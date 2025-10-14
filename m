@@ -1,37 +1,37 @@
 Received: from mail.zytor.com (terminus.zytor.com [198.137.202.136])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F247C2FF66F;
-	Tue, 14 Oct 2025 01:11:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 833CE2FFDD2;
+	Tue, 14 Oct 2025 01:11:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.137.202.136
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760404277; cv=none; b=OeLR+SmgjaVVHaCkTjYgDllWGPursMJdyhHyzjagWJaGcrPT3EyZdc9462b6pldb2fLQiZimYrobG5G3Y493/XpnzlkODjHomfpgpDNFwTUh/U8Aty4lxCk2w2bEXXjX+bWUNr4AzOvZYw9Exc54b6g3jE0VCs9r7pwdkJpdZ2M=
+	t=1760404278; cv=none; b=BlOqZ0J70z348Sp5qZOe7ysUf9516qRdbvA7sAjSQMWiSdOGu3ir4lY6ZCzeNZ7nosKbB0jZNZT2IT9s8QrlvD/kHlgbWYNAL4NqxduRuL/zWL5Ne2Ha/twyALOFvdDaVoPIpf8+OE2BkgMhp5uFbcWbX+/vfM0VUD8N/ag8ey0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760404277; c=relaxed/simple;
-	bh=PCK07hZjZe/djyfCR93LEEj+EseF0gt0pumT0MN7FO4=;
+	s=arc-20240116; t=1760404278; c=relaxed/simple;
+	bh=cjXlEW+HJrC+n7WdEVn9NIj5cqbE93TJstdh2DhLT/4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=V1aLdiq+O8tDZU8YP3E7VSgGB8fvr/E1K3ZxtWEEzjhO3zcTblZKm2IoICdKlq9+qbkIwQCpOkTs0cp9y61oKkYq6FpxRT0TA5uHnzakFdHH8vFhkZ0FCAHfVRTeD7IxiLRfoS5kv8G3hLcYDRyweqme+VUN/nPJlwFidZ+nU8g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zytor.com; spf=pass smtp.mailfrom=zytor.com; dkim=pass (2048-bit key) header.d=zytor.com header.i=@zytor.com header.b=XMvtRdwa; arc=none smtp.client-ip=198.137.202.136
+	 MIME-Version; b=sS+cEsieY7TDQo0aPsUUkt+1xm5L6U5FJVWO/ycNeD45uAU28gtycYfc8LlIRl+uXT2TfytG2myE+CW9hdHbAYJ8XJQZRk8htQFFUbRhstLzXUUWzWyRKM9GRsCPeZbIxs82rJcPT+oh1rt5WCsVcUpl3LwpDAd3JyaMLeWctYo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zytor.com; spf=pass smtp.mailfrom=zytor.com; dkim=pass (2048-bit key) header.d=zytor.com header.i=@zytor.com header.b=Hu+M1cMt; arc=none smtp.client-ip=198.137.202.136
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zytor.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=zytor.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=zytor.com header.i=@zytor.com header.b="XMvtRdwa"
+	dkim=pass (2048-bit key) header.d=zytor.com header.i=@zytor.com header.b="Hu+M1cMt"
 Received: from terminus.zytor.com (terminus.zytor.com [IPv6:2607:7c80:54:3:0:0:0:136])
 	(authenticated bits=0)
-	by mail.zytor.com (8.18.1/8.17.1) with ESMTPSA id 59E19p1b1568441
+	by mail.zytor.com (8.18.1/8.17.1) with ESMTPSA id 59E19p1h1568441
 	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NO);
-	Mon, 13 Oct 2025 18:10:08 -0700
-DKIM-Filter: OpenDKIM Filter v2.11.0 mail.zytor.com 59E19p1b1568441
+	Mon, 13 Oct 2025 18:10:13 -0700
+DKIM-Filter: OpenDKIM Filter v2.11.0 mail.zytor.com 59E19p1h1568441
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=zytor.com;
-	s=2025092201; t=1760404208;
-	bh=UPeE8tl0kefM8+QolEcGU5SRTnwPLc6mn0cnq24BAgQ=;
+	s=2025092201; t=1760404214;
+	bh=/ggZC0jetPh6xwp3QLheVMToejFWyPevCxxzlMeq2Ow=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XMvtRdwa24F+Lqawt1KyWygWHA61AO1zsLGeLVw7VKSv8I92Qb4s4K4lgqkguyNl2
-	 7YZuLxIlAN36kUqKYr2zGNmVKm37euHWoD2JxU/E9YleM0Z/ovQUlEUOZ/Zcyhpr5f
-	 JxASPObXDqvlC4oKNW3r7g1Kmy5gpZ7Iv/G4Wpa9tAUT8btLO4+pyrBAVb7PWvb0wQ
-	 su2IZgH9r8WtD/6ai1XtSEGb/OgskpqUYMdmrErECmu6WDFtRt2tqymiPXzFnEJpET
-	 rGH4RedmSI+DwbfrQqOm1Otc1gNGqLvKe2/U/9ZhS1YFfks4oON1DLmrC/ciX7PSUK
-	 sJBX/rRC8E0UA==
+	b=Hu+M1cMt3SqPQhuRYvgFkpMkufZSU7Db2GawhqkDEea3H9u9F8DFv4bHnwH+YNovr
+	 +iRQzTmp+NlJSg50qoUai21OJDFRoOnePa7iUAWRpJwDCc0r8XiZlGQw8LcpBIT3XR
+	 yiGD2+InuNefQDu6gkPPTsXYZk1OdjcAFEMGCUlrkxBdpzLhoZ/C7Kn2ww0Kfc9F9+
+	 rIxg+oPbMVQF0vYd4dC3ZwcTg2pHE1QgCURCXrCuNLLE6AL3VnuZlXNglkZjp06x3L
+	 23IdcYNUxnfvXrk3KMFjN7OZkyMev2eT17dMDC6uC8gGGQKXMIkXwrRX5uGedQ+EJD
+	 T2H4wvp/1+4og==
 From: "Xin Li (Intel)" <xin@zytor.com>
 To: linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
         linux-doc@vger.kernel.org
@@ -40,9 +40,9 @@ Cc: pbonzini@redhat.com, seanjc@google.com, corbet@lwn.net, tglx@linutronix.de,
         x86@kernel.org, hpa@zytor.com, xin@zytor.com, luto@kernel.org,
         peterz@infradead.org, andrew.cooper3@citrix.com, chao.gao@intel.com,
         hch@infradead.org
-Subject: [PATCH v8 14/21] KVM: x86: Mark CR4.FRED as not reserved
-Date: Mon, 13 Oct 2025 18:09:43 -0700
-Message-ID: <20251014010950.1568389-15-xin@zytor.com>
+Subject: [PATCH v8 20/21] KVM: nVMX: Add prerequisites to SHADOW_FIELD_R[OW] macros
+Date: Mon, 13 Oct 2025 18:09:49 -0700
+Message-ID: <20251014010950.1568389-21-xin@zytor.com>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20251014010950.1568389-1-xin@zytor.com>
 References: <20251014010950.1568389-1-xin@zytor.com>
@@ -56,12 +56,13 @@ Content-Transfer-Encoding: 8bit
 
 From: Xin Li <xin3.li@intel.com>
 
-The CR4.FRED bit, i.e., CR4[32], is no longer a reserved bit when
-guest cpu cap has FRED, i.e.,
-  1) All of FRED KVM support is in place.
-  2) Guest enumerates FRED.
+Add VMX feature checks before accessing VMCS fields via SHADOW_FIELD_R[OW]
+macros, as some fields may not be supported on all CPUs.
 
-Otherwise it is still a reserved bit.
+Functions like copy_shadow_to_vmcs12() and copy_vmcs12_to_shadow() access
+VMCS fields that may not exist on certain hardware, such as
+INJECTED_EVENT_DATA.  To avoid VMREAD/VMWRITE warnings, skip syncing fields
+tied to unsupported VMX features.
 
 Signed-off-by: Xin Li <xin3.li@intel.com>
 Signed-off-by: Xin Li (Intel) <xin@zytor.com>
@@ -72,43 +73,247 @@ Tested-by: Xuelian Guo <xuelian.guo@intel.com>
 Change in v5:
 * Add TB from Xuelian Guo.
 
-Change in v4:
-* Rebase on top of "guest_cpu_cap".
-
-Change in v3:
-* Don't allow CR4.FRED=1 before all of FRED KVM support is in place
-  (Sean Christopherson).
+Change since v2:
+* Add __SHADOW_FIELD_R[OW] for better readability or maintability (Sean).
 ---
- arch/x86/include/asm/kvm_host.h | 2 +-
- arch/x86/kvm/x86.h              | 2 ++
- 2 files changed, 3 insertions(+), 1 deletion(-)
+ arch/x86/kvm/vmx/nested.c             | 79 +++++++++++++++++++--------
+ arch/x86/kvm/vmx/vmcs_shadow_fields.h | 41 +++++++++-----
+ 2 files changed, 83 insertions(+), 37 deletions(-)
 
-diff --git a/arch/x86/include/asm/kvm_host.h b/arch/x86/include/asm/kvm_host.h
-index 5fff22d837aa..558f260a1afd 100644
---- a/arch/x86/include/asm/kvm_host.h
-+++ b/arch/x86/include/asm/kvm_host.h
-@@ -142,7 +142,7 @@
- 			  | X86_CR4_OSXSAVE | X86_CR4_SMEP | X86_CR4_FSGSBASE \
- 			  | X86_CR4_OSXMMEXCPT | X86_CR4_LA57 | X86_CR4_VMXE \
- 			  | X86_CR4_SMAP | X86_CR4_PKE | X86_CR4_UMIP \
--			  | X86_CR4_LAM_SUP | X86_CR4_CET))
-+			  | X86_CR4_LAM_SUP | X86_CR4_CET | X86_CR4_FRED))
+diff --git a/arch/x86/kvm/vmx/nested.c b/arch/x86/kvm/vmx/nested.c
+index bffd10b6fe25..0867c1f09999 100644
+--- a/arch/x86/kvm/vmx/nested.c
++++ b/arch/x86/kvm/vmx/nested.c
+@@ -55,14 +55,14 @@ struct shadow_vmcs_field {
+ 	u16	offset;
+ };
+ static struct shadow_vmcs_field shadow_read_only_fields[] = {
+-#define SHADOW_FIELD_RO(x, y) { x, offsetof(struct vmcs12, y) },
++#define __SHADOW_FIELD_RO(x, y, c) { x, offsetof(struct vmcs12, y) },
+ #include "vmcs_shadow_fields.h"
+ };
+ static int max_shadow_read_only_fields =
+ 	ARRAY_SIZE(shadow_read_only_fields);
  
- #define CR8_RESERVED_BITS (~(unsigned long)X86_CR8_TPR)
+ static struct shadow_vmcs_field shadow_read_write_fields[] = {
+-#define SHADOW_FIELD_RW(x, y) { x, offsetof(struct vmcs12, y) },
++#define __SHADOW_FIELD_RW(x, y, c) { x, offsetof(struct vmcs12, y) },
+ #include "vmcs_shadow_fields.h"
+ };
+ static int max_shadow_read_write_fields =
+@@ -85,6 +85,17 @@ static void init_vmcs_shadow_fields(void)
+ 			pr_err("Missing field from shadow_read_only_field %x\n",
+ 			       field + 1);
  
-diff --git a/arch/x86/kvm/x86.h b/arch/x86/kvm/x86.h
-index 4f5d12d7136e..e9c6f304b02e 100644
---- a/arch/x86/kvm/x86.h
-+++ b/arch/x86/kvm/x86.h
-@@ -687,6 +687,8 @@ static inline bool __kvm_is_valid_cr4(struct kvm_vcpu *vcpu, unsigned long cr4)
- 	if (!__cpu_has(__c, X86_FEATURE_SHSTK) &&       \
- 	    !__cpu_has(__c, X86_FEATURE_IBT))           \
- 		__reserved_bits |= X86_CR4_CET;         \
-+	if (!__cpu_has(__c, X86_FEATURE_FRED))          \
-+		__reserved_bits |= X86_CR4_FRED;        \
- 	__reserved_bits;                                \
- })
++		switch (field) {
++#define __SHADOW_FIELD_RO(x, y, c)		\
++		case x:				\
++			if (!(c))		\
++				continue;	\
++			break;
++#include "vmcs_shadow_fields.h"
++		default:
++			break;
++		}
++
+ 		clear_bit(field, vmx_vmread_bitmap);
+ 		if (field & 1)
+ #ifdef CONFIG_X86_64
+@@ -110,24 +121,13 @@ static void init_vmcs_shadow_fields(void)
+ 			  field <= GUEST_TR_AR_BYTES,
+ 			  "Update vmcs12_write_any() to drop reserved bits from AR_BYTES");
  
+-		/*
+-		 * PML and the preemption timer can be emulated, but the
+-		 * processor cannot vmwrite to fields that don't exist
+-		 * on bare metal.
+-		 */
+ 		switch (field) {
+-		case GUEST_PML_INDEX:
+-			if (!cpu_has_vmx_pml())
+-				continue;
+-			break;
+-		case VMX_PREEMPTION_TIMER_VALUE:
+-			if (!cpu_has_vmx_preemption_timer())
+-				continue;
+-			break;
+-		case GUEST_INTR_STATUS:
+-			if (!cpu_has_vmx_apicv())
+-				continue;
++#define __SHADOW_FIELD_RW(x, y, c)		\
++		case x:				\
++			if (!(c))		\
++				continue;	\
+ 			break;
++#include "vmcs_shadow_fields.h"
+ 		default:
+ 			break;
+ 		}
+@@ -1633,8 +1633,8 @@ int vmx_get_vmx_msr(struct nested_vmx_msrs *msrs, u32 msr_index, u64 *pdata)
+ /*
+  * Copy the writable VMCS shadow fields back to the VMCS12, in case they have
+  * been modified by the L1 guest.  Note, "writable" in this context means
+- * "writable by the guest", i.e. tagged SHADOW_FIELD_RW; the set of
+- * fields tagged SHADOW_FIELD_RO may or may not align with the "read-only"
++ * "writable by the guest", i.e. tagged __SHADOW_FIELD_RW; the set of
++ * fields tagged __SHADOW_FIELD_RO may or may not align with the "read-only"
+  * VM-exit information fields (which are actually writable if the vCPU is
+  * configured to support "VMWRITE to any supported field in the VMCS").
+  */
+@@ -1655,6 +1655,18 @@ static void copy_shadow_to_vmcs12(struct vcpu_vmx *vmx)
+ 
+ 	for (i = 0; i < max_shadow_read_write_fields; i++) {
+ 		field = shadow_read_write_fields[i];
++
++		switch (field.encoding) {
++#define __SHADOW_FIELD_RW(x, y, c)		\
++		case x:				\
++			if (!(c))		\
++				continue;	\
++			break;
++#include "vmcs_shadow_fields.h"
++		default:
++			break;
++		}
++
+ 		val = __vmcs_readl(field.encoding);
+ 		vmcs12_write_any(vmcs12, field.encoding, field.offset, val);
+ 	}
+@@ -1689,6 +1701,23 @@ static void copy_vmcs12_to_shadow(struct vcpu_vmx *vmx)
+ 	for (q = 0; q < ARRAY_SIZE(fields); q++) {
+ 		for (i = 0; i < max_fields[q]; i++) {
+ 			field = fields[q][i];
++
++			switch (field.encoding) {
++#define __SHADOW_FIELD_RO(x, y, c)			\
++			case x:				\
++				if (!(c))		\
++					continue;	\
++				break;
++#define __SHADOW_FIELD_RW(x, y, c)			\
++			case x:				\
++				if (!(c))		\
++					continue;	\
++				break;
++#include "vmcs_shadow_fields.h"
++			default:
++				break;
++			}
++
+ 			val = vmcs12_read_any(vmcs12, field.encoding,
+ 					      field.offset);
+ 			__vmcs_writel(field.encoding, val);
+@@ -5997,9 +6026,10 @@ static int handle_vmread(struct kvm_vcpu *vcpu)
+ static bool is_shadow_field_rw(unsigned long field)
+ {
+ 	switch (field) {
+-#define SHADOW_FIELD_RW(x, y) case x:
++#define __SHADOW_FIELD_RW(x, y, c)	\
++	case x:				\
++		return c;
+ #include "vmcs_shadow_fields.h"
+-		return true;
+ 	default:
+ 		break;
+ 	}
+@@ -6009,9 +6039,10 @@ static bool is_shadow_field_rw(unsigned long field)
+ static bool is_shadow_field_ro(unsigned long field)
+ {
+ 	switch (field) {
+-#define SHADOW_FIELD_RO(x, y) case x:
++#define __SHADOW_FIELD_RO(x, y, c)	\
++	case x:				\
++		return c;
+ #include "vmcs_shadow_fields.h"
+-		return true;
+ 	default:
+ 		break;
+ 	}
+diff --git a/arch/x86/kvm/vmx/vmcs_shadow_fields.h b/arch/x86/kvm/vmx/vmcs_shadow_fields.h
+index da338327c2b3..607945ada35f 100644
+--- a/arch/x86/kvm/vmx/vmcs_shadow_fields.h
++++ b/arch/x86/kvm/vmx/vmcs_shadow_fields.h
+@@ -1,14 +1,17 @@
+-#if !defined(SHADOW_FIELD_RO) && !defined(SHADOW_FIELD_RW)
++#if !defined(__SHADOW_FIELD_RO) && !defined(__SHADOW_FIELD_RW)
+ BUILD_BUG_ON(1)
+ #endif
+ 
+-#ifndef SHADOW_FIELD_RO
+-#define SHADOW_FIELD_RO(x, y)
++#ifndef __SHADOW_FIELD_RO
++#define __SHADOW_FIELD_RO(x, y, c)
+ #endif
+-#ifndef SHADOW_FIELD_RW
+-#define SHADOW_FIELD_RW(x, y)
++#ifndef __SHADOW_FIELD_RW
++#define __SHADOW_FIELD_RW(x, y, c)
+ #endif
+ 
++#define SHADOW_FIELD_RO(x, y) __SHADOW_FIELD_RO(x, y, true)
++#define SHADOW_FIELD_RW(x, y) __SHADOW_FIELD_RW(x, y, true)
++
+ /*
+  * We do NOT shadow fields that are modified when L0
+  * traps and emulates any vmx instruction (e.g. VMPTRLD,
+@@ -32,8 +35,12 @@ BUILD_BUG_ON(1)
+  */
+ 
+ /* 16-bits */
+-SHADOW_FIELD_RW(GUEST_INTR_STATUS, guest_intr_status)
+-SHADOW_FIELD_RW(GUEST_PML_INDEX, guest_pml_index)
++__SHADOW_FIELD_RW(GUEST_INTR_STATUS, guest_intr_status, cpu_has_vmx_apicv())
++/*
++ * PML can be emulated, but the processor cannot vmwrite to the VMCS field
++ * GUEST_PML_INDEX that doesn't exist on bare metal.
++ */
++__SHADOW_FIELD_RW(GUEST_PML_INDEX, guest_pml_index, cpu_has_vmx_pml())
+ SHADOW_FIELD_RW(HOST_FS_SELECTOR, host_fs_selector)
+ SHADOW_FIELD_RW(HOST_GS_SELECTOR, host_gs_selector)
+ 
+@@ -41,9 +48,9 @@ SHADOW_FIELD_RW(HOST_GS_SELECTOR, host_gs_selector)
+ SHADOW_FIELD_RO(VM_EXIT_REASON, vm_exit_reason)
+ SHADOW_FIELD_RO(VM_EXIT_INTR_INFO, vm_exit_intr_info)
+ SHADOW_FIELD_RO(VM_EXIT_INSTRUCTION_LEN, vm_exit_instruction_len)
++SHADOW_FIELD_RO(VM_EXIT_INTR_ERROR_CODE, vm_exit_intr_error_code)
+ SHADOW_FIELD_RO(IDT_VECTORING_INFO_FIELD, idt_vectoring_info_field)
+ SHADOW_FIELD_RO(IDT_VECTORING_ERROR_CODE, idt_vectoring_error_code)
+-SHADOW_FIELD_RO(VM_EXIT_INTR_ERROR_CODE, vm_exit_intr_error_code)
+ SHADOW_FIELD_RO(GUEST_CS_AR_BYTES, guest_cs_ar_bytes)
+ SHADOW_FIELD_RO(GUEST_SS_AR_BYTES, guest_ss_ar_bytes)
+ SHADOW_FIELD_RW(CPU_BASED_VM_EXEC_CONTROL, cpu_based_vm_exec_control)
+@@ -54,7 +61,12 @@ SHADOW_FIELD_RW(VM_ENTRY_INTR_INFO_FIELD, vm_entry_intr_info_field)
+ SHADOW_FIELD_RW(VM_ENTRY_INSTRUCTION_LEN, vm_entry_instruction_len)
+ SHADOW_FIELD_RW(TPR_THRESHOLD, tpr_threshold)
+ SHADOW_FIELD_RW(GUEST_INTERRUPTIBILITY_INFO, guest_interruptibility_info)
+-SHADOW_FIELD_RW(VMX_PREEMPTION_TIMER_VALUE, vmx_preemption_timer_value)
++/*
++ * The preemption timer can be emulated, but the processor cannot vmwrite to
++ * the VMCS field VMX_PREEMPTION_TIMER_VALUE that doesn't exist on bare metal.
++ */
++__SHADOW_FIELD_RW(VMX_PREEMPTION_TIMER_VALUE, vmx_preemption_timer_value,
++		  cpu_has_vmx_preemption_timer())
+ 
+ /* Natural width */
+ SHADOW_FIELD_RO(EXIT_QUALIFICATION, exit_qualification)
+@@ -74,10 +86,13 @@ SHADOW_FIELD_RW(HOST_GS_BASE, host_gs_base)
+ /* 64-bit */
+ SHADOW_FIELD_RO(GUEST_PHYSICAL_ADDRESS, guest_physical_address)
+ SHADOW_FIELD_RO(GUEST_PHYSICAL_ADDRESS_HIGH, guest_physical_address)
+-SHADOW_FIELD_RO(ORIGINAL_EVENT_DATA, original_event_data)
+-SHADOW_FIELD_RO(ORIGINAL_EVENT_DATA_HIGH, original_event_data)
+-SHADOW_FIELD_RW(INJECTED_EVENT_DATA, injected_event_data)
+-SHADOW_FIELD_RW(INJECTED_EVENT_DATA_HIGH, injected_event_data)
++__SHADOW_FIELD_RO(ORIGINAL_EVENT_DATA, original_event_data, cpu_has_vmx_fred())
++__SHADOW_FIELD_RO(ORIGINAL_EVENT_DATA_HIGH, original_event_data, cpu_has_vmx_fred())
++__SHADOW_FIELD_RW(INJECTED_EVENT_DATA, injected_event_data, cpu_has_vmx_fred())
++__SHADOW_FIELD_RW(INJECTED_EVENT_DATA_HIGH, injected_event_data, cpu_has_vmx_fred())
+ 
+ #undef SHADOW_FIELD_RO
+ #undef SHADOW_FIELD_RW
++
++#undef __SHADOW_FIELD_RO
++#undef __SHADOW_FIELD_RW
 -- 
 2.51.0
 
