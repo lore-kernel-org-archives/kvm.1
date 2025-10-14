@@ -1,37 +1,37 @@
 Received: from mail.zytor.com (terminus.zytor.com [198.137.202.136])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D10519F48D;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9FB71218599;
 	Tue, 14 Oct 2025 01:10:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.137.202.136
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760404238; cv=none; b=lpef5hzIjqxyWhaj+UNAIZrYthcP29pIQ8y7wbAciIO/t3hIjAo+HJlS/+1QO8XTvmU3UG6iPDNXK/rxyTliPvqjG38ANrEXvH7TOuAaMx/SVr/r7ResisnJkiuZF9a03PTsbgVqgw3yc3LedvblgPRiZZC4bw/fuzfvh96OGU4=
+	t=1760404238; cv=none; b=FS3DiQqtJPL77cGUeVUk09vMO+H04Q50qfGIgVy8e6I7x9iEejH3OMULaNLfFI6WB7inNZFnodQdE/tJ89PsWt1Z3rH3TJVuqkKj0MGwuM7zLYhEydgkhNjBwosui+bWq68hWNhwkiDi2L7aU9oOjM5Ut/hWklkHANfGCChjzEw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1760404238; c=relaxed/simple;
-	bh=uIJN3VdN1mUAT5jTOI6pi2Bgh1By/v/hWWmxwuQXcPw=;
+	bh=w6FUw76nshN7kHmvpn95mgA/CQI219vkL7sUl9Hz8HE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oJhkRQF9AchJvbP0YdnUIXonoyds+IQYqTnNZRDMp4VmPEPR4NBjaaNs2HH1XpLZUFnG6MWy7vKEj0yZYzcrvj+88RdRaREEPpCL+ndBWz+/LZbFaxvu0H5q54o05wii1Ex0K/oasSV7SO/DyY9wzFJI2sVxfTvKx1ZqRlphAvQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zytor.com; spf=pass smtp.mailfrom=zytor.com; dkim=pass (2048-bit key) header.d=zytor.com header.i=@zytor.com header.b=dgzTIyq+; arc=none smtp.client-ip=198.137.202.136
+	 MIME-Version; b=ZoZlT7Ge+qzXzL6jV/0ZcDYoZaQz5yW3lWqsOxovUvqljTbVwIvZ9/qX3Gj1CBZ+FpbMreaqS+bTCbMOPMwhGB1/AG3b+l3LmZahXdB15veq161OR2KKbkDQkHh8LxnnZUvPV9+FHy2ujO4OA3l99XKCdnpTjAmNnZxTXB061rk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zytor.com; spf=pass smtp.mailfrom=zytor.com; dkim=pass (2048-bit key) header.d=zytor.com header.i=@zytor.com header.b=QEDf8Bh/; arc=none smtp.client-ip=198.137.202.136
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zytor.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=zytor.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=zytor.com header.i=@zytor.com header.b="dgzTIyq+"
+	dkim=pass (2048-bit key) header.d=zytor.com header.i=@zytor.com header.b="QEDf8Bh/"
 Received: from terminus.zytor.com (terminus.zytor.com [IPv6:2607:7c80:54:3:0:0:0:136])
 	(authenticated bits=0)
-	by mail.zytor.com (8.18.1/8.17.1) with ESMTPSA id 59E19p1W1568441
+	by mail.zytor.com (8.18.1/8.17.1) with ESMTPSA id 59E19p1f1568441
 	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NO);
-	Mon, 13 Oct 2025 18:10:03 -0700
-DKIM-Filter: OpenDKIM Filter v2.11.0 mail.zytor.com 59E19p1W1568441
+	Mon, 13 Oct 2025 18:10:11 -0700
+DKIM-Filter: OpenDKIM Filter v2.11.0 mail.zytor.com 59E19p1f1568441
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=zytor.com;
-	s=2025092201; t=1760404204;
-	bh=/UBGMbczMLj4pPauT6AJ4EIz1iBt7oMw+LqWmfBkdAc=;
+	s=2025092201; t=1760404212;
+	bh=BV6KeZ8a3ep+cOlA91QSZALk0pngu78LJrKwv0oh/tE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dgzTIyq+dgLLvWm2YMuNip3clEirOJ5syVCchsLnqOnGBCa1G6xp+cWo3dB/uy5d6
-	 c1JYg1ijmIvMmCos375oXEL1Ik9T/ABn274nSfDw5NO0c0V4MsZGgLon39IwUfiB56
-	 VJPXWG+1sN11qnhQfNKayA4HN1DaK3CVHW0bny59BLeod2O+dVPJ5dIMOdfDnDzN0c
-	 SO9eltUmMTPjpykTmoEUTLbD5X75I75zZsx5nB9xh81KF4k0XuMHe7VCswrMPh6nDn
-	 Y2c0CN0o0dTdFeyEi4Nwbx4GxF8qzo0kew27mXauZlRpawqXCuiBS3hAkefli8OqQM
-	 Fki8JW6Mo7gZA==
+	b=QEDf8Bh/U939xiTp6l4bz9vnESDdHCdPo/qdfRrJh5AcdpXRHJmghjuWlsT8YswaC
+	 vWZmzk5frdOJFTIArc0tRVgaYg/M6ncJDx5BGoQ0HY6/eDvUj7Muh7F0s18zjrEcai
+	 +33z/NRMCgrFurTw4gpYFXJEoRBZN1cAe0cryef6EWY5TD9fDfQzo/XKNyJQayAcsP
+	 YSnD4HYT5hI0v4FCS1tweU6iL8oNQHpHdhWTGarXG0E2E+MCmKbAqndAN8dCSJ3NCk
+	 GP1FcETPJbtx3WYnxQgLo389zVQtOu4Dr9roL7hDKCukRuDAUJ98de0CUCvqk3hneW
+	 NLc3MfsoeYlqw==
 From: "Xin Li (Intel)" <xin@zytor.com>
 To: linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
         linux-doc@vger.kernel.org
@@ -40,9 +40,9 @@ Cc: pbonzini@redhat.com, seanjc@google.com, corbet@lwn.net, tglx@linutronix.de,
         x86@kernel.org, hpa@zytor.com, xin@zytor.com, luto@kernel.org,
         peterz@infradead.org, andrew.cooper3@citrix.com, chao.gao@intel.com,
         hch@infradead.org
-Subject: [PATCH v8 09/21] KVM: VMX: Add support for saving and restoring FRED MSRs
-Date: Mon, 13 Oct 2025 18:09:38 -0700
-Message-ID: <20251014010950.1568389-10-xin@zytor.com>
+Subject: [PATCH v8 18/21] KVM: nVMX: Add FRED VMCS fields to nested VMX context handling
+Date: Mon, 13 Oct 2025 18:09:47 -0700
+Message-ID: <20251014010950.1568389-19-xin@zytor.com>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20251014010950.1568389-1-xin@zytor.com>
 References: <20251014010950.1568389-1-xin@zytor.com>
@@ -56,15 +56,22 @@ Content-Transfer-Encoding: 8bit
 
 From: Xin Li <xin3.li@intel.com>
 
-Introduce support for handling FRED MSR access requests, enabling both
-host and guest to read and write FRED MSRs, which is essential for VM
-save/restore and live migration, and allows userspace tools such as QEMU
-to access the relevant MSRs.
+Extend nested VMX context management to include FRED-related VMCS fields.
+This enables proper handling of FRED state during nested virtualization.
 
-Specially, intercept accesses to the FRED SSP0 MSR (IA32_PL0_SSP), which
-remains accessible when FRED is enumerated even if CET is not.  This
-ensures the guest value is fully virtual and does not alter the hardware
-FRED SSP0 MSR.
+Because KVM always sets SECONDARY_VM_EXIT_SAVE_IA32_FRED, FRED MSRs are
+always saved to vmcs02.  However an L1 VMM may choose to clear this bit,
+i.e., not to save FRED MSRs to vmcs12.  This is not a problem when the L1
+VMM sets SECONDARY_VM_EXIT_LOAD_IA32_FRED, as KVM then immediately loads
+host FRED MSRs of vmcs12 to guest FRED MSRs of vmcs01.  However if the L1
+VMM clears SECONDARY_VM_EXIT_LOAD_IA32_FRED, KVM should retain FRED MSRs
+to run the L1 VMM.
+
+To propagate guest FRED MSRs from vmcs02 to vmcs01, save them in
+sync_vmcs02_to_vmcs12() regardless of whether
+SECONDARY_VM_EXIT_SAVE_IA32_FRED is set in vmcs12.  Then, use the saved
+values to set guest FRED MSRs in vmcs01 within load_vmcs12_host_state()
+when !nested_cpu_load_host_fred_state().
 
 Signed-off-by: Xin Li <xin3.li@intel.com>
 Signed-off-by: Xin Li (Intel) <xin@zytor.com>
@@ -72,278 +79,465 @@ Tested-by: Shan Kang <shan.kang@intel.com>
 Tested-by: Xuelian Guo <xuelian.guo@intel.com>
 ---
 
-Change in v7:
-* Intercept accesses to FRED SSP0, i.e., IA32_PL0_SSP, which remains
-  accessible when FRED but !CET (Sean).
+Changes in v8:
+* Make the newly added FRED fields 64-bit aligned in vmcs12 (Isaku).
+* Remove the change to Documentation/virt/kvm/x86/nested-vmx.rst.
 
 Change in v6:
-* Return KVM_MSR_RET_UNSUPPORTED instead of 1 when FRED is not available
-  (Chao Gao)
-* Handle MSR_IA32_PL0_SSP when FRED is enumerated but CET not.
+* Handle FRED MSR pre-vmenter save/restore (Chao Gao).
+* Save FRED MSRs of vmcs02 at VM-Exit even an L1 VMM clears
+  SECONDARY_VM_EXIT_SAVE_IA32_FRED.
+* Save FRED MSRs in sync_vmcs02_to_vmcs12() instead of its rare version.
 
 Change in v5:
-* Use the newly added guest MSR read/write helpers (Sean).
-* Check the size of fred_msr_vmcs_fields[] using static_assert() (Sean).
-* Rewrite setting FRED MSRs to make it much easier to read (Sean).
 * Add TB from Xuelian Guo.
 
-Changes since v2:
-* Add a helper to convert FRED MSR index to VMCS field encoding to
-  make the code more compact (Chao Gao).
-* Get rid of the "host_initiated" check because userspace has to set
-  CPUID before MSRs (Chao Gao & Sean Christopherson).
-* Address a few cleanup comments (Sean Christopherson).
+Changes in v4:
+* Advertise VMX nested exception as if the CPU supports it (Chao Gao).
+* Split FRED state management controls (Chao Gao).
 
-Changes since v1:
+Changes in v3:
+* Add and use nested_cpu_has_fred(vmcs12) because vmcs02 should be set
+  from vmcs12 if and only if the field is enabled in L1's VMX config
+  (Sean Christopherson).
+* Fix coding style issues (Sean Christopherson).
+
+Changes in v2:
+* Remove hyperv TLFS related changes (Jeremi Piotrowski).
 * Use kvm_cpu_cap_has() instead of cpu_feature_enabled() (Chao Gao).
-* Fail host requested FRED MSRs access if KVM cannot virtualize FRED
-  (Chao Gao).
-* Handle the case FRED MSRs are valid but KVM cannot virtualize FRED
-  (Chao Gao).
-* Add sanity checks when writing to FRED MSRs.
 ---
- arch/x86/include/asm/kvm_host.h |  5 ++
- arch/x86/kvm/vmx/vmx.c          | 45 +++++++++++++++++
- arch/x86/kvm/x86.c              | 85 +++++++++++++++++++++++++++++++--
- 3 files changed, 132 insertions(+), 3 deletions(-)
+ arch/x86/kvm/vmx/capabilities.h       |   5 ++
+ arch/x86/kvm/vmx/nested.c             | 113 +++++++++++++++++++++++++-
+ arch/x86/kvm/vmx/nested.h             |  22 +++++
+ arch/x86/kvm/vmx/vmcs12.c             |  18 ++++
+ arch/x86/kvm/vmx/vmcs12.h             |  37 +++++++++
+ arch/x86/kvm/vmx/vmcs_shadow_fields.h |   4 +
+ arch/x86/kvm/vmx/vmx.h                |  41 ++++++++++
+ 7 files changed, 238 insertions(+), 2 deletions(-)
 
-diff --git a/arch/x86/include/asm/kvm_host.h b/arch/x86/include/asm/kvm_host.h
-index 48598d017d6f..43a18e265289 100644
---- a/arch/x86/include/asm/kvm_host.h
-+++ b/arch/x86/include/asm/kvm_host.h
-@@ -1092,6 +1092,11 @@ struct kvm_vcpu_arch {
- #if IS_ENABLED(CONFIG_HYPERV)
- 	hpa_t hv_root_tdp;
- #endif
-+	/*
-+	 * Stores the FRED SSP0 MSR when CET is not supported, prompting KVM
-+	 * to intercept its accesses.
-+	 */
-+	u64 fred_ssp0_fallback;
- };
- 
- struct kvm_lpage_info {
-diff --git a/arch/x86/kvm/vmx/vmx.c b/arch/x86/kvm/vmx/vmx.c
-index 3ea660c0481c..f797e6b12721 100644
---- a/arch/x86/kvm/vmx/vmx.c
-+++ b/arch/x86/kvm/vmx/vmx.c
-@@ -1386,6 +1386,18 @@ static void vmx_write_guest_kernel_gs_base(struct vcpu_vmx *vmx, u64 data)
- 	vmx_write_guest_host_msr(vmx, MSR_KERNEL_GS_BASE, data,
- 				 &vmx->msr_guest_kernel_gs_base);
+diff --git a/arch/x86/kvm/vmx/capabilities.h b/arch/x86/kvm/vmx/capabilities.h
+index f390f9f883c3..5eba2530ffb4 100644
+--- a/arch/x86/kvm/vmx/capabilities.h
++++ b/arch/x86/kvm/vmx/capabilities.h
+@@ -80,6 +80,11 @@ static inline bool cpu_has_vmx_basic_no_hw_errcode_cc(void)
+ 	return	vmcs_config.basic & VMX_BASIC_NO_HW_ERROR_CODE_CC;
  }
-+
-+static u64 vmx_read_guest_fred_rsp0(struct vcpu_vmx *vmx)
-+{
-+	return vmx_read_guest_host_msr(vmx, MSR_IA32_FRED_RSP0,
-+				       &vmx->msr_guest_fred_rsp0);
-+}
-+
-+static void vmx_write_guest_fred_rsp0(struct vcpu_vmx *vmx, u64 data)
-+{
-+	vmx_write_guest_host_msr(vmx, MSR_IA32_FRED_RSP0, data,
-+				 &vmx->msr_guest_fred_rsp0);
-+}
- #endif
  
- static void grow_ple_window(struct kvm_vcpu *vcpu)
-@@ -1987,6 +1999,27 @@ int vmx_get_feature_msr(u32 msr, u64 *data)
++static inline bool cpu_has_vmx_nested_exception(void)
++{
++	return vmcs_config.basic & VMX_BASIC_NESTED_EXCEPTION;
++}
++
+ static inline bool cpu_has_virtual_nmis(void)
+ {
+ 	return vmcs_config.pin_based_exec_ctrl & PIN_BASED_VIRTUAL_NMIS &&
+diff --git a/arch/x86/kvm/vmx/nested.c b/arch/x86/kvm/vmx/nested.c
+index 332c1ac12eb6..aba2800b4012 100644
+--- a/arch/x86/kvm/vmx/nested.c
++++ b/arch/x86/kvm/vmx/nested.c
+@@ -705,6 +705,9 @@ static inline bool nested_vmx_prepare_msr_bitmap(struct kvm_vcpu *vcpu,
+ 
+ 	nested_vmx_set_intercept_for_msr(vmx, msr_bitmap_l1, msr_bitmap_l0,
+ 					 MSR_KERNEL_GS_BASE, MSR_TYPE_RW);
++
++	nested_vmx_set_intercept_for_msr(vmx, msr_bitmap_l1, msr_bitmap_l0,
++					 MSR_IA32_FRED_RSP0, MSR_TYPE_RW);
+ #endif
+ 	nested_vmx_set_intercept_for_msr(vmx, msr_bitmap_l1, msr_bitmap_l0,
+ 					 MSR_IA32_SPEC_CTRL, MSR_TYPE_RW);
+@@ -1291,9 +1294,11 @@ static int vmx_restore_vmx_basic(struct vcpu_vmx *vmx, u64 data)
+ 	const u64 feature_bits = VMX_BASIC_DUAL_MONITOR_TREATMENT |
+ 				 VMX_BASIC_INOUT |
+ 				 VMX_BASIC_TRUE_CTLS |
+-				 VMX_BASIC_NO_HW_ERROR_CODE_CC;
++				 VMX_BASIC_NO_HW_ERROR_CODE_CC |
++				 VMX_BASIC_NESTED_EXCEPTION;
+ 
+-	const u64 reserved_bits = GENMASK_ULL(63, 57) |
++	const u64 reserved_bits = GENMASK_ULL(63, 59) |
++				  BIT_ULL(57) |
+ 				  GENMASK_ULL(47, 45) |
+ 				  BIT_ULL(31);
+ 
+@@ -2545,6 +2550,8 @@ static void prepare_vmcs02_early(struct vcpu_vmx *vmx, struct loaded_vmcs *vmcs0
+ 			     vmcs12->vm_entry_instruction_len);
+ 		vmcs_write32(GUEST_INTERRUPTIBILITY_INFO,
+ 			     vmcs12->guest_interruptibility_info);
++		if (cpu_has_vmx_fred())
++			vmcs_write64(INJECTED_EVENT_DATA, vmcs12->injected_event_data);
+ 		vmx->loaded_vmcs->nmi_known_unmasked =
+ 			!(vmcs12->guest_interruptibility_info & GUEST_INTR_STATE_NMI);
+ 	} else {
+@@ -2699,6 +2706,17 @@ static void prepare_vmcs02_rare(struct vcpu_vmx *vmx, struct vmcs12 *vmcs12)
+ 				     vmcs12->guest_ssp, vmcs12->guest_ssp_tbl);
+ 
+ 	set_cr4_guest_host_mask(vmx);
++
++	if (nested_cpu_load_guest_fred_state(vmcs12)) {
++		vmcs_write64(GUEST_IA32_FRED_CONFIG, vmcs12->guest_ia32_fred_config);
++		vmcs_write64(GUEST_IA32_FRED_RSP1, vmcs12->guest_ia32_fred_rsp1);
++		vmcs_write64(GUEST_IA32_FRED_RSP2, vmcs12->guest_ia32_fred_rsp2);
++		vmcs_write64(GUEST_IA32_FRED_RSP3, vmcs12->guest_ia32_fred_rsp3);
++		vmcs_write64(GUEST_IA32_FRED_STKLVLS, vmcs12->guest_ia32_fred_stklvls);
++		vmcs_write64(GUEST_IA32_FRED_SSP1, vmcs12->guest_ia32_fred_ssp1);
++		vmcs_write64(GUEST_IA32_FRED_SSP2, vmcs12->guest_ia32_fred_ssp2);
++		vmcs_write64(GUEST_IA32_FRED_SSP3, vmcs12->guest_ia32_fred_ssp3);
++	}
+ }
+ 
+ /*
+@@ -2765,6 +2783,18 @@ static int prepare_vmcs02(struct kvm_vcpu *vcpu, struct vmcs12 *vmcs12,
+ 		vmcs_write64(GUEST_IA32_PAT, vmx->vcpu.arch.pat);
  	}
+ 
++	if (!vmx->nested.nested_run_pending ||
++	    !nested_cpu_load_guest_fred_state(vmcs12)) {
++		vmcs_write64(GUEST_IA32_FRED_CONFIG, vmx->nested.pre_vmenter_fred_config);
++		vmcs_write64(GUEST_IA32_FRED_RSP1, vmx->nested.pre_vmenter_fred_rsp1);
++		vmcs_write64(GUEST_IA32_FRED_RSP2, vmx->nested.pre_vmenter_fred_rsp2);
++		vmcs_write64(GUEST_IA32_FRED_RSP3, vmx->nested.pre_vmenter_fred_rsp3);
++		vmcs_write64(GUEST_IA32_FRED_STKLVLS, vmx->nested.pre_vmenter_fred_stklvls);
++		vmcs_write64(GUEST_IA32_FRED_SSP1, vmx->nested.pre_vmenter_fred_ssp1);
++		vmcs_write64(GUEST_IA32_FRED_SSP2, vmx->nested.pre_vmenter_fred_ssp2);
++		vmcs_write64(GUEST_IA32_FRED_SSP3, vmx->nested.pre_vmenter_fred_ssp3);
++	}
++
+ 	vcpu->arch.tsc_offset = kvm_calc_nested_tsc_offset(
+ 			vcpu->arch.l1_tsc_offset,
+ 			vmx_get_l2_tsc_offset(vcpu),
+@@ -3679,6 +3709,18 @@ enum nvmx_vmentry_status nested_vmx_enter_non_root_mode(struct kvm_vcpu *vcpu,
+ 				    &vmx->nested.pre_vmenter_ssp,
+ 				    &vmx->nested.pre_vmenter_ssp_tbl);
+ 
++	if (!vmx->nested.nested_run_pending ||
++	    !nested_cpu_load_guest_fred_state(vmcs12)) {
++		vmx->nested.pre_vmenter_fred_config = vmcs_read64(GUEST_IA32_FRED_CONFIG);
++		vmx->nested.pre_vmenter_fred_rsp1 = vmcs_read64(GUEST_IA32_FRED_RSP1);
++		vmx->nested.pre_vmenter_fred_rsp2 = vmcs_read64(GUEST_IA32_FRED_RSP2);
++		vmx->nested.pre_vmenter_fred_rsp3 = vmcs_read64(GUEST_IA32_FRED_RSP3);
++		vmx->nested.pre_vmenter_fred_stklvls = vmcs_read64(GUEST_IA32_FRED_STKLVLS);
++		vmx->nested.pre_vmenter_fred_ssp1 = vmcs_read64(GUEST_IA32_FRED_SSP1);
++		vmx->nested.pre_vmenter_fred_ssp2 = vmcs_read64(GUEST_IA32_FRED_SSP2);
++		vmx->nested.pre_vmenter_fred_ssp3 = vmcs_read64(GUEST_IA32_FRED_SSP3);
++	}
++
+ 	/*
+ 	 * Overwrite vmcs01.GUEST_CR3 with L1's CR3 if EPT is disabled *and*
+ 	 * nested early checks are disabled.  In the event of a "late" VM-Fail,
+@@ -3986,6 +4028,8 @@ static void vmcs12_save_pending_event(struct kvm_vcpu *vcpu,
+ 	u32 idt_vectoring;
+ 	unsigned int nr;
+ 
++	vmcs12->original_event_data = 0;
++
+ 	/*
+ 	 * Per the SDM, VM-Exits due to double and triple faults are never
+ 	 * considered to occur during event delivery, even if the double/triple
+@@ -4024,6 +4068,13 @@ static void vmcs12_save_pending_event(struct kvm_vcpu *vcpu,
+ 				vcpu->arch.exception.error_code;
+ 		}
+ 
++		if ((vmcs12->vm_entry_controls & VM_ENTRY_IA32E_MODE) &&
++		    (vmcs12->guest_cr4 & X86_CR4_FRED) &&
++		    (vcpu->arch.exception.nested))
++			idt_vectoring |= VECTORING_INFO_NESTED_EXCEPTION_MASK;
++
++		vmcs12->original_event_data = vcpu->arch.exception.event_data;
++
+ 		vmcs12->idt_vectoring_info_field = idt_vectoring;
+ 	} else if (vcpu->arch.nmi_injected) {
+ 		vmcs12->idt_vectoring_info_field =
+@@ -4766,6 +4817,26 @@ static void sync_vmcs02_to_vmcs12(struct kvm_vcpu *vcpu, struct vmcs12 *vmcs12)
+ 	vmcs_read_cet_state(&vmx->vcpu, &vmcs12->guest_s_cet,
+ 			    &vmcs12->guest_ssp,
+ 			    &vmcs12->guest_ssp_tbl);
++
++	vmx->nested.fred_msr_at_vmexit.fred_config = vmcs_read64(GUEST_IA32_FRED_CONFIG);
++	vmx->nested.fred_msr_at_vmexit.fred_rsp1 = vmcs_read64(GUEST_IA32_FRED_RSP1);
++	vmx->nested.fred_msr_at_vmexit.fred_rsp2 = vmcs_read64(GUEST_IA32_FRED_RSP2);
++	vmx->nested.fred_msr_at_vmexit.fred_rsp3 = vmcs_read64(GUEST_IA32_FRED_RSP3);
++	vmx->nested.fred_msr_at_vmexit.fred_stklvls = vmcs_read64(GUEST_IA32_FRED_STKLVLS);
++	vmx->nested.fred_msr_at_vmexit.fred_ssp1 = vmcs_read64(GUEST_IA32_FRED_SSP1);
++	vmx->nested.fred_msr_at_vmexit.fred_ssp2 = vmcs_read64(GUEST_IA32_FRED_SSP2);
++	vmx->nested.fred_msr_at_vmexit.fred_ssp3 = vmcs_read64(GUEST_IA32_FRED_SSP3);
++
++	if (nested_cpu_save_guest_fred_state(vmcs12)) {
++		vmcs12->guest_ia32_fred_config = vmx->nested.fred_msr_at_vmexit.fred_config;
++		vmcs12->guest_ia32_fred_rsp1 = vmx->nested.fred_msr_at_vmexit.fred_rsp1;
++		vmcs12->guest_ia32_fred_rsp2 = vmx->nested.fred_msr_at_vmexit.fred_rsp2;
++		vmcs12->guest_ia32_fred_rsp3 = vmx->nested.fred_msr_at_vmexit.fred_rsp3;
++		vmcs12->guest_ia32_fred_stklvls = vmx->nested.fred_msr_at_vmexit.fred_stklvls;
++		vmcs12->guest_ia32_fred_ssp1 = vmx->nested.fred_msr_at_vmexit.fred_ssp1;
++		vmcs12->guest_ia32_fred_ssp2 = vmx->nested.fred_msr_at_vmexit.fred_ssp2;
++		vmcs12->guest_ia32_fred_ssp3 = vmx->nested.fred_msr_at_vmexit.fred_ssp3;
++	}
  }
  
-+#ifdef CONFIG_X86_64
-+static const u32 fred_msr_vmcs_fields[] = {
-+	GUEST_IA32_FRED_RSP1,
-+	GUEST_IA32_FRED_RSP2,
-+	GUEST_IA32_FRED_RSP3,
-+	GUEST_IA32_FRED_STKLVLS,
-+	GUEST_IA32_FRED_SSP1,
-+	GUEST_IA32_FRED_SSP2,
-+	GUEST_IA32_FRED_SSP3,
-+	GUEST_IA32_FRED_CONFIG,
-+};
+ /*
+@@ -4810,6 +4881,21 @@ static void prepare_vmcs12(struct kvm_vcpu *vcpu, struct vmcs12 *vmcs12,
+ 
+ 		vmcs12->vm_exit_intr_info = exit_intr_info;
+ 		vmcs12->vm_exit_instruction_len = exit_insn_len;
 +
-+static_assert(MSR_IA32_FRED_CONFIG - MSR_IA32_FRED_RSP1 ==
-+	      ARRAY_SIZE(fred_msr_vmcs_fields) - 1);
++		/*
++		 * When there is a valid original event, the exiting event is a nested
++		 * event during delivery of the earlier original event.
++		 *
++		 * FRED event delivery reflects this relationship by setting the value
++		 * of the nested exception bit of VM-exit interruption information
++		 * (aka exiting-event identification) to that of the valid bit of the
++		 * IDT-vectoring information (aka original-event identification).
++		 */
++		if ((vmcs12->idt_vectoring_info_field & VECTORING_INFO_VALID_MASK) &&
++		    (vmcs12->vm_entry_controls & VM_ENTRY_IA32E_MODE) &&
++		    (vmcs12->guest_cr4 & X86_CR4_FRED))
++			vmcs12->vm_exit_intr_info |= INTR_INFO_NESTED_EXCEPTION_MASK;
 +
-+static u32 fred_msr_to_vmcs(u32 msr)
+ 		vmcs12->vmx_instruction_info = vmcs_read32(VMX_INSTRUCTION_INFO);
+ 
+ 		/*
+@@ -4838,6 +4924,7 @@ static void prepare_vmcs12(struct kvm_vcpu *vcpu, struct vmcs12 *vmcs12,
+ static void load_vmcs12_host_state(struct kvm_vcpu *vcpu,
+ 				   struct vmcs12 *vmcs12)
+ {
++	struct vcpu_vmx *vmx = to_vmx(vcpu);
+ 	enum vm_entry_failure_code ignored;
+ 	struct kvm_segment seg;
+ 
+@@ -4912,6 +4999,26 @@ static void load_vmcs12_host_state(struct kvm_vcpu *vcpu,
+ 		WARN_ON_ONCE(__kvm_emulate_msr_write(vcpu, MSR_CORE_PERF_GLOBAL_CTRL,
+ 						     vmcs12->host_ia32_perf_global_ctrl));
+ 
++	if (nested_cpu_load_host_fred_state(vmcs12)) {
++		vmcs_write64(GUEST_IA32_FRED_CONFIG, vmcs12->host_ia32_fred_config);
++		vmcs_write64(GUEST_IA32_FRED_RSP1, vmcs12->host_ia32_fred_rsp1);
++		vmcs_write64(GUEST_IA32_FRED_RSP2, vmcs12->host_ia32_fred_rsp2);
++		vmcs_write64(GUEST_IA32_FRED_RSP3, vmcs12->host_ia32_fred_rsp3);
++		vmcs_write64(GUEST_IA32_FRED_STKLVLS, vmcs12->host_ia32_fred_stklvls);
++		vmcs_write64(GUEST_IA32_FRED_SSP1, vmcs12->host_ia32_fred_ssp1);
++		vmcs_write64(GUEST_IA32_FRED_SSP2, vmcs12->host_ia32_fred_ssp2);
++		vmcs_write64(GUEST_IA32_FRED_SSP3, vmcs12->host_ia32_fred_ssp3);
++	} else {
++		vmcs_write64(GUEST_IA32_FRED_CONFIG, vmx->nested.fred_msr_at_vmexit.fred_config);
++		vmcs_write64(GUEST_IA32_FRED_RSP1, vmx->nested.fred_msr_at_vmexit.fred_rsp1);
++		vmcs_write64(GUEST_IA32_FRED_RSP2, vmx->nested.fred_msr_at_vmexit.fred_rsp2);
++		vmcs_write64(GUEST_IA32_FRED_RSP3, vmx->nested.fred_msr_at_vmexit.fred_rsp3);
++		vmcs_write64(GUEST_IA32_FRED_STKLVLS, vmx->nested.fred_msr_at_vmexit.fred_stklvls);
++		vmcs_write64(GUEST_IA32_FRED_SSP1, vmx->nested.fred_msr_at_vmexit.fred_ssp1);
++		vmcs_write64(GUEST_IA32_FRED_SSP2, vmx->nested.fred_msr_at_vmexit.fred_ssp2);
++		vmcs_write64(GUEST_IA32_FRED_SSP3, vmx->nested.fred_msr_at_vmexit.fred_ssp3);
++	}
++
+ 	/* Set L1 segment info according to Intel SDM
+ 	    27.5.2 Loading Host Segment and Descriptor-Table Registers */
+ 	seg = (struct kvm_segment) {
+@@ -7390,6 +7497,8 @@ static void nested_vmx_setup_basic(struct nested_vmx_msrs *msrs)
+ 		msrs->basic |= VMX_BASIC_INOUT;
+ 	if (cpu_has_vmx_basic_no_hw_errcode_cc())
+ 		msrs->basic |= VMX_BASIC_NO_HW_ERROR_CODE_CC;
++	if (cpu_has_vmx_nested_exception())
++		msrs->basic |= VMX_BASIC_NESTED_EXCEPTION;
+ }
+ 
+ static void nested_vmx_setup_cr_fixed(struct nested_vmx_msrs *msrs)
+diff --git a/arch/x86/kvm/vmx/nested.h b/arch/x86/kvm/vmx/nested.h
+index 983484d42ebf..a99d3d83d58e 100644
+--- a/arch/x86/kvm/vmx/nested.h
++++ b/arch/x86/kvm/vmx/nested.h
+@@ -249,6 +249,11 @@ static inline bool nested_cpu_has_save_preemption_timer(struct vmcs12 *vmcs12)
+ 	    VM_EXIT_SAVE_VMX_PREEMPTION_TIMER;
+ }
+ 
++static inline bool nested_cpu_has_secondary_vm_exit_controls(struct vmcs12 *vmcs12)
 +{
-+	return fred_msr_vmcs_fields[msr - MSR_IA32_FRED_RSP1];
++	return vmcs12->vm_exit_controls & VM_EXIT_ACTIVATE_SECONDARY_CONTROLS;
 +}
-+#endif
++
+ static inline bool nested_exit_on_nmi(struct kvm_vcpu *vcpu)
+ {
+ 	return nested_cpu_has_nmi_exiting(get_vmcs12(vcpu));
+@@ -269,6 +274,23 @@ static inline bool nested_cpu_has_encls_exit(struct vmcs12 *vmcs12)
+ 	return nested_cpu_has2(vmcs12, SECONDARY_EXEC_ENCLS_EXITING);
+ }
+ 
++static inline bool nested_cpu_load_guest_fred_state(struct vmcs12 *vmcs12)
++{
++	return vmcs12->vm_entry_controls & VM_ENTRY_LOAD_IA32_FRED;
++}
++
++static inline bool nested_cpu_save_guest_fred_state(struct vmcs12 *vmcs12)
++{
++	return nested_cpu_has_secondary_vm_exit_controls(vmcs12) &&
++	       vmcs12->secondary_vm_exit_controls & SECONDARY_VM_EXIT_SAVE_IA32_FRED;
++}
++
++static inline bool nested_cpu_load_host_fred_state(struct vmcs12 *vmcs12)
++{
++	return nested_cpu_has_secondary_vm_exit_controls(vmcs12) &&
++	       vmcs12->secondary_vm_exit_controls & SECONDARY_VM_EXIT_LOAD_IA32_FRED;
++}
 +
  /*
-  * Reads an msr value (of 'msr_info->index') into 'msr_info->data'.
-  * Returns 0 on success, non-0 otherwise.
-@@ -2009,6 +2042,12 @@ int vmx_get_msr(struct kvm_vcpu *vcpu, struct msr_data *msr_info)
- 	case MSR_KERNEL_GS_BASE:
- 		msr_info->data = vmx_read_guest_kernel_gs_base(vmx);
- 		break;
-+	case MSR_IA32_FRED_RSP0:
-+		msr_info->data = vmx_read_guest_fred_rsp0(vmx);
-+		break;
-+	case MSR_IA32_FRED_RSP1 ... MSR_IA32_FRED_CONFIG:
-+		msr_info->data = vmcs_read64(fred_msr_to_vmcs(msr_info->index));
-+		break;
- #endif
- 	case MSR_EFER:
- 		return kvm_get_msr_common(vcpu, msr_info);
-@@ -2241,6 +2280,12 @@ int vmx_set_msr(struct kvm_vcpu *vcpu, struct msr_data *msr_info)
- 			vmx_update_exception_bitmap(vcpu);
- 		}
- 		break;
-+	case MSR_IA32_FRED_RSP0:
-+		vmx_write_guest_fred_rsp0(vmx, data);
-+		break;
-+	case MSR_IA32_FRED_RSP1 ... MSR_IA32_FRED_CONFIG:
-+		vmcs_write64(fred_msr_to_vmcs(msr_index), data);
-+		break;
- #endif
- 	case MSR_IA32_SYSENTER_CS:
- 		if (is_guest_mode(vcpu))
-diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
-index 42ecd093bb4c..80c490e71853 100644
---- a/arch/x86/kvm/x86.c
-+++ b/arch/x86/kvm/x86.c
-@@ -331,6 +331,9 @@ static const u32 msrs_to_save_base[] = {
- 	MSR_STAR,
- #ifdef CONFIG_X86_64
- 	MSR_CSTAR, MSR_KERNEL_GS_BASE, MSR_SYSCALL_MASK, MSR_LSTAR,
-+	MSR_IA32_FRED_RSP0, MSR_IA32_FRED_RSP1, MSR_IA32_FRED_RSP2,
-+	MSR_IA32_FRED_RSP3, MSR_IA32_FRED_STKLVLS, MSR_IA32_FRED_SSP1,
-+	MSR_IA32_FRED_SSP2, MSR_IA32_FRED_SSP3, MSR_IA32_FRED_CONFIG,
- #endif
- 	MSR_IA32_TSC, MSR_IA32_CR_PAT, MSR_VM_HSAVE_PA,
- 	MSR_IA32_FEAT_CTL, MSR_IA32_BNDCFGS, MSR_TSC_AUX,
-@@ -1919,7 +1922,7 @@ static int __kvm_set_msr(struct kvm_vcpu *vcpu, u32 index, u64 data,
- 		 * architecture. Intercepting XRSTORS/XSAVES for this
- 		 * special case isn't deemed worthwhile.
- 		 */
--	case MSR_IA32_PL0_SSP ... MSR_IA32_INT_SSP_TAB:
-+	case MSR_IA32_PL1_SSP ... MSR_IA32_INT_SSP_TAB:
- 		if (!guest_cpu_cap_has(vcpu, X86_FEATURE_SHSTK))
- 			return KVM_MSR_RET_UNSUPPORTED;
- 		/*
-@@ -1934,6 +1937,52 @@ static int __kvm_set_msr(struct kvm_vcpu *vcpu, u32 index, u64 data,
- 		if (index != MSR_IA32_INT_SSP_TAB && !IS_ALIGNED(data, 4))
- 			return 1;
- 		break;
-+	case MSR_IA32_FRED_STKLVLS:
-+		if (!guest_cpu_cap_has(vcpu, X86_FEATURE_FRED))
-+			return KVM_MSR_RET_UNSUPPORTED;
-+		break;
-+	case MSR_IA32_FRED_RSP0 ... MSR_IA32_FRED_RSP3:
-+	case MSR_IA32_FRED_SSP1 ... MSR_IA32_FRED_CONFIG: {
-+		u64 reserved_bits = 0;
-+
-+		if (!guest_cpu_cap_has(vcpu, X86_FEATURE_FRED))
-+			return KVM_MSR_RET_UNSUPPORTED;
-+
-+		if (is_noncanonical_msr_address(data, vcpu))
-+			return 1;
-+
-+		switch (index) {
-+		case MSR_IA32_FRED_CONFIG:
-+			reserved_bits = BIT_ULL(11) | GENMASK_ULL(5, 4) | BIT_ULL(2);
-+			break;
-+		case MSR_IA32_FRED_RSP0 ... MSR_IA32_FRED_RSP3:
-+			reserved_bits = GENMASK_ULL(5, 0);
-+			break;
-+		case MSR_IA32_FRED_SSP1 ... MSR_IA32_FRED_SSP3:
-+			reserved_bits = GENMASK_ULL(2, 0);
-+			break;
-+		default:
-+			WARN_ON_ONCE(1);
-+			return 1;
-+		}
-+
-+		if (data & reserved_bits)
-+			return 1;
-+
-+		break;
-+	}
-+	case MSR_IA32_PL0_SSP: /* I.e., MSR_IA32_FRED_SSP0 */
-+		if (!guest_cpu_cap_has(vcpu, X86_FEATURE_SHSTK) &&
-+		    !guest_cpu_cap_has(vcpu, X86_FEATURE_FRED))
-+			return KVM_MSR_RET_UNSUPPORTED;
-+
-+		if (is_noncanonical_msr_address(data, vcpu))
-+			return 1;
-+
-+		if (!IS_ALIGNED(data, 4))
-+			return 1;
-+
-+		break;
- 	}
+  * if fixed0[i] == 1: val[i] must be 1
+  * if fixed1[i] == 0: val[i] must be 0
+diff --git a/arch/x86/kvm/vmx/vmcs12.c b/arch/x86/kvm/vmx/vmcs12.c
+index 3b01175f392a..9691e709061f 100644
+--- a/arch/x86/kvm/vmx/vmcs12.c
++++ b/arch/x86/kvm/vmx/vmcs12.c
+@@ -67,6 +67,24 @@ const unsigned short vmcs12_field_offsets[] = {
+ 	FIELD64(HOST_IA32_EFER, host_ia32_efer),
+ 	FIELD64(HOST_IA32_PERF_GLOBAL_CTRL, host_ia32_perf_global_ctrl),
+ 	FIELD64(SECONDARY_VM_EXIT_CONTROLS, secondary_vm_exit_controls),
++	FIELD64(INJECTED_EVENT_DATA, injected_event_data),
++	FIELD64(ORIGINAL_EVENT_DATA, original_event_data),
++	FIELD64(GUEST_IA32_FRED_CONFIG, guest_ia32_fred_config),
++	FIELD64(GUEST_IA32_FRED_RSP1, guest_ia32_fred_rsp1),
++	FIELD64(GUEST_IA32_FRED_RSP2, guest_ia32_fred_rsp2),
++	FIELD64(GUEST_IA32_FRED_RSP3, guest_ia32_fred_rsp3),
++	FIELD64(GUEST_IA32_FRED_STKLVLS, guest_ia32_fred_stklvls),
++	FIELD64(GUEST_IA32_FRED_SSP1, guest_ia32_fred_ssp1),
++	FIELD64(GUEST_IA32_FRED_SSP2, guest_ia32_fred_ssp2),
++	FIELD64(GUEST_IA32_FRED_SSP3, guest_ia32_fred_ssp3),
++	FIELD64(HOST_IA32_FRED_CONFIG, host_ia32_fred_config),
++	FIELD64(HOST_IA32_FRED_RSP1, host_ia32_fred_rsp1),
++	FIELD64(HOST_IA32_FRED_RSP2, host_ia32_fred_rsp2),
++	FIELD64(HOST_IA32_FRED_RSP3, host_ia32_fred_rsp3),
++	FIELD64(HOST_IA32_FRED_STKLVLS, host_ia32_fred_stklvls),
++	FIELD64(HOST_IA32_FRED_SSP1, host_ia32_fred_ssp1),
++	FIELD64(HOST_IA32_FRED_SSP2, host_ia32_fred_ssp2),
++	FIELD64(HOST_IA32_FRED_SSP3, host_ia32_fred_ssp3),
+ 	FIELD(PIN_BASED_VM_EXEC_CONTROL, pin_based_vm_exec_control),
+ 	FIELD(CPU_BASED_VM_EXEC_CONTROL, cpu_based_vm_exec_control),
+ 	FIELD(EXCEPTION_BITMAP, exception_bitmap),
+diff --git a/arch/x86/kvm/vmx/vmcs12.h b/arch/x86/kvm/vmx/vmcs12.h
+index fa5306dc0311..051016a3afba 100644
+--- a/arch/x86/kvm/vmx/vmcs12.h
++++ b/arch/x86/kvm/vmx/vmcs12.h
+@@ -191,6 +191,25 @@ struct __packed vmcs12 {
+ 	u16 host_gs_selector;
+ 	u16 host_tr_selector;
+ 	u16 guest_pml_index;
++	u16 padding16[1]; /* align to 64-bit boundary */
++	u64 guest_ia32_fred_config;
++	u64 guest_ia32_fred_rsp1;
++	u64 guest_ia32_fred_rsp2;
++	u64 guest_ia32_fred_rsp3;
++	u64 guest_ia32_fred_stklvls;
++	u64 guest_ia32_fred_ssp1;
++	u64 guest_ia32_fred_ssp2;
++	u64 guest_ia32_fred_ssp3;
++	u64 host_ia32_fred_config;
++	u64 host_ia32_fred_rsp1;
++	u64 host_ia32_fred_rsp2;
++	u64 host_ia32_fred_rsp3;
++	u64 host_ia32_fred_stklvls;
++	u64 host_ia32_fred_ssp1;
++	u64 host_ia32_fred_ssp2;
++	u64 host_ia32_fred_ssp3;
++	u64 injected_event_data;
++	u64 original_event_data;
+ };
  
- 	msr.data = data;
-@@ -1988,10 +2037,19 @@ static int __kvm_get_msr(struct kvm_vcpu *vcpu, u32 index, u64 *data,
- 		if (!host_initiated)
- 			return 1;
- 		fallthrough;
--	case MSR_IA32_PL0_SSP ... MSR_IA32_INT_SSP_TAB:
-+	case MSR_IA32_PL1_SSP ... MSR_IA32_INT_SSP_TAB:
- 		if (!guest_cpu_cap_has(vcpu, X86_FEATURE_SHSTK))
- 			return KVM_MSR_RET_UNSUPPORTED;
- 		break;
-+	case MSR_IA32_FRED_RSP0 ... MSR_IA32_FRED_CONFIG:
-+		if (!guest_cpu_cap_has(vcpu, X86_FEATURE_FRED))
-+			return KVM_MSR_RET_UNSUPPORTED;
-+		break;
-+	case MSR_IA32_PL0_SSP: /* I.e., MSR_IA32_FRED_SSP0 */
-+		if (!guest_cpu_cap_has(vcpu, X86_FEATURE_SHSTK) &&
-+		    !guest_cpu_cap_has(vcpu, X86_FEATURE_FRED))
-+			return KVM_MSR_RET_UNSUPPORTED;
-+		break;
- 	}
+ /*
+@@ -373,6 +392,24 @@ static inline void vmx_check_vmcs12_offsets(void)
+ 	CHECK_OFFSET(host_gs_selector, 992);
+ 	CHECK_OFFSET(host_tr_selector, 994);
+ 	CHECK_OFFSET(guest_pml_index, 996);
++	CHECK_OFFSET(guest_ia32_fred_config, 1000);
++	CHECK_OFFSET(guest_ia32_fred_rsp1, 1008);
++	CHECK_OFFSET(guest_ia32_fred_rsp2, 1016);
++	CHECK_OFFSET(guest_ia32_fred_rsp3, 1024);
++	CHECK_OFFSET(guest_ia32_fred_stklvls, 1032);
++	CHECK_OFFSET(guest_ia32_fred_ssp1, 1040);
++	CHECK_OFFSET(guest_ia32_fred_ssp2, 1048);
++	CHECK_OFFSET(guest_ia32_fred_ssp3, 1056);
++	CHECK_OFFSET(host_ia32_fred_config, 1064);
++	CHECK_OFFSET(host_ia32_fred_rsp1, 1072);
++	CHECK_OFFSET(host_ia32_fred_rsp2, 1080);
++	CHECK_OFFSET(host_ia32_fred_rsp3, 1088);
++	CHECK_OFFSET(host_ia32_fred_stklvls, 1096);
++	CHECK_OFFSET(host_ia32_fred_ssp1, 1104);
++	CHECK_OFFSET(host_ia32_fred_ssp2, 1112);
++	CHECK_OFFSET(host_ia32_fred_ssp3, 1120);
++	CHECK_OFFSET(injected_event_data, 1128);
++	CHECK_OFFSET(original_event_data, 1136);
+ }
  
- 	msr.index = index;
-@@ -4316,6 +4374,12 @@ int kvm_set_msr_common(struct kvm_vcpu *vcpu, struct msr_data *msr_info)
- #endif
- 	case MSR_IA32_U_CET:
- 	case MSR_IA32_PL0_SSP ... MSR_IA32_PL3_SSP:
-+		if (!guest_cpu_cap_has(vcpu, X86_FEATURE_SHSTK)) {
-+			WARN_ON_ONCE(msr != MSR_IA32_FRED_SSP0);
-+			vcpu->arch.fred_ssp0_fallback = data;
-+			break;
-+		}
+ extern const unsigned short vmcs12_field_offsets[];
+diff --git a/arch/x86/kvm/vmx/vmcs_shadow_fields.h b/arch/x86/kvm/vmx/vmcs_shadow_fields.h
+index cad128d1657b..da338327c2b3 100644
+--- a/arch/x86/kvm/vmx/vmcs_shadow_fields.h
++++ b/arch/x86/kvm/vmx/vmcs_shadow_fields.h
+@@ -74,6 +74,10 @@ SHADOW_FIELD_RW(HOST_GS_BASE, host_gs_base)
+ /* 64-bit */
+ SHADOW_FIELD_RO(GUEST_PHYSICAL_ADDRESS, guest_physical_address)
+ SHADOW_FIELD_RO(GUEST_PHYSICAL_ADDRESS_HIGH, guest_physical_address)
++SHADOW_FIELD_RO(ORIGINAL_EVENT_DATA, original_event_data)
++SHADOW_FIELD_RO(ORIGINAL_EVENT_DATA_HIGH, original_event_data)
++SHADOW_FIELD_RW(INJECTED_EVENT_DATA, injected_event_data)
++SHADOW_FIELD_RW(INJECTED_EVENT_DATA_HIGH, injected_event_data)
+ 
+ #undef SHADOW_FIELD_RO
+ #undef SHADOW_FIELD_RW
+diff --git a/arch/x86/kvm/vmx/vmx.h b/arch/x86/kvm/vmx/vmx.h
+index c4a3b28553fb..36dcc888e5c6 100644
+--- a/arch/x86/kvm/vmx/vmx.h
++++ b/arch/x86/kvm/vmx/vmx.h
+@@ -67,6 +67,37 @@ struct pt_desc {
+ 	struct pt_ctx guest;
+ };
+ 
++/*
++ * Used to snapshot FRED MSRs that may NOT be saved to vmcs12 as specified
++ * in the VM-Exit controls of vmcs12 configured by L1 VMM.
++ *
++ * FRED MSRs are *always* saved into vmcs02 because KVM always sets
++ * SECONDARY_VM_EXIT_SAVE_IA32_FRED.  However an L1 VMM may choose to clear
++ * this bit, resulting in FRED MSRs not being propagated to vmcs12 from
++ * vmcs02.  When the L1 VMM sets SECONDARY_VM_EXIT_LOAD_IA32_FRED, this is
++ * not a problem, since KVM then immediately loads the host FRED MSRs of
++ * vmcs12 to the guest FRED MSRs of vmcs01.
++ *
++ * But if the L1 VMM clears SECONDARY_VM_EXIT_LOAD_IA32_FRED, KVM should
++ * retain the FRED MSRs, i.e., propagate the guest FRED MSRs of vmcs02 to
++ * the guest FRED MSRs of vmcs01.
++ *
++ * This structure stores guest FRED MSRs that an L1 VMM opts not to save
++ * during VM-Exits from L2 to L1.  These MSRs may still be retained for
++ * running the L1 VMM if SECONDARY_VM_EXIT_LOAD_IA32_FRED is cleared in
++ * vmcs12.
++ */
++struct fred_msr_at_vmexit {
++	u64 fred_config;
++	u64 fred_rsp1;
++	u64 fred_rsp2;
++	u64 fred_rsp3;
++	u64 fred_stklvls;
++	u64 fred_ssp1;
++	u64 fred_ssp2;
++	u64 fred_ssp3;
++};
 +
- 		kvm_set_xstate_msr(vcpu, msr_info);
- 		break;
- 	default:
-@@ -4669,6 +4733,12 @@ int kvm_get_msr_common(struct kvm_vcpu *vcpu, struct msr_data *msr_info)
- #endif
- 	case MSR_IA32_U_CET:
- 	case MSR_IA32_PL0_SSP ... MSR_IA32_PL3_SSP:
-+		if (!guest_cpu_cap_has(vcpu, X86_FEATURE_SHSTK)) {
-+			WARN_ON_ONCE(msr_info->index != MSR_IA32_FRED_SSP0);
-+			msr_info->data = vcpu->arch.fred_ssp0_fallback;
-+			break;
-+		}
+ /*
+  * The nested_vmx structure is part of vcpu_vmx, and holds information we need
+  * for correct emulation of VMX (i.e., nested VMX) on this vcpu.
+@@ -184,6 +215,16 @@ struct nested_vmx {
+ 	u64 pre_vmenter_s_cet;
+ 	u64 pre_vmenter_ssp;
+ 	u64 pre_vmenter_ssp_tbl;
++	u64 pre_vmenter_fred_config;
++	u64 pre_vmenter_fred_rsp1;
++	u64 pre_vmenter_fred_rsp2;
++	u64 pre_vmenter_fred_rsp3;
++	u64 pre_vmenter_fred_stklvls;
++	u64 pre_vmenter_fred_ssp1;
++	u64 pre_vmenter_fred_ssp2;
++	u64 pre_vmenter_fred_ssp3;
 +
- 		kvm_get_xstate_msr(vcpu, msr_info);
- 		break;
- 	default:
-@@ -7712,10 +7782,19 @@ static void kvm_probe_msr_to_save(u32 msr_index)
- 		if (!kvm_cpu_cap_has(X86_FEATURE_LM))
- 			return;
- 		fallthrough;
--	case MSR_IA32_PL0_SSP ... MSR_IA32_PL3_SSP:
-+	case MSR_IA32_PL1_SSP ... MSR_IA32_PL3_SSP:
- 		if (!kvm_cpu_cap_has(X86_FEATURE_SHSTK))
- 			return;
- 		break;
-+	case MSR_IA32_FRED_RSP0 ... MSR_IA32_FRED_CONFIG:
-+		if (!kvm_cpu_cap_has(X86_FEATURE_FRED))
-+			return;
-+		break;
-+	case MSR_IA32_PL0_SSP: /* I.e., MSR_IA32_FRED_SSP0 */
-+		if (!kvm_cpu_cap_has(X86_FEATURE_SHSTK) &&
-+		    !kvm_cpu_cap_has(X86_FEATURE_FRED))
-+			return;
-+		break;
- 	default:
- 		break;
- 	}
++	struct fred_msr_at_vmexit fred_msr_at_vmexit;
+ 
+ 	/* to migrate it to L1 if L2 writes to L1's CR8 directly */
+ 	int l1_tpr_threshold;
 -- 
 2.51.0
 
