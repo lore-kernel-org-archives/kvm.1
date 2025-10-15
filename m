@@ -1,47 +1,47 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E9F0329E0E7
-	for <kvm@vger.kernel.org>; Wed, 15 Oct 2025 03:33:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D21922E1F03
+	for <kvm@vger.kernel.org>; Wed, 15 Oct 2025 03:33:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760499192; cv=none; b=RNsUz+YswsVVu0RYthG/xlN1L2Gz1wgA/dEQRSzdnnMB2BxRBizRG2uVKKiFWTZqLLysTNtAY/50BOIC0tB+nq90QxcRiQ7IdJW6VNZU7OGv7ph+346+jBNJ2cs+9pQ3ER7AfmQglDuXMYEym6ot2wgN2wGFy61VdqLRUdFgSvs=
+	t=1760499195; cv=none; b=KuCG8i7Iwbh2vQdWZNokSJiMdDmyrnqdhT9O1GzABPS9z1h0WtEGzvUckE8b3qkILpE7geb5tA/FfEXFm+Vvi7eCc1Mte5HhXePOLThFriv4VdPlSRzInhHcrVMF3LhzAHZS9UkUxfAi/fvlZ22xzkopwYeJF2qzxVDQLKreBNA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760499192; c=relaxed/simple;
-	bh=mw7TGY0Xv8+iKkhM8M/JttJ8g/t1n5LN+OhsmZ8c5Xg=;
+	s=arc-20240116; t=1760499195; c=relaxed/simple;
+	bh=7Lc7gahgBxQVrfIRlEfFKZkRDdoglayt0dU9uKfIWkk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TnHJdfYEFvL9kEp454GC5mx/0ZfQawuVNuKdD5iKbbCbo9ilUOlF+ynOI5FO9qSM4nHQ6jLNn8RKl6Lfap+I3TNOsBP1rkQ117kBdiZ6XIwL7z5QoqfCjVm+kEGzxfWIXsUTl8GdO2oG/7UjQUp74pOHDGyfGsm4uZzwLKEUI8M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=OZ9Qwo6e; arc=none smtp.client-ip=170.10.129.124
+	 MIME-Version; b=ro5ce7/F4IlK8FFYpbpWBOydDeRaHz8Z899Pu8YHP3Lzj7/7ILppEWZd2JeKDixqepMWG7VlSWzX9WpazaytskJL4fAFqj+g3uYePwX0REf/o+QLZbKBQ/ebfjMg12f8LECeuBZQJuMiPVAydyOvXb+GX4bSnFE4QWNQPY9/3gk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=a8gDew7z; arc=none smtp.client-ip=170.10.133.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="OZ9Qwo6e"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="a8gDew7z"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1760499189;
+	s=mimecast20190719; t=1760499192;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=aBMe1HD5P3C7TJ6RCjcRCnllQM6K3Wm1i1grp8EBeR8=;
-	b=OZ9Qwo6erzmVj+sXQ32GjXfTSdHE/c/GszAEpy2vf6FaFOZqWtog4Sl6HH4RH58r3yiKA/
-	I1sFEff88bxjNdqdzzwrh/CO7gAWxFrfUuPT76Y/9yiPRH4KCxjF8/lO0d6sZFpz4WLngz
-	jpIPqqHL0caf/5gV+g9OOMF0gnoY1B4=
-Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
+	bh=XodsAQ9nLFa5bqjuqQ0w2yOtFTPpjVmvjRgcW2yd9Ms=;
+	b=a8gDew7zhDuUKKL9BKvOuuqVV4FgkMxLfu0JxGuvaBphFGLiQqqCS+fMNQtM62t4yVGJU/
+	qv9DydjqT7VafeNluffEUceV5+fAl9r6Y96Ju11/TMyUXnqXGXulB7REmaYs8UniElHYB/
+	QL1xH1HA+lePSQQU+k+Ja8jKxYRXUHw=
+Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-363-SFu7NNpAPD63VNAn-I4kKA-1; Tue,
- 14 Oct 2025 23:33:05 -0400
-X-MC-Unique: SFu7NNpAPD63VNAn-I4kKA-1
-X-Mimecast-MFC-AGG-ID: SFu7NNpAPD63VNAn-I4kKA_1760499183
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-586-lfHcwgXFMHWgWgyebGZMfQ-1; Tue,
+ 14 Oct 2025 23:33:09 -0400
+X-MC-Unique: lfHcwgXFMHWgWgyebGZMfQ-1
+X-Mimecast-MFC-AGG-ID: lfHcwgXFMHWgWgyebGZMfQ_1760499188
 Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id B7C9B1800654;
-	Wed, 15 Oct 2025 03:33:03 +0000 (UTC)
+	by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id BDDD318002F5;
+	Wed, 15 Oct 2025 03:33:07 +0000 (UTC)
 Received: from intellaptop.redhat.com (unknown [10.22.80.16])
-	by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id ACDA61800451;
-	Wed, 15 Oct 2025 03:33:01 +0000 (UTC)
+	by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id CAB981800452;
+	Wed, 15 Oct 2025 03:33:05 +0000 (UTC)
 From: Maxim Levitsky <mlevitsk@redhat.com>
 To: kvm@vger.kernel.org
 Cc: x86@kernel.org,
@@ -54,9 +54,9 @@ Cc: x86@kernel.org,
 	"H. Peter Anvin" <hpa@zytor.com>,
 	Dave Hansen <dave.hansen@linux.intel.com>,
 	Maxim Levitsky <mlevitsk@redhat.com>
-Subject: [PATCH v2 1/3] KVM: x86: Warn if KVM tries to deliver an #APF completion when APF is not enabled
-Date: Tue, 14 Oct 2025 23:32:56 -0400
-Message-ID: <20251015033258.50974-2-mlevitsk@redhat.com>
+Subject: [PATCH v2 3/3] KVM: x86: Fix the interaction between SMM and the asynchronous pagefault
+Date: Tue, 14 Oct 2025 23:32:58 -0400
+Message-ID: <20251015033258.50974-4-mlevitsk@redhat.com>
 In-Reply-To: <20251015033258.50974-1-mlevitsk@redhat.com>
 References: <20251015033258.50974-1-mlevitsk@redhat.com>
 Precedence: bulk
@@ -68,27 +68,92 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
 
-KVM flushes the APF queue completely when the asynchronous pagefault is
-disabled, therefore this case should not occur.
+Currently a #SMI can cause KVM to drop an #APF ready event and
+subsequently causes the guest to never resume the task that is waiting
+for it.
+This can result in tasks becoming permanently stuck within the guest.
+
+This happens because KVM flushes the APF queue without notifying the guest
+of completed APF requests when the guest exits to real mode.
+
+And the SMM exit code calls kvm_set_cr0 with CR.PE == 0, which triggers
+this code.
+
+It must be noted that while this flush is reasonable to do for the actual
+real mode entry, it is actually achieves nothing because it is too late to
+flush this queue on SMM exit.
+
+To fix this, avoid doing this flush altogether, and handle the real
+mode entry/exits in the same way KVM already handles the APIC
+enable/disable events:
+
+APF completion events are not injected while APIC is disabled,
+and once APIC is re-enabled, KVM raises the KVM_REQ_APF_READY request
+which causes the first pending #APF ready event to be injected prior
+to entry to the guest mode.
+
+This change also has the side benefit of preserving #APF events if the
+guest temporarily enters real mode - for example, to call firmware -
+although such usage should be extermery rare in modern operating systems.
 
 Signed-off-by: Maxim Levitsky <mlevitsk@redhat.com>
 ---
- arch/x86/kvm/x86.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/x86/kvm/x86.c | 22 ++++++++++++----------
+ 1 file changed, 12 insertions(+), 10 deletions(-)
 
 diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
-index 4b8138bd4857..22024de00cbd 100644
+index 0fc7171ced26..ec96328634ed 100644
 --- a/arch/x86/kvm/x86.c
 +++ b/arch/x86/kvm/x86.c
-@@ -13896,7 +13896,7 @@ void kvm_arch_async_page_present_queued(struct kvm_vcpu *vcpu)
+@@ -1046,6 +1046,13 @@ bool kvm_require_dr(struct kvm_vcpu *vcpu, int dr)
+ }
+ EXPORT_SYMBOL_FOR_KVM_INTERNAL(kvm_require_dr);
  
- bool kvm_arch_can_dequeue_async_page_present(struct kvm_vcpu *vcpu)
++static bool kvm_pv_async_pf_enabled(struct kvm_vcpu *vcpu)
++{
++	u64 mask = KVM_ASYNC_PF_ENABLED | KVM_ASYNC_PF_DELIVERY_AS_INT;
++
++	return (vcpu->arch.apf.msr_en_val & mask) == mask;
++}
++
+ static inline u64 pdptr_rsvd_bits(struct kvm_vcpu *vcpu)
  {
--	if (!kvm_pv_async_pf_enabled(vcpu))
-+	if (WARN_ON_ONCE(!kvm_pv_async_pf_enabled(vcpu)))
- 		return true;
- 	else
- 		return kvm_lapic_enabled(vcpu) && apf_pageready_slot_free(vcpu);
+ 	return vcpu->arch.reserved_gpa_bits | rsvd_bits(5, 8) | rsvd_bits(1, 2);
+@@ -1138,15 +1145,17 @@ void kvm_post_set_cr0(struct kvm_vcpu *vcpu, unsigned long old_cr0, unsigned lon
+ 	}
+ 
+ 	if ((cr0 ^ old_cr0) & X86_CR0_PG) {
+-		kvm_clear_async_pf_completion_queue(vcpu);
+-		kvm_async_pf_hash_reset(vcpu);
+-
+ 		/*
+ 		 * Clearing CR0.PG is defined to flush the TLB from the guest's
+ 		 * perspective.
+ 		 */
+ 		if (!(cr0 & X86_CR0_PG))
+ 			kvm_make_request(KVM_REQ_TLB_FLUSH_GUEST, vcpu);
++		/*
++		 * Re-check APF completion events, when the guest re-enables paging.
++		 */
++		else if (kvm_pv_async_pf_enabled(vcpu))
++			kvm_make_request(KVM_REQ_APF_READY, vcpu);
+ 	}
+ 
+ 	if ((cr0 ^ old_cr0) & KVM_MMU_CR0_ROLE_BITS)
+@@ -3651,13 +3660,6 @@ static int set_msr_mce(struct kvm_vcpu *vcpu, struct msr_data *msr_info)
+ 	return 0;
+ }
+ 
+-static inline bool kvm_pv_async_pf_enabled(struct kvm_vcpu *vcpu)
+-{
+-	u64 mask = KVM_ASYNC_PF_ENABLED | KVM_ASYNC_PF_DELIVERY_AS_INT;
+-
+-	return (vcpu->arch.apf.msr_en_val & mask) == mask;
+-}
+-
+ static int kvm_pv_enable_async_pf(struct kvm_vcpu *vcpu, u64 data)
+ {
+ 	gpa_t gpa = data & ~0x3f;
 -- 
 2.49.0
 
