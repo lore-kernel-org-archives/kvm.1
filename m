@@ -1,27 +1,74 @@
-Received: from isrv.corpit.ru (isrv.corpit.ru [212.248.84.144])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EDCB92F12A9
-	for <kvm@vger.kernel.org>; Fri, 17 Oct 2025 15:06:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.248.84.144
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4FA6C330317
+	for <kvm@vger.kernel.org>; Fri, 17 Oct 2025 15:08:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760713617; cv=none; b=nB6LKo5opI0pd6yDy0U/jH2hXm5D+JT/ufXcWx2YhFgQIyoS78HJBiVtyvHLDPYPuxk3F6A1BD7y/zwNW6cWgbU7eIB6uBhKXEOwRF5Qq7PyiFDx8OizCZ+7Sqb8pEbq5uF1vg6UDZLEf/AS/Gi9SEPYOnKCXP8VibjX/9Ia4FE=
+	t=1760713681; cv=none; b=iEYplKELq4tgERfmXhdPy17iwSKRyC5UBqQwP4E5Qo2s5EA6b38YHc+AS8hYve158T8Xh2x+t5Zj7/yD1Xq6/6/Fl8l0LiJgvp/WdOEPv4JKfLJ599TUIJdixJjwfUhICKCvyXP8vEI3+bwBmPU7gKJ6Rfcugo2O31ROCbPsqzo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760713617; c=relaxed/simple;
-	bh=Uj82o5d/EjBMmWoJ5XGai6dLrCjJdTSiQ7RbeIQQSZM=;
+	s=arc-20240116; t=1760713681; c=relaxed/simple;
+	bh=8FnhvHU+cZJ6d29TK17dqd2oLil9K+bBITH2vkfujHU=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=HXYszD7J+6dmdTfGcgi65MlSSuVLKQsb0pr3IS2EMvfATzjvTy9IRQ8xBsCigvnqvCqrh3TIITzxeVLqt9VD62mlxM2ZS1tp6lnQx2p3i67A0H1MfGIlqaMJEaMrhR2aC2pe1DbPAdDlLia7GYFV69la3RH9BfuYRHIdDmpVZiQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tls.msk.ru; spf=pass smtp.mailfrom=tls.msk.ru; arc=none smtp.client-ip=212.248.84.144
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tls.msk.ru
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tls.msk.ru
-Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
-	by isrv.corpit.ru (Postfix) with ESMTP id D1C9F15F293;
-	Fri, 17 Oct 2025 17:58:48 +0300 (MSK)
-Received: from [192.168.177.130] (mjt.wg.tls.msk.ru [192.168.177.130])
-	by tsrv.corpit.ru (Postfix) with ESMTP id 7C4052EFE85;
-	Fri, 17 Oct 2025 17:58:50 +0300 (MSK)
-Message-ID: <f074aed2-7702-4a4a-a7d5-7abeb29ea663@tls.msk.ru>
-Date: Fri, 17 Oct 2025 17:58:50 +0300
+	 In-Reply-To:Content-Type; b=R+jIv7Ci2VEfNxALrMPmYwFg0dzvovmV22aAJgFgbfG9SkPfj6DNyM8KlsQKxOPL+UIvwrcYEFIHrYmVlz0b5QqI8LMJ9h87mbB8TSJDB+9rhqlpB/ggNYNegoHLaD9rI3JZbSJ6eAlsfENc5l+LNwbB6bGrJWJEh1h31JFa0nM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=hrtjGFOu; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="hrtjGFOu"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1760713679;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=J9X1BIc43NGsZkRZORFu1zjHPZ7Rg9eKPpWeWjUt83E=;
+	b=hrtjGFOuHwEmmnV2YlryD25CoAqQYySY9/jQV7YWorw2Cmv+N8Fat3UiFJ0tCjf6+1PZ82
+	FkHvaDK5/YhjEI5sJuknXpMWZr6U4ZRhbMGG6GtYAxAQ39IsRJjMEz1Zjmsd8/kR4H4eY9
+	TdPvCmdEF6b0/fhcCGLJ8VGPTUtBOVo=
+Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
+ [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-312-_Z-i-NGYNsKqgiOKxe20kA-1; Fri, 17 Oct 2025 11:07:58 -0400
+X-MC-Unique: _Z-i-NGYNsKqgiOKxe20kA-1
+X-Mimecast-MFC-AGG-ID: _Z-i-NGYNsKqgiOKxe20kA_1760713676
+Received: by mail-wm1-f71.google.com with SMTP id 5b1f17b1804b1-46e4fa584e7so9506085e9.0
+        for <kvm@vger.kernel.org>; Fri, 17 Oct 2025 08:07:56 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1760713676; x=1761318476;
+        h=content-transfer-encoding:in-reply-to:autocrypt:content-language
+         :from:references:cc:to:subject:user-agent:mime-version:date
+         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=J9X1BIc43NGsZkRZORFu1zjHPZ7Rg9eKPpWeWjUt83E=;
+        b=haNstYcGaPbuhw6kTHT13RJAPEUG0PIGhH+60jCBqsAU3UfIjvF40sJU6cPBXtm5WW
+         umYIUyzRpgFCdoB/2CqxhLCchVnxKk3H7FyHiM+22oF86dY8uxdO7k44zNdprPzGP5qu
+         J/Gu1z1X+KB6+cGaMqFtwFwNMIsMYVkiDALrlnwI/xNfOYuuCXYjeNBNDESkQI4679L7
+         A4yTkqMJ/yWTV2Pm3J9k17nxqNWAz5cZIPvbNZy+gHIhVcnMfAiideU/EYVDvqHE0ivZ
+         vMnmhTyIMPCiDYzxcoS4i8KI55Ava2tyWgm7DJ38Os3TLRyj9gEUhXPNMvu3xjuu5HVW
+         TXoQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVekGXHiAZirG6cvhgOIxJcHWTUD6Raa58EsilxZbTohYKIlLo8nxEZjkRTWso4vZ2MpwU=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzNkiHB/UdQdaGrhsCdufriK++l1H94hnswiNCHotlMr6uS1LpS
+	vMrddORsvV7nZHYLAryfk9FnoIt4FTx/RjtHqVuK/fFL3FbKy00dZRjXpD6hkD3Yr+wCWL15bqo
+	tF22q97ox6s/Oln/1JKqIpGmIbHIxDzG/gxCndW1llnKjtafWWzmFbA==
+X-Gm-Gg: ASbGncuMLiWSb3EXYepy2sr2B2Vo2OZxVwjPN7cN7IkbJ8su1jI0CPtYqSKicZc88G3
+	BmEiOZFLV3D3ObtSr0yr3naoi6uNld7LCHOpKMdOVjB8xkkyO/0OAAkxs6N10TzpJgd0LaZK3iK
+	I4gs+IXQW1jV1VBO78rFitxbr831mW8ETcG3CTNMPohDw6Fs5WfTBuRlv6JKM2PqI5gP78ftvYH
+	xz8UFYr4hblcUWAu7vJ6Ezw42emgEWhV0J1xrLjx9GPk609M4XQ6DStN9H3MpXjeaMHFLknxwxA
+	i0lkvTAmfKBpnbi1YqWICEcYewK06On2RxicRgVVEUWCTSNq+qT4JAuWvNNypTEvT6hSG97M2rn
+	5AxcSugiDPY8Cvp3ptn6RrnL+q24ifMDFn6JdFqkjZR5DpuZEd5pyctSdq11xDwcy8o+i6zlJXs
+	A2EBq2PhIQTRV2cfKn9qWt0M6Q2aU=
+X-Received: by 2002:a05:600c:818f:b0:46f:b42e:e361 with SMTP id 5b1f17b1804b1-47117931c89mr25044915e9.41.1760713675706;
+        Fri, 17 Oct 2025 08:07:55 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEeV20qcvkEmPA1bp02PI7vEzOGbT0hRxWJer5oIgjdZd36IQslHVl6fowxmxv1EbzRsULEwQ==
+X-Received: by 2002:a05:600c:818f:b0:46f:b42e:e361 with SMTP id 5b1f17b1804b1-47117931c89mr25044545e9.41.1760713675293;
+        Fri, 17 Oct 2025 08:07:55 -0700 (PDT)
+Received: from ?IPV6:2003:d8:2f0c:c200:fa4a:c4ff:1b32:21ce? (p200300d82f0cc200fa4ac4ff1b3221ce.dip0.t-ipconnect.de. [2003:d8:2f0c:c200:fa4a:c4ff:1b32:21ce])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-47114428dbfsm85439735e9.5.2025.10.17.08.07.53
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 17 Oct 2025 08:07:54 -0700 (PDT)
+Message-ID: <8c778cd0-5608-4852-9840-4d98828d7b33@redhat.com>
+Date: Fri, 17 Oct 2025 17:07:53 +0200
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -29,95 +76,116 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 09/11] hw/intc/apic: Ensure own APIC use in
- apic_register_{read, write}
-To: Bernhard Beschow <shentey@gmail.com>, qemu-devel@nongnu.org
-Cc: Roman Bolshakov <rbolshakov@ddn.com>, Laurent Vivier <laurent@vivier.eu>,
- Eduardo Habkost <eduardo@habkost.net>, Cameron Esfahani <dirty@apple.com>,
- "Michael S. Tsirkin" <mst@redhat.com>, Marcelo Tosatti
- <mtosatti@redhat.com>, Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Paolo Bonzini <pbonzini@redhat.com>,
- Sunil Muthuswamy <sunilmut@microsoft.com>, Zhao Liu <zhao1.liu@intel.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- Fabiano Rosas <farosas@suse.de>, qemu-trivial@nongnu.org,
- Gerd Hoffmann <kraxel@redhat.com>, qemu-block@nongnu.org,
- Phil Dennis-Jordan <phil@philjordan.eu>, John Snow <jsnow@redhat.com>,
- kvm@vger.kernel.org, Laurent Vivier <lvivier@redhat.com>
-References: <20251017141117.105944-1-shentey@gmail.com>
- <20251017141117.105944-10-shentey@gmail.com>
-Content-Language: en-US, ru-RU
-From: Michael Tokarev <mjt@tls.msk.ru>
-Autocrypt: addr=mjt@tls.msk.ru; keydata=
- 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
-In-Reply-To: <20251017141117.105944-10-shentey@gmail.com>
+Subject: Re: linux-next: KVM/s390x regression
+To: Christian Borntraeger <borntraeger@linux.ibm.com>, balbirs@nvidia.com
+Cc: Liam.Howlett@oracle.com, airlied@gmail.com, akpm@linux-foundation.org,
+ apopple@nvidia.com, baohua@kernel.org, baolin.wang@linux.alibaba.com,
+ byungchul@sk.com, dakr@kernel.org, dev.jain@arm.com,
+ dri-devel@lists.freedesktop.org, francois.dugast@intel.com,
+ gourry@gourry.net, joshua.hahnjy@gmail.com, linux-kernel@vger.kernel.org,
+ linux-mm@kvack.org, lorenzo.stoakes@oracle.com, lyude@redhat.com,
+ matthew.brost@intel.com, mpenttil@redhat.com, npache@redhat.com,
+ osalvador@suse.de, rakie.kim@sk.com, rcampbell@nvidia.com,
+ ryan.roberts@arm.com, simona@ffwll.ch, ying.huang@linux.alibaba.com,
+ ziy@nvidia.com, kvm@vger.kernel.org, linux-s390@vger.kernel.org,
+ linux-next@vger.kernel.org
+References: <20251001065707.920170-4-balbirs@nvidia.com>
+ <20251017144924.10034-1-borntraeger@linux.ibm.com>
+ <9beff9d6-47c7-4a65-b320-43efd1e12687@redhat.com>
+ <c67386be-5278-411d-97e7-43fc34bf7c98@linux.ibm.com>
+From: David Hildenbrand <david@redhat.com>
+Content-Language: en-US
+Autocrypt: addr=david@redhat.com; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <c67386be-5278-411d-97e7-43fc34bf7c98@linux.ibm.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 
-17.10.2025 17:11, Bernhard Beschow wrote:
-> ... In apic_mem_{read,write}, the
-> own APIC instance is available as the opaque parameter
+On 17.10.25 17:01, Christian Borntraeger wrote:
+> Am 17.10.25 um 16:54 schrieb David Hildenbrand:
+>> On 17.10.25 16:49, Christian Borntraeger wrote:
+>>> This patch triggers a regression for s390x kvm as qemu guests can no longer start
+>>>
+>>> error: kvm run failed Cannot allocate memory
+>>> PSW=mask 0000000180000000 addr 000000007fd00600
+>>> R00=0000000000000000 R01=0000000000000000 R02=0000000000000000 R03=0000000000000000
+>>> R04=0000000000000000 R05=0000000000000000 R06=0000000000000000 R07=0000000000000000
+>>> R08=0000000000000000 R09=0000000000000000 R10=0000000000000000 R11=0000000000000000
+>>> R12=0000000000000000 R13=0000000000000000 R14=0000000000000000 R15=0000000000000000
+>>> C00=00000000000000e0 C01=0000000000000000 C02=0000000000000000 C03=0000000000000000
+>>> C04=0000000000000000 C05=0000000000000000 C06=0000000000000000 C07=0000000000000000
+>>> C08=0000000000000000 C09=0000000000000000 C10=0000000000000000 C11=0000000000000000
+>>> C12=0000000000000000 C13=0000000000000000 C14=00000000c2000000 C15=0000000000000000
+>>>
+>>> KVM on s390x does not use THP so far, will investigate. Does anyone have a quick idea?
+>>
+>> Only when running KVM guests and apart from that everything else seems to be fine?
+> 
+> We have other weirdness in linux-next but in different areas. Could that somehow be
+> related to use disabling THP for the kvm address space?
 
-> diff --git a/hw/intc/apic.c b/hw/intc/apic.c
+Not sure ... it's a bit weird. I mean, when KVM disables THPs we 
+essentially just remap everything to be mapped by PTEs. So there 
+shouldn't be any PMDs in that whole process.
 
-> @@ -876,7 +870,7 @@ static uint64_t apic_mem_read(void *opaque, hwaddr addr, unsigned size)
->       }
->   
->       index = (addr >> 4) & 0xff;
-> -    apic_register_read(index, &val);
-> +    apic_register_read(opaque, index, &val);
+Remapping a file THP (shmem) implies zapping the THP completely.
 
-I think it would be better to use local variable here:
 
-  APICCommonState *s = opaque;
+I assume in your kernel config has CONFIG_ZONE_DEVICE and 
+CONFIG_ARCH_ENABLE_THP_MIGRATION set, right?
 
-and use it down the line.  Yes, there's just one usage, but it is
-still clearer this way (in my opinion anyway).
+I'd rule out copy_huge_pmd(), zap_huge_pmd() a well.
 
-Ditto in apic_mem_write.
 
-But it's more a nitpick really.
+What happens if you revert the change in mm/pgtable-generic.c?
 
-Thanks,
 
-/mjt
+But the whole -ENOMEM error is a weird symptom.
+
+-- 
+Cheers
+
+David / dhildenb
+
