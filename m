@@ -1,27 +1,67 @@
-Received: from vps-ovh.mhejs.net (vps-ovh.mhejs.net [145.239.82.108])
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73031337111;
-	Fri, 17 Oct 2025 14:58:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=145.239.82.108
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A63F32E141;
+	Fri, 17 Oct 2025 15:02:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760713128; cv=none; b=sUtDclJrqM3B0Rhm5HIWoWmrOmOar8cO8GunJGZkCQ7/zARHKUjxskn00dq+KTpvMJ4Qxd3QOTHq8OszAUIY6Qv1jriciR0R3gTWui7bkeJSnnTQT0nRYamStOp3/IfffWwmx9Z6Jdtr9urgyQVII4CD17+g6xc0ZdNTSehWans=
+	t=1760713333; cv=none; b=bOjgDnniwXloitRZMmcExzUgO6zCHuBRI9fsX1lij4qpSZG0Ooizc0FTe7zqR45H1JiJWH36ba1t9O9BmPp3+wefh1FOl7++ZGl1ghFPLLNr6sWBSHT8S5ugdWN1fUKnGdtgrmeC8SzoLts0vFx62esWNRzZQFZHes17+9DAozA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760713128; c=relaxed/simple;
-	bh=2Z5mLw6kXfd8YBgerFh+G4yOPV50JSC6+w5LZmuRvu4=;
-	h=Message-ID:Date:MIME-Version:Subject:Cc:References:From:To:
-	 In-Reply-To:Content-Type; b=tjnWm4aZhodm5iZt4i1Fdcjt1Xf1REsRZG7eLK7H4xj2wOHPTzh4P6yXpVZTEbxXTkKUWsAwt6xDbnvB1Bzwp0grnTkzvz+tU9yw/ft20ON49MtuB1T5RdoIAyOLus0CGjYyG177viUIbO1dSI8SBoUyh7yNvpdDSHs1wcQIlv4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=maciej.szmigiero.name; spf=pass smtp.mailfrom=vps-ovh.mhejs.net; arc=none smtp.client-ip=145.239.82.108
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=maciej.szmigiero.name
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=vps-ovh.mhejs.net
-Received: from MUA
-	by vps-ovh.mhejs.net with esmtpsa  (TLS1.3) tls TLS_AES_128_GCM_SHA256
-	(Exim 4.98.2)
-	(envelope-from <mhej@vps-ovh.mhejs.net>)
-	id 1v9krf-00000000vfB-2vpU;
-	Fri, 17 Oct 2025 15:51:27 +0200
-Message-ID: <ad3b910a-ff83-4738-888b-5432d09de073@maciej.szmigiero.name>
-Date: Fri, 17 Oct 2025 15:51:22 +0200
+	s=arc-20240116; t=1760713333; c=relaxed/simple;
+	bh=DxLnhdIQ2kU+zeD/wAroujRESZq6V2Rlm0i8ySn6fOs=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=HfRBCvtd6VUhoRXcQKYVK/8zfuUpltO0909L4fCi17ifdRic8v+zJG3O2oLzZszeyfu1xWReKucxgr0n0bi7MTvwhwLy+3ETBD4rK3qSqPrC/NyX3LVbU3HFR640F761JYBq/NgWtJ3JMTZfD5WrWl1ohyCkHh/kmlan/lZ2X8k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=OCn34bF2; arc=none smtp.client-ip=148.163.158.5
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="OCn34bF2"
+Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 59HBHM9h021066;
+	Fri, 17 Oct 2025 15:01:46 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=WjlOEp
+	jA/dZDxYCSjsqfVgbZFM/SxanKWySMXDeQTRA=; b=OCn34bF2k/4rTHZa89TN+a
+	tJKPMQDGoxH2pn9ne2v6SOaGqeVSxpPjHe/iOg5w/NXb5+58U+J80m+CDwg0WZ6U
+	DY9ssF3TJmj8rLrVmIQkObSShDGbdGdd3+JJIpxjN3lnvCq+e2UGidVRTL3trVh8
+	Mbh+epPmp8zruQgMiRuj9VbWP0cLNmAoWlBVbIj6jGWy2mfkiHhqmR3w4ndJOQqS
+	IPORSIeVzR9+5OFTlGysUwxV6uOitTHZnEuToToFS24otgwEj1BSALjizSgTBdfJ
+	b0dLnWC2Ixo1T2Yoy4SFlRczoKLEN9UWT1G0iqHDLsEH8uDPk5aDwpZDDtExCGMw
+	==
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 49qew0hwd6-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 17 Oct 2025 15:01:45 +0000 (GMT)
+Received: from m0360072.ppops.net (m0360072.ppops.net [127.0.0.1])
+	by pps.reinject (8.18.1.12/8.18.0.8) with ESMTP id 59HEY0SR015227;
+	Fri, 17 Oct 2025 15:01:45 GMT
+Received: from ppma21.wdc07v.mail.ibm.com (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 49qew0hwd2-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 17 Oct 2025 15:01:45 +0000 (GMT)
+Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma21.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 59HBd3uE018917;
+	Fri, 17 Oct 2025 15:01:44 GMT
+Received: from smtprelay04.fra02v.mail.ibm.com ([9.218.2.228])
+	by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 49r2jn5x58-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 17 Oct 2025 15:01:44 +0000
+Received: from smtpav07.fra02v.mail.ibm.com (smtpav07.fra02v.mail.ibm.com [10.20.54.106])
+	by smtprelay04.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 59HF1ge619988834
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Fri, 17 Oct 2025 15:01:42 GMT
+Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 1E81E20043;
+	Fri, 17 Oct 2025 15:01:42 +0000 (GMT)
+Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id E57DF20040;
+	Fri, 17 Oct 2025 15:01:40 +0000 (GMT)
+Received: from [9.111.36.47] (unknown [9.111.36.47])
+	by smtpav07.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Fri, 17 Oct 2025 15:01:40 +0000 (GMT)
+Message-ID: <c67386be-5278-411d-97e7-43fc34bf7c98@linux.ibm.com>
+Date: Fri, 17 Oct 2025 17:01:39 +0200
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -29,90 +69,70 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3] KVM: selftests: Test TPR / CR8 sync and interrupt
- masking
-Cc: Naveen N Rao <naveen@kernel.org>, Maxim Levitsky <mlevitsk@redhat.com>,
- Suravee Suthikulpanit <Suravee.Suthikulpanit@amd.com>,
- Alejandro Jimenez <alejandro.j.jimenez@oracle.com>, kvm@vger.kernel.org,
- linux-kernel@vger.kernel.org
-References: <90ea0b66874d676b93be43e9bf89a9a831323107.1758647049.git.maciej.szmigiero@oracle.com>
- <pssrvpxpo7ncvfkgunuwbenztcw4p4d3aavvbmgzcr23fg7biy@aeylu42ii3k6>
-From: "Maciej S. Szmigiero" <mail@maciej.szmigiero.name>
-Content-Language: en-US, pl-PL
-To: Paolo Bonzini <pbonzini@redhat.com>,
- Sean Christopherson <seanjc@google.com>
-Autocrypt: addr=mail@maciej.szmigiero.name; keydata=
- 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
-In-Reply-To: <pssrvpxpo7ncvfkgunuwbenztcw4p4d3aavvbmgzcr23fg7biy@aeylu42ii3k6>
+Subject: Re: linux-next: KVM/s390x regression
+To: David Hildenbrand <david@redhat.com>, balbirs@nvidia.com
+Cc: Liam.Howlett@oracle.com, airlied@gmail.com, akpm@linux-foundation.org,
+        apopple@nvidia.com, baohua@kernel.org, baolin.wang@linux.alibaba.com,
+        byungchul@sk.com, dakr@kernel.org, dev.jain@arm.com,
+        dri-devel@lists.freedesktop.org, francois.dugast@intel.com,
+        gourry@gourry.net, joshua.hahnjy@gmail.com,
+        linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+        lorenzo.stoakes@oracle.com, lyude@redhat.com, matthew.brost@intel.com,
+        mpenttil@redhat.com, npache@redhat.com, osalvador@suse.de,
+        rakie.kim@sk.com, rcampbell@nvidia.com, ryan.roberts@arm.com,
+        simona@ffwll.ch, ying.huang@linux.alibaba.com, ziy@nvidia.com,
+        kvm@vger.kernel.org, linux-s390@vger.kernel.org,
+        linux-next@vger.kernel.org
+References: <20251001065707.920170-4-balbirs@nvidia.com>
+ <20251017144924.10034-1-borntraeger@linux.ibm.com>
+ <9beff9d6-47c7-4a65-b320-43efd1e12687@redhat.com>
+Content-Language: en-US
+From: Christian Borntraeger <borntraeger@linux.ibm.com>
+In-Reply-To: <9beff9d6-47c7-4a65-b320-43efd1e12687@redhat.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Sender: mhej@vps-ovh.mhejs.net
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: 9LKX8Nmv4XcVUXrLvHE_HxecLxk_cP8h
+X-Authority-Analysis: v=2.4 cv=eJkeTXp1 c=1 sm=1 tr=0 ts=68f25a59 cx=c_pps
+ a=GFwsV6G8L6GxiO2Y/PsHdQ==:117 a=GFwsV6G8L6GxiO2Y/PsHdQ==:17
+ a=IkcTkHD0fZMA:10 a=x6icFKpwvdMA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=U-Hwjmto4vr2S7wfJqkA:9 a=QEXdDO2ut3YA:10 a=nl4s5V0KI7Kw-pW0DWrs:22
+ a=pHzHmUro8NiASowvMSCR:22 a=xoEH_sTeL_Rfw54TyV31:22
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMDExMDAxNCBTYWx0ZWRfXwHOgqQ6tTe+U
+ eJeOmxYOFp6+xojNs6VzBRrLhYngNWxnQYx4056hPZU3A7tztlpmQKe0jl4dRsHm2EY5V4OwECd
+ wfXh8kvLFSBLNWQO6YChYGy8sO5WM4VZzr8m4sgqW6h5Ode2RGLfx0nNgfJ6/OIZqgqp3jebCHe
+ dmip45P6cxhsJignJNv2FmPri77wdU9CW/FxJ8EHR1zW+g4xOQmIisNydT7y5lhEebl5F7X762z
+ F59ssPdVoDm8ELtqeqRw8YLucK+fiFaZoZ6bzLG5yyQGtkx8T1J2LG04XKhx60ksW8Zheieeyiy
+ hdZEIis1wsxG2DnvxK4WS+PNIjnS5x8eC2KBhybUtz5i6wzPM91FG6A/3s+VFhy+r+YRTQPrmaJ
+ LApWx8jnpGwmr0TM/gRlRO66VANL4g==
+X-Proofpoint-GUID: P8unXoLWz4BehbTrBCBmfoLT7VBR8y9s
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.80.40
+ definitions=2025-10-17_05,2025-10-13_01,2025-03-28_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ suspectscore=0 lowpriorityscore=0 spamscore=0 clxscore=1015 impostorscore=0
+ phishscore=0 malwarescore=0 adultscore=0 priorityscore=1501 bulkscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.19.0-2510020000 definitions=main-2510110014
 
-On 25.09.2025 12:43, Naveen N Rao wrote:
-> On Tue, Sep 23, 2025 at 07:32:14PM +0200, Maciej S. Szmigiero wrote:
->> From: "Maciej S. Szmigiero" <maciej.szmigiero@oracle.com>
+Am 17.10.25 um 16:54 schrieb David Hildenbrand:
+> On 17.10.25 16:49, Christian Borntraeger wrote:
+>> This patch triggers a regression for s390x kvm as qemu guests can no longer start
 >>
->> Add a few extra TPR / CR8 tests to x86's xapic_state_test to see if:
->> * TPR is 0 on reset,
->> * TPR, PPR and CR8 are equal inside the guest,
->> * TPR and CR8 read equal by the host after a VMExit
->> * TPR borderline values set by the host correctly mask interrupts in the
->> guest.
+>> error: kvm run failed Cannot allocate memory
+>> PSW=mask 0000000180000000 addr 000000007fd00600
+>> R00=0000000000000000 R01=0000000000000000 R02=0000000000000000 R03=0000000000000000
+>> R04=0000000000000000 R05=0000000000000000 R06=0000000000000000 R07=0000000000000000
+>> R08=0000000000000000 R09=0000000000000000 R10=0000000000000000 R11=0000000000000000
+>> R12=0000000000000000 R13=0000000000000000 R14=0000000000000000 R15=0000000000000000
+>> C00=00000000000000e0 C01=0000000000000000 C02=0000000000000000 C03=0000000000000000
+>> C04=0000000000000000 C05=0000000000000000 C06=0000000000000000 C07=0000000000000000
+>> C08=0000000000000000 C09=0000000000000000 C10=0000000000000000 C11=0000000000000000
+>> C12=0000000000000000 C13=0000000000000000 C14=00000000c2000000 C15=0000000000000000
 >>
->> These hopefully will catch the most obvious cases of improper TPR sync or
->> interrupt masking.
->>
->> Do these tests both in x2APIC and xAPIC modes.
->> The x2APIC mode uses SELF_IPI register to trigger interrupts to give it a
->> bit of exercise too.
->>
->> Signed-off-by: Maciej S. Szmigiero <maciej.szmigiero@oracle.com>
+>> KVM on s390x does not use THP so far, will investigate. Does anyone have a quick idea?
 > 
-> Acked-by: Naveen N Rao (AMD) <naveen@kernel.org>
-> 
+> Only when running KVM guests and apart from that everything else seems to be fine?
 
-Was this patch picked up or are there any other review comments here?
-I can't seem to find it in any KVM upstream tree.
-
-Thanks,
-Maciej
-
+We have other weirdness in linux-next but in different areas. Could that somehow be
+related to use disabling THP for the kvm address space?
