@@ -1,123 +1,114 @@
-Received: from mail-ej1-f54.google.com (mail-ej1-f54.google.com [209.85.218.54])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD713304967
-	for <kvm@vger.kernel.org>; Mon, 20 Oct 2025 12:19:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DCDF22F549E;
+	Mon, 20 Oct 2025 12:27:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.137.202.133
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760962763; cv=none; b=t+M7kfTw1La+KNhyhikYaXJiBVWJOzRkB2k7XEfu7OA1iMkwXc4x0XlNgYDseslRQRpNFN2mLBbCTh1ikXYqGsrELmTC99mWJJRinjXWribZF6wcV5u7zHOWQES3xHxI2yz+4u/7ihU6Lk+Dqy9OyeTamVVwJn4xcAXKDtQh420=
+	t=1760963237; cv=none; b=e2v19sLf0CvcZBlyp3WGLMvZluvk1hqpfhO29w6LNbsulC1kbsoXKSgkESo33uDY3z50PSnWCRmEShImgDMfIafV2pZYBMfYjE0nDY2RoHpuRCEKU6ZBnv9HLe0W7q68e38zAdVxctODL7eUcusRcluOsn3LEE/BLHy9iVyoi8c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760962763; c=relaxed/simple;
-	bh=hY+zN89xlI7lc9RRHt5oYwxs5QpVRwojNlKfwv12jR0=;
-	h=Date:From:To:CC:Subject:In-Reply-To:References:Message-ID:
-	 MIME-Version:Content-Type; b=iFpQAQLZKQprcgHTzGn2ll2apo7ztrze2kC9+FT3QWiFMyj7IgABDRHyNUfT+j0C+vpAjYjEZBKix8AcFFlj2h9o+PqV7w3Dpa11N6pW4xbVIqmnTjMbZ18R/D/mULUz9PYxyKq0B52/yKa4dgTgn6G+HWY6lFQV5Yk40xeYK/8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=SHQeSB40; arc=none smtp.client-ip=209.85.218.54
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1760963237; c=relaxed/simple;
+	bh=FWqTuU31olvHn7Eaizpk8jtM+MU3rAxvnzWUJUzSqAU=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=FcbasST5a9TcTg4zWz0dqOhXY2NWoOqso+zeIA7wta9RCSy/8+gRntvQ/lEMjSI+2BQahxSt5vCUQ4XOU6JrpS0sRQ9ol2wS0sJWpPR2+DWmH/wgmXAM5PpE+37pyjr0mrtlUyJBFAKXpgvtbWk03HMMXzSjwcwEV7FLgfkzsP4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=bombadil.srs.infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=KQhiungt; arc=none smtp.client-ip=198.137.202.133
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=bombadil.srs.infradead.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="SHQeSB40"
-Received: by mail-ej1-f54.google.com with SMTP id a640c23a62f3a-b3d50882cc2so818048466b.2
-        for <kvm@vger.kernel.org>; Mon, 20 Oct 2025 05:19:21 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1760962760; x=1761567560; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:references
-         :in-reply-to:subject:cc:to:from:date:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=kT0j/s0XBuP0ITAjNCV5ZQF3F9LmCWWFhKV3gfp9k/0=;
-        b=SHQeSB40mJHfY6q8RyBDkUygNSwYkbailWh3a86tdDWSD6oG+wCg5JzjDuAR5rOrYg
-         dwGtCjpU8h9HDMcgcL5CnOaUU6fepyz4ULHL2EVUJpELSSuOGN4snhhPlzCUBkNeSc6I
-         5zoVahhkHduh40WPgNEHjIseOztJTOD++3D3qq+npGQl3dcFl71m6E+SAvoFceo3vs07
-         Lub4QqT9n0KYxwTOs87T3LSUvF16xAJGwmLZN3DyeYqcvirusY83c2yl9RCrhUWItqCf
-         w1JbB5dm+MFaEnGj804CRTuAI5GutEC0rrX5WUFyvTiJk+4a3uL24Cu9GozRWscSNdBp
-         Ajag==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1760962760; x=1761567560;
-        h=content-transfer-encoding:mime-version:message-id:references
-         :in-reply-to:subject:cc:to:from:date:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=kT0j/s0XBuP0ITAjNCV5ZQF3F9LmCWWFhKV3gfp9k/0=;
-        b=cfjjflp88IzgWMeb/gFEzE9D8K1sq2IMIUk+lFUhMN2siCM6seaBelcwdvXtoQwgOm
-         UEmqLFqAywj04j65q9dvE3JZ4Je8+3IPcSL9zXGf8XjZfsldhnyD4zmNZ4lJ5qa1DN67
-         L/jm3zQ0XlTKiNjSUAYwRqvPqqymXNOmS7Cqz6gkEvstmjQohgHfU/qgLHvLaitjJsYq
-         gkQKHdi7Q9/KqlgFnKYZELr7WrMHZHz7HoXclMSQMFOpZI8iee/zPPStTaP55GzHsK5E
-         NVm708FIGIQoo+VROKOh04D9sZ2l/9aIf8T2+I0rzSoeGLkIPe5WeAUZ7oK1jtjJp0N2
-         ABoQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWfXEvgYMESQxwtwumxKH6wOE60pekJhdU3qJD065ByJmBZXprMw8+WwpVX/huApguRZVM=@vger.kernel.org
-X-Gm-Message-State: AOJu0Ywvp+XEyXYaR+icxuKP/0A33s04Oy4QPu5png+iwfQ5tGQswEWi
-	u6AypLfVb5FF0oX0dGBylk9SD3xTgR6UcIyUHnOoWNWN5EPe8ordi0lU
-X-Gm-Gg: ASbGncuOucMqaF0wDXcVHxr0KFpEkAJvZHP9M2BNjgplcEJXQNnEg8mZnL8OtbZMEia
-	R5xX6NjQ+t8hDTwc4zVs8r2fWkSdif396ivQuP+DPpdpZL8GHsuPw36vSpMWUGgIZuIiCHnrWI8
-	gZQsw6OPZqJ5pUybIjfyqFG5MqdqBkxhfPHFJqqpDV01VRJPa85RDxDp6TP/hSFepDqzTnTs8yj
-	BQph6905fzAXtQHOPmy0XoUu3/lISI7OCa/aHu/fuGwGNynZeIVdhxF9ye0GE5FfgLMvXRcVyaw
-	nOS44h1ObaTxpEOamXfapRsDfD4cccgyr/lb253ls+O+ruKNtLorQU5iGvOLDT2KE2oZGe6cttL
-	0VCowqsyFKNcwRGpZY9U6ElSCBw8mjphI6qnIb6lPJOMXBQU05dINQzlkp9WvvGejLFGZ19Bz2/
-	cl5dtptbCwclwHVY8WEw==
-X-Google-Smtp-Source: AGHT+IHxPPhHxkb1OPMx+8tRbXsfi7bsKNPwr2ehmzVPkmhExYX3HfawB7KM5n+STVBA8HM1UbVekw==
-X-Received: by 2002:a17:907:3dac:b0:b45:8370:ef10 with SMTP id a640c23a62f3a-b647245845bmr1536621066b.22.1760962759904;
-        Mon, 20 Oct 2025 05:19:19 -0700 (PDT)
-Received: from ehlo.thunderbird.net ([90.187.110.129])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b65eb0362fbsm784362466b.39.2025.10.20.05.19.19
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 20 Oct 2025 05:19:19 -0700 (PDT)
-Date: Mon, 20 Oct 2025 10:27:14 +0000
-From: Bernhard Beschow <shentey@gmail.com>
-To: qemu-devel@nongnu.org, Pierrick Bouvier <pierrick.bouvier@linaro.org>,
- Mohamed Mediouni <mohamed@unpredictable.fr>
-CC: Alexander Graf <agraf@csgraf.de>,
- Richard Henderson <richard.henderson@linaro.org>,
- Cameron Esfahani <dirty@apple.com>, Mads Ynddal <mads@ynddal.dk>,
- qemu-arm@nongnu.org,
- =?ISO-8859-1?Q?Philippe_Mathieu-Daud=E9?= <philmd@linaro.org>,
- Ani Sinha <anisinha@redhat.com>, Phil Dennis-Jordan <phil@philjordan.eu>,
- Eduardo Habkost <eduardo@habkost.net>,
- Sunil Muthuswamy <sunilmut@microsoft.com>,
- "Michael S. Tsirkin" <mst@redhat.com>, Igor Mammedov <imammedo@redhat.com>,
- Paolo Bonzini <pbonzini@redhat.com>, Yanan Wang <wangyanan55@huawei.com>,
- =?ISO-8859-1?Q?Daniel_P=2E_Berrang=E9?= <berrange@redhat.com>,
- Shannon Zhao <shannon.zhaosl@gmail.com>, kvm@vger.kernel.org,
- Peter Maydell <peter.maydell@linaro.org>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- =?ISO-8859-1?Q?Marc-Andr=E9_Lureau?= <marcandre.lureau@redhat.com>,
- Pedro Barbuda <pbarbuda@microsoft.com>, Zhao Liu <zhao1.liu@intel.com>,
- Roman Bolshakov <rbolshakov@ddn.com>
-Subject: =?US-ASCII?Q?Re=3A_=5BPATCH_v7_24/24=5D_whpx=3A_apic=3A_use_non-deprec?=
- =?US-ASCII?Q?ated_APIs_to_control_interrupt_controller_state?=
-In-Reply-To: <2cbd9feb-2c20-46e0-af40-0bd64060dfba@linaro.org>
-References: <20251016165520.62532-1-mohamed@unpredictable.fr> <20251016165520.62532-25-mohamed@unpredictable.fr> <2cbd9feb-2c20-46e0-af40-0bd64060dfba@linaro.org>
-Message-ID: <6982BC4E-1F59-47AD-B6E6-9FFF4212C627@gmail.com>
+	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="KQhiungt"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=bombadil.20210309; h=In-Reply-To:Content-Type:MIME-Version
+	:References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=jdaQM4uR5JLsKGA0oS0VASYRTZKdaGisbnRnH43EfLY=; b=KQhiungt0DOFTC/2vEdmUu5RdM
+	IjizyZW3KhQexecpWhn1JKycVRVYWQTJ9G7l/7owVKfDlpqNGVtDnwK8xwsjX6I64YK5ejanAY0FB
+	zzX4HHOKjNYa4wCLEeTShJPyzXTrVdkNr6T+/TruAVmGzKfuVYgSNuwpcWQwRtB1xfAiScls8jaTF
+	CtGh0RsnHpRzgHMaS7buG481FDfyI7wa7CD/qzHH4+SgPejuNG/LF4EmwQHr8caZKTi5KEcUFoY9W
+	z+5GpLZZYb6wF0dThq4Fmcc6GulKZn6HurCZW1AoO7vNphT4pMFJzXHY8iCTyrAiXmSBWSKpPvYGt
+	H76pYSOw==;
+Received: from hch by bombadil.infradead.org with local (Exim 4.98.2 #2 (Red Hat Linux))
+	id 1vAoyc-0000000DPQg-3mdN;
+	Mon, 20 Oct 2025 12:27:02 +0000
+Date: Mon, 20 Oct 2025 05:27:02 -0700
+From: Christoph Hellwig <hch@infradead.org>
+To: Jason Gunthorpe <jgg@nvidia.com>
+Cc: Christoph Hellwig <hch@infradead.org>,
+	Leon Romanovsky <leon@kernel.org>,
+	Alex Williamson <alex.williamson@redhat.com>,
+	Leon Romanovsky <leonro@nvidia.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Christian =?iso-8859-1?Q?K=F6nig?= <christian.koenig@amd.com>,
+	dri-devel@lists.freedesktop.org, iommu@lists.linux.dev,
+	Jens Axboe <axboe@kernel.dk>, Joerg Roedel <joro@8bytes.org>,
+	kvm@vger.kernel.org, linaro-mm-sig@lists.linaro.org,
+	linux-block@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-media@vger.kernel.org, linux-mm@kvack.org,
+	linux-pci@vger.kernel.org, Logan Gunthorpe <logang@deltatee.com>,
+	Marek Szyprowski <m.szyprowski@samsung.com>,
+	Robin Murphy <robin.murphy@arm.com>,
+	Sumit Semwal <sumit.semwal@linaro.org>,
+	Vivek Kasireddy <vivek.kasireddy@intel.com>,
+	Will Deacon <will@kernel.org>
+Subject: Re: [PATCH v5 1/9] PCI/P2PDMA: Separate the mmap() support from the
+ core logic
+Message-ID: <aPYqliGwJTcZznSX@infradead.org>
+References: <cover.1760368250.git.leon@kernel.org>
+ <1044f7aa09836d63de964d4eb6e646b3071c1fdb.1760368250.git.leon@kernel.org>
+ <aPHibioUFZV8Wnd1@infradead.org>
+ <20251017115320.GF3901471@nvidia.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain;
- charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20251017115320.GF3901471@nvidia.com>
+X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by bombadil.infradead.org. See http://www.infradead.org/rpr.html
 
+On Fri, Oct 17, 2025 at 08:53:20AM -0300, Jason Gunthorpe wrote:
+> On Thu, Oct 16, 2025 at 11:30:06PM -0700, Christoph Hellwig wrote:
+> > On Mon, Oct 13, 2025 at 06:26:03PM +0300, Leon Romanovsky wrote:
+> > > The DMA API now has a new flow, and has gained phys_addr_t support, so
+> > > it no longer needs struct pages to perform P2P mapping.
+> > 
+> > That's news to me.  All the pci_p2pdma_map_state machinery is still
+> > based on pgmaps and thus pages.
+> 
+> We had this discussion already three months ago:
+> 
+> https://lore.kernel.org/all/20250729131502.GJ36037@nvidia.com/
+> 
+> These couple patches make the core pci_p2pdma_map_state machinery work
+> on struct p2pdma_provider, and pgmap is just one way to get a
+> p2pdma_provider *
+> 
+> The struct page paths through pgmap go page->pgmap->mem to get
+> p2pdma_provider.
+> 
+> The non-struct page paths just have a p2pdma_provider * without a
+> pgmap. In this series VFIO uses
+> 
+> +	*provider = pcim_p2pdma_provider(pdev, bar);
+> 
+> To get the provider for a specific BAR.
 
+And what protects that life time?  I've not seen anyone actually
+building the proper lifetime management.  And if someone did the patches
+need to clearly point to that.
 
-Am 16=2E Oktober 2025 17:15:42 UTC schrieb Pierrick Bouvier <pierrick=2Ebo=
-uvier@linaro=2Eorg>:
->On 10/16/25 9:55 AM, Mohamed Mediouni wrote:
->> WHvGetVirtualProcessorInterruptControllerState2 and
->> WHvSetVirtualProcessorInterruptControllerState2 are
->> deprecated since Windows 10 version 2004=2E
->>=20
->> Use the non-deprecated WHvGetVirtualProcessorState and
->> WHvSetVirtualProcessorState when available=2E
->>=20
->> Signed-off-by: Mohamed Mediouni <mohamed@unpredictable=2Efr>
->> ---
->>   include/system/whpx-internal=2Eh |  9 +++++++
->>   target/i386/whpx/whpx-apic=2Ec   | 46 +++++++++++++++++++++++++------=
----
->>   2 files changed, 43 insertions(+), 12 deletions(-)
->
->Reviewed-by: Pierrick Bouvier <pierrick=2Ebouvier@linaro=2Eorg>
+> I think I've answered this three times now - for DMABUF the DMABUF
+> invalidation scheme is used to control the lifetime and no DMA mapping
+> outlives the provider, and the provider doesn't outlive the driver.
 
-Couldn't we merge this patch already until the rest of the series is figur=
-ed out?
+How?
 
-Best regards,
-Bernhard
+> Obviously you cannot use the new p2provider mechanism without some
+> kind of protection against use after hot unplug, but it doesn't have
+> to be struct page based.
+
+And how does this interact with everyone else expecting pgmap based
+lifetime management.
+
