@@ -1,137 +1,116 @@
-Received: from mail-wm1-f46.google.com (mail-wm1-f46.google.com [209.85.128.46])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from fra-out-006.esa.eu-central-1.outbound.mail-perimeter.amazon.com (fra-out-006.esa.eu-central-1.outbound.mail-perimeter.amazon.com [18.197.217.180])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A4292FB963
-	for <kvm@vger.kernel.org>; Mon, 20 Oct 2025 11:35:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 817B230FC35;
+	Mon, 20 Oct 2025 12:12:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=18.197.217.180
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760960145; cv=none; b=PxIgntrG6HwJrOUGPXmxyILt1Dgs3KFtMQZHULFrw7ASdMJDvdF8fQqy4pFy4oHv1AvrM8ZM5qPwvwGpPzwhff7KOAbtGtqVaL9A0cMhPr6sIO1BtKs7r0+oezuahlsEDhN3wYDPgI/+yhZ4QS1DJxBSZpO3FW3cTnfY8brNIyk=
+	t=1760962381; cv=none; b=V5K3rLg1PuVdy2e5opjLgKVHrPIDl4xIgVgO2U1fwIKEl0RYxpsmuNwKPIlMbctJRDMAHllTaKDdSzycUZGYw7WpKEYyzEI8HGipQgBMSrkHeKk20UgSW7pv2H/i7DGyW4VAwtP81xUFJ66901JWjOzxvhLncUID9L2LfZQlLLs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760960145; c=relaxed/simple;
-	bh=eR6IR+0+HcZgX42GHDv5+gE9w7Xb33d3WVW7VKMOqDw=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=VtG/nizoMXLjslSuP/8aAzxT4BUo+sRDbcpOXwx6fotAYqWeJU8kaewBZ2UoaYH/ZyJfrhimxfk9V5p+SiE4y/l1aol2SkoUan/M7qkDZ4vVxGEVHuGmn1gdUwruyn1hl5FuFhZcZy/3SEylbvSDoVVsdtIlEKs0cPZImXyuEGY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=f554nIUl; arc=none smtp.client-ip=209.85.128.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+	s=arc-20240116; t=1760962381; c=relaxed/simple;
+	bh=dahik2fjbYeAuSQncBFoEVv2d4q4dFGjf2TdTtpUg/c=;
+	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=ujzhZHfs1ya8YeNP9Z9lAmQhyoUhqL8jwca2bnNc3/q/6Hhxm3EdDkOk3EPnugb3NFx9rf+rrHDtCtMx8B2dDGfuVmtUFCN6FBJeDOT96pZrq9fVN7yF9tnSAVJ0/1JvKnP+6FROadK60xJOHw9qeYwCsgVX8Sv+cvraXKa9qFQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.de; spf=pass smtp.mailfrom=amazon.de; dkim=pass (2048-bit key) header.d=amazon.de header.i=@amazon.de header.b=RcHeUbw8; arc=none smtp.client-ip=18.197.217.180
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amazon.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="f554nIUl"
-Received: by mail-wm1-f46.google.com with SMTP id 5b1f17b1804b1-4710665e7deso14252845e9.1
-        for <kvm@vger.kernel.org>; Mon, 20 Oct 2025 04:35:43 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=amazon.de header.i=@amazon.de header.b="RcHeUbw8"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1760960142; x=1761564942; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=71R8sAvBEiNvqEf9kiOYU72VRXxnt/PEhui8Mhvi1Og=;
-        b=f554nIUl6xDKwbtbg8KePD1ja1/AQViYvJMgfs+BipCWWaSeQ7kNsLbrOzi9ipAioe
-         yzDmlUuVDWy1jfVsnIVFD8Ma3eWBs7PyUhZbcZaRz0IHHkVIPGtgqSSmHPwCRtgBGTak
-         C/AJ/Onjepu9xPoZeipfvee12PDTsiB2C+zQXctrJ8U9DS50R6TEkq4Zm3Dr1Fqo+MIv
-         Vqq431h6i9efvFEW7o9QhIZsNHDDDufKnDSTtQncXozB1GyClwQ7tS7NtcCMreAiqp7n
-         UzZJQ+YdEIG98TWeGxwJFmdlMxqvdNxQRTbN4sN/0pvt9PXWrBlcfsJ1f6fDIWtl4N5z
-         LxOw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1760960142; x=1761564942;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=71R8sAvBEiNvqEf9kiOYU72VRXxnt/PEhui8Mhvi1Og=;
-        b=Q+mNSiILBlzY8q3yve3P7EkllQaELy5ZkArjUtNS23QwrOz9ITWagu0lIOVkfO9bg9
-         cwma41FSKJP8v9CiDT16beA2gk2FxpKPQsUIL4X6zyNFpJOjgRKtG2jl5sGTV0tye5hp
-         HQzHx7SvZt4ROg+wcVm4X3QwqaEU+WKy9MmZJ6wSwhodDhwu9RINej3pPP3lZSqugU3h
-         7cYVEYaA/gOhDfWTrhEMHyemQOkClweFvPc5hinwNadxwQ66+Djh0T20///Mus49YLl3
-         pKW+iuZayW4O85dushqE3yML2bAbsV3KCMWle667hyxL5etA1FVNlwq9iaIB+oCpou2Q
-         mNWQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXU5lnuZf+3su4LelqTLtH06bOPDKs+kBsrftNx0vn7tf6WfPTMgM+elrPnai2VmAka1io=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy9G6PKyOpPOKSxJ35rSMd2rTdVqurRn0ooL0iNXkcDide8Xyvq
-	GaWKjXAafY5l/6RG78/gnTKPxvxSjHPw5Ka/ZhWVX8x3BVYuP6RuCWnu+/OvYV64AZ4=
-X-Gm-Gg: ASbGncur3rkZdMkTsm2SbccB8LjxWKCDvm/hzJIjkXcMSbNbflI8lvbrS2vXnIN96R5
-	Fu7sJwRKCPgrdKoEcyeaE3cK8aYoZadzGC17nO/A+Gf42YGpsShx/K74swF20sW5XNeM6OdS5IS
-	aPQ/eqHUNCOyvLV7Q3ISoxp/zqrofcLBOojFkNNi+5GbxgPnCfsAXjrm2D4SNMWM///RQwlZvcx
-	N58YYDjtucUP+3wGcx1Qq3zZS1qpzlOD5boHl9/CneOK0xXUW4BLDUPWnHf7TVhZsBLbKjoqXuu
-	2C9FYj4Ij0ncP/7V8x/mYvR9IxkRlqo1eWh17Uej9qHNoGvIAQyempQQZYSEjqmB/5ieV4EHXcl
-	1DBiLFC+avVUSUv++XlKdAGWxEuRz/l1zCAAdrIKm3soaYXXY4SSmGHdm4/uwgRkcgAONqHIyAB
-	c+2ieNb+VLxXwACm9ZQiuMkCQ3553+HIMXYDXM5bMZ3KhKQLI3lbqUzsTAGsL7
-X-Google-Smtp-Source: AGHT+IEPx0SE5xUIDTfxvhDNmRz2LWgkyKXl8jschWeu+y/qt79zcqlwmwc9t+0lsEUm/8AyI37oAg==
-X-Received: by 2002:a05:600c:3513:b0:46f:b340:75e7 with SMTP id 5b1f17b1804b1-471178748a9mr100220295e9.8.1760960142366;
-        Mon, 20 Oct 2025 04:35:42 -0700 (PDT)
-Received: from localhost.localdomain (88-187-86-199.subs.proxad.net. [88.187.86.199])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-427f00ce178sm14714271f8f.46.2025.10.20.04.35.41
-        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Mon, 20 Oct 2025 04:35:41 -0700 (PDT)
-From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-To: qemu-devel@nongnu.org
-Cc: Chinmay Rath <rathc@linux.ibm.com>,
-	Harsh Prateek Bora <harshpb@linux.ibm.com>,
-	qemu-ppc@nongnu.org,
-	Paolo Bonzini <pbonzini@redhat.com>,
-	kvm@vger.kernel.org,
-	Nicholas Piggin <npiggin@gmail.com>,
-	=?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH 18/18] hw/ppc/spapr: Remove SpaprMachineClass::rma_limit field
-Date: Mon, 20 Oct 2025 13:35:21 +0200
-Message-ID: <20251020113521.81495-5-philmd@linaro.org>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251020103815.78415-1-philmd@linaro.org>
-References: <20251020103815.78415-1-philmd@linaro.org>
+  d=amazon.de; i=@amazon.de; q=dns/txt; s=amazoncorp2;
+  t=1760962379; x=1792498379;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=gT4c4sJrY+uRE80dfQnZ0+JjbvKqCsCY5BuNFNs0hp4=;
+  b=RcHeUbw8cb3QpJzWDkDwBmSVtRUt2T28lfvwcIU3vQYxQK+UXlr+Ax2J
+   xybaXsivVK8JlfltwhwLcvaY5ov3XxAhlUrWgGKPnrf7409zX0XwnaOfs
+   9/C6GJU+i0B+qw8Fb1r6PJRfhKoKnh5mvPaGFHQbAGCLmVvPBgFeOo1Xj
+   XYuLOVhTgn/jVfJGvMXMuExblUJjKwcKxCgwJIKW47TojH7t/9AVzqSio
+   W6f71eaktYYc8t99iM76NdYLq+GHCxu9ovJI771Bt/UkSRa6K6P9tu1T7
+   E1cs0PPQT6JEsz7J+6C+khmpRvyOcxAa9ZVwf8iciiHQdmBSOeAxpDvd4
+   A==;
+X-CSE-ConnectionGUID: paAvEk0fQZycm0Z2Ouoe9w==
+X-CSE-MsgGUID: urA571EoRWOh9u8FI1m1cw==
+X-IronPort-AV: E=Sophos;i="6.19,242,1754956800"; 
+   d="scan'208";a="3869976"
+Received: from ip-10-6-11-83.eu-central-1.compute.internal (HELO smtpout.naws.eu-central-1.prod.farcaster.email.amazon.dev) ([10.6.11.83])
+  by internal-fra-out-006.esa.eu-central-1.outbound.mail-perimeter.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Oct 2025 12:12:48 +0000
+Received: from EX19MTAEUC001.ant.amazon.com [54.240.197.225:17685]
+ by smtpin.naws.eu-central-1.prod.farcaster.email.amazon.dev [10.0.33.169:2525] with esmtp (Farcaster)
+ id d81a3bf9-5a3a-4933-b9f8-3d78ac7eca0f; Mon, 20 Oct 2025 12:12:48 +0000 (UTC)
+X-Farcaster-Flow-ID: d81a3bf9-5a3a-4933-b9f8-3d78ac7eca0f
+Received: from EX19D016EUA001.ant.amazon.com (10.252.50.245) by
+ EX19MTAEUC001.ant.amazon.com (10.252.51.155) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.20;
+ Mon, 20 Oct 2025 12:12:34 +0000
+Received: from amazon.com (10.1.213.26) by EX19D016EUA001.ant.amazon.com
+ (10.252.50.245) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.20; Mon, 20 Oct 2025
+ 12:12:30 +0000
+From: Maximilian Dittgen <mdittgen@amazon.de>
+To: <maz@kernel.org>
+CC: <epetron@amazon.de>, <kvm@vger.kernel.org>, <kvmarm@lists.linux.dev>,
+	<linux-arm-kernel@lists.infradead.org>, <linux-kselftest@vger.kernel.org>,
+	<mdittgen@amazon.com>, <mdittgen@amazon.de>, <nh-open-source@amazon.com>,
+	<oliver.upton@linux.dev>, <pbonzini@redhat.com>, <shuah@kernel.org>
+Subject: Re: [PATCH] KVM: selftests: fix ITS collection target addresses in vgic_lpi_stress
+Date: Mon, 20 Oct 2025 14:12:20 +0200
+Message-ID: <20251020121220.83972-1-mdittgen@amazon.de>
+X-Mailer: git-send-email 2.50.1
+In-Reply-To: <86v7kdwj8u.wl-maz@kernel.org>
+References: <20251017161918.40711-1-mdittgen@amazon.de> <86v7kdwj8u.wl-maz@kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: EX19D037UWB004.ant.amazon.com (10.13.138.84) To
+ EX19D016EUA001.ant.amazon.com (10.252.50.245)
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 
-The SpaprMachineClass::rma_limit field was only used by the
-pseries-4.2 machine, which got removed. Remove it as now unused.
+On Fri, 17 Oct 2025 19:06:25 +0200,
+Marc Zyngier <maz@kernel.org> wrote:
+>
+>	  * We use linear CPU numbers for redistributor addressing,
+>	  * so GITS_TYPER.PTA is 0.
+>
+> It is not an address.
 
-Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
----
- include/hw/ppc/spapr.h |  1 -
- hw/ppc/spapr.c         | 10 ----------
- 2 files changed, 11 deletions(-)
+The issue is that its_encode_target in selftests is designed for
+physical redistriubtor addresses (GITS_TYPER.PTA = 1) and thus
+performs a right shift by 16 bits:
 
-diff --git a/include/hw/ppc/spapr.h b/include/hw/ppc/spapr.h
-index 60d9a8a0377..b9d884745fe 100644
---- a/include/hw/ppc/spapr.h
-+++ b/include/hw/ppc/spapr.h
-@@ -141,7 +141,6 @@ struct SpaprCapabilities {
- struct SpaprMachineClass {
-     MachineClass parent_class;
- 
--    hwaddr rma_limit;          /* clamp the RMA to this size */
-     bool pre_5_1_assoc_refpoints;
-     bool pre_5_2_numa_associativity;
-     bool pre_6_2_numa_affinity;
-diff --git a/hw/ppc/spapr.c b/hw/ppc/spapr.c
-index 97211bc2ddc..52333250c68 100644
---- a/hw/ppc/spapr.c
-+++ b/hw/ppc/spapr.c
-@@ -2728,7 +2728,6 @@ static PCIHostState *spapr_create_default_phb(void)
- static hwaddr spapr_rma_size(SpaprMachineState *spapr, Error **errp)
- {
-     MachineState *machine = MACHINE(spapr);
--    SpaprMachineClass *smc = SPAPR_MACHINE_GET_CLASS(spapr);
-     hwaddr rma_size = machine->ram_size;
-     hwaddr node0_size = spapr_node0_size(machine);
- 
-@@ -2741,15 +2740,6 @@ static hwaddr spapr_rma_size(SpaprMachineState *spapr, Error **errp)
-      */
-     rma_size = MIN(rma_size, 1 * TiB);
- 
--    /*
--     * Clamp the RMA size based on machine type.  This is for
--     * migration compatibility with older qemu versions, which limited
--     * the RMA size for complicated and mostly bad reasons.
--     */
--    if (smc->rma_limit) {
--        rma_size = MIN(rma_size, smc->rma_limit);
--    }
--
-     if (rma_size < MIN_RMA_SLOF) {
-         error_setg(errp,
-                    "pSeries SLOF firmware requires >= %" HWADDR_PRIx
--- 
-2.51.0
+		its_mask_encode(&cmd->raw_cmd[2], target_addr >> 16, 51, 16);
+
+When the vgic_lpi_stress selftest passes in a linear vCPU id as
+the redistributor address (GITS_TYPER.PTA = 0 behavior),
+The its_encode_target function shifts the CPU numbers 16 bits right,
+functionally zeroing them.
+
+We need to either:
+- Align this specific selftest with GITS_TYPER.PTA = 0 and not use
+    its_encode_target to encode the target vCPU id. Instead have a
+    dedicated encode function for the use case without a bit shift.
+- Align all selftests with GITS_TYPER.PTA = 0 and refactor
+    its_encode_target to skip the bit shift altogether.
+- Align selftests with GITS_TYPER.PTA = 1 and pass a redistributor
+    address, not a vCPU id, into its_send_mapc_cmd().
+
+Otherwise, the selftest's current behavior incorrectly maps all
+collections to target vCPU 0.
+
+Thanks,
+Maximilian
+
+
+
+Amazon Web Services Development Center Germany GmbH
+Tamara-Danz-Str. 13
+10243 Berlin
+Geschaeftsfuehrung: Christian Schlaeger
+Eingetragen am Amtsgericht Charlottenburg unter HRB 257764 B
+Sitz: Berlin
+Ust-ID: DE 365 538 597
 
