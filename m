@@ -1,153 +1,95 @@
-Received: from out30-99.freemail.mail.aliyun.com (out30-99.freemail.mail.aliyun.com [115.124.30.99])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 34E0523D2B8;
-	Tue, 21 Oct 2025 14:21:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.30.99
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E6CF7255F31;
+	Tue, 21 Oct 2025 14:38:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761056506; cv=none; b=ryMWwv+QCQQlDJwxLel+n3Y4AJ6NaCeSD6LlepSLg8x/3Nxx3/R62DiniZrN+0EG+uoH7QtCYpRB6Jh1KzKwAlUrfg67sZtfgTMCkGY1++Vx0h6EQML5WwCnMQ6XJ+7hdsjDMUEbuR9SlT5Uc68+aYEn9oLRt/qqfTyfJbpDH5Q=
+	t=1761057484; cv=none; b=DCdE1wWBYFNRZgUDy/NNAhkzb9r6e66IR4KbBROmToWvh3/h8piuJfObQINOi7JkBTdSo/Sx+E8AIBBWiEuvO2kdZj5uf5auGEMr6A++W0HKLjadSN4f1cAsFgS01M6yrbXjdN53gcO4esFI9ImJPy/sKrK8FUkBzvjafRk5yjU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761056506; c=relaxed/simple;
-	bh=zbf5X6xFgjcLKvQ//NfXqUxkpVqdnHgnddzIX/9P3i0=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=QM/OhYaIEoTafgQrnATcsvCfYfdGJbqkMI+Hhda2VY58O/xygOa2pko14DrnzJaZFt/43SEnz0s0jER9hVH6PxwzClsuHBPelg8n56KbqOiYWlm7wZDNEbv89cbD4uXo5es7DhrmZ3+LG8qdeSZjPyeE6cV1vr0NGTPeYJGGaEY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; spf=pass smtp.mailfrom=linux.alibaba.com; dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b=lxf/7M7Q; arc=none smtp.client-ip=115.124.30.99
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.alibaba.com
+	s=arc-20240116; t=1761057484; c=relaxed/simple;
+	bh=wFbwZbsHTJiSSwxGm5j+8zH7cL1GYeO4xnLoFEPZCNY=;
+	h=Date:Message-ID:From:To:Cc:Subject:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=twIgx1hpT4z+ZR02v3oaAIyewW8d1a4BiJUc49Q+RzQcee6wbbn9xFFq2Tg6mc9rR7VseXvqVHYWzn5Spgbsxr70ZiW4XKopk7zpb/UbTVzPtrbjudjJzPXIvFMoDxQM0MoeeTg8Fj7aPpnFLbj09TI4fVBpqOe7GpCC6ko0xkA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RE8W1iTx; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b="lxf/7M7Q"
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux.alibaba.com; s=default;
-	t=1761056497; h=From:To:Subject:Date:Message-Id:MIME-Version;
-	bh=bcvGo8vZx1GTax8WxbQQMp+Ghln0kxNOs/BCW6mwRY4=;
-	b=lxf/7M7QxySY7IP4CMnr3nMde1Jwv3vXRKjvVmSoQqCrnihsuspPI363MwxC+3Y+RtW8PkcxXVDzwL5aEFes6aMKghPsvFeiQx6mEYx2m1iNp1I6ZhjVyfBSI7rBuOZ84niWxvx8wJlAnU6ssGBaZO0iT8D2DpzGvQSvuleQwB0=
-Received: from localhost.localdomain(mailfrom:fangyu.yu@linux.alibaba.com fp:SMTPD_---0WqjBICH_1761056493 cluster:ay36)
-          by smtp.aliyun-inc.com;
-          Tue, 21 Oct 2025 22:21:35 +0800
-From: fangyu.yu@linux.alibaba.com
-To: anup@brainfault.org,
-	atish.patra@linux.dev,
-	pjw@kernel.org,
-	palmer@dabbelt.com,
-	aou@eecs.berkeley.edu,
-	alex@ghiti.fr,
-	pbonzini@redhat.com,
-	jiangyifei@huawei.com
-Cc: guoren@kernel.org,
-	dbarboza@ventanamicro.com,
-	kvm@vger.kernel.org,
-	kvm-riscv@lists.infradead.org,
-	linux-riscv@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	Fangyu Yu <fangyu.yu@linux.alibaba.com>
-Subject: [PATCH v2] RISC-V: KVM: Remove automatic I/O mapping for VM_PFNMAP
-Date: Tue, 21 Oct 2025 22:21:31 +0800
-Message-Id: <20251021142131.78796-1-fangyu.yu@linux.alibaba.com>
-X-Mailer: git-send-email 2.39.3 (Apple Git-146)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RE8W1iTx"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7CF02C4CEF1;
+	Tue, 21 Oct 2025 14:38:02 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1761057482;
+	bh=wFbwZbsHTJiSSwxGm5j+8zH7cL1GYeO4xnLoFEPZCNY=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=RE8W1iTx33LnSMetMg4dLbUvYOYZSMVmXe0AE5llr3mbj/dkawF74r2l46bO7rs8N
+	 j849i5QTsa5QBJ9dBxmVf8zcEkhsGGYvVhsP2nHb6ornRGjE+eGgZrW3PlXzkgJcsT
+	 s2ltvMb3GRVAUQUkNillw5tBDlLvp9LBkzQbPetvEnNZV85WQajG3tmO0Cq80LZHsy
+	 //V4L7yU0mFCi9aeFmi5U0hrL/Yv11LZqqTUprKbqfyeJj3L6UrJCjP/G8bR4q2kZ1
+	 0Rfjp0myWpGDB42nTA7mO6IGpKs+A9Ixh1eFtK7z3m2ctZ96xWw5217gsf0HR+WXwG
+	 a6lBfXVU+tAQA==
+Received: from sofa.misterjones.org ([185.219.108.64] helo=goblin-girl.misterjones.org)
+	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.98.2)
+	(envelope-from <maz@kernel.org>)
+	id 1vBDUu-0000000FsUT-1AY9;
+	Tue, 21 Oct 2025 14:38:00 +0000
+Date: Tue, 21 Oct 2025 15:37:59 +0100
+Message-ID: <86bjm0wcag.wl-maz@kernel.org>
+From: Marc Zyngier <maz@kernel.org>
+To: Mark Brown <broonie@kernel.org>
+Cc: Sascha Bischoff <Sascha.Bischoff@arm.com>,
+	"linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>,
+	"kvmarm@lists.linux.dev" <kvmarm@lists.linux.dev>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"kvm@vger.kernel.org" <kvm@vger.kernel.org>,
+	nd <nd@arm.com>,
+	"oliver.upton@linux.dev" <oliver.upton@linux.dev>,
+	Joey Gouly <Joey.Gouly@arm.com>,
+	Suzuki Poulose <Suzuki.Poulose@arm.com>,
+	"yuzenghui@huawei.com" <yuzenghui@huawei.com>,
+	Paolo Bonzini <pbonzini@redhat.com>,
+	Linus Torvalds <torvalds@linux-foundation.org>,
+	Aishwarya.TCV@arm.com
+Subject: Re: [PATCH] KVM: arm64: gic-v3: Only set ICH_HCR traps for v2-on-v3 or v3 guests
+In-Reply-To: <78b0297c-4622-4b75-bcae-45c144c92c45@sirena.org.uk>
+References: <20251007160704.1673584-1-sascha.bischoff@arm.com>
+	<23072856-6b8c-41e2-93d1-ea8a240a7079@sirena.org.uk>
+	<86frbcwv5t.wl-maz@kernel.org>
+	<78b0297c-4622-4b75-bcae-45c144c92c45@sirena.org.uk>
+User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
+ FLIM-LB/1.14.9 (=?UTF-8?B?R29qxY0=?=) APEL-LB/10.8 EasyPG/1.0.0 Emacs/30.1
+ (aarch64-unknown-linux-gnu) MULE/6.0 (HANACHIRUSATO)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
+Content-Type: text/plain; charset=US-ASCII
+X-SA-Exim-Connect-IP: 185.219.108.64
+X-SA-Exim-Rcpt-To: broonie@kernel.org, Sascha.Bischoff@arm.com, linux-arm-kernel@lists.infradead.org, kvmarm@lists.linux.dev, linux-kernel@vger.kernel.org, kvm@vger.kernel.org, nd@arm.com, oliver.upton@linux.dev, Joey.Gouly@arm.com, Suzuki.Poulose@arm.com, yuzenghui@huawei.com, pbonzini@redhat.com, torvalds@linux-foundation.org, Aishwarya.TCV@arm.com
+X-SA-Exim-Mail-From: maz@kernel.org
+X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
 
-From: Fangyu Yu <fangyu.yu@linux.alibaba.com>
+On Tue, 21 Oct 2025 15:00:30 +0100,
+Mark Brown <broonie@kernel.org> wrote:
+> 
+> On Tue, Oct 21, 2025 at 08:50:22AM +0100, Marc Zyngier wrote:
+> > Mark Brown <broonie@kernel.org> wrote:
+> 
+> The only thing I can think of is that you are objecting to the idea of
+> having the KVM arm64 tree merge it's fixes branch into it's development
+> branch.  That is not what I am suggesting, I am suggesting putting the
+> fixes branch itself directly into -next to be merged by Stephen.  I am
+> not proposing any change to the content of the KVM arm64 branches.
 
-As of commit aac6db75a9fc ("vfio/pci: Use unmap_mapping_range()"),
-vm_pgoff may no longer guaranteed to hold the PFN for VM_PFNMAP
-regions. Using vma->vm_pgoff to derive the HPA here may therefore
-produce incorrect mappings.
+Then I don't know why you even involve me here.
 
-Instead, I/O mappings for such regions can be established on-demand
-during g-stage page faults, making the upfront ioremap in this path
-is unnecessary.
+You can pull anything you want in -next, and you don't need my
+approval for it. I still don't think this is a good idea because the
+life cycles are totally different, but if you like making your own
+life complicated, go ahead, I'm not going to stop you.
 
-Fixes: 9d05c1fee837 ("RISC-V: KVM: Implement stage2 page table programming")
-Signed-off-by: Fangyu Yu <fangyu.yu@linux.alibaba.com>
-Tested-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+	M.
 
----
-Changes in v2:
-- Fixed build warnings.
----
- arch/riscv/kvm/mmu.c | 25 ++-----------------------
- 1 file changed, 2 insertions(+), 23 deletions(-)
-
-diff --git a/arch/riscv/kvm/mmu.c b/arch/riscv/kvm/mmu.c
-index 525fb5a330c0..58f5f3536ffd 100644
---- a/arch/riscv/kvm/mmu.c
-+++ b/arch/riscv/kvm/mmu.c
-@@ -171,7 +171,6 @@ int kvm_arch_prepare_memory_region(struct kvm *kvm,
- 				enum kvm_mr_change change)
- {
- 	hva_t hva, reg_end, size;
--	gpa_t base_gpa;
- 	bool writable;
- 	int ret = 0;
- 
-@@ -190,15 +189,13 @@ int kvm_arch_prepare_memory_region(struct kvm *kvm,
- 	hva = new->userspace_addr;
- 	size = new->npages << PAGE_SHIFT;
- 	reg_end = hva + size;
--	base_gpa = new->base_gfn << PAGE_SHIFT;
- 	writable = !(new->flags & KVM_MEM_READONLY);
- 
- 	mmap_read_lock(current->mm);
- 
- 	/*
- 	 * A memory region could potentially cover multiple VMAs, and
--	 * any holes between them, so iterate over all of them to find
--	 * out if we can map any of them right now.
-+	 * any holes between them, so iterate over all of them.
- 	 *
- 	 *     +--------------------------------------------+
- 	 * +---------------+----------------+   +----------------+
-@@ -209,7 +206,7 @@ int kvm_arch_prepare_memory_region(struct kvm *kvm,
- 	 */
- 	do {
- 		struct vm_area_struct *vma;
--		hva_t vm_start, vm_end;
-+		hva_t vm_end;
- 
- 		vma = find_vma_intersection(current->mm, hva, reg_end);
- 		if (!vma)
-@@ -225,36 +222,18 @@ int kvm_arch_prepare_memory_region(struct kvm *kvm,
- 		}
- 
- 		/* Take the intersection of this VMA with the memory region */
--		vm_start = max(hva, vma->vm_start);
- 		vm_end = min(reg_end, vma->vm_end);
- 
- 		if (vma->vm_flags & VM_PFNMAP) {
--			gpa_t gpa = base_gpa + (vm_start - hva);
--			phys_addr_t pa;
--
--			pa = (phys_addr_t)vma->vm_pgoff << PAGE_SHIFT;
--			pa += vm_start - vma->vm_start;
--
- 			/* IO region dirty page logging not allowed */
- 			if (new->flags & KVM_MEM_LOG_DIRTY_PAGES) {
- 				ret = -EINVAL;
- 				goto out;
- 			}
--
--			ret = kvm_riscv_mmu_ioremap(kvm, gpa, pa, vm_end - vm_start,
--						    writable, false);
--			if (ret)
--				break;
- 		}
- 		hva = vm_end;
- 	} while (hva < reg_end);
- 
--	if (change == KVM_MR_FLAGS_ONLY)
--		goto out;
--
--	if (ret)
--		kvm_riscv_mmu_iounmap(kvm, base_gpa, size);
--
- out:
- 	mmap_read_unlock(current->mm);
- 	return ret;
 -- 
-2.50.1
-
+Without deviation from the norm, progress is not possible.
