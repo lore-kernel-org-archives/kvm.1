@@ -1,192 +1,118 @@
-Received: from mail-pf1-f181.google.com (mail-pf1-f181.google.com [209.85.210.181])
+Received: from mail-pl1-f202.google.com (mail-pl1-f202.google.com [209.85.214.202])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B72AB348462
-	for <kvm@vger.kernel.org>; Wed, 22 Oct 2025 15:01:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.181
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 27CE734B697
+	for <kvm@vger.kernel.org>; Wed, 22 Oct 2025 15:04:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.202
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761145311; cv=none; b=pvesEIYQzdisy6P3R2Phq4Jx57FOOG+zbjYp6jMInYU/bwQjISBMkjRDykS6RN+DIPnU9ssalFqk6D2a8w0Ap4X24Fy2+4KJsmIMT/v+Mijq5zMJc6WM13CNKk9x/JFD48NY8J+zMJ9uSOGllNG0rev3p0tdyLltiALsJXArwcw=
+	t=1761145480; cv=none; b=LpFsnn9xNDzkrM72f7NAVXKf+lS4Hcs3uWrWCAZxxlYakkLEY/39J986qHZmQO34xSZPKuqhidqdOXdnpiQR9rUuXu6eoIU7ux4L0YHMwaXcxdY8CQknqm7vxqg0e6p97aOV4Uj+Bf6lvUUM4TdfJAfIMg+rsMDaaYNGPP4rkf0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761145311; c=relaxed/simple;
-	bh=E3MjY4wrFQgs0Ey0M7VbCGgbgx+qYCvJq22nI6SsagA=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YNbpYGBwYJZEA9nHF2KWDkXdsju/FpYSXNRuNNoMga6qzKWZk2vFKcEpF93pCfXz4fKKp31tqMM/6goQyWgcMVehcdxrAl69gwBok34cq305TWIyCXxqxWVvdNN6Y0UZZVGb9tjzemVJEnqpVzo9bq3XdyupBMEMLvgZn24+lbs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=crd0p7DR; arc=none smtp.client-ip=209.85.210.181
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1761145480; c=relaxed/simple;
+	bh=nZQfmaq7moybwbWzm06XV/8/By6UQtVLqwmofRufDnI=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=UXDAjfXFVlx7+WWNPkOGnK4WYwy/abkyAG/I8DYsP3Cpu2TusTOqXwXMWL56ZeJR7MIS8x5/3RjXX6Pct1GwNvLHXy414blv2bYKvtA0fT4Okgf/II/vvUSRRhRT9wZukY6eqr0jnlTA50ZMl/F8WzBYsLguzY3Ts+9khCCU7G0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=iZjB6egw; arc=none smtp.client-ip=209.85.214.202
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="crd0p7DR"
-Received: by mail-pf1-f181.google.com with SMTP id d2e1a72fcca58-7811a02316bso4894790b3a.3
-        for <kvm@vger.kernel.org>; Wed, 22 Oct 2025 08:01:47 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="iZjB6egw"
+Received: by mail-pl1-f202.google.com with SMTP id d9443c01a7336-28973df6a90so68723445ad.2
+        for <kvm@vger.kernel.org>; Wed, 22 Oct 2025 08:04:38 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1761145307; x=1761750107; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=GAEfyzLs6ZfNZyLJabqtuJouEJtYNe8jJBcru5DQddE=;
-        b=crd0p7DRC1Tng3tEWub76YtCUDAkij09uw+6KcBEEkvGAyt95fZX4T4MwDnqId/2BA
-         R0qu1+8lPLRhhJykLhmzG37BTYPsd1GWfuxyyEhNqgLoTF2utlUYf2te7P+Yb5Hj0DB6
-         XihhBFt8p4MDpA2hZpiksc8FVGfagOk5hVAL6w5MTAss3GvynTqBdWgYvW80TVyPzka2
-         2YZhxVhaEG4rlBdwaMhRlYYAJVtvMDh4/HFEdA4vG8taJ7gGQ+rDYktVCLeEeny+m8cz
-         pe8YZ/CQRxGnv8RGikPgUS3WH5JSGyRMVv6wD2VQPMMIMv6ahmOdCCsrxZfbKNMo3kf5
-         gmAw==
+        d=google.com; s=20230601; t=1761145478; x=1761750278; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=ZeDoTHxRwcTS0U/KOB71AKaMICpadOQ/ESmZ45ZtCPU=;
+        b=iZjB6egwfkGRQW7asm1yvaNn79dpx8H2GCe5grmgzEUmJED4jl41MeTrCx/8JrAaS+
+         67Z7o20X9u3jPgoOIExf33r9nih7ylWjcTdRmJOhRYQftxsnj4FoiBJ39XJSfhkMpInm
+         SQLnPMMUtl6o008CaZZsSesp4hjiM7S0c/4saT3kjGfP9BOzo+Wy+b7xEtPTywZyhNPK
+         HvlnEGQRAdl37M7i0niCrUUpPSXhfNlu7oJdONff3vUr/75WkiLf9ZEsdOufQl4H+L3Q
+         ZNf4H/FWLc5vOOZ9NBIVvV4OqCzUoOQ8ffNHbFOkJYjB84qckOHPVcR9pfH6cQI9yACz
+         Os2g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1761145307; x=1761750107;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=GAEfyzLs6ZfNZyLJabqtuJouEJtYNe8jJBcru5DQddE=;
-        b=a80iQ4obeUfdcLcIRVJKFIjjfzlw8FazTiwS8oNZj7nNS/vezc0gSBT17xb7AFLrOJ
-         jv0e1ZwpLEiMApxL+WoNeGogN0JLauE/0rc3RhyHN3k+0v3AppF02VxXCyODxyQck6KA
-         tBLZOtfClCStAI0ZArnhdbcZIsxKBrSF0znr3jyjUPdaSGJTqM7tCM88+tIVSESGGgP4
-         xGS9wZRW+Nre31iyYzkvHPVMKkSuVr22+TJa5gr06OIaEydgETj+dWuFbtsDmz/L4s9a
-         27AtW9q0Kset+GRoVrvcdq6e7sAmRZrhi5gHIySlbcBWER6ZqVHf6NqZVRU9WQkzzvH/
-         4Ycg==
-X-Forwarded-Encrypted: i=1; AJvYcCUgmLgXqMNWuYkpcfrBFLl5OvjGxCP3z5E0eSx+5rjQQFT+gec96c3xoj+xDY5CFcX8K/A=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx3uM/sxFSuvvhrWgPMH3KdduzDpXE5l5szjzQTK81LFV5uK6W8
-	Js3Bpv5ksznP3lHM24oKu8c6usrStPPexNRiADppoQZenbb3qNv8LaRS
-X-Gm-Gg: ASbGncuSBNyolTy0eZLiinLBEXZAw+x/J3d/jGKvF43h7g1adaXawZB4DiPANHyBrz5
-	eNGyRDt5DlDiEz0DnQZNCr64L6zXeRCM2J1/1VkPlwGpt8F039I7K3jTRnt07z1w797TkFI7zCN
-	cRAPP5DXLWf+xTPy7rfKqZ7ShN2OB1vHWrmcSaebdqZIVmBlDeOLNfzwQMyDTv4RaN1OatUaK3h
-	z14SopzPeh/LsEwJh3xD/VMBn6BFoyKlabMgaeVytRbQ4QPU5S5aZ7fIzORyaMTOP4QnCa/N98X
-	PjxYRx+AKCH37anlqCUl13JUjqQNqmbJCTCxouTZQN1JYpEtVKksIPAyK8jFfBHYqs5D7v2LON0
-	l2aSBJPY/MyL8bzPmroAAsD4nVpKCVW91TSHzX9IZgYdeyDsQQ1a5tvtQm/bbKqvssmbNpGTFy3
-	EybVn0TI0B5yjFbIA8O9vIp4hM//B78Ia6xZVCc00bGHC6Fovn8Oyy2ekSGQ==
-X-Google-Smtp-Source: AGHT+IGrUnu0OE0MYMOGdRgAiyJXuUcaG4uPEeJasZ3TUiI7e1KAHvPHOFWaSXc9Do7+EcDyuK5f7Q==
-X-Received: by 2002:a17:902:e5cf:b0:290:a32b:9095 with SMTP id d9443c01a7336-290cb7567fdmr293829075ad.54.1761145306436;
-        Wed, 22 Oct 2025 08:01:46 -0700 (PDT)
-Received: from localhost.localdomain ([2408:80e0:41fc:0:8685:174d:2a07:e639])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-33e3125a3afsm1973624a91.6.2025.10.22.08.01.38
-        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Wed, 22 Oct 2025 08:01:45 -0700 (PDT)
-From: fuqiang wang <fuqiang.wng@gmail.com>
-To: Sean Christopherson <seanjc@google.com>,
-	Paolo Bonzini <pbonzini@redhat.com>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Ingo Molnar <mingo@redhat.com>,
-	Borislav Petkov <bp@alien8.de>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	x86@kernel.org,
-	"H . Peter Anvin" <hpa@zytor.com>,
-	Maxim Levitsky <mlevitsk@redhat.com>,
-	kvm@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Cc: fuqiang wang <fuqiang.wng@gmail.com>,
-	yu chen <33988979@163.com>,
-	dongxu zhang <xu910121@sina.com>
-Subject: [PATCH v3 2/2] fix hardlockup when waking VM after long suspend
-Date: Wed, 22 Oct 2025 23:00:55 +0800
-Message-ID: <20251022150055.2531-3-fuqiang.wng@gmail.com>
-X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20251022150055.2531-1-fuqiang.wng@gmail.com>
-References: <20251022150055.2531-1-fuqiang.wng@gmail.com>
+        d=1e100.net; s=20230601; t=1761145478; x=1761750278;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=ZeDoTHxRwcTS0U/KOB71AKaMICpadOQ/ESmZ45ZtCPU=;
+        b=xHWp7dqyr2ZwvXu0NchU0Fh4vWPJE9uL/bcNeG8YQEJnDmMGxqQyvEkGNIw3yK3+z0
+         H+z8f+iJIMvGgLHyq23PASgpvZNPfyAYFUn6bdeeVeZ4+zkcOPyQ+uEcYYrnR7gA1le6
+         MYab65Vh2MiWDZg4EjQ3lq5U/qF9F/uwEG+rlH8SmmWJBYP0+/8I1BS0+cr0+JwfVanQ
+         cVHM3sTDJhfn7hQPzOFm1k1IZRKIzBQaa6BVqHiAnwXJfdSCmxzn7rj/DmLGWapt2BJ1
+         Fzodpxmdip50MS5jJxMRljc0ho9eYqCQfMIfoboAbFg/YU7DcbnOEo6v/QI4ej/5DXpn
+         UFlg==
+X-Forwarded-Encrypted: i=1; AJvYcCVPcodvmO2TO+m5cI5j/gictsO9KhmlwCIta5zndkDy1u7baP/NbHcPGH4lO/8us4ku4I0=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzHdSkqgD0o+aUlAcovFE7Sg6y+zrrB8MexFJ6UmdA4HwXfxqWd
+	UQ4pNiTcX3p/c2qkxezWwbfcPtz5eGf/30oy1QHVx65cCqaGMOfrS93Gt7b9NrMUzFZdOAHu9B8
+	H2oHE8A==
+X-Google-Smtp-Source: AGHT+IE1dZw0eGxjpS+GgO8lvLCozsqVIb14AspJ8xG436SZwB7we6zJwtkw1VmC+yZCSr85pE3qdf5/kZE=
+X-Received: from pjbrr12.prod.google.com ([2002:a17:90b:2b4c:b0:33d:b520:bb61])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:903:4b30:b0:27e:e55f:c6c3
+ with SMTP id d9443c01a7336-290ccaca5cemr259712015ad.55.1761145478495; Wed, 22
+ Oct 2025 08:04:38 -0700 (PDT)
+Date: Wed, 22 Oct 2025 08:04:37 -0700
+In-Reply-To: <DDOH9JW22RZ9.3BMRT1XHHJAVL@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Mime-Version: 1.0
+References: <20251016200417.97003-1-seanjc@google.com> <20251016200417.97003-2-seanjc@google.com>
+ <20251021231831.lofzy6frinusrd5s@desk> <DDOH9JW22RZ9.3BMRT1XHHJAVL@google.com>
+Message-ID: <aPjyhYS-jZxtx4zr@google.com>
+Subject: Re: [PATCH v3 1/4] KVM: VMX: Flush CPU buffers as needed if L1D cache
+ flush is skipped
+From: Sean Christopherson <seanjc@google.com>
+To: Brendan Jackman <jackmanb@google.com>
+Cc: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>, Paolo Bonzini <pbonzini@redhat.com>, 
+	kvm@vger.kernel.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="us-ascii"
 
-When a virtual machine uses the HV timer during suspend, the KVM timer does
-not advance. Upon waking after a long period, there may be a significant
-gap between target_expiration and the current time. Since each timer
-expiration only advances target_expiration by one period, the expiration
-handler can be invoked repeatedly to catch up.
+On Wed, Oct 22, 2025, Brendan Jackman wrote:
+> On Tue Oct 21, 2025 at 11:18 PM UTC, Pawan Gupta wrote:
+> > On Thu, Oct 16, 2025 at 01:04:14PM -0700, Sean Christopherson wrote:
+> >> If the L1D flush for L1TF is conditionally enabled, flush CPU buffers to
+> >> mitigate MMIO Stale Data as needed if KVM skips the L1D flush, e.g.
+> >> because none of the "heavy" paths that trigger an L1D flush were tripped
+> >> since the last VM-Enter.
+> >>
+> >> Note, the flaw goes back to the introduction of the MDS mitigation.
+> >
+> > I don't think it is a flaw. If L1D flush was skipped because VMexit did not
+> > touch any interested data, then there shouldn't be any need to flush CPU
+> > buffers.
 
-Prior to the previous patch, if the advanced target_expiration remained
-less than the current time, tscdeadline could be set to a negative value.
-This would cause HV timer setup to fail and fallback to the SW timer. After
-switching to SW timer, apic_timer_fn could be repeatedly executed within a
-single clock interrupt handler, resulting in a hardlockup:
+But as Brendan alludes to below, that assumes certain aspects of L1TF and MDS are
+equal.  Obliterating the L1D is far more costly than flushing CPU buffers, as
+evidenced by the much more conditional flushing for L1TF.  My read of the L1TF
+mitigation is that the conditional flushing is that it's a compromise between
+performance and security.  Skipping the flush doesn't necessarily mean nothing
+interesting was accessed, it just means that KVM didn't hit any of the flows
+where a large amount of interesting data was guaranteed to have been accessed.
 
-  NMI watchdog: Watchdog detected hard LOCKUP on cpu 45
-  ...
-  RIP: 0010:advance_periodic_target_expiration+0x4d/0x80 [kvm]
-  ...
-  RSP: 0018:ff4f88f5d98d8ef0 EFLAGS: 00000046
-  RAX: fff0103f91be678e RBX: fff0103f91be678e RCX: 00843a7d9e127bcc
-  RDX: 0000000000000002 RSI: 0052ca4003697505 RDI: ff440d5bfbdbd500
-  RBP: ff440d5956f99200 R08: ff2ff2a42deb6a84 R09: 000000000002a6c0
-  R10: 0122d794016332b3 R11: 0000000000000000 R12: ff440db1af39cfc0
-  R13: ff440db1af39cfc0 R14: ffffffffc0d4a560 R15: ff440db1af39d0f8
-  FS:  00007f04a6ffd700(0000) GS:ff440db1af380000(0000) knlGS:000000e38a3b8000
-  CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-  CR2: 000000d5651feff8 CR3: 000000684e038002 CR4: 0000000000773ee0
-  PKRU: 55555554
-  Call Trace:
-   <IRQ>
-   apic_timer_fn+0x31/0x50 [kvm]
-   __hrtimer_run_queues+0x100/0x280
-   hrtimer_interrupt+0x100/0x210
-   ? ttwu_do_wakeup+0x19/0x160
-   smp_apic_timer_interrupt+0x6a/0x130
-   apic_timer_interrupt+0xf/0x20
-   </IRQ>
+> > Secondly, when L1D flush is skipped, flushing MDS affected buffers is of no
+> > use, because the data could still be extracted from L1D cache using L1TF.
+> > Isn't it?
+> 
+> This is assuming an equivalence between what L1TF and MMIO Stale Data
+> exploits can do, that isn't really captured in the code/documentation
+> IMO.
 
-With the previous patch applied, HV timer no longer falls back to SW timer.
-Additionally, while target_expiration is catching up to the current time,
-the VMX-preemption timer is set to 0 before each VM entry. According to
-Intel SDM 27.7.4 ("VMX-Preemption Timer"), if the timer has already expired
-at VM entry, a VM exit occurs before any guest instruction executes. As a
-result, the guest cannot run instructions during this period and cannot
-reach vcpu_block() to switch to the SW timer, preventing hardlockup.
+And again, the cost.  To fully mitigate L1TF, KVM would need to flush on every
+entry, but that completely tanks performance.  But that doesn't 
 
-However, unnecessary repeated catch-ups should still be avoided. Therefore,
-if the advanced target_expiration is still less than the current time, we
-immediately catch up to the current time in the handler.
+> This probably felt much more obvious when the vulns were new...
+> 
+> I dunno, in the end this definitely doesn't seem like a terrifying big
+> deal, I'm not saying the current behaviour is crazy or anything, it's
+> just slightly surprising and people with sophisticated opinions about
+> this might not be getting what they think they are out of the default
+> setup.
 
-Signed-off-by: fuqiang wang <fuqiang.wng@gmail.com>
----
- arch/x86/kvm/lapic.c | 24 ++++++++++++++++--------
- 1 file changed, 16 insertions(+), 8 deletions(-)
+Ya.  I highly doubt this particular combination matters in practice, but I don't
+like surprises.  And I find it surprising that the behavior of KVM's mitigation
+for MMIO Stale Data changes based on whether or not the L1TF mitigation is enabled.
 
-diff --git a/arch/x86/kvm/lapic.c b/arch/x86/kvm/lapic.c
-index fa07a303767c..307e2d6c3450 100644
---- a/arch/x86/kvm/lapic.c
-+++ b/arch/x86/kvm/lapic.c
-@@ -2140,17 +2140,25 @@ static void advance_periodic_target_expiration(struct kvm_lapic *apic)
- 	apic->lapic_timer.target_expiration =
- 		ktime_add_ns(apic->lapic_timer.target_expiration,
- 				apic->lapic_timer.period);
--	delta = ktime_sub(apic->lapic_timer.target_expiration, now);
- 
- 	/*
--	 * Don't adjust the tscdeadline if the next period has already expired,
--	 * e.g. due to software overhead resulting in delays larger than the
--	 * period.  Blindly adding a negative delta could cause the deadline to
--	 * become excessively large due to the deadline being an unsigned value.
-+	 * When the vm is suspend, the hv timer also stops advancing. After it
-+	 * is resumed, this may result in a large delta. If the
-+	 * target_expiration only advances by one period each time, it will
-+	 * cause KVM to frequently handle timer expirations.
- 	 */
-+	if (apic->lapic_timer.period > 0 &&
-+	    ktime_before(apic->lapic_timer.target_expiration, now))
-+		apic->lapic_timer.target_expiration = now;
-+
-+	delta = ktime_sub(apic->lapic_timer.target_expiration, now);
- 	apic->lapic_timer.tscdeadline = kvm_read_l1_tsc(apic->vcpu, tscl);
--	if (delta > 0)
--		apic->lapic_timer.tscdeadline += nsec_to_cycles(apic->vcpu, delta);
-+	/*
-+	 * Note: delta must not be negative. Otherwise, blindly adding a
-+	 * negative delta could cause the deadline to become excessively large
-+	 * due to the deadline being an unsigned value.
-+	 */
-+	apic->lapic_timer.tscdeadline += nsec_to_cycles(apic->vcpu, delta);
- }
- 
- static void start_sw_period(struct kvm_lapic *apic)
-@@ -2980,7 +2988,7 @@ static enum hrtimer_restart apic_timer_fn(struct hrtimer *data)
- 
- 	if (lapic_is_periodic(apic)) {
- 		advance_periodic_target_expiration(apic);
--		hrtimer_add_expires_ns(&ktimer->timer, ktimer->period);
-+		hrtimer_set_expires(&ktimer->timer, ktimer->target_expiration);
- 		return HRTIMER_RESTART;
- 	} else
- 		return HRTIMER_NORESTART;
--- 
-2.47.0
-
+> But I have no evidence that these sophisticated dissidents actually
+> exist, maybe just adding commentary about this rationale is more than
+> good enough here.
