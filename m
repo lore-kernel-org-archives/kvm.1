@@ -1,67 +1,68 @@
-Received: from mail-pf1-f169.google.com (mail-pf1-f169.google.com [209.85.210.169])
+Received: from mail-pg1-f169.google.com (mail-pg1-f169.google.com [209.85.215.169])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3BBA734A3DE
-	for <kvm@vger.kernel.org>; Thu, 23 Oct 2025 18:28:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.169
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 92A7234C155
+	for <kvm@vger.kernel.org>; Thu, 23 Oct 2025 18:28:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.169
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761244098; cv=none; b=jx4FI8SYi2Jkho5NeC3m5/lOBnqAE6ENLfHFFLwaheLVTfQCn4xgFUthSYexICbdV6LCvYq99B2uMl8uK4yT5qbWmPJP8YSMhhGbZV3gU1GbbWTR/tgCtUqtz+QGjpWctYjKeSv1GeLe7q/p+FRgdcDZecDoEw0ysDgbB1c/AK4=
+	t=1761244101; cv=none; b=gMJ34eC/C9rHsNCzJJb8IGuVYwi9wrOvRAVXkflAbLxd8kWw5tejjdLhoRWvLEZGxDyv0Ap3FB6BcBkhMJVUNmsid4h9atH0K71wiv5uNK26jRGjnHHMFaOPHnO6dWYtnNgVogMHqtKaKkjRWr2kNuRvSBdHynDPhmNnQIER+Eg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761244098; c=relaxed/simple;
-	bh=LTNf3zO088KcCuJY5DwlnqiVNrOCKFiVyhJKNJE5MP4=;
+	s=arc-20240116; t=1761244101; c=relaxed/simple;
+	bh=kQBee9DoWSc6883yGLsxi//tyX5HHzjIliVS8SZbc0w=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=qcnXnmgLz3A3UXnX7kJDsC7VtqyisOaMefjGgQlcUg2NI05i+e9LKHNOGbgNj7oCTFSDkbeM2oPFILrrkNJADFlAgLy2Spjj8EHN/1elCnm0GEnWXroacSI2cdj1jPOUvHxVzjss1nXQ7dHcyhfVwrcA7uYfJqKfAulIEU0XN+Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=YfjEVeHs; arc=none smtp.client-ip=209.85.210.169
+	 In-Reply-To:To:Cc; b=KInOSo6ParJU2OUjEa+Y/rnxIff15cAbM4pg68NbPK8WSDg4Drl+kIlva5djeFxudf95ZuphqLeDxAZBQeKo5/Ul94W0UdIv0y9l6m6W8DCmF07LAe3T1yiSezyUL3P0WAZ1uHGxwARsXiW6AgttZsQ6XjY38HZWoOPQtj9wAu4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Tge3NCLR; arc=none smtp.client-ip=209.85.215.169
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="YfjEVeHs"
-Received: by mail-pf1-f169.google.com with SMTP id d2e1a72fcca58-7a27ab05a2dso811373b3a.2
-        for <kvm@vger.kernel.org>; Thu, 23 Oct 2025 11:28:12 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Tge3NCLR"
+Received: by mail-pg1-f169.google.com with SMTP id 41be03b00d2f7-b6ce6d1d3dcso796737a12.3
+        for <kvm@vger.kernel.org>; Thu, 23 Oct 2025 11:28:16 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1761244091; x=1761848891; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1761244094; x=1761848894; darn=vger.kernel.org;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=oi6EltuDjrHL40/sPKeBo5GOQD3+wZV32ZLMdcfyakU=;
-        b=YfjEVeHsuZ65u2Sj5Fvwglv32W6Wkez8ZScPWTnJGHSdW3WjwEFwjcWhj6dyoVOtnm
-         dpajQATX7DRUa1fTp+iMZQ8mqTMcvSgCZDfrFNnmeoxDMNF1B73MOK9bCGtbxLaAnMMp
-         04kFDK4DiY1/eCdmtA7iuIKp4SaqZXWlLx33MIFZO5Nc/FKIG3DWsbPFsn+b3k82tdLJ
-         YHmXazaQp4/B46x5GHvLr56OQ8PWE9jKYfi8Xp5QCEKcziLvzUyvTIonySFyWqi3kJds
-         MCXN/J5sOU7tOe8dnpo38wKyPhbddk8CbZqnj/veTd1NH5O14HusArY4ovnf9Baw0soX
-         qrqg==
+        bh=ukvtIuA2GTbBdDn1KeFlCInIvIk5c30LHz1pGa2sbYQ=;
+        b=Tge3NCLRtkzCQ+jCqUZQOyaNp+loo8/G+rXlppiyrkJsyLa3KmOjBPaeOVTE777T3w
+         Ian3aCFII+IIdvkwSFHutd5pRjp1idCDfDfM6a669EwCOjisrLkfjMJnih0JtyyhYSAN
+         lR8i/fsQ+b0FPhI+GvEjS8GI919qut77AfSO8u/i/XAzmJ6EPIbc9nALDhziOD02CV6E
+         Fv7Sda1NjdbCmCxeRMqY2QHOfteR8llI6n9lOrPdABjyto52cQskLHLEkt0QcBG732DR
+         GujtI/ZrAn2yfqc2wJ7XIxspzgXDfJmu8nsUw4AYd6eTqZbSfNwEDYWKPASxs0ttuWPu
+         S8Fw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1761244091; x=1761848891;
+        d=1e100.net; s=20230601; t=1761244094; x=1761848894;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=oi6EltuDjrHL40/sPKeBo5GOQD3+wZV32ZLMdcfyakU=;
-        b=pvYTcNVbLclcdsHCLxxUCABILTeUK4xTFXm7xntAaCX4EQXMssVD69x/16+pnCzjEM
-         +m2rrYOp/nKZEuJeqpDOy+pvVfJnNFokgetaAEW7IwqcK7Vz4zHfUnEnI8XYHRp/MgwQ
-         fPlCNtZOM4q2oCX+f6yXrQqVdabMlJcgaWxqxaPzaaWhyFw+ZDUlos2lsaoK+E4wQlXf
-         L9DgESKIhCE3nrnYr3zMaW1ouFjHcfYdPPceCzOV2Rm8ZxR6gX6jNON7NxuIGOg9sYRx
-         smNyTeEkcD8UIl4Uy/vrWbGsTC2L9Ghdy9lfUCUrhFlfRO459hyu846fePZa3SCG2iG1
-         YmqA==
-X-Forwarded-Encrypted: i=1; AJvYcCW0/N59SRgVLikAKrjvlww2sLwmlQQtBsbMhBglHu2c5fFjbhxuNWEZhRudnhJVe+Pda/A=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzJytU8TD2OOpro65PnA/J4ydoETER74shkfOW1yh1yU8ef6Kry
-	mNX/Tt2m8o53BjrG1l82ghM9nQX6VVZWl51hhyVZ+ZBDX0P7a5LroycL
-X-Gm-Gg: ASbGncvVSRC0MHEWDZv2ZpgZQfFwQw6ydkjaeKnCuoJJldhjbVcanum9Pbb//FQ87rZ
-	GoMsO4q6orYdFJ3i6ckIyBwompSOrcPAi0kuZlmqTHwzlO1rRiNsInbcgHoasWpox/kEJ6RMQQp
-	vFwhZSGSLnrMzabs1iOhICbLbLr5RGe+/phxvrDoFXJLue+tsOZGHU62RZlio3Oo8P/hx110CZQ
-	5LnWlI3n9HV3N+H271UnPpljzMnf122s63iY9qQo736Po4+Rw8UpwnTbGjBx41QWQCE/YLYQqfU
-	OAdAhN8r4UldJSDIeR5NN12nOk/fXsaX2tM5krG8qZu/5QEjhe7wMevGAOINDpql2HdUeqfcB10
-	Fe5G/v9Z0myGje/5c7tTrLZ0IwXGBA5oPF2AnO3oyykmdWFUpmC+fRga6KTUsVm0CRqMQWSAsz+
-	ClLHa/68Xpz2L6mkmARQ==
-X-Google-Smtp-Source: AGHT+IEELjFHyyABUDK0LWZlqB6sz5BNRvODMd0egUzV54kNQXVCm7c3MiRl9+V7BDlFPN8LAFPFTg==
-X-Received: by 2002:a17:902:e88e:b0:25c:76f1:b024 with SMTP id d9443c01a7336-290c9ceeadcmr331021865ad.25.1761244090770;
-        Thu, 23 Oct 2025 11:28:10 -0700 (PDT)
-Received: from localhost ([2a03:2880:2ff:4::])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-33e223e3154sm6489960a91.9.2025.10.23.11.28.10
+        bh=ukvtIuA2GTbBdDn1KeFlCInIvIk5c30LHz1pGa2sbYQ=;
+        b=LJ/fCnGuOlXnv9moo+wZVj42uF45esVJtt4j1cLBVwMAlcWHNAYvUIYQ8+BagDYbOT
+         B9D/y3B0TIj4I0R5w+FSwrKW0HfbtuW8rIwU8IxT+hZjF7+IV6V/qNl3S9bsbJhtuLnQ
+         CE5ce9/K0q6+9jg02jxdJEtkBJvjNR9WmLPNpIBPovdVvc16MMSLkoKUFv+BBpzuC4mg
+         G+i3F26jPdpKlerSLoT+RqGUzpOx+HggpuHA5k/LEfi6IEtctRoUmRALcSJJCgNRZRxa
+         hHxq8KDA5ZzliSge9VG//K5S8I7QOiKfuBDhctjZcsKyUbhbc2JeDEEsj0Yd0fCr2dIs
+         YRhQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUrtg0RW29zH0iE5BaP+P32M2GdmvswAlBoPr5X3HTXCt3CUhnvp0MNboYC+85/OtPV28c=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz7F/CbWzx3uAPeM4DqwBvHMUsSTPmvh2auD0mypGsn5U2k0FkR
+	9MawyacTRbidwXZDISBzc6JrtlucMO6s6Iad9wqYTFanmryQNvHBpDH3
+X-Gm-Gg: ASbGnct//a9uqmmGAdVXqlqsxNSzSr2gg4fI3gkOHmvu07qT4q9ieQurEjOOBvmbhgc
+	+d61Tx2QgyM+o2gq4FKQLV4MO43IhRP2tLbu8rKRdqHiz5JGuRu2m+4es7cImxowvY0Hubzwp/D
+	uijS58/Nuf9BmfPxrmEiWamXa7T2y/1ci/eMPF6VPEnbphzIBucCzqt1hTmKq+WkK/nLkRr2sa3
+	/u3CXwBmwvlA1SRMajQx1PRlV/ZBGQivkI3vXoyNglZia+q2V6m12ZrgGQsenBwoo8mrqvtFcVf
+	0sNOwG/eNxgzkDY6jHkKWhifiSaAamr5FBXwIj35ZaA9Nf+kPLlqqanuZBsxhsFcq2EieQLeeMp
+	ZpA8KjWCYycx3fwyfHHBFlD/DfTbG/VO3K3hamiesAadAuHyDQkoM/NgVlHWw2OFE/pURdYkYDt
+	WHm+pJd3/OBB5KTXxxyKc=
+X-Google-Smtp-Source: AGHT+IGZ1uFbSH3kISIMtcXAT6m/nUhLcNZeEGyE8hNSy9KW4xwjRKfbKytlo0lhRW4rLAUXnaGm1g==
+X-Received: by 2002:a17:902:f605:b0:26e:62c9:1cc4 with SMTP id d9443c01a7336-290c9c89da2mr279808105ad.4.1761244093791;
+        Thu, 23 Oct 2025 11:28:13 -0700 (PDT)
+Received: from localhost ([2a03:2880:2ff:40::])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2946de03081sm30876635ad.43.2025.10.23.11.28.13
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 23 Oct 2025 11:28:10 -0700 (PDT)
+        Thu, 23 Oct 2025 11:28:13 -0700 (PDT)
 From: Bobby Eshleman <bobbyeshleman@gmail.com>
-Date: Thu, 23 Oct 2025 11:27:46 -0700
-Subject: [PATCH net-next v8 07/14] vhost/vsock: add netns support
+Date: Thu, 23 Oct 2025 11:27:49 -0700
+Subject: [PATCH net-next v8 10/14] selftests/vsock: add tests for proc sys
+ vsock ns_mode
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -70,7 +71,7 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20251023-vsock-vmtest-v8-7-dea984d02bb0@meta.com>
+Message-Id: <20251023-vsock-vmtest-v8-10-dea984d02bb0@meta.com>
 References: <20251023-vsock-vmtest-v8-0-dea984d02bb0@meta.com>
 In-Reply-To: <20251023-vsock-vmtest-v8-0-dea984d02bb0@meta.com>
 To: Stefano Garzarella <sgarzare@redhat.com>, Shuah Khan <shuah@kernel.org>, 
@@ -94,187 +95,176 @@ X-Mailer: b4 0.14.3
 
 From: Bobby Eshleman <bobbyeshleman@meta.com>
 
-Add the ability to isolate vhost-vsock flows using namespaces.
+Add tests for the /proc/sys/net/vsock/ns_mode interface.  Namely,
+that it accepts "global" and "local" strings and enforces a write-once
+policy.
 
-The VM, via the vhost_vsock struct, inherits its namespace from the
-process that opens the vhost-vsock device. vhost_vsock lookup functions
-are modified to take into account the mode (e.g., if CIDs are matching
-but modes don't align, then return NULL).
+Start a convention of commenting the test name over the test
+description. Add test name comments over test descriptions that existed
+before this convention.
 
-vhost_vsock now acquires a reference to the namespace.
+Add a check_netns() function that checks if the test requires namespaces
+and if the current kernel supports namespaces. Skip tests that require
+namespaces if the system does not have namespace support.
+
+This patch is the first to add tests that do *not* re-use the same
+shared VM. For that reason, it adds a run_tests() function to run these
+tests and filter out the shared VM tests.
 
 Signed-off-by: Bobby Eshleman <bobbyeshleman@meta.com>
 ---
-Changes in v7:
-- remove the check_global flag of vhost_vsock_get(), that logic was both
-  wrong and not necessary, reuse vsock_net_check_mode() instead
-- remove 'delete me' comment
-Changes in v5:
-- respect pid namespaces when assigning namespace to vhost_vsock
----
- drivers/vhost/vsock.c | 44 ++++++++++++++++++++++++++++++++++----------
- 1 file changed, 34 insertions(+), 10 deletions(-)
+ tools/testing/selftests/vsock/vmtest.sh | 99 ++++++++++++++++++++++++++++++++-
+ 1 file changed, 98 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/vhost/vsock.c b/drivers/vhost/vsock.c
-index 34adf0cf9124..df6136633cd8 100644
---- a/drivers/vhost/vsock.c
-+++ b/drivers/vhost/vsock.c
-@@ -46,6 +46,11 @@ static DEFINE_READ_MOSTLY_HASHTABLE(vhost_vsock_hash, 8);
- struct vhost_vsock {
- 	struct vhost_dev dev;
- 	struct vhost_virtqueue vqs[2];
-+	struct net *net;
-+	netns_tracker ns_tracker;
+diff --git a/tools/testing/selftests/vsock/vmtest.sh b/tools/testing/selftests/vsock/vmtest.sh
+index d047f6d27df4..b775fb0cd4ed 100755
+--- a/tools/testing/selftests/vsock/vmtest.sh
++++ b/tools/testing/selftests/vsock/vmtest.sh
+@@ -38,11 +38,28 @@ readonly KERNEL_CMDLINE="\
+ 	virtme.ssh virtme_ssh_channel=tcp virtme_ssh_user=$USER \
+ "
+ readonly LOG=$(mktemp /tmp/vsock_vmtest_XXXX.log)
+-readonly TEST_NAMES=(vm_server_host_client vm_client_host_server vm_loopback)
++readonly TEST_NAMES=(
++	vm_server_host_client
++	vm_client_host_server
++	vm_loopback
++	ns_host_vsock_ns_mode_ok
++	ns_host_vsock_ns_mode_write_once_ok
++)
+ readonly TEST_DESCS=(
++	# vm_server_host_client
+ 	"Run vsock_test in server mode on the VM and in client mode on the host."
 +
-+	/* The ns mode at the time vhost_vsock was created */
-+	enum vsock_net_mode net_mode;
++	# vm_client_host_server
+ 	"Run vsock_test in client mode on the VM and in server mode on the host."
++
++	# vm_loopback
+ 	"Run vsock_test using the loopback transport in the VM."
++
++	# ns_host_vsock_ns_mode_ok
++	"Check /proc/sys/net/vsock/ns_mode strings on the host."
++
++	# ns_host_vsock_ns_mode_write_once_ok
++	"Check /proc/sys/net/vsock/ns_mode is write-once on the host."
+ )
  
- 	/* Link to global vhost_vsock_hash, writes use vhost_vsock_mutex */
- 	struct hlist_node hash;
-@@ -67,7 +72,8 @@ static u32 vhost_transport_get_local_cid(void)
- /* Callers that dereference the return value must hold vhost_vsock_mutex or the
-  * RCU read lock.
-  */
--static struct vhost_vsock *vhost_vsock_get(u32 guest_cid)
-+static struct vhost_vsock *vhost_vsock_get(u32 guest_cid, struct net *net,
-+					   enum vsock_net_mode mode)
- {
- 	struct vhost_vsock *vsock;
- 
-@@ -78,9 +84,9 @@ static struct vhost_vsock *vhost_vsock_get(u32 guest_cid)
- 		if (other_cid == 0)
- 			continue;
- 
--		if (other_cid == guest_cid)
-+		if (other_cid == guest_cid &&
-+		    vsock_net_check_mode(net, mode, vsock->net, vsock->net_mode))
- 			return vsock;
--
- 	}
- 
- 	return NULL;
-@@ -271,14 +277,16 @@ static void vhost_transport_send_pkt_work(struct vhost_work *work)
- static int
- vhost_transport_send_pkt(struct sk_buff *skb)
- {
-+	enum vsock_net_mode mode = virtio_vsock_skb_net_mode(skb);
- 	struct virtio_vsock_hdr *hdr = virtio_vsock_hdr(skb);
-+	struct net *net = virtio_vsock_skb_net(skb);
- 	struct vhost_vsock *vsock;
- 	int len = skb->len;
- 
- 	rcu_read_lock();
- 
- 	/* Find the vhost_vsock according to guest context id  */
--	vsock = vhost_vsock_get(le64_to_cpu(hdr->dst_cid));
-+	vsock = vhost_vsock_get(le64_to_cpu(hdr->dst_cid), net, mode);
- 	if (!vsock) {
- 		rcu_read_unlock();
- 		kfree_skb(skb);
-@@ -305,7 +313,8 @@ vhost_transport_cancel_pkt(struct vsock_sock *vsk)
- 	rcu_read_lock();
- 
- 	/* Find the vhost_vsock according to guest context id  */
--	vsock = vhost_vsock_get(vsk->remote_addr.svm_cid);
-+	vsock = vhost_vsock_get(vsk->remote_addr.svm_cid,
-+				sock_net(sk_vsock(vsk)), vsk->net_mode);
- 	if (!vsock)
- 		goto out;
- 
-@@ -327,7 +336,7 @@ vhost_transport_cancel_pkt(struct vsock_sock *vsk)
+ readonly USE_SHARED_VM=(vm_server_host_client vm_client_host_server vm_loopback)
+@@ -203,6 +220,20 @@ check_deps() {
+ 	fi
  }
  
- static struct sk_buff *
--vhost_vsock_alloc_skb(struct vhost_virtqueue *vq,
-+vhost_vsock_alloc_skb(struct vhost_vsock *vsock, struct vhost_virtqueue *vq,
- 		      unsigned int out, unsigned int in)
- {
- 	struct virtio_vsock_hdr *hdr;
-@@ -353,6 +362,9 @@ vhost_vsock_alloc_skb(struct vhost_virtqueue *vq,
- 	if (!skb)
- 		return NULL;
- 
-+	virtio_vsock_skb_set_net(skb, vsock->net);
-+	virtio_vsock_skb_set_net_mode(skb, vsock->net_mode);
++check_netns() {
++	local tname=$1
 +
- 	iov_iter_init(&iov_iter, ITER_SOURCE, vq->iov, out, len);
- 
- 	hdr = virtio_vsock_hdr(skb);
-@@ -462,11 +474,12 @@ static struct virtio_transport vhost_transport = {
- 
- static bool vhost_transport_seqpacket_allow(struct vsock_sock *vsk, u32 remote_cid)
- {
-+	struct net *net = sock_net(sk_vsock(vsk));
- 	struct vhost_vsock *vsock;
- 	bool seqpacket_allow = false;
- 
- 	rcu_read_lock();
--	vsock = vhost_vsock_get(remote_cid);
-+	vsock = vhost_vsock_get(remote_cid, net, vsk->net_mode);
- 
- 	if (vsock)
- 		seqpacket_allow = vsock->seqpacket_allow;
-@@ -520,7 +533,7 @@ static void vhost_vsock_handle_tx_kick(struct vhost_work *work)
- 			break;
- 		}
- 
--		skb = vhost_vsock_alloc_skb(vq, out, in);
-+		skb = vhost_vsock_alloc_skb(vsock, vq, out, in);
- 		if (!skb) {
- 			vq_err(vq, "Faulted on pkt\n");
- 			continue;
-@@ -652,8 +665,10 @@ static void vhost_vsock_free(struct vhost_vsock *vsock)
- 
- static int vhost_vsock_dev_open(struct inode *inode, struct file *file)
- {
++	# If the test requires NS support, check if NS support exists
++	# using /proc/self/ns
++	if [[ "${tname}" =~ ^ns_ ]] &&
++	   [[ ! -e /proc/self/ns ]]; then
++		log_host "No NS support detected for test ${tname}"
++		return 1
++	fi
 +
- 	struct vhost_virtqueue **vqs;
- 	struct vhost_vsock *vsock;
-+	struct net *net;
- 	int ret;
- 
- 	/* This struct is large and allocation could fail, fall back to vmalloc
-@@ -669,6 +684,14 @@ static int vhost_vsock_dev_open(struct inode *inode, struct file *file)
- 		goto out;
- 	}
- 
-+	net = current->nsproxy->net_ns;
-+	vsock->net = get_net_track(net, &vsock->ns_tracker, GFP_KERNEL);
++	return 0
++}
 +
-+	/* Cache the mode of the namespace so that if that netns mode changes,
-+	 * the vhost_vsock will continue to function as expected.
-+	 */
-+	vsock->net_mode = vsock_net_mode(net);
+ check_vng() {
+ 	local tested_versions
+ 	local version
+@@ -502,6 +533,43 @@ log_guest() {
+ 	LOG_PREFIX=guest log $@
+ }
+ 
++test_ns_host_vsock_ns_mode_ok() {
++	add_namespaces
 +
- 	vsock->guest_cid = 0; /* no CID assigned yet */
- 	vsock->seqpacket_allow = false;
++	for mode in "${NS_MODES[@]}"; do
++		if ! ns_set_mode "${mode}0" "${mode}"; then
++			del_namespaces
++			return "${KSFT_FAIL}"
++		fi
++	done
++
++	del_namespaces
++
++	return "${KSFT_PASS}"
++}
++
++test_ns_host_vsock_ns_mode_write_once_ok() {
++	add_namespaces
++
++	for mode in "${NS_MODES[@]}"; do
++		local ns="${mode}0"
++		if ! ns_set_mode "${ns}" "${mode}"; then
++			del_namespaces
++			return "${KSFT_FAIL}"
++		fi
++
++		# try writing again and expect failure
++		if ns_set_mode "${ns}" "${mode}"; then
++			del_namespaces
++			return "${KSFT_FAIL}"
++		fi
++	done
++
++	del_namespaces
++
++	return "${KSFT_PASS}"
++}
++
+ test_vm_server_host_client() {
+ 	if ! vm_vsock_test "init_ns" "server" 2 "${TEST_GUEST_PORT}"; then
+ 		return "${KSFT_FAIL}"
+@@ -575,6 +643,11 @@ run_shared_vm_tests() {
+ 			continue
+ 		fi
  
-@@ -708,7 +731,7 @@ static void vhost_vsock_reset_orphans(struct sock *sk)
- 	 */
++		if ! check_netns "${arg}"; then
++			check_result "${KSFT_SKIP}"
++			continue
++		fi
++
+ 		run_shared_vm_test "${arg}"
+ 		check_result $?
+ 	done
+@@ -628,6 +701,28 @@ run_shared_vm_test() {
+ 	return "${rc}"
+ }
  
- 	/* If the peer is still valid, no need to reset connection */
--	if (vhost_vsock_get(vsk->remote_addr.svm_cid))
-+	if (vhost_vsock_get(vsk->remote_addr.svm_cid, sock_net(sk), vsk->net_mode))
- 		return;
++run_tests() {
++	for arg in "${ARGS[@]}"; do
++		if shared_vm_test "${arg}"; then
++			continue
++		fi
++
++		if ! check_netns "${arg}"; then
++			check_result "${KSFT_SKIP}"
++			continue
++		fi
++
++		add_namespaces
++
++		name=$(echo "${arg}" | awk '{ print $1 }')
++		log_host "Executing test_${name}"
++		eval test_"${name}"
++		check_result $?
++
++		del_namespaces
++	done
++}
++
+ BUILD=0
+ QEMU="qemu-system-$(uname -m)"
  
- 	/* If the close timeout is pending, let it expire.  This avoids races
-@@ -753,6 +776,7 @@ static int vhost_vsock_dev_release(struct inode *inode, struct file *file)
- 	virtio_vsock_skb_queue_purge(&vsock->send_pkt_queue);
+@@ -671,6 +766,8 @@ if shared_vm_tests_requested "${ARGS[@]}"; then
+ 	terminate_pidfiles "${pidfile}"
+ fi
  
- 	vhost_dev_cleanup(&vsock->dev);
-+	put_net_track(vsock->net, &vsock->ns_tracker);
- 	kfree(vsock->dev.vqs);
- 	vhost_vsock_free(vsock);
- 	return 0;
-@@ -779,7 +803,7 @@ static int vhost_vsock_set_cid(struct vhost_vsock *vsock, u64 guest_cid)
++run_tests "${ARGS[@]}"
++
+ echo "SUMMARY: PASS=${cnt_pass} SKIP=${cnt_skip} FAIL=${cnt_fail}"
+ echo "Log: ${LOG}"
  
- 	/* Refuse if CID is already in use */
- 	mutex_lock(&vhost_vsock_mutex);
--	other = vhost_vsock_get(guest_cid);
-+	other = vhost_vsock_get(guest_cid, vsock->net, vsock->net_mode);
- 	if (other && other != vsock) {
- 		mutex_unlock(&vhost_vsock_mutex);
- 		return -EADDRINUSE;
 
 -- 
 2.47.3
