@@ -1,106 +1,120 @@
-Received: from out-176.mta1.migadu.com (out-176.mta1.migadu.com [95.215.58.176])
+Received: from out-186.mta0.migadu.com (out-186.mta0.migadu.com [91.218.175.186])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC7F22BE03E
-	for <kvm@vger.kernel.org>; Fri, 24 Oct 2025 19:29:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.176
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A22D02C0F95
+	for <kvm@vger.kernel.org>; Fri, 24 Oct 2025 19:49:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.186
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761334198; cv=none; b=XUIU7hteku2Ec6QTSrWaz7CofXPtlA0AE3P/7fK68fDo3qabMU16M9amoxUJTS7Rx/AvJlHwSwDYE1nN8dpPeOpbT56oQQeFtRbMT09BwSpam52v+n969L7sF+SIiLkPkqUHGahROZCsAbeuC3T3Z3x5ROgX2oMxzbvedxAWYZs=
+	t=1761335384; cv=none; b=FweWKOv8QD/adJjYWRamPOcZ5Tc6JuX3DJbqrOOYLJNAsqxhT42NPgk3tbGF/mwZFHVADceTRrwkOLe3Ke9JyVu9vVFG/YKkwnAHEt3pen3gsyDJxStXFeKf0mOF8O1C40U0TfHMDBGqaOKMBv25AmdPHkhL+QlkYnJx4UMRi+c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761334198; c=relaxed/simple;
-	bh=Rbouwn/Fe2w8MIJjhC34nR8g2gP/sC74mPrcleYapB8=;
+	s=arc-20240116; t=1761335384; c=relaxed/simple;
+	bh=QH29zgZGFcZKWba6DgL9VJdCpR+8hm+YSLE/pZSJuzo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Aa43lQ9/2RnpB9hHZDBqubaQ6wvLtkg2n7o4/l8uQ6UWuXxvZimVq2tX42eSI4FMnu5ZBGz05Nta+qP+W8045sjRehJ/KSBwFPxSVErUSAo6PdKBlnZnpdqToGISQBDFpqzp4itSLkzu97my6ahP+LXfZYA3jm1ifxcK13naKHA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=OXApD2RS; arc=none smtp.client-ip=95.215.58.176
+	 MIME-Version; b=JBcdV85w81xfoEaW+fCQuSwyDiBdwrfux//ysX4sbBIGcq5OpClxUKCb7uxli/L9dhU56o28OpACxXGxhpep03TpqIxuaw3VCQQcSYd9L1iRn5b2lB4PBRbUJhJRDEt7Cllyy21zeFyUfx6R5cb6B//IakMkFvFvgzDwPVRz3K8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=CBJfugn1; arc=none smtp.client-ip=91.218.175.186
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="OXApD2RS"
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="CBJfugn1"
 X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1761334194;
+	t=1761335380;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=c57tg/C/NUSYzi8pno9yKYmODzHakA7S21mwRLPVsP8=;
-	b=OXApD2RSixprRjxTR+xY5rWGXrnujrl/zMgOloCvivOyq6iCwUqGVKjuyrQylniBTh8lrv
-	kICCm5heYnBSMyA1sM5it4nkBl9usClqLkJxTAERU3kJRZu7DOUpDuhSrZn2QJhqmJMJnc
-	XlAaxDE4xcLmjSRU+khppHIWgr9/e00=
+	bh=J1kh3wzJ2IyZ2rSYc2w+/9+gZYIO+ejKEv2FW4QM4RE=;
+	b=CBJfugn13F5y49v/bEdH+arwdtiS9mVh8cz7On7jIURPyGIFEpdQpfCrd4+dxDcpMm1Zsy
+	cwUXp17YMlJbsZQDJDV0DramZco25CyAVr32ITWAnlkH1pYU0rNGgpTORIrwL0hYAUJ43z
+	bA4ji4IndPKBxzxlq2x0XCifPWk+zEM=
 From: Yosry Ahmed <yosry.ahmed@linux.dev>
 To: Sean Christopherson <seanjc@google.com>
 Cc: Paolo Bonzini <pbonzini@redhat.com>,
 	Jim Mattson <jmattson@google.com>,
 	kvm@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
-	Yosry Ahmed <yosry.ahmed@linux.dev>,
-	stable@vger.kernel
-Subject: [PATCH 3/3] KVM: nSVM: Avoid incorrect injection of SVM_EXIT_CR0_SEL_WRITE
-Date: Fri, 24 Oct 2025 19:29:18 +0000
-Message-ID: <20251024192918.3191141-4-yosry.ahmed@linux.dev>
-In-Reply-To: <20251024192918.3191141-1-yosry.ahmed@linux.dev>
-References: <20251024192918.3191141-1-yosry.ahmed@linux.dev>
+	Yosry Ahmed <yosryahmed@google.com>
+Subject: [kvm-unit-tests 1/7] x86/svm: Cleanup selective cr0 write intercept test
+Date: Fri, 24 Oct 2025 19:49:19 +0000
+Message-ID: <20251024194925.3201933-2-yosry.ahmed@linux.dev>
+In-Reply-To: <20251024194925.3201933-1-yosry.ahmed@linux.dev>
+References: <20251024194925.3201933-1-yosry.ahmed@linux.dev>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Migadu-Flow: FLOW_OUT
 
-When emulating L2 instructions, svm_check_intercept() checks whether a
-write to CR0 should trigger a synthesized #VMEXIT with
-SVM_EXIT_CR0_SEL_WRITE. However, it does not check whether L1 enabled
-the intercept for SVM_EXIT_WRITE_CR0, which has higher priority
-according to the APM (24593—Rev.  3.42—March 2024, Table 15-7):
+From: Yosry Ahmed <yosryahmed@google.com>
 
-  When both selective and non-selective CR0-write
-  intercepts are active at the same time, the non-selective
-  intercept takes priority. With respect to exceptions, the
-  priority of this inter
+Rename the test and functions to more general names describing the test
+more accurately. Use X86_CR0_CD instead of hardcoding the bitmask, and
+explicitly clear the bit in the prepare() function to make it clearer
+that it would only be set by the test.
 
-Make sure L1 does NOT intercept SVM_EXIT_WRITE_CR0 before checking if
-SVM_EXIT_CR0_SEL_WRITE needs to be injected.
-
-Fixes: cfec82cb7d31 ("KVM: SVM: Add intercept check for emulated cr accesses")
-Cc: stable@vger.kernel
-Signed-off-by: Yosry Ahmed <yosry.ahmed@linux.dev>
+Signed-off-by: Yosry Ahmed <yosryahmed@google.com>
 ---
- arch/x86/kvm/svm/svm.c | 16 +++++++++++++---
- 1 file changed, 13 insertions(+), 3 deletions(-)
+ x86/svm_tests.c | 22 +++++++++-------------
+ 1 file changed, 9 insertions(+), 13 deletions(-)
 
-diff --git a/arch/x86/kvm/svm/svm.c b/arch/x86/kvm/svm/svm.c
-index 9ea0ff136e299..4f79c4d837535 100644
---- a/arch/x86/kvm/svm/svm.c
-+++ b/arch/x86/kvm/svm/svm.c
-@@ -4533,12 +4533,22 @@ static int svm_check_intercept(struct kvm_vcpu *vcpu,
- 		if (info->intercept == x86_intercept_cr_write)
- 			icpt_info.exit_code += info->modrm_reg;
+diff --git a/x86/svm_tests.c b/x86/svm_tests.c
+index 80d5aeb1..e9116591 100644
+--- a/x86/svm_tests.c
++++ b/x86/svm_tests.c
+@@ -793,23 +793,19 @@ static bool check_asid_zero(struct svm_test *test)
+ 	return vmcb->control.exit_code == SVM_EXIT_ERR;
+ }
  
-+		/*
-+		 * If the write is indeed to CR0, check whether the exit_code
-+		 * needs to be converted to SVM_EXIT_CR0_SEL_WRITE. Intercepting
-+		 * SVM_EXIT_WRITE_CR0 has higher priority than
-+		 * SVM_EXIT_CR0_SEL_WRITE, so this is only relevant if L1 sets
-+		 * INTERCEPT_SELECTIVE_CR0 but not INTERCEPT_CR0_WRITE.
-+		 */
- 		if (icpt_info.exit_code != SVM_EXIT_WRITE_CR0 ||
--		    info->intercept == x86_intercept_clts)
-+		    vmcb12_is_intercept(&svm->nested.ctl,
-+					INTERCEPT_CR0_WRITE) ||
-+		    !(vmcb12_is_intercept(&svm->nested.ctl,
-+					  INTERCEPT_SELECTIVE_CR0)))
- 			break;
+-static void sel_cr0_bug_prepare(struct svm_test *test)
++static void prepare_sel_cr0_intercept(struct svm_test *test)
+ {
++	vmcb->save.cr0 &= ~X86_CR0_CD;
+ 	vmcb->control.intercept |= (1ULL << INTERCEPT_SELECTIVE_CR0);
+ }
  
--		if (!(vmcb12_is_intercept(&svm->nested.ctl,
--					INTERCEPT_SELECTIVE_CR0)))
-+		/* CLTS never triggers INTERCEPT_SELECTIVE_CR0 */
-+		if (info->intercept == x86_intercept_clts)
- 			break;
+-static bool sel_cr0_bug_finished(struct svm_test *test)
+-{
+-	return true;
+-}
+-
+-static void sel_cr0_bug_test(struct svm_test *test)
++static void test_sel_cr0_write_intercept(struct svm_test *test)
+ {
+ 	unsigned long cr0;
  
- 		/* LMSW always triggers INTERCEPT_SELECTIVE_CR0 */
+-	/* read cr0, clear CD, and write back */
++	/* read cr0, set CD, and write back */
+ 	cr0  = read_cr0();
+-	cr0 |= (1UL << 30);
++	cr0 |= X86_CR0_CD;
+ 	write_cr0(cr0);
+ 
+ 	/*
+@@ -821,7 +817,7 @@ static void sel_cr0_bug_test(struct svm_test *test)
+ 	exit(report_summary());
+ }
+ 
+-static bool sel_cr0_bug_check(struct svm_test *test)
++static bool check_sel_cr0_intercept(struct svm_test *test)
+ {
+ 	return vmcb->control.exit_code == SVM_EXIT_CR0_SEL_WRITE;
+ }
+@@ -3486,9 +3482,9 @@ struct svm_test svm_tests[] = {
+ 	{ "asid_zero", default_supported, prepare_asid_zero,
+ 	  default_prepare_gif_clear, test_asid_zero,
+ 	  default_finished, check_asid_zero },
+-	{ "sel_cr0_bug", default_supported, sel_cr0_bug_prepare,
+-	  default_prepare_gif_clear, sel_cr0_bug_test,
+-	  sel_cr0_bug_finished, sel_cr0_bug_check },
++	{ "sel cr0 write intercept", default_supported,
++	  prepare_sel_cr0_intercept, default_prepare_gif_clear,
++	  test_sel_cr0_write_intercept, default_finished, check_sel_cr0_intercept},
+ 	{ "tsc_adjust", tsc_adjust_supported, tsc_adjust_prepare,
+ 	  default_prepare_gif_clear, tsc_adjust_test,
+ 	  default_finished, tsc_adjust_check },
 -- 
 2.51.1.821.gb6fe4d2222-goog
 
