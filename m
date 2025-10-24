@@ -1,48 +1,106 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qk1-f175.google.com (mail-qk1-f175.google.com [209.85.222.175])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D29001990A7
-	for <kvm@vger.kernel.org>; Fri, 24 Oct 2025 17:25:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C14D0324B34
+	for <kvm@vger.kernel.org>; Fri, 24 Oct 2025 17:32:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.175
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761326743; cv=none; b=I5HxwlDSsxrYeXWTzFNShRzANSxNNZMObOySnDKOXYNVY6ChNFlilyvIQxpjYzOU762PhHp6EM5fkvKNxIJstYxRCSy57PL9nuqesDZi9Qdf9lG21s/FS26+vAq50zp7cYvQ8YGpm3+L2CCv4pFqMWbmNRuNorvrjOG0sG9tKYc=
+	t=1761327155; cv=none; b=DY2ve++hHPU3JhBLMzWZazsGrSR+PM7N7NpHoCvJTkxvM/xQQ7pSkmC0eYSaJeWfZ1nW9/I7VXvrze/O5vIrTOiHdjgAUM1rsYX8XqmQr5q9MWF6aiMJfn+69TtzkoJ2krvCME+r+6lhlwEFzRi/+pwj2m6ssP2xDwOGKbhbDvA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761326743; c=relaxed/simple;
-	bh=whe1EgFnKNzU49GGbQWXa7d8Iw0DdHK2jOM6pT46VoM=;
+	s=arc-20240116; t=1761327155; c=relaxed/simple;
+	bh=UpAvej523gjBWiVNLg/BeJTlpEBeruOMQsLrtxPGcjQ=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=VOTKvCZ7l833iqg8TpW53h/vrZgH63rtSDV9A0PZtF5oULnMuziKYbfdtB3EB0Sog5WDCYelsbZmyq2xMsDM/al2+UksYTV24MUBhSWXAuxk6VREhs6ZITcpG3flfbzeb0T1d37w2FcyKhA7H8o/lmkZ9eAp72s6uYcwWK/qbaM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Zntnr1aC; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=Zwh626us30fdL4EzGSG6XthgmJgFvmz1O6HZ2os27peIgjoP6SHtsC/Cr5iuOFLKcfTixG8tBHjiOHGvlHo/4mcOe+Ngiw9jmFCj7xAqS/xOpmLPbj1GvScwFxR5Azvs6vtofuFd9v+kUPMmrJEr9ulWLSpxnJHwGRMhp7Ke3QI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gourry.net; spf=pass smtp.mailfrom=gourry.net; dkim=pass (2048-bit key) header.d=gourry.net header.i=@gourry.net header.b=YIxKOjvZ; arc=none smtp.client-ip=209.85.222.175
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gourry.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gourry.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Zntnr1aC"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E3475C4CEF1;
-	Fri, 24 Oct 2025 17:25:42 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1761326743;
-	bh=whe1EgFnKNzU49GGbQWXa7d8Iw0DdHK2jOM6pT46VoM=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=Zntnr1aCVUG/d5vY3i7gDibOEN38IWE+AYb//5q4eSLKSwwDp9uAnww0yT2Wsr/qk
-	 QEq6u3AfTJB88X/uLA2zjE3Q4pwOEG32e/Q0jE3X58VZz1MnMV2RnxAcYyqR95xMAt
-	 BMmw2hOV2n+O/s/BBp7CSrqiLrPc1bvni8JNi+Q7EC/UXQ9gsPefZ2YS/YsarQ67WB
-	 91fZL64VVmdDFOCQeAv+AcnJZOOkEp51/PedDU6aCIxQvJr0NBfN76IHie7TiI3YA5
-	 fW8LwloSrckfdUiVqEgd7iy0mV2rFOxCxGn/gB4r43RGcueLjjU7B+2KFQJTI23NmI
-	 +Xd9hPTGUZFIw==
-Date: Fri, 24 Oct 2025 22:46:48 +0530
-From: Naveen N Rao <naveen@kernel.org>
-To: Tom Lendacky <thomas.lendacky@amd.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>, Eric Blake <eblake@redhat.com>, 
-	Markus Armbruster <armbru@redhat.com>, Marcelo Tosatti <mtosatti@redhat.com>, 
-	qemu-devel <qemu-devel@nongnu.org>, kvm@vger.kernel.org, Nikunj A Dadhania <nikunj@amd.com>, 
-	"Daniel P. Berrange" <berrange@redhat.com>, Eduardo Habkost <eduardo@habkost.net>, 
-	Zhao Liu <zhao1.liu@intel.com>, Michael Roth <michael.roth@amd.com>, 
-	Roy Hopkins <roy.hopkins@randomman.co.uk>
-Subject: Re: [PATCH v2 8/9] target/i386: SEV: Add support for setting TSC
- frequency for Secure TSC
-Message-ID: <boyf3kr7uo7jnlratgmgaklm2a4leg37hsgfno5ywsl6qvbcvo@5dwlbncvaogv>
-References: <cover.1758794556.git.naveen@kernel.org>
- <65400881e426aa0e412eb431099626dceb145ddd.1758794556.git.naveen@kernel.org>
- <6a9ce7bb-5c69-ad8b-8bfd-638122619c71@amd.com>
- <uzfmnzzhz7a7lghdpazb2sphtctphmsj2nyfqnu6erjt44h577@bjj57um7n2ze>
- <a8a324ba-e474-4733-b998-7d36be06b7f7@amd.com>
+	dkim=pass (2048-bit key) header.d=gourry.net header.i=@gourry.net header.b="YIxKOjvZ"
+Received: by mail-qk1-f175.google.com with SMTP id af79cd13be357-89ed2ee36b0so25548585a.2
+        for <kvm@vger.kernel.org>; Fri, 24 Oct 2025 10:32:33 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gourry.net; s=google; t=1761327152; x=1761931952; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=68b/g5DOQEfyTkIlrk7BVq23q9O97J8PIirLY9E/558=;
+        b=YIxKOjvZzvpj/k7qXRAnRBWIDBkC/oznFiyvfaOIcKDF07U4AepP8Nw5JcmEvUqde0
+         EpwUflB25Mqv2Qcmi2nBiaTOMRSWH0j/9ytlAAZvOj8G10xETo30J0fsc/Ufxr4Qq5Lw
+         ss3WOe/xkm9fpVGq7mxny2WXlW0I+zqosNr/aoTeggYRJcNxwWQiUA55f2kLuKroABjY
+         QpHt014/fVwnwiuMxCtbU40diHYDYXIyk3cXX7XI4lABcUbrJmR33t80rayU5kdJS3tW
+         Mcmn6LcPyc0L9Wlsn+bH40VQHBM2oHPU+p11Liq2TsD0eV4DmWnJdI6TDpfN1idM27fP
+         WmAg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1761327152; x=1761931952;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=68b/g5DOQEfyTkIlrk7BVq23q9O97J8PIirLY9E/558=;
+        b=M/7ChwmK+NKSrEP7YlbRSVfYH99i6RJXHvOkSrJvGAGzR/Ye46xXrg4JfD/yhlcxrb
+         N4tU0rWWcOiThXRjLuG6j1lHmc5EmyfVshZkCsQP2OwHU+cXyJQ3kKqRb6zlex6BVeP3
+         fZg/yfcwzHCD2uLuNrdb+mF6MAOG9UAVvc1XWTp9Npqi9pCnzshIKqK6SDpcT8yJtwwG
+         1JXh/oZF2cz4LGKfhdv9Tbs2XspSH+bdsH2nieIF1VN+3ih9nW3ws5xN6jFEDc2so+FZ
+         7Mf957eVazgDcWZ7/giH5XW7tufRbjlhznG69yJWashNh+P6L68CkS6QRHWdvbRh+Xne
+         CpvA==
+X-Forwarded-Encrypted: i=1; AJvYcCW7Gstd8hsFmggS1PdDZKabjDeWmnoYrm4VeQPhCus6yCWEpxYA83Vd+3QsLB46mGi2R94=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxLAku356m+dA2DW1ZC5D7TiPCicgqxLNQxVQAPckT4ekT5NNR8
+	jIhna+IZ9cZCiOxHs+zUmtkVflEo+6HMd8QQThpNdrlYuyBUx8EiDsjz2kZ3wilShMo=
+X-Gm-Gg: ASbGnctVtNytYM9jyVi4+CFpYWRSrsDgLsVey/lvzdo3z2XiKBWNitb+pcQcjs2Ou9W
+	tmdd2nPlIsqS1BjmFxcWyhf6OGd3IGgUDdfROZApJkZqAeOjHo2DahOLm8/OOzjRDS6HHBzG0TJ
+	nQfy3IykLCAVpApbWeryEs42PSKJY/IIASkTwsT39dEwFk+Qc2agYbVXh2/8jlTOi2QE28Wqi3Q
+	gJfUA1kbG9HtC2X/m2LVurAbjdF09TEit+e1Jt+2FWj9qXC4BzCvaO08R7NxMiaSAPrYFkWIfCO
+	qICPXBaBuplM1IzvvNsJIMiIcc6jSP5q6W9F7rsUU5gAtedlDTaX4kA7Tlg5dh+5qIoVqbJ3KnK
+	2DhZfdHM9HIWXRMbaMIMY904PYlztvCqP4xPiJfSWZDWhhyfUgb3HvlrS/yG2D/1U2PnMow6r57
+	dP+fgAA9+ZFpQxi2W7b5XaiC0CVASQqh8kWzM+VR4NfbEIEXCcZ1d6ilUJ3VrZWQ7s8VkZ+A==
+X-Google-Smtp-Source: AGHT+IHmBN0+9+r5KY4AyoghUj0jEXWjqZKGqzuPjvXeVNzt6iAcmzIlgz93IE1ZHjH55zZ3g6T32Q==
+X-Received: by 2002:a05:620a:2950:b0:88e:aae4:9599 with SMTP id af79cd13be357-89dbfc9f46cmr377281085a.10.1761327152303;
+        Fri, 24 Oct 2025 10:32:32 -0700 (PDT)
+Received: from gourry-fedora-PF4VCD3F (pool-96-255-20-138.washdc.ftas.verizon.net. [96.255.20.138])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-89eadc0ab82sm58312485a.53.2025.10.24.10.32.30
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 24 Oct 2025 10:32:31 -0700 (PDT)
+Date: Fri, 24 Oct 2025 13:32:29 -0400
+From: Gregory Price <gourry@gourry.net>
+To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+	Christian Borntraeger <borntraeger@linux.ibm.com>,
+	Janosch Frank <frankja@linux.ibm.com>,
+	Claudio Imbrenda <imbrenda@linux.ibm.com>,
+	David Hildenbrand <david@redhat.com>,
+	Alexander Gordeev <agordeev@linux.ibm.com>,
+	Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
+	Heiko Carstens <hca@linux.ibm.com>,
+	Vasily Gorbik <gor@linux.ibm.com>,
+	Sven Schnelle <svens@linux.ibm.com>, Zi Yan <ziy@nvidia.com>,
+	Baolin Wang <baolin.wang@linux.alibaba.com>,
+	"Liam R . Howlett" <Liam.Howlett@oracle.com>,
+	Nico Pache <npache@redhat.com>, Ryan Roberts <ryan.roberts@arm.com>,
+	Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>,
+	Lance Yang <lance.yang@linux.dev>,
+	Kemeng Shi <shikemeng@huaweicloud.com>,
+	Kairui Song <kasong@tencent.com>, Nhat Pham <nphamcs@gmail.com>,
+	Baoquan He <bhe@redhat.com>, Chris Li <chrisl@kernel.org>,
+	Peter Xu <peterx@redhat.com>, Matthew Wilcox <willy@infradead.org>,
+	Jason Gunthorpe <jgg@ziepe.ca>, Leon Romanovsky <leon@kernel.org>,
+	Muchun Song <muchun.song@linux.dev>,
+	Oscar Salvador <osalvador@suse.de>,
+	Vlastimil Babka <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>, Jann Horn <jannh@google.com>,
+	Matthew Brost <matthew.brost@intel.com>,
+	Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>,
+	Byungchul Park <byungchul@sk.com>,
+	Ying Huang <ying.huang@linux.alibaba.com>,
+	Alistair Popple <apopple@nvidia.com>,
+	Pedro Falcato <pfalcato@suse.de>,
+	Pasha Tatashin <pasha.tatashin@soleen.com>,
+	Rik van Riel <riel@surriel.com>, Harry Yoo <harry.yoo@oracle.com>,
+	kvm@vger.kernel.org, linux-s390@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org,
+	linux-mm@kvack.org
+Subject: Re: [RFC PATCH 05/12] fs/proc/task_mmu: refactor pagemap_pmd_range()
+Message-ID: <aPu4LWGdGSQR_xY0@gourry-fedora-PF4VCD3F>
+References: <cover.1761288179.git.lorenzo.stoakes@oracle.com>
+ <2ce1da8c64bf2f831938d711b047b2eba0fa9f32.1761288179.git.lorenzo.stoakes@oracle.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -51,55 +109,53 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <a8a324ba-e474-4733-b998-7d36be06b7f7@amd.com>
+In-Reply-To: <2ce1da8c64bf2f831938d711b047b2eba0fa9f32.1761288179.git.lorenzo.stoakes@oracle.com>
 
-On Fri, Oct 24, 2025 at 10:00:08AM -0500, Tom Lendacky wrote:
-> On 10/8/25 04:52, Naveen N Rao wrote:
-> > On Tue, Oct 07, 2025 at 08:31:47AM -0500, Tom Lendacky wrote:
-> >> On 9/25/25 05:17, Naveen N Rao (AMD) wrote:
-> > 
-> > ...
-> > 
-> >>> +
-> >>> +static void
-> >>> +sev_snp_guest_set_tsc_frequency(Object *obj, Visitor *v, const char *name,
-> >>> +                                void *opaque, Error **errp)
-> >>> +{
-> >>> +    uint32_t value;
-> >>> +
-> >>> +    if (!visit_type_uint32(v, name, &value, errp)) {
-> >>> +        return;
-> >>> +    }
-> >>> +
-> >>> +    SEV_SNP_GUEST(obj)->tsc_khz = value / 1000;
-> >>
-> >> This will cause a value that isn't evenly divisible by 1000 to be
-> >> rounded down, e.g.: tsc-frequency=2500000999. Should this name instead
-> >> just be tsc-khz or secure-tsc-khz (to show it is truly associated with
-> >> Secure TSC)?
-> > 
-> > I modeled this after the existing tsc-frequency parameter on the cpu 
-> > object to keep it simple (parameter is the same, just where it is 
-> > specified differs). This also aligns with TDX which re-uses the 
-> > tsc-frequency parameter on the cpu object.
+On Fri, Oct 24, 2025 at 08:41:21AM +0100, Lorenzo Stoakes wrote:
+> Separate out THP logic so we can drop an indentation level and reduce the
+> amount of noise in this function.
 > 
-> So why aren't we using the one on the cpu object instead of creating a
-> duplicate parameter? There should be some way to get that value, no?
+> We add pagemap_pmd_range_thp() for this purpose.
+> 
+> While we're here, convert the VM_BUG_ON() to a VM_WARN_ON_ONCE() at the
+> same time.
+> 
+> Signed-off-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+... >8
+> +static int pagemap_pmd_range(pmd_t *pmdp, unsigned long addr, unsigned long end,
+> +			     struct mm_walk *walk)
+> +{
+> +	struct vm_area_struct *vma = walk->vma;
+> +	struct pagemapread *pm = walk->private;
+> +	spinlock_t *ptl;
+> +	pte_t *pte, *orig_pte;
+> +	int err = 0;
+> +
+> +#ifdef CONFIG_TRANSPARENT_HUGEPAGE
+> +	ptl = pmd_trans_huge_lock(pmdp, vma);
+> +	if (ptl)
+> +		return pagemap_pmd_range_thp(pmdp, addr, end, vma, pm, ptl);
+> +#endif
 
-I had spent some time on this, but I couldn't figure out a simple way to 
-make that work.
+Maybe something like...
 
-TDX uses a vcpu pre-create hook (similar to KVM) to get access to and 
-set the TSC value from the cpu object. For SEV-SNP, we need the TSC 
-frequency during SNP_LAUNCH_START which is quite early and we don't have 
-access to the cpu object there.
+#ifdef CONFIG_TRANSPARENT_HUGEPAGE
+ptl = pmd_trans_huge_lock(pmdp, vma);
+if (ptl) {
+	err = pagemap_pmd_range_thp(pmdp, addr, end, vma, pm, ptl);
+	spin_unlock(ptl);
+	return err;
+}
+#endif
 
-Admittedly, my qemu understanding is limited. If there is a way to 
-re-use the cpu tsc-frequency field, then that would be ideal.
+and drop the spin_unlock(ptl) calls from pagemap_pmd_range_thp?
 
-Any ideas/suggestions?
+Makes it easier to understand the locking semantics.
 
+Might be worth adding a comment to pagemap_pmd_range_thp that callers
+must hold the ptl lock.
 
-Thanks,
-Naveen
+~Gregory
 
+P.S. This patch set made my day, the whole non-swap-swap thing has
+always broken my brain.  <3
