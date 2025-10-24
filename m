@@ -1,145 +1,146 @@
-Received: from mail-qt1-f178.google.com (mail-qt1-f178.google.com [209.85.160.178])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from r3-25.sinamail.sina.com.cn (r3-25.sinamail.sina.com.cn [202.108.3.25])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9FD1329993E
-	for <kvm@vger.kernel.org>; Fri, 24 Oct 2025 20:37:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.178
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 680C130DD10
+	for <kvm@vger.kernel.org>; Fri, 24 Oct 2025 23:25:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.108.3.25
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761338245; cv=none; b=aiHNbj/dOSHLYKvhlPanRzAczmp1iGzg4YHMKintoiGzbFRIsRNPwcIQ7a8bRwbxabAofgisecK7KT7D7EWR7BnzYC8lBgSj9E1IotKmqvzVLA28gZIaRfihee2vY0r4RIscjVpOrJZjq3h1cWgjTZO6i0KybYHzi9ozHJv8H/A=
+	t=1761348325; cv=none; b=I+cYkKslMsSqFuAF4UIyNfr32DlYZFR0tcpi4pMGppIS+9eUadj7agOZjGHUnzSx1K+qR2DAmxafz8qwTp503z08N6zHcT6ptt+Tyn1L9RCtzLXZhvA9dweo1cCtwOJ1xfElReMhBdPWfEfUDK72V9ko91rx4ujRxvKxtRgjTPk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761338245; c=relaxed/simple;
-	bh=brPT+lM2XPdvJ0J0zQqzP3FRuejOJIrYJjvdheDJC0A=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=A3pe3L7AobZwj/vCd21VCL+lAG3Ti9gmxOtO4aUM0MIe8vgCylT4D6y1Hw7K/5UTvfO0ZPXKj54Rueur+MI0VjLLyAWGRyAvq9DubSoEoPj76v45S+WR68iJeeuXDZZBZWRJY1amoFOiApgmf8wL5BzVnVtrhSkilPJaIA3x+1Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gourry.net; spf=pass smtp.mailfrom=gourry.net; dkim=pass (2048-bit key) header.d=gourry.net header.i=@gourry.net header.b=qgjWqiQg; arc=none smtp.client-ip=209.85.160.178
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gourry.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gourry.net
+	s=arc-20240116; t=1761348325; c=relaxed/simple;
+	bh=JnBSWPnywjh1398V6XIeFjYzAtApDUflqSGMIRMPDf8=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=NZs1VWCoVK5KKQvpMa31vbtxfW22YZ4JYIQuWDYrWZN3AgUzYbKEMkrvGQkb7G2D6OkYI8tOn6b7Zdm0mSuDnv1dNWdVnjmQi5U9VtH6OLtwEbOgAUuQg4rIf3/WvN6WvpDmVzQhnuYogoooMctzb9dFMNbJwVrDHA8RIFacWTo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sina.com; spf=pass smtp.mailfrom=sina.com; dkim=pass (1024-bit key) header.d=sina.com header.i=@sina.com header.b=Bhv3ZeVn; arc=none smtp.client-ip=202.108.3.25
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sina.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sina.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gourry.net header.i=@gourry.net header.b="qgjWqiQg"
-Received: by mail-qt1-f178.google.com with SMTP id d75a77b69052e-4e89e689ec7so15626241cf.2
-        for <kvm@vger.kernel.org>; Fri, 24 Oct 2025 13:37:22 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gourry.net; s=google; t=1761338241; x=1761943041; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=Vn4hQEcGul2fUa7R/OzGXx8vWTt9TjtrdGmgBs4cZEg=;
-        b=qgjWqiQg7Mw0bd6Y7P3gb+spLRaKxWc55mXCg5lTEioPzr2WALPNAO9coZW5YwSU/Q
-         CutOTbPQFirUB6W23YGRV/4n3KJAwDc2HuZ1vmW9vsHfhTQE1lFOzrT1zKthKJ1vN7w8
-         J99nIJOu6f1vbKH/VbY6iGK7SaV9bmoiquLKjhFMYlujpJGyyVA8Y6ikqLPzjJZE3K4u
-         OZgIq3WLWE0V48aNTFEFsT8fugi2BJ4QfjAxzSnSHsv/2yqeA/JFfFAvF5Jn45VPjnM2
-         VbQo5z+uEOp/ZfIDudxeAtIZujmHqqIYhpz5spR8VsG3LNndPL57lSFQQ4mQS3eRwY0J
-         boJQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1761338241; x=1761943041;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Vn4hQEcGul2fUa7R/OzGXx8vWTt9TjtrdGmgBs4cZEg=;
-        b=wf92oOh/4BauytpcJVyj4Bx8CT6ZF8/Lfck86TtcRObDI3RyvrPgfJRcikAjifWGnW
-         IinHGBNhor/a8bNQcsN7Z9vBKUCF7oI8QhqRHUSMqJJ+IaeAgtS2S4gKKWHYqaUbSkGR
-         zbx/X469KAixUMvf9fp5QVHSJfHx0bjDnirfVAYaW7viuEL7qCp1zESg6737+QkRuhgB
-         9QfAW+ZoeE5KZ0cn344WZoij0fYdXP+1kv+GigGB3uD+h/9PnUPrJnVkERKY3U1ofczd
-         S2Vv6W1iRdn5NtCFMvIjzWYIlFSIMakVlUWxYTWL38WU0gDPlPrOf9BpGmwxC5QdOjKL
-         Vfig==
-X-Forwarded-Encrypted: i=1; AJvYcCVSKj7LlmEqi6Toat7oyBl9L61uf8k+oTyIm/+N42R4HyGFFltemE1+6/CWZlyOpsqpt70=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yzit5/GOQg60QiwfzMlPYP1fX4dMH+wp5ktXe3w5l/YGYajSFoR
-	QaK6iTCa+XJoeD8uySsPa9dpTpS8/LgJrL+lzifVpDjN5PwKnNn8WIXnn1iKVMr6fRE=
-X-Gm-Gg: ASbGncvfaJPEmI7uz22IDd8XxM1NwqGDY1/PHFUJ9/r3agttmYkAXPxXM/X5k7o8con
-	/Z+iqENAkaqS9MU71U9bcVw51zD89Deo9jdVc+91rGchziOldgVPYk0iFzKQivlM1o1Ive+c2Lc
-	aiwst7itHjDN+sawMR2DSkN6169RCZCpzuWtnS84wg4CIxbRKLiJPGT4Jfd02vZlsFOcwjWxZCW
-	pcqRzbB9/MmZ4OOKBEHYFkB9tQpR6c3tPdARMX6TrHPxSJ9i8vow5p3H1MEhuCT1SSJU9Evle5Z
-	mKxE+C0b2ISXA4Zz5uDLlwB5h5lqPJqS5kNsPPRepj9RrzfLGhNzq2HVkXAZfJtW6KXYif21Zbp
-	qQp6oyos2UVaQ2pU+rSh9D3bNA+ZEYTB13PuPgqqbmxYLvWWe2UzBhMpzEGim/apkgL6/MvNzzu
-	AkBSkA8FqS4ZGAFy1H3eyqLs0JmYhH7KR/Yovu6YeqzdBBu58nJKy+P7R0WJvIgunJ/ek7Rg==
-X-Google-Smtp-Source: AGHT+IEizsVD5MWKlpznZSR+oUAoDamQsr5IFux8tgX6jFrLAoh3hAikSuRK1/9hfCiWycXsqW7SdA==
-X-Received: by 2002:ac8:58d6:0:b0:4e8:8ed7:da6a with SMTP id d75a77b69052e-4e89d20680bmr359946041cf.8.1761338241380;
-        Fri, 24 Oct 2025 13:37:21 -0700 (PDT)
-Received: from gourry-fedora-PF4VCD3F (pool-96-255-20-138.washdc.ftas.verizon.net. [96.255.20.138])
-        by smtp.gmail.com with ESMTPSA id d75a77b69052e-4eba37b96d0sm861481cf.6.2025.10.24.13.37.19
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 24 Oct 2025 13:37:20 -0700 (PDT)
-Date: Fri, 24 Oct 2025 16:37:18 -0400
-From: Gregory Price <gourry@gourry.net>
-To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-	Christian Borntraeger <borntraeger@linux.ibm.com>,
-	Janosch Frank <frankja@linux.ibm.com>,
-	Claudio Imbrenda <imbrenda@linux.ibm.com>,
-	David Hildenbrand <david@redhat.com>,
-	Alexander Gordeev <agordeev@linux.ibm.com>,
-	Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
-	Heiko Carstens <hca@linux.ibm.com>,
-	Vasily Gorbik <gor@linux.ibm.com>,
-	Sven Schnelle <svens@linux.ibm.com>, Zi Yan <ziy@nvidia.com>,
-	Baolin Wang <baolin.wang@linux.alibaba.com>,
-	"Liam R . Howlett" <Liam.Howlett@oracle.com>,
-	Nico Pache <npache@redhat.com>, Ryan Roberts <ryan.roberts@arm.com>,
-	Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>,
-	Lance Yang <lance.yang@linux.dev>,
-	Kemeng Shi <shikemeng@huaweicloud.com>,
-	Kairui Song <kasong@tencent.com>, Nhat Pham <nphamcs@gmail.com>,
-	Baoquan He <bhe@redhat.com>, Chris Li <chrisl@kernel.org>,
-	Peter Xu <peterx@redhat.com>, Matthew Wilcox <willy@infradead.org>,
-	Jason Gunthorpe <jgg@ziepe.ca>, Leon Romanovsky <leon@kernel.org>,
-	Muchun Song <muchun.song@linux.dev>,
-	Oscar Salvador <osalvador@suse.de>,
-	Vlastimil Babka <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>, Jann Horn <jannh@google.com>,
-	Matthew Brost <matthew.brost@intel.com>,
-	Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>,
-	Byungchul Park <byungchul@sk.com>,
-	Ying Huang <ying.huang@linux.alibaba.com>,
-	Alistair Popple <apopple@nvidia.com>,
-	Pedro Falcato <pfalcato@suse.de>,
-	Pasha Tatashin <pasha.tatashin@soleen.com>,
-	Rik van Riel <riel@surriel.com>, Harry Yoo <harry.yoo@oracle.com>,
-	kvm@vger.kernel.org, linux-s390@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org,
-	linux-mm@kvack.org
-Subject: Re: [RFC PATCH 05/12] fs/proc/task_mmu: refactor pagemap_pmd_range()
-Message-ID: <aPvjfo1hVlb_WBcz@gourry-fedora-PF4VCD3F>
-References: <cover.1761288179.git.lorenzo.stoakes@oracle.com>
- <2ce1da8c64bf2f831938d711b047b2eba0fa9f32.1761288179.git.lorenzo.stoakes@oracle.com>
- <aPu4LWGdGSQR_xY0@gourry-fedora-PF4VCD3F>
- <76348b1f-2626-4010-8269-edd74a936982@lucifer.local>
- <aPvPiI4BxTIzasq1@gourry-fedora-PF4VCD3F>
- <3f3e5582-d707-41d0-99a7-4e9c25f1224d@lucifer.local>
+	dkim=pass (1024-bit key) header.d=sina.com header.i=@sina.com header.b="Bhv3ZeVn"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=sina.com; s=201208; t=1761348320;
+	bh=JZjQ2LqcYw+dVeyBIzBUQ7Hz5flKU9QyhobNZyh5Zuk=;
+	h=From:Subject:Date:Message-ID;
+	b=Bhv3ZeVnPaKGptBzB37Xca9btk8bRs5KwDEBW/5niAZPKLJ31+X8gYXm4ijnGXn3B
+	 xpXx21715jYzofd7yUVWXDJsIUGFGs/xe7PourK38jADe0VWGfNtmOt06pd0gCTUou
+	 kc4Olq7uooGxuNcIixGtyPB7FJAQcOPvvkEq1agw=
+X-SMAIL-HELO: localhost.localdomain
+Received: from unknown (HELO localhost.localdomain)([114.249.58.236])
+	by sina.com (10.54.253.31) with ESMTP
+	id 68FC0AD400004BCC; Fri, 25 Oct 2025 07:25:11 +0800 (CST)
+X-Sender: hdanton@sina.com
+X-Auth-ID: hdanton@sina.com
+Authentication-Results: sina.com;
+	 spf=none smtp.mailfrom=hdanton@sina.com;
+	 dkim=none header.i=none;
+	 dmarc=none action=none header.from=hdanton@sina.com
+X-SMAIL-MID: 4868976816219
+X-SMAIL-UIID: E775CA12EA2B4AA78CFD77F72F430EE1-20251025-072511-1
+From: Hillf Danton <hdanton@sina.com>
+To: syzbot <syzbot+2479e53d0db9b32ae2aa@syzkaller.appspotmail.com>
+Cc: Sean Christopherson <seanjc@google.com>,
+	kvm@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	syzkaller-bugs@googlegroups.com,
+	tabba@google.com,
+	xiaoyao.li@intel.com
+Subject: Re: [syzbot] [kvm?] KASAN: slab-use-after-free Write in kvm_gmem_release
+Date: Sat, 25 Oct 2025 07:24:57 +0800
+Message-ID: <20251024232459.8716-1-hdanton@sina.com>
+In-Reply-To: <68fb1966.050a0220.346f24.0093.GAE@google.com>
+References: 
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <3f3e5582-d707-41d0-99a7-4e9c25f1224d@lucifer.local>
+Content-Transfer-Encoding: 8bit
 
-On Fri, Oct 24, 2025 at 09:15:59PM +0100, Lorenzo Stoakes wrote:
-> On Fri, Oct 24, 2025 at 03:12:08PM -0400, Gregory Price wrote:
+On Thu, Oct 23, 2025, syzbot wrote:
+> syzbot has bisected this issue to:
 > 
-> So maybe actually that isn't too bad of an idea...
+> commit d1e54dd08f163a9021433020d16a8f8f70ddc41c
+> Author: Fuad Tabba <tabba@google.com>
+> Date:   Tue Jul 29 22:54:40 2025 +0000
 > 
-> Could also be
+>     KVM: x86: Enable KVM_GUEST_MEMFD for all 64-bit builds
 > 
-> nonpresent_or_swap_t but that's kinda icky...
+> bisection log:  https://syzkaller.appspot.com/x/bisect.txt?x=12a663cd980000
+> start commit:   43e9ad0c55a3 Merge tag 'scsi-fixes' of git://git.kernel.or..
+> git tree:       upstream
+> final oops:     https://syzkaller.appspot.com/x/report.txt?x=11a663cd980000
+> console output: https://syzkaller.appspot.com/x/log.txt?x=16a663cd980000
+> kernel config:  https://syzkaller.appspot.com/x/.config?x=67b63a24f3c26fca
+> dashboard link: https://syzkaller.appspot.com/bug?extid=2479e53d0db9b32ae2aa
+> syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=173ecd2f980000
+> C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=14bc2be2580000
 
-clearly we need:
+Test Sean's fix.
 
-union {
-	swp_entry_t swap;
-	nonpresent_entry_t np;
-	pony_entry_t pony;
-	plum_emtry_t beer;
-} leaf_entry_t;
+#syz test
 
-with
-
-leaf_type whats_that_pte(leaf_entry_t);
-
-with 20 more new functions about how to manage leaf_entries ;]
-
-no not seriously, please have a good weekend!
-
-and thanks again for doing this!
-~Gregory
+--- x/virt/kvm/guest_memfd.c
++++ y/virt/kvm/guest_memfd.c
+@@ -708,23 +708,11 @@ err:
+ 	return r;
+ }
+ 
+-void kvm_gmem_unbind(struct kvm_memory_slot *slot)
++static void __kvm_gmem_unbind(struct kvm_memory_slot *slot, struct gmem_file *f)
+ {
+ 	unsigned long start = slot->gmem.pgoff;
+ 	unsigned long end = start + slot->npages;
+-	struct gmem_file *f;
+-
+-	/*
+-	 * Nothing to do if the underlying file was already closed (or is being
+-	 * closed right now), kvm_gmem_release() invalidates all bindings.
+-	 */
+-	CLASS(gmem_get_file, file)(slot);
+-	if (!file)
+-		return;
+-
+-	f = file->private_data;
+ 
+-	filemap_invalidate_lock(file->f_mapping);
+ 	xa_store_range(&f->bindings, start, end - 1, NULL, GFP_KERNEL);
+ 
+ 	/*
+@@ -732,7 +720,36 @@ void kvm_gmem_unbind(struct kvm_memory_s
+ 	 * cannot see this memslot.
+ 	 */
+ 	WRITE_ONCE(slot->gmem.file, NULL);
+-	filemap_invalidate_unlock(file->f_mapping);
++}
++
++void kvm_gmem_unbind(struct kvm_memory_slot *slot)
++{
++       /*
++        * Nothing to do if the underlying file was _already_ closed, as
++        * kvm_gmem_release() invalidates and nullifies all bindings.
++        */
++       if (!slot->gmem.file)
++               return;
++
++       CLASS(gmem_get_file, file)(slot);
++
++       /*
++        * However, if the file is _being_ closed, then the bindings need to be
++        * removed as kvm_gmem_release() might not run until after the memslot
++        * is freed.  Note, modifying the bindings is safe even though the file
++        * is dying as kvm_gmem_release() nullifies slot->gmem.file under
++        * slots_lock, and only puts its reference to KVM after destroying all
++        * bindings.  I.e. reaching this point means kvm_gmem_release() can't
++        * concurrently destroy the bindings or free the gmem_file.
++        */
++       if (!file) {
++               __kvm_gmem_unbind(slot, slot->gmem.file->private_data);
++               return;
++       }
++
++       filemap_invalidate_lock(file->f_mapping);
++       __kvm_gmem_unbind(slot, file->private_data);
++       filemap_invalidate_unlock(file->f_mapping);
+ }
+ 
+ /* Returns a locked folio on success.  */
+--
