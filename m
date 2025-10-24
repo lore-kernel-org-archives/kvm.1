@@ -1,150 +1,158 @@
-Received: from mail-pj1-f73.google.com (mail-pj1-f73.google.com [209.85.216.73])
+Received: from mail-pg1-f201.google.com (mail-pg1-f201.google.com [209.85.215.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C22633A02D
-	for <kvm@vger.kernel.org>; Fri, 24 Oct 2025 16:57:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.73
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9AADB1990A7
+	for <kvm@vger.kernel.org>; Fri, 24 Oct 2025 17:24:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761325044; cv=none; b=L32wc+nmDwsrHH4Y5ODJj2UWaQKsuBVJ3b/V5Euko7nDukQdAlHX3xStL1RGR1niBokcxAAzpswqgvpVeIcsdM2fNkVWo1E/tlUNDPevGnxlxiIzwXXXXlJ3UwUf0hUvZDbFGxAy/sPeXcAXzS7v5nPhVK0+EOjFe81du9SjDRU=
+	t=1761326650; cv=none; b=ctQCenL7nGmxAL99UCqvYBxj4bNkw8finimekulOwxNWZGgRhfp/q8Y564GLAXUQ2hJQ1IUlxzFEeOGgPtAUqzmlMtTr3NK2xYwEhfc2Q9gaBfRH3U3u69vaUVZa36QCvi3bbIP2HuUC1ykDRzk0i2209YxrkFOefSdBt3Sx4q4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761325044; c=relaxed/simple;
-	bh=znxPntvSK0iLuvDlLrIc6oUoFoqXWddOvlpeLWfjD/8=;
+	s=arc-20240116; t=1761326650; c=relaxed/simple;
+	bh=eSVXjWvufq5wlXV/uRQ71AATlF89iNraJnuNs0WQoSQ=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=APrPzk8PtUlf8j//O869PiNC5oeygFTvED1eoH5oYcYGNiPIg9OoF5l7wdbo/4wuifZblvZBXs476jvnkUPMLHW9X6gDy3r4FTsCIO+2tfbSCAR8dRK3fGB0jYufKz8D+Lx9BrNaJWf+TMgg4Zp38isROWq4CNWysdw6pk+DnIo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=hKhw31zy; arc=none smtp.client-ip=209.85.216.73
+	 To:Cc:Content-Type; b=BJa93878VjdqLoe1SIek3HPtDtMeO0OV2ARexKDpp/k2H75uWhHOKqy4jHXQ5G0ojHQJLu/Ta3s1owheXXZjIIvbmfM3duolDC+Kx5LnbbiKuinuJM5ccsQ3mVKFy+3H3f4O7GVmMkUT8w2sFd8rQHMDSYrnQywT9Vq2xbmsfL8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=K4Iqd2Mm; arc=none smtp.client-ip=209.85.215.201
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="hKhw31zy"
-Received: by mail-pj1-f73.google.com with SMTP id 98e67ed59e1d1-33bcb779733so2075941a91.3
-        for <kvm@vger.kernel.org>; Fri, 24 Oct 2025 09:57:22 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="K4Iqd2Mm"
+Received: by mail-pg1-f201.google.com with SMTP id 41be03b00d2f7-b6ce25bea3eso1661057a12.2
+        for <kvm@vger.kernel.org>; Fri, 24 Oct 2025 10:24:08 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1761325041; x=1761929841; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=kCSFoTED+bN9czctrBnViFjaUxjZI+PzjY/BcjiPyhU=;
-        b=hKhw31zyrAbgqsXNoWbtQ3K4Q5NQkmPMhTqiLcUwwNDWTKJgc/p527KT7Prdtijhlk
-         TymHKg62C+q0vryN6ELJrmV1MP2MdGyLe3ofkLmyEVzmA3GXDV2/1FexHUwi9FWnxPRM
-         jUXc+5FeS6BYh8J0t5QUU6QXpOoQRDFUkQNZpAsqr6oRoc4SF29INiz95pkFsS4lMVc+
-         pL0fPLBRbihVQcw1voYIETiCGbacIIyy/xrAD8/U/kX4SER5Mm9+1CNC0Mkf4xYwTPtE
-         GqsNbkanHvwbztdQ/5wIU86NIoZJzBlicVxqq3RF0mFJ5kHvx1oQJzkDXnUOm+aI37qi
-         DeOg==
+        d=google.com; s=20230601; t=1761326648; x=1761931448; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:from:subject:message-id:references
+         :mime-version:in-reply-to:date:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=7FLP5WkTh+VRhKc08YfB2VDRV9fkYbRqP1RoJ7oLnhA=;
+        b=K4Iqd2MmssquLsSI3+ynC5W+W9KudxoIIYNy5GGAUohuBWtEkZTANUhZbwze8cz42K
+         MijQTgM0Jbn1shXxiFKH0DitMxFQQbzArnQreOfmXYy6mQS/XAWDVZ56+nSleZWcHGr0
+         lFeX7VXQFZg9hOKVAFRo/aWnNG3lFO/rwmX13cARKg3MzYssUtpDFfbset0JOlm4YPTz
+         kRHl5jIG3mfrBtOg6rYM+I6iWIKJ8cTzixps3IOuXUpZ8YjeOYQUw7zvfWBFnad15uKw
+         lCuTP/0PiKCJNki5bkrSi2Wc59P8yLfX+6cdETW/zkkULQoZWCGY6XyTin5n+9SZu3oM
+         sHow==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1761325041; x=1761929841;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=kCSFoTED+bN9czctrBnViFjaUxjZI+PzjY/BcjiPyhU=;
-        b=wsk2LkAN61VsYJ7nw6kgZnCq1xq0mISNNOKxi6W2RIzfcDyoHFvRSJWO4Qr+0QgtFQ
-         RMt3jLNdeUp8EWUEKlXOCMPyNOFJdUQegLyWDGNah+JPs3VKTA5JyPpdv43A35N89kgg
-         LDlIJ203LQXWWP8dcvKsGFkTKkPYo75k7HFUrAh8E6rcc3q+0EMcN3sY9ZqOUWc45VB5
-         R/DI7wGbUtys5eFf5YXVdcmRWffL5CqsoBxMx4yOcXDTGvUrQpG1s9knCzH7e2hMMw2E
-         KsGLD+oo8iUPeTo9HoA4uyroW0t9IbA023nLDSQsu1ydv5wHhRu72Gc0N+vNvG6sHNUA
-         /mAw==
-X-Forwarded-Encrypted: i=1; AJvYcCV3HK/jM6Hb+7RNbqe8zK1aamBUk3P4dP7ZATW+hluTHWeYii5uwGU6aKrbnAYdZiY1cK4=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxRlWqy7r28W9ZEAYjVKWgv87W/DeenWIVruUcgPVG3cRfctVLu
-	BqT8BvCjkhj99Dw8j3fO7oPnHgeb6uVWcLwOFHkIRXUw83ntmiugizohJmwbck805YhoRcqt7iP
-	zi4zDgg==
-X-Google-Smtp-Source: AGHT+IHXmSeD3kNK6POSE1hGR7Jvio0RnirzUH7WSrLaKZ09lPaFZJIUb09S/aBT/hnx0ZxmJITFzdMKVRo=
-X-Received: from pjnu4.prod.google.com ([2002:a17:90a:8904:b0:339:dc19:ae5d])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:48c8:b0:33b:ba55:f5dd
- with SMTP id 98e67ed59e1d1-33bcf93ab88mr32766320a91.37.1761325041555; Fri, 24
- Oct 2025 09:57:21 -0700 (PDT)
-Date: Fri, 24 Oct 2025 09:57:20 -0700
-In-Reply-To: <aPtOtzGLigbY0Vqw@yzhao56-desk.sh.intel.com>
+        d=1e100.net; s=20230601; t=1761326648; x=1761931448;
+        h=content-transfer-encoding:cc:to:from:subject:message-id:references
+         :mime-version:in-reply-to:date:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=7FLP5WkTh+VRhKc08YfB2VDRV9fkYbRqP1RoJ7oLnhA=;
+        b=ADxjWq32bK+EzymP1HwlRJVf6olp64pMgEQEO/8A+DMFoJ3wqf8HSTBbDmR5Ao20Xh
+         YbRiYKcOJ257408VA7hIEDZHujLeiCxGtsAJLpIhmXCN2q+9xLVl+Va/n6k8cCG5qaDr
+         dOjeVWhSx7zyxMXh5yJ8vnUZwFYP02yoFbagxcvVf/yL8hVUEDHW6S0r7iR1bqS5fCqo
+         eXKBVZ4/Au1E90637dC3Mh9nE4Kg9BliT5JQ8dnSt2+7RiZqR6i6qehI2i0rH4RhluUQ
+         bMQq+jWMSaIpw+wEVtrDqpRoXs+iwZcvfjAq48c8lb7tZRn8Zm4RDMqpzSSees31IXZ5
+         HWLg==
+X-Forwarded-Encrypted: i=1; AJvYcCXvEmnnn+tX7+2b6F9qRfDQgzmj+96Vl2BwlXGmEnWavaSTnkBz+i7C2EThCFREub2z1ys=@vger.kernel.org
+X-Gm-Message-State: AOJu0Ywp4n0rnwjYfr85BQUpmLCbXKDtpTeXB4UN9PkjwL+NLpsyXOLC
+	XsBbvckMJbKeSfEL8sxkR1nWF4rZH9AFK+TxG1GFvQzFIZ8+iZrANlku/MmTTEHJIbFdnGYQ3D2
+	77jFc4Q==
+X-Google-Smtp-Source: AGHT+IEIm9NIN92smmhmaW4iWKKJb1V67wupHKKcMMvqTgE7x+LAyO/si8uIpWAx2DZBg/t9wHtaIrchfoA=
+X-Received: from pjbsd7.prod.google.com ([2002:a17:90b:5147:b0:33b:b3b8:216b])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:903:244d:b0:24d:1f99:713a
+ with SMTP id d9443c01a7336-2948ba0d8f8mr43813095ad.31.1761326647757; Fri, 24
+ Oct 2025 10:24:07 -0700 (PDT)
+Date: Fri, 24 Oct 2025 10:24:06 -0700
+In-Reply-To: <CAAhR5DFJKTTY3tN7AU=BXDRJAGjuortmK0ruQWU8RB_Z6jVugQ@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-References: <20251017003244.186495-1-seanjc@google.com> <20251017003244.186495-25-seanjc@google.com>
- <aPtOtzGLigbY0Vqw@yzhao56-desk.sh.intel.com>
-Message-ID: <aPuv8F8iDp3SLb9q@google.com>
-Subject: Re: [PATCH v3 24/25] KVM: TDX: Guard VM state transitions with "all"
- the locks
+References: <20250925172851.606193-1-sagis@google.com> <20250925172851.606193-14-sagis@google.com>
+ <68efcb7ee33e5_cab031002e@iweiny-mobl.notmuch> <CAAhR5DGcz-2=a6Q2zZS_eP2ZjNNPs65jNG+K50tdVAQfC6AbbA@mail.gmail.com>
+ <aPui50JMEcuIl7-8@google.com> <CAAhR5DFJKTTY3tN7AU=BXDRJAGjuortmK0ruQWU8RB_Z6jVugQ@mail.gmail.com>
+Message-ID: <aPu2NsDuU08UQ5N4@google.com>
+Subject: Re: [PATCH v11 13/21] KVM: selftests: Add helpers to init TDX memory
+ and finalize VM
 From: Sean Christopherson <seanjc@google.com>
-To: Yan Zhao <yan.y.zhao@intel.com>
-Cc: Marc Zyngier <maz@kernel.org>, Oliver Upton <oliver.upton@linux.dev>, 
-	Tianrui Zhao <zhaotianrui@loongson.cn>, Bibo Mao <maobibo@loongson.cn>, 
-	Huacai Chen <chenhuacai@kernel.org>, Madhavan Srinivasan <maddy@linux.ibm.com>, 
-	Anup Patel <anup@brainfault.org>, Paul Walmsley <pjw@kernel.org>, 
-	Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>, 
-	Christian Borntraeger <borntraeger@linux.ibm.com>, Janosch Frank <frankja@linux.ibm.com>, 
-	Claudio Imbrenda <imbrenda@linux.ibm.com>, Paolo Bonzini <pbonzini@redhat.com>, 
-	"Kirill A. Shutemov" <kas@kernel.org>, linux-arm-kernel@lists.infradead.org, 
-	kvmarm@lists.linux.dev, kvm@vger.kernel.org, loongarch@lists.linux.dev, 
-	linux-mips@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, 
-	kvm-riscv@lists.infradead.org, linux-riscv@lists.infradead.org, 
-	x86@kernel.org, linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org, 
-	Ira Weiny <ira.weiny@intel.com>, Kai Huang <kai.huang@intel.com>, 
-	Michael Roth <michael.roth@amd.com>, Vishal Annapurve <vannapurve@google.com>, 
-	Rick Edgecombe <rick.p.edgecombe@intel.com>, Ackerley Tng <ackerleytng@google.com>, 
-	Binbin Wu <binbin.wu@linux.intel.com>
-Content-Type: text/plain; charset="us-ascii"
+To: Sagi Shahar <sagis@google.com>
+Cc: Ira Weiny <ira.weiny@intel.com>, linux-kselftest@vger.kernel.org, 
+	Paolo Bonzini <pbonzini@redhat.com>, Shuah Khan <shuah@kernel.org>, 
+	Ackerley Tng <ackerleytng@google.com>, Ryan Afranji <afranji@google.com>, 
+	Andrew Jones <ajones@ventanamicro.com>, Isaku Yamahata <isaku.yamahata@intel.com>, 
+	Erdem Aktas <erdemaktas@google.com>, Rick Edgecombe <rick.p.edgecombe@intel.com>, 
+	Roger Wang <runanwang@google.com>, Binbin Wu <binbin.wu@linux.intel.com>, 
+	Oliver Upton <oliver.upton@linux.dev>, "Pratik R. Sampat" <pratikrajesh.sampat@amd.com>, 
+	Reinette Chatre <reinette.chatre@intel.com>, Chao Gao <chao.gao@intel.com>, 
+	Chenyi Qiang <chenyi.qiang@intel.com>, linux-kernel@vger.kernel.org, kvm@vger.kernel.org
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Fri, Oct 24, 2025, Yan Zhao wrote:
-> On Thu, Oct 16, 2025 at 05:32:42PM -0700, Sean Christopherson wrote:
-> > Acquire kvm->lock, kvm->slots_lock, and all vcpu->mutex locks when
-> > servicing ioctls that (a) transition the TD to a new state, i.e. when
-> > doing INIT or FINALIZE or (b) are only valid if the TD is in a specific
-> > state, i.e. when initializing a vCPU or memory region.  Acquiring "all"
-> > the locks fixes several KVM_BUG_ON() situations where a SEAMCALL can fail
-> > due to racing actions, e.g. if tdh_vp_create() contends with either
-> > tdh_mr_extend() or tdh_mr_finalize().
-> > 
-> > For all intents and purposes, the paths in question are fully serialized,
-> > i.e. there's no reason to try and allow anything remotely interesting to
-> > happen.  Smack 'em with a big hammer instead of trying to be "nice".
-> > 
-> > Acquire kvm->lock to prevent VM-wide things from happening, slots_lock to
-> > prevent kvm_mmu_zap_all_fast(), and _all_ vCPU mutexes to prevent vCPUs
-> slots_lock to prevent kvm_mmu_zap_memslot()?
-> kvm_mmu_zap_all_fast() does not operate on the mirror root.
+On Fri, Oct 24, 2025, Sagi Shahar wrote:
+> On Fri, Oct 24, 2025 at 11:02=E2=80=AFAM Sean Christopherson <seanjc@goog=
+le.com> wrote:
+> >
+> > On Thu, Oct 23, 2025, Sagi Shahar wrote:
+> > > On Wed, Oct 15, 2025 at 11:25=E2=80=AFAM Ira Weiny <ira.weiny@intel.c=
+om> wrote:
+> > > >
+> > > > Sagi Shahar wrote:
+> > > > > From: Ackerley Tng <ackerleytng@google.com>
+> > > > >
+> > > >
+> > > > [snip]
+> > > >
+> > > > > diff --git a/tools/testing/selftests/kvm/lib/x86/tdx/tdx_util.c b=
+/tools/testing/selftests/kvm/lib/x86/tdx/tdx_util.c
+> > > > > index 2551b3eac8f8..53cfadeff8de 100644
+> > > > > --- a/tools/testing/selftests/kvm/lib/x86/tdx/tdx_util.c
+> > > > > +++ b/tools/testing/selftests/kvm/lib/x86/tdx/tdx_util.c
+> > > > > @@ -270,3 +270,61 @@ void vm_tdx_init_vm(struct kvm_vm *vm, uint6=
+4_t attributes)
+> > > > >
+> > > > >       free(init_vm);
+> > > > >  }
+> > > > > +
+> > > >
+> > > > [snip]
+> > > >
+> > > > > +
+> > > > > +void vm_tdx_finalize(struct kvm_vm *vm)
+> > > >
+> > > > Why is this not a new kvm_arch_vm_finalize_vcpu() call?
+> > >
+> > > What do you mean?
+> >
+> > Ira is pointing out that upstream now has kvm_arch_vm_finalize_vcpus(),=
+ so you
+> > can (and I agree, should) implement that for x86.c, and do vm_tdx_final=
+ize() from
+> > there (based on the VM shape) instead of requiring the caller to manual=
+ly finalize
+> > the TD.
+> >
+> > Unlike SEV, where userspace can manipulate guest state prior to LAUNCH,=
+ TDX guest
+> > state is unreachable from time zero, i.e. there is unlikely to be many =
+(any?) use
+> > cases where a selftest wants to do something between creating vCPUs and=
+ finalizing
+> > the TD.
+>=20
+> There are actually a few use cases for calling vm_tdx_finalize
+> seperately from the create phase. One such case is when a user wants
+> to add additional memslots for testing shared memory conversions.
 
-Oh, right.
+Why does creating memslots need to be done before finalizing the TD?  The e=
+xtra
+memslots shouldn't _need_ to be included in the initial image, and I don't =
+recall
+anything in the kernel that prevents adding a memslot after the TD is initi=
+alized.
 
-> We may have missed a zap in the guest_memfd punch hole path:
-> 
-> The SEAMCALLs tdh_mem_range_block(), tdh_mem_track() tdh_mem_page_remove()
-> in the guest_memfd punch hole path are only protected by the filemap invaliate
-> lock and mmu_lock, so they could contend with v1 version of tdh_vp_init().
->
-> (I'm writing a selftest to verify this, haven't been able to reproduce
-> tdh_vp_init(v1) returning BUSY yet. However, this race condition should be
-> theoretically possible.)
-> 
-> Resources              SHARED  users              EXCLUSIVE users
-> ------------------------------------------------------------------------
-> (1) TDR                tdh_mng_rdwr               tdh_mng_create
->                        tdh_vp_create              tdh_mng_add_cx
->                        tdh_vp_addcx               tdh_mng_init
->                        tdh_vp_init(v0)            tdh_mng_vpflushdone
->                        tdh_vp_enter               tdh_mng_key_config
->                        tdh_vp_flush               tdh_mng_key_freeid
->                        tdh_vp_rd_wr               tdh_mr_extend
->                        tdh_mem_sept_add           tdh_mr_finalize
->                        tdh_mem_sept_remove        tdh_vp_init(v1)
->                        tdh_mem_page_aug           tdh_mem_page_add
->                        tdh_mem_page_remove
->                        tdh_mem_range_block
->                        tdh_mem_track
->                        tdh_mem_range_unblock
->                        tdh_phymem_page_reclaim
-> 
-> Do you think we can acquire the mmu_lock for cmd KVM_TDX_INIT_VCPU?
+> Another one is installing interrupt handlers. But these are probably
+> rare enough that they can call __vm_create() and vm_vcpu_add()
+> manually instead of using the wrapper
 
-Ugh, I'd rather not?  Refresh me, what's the story with "v1"?  Are we now on v2?
-If this is effectively limited to deprecated TDX modules, my vote would be to
-ignore the flaw and avoid even more complexity in KVM.
+Hmm, for installing interrupt handlers, we could handle that by adding a gu=
+est
+variant, e.g. so that the guest can install/remove exception handlers after
+the initial image is finalized.  We probably want that anyways, otherwise t=
+ests
+would be unable to manipulate handlers throughout a test.
 
-> > @@ -3155,12 +3198,13 @@ int tdx_vcpu_unlocked_ioctl(struct kvm_vcpu *vcpu, void __user *argp)
-> >  	if (r)
-> >  		return r;
-> >  
-> > +	CLASS(tdx_vm_state_guard, guard)(kvm);
-> Should we move the guard to inside each cmd? Then there's no need to acquire the
-> locks in the default cases. 
-
-No, I don't think it's a good tradeoff.  We'd also need to move vcpu_{load,put}()
-into the cmd helpers, and theoretically slowing down a bad ioctl invocation due
-to taking extra locks is a complete non-issue.
+In fact, it's tempting to kill off vm_install_exception_handler() in x86 en=
+tirely,
+but that's probably not worth the churn (and some tests would be made more =
+complex).
