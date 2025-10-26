@@ -1,37 +1,37 @@
 Received: from mail.zytor.com (terminus.zytor.com [198.137.202.136])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A9B5D27056D;
-	Sun, 26 Oct 2025 20:20:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 097E42609D4;
+	Sun, 26 Oct 2025 20:20:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.137.202.136
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761510029; cv=none; b=Srv+vs25QRNiDbbVBwy3oaj5JWYG4u00xodSlwmkwJMNkmU+XenWOxE2pJJ2qL15xbY1ty0lZ9GAhxi1VFVdzT0j8FNw5FJDQCOeuJY4J/UxRLzsr2etMaNqTAvyUjWNQiO09S7zfxr6+QAF/oQ0bBTeFi95QLqbdEy0YQaYz3A=
+	t=1761510029; cv=none; b=G5SCgHeTavtcD2Wo+QRPJZG+Y8od9q/ixBGUQ++zamr4CqZGkhZwC00KhxIe8D+DgdzZ0/sIhIv5QFsO3C0dVAlRWrcXeF26r9eyiOCh/+Yxa0I6MWgMFoyUp8Tpk29qyF/vbjHMY5K3qOc6FWLwkWwRru7iOPqWFTYGpuFcjM0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1761510029; c=relaxed/simple;
-	bh=7PwOA2L22RhU7Wfpb+LLiL1s44n+Quo7GOcgLxC7hqE=;
+	bh=DhfeZ5KJjUnT+uof/Q7kUfYqovetZHfl3FFvo/ybTZI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mzbTch1RvwGEiAUIcc1Pw4Ay6fqF986jj0qtD+Z9uQs597P0cRVyM/xLHLJH7AJqdomdjfApaCJheqkn8czd/l2XO7DCuUgg4ofiwMYbWIDMCT+Mrd0SkkhdzK3EEycK3B2d56cTL/MuwNFS1tsZnJMddRQvPYxUxY/YGdAt+pA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zytor.com; spf=pass smtp.mailfrom=zytor.com; dkim=pass (2048-bit key) header.d=zytor.com header.i=@zytor.com header.b=gCYjF+GI; arc=none smtp.client-ip=198.137.202.136
+	 MIME-Version; b=EywMyBx0iKU4AwSBc7Fj17gRxNHDhUqNh4ATyJS9pysHQO5oMnxwlgnLqSEFXgSrllwGyNFylVCaOVdadvqmfNggns8Re4F75a15gAbFpEL086Xvs6M/JOnHiXhnjP0HGCcEe7DSAo5qNw3/1TzY08tZqugD7fAEbxrnDME33bI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zytor.com; spf=pass smtp.mailfrom=zytor.com; dkim=pass (2048-bit key) header.d=zytor.com header.i=@zytor.com header.b=aCeTtv9F; arc=none smtp.client-ip=198.137.202.136
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zytor.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=zytor.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=zytor.com header.i=@zytor.com header.b="gCYjF+GI"
+	dkim=pass (2048-bit key) header.d=zytor.com header.i=@zytor.com header.b="aCeTtv9F"
 Received: from terminus.zytor.com (terminus.zytor.com [IPv6:2607:7c80:54:3:0:0:0:136])
 	(authenticated bits=0)
-	by mail.zytor.com (8.18.1/8.17.1) with ESMTPSA id 59QKJBkN505258
+	by mail.zytor.com (8.18.1/8.17.1) with ESMTPSA id 59QKJBkd505258
 	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NO);
-	Sun, 26 Oct 2025 13:19:25 -0700
-DKIM-Filter: OpenDKIM Filter v2.11.0 mail.zytor.com 59QKJBkN505258
+	Sun, 26 Oct 2025 13:19:40 -0700
+DKIM-Filter: OpenDKIM Filter v2.11.0 mail.zytor.com 59QKJBkd505258
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=zytor.com;
-	s=2025102301; t=1761509965;
-	bh=mAJqAzOR6CadX8T1AE8gzgcquxHerGtrywt6QGPvQE8=;
+	s=2025102301; t=1761509981;
+	bh=LSH6dllTZDuGC8GAQCGYqP7bjrBN7UAddi2Jiew0Xzg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gCYjF+GIVss4rm1wXe6hHnO0Q18pUZvfgaRrzzaZT5RgalAjOlij8lX/vXqPw7YxD
-	 weVC2Zh7syhBy2GF/ntoRxzcNZIfx4iHAapIMGaxFRXbYMgxqXB58WT34oDPXqBgjH
-	 EERntFFsIUmq0Krx2vcc/M36XDbeF3eOJamvuYMABwDJ9nS1hbvfalfJf/6b8ac63g
-	 pBoURs2qPS50yMZPWujqPiwoBp4LpkQLckhCuDuhZsahx1j2IENwKaf4r7LAyIBTXd
-	 vyNRcahdhr3uA9ucr0OoifF9SCgK0itF1PNJjTLxO5LPpAkd7vXIYcLub2+B7ClsQT
-	 jtDT6vLJ5f4UA==
+	b=aCeTtv9F7kqjJpVsDHMFwGF181/2mqxa9WEjk9hb1FKE/q7rr98QkOCQ5gJjip7SA
+	 9HHQVJpB+W0pFK53+qNkUdWtB3iajdv6Ukp2U3P6i94ZVX09LmLgieeI0fR4KVarSp
+	 x/8mqtuiCqOYkF7SnOYQOeVq5t61X0MkCXnGDzg2UOFFkOjXnf2jr305YpGWKj2LrN
+	 6Y2jj0TWEuBI8/GyFF8p5AFWTy6JNrCoBmTHT2iGAAv112XfiiuSYRtofeg2wZ6YWc
+	 sM0m34ta4V6E3miWBoM1QhMHU9pcjoshj4ZfgIHynIA4vBcUTWiw4P5uk4c/o94F0x
+	 KyLSnhkRHfCOw==
 From: "Xin Li (Intel)" <xin@zytor.com>
 To: linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
         linux-doc@vger.kernel.org
@@ -40,9 +40,9 @@ Cc: pbonzini@redhat.com, seanjc@google.com, corbet@lwn.net, tglx@linutronix.de,
         x86@kernel.org, hpa@zytor.com, xin@zytor.com, luto@kernel.org,
         peterz@infradead.org, andrew.cooper3@citrix.com, chao.gao@intel.com,
         hch@infradead.org, sohil.mehta@intel.com
-Subject: [PATCH v9 06/22] x86/cea: Export __this_cpu_ist_top_va() to KVM
-Date: Sun, 26 Oct 2025 13:18:54 -0700
-Message-ID: <20251026201911.505204-7-xin@zytor.com>
+Subject: [PATCH v9 22/22] KVM: nVMX: Enable VMX FRED controls
+Date: Sun, 26 Oct 2025 13:19:10 -0700
+Message-ID: <20251026201911.505204-23-xin@zytor.com>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20251026201911.505204-1-xin@zytor.com>
 References: <20251026201911.505204-1-xin@zytor.com>
@@ -54,43 +54,59 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Export __this_cpu_ist_top_va() to allow KVM to retrieve the per-CPU
-exception stack top.
+From: Xin Li <xin3.li@intel.com>
 
-FRED introduced new fields in the host-state area of the VMCS for stack
-levels 1->3 (HOST_IA32_FRED_RSP[123]), each respectively corresponding to
-per-CPU exception stacks for #DB, NMI and #DF.  KVM must populate these
-fields each time a vCPU is loaded onto a CPU.
+Permit use of VMX FRED controls in nested VMX now that support for nested
+FRED is implemented.
 
+Signed-off-by: Xin Li <xin3.li@intel.com>
 Signed-off-by: Xin Li (Intel) <xin@zytor.com>
+Tested-by: Shan Kang <shan.kang@intel.com>
+Tested-by: Xuelian Guo <xuelian.guo@intel.com>
 ---
- arch/x86/mm/cpu_entry_area.c | 6 ++++++
- 1 file changed, 6 insertions(+)
 
-diff --git a/arch/x86/mm/cpu_entry_area.c b/arch/x86/mm/cpu_entry_area.c
-index b3d90f9cfbb1..e507621d5c20 100644
---- a/arch/x86/mm/cpu_entry_area.c
-+++ b/arch/x86/mm/cpu_entry_area.c
-@@ -19,6 +19,11 @@ static DEFINE_PER_CPU_PAGE_ALIGNED(struct exception_stacks, exception_stacks);
- DEFINE_PER_CPU(struct cea_exception_stacks*, cea_exception_stacks);
- 
- /*
-+ * FRED introduced new fields in the host-state area of the VMCS for
-+ * stack levels 1->3 (HOST_IA32_FRED_RSP[123]), each respectively
-+ * corresponding to per CPU stacks for #DB, NMI and #DF.  KVM must
-+ * populate these each time a vCPU is loaded onto a CPU.
-+ *
-  * Typically invoked by entry code, so must be noinstr.
-  */
- noinstr unsigned long __this_cpu_ist_bottom_va(enum exception_stack_ordering stack)
-@@ -36,6 +41,7 @@ noinstr unsigned long __this_cpu_ist_top_va(enum exception_stack_ordering stack)
- {
- 	return __this_cpu_ist_bottom_va(stack) + EXCEPTION_STKSZ;
+Change in v5:
+* Add TB from Xuelian Guo.
+---
+ arch/x86/kvm/vmx/nested.c | 5 +++--
+ arch/x86/kvm/vmx/vmx.c    | 1 +
+ 2 files changed, 4 insertions(+), 2 deletions(-)
+
+diff --git a/arch/x86/kvm/vmx/nested.c b/arch/x86/kvm/vmx/nested.c
+index 37ab8250dd31..655257b34d15 100644
+--- a/arch/x86/kvm/vmx/nested.c
++++ b/arch/x86/kvm/vmx/nested.c
+@@ -7397,7 +7397,8 @@ static void nested_vmx_setup_exit_ctls(struct vmcs_config *vmcs_conf,
+ 		 * advertise any feature in it to nVMX until its nVMX support
+ 		 * is ready.
+ 		 */
+-		msrs->secondary_exit_ctls &= 0;
++		msrs->secondary_exit_ctls &= SECONDARY_VM_EXIT_SAVE_IA32_FRED |
++					     SECONDARY_VM_EXIT_LOAD_IA32_FRED;
+ 	}
  }
-+EXPORT_SYMBOL_FOR_MODULES(__this_cpu_ist_top_va, "kvm-intel");
  
- static DEFINE_PER_CPU_READ_MOSTLY(unsigned long, _cea_offset);
+@@ -7413,7 +7414,7 @@ static void nested_vmx_setup_entry_ctls(struct vmcs_config *vmcs_conf,
+ 		VM_ENTRY_IA32E_MODE |
+ #endif
+ 		VM_ENTRY_LOAD_IA32_PAT | VM_ENTRY_LOAD_BNDCFGS |
+-		VM_ENTRY_LOAD_CET_STATE;
++		VM_ENTRY_LOAD_CET_STATE | VM_ENTRY_LOAD_IA32_FRED;
+ 	msrs->entry_ctls_high |=
+ 		(VM_ENTRY_ALWAYSON_WITHOUT_TRUE_MSR | VM_ENTRY_LOAD_IA32_EFER |
+ 		 VM_ENTRY_LOAD_IA32_PERF_GLOBAL_CTRL);
+diff --git a/arch/x86/kvm/vmx/vmx.c b/arch/x86/kvm/vmx/vmx.c
+index 04442f869abb..8f3805a71a97 100644
+--- a/arch/x86/kvm/vmx/vmx.c
++++ b/arch/x86/kvm/vmx/vmx.c
+@@ -7994,6 +7994,7 @@ static void nested_vmx_cr_fixed1_bits_update(struct kvm_vcpu *vcpu)
  
+ 	entry = kvm_find_cpuid_entry_index(vcpu, 0x7, 1);
+ 	cr4_fixed1_update(X86_CR4_LAM_SUP,    eax, feature_bit(LAM));
++	cr4_fixed1_update(X86_CR4_FRED,       eax, feature_bit(FRED));
+ 
+ #undef cr4_fixed1_update
+ }
 -- 
 2.51.0
 
