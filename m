@@ -1,119 +1,326 @@
-Received: from mail-yw1-f178.google.com (mail-yw1-f178.google.com [209.85.128.178])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0b-00082601.pphosted.com (mx0b-00082601.pphosted.com [67.231.153.30])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9FCD0311C38
-	for <kvm@vger.kernel.org>; Mon, 27 Oct 2025 17:25:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.178
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9765D2E1F08
+	for <kvm@vger.kernel.org>; Mon, 27 Oct 2025 17:34:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=67.231.153.30
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761585937; cv=none; b=pbI/CSVTuaNwGViHh34szqHWN1S6X7voFMOxh0JX+kHMPgJRFLrVF61lakpPJXQNY+pLk9nPMNUOfJfE8002fHp5I5o3DExks7l3DykFg3mzadCaKdrhcaMQmU/TgMiu70iUeHLZROm+bHWJe6RdjWxJPwUCbzMhq7YbUVxqJ0o=
+	t=1761586444; cv=none; b=RBHODYCpI7KuRmZwVZinSDcIo1OlOHjcqknAgxXpY257OpKLPVAy8WyAu88GtWDe7CokSw/WMMcazIDHydcZI3tdAuQ/IEIsf/kQYcXNGkFzAOEfV+Xvtj74xF1jlH3LX6Xa9wwoWVf2stscrUnkrhnvDa3HiDLyOZjtTxiMWfU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761585937; c=relaxed/simple;
-	bh=HAqDcgGMjKKzyDltuxO03NIXefnszZjB7wdrs046Gys=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=gjWQOrppTZTeYTVn3IFUCpE5gBHQf952YmY7+NDNJ/JHHxu6aVCz7A/DWuHFjmUjX3nDq6YSqohWz7TWid0c5ckSw+HL2CBVNQ7WzIh7Vn/+4vJjmOme7Wr16+Lh81GyWCRGpt8sQUu+Mzsiph2SR3fgrcpFB4aFi2spuw8hYI4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=UypOm19P; arc=none smtp.client-ip=209.85.128.178
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1761586444; c=relaxed/simple;
+	bh=Vc/SsYshYgWtGiWBSl00U/cMRy3jFTCaFrXnvpawQLA=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-ID:References:
+	 In-Reply-To:To:CC; b=GDfgp5E+/EzX4vEgFHjBzZjotCJw1oip80ylqRVAPb1rbOaL6KyLjh276t3yaM4Fuz4HbnJ8p9LXrL/Du9XpKUiEilyrn3ENIap+RPVo6/kdYeFmfwMYPF4Kfd9MwxJhpj+17ljFHIQ4pZ10bi/YUD8jpie+TuY59hpxYDTHr1U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=fb.com; spf=pass smtp.mailfrom=meta.com; dkim=pass (2048-bit key) header.d=fb.com header.i=@fb.com header.b=u2e13J/1; arc=none smtp.client-ip=67.231.153.30
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=fb.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=meta.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="UypOm19P"
-Received: by mail-yw1-f178.google.com with SMTP id 00721157ae682-784826b775aso54939417b3.2
-        for <kvm@vger.kernel.org>; Mon, 27 Oct 2025 10:25:35 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1761585934; x=1762190734; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=rJ/ydtqR65wkobsTKCpney8zjIjx42CMb/k/gju9QlM=;
-        b=UypOm19PIaJXT77Hrr6pWAUNTOqddsoLus5KTq1conazITUnHnyPeEubbTWMTL5CEZ
-         oZgZQZYcB7xEbAVXGmD7ci7W6P1F69Bv9w+uC53x8yXeB2z0ecWnIp+3UI5DWCwKr5bQ
-         z66vb99ZeW2530AG0GGcastxAQ0Fr/AoQ7Qr4z+fmpX7ixscRod1ZP2/6UPM0PUXk2Og
-         BpEAeSZI1kBQXMPcKX3fRGep94r0IQjhp6L4Prj3FvdparUhGQUjwp1W+PrMZm6zEAzT
-         5RQx0Qy1G/1HT2Sg/atd5PsL6srvd/VGxqvZWz0h4xWYOEm53Wbz333h1eKbaO///0si
-         mv1Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1761585934; x=1762190734;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=rJ/ydtqR65wkobsTKCpney8zjIjx42CMb/k/gju9QlM=;
-        b=Eb8qoFiLRbyou4BwQ6kpF3n6Q1aW9rOcmaPJX1GZNgrCu4Ecn4OxqfKM8QGsK0qXOw
-         45jnb+3cH0ITesyeKWY5Dmeqm2lOw2RxOvviJnvZKTXO3fmihUiDKXDJAWsZPIf4iANl
-         WWYdtjl9pMZC8EhAnnBuxDRKfntmY3gu2VMMrMkWAN8yN46z3GFhuAPptRrOELGDFDMz
-         wlLM4eJFgpWGKh/8CeokkpGnu1MtbLc/KWP1q7tY1EL9QekSrJyUqv8BTXHVBHOmedZJ
-         sK6US6JcgcXBMa1BAvgAN4nGtUhHqKsLDomwSAHWhiU0nc7DxySYF7+GNO5urpjgMn95
-         qSlQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVVCQrPYVRwdYcC43SCyRxh6QUuoayU7jI+brivhMpp4HQZiCki2RVQy2JewvTdHEXGu1A=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzXJDbP4Ck+fH6OhFlxIsLIHP3pSy1TAjfa13dqPSbFxcfP/oqC
-	FW4woElGB5W+QVxolKDePUqCQndfNTm1WOAWDkQG/eJZUZuR9pcRDKwx
-X-Gm-Gg: ASbGncss3HBPoT1xrwY+HLIN/TNkOYj0t/leFYO7hZy+Lgb7zQq5aSMxNiAhQOHJBmc
-	wFz2tiyLlqBqbPWwNHzIiiGKTf/N+RF01abUshdUDx9S5jxnJKGyI31qKDvzVhIlnUbn7nU6CcN
-	zi0+vVMZaxtX7J92zfJ5rqNzxnqNRgG+Ou5BJmYZQ1nfbTFrvWsuK4rg5xHEJ6wzJ1YIPlbxsqx
-	pZ97L3dJXLoleedUJKy9jl7thMoO+y7L+Ys1eQ5HLYnejZ4400HqqsS3CIHcHwVkVXDi/V/ZyVV
-	noRndtfzP3KbpPDrt0z4Nzz5iiMuNWlMiJLbxlqrybQCahIagbIIgnWAI1U4wbR/QBZDFYCz+qu
-	lDLlTbUehHD8rwwOARsXmbh6O3EZc2rvSQ5fklYZHwyNt++lRSbTYnjc+G/qix7LP3hQcOKVswp
-	cJWHzkjTdG/LKFhxm23ZmKQy/AVUyPqFgLGKk=
-X-Google-Smtp-Source: AGHT+IGHTF9vBtn+seygObOHlL96iKi+OVb+7MtjlE9jx6wEi+MY/OkA96sVfPPxkYnPfsaXOqXkAw==
-X-Received: by 2002:a05:690c:338b:b0:723:bf47:96f8 with SMTP id 00721157ae682-786183ab057mr5505517b3.53.1761585934504;
-        Mon, 27 Oct 2025 10:25:34 -0700 (PDT)
-Received: from devvm11784.nha0.facebook.com ([2a03:2880:25ff:9::])
-        by smtp.gmail.com with ESMTPSA id 00721157ae682-785ed1423f5sm20564397b3.5.2025.10.27.10.25.33
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 27 Oct 2025 10:25:33 -0700 (PDT)
-Date: Mon, 27 Oct 2025 10:25:29 -0700
-From: Bobby Eshleman <bobbyeshleman@gmail.com>
-To: Stefano Garzarella <sgarzare@redhat.com>
-Cc: Shuah Khan <shuah@kernel.org>, "David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	Stefan Hajnoczi <stefanha@redhat.com>,
-	"Michael S. Tsirkin" <mst@redhat.com>,
-	Jason Wang <jasowang@redhat.com>,
-	Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
-	Eugenio =?iso-8859-1?Q?P=E9rez?= <eperezma@redhat.com>,
-	"K. Y. Srinivasan" <kys@microsoft.com>,
-	Haiyang Zhang <haiyangz@microsoft.com>,
-	Wei Liu <wei.liu@kernel.org>, Dexuan Cui <decui@microsoft.com>,
-	Bryan Tan <bryan-bt.tan@broadcom.com>,
-	Vishnu Dasa <vishnu.dasa@broadcom.com>,
-	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>,
-	virtualization@lists.linux.dev, netdev@vger.kernel.org,
-	linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org,
-	kvm@vger.kernel.org, linux-hyperv@vger.kernel.org,
-	berrange@redhat.com, Bobby Eshleman <bobbyeshleman@meta.com>
-Subject: Re: [PATCH net-next v8 00/14] vsock: add namespace support to
- vhost-vsock
-Message-ID: <aP+rCQih4YMm1OAp@devvm11784.nha0.facebook.com>
-References: <20251023-vsock-vmtest-v8-0-dea984d02bb0@meta.com>
- <k4tqyp7wlnbmcntmvzp7oawacfofnnzdi5cjwlj6djxtlo6xai@44ivtv4kgjz2>
+	dkim=pass (2048-bit key) header.d=fb.com header.i=@fb.com header.b="u2e13J/1"
+Received: from pps.filterd (m0148460.ppops.net [127.0.0.1])
+	by mx0a-00082601.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 59RF6vYm975897
+	for <kvm@vger.kernel.org>; Mon, 27 Oct 2025 10:34:01 -0700
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=fb.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=s2048-2025-q2;
+	 bh=OzYCMuVBq+ZQIkmYYGsKvAwvz51TdK3SjEwPx+hEItc=; b=u2e13J/17QEg
+	aN6a6/gpIHsiTEC+QcqjSkdHyF2NfGTdRTb62cM8KrgGTcXBmTfK7hHKrMjxDcfq
+	TG42INUWqeSOUtzfmDXwTsldt0kwKyQYU4O5bClr2mp1pWhwrgTdf4ZmsMEh6K3m
+	ev7vJ5V/9AxME5ii+urT3cAdn7bzZP8VtMUYkyQMk7k0wcQtJXDqnJyIsVokBVx2
+	DkVVTWJ66aNhUd+brRFtWv7pUbhlNDb0PPEqMiHF7r/zanzqFqy6cmkTCGQNpbg5
+	geYf/LrSDgWvL5QrrDXXujZ0sc/s/sO2MJp13FYw1eOU2ni17v+VNOP2moJlKGlG
+	8fzNNAzSzA==
+Received: from maileast.thefacebook.com ([163.114.135.16])
+	by mx0a-00082601.pphosted.com (PPS) with ESMTPS id 4a2b3j9dfc-3
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT)
+	for <kvm@vger.kernel.org>; Mon, 27 Oct 2025 10:34:01 -0700 (PDT)
+Received: from twshared13080.31.frc3.facebook.com (2620:10d:c0a8:1c::1b) by
+ mail.thefacebook.com (2620:10d:c0a9:6f::237c) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.2.2562.20; Mon, 27 Oct 2025 17:33:59 +0000
+Received: by devgpu012.nha5.facebook.com (Postfix, from userid 28580)
+	id 7A56343E094; Mon, 27 Oct 2025 10:33:57 -0700 (PDT)
+From: Alex Mastro <amastro@fb.com>
+Date: Mon, 27 Oct 2025 10:33:41 -0700
+Subject: [PATCH v5 1/5] vfio/type1: sanitize for overflow using
+ check_*_overflow
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <k4tqyp7wlnbmcntmvzp7oawacfofnnzdi5cjwlj6djxtlo6xai@44ivtv4kgjz2>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-ID: <20251027-fix-unmap-v5-1-4f0fcf8ffb7d@fb.com>
+References: <20251027-fix-unmap-v5-0-4f0fcf8ffb7d@fb.com>
+In-Reply-To: <20251027-fix-unmap-v5-0-4f0fcf8ffb7d@fb.com>
+To: Alex Williamson <alex@shazbot.org>
+CC: Jason Gunthorpe <jgg@ziepe.ca>,
+        Alejandro Jimenez
+	<alejandro.j.jimenez@oracle.com>,
+        David Matlack <dmatlack@google.com>, <kvm@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>, Alex Mastro
+	<amastro@fb.com>,
+        Jason Gunthorpe <jgg@ziepe.ca>
+X-Mailer: b4 0.13.0
+X-FB-Internal: Safe
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMDI3MDE2MyBTYWx0ZWRfX2OYg3l+CjuSl
+ vAh201c7evX/Tb7DCiNvIQvmQYHcyJdmTZ157xutzo6HL1wS9MK4xuFxTI9+0Y+gD/uhQ3GQGV3
+ br2rtsJpQgP8cjaA1CDrtj3f7RfNQNuA1Q/+EX7b8cCtfQVUVGoOskJKb04h8i+sdbacVN3fD/X
+ P0eXViDxxrU2Tkn3fDA3BEpgL2GZ+yWU2Dt2wmUoe7BMFPKbSLA5PaTwQjpFBqLB4aC5R8tRP7m
+ zkW6AxfIn/1CUw8/GPJ7MTdSSJuse9dqo2VPGz59OtZo3DgjdNjJ5EZb/CYjr6yTfDmigx4hz+3
+ hxRMa0ofWvLyBRLY3mn6szYn9hN1DPO/rEZK1UjhcRtsxzceLouwq0OzPZsbkAqowUi4TF+qyw1
+ LRZhjW640M0hEmr2U9ue31NYPycf5Q==
+X-Authority-Analysis: v=2.4 cv=H87WAuYi c=1 sm=1 tr=0 ts=68ffad09 cx=c_pps
+ a=MfjaFnPeirRr97d5FC5oHw==:117 a=MfjaFnPeirRr97d5FC5oHw==:17
+ a=IkcTkHD0fZMA:10 a=x6icFKpwvdMA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=yPCof4ZbAAAA:8 a=Ikd4Dj_1AAAA:8 a=FOH2dFAWAAAA:8 a=kyqc8lFLhbGN_ZoCeBMA:9
+ a=QEXdDO2ut3YA:10
+X-Proofpoint-ORIG-GUID: IIht5etzLH6SVz3QDZcq8d_WyBKgXVGh
+X-Proofpoint-GUID: IIht5etzLH6SVz3QDZcq8d_WyBKgXVGh
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.80.40
+ definitions=2025-10-27_07,2025-10-22_01,2025-03-28_01
 
-On Mon, Oct 27, 2025 at 02:28:31PM +0100, Stefano Garzarella wrote:
-> Hi Bobby,
-> 
-> > 
-> > Changes in v8:
-> > - Break generic cleanup/refactoring patches into standalone series,
-> >  remove those from this series
-> 
-> Yep, thanks for splitting the series. I'll review it ASAP since it's a
-> dependency.
-> 
-> I was at GSoC mentor summit last week, so I'm bit busy with the backlog, but
-> I'll do my best to review both series this week.
-> 
-> Thanks,
-> Stefano
-> 
+Adopt check_*_overflow functions to clearly express overflow check
+intent.
 
-Thanks for the heads up!
+Tested-by: Alejandro Jimenez <alejandro.j.jimenez@oracle.com>
+Fixes: 73fa0d10d077 ("vfio: Type1 IOMMU implementation")
+Reviewed-by: Jason Gunthorpe <jgg@nvidia.com>
+Reviewed-by: Alejandro Jimenez <alejandro.j.jimenez@oracle.com>
+Signed-off-by: Alex Mastro <amastro@fb.com>
+---
+ drivers/vfio/vfio_iommu_type1.c | 86 ++++++++++++++++++++++++++++++-----------
+ 1 file changed, 63 insertions(+), 23 deletions(-)
 
-Best,
-Bobby
+diff --git a/drivers/vfio/vfio_iommu_type1.c b/drivers/vfio/vfio_iommu_type1.c
+index 916cad80941c..91b1480b7a37 100644
+--- a/drivers/vfio/vfio_iommu_type1.c
++++ b/drivers/vfio/vfio_iommu_type1.c
+@@ -38,6 +38,7 @@
+ #include <linux/workqueue.h>
+ #include <linux/notifier.h>
+ #include <linux/mm_inline.h>
++#include <linux/overflow.h>
+ #include "vfio.h"
+ 
+ #define DRIVER_VERSION  "0.2"
+@@ -182,7 +183,7 @@ static struct vfio_dma *vfio_find_dma(struct vfio_iommu *iommu,
+ }
+ 
+ static struct rb_node *vfio_find_dma_first_node(struct vfio_iommu *iommu,
+-						dma_addr_t start, u64 size)
++						dma_addr_t start, size_t size)
+ {
+ 	struct rb_node *res = NULL;
+ 	struct rb_node *node = iommu->dma_list.rb_node;
+@@ -895,14 +896,20 @@ static int vfio_iommu_type1_pin_pages(void *iommu_data,
+ 	unsigned long remote_vaddr;
+ 	struct vfio_dma *dma;
+ 	bool do_accounting;
++	dma_addr_t iova_end;
++	size_t iova_size;
+ 
+-	if (!iommu || !pages)
++	if (!iommu || !pages || npage <= 0)
+ 		return -EINVAL;
+ 
+ 	/* Supported for v2 version only */
+ 	if (!iommu->v2)
+ 		return -EACCES;
+ 
++	if (check_mul_overflow(npage, PAGE_SIZE, &iova_size) ||
++	    check_add_overflow(user_iova, iova_size - 1, &iova_end))
++		return -EOVERFLOW;
++
+ 	mutex_lock(&iommu->lock);
+ 
+ 	if (WARN_ONCE(iommu->vaddr_invalid_count,
+@@ -1008,12 +1015,21 @@ static void vfio_iommu_type1_unpin_pages(void *iommu_data,
+ {
+ 	struct vfio_iommu *iommu = iommu_data;
+ 	bool do_accounting;
++	dma_addr_t iova_end;
++	size_t iova_size;
+ 	int i;
+ 
+ 	/* Supported for v2 version only */
+ 	if (WARN_ON(!iommu->v2))
+ 		return;
+ 
++	if (WARN_ON(npage <= 0))
++		return;
++
++	if (WARN_ON(check_mul_overflow(npage, PAGE_SIZE, &iova_size) ||
++		    check_add_overflow(user_iova, iova_size - 1, &iova_end)))
++		return;
++
+ 	mutex_lock(&iommu->lock);
+ 
+ 	do_accounting = list_empty(&iommu->domain_list);
+@@ -1374,7 +1390,8 @@ static int vfio_dma_do_unmap(struct vfio_iommu *iommu,
+ 	int ret = -EINVAL, retries = 0;
+ 	unsigned long pgshift;
+ 	dma_addr_t iova = unmap->iova;
+-	u64 size = unmap->size;
++	dma_addr_t iova_end;
++	size_t size = unmap->size;
+ 	bool unmap_all = unmap->flags & VFIO_DMA_UNMAP_FLAG_ALL;
+ 	bool invalidate_vaddr = unmap->flags & VFIO_DMA_UNMAP_FLAG_VADDR;
+ 	struct rb_node *n, *first_n;
+@@ -1387,6 +1404,11 @@ static int vfio_dma_do_unmap(struct vfio_iommu *iommu,
+ 		goto unlock;
+ 	}
+ 
++	if (iova != unmap->iova || size != unmap->size) {
++		ret = -EOVERFLOW;
++		goto unlock;
++	}
++
+ 	pgshift = __ffs(iommu->pgsize_bitmap);
+ 	pgsize = (size_t)1 << pgshift;
+ 
+@@ -1396,10 +1418,15 @@ static int vfio_dma_do_unmap(struct vfio_iommu *iommu,
+ 	if (unmap_all) {
+ 		if (iova || size)
+ 			goto unlock;
+-		size = U64_MAX;
+-	} else if (!size || size & (pgsize - 1) ||
+-		   iova + size - 1 < iova || size > SIZE_MAX) {
+-		goto unlock;
++		size = SIZE_MAX;
++	} else {
++		if (!size || size & (pgsize - 1))
++			goto unlock;
++
++		if (check_add_overflow(iova, size - 1, &iova_end)) {
++			ret = -EOVERFLOW;
++			goto unlock;
++		}
+ 	}
+ 
+ 	/* When dirty tracking is enabled, allow only min supported pgsize */
+@@ -1446,7 +1473,7 @@ static int vfio_dma_do_unmap(struct vfio_iommu *iommu,
+ 		if (dma && dma->iova != iova)
+ 			goto unlock;
+ 
+-		dma = vfio_find_dma(iommu, iova + size - 1, 0);
++		dma = vfio_find_dma(iommu, iova_end, 0);
+ 		if (dma && dma->iova + dma->size != iova + size)
+ 			goto unlock;
+ 	}
+@@ -1648,7 +1675,9 @@ static int vfio_dma_do_map(struct vfio_iommu *iommu,
+ {
+ 	bool set_vaddr = map->flags & VFIO_DMA_MAP_FLAG_VADDR;
+ 	dma_addr_t iova = map->iova;
++	dma_addr_t iova_end;
+ 	unsigned long vaddr = map->vaddr;
++	unsigned long vaddr_end;
+ 	size_t size = map->size;
+ 	int ret = 0, prot = 0;
+ 	size_t pgsize;
+@@ -1656,8 +1685,15 @@ static int vfio_dma_do_map(struct vfio_iommu *iommu,
+ 
+ 	/* Verify that none of our __u64 fields overflow */
+ 	if (map->size != size || map->vaddr != vaddr || map->iova != iova)
++		return -EOVERFLOW;
++
++	if (!size)
+ 		return -EINVAL;
+ 
++	if (check_add_overflow(iova, size - 1, &iova_end) ||
++	    check_add_overflow(vaddr, size - 1, &vaddr_end))
++		return -EOVERFLOW;
++
+ 	/* READ/WRITE from device perspective */
+ 	if (map->flags & VFIO_DMA_MAP_FLAG_WRITE)
+ 		prot |= IOMMU_WRITE;
+@@ -1673,13 +1709,7 @@ static int vfio_dma_do_map(struct vfio_iommu *iommu,
+ 
+ 	WARN_ON((pgsize - 1) & PAGE_MASK);
+ 
+-	if (!size || (size | iova | vaddr) & (pgsize - 1)) {
+-		ret = -EINVAL;
+-		goto out_unlock;
+-	}
+-
+-	/* Don't allow IOVA or virtual address wrap */
+-	if (iova + size - 1 < iova || vaddr + size - 1 < vaddr) {
++	if ((size | iova | vaddr) & (pgsize - 1)) {
+ 		ret = -EINVAL;
+ 		goto out_unlock;
+ 	}
+@@ -1710,7 +1740,7 @@ static int vfio_dma_do_map(struct vfio_iommu *iommu,
+ 		goto out_unlock;
+ 	}
+ 
+-	if (!vfio_iommu_iova_dma_valid(iommu, iova, iova + size - 1)) {
++	if (!vfio_iommu_iova_dma_valid(iommu, iova, iova_end)) {
+ 		ret = -EINVAL;
+ 		goto out_unlock;
+ 	}
+@@ -2977,7 +3007,8 @@ static int vfio_iommu_type1_dirty_pages(struct vfio_iommu *iommu,
+ 		struct vfio_iommu_type1_dirty_bitmap_get range;
+ 		unsigned long pgshift;
+ 		size_t data_size = dirty.argsz - minsz;
+-		size_t iommu_pgsize;
++		size_t size, iommu_pgsize;
++		dma_addr_t iova, iova_end;
+ 
+ 		if (!data_size || data_size < sizeof(range))
+ 			return -EINVAL;
+@@ -2986,14 +3017,24 @@ static int vfio_iommu_type1_dirty_pages(struct vfio_iommu *iommu,
+ 				   sizeof(range)))
+ 			return -EFAULT;
+ 
+-		if (range.iova + range.size < range.iova)
++		iova = range.iova;
++		size = range.size;
++
++		if (iova != range.iova || size != range.size)
++			return -EOVERFLOW;
++
++		if (!size)
+ 			return -EINVAL;
++
++		if (check_add_overflow(iova, size - 1, &iova_end))
++			return -EOVERFLOW;
++
+ 		if (!access_ok((void __user *)range.bitmap.data,
+ 			       range.bitmap.size))
+ 			return -EINVAL;
+ 
+ 		pgshift = __ffs(range.bitmap.pgsize);
+-		ret = verify_bitmap_size(range.size >> pgshift,
++		ret = verify_bitmap_size(size >> pgshift,
+ 					 range.bitmap.size);
+ 		if (ret)
+ 			return ret;
+@@ -3007,19 +3048,18 @@ static int vfio_iommu_type1_dirty_pages(struct vfio_iommu *iommu,
+ 			ret = -EINVAL;
+ 			goto out_unlock;
+ 		}
+-		if (range.iova & (iommu_pgsize - 1)) {
++		if (iova & (iommu_pgsize - 1)) {
+ 			ret = -EINVAL;
+ 			goto out_unlock;
+ 		}
+-		if (!range.size || range.size & (iommu_pgsize - 1)) {
++		if (size & (iommu_pgsize - 1)) {
+ 			ret = -EINVAL;
+ 			goto out_unlock;
+ 		}
+ 
+ 		if (iommu->dirty_page_tracking)
+ 			ret = vfio_iova_dirty_bitmap(range.bitmap.data,
+-						     iommu, range.iova,
+-						     range.size,
++						     iommu, iova, size,
+ 						     range.bitmap.pgsize);
+ 		else
+ 			ret = -EINVAL;
+
+-- 
+2.47.3
+
