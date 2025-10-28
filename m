@@ -1,48 +1,48 @@
-Received: from mx0a-00082601.pphosted.com (mx0a-00082601.pphosted.com [67.231.145.42])
+Received: from mx0b-00082601.pphosted.com (mx0b-00082601.pphosted.com [67.231.153.30])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4CABC284674
-	for <kvm@vger.kernel.org>; Tue, 28 Oct 2025 16:15:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=67.231.145.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 06D67283FF8
+	for <kvm@vger.kernel.org>; Tue, 28 Oct 2025 16:15:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=67.231.153.30
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761668122; cv=none; b=o148T40meOWAkAIsNmreCCgPVu0JIUHYPw1Zi2SJud1igq+fI80xEMnJZmakFiswIcaoieAlBuDsx/sl1boImDDMQqteFWdPHzMlb/H/2myn6jb0ZU7iHAk1FsXUSXotqj5s5KI+IJsB4xeUnGbUk6iyX1mtP0s6z1WCS0PpdlY=
+	t=1761668123; cv=none; b=dGjFeYcsUnEs+8JjzORv2eiIyVNcUJe6CFJcmQkkrerhSYP83ZYK/Y8SABN4+bLsl7jdH2mn/fOCWHWc4F/JV/2VpDVmOLMmoaDDdwyfyTRlvGIihZkBMqL/oZf59puRTkCCVvSzcPzeITFdxTUhqznElF4XmGWChIvLI4BjMlk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761668122; c=relaxed/simple;
-	bh=zH2bltp5SnxsRbXoUh5UiyX6fJZxfu9t7+eKTgtNKhw=;
+	s=arc-20240116; t=1761668123; c=relaxed/simple;
+	bh=tzggaxR9FZMIzBPQS8Uhk5DQQIJ5mAFzxbGJIArHuc4=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-ID:References:
-	 In-Reply-To:To:CC; b=bbyBLmecMyfGkNxH+9V+VHGUEa0NL9D1l4AxGX3m41CHhHDRerlxloMMf1nHZtZuWaVowBKKe9CLIC54JsxtjpS3Ls7WqyFTnhBKc1evTk+hRxD9vIF5qpkuRwQsg4zdYdk8JL7Ff/y0SA7FgzN7Dm70eMiL7W9W0H8+e5PPoKU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=fb.com; spf=pass smtp.mailfrom=meta.com; dkim=pass (2048-bit key) header.d=fb.com header.i=@fb.com header.b=hieX/C1x; arc=none smtp.client-ip=67.231.145.42
+	 In-Reply-To:To:CC; b=hrVmcLjO52N9gHgL9sQy6XdmlZ3I1OKLb2aUm1GfTJZfX3vTMKP4idx0jPLLuHTgZY1KgQXiIj7K9g/1ZCz01RDSs9+iJ/eSqWdVhoXJj2jSHW6yn39KHHaT0BReRUptASHADBZ2xRIM9ywKEwT86jln7rbm6CwsiPqsvEEVriI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=fb.com; spf=pass smtp.mailfrom=meta.com; dkim=pass (2048-bit key) header.d=fb.com header.i=@fb.com header.b=HOKKYZtr; arc=none smtp.client-ip=67.231.153.30
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=fb.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=meta.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=fb.com header.i=@fb.com header.b="hieX/C1x"
-Received: from pps.filterd (m0044010.ppops.net [127.0.0.1])
-	by mx0a-00082601.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 59SFNowR3079487
-	for <kvm@vger.kernel.org>; Tue, 28 Oct 2025 09:15:19 -0700
+	dkim=pass (2048-bit key) header.d=fb.com header.i=@fb.com header.b="HOKKYZtr"
+Received: from pps.filterd (m0109332.ppops.net [127.0.0.1])
+	by mx0a-00082601.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 59SDI1Qp471239
+	for <kvm@vger.kernel.org>; Tue, 28 Oct 2025 09:15:18 -0700
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=fb.com; h=cc
 	:content-transfer-encoding:content-type:date:from:in-reply-to
 	:message-id:mime-version:references:subject:to; s=s2048-2025-q2;
-	 bh=5Xtgh45PqrJXrHbQeeYqpMNjm28cym0+HxoQQ807OaM=; b=hieX/C1xkhLS
-	e3xzMgmGsFcxcGmdxQUoyVThbPDASo4WmZZyVBxfQY8VBJ+Qv1OEkDysokXAHE79
-	VM0yU93lNWm2EqBrWJFR/6LxxWWVQ0RC/iDyxbp53rL9YplTSVg0ym3/3Max8Wom
-	SIVjYbZrGKcBNlmvS8XVmJSMIu2U/hvz/Sg1VTwCTgh5lL5apBWLsqslTlCA6i63
-	GO5UmR6QdF/YOAX3yOD4xoImfAb1BLW5M//5moFdfAR9lSAC410RoFjLfjAVhmZU
-	zx+C5iyMwSVOwnhd7ZoLBOGV6Yhq86xp1Elv7QM3xpPGP4tiZ38x169k6+zLACs+
-	QK42qPc7gA==
-Received: from maileast.thefacebook.com ([163.114.135.16])
-	by mx0a-00082601.pphosted.com (PPS) with ESMTPS id 4a30eggge2-9
+	 bh=jL27jaMKNMd3868BGcN8P3oHAzLxge4Xak38+P/R528=; b=HOKKYZtrgrl4
+	TqOmQtT1fJ7qYwIMUqejfa+hMZWFT2/r+0YdM5IzfY2RBNSJ9DlQVqI4XQgRMc36
+	S2c1E3KCdvyar50lqlSKk7oWPFMyoJKUxfF0RS2/hB0SHnxiq8OmGiDy6Z4l8+yV
+	xheMDaYD3YUP3P5Cl8Nf/K63Z79ixNnyR6jEAAm0/GBSP43FrYBXPrd+lZYBZl/T
+	mTir10MOmaKkycV87BEdwfouqVFxmCpzURfTawcEhNXIciJEPmamly1Jo3O3NEIw
+	IxtCIw1+dWgvcDke4ADhvVICa8Uhn5J6Ojjmo79dP3//FBIdkcg5m5EFnwPZNR/r
+	YkgZs5YC+A==
+Received: from mail.thefacebook.com ([163.114.134.16])
+	by mx0a-00082601.pphosted.com (PPS) with ESMTPS id 4a2xkhhq1h-20
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT)
-	for <kvm@vger.kernel.org>; Tue, 28 Oct 2025 09:15:19 -0700 (PDT)
-Received: from twshared82436.15.frc2.facebook.com (2620:10d:c0a8:1b::30) by
- mail.thefacebook.com (2620:10d:c0a9:6f::8fd4) with Microsoft SMTP Server
+	for <kvm@vger.kernel.org>; Tue, 28 Oct 2025 09:15:18 -0700 (PDT)
+Received: from twshared15465.32.frc3.facebook.com (2620:10d:c085:208::7cb7) by
+ mail.thefacebook.com (2620:10d:c08b:78::c78f) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.2.2562.20; Tue, 28 Oct 2025 16:15:18 +0000
+ 15.2.2562.20; Tue, 28 Oct 2025 16:15:11 +0000
 Received: by devgpu012.nha5.facebook.com (Postfix, from userid 28580)
-	id 01E18512937; Tue, 28 Oct 2025 09:15:05 -0700 (PDT)
+	id 0778E51293D; Tue, 28 Oct 2025 09:15:05 -0700 (PDT)
 From: Alex Mastro <amastro@fb.com>
-Date: Tue, 28 Oct 2025 09:15:01 -0700
-Subject: [PATCH v6 2/5] vfio/type1: move iova increment to unmap_unpin_*()
- caller
+Date: Tue, 28 Oct 2025 09:15:04 -0700
+Subject: [PATCH v6 5/5] vfio: selftests: add end of address space DMA
+ map/unmap tests
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -51,7 +51,7 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-ID: <20251028-fix-unmap-v6-2-2542b96bcc8e@fb.com>
+Message-ID: <20251028-fix-unmap-v6-5-2542b96bcc8e@fb.com>
 References: <20251028-fix-unmap-v6-0-2542b96bcc8e@fb.com>
 In-Reply-To: <20251028-fix-unmap-v6-0-2542b96bcc8e@fb.com>
 To: Alex Williamson <alex@shazbot.org>
@@ -60,117 +60,144 @@ CC: Jason Gunthorpe <jgg@ziepe.ca>,
 	<alejandro.j.jimenez@oracle.com>,
         David Matlack <dmatlack@google.com>, <kvm@vger.kernel.org>,
         <linux-kernel@vger.kernel.org>, Alex Mastro
-	<amastro@fb.com>,
-        Jason Gunthorpe <jgg@ziepe.ca>
+	<amastro@fb.com>
 X-Mailer: b4 0.13.0
 X-FB-Internal: Safe
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMDI4MDEzNyBTYWx0ZWRfX8MYIx3do9StX
- LAmgVrTbGAonu8uANUg+dOiNgffZEPphk1pMO6EeavihRFZ2QgFwhbKCIkJJFzeZFw+4gshkxfD
- 21bX5wEIUdd1aPFD3Pyd2HrtOL8higloBZF4LFD9w/TX5LU/vqVa19IqbeDHQFuKv20fo4EQgeX
- dnuWmyqYMMV8Yb9yWZ66tH7hAY7YnkldNqrCnr3Ag7o2e5amQSQb8afA5BOUrcRAsnWMaw4o0da
- G7WN/ACJ0V5/XybBXeP0UbjwPDJDxD8gv3w5h/haHst0Dczpvc2k/JvZy1s/4hzScYIeuc9uK0G
- 2mAEnY1mSSlNVOivUXnK2v4KHWSLZUy+gwNAW22UwtcGZTMpJeLidGMHDacyelI3B46fTF3prCP
- smqWHVxf6LblzQy7nH6rMJbXdK4Zpw==
-X-Proofpoint-GUID: Lpot5dZmDkHe0bij5ZdZGzJfKqpfuVlG
-X-Authority-Analysis: v=2.4 cv=PNkCOPqC c=1 sm=1 tr=0 ts=6900ec17 cx=c_pps
- a=MfjaFnPeirRr97d5FC5oHw==:117 a=MfjaFnPeirRr97d5FC5oHw==:17
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMDI4MDEzNyBTYWx0ZWRfXy2kDZIpycgqT
+ OLtdl2IEmenACp9QYiqvaSeFXob04cM31mUSG2PObyEmZ/T4PBPO9o+NMfXMRD5tRmN1kksr8pR
+ XMTdzoApwPbFqzkdKgUJXoVCmBqnIGaXALFh6rThJuQB7EigtiSfTlURmcKDP0yQvgEAtejKSrv
+ VhEp+oYNyZcue9SBfDSoI0DnAGL3f9oARmQIMsazW7oAAGBjWeL5mphvQkR2p1+bxrmJiXvoQf7
+ Zkpa1OhIW+XmOpKaFk6ralos5yhtWebzbQDqHqwSY6hm0TNpy9uDDHe5/znJy0eZJX79eFenGO4
+ FymjbxZqqqu5uepAJNRaoOMnRtxpsmOzDpn/pYm1tJoaY6k/Y1k4SOKyMabNAMVuAWH6c/nGS3W
+ WYwfHnCe5c3bmihKjDPEadJGCW2Crg==
+X-Proofpoint-GUID: k0T45pGA6VPHuiGKJ7zB-w5Gihfrs63u
+X-Authority-Analysis: v=2.4 cv=Uspu9uwB c=1 sm=1 tr=0 ts=6900ec16 cx=c_pps
+ a=CB4LiSf2rd0gKozIdrpkBw==:117 a=CB4LiSf2rd0gKozIdrpkBw==:17
  a=IkcTkHD0fZMA:10 a=x6icFKpwvdMA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=yPCof4ZbAAAA:8 a=Ikd4Dj_1AAAA:8 a=FOH2dFAWAAAA:8 a=PelP7hj50Gaxf9uocr0A:9
- a=QEXdDO2ut3YA:10
-X-Proofpoint-ORIG-GUID: Lpot5dZmDkHe0bij5ZdZGzJfKqpfuVlG
+ a=1XWaLZrsAAAA:8 a=FOH2dFAWAAAA:8 a=wf1ge7rc0ZxdfOmzxhAA:9 a=QEXdDO2ut3YA:10
+X-Proofpoint-ORIG-GUID: k0T45pGA6VPHuiGKJ7zB-w5Gihfrs63u
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.80.40
  definitions=2025-10-28_06,2025-10-22_01,2025-03-28_01
 
-Move incrementing iova to the caller of these functions as part of
-preparing to handle end of address space map/unmap.
+Add tests which validate dma map/unmap at the end of address space. Add
+negative test cases for checking that overflowing ioctl args fail with
+the expected errno.
 
-Tested-by: Alejandro Jimenez <alejandro.j.jimenez@oracle.com>
-Fixes: 73fa0d10d077 ("vfio: Type1 IOMMU implementation")
-Reviewed-by: Jason Gunthorpe <jgg@nvidia.com>
-Reviewed-by: Alejandro Jimenez <alejandro.j.jimenez@oracle.com>
+Reviewed-by: David Matlack <dmatlack@google.com>
 Signed-off-by: Alex Mastro <amastro@fb.com>
 ---
- drivers/vfio/vfio_iommu_type1.c | 20 ++++++++++----------
- 1 file changed, 10 insertions(+), 10 deletions(-)
+ .../testing/selftests/vfio/vfio_dma_mapping_test.c | 90 ++++++++++++++++++++++
+ 1 file changed, 90 insertions(+)
 
-diff --git a/drivers/vfio/vfio_iommu_type1.c b/drivers/vfio/vfio_iommu_type1.c
-index 91b1480b7a37..48bcc0633d44 100644
---- a/drivers/vfio/vfio_iommu_type1.c
-+++ b/drivers/vfio/vfio_iommu_type1.c
-@@ -1083,7 +1083,7 @@ static long vfio_sync_unpin(struct vfio_dma *dma, struct vfio_domain *domain,
- #define VFIO_IOMMU_TLB_SYNC_MAX		512
+diff --git a/tools/testing/selftests/vfio/vfio_dma_mapping_test.c b/tools/testing/selftests/vfio/vfio_dma_mapping_test.c
+index a38966e8e5a6..4f1ea79a200c 100644
+--- a/tools/testing/selftests/vfio/vfio_dma_mapping_test.c
++++ b/tools/testing/selftests/vfio/vfio_dma_mapping_test.c
+@@ -112,6 +112,8 @@ FIXTURE_VARIANT_ADD_ALL_IOMMU_MODES(anonymous, 0, 0);
+ FIXTURE_VARIANT_ADD_ALL_IOMMU_MODES(anonymous_hugetlb_2mb, SZ_2M, MAP_HUGETLB | MAP_HUGE_2MB);
+ FIXTURE_VARIANT_ADD_ALL_IOMMU_MODES(anonymous_hugetlb_1gb, SZ_1G, MAP_HUGETLB | MAP_HUGE_1GB);
  
- static size_t unmap_unpin_fast(struct vfio_domain *domain,
--			       struct vfio_dma *dma, dma_addr_t *iova,
-+			       struct vfio_dma *dma, dma_addr_t iova,
- 			       size_t len, phys_addr_t phys, long *unlocked,
- 			       struct list_head *unmapped_list,
- 			       int *unmapped_cnt,
-@@ -1093,18 +1093,17 @@ static size_t unmap_unpin_fast(struct vfio_domain *domain,
- 	struct vfio_regions *entry = kzalloc(sizeof(*entry), GFP_KERNEL);
- 
- 	if (entry) {
--		unmapped = iommu_unmap_fast(domain->domain, *iova, len,
-+		unmapped = iommu_unmap_fast(domain->domain, iova, len,
- 					    iotlb_gather);
- 
- 		if (!unmapped) {
- 			kfree(entry);
- 		} else {
--			entry->iova = *iova;
-+			entry->iova = iova;
- 			entry->phys = phys;
- 			entry->len  = unmapped;
- 			list_add_tail(&entry->list, unmapped_list);
- 
--			*iova += unmapped;
- 			(*unmapped_cnt)++;
- 		}
- 	}
-@@ -1123,18 +1122,17 @@ static size_t unmap_unpin_fast(struct vfio_domain *domain,
++#undef FIXTURE_VARIANT_ADD_IOMMU_MODE
++
+ FIXTURE_SETUP(vfio_dma_mapping_test)
+ {
+ 	self->device = vfio_pci_device_init(device_bdf, variant->iommu_mode);
+@@ -195,6 +197,94 @@ TEST_F(vfio_dma_mapping_test, dma_map_unmap)
+ 	ASSERT_TRUE(!munmap(region.vaddr, size));
  }
  
- static size_t unmap_unpin_slow(struct vfio_domain *domain,
--			       struct vfio_dma *dma, dma_addr_t *iova,
-+			       struct vfio_dma *dma, dma_addr_t iova,
- 			       size_t len, phys_addr_t phys,
- 			       long *unlocked)
- {
--	size_t unmapped = iommu_unmap(domain->domain, *iova, len);
-+	size_t unmapped = iommu_unmap(domain->domain, iova, len);
- 
- 	if (unmapped) {
--		*unlocked += vfio_unpin_pages_remote(dma, *iova,
-+		*unlocked += vfio_unpin_pages_remote(dma, iova,
- 						     phys >> PAGE_SHIFT,
- 						     unmapped >> PAGE_SHIFT,
- 						     false);
--		*iova += unmapped;
- 		cond_resched();
- 	}
- 	return unmapped;
-@@ -1197,16 +1195,18 @@ static long vfio_unmap_unpin(struct vfio_iommu *iommu, struct vfio_dma *dma,
- 		 * First, try to use fast unmap/unpin. In case of failure,
- 		 * switch to slow unmap/unpin path.
- 		 */
--		unmapped = unmap_unpin_fast(domain, dma, &iova, len, phys,
-+		unmapped = unmap_unpin_fast(domain, dma, iova, len, phys,
- 					    &unlocked, &unmapped_region_list,
- 					    &unmapped_region_cnt,
- 					    &iotlb_gather);
- 		if (!unmapped) {
--			unmapped = unmap_unpin_slow(domain, dma, &iova, len,
-+			unmapped = unmap_unpin_slow(domain, dma, iova, len,
- 						    phys, &unlocked);
- 			if (WARN_ON(!unmapped))
- 				break;
- 		}
++FIXTURE(vfio_dma_map_limit_test) {
++	struct vfio_pci_device *device;
++	struct vfio_dma_region region;
++	size_t mmap_size;
++};
 +
-+		iova += unmapped;
- 	}
- 
- 	dma->iommu_mapped = false;
++FIXTURE_VARIANT(vfio_dma_map_limit_test) {
++	const char *iommu_mode;
++};
++
++#define FIXTURE_VARIANT_ADD_IOMMU_MODE(_iommu_mode)			       \
++FIXTURE_VARIANT_ADD(vfio_dma_map_limit_test, _iommu_mode) {		       \
++	.iommu_mode = #_iommu_mode,					       \
++}
++
++FIXTURE_VARIANT_ADD_ALL_IOMMU_MODES();
++
++#undef FIXTURE_VARIANT_ADD_IOMMU_MODE
++
++FIXTURE_SETUP(vfio_dma_map_limit_test)
++{
++	struct vfio_dma_region *region = &self->region;
++	u64 region_size = getpagesize();
++
++	/*
++	 * Over-allocate mmap by double the size to provide enough backing vaddr
++	 * for overflow tests
++	 */
++	self->mmap_size = 2 * region_size;
++
++	self->device = vfio_pci_device_init(device_bdf, variant->iommu_mode);
++	region->vaddr = mmap(NULL, self->mmap_size, PROT_READ | PROT_WRITE,
++			     MAP_ANONYMOUS | MAP_PRIVATE, -1, 0);
++	ASSERT_NE(region->vaddr, MAP_FAILED);
++
++	/* One page prior to the end of address space */
++	region->iova = ~(iova_t)0 & ~(region_size - 1);
++	region->size = region_size;
++}
++
++FIXTURE_TEARDOWN(vfio_dma_map_limit_test)
++{
++	vfio_pci_device_cleanup(self->device);
++	ASSERT_EQ(munmap(self->region.vaddr, self->mmap_size), 0);
++}
++
++TEST_F(vfio_dma_map_limit_test, unmap_range)
++{
++	struct vfio_dma_region *region = &self->region;
++	u64 unmapped;
++	int rc;
++
++	vfio_pci_dma_map(self->device, region);
++	ASSERT_EQ(region->iova, to_iova(self->device, region->vaddr));
++
++	rc = __vfio_pci_dma_unmap(self->device, region, &unmapped);
++	ASSERT_EQ(rc, 0);
++	ASSERT_EQ(unmapped, region->size);
++}
++
++TEST_F(vfio_dma_map_limit_test, unmap_all)
++{
++	struct vfio_dma_region *region = &self->region;
++	u64 unmapped;
++	int rc;
++
++	vfio_pci_dma_map(self->device, region);
++	ASSERT_EQ(region->iova, to_iova(self->device, region->vaddr));
++
++	rc = __vfio_pci_dma_unmap_all(self->device, &unmapped);
++	ASSERT_EQ(rc, 0);
++	ASSERT_EQ(unmapped, region->size);
++}
++
++TEST_F(vfio_dma_map_limit_test, overflow)
++{
++	struct vfio_dma_region *region = &self->region;
++	int rc;
++
++	region->size = self->mmap_size;
++
++	rc = __vfio_pci_dma_map(self->device, region);
++	ASSERT_EQ(rc, -EOVERFLOW);
++
++	rc = __vfio_pci_dma_unmap(self->device, region, NULL);
++	ASSERT_EQ(rc, -EOVERFLOW);
++}
++
+ int main(int argc, char *argv[])
+ {
+ 	device_bdf = vfio_selftests_get_bdf(&argc, argv);
 
 -- 
 2.47.3
