@@ -1,55 +1,55 @@
 Received: from mail-io1-f73.google.com (mail-io1-f73.google.com [209.85.166.73])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 61C81354ADA
-	for <kvm@vger.kernel.org>; Tue, 28 Oct 2025 21:21:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B32535504B
+	for <kvm@vger.kernel.org>; Tue, 28 Oct 2025 21:21:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.73
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761686464; cv=none; b=Ia/p9g1vmUgGQh1V6qLGXU7zZxGcJ57EVk1JNVq/nWftx+BabKZy0eksH2wXxKlCgm6LK78cI7RkfW0OclsVZR0oTCXq0KIJYgeeSSEHlbsOhH6obmSFb7q9I9S3g7PTrLjwcTrc0T+QXh0IRvMfqkmBAu5gNW5l9iTK8tskaQs=
+	t=1761686465; cv=none; b=IbgieYht8GZSHmIz5VhSasNkxoAMVxwNX2eCXostXpnjt419gkp3sfypFaWLDaxnIRkggfjddO6N6pyrKVb9Y7oeglpoZneMsqUL5M7wmAr+fW7KGuP12iLkcUqZJPRq3jepRJMmkemJsD35O8clW9VVu+29NuUgthMwTbGyoSE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761686464; c=relaxed/simple;
-	bh=EJICXa/yniV4LFyjrDgYiN24uZol6pdpsvo9d5t1gtc=;
+	s=arc-20240116; t=1761686465; c=relaxed/simple;
+	bh=xgvBeAilvuR1wMxMA2IgvQnx8mA6bQkEXXA41ECFhcY=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=U/WSpQqxnjiQMMh+U1sqyRO5dpNQIcvFF6kdnE95/edShtEsXhrCkv0q3/grKf/k/x/Y/C0kRgTWHfK+ja9aTCi/DsX3bE1qfHvXpdbT7J7DFsbbCln4tZ+FUva6L/x2oepyxWMwxhfrIG5R/1rz1bSWkr6x9HPXRG9/VLUS/oM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--sagis.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=BT0Vg4bY; arc=none smtp.client-ip=209.85.166.73
+	 To:Cc:Content-Type; b=iHYLeIytbgoKetWlMkjZuxKh4N2qZLaMRVxQJP7OAPlawa8Mk0Iwh2qsYV1a8GXB4RkkxVmEbIMvjTOZKODxgCgnz97eo2Vlhg6U/6kTRtBX4B7deLfijLAlVwo4KGhjIlH7SzK7ZTSXHNY9aPq7P0Awr7ot5aLWooXccuKo41w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--sagis.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=pllzVKH6; arc=none smtp.client-ip=209.85.166.73
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--sagis.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="BT0Vg4bY"
-Received: by mail-io1-f73.google.com with SMTP id ca18e2360f4ac-93e4da7a183so609538339f.1
-        for <kvm@vger.kernel.org>; Tue, 28 Oct 2025 14:21:01 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="pllzVKH6"
+Received: by mail-io1-f73.google.com with SMTP id ca18e2360f4ac-93e7ece2ff4so2022059939f.2
+        for <kvm@vger.kernel.org>; Tue, 28 Oct 2025 14:21:02 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1761686460; x=1762291260; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1761686462; x=1762291262; darn=vger.kernel.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=KJrNVIag5TCnvbKa/N0Y0euKb8NaHrULGif/OSObmig=;
-        b=BT0Vg4bYZGBWSXHbuFwcZrV5ooC2CsTLeLzwo4/ZIVK2xd5bfLJGgGYuVaX3YFb4FW
-         ULVOH3AgT0Gor0JOZm1BUhnEBxWofes7wVJ59DbEsN781F5hxiqFiWvTz01oDVwF7WTv
-         B87lgLT0sLJ2WgMJtcslKrpZkVl5cQkcY8SfvmK4aihsaL9OoCYbyfSRjn/xmqsAE1JU
-         gp7ysGgVuAyiueUQ9gWOLhP4x0eE4QWoBIEjAqh5BdoaMiMMPujUIJ7MTBtAT0aOAqub
-         /ruuRMzbZTeUJ99EHqmpgGWEtDZRXArXkICAl+ekEo7Uo42oKHAp4ZCN/IVWFc9oxtGO
-         LCaQ==
+        bh=Iwnkeaw5xTHA537xvr1qbvrkFbFprtxqChvd3RhJpBM=;
+        b=pllzVKH6+E9xifzxMJoOSM30piruYsMfOEnGGHvTZ5eIodgIXAtD8Gy7D1vzTKFRZJ
+         xURUwI0sLUxClhmVXPQCX8a5TvGgh68BPiq0yHc1E0S2JhLjXzCKX8ldwJ3DGxB595wO
+         1T2rU5Odr8A2XTRCY+Z/M8B2n3CJp+Euo+KTgGwg0yTcjEgsEtKWFWgu/vI5nyW4o9wJ
+         /wvgq/kKgDluSyUiBTvBdYwaOM6HkemRToDwR4BnSfpqwTAcHk43+iR72u9wE7GdgNwM
+         XIBRaxOIqGbKwJ1yp/lkpBvW0aKNh9FwnfefvUO+5pfIQBD6xvZxeddC3++KmiQRqU+b
+         kq9w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1761686460; x=1762291260;
+        d=1e100.net; s=20230601; t=1761686462; x=1762291262;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=KJrNVIag5TCnvbKa/N0Y0euKb8NaHrULGif/OSObmig=;
-        b=K7HwwOolvNTwfScs5u6AoOzREof+mu4Qkk7fkZ6CEX79ocpkr2i3uovVO67/ZRmD/1
-         zGNc9nZGODxpfw05He3SwG2qxKUTDPbGwW8Wumr/U3XzrpCsDZU4VdMd6uLx0e5Qj+x1
-         gxvxAy/F4k5LuTQYy4YnXiiOibRAdI4lGYbUX5f7yhXsuBgdgXbNXcuLwAJ77zrlkv6e
-         ekRCLeaZYFSmtxx5PnUM+Gr4Ri4KqOFoVNzf2URszUEOx8wP1nMjnOxgUALi4aTH7+uY
-         j85Htya3s2kW+9XmIOCEa4LH4qFrNcz1TnM6Wsel7dNESH6doZYRKyiEbPPmO4wSfdyf
-         ovTw==
-X-Forwarded-Encrypted: i=1; AJvYcCXD475IoMjxqezzwxuMm4oDTPzlaQgRpK6QlvrtqLucmSAqU9PytROrvRX4jWXgCLkNPzA=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxUkXKWwqQlFJpFUKwDdUw02Y/Gfzhh7WGOiuVVMr1q4SHym/mv
-	OTsV1PFADaANT8Yyeyen7iYx4Nx7dRBqb8sL9sbGCGJOM8oCFZ/I+xZsTctc+SIjX/dQL0fq+Ww
-	2Dg==
-X-Google-Smtp-Source: AGHT+IEFDrPZWGFBr5+mejr0DLlrxzW412Y0+IuWkkXjbawypFaXM37gBgvb80RrvB50OENuGh7DZHijvw==
-X-Received: from iobid12.prod.google.com ([2002:a05:6602:6a8c:b0:944:5708:3425])
- (user=sagis job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6602:3fcd:b0:945:a7ce:646c
- with SMTP id ca18e2360f4ac-945c97ea328mr148145439f.10.1761686460371; Tue, 28
- Oct 2025 14:21:00 -0700 (PDT)
-Date: Tue, 28 Oct 2025 21:20:31 +0000
+        bh=Iwnkeaw5xTHA537xvr1qbvrkFbFprtxqChvd3RhJpBM=;
+        b=tnRLhakJr/DtzLQZdxYp+/CMYUnRApFaMZzJKfP5XSWsYQeKlWSksdEQ+6qOAQFWaj
+         +xhKZ+XtRRcxFqqpcrFN8QieXOvy6nYBvEjzCO92wYa4paXTriLswKs1+c/6l7udrnVM
+         f8nNe0QKvkOe4p9u0+03cegp4QR2bx2ycWYHlrQRzEpWfqxb33o3wSvzhQHCyiOUtPmt
+         2vg48R432vIC9aPNKkyKBvKifRBKxo4PKAaqaaJeZ8DmiqHbjKVMUACm7Y9B0ofCpET0
+         GlQ/K1h1HagDStEkeI9/x1kfa5zCZo8NkLiB/kJa8REyAGgU2sOqX1ONmFsTFdeFTN6M
+         L8TQ==
+X-Forwarded-Encrypted: i=1; AJvYcCU5vfotj8JoU+4atXm9eRMJc8v0Y3/vlcZxKnA6Pkbs7Gc2SpOTPHyRojnP0d20O829Z8A=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwRy/SSLC67lmnqk976+bwApMmt0nesyxL9ATppxA8p6gFwV4VZ
+	yWvpa1AKBkq/yQsEHrY42jfdtYOAD+UFKatMkR1sy3IG9TSNlFMRtQ8JKsdPr8cGP/lXWeG0Egi
+	POQ==
+X-Google-Smtp-Source: AGHT+IEN3PgPSnkwVy0W1+8Dw44bu1h3INTGMoIy4zBd51QD+vZlneDPokuppUvG2xB3FVMgGelzQJssJg==
+X-Received: from iobel10.prod.google.com ([2002:a05:6602:3e8a:b0:936:faee:15c])
+ (user=sagis job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6602:14ce:b0:93e:7883:89a6
+ with SMTP id ca18e2360f4ac-945c98a8aa9mr141227139f.16.1761686462162; Tue, 28
+ Oct 2025 14:21:02 -0700 (PDT)
+Date: Tue, 28 Oct 2025 21:20:33 +0000
 In-Reply-To: <20251028212052.200523-1-sagis@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
@@ -59,9 +59,8 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 References: <20251028212052.200523-1-sagis@google.com>
 X-Mailer: git-send-email 2.51.1.851.g4ebd6896fd-goog
-Message-ID: <20251028212052.200523-6-sagis@google.com>
-Subject: [PATCH v12 05/23] KVM: selftests: Update kvm_init_vm_address_properties()
- for TDX
+Message-ID: <20251028212052.200523-8-sagis@google.com>
+Subject: [PATCH v12 07/23] KVM: selftests: Add kbuild definitons
 From: Sagi Shahar <sagis@google.com>
 To: linux-kselftest@vger.kernel.org, Paolo Bonzini <pbonzini@redhat.com>, 
 	Shuah Khan <shuah@kernel.org>, Sean Christopherson <seanjc@google.com>, 
@@ -73,84 +72,46 @@ To: linux-kselftest@vger.kernel.org, Paolo Bonzini <pbonzini@redhat.com>,
 	"Pratik R. Sampat" <pratikrajesh.sampat@amd.com>, Reinette Chatre <reinette.chatre@intel.com>, 
 	Ira Weiny <ira.weiny@intel.com>, Chao Gao <chao.gao@intel.com>, 
 	Chenyi Qiang <chenyi.qiang@intel.com>
-Cc: linux-kernel@vger.kernel.org, kvm@vger.kernel.org, 
-	Adrian Hunter <adrian.hunter@intel.com>
+Cc: linux-kernel@vger.kernel.org, kvm@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 
-From: Isaku Yamahata <isaku.yamahata@intel.com>
+Add kbuild.h that can be used by files under tools/
 
-Let kvm_init_vm_address_properties() initialize vm->arch.{s_bit, tag_mask}
-similar to SEV.
+Definitions are taken from the original definitions at
+include/linux/kbuild.h
 
-TDX sets the shared bit based on the guest physical address width and
-currently supports 48 and 52 widths.
+This is needed to expose values from c code to assembly code.
 
-Reviewed-by: Binbin Wu <binbin.wu@linux.intel.com>
-Co-developed-by: Adrian Hunter <adrian.hunter@intel.com>
-Signed-off-by: Adrian Hunter <adrian.hunter@intel.com>
-Signed-off-by: Isaku Yamahata <isaku.yamahata@intel.com>
-Co-developed-by: Sagi Shahar <sagis@google.com>
 Signed-off-by: Sagi Shahar <sagis@google.com>
 ---
- .../selftests/kvm/include/x86/tdx/tdx_util.h       | 14 ++++++++++++++
- tools/testing/selftests/kvm/lib/x86/processor.c    | 12 ++++++++++--
- 2 files changed, 24 insertions(+), 2 deletions(-)
- create mode 100644 tools/testing/selftests/kvm/include/x86/tdx/tdx_util.h
+ tools/include/linux/kbuild.h | 18 ++++++++++++++++++
+ 1 file changed, 18 insertions(+)
+ create mode 100644 tools/include/linux/kbuild.h
 
-diff --git a/tools/testing/selftests/kvm/include/x86/tdx/tdx_util.h b/tools/testing/selftests/kvm/include/x86/tdx/tdx_util.h
+diff --git a/tools/include/linux/kbuild.h b/tools/include/linux/kbuild.h
 new file mode 100644
-index 000000000000..286d5e3c24b1
+index 000000000000..62e20ba9380e
 --- /dev/null
-+++ b/tools/testing/selftests/kvm/include/x86/tdx/tdx_util.h
-@@ -0,0 +1,14 @@
-+/* SPDX-License-Identifier: GPL-2.0-only */
-+#ifndef SELFTESTS_TDX_TDX_UTIL_H
-+#define SELFTESTS_TDX_TDX_UTIL_H
++++ b/tools/include/linux/kbuild.h
+@@ -0,0 +1,18 @@
++/* SPDX-License-Identifier: GPL-2.0 */
++#ifndef __TOOLS_LINUX_KBUILD_H
++#define __TOOLS_LINUX_KBUILD_H
 +
-+#include <stdbool.h>
++#include <stddef.h>
 +
-+#include "kvm_util.h"
++#define DEFINE(sym, val) \
++	asm volatile("\n.ascii \"->" #sym " %0 " #val "\"" : : "i" (val))
 +
-+static inline bool is_tdx_vm(struct kvm_vm *vm)
-+{
-+	return vm->type == KVM_X86_TDX_VM;
-+}
++#define BLANK() asm volatile("\n.ascii \"->\"" : : )
 +
-+#endif // SELFTESTS_TDX_TDX_UTIL_H
-diff --git a/tools/testing/selftests/kvm/lib/x86/processor.c b/tools/testing/selftests/kvm/lib/x86/processor.c
-index 2898fe4f6de4..519d60a3827c 100644
---- a/tools/testing/selftests/kvm/lib/x86/processor.c
-+++ b/tools/testing/selftests/kvm/lib/x86/processor.c
-@@ -9,6 +9,7 @@
- #include "pmu.h"
- #include "processor.h"
- #include "sev.h"
-+#include "tdx/tdx_util.h"
- 
- #ifndef NUM_INTERRUPTS
- #define NUM_INTERRUPTS 256
-@@ -1195,12 +1196,19 @@ void kvm_get_cpu_address_width(unsigned int *pa_bits, unsigned int *va_bits)
- 
- void kvm_init_vm_address_properties(struct kvm_vm *vm)
- {
-+	uint32_t gpa_bits = kvm_cpu_property(X86_PROPERTY_GUEST_MAX_PHY_ADDR);
++#define OFFSET(sym, str, mem) \
++	DEFINE(sym, offsetof(struct str, mem))
 +
-+	vm->arch.sev_fd = -1;
++#define COMMENT(x) \
++	asm volatile("\n.ascii \"->#" x "\"")
 +
- 	if (is_sev_vm(vm)) {
- 		vm->arch.sev_fd = open_sev_dev_path_or_exit();
- 		vm->arch.c_bit = BIT_ULL(this_cpu_property(X86_PROPERTY_SEV_C_BIT));
- 		vm->gpa_tag_mask = vm->arch.c_bit;
--	} else {
--		vm->arch.sev_fd = -1;
-+	} else if (is_tdx_vm(vm)) {
-+		TEST_ASSERT(gpa_bits == 48 || gpa_bits == 52,
-+			    "TDX: bad X86_PROPERTY_GUEST_MAX_PHY_ADDR value: %u", gpa_bits);
-+		vm->arch.s_bit = BIT_ULL(gpa_bits - 1);
-+		vm->gpa_tag_mask = vm->arch.s_bit;
- 	}
- }
- 
++#endif /* __TOOLS_LINUX_KBUILD_H */
 -- 
 2.51.1.851.g4ebd6896fd-goog
 
