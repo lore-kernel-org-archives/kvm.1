@@ -1,115 +1,39 @@
-Received: from mail-qv1-f53.google.com (mail-qv1-f53.google.com [209.85.219.53])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from out-184.mta0.migadu.com (out-184.mta0.migadu.com [91.218.175.184])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ADD7E1B4257
-	for <kvm@vger.kernel.org>; Wed, 29 Oct 2025 14:10:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B17AC279334
+	for <kvm@vger.kernel.org>; Wed, 29 Oct 2025 14:25:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.184
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761747053; cv=none; b=Guox0tyAH8MdT9BtWf1JelJpy+iRy4b3hECciXEee0OF6L2gj8HWIXwSGmVZ89NcGvkUKrf5QTY4YyyvQZpbQq9++UmFnbOpnBmvP1gRU9RPtzbr0TyFzOpkIDp0ngrlBzyIQc8pPerJoHbX3ar1bFG5Wg1IeIILPvVGVj5TJyU=
+	t=1761747904; cv=none; b=OvulJyPK4geXL9RICPGbc1kxzZXO81oE57bQy0vtFgRbZEyvmQtkTwW59EZPiLOW1FUB/HdeI9emflJmfXhY1MrFREQRI3LIL5d9Bm2Ltv/lkqzlei9QVxCtGDDMVIq+FaDPH2WcYsESA0yGh1b4u2eqSIjW6hxSpLCdFk65Xkk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761747053; c=relaxed/simple;
-	bh=FtkXBRR1i74hdYvMHxT8SXn72fikHIr5QYRX/FKzjvM=;
+	s=arc-20240116; t=1761747904; c=relaxed/simple;
+	bh=EqIuTc40Ga8aNytkZYOXWNdARKNEeSz0SVU+6y/6Ap4=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ranJotoDOxFfz/aHh1pmf9EZboNypt+HNKDUfpqVUY4OOpbmwgjcNqIBONj+YyzMEYnWWBtVsy9IeS04g+wZkX8sEE5U6lr9L6PNdfwlSsIpw9rgy20nn5hdGF2v9GViepuWdp2ASfs6nNtWzvtw6CZ925uqCDD+aGCBCBksyeE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca; spf=pass smtp.mailfrom=ziepe.ca; dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b=XtYF3cBQ; arc=none smtp.client-ip=209.85.219.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ziepe.ca
+	 Content-Type:Content-Disposition:In-Reply-To; b=pI99ELDMGfNhwzijEWLJ3AdHMjpdV7S7lLKtFtoG4UF4E21hakr/gl3syLs7ESZNmw+Dp/msXIvj5wF+TcmmHWT1Dy0pnyimKkAazd+o2VDQMZBMhS2aQPppYwr0DUx9FKWmPGcgRBJ9jYNA+02J9PPjA281paGARc/hY+ruTiY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=wXnpmLP0; arc=none smtp.client-ip=91.218.175.184
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b="XtYF3cBQ"
-Received: by mail-qv1-f53.google.com with SMTP id 6a1803df08f44-87c1f61ba98so105479036d6.0
-        for <kvm@vger.kernel.org>; Wed, 29 Oct 2025 07:10:51 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ziepe.ca; s=google; t=1761747050; x=1762351850; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=3gCBuq56/59adr8Ol0O4W3+IsGMOD3y6s+9TcTsiPOY=;
-        b=XtYF3cBQ/iUolTaq0Qh4Wu/3nUIzHeTXQKWw3P1uEJ7RX5J/q+NHSZ90s2g+2F7tak
-         5b0nlI5yabJThUBrmRjLTa1MrbtK2boO52QUqXpoG6pvXqItN1ByTDfFCk4wvSnbwVII
-         UHKzqgWf/eR154V2f2iL1FBzr4RYaiE8Nxtrvpdwrlak7AmslIVYFSHLhJwSPdN0tmSU
-         qUi6Iy2fUwbuXQPhaIkM/RLKVJXdsQOuUjUZZqz2Dy/XIrEkzLae8amIgt4NXfgy2Lnj
-         AVKHykL6FOst8ffgc7l9mWVm9m8WEj3JTFjJAAE/YvzZmx03GvBm0xnVYzF5tmSl4PLV
-         V6IQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1761747050; x=1762351850;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=3gCBuq56/59adr8Ol0O4W3+IsGMOD3y6s+9TcTsiPOY=;
-        b=tBPtQVJtY1l0KcCZQRaD8TYPjJhe4bCBg0PhJL1ai1BFNoHzcC0r8ES3Bk0hno2gbv
-         0VBFLF2IBv0EaAK7RR2IgawOvcbHjbzK5JmIKgT+Z5BbhN9+wumXMDRgNRqtheBgkaGm
-         F1EMF5fGmbu594kPO1TSEd2zXfIouyXhrQRVyHm3MG40K1AuDimTActEBqB/nzxiBF84
-         z84dLPgw8DqQus6jTJzg+G5pFHRtRHPofK1jK6OM5GupZ85LeHlKy/9In+SxJwSiYNZi
-         Kw6LvBCy/cGmDsHBY++LsMoUjCvnEto4lFtkvZluh86clED6Yr47Uo6k8OtRoBR4R+gI
-         CWag==
-X-Forwarded-Encrypted: i=1; AJvYcCXJBIMADcuTKbj31srwTR/C39YLsRU3WBtjlpO86taNy/DfQ9U/G9Wvcxl4pBLb006EDek=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzOaS5A/WOhFhK7cvZ9T/dRAU/5q2zkMTKHaw6KktPcQahX1t3c
-	3G0ujF6uJou5Tc15pAXLxlGHu4vlMqNq9w4NXdq+rs/CQyphp+oVkdTN/jEt9l3+eBU=
-X-Gm-Gg: ASbGncsynpIdr3Gp3I/eObPQbnSjg+itX7pfQYZA6ZWsurYn6cOVTPrZ5SufTNpdeEb
-	08WjFJ5U8tzsQnjrfRxxyx7kOo9N1lqTdsexfLEfUdZWLux+p85CRl6HXvo3HLxyelOG4TtutIJ
-	3IEpFTJDsDuhdMILl5m1j9GTKxniXxWdGklCrjYJcQEBot/6tX1pZ17ywv+vxHeZvNrD0pCMoWp
-	orlgJPMxz5m6awYgTQQxQ099N6TRkWxmDTkzNIqiiHXHAz2nNuHZV/Kz5AxUhA/KcBMq+e4u/kD
-	xYGhr4HbwwZCha3Kd+bt5XTQQxAJe9rX2wfDM2QPps62vhgYyh2G3/5vt4H72c+c6TN5EYapkq0
-	xV9gkkaeJEu5bCsAHTEbiHkN0jB/BIU1BSkO0G2JXZButw/+bIEKVgXvxsHr1Bj9BdaWp2VYYkA
-	g9Yxx1/txNClesPzGttz2DUxKAMLDpnNgcCaaibFIyU4FaWF83bba3p2KH
-X-Google-Smtp-Source: AGHT+IFN9EEFBAzfjpvQnmAHpqKEJbqdqdrZ9KL1PtSYGMem5wdE9qnodevFJl+GDHD76k8KE97qmg==
-X-Received: by 2002:a05:6214:23cb:b0:70d:fa79:baf0 with SMTP id 6a1803df08f44-88009be5c01mr41077486d6.38.1761747050399;
-        Wed, 29 Oct 2025 07:10:50 -0700 (PDT)
-Received: from ziepe.ca (hlfxns017vw-47-55-120-4.dhcp-dynamic.fibreop.ns.bellaliant.net. [47.55.120.4])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-87fc494ab16sm98679066d6.39.2025.10.29.07.10.49
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 29 Oct 2025 07:10:49 -0700 (PDT)
-Received: from jgg by wakko with local (Exim 4.97)
-	(envelope-from <jgg@ziepe.ca>)
-	id 1vE6sy-00000004etU-2Jns;
-	Wed, 29 Oct 2025 11:10:48 -0300
-Date: Wed, 29 Oct 2025 11:10:48 -0300
-From: Jason Gunthorpe <jgg@ziepe.ca>
-To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-	Christian Borntraeger <borntraeger@linux.ibm.com>,
-	Janosch Frank <frankja@linux.ibm.com>,
-	Claudio Imbrenda <imbrenda@linux.ibm.com>,
-	David Hildenbrand <david@redhat.com>,
-	Alexander Gordeev <agordeev@linux.ibm.com>,
-	Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
-	Heiko Carstens <hca@linux.ibm.com>,
-	Vasily Gorbik <gor@linux.ibm.com>,
-	Sven Schnelle <svens@linux.ibm.com>, Zi Yan <ziy@nvidia.com>,
-	Baolin Wang <baolin.wang@linux.alibaba.com>,
-	"Liam R . Howlett" <Liam.Howlett@oracle.com>,
-	Nico Pache <npache@redhat.com>, Ryan Roberts <ryan.roberts@arm.com>,
-	Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>,
-	Lance Yang <lance.yang@linux.dev>,
-	Kemeng Shi <shikemeng@huaweicloud.com>,
-	Kairui Song <kasong@tencent.com>, Nhat Pham <nphamcs@gmail.com>,
-	Baoquan He <bhe@redhat.com>, Chris Li <chrisl@kernel.org>,
-	Peter Xu <peterx@redhat.com>, Matthew Wilcox <willy@infradead.org>,
-	Leon Romanovsky <leon@kernel.org>,
-	Muchun Song <muchun.song@linux.dev>,
-	Oscar Salvador <osalvador@suse.de>,
-	Vlastimil Babka <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>, Jann Horn <jannh@google.com>,
-	Matthew Brost <matthew.brost@intel.com>,
-	Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>,
-	Byungchul Park <byungchul@sk.com>,
-	Gregory Price <gourry@gourry.net>,
-	Ying Huang <ying.huang@linux.alibaba.com>,
-	Alistair Popple <apopple@nvidia.com>,
-	Pedro Falcato <pfalcato@suse.de>,
-	Pasha Tatashin <pasha.tatashin@soleen.com>,
-	Rik van Riel <riel@surriel.com>, Harry Yoo <harry.yoo@oracle.com>,
-	kvm@vger.kernel.org, linux-s390@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org,
-	linux-mm@kvack.org
-Subject: Re: [RFC PATCH 00/12] remove is_swap_[pte, pmd]() + non-swap
- confusion
-Message-ID: <20251029141048.GN760669@ziepe.ca>
-References: <cover.1761288179.git.lorenzo.stoakes@oracle.com>
- <20251027160923.GF760669@ziepe.ca>
- <8d4da271-472b-4a32-9e51-3ff4d8c2e232@lucifer.local>
- <20251028124817.GH760669@ziepe.ca>
- <ce71f42f-e80d-4bae-9b8d-d09fe8bd1527@lucifer.local>
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="wXnpmLP0"
+Date: Wed, 29 Oct 2025 14:24:34 +0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1761747896;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=voX1IkfxOsRbEdnFfs0CHPgg1gOl+sXcGlirOmKQbR4=;
+	b=wXnpmLP0HDEQyb/8xevKV/G/apWSCxt94HkKwhsZMljCznz/fG3j+SPLlFa2nDBo6S3+VI
+	iMZYwDTiSFZxQykMbZW263Iy16EtqzYhzQS+zgFrBLzvgHmruHCFqlZ8iIQ11qfgsXbIWX
+	ge3/b08bk33L8FmHe2Tb7NBM3izn5Y4=
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Yosry Ahmed <yosry.ahmed@linux.dev>
+To: Sean Christopherson <seanjc@google.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>, Jim Mattson <jmattson@google.com>, 
+	kvm@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2 00/23] Extend test coverage for nested SVM
+Message-ID: <6upf6dputsb3w56my62xvgdxbk27qlurn5egtkejc2m6mmcxpr@qevtkb6o32zh>
+References: <20251021074736.1324328-1-yosry.ahmed@linux.dev>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -118,57 +42,118 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <ce71f42f-e80d-4bae-9b8d-d09fe8bd1527@lucifer.local>
+In-Reply-To: <20251021074736.1324328-1-yosry.ahmed@linux.dev>
+X-Migadu-Flow: FLOW_OUT
 
-On Tue, Oct 28, 2025 at 06:20:54PM +0000, Lorenzo Stoakes wrote:
-> > > And use the new type right away.
-> >
-> > Then the followup series is cleaning away swap_entry_t as a name.
+On Tue, Oct 21, 2025 at 07:47:13AM +0000, Yosry Ahmed wrote:
+> There are multiple selftests exercising nested VMX that are not specific
+> to VMX (at least not anymore). Extend their coverage to nested SVM.
 > 
-> OK so you're good with the typedef? This would be quite nice actually as we
-> could then use leaf_entry_t in all the core leafent_xxx() logic ahead of
-> time and reduce confusion _there_ and effectively document that swp_entry_t
-> is just badly named.
-
-Yeah, I think so, a commit message explaining it is temporary and a
-future series will mechanically rename it away and this is
-preparation.
-
-> I mean I'm not so sure that's all that useful, you often want to skip over
-> things that are 'none' entries without doing this conversion.
-
-Maybe go directly from a pte to the leaf entry type for this check?
-
-#define __swp_type(x) ((x).val >> (64 - SWP_TYPE_BITS))
-
-That's basically free on most arches..
-
-> We could use the concept of 'none is an empty leaf_entry_t' more thoroughly
-> internally in functions though.
+> This version is significantly different (and longer) than v1 [1], mainly
+> due to the change of direction to reuse __virt_pg_map() for nested EPT/NPT
+> mappings instead of extending the existing nested EPT infrastructure. It
+> also has a lot more fixups and cleanups.
 > 
-> I will see what I can do.
-
-Sure, maybe something works out
-
-Though if we want to keep them seperate then maybe pte_is_leafent() is
-the right name for pte_none(). Reads so much better like this:
-
-if (pte_is_leafent(pte)) {
-    leafent_t leaf = leafent_from_pte(pte)
-
-     if (leafent_is_swap(leaf)) {..}
-}
-
-> > Then this:
-> >
-> >   pmd_is_present_or_leafent(pmd)
+> This series depends on two other series:
+> - "KVM: SVM: GIF and EFER.SVME are independent" [2]
+> - "KVM: selftests: Add test of SET_NESTED_STATE with 48-bit L2 on 57-bit L1" [3]
 > 
-> A PMD can be present and contain an entry pointing at a PTE table so I'm
-> not sure that helps... naming is hard :)
+> The dependency on the former is because set_nested_state_test is now
+> also a regression test for that fix. The dependency on the latter is
+> purely to avoid conflicts.
+> 
+> The patch ordering is not perfect, I did some cleanups toward the end
+> that arguably should have been moved to the beginning, but I had to stop
+> rebasing and send the patches out at some point:
+> 
+> Block #1 (patch 1 to patch 7):
+> - Direct successors to the first 6 patches in v1, addressing review
+>   comments from Jim and collecting his review tags. These patch extend 5
+>   of the nVMX tests to cover nSVM.
+> 
+> Block #2 (patch 8 to patch 11):
+> - Miscellaneous fixups and cleanups.
+> 
+> Block #3 (patch 11 to patch 17):
+> - Moving nested EPT mapping functions to use __virt_pg_map(), patches 11
+>   to 15 do the prep work, and patch 16 does the switch. Patch 17 is a
+>   minor cleanup on top (which arguably fits better in block #2).
+> 
+> Block #4 (patch 18 to 23):
+> - Patches 18 to 22 are prep work to generalize the nested EPT mapping
+>   code to work with nested NPT, and patch 23 finally extends the nested
+>   dirty logging test to work with nSVM using the nested NPT
+>   infrastructure. Patch 19 is admittedly an imposter in this block and
+>   should have been in block #2.
 
-pmd_is_leaf_or_leafent()
+Hi Sean,
 
-In the PTE API we are calling present entries that are address, not
-tables, leafs.
+Any thoughts on the current version? Is this what you had in mind for
+reusing __virt_pg_map()?
 
-Jason
+> 
+> [1]https://lore.kernel.org/kvm/20251001145816.1414855-1-yosry.ahmed@linux.dev/
+> [2]https://lore.kernel.org/kvm/20251009223153.3344555-1-jmattson@google.com/
+> [3]https://lore.kernel.org/kvm/20250917215031.2567566-1-jmattson@google.com/
+> 
+> Yosry Ahmed (23):
+>   KVM: selftests: Minor improvements to asserts in
+>     test_vmx_nested_state()
+>   KVM: selftests: Extend vmx_set_nested_state_test to cover SVM
+>   KVM: selftests: Extend vmx_close_while_nested_test to cover SVM
+>   KVM: selftests: Extend vmx_nested_tsc_scaling_test to cover SVM
+>   KVM: selftests: Move nested invalid CR3 check to its own test
+>   KVM: selftests: Extend nested_invalid_cr3_test to cover SVM
+>   KVM: selftests: Extend vmx_tsc_adjust_test to cover SVM
+>   KVM: selftests: Stop hardcoding PAGE_SIZE in x86 selftests
+>   KVM: selftests: Remove the unused argument to prepare_eptp()
+>   KVM: selftests: Stop using __virt_pg_map() directly in tests
+>   KVM: selftests: Make sure vm->vpages_mapped is always up-to-date
+>   KVM: selftests: Parameterize the PTE bitmasks for virt mapping
+>     functions
+>   KVM: selftests: Pass the root GPA into virt_get_pte()
+>   KVM: selftests: Pass the root GPA into __virt_pg_map()
+>   KVM: selftests: Stop setting AD bits on nested EPTs on creation
+>   KVM: selftests: Use __virt_pg_map() for nested EPTs
+>   KVM: selftests: Kill eptPageTablePointer
+>   KVM: selftests: Generalize nested mapping functions
+>   KVM: selftests: Move nested MMU mapping functions outside of vmx.c
+>   KVM: selftests: Stop passing a memslot to nested_map_memslot()
+>   KVM: selftests: Allow kvm_cpu_has_ept() to be called on AMD CPUs
+>   KVM: selftests: Set the user bit on nested MMU PTEs
+>   KVM: selftests: Extend vmx_dirty_log_test to cover SVM
+> 
+>  tools/testing/selftests/kvm/Makefile.kvm      |  11 +-
+>  .../testing/selftests/kvm/include/kvm_util.h  |   1 +
+>  .../selftests/kvm/include/x86/processor.h     |  34 ++-
+>  .../selftests/kvm/include/x86/svm_util.h      |   8 +
+>  tools/testing/selftests/kvm/include/x86/vmx.h |  15 +-
+>  tools/testing/selftests/kvm/lib/kvm_util.c    |   3 -
+>  .../testing/selftests/kvm/lib/x86/memstress.c |   6 +-
+>  .../testing/selftests/kvm/lib/x86/processor.c | 184 +++++++++++---
+>  tools/testing/selftests/kvm/lib/x86/svm.c     |  19 ++
+>  tools/testing/selftests/kvm/lib/x86/vmx.c     | 232 +++---------------
+>  tools/testing/selftests/kvm/mmu_stress_test.c |   6 +-
+>  ...ested_test.c => close_while_nested_test.c} |  42 +++-
+>  .../selftests/kvm/x86/hyperv_features.c       |   2 +-
+>  tools/testing/selftests/kvm/x86/hyperv_ipi.c  |  18 +-
+>  .../selftests/kvm/x86/hyperv_tlb_flush.c      |   2 +-
+>  ...rty_log_test.c => nested_dirty_log_test.c} | 102 +++++---
+>  .../kvm/x86/nested_invalid_cr3_test.c         | 118 +++++++++
+>  ...adjust_test.c => nested_tsc_adjust_test.c} |  79 +++---
+>  ...aling_test.c => nested_tsc_scaling_test.c} |  48 +++-
+>  ...d_state_test.c => set_nested_state_test.c} | 135 +++++++++-
+>  .../selftests/kvm/x86/sev_smoke_test.c        |   2 +-
+>  tools/testing/selftests/kvm/x86/state_test.c  |   2 +-
+>  .../selftests/kvm/x86/userspace_io_test.c     |   2 +-
+>  23 files changed, 695 insertions(+), 376 deletions(-)
+>  rename tools/testing/selftests/kvm/x86/{vmx_close_while_nested_test.c => close_while_nested_test.c} (64%)
+>  rename tools/testing/selftests/kvm/x86/{vmx_dirty_log_test.c => nested_dirty_log_test.c} (57%)
+>  create mode 100644 tools/testing/selftests/kvm/x86/nested_invalid_cr3_test.c
+>  rename tools/testing/selftests/kvm/x86/{vmx_tsc_adjust_test.c => nested_tsc_adjust_test.c} (61%)
+>  rename tools/testing/selftests/kvm/x86/{vmx_nested_tsc_scaling_test.c => nested_tsc_scaling_test.c} (83%)
+>  rename tools/testing/selftests/kvm/x86/{vmx_set_nested_state_test.c => set_nested_state_test.c} (67%)
+> 
+> -- 
+> 2.51.0.869.ge66316f041-goog
+> 
