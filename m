@@ -1,49 +1,49 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C0A903655E2
-	for <kvm@vger.kernel.org>; Thu, 30 Oct 2025 15:42:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.20
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 767B736449B
+	for <kvm@vger.kernel.org>; Thu, 30 Oct 2025 15:45:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.14
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761838944; cv=none; b=QkzHPYUApkEONkTTBm4KOZ+6zmBsj0VZGFpA1EA3oAFciE6tUctikoEfUBYr2RDHwjljtxYHLSlk5gtAnmpvuio5aRc6FVWxITSx2ZYoYU8YbcP9WcUQ22ZH/5DJa+clAS+EaPKk7Tu15jnms1K3HvX+jKt81k8rgMteGF2QutE=
+	t=1761839117; cv=none; b=klw1+6Xw+lmFqmk4tneW6n9TxTs0EEaKYEBqHhvjOSbO8VijAPnH/1q3gHK74fRpBV8O5XfoK2h+sP0qDMpYAsJ+cu+2Me+XSf9/jIcK6XKqohBCqvhIMnypI8PzSC5DgOD2FFnte21jTPraULzFOBfoZLOGu1lXxBsBmIZiDc0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761838944; c=relaxed/simple;
-	bh=G82bnRITGyqKjw4vCwsGZ99kE0549Ia3SE8bIF8kwK0=;
+	s=arc-20240116; t=1761839117; c=relaxed/simple;
+	bh=qS+02fCqSHr3tcnWuRZhV6jK2aqbd4ZTjkQZxDlSqeE=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=YNGKRoWONFldA3nQiKTlLuM0lkJoKy9hHlusxuhs72oKHn+rj7Kc+ms/5Bor/OkPIol2rO3LE0FgHoklsq/++0xGJ1qHG7fEYoSzt2QWmPhImtaYOIfxfBN4Juv/yLgnCmtXtxoNg+x5gWtMz5htHdlg3uZCb7ryeRgnGMMJtjc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=I3C8cnKH; arc=none smtp.client-ip=198.175.65.20
+	 Content-Type:Content-Disposition:In-Reply-To; b=Vatxe3meoE/xseoOaM/WIClRBxUeWps1phdPBamhvUj49gcTOLACk+Jup36PpRZYSI6c/QBl8dcs2WImWMT4iSitidkVKf8noT4YH0vBPtkyR3l99LTqJ46vrbrhBasfOURIwVQHP3DdUgZIeWJX8pPrsu9pxX6G0mHXIW6dIPY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=HiO5kPSx; arc=none smtp.client-ip=192.198.163.14
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="I3C8cnKH"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="HiO5kPSx"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1761838943; x=1793374943;
+  t=1761839116; x=1793375116;
   h=date:from:to:cc:subject:message-id:references:
    mime-version:in-reply-to;
-  bh=G82bnRITGyqKjw4vCwsGZ99kE0549Ia3SE8bIF8kwK0=;
-  b=I3C8cnKH/iUyu132PwMN6KUXLjf7j2QWvtsrVgNAzUifF9U0yJunRdsz
-   o8fEwYf44pXPJ9aCStSOf3WNMGaZ20Gd5fpilLGfc6B3u7WkE/3v0Ne2t
-   8yXc3q6obuPz3tHx3VSGe2HSqM8vzkxfbrV8sjTiqqD+5WfhHbU4ZfyJ9
-   dcOshL68cQtAEeYcDewQtqxisX/pfNo4TEFbGPprXsEx2xqYMiFTBWOFF
-   d3l29ow504m8SZrXlR3BYOar3nINxlmwG16PmPtJSLb8SFzTtRru9OgLZ
-   sh36Z/M8Yn0vhdm1ChXgvYnYuoETWuF/VOdjzhsLXeTXCqC7vQs+ss5cc
-   g==;
-X-CSE-ConnectionGUID: fQfTRa2MQIOhnehCSpBBbg==
-X-CSE-MsgGUID: GK0AU3UMT1a7eGspuGVKFA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11598"; a="63684838"
+  bh=qS+02fCqSHr3tcnWuRZhV6jK2aqbd4ZTjkQZxDlSqeE=;
+  b=HiO5kPSxaUFTrJQyM8dWGcIB0dWes4H4idCGsPJn64MdLT5fEfArG/Ie
+   DadpV9vZIxfwCt8p8UJ0MzX0hspJJPw2hlCtang20jK+9Rmp6WpexHqU8
+   GTJmfpSMSthhoMULTCfbWDkGD8iZmnGbLRkn972Wpq2ogn/JzVaVf8+fF
+   PY/uFvXb/qypH0INbdTfos7HO/o59MKwQf3MlzEHTz4NdFI4HyBvtJWdK
+   zSAGd7rYJnltsXdr8xHzCVc4WQ4H8qp5CpUarqg7ozycJ+fdU1EG5/8KJ
+   3ua4gboH+kD4KBVd0eJmBmyWx2k5tZIkZ4zJbe76MzK5qm/3BvAZWSh16
+   Q==;
+X-CSE-ConnectionGUID: P3fpFEUrT4OoRigb8tRshQ==
+X-CSE-MsgGUID: cgzMhWakREOIdXoe7KuKlg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11598"; a="64017356"
 X-IronPort-AV: E=Sophos;i="6.19,267,1754982000"; 
-   d="scan'208";a="63684838"
-Received: from fmviesa007.fm.intel.com ([10.60.135.147])
-  by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Oct 2025 08:42:23 -0700
-X-CSE-ConnectionGUID: LzuJ36b8QLq7/qznGsTrwA==
-X-CSE-MsgGUID: G6SewhZcS8q1HQtR95fX1A==
+   d="scan'208";a="64017356"
+Received: from fmviesa002.fm.intel.com ([10.60.135.142])
+  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Oct 2025 08:45:15 -0700
+X-CSE-ConnectionGUID: FC40WmS4QyaVU3OXCmeoBA==
+X-CSE-MsgGUID: 8ovOVZtJQuCi1zFIX0P/xA==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.19,267,1754982000"; 
-   d="scan'208";a="185678709"
+   d="scan'208";a="209560818"
 Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost) ([10.239.160.39])
-  by fmviesa007.fm.intel.com with ESMTP; 30 Oct 2025 08:42:18 -0700
-Date: Fri, 31 Oct 2025 00:04:30 +0800
+  by fmviesa002.fm.intel.com with ESMTP; 30 Oct 2025 08:45:11 -0700
+Date: Fri, 31 Oct 2025 00:07:23 +0800
 From: Zhao Liu <zhao1.liu@intel.com>
 To: Xiaoyao Li <xiaoyao.li@intel.com>
 Cc: Paolo Bonzini <pbonzini@redhat.com>,
@@ -53,13 +53,13 @@ Cc: Paolo Bonzini <pbonzini@redhat.com>,
 	Mathias Krause <minipli@grsecurity.net>,
 	Dapeng Mi <dapeng1.mi@intel.com>, Zide Chen <zide.chen@intel.com>,
 	Chenyi Qiang <chenyi.qiang@intel.com>,
-	Farrah Chen <farrah.chen@intel.com>,
-	Yang Weijiang <weijiang.yang@intel.com>
-Subject: Re: [PATCH v3 15/20] i386/machine: Add vmstate for cet-ss and cet-ibt
-Message-ID: <aQOMjlHnjgwdYfFX@intel.com>
+	Farrah Chen <farrah.chen@intel.com>
+Subject: Re: [PATCH v3 20/20] i386/tdx: Add CET SHSTK/IBT into the supported
+ CPUID by XFAM
+Message-ID: <aQONOxHIu8IUtmiJ@intel.com>
 References: <20251024065632.1448606-1-zhao1.liu@intel.com>
- <20251024065632.1448606-16-zhao1.liu@intel.com>
- <445462e9-22e5-4e8b-999e-7be468731752@intel.com>
+ <20251024065632.1448606-21-zhao1.liu@intel.com>
+ <ea4ff407-b5ee-4649-b5cd-82b626dca3ee@intel.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -68,114 +68,39 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <445462e9-22e5-4e8b-999e-7be468731752@intel.com>
+In-Reply-To: <ea4ff407-b5ee-4649-b5cd-82b626dca3ee@intel.com>
 
-On Tue, Oct 28, 2025 at 04:29:58PM +0800, Xiaoyao Li wrote:
-> Date: Tue, 28 Oct 2025 16:29:58 +0800
+On Tue, Oct 28, 2025 at 04:55:25PM +0800, Xiaoyao Li wrote:
+> Date: Tue, 28 Oct 2025 16:55:25 +0800
 > From: Xiaoyao Li <xiaoyao.li@intel.com>
-> Subject: Re: [PATCH v3 15/20] i386/machine: Add vmstate for cet-ss and
->  cet-ibt
+> Subject: Re: [PATCH v3 20/20] i386/tdx: Add CET SHSTK/IBT into the
+>  supported CPUID by XFAM
 > 
 > On 10/24/2025 2:56 PM, Zhao Liu wrote:
-> > From: Yang Weijiang <weijiang.yang@intel.com>
+> > From: Chenyi Qiang <chenyi.qiang@intel.com>
 > > 
-> > Add vmstates for cet-ss and cet-ibt
+> > So that it can be configured in TD guest.
 > > 
+> > And considerring cet-u and cet-s have the same dependencies, it's enough
+> > to only list cet-u in tdx_xfam_deps[].
+> 
+> In fact, this is not the reason.
+> 
+> The reason is that CET_U and CET_S bits are always same in supported XFAM
+> reported by TDX module, i.e., either 00 or 11. So, we only need to choose
+> one of them.
+
+Good words. Will update.
+
 > > Tested-by: Farrah Chen <farrah.chen@intel.com>
-> > Signed-off-by: Yang Weijiang <weijiang.yang@intel.com>
-> > Co-developed-by: Chao Gao <chao.gao@intel.com>
-> > Signed-off-by: Chao Gao <chao.gao@intel.com>
-> > Co-developed-by: Zhao Liu <zhao1.liu@intel.com>
+> > Signed-off-by: Chenyi Qiang <chenyi.qiang@intel.com>
 > > Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
-> > ---
-> > Changes Since v2:
-> >   - Split a subsection "vmstate_ss" since shstk is user-configurable.
-> > ---
-> >   target/i386/machine.c | 53 +++++++++++++++++++++++++++++++++++++++++++
-> >   1 file changed, 53 insertions(+)
-> > 
-> > diff --git a/target/i386/machine.c b/target/i386/machine.c
-> > index 45b7cea80aa7..3ad07ec82428 100644
-> > --- a/target/i386/machine.c
-> > +++ b/target/i386/machine.c
-> > @@ -1668,6 +1668,58 @@ static const VMStateDescription vmstate_triple_fault = {
-> >       }
-> >   };
-> > +static bool shstk_needed(void *opaque)
-> > +{
-> > +    X86CPU *cpu = opaque;
-> > +    CPUX86State *env = &cpu->env;
-> > +
-> > +    return !!(env->features[FEAT_7_0_ECX] & CPUID_7_0_ECX_CET_SHSTK);
-> > +}
-> > +
-> > +static const VMStateDescription vmstate_ss = {
-> > +    .name = "cpu/cet_ss",
-> > +    .version_id = 1,
-> > +    .minimum_version_id = 1,
-> > +    .needed = shstk_needed,
-> > +    .fields = (VMStateField[]) {
-> > +        VMSTATE_UINT64(env.pl0_ssp, X86CPU),
-> > +        VMSTATE_UINT64(env.pl1_ssp, X86CPU),
-> > +        VMSTATE_UINT64(env.pl2_ssp, X86CPU),
-> > +        VMSTATE_UINT64(env.pl3_ssp, X86CPU),
-> > +#ifdef TARGET_X86_64
-> > +        /* This MSR is only present on Intel 64 architecture. */
-> > +        VMSTATE_UINT64(env.int_ssp_table, X86CPU),
-> > +#endif
 > 
-> It seems we need to split int_ssp_table into a separate vmstate_*
+> With commit message updated,
 > 
-> Its .needed function needs to check both  CPUID_7_0_ECX_CET_SHSTK &&
-> CPUID_EXT2_LM.
+> Reviewed-by: Xiaoyao Li <xiaoyao.li@intel.com>
 
-Ok, will split this entry into a subsection. Thanks.
-
-> > +        VMSTATE_UINT64(env.guest_ssp, X86CPU),
-> > +        VMSTATE_END_OF_LIST()
-> > +    }
-> > +};
-> > +
-> > +static bool cet_needed(void *opaque)
-> > +{
-> > +    X86CPU *cpu = opaque;
-> > +    CPUX86State *env = &cpu->env;
-> > +
-> > +    return !!((env->features[FEAT_7_0_ECX] & CPUID_7_0_ECX_CET_SHSTK) ||
-> > +              (env->features[FEAT_7_0_EDX] & CPUID_7_0_EDX_CET_IBT));
-> > +}
-> > +
-> > +static const VMStateDescription vmstate_cet = {
-> > +    .name = "cpu/cet",
-> > +    .version_id = 1,
-> > +    .minimum_version_id = 1,
-> > +    .needed = cet_needed,
-> > +    .fields = (VMStateField[]) {
-> > +        VMSTATE_UINT64(env.u_cet, X86CPU),
-> > +        VMSTATE_UINT64(env.s_cet, X86CPU),
-> > +        VMSTATE_END_OF_LIST()
-> > +    },
-> > +    .subsections = (const VMStateDescription * const []) {
-> > +        &vmstate_ss,
-
-here:       ^^^^^^^^^^^^^
-
-> > +        NULL,
-> > +    },
-> > +};
-> > +
-> >   const VMStateDescription vmstate_x86_cpu = {
-> >       .name = "cpu",
-> >       .version_id = 12,
-> > @@ -1817,6 +1869,7 @@ const VMStateDescription vmstate_x86_cpu = {
-> >   #endif
-> >           &vmstate_arch_lbr,
-> >           &vmstate_triple_fault,
-> > +        &vmstate_cet,
-> 
-> missing &vmstate_ss
-
-I made vmstate_ss as a subsection in vmstate_cet
+Thanks!
 
 Regards,
 Zhao
