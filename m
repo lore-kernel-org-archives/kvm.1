@@ -1,94 +1,178 @@
-Received: from pc232-55.mailgun.net (pc232-55.mailgun.net [143.55.232.55])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E2C0132D437
-	for <kvm@vger.kernel.org>; Thu, 30 Oct 2025 11:42:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=143.55.232.55
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CBEA23195E7;
+	Thu, 30 Oct 2025 12:27:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761824568; cv=none; b=lFG0uYCWw8nOoYrcfBnP3/ygKltCWv4gSo+L9oq7ygFSU79V0vTIH/ijmyQhgDXsZFabGEnUyfWKcnOBTUq/OJJ8x0xg1Scxl1NiIGtia8qkzxx24PnY4dTbVX0hoAI2ygfCR+BmqdccTwhnOma2sZBqbIXJOgmttjzDphC+kpw=
+	t=1761827232; cv=none; b=InQajaqXXXzhW2P99r1HecMtReyDJayMdSXpy3EOhgyBT1cTkiGSmRsjmh0sAyIdehuCAdIE9Na4/ms2MLMTc2+fj/FcS/c0i0RlPBhUV6pa0MWuDVYLgOSKH6GtA/0Pc+Gx1NW6bgGd4lopJ2fBtQxpeoGdIEslXfgsUQ/PLPI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761824568; c=relaxed/simple;
-	bh=yZoChXLznwSscAm+JJJt2BYR/avxL8jDXJ0N3C+Wfi4=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=SSYsTwoHZzXS/hn459M06LjQBqgT3NGvLrfaksTtR1PhsPECLn4C+xmIje47cu5FOiIrB4sKaqv97PtWZ2W0bPIq8iEwzNcl/FnwK9pYTTH3lEGjAdtCIcFP3/mZtFKW+XsWbZeCYRClLYzHDFSmmy0brwPyoVBOrpfwbwiCUD4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yodel.dev; spf=pass smtp.mailfrom=mail.yodel.dev; dkim=pass (1024-bit key) header.d=mail.yodel.dev header.i=@mail.yodel.dev header.b=BR9/mlZc; arc=none smtp.client-ip=143.55.232.55
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yodel.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mail.yodel.dev
+	s=arc-20240116; t=1761827232; c=relaxed/simple;
+	bh=UfCFaVKbtSEI+V6qqF15cRQES87gXNRh87C3CkdBTRA=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=KMVSiy6/1H1Mogq/TXnDVzoXBfi5X6LW1nDi2uTXx1hRJ+UBrEeVOzVjfFWuIDudTOy04QcLqTgTWez3Ch/5L8vFcopZr5dj0xahGj46qhk6i/kSrA9D90rAyT8FDzc/zZK1se84hWLviCJ79aChOnO27equ/7ZJYgbryDZ/CsE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lJvQnnue; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=mail.yodel.dev header.i=@mail.yodel.dev header.b="BR9/mlZc"
-DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mail.yodel.dev; q=dns/txt; s=dkim; t=1761824563; x=1761831763;
- h=Content-Transfer-Encoding: Content-Type: In-Reply-To: From: From: References: Cc: To: To: Subject: Subject: MIME-Version: Date: Message-ID: Sender: Sender;
- bh=BX8WMM54/X2z4JKKterrQ+u3+tKia/gkKKQAUuSGQIw=;
- b=BR9/mlZcGJOgzJb9C5XSJSqttREsKlgcbgvKqjAs3SPCxp5hoFCR5MAVUXL4FFT6MLi5Q318/y3y4cWHIoTIzt8mRR/z6qqWSOd13xPSYf5mkUPXzODliEMGOMsAB93HYj+QD+3GmICuQyvQaKXd2y2JERaVYXVmsG/zg/0bGCU=
-X-Mailgun-Sid: WyI1YzlhMSIsImt2bUB2Z2VyLmtlcm5lbC5vcmciLCIzM2U5MjAiXQ==
-Received: from mail.yodel.dev (mail.yodel.dev [35.209.39.246]) by
- 82b7b0aa6a9490e1d37f90288d42dfc2781b07d0e3a3464ca437034ccc894751 with SMTP id
- 69034f33e4319a89b6306c09; Thu, 30 Oct 2025 11:42:43 GMT
-X-Mailgun-Sending-Ip: 143.55.232.55
-Sender: yodel.eldar=yodel.dev@mail.yodel.dev
-Message-ID: <f1a0f03f-54b8-4fa8-8e03-b00a617bd462@yodel.dev>
-Date: Thu, 30 Oct 2025 06:42:41 -0500
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lJvQnnue"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D66EC4CEF8;
+	Thu, 30 Oct 2025 12:27:12 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1761827232;
+	bh=UfCFaVKbtSEI+V6qqF15cRQES87gXNRh87C3CkdBTRA=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=lJvQnnue7FUq5buNg1/6/eV4HRC9c1YHZNmfzes+cB1tRQgCoaFXxqYwQhmLaT7QV
+	 hePGeytRUmfXvL5Ng134peuZkqZzz0StEmn+KRzoHGyBSaFZPRl78OEOk2zaA+QJny
+	 yEp9L1g26IShnWoVQKf3WJZr/W+pvYFY79bcEKn9ylqxMkTJnEBWb4jKYSSwcgNtGQ
+	 Fe4XWkOyFIGyEK0vpR89xMf/+MXAYFJ+sDY3/vcGPdIGmie9Xz9o6Ee18GhDZ+L3vH
+	 zreHojiP27SA9vEcttb8yZayM1Znq/cYvHY3iuD8I/8Lo15hr3Y4pwVwaWZPmWA9cL
+	 ZgEWyvcaxYG6g==
+Received: from sofa.misterjones.org ([185.219.108.64] helo=valley-girl.lan)
+	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.98.2)
+	(envelope-from <maz@kernel.org>)
+	id 1vERkE-00000000yNP-1KhX;
+	Thu, 30 Oct 2025 12:27:10 +0000
+From: Marc Zyngier <maz@kernel.org>
+To: kvmarm@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org,
+	kvm@vger.kernel.org
+Cc: Joey Gouly <joey.gouly@arm.com>,
+	Suzuki K Poulose <suzuki.poulose@arm.com>,
+	Oliver Upton <oliver.upton@linux.dev>,
+	Zenghui Yu <yuzenghui@huawei.com>,
+	Peter Maydell <peter.maydell@linaro.org>,
+	stable@vger.kernel.org
+Subject: [PATCH v2 1/3] KVM: arm64: Make all 32bit ID registers fully writable
+Date: Thu, 30 Oct 2025 12:27:05 +0000
+Message-ID: <20251030122707.2033690-2-maz@kernel.org>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20251030122707.2033690-1-maz@kernel.org>
+References: <20251030122707.2033690-1-maz@kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Subject: Re: [PATCH 0/7] cpus: Constify some CPUState arguments
-To: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>,
- =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Cc: qemu-devel@nongnu.org, Richard Henderson <richard.henderson@linaro.org>,
- Kyle Evans <kevans@freebsd.org>, Warner Losh <imp@bsdimp.com>,
- kvm@vger.kernel.org, Laurent Vivier <laurent@vivier.eu>
-References: <20250120061310.81368-1-philmd@linaro.org>
- <395c7c86-08b1-4af4-a5ca-012a9aa89339@linaro.org>
- <CAAjaMXZSkxCgzdC6w-onUxVxU_ZW5fiBtW5-ioeKaXwD_7tJeQ@mail.gmail.com>
-Content-Language: en-US
-From: Yodel Eldar <yodel.eldar@yodel.dev>
-Autocrypt: addr=yodel.eldar@yodel.dev; keydata=
- xjMEZxqXdhYJKwYBBAHaRw8BAQdAkletQdG3CLyANZyuf2t7Z9PK4b6HiT+DdSPUB2mHzmPN
- I1lvZGVsIEVsZGFyIDx5b2RlbC5lbGRhckB5b2RlbC5kZXY+wpkEExYKAEECGwMFCQOcG00F
- CwkIBwIGFQoJCAsCBBYCAwECHgECF4AWIQTTzRjNQG27imap+N+V7k+3NmVNrAUCaNWASwIZ
- AQAKCRCV7k+3NmVNrNnSAPoDjQXa6v7ZzdQSaLdRfAQy/5SsUucv+zp3WAP4pXdgJQEAzMMC
- Ctx4l6b13Fs2hZdRXEnF/4BZ9t1K68nwzZOV3QnOOARnGpd2EgorBgEEAZdVAQUBAQdAKPIy
- 3W/DKFsm1e+31zoqmOY0pqz8vjIM846wM6lEY2QDAQgHwn4EGBYIACYCGwwWIQTTzRjNQG27
- imap+N+V7k+3NmVNrAUCaNWG7QUJA5wi9wAKCRCV7k+3NmVNrPusAQCQDQwETy7VT6UhHPho
- TkrQnsNqQfFU3tXqCTiViToktQD7B/U2/to97hQIJCWbK6yd3T+KPZJPMcHMg2XRyedUvgA=
-In-Reply-To: <CAAjaMXZSkxCgzdC6w-onUxVxU_ZW5fiBtW5-ioeKaXwD_7tJeQ@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
+X-SA-Exim-Connect-IP: 185.219.108.64
+X-SA-Exim-Rcpt-To: kvmarm@lists.linux.dev, linux-arm-kernel@lists.infradead.org, kvm@vger.kernel.org, joey.gouly@arm.com, suzuki.poulose@arm.com, oliver.upton@linux.dev, yuzenghui@huawei.com, peter.maydell@linaro.org, stable@vger.kernel.org
+X-SA-Exim-Mail-From: maz@kernel.org
+X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
 
+32bit ID registers aren't getting much love these days, and are
+often missed in updates. One of these updates broke restoring
+a GICv2 guest on a GICv3 machine.
 
-On 30/10/2025 01:59, Manos Pitsidianakis wrote:
-> On Wed, Oct 29, 2025 at 7:59 PM Philippe Mathieu-Daudé
-> <philmd@linaro.org> wrote:
->>
->> On 20/1/25 07:13, Philippe Mathieu-Daudé wrote:
->>> This is in preparation of making various CPUClass handlers
->>> take a const CPUState argument.
->>>
->>> Philippe Mathieu-Daudé (7):
->>>     qemu/thread: Constify qemu_thread_get_affinity() 'thread' argument
->>>     qemu/thread: Constify qemu_thread_is_self() argument
->>>     cpus: Constify qemu_cpu_is_self() argument
->>>     cpus: Constify cpu_get_address_space() 'cpu' argument
->>>     cpus: Constify cpu_is_stopped() argument
->>>     cpus: Constify cpu_work_list_empty() argument
->>>     accels: Constify AccelOpsClass::cpu_thread_is_idle() argument
->>
->> ping?
->>
-> 
-> Hi Philippe, I can't find this series in my mailbox and it's not on
-> lore.kernel.org/patchew/lists.gnu.org either. Resend?
-> 
+Instead of performing a piecemeal fix, just bite the bullet
+and make all 32bit ID regs fully writable. KVM itself never
+relies on them for anything, and if the VMM wants to mess up
+the guest, so be it.
 
-Hi,
+Fixes: 5cb57a1aff755 ("KVM: arm64: Zero ID_AA64PFR0_EL1.GIC when no GICv3 is presented to the guest")
+Reported-by: Peter Maydell <peter.maydell@linaro.org>
+Signed-off-by: Marc Zyngier <maz@kernel.org>
+Cc: stable@vger.kernel.org
+---
+ arch/arm64/kvm/sys_regs.c | 59 ++++++++++++++++++++-------------------
+ 1 file changed, 31 insertions(+), 28 deletions(-)
 
-Looks like it landed on the kvm mailing list via Cc but was left out of
-qemu-devel, despite the seemingly correct To header:
+diff --git a/arch/arm64/kvm/sys_regs.c b/arch/arm64/kvm/sys_regs.c
+index e67eb39ddc118..ad82264c6cbe1 100644
+--- a/arch/arm64/kvm/sys_regs.c
++++ b/arch/arm64/kvm/sys_regs.c
+@@ -2595,19 +2595,23 @@ static bool bad_redir_trap(struct kvm_vcpu *vcpu,
+ 	.val = 0,				\
+ }
+ 
+-/* sys_reg_desc initialiser for known cpufeature ID registers */
+-#define AA32_ID_SANITISED(name) {		\
+-	ID_DESC(name),				\
+-	.visibility = aa32_id_visibility,	\
+-	.val = 0,				\
+-}
+-
+ /* sys_reg_desc initialiser for writable ID registers */
+ #define ID_WRITABLE(name, mask) {		\
+ 	ID_DESC(name),				\
+ 	.val = mask,				\
+ }
+ 
++/*
++ * 32bit ID regs are fully writable when the guest is 32bit
++ * capable. Nothing in the KVM code should rely on 32bit features
++ * anyway, only 64bit, so let the VMM do its worse.
++ */
++#define AA32_ID_WRITABLE(name) {		\
++	ID_DESC(name),				\
++	.visibility = aa32_id_visibility,	\
++	.val = GENMASK(31, 0),			\
++}
++
+ /* sys_reg_desc initialiser for cpufeature ID registers that need filtering */
+ #define ID_FILTERED(sysreg, name, mask) {	\
+ 	ID_DESC(sysreg),				\
+@@ -3128,40 +3132,39 @@ static const struct sys_reg_desc sys_reg_descs[] = {
+ 
+ 	/* AArch64 mappings of the AArch32 ID registers */
+ 	/* CRm=1 */
+-	AA32_ID_SANITISED(ID_PFR0_EL1),
+-	AA32_ID_SANITISED(ID_PFR1_EL1),
++	AA32_ID_WRITABLE(ID_PFR0_EL1),
++	AA32_ID_WRITABLE(ID_PFR1_EL1),
+ 	{ SYS_DESC(SYS_ID_DFR0_EL1),
+ 	  .access = access_id_reg,
+ 	  .get_user = get_id_reg,
+ 	  .set_user = set_id_dfr0_el1,
+ 	  .visibility = aa32_id_visibility,
+ 	  .reset = read_sanitised_id_dfr0_el1,
+-	  .val = ID_DFR0_EL1_PerfMon_MASK |
+-		 ID_DFR0_EL1_CopDbg_MASK, },
++	  .val = GENMASK(31, 0) },
+ 	ID_HIDDEN(ID_AFR0_EL1),
+-	AA32_ID_SANITISED(ID_MMFR0_EL1),
+-	AA32_ID_SANITISED(ID_MMFR1_EL1),
+-	AA32_ID_SANITISED(ID_MMFR2_EL1),
+-	AA32_ID_SANITISED(ID_MMFR3_EL1),
++	AA32_ID_WRITABLE(ID_MMFR0_EL1),
++	AA32_ID_WRITABLE(ID_MMFR1_EL1),
++	AA32_ID_WRITABLE(ID_MMFR2_EL1),
++	AA32_ID_WRITABLE(ID_MMFR3_EL1),
+ 
+ 	/* CRm=2 */
+-	AA32_ID_SANITISED(ID_ISAR0_EL1),
+-	AA32_ID_SANITISED(ID_ISAR1_EL1),
+-	AA32_ID_SANITISED(ID_ISAR2_EL1),
+-	AA32_ID_SANITISED(ID_ISAR3_EL1),
+-	AA32_ID_SANITISED(ID_ISAR4_EL1),
+-	AA32_ID_SANITISED(ID_ISAR5_EL1),
+-	AA32_ID_SANITISED(ID_MMFR4_EL1),
+-	AA32_ID_SANITISED(ID_ISAR6_EL1),
++	AA32_ID_WRITABLE(ID_ISAR0_EL1),
++	AA32_ID_WRITABLE(ID_ISAR1_EL1),
++	AA32_ID_WRITABLE(ID_ISAR2_EL1),
++	AA32_ID_WRITABLE(ID_ISAR3_EL1),
++	AA32_ID_WRITABLE(ID_ISAR4_EL1),
++	AA32_ID_WRITABLE(ID_ISAR5_EL1),
++	AA32_ID_WRITABLE(ID_MMFR4_EL1),
++	AA32_ID_WRITABLE(ID_ISAR6_EL1),
+ 
+ 	/* CRm=3 */
+-	AA32_ID_SANITISED(MVFR0_EL1),
+-	AA32_ID_SANITISED(MVFR1_EL1),
+-	AA32_ID_SANITISED(MVFR2_EL1),
++	AA32_ID_WRITABLE(MVFR0_EL1),
++	AA32_ID_WRITABLE(MVFR1_EL1),
++	AA32_ID_WRITABLE(MVFR2_EL1),
+ 	ID_UNALLOCATED(3,3),
+-	AA32_ID_SANITISED(ID_PFR2_EL1),
++	AA32_ID_WRITABLE(ID_PFR2_EL1),
+ 	ID_HIDDEN(ID_DFR1_EL1),
+-	AA32_ID_SANITISED(ID_MMFR5_EL1),
++	AA32_ID_WRITABLE(ID_MMFR5_EL1),
+ 	ID_UNALLOCATED(3,7),
+ 
+ 	/* AArch64 ID registers */
+-- 
+2.47.3
 
-https://lore.kernel.org/kvm/20250120061310.81368-1-philmd@linaro.org/
-
-Regards,
-Yodel
