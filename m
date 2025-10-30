@@ -1,108 +1,139 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f74.google.com (mail-ed1-f74.google.com [209.85.208.74])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2EC831AF1E;
-	Thu, 30 Oct 2025 12:27:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB4A730AAD7
+	for <kvm@vger.kernel.org>; Thu, 30 Oct 2025 12:28:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.74
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761827233; cv=none; b=f5SRr6DljDTyiHryAHSfvqIfUjGijXVr0yA1RRNEu1EsI+oGl0dt8vH7QBuRGQOFFb/rRX38BWLdn4EZ6WIav+Zw+cj24DWQwRmOLM+xueF62JAS2jxj0x89h0RioIG3eue/UrN1SsX5tc5xDkPskSyxamKkQIOPUXzKUvJk5zk=
+	t=1761827290; cv=none; b=gEwHau/mywavR/ll71UBLpywun+ZCYBjWXqQbRxRtB3Jk/lIlM8AS0Eb/On/k3B7oiCBaHOk5EiGrcOUQYTkUhHoKsxpKpKdjBJamIJKvT3xqW4TnvxaKhk6+gw8e2kXFls8Q9sAzqndihepqSpGr1Fc+tE3qaJFThuF0+Nggxw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761827233; c=relaxed/simple;
-	bh=QP7tdwQd4OxeSGfWsVqm9Zb2T1wUSpsY0DId1bNFcO0=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DV8ITFyIYkPhXlzmj5UpxvaGmBhvvgNENnH9jxvWguoTN820azqQvNNPasYI4U2qP/+Jezmh1gcUtY2qNnsnABAhBcptrqc6nZhnHqs4+p+LOrUzXrh09SYu2PYw0LIhYO0Pz3dGqxBqNIgqJtPKdKkWilID9+zDOGhXaREo4Tg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GDTWIEl7; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1761827290; c=relaxed/simple;
+	bh=WT+yWFoFzB4isQBpCZEi4cpIboFEmQeIxx/K8SUZ2yI=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=KCH2sLQqJ90yWZsg98PO0TGrPM8MoIIoIF13442khykNIaO1TjucjMSiBhCHcT80ozcSzNnnOjwo1mlCU3pT8kp9uJZ/fTO1Yjf5CSHsfiUweDGOE/tFyx7ttTGApfyi2rfVpqEO9fpFcv2I9lrHVmu6rwTmReUjbKIsFo+tYvQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--jackmanb.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=OzXvSAJU; arc=none smtp.client-ip=209.85.208.74
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--jackmanb.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GDTWIEl7"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 913F2C4CEFF;
-	Thu, 30 Oct 2025 12:27:12 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1761827232;
-	bh=QP7tdwQd4OxeSGfWsVqm9Zb2T1wUSpsY0DId1bNFcO0=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GDTWIEl7dRwqX5FLwLXig5AWQ+CJHxhp9h9vIvTwBbpV+pexoRdlxpe1Z87KO83Gn
-	 wn09GM4J4n3aiOmsM/ndwhOFKLd3SSJ1HIemA/UUdXmzrBAuc7kmtMTs0yNAdY+F9j
-	 +JJHC2CjAgme30ypZEsFDxPZaPB4EWvhtNckebu08nyFAu4qd2RCX2WJwX02wxuMov
-	 /dGLiQ+LKhMaVpOqBHv8yOGExoTExl3c39tjD+t3furbnOd7R4JrlCpd850od53XEI
-	 9MU51fKSBKDGK//FulYK2e1icg9klKg98g5SxT22YGjTn2PBv0io+Zk+6j/qwU0ZO3
-	 MPODi/EshA2eA==
-Received: from sofa.misterjones.org ([185.219.108.64] helo=valley-girl.lan)
-	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.98.2)
-	(envelope-from <maz@kernel.org>)
-	id 1vERkE-00000000yNP-2HBu;
-	Thu, 30 Oct 2025 12:27:10 +0000
-From: Marc Zyngier <maz@kernel.org>
-To: kvmarm@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org,
-	kvm@vger.kernel.org
-Cc: Joey Gouly <joey.gouly@arm.com>,
-	Suzuki K Poulose <suzuki.poulose@arm.com>,
-	Oliver Upton <oliver.upton@linux.dev>,
-	Zenghui Yu <yuzenghui@huawei.com>,
-	Peter Maydell <peter.maydell@linaro.org>
-Subject: [PATCH v2 2/3] KVM: arm64: Set ID_{AA64PFR0,PFR1}_EL1.GIC when GICv3 is configured
-Date: Thu, 30 Oct 2025 12:27:06 +0000
-Message-ID: <20251030122707.2033690-3-maz@kernel.org>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20251030122707.2033690-1-maz@kernel.org>
-References: <20251030122707.2033690-1-maz@kernel.org>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="OzXvSAJU"
+Received: by mail-ed1-f74.google.com with SMTP id 4fb4d7f45d1cf-63c4b757a76so762871a12.2
+        for <kvm@vger.kernel.org>; Thu, 30 Oct 2025 05:28:08 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1761827287; x=1762432087; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=Iz5sLW500EYIVdnuMM9jOjVidmBC+9TxhNfn+Chx9HU=;
+        b=OzXvSAJU1RB1N4oXVy4AMmr9PbgiFXbBwkzJTuojrcrjZtRYk/+q8qE810HNOeVO8D
+         rCcW37zAAyDgM4uJZkoVJ5mzFElj2xROZ3TtTv8meVjRFxTrK8ta9sRythQye9TxQrBI
+         ZadkpfO6W++74IreQkp9+MzwL0Ms5zloBS/WyGw3SgSJpfHepeTtYboO93g+Wm1+dQmV
+         wW2CylE9GlgOCzYxWRsB1zPORT6IBjLmj5EVzOu4cAfZBI94qtrGrMmI18FXKpECov5/
+         1caUQZsa9+EVDsxui7WB+VGlv91v5RUer6udCmhh8FFfINs5aKFvKSiQBbEsafXGHEUj
+         t/Tw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1761827287; x=1762432087;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=Iz5sLW500EYIVdnuMM9jOjVidmBC+9TxhNfn+Chx9HU=;
+        b=v2gbcpZgZSDgk8gHWxkcY73C6V/Fr0Cl2x7O6TlS5uilk28it25QEeqM0ZTyvMjVzN
+         edWAaLBHmV5r+D1hh8DQEFUtOeUzYyfQ/iCJ2OeCFT0LeibnZgAKD/b6TC8kBu0NkDKB
+         Vr8JwBY7+2Vs4CUCo7VX0S9yWf6b7DOaPaQQl1rVMfjLLTPFidhjv06nxeLTZaq7Swaa
+         VWIR0MC6z4aqHF9qzFGwHknlSH8aFNAOv1mJousm53NH/krn2vYMJmgcQhsH/Z/hOGrv
+         sx/gdKa24tDQZc6VRntmK9F1mLSY/FFfe+NJuktVog2FuY90mbm/MTiMnK/lcuUf8gLB
+         BVvQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXoEh6qOvsMmCT7IdzbB+1FjUvLxgw2q8K3BiCfG1o1CGzcF3cg/u9YM13Bithf5dnb0IU=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yxvn9C6K5sVFhcusE07bNPdh4vzSEBb3NP7RavVIvS5jUU3zAMn
+	c5Ml2YhiXQ8kAbkrb9zmGBoGqzD08ZeX7moE54zFNvhH7RjWLd9ljZG1paZulxC0sIuhDjLOkpm
+	P6QOIsnlEdm+FxQ==
+X-Google-Smtp-Source: AGHT+IFf0JtH99Wnxr1MiK355F5gK34ff6ks2LaQ8nseaqfEWG8gnD0yPd0xWpTbGOhwBalj68ePrx7AR9f0bg==
+X-Received: from edj18.prod.google.com ([2002:a05:6402:3252:b0:63e:1b84:55fa])
+ (user=jackmanb job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:6402:5245:b0:639:720d:72d with SMTP id 4fb4d7f45d1cf-6404425e8c2mr5290841a12.29.1761827287114;
+ Thu, 30 Oct 2025 05:28:07 -0700 (PDT)
+Date: Thu, 30 Oct 2025 12:28:06 +0000
+In-Reply-To: <20251029-verw-vm-v1-1-babf9b961519@linux.intel.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-SA-Exim-Connect-IP: 185.219.108.64
-X-SA-Exim-Rcpt-To: kvmarm@lists.linux.dev, linux-arm-kernel@lists.infradead.org, kvm@vger.kernel.org, joey.gouly@arm.com, suzuki.poulose@arm.com, oliver.upton@linux.dev, yuzenghui@huawei.com, peter.maydell@linaro.org
-X-SA-Exim-Mail-From: maz@kernel.org
-X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
+Mime-Version: 1.0
+References: <20251029-verw-vm-v1-0-babf9b961519@linux.intel.com> <20251029-verw-vm-v1-1-babf9b961519@linux.intel.com>
+X-Mailer: aerc 0.21.0
+Message-ID: <DDVNNDVOE49L.1F77ZUNBVTR1I@google.com>
+Subject: Re: [PATCH 1/3] x86/bugs: Use VM_CLEAR_CPU_BUFFERS in VMX as well
+From: Brendan Jackman <jackmanb@google.com>
+To: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>, 
+	Thomas Gleixner <tglx@linutronix.de>, Borislav Petkov <bp@alien8.de>, 
+	Peter Zijlstra <peterz@infradead.org>, Josh Poimboeuf <jpoimboe@kernel.org>, 
+	Ingo Molnar <mingo@redhat.com>, Dave Hansen <dave.hansen@linux.intel.com>, <x86@kernel.org>, 
+	"H. Peter Anvin" <hpa@zytor.com>, Sean Christopherson <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>
+Cc: <linux-kernel@vger.kernel.org>, <kvm@vger.kernel.org>, 
+	Tao Zhang <tao1.zhang@intel.com>, Jim Mattson <jmattson@google.com>, 
+	Brendan Jackman <jackmanb@google.com>
+Content-Type: text/plain; charset="UTF-8"
 
-Drive the idreg fields indicating the presence of GICv3 directly from
-the vgic code. This avoids having to do any sort of runtime clearing
-of the idreg.
+On Wed Oct 29, 2025 at 9:26 PM UTC, Pawan Gupta wrote:
+> TSA mitigation:
+>
+>   d8010d4ba43e ("x86/bugs: Add a Transient Scheduler Attacks mitigation")
+>
+> introduced VM_CLEAR_CPU_BUFFERS for guests on AMD CPUs. Currently on Intel
+> CLEAR_CPU_BUFFERS is being used for guests which has a much broader scope
+> (kernel->user also).
+>
+> Make mitigations on Intel consistent with TSA. This would help handling the
+> guest-only mitigations better in future.
+>
+> Signed-off-by: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
+> ---
+>  arch/x86/kernel/cpu/bugs.c | 9 +++++++--
+>  arch/x86/kvm/vmx/vmenter.S | 3 ++-
+>  2 files changed, 9 insertions(+), 3 deletions(-)
+>
+> diff --git a/arch/x86/kernel/cpu/bugs.c b/arch/x86/kernel/cpu/bugs.c
+> index d7fa03bf51b4517c12cc68e7c441f7589a4983d1..6d00a9ea7b4f28da291114a7a096b26cc129b57e 100644
+> --- a/arch/x86/kernel/cpu/bugs.c
+> +++ b/arch/x86/kernel/cpu/bugs.c
+> @@ -194,7 +194,7 @@ DEFINE_STATIC_KEY_FALSE(switch_mm_cond_l1d_flush);
+>  
+>  /*
+>   * Controls CPU Fill buffer clear before VMenter. This is a subset of
+> - * X86_FEATURE_CLEAR_CPU_BUF, and should only be enabled when KVM-only
+> + * X86_FEATURE_CLEAR_CPU_BUF_VM, and should only be enabled when KVM-only
+>   * mitigation is required.
+>   */
 
-Fixes: 5cb57a1aff755 ("KVM: arm64: Zero ID_AA64PFR0_EL1.GIC when no GICv3 is presented to the guest")
-Signed-off-by: Marc Zyngier <maz@kernel.org>
----
- arch/arm64/kvm/vgic/vgic-init.c | 14 ++++++++++++--
- 1 file changed, 12 insertions(+), 2 deletions(-)
+So if I understand correctly with this patch the aim is:
 
-diff --git a/arch/arm64/kvm/vgic/vgic-init.c b/arch/arm64/kvm/vgic/vgic-init.c
-index 1796b1a22a72a..ca411cce41409 100644
---- a/arch/arm64/kvm/vgic/vgic-init.c
-+++ b/arch/arm64/kvm/vgic/vgic-init.c
-@@ -71,6 +71,7 @@ static int vgic_allocate_private_irqs_locked(struct kvm_vcpu *vcpu, u32 type);
- int kvm_vgic_create(struct kvm *kvm, u32 type)
- {
- 	struct kvm_vcpu *vcpu;
-+	u64 aa64pfr0, pfr1;
- 	unsigned long i;
- 	int ret;
- 
-@@ -161,10 +162,19 @@ int kvm_vgic_create(struct kvm *kvm, u32 type)
- 
- 	kvm->arch.vgic.vgic_dist_base = VGIC_ADDR_UNDEF;
- 
--	if (type == KVM_DEV_TYPE_ARM_VGIC_V2)
-+	aa64pfr0 = kvm_read_vm_id_reg(kvm, SYS_ID_AA64PFR0_EL1) & ~ID_AA64PFR0_EL1_GIC;
-+	pfr1 = kvm_read_vm_id_reg(kvm, SYS_ID_PFR1_EL1) & ~ID_PFR1_EL1_GIC;
-+
-+	if (type == KVM_DEV_TYPE_ARM_VGIC_V2) {
- 		kvm->arch.vgic.vgic_cpu_base = VGIC_ADDR_UNDEF;
--	else
-+	} else {
- 		INIT_LIST_HEAD(&kvm->arch.vgic.rd_regions);
-+		aa64pfr0 |= SYS_FIELD_PREP_ENUM(ID_AA64PFR0_EL1, GIC, IMP);
-+		pfr1 |= SYS_FIELD_PREP_ENUM(ID_PFR1_EL1, GIC, GICv3);
-+	}
-+
-+	kvm_set_vm_id_reg(kvm, SYS_ID_AA64PFR0_EL1, aa64pfr0);
-+	kvm_set_vm_id_reg(kvm, SYS_ID_PFR1_EL1, pfr1);
- 
- 	if (type == KVM_DEV_TYPE_ARM_VGIC_V3)
- 		kvm->arch.vgic.nassgicap = system_supports_direct_sgis();
--- 
-2.47.3
+X86_FEATURE_CLEAR_CPU_BUF means verw before exit to usermode
 
+X86_FEATURE_CLEAR_CPU_BUF_VM means unconditional verw before VM Enter
+
+cpu_buf_vm_clear[_mmio_only] means verw before VM Enter for
+MMIO-capable guests.
+
+Since this is being cleaned up can we also:
+
+- Update the definition of X86_FEATURE_CLEAR_CPU_BUF in cpufeatures.h to
+  say what context it applies to (now it's specifically exit to user)
+
+- Clear up how verw_clear_cpu_buf_mitigation_selected relates to these
+  two flags. Thinking aloud here... it looks like this is set:
+
+  - If MDS mitigations are on, meaning both flags are set
+
+  - If TAA mitigations are on, meaning both flags are set
+
+  - If MMIO mitigations are on, and the CPU has MDS or TAA. In this case
+    both flags are set, but this causality is messier.
+
+  - If RFDS mitigations are on and supported, meaning both flags are set
+
+  So if I'm reading this correctly whenever
+  verw_clear_cpu_buf_mitigation_selected we should expect both flags
+  enabled. So I think all that's needed is to add a reference to
+  X86_FEATURE_CLEAR_CPU_BUF_VM to the comment?
+
+I think we also need to update the assertion of vmx->disable_fb_clear?
+
+Anyway thanks this seems like a very clear improvement to me.
