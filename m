@@ -1,50 +1,50 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D59E932AAD0;
-	Fri, 31 Oct 2025 08:57:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.19
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 22066329C53;
+	Fri, 31 Oct 2025 08:59:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.14
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761901031; cv=none; b=JpTvVF5eEXj4V9QexGP9Xqp0iDai+YzZSOjoUs4+ce8/PEhkgkiBtyqMnpQfUJjZMFJQ36uvZLurbHCbNKgZ84uMlfxvGpzhH4E5YhfkCQRybrDbwOVs6phy7EfZYTBqMCINp+lbaPgo91VbnId7Wh8ZZ43A6EDHo2BhTgqaFQg=
+	t=1761901152; cv=none; b=ftcksk2WpUgBwCSWbXITop4SwINI6pAE7635CaRPJQXdOGuwQ2kaj3cKym0VzmF2HGXXvcJyv4F+pVH08VlOmlkLiVcMtPH8p7nNSPGGAgO9SGjX4jVyB0FO9Jqz9zABLGCSorPlbQTEkRTPo5FSRfnQJ/UIez5E46Jekdk9Mpo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761901031; c=relaxed/simple;
-	bh=4KtmtUmeRKY0mhGFlHsvUKmdbP8tr/tefUK44+GBirI=;
+	s=arc-20240116; t=1761901152; c=relaxed/simple;
+	bh=14teRbdSNDZoo6LY1BdIEFiTD+Kt/E9bpeaMX41fhsM=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=iI4FHiikgKWa3jlCF0SX5d9Y3gfwRBiSWP3YfHOfMMmTRj1epL0GKEDL9/YT1fVe7Pltz3wkzj4Ra3zS7/DS8FuREe7wVHdnIDG4JOy60Xg0LZHpIxPNnl85EaHGxblqBxNmIgDzJPBQXBA2Vzs+NguAzPiGpJk+cygalCQcNzo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=kmsoxXtL; arc=none smtp.client-ip=198.175.65.19
+	 In-Reply-To:Content-Type; b=FLdPu2uhNpgrJAw8s9RHB9+1oZSvj84oq0JWyfb0mEno5OrrD3xDau/IK3zqw0eE2udHILS7nu/UUQTJyEuXRDPoGVGalgVhdKQbqqBNxbnpBYhZve6wchKP4EoePOQAd7GsEnCnrSXxGqsG+HLMwtey4xntLsiwwLvRQjn0bZo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=fACj2G1h; arc=none smtp.client-ip=198.175.65.14
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="kmsoxXtL"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="fACj2G1h"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1761901030; x=1793437030;
+  t=1761901152; x=1793437152;
   h=message-id:date:mime-version:subject:to:cc:references:
    from:in-reply-to:content-transfer-encoding;
-  bh=4KtmtUmeRKY0mhGFlHsvUKmdbP8tr/tefUK44+GBirI=;
-  b=kmsoxXtLm5seRBblXpIeX24B9+tvv74UDZfIwB9mubmQEe2CFPBIFEDg
-   2XPT5QBUQP26OX74Qm92KzYJ5BysNX2CY5A++24rJhjNh5LcYxWRzrYOM
-   AcdNgUE8k9hftAcbb8xvRBzaHKzqyjAXHK9rnX5eO6c8fduw3DaCrolWX
-   yyHZwrxbB7EP7UkExeo6m9x819yHcHlzk0CdsrAKYejHYV4l9Efj6RJpl
-   XZwPPqylrXdu4lfVtBJ/ni31u5W6rb4jYDpj43A1ubZOU3NNsX3Ctc+vT
-   WYuGJLgWYPShdAs2bZ6JseH2wN+WpZ2Ut/nokOv85XqyzkCtor+8Dy7TF
-   w==;
-X-CSE-ConnectionGUID: x7VCRS38Qc+rD/jlQ7amTQ==
-X-CSE-MsgGUID: vj7cSTVnS8itcZpvlxKW0A==
-X-IronPort-AV: E=McAfee;i="6800,10657,11598"; a="63942707"
-X-IronPort-AV: E=Sophos;i="6.19,268,1754982000"; 
-   d="scan'208";a="63942707"
+  bh=14teRbdSNDZoo6LY1BdIEFiTD+Kt/E9bpeaMX41fhsM=;
+  b=fACj2G1huC3BjSANlqRNVV6cQ6XESOtH1ut6OKV/gj0KHYJpqwNwYfHz
+   J/bDKESFqWHxfwMAmxvjNp9CdZepgyXsYflyfacK+TP4Fo4BO7TLTBvBC
+   vWhtPQF/IYTY4qr2/GNkJKD2IUlGTx24kwKl2czh7TgjvTxrSK1TerG/N
+   l4btOrpy3Bnpha/S3avLt1RgyBWxw5dXvlD2I0UosoERogJj2iQ9X9Trx
+   Tkc89Wo7tzGGcUy3WAHfbAMynoD6NVFJ7yYmoYsVOBxH5frpPY1bAhhRQ
+   f+tUPHtzwLthsWOA7TsmU0pgdTcT2btPizSs2P9502+UiSPfGMRwZTTMi
+   g==;
+X-CSE-ConnectionGUID: OVjCLDqlSFW2pGDTY1MIlg==
+X-CSE-MsgGUID: xCnUw1JrRL2IW6jfHxJ6Tg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11531"; a="67892975"
+X-IronPort-AV: E=Sophos;i="6.17,312,1747724400"; 
+   d="scan'208";a="67892975"
 Received: from orviesa007.jf.intel.com ([10.64.159.147])
-  by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 31 Oct 2025 01:57:08 -0700
-X-CSE-ConnectionGUID: sPC6mEPlSqSwx3TQdrZz6Q==
-X-CSE-MsgGUID: BsJwtL+UTb27i21msflWIQ==
+  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 31 Oct 2025 01:59:11 -0700
+X-CSE-ConnectionGUID: Qkn6DZO5Rceyyp8KD2OnrQ==
+X-CSE-MsgGUID: hAjIabqjQHemJifWFRIz7Q==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.19,269,1754982000"; 
-   d="scan'208";a="186118722"
+   d="scan'208";a="186119255"
 Received: from binbinwu-mobl.ccr.corp.intel.com (HELO [10.124.240.28]) ([10.124.240.28])
-  by orviesa007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 31 Oct 2025 01:56:55 -0700
-Message-ID: <88d479a0-e849-49d6-86e7-8cd00daccee0@linux.intel.com>
-Date: Fri, 31 Oct 2025 16:56:52 +0800
+  by orviesa007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 31 Oct 2025 01:59:02 -0700
+Message-ID: <5eaab97d-30c3-46a5-8be2-2ea1ef28e71e@linux.intel.com>
+Date: Fri, 31 Oct 2025 16:58:59 +0800
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -52,8 +52,8 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 17/28] KVM: TDX: Fold tdx_sept_zap_private_spte() into
- tdx_sept_remove_private_spte()
+Subject: Re: [PATCH v4 18/28] KVM: TDX: Combine KVM_BUG_ON + pr_tdx_error()
+ into TDX_BUG_ON()
 To: Sean Christopherson <seanjc@google.com>
 Cc: Marc Zyngier <maz@kernel.org>, Oliver Upton <oliver.upton@linux.dev>,
  Tianrui Zhao <zhaotianrui@loongson.cn>, Bibo Mao <maobibo@loongson.cn>,
@@ -75,27 +75,26 @@ Cc: Marc Zyngier <maz@kernel.org>, Oliver Upton <oliver.upton@linux.dev>,
  Rick Edgecombe <rick.p.edgecombe@intel.com>,
  Ackerley Tng <ackerleytng@google.com>
 References: <20251030200951.3402865-1-seanjc@google.com>
- <20251030200951.3402865-18-seanjc@google.com>
+ <20251030200951.3402865-19-seanjc@google.com>
 Content-Language: en-US
 From: Binbin Wu <binbin.wu@linux.intel.com>
-In-Reply-To: <20251030200951.3402865-18-seanjc@google.com>
+In-Reply-To: <20251030200951.3402865-19-seanjc@google.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 
 
 
 On 10/31/2025 4:09 AM, Sean Christopherson wrote:
-> Do TDH_MEM_RANGE_BLOCK directly in tdx_sept_remove_private_spte() instead
-> of using a one-off helper now that the nr_premapped tracking is gone.
+> Add TDX_BUG_ON() macros (with varying numbers of arguments) to deduplicate
+> the myriad flows that do KVM_BUG_ON()/WARN_ON_ONCE() followed by a call to
+> pr_tdx_error().  In addition to reducing boilerplate copy+paste code, this
+> also helps ensure that KVM provides consistent handling of SEAMCALL errors.
 >
-> Opportunistically drop the WARN on hugepages, which was dead code (see the
-> KVM_BUG_ON() in tdx_sept_remove_private_spte()).
->
-> No functional change intended.
+> Opportunistically convert a handful of bare WARN_ON_ONCE() paths to the
+> equivalent of KVM_BUG_ON(), i.e. have them terminate the VM.  If a SEAMCALL
+> error is fatal enough to WARN on, it's fatal enough to terminate the TD.
 >
 > Reviewed-by: Rick Edgecombe <rick.p.edgecombe@intel.com>
-> Reviewed-by: Kai Huang <kai.huang@intel.com>
 > Signed-off-by: Sean Christopherson <seanjc@google.com>
 
 Reviewed-by: Binbin Wu <binbin.wu@linux.intel.com>
-
