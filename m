@@ -1,39 +1,40 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 322421B87C9
-	for <kvm@vger.kernel.org>; Mon,  3 Nov 2025 09:12:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8EA4D38D
+	for <kvm@vger.kernel.org>; Mon,  3 Nov 2025 09:17:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762161172; cv=none; b=dAztxBLIzHzj3lQzctgD3rRbX3rYODQXQ8oT+soHNLQuufypgRkxV7vGvdJdpaevDtSSJAW5Y6hNelg8x1Rjnysv6H+Di68mhHs//SQQJpkqvtS7kc4nsigk+XJyowgTyK3n1B/sqpRjYxjtNGngDl5aDoVJ9HmtFeskQXhaJUg=
+	t=1762161476; cv=none; b=dqNmW/Sao+kDATORLcp+YvW6GjBjd9bK2vBZHiqVd+Wy2uI5RZlZMr5tR4I36xquLc4A3+PmUaSjGQXxj/6rr6vIfzlAb2JoeKSg+FwSGjS/+y1Ylwcy0eA20HfMgdfKHnSqY/qU6zjQ57ByMch+6+AxXQ4zZ3oEHRFx+mXaRtg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762161172; c=relaxed/simple;
-	bh=PBYpNLYnnMbku+7d1x4dCv4wHnzS9z2Su+rR8nJHbOM=;
-	h=From:To:Subject:Date:Message-ID:Content-Type:MIME-Version; b=J9M4fT4mFASNyOd3sH3RbivG8nCvS0Nrj8eqhnjVcJJPi0QY7fiLjGzWXuwITee92Rlz0zDNrIkD0dIakx6PVEOTiQSuZLnys7xQzNflhrvK1p3P0DKvjqSpoWJkGInyX5fUjaYuvVHO6Winour7qRzp5E4vldWz/J2irM/fIFk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=sd3HN1tK; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1762161476; c=relaxed/simple;
+	bh=LY1xRyw/sotSmc1ZWJGJzk33jk3SQzhqq5wkvs4AlEA=;
+	h=From:To:Subject:Date:Message-ID:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=VqhI63vnV7EOD6NBMPr1wxEeU1T61Cup5bvHHmnmfcX/f27j110pJdQ84uN+zDzxaocIlPE4OGlVsF2X7l1wdRa32zv7LGtHuBuM4U2LFuzkQIn9aH1KfOZDBKwhtZE5yGBx9tCyCLGh4me3S4rd+SqZIJzCZVxIEhjKrLnJjZ0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=P361Trol; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="sd3HN1tK"
-Received: by smtp.kernel.org (Postfix) with ESMTPS id AF2D5C116D0
-	for <kvm@vger.kernel.org>; Mon,  3 Nov 2025 09:12:51 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="P361Trol"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 077A5C4CEFD
+	for <kvm@vger.kernel.org>; Mon,  3 Nov 2025 09:17:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1762161171;
-	bh=PBYpNLYnnMbku+7d1x4dCv4wHnzS9z2Su+rR8nJHbOM=;
-	h=From:To:Subject:Date:From;
-	b=sd3HN1tKLLoeuu0jOEaE4cr/00A69FEZolKlqqL2jvHiBLmH57upbYDZWo9vNXNWI
-	 UhzDcUi2QLUfDgKNwIoluaYytWBW/WDZ/ITCBvQvfdIPbsNstQ4NuWDEqoqUAPRwqc
-	 0DBqVIAh7YJzc9IdVcFNscdyNrj4TW8Uqemo8PKYhV7mhLHrbcpPWeiO12bp7jNpmi
-	 Jq4z1FDtc81YYYeRL9DmkQnfftsXJLYvH0Gh7tx/uM1UZgtQ4SfADdWyLQ7/OcQB2E
-	 Kj1dx7QGGXrQj21XrW0noSaNUMR13MWnJvSrFn2x2VQLLjlmccXkocBc093LTHzqaF
-	 id5LxYkWhYzjA==
+	s=k20201202; t=1762161476;
+	bh=LY1xRyw/sotSmc1ZWJGJzk33jk3SQzhqq5wkvs4AlEA=;
+	h=From:To:Subject:Date:In-Reply-To:References:From;
+	b=P361Trolla5WlyCdCW7GyQa4tfpi6k7q3AT6QGAp0BGcevAWe7gjkgaLH6hwygdhA
+	 STSbFB5ObnESud9KmyVeyvE2DwTPJUqwRDpeT1vJD3OkQ3XFODZS3qKLCl91Yw09GJ
+	 yyVzmuJcuq192+Op+yUyGH9bboGIyzFlcRRdxpc3rGNjtpFLGuYlOqsvZytCNW9GCa
+	 +mCiYSKcT4lmAcq6dA6Ed7Btu0kw8l2taiTiPeLYmiEKhrtlX1WinNQH4YVNTIj4Wk
+	 x/cWMSSkHUW5bnwSUKwCSnX7t4l/wUPLD5xOUyLBZHC971B2YgRtkKyJpNo3XIPE+C
+	 EBxHE6IzEwdNA==
 Received: by aws-us-west-2-korg-bugzilla-1.web.codeaurora.org (Postfix, from userid 48)
-	id A3BE0C41613; Mon,  3 Nov 2025 09:12:51 +0000 (UTC)
+	id F06C2C53BC5; Mon,  3 Nov 2025 09:17:55 +0000 (UTC)
 From: bugzilla-daemon@kernel.org
 To: kvm@vger.kernel.org
-Subject: [Bug 220740] New: Host crash when do PF passthrough to KVM guest
- with some devices
-Date: Mon, 03 Nov 2025 09:12:51 +0000
+Subject: [Bug 220740] Host crash when do PF passthrough to KVM guest with
+ some devices
+Date: Mon, 03 Nov 2025 09:17:55 +0000
 X-Bugzilla-Reason: None
-X-Bugzilla-Type: new
+X-Bugzilla-Type: changed
 X-Bugzilla-Watch-Reason: AssignedTo virtualization_kvm@kernel-bugs.osdl.org
 X-Bugzilla-Product: Virtualization
 X-Bugzilla-Component: kvm
@@ -46,10 +47,10 @@ X-Bugzilla-Resolution:
 X-Bugzilla-Priority: P3
 X-Bugzilla-Assigned-To: virtualization_kvm@kernel-bugs.osdl.org
 X-Bugzilla-Flags: 
-X-Bugzilla-Changed-Fields: bug_id short_desc product version rep_platform
- op_sys bug_status bug_severity priority component assigned_to reporter
- cf_regression
-Message-ID: <bug-220740-28872@https.bugzilla.kernel.org/>
+X-Bugzilla-Changed-Fields: cf_bisect_commit cc cf_regression
+Message-ID: <bug-220740-28872-Lz15Sg6qBz@https.bugzilla.kernel.org/>
+In-Reply-To: <bug-220740-28872@https.bugzilla.kernel.org/>
+References: <bug-220740-28872@https.bugzilla.kernel.org/>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 X-Bugzilla-URL: https://bugzilla.kernel.org/
@@ -63,142 +64,60 @@ MIME-Version: 1.0
 
 https://bugzilla.kernel.org/show_bug.cgi?id=3D220740
 
-            Bug ID: 220740
-           Summary: Host crash when do PF passthrough to KVM guest with
-                    some devices
-           Product: Virtualization
-           Version: unspecified
-          Hardware: Intel
-                OS: Linux
-            Status: NEW
-          Severity: high
-          Priority: P3
-         Component: kvm
-          Assignee: virtualization_kvm@kernel-bugs.osdl.org
-          Reporter: farrah.chen@intel.com
-        Regression: No
+Chen, Fan (farrah.chen@intel.com) changed:
 
-Environment:
+           What    |Removed                     |Added
+----------------------------------------------------------------------------
+ Bisected commit-id|                            |2b938e3db335e3670475e31a722
+                   |                            |c2bee34748c5a
+                 CC|                            |farrah.chen@intel.com
+         Regression|No                          |Yes
 
-Host Kernel: https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux=
-.git
-v6.18.0-rc4
+--- Comment #1 from Chen, Fan (farrah.chen@intel.com) ---
+I reproduced this issue on SPR, GNR, SRF, CWF.
+If we disable "PCIE Error Enabling" in BIOS, host will not crash.
 
-Guest kernel: 6.17-rc7
+After bisecting, the first bad commit is:
+commit 2b938e3db335e3670475e31a722c2bee34748c5a (HEAD)
+Author: Ramesh Thomas <ramesh.thomas@intel.com>
+Date:   Tue Dec 10 05:19:37 2024 -0800
 
-QEMU: https://gitlab.com/qemu-project/qemu.git master 37ad0e48e9fd58b17
+    vfio/pci: Enable iowrite64 and ioread64 for vfio pci
 
-Bug detail description:=20
+    Definitions of ioread64 and iowrite64 macros in asm/io.h called by vfio
+    pci implementations are enclosed inside check for CONFIG_GENERIC_IOMAP.
+    They don't get defined if CONFIG_GENERIC_IOMAP is defined. Include
+    linux/io-64-nonatomic-lo-hi.h to define iowrite64 and ioread64 macros
+    when they are not defined. io-64-nonatomic-lo-hi.h maps the macros to
+    generic implementation in lib/iomap.c. The generic implementation does
+    64 bit rw if readq/writeq is defined for the architecture, otherwise it
+    would do 32 bit back to back rw.
 
-when do PF passthrough to KVM guest with some devices, guest failed to boot=
- and
-host crash.
+    Note that there are two versions of the generic implementation that
+    differs in the order the 32 bit words are written if 64 bit support is
+    not present. This is not the little/big endian ordering, which is
+    handled separately. This patch uses the lo followed by hi word ordering
+    which is consistent with current back to back implementation in the
+    vfio/pci code.
 
-Not all devices can trigger this issue, currently, I found Intel NIC
-X710(almost every time) and Nvidia GPU A10(randomly) can reproduce this iss=
-ue.
-VF passthrough can't reproduce this issue.
+    Signed-off-by: Ramesh Thomas <ramesh.thomas@intel.com>
+    Reviewed-by: Jason Gunthorpe <jgg@nvidia.com>
+    Link:
+https://lore.kernel.org/r/20241210131938.303500-2-ramesh.thomas@intel.com
+    Signed-off-by: Alex Williamson <alex.williamson@redhat.com>
 
-Reproduce steps:=20
+diff --git a/drivers/vfio/pci/vfio_pci_rdwr.c
+b/drivers/vfio/pci/vfio_pci_rdwr.c
+index 66b72c289284..a0595c745732 100644
+--- a/drivers/vfio/pci/vfio_pci_rdwr.c
++++ b/drivers/vfio/pci/vfio_pci_rdwr.c
+@@ -16,6 +16,7 @@
+ #include <linux/io.h>
+ #include <linux/vfio.h>
+ #include <linux/vgaarb.h>
++#include <linux/io-64-nonatomic-lo-hi.h>
 
-Add "intel_iommu=3Don" host kernel cmdline to enable VTD
-Check VTD in dmesg
-[root@gnr ~]# dmesg|grep "Virtualization Technology"
-[   27.313975] DMAR: Intel(R) Virtualization Technology for Directed I/O
-Check BDF of X710
-[root@gnr ~]# lspci|grep "X710"
-b8:00.0 Ethernet controller: Intel Corporation Ethernet Controller X710 for
-10GbE SFP+ (rev 01)
-...
-Bind X710 to vfio-pci driver
-[root@gnr ~]# modprobe vfio-pci
-[root@gnr ~]# echo 0000:b8:00.0 >
-/sys/bus/pci/devices/0000\:b8\:00.0/driver/unbind
-
-[root@gnr ~]# lspci -n -s b8:00.0
-b8:00.0 0200: 8086:1572 (rev 01)
-[root@gnr ~]# echo 8086 1572 > /sys/bus/pci/drivers/vfio-pci/new_id
-[root@gnr ~]# lspci -k -s b8:00.0
-b8:00.0 Ethernet controller: Intel Corporation Ethernet Controller X710 for
-10GbE SFP+ (rev 01)
-        Subsystem: Intel Corporation Ethernet Converged Network Adapter X71=
-0-2
-        Kernel driver in use: vfio-pci
-        Kernel modules: i40e
-
-Boot guest with b8:00.0 assigned
-/home/qemu/build/qemu-system-x86_64 \
-    -name legacy,debug-threads=3Don \
-    -accel kvm \
-    -cpu host \
-    -smp 16 \
-    -m 16G \
-    -drive file=3D/home/centos9.qcow2,if=3Dnone,id=3Dvirtio-disk0 \
-    -device virtio-blk-pci,drive=3Dvirtio-disk0 \
-    -vnc :1 \
-    -monitor telnet:127.0.0.1:45455,nowait,server \
-    -device vfio-pci,host=3Db8:00.0 \
-    -serial stdio
-Error log:=20
-
-VM failed to boot, no output.
-Host crash with below error in serial output.
-
-gnr login: [  120.259677] i40e 0000:b8:00.0: i40e_ptp_stop: removed PHC on
-ens26f0np0
-
-[  136.778544] vfio-pci 0000:b8:00.0: resetting
-
-[  136.891303] vfio-pci 0000:b8:00.0: reset done
-
-[  136.896389] vfio-pci 0000:b8:00.0: Masking broken INTx support
-
-[  136.940637] vfio-pci 0000:b8:00.0: resetting
-
-[  137.051298] vfio-pci 0000:b8:00.0: reset done
-
-[IEH] error found at IEH(S:0x1 B:0xFE D:0x2 F:0x0) Sev: IEH CORRECT ERROR
-
-[IEH] ErrorStatus 0x10, MaxBitIdx 0x1D
-
-IEH CORRECT ERROR
-
-[IEH] BitIdx 0x4, ShareIdx 0x0
-
-[IEH] error device is (S:0x1 B:0xB7 D:0x0 F:0x4) BitIdx 0x4, ShareIdx 0x0 [=
-IEH]
-error found at IEH(S:0x1 B:0xB7 D:0x0 F:0x4) Sev: IEH CORRECT ERROR
-
-[IEH] ErrorStatus 0x4, MaxBitIdx 0x11
-
-IEH CORRECT ERROR
-
-[IEH] BitIdx 0x2, ShareIdx 0x0
-
-[IEH] error device is (S:0x1 B:0xB7 D:0x2 F:0x0) BitIdx 0x2, ShareIdx 0x0=
-=20=20
-[Device Error] error on skt:0x1 Bus:0xB7 Device:0x2 func:0x0
-
-PcieRootPortErrorHandler MailBox->PcieInitPar.SerrEmuTestEn =3D 0x0
-
-PcieRootPortMultiErrorsHandler RP Error handler.
-
-ERROR: C00000002:V03071008 I0 515DFD4E-2D7E-40D1-8C22-8AD3CD224325 7C7C9818
-
-WHEA: Detected PCIe Error
-
- --Logging Corrected Error to WHEA
-
-WHEA: Sending OS notification via SCI. Success
-
-ERROR: C00000002:V03071008 I0 515DFD4E-2D7E-40D1-8C22-8AD3CD224325 7C7C9818
-
-WHEA: Detected PCIe Error
-
- --Logging Corrected Error to WHEA
-
-WHEA: Sending OS notification via SCI. Success
-...
+ #include "vfio_pci_priv.h"
 
 --=20
 You may reply to this email to add a comment.
