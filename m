@@ -1,37 +1,37 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 389C531E0ED;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3794631E0EC;
 	Mon,  3 Nov 2025 16:55:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762188930; cv=none; b=rIH7uNvAk7S5DlyNjHs0ZTvedDItwQGWyiqzQi4AuEn4wSyTU5bgsnO5/oRLsqjHpxDrSdyfqOzamOd/EWjuAPqZf1qRbHbhqR035TS3XpuZeWcwb/uOo5KHTh62trdkg9HJtvyy0LV39CXGHi99eBRjkkAy1JPM2dYDm+f89rE=
+	t=1762188930; cv=none; b=jSNfBIN48oQNQPoN5QWI9XrupE+r9fOhxrxt6WpdEFYDMjDO2Lz273yO4TDmdVNe5bRWpeOWyCVu2M6mWdRUEMANEulAvbv918YFxP/uc9CC/+faoxjSOcmOQudVUjBetd8klYzWK2ioajbBwKicWexwj2B07jAYMENVWR6NJWw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1762188930; c=relaxed/simple;
-	bh=v01Vg22EJGqDANe+d5iFLhgxo6rRA09Yj1ZORRZolzA=;
+	bh=zuhKLI7VX81K7N1waWG6RKB+bJ6LNUR7JqGCymcfMXg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rPwkefNWHohC0Nc4TVmxD8q9k5Q/XtESkL6xMSDg4R88etGowN2MHsVhxvtkWr06cDZffIgSEa9LNggAvV5lkPMmG34hgjAeDcnCMbK2oitQdC11i8CLRAiVzMfzLltrtcdjMqwW/5HOCH6nv1hhP28BhlmkFFxKv+CfHrKNPzQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MHK5f4cW; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version; b=fcwpz0DqCZdXvIRcAYdhkcZ6rYkpOjkBnq4uQ4K6RUY84+JS6GYEDK7XqAZdM8q9xMr552C02B2SBDYwI+kUnmlWdYcCayaHALnA1c6lnCamiB7/uTsg2BEOw+sRNj4UF3ZJleBDZnbc/KYKela5t8gwdSqaMZh5Q8rGpKOoD9Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PozW+kgK; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MHK5f4cW"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D026BC16AAE;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PozW+kgK"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C05F3C4CEFD;
 	Mon,  3 Nov 2025 16:55:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1762188929;
-	bh=v01Vg22EJGqDANe+d5iFLhgxo6rRA09Yj1ZORRZolzA=;
+	bh=zuhKLI7VX81K7N1waWG6RKB+bJ6LNUR7JqGCymcfMXg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MHK5f4cWAfzeHfwjlMfH2dS/2qJhujfljbX041jtbRl4cMS/gcbJ7FHCtPSHfe5HW
-	 VLWe2wgmR4XoOkVBLVdd4JhUzn+0faii5NDAjtspvXdPWzg++EvB1hUgDq1Z7BhxBt
-	 AHktNgD4pYgVx36XvXXHuF59rfbKw3RYFBb0ktjOi0iwywcNOLTa2wpam1VOlg/I3M
-	 2P+NplRAGR/dpvy4ZqRfF/ikPDjbX2tpxkMwOYhfWSKWED0GyKLjfoLWFe1K/whusq
-	 CCZxnspxIIemQlFYfGbPU8b5S2C3TRu8i68WIp/cEQWSqFYAlEMcCw932aSTSM6C07
-	 0ZDdheYfSPfAA==
+	b=PozW+kgKZllTeNrjJv/g/u3+TzveJkdKg4AH1MNeKIqUai2wjCGyE9HC75KpQzCUo
+	 ShNQVoIhJu4GBr4PfCnVuuYlKh73WxKEGJBksgu8Bbbotj7Wm8BWoojivw77ybZK9C
+	 OvX3hmoDZjjEULrlBKm2xR67u+ct3bXXwWEd4tWog77UBJ4upYPRGWz4j/vcV8ypnK
+	 DdA1DucsIF/nUobJ94ANjG6lXQArbeWMlvLrkiG/owFbj84CV0PBZ9tWKhVqsDJfyj
+	 iZbghcPenDQWPguqNok/RpQMZVsyKakx1Cut8wuZYNT+KvF9EMEdO+Z88JzA+JUKYS
+	 /CyEF7XVLuC1Q==
 Received: from sofa.misterjones.org ([185.219.108.64] helo=valley-girl.lan)
 	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.98.2)
 	(envelope-from <maz@kernel.org>)
-	id 1vFxq4-000000021VN-08T3;
-	Mon, 03 Nov 2025 16:55:28 +0000
+	id 1vFxq3-000000021VN-3LBp;
+	Mon, 03 Nov 2025 16:55:27 +0000
 From: Marc Zyngier <maz@kernel.org>
 To: kvmarm@lists.linux.dev,
 	linux-arm-kernel@lists.infradead.org,
@@ -42,9 +42,9 @@ Cc: Joey Gouly <joey.gouly@arm.com>,
 	Zenghui Yu <yuzenghui@huawei.com>,
 	Christoffer Dall <christoffer.dall@arm.com>,
 	Volodymyr Babchuk <Volodymyr_Babchuk@epam.com>
-Subject: [PATCH 14/33] KVM: arm64: GICv2: Preserve EOIcount on exit
-Date: Mon,  3 Nov 2025 16:54:58 +0000
-Message-ID: <20251103165517.2960148-15-maz@kernel.org>
+Subject: [PATCH 13/33] KVM: arm64: GICv3: Extract LR computing primitive
+Date: Mon,  3 Nov 2025 16:54:57 +0000
+Message-ID: <20251103165517.2960148-14-maz@kernel.org>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20251103165517.2960148-1-maz@kernel.org>
 References: <20251103165517.2960148-1-maz@kernel.org>
@@ -60,35 +60,97 @@ X-SA-Exim-Rcpt-To: kvmarm@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
 X-SA-Exim-Mail-From: maz@kernel.org
 X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
 
-EOIcount is how the virtual CPU interface signals that the guest
-is deactivating interrupts outside of the LRs when EOImode==0.
-
-We therefore need to preserve that information so that we can find
-out what actually needs deactivating, just like we already do on
-GICv3.
+Split vgic_v3_populate_lr() into two, so that we have another
+primitive that computes the LR from a vgic_irq, but doesn't
+update anything in the shadow structure.
 
 Signed-off-by: Marc Zyngier <maz@kernel.org>
 ---
- arch/arm64/kvm/vgic/vgic-v2.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ arch/arm64/kvm/vgic/vgic-v3.c | 49 +++++++++++++++++++++++------------
+ 1 file changed, 32 insertions(+), 17 deletions(-)
 
-diff --git a/arch/arm64/kvm/vgic/vgic-v2.c b/arch/arm64/kvm/vgic/vgic-v2.c
-index 74efacba38d42..5cfbe58983428 100644
---- a/arch/arm64/kvm/vgic/vgic-v2.c
-+++ b/arch/arm64/kvm/vgic/vgic-v2.c
-@@ -437,6 +437,12 @@ void vgic_v2_save_state(struct kvm_vcpu *vcpu)
- 		return;
+diff --git a/arch/arm64/kvm/vgic/vgic-v3.c b/arch/arm64/kvm/vgic/vgic-v3.c
+index 8f28227ae7193..ad5c0dbae2dfe 100644
+--- a/arch/arm64/kvm/vgic/vgic-v3.c
++++ b/arch/arm64/kvm/vgic/vgic-v3.c
+@@ -107,7 +107,7 @@ void vgic_v3_fold_lr_state(struct kvm_vcpu *vcpu)
+ }
  
- 	if (used_lrs) {
-+		if (vcpu->arch.vgic_cpu.vgic_v2.vgic_hcr & GICH_HCR_LRENPIE) {
-+			u32 val = readl_relaxed(base + GICH_HCR);
+ /* Requires the irq to be locked already */
+-void vgic_v3_populate_lr(struct kvm_vcpu *vcpu, struct vgic_irq *irq, int lr)
++static u64 vgic_v3_compute_lr(struct kvm_vcpu *vcpu, struct vgic_irq *irq)
+ {
+ 	u32 model = vcpu->kvm->arch.vgic.vgic_model;
+ 	u64 val = irq->intid;
+@@ -154,6 +154,35 @@ void vgic_v3_populate_lr(struct kvm_vcpu *vcpu, struct vgic_irq *irq, int lr)
+ 	if (allow_pending && irq_is_pending(irq)) {
+ 		val |= ICH_LR_PENDING_BIT;
+ 
++		if (is_v2_sgi) {
++			u32 src = ffs(irq->source);
 +
-+			vcpu->arch.vgic_cpu.vgic_v2.vgic_hcr &= ~GICH_HCR_EOICOUNT;
-+			vcpu->arch.vgic_cpu.vgic_v2.vgic_hcr |= val & GICH_HCR_EOICOUNT;
++			if (WARN_RATELIMIT(!src, "No SGI source for INTID %d\n",
++					   irq->intid))
++				return 0;
++
++			val |= (src - 1) << GICH_LR_PHYSID_CPUID_SHIFT;
++			if (irq->source & ~BIT(src - 1))
++				val |= ICH_LR_EOI;
 +		}
- 		save_lrs(vcpu, base);
- 		writel_relaxed(0, base + GICH_HCR);
++	}
++
++	if (irq->group)
++		val |= ICH_LR_GROUP;
++
++	val |= (u64)irq->priority << ICH_LR_PRIORITY_SHIFT;
++
++	return val;
++}
++
++void vgic_v3_populate_lr(struct kvm_vcpu *vcpu, struct vgic_irq *irq, int lr)
++{
++	u32 model = vcpu->kvm->arch.vgic.vgic_model;
++	u64 val = vgic_v3_compute_lr(vcpu, irq);
++
++	vcpu->arch.vgic_cpu.vgic_v3.vgic_lr[lr] = val;
++
++	if (val & ICH_LR_PENDING_BIT) {
+ 		if (irq->config == VGIC_CONFIG_EDGE)
+ 			irq->pending_latch = false;
+ 
+@@ -161,16 +190,9 @@ void vgic_v3_populate_lr(struct kvm_vcpu *vcpu, struct vgic_irq *irq, int lr)
+ 		    model == KVM_DEV_TYPE_ARM_VGIC_V2) {
+ 			u32 src = ffs(irq->source);
+ 
+-			if (WARN_RATELIMIT(!src, "No SGI source for INTID %d\n",
+-					   irq->intid))
+-				return;
+-
+-			val |= (src - 1) << GICH_LR_PHYSID_CPUID_SHIFT;
+-			irq->source &= ~(1 << (src - 1));
+-			if (irq->source) {
++			irq->source &= ~BIT(src - 1);
++			if (irq->source)
+ 				irq->pending_latch = true;
+-				val |= ICH_LR_EOI;
+-			}
+ 		}
  	}
+ 
+@@ -183,13 +205,6 @@ void vgic_v3_populate_lr(struct kvm_vcpu *vcpu, struct vgic_irq *irq, int lr)
+ 	if (vgic_irq_is_mapped_level(irq) && (val & ICH_LR_PENDING_BIT))
+ 		irq->line_level = false;
+ 
+-	if (irq->group)
+-		val |= ICH_LR_GROUP;
+-
+-	val |= (u64)irq->priority << ICH_LR_PRIORITY_SHIFT;
+-
+-	vcpu->arch.vgic_cpu.vgic_v3.vgic_lr[lr] = val;
+-
+ 	irq->on_lr = true;
+ }
+ 
 -- 
 2.47.3
 
