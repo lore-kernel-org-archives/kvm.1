@@ -1,64 +1,64 @@
-Received: from mail-pl1-f179.google.com (mail-pl1-f179.google.com [209.85.214.179])
+Received: from mail-pl1-f176.google.com (mail-pl1-f176.google.com [209.85.214.176])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D6A0423A984
-	for <kvm@vger.kernel.org>; Mon,  3 Nov 2025 06:06:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.179
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 53C33285CAE
+	for <kvm@vger.kernel.org>; Mon,  3 Nov 2025 06:21:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.176
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762149980; cv=none; b=hvj4PfKs7JBpuJPmsz80kjoG88nhcSdca2cMC8EyF5v2VF1L4IABwD1hK4GDc73VgmT/YtsGwaASAqbDiDh3iI8kOXvU9DwYQYYovtqGFAXLfhJlDyArcO1cadWr8/1LbHhQYG4EscrU4yZMO2saBh+aQ3sXLDV7cZWnH3X+qkA=
+	t=1762150909; cv=none; b=cT1baHbFh7V5wBFTVCeNkgmBup7R8sqAiXfvedyb/SpWIgARkJ10XwoSN0ZbL4Ye7ep3mIABcKbCRsxj0K2dqU6o2iPTQYsPOY/LXsGwN0w8XNOG2bbxZsAzLUkans6z+a9znr68c7prIDTpr7sr6ye0QJJDETCkCigNNM090+w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762149980; c=relaxed/simple;
-	bh=aNWT1S8ZE3WFAX7jq/LAX4FFPsVg9T8Q53OEL4HSo8c=;
+	s=arc-20240116; t=1762150909; c=relaxed/simple;
+	bh=q6TURu0Txeo2OJvua8KGcsnP9mDJkJtsWp5sVhFajZo=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=FDpbGTd4sxhL0IFQ3AbMmA5GMCaDQxdzFyB35IwAjlR6VZfuvSQDzupjzZmlNcCi+vpGdTB1n81uh8J+cd8Kz1Z7ZJLDIcyTKDGBe7GBbE9f5uRPUrUG1CkAYmaNZq03Q/lPi9SXjs4tBeLLaR5VnwIlpT/TEdwnqxycOgv3AI8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=WP9bvsoq; arc=none smtp.client-ip=209.85.214.179
+	 Content-Type:Content-Disposition:In-Reply-To; b=SQs0O7am6I9IC4loenjuehcBOn9fOqR3dTphutdnVKPVp9t2TV1slkwO4NjVyM45IbQ+nAbvfu8l8qAvG7v1PsnIsD5c+SoUzZlWN3csk4TcEqVPbUzpRUo4nEqq4MnM5WFgmdV9yQXI9eTL+vzaauXJhVt31232rPzMImg04Rk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=KhI8mYEc; arc=none smtp.client-ip=209.85.214.176
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="WP9bvsoq"
-Received: by mail-pl1-f179.google.com with SMTP id d9443c01a7336-27d67abd215so371965ad.0
-        for <kvm@vger.kernel.org>; Sun, 02 Nov 2025 22:06:18 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="KhI8mYEc"
+Received: by mail-pl1-f176.google.com with SMTP id d9443c01a7336-294f3105435so331675ad.1
+        for <kvm@vger.kernel.org>; Sun, 02 Nov 2025 22:21:48 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1762149978; x=1762754778; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1762150907; x=1762755707; darn=vger.kernel.org;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=daEhgCusceEtpwe81ptEC+bKqGITwloFYe7hKEHFGD0=;
-        b=WP9bvsoq8vhBv3AZfCZVv9OYxit2eKoz3dFIQIW0pvoS+myz985i9PidF4GcW4F5nv
-         nAmQagrLw4AUX+iwq83U/bORt3/COP5uFfxgn8QZQOnRmrBAwzhdHv1+AwyqndUuQzZa
-         60due/gvgAKtZVVjIDpysgAK4U0EfbCSchPvHhVUxGd5haBf1twio8gotLUugsQ/P0bq
-         TSKiw1ZtvB3KT7WvpZHsJYXQTJ4v5R+Gpt+gI8pncegVjrDvneYnhelS6e42HMbuFdnr
-         rRoF+uRTdemSk1z62s4zLQQhSqAGVdUV5TKWBE6alXkHZTZNn5p3kEs+LmKqz26EsD+V
-         pNvA==
+        bh=nWlZBJWMNR3o5R9SijDhT22MNLu42EpPET2zOzK998A=;
+        b=KhI8mYEcsJ6TsfAorMN5CZWcaO3mMtm1GdlGy1IAK4tgpOQ7Yot/PtI/AOVagzbjO2
+         CGEC2YM0pqZQjIkQD1/P86ao7gWHDIU1yDfmEzrHslNfARjUAEQTdT19qhiVbkZDbaw0
+         sja4N/5aSJLeibnBGHZ5v3lnK15n8+GmTl4xOBHotrB7WwLmuYYVrSgnGX+jRX+cIg98
+         QfCXWLidFvNwyyoKMnmYHlU1NVJ3h/RKHZdEzAnNYs5VM1e2gpa93kP3i4FcZPgfCqw8
+         7RxL2+jqJTzpc8KJNTR31K5PCArJ+3vHP0Q4L+3cI7fEakSceMf43vWyvjgu/TErg0L4
+         ljTA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1762149978; x=1762754778;
+        d=1e100.net; s=20230601; t=1762150907; x=1762755707;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=daEhgCusceEtpwe81ptEC+bKqGITwloFYe7hKEHFGD0=;
-        b=A2Sen3AMpdIx9/2291RqEd+ysokBH1x99GiJiBHu00RP2Q5Q9/ijBN7kZqXHS+jGSL
-         SIugWkvebRIKSdEY5aitTD8bwDeVcmCxz0NPbuoWjXRRfe2MjgQM8XgQMG+H1bmWeLGj
-         2YayWGqt6IZ3gMJObhF8YTlLf/TYFWyDtqv6AQ70sTrQ2ndJY/ESr924ELESA0zwRa86
-         bV52olSn6iduv0b5tp4UbGOdoCCDkc07wELeZVL5RtyAv5ks1gz2wvaxfgrCrogcvvLn
-         wLNtKDQUGiAgIYNx+kqaKCcBsBrWvdCwTURiaD3p52YWCMnRJcW4hOjYlRthY/RJ4KD9
-         vEZw==
-X-Forwarded-Encrypted: i=1; AJvYcCWCOF+TWbN+QsENITVZ9KwTT1K9H56kz3z4PSVXKVCszi5P0B0CTSsTUVazW03NltXxLGY=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx8iH9LoWMXrhyp+dWfN26VOkcUHdNWnYLiilra8Mx5VYt2w9cH
-	dzvnQC4dLzd1owfKYl6367EQ6Pw2iIwa8usgoT91Q1pGYkUk2ufC7M4xUjlK3K3k8w==
-X-Gm-Gg: ASbGncuPKhL1FTpJDMqAdjsYi/qf4JWuwT9cyUJ6PgWzK1qDt4nG5KF5ARKaYMy4t3V
-	HexOsFlEoF+O73XhqP4NodXznYKQGU0Usqo1lvp0qs9ipqAXLD84Ni/1GBWEUZcqzx991a5bt7r
-	10KCqnAfZtBUsP1i5hBKlgAB0iM0lmFrkJLuLHckDGyW3cc51xg/jFvP+U11nxssYgaJ7pj0Nsn
-	UOF6FwFR7dXf0/16dJ+ZFuhorNUfX5HYdJyLlxyrNXn4pO+YOVE0ek8gOZGJzUCSmTzMraJLDzX
-	X2qL/gwBeKYPqrBx4d0Klx2+6pyaPOVatdb7TyS4TLsLFI4BnYu2DVNDzwCMiZIT29Ey3ZaBAlV
-	iXCoSJKKaGDWVt9PDmwHA8/3M5rBNkVH0lN7AblfL90C7g8tWat3K35AEmg/QB/lA2a7vMteneO
-	jh4zZ+7eoGsBuPLYqcSvFRZbZRy2I4cY+sdELsrg==
-X-Google-Smtp-Source: AGHT+IEluRFzLqUGHbmfa87kzbGcxD4xtCtUDt3Aesdz6fP5oqFYMacpJF/LHmpqMlg6+1lRT50KTA==
-X-Received: by 2002:a17:902:ea08:b0:294:faad:8cb4 with SMTP id d9443c01a7336-29554b85496mr5533065ad.8.1762149977826;
-        Sun, 02 Nov 2025 22:06:17 -0800 (PST)
+        bh=nWlZBJWMNR3o5R9SijDhT22MNLu42EpPET2zOzK998A=;
+        b=nK6rXPqKBmcEueDSp8mDcy3Z/S3iOw9OpYWIj6e2dPgGBabl8muMS/tTx5WNH9Dm9G
+         j41TVZVBPbQRWbjxXqvPQhqcWfIw6eBz7slUvHMFReBlhHZS2rmZQLAMxKQuXJzFhsGV
+         h0m3T8s9aK13jUWOMR8n2abEIlzYrNqTYchl5YQJo5Q2T5w4+a6sVxfMIPB3j2oSCeqG
+         euuK1tFBaBIbGQh6QePqBoE0ezNojgLUOzGFl+PVF6ExvFLRabITtZl+dPwo4EOcpwts
+         kp5znu5L8O7HC0oSQFw9vz5Ez9yybao0z3JlyPDzPZrPryibF603IUGENwWV2beJ8fQZ
+         qIaw==
+X-Forwarded-Encrypted: i=1; AJvYcCUWm9SvZuOFdNtqE0kaFGF7tePGUbLdg6LRrVIi4LE4gn5nuw5FG+xxUx3hUfap+xjooMc=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzHBZrtpevXjxdF1nOAwDUdbSX2sJBm/VIPEWTOBaUP34Nr4lJV
+	stcZyN+C/qDOuCwOuEqMjTGJLU/aCK5DMFzgDr4LtkB5REOMUDHi92p74tr/YgN+1A==
+X-Gm-Gg: ASbGncsFX/DW+Qo0ea5hySR6nWeu2j1RT1uFmkwtUkjD/C3h0NDIDVn9GrdTNagJy+s
+	0h5fhAu0CyQKSIbJtqBAsg0g9B87b6dJQoLSPbg7EARAuLbvwQZCa/STCl7rsl+oBQVYVhrB4C4
+	mrcREFfmjzIoBRDGyCFL7Ck/j/+tYSWtoiOF7ajt4eDb9Ivg6XyhJqcP5rTjyjuOra1KPvNaqPw
+	w7F4G94moSnxGX+g61/fKpMXoJvvrC7D36BEyjoBQzHC1/O18z7qIUYGaKFfsMc2oPn9qV0ordX
+	Dom0Lh3AoaTm0peR7pR5Pl2ODUR1ELGiAGfLD0ujhhm953SUd3BCkqZgqAQd+XqR4FGTpPwmuR0
+	H+Lxd3D0iIUdEy7Ol6RVIP67fPrxb5OFoHDjiARi4FcAX9fou48QmVtk8ZhW1fulXsV5S/xDIfq
+	w5uKbW7L8P7XY+CId18G5mys3gJDgcYU19oIxTQQ==
+X-Google-Smtp-Source: AGHT+IGruOwIqSOkw/c0UIqbUAnBCrsgVRvu/C4si6qjv3qWziT7RTJr58fgj5zqaOcpkLKvHmo5tQ==
+X-Received: by 2002:a17:902:e891:b0:290:dd42:eb5f with SMTP id d9443c01a7336-29554be37d6mr5455555ad.12.1762150907195;
+        Sun, 02 Nov 2025 22:21:47 -0800 (PST)
 Received: from google.com (164.210.142.34.bc.googleusercontent.com. [34.142.210.164])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-7a9bad978c4sm5062872b3a.13.2025.11.02.22.06.10
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-7a7db67cbdfsm9912363b3a.49.2025.11.02.22.21.39
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 02 Nov 2025 22:06:17 -0800 (PST)
-Date: Mon, 3 Nov 2025 06:06:07 +0000
+        Sun, 02 Nov 2025 22:21:46 -0800 (PST)
+Date: Mon, 3 Nov 2025 06:21:36 +0000
 From: Pranjal Shrivastava <praan@google.com>
 To: Jason Gunthorpe <jgg@nvidia.com>
 Cc: Alexander Gordeev <agordeev@linux.ibm.com>,
@@ -93,10 +93,10 @@ Cc: Alexander Gordeev <agordeev@linux.ibm.com>,
 	Yishai Hadas <yishaih@nvidia.com>,
 	Zhenyu Wang <zhenyuw.linux@gmail.com>,
 	Zhi Wang <zhi.wang.linux@gmail.com>, patches@lists.linux.dev
-Subject: Re: [PATCH 02/22] vfio/hisi: Convert to the get_region_info op
-Message-ID: <aQhGTwg4kpuP8pgF@google.com>
+Subject: Re: [PATCH 03/22] vfio/virtio: Convert to the get_region_info op
+Message-ID: <aQhJ8OZiVYe06hv_@google.com>
 References: <0-v1-679a6fa27d31+209-vfio_get_region_info_op_jgg@nvidia.com>
- <2-v1-679a6fa27d31+209-vfio_get_region_info_op_jgg@nvidia.com>
+ <3-v1-679a6fa27d31+209-vfio_get_region_info_op_jgg@nvidia.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -105,107 +105,27 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <2-v1-679a6fa27d31+209-vfio_get_region_info_op_jgg@nvidia.com>
+In-Reply-To: <3-v1-679a6fa27d31+209-vfio_get_region_info_op_jgg@nvidia.com>
 
-On Thu, Oct 23, 2025 at 08:09:16PM -0300, Jason Gunthorpe wrote:
-> Change the function signature of hisi_acc_vfio_pci_ioctl()
-> and re-indent it.
+On Thu, Oct 23, 2025 at 08:09:17PM -0300, Jason Gunthorpe wrote:
+> Remove virtiovf_vfio_pci_core_ioctl() and change the signature of
+> virtiovf_pci_ioctl_get_region_info().
 > 
 > Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
 > ---
->  .../vfio/pci/hisilicon/hisi_acc_vfio_pci.c    | 57 +++++++++----------
->  1 file changed, 27 insertions(+), 30 deletions(-)
+>  drivers/vfio/pci/virtio/common.h    |  4 +---
+>  drivers/vfio/pci/virtio/legacy_io.c | 20 ++++----------------
+>  drivers/vfio/pci/virtio/main.c      |  3 ++-
+>  3 files changed, 7 insertions(+), 20 deletions(-)
 > 
-> diff --git a/drivers/vfio/pci/hisilicon/hisi_acc_vfio_pci.c b/drivers/vfio/pci/hisilicon/hisi_acc_vfio_pci.c
-> index fde33f54e99ec5..f06dcfcf09599f 100644
-> --- a/drivers/vfio/pci/hisilicon/hisi_acc_vfio_pci.c
-> +++ b/drivers/vfio/pci/hisilicon/hisi_acc_vfio_pci.c
-> @@ -1324,43 +1324,39 @@ static ssize_t hisi_acc_vfio_pci_read(struct vfio_device *core_vdev,
->  	return vfio_pci_core_read(core_vdev, buf, new_count, ppos);
->  }
->  
-> -static long hisi_acc_vfio_pci_ioctl(struct vfio_device *core_vdev, unsigned int cmd,
-> -				    unsigned long arg)
-> +static int hisi_acc_vfio_get_region(struct vfio_device *core_vdev,
-> +				    struct vfio_region_info __user *arg)
->  {
-> -	if (cmd == VFIO_DEVICE_GET_REGION_INFO) {
-> -		struct vfio_pci_core_device *vdev =
-> -			container_of(core_vdev, struct vfio_pci_core_device, vdev);
-> -		struct pci_dev *pdev = vdev->pdev;
-> -		struct vfio_region_info info;
-> -		unsigned long minsz;
-> +	struct vfio_pci_core_device *vdev =
-> +		container_of(core_vdev, struct vfio_pci_core_device, vdev);
-> +	struct pci_dev *pdev = vdev->pdev;
-> +	struct vfio_region_info info;
-> +	unsigned long minsz;
->  
-> -		minsz = offsetofend(struct vfio_region_info, offset);
-> +	minsz = offsetofend(struct vfio_region_info, offset);
->  
-> -		if (copy_from_user(&info, (void __user *)arg, minsz))
-> -			return -EFAULT;
-> +	if (copy_from_user(&info, arg, minsz))
-> +		return -EFAULT;
->  
-> -		if (info.argsz < minsz)
-> -			return -EINVAL;
-> +	if (info.argsz < minsz)
-> +		return -EINVAL;
->  
-> -		if (info.index == VFIO_PCI_BAR2_REGION_INDEX) {
-> -			info.offset = VFIO_PCI_INDEX_TO_OFFSET(info.index);
-> +	if (info.index != VFIO_PCI_BAR2_REGION_INDEX)
-> +		return vfio_pci_ioctl_get_region_info(core_vdev, arg);
->  
+> diff --git a/drivers/vfio/pci/virtio/common.h b/drivers/vfio/pci/virtio/common.h
+> index c7d7e27af386e9..a10f2d92cb6238 100644
+> --- a/drivers/vfio/pci/virtio/common.h
+> +++ b/drivers/vfio/pci/virtio/common.h
+> @@ -109,10 +109,8 @@ void virtiovf_migration_reset_done(struct pci_dev *pdev);
+>
 
-I'm curious to learn the reason for flipping polarity here? (apart from
-readability).
-
-> -			/*
-> -			 * ACC VF dev BAR2 region consists of both functional
-> -			 * register space and migration control register space.
-> -			 * Report only the functional region to Guest.
-> -			 */
-> -			info.size = pci_resource_len(pdev, info.index) / 2;
-> +	info.offset = VFIO_PCI_INDEX_TO_OFFSET(info.index);
->  
-> -			info.flags = VFIO_REGION_INFO_FLAG_READ |
-> -					VFIO_REGION_INFO_FLAG_WRITE |
-> -					VFIO_REGION_INFO_FLAG_MMAP;
-> +	/*
-> +	 * ACC VF dev BAR2 region consists of both functional
-> +	 * register space and migration control register space.
-> +	 * Report only the functional region to Guest.
-> +	 */
-> +	info.size = pci_resource_len(pdev, info.index) / 2;
->  
-> -			return copy_to_user((void __user *)arg, &info, minsz) ?
-> -					    -EFAULT : 0;
-> -		}
-> -	}
-> -	return vfio_pci_core_ioctl(core_vdev, cmd, arg);
-> +	info.flags = VFIO_REGION_INFO_FLAG_READ | VFIO_REGION_INFO_FLAG_WRITE |
-> +		     VFIO_REGION_INFO_FLAG_MMAP;
-> +
-> +	return copy_to_user(arg, &info, minsz) ? -EFAULT : 0;
->  }
->  
->  static int hisi_acc_vf_debug_check(struct seq_file *seq, struct vfio_device *vdev)
-> @@ -1557,7 +1553,8 @@ static const struct vfio_device_ops hisi_acc_vfio_pci_migrn_ops = {
->  	.release = vfio_pci_core_release_dev,
->  	.open_device = hisi_acc_vfio_pci_open_device,
->  	.close_device = hisi_acc_vfio_pci_close_device,
-> -	.ioctl = hisi_acc_vfio_pci_ioctl,
-> +	.ioctl = vfio_pci_core_ioctl,
-> +	.get_region_info = hisi_acc_vfio_get_region,
->  	.device_feature = vfio_pci_core_ioctl_feature,
->  	.read = hisi_acc_vfio_pci_read,
->  	.write = hisi_acc_vfio_pci_write,
-
-The change seems to maintain original functionality and LGTM.
-Acked-by: Pranjal Shrivastava <praan@google.com>
+Reviewed-by: Pranjal Shrivastava <praan@google.com>
 
 Thanks,
 Praan
