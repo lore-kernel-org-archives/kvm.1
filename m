@@ -1,306 +1,283 @@
-Received: from mx0a-00082601.pphosted.com (mx0a-00082601.pphosted.com [67.231.145.42])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2358C245005;
-	Mon,  3 Nov 2025 20:08:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=67.231.145.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D5D661DFE26;
+	Mon,  3 Nov 2025 20:31:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.13
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762200488; cv=none; b=b4AgGXutBmeomyZ9jcgHDoxIV2iHnjKYFhs/p7uyVQymG+N9b6foZZLSQcfSVXVZYkAZd9FCuGnPnozncOglYPsdkUZbimxeTBwcpJuxfA4UM/MTIlJwv3FYkBnBowSnUpPkyvgpFgtDL8zwlJHD84d0UuE3LdoS2cMM8xH74J8=
+	t=1762201873; cv=none; b=cSlLzl4mq//yJaeIfkXevgh2quFlVDYUl9q7hSTljLuIZkn+ly4Ri4hmeM1pipglBzqzoehvzobORiD4TY/syja8Hj09jjYQT6GXw2PrJjqlbsqQZLxx+V9NawmXV75va1NjGPAM7JlwIK6cXasCA7U/uJJSkErNLcQ7FWToG+0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762200488; c=relaxed/simple;
-	bh=bOZFIe2RQWsHY3f7hDWHXpv++tj6j9WWgZ4tTtaKlRA=;
-	h=Date:From:To:CC:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=S5pFkc59spoeIdRnn37DrwArmI1at8FtCNXp4s58ISK1PSC5ZJCL1D1dzY8aq223C9FIoMBaM42qZw1YWd6i6z4buGcyUUZJSVbFkMIYTJG8yy0a+wmiWiWPtYNTQU+Js+2WH8PjstPHCpNNUs7G5aygnc8HBO4SAUnWQsVLneA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=fb.com; spf=pass smtp.mailfrom=meta.com; dkim=pass (2048-bit key) header.d=fb.com header.i=@fb.com header.b=Y5TYvio2; arc=none smtp.client-ip=67.231.145.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=fb.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=meta.com
+	s=arc-20240116; t=1762201873; c=relaxed/simple;
+	bh=v778Iea2GSy92KicvT65BGxZD8ysspDSIEJ0F6r/wbE=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=lTjq3TdnH5kooXbCmrCLeAInLfngHzaaddQ9SQ3z70VFnTjy3nrIkMqybYf/Dh7WpS/LKT+Pn58RP+KVKCj5nDFausS7L7djZUuC4phHzGcZ5UQak/qhm5jZrtLyccmDvv7jQZVwVapoIsNmREcqLSuJ/OmKp1mRuD9D4sHJ2Mo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Bb/TTmzo; arc=none smtp.client-ip=192.198.163.13
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=fb.com header.i=@fb.com header.b="Y5TYvio2"
-Received: from pps.filterd (m0044012.ppops.net [127.0.0.1])
-	by mx0a-00082601.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 5A3HSUl13368916;
-	Mon, 3 Nov 2025 12:07:21 -0800
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=fb.com; h=cc
-	:content-type:date:from:in-reply-to:message-id:mime-version
-	:references:subject:to; s=s2048-2025-q2; bh=n9Hp+W96E82ffeM9TGY/
-	T64q12eMoTlbRaWkBHrOVhQ=; b=Y5TYvio2wy42a6OuNV1jizo/aQU5rL6HohWI
-	OdRswHnuwgKDGg4PRZorsSwOwSWNepxL3lv6e92F0ZZiEQOO8ZMDqwElBWya7VYx
-	yHZJ1Bg/rdGSvGKN1xCect7aLk4BJP3dFq0W4bRU4thNy47l/7qf6QCLDdrJWuYT
-	ttchffm5fJ8azlwk2GD5NtPH33FSvCNhfhPKLPVh0Qs6M/RaBFY1LsIhyFIHXKOv
-	PPwMbL4I1eFF62/08bb33eCUiaTLoRka7NFBHCCzuXtuZDc3HhRZW8A7Jd4FsCBj
-	aU36aw88WsqWA0jpB+Nf9LOBQRQOfcCvornGVmHGoYNGSzpsQw==
-Received: from mail.thefacebook.com ([163.114.134.16])
-	by mx0a-00082601.pphosted.com (PPS) with ESMTPS id 4a6yfe2849-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
-	Mon, 03 Nov 2025 12:07:21 -0800 (PST)
-Received: from devgpu015.cco6.facebook.com (2620:10d:c085:208::7cb7) by
- mail.thefacebook.com (2620:10d:c08b:78::c78f) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.2.2562.20; Mon, 3 Nov 2025 20:07:19 +0000
-Date: Mon, 3 Nov 2025 12:07:12 -0800
-From: Alex Mastro <amastro@fb.com>
-To: Leon Romanovsky <leon@kernel.org>
-CC: Bjorn Helgaas <bhelgaas@google.com>,
-        Logan Gunthorpe
-	<logang@deltatee.com>, Jens Axboe <axboe@kernel.dk>,
-        Robin Murphy
-	<robin.murphy@arm.com>, Joerg Roedel <joro@8bytes.org>,
-        Will Deacon
-	<will@kernel.org>,
-        Marek Szyprowski <m.szyprowski@samsung.com>,
-        Jason
- Gunthorpe <jgg@ziepe.ca>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Jonathan
- Corbet <corbet@lwn.net>,
-        Sumit Semwal <sumit.semwal@linaro.org>,
-        Christian
- =?iso-8859-1?Q?K=F6nig?= <christian.koenig@amd.com>,
-        Alex Williamson
-	<alex.williamson@redhat.com>,
-        Kees Cook <kees@kernel.org>,
-        "Gustavo A. R.
- Silva" <gustavoars@kernel.org>,
-        Ankit Agrawal <ankita@nvidia.com>, Yishai
- Hadas <yishaih@nvidia.com>,
-        Shameer Kolothum <skolothumtho@nvidia.com>,
-        Kevin
- Tian <kevin.tian@intel.com>,
-        Krishnakant Jaju <kjaju@nvidia.com>, Matt Ochs
-	<mochs@nvidia.com>,
-        <linux-pci@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        <linux-block@vger.kernel.org>, <iommu@lists.linux.dev>,
-        <linux-mm@kvack.org>, <linux-doc@vger.kernel.org>,
-        <linux-media@vger.kernel.org>, <dri-devel@lists.freedesktop.org>,
-        <linaro-mm-sig@lists.linaro.org>, <kvm@vger.kernel.org>,
-        <linux-hardening@vger.kernel.org>,
-        Vivek Kasireddy
-	<vivek.kasireddy@intel.com>
-Subject: Re: [PATCH v6 00/11] vfio/pci: Allow MMIO regions to be exported
- through dma-buf
-Message-ID: <aQkLcAxEn4qmF3c4@devgpu015.cco6.facebook.com>
-References: <20251102-dmabuf-vfio-v6-0-d773cff0db9f@nvidia.com>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Bb/TTmzo"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1762201871; x=1793737871;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=v778Iea2GSy92KicvT65BGxZD8ysspDSIEJ0F6r/wbE=;
+  b=Bb/TTmzoDfXjtD38mvJKZmLzbaGvw1ugLtyX8oW59BEj01Kx1BTftWcP
+   K3TO1HBj/qDgsj/lYZrHnFAUcaUu84XQS/IqLmKxRn+WshAQOAeRNTfrn
+   NKQiqimdQSxBq4RDfDd3i0uu+WXLZZnt4d0xoOxCORNbxpXVyV9oEzQ5i
+   CMQNvuxBFcPH2k9NPbifG2Cywb5QLWVcbnxsM3zjGADZmUNKJ2AP/O/dO
+   Co5iWvse/r1LkL/tEWpDCFzBGZMilr1M3QDphUOBrEcpXNIfxnOhpN9Bh
+   Xsh1tkxLw+k5O609UT5DLExM+qc8+bXhlPZy76ZRP1CwZIZa0yB1UPGFb
+   g==;
+X-CSE-ConnectionGUID: Wz/kq1kfSeS6dwJDzwQ/QQ==
+X-CSE-MsgGUID: UeI7TeS7RT67KLaiziinGg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11602"; a="66900503"
+X-IronPort-AV: E=Sophos;i="6.19,277,1754982000"; 
+   d="scan'208";a="66900503"
+Received: from orviesa010.jf.intel.com ([10.64.159.150])
+  by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Nov 2025 12:31:10 -0800
+X-CSE-ConnectionGUID: gIAn2H+fR0Wp+9aQN2ul0Q==
+X-CSE-MsgGUID: qLqgZrNJSpCz9OoHkpnIyg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.19,277,1754982000"; 
+   d="scan'208";a="186253820"
+Received: from jmaxwel1-mobl.amr.corp.intel.com (HELO [10.125.110.129]) ([10.125.110.129])
+  by orviesa010-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Nov 2025 12:31:11 -0800
+Message-ID: <b808c532-44aa-47a0-8fb8-2bdf5b27c3e4@intel.com>
+Date: Mon, 3 Nov 2025 12:31:09 -0800
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Disposition: inline
-In-Reply-To: <20251102-dmabuf-vfio-v6-0-d773cff0db9f@nvidia.com>
-X-Authority-Analysis: v=2.4 cv=G9QR0tk5 c=1 sm=1 tr=0 ts=69090b79 cx=c_pps
- a=CB4LiSf2rd0gKozIdrpkBw==:117 a=CB4LiSf2rd0gKozIdrpkBw==:17
- a=kj9zAlcOel0A:10 a=6UeiqGixMTsA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=FOH2dFAWAAAA:8 a=b_Saz7MSmFOFN_6dvx4A:9 a=CjuIK1q_8ugA:10
- a=DXsff8QfwkrTrK3sU8N1:22 a=Z5ABNNGmrOfJ6cZ5bIyy:22 a=bWyr8ysk75zN3GCy5bjg:22
-X-Proofpoint-ORIG-GUID: F1nk6hmysPbKhKVQa_mqqIFKqOIt2lHM
-X-Proofpoint-GUID: F1nk6hmysPbKhKVQa_mqqIFKqOIt2lHM
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMTAzMDE3OSBTYWx0ZWRfX6SW28Xvycs0O
- YOKukhqpHcTfkYNeGRk02UVQnYAieNl0FPP5nyOoQsMjQfkPKcUonaa3EWc/tqdoAAQyhyOyp0d
- /JHwcN3QLYQ/+EZJhZ2InHvQ5+q0ThEzTdyBEGsfGK6Opxy38U0CpsznUzKLwU/5Eqh1l493VDE
- PyTsfwJm0au//MmeaXH4NXKBaJs6mnL334sMoj6rtJQYWDX5DKMNRtgxvcMAQid95nsgniy4DYE
- +umaq/vNBvV3b0K6HXe0s/cT+YOR8m2DkpctVf5zXXorytYnhbn1vV3nGRWxaQ24cLeCzQnNSqB
- UmVF2ZqiQwbE9Yb71RMC4EJcfgbsbmodipz9oljstvRLhQ7lzspcSOdC0w5Z4QcLNUWGre4urgV
- ZaziQQl4T7tsVkAKgmifB2A8A6gzCQ==
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
- definitions=2025-11-03_04,2025-11-03_03,2025-10-01_01
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 2/3] x86/vmscape: Replace IBPB with branch history
+ clear on exit to userspace
+To: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>, x86@kernel.org,
+ "H. Peter Anvin" <hpa@zytor.com>, Josh Poimboeuf <jpoimboe@kernel.org>,
+ David Kaplan <david.kaplan@amd.com>, Sean Christopherson
+ <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>,
+ Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>
+Cc: linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
+ Asit Mallick <asit.k.mallick@intel.com>, Tao Zhang <tao1.zhang@intel.com>
+References: <20251027-vmscape-bhb-v3-0-5793c2534e93@linux.intel.com>
+ <20251027-vmscape-bhb-v3-2-5793c2534e93@linux.intel.com>
+From: Dave Hansen <dave.hansen@intel.com>
+Content-Language: en-US
+Autocrypt: addr=dave.hansen@intel.com; keydata=
+ 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
+In-Reply-To: <20251027-vmscape-bhb-v3-2-5793c2534e93@linux.intel.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Sun, Nov 02, 2025 at 10:00:48AM +0200, Leon Romanovsky wrote:
-> Changelog:
-> v6:
->  * Fixed wrong error check from pcim_p2pdma_init().
->  * Documented pcim_p2pdma_provider() function.
->  * Improved commit messages.
->  * Added VFIO DMA-BUF selftest.
->  * Added __counted_by(nr_ranges) annotation to struct vfio_device_feature_dma_buf.
->  * Fixed error unwind when dma_buf_fd() fails.
->  * Document latest changes to p2pmem.
->  * Removed EXPORT_SYMBOL_GPL from pci_p2pdma_map_type.
->  * Moved DMA mapping logic to DMA-BUF.
->  * Removed types patch to avoid dependencies between subsystems.
->  * Moved vfio_pci_dma_buf_move() in err_undo block.
->  * Added nvgrace patch.
+On 10/27/25 16:43, Pawan Gupta wrote:
+> IBPB mitigation for VMSCAPE is an overkill for CPUs that are only affected
+> by the BHI variant of VMSCAPE. On such CPUs, eIBRS already provides
+> indirect branch isolation between guest and host userspace. But, a guest
+> could still poison the branch history.
 
-Thanks Leon. Attaching a toy program which sanity tests the dma-buf export UAPI
-by feeding the allocated dma-buf into an dma-buf importer (libibverbs + CX-7).
- 
-Tested-by: Alex Mastro <amastro@fb.com>
+This is missing a wee bit of background about how branch history and
+indirect branch prediction are involved in VMSCAPE.
 
-$ cc -Og -Wall -Wextra $(pkg-config --cflags --libs libibverbs) test_dmabuf.c -o test_dmabuf
-$ ./test_dmabuf 0000:05:00.0 3 4 0 0x1000
-opening 0000:05:00.0 via /dev/vfio/56
-allocating dma_buf bar_idx=4, bar_offset=0x0, size=0x1000
-allocated dma_buf fd=6
-discovered 4 ibv devices: mlx5_0 mlx5_1 mlx5_2 mlx5_3
-opened ibv device 3: mlx5_3
-registered dma_buf
-unregistered dma_buf
-closed dma_buf fd
+> To mitigate that, use the recently added clear_bhb_long_loop() to isolate
+> the branch history between guest and userspace. Add cmdline option
+> 'vmscape=on' that automatically selects the appropriate mitigation based
+> on the CPU.
 
----
-#include <fcntl.h>
-#include <infiniband/verbs.h>
-#include <libgen.h>
-#include <linux/limits.h>
-#include <linux/types.h>
-#include <linux/vfio.h>
-#include <stdbool.h>
-#include <stdint.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <sys/ioctl.h>
-#include <unistd.h>
+Is "=on" the right thing here as opposed to "=auto"? What you have here
+doesn't actually turn VMSCAPE mitigation on for 'vmscape=on'.
 
-#define ensure(cond)                                                             \
-	do {                                                                     \
-		if (!(cond)) {                                                   \
-			fprintf(stderr,                                          \
-				"%s:%d Condition failed: '%s' (errno=%d: %s)\n", \
-				__FILE__, __LINE__, #cond, errno,                \
-				strerror(errno));                                \
-			exit(EXIT_FAILURE);                                      \
-		}                                                                \
-	} while (0)
+>  Documentation/admin-guide/hw-vuln/vmscape.rst   |  8 ++++
+>  Documentation/admin-guide/kernel-parameters.txt |  4 +-
+>  arch/x86/include/asm/cpufeatures.h              |  1 +
+>  arch/x86/include/asm/entry-common.h             | 12 +++---
+>  arch/x86/include/asm/nospec-branch.h            |  2 +-
+>  arch/x86/kernel/cpu/bugs.c                      | 53 ++++++++++++++++++-------
+>  arch/x86/kvm/x86.c                              |  5 ++-
+>  7 files changed, 61 insertions(+), 24 deletions(-)
 
-#ifndef VFIO_DEVICE_FEATURE_DMA_BUF
-#define VFIO_DEVICE_FEATURE_DMA_BUF 11
+I think I'd rather this be three or four or five more patches.
 
-struct vfio_region_dma_range {
-	__u64 offset;
-	__u64 length;
-};
+The rename:
 
-struct vfio_device_feature_dma_buf {
-	__u32 region_index;
-	__u32 open_flags;
-	__u32 flags;
-	__u32 nr_ranges;
-	struct vfio_region_dma_range dma_ranges[];
-};
-#endif
+> -DECLARE_PER_CPU(bool, x86_ibpb_exit_to_user);
+> +DECLARE_PER_CPU(bool, x86_predictor_flush_exit_to_user);
 
-static uint32_t group_for_bdf(const char *bdf)
-{
-	char path[PATH_MAX];
-	char link[PATH_MAX];
-	int ret;
+could be alone by itself.
 
-	snprintf(path, sizeof(path), "/sys/bus/pci/devices/%s/iommu_group",
-		 bdf);
-	ret = readlink(path, link, sizeof(link));
-	ensure(ret > 0);
+So could the additional command-line override and its documentation.
+(whatever it gets named).
 
-	const char *filename = basename(link);
-	ensure(filename);
+...
+> diff --git a/arch/x86/include/asm/cpufeatures.h b/arch/x86/include/asm/cpufeatures.h
+> index 4091a776e37aaed67ca93b0a0cd23cc25dbc33d4..3d547c3eab4e3290de3eee8e89f21587fee34931 100644
+> --- a/arch/x86/include/asm/cpufeatures.h
+> +++ b/arch/x86/include/asm/cpufeatures.h
+> @@ -499,6 +499,7 @@
+>  #define X86_FEATURE_IBPB_EXIT_TO_USER	(21*32+14) /* Use IBPB on exit-to-userspace, see VMSCAPE bug */
+>  #define X86_FEATURE_ABMC		(21*32+15) /* Assignable Bandwidth Monitoring Counters */
+>  #define X86_FEATURE_MSR_IMM		(21*32+16) /* MSR immediate form instructions */
+> +#define X86_FEATURE_CLEAR_BHB_EXIT_TO_USER (21*32+17) /* Clear branch history on exit-to-userspace, see VMSCAPE bug */
 
-	return strtoul(filename, NULL, 0);
-}
+X86_FEATURE flags are cheap, but they're not infinite. Is this worth two
+of these? It actually makes the code actively worse. (See below).
 
-int main(int argc, char **argv)
-{
-	int ret;
+> diff --git a/arch/x86/include/asm/entry-common.h b/arch/x86/include/asm/entry-common.h
+> index ce3eb6d5fdf9f2dba59b7bad24afbfafc8c36918..b629e85c33aa7387042cce60040b8a493e3e6d46 100644
+> --- a/arch/x86/include/asm/entry-common.h
+> +++ b/arch/x86/include/asm/entry-common.h
+> @@ -94,11 +94,13 @@ static inline void arch_exit_to_user_mode_prepare(struct pt_regs *regs,
+>  	 */
+>  	choose_random_kstack_offset(rdtsc());
+>  
+> -	/* Avoid unnecessary reads of 'x86_ibpb_exit_to_user' */
+> -	if (cpu_feature_enabled(X86_FEATURE_IBPB_EXIT_TO_USER) &&
+> -	    this_cpu_read(x86_ibpb_exit_to_user)) {
+> -		indirect_branch_prediction_barrier();
+> -		this_cpu_write(x86_ibpb_exit_to_user, false);
+> +	if (unlikely(this_cpu_read(x86_predictor_flush_exit_to_user))) {
+> +		if (cpu_feature_enabled(X86_FEATURE_IBPB_EXIT_TO_USER))
+> +			indirect_branch_prediction_barrier();
+> +		if (cpu_feature_enabled(X86_FEATURE_CLEAR_BHB_EXIT_TO_USER))
+> +			clear_bhb_long_loop();
+> +
+> +		this_cpu_write(x86_predictor_flush_exit_to_user, false);
+>  	}
+>  }
 
-	if (argc != 6) {
-		printf("usage: %s <vfio_bdf> <ibv_device_idx> <bar_idx> <bar_offset> <size>\n",
-		       argv[0]);
-		printf("example: %s 0000:05:00.0 3 2 0x20000 0x1000\n",
-		       argv[0]);
-		return 1;
-	}
+One (mildly) nice thing about the old code was that it could avoid
+reading 'x86_predictor_flush_exit_to_user' in the unaffected case.
 
-	const char *bdf = argv[1];
-	uint32_t ibv_idx = strtoul(argv[2], NULL, 0);
-	uint32_t bar_idx = strtoul(argv[3], NULL, 0);
-	uint64_t bar_offs = strtoull(argv[4], NULL, 0);
-	uint64_t dmabuf_len = strtoull(argv[5], NULL, 0);
+Also, how does the code generation end up looking here? Each
+cpu_feature_enabled() has an alternative, and
+indirect_branch_prediction_barrier() has another one. Are we generating
+alternatives that can't even possibly happen? For instance, could we
+ever have system with X86_FEATURE_IBPB_EXIT_TO_USER but *not*
+X86_FEATURE_IBPB?
 
-	uint32_t group_num = group_for_bdf(bdf);
-	char group_path[PATH_MAX];
-	snprintf(group_path, sizeof(group_path), "/dev/vfio/%u", group_num);
+Let's say this was:
 
-	int container_fd = open("/dev/vfio/vfio", O_RDWR);
-	ensure(container_fd >= 0);
+        if (cpu_feature_enabled(X86_FEATURE_FOO_EXIT_TO_USER) &&
+            this_cpu_read(x86_ibpb_exit_to_user)) {
+		static_call(clear_branch_history);
+                this_cpu_write(x86_ibpb_exit_to_user, false);
+        }
 
-	printf("opening %s via %s\n", bdf, group_path);
-	int group_fd = open(group_path, O_RDWR);
-	ensure(group_fd >= 0);
+And the static_call() was assigned to either clear_bhb_long_loop() or
+write_ibpb(). I suspect the code generation would be nicer and it would
+eliminate one reason for having two X86_FEATUREs.
 
-	ret = ioctl(group_fd, VFIO_GROUP_SET_CONTAINER, &container_fd);
-	ensure(!ret);
 
-	ret = ioctl(container_fd, VFIO_SET_IOMMU, VFIO_TYPE1v2_IOMMU);
-	ensure(!ret);
+>  static enum vmscape_mitigations vmscape_mitigation __ro_after_init =
+> @@ -3221,6 +3222,8 @@ static int __init vmscape_parse_cmdline(char *str)
+>  	} else if (!strcmp(str, "force")) {
+>  		setup_force_cpu_bug(X86_BUG_VMSCAPE);
+>  		vmscape_mitigation = VMSCAPE_MITIGATION_AUTO;
+> +	} else if (!strcmp(str, "on")) {
+> +		vmscape_mitigation = VMSCAPE_MITIGATION_AUTO;
+>  	} else {
+>  		pr_err("Ignoring unknown vmscape=%s option.\n", str);
+>  	}
 
-	int device_fd = ioctl(group_fd, VFIO_GROUP_GET_DEVICE_FD, bdf);
-	ensure(device_fd >= 0);
+Yeah, it's goofy that =on sets ..._AUTO.
 
-	uint8_t buf[sizeof(struct vfio_device_feature) +
-		    sizeof(struct vfio_device_feature_dma_buf) +
-		    sizeof(struct vfio_region_dma_range)]
-		__attribute__((aligned(32)));
+> @@ -3231,18 +3234,35 @@ early_param("vmscape", vmscape_parse_cmdline);
+>  
+>  static void __init vmscape_select_mitigation(void)
+>  {
+> -	if (!boot_cpu_has_bug(X86_BUG_VMSCAPE) ||
+> -	    !boot_cpu_has(X86_FEATURE_IBPB)) {
+> +	if (!boot_cpu_has_bug(X86_BUG_VMSCAPE)) {
+>  		vmscape_mitigation = VMSCAPE_MITIGATION_NONE;
+>  		return;
+>  	}
+>  
+> -	if (vmscape_mitigation == VMSCAPE_MITIGATION_AUTO) {
+> -		if (should_mitigate_vuln(X86_BUG_VMSCAPE))
+> -			vmscape_mitigation = VMSCAPE_MITIGATION_IBPB_EXIT_TO_USER;
+> -		else
+> -			vmscape_mitigation = VMSCAPE_MITIGATION_NONE;
+> +	if (vmscape_mitigation == VMSCAPE_MITIGATION_AUTO &&
+> +	    !should_mitigate_vuln(X86_BUG_VMSCAPE))
+> +		vmscape_mitigation = VMSCAPE_MITIGATION_NONE;
+> +
+> +	if (vmscape_mitigation == VMSCAPE_MITIGATION_IBPB_EXIT_TO_USER &&
+> +	    !boot_cpu_has(X86_FEATURE_IBPB)) {
+> +		pr_err("IBPB not supported, switching to AUTO select\n");
+> +		vmscape_mitigation = VMSCAPE_MITIGATION_AUTO;
+>  	}
+> +
+> +	if (vmscape_mitigation != VMSCAPE_MITIGATION_AUTO)
+> +		return;
+> +
+> +	/*
+> +	 * CPUs with BHI_CTRL(ADL and newer) can avoid the IBPB and use BHB
+> +	 * clear sequence. These CPUs are only vulnerable to the BHI variant
+> +	 * of the VMSCAPE attack and does not require an IBPB flush.
+> +	 */
+> +	if (boot_cpu_has(X86_FEATURE_BHI_CTRL))
+> +		vmscape_mitigation = VMSCAPE_MITIGATION_BHB_CLEAR_EXIT_TO_USER;
+> +	else if (boot_cpu_has(X86_FEATURE_IBPB))
+> +		vmscape_mitigation = VMSCAPE_MITIGATION_IBPB_EXIT_TO_USER;
+> +	else
+> +		vmscape_mitigation = VMSCAPE_MITIGATION_NONE;
+>  }
 
-	struct vfio_device_feature *ft = (struct vfio_device_feature *)buf;
-	*ft = (struct vfio_device_feature){
-		.argsz = sizeof(buf),
-		.flags = VFIO_DEVICE_FEATURE_GET | VFIO_DEVICE_FEATURE_DMA_BUF,
-	};
+Yeah, there are a *lot* of logic changes there. Any simplifications by
+breaking this up would be appreciated.
 
-	struct vfio_device_feature_dma_buf *ft_dma_buf =
-		(struct vfio_device_feature_dma_buf *)ft->data;
-	*ft_dma_buf = (struct vfio_device_feature_dma_buf){
-		.region_index = bar_idx,
-		.open_flags = O_RDWR,
-		.nr_ranges = 1,
-	};
+>  static void __init vmscape_update_mitigation(void)
+> @@ -3261,6 +3281,8 @@ static void __init vmscape_apply_mitigation(void)
+>  {
+>  	if (vmscape_mitigation == VMSCAPE_MITIGATION_IBPB_EXIT_TO_USER)
+>  		setup_force_cpu_cap(X86_FEATURE_IBPB_EXIT_TO_USER);
+> +	else if (vmscape_mitigation == VMSCAPE_MITIGATION_BHB_CLEAR_EXIT_TO_USER)
+> +		setup_force_cpu_cap(X86_FEATURE_CLEAR_BHB_EXIT_TO_USER);
+>  }
 
-	ft_dma_buf->dma_ranges[0] = (struct vfio_region_dma_range){
-		.length = dmabuf_len,
-		.offset = bar_offs,
-	};
+Yeah, so in that scheme I was talking about a minute ago, this could be
+where you do a static_call_update() instead of setting individual
+feature bits.
 
-	printf("allocating dma_buf bar_idx=%u, bar_offset=0x%lx, size=0x%lx\n",
-	       bar_idx, bar_offs, dmabuf_len);
-	int dmabuf_fd = ioctl(device_fd, VFIO_DEVICE_FEATURE, buf);
-	ensure(dmabuf_fd >= 0);
-	printf("allocated dma_buf fd=%d\n", dmabuf_fd);
-
-	int num;
-	struct ibv_device **devs = ibv_get_device_list(&num);
-	ensure(devs && num > 0);
-	printf("discovered %d ibv devices:", num);
-	for (int i = 0; i < num; i++) {
-		printf(" %s", ibv_get_device_name(devs[i]));
-	}
-	printf("\n");
-	ensure(ibv_idx < (uint32_t)num);
-
-	struct ibv_context *ctx = ibv_open_device(devs[ibv_idx]);
-	ensure(ctx);
-	printf("opened ibv device %d: %s\n", ibv_idx,
-	       ibv_get_device_name(devs[ibv_idx]));
-
-	struct ibv_pd *pd = ibv_alloc_pd(ctx);
-	ensure(pd);
-
-	uint64_t offset = 0;
-	uint64_t iova = 0;
-	int access = IBV_ACCESS_LOCAL_WRITE | IBV_ACCESS_REMOTE_READ |
-		     IBV_ACCESS_REMOTE_WRITE;
-
-	struct ibv_mr *mr = ibv_reg_dmabuf_mr(pd, offset, dmabuf_len, iova,
-					      dmabuf_fd, access);
-	ensure(mr);
-	printf("registered dma_buf\n");
-
-	ret = ibv_dereg_mr(mr);
-	ensure(!ret);
-	printf("unregistered dma_buf\n");
-
-	ret = close(dmabuf_fd);
-	ensure(!ret);
-	printf("closed dma_buf fd\n");
-
-	return 0;
-}
----
