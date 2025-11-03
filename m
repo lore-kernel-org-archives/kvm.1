@@ -1,36 +1,36 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB92D31BCA3;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C10F31AF24;
 	Mon,  3 Nov 2025 16:55:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762188929; cv=none; b=UkDCxOE+pChq0rID53osoVtBJGd0QIj2hPhd88P8g27JIuy4y9vbSvAuhFkL3AYJRyD7uXgTUM/Bky9dwqnzgPOedoZO+I0cNt1eCmT/P8no2kfqrxwHy9pxHxdND/YdD2SEa28YF2oqCb7B42BRbJINWJJEMV1GgB+ei7vP7Rs=
+	t=1762188928; cv=none; b=sn4b61DJJU+uPHGOftogg5xYovN5HiP/CQwTV1cVK228wG8tBK+oMrUPAZRwvSqy0KnUxrY3kvyrZWfUdW9Cef86SFWsTdHaHfXlKQZ11II0P3UpPagsCwNatLclAvF2dYhk0ecCubQo82TZ0RT2+JV/hu24wV+vkghnj/1dxns=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762188929; c=relaxed/simple;
-	bh=vOdulj5AFu6v0FR3uIvJYJMqreQ8YmIjlJ3xwKL3b1k=;
+	s=arc-20240116; t=1762188928; c=relaxed/simple;
+	bh=uG/sGiah4ee3+/bxdFax57bVH6y6zvhTVa/pehRU4hI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rDu/CrMGl6EnEEXvziHz3Iz+va4ikf8aiXi/+CjW592p3ErzeP6ptOrHAd/qa/siJNjLP9vn8gX9x+fGiIYZ0IOFK5ijHYgs8MMZGeJiYM8+zeSALuMlKYONbUWch5l1OOjIzqE+gXNbNrixALF4sWBBJuqWJS5MVr7mH+WEJa8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ahqsfrN6; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version; b=kqw67YLL6ULa2C40Ui07AOEvIveW5FiJfC1y2zxYK8ABOsjLbAveac2BvMkdkcrkh4zMky+D+OGaY2BtKOsDZx+UawwNPLEZ5U5AaExuFrQjnY9EAwqeSNsW70uZCv+z/p/4swG0x6O0wmALP7aUI9Bzm0MIGLfujA/Fm7P7qyA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hRvihzsi; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ahqsfrN6"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BFCA0C16AAE;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hRvihzsi"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0DE2CC4CEE7;
 	Mon,  3 Nov 2025 16:55:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1762188928;
-	bh=vOdulj5AFu6v0FR3uIvJYJMqreQ8YmIjlJ3xwKL3b1k=;
+	bh=uG/sGiah4ee3+/bxdFax57bVH6y6zvhTVa/pehRU4hI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ahqsfrN63SQgIwHmqrPnaXVQcSQ0Div6eXuCJkpydi14aXlvZbhRQ8AGknoAXVGZb
-	 TPDuykcCPcS7brWfg350wz3UgHiRmc9YKEsxceGIZLpcYHatJadVlLYmZgA4sow58k
-	 IPJfgYuo5JgxEl1RNParFZr0XcjvYEmtS5Cnq66wnyxMEPeevo5MKwVPD4sApQtxr6
-	 IZTJIdB3pZknUmin9eGo1DdkAsT0Fvv7mer/kR2ZOPoUkIxIKd658tPW2z6l1XpDeN
-	 ONDnULbbsD896Ti0ZqRdcOFSPWN6PxLHrwiAqjQQMAAF9ovB9s17hei24SZOJxFcmT
-	 F4PwT+fD8D6qw==
+	b=hRvihzsiD5gV/QP8RGA3qdspcojSiKsLZh2kF/N70KhSMAxv2BfV1WC9XfIk/MJti
+	 N8P+Jb2I//P/DjfbTWWDd7ACPAjtXKc9F7FtKVFs7ES3bBWcdC10ZI5DAQlBjPbNZh
+	 jGIjdZcXh6UCJFvA3iH0kXRKNF+9/A8mtpHa2vpy6hQOOwKaDnbFUqgqmfcPEc4hxj
+	 nuS2LFtNx4Tyxsmba+tKeF7zobf7tnCbzieKLZzKo2YO2h77LdUD3SWVfoXF011O+I
+	 pA9wS1KAv8xbM/+NwCjvGJ8oy05qD3EfEadmRdp/dZDnowLuXXjwWVFtrL6PYJf+mP
+	 WtvjqXyIc5m7g==
 Received: from sofa.misterjones.org ([185.219.108.64] helo=valley-girl.lan)
 	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.98.2)
 	(envelope-from <maz@kernel.org>)
-	id 1vFxq2-000000021VN-3HYU;
+	id 1vFxq2-000000021VN-0LB6;
 	Mon, 03 Nov 2025 16:55:26 +0000
 From: Marc Zyngier <maz@kernel.org>
 To: kvmarm@lists.linux.dev,
@@ -42,9 +42,9 @@ Cc: Joey Gouly <joey.gouly@arm.com>,
 	Zenghui Yu <yuzenghui@huawei.com>,
 	Christoffer Dall <christoffer.dall@arm.com>,
 	Volodymyr Babchuk <Volodymyr_Babchuk@epam.com>
-Subject: [PATCH 09/33] KVM: arm64: GICv3: Drop LPI active state when folding LRs
-Date: Mon,  3 Nov 2025 16:54:53 +0000
-Message-ID: <20251103165517.2960148-10-maz@kernel.org>
+Subject: [PATCH 06/33] KVM: arm64: Repack struct vgic_irq fields
+Date: Mon,  3 Nov 2025 16:54:50 +0000
+Message-ID: <20251103165517.2960148-7-maz@kernel.org>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20251103165517.2960148-1-maz@kernel.org>
 References: <20251103165517.2960148-1-maz@kernel.org>
@@ -60,37 +60,87 @@ X-SA-Exim-Rcpt-To: kvmarm@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
 X-SA-Exim-Mail-From: maz@kernel.org
 X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
 
-Despite LPIs not having an active state, *virtual* LPIs do have
-one, which gets cleared on EOI. So far, so good.
-
-However, this leads to a small problem: when an active LPI is not
-in the LRs, that EOImode==0 and that the guest EOIs it, EOIcount
-doesn't get bumped up. Which means that in these condition, the
-LPI would stay active forever.
-
-Clearly, we can't have that. So if we spot an active LPI, we drop
-that state. It's pretty pointless anyway, and only serves as a way
-to trip SW over.
+struct vgic_irq has grown over the years, in a rather bad way.
+Repack it using bitfields so that the individual flags, and move
+things around a bit so that it a bit smaller.
 
 Signed-off-by: Marc Zyngier <maz@kernel.org>
 ---
- arch/arm64/kvm/vgic/vgic-v3.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ arch/arm64/kvm/vgic/vgic-v4.c |  5 ++++-
+ include/kvm/arm_vgic.h        | 20 ++++++++++----------
+ 2 files changed, 14 insertions(+), 11 deletions(-)
 
-diff --git a/arch/arm64/kvm/vgic/vgic-v3.c b/arch/arm64/kvm/vgic/vgic-v3.c
-index c71cf2bcc57c9..ba2b9d4d0c778 100644
---- a/arch/arm64/kvm/vgic/vgic-v3.c
-+++ b/arch/arm64/kvm/vgic/vgic-v3.c
-@@ -72,7 +72,9 @@ void vgic_v3_fold_lr_state(struct kvm_vcpu *vcpu)
+diff --git a/arch/arm64/kvm/vgic/vgic-v4.c b/arch/arm64/kvm/vgic/vgic-v4.c
+index 548aec9d5a728..09c3e9eb23f89 100644
+--- a/arch/arm64/kvm/vgic/vgic-v4.c
++++ b/arch/arm64/kvm/vgic/vgic-v4.c
+@@ -163,6 +163,7 @@ static void vgic_v4_disable_vsgis(struct kvm_vcpu *vcpu)
+ 		struct vgic_irq *irq = vgic_get_vcpu_irq(vcpu, i);
+ 		struct irq_desc *desc;
+ 		unsigned long flags;
++		bool pending;
+ 		int ret;
  
- 		raw_spin_lock(&irq->irq_lock);
+ 		raw_spin_lock_irqsave(&irq->irq_lock, flags);
+@@ -173,9 +174,11 @@ static void vgic_v4_disable_vsgis(struct kvm_vcpu *vcpu)
+ 		irq->hw = false;
+ 		ret = irq_get_irqchip_state(irq->host_irq,
+ 					    IRQCHIP_STATE_PENDING,
+-					    &irq->pending_latch);
++					    &pending);
+ 		WARN_ON(ret);
  
--		/* Always preserve the active bit, note deactivation */
-+		/* Always preserve the active bit for !LPIs, note deactivation */
-+		if (irq->intid >= VGIC_MIN_LPI)
-+			val &= ~ICH_LR_ACTIVE_BIT;
- 		deactivated = irq->active && !(val & ICH_LR_ACTIVE_BIT);
- 		irq->active = !!(val & ICH_LR_ACTIVE_BIT);
++		irq->pending_latch = pending;
++
+ 		desc = irq_to_desc(irq->host_irq);
+ 		irq_domain_deactivate_irq(irq_desc_get_irq_data(desc));
+ 	unlock:
+diff --git a/include/kvm/arm_vgic.h b/include/kvm/arm_vgic.h
+index 577723f5599bd..e84a1bc5cf172 100644
+--- a/include/kvm/arm_vgic.h
++++ b/include/kvm/arm_vgic.h
+@@ -123,6 +123,7 @@ struct irq_ops {
+ 
+ struct vgic_irq {
+ 	raw_spinlock_t irq_lock;	/* Protects the content of the struct */
++	u32 intid;			/* Guest visible INTID */
+ 	struct rcu_head rcu;
+ 	struct list_head ap_list;
+ 
+@@ -137,17 +138,17 @@ struct vgic_irq {
+ 					 * affinity reg (v3).
+ 					 */
+ 
+-	u32 intid;			/* Guest visible INTID */
+-	bool line_level;		/* Level only */
+-	bool pending_latch;		/* The pending latch state used to calculate
+-					 * the pending state for both level
+-					 * and edge triggered IRQs. */
+-	bool active;
+-	bool pending_release;		/* Used for LPIs only, unreferenced IRQ
++	bool pending_release:1;		/* Used for LPIs only, unreferenced IRQ
+ 					 * pending a release */
+ 
+-	bool enabled;
+-	bool hw;			/* Tied to HW IRQ */
++	bool pending_latch:1;		/* The pending latch state used to calculate
++					 * the pending state for both level
++					 * and edge triggered IRQs. */
++	enum vgic_irq_config config:1;	/* Level or edge */
++	bool line_level:1;		/* Level only */
++	bool enabled:1;
++	bool active:1;
++	bool hw:1;			/* Tied to HW IRQ */
+ 	refcount_t refcount;		/* Used for LPIs */
+ 	u32 hwintid;			/* HW INTID number */
+ 	unsigned int host_irq;		/* linux irq corresponding to hwintid */
+@@ -159,7 +160,6 @@ struct vgic_irq {
+ 	u8 active_source;		/* GICv2 SGIs only */
+ 	u8 priority;
+ 	u8 group;			/* 0 == group 0, 1 == group 1 */
+-	enum vgic_irq_config config;	/* Level or edge */
+ 
+ 	struct irq_ops *ops;
  
 -- 
 2.47.3
