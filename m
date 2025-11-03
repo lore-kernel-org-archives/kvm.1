@@ -1,50 +1,50 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6673829994B;
-	Mon,  3 Nov 2025 20:04:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.9
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F6B9245014;
+	Mon,  3 Nov 2025 20:07:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.13
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762200294; cv=none; b=BwkgpyXpBQ7JTX4Xaz1YMkYSoNdXOvwlxq3SpjhuwtgDyfRMema9EkEiPjkh7sb055eWmZjecAcSZ1+sI8eIxpZqspX+peSqDPjQO9dsKsahNrwh4FtSRgNskFTU1oWKeSxZ848Q/QphNhuuUzByAUZ1dU7LOCcZ4/u5mfNQIsw=
+	t=1762200452; cv=none; b=iQIGx/8HCXSXVP/2aRuUQB9EC4tVI1JrOv+ingBUBRAw1tS8gqbUlwh1pmNPZXQZHQy7XHcFBEIICwxK1ywsq1YzyiboJGJ0weugiTe0yR9Vm79rH31tj7GmXQ6oz/SaEweY910UH24bHcJLJTkDBI+amWMVYMIAqsmgksxor5w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762200294; c=relaxed/simple;
-	bh=zSZ7IBXioErhSo4Nbik2yG9o/pB1tR/0x/oZ8K6xjb4=;
+	s=arc-20240116; t=1762200452; c=relaxed/simple;
+	bh=nvQMRzcA8E7CAdwpYbFFuG1IT8o7EGRqeDeAoiKtCIs=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=l/Vh4aaRp9u98HWKiyV2s5gg0UTXYUfFJrhoSkJLw7pFYD4i96k2eeLszOdE39raY9/L+4nORrEAzzP1W1UZs6RUbyTUMHs8u/iPzflLn8ynqm7qgYgoo5hqhuKRWUT0J3LsqkUyONoIfir/1DDq/c5aMaP3WYeC6vXOeAV5UWA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=F1IvAqiz; arc=none smtp.client-ip=192.198.163.9
+	 In-Reply-To:Content-Type; b=LqolW6BahvszFxfy5iUE6wBNSedjjpe/MYzRea4+zgqbnaqLJB6mLEaIbW5YVtvKOBB8xSrpYtxC0ud9Lxadt9GBBilX9G29Qrgk+KOSZeT7zk+0oLam3b+yNHyhuJyoqsF6DP2QtAFB8buGQG3u43GYNUic8zyWaMw/VX4Ytm0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=ZBkJyQlv; arc=none smtp.client-ip=192.198.163.13
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="F1IvAqiz"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="ZBkJyQlv"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1762200292; x=1793736292;
+  t=1762200451; x=1793736451;
   h=message-id:date:mime-version:subject:to:cc:references:
    from:in-reply-to:content-transfer-encoding;
-  bh=zSZ7IBXioErhSo4Nbik2yG9o/pB1tR/0x/oZ8K6xjb4=;
-  b=F1IvAqizQIWaEQ7sEr3jwiOgypCZCJjxJnlgR4XPUIFj2dygYzdkyiq/
-   7czMxFyZEP0SDasSOG7WfCvHE9vIUcFre+WdBqJvIn5zZqbAA5ZMJFriG
-   xCmHV6f7iyZpkwiFxcryEWUXzhJ6S2mh7dKXdi9S7qxuGy0uiUqxTapB8
-   3fZ7jy9lq/sENT1T/qJP/WEb8euWzI+yFODmr5fFlIkvOI+E3IzBtRI53
-   Vnkm4DyXZDaWH6lfnbh6qtO9oOnfwBQPu/2O9g8opOlvMF8n96RKB23xs
-   f2yxUY7ZjdkDoObZspoYkEZCRKK63bagnpFeh/gUZqFWd/wSnFzeUHSMT
-   Q==;
-X-CSE-ConnectionGUID: 76Ucoo1aSdew8KUbRVRExQ==
-X-CSE-MsgGUID: pvJNbLaeRuiffoyiW/JYxg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11602"; a="74964537"
+  bh=nvQMRzcA8E7CAdwpYbFFuG1IT8o7EGRqeDeAoiKtCIs=;
+  b=ZBkJyQlv0fVEsRO7vZrGhLvWmoVuEcEE5tYCEd5ptmXRbSKTEyTkdcQH
+   kvnlrv/RYLI1oVWfqEwm/nemiPzUpaYFG+YtH7Eso5OGUSB+mm9zeCg9f
+   mkJBGAh01YXLcx51PEXVz0GGRqFKLHfIC9zh6aA8iBI+AlijiJzoQw7np
+   /U/9pWZk0rxXn3n2DjUbV2/yNdVrn3LI0FDZykiMX5fZKTiE1pE2ebs1k
+   FvQp7nlK23WXkNOwkLFVDjVLluFK+R9LPbdW6XDrlVgyti1tujpnRI0cT
+   +Cqv9801KPex0ZfWbZNpKR5myGuqtkbnsfpmqAsxzvQix6io5q5cItkLC
+   w==;
+X-CSE-ConnectionGUID: PTslYt7iTASNOCEoI/nkEw==
+X-CSE-MsgGUID: KSNUUUk+STi7WnVqJQwWUA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11602"; a="66898502"
 X-IronPort-AV: E=Sophos;i="6.19,277,1754982000"; 
-   d="scan'208";a="74964537"
+   d="scan'208";a="66898502"
 Received: from orviesa010.jf.intel.com ([10.64.159.150])
-  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Nov 2025 12:04:51 -0800
-X-CSE-ConnectionGUID: AqV9ayP4Qm+aU/pCsOM7vQ==
-X-CSE-MsgGUID: T5HbE5iZTNiDps0DWzT1DQ==
+  by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Nov 2025 12:07:31 -0800
+X-CSE-ConnectionGUID: sfh+W+8DQJC/jgKC0GmgHA==
+X-CSE-MsgGUID: 8dfCUs8DRgSoaoCR/+mf0w==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.19,277,1754982000"; 
-   d="scan'208";a="186249300"
+   d="scan'208";a="186249911"
 Received: from jmaxwel1-mobl.amr.corp.intel.com (HELO [10.125.110.129]) ([10.125.110.129])
-  by orviesa010-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Nov 2025 12:04:52 -0800
-Message-ID: <40dd7445-a94d-4b90-8a8a-56c15386866a@intel.com>
-Date: Mon, 3 Nov 2025 12:04:50 -0800
+  by orviesa010-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Nov 2025 12:07:31 -0800
+Message-ID: <f07e3144-edcd-4b5c-8b4a-fb6bdd90943b@intel.com>
+Date: Mon, 3 Nov 2025 12:07:30 -0800
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -52,8 +52,7 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 1/3] x86/bhi: Add BHB clearing for CPUs with larger
- branch history
+Subject: Re: [PATCH v3 0/3] VMSCAPE optimization for BHI variant
 To: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>, x86@kernel.org,
  "H. Peter Anvin" <hpa@zytor.com>, Josh Poimboeuf <jpoimboe@kernel.org>,
  David Kaplan <david.kaplan@amd.com>, Sean Christopherson
@@ -62,7 +61,6 @@ To: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>, x86@kernel.org,
 Cc: linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
  Asit Mallick <asit.k.mallick@intel.com>, Tao Zhang <tao1.zhang@intel.com>
 References: <20251027-vmscape-bhb-v3-0-5793c2534e93@linux.intel.com>
- <20251027-vmscape-bhb-v3-1-5793c2534e93@linux.intel.com>
 From: Dave Hansen <dave.hansen@intel.com>
 Content-Language: en-US
 Autocrypt: addr=dave.hansen@intel.com; keydata=
@@ -108,52 +106,19 @@ Autocrypt: addr=dave.hansen@intel.com; keydata=
  MTsCeQDdjpgHsj+P2ZDeEKCbma4m6Ez/YWs4+zDm1X8uZDkZcfQlD9NldbKDJEXLIjYWo1PH
  hYepSffIWPyvBMBTW2W5FRjJ4vLRrJSUoEfJuPQ3vW9Y73foyo/qFoURHO48AinGPZ7PC7TF
  vUaNOTjKedrqHkaOcqB185ahG2had0xnFsDPlx5y
-In-Reply-To: <20251027-vmscape-bhb-v3-1-5793c2534e93@linux.intel.com>
+In-Reply-To: <20251027-vmscape-bhb-v3-0-5793c2534e93@linux.intel.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
 On 10/27/25 16:43, Pawan Gupta wrote:
-> Add a version of clear_bhb_loop() that works on CPUs with larger branch
-> history table such as Alder Lake and newer. This could serve as a cheaper
-> alternative to IBPB mitigation for VMSCAPE.
+> | iPerf user-net | IBPB    | BHB Clear |
+> |----------------|---------|-----------|
+> | UDP 1-vCPU_p1  | -12.5%  |   1.3%    |
+...
 
-This is missing a bit of background about clear_bhb_loop(). What does it
-mitigate? This is also a better place to talk about why this loop exists
-if it doesn't work on newer CPUs.
+Could you clarify what "1.3%" means? Is that relative to the baseline,
+or relative to the IBPB number?
 
-In other words, please mention BHI_DIS_S here.
-
-> clear_bhb_loop() and the new clear_bhb_long_loop() only differ in the loop
-> counter. Convert the asm implementation of clear_bhb_loop() into a macro
-> that is used by both the variants, passing counter as an argument.
-
-I find these a lot easier to review if you separate out the refactoring
-from the new work. I know it's not a lot of code, but refactor first,
-then add he new function in a separate patch.
-
-> +/*
-> + * A longer version of clear_bhb_loop to ensure that the BHB is cleared on CPUs
-
-"clear_bhb_loop()", please.
-
-> + * with larger branch history tables (i.e. Alder Lake and newer). BHI_DIS_S
-> + * protects the kernel, but to mitigate the guest influence on the host
-> + * userspace either IBPB or this sequence should be used. See VMSCAPE bug.
-> + */
-> +SYM_FUNC_START(clear_bhb_long_loop)
-> +	__CLEAR_BHB_LOOP 12, 7
-> +SYM_FUNC_END(clear_bhb_long_loop)
-> +EXPORT_SYMBOL_GPL(clear_bhb_long_loop)
-> +STACK_FRAME_NON_STANDARD(clear_bhb_long_loop)
-
-All the pieces are out there, but I feel like we need this in one place,
-somewhere:
-
-BHI_DIS_S:  Mitigates user=>kernel attacks on new CPUs. Faster than the
-            long loop.
-Long Loop:  Mitigates guest=>host userspace attacks on new CPUs. Would
-	    also work for user=>kernel, but BHI_DIS_S is faster.
-Short Loop: The only choice on older CPUs. Used for both user=>kernel
-	    and guest=>host userspace mitigation.
-
-
+If it's relative to the baseline, then this data either looks wrong or
+noisy since there are a lot of places where adding the BHB Clear loop
+makes things faster.
