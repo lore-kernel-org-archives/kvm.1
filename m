@@ -1,37 +1,37 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C10F31AF24;
-	Mon,  3 Nov 2025 16:55:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3615E31C59F;
+	Mon,  3 Nov 2025 16:55:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762188928; cv=none; b=sn4b61DJJU+uPHGOftogg5xYovN5HiP/CQwTV1cVK228wG8tBK+oMrUPAZRwvSqy0KnUxrY3kvyrZWfUdW9Cef86SFWsTdHaHfXlKQZ11II0P3UpPagsCwNatLclAvF2dYhk0ecCubQo82TZ0RT2+JV/hu24wV+vkghnj/1dxns=
+	t=1762188929; cv=none; b=INC9YaF8Pg5JQ5O29grkdn9jjnRF59nMBf+usGHq8IfarvBx8gSJ7msYzI0JIn8uDlH1CliTMX0/zb+E5RqpTqAbziESYMzTCW3lPkbWo38EazLgAz9b913Ml2vJ+w991k5X+zUlo79+Y36YWZ/AlSA5W8Y4ZL+HTR9kfXuaVQs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762188928; c=relaxed/simple;
-	bh=uG/sGiah4ee3+/bxdFax57bVH6y6zvhTVa/pehRU4hI=;
+	s=arc-20240116; t=1762188929; c=relaxed/simple;
+	bh=QMaC0gqBcRF3hw0Xjj6IXI4r1QPU/njBPXxtSLfQ9YE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kqw67YLL6ULa2C40Ui07AOEvIveW5FiJfC1y2zxYK8ABOsjLbAveac2BvMkdkcrkh4zMky+D+OGaY2BtKOsDZx+UawwNPLEZ5U5AaExuFrQjnY9EAwqeSNsW70uZCv+z/p/4swG0x6O0wmALP7aUI9Bzm0MIGLfujA/Fm7P7qyA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hRvihzsi; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version; b=eOYuJswrmdbXoUehGqJFTlOOBxYq96kUTqqN80E4q8usA5q7HvCr2uKS1jfysOQYcAeOzBW9pQ7UUPSaTHU+NbXEeTAzvMtQKnraDRfmFymLQLZNTCB7jIFEBghGGQqkQFqgM6Po6mvtQAIc8dsPxs3jesfUVTE8WRm5Sxu0c7c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Q9GVfA/X; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hRvihzsi"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0DE2CC4CEE7;
-	Mon,  3 Nov 2025 16:55:28 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Q9GVfA/X"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1722BC4CEE7;
+	Mon,  3 Nov 2025 16:55:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1762188928;
-	bh=uG/sGiah4ee3+/bxdFax57bVH6y6zvhTVa/pehRU4hI=;
+	s=k20201202; t=1762188929;
+	bh=QMaC0gqBcRF3hw0Xjj6IXI4r1QPU/njBPXxtSLfQ9YE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hRvihzsiD5gV/QP8RGA3qdspcojSiKsLZh2kF/N70KhSMAxv2BfV1WC9XfIk/MJti
-	 N8P+Jb2I//P/DjfbTWWDd7ACPAjtXKc9F7FtKVFs7ES3bBWcdC10ZI5DAQlBjPbNZh
-	 jGIjdZcXh6UCJFvA3iH0kXRKNF+9/A8mtpHa2vpy6hQOOwKaDnbFUqgqmfcPEc4hxj
-	 nuS2LFtNx4Tyxsmba+tKeF7zobf7tnCbzieKLZzKo2YO2h77LdUD3SWVfoXF011O+I
-	 pA9wS1KAv8xbM/+NwCjvGJ8oy05qD3EfEadmRdp/dZDnowLuXXjwWVFtrL6PYJf+mP
-	 WtvjqXyIc5m7g==
+	b=Q9GVfA/XE980ACjtwpBE1/betOQqaRRgRdFcXEk06XZzC/mX2t72dvq0m+fiVoFUr
+	 XJbWit+auL6euD7O4eHH//Bp4oVWavirUm/ymL8TUcDySmZ9YSrXiFRnFlXE4lu4dP
+	 leNPfDPMTmp8046HgzkHWGscWCdxousrFppWEEGgfCr+QyZB+F+Ivtg8yI0faRRx+p
+	 7ugEi/qm66FYV8xR80if/T+zGlDC7YsNW6I2vSnuR27vXI36aRrpAUfgd/dCFZ8TDV
+	 2KYohOeBzgUi9A2Vwy61HZs5Ejkia1KAXXhpnjM2E3hDQhy67ANTOZCvbC+Q0rgNa7
+	 dhCEdqqAwd1Ww==
 Received: from sofa.misterjones.org ([185.219.108.64] helo=valley-girl.lan)
 	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.98.2)
 	(envelope-from <maz@kernel.org>)
-	id 1vFxq2-000000021VN-0LB6;
-	Mon, 03 Nov 2025 16:55:26 +0000
+	id 1vFxq3-000000021VN-0yl1;
+	Mon, 03 Nov 2025 16:55:27 +0000
 From: Marc Zyngier <maz@kernel.org>
 To: kvmarm@lists.linux.dev,
 	linux-arm-kernel@lists.infradead.org,
@@ -42,9 +42,9 @@ Cc: Joey Gouly <joey.gouly@arm.com>,
 	Zenghui Yu <yuzenghui@huawei.com>,
 	Christoffer Dall <christoffer.dall@arm.com>,
 	Volodymyr Babchuk <Volodymyr_Babchuk@epam.com>
-Subject: [PATCH 06/33] KVM: arm64: Repack struct vgic_irq fields
-Date: Mon,  3 Nov 2025 16:54:50 +0000
-Message-ID: <20251103165517.2960148-7-maz@kernel.org>
+Subject: [PATCH 11/33] KVM: arm64: GICv3: Decouple ICH_HCR_EL2 programming from LRs
+Date: Mon,  3 Nov 2025 16:54:55 +0000
+Message-ID: <20251103165517.2960148-12-maz@kernel.org>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20251103165517.2960148-1-maz@kernel.org>
 References: <20251103165517.2960148-1-maz@kernel.org>
@@ -60,88 +60,75 @@ X-SA-Exim-Rcpt-To: kvmarm@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
 X-SA-Exim-Mail-From: maz@kernel.org
 X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
 
-struct vgic_irq has grown over the years, in a rather bad way.
-Repack it using bitfields so that the individual flags, and move
-things around a bit so that it a bit smaller.
+Not programming ICH_HCR_EL2 while no LRs are populated is a bit
+of an issue, as we otherwise don't see any maintenance interrupt
+when the guest interacts with the LRs.
+
+Decouple the two and always program the control register, even when
+we don't have to touch the LRs.
 
 Signed-off-by: Marc Zyngier <maz@kernel.org>
 ---
- arch/arm64/kvm/vgic/vgic-v4.c |  5 ++++-
- include/kvm/arm_vgic.h        | 20 ++++++++++----------
- 2 files changed, 14 insertions(+), 11 deletions(-)
+ arch/arm64/kvm/hyp/vgic-v3-sr.c | 26 ++++++++++++--------------
+ 1 file changed, 12 insertions(+), 14 deletions(-)
 
-diff --git a/arch/arm64/kvm/vgic/vgic-v4.c b/arch/arm64/kvm/vgic/vgic-v4.c
-index 548aec9d5a728..09c3e9eb23f89 100644
---- a/arch/arm64/kvm/vgic/vgic-v4.c
-+++ b/arch/arm64/kvm/vgic/vgic-v4.c
-@@ -163,6 +163,7 @@ static void vgic_v4_disable_vsgis(struct kvm_vcpu *vcpu)
- 		struct vgic_irq *irq = vgic_get_vcpu_irq(vcpu, i);
- 		struct irq_desc *desc;
- 		unsigned long flags;
-+		bool pending;
- 		int ret;
+diff --git a/arch/arm64/kvm/hyp/vgic-v3-sr.c b/arch/arm64/kvm/hyp/vgic-v3-sr.c
+index aa04cc9cdc1ab..d001b26a21f16 100644
+--- a/arch/arm64/kvm/hyp/vgic-v3-sr.c
++++ b/arch/arm64/kvm/hyp/vgic-v3-sr.c
+@@ -219,20 +219,12 @@ void __vgic_v3_save_state(struct vgic_v3_cpu_if *cpu_if)
+ 		}
+ 	}
  
- 		raw_spin_lock_irqsave(&irq->irq_lock, flags);
-@@ -173,9 +174,11 @@ static void vgic_v4_disable_vsgis(struct kvm_vcpu *vcpu)
- 		irq->hw = false;
- 		ret = irq_get_irqchip_state(irq->host_irq,
- 					    IRQCHIP_STATE_PENDING,
--					    &irq->pending_latch);
-+					    &pending);
- 		WARN_ON(ret);
+-	if (used_lrs || cpu_if->its_vpe.its_vm) {
++	if (used_lrs) {
+ 		int i;
+ 		u32 elrsr;
  
-+		irq->pending_latch = pending;
+ 		elrsr = read_gicreg(ICH_ELRSR_EL2);
+ 
+-		if (cpu_if->vgic_hcr & ICH_HCR_EL2_LRENPIE) {
+-			u64 val = read_gicreg(ICH_HCR_EL2);
+-			cpu_if->vgic_hcr &= ~ICH_HCR_EL2_EOIcount;
+-			cpu_if->vgic_hcr |= val & ICH_HCR_EL2_EOIcount;
+-		}
+-
+-		write_gicreg(compute_ich_hcr(cpu_if) & ~ICH_HCR_EL2_En, ICH_HCR_EL2);
+-
+ 		for (i = 0; i < used_lrs; i++) {
+ 			if (elrsr & (1 << i))
+ 				cpu_if->vgic_lr[i] &= ~ICH_LR_STATE;
+@@ -242,6 +234,14 @@ void __vgic_v3_save_state(struct vgic_v3_cpu_if *cpu_if)
+ 			__gic_v3_set_lr(0, i);
+ 		}
+ 	}
 +
- 		desc = irq_to_desc(irq->host_irq);
- 		irq_domain_deactivate_irq(irq_desc_get_irq_data(desc));
- 	unlock:
-diff --git a/include/kvm/arm_vgic.h b/include/kvm/arm_vgic.h
-index 577723f5599bd..e84a1bc5cf172 100644
---- a/include/kvm/arm_vgic.h
-+++ b/include/kvm/arm_vgic.h
-@@ -123,6 +123,7 @@ struct irq_ops {
++	if (cpu_if->vgic_hcr & ICH_HCR_EL2_LRENPIE) {
++		u64 val = read_gicreg(ICH_HCR_EL2);
++		cpu_if->vgic_hcr &= ~ICH_HCR_EL2_EOIcount;
++		cpu_if->vgic_hcr |= val & ICH_HCR_EL2_EOIcount;
++	}
++
++	write_gicreg(compute_ich_hcr(cpu_if) & ~ICH_HCR_EL2_En, ICH_HCR_EL2);
+ }
  
- struct vgic_irq {
- 	raw_spinlock_t irq_lock;	/* Protects the content of the struct */
-+	u32 intid;			/* Guest visible INTID */
- 	struct rcu_head rcu;
- 	struct list_head ap_list;
+ void __vgic_v3_restore_state(struct vgic_v3_cpu_if *cpu_if)
+@@ -249,12 +249,10 @@ void __vgic_v3_restore_state(struct vgic_v3_cpu_if *cpu_if)
+ 	u64 used_lrs = cpu_if->used_lrs;
+ 	int i;
  
-@@ -137,17 +138,17 @@ struct vgic_irq {
- 					 * affinity reg (v3).
- 					 */
+-	if (used_lrs || cpu_if->its_vpe.its_vm) {
+-		write_gicreg(compute_ich_hcr(cpu_if), ICH_HCR_EL2);
++	write_gicreg(compute_ich_hcr(cpu_if), ICH_HCR_EL2);
  
--	u32 intid;			/* Guest visible INTID */
--	bool line_level;		/* Level only */
--	bool pending_latch;		/* The pending latch state used to calculate
--					 * the pending state for both level
--					 * and edge triggered IRQs. */
--	bool active;
--	bool pending_release;		/* Used for LPIs only, unreferenced IRQ
-+	bool pending_release:1;		/* Used for LPIs only, unreferenced IRQ
- 					 * pending a release */
+-		for (i = 0; i < used_lrs; i++)
+-			__gic_v3_set_lr(cpu_if->vgic_lr[i], i);
+-	}
++	for (i = 0; i < used_lrs; i++)
++		__gic_v3_set_lr(cpu_if->vgic_lr[i], i);
  
--	bool enabled;
--	bool hw;			/* Tied to HW IRQ */
-+	bool pending_latch:1;		/* The pending latch state used to calculate
-+					 * the pending state for both level
-+					 * and edge triggered IRQs. */
-+	enum vgic_irq_config config:1;	/* Level or edge */
-+	bool line_level:1;		/* Level only */
-+	bool enabled:1;
-+	bool active:1;
-+	bool hw:1;			/* Tied to HW IRQ */
- 	refcount_t refcount;		/* Used for LPIs */
- 	u32 hwintid;			/* HW INTID number */
- 	unsigned int host_irq;		/* linux irq corresponding to hwintid */
-@@ -159,7 +160,6 @@ struct vgic_irq {
- 	u8 active_source;		/* GICv2 SGIs only */
- 	u8 priority;
- 	u8 group;			/* 0 == group 0, 1 == group 1 */
--	enum vgic_irq_config config;	/* Level or edge */
- 
- 	struct irq_ops *ops;
- 
+ 	/*
+ 	 * Ensure that writes to the LRs, and on non-VHE systems ensure that
 -- 
 2.47.3
 
