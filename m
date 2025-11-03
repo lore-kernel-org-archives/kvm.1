@@ -1,115 +1,78 @@
-Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E810E2E7BCE;
-	Mon,  3 Nov 2025 09:18:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.50.34
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E85C72E8882
+	for <kvm@vger.kernel.org>; Mon,  3 Nov 2025 09:21:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762161483; cv=none; b=rbRI0JztsOYMU5nFPtepAU4XDKyvZh2Xi+THzVRzJESoKzhgtQ562pN3r80VtjM/kfccJKy4TQEEJuT7Zw90UhZVbivplT2stsaCdwO4NhMO5XfDbwxwTrovIhw2PaqV62OyvYmXtkXDrQ9PrZdAv//2UOEWTKoeLn4hUBNBy4Q=
+	t=1762161698; cv=none; b=MMVzmaBStoK1aoBxLTHUVsBQ+8unitLMBm7bfr1kKoxMX4g80GQu7Vqd7WyTZFWR0NgZ3VqlewF6ulkLkCkYboTug5L52/qCn20E+r2tTCktp3SfAFBDZcMw+EleKCxdBmvzWxjU5WZD147PvnfEjKPgibeHLZON26ZaFsOcKac=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762161483; c=relaxed/simple;
-	bh=uDw7dUcSPLDcLjn4FHKbeawyT4pKbSlyz6Q50G7OEfo=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=P/CyM91IXKy0DVtKyuS12REHXVo17jRwUgYxiCDb2du8yGy83lehZ46OyYrX+3jpPYM8+gZghGtNxNh7Ohz9ZAkiym9O0K3u8y+4rhu8gIHh9XWdT+M6L+Z423RDdoJN6188puAVBbyimBySBoSVskBfeJtJbTAyXuLgsBlcAOo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=BSPwC5kG; arc=none smtp.client-ip=90.155.50.34
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=infradead.org
+	s=arc-20240116; t=1762161698; c=relaxed/simple;
+	bh=x56ROdi8S1Tr2huP93sZZhjkA/5DW6FgMBp/T2BDPKM=;
+	h=From:To:Subject:Date:Message-ID:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=qU33oXfZCI89jX/IlujErWCSueQ7C58bL/soP3PhbPJfljVG6wu/5T6TvJUlJ9B5L3jrXXKpyXo6dosTuBUPvfZzp8HSiOolC72MUTSSX0K1g28pFmyoWS4muz2yOV+Yyxqe/J4XeY/5eaBLSzufZLD+tX7cqbHYmC683LQphvk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hbH5BANH; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="BSPwC5kG"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=ZGAHTQeKhhaTDSVnfwPbs9ecAwvUD0Gp75ur/DeNVyY=; b=BSPwC5kGlJJHZs1RBLRxslg68M
-	XezaODI0jdADd65PbZls4qvrFJBC1OLGhS/PJsOR5y5q6hBkN6jriV+lwwETRij9YX+yPl2/Mj55j
-	xYu+pcOlVg73WVP2cWxwlrGw7kqXaGCNlyfQlv33ZbP2c2iGB+cdg0uZqWPufREe2ZQl99uwdQgYU
-	cP77FsvyGBg8ufHXHLok+/lZ8SlLawP5sYXBJXCoTkFxBcKGwxZq5MwoC9D/BJGdcHk9VzTApCBa6
-	pXlM+foM17+OLHh+s5UDiuaYdqVkHDIvzpHaXcIzIbPJMCBVfztLPGiW8YPlT7tPNJcKLO2F0yUib
-	iTisLoQA==;
-Received: from 77-249-17-252.cable.dynamic.v4.ziggo.nl ([77.249.17.252] helo=noisy.programming.kicks-ass.net)
-	by casper.infradead.org with esmtpsa (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vFqhC-00000001mNs-2ET0;
-	Mon, 03 Nov 2025 09:17:51 +0000
-Received: by noisy.programming.kicks-ass.net (Postfix, from userid 1000)
-	id E6DB030023C; Mon, 03 Nov 2025 10:17:49 +0100 (CET)
-Date: Mon, 3 Nov 2025 10:17:49 +0100
-From: Peter Zijlstra <peterz@infradead.org>
-To: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
-Cc: Sean Christopherson <seanjc@google.com>,
-	Paolo Bonzini <pbonzini@redhat.com>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Borislav Petkov <bp@alien8.de>,
-	Josh Poimboeuf <jpoimboe@kernel.org>, kvm@vger.kernel.org,
-	linux-kernel@vger.kernel.org, Brendan Jackman <jackmanb@google.com>
-Subject: Re: [PATCH v4 4/8] KVM: VMX: Handle MMIO Stale Data in VM-Enter
- assembly via ALTERNATIVES_2
-Message-ID: <20251103091749.GW3245006@noisy.programming.kicks-ass.net>
-References: <20251031003040.3491385-1-seanjc@google.com>
- <20251031003040.3491385-5-seanjc@google.com>
- <20251031235524.cuwrx4qys46xnpjr@desk>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hbH5BANH"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 7B4B5C116D0
+	for <kvm@vger.kernel.org>; Mon,  3 Nov 2025 09:21:37 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1762161697;
+	bh=x56ROdi8S1Tr2huP93sZZhjkA/5DW6FgMBp/T2BDPKM=;
+	h=From:To:Subject:Date:In-Reply-To:References:From;
+	b=hbH5BANHxLwK1rc+q8oqm1SYfqFW45Q5EerrBDA8ftA2Qwn1ciC+sSXB4GxTVa0gv
+	 /8Cz4Kap0zvFlcljR9xt1CKUnSukWOUI1ce9JpWMQ4cRV1GvBBMe8l0tCSdk5S7wNX
+	 bC+qypxL7UxWRTh7F6VsXxc9TxNMRTJ3SCB73P4eXth9Kkp3lHQ/YNRlxV8WvrO56s
+	 Q3H2foiM8UemQNSvYRAGHmacF7BkVYs7fKXgZayMMZGLDmevtcCYJ8oxD5JxlLJ79A
+	 xM0J7fulxt4SLYOQ+ilTDVLKSNqOicKp4qvJ5/Dat+avqg/PxniGrgUTp736LXz12D
+	 4rXUGZklKVovg==
+Received: by aws-us-west-2-korg-bugzilla-1.web.codeaurora.org (Postfix, from userid 48)
+	id 71ABFC3279F; Mon,  3 Nov 2025 09:21:37 +0000 (UTC)
+From: bugzilla-daemon@kernel.org
+To: kvm@vger.kernel.org
+Subject: [Bug 220019] Host call trace and crash after boot guest with perf
+ kvm stat record
+Date: Mon, 03 Nov 2025 09:21:37 +0000
+X-Bugzilla-Reason: None
+X-Bugzilla-Type: changed
+X-Bugzilla-Watch-Reason: AssignedTo virtualization_kvm@kernel-bugs.osdl.org
+X-Bugzilla-Product: Virtualization
+X-Bugzilla-Component: kvm
+X-Bugzilla-Version: unspecified
+X-Bugzilla-Keywords: 
+X-Bugzilla-Severity: high
+X-Bugzilla-Who: farrah.chen@intel.com
+X-Bugzilla-Status: RESOLVED
+X-Bugzilla-Resolution: CODE_FIX
+X-Bugzilla-Priority: P3
+X-Bugzilla-Assigned-To: virtualization_kvm@kernel-bugs.osdl.org
+X-Bugzilla-Flags: 
+X-Bugzilla-Changed-Fields: bug_status resolution
+Message-ID: <bug-220019-28872-yoGEMJJqw0@https.bugzilla.kernel.org/>
+In-Reply-To: <bug-220019-28872@https.bugzilla.kernel.org/>
+References: <bug-220019-28872@https.bugzilla.kernel.org/>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Bugzilla-URL: https://bugzilla.kernel.org/
+Auto-Submitted: auto-generated
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251031235524.cuwrx4qys46xnpjr@desk>
 
-On Fri, Oct 31, 2025 at 04:55:24PM -0700, Pawan Gupta wrote:
-> On Thu, Oct 30, 2025 at 05:30:36PM -0700, Sean Christopherson wrote:
-> ...
-> > diff --git a/arch/x86/kvm/vmx/vmenter.S b/arch/x86/kvm/vmx/vmenter.S
-> > index 1f99a98a16a2..61a809790a58 100644
-> > --- a/arch/x86/kvm/vmx/vmenter.S
-> > +++ b/arch/x86/kvm/vmx/vmenter.S
-> > @@ -71,6 +71,7 @@
-> >   * @regs:	unsigned long * (to guest registers)
-> >   * @flags:	VMX_RUN_VMRESUME:	use VMRESUME instead of VMLAUNCH
-> >   *		VMX_RUN_SAVE_SPEC_CTRL: save guest SPEC_CTRL into vmx->spec_ctrl
-> > + *		VMX_RUN_CLEAR_CPU_BUFFERS_FOR_MMIO: vCPU can access host MMIO
-> >   *
-> >   * Returns:
-> >   *	0 on VM-Exit, 1 on VM-Fail
-> > @@ -137,6 +138,12 @@ SYM_FUNC_START(__vmx_vcpu_run)
-> >  	/* Load @regs to RAX. */
-> >  	mov (%_ASM_SP), %_ASM_AX
-> >  
-> > +	/* Stash "clear for MMIO" in EFLAGS.ZF (used below). */
-> > +	ALTERNATIVE_2 "",								\
-> > +		      __stringify(test $VMX_RUN_CLEAR_CPU_BUFFERS_FOR_MMIO, %ebx), 	\
-> > +		      X86_FEATURE_CLEAR_CPU_BUF_MMIO,					\
-> > +		      "", X86_FEATURE_CLEAR_CPU_BUF_VM
-> > +
-> >  	/* Check if vmlaunch or vmresume is needed */
-> >  	bt   $VMX_RUN_VMRESUME_SHIFT, %ebx
-> >  
-> > @@ -161,7 +168,12 @@ SYM_FUNC_START(__vmx_vcpu_run)
-> >  	mov VCPU_RAX(%_ASM_AX), %_ASM_AX
-> >  
-> >  	/* Clobbers EFLAGS.ZF */
-> > -	VM_CLEAR_CPU_BUFFERS
-> > +	ALTERNATIVE_2 "",							\
-> > +		      __stringify(jz .Lskip_clear_cpu_buffers;			\
-> > +				  CLEAR_CPU_BUFFERS_SEQ;			\
-> > +				  .Lskip_clear_cpu_buffers:),			\
-> > +		      X86_FEATURE_CLEAR_CPU_BUF_MMIO,				\
-> > +		      __CLEAR_CPU_BUFFERS, X86_FEATURE_CLEAR_CPU_BUF_VM
-> 
-> Another way to write this could be:
-> 
-> 	ALTERNATIVE_2 "jmp .Lskip_clear_cpu_buffers",					\
-> 		      "jz  .Lskip_clear_cpu_buffers", X86_FEATURE_CLEAR_CPU_BUF_MMIO,	\
-> 		      "",			      X86_FEATURE_CLEAR_CPU_BUF_VM
-> 
-> 	CLEAR_CPU_BUFFERS_SEQ
-> .Lskip_clear_cpu_buffers:
-> 
-> With this jmp;verw; would show up in the disassembly on unaffected CPUs, I
-> don't know how big a problem is that. OTOH, I find this easier to understand.
+https://bugzilla.kernel.org/show_bug.cgi?id=3D220019
 
-Generating larger code just to keep disassembly 'simple' seems wrong.
-Also, see this:
+Chen, Fan (farrah.chen@intel.com) changed:
 
-  https://lkml.kernel.org/r/194ad779-f41f-46a5-9973-e886f483b60a@oracle.com
+           What    |Removed                     |Added
+----------------------------------------------------------------------------
+             Status|NEW                         |RESOLVED
+         Resolution|---                         |CODE_FIX
+
+--=20
+You may reply to this email to add a comment.
+
+You are receiving this mail because:
+You are watching the assignee of the bug.=
