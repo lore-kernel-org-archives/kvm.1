@@ -1,43 +1,42 @@
-Received: from out-180.mta0.migadu.com (out-180.mta0.migadu.com [91.218.175.180])
+Received: from out-181.mta0.migadu.com (out-181.mta0.migadu.com [91.218.175.181])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 61E422D1F64
-	for <kvm@vger.kernel.org>; Tue,  4 Nov 2025 20:00:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.180
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ACA982E764D
+	for <kvm@vger.kernel.org>; Tue,  4 Nov 2025 20:00:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.181
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762286414; cv=none; b=aUlDSJ3/8fjdbGUsh56pJmUnaoPFMVQnl4HLm9waq7COzqklGvcrKGNohn8J+WVic+mZvGvzN5Jun0mr+dlgQvTb9QBY6tjfoTlUqMIK1eIzb0cwBA25UrSQslMgvVKsqYnrzhIM4t5SWdO87zlTvQRgnOfLcniWopngoEsQ+00=
+	t=1762286415; cv=none; b=F6qhzvZl155a97D7B1QDOVMa3eWiqhCGbZd+UwnrIqdf5S2N9HUApK/XP1MEg9A9WZiSQjB4PahcjbSkmnk35xlJPg3qmjo/iG7gfs/pXiGHWJOTB3Ev9RbElaId2It4ZcPLzjO+zeKHtS3BGFwoQrZUvF3kReVb4UC1oj/gVTA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762286414; c=relaxed/simple;
-	bh=ZdzFWnzfAMTVJrGrdmWOLzOvrX4cyva0LVVwZREYBBo=;
+	s=arc-20240116; t=1762286415; c=relaxed/simple;
+	bh=3SZLZNF3cYTuUQGnWwham9Q9DCKPuYhxMLuTx+7LaW4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=D6UGOh5kQJlkKuFOFd8ihBxyjwwWTuvsWuqJmBncViJVW/3g2nnSlViZiLbHs61WMm/4j4lKZ0cUuaRI4q0FhbrHIS9jnnl8vhKaqoKgyx0kdhpjQ3Wm2F8o4MQOwWG1X35MLdruzzBfDH48L0XiPpRlRz01IjEPzeVWi9mJdwM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=qdbHdW3d; arc=none smtp.client-ip=91.218.175.180
+	 MIME-Version:Content-Type; b=Tnm2xTEJM6nO0ricGxw4G+1iLio2OFRQorOHggZebWEsyPjY1Hb3SxuBC9llaQjv203ftdmjWZx8/u347+6hVkpXXKWZpTw8k0to62/b5Unj44mP27SJjP4sVG0xYniYPsokxzclKETf0ChAiygCI2rX10vYDWSMHucM8nQ9rX8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=Gu/cED9p; arc=none smtp.client-ip=91.218.175.181
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="qdbHdW3d"
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="Gu/cED9p"
 X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1762286407;
+	t=1762286410;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=gRqbR3TSsnM7je14FE4SneIrmCgcOO3Mu3NX/MWpW1s=;
-	b=qdbHdW3dWT4QQPbk5w1FoUjQ6oDpt9FmEJYcGJ7QtBydnULGYM1jXRlai5MQRhGHKxmqSP
-	rM20UlMjubI1rBA+z21f8nJ2EPhcz1D/H+NgrmUsYju07BV3pLzFtcBqiiO2pONHeK8e6t
-	oT73gbytfHTtOHmXdSZkgjISE2rV090=
+	bh=HV4S+peGRoTsgN2fUfkCI3V0B36Ozd3fgJngLdVoJ/Q=;
+	b=Gu/cED9pZMkmVdQ/WjoyBoCro0lpvlJHkfCqxg675YzvDEsVw+3y2P5W19XooOpySYD0sE
+	egQXN9KOYewZyM7URD2SKX/jf1WfiXAxHRNFfNOMNmDvQmpxUwlcfZdB9YM5FK1Vi0Zx16
+	g9p7c142dZYnFipUSesmLVtEdE3s1/8=
 From: Yosry Ahmed <yosry.ahmed@linux.dev>
 To: Sean Christopherson <seanjc@google.com>
 Cc: Paolo Bonzini <pbonzini@redhat.com>,
 	Jim Mattson <jmattson@google.com>,
 	kvm@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
-	Yosry Ahmed <yosry.ahmed@linux.dev>,
-	stable@vger.kernel.org
-Subject: [PATCH 01/11] KVM: nSVM: Fix consistency checks for NP_ENABLE
-Date: Tue,  4 Nov 2025 19:59:39 +0000
-Message-ID: <20251104195949.3528411-2-yosry.ahmed@linux.dev>
+	Yosry Ahmed <yosry.ahmed@linux.dev>
+Subject: [PATCH 03/11] KVM: nSVM: Add missing consistency check for event_inj
+Date: Tue,  4 Nov 2025 19:59:41 +0000
+Message-ID: <20251104195949.3528411-4-yosry.ahmed@linux.dev>
 In-Reply-To: <20251104195949.3528411-1-yosry.ahmed@linux.dev>
 References: <20251104195949.3528411-1-yosry.ahmed@linux.dev>
 Precedence: bulk
@@ -50,127 +49,94 @@ Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Migadu-Flow: FLOW_OUT
 
-KVM currenty fails a nested VMRUN and injects VMEXIT_INVALID (aka
-SVM_EXIT_ERR) if L1 sets NP_ENABLE and the host does not support NPTs.
-On first glance, it seems like the check should actually be for
-guest_cpu_cap_has(X86_FEATURE_NPT) instead, as it is possible for the
-host to support NPTs but the guest CPUID to not advertise it.
+According to the APM Volume #2, 15.20 (24593—Rev. 3.42—March 2024):
 
-However, the consistency check is not architectural to begin with. The
-APM does not mention VMEXIT_INVALID if NP_ENABLE is set on a processor
-that does not have X86_FEATURE_NPT. Hence, NP_ENABLE should be ignored
-if X86_FEATURE_NPT is not available for L1. Apart from the consistency
-check, this is currently the case because NP_ENABLE is actually copied
-from VMCB01 to VMCB02, not from VMCB12.
+  VMRUN exits with VMEXIT_INVALID error code if either:
+  • Reserved values of TYPE have been specified, or
+  • TYPE = 3 (exception) has been specified with a vector that does not
+    correspond to an exception (this includes vector 2, which is an NMI,
+    not an exception).
 
-On the other hand, the APM does mention two other consistency checks for
-NP_ENABLE, both of which are missing (paraphrased):
-
-In Volume #2, 15.25.3 (24593—Rev. 3.42—March 2024):
-
-  If VMRUN is executed with hCR0.PG cleared to zero and NP_ENABLE set to
-  1, VMRUN terminates with #VMEXIT(VMEXIT_INVALID)
-
-In Volume #2, 15.25.4 (24593—Rev. 3.42—March 2024):
-
-  When VMRUN is executed with nested paging enabled (NP_ENABLE = 1), the
-  following conditions are considered illegal state combinations, in
-  addition to those mentioned in “Canonicalization and Consistency
-  Checks”:
-    • Any MBZ bit of nCR3 is set.
-    • Any G_PAT.PA field has an unsupported type encoding or any
-    reserved field in G_PAT has a nonzero value.
-
-Replace the existing consistency check with consistency checks on
-hCR0.PG and nCR3. The G_PAT consistency check will be addressed
-separately.
-
-Pass L1's CR0 to __nested_vmcb_check_controls(). In
-nested_vmcb_check_controls(), L1's CR0 is available through
-kvm_read_cr0(), as vcpu->arch.cr0 is not updated to L2's CR0 until later
-through nested_vmcb02_prepare_save() -> svm_set_cr0().
-
-In svm_set_nested_state(), L1's CR0 is available in the captured save
-area, as svm_get_nested_state() captures L1's save area when running L2,
-and L1's CR0 is stashed in VMCB01 on nested VMRUN (in
-nested_svm_vmrun()).
-
-Fixes: 4b16184c1cca ("KVM: SVM: Initialize Nested Nested MMU context on VMRUN")
-Cc: stable@vger.kernel.org
+Add the missing consistency checks to KVM. For the second point, inject
+VMEXIT_INVALID if the vector is anything but the vectors defined by the
+APM for exceptions. Reserved vectors are also considered invalid, which
+matches the HW behavior. Vector 9 (i.e. #CSO) is considered invalid
+because it is reserved on modern CPUs, and according to LLMs no CPUs
+exist supporting SVM and producing #CSOs.
 
 Signed-off-by: Yosry Ahmed <yosry.ahmed@linux.dev>
 ---
- arch/x86/kvm/svm/nested.c | 21 ++++++++++++++++-----
- arch/x86/kvm/svm/svm.h    |  3 ++-
- 2 files changed, 18 insertions(+), 6 deletions(-)
+ arch/x86/include/asm/svm.h |  5 +++++
+ arch/x86/kvm/svm/nested.c  | 33 +++++++++++++++++++++++++++++++++
+ 2 files changed, 38 insertions(+)
 
+diff --git a/arch/x86/include/asm/svm.h b/arch/x86/include/asm/svm.h
+index e69b6d0dedcf0..3a9441a8954f3 100644
+--- a/arch/x86/include/asm/svm.h
++++ b/arch/x86/include/asm/svm.h
+@@ -633,6 +633,11 @@ static inline void __unused_size_checks(void)
+ #define SVM_EVTINJ_VALID (1 << 31)
+ #define SVM_EVTINJ_VALID_ERR (1 << 11)
+ 
++/* Only valid exceptions (and not NMIs) are allowed for SVM_EVTINJ_TYPE_EXEPT */
++#define SVM_EVNTINJ_INVALID_EXEPTS (NMI_VECTOR | BIT_ULL(9) | BIT_ULL(15) | \
++				    BIT_ULL(20) | GENMASK_ULL(27, 22) | \
++				    BIT_ULL(31))
++
+ #define SVM_EXITINTINFO_VEC_MASK SVM_EVTINJ_VEC_MASK
+ #define SVM_EXITINTINFO_TYPE_MASK SVM_EVTINJ_TYPE_MASK
+ 
 diff --git a/arch/x86/kvm/svm/nested.c b/arch/x86/kvm/svm/nested.c
-index 83de3456df708..9a534f04bdc83 100644
+index 9866b2fd8f32a..8641ac9331c5d 100644
 --- a/arch/x86/kvm/svm/nested.c
 +++ b/arch/x86/kvm/svm/nested.c
-@@ -325,7 +325,8 @@ static bool nested_svm_check_bitmap_pa(struct kvm_vcpu *vcpu, u64 pa, u32 size)
+@@ -324,6 +324,36 @@ static bool nested_svm_check_bitmap_pa(struct kvm_vcpu *vcpu, u64 pa, u32 size)
+ 	    kvm_vcpu_is_legal_gpa(vcpu, addr + size - 1);
  }
  
- static bool __nested_vmcb_check_controls(struct kvm_vcpu *vcpu,
--					 struct vmcb_ctrl_area_cached *control)
-+					 struct vmcb_ctrl_area_cached *control,
-+					 unsigned long l1_cr0)
- {
- 	if (CC(!vmcb12_is_intercept(control, INTERCEPT_VMRUN)))
- 		return false;
-@@ -333,8 +334,12 @@ static bool __nested_vmcb_check_controls(struct kvm_vcpu *vcpu,
- 	if (CC(control->asid == 0))
- 		return false;
- 
--	if (CC((control->nested_ctl & SVM_NESTED_CTL_NP_ENABLE) && !npt_enabled))
--		return false;
-+	if (control->nested_ctl & SVM_NESTED_CTL_NP_ENABLE) {
-+		if (CC(!kvm_vcpu_is_legal_gpa(vcpu, control->nested_cr3)))
++/*
++ * According to the APM, VMRUN exits with SVM_EXIT_ERR if:
++ * - The type of event_inj is not one of the defined values.
++ * - The type is SVM_EVTINJ_TYPE_EXEPT, but the vector does not
++ *   correspond to an exception (no NMIs and no reserved values).
++ *
++ * These checks are only performed if SVM_EVTINJ_VALID is set.
++ */
++static bool nested_svm_check_event_inj(u32 event_inj)
++{
++	u32 type = event_inj & SVM_EVTINJ_TYPE_MASK;
++	u8 vector = event_inj & SVM_EVTINJ_VEC_MASK;
++
++	if (!(event_inj & SVM_EVTINJ_VALID))
++		return true;
++
++	if (type != SVM_EVTINJ_TYPE_INTR && type != SVM_EVTINJ_TYPE_NMI &&
++	    type != SVM_EVTINJ_TYPE_EXEPT && type != SVM_EVTINJ_TYPE_SOFT)
++		return false;
++
++	if (type == SVM_EVTINJ_TYPE_EXEPT) {
++		if (vector >= FIRST_EXTERNAL_VECTOR)
 +			return false;
-+		if (CC(!(l1_cr0 & X86_CR0_PG)))
++
++		if ((1 << vector) & SVM_EVNTINJ_INVALID_EXEPTS)
 +			return false;
 +	}
++	return true;
++}
++
+ static bool __nested_vmcb_check_controls(struct kvm_vcpu *vcpu,
+ 					 struct vmcb_ctrl_area_cached *control,
+ 					 unsigned long l1_cr0)
+@@ -353,6 +383,9 @@ static bool __nested_vmcb_check_controls(struct kvm_vcpu *vcpu,
+ 		return false;
+ 	}
  
- 	if (CC(!nested_svm_check_bitmap_pa(vcpu, control->msrpm_base_pa,
- 					   MSRPM_SIZE)))
-@@ -400,7 +405,12 @@ static bool nested_vmcb_check_controls(struct kvm_vcpu *vcpu)
- 	struct vcpu_svm *svm = to_svm(vcpu);
- 	struct vmcb_ctrl_area_cached *ctl = &svm->nested.ctl;
- 
--	return __nested_vmcb_check_controls(vcpu, ctl);
-+	/*
-+	 * Make sure we did not enter guest mode yet, in which case
-+	 * kvm_read_cr0() could return L2's CR0.
-+	 */
-+	WARN_ON_ONCE(is_guest_mode(vcpu));
-+	return __nested_vmcb_check_controls(vcpu, ctl, kvm_read_cr0(vcpu));
++	if (CC(!nested_svm_check_event_inj(control->event_inj)))
++		return false;
++
+ 	return true;
  }
  
- static
-@@ -1832,7 +1842,8 @@ static int svm_set_nested_state(struct kvm_vcpu *vcpu,
- 
- 	ret = -EINVAL;
- 	__nested_copy_vmcb_control_to_cache(vcpu, &ctl_cached, ctl);
--	if (!__nested_vmcb_check_controls(vcpu, &ctl_cached))
-+	/* 'save' contains L1 state saved from before VMRUN */
-+	if (!__nested_vmcb_check_controls(vcpu, &ctl_cached, save->cr0))
- 		goto out_free;
- 
- 	/*
-diff --git a/arch/x86/kvm/svm/svm.h b/arch/x86/kvm/svm/svm.h
-index 6765a5e433cea..0a2908e22d746 100644
---- a/arch/x86/kvm/svm/svm.h
-+++ b/arch/x86/kvm/svm/svm.h
-@@ -552,7 +552,8 @@ static inline bool gif_set(struct vcpu_svm *svm)
- 
- static inline bool nested_npt_enabled(struct vcpu_svm *svm)
- {
--	return svm->nested.ctl.nested_ctl & SVM_NESTED_CTL_NP_ENABLE;
-+	return guest_cpu_cap_has(&svm->vcpu, X86_FEATURE_NPT) &&
-+		svm->nested.ctl.nested_ctl & SVM_NESTED_CTL_NP_ENABLE;
- }
- 
- static inline bool nested_vnmi_enabled(struct vcpu_svm *svm)
 -- 
 2.51.2.1026.g39e6a42477-goog
 
