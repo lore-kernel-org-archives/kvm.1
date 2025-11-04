@@ -1,32 +1,32 @@
-Received: from out-187.mta1.migadu.com (out-187.mta1.migadu.com [95.215.58.187])
+Received: from out-184.mta0.migadu.com (out-184.mta0.migadu.com [91.218.175.184])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A2A52E62A2
-	for <kvm@vger.kernel.org>; Tue,  4 Nov 2025 19:31:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.187
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C10972874E9;
+	Tue,  4 Nov 2025 20:00:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.184
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762284684; cv=none; b=Dq6Kb7w/R7MpZqpSpgkdqKxcgOYCUOwO+MmtAb9sZKML9B9bZCbEtWVh5jBnsa2sO+e8LXaM1nWh+1o6gPMR/Xz0YiKdNFSnQAW+jmnBwfuZg3M8M/E/SVEtL/sBQbSWFMKTi8sYu5PfwUzVL11VC7AKXlppTk4Kt3HklYEwFZ0=
+	t=1762286412; cv=none; b=uso5SVMUUigAC9wqtRQKYbaNiL3L6cjVL3S7Rcs70qoV93zwR20ZKK003ZC+W2Rn7Yk62sdIp34Afi52oHs0Qyz54BeWuNULsmTYxhoBG3BXPp8U0gQI/KcEj+V93kU4VYcmRYSlqumTjob5vREkGbtshviKIDmVM7ZSvF0Bf34=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762284684; c=relaxed/simple;
-	bh=+ZJA6Q75MIRb7BPwJQxYYkjbOwsjL+1qbka9doCeMbA=;
+	s=arc-20240116; t=1762286412; c=relaxed/simple;
+	bh=sXYJzjseqJuvj8NINKu5aCwyL2sAus6gfzVskW5l7H4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Q7JGntK26mFGpmiLFW4M2hUC4GJt2PZzumHoWr/iAc3DK4YsIgmDNNyi2i8yO2lHH1LLiLj0IVDoE+/Eye9ZMQVr4uZ8fPLvSypuJv5ZSEcMLsUmD7jRrM5Ie5CpvLVUbw+JQvZ06AVQCg2Ajp/UMp3wuf7zaonGG0J8NdhJvXA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=JMwYmvBO; arc=none smtp.client-ip=95.215.58.187
+	 MIME-Version:Content-Type; b=FwsVoLQ5PIlWgBj5378sxxiL+1nd3VchFuLX6QMHRjG6CrbxO9Yrs7217U95vKUCM7qUKCT7N2zTHWlFovcxswEfG7a9y4Udh7krOiKrZgd8MGKGDV1VIApFVRJIsjjL+4OeRLXJ9HEaQsQeQBXu9rtB73wkwXR8Mho3xf7Xn1A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=INFvzPZp; arc=none smtp.client-ip=91.218.175.184
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="JMwYmvBO"
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="INFvzPZp"
 X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1762284680;
+	t=1762286409;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=givJI//PiAABh+/f+gBvpZ0lroLLWSUedcKqAHccxGg=;
-	b=JMwYmvBOMhpEjCwRCpCXCEUnynnZCC36OZL1GruFCVBVHW6+CLEIPl1+ZWyjQUhagROsBD
-	JaScDP0pzUaLU1yohIV7iNXFG0lQZwEl0EkFsHdxUv7YQhGMf54KjZ2onkBGmXI5GBEAi7
-	QJb7krxIBAYJF+vcb7qwaPwh1lAPAR0=
+	bh=+63j098rpFjBiDSEQuayeuzFS+idIYHSpwfAxQDf2J0=;
+	b=INFvzPZphCoN1LjY3YMVWX8xHa5AxP7EJkK4CwKs/QAqwbS2KQ2laoNGdmMo5Z7LayyyRS
+	xtlsxOZ9DnMn8HXTQjPGJ8gqcCt4hhxV0CLYd5g5QeBxK6RaB2B4TagCDLapRNpa1gsDzn
+	/lzH6aDT3HUsbYbIUkwcuQ/z6fhlS2Q=
 From: Yosry Ahmed <yosry.ahmed@linux.dev>
 To: Sean Christopherson <seanjc@google.com>
 Cc: Paolo Bonzini <pbonzini@redhat.com>,
@@ -34,46 +34,75 @@ Cc: Paolo Bonzini <pbonzini@redhat.com>,
 	kvm@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	Yosry Ahmed <yosry.ahmed@linux.dev>
-Subject: [kvm-unit-tests 4/4] x86/svm: Deflake svm_tsc_scale_test
-Date: Tue,  4 Nov 2025 19:30:16 +0000
-Message-ID: <20251104193016.3408754-5-yosry.ahmed@linux.dev>
-In-Reply-To: <20251104193016.3408754-1-yosry.ahmed@linux.dev>
-References: <20251104193016.3408754-1-yosry.ahmed@linux.dev>
+Subject: [PATCH 02/11] KVM: nSVM: Add missing consistency check for EFER, CR0, CR4, and CS
+Date: Tue,  4 Nov 2025 19:59:40 +0000
+Message-ID: <20251104195949.3528411-3-yosry.ahmed@linux.dev>
+In-Reply-To: <20251104195949.3528411-1-yosry.ahmed@linux.dev>
+References: <20251104195949.3528411-1-yosry.ahmed@linux.dev>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Migadu-Flow: FLOW_OUT
 
-On an AMT Turin (EPYC Zen 5), svm_tsc_scale_test flakes on the last test
-case with 0.0001 TSC scaling ratio, even with the 24-bit shift for
-stability. On failure, the actual value is 49 instead of the expected
-50.
+According to the APM Volume #2, 15.5, Canonicalization and Consistency
+Checks (24593—Rev. 3.42—March 2024), the following condition (among
+others) results in a #VMEXIT with VMEXIT_INVALID (aka SVM_EXIT_ERR):
 
-Use a higher scaling ratio, 0.001, which makes the test pass
-consistently.
+  EFER.LME, CR0.PG, CR4.PAE, CS.L, and CS.D are all non-zero.
+
+Add the missing consistency check. This is functionally a nop because
+the nested VMRUN results in SVM_EXIT_ERR in HW, which is forwarded to
+L1, but KVM makes all consistency checks before a VMRUN is actually
+attempted.
 
 Signed-off-by: Yosry Ahmed <yosry.ahmed@linux.dev>
 ---
- x86/svm_tests.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/x86/kvm/svm/nested.c | 7 +++++++
+ arch/x86/kvm/svm/svm.h    | 1 +
+ 2 files changed, 8 insertions(+)
 
-diff --git a/x86/svm_tests.c b/x86/svm_tests.c
-index 8d309860e76e5..29c899762b7a4 100644
---- a/x86/svm_tests.c
-+++ b/x86/svm_tests.c
-@@ -1002,7 +1002,7 @@ static void svm_tsc_scale_test(void)
+diff --git a/arch/x86/kvm/svm/nested.c b/arch/x86/kvm/svm/nested.c
+index 9a534f04bdc83..9866b2fd8f32a 100644
+--- a/arch/x86/kvm/svm/nested.c
++++ b/arch/x86/kvm/svm/nested.c
+@@ -380,6 +380,11 @@ static bool __nested_vmcb_check_save(struct kvm_vcpu *vcpu,
+ 		    CC(!(save->cr0 & X86_CR0_PE)) ||
+ 		    CC(!kvm_vcpu_is_legal_cr3(vcpu, save->cr3)))
+ 			return false;
++
++		if (CC((save->cr4 & X86_CR4_PAE) &&
++		       (save->cs.attrib & SVM_SELECTOR_L_MASK) &&
++		       (save->cs.attrib & SVM_SELECTOR_DB_MASK)))
++			return false;
  	}
  
- 	svm_tsc_scale_run_testcase(50, 255, rdrand());
--	svm_tsc_scale_run_testcase(50, 0.0001, rdrand());
-+	svm_tsc_scale_run_testcase(50, 0.001, rdrand());
- }
+ 	/* Note, SVM doesn't have any additional restrictions on CR4. */
+@@ -473,6 +478,8 @@ static void __nested_copy_vmcb_save_to_cache(struct vmcb_save_area_cached *to,
+ 	 * Copy only fields that are validated, as we need them
+ 	 * to avoid TOC/TOU races.
+ 	 */
++	to->cs = from->cs;
++
+ 	to->efer = from->efer;
+ 	to->cr0 = from->cr0;
+ 	to->cr3 = from->cr3;
+diff --git a/arch/x86/kvm/svm/svm.h b/arch/x86/kvm/svm/svm.h
+index 0a2908e22d746..efcf923264c55 100644
+--- a/arch/x86/kvm/svm/svm.h
++++ b/arch/x86/kvm/svm/svm.h
+@@ -142,6 +142,7 @@ struct kvm_vmcb_info {
+ };
  
- static void latency_prepare(struct svm_test *test)
+ struct vmcb_save_area_cached {
++	struct vmcb_seg cs;
+ 	u64 efer;
+ 	u64 cr4;
+ 	u64 cr3;
 -- 
 2.51.2.1026.g39e6a42477-goog
 
