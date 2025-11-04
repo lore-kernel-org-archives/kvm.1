@@ -1,23 +1,23 @@
 Received: from mail.loongson.cn (mail.loongson.cn [114.242.206.163])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 324DB2EBDC8;
-	Tue,  4 Nov 2025 11:37:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 832342E8E00;
+	Tue,  4 Nov 2025 11:37:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=114.242.206.163
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762256235; cv=none; b=IHU0laDastJNe8w+u3NU2yjrfFYZaz5CwrvIXUOmm10twiUMbk7Cn8VRDV8FcBJhRlfgP2k9ASMRyggZCs48JzyIX2W6fPFC7JY1XK0IY/KmULBqgIPGq9zzgB3r6xcry3IRKZMX8oZYHHZUmao92huh0qpja/ZohFJaIHSjP/Y=
+	t=1762256245; cv=none; b=CqQF92+jXRETUDB8AvI1DFP5UcUDILCB9QipCO1AaIo3F0LoqV+82aZH8U5l7LcbdQTQILUMyjhYzMqzlnv3IEuQDwEyXR8XXRS4sqOr3Ch3hthW5ggyouhPElUet/FrsWlQHhlB1gzaqtoJ0gaPgkDP1IZHkSIiAun1Zb6Yqvs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762256235; c=relaxed/simple;
-	bh=3Cn90PzoAgXIMBrFrlCRw0RCGioUkGTP36E1XXAVHxw=;
+	s=arc-20240116; t=1762256245; c=relaxed/simple;
+	bh=edbj2W3W9sG89u/NiKy0Vr7p5pOwZjU4SCA7YpuQaJ0=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=nq2Fm/gg+ivHhTUy5eU7ZM+hXQN/PUsD9rtWr1jx06yEmSPGwZf4PpUFGLPsWVzzRbzJpewdAtZadJe2k4e8NwBwRlKCBCEmJiiXE8kweE3IQkCpO4Hgl/KzmWJPuortxefE8TIlG+6o1ijQT2TmAoTC4cLNnOlS/jd7oBcc6CE=
+	 MIME-Version; b=BlD0yv4j8gWGc5ng/yGGThw8ZvGFiDBfS8d96vQifVRltRhfCjS/DNw9tzNszGAptEsC5SwiH3MwGDuslqqEE70evWh/QPTlwHjoK2dv45b9iBAKspIo9Cm2eoWGR/eL31b4YOVpZUzIUGE0mh9oUF1UoYUrz0ohZ1ua8Fpxong=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn; spf=pass smtp.mailfrom=loongson.cn; arc=none smtp.client-ip=114.242.206.163
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=loongson.cn
 Received: from loongson.cn (unknown [10.2.5.213])
-	by gateway (Coremail) with SMTP id _____8DxP9Nm5Qlpa7QeAA--.65179S3;
-	Tue, 04 Nov 2025 19:37:10 +0800 (CST)
+	by gateway (Coremail) with SMTP id _____8Axjr9t5Qlpf7QeAA--.64813S3;
+	Tue, 04 Nov 2025 19:37:17 +0800 (CST)
 Received: from localhost.localdomain (unknown [10.2.5.213])
-	by front1 (Coremail) with SMTP id qMiowJBxjcFk5QlpTjImAQ--.63810S3;
-	Tue, 04 Nov 2025 19:37:09 +0800 (CST)
+	by front1 (Coremail) with SMTP id qMiowJCxM+Rr5QlpWDImAQ--.51821S3;
+	Tue, 04 Nov 2025 19:37:17 +0800 (CST)
 From: Bibo Mao <maobibo@loongson.cn>
 To: Paolo Bonzini <pbonzini@redhat.com>,
 	Sean Christopherson <seanjc@google.com>,
@@ -28,9 +28,9 @@ Cc: linux-kernel@vger.kernel.org,
 	kvm@vger.kernel.org,
 	loongarch@lists.linux.dev,
 	linux-kselftest@vger.kernel.org
-Subject: [PATCH v2 3/7] KVM: LoongArch: selftests: Add basic interfaces
-Date: Tue,  4 Nov 2025 19:36:55 +0800
-Message-Id: <20251104113700.1561752-4-maobibo@loongson.cn>
+Subject: [PATCH v2 5/7] KVM: LoongArch: selftests: Add period mode timer test
+Date: Tue,  4 Nov 2025 19:36:57 +0800
+Message-Id: <20251104113700.1561752-6-maobibo@loongson.cn>
 X-Mailer: git-send-email 2.39.3
 In-Reply-To: <20251104113700.1561752-1-maobibo@loongson.cn>
 References: <20251104113700.1561752-1-maobibo@loongson.cn>
@@ -41,104 +41,90 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:qMiowJBxjcFk5QlpTjImAQ--.63810S3
+X-CM-TRANSID:qMiowJCxM+Rr5QlpWDImAQ--.51821S3
 X-CM-SenderInfo: xpdruxter6z05rqj20fqof0/
 X-Coremail-Antispam: 1Uk129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7KY7
 	ZEXasCq-sGcSsGvfJ3UbIjqfuFe4nvWSU5nxnvy29KBjDU0xBIdaVrnUUvcSsGvfC2Kfnx
 	nUUI43ZEXa7xR_UUUUUUUUU==
 
-Add some basic function interfaces such as CSR register access,
-local irq enable or disable APIs.
+Period mode timer is added. Timer only need program once with period
+mode, its compared tick value will reload when timer is fired.
 
 Signed-off-by: Bibo Mao <maobibo@loongson.cn>
 ---
- .../kvm/include/loongarch/processor.h         | 52 +++++++++++++++++++
- .../selftests/kvm/lib/loongarch/processor.c   |  5 ++
- 2 files changed, 57 insertions(+)
+ .../kvm/include/loongarch/arch_timer.h        |  5 ++++
+ .../selftests/kvm/loongarch/arch_timer.c      | 28 +++++++++++++++++++
+ 2 files changed, 33 insertions(+)
 
-diff --git a/tools/testing/selftests/kvm/include/loongarch/processor.h b/tools/testing/selftests/kvm/include/loongarch/processor.h
-index a18ac7bff303..b027f8f4dac7 100644
---- a/tools/testing/selftests/kvm/include/loongarch/processor.h
-+++ b/tools/testing/selftests/kvm/include/loongarch/processor.h
-@@ -118,6 +118,28 @@
- #define  CSR_TLBREHI_PS_SHIFT		0
- #define  CSR_TLBREHI_PS			(0x3fUL << CSR_TLBREHI_PS_SHIFT)
- 
-+#define csr_read(csr)				\
-+({						\
-+	register unsigned long __v;		\
-+	__asm__ __volatile__(			\
-+		"csrrd %[val], %[reg]\n\t"	\
-+		: [val] "=r" (__v)		\
-+		: [reg] "i" (csr)		\
-+		: "memory");			\
-+	__v;					\
-+})
-+
-+#define csr_write(v, csr)			\
-+({						\
-+	register unsigned long __v = v;		\
-+	__asm__ __volatile__ (			\
-+		"csrwr %[val], %[reg]\n\t"	\
-+		: [val] "+r" (__v)		\
-+		: [reg] "i" (csr)		\
-+		: "memory");			\
-+	__v;					\
-+})
-+
- #define EXREGS_GPRS			(32)
- 
- #ifndef __ASSEMBLER__
-@@ -147,6 +169,36 @@ struct handlers {
- void vm_init_descriptor_tables(struct kvm_vm *vm);
- void vm_install_exception_handler(struct kvm_vm *vm, int vector, handler_fn handler);
- 
-+static inline void local_irq_enable(void)
-+{
-+	unsigned int flags = CSR_CRMD_IE;
-+
-+	register unsigned int mask asm("$t0") = CSR_CRMD_IE;
-+
-+	__asm__ __volatile__(
-+		"csrxchg %[val], %[mask], %[reg]\n\t"
-+		: [val] "+r" (flags)
-+		: [mask] "r" (mask), [reg] "i" (LOONGARCH_CSR_CRMD)
-+		: "memory");
-+}
-+
-+static inline void local_irq_disable(void)
-+{
-+	unsigned int flags = 0;
-+
-+	register unsigned int mask asm("$t0") = CSR_CRMD_IE;
-+
-+	__asm__ __volatile__(
-+		"csrxchg %[val], %[mask], %[reg]\n\t"
-+		: [val] "+r" (flags)
-+		: [mask] "r" (mask), [reg] "i" (LOONGARCH_CSR_CRMD)
-+		: "memory");
-+}
-+
-+static inline void cpu_relax(void)
-+{
-+	asm volatile("nop" ::: "memory");
-+}
- #else
- #define PC_OFFSET_EXREGS		((EXREGS_GPRS + 0) * 8)
- #define ESTAT_OFFSET_EXREGS		((EXREGS_GPRS + 1) * 8)
-diff --git a/tools/testing/selftests/kvm/lib/loongarch/processor.c b/tools/testing/selftests/kvm/lib/loongarch/processor.c
-index be537c5ff74e..20ba476ccb72 100644
---- a/tools/testing/selftests/kvm/lib/loongarch/processor.c
-+++ b/tools/testing/selftests/kvm/lib/loongarch/processor.c
-@@ -373,3 +373,8 @@ void vcpu_arch_set_entry_point(struct kvm_vcpu *vcpu, void *guest_code)
- 	regs.pc = (uint64_t)guest_code;
- 	vcpu_regs_set(vcpu, &regs);
+diff --git a/tools/testing/selftests/kvm/include/loongarch/arch_timer.h b/tools/testing/selftests/kvm/include/loongarch/arch_timer.h
+index 94b1cba2744d..b6399e748f72 100644
+--- a/tools/testing/selftests/kvm/include/loongarch/arch_timer.h
++++ b/tools/testing/selftests/kvm/include/loongarch/arch_timer.h
+@@ -36,6 +36,11 @@ static inline void timer_set_next_cmp_ms(unsigned int msec, bool period)
+ 	csr_write(val, LOONGARCH_CSR_TCFG);
  }
-+
-+uint32_t guest_get_vcpuid(void)
+ 
++static inline void disable_timer(void)
 +{
-+	return csr_read(LOONGARCH_CSR_CPUID);
++	csr_write(0, LOONGARCH_CSR_TCFG);
 +}
++
+ static inline unsigned long timer_get_val(void)
+ {
+ 	return csr_read(LOONGARCH_CSR_TVAL);
+diff --git a/tools/testing/selftests/kvm/loongarch/arch_timer.c b/tools/testing/selftests/kvm/loongarch/arch_timer.c
+index 2a2cebcf3885..a4a39f24bb7e 100644
+--- a/tools/testing/selftests/kvm/loongarch/arch_timer.c
++++ b/tools/testing/selftests/kvm/loongarch/arch_timer.c
+@@ -23,6 +23,13 @@ static void guest_irq_handler(struct ex_regs *regs)
+ 	GUEST_ASSERT_EQ(intid, 1);
+ 
+ 	cfg = timer_get_cfg();
++	if (cfg & CSR_TCFG_PERIOD) {
++		WRITE_ONCE(shared_data->nr_iter, shared_data->nr_iter - 1);
++		if (shared_data->nr_iter == 0)
++			disable_timer();
++		csr_write(CSR_TINTCLR_TI, LOONGARCH_CSR_TINTCLR);
++		return;
++	}
+ 
+ 	/*
+ 	 * On physical machine, value of LOONGARCH_CSR_TVAL is BIT_ULL(48) - 1
+@@ -67,6 +74,26 @@ static void guest_test_oneshot_timer(uint32_t cpu)
+ 	}
+ }
+ 
++static void guest_test_period_timer(uint32_t cpu)
++{
++	uint32_t irq_iter;
++	uint64_t us;
++	struct test_vcpu_shared_data *shared_data = &vcpu_shared_data[cpu];
++
++	shared_data->nr_iter = test_args.nr_iter;
++	shared_data->xcnt = timer_get_cycles();
++	us = msecs_to_usecs(test_args.timer_period_ms) + test_args.timer_err_margin_us;
++	timer_set_next_cmp_ms(test_args.timer_period_ms, true);
++	/* Setup a timeout for the interrupt to arrive */
++	udelay(us * test_args.nr_iter);
++	irq_iter = READ_ONCE(shared_data->nr_iter);
++	__GUEST_ASSERT(irq_iter == 0,
++			"irq_iter = 0x%x.\n"
++			"  Guest period timer interrupt was not triggered within the specified\n"
++			"  interval, try to increase the error margin by [-e] option.\n",
++			irq_iter);
++}
++
+ static void guest_code(void)
+ {
+ 	uint32_t cpu = guest_get_vcpuid();
+@@ -74,6 +101,7 @@ static void guest_code(void)
+ 	timer_irq_enable();
+ 	local_irq_enable();
+ 	guest_test_oneshot_timer(cpu);
++	guest_test_period_timer(cpu);
+ 
+ 	GUEST_DONE();
+ }
 -- 
 2.39.3
 
