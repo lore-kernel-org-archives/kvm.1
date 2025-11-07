@@ -1,168 +1,267 @@
-Received: from mail-wr1-f73.google.com (mail-wr1-f73.google.com [209.85.221.73])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from DM5PR21CU001.outbound.protection.outlook.com (mail-centralusazon11011053.outbound.protection.outlook.com [52.101.62.53])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4EC733358C6
-	for <kvm@vger.kernel.org>; Fri,  7 Nov 2025 17:37:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.73
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762537029; cv=none; b=QI0sP2IPLpdJLDE/UPcS0Vo01PGCe+J94z/Ydz4u99IHj/l0ziXaaXHKky7JpefGxpv2ByukM0nRwVKIiUNIAOA7dEyQzNvDmdnmb5+3mRLykO8iJLKnDJJ5tk4/OEwi+W6TCkgpyiVdZFztBq4x6uFqdfOiC1C8hRtk9Md8U38=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762537029; c=relaxed/simple;
-	bh=Lx3bFQ3NiP4uoTXJligat5YBVbYSgoMH3tTDsWSPIac=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=N9AshZzofWIP6JzP5ZNSOlnHLDSrE8L1SMAXGAaTsfoG/mhbt90twe5Wyb3U7kEFdbMKzt1fGot1X/JF3OY84VzVug7+NFs5ilSg9PUN9iHDc5SyyqIPc6UUSqvnuKRmdbu3xMx466RFvkX77B1Qgf4OEowAMAVoQe1dL5EGQ/o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--jackmanb.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=P9bvmQ2D; arc=none smtp.client-ip=209.85.221.73
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--jackmanb.bounces.google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C45A335081;
+	Fri,  7 Nov 2025 17:41:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.62.53
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1762537305; cv=fail; b=ZLg7NBhY24x2dGyT0K42xs1bkR0IWZByFbPDwe8kExlsfu9oDeAPtvECMgb5eGg9jkaCSWSrPmZQQM0mr3DMKJFn6EGw4jBgQ/X8pudRquv9G14kuPf5R2dnFOYiF4t3tyCbZ1Ad6PtpMQrsm4C1YQKRn7El2WG+tKGzC/h5jEk=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1762537305; c=relaxed/simple;
+	bh=/XdmGWUZ1hByFn+oAbM0l1/H0+SjDdon/y/REaPXYL8=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=GvVF85GpKlwty7fqpwSHArhWJ2mnGaCqmf/gFx8IqTPTqKIrJBnkoW2vA0AxWaglETnHS4OlxRrr/P1VhEmKLUFnBzGhxJzStWLbBOWZKn5gwyRVp5ucTXDkAUvm5TDWtUW/AnnNm1i8vs6+Rw35Mtmh0uQVZ0O3gP5DR43jI4Q=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=LllH6/96; arc=fail smtp.client-ip=52.101.62.53
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="P9bvmQ2D"
-Received: by mail-wr1-f73.google.com with SMTP id ffacd0b85a97d-426ce339084so770559f8f.0
-        for <kvm@vger.kernel.org>; Fri, 07 Nov 2025 09:37:05 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1762537024; x=1763141824; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=Zhz7gcsikgOjW44ogPO6UQeW+YT4AB9gKFb1aT581fI=;
-        b=P9bvmQ2DdHFQGaXVosN7z50YtAoWXDvGhEpUoslH5au84lQCn831C9zDK4pfZKbDS4
-         XVHZcr4LQFqwmjTiQebheCRYPJ/XNRSIyzVb0LW1UQ9Zb4daMn7jcek37pgTfFzjtUFx
-         91Cuw9RtJciYAE8f+jJCkXAuvQM2HF3Si2l5/Ti3qyCVH0wCy/fe8rP1KKB959OLoGv8
-         iw7yDlULYlQCgqh5ykcX39r5wAW1LTc1HIcjKxvJoWUDoA1wOYemWtFE9t7RoQM5aHH7
-         uxP64yDOeG6X8b0dp6ZMIYhNwlsGNQoR7H20a10RKp0lhDIfXucjxiJ0pWVhUirM2jaa
-         WbaA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1762537024; x=1763141824;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=Zhz7gcsikgOjW44ogPO6UQeW+YT4AB9gKFb1aT581fI=;
-        b=Msu1kYHn9X+MlJt9RcLMyfczFsinCBXxUlQRKSf5e+FG7TiRjapP0QFmAFzGGeaqBK
-         6SKHjNT2Jtx0YX6aeLsrpYbcE3+r2ufGwueoJjYw+fE2yHp6eFGykuTxOLDsUgZEqcLR
-         XRF0tRML4NstJIW6Xu1HJxtuppMSPfsW7P79tKX/F9IPluKmHLnjazPMyqf7l9QundZB
-         P74e0DVw9TtmS3HzLwHV/5BrXiCnZtbe1byc6WfUmAibzR6uwch0lHPFxFUu+BCL6Kna
-         3qFKF5MOBFDGb/731Dp7rrguRBEd8CQGtop74iT6tSGKAV9XI/x6IfV6xzIocJ/lfqPz
-         qwKQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVBxgu0jgRSqp2sKoTRD4MmzytR0w19EvxgA8Ll53JkJmNPQtU9iUuMLdph27y9ddY41/o=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwAUHrpoYL8lKHA/DJgPYF5tXiMVso5uujYqBGv7F2yIWXt5iq8
-	P9HuqWutNRlypoX4shZefFtWia9Vc2AsRJ277aypLOw+RKCLUZU02d84L0LH64VyEhW/b04VG2J
-	OdWvm/Py4tpTZCg==
-X-Google-Smtp-Source: AGHT+IFJF2Ksc6u55CE+GD/K60cqff3jO8p1vj7rkxXgTU2hADlFy8fEI1U56A7kvOlzF5vcUeX5HHSZeZ5zgA==
-X-Received: from wrbfq11.prod.google.com ([2002:a05:6000:2a0b:b0:429:ccad:3298])
- (user=jackmanb job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:6000:178b:b0:429:d725:4114 with SMTP id ffacd0b85a97d-42ae5ac5374mr3668462f8f.39.1762537024246;
- Fri, 07 Nov 2025 09:37:04 -0800 (PST)
-Date: Fri, 07 Nov 2025 17:37:03 +0000
-In-Reply-To: <DE2L1SAOC55E.E4JY62WJQ2A8@google.com>
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="LllH6/96"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=Gr7BgZMxJp1Bb13ck9UsED3rRwKceuxKBJJHWxiV2XTz3gPyK8VM/vsJ8mUajBRVd+0/53IdyOR0LsuSnvFoRWj9tP/czIqQarHRuu1hsbAyLl7bopi2lbdcBSijMkMDD2n8/62FoXUexD7etEEg8mZO5A9B5FD5rv9PslUmB6IL6nwkK5XJLfyDLcO7orL4GMhYHyngEnHeCf4vgfhUiGgKLntmoTZK5mo5Cq/JlWHo3Eh7mc6C1oOMw3185dBSrhE7w8bYc1s7YLGoVMxg3bOUQW5iMJZ7GFOtkWHUx2Eoc0s7CbquJAdOHor+oEWCoFwQHhtrMFAfHseiY10DsQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=29fWgNKhmQP+In0rAZrq4QS2FZYdxruVJmI4g1EJYB4=;
+ b=VzpX5+ioHBZG9t8a2TEj5JYvcRuQME62sVImh2IaHzSsyrnH/5DoGqJ3lxm/QSVNb5Z0bE1BbFFJSONdlJCk2MwRVrNmSxhtTMsY9KE2EiLYJs9jjDpI8FjTenBtiV+V9/Y64Xr6Q0pbTtuDfKAoKwlMSAYT+WHMc9QzfMyfmBw5nbCmLHCxrXgPCdkS5pNGvZvGR10weTsGrMH7U/oHgv5N1wealSdjuCxd9fRNOq+hyjh99QbYjRSTq8sL+3FS5FvJYa/DgWu/hdJ9ILNJU39/ZbA5zr2zstzYTntbOG0opN5ZhPcp7BCnNuBtC2QWM/67cyrXdC1X1ppzLxZo6Q==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=29fWgNKhmQP+In0rAZrq4QS2FZYdxruVJmI4g1EJYB4=;
+ b=LllH6/96VRG1iB/cH4kSjeXX5/eWxuDY0vXNzMU6tlQHbZYV7Q4GsUIuM3qNUXQ+64UMYluroUJOdYsuIsNorxyCqgUGXCvo2x4Iy5m8J7agnoIqu0w4GwZdkr5305E24yKtnTViemwx0DAteZ9Tn/j8zx9HSal/BHv4K+YbAn/tGqetY1lYCibN4VTYt/PKSBrj8WXjYqNmpeFj8wystJ+8MHGjYTIaxDcCDmf2ql4hKEaOTEZRIHcDIXVQldoI9cPMIZn5GwLDShO1rgf58cnamJP4E7j2o8JLc6b8EGBZNvzsYnQe3PBAIK/dmevDDo+/zlGX1sRWKRdvkNg6hg==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from MN2PR12MB3613.namprd12.prod.outlook.com (2603:10b6:208:c1::17)
+ by PH7PR12MB8826.namprd12.prod.outlook.com (2603:10b6:510:26a::5) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9298.12; Fri, 7 Nov
+ 2025 17:41:39 +0000
+Received: from MN2PR12MB3613.namprd12.prod.outlook.com
+ ([fe80::1b3b:64f5:9211:608b]) by MN2PR12MB3613.namprd12.prod.outlook.com
+ ([fe80::1b3b:64f5:9211:608b%4]) with mapi id 15.20.9298.006; Fri, 7 Nov 2025
+ 17:41:39 +0000
+From: Jason Gunthorpe <jgg@nvidia.com>
+To: Alexander Gordeev <agordeev@linux.ibm.com>,
+	David Airlie <airlied@gmail.com>,
+	Alex Williamson <alex.williamson@redhat.com>,
+	Ankit Agrawal <ankita@nvidia.com>,
+	Christian Borntraeger <borntraeger@linux.ibm.com>,
+	Brett Creeley <brett.creeley@amd.com>,
+	dri-devel@lists.freedesktop.org,
+	Eric Auger <eric.auger@redhat.com>,
+	Eric Farman <farman@linux.ibm.com>,
+	Giovanni Cabiddu <giovanni.cabiddu@intel.com>,
+	Vasily Gorbik <gor@linux.ibm.com>,
+	Heiko Carstens <hca@linux.ibm.com>,
+	intel-gfx@lists.freedesktop.org,
+	Jani Nikula <jani.nikula@linux.intel.com>,
+	Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
+	kvm@vger.kernel.org,
+	Kirti Wankhede <kwankhede@nvidia.com>,
+	linux-s390@vger.kernel.org,
+	Longfang Liu <liulongfang@huawei.com>,
+	Matthew Rosato <mjrosato@linux.ibm.com>,
+	Nikhil Agarwal <nikhil.agarwal@amd.com>,
+	Nipun Gupta <nipun.gupta@amd.com>,
+	Peter Oberparleiter <oberpar@linux.ibm.com>,
+	Halil Pasic <pasic@linux.ibm.com>,
+	qat-linux@intel.com,
+	Rodrigo Vivi <rodrigo.vivi@intel.com>,
+	Simona Vetter <simona@ffwll.ch>,
+	Shameer Kolothum <skolothumtho@nvidia.com>,
+	Sven Schnelle <svens@linux.ibm.com>,
+	Tvrtko Ursulin <tursulin@ursulin.net>,
+	virtualization@lists.linux.dev,
+	Vineeth Vijayan <vneethv@linux.ibm.com>,
+	Yishai Hadas <yishaih@nvidia.com>,
+	Zhenyu Wang <zhenyuw.linux@gmail.com>,
+	Zhi Wang <zhi.wang.linux@gmail.com>
+Cc: Kevin Tian <kevin.tian@intel.com>,
+	patches@lists.linux.dev,
+	Pranjal Shrivastava <praan@google.com>,
+	Mostafa Saleh <smostafa@google.com>
+Subject: [PATCH v2 06/22] vfio/mtty: Provide a get_region_info op
+Date: Fri,  7 Nov 2025 13:41:22 -0400
+Message-ID: <6-v2-2a9e24d62f1b+e10a-vfio_get_region_info_op_jgg@nvidia.com>
+In-Reply-To: <0-v2-2a9e24d62f1b+e10a-vfio_get_region_info_op_jgg@nvidia.com>
+References:
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: BL1PR13CA0447.namprd13.prod.outlook.com
+ (2603:10b6:208:2c3::32) To MN2PR12MB3613.namprd12.prod.outlook.com
+ (2603:10b6:208:c1::17)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20250924151101.2225820-1-patrick.roy@campus.lmu.de> <DE2L1SAOC55E.E4JY62WJQ2A8@google.com>
-X-Mailer: aerc 0.21.0
-Message-ID: <DE2N8AOQ1A0Y.1PVEXY6ULPCFV@google.com>
-Subject: Re: [PATCH v7 00/12] Direct Map Removal Support for guest_memfd
-From: Brendan Jackman <jackmanb@google.com>
-To: Brendan Jackman <jackmanb@google.com>, Patrick Roy <patrick.roy@campus.lmu.de>
-Cc: Patrick Roy <roypat@amazon.co.uk>, <pbonzini@redhat.com>, <corbet@lwn.net>, 
-	<maz@kernel.org>, <oliver.upton@linux.dev>, <joey.gouly@arm.com>, 
-	<suzuki.poulose@arm.com>, <yuzenghui@huawei.com>, <catalin.marinas@arm.com>, 
-	<will@kernel.org>, <tglx@linutronix.de>, <mingo@redhat.com>, <bp@alien8.de>, 
-	<dave.hansen@linux.intel.com>, <x86@kernel.org>, <hpa@zytor.com>, 
-	<luto@kernel.org>, <peterz@infradead.org>, <willy@infradead.org>, 
-	<akpm@linux-foundation.org>, <david@redhat.com>, <lorenzo.stoakes@oracle.com>, 
-	<Liam.Howlett@oracle.com>, <vbabka@suse.cz>, <rppt@kernel.org>, 
-	<surenb@google.com>, <mhocko@suse.com>, <song@kernel.org>, <jolsa@kernel.org>, 
-	<ast@kernel.org>, <daniel@iogearbox.net>, <andrii@kernel.org>, 
-	<martin.lau@linux.dev>, <eddyz87@gmail.com>, <yonghong.song@linux.dev>, 
-	<john.fastabend@gmail.com>, <kpsingh@kernel.org>, <sdf@fomichev.me>, 
-	<haoluo@google.com>, <jgg@ziepe.ca>, <jhubbard@nvidia.com>, 
-	<peterx@redhat.com>, <jannh@google.com>, <pfalcato@suse.de>, 
-	<shuah@kernel.org>, <seanjc@google.com>, <kvm@vger.kernel.org>, 
-	<linux-doc@vger.kernel.org>, <linux-kernel@vger.kernel.org>, 
-	<linux-arm-kernel@lists.infradead.org>, <kvmarm@lists.linux.dev>, 
-	<linux-fsdevel@vger.kernel.org>, <linux-mm@kvack.org>, <bpf@vger.kernel.org>, 
-	<linux-kselftest@vger.kernel.org>, <xmarcalx@amazon.co.uk>, 
-	<kalyazin@amazon.co.uk>, <jackabt@amazon.co.uk>, <derekmn@amazon.co.uk>, 
-	<tabba@google.com>, <ackerleytng@google.com>
-Content-Type: text/plain; charset="UTF-8"
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: MN2PR12MB3613:EE_|PH7PR12MB8826:EE_
+X-MS-Office365-Filtering-Correlation-Id: a158fe60-42df-4ed5-d9d8-08de1e24e824
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|366016|1800799024|7416014|376014|921020;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?ZodgfdvqpQf0qe73D2Kkfd8lh85oUENQi8j+Npdrq/QHUvKyaaTMI7ubLB1z?=
+ =?us-ascii?Q?WDCix2XgEOeSDxV3waMRfw/ZIo7TX4/Wbj5n3t64rTmfYIbuFPFee8eAl1uu?=
+ =?us-ascii?Q?+5Mg3zgLaU4osVnPl5faoJF7OI6sjKOosd1akzxfeMtdjBZKhKbEoexwShrr?=
+ =?us-ascii?Q?0SZMXP/T+OXAUm5Vxb3dJoyyHDmOsQXGyjgBnbgQfcv4372QE1hTLx6dZiMI?=
+ =?us-ascii?Q?SomNbIqntF0z5GfW3NTfVyh282XXDW0WCRJNrJTEBnla+1ThdNZKlRNl8TcJ?=
+ =?us-ascii?Q?4rpW/a0A+mxOOQ3JTZ+L48LJNpCeYzDyuDoFttFEyWXD8yCi/O/wHo5/aqtg?=
+ =?us-ascii?Q?sFDEz4vj4cPfU2sITj/vKhJBk0FF3ZTEnGgle0Es9sf1eHAGKZzLZocZTVaF?=
+ =?us-ascii?Q?TNJmIxsRXEIP7Bu4NiASq8N1JubQUpksPmahSSvG46osD5SPdicKNskVRFhq?=
+ =?us-ascii?Q?IFPNeFOnzlo+AIErpmFzOr7i0WA/xP61CN0tZgxjcLHmgp0PDI9hd4EAhlbA?=
+ =?us-ascii?Q?AoKHWYjpIT1KbkZ0ivSBP239dSvXGNGwHKrlBl1Ugx047042Mx15m2R5S7Wp?=
+ =?us-ascii?Q?j+paz+ClfQ9OAfbg4C0sXGSdhZnFUjBL2c9EO4sJ6Ka9MUZjJy+hR7n/Bx0k?=
+ =?us-ascii?Q?3uHCwGTy4bsV+jdZGehQaBq3IFfn2kJ2ES6QrDKYc7+DXs3TjM/luumte4qP?=
+ =?us-ascii?Q?jBxE8x1kyK9k9vxiNgm+LRbyiFMgLE5tbaAtTnBM43+5VEqwbHlYfDi42DYW?=
+ =?us-ascii?Q?UVz8VcF4UhyVhU6iiU0t2nmfAdqLA76dZBm4Ys8QqOrDBb23TC0rjPGCpUFD?=
+ =?us-ascii?Q?4zPsW0zOnoRKGHSjUDmZUZJOkzueDuKof5ngS2wwn+5qkmabBJnnfsbAPSch?=
+ =?us-ascii?Q?n3nl+vsvaJYW4yLg8eqwg3aOILA1anORhHyGG/haRveJjvjntUf9l7ji2GeG?=
+ =?us-ascii?Q?1vayqy8zYmfQGicoOe4t8PruHUWvqme5kH2EL36ZgOmEB8DRk9zdoIaELZ9L?=
+ =?us-ascii?Q?cE2ivqEmZt8T31zjMY+uZt1Ttpei06Cl6gPeqlNZjkzrqKbKW1QnJfsziHkh?=
+ =?us-ascii?Q?SbuctJcQKpsU8LyjR7/JS2YRqkhaV9ZpmUQpy+ZP1wewHOmV+roJgUgk6n3k?=
+ =?us-ascii?Q?bqxTM/kAkG7wy/VlLsmkNGDUqPyVxnOnK5azMUOAA95M3JzYhr/BjG7lMREY?=
+ =?us-ascii?Q?Lw/XdEx3Dl3stqvGDNTQZq0jfT5AYr24bx1GG9D0bRnrv/o3LPkhwiJQF4Ax?=
+ =?us-ascii?Q?Wtw92WdvzwhNp8caY7TSel04RKMfDDe674gHOrLwUnFKZS08mHPBZwgZ6ey/?=
+ =?us-ascii?Q?nB4NTDyRWc5GY4joORey8VaqNVHQa7qL0yxxRPLIHO+3tjKgSabIlag3y5DJ?=
+ =?us-ascii?Q?CNB/TGg9uOiaF0UfyY45p+WGOld36Qtub4XV+gxz6ZG8okEZHhGWRgnUVSJ/?=
+ =?us-ascii?Q?mOJCQ/ckrJlaOZMzifcxPpcd+3R8IV8KJBAf+WaYfawigJ6h+SauT3I0X38w?=
+ =?us-ascii?Q?CqDcAdZmx0Af5mo=3D?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MN2PR12MB3613.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(7416014)(376014)(921020);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?F0y/rQD8Uh5aq/ML7UEf+1hgBoyKtFdQdyVBG5wXUT/QL9JmdYmhHerhFMos?=
+ =?us-ascii?Q?SiCpEZT09Y9k87xG9FUyaa1hqSxOvEjrX1YfSIcNYieOKOu0Y79d5lMQqEBd?=
+ =?us-ascii?Q?2p0iJDCmRlTOxyCsZLoBaI4UrQjyXnqI1xAiFylQ0bAkj44Ep0KZ60BFngBb?=
+ =?us-ascii?Q?E6PVToVpSINaRjLn6wB/pTZ4kGSA2jTxc6BIaQf8Ku+Lxfd5bps5rytk5749?=
+ =?us-ascii?Q?3abUF9Sg+8xYKmdfB7uKWm+k84MG0ghpCQ6pj0XNt8L3RitF2fekkcx2NXS1?=
+ =?us-ascii?Q?VDLU/l8RsBlTEOCM9cKxFsoms3mLD5UYPJjmte06r7wGbiFJfOxzB5uOfrba?=
+ =?us-ascii?Q?pJMezmjl1QpRc5jczRIwmAjOjmQcQ0TzVQrxeDweLmE5yFr5V/Ot6mgefL4G?=
+ =?us-ascii?Q?bSvu9rlKqrbebHhDixorEgsf45Uy6NBqoNi48fziHR3P6/OJ4CHtmA1ho7TM?=
+ =?us-ascii?Q?jkR6aCkAYC5FeUF+Hj833qp6BmhvnHbBIy8NtiN1muh5swZ3di9BaYcGfufa?=
+ =?us-ascii?Q?333RRSg7u3yD9hgm3KTYsbsn0QgunaJzX+Z8FsTQXlRCzs1djrWqVJ7ujQqY?=
+ =?us-ascii?Q?TCl9hTVzce7Hf8dLId84teVnv9F+hYMRa/y5UX37fJhlaDm95JPH6Cg9B98U?=
+ =?us-ascii?Q?SqzZiJF7T5bBcXSPf++aszye3Clsq850x3Mcoj3sie4W71nLzFd3gybG2jsN?=
+ =?us-ascii?Q?1xSJUMukMBHSwUmHNCEghtCbFre4uS4VbROuEcabGJolMDXw7gamIEwq9jhy?=
+ =?us-ascii?Q?wZlFcrEZMb75aLhJD0KzkpeZOK2pUgLocDzWQClN0mAu1aCpXSKhJujGaaK/?=
+ =?us-ascii?Q?8pG917UtQMIIE5SKVEWxHVumgKOAxLsAyUhmoKTBysNuuVw6aYfQ2a+rqlAP?=
+ =?us-ascii?Q?3jVXg6aEI9rdrMl4/DujNBsFLnXTASm4eaeWzuCemAYZwKAk45Vg4Zwc3vz7?=
+ =?us-ascii?Q?hssluAWpTUCIJcxvDpYNFih0+g1J5NXDp2kCbp0NNsc3qVopdmhjJM4F4Baa?=
+ =?us-ascii?Q?/ve6Jw7yL9Jcny6BhhUIaAIr4KF+DGyZFD+g5BoefFC7rkI/CBK49o91UMoN?=
+ =?us-ascii?Q?I5kqZAdjns/uXpC8Dubp9lGc/JKXAcwqSgMrqwNVGH6mdvUBP96G0S6HfRe+?=
+ =?us-ascii?Q?ZwApbAMmNqX8TKjN4LCP6zzyb6tZeINNk9QjDYJHDzLMoNprbtDBIIBNOsxj?=
+ =?us-ascii?Q?4J4azTcMRKqugQnLHPv1pDiBnLHykvtHv7RH/t2XDofXKB3RcqXwewQfecPS?=
+ =?us-ascii?Q?q2lt6KUe0G1YgrgxAXh/xlB1rw1wKtvyll2JMwpbdmbhYMtnkDA8RV8OWPP9?=
+ =?us-ascii?Q?JLyH5E/Kn032O+PbvuH8c9sYw+UraQJ25UjHXj/4j80E1WFGwChtVmDCQUCi?=
+ =?us-ascii?Q?U743m5MaTesBD7KLL9HRg+L788BufbVBa2aF8HeGItr9uQiIZT/s19lSbkZc?=
+ =?us-ascii?Q?7+EhQbXwEqKSLyCJuqPROjQKhvBJdmIYlJuWScWq4D4Rf3N/QqU9nRsmn/+y?=
+ =?us-ascii?Q?TKe2ZdhlzlFS/a42jKsnx3jLtnvvan1sQ3mKy3IwzoCVbrG7BVAZ2OBVraHL?=
+ =?us-ascii?Q?Phz7+tRZ5AgecsEKT/A=3D?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: a158fe60-42df-4ed5-d9d8-08de1e24e824
+X-MS-Exchange-CrossTenant-AuthSource: MN2PR12MB3613.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 07 Nov 2025 17:41:39.7060
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: YXdQfAdZCvwQHggmB+mLWDio9YqSTYcBn3izIqX3i1QaYqOu9svc9RWWUlWAFMgE
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH7PR12MB8826
 
-On Fri Nov 7, 2025 at 3:54 PM UTC, Brendan Jackman wrote:
-> On Wed Sep 24, 2025 at 3:10 PM UTC, Patrick Roy wrote:
->> From: Patrick Roy <roypat@amazon.co.uk>
->>
->> [ based on kvm/next ]
->>
->> Unmapping virtual machine guest memory from the host kernel's direct map is a
->> successful mitigation against Spectre-style transient execution issues: If the
->> kernel page tables do not contain entries pointing to guest memory, then any
->> attempted speculative read through the direct map will necessarily be blocked
->> by the MMU before any observable microarchitectural side-effects happen. This
->> means that Spectre-gadgets and similar cannot be used to target virtual machine
->> memory. Roughly 60% of speculative execution issues fall into this category [1,
->> Table 1].
->>
->> This patch series extends guest_memfd with the ability to remove its memory
->> from the host kernel's direct map, to be able to attain the above protection
->> for KVM guests running inside guest_memfd.
->>
->> Additionally, a Firecracker branch with support for these VMs can be found on
->> GitHub [2].
->>
->> For more details, please refer to the v5 cover letter [v5]. No
->> substantial changes in design have taken place since.
->>
->> === Changes Since v6 ===
->>
->> - Drop patch for passing struct address_space to ->free_folio(), due to
->>   possible races with freeing of the address_space. (Hugh)
->> - Stop using PG_uptodate / gmem preparedness tracking to keep track of
->>   direct map state.  Instead, use the lowest bit of folio->private. (Mike, David)
->> - Do direct map removal when establishing mapping of gmem folio instead
->>   of at allocation time, due to impossibility of handling direct map
->>   removal errors in kvm_gmem_populate(). (Patrick)
->> - Do TLB flushes after direct map removal, and provide a module
->>   parameter to opt out from them, and a new patch to export
->>   flush_tlb_kernel_range() to KVM. (Will)
->>
->> [1]: https://download.vusec.net/papers/quarantine_raid23.pdf
->> [2]: https://github.com/firecracker-microvm/firecracker/tree/feature/secret-hiding
->
-> I just got around to trying this out, I checked out this patchset using
-> its base-commit and grabbed the Firecracker branch. Things seem OK until
-> I set the secrets_free flag in the Firecracker config which IIUC makes
-> it set GUEST_MEMFD_FLAG_NO_DIRECT_MAP.
->
-> If I set it, I find the guest doesn't show anything on the console.
-> Running it in a VM and attaching GDB suggests that it's entering the
-> guest repeatedly, it doesn't seem like the vCPU thread is stuck or
-> anything. I'm a bit clueless about how to debug that (so far, whenever
-> I've broken KVM, things always exploded very dramatically).
+Move it out of mtty_ioctl() and re-indent it.
 
-I discovered that Firecracker has a GDB stub, so I can just attach to
-that and see what the guest is up to.
+Reviewed-by: Kevin Tian <kevin.tian@intel.com>
+Acked-by: Pranjal Shrivastava <praan@google.com>
+Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
+---
+ samples/vfio-mdev/mtty.c | 53 ++++++++++++++++++++++------------------
+ 1 file changed, 29 insertions(+), 24 deletions(-)
 
-The issue that the pvclock_vcpu_time_info in kvmclock is all zero:
-
-(gdb) backtrace
-#0  pvclock_tsc_khz (src=0xffffffff83a03000 <hv_clock_boot>) at ../arch/x86/kernel/pvclock.c:28
-#1  0xffffffff8109d137 in kvm_get_tsc_khz () at ../arch/x86/include/asm/kvmclock.h:11
-#2  0xffffffff835c1842 in kvm_get_preset_lpj () at ../arch/x86/kernel/kvmclock.c:128
-#3  kvmclock_init () at ../arch/x86/kernel/kvmclock.c:332
-#4  0xffffffff835c1487 in kvm_init_platform () at ../arch/x86/kernel/kvm.c:982
-#5  0xffffffff835a83df in setup_arch (cmdline_p=cmdline_p@entry=0xffffffff82e03f00) at ../arch/x86/kernel/setup.c:916
-#6  0xffffffff83595a22 in start_kernel () at ../init/main.c:925
-#7  0xffffffff835a7354 in x86_64_start_reservations (
-    real_mode_data=real_mode_data@entry=0x36326c0 <error: Cannot access memory at address 0x36326c0>) at ../arch/x86/kernel/head64.c:507
-#8  0xffffffff835a7466 in x86_64_start_kernel (real_mode_data=0x36326c0 <error: Cannot access memory at address 0x36326c0>)
-    at ../arch/x86/kernel/head64.c:488
-#9  0xffffffff8103e7fd in secondary_startup_64 () at ../arch/x86/kernel/head_64.S:413
-#10 0x0000000000000000 in ?? ()
-(gdb) p *src
-$3 = {version = 0, pad0 = 0, tsc_timestamp = 0, system_time = 0, tsc_to_system_mul = 0, tsc_shift = 0 '\000', flags = 0 '\000', 
-  pad = "\000"}
-
-This causes a divide by zero in kvm_get_tsc_khz().
-
-Probably the only reason I didn't see any console output is that I
-forgot to set earlyprintk, oops...
+diff --git a/samples/vfio-mdev/mtty.c b/samples/vfio-mdev/mtty.c
+index 59eefe2fed10ca..b27f9b93471bc5 100644
+--- a/samples/vfio-mdev/mtty.c
++++ b/samples/vfio-mdev/mtty.c
+@@ -1785,6 +1785,34 @@ static int mtty_get_device_info(struct vfio_device_info *dev_info)
+ 	return 0;
+ }
+ 
++static int mtty_ioctl_get_region_info(struct vfio_device *vdev,
++				      struct vfio_region_info __user *arg)
++{
++	struct mdev_state *mdev_state =
++		container_of(vdev, struct mdev_state, vdev);
++	struct vfio_region_info info;
++	void *cap_type = NULL;
++	u16 cap_type_id = 0;
++	unsigned long minsz;
++	int ret;
++
++	minsz = offsetofend(struct vfio_region_info, offset);
++
++	if (copy_from_user(&info, arg, minsz))
++		return -EFAULT;
++
++	if (info.argsz < minsz)
++		return -EINVAL;
++
++	ret = mtty_get_region_info(mdev_state, &info, &cap_type_id, &cap_type);
++	if (ret)
++		return ret;
++
++	if (copy_to_user(arg, &info, minsz))
++		return -EFAULT;
++	return 0;
++}
++
+ static long mtty_ioctl(struct vfio_device *vdev, unsigned int cmd,
+ 			unsigned long arg)
+ {
+@@ -1817,30 +1845,6 @@ static long mtty_ioctl(struct vfio_device *vdev, unsigned int cmd,
+ 
+ 		return 0;
+ 	}
+-	case VFIO_DEVICE_GET_REGION_INFO:
+-	{
+-		struct vfio_region_info info;
+-		u16 cap_type_id = 0;
+-		void *cap_type = NULL;
+-
+-		minsz = offsetofend(struct vfio_region_info, offset);
+-
+-		if (copy_from_user(&info, (void __user *)arg, minsz))
+-			return -EFAULT;
+-
+-		if (info.argsz < minsz)
+-			return -EINVAL;
+-
+-		ret = mtty_get_region_info(mdev_state, &info, &cap_type_id,
+-					   &cap_type);
+-		if (ret)
+-			return ret;
+-
+-		if (copy_to_user((void __user *)arg, &info, minsz))
+-			return -EFAULT;
+-
+-		return 0;
+-	}
+ 
+ 	case VFIO_DEVICE_GET_IRQ_INFO:
+ 	{
+@@ -1949,6 +1953,7 @@ static const struct vfio_device_ops mtty_dev_ops = {
+ 	.read = mtty_read,
+ 	.write = mtty_write,
+ 	.ioctl = mtty_ioctl,
++	.get_region_info = mtty_ioctl_get_region_info,
+ 	.bind_iommufd	= vfio_iommufd_emulated_bind,
+ 	.unbind_iommufd	= vfio_iommufd_emulated_unbind,
+ 	.attach_ioas	= vfio_iommufd_emulated_attach_ioas,
+-- 
+2.43.0
 
