@@ -1,264 +1,280 @@
-Received: from SA9PR02CU001.outbound.protection.outlook.com (mail-southcentralusazon11013040.outbound.protection.outlook.com [40.93.196.40])
+Received: from fra-out-007.esa.eu-central-1.outbound.mail-perimeter.amazon.com (fra-out-007.esa.eu-central-1.outbound.mail-perimeter.amazon.com [3.75.33.185])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E7C2E336EF9;
-	Fri,  7 Nov 2025 16:49:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.93.196.40
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762534198; cv=fail; b=UJ6GMoH/OxqTJ5lMCBrHHBvkjc5J+3HQjyHKFJlEzAkpQiaFiQ5H/Fu+sxRRK3CVca/mpcRSEippCQt4t/wrdXgXvPb74xinJTT19NrwDoANCzgWZpd6+GnjdC6F1Ebt3yvSL85nJAaxxwmlhqTPRPP8wv9wM1KwOmI/1gmhGwc=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762534198; c=relaxed/simple;
-	bh=vsrZFLXGMsRvDJv2zAycPL5qtmJq6uMWL8PVjSECN4I=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=b2rHfcv/mHU2lT84PoHKeMpGB8I8jJZMwskMNv7f6yJeKl0bAAnCvSF8wumQJgFiBWKwah4mMFffwINl4B4LCPUxUGx7WnahAOBldmkU+aAxqSVl8LrVu/aF3otcVlKJOz0m515chvFSNSq64TO1XoP2Ozys9fJzABaAXaB8lQY=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=RBmIzOPF; arc=fail smtp.client-ip=40.93.196.40
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F35D320385;
+	Fri,  7 Nov 2025 17:22:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=3.75.33.185
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1762536145; cv=none; b=mev/RYEPiusAJFix5z1/FgtfygRLCDkCbxwMjyNM4pqeuTH7yt7VJ76BcS6AXEepIcM591QGZBTTxJHDXhn5vk6NyoT4TcLlQN12Eg2ic7+tdm7k21FCClxUbu+UAcshcJ3GLeIra/qvdtlhu/k757+Gp7WO9o32l98WGF7ym2A=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1762536145; c=relaxed/simple;
+	bh=pHNLLfqbYumlAme2jvMWvv2Y3hjJio/f8OMxN+Ru/vo=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=FdZvMde/u+xv5nbzr/mtFgM1m4poFSsvfAWwAy0nfYFF3PwX7wX43GbOBbCJWKUUE4rHEapgo1Kgq/TLOvqMscAZV1yKOW2E5N+9CdGC9f25y6wzKs4n7s7kIdOqBvmAVw4oCI67CwoVWxZKvMN3ps9lrqIPe/eUEagHSzs35/M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com; spf=pass smtp.mailfrom=amazon.co.uk; dkim=pass (2048-bit key) header.d=amazon.com header.i=@amazon.com header.b=oivdVo0f; arc=none smtp.client-ip=3.75.33.185
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amazon.co.uk
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="RBmIzOPF"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=TqXFWmwKJQw7bcWHQMqqOW07FzA6/v+sbx1TLnREBLOIO4Ci0xtqv5DOoGdqgO68IMKhZrnwVTHDKjfLMgkeh2A/BGEO3i2ge2IxIAjGRKskZFGM7CyY0kF9ALQj3SMtpFDqW36qvga6P9O7oS89upK9oSn9LhCXIlt0YzVVeKPXFI3++04GKqsMYef2/y0EBI7hddOKN9opnewfc0TziRm48LcjyYcvoeGmaYSVBXAs3g1Fj6KWdRlA/AaDGpnGjjiRPtqs8wpIUQssl8wJfPzZWSQwA0ECFmQbq9jTgZi9ufeh9WuMgzE9K0tf4qEgiwVH+E1igIm6GsGntEVnyA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=3Df9m6Q/GPpg4dpwQQEQDNvNlnJB3Xhl8MD5mFvYWlY=;
- b=SRN+9otaso3yWd88stSizZ5gvX48pQYhT9+M9Tl2Kk9CkVyX5iTfFSyWWfr1imRnSclZSdu7Lc2bfO40rBsOP7PTz5E4HQvxWNzXn2uDCM6wJzF+nXZYeuyrGtyPZ2d9qP7tHygfUTlNFbr5yxidAusTOL8tRg7BA87+TxgZo9QOP6TtE1/JuG2BIXDEg0YWTTXqXl7xinx1sezOq57c+5zBfxi0rJjqUblFObpzFeF/9QYNnrRGCmsPXX3bW/PJtoG4crUwX0jItmzcEh5cxPq2U4x2Y5emo263jLbKENYUu4Cv3bliub5i34jsYqobCuaFYHVuM0chxw2/fhvT8A==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=3Df9m6Q/GPpg4dpwQQEQDNvNlnJB3Xhl8MD5mFvYWlY=;
- b=RBmIzOPFLbxHohky1WEOnsrvLTyBSdMnpGyQ7sncdV6n4lpGViaYT1s6RzSnsr2DiTxc7/cRcVVhDy6URoGMzP/2DSVt/P1rhZM632IikJhI43Vqvtbd0lcvK58+NGH2XC/QRLWYkRSQi0WBjjQeYeYiP8f8VSoC27J0zEgmCaRl/wurlVu9RVwc5Qk2e04QV5W0iIStnw+tTueJU7QJk9bwhDsDG96gdVnRJhfvYKOUUgnzveaODneXrteLSkuZqlQs+6Z0GbNYW2FEjYRQZa7ynh8P0jmQdMv4QjfWNc+4DQFEsG7QvBh6ZzNP3WCNRPdqL5sO98RMZahyhNv8pQ==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from MN2PR12MB3613.namprd12.prod.outlook.com (2603:10b6:208:c1::17)
- by BY5PR12MB4196.namprd12.prod.outlook.com (2603:10b6:a03:205::21) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9298.12; Fri, 7 Nov
- 2025 16:49:46 +0000
-Received: from MN2PR12MB3613.namprd12.prod.outlook.com
- ([fe80::1b3b:64f5:9211:608b]) by MN2PR12MB3613.namprd12.prod.outlook.com
- ([fe80::1b3b:64f5:9211:608b%4]) with mapi id 15.20.9298.006; Fri, 7 Nov 2025
- 16:49:46 +0000
-From: Jason Gunthorpe <jgg@nvidia.com>
-To: Alex Williamson <alex@shazbot.org>,
-	=?utf-8?q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>,
-	dri-devel@lists.freedesktop.org,
-	iommu@lists.linux.dev,
-	Joerg Roedel <joro@8bytes.org>,
-	Kevin Tian <kevin.tian@intel.com>,
-	kvm@vger.kernel.org,
-	linaro-mm-sig@lists.linaro.org,
-	linux-kselftest@vger.kernel.org,
-	linux-media@vger.kernel.org,
-	Robin Murphy <robin.murphy@arm.com>,
-	Shuah Khan <shuah@kernel.org>,
-	Sumit Semwal <sumit.semwal@linaro.org>,
-	Will Deacon <will@kernel.org>
-Cc: Krishnakant Jaju <kjaju@nvidia.com>,
-	Leon Romanovsky <leon@kernel.org>,
-	Matt Ochs <mochs@nvidia.com>,
-	Nicolin Chen <nicolinc@nvidia.com>,
-	patches@lists.linux.dev,
-	Simona Vetter <simona.vetter@ffwll.ch>,
-	Vivek Kasireddy <vivek.kasireddy@intel.com>,
-	Xu Yilun <yilun.xu@linux.intel.com>
-Subject: [PATCH 7/9] iommufd: Have iopt_map_file_pages convert the fd to a file
-Date: Fri,  7 Nov 2025 12:49:39 -0400
-Message-ID: <7-v1-af84a3ab44f5+f68-iommufd_buf_jgg@nvidia.com>
-In-Reply-To: <0-v1-af84a3ab44f5+f68-iommufd_buf_jgg@nvidia.com>
-References:
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: BN9PR03CA0709.namprd03.prod.outlook.com
- (2603:10b6:408:ef::24) To MN2PR12MB3613.namprd12.prod.outlook.com
- (2603:10b6:208:c1::17)
+	dkim=pass (2048-bit key) header.d=amazon.com header.i=@amazon.com header.b="oivdVo0f"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+  d=amazon.com; i=@amazon.com; q=dns/txt; s=amazoncorp2;
+  t=1762536139; x=1794072139;
+  h=message-id:date:mime-version:reply-to:subject:to:cc:
+   references:from:in-reply-to:content-transfer-encoding;
+  bh=zeq9wpmkvH2UHLy5H6u2LRXPndXmWsiN26yYiLqvdkA=;
+  b=oivdVo0fZqFMZ4Xjj3VIAdsA6QPvyp99qBxkOQSEtHZhAXcgXg+7+1hr
+   vrsJQRZ0LA9YaQ6hEsUSn2lEiMa3d8mBJAq9KrkjDeREw/luuwD2T6K+H
+   6bpmjNqgt9yIeSM14DeEzfvxgWb6lEgJWUePaR7aTjgAzilH7kFcgMYMX
+   ZYWZVwQ492Xdkxo75Ye8vXq2bHHKyEy1RX2e6MbCLPKy/FJUqx8bMrkpv
+   9PT6gCtNQd/qgvXq7MaC+Q/wQulrH7e+eCixpWy8Vf9TsTs5nWOu1YQ3e
+   WMH6oyajCAN2xp+5XQE/ry9i/f3N957rR1PHjjfMfzzzsadsAb/YFnGRO
+   g==;
+X-CSE-ConnectionGUID: eADlVNDWRVSnPzMvuX45Hg==
+X-CSE-MsgGUID: u80Q1nSiRxS18+LvWHhDZQ==
+X-IronPort-AV: E=Sophos;i="6.19,287,1754956800"; 
+   d="scan'208";a="4849265"
+Received: from ip-10-6-3-216.eu-central-1.compute.internal (HELO smtpout.naws.eu-central-1.prod.farcaster.email.amazon.dev) ([10.6.3.216])
+  by internal-fra-out-007.esa.eu-central-1.outbound.mail-perimeter.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Nov 2025 17:21:59 +0000
+Received: from EX19MTAEUA002.ant.amazon.com [54.240.197.232:19579]
+ by smtpin.naws.eu-central-1.prod.farcaster.email.amazon.dev [10.0.36.34:2525] with esmtp (Farcaster)
+ id da86097e-7b6d-4b55-a5fe-596b9a5cc565; Fri, 7 Nov 2025 17:21:59 +0000 (UTC)
+X-Farcaster-Flow-ID: da86097e-7b6d-4b55-a5fe-596b9a5cc565
+Received: from EX19D022EUC002.ant.amazon.com (10.252.51.137) by
+ EX19MTAEUA002.ant.amazon.com (10.252.50.126) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.29;
+ Fri, 7 Nov 2025 17:21:59 +0000
+Received: from [192.168.9.244] (10.106.83.15) by EX19D022EUC002.ant.amazon.com
+ (10.252.51.137) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.29; Fri, 7 Nov 2025
+ 17:21:56 +0000
+Message-ID: <3a87167e-32fb-4ce7-8c70-40dfa9d0f2a2@amazon.com>
+Date: Fri, 7 Nov 2025 17:21:54 +0000
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: MN2PR12MB3613:EE_|BY5PR12MB4196:EE_
-X-MS-Office365-Filtering-Correlation-Id: 1084b1a6-4248-47a7-b970-08de1e1da74b
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|366016|7416014|376014|921020;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?A1AWLtjrikxP3IAKKjTRNjTRZKRhJkBeqwG0aTVbakcWzFj5v73qFe+BxWFJ?=
- =?us-ascii?Q?8PwmPhI3wRvGy3+FN5lvlAxkrQQ1ka3UklmT/u7+EPHvIgGiD4JRVVF1797g?=
- =?us-ascii?Q?i9hEpAMym1c7eOqDNB8LjNfpbf0XQ0FP/vHMQXJ8RYkVsQYKc4gtJd+pJSqq?=
- =?us-ascii?Q?iKmHU80JU0AV/mYjdDDFWphHuSmtMURvJkNSQEkHYtj2Gkt0VaDXEQ2LPsdK?=
- =?us-ascii?Q?sXAmjWZ2kvJoW6YP6knaaagM94KtWCYUeVi/nVqSkXFv93VZMhqntLV41j/I?=
- =?us-ascii?Q?7QmdBKghXUkmy1oMQ/SO1PKmpU6BaKepdZN/MBY15BPVOdnZ1/1LJnIjBL29?=
- =?us-ascii?Q?jjSfR53Rf96wg1/XLjB51tL8Uf1J3aaAivoY43zjTwlQzxPq2XYSuFxJbF9V?=
- =?us-ascii?Q?4Mciufwr/ZlRfNLpXi3J6EUrSFwkUgUaZe7enU9j8Vgkr/kegBR7rP96VOQH?=
- =?us-ascii?Q?dC3dx/YYBYl4jnXfqHR5lOCwJ/9Iez3cBUDrbPYyBg/2iDc45AG+Bb3jj7vR?=
- =?us-ascii?Q?EdfyCcYGBtK4jw4VHBxrt1H7UxB3y1qDiuW0qBC9t7Age3MK1DRiaWs6j2He?=
- =?us-ascii?Q?nF7nJIgP8lN3u35NbFwx52xeeenWYguE1s6JgmI57coXVX1sKDHkgARi7jZ8?=
- =?us-ascii?Q?/FV72LD72E+p5qwfb9RLzPx6DfA4WmXorBt+k+VraqTx9Dq+VYAMbbFxwiwf?=
- =?us-ascii?Q?mXnag7mm1KJpv9GFF+7Ub2QLJ4OmSwcTPcLMWDZVPH2Q1WuKrVpQ5xgW5eMP?=
- =?us-ascii?Q?tSKCqxIQJA0KTKmvGbF67lLgvDZMSpd3KBy3wJp9EeAEBO82+/0DBUCfS7H8?=
- =?us-ascii?Q?WRqNlHduc33JZ6Rxhr6r75UnaQbTZYbw3J1ukq2YPnTrnS45nxJYeZYy0Os/?=
- =?us-ascii?Q?/pPL+Hq/bosI9T5Nrnwm9q5/S7v4K3yMRCYeStR558IsYbwEikex/SWut1Qh?=
- =?us-ascii?Q?NzzcrSpB5pa029O84YeE1uHQwn48UabmsZAEB5d8VBx3lEaMYDeSY3KebXER?=
- =?us-ascii?Q?oPouo4Cp9WcIfTciRT4d+sAAfQT9+3kFsvNJZqlJZT264J1Cwrme9JKYWKOo?=
- =?us-ascii?Q?yivxVd3KCQBix5Ad75OHnedVRsqxAgS6FknvodIXWF0SdjG5bTYT1cxgIRPK?=
- =?us-ascii?Q?JT1W6yNz6zf/xuZ/E/ogS0LFlrxVB+Wa1yxVx2rh764H4w8fXheUpsvQqT7D?=
- =?us-ascii?Q?PR0VC3E9/cvI8FhWuUHcFfcSlDpXyM9/7WTATNM+1iBaWtENIvE7pUgxVBBu?=
- =?us-ascii?Q?vZDYZTs400jOWq2RWuKWYmeNoMbLcXnDpzOyntqUOnl6NVU0RAMlgappgvL1?=
- =?us-ascii?Q?SFFiZWqT8Doj8VyZJV5fCTSSHvCI2w8kZZWsvEmLN6NnJ+uwcbmRyLWuctCf?=
- =?us-ascii?Q?BhcXKaw0cryl/vpcfLQY2LwPo/uW085jZYwumXzXkHZe/zOpLnqmi2bg8xQR?=
- =?us-ascii?Q?BE2voiwfelSDiqgaMqoSavd8jcho9sdglwZX6j05woH+FCnIDx8aKeoXcRIQ?=
- =?us-ascii?Q?Ocbeozg3WJm1/6EVP/A09W1aKdfXY0NdeQ4W?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MN2PR12MB3613.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(7416014)(376014)(921020);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?JQzuGmVqgeG11H5RMFfSKpbi+WiuoTpVotGlZwVI+z2dQ2xipi3OtFdhbCMb?=
- =?us-ascii?Q?T0C/1NO0+ZDiyt9TqnakpzEB2XHVe5b4bmwRvq5R/O42kApHwtS9QnwCqipz?=
- =?us-ascii?Q?EVGrm+gLNq/8utzq8DYi7FPy9r+8HrkclKs4Do5+MgSTld0DaQOTcLy2G7Xp?=
- =?us-ascii?Q?IKSLpRL45DHGNF5SUT+D1ZdyrsU3eURXVeiGybGexq+WDk7DXyFER5MbWw6H?=
- =?us-ascii?Q?eXosRCZuE168Hdgjh4MSnjLQ28NAxwdpky267/7eP8NPAwKTIOaHqpdQqyTo?=
- =?us-ascii?Q?qq5DzINOAckU9hlLWVtMrEB3bVUaOmVxxMrqaMRCLSwEHatU03KLKp75l4oF?=
- =?us-ascii?Q?HpMHFFfRuJ4XnmQxqa+kNo+AFZQOhO3m5aL/jNTIsYerP9lqLgCmZgNG8jmd?=
- =?us-ascii?Q?oibc9XaTfTmhTcPAnRbsqHb1V8uAxVtYLQ4wNdruGk1yaS5fGxpQflfElp2q?=
- =?us-ascii?Q?bqQRjcO+xNZgmtlTbcS/g9JzkfNVc/FnJckss9pyX+nlLApu8yDT/ZRgfR5O?=
- =?us-ascii?Q?l/zAuFI1pVcaXzsMoKOXmUGcpuypZkAKkwcLwEMxTV1MrA/Lq6G9fsfDlpGF?=
- =?us-ascii?Q?einrdthKBcUb0Mv9u0g9teCFsgtiF8iMZ6pqwQNwRKdaqJPpLS+kKyU6Z7aF?=
- =?us-ascii?Q?4aJMGvRGcqjYVJVWc0ah7AVsMggYjkibQpH7G0mrtkCjLa3JEucGnk/wcd/E?=
- =?us-ascii?Q?2NVplGG2vRvHW/rt009G43Vy0P4eX+A4iy3cpcVSASW9jc16kaS/VmrFiYHh?=
- =?us-ascii?Q?OoifAtX0LqK9Di52NIrit57PSI7DlZIzwhr/Vz6iu5pXaRn3OIRZaGbQlhmm?=
- =?us-ascii?Q?WuzJimxgmGZ70hnqm/NQT8Kl/Mi/fBqHSoxh6cnAVc1QzCh26Lk9/1QEiJft?=
- =?us-ascii?Q?xG7AdN47zbTwNm0f7FKz2HT/DaoLcEPnMgWuSaUfcUrdRQaMvPRSEDIQZa0N?=
- =?us-ascii?Q?ebZnJNGV/un2H8kTjkoCr0tckCqOGnfsuDsnwRBAHTjcVbjOt76c82K+JdyO?=
- =?us-ascii?Q?fwTCcWFLXmxGZPc/S01vPBtzRx6IyaAEtEzETGpNWD0xRGrGnVSi+aUN0U1w?=
- =?us-ascii?Q?kAInUu082s8zOtQiNbteDTCV+6aJTXLjPZmtjmN9Py5JyphMPnTv7OkY0dkx?=
- =?us-ascii?Q?1DEO3FATjvT3D0Ks3fPz0fc8EdxzG4Uo7gc9ErmbJJ98aFYxBJTjiA/7Ycnd?=
- =?us-ascii?Q?/2eDLnHIqTgwuAgbCIxqxyI75oZpnDAZKk6b1RLrQ68ndYu6Bcv2pq6g/z0v?=
- =?us-ascii?Q?63+3eNeLCg9q3W6usbCUxA4IXrp9QZQ+3Fl80Xv0i7la9lqEsg/cnLElW7iI?=
- =?us-ascii?Q?inc8COkc4rV0kBaXrF1/YwHUlc7XOBuKGLO6uG1hg23aQyiVoZAtKZ7UMIDj?=
- =?us-ascii?Q?K6XwFl56KHJvlNk1qHsBONUa3H5nqMEkqsWvGbzHeCrDUTVNuxyr1JlXAm9f?=
- =?us-ascii?Q?0VIM9OX6qTA3XSmsiDurIG5wwG68mGvuSAfRZ8CyRtPNL5ykQ0UkJeaGk8Wu?=
- =?us-ascii?Q?nxzsTw9MptFtTuS4BKhm/BYlt2voi0LI2TnbgbO8duwNGwN0DDKYgMg/8Iuy?=
- =?us-ascii?Q?bGl5x6KMRpExt4A/Wec=3D?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 1084b1a6-4248-47a7-b970-08de1e1da74b
-X-MS-Exchange-CrossTenant-AuthSource: MN2PR12MB3613.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 07 Nov 2025 16:49:44.4969
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: PqiwLEct8oiiV7lSP1SYLMqDAxDwF5YXDpTo3S7TYnFXTaqPfdjqEsjuAXZgJ8uS
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: BY5PR12MB4196
+User-Agent: Mozilla Thunderbird
+Reply-To: <kalyazin@amazon.com>
+Subject: Re: [PATCH v7 06/12] KVM: guest_memfd: add module param for disabling
+ TLB flushing
+To: Will Deacon <will@kernel.org>, Dave Hansen <dave.hansen@intel.com>
+CC: "Roy, Patrick" <roypat@amazon.co.uk>, "pbonzini@redhat.com"
+	<pbonzini@redhat.com>, "corbet@lwn.net" <corbet@lwn.net>, "maz@kernel.org"
+	<maz@kernel.org>, "oliver.upton@linux.dev" <oliver.upton@linux.dev>,
+	"joey.gouly@arm.com" <joey.gouly@arm.com>, "suzuki.poulose@arm.com"
+	<suzuki.poulose@arm.com>, "yuzenghui@huawei.com" <yuzenghui@huawei.com>,
+	"catalin.marinas@arm.com" <catalin.marinas@arm.com>, "tglx@linutronix.de"
+	<tglx@linutronix.de>, "mingo@redhat.com" <mingo@redhat.com>, "bp@alien8.de"
+	<bp@alien8.de>, "dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>,
+	"x86@kernel.org" <x86@kernel.org>, "hpa@zytor.com" <hpa@zytor.com>,
+	"luto@kernel.org" <luto@kernel.org>, "peterz@infradead.org"
+	<peterz@infradead.org>, "willy@infradead.org" <willy@infradead.org>,
+	"akpm@linux-foundation.org" <akpm@linux-foundation.org>,
+	"lorenzo.stoakes@oracle.com" <lorenzo.stoakes@oracle.com>,
+	"Liam.Howlett@oracle.com" <Liam.Howlett@oracle.com>, "vbabka@suse.cz"
+	<vbabka@suse.cz>, "rppt@kernel.org" <rppt@kernel.org>, "surenb@google.com"
+	<surenb@google.com>, "mhocko@suse.com" <mhocko@suse.com>, "song@kernel.org"
+	<song@kernel.org>, "jolsa@kernel.org" <jolsa@kernel.org>, "ast@kernel.org"
+	<ast@kernel.org>, "daniel@iogearbox.net" <daniel@iogearbox.net>,
+	"andrii@kernel.org" <andrii@kernel.org>, "martin.lau@linux.dev"
+	<martin.lau@linux.dev>, "eddyz87@gmail.com" <eddyz87@gmail.com>,
+	"yonghong.song@linux.dev" <yonghong.song@linux.dev>,
+	"john.fastabend@gmail.com" <john.fastabend@gmail.com>, "kpsingh@kernel.org"
+	<kpsingh@kernel.org>, "sdf@fomichev.me" <sdf@fomichev.me>,
+	"haoluo@google.com" <haoluo@google.com>, "jgg@ziepe.ca" <jgg@ziepe.ca>,
+	"jhubbard@nvidia.com" <jhubbard@nvidia.com>, "peterx@redhat.com"
+	<peterx@redhat.com>, "jannh@google.com" <jannh@google.com>,
+	"pfalcato@suse.de" <pfalcato@suse.de>, "shuah@kernel.org" <shuah@kernel.org>,
+	"seanjc@google.com" <seanjc@google.com>, "kvm@vger.kernel.org"
+	<kvm@vger.kernel.org>, "linux-doc@vger.kernel.org"
+	<linux-doc@vger.kernel.org>, "linux-kernel@vger.kernel.org"
+	<linux-kernel@vger.kernel.org>, "linux-arm-kernel@lists.infradead.org"
+	<linux-arm-kernel@lists.infradead.org>, "kvmarm@lists.linux.dev"
+	<kvmarm@lists.linux.dev>, "linux-fsdevel@vger.kernel.org"
+	<linux-fsdevel@vger.kernel.org>, "linux-mm@kvack.org" <linux-mm@kvack.org>,
+	"bpf@vger.kernel.org" <bpf@vger.kernel.org>,
+	"linux-kselftest@vger.kernel.org" <linux-kselftest@vger.kernel.org>, "Cali,
+ Marco" <xmarcalx@amazon.co.uk>, "Kalyazin, Nikita" <kalyazin@amazon.co.uk>,
+	"Thomson, Jack" <jackabt@amazon.co.uk>, "derekmn@amazon.co.uk"
+	<derekmn@amazon.co.uk>, "tabba@google.com" <tabba@google.com>,
+	"ackerleytng@google.com" <ackerleytng@google.com>, Patrick Roy
+	<patrick.roy@linux.dev>, David Hildenbrand <david@redhat.com>
+References: <20250924151101.2225820-4-patrick.roy@campus.lmu.de>
+ <20250924152214.7292-1-roypat@amazon.co.uk>
+ <20250924152214.7292-3-roypat@amazon.co.uk>
+ <e25867b6-ffc0-4c7c-9635-9b3f47b186ca@intel.com>
+ <c1875a54-0c87-450f-9370-29e7ec4fea3d@redhat.com>
+ <82bff1c4-987f-46cb-833c-bd99eaa46e7a@intel.com>
+ <c79173d8-6f18-40fa-9621-e691990501e4@redhat.com>
+ <c88514c3-e15f-4853-8acf-15e7b4b979f4@linux.dev>
+ <aNZwmPFAxm_HRYpC@willie-the-truck>
+ <5d11b5f7-3208-4ea8-bbff-f535cf62d576@redhat.com>
+ <be89abc6-97ca-47d8-b8e7-95f58ab9cc67@linux.dev>
+ <f13e06f3-3c7b-4993-b33a-a6921c14231b@redhat.com>
+ <d25340e3-2017-4614-a472-c5c7244c7ce4@linux.dev>
+Content-Language: en-US
+From: Nikita Kalyazin <kalyazin@amazon.com>
+Autocrypt: addr=kalyazin@amazon.com; keydata=
+ xjMEY+ZIvRYJKwYBBAHaRw8BAQdA9FwYskD/5BFmiiTgktstviS9svHeszG2JfIkUqjxf+/N
+ JU5pa2l0YSBLYWx5YXppbiA8a2FseWF6aW5AYW1hem9uLmNvbT7CjwQTFggANxYhBGhhGDEy
+ BjLQwD9FsK+SyiCpmmTzBQJnrNfABQkFps9DAhsDBAsJCAcFFQgJCgsFFgIDAQAACgkQr5LK
+ IKmaZPOpfgD/exazh4C2Z8fNEz54YLJ6tuFEgQrVQPX6nQ/PfQi2+dwBAMGTpZcj9Z9NvSe1
+ CmmKYnYjhzGxzjBs8itSUvWIcMsFzjgEY+ZIvRIKKwYBBAGXVQEFAQEHQCqd7/nb2tb36vZt
+ ubg1iBLCSDctMlKHsQTp7wCnEc4RAwEIB8J+BBgWCAAmFiEEaGEYMTIGMtDAP0Wwr5LKIKma
+ ZPMFAmes18AFCQWmz0MCGwwACgkQr5LKIKmaZPNTlQEA+q+rGFn7273rOAg+rxPty0M8lJbT
+ i2kGo8RmPPLu650A/1kWgz1AnenQUYzTAFnZrKSsXAw5WoHaDLBz9kiO5pAK
+In-Reply-To: <d25340e3-2017-4614-a472-c5c7244c7ce4@linux.dev>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: EX19D003EUB003.ant.amazon.com (10.252.51.36) To
+ EX19D022EUC002.ant.amazon.com (10.252.51.137)
 
-Since dmabuf only has APIs that work on a int fd and not a struct file *,
-pass the fd deeper into the call chain so we can use the dmabuf APIs as
-is.
 
-Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
----
- drivers/iommu/iommufd/io_pagetable.c    | 15 +++++++++++----
- drivers/iommu/iommufd/ioas.c            |  8 +-------
- drivers/iommu/iommufd/iommufd_private.h |  2 +-
- 3 files changed, 13 insertions(+), 12 deletions(-)
 
-diff --git a/drivers/iommu/iommufd/io_pagetable.c b/drivers/iommu/iommufd/io_pagetable.c
-index a120c2ae942a8b..0bf6ca77888c0f 100644
---- a/drivers/iommu/iommufd/io_pagetable.c
-+++ b/drivers/iommu/iommufd/io_pagetable.c
-@@ -10,6 +10,7 @@
-  */
- #include <linux/err.h>
- #include <linux/errno.h>
-+#include <linux/file.h>
- #include <linux/iommu.h>
- #include <linux/iommufd.h>
- #include <linux/lockdep.h>
-@@ -471,21 +472,27 @@ int iopt_map_user_pages(struct iommufd_ctx *ictx, struct io_pagetable *iopt,
-  * @iopt: io_pagetable to act on
-  * @iova: If IOPT_ALLOC_IOVA is set this is unused on input and contains
-  *        the chosen iova on output. Otherwise is the iova to map to on input
-- * @file: file to map
-+ * @fd: fdno of a file to map
-  * @start: map file starting at this byte offset
-  * @length: Number of bytes to map
-  * @iommu_prot: Combination of IOMMU_READ/WRITE/etc bits for the mapping
-  * @flags: IOPT_ALLOC_IOVA or zero
-  */
- int iopt_map_file_pages(struct iommufd_ctx *ictx, struct io_pagetable *iopt,
--			unsigned long *iova, struct file *file,
--			unsigned long start, unsigned long length,
--			int iommu_prot, unsigned int flags)
-+			unsigned long *iova, int fd, unsigned long start,
-+			unsigned long length, int iommu_prot,
-+			unsigned int flags)
- {
- 	struct iopt_pages *pages;
-+	struct file *file;
-+
-+	file = fget(fd);
-+	if (!file)
-+		return -EBADF;
- 
- 	pages = iopt_alloc_file_pages(file, start, length,
- 				      iommu_prot & IOMMU_WRITE);
-+	fput(file);
- 	if (IS_ERR(pages))
- 		return PTR_ERR(pages);
- 	return iopt_map_common(ictx, iopt, pages, iova, length,
-diff --git a/drivers/iommu/iommufd/ioas.c b/drivers/iommu/iommufd/ioas.c
-index 1542c5fd10a85c..0dee38d7252df4 100644
---- a/drivers/iommu/iommufd/ioas.c
-+++ b/drivers/iommu/iommufd/ioas.c
-@@ -207,7 +207,6 @@ int iommufd_ioas_map_file(struct iommufd_ucmd *ucmd)
- 	unsigned long iova = cmd->iova;
- 	struct iommufd_ioas *ioas;
- 	unsigned int flags = 0;
--	struct file *file;
- 	int rc;
- 
- 	if (cmd->flags &
-@@ -229,11 +228,7 @@ int iommufd_ioas_map_file(struct iommufd_ucmd *ucmd)
- 	if (!(cmd->flags & IOMMU_IOAS_MAP_FIXED_IOVA))
- 		flags = IOPT_ALLOC_IOVA;
- 
--	file = fget(cmd->fd);
--	if (!file)
--		return -EBADF;
--
--	rc = iopt_map_file_pages(ucmd->ictx, &ioas->iopt, &iova, file,
-+	rc = iopt_map_file_pages(ucmd->ictx, &ioas->iopt, &iova, cmd->fd,
- 				 cmd->start, cmd->length,
- 				 conv_iommu_prot(cmd->flags), flags);
- 	if (rc)
-@@ -243,7 +238,6 @@ int iommufd_ioas_map_file(struct iommufd_ucmd *ucmd)
- 	rc = iommufd_ucmd_respond(ucmd, sizeof(*cmd));
- out_put:
- 	iommufd_put_object(ucmd->ictx, &ioas->obj);
--	fput(file);
- 	return rc;
- }
- 
-diff --git a/drivers/iommu/iommufd/iommufd_private.h b/drivers/iommu/iommufd/iommufd_private.h
-index 10ee3510312132..a2786fee7603f5 100644
---- a/drivers/iommu/iommufd/iommufd_private.h
-+++ b/drivers/iommu/iommufd/iommufd_private.h
-@@ -108,7 +108,7 @@ int iopt_map_user_pages(struct iommufd_ctx *ictx, struct io_pagetable *iopt,
- 			unsigned long length, int iommu_prot,
- 			unsigned int flags);
- int iopt_map_file_pages(struct iommufd_ctx *ictx, struct io_pagetable *iopt,
--			unsigned long *iova, struct file *file,
-+			unsigned long *iova, int fd,
- 			unsigned long start, unsigned long length,
- 			int iommu_prot, unsigned int flags);
- int iopt_map_pages(struct io_pagetable *iopt, struct list_head *pages_list,
--- 
-2.43.0
+On 11/10/2025 15:32, Patrick Roy wrote:
+> Hey all,
+> 
+> sorry it took me a while to get back to this, turns out moving
+> internationally is move time consuming than I expected.
+> 
+> On Mon, 2025-09-29 at 12:20 +0200, David Hildenbrand wrote:
+>> On 27.09.25 09:38, Patrick Roy wrote:
+>>> On Fri, 2025-09-26 at 21:09 +0100, David Hildenbrand wrote:
+>>>> On 26.09.25 12:53, Will Deacon wrote:
+>>>>> On Fri, Sep 26, 2025 at 10:46:15AM +0100, Patrick Roy wrote:
+>>>>>> On Thu, 2025-09-25 at 21:13 +0100, David Hildenbrand wrote:
+>>>>>>> On 25.09.25 21:59, Dave Hansen wrote:
+>>>>>>>> On 9/25/25 12:20, David Hildenbrand wrote:
+>>>>>>>>> On 25.09.25 20:27, Dave Hansen wrote:
+>>>>>>>>>> On 9/24/25 08:22, Roy, Patrick wrote:
+>>>>>>>>>>> Add an option to not perform TLB flushes after direct map manipulations.
+>>>>>>>>>>
+>>>>>>>>>> I'd really prefer this be left out for now. It's a massive can of worms.
+>>>>>>>>>> Let's agree on something that works and has well-defined behavior before
+>>>>>>>>>> we go breaking it on purpose.
+>>>>>>>>>
+>>>>>>>>> May I ask what the big concern here is?
+>>>>>>>>
+>>>>>>>> It's not a _big_ concern.
+>>>>>>>
+>>>>>>> Oh, I read "can of worms" and thought there is something seriously problematic :)
+>>>>>>>
+>>>>>>>> I just think we want to start on something
+>>>>>>>> like this as simple, secure, and deterministic as possible.
+>>>>>>>
+>>>>>>> Yes, I agree. And it should be the default. Less secure would have to be opt-in and documented thoroughly.
+>>>>>>
+>>>>>> Yes, I am definitely happy to have the 100% secure behavior be the
+>>>>>> default, and the skipping of TLB flushes be an opt-in, with thorough
+>>>>>> documentation!
+>>>>>>
+>>>>>> But I would like to include the "skip tlb flushes" option as part of
+>>>>>> this patch series straight away, because as I was alluding to in the
+>>>>>> commit message, with TLB flushes this is not usable for Firecracker for
+>>>>>> performance reasons :(
+>>>>>
+>>>>> I really don't want that option for arm64. If we're going to bother
+>>>>> unmapping from the linear map, we should invalidate the TLB.
+>>>>
+>>>> Reading "TLB flushes result in a up to 40x elongation of page faults in
+>>>> guest_memfd (scaling with the number of CPU cores), or a 5x elongation
+>>>> of memory population,", I can understand why one would want that optimization :)
+>>>>
+>>>> @Patrick, couldn't we use fallocate() to preallocate memory and batch the TLB flush within such an operation?
+>>>>
+>>>> That is, we wouldn't flush after each individual direct-map modification but after multiple ones part of a single operation like fallocate of a larger range.
+>>>>
+>>>> Likely wouldn't make all use cases happy.
+>>>>
+>>>
+>>> For Firecracker, we rely a lot on not preallocating _all_ VM memory, and
+>>> trying to ensure only the actual "working set" of a VM is faulted in (we
+>>> pack a lot more VMs onto a physical host than there is actual physical
+>>> memory available). For VMs that are restored from a snapshot, we know
+>>> pretty well what memory needs to be faulted in (that's where @Nikita's
+>>> write syscall comes in), so there we could try such an optimization. But
+>>> for everything else we very much rely on the on-demand nature of guest
+>>> memory allocation (and hence direct map removal). And even right now,
+>>> the long pole performance-wise are these on-demand faults, so really, we
+>>> don't want them to become even slower :(
+>>
+>> Makes sense. I guess even without support for large folios one could implement a kind of "fault" around: for example, on access to one addr, allocate+prepare all pages in the same 2 M chunk, flushing the tlb only once after adjusting all the direct map entries.
+>>
+>>>
+>>> Also, can we really batch multiple TLB flushes as you suggest? Even if
+>>> pages are at consecutive indices in guest_memfd, they're not guaranteed
+>>> to be continguous physically, e.g. we couldn't just coalesce multiple
+>>> TLB flushes into a single TLB flush of a larger range.
+>>
+>> Well, you there is the option on just flushing the complete tlb of course :) When trying to flush a range you would indeed run into the problem of flushing an ever growing range.
+> 
+> In the last guest_memfd upstream call (over a week ago now), we've
+> discussed the option of batching and deferring TLB flushes, while
+> providing a sort of "deadline" at which a TLB flush will
+> deterministically be done.  E.g. guest_memfd would keep a counter of how
+> many pages got direct map zapped, and do a flush of a range that
+> contains all zapped pages every 512 allocated pages (and to ensure the
+> flushes even happen in a timely manner if no allocations happen for a
+> long time, also every, say, 5 seconds or something like that). Would
+> that work for everyone?
+
+Hi Dave, Will,
+
+We have been exploring ways to improve performance while still making 
+sure stale entries are wiped out from the TLBs in a timely manner.  What 
+we came up with is flushing all entries in the local TLBs (without 
+broadcasting) whenever a VM enter occurs on the CPU or a vCPU is 
+migrated to another pCPU.  Thus we will guarantee that the VM will never 
+see stale entries in its TLB and won't be able to access pages that were 
+removed from the direct map.  In my experiment, such flushes take ~100 
+ns on x86 and ~220 ns on ARM, which is acceptable from the performance 
+point of view.  Would you be open to considering this solution?
+
+Nikita
+
+> that work for everyone? I briefly tested the performance of> batch-flushes with secretmem in QEMU, and its within of 30% of the "no
+> TLB flushes at all" solution in a simple benchmark that just memsets
+> 2GiB of memory.
+> 
+> I think something like this, together with the batch-flushing at the end
+> of fallocate() / write() as David suggested above should work for
+> Firecracker.
+> 
+>>> There's probably other things we can try. Backing guest_memfd with
+>>> hugepages would reduce the number TLB flushes by 512x (although not all
+>>> users of Firecracker at Amazon [can] use hugepages).
+>>
+>> Right.
+>>
+>>>
+>>> And I do still wonder if it's possible to have "async TLB flushes" where
+>>> we simply don't wait for the IPI (x86 terminology, not sure what the
+>>> mechanism on arm64 is). Looking at
+>>> smp_call_function_many_cond()/invlpgb_kernel_range_flush() on x86, it
+>>> seems so? Although seems like on ARM it's actually just handled by a
+>>> single instruction (TLBI) and not some interprocess communication
+>>> thingy. Maybe there's a variant that's faster / better for this usecase?
+>>
+>> Right, some architectures (and IIRC also x86 with some extension) are able to flush remote TLBs without IPIs.
+>>
+>> Doing a quick search, there seems to be some research on async TLB flushing, e.g., [1].
+>>
+>> In the context here, I wonder whether an async TLB flush would be
+>> significantly better than not doing an explicit TLB flush: in both
+>> cases, it's not really deterministic when the relevant TLB entries
+>> will vanish: with the async variant it might happen faster on average
+>> I guess.
+> 
+> I actually did end up playing around with this a while ago, and it made
+> things slightly better performance wise, but it was still too bad to be
+> useful :(
+> 
+>>
+>> [1] https://cs.yale.edu/homes/abhishek/kumar-taco20.pdf
+>>
+> 
+> Best,
+> Patrick
 
