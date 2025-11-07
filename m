@@ -1,267 +1,237 @@
-Received: from PH0PR06CU001.outbound.protection.outlook.com (mail-westus3azon11011030.outbound.protection.outlook.com [40.107.208.30])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f74.google.com (mail-wr1-f74.google.com [209.85.221.74])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77C9F339B34;
-	Fri,  7 Nov 2025 18:03:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.208.30
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762538624; cv=fail; b=dl33HfcJMhlno1wPZVjahD7GOba3Pnnis5E3UqbwCZXUmHGI1VyVMIqnnP9ptzDAPggr1IKpdVeNv3ORqYTe4dBOHSzzHz5i9Tpx123UTWvngJu7JiG6V82an63wFLtMZldRFugbkCLTtdfNZY0QYvLmY81LLJzYeXyYdaEnGK4=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762538624; c=relaxed/simple;
-	bh=uNNuaQRkCs4DJleLxCDAV/AXxpzfxHeBP49eYSVJRKg=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=Ky/d44/oi07pg1QZqUYJl27fgh1QTzzdub/8/bVCFgYMGEnK470e9vnXF6YQta726LANRgrOYp7WEHxtohCj+jT7dYruJcqjau/QyGqwGRMR9lXTiY7qVWLOXT5pJLOsZsHRwiOq2t6vc9/dHYkg1IGne+Fe4rw7myCF7+hqsgo=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=OrsQUHnD; arc=fail smtp.client-ip=40.107.208.30
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA736280033
+	for <kvm@vger.kernel.org>; Fri,  7 Nov 2025 18:04:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.74
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1762538702; cv=none; b=i78AuMTtJDB//Y4Ov9grJr58b8edSKu/sZHAgzWVqTFSMYVW3V3j/iFeM6dXwmvrSP7H69uCzJuAEuF+wFQNVQeIJLGtvFMHO3ue2I1wzQTTk0xlKQVS/mWHMaNetJI/gV2hJ4sxsq1xF75QGsWKgzr+elI9+mD+K1rt/lnqHrE=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1762538702; c=relaxed/simple;
+	bh=yVzlCT5Uu1SxfjDUt0JzOKp9XvXdUS1XaZo2iK8crO0=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=SiGXMqKdUkHnlJ47tlYM9GaA5Vwa3FrnocQu0QtXjtTYlCAS3VQulpMT4iWbslRS02Aj3rYn1OR+C86p5kfV84B/nMRXnbidY+davri8wj+99o0K6OYuESLyRSqa/9cANIdsuPogqW223s/2zCGnzj1mQNncu36INHZn9ud/Ypo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--jackmanb.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=HHRviqZL; arc=none smtp.client-ip=209.85.221.74
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--jackmanb.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="OrsQUHnD"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=fcllfisX0WeKSybxa4VopWRJEd8Iv/D27JVZblbJr/H+pFz4N7PUpPpZIIkbF+s6IA504PYUJsE1z3Q+QZXkPlMU7GOTX+RfQI6H8WV4RYbDqGQEcrxTNpkAXwgq+zHK3cHIuyUbg9jhj5D7V83nuonsNendBweQiVhACea4wQN/eyEcu42wc6b9LxPnpgy6dHPg2vSkpS5KFgYreX7D/VeZn0I0XLmomS0XsdMBQJZ9gw+uCqXXE1KY9ahmTnViCwZApmTL4wpUl+qyeof5lSBBsQgzj9UuNsN36tISonCgBxzvLRo/8RMLg/9wgxg6CTtsxXyZYQSn/6nhxxKTaQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=Sp3PWS1q/3fTTIF+9ojNUN9KFzSVnV2dtZYUx9yqxtA=;
- b=HctPXX31qdhA0VIllTGiiUPH8wvTx6MurHFDEb7+ZzqwvbJJJUFngwhwhgwQXnpUHQiWFSOfQOv72l9EgBWt0jPHVPgeMiH+2aj9uMhQ9iVOrncN60x1kpMuRAMDFBNqgA2X00M1oEi6w4pXJNYhojmbB0oTAjmT/fosFSO69GLxW2L7HSIk9gPu9K94Mnb8QqYfZcbYkIjo0e0BuVrjBg9SVSbLTNwV/xsJkLvyNOyEUglGZrCiWrStD2sOW4edzuAUd8dp2RemTH8qIptG7MlaBLmKY6owgcLcjqu//ACQ7ujtneT9Hh5JkV2+mp5tp0L1UWnsv5pTVof0HYhB5A==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=Sp3PWS1q/3fTTIF+9ojNUN9KFzSVnV2dtZYUx9yqxtA=;
- b=OrsQUHnDNymDu1WcNBf6Hd6aRfIIU/uAGY3GPXY1fgKWoFmkqjXGGN1egLFFAo4InB1Gq2znZjwfKe8E/8uM7p0ujCj4d/qSEsQXngRfmxERyzMY9iCqwStyPJ5ayf25lVVLCpC5zWgIy85ZOMVW+96GQnGF3VA9w4JIDW7eG/J6i5T0CTEIEes9FAyv/l8Ql0mNL/ovZkON5+E1PF1ULEOCgSRvRMxp+lflkc78msAnyzIYgdjF2IMXOXYJcXAPNMTbBmyh5CGK14lyh7praDiQL4tGQftds466sqm1HNvVSku8xp8y9OiqovDGN09CKSpMomz6qhixnOn/kR5g1A==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from MN2PR12MB3613.namprd12.prod.outlook.com (2603:10b6:208:c1::17)
- by SJ0PR12MB8091.namprd12.prod.outlook.com (2603:10b6:a03:4d5::21) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9298.12; Fri, 7 Nov
- 2025 18:03:34 +0000
-Received: from MN2PR12MB3613.namprd12.prod.outlook.com
- ([fe80::1b3b:64f5:9211:608b]) by MN2PR12MB3613.namprd12.prod.outlook.com
- ([fe80::1b3b:64f5:9211:608b%4]) with mapi id 15.20.9298.006; Fri, 7 Nov 2025
- 18:03:34 +0000
-From: Jason Gunthorpe <jgg@nvidia.com>
-To: Alexander Gordeev <agordeev@linux.ibm.com>,
-	David Airlie <airlied@gmail.com>,
-	Alex Williamson <alex.williamson@redhat.com>,
-	Ankit Agrawal <ankita@nvidia.com>,
-	Christian Borntraeger <borntraeger@linux.ibm.com>,
-	Brett Creeley <brett.creeley@amd.com>,
-	dri-devel@lists.freedesktop.org,
-	Eric Auger <eric.auger@redhat.com>,
-	Eric Farman <farman@linux.ibm.com>,
-	Giovanni Cabiddu <giovanni.cabiddu@intel.com>,
-	Vasily Gorbik <gor@linux.ibm.com>,
-	Heiko Carstens <hca@linux.ibm.com>,
-	intel-gfx@lists.freedesktop.org,
-	Jani Nikula <jani.nikula@linux.intel.com>,
-	Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
-	kvm@vger.kernel.org,
-	Kirti Wankhede <kwankhede@nvidia.com>,
-	linux-s390@vger.kernel.org,
-	Longfang Liu <liulongfang@huawei.com>,
-	Matthew Rosato <mjrosato@linux.ibm.com>,
-	Nikhil Agarwal <nikhil.agarwal@amd.com>,
-	Nipun Gupta <nipun.gupta@amd.com>,
-	Peter Oberparleiter <oberpar@linux.ibm.com>,
-	Halil Pasic <pasic@linux.ibm.com>,
-	qat-linux@intel.com,
-	Rodrigo Vivi <rodrigo.vivi@intel.com>,
-	Simona Vetter <simona@ffwll.ch>,
-	Shameer Kolothum <skolothumtho@nvidia.com>,
-	Sven Schnelle <svens@linux.ibm.com>,
-	Tvrtko Ursulin <tursulin@ursulin.net>,
-	virtualization@lists.linux.dev,
-	Vineeth Vijayan <vneethv@linux.ibm.com>,
-	Yishai Hadas <yishaih@nvidia.com>,
-	Zhenyu Wang <zhenyuw.linux@gmail.com>,
-	Zhi Wang <zhi.wang.linux@gmail.com>
-Cc: Kevin Tian <kevin.tian@intel.com>,
-	patches@lists.linux.dev,
-	Pranjal Shrivastava <praan@google.com>,
-	Mostafa Saleh <smostafa@google.com>
-Subject: [PATCH v2 03/22] vfio/virtio: Convert to the get_region_info op
-Date: Fri,  7 Nov 2025 13:41:19 -0400
-Message-ID: <3-v2-2a9e24d62f1b+e10a-vfio_get_region_info_op_jgg@nvidia.com>
-In-Reply-To: <0-v2-2a9e24d62f1b+e10a-vfio_get_region_info_op_jgg@nvidia.com>
-References:
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: MN2PR18CA0006.namprd18.prod.outlook.com
- (2603:10b6:208:23c::11) To MN2PR12MB3613.namprd12.prod.outlook.com
- (2603:10b6:208:c1::17)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="HHRviqZL"
+Received: by mail-wr1-f74.google.com with SMTP id ffacd0b85a97d-429cbed2b8fso667236f8f.1
+        for <kvm@vger.kernel.org>; Fri, 07 Nov 2025 10:04:58 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1762538697; x=1763143497; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=/AqAgTDxm6jquTqnEsjA3Waymb6wOkAp7ZeQjd8rqgw=;
+        b=HHRviqZL94lptzuP4Yb2YG+7cwZ4Ob8ElK/7SKdqqS6MxSf0awbmKhQdNn3iSZlsvE
+         VmiPypB2CzyHj3BfAiFdMXGcId8M8GnuW7mHiYNsgqUhJI6AsW9GDCEYGaw43UHRRKNv
+         W/ppzeAm+VNohJY2ddFeKl6cXvKC8rxKwn8rrMmbN0D4FjGDQCsLZotqdx9EzoGIUafS
+         rUs5h2N55SRNLdUGiihryVv77RAzziu5gKxiQ6Z8vB/NG4tXY1yFDPmWnVIwpTUyy16M
+         us4KACJqnpB2CNSC5trBovBuJfMf13S/3QdG3Fpl9Dmhqqo5A43rUHUN1CbJp7hAQbkU
+         AtiA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1762538697; x=1763143497;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=/AqAgTDxm6jquTqnEsjA3Waymb6wOkAp7ZeQjd8rqgw=;
+        b=WkZTm3ubB2m4EAd9uSOzi51jVpZlJJk8W78F2PLo0DEcps29fnr6voeKx13jygV3OL
+         BuvxwLRwLpRb3GUxbAWJGLsMAxrXhR0PYRIIGtFn5guyxcqDx2f8m5TrSVgUccyyNxLw
+         79ZgMoSZcO+oOUbxsPD+n59FsJmgPwCaSBP43UJ2teubnxgBNcZ5Ee7wE4+PWzD0ZIia
+         d9LFvFGNOMr/3KjHc13Y4fVy6oPdc79B7B5ZEg7XkXtYjQk9HjRPVKDHFydq9UbuYbUW
+         cwz/CdGB0S/OiRQMOurLn4LAUWGNRLCSm5TzNh+E7FNSopMqZ5uKLx7lfqW0LFwTLs83
+         Qy+Q==
+X-Forwarded-Encrypted: i=1; AJvYcCUpTivvn6mjcqdwgMjvPbsIn3+WzhZmwpPKOrygBT68zhLCk2smU1pgH/eNmJo1GobVOKY=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yzt+mfKw7LVp77aN/dixrokej1IA1aUdsr/W+QcQoSg3V3xQ7ck
+	lUoM96c8FiuaqZg+iv1K4bMRtkf4QqGQ+NB+O2bMbvWJlL5+64hkWOZ74fZtc/CZdzbmY7jupIH
+	J3JzxHKzylQsHOA==
+X-Google-Smtp-Source: AGHT+IFOkVmSQK/jYvTSHAXnkCCnA0joruckYbu4Ldmd5HExfLsxuZZgznGEf8JFTpeS7lG61pD7MYDnH/6ugg==
+X-Received: from wrvs14.prod.google.com ([2002:a5d:4ece:0:b0:425:f04a:4d98])
+ (user=jackmanb job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:6000:2408:b0:429:d3b8:7387 with SMTP id ffacd0b85a97d-42aefb4351dmr3543783f8f.42.1762538697024;
+ Fri, 07 Nov 2025 10:04:57 -0800 (PST)
+Date: Fri, 07 Nov 2025 18:04:56 +0000
+In-Reply-To: <add94932-290c-4037-b4e6-c3c760240819@amazon.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: MN2PR12MB3613:EE_|SJ0PR12MB8091:EE_
-X-MS-Office365-Filtering-Correlation-Id: e27edeba-b86b-4641-6611-08de1e27f79b
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|1800799024|376014|7416014|921020;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?fl2OfVxYXBPB6wY/3fHOZ2La6VkSnDTXegN6ieN4I+YnJQYCSQC4tLfrUEdo?=
- =?us-ascii?Q?L+eKr/nG+uL/n+42e5iJv1ctxoK/h3nqWlg6Iyv12cBQEhDipmCjCU7cwy3c?=
- =?us-ascii?Q?KHGcpv688iym8NcRCurwXf3klwLKXghna+5BEFpsDpLUc11Ts/Q65/r2cjXs?=
- =?us-ascii?Q?cizYNzOKxq2cI1B6orp1R6a3oWp8rjXDeHB6wYZF7D4ReuS/36csvKQ42twO?=
- =?us-ascii?Q?nSZpBFlY2B8P2HG1aVIf9LhNkQRlStuJ5uD4R3Ozlzn6pcK0Na33E4ZCt6L/?=
- =?us-ascii?Q?YnmVjS2AkeQF9IucokBeNDixP8+Mh27H78NIqQ91Yr2bMIFUB2D/NHtfqyon?=
- =?us-ascii?Q?kIkOZNPfigYePotlaWNFGnLtxQNRv48qeRJebyyyq0WHqidrwOWin1hMtjr9?=
- =?us-ascii?Q?/lLugUglNxG/yWOCAiVqDv89uRFjmjo99v8ZTrGVeza64d9h0a4mJEScasMn?=
- =?us-ascii?Q?iTvEoV7I9+C3aNkthWw7CxkO7eYSm35zp/d9CfvC7YAqA1Z0naADNp/P7iz4?=
- =?us-ascii?Q?CQNewCcDBkg983uO9aquLOriZVuYy9l9+3102olhUOnFyYvbd+L209PHZlql?=
- =?us-ascii?Q?tXvelFPzbHB5nPsSr+YwYpcVP80k/aIqprmb6GAPj4fDI5qc8s6og0ALP3ub?=
- =?us-ascii?Q?whTnWtAjC/7qdemhQD0Kb2GDthwThbzW9ZUvLi5P+N2yQDDxn4pMhERqqYSE?=
- =?us-ascii?Q?fF0ZQDxJppxufIdPVeWhdth8S9pirMYrYbx620PgHyyTtL9+VUGHzacp86wv?=
- =?us-ascii?Q?cSIltRPaGAokao8tuuKSYix2JhC2pUSFsttwK2j3ZLeRI048WcHzGQ9CtKem?=
- =?us-ascii?Q?BcbXcVHpOal/plv3Fzm9/nbTFmulyXJV+jIVO7djfKEcY3lSL632LSRq/l8+?=
- =?us-ascii?Q?OwkiaRLdPqkpuxGcZ5xEM2G55+ppicLv6YJyGe0VWT7wEaFoWmLphXqWnHnL?=
- =?us-ascii?Q?jhVVICnSImEAkkWG5L34BBzW37e1iToJsGtBTS1RkNNoTnoQ1QtPHvw3qQrP?=
- =?us-ascii?Q?1jgpWS6vMagJJbM6SfzGGLCdibFMMl2j5f2fgnwd159kzg9Ve2axC1PyJsvt?=
- =?us-ascii?Q?Y22/Y6YECosPYXNtInTor2HP1YJJ8EdyD3GGwxQOKNrRR6iMBiizFdiXxXH1?=
- =?us-ascii?Q?UA9zgYWCF41aZ7W5h2cwrjXg+tQ98e83246dJAPh/LXWMf50gg152ww1e9fL?=
- =?us-ascii?Q?JjJaj2J77+mXjf12ya6K5a0x6HxHvKMuEqPJ4T65Sb/F7xZZYwMdK//ulC0y?=
- =?us-ascii?Q?Vp9aO8QnOkh1g9wT3996SHQeyoqCLTXVN1Q/5Q3h2HFNB1SUx+nstj0TraTV?=
- =?us-ascii?Q?fKqxXg5ab/VeTdVwzXTqrx0jU7VE5WOcUCuOQBReWSMUu2kQ66l/A4gcHqDZ?=
- =?us-ascii?Q?SNFJ9XIBwcVoynMzjALls1Ui92rNNEPd8cDn+qtrdawUzmkOkI++V6ot2EMX?=
- =?us-ascii?Q?DEyOw9C43+ODYVrNgHBdgpIvAORldQCaB9VYiA9knss2f3AbKzWI7czaRe/3?=
- =?us-ascii?Q?TgEGoWjD0IKTVqM=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MN2PR12MB3613.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(376014)(7416014)(921020);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?qXhIrPmESatrL/9Pt3HwDYnS77vWSX4PYf+LHUdEgsGdiKHzdv6SAmQ9kANR?=
- =?us-ascii?Q?zceqbtRxzC6AqyY05t+SyyvrdZL+ji23Pg18W7w8urTZderIaGMsuCknH05l?=
- =?us-ascii?Q?OIQRtA6Dg7p7sQzhbXpJfCkHwCBDQhlCChaWEIMgHpOMTEKmXCemwrEsMn7B?=
- =?us-ascii?Q?JfjTAMhTpfuXWIG41nDDj4n8UUptLr5ojEJhQCtfRxY/MC03pBJ8J3BrSG8T?=
- =?us-ascii?Q?l7ftQs9OCruTGymFaatICKw8hHd+QB17T76DqqnV16bYlOkI0NnlzL+0bixn?=
- =?us-ascii?Q?d6KZHO9LMiGowwoX2klLi3gPkbH08BW+WEus6Xcl8SOFUm239DEwNenajtRd?=
- =?us-ascii?Q?Zl6aA58Fz/v7j1BlKJ5z/DlMlzc+fJ2E5zha6XTEdV2eniB9jNqiZLtToAQS?=
- =?us-ascii?Q?fMy/PLXfZn+x8j1ihNI1La+OOJnFal+A2XSkxauDSq+cLfirZUU9PoEeSr2p?=
- =?us-ascii?Q?ZTmg1lKggvlJ52pMiqxBM3oSOkVmY3jZ1LQyWKk7pxNcXsaWn+ZIoC5sicaQ?=
- =?us-ascii?Q?VFwE7cu9fC/rygadis3WKz1T2KstnDbBAqE+dwZdx38gcpJK5xSNEOQDpJQe?=
- =?us-ascii?Q?LJLYU8AI2Opbobhi9np9PJw4Kr4UMF5OSMmrQ+tj4+E09LvbVvzsHhzl8gfD?=
- =?us-ascii?Q?Sx72W0rdJS6aPQYVQ6Zyu7unhTGFUEmu+4ZkVWlthyj2VqFma3TfuBoDPCED?=
- =?us-ascii?Q?/R4ssdpPeuO5YvDszp+rHbZZE4wVEifUxRlv7SerApG81hyxl5TL8w83z7Iw?=
- =?us-ascii?Q?mqwfcB/gwViuVAVoFsTkp+iz3GIeppBP1FnKHWY7UlPnIBQviW0tXjACqalw?=
- =?us-ascii?Q?96NRmRGWpXRFsU7IyjiYZi3a11uULy4r5slv8SF273HpIJP68E6N6KUjpBgJ?=
- =?us-ascii?Q?qQFTdKe5cZsSZUPhKhtPFXoX/FebRm9vDdoqCctIG4HFmhMy84FbTXM8pK5a?=
- =?us-ascii?Q?1IL2Dv8rjyfdfdW86FQgY731efltNIVww5+hmKnHroG/Oo3AOwTYQgdJ7TOq?=
- =?us-ascii?Q?M9Wba3je3Fka4TJlZULr+4trg4zj2pNtKXYpYOJyzCn+WDZeP0Ei+AgktB0o?=
- =?us-ascii?Q?WbjsP7z6OarOKiDZYdvHRhHcUbHJH8KJJP251dcn/W4maeebsmdjgDDH3iU4?=
- =?us-ascii?Q?mnX5SpPQ/jZO77p7zigFVPHjGH4heH48yah1ynhZz+IEBGPMrx9gILlzWY0M?=
- =?us-ascii?Q?pj2Kgdc6dGsHbS1gtH6/J9h/7NhR3r35Sn9jw5tGdNzHc3ox/ay0+JgaHCSR?=
- =?us-ascii?Q?LvyGRFepswBboSxG42jm8/OhPoYlaAEBqszwGhcwFmdtmeFAC3s07Y8szL8+?=
- =?us-ascii?Q?iGKzi1GMNLbMSdCBX8ksVQJ1Un9EgAXCG2SHv8DyDFXyGWicSOtAN4Ese0JO?=
- =?us-ascii?Q?Tx+RLms2pYqQkilsTCjdMVe+IXvF9vqSyRnTVgDHOZ28Uz9Cv7NaonEzWMQw?=
- =?us-ascii?Q?bQd0Szr2Uldi14c64k9f/Er+tPThSUyJdW8QVzxQ6zj+vZxdaC9mrU9XuP9u?=
- =?us-ascii?Q?H6LesnEks6dcmv17Vrrsw/NUVSAPg2Edy4Byl2VK34/v8D7/buwcxj2cV4rI?=
- =?us-ascii?Q?srq7+90BaDiIdSkBgNw=3D?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: e27edeba-b86b-4641-6611-08de1e27f79b
-X-MS-Exchange-CrossTenant-AuthSource: MN2PR12MB3613.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 07 Nov 2025 18:03:34.1060
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: mpZK0jha0MhkC9Mn6ca3mYJtxVMJIMiBIbNODRg15YljzEshAanCEiNsTXT9WebU
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ0PR12MB8091
+Mime-Version: 1.0
+References: <20250924151101.2225820-1-patrick.roy@campus.lmu.de>
+ <DE2L1SAOC55E.E4JY62WJQ2A8@google.com> <add94932-290c-4037-b4e6-c3c760240819@amazon.com>
+X-Mailer: aerc 0.21.0
+Message-ID: <DE2NTMZXQ1MT.2TH9VAKM6WP6I@google.com>
+Subject: Re: [PATCH v7 00/12] Direct Map Removal Support for guest_memfd
+From: Brendan Jackman <jackmanb@google.com>
+To: <kalyazin@amazon.com>, Brendan Jackman <jackmanb@google.com>
+Cc: <pbonzini@redhat.com>, <corbet@lwn.net>, <maz@kernel.org>, 
+	<oliver.upton@linux.dev>, <joey.gouly@arm.com>, <suzuki.poulose@arm.com>, 
+	<yuzenghui@huawei.com>, <catalin.marinas@arm.com>, <will@kernel.org>, 
+	<tglx@linutronix.de>, <mingo@redhat.com>, <bp@alien8.de>, 
+	<dave.hansen@linux.intel.com>, <x86@kernel.org>, <hpa@zytor.com>, 
+	<luto@kernel.org>, <peterz@infradead.org>, <willy@infradead.org>, 
+	<akpm@linux-foundation.org>, <david@redhat.com>, <lorenzo.stoakes@oracle.com>, 
+	<Liam.Howlett@oracle.com>, <vbabka@suse.cz>, <rppt@kernel.org>, 
+	<surenb@google.com>, <mhocko@suse.com>, <song@kernel.org>, <jolsa@kernel.org>, 
+	<ast@kernel.org>, <daniel@iogearbox.net>, <andrii@kernel.org>, 
+	<martin.lau@linux.dev>, <eddyz87@gmail.com>, <yonghong.song@linux.dev>, 
+	<john.fastabend@gmail.com>, <kpsingh@kernel.org>, <sdf@fomichev.me>, 
+	<haoluo@google.com>, <jgg@ziepe.ca>, <jhubbard@nvidia.com>, 
+	<peterx@redhat.com>, <jannh@google.com>, <pfalcato@suse.de>, 
+	<shuah@kernel.org>, <seanjc@google.com>, <kvm@vger.kernel.org>, 
+	<linux-doc@vger.kernel.org>, <linux-kernel@vger.kernel.org>, 
+	<linux-arm-kernel@lists.infradead.org>, <kvmarm@lists.linux.dev>, 
+	<linux-fsdevel@vger.kernel.org>, <linux-mm@kvack.org>, <bpf@vger.kernel.org>, 
+	<linux-kselftest@vger.kernel.org>, <xmarcalx@amazon.co.uk>, 
+	<kalyazin@amazon.co.uk>, <jackabt@amazon.co.uk>, <derekmn@amazon.co.uk>, 
+	<tabba@google.com>, <ackerleytng@google.com>, 
+	Patrick Roy <patrick.roy@campus.lmu.de>
+Content-Type: text/plain; charset="UTF-8"
 
-Remove virtiovf_vfio_pci_core_ioctl() and change the signature of
-virtiovf_pci_ioctl_get_region_info().
+On Fri Nov 7, 2025 at 5:23 PM UTC, Nikita Kalyazin wrote:
+>
+>
+> On 07/11/2025 15:54, Brendan Jackman wrote:
+>> On Wed Sep 24, 2025 at 3:10 PM UTC, Patrick Roy wrote:
+>>> From: Patrick Roy <roypat@amazon.co.uk>
+>>>
+>>> [ based on kvm/next ]
+>>>
+>>> Unmapping virtual machine guest memory from the host kernel's direct map is a
+>>> successful mitigation against Spectre-style transient execution issues: If the
+>>> kernel page tables do not contain entries pointing to guest memory, then any
+>>> attempted speculative read through the direct map will necessarily be blocked
+>>> by the MMU before any observable microarchitectural side-effects happen. This
+>>> means that Spectre-gadgets and similar cannot be used to target virtual machine
+>>> memory. Roughly 60% of speculative execution issues fall into this category [1,
+>>> Table 1].
+>>>
+>>> This patch series extends guest_memfd with the ability to remove its memory
+>>> from the host kernel's direct map, to be able to attain the above protection
+>>> for KVM guests running inside guest_memfd.
+>>>
+>>> Additionally, a Firecracker branch with support for these VMs can be found on
+>>> GitHub [2].
+>>>
+>>> For more details, please refer to the v5 cover letter [v5]. No
+>>> substantial changes in design have taken place since.
+>>>
+>>> === Changes Since v6 ===
+>>>
+>>> - Drop patch for passing struct address_space to ->free_folio(), due to
+>>>    possible races with freeing of the address_space. (Hugh)
+>>> - Stop using PG_uptodate / gmem preparedness tracking to keep track of
+>>>    direct map state.  Instead, use the lowest bit of folio->private. (Mike, David)
+>>> - Do direct map removal when establishing mapping of gmem folio instead
+>>>    of at allocation time, due to impossibility of handling direct map
+>>>    removal errors in kvm_gmem_populate(). (Patrick)
+>>> - Do TLB flushes after direct map removal, and provide a module
+>>>    parameter to opt out from them, and a new patch to export
+>>>    flush_tlb_kernel_range() to KVM. (Will)
+>>>
+>>> [1]: https://download.vusec.net/papers/quarantine_raid23.pdf
+>>> [2]: https://github.com/firecracker-microvm/firecracker/tree/feature/secret-hiding
+>> 
+>> I just got around to trying this out, I checked out this patchset using
+>> its base-commit and grabbed the Firecracker branch. Things seem OK until
+>> I set the secrets_free flag in the Firecracker config which IIUC makes
+>> it set GUEST_MEMFD_FLAG_NO_DIRECT_MAP.
+>> 
+>> If I set it, I find the guest doesn't show anything on the console.
+>> Running it in a VM and attaching GDB suggests that it's entering the
+>> guest repeatedly, it doesn't seem like the vCPU thread is stuck or
+>> anything. I'm a bit clueless about how to debug that (so far, whenever
+>> I've broken KVM, things always exploded very dramatically).
+>> 
+>> Anyway, if I then kill the firecracker process, the host sometimes
+>> crashes, I think this is the most suggestive splat I've seen:
+>> 
+>> [   99.673420][    T2] BUG: unable to handle page fault for address: ffff888012804000
+>> [   99.676216][    T2] #PF: supervisor write access in kernel mode
+>> [   99.678381][    T2] #PF: error_code(0x0002) - not-present page
+>> [   99.680499][    T2] PGD 2e01067 P4D 2e01067 PUD 2e02067 PMD 12801063 PTE 800fffffed7fb020
+>> [   99.683374][    T2] Oops: Oops: 0002 [#1] SMP
+>> [   99.685004][    T2] CPU: 0 UID: 0 PID: 2 Comm: kthreadd Not tainted 6.17.0-rc7-00366-g473c46a3cb2a #106 NONE
+>> [   99.688514][    T2] Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 0.1 11/11/2019
+>> [   99.691547][    T2] RIP: 0010:clear_page_erms+0x7/0x10
+>> [   99.693440][    T2] Code: 48 89 47 18 48 89 47 20 48 89 47 28 48 89 47 30 48 89 47 38 48 8d 7f 40 75 d9 90 c3 0f 1f 80 00 00 00 00 b9 00 10 00 00 31 c0 <f3> aa c3 66 0f 1f 44 00 00 48 83 f9 40 73 2a 83 f9 08 73 0f 85 c9
+>> [   99.700188][    T2] RSP: 0018:ffff88800318fc10 EFLAGS: 00010246
+>> [   99.702321][    T2] RAX: 0000000000000000 RBX: 0000000000400dc0 RCX: 0000000000001000
+>> [   99.705100][    T2] RDX: ffffea00004a0100 RSI: ffffea00004a0200 RDI: ffff888012804000
+>> [   99.707861][    T2] RBP: 0000000000000801 R08: 0000000000000000 R09: 0000000000000000
+>> [   99.710648][    T2] R10: 0000000000000000 R11: 0000000000000000 R12: 0000000000000002
+>> [   99.713412][    T2] R13: 0000000000000801 R14: ffffea00004a0100 R15: ffffffff81f4df80
+>> [   99.716191][    T2] FS:  0000000000000000(0000) GS:ffff8880bbf28000(0000) knlGS:0000000000000000
+>> [   99.719316][    T2] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+>> [   99.721648][    T2] CR2: ffff888012804000 CR3: 0000000007583001 CR4: 0000000000372eb0
+>> [   99.724421][    T2] Call Trace:
+>> [   99.725608][    T2]  <TASK>
+>> [   99.726646][    T2]  get_page_from_freelist+0x6fe/0x14b0
+>> [   99.728583][    T2]  ? fs_reclaim_acquire+0x43/0xe0
+>> [   99.730325][    T2]  ? find_held_lock+0x2b/0x80
+>> [   99.731965][    T2]  __alloc_frozen_pages_noprof+0x147/0x2d0
+>> [   99.734003][    T2]  __alloc_pages_noprof+0x5/0x50
+>> [   99.735766][    T2]  copy_process+0x1b1/0x1b30
+>> [   99.737398][    T2]  ? lock_is_held_type+0x89/0x100
+>> [   99.739157][    T2]  ? kthreadd+0x25/0x190
+>> [   99.740664][    T2]  kernel_clone+0x59/0x390
+>> [   99.742213][    T2]  ? kthreadd+0x25/0x190
+>> [   99.743728][    T2]  kernel_thread+0x55/0x70
+>> [   99.745310][    T2]  ? kthread_complete_and_exit+0x20/0x20
+>> [   99.747265][    T2]  kthreadd+0x117/0x190
+>> [   99.748748][    T2]  ? kthread_is_per_cpu+0x30/0x30
+>> [   99.750509][    T2]  ret_from_fork+0x16b/0x1e0
+>> [   99.752193][    T2]  ? kthread_is_per_cpu+0x30/0x30
+>> [   99.753992][    T2]  ret_from_fork_asm+0x11/0x20
+>> [   99.755717][    T2]  </TASK>
+>> [   99.756861][    T2] CR2: ffff888012804000
+>> [   99.758353][    T2] ---[ end trace 0000000000000000 ]---
+>> [   99.760319][    T2] RIP: 0010:clear_page_erms+0x7/0x10
+>> [   99.762209][    T2] Code: 48 89 47 18 48 89 47 20 48 89 47 28 48 89 47 30 48 89 47 38 48 8d 7f 40 75 d9 90 c3 0f 1f 80 00 00 00 00 b9 00 10 00 00 31 c0 <f3> aa c3 66 0f 1f 44 00 00 48 83 f9 40 73 2a 83 f9 08 73 0f 85 c9
+>> [   99.769129][    T2] RSP: 0018:ffff88800318fc10 EFLAGS: 00010246
+>> [   99.771297][    T2] RAX: 0000000000000000 RBX: 0000000000400dc0 RCX: 0000000000001000
+>> [   99.774126][    T2] RDX: ffffea00004a0100 RSI: ffffea00004a0200 RDI: ffff888012804000
+>> [   99.777013][    T2] RBP: 0000000000000801 R08: 0000000000000000 R09: 0000000000000000
+>> [   99.779827][    T2] R10: 0000000000000000 R11: 0000000000000000 R12: 0000000000000002
+>> [   99.782641][    T2] R13: 0000000000000801 R14: ffffea00004a0100 R15: ffffffff81f4df80
+>> [   99.785487][    T2] FS:  0000000000000000(0000) GS:ffff8880bbf28000(0000) knlGS:0000000000000000
+>> [   99.788671][    T2] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+>> [   99.791012][    T2] CR2: ffff888012804000 CR3: 0000000007583001 CR4: 0000000000372eb0
+>> [   99.793863][    T2] Kernel panic - not syncing: Fatal exception
+>> [   99.796760][    T2] Kernel Offset: disabled
+>> [   99.798296][    T2] ---[ end Kernel panic - not syncing: Fatal exception ]---
+>> 
+>> This makes me suspect the kvm_gmem_folio_restore_direct_map() path isn't
+>> working or isn't getting called.
+>> 
+>> If anyone wants help trying to reproduce this let me know.
+>
+> Hi Brendan,
+>
+> Thanks for trying to run it!
+>
+> Just as a sanity check, the way it is known for us to work is we apply 
+> all patches from [1].  For booted VMs (as opposed to restored from 
+> snapshot), apart from the v6 of the direct map removal series, the only 
+> additional patch is a fix for kvmclock on x86 [2].  Please let me know 
+> if you see the same issue with that patch applied too.
+>
+> Nikita
+>
+> [1] 
+> https://github.com/firecracker-microvm/firecracker/tree/feature/secret-hiding/resources/hiding_ci/linux_patches
+> [2] 
+> https://github.com/firecracker-microvm/firecracker/tree/feature/secret-hiding/resources/hiding_ci/linux_patches/11-kvm-clock
 
-Reviewed-by: Kevin Tian <kevin.tian@intel.com>
-Reviewed-by: Pranjal Shrivastava <praan@google.com>
-Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
----
- drivers/vfio/pci/virtio/common.h    |  4 +---
- drivers/vfio/pci/virtio/legacy_io.c | 20 ++++----------------
- drivers/vfio/pci/virtio/main.c      |  3 ++-
- 3 files changed, 7 insertions(+), 20 deletions(-)
+Ah, thanks! Seems I should have checked my inbox before sending my other
+mail. With the kvmclock fix applied to my host kernel, I start setting
+the other crash immediately when the VM boots. If I comment out the
+actual unmapping of memory, it boots (before, it wouldn't boot even with
+that commented out).
 
-diff --git a/drivers/vfio/pci/virtio/common.h b/drivers/vfio/pci/virtio/common.h
-index c7d7e27af386e9..a10f2d92cb6238 100644
---- a/drivers/vfio/pci/virtio/common.h
-+++ b/drivers/vfio/pci/virtio/common.h
-@@ -109,10 +109,8 @@ void virtiovf_migration_reset_done(struct pci_dev *pdev);
- 
- #ifdef CONFIG_VIRTIO_VFIO_PCI_ADMIN_LEGACY
- int virtiovf_open_legacy_io(struct virtiovf_pci_core_device *virtvdev);
--long virtiovf_vfio_pci_core_ioctl(struct vfio_device *core_vdev,
--				  unsigned int cmd, unsigned long arg);
- int virtiovf_pci_ioctl_get_region_info(struct vfio_device *core_vdev,
--				       unsigned int cmd, unsigned long arg);
-+				       struct vfio_region_info __user *arg);
- ssize_t virtiovf_pci_core_write(struct vfio_device *core_vdev,
- 				const char __user *buf, size_t count,
- 				loff_t *ppos);
-diff --git a/drivers/vfio/pci/virtio/legacy_io.c b/drivers/vfio/pci/virtio/legacy_io.c
-index 832af5ba267c49..d735d5c4bd7775 100644
---- a/drivers/vfio/pci/virtio/legacy_io.c
-+++ b/drivers/vfio/pci/virtio/legacy_io.c
-@@ -281,15 +281,14 @@ ssize_t virtiovf_pci_core_write(struct vfio_device *core_vdev, const char __user
- }
- 
- int virtiovf_pci_ioctl_get_region_info(struct vfio_device *core_vdev,
--				       unsigned int cmd, unsigned long arg)
-+				       struct vfio_region_info __user *arg)
- {
- 	struct virtiovf_pci_core_device *virtvdev = container_of(
- 		core_vdev, struct virtiovf_pci_core_device, core_device.vdev);
- 	unsigned long minsz = offsetofend(struct vfio_region_info, offset);
--	void __user *uarg = (void __user *)arg;
- 	struct vfio_region_info info = {};
- 
--	if (copy_from_user(&info, uarg, minsz))
-+	if (copy_from_user(&info, arg, minsz))
- 		return -EFAULT;
- 
- 	if (info.argsz < minsz)
-@@ -301,20 +300,9 @@ int virtiovf_pci_ioctl_get_region_info(struct vfio_device *core_vdev,
- 		info.size = virtvdev->bar0_virtual_buf_size;
- 		info.flags = VFIO_REGION_INFO_FLAG_READ |
- 			     VFIO_REGION_INFO_FLAG_WRITE;
--		return copy_to_user(uarg, &info, minsz) ? -EFAULT : 0;
-+		return copy_to_user(arg, &info, minsz) ? -EFAULT : 0;
- 	default:
--		return vfio_pci_core_ioctl(core_vdev, cmd, arg);
--	}
--}
--
--long virtiovf_vfio_pci_core_ioctl(struct vfio_device *core_vdev, unsigned int cmd,
--				  unsigned long arg)
--{
--	switch (cmd) {
--	case VFIO_DEVICE_GET_REGION_INFO:
--		return virtiovf_pci_ioctl_get_region_info(core_vdev, cmd, arg);
--	default:
--		return vfio_pci_core_ioctl(core_vdev, cmd, arg);
-+		return vfio_pci_ioctl_get_region_info(core_vdev, arg);
- 	}
- }
- 
-diff --git a/drivers/vfio/pci/virtio/main.c b/drivers/vfio/pci/virtio/main.c
-index 8084f3e36a9f70..92b525e52abe4d 100644
---- a/drivers/vfio/pci/virtio/main.c
-+++ b/drivers/vfio/pci/virtio/main.c
-@@ -108,7 +108,8 @@ static const struct vfio_device_ops virtiovf_vfio_pci_tran_lm_ops = {
- 	.release = virtiovf_pci_core_release_dev,
- 	.open_device = virtiovf_pci_open_device,
- 	.close_device = virtiovf_pci_close_device,
--	.ioctl = virtiovf_vfio_pci_core_ioctl,
-+	.ioctl = vfio_pci_core_ioctl,
-+	.get_region_info = virtiovf_pci_ioctl_get_region_info,
- 	.device_feature = vfio_pci_core_ioctl_feature,
- 	.read = virtiovf_pci_core_read,
- 	.write = virtiovf_pci_core_write,
--- 
-2.43.0
+For the other linux_patches, I couldn't apply them on top of this
+series, do you have a branch I can use as a reference?
 
+Anyway, the solution I'm hoping to present for your problem gets rid of
+that explicit unmapping code (the allocator will do it for you), so in
+the meantime I have something I can work with.
