@@ -1,138 +1,293 @@
-Received: from mail-pl1-f201.google.com (mail-pl1-f201.google.com [209.85.214.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 11F84328622
-	for <kvm@vger.kernel.org>; Mon, 10 Nov 2025 18:23:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 44D2C32AAB8;
+	Mon, 10 Nov 2025 18:24:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.12
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762799028; cv=none; b=j5nyBNwbXzTIt7QXGwcayIYnoHDX8gjaRGu6oaDyKh7bHmRusTYn6WkNmnWxqHT71hmVj52wrIam62FlqGKJmrZDnZAuJxllgDnzcnTF5OuA4E5KuzrRenkL2Q8A201CHHVZIg8I7bUMVSoVzkNmmzosXtf59V96ixMMsiJ0zcE=
+	t=1762799074; cv=none; b=FgRjpJwumw/YbJOTMNdSCbyJeYrLWiekgOqbWDIn55W3setjtLJnzon4K7FIxphC5n8tqocjHYpVLa9J/H1lM0QVX1xd7M/emFMA/yNhfsJh4u21IRappai/SoUNctfS4pY+XLRbvx4bbyngFxMv07SIRC8uI0E4XJeHdfKfpPI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762799028; c=relaxed/simple;
-	bh=0B5t6DWhDiwMV6cYZ+zAwswI7QSnPE13XKjJKivILI8=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=SGACNMq0EPTjYBCZPBu92vWYA5nh7vKAmwESPjR42mhZRUM0aFRfLEhH2l1tf49koJVb+nb7inLvUjSgowY27GGIB/T2rFp9o9OXCY9FuQtfjGGMOcKXgEPW1mydEYdQj7XQinaaV7geXW0VOJENUNHadVidkRUoDf4dim9Xc+g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=EixBAtBQ; arc=none smtp.client-ip=209.85.214.201
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+	s=arc-20240116; t=1762799074; c=relaxed/simple;
+	bh=Fi/ogMOE8ci/isPMMZbSl/BCrquYT2jUtaPI4KPRkzo=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=rYLb5feU18efAZGyl4e52h2AMT31mE0sJ/rR9Wt589UicqoUa37kDj8FLU+zEtwC6tzUz2PH2CHFUJHDQJ1QHn+6SpQoeZK6kDFS9B2Q29J0Fidti+zXpz37yi7Noyj56eFuCzqwQssuuEWke1/aNPQTtiWmKu4qhCHUj9NL0gE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=UKtDhT7o; arc=none smtp.client-ip=198.175.65.12
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="EixBAtBQ"
-Received: by mail-pl1-f201.google.com with SMTP id d9443c01a7336-2958c80fcabso91476185ad.0
-        for <kvm@vger.kernel.org>; Mon, 10 Nov 2025 10:23:46 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1762799026; x=1763403826; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=4/RtuixS6ivHaJzMt+cypZgpKYgDJDNLyz12fZKnsp0=;
-        b=EixBAtBQcHIbxnbECgTVfCMhh0Q8b1aqZW6pSgKUZ+tIoKLnyg1izjOhbDQ7gmFLwN
-         8ujkOCVEiUu70iju58EeQj4kMpDPskMwYgEitGyTZMat5qn3nF+Mv+J3scEroxB5Hgtj
-         2QbY+gUKRGtDGuesOZbRAxcLxN+vSiM6nXQrFrP6Jji5Siz1FrP/xP5nIqJnbOvZwhmI
-         qDyjhPVpWo+P3UP7CF31c2p3hSHTCxgq1uyEJ4cDy6u0L9KQwNuE4Jcyx8S/2Kk/oqYd
-         u8x/0IJQqZH/lkxSjte3dYVIZk1hfKmnW093mJyJjtzC3eYD4HoX7EIYtG9AuV58FdwS
-         UNdQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1762799026; x=1763403826;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=4/RtuixS6ivHaJzMt+cypZgpKYgDJDNLyz12fZKnsp0=;
-        b=DvmAVsGnvtleFh09E1SeTKaN7wul/L+sU40BO6E2n4xXF8HhX3hFARt/iO9y0h6T5C
-         ha5uqormKk2Bf5tb9GmCuCH6DFfKDMcO15/ipCUjcttKNFv5jkFr0LUVaDh/4+jBHwmu
-         /dTjXBIQGApcf7W1ANJOyDQurm76mPfzIARIB+d7IfVH8AvrVusVEM2bEjonTz8uMONi
-         eQuJhm5AKx25/0n2aVpXkAS2nFCp8PKPdNhFnY2u+Qf1TVQDwoBNNrI9ZiMiEOMvk8gh
-         gCQApRpSL7u4RVQg0ebABaSIl51R1wpbM/SRN2GFw6yBddQZnembclhlEw7iyGKsWcfc
-         hhhA==
-X-Forwarded-Encrypted: i=1; AJvYcCUDCG8Xcsp8a5rMnGOHQ6UBCXQRHUzQ++t2tfAj9GKlcwjt8PXLmdTw4s1/6HEZY/K6oeQ=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw5z8AYbFyfZWU6ElpI2j+dXxmgjZ0dWKTwBi4xsvGHwbjS/8YU
-	LNs5zuCHMjuPx9xW+78DSxz7AcHOlhBEAqlVTJVXBtCruaJpm6sznXNm/RIE+CuVnMbGgwNxg06
-	Ec3z++Q==
-X-Google-Smtp-Source: AGHT+IHLjhF/B9JRNWlfF4xQjImNcP66JBbSmi5nz2WQmt8Y80nCa0FnJnmx6rkg3zEfysgHKy0W5hbcKSg=
-X-Received: from plpn7.prod.google.com ([2002:a17:902:9687:b0:296:18d:ea16])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:903:1a0c:b0:297:f8dd:4d8e
- with SMTP id d9443c01a7336-297f8dd5382mr86324925ad.30.1762799026327; Mon, 10
- Nov 2025 10:23:46 -0800 (PST)
-Date: Mon, 10 Nov 2025 10:23:44 -0800
-In-Reply-To: <690e0be4.a70a0220.22f260.0050.GAE@google.com>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="UKtDhT7o"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1762799072; x=1794335072;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=Fi/ogMOE8ci/isPMMZbSl/BCrquYT2jUtaPI4KPRkzo=;
+  b=UKtDhT7oN1reogmIsf1ofnmHbr+rG9577APYMLKV13RWIOLiSRGmU50v
+   4rSoXZle/vqH/t6LADwfbCwmSpUnXcQR4ywvDNWr9ynL+DOMuZEXe43YF
+   a5zGFziSsgMo47tuZWtViPao0q/4m7MuPt0YINKPbwY1XjmtBnVODLJBe
+   TgRmUx4Oo+sbkwAMuJK0Bi4w1qmnrDVQKZe6QJwLDHvDyYvluMeEIBra8
+   sWpuMSdpNIRR5n5JZ1sAJRIfbUwthh5XYjMQZad5YR8iJX+NTpGquvIKn
+   BZICe/mol/sIYeUP/bHcEAH4ug0V6+K9gSBLAZXYk4eIc4Nll60ewkW8y
+   A==;
+X-CSE-ConnectionGUID: 65D3++JbSr6+3s0NlsXWAw==
+X-CSE-MsgGUID: dMix0K7YSWKc8IOarKl/3g==
+X-IronPort-AV: E=McAfee;i="6800,10657,11609"; a="76305475"
+X-IronPort-AV: E=Sophos;i="6.19,294,1754982000"; 
+   d="scan'208";a="76305475"
+Received: from orviesa002.jf.intel.com ([10.64.159.142])
+  by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Nov 2025 10:24:32 -0800
+X-CSE-ConnectionGUID: UywlTR1cQQu8EePz0KEhcQ==
+X-CSE-MsgGUID: /3VUevgjTJ+vC5SnN6Vp2Q==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.19,294,1754982000"; 
+   d="scan'208";a="219396019"
+Received: from chang-linux-3.sc.intel.com (HELO chang-linux-3) ([172.25.66.172])
+  by orviesa002.jf.intel.com with ESMTP; 10 Nov 2025 10:24:32 -0800
+From: "Chang S. Bae" <chang.seok.bae@intel.com>
+To: kvm@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Cc: pbonzini@redhat.com,
+	seanjc@google.com,
+	chao.gao@intel.com,
+	zhao1.liu@intel.com,
+	chang.seok.bae@intel.com
+Subject: [PATCH RFC v1 00/20] KVM: x86: Support APX feature for guests
+Date: Mon, 10 Nov 2025 18:01:11 +0000
+Message-ID: <20251110180131.28264-1-chang.seok.bae@intel.com>
+X-Mailer: git-send-email 2.51.0
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <690e0be4.a70a0220.22f260.0050.GAE@google.com>
-Message-ID: <aRItsJNnsja0Wj2W@google.com>
-Subject: Re: [syzbot] [kvm-x86?] WARNING in kvm_arch_can_dequeue_async_page_present
-From: Sean Christopherson <seanjc@google.com>
-To: syzbot <syzbot+6bea72f0c8acbde47c55@syzkaller.appspotmail.com>
-Cc: bp@alien8.de, dave.hansen@linux.intel.com, hpa@zytor.com, 
-	kvm@vger.kernel.org, linux-kernel@vger.kernel.org, mingo@redhat.com, 
-	pbonzini@redhat.com, syzkaller-bugs@googlegroups.com, tglx@linutronix.de, 
-	x86@kernel.org
-Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-On Fri, Nov 07, 2025, syzbot wrote:
-> Hello,
-> 
-> syzbot found the following issue on:
-> 
-> HEAD commit:    9c0826a5d9aa Add linux-next specific files for 20251107
-> git tree:       linux-next
-> console output: https://syzkaller.appspot.com/x/log.txt?x=13a67012580000
-> kernel config:  https://syzkaller.appspot.com/x/.config?x=4f8fcc6438a785e7
-> dashboard link: https://syzkaller.appspot.com/bug?extid=6bea72f0c8acbde47c55
-> compiler:       Debian clang version 20.1.8 (++20250708063551+0c9f909b7976-1~exp1~20250708183702.136), Debian LLD 20.1.8
-> syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=14e110b4580000
-> C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=14ab1114580000
-> 
-> Downloadable assets:
-> disk image: https://storage.googleapis.com/syzbot-assets/6b76dc0ec17f/disk-9c0826a5.raw.xz
-> vmlinux: https://storage.googleapis.com/syzbot-assets/522b6d2a1d1d/vmlinux-9c0826a5.xz
-> kernel image: https://storage.googleapis.com/syzbot-assets/4a58225d70f3/bzImage-9c0826a5.xz
-> 
-> IMPORTANT: if you fix the issue, please add the following tag to the commit:
-> Reported-by: syzbot+6bea72f0c8acbde47c55@syzkaller.appspotmail.com
-> 
-> kvm_intel: L1TF CPU bug present and SMT on, data leak possible. See CVE-2018-3646 and https://www.kernel.org/doc/html/latest/admin-guide/hw-vuln/l1tf.html for details.
-> ------------[ cut here ]------------
-> WARNING: arch/x86/kvm/x86.c:13965 at kvm_arch_can_dequeue_async_page_present+0x1a9/0x2f0 arch/x86/kvm/x86.c:13965, CPU#0: syz.0.17/5998
-> Modules linked in:
-> CPU: 0 UID: 0 PID: 5998 Comm: syz.0.17 Not tainted syzkaller #0 PREEMPT(full) 
-> Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 10/02/2025
-> RIP: 0010:kvm_arch_can_dequeue_async_page_present+0x1a9/0x2f0 arch/x86/kvm/x86.c:13965
-> Code: 00 65 48 8b 0d 58 81 72 11 48 3b 4c 24 40 75 21 48 8d 65 d8 5b 41 5c 41 5d 41 5e 41 5f 5d e9 3e af 20 0a cc e8 48 e1 79 00 90 <0f> 0b 90 b0 01 eb c0 e8 4b c1 1d 0a f3 0f 1e fa 4c 8d b3 f8 02 00
-> RSP: 0018:ffffc90003167460 EFLAGS: 00010293
-> RAX: ffffffff8147eee8 RBX: ffff888030280000 RCX: ffff88807fda1e80
-> RDX: 0000000000000000 RSI: 0000000000000000 RDI: 0000000000000009
-> RBP: ffffc900031674e8 R08: ffff88803028003f R09: 1ffff11006050007
-> R10: dffffc0000000000 R11: ffffed1006050008 R12: 1ffff9200062ce8c
-> R13: dffffc0000000000 R14: 0000000000000000 R15: dffffc0000000000
-> FS:  000055556a8c3500(0000) GS:ffff888125a79000(0000) knlGS:0000000000000000
-> CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-> CR2: 0000000000000000 CR3: 0000000072cc2000 CR4: 00000000003526f0
-> Call Trace:
->  <TASK>
->  kvm_check_async_pf_completion+0x102/0x3c0 virt/kvm/async_pf.c:158
->  vcpu_enter_guest arch/x86/kvm/x86.c:11209 [inline]
->  vcpu_run+0x26be/0x7760 arch/x86/kvm/x86.c:11650
->  kvm_arch_vcpu_ioctl_run+0x116c/0x1cb0 arch/x86/kvm/x86.c:11995
->  kvm_vcpu_ioctl+0x99a/0xed0 virt/kvm/kvm_main.c:4477
->  vfs_ioctl fs/ioctl.c:51 [inline]
->  __do_sys_ioctl fs/ioctl.c:597 [inline]
->  __se_sys_ioctl+0xfc/0x170 fs/ioctl.c:583
->  do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
->  do_syscall_64+0xfa/0xfa0 arch/x86/entry/syscall_64.c:94
->  entry_SYSCALL_64_after_hwframe+0x77/0x7f
-> RIP: 0033:0x7f1588b8f6c9
-> Code: ff ff c3 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 40 00 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 a8 ff ff ff f7 d8 64 89 01 48
-> RSP: 002b:00007ffdfcd816a8 EFLAGS: 00000246 ORIG_RAX: 0000000000000010
-> RAX: ffffffffffffffda RBX: 00007f1588de5fa0 RCX: 00007f1588b8f6c9
-> RDX: 0000000000000000 RSI: 000000000000ae80 RDI: 0000000000000006
-> RBP: 00007f1588c11f91 R08: 0000000000000000 R09: 0000000000000000
-> R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000000
-> R13: 00007f1588de5fa0 R14: 00007f1588de5fa0 R15: 0000000000000003
->  </TASK>
-> 
-> 
-> ---
+Hi all,
 
-Now that the buggy patch is gone from linux-next...
+This series is intended to initiate the enablement of APX support in KVM.
+The goal is to start discussions and, ideally, reach consensus on key
+decisions for the enabling path.
 
-#syz invalid
+== Introduction ==
+
+Intel introduces Advanced Performance Extensions (APX), which add 16
+additional 64-bit general-purpose registers (EGPRs: R16–R31).
+
+APX also introduces new instruction prefixes that extend register indices
+to 5 bits, providing additional encoding space. The feature specification
+[1] describes these extensions in detail.
+
+The specification deliberately scopes out some areas. For example,
+Sections 3.1.4.4.2–7 note that initialization and reset behaviors follow
+existing XSTATE conventions.
+
+That said, there are still some essential elements to consider at first.
+
+== Ingredients to Consider ==
+
+With guest exposure, the new registers will affect how KVM handles VM
+exits and manages guest state. So the extended register indices need to
+be properly interpreted.
+
+There are three relevant contexts where KVM must handle the new 5-bit
+register index:
+
+ * Instruction Information in VMCS
+
+   VMX provides instruction information through a dedicated field in the
+   VMCS. However, the legacy format supports only 4-bit register indices,
+   so a new 64-bit field was introduced to support 5-bit indices for
+   EGPRs (see Table 3.11 in the spec).
+
+ * Exit Qualification in VMCS
+
+   This field also carries register index information. Fortunately, the
+   current layout is not fully packed, so it appears feasible to extend
+   index fields to 5 bits without structural conflict.
+
+ * Instruction Emulator
+
+   When exits are handled through instruction emulation, the emulator
+   must decode REX2-prefixed instructions, which carry the additional
+   bits encoding the extended indices and other new modifiers.
+
+Once handlers can identify EGPR-related indices, the next question is how
+to access and maintain their state.
+
+ * Extended GPR State Management
+
+   Current KVM behavior for legacy GPRs can be summarized as follows:
+   (a) All legacy GPRs are saved on every VM exit and written back on
+       re-entry. Most access operations go through KVM register cache.
+   (b) The instruction emulator also maintains a temporary GPR cache
+       during emulation, backed by the same KVM-managed accessor
+       interface.
+
+   For the new EGPRs, there are a few important differences:
+   (a) They are general-purpose registers, but their state is
+       XSAVE-managed, which makes them distinct from legacy GPRs.
+   (b) The kernel itself currently does not use them, so there is no
+       requirement to save EGPRs on every VM exit -- they can remain in
+       hardware registers.
+
+The mechanism to read and write EGPR state will therefore be commonly
+needed by both VMX handlers and the instruction emulator.
+
+== Approaches to Support ==
+
+Given the above aspects, the first step is to build out a generalized GPR
+accessor framework. This constitutes the first part (PART1: PATCH1–3) of
+the series, laying the foundational infrastructure.
+
+ * New EGPR Accessors (PATCH3)
+
+   Since EGPRs are not yet clobbered by the host, they can be accessed
+   directly through hardware, using the existing helpers kvm_fpu_get()
+   and kvm_fpu_put().
+
+   This model follows the same approach used for legacy FP state
+   handling.
+
+   The design choice is based on the following considerations:
+   (a) Caching EGPR state on every VM exit would be unnecessary cost.
+   (b) If EGPRs are updated during VM exit handling or instruction
+       emulation, synchronizing them with the guest fpstate would require
+       new interfaces to interact with x86 core logic, adding complexity.
+
+ * Common GPR Access Interface --Unifying Legacy and Extended Accessors
+   (PATCH2)
+
+   Although legacy GPRs and EGPRs differ in how their state is accessed,
+   that distinction does not justify maintaining separate interfaces. A
+   unified accessor abstraction allows both legacy and extended registers
+   to be accessed uniformly, simplifying usage for both exit handlers and
+   the emulator.
+
+Returning to the remaining key ingredients -- VMX handlers and the
+instruction emulator -- the necessary updates break down into the
+following.
+
+ * Extended Instruction Information Extraction (PART2: PATCH4–8)
+
+   Currently, instruction-related VMCS fields are stored as 32-bit raw
+   data and interpreted on site. Adding separate variable in this manner
+   would increase code complexity.
+
+   Thus, refactoring this logic into a proper data structure with clear
+   semantics appears to be a sensible direction.
+
+ * Instruction Emulator (PART3: PATCH9–16)
+
+   As noted in Paolo’s earlier feedback [2], support for REX2-prefixed
+   instruction emulation is required.
+
+   While REX2 largely mirrors legacy opcode behavior, a few exceptions
+   and new instructions introduce additional decoding and handling
+   requirements.
+
+Conceptually, the changes are straightforward, though details are better
+handled directly in the patches.
+
+Finally, actual feature exposure and XCR0 management form the last stage
+of enabling (PART4: PATCH17-20), relatively small but with a few key
+constraints:
+
+ * XCR0 updates and CPUID feature exposure must occur together (PATCH18).
+ * The current enabling scope applies only to VMX (PATCH17-18).
+
+== Patchset ==
+
+As mentioned earlier, while the number of patches is relatively large,
+the series is organized into four logical parts for clarity and
+reviewability:
+
+ * PART1, PATCH 01–03: GPR accessor refactoring (foundational)
+ * PART2, PATCH 04–08: VMX support for EGPR index handling
+ * PART3, PATCH 09–16: Instruction emulator support for REX2
+ * PART4, PATCH 17–20: APX exposure and minor selftest updates
+
+Each patch includes an RFC note to provide context for reviewers.
+
+This series is based on the next branch of the KVM x86 tree [3] and is
+available at:
+
+  git://github.com/intel/apx.git apx-kvm_rfc-v1
+
+== Testing ==
+
+Testing so far has focused on unit and synthetic coverage of relevant
+code paths using KVM selftests, both on legacy and APX systems.
+
+For decoder-related changes, additional testing was performed by invoking
+x86_decode_insn() from a pseudo driver with some test inputs to exercise
+REX2 and legacy decoding logic.
+
+== References ==
+
+[1] https://cdrdv2.intel.com/v1/dl/getContent/784266
+[2] https://lore.kernel.org/kvm/CABgObfaHp9bH783Kdwm_tMBHZk5zWCxD7R+RroB_Q_o5NWBVZg@mail.gmail.com/
+[3] https://github.com/kvm-x86/linux
+
+
+I would also give thanks to Chao and Zhao for helping me out in this
+KVM series.
+
+Thanks for a look on this.
+Chang
+
+Chang S. Bae (19):
+  KVM: x86: Rename register accessors to be GPR-specific
+  KVM: x86: Refactor GPR accessors to differentiate register access
+    types
+  KVM: x86: Implement accessors for extended GPRs
+  KVM: VMX: Introduce unified instruction info structure
+  KVM: VMX: Refactor instruction information retrieval
+  KVM: VMX: Refactor GPR index retrieval from exit qualification
+  KVM: nVMX: Support the extended instruction info field
+  KVM: VMX: Support extended register index in exit handling
+  KVM: x86: Support EGPR accessing and tracking for instruction
+    emulation
+  KVM: x86: Refactor REX prefix handling in instruction emulation
+  KVM: x86: Refactor opcode table lookup in instruction emulation
+  KVM: x86: Support REX2-extended register index in the decoder
+  KVM: x86: Add REX2 opcode tables to the instruction decoder
+  KVM: x86: Emulate REX2-prefixed 64-bit absolute jump
+  KVM: x86: Reject EVEX-prefix instructions in the emulator
+  KVM: x86: Decode REX2 prefix in the emulator
+  KVM: x86: Prepare APX state setting in XCR0
+  KVM: x86: Expose APX sub-features to guests
+  KVM: selftests: Add APX state handling and XCR0 sanity checks
+
+Peter Fang (1):
+  KVM: x86: Expose APX foundational feature bit to guests
+
+ arch/x86/include/asm/kvm_host.h               |  19 ++
+ arch/x86/include/asm/kvm_vcpu_regs.h          |  16 ++
+ arch/x86/include/asm/vmx.h                    |   2 +
+ arch/x86/kvm/cpuid.c                          |  14 +-
+ arch/x86/kvm/emulate.c                        | 177 +++++++++++++++---
+ arch/x86/kvm/fpu.h                            |  82 ++++++++
+ arch/x86/kvm/kvm_cache_regs.h                 |   1 +
+ arch/x86/kvm/kvm_emulate.h                    |  44 ++++-
+ arch/x86/kvm/reverse_cpuid.h                  |   6 +
+ arch/x86/kvm/svm/svm.c                        |  23 ++-
+ arch/x86/kvm/vmx/nested.c                     |  83 ++++----
+ arch/x86/kvm/vmx/nested.h                     |   2 +-
+ arch/x86/kvm/vmx/vmcs12.c                     |   1 +
+ arch/x86/kvm/vmx/vmcs12.h                     |   3 +-
+ arch/x86/kvm/vmx/vmx.c                        |  26 +--
+ arch/x86/kvm/vmx/vmx.h                        | 106 ++++++++++-
+ arch/x86/kvm/x86.c                            |  29 ++-
+ arch/x86/kvm/x86.h                            |  49 ++++-
+ arch/x86/kvm/xen.c                            |   2 +-
+ .../selftests/kvm/include/x86/processor.h     |   1 +
+ tools/testing/selftests/kvm/x86/state_test.c  |   6 +
+ .../selftests/kvm/x86/xcr0_cpuid_test.c       |  20 ++
+ 22 files changed, 592 insertions(+), 120 deletions(-)
+
+
+base-commit: e9a6fb0bcdd7609be6969112f3fbfcce3b1d4a7c
+-- 
+2.51.0
+
