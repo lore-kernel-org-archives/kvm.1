@@ -1,89 +1,89 @@
-Received: from fout-b8-smtp.messagingengine.com (fout-b8-smtp.messagingengine.com [202.12.124.151])
+Received: from fhigh-b8-smtp.messagingengine.com (fhigh-b8-smtp.messagingengine.com [202.12.124.159])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 114D02FE59A;
-	Mon, 10 Nov 2025 21:32:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.151
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9FB2E2BFC73;
+	Mon, 10 Nov 2025 21:32:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.159
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762810327; cv=none; b=L897Py4ADtM/PDYeHOUl/uTLZ3ifvhIhi4oM/YECcxx6b2Ow9SaVcC9yzIcojiVJBJaAn36GMjRfgyvEZ22g5G9C9ivemCf295DDRVX+k2qfAdZay/jhD6+sZwTdcGxnpfJdYQcRcTVhf7eXxYMJxvfRoSLkCpO8QqxOb3cFtTM=
+	t=1762810327; cv=none; b=VOg7Annqf29zkupQK/OQeZxPuZV35f2XneYlqvErtV8rg6G+w9vbA1FZOKdt5ovQ6IiVm3TaXMIvbYuUhjbg+Ai9mMCWDIYX18IMvQaihWUOvyzE/Evt5jHpL4kZ2HbjWtgkS+Fr55uehvC42Uk5YRlQ4S8vwgj3excKQa7IT10=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1762810327; c=relaxed/simple;
-	bh=udhFd8bnikNF4U1Q3cHYKYq3qZpVN84Y40g+EqnzB8U=;
+	bh=FiFzuN3td0ZW+I+77rN9OGFN9YFjAznR2RMkiWmt8VQ=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=kA3vE8w/KywTv4FNzGCqapyVGfeN3jgZ3qS+BB1O38/tkb2+ROMdKiPttnQLlMhfndVTiu5Uau/wSyGLZelZLVO3fo93H6gY7ImxXvzUPCzNqvb8ABzwowMw7FXlikym1qf15TiGE7Jpw1qFm/XpcdMVDutHj7j67gYYR00FAs8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=shazbot.org; spf=pass smtp.mailfrom=shazbot.org; dkim=pass (2048-bit key) header.d=shazbot.org header.i=@shazbot.org header.b=NNZUxSkp; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=gC+hhKOs; arc=none smtp.client-ip=202.12.124.151
+	 MIME-Version:Content-Type; b=tAf8MWCpcBPqDMpIH+keRiLRBxFaepOCu6z5LN0DZRYGzSrkhXZmOYlrLO6ubhXVR7a5gkE2sMzXf3W2/xJBOzsSjYp33VSXrJM3FSZ06SCm34CH4sdEzMPSBLr/CLB+XVcYSgMa26pcQ+0L13XevFoU0V7ayafc3FE3M0IcU+8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=shazbot.org; spf=pass smtp.mailfrom=shazbot.org; dkim=pass (2048-bit key) header.d=shazbot.org header.i=@shazbot.org header.b=NPe51RGA; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=0I7YgvCP; arc=none smtp.client-ip=202.12.124.159
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=shazbot.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=shazbot.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=shazbot.org header.i=@shazbot.org header.b="NNZUxSkp";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="gC+hhKOs"
-Received: from phl-compute-05.internal (phl-compute-05.internal [10.202.2.45])
-	by mailfout.stl.internal (Postfix) with ESMTP id E9A1E1D000FA;
-	Mon, 10 Nov 2025 16:32:02 -0500 (EST)
+	dkim=pass (2048-bit key) header.d=shazbot.org header.i=@shazbot.org header.b="NPe51RGA";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="0I7YgvCP"
+Received: from phl-compute-11.internal (phl-compute-11.internal [10.202.2.51])
+	by mailfhigh.stl.internal (Postfix) with ESMTP id AD5497A00CC;
+	Mon, 10 Nov 2025 16:32:04 -0500 (EST)
 Received: from phl-mailfrontend-02 ([10.202.2.163])
-  by phl-compute-05.internal (MEProxy); Mon, 10 Nov 2025 16:32:03 -0500
+  by phl-compute-11.internal (MEProxy); Mon, 10 Nov 2025 16:32:04 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shazbot.org; h=
 	cc:cc:content-transfer-encoding:content-type:content-type:date
 	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to; s=fm2; t=1762810322;
-	 x=1762896722; bh=1E6u0oaZlVkxhpwKTBr/EX/G0FGOFEVQY7LANLUpoZs=; b=
-	NNZUxSkp4vSHsvtawj3MmM5O7dy3qY9bntMq8OuTqO++p2fYhiOkdok+33VJqcS9
-	cEvJGaGe8hTF71YdT3h/S692SSyzPIO4eIf+xdz3fzRV6YIdnQdtArcwTY9ABr6z
-	Wh98Qe4aiK6/krnpBw0KDwwxmXCyBC5V0H2tpu6dEphRhIBuuqJUAcGmLBZ/MjWS
-	4QJ0mHfPQjulprrbggohfqHikUlyEVaAutSQ18jsxFoxmcdqsOcWQ3/JN5jAhUz1
-	dfouo4jRMymqEI6OnmZybqXLrBQEliAe4+pMzGWDODIP5e4UIRWyanKxq1gX3lNW
-	WX5wGQgAt9gQYEBGkCOwiw==
+	:references:reply-to:subject:subject:to:to; s=fm2; t=1762810324;
+	 x=1762896724; bh=VHtnDqllUYwlSha0vfVZNUtiMI4Z2TOYXVyInyROHzY=; b=
+	NPe51RGAeg7kIl2IWscHi7pT8Nbbuv6l2Dw5febmah4nUD9wgp/n4od+eVwCMwQh
+	ragHG4zInloXgD6eZnKiCHXiTnI+UpUha5W9ylnEzzz0aDodAzTE5MDC70E90lfo
+	6xA27s2ZACKrzU6AxVJVwPwnn3vZpUjH7twLyTaK5OQluibOA7Z4zZNJ/AbdA6GW
+	/K7pooOBrDBF7NejoNjhPkx2lmWtDWxUHW9awvdXtA9Q6CA0T/NyJr5kzQa+Tgc8
+	qh5kYV++5YsBqGPY+OBWgUa67uBEkB+YjTm5cCtqxe3UWXX1ryqNvGL6W3YtrErS
+	YhbRDFP5tKiH6m6DGgkBCg==
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
 	messagingengine.com; h=cc:cc:content-transfer-encoding
 	:content-type:content-type:date:date:feedback-id:feedback-id
 	:from:from:in-reply-to:in-reply-to:message-id:mime-version
 	:references:reply-to:subject:subject:to:to:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=1762810322; x=
-	1762896722; bh=1E6u0oaZlVkxhpwKTBr/EX/G0FGOFEVQY7LANLUpoZs=; b=g
-	C+hhKOs60Kxp+dFbsStjHPeHdZRye5P+azAqGWDe0JGJNhZNsFBxMlWtbRoCy1e+
-	qt8UXzwGn2bYtz/R06vS5iY/7JmXq4IJfvEiwWkHNqKC4IWfJPz4eO/dEmo44c0J
-	ONrRlC2W55/OjdzhYxtk08s9S0A+DaTnRDbrUrjdnHwSiEhPODm3TMytnm6/vDHx
-	/x71mpdZhjuukxNQS8nW06lG40qMtllMBIWqBPx28Y+AE/2Mmn1aepm4DZRJokmY
-	VtbDgTD2jGOCOYPvxdmDijul/wZBCj7UnDmkkSElRMGDxJoUPA6fm7jSnNpZ2DnJ
-	EAOieCEq7fanyAF89/7Kg==
-X-ME-Sender: <xms:0lkSaYMYKflndtOLT5UTxb7Mx7z3CS3TZ6zKOqMfVLj27LvmWes1Dw>
-    <xme:0lkSaZCBlofumg-jurvHDXAIRX1Ou01o0s0YMhAmNp_2j3mHa2impIYOWSKVfAxEq
-    S2NBaQZ1Pj3osoda4kNLmzR5xaC1uAmOYIKzhFU-yWeKVdyRwd0Fw>
-X-ME-Received: <xmr:0lkSafLlFriDV9qwFzXBwyxGABnqEQNSAOQkWEKr70KZlPCS6S6_oV-K>
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=1762810324; x=
+	1762896724; bh=VHtnDqllUYwlSha0vfVZNUtiMI4Z2TOYXVyInyROHzY=; b=0
+	I7YgvCPrakAT3e7WW7P9ThlrIPW4tAydiRdcXSx6pOt9biWvMOwTwvU8ezGeXqga
+	hPHRZD8P931TKRIXKov0asmZFHrOXg4zOF/0Y969AbZ+gobvFO5+EuDys9Lb/MS9
+	CIzUntAUTECADHQ/Eb1SNcOO4J6T/PgeEDf9831Vyi2z430dtXyiLdFPFqt5v3p4
+	VUP0zNitZGQzyxmZIJ2pwCAuQjOkD1v3sxRiykUGBMB/M2yJSHk3D/wKW/PN5Uf4
+	eTb0QdmHDCtWVQ9GLhydnQqct3hwB4K70V8ZR0UOljEiWlUZxwzT/DwzPrG1EUhL
+	AY6KJNhoBZUfi7iEDbMvQ==
+X-ME-Sender: <xms:1FkSaQfnZS3Zzq1COs0wsjSOnF_rzhoNF9BEcc9eqLcL3b4RkdvdGw>
+    <xme:1FkSacQHtUAHAloOSSrxwXdpvLn0oDC6isQAgEGPOEh6Fogwd2NlxdIuNCpntHO62
+    cqWNKuQzkYZjhTFiIjBEzEnq3jwSsEipoFYZqUZuza4RwdJKBLo>
+X-ME-Received: <xmr:1FkSaRbCmMYJCQ9Xf4qyqGsan4iYzdEn5SxfzSMWcPpmh8zmBKn8W7Qt>
 X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdeggdduleelgedtucetufdoteggodetrf
     dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
     rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
     gurhepfffhvfevuffkjghfgggtgfesthejredttddtvdenucfhrhhomheptehlvgigucgh
     ihhllhhirghmshhonhcuoegrlhgvgiesshhhrgiisghothdrohhrgheqnecuggftrfgrth
-    htvghrnhepteetudelgeekieegudegleeuvdffgeehleeivddtfeektdekkeehffehudet
-    hffhnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomheprg
-    hlvgigsehshhgriigsohhtrdhorhhgpdhnsggprhgtphhtthhopeejpdhmohguvgepshhm
-    thhpohhuthdprhgtphhtthhopegrmhgrshhtrhhosehfsgdrtghomhdprhgtphhtthhope
-    gumhgrthhlrggtkhesghhoohhglhgvrdgtohhmpdhrtghpthhtohepshhhuhgrhheskhgv
-    rhhnvghlrdhorhhgpdhrtghpthhtohepkhhvmhesvhhgvghrrdhkvghrnhgvlhdrohhrgh
-    dprhgtphhtthhopehlihhnuhigqdhkshgvlhhfthgvshhtsehvghgvrhdrkhgvrhhnvghl
-    rdhorhhgpdhrtghpthhtoheplhhinhhugidqkhgvrhhnvghlsehvghgvrhdrkhgvrhhnvg
-    hlrdhorhhgpdhrtghpthhtohepjhhgghesiihivghpvgdrtggr
-X-ME-Proxy: <xmx:0lkSaSNP2Fk_ea79MSC3qO7cKQG5RsnV9twBB9KBEMIvDDsVbsPwjg>
-    <xmx:0lkSad7hA3rvpA9XNWFrH0NUmLSTobmXjmolU19kRmLBBAG4TNFsZw>
-    <xmx:0lkSaU69JaJC_ts2dKjVNfUaaygeLcACiYZGuiNIX-k51mE-nCiH1g>
-    <xmx:0lkSabE8TEJshgzkWIBRxe8puvwbgbhcBnqYqSlAGW2baQ2vhG9LLA>
-    <xmx:0lkSaTQiBjX4FnlosHQBX0GrYTfHIO580pnh2ytiFUOHuHsBsVD8yTgL>
+    htvghrnhephedvtdeuveejudffjeefudfhueefjedvtefgffdtieeiudfhjeejhffhfeeu
+    vedunecuffhomhgrihhnpehkvghrnhgvlhdrohhrghenucevlhhushhtvghrufhiiigvpe
+    dtnecurfgrrhgrmhepmhgrihhlfhhrohhmpegrlhgvgiesshhhrgiisghothdrohhrghdp
+    nhgspghrtghpthhtohepjedpmhhouggvpehsmhhtphhouhhtpdhrtghpthhtoheprghmrg
+    hsthhrohesfhgsrdgtohhmpdhrtghpthhtohepughmrghtlhgrtghksehgohhoghhlvgdr
+    tghomhdprhgtphhtthhopehshhhurghhsehkvghrnhgvlhdrohhrghdprhgtphhtthhope
+    hkvhhmsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtoheplhhinhhugidqkhhs
+    vghlfhhtvghsthesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehlihhnuh
+    igqdhkvghrnhgvlhesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehjghhg
+    seiiihgvphgvrdgtrg
+X-ME-Proxy: <xmx:1FkSaXdiG1yxpuzAL15ndbFPqNpkqalZpZ45mv01GwQcU8UgmJiXKw>
+    <xmx:1FkSaaKUYF0zQA5YUex-gKm2COYlzzjqW-3RlzjIBuzn7sPJO4aZmA>
+    <xmx:1FkSacLy6X1fHfNW-fN43DwwmlJh-CkBj4FIi_WVs4bqvOv4yXaq9w>
+    <xmx:1FkSaRU3zfv19b4rCIveaR4ZwA41hJF_ooUsNZ5Qy0Sy1Wn12CGUxg>
+    <xmx:1FkSaWibPh5DLDyJZfoKMPFOchJYt-Q6EIQhR7yLBePeM3DskmRQwRU->
 Feedback-ID: i03f14258:Fastmail
 Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
- 10 Nov 2025 16:32:01 -0500 (EST)
-Date: Mon, 10 Nov 2025 14:31:52 -0700
+ 10 Nov 2025 16:32:03 -0500 (EST)
+Date: Mon, 10 Nov 2025 14:31:54 -0700
 From: Alex Williamson <alex@shazbot.org>
 To: Alex Mastro <amastro@fb.com>
 Cc: David Matlack <dmatlack@google.com>, Shuah Khan <shuah@kernel.org>,
  <kvm@vger.kernel.org>, <linux-kselftest@vger.kernel.org>,
  <linux-kernel@vger.kernel.org>, Jason Gunthorpe <jgg@ziepe.ca>
-Subject: Re: [PATCH 2/4] vfio: selftests: fix map limit tests to use last
- available iova
-Message-ID: <20251110143152.5af498f4.alex@shazbot.org>
-In-Reply-To: <20251110-iova-ranges-v1-2-4d441cf5bf6d@fb.com>
+Subject: Re: [PATCH 3/4] vfio: selftests: add iova allocator
+Message-ID: <20251110143154.3ff4aa09.alex@shazbot.org>
+In-Reply-To: <20251110-iova-ranges-v1-3-4d441cf5bf6d@fb.com>
 References: <20251110-iova-ranges-v1-0-4d441cf5bf6d@fb.com>
-	<20251110-iova-ranges-v1-2-4d441cf5bf6d@fb.com>
+	<20251110-iova-ranges-v1-3-4d441cf5bf6d@fb.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -93,74 +93,153 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Mon, 10 Nov 2025 13:10:42 -0800
+On Mon, 10 Nov 2025 13:10:43 -0800
 Alex Mastro <amastro@fb.com> wrote:
 
-> Use the newly available vfio_pci_iova_ranges() to determine the last
-> legal IOVA, and use this as the basis for vfio_dma_map_limit_test tests.
+> Add struct iova_allocator, which gives tests a convenient way to generate
+> legally-accessible IOVAs to map.
 > 
-> Fixes: de8d1f2fd5a5 ("vfio: selftests: add end of address space DMA map/unmap tests")
+> This is based on Alex Williamson's patch series for adding an IOVA
+> allocator [1].
+> 
+> [1] https://lore.kernel.org/all/20251108212954.26477-1-alex@shazbot.org/
+> 
 > Signed-off-by: Alex Mastro <amastro@fb.com>
 > ---
->  tools/testing/selftests/vfio/vfio_dma_mapping_test.c | 17 +++++++++++++++--
->  1 file changed, 15 insertions(+), 2 deletions(-)
+>  .../testing/selftests/vfio/lib/include/vfio_util.h | 14 +++++
+>  tools/testing/selftests/vfio/lib/vfio_pci_device.c | 65 +++++++++++++++++++++-
+>  2 files changed, 78 insertions(+), 1 deletion(-)
 > 
-> diff --git a/tools/testing/selftests/vfio/vfio_dma_mapping_test.c b/tools/testing/selftests/vfio/vfio_dma_mapping_test.c
-> index 4f1ea79a200c..37c2a342df8d 100644
-> --- a/tools/testing/selftests/vfio/vfio_dma_mapping_test.c
-> +++ b/tools/testing/selftests/vfio/vfio_dma_mapping_test.c
-> @@ -3,6 +3,8 @@
->  #include <sys/mman.h>
->  #include <unistd.h>
+> diff --git a/tools/testing/selftests/vfio/lib/include/vfio_util.h b/tools/testing/selftests/vfio/lib/include/vfio_util.h
+> index fb5efec52316..bb1e7d39dfb9 100644
+> --- a/tools/testing/selftests/vfio/lib/include/vfio_util.h
+> +++ b/tools/testing/selftests/vfio/lib/include/vfio_util.h
+> @@ -13,6 +13,8 @@
 >  
-> +#include <uapi/linux/types.h>
+>  #include "../../../kselftest.h"
+>  
+> +#define ALIGN(x, a)	(((x) + (a - 1)) & (~((a) - 1)))
+> +
+>  #define VFIO_LOG_AND_EXIT(...) do {		\
+>  	fprintf(stderr, "  " __VA_ARGS__);	\
+>  	fprintf(stderr, "\n");			\
+> @@ -188,6 +190,13 @@ struct vfio_pci_device {
+>  	struct vfio_pci_driver driver;
+>  };
+>  
+> +struct iova_allocator {
+> +	struct iommu_iova_range *ranges;
+> +	size_t nranges;
+> +	size_t range_idx;
+> +	iova_t iova_next;
+> +};
+> +
+>  /*
+>   * Return the BDF string of the device that the test should use.
+>   *
+> @@ -212,6 +221,11 @@ void vfio_pci_device_reset(struct vfio_pci_device *device);
+>  struct iommu_iova_range *vfio_pci_iova_ranges(struct vfio_pci_device *device,
+>  					      size_t *nranges);
+>  
+> +int iova_allocator_init(struct vfio_pci_device *device,
+> +			    struct iova_allocator *allocator);
+> +void iova_allocator_deinit(struct iova_allocator *allocator);
+> +iova_t iova_allocator_alloc(struct iova_allocator *allocator, size_t size);
+> +
+>  int __vfio_pci_dma_map(struct vfio_pci_device *device,
+>  		       struct vfio_dma_region *region);
+>  int __vfio_pci_dma_unmap(struct vfio_pci_device *device,
+> diff --git a/tools/testing/selftests/vfio/lib/vfio_pci_device.c b/tools/testing/selftests/vfio/lib/vfio_pci_device.c
+> index 6bedbe65f0a1..a634feb1d378 100644
+> --- a/tools/testing/selftests/vfio/lib/vfio_pci_device.c
+> +++ b/tools/testing/selftests/vfio/lib/vfio_pci_device.c
+> @@ -12,11 +12,12 @@
+>  #include <sys/mman.h>
+>  
+>  #include <uapi/linux/types.h>
 > +#include <linux/iommufd.h>
 >  #include <linux/limits.h>
 >  #include <linux/mman.h>
->  #include <linux/sizes.h>
-> @@ -219,7 +221,10 @@ FIXTURE_VARIANT_ADD_ALL_IOMMU_MODES();
->  FIXTURE_SETUP(vfio_dma_map_limit_test)
->  {
->  	struct vfio_dma_region *region = &self->region;
+> +#include <linux/overflow.h>
+>  #include <linux/types.h>
+>  #include <linux/vfio.h>
+> -#include <linux/iommufd.h>
+>  
+>  #include "../../../kselftest.h"
+>  #include <vfio_util.h>
+> @@ -190,6 +191,68 @@ struct iommu_iova_range *vfio_pci_iova_ranges(struct vfio_pci_device *device,
+>  	return ranges;
+>  }
+>  
+> +int iova_allocator_init(struct vfio_pci_device *device,
+> +			struct iova_allocator *allocator)
+> +{
 > +	struct iommu_iova_range *ranges;
->  	u64 region_size = getpagesize();
-> +	iova_t last_iova;
 > +	size_t nranges;
->  
->  	/*
->  	 * Over-allocate mmap by double the size to provide enough backing vaddr
-> @@ -232,8 +237,13 @@ FIXTURE_SETUP(vfio_dma_map_limit_test)
->  			     MAP_ANONYMOUS | MAP_PRIVATE, -1, 0);
->  	ASSERT_NE(region->vaddr, MAP_FAILED);
->  
-> -	/* One page prior to the end of address space */
-> -	region->iova = ~(iova_t)0 & ~(region_size - 1);
-> +	ranges = vfio_pci_iova_ranges(self->device, &nranges);
-> +	VFIO_ASSERT_NOT_NULL(ranges);
-> +	last_iova = ranges[nranges - 1].last;
+> +
+> +	memset(allocator, 0, sizeof(*allocator));
+> +
+> +	ranges = vfio_pci_iova_ranges(device, &nranges);
+> +	if (!ranges)
+> +		return -ENOENT;
+> +
+> +	*allocator = (struct iova_allocator){
+> +		.ranges = ranges,
+> +		.nranges = nranges,
+> +		.range_idx = 0,
+> +		.iova_next = 0,
 
-
-Building on the imposed requirement of ordered ranges.  Thanks,
+iova_next needs to be initialized from ranges[0].start.  Thanks,
 
 Alex
 
-
-> +	free(ranges);
+> +	};
 > +
-> +	/* One page prior to the last iova */
-> +	region->iova = last_iova & ~(region_size - 1);
->  	region->size = region_size;
->  }
->  
-> @@ -276,6 +286,9 @@ TEST_F(vfio_dma_map_limit_test, overflow)
->  	struct vfio_dma_region *region = &self->region;
->  	int rc;
->  
-> +	if (region->iova != (~(iova_t)0 & ~(region->size - 1)))
-> +		SKIP(return, "IOMMU address space insufficient for overflow test");
+> +	return 0;
+> +}
 > +
->  	region->size = self->mmap_size;
->  
->  	rc = __vfio_pci_dma_map(self->device, region);
+> +void iova_allocator_deinit(struct iova_allocator *allocator)
+> +{
+> +	free(allocator->ranges);
+> +}
+> +
+> +iova_t iova_allocator_alloc(struct iova_allocator *allocator, size_t size)
+> +{
+> +	int idx = allocator->range_idx;
+> +	struct iommu_iova_range *range = &allocator->ranges[idx];
+> +
+> +	VFIO_ASSERT_LT(idx, allocator->nranges, "IOVA allocator out of space\n");
+> +	VFIO_ASSERT_GT(size, 0, "Invalid size arg, zero\n");
+> +	VFIO_ASSERT_EQ(size & (size - 1), 0, "Invalid size arg, non-power-of-2\n");
+> +
+> +	for (;;) {
+> +		iova_t iova, last;
+> +
+> +		iova = ALIGN(allocator->iova_next, size);
+> +
+> +		if (iova < allocator->iova_next || iova > range->last ||
+> +		    check_add_overflow(iova, size - 1, &last) ||
+> +		    last > range->last) {
+> +			allocator->range_idx = ++idx;
+> +			VFIO_ASSERT_LT(idx, allocator->nranges,
+> +				       "Out of ranges for allocation\n");
+> +			allocator->iova_next = (++range)->start;
+> +			continue;
+> +		}
+> +
+> +		if (check_add_overflow(last, (iova_t)1, &allocator->iova_next) ||
+> +		    allocator->iova_next > range->last) {
+> +			allocator->range_idx = ++idx;
+> +			if (idx < allocator->nranges)
+> +				allocator->iova_next = (++range)->start;
+> +		}
+> +
+> +		return iova;
+> +	}
+> +}
+> +
+>  iova_t __to_iova(struct vfio_pci_device *device, void *vaddr)
+>  {
+>  	struct vfio_dma_region *region;
 > 
 
