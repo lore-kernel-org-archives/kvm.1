@@ -1,30 +1,32 @@
-Received: from out-172.mta0.migadu.com (out-172.mta0.migadu.com [91.218.175.172])
+Received: from out-184.mta0.migadu.com (out-184.mta0.migadu.com [91.218.175.184])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B4D1C31281B
-	for <kvm@vger.kernel.org>; Mon, 10 Nov 2025 23:27:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.172
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF779303CB2
+	for <kvm@vger.kernel.org>; Mon, 10 Nov 2025 23:27:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.184
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762817235; cv=none; b=H3vUQld6FMvx4tuzbhl6Q3HF8dV4mmBrtEs+l3V0U4+uuLipU4uZM+0ZeMlvYEGozDZbYGjQibxJvNqricMre7h0KSqPpR3ondv6NICiNASJJK0NN+HyiD5o90ZcTVsbdfXKeRCPxzd/4XRD0caMmmwUcnP4MP4rvLtV5XEi85I=
+	t=1762817237; cv=none; b=o0elpfk+NaoIkOWbAriwn39tGp94yABL8Eot8xVvbXN6lCjjclHs+mPrFS1eYhaVdaDXCyNCyOiFJRKHyBPrvK1cVm+fAMECuEAhorsoFqFDtZHo75PMvDiujb5gJxqYP5ZtBnbyu0RdWA8HHL6P5ACjvdST6EHkUclx3pSmvZ4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762817235; c=relaxed/simple;
-	bh=/9UG0LzYBSu5uJGvcQElIGzsedcqBP/QxZPWBQzj3No=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=hBPh7OAWCDWnTu6K2kmwOaf2d4A7BY9W3y2EvPHCl6gqjaQ6P0W9KtaOuYEvoMl6r2u7C1Lzd8AkcdD2l6RwHeVrJfZCclBGtfS798+7BEtr8coEgU+GbywPDaThig+t0GtxIzBBrh+6UvoANGsqFsIHxoBcrBDJLalLezmKSTc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=sE4rMjGL; arc=none smtp.client-ip=91.218.175.172
+	s=arc-20240116; t=1762817237; c=relaxed/simple;
+	bh=Tf2WOo+nTdA0kHa5juQ5OUWkXPxlWSD/okXr3AMAQic=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=kNxov4IvLuJHAcVJcr3qfjGTdNw6/fHmcX1tlPEI39wLgBCCIx57D9camMgy6astZdOderKPX3+41dhHDdxIr3P+2O+7FTSntOj8640xUj30UsbpKHmXz6HE+AQbYe/veZsz9tdfdZn7F8LttDqfGRJ3ZK8gWoHOwAEMHCF1nGM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=EhjnLSZi; arc=none smtp.client-ip=91.218.175.184
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="sE4rMjGL"
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="EhjnLSZi"
 X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1762817220;
+	t=1762817232;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=dmoWcwjZhu5uEPgclztVaT4/J/i5TtOnZ6ghcyqjVsQ=;
-	b=sE4rMjGLyJeozhD7Y3Prf1Jlo++YUFg+nNWgIVVTy2yyH7xZhUWYtARf45dWgB2YAjQD3g
-	Dl+ml1rf/2xTYRVlo0e2HD4u3o3PcZnQTgbvcrLTlVcgN9KZhaG8sN4VAoh3wlcdiyDOBq
-	RsUK2NIHUkYVP0iVzef77+SkGp3edU0=
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=QN+Jb/sMTKw705goXC8AQxOha75Fi5974iJiM9D+sAM=;
+	b=EhjnLSZi2hbQf2TDrsHHuE9WjfYeOq6pvHrlli78ZzLZedUwedLtc62AsQtHF8jSX5yKc7
+	/baZJOjHuJIbiRT2n8WyF0nyvLR7L7ZZzySy7WQkO1WqkM/NnpHQm1jYE7xRIjxRp5aHA0
+	VgqmHjm6h85AIOgtzRjvnEJXaiKMIbA=
 From: Yosry Ahmed <yosry.ahmed@linux.dev>
 To: Sean Christopherson <seanjc@google.com>
 Cc: Paolo Bonzini <pbonzini@redhat.com>,
@@ -32,9 +34,11 @@ Cc: Paolo Bonzini <pbonzini@redhat.com>,
 	kvm@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	Yosry Ahmed <yosry.ahmed@linux.dev>
-Subject: [PATCH v3 00/14] Improvements for (nested) SVM testing
-Date: Mon, 10 Nov 2025 23:26:28 +0000
-Message-ID: <20251110232642.633672-1-yosry.ahmed@linux.dev>
+Subject: [PATCH v3 07/14] x86/svm: Move report_svm_guest() to the top of svm_tests.c
+Date: Mon, 10 Nov 2025 23:26:35 +0000
+Message-ID: <20251110232642.633672-8-yosry.ahmed@linux.dev>
+In-Reply-To: <20251110232642.633672-1-yosry.ahmed@linux.dev>
+References: <20251110232642.633672-1-yosry.ahmed@linux.dev>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -44,62 +48,61 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Migadu-Flow: FLOW_OUT
 
-This is a combined v2/v3 of the patch series in [1] and [2], with a
-couple of extra changes.
+Move the macro ahead of other tests that will start using it.
 
-The series mostly includes fixups and cleanups, and more importantly new
-tests for selective CR0  write intercepts and LBRV, which cover bugs
-recently fixed by [3] and [4].
+Signed-off-by: Yosry Ahmed <yosry.ahmed@linux.dev>
+---
+ x86/svm_tests.c | 30 +++++++++++++++---------------
+ 1 file changed, 15 insertions(+), 15 deletions(-)
 
-Patches 1-2 are unrelated fixups outside of SVM that I just included
-here instead of submitting separately out of pure laziness.
-
-Patches 3-8 are cleanups and refactoring.
-
-Patch 9 deflakes svm_tsc_scale_test in a not-so-sophisticated way.
-
-Patches 10-11 generalize the existing selective CR0 intercept tests and
-extend them with new test cases.
-
-Patches 12-13 cleanup the existing LBRV tests and extend them with new
-test cases.
-
-Patch 14 is a rename to some of VMCB fields to match recent renames in
-KVM [5]. This is the last patch is in the series also due to laziness.
-
-I realize that the patch ordering is a mess, and I can rebase and
-reorder if it actually matters to anyone.
-
-[1]https://lore.kernel.org/kvm/20251028221213.1937120-1-yosry.ahmed@linux.dev/
-[2]https://lore.kernel.org/kvm/20251104193016.3408754-1-yosry.ahmed@linux.dev/
-[3]https://lore.kernel.org/kvm/20251024192918.3191141-1-yosry.ahmed@linux.dev/
-[4]https://lore.kernel.org/kvm/20251108004524.1600006-1-yosry.ahmed@linux.dev/
-[5]https://lore.kernel.org/kvm/20251110222922.613224-1-yosry.ahmed@linux.dev/
-
-Yosry Ahmed (14):
-  scripts: Always return '2' when skipping tests
-  x86/vmx: Skip vmx_pf_exception_test_fep early if FEP is not available
-  x86/svm: Cleanup selective cr0 write intercept test
-  x86/svm: Move CR0 selective write intercept test near CR3 intercept
-  x86/svm: Add FEP helpers for SVM tests
-  x86/svm: Report unsupported SVM tests
-  x86/svm: Move report_svm_guest() to the top of svm_tests.c
-  x86/svm: Print SVM test names before running tests
-  x86/svm: Deflake svm_tsc_scale_test
-  x86/svm: Generalize and improve selective CR0 write intercept test
-  x86/svm: Add more selective CR0 write and LMSW test cases
-  x86/svm: Cleanup LBRV tests
-  x86/svm: Add more LBRV test cases
-  x86/svm: Rename VMCB fields to match KVM
-
- lib/x86/desc.h       |   8 +
- scripts/runtime.bash |   4 +-
- x86/svm.c            |  12 +-
- x86/svm.h            |   7 +-
- x86/svm_tests.c      | 402 +++++++++++++++++++++++++++++--------------
- x86/vmx_tests.c      |   5 +-
- 6 files changed, 303 insertions(+), 135 deletions(-)
-
+diff --git a/x86/svm_tests.c b/x86/svm_tests.c
+index feeb27d61435b..61ab63db462dc 100644
+--- a/x86/svm_tests.c
++++ b/x86/svm_tests.c
+@@ -37,6 +37,21 @@ u64 latclgi_max;
+ u64 latclgi_min;
+ u64 runs;
+ 
++/*
++ * Report failures from SVM guest code, and on failure, set the stage to -1 and
++ * do VMMCALL to terminate the test (host side must treat -1 as "finished").
++ * TODO: fix the tests that don't play nice with a straight report, e.g. the
++ * V_TPR test fails if report() is invoked.
++ */
++#define report_svm_guest(cond, test, fmt, args...)	\
++do {							\
++	if (!(cond)) {					\
++		report_fail(fmt, ##args);		\
++		set_test_stage(test, -1);		\
++		vmmcall();				\
++	}						\
++} while (0)
++
+ static void null_test(struct svm_test *test)
+ {
+ }
+@@ -1074,21 +1089,6 @@ static bool lat_svm_insn_check(struct svm_test *test)
+ 	return true;
+ }
+ 
+-/*
+- * Report failures from SVM guest code, and on failure, set the stage to -1 and
+- * do VMMCALL to terminate the test (host side must treat -1 as "finished").
+- * TODO: fix the tests that don't play nice with a straight report, e.g. the
+- * V_TPR test fails if report() is invoked.
+- */
+-#define report_svm_guest(cond, test, fmt, args...)	\
+-do {							\
+-	if (!(cond)) {					\
+-		report_fail(fmt, ##args);		\
+-		set_test_stage(test, -1);		\
+-		vmmcall();				\
+-	}						\
+-} while (0)
+-
+ bool pending_event_ipi_fired;
+ bool pending_event_guest_run;
+ 
 -- 
 2.51.2.1041.gc1ab5b90ca-goog
 
