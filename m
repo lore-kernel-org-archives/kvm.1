@@ -1,144 +1,93 @@
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f74.google.com (mail-pj1-f74.google.com [209.85.216.74])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CAFA42264BA;
-	Mon, 10 Nov 2025 15:38:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC41131619A
+	for <kvm@vger.kernel.org>; Mon, 10 Nov 2025 15:38:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.74
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762789127; cv=none; b=WACAYoOhFTQ/JOkfgikudVlIFwibi3HDyjKrenyoetoDEhiNFyWEz2rCFrQ01C6UmS6sPhjhe5CuO2sBthbM4xH0TOVMvgcJC9XPeFMScBFwFoCgiqd0bD/NGonxzeotI045cBeEGPzJhKLd5Ifrw0MiulzpCrZVumVlr3VL1zI=
+	t=1762789133; cv=none; b=GF1Saum4d7Z3pQnhqnfWGB0l+oZ/Bt9onIHM/1ShRUrEiITfqxtQMjp91aIvU7vsiZY70G30s79TM/zLbb+73vzE1xCtXdyxhmX+HmhhwqzRLTKjgretzTqk1QuWKc4P7U/NsAFg6KnBkbyT58YizAbPfee79tNut57DJ/B2pGs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762789127; c=relaxed/simple;
-	bh=LHsY5jITGDFoq/9tN1I06LeZBDtc15xV3HQ5viiTCs0=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=REi6MAbI9FPUvA84SBQqBF6W7umFKokPYxkDTLrroLLPIlK7iU/e11NRu3C+CuHdzTEnR3sdEDtl6u/l5ALrQ3vjeaBYoacp2fs8BsAFMy45Df6h6umz4UfwbWaZiFd7IfxGbj3c5b+xpLBzHemn6lVx12gAwkLpF0SY2t/4kvk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=ht+K8nHR; arc=none smtp.client-ip=148.163.156.1
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+	s=arc-20240116; t=1762789133; c=relaxed/simple;
+	bh=WYo31m3heuJFHd2AleHIkwCwmVtacFIEhcJ51fkn2mU=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=Ilzvos5wtdbHJ0TSVqzybjFs8dUtJcWv0nhiNPaAl1bS7WlwUCyw2ZyPgpmimxobAvUh3wQYQGAAv998y6nDNG8+KcBEaNhhRB359pHoYuES3xoW0LzFuPx2BWSgkgRibJ7PGWFfFN2sHncy6qaDtHJfB9QR8Kaodmiuq08nRKA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=zFqZdDec; arc=none smtp.client-ip=209.85.216.74
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="ht+K8nHR"
-Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 5AAEUkwT024315;
-	Mon, 10 Nov 2025 15:38:40 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-type:date:from:in-reply-to:message-id:mime-version
-	:references:subject:to; s=pp1; bh=OcBGousLcIDBIHHZkfGtkxYLVh1p65
-	7jRflqxnRy9pQ=; b=ht+K8nHRBVOP+H24c7yctgg2tTK0qOw0shdi88awVOmD8B
-	ftVtlAnJoNKSBi2GKdkOB2dQfdRkCgkoeiM1TkZEUxlpVCU29RjaVVSJ+G2pi0dT
-	G+P6HAe4mbrmrtiBeatCuCRHxaZEhGDM6sPTfJGVgOOXUpyYJc/CgYYvLKYYCOJH
-	uNWqaf+8/Ha4pQfE5rtJePqPuCo79vqwoueGiQ5il4K2jEO9q3MehvxufcDb1k+N
-	VS4f2Hhs4IYRLb5j/12XLsikE4qNToUPpfUHdz1qAuTj9zDS22IcalQmppSjGXfU
-	LDkSqg5JJQufjTcZOZNkZG2lb1N3oUnQfG+Y2Ueg==
-Received: from ppma13.dal12v.mail.ibm.com (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4aa5chyqff-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 10 Nov 2025 15:38:40 +0000 (GMT)
-Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma13.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 5AAD2EFi007313;
-	Mon, 10 Nov 2025 15:38:39 GMT
-Received: from smtprelay07.fra02v.mail.ibm.com ([9.218.2.229])
-	by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 4aajdj63d3-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 10 Nov 2025 15:38:39 +0000
-Received: from smtpav02.fra02v.mail.ibm.com (smtpav02.fra02v.mail.ibm.com [10.20.54.101])
-	by smtprelay07.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 5AAFcZub41091336
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 10 Nov 2025 15:38:35 GMT
-Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 5042A20043;
-	Mon, 10 Nov 2025 15:38:35 +0000 (GMT)
-Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 4368C20040;
-	Mon, 10 Nov 2025 15:38:34 +0000 (GMT)
-Received: from li-1de7cd4c-3205-11b2-a85c-d27f97db1fe1.ibm.com (unknown [9.111.80.93])
-	by smtpav02.fra02v.mail.ibm.com (Postfix) with ESMTPS;
-	Mon, 10 Nov 2025 15:38:34 +0000 (GMT)
-From: "Marc Hartmayer" <mhartmay@linux.ibm.com>
-To: Claudio Imbrenda <imbrenda@linux.ibm.com>, linux-kernel@vger.kernel.org,
-        kvm@vger.kernel.org
-Cc: linux-s390@vger.kernel.org, borntraeger@de.ibm.com, frankja@linux.ibm.com,
-        nrb@linux.ibm.com, nsg@linux.ibm.com, seiden@linux.ibm.com,
-        gra@linux.ibm.com, schlameuss@linux.ibm.com, hca@linux.ibm.com,
-        svens@linux.ibm.com, agordeev@linux.ibm.com, gor@linux.ibm.com,
-        ggala@linux.ibm.com, david@redhat.com
-Subject: Re: [PATCH v1 1/1] KVM: s390: Fix gmap_helper_zap_one_page() again
-In-Reply-To: <20251106152545.338188-1-imbrenda@linux.ibm.com>
-References: <20251106152545.338188-1-imbrenda@linux.ibm.com>
-Date: Mon, 10 Nov 2025 16:38:33 +0100
-Message-ID: <87346l7v9i.fsf@linux.ibm.com>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="zFqZdDec"
+Received: by mail-pj1-f74.google.com with SMTP id 98e67ed59e1d1-340c07119bfso7742650a91.2
+        for <kvm@vger.kernel.org>; Mon, 10 Nov 2025 07:38:51 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1762789131; x=1763393931; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=UMGtDSMhLp7PwCftwD5VWBt9/H+12AqeZNXDWEVNOss=;
+        b=zFqZdDecMTfURgE0Vc0HAdqEaPBE+hLLdocxPPkL4Tdd4jXBRtbgrSHe5Int4jVkF5
+         9OwWASgiq97ASKGQQ33ovNmbcm1YjQ3EFTsV90h1xlix7+33Ez/LTVHjqyD2AWvnJOkw
+         ox5K5Fw53ds0P95rkuQvMBs4u9p49N2MPJ5B0cLNT0vIu5CRj51jnuO1ZowDcSQxZVVz
+         rQscTLkEffgZxv/vN3N5X4Te1cTQfnMpeF9LsezHIPbdqD3s4O/4zIiddo1oAD9b12qb
+         K/tq0tE0n6XFWsLop2tOxi2dcH3YOfeoC1c+hlxtSgIMrEio/AJhb5aMNJDboaEWDdze
+         W1mw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1762789131; x=1763393931;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=UMGtDSMhLp7PwCftwD5VWBt9/H+12AqeZNXDWEVNOss=;
+        b=H47fISxuCZLlLxotr3L/j/ZaOIlc7tUeBq35qg5p6Q5Fd4LzhKPaagy7UqDIsyFmji
+         tuY3LnJZFim912zGF2vkAjsTwHl6XAy5kKxpsCC7PWEWa/UuOQoFLPBgU8OgjtlmI3dL
+         XkoXjFw14337neiSdC8vDEQ6K1/o4XWlNJbSd7mUH9Gdk3/fZSH0yOxORExgZnPAHAOi
+         gLVy4zAeYJQwxwDNMULM6+k5g1SzkfQL+MaoOhMvMnSs46qg3iSxAsdETu4je1Xzg2Cy
+         DCQ6GwjL9dItb91B08FQxr7BsmYHaOp0XCcdQuMvQON3FDMfKk0DaDHmmxj8u5QlVw5a
+         f+Og==
+X-Gm-Message-State: AOJu0YzQh2PgMaXbSESPLmS6Ehy/7fSxLEZPuzyjRdB2SLYr3mGKNLtd
+	bdyw6yiE/tBxfD4K3S7358Wm/jtlIn3+jgSTnJpPmuPm6LygyxtuNmAMJ5MMO2L0gPIF9OH+ckm
+	NqYKN9Q==
+X-Google-Smtp-Source: AGHT+IEp9sm7tBdgsbr2NYRbGOtKx/P5/qWT3g321cSR22hpudavx53XGYsuVNRtFk/NTp4RaBYyBOym9jY=
+X-Received: from pjon19.prod.google.com ([2002:a17:90a:9293:b0:341:8b2e:afe9])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:2dd1:b0:340:f009:ca89
+ with SMTP id 98e67ed59e1d1-3436ccf1f55mr11306347a91.22.1762789130950; Mon, 10
+ Nov 2025 07:38:50 -0800 (PST)
+Date: Mon, 10 Nov 2025 07:37:19 -0800
+In-Reply-To: <20251030224246.3456492-1-seanjc@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain
-X-TM-AS-GCONF: 00
-X-Authority-Analysis: v=2.4 cv=Ss+dKfO0 c=1 sm=1 tr=0 ts=69120700 cx=c_pps
- a=AfN7/Ok6k8XGzOShvHwTGQ==:117 a=AfN7/Ok6k8XGzOShvHwTGQ==:17
- a=6UeiqGixMTsA:10 a=VkNPw1HP01LnGYTKEx00:22 a=VnNF1IyMAAAA:8
- a=pknXBTohXVt6Cvpor-UA:9
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMTA4MDA5NSBTYWx0ZWRfX2zwed/t/ApLa
- f4rlvWj9QEs2BT/VketNC18m+DOIyUUG1zTiAJCTMgSCYAbhoyWLLSyaeYHg5ATQ2iI0hkzyAHa
- VulS+5gr3gw9ECbZhjxQKgSsWdgbxLyan2ILmqhj+FUKiWBDmOaC+KXTNx5hvg8ZlO6L+77S007
- T/37mykupHkbSlny/9O0fUd4Rzuwfv0kgYwRYtl0tetMF99k456ZrusMsxRIDzV7sNt8EW5DC8R
- KQwEj4R9LIbZN14LvuHc1Cb9g1K/8NNnyFOWWCd8HnpWttWTq/8rY2NgH69dPQKC4zDN56FcK9R
- DAPTbkILI2B0+1elQPgPmM9hHk1Gm4gsyWtsMrW2SkLlPPdnAJM0UR8UjErZ70op3Pi9NZv1v1m
- UL2X8xn+mVn0nuW55b0FfyGCIoXFGQ==
-X-Proofpoint-GUID: LPxLY2YjJFAeJd2cnqic_Cz6afSrasmA
-X-Proofpoint-ORIG-GUID: LPxLY2YjJFAeJd2cnqic_Cz6afSrasmA
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
- definitions=2025-11-10_05,2025-11-10_02,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- clxscore=1011 suspectscore=0 impostorscore=0 bulkscore=0 phishscore=0
- lowpriorityscore=0 adultscore=0 priorityscore=1501 spamscore=0 malwarescore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.19.0-2510240000 definitions=main-2511080095
+Mime-Version: 1.0
+References: <20251030224246.3456492-1-seanjc@google.com>
+X-Mailer: git-send-email 2.51.2.1041.gc1ab5b90ca-goog
+Message-ID: <176254658743.821204.2042588290407024138.b4-ty@google.com>
+Subject: Re: [PATCH 0/4] KVM: x86: Cleanup #MC and XCR0/XSS/PKRU handling
+From: Sean Christopherson <seanjc@google.com>
+To: Sean Christopherson <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>
+Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	Jon Kohler <jon@nutanix.com>
+Content-Type: text/plain; charset="utf-8"
 
-On Thu, Nov 06, 2025 at 04:25 PM +0100, Claudio Imbrenda <imbrenda@linux.ibm.com> wrote:
-> A few checks were missing in gmap_helper_zap_one_page(), which can lead
-> to memory corruption in the guest under specific circumstances.
->
-> Add the missing checks.
->
-> Fixes: 5deafa27d9ae ("KVM: s390: Fix to clear PTE when discarding a swapped page")
-> Reported-by: Marc Hartmayer <mhartmay@linux.ibm.com>
-> Signed-off-by: Claudio Imbrenda <imbrenda@linux.ibm.com>
-> ---
->  arch/s390/mm/gmap_helpers.c | 9 +++++++--
->  1 file changed, 7 insertions(+), 2 deletions(-)
->
-> diff --git a/arch/s390/mm/gmap_helpers.c b/arch/s390/mm/gmap_helpers.c
-> index d4c3c36855e2..38a2d82cd88a 100644
-> --- a/arch/s390/mm/gmap_helpers.c
-> +++ b/arch/s390/mm/gmap_helpers.c
-> @@ -47,6 +47,7 @@ static void ptep_zap_swap_entry(struct mm_struct *mm, swp_entry_t entry)
->  void gmap_helper_zap_one_page(struct mm_struct *mm, unsigned long vmaddr)
->  {
->  	struct vm_area_struct *vma;
-> +	unsigned long pgstev;
->  	spinlock_t *ptl;
->  	pgste_t pgste;
->  	pte_t *ptep;
-> @@ -65,9 +66,13 @@ void gmap_helper_zap_one_page(struct mm_struct *mm, unsigned long vmaddr)
->  	if (pte_swap(*ptep)) {
->  		preempt_disable();
->  		pgste = pgste_get_lock(ptep);
-> +		pgstev = pgste_val(pgste);
->  
-> -		ptep_zap_swap_entry(mm, pte_to_swp_entry(*ptep));
-> -		pte_clear(mm, vmaddr, ptep);
-> +		if ((pgstev & _PGSTE_GPS_USAGE_MASK) == _PGSTE_GPS_USAGE_UNUSED ||
-> +		    (pgstev & _PGSTE_GPS_ZERO)) {
-> +			ptep_zap_swap_entry(mm, pte_to_swp_entry(*ptep));
-> +			pte_clear(mm, vmaddr, ptep);
-> +		}
->  
->  		pgste_set_unlock(ptep, pgste);
->  		preempt_enable();
-> -- 
-> 2.51.1
+On Thu, 30 Oct 2025 15:42:42 -0700, Sean Christopherson wrote:
+> This series is the result of the recent PUCK discussion[*] on optimizing the
+> XCR0/XSS loads that are currently done on every VM-Enter and VM-Exit.  My
+> initial thought that swapping XCR0/XSS outside of the fastpath was spot on;
+> turns out the only reason they're swapped in the fastpath is because of a
+> hack-a-fix that papered over an egregious #MC handling bug where the kernel #MC
+> handler would call schedule() from an atomic context.  The resulting #GP due to
+> trying to swap FPU state with a guest XCR0/XSS was "fixed" by loading the host
+> values before handling #MCs from the guest.
+> 
+> [...]
 
-Thanks for the fix.
+Applied to kvm-x86 misc, thanks!
 
-Tested-by: Marc Hartmayer <mhartmay@linux.ibm.com>
+[1/4] KVM: SVM: Handle #MCs in guest outside of fastpath
+      https://github.com/kvm-x86/linux/commit/6e640bb5caab
+[2/4] KVM: VMX: Handle #MCs on VM-Enter/TD-Enter outside of the fastpath
+      https://github.com/kvm-x86/linux/commit/8934c592bcbf
+[3/4] KVM: x86: Load guest/host XCR0 and XSS outside of the fastpath run loop
+      https://github.com/kvm-x86/linux/commit/3377a9233d30
+[4/4] KVM: x86: Load guest/host PKRU outside of the fastpath run loop
+      https://github.com/kvm-x86/linux/commit/7df3021b622f
+
+--
+https://github.com/kvm-x86/linux/tree/next
