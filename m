@@ -1,211 +1,199 @@
-Received: from fout-b6-smtp.messagingengine.com (fout-b6-smtp.messagingengine.com [202.12.124.149])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DEFC12DECC2;
-	Mon, 10 Nov 2025 18:38:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.149
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762799886; cv=none; b=Qze/KBpSN+0TzHh3xBVpP5WPg+8epoVrihHaqJx3mGudVhuSDOS6kIuvQWJ3B2TnabvbineObuM3bD8cfvjzEKzUD9MnlbHrJ3wYW+p01oVmrNVqIrMOXMFFp56ib3hNZAmnmcWdTkzCCANyCeeEHPXu3+hW2U5Rl05w3KcHZFM=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762799886; c=relaxed/simple;
-	bh=zspJnCQxK4K7uUc4qnAm9wXMc+7WL20mQ6Qc7lGPTcU=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=MqRbdvsqKhnN4ZOCQO0JyUCW8l3b0wiV2DZizol5JpOnvTk1y2RA0+gSgIucxzsxtI4igWMy+Txl4ZAHlnh3bTNVOaKENQleSl0rZC5z/WogSN/VDgmC0FqEh5ZhU3pm7ha1gqCqKCOaK7FbRqXIzsu6C1fP4R75QS7Q606zFLU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=shazbot.org; spf=pass smtp.mailfrom=shazbot.org; dkim=pass (2048-bit key) header.d=shazbot.org header.i=@shazbot.org header.b=cl9XAEFB; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=VcH8kvUY; arc=none smtp.client-ip=202.12.124.149
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=shazbot.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=shazbot.org
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A9DD330B00;
+	Mon, 10 Nov 2025 18:50:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=198.175.65.18
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1762800646; cv=fail; b=uJ4WkYz1pA+Miuvwbs+WtluC1lSLseNHQqdXozNC9R48FoNc9/z+kg6+0wtjHgGsXnvyP2dbiVCi8a7q9mL9VGw5fdR50uIQ/bfCGH8sATy7pDFQxKPthAm59bjCvklSMN5AH3qUA/tW0mGCFy62SgpV635fy3qpmIuPzPNPj6g=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1762800646; c=relaxed/simple;
+	bh=xTV7QYZzZy1UG+4DKnlxrotJdO+aq03oW5uR3bLH5GI=;
+	h=Message-ID:Date:Subject:To:CC:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=FT8YbHQj60uTt/nicxqn7iasjM9fxqM9i4taxSlcD9H4OyHELcOgMyAWFx4yhHXv+/gzFqIg1gGKw1wlsoxBosfwohAsSF/3takDzf875pt5RK+Sv0gyGzifsDg6xA6XPpRbnbo39JIECgfQTDnV033YzCg03ZeONY0R8UK3VSg=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=jr+PtW1E; arc=fail smtp.client-ip=198.175.65.18
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=shazbot.org header.i=@shazbot.org header.b="cl9XAEFB";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="VcH8kvUY"
-Received: from phl-compute-03.internal (phl-compute-03.internal [10.202.2.43])
-	by mailfout.stl.internal (Postfix) with ESMTP id 85DEA1D001E3;
-	Mon, 10 Nov 2025 13:38:01 -0500 (EST)
-Received: from phl-mailfrontend-02 ([10.202.2.163])
-  by phl-compute-03.internal (MEProxy); Mon, 10 Nov 2025 13:38:01 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shazbot.org; h=
-	cc:cc:content-transfer-encoding:content-type:content-type:date
-	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to; s=fm2; t=1762799881;
-	 x=1762886281; bh=eMKjXJVti11Y2CN6F7Pq9i7z+MqTZx1e+eE7f+6hcwM=; b=
-	cl9XAEFBFHS4AzsUA17kd42VlAjYAVlKWfFNiznhSvD5OyTctq7g+xMyjTEGILP1
-	kAdjE59ijjfJk26/hiCbJ/R8Cl/0kAy22cRXWjalIOnh44tq63rLAuWojPs+yYHd
-	6BSycHXBJGYxZgOpj0VE36/KDl2td2SHP+hfrW8pn3qCZrTA7cllCfJjIwflMoHQ
-	yf4NB5Oc4T7q9WOHaynfW7bmIUM6p22QG/vlL4rjesTtbO0joglcK8d+4fisrySV
-	etlZxTwN5TJKZd4iCKkiJ6qxBpenEj5mPIlvagNqAugWmLG0FgN4/olLNJVhSWNl
-	Zf35jdOp0J1TbkzCiHrDiQ==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=1762799881; x=
-	1762886281; bh=eMKjXJVti11Y2CN6F7Pq9i7z+MqTZx1e+eE7f+6hcwM=; b=V
-	cH8kvUYCCpKQCKvHCbo6Yv1nyvx4CyjS3hTf+38RhOT5vrpVOpmPTxcXJ49K29Y5
-	8KXSPCRefuJCZcbio9Xj8oUzzLITfw+MutU5b+iSnx/YopMdpyk5t5WQUbFjtUY4
-	CqLUdV0gfbVvC8McuvKcG10mzWeSn6g6awomrhsXlsZWwHNaHO7IySbxBGEiYQX7
-	6z6gNef1iLrq073K51CTK2rHfbULTbRYRcmBDqDmxV+36XTjmSVo345CHsOOGNMp
-	OEsz1zfyRzy5c8oyngrB0uBgtl57mOg0JYBPO5+KD11qwPfp75iah54ICTnArIhU
-	oOvh9PkfmBOfiSRPbgANQ==
-X-ME-Sender: <xms:CDESabNoZSWiof0Ox2ftOMRVz3-R5rLIzcQs6tENJs-7pcUwqThBFw>
-    <xme:CDESaWs1uC1uK9h7IWlaQda5OcXh68N34cUnnVdwFGmM2wG6falnT9RgcRtXpstCD
-    o6B7hRFcW1g5oFhbdcJBCVoJKRu48fSz0ByTFBCua1z_K6dCbNz>
-X-ME-Received: <xmr:CDESaWb_QI8Ctmq8rR-iXEq5kyG_rm-vTE1SSUm6Ecog17vt8T2WYIiL>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdeggdduleeltdehucetufdoteggodetrf
-    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
-    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
-    gurhepfffhvfevuffkjghfgggtgfesthejredttddtvdenucfhrhhomheptehlvgigucgh
-    ihhllhhirghmshhonhcuoegrlhgvgiesshhhrgiisghothdrohhrgheqnecuggftrfgrth
-    htvghrnhephedvtdeuveejudffjeefudfhueefjedvtefgffdtieeiudfhjeejhffhfeeu
-    vedunecuffhomhgrihhnpehkvghrnhgvlhdrohhrghenucevlhhushhtvghrufhiiigvpe
-    dtnecurfgrrhgrmhepmhgrihhlfhhrohhmpegrlhgvgiesshhhrgiisghothdrohhrghdp
-    nhgspghrtghpthhtohepiedpmhhouggvpehsmhhtphhouhhtpdhrtghpthhtohepughmrg
-    htlhgrtghksehgohhoghhlvgdrtghomhdprhgtphhtthhopegrmhgrshhtrhhosehfsgdr
-    tghomhdprhgtphhtthhopegrlhgvgidrfihilhhlihgrmhhsohhnsehrvgguhhgrthdrtg
-    homhdprhgtphhtthhopehjghhgseiiihgvphgvrdgtrgdprhgtphhtthhopehkvhhmsehv
-    ghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtoheplhhinhhugidqkhgvrhhnvghlse
-    hvghgvrhdrkhgvrhhnvghlrdhorhhg
-X-ME-Proxy: <xmx:CDESaQzZMlgvFT1GMAXt8smoGNAp4J9dQ_bWfRitbp8y8RQks3ztCw>
-    <xmx:CDESaWg2hboCwA2BVQvuNcfylB6v5NeEHFgQychvfyj9jNXO_cby2g>
-    <xmx:CDESaUl2vVzOQeAsGqq9Cn6BGLQ6l9DYvlxmy02nF_XTP1UCWYUIGQ>
-    <xmx:CDESaUhh7Jy4Zu0imVmFYpuzAItGaSRdKj7toxOsci8j8P9tfHXe3Q>
-    <xmx:CTESadN4Udm0C1vRIRlx4OPmw9idgsThuPp_W0fDd63f_H51GC4N7UnJ>
-Feedback-ID: i03f14258:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
- 10 Nov 2025 13:38:00 -0500 (EST)
-Date: Mon, 10 Nov 2025 11:37:57 -0700
-From: Alex Williamson <alex@shazbot.org>
-To: David Matlack <dmatlack@google.com>
-Cc: Alex Mastro <amastro@fb.com>, Alex Williamson
- <alex.williamson@redhat.com>, Jason Gunthorpe <jgg@ziepe.ca>,
- kvm@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] vfio: selftests: Skip vfio_dma_map_limit_test if
- mapping returns -EINVAL
-Message-ID: <20251110113757.22b320b8.alex@shazbot.org>
-In-Reply-To: <aRIoKJk0uwLD-yGr@google.com>
-References: <20251107222058.2009244-1-dmatlack@google.com>
-	<aQ6MFM1NX8WsDIdX@devgpu015.cco6.facebook.com>
-	<aQ+l5IRtFaE24v0g@devgpu015.cco6.facebook.com>
-	<20251108143710.318702ec.alex@shazbot.org>
-	<aQ/sShi4MWr6+f5l@devgpu015.cco6.facebook.com>
-	<20251110081709.53b70993.alex@shazbot.org>
-	<aRIXboz5X4KKq/8R@devgpu015.cco6.facebook.com>
-	<aRIoKJk0uwLD-yGr@google.com>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="jr+PtW1E"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1762800645; x=1794336645;
+  h=message-id:date:subject:to:cc:references:from:
+   in-reply-to:content-transfer-encoding:mime-version;
+  bh=xTV7QYZzZy1UG+4DKnlxrotJdO+aq03oW5uR3bLH5GI=;
+  b=jr+PtW1EFeZzDtxwxdP50fhb3cIfPAqWYPOQ38SW6Bk9Q1IdSOodJI6u
+   dEm0TQ/ve97jX1Fx33EkX+Wz9kAbpUybf6H5bmbIDAfiHZCXyvOK7V6qp
+   ow8176i5vxDEiaaWTlVIw6c0b88LIymyt+sFIjuilopMRlawqg9x6w30i
+   8RMKJwvnDaOds61aXYspWtJEtKp9TPEVRaX5mtxArohebXfCluZFTcull
+   brRgQ8sp4AiE8RETJRH3J+lMTOF/y70rDzCf5TvmQ2G9WMi5IdkPcfnFR
+   Tg/xAMc/ymF6KWh66aGdVQN2pwubtUP/zUzqdfMgBILv6/QPflIBDIaHh
+   w==;
+X-CSE-ConnectionGUID: vcEt9UsnSs6CujTv9r6bug==
+X-CSE-MsgGUID: ZSm8wxMrSvWGRk/Gcg1hYg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11609"; a="64898015"
+X-IronPort-AV: E=Sophos;i="6.19,294,1754982000"; 
+   d="scan'208";a="64898015"
+Received: from fmviesa003.fm.intel.com ([10.60.135.143])
+  by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Nov 2025 10:50:45 -0800
+X-CSE-ConnectionGUID: udsDuok3RqmjMCrMNs79Zw==
+X-CSE-MsgGUID: s8yupxxISlKzD2R9wvCegA==
+X-ExtLoop1: 1
+Received: from orsmsx902.amr.corp.intel.com ([10.22.229.24])
+  by fmviesa003.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Nov 2025 10:50:44 -0800
+Received: from ORSMSX901.amr.corp.intel.com (10.22.229.23) by
+ ORSMSX902.amr.corp.intel.com (10.22.229.24) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.27; Mon, 10 Nov 2025 10:50:43 -0800
+Received: from ORSEDG903.ED.cps.intel.com (10.7.248.13) by
+ ORSMSX901.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.27 via Frontend Transport; Mon, 10 Nov 2025 10:50:43 -0800
+Received: from BL2PR02CU003.outbound.protection.outlook.com (52.101.52.16) by
+ edgegateway.intel.com (134.134.137.113) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.27; Mon, 10 Nov 2025 10:50:43 -0800
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=PdYE3L4ubj9fozNAN64OF8OZw/QpW0j07MRuaCdxILN7vYkIZnFBXi4n5LZUb43CpXa19m6QRNi8DURhkfCdnAcWEjrCtrDEnUiCqMeZapEBGS2w0wGzaC2uBXa4M/r2YeWL2oiHujV98Ac/j8N4SM5OJxaEBHo1BfMMttous6KJ6sci3O08Ewj/yrxLPNMDYBMHfz7ik7kGZCOPQy8/w0A+JkBTytaZFSGr+pAMb+Qiiz/eOCx279WEA7VilzFsemka8tm3vndPqTydyHy4cH9XtnrQW4F6HMzw7DAiyEodPFhE7fgRpiGGHeZz9c5FlUO+y5qxtdPpkXXNKwdZ8w==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=oskcQLjnTfSlWk6/hgRugdfijfWdOri3KL552CA4nl0=;
+ b=dPlgOZqVIHK1ilhtIwBjz7mow+0+0YgqvGiGflxEqJ575ZpeN7KZVFALT8Iap3zEEex6r1aKiin8ZKrr1rZ1ZuuC0RXDO2rqpSjm4oVuPYpsQQSpgS2MGdT3fAEo2OulDPIqxDy1u4WXHWvklwjvSYesZkJNb4Pkkg0ieXr/xHiCzgLjS8ToKuAKaxgscuyuqhI/SgpeFI7xts1N50DCdhFQACPAoumOtL5+VLJTSg2PhJz+GLE4R/IUfQw8HTMnH9E5Z6UKoq/+mBPL8hFPoz/gj0mgwz7Pu03Xk9F49L2JdqSz+NCVvgINU5lleMSE51T40pxqnlHt3X352EOk9Q==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+Received: from DS0PR11MB7925.namprd11.prod.outlook.com (2603:10b6:8:f8::18) by
+ DS4PPF0442004E1.namprd11.prod.outlook.com (2603:10b6:f:fc02::6) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9298.16; Mon, 10 Nov
+ 2025 18:50:41 +0000
+Received: from DS0PR11MB7925.namprd11.prod.outlook.com
+ ([fe80::b1ef:c95b:554d:19c9]) by DS0PR11MB7925.namprd11.prod.outlook.com
+ ([fe80::b1ef:c95b:554d:19c9%6]) with mapi id 15.20.9298.015; Mon, 10 Nov 2025
+ 18:50:41 +0000
+Message-ID: <2bb461a0-1332-49c8-94f7-fd8ba562b752@intel.com>
+Date: Mon, 10 Nov 2025 10:50:39 -0800
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH RFC v1 00/20] KVM: x86: Support APX feature for guests
+To: <kvm@vger.kernel.org>, <linux-kernel@vger.kernel.org>
+CC: <pbonzini@redhat.com>, <seanjc@google.com>, <chao.gao@intel.com>,
+	<zhao1.liu@intel.com>
+References: <20251110180131.28264-1-chang.seok.bae@intel.com>
+Content-Language: en-US
+From: "Chang S. Bae" <chang.seok.bae@intel.com>
+In-Reply-To: <20251110180131.28264-1-chang.seok.bae@intel.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: SJ0PR13CA0065.namprd13.prod.outlook.com
+ (2603:10b6:a03:2c4::10) To DS0PR11MB7925.namprd11.prod.outlook.com
+ (2603:10b6:8:f8::18)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DS0PR11MB7925:EE_|DS4PPF0442004E1:EE_
+X-MS-Office365-Filtering-Correlation-Id: 732154de-4020-4e99-8b21-08de208a0c14
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|376014|366016;
+X-Microsoft-Antispam-Message-Info: =?utf-8?B?dXVFbUVQL01qWXdDTWFtcU1MMkJBNldkLzZRcnB3bjJRZ0dQOVA0L2gvam1T?=
+ =?utf-8?B?aG9xZkE5cGFIUEgvMjZtaVhNQ3JreHpuNXVpM0FnaEx4MUFGdnM3THVkYWpM?=
+ =?utf-8?B?K0ljWEFVNWNPdGpaRUtseDM1ejhkRHFwdEdQRElTQW1aYWY3M3J5U0Q0dlEx?=
+ =?utf-8?B?ZmVOczBIRTN4YWR3OXE2d3BLQmxNdXB6YnM3bTBpVDRlZHo2NlFqTlFjS2Ir?=
+ =?utf-8?B?TjNlT0lWdEJxbWt1QWZsd2NsdWZZNFRDQVZ0WFd2YmVuOG5OWE5hbmw1SkF6?=
+ =?utf-8?B?Mk1EMTlBSzBjWXRmZUUzYVlLR0VrZWIvRWM0eUFJNlJ0b3h1Z202WWcvVXpx?=
+ =?utf-8?B?R08rQ1ovdDhTRDFqT3B4d1lteTFMZ25HVnozRXVHb2NwT1ZuZlF2dVJSQ0Mz?=
+ =?utf-8?B?dTVHeTZVZlgxWUpXQVNORVpOUzhtTGR6Um5nVWlUNzB6cXk1N2xMc2kxNGJV?=
+ =?utf-8?B?WmhLcjNJVkJEZUpDR01ZcENvZ3VrVmY2aW8ycjFXa09lVXZjbXNHY1lYYnUw?=
+ =?utf-8?B?VlB2TDZBanFVbWhHZUxJTWFDVFlRVTFaa0cwQUpYQU5VMElpSHExeTBqbm9P?=
+ =?utf-8?B?bDVNbmJHVG8xcGxyVVd3WThERUV1OHZoZ052RmFEVWhJQ2ZoelAwblN1YkJ2?=
+ =?utf-8?B?aitPOXZWV1Z6Z3BPRjY1a2tYSFJQTWhmaHZkTUNzV1BvZDBiaFpyQ2ZJcGhP?=
+ =?utf-8?B?Zktha2dNb2cvUEJxNnFaQ05uaVRxY1FFQ3lkU0dFT0hvTUFKL3RnMjlmUlJM?=
+ =?utf-8?B?TFE3eFlidWFaY1o2K1ZDemwzTlVCdDd6eis5TkczaUlkRVBWSS9xWEpocUVq?=
+ =?utf-8?B?emJacGlTd081TEIvTzMxcXFUWGpWVHNnTkNrOWRXK2pQSHZ4aGo4MTFvd0g5?=
+ =?utf-8?B?QTVVZ3FUUWdQbFp5MGF3RjRQcUZSRHBHcC8yWUdQcUk3a0tUL3hRUHFmTHJB?=
+ =?utf-8?B?ZGtuVzJaeUxJWVVJcklsUXJPczlNK25WOXoxTFRMTTlBblYxSEZPUHBZdlor?=
+ =?utf-8?B?NS9iNkplQmNHL0dnNVYvMVNoRDIyWHpPMHpKRkFjNk5lajFVUGI3aGVUa3p3?=
+ =?utf-8?B?V0s4bEZnZS8vaHdWb2FxcjVXSngzQ2swVHRVdkE1YXZDLytzSlVzN2duS1Zl?=
+ =?utf-8?B?dzUvNkNvVGtPTkkwWUlaQnk3U3JVWWZmRjhORWtaWGhWUEowZGxFVEUwN1dO?=
+ =?utf-8?B?NVhnd01yV3A5SlJ5ajBHZ0tadGRZc1FBNi9tdkFFYTVsd1IwS29QVXlmOG1N?=
+ =?utf-8?B?VmhkWkdjVWtVUWVIRFFSZlVtM21uUXo5T0pUY0hyTHlGUlllUnN3VkQrS3ZW?=
+ =?utf-8?B?STZ6bzFHNmF3OHI2azltWG5RTmQzaUlXS00yYzhjYWJVcEpTYXIwQUQ4c2FR?=
+ =?utf-8?B?bWg2VlhleEpncWQzd1FGRTFCVngxVFczaVRyKzRKblVuMEVSS3NCakZTRmxX?=
+ =?utf-8?B?RVAvWGdTRytGd0tqVFZHTzA0elB0WkhBZ2ZWODFrRTIwY3lVNUxSMWNYb1Bs?=
+ =?utf-8?B?ekRyNlVteStvdjJkMlZnZXpLM1JCd0pLWHdLRjQrdWw2cWdKd0pvdTc3alJv?=
+ =?utf-8?B?QSt6SmZtNXE1VU4vQ2U2Rm5yanFoVzJWbmFuY0lKWnR3S04yQitZTHJubGhV?=
+ =?utf-8?B?MWJtdFdXUkxyazJvZGVnTkp0ckRPdnhFSmxscVdwTEdGV1Y0NUhGYUd1SU1o?=
+ =?utf-8?B?cml1OXpMZE1ETkM2TmVFNTRWUmpXeU1wa1BTMnhEdVNDRGpsdXRiZGN0SUdS?=
+ =?utf-8?B?SDF5OTRobnVoQmVGZ1BDcHZxQi90YldORHFKOThIL2s3UzNxa2hoUlI1VHA5?=
+ =?utf-8?B?U09mZWZ5a0grbGRTQXRZTFJDcVR4SGdCSzBLV2g5QmZlZXNMSkdyZDlzbEJX?=
+ =?utf-8?B?dUZxTndxelo1M3N3UFRpa25GRXkvRmYzTTRuVVJMM052eWNyMUVBbkJ5cW5z?=
+ =?utf-8?Q?jt+hIuxkiGrwsfhuhy9P6jbB1Ax0+nL2?=
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS0PR11MB7925.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(376014)(366016);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?aHI0RUxIb1dSOU5hUTNQUy81Z0k5eDR2djZ4MjRsZXI1MTlCM0lJOUhBb3o4?=
+ =?utf-8?B?YzFCZmNvK1BWcE9NSjNEanZyanRxTlQ5akIwMGdBRDFVbVU2emFramJFK3Nh?=
+ =?utf-8?B?U1pnU0NibGwvTGhDN3J1TUZlbnhmWVZEUTlEeFZJeURqenE1MG0rQlNVR2Zm?=
+ =?utf-8?B?Q0ZHYkpTTzg3N2Zob0swUlZjcXpCemZzbC9EM3hDR001S1ZyQ0FvTjluSzhV?=
+ =?utf-8?B?QXFPT2gxdnhJcEFHNjZFcmhJVmhQMWJtbVkyT0N2bXVDK1BCNlZGbFpHWEtT?=
+ =?utf-8?B?UUtVdVRxeG5tSmhSZzNlMFZEbWgwbFVBcjQ4OUtzdDBSR01NTnQvS2xadXBk?=
+ =?utf-8?B?cnF0MG85Y3pURk0zK0dadzBwaHZBbTRzbDA3TlJJVmVobWQ4c3ZUYWNuU2tE?=
+ =?utf-8?B?TTcvL1J4RFNMaWtEclBpVW1aUVZ4VmpKY3UzOENkb1ZMQkZ3dDVMaEtnVW1o?=
+ =?utf-8?B?QmdYaGVXcER5a1M3c1pKNzdab1k5MStwcndKMUJFcXhVZThKeFNyeWRGL3RQ?=
+ =?utf-8?B?SEpFR0dyS3RRMDVkS3o4NXpQTTg4YnhZTU1PTkJaVC9qdkZNeStDMUVCL1pC?=
+ =?utf-8?B?dTRWSWNRTGNJU2tVSWp4U1hxVE0ySHhKRUtIYXZMSzA4YUlnd05YU3FxdGU2?=
+ =?utf-8?B?QS91Z2ZHNWtDN3lOSlA5aERMaDFLUFU3QXlSMEpXbG9tR1J6cDd2d2VEZ0JJ?=
+ =?utf-8?B?eE1JTUozaEZRS2pLSS9DdkxUNFpMQmduVERmQit2eERPTW5CVlJ5K2NCcWRa?=
+ =?utf-8?B?aksyQkxscnEwWGRhQ1ArQmR0UDZ5dE5pTDJOdFh2YW5xSUh2bG8zQy9OTlZJ?=
+ =?utf-8?B?L0tIa21mRHdySzd0ZVhMTDNyQ0hrbTRzWFBVd1Vsdzh3MWZvWXYwQk9EbTBo?=
+ =?utf-8?B?b1RwcTcxQUxOV2pCdkZqQWJXQ1J5OWhtV2Q2RUdjZE1kQjR3SFBtWkIvUkY2?=
+ =?utf-8?B?RDFLQW9pYnMzWjR5WGxKejMwQVJhdVBlMjJSYmlGQ1RuYmRoTVZwNTZLMkV6?=
+ =?utf-8?B?N3pnazR2QnA1NXdyWU8xUnBBdjJEMXRHd3BwMG9XODRJa3NzWmR2SlZLZk5j?=
+ =?utf-8?B?RXo4aXRFMTU0bElIRm0yUXRSaCtQSjhTTWljV3R6NWtEZGZQTlZkdzFabUtW?=
+ =?utf-8?B?aXUzZ1BNN2xBSmpWWjIzc1dPQ3pMcncyOC9ybGhFdHlVcjY1ZDlnYjQzNUJv?=
+ =?utf-8?B?RGZiRzVpZVFTclJ0OGpYSUppeVJjMUg1RDJjd1AyYWpxUTRQQlZJRHNla3RM?=
+ =?utf-8?B?THJlTGhSVkp4Tmtia25YbnIxQkVZVnl5aFJ3SUdRSVJBQU1TVmRiQzJDa3FV?=
+ =?utf-8?B?ZTdlSVREN1pMMWs3ZVk4bTVMYmw1TFk0aWVQVE5IN2N6WXdGTDJqa2pJVWRR?=
+ =?utf-8?B?U0tTOHhWcUFhRi9IVklIK3Rqa1BWamsxc09zc055SWNIWEtvMWg1M3pTL1RW?=
+ =?utf-8?B?b1RxK3kzODlyMGdKSGxtdUFTUkxMcFJvWFZUK0RCQ29lUVFCNE56WURiZ094?=
+ =?utf-8?B?ajY4b0ZWQXQzbUUyRCtVSXE1MGJ2dk00bDVNcWhmVE05dGMwUXlYV0kvSjZy?=
+ =?utf-8?B?R3VjRmF3eER2UUR0TXBqVDdPazBFSldBTkFGc1pDWXZzbWgxMHkvRW1lUnVD?=
+ =?utf-8?B?b1lxY3FmY2w3eXN5bnNQd0lVZ0dudVBTeHdVOGR2OGhiSktzenREOVpmL0h5?=
+ =?utf-8?B?N3UrZWh3Ym1IaEVxaVJQYlVwTVZieHJEUTJFUERlTjlkR2dKb01ISURJTDhw?=
+ =?utf-8?B?ditjdjZOeGlNODZRZldiQk5LUXRlWVNhRXRiSHpTS29YM1ZIRk5icStlRjNl?=
+ =?utf-8?B?VlBDZFZIcVVhTGkyZmh6Nnd5ZzE4RThSaVdGZDR0cStua0k3d2tqVGhWRGt3?=
+ =?utf-8?B?VDE4RldyQXNtbWZnSElPKzAvNUVybVpzMXdNR1hTc1krVXlZdGpPazhORmtl?=
+ =?utf-8?B?SzcxL2twWU96OWthVDhISzJzSnpua3c5WkhuM2NucjhFc0t1RjJ1WnVZcEtm?=
+ =?utf-8?B?SXFmaEJVYmVsQndGclMvNEZ2bk40dkFUM1A4SVZJWjI3UVRYMHdsZy84MzhC?=
+ =?utf-8?B?ZnJsaHNEWlZFa3hLSWQ2eWNGT0hFa3dsWjhwOFIyUm40dVpDQ3dlYkpOcHY4?=
+ =?utf-8?B?N28rdnVSK1BHTzNxK1hoemY0Z3RNZjNFdHFiK1g2QTlQV0trSXo0YTBLcnZW?=
+ =?utf-8?B?ZGc9PQ==?=
+X-MS-Exchange-CrossTenant-Network-Message-Id: 732154de-4020-4e99-8b21-08de208a0c14
+X-MS-Exchange-CrossTenant-AuthSource: DS0PR11MB7925.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 10 Nov 2025 18:50:41.5865
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: hyMn37Gw1LGi/kO58Pwh4TlpTJ9n7pPVCR51mANi/Ju/qf5WRJ95R9sE82oBHXB0ZAlp+THpSQOV0Slwn1PTdR/3no56CMsraI23ktelkCg=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS4PPF0442004E1
+X-OriginatorOrg: intel.com
 
-On Mon, 10 Nov 2025 18:00:08 +0000
-David Matlack <dmatlack@google.com> wrote:
+On 11/10/2025 10:01 AM, Chang S. Bae wrote:
+> 
+> This series is based on the next branch of the KVM x86 tree [3] and is
+> available at:
+> 
+>    git://github.com/intel/apx.git apx-kvm_rfc-v1
+...
+> base-commit: e9a6fb0bcdd7609be6969112f3fbfcce3b1d4a7c
 
-> On 2025-11-10 08:48 AM, Alex Mastro wrote:
-> > On Mon, Nov 10, 2025 at 08:17:09AM -0700, Alex Williamson wrote:  
-> > > On Sat, 8 Nov 2025 17:20:10 -0800
-> > > Alex Mastro <amastro@fb.com> wrote:
-> > >   
-> > > > On Sat, Nov 08, 2025 at 02:37:10PM -0700, Alex Williamson wrote:  
-> > > > > On Sat, 8 Nov 2025 12:19:48 -0800
-> > > > > Alex Mastro <amastro@fb.com> wrote:    
-> > > > > > Here's my attempt at adding some machinery to query iova ranges, with
-> > > > > > normalization to iommufd's struct. I kept the vfio capability chain stuff
-> > > > > > relatively generic so we can use it for other things in the future if needed.    
-> > > > > 
-> > > > > Seems we were both hacking on this, I hadn't seen you posted this
-> > > > > before sending:
-> > > > > 
-> > > > > https://lore.kernel.org/kvm/20251108212954.26477-1-alex@shazbot.org/T/#u
-> > > > > 
-> > > > > Maybe we can combine the best merits of each.  Thanks,    
-> > > > 
-> > > > Yes! I have been thinking along the following lines
-> > > > - Your idea to change the end of address space test to allocate at the end of
-> > > >   the supported range is better and more general than my idea of skipping the
-> > > >   test if ~(iova_t)0 is out of bounds. We should do that.
-> > > > - Introducing the concept iova allocator makes sense.
-> > > > - I think it's worthwhile to keep common test concepts like vfio_pci_device
-> > > >   less opinionated/stateful so as not to close the door on certain categories of
-> > > >   testing in the future. For example, if we ever wanted to test IOVA range
-> > > >   contraction after binding additional devices to an IOAS or vfio container.  
-> > > 
-> > > Yes, fetching the IOVA ranges should really occur after all the devices
-> > > are attached to the container/ioas rather than in device init.  We need
-> > > another layer of abstraction for the shared IOMMU state.  We can
-> > > probably work on that incrementally.  
-> 
-> I am working on pulling the iommu state out of struct vfio_pci_device
-> here:
-> 
->   https://lore.kernel.org/kvm/20251008232531.1152035-5-dmatlack@google.com/
-> 
-> But if we keep the iova allocator a separate object, then we can
-> introduce it mosty indepently from this series. I imagine the only thing
-> that will change is passing a struct iommu * instead of a struct
-> vfio_pci_device * when initializing the allocator.
-> 
-> > > 
-> > > I certainly like the idea of testing range contraction, but I don't
-> > > know where we can reliably see that behavior.  
-> > 
-> > I'm not sure about the exact testing strategy for that yet either actually.
-> >   
-> > > > - What do you think about making the concept of an IOVA allocator something
-> > > >   standalone for which tests that need it can create one? I think it would
-> > > >   compose pretty cleanly on top of my vfio_pci_iova_ranges().  
-> > > 
-> > > Yep, that sounds good.  Obviously what's there is just the simplest
-> > > possible linear, aligned allocator with no attempt to fill gaps or
-> > > track allocations for freeing.  We're not likely to exhaust the address
-> > > space in an individual unit test, I just wanted to relieve the test
-> > > from the burden of coming up with a valid IOVA, while leaving some
-> > > degree of geometry info for exploring the boundaries.  
-> > 
-> > Keeping the simple linear allocator makes sense to me.
-> >   
-> > > Are you interested in generating a combined v2?  
-> > 
-> > Sure -- I can put up a v2 series which stages like so
-> > - adds stateless low level iova ranges queries
-> > - adds iova allocator utility object
-> > - fixes end of ranges tests, uses iova allocator instead of iova=vaddr   
-> 
-> +1 to getting rid of iova=vaddr.
-> 
-> But note that the HugeTLB tests in vfio_dma_mapping_test.c have
-> alignment requirements to pass on Intel (since it validates the pages
-> are mapped at the right level in the I/O page tables using the Intel
-> debugfs interface).
-> 
-> > > TBH I'm not sure that just marking a test as skipped based on the DMA
-> > > mapping return is worthwhile with a couple proposals to add IOVA range
-> > > support already on the table.  Thanks,  
-> > 
-> > I'll put up the new series rooted on linux-vfio/next soon.  
-> 
-> I think we should try to get vfio_dma_mapping_test back to passing in
-> time for Linux 6.18, since the newly failing test was added in 6.18.
-> 
-> The sequence I was imagining was:
-> 
->  1. Merge the quick fix to skip the test into 6.18.
-
-We'd still have the iova=vaddr failure on some platforms, but could
-hack around that by hard coding some "well supporteD" IOVA like 0 or
-4GB.
-
->  2. Split struct iommu from struct vfio_pci_device.
->  3. Add iova allocator.
-> 
-> AlexW, how much time do we have to get AlexM's series ready? I am fine
-> with doing (3), then (2), and dropping (1) if there's enough time.
-
-I'll certainly agree that it'd be a much better precedent if the self
-test were initially working, but also we should not increase the scope
-beyond what we need to make it work for v6.18.  If we can get that done
-in the next day or two, add it to linux-next mid-week, and get Linus to
-pull for rc6, I think that'd be reasonable.  Thanks,
-
-Alex
+I don't think it really matters at this point. But I just rebased on 
+6.18-rc5 during last minutes.
