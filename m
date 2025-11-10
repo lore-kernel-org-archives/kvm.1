@@ -1,55 +1,55 @@
-Received: from fout-b8-smtp.messagingengine.com (fout-b8-smtp.messagingengine.com [202.12.124.151])
+Received: from fhigh-b8-smtp.messagingengine.com (fhigh-b8-smtp.messagingengine.com [202.12.124.159])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3129432D0D0;
-	Mon, 10 Nov 2025 21:32:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.151
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A75D0331A63;
+	Mon, 10 Nov 2025 21:32:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.159
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762810329; cv=none; b=j4Kh6OyVskDcM7PbdChE5BtehVaLH39LIuuF8HOCQGllBEvPUCFm5/MDownXiPXAg4RQvortGmTLZjkHK4v1g/k3ISqEotzDEvTAsBxTZZmNFqjW0Hs6MeUBBrJcG0+RFJ6kbQolxTKHAsmDGhEOVxxD2MNK9XS0YtLyQlJQMEQ=
+	t=1762810330; cv=none; b=Ps+bMzaNvoK9ibncCzDPbc8x6QznKQqlB22DGZD4CONBSPcsSHz1iSCbqB29u8HFd1sjvyEZt+qaWfu2XeiF/i9xwmcpP5OHv3l1+vkCTl/YOu+cZzLOjYtTfIKnX9UcWIFz441oS90NopmC2AFCOAOYpbk+oDV3yLV8OIgQcIs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762810329; c=relaxed/simple;
-	bh=MCilM5LehRXK/jRHJuvH+tCbuQlTkTvEIGzXHS2eMRg=;
+	s=arc-20240116; t=1762810330; c=relaxed/simple;
+	bh=vxBi0nvyAkJDE1yP7hrlOq7bh6+WO3W1QC4fXD1XMKY=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=io6d4EXb6iBOS4ZVbBwxkljG0fxOdAuvN06IkzBI68+c8G54KtmPNnXSaopmpVAC/0a0uY0k/WbZj4LVxk4laONsglJL6r5vJXzKt4vdIBkTd3eEMN1RAKIgRv2kbozsy1v9VFNGyeAOpmpfMXE1y0/EEUDLZ9DgL3NEM4XfH0o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=shazbot.org; spf=pass smtp.mailfrom=shazbot.org; dkim=pass (2048-bit key) header.d=shazbot.org header.i=@shazbot.org header.b=e1KY6Dl4; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=aWAmI+oD; arc=none smtp.client-ip=202.12.124.151
+	 MIME-Version:Content-Type; b=E7Icj/qx4Hkq1Rcv6DrXCOJJb6zdGcNQo4HLt0heRP6nmcFSzSDgYcwSn3GQxq6W6uvTnPopC3f+rou25NTwjO/YJjBUMSJTYGQQG4BqU6n/4YmLNi59zNL8SkGKsKjbglOX6tsFsR7Ekd3m+LTkaNjoi3N+vVDYchUXeVAjgLE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=shazbot.org; spf=pass smtp.mailfrom=shazbot.org; dkim=pass (2048-bit key) header.d=shazbot.org header.i=@shazbot.org header.b=dYFR2eoS; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=NhWQPMA9; arc=none smtp.client-ip=202.12.124.159
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=shazbot.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=shazbot.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=shazbot.org header.i=@shazbot.org header.b="e1KY6Dl4";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="aWAmI+oD"
-Received: from phl-compute-11.internal (phl-compute-11.internal [10.202.2.51])
-	by mailfout.stl.internal (Postfix) with ESMTP id 2DE461D000C3;
-	Mon, 10 Nov 2025 16:32:06 -0500 (EST)
+	dkim=pass (2048-bit key) header.d=shazbot.org header.i=@shazbot.org header.b="dYFR2eoS";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="NhWQPMA9"
+Received: from phl-compute-03.internal (phl-compute-03.internal [10.202.2.43])
+	by mailfhigh.stl.internal (Postfix) with ESMTP id D01997A00F7;
+	Mon, 10 Nov 2025 16:32:07 -0500 (EST)
 Received: from phl-mailfrontend-02 ([10.202.2.163])
-  by phl-compute-11.internal (MEProxy); Mon, 10 Nov 2025 16:32:06 -0500
+  by phl-compute-03.internal (MEProxy); Mon, 10 Nov 2025 16:32:08 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shazbot.org; h=
 	cc:cc:content-transfer-encoding:content-type:content-type:date
 	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to; s=fm2; t=1762810326;
-	 x=1762896726; bh=Nvr3v2IdFq6z26yieZyCxtOgb/hX4txgIDXKOBDMeHA=; b=
-	e1KY6Dl4Gu5ebc3VF8QwOTj3gj7k3VNFGcR8ooKao4U9k2ovm/Er5YwNGYqknJB6
-	mZnTmh7mrUPd8KtdhKlSIz82ILWtxqGXQyplKJife10QbTg/c085BUmjGJ3W97IN
-	6n1OgT2VD5z5d4ddf2eyiq/hUBUe+SMLETNBdnQ2arx3/1VEPmewW6cLdhcB6gc4
-	k9KlESletWRqCSec/IR/7z4hEsFqvbg4mkvx4aCnfigzptqpqQ0lSPH/YzMi1JPl
-	tzQ98Hb7ZCyiyhduE9Nq6evMA+Z7BGDTEgogp3BToTf44eOs3vd0aPFo1UX3buCn
-	LW6L9W6V5nX8S3Z0dMxjKw==
+	:references:reply-to:subject:subject:to:to; s=fm2; t=1762810327;
+	 x=1762896727; bh=25GjsnAAs1TRFEpPcIW2mW9ndg7EOK3Ky9AP3YJIP1I=; b=
+	dYFR2eoSfXCx6EDRLdne30kGxwLJa1Yh74eNMz7TAuFic97LrpaB9XEePd4eqkMV
+	jPtgml/Wf1rpnRDhgOewa4XS5/wmGmxwULcBCvDMrmFbVh0h/CdhP88Ujk9SDwwN
+	CbAIB0g38v27ZXnbj153G7BQC7c6guWkPeI1kluNGSJVVJa5yOxWtKJwDXmJgYw5
+	zx1Qd3mD6YVE5VVs3zeAng1W8Nz7TKolV0DQ56Tmep5cU8+JtZEefvbzM1WVlAHt
+	HqD8VeDs1r4Pl4V2KNTBzQD4tGHdK0feVpNzYfk4bvdJoAS0kbPeXdUbeVWTOL08
+	aE3AQwr9wle7JAHqqwG4Fw==
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
 	messagingengine.com; h=cc:cc:content-transfer-encoding
 	:content-type:content-type:date:date:feedback-id:feedback-id
 	:from:from:in-reply-to:in-reply-to:message-id:mime-version
 	:references:reply-to:subject:subject:to:to:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=1762810326; x=
-	1762896726; bh=Nvr3v2IdFq6z26yieZyCxtOgb/hX4txgIDXKOBDMeHA=; b=a
-	WAmI+oDEXz4xKBm1zZlfpgfxL7cO4b4XvqsLURcnuZXMohIlxEsYH0yflmCzkKRV
-	s1myjI/P/imV60ZvVcK/HinKQAbsSNUk5vKWMNFQcAifzBL0TuhYcMiN32zsIOue
-	ff+N+Wnh7/I5pLFF0XQK6JDnuDTndaZ/BIu52nqpqGn1Mqg7CZSnXOHaQYPI8979
-	CBD397iHUrmVBx4j0PdPYUAZXnlagR1LVm8kyP4Bxph+/opvF+/abAewwqou0LAY
-	JTOFm+iS3SOGrMFsg3rlpvIdyof8UbbghXx8kORhqdIZZfIHgSVPtAvHF28KfcJq
-	7cIi+tDEZ+XJCId2Ze/og==
-X-ME-Sender: <xms:1VkSabEMpOMPrPl3TeCcgX6NZgZcra3OVLIaAflaBSC4uNyBvQcI5Q>
-    <xme:1VkSaSbNudPCRShr2uXKk4uxYzTC_5ktHsDVwRMji5i5ZRYPCsUmY2EIJ6kCPyfX0
-    q4N20DMP6PTSabbvJ8Kovk7Gtlz-xnH7wzIv34f4c6WvgzYukxT>
-X-ME-Received: <xmr:1VkSadDYTpu5gBkx_90KEG9tI0XawMNx-l1keJ6p5WiyIxWXDt7kBZCe>
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=1762810327; x=
+	1762896727; bh=25GjsnAAs1TRFEpPcIW2mW9ndg7EOK3Ky9AP3YJIP1I=; b=N
+	hWQPMA9aeO6sT61Qbipsc6rjmDigJG91gU5efJtZANdLCoDuMTglMDOv5EzdqFRB
+	TFfV+MLeo+EEQbKJnCMoyxqh09H0vyywAR6hfImen7INKt28yR1buM8S5PqvOUVO
+	tl/sQ8/9P9R5CUpSnipY3Ei7yqofHZudlUL3G2QNFxv2xDeOmV0NGRpAbI4gaTt+
+	dCZpaRnBpXyPN8iHgI+8/G6aHon95Lfyqzk1rIb7+Sl6VZBKstiZPoRZL7LXYB0E
+	3VUmw920R91d0Klf2le4k1Siu/TM6armMYtXgPC1IN3Q17zjuJmY43DGeNYAFgPr
+	ei5lBZ39TuEVK9dmvVZsA==
+X-ME-Sender: <xms:11kSaYCQ0CHxzPVVICT_yDxhZaWaTQkJA5eYC9Abi4qYltgiOnnpHg>
+    <xme:11kSaUnm7U8y1rTFEM68WybWxz9tgk6sAgECPKpfPO2RE1wv-ba0oB3IEY2JnstCY
+    QUfGBrsIDv6tIET10Z-02AOeXJvsig8szOyN3BZkkwEnyNDl1Ki>
+X-ME-Received: <xmr:11kSabf-VtLJcmymwgoSEsC11aQB65taj2gRTWV5lroRtHtRy3jXIhQH>
 X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdeggdduleelgedtucetufdoteggodetrf
     dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
     rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
@@ -64,25 +64,26 @@ X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdeggdduleelgedtucetufdote
     dprhgtphhtthhopehlihhnuhigqdhkshgvlhhfthgvshhtsehvghgvrhdrkhgvrhhnvghl
     rdhorhhgpdhrtghpthhtoheplhhinhhugidqkhgvrhhnvghlsehvghgvrhdrkhgvrhhnvg
     hlrdhorhhgpdhrtghpthhtohepjhhgghesiihivghpvgdrtggr
-X-ME-Proxy: <xmx:1VkSaakrhsWDMCThDf--lthidA43QzICHV7UM-fkAX-OV19GpZBNcw>
-    <xmx:1VkSaewqswa6Y8E0pP04V39tpCo-_mV18D_xDk_0JmW96v0xM_V3Hw>
-    <xmx:1VkSaURsUoFkbN42U9-VcwxUAOGc7wZSWGfkaDvFddYbxAGWBryOIw>
-    <xmx:1VkSaW-_SwzwBU481bB4loET9FGSuJcPfrjTtijS4XnraR7yS3L5zA>
-    <xmx:1lkSaUrIWktTDViwyKx17KXhjWuWDjWQgrj5H6WppFthpmSlvPcZRrOj>
+X-ME-Proxy: <xmx:11kSaQTZ_8i49bqB55AXmpOxa2kYvVhG6MWmZ6_IKQwQqdOpOGVxyQ>
+    <xmx:11kSaau8JY0SNh10eelV8QjjVdboU1PvPclmDb2-P4ncMVXBDKxQTg>
+    <xmx:11kSaZcUIK0rQl3WtiblyWWlFL4p2V4qu05D7cQ-1UptziriOUHGcA>
+    <xmx:11kSacb8mp61akmALVMDexgil9I2b07bvGrLVwaJ9Rrsv-T3rnRR8w>
+    <xmx:11kSaa24-zMlZu7nxDHKfwomQ_s04hQ4795YXA-5jCWiBFB-DIpZd7Eg>
 Feedback-ID: i03f14258:Fastmail
 Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
- 10 Nov 2025 16:32:05 -0500 (EST)
-Date: Mon, 10 Nov 2025 14:31:53 -0700
+ 10 Nov 2025 16:32:06 -0500 (EST)
+Date: Mon, 10 Nov 2025 14:31:56 -0700
 From: Alex Williamson <alex@shazbot.org>
 To: Alex Mastro <amastro@fb.com>
 Cc: David Matlack <dmatlack@google.com>, Shuah Khan <shuah@kernel.org>,
  <kvm@vger.kernel.org>, <linux-kselftest@vger.kernel.org>,
  <linux-kernel@vger.kernel.org>, Jason Gunthorpe <jgg@ziepe.ca>
-Subject: Re: [PATCH 1/4] vfio: selftests: add iova range query helpers
-Message-ID: <20251110143153.4c456ad4.alex@shazbot.org>
-In-Reply-To: <20251110-iova-ranges-v1-1-4d441cf5bf6d@fb.com>
+Subject: Re: [PATCH 4/4] vfio: selftests: update vfio_dma_mapping_test to
+ allocate iovas
+Message-ID: <20251110143156.08d1859b.alex@shazbot.org>
+In-Reply-To: <20251110-iova-ranges-v1-4-4d441cf5bf6d@fb.com>
 References: <20251110-iova-ranges-v1-0-4d441cf5bf6d@fb.com>
-	<20251110-iova-ranges-v1-1-4d441cf5bf6d@fb.com>
+	<20251110-iova-ranges-v1-4-4d441cf5bf6d@fb.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -92,246 +93,60 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Mon, 10 Nov 2025 13:10:41 -0800
+On Mon, 10 Nov 2025 13:10:44 -0800
 Alex Mastro <amastro@fb.com> wrote:
 
-> VFIO selftests need to map IOVAs from legally accessible ranges, which
-> could vary between hardware. Tests in vfio_dma_mapping_test.c are making
-> excessively strong assumptions about which IOVAs can be mapped.
-> 
-> Add vfio_iommu_iova_ranges(), which queries IOVA ranges from the
-> IOMMUFD or VFIO container associated with the device. The queried ranges
-> are normalized to IOMMUFD's iommu_iova_range representation so that
-> handling of IOVA ranges up the stack can be implementation-agnostic.
-> iommu_iova_range and vfio_iova_range are equivalent, so bias to using the
-> new interface's struct.
-> 
-> Query IOMMUFD's ranges with IOMMU_IOAS_IOVA_RANGES.
-> Query VFIO container's ranges with VFIO_IOMMU_GET_INFO and
-> VFIO_IOMMU_TYPE1_INFO_CAP_IOVA_RANGE.
-> 
-> The underlying vfio_iommu_type1_info buffer-related functionality has
-> been kept generic so the same helpers can be used to query other
-> capability chain information, if needed.
+> vfio_dma_mapping_test currently uses iova=vaddr as part of DMA mapping
+> validation. The assumption that these IOVAs are legal has held up on all
+> the hardware we've tested so far, but but is not guaranteed. Make the
+> test more robust by using iova_allocator to vend IOVAs, which queries
+> legally accessible IOVAs from the underlying IOMMUFD or VFIO container.
 > 
 > Signed-off-by: Alex Mastro <amastro@fb.com>
 > ---
->  .../testing/selftests/vfio/lib/include/vfio_util.h |   8 +-
->  tools/testing/selftests/vfio/lib/vfio_pci_device.c | 161 +++++++++++++++++++++
->  2 files changed, 168 insertions(+), 1 deletion(-)
+>  tools/testing/selftests/vfio/vfio_dma_mapping_test.c | 8 +++++++-
+>  1 file changed, 7 insertions(+), 1 deletion(-)
 > 
-> diff --git a/tools/testing/selftests/vfio/lib/include/vfio_util.h b/tools/testing/selftests/vfio/lib/include/vfio_util.h
-> index 240409bf5f8a..fb5efec52316 100644
-> --- a/tools/testing/selftests/vfio/lib/include/vfio_util.h
-> +++ b/tools/testing/selftests/vfio/lib/include/vfio_util.h
-> @@ -4,9 +4,12 @@
+> diff --git a/tools/testing/selftests/vfio/vfio_dma_mapping_test.c b/tools/testing/selftests/vfio/vfio_dma_mapping_test.c
+> index 37c2a342df8d..c1a015385b0f 100644
+> --- a/tools/testing/selftests/vfio/vfio_dma_mapping_test.c
+> +++ b/tools/testing/selftests/vfio/vfio_dma_mapping_test.c
+> @@ -95,6 +95,7 @@ static int iommu_mapping_get(const char *bdf, u64 iova,
 >  
->  #include <fcntl.h>
->  #include <string.h>
-> -#include <linux/vfio.h>
-> +
-> +#include <uapi/linux/types.h>
-> +#include <linux/iommufd.h>
->  #include <linux/list.h>
->  #include <linux/pci_regs.h>
-> +#include <linux/vfio.h>
+>  FIXTURE(vfio_dma_mapping_test) {
+>  	struct vfio_pci_device *device;
+> +	struct iova_allocator iova_allocator;
+>  };
 >  
->  #include "../../../kselftest.h"
+>  FIXTURE_VARIANT(vfio_dma_mapping_test) {
+> @@ -118,11 +119,16 @@ FIXTURE_VARIANT_ADD_ALL_IOMMU_MODES(anonymous_hugetlb_1gb, SZ_1G, MAP_HUGETLB |
 >  
-> @@ -206,6 +209,9 @@ struct vfio_pci_device *vfio_pci_device_init(const char *bdf, const char *iommu_
->  void vfio_pci_device_cleanup(struct vfio_pci_device *device);
->  void vfio_pci_device_reset(struct vfio_pci_device *device);
->  
-> +struct iommu_iova_range *vfio_pci_iova_ranges(struct vfio_pci_device *device,
-> +					      size_t *nranges);
-> +
->  int __vfio_pci_dma_map(struct vfio_pci_device *device,
->  		       struct vfio_dma_region *region);
->  int __vfio_pci_dma_unmap(struct vfio_pci_device *device,
-> diff --git a/tools/testing/selftests/vfio/lib/vfio_pci_device.c b/tools/testing/selftests/vfio/lib/vfio_pci_device.c
-> index a381fd253aa7..6bedbe65f0a1 100644
-> --- a/tools/testing/selftests/vfio/lib/vfio_pci_device.c
-> +++ b/tools/testing/selftests/vfio/lib/vfio_pci_device.c
-> @@ -29,6 +29,167 @@
->  	VFIO_ASSERT_EQ(__ret, 0, "ioctl(%s, %s, %s) returned %d\n", #_fd, #_op, #_arg, __ret); \
->  } while (0)
->  
-> +static struct vfio_info_cap_header *next_cap_hdr(void *buf, size_t bufsz,
-> +						 size_t *cap_offset)
-> +{
-> +	struct vfio_info_cap_header *hdr;
-> +
-> +	if (!*cap_offset)
-> +		return NULL;
-> +
-> +	/* Cap offset must be in bounds */
-> +	VFIO_ASSERT_LT(*cap_offset, bufsz);
-> +	/* There must be enough remaining space to contain the header */
-> +	VFIO_ASSERT_GE(bufsz - *cap_offset, sizeof(*hdr));
-> +
-> +	hdr = (struct vfio_info_cap_header *)((u8 *)buf + *cap_offset);
-> +
-> +	/* If there is a next, offset must increase by at least the header size */
-> +	if (hdr->next) {
-> +		VFIO_ASSERT_GT(hdr->next, *cap_offset);
-> +		VFIO_ASSERT_GE(hdr->next - *cap_offset, sizeof(*hdr));
-> +	}
-> +
-> +	*cap_offset = hdr->next;
-> +
-> +	return hdr;
-> +}
-> +
-> +static struct vfio_info_cap_header *vfio_iommu_info_cap_hdr(struct vfio_iommu_type1_info *buf,
-> +							    u16 cap_id)
-> +{
-> +	struct vfio_info_cap_header *hdr;
-> +	size_t cap_offset = buf->cap_offset;
-> +
-> +	if (!(buf->flags & VFIO_IOMMU_INFO_CAPS))
-> +		return NULL;
-> +
-> +	if (cap_offset)
-> +		VFIO_ASSERT_GE(cap_offset, sizeof(struct vfio_iommu_type1_info));
-> +
-> +	while ((hdr = next_cap_hdr(buf, buf->argsz, &cap_offset))) {
-> +		if (hdr->id == cap_id)
-> +			return hdr;
-> +	}
-> +
-> +	return NULL;
-> +}
-> +
-> +/* Return buffer including capability chain, if present. Free with free() */
-> +static struct vfio_iommu_type1_info *vfio_iommu_info_buf(struct vfio_pci_device *device)
-> +{
-> +	struct vfio_iommu_type1_info *buf;
-> +
-> +	buf = malloc(sizeof(*buf));
-> +	VFIO_ASSERT_NOT_NULL(buf);
-> +
-> +	*buf = (struct vfio_iommu_type1_info) {
-> +		.argsz = sizeof(*buf),
-> +	};
-> +
-> +	ioctl_assert(device->container_fd, VFIO_IOMMU_GET_INFO, buf);
-> +
-> +	buf = realloc(buf, buf->argsz);
-> +	VFIO_ASSERT_NOT_NULL(buf);
-> +
-> +	ioctl_assert(device->container_fd, VFIO_IOMMU_GET_INFO, buf);
-> +
-> +	return buf;
-> +}
-> +
-> +/*
-> + * Return iova ranges for the device's container. Normalize vfio_iommu_type1 to
-> + * report iommufd's iommu_iova_range. Free with free().
-> + */
-> +static struct iommu_iova_range *vfio_iommu_iova_ranges(struct vfio_pci_device *device,
-> +						       size_t *nranges)
-> +{
-> +	struct vfio_iommu_type1_info_cap_iova_range *cap_range;
-> +	struct vfio_iommu_type1_info *buf;
-> +	struct vfio_info_cap_header *hdr;
-> +	struct iommu_iova_range *ranges = NULL;
-> +
-> +	buf = vfio_iommu_info_buf(device);
-> +	VFIO_ASSERT_NOT_NULL(buf);
-> +
-> +	hdr = vfio_iommu_info_cap_hdr(buf, VFIO_IOMMU_TYPE1_INFO_CAP_IOVA_RANGE);
-> +	if (!hdr)
-> +		goto free_buf;
-> +
-> +	cap_range = container_of(hdr, struct vfio_iommu_type1_info_cap_iova_range, header);
-> +	if (!cap_range->nr_iovas)
-> +		goto free_buf;
-> +
-> +	ranges = malloc(cap_range->nr_iovas * sizeof(*ranges));
-
-
-Natural calloc() use case.
-
-> +	VFIO_ASSERT_NOT_NULL(ranges);
-> +
-> +	for (u32 i = 0; i < cap_range->nr_iovas; i++) {
-> +		ranges[i] = (struct iommu_iova_range){
-> +			.start = cap_range->iova_ranges[i].start,
-> +			.last = cap_range->iova_ranges[i].end,
-> +		};
-> +	}
-> +
-> +	*nranges = cap_range->nr_iovas;
-> +
-> +free_buf:
-> +	free(buf);
-> +	return ranges;
-> +}
-> +
-> +/* Return iova ranges of the device's IOAS. Free with free() */
-> +struct iommu_iova_range *iommufd_iova_ranges(struct vfio_pci_device *device,
-> +					     size_t *nranges)
-> +{
-> +	struct iommu_iova_range *ranges;
+>  FIXTURE_SETUP(vfio_dma_mapping_test)
+>  {
 > +	int ret;
 > +
-> +	struct iommu_ioas_iova_ranges query = {
-> +		.size = sizeof(query),
-> +		.ioas_id = device->ioas_id,
-> +	};
-> +
-> +	ret = ioctl(device->iommufd, IOMMU_IOAS_IOVA_RANGES, &query);
-> +	VFIO_ASSERT_EQ(ret, -1);
-> +	VFIO_ASSERT_EQ(errno, EMSGSIZE);
-> +	VFIO_ASSERT_GT(query.num_iovas, 0);
-> +
-> +	ranges = malloc(query.num_iovas * sizeof(*ranges));
-
-Same.
-
-> +	VFIO_ASSERT_NOT_NULL(ranges);
-> +
-> +	query.allowed_iovas = (uintptr_t)ranges;
-> +
-> +	ioctl_assert(device->iommufd, IOMMU_IOAS_IOVA_RANGES, &query);
-> +	*nranges = query.num_iovas;
-> +
-> +	return ranges;
-> +}
-> +
-> +struct iommu_iova_range *vfio_pci_iova_ranges(struct vfio_pci_device *device,
-> +					      size_t *nranges)
-> +{
-> +	struct iommu_iova_range *ranges;
-> +
-> +	if (device->iommufd)
-> +		ranges = iommufd_iova_ranges(device, nranges);
-> +	else
-> +		ranges = vfio_iommu_iova_ranges(device, nranges);
-> +
-> +	if (!ranges)
-> +		return NULL;
-> +
-> +	/* ranges should be valid, ascending, and non-overlapping */
-
-I don't recall that ranges are required to be in any particular order.
-Thanks,
-
-Alex
-
-> +	VFIO_ASSERT_GT(*nranges, 0);
-> +	VFIO_ASSERT_LT(ranges[0].start, ranges[0].last);
-> +
-> +	for (size_t i = 1; i < *nranges; i++) {
-> +		VFIO_ASSERT_LT(ranges[i].start, ranges[i].last);
-> +		VFIO_ASSERT_LT(ranges[i - 1].last, ranges[i].start);
-> +	}
-> +
-> +	return ranges;
-> +}
-> +
->  iova_t __to_iova(struct vfio_pci_device *device, void *vaddr)
+>  	self->device = vfio_pci_device_init(device_bdf, variant->iommu_mode);
+> +	ret = iova_allocator_init(self->device, &self->iova_allocator);
+> +	VFIO_ASSERT_EQ(ret, 0);
+>  }
+>  
+>  FIXTURE_TEARDOWN(vfio_dma_mapping_test)
 >  {
->  	struct vfio_dma_region *region;
+> +	iova_allocator_deinit(&self->iova_allocator);
+>  	vfio_pci_device_cleanup(self->device);
+>  }
+>  
+> @@ -144,7 +150,7 @@ TEST_F(vfio_dma_mapping_test, dma_map_unmap)
+>  	else
+>  		ASSERT_NE(region.vaddr, MAP_FAILED);
+>  
+> -	region.iova = (u64)region.vaddr;
+> +	region.iova = iova_allocator_alloc(&self->iova_allocator, size);
+>  	region.size = size;
+>  
+>  	vfio_pci_dma_map(self->device, &region);
 > 
 
+There's another in the driver test.  Thanks,
+
+Alex
