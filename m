@@ -1,101 +1,144 @@
-Received: from mail-pj1-f73.google.com (mail-pj1-f73.google.com [209.85.216.73])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 29EE52236E5
-	for <kvm@vger.kernel.org>; Mon, 10 Nov 2025 15:38:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.73
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CAFA42264BA;
+	Mon, 10 Nov 2025 15:38:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762789119; cv=none; b=GI1X0jNsW+BwaQ+pPY99+A7oCXYxik021Kske08Zwg4C8Fg9zlItJrm5DYrtMhghjBlsR/HD5QoI74hEb8kkVJoL+yEYZyeJkOqnZR9ilMEeoM+pW781Iikeh/zICjOvhARl3msMd2myQyhTFl+oSWK6GD+MueuC+RrUjIg70mk=
+	t=1762789127; cv=none; b=WACAYoOhFTQ/JOkfgikudVlIFwibi3HDyjKrenyoetoDEhiNFyWEz2rCFrQ01C6UmS6sPhjhe5CuO2sBthbM4xH0TOVMvgcJC9XPeFMScBFwFoCgiqd0bD/NGonxzeotI045cBeEGPzJhKLd5Ifrw0MiulzpCrZVumVlr3VL1zI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762789119; c=relaxed/simple;
-	bh=wWF6uOjqUv6W+Plh3B4k3LA4DNAjjEGlwhf3dBu6NtY=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=f93q5E3W1hC8R/3qYAT+9ZpDFTBhX9ix8oHkKW7HGHvD8SLIGAVcbkbobdUn3y5B5b+ILhgdy/8Lm0FtxTR/JtYl/pckUmfLqvMDXRhORl942xRULEiedsnwTvHPUXRh+w4JVHCAK6sFS53s55FGa8of069fqRkxw1tqoDVh9f0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=zL6ZXU+1; arc=none smtp.client-ip=209.85.216.73
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+	s=arc-20240116; t=1762789127; c=relaxed/simple;
+	bh=LHsY5jITGDFoq/9tN1I06LeZBDtc15xV3HQ5viiTCs0=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=REi6MAbI9FPUvA84SBQqBF6W7umFKokPYxkDTLrroLLPIlK7iU/e11NRu3C+CuHdzTEnR3sdEDtl6u/l5ALrQ3vjeaBYoacp2fs8BsAFMy45Df6h6umz4UfwbWaZiFd7IfxGbj3c5b+xpLBzHemn6lVx12gAwkLpF0SY2t/4kvk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=ht+K8nHR; arc=none smtp.client-ip=148.163.156.1
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="zL6ZXU+1"
-Received: by mail-pj1-f73.google.com with SMTP id 98e67ed59e1d1-340c07119bfso7742054a91.2
-        for <kvm@vger.kernel.org>; Mon, 10 Nov 2025 07:38:38 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1762789117; x=1763393917; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=yfPsA9R0m1PbgxrFpo4vz1rRRYntzKHoCzeS0KAV2Qg=;
-        b=zL6ZXU+1kZvN2/nDjtTNLLS/91EPST7S/A/BgiUDrMIHamYQI5Pi3/yxTF9ze5j3XV
-         Lk29HOsx3HFkpQSIAaKhV+85TL2Qy/ybstwq/o6BEylxuYKkj4yjTfZVbuX4qAJ+LFjl
-         19fuZ54Fij6hnmDvSl2BxViA2p3s2BjTq3I5MdT4YH0FEg3mGBZ5h0TUHV0v6Lo3Iezr
-         Z7shCvBLrR+CC2KUdK7IHW777D6AqmWtMTr2LEHhYVGyF6Lggn0wIj1yX09SqSS1AdX6
-         /0eRZVtCxm0rCYXTe0VI7B6H9Rn4jcusJhZcJur01i9yPOT/2XNVFu2aUs+OsuNKMbWj
-         H+Ug==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1762789117; x=1763393917;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=yfPsA9R0m1PbgxrFpo4vz1rRRYntzKHoCzeS0KAV2Qg=;
-        b=YwV9lPKgAw8j7TzlxvSf/7RQYhovC3LDQybRthKtitTwRfWNknJqTD+leyDmhvV5HU
-         G1pBIhxXSGj7UPD4TfZkn/QTjdUIzlsJckwva0EralUvkRo6FQkwHr7CWh7SPbxEEeB2
-         mH4RHXLqJf6zMHQtvakJ/Zn9Wp047UZ9AJXS2XAtLoInck8LLkRDWK7jYkugeJpHp8XA
-         8/Hh/YNIuNiI2obNSmuEfu6J5M5yvghCg9gnl6nJLXbUOPSK27oFgvutkE+t3GOhf51R
-         z/xlVT97RXI6o6euvBepzhlvviYlPj9cKAbUst77YYeSPkZD3OVsfmXuWP6FDTJY0A4l
-         yEew==
-X-Forwarded-Encrypted: i=1; AJvYcCVFaXRuTSxEtYrKT2FZVioFMVqPoShWqO7kxLC4dg5sBBaA/OkaYPDyhJlWmHIa7R43B3s=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzOrJKr8tB5Vaa+T1mtR64z6DlVWpzDMNU5VzwtOWMVt7rmCvSr
-	j1w/51B/EtufnzrWuQvr6RmpW/A5/95gylWf9lzu6gsIAm6JBvddJ1xhHLy3bA1DIeloRq5htXj
-	MD9gIkQ==
-X-Google-Smtp-Source: AGHT+IGK1wZ3/zucTg6yFltfJmAFT0YJdOBTxemOkKdCIS/Efg08CIE0m38N8M4xq0bxiDvgMiQUD2dCHdc=
-X-Received: from pjbgv9.prod.google.com ([2002:a17:90b:11c9:b0:340:c625:b238])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:3811:b0:340:29ce:f7fa
- with SMTP id 98e67ed59e1d1-3436cb7ae1emr12134871a91.7.1762789117528; Mon, 10
- Nov 2025 07:38:37 -0800 (PST)
-Date: Mon, 10 Nov 2025 07:37:17 -0800
-In-Reply-To: <20251015033258.50974-1-mlevitsk@redhat.com>
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="ht+K8nHR"
+Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 5AAEUkwT024315;
+	Mon, 10 Nov 2025 15:38:40 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-type:date:from:in-reply-to:message-id:mime-version
+	:references:subject:to; s=pp1; bh=OcBGousLcIDBIHHZkfGtkxYLVh1p65
+	7jRflqxnRy9pQ=; b=ht+K8nHRBVOP+H24c7yctgg2tTK0qOw0shdi88awVOmD8B
+	ftVtlAnJoNKSBi2GKdkOB2dQfdRkCgkoeiM1TkZEUxlpVCU29RjaVVSJ+G2pi0dT
+	G+P6HAe4mbrmrtiBeatCuCRHxaZEhGDM6sPTfJGVgOOXUpyYJc/CgYYvLKYYCOJH
+	uNWqaf+8/Ha4pQfE5rtJePqPuCo79vqwoueGiQ5il4K2jEO9q3MehvxufcDb1k+N
+	VS4f2Hhs4IYRLb5j/12XLsikE4qNToUPpfUHdz1qAuTj9zDS22IcalQmppSjGXfU
+	LDkSqg5JJQufjTcZOZNkZG2lb1N3oUnQfG+Y2Ueg==
+Received: from ppma13.dal12v.mail.ibm.com (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4aa5chyqff-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 10 Nov 2025 15:38:40 +0000 (GMT)
+Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma13.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 5AAD2EFi007313;
+	Mon, 10 Nov 2025 15:38:39 GMT
+Received: from smtprelay07.fra02v.mail.ibm.com ([9.218.2.229])
+	by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 4aajdj63d3-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 10 Nov 2025 15:38:39 +0000
+Received: from smtpav02.fra02v.mail.ibm.com (smtpav02.fra02v.mail.ibm.com [10.20.54.101])
+	by smtprelay07.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 5AAFcZub41091336
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Mon, 10 Nov 2025 15:38:35 GMT
+Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 5042A20043;
+	Mon, 10 Nov 2025 15:38:35 +0000 (GMT)
+Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 4368C20040;
+	Mon, 10 Nov 2025 15:38:34 +0000 (GMT)
+Received: from li-1de7cd4c-3205-11b2-a85c-d27f97db1fe1.ibm.com (unknown [9.111.80.93])
+	by smtpav02.fra02v.mail.ibm.com (Postfix) with ESMTPS;
+	Mon, 10 Nov 2025 15:38:34 +0000 (GMT)
+From: "Marc Hartmayer" <mhartmay@linux.ibm.com>
+To: Claudio Imbrenda <imbrenda@linux.ibm.com>, linux-kernel@vger.kernel.org,
+        kvm@vger.kernel.org
+Cc: linux-s390@vger.kernel.org, borntraeger@de.ibm.com, frankja@linux.ibm.com,
+        nrb@linux.ibm.com, nsg@linux.ibm.com, seiden@linux.ibm.com,
+        gra@linux.ibm.com, schlameuss@linux.ibm.com, hca@linux.ibm.com,
+        svens@linux.ibm.com, agordeev@linux.ibm.com, gor@linux.ibm.com,
+        ggala@linux.ibm.com, david@redhat.com
+Subject: Re: [PATCH v1 1/1] KVM: s390: Fix gmap_helper_zap_one_page() again
+In-Reply-To: <20251106152545.338188-1-imbrenda@linux.ibm.com>
+References: <20251106152545.338188-1-imbrenda@linux.ibm.com>
+Date: Mon, 10 Nov 2025 16:38:33 +0100
+Message-ID: <87346l7v9i.fsf@linux.ibm.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20251015033258.50974-1-mlevitsk@redhat.com>
-X-Mailer: git-send-email 2.51.2.1041.gc1ab5b90ca-goog
-Message-ID: <176278796977.917257.9553898354103958134.b4-ty@google.com>
-Subject: Re: [PATCH v2 0/3] Fix a lost async pagefault notification when the
- guest is using SMM
-From: Sean Christopherson <seanjc@google.com>
-To: Sean Christopherson <seanjc@google.com>, kvm@vger.kernel.org, 
-	Maxim Levitsky <mlevitsk@redhat.com>
-Cc: x86@kernel.org, Thomas Gleixner <tglx@linutronix.de>, Paolo Bonzini <pbonzini@redhat.com>, 
-	Ingo Molnar <mingo@redhat.com>, linux-kernel@vger.kernel.org, 
-	Borislav Petkov <bp@alien8.de>, "H. Peter Anvin" <hpa@zytor.com>, Dave Hansen <dave.hansen@linux.intel.com>
-Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Type: text/plain
+X-TM-AS-GCONF: 00
+X-Authority-Analysis: v=2.4 cv=Ss+dKfO0 c=1 sm=1 tr=0 ts=69120700 cx=c_pps
+ a=AfN7/Ok6k8XGzOShvHwTGQ==:117 a=AfN7/Ok6k8XGzOShvHwTGQ==:17
+ a=6UeiqGixMTsA:10 a=VkNPw1HP01LnGYTKEx00:22 a=VnNF1IyMAAAA:8
+ a=pknXBTohXVt6Cvpor-UA:9
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMTA4MDA5NSBTYWx0ZWRfX2zwed/t/ApLa
+ f4rlvWj9QEs2BT/VketNC18m+DOIyUUG1zTiAJCTMgSCYAbhoyWLLSyaeYHg5ATQ2iI0hkzyAHa
+ VulS+5gr3gw9ECbZhjxQKgSsWdgbxLyan2ILmqhj+FUKiWBDmOaC+KXTNx5hvg8ZlO6L+77S007
+ T/37mykupHkbSlny/9O0fUd4Rzuwfv0kgYwRYtl0tetMF99k456ZrusMsxRIDzV7sNt8EW5DC8R
+ KQwEj4R9LIbZN14LvuHc1Cb9g1K/8NNnyFOWWCd8HnpWttWTq/8rY2NgH69dPQKC4zDN56FcK9R
+ DAPTbkILI2B0+1elQPgPmM9hHk1Gm4gsyWtsMrW2SkLlPPdnAJM0UR8UjErZ70op3Pi9NZv1v1m
+ UL2X8xn+mVn0nuW55b0FfyGCIoXFGQ==
+X-Proofpoint-GUID: LPxLY2YjJFAeJd2cnqic_Cz6afSrasmA
+X-Proofpoint-ORIG-GUID: LPxLY2YjJFAeJd2cnqic_Cz6afSrasmA
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
+ definitions=2025-11-10_05,2025-11-10_02,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ clxscore=1011 suspectscore=0 impostorscore=0 bulkscore=0 phishscore=0
+ lowpriorityscore=0 adultscore=0 priorityscore=1501 spamscore=0 malwarescore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.19.0-2510240000 definitions=main-2511080095
 
-On Tue, 14 Oct 2025 23:32:55 -0400, Maxim Levitsky wrote:
-> Recently we debugged a customer case in which the guest VM was showing
-> tasks permanently stuck in the kvm_async_pf_task_wait_schedule.
-> 
-> This was traced to the incorrect flushing of the async pagefault queue,
-> which was done during the real mode entry by the kvm_post_set_cr0.
-> 
-> This code, the kvm_clear_async_pf_completion_queue does wait for all #APF
-> tasks to complete but then it proceeds to wipe the 'done' queue without
-> notifying the guest.
-> 
-> [...]
+On Thu, Nov 06, 2025 at 04:25 PM +0100, Claudio Imbrenda <imbrenda@linux.ibm.com> wrote:
+> A few checks were missing in gmap_helper_zap_one_page(), which can lead
+> to memory corruption in the guest under specific circumstances.
+>
+> Add the missing checks.
+>
+> Fixes: 5deafa27d9ae ("KVM: s390: Fix to clear PTE when discarding a swapped page")
+> Reported-by: Marc Hartmayer <mhartmay@linux.ibm.com>
+> Signed-off-by: Claudio Imbrenda <imbrenda@linux.ibm.com>
+> ---
+>  arch/s390/mm/gmap_helpers.c | 9 +++++++--
+>  1 file changed, 7 insertions(+), 2 deletions(-)
+>
+> diff --git a/arch/s390/mm/gmap_helpers.c b/arch/s390/mm/gmap_helpers.c
+> index d4c3c36855e2..38a2d82cd88a 100644
+> --- a/arch/s390/mm/gmap_helpers.c
+> +++ b/arch/s390/mm/gmap_helpers.c
+> @@ -47,6 +47,7 @@ static void ptep_zap_swap_entry(struct mm_struct *mm, swp_entry_t entry)
+>  void gmap_helper_zap_one_page(struct mm_struct *mm, unsigned long vmaddr)
+>  {
+>  	struct vm_area_struct *vma;
+> +	unsigned long pgstev;
+>  	spinlock_t *ptl;
+>  	pgste_t pgste;
+>  	pte_t *ptep;
+> @@ -65,9 +66,13 @@ void gmap_helper_zap_one_page(struct mm_struct *mm, unsigned long vmaddr)
+>  	if (pte_swap(*ptep)) {
+>  		preempt_disable();
+>  		pgste = pgste_get_lock(ptep);
+> +		pgstev = pgste_val(pgste);
+>  
+> -		ptep_zap_swap_entry(mm, pte_to_swp_entry(*ptep));
+> -		pte_clear(mm, vmaddr, ptep);
+> +		if ((pgstev & _PGSTE_GPS_USAGE_MASK) == _PGSTE_GPS_USAGE_UNUSED ||
+> +		    (pgstev & _PGSTE_GPS_ZERO)) {
+> +			ptep_zap_swap_entry(mm, pte_to_swp_entry(*ptep));
+> +			pte_clear(mm, vmaddr, ptep);
+> +		}
+>  
+>  		pgste_set_unlock(ptep, pgste);
+>  		preempt_enable();
+> -- 
+> 2.51.1
 
-Applied 2 and 3 to kvm-x86 misc.  The async #PF delivery path is also used by
-the host-only version of async #PF (where KVM puts the vCPU into HLT instead of
-letting the kernel schedule() in I/O), and so it's entirely expected that KVM
-will dequeue completed async #PFs when the PV version is disabled.
+Thanks for the fix.
 
-https://lore.kernel.org/all/aQ5BiLBWGKcMe-mM@google.com
-
-[1/3] KVM: x86: Warn if KVM tries to deliver an #APF completion when APF is not enabled
-      [DROP]
-[2/3] KVM: x86: Fix a semi theoretical bug in kvm_arch_async_page_present_queued
-      https://github.com/kvm-x86/linux/commit/68c35f89d016
-[3/3] KVM: x86: Fix the interaction between SMM and the asynchronous pagefault
-      https://github.com/kvm-x86/linux/commit/ab4e41eb9fab
-
---
-https://github.com/kvm-x86/linux/tree/next
+Tested-by: Marc Hartmayer <mhartmay@linux.ibm.com>
