@@ -1,154 +1,99 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f169.google.com (mail-pf1-f169.google.com [209.85.210.169])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 055FD3396FE;
-	Mon, 10 Nov 2025 18:25:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.12
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 382A032C336
+	for <kvm@vger.kernel.org>; Mon, 10 Nov 2025 18:28:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.169
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762799113; cv=none; b=geHReUcoU1eVsEAnjuCUfRJ5yv9AtPH9RCP48cwOGEPg8iuBi566EN+2Sjp7bcmfy/2HmKnFNwW6zv3zU98/Nq1L8aBGgWhhGwLTlB6qbUXVKZVKmU/oM4Oi16bVqZd5vFlHPlLK9KwVd1fVPnr0M1kqrAxJC47alY/pI9L28Wg=
+	t=1762799339; cv=none; b=OALY4nt3TCi099JFVKFZF7rT6hGFS7ynkaJOtNDWQccHMl/cWkA0iklXJ53CB9S4cN7DCk/QXLSkLvVfWCvPSJyIntwT4xpfNalqcE1OAmas5K5xWkLaFcFb3MaxQuB7t1XjPulkWZ1IPSY+pZzoIi7Doyiz6FuwlUnA2a0UI4c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762799113; c=relaxed/simple;
-	bh=nttrs9kXJEruBtJDkTL/ZkXBCpbVD+Se2fR40WktCw4=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=diplprWOjx7fqicQ7Q8ybqCjAj7vIMg9qopbXov/o6OHx0fC4zbQDuhqI7xUpRjXnEzY7nLG0z57Zow629Wntl38Fy4Qp514tf5L284i3UOucH2oXBqGAUgNnE+1AgEA7+2gFpl4x9zqVys5/ByCyQHbc/369NeDA5iwgWWf/xU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=b2OGkEzi; arc=none smtp.client-ip=198.175.65.12
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1762799339; c=relaxed/simple;
+	bh=fJV/RtlEridQLN78C7ptYM1qw13Wglr7XvHzt88UOiQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=m+brUInUqQADkPim5FW2akJxWbJ5eZXc9P9xlP9qFuuWXgA7d8zgI9kmFzhtg8OT9ArWKE+I4N9PfRGj/h/XVvFmzppJ5Nlv/T0no2+ZajwkFzFrEaJ3Co1KmBIpvTW+z09WzMrQ5y8NSqC2297V1cXRXh0d8bRroFmAy/ppiqY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=GN4yE0M8; arc=none smtp.client-ip=209.85.210.169
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="b2OGkEzi"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1762799112; x=1794335112;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=nttrs9kXJEruBtJDkTL/ZkXBCpbVD+Se2fR40WktCw4=;
-  b=b2OGkEziBuVCBmILT3O6HopGHpN86odXwZcQWIAJURL07xDbPMoALBQm
-   945vXUL1kjj9DYLrpsWEOgjSSA/Anx3Dbq7aK5VZeucyHRJ6cdCROxAv8
-   C8pSzs3BQA5ELXiKb+ZVf+D59ywvppv9tWmIzKL9YE6Lkj02aEUiRFkTb
-   7GeVA8hbVvfEo9/Ke4KIW8A/9wkIafRfy/c5LrUfRpMWCN2KoSVpy01xf
-   zXYBBfmBAD1DXZUS3GFp+5pNObGMaZD4tZnbamubtuxNbZ/e9kGHrgN8c
-   gnujfNI2SD0w4TGT2rp248R43Te/LRLwH5tQRr4hK1xDU/hiUDQL6CaHX
-   g==;
-X-CSE-ConnectionGUID: Loa790ghSMaJfHPMpf34sw==
-X-CSE-MsgGUID: 7bGlQ0hKSX6HC817Ms9Y3A==
-X-IronPort-AV: E=McAfee;i="6800,10657,11609"; a="76305555"
-X-IronPort-AV: E=Sophos;i="6.19,294,1754982000"; 
-   d="scan'208";a="76305555"
-Received: from orviesa002.jf.intel.com ([10.64.159.142])
-  by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Nov 2025 10:25:12 -0800
-X-CSE-ConnectionGUID: vJb1HY+jRJiswqjNK2PQzg==
-X-CSE-MsgGUID: DvjLWkxdSlqFhlv4UCNEBg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.19,294,1754982000"; 
-   d="scan'208";a="219396288"
-Received: from chang-linux-3.sc.intel.com (HELO chang-linux-3) ([172.25.66.172])
-  by orviesa002.jf.intel.com with ESMTP; 10 Nov 2025 10:25:12 -0800
-From: "Chang S. Bae" <chang.seok.bae@intel.com>
-To: kvm@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Cc: pbonzini@redhat.com,
-	seanjc@google.com,
-	chao.gao@intel.com,
-	zhao1.liu@intel.com,
-	chang.seok.bae@intel.com
-Subject: [PATCH RFC v1 20/20] KVM: selftests: Add APX state handling and XCR0 sanity checks
-Date: Mon, 10 Nov 2025 18:01:31 +0000
-Message-ID: <20251110180131.28264-21-chang.seok.bae@intel.com>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251110180131.28264-1-chang.seok.bae@intel.com>
-References: <20251110180131.28264-1-chang.seok.bae@intel.com>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="GN4yE0M8"
+Received: by mail-pf1-f169.google.com with SMTP id d2e1a72fcca58-7b18c6cc278so3354690b3a.0
+        for <kvm@vger.kernel.org>; Mon, 10 Nov 2025 10:28:57 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1762799336; x=1763404136; darn=vger.kernel.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=PI3PxyMvV2B0xV3gp+ziEDLShaFZbpMva22kJCv4VyE=;
+        b=GN4yE0M8RWla7rRC73HC04yTiULuR688keH0YM34VFGaiormiR8YZcmBIV6OXVkNH7
+         Ca2vtaHpYt1hWx4p01wJUox1DhqSae0itpyhzsPvuz4yGEkjcuv5Zdqp8BuJGZKTjGjN
+         wkKxOQtHoBDYFFjgQTKvBAz3GU/OW1lwsrRqkKTLpbTCWGAVBEmxx1pDyWV2BPXC0INR
+         NXphMQamABUhlbKlAhINQ97WVo0+eGMzQIFXfzBkanSF00CZS0HLKN09IdnYZ8YDkDdr
+         NAlyEmXCmmAO1arkwX7LDwzsS0Fkqjoh8SkAebb/sAgbyPTqwAcjJN5crWJlOt8Eou2X
+         GDDw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1762799336; x=1763404136;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=PI3PxyMvV2B0xV3gp+ziEDLShaFZbpMva22kJCv4VyE=;
+        b=oycXfXPxltUqY6zFLhmuOIlXtsQwYcfS7NqlFTfzdVtMqAKd34I8QcGL/PSc2Ar8ih
+         SQOEkbEP+dJr7MOx6mxp0RRhFafplgROpXey8ghmwy7QOd+g2/JpPQFQcHIzCf7Z1zzW
+         SA6xfFJ3mPAm0qFatKeITPTGgmsrIFESlkNr6uieC3LrdtURJWNwjDVscogQHjcfAAVE
+         s+StgMY1vts5D+N1skcMqtW59NjryotjXRv6hcefK36wFRRJ/N6/PbMZ1PaiX7fiK1hP
+         pkkQCItuzbx3BVLRk0Xa1yJt8wcZ7hsILn9GTQobaNV3gRRPyxROkqULO8AhLC5UTTPZ
+         PlIw==
+X-Forwarded-Encrypted: i=1; AJvYcCU9x5fclOkvefq+wP+L5RDfSGSi8gY43CHhE8knfa3mPLUwekwWqXZep8PQVgy8NzrSKDM=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyS+5PEgsqCd3RkQiaXXbEkwJvxFj01nro9yQgORRnBrpDxuQsz
+	kqaOyZUyfkx0u/NbOtQb82ka4cFyYE+h+10PExvxkfitSNZ0ce6HNk3eDSPlxcOXtQ==
+X-Gm-Gg: ASbGncvwSvHv6h8k3Gx6tzOExFJA4MNYcHGbfPN1RHbuPxV/tOZDCkFNxWo491NUM9t
+	xquKssX7qaWKkLvhr7XLuFzy5rXfk0UIJrsEIABuhcjp34bRLSMQ5pctGqkND44Fgl6EOdhJ5lg
+	KXNDQvpUazWrhSvma5lv9HLWirUiroL6lWk89YTyvrE0IWy7V+1oSXi8YzMtiaJafqKMBzrTasM
+	VDV29Wp6h3DnvAv0FfNEIyu5ls1gqSnekiaMa89ksHd6qVIcByJBx/7KIbqbuQCPbQ+/+bi9RE2
+	zTiZL1/kEdr2K3PqnMPhmsu6nCacDvMgellY4DGM7PkGo/dMwjv2lIHg2M61J5CATrGMgrUb/wh
+	ObojFGSqIIXm7gdMv1k+/tsa65nV+hhfhytj6b+YYdCTPtxG5O1fvu/R8B3qFoZbvbA3BouU70a
+	u1XjShQODYln7jXZMmxVDsJKFwiri4AIYM7q6fV5no0QqELkAQ9RkKEO1Krm35kaM=
+X-Google-Smtp-Source: AGHT+IEuJ+xbZqmpIvt54pycTa/bJt4HbP+wihthd82hIgSEgNxkl0MwreNvzp4qbKAt5Jp8AdaxTQ==
+X-Received: by 2002:a05:6a21:6d9a:b0:33b:bce3:31c2 with SMTP id adf61e73a8af0-353a0465d35mr11833866637.20.1762799336047;
+        Mon, 10 Nov 2025 10:28:56 -0800 (PST)
+Received: from google.com (132.200.185.35.bc.googleusercontent.com. [35.185.200.132])
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-ba8f9ed21e9sm13952396a12.14.2025.11.10.10.28.55
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 10 Nov 2025 10:28:55 -0800 (PST)
+Date: Mon, 10 Nov 2025 18:28:51 +0000
+From: David Matlack <dmatlack@google.com>
+To: Raghavendra Rao Ananta <rananta@google.com>
+Cc: Alex Williamson <alex.williamson@redhat.com>,
+	Jason Gunthorpe <jgg@nvidia.com>, Josh Hilke <jrhilke@google.com>,
+	kvm@vger.kernel.org, Vipin Sharma <vipinsh@google.com>
+Subject: Re: [PATCH 07/12] vfio: selftests: Prefix logs with device BDF where
+ relevant
+Message-ID: <aRIu49aeGUS3OJS7@google.com>
+References: <20251008232531.1152035-1-dmatlack@google.com>
+ <20251008232531.1152035-8-dmatlack@google.com>
+ <CAJHc60zH4x98uCDEveGf3Lr+b0RaiBUC+r9ZdwpNxu9wTAPptQ@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAJHc60zH4x98uCDEveGf3Lr+b0RaiBUC+r9ZdwpNxu9wTAPptQ@mail.gmail.com>
 
-Now that KVM exposes the APX feature to guests on APX-capable systems,
-extend the selftests to validate XCR0 configuration and state management.
+On 2025-11-10 10:24 AM, Raghavendra Rao Ananta wrote:
+> On Thu, Oct 9, 2025 at 4:56 AM David Matlack <dmatlack@google.com> wrote:
+> > +#define dev_info(_dev, _fmt, ...) printf("%s: " _fmt, (_dev)->bdf, ##__VA_ARGS__)
+> > +#define dev_err(_dev, _fmt, ...) fprintf(stderr, "%s: " _fmt, (_dev)->bdf, ##__VA_ARGS__)
+> > +
+> nit: For all the dev_info() replacements in this patch, the messages
+> sound like something went bad/wrong. Shouldn't they be dev_err()
+> instead, or were you just aiming for a 1:1 conversion?
 
-Since APX repurposes the XSAVE area previously used by MPX in the
-non-compacted format, add a check to ensure that MPX states are not set
-when APX is enabled.
+Yeah I just wanted to do a 1:1 conversion in this patch:
 
-Also, load non-init APX state data in the guest so that XSTATE_BV[APX] is
-set, allowing validation of APX state testing.
+  printf(...) -> dev_info(...)
+  fprintf(stderr, ...) -> dev_err(...)
 
-Signed-off-by: Chang S. Bae <chang.seok.bae@intel.com>
----
- .../selftests/kvm/include/x86/processor.h     |  1 +
- tools/testing/selftests/kvm/x86/state_test.c  |  6 ++++++
- .../selftests/kvm/x86/xcr0_cpuid_test.c       | 20 +++++++++++++++++++
- 3 files changed, 27 insertions(+)
-
-diff --git a/tools/testing/selftests/kvm/include/x86/processor.h b/tools/testing/selftests/kvm/include/x86/processor.h
-index 51cd84b9ca66..dde7af40584e 100644
---- a/tools/testing/selftests/kvm/include/x86/processor.h
-+++ b/tools/testing/selftests/kvm/include/x86/processor.h
-@@ -88,6 +88,7 @@ struct xstate {
- #define XFEATURE_MASK_LBR		BIT_ULL(15)
- #define XFEATURE_MASK_XTILE_CFG		BIT_ULL(17)
- #define XFEATURE_MASK_XTILE_DATA	BIT_ULL(18)
-+#define XFEATURE_MASK_APX		BIT_ULL(19)
- 
- #define XFEATURE_MASK_AVX512		(XFEATURE_MASK_OPMASK | \
- 					 XFEATURE_MASK_ZMM_Hi256 | \
-diff --git a/tools/testing/selftests/kvm/x86/state_test.c b/tools/testing/selftests/kvm/x86/state_test.c
-index 141b7fc0c965..6d1dc575b22b 100644
---- a/tools/testing/selftests/kvm/x86/state_test.c
-+++ b/tools/testing/selftests/kvm/x86/state_test.c
-@@ -167,6 +167,12 @@ static void __attribute__((__flatten__)) guest_code(void *arg)
- 			asm volatile ("vmovupd %0, %%zmm16" :: "m" (buffer));
- 		}
- 
-+		if (supported_xcr0 & XFEATURE_MASK_APX) {
-+			/* mov $0xcccccccc, %r16 */
-+			asm volatile (".byte 0xd5, 0x18, 0xb8, 0xcc, 0xcc,"
-+				      "0xcc, 0xcc, 0x00, 0x00, 0x00, 0x00");
-+		}
-+
- 		if (this_cpu_has(X86_FEATURE_MPX)) {
- 			uint64_t bounds[2] = { 10, 0xffffffffull };
- 			uint64_t output[2] = { };
-diff --git a/tools/testing/selftests/kvm/x86/xcr0_cpuid_test.c b/tools/testing/selftests/kvm/x86/xcr0_cpuid_test.c
-index d038c1571729..6e4f2f83c831 100644
---- a/tools/testing/selftests/kvm/x86/xcr0_cpuid_test.c
-+++ b/tools/testing/selftests/kvm/x86/xcr0_cpuid_test.c
-@@ -46,6 +46,21 @@ do {									\
- 		       __supported, (xfeatures));			\
- } while (0)
- 
-+/*
-+ * Verify that mutually exclusive architectural features do not overlap.
-+ * For example, APX and MPX must never be reported as supported together.
-+ */
-+#define ASSERT_XFEATURE_CONFLICT(supported_xcr0, xfeatures, conflicts)			\
-+do {											\
-+	uint64_t __supported = (supported_xcr0) & ((xfeatures) | (conflicts));		\
-+											\
-+	__GUEST_ASSERT((__supported & (xfeatures)) != (xfeatures) ||			\
-+		       !(__supported & (conflicts)),					\
-+		       "supported = 0x%lx, xfeatures = 0x%llx, conflicts = 0x%llx",	\
-+		       __supported, (xfeatures), (conflicts));				\
-+} while (0)
-+
-+
- static void guest_code(void)
- {
- 	uint64_t initial_xcr0;
-@@ -79,6 +94,11 @@ static void guest_code(void)
- 	ASSERT_ALL_OR_NONE_XFEATURE(supported_xcr0,
- 				    XFEATURE_MASK_XTILE);
- 
-+	/* Check APX by ensuring MPX is not exposed concurrently */
-+	ASSERT_XFEATURE_CONFLICT(supported_xcr0,
-+				 XFEATURE_MASK_APX,
-+				 XFEATURE_MASK_BNDREGS | XFEATURE_MASK_BNDCSR);
-+
- 	vector = xsetbv_safe(0, XFEATURE_MASK_FP);
- 	__GUEST_ASSERT(!vector,
- 		       "Expected success on XSETBV(FP), got %s",
--- 
-2.51.0
-
+I can upgrade them in a separate patch in v2.
