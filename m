@@ -1,51 +1,51 @@
-Received: from mx0a-00069f02.pphosted.com (mx0a-00069f02.pphosted.com [205.220.165.32])
+Received: from mx0b-00069f02.pphosted.com (mx0b-00069f02.pphosted.com [205.220.177.32])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2FFCE2D23A6
-	for <kvm@vger.kernel.org>; Tue, 11 Nov 2025 06:20:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.165.32
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 725192D24BA
+	for <kvm@vger.kernel.org>; Tue, 11 Nov 2025 06:20:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.177.32
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762842024; cv=none; b=PTHJBelRh6sGyA34czmDW5g6Lm79PCyH15ycJLLPQfjPYtQEiNrPDtmJyFdxHjEy2YEl+m3oCNhYAv9Cdxrjmc5BOBcW174ozhG56ZLlpRrB7gfw5cXmKXDH/o4aGJMPMi0DtH5du7kDdRZSGMAylj2Kx8IR3K0maFgIbwDzbUQ=
+	t=1762842025; cv=none; b=dgDK1vMK3tUpqrRxl5EuDJHeN/secEnS1hVvQb7eYAXUG/uUomVAOYFSOZ6gRcGATWPRVA97E/YxPpmTKeIx5cipvs8qO26TliXWC/8mkLSQ1VqKHZgP0oLokm+h44eMGdUG7Chddm/b4R82yrjHwGhO3XsgIizUnGqp9CnXfVE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762842024; c=relaxed/simple;
-	bh=TieqRBP16c9f7Rm2yvr/uwDyL0z+kF5SIZui/nu7svs=;
+	s=arc-20240116; t=1762842025; c=relaxed/simple;
+	bh=71Sf0pz2SgKDJYniMLq6x9xBcWr8UoC3jczpPj91oE8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nCH9fl4f22lt8x5XScOSowCBdMM3oZMinbkAVL7KTxVDk0yLNcEJq6/HfKA+Y1lQhPjAdav3il3u0hPgudm5UjwxZOLOfhVqRhA/Z341BA4Nb9CynddQUoXbA4l1BhFQwJNHt2UyjW025TvdbiQS8bgav5zXfJshIzBdr3XVaUc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com; spf=pass smtp.mailfrom=oracle.com; dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b=m1LHZ/Q8; arc=none smtp.client-ip=205.220.165.32
+	 MIME-Version; b=rY9CYan467B/HnjDNwN9Y8WBXSUQgXCXYoJwHZ1ZW31SY7DUprdLjbTdS5hoVw7nRw+8rMFALEND6cQB0whfOdrxv4rLvWVdoMpEEWANGXwjCUtjIjFuWkM5+AQg2YuF4YTvwCBIB0Hvbb1roV+AQDhR1YCijSts6FN0UJh82t4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com; spf=pass smtp.mailfrom=oracle.com; dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b=d9UUXkpl; arc=none smtp.client-ip=205.220.177.32
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oracle.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b="m1LHZ/Q8"
-Received: from pps.filterd (m0333521.ppops.net [127.0.0.1])
-	by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 5AB5lKe8010856;
-	Tue, 11 Nov 2025 06:19:58 GMT
+	dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b="d9UUXkpl"
+Received: from pps.filterd (m0246630.ppops.net [127.0.0.1])
+	by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 5AB68EI6001041;
+	Tue, 11 Nov 2025 06:19:56 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
 	:content-transfer-encoding:date:from:in-reply-to:message-id
-	:mime-version:references:subject:to; s=corp-2025-04-25; bh=Oy+Bz
-	41mk51H4l/PwP7c7q7j84GKvjI78ixYVp9g/I8=; b=m1LHZ/Q8uf1b30qdpzAmR
-	/fviToQmKnJ9HkbAMnYOULvJXR1mvxbJmP/XtAVOyJPdRTM98ybxkY6vo//0UW2o
-	uNIEYS2m2vYLDm9De8BaK3GeK0tD2G3CPDwtnWt/GCnumesH/T1rTMfCw4f77KMD
-	dwVAv8sMIZFGMhTi1oHu5dmiDEu+uQ09gco3eXzOFZ3BXh7brbmnUk31AkW7/TTh
-	GzUHk5Qx8ubKuCNZN0uee7zZWb9wqA4pD4j5COvdYQebKvbTlPcSHYze+OiJUw0a
-	Qxb4cHldlaCgweTDiDYBCFh0fUVbBapL/cF11yfons1uDfnRZ/NZGNjqH1JoV7OU
+	:mime-version:references:subject:to; s=corp-2025-04-25; bh=2deag
+	evKAnTw8QdOvgqpHGJYSKDO5JNyiKn9kTS3xyE=; b=d9UUXkplqeDCvlKDY4/UE
+	RVyAnRie8vvrJOcVSWLuApZ7sq1btvxRBmxPe7jDxTjfWZIMdcXBPdvuc/c7a2FX
+	6iyLVPxRqX7LXKRbjyv/+o+F3hKOLOhYHEWFDcbmSvj2KhmpFoiYTHJX4ZyvCCx/
+	sPucK7v5KRwm4152+BJJ3BBEYqYV/01gZUCn0+tDXxvZdhgXl2UcOlzUy3qXsCpQ
+	gWO2eAzFIeGLxAEIEqU9SqnDEmUmOeAtZYMpKteGGOLQqUws1Nws01BR5+coMXPu
+	XNtiojo43JZv3Ja8lTTKz/fR+mKIvkN90aI32QHXAEkqWzqCKgXZlRUiVUGrplxW
 	g==
 Received: from phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta01.appoci.oracle.com [138.1.114.2])
-	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 4abwn7r5pu-1
+	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 4abxrt82py-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 11 Nov 2025 06:19:58 +0000 (GMT)
+	Tue, 11 Nov 2025 06:19:56 +0000 (GMT)
 Received: from pps.filterd (phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
-	by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 5AB54UlE007356;
-	Tue, 11 Nov 2025 06:19:57 GMT
+	by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 5AB4v36q007397;
+	Tue, 11 Nov 2025 06:19:55 GMT
 Received: from pps.reinject (localhost [127.0.0.1])
-	by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id 4a9va9mkb6-1
+	by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id 4a9va9mka6-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 11 Nov 2025 06:19:57 +0000
+	Tue, 11 Nov 2025 06:19:55 +0000
 Received: from phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
-	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 5AB6C6qp029277;
-	Tue, 11 Nov 2025 06:19:56 GMT
+	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 5AB6C6ql029277;
+	Tue, 11 Nov 2025 06:19:54 GMT
 Received: from localhost.localdomain (ca-dev80.us.oracle.com [10.211.9.80])
-	by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTP id 4a9va9mk84-5;
-	Tue, 11 Nov 2025 06:19:56 +0000
+	by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTP id 4a9va9mk84-3;
+	Tue, 11 Nov 2025 06:19:54 +0000
 From: Dongli Zhang <dongli.zhang@oracle.com>
 To: qemu-devel@nongnu.org, kvm@vger.kernel.org
 Cc: pbonzini@redhat.com, zhao1.liu@intel.com, mtosatti@redhat.com,
@@ -55,9 +55,9 @@ Cc: pbonzini@redhat.com, zhao1.liu@intel.com, mtosatti@redhat.com,
         davydov-max@yandex-team.ru, xiaoyao.li@intel.com,
         dapeng1.mi@linux.intel.com, joe.jin@oracle.com, ewanhai-oc@zhaoxin.com,
         ewanhai@zhaoxin.com
-Subject: [PATCH v7 4/9] target/i386/kvm: extract unrelated code out of kvm_x86_build_cpuid()
-Date: Mon, 10 Nov 2025 22:14:53 -0800
-Message-ID: <20251111061532.36702-5-dongli.zhang@oracle.com>
+Subject: [PATCH v7 2/9] target/i386: disable PERFCORE when "-pmu" is configured
+Date: Mon, 10 Nov 2025 22:14:51 -0800
+Message-ID: <20251111061532.36702-3-dongli.zhang@oracle.com>
 X-Mailer: git-send-email 2.43.5
 In-Reply-To: <20251111061532.36702-1-dongli.zhang@oracle.com>
 References: <20251111061532.36702-1-dongli.zhang@oracle.com>
@@ -75,132 +75,61 @@ X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 adultscore=0 malw
  mlxscore=0 bulkscore=0 suspectscore=0 mlxlogscore=999 phishscore=0
  classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2510240000
  definitions=main-2511110047
-X-Proofpoint-ORIG-GUID: ZVUJ7vK1vsDVXOGyugdtbK9KqctgoTPl
-X-Proofpoint-GUID: ZVUJ7vK1vsDVXOGyugdtbK9KqctgoTPl
-X-Authority-Analysis: v=2.4 cv=YIGSCBGx c=1 sm=1 tr=0 ts=6912d58e cx=c_pps
+X-Authority-Analysis: v=2.4 cv=c7+mgB9l c=1 sm=1 tr=0 ts=6912d58c cx=c_pps
  a=XiAAW1AwiKB2Y8Wsi+sD2Q==:117 a=XiAAW1AwiKB2Y8Wsi+sD2Q==:17
- a=6UeiqGixMTsA:10 a=VkNPw1HP01LnGYTKEx00:22 a=yPCof4ZbAAAA:8 a=QyXUC8HyAAAA:8
- a=PfVMnciqd94fTzcZrM0A:9 a=cPQSjfK2_nFv0Q5t_7PE:22
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMTExMDAyNiBTYWx0ZWRfX38RLeyHki27E
- U0+TQyUPdCjPP6SOA246drPIBtJPxic6TAqSL7XV3iaWp0xU9i1QgE9NPZiF+vtsyYwJGkiKHWH
- Uoqeixek5JVrsM+vGO25CQkXMC5bK89fSKX2awxc4RlPHrz82EWbJMWsg5hY9v7SspFeZrvrduE
- fWENYw3JDccnGUZSz8t1p5a82Jhlaei7X/FRFy3qmyUQItP6WrKzDKUV1j4BWhCset+8E3MZxAF
- fLe/EWhEEcgI3QQ5/cK1oze9WHbHU+SqhzM3ga5rRTBmFQwYlB6rwDlrkK1Df1lBm/LZyS3cYdx
- AZ2GteUGXB7psVd1HtYgU5dRO3TxUCRLiNCChTw8PLSGH0r4DEXQHulMdO/G04usPWBhH7CijBm
- o1QvN2q8Lk7le1Z9Tq/9Z4Rx3kY/6w==
+ a=6UeiqGixMTsA:10 a=VkNPw1HP01LnGYTKEx00:22 a=QyXUC8HyAAAA:8 a=yPCof4ZbAAAA:8
+ a=zd2uoN0lAAAA:8 a=ljiX_LIxqC18hRgHw8cA:9 a=cPQSjfK2_nFv0Q5t_7PE:22
+X-Proofpoint-GUID: Hu8qkhj9Ngxw7NZWFoKWcddzrzaKQjNn
+X-Proofpoint-ORIG-GUID: Hu8qkhj9Ngxw7NZWFoKWcddzrzaKQjNn
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMTExMDAzNyBTYWx0ZWRfX/zPWvxYIoJlt
+ i1RhC6BMyA2fGssWMOs7OcYGNn73YPxiWWswDjs5mf7QyP8/Onj4ytsGNMPsaJElLALawBXQZyP
+ LDudB3hzM7IAc4+p/MiDh8wOJ5WWXvqt2qIbJX0AlT4qtUzLmJtBVnYew1e9Ah+dvQ5S267rxMr
+ ojIZjgTs7l8eXpWNnCta61K0LDYzhvifRSvQ9CetYSuzmoRNp0wM4l3nBeF6GdIzLagaF7wJpRt
+ he/7IEnKu7FZCfxiTWj5GlMXR09HrEYgzSM224dkskWmtIuX7IoWgWD7lZV5UcjrE/ZsE4Oo8Ux
+ N796rZQkSrMay0W1R0pB2e9tEj/mGd8uoiC0seCey0oVPhmCKinzQyJ9yMz+Td+CXZGIHchA6M7
+ CHbYACWn6TxXgfTAWSfAcQUmB93P1g==
 
-The initialization of 'has_architectural_pmu_version',
-'num_architectural_pmu_gp_counters', and
-'num_architectural_pmu_fixed_counters' is unrelated to the process of
-building the CPUID.
+Currently, AMD PMU support isn't determined based on CPUID, that is, the
+"-pmu" option does not fully disable KVM AMD PMU virtualization.
 
-Extract them out of kvm_x86_build_cpuid().
+To minimize AMD PMU features, remove PERFCORE when "-pmu" is configured.
 
-In addition, use cpuid_find_entry() instead of cpu_x86_cpuid(), because
-CPUID has already been filled at this stage.
+To completely disable AMD PMU virtualization will be implemented via
+KVM_CAP_PMU_CAPABILITY in upcoming patches.
 
+As a reminder, neither CPUID_EXT3_PERFCORE nor
+CPUID_8000_0022_EAX_PERFMON_V2 is removed from env->features[] when "-pmu"
+is configured. Developers should query whether they are supported via
+cpu_x86_cpuid() rather than relying on env->features[] in future patches.
+
+Suggested-by: Zhao Liu <zhao1.liu@intel.com>
 Signed-off-by: Dongli Zhang <dongli.zhang@oracle.com>
 Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
-Reviewed-by: Dapeng Mi <dapeng1.mi@linux.intel.com>
+Reviewed-by: Sandipan Das <sandipan.das@amd.com>
 ---
-Changed since v1:
-  - Still extract the code, but call them for all CPUs.
 Changed since v2:
-  - Use cpuid_find_entry() instead of cpu_x86_cpuid().
-  - Didn't add Reviewed-by from Dapeng as the change isn't minor.
-Changed since v6:
-  - Add Reviewed-by from Dapeng Mi.
+  - No need to check "kvm_enabled() && IS_AMD_CPU(env)".
+Changed since v4:
+  - Add Reviewed-by from Sandipan.
 
- target/i386/kvm/kvm.c | 62 ++++++++++++++++++++++++-------------------
- 1 file changed, 35 insertions(+), 27 deletions(-)
+ target/i386/cpu.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/target/i386/kvm/kvm.c b/target/i386/kvm/kvm.c
-index e5daa8c9fe..487647271c 100644
---- a/target/i386/kvm/kvm.c
-+++ b/target/i386/kvm/kvm.c
-@@ -1985,33 +1985,6 @@ uint32_t kvm_x86_build_cpuid(CPUX86State *env, struct kvm_cpuid_entry2 *entries,
+diff --git a/target/i386/cpu.c b/target/i386/cpu.c
+index 3653f8953e..4fcade89bc 100644
+--- a/target/i386/cpu.c
++++ b/target/i386/cpu.c
+@@ -8360,6 +8360,10 @@ void cpu_x86_cpuid(CPUX86State *env, uint32_t index, uint32_t count,
+             !(env->hflags & HF_LMA_MASK)) {
+             *edx &= ~CPUID_EXT2_SYSCALL;
          }
-     }
- 
--    if (limit >= 0x0a) {
--        uint32_t eax, edx;
--
--        cpu_x86_cpuid(env, 0x0a, 0, &eax, &unused, &unused, &edx);
--
--        has_architectural_pmu_version = eax & 0xff;
--        if (has_architectural_pmu_version > 0) {
--            num_architectural_pmu_gp_counters = (eax & 0xff00) >> 8;
--
--            /* Shouldn't be more than 32, since that's the number of bits
--             * available in EBX to tell us _which_ counters are available.
--             * Play it safe.
--             */
--            if (num_architectural_pmu_gp_counters > MAX_GP_COUNTERS) {
--                num_architectural_pmu_gp_counters = MAX_GP_COUNTERS;
--            }
--
--            if (has_architectural_pmu_version > 1) {
--                num_architectural_pmu_fixed_counters = edx & 0x1f;
--
--                if (num_architectural_pmu_fixed_counters > MAX_FIXED_COUNTERS) {
--                    num_architectural_pmu_fixed_counters = MAX_FIXED_COUNTERS;
--                }
--            }
--        }
--    }
--
-     cpu_x86_cpuid(env, 0x80000000, 0, &limit, &unused, &unused, &unused);
- 
-     for (i = 0x80000000; i <= limit; i++) {
-@@ -2115,6 +2088,39 @@ int kvm_arch_pre_create_vcpu(CPUState *cpu, Error **errp)
-     return 0;
- }
- 
-+static void kvm_init_pmu_info(struct kvm_cpuid2 *cpuid)
-+{
-+    struct kvm_cpuid_entry2 *c;
 +
-+    c = cpuid_find_entry(cpuid, 0xa, 0);
-+
-+    if (!c) {
-+        return;
-+    }
-+
-+    has_architectural_pmu_version = c->eax & 0xff;
-+    if (has_architectural_pmu_version > 0) {
-+        num_architectural_pmu_gp_counters = (c->eax & 0xff00) >> 8;
-+
-+        /*
-+         * Shouldn't be more than 32, since that's the number of bits
-+         * available in EBX to tell us _which_ counters are available.
-+         * Play it safe.
-+         */
-+        if (num_architectural_pmu_gp_counters > MAX_GP_COUNTERS) {
-+            num_architectural_pmu_gp_counters = MAX_GP_COUNTERS;
++        if (!cpu->enable_pmu) {
++            *ecx &= ~CPUID_EXT3_PERFCORE;
 +        }
-+
-+        if (has_architectural_pmu_version > 1) {
-+            num_architectural_pmu_fixed_counters = c->edx & 0x1f;
-+
-+            if (num_architectural_pmu_fixed_counters > MAX_FIXED_COUNTERS) {
-+                num_architectural_pmu_fixed_counters = MAX_FIXED_COUNTERS;
-+            }
-+        }
-+    }
-+}
-+
- int kvm_arch_init_vcpu(CPUState *cs)
- {
-     struct {
-@@ -2305,6 +2311,8 @@ int kvm_arch_init_vcpu(CPUState *cs)
-     cpuid_i = kvm_x86_build_cpuid(env, cpuid_data.entries, cpuid_i);
-     cpuid_data.cpuid.nent = cpuid_i;
- 
-+    kvm_init_pmu_info(&cpuid_data.cpuid);
-+
-     if (x86_cpu_family(env->cpuid_version) >= 6
-         && (env->features[FEAT_1_EDX] & (CPUID_MCE | CPUID_MCA)) ==
-            (CPUID_MCE | CPUID_MCA)) {
+         break;
+     case 0x80000002:
+     case 0x80000003:
 -- 
 2.39.3
 
