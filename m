@@ -1,51 +1,51 @@
 Received: from mx0a-00069f02.pphosted.com (mx0a-00069f02.pphosted.com [205.220.165.32])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D38E2882B6
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D4042D1F7B
 	for <kvm@vger.kernel.org>; Tue, 11 Nov 2025 06:20:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.165.32
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762842022; cv=none; b=nRVtZK7weAzA3BFSznU0EiWDIbmG7AeiTzQxuUjcqYtjRBtoWSbIZ2jSuOFIbnv4eAZ3fylzEhjEpEBwKWbTddM8WvC4lMOb+xd3gv5EZTps6JoUhSLSt4mZyUaaqntpiCyndRT3J78zpx/bBghFnYGzz5Lc/NJHl4LRk4/ovUI=
+	t=1762842023; cv=none; b=LDT/Be+Ji4sIiScatexYjefZammlB1er35lR+niEPU1b9kdmz7K6a1nPSRaxojszgezOFEO/U/E411laiRf7lHCMwaBPscC/MDhhBUl3faIDcdHWDMIk5vtmIIq9azP2Jg4YTk3X3H13wGWgdo3tLA/2lxnf843XjNqWHuMKThE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762842022; c=relaxed/simple;
-	bh=8dhhTSNXXi2aM7/FnBF8pQzkYaU3DWRNkmS8JJat/Eg=;
+	s=arc-20240116; t=1762842023; c=relaxed/simple;
+	bh=qy6zpi7o/8jseSw+sAQPLjTS6PZQUwQ9JwlgaJn5ewo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mkvnTg27ExLI8sn+xLcgU0+bQLdiFxMC16S1z37WwXyBj6dpZcy2q6uwNl783ipBeU9u9B7pMq9DSDxq4A1zfYMZkMvFdZ3ECRol11BLmxjT/wJYZWNjzHXwzL5DA3E6io6UHW/JhcYFwaUkLEz8JIVW91GtH9Ry0VnWQgJ/RDI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com; spf=pass smtp.mailfrom=oracle.com; dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b=fCxzJLwt; arc=none smtp.client-ip=205.220.165.32
+	 MIME-Version; b=rVbRnAaOXIVVHP0ZvaM0Rq3AP4gwGUAtJeBeu+OYhPycL2WzgwDec3vrIkRTiITAofvAR3XYI2wJHWVzGMoodTVk7otzHmZknChIOjaeMy6dj3Vwatpkc4qjKFB+tFvUxbiEh/BvgtzZImvXS8hdLM/hmcpgRp6Sk8EgCVy9o08=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com; spf=pass smtp.mailfrom=oracle.com; dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b=Nr0DYHmD; arc=none smtp.client-ip=205.220.165.32
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oracle.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b="fCxzJLwt"
-Received: from pps.filterd (m0246629.ppops.net [127.0.0.1])
-	by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 5AB5iYSk024218;
-	Tue, 11 Nov 2025 06:19:54 GMT
+	dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b="Nr0DYHmD"
+Received: from pps.filterd (m0246627.ppops.net [127.0.0.1])
+	by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 5AB6FnVb002303;
+	Tue, 11 Nov 2025 06:19:57 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
 	:content-transfer-encoding:date:from:in-reply-to:message-id
-	:mime-version:references:subject:to; s=corp-2025-04-25; bh=GO6Di
-	uMe5Yf+fEiiAb+b+n0BLkryaImSvid7uRBci3Q=; b=fCxzJLwtA9QBmw6Q5ct+J
-	v1H4ga9DIAjWdNBd3K6n/mgTsCWNEJyckU6aIZTR3kSPTh5f7ZGJvfhz5Fh8CYa7
-	kEi6oEkr9ml/RjjLJYE51OAsv3ilPWMOd/566zfSwJYfrV6b93sbJznj1/Q3vTeq
-	9AYd0qM5f9rS/jf+E1+j++PkFwnJqu2G70iylk4tazanOIJjs0pV609e779EazVL
-	9G2QKr3gF3eImVcGPVFNUVTEQF20/YxLtDLeLVSEBFa+ywPdXXBe/UqKKOOQihE0
-	9L8aFXfkFgS8+JTiv2glUYZ1q8kOu4FjoJciVQ8W0FUo9mJ/rEIR2S38ZZLwXvBp
-	A==
+	:mime-version:references:subject:to; s=corp-2025-04-25; bh=74ctO
+	jyEpekcVMGIpxrUpJ+R9v4+JGBkIo3onIlqewk=; b=Nr0DYHmDo5KDLWx1NMlR9
+	AIP4TbjVjLl6SkVV/kLwjb4tB1jlmYGS0/6iliUo4JPCesNOV49Jm6hhrwhSmqZI
+	T8tqboQqPPbmz94jYmLuZ3LFzqEdsHS0cmxPViZNay0zsWyQuwSqW3rfbh/wg3CT
+	0FQOEMdlcaj4TS950j06vRJbuOAPOVv7UgTpeTVem0yU290d18c62YaQgvkoYytP
+	hV1OChrf8Ci0cktIR22JB9J2e3K7zoeqEk/b80T1/NL8gT4/n7DCF9sTohdtWR1B
+	vNwNIVT7xkoKu0a89HRoOMCT6PTooTSmbJOrB8EWT1rHijO+NXFHA+Rv6dzUJYaA
+	w==
 Received: from phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta01.appoci.oracle.com [138.1.114.2])
-	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 4abwkar58d-1
+	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 4abw9wg67k-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 11 Nov 2025 06:19:54 +0000 (GMT)
+	Tue, 11 Nov 2025 06:19:56 +0000 (GMT)
 Received: from pps.filterd (phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
-	by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 5AB6BWG1007462;
-	Tue, 11 Nov 2025 06:19:53 GMT
+	by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 5AB5A8sE007383;
+	Tue, 11 Nov 2025 06:19:56 GMT
 Received: from pps.reinject (localhost [127.0.0.1])
-	by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id 4a9va9mk9g-1
+	by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id 4a9va9mkam-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 11 Nov 2025 06:19:53 +0000
+	Tue, 11 Nov 2025 06:19:56 +0000
 Received: from phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
-	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 5AB6C6qj029277;
-	Tue, 11 Nov 2025 06:19:53 GMT
+	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 5AB6C6qn029277;
+	Tue, 11 Nov 2025 06:19:55 GMT
 Received: from localhost.localdomain (ca-dev80.us.oracle.com [10.211.9.80])
-	by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTP id 4a9va9mk84-2;
-	Tue, 11 Nov 2025 06:19:52 +0000
+	by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTP id 4a9va9mk84-4;
+	Tue, 11 Nov 2025 06:19:55 +0000
 From: Dongli Zhang <dongli.zhang@oracle.com>
 To: qemu-devel@nongnu.org, kvm@vger.kernel.org
 Cc: pbonzini@redhat.com, zhao1.liu@intel.com, mtosatti@redhat.com,
@@ -55,9 +55,9 @@ Cc: pbonzini@redhat.com, zhao1.liu@intel.com, mtosatti@redhat.com,
         davydov-max@yandex-team.ru, xiaoyao.li@intel.com,
         dapeng1.mi@linux.intel.com, joe.jin@oracle.com, ewanhai-oc@zhaoxin.com,
         ewanhai@zhaoxin.com
-Subject: [PATCH v7 1/9] target/i386: disable PerfMonV2 when PERFCORE unavailable
-Date: Mon, 10 Nov 2025 22:14:50 -0800
-Message-ID: <20251111061532.36702-2-dongli.zhang@oracle.com>
+Subject: [PATCH v7 3/9] target/i386/kvm: set KVM_PMU_CAP_DISABLE if "-pmu" is configured
+Date: Mon, 10 Nov 2025 22:14:52 -0800
+Message-ID: <20251111061532.36702-4-dongli.zhang@oracle.com>
 X-Mailer: git-send-email 2.43.5
 In-Reply-To: <20251111061532.36702-1-dongli.zhang@oracle.com>
 References: <20251111061532.36702-1-dongli.zhang@oracle.com>
@@ -75,71 +75,120 @@ X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 adultscore=0 malw
  mlxscore=0 bulkscore=0 suspectscore=0 mlxlogscore=999 phishscore=0
  classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2510240000
  definitions=main-2511110047
-X-Proofpoint-GUID: yfOVOj0x4w8XVagxf0LdcHT4vOLBPAPo
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMTExMDAyNiBTYWx0ZWRfX4T66r2FUgUoB
- lrTPfJhTgmygaLakpbHnqOvQ0cpA5iW4eGva3Ugrj6o8Mm0VHDvC8n0EO9TWRVu5ueZrCv3bHR6
- evtq3sn+9dPU6W72KT+Y3acrCnZ4CPBWqL+n5BwvJXDEBR0CKJ55ivpIpNBrmD5LgXil43hUV4p
- 7hFDIoztDV5wMxIQGUJuTbNoF0Hxx48OZ1uvVldDrcNUvFRlSWKD8Gqe8wDllc2Cn2j2oxYslCj
- FGtS9Epj7Xx6h3vd+Gd4Eid9CVxrgqDQ6M7RsAKVrZvpW3LU6CUSYCIyedSOuopwSUFoCtA423r
- d9bR9/fSIAQyYBRDDb97sNKDkCZftEJu2Yj0rqWWX8Hgj+uWDWXz/2BOgoheVRDikJFIrXnp+YF
- LxY6ZK6JgSys0hLUztjIzQHGZIfJOA==
-X-Proofpoint-ORIG-GUID: yfOVOj0x4w8XVagxf0LdcHT4vOLBPAPo
-X-Authority-Analysis: v=2.4 cv=BMu+bVQG c=1 sm=1 tr=0 ts=6912d58a cx=c_pps
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMTExMDAyNCBTYWx0ZWRfX7KMdvzarblHX
+ yBcQVB+2Y9FaD/8Pe/Xk9ubRQd/xLhRjvboHdBmHo1unkduUBfssDoUS/lfKIxxRtjNoTIEU1D/
+ bsAQ0zRIuIrvJxQWppGV1B8EZPjxUxHfRTk2jNg+EvjLLCzm56lFlNLqku8oipkXI2k+o6pJLKr
+ j5qAcGi8HhipLvSvB6et5LRQRdncAXGLfYgVvOHT1gOD89nR38mLsJbcHdHgGtHx33ybJfbUGpv
+ vZqTu0oi0SyiqkK/hxlqUbY1nlksIMpv0qOL40U3Ohcb5CbKSmf52pXnBNUFwhtOHvbakw3Cr2W
+ U+CV8JeQR2AI/AJDVC7w1zE26UH+f2V7pPGvERDdaFOCV9MoB7GlAPlVNAh/kf0at68TO0z/sTA
+ J727rOzkHvpnTgsAskqxeMGSjN+zqg==
+X-Proofpoint-GUID: Cbcnzxgnav_PwIYG9HOOoE4pMBpaiTUs
+X-Authority-Analysis: v=2.4 cv=M49A6iws c=1 sm=1 tr=0 ts=6912d58c cx=c_pps
  a=XiAAW1AwiKB2Y8Wsi+sD2Q==:117 a=XiAAW1AwiKB2Y8Wsi+sD2Q==:17
- a=6UeiqGixMTsA:10 a=VkNPw1HP01LnGYTKEx00:22 a=QyXUC8HyAAAA:8 a=yPCof4ZbAAAA:8
- a=zd2uoN0lAAAA:8 a=He110phtp1333cD8tQQA:9 a=cPQSjfK2_nFv0Q5t_7PE:22
+ a=6UeiqGixMTsA:10 a=VkNPw1HP01LnGYTKEx00:22 a=VwQbUJbxAAAA:8 a=yPCof4ZbAAAA:8
+ a=QyXUC8HyAAAA:8 a=I5TUGnRYk-IH75UTjikA:9 a=cPQSjfK2_nFv0Q5t_7PE:22
+X-Proofpoint-ORIG-GUID: Cbcnzxgnav_PwIYG9HOOoE4pMBpaiTUs
 
-When the PERFCORE is disabled with "-cpu host,-perfctr-core", it is
-reflected in in guest dmesg.
+Although AMD PERFCORE and PerfMonV2 are removed when "-pmu" is configured,
+there is no way to fully disable KVM AMD PMU virtualization. Neither
+"-cpu host,-pmu" nor "-cpu EPYC" achieves this.
 
-[    0.285136] Performance Events: AMD PMU driver.
+As a result, the following message still appears in the VM dmesg:
 
-However, the guest CPUID indicates the PerfMonV2 is still available.
+[    0.263615] Performance Events: AMD PMU driver.
 
-CPU:
-   Extended Performance Monitoring and Debugging (0x80000022):
-      AMD performance monitoring V2         = true
-      AMD LBR V2                            = false
-      AMD LBR stack & PMC freezing          = false
-      number of core perf ctrs              = 0x6 (6)
-      number of LBR stack entries           = 0x0 (0)
-      number of avail Northbridge perf ctrs = 0x0 (0)
-      number of available UMC PMCs          = 0x0 (0)
-      active UMCs bitmask                   = 0x0
+However, the expected output should be:
 
-Disable PerfMonV2 in CPUID when PERFCORE is disabled.
+[    0.596381] Performance Events: PMU not available due to virtualization, using software events only.
+[    0.600972] NMI watchdog: Perf NMI watchdog permanently disabled
 
-Suggested-by: Zhao Liu <zhao1.liu@intel.com>
-Fixes: 209b0ac12074 ("target/i386: Add PerfMonV2 feature bit")
+This occurs because AMD does not use any CPUID bit to indicate PMU
+availability.
+
+To address this, KVM_CAP_PMU_CAPABILITY is used to set KVM_PMU_CAP_DISABLE
+when "-pmu" is configured.
+
 Signed-off-by: Dongli Zhang <dongli.zhang@oracle.com>
 Reviewed-by: Xiaoyao Li <xiaoyao.li@intel.com>
 Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
-Reviewed-by: Sandipan Das <sandipan.das@amd.com>
+Reviewed-by: Dapeng Mi <dapeng1.mi@linux.intel.com>
 ---
 Changed since v1:
-  - Use feature_dependencies (suggested by Zhao Liu).
+  - Switch back to the initial implementation with "-pmu".
+https://lore.kernel.org/all/20221119122901.2469-3-dongli.zhang@oracle.com
+  - Mention that "KVM_PMU_CAP_DISABLE doesn't change the PMU behavior on
+    Intel platform because current "pmu" property works as expected."
 Changed since v2:
-  - Nothing. Zhao and Xiaoyao may move it to x86_cpu_expand_features()
-    later.
+  - Change has_pmu_cap to pmu_cap.
+  - Use (pmu_cap & KVM_PMU_CAP_DISABLE) instead of only pmu_cap in if
+    statement.
+  - Add Reviewed-by from Xiaoyao and Zhao as the change is minor.
+Changed since v5:
+  - Re-base on top of most recent mainline QEMU.
+  - To resolve conflicts, move the PMU related code before the
+    call site of is_tdx_vm().
+Changed since v6:
+  - Add Reviewed-by from Dapeng Mi.
 
- target/i386/cpu.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ target/i386/kvm/kvm.c | 31 +++++++++++++++++++++++++++++++
+ 1 file changed, 31 insertions(+)
 
-diff --git a/target/i386/cpu.c b/target/i386/cpu.c
-index 6417775786..3653f8953e 100644
---- a/target/i386/cpu.c
-+++ b/target/i386/cpu.c
-@@ -1994,6 +1994,10 @@ static FeatureDep feature_dependencies[] = {
-         .from = { FEAT_7_1_EDX,             CPUID_7_1_EDX_AVX10 },
-         .to = { FEAT_24_0_EBX,              ~0ull },
-     },
-+    {
-+        .from = { FEAT_8000_0001_ECX,       CPUID_EXT3_PERFCORE },
-+        .to = { FEAT_8000_0022_EAX,         CPUID_8000_0022_EAX_PERFMON_V2 },
-+    },
- };
+diff --git a/target/i386/kvm/kvm.c b/target/i386/kvm/kvm.c
+index 60c7981138..e5daa8c9fe 100644
+--- a/target/i386/kvm/kvm.c
++++ b/target/i386/kvm/kvm.c
+@@ -178,6 +178,8 @@ static int has_triple_fault_event;
  
- typedef struct X86RegisterInfo32 {
+ static bool has_msr_mcg_ext_ctl;
+ 
++static int pmu_cap;
++
+ static struct kvm_cpuid2 *cpuid_cache;
+ static struct kvm_cpuid2 *hv_cpuid_cache;
+ static struct kvm_msr_list *kvm_feature_msrs;
+@@ -2079,6 +2081,33 @@ full:
+ 
+ int kvm_arch_pre_create_vcpu(CPUState *cpu, Error **errp)
+ {
++    static bool first = true;
++    int ret;
++
++    if (first) {
++        first = false;
++
++        /*
++         * Since Linux v5.18, KVM provides a VM-level capability to easily
++         * disable PMUs; however, QEMU has been providing PMU property per
++         * CPU since v1.6. In order to accommodate both, have to configure
++         * the VM-level capability here.
++         *
++         * KVM_PMU_CAP_DISABLE doesn't change the PMU
++         * behavior on Intel platform because current "pmu" property works
++         * as expected.
++         */
++        if ((pmu_cap & KVM_PMU_CAP_DISABLE) && !X86_CPU(cpu)->enable_pmu) {
++            ret = kvm_vm_enable_cap(kvm_state, KVM_CAP_PMU_CAPABILITY, 0,
++                                    KVM_PMU_CAP_DISABLE);
++            if (ret < 0) {
++                error_setg_errno(errp, -ret,
++                                 "Failed to set KVM_PMU_CAP_DISABLE");
++                return ret;
++            }
++        }
++    }
++
+     if (is_tdx_vm()) {
+         return tdx_pre_create_vcpu(cpu, errp);
+     }
+@@ -3390,6 +3419,8 @@ int kvm_arch_init(MachineState *ms, KVMState *s)
+         }
+     }
+ 
++    pmu_cap = kvm_check_extension(s, KVM_CAP_PMU_CAPABILITY);
++
+     return 0;
+ }
+ 
 -- 
 2.39.3
 
