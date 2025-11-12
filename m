@@ -1,127 +1,106 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B222347FCA
-	for <kvm@vger.kernel.org>; Wed, 12 Nov 2025 18:14:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 283FA35CBB4;
+	Wed, 12 Nov 2025 18:17:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.12
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762971254; cv=none; b=GbYOYIg2fLe9W2stcNkE7/j38Pwhp3Oh76JyKpvNKNu5BVNr9HzojQ3myLVDC3HUuBF0K7pwxLp97rwh265tYmEppJpaF4PcIVYOHVcALCBsaSqg48YeLf0bUFIRNVZwe4lRVOI9h7BYDviHHLFMVfiyxecMSFdMRLt9puWSH4c=
+	t=1762971466; cv=none; b=DNDvB/47sJTra4LwQhzEjRJxHMBHykEu61SXqgdDsKYdrrkyEq/Cy+nE5grroZI04vP/8NMAkr1wsv3gmMkjzXjqd01BeTazLefKWg2RiJxHOv1+WM0rrzyfCNX6IRJQquq7LtjSglwAo4XKv5CRg5U9wMmRdrbixJRm1KO80RU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762971254; c=relaxed/simple;
-	bh=5Yb3X6PZiKols/sQXmoknfK/pTPbA3jLRfEhVBUsSgo=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Bm69TNFzgYV9cQ3AQCjWknm0CStC9RLrag3vdSp3Oqm884Pfq2LSS5dii9JxwCRZOpqV07de6g6s7Car1pi8BWdSkNtcF/quZREcaEOClEoMwpLzg1WigrRJy03NrWPwC+sMBocdPJHhzYZHxekCr/BIm3mE/bRNfuSV3gyPeoI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=F3X58444; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=YLhX5lcM; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1762971466; c=relaxed/simple;
+	bh=XCsg6C+dT69tAsEDcbWjJ2ffwwjzqz/+aK3ZgSOq+L8=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=W+LrBsmja9IT4mBODsoOWUaENN3pmwWHJtETBB68n2DIgU5Bd5CW5vl6u41ZNeJ5cEOMoxNdUz26U5AbHMLdYlPMvprmAxF7I1r5UkzqSEN5mbmb1GYqIY2D7Hba7uV0uvPMFx9O3pnulocUC+BWqf6G1KVCqsgsQibAcP9kTpM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=gfIoQ7kD; arc=none smtp.client-ip=198.175.65.12
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="F3X58444";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="YLhX5lcM"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1762971250;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=U7+Ad1DQku/KL3b7bCdX4+uTWQCvm0tEszy834Ayws4=;
-	b=F3X58444+vydgcbylzWQlATIdR1va4Vs7emMsR19yAD7gABg7RCCbT8wxEt9NL6s3VZp2+
-	tFs0ITEN6WFOHGuNfg++325jMCHumDKJG2JpD+C68d4xbyps3jD+HQP7QQ1EPd8YW7nF5y
-	R52s6Q4+k9+ygNE6/XTbr2zf/+NL060=
-Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
- [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-418-Tvp2SVJsNPeOJ-M3k7Wb3w-1; Wed, 12 Nov 2025 13:14:09 -0500
-X-MC-Unique: Tvp2SVJsNPeOJ-M3k7Wb3w-1
-X-Mimecast-MFC-AGG-ID: Tvp2SVJsNPeOJ-M3k7Wb3w_1762971248
-Received: by mail-wm1-f69.google.com with SMTP id 5b1f17b1804b1-47778daa4d2so9676375e9.2
-        for <kvm@vger.kernel.org>; Wed, 12 Nov 2025 10:14:09 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1762971248; x=1763576048; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=U7+Ad1DQku/KL3b7bCdX4+uTWQCvm0tEszy834Ayws4=;
-        b=YLhX5lcMXJWAYwN8dyyFYtuQ9ANrl+pg2fd834s/7xb2+7WJRqJELDlB8jwsD+FcKX
-         j5prfbC5J4IKplfa5TChjmUpq7jtbQSOtyxg6Cm/Q/2DGgea3OdX0bMEUrsNJUm/lu9E
-         g/V4VLqkPSV34f/1YgzVFSOT+Pj7nB03GrTfVPtAP1COpQkqwykzYFdV6hq/I3EMUtQb
-         0ARNWiS2q/P+SzQ+BuYFb8PflOGTnvmeK16JNEzmbYa416awqzXxDdcgf4l/yCjf7ERj
-         /ss2rjrSO0lakWv9uD8iJ99cUWnHr9uc081bHhEVUh3P2PX+IDSt6j28vO74uerfGBxT
-         +2xw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1762971248; x=1763576048;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=U7+Ad1DQku/KL3b7bCdX4+uTWQCvm0tEszy834Ayws4=;
-        b=jELWvW33LNqy0a89CRQfsAtj0/oHliINXcv82q1RE2CAxHEJWoy/p3tmTwyDbVB0Gw
-         EwirTVnXOkpaflWQfHzGWBaB3wVzUeOfDE3eMWYeOVCEFhRvDadjoJvZ8A6Uzol4Vl/p
-         eRxPnvEbEvj8Yp758n3JyBdDLzU/56MI5bugaJy9kgFz87kMoS9jZIJnvS4aEsIYbnEV
-         eM+N73SOI52p4I4/E3+fkKIixqkCJ0PvOjhIcJaURpHsbMzlmFIXO5ZAZm5sekLl2fQb
-         8c4e+3lNXnj1z+J6R6XwbYES1YomJT3a2Mh/8w+K3Df6ALYHvwVgJaJuL2zAG0pAJaPd
-         KBJA==
-X-Forwarded-Encrypted: i=1; AJvYcCUz7XHGW84b/C3RhDvvUr1syZTVpSIK64vKBF447fj/v5PMdSixe7BC9iRoQon3dep4xQk=@vger.kernel.org
-X-Gm-Message-State: AOJu0YytthLwd2+OI2qbNzWnWZR0aKcrWG6Tdtm3gu2mcywhJlaMUKKM
-	j2ufcte3K0aizoujKr7H+22f/FS/wF7xmeeNHHAnRDd0PpwlT+DRUULNT3YjZiW8mMejRvEm48v
-	YWLWqcYSb6ht5IlvqDaR2kpS7OJjfiLRGQad4kmZ4tEeoTUY7KiL9BFYxhFYWUA==
-X-Gm-Gg: ASbGncsUpqLXLhOxgrmzpMjbHZdDzp6vfvT5fZkKj6+A7WfY9OeCSohAgehR4tj4Wvx
-	ap8h6JmDfHieqNQ+Dq+VwL+jkpI2Sw0FDyY8m82eCehWf5Hurz43m0VZhr5L+jhrGarIeTNbeI5
-	mykSSfQysDbCpAVmR0EbGOYjtrat7ARQALo5MeRHOqZK7ta+VfxEpNAAczj9+kh9B0tmG64vVHz
-	u3G1sYFrcMS7oPACCKbDTJ/BITYzuLkjLNk1Bru0yIMUh2kF3rJzZQ6B/j7H3rsEt1y3WCrclLw
-	Xetsj5Hlb6HXP3SOF+/2bsalo5K0aH8zV6esKbRbKuUdIgl4bxyBTLuNj1GdRtMAfriqg3IaTDd
-	pcnCGu9p5HSMggncAhdOi6IwYvjfoklBEuxak2tIPYTNi5kuVI16m467+SoaZrA==
-X-Received: by 2002:a05:600c:1d0f:b0:471:16e5:6d7a with SMTP id 5b1f17b1804b1-4778706ea91mr33694095e9.13.1762971247847;
-        Wed, 12 Nov 2025 10:14:07 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IExx7YrdQI+IydYpEMMuMdDOGxLo8j/rSItSIu9aQs64pFfJY+BoQHkmXgSTSSwlx02YpTuFw==
-X-Received: by 2002:a05:600c:1d0f:b0:471:16e5:6d7a with SMTP id 5b1f17b1804b1-4778706ea91mr33693785e9.13.1762971247394;
-        Wed, 12 Nov 2025 10:14:07 -0800 (PST)
-Received: from rh.fritz.box (p200300f6af131a0027bd20bfc18c447d.dip0.t-ipconnect.de. [2003:f6:af13:1a00:27bd:20bf:c18c:447d])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-47787e51e49sm46851355e9.7.2025.11.12.10.14.06
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 12 Nov 2025 10:14:06 -0800 (PST)
-From: Sebastian Ott <sebott@redhat.com>
-To: Peter Maydell <peter.maydell@linaro.org>,
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="gfIoQ7kD"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1762971464; x=1794507464;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=XCsg6C+dT69tAsEDcbWjJ2ffwwjzqz/+aK3ZgSOq+L8=;
+  b=gfIoQ7kD2vDAF/p2q/wpiZEuGQlzC523e5mrtGN2WL5LjdqyU4VCIWRM
+   rZKniDzE9+/jRzJc4unOdLbFKgzMdM2WmXoOMG4OycgOZTO5iAqc80nhb
+   BzC1AIdDt2e05h9KoU37uWnnKh9p+yB3x6SeoTqX6odwxCNT8U/HaYbip
+   uciAeLHSgns+ngfyi7GnzmiZlHMtf6cifng0xE6bGhago7zEnfn3uYGuq
+   Xh4yoff2Xa1LKfMRXTcG5N6gUmN8OiITVUahRLxoRiMYxA3YwcU69cu3M
+   B67LtYpRgEe+k2QTI+TQGwlFdFgDF/iZfn74HIzBfm4yyAwWYnn9asyB+
+   g==;
+X-CSE-ConnectionGUID: jooDEBhRTGaUSal8jFN9Kw==
+X-CSE-MsgGUID: YGJEta3uRiCFDB5K00ba1A==
+X-IronPort-AV: E=McAfee;i="6800,10657,11611"; a="76502324"
+X-IronPort-AV: E=Sophos;i="6.19,300,1754982000"; 
+   d="scan'208";a="76502324"
+Received: from orviesa004.jf.intel.com ([10.64.159.144])
+  by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Nov 2025 10:17:43 -0800
+X-CSE-ConnectionGUID: 66y/mOWpTNKdWfaiVTgb3w==
+X-CSE-MsgGUID: 6HPwPNgTRL2knMljzwebdA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.19,300,1754982000"; 
+   d="scan'208";a="193680598"
+Received: from guptapa-desk.jf.intel.com (HELO desk) ([10.165.239.46])
+  by orviesa004-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Nov 2025 10:17:43 -0800
+Date: Wed, 12 Nov 2025 10:17:38 -0800
+From: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
+To: Borislav Petkov <bp@alien8.de>
+Cc: Sean Christopherson <seanjc@google.com>,
 	Paolo Bonzini <pbonzini@redhat.com>,
-	Eric Auger <eric.auger@redhat.com>
-Cc: qemu-arm@nongnu.org,
-	qemu-devel@nongnu.org,
-	kvm@vger.kernel.org,
-	kvmarm@lists.linux.dev,
-	Sebastian Ott <sebott@redhat.com>
-Subject: [PATCH v3 1/2] target/arm/kvm: add constants for new PSCI versions
-Date: Wed, 12 Nov 2025 19:13:56 +0100
-Message-ID: <20251112181357.38999-2-sebott@redhat.com>
-X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251112181357.38999-1-sebott@redhat.com>
-References: <20251112181357.38999-1-sebott@redhat.com>
+	Thomas Gleixner <tglx@linutronix.de>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Josh Poimboeuf <jpoimboe@kernel.org>, kvm@vger.kernel.org,
+	linux-kernel@vger.kernel.org, Brendan Jackman <jackmanb@google.com>
+Subject: Re: [PATCH v4 1/8] x86/bugs: Use VM_CLEAR_CPU_BUFFERS in VMX as well
+Message-ID: <20251112181738.bm3voyeyjfnqkgnc@desk>
+References: <20251031003040.3491385-1-seanjc@google.com>
+ <20251031003040.3491385-2-seanjc@google.com>
+ <20251103181840.kx3egw5fwgzpksu4@desk>
+ <20251107190534.GTaQ5C_l_UsZmQR1ph@fat_crate.local>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20251107190534.GTaQ5C_l_UsZmQR1ph@fat_crate.local>
 
-Add constants for PSCI version 1_2 and 1_3.
+On Fri, Nov 07, 2025 at 08:05:34PM +0100, Borislav Petkov wrote:
+> On Mon, Nov 03, 2025 at 10:18:40AM -0800, Pawan Gupta wrote:
+> > diff --git a/arch/x86/include/asm/nospec-branch.h b/arch/x86/include/asm/nospec-branch.h
+> > index 08ed5a2e46a5..2be9be782013 100644
+> > --- a/arch/x86/include/asm/nospec-branch.h
+> > +++ b/arch/x86/include/asm/nospec-branch.h
+> > @@ -321,9 +321,11 @@
+> >  #endif
+> >  .endm
+> >  
+> > +/* Primarily used in exit-to-userspace path */
+> 
+> What does "primarily" mean here?
 
-Signed-off-by: Sebastian Ott <sebott@redhat.com>
-Reviewed-by: Eric Auger <eric.auger@redhat.com>
----
- target/arm/kvm-consts.h | 2 ++
- 1 file changed, 2 insertions(+)
+> $ git grep -w CLEAR_CPU_BUFFERS
+> 
+> says *only* the kernel->user vector.
 
-diff --git a/target/arm/kvm-consts.h b/target/arm/kvm-consts.h
-index 54ae5da7ce..9fba3e886d 100644
---- a/target/arm/kvm-consts.h
-+++ b/target/arm/kvm-consts.h
-@@ -97,6 +97,8 @@ MISMATCH_CHECK(QEMU_PSCI_1_0_FN_PSCI_FEATURES, PSCI_1_0_FN_PSCI_FEATURES);
- #define QEMU_PSCI_VERSION_0_2                     0x00002
- #define QEMU_PSCI_VERSION_1_0                     0x10000
- #define QEMU_PSCI_VERSION_1_1                     0x10001
-+#define QEMU_PSCI_VERSION_1_2                     0x10002
-+#define QEMU_PSCI_VERSION_1_3                     0x10003
- 
- MISMATCH_CHECK(QEMU_PSCI_0_2_RET_TOS_MIGRATION_NOT_REQUIRED, PSCI_0_2_TOS_MP);
- /* We don't bother to check every possible version value */
--- 
-2.42.0
+By the end of this series, yes. At this patch this is used in VMX also:
 
+  arch/x86/kvm/vmx/vmenter.S:164:        CLEAR_CPU_BUFFERS
+
+"Primarily" can be dropped by the patch that replaces it in SVM/VMX.
+
+> >  #define CLEAR_CPU_BUFFERS \
+> >  	__CLEAR_CPU_BUFFERS X86_FEATURE_CLEAR_CPU_BUF
+> >  
+> > +/* For use in KVM */
+> 
+> That's why the "VM_" prefix is there.
+> 
+> The comments in arch/x86/include/asm/cpufeatures.h actually already explain
+> that, you could make them more explicit but let's not sprinkle comments
+> willy-nilly.
+
+As Sean pointed out, this goes away in later patches.
