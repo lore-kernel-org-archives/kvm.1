@@ -1,226 +1,117 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8424C10942;
-	Wed, 12 Nov 2025 06:22:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.10
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 24F682DF6F8;
+	Wed, 12 Nov 2025 06:25:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762928539; cv=none; b=E+539e+SCWByRFEdLhNAEu9YMxmDYQV4BrlQ+iEP4xtwSPjI2zUBd9Tj23s6Wk8YOFyjcvcZdAesOn26WE6nvlMJu0ywakD+pUk5eSlZa2aJOtDaOoA00L8/WE7kGvy6BsL9ptyRmeH9FEZicXlXIDDNXtlzhUfGX98peNP+zJs=
+	t=1762928751; cv=none; b=TxB+P6Vd41R1LT680GjYKU0GTjut7/y1bW2I30MGoRCTrRmGtyxg0vDqutRqzRML0lfxPmhligxZ2Aw64ckWu+KBurA1zh87MXqJFQh3NMglk1ZBnKWNjhi7A0lB21Zd2LjZB3USd4Q8ToV7Gc9WfqwXNxi7WqL2VHKzR55eWr4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762928539; c=relaxed/simple;
-	bh=WUP1kjvtR8UUXkZWolJKlxqm2Abil0rICQsZg+E7nCk=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=CMEkvxrplpU2UbmknE3XdlC4NNjYBE8qsXe6Dp9Ymt6NNHMFpcvzfBVR+GFl+jMTIdXwLft32RDNdjsh2XmoT+CBD1qn7Vp1oJXZ45oIN+HhxDDeBcO00AmbSXa/R2hD+MD+/bLueCdanZUFDDkT0TTGAslb8ahsifJJnhoGxBU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=LzDtcjbX; arc=none smtp.client-ip=198.175.65.10
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+	s=arc-20240116; t=1762928751; c=relaxed/simple;
+	bh=V8lpm8QJ4lXgG02nCO8rtalnqI+BYwQEyPvZ0LBvYuM=;
+	h=Mime-Version:Content-Type:Date:Message-Id:From:Cc:To:Subject:
+	 References:In-Reply-To; b=jMqhKsCVyyD9RyEBrG05ka2tim4oa9k6A70yYnjvkbDOh7ZLn2wKumlt02nPhudx9sg8P1CGByff44z6LAOy9rEMJtFHfpxFkpmQyIlrKOX0h7zCTDXtgIt1CA7/HQ46GG3nO2wzGXujETBYPE1zw0Eizgd7Bv2S93AtTGndv1A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=GNvc0dFn; arc=none smtp.client-ip=148.163.158.5
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="LzDtcjbX"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1762928537; x=1794464537;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=WUP1kjvtR8UUXkZWolJKlxqm2Abil0rICQsZg+E7nCk=;
-  b=LzDtcjbX0ne40r/mjR0TirnKeX9ffMeHZO6roH8FZApBBBIkIWImBn/M
-   YTHJicLbXMkcAgO16mv4w3qqveOuAK7lthGFQOmJMRWu2YWtyG+jhgRRl
-   zkX6zvzsB1keAUvj+26FAsPCFQrkoxRLQC+4ERXx9uyyFPEaAVP/g7GMo
-   E6e0yXKxIxtr164KfvaeyjOKoOu7HIcLI4rH4u4zR0Rcg65eIVBIv1hrt
-   HTsotLBrgji5sZs8Dbn8amUCXdPw+3TIEcUvgLA+gB253B2TNI0iXbugM
-   8jziFRhmE42XlD8fEYnF57TNThPLGeqplBHQVAKD/bbe9wYyl8z2D/GoG
-   A==;
-X-CSE-ConnectionGUID: H5fe4gaeTDiHo0GYp9sPNg==
-X-CSE-MsgGUID: nlJHO3AuTp2/vj1t03DQHg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11610"; a="82383158"
-X-IronPort-AV: E=Sophos;i="6.19,298,1754982000"; 
-   d="scan'208";a="82383158"
-Received: from orviesa007.jf.intel.com ([10.64.159.147])
-  by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Nov 2025 22:22:17 -0800
-X-CSE-ConnectionGUID: bunbCrviTPWIJPn1B3GT+g==
-X-CSE-MsgGUID: jeGtRGzFRRCq22mROzCv+g==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.19,298,1754982000"; 
-   d="scan'208";a="189106120"
-Received: from allen-sbox.sh.intel.com (HELO [10.239.159.30]) ([10.239.159.30])
-  by orviesa007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Nov 2025 22:22:12 -0800
-Message-ID: <60970315-613f-4e62-8923-e162c29d9362@linux.intel.com>
-Date: Wed, 12 Nov 2025 14:18:09 +0800
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="GNvc0dFn"
+Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 5ABKlmTe005808;
+	Wed, 12 Nov 2025 06:25:47 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=NkE3Qk
+	sqEBdmdL/XrDKZg7mI0tsvtwuVamNTFbTzG6c=; b=GNvc0dFndzaY0fzg1ETsQS
+	HeBLiDxYL2qiYQiqOcF1/A4ilj3H2Bq+VWCu5C9MD5X8NZIQojmzhRmoK4snVx9L
+	3mv9z1UzX+gvBiWm9h6qdfmGvOkX3WKIFSjneoz4d2VM+y0VifsZ76qasrLh62vE
+	AoDpOw2qaWa4z6FqkHsUM51rfehiq5W1HX3j/Xc5BG1xpScA6RvZReYGf218tNJ0
+	6IxNPMUsFE12FVytYKFFhLQtwHSrXp8prq8sPWT+CU1NUjuxaGiVj48m5aoBDaNs
+	kCNDjivo8HK2Np9m5SIpI+7jfPOyW/ANHcUKoQ5LyeYKdM4S4DFHLc2cwhZDnsIw
+	==
+Received: from ppma13.dal12v.mail.ibm.com (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4a9wgwyk19-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 12 Nov 2025 06:25:47 +0000 (GMT)
+Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma13.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 5AC5mKAV007375;
+	Wed, 12 Nov 2025 06:25:46 GMT
+Received: from smtprelay04.fra02v.mail.ibm.com ([9.218.2.228])
+	by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 4aajdjef6d-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 12 Nov 2025 06:25:46 +0000
+Received: from smtpav04.fra02v.mail.ibm.com (smtpav04.fra02v.mail.ibm.com [10.20.54.103])
+	by smtprelay04.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 5AC6PhIB27001462
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Wed, 12 Nov 2025 06:25:43 GMT
+Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 1C4752004D;
+	Wed, 12 Nov 2025 06:25:43 +0000 (GMT)
+Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id E58892004B;
+	Wed, 12 Nov 2025 06:25:42 +0000 (GMT)
+Received: from darkmoore (unknown [9.111.61.55])
+	by smtpav04.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Wed, 12 Nov 2025 06:25:42 +0000 (GMT)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 4/5] iommu: Introduce iommu_dev_reset_prepare() and
- iommu_dev_reset_done()
-To: Nicolin Chen <nicolinc@nvidia.com>, joro@8bytes.org, afael@kernel.org,
- bhelgaas@google.com, alex@shazbot.org, jgg@nvidia.com, kevin.tian@intel.com
-Cc: will@kernel.org, robin.murphy@arm.com, lenb@kernel.org,
- linux-arm-kernel@lists.infradead.org, iommu@lists.linux.dev,
- linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org,
- linux-pci@vger.kernel.org, kvm@vger.kernel.org, patches@lists.linux.dev,
- pjaroszynski@nvidia.com, vsethi@nvidia.com, helgaas@kernel.org,
- etzhao1900@gmail.com
-References: <cover.1762835355.git.nicolinc@nvidia.com>
- <28af027371a981a2b4154633e12cdb1e5a11da4a.1762835355.git.nicolinc@nvidia.com>
-Content-Language: en-US
-From: Baolu Lu <baolu.lu@linux.intel.com>
-In-Reply-To: <28af027371a981a2b4154633e12cdb1e5a11da4a.1762835355.git.nicolinc@nvidia.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Wed, 12 Nov 2025 07:25:08 +0100
+Message-Id: <DE6I2KA0FPCX.IKTZXU74CPDX@linux.ibm.com>
+From: "Christoph Schlameuss" <schlameuss@linux.ibm.com>
+Cc: <linux-kernel@vger.kernel.org>, <linux-s390@vger.kernel.org>,
+        <borntraeger@de.ibm.com>, <frankja@linux.ibm.com>, <nsg@linux.ibm.com>,
+        <nrb@linux.ibm.com>, <seiden@linux.ibm.com>, <hca@linux.ibm.com>,
+        <svens@linux.ibm.com>, <agordeev@linux.ibm.com>, <gor@linux.ibm.com>,
+        <david@redhat.com>, <gerald.schaefer@linux.ibm.com>
+To: "Claudio Imbrenda" <imbrenda@linux.ibm.com>, <kvm@vger.kernel.org>
+Subject: Re: [PATCH v3 04/23] KVM: s390: Add gmap_helper_set_unused()
+X-Mailer: aerc 0.20.1
+References: <20251106161117.350395-1-imbrenda@linux.ibm.com>
+ <20251106161117.350395-5-imbrenda@linux.ibm.com>
+In-Reply-To: <20251106161117.350395-5-imbrenda@linux.ibm.com>
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: 4gwAgylh-BBYJQdN823d49WrTVNulepN
+X-Proofpoint-ORIG-GUID: 4gwAgylh-BBYJQdN823d49WrTVNulepN
+X-Authority-Analysis: v=2.4 cv=VMPQXtPX c=1 sm=1 tr=0 ts=6914286b cx=c_pps
+ a=AfN7/Ok6k8XGzOShvHwTGQ==:117 a=AfN7/Ok6k8XGzOShvHwTGQ==:17
+ a=IkcTkHD0fZMA:10 a=6UeiqGixMTsA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=VnNF1IyMAAAA:8 a=Y6CA1nhfU0GbWGwoTcwA:9 a=QEXdDO2ut3YA:10
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMTA4MDAyMiBTYWx0ZWRfXzqbXUMdn6okH
+ fxFdN8VDJtVWeEwunpovR7oCjr45qPYsoz2nND6W5wOmmEpxsyGGYz+I2GXMGDNwbVk4m8A/z8r
+ TIXKV3jbkbakv1btqmLfUGl9ungPllHQHK/+w/MPmwhwIc1D3uS2PT331OczaT5UJv7CXAf4rlu
+ oxRbABnc3PQ7MxONpbEnmQf8N7bvz7V0hKpgWc05QB4yRm2Qu0nJNEuFEbg5l9MEFKiU8eMjKpR
+ y8fGB8vtlX/zq97LZ4BJ0yhQK6KpHQM93MycniTj8/RDDRXL1CaqTWj3ODjiH/Kk77UddhgzFtR
+ MwT9JKtE1bXAARd+gWPReowPpN+YEgGRgNdUDlbD1JEkCLL07m0PC9BZ350rRWt608m+aEK2c9O
+ ht9XLqVHDa7b0zb8B06SmpoCfWSWGw==
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
+ definitions=2025-11-12_01,2025-11-11_03,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ impostorscore=0 priorityscore=1501 lowpriorityscore=0 bulkscore=0
+ clxscore=1015 phishscore=0 spamscore=0 malwarescore=0 adultscore=0
+ suspectscore=0 classifier=typeunknown authscore=0 authtc= authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.19.0-2510240000
+ definitions=main-2511080022
 
-On 11/11/25 13:12, Nicolin Chen wrote:
-> +/**
-> + * iommu_dev_reset_prepare() - Block IOMMU to prepare for a device reset
-> + * @dev: device that is going to enter a reset routine
-> + *
-> + * When certain device is entering a reset routine, it wants to block any IOMMU
-> + * activity during the reset routine. This includes blocking any translation as
-> + * well as cache invalidation (especially the device cache).
-> + *
-> + * This function attaches all RID/PASID of the device's to IOMMU_DOMAIN_BLOCKED
-> + * allowing any blocked-domain-supporting IOMMU driver to pause translation and
-> + * cahce invalidation, but leaves the software domain pointers intact so later
-> + * the iommu_dev_reset_done() can restore everything.
-> + *
-> + * Return: 0 on success or negative error code if the preparation failed.
-> + *
-> + * Caller must use iommu_dev_reset_prepare() and iommu_dev_reset_done() together
-> + * before/after the core-level reset routine, to unset the resetting_domain.
-> + *
-> + * These two functions are designed to be used by PCI reset functions that would
-> + * not invoke any racy iommu_release_device(), since PCI sysfs node gets removed
-> + * before it notifies with a BUS_NOTIFY_REMOVED_DEVICE. When using them in other
-> + * case, callers must ensure there will be no racy iommu_release_device() call,
-> + * which otherwise would UAF the dev->iommu_group pointer.
-> + */
-> +int iommu_dev_reset_prepare(struct device *dev)
-> +{
-> +	struct iommu_group *group = dev->iommu_group;
-> +	unsigned long pasid;
-> +	void *entry;
-> +	int ret = 0;
-> +
-> +	if (!dev_has_iommu(dev))
-> +		return 0;
+On Thu Nov 6, 2025 at 5:10 PM CET, Claudio Imbrenda wrote:
+> Add gmap_helper_set_unused() to mark userspace ptes as unused.
+>
+> Core mm code will use that information to discard unused pages instead
+> of attempting to swap them.
+>
+> Signed-off-by: Claudio Imbrenda <imbrenda@linux.ibm.com>
+> Reviewed-by: Nico Boehr <nrb@linux.ibm.com>
+> Tested-by: Nico Boehr <nrb@linux.ibm.com>
 
-Nit: This interface is only for PCI layer, so why not just
+Acked-by: Christoph Schlameuss <schlameuss@linux.ibm.com>
 
-	if (WARN_ON(!dev_is_pci(dev)))
-		return -EINVAL;
-?
-> +
-> +	guard(mutex)(&group->mutex);
-> +
-> +	/*
-> +	 * Once the resetting_domain is set, any concurrent attachment to this
-> +	 * iommu_group will be rejected, which would break the attach routines
-> +	 * of the sibling devices in the same iommu_group. So, skip this case.
-> +	 */
-> +	if (dev_is_pci(dev)) {
-> +		struct group_device *gdev;
-> +
-> +		for_each_group_device(group, gdev) {
-> +			if (gdev->dev != dev)
-> +				return 0;
-> +		}
-> +	}
-
-With above dev_is_pci() check, here it can simply be,
-
-	if (list_count_nodes(&group->devices) != 1)
-		return 0;		
-
-> +
-> +	/* Re-entry is not allowed */
-> +	if (WARN_ON(group->resetting_domain))
-> +		return -EBUSY;
-> +
-> +	ret = __iommu_group_alloc_blocking_domain(group);
-> +	if (ret)
-> +		return ret;
-> +
-> +	/* Stage RID domain at blocking_domain while retaining group->domain */
-> +	if (group->domain != group->blocking_domain) {
-> +		ret = __iommu_attach_device(group->blocking_domain, dev,
-> +					    group->domain);
-> +		if (ret)
-> +			return ret;
-> +	}
-> +
-> +	/*
-> +	 * Stage PASID domains at blocking_domain while retaining pasid_array.
-> +	 *
-> +	 * The pasid_array is mostly fenced by group->mutex, except one reader
-> +	 * in iommu_attach_handle_get(), so it's safe to read without xa_lock.
-> +	 */
-> +	xa_for_each_start(&group->pasid_array, pasid, entry, 1)
-> +		iommu_remove_dev_pasid(dev, pasid,
-> +				       pasid_array_entry_to_domain(entry));
-> +
-> +	group->resetting_domain = group->blocking_domain;
-> +	return ret;
-> +}
-> +EXPORT_SYMBOL_GPL(iommu_dev_reset_prepare);
-> +
-> +/**
-> + * iommu_dev_reset_done() - Restore IOMMU after a device reset is finished
-> + * @dev: device that has finished a reset routine
-> + *
-> + * When certain device has finished a reset routine, it wants to restore its
-> + * IOMMU activity, including new translation as well as cache invalidation, by
-> + * re-attaching all RID/PASID of the device's back to the domains retained in
-> + * the core-level structure.
-> + *
-> + * Caller must pair it with a successfully returned iommu_dev_reset_prepare().
-> + *
-> + * Note that, although unlikely, there is a risk that re-attaching domains might
-> + * fail due to some unexpected happening like OOM.
-> + */
-> +void iommu_dev_reset_done(struct device *dev)
-> +{
-> +	struct iommu_group *group = dev->iommu_group;
-> +	unsigned long pasid;
-> +	void *entry;
-> +
-> +	if (!dev_has_iommu(dev))
-> +		return;
-> +
-> +	guard(mutex)(&group->mutex);
-> +
-> +	/* iommu_dev_reset_prepare() was bypassed for the device */
-> +	if (!group->resetting_domain)
-> +		return;
-> +
-> +	/* iommu_dev_reset_prepare() was not successfully called */
-> +	if (WARN_ON(!group->blocking_domain))
-> +		return;
-> +
-> +	/* Re-attach RID domain back to group->domain */
-> +	if (group->domain != group->blocking_domain) {
-> +		WARN_ON(__iommu_attach_device(group->domain, dev,
-> +					      group->blocking_domain));
-> +	}
-> +
-> +	/*
-> +	 * Re-attach PASID domains back to the domains retained in pasid_array.
-> +	 *
-> +	 * The pasid_array is mostly fenced by group->mutex, except one reader
-> +	 * in iommu_attach_handle_get(), so it's safe to read without xa_lock.
-> +	 */
-> +	xa_for_each_start(&group->pasid_array, pasid, entry, 1)
-> +		WARN_ON(__iommu_set_group_pasid(
-> +			pasid_array_entry_to_domain(entry), group, pasid,
-> +			group->blocking_domain));
-> +
-> +	group->resetting_domain = NULL;
-> +}
-> +EXPORT_SYMBOL_GPL(iommu_dev_reset_done);
-> +
->   #if IS_ENABLED(CONFIG_IRQ_MSI_IOMMU)
->   /**
->    * iommu_dma_prepare_msi() - Map the MSI page in the IOMMU domain
-
-Thanks,
-baolu
+> ---
+>  arch/s390/include/asm/gmap_helpers.h |  1 +
+>  arch/s390/mm/gmap_helpers.c          | 79 ++++++++++++++++++++++++++++
+>  2 files changed, 80 insertions(+)
