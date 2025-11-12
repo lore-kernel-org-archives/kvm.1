@@ -1,50 +1,69 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
+Received: from PH0PR06CU001.outbound.protection.outlook.com (mail-westus3azon11011041.outbound.protection.outlook.com [40.107.208.41])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B32F31E3DCD;
-	Wed, 12 Nov 2025 06:02:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.17
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762927382; cv=none; b=m/15Qz4b03sw4H3TVj1E+ooVZJVxPI4qVo6ohJJFT/xmcj1Ym6pZKvbSUgc0iX0ilEK4DnaPd/hmXeNQ1PWE5l/DDz9Vvx18KSWuTBCdWJJ9aJhfkxCa822Keu4vWfUYWP8oqHF3whMqJ3BMx4AA8Kdm9qmQGS+eVeNet51aTuE=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762927382; c=relaxed/simple;
-	bh=5P785U/6nIR5hmheHhi3SEIcKPyZPlJEhzUt1w6Lq7I=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=SCeigCO6rc4GA0DoONqN0ZB6PA+GGRDK3tHoCs3z7Yysn3hsTVGVBGerUCGTX3n+v7nUM+wOeYY95H/tveJKWMRjdREaaT/Mb0WkJrJWJKLft6m0iHtPTNwIGUoZ9yblBHeK6mH6Y0bYX/lITUYwHDiE4hJmjAT3M/msSU4hWwM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=oFcMwVhH; arc=none smtp.client-ip=198.175.65.17
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2179C1D618C;
+	Wed, 12 Nov 2025 06:07:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.208.41
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1762927630; cv=fail; b=aWaHzxg07seQs6HDbEI0hV9RIXdTIfOkNNbdL8u3hfuWG9ADHSlveSXu9YsvEiQr8Z+hSM7zZMTNaeX8NaQqHKgJ5i1xonV2EIG+rrKcW4Q46CKM+lXa1Sr6aqZMyzrnmoa6QkxzhALS+PopC9KNVFgmUrBDUrKTzHiEDRapDR4=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1762927630; c=relaxed/simple;
+	bh=aeEX8zTSxV3tTBPWrEnyWBeGg3ylmFsaaF6VqJJqrGk=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=oOKy0a/DVYg6h8viekWnwbFWj3xJo4iFBDsHZLoKLhjCc+UAEzvsLUP/bmGqtl+L2xBxihUKjQnXeCvZi+bj/UItoSzvt2A0T1ZSIWY2yVKAgVyG1Nqi8BmSCno26dmgUaka7t5/OYe2R9GCs3Nz8LuDXoKkvvd7XczUaf7kqcw=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=1pF643ZE; arc=fail smtp.client-ip=40.107.208.41
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="oFcMwVhH"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1762927379; x=1794463379;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=5P785U/6nIR5hmheHhi3SEIcKPyZPlJEhzUt1w6Lq7I=;
-  b=oFcMwVhHKBIgYjEBlDIzQxuUfbluayiPAldPXMm211ntr4UMFdk5mz6q
-   PnVyXllorQkc7Pml2jAejxJuTiDne7Lqx64bCQctRJ1MCBNM09uiQseUy
-   t1MX8LO7ModSXpWIAovaSfXjGJD6D9gIEq5XSAeUPESqt6j4wOgTQ7OBd
-   NrPAWXyoDq9JXu2g4KkxNq80vMgqcoVEdTVwO63WnwcpscEAl5SprrpIy
-   tKZodCx9zpslZ5vCSky+hQt6NqoeqJ8uaFzapQbfoRyGdrZXrM4RCUTPn
-   RysTKAZ5ToYq8XDJVQoWAbNiiQzRO24E/CCwA0n/pkINx6on4PlupC5iQ
-   A==;
-X-CSE-ConnectionGUID: J3XQvOBvRaC1n4U0cpUfMQ==
-X-CSE-MsgGUID: QGYAZv4WRUuR9RNh5JXzcw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11531"; a="64920252"
-X-IronPort-AV: E=Sophos;i="6.17,312,1747724400"; 
-   d="scan'208";a="64920252"
-Received: from fmviesa010.fm.intel.com ([10.60.135.150])
-  by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Nov 2025 22:02:59 -0800
-X-CSE-ConnectionGUID: h2IRcZemTGuOgw+Cz+mqmA==
-X-CSE-MsgGUID: SUtSziV9Qu6Uwss2XMdTJQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.19,298,1754982000"; 
-   d="scan'208";a="189864807"
-Received: from allen-sbox.sh.intel.com (HELO [10.239.159.30]) ([10.239.159.30])
-  by fmviesa010-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Nov 2025 22:02:55 -0800
-Message-ID: <d5445875-76bd-453d-b959-25989f5d3060@linux.intel.com>
-Date: Wed, 12 Nov 2025 13:58:51 +0800
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="1pF643ZE"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=dHbSHiqBzHyZgVvzsM2twh333Mu5mkItkEeQYzDSZlKjHRm239oFyeIkcN7JIelgloOCXsM2m/ibPv9k2Urvc9esEZVfOo6va0Bqg53BOrQRk+ZlrxnuXaxzROk5/VjOKh68OJDXSDY0hs4jjWauqOrbmbjs+T8h/8XMEHGcN5N8X99VVnAK4d/VO7V468X4t/DW3wbDnVhdfza/RJKDfz5GJ6Y9PVMor9SAmAPgzTjY/ua8fr34IgilS9ICTcmIpj+QjwBYDrsDBvMmIEKCiRxVKSNT4mt70nzrP16vrjzoPZpdeUI7DTf28JcnQt3VkV7hbcNe9UB872jeWMXcqg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=HHG6b/wBP/E4F7QF7TsNyOjX1S4KKSZCgyasVs6ZrQw=;
+ b=d80mi8mC7UpuJXcx0MPCaxAYRTN6g9eiSnvpFK5q2D3Zb1Bk7QzvvGt6EsEbNZMo1fPz+WEX1JTAmWqnu2bi7nvgkgiqAO7ZO5ykojlFQJsiPCroP7xmlnFtawSad1qqA9UqdFusjqEHColJrLbS5iNOpkaBavjDXRSESZOveSn3PzWANfKWlb7dDf9lrLmR8zaUSqBhDqHFgGFzJ/uheEd9an3F4mXlaApPVOubYGCdb7b88r91AlI8mRQXOX0E5z1QjN/hd3l2bWLiy9W69t/aqYGk/B2sg0Tn3GVZ8cLGbair+kQ3BnMDPC4v136OpedS6T57j76nuQfD2qoaIA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=gmail.com smtp.mailfrom=amd.com; dmarc=pass
+ (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=HHG6b/wBP/E4F7QF7TsNyOjX1S4KKSZCgyasVs6ZrQw=;
+ b=1pF643ZEjUmBuBhooaE/K4gq3n+NyuBbjVED6r+BpLELinecQ4zGXjdRWh4L1SP7tjhQecVrzHBaDxrkAXbJZMIP7uhk6ptaK9iNhRnHeSlfohN/sSYqkRvhVMJX2Rr85R22IGUcgaxuM5Cps2xMJPiE4qny7RZij8Ybyb/GIHM=
+Received: from BYAPR08CA0062.namprd08.prod.outlook.com (2603:10b6:a03:117::39)
+ by CH3PR12MB7500.namprd12.prod.outlook.com (2603:10b6:610:148::17) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9320.15; Wed, 12 Nov
+ 2025 06:07:05 +0000
+Received: from SJ5PEPF00000204.namprd05.prod.outlook.com
+ (2603:10b6:a03:117:cafe::f5) by BYAPR08CA0062.outlook.office365.com
+ (2603:10b6:a03:117::39) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.9320.15 via Frontend Transport; Wed,
+ 12 Nov 2025 06:07:03 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
+ smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=satlexmb08.amd.com; pr=C
+Received: from satlexmb08.amd.com (165.204.84.17) by
+ SJ5PEPF00000204.mail.protection.outlook.com (10.167.244.37) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.9320.13 via Frontend Transport; Wed, 12 Nov 2025 06:07:04 +0000
+Received: from Satlexmb09.amd.com (10.181.42.218) by satlexmb08.amd.com
+ (10.181.42.217) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.17; Tue, 11 Nov
+ 2025 22:07:04 -0800
+Received: from satlexmb08.amd.com (10.181.42.217) by satlexmb09.amd.com
+ (10.181.42.218) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.17; Tue, 11 Nov
+ 2025 22:07:04 -0800
+Received: from [172.31.184.125] (10.180.168.240) by satlexmb08.amd.com
+ (10.181.42.217) with Microsoft SMTP Server id 15.2.2562.17 via Frontend
+ Transport; Tue, 11 Nov 2025 22:07:01 -0800
+Message-ID: <27c6a3f4-ca70-45ce-a684-fe8e9b33efd1@amd.com>
+Date: Wed, 12 Nov 2025 11:37:00 +0530
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -52,151 +71,126 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 3/5] iommu: Add iommu_driver_get_domain_for_dev()
- helper
-To: Nicolin Chen <nicolinc@nvidia.com>, joro@8bytes.org, afael@kernel.org,
- bhelgaas@google.com, alex@shazbot.org, jgg@nvidia.com, kevin.tian@intel.com
-Cc: will@kernel.org, robin.murphy@arm.com, lenb@kernel.org,
- linux-arm-kernel@lists.infradead.org, iommu@lists.linux.dev,
- linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org,
- linux-pci@vger.kernel.org, kvm@vger.kernel.org, patches@lists.linux.dev,
- pjaroszynski@nvidia.com, vsethi@nvidia.com, helgaas@kernel.org,
- etzhao1900@gmail.com
-References: <cover.1762835355.git.nicolinc@nvidia.com>
- <0303739735f3f49bcebc244804e9eeb82b1c41dc.1762835355.git.nicolinc@nvidia.com>
+Subject: Re: [PATCH 00/10] sched/kvm: Semantics-aware vCPU scheduling for
+ oversubscribed KVM
+To: Wanpeng Li <kernellwp@gmail.com>
+CC: Peter Zijlstra <peterz@infradead.org>, Ingo Molnar <mingo@redhat.com>,
+	Thomas Gleixner <tglx@linutronix.de>, Paolo Bonzini <pbonzini@redhat.com>,
+	Sean Christopherson <seanjc@google.com>, Steven Rostedt
+	<rostedt@goodmis.org>, Vincent Guittot <vincent.guittot@linaro.org>, "Juri
+ Lelli" <juri.lelli@redhat.com>, <linux-kernel@vger.kernel.org>,
+	<kvm@vger.kernel.org>, Wanpeng Li <wanpengli@tencent.com>
+References: <20251110033232.12538-1-kernellwp@gmail.com>
+ <7bc4b0b7-42ea-42fc-ae96-3084f44bdc81@amd.com>
+ <CANRm+CxZfFVk=dX3Koi_RUH6ppr_zc6fs3HHPaYkRGwV7h9L7w@mail.gmail.com>
 Content-Language: en-US
-From: Baolu Lu <baolu.lu@linux.intel.com>
-In-Reply-To: <0303739735f3f49bcebc244804e9eeb82b1c41dc.1762835355.git.nicolinc@nvidia.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+From: K Prateek Nayak <kprateek.nayak@amd.com>
+In-Reply-To: <CANRm+CxZfFVk=dX3Koi_RUH6ppr_zc6fs3HHPaYkRGwV7h9L7w@mail.gmail.com>
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: 7bit
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: SJ5PEPF00000204:EE_|CH3PR12MB7500:EE_
+X-MS-Office365-Filtering-Correlation-Id: c81ede63-8244-4bf5-82e2-08de21b1b437
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|36860700013|82310400026|1800799024|376014|7416014;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?RXJGdzZvM0ZNb3B5MGdkMitMd1RMWjZJNFdzdzRtZ1dEcS9FNnoyTmk5WEdq?=
+ =?utf-8?B?SC9OT1FlMDkwSVh5dEtZN29oV2laMndSU1FBbDdGd1pXR2w2aXZXbEZVaHpD?=
+ =?utf-8?B?TW1mMUJSYkZZRXR5aDRCa2tqWWszWE9mNFErLzdKcUNERVVDZmphWUhhNE9M?=
+ =?utf-8?B?RnFJZGo0ZEk2a3ZRcmZhUkpUcHlaRkRVMTdpM1FWeFMrTlIxTGh0TzFvUUNa?=
+ =?utf-8?B?T3FabmxwR0pSaHVFdGExWWhiemNnUnZRdDZLZnBhdmtOQUJMY1c4Qlo5MVVG?=
+ =?utf-8?B?TXNnanV1TkZJZ3R6N3FjZk1BeHdsb1NRTUg1SUVtWEZXU2hBQXF3RCs0TnVX?=
+ =?utf-8?B?TWZ6NG92VXA3blFHWVlGQ0V6aVBFZHBvMW94d3d3LzJxcy9BSHpmaDI0Ym44?=
+ =?utf-8?B?TnZIOXMyK0RTM3dGeXR1ejNhMysxN0xhemhEMWN1TDNRNC9FdEhlK1lGc1lU?=
+ =?utf-8?B?NFgzSHBLc252SStiN055VUFEVHV1OUFFNURSSUo4dmNzbFd2T2dpUmRhL3dJ?=
+ =?utf-8?B?bDFHc1QvMHBvS2pLWlZFNU5pOFBiSHNJS1FaOGtkUnltRFFIbmIzeUJVZE5l?=
+ =?utf-8?B?ZGVyNm1ZQ1YvN0YrWGk2M3pIdVZMZFdnSG15QWlSZks1UmNYU1ZXRDRGSVlV?=
+ =?utf-8?B?QXhxWHgwUFRaZzFuQ3AwTFducmVPb2ZjQVl3OG04alJ5c3htQThrRTIwZUIr?=
+ =?utf-8?B?QmM5b3IrZ3dVQkNGQWRDWjJ1ODdKekt3VWRDdlpLdTIxZTlFVGpoVi9DS0Rq?=
+ =?utf-8?B?aFc0SCtpZEgycEV4L2NZRTZUSFJrTjVKTDdDaktNY2lmcnd2dkNhRkR5OW5N?=
+ =?utf-8?B?YzZ5dnV3UlBxNW9sMjllTSt4QWpjMFV1WUZVOXBWNjhjaDFJWDN4cENJL0dk?=
+ =?utf-8?B?Y2dxR3VtaGx1dDEwM0V2TlJtb2NRODZCdTl1SDFLSmhxeWJZajE0T2JsblE0?=
+ =?utf-8?B?YWd5dkFPZ0kwd09iUlNsN2pJS0hKMUxuN3lJRzFYZjk1amhlNWh5MUZya1Qr?=
+ =?utf-8?B?T3dKSXB4TlE0Rmd4ZE5IQjNKelhYRHNNQ3ZHS0h2OTJWcHJrS1pjN0FjYndy?=
+ =?utf-8?B?cTR1NEw3aGNrRG5CVWd1VVU0am5US2tOK3FUOThUeHJyZjRMa0hEL2Q0L3BR?=
+ =?utf-8?B?dWdCRGRTNmZlSTBROHBwWXViRnlIVEIvdWVVREphMmVmN1ZkQ3IvNXlPNTk0?=
+ =?utf-8?B?K0d6RVJwRk9OU1JVbWRwK2JURzFsMXBHWTE5QkpCY3dibVJJU0FiRGlKVTNS?=
+ =?utf-8?B?QlgyRGl6Z0kyRnJFZHBxdi9yeDZkUVI4V1dNVWVCMFR2ajJDRjlBNjN2dnJl?=
+ =?utf-8?B?elhlcGxjWVIvcGVNT3JYMmhYb2FZNG1qUERiRzlmc3pMTTUxQ2l4N0VWNnBJ?=
+ =?utf-8?B?UnI3Qy9vY0gwTXEzVmRMVTVLQWo1cXBVS01iNUg1amg4R0pwQnJ2KzJZWkV3?=
+ =?utf-8?B?Q3JjNzhONnk2MXBYanlZRU0xMHVJUUZVLzVEWUFSYzFXZVFTOUNZbFp6N1E1?=
+ =?utf-8?B?Mk1JTE1XbVA4NHdmenVmRzRYNlRiSzNjb0JMVmRVMnVNNzFtYTV1ZTNsTmZY?=
+ =?utf-8?B?Z1RPeFZUVmZoZUVuc3RnMTRHNXVaUEdnMEFMQ3QyM0xsK1dwNmZHMFVYa0Rh?=
+ =?utf-8?B?Z0JuOVlOa3h6b05vMmdaQzFydytoNjNBS0VpOWlrV0VSem53N2xuWHpLcHZy?=
+ =?utf-8?B?QmJMVU9sQ21RRlljejdFWlptOVhLRFZGVkc2ZFR3aDBPMjdJRHVHeXQzOTBq?=
+ =?utf-8?B?b3VrRm85ZHdabEcxeEwySmZOdklRMi9xYXlTZ1VwSHVjZnNoMkt2cy9idG41?=
+ =?utf-8?B?S0Q2ZzZTbzRHWWk5dk4wTC9SNEhmT25ndkVJc0ZGQWh0by9xc3lqc1ZVMVZu?=
+ =?utf-8?B?a1NEMmNQYi95UTBTb250RW9sMlRmVlU1WVZoaFhLZ0ZaQjVLLzRyUHBCSmE4?=
+ =?utf-8?B?aVhXanVXVmVKQURkTGVPL2ZKSEtFaVUyK0s3YUdYdkZnVm82Z2gvdDZ1OFU0?=
+ =?utf-8?B?cjdyRFR5aW8vZVQwakRwZ1JKMjhiTDlqRXdTOXFUT2xXME1RQi9RclkvaURD?=
+ =?utf-8?B?VEptazN6QVFZb1ltYVBJY3hhRm00TXFBNkxaQT09?=
+X-Forefront-Antispam-Report:
+	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:satlexmb08.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(36860700013)(82310400026)(1800799024)(376014)(7416014);DIR:OUT;SFP:1101;
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 12 Nov 2025 06:07:04.8323
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: c81ede63-8244-4bf5-82e2-08de21b1b437
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[satlexmb08.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	SJ5PEPF00000204.namprd05.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH3PR12MB7500
 
-On 11/11/25 13:12, Nicolin Chen wrote:
-> There is a need to stage a resetting PCI device to temporally the blocked
-> domain and then attach back to its previously attached domain after reset.
+Hello Wanpeng,
+
+On 11/12/2025 10:24 AM, Wanpeng Li wrote:
+>>> Problem Statement
+>>> -----------------
+>>>
+>>> In overcommitted virtualization scenarios, vCPUs frequently spin on locks
+>>> held by other vCPUs that are not currently running. The kernel's
+>>> paravirtual spinlock support detects these situations and calls yield_to()
+>>> to boost the lock holder, allowing it to run and release the lock.
+>>>
+>>> However, the current implementation has two critical limitations:
+>>>
+>>> 1. Scheduler-side limitation:
+>>>
+>>>    yield_to_task_fair() relies solely on set_next_buddy() to provide
+>>>    preference to the target vCPU. This buddy mechanism only offers
+>>>    immediate, transient preference. Once the buddy hint expires (typically
+>>>    after one scheduling decision), the yielding vCPU may preempt the target
+>>>    again, especially in nested cgroup hierarchies where vruntime domains
+>>>    differ.
+>>
+>> So what you are saying is there are configurations out there where vCPUs
+>> of same guest are put in different cgroups? Why? Does the use case
+>> warrant enabling the cpu controller for the subtree? Are you running
 > 
-> This can be simply done by keeping the "previously attached domain" in the
-> iommu_group->domain pointer while adding an iommu_group->resetting_domain,
-> which gives troubles to IOMMU drivers using the iommu_get_domain_for_dev()
-> for a device's physical domain in order to program IOMMU hardware.
+> You're right to question this. The problematic scenario occurs with
+> nested cgroup hierarchies, which is common when VMs are deployed with
+> cgroup-based resource management. Even when all vCPUs of a single
+> guest are in the same leaf cgroup, that leaf sits under parent cgroups
+> with their own vruntime domains.
 > 
-> And in such for-driver use cases, the iommu_group->mutex must be held, so
-> it doesn't fit in external callers that don't hold the iommu_group->mutex.
+> The issue manifests when:
+>    - set_next_buddy() provides preference at the leaf level
+>    - But vruntime competition happens at parent levels
+
+If that is the case, then NEXT_BUDDY is in-eligible as a result of its
+vruntime being higher that the weighted averages of other entity.
+Won't this break fairness?
+
+Let me go look at the series and come back.
+
+>    - The buddy hint gets "diluted" when pick_task_fair() walks up the hierarchy
 > 
-> Introduce a new iommu_driver_get_domain_for_dev() helper, exclusively for
-> driver use cases that hold the iommu_group->mutex, to separate from those
-> external use cases.
-> 
-> Add a lockdep_assert_not_held to the existing iommu_get_domain_for_dev()
-> and highlight that in a kdoc.
-> 
-> Reviewed-by: Kevin Tian <kevin.tian@intel.com>
-> Signed-off-by: Nicolin Chen <nicolinc@nvidia.com>
-> ---
->   include/linux/iommu.h                       |  1 +
->   drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.c |  5 ++--
->   drivers/iommu/iommu.c                       | 28 +++++++++++++++++++++
->   3 files changed, 32 insertions(+), 2 deletions(-)
-> 
-> diff --git a/include/linux/iommu.h b/include/linux/iommu.h
-> index 801b2bd9e8d49..a42a2d1d7a0b7 100644
-> --- a/include/linux/iommu.h
-> +++ b/include/linux/iommu.h
-> @@ -910,6 +910,7 @@ extern int iommu_attach_device(struct iommu_domain *domain,
->   extern void iommu_detach_device(struct iommu_domain *domain,
->   				struct device *dev);
->   extern struct iommu_domain *iommu_get_domain_for_dev(struct device *dev);
-> +struct iommu_domain *iommu_driver_get_domain_for_dev(struct device *dev);
->   extern struct iommu_domain *iommu_get_dma_domain(struct device *dev);
->   extern int iommu_map(struct iommu_domain *domain, unsigned long iova,
->   		     phys_addr_t paddr, size_t size, int prot, gfp_t gfp);
-> diff --git a/drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.c b/drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.c
-> index a33fbd12a0dd9..412d1a9b31275 100644
-> --- a/drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.c
-> +++ b/drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.c
-> @@ -3125,7 +3125,8 @@ int arm_smmu_set_pasid(struct arm_smmu_master *master,
->   		       struct arm_smmu_domain *smmu_domain, ioasid_t pasid,
->   		       struct arm_smmu_cd *cd, struct iommu_domain *old)
->   {
-> -	struct iommu_domain *sid_domain = iommu_get_domain_for_dev(master->dev);
-> +	struct iommu_domain *sid_domain =
-> +		iommu_driver_get_domain_for_dev(master->dev);
->   	struct arm_smmu_attach_state state = {
->   		.master = master,
->   		.ssid = pasid,
-> @@ -3191,7 +3192,7 @@ static int arm_smmu_blocking_set_dev_pasid(struct iommu_domain *new_domain,
->   	 */
->   	if (!arm_smmu_ssids_in_use(&master->cd_table)) {
->   		struct iommu_domain *sid_domain =
-> -			iommu_get_domain_for_dev(master->dev);
-> +			iommu_driver_get_domain_for_dev(master->dev);
->   
->   		if (sid_domain->type == IOMMU_DOMAIN_IDENTITY ||
->   		    sid_domain->type == IOMMU_DOMAIN_BLOCKED)
-> diff --git a/drivers/iommu/iommu.c b/drivers/iommu/iommu.c
-> index 1e322f87b1710..1f4d6ca0937bc 100644
-> --- a/drivers/iommu/iommu.c
-> +++ b/drivers/iommu/iommu.c
-> @@ -2217,6 +2217,15 @@ void iommu_detach_device(struct iommu_domain *domain, struct device *dev)
->   }
->   EXPORT_SYMBOL_GPL(iommu_detach_device);
->   
-> +/**
-> + * iommu_get_domain_for_dev() - Return the DMA API domain pointer
-> + * @dev - Device to query
-> + *
-> + * This function can be called within a driver bound to dev. The returned
-> + * pointer is valid for the lifetime of the bound driver.
-> + *
-> + * It should not be called by drivers with driver_managed_dma = true.
+-- 
+Thanks and Regards,
+Prateek
 
-"driver_managed_dma != true" means the driver will use the default
-domain allocated by the iommu core during iommu probe. The iommu core
-ensures that this domain stored at group->domain will not be changed
-during the driver's whole lifecycle. That's reasonable.
-
-How about making some code to enforce this requirement? Something like
-below ...
-
-> + */
->   struct iommu_domain *iommu_get_domain_for_dev(struct device *dev)
->   {
->   	/* Caller must be a probed driver on dev */
-> @@ -2225,10 +2234,29 @@ struct iommu_domain *iommu_get_domain_for_dev(struct device *dev)
->   	if (!group)
->   		return NULL;
->   
-> +	lockdep_assert_not_held(&group->mutex);
-
-...
-	if (WARN_ON(!dev->driver || !group->owner_cnt || group->owner))
-		return NULL;
-
-> +
->   	return group->domain;
->   }
->   EXPORT_SYMBOL_GPL(iommu_get_domain_for_dev);
->   
-> +/**
-> + * iommu_driver_get_domain_for_dev() - Return the driver-level domain pointer
-> + * @dev - Device to query
-> + *
-> + * This function can be called by an iommu driver that wants to get the physical
-> + * domain within an iommu callback function where group->mutex is held.
-> + */
-> +struct iommu_domain *iommu_driver_get_domain_for_dev(struct device *dev)
-> +{
-> +	struct iommu_group *group = dev->iommu_group;
-> +
-> +	lockdep_assert_held(&group->mutex);
-> +
-> +	return group->domain;
-> +}
-> +EXPORT_SYMBOL_GPL(iommu_driver_get_domain_for_dev);
-> +
->   /*
->    * For IOMMU_DOMAIN_DMA implementations which already provide their own
->    * guarantees that the group and its default domain are valid and correct.
-
-Others look good to me.
-
-Reviewed-by: Lu Baolu <baolu.lu@linux.intel.com>
