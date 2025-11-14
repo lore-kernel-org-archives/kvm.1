@@ -1,123 +1,105 @@
-Received: from mail-pf1-f201.google.com (mail-pf1-f201.google.com [209.85.210.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from out-189.mta1.migadu.com (out-189.mta1.migadu.com [95.215.58.189])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE59921ADB7
-	for <kvm@vger.kernel.org>; Fri, 14 Nov 2025 00:47:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 201F521ADB7
+	for <kvm@vger.kernel.org>; Fri, 14 Nov 2025 00:48:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.189
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763081257; cv=none; b=oZ7zcJU0i1lEdEJ/iljORtQHk+MWRzthEyAIlyCYUGb7lZrzaYihJ4r/Uj26E9+bqUX8Nucs4p/kasPsowAv8+g/CsLBP81QdsXcTZgTcUKC4ZhXK8RrODZwn5M5qKXAriM9OXx4wHVo74g70Ai1gboENhdWTOhlbbHfPO58IAA=
+	t=1763081306; cv=none; b=hqHUxTYPV8hC8L6iI3g2TzA461Rt3RC9lvwk1lYfxCDZ6TZzNBtVuyGKbO8luqY9so7MlhmrsMQqaWou2sUNhi+zysYJAAUvM8xoNoqddZP5V4GnzyNSHiouR5bugUsAKYv1YKPDhoK4fpicPlnD2LhhWE7aKa3FavlazYQccuU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763081257; c=relaxed/simple;
-	bh=sUIkTimVmMzrn6W3mfZBB4kEtJCeeFQ76IKk5QMtTu8=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=tNo2k0UEKXWlp6LE6hSmzv6As+iUzXsqIdnL5NPjyYkrdQYsAIFpClrleixmifeu8JKdq5jblH+R2g1a5Znn7k8ZKYa3TGWz3oxFAxSZE8d6XS8a45SOI1eLVgDEVArwyw6pf8+cJUGph70/TSVZDY/Xb1/pcYfCCVm/lPdhIBY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=EmB8hTwc; arc=none smtp.client-ip=209.85.210.201
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+	s=arc-20240116; t=1763081306; c=relaxed/simple;
+	bh=a4QXijgvqBr7v4vZWfQe+sv6VTbjhHi8C7mLEuG5cBU=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=AqAyJDtryTIVrXDKAZqWb1EPYL/kQ/sF9GJT1OMTaeyUtfFKWCWK6Tq0b+dfblbYoeHeFTfVC2XDeaPuAN4h8/8uBHWKl+dI8enK8oyCAONXgex8RLlPrdWkdUDOf7y3Ls1ESM9fK0gzwHZ4txSpCvXZ8U/QFKbAzXLVBrBiY+E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=h3gxrIWF; arc=none smtp.client-ip=95.215.58.189
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="EmB8hTwc"
-Received: by mail-pf1-f201.google.com with SMTP id d2e1a72fcca58-7b8ed43cd00so1797047b3a.2
-        for <kvm@vger.kernel.org>; Thu, 13 Nov 2025 16:47:35 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1763081255; x=1763686055; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=V89RgdOCB2GTsttfBVIttwbOk7GKNXKV4z2HImGCsug=;
-        b=EmB8hTwcgy0ZpY+0TRrUMeFObqcGLoFIgyES0o2lfKKxhafVJBvdtRgg1mMXPdHyNy
-         JZ/y3ONFD/3kLmtc0T+zup82PLBL3/jr2uIdTUX/im/Cfpjms7m1a39J6vfZQTi1dvTo
-         nHZZJsGVjG7Z3g0Y9TB6hnHKMNzrlOszo3RlwCJ7KQEdcC8v/tqMaHT2FRmafHxr2t0n
-         rLxm0kkbvrz3aK7rcXezvtspQnrC3zjHqw/BDM6T6YE99ThHDuTzpVJeZAx9sT45LS12
-         IflIpKYTXzaOFuPwJwo0cKpDJzyGVVrsWKok4IpPljZxOOeRce3aj0pLuGnD0HtPvouz
-         TQyA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1763081255; x=1763686055;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=V89RgdOCB2GTsttfBVIttwbOk7GKNXKV4z2HImGCsug=;
-        b=Y7PrUlcDqe/2DqHgcXHuSYDLGKhXAyPQS5UJD9+o1+X0gJlSCpDzA3q3ot7X48+0kn
-         2+YfZKMzsDxhzYYTQ8BQFkXXrr73of6bUGjw9F1PKHo7llQjygqma6cQroDESa9/tXtF
-         VPZrEVMaMgmTxZTn0OqFmbAz0bkrgt/rlgvjcOUQ4gqt85GdD5Cjov998C7JDaXspI4J
-         hCb1pzIlXgd5zgS+HEtajYmJM4Q3ujXimAPKttJ/+n/Im+xNPJxEaLyk79RK8ZfDs5vP
-         u+GvyeJPlDQHedlAMGXu4b8u+HccawLg4DL3P7I+1pg96kZb3hsh2SyYPMRTfdkXRQYE
-         RehQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUr0FekNisY5x/FD1EQxehRRj4LvRX08HGH7itl3B1TvakoqgNdErJNomNQPEkhvpmBW0s=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz3Z2RsGSF1iUH+tZ/cmCAOsRPdZzr9SZyBYZd//WENlkc5gFwW
-	k1JEQf8P21zAYLwFb6dO4j3E5gLqvvubbi1Ruyqky6kCL68SyA7Xw4FwN/iKlYvJO0HIF/JZRQb
-	AJmmv6g==
-X-Google-Smtp-Source: AGHT+IEBCcYi5IXDXywof+v46PCd55ao3/mcwgvVYMuI7wXX2ywbYjLb9BpsFLUUUpZ04U2oievz0raOPeA=
-X-Received: from pgc28.prod.google.com ([2002:a05:6a02:2f9c:b0:b49:d798:eefa])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a20:7f81:b0:334:7bce:8394
- with SMTP id adf61e73a8af0-35ba2c7f49fmr1832396637.51.1763081254828; Thu, 13
- Nov 2025 16:47:34 -0800 (PST)
-Date: Thu, 13 Nov 2025 16:46:13 -0800
-In-Reply-To: <20251110232642.633672-1-yosry.ahmed@linux.dev>
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="h3gxrIWF"
+Date: Fri, 14 Nov 2025 00:47:19 +0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1763081301;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=awKBPmBE8+R/sDQQkpEY6ofOBRFl9vt/VG/aDp1ugu4=;
+	b=h3gxrIWF52TyPo2koaQbr3Mfw0YXsHHTczzQIaZthqET6fN4gEQu+OLreabU5f2XZq4wDF
+	hRlR6n91P+cwfu8632R5AgqZKJ/qe3NPrUoxxpGI3QIIaeqqdnkiq6U18jjOKeKv+vjShB
+	Cfev1W5EulwqNkBITaSI6l2W/OxLu/E=
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Yosry Ahmed <yosry.ahmed@linux.dev>
+To: Sean Christopherson <seanjc@google.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>, Kevin Cheng <chengkev@google.com>, 
+	kvm@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v3 02/14] x86/vmx: Skip vmx_pf_exception_test_fep early
+ if FEP is not available
+Message-ID: <axcelxpkwmqht3lq7gpmp4idkcyujyr4jjtf5gh5usp7gxnl3v@rxckldu4iup7>
+References: <20251110232642.633672-1-yosry.ahmed@linux.dev>
+ <20251110232642.633672-3-yosry.ahmed@linux.dev>
+ <aRZ6bM_yVo9-zyDT@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20251110232642.633672-1-yosry.ahmed@linux.dev>
-X-Mailer: git-send-email 2.52.0.rc1.455.g30608eb744-goog
-Message-ID: <176307992383.1723017.8674241803582531057.b4-ty@google.com>
-Subject: Re: [PATCH v3 00/14] Improvements for (nested) SVM testing
-From: Sean Christopherson <seanjc@google.com>
-To: Sean Christopherson <seanjc@google.com>, Yosry Ahmed <yosry.ahmed@linux.dev>
-Cc: Paolo Bonzini <pbonzini@redhat.com>, Kevin Cheng <chengkev@google.com>, kvm@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <aRZ6bM_yVo9-zyDT@google.com>
+X-Migadu-Flow: FLOW_OUT
 
-On Mon, 10 Nov 2025 23:26:28 +0000, Yosry Ahmed wrote:
-> This is a combined v2/v3 of the patch series in [1] and [2], with a
-> couple of extra changes.
+On Thu, Nov 13, 2025 at 04:40:12PM -0800, Sean Christopherson wrote:
+> On Mon, Nov 10, 2025, Yosry Ahmed wrote:
+> > The check to skip the test is currently performed in the guest code.
+> > There a few TEST_ASSERTs that happen before the guest is run, which
+> > internally call report_passed(). The latter increases the number of
+> > passed tests.
+> > 
+> > Hence, when vmx_pf_exception_test_fep is run, report_summary() does not
+> > return a "skip" error code because the total number of tests is larger
+> > than the number of skipped tests.
+> > 
+> > Skip early if FEP is not available, before any assertions, such that
+> > report_summary() finds exactly 1 skipped test and returns the
+> > appropriate error code.
+> > 
+> > Signed-off-by: Yosry Ahmed <yosry.ahmed@linux.dev>
+> > ---
+> >  x86/vmx_tests.c | 5 ++++-
+> >  1 file changed, 4 insertions(+), 1 deletion(-)
+> > 
+> > diff --git a/x86/vmx_tests.c b/x86/vmx_tests.c
+> > index 0b3cfe50c6142..4f214ebdbe1d9 100644
+> > --- a/x86/vmx_tests.c
+> > +++ b/x86/vmx_tests.c
+> > @@ -10644,7 +10644,10 @@ static void vmx_pf_exception_test(void)
+> >  
+> >  static void vmx_pf_exception_forced_emulation_test(void)
+> >  {
+> > -	__vmx_pf_exception_test(NULL, NULL, vmx_pf_exception_forced_emulation_test_guest);
+> > +	if (is_fep_available)
+> > +		__vmx_pf_exception_test(NULL, NULL, vmx_pf_exception_forced_emulation_test_guest);
+> > +	else
+> > +		report_skip("Forced emulation prefix (FEP) not available\n");
 > 
-> The series mostly includes fixups and cleanups, and more importantly new
-> tests for selective CR0  write intercepts and LBRV, which cover bugs
-> recently fixed by [3] and [4].
+> To be consistent with other tests, and the kernel's general pattern of:
 > 
-> [...]
+> 	if (<error>) {
+> 		<react>
+> 		return;
+> 	}
+> 
+> 	<do useful stuff>
+> 
+> I'll tweak this to
+> 
+> 	if (!is_fep_available) {
+> 		report_skip("Forced emulation prefix (FEP) not available\n");
+> 		return;
+> 	}
+> 
+> 	__vmx_pf_exception_test(NULL, NULL, vmx_pf_exception_forced_emulation_test_guest);
+> 
+> when applying.
 
-Applied to kvm-x86 next.  In the future, please only bundle related and/or
-dependent patches, especially for one-off patches.  It's a lot easier on my
-end (and likely for most maintainers and reviewers) to deal separate series.
-
-E.g. if you need to spin a new version, then you aren't spamming everyone
-with 10+ patches just to rev one patch that might not even be realted to the
-rest.  And having separate series makes it easier to select exactly what I
-want to apply.
-
-Concretely, at a glance, this could/should be 7 different patches/series:
-
-   1, 2, 3-5 + 7 + 10-11, 6, 8, 9, 12-13, 14
-
-[01/14] scripts: Always return '2' when skipping tests
-        https://github.com/kvm-x86/kvm-unit-tests/commit/1825b2d46c1a
-[02/14] x86/vmx: Skip vmx_pf_exception_test_fep early if FEP is not available
-        https://github.com/kvm-x86/kvm-unit-tests/commit/cab22b23b676
-[03/14] x86/svm: Cleanup selective cr0 write intercept test
-        https://github.com/kvm-x86/kvm-unit-tests/commit/5f57e54c42e6
-[04/14] x86/svm: Move CR0 selective write intercept test near CR3 intercept
-        https://github.com/kvm-x86/kvm-unit-tests/commit/0fa8b9beffba
-[05/14] x86/svm: Add FEP helpers for SVM tests
-        https://github.com/kvm-x86/kvm-unit-tests/commit/1c5e0e1c75aa
-[06/14] x86/svm: Report unsupported SVM tests
-        https://github.com/kvm-x86/kvm-unit-tests/commit/d7e64b50d0e3
-[07/14] x86/svm: Move report_svm_guest() to the top of svm_tests.c
-        https://github.com/kvm-x86/kvm-unit-tests/commit/9af8f8e09dff
-[08/14] x86/svm: Print SVM test names before running tests
-        https://github.com/kvm-x86/kvm-unit-tests/commit/044c33c54661
-[09/14] x86/svm: Deflake svm_tsc_scale_test
-        [ DROP ]
-[10/14] x86/svm: Generalize and improve selective CR0 write intercept test
-        https://github.com/kvm-x86/kvm-unit-tests/commit/cc34f04ac665
-[11/14] x86/svm: Add more selective CR0 write and LMSW test cases
-        https://github.com/kvm-x86/kvm-unit-tests/commit/09e2c95edefd
-[12/14] x86/svm: Cleanup LBRV tests
-        https://github.com/kvm-x86/kvm-unit-tests/commit/114a564310f6
-[13/14] x86/svm: Add more LBRV test cases
-        https://github.com/kvm-x86/kvm-unit-tests/commit/ffd01c54af99
-[14/14] x86/svm: Rename VMCB fields to match KVM
-        [ WAIT ]
-
---
-https://github.com/kvm-x86/kvm-unit-tests/tree/next
+LGTM, thanks!
