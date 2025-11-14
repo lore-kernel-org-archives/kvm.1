@@ -1,55 +1,55 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 266EE268C42
-	for <kvm@vger.kernel.org>; Fri, 14 Nov 2025 00:36:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EDD47266B46
+	for <kvm@vger.kernel.org>; Fri, 14 Nov 2025 00:36:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763080607; cv=none; b=LofZuvEr7A1SpX9ZruKQ4i+iMkV4YZVH9HtVND+R3WhFXIfiYaHfkKWMDsUMR3oeD/rKymimBO+YLH7KK6njfl+gVu2LjKBkZJGBDJ9noRiwlx0/VHTr5uOU6NV8UH0CbBS+zV9P8E57bd6ErBsDymHslVv/GWLfYvNEzLdW9Ck=
+	t=1763080607; cv=none; b=ZvYE7olvxIdIV0tWbY14ooJD74gEuAsc+NSRiX4FgkOQYV5fGPYsbmIJs6vIh7bPVf6jJEsCrkvwtIOnh+XajoNqEFL9x7ditk6TSJDBhxjjGn3vZSbiBAq+oZ3nszAJ6mshBPZqLF91jPxZC78NqCXzPEzPgAxBGIMNTwF2Uqc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1763080607; c=relaxed/simple;
-	bh=gsqJButb/WxCugAlU5RRzsHtU3PFmk0VKfPN29GaQrE=;
+	bh=wZgjyUuJ4bKtSipCRhvvXuowUWE5I6Lbx5mstw8ju/c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=PZ6zDNJTqbJD7g7s5Y8clTqWIU4NZOdxGDR5yF9gCgCJSUJx7cC2WeDdgHrah/tMHAtNqxrMYfvDX8eHGtBLdHu/88Md4EoAgh7GxaQXZY/RI6D2SchNXkxHwZVsOqhxmcc7U6AOlEsdKlvkOUOWl0m3O9WIs5bRwRkcGc5q62c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=PG1kvnGg; arc=none smtp.client-ip=170.10.129.124
+	 MIME-Version:Content-Type; b=MBcRxZoXiVPrYVibqedFT+lS9TaYAtgKipR9WX99kWlMNtDZbRzITvVLhIPixa9AcLLpVlyjyw4mGMBEeVyzmByJePBPdbo1cyVLAzuDjVYJrC+DXjq6/2ltigyxm+TZ/xzOnfMahqjhrRtthX74bFfhPerNp016LEtkgxLJ63s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=UyfzhDGz; arc=none smtp.client-ip=170.10.133.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="PG1kvnGg"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="UyfzhDGz"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
 	s=mimecast20190719; t=1763080605;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=N2pThv8sz01YiUVMpsc4DJLfGIJT4Z4GexoPb88TO8I=;
-	b=PG1kvnGgLtThCb2fd8bOFtsyb/TBuwuhkDsmBwSkwismiL44dhXM/SxXskCrxynLbqIBIw
-	v6fRPb3idAdeYqo0ojTHM5fT2yq/fPAAnqZdXsy1xXSYT3N7okosIHHpiO795/BswX5CMX
-	RdGcmrDlykA5VpOdU5Aq4/uI968HxJ4=
-Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
+	bh=jNpw6akGzzgzwPATGL5Lsbuz5AzDxpwxXI42+6d44EY=;
+	b=UyfzhDGzwD8LB3RsbpJIsneDWC82eJWqjJpwj3WIHqfEmTbMkJ1uWqIhSCfhLGJVSGijSA
+	iB4IZQYehLCQQYofVIQRo3tOzEejjcQt3tFnglBVAAvlQ8G2qoQsHaoIFCGK2r41qI+SbU
+	GNDC10qWHTCnqEbmsiEukV6+XPsyumQ=
+Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-283-nTJ9kuv5OQ-rhCI5Nv6_3g-1; Thu,
- 13 Nov 2025 19:36:43 -0500
-X-MC-Unique: nTJ9kuv5OQ-rhCI5Nv6_3g-1
-X-Mimecast-MFC-AGG-ID: nTJ9kuv5OQ-rhCI5Nv6_3g_1763080602
-Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-328-ys94N6ihO9mUxr3M41_6mQ-1; Thu,
+ 13 Nov 2025 19:36:39 -0500
+X-MC-Unique: ys94N6ihO9mUxr3M41_6mQ-1
+X-Mimecast-MFC-AGG-ID: ys94N6ihO9mUxr3M41_6mQ_1763080598
+Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id B1C3118AB404;
-	Fri, 14 Nov 2025 00:36:42 +0000 (UTC)
+	by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 87CEC1956096;
+	Fri, 14 Nov 2025 00:36:38 +0000 (UTC)
 Received: from virtlab1023.lab.eng.rdu2.redhat.com (virtlab1023.lab.eng.rdu2.redhat.com [10.8.1.187])
-	by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 247F7300018D;
-	Fri, 14 Nov 2025 00:36:42 +0000 (UTC)
+	by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id F297419560B9;
+	Fri, 14 Nov 2025 00:36:37 +0000 (UTC)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: linux-kernel@vger.kernel.org,
 	kvm@vger.kernel.org
 Cc: kbusch@kernel.org,
 	chang.seok.bae@intel.com
-Subject: [PATCH 10/10] KVM: emulate: enable AVX moves
-Date: Thu, 13 Nov 2025 19:36:33 -0500
-Message-ID: <20251114003633.60689-11-pbonzini@redhat.com>
+Subject: [PATCH 05/10] KVM: emulate: share common register decoding code
+Date: Thu, 13 Nov 2025 19:36:28 -0500
+Message-ID: <20251114003633.60689-6-pbonzini@redhat.com>
 In-Reply-To: <20251114003633.60689-1-pbonzini@redhat.com>
 References: <20251114003633.60689-1-pbonzini@redhat.com>
 Precedence: bulk
@@ -60,80 +60,126 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
 
-Some users of KVM have emulated devices (typically added to private
-forks of QEMU) that execute AVX instructions on PCI BARs.  Whenever
-the guest OS tries to do that, an illegal instruction exception or
-emulation failure is triggered.
+Remove all duplicate handling of register operands, including picking
+the right register class and fetching it, by extracting a new function
+that can be used for both REG and MODRM operands.
 
-Add the Avx flag to move instructions:
-- (66) 0f 10 - MOVUPS/MOVUPD from memory
-- (66) 0f 11 - MOVUPS/MOVUPD to memory
-- 66 0f 6f - MOVDQA from memory
-- 66 0f 7f - MOVDQA to memory
-- f3 0f 6f - MOVDQU from memory
-- f3 0f 7f - MOVDQU to memory
-- (66) 0f 28 - MOVAPS/MOVAPD from memory
-- (66) 0f 29 - MOVAPS/MOVAPD to memory
-- (66) 0f 2b - MOVNTPS/MOVNTPD to memory
-- 66 0f e7 - MOVNTDQ to memory
-- 66 0f 38 2a - MOVNTDQA to memory
+Centralize setting op->orig_val = op->val in fetch_register_operand()
+as well.
 
-Co-developed-by: Keith Busch <kbusch@kernel.org>
-Signed-off-by: Keith Busch <kbusch@kernel.org>
-Link: https://lore.kernel.org/kvm/BD108C42-0382-4B17-B601-434A4BD038E7@fb.com/T/
+No functional change intended.
+
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- arch/x86/kvm/emulate.c | 14 +++++++-------
- 1 file changed, 7 insertions(+), 7 deletions(-)
+ arch/x86/kvm/emulate.c | 49 +++++++++++++++---------------------------
+ 1 file changed, 17 insertions(+), 32 deletions(-)
 
 diff --git a/arch/x86/kvm/emulate.c b/arch/x86/kvm/emulate.c
-index 1e17043a6304..75619bdc600f 100644
+index 7ef791407dbc..6c8d3f786e74 100644
 --- a/arch/x86/kvm/emulate.c
 +++ b/arch/x86/kvm/emulate.c
-@@ -4122,7 +4122,7 @@ static const struct group_dual group15 = { {
- } };
+@@ -1026,6 +1026,7 @@ static void fetch_register_operand(struct operand *op)
+ 		op->val = *(u64 *)op->addr.reg;
+ 		break;
+ 	}
++	op->orig_val = op->val;
+ }
  
- static const struct gprefix pfx_0f_6f_0f_7f = {
--	I(Mmx, em_mov), I(Sse | Aligned, em_mov), N, I(Sse | Unaligned, em_mov),
-+	I(Mmx, em_mov), I(Sse | Avx | Aligned, em_mov), N, I(Sse | Avx | Unaligned, em_mov),
- };
+ static int em_fninit(struct x86_emulate_ctxt *ctxt)
+@@ -1071,16 +1072,9 @@ static int em_fnstsw(struct x86_emulate_ctxt *ctxt)
+ 	return X86EMUL_CONTINUE;
+ }
  
- static const struct instr_dual instr_dual_0f_2b = {
-@@ -4142,7 +4142,7 @@ static const struct gprefix pfx_0f_28_0f_29 = {
- };
+-static void decode_register_operand(struct x86_emulate_ctxt *ctxt,
+-				    struct operand *op)
++static void __decode_register_operand(struct x86_emulate_ctxt *ctxt,
++				      struct operand *op, int reg)
+ {
+-	unsigned int reg;
+-
+-	if (ctxt->d & ModRM)
+-		reg = ctxt->modrm_reg;
+-	else
+-		reg = (ctxt->b & 7) | ((ctxt->rex_prefix & 1) << 3);
+-
+ 	if (ctxt->d & Sse) {
+ 		op->type = OP_XMM;
+ 		op->bytes = 16;
+@@ -1099,9 +1093,20 @@ static void decode_register_operand(struct x86_emulate_ctxt *ctxt,
+ 	op->type = OP_REG;
+ 	op->bytes = (ctxt->d & ByteOp) ? 1 : ctxt->op_bytes;
+ 	op->addr.reg = decode_register(ctxt, reg, ctxt->d & ByteOp);
+-
+ 	fetch_register_operand(op);
+-	op->orig_val = op->val;
++}
++
++static void decode_register_operand(struct x86_emulate_ctxt *ctxt,
++				    struct operand *op)
++{
++	unsigned int reg;
++
++	if (ctxt->d & ModRM)
++		reg = ctxt->modrm_reg;
++	else
++		reg = (ctxt->b & 7) | ((ctxt->rex_prefix & 1) << 3);
++
++	__decode_register_operand(ctxt, op, reg);
+ }
  
- static const struct gprefix pfx_0f_e7_0f_38_2a = {
--	N, I(Sse, em_mov), N, N,
-+	N, I(Sse | Avx, em_mov), N, N,
- };
+ static void adjust_modrm_seg(struct x86_emulate_ctxt *ctxt, int base_reg)
+@@ -1128,24 +1133,7 @@ static int decode_modrm(struct x86_emulate_ctxt *ctxt,
+ 	ctxt->modrm_seg = VCPU_SREG_DS;
  
- static const struct escape escape_d9 = { {
-@@ -4355,8 +4355,8 @@ static const struct opcode twobyte_table[256] = {
- 	DI(ImplicitOps | Priv, invd), DI(ImplicitOps | Priv, wbinvd), N, N,
- 	N, D(ImplicitOps | ModRM | SrcMem | NoAccess), N, N,
- 	/* 0x10 - 0x1F */
--	GP(ModRM | DstReg | SrcMem | Mov | Sse, &pfx_0f_10_0f_11),
--	GP(ModRM | DstMem | SrcReg | Mov | Sse, &pfx_0f_10_0f_11),
-+	GP(ModRM | DstReg | SrcMem | Mov | Sse | Avx, &pfx_0f_10_0f_11),
-+	GP(ModRM | DstMem | SrcReg | Mov | Sse | Avx, &pfx_0f_10_0f_11),
- 	N, N, N, N, N, N,
- 	D(ImplicitOps | ModRM | SrcMem | NoAccess), /* 4 * prefetch + 4 * reserved NOP */
- 	D(ImplicitOps | ModRM | SrcMem | NoAccess), N, N,
-@@ -4372,9 +4372,9 @@ static const struct opcode twobyte_table[256] = {
- 	IIP(ModRM | SrcMem | Priv | Op3264 | NoMod, em_dr_write, dr_write,
- 						check_dr_write),
- 	N, N, N, N,
--	GP(ModRM | DstReg | SrcMem | Mov | Sse, &pfx_0f_28_0f_29),
--	GP(ModRM | DstMem | SrcReg | Mov | Sse, &pfx_0f_28_0f_29),
--	N, GP(ModRM | DstMem | SrcReg | Mov | Sse, &pfx_0f_2b),
-+	GP(ModRM | DstReg | SrcMem | Mov | Sse | Avx, &pfx_0f_28_0f_29),
-+	GP(ModRM | DstMem | SrcReg | Mov | Sse | Avx, &pfx_0f_28_0f_29),
-+	N, GP(ModRM | DstMem | SrcReg | Mov | Sse | Avx, &pfx_0f_2b),
- 	N, N, N, N,
- 	/* 0x30 - 0x3F */
- 	II(ImplicitOps | Priv, em_wrmsr, wrmsr),
+ 	if (ctxt->modrm_mod == 3 || (ctxt->d & NoMod)) {
+-		op->type = OP_REG;
+-		op->bytes = (ctxt->d & ByteOp) ? 1 : ctxt->op_bytes;
+-		op->addr.reg = decode_register(ctxt, ctxt->modrm_rm,
+-				ctxt->d & ByteOp);
+-		if (ctxt->d & Sse) {
+-			op->type = OP_XMM;
+-			op->bytes = 16;
+-			op->addr.xmm = ctxt->modrm_rm;
+-			kvm_read_sse_reg(ctxt->modrm_rm, &op->vec_val);
+-			return rc;
+-		}
+-		if (ctxt->d & Mmx) {
+-			op->type = OP_MM;
+-			op->bytes = 8;
+-			op->addr.mm = ctxt->modrm_rm & 7;
+-			return rc;
+-		}
+-		fetch_register_operand(op);
++		__decode_register_operand(ctxt, op, ctxt->modrm_rm);
+ 		return rc;
+ 	}
+ 
+@@ -4619,14 +4607,12 @@ static int decode_operand(struct x86_emulate_ctxt *ctxt, struct operand *op,
+ 		op->bytes = (ctxt->d & ByteOp) ? 1 : ctxt->op_bytes;
+ 		op->addr.reg = reg_rmw(ctxt, VCPU_REGS_RAX);
+ 		fetch_register_operand(op);
+-		op->orig_val = op->val;
+ 		break;
+ 	case OpAccLo:
+ 		op->type = OP_REG;
+ 		op->bytes = (ctxt->d & ByteOp) ? 2 : ctxt->op_bytes;
+ 		op->addr.reg = reg_rmw(ctxt, VCPU_REGS_RAX);
+ 		fetch_register_operand(op);
+-		op->orig_val = op->val;
+ 		break;
+ 	case OpAccHi:
+ 		if (ctxt->d & ByteOp) {
+@@ -4637,7 +4623,6 @@ static int decode_operand(struct x86_emulate_ctxt *ctxt, struct operand *op,
+ 		op->bytes = ctxt->op_bytes;
+ 		op->addr.reg = reg_rmw(ctxt, VCPU_REGS_RDX);
+ 		fetch_register_operand(op);
+-		op->orig_val = op->val;
+ 		break;
+ 	case OpDI:
+ 		op->type = OP_MEM;
 -- 
 2.43.5
+
 
