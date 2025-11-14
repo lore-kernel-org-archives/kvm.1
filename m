@@ -1,80 +1,60 @@
-Received: from mail-pj1-f73.google.com (mail-pj1-f73.google.com [209.85.216.73])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4ADA61C28E
-	for <kvm@vger.kernel.org>; Fri, 14 Nov 2025 00:48:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.73
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DAC6321254B;
+	Fri, 14 Nov 2025 00:51:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763081330; cv=none; b=V+A5S0gr2FNgGltThW5EmRVnhN6BRtBTm7r3ktc51unr8zMz/Kpiw9T3A1lhC7CG4FOCYv1cn6ZWvfRkTCdWJQlMkwjjLH2cIyeJwFVLeX16iupijcVwhStpELagkQ3DE8ikMLastW0brYP3tM/46j502Wxheg8X2H1U9FOqPbE=
+	t=1763081510; cv=none; b=Lz4SZHs0jIP4u9K45Xqe9Kt0YtO0qdMmLjH9FB2KMJT7SOaIWMmO4M2r+FqAMJ+H0l7gVMD0/hrXDyMt/2CXLafBiTN40tMfHFVnTWhRMmYVfh2qGs5AnpVUEX5p1d4HzQoQzgEClgu+NCdySE+Lhvp4l20x8KFM5WR6G3nXIA8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763081330; c=relaxed/simple;
-	bh=/yxZzSCUr+WwcFJiPBAEvRAv6B+69x8f6/mrQo4lv3o=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=RAcbDgUjKfhMTdNnpPbMlaxEYZzQStHxP8OBXwvtfmbVqKv7S4rtarz1syqKDaW0rF3VQMio5LOI6mam98c2sGFBaT9peXMgQFBgEk2v1I52v6HUYelIEnKXPl/FzGlmS9bF9TDIXzL2KC1Kukglb94AbEcAOC3rw4q9uZWoono=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=g+0aVsWJ; arc=none smtp.client-ip=209.85.216.73
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+	s=arc-20240116; t=1763081510; c=relaxed/simple;
+	bh=QJ86ODYqgqxlHMa+YM3HW/LCfnPhZ3HHo69Oz3Edjoc=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=T0WZprWp9DqfBPuQWVH0t2Thpo/r1+rmF0xKK8LK7em5VU3nA9BMnrj4cSK5t+qLoBTUw7WVMg4tuA7/FRiZGji2bUweva3jDpCi3X8W/antJF0N70AY9BIrjxeSdLoNLJ36rk4eKSCATIcsAVmTqLDySukdNSiTO/uE6sFTfx4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Es0uZdzA; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="g+0aVsWJ"
-Received: by mail-pj1-f73.google.com with SMTP id 98e67ed59e1d1-3437f0760daso3607581a91.1
-        for <kvm@vger.kernel.org>; Thu, 13 Nov 2025 16:48:49 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1763081329; x=1763686129; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=OU3M65yfjgAgQasfUOmEFLutB5uFULte4qGqRuq7ngY=;
-        b=g+0aVsWJAGa14ZpFkireedZkzknKebRiaXfxOYKuQQUobE+8zYLuTOlrlERBJlhjfq
-         QDzhAiMJoAFgGfgT94EsKanNJUbNPVLGQw94uZLLxJnfssfcCsXzg/rbpNWFBmeSNvjO
-         F89QkkCMoEMeZVHCYtBYyIHWE5p6ttZwLO6I5SvXWCPhBWC4BQ+Xwni/Yc54BnMr2RQ6
-         A39Ku4l7JQg71X+hqjku00VSA2G0z3hWsQ767nSJWabLbx9s4DRH7hw1g4rZ5CpJOotM
-         UaNlkiSYK9a/+d5vvPdVqGJzZRksDtrMnxOFzQ8EZQXVd9BTrDUMxmDOjwuTh43ZF8N3
-         o0KQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1763081329; x=1763686129;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=OU3M65yfjgAgQasfUOmEFLutB5uFULte4qGqRuq7ngY=;
-        b=dUE+KFpcHpgfIdcaRP+YPeO9LGMCegUFdMLmPpW2Mg4YX8Lgom3v4uDOocKlzNVTu0
-         +bgVYm+CCCjIIbTHT82uiB0kKjNdh/cprG0MNS+aWQNiHvpNrH23myYJNPRf5yoRh1P+
-         kVoLKk40kZG/T0uZxDftiPQ12fGvmdyyYYR+Ubsq5gYweh9Hi6IOuxc7iELakd4wkQed
-         bDaG20eKWd+WJvo50NY56Z77K72JigtGtUOQ55Rw9QW4nCpUFMmCLBBc5tgLPLJi5E/o
-         IBaX6zHDOa4x9DvoFy5/rJt6bxLuntEcn4VnHlVuhfIYkePofqu4tsG32mPt66ESFLOY
-         h41g==
-X-Gm-Message-State: AOJu0Yz6Lul9mx2rGUQNs/kdt4QEJtSVhDhBaM5nZ5rE/DoUBd1WNaQO
-	E79dICIBDEzN7OV82AvuTeu/YaGU7FvLpZ6nd5nty+6lCUdapBsJy0X8yFbqWkO7qTlXU0zIvg3
-	RgalD4g==
-X-Google-Smtp-Source: AGHT+IEmAPQT/T7JzDVscIDI618GNw3PpC2N6GbhIE3cHYhn/zzHxtmhKTIewdI4dUzp/ZFrLjSmG34NgU0=
-X-Received: from pjbgc20.prod.google.com ([2002:a17:90b:3114:b0:340:bb32:f5cf])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:4a45:b0:340:d569:d295
- with SMTP id 98e67ed59e1d1-343fa62fbb3mr1416586a91.24.1763081328657; Thu, 13
- Nov 2025 16:48:48 -0800 (PST)
-Date: Thu, 13 Nov 2025 16:46:17 -0800
-In-Reply-To: <20251106205114.218226-1-seanjc@google.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Es0uZdzA"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7C4E8C16AAE;
+	Fri, 14 Nov 2025 00:51:45 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1763081509;
+	bh=QJ86ODYqgqxlHMa+YM3HW/LCfnPhZ3HHo69Oz3Edjoc=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=Es0uZdzAGHkyljWPk2oI0H8KafeujGgbq/SMP3P7P48HsLkTvF0X0Cl3Cg72pMVPq
+	 aoseRPEGD0nlx5jWGZNZhf7l4/HtA6NSWm1XX4mo7tDppbog10rALWhr4YY3G4r9eP
+	 QR4WWu+p7nOgCUyK4h53oIFRQq/hRQun+2tIjdWDwvgf9/mwEDCfELDxfrnxHCfCQE
+	 QeueAcR/3vPMssKw3vTQ2FeiSXT51jS6F3TA1uSAFnYcBeOzA7i32o3W25gQz368pw
+	 BXpj80Vm2b4lyLUYr1cExCCjaJdomVLjnbuXF5Wo86RShx1EeHLuNxrSW7XlYuVb2o
+	 ePhDD0NQ6btsw==
+Date: Thu, 13 Nov 2025 19:51:32 -0500
+From: Keith Busch <kbusch@kernel.org>
+To: Paolo Bonzini <pbonzini@redhat.com>
+Cc: linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
+	chang.seok.bae@intel.com
+Subject: Re: [PATCH 00/10] KVM: emulate: enable AVX moves
+Message-ID: <aRZ9FHvDXmDJ-K39@kbusch-mbp>
+References: <20251114003633.60689-1-pbonzini@redhat.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20251106205114.218226-1-seanjc@google.com>
-X-Mailer: git-send-email 2.52.0.rc1.455.g30608eb744-goog
-Message-ID: <176305662913.1602433.2540496540311423211.b4-ty@google.com>
-Subject: Re: [PATCH] KVM: VMX: Make loaded_vmcs_clear() static in vmx.c
-From: Sean Christopherson <seanjc@google.com>
-To: Sean Christopherson <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>
-Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20251114003633.60689-1-pbonzini@redhat.com>
 
-On Thu, 06 Nov 2025 12:51:14 -0800, Sean Christopherson wrote:
-> Make loaded_vmcs_clear() local to vmx.c as there are no longer any
-> external callers.
-> 
-> No functional change intended.
+On Thu, Nov 13, 2025 at 07:36:23PM -0500, Paolo Bonzini wrote:
+> Over a year ago, Keith Busch posted an RFC patch to enable VMOVDQA
+> and VMOVDQU instructions in the KVM emulator.  The reason to do so
+> is that people are using QEMU to emulate fancy devices whose drivers
+> use those instructions with BARs that, on real hardware, would
+> presumably support write combining.  These same people obviously
+> would appreciate being able to use KVM instead of emulation, hence
+> the request.
 
-Applied to kvm-x86 vmx, thanks!
-
-[1/1] KVM: VMX: Make loaded_vmcs_clear() static in vmx.c
-      https://github.com/kvm-x86/linux/commit/dfd1572a64c9
-
---
-https://github.com/kvm-x86/linux/tree/next
+Thanks so much! We do still use this, so I'm happy to see this moving. I
+know it's been some time in the making, but I can appreciate this is
+pretty gnarly and the details are important. I will be happy to give
+this a run through the emulation devices, though it may be another week
+or so before I can give it a spin.
