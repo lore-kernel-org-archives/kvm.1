@@ -1,206 +1,212 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f47.google.com (mail-wm1-f47.google.com [209.85.128.47])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 358AA3233E5;
-	Tue, 18 Nov 2025 16:41:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 03BD53A79A2
+	for <kvm@vger.kernel.org>; Tue, 18 Nov 2025 17:11:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763484082; cv=none; b=dkdew8G32D/Rd2y4bH0JEcuO7Bg55mJ4buHekzdYJ6VmJkUO/Zf/IkUiYYmNq/jKq+MfXLGpJ1ZeF1QSfJCREh0kw3M9pRdfLOMB9MyEVOdRpmkivQK6nqvs+4ok9pQCf4biwrUr90kO8I7UjHn0D+i7D9MzWG8PyEE8AvnaEzM=
+	t=1763485884; cv=none; b=nE80iI5rwNOF/zw6vcW7LgEBwbLS582h440fMZYwUbrLrxx7JXYLFKu97gfPCfSh5JuySoJxbAPLXyiEoeKR0l7CKAz/OPoeoQQR2U5k23XMH4s8WChQMR2Y5c9ZFWBQrKOIl4WmQB0Rz8Z6uuLGYzsBADbq/+qi923Ux8pS4VE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763484082; c=relaxed/simple;
-	bh=76iwa07E2cia9ejh4c5uPXwKmb4vHJQCgXEZEhMo7lw=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=TszpHmfzkanunmTdVL3589ZulsgC3ba6jbfkRpy8PPCg+rGqd2k65Mk6rCY+WVz4bCyYJkg6G4RkGqYdHWV/7aVqMQ8NFfdaXPEQwdIkVARoPkarHxu8747Bljc8BIlcT7ZcP+BftVskR0kZsbOpdlnAr83PhuDp5oykAvzIQnQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CNJ72i/Q; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1763485884; c=relaxed/simple;
+	bh=GTh03DnovL1IfXrIJWOOWsXVB4KulpyzdpPOxbFjAXc=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=IeVDcSFbruvkJWcQoc/Tn9mNurXGWv8tQj9PfDPemquAIFR8XrpgvNICHDNXjeO0pSX3kNd/6cHEViGUNFcNaCVCAOEZJ92Xu6fY8OO9fkg4JMDWAL/rICtdLdgg5fB+AC3HC1NmtwkdJAq4c2NodL2CHokurCzqulI8wZyRPUQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=BvFGrTQ4; arc=none smtp.client-ip=209.85.128.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CNJ72i/Q"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B9AA5C2BC86;
-	Tue, 18 Nov 2025 16:41:16 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1763484082;
-	bh=76iwa07E2cia9ejh4c5uPXwKmb4vHJQCgXEZEhMo7lw=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=CNJ72i/QYImuXjY+Pg3BNrRhfOW78dFP48BxEYM13lc4eh3d/QCk+ootmeZ6HYp6V
-	 W7R6dP1va7EYMXMgF78zewkbrvEUkCMGbv3s2J500oOaooSHnnUR90xs5zs1GC5cz7
-	 jKthpLZGAoPHrKj135vstQa5Zxt/kuCMsKiCTGFzT56xrpn/caKAp6Ff6uUNf0UnJk
-	 8gQsBTnrG1eFiG3M/n+uAxMqtDPNa4jK0pz3codcrfDfnjZDBjsr+K6rvlnfYvjFuM
-	 4R2veWbx4NRNhwDPDpRSWJr+8B6PIbCMWj0t3veCRhz1ycxHFviUvefkCSBjEc4x2l
-	 22FMPgm86U8vg==
-Message-ID: <007c08e4-ce70-4c30-b3b1-e25e02dfe29d@kernel.org>
-Date: Tue, 18 Nov 2025 17:41:13 +0100
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="BvFGrTQ4"
+Received: by mail-wm1-f47.google.com with SMTP id 5b1f17b1804b1-47795f6f5c0so26422075e9.1
+        for <kvm@vger.kernel.org>; Tue, 18 Nov 2025 09:11:21 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1763485880; x=1764090680; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=2msaF/pghuykVBiKeYLpA2uXeztIpV3HBLG8Kfba9b0=;
+        b=BvFGrTQ4pfCkJK65Z3g55lBEsQMtMyGz69ZKdp69o9CBY3fJVWw4hKuJLPc7tniSFf
+         IZZNuD1qJCkpht/w23hiHkZmloleFvxU+1uBZYhLt3MxilNGX+QIoNiHeFhh2eLzQ+tN
+         1Q8Cj+BbRzXmht8P1idLA0gEnbhabA4+cXlpt1BIpZrIovBmmvZEr0/xu6TCtExfh2R7
+         cMyFMC/LkB9+V6fmjeCQ1ySs2V0CX7TtC8uO16Foz8tSQ9RMcZRcBicJ1e0tUeA185Ql
+         5fyQDPba8jatX0HUScKhXa+B73rSgOR3pWEgXK1Jhq/ztvdLtsBH3JYuRvOW/r7P/WL/
+         JMHQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1763485880; x=1764090680;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=2msaF/pghuykVBiKeYLpA2uXeztIpV3HBLG8Kfba9b0=;
+        b=SwlRj4ZgyQt2VPqdE3k1CPR+/rtZYhmFLcVHjMaTrgTaKUxo6ExgO8umyiY/eiFpzJ
+         Fqw/huFVVKEMSrute0Snnp+uiIFB80iHOhhM0dmeFH+ZAsgOXU7tZgL1lAzjbPnbuSX2
+         R5uQy1hAK7A4ZZmNlbjR1/BS/N5O569vBVytqBUFqXHbfiSGJFn8zYTG/ZaACwpMtaEt
+         1UR7n6Ck5zZVz6wdrl88foQHYl7dy3Td0wdknAm2dqGS3ViTGzaRJoX6UY29Zpgsja53
+         oEHpIjTKQZcjyiLauSmDSFPudir4l4JSelsCHW4H6xGhG7Xtt9ZgPtheC7Zs/NbRpnMS
+         72nQ==
+X-Gm-Message-State: AOJu0YwT41+qXni0GOwWz6w7hEOMsAORrEVI+CmPngVFZY00+kENxNZA
+	Tju17FBWHQDaQBC208gfbC7UCbM0+qWmDzDH1R5wAX2qD6bOs7bGuPNwimSEjSvcuA9BVA==
+X-Gm-Gg: ASbGncu+3lp85qXjRwAvhHkQHDVv1qOyAW0mkO/j5s/bu74DIUJDUr4o6hg2n0m2YyL
+	nxcvbVf2TeJICciV9UMLpHu3H8Ii+eK4eyNMtCQvVt6pAIUdd2NVzo3Nu4JUpE7ov2at8HPQXu9
+	f5RF8hEKOqF5kN60GQ8PDTNMNJ+yeuCN47Zt9/jvh8Yu+KXjqA5KVRS6MBd2xUPXNq8+lz9Ib6s
+	OTuvqzWhb1qERvxIzhub52NfSF4JX75lK3bZhp+h3USsmFyjhxzh7tVMRibDlXZ2hdiUGB5neLp
+	1T69ybC2WD/6W2kG+IPQQvv1SpT/7D7JytBI0/Gdgky7Dd/R7d//TeFPey5cRWyIc5O+zgXrJyx
+	iXN1zk9W2eNUgBZCe5OtTmevIXj130nJayUJxigLFWTKZq5BaPtW1D3ca4ysiSdtljWfeGgFjaG
+	1dsp0kdFV3PFNvHXY8xBZdUYLY15J3O/3DepKW3COX5y3rGAhOkDKtow6RWdPbgep6FFgCSdz6a
+	EYOeWPpVO+XBa9YMQvCmjqws1haWbGD/VIbZiQKjmI=
+X-Google-Smtp-Source: AGHT+IHdXnNaex4ngSMgitg8wwk6Na5e/foyybWKk5KGf3oOduiN1nkUwKeEG02d7fZ9hcGJWmLqmg==
+X-Received: by 2002:a05:600c:3baa:b0:477:54b3:3484 with SMTP id 5b1f17b1804b1-4778febd2eamr153120225e9.37.1763485879789;
+        Tue, 18 Nov 2025 09:11:19 -0800 (PST)
+Received: from ip-10-0-150-200.eu-west-1.compute.internal (ec2-52-49-196-232.eu-west-1.compute.amazonaws.com. [52.49.196.232])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-477b103d312sm706385e9.13.2025.11.18.09.11.19
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 18 Nov 2025 09:11:19 -0800 (PST)
+From: griffoul@gmail.com
+X-Google-Original-From: griffoul@gmail.org
+To: kvm@vger.kernel.org
+Cc: seanjc@google.com,
+	pbonzini@redhat.com,
+	vkuznets@redhat.com,
+	shuah@kernel.org,
+	dwmw@amazon.co.uk,
+	linux-kselftest@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Fred Griffoul <fgriffo@amazon.co.uk>
+Subject: [PATCH v2 01/10] KVM: nVMX: Implement cache for L1 MSR bitmap
+Date: Tue, 18 Nov 2025 17:11:04 +0000
+Message-ID: <20251118171113.363528-2-griffoul@gmail.org>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20251118171113.363528-1-griffoul@gmail.org>
+References: <20251118171113.363528-1-griffoul@gmail.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH 3/4] userfaultfd, guest_memfd: support userfault minor
- mode in guest_memfd
-To: Mike Rapoport <rppt@kernel.org>, linux-mm@kvack.org
-Cc: Andrea Arcangeli <aarcange@redhat.com>,
- Andrew Morton <akpm@linux-foundation.org>,
- Baolin Wang <baolin.wang@linux.alibaba.com>, Hugh Dickins
- <hughd@google.com>, "Liam R. Howlett" <Liam.Howlett@oracle.com>,
- Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, Michal Hocko
- <mhocko@suse.com>, Nikita Kalyazin <kalyazin@amazon.com>,
- Paolo Bonzini <pbonzini@redhat.com>, Peter Xu <peterx@redhat.com>,
- Sean Christopherson <seanjc@google.com>, Shuah Khan <shuah@kernel.org>,
- Suren Baghdasaryan <surenb@google.com>, Vlastimil Babka <vbabka@suse.cz>,
- linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
- linux-kselftest@vger.kernel.org
-References: <20251117114631.2029447-1-rppt@kernel.org>
- <20251117114631.2029447-4-rppt@kernel.org>
-From: "David Hildenbrand (Red Hat)" <david@kernel.org>
-Content-Language: en-US
-In-Reply-To: <20251117114631.2029447-4-rppt@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-On 17.11.25 12:46, Mike Rapoport wrote:
-> From: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
-> 
-> * Export handle_userfault() for KVM module so that fault() handler in
->    guest_memfd would be able to notify userspace about page faults in its
->    address space.
-> * Implement get_pagecache_folio() for guest_memfd.
-> * And finally, introduce UFFD_FEATURE_MINOR_GENERIC that will allow
->    using userfaultfd minor mode with memory types other than shmem and
->    hugetlb provided they are allowed to call handle_userfault() and
->    implement get_pagecache_folio().
-> 
-> Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
-> ---
->   fs/userfaultfd.c                 |  4 +++-
->   include/uapi/linux/userfaultfd.h |  8 +++++++-
->   virt/kvm/guest_memfd.c           | 30 ++++++++++++++++++++++++++++++
->   3 files changed, 40 insertions(+), 2 deletions(-)
-> 
-> diff --git a/fs/userfaultfd.c b/fs/userfaultfd.c
-> index 54c6cc7fe9c6..964fa2662d5c 100644
-> --- a/fs/userfaultfd.c
-> +++ b/fs/userfaultfd.c
-> @@ -537,6 +537,7 @@ vm_fault_t handle_userfault(struct vm_fault *vmf, unsigned long reason)
->   out:
->   	return ret;
->   }
-> +EXPORT_SYMBOL_FOR_MODULES(handle_userfault, "kvm");
->   
->   static void userfaultfd_event_wait_completion(struct userfaultfd_ctx *ctx,
->   					      struct userfaultfd_wait_queue *ewq)
-> @@ -1978,7 +1979,8 @@ static int userfaultfd_api(struct userfaultfd_ctx *ctx,
->   	uffdio_api.features = UFFD_API_FEATURES;
->   #ifndef CONFIG_HAVE_ARCH_USERFAULTFD_MINOR
->   	uffdio_api.features &=
-> -		~(UFFD_FEATURE_MINOR_HUGETLBFS | UFFD_FEATURE_MINOR_SHMEM);
-> +		~(UFFD_FEATURE_MINOR_HUGETLBFS | UFFD_FEATURE_MINOR_SHMEM |
-> +		  UFFD_FEATURE_MINOR_GENERIC);
->   #endif
->   #ifndef CONFIG_HAVE_ARCH_USERFAULTFD_WP
->   	uffdio_api.features &= ~UFFD_FEATURE_PAGEFAULT_FLAG_WP;
-> diff --git a/include/uapi/linux/userfaultfd.h b/include/uapi/linux/userfaultfd.h
-> index 2841e4ea8f2c..c5cbd4a5a26e 100644
-> --- a/include/uapi/linux/userfaultfd.h
-> +++ b/include/uapi/linux/userfaultfd.h
-> @@ -42,7 +42,8 @@
->   			   UFFD_FEATURE_WP_UNPOPULATED |	\
->   			   UFFD_FEATURE_POISON |		\
->   			   UFFD_FEATURE_WP_ASYNC |		\
-> -			   UFFD_FEATURE_MOVE)
-> +			   UFFD_FEATURE_MOVE |			\
-> +			   UFFD_FEATURE_MINOR_GENERIC)
->   #define UFFD_API_IOCTLS				\
->   	((__u64)1 << _UFFDIO_REGISTER |		\
->   	 (__u64)1 << _UFFDIO_UNREGISTER |	\
-> @@ -210,6 +211,10 @@ struct uffdio_api {
->   	 * UFFD_FEATURE_MINOR_SHMEM indicates the same support as
->   	 * UFFD_FEATURE_MINOR_HUGETLBFS, but for shmem-backed pages instead.
->   	 *
-> +	 * UFFD_FEATURE_MINOR_GENERIC indicates that minor faults can be
-> +	 * intercepted for file-backed memory in case subsystem backing this
-> +	 * memory supports it.
-> +	 *
->   	 * UFFD_FEATURE_EXACT_ADDRESS indicates that the exact address of page
->   	 * faults would be provided and the offset within the page would not be
->   	 * masked.
-> @@ -248,6 +253,7 @@ struct uffdio_api {
->   #define UFFD_FEATURE_POISON			(1<<14)
->   #define UFFD_FEATURE_WP_ASYNC			(1<<15)
->   #define UFFD_FEATURE_MOVE			(1<<16)
-> +#define UFFD_FEATURE_MINOR_GENERIC		(1<<17)
->   	__u64 features;
->   
->   	__u64 ioctls;
-> diff --git a/virt/kvm/guest_memfd.c b/virt/kvm/guest_memfd.c
-> index fbca8c0972da..5e3c63307fdf 100644
-> --- a/virt/kvm/guest_memfd.c
-> +++ b/virt/kvm/guest_memfd.c
-> @@ -4,6 +4,7 @@
->   #include <linux/kvm_host.h>
->   #include <linux/pagemap.h>
->   #include <linux/anon_inodes.h>
-> +#include <linux/userfaultfd_k.h>
->   
->   #include "kvm_mm.h"
->   
-> @@ -369,6 +370,12 @@ static vm_fault_t kvm_gmem_fault_user_mapping(struct vm_fault *vmf)
->   		return vmf_error(err);
->   	}
->   
-> +	if (userfaultfd_minor(vmf->vma)) {
-> +		folio_unlock(folio);
-> +		folio_put(folio);
-> +		return handle_userfault(vmf, VM_UFFD_MINOR);
-> +	}
+From: Fred Griffoul <fgriffo@amazon.co.uk>
 
-Staring at things like VM_FAULT_NEEDDSYNC, I'm wondering whether we could have a
-new return value from ->fault that would indicate that
-handle_userfault(vmf, VM_UFFD_MINOR) should be called.
+Introduce a gfn_to_pfn_cache to optimize L1 MSR bitmap access by
+replacing map/unmap operations. This optimization reduces overhead
+during L2 VM-entry where nested_vmx_prepare_msr_bitmap() merges L1's MSR
+intercepts with L0's requirements.
 
-Maybe some VM_FAULT_UFFD_MINOR or simply VM_FAULT_USERFAULTFD and we
-can just derive that it is VM_UFFD_MINOR.
+Current implementation using kvm_vcpu_map_readonly() and
+kvm_vcpu_unmap() creates significant performance impact, mostly with
+unmanaged guest memory.
 
+The cache is initialized when entering VMX operation and deactivated
+when VMX operation ends.
 
-diff --git a/include/linux/mm_types.h b/include/linux/mm_types.h
-index 4f66a3206a63c..2cf17da880f0e 100644
---- a/include/linux/mm_types.h
-+++ b/include/linux/mm_types.h
-@@ -1601,6 +1601,8 @@ typedef __bitwise unsigned int vm_fault_t;
-   *                             fsync() to complete (for synchronous page faults
-   *                             in DAX)
-   * @VM_FAULT_COMPLETED:                ->fault completed, meanwhile mmap lock released
-+ * @VM_FAULT_USERFAULTFD:      ->fault did not modify page tables and needs
-+ *                             handle_userfault() to complete
-   * @VM_FAULT_HINDEX_MASK:      mask HINDEX value
-   *
-   */
-@@ -1618,6 +1620,7 @@ enum vm_fault_reason {
-         VM_FAULT_DONE_COW       = (__force vm_fault_t)0x001000,
-         VM_FAULT_NEEDDSYNC      = (__force vm_fault_t)0x002000,
-         VM_FAULT_COMPLETED      = (__force vm_fault_t)0x004000,
-+       VM_FAULT_USERFAULTFD    = (__force vm_fault_t)0x006000,
-         VM_FAULT_HINDEX_MASK    = (__force vm_fault_t)0x0f0000,
-  };
-  
-@@ -1642,6 +1645,7 @@ enum vm_fault_reason {
-         { VM_FAULT_FALLBACK,            "FALLBACK" },   \
-         { VM_FAULT_DONE_COW,            "DONE_COW" },   \
-         { VM_FAULT_NEEDDSYNC,           "NEEDDSYNC" },  \
-+       { VM_FAULT_USERFAULTFD,         "USERFAULTFD" },\
-         { VM_FAULT_COMPLETED,           "COMPLETED" }
-  
-  struct vm_special_mapping {
+Signed-off-by: Fred Griffoul <fgriffo@amazon.co.uk>
+---
+ arch/x86/kvm/vmx/nested.c | 42 +++++++++++++++++++++++++++++++++++----
+ arch/x86/kvm/vmx/vmx.h    |  2 ++
+ 2 files changed, 40 insertions(+), 4 deletions(-)
 
-
-IIUC, we have exactly two invocations of ->fault(vmf) in memory.c where
-we would have to handle it IIUC. And the return value would never leave
-the core.
-
-That way, we wouldn't have to export handle_userfault().
-
-Just a thought ...
-
+diff --git a/arch/x86/kvm/vmx/nested.c b/arch/x86/kvm/vmx/nested.c
+index 8b131780e981..0de84b30c41d 100644
+--- a/arch/x86/kvm/vmx/nested.c
++++ b/arch/x86/kvm/vmx/nested.c
+@@ -315,6 +315,34 @@ static void vmx_switch_vmcs(struct kvm_vcpu *vcpu, struct loaded_vmcs *vmcs)
+ 	vcpu->arch.regs_dirty = 0;
+ }
+ 
++/*
++ * Maps a single guest page starting at @gpa and lock the cache for access.
++ */
++static int nested_gpc_lock(struct gfn_to_pfn_cache *gpc, gpa_t gpa)
++{
++	int err;
++
++	if (!PAGE_ALIGNED(gpa))
++		return -EINVAL;
++retry:
++	read_lock(&gpc->lock);
++	if (!kvm_gpc_check(gpc, PAGE_SIZE) || (gpc->gpa != gpa)) {
++		read_unlock(&gpc->lock);
++		err = kvm_gpc_activate(gpc, gpa, PAGE_SIZE);
++		if (err)
++			return err;
++
++		goto retry;
++	}
++
++	return 0;
++}
++
++static void nested_gpc_unlock(struct gfn_to_pfn_cache *gpc)
++{
++	read_unlock(&gpc->lock);
++}
++
+ static void nested_put_vmcs12_pages(struct kvm_vcpu *vcpu)
+ {
+ 	struct vcpu_vmx *vmx = to_vmx(vcpu);
+@@ -344,6 +372,9 @@ static void free_nested(struct kvm_vcpu *vcpu)
+ 	vmx->nested.vmxon = false;
+ 	vmx->nested.smm.vmxon = false;
+ 	vmx->nested.vmxon_ptr = INVALID_GPA;
++
++	kvm_gpc_deactivate(&vmx->nested.msr_bitmap_cache);
++
+ 	free_vpid(vmx->nested.vpid02);
+ 	vmx->nested.posted_intr_nv = -1;
+ 	vmx->nested.current_vmptr = INVALID_GPA;
+@@ -625,7 +656,7 @@ static inline bool nested_vmx_prepare_msr_bitmap(struct kvm_vcpu *vcpu,
+ 	int msr;
+ 	unsigned long *msr_bitmap_l1;
+ 	unsigned long *msr_bitmap_l0 = vmx->nested.vmcs02.msr_bitmap;
+-	struct kvm_host_map map;
++	struct gfn_to_pfn_cache *gpc;
+ 
+ 	/* Nothing to do if the MSR bitmap is not in use.  */
+ 	if (!cpu_has_vmx_msr_bitmap() ||
+@@ -648,10 +679,11 @@ static inline bool nested_vmx_prepare_msr_bitmap(struct kvm_vcpu *vcpu,
+ 			return true;
+ 	}
+ 
+-	if (kvm_vcpu_map_readonly(vcpu, gpa_to_gfn(vmcs12->msr_bitmap), &map))
++	gpc = &vmx->nested.msr_bitmap_cache;
++	if (nested_gpc_lock(gpc, vmcs12->msr_bitmap))
+ 		return false;
+ 
+-	msr_bitmap_l1 = (unsigned long *)map.hva;
++	msr_bitmap_l1 = (unsigned long *)gpc->khva;
+ 
+ 	/*
+ 	 * To keep the control flow simple, pay eight 8-byte writes (sixteen
+@@ -739,7 +771,7 @@ static inline bool nested_vmx_prepare_msr_bitmap(struct kvm_vcpu *vcpu,
+ 	nested_vmx_set_intercept_for_msr(vmx, msr_bitmap_l1, msr_bitmap_l0,
+ 					 MSR_IA32_PL3_SSP, MSR_TYPE_RW);
+ 
+-	kvm_vcpu_unmap(vcpu, &map);
++	nested_gpc_unlock(gpc);
+ 
+ 	vmx->nested.force_msr_bitmap_recalc = false;
+ 
+@@ -5490,6 +5522,8 @@ static int enter_vmx_operation(struct kvm_vcpu *vcpu)
+ 
+ 	vmx->nested.vpid02 = allocate_vpid();
+ 
++	kvm_gpc_init(&vmx->nested.msr_bitmap_cache, vcpu->kvm);
++
+ 	vmx->nested.vmcs02_initialized = false;
+ 	vmx->nested.vmxon = true;
+ 
+diff --git a/arch/x86/kvm/vmx/vmx.h b/arch/x86/kvm/vmx/vmx.h
+index ea93121029f9..d76621403c28 100644
+--- a/arch/x86/kvm/vmx/vmx.h
++++ b/arch/x86/kvm/vmx/vmx.h
+@@ -152,6 +152,8 @@ struct nested_vmx {
+ 
+ 	struct loaded_vmcs vmcs02;
+ 
++	struct gfn_to_pfn_cache msr_bitmap_cache;
++
+ 	/*
+ 	 * Guest pages referred to in the vmcs02 with host-physical
+ 	 * pointers, so we must keep them pinned while L2 runs.
 -- 
-Cheers
+2.43.0
 
-David
