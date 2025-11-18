@@ -1,82 +1,82 @@
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 33FEB2D8368
-	for <kvm@vger.kernel.org>; Tue, 18 Nov 2025 18:13:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B974135FF5D
+	for <kvm@vger.kernel.org>; Tue, 18 Nov 2025 18:14:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763489595; cv=none; b=lT4fpbTniWnZoi2e+Kj/uUAoCTlUheCxuV9G0kr4rOjXggJg6zdxqQKEeTWSxw4xX3xHvsQVO80/jzGzmOGtqd2eUtXGa9hvWxenoJReKEv2k7gR/JpillgjU+pHz5efxD5BpHpeIsGYLQ3QIQR6V11j+6/Zdxzqli0MgCqpqCU=
+	t=1763489667; cv=none; b=VH24UZ6CtH5tQ5vhTBGGoY/EZ9AByzidKiDgiUTylSxOaajKXQqS93nUIqcrwDfgY9M04I0oX4IB5HfNPTD8Qg/Toi/WrN/Q5vuPeWRNFR9D0yD6pwaGp3obgY4cH7VqsQ1+qL1YH5BIack7Jfx1iwaGcuMLnr/OWn5sMVoHVcc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763489595; c=relaxed/simple;
-	bh=ESkljyOopVtU50//2SKEaLXXjPSw66upROeHtwZHBTo=;
+	s=arc-20240116; t=1763489667; c=relaxed/simple;
+	bh=93pZ6dl5lFQD43TapInbMA0s7FqryaSyeA9SjB2/Swk=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=hGZYuoOgmM94InWIYgEOqKb+USCTkc8yEtq2OexT6db3BY2muv9eDTUlQaeuujrd/s9wejtZuftLLIVELru72PuMAlHD2x5H39voaSKV5fWe8UZBhTf4oxk26O8VqC0t4ngVR8/SJ/jT0hr0y+iKmBp5Ag5XYPVbFQPemfxISLQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=LHoRL0W9; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=aLwdneCf; arc=none smtp.client-ip=170.10.133.124
+	 Content-Type:Content-Disposition:In-Reply-To; b=oZ2p5f83l/imHT8au+SLsKNKtPU6k4yBE2gwO7hfX7L744cC2oygWH1uJsK9Yu+ziVcTV+ylA+MxvwGt2y+wNCDzHCmhIyZc/u5jjQ1ZdlhqRY/xzh4VKAR7dz1SPG1vWZbNTo7BZ9dzKFxt6PvAISV9g8jjQIISGC06kI0fSrA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=YPXt3JgT; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=FoIB6mbt; arc=none smtp.client-ip=170.10.133.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="LHoRL0W9";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="aLwdneCf"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="YPXt3JgT";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="FoIB6mbt"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1763489593;
+	s=mimecast20190719; t=1763489664;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=voAmjtngZH987SL0d1/xV0xBaRhoeK7O02B2C/SKO58=;
-	b=LHoRL0W90uQfrkONRFJVVusN1nPdqkZL/rA18Q8YGdnESAm8eYezQcV0F7cFkAk08uiuG1
-	bwpy4TKwIvGW4fgAz1WyykAGqUylyK0XeQNjJUdRHFCwClzBxO3hRvM0HWVKrElPVgTYg2
-	z2pmi1vSD5iGtZF30laloS9gNVHbFzw=
-Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
- [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=ogfCDQuwBr308yi4xavgkU0Sq9YiKn4sM5QwPOHCZ7A=;
+	b=YPXt3JgT3WfKGtMRiafhymWvX8w6wIvzrxJuitdlK/TIHSjkH6wys4F9KRzmeaZrgno7El
+	gAnP12Ug5QNK+0tfAL1YzFHW6EdiSC3DCqw3z90hvl1uK1DV3YU+c17nEwEZFEpJ1XGYsF
+	2q8Bwbxubvwr3EXG3WsBSsNS6lAOgPo=
+Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
+ [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-550-li4aT3nmM3OY_ROdT1bYug-1; Tue, 18 Nov 2025 13:13:12 -0500
-X-MC-Unique: li4aT3nmM3OY_ROdT1bYug-1
-X-Mimecast-MFC-AGG-ID: li4aT3nmM3OY_ROdT1bYug_1763489591
-Received: by mail-wm1-f72.google.com with SMTP id 5b1f17b1804b1-47788165c97so8637005e9.0
-        for <kvm@vger.kernel.org>; Tue, 18 Nov 2025 10:13:11 -0800 (PST)
+ us-mta-22-7J9GOGRCPzuVgTNx6jCVwQ-1; Tue, 18 Nov 2025 13:14:22 -0500
+X-MC-Unique: 7J9GOGRCPzuVgTNx6jCVwQ-1
+X-Mimecast-MFC-AGG-ID: 7J9GOGRCPzuVgTNx6jCVwQ_1763489660
+Received: by mail-wr1-f72.google.com with SMTP id ffacd0b85a97d-42b2f79759bso4163052f8f.2
+        for <kvm@vger.kernel.org>; Tue, 18 Nov 2025 10:14:21 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1763489591; x=1764094391; darn=vger.kernel.org;
+        d=redhat.com; s=google; t=1763489660; x=1764094460; darn=vger.kernel.org;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=voAmjtngZH987SL0d1/xV0xBaRhoeK7O02B2C/SKO58=;
-        b=aLwdneCfEURxR7QwR+JA//XqUSuJiIbzyi+clLnD3IqgHujVMNwN2T2nrf/ukOJ409
-         1j6NmZnROQ9GXRlYiQ2+VolkampsITJDQKVJEsL9ECMWBZyCttOK065SKm5fVHo9AKUZ
-         XZfvocAUJVJNmqSWOp0wLY5SyFJnCYJ5b5A3x8A6GdwvSnHwAgWaLBtcRmeoLgCHDsV+
-         Pg1Fr0EoSEu1mXF1GRiXY3E2YCnZxBbA3f/9NAfB4aOuBiP1QPS7xqy3GfA1rnR0oivM
-         IeiRb2qiCj7z8/rnETcuBpwJYVzlkvPL4EV+Q3ABp1oc7Zv/pOz2+fA76NVhZ+0d+fao
-         XUgw==
+        bh=ogfCDQuwBr308yi4xavgkU0Sq9YiKn4sM5QwPOHCZ7A=;
+        b=FoIB6mbteb+Uo4T86irp/XzAl6AecdpoiX1D0DT6C3PRR71pDf/bnDxApUzfFSOtIt
+         qq4r6VZwppZc2lahK+/F+IPRXCPfu/74Mbxv9dimzrI2PagLTlVw5DGveCMppD1U3DjV
+         ziyEC8UTUUYUhs98KFd8xI56blKiIyDJUR8fk2kzm5ZVJZ7Dl9bM4mkJOE26AG/oXjO1
+         MNM1o8q2G9KX85fRdGMpVQO3jort4EGrWpWkCbHWVSq3F4cc4NoHqHDhlNdBAJTCkCyF
+         FZkZ4fqXExrsJPERHtiMld5kc9VtCqMYu3CswKL8xEFfgahzbZ0hDRQfSCGHgOuQakgp
+         1FVQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1763489591; x=1764094391;
+        d=1e100.net; s=20230601; t=1763489660; x=1764094460;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=voAmjtngZH987SL0d1/xV0xBaRhoeK7O02B2C/SKO58=;
-        b=PQYeX324MyfOnXlxXIgquVMt3Ybd/D64Wvy2p00amcGg/B6FwY4CaVhoOfTvVBVZ/e
-         503G3SwoA8eN2CqJ9JSO6fVZpiTzBULKcKZvQzaoteVN0QtcDHZ9voaRMJwYlkOsYD96
-         FPiPOr8KgBM46x+6uEp5fipJc/E2aV9sGYVaZ+Dr9zDHCf2DmgT2SCZkiTgw4iToS1YZ
-         9aEc8SSY/PlgQrmYm6jslfs/stKNkR5t8BpmOVHTWYqNWswIs+zt8KN2y/NoSmuG52/i
-         WqI86ehM93s37ZRZRGl/vdB9uOluYZoOYe0vf7gS7Tqev7ptg0uRlyF0+PeZcK6GxErZ
-         f/1A==
-X-Forwarded-Encrypted: i=1; AJvYcCUbIqAauhMP8x2wLMmmioRpLZpXDZBA0f/EXIXO2NvSesiJawQUQgtoD5hi3foufJ8sZUo=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yybl00We6mOQncJ2uqN81U/bDgrGQryu+rZqoD/gTWP/Nl8m4YF
-	Apevh4LSdaSfY7gTlRIti72TiuXVVbksfjS/9GBRjA/H/QuIpwAUNSjsG4G2+8XmdiW20LPOLIy
-	MA14GLjRhhW1FZ11boxDzjREuKFGFBTz3lk9JlE7btMIAe+AjQM25dA==
-X-Gm-Gg: ASbGncu4JWUlQDlIqvVLt3ccJegxu4lmxK1ps4VjVvlbEWFAOHFEBY5WBbAGJzE+z8b
-	Ak1Q+sxfE7SmFT/aMRghxNxBQ3tXRZSCHVKH2GCmKluK8hDxjFBDN5Rd5XVGA7zXClsMD24jC2e
-	hUFolhjKpMI2vyEOSmKVDP9eHnIURpLz5aPaFscoMtLdg90rDbtUN/rUGOCRU8PRFzQAkft/q3C
-	T4naQqgEfUSQipJS7XagXHKVYONb5wpS5+iWNO6zyw+uE61Q39Zhg6oYJu6erHnJIc8CDIRUTbo
-	JBpA96vGnZTsCE62DsWRaHMgG3IdK4MRz6EU6TybC9yrpUIN7E0jHQo298lOl4wkD+EAJzJnLaT
-	EZDqCWZrMcqsLBsx9dDUVpIsPfQe3mRWwMzpZ1cWHIq/n22zblPYbmQqAg/Y=
-X-Received: by 2002:a05:600c:4752:b0:477:7b9a:bb0a with SMTP id 5b1f17b1804b1-4778feaa7cdmr147586115e9.21.1763489590819;
-        Tue, 18 Nov 2025 10:13:10 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IHIT8ng0CUWbvzfqjNxNNDfLjFNDwG4+rLmN0Xj3SFNTvDx9hI+oXmEXYHOMQFCNSDvZBqLmQ==
-X-Received: by 2002:a05:600c:4752:b0:477:7b9a:bb0a with SMTP id 5b1f17b1804b1-4778feaa7cdmr147585685e9.21.1763489590295;
-        Tue, 18 Nov 2025 10:13:10 -0800 (PST)
+        bh=ogfCDQuwBr308yi4xavgkU0Sq9YiKn4sM5QwPOHCZ7A=;
+        b=E+kj1GAJqVkMLcS7cqfhy2L7OS+mVw0IMno7j8vYLxKLbaPRq8J4sakK8NSqyfKwUv
+         dFpk5Rz0i5YFRuoxYqPaHZ8/ovh+MZPXbLefsfvv4dreQshCIUGvOChLCr+0SkYKiCqE
+         mBxktqwr8qIyI4OzdEeU6uo72sCgc4+pl9oSDnbers/f8Sf3dKXBZPtGa8RaH+dmWrA9
+         8SOL4CQ8gtN09PU99H6aBd783djoGqgdF/k7QzZFwOi1BYS/KJ7nqdXS91PuBxeJgL+r
+         e0Tmg4cN1m/PCu0mE3wXs79/Uo6PA/frdQXudhDC9lmnwE+vk1o3PrqRFffqAS6Fayue
+         MMsQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXb9KZqiL4YI57XOmpZb0Ni8nR2kcpkePaRd/OP2HOLLt8aTs70pP4AGU7rJC93UGEqYpg=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzABdsJVQyiHMAmpeVyIs/QIOtPZt7HcwB5OpvfC2IQ1lp9ORO6
+	3VUU1xrKBFkwOQ1o4Xc4RzCh7a5tMyPMngWOriQvonxAjAhphKGBnnr4Nxql19Rg/QyzttbgnAa
+	6wBALxS4NnkQqDxnSp7D/j1yu4+TO7Ykfbh2isO0FIKs9HiBG7VHzag==
+X-Gm-Gg: ASbGncvN6Ku4FMm0XgfVekxZc3wu5xSN1vSZj7R7imsm3EPkAvSCvkm6pj2dX2YVty1
+	2RPtEIqm7ZCz6+YUKdy99LWZGDHxaoybY8iQEaxzKHVCEpHVJj/XMQK73UnDkIz6hbP9bgyJY3T
+	m2qSpqTi7EmvuMWHhSmBHvfPDgEFNtDlzEVgIdhjnZrdZAl2OaJRYjq8c3UtPwLtgyHRIJQa8h/
+	Yz4aZEViBLC1h0KxJKweYmTvNiu/7R1VmIvO2DKETmcIbSRPgcOF6uIn7T5h10b4aatGdk9LM49
+	ypz/r5cRIB7XXcJ08KmS0ppJejVXxfaS+m6hpHYw6RLuuGXGwq8okMrBXFfBDBs4PnFL3MHG0Ls
+	C31BvxP+iE5YrI7HM43xANOGYfZySu0JiUojjOdquiG78oYTL1aXYUcGPDWc=
+X-Received: by 2002:a05:6000:4210:b0:42b:3bd2:b2f8 with SMTP id ffacd0b85a97d-42b593849ffmr16260479f8f.46.1763489660386;
+        Tue, 18 Nov 2025 10:14:20 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IFS8o+OnlcCO7Yj6XaGWOD+hRu7PmlcNwfKGvJu2ycvTutZuUYYNXih4+y5NlFSoF//9qYsmQ==
+X-Received: by 2002:a05:6000:4210:b0:42b:3bd2:b2f8 with SMTP id ffacd0b85a97d-42b593849ffmr16260434f8f.46.1763489659913;
+        Tue, 18 Nov 2025 10:14:19 -0800 (PST)
 Received: from sgarzare-redhat (host-82-57-51-250.retail.telecomitalia.it. [82.57.51.250])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-477a9e19875sm21423225e9.16.2025.11.18.10.13.01
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-42b53f19aa0sm33992549f8f.37.2025.11.18.10.14.13
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 18 Nov 2025 10:13:09 -0800 (PST)
-Date: Tue, 18 Nov 2025 19:12:58 +0100
+        Tue, 18 Nov 2025 10:14:19 -0800 (PST)
+Date: Tue, 18 Nov 2025 19:14:10 +0100
 From: Stefano Garzarella <sgarzare@redhat.com>
 To: Bobby Eshleman <bobbyeshleman@gmail.com>
 Cc: "David S. Miller" <davem@davemloft.net>, 
@@ -91,11 +91,11 @@ Cc: "David S. Miller" <davem@davemloft.net>,
 	virtualization@lists.linux.dev, netdev@vger.kernel.org, kvm@vger.kernel.org, 
 	linux-hyperv@vger.kernel.org, linux-kselftest@vger.kernel.org, 
 	Sargun Dhillon <sargun@sargun.me>, berrange@redhat.com, Bobby Eshleman <bobbyeshleman@meta.com>
-Subject: Re: [PATCH net-next v10 06/11] selftests/vsock: add namespace
- helpers to vmtest.sh
-Message-ID: <643ayuucvcaet3v47uwh22mahncfbm3arjqf7szs4apa7gsklq@clggma36o37s>
+Subject: Re: [PATCH net-next v10 09/11] selftests/vsock: add namespace tests
+ for CID collisions
+Message-ID: <iyn62b6uwxgoz5r3rk3huca3ehwvh6zv4rx37hliqrkh3bknkt@qfmfnrwdd3ks>
 References: <20251117-vsock-vmtest-v10-0-df08f165bf3e@meta.com>
- <20251117-vsock-vmtest-v10-6-df08f165bf3e@meta.com>
+ <20251117-vsock-vmtest-v10-9-df08f165bf3e@meta.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -104,103 +104,141 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii; format=flowed
 Content-Disposition: inline
-In-Reply-To: <20251117-vsock-vmtest-v10-6-df08f165bf3e@meta.com>
+In-Reply-To: <20251117-vsock-vmtest-v10-9-df08f165bf3e@meta.com>
 
-On Mon, Nov 17, 2025 at 06:00:29PM -0800, Bobby Eshleman wrote:
+On Mon, Nov 17, 2025 at 06:00:32PM -0800, Bobby Eshleman wrote:
 >From: Bobby Eshleman <bobbyeshleman@meta.com>
 >
->Add functions for initializing namespaces with the different vsock NS
->modes. Callers can use add_namespaces() and del_namespaces() to create
->namespaces global0, global1, local0, and local1.
+>Add tests to verify CID collision rules across different vsock namespace
+>modes.
 >
->The init_namespaces() function initializes global0, local0, etc...  with
->their respective vsock NS mode. This function is separate so that tests
->that depend on this initialization can use it, while other tests that
->want to test the initialization interface itself can start with a clean
->slate by omitting this call.
+>1. Two VMs with the same CID cannot start in different global namespaces
+>   (ns_global_same_cid_fails)
+>2. Two VMs with the same CID can start in different local namespaces
+>   (ns_local_same_cid_ok)
+>3. VMs with the same CID can coexist when one is in a global namespace
+>   and another is in a local namespace (ns_global_local_same_cid_ok and
+>   ns_local_global_same_cid_ok)
 >
->Remove namespaces upon exiting the program in cleanup().  This is
->unlikely to be needed for a healthy run, but it is useful for tests that
->are manually killed mid-test. In that case, this patch prevents the
->subsequent test run from finding stale namespaces with
->already-write-once-locked vsock ns modes.
+>The tests ns_global_local_same_cid_ok and ns_local_global_same_cid_ok
+>make sure that ordering does not matter.
 >
->This patch is in preparation for later namespace tests.
+>The tests use a shared helper function namespaces_can_boot_same_cid()
+>that attempts to start two VMs with identical CIDs in the specified
+>namespaces and verifies whether VM initialization failed or succeeded.
 >
 >Signed-off-by: Bobby Eshleman <bobbyeshleman@meta.com>
 >---
-> tools/testing/selftests/vsock/vmtest.sh | 41 +++++++++++++++++++++++++++++++++
-> 1 file changed, 41 insertions(+)
-
-Reviewed-by: Stefano Garzarella <sgarzare@redhat.com>
-
+> tools/testing/selftests/vsock/vmtest.sh | 73 +++++++++++++++++++++++++++++++++
+> 1 file changed, 73 insertions(+)
 >
 >diff --git a/tools/testing/selftests/vsock/vmtest.sh b/tools/testing/selftests/vsock/vmtest.sh
->index c7b270dd77a9..f78cc574c274 100755
+>index 86483249f490..a8bf78a5075d 100755
 >--- a/tools/testing/selftests/vsock/vmtest.sh
 >+++ b/tools/testing/selftests/vsock/vmtest.sh
->@@ -49,6 +49,7 @@ readonly TEST_DESCS=(
+>@@ -48,6 +48,10 @@ readonly TEST_NAMES=(
+> 	ns_host_vsock_ns_mode_ok
+> 	ns_host_vsock_ns_mode_write_once_ok
+> 	ns_vm_local_mode_rejected
+>+	ns_global_same_cid_fails
+>+	ns_local_same_cid_ok
+>+	ns_global_local_same_cid_ok
+>+	ns_local_global_same_cid_ok
+> )
+> readonly TEST_DESCS=(
+> 	# vm_server_host_client
+>@@ -67,6 +71,17 @@ readonly TEST_DESCS=(
+>
+> 	# ns_vm_local_mode_rejected
+> 	"Test that guest VM with G2H transport cannot set namespace mode to 'local'"
+>+	# ns_global_same_cid_fails
+>+	"Check QEMU fails to start two VMs with same CID in two different global namespaces."
+>+
+>+	# ns_local_same_cid_ok
+>+	"Check QEMU successfully starts two VMs with same CID in two different local namespaces."
+>+
+>+	# ns_global_local_same_cid_ok
+>+	"Check QEMU successfully starts one VM in a global ns and then another VM in a local ns with the same CID."
+>+
+>+	# ns_local_global_same_cid_ok
+>+	"Check QEMU successfully starts one VM in a local ns and then another VM in a global ns with the same CID."
 > )
 >
-> readonly USE_SHARED_VM=(vm_server_host_client vm_client_host_server vm_loopback)
->+readonly NS_MODES=("local" "global")
->
-> VERBOSE=0
->
->@@ -103,6 +104,45 @@ check_result() {
-> 	fi
+> readonly USE_SHARED_VM=(
+>@@ -553,6 +568,64 @@ test_ns_host_vsock_ns_mode_ok() {
+> 	return "${KSFT_PASS}"
 > }
 >
->+add_namespaces() {
->+	# add namespaces local0, local1, global0, and global1
->+	for mode in "${NS_MODES[@]}"; do
->+		ip netns add "${mode}0" 2>/dev/null
->+		ip netns add "${mode}1" 2>/dev/null
->+	done
+>+namespaces_can_boot_same_cid() {
+>+	local ns0=$1
+>+	local ns1=$2
+>+	local pidfile1 pidfile2
+>+	local rc
+>+
+>+	pidfile1="$(create_pidfile)"
+>+	vm_start "${pidfile1}" "${ns0}"
+
+Should we check also this return value or return an AND of both?
+
+>+
+>+	pidfile2="$(create_pidfile)"
+>+	vm_start "${pidfile2}" "${ns1}"
+>+
+>+	rc=$?
+>+	terminate_pidfiles "${pidfile1}" "${pidfile2}"
+>+
+>+	return "${rc}"
 >+}
 >+
->+init_namespaces() {
->+	for mode in "${NS_MODES[@]}"; do
->+		ns_set_mode "${mode}0" "${mode}"
->+		ns_set_mode "${mode}1" "${mode}"
+>+test_ns_global_same_cid_fails() {
+>+	init_namespaces
 >+
->+		log_host "set ns ${mode}0 to mode ${mode}"
->+		log_host "set ns ${mode}1 to mode ${mode}"
+>+	if namespaces_can_boot_same_cid "global0" "global1"; then
+>+		return "${KSFT_FAIL}"
+>+	fi
 >+
->+		# we need lo for qemu port forwarding
->+		ip netns exec "${mode}0" ip link set dev lo up
->+		ip netns exec "${mode}1" ip link set dev lo up
->+	done
+>+	return "${KSFT_PASS}"
 >+}
 >+
->+del_namespaces() {
->+	for mode in "${NS_MODES[@]}"; do
->+		ip netns del "${mode}0" &>/dev/null
->+		ip netns del "${mode}1" &>/dev/null
->+		log_host "removed ns ${mode}0"
->+		log_host "removed ns ${mode}1"
->+	done
+>+test_ns_local_global_same_cid_ok() {
+>+	init_namespaces
+>+
+>+	if namespaces_can_boot_same_cid "local0" "global0"; then
+>+		return "${KSFT_PASS}"
+>+	fi
+>+
+>+	return "${KSFT_FAIL}"
 >+}
 >+
->+ns_set_mode() {
->+	local ns=$1
->+	local mode=$2
+>+test_ns_global_local_same_cid_ok() {
+>+	init_namespaces
 >+
->+	echo "${mode}" | ip netns exec "${ns}" \
->+		tee /proc/sys/net/vsock/ns_mode &>/dev/null
+>+	if namespaces_can_boot_same_cid "global0" "local0"; then
+>+		return "${KSFT_PASS}"
+>+	fi
+>+
+>+	return "${KSFT_FAIL}"
 >+}
 >+
-> vm_ssh() {
-> 	ssh -q -o UserKnownHostsFile=/dev/null -p ${SSH_HOST_PORT} localhost "$@"
-> 	return $?
->@@ -110,6 +150,7 @@ vm_ssh() {
->
-> cleanup() {
-> 	terminate_pidfiles "${!PIDFILES[@]}"
->+	del_namespaces
-> }
->
-> check_args() {
+>+test_ns_local_same_cid_ok() {
+
+IIUC the naming convention, should this be with _fails() suffix?
+
+Thanks,
+Stefano
+
+>+	init_namespaces
+>+
+>+	if namespaces_can_boot_same_cid "local0" "local0"; then
+>+		return "${KSFT_FAIL}"
+>+	fi
+>+
+>+	return "${KSFT_PASS}"
+>+}
+>+
+> test_ns_host_vsock_ns_mode_write_once_ok() {
+> 	for mode in "${NS_MODES[@]}"; do
+> 		local ns="${mode}0"
 >
 >-- 
 >2.47.3
