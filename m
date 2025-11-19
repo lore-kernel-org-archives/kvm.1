@@ -1,242 +1,161 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 85EF2346FA2
-	for <kvm@vger.kernel.org>; Wed, 19 Nov 2025 10:44:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.17
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA5A7350A0A
+	for <kvm@vger.kernel.org>; Wed, 19 Nov 2025 11:04:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763549078; cv=none; b=pxN8cTFkjjzKpJfc27+gf0OPqu0n5dewGoX74Qd4dfDe4xjoA+Nwnxm7vMdT3KyQsWuQ55y6HTHBhdknw1DKmJItIsYyGQywYuDNHtwOzUwt2otJY27UVdL74JmuoVI9dIlv9X66SDmt9BjsG0fxtzzDu0tkfoY0kS+zTTh/40k=
+	t=1763550261; cv=none; b=aTvcTiSs4pgKrgFIIFdVNBJ9Ip6X/8Pm/qIEfmvoH46X9jKmdv6pBeeo0iHZxv/KZPqau5k7+EDQYAGdhZPgHnRgNL7dORyDA+9GwsOS/iARx6OAKMP3ayn1MkKsiYajZ3roC/yNECUmHFyovZppEdNWoTzF/3L6z5nYlLo02Cg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763549078; c=relaxed/simple;
-	bh=WhK5P4cuobRv3bMhRyzWkwxWn+7RqWPfiO66DzwlRZg=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=NUe6PpwZOUo8o+upsDimoH7mvcQ34TlqvH8myXS9AoeCAWq+/kT0o7JKeLNu53fObUcR0mhJcVy718zq8QXOOVXEm2xD2DJk/z5A2joNft5vFnApikALdd3PCw22A07G5GX0pj/Jsm6CxCyP/EY9TB/QpVmK9W3UZyfM9I6bvLg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=O1gPaO1o; arc=none smtp.client-ip=192.198.163.17
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1763550261; c=relaxed/simple;
+	bh=Or/iFwMt+BMeSO1coYhZawNSolBDuL6LbxtDXCET8WI=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=hcAZ+h1UBM9OV7sZL82ETmbNHyq46sCv+GUwGKgkM0YBOEoYe5Y/6mGSQWbvAnT7OFtKiMy/yzqyVEdyj8hF45zbwvZmVuuHxCsIZF4VlpfV/DWYD6Z154twOhXASa+wdFoRDj68xg29qH7/SDFBaVPc1jw595xJ8ZaNkNY69EE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=QqbYJs9W; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=uEVn1Wcs; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="O1gPaO1o"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1763549076; x=1795085076;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=WhK5P4cuobRv3bMhRyzWkwxWn+7RqWPfiO66DzwlRZg=;
-  b=O1gPaO1o0D+dzbMNmue/c11DvmHptZb6rvQdAwxBALNIhtTjMKrxnK0l
-   wupQaBEnXePh+oyPkvyRG383nJ5pu0ewQUCgRyb7UEV8Y5x3yn5X5XErj
-   rV56YgjURufoYSOsMEFUMKOit/luC2iONY4XAkJ24WaVQrww2kuHfJjyE
-   IInZkB4bnYmR9E6jOjEKH/w2Qaagd7A58754pMZ6S7Uap070wq81RXbu6
-   P928uMOsdZjY24qilkD78/i9tS9l6BJ8ltuyFcZC00yyVNjX4KcMnrTkl
-   +kRA+VqCyPTjDo5ibQbI5eRYfpICWUcWwexHTzsyXX8aTt7ZqSkUSi0Mv
-   A==;
-X-CSE-ConnectionGUID: fz3xAOHYRbeq+/Pted8tJw==
-X-CSE-MsgGUID: ko8YeIGgRXmHI7gdL5PHhg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11617"; a="65483370"
-X-IronPort-AV: E=Sophos;i="6.19,315,1754982000"; 
-   d="scan'208";a="65483370"
-Received: from fmviesa004.fm.intel.com ([10.60.135.144])
-  by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Nov 2025 02:44:35 -0800
-X-CSE-ConnectionGUID: mItufiZIQR2Hevf9RtiK1g==
-X-CSE-MsgGUID: USMTkdqxSGGJc3gf0UXzbg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.19,315,1754982000"; 
-   d="scan'208";a="195971496"
-Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost) ([10.239.160.39])
-  by fmviesa004.fm.intel.com with ESMTP; 19 Nov 2025 02:44:31 -0800
-Date: Wed, 19 Nov 2025 19:06:51 +0800
-From: Zhao Liu <zhao1.liu@intel.com>
-To: Dongli Zhang <dongli.zhang@oracle.com>
-Cc: qemu-devel@nongnu.org, kvm@vger.kernel.org, pbonzini@redhat.com,
-	mtosatti@redhat.com, sandipan.das@amd.com, babu.moger@amd.com,
-	likexu@tencent.com, like.xu.linux@gmail.com, groug@kaod.org,
-	khorenko@virtuozzo.com, alexander.ivanov@virtuozzo.com,
-	den@virtuozzo.com, davydov-max@yandex-team.ru, xiaoyao.li@intel.com,
-	dapeng1.mi@linux.intel.com, joe.jin@oracle.com,
-	ewanhai-oc@zhaoxin.com, ewanhai@zhaoxin.com, zhao1.liu@intel.com
-Subject: Re: [PATCH v7 2/9] target/i386: disable PERFCORE when "-pmu" is
- configured
-Message-ID: <aR2ky5WU8CqH8+lS@intel.com>
-References: <20251111061532.36702-1-dongli.zhang@oracle.com>
- <20251111061532.36702-3-dongli.zhang@oracle.com>
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="QqbYJs9W";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="uEVn1Wcs"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1763550257;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=vKuBd2HW8nRsL/d/yhqkB0zqQvQiI6NwLHvu1csy0yA=;
+	b=QqbYJs9WyPur5F6SVXW39FmkvRxqjh2CM3mEN8+7L2gOsbr0Pj3L0MvqTRw/XX3rbCwZJd
+	FXYNt3OxXhnmtDmFprqfBlVisAP6yDdkxR0VB/RdpkxZzd33TtfdiFbYn9Nf2cgiDd+6X9
+	S3ijME4kkGK2hBPlfg3xJXT/KzHMSo8=
+Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
+ [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-353-Y_vYN0GJO1ivfrdIUhnYog-1; Wed, 19 Nov 2025 06:04:16 -0500
+X-MC-Unique: Y_vYN0GJO1ivfrdIUhnYog-1
+X-Mimecast-MFC-AGG-ID: Y_vYN0GJO1ivfrdIUhnYog_1763550255
+Received: by mail-wr1-f69.google.com with SMTP id ffacd0b85a97d-42b56125e77so3345690f8f.3
+        for <kvm@vger.kernel.org>; Wed, 19 Nov 2025 03:04:16 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=redhat.com; s=google; t=1763550255; x=1764155055; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=vKuBd2HW8nRsL/d/yhqkB0zqQvQiI6NwLHvu1csy0yA=;
+        b=uEVn1WcsaTqMiRrKNZiy6NqgGLAEyAQeKJKvxdH9sw7zKLmC7HJuLg6Ihu0MPLA/A+
+         S34IHb1FSNSZo1sH6oQ7iFK60B0HkN7x0qXzxwPuNHzU3h/fkpXMss6fUSW20zTWR2ss
+         XGyQUfKd7i7aJrVm7r853a3oGjbTRcj9BrLUQA0dn1OhqRTCnIB2ZwB0mkAc6/9N7hxQ
+         wDaxlXSZQJ8DeDvcbrJXXP/+kFXqB2UFhx7rwii40Rf9+mZ7jJ5RpYLMxqVyvNnK4Y1M
+         s5kOV9y1MaqyqZ2mSVhVq6F9miKPhLuY5Y0hJrX21ViM/fgdmmlS6X0xYf/L4XfI0+qZ
+         FvbA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1763550255; x=1764155055;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=vKuBd2HW8nRsL/d/yhqkB0zqQvQiI6NwLHvu1csy0yA=;
+        b=E0uwGhWvb7iHJe/F2gbEVtmOM0h8hExF5WW1Ef4925xVh1xVe47gj+GwIj9Z41axv7
+         hA3erxkGkLk9TGtODVUGPzUse5typoqhMAmLPtqIkuHwrkprDNG8ltByZ1RHC2vBMK3w
+         7QIOpgMBwt17uV2IxoCQ/g0lV/y6kycCrUoiqGYRhnYxV55q6+4cxJSN+Kt1994Xm4qK
+         7HT65yOcVHdI+pZ95yrOi3n/4QyaBiFv067e08zCiK4gtLgTvawuAVOCbUOtwjXTlxWN
+         brPMJItVIV4Jwf98LUEbwyVr4ghA0SfEdcOaL2+D4jkI872GuoEqznZJakXLfckBlaT0
+         dQkA==
+X-Forwarded-Encrypted: i=1; AJvYcCWxj++iVvtApDKVOQKK3lF2nlHI4vtMfi6VobY6cJw5VMNZuw/72CQ0EEiMmOTH1HYfJFQ=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzfJIZsS4h9UIJp93UuVivQsxAR7rfgL/r3hqLJxRNSYdBK/Egi
+	hqo05HyDuit1Rzx3q3mHtBMt0OVZBWOD9FW+z4DLdrggRlmFlLNYsKm+9XnhePMZKJADbw4hzJN
+	RfOlebu+Dktwa7fMhAZhZpFah5HugAbbRg/ssRYlgDSySzEYJ459BqQ==
+X-Gm-Gg: ASbGnct8qX3jDlp43s0YRiDmYYB+F5PoSCZYckSphsEmZc0zfZWi4VXjkEgSwg/UOQn
+	tWkrRpTg03OEtbXULjTjO53O6tzFiNod9PBZnTX2ARhTS9My/irBA/KFPIKOjz1Vn7PNjV7rpU1
+	ZyvpmCmg2GSuJwc42KqEXLKiSlatlxRzfym2AL5of1v2lqjWnB1P+CUSYYcwoZcqhciK/KwaPcD
+	DJN/fZnYioSKh7oEhi9SrTpAhXd+2ZLhk2fQdqptIfhqCqbv42+EY8KLrzyix1yiF/HLL79bz5+
+	SEhrH+nCVNY17g3FnFUsmaFL7aLbDc2JJIqgrc5rLn/1hhp2RRluBdm709IrduIEEuD9oCbylyZ
+	RFjEgr6J8ILE0
+X-Received: by 2002:a05:6000:1ac9:b0:42b:2e65:655e with SMTP id ffacd0b85a97d-42b5935a880mr17671088f8f.27.1763550255264;
+        Wed, 19 Nov 2025 03:04:15 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IHnOndlVgs3mj8Ki0CtCTtbt0/DkKKE/b2cx4wA0ZToqoDYX1G7zSXdvoOnOMWxyBTwFXC8VQ==
+X-Received: by 2002:a05:6000:1ac9:b0:42b:2e65:655e with SMTP id ffacd0b85a97d-42b5935a880mr17671049f8f.27.1763550254851;
+        Wed, 19 Nov 2025 03:04:14 -0800 (PST)
+Received: from [192.168.88.32] ([212.105.155.41])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-42b53e84a4fsm37236036f8f.11.2025.11.19.03.04.13
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 19 Nov 2025 03:04:14 -0800 (PST)
+Message-ID: <4204ed4b-0da1-407f-84e0-e23e2ce65fc7@redhat.com>
+Date: Wed, 19 Nov 2025 12:04:12 +0100
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251111061532.36702-3-dongli.zhang@oracle.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v5 2/2] vhost: switch to arrays of feature bits
+To: "Michael S. Tsirkin" <mst@redhat.com>, linux-kernel@vger.kernel.org
+Cc: Andrew Lunn <andrew@lunn.ch>, Jason Wang <jasowang@redhat.com>,
+ =?UTF-8?Q?Eugenio_P=C3=A9rez?= <eperezma@redhat.com>,
+ Xuan Zhuo <xuanzhuo@linux.alibaba.com>, Jonathan Corbet <corbet@lwn.net>,
+ kvm@vger.kernel.org, virtualization@lists.linux.dev, netdev@vger.kernel.org,
+ linux-doc@vger.kernel.org, Mike Christie <michael.christie@oracle.com>,
+ Paolo Bonzini <pbonzini@redhat.com>, Stefan Hajnoczi <stefanha@redhat.com>,
+ Stefano Garzarella <sgarzare@redhat.com>
+References: <cover.1763535083.git.mst@redhat.com>
+ <fbf51913a243558ddfee96d129d37d570fa23946.1763535083.git.mst@redhat.com>
+Content-Language: en-US
+From: Paolo Abeni <pabeni@redhat.com>
+In-Reply-To: <fbf51913a243558ddfee96d129d37d570fa23946.1763535083.git.mst@redhat.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-Hi Dongli,
+On 11/19/25 7:55 AM, Michael S. Tsirkin wrote:
+> @@ -1720,6 +1720,7 @@ static long vhost_net_set_owner(struct vhost_net *n)
+>  static long vhost_net_ioctl(struct file *f, unsigned int ioctl,
+>  			    unsigned long arg)
+>  {
+> +	const DEFINE_VHOST_FEATURES_ARRAY(features_array, vhost_net_features);
 
-> diff --git a/target/i386/cpu.c b/target/i386/cpu.c
-> index 3653f8953e..4fcade89bc 100644
-> --- a/target/i386/cpu.c
-> +++ b/target/i386/cpu.c
-> @@ -8360,6 +8360,10 @@ void cpu_x86_cpuid(CPUX86State *env, uint32_t index, uint32_t count,
->              !(env->hflags & HF_LMA_MASK)) {
->              *edx &= ~CPUID_EXT2_SYSCALL;
->          }
+I'm sorry for the late feedback, I was drowning in other stuff.
+
+I have just a couple of non blocking suggestions, feel free to ignore.
+
+I think that if you rename `vhost_net_features` as
+`vhost_net_features_bits` and `features_array` as `vhost_net_features`
+the diffstat could be smaller and possibly clearer.
+
+>  	u64 all_features[VIRTIO_FEATURES_U64S];
+>  	struct vhost_net *n = f->private_data;
+>  	void __user *argp = (void __user *)arg;
+> @@ -1734,14 +1735,14 @@ static long vhost_net_ioctl(struct file *f, unsigned int ioctl,
+>  			return -EFAULT;
+>  		return vhost_net_set_backend(n, backend.index, backend.fd);
+>  	case VHOST_GET_FEATURES:
+> -		features = vhost_net_features[0];
+> +		features = VHOST_FEATURES_U64(vhost_net_features, 0);
+
+Here and below you could use directly:
+
+		features = features_array[0];
+
+if you apply the rename mentioned above, this chunk and the following 3
+should not be needed.
+
+[...]> diff --git a/drivers/vhost/test.c b/drivers/vhost/test.c
+> index 42c955a5b211..af727fccfe40 100644
+> --- a/drivers/vhost/test.c
+> +++ b/drivers/vhost/test.c
+> @@ -308,6 +308,12 @@ static long vhost_test_set_backend(struct vhost_test *n, unsigned index, int fd)
+>  	return r;
+>  }
+>  
+> +static const int vhost_test_features[] = {
+> +	VHOST_FEATURES
+> +};
 > +
-> +        if (!cpu->enable_pmu) {
-> +            *ecx &= ~CPUID_EXT3_PERFCORE;
-> +        }
+> +#define VHOST_TEST_FEATURES VHOST_FEATURES_U64(vhost_test_features, 0)
 
-Learned the lessons from PDCM [*]:
+If you rename `VHOST_FEATURES` to `VHOST_FEATURES_BITS` and
+`VHOST_TEST_FEATURES` to `VHOST_FEATURES`, the following two chunks
+should not be needed.
 
-[*] https://lore.kernel.org/qemu-devel/20250923104136.133875-3-pbonzini@redhat.com/
+Thanks,
 
-Directly masking CPUID bit off is not a good idea... modifying the
-CPUID, even when fixing or adding dependencies, can easily break
-migration.
-
-So a safe way is to add a compat option. And I think it would be better
-if patch 1 also has a compat option. A single compat option could cover
-patch 1 & 2.
-
-I have these thoughts:
-
-* For "-pmu" dependency, it can be checked as [*] did.
-* For normal feature bit dependency (patch 1), it seems possible to add
-  compat_prop condition in feature_dependencies[].
-
-I attached a draft for discussion (which is on the top of the whole
-series).
-
-Note, we are currently in the RC phase for v10.2, and the
-pc_compat_10_2[] array is not yet added, which will be added before the
-release of v10.2. Therefore, we have enough time for discussion I think.
-
-If you think it's fine, I'll post compat_prop support separately as an
-RFC. The specific compat option can be left to this series.
-
-Although wait for a while, in a way, it is lucky :) - there's an
-opportunity to avoid making mistakes for us.
-
-Regards,
-Zhao
-
-------------------------------------------------
-diff --git a/hw/i386/pc.c b/hw/i386/pc.c
-index f8b919cb6c47..d2b8e83e556d 100644
---- a/hw/i386/pc.c
-+++ b/hw/i386/pc.c
-@@ -83,6 +83,7 @@
-
- GlobalProperty pc_compat_10_1[] = {
-     { "mch", "extended-tseg-mbytes", "16" },
-+    { TYPE_X86_CPU, "x-amd-perfmon-always-on", "true" }, // This should be added to pc_compat_10_2!
- };
- const size_t pc_compat_10_1_len = G_N_ELEMENTS(pc_compat_10_1);
-
-diff --git a/target/i386/cpu.c b/target/i386/cpu.c
-index 4fcade89bcea..8c56789eb296 100644
---- a/target/i386/cpu.c
-+++ b/target/i386/cpu.c
-@@ -1997,6 +1997,8 @@ static FeatureDep feature_dependencies[] = {
-     {
-         .from = { FEAT_8000_0001_ECX,       CPUID_EXT3_PERFCORE },
-         .to = { FEAT_8000_0022_EAX,         CPUID_8000_0022_EAX_PERFMON_V2 },
-+        .compat_prop =
-+            { "x-amd-perfmon-always-on",    "false" },
-     },
- };
-
-@@ -8998,15 +9000,36 @@ void x86_cpu_expand_features(X86CPU *cpu, Error **errp)
-         }
-     }
-
--    if (!cpu->pdcm_on_even_without_pmu) {
-+    if (!cpu->enable_pmu) {
-         /* PDCM is fixed1 bit for TDX */
--        if (!cpu->enable_pmu && !is_tdx_vm()) {
-+        if (!cpu->pdcm_on_even_without_pmu && !is_tdx_vm()) {
-             env->features[FEAT_1_ECX] &= ~CPUID_EXT_PDCM;
-         }
-+
-+        if (!cpu->amd_perfmon_always_on) {
-+            env->features[FEAT_8000_0001_ECX] &= ~CPUID_EXT3_PERFCORE;
-+        }
-     }
-
-     for (i = 0; i < ARRAY_SIZE(feature_dependencies); i++) {
-         FeatureDep *d = &feature_dependencies[i];
-+        bool compat_omit = false;
-+        PropValue *prop = &d->compat_prop;
-+
-+        if (prop->value) {
-+            char *v = object_property_print(OBJECT(cpu), prop->prop, false, NULL);
-+            if (v) {
-+                compat_omit = !strcmp(prop->value, v);
-+                printf("feature_dependencies: v: %s, value: %s, omit: %d\n",
-+                       v, prop->value, compat_omit);
-+                g_free(v);
-+            }
-+
-+            if (compat_omit) {
-+                continue;
-+            }
-+        }
-+
-         if (!(env->features[d->from.index] & d->from.mask)) {
-             uint64_t unavailable_features = env->features[d->to.index] & d->to.mask;
-
-@@ -10065,6 +10088,8 @@ static const Property x86_cpu_properties[] = {
-                      arch_cap_always_on, false),
-     DEFINE_PROP_BOOL("x-pdcm-on-even-without-pmu", X86CPU,
-                      pdcm_on_even_without_pmu, false),
-+    DEFINE_PROP_BOOL("x-amd-perfmon-always-on", X86CPU,
-+                     amd_perfmon_always_on, false),
- };
-
- #ifndef CONFIG_USER_ONLY
-diff --git a/target/i386/cpu.h b/target/i386/cpu.h
-index 6d78f3995b6b..ac8dd92efc59 100644
---- a/target/i386/cpu.h
-+++ b/target/i386/cpu.h
-@@ -696,8 +696,14 @@ typedef struct FeatureMask {
-     uint64_t mask;
- } FeatureMask;
-
-+typedef struct PropValue {
-+    const char *prop, *value;
-+} PropValue;
-+
- typedef struct FeatureDep {
-     FeatureMask from, to;
-+    /* Once set, only when prop is satisfied, dependency can be checked. */
-+    PropValue compat_prop;
- } FeatureDep;
-
- typedef uint64_t FeatureWordArray[FEATURE_WORDS];
-@@ -2353,6 +2359,16 @@ struct ArchCPU {
-      */
-     bool pdcm_on_even_without_pmu;
-
-+    /*
-+     * Backwards compatibility with QEMU <10.2. (TODO: change 10.2 to 11.0!)
-+     * This flag covers 2 parts:
-+     * - The PERFCORE feature is now disabled when PMU is not available, but prior to
-+     *   10.2 it was enabled even if PMU is off.
-+     * - The PerfMonV2 feature is now disabled when PERFCORE is disabled, but prior to
-+     *   10.2 it was enabled even if PERFCORE is off.
-+     */
-+    bool amd_perfmon_always_on;
-+
-     /* Number of physical address bits supported */
-     uint32_t phys_bits;
-
-@@ -2579,9 +2595,7 @@ bool cpu_x86_xrstor(CPUX86State *s, void *host, size_t len, uint64_t rbfm);
- /* cpu.c */
- void x86_cpu_vendor_words2str(char *dst, uint32_t vendor1,
-                               uint32_t vendor2, uint32_t vendor3);
--typedef struct PropValue {
--    const char *prop, *value;
--} PropValue;
-+
- void x86_cpu_apply_props(X86CPU *cpu, PropValue *props);
-
- void x86_cpu_after_reset(X86CPU *cpu);
-
+Paolo
 
