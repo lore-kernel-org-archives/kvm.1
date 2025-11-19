@@ -1,236 +1,161 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from CY3PR05CU001.outbound.protection.outlook.com (mail-westcentralusazon11013043.outbound.protection.outlook.com [40.93.201.43])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C5902D4816
-	for <kvm@vger.kernel.org>; Wed, 19 Nov 2025 02:56:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763520996; cv=none; b=GEkvJHuntaxyFRnqc5RNkHus2KNYpJSwcEvAdL3XBH7S0+44nHgHTwI/SrHbGcg523RMSCruKHIvNoUiuSPMKNYQ6FwpPW6xy04zHupQ3h1SeCtqTPm1RGZtnxlud9vIvyOQ3z4pWJlFDWhQc7OZiiQqP1UmIdysMEVtU1ng/sY=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763520996; c=relaxed/simple;
-	bh=G12hxObS9vVdQSHOVQsEwJdya84pJfSeHUQ2pXezb/M=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=DyLghZCqAkDVMsV2CDqQGy+0m378Qt+pXQ0TGCjAZL1FtlkejZyFCGZCiGny10olczdNO0wfeF0iB+RDsTDE8FI9FFufeZMyigPWxbovIerVdqfY4Ck9qfb8i7d2ZgKTYYK13OWzuvy5rTZTFKL8vCpKxOm5kcCISLJbcQmMuuI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=Bu0Jm5HU; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=ZXBYrMFC; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 585F925EFB6;
+	Wed, 19 Nov 2025 02:57:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.93.201.43
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1763521060; cv=fail; b=nDKVnJGNBeEAnlU40zKiuTLG2HACHvZ06P/+ipQJ95+6LAc2VBOFYg5tXa/ITd8yoW3bEjXzQ+7dkMNDQc6xLguaPZ1wREuEPJKFNm/2WfdtdiDxAkYU7WnaDm1IhRVsyiwS4oSJTXL0jyT3gOVB7SH5Bpp2CGithXRdGzqvSQU=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1763521060; c=relaxed/simple;
+	bh=fQKrVrwHRKLhnEMM5gHKRGDSiCTkaqgqzHYOdDHaPmI=;
+	h=Date:From:To:CC:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=eraJlb4rwL0SJspnkWiX6FffdAR9PKUulhGE02msQ6VbZdf/jXzydFrcT60uLdymds6zXnKGVOlcLwHaTWTAoOOWStYAnjn52yYn2NY/hz/fI111BA6csSXWGlHRl9prMt51FE+c2CqoNfGN6VAZO0a1ym49hjnUiIQuUbSJsS0=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=FWEAaOKY; arc=fail smtp.client-ip=40.93.201.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="Bu0Jm5HU";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="ZXBYrMFC"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1763520993;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=jDvPTx8od/LRicGRV59Ci5CqBppmh/yq9CH+cOE9Xiw=;
-	b=Bu0Jm5HUvWXy2aT0LbgwZdQYUPGq1IqUqoc0oi50oLNLTDOj+CWsxMDKmNuLrtZdslSVll
-	hP5OW1Zh4s/guy+xx0i909+jKQNb+Qi6+9g+kAZF5q4zYya9bXaYZqn/vvdFol5pbgq/sU
-	ZoJa4bY80WLv4rTtnRCi/edLjRLfRf0=
-Received: from mail-ua1-f70.google.com (mail-ua1-f70.google.com
- [209.85.222.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-144-N_nvdy9CMlSFxEn16AMl4Q-1; Tue, 18 Nov 2025 21:56:32 -0500
-X-MC-Unique: N_nvdy9CMlSFxEn16AMl4Q-1
-X-Mimecast-MFC-AGG-ID: N_nvdy9CMlSFxEn16AMl4Q_1763520991
-Received: by mail-ua1-f70.google.com with SMTP id a1e0cc1a2514c-9372401215fso13318373241.3
-        for <kvm@vger.kernel.org>; Tue, 18 Nov 2025 18:56:31 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1763520990; x=1764125790; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=jDvPTx8od/LRicGRV59Ci5CqBppmh/yq9CH+cOE9Xiw=;
-        b=ZXBYrMFC4R3upu86JqxrnKc8pUwc541fOUIcr2lW83OWb7MyiGlakRT3DQh/NNaklx
-         DuI0W82eWlyIfqQgWwvw3aZX99ngVnxCH4UEU4Om8/bCaIEO0sZhrL2fsSRXOMXvVRBO
-         X3Z4uIZXaKSeiduiMyfySKcmUQILVfqnXW0vePUqWdvjUv9JDXuRM1iZJKRPUEXGif8E
-         1dGc16Bs3uXdqAsvoaJdlFquFjQdEQVB/zz+QvWFbS/Obb4vmUotnaF24u/v9fqxQa0J
-         7ma96TyOM2OnZynw7Trsld6H4EpG/uZWGcGkaWVMK2PcFdXm2X2O4knA933oiINc05nV
-         qoVQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1763520990; x=1764125790;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=jDvPTx8od/LRicGRV59Ci5CqBppmh/yq9CH+cOE9Xiw=;
-        b=vTHqUrh6YmL2OBAeZrMMNwgMhGdt1zJFRFOiQbIv8Sud3qExammI2ExrV39akDo4dt
-         ET2/JIeAJFULmr6ZduZnx8sUX3w4p7sqjrP26aytRZxJfftgU6gY//884CHOEwU3+mG8
-         LtB5RE+BBZd12lK0OiC+HjXXnUnrGecbxqkdCqH1CC6Y2GrPEh1yKpFx6yN70ktZ1xxu
-         sQEEo9JHoQ7glnRcflwyTIYhxV2PTqe4+SpdQ9k3qYHTVN1nseIZ20l9Il2+H2QJvbKl
-         gRce08Tal6mk6kPA57GkoKLj3vR9nsIE9DLaeZF84xKwpngcgpCkq8fO/A8xiJkPu60v
-         pM3w==
-X-Forwarded-Encrypted: i=1; AJvYcCWLdfNj3y8N8JGee8xbngojgqJ+b+ppiH1ebf6jtTVnnaAJQP7qb/3IW79FrDrb6eWoUrI=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwGEakVVYOmEJ3DfeCOUC+3ATOBTJnPLJBtOm0LDHAnlIBszple
-	Y1jdB1EH84X+aS01ms2QTdeC0f1J02nP9wN2WiJ3pr5NFt8IahK60RPt9OCKkDhtsIVmxDGNJeJ
-	FaU/iWml9T1a5usRFPts5xOIzQKju+yPnqWueNyRLxqvszYDbu3rcoPzAEfxTGXuL0FR7ANMz/v
-	bv6TTLDiy5ip8uprb5nZ/sNIjRq9FbARbHK/f9zYM=
-X-Gm-Gg: ASbGncvuz53jhsvKhkUrH3dwOstj0+/HydLcVi30x4VVtsA+wHXIQCUHC8Mt6Idatyz
-	Xr6I6xu2z4f/Rrg0aYVOPeZket+120RS3W0H2shCLLpdu7639tibtLuDTw7HsqWUin5/AaJ1W3+
-	BXJK/b9yEKFwdATFntYDmQ3a6grNk4KD2i1DtetYInUaUx+MF4GZwlpsAtTxDgsf0=
-X-Received: by 2002:a05:6102:e0a:b0:5db:ef3f:6c7d with SMTP id ada2fe7eead31-5dfc5556bf8mr6112208137.14.1763520990178;
-        Tue, 18 Nov 2025 18:56:30 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IEMHvc8TbnsY8T2F+eiw7C0cSgj9lMpJACXTR8AzjwZ2GrCglhiRk/Pmo0QAEu0HhMJS9z+SDjksvQGpkSmyfk=
-X-Received: by 2002:a05:6102:e0a:b0:5db:ef3f:6c7d with SMTP id
- ada2fe7eead31-5dfc5556bf8mr6112195137.14.1763520989781; Tue, 18 Nov 2025
- 18:56:29 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="FWEAaOKY"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=Bxm3RXxvubiwG4dOPhIVnJPy8h8SFYdyUflcBn4Ef8t2snJLVzEE/x0F8QQr11Kv4oY53ZliRK6niX5SJZGNnRAdwb0U8IhdLohfzb+a2djntIuX+xA/LwrwLPvkGDAnU5WFijHDv6eSIk6ZfuoB+LC7ez6Ovj371kmVgrWxv9Kgd0HeR99JgUx4rGEMo/LzwQg5Rt+8Y/03kNIoQMmdrc5nCri7WlXSNPDoFvrgaBIPyXTmFe9YU9STv46FziyJSszgtK8UPTwMrrny16yWWy0LDYWz50jBo5aVEyZN/v1tMb0NcA8NopvOJi54brUBPpZ67a036ECVthAt5D+Bpg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=nKjwVPwmJFzJqbdbyIv7KhtlryrsG3+BBiTqRk3yV4E=;
+ b=HDAgRmoYx4bxUWi1RLfoQ5qqa7imxTLA8eSn3R7ySf9tGDVhWtNlv0iRZ81CmjJo7YKHlEFOowRdvNUV+eeK3OGIq81bXUGPmcEniIbN4T4uNij/TBFPzMyS5gSGgv0zGkX0iYM2ipVM241exCxkqdbAs1oPtj+l2rNZAlNG6UHNpZK5Gpx63WnQgAVOhWFHx+vpH3evDiLuGH0VCL1RFAh/XtqYhdbU/zgM8sHEuO9gmqrgMr0+B8beMSJGxmg0IcsfbIZ/fOC7yL2CqxMmT4HPwb8lQxo9FRh+5Rs4uh4f7t+0cv0N39rQlnidElDms1XeMvdT0+bOhbuzWYjO+Q==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 216.228.118.232) smtp.rcpttodomain=linux.intel.com smtp.mailfrom=nvidia.com;
+ dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=nKjwVPwmJFzJqbdbyIv7KhtlryrsG3+BBiTqRk3yV4E=;
+ b=FWEAaOKY75gJSAkXUqzqb1Lk/+MJb3IOz+gqWksdkE0tjwpmpy9eqDRHiEIEYQGfWrjJEriEvz5V2dLeAMpazYPCFxMxByOmzL3M/UMbJ2tw6n8K+meWP8WWhnwsDGC3al/DMWJEh800XLfs3GFJSAGrWTtsJv2voxp0BwWwXi+CXkzD84vZjcXcMLPmS1dpDqvG06nr2w3XLyxNeprYG5eLqJ0RzugEk7CndBb6zXNVJrlWzrAvTo4KfSrxkiJzL4Xb84lE0dVIZZqnneqhXRY3sfkHRiXV5aIjcG0fxMhXdAxf0Bu0DdFQzuhy3fobWwqohAJKLyD7S07QeOvcJw==
+Received: from CH2PR14CA0043.namprd14.prod.outlook.com (2603:10b6:610:56::23)
+ by DM3PR12MB9349.namprd12.prod.outlook.com (2603:10b6:0:49::12) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9320.22; Wed, 19 Nov
+ 2025 02:57:33 +0000
+Received: from CH3PEPF00000012.namprd21.prod.outlook.com
+ (2603:10b6:610:56:cafe::f9) by CH2PR14CA0043.outlook.office365.com
+ (2603:10b6:610:56::23) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.9343.10 via Frontend Transport; Wed,
+ 19 Nov 2025 02:57:32 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.118.232)
+ smtp.mailfrom=nvidia.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=nvidia.com;
+Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
+ 216.228.118.232 as permitted sender) receiver=protection.outlook.com;
+ client-ip=216.228.118.232; helo=mail.nvidia.com; pr=C
+Received: from mail.nvidia.com (216.228.118.232) by
+ CH3PEPF00000012.mail.protection.outlook.com (10.167.244.117) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.9366.1 via Frontend Transport; Wed, 19 Nov 2025 02:57:33 +0000
+Received: from drhqmail201.nvidia.com (10.126.190.180) by mail.nvidia.com
+ (10.127.129.5) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20; Tue, 18 Nov
+ 2025 18:57:25 -0800
+Received: from drhqmail201.nvidia.com (10.126.190.180) by
+ drhqmail201.nvidia.com (10.126.190.180) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.20; Tue, 18 Nov 2025 18:57:25 -0800
+Received: from Asurada-Nvidia (10.127.8.11) by mail.nvidia.com
+ (10.126.190.180) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20 via Frontend
+ Transport; Tue, 18 Nov 2025 18:57:24 -0800
+Date: Tue, 18 Nov 2025 18:57:23 -0800
+From: Nicolin Chen <nicolinc@nvidia.com>
+To: Baolu Lu <baolu.lu@linux.intel.com>
+CC: <joro@8bytes.org>, <afael@kernel.org>, <bhelgaas@google.com>,
+	<alex@shazbot.org>, <jgg@nvidia.com>, <kevin.tian@intel.com>,
+	<will@kernel.org>, <robin.murphy@arm.com>, <lenb@kernel.org>,
+	<linux-arm-kernel@lists.infradead.org>, <iommu@lists.linux.dev>,
+	<linux-kernel@vger.kernel.org>, <linux-acpi@vger.kernel.org>,
+	<linux-pci@vger.kernel.org>, <kvm@vger.kernel.org>,
+	<patches@lists.linux.dev>, <pjaroszynski@nvidia.com>, <vsethi@nvidia.com>,
+	<helgaas@kernel.org>, <etzhao1900@gmail.com>
+Subject: Re: [PATCH v5 3/5] iommu: Add iommu_driver_get_domain_for_dev()
+ helper
+Message-ID: <aR0yEyFoKQk7AXcx@Asurada-Nvidia>
+References: <cover.1762835355.git.nicolinc@nvidia.com>
+ <0303739735f3f49bcebc244804e9eeb82b1c41dc.1762835355.git.nicolinc@nvidia.com>
+ <d5445875-76bd-453d-b959-25989f5d3060@linux.intel.com>
+ <aRTGwJ2CABOIKtq6@Asurada-Nvidia>
+ <aRwaHMcgQNqV/cCG@Asurada-Nvidia>
+ <69ebd6cc-7620-4156-b64c-35ae1344d54f@linux.intel.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20251118090942.1369-1-liming.wu@jaguarmicro.com>
-In-Reply-To: <20251118090942.1369-1-liming.wu@jaguarmicro.com>
-From: Jason Wang <jasowang@redhat.com>
-Date: Wed, 19 Nov 2025 10:56:17 +0800
-X-Gm-Features: AWmQ_bmKFv4JLlor4jL7WLrkrIdgod9abx7FeAA8sB4t9HbQcF1R97xzgCvVagE
-Message-ID: <CACGkMEvwedzRrMd9hYm7PbDezBu1GM3q-YcUhsvfYJVv=bNSdw@mail.gmail.com>
-Subject: Re: [PATCH] virtio_net: enhance wake/stop tx queue statistics accounting
-To: liming.wu@jaguarmicro.com
-Cc: "Michael S . Tsirkin" <mst@redhat.com>, Xuan Zhuo <xuanzhuo@linux.alibaba.com>, 
-	=?UTF-8?Q?Eugenio_P=C3=A9rez?= <eperezma@redhat.com>, kvm@vger.kernel.org, 
-	virtualization@lists.linux-foundation.org, netdev@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, angus.chen@jaguarmicro.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="us-ascii"
+Content-Disposition: inline
+In-Reply-To: <69ebd6cc-7620-4156-b64c-35ae1344d54f@linux.intel.com>
+X-NV-OnPremToCloud: ExternallySecured
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CH3PEPF00000012:EE_|DM3PR12MB9349:EE_
+X-MS-Office365-Filtering-Correlation-Id: cd9d1163-36ff-4a91-486e-08de271762fe
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|7416014|376014|1800799024|82310400026|36860700013|13003099007;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?4eK6mE6CB1kvtaSM+Jl5kn8X751w5m40QcHkx+uiIIYyH6EpdklI4E7WRw3T?=
+ =?us-ascii?Q?KS18WmHCAyDnW8vkBYKmJuwqb06c+w/buuai8cKWjoZprft5YDUBJQypOOTY?=
+ =?us-ascii?Q?ob7w0XrP+oCz6LKZ6X+5XlPnNhK5yr69AQQbpz0moOw66wvXccaSCBF0xFIQ?=
+ =?us-ascii?Q?a2nf50R+T8rgTSGroJmxIlei17v9wsrHDpCwNd+wo1B51pNzebGnl7kRS5WO?=
+ =?us-ascii?Q?/lrfMe7ERx7R/RGv6nK5Uegu8Nv4apHfQA1Z+bx6sYeScr7xoMyXJ7MawL9X?=
+ =?us-ascii?Q?Ph0nZ6x4g59KFuaWuHpy6bBKoEVfxlQ+HGJ8GxtljRU1mlphv3gU/gPBixlM?=
+ =?us-ascii?Q?QbVUEMt3eIhloUzBfs7hQQBrKplT+pTsK+5ed2CkSQK81NcQuD0tj8KIDxDK?=
+ =?us-ascii?Q?wYIzRkGRDn/H7ElQJY1tw7pZ2RH7hiJ5BXydr+J7/WfO+6nzvCuzjoJzTKrC?=
+ =?us-ascii?Q?Wa/a4a+w9nfY2IiEu4DwDv63TxumLhukVb6JkO9xgps+hz/xPO0Gi4HJkGDl?=
+ =?us-ascii?Q?Nd6+cdmUj+671afY3vmK2luwKvDA8UPQ9avkNRF+cdlyC5qf9qVJNEcRRAd7?=
+ =?us-ascii?Q?UTrKpGID8FhzrotXyCYbtCjKQz1ZcHvTv8y4kyvQa+oONBhC6wkKiVIgvZqT?=
+ =?us-ascii?Q?DlCnkBkUiBaIJQaGqX/+9gn4CaJWm4+ovG9v8e1cpwJcNxkBaqlJN0cI7Jtf?=
+ =?us-ascii?Q?lEZDWawVHyBNmlHP0t1eSCqdGIKY1dJ6d4Fku7F44TEW31r1LSyqEH5ZTgYe?=
+ =?us-ascii?Q?EmEYGt2b1Ir+ctvMZAY3SigdrNPKHTG7nG2iaCakZl9NnxZnyjiMnhJOR2Tk?=
+ =?us-ascii?Q?FhKPDGggQ2AVoaZ/yMaFehVND1m5KcjKdGpLtmTHYQcRO8VheQ0CsYT9/XFt?=
+ =?us-ascii?Q?IjxVNDrGYpZRgTuG31lq7Fa+2DBy5ua1RLk5JjhBnbscDpSBJ+QyDVRocJ3l?=
+ =?us-ascii?Q?TNaj6NHrLFZ7mW625KuFMPp91j9mOw353LEG2e89nbjEgoZTu7fBYMGMyz7O?=
+ =?us-ascii?Q?Ze0WFjVpPcvfmrYJMrzyAzPfKp5sLdctdYh18smzoDxSmgJedaOTWRlYY0k1?=
+ =?us-ascii?Q?Pm0999EOsSrnI5A3b5jzlBK5zeXFQX0wD/dsu59u1MeCdWKiJrABYgZDNJDi?=
+ =?us-ascii?Q?eLMLuReE6ccQ+HeIpZRo2T7NYqFed4QUFZY/FtzorGQtvETIfSdoXH+X/zrz?=
+ =?us-ascii?Q?ggpv3OI6eN8BrH3+TyayFIsnYf5+MNpE/MeAFOo3kqyIOlj6U8LJhCPwtVdl?=
+ =?us-ascii?Q?z1fXx0XIow+UI0tQZBrpKGs1Rd2ubuwG3sCJb/DT0oVv848v/XRIH6VHa3/S?=
+ =?us-ascii?Q?V91YHJECYvLASqcBr1AVkqdyJNRz88XknPy91HjQoRSNa9S1NfAHOK4kP7+u?=
+ =?us-ascii?Q?BVseQX9EKaLleAXpO5N3mt5GSfhm9kRYrbpRePHu1Xyz1XxyvzBwhk+9k4qj?=
+ =?us-ascii?Q?/Doux6fYlG5cSqCnI19rXaE7NyEpsiibclTUS7qjwDmZ6xSMqTI0zq8Xp4Is?=
+ =?us-ascii?Q?5O2/rzGgETUgLBP9Pd9DiEQFekx5T23Cc02unWm2bseG+YX5xkqaz9f945Ki?=
+ =?us-ascii?Q?WnLTuPeR7gMxohjpG7k=3D?=
+X-Forefront-Antispam-Report:
+	CIP:216.228.118.232;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc7edge1.nvidia.com;CAT:NONE;SFS:(13230040)(7416014)(376014)(1800799024)(82310400026)(36860700013)(13003099007);DIR:OUT;SFP:1101;
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 19 Nov 2025 02:57:33.0345
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: cd9d1163-36ff-4a91-486e-08de271762fe
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.118.232];Helo=[mail.nvidia.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	CH3PEPF00000012.namprd21.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM3PR12MB9349
 
-On Tue, Nov 18, 2025 at 5:10=E2=80=AFPM <liming.wu@jaguarmicro.com> wrote:
->
-> From: Liming Wu <liming.wu@jaguarmicro.com>
->
-> This patch refines and strengthens the statistics collection of TX queue
-> wake/stop events introduced by a previous patch.
+On Wed, Nov 19, 2025 at 10:47:26AM +0800, Baolu Lu wrote:
+> On 11/18/25 15:02, Nicolin Chen wrote:
+> > For v6, I tend to keep this API as-is, trying not to give troubles
+> > to existing callers. Jason suggested a potential followup series:
+> > https://lore.kernel.org/linux-iommu/20250821131304.GM802098@nvidia.com/
+> > That would replace this function, so maybe we can think about that.
+> > 
+> > If you have a strong feeling about the WARN_ON, please let me know.
+> > 
+> No strong feeling. I am fine with it because the comments have already
+> stated that "This function can be called within a driver bound to dev.".
 
-It would be better to add commit id here.
+Ack. Thanks!
 
->
-> Previously, the driver only recorded partial wake/stop statistics
-> for TX queues. Some wake events triggered by 'skb_xmit_done()' or resume
-> operations were not counted, which made the per-queue metrics incomplete.
->
-> Signed-off-by: Liming Wu <liming.wu@jaguarmicro.com>
-> ---
->  drivers/net/virtio_net.c | 49 ++++++++++++++++++++++------------------
->  1 file changed, 27 insertions(+), 22 deletions(-)
->
-> diff --git a/drivers/net/virtio_net.c b/drivers/net/virtio_net.c
-> index 8e8a179aaa49..f92a90dde2b3 100644
-> --- a/drivers/net/virtio_net.c
-> +++ b/drivers/net/virtio_net.c
-> @@ -775,10 +775,26 @@ static bool virtqueue_napi_complete(struct napi_str=
-uct *napi,
->         return false;
->  }
->
-> +static void virtnet_tx_wake_queue(struct virtnet_info *vi,
-> +                               struct send_queue *sq)
-> +{
-> +       unsigned int index =3D vq2txq(sq->vq);
-> +       struct netdev_queue *txq =3D netdev_get_tx_queue(vi->dev, index);
-> +
-> +       if (netif_tx_queue_stopped(txq)) {
-> +               u64_stats_update_begin(&sq->stats.syncp);
-> +               u64_stats_inc(&sq->stats.wake);
-> +               u64_stats_update_end(&sq->stats.syncp);
-> +               netif_tx_wake_queue(txq);
-> +       }
-> +}
-> +
->  static void skb_xmit_done(struct virtqueue *vq)
->  {
->         struct virtnet_info *vi =3D vq->vdev->priv;
-> -       struct napi_struct *napi =3D &vi->sq[vq2txq(vq)].napi;
-> +       unsigned int index =3D vq2txq(vq);
-> +       struct send_queue *sq =3D &vi->sq[index];
-> +       struct napi_struct *napi =3D &sq->napi;
->
->         /* Suppress further interrupts. */
->         virtqueue_disable_cb(vq);
-> @@ -786,8 +802,7 @@ static void skb_xmit_done(struct virtqueue *vq)
->         if (napi->weight)
->                 virtqueue_napi_schedule(napi, vq);
->         else
-> -               /* We were probably waiting for more output buffers. */
-> -               netif_wake_subqueue(vi->dev, vq2txq(vq));
-> +               virtnet_tx_wake_queue(vi, sq);
->  }
->
->  #define MRG_CTX_HEADER_SHIFT 22
-> @@ -1166,10 +1181,7 @@ static void check_sq_full_and_disable(struct virtn=
-et_info *vi,
->                         /* More just got used, free them then recheck. */
->                         free_old_xmit(sq, txq, false);
->                         if (sq->vq->num_free >=3D MAX_SKB_FRAGS + 2) {
-> -                               netif_start_subqueue(dev, qnum);
-> -                               u64_stats_update_begin(&sq->stats.syncp);
-> -                               u64_stats_inc(&sq->stats.wake);
-> -                               u64_stats_update_end(&sq->stats.syncp);
-> +                               virtnet_tx_wake_queue(vi, sq);
-
-This is suspicious, netif_tx_wake_queue() will schedule qdisc, or is
-this intended?
-
->                                 virtqueue_disable_cb(sq->vq);
->                         }
->                 }
-> @@ -3068,13 +3080,8 @@ static void virtnet_poll_cleantx(struct receive_qu=
-eue *rq, int budget)
->                         free_old_xmit(sq, txq, !!budget);
->                 } while (unlikely(!virtqueue_enable_cb_delayed(sq->vq)));
->
-> -               if (sq->vq->num_free >=3D MAX_SKB_FRAGS + 2 &&
-> -                   netif_tx_queue_stopped(txq)) {
-> -                       u64_stats_update_begin(&sq->stats.syncp);
-> -                       u64_stats_inc(&sq->stats.wake);
-> -                       u64_stats_update_end(&sq->stats.syncp);
-> -                       netif_tx_wake_queue(txq);
-> -               }
-> +               if (sq->vq->num_free >=3D MAX_SKB_FRAGS + 2)
-> +                       virtnet_tx_wake_queue(vi, sq);
->
->                 __netif_tx_unlock(txq);
->         }
-> @@ -3264,13 +3271,8 @@ static int virtnet_poll_tx(struct napi_struct *nap=
-i, int budget)
->         else
->                 free_old_xmit(sq, txq, !!budget);
->
-> -       if (sq->vq->num_free >=3D MAX_SKB_FRAGS + 2 &&
-> -           netif_tx_queue_stopped(txq)) {
-> -               u64_stats_update_begin(&sq->stats.syncp);
-> -               u64_stats_inc(&sq->stats.wake);
-> -               u64_stats_update_end(&sq->stats.syncp);
-> -               netif_tx_wake_queue(txq);
-> -       }
-> +       if (sq->vq->num_free >=3D MAX_SKB_FRAGS + 2)
-> +               virtnet_tx_wake_queue(vi, sq);
->
->         if (xsk_done >=3D budget) {
->                 __netif_tx_unlock(txq);
-> @@ -3521,6 +3523,9 @@ static void virtnet_tx_pause(struct virtnet_info *v=
-i, struct send_queue *sq)
->
->         /* Prevent the upper layer from trying to send packets. */
->         netif_stop_subqueue(vi->dev, qindex);
-> +       u64_stats_update_begin(&sq->stats.syncp);
-> +       u64_stats_inc(&sq->stats.stop);
-> +       u64_stats_update_end(&sq->stats.syncp);
->
->         __netif_tx_unlock_bh(txq);
->  }
-> @@ -3537,7 +3542,7 @@ static void virtnet_tx_resume(struct virtnet_info *=
-vi, struct send_queue *sq)
->
->         __netif_tx_lock_bh(txq);
->         sq->reset =3D false;
-> -       netif_tx_wake_queue(txq);
-> +       virtnet_tx_wake_queue(vi, sq);
->         __netif_tx_unlock_bh(txq);
->
->         if (running)
-> --
-> 2.34.1
->
-
-Thanks
-
+Nicolin
