@@ -1,350 +1,186 @@
-Received: from mail.loongson.cn (mail.loongson.cn [114.242.206.163])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F3AFE313525;
-	Wed, 19 Nov 2025 06:12:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=114.242.206.163
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763532739; cv=none; b=EvfxaN7iY6GTwz8GY/fMzRuFS7Vq+BlxtkMwgZTiopgqs0Ola7NfDmWAuzj8SqThD5NUDv+A/+EdD5SjZODSntmbvZX68qz/UUv/kTwTj4EpePOwStI6xK/vHgadn6cnz4vII8nS80nJRMaoYp0PJGIvoBTZ/oWq9cVIdxWi2vk=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763532739; c=relaxed/simple;
-	bh=KxoYgn8R3u7q5pEkNPEUbXw3tyWVn1HAcjT/sw14z1U=;
-	h=Subject:From:To:Cc:References:Message-ID:Date:MIME-Version:
-	 In-Reply-To:Content-Type; b=NZyPr9hWhu70UV7k452PZJQykGfx3qYxPh9nI36nE433lrT9ncDV3HvxdTLS44RpDWpLzGWHD0JTMBSHvoBldS+zkdoulkJHFGKIEUQMtGk3QmTDz7Auxmve/IceKHZ4m+Lq6HgseOyHR0vxq952S6xNfKeOsXfhwclnWmye8tk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn; spf=pass smtp.mailfrom=loongson.cn; arc=none smtp.client-ip=114.242.206.163
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=loongson.cn
-Received: from loongson.cn (unknown [10.20.42.62])
-	by gateway (Coremail) with SMTP id _____8Axjr+8Xx1pLmglAA--.13135S3;
-	Wed, 19 Nov 2025 14:12:12 +0800 (CST)
-Received: from [10.20.42.62] (unknown [10.20.42.62])
-	by front1 (Coremail) with SMTP id qMiowJDxQ+S2Xx1pCio4AQ--.29734S3;
-	Wed, 19 Nov 2025 14:12:09 +0800 (CST)
-Subject: Re: [PATCH 2/3] LoongArch: Add paravirt support with
- vcpu_is_preempted()
-From: Bibo Mao <maobibo@loongson.cn>
-To: Huacai Chen <chenhuacai@kernel.org>
-Cc: Paolo Bonzini <pbonzini@redhat.com>, WANG Xuerui <kernel@xen0n.name>,
- Peter Zijlstra <peterz@infradead.org>, Ingo Molnar <mingo@redhat.com>,
- Will Deacon <will@kernel.org>, Boqun Feng <boqun.feng@gmail.com>,
- Waiman Long <longman@redhat.com>, Juergen Gross <jgross@suse.com>,
- Ajay Kaher <ajay.kaher@broadcom.com>,
- Alexey Makhalov <alexey.makhalov@broadcom.com>,
- Broadcom internal kernel review list
- <bcm-kernel-feedback-list@broadcom.com>, kvm@vger.kernel.org,
- loongarch@lists.linux.dev, linux-kernel@vger.kernel.org,
- virtualization@lists.linux.dev, x86@kernel.org
-References: <20251118080656.2012805-1-maobibo@loongson.cn>
- <20251118080656.2012805-3-maobibo@loongson.cn>
- <CAAhV-H4hoS0Wo3TS+FdikXMkb7qjWNFSPDoajQr0bzdeROJwGw@mail.gmail.com>
- <db8a26ca-8430-9e7d-4ad1-9b7743c4cfd1@loongson.cn>
-Message-ID: <147fe837-5f81-4246-7d01-84b75cb94e6f@loongson.cn>
-Date: Wed, 19 Nov 2025 14:09:42 +0800
-User-Agent: Mozilla/5.0 (X11; Linux loongarch64; rv:68.0) Gecko/20100101
- Thunderbird/68.7.0
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 19095313525;
+	Wed, 19 Nov 2025 06:14:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=192.198.163.10
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1763532857; cv=fail; b=CW/vgOxDD4V0xwDL53h0ZI+Z6osM31VjYgrGuJlIRCLRwEKzqiI0KBE08rRMRewOqh9fl/hedXU4hAKrv0vXLZsWc6hNgMnqkOttbXMHHXGS4Py92q+vCqrcrpQWy/V3OI1egKJB0GFJ2BCua8mKJbmUcaXoAkLrChXIFi0Zgq0=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1763532857; c=relaxed/simple;
+	bh=/AekqzzMbluT/Y/Z+RKzXlFt6gZe+sqOZi1evh8ogHo=;
+	h=Date:From:To:CC:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=UJjylTqoZ0v0LC5dQr+24Z+eHZB/kbq2sQfPX5wiP5wuURa28kBbjigGmmm/VxnZi3NNJDj9jrpUw/4rxjd/uwWHFf4CVE3eGMBlzaI80k5uLRvxQvzxPetsykooiji6Qv5Y6f/9s4AMZ4iugnfGTomooOFqRTquUXGwmPZi5wY=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=myM4TP1G; arc=fail smtp.client-ip=192.198.163.10
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="myM4TP1G"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1763532855; x=1795068855;
+  h=date:from:to:cc:subject:message-id:references:
+   in-reply-to:mime-version;
+  bh=/AekqzzMbluT/Y/Z+RKzXlFt6gZe+sqOZi1evh8ogHo=;
+  b=myM4TP1G/4g6pNrkbBB07PbzKE/Hu5OoX6ULrOwg4Dtqtc19ORgruK2D
+   TNjv/gOeVB6mbwr1aW77Q+n+CJZvmX7s68djHCug+RUDZk+0PNFuIVJ2e
+   bzAIvEfP9HGRdfhC6/FCGETNOsUE1db6yJKrT0wOBxs5Gytn6Ib9ZTKvx
+   hHA8uxOWcs2C0+FolK+nAL6LcZw10VWfM1IT3MPx3WJLfdaICoou0uJmD
+   kuPTiuZbofByDy9At1+s7pzR4PmTJznzfNyk9Yz6ono3I8tM0Wh4xxGSg
+   Gxu+3t1dMVIAzD8ZIEK4RyZAAzIxI0koHxkN9KSk8C5EFNyk/Pan4zHx1
+   Q==;
+X-CSE-ConnectionGUID: nD6kzoRJQeW0yavpsW7buA==
+X-CSE-MsgGUID: 6hLZpTghQ5GEyhuOtUy3XQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11617"; a="76920951"
+X-IronPort-AV: E=Sophos;i="6.19,315,1754982000"; 
+   d="scan'208";a="76920951"
+Received: from orviesa009.jf.intel.com ([10.64.159.149])
+  by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Nov 2025 22:14:14 -0800
+X-CSE-ConnectionGUID: DcjMNhI7TUG0OnpvN7VZ3g==
+X-CSE-MsgGUID: 2+lv0wFqSG+k6U3Xfg6xeA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.19,315,1754982000"; 
+   d="scan'208";a="190761535"
+Received: from fmsmsx903.amr.corp.intel.com ([10.18.126.92])
+  by orviesa009.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Nov 2025 22:14:12 -0800
+Received: from FMSMSX901.amr.corp.intel.com (10.18.126.90) by
+ fmsmsx903.amr.corp.intel.com (10.18.126.92) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.27; Tue, 18 Nov 2025 22:14:11 -0800
+Received: from fmsedg901.ED.cps.intel.com (10.1.192.143) by
+ FMSMSX901.amr.corp.intel.com (10.18.126.90) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.27 via Frontend Transport; Tue, 18 Nov 2025 22:14:11 -0800
+Received: from PH7PR06CU001.outbound.protection.outlook.com (52.101.201.65) by
+ edgegateway.intel.com (192.55.55.81) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.27; Tue, 18 Nov 2025 22:14:11 -0800
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=JZwwP0DSxUcFB1CM9SYljVCbd2wuVxbT6GbT1pukWYfWHBxxeWNva2CZSWyCr0/N2+gKKiHUUyMpc1Owv5dhEmy3nHuPSCG5e3M5PM1TH8jIVGeo17SW/GY+81IQ/5TlSLShBAFWm6KTxtt7aaCr8rZftBFfrevRcqkXRxVMlQZXbwV42t7ydzPNO/z5FSw0NaiIuOa255mw+kSGIK6B0BFDrWtyWS4jHw0QuByv/mV+QQ04aLdqi7dO7sawAJAQdD8HnnYW7I28iiFVGeB1I/48LXecQBnvTaD5Y7uSM49Lpo903oZ2EE0bzjb0VZeADY1GHDwIn8nc7WtzHmr4dQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=/AekqzzMbluT/Y/Z+RKzXlFt6gZe+sqOZi1evh8ogHo=;
+ b=tn8caQ1FUdjj2jpADSOsr6j+rVT2oJUSnsfiXxh7y9+U01XXnPYbYufE5uMwK7VBGRXmHNUXLYF2RThXqMs1/ZhRCy4k2VlPpz/jUn7HuAgwREnW72iwt3851x9nFkFJDhRLF3FFS7s1axrT6AgZwRfVKeySPK7E0OXh2Xp7CgPcoeLQTd88ucRl4W3EhSD0INKZrddkvSgh/W8nwDkYbwX2Ze6R1tn7a4TnDA4MMbSNzaltnONqZ6RYj+FxP0E/nJiwAJw1S5niQ4Pxxsrp4GrcqDYNhaC3Itj/1gpyKvGJ3Sdq9oq22k3hTokT3a72o6DgTpZ84iNEqQeiK/KOrA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+Received: from CH3PR11MB8660.namprd11.prod.outlook.com (2603:10b6:610:1ce::13)
+ by DS7PR11MB6222.namprd11.prod.outlook.com (2603:10b6:8:99::20) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9343.10; Wed, 19 Nov
+ 2025 06:14:08 +0000
+Received: from CH3PR11MB8660.namprd11.prod.outlook.com
+ ([fe80::fdc2:40ba:101d:40bf]) by CH3PR11MB8660.namprd11.prod.outlook.com
+ ([fe80::fdc2:40ba:101d:40bf%6]) with mapi id 15.20.9343.009; Wed, 19 Nov 2025
+ 06:14:08 +0000
+Date: Wed, 19 Nov 2025 14:13:56 +0800
+From: Chao Gao <chao.gao@intel.com>
+To: "Xin Li (Intel)" <xin@zytor.com>
+CC: <linux-kernel@vger.kernel.org>, <kvm@vger.kernel.org>,
+	<linux-doc@vger.kernel.org>, <pbonzini@redhat.com>, <seanjc@google.com>,
+	<corbet@lwn.net>, <tglx@linutronix.de>, <mingo@redhat.com>, <bp@alien8.de>,
+	<dave.hansen@linux.intel.com>, <x86@kernel.org>, <hpa@zytor.com>,
+	<luto@kernel.org>, <peterz@infradead.org>, <andrew.cooper3@citrix.com>,
+	<hch@infradead.org>, <sohil.mehta@intel.com>
+Subject: Re: [PATCH v9 14/22] KVM: x86: Save/restore the nested flag of an
+ exception
+Message-ID: <aR1gJLQNykeMT4CR@intel.com>
+References: <20251026201911.505204-1-xin@zytor.com>
+ <20251026201911.505204-15-xin@zytor.com>
+Content-Type: text/plain; charset="us-ascii"
+Content-Disposition: inline
+In-Reply-To: <20251026201911.505204-15-xin@zytor.com>
+X-ClientProxiedBy: KUZPR02CA0001.apcprd02.prod.outlook.com
+ (2603:1096:d10:33::6) To CH3PR11MB8660.namprd11.prod.outlook.com
+ (2603:10b6:610:1ce::13)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-In-Reply-To: <db8a26ca-8430-9e7d-4ad1-9b7743c4cfd1@loongson.cn>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:qMiowJDxQ+S2Xx1pCio4AQ--.29734S3
-X-CM-SenderInfo: xpdruxter6z05rqj20fqof0/
-X-Coremail-Antispam: 1Uk129KBj93XoW3uw4fKF45AFWrAFy7JFyxJFc_yoWDur1xpr
-	1kJFykJ3yUWr1kAw4UtF1jvryUJr18Jw1UXFy7XFyUtrsrWr1qqr1UXryjgr1UJr48Jr1j
-	qr1xJrW2vF17JabCm3ZEXasCq-sJn29KB7ZKAUJUUUU3529EdanIXcx71UUUUU7KY7ZEXa
-	sCq-sGcSsGvfJ3Ic02F40EFcxC0VAKzVAqx4xG6I80ebIjqfuFe4nvWSU5nxnvy29KBjDU
-	0xBIdaVrnRJUUUPIb4IE77IF4wAFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2
-	IYs7xG6rWj6s0DM7CIcVAFz4kK6r1Y6r17M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48v
-	e4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_JFI_Gr1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI
-	0_Gr0_Cr1l84ACjcxK6I8E87Iv67AKxVWxJVW8Jr1l84ACjcxK6I8E87Iv6xkF7I0E14v2
-	6r4UJVWxJr1ln4kS14v26r126r1DM2AIxVAIcxkEcVAq07x20xvEncxIr21l57IF6xkI12
-	xvs2x26I8E6xACxx1l5I8CrVACY4xI64kE6c02F40Ex7xfMcIj6xIIjxv20xvE14v26r12
-	6r1DMcIj6I8E87Iv67AKxVW8JVWxJwAm72CE4IkC6x0Yz7v_Jr0_Gr1lF7xvr2IY64vIr4
-	1lc7I2V7IY0VAS07AlzVAYIcxG8wCY1x0262kKe7AKxVWUtVW8ZwCF04k20xvY0x0EwIxG
-	rwCFx2IqxVCFs4IE7xkEbVWUJVW8JwCFI7km07C267AKxVWUAVWUtwC20s026c02F40E14
-	v26r1j6r18MI8I3I0E7480Y4vE14v26r106r1rMI8E67AF67kF1VAFwI0_GFv_WrylIxkG
-	c2Ij64vIr41lIxAIcVC0I7IYx2IY67AKxVWUCVW8JwCI42IY6xIIjxv20xvEc7CjxVAFwI
-	0_Gr0_Cr1lIxAIcVCF04k26cxKx2IYs7xG6r1j6r1xMIIF0xvEx4A2jsIE14v26r4j6F4U
-	MIIF0xvEx4A2jsIEc7CjxVAFwI0_Gr0_Gr1UYxBIdaVFxhVjvjDU0xZFpf9x07joc_-UUU
-	UU=
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CH3PR11MB8660:EE_|DS7PR11MB6222:EE_
+X-MS-Office365-Filtering-Correlation-Id: f3435889-1673-4f9f-a12f-08de2732d988
+X-LD-Processed: 46c98d88-e344-4ed4-8496-4ed7712e255d,ExtAddr
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|366016|7416014|376014|7053199007;
+X-Microsoft-Antispam-Message-Info: =?us-ascii?Q?bXykwUqphvLiKtHUSY33k7dFff21m0gp34YJmtUFmaUxyQzvxMMXlVXn/BDX?=
+ =?us-ascii?Q?gCFA/ddF+Hyuhy2vCX8KtTo7SHYg7w7GQYsJps14+BlLvhvZQXfwDfLzDVOs?=
+ =?us-ascii?Q?7sdGqxCdmiEo6VLn0CgP9h+wY5FSBnL0BzEDtiGC40T2ZbNYiBQagULtymHY?=
+ =?us-ascii?Q?CoPWQKxqACkhBFX/LML3MboSVx/nZjhDPVBHXu0sxIbdCE4SE+VJYU3W5TsF?=
+ =?us-ascii?Q?Q7lAJoHaJI/mBX/XDMJhkHZV0SsXZA0B23Ix/BLzrUX07CBGrIVJCh+kSog3?=
+ =?us-ascii?Q?Kp2TwojexWXBQ5lD7iWXEcBRVhcl3TWrO2BuFx2/KUBRKfC4jyVwunB087/D?=
+ =?us-ascii?Q?7s9k/3vmL9Lu/X3FVBgsSAPzslVae7uLpeGQP1R50jVK2I0bxGgpjr7B4yGX?=
+ =?us-ascii?Q?iz6wz+Eb8JLox6VNOyeEHa1+DUQ4BxKSgjDI8A/5gP8eV4AfZNIQTQfsnx2N?=
+ =?us-ascii?Q?HWkLFpgSSOEtYyA76L/gmHN+CO6Kub4RcQ5puakqeqzJHFQQ61YJZd3Mok5I?=
+ =?us-ascii?Q?FC5272FCAhbo0nmb+0uQ/aWgtzEjMTrDch2cqH1zGvToZSWOpWAdNIvQsT3N?=
+ =?us-ascii?Q?RIbnuuALJQP6cET6V1/GsxqrEmGEs0QOHDnlmmTErWgzx0sEGXTBdZRgE9Kz?=
+ =?us-ascii?Q?MA0FPtohqxu80Rt/p+lhae8pe54NKmuZnzlsqZ/pet9RpzQ3lY6QiDW7MofF?=
+ =?us-ascii?Q?3vdJY2A9BE1ZDrjysr7vmFaQJlo+dkd7807PiDI8xZGKumuLXyPrWcoQvs6I?=
+ =?us-ascii?Q?yD2bfAE8bOpJAh7+1vWORrydYwxqerms6sncKJWgx00MXJu3eSS/okszBNcR?=
+ =?us-ascii?Q?3Oyg1OLIno1daouk8K9Ex3SpgXXxP8g3T6lS8X2leshR769sUl+0I4vb5lAm?=
+ =?us-ascii?Q?Y+Hpyl5BJsZKHFOGGvKBoeOocA1KiD0DBBastVicyEdGYfRInDZr+YZR3HDg?=
+ =?us-ascii?Q?cbGJOdQ/YWpVflPxVX5U8/GU8UesbXGFIwtG2+v8Y+x3on3/FyoStt7vJNLy?=
+ =?us-ascii?Q?eUagLgc4bid9sAqm7cmUgCSH7kbe9U0VtzN8xLOc83+sEdaEJKCRCrGCG0W/?=
+ =?us-ascii?Q?BIX0Jxds2U7WWkETZL95GwCeBdM+rQj8pVePuX8BwrslZGu4ybNEvh+8OQiB?=
+ =?us-ascii?Q?w1u2Tzs1lRHYaVC0OVqR6yZReICjk+hGFi4jpj8oLPi80tXM1G0xmRrWuYZS?=
+ =?us-ascii?Q?I43CEcZzjMsFnUhZytqh7hpLdRqsCvlxl5/S5NgGQEhp/4FOu5tNF75Lmmfs?=
+ =?us-ascii?Q?UZfCpkXqkCjnGNy4ipQxL6qxHhLVd+FkWG/FTct7smH7jeGsfo4pQwzx1v8j?=
+ =?us-ascii?Q?aTzY6CNR7Apwjrj/8tfcxP2hJzGFHAa40vfUC1r/Q3VOxAW/2fyweOMF7pL3?=
+ =?us-ascii?Q?Ia2RL4A5dQe1TVS2akU61fwyJTPvYsUHApvCkF128112KzB8GYULv9fupw7u?=
+ =?us-ascii?Q?OfqfdfqtLAxZLOOswDE7cXup7DQQ1HqD?=
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH3PR11MB8660.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(7416014)(376014)(7053199007);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?UG8/zjKjXPfDjXOYCfqcqM5l9gjihQgw5XVtufL8Pwut7aPwcbBaQE5oFfLG?=
+ =?us-ascii?Q?2Dy9v0FwisbKoDXVVQMPpi+N71KKw2j5eArhgESoYHNjf6gQdq3E4idvA70h?=
+ =?us-ascii?Q?SBYj0/5Po+tppF0MaDn4dfZ/cjbX2quNW8wrqAlxFlc4G93omcHTtehK74jA?=
+ =?us-ascii?Q?XNoN8brx56vR/IZfX3dC4OZjXztkLi39y8wOpgRUairjkEyvsoVvdWgF8wv3?=
+ =?us-ascii?Q?tvpwV4JXtwe2BcprRMNB8hVTCvwmqzAt/HHWiYi0Qg/sll12JwxcLfn2jWo8?=
+ =?us-ascii?Q?3TMqgA6356p5Q/a1heG0Nt52AdwUc/9gEDbzRBufDDMsiCtOf1wLxvIzlVcE?=
+ =?us-ascii?Q?0Um1y/mlBS2iRaj1bwGeJPH6Bw/tXfqkWmUK+wc3XjjGehDe6w0Rfpw9wW4r?=
+ =?us-ascii?Q?iQJ7oFcs8Tqibm6ILPXsOiqF7ZZqawW1mFP1vHufV4l9JgWdKbF9tkSjbgV9?=
+ =?us-ascii?Q?u2SlOuFnmyiZHZogoibOZQROlq6plX1A2250ZTi5QrdhVtY97DPZuFys3faG?=
+ =?us-ascii?Q?JU9MRgqnF1knMmJntkhbtEXDal2VVUwwUpKEhmBA8XDMabW86hzGhGgdXaY8?=
+ =?us-ascii?Q?sIQ0pX/s2/XW9coV3NTio07LeJ3pmWTNNCK8JFeSYuy89+zSpPO7P4t8UUis?=
+ =?us-ascii?Q?zf60aQB2zqllZ/HkR3cMObitKF+2c/jhl5PvDMrjIpVNGIKvbxvjENl/O2hP?=
+ =?us-ascii?Q?/HHrrPf1FvbjaoS79V+oJsCo1OukK6qwRRQHzpuuBkIQGzMqVmSG295K8ZiU?=
+ =?us-ascii?Q?3S6Iv8/DdaGY/RsfIFuaooTLQDeJ7Rep3+txjx1cQzAzoywvamVCHKqAx5MP?=
+ =?us-ascii?Q?+2Xv/KUbH0krwKHa47Ui996SCtUe/H8FeiywB8DYDyb8PJiJBzAthexgQSoA?=
+ =?us-ascii?Q?D3rT7fs4KFQZgvWam2OL1uVM0cotnkRW9PUXr8umV5S/4UU/H9vIdYxZpR6b?=
+ =?us-ascii?Q?RRB0GAQG0OfZFo38+c28wh3/KgnqGz3Toweid4XJd0HDGukWh0TL1xTvCCCd?=
+ =?us-ascii?Q?c+XKuk6SouTHhb+SA+gUZKDjfSDczASJbw2fqx3G5XhjZdMl66x7wLadOc/1?=
+ =?us-ascii?Q?ReRVkmeoDq6QJBX5po6VGn0/3t4CAkUkcjMmgztfaVRKQaApBhOV0gdbDWKp?=
+ =?us-ascii?Q?oHU5vPUmdWOxas2znDTICteR/1VF9X6D0EpUp8HnNxNF1kccylK5IUB0mZxB?=
+ =?us-ascii?Q?2pMXAcxHt2fHmKEYGEsn3w1Bdj5zvwsjwvInKuXY6rCeFVwQ13jK6X7QKm69?=
+ =?us-ascii?Q?A+avesaASO2pK6Lal8+rrsw0O8USRZjlvNjVYADFIpSnlYYMSYsHKxCEvW/i?=
+ =?us-ascii?Q?BrMkmF6NrWKlgWSPKQVkG6IpoRoN4cfVqiY0wkr2S1FItPbVX9ubcUWr74CR?=
+ =?us-ascii?Q?Z8nQI+sOhVMZZaYHCsA5M7ZISUWGwiF2N4+gi96a5opJFVL20z+2Co82IpEC?=
+ =?us-ascii?Q?vXygtZ7e2uynmk0/HQPAvYiWgrSUEiG30eyhwZkb6vjuVTAt3kb5dW1DBiK5?=
+ =?us-ascii?Q?I0dqAv+fvO3Ifmu1o2NF0xjO/M/UC+wrQTlTy7OZU4V4bzRpcqyUWT9C6bml?=
+ =?us-ascii?Q?ntvww5zc/DdxTVix8jJgr96zghwuttbJm9QWZNmX?=
+X-MS-Exchange-CrossTenant-Network-Message-Id: f3435889-1673-4f9f-a12f-08de2732d988
+X-MS-Exchange-CrossTenant-AuthSource: CH3PR11MB8660.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 19 Nov 2025 06:14:08.6433
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: ExiRnI4BgoeQcR5rTSGA0pGDRBEi1UW28dHMwaQUHT2N4L/O4NOKyRgn91d+NSCdCDRFmZwJ1mN6GmFHk6bFgA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS7PR11MB6222
+X-OriginatorOrg: intel.com
 
+On Sun, Oct 26, 2025 at 01:19:02PM -0700, Xin Li (Intel) wrote:
+>Save/restore the nested flag of an exception during VM save/restore
+>and live migration to ensure a correct event stack level is chosen
+>when a nested exception is injected through FRED event delivery.
+>
+>Signed-off-by: Xin Li (Intel) <xin@zytor.com>
+>Tested-by: Xuelian Guo <xuelian.guo@intel.com>
 
-
-On 2025/11/19 上午9:59, Bibo Mao wrote:
-> 
-> 
-> On 2025/11/18 下午8:48, Huacai Chen wrote:
->> Hi, Bibo,
->>
->> On Tue, Nov 18, 2025 at 4:07 PM Bibo Mao <maobibo@loongson.cn> wrote:
->>>
->>> Function vcpu_is_preempted() is used to check whether vCPU is preempted
->>> or not. Here add implementation with vcpu_is_preempted() when option
->>> CONFIG_PARAVIRT is enabled.
->>>
->>> Signed-off-by: Bibo Mao <maobibo@loongson.cn>
->>> ---
->>>   arch/loongarch/include/asm/smp.h      |  1 +
->>>   arch/loongarch/include/asm/spinlock.h |  5 +++++
->>>   arch/loongarch/kernel/paravirt.c      | 16 ++++++++++++++++
->>>   arch/loongarch/kernel/smp.c           |  6 ++++++
->>>   4 files changed, 28 insertions(+)
->>>
->>> diff --git a/arch/loongarch/include/asm/smp.h 
->>> b/arch/loongarch/include/asm/smp.h
->>> index 3a47f52959a8..5b37f7bf2060 100644
->>> --- a/arch/loongarch/include/asm/smp.h
->>> +++ b/arch/loongarch/include/asm/smp.h
->>> @@ -18,6 +18,7 @@ struct smp_ops {
->>>          void (*init_ipi)(void);
->>>          void (*send_ipi_single)(int cpu, unsigned int action);
->>>          void (*send_ipi_mask)(const struct cpumask *mask, unsigned 
->>> int action);
->>> +       bool (*vcpu_is_preempted)(int cpu);
->>>   };
->>>   extern struct smp_ops mp_ops;
->>>
->>> diff --git a/arch/loongarch/include/asm/spinlock.h 
->>> b/arch/loongarch/include/asm/spinlock.h
->>> index 7cb3476999be..c001cef893aa 100644
->>> --- a/arch/loongarch/include/asm/spinlock.h
->>> +++ b/arch/loongarch/include/asm/spinlock.h
->>> @@ -5,6 +5,11 @@
->>>   #ifndef _ASM_SPINLOCK_H
->>>   #define _ASM_SPINLOCK_H
->>>
->>> +#ifdef CONFIG_PARAVIRT
->>> +#define vcpu_is_preempted      vcpu_is_preempted
->>> +bool vcpu_is_preempted(int cpu);
->>> +#endif
->> Maybe paravirt.h is a better place?
-> 
-> It is actually a little strange to add macro CONFIG_PARAVIRT in file 
-> asm/spinlock.h
-> 
-> vcpu_is_preempted is originally defined in header file 
-> include/linux/sched.h like this
-> #ifndef vcpu_is_preempted
-> static inline bool vcpu_is_preempted(int cpu)
-> {
->          return false;
-> }
-> #endif
-> 
-> that requires that header file is included before sched.h, file 
-> asm/spinlock.h can meet this requirement, however header file paravirt.h
-> maybe it is not included before sched.h in generic.
-> 
-> Here vcpu_is_preempted definition is added before the following including.
->     #include <asm/processor.h>
->     #include <asm/qspinlock.h>
->     #include <asm/qrwlock.h>
-> Maybe it is better to be added after the above header files including 
-> sentences, but need further investigation.
->>
->>> +
->>>   #include <asm/processor.h>
->>>   #include <asm/qspinlock.h>
->>>   #include <asm/qrwlock.h>
->>> diff --git a/arch/loongarch/kernel/paravirt.c 
->>> b/arch/loongarch/kernel/paravirt.c
->>> index b1b51f920b23..b99404b6b13f 100644
->>> --- a/arch/loongarch/kernel/paravirt.c
->>> +++ b/arch/loongarch/kernel/paravirt.c
->>> @@ -52,6 +52,13 @@ static u64 paravt_steal_clock(int cpu)
->>>   #ifdef CONFIG_SMP
->>>   static struct smp_ops native_ops;
->>>
->>> +static bool pv_vcpu_is_preempted(int cpu)
->>> +{
->>> +       struct kvm_steal_time *src = &per_cpu(steal_time, cpu);
->>> +
->>> +       return !!(src->preempted & KVM_VCPU_PREEMPTED);
->>> +}
->>> +
->>>   static void pv_send_ipi_single(int cpu, unsigned int action)
->>>   {
->>>          int min, old;
->>> @@ -308,6 +315,9 @@ int __init pv_time_init(void)
->>>                  pr_err("Failed to install cpu hotplug callbacks\n");
->>>                  return r;
->>>          }
->>> +
->>> +       if (kvm_para_has_feature(KVM_FEATURE_PREEMPT_HINT))
->>> +               mp_ops.vcpu_is_preempted = pv_vcpu_is_preempted;
->>>   #endif
->>>
->>>          static_call_update(pv_steal_clock, paravt_steal_clock);
->>> @@ -332,3 +342,9 @@ int __init pv_spinlock_init(void)
->>>
->>>          return 0;
->>>   }
->>> +
->>> +bool notrace vcpu_is_preempted(int cpu)
->>> +{
->>> +       return mp_ops.vcpu_is_preempted(cpu);
->>> +}
->>
->> We can simplify the whole patch like this, then we don't need to touch
->> smp.c, and we can merge Patch-2/3.
->>
->> +bool notrace vcpu_is_preempted(int cpu)
->> +{
->> +  if (!kvm_para_has_feature(KVM_FEATURE_PREEMPT_HINT))
->> +     return false;
->> + else {
->> +     struct kvm_steal_time *src = &per_cpu(steal_time, cpu);
->> +     return !!(src->preempted & KVM_VCPU_PREEMPTED);
->> + }
->> +}
-> 1. there is assembly output about relative vcpu_is_preempted
->   <loongson_vcpu_is_preempted>:
->                 move    $r4,$r0
->                 jirl    $r0,$r1,0
-> 
->   <pv_vcpu_is_preempted>:
->          pcalau12i       $r13,8759(0x2237)
->          slli.d  $r4,$r4,0x3
->          addi.d  $r13,$r13,-1000(0xc18)
->          ldx.d   $r13,$r13,$r4
->          pcalau12i       $r12,5462(0x1556)
->          addi.d  $r12,$r12,384(0x180)
->          add.d   $r12,$r13,$r12
->          ld.bu   $r4,$r12,16(0x10)
->          andi    $r4,$r4,0x1
->          jirl    $r0,$r1,0
-> 
->   <vcpu_is_preempted>:
->          pcalau12i       $r12,8775(0x2247)
->          ld.d    $r12,$r12,-472(0xe28)
->          jirl    $r0,$r12,0
->          andi    $r0,$r0,0x0
-> 
->   <vcpu_is_preempted_new>:
->          pcalau12i       $r12,8151(0x1fd7)
->          ld.d    $r12,$r12,-1008(0xc10)
->          bstrpick.d      $r12,$r12,0x1a,0x1a
->          beqz    $r12,188(0xbc) # 900000000024ec60
->          pcalau12i       $r12,11802(0x2e1a)
->          addi.d  $r12,$r12,-1400(0xa88)
->          ldptr.w $r14,$r12,36(0x24)
->          beqz    $r14,108(0x6c) # 900000000024ec20
->          addi.w  $r13,$r0,1(0x1)
->          bne     $r14,$r13,164(0xa4) # 900000000024ec60
->          ldptr.w $r13,$r12,40(0x28)
->          bnez    $r13,24(0x18) # 900000000024ebdc
->          lu12i.w $r14,262144(0x40000)
->          ori     $r14,$r14,0x4
->          cpucfg  $r14,$r14
->          slli.w  $r13,$r14,0x0
->          st.w    $r14,$r12,40(0x28)
->          bstrpick.d      $r13,$r13,0x3,0x3
->          beqz    $r13,128(0x80) # 900000000024ec60
->          pcalau12i       $r13,8759(0x2237)
->          slli.d  $r4,$r4,0x3
->          addi.d  $r13,$r13,-1000(0xc18)
->          ldx.d   $r13,$r13,$r4
->          pcalau12i       $r12,5462(0x1556)
->          addi.d  $r12,$r12,384(0x180)
->          add.d   $r12,$r13,$r12
->          ld.bu   $r4,$r12,16(0x10)
->          andi    $r4,$r4,0x1
->          jirl    $r0,$r1,0
->          andi    $r0,$r0,0x0
->          andi    $r0,$r0,0x0
->          andi    $r0,$r0,0x0
->          andi    $r0,$r0,0x0
->          andi    $r0,$r0,0x0
->          lu12i.w $r13,262144(0x40000)
->          cpucfg  $r13,$r13
->          lu12i.w $r15,1237(0x4d5)
->          ori     $r15,$r15,0x64b
->          slli.w  $r13,$r13,0x0
->          bne     $r13,$r15,-124(0x3ff84) # 900000000024ebb8
->          addi.w  $r13,$r0,1(0x1)
->          st.w    $r13,$r12,36(0x24)
->          b       -128(0xfffff80) # 900000000024ebc0
->          andi    $r0,$r0,0x0
->          andi    $r0,$r0,0x0
->          andi    $r0,$r0,0x0
->          andi    $r0,$r0,0x0
->          andi    $r0,$r0,0x0
->          andi    $r0,$r0,0x0
->          andi    $r0,$r0,0x0
->          move    $r4,$r0
->          jirl    $r0,$r1,0
-> 
-> With vcpu_is_preempted(), there is one memory load and one jirl jump, 
-> with vcpu_is_preempted_new(), there is two memory load and two beq 
-> compare instructions.
-> 
-> 2. In some scenery such nr_cpus == 1, loongson_vcpu_is_preempted() is 
-> better than pv_vcpu_is_preempted() even if the preempt feature is enabled.
-how about use static key and keep file smp.c untouched?
-bool notrace vcpu_is_preempted(int cpu)
-{
-         struct kvm_steal_time *src;
-
-         if (!static_branch_unlikely(&virt_preempt_key))
-                 return false;
-
-         src = &per_cpu(steal_time, cpu);
-         return !!(src->preempted & KVM_VCPU_PREEMPTED);
-}
-
-it reduces one memory load, here is assembly output:
-  <vcpu_is_preempted>:
-         andi    $r0,$r0,0x0
-         move    $r4,$r0
-         jirl    $r0,$r1,0
-         andi    $r0,$r0,0x0
-         pcalau12i       $r13,8759(0x2237)
-         slli.d  $r4,$r4,0x3
-         addi.d  $r13,$r13,-1000(0xc18)
-         ldx.d   $r13,$r13,$r4
-         pcalau12i       $r12,5462(0x1556)
-         addi.d  $r12,$r12,384(0x180)
-         add.d   $r12,$r13,$r12
-         ld.bu   $r4,$r12,16(0x10)
-         andi    $r4,$r4,0x1
-         jirl    $r0,$r1,0
-
-Regards
-Bibo Mao
-
-> 
-> Regards
-> Bibo Mao
->> Huacai
->>
->>> +EXPORT_SYMBOL(vcpu_is_preempted);
->>> diff --git a/arch/loongarch/kernel/smp.c b/arch/loongarch/kernel/smp.c
->>> index 46036d98da75..f04192fedf8d 100644
->>> --- a/arch/loongarch/kernel/smp.c
->>> +++ b/arch/loongarch/kernel/smp.c
->>> @@ -307,10 +307,16 @@ static void loongson_init_ipi(void)
->>>                  panic("IPI IRQ request failed\n");
->>>   }
->>>
->>> +static bool loongson_vcpu_is_preempted(int cpu)
->>> +{
->>> +       return false;
->>> +}
->>> +
->>>   struct smp_ops mp_ops = {
->>>          .init_ipi               = loongson_init_ipi,
->>>          .send_ipi_single        = loongson_send_ipi_single,
->>>          .send_ipi_mask          = loongson_send_ipi_mask,
->>> +       .vcpu_is_preempted      = loongson_vcpu_is_preempted,
->>>   };
->>>
->>>   static void __init fdt_smp_setup(void)
->>> -- 
->>> 2.39.3
->>>
->>>
-> 
-
+Reviewed-by: Chao Gao <chao.gao@intel.com>
