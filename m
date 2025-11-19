@@ -1,166 +1,313 @@
-Received: from BL2PR02CU003.outbound.protection.outlook.com (mail-eastusazon11011013.outbound.protection.outlook.com [52.101.52.13])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF3FE2D63F2;
-	Wed, 19 Nov 2025 02:58:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.52.13
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763521091; cv=fail; b=PdQ+eu3Dh55FDhtyttSwoPIprLwImnGvhdRmTOXt8nBXrQpQ3dvUhlwuUirGXgSKPPgztNb4TjGoWBjCJ2yzn3wg4vd6PPFLR1CtlFLMcI6dpv+bWLUGtMycakJV01xiRIW93usO+Y+EaqvsIVTrMknJkpzkbqF0gk8LY4veUqE=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763521091; c=relaxed/simple;
-	bh=IU+xN4mGlYYcOWYy8U2067Tzm1156ueIINw++idTvGQ=;
-	h=Date:From:To:CC:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=O9I/AQnR/HlAsqQqzn06Qgn1E0D3KdfzEoMR2hBh0+r3UGU53P0c8FuxtfqsgdSDeNspLjwlh5pTMB1wBFbV9BBNjdKQCOy5OdDsGu4579OTkv++qeZh82Q3+gY/nKF4OP8sPjDs6u16iTUdnfK63JNLOuXBVUlhwv7BVtKR9x0=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=V2NNDAYl; arc=fail smtp.client-ip=52.101.52.13
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="V2NNDAYl"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=d9svGsATLQpCMy30lRbYg99UkUmruAYoUEUbJWXDH+8tQ0WO0KskJ7b6icSYLoALckynO3y/yyst3i2YO8OPLG2m40Pa+NgAx7yqYDIUoIDk67u2OyNbC2xO8g39avgD3CtcMWasyQkIE+IpBUZM7M3IgYD5AyzkiZZItuicMr4/xbdPzGdnkUAzF9lRk4vusrI3hmW6M0nifFw2Xn4RxE99orO5wUyzoBm2kZJ80T9cdNW+A1DHZ2AMLFfFt/ShJAW7LB0gMpS6H5xActMOyAUlplNcHiAvJ8KNsZf2OhwkdDM+p2eamV2IDMFuO2TlrGlpQ8sepFsSxbZsb/KDFw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=oQgO+5ebdOnWGfqH9mnnlh3Ijz/z4H6/GahjpM15XXQ=;
- b=f7zTvl6h/hqco1xGjkhkgaWStgbtd0eYroItl46fKignklJmpYWbxA3wpXTt5w21x1Vl8nNyIGFLuOjkrqB8UCJbjOw0gxre4TeXkYUglQ3kobqfkqcnxzk2TydSHdPlpA03JzmX+w4ueyIljUB4mp64FlbKS1+Rt7udtQ4I1Ivw9GCjV8IOXDZUVsER49JeZWne2orQmX282/A9tZhArgsY/AZASe5fN8GyqKKdXckmSW0zTyZx1Zzdog3r8KNhym5YNr9G757xhI+p9PUm9WF7UmLxNQhYfWXjtClg4PUm39jaL39b79tV/TcclxyKTfbGq3lZn/YoJAytG2FpNg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 216.228.117.160) smtp.rcpttodomain=arm.com smtp.mailfrom=nvidia.com;
- dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
- dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=oQgO+5ebdOnWGfqH9mnnlh3Ijz/z4H6/GahjpM15XXQ=;
- b=V2NNDAYlaI1nkJ/u7LVncD4T4tXWH8Gpyges8bOyAidNY/nYYeNeGQi22PzGdl8vnlAOEHUk0mhMrKmcmCvrS/dUrMtl2usnnMOPiASNldRaJsJmi2Il59Mz+4AzMe7R05aDccDGz/px1pSd/aHJPZ7TZmNPo3v99e4oMPN290SWzDZkpYPgq8qN1Fp2WnMFmrttax09HyoXYMuoSWiCljuV0NrMH/vqM1WRi3x5CqMbgcDinASoVq0mNW8u6CvDFtlwOqnXDn72PBixIDzsGWt5jrj3M+z0fN3QZciIyHBRDza6KB/YbmlcxFeHthiCSGSTxEWtsvVwkoQ3nfdGEg==
-Received: from SN6PR08CA0005.namprd08.prod.outlook.com (2603:10b6:805:66::18)
- by LV2PR12MB5822.namprd12.prod.outlook.com (2603:10b6:408:179::9) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9343.10; Wed, 19 Nov
- 2025 02:56:53 +0000
-Received: from SN1PEPF000397B2.namprd05.prod.outlook.com
- (2603:10b6:805:66:cafe::de) by SN6PR08CA0005.outlook.office365.com
- (2603:10b6:805:66::18) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.20.9343.10 via Frontend Transport; Wed,
- 19 Nov 2025 02:56:53 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.117.160)
- smtp.mailfrom=nvidia.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=nvidia.com;
-Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
- 216.228.117.160 as permitted sender) receiver=protection.outlook.com;
- client-ip=216.228.117.160; helo=mail.nvidia.com; pr=C
-Received: from mail.nvidia.com (216.228.117.160) by
- SN1PEPF000397B2.mail.protection.outlook.com (10.167.248.56) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.9343.9 via Frontend Transport; Wed, 19 Nov 2025 02:56:52 +0000
-Received: from rnnvmail204.nvidia.com (10.129.68.6) by mail.nvidia.com
- (10.129.200.66) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20; Tue, 18 Nov
- 2025 18:56:36 -0800
-Received: from rnnvmail204.nvidia.com (10.129.68.6) by rnnvmail204.nvidia.com
- (10.129.68.6) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20; Tue, 18 Nov
- 2025 18:56:36 -0800
-Received: from Asurada-Nvidia (10.127.8.11) by mail.nvidia.com (10.129.68.6)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20 via Frontend
- Transport; Tue, 18 Nov 2025 18:56:34 -0800
-Date: Tue, 18 Nov 2025 18:56:33 -0800
-From: Nicolin Chen <nicolinc@nvidia.com>
-To: <robin.murphy@arm.com>, <joro@8bytes.org>, <afael@kernel.org>,
-	<bhelgaas@google.com>, <alex@shazbot.org>, <jgg@nvidia.com>,
-	<kevin.tian@intel.com>
-CC: <will@kernel.org>, <lenb@kernel.org>, <baolu.lu@linux.intel.com>,
-	<linux-arm-kernel@lists.infradead.org>, <iommu@lists.linux.dev>,
-	<linux-kernel@vger.kernel.org>, <linux-acpi@vger.kernel.org>,
-	<linux-pci@vger.kernel.org>, <kvm@vger.kernel.org>,
-	<patches@lists.linux.dev>, <pjaroszynski@nvidia.com>, <vsethi@nvidia.com>,
-	<helgaas@kernel.org>, <etzhao1900@gmail.com>
-Subject: Re: [PATCH v6 4/5] iommu: Introduce
- pci_dev_reset_iommu_prepare/done()
-Message-ID: <aR0x4b7fN22K36jR@Asurada-Nvidia>
-References: <cover.1763512374.git.nicolinc@nvidia.com>
- <246a652600f2ba510354a1a670fa1177280528be.1763512374.git.nicolinc@nvidia.com>
+Received: from mail.loongson.cn (mail.loongson.cn [114.242.206.163])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 47B252D5C61;
+	Wed, 19 Nov 2025 02:58:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=114.242.206.163
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1763521093; cv=none; b=lQgT1zLz8Bm4HqAI4Dm8ShCypBn+ABkdt3nJJUqfD7rVZKcLfNZ/h9tP15HV3jrVHK7fg7CheyCWX9/JU5Okh0IsEC9fxWSxuhjYGbtHDyuS3d82U0RU6HMIupZPK9zfxOhCeE6AQvNsGJxsQL0lzaazHLiunO8zzzv5n+D96H4=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1763521093; c=relaxed/simple;
+	bh=8b6Nn8XSUDWrgIFjX7sFV6/wgeQ7XUcqHmdirfRcl4s=;
+	h=Subject:To:Cc:References:From:Message-ID:Date:MIME-Version:
+	 In-Reply-To:Content-Type; b=Ja1dK7bmaztg0z3uAB2TU63Np4Ovc9R2+tmy6Naa0OxDLs8s7Cdxir4ku8URVG3YR2lMyZUOS0Et8Ym46qf8q0fOWXUf3N2aXlK/PK/t9bfQJEas1v8hCQqybbQ1Hq1zCmxRTlOlUXUmu/qNmroLpqWVcKxqWVv09xPl0jVH3bw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn; spf=pass smtp.mailfrom=loongson.cn; arc=none smtp.client-ip=114.242.206.163
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=loongson.cn
+Received: from loongson.cn (unknown [10.20.42.62])
+	by gateway (Coremail) with SMTP id _____8Axz788Mh1p_VIlAA--.12568S3;
+	Wed, 19 Nov 2025 10:58:04 +0800 (CST)
+Received: from [10.20.42.62] (unknown [10.20.42.62])
+	by front1 (Coremail) with SMTP id qMiowJDx_8M1Mh1pSAM4AQ--.27336S3;
+	Wed, 19 Nov 2025 10:57:59 +0800 (CST)
+Subject: Re: [PATCH 1/3] LoongArch: KVM: Add preempt hint feature in
+ hypervisor side
+To: Huacai Chen <chenhuacai@kernel.org>
+Cc: Paolo Bonzini <pbonzini@redhat.com>,
+ Tianrui Zhao <zhaotianrui@loongson.cn>, WANG Xuerui <kernel@xen0n.name>,
+ kvm@vger.kernel.org, loongarch@lists.linux.dev, linux-kernel@vger.kernel.org
+References: <20251118080656.2012805-1-maobibo@loongson.cn>
+ <20251118080656.2012805-2-maobibo@loongson.cn>
+ <CAAhV-H5qZ3_KTvkZ-zQni6Lg-6W5y9oBXDb9+2VAeFV82BEzhA@mail.gmail.com>
+ <3e36f507-a907-7143-41a7-58dbefb73fb5@loongson.cn>
+ <CAAhV-H7CEhk9tNGr9sOzhoPAE+UtA2AtogBg8+HQCko31YUc2A@mail.gmail.com>
+From: Bibo Mao <maobibo@loongson.cn>
+Message-ID: <f8ad1ecb-0272-f027-807c-98d2511c2871@loongson.cn>
+Date: Wed, 19 Nov 2025 10:55:33 +0800
+User-Agent: Mozilla/5.0 (X11; Linux loongarch64; rv:68.0) Gecko/20100101
+ Thunderbird/68.7.0
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Disposition: inline
-In-Reply-To: <246a652600f2ba510354a1a670fa1177280528be.1763512374.git.nicolinc@nvidia.com>
-X-NV-OnPremToCloud: ExternallySecured
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SN1PEPF000397B2:EE_|LV2PR12MB5822:EE_
-X-MS-Office365-Filtering-Correlation-Id: 8802f48b-3f4d-441b-19b5-08de27174af8
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|36860700013|1800799024|82310400026|376014|7416014;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?WB284D0OZKvWVVk/HR/th4cqbIRvwj2B8ljPQw1FJiyLqJrZ/tuQk2DC3Rsx?=
- =?us-ascii?Q?DdP5e58a+E/xAKIbyS9QiAclQrk5LcG2x7OymHNMzyETNChNvbrYJqrNLBJK?=
- =?us-ascii?Q?2y4N4zyAgjpGqvgRXUIjGADxSFBc1Hj2mD7aVvIeJCS6A7qIk2PirwhjLmux?=
- =?us-ascii?Q?ZgmkUF7IHzlzHLjHHGskYmNrVY+QwV3BtnaTAyEf5olKg7ND4vOtuR85L5Jv?=
- =?us-ascii?Q?2QVWOv04CDR7nXcOxrNRtHZNUfNjftk7Z6RJcPHh22Og6I9K1tdBddAlNP/R?=
- =?us-ascii?Q?Ltxy6UGNL193QZLsbjeyRz0oZlN8KsLvD139nC1h4L/Fybz2N8NNekYKlRVQ?=
- =?us-ascii?Q?EtLZ8AJWFZTQp3aqSNSYYLkPe11BrGsF8dPak9dfyJBb0TyMHHYA/hsChUk0?=
- =?us-ascii?Q?BcNEZZytQpD57+Fky7PPDEnMbQISz6FIYP8FVaJqjY4qvUcin7JQE110KdSP?=
- =?us-ascii?Q?Ui/nE7U5al3vsYOioi1LLbd8Wh+kbNhjUKpmZrLP+KydY5FhQET28CZVETV7?=
- =?us-ascii?Q?eO+HyKpEsSzMfhf5jD24StiXRjA5DLDe4qpKd5eXGcnzqwiK4QpBU1xrO1pC?=
- =?us-ascii?Q?BWUVTXIV9Z4+gc+CZFN82dpcyIYpuGzDvnM58iCUW0RcRQSOn5pb7o2zl1zx?=
- =?us-ascii?Q?tPO72iVg+6XS6jpowvLdifNRw0LCR6VnxLX7yvu8oPFnwIZxbCaunXZKOmWf?=
- =?us-ascii?Q?XEqtO18rR+5x8vmv9bM0SZYy5LYjmkJRqeCmKX4kfWNGx27yNblnD0Od+Jh5?=
- =?us-ascii?Q?ubgmZJ0SQT2z0yk5/cuvnB5oRvJbTq2Z+cObGKUr/bnPh6214i/3Y8Xvm24C?=
- =?us-ascii?Q?5rO/pGNuRaL7l7r5ydi18E46voWJllN7oe62dnDrCKmyJkgUsrnY3yqQOlxB?=
- =?us-ascii?Q?BwPsnih+80i9fXeza35K6B/f+K2DIIXOgisPKpT+h6F08qDjgJX5ZGp9Vd7n?=
- =?us-ascii?Q?mWt1sp9TY3qGol8t/R1tfVYQtg1L1s7dpQT/SJcWjRAlsI/vBrNi+Pp7ljQc?=
- =?us-ascii?Q?g6/57bsEbR4iQVlsIxAHlzB/Um4wLCf/9xpnm089HmKLFzF0+ijl16UiznRf?=
- =?us-ascii?Q?KjpH0r1YjHugNjyHXDzVSYjNeFggaaNO8IVhRPUzzf9UEyZvCRgQPpW6IjSf?=
- =?us-ascii?Q?VH+4KmdN6/NPB+7famYrygT5gztAb7fiS68+v2k8amZRAqVTvGnxXHWCWld4?=
- =?us-ascii?Q?PVTLBHBUoelfUXKQs+vVqnwCx3QMwCIt1bG+ySB9crnL0ppkgh3wbxHCbl6M?=
- =?us-ascii?Q?QK2TVj3AJo3CCbLCUaZycWaGd7Yij22/BBbQulWY3lwt0YaBNhsryOU6HJ85?=
- =?us-ascii?Q?GV3KJ2soHUHLMTKItMg+qEn1erRB9Nd01YHhv6hXfNcDefKabMU59U4W+T7+?=
- =?us-ascii?Q?FC46GrTvuFaGCwof8WIDW9AnTwWf1Ud0Xf/GkTjfFzTpB4p3YJ89GtHs64+8?=
- =?us-ascii?Q?5cCxwl7UmagVzTfWyrv1TIkNNDaPyb7lTbSYS9ZHd60xvHxbHVKpk4Bf/2SH?=
- =?us-ascii?Q?GePaZePPxSojFpG0AmcgXevrgSLgB3kz5eKL4ncGxrghX0um7KYCoSC31/iC?=
- =?us-ascii?Q?IjRBMgD6Z4S42c61RqM=3D?=
-X-Forefront-Antispam-Report:
-	CIP:216.228.117.160;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc6edge1.nvidia.com;CAT:NONE;SFS:(13230040)(36860700013)(1800799024)(82310400026)(376014)(7416014);DIR:OUT;SFP:1101;
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 19 Nov 2025 02:56:52.7433
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 8802f48b-3f4d-441b-19b5-08de27174af8
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.117.160];Helo=[mail.nvidia.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	SN1PEPF000397B2.namprd05.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: LV2PR12MB5822
+In-Reply-To: <CAAhV-H7CEhk9tNGr9sOzhoPAE+UtA2AtogBg8+HQCko31YUc2A@mail.gmail.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:qMiowJDx_8M1Mh1pSAM4AQ--.27336S3
+X-CM-SenderInfo: xpdruxter6z05rqj20fqof0/
+X-Coremail-Antispam: 1Uk129KBj93XoW3WF4UKr43Wr1UGryUAr4DWrX_yoWfAr4xpF
+	W8AF4kJF48Gr1fCw1Iq3sI9rnIgr97Kr1IqFy7GayYyF1qqFy3Ar10kryDCF98Xw18Xa4I
+	vFn5tr43uF45twbCm3ZEXasCq-sJn29KB7ZKAUJUUUUr529EdanIXcx71UUUUU7KY7ZEXa
+	sCq-sGcSsGvfJ3Ic02F40EFcxC0VAKzVAqx4xG6I80ebIjqfuFe4nvWSU5nxnvy29KBjDU
+	0xBIdaVrnRJUUUBFb4IE77IF4wAFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2
+	IYs7xG6rWj6s0DM7CIcVAFz4kK6r1Y6r17M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48v
+	e4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Gr0_Xr1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI
+	0_Gr0_Cr1l84ACjcxK6I8E87Iv67AKxVWxJVW8Jr1l84ACjcxK6I8E87Iv6xkF7I0E14v2
+	6r4UJVWxJr1ln4kS14v26r1Y6r17M2AIxVAIcxkEcVAq07x20xvEncxIr21l57IF6xkI12
+	xvs2x26I8E6xACxx1l5I8CrVACY4xI64kE6c02F40Ex7xfMcIj6xIIjxv20xvE14v26r1q
+	6rW5McIj6I8E87Iv67AKxVW8JVWxJwAm72CE4IkC6x0Yz7v_Jr0_Gr1lF7xvr2IY64vIr4
+	1lc7I2V7IY0VAS07AlzVAYIcxG8wCF04k20xvY0x0EwIxGrwCFx2IqxVCFs4IE7xkEbVWU
+	JVW8JwCFI7km07C267AKxVWUAVWUtwC20s026c02F40E14v26r1j6r18MI8I3I0E7480Y4
+	vE14v26r106r1rMI8E67AF67kF1VAFwI0_JF0_Jw1lIxkGc2Ij64vIr41lIxAIcVC0I7IY
+	x2IY67AKxVW8JVW5JwCI42IY6xIIjxv20xvEc7CjxVAFwI0_Gr0_Cr1lIxAIcVCF04k26c
+	xKx2IYs7xG6r1j6r1xMIIF0xvEx4A2jsIE14v26r4j6F4UMIIF0xvEx4A2jsIEc7CjxVAF
+	wI0_Gr0_Gr1UYxBIdaVFxhVjvjDU0xZFpf9x07jz2NtUUUUU=
 
-On Tue, Nov 18, 2025 at 04:52:10PM -0800, Nicolin Chen wrote:
-> +/* PCI device reset functions */
-> +int pci_dev_reset_iommu_prepare(struct pci_dev *pdev);
-> +void pci_dev_reset_iommu_done(struct pci_dev *pdev);
->  #else /* CONFIG_IOMMU_API */
->  
->  struct iommu_ops {};
-> @@ -1509,6 +1513,15 @@ static inline ioasid_t iommu_alloc_global_pasid(struct device *dev)
->  }
->  
->  static inline void iommu_free_global_pasid(ioasid_t pasid) {}
-> +
-> +static inline int pci_dev_reset_iommu_prepare(struct device *dev)
-> +{
-> +	return 0;
-> +}
-> +
-> +static inline void pci_dev_reset_iommu_done(struct device *dev)
 
-Ah, I forgot to update these two using struct pci_dev..
 
-Will fix this in v7.
+On 2025/11/19 上午10:45, Huacai Chen wrote:
+> On Wed, Nov 19, 2025 at 9:23 AM Bibo Mao <maobibo@loongson.cn> wrote:
+>>
+>>
+>>
+>> On 2025/11/18 下午8:46, Huacai Chen wrote:
+>>> Hi, Bibo,
+>>>
+>>> On Tue, Nov 18, 2025 at 4:07 PM Bibo Mao <maobibo@loongson.cn> wrote:
+>>>>
+>>>> Feature KVM_FEATURE_PREEMPT_HINT is added to show whether vCPU is
+>>>> preempted or not. It is to help guest OS scheduling or lock checking
+>>>> etc. Here add KVM_FEATURE_PREEMPT_HINT feature and use one byte as
+>>>> preempted flag in steal time structure.
+>>>>
+>>>> Signed-off-by: Bibo Mao <maobibo@loongson.cn>
+>>>> ---
+>>>>    arch/loongarch/include/asm/kvm_host.h      |  2 +
+>>>>    arch/loongarch/include/asm/kvm_para.h      |  5 +-
+>>>>    arch/loongarch/include/uapi/asm/kvm.h      |  1 +
+>>>>    arch/loongarch/include/uapi/asm/kvm_para.h |  1 +
+>>>>    arch/loongarch/kvm/vcpu.c                  | 54 +++++++++++++++++++++-
+>>>>    arch/loongarch/kvm/vm.c                    |  5 +-
+>>>>    6 files changed, 65 insertions(+), 3 deletions(-)
+>>>>
+>>>> diff --git a/arch/loongarch/include/asm/kvm_host.h b/arch/loongarch/include/asm/kvm_host.h
+>>>> index 0cecbd038bb3..04c6dd171877 100644
+>>>> --- a/arch/loongarch/include/asm/kvm_host.h
+>>>> +++ b/arch/loongarch/include/asm/kvm_host.h
+>>>> @@ -163,6 +163,7 @@ enum emulation_result {
+>>>>    #define LOONGARCH_PV_FEAT_UPDATED      BIT_ULL(63)
+>>>>    #define LOONGARCH_PV_FEAT_MASK         (BIT(KVM_FEATURE_IPI) |         \
+>>>>                                            BIT(KVM_FEATURE_STEAL_TIME) |  \
+>>>> +                                        BIT(KVM_FEATURE_PREEMPT_HINT) |\
+>>>>                                            BIT(KVM_FEATURE_USER_HCALL) |  \
+>>>>                                            BIT(KVM_FEATURE_VIRT_EXTIOI))
+>>>>
+>>>> @@ -250,6 +251,7 @@ struct kvm_vcpu_arch {
+>>>>                   u64 guest_addr;
+>>>>                   u64 last_steal;
+>>>>                   struct gfn_to_hva_cache cache;
+>>>> +               u8  preempted;
+>>>>           } st;
+>>>>    };
+>>>>
+>>>> diff --git a/arch/loongarch/include/asm/kvm_para.h b/arch/loongarch/include/asm/kvm_para.h
+>>>> index 3e4b397f423f..d8592a7f5922 100644
+>>>> --- a/arch/loongarch/include/asm/kvm_para.h
+>>>> +++ b/arch/loongarch/include/asm/kvm_para.h
+>>>> @@ -37,8 +37,11 @@ struct kvm_steal_time {
+>>>>           __u64 steal;
+>>>>           __u32 version;
+>>>>           __u32 flags;
+>>>> -       __u32 pad[12];
+>>>> +       __u8  preempted;
+>>>> +       __u8  u8_pad[3];
+>>>> +       __u32 pad[11];
+>>> Maybe a single __u8 pad[47] is enough?
+>> yes, pad[47] seems better unless there is definitely __u32 type
+>> requirement in future.
+>>
+>> Will do in next version.
+>>>
+>>>>    };
+>>>> +#define KVM_VCPU_PREEMPTED             (1 << 0)
+>>>>
+>>>>    /*
+>>>>     * Hypercall interface for KVM hypervisor
+>>>> diff --git a/arch/loongarch/include/uapi/asm/kvm.h b/arch/loongarch/include/uapi/asm/kvm.h
+>>>> index 57ba1a563bb1..bca7154aa651 100644
+>>>> --- a/arch/loongarch/include/uapi/asm/kvm.h
+>>>> +++ b/arch/loongarch/include/uapi/asm/kvm.h
+>>>> @@ -104,6 +104,7 @@ struct kvm_fpu {
+>>>>    #define  KVM_LOONGARCH_VM_FEAT_PV_IPI          6
+>>>>    #define  KVM_LOONGARCH_VM_FEAT_PV_STEALTIME    7
+>>>>    #define  KVM_LOONGARCH_VM_FEAT_PTW             8
+>>>> +#define KVM_LOONGARCH_VM_FEAT_PV_PREEMPT_HINT  10
+>>>   From the name it is a "hint", from include/linux/kvm_para.h we know
+>>> features and hints are different. If preempt is really a feature,
+>>> rename it?
+>> It is a feature. yes, in generic hint is suggestion for VM and VM can
+>> selectively do or not.
+>>
+>> Will rename it with KVM_LOONGARCH_VM_FEAT_PV_PREEMPT.
+>>>
+>>>>
+>>>>    /* Device Control API on vcpu fd */
+>>>>    #define KVM_LOONGARCH_VCPU_CPUCFG      0
+>>>> diff --git a/arch/loongarch/include/uapi/asm/kvm_para.h b/arch/loongarch/include/uapi/asm/kvm_para.h
+>>>> index 76d802ef01ce..fe4107869ce6 100644
+>>>> --- a/arch/loongarch/include/uapi/asm/kvm_para.h
+>>>> +++ b/arch/loongarch/include/uapi/asm/kvm_para.h
+>>>> @@ -15,6 +15,7 @@
+>>>>    #define CPUCFG_KVM_FEATURE             (CPUCFG_KVM_BASE + 4)
+>>>>    #define  KVM_FEATURE_IPI               1
+>>>>    #define  KVM_FEATURE_STEAL_TIME                2
+>>>> +#define  KVM_FEATURE_PREEMPT_HINT      3
+>>>>    /* BIT 24 - 31 are features configurable by user space vmm */
+>>>>    #define  KVM_FEATURE_VIRT_EXTIOI       24
+>>>>    #define  KVM_FEATURE_USER_HCALL                25
+>>>> diff --git a/arch/loongarch/kvm/vcpu.c b/arch/loongarch/kvm/vcpu.c
+>>>> index 1245a6b35896..33a94b191b5d 100644
+>>>> --- a/arch/loongarch/kvm/vcpu.c
+>>>> +++ b/arch/loongarch/kvm/vcpu.c
+>>>> @@ -180,6 +180,11 @@ static void kvm_update_stolen_time(struct kvm_vcpu *vcpu)
+>>>>           }
+>>>>
+>>>>           st = (struct kvm_steal_time __user *)ghc->hva;
+>>>> +       if (kvm_guest_has_pv_feature(vcpu, KVM_FEATURE_PREEMPT_HINT)) {
+>>>> +               unsafe_put_user(0, &st->preempted, out);
+>>>> +               vcpu->arch.st.preempted = 0;
+>>>> +       }
+>>>> +
+>>>>           unsafe_get_user(version, &st->version, out);
+>>>>           if (version & 1)
+>>>>                   version += 1; /* first time write, random junk */
+>>>> @@ -1757,11 +1762,58 @@ static int _kvm_vcpu_put(struct kvm_vcpu *vcpu, int cpu)
+>>>>           return 0;
+>>>>    }
+>>>>
+>>>> +static void _kvm_set_vcpu_preempted(struct kvm_vcpu *vcpu)
+>>> Just using kvm_set_vcpu_preempted() is enough, no "_".
+>>>
+>>>> +{
+>>>> +       struct gfn_to_hva_cache *ghc;
+>>>> +       struct kvm_steal_time __user *st;
+>>>> +       struct kvm_memslots *slots;
+>>>> +       static const u8 preempted = KVM_VCPU_PREEMPTED;
+>>> I'm not sure whether "static" is right, it's not reentrant.
+>> I think static is better here, it saves one cycle with assignment here.
+> I know, but I want to know whether the logic is correct.
+> vcpu->arch.st.preempted is per-cpu, but the local variable "preempted"
+> can be used across multiple VCPU? I'm not sure.
+It is read-only, of course can be used by multiple vCPUs. or remove it 
+directly?
 
-Nicolin
+@@ -1767,7 +1767,6 @@ static void _kvm_set_vcpu_preempted(struct 
+kvm_vcpu *vcpu)
+         struct gfn_to_hva_cache *ghc;
+         struct kvm_steal_time __user *st;
+         struct kvm_memslots *slots;
+-       static const u8 preempted = KVM_VCPU_PREEMPTED;
+         gpa_t gpa;
+
+         gpa = vcpu->arch.st.guest_addr;
+@@ -1793,7 +1792,7 @@ static void _kvm_set_vcpu_preempted(struct 
+kvm_vcpu *vcpu)
+         }
+
+         st = (struct kvm_steal_time __user *)ghc->hva;
+-       unsafe_put_user(preempted, &st->preempted, out);
++       unsafe_put_user(KVM_VCPU_PREEMPTED, &st->preempted, out);
+         vcpu->arch.st.preempted = KVM_VCPU_PREEMPTED;
+
+> 
+> Huacai
+> 
+>>
+>> Regards
+>> Bibo Mao
+>>>
+>>>
+>>> Huacai
+>>>
+>>>> +       gpa_t gpa;
+>>>> +
+>>>> +       gpa = vcpu->arch.st.guest_addr;
+>>>> +       if (!(gpa & KVM_STEAL_PHYS_VALID))
+>>>> +               return;
+>>>> +
+>>>> +       /* vCPU may be preempted for many times */
+>>>> +       if (vcpu->arch.st.preempted)
+>>>> +               return;
+>>>> +
+>>>> +       /* This happens on process exit */
+>>>> +       if (unlikely(current->mm != vcpu->kvm->mm))
+>>>> +               return;
+>>>> +
+>>>> +       gpa &= KVM_STEAL_PHYS_MASK;
+>>>> +       ghc = &vcpu->arch.st.cache;
+>>>> +       slots = kvm_memslots(vcpu->kvm);
+>>>> +       if (slots->generation != ghc->generation || gpa != ghc->gpa) {
+>>>> +               if (kvm_gfn_to_hva_cache_init(vcpu->kvm, ghc, gpa, sizeof(*st))) {
+>>>> +                       ghc->gpa = INVALID_GPA;
+>>>> +                       return;
+>>>> +               }
+>>>> +       }
+>>>> +
+>>>> +       st = (struct kvm_steal_time __user *)ghc->hva;
+>>>> +       unsafe_put_user(preempted, &st->preempted, out);
+>>>> +       vcpu->arch.st.preempted = KVM_VCPU_PREEMPTED;
+>>>> +out:
+>>>> +       mark_page_dirty_in_slot(vcpu->kvm, ghc->memslot, gpa_to_gfn(ghc->gpa));
+>>>> +}
+>>>> +
+>>>>    void kvm_arch_vcpu_put(struct kvm_vcpu *vcpu)
+>>>>    {
+>>>> -       int cpu;
+>>>> +       int cpu, idx;
+>>>>           unsigned long flags;
+>>>>
+>>>> +       if (vcpu->preempted && kvm_guest_has_pv_feature(vcpu, KVM_FEATURE_PREEMPT_HINT)) {
+>>>> +               /*
+>>>> +                * Take the srcu lock as memslots will be accessed to check the gfn
+>>>> +                * cache generation against the memslots generation.
+>>>> +                */
+>>>> +               idx = srcu_read_lock(&vcpu->kvm->srcu);
+>>>> +               _kvm_set_vcpu_preempted(vcpu);
+>>>> +               srcu_read_unlock(&vcpu->kvm->srcu, idx);
+>>>> +       }
+>>>> +
+>>>>           local_irq_save(flags);
+>>>>           cpu = smp_processor_id();
+>>>>           vcpu->arch.last_sched_cpu = cpu;
+>>>> diff --git a/arch/loongarch/kvm/vm.c b/arch/loongarch/kvm/vm.c
+>>>> index a49b1c1a3dd1..b8879110a0a1 100644
+>>>> --- a/arch/loongarch/kvm/vm.c
+>>>> +++ b/arch/loongarch/kvm/vm.c
+>>>> @@ -45,8 +45,10 @@ int kvm_arch_init_vm(struct kvm *kvm, unsigned long type)
+>>>>
+>>>>           /* Enable all PV features by default */
+>>>>           kvm->arch.pv_features = BIT(KVM_FEATURE_IPI);
+>>>> -       if (kvm_pvtime_supported())
+>>>> +       if (kvm_pvtime_supported()) {
+>>>>                   kvm->arch.pv_features |= BIT(KVM_FEATURE_STEAL_TIME);
+>>>> +               kvm->arch.pv_features |= BIT(KVM_FEATURE_PREEMPT_HINT);
+>>>> +       }
+>>>>
+>>>>           /*
+>>>>            * cpu_vabits means user address space only (a half of total).
+>>>> @@ -143,6 +145,7 @@ static int kvm_vm_feature_has_attr(struct kvm *kvm, struct kvm_device_attr *attr
+>>>>           case KVM_LOONGARCH_VM_FEAT_PV_IPI:
+>>>>                   return 0;
+>>>>           case KVM_LOONGARCH_VM_FEAT_PV_STEALTIME:
+>>>> +       case KVM_LOONGARCH_VM_FEAT_PV_PREEMPT_HINT:
+>>>>                   if (kvm_pvtime_supported())
+>>>>                           return 0;
+>>>>                   return -ENXIO;
+>>>> --
+>>>> 2.39.3
+>>>>
+>>>>
+>>
+>>
+
