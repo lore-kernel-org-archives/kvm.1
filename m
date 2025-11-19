@@ -1,168 +1,153 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 358B2352FA2
-	for <kvm@vger.kernel.org>; Wed, 19 Nov 2025 11:04:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0FC7D2F5A3C;
+	Wed, 19 Nov 2025 11:06:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763550283; cv=none; b=Dq6rKK4j7mel7ZlkQXzHYZ1Ml1emiNWBoUg9zmODNM49i3ZK3ys5Ic8mg/a6KcvFXcDzE3UksK2ROXjZxELUqn1fD6hGE03p5KW2gxpOFqz62buUCleWszc4Guga4khuxqH4t6gFqyK7wuW+x5WbMEKhXFVulg/68TduVZ1KxCI=
+	t=1763550384; cv=none; b=IQchq4VO+Wjp2H+0TAgmhggms5sgJcSwoVCMU832YNUB/sDwx55kZzUBoykt4W2cDpkoS88MqhPy5lrw+21aepiB8UQ9gXui0/p5igtyaSo5IdfD0zx7OVodTWgmAj7LGj5+HwFATThmdVy1NeqvF/dvDHhHEnKunYB4i19Aoek=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763550283; c=relaxed/simple;
-	bh=QJRpxNJ6nM55oUProzvGLMXrymnGB0HzC7vMJLxqOVg=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=uCYxBxJSIrs5YGNJYL4BMo4HOJA3eaRBkGX5vMH1rAVCbxUpBp0jK+DmAYHdS46kJixNpileuPH2IKbSHVkLaoPxfaLfaH1+j5SZ5sJJo12QzR/3LO2ttC4sjaYEAJ2o2gzxV5Qq5hr+N9ityltQNf1QRoo7HjmR4JTIItjgEC8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=XAxaz9si; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=a34AVZsN; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1763550384; c=relaxed/simple;
+	bh=1uV1vmMeM6tA/4abIrzulGX4cdatfChnd623tezCQwY=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=GpnZ1sHOSoDKjWMeymaoO/pwJsW6bm75j79vJtHbTxbdldA7EYpmYahT3dGVqpA8TbKsc/Vg6gHga4vVF7p63d5sOkQz0WsjAwgKNGGyowEITOVWKK+L3I1nnzqVhe0rGRW776E1fhQhgAMaXtPLzVLKB0ASt9QLDjre+SvrHbg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=tHc52Usx; arc=none smtp.client-ip=148.163.156.1
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="XAxaz9si";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="a34AVZsN"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1763550280;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=42XSTDD+Tw2WVGrVsFAsxHT5sZ/yd8/fKSBACD6leIQ=;
-	b=XAxaz9siEu3dufMJtmuP2Lkb8OtZenxaH9Ko5MrLjkpsJNqwEpli5c/qSu5vUW5ZFqRrKR
-	z7IcJvqDdtkpB/S0pmp8ejyHHLH9Nrte5J03RX7sgcx69Lrrb8Mm9NiJMby06Nj7gu1tXT
-	fQIIl68vG83Bjh5SNp1xy8IP2ATt9k8=
-Received: from mail-qv1-f70.google.com (mail-qv1-f70.google.com
- [209.85.219.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-660-hi5u9ncuOj-yZwyulBh7Ag-1; Wed, 19 Nov 2025 06:04:38 -0500
-X-MC-Unique: hi5u9ncuOj-yZwyulBh7Ag-1
-X-Mimecast-MFC-AGG-ID: hi5u9ncuOj-yZwyulBh7Ag_1763550278
-Received: by mail-qv1-f70.google.com with SMTP id 6a1803df08f44-8824292911cso17070896d6.1
-        for <kvm@vger.kernel.org>; Wed, 19 Nov 2025 03:04:38 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1763550278; x=1764155078; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=42XSTDD+Tw2WVGrVsFAsxHT5sZ/yd8/fKSBACD6leIQ=;
-        b=a34AVZsNXjM+XWUSGb+JUGfhIezMxetxPfQJ0LdxM7JD1Gl+NCL5TmaahNwA3W51ns
-         /EaCg9C+LnFwmXWUyuQ2u/ddDQZ3Y+1dHaj4amrNQcxJQ/ky7nJeUoGMTAsHdzvbLFpy
-         t5TW7is2qMykSe024ldj23RxSkrKEUx3Bjrz7O54avbzCBWBc5JsMGjG7C4XNsARb1S1
-         OeM7bIuYZlkofsxLfG2rrWrWyGuHCPSGYysxJtoijUYtYMupPQTXmtvRl9VwLAsga2CY
-         HZTki6YU50vGVV/0wYNFdWStCDWEzzWEnY/ZaJHzuontkR7MRF3EcBhKTaExzUV08q6C
-         wZoQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1763550278; x=1764155078;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=42XSTDD+Tw2WVGrVsFAsxHT5sZ/yd8/fKSBACD6leIQ=;
-        b=qtNpJFvSqbbRsWjSAxhQvvDGI5XGxAZ1AUlqBujDh44CMBsyCqK3r1/tNwZg9NNJgX
-         LD/Gg7xgmvyn9b2owTPyIRNLeVkg9TseSBsVTFoRNg+pLILxF1gDF9GOLSXJJyWw5RGe
-         yG+JCSMiAEYMl0o9SYmIeDAGjsIIJzzGLCaOAedAocjZ9rZOwHTXKA81nkRx2QD2eftW
-         pa50+S0wnc2Y7TpHoBNE3FtpDivf1QQGwDMG6zgn67huljpOef60+ND0SnFQe7fsRRig
-         cA+hZj7SO2P7XMCdtGFNW24ABBXRqcu9vq/Tx3g2iv6QPkgIAeNwZUydJG4C5krH/Fp+
-         BuAA==
-X-Forwarded-Encrypted: i=1; AJvYcCWpmlMxq7MvCFZohpqsodn1VHa+6sAFrg87FG5t+0JnEOFhMHW81HKly0hFnCYiuwPPOHY=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yzjt5xApr6f65W8Bj683zUcHluXtVFQ/1m4Df30x9O4/6l0h7XS
-	zGBtXQh/Cbq1jHqtweXpeq9adsleYiWq7vg6R623q9sZgMRiI8WbFnA5AY3RD0TktDtANrLYX5j
-	G9Pv4fVfRNrZAo7ARoeVXCMH+HiKfxXHRsiui6EQUcLoGmRd2i0eQCA==
-X-Gm-Gg: ASbGncudlWajqfgjB26cfQ2gXRJQ8Ac4fHs+rzLTn3GYYtR1aTEpODRHBxRvEHvQxou
-	AI6+9Cwl3CnJILoKaTozIU28b2OYZBKMhyAAUN+nG8vUr87WDhh2RBOkzvFz3GOiJU9Gz50cJGe
-	IW8DFdzYFVJ0nbt0WZtfhx/zUhtgMB0FZDsC2NsuwunpJbsQopJgpXDayF5N+mzOR8QBubZZ7GM
-	gLAa8dXaww+OkVeLD7TY1zF9iSXS8ouj+XK3aFs9ejNRHxSs9GIhHlhqzQQui0wA3AIv+hpGNv5
-	r3B/Ssymu8K56l7ibQG7qpLCzz6OyNc7tpf+MFJA5t1NXOTjHorezgr6JCP5jEhsmMieiUGNX9l
-	518Wq+l0tB9HWoXrYBUcQC2s6AxZ6DxVSAcByIqYEl8rrlPdH05xEyFFyCr/njA==
-X-Received: by 2002:a05:6214:5e88:b0:882:760e:822e with SMTP id 6a1803df08f44-8845ffd1671mr19255846d6.2.1763550278371;
-        Wed, 19 Nov 2025 03:04:38 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IGUx18S7QU3TAKJCuch0iU57e5cRCXq8XDSG2cx+/NGC5m+qevE8BVa0OMVsBGaSQSjDNVFOQ==
-X-Received: by 2002:a05:6214:5e88:b0:882:760e:822e with SMTP id 6a1803df08f44-8845ffd1671mr19255436d6.2.1763550277970;
-        Wed, 19 Nov 2025 03:04:37 -0800 (PST)
-Received: from sgarzare-redhat (host-87-12-139-91.business.telecomitalia.it. [87.12.139.91])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-8828613962esm132823926d6.0.2025.11.19.03.04.32
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 19 Nov 2025 03:04:36 -0800 (PST)
-Date: Wed, 19 Nov 2025 12:04:12 +0100
-From: Stefano Garzarella <sgarzare@redhat.com>
-To: Bobby Eshleman <bobbyeshleman@gmail.com>
-Cc: "David S. Miller" <davem@davemloft.net>, 
-	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, 
-	Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
-	Stefan Hajnoczi <stefanha@redhat.com>, "Michael S. Tsirkin" <mst@redhat.com>, 
-	Jason Wang <jasowang@redhat.com>, Eugenio =?utf-8?B?UMOpcmV6?= <eperezma@redhat.com>, 
-	Xuan Zhuo <xuanzhuo@linux.alibaba.com>, "K. Y. Srinivasan" <kys@microsoft.com>, 
-	Haiyang Zhang <haiyangz@microsoft.com>, Wei Liu <wei.liu@kernel.org>, Dexuan Cui <decui@microsoft.com>, 
-	Bryan Tan <bryan-bt.tan@broadcom.com>, Vishnu Dasa <vishnu.dasa@broadcom.com>, 
-	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>, Shuah Khan <shuah@kernel.org>, linux-kernel@vger.kernel.org, 
-	virtualization@lists.linux.dev, netdev@vger.kernel.org, kvm@vger.kernel.org, 
-	linux-hyperv@vger.kernel.org, linux-kselftest@vger.kernel.org, 
-	Sargun Dhillon <sargun@sargun.me>, berrange@redhat.com, Bobby Eshleman <bobbyeshleman@meta.com>
-Subject: Re: [PATCH net-next v10 03/11] vsock: reject bad
- VSOCK_NET_MODE_LOCAL configuration for G2H
-Message-ID: <tfrb7l3cguctjl5jbd7ykon4aqav4ognxndtnohs7ukmvk7wkm@tpaaicknwwhq>
-References: <20251117-vsock-vmtest-v10-0-df08f165bf3e@meta.com>
- <20251117-vsock-vmtest-v10-3-df08f165bf3e@meta.com>
- <vsyzveqyufaquwx3xgahsh3stb6i5u3xa4kubpvesfzcuj6dry@sn4kx5ctgpbz>
- <aR0arw2F/DmbIrzY@devvm11784.nha0.facebook.com>
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="tHc52Usx"
+Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 5AJ4SPoa017684;
+	Wed, 19 Nov 2025 11:06:20 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=WObmAZ
+	cEfsNWs6IKlnP++yHGWelEOCF2wjJBKwoNZmA=; b=tHc52UsxZJX3XK9m4oFhoL
+	sEFRGYhw4gOn5gAU0ZiogLNpigGnQVkNah30ovAHpIPgJqtUm8Cza4zDrigbkXrO
+	fwfpaZp/VNkmCjN/ZUPev9zA97KEWEOo20jX4XH7+wG5PzEgk6L5QPNScHH7Glvc
+	+uMB/HOFyg8A2DD31fy7n25PbIszpc1LQjmvCbL0eK7WnAnJzJPBjRKmYr/k/rQD
+	zapiutB8fox0VxamJU4mdXhnwsM7q2H0V3EMlX0oAvZn1WMBXALiFzVrqDRX7Uqe
+	nsijsm2RBhZbiDCU/V7yNF1Oye/tPeLb9v3Ns2ufypPPEab7aUq3GUezH/9r+qiw
+	==
+Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4aejk9yy1n-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 19 Nov 2025 11:06:20 +0000 (GMT)
+Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma23.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 5AJ7Pp0O005244;
+	Wed, 19 Nov 2025 11:06:19 GMT
+Received: from smtprelay02.fra02v.mail.ibm.com ([9.218.2.226])
+	by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4af5bk867h-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 19 Nov 2025 11:06:18 +0000
+Received: from smtpav05.fra02v.mail.ibm.com (smtpav05.fra02v.mail.ibm.com [10.20.54.104])
+	by smtprelay02.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 5AJB6EVU42336752
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Wed, 19 Nov 2025 11:06:15 GMT
+Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id E1FEE2004B;
+	Wed, 19 Nov 2025 11:06:14 +0000 (GMT)
+Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 0B00F20040;
+	Wed, 19 Nov 2025 11:06:13 +0000 (GMT)
+Received: from p-imbrenda (unknown [9.87.156.96])
+	by smtpav05.fra02v.mail.ibm.com (Postfix) with SMTP;
+	Wed, 19 Nov 2025 11:06:12 +0000 (GMT)
+Date: Wed, 19 Nov 2025 12:06:09 +0100
+From: Claudio Imbrenda <imbrenda@linux.ibm.com>
+To: Heiko Carstens <hca@linux.ibm.com>
+Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-s390@vger.kernel.org, borntraeger@de.ibm.com,
+        frankja@linux.ibm.com, nsg@linux.ibm.com, nrb@linux.ibm.com,
+        seiden@linux.ibm.com, schlameuss@linux.ibm.com, svens@linux.ibm.com,
+        agordeev@linux.ibm.com, gor@linux.ibm.com, david@redhat.com,
+        gerald.schaefer@linux.ibm.com
+Subject: Re: [PATCH v3 15/23] KVM: s390: Add helper functions for fault
+ handling
+Message-ID: <20251119120609.4a4bf008@p-imbrenda>
+In-Reply-To: <20251118151005.9674Af1-hca@linux.ibm.com>
+References: <20251106161117.350395-1-imbrenda@linux.ibm.com>
+	<20251106161117.350395-16-imbrenda@linux.ibm.com>
+	<20251118151005.9674Af1-hca@linux.ibm.com>
+Organization: IBM
+X-Mailer: Claws Mail 4.3.1 (GTK 3.24.49; x86_64-redhat-linux-gnu)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii; format=flowed
-Content-Disposition: inline
-In-Reply-To: <aR0arw2F/DmbIrzY@devvm11784.nha0.facebook.com>
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: PCZXa7uLXtCC8Dgv-qApYf4PvvbyofZT
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMTE1MDAzMiBTYWx0ZWRfXxmj9TFKMiS4F
+ ktazYnXCQlNcjDjmGRyGjqAi5+DrXiuD7Zf0BUvheAaa1vLfh9WLWPD9LIx3HyNxw5cLtsybWcC
+ AmvBRQ+nyEs+Pt+OHnwUVMVubf6onF/vipNpIyhEJ9JQQrqsmQiD7rToCMUK99HONfYmyuyUFU6
+ B5ASyXfRlM0p772z5WvfQn+y00gIW7yKsEbeTSjJVSLoIDj7wjCtukKBZlg/qmA0hBjqdtOReEa
+ sP2KZhCyiMAnJRXSrbF6tN19Uv0Kae1sgB0Gk6+JCF3QcQx0FaKqCxQl2rzIRBQ8kYh3LEtTPtJ
+ Qwsy1A8rRG4MWlxYwtHYSJ67uWK00SIraxrJVmoAXSh3tznMbHs1CeQDoWn9RuW/3SFGFLU75xr
+ uZpu45xAM5cxfyr9zfB2hO9/rMoHyQ==
+X-Proofpoint-ORIG-GUID: PCZXa7uLXtCC8Dgv-qApYf4PvvbyofZT
+X-Authority-Analysis: v=2.4 cv=XtL3+FF9 c=1 sm=1 tr=0 ts=691da4ac cx=c_pps
+ a=3Bg1Hr4SwmMryq2xdFQyZA==:117 a=3Bg1Hr4SwmMryq2xdFQyZA==:17
+ a=kj9zAlcOel0A:10 a=6UeiqGixMTsA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=VnNF1IyMAAAA:8 a=W69JXFrg6a1OFCXWetkA:9 a=CjuIK1q_8ugA:10
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
+ definitions=2025-11-19_03,2025-11-18_02,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ clxscore=1015 spamscore=0 bulkscore=0 priorityscore=1501 impostorscore=0
+ adultscore=0 lowpriorityscore=0 phishscore=0 suspectscore=0 malwarescore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.19.0-2510240000 definitions=main-2511150032
 
-On Tue, Nov 18, 2025 at 05:17:35PM -0800, Bobby Eshleman wrote:
->On Tue, Nov 18, 2025 at 07:10:28PM +0100, Stefano Garzarella wrote:
->> On Mon, Nov 17, 2025 at 06:00:26PM -0800, Bobby Eshleman wrote:
->> > From: Bobby Eshleman <bobbyeshleman@meta.com>
+On Tue, 18 Nov 2025 16:10:05 +0100
+Heiko Carstens <hca@linux.ibm.com> wrote:
 
-[...]
+> On Thu, Nov 06, 2025 at 05:11:09PM +0100, Claudio Imbrenda wrote:
+> > Add some helper functions for handling multiple guest faults at the
+> > same time.
+> > 
+> > This will be needed for VSIE, where a nested guest access also needs to
+> > access all the page tables that map it.
+> > 
+> > Signed-off-by: Claudio Imbrenda <imbrenda@linux.ibm.com>
+> > ---
+> >  arch/s390/include/asm/kvm_host.h |   1 +
+> >  arch/s390/kvm/Makefile           |   2 +-
+> >  arch/s390/kvm/faultin.c          | 148 +++++++++++++++++++++++++++++++
+> >  arch/s390/kvm/faultin.h          |  92 +++++++++++++++++++
+> >  arch/s390/kvm/kvm-s390.c         |   2 +-
+> >  arch/s390/kvm/kvm-s390.h         |   2 +
+> >  6 files changed, 245 insertions(+), 2 deletions(-)
+> >  create mode 100644 arch/s390/kvm/faultin.c
+> >  create mode 100644 arch/s390/kvm/faultin.h  
+> 
+> ...
+> 
+> > +int kvm_s390_faultin_gfn(struct kvm_vcpu *vcpu, struct kvm *kvm, struct guest_fault *f)
+> > +{  
+> 
+> ...
+> 
+> > +		scoped_guard(read_lock, &kvm->mmu_lock) {
+> > +			if (!mmu_invalidate_retry_gfn(kvm, inv_seq, f->gfn)) {
+> > +				f->valid = true;
+> > +				rc = gmap_link(mc, kvm->arch.gmap, f);
+> > +				kvm_release_faultin_page(kvm, f->page, !!rc, f->write_attempt);
+> > +				f->page = NULL;
+> > +			}
+> > +		}
+> > +		kvm_release_faultin_page(kvm, f->page, true, false);
+> > +
+> > +		if (rc == -ENOMEM) {
+> > +			rc = kvm_s390_mmu_cache_topup(mc);  
+> 
+> If I'm not mistaken then gmap_link() -> dat_link() maps the possible -ENOMEM
+> return value of dat_entry() to -EAGAIN. So the case where -ENOMEM leads to a
+> kvm_s390_mmu_cache_topup() call will never happen.
 
->> > diff --git a/net/vmw_vsock/vmci_transport.c b/net/vmw_vsock/vmci_transport.c
->> > index 7eccd6708d66..da7c52ad7b2a 100644
->> > --- a/net/vmw_vsock/vmci_transport.c
->> > +++ b/net/vmw_vsock/vmci_transport.c
->> > @@ -2033,6 +2033,12 @@ static u32 vmci_transport_get_local_cid(void)
->> > 	return vmci_get_context_id();
->> > }
->> >
->> > +static bool vmci_transport_supports_local_mode(void)
->> > +{
->> > +	/* Local mode is supported only when no device is present. */
->> > +	return vmci_transport_get_local_cid() == VMCI_INVALID_ID;
->>
->> IIRC vmci can be registered both as H2G and G2H, so should we filter out
->> the H2G case?
->
->In fact, I'm realizing now that this should probably just be:
->
->static bool vmci_transport_supports_local_mode(void)
->{
->	return false;
->}
->
->
->... because even for H2G there is no mechanism for attaching a namespace
->to a VM (unlike w/ vhost_vsock device open).
->
->Does that seem right?
+oops, you're right
 
-tl;dr   yes
-
-
-vmci_transport.c has MODULE_ALIAS_NETPROTO(PF_VSOCK) for historical 
-reasons. This means that the module is automatically loaded the first 
-time PF_VSOCK is requested by the user if af_vsock is not loaded.
-
-This was the case before vsock was generalized to support multiple 
-transports and has remained so for historical reasons.
-
-So today, we can have that module loaded, registered only for F_DGRAM 
-but not registered for F_G2H and F_H2G, so maybe it could work for now 
-and if the H2G is also not supporting it, maybe is the right thing to 
-do. (with a better comment there on the reason why both G2H and H2G 
-doesn't support it).
-
-Sorry for the long reply, maybe just `yes` was fine, but I dumped what I 
-thought because I feel it might be useful to you.
-
-Thanks,
-Stefano
-
+I'll fix dat_link() accordingly
