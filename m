@@ -1,117 +1,129 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mailtransmit04.runbox.com (mailtransmit04.runbox.com [185.226.149.37])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 266EE30DEDE;
-	Wed, 19 Nov 2025 22:35:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B8E533126D1;
+	Wed, 19 Nov 2025 22:42:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.226.149.37
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763591732; cv=none; b=D3hA5THzKN8ZiCh0goe1KAZIUDGJo3NjRyCXLIygm5XWUXM+9JVyHz5sSHYHQI2nRcP7Gvg7x8DyTZBwyJ6qh7AMS6FiH8q4KgfkP8w4yEF7f9cj7ZDcDoRwobeOnq0w2+COhcz5dQjlPchKTwjxckAV/w71CpnCkSA9JMuvaow=
+	t=1763592169; cv=none; b=Xra7MNfwTOHbZtItmeaHdOO3KyE5veOj4xmZiX1QDQ2q66Nrw6BiE62e2whtSzt3CzAiO4/fI6QHLe3BbwKRbN4TRSZsOvD72cUERrvnD+N0ZPQuz9EI0Jc8jprjkPlukH+WvM0nM48n6msg4puUl4ielM2fQE1WXBnW8T5Y3cI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763591732; c=relaxed/simple;
-	bh=sDyW89qPXT3xdQtj10GxlHLo6uAfus5uHKYULC7hRl4=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ntZ0xjekzDtv4jllJ/dH069Y9gSVqJgLGdIQnkFmXKkNmlG09dnWIA34cUMt2LgtmjKHhytyITicEFhKyDnD2EOtUHS4kYO44zc5j/vCF7laSxfiGftBaPAa1VZ9VV0VrnBZJA896C8EWP7THVUp0sMYePrxcRx+MQnTrP+uYwg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=rt0Vg+lz; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1763592169; c=relaxed/simple;
+	bh=sKT1pp0kXgC9eDN7tUsZHEvBOw4i30duGD5WD7ELpo4=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=AIKb63FNdMYxYeonPMCGaD/ayR0MNC2GWn2EH5sLMOmLwBM/E7/YO5LJiEm9QIZ/GndsPXtEFrfV+7tItXWK850vMAZNFR75ixpzrFFuHvrTePSKD1ufFnwivkOnbk3gV2jnzAYgkEx0lWLuOzQFtujxRUsk5kQ/Ld8FOpaMYXA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=runbox.com; dkim=pass (2048-bit key) header.d=runbox.com header.i=@runbox.com header.b=gn5UXjfE; arc=none smtp.client-ip=185.226.149.37
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=runbox.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="rt0Vg+lz"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A8992C19421;
-	Wed, 19 Nov 2025 22:35:31 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1763591731;
-	bh=sDyW89qPXT3xdQtj10GxlHLo6uAfus5uHKYULC7hRl4=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rt0Vg+lzXkk7T3RVTZNY/ZGYbm7HWy7YYAeYDktDAgzB4DG+fqhFxJ5KVxgemCpAx
-	 uLpKJ9LFrcVGvOxsgPcurh4KAT+/qHiy1K/4LKT2Dm9uDQ/ighMwPkz/pGOPsnspTh
-	 4lYlwLHJ7xsi4KdUReKoML5WaUtgAWxtxo3zO80+zHLqltFeUAimDZrIpa/z9GStJv
-	 xk1CUYTjSbP1YqQm5+RTWnvx4hDWT0j1wtZ4JRAv82Pm3mMtdzPbapGNA62yOdODBb
-	 sxqkZ05AoP+HlPlYAsYdtCMW7wcf32HmiJcY36JRkjy0tHFD9w+MpEg5fiSC4AxWL+
-	 L4S0oZ1e+P/FA==
-From: Oliver Upton <oupton@kernel.org>
-To: Marc Zyngier <maz@kernel.org>,
-	Raghavendra Rao Ananta <rananta@google.com>
-Cc: Oliver Upton <oupton@kernel.org>,
-	Mingwei Zhang <mizhang@google.com>,
-	linux-arm-kernel@lists.infradead.org,
-	kvmarm@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
+	dkim=pass (2048-bit key) header.d=runbox.com header.i=@runbox.com header.b="gn5UXjfE"
+Received: from mailtransmit03.runbox ([10.9.9.163] helo=aibo.runbox.com)
+	by mailtransmit04.runbox.com with esmtps  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
+	(Exim 4.93)
+	(envelope-from <david.laight.linux_spam@runbox.com>)
+	id 1vLqso-006yp4-NH; Wed, 19 Nov 2025 23:42:38 +0100
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=runbox.com;
+	 s=selector1; h=Content-Transfer-Encoding:MIME-Version:References:In-Reply-To
+	:Message-Id:Date:Subject:Cc:To:From;
+	bh=Qm5JY2mMJkohgmQ/bUwBjPkYq8QhcEnzUcW/mrBnhJ4=; b=gn5UXjfEU2284sEBoGiWjavm4X
+	EB/7NLMjxofZMbQwQ91xNRSXeDP9YESyj5W6el8R8X67GJZcrt4gQ7YUktrH+S2U/CKIxfIqVe1iV
+	cXgnNU/7iCR1YeGdq0yZ/KeZJJtd4/GfIx/2oivr/VBcaX77HairvKASZTS3dCv3w8SbA65a1gSgh
+	k+dyHhG+YX1OSY7ZCIrZBEJa32bXvlm9NmoMDuLl0CpHvxF+qhJkC8aue6C/EpCksC31xgHceJggI
+	uNvDHxRp876h66LBm63lxSMlyc1T1fF04qODV2lwPrwnlWWP0EziKUq1TlQx40u2xtitRwKCOljEk
+	/bwFtaiA==;
+Received: from [10.9.9.74] (helo=submission03.runbox)
+	by mailtransmit03.runbox with esmtp (Exim 4.86_2)
+	(envelope-from <david.laight.linux_spam@runbox.com>)
+	id 1vLqsn-00007D-Es; Wed, 19 Nov 2025 23:42:38 +0100
+Received: by submission03.runbox with esmtpsa  [Authenticated ID (1493616)]  (TLS1.2:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+	(Exim 4.93)
+	id 1vLqsZ-00Fos6-Mj; Wed, 19 Nov 2025 23:42:23 +0100
+From: david.laight.linux@gmail.com
+To: linux-kernel@vger.kernel.org,
 	kvm@vger.kernel.org
-Subject: Re: [PATCH 0/3] KVM: arm64: Reschedule as needed when destroying the stage-2 page-tables
-Date: Wed, 19 Nov 2025 14:35:28 -0800
-Message-ID: <176359161125.183996.17801262311162275177.b4-ty@kernel.org>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20251113052452.975081-1-rananta@google.com>
-References: <20251113052452.975081-1-rananta@google.com>
+Cc: Borislav Petkov <bp@alien8.de>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	Ingo Molnar <mingo@redhat.com>,
+	Paolo Bonzini <pbonzini@redhat.com>,
+	Sean Christopherson <seanjc@google.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	x86@kernel.org,
+	David Laight <david.laight.linux@gmail.com>
+Subject: [PATCH 11/44] arch/x96/kvm: use min() instead of min_t()
+Date: Wed, 19 Nov 2025 22:41:07 +0000
+Message-Id: <20251119224140.8616-12-david.laight.linux@gmail.com>
+X-Mailer: git-send-email 2.39.5
+In-Reply-To: <20251119224140.8616-1-david.laight.linux@gmail.com>
+References: <20251119224140.8616-1-david.laight.linux@gmail.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
 
-On Thu, 13 Nov 2025 05:24:49 +0000, Raghavendra Rao Ananta wrote:
-> When destroying a fully-mapped 128G VM abruptly, the following scheduler
-> warning is observed:
-> 
->   sched: CPU 0 need_resched set for > 100018840 ns (100 ticks) without schedule
->   CPU: 0 UID: 0 PID: 9617 Comm: kvm_page_table_ Tainted: G O 6.16.0-smp-DEV #3 NONE
->   Tainted: [O]=OOT_MODULE
->   Call trace:
->       show_stack+0x20/0x38 (C)
->       dump_stack_lvl+0x3c/0xb8
->       dump_stack+0x18/0x30
->       resched_latency_warn+0x7c/0x88
->       sched_tick+0x1c4/0x268
->       update_process_times+0xa8/0xd8
->       tick_nohz_handler+0xc8/0x168
->       __hrtimer_run_queues+0x11c/0x338
->       hrtimer_interrupt+0x104/0x308
->       arch_timer_handler_phys+0x40/0x58
->       handle_percpu_devid_irq+0x8c/0x1b0
->       generic_handle_domain_irq+0x48/0x78
->       gic_handle_irq+0x1b8/0x408
->       call_on_irq_stack+0x24/0x30
->       do_interrupt_handler+0x54/0x78
->       el1_interrupt+0x44/0x88
->       el1h_64_irq_handler+0x18/0x28
->       el1h_64_irq+0x84/0x88
->       stage2_free_walker+0x30/0xa0 (P)
->       __kvm_pgtable_walk+0x11c/0x258
->       __kvm_pgtable_walk+0x180/0x258
->       __kvm_pgtable_walk+0x180/0x258
->       __kvm_pgtable_walk+0x180/0x258
->       kvm_pgtable_walk+0xc4/0x140
->       kvm_pgtable_stage2_destroy+0x5c/0xf0
->       kvm_free_stage2_pgd+0x6c/0xe8
->       kvm_uninit_stage2_mmu+0x24/0x48
->       kvm_arch_flush_shadow_all+0x80/0xa0
->       kvm_mmu_notifier_release+0x38/0x78
->       __mmu_notifier_release+0x15c/0x250
->       exit_mmap+0x68/0x400
->       __mmput+0x38/0x1c8
->       mmput+0x30/0x68
->       exit_mm+0xd4/0x198
->       do_exit+0x1a4/0xb00
->       do_group_exit+0x8c/0x120
->       get_signal+0x6d4/0x778
->       do_signal+0x90/0x718
->       do_notify_resume+0x70/0x170
->       el0_svc+0x74/0xd8
->       el0t_64_sync_handler+0x60/0xc8
->       el0t_64_sync+0x1b0/0x1b8
-> 
-> [...]
+From: David Laight <david.laight.linux@gmail.com>
 
-Applied to next, thanks!
+min_t(unsigned int, a, b) casts an 'unsigned long' to 'unsigned int'.
+Use min(a, b) instead as it promotes any 'unsigned int' to 'unsigned long'
+and so cannot discard significant bits.
 
-[1/3] KVM: arm64: Only drop references on empty tables in stage2_free_walker
-      https://git.kernel.org/kvmarm/kvmarm/c/156f70afcfec
-[2/3] KVM: arm64: Split kvm_pgtable_stage2_destroy()
-      https://git.kernel.org/kvmarm/kvmarm/c/d68d66e57e2b
-[3/3] KVM: arm64: Reschedule as needed when destroying the stage-2 page-tables
-      https://git.kernel.org/kvmarm/kvmarm/c/4ddfab5436b6
+In this case the 'unsigned long' value is small enough that the result
+is ok.
 
---
-Best,
-Oliver
+(Similarly for max_t() and clamp_t().)
+
+Use min3() in __do_insn_fetch_bytes().
+
+Detected by an extra check added to min_t().
+
+Signed-off-by: David Laight <david.laight.linux@gmail.com>
+---
+ arch/x86/kvm/emulate.c | 3 +--
+ arch/x86/kvm/lapic.c   | 2 +-
+ arch/x86/kvm/mmu/mmu.c | 2 +-
+ 3 files changed, 3 insertions(+), 4 deletions(-)
+
+diff --git a/arch/x86/kvm/emulate.c b/arch/x86/kvm/emulate.c
+index 4e3da5b497b8..9596969f4714 100644
+--- a/arch/x86/kvm/emulate.c
++++ b/arch/x86/kvm/emulate.c
+@@ -861,8 +861,7 @@ static int __do_insn_fetch_bytes(struct x86_emulate_ctxt *ctxt, int op_size)
+ 	if (unlikely(rc != X86EMUL_CONTINUE))
+ 		return rc;
+ 
+-	size = min_t(unsigned, 15UL ^ cur_size, max_size);
+-	size = min_t(unsigned, size, PAGE_SIZE - offset_in_page(linear));
++	size = min3(15U ^ cur_size, max_size, PAGE_SIZE - offset_in_page(linear));
+ 
+ 	/*
+ 	 * One instruction can only straddle two pages,
+diff --git a/arch/x86/kvm/lapic.c b/arch/x86/kvm/lapic.c
+index 0ae7f913d782..b6bdb76efe3a 100644
+--- a/arch/x86/kvm/lapic.c
++++ b/arch/x86/kvm/lapic.c
+@@ -1894,7 +1894,7 @@ static inline void __wait_lapic_expire(struct kvm_vcpu *vcpu, u64 guest_cycles)
+ 	} else {
+ 		u64 delay_ns = guest_cycles * 1000000ULL;
+ 		do_div(delay_ns, vcpu->arch.virtual_tsc_khz);
+-		ndelay(min_t(u32, delay_ns, timer_advance_ns));
++		ndelay(min(delay_ns, timer_advance_ns));
+ 	}
+ }
+ 
+diff --git a/arch/x86/kvm/mmu/mmu.c b/arch/x86/kvm/mmu/mmu.c
+index 667d66cf76d5..989d96f5ec23 100644
+--- a/arch/x86/kvm/mmu/mmu.c
++++ b/arch/x86/kvm/mmu/mmu.c
+@@ -5768,7 +5768,7 @@ static void kvm_init_shadow_mmu(struct kvm_vcpu *vcpu,
+ 	root_role = cpu_role.base;
+ 
+ 	/* KVM uses PAE paging whenever the guest isn't using 64-bit paging. */
+-	root_role.level = max_t(u32, root_role.level, PT32E_ROOT_LEVEL);
++	root_role.level = max(root_role.level + 0, PT32E_ROOT_LEVEL);
+ 
+ 	/*
+ 	 * KVM forces EFER.NX=1 when TDP is disabled, reflect it in the MMU role.
+-- 
+2.39.5
+
