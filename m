@@ -1,358 +1,236 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from OS8PR02CU002.outbound.protection.outlook.com (mail-japanwestazon11022098.outbound.protection.outlook.com [40.107.75.98])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D3CC52F066D
-	for <kvm@vger.kernel.org>; Wed, 19 Nov 2025 07:41:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763538117; cv=none; b=UPda2LyVkYtvOMRKSKHpvur1gQs4g8ncxtudxhPTc+i/fmZOq5jNYFXemVzQo/Q5wbFs7qDbUO4S+1p4fETY0Mk6nnu18EyNdCXHPToLx1+0QdLHmOdMftgVr3rwvYOQErgy9GciQXbCtoV8dVVknTd7Lahr1DApwqVhOKyJ0LY=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763538117; c=relaxed/simple;
-	bh=q+M8pAK93vzhowA2DZlzeNkV6+IdzOKtoY3k4WaVsTE=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=AZA+vKcEIQfcdvaKea1ZuUG9Cueie7NxqKqmoObtPZUkCNXpYzg1GoXglg1hYeMcRHS+Q+zK2D01OMBZDlpQw06oTW/0e/wwvXRH9ffpTWe/Cb1W+a+nQF/yRbGNc8Akx2RK1JutmKWZi6gGHD23LJlca1Ndq1qVAMwhbw77INk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=pt67Kc2F; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 74D3532B9B8;
+	Wed, 19 Nov 2025 07:54:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.75.98
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1763538860; cv=fail; b=NPsYIyejZUsB077nvkfzUcabzpTEyISZZf25Lsv4mMaDt2rOYMUaPgKmn/OMO7AAjoSU4Nmmcl/eYr+TbF0+v1kDhtv96h0tzD7ouVMp5Tey5jo307CY6pAQamRm6oNgMIsS9NaeXVuZ/A3wt//M1kVwg64Ev6HmZZ4KGCGXZ0o=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1763538860; c=relaxed/simple;
+	bh=VMRL+GNOpyO6zRLexYZU+kuOTKq3IpWWzDdV05WUGv0=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=no41dTikgQ8Uvhr87aROyuTht2k54HNRzXdSAt3XtJ6EsfLgBl8hDn3OslfwHuTm7ff82jzG44xOiZlb/kN4muvEZUQCqlLOpHlhqrmyGI7OzyA7eOp0z0yWx4JzG6Z9rZ2EQKdOs1YkG1rmGI5yrv8SQxGYVFitJ+YNCO1uZ5Q=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=jaguarmicro.com; spf=pass smtp.mailfrom=jaguarmicro.com; dkim=pass (2048-bit key) header.d=jaguarmicro.com header.i=@jaguarmicro.com header.b=TQYL9ZUb; arc=fail smtp.client-ip=40.107.75.98
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=jaguarmicro.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=jaguarmicro.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="pt67Kc2F"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 77415C4AF0C
-	for <kvm@vger.kernel.org>; Wed, 19 Nov 2025 07:41:57 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1763538117;
-	bh=q+M8pAK93vzhowA2DZlzeNkV6+IdzOKtoY3k4WaVsTE=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=pt67Kc2Fk2PSImK3q0T/RRv2T5kofkFIt/v1X+RCbUU+uGbKyVGtq37+2/BSve5HN
-	 a1z3U1Q6pSk/2rsaOCxGQ0q4zR0TUTvEtNNV/cGUcpPpmVpVu8qSdfbRN6vQiGHwM0
-	 TpvktNhsazuJj48lmamF0zipr2Ergr4ttMk+D3HrswC20gDAWd83TIWPMZP3ZCvc2o
-	 F8szFFDP5uyQIZmTr/lGclWB+m8xe8cSG1y0ojFCo1ucHP96tTMhBGCqynkerj7ESx
-	 NK0Z1ofCWM1++3f2cw47E3myFza+PbLQhkIdqquzjB+8BcjmRTAM2g2yi8DtGSn6Z6
-	 S2kqtOsvD9KtQ==
-Received: by mail-ed1-f42.google.com with SMTP id 4fb4d7f45d1cf-6408f9cb1dcso9729146a12.3
-        for <kvm@vger.kernel.org>; Tue, 18 Nov 2025 23:41:57 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCXZIXS5DFYMSsanBddRcGY+DPVRyAicBwEZzU2rF+PpXQz1HRFScVMKmGmcA2hVmnmbRVg=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwA7PDnnUtXRel4vHBaZaV3lBXQtJoVPeSTOVsu80ezVGp4RNn2
-	Q25uEuYJL9BVH9/wk+rGJ0DkzZWunNMdYJcHL0scSXQvx0iMAT2kfaWscGZ+aCOYmbuLqSwLSxd
-	h8gQ/QpgwZULQ6XrKu+LpI04i7cqpp7I=
-X-Google-Smtp-Source: AGHT+IH5PbHFy7SQADclvhkt/p7du3tmh3sfmEcVHooQlHiNoc2hfeXJOWIZLW4v82VRauSavd+AGz3Fr4UFydIhjVQ=
-X-Received: by 2002:a17:907:1c81:b0:b73:42e5:a59e with SMTP id
- a640c23a62f3a-b73677edb7bmr1767735066b.12.1763538113330; Tue, 18 Nov 2025
- 23:41:53 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=jaguarmicro.com header.i=@jaguarmicro.com header.b="TQYL9ZUb"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=LlNCtZ7YgSvgR1crpZstjMHwBHuZ4mlvAS17bUJLk4prTcWvcQ6YDq0qmzlMvVRErfl4EA7D4PIPiFYu9fXG1vWxj+lX04R7BvoRNll5wQoCSHTR0H9heGK2KuprsXv5xOCVz1ZjhSfgdFB9j8LeV9+LTA7g8McvupMuT2yD9s5q2SOyqWuq3tn3fki2dM5vAX/vFO6aXq6S1fYlvZjnlrOG4Ynilw7ggihZGebkbJXANbsoZyta/Oce9iQW4AKYfR1QHNLUteZ5KPDvJlL5dJvc4Mrs4oWKnegn48USY1mEwXUPfYw7bGo459FTsplPDf0L93x8joohwfR1r+RCMg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=VMRL+GNOpyO6zRLexYZU+kuOTKq3IpWWzDdV05WUGv0=;
+ b=nFEt9bxPTQ6gwGsNENg9aqQLAOiEkIxPgQ/xEC7ydexpDRnfE+XyoMgV5uh5cYEDebLwgQYvepj9dZgVxUJZBouZ+RKO7zwV4UqPr5ogBC6TmxWF2L8SuWBGFJ/yAmSpbf+0CtvslWJS0eWqCDbzMaJ5D9ow2MmYHd4ZyIm/ttXXnsnj/dbpRIZttCKNNvtiWr64bOTCBE7FsDaLEmbhHWJAxPtOPBq1kRIqUwghCRTeyKIKC6wI1LmSXcur55vYz0e81WnduD60Esf5R/JzJavIg4u1CJ33pIWSqA5n524W/VYbqUZvGExOj/gJeIhWSji/yHOSVnkV7aGaQRnhQQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=jaguarmicro.com; dmarc=pass action=none
+ header.from=jaguarmicro.com; dkim=pass header.d=jaguarmicro.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=jaguarmicro.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=VMRL+GNOpyO6zRLexYZU+kuOTKq3IpWWzDdV05WUGv0=;
+ b=TQYL9ZUbWjSnpVGnkxPwzTl18qjzR65NNlrAI4TttV5nIpnmK30b4YAuvZ1jmUCWBkfAZtvCC7BjzHhj6KT9jjjuqbXLuK+do6hD5xVQu0m4JHJd3b2fejkZHXNZoYBYVuw/2tu19wTRz0a9GSGg+drKYPd+j5wMfRLuo90sV6MvvG8tc1SRcYx6nP4orZMQl9htxbJfCwOyDgui6ZoPVb76PjiOWahZtPaAnlDMcIPuWcVg8g6oeW7W/SP0mQpjFsuvdCWuCcIq99yXty5RumdDvYUO54KaPQcdQKoeV07G3XQroI+6pTq8Se27i9gzNH0l/wtPIQdDQZi6653/Dg==
+Received: from PSAPR06MB3942.apcprd06.prod.outlook.com (2603:1096:301:2b::5)
+ by KUZPR06MB8058.apcprd06.prod.outlook.com (2603:1096:d10:48::8) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9320.16; Wed, 19 Nov
+ 2025 07:54:07 +0000
+Received: from PSAPR06MB3942.apcprd06.prod.outlook.com
+ ([fe80::9b95:32e5:8e63:7881]) by PSAPR06MB3942.apcprd06.prod.outlook.com
+ ([fe80::9b95:32e5:8e63:7881%5]) with mapi id 15.20.9343.009; Wed, 19 Nov 2025
+ 07:54:07 +0000
+From: Liming Wu <liming.wu@jaguarmicro.com>
+To: Jason Wang <jasowang@redhat.com>
+CC: "Michael S . Tsirkin" <mst@redhat.com>, Xuan Zhuo
+	<xuanzhuo@linux.alibaba.com>, =?utf-8?B?RXVnZW5pbyBQw6lyZXo=?=
+	<eperezma@redhat.com>, "kvm@vger.kernel.org" <kvm@vger.kernel.org>,
+	"virtualization@lists.linux-foundation.org"
+	<virtualization@lists.linux-foundation.org>, "netdev@vger.kernel.org"
+	<netdev@vger.kernel.org>, "linux-kernel@vger.kernel.org"
+	<linux-kernel@vger.kernel.org>, Angus Chen <angus.chen@jaguarmicro.com>
+Subject: RE: [PATCH] virtio_net: enhance wake/stop tx queue statistics
+ accounting
+Thread-Topic: [PATCH] virtio_net: enhance wake/stop tx queue statistics
+ accounting
+Thread-Index: AQHcWGsdJGJTMv6SqU2bnvzij0+hFLT5T1CAgABR10A=
+Date: Wed, 19 Nov 2025 07:54:07 +0000
+Message-ID:
+ <PSAPR06MB39429783A41F42FDD82477A2E1D7A@PSAPR06MB3942.apcprd06.prod.outlook.com>
+References: <20251118090942.1369-1-liming.wu@jaguarmicro.com>
+ <CACGkMEvwedzRrMd9hYm7PbDezBu1GM3q-YcUhsvfYJVv=bNSdw@mail.gmail.com>
+In-Reply-To:
+ <CACGkMEvwedzRrMd9hYm7PbDezBu1GM3q-YcUhsvfYJVv=bNSdw@mail.gmail.com>
+Accept-Language: zh-CN, en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=jaguarmicro.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: PSAPR06MB3942:EE_|KUZPR06MB8058:EE_
+x-ms-office365-filtering-correlation-id: fbb97062-5bdf-4a57-5808-08de2740d10e
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;ARA:13230040|366016|1800799024|376014|38070700021;
+x-microsoft-antispam-message-info:
+ =?utf-8?B?NHNLeXdnTXhKMHROYWtjaEVHUnVsM0xPU3FjdGtBZWtneG5XS0dpZGp3MGxU?=
+ =?utf-8?B?UDVRY1pQQ0JyUEMvWGhoZlh6cThCTkNpalJSUDQrakRBSGFGRVlPNUFEUy9B?=
+ =?utf-8?B?ODdVVVR6MDEyOVk4WkFFN0JqTGpOM21HMlBiT2xncVpEeGl5cWcwVDBZc0ov?=
+ =?utf-8?B?cEx0MUNVSHFZTE5ZUkRaSFhnOG9wUHptMXY4dWhzd2h5K2w2aW93d3plL0Q2?=
+ =?utf-8?B?Ny9URWl4b1plekRoRnNwNkFFSHE3Rk01V0NaYUFETXZScytFUnJobHpZQ1J6?=
+ =?utf-8?B?WjU3LzF1MGE0UFNQUjFyeS9tU2hIbFRMY0Uxc3NNRU91ZGd2TFFwdVZoMHFO?=
+ =?utf-8?B?cGF1anBHOHY0UUNWazR0Z3dEU1kxTzhTeURtVGtzWTAzUHh2RXY4bXRuRkE0?=
+ =?utf-8?B?K3JyYTZ6UFVxYTNTZXA2Yng5ZXFjS05VdFBXS08yeitremt6QkdWQk16bDVC?=
+ =?utf-8?B?TXdoYUhNVUh2MjhwcG1tLzlMWHdaQ2NTU2swMllDc0J3WmxISnp6d3owU3lW?=
+ =?utf-8?B?TGpJc1Bqd1N1c1lGVU1BOWdXSDJQeklGRUZsT2xsa1VHanptU1NTRUZFSlpr?=
+ =?utf-8?B?ang3Ty9tdzBQRnBtTm5mb0RmdFdlbE5sZlpqY3ljVjZwcWhLdGczQUN6WTR2?=
+ =?utf-8?B?TEQyQ1ZqNmFUbDcrYmVTZmFkeDFiMFJyU3dqZ0pIQ3dDN1FsYWJtdlZWRU1s?=
+ =?utf-8?B?dFR2WTJwNyt3ZFZmSzNyTi8xOE40S0o1QnBjUURBM08vUGJJVzRVUXBkQlhX?=
+ =?utf-8?B?ay9jVzNQb05aa1Z4WTZ3RjhqM21YTkxockM1WG4wc3FRNmE0SE1qZTg1YWhj?=
+ =?utf-8?B?RkpEaGl4cG9VSDZadU5jMTl2cWUxWlRpYWY5SVpsclhnS2hlOWJzU1M3UzE0?=
+ =?utf-8?B?S3R4ZEhqVFQyMk9Qb2FKR3ZEUFMrV2phQTF1VWRoeGtHMm9tSVlzblJDYmEr?=
+ =?utf-8?B?ZWtRVmp1TW5acGl3M21CY1haVVZaWjlTa0E5cTZ6WnVyQkdMeGMvdWtONzdy?=
+ =?utf-8?B?clRmR2xqVGpvdHdKMzZINzRJUmY1WCtVdXo0dW5hWGRySTZORVBubFMwSEk0?=
+ =?utf-8?B?ak93akFnQzJ1SitvZUVtRkRUcjZPZmtaQTdGVzhaYW9TOWhiS3N4WUdtcFhz?=
+ =?utf-8?B?SWNHN0MvVVdTelJ3eU1JdkJyQ3RYWFpkT0dIUStjQ2VMOEh6WG95SlhULzNM?=
+ =?utf-8?B?SzUrakZlTGpvazJzbzVhYWV0VUJUVWlhQ0UxZ3ZiaVFoc1I0WXhEa3MyU3I4?=
+ =?utf-8?B?aXo4cE1uZHQxbXVsK3ZWclZiV21ncWFOTVdYWS9BNDBqUmRtT0wzOFBxcU5H?=
+ =?utf-8?B?K3BOMHA2UUhsVmpLMGFYSUJVNXZUaTNVOXdFdmpSRW43bHkva1RtV1c1b3Aw?=
+ =?utf-8?B?M0o0eGVSMUM5elBlV25UUEZOTFN6akVZTjVrOGQ1WjBvdG12OExVODF1SlBX?=
+ =?utf-8?B?elF3cGE2TTJRR1F5cU5oV1RpUzdBSkllZE1CVUtDN05BNlREeDhMN282TkR2?=
+ =?utf-8?B?NjErQmQzdHpkeERLS0ZIK0lrSExQeXdDb3Q5YmNXdVE4VXRLcFAwb0lMTjl0?=
+ =?utf-8?B?d090MjJnNlBDckM2Sm9OSE5xL2lUdEY5WnlaU3FLN3laLzdtYmcycGM3RWRH?=
+ =?utf-8?B?WTB0eEpXR2d2VFdPb2lzS1dwaS9oenRFaHMvMDdoUStWNXh3b21UOG54Z0tX?=
+ =?utf-8?B?SWxndzRla0VZcW5WNUdwRnI1aDNoWEgxc2F0MEtaaFNGakRFdlVmQ1AyQ0Zr?=
+ =?utf-8?B?RVI2UlgySjhIZ0diN0kvanVQV2RpZmdHU3lBMnA1eXd0alZaSWw3T0Y1Q2hY?=
+ =?utf-8?B?Uk1IVURaNTRuZHJTd29vSTJFMzFHbnZIN1JqTnVBRjc2cW9zb2liNmdpMkdk?=
+ =?utf-8?B?YXhRWHlneHdZOFYzYkR3aFEvSjQxbktkRUVvUVl4M1V0a0hyUUhTM3Q1dGhm?=
+ =?utf-8?B?MTgyczNWb2tTbFN4VHVmUzhKQ0ZFYUpqM2xZYTlGTW8zcStXM0JPUjlENVdL?=
+ =?utf-8?B?WnU1a0trRlhIWkRBNng4MW5VU0dqWXJDc0R6RVFBOHhuSWFFTU5TV0p4clZl?=
+ =?utf-8?Q?IFz+Gz?=
+x-forefront-antispam-report:
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PSAPR06MB3942.apcprd06.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(376014)(38070700021);DIR:OUT;SFP:1102;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0:
+ =?utf-8?B?UzA4Z3FUU3ZqdVgwNDVmNStOMFZmT2xVUitQeHlGTzhrdWVheXRDWjhnYjhJ?=
+ =?utf-8?B?WmJtYlhnR0tjUkt1V2pNWjROMVYzdER6bUVvS2ZkSEorK2E5UkNGTjlHTWRQ?=
+ =?utf-8?B?RDhpWG51QkhnWUpncUJtaWUzMEp5ZlE3VFlmYmpTTTE4a1A0dU1VcWxoVTZs?=
+ =?utf-8?B?a3ZkVUpQWDZjOVdOUkdITmI1c2pqRnN2OHM2bUltNHFvU2NqQmo0QXZiWmpw?=
+ =?utf-8?B?dmZGRXpUQ1FSc09iN3JjQ2NMek1CLzU1YmlPQXNmQU5NTGFmOFY0Vjd5Y3lh?=
+ =?utf-8?B?N24zM2pRSHhuWjRZTTduSklaOHduS2JIQ2pMaDVtcnlUenpjd1lGTlJkTzB5?=
+ =?utf-8?B?d0dqTEZBTDBVeWFoNEZUeUU3enJNOGJoTlJpUTVnbjVLdmNkWkF4anNmakZT?=
+ =?utf-8?B?QytjbzQ1YlgwODFxRkNaSG5nN0FDYXk1cHBCSksrWlRESnVvMXFhMEZEdS9L?=
+ =?utf-8?B?MmhRS0htVDJKSFF2TVBTV3ZOS0NVWGJEeEtUeituMThVYnM3NU1HT0pieEo3?=
+ =?utf-8?B?TEkyZXNrcng2WW9uTWVGdFUxOGZlV1JtVGFhekVoVE4yRnBxbUxHTHp6NUlo?=
+ =?utf-8?B?a2I3VWxDM0M0S3I3VHhwVm9ybGVuTDdHV0RWa0wvUkZJdlJMUG9FQVVnUWpD?=
+ =?utf-8?B?SEl5KzdiVHZNNlUzOTd5UkZWS3Y5U0MzdFg0OXpBaEZra0pVMEpDTGFsYkxa?=
+ =?utf-8?B?V0hVb0g5dGxpQU81TjJXNFJieG5UbkR3Uy9leXlDY0lML3BBOWZDRGFqSHNS?=
+ =?utf-8?B?cnhBb0hCOUdrQkRCYUN0c2JJeExGZWlOb2ZOd0RnSFNmc2pnSk10dlBjb1li?=
+ =?utf-8?B?OEFFTnk4TEFTUmJ3VjkzYStJYWQxYkx5T0ZkNmlRdFlXbGszSVp6WGhBSUZv?=
+ =?utf-8?B?anA4QWMzWjRBQlBocnUxU1dITno2VXBzUEZoWTcyUXpIRHdTNEl3REdyM1NL?=
+ =?utf-8?B?a3NOR1UvNFlJaEpidEdYK092VG85MTdlcm9ZZVZTMFpRd3hnbkhIaGhkM0Vm?=
+ =?utf-8?B?K29ZZDROeWtrbVVpZzdaTTh0UkJocVlGdlA1eHYrRkpJYzVoS1lzK0ZFdUFI?=
+ =?utf-8?B?N0JWdm5CU0ZWRFdhN0tJYUFvajZwUnpPdVpkRUUra0prQ3hobUxwRUtRZzZP?=
+ =?utf-8?B?YVI2QUVsa3JoS0tHY1BBbjlLQzdpdThzRVd3N04raTY0ZVRGVm0zVEFTYVUz?=
+ =?utf-8?B?dEU2RWtiMXBSblpwc2w1Witva2lmNUhLZjNjUkloYzczQXdqY3JsR1p1NE9S?=
+ =?utf-8?B?TmJYUVRKM3duV0dyOWN5STREQnpsRWh4dkN5YzNpTTNHNC81UkIyTENBTXUr?=
+ =?utf-8?B?WElGbmlXMWh4MFN1TTlGaDY0K0tTMWZRK3pTUlM2VHN1aVRKL2JoTGRFeEhK?=
+ =?utf-8?B?enFjL2tBSjk2d0pxVjFqdlNZbXllMkNNRS9YYXhEeEwvRFg5U1lScDVkcStE?=
+ =?utf-8?B?M0VHU2t3c0hxQWpwa0JHM3h4RFhWTDRPeUo4djJmOG04cjU2MSs1dm1lY2tE?=
+ =?utf-8?B?aTVYQllwVGE1aGtDNjVYUlhrR1BQdkUrb3RLVWJ1VVRYQXgyL3pHK1BIbjN4?=
+ =?utf-8?B?bG52cmNKYnV3dS8xSXp5TU10MHlaeEpXTWlKSFBZUTBVK1MvbG10MFNDNFZy?=
+ =?utf-8?B?WGVKQlZQWU1hWWRkb3RtWHVHQk5CL3A4dUxQY1Bvb3V4OCsxbnJDSC91eWFo?=
+ =?utf-8?B?b2pwR2VtOUlqS09JNGhWcjl6OXA1cVNGVlc1TUFMRVhSbHBiU0U1UERoeUF5?=
+ =?utf-8?B?em5HYkovRlR0Sjg3MUM5REo2cTBlUEsxazZCQWRha2NzRnp0aEhBbFhZVTRI?=
+ =?utf-8?B?YzRlWlhHaElEeHhDUG9hbC9JNjFvZFQwMWRDL1NwYXFnRFlkczUxMVd5Sk14?=
+ =?utf-8?B?QVVkTHFqelhFTURDbTUxckVLUldYVE01ekxwRGExRDVmN2JXQXBxWXVyNHV2?=
+ =?utf-8?B?MjZlTWhOUENyVGE4ZVJoT2tSdUJCTFo2MzJHQnUrU2hhdmYxUkRQd0RJcXdo?=
+ =?utf-8?B?VkdXQjRZdm9CTUREUEN2aWVtREFrMUh0MitIMUpLSDIxT2Y3TDFZcEpXWVNP?=
+ =?utf-8?B?Umk4WTNvQVRjUXY1U3BFdFo3bm1XYXYzZjdMZEYrSWtkZzl4ZFgzTFhud0Vv?=
+ =?utf-8?Q?R/OfletaeIujUfGWzt0XqiANk?=
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20251118080656.2012805-1-maobibo@loongson.cn> <20251118080656.2012805-3-maobibo@loongson.cn>
- <CAAhV-H4hoS0Wo3TS+FdikXMkb7qjWNFSPDoajQr0bzdeROJwGw@mail.gmail.com>
- <db8a26ca-8430-9e7d-4ad1-9b7743c4cfd1@loongson.cn> <147fe837-5f81-4246-7d01-84b75cb94e6f@loongson.cn>
-In-Reply-To: <147fe837-5f81-4246-7d01-84b75cb94e6f@loongson.cn>
-From: Huacai Chen <chenhuacai@kernel.org>
-Date: Wed, 19 Nov 2025 15:41:54 +0800
-X-Gmail-Original-Message-ID: <CAAhV-H7ij5pcr6i6q-eh-2nUzs-L2Wq79PaxMnE_t5a4w7=75A@mail.gmail.com>
-X-Gm-Features: AWmQ_blo9K89j3uDki4PYxlv2C24lE5i_gVLytQcrrxj2URj4nf6q2IbqCsxLPc
-Message-ID: <CAAhV-H7ij5pcr6i6q-eh-2nUzs-L2Wq79PaxMnE_t5a4w7=75A@mail.gmail.com>
-Subject: Re: [PATCH 2/3] LoongArch: Add paravirt support with vcpu_is_preempted()
-To: Bibo Mao <maobibo@loongson.cn>
-Cc: Paolo Bonzini <pbonzini@redhat.com>, WANG Xuerui <kernel@xen0n.name>, 
-	Peter Zijlstra <peterz@infradead.org>, Ingo Molnar <mingo@redhat.com>, Will Deacon <will@kernel.org>, 
-	Boqun Feng <boqun.feng@gmail.com>, Waiman Long <longman@redhat.com>, 
-	Juergen Gross <jgross@suse.com>, Ajay Kaher <ajay.kaher@broadcom.com>, 
-	Alexey Makhalov <alexey.makhalov@broadcom.com>, 
-	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>, kvm@vger.kernel.org, 
-	loongarch@lists.linux.dev, linux-kernel@vger.kernel.org, 
-	virtualization@lists.linux.dev, x86@kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+X-OriginatorOrg: jaguarmicro.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: PSAPR06MB3942.apcprd06.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: fbb97062-5bdf-4a57-5808-08de2740d10e
+X-MS-Exchange-CrossTenant-originalarrivaltime: 19 Nov 2025 07:54:07.1912
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 1e45a5c2-d3e1-46b3-a0e6-c5ebf6d8ba7b
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: 581Kq9zhu2wQ8NOHIMhGrQtsa68qILnlqhL8dDPRTuV1uVTH2X0JyRX4NlqorpJuooZMv5EwrgI2Cf/OabCO57BW2/OIjIeqg7H1EfsQgCE=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: KUZPR06MB8058
 
-On Wed, Nov 19, 2025 at 2:12=E2=80=AFPM Bibo Mao <maobibo@loongson.cn> wrot=
-e:
->
->
->
-> On 2025/11/19 =E4=B8=8A=E5=8D=889:59, Bibo Mao wrote:
-> >
-> >
-> > On 2025/11/18 =E4=B8=8B=E5=8D=888:48, Huacai Chen wrote:
-> >> Hi, Bibo,
-> >>
-> >> On Tue, Nov 18, 2025 at 4:07=E2=80=AFPM Bibo Mao <maobibo@loongson.cn>=
- wrote:
-> >>>
-> >>> Function vcpu_is_preempted() is used to check whether vCPU is preempt=
-ed
-> >>> or not. Here add implementation with vcpu_is_preempted() when option
-> >>> CONFIG_PARAVIRT is enabled.
-> >>>
-> >>> Signed-off-by: Bibo Mao <maobibo@loongson.cn>
-> >>> ---
-> >>>   arch/loongarch/include/asm/smp.h      |  1 +
-> >>>   arch/loongarch/include/asm/spinlock.h |  5 +++++
-> >>>   arch/loongarch/kernel/paravirt.c      | 16 ++++++++++++++++
-> >>>   arch/loongarch/kernel/smp.c           |  6 ++++++
-> >>>   4 files changed, 28 insertions(+)
-> >>>
-> >>> diff --git a/arch/loongarch/include/asm/smp.h
-> >>> b/arch/loongarch/include/asm/smp.h
-> >>> index 3a47f52959a8..5b37f7bf2060 100644
-> >>> --- a/arch/loongarch/include/asm/smp.h
-> >>> +++ b/arch/loongarch/include/asm/smp.h
-> >>> @@ -18,6 +18,7 @@ struct smp_ops {
-> >>>          void (*init_ipi)(void);
-> >>>          void (*send_ipi_single)(int cpu, unsigned int action);
-> >>>          void (*send_ipi_mask)(const struct cpumask *mask, unsigned
-> >>> int action);
-> >>> +       bool (*vcpu_is_preempted)(int cpu);
-> >>>   };
-> >>>   extern struct smp_ops mp_ops;
-> >>>
-> >>> diff --git a/arch/loongarch/include/asm/spinlock.h
-> >>> b/arch/loongarch/include/asm/spinlock.h
-> >>> index 7cb3476999be..c001cef893aa 100644
-> >>> --- a/arch/loongarch/include/asm/spinlock.h
-> >>> +++ b/arch/loongarch/include/asm/spinlock.h
-> >>> @@ -5,6 +5,11 @@
-> >>>   #ifndef _ASM_SPINLOCK_H
-> >>>   #define _ASM_SPINLOCK_H
-> >>>
-> >>> +#ifdef CONFIG_PARAVIRT
-> >>> +#define vcpu_is_preempted      vcpu_is_preempted
-> >>> +bool vcpu_is_preempted(int cpu);
-> >>> +#endif
-> >> Maybe paravirt.h is a better place?
-> >
-> > It is actually a little strange to add macro CONFIG_PARAVIRT in file
-> > asm/spinlock.h
-> >
-> > vcpu_is_preempted is originally defined in header file
-> > include/linux/sched.h like this
-> > #ifndef vcpu_is_preempted
-> > static inline bool vcpu_is_preempted(int cpu)
-> > {
-> >          return false;
-> > }
-> > #endif
-> >
-> > that requires that header file is included before sched.h, file
-> > asm/spinlock.h can meet this requirement, however header file paravirt.=
-h
-> > maybe it is not included before sched.h in generic.
-> >
-> > Here vcpu_is_preempted definition is added before the following includi=
-ng.
-> >     #include <asm/processor.h>
-> >     #include <asm/qspinlock.h>
-> >     #include <asm/qrwlock.h>
-> > Maybe it is better to be added after the above header files including
-> > sentences, but need further investigation.
-> >>
-> >>> +
-> >>>   #include <asm/processor.h>
-> >>>   #include <asm/qspinlock.h>
-> >>>   #include <asm/qrwlock.h>
-> >>> diff --git a/arch/loongarch/kernel/paravirt.c
-> >>> b/arch/loongarch/kernel/paravirt.c
-> >>> index b1b51f920b23..b99404b6b13f 100644
-> >>> --- a/arch/loongarch/kernel/paravirt.c
-> >>> +++ b/arch/loongarch/kernel/paravirt.c
-> >>> @@ -52,6 +52,13 @@ static u64 paravt_steal_clock(int cpu)
-> >>>   #ifdef CONFIG_SMP
-> >>>   static struct smp_ops native_ops;
-> >>>
-> >>> +static bool pv_vcpu_is_preempted(int cpu)
-> >>> +{
-> >>> +       struct kvm_steal_time *src =3D &per_cpu(steal_time, cpu);
-> >>> +
-> >>> +       return !!(src->preempted & KVM_VCPU_PREEMPTED);
-> >>> +}
-> >>> +
-> >>>   static void pv_send_ipi_single(int cpu, unsigned int action)
-> >>>   {
-> >>>          int min, old;
-> >>> @@ -308,6 +315,9 @@ int __init pv_time_init(void)
-> >>>                  pr_err("Failed to install cpu hotplug callbacks\n");
-> >>>                  return r;
-> >>>          }
-> >>> +
-> >>> +       if (kvm_para_has_feature(KVM_FEATURE_PREEMPT_HINT))
-> >>> +               mp_ops.vcpu_is_preempted =3D pv_vcpu_is_preempted;
-> >>>   #endif
-> >>>
-> >>>          static_call_update(pv_steal_clock, paravt_steal_clock);
-> >>> @@ -332,3 +342,9 @@ int __init pv_spinlock_init(void)
-> >>>
-> >>>          return 0;
-> >>>   }
-> >>> +
-> >>> +bool notrace vcpu_is_preempted(int cpu)
-> >>> +{
-> >>> +       return mp_ops.vcpu_is_preempted(cpu);
-> >>> +}
-> >>
-> >> We can simplify the whole patch like this, then we don't need to touch
-> >> smp.c, and we can merge Patch-2/3.
-> >>
-> >> +bool notrace vcpu_is_preempted(int cpu)
-> >> +{
-> >> +  if (!kvm_para_has_feature(KVM_FEATURE_PREEMPT_HINT))
-> >> +     return false;
-> >> + else {
-> >> +     struct kvm_steal_time *src =3D &per_cpu(steal_time, cpu);
-> >> +     return !!(src->preempted & KVM_VCPU_PREEMPTED);
-> >> + }
-> >> +}
-> > 1. there is assembly output about relative vcpu_is_preempted
-> >   <loongson_vcpu_is_preempted>:
-> >                 move    $r4,$r0
-> >                 jirl    $r0,$r1,0
-> >
-> >   <pv_vcpu_is_preempted>:
-> >          pcalau12i       $r13,8759(0x2237)
-> >          slli.d  $r4,$r4,0x3
-> >          addi.d  $r13,$r13,-1000(0xc18)
-> >          ldx.d   $r13,$r13,$r4
-> >          pcalau12i       $r12,5462(0x1556)
-> >          addi.d  $r12,$r12,384(0x180)
-> >          add.d   $r12,$r13,$r12
-> >          ld.bu   $r4,$r12,16(0x10)
-> >          andi    $r4,$r4,0x1
-> >          jirl    $r0,$r1,0
-> >
-> >   <vcpu_is_preempted>:
-> >          pcalau12i       $r12,8775(0x2247)
-> >          ld.d    $r12,$r12,-472(0xe28)
-> >          jirl    $r0,$r12,0
-> >          andi    $r0,$r0,0x0
-> >
-> >   <vcpu_is_preempted_new>:
-> >          pcalau12i       $r12,8151(0x1fd7)
-> >          ld.d    $r12,$r12,-1008(0xc10)
-> >          bstrpick.d      $r12,$r12,0x1a,0x1a
-> >          beqz    $r12,188(0xbc) # 900000000024ec60
-> >          pcalau12i       $r12,11802(0x2e1a)
-> >          addi.d  $r12,$r12,-1400(0xa88)
-> >          ldptr.w $r14,$r12,36(0x24)
-> >          beqz    $r14,108(0x6c) # 900000000024ec20
-> >          addi.w  $r13,$r0,1(0x1)
-> >          bne     $r14,$r13,164(0xa4) # 900000000024ec60
-> >          ldptr.w $r13,$r12,40(0x28)
-> >          bnez    $r13,24(0x18) # 900000000024ebdc
-> >          lu12i.w $r14,262144(0x40000)
-> >          ori     $r14,$r14,0x4
-> >          cpucfg  $r14,$r14
-> >          slli.w  $r13,$r14,0x0
-> >          st.w    $r14,$r12,40(0x28)
-> >          bstrpick.d      $r13,$r13,0x3,0x3
-> >          beqz    $r13,128(0x80) # 900000000024ec60
-> >          pcalau12i       $r13,8759(0x2237)
-> >          slli.d  $r4,$r4,0x3
-> >          addi.d  $r13,$r13,-1000(0xc18)
-> >          ldx.d   $r13,$r13,$r4
-> >          pcalau12i       $r12,5462(0x1556)
-> >          addi.d  $r12,$r12,384(0x180)
-> >          add.d   $r12,$r13,$r12
-> >          ld.bu   $r4,$r12,16(0x10)
-> >          andi    $r4,$r4,0x1
-> >          jirl    $r0,$r1,0
-> >          andi    $r0,$r0,0x0
-> >          andi    $r0,$r0,0x0
-> >          andi    $r0,$r0,0x0
-> >          andi    $r0,$r0,0x0
-> >          andi    $r0,$r0,0x0
-> >          lu12i.w $r13,262144(0x40000)
-> >          cpucfg  $r13,$r13
-> >          lu12i.w $r15,1237(0x4d5)
-> >          ori     $r15,$r15,0x64b
-> >          slli.w  $r13,$r13,0x0
-> >          bne     $r13,$r15,-124(0x3ff84) # 900000000024ebb8
-> >          addi.w  $r13,$r0,1(0x1)
-> >          st.w    $r13,$r12,36(0x24)
-> >          b       -128(0xfffff80) # 900000000024ebc0
-> >          andi    $r0,$r0,0x0
-> >          andi    $r0,$r0,0x0
-> >          andi    $r0,$r0,0x0
-> >          andi    $r0,$r0,0x0
-> >          andi    $r0,$r0,0x0
-> >          andi    $r0,$r0,0x0
-> >          andi    $r0,$r0,0x0
-> >          move    $r4,$r0
-> >          jirl    $r0,$r1,0
-> >
-> > With vcpu_is_preempted(), there is one memory load and one jirl jump,
-> > with vcpu_is_preempted_new(), there is two memory load and two beq
-> > compare instructions.
-> >
-> > 2. In some scenery such nr_cpus =3D=3D 1, loongson_vcpu_is_preempted() =
-is
-> > better than pv_vcpu_is_preempted() even if the preempt feature is enabl=
-ed.
-> how about use static key and keep file smp.c untouched?
-OK, it's better.
-
-Huacai
-
-> bool notrace vcpu_is_preempted(int cpu)
-> {
->          struct kvm_steal_time *src;
->
->          if (!static_branch_unlikely(&virt_preempt_key))
->                  return false;
->
->          src =3D &per_cpu(steal_time, cpu);
->          return !!(src->preempted & KVM_VCPU_PREEMPTED);
-> }
->
-> it reduces one memory load, here is assembly output:
->   <vcpu_is_preempted>:
->          andi    $r0,$r0,0x0
->          move    $r4,$r0
->          jirl    $r0,$r1,0
->          andi    $r0,$r0,0x0
->          pcalau12i       $r13,8759(0x2237)
->          slli.d  $r4,$r4,0x3
->          addi.d  $r13,$r13,-1000(0xc18)
->          ldx.d   $r13,$r13,$r4
->          pcalau12i       $r12,5462(0x1556)
->          addi.d  $r12,$r12,384(0x180)
->          add.d   $r12,$r13,$r12
->          ld.bu   $r4,$r12,16(0x10)
->          andi    $r4,$r4,0x1
->          jirl    $r0,$r1,0
->
-> Regards
-> Bibo Mao
->
-> >
-> > Regards
-> > Bibo Mao
-> >> Huacai
-> >>
-> >>> +EXPORT_SYMBOL(vcpu_is_preempted);
-> >>> diff --git a/arch/loongarch/kernel/smp.c b/arch/loongarch/kernel/smp.=
-c
-> >>> index 46036d98da75..f04192fedf8d 100644
-> >>> --- a/arch/loongarch/kernel/smp.c
-> >>> +++ b/arch/loongarch/kernel/smp.c
-> >>> @@ -307,10 +307,16 @@ static void loongson_init_ipi(void)
-> >>>                  panic("IPI IRQ request failed\n");
-> >>>   }
-> >>>
-> >>> +static bool loongson_vcpu_is_preempted(int cpu)
-> >>> +{
-> >>> +       return false;
-> >>> +}
-> >>> +
-> >>>   struct smp_ops mp_ops =3D {
-> >>>          .init_ipi               =3D loongson_init_ipi,
-> >>>          .send_ipi_single        =3D loongson_send_ipi_single,
-> >>>          .send_ipi_mask          =3D loongson_send_ipi_mask,
-> >>> +       .vcpu_is_preempted      =3D loongson_vcpu_is_preempted,
-> >>>   };
-> >>>
-> >>>   static void __init fdt_smp_setup(void)
-> >>> --
-> >>> 2.39.3
-> >>>
-> >>>
-> >
->
->
+PiBxdWV1ZSB3YWtlL3N0b3AgZXZlbnRzIGludHJvZHVjZWQgYnkgYSBwcmV2aW91cyBwYXRjaC4N
+Cj4gDQo+IEl0IHdvdWxkIGJlIGJldHRlciB0byBhZGQgY29tbWl0IGlkIGhlcmUuDQpPSywgdGh4
+Lg0KDQo+IA0KZWNrLiAqLw0KPiA+ICAgICAgICAgICAgICAgICAgICAgICAgIGZyZWVfb2xkX3ht
+aXQoc3EsIHR4cSwgZmFsc2UpOw0KPiA+ICAgICAgICAgICAgICAgICAgICAgICAgIGlmIChzcS0+
+dnEtPm51bV9mcmVlID49IE1BWF9TS0JfRlJBR1MgKyAyKSB7DQo+ID4gLSAgICAgICAgICAgICAg
+ICAgICAgICAgICAgICAgICBuZXRpZl9zdGFydF9zdWJxdWV1ZShkZXYsIHFudW0pOw0KPiA+IC0N
+Cj4gdTY0X3N0YXRzX3VwZGF0ZV9iZWdpbigmc3EtPnN0YXRzLnN5bmNwKTsNCj4gPiAtICAgICAg
+ICAgICAgICAgICAgICAgICAgICAgICAgIHU2NF9zdGF0c19pbmMoJnNxLT5zdGF0cy53YWtlKTsN
+Cj4gPiAtDQo+IHU2NF9zdGF0c191cGRhdGVfZW5kKCZzcS0+c3RhdHMuc3luY3ApOw0KPiA+ICsg
+ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgdmlydG5ldF90eF93YWtlX3F1ZXVlKHZpLCBz
+cSk7DQo+IA0KPiBUaGlzIGlzIHN1c3BpY2lvdXMsIG5ldGlmX3R4X3dha2VfcXVldWUoKSB3aWxs
+IHNjaGVkdWxlIHFkaXNjLCBvciBpcyB0aGlzIGludGVuZGVkPw0KVGhhbmtzIGZvciBwb2ludGlu
+ZyB0aGlzIG91dC4NCllvdSdyZSByaWdodCDigJQgdXNpbmcgbmV0aWZfdHhfd2FrZV9xdWV1ZSgp
+IGhlcmUgd291bGQgaW5kZWVkIHRyaWdnZXIgcWRpc2Mgc2NoZWR1bGluZywgd2hpY2ggaXMgbm90
+IGludGVuZGVkIGluIHRoaXMgc3BlY2lmaWMgcGF0aC4NCk15IGNoYW5nZSB0cmllZCB0byB1bmlm
+eSB0aGUgd2FrZS9zdG9wIGFjY291bnRpbmcgcGF0aHMsIGJ1dCByZXBsYWNpbmcgbmV0aWZfc3Rh
+cnRfc3VicXVldWUoKSB3YXMgbm90IHRoZSByaWdodCBjaG9pY2Ugc2VtYW50aWNhbGx5Lg0KDQpJ
+IHdpbGwgcmVzdG9yZSBuZXRpZl9zdGFydF9zdWJxdWV1ZSgpIGF0IHRoaXMgc2l0ZSBhbmQga2Vl
+cCBvbmx5IHRoZSBzdGF0aXN0aWMgaW5jcmVtZW50LCBzbyB0aGUgYmVoYXZpb3Igc3RheXMgY29u
+c2lzdGVudCB3aXRoIHRoZSBvcmlnaW5hbCBjb2RlIHdoaWxlIHN0aWxsIGltcHJvdmluZyB0aGUg
+cGVyLXF1ZXVlIG1ldHJpY3MuDQoNCj4gDQo+ID4gICAgICAgICAgICAgICAgICAgICAgICAgICAg
+ICAgICB2aXJ0cXVldWVfZGlzYWJsZV9jYihzcS0+dnEpOw0KPiA+ICAgICAgICAgICAgICAgICAg
+ICAgICAgIH0NCj4gPiAgICAgICAgICAgICAgICAgfQ0KPiA+IEBAIC0zMDY4LDEzICszMDgwLDgg
+QEAgc3RhdGljIHZvaWQgdmlydG5ldF9wb2xsX2NsZWFudHgoc3RydWN0DQo+IHJlY2VpdmVfcXVl
+dWUgKnJxLCBpbnQgYnVkZ2V0KQ0KPiA+ICAgICAgICAgICAgICAgICAgICAgICAgIGZyZWVfb2xk
+X3htaXQoc3EsIHR4cSwgISFidWRnZXQpOw0KPiA+ICAgICAgICAgICAgICAgICB9IHdoaWxlDQo+
+ID4gKHVubGlrZWx5KCF2aXJ0cXVldWVfZW5hYmxlX2NiX2RlbGF5ZWQoc3EtPnZxKSkpOw0KPiA+
+DQo+ID4gLSAgICAgICAgICAgICAgIGlmIChzcS0+dnEtPm51bV9mcmVlID49IE1BWF9TS0JfRlJB
+R1MgKyAyICYmDQo+ID4gLSAgICAgICAgICAgICAgICAgICBuZXRpZl90eF9xdWV1ZV9zdG9wcGVk
+KHR4cSkpIHsNCj4gPiAtICAgICAgICAgICAgICAgICAgICAgICB1NjRfc3RhdHNfdXBkYXRlX2Jl
+Z2luKCZzcS0+c3RhdHMuc3luY3ApOw0KPiA+IC0gICAgICAgICAgICAgICAgICAgICAgIHU2NF9z
+dGF0c19pbmMoJnNxLT5zdGF0cy53YWtlKTsNCj4gPiAtICAgICAgICAgICAgICAgICAgICAgICB1
+NjRfc3RhdHNfdXBkYXRlX2VuZCgmc3EtPnN0YXRzLnN5bmNwKTsNCj4gPiAtICAgICAgICAgICAg
+ICAgICAgICAgICBuZXRpZl90eF93YWtlX3F1ZXVlKHR4cSk7DQo+ID4gLSAgICAgICAgICAgICAg
+IH0NCj4gPiArICAgICAgICAgICAgICAgaWYgKHNxLT52cS0+bnVtX2ZyZWUgPj0gTUFYX1NLQl9G
+UkFHUyArIDIpDQo+ID4gKyAgICAgICAgICAgICAgICAgICAgICAgdmlydG5ldF90eF93YWtlX3F1
+ZXVlKHZpLCBzcSk7DQo+ID4NCj4gPiAgICAgICAgICAgICAgICAgX19uZXRpZl90eF91bmxvY2so
+dHhxKTsNCj4gPiAgICAgICAgIH0NCj4gPiBAQCAtMzI2NCwxMyArMzI3MSw4IEBAIHN0YXRpYyBp
+bnQgdmlydG5ldF9wb2xsX3R4KHN0cnVjdCBuYXBpX3N0cnVjdCAqbmFwaSwNCj4gaW50IGJ1ZGdl
+dCkNCj4gPiAgICAgICAgIGVsc2UNCj4gPiAgICAgICAgICAgICAgICAgZnJlZV9vbGRfeG1pdChz
+cSwgdHhxLCAhIWJ1ZGdldCk7DQo+ID4NCj4gPiAtICAgICAgIGlmIChzcS0+dnEtPm51bV9mcmVl
+ID49IE1BWF9TS0JfRlJBR1MgKyAyICYmDQo+ID4gLSAgICAgICAgICAgbmV0aWZfdHhfcXVldWVf
+c3RvcHBlZCh0eHEpKSB7DQo+ID4gLSAgICAgICAgICAgICAgIHU2NF9zdGF0c191cGRhdGVfYmVn
+aW4oJnNxLT5zdGF0cy5zeW5jcCk7DQo+ID4gLSAgICAgICAgICAgICAgIHU2NF9zdGF0c19pbmMo
+JnNxLT5zdGF0cy53YWtlKTsNCj4gPiAtICAgICAgICAgICAgICAgdTY0X3N0YXRzX3VwZGF0ZV9l
+bmQoJnNxLT5zdGF0cy5zeW5jcCk7DQo+ID4gLSAgICAgICAgICAgICAgIG5ldGlmX3R4X3dha2Vf
+cXVldWUodHhxKTsNCj4gPiAtICAgICAgIH0NCj4gPiArICAgICAgIGlmIChzcS0+dnEtPm51bV9m
+cmVlID49IE1BWF9TS0JfRlJBR1MgKyAyKQ0KPiA+ICsgICAgICAgICAgICAgICB2aXJ0bmV0X3R4
+X3dha2VfcXVldWUodmksIHNxKTsNCj4gPg0KPiA+ICAgICAgICAgaWYgKHhza19kb25lID49IGJ1
+ZGdldCkgew0KPiA+ICAgICAgICAgICAgICAgICBfX25ldGlmX3R4X3VubG9jayh0eHEpOyBAQCAt
+MzUyMSw2ICszNTIzLDkgQEAgc3RhdGljDQo+ID4gdm9pZCB2aXJ0bmV0X3R4X3BhdXNlKHN0cnVj
+dCB2aXJ0bmV0X2luZm8gKnZpLCBzdHJ1Y3Qgc2VuZF9xdWV1ZSAqc3EpDQo+ID4NCj4gPiAgICAg
+ICAgIC8qIFByZXZlbnQgdGhlIHVwcGVyIGxheWVyIGZyb20gdHJ5aW5nIHRvIHNlbmQgcGFja2V0
+cy4gKi8NCj4gPiAgICAgICAgIG5ldGlmX3N0b3Bfc3VicXVldWUodmktPmRldiwgcWluZGV4KTsN
+Cj4gPiArICAgICAgIHU2NF9zdGF0c191cGRhdGVfYmVnaW4oJnNxLT5zdGF0cy5zeW5jcCk7DQo+
+ID4gKyAgICAgICB1NjRfc3RhdHNfaW5jKCZzcS0+c3RhdHMuc3RvcCk7DQo+ID4gKyAgICAgICB1
+NjRfc3RhdHNfdXBkYXRlX2VuZCgmc3EtPnN0YXRzLnN5bmNwKTsNCj4gPg0KPiA+ICAgICAgICAg
+X19uZXRpZl90eF91bmxvY2tfYmgodHhxKTsNCj4gPiAgfQ0KPiA+IEBAIC0zNTM3LDcgKzM1NDIs
+NyBAQCBzdGF0aWMgdm9pZCB2aXJ0bmV0X3R4X3Jlc3VtZShzdHJ1Y3QNCj4gPiB2aXJ0bmV0X2lu
+Zm8gKnZpLCBzdHJ1Y3Qgc2VuZF9xdWV1ZSAqc3EpDQo+ID4NCj4gPiAgICAgICAgIF9fbmV0aWZf
+dHhfbG9ja19iaCh0eHEpOw0KPiA+ICAgICAgICAgc3EtPnJlc2V0ID0gZmFsc2U7DQo+ID4gLSAg
+ICAgICBuZXRpZl90eF93YWtlX3F1ZXVlKHR4cSk7DQo+ID4gKyAgICAgICB2aXJ0bmV0X3R4X3dh
+a2VfcXVldWUodmksIHNxKTsNCj4gPiAgICAgICAgIF9fbmV0aWZfdHhfdW5sb2NrX2JoKHR4cSk7
+DQo+ID4NCj4gPiAgICAgICAgIGlmIChydW5uaW5nKQ0KPiA+IC0tDQo+ID4gMi4zNC4xDQo+ID4N
+Cj4gDQo+IFRoYW5rcw0KDQo=
