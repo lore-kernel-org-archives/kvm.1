@@ -1,165 +1,242 @@
-Received: from mail-qt1-f171.google.com (mail-qt1-f171.google.com [209.85.160.171])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA223347FFA
-	for <kvm@vger.kernel.org>; Wed, 19 Nov 2025 10:38:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 85EF2346FA2
+	for <kvm@vger.kernel.org>; Wed, 19 Nov 2025 10:44:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.17
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763548699; cv=none; b=lRE4abD6IzmrcFFnNjUN4XvMnkjA+b8dfrLr0NmcDEjeNQqhIAELB4PWs9GDNV2lrynhSwQh/NUciAq19jpgREEOqrt8pM1bcnLCR0LeJnTtk212n9qg7/RMReLc4+KlP9VdQkVyhoPm+/ktt2nZYj/DBf5paMnBQoPso4CYWVA=
+	t=1763549078; cv=none; b=pxN8cTFkjjzKpJfc27+gf0OPqu0n5dewGoX74Qd4dfDe4xjoA+Nwnxm7vMdT3KyQsWuQ55y6HTHBhdknw1DKmJItIsYyGQywYuDNHtwOzUwt2otJY27UVdL74JmuoVI9dIlv9X66SDmt9BjsG0fxtzzDu0tkfoY0kS+zTTh/40k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763548699; c=relaxed/simple;
-	bh=qWJmc0Xb6IbyOw8w8OA9A8sY8tyZ294+v84mJLscPjU=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=BiboorSPvo4qxlInrsZ10oRwdc0A2cnjD+IRJIgfWh6krynurkIl0Z716eLi+9RGxo7j1VPFM1yOP9hnm4jSRirkXpA4JCSfFxyQ89BZsTHD3sWVjWISaDfFpxfv/kEo4n9X4BnThhqSTliRT+Ay2ub01ENAXc67KQJ6LKBD/sM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=SYoy/uJG; arc=none smtp.client-ip=209.85.160.171
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	s=arc-20240116; t=1763549078; c=relaxed/simple;
+	bh=WhK5P4cuobRv3bMhRyzWkwxWn+7RqWPfiO66DzwlRZg=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=NUe6PpwZOUo8o+upsDimoH7mvcQ34TlqvH8myXS9AoeCAWq+/kT0o7JKeLNu53fObUcR0mhJcVy718zq8QXOOVXEm2xD2DJk/z5A2joNft5vFnApikALdd3PCw22A07G5GX0pj/Jsm6CxCyP/EY9TB/QpVmK9W3UZyfM9I6bvLg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=O1gPaO1o; arc=none smtp.client-ip=192.198.163.17
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="SYoy/uJG"
-Received: by mail-qt1-f171.google.com with SMTP id d75a77b69052e-4edb8d6e98aso318721cf.0
-        for <kvm@vger.kernel.org>; Wed, 19 Nov 2025 02:38:17 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1763548697; x=1764153497; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=ajPJXKSb6EvakAv/OuhuRvH8YRFIbHznazB/0gEJ+2M=;
-        b=SYoy/uJGNFg97q//gi107l7bEebyW+GxrjNsAtH50NjBo3JlJVTOQV4T6n8Zg9MGrS
-         z3qAlc1N5pNd76AC+Q76C+dBQRxmFnUiEy2FPHr1aHz5bINIoHQIj/i9XiEBERqnhgYa
-         GZC/4xddHIekpKFagJ5aVn9uqIV66UhPw/FcP8tB/3EYCno8QWV/W95Qn5rZTeDMz+Oy
-         +SKoy8s+00J0xpWW80bRF4IVibqSx65gtxS8a4rosKoABOGIzeOLMhx8FQnTLFwhb8Z1
-         oPqSluHy4IlyDaCXdCDNwZ3IHblvvSGJFGbGpFSfBfEkUdlmOOrgNDpZ+UHoN7SeBPMp
-         rpkg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1763548697; x=1764153497;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=ajPJXKSb6EvakAv/OuhuRvH8YRFIbHznazB/0gEJ+2M=;
-        b=cgDhdOef5J4Q8AT/Q469u0mn1QKMoQl0Wj66QjE/wjOfqJoR92W3o2gSf1jGBdKm9F
-         LdFNhPsBvKBZEVtdEmMhUjvHj3QtmDc24ysHwTCvhtm8z5kamJc4rcl1o8g4uVKLI5x1
-         yhugemjnJHwpflE1eAIciAehBB/II0BDhc/kVNwOzNoIvK6DldyjJwTM+rlhXb3Jh/Tk
-         cuU61UqTQiKmPlv7/dn+NRnQFmUO9fBmPUfuCqM/jzLfJU5JkNuwhbUZ1aE3Yg0KWqT/
-         FQNOgn+p1+NEaK5JrYGE2LTAVo2oSaNnAPTeEu9JrAny35NUvxJfFFmnIsIl5gwihskf
-         4sCQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUTFFmWoR7C4gSxIC6lBvomkayqL78LfZE40NgJY2Aw7+Q2GSSMWGyXUJwTgwBi1CS5paI=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyNLGaLRaz0ThN3JpK5b6tWckBLD4ZxCMMIdJz4sB7W0E3eyek2
-	jT4+TvGtZx4TsdfUmSZ1AFCsap9Di8bkMpSIqnr+u7gbaGeldW5rQcBeG1VMGxI3kIN9nHoKfjG
-	v6nZj9cImqTb1s8IprSH26VQCaoge+Iq/0GT846ke
-X-Gm-Gg: ASbGncsaRxug3tXG7jSy5yGflV1H95akEKXE3qXz46xR4YP+cX4imXWLezV+RuWxnZd
-	/xwqG/c97Ie06XkHct1abhP76aD6v0VZam8Cw+pkqxeYDVq8OFGQziDa3+4tnWq7+0P0TKYDuc0
-	4v+vCGJknL1LGoKeOWX0chHv3nZ6DuXCJLAk0A+BLWwBX709Ah6SsRM1azebt1TyoGBZVDAcRF+
-	yPbdjdvwJu4hJgXvlZt6DXYz1OP/4gvUFPgVnjRK3AjHd+lJLBTOqKXKYBRAInG8vog4OH4Gp6M
-	cbIcB/hL8kVlaSM5v1v2UtYiSlOSg078ClA=
-X-Google-Smtp-Source: AGHT+IHyZj1mHlRoqcMVEK+Ke9v+QKN/GTCdvCboTV8ytrHFav/L7x1i8RWg43NziKnKMj+gWGYsCAB6fcyxt7vblr4=
-X-Received: by 2002:a05:622a:1b88:b0:4ed:18ef:4060 with SMTP id
- d75a77b69052e-4ee3ec3080cmr5005131cf.8.1763548696534; Wed, 19 Nov 2025
- 02:38:16 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="O1gPaO1o"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1763549076; x=1795085076;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=WhK5P4cuobRv3bMhRyzWkwxWn+7RqWPfiO66DzwlRZg=;
+  b=O1gPaO1o0D+dzbMNmue/c11DvmHptZb6rvQdAwxBALNIhtTjMKrxnK0l
+   wupQaBEnXePh+oyPkvyRG383nJ5pu0ewQUCgRyb7UEV8Y5x3yn5X5XErj
+   rV56YgjURufoYSOsMEFUMKOit/luC2iONY4XAkJ24WaVQrww2kuHfJjyE
+   IInZkB4bnYmR9E6jOjEKH/w2Qaagd7A58754pMZ6S7Uap070wq81RXbu6
+   P928uMOsdZjY24qilkD78/i9tS9l6BJ8ltuyFcZC00yyVNjX4KcMnrTkl
+   +kRA+VqCyPTjDo5ibQbI5eRYfpICWUcWwexHTzsyXX8aTt7ZqSkUSi0Mv
+   A==;
+X-CSE-ConnectionGUID: fz3xAOHYRbeq+/Pted8tJw==
+X-CSE-MsgGUID: ko8YeIGgRXmHI7gdL5PHhg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11617"; a="65483370"
+X-IronPort-AV: E=Sophos;i="6.19,315,1754982000"; 
+   d="scan'208";a="65483370"
+Received: from fmviesa004.fm.intel.com ([10.60.135.144])
+  by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Nov 2025 02:44:35 -0800
+X-CSE-ConnectionGUID: mItufiZIQR2Hevf9RtiK1g==
+X-CSE-MsgGUID: USMTkdqxSGGJc3gf0UXzbg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.19,315,1754982000"; 
+   d="scan'208";a="195971496"
+Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost) ([10.239.160.39])
+  by fmviesa004.fm.intel.com with ESMTP; 19 Nov 2025 02:44:31 -0800
+Date: Wed, 19 Nov 2025 19:06:51 +0800
+From: Zhao Liu <zhao1.liu@intel.com>
+To: Dongli Zhang <dongli.zhang@oracle.com>
+Cc: qemu-devel@nongnu.org, kvm@vger.kernel.org, pbonzini@redhat.com,
+	mtosatti@redhat.com, sandipan.das@amd.com, babu.moger@amd.com,
+	likexu@tencent.com, like.xu.linux@gmail.com, groug@kaod.org,
+	khorenko@virtuozzo.com, alexander.ivanov@virtuozzo.com,
+	den@virtuozzo.com, davydov-max@yandex-team.ru, xiaoyao.li@intel.com,
+	dapeng1.mi@linux.intel.com, joe.jin@oracle.com,
+	ewanhai-oc@zhaoxin.com, ewanhai@zhaoxin.com, zhao1.liu@intel.com
+Subject: Re: [PATCH v7 2/9] target/i386: disable PERFCORE when "-pmu" is
+ configured
+Message-ID: <aR2ky5WU8CqH8+lS@intel.com>
+References: <20251111061532.36702-1-dongli.zhang@oracle.com>
+ <20251111061532.36702-3-dongli.zhang@oracle.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20251117091527.1119213-1-maz@kernel.org> <aRweUM4O71ecPvVr@kernel.org>
- <CA+EHjTzJQOTTSUoXVKpGdWO8vz9Vc-2AL3zRyzG4DkUPz+wBBQ@mail.gmail.com> <86ms4jrwhr.wl-maz@kernel.org>
-In-Reply-To: <86ms4jrwhr.wl-maz@kernel.org>
-From: Fuad Tabba <tabba@google.com>
-Date: Wed, 19 Nov 2025 10:37:39 +0000
-X-Gm-Features: AWmQ_bnZDu_VkCPXAw-nz27IkT05jj1DSam5-p8uzswdO8xX2NqMq69pMVBt_H4
-Message-ID: <CA+EHjTyiM+BNP+iRTYP7968np=y0+Vn38GtAfiTtg=JcUzjPpQ@mail.gmail.com>
-Subject: Re: [PATCH v3 0/5] KVM: arm64: Add LR overflow infrastructure (the
- dregs, the bad and the ugly)
-To: Marc Zyngier <maz@kernel.org>
-Cc: Oliver Upton <oupton@kernel.org>, kvmarm@lists.linux.dev, 
-	linux-arm-kernel@lists.infradead.org, kvm@vger.kernel.org, 
-	Joey Gouly <joey.gouly@arm.com>, Suzuki K Poulose <suzuki.poulose@arm.com>, 
-	Zenghui Yu <yuzenghui@huawei.com>, Christoffer Dall <christoffer.dall@arm.com>, 
-	Mark Brown <broonie@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20251111061532.36702-3-dongli.zhang@oracle.com>
 
-Hi Marc,
+Hi Dongli,
 
-On Tue, 18 Nov 2025 at 19:06, Marc Zyngier <maz@kernel.org> wrote:
->
-> Hi Fuad,
->
-> On Tue, 18 Nov 2025 13:59:14 +0000,
-> Fuad Tabba <tabba@google.com> wrote:
-> >
-> > On Tue, 18 Nov 2025 at 07:20, Oliver Upton <oupton@kernel.org> wrote:
-> > >
-> > > On Mon, Nov 17, 2025 at 09:15:22AM +0000, Marc Zyngier wrote:
-> > > > This is a follow-up to the original series [1] (and fixes [2][3])
-> > > > with a bunch of bug-fixes and improvements. At least one patch has
-> > > > already been posted, but I thought I might repost it as part of a
-> > > > series, since I accumulated more stuff:
-> > > >
-> > > > - The first patch addresses Mark's observation that the no-vgic-v3
-> > > >   test has been broken once more. At some point, we'll have to retire
-> > > >   that functionality, because even if we keep fixing the SR handling,
-> > > >   nobody tests the actual interrupt state exposure to userspace, which
-> > > >   I'm pretty sure has badly been broken for at least 5 years.
-> > > >
-> > > > - The second one addresses a report from Fuad that on QEMU,
-> > > >   ICH_HCR_EL2.TDIR traps ICC_DIR_EL1 on top of ICV_DIR_EL1, leading to
-> > > >   the host exploding on deactivating an interrupt. This behaviour is
-> > > >   allowed by the spec, so make sure we clear all trap bits
-> > > >
-> > > > - Running vgic_irq in an L1 guest (the test being an L2) results in a
-> > > >   MI storm on the host, as the state synchronisation is done at the
-> > > >   wrong place, much like it was on the non-NV path before it was
-> > > >   reworked. Apply the same methods to the NV code, and enjoy much
-> > > >   better MI emulation, now tested all the way into an L3.
-> > > >
-> > > > - Nuke a small leftover from previous rework.
-> > > >
-> > > > - Force a read-back of ICH_MISR_EL2 when disabling the vgic, so that
-> > > >   the trap prevents too many spurious MIs in an L1 guest, as the write
-> > > >   to ICH_HCR_EL2 does exactly nothing on its own when running under
-> > > >   FEAT_NV2.
-> > > >
-> > > > Oliver: this is starting to be a large series of fixes on top of the
-> > > > existing series, plus the two patches you have already added. I'd be
-> > > > happy to respin a full v4 with the fixes squashed into their original
-> > > > patches. On the other hand, if you want to see the history in its full
-> > > > glory, that also works for me.
-> > >
-> > > I'll pick up these patches in a moment but at this point I'd prefer a
-> > > clean history. Plan is to send out the 6.19 pull sometime next week so
-> > > any time before then would be great for v4.
-> >
-> > I'm happy to take that for another spin Marc before you send it, if
-> > it's different from the ToT I tested. In that case, just send me a
-> > pointer to the branch.
->
-> I've just pushed out a full branch at [1]. Please make sure to merge
-> kvmarm-fixes-6.18-3 in, as it fixes a couple of nasties (small
-> conflict expected, but the resolution should be obvious).
+> diff --git a/target/i386/cpu.c b/target/i386/cpu.c
+> index 3653f8953e..4fcade89bc 100644
+> --- a/target/i386/cpu.c
+> +++ b/target/i386/cpu.c
+> @@ -8360,6 +8360,10 @@ void cpu_x86_cpuid(CPUX86State *env, uint32_t index, uint32_t count,
+>              !(env->hflags & HF_LMA_MASK)) {
+>              *edx &= ~CPUID_EXT2_SYSCALL;
+>          }
+> +
+> +        if (!cpu->enable_pmu) {
+> +            *ecx &= ~CPUID_EXT3_PERFCORE;
+> +        }
 
-For this branch [1]:
-Tested-by: Fuad Tabba <tabba@google.com>
+Learned the lessons from PDCM [*]:
 
-On QEMU, nVHE, hVHE protected mode (non-protected VMs with and without
-the Android pKVM patches), and protected VMs (with the Android pKVM
-patches).
+[*] https://lore.kernel.org/qemu-devel/20250923104136.133875-3-pbonzini@redhat.com/
 
-Cheers,
-/fuad
+Directly masking CPUID bit off is not a good idea... modifying the
+CPUID, even when fixing or adding dependencies, can easily break
+migration.
+
+So a safe way is to add a compat option. And I think it would be better
+if patch 1 also has a compat option. A single compat option could cover
+patch 1 & 2.
+
+I have these thoughts:
+
+* For "-pmu" dependency, it can be checked as [*] did.
+* For normal feature bit dependency (patch 1), it seems possible to add
+  compat_prop condition in feature_dependencies[].
+
+I attached a draft for discussion (which is on the top of the whole
+series).
+
+Note, we are currently in the RC phase for v10.2, and the
+pc_compat_10_2[] array is not yet added, which will be added before the
+release of v10.2. Therefore, we have enough time for discussion I think.
+
+If you think it's fine, I'll post compat_prop support separately as an
+RFC. The specific compat option can be left to this series.
+
+Although wait for a while, in a way, it is lucky :) - there's an
+opportunity to avoid making mistakes for us.
+
+Regards,
+Zhao
+
+------------------------------------------------
+diff --git a/hw/i386/pc.c b/hw/i386/pc.c
+index f8b919cb6c47..d2b8e83e556d 100644
+--- a/hw/i386/pc.c
++++ b/hw/i386/pc.c
+@@ -83,6 +83,7 @@
+
+ GlobalProperty pc_compat_10_1[] = {
+     { "mch", "extended-tseg-mbytes", "16" },
++    { TYPE_X86_CPU, "x-amd-perfmon-always-on", "true" }, // This should be added to pc_compat_10_2!
+ };
+ const size_t pc_compat_10_1_len = G_N_ELEMENTS(pc_compat_10_1);
+
+diff --git a/target/i386/cpu.c b/target/i386/cpu.c
+index 4fcade89bcea..8c56789eb296 100644
+--- a/target/i386/cpu.c
++++ b/target/i386/cpu.c
+@@ -1997,6 +1997,8 @@ static FeatureDep feature_dependencies[] = {
+     {
+         .from = { FEAT_8000_0001_ECX,       CPUID_EXT3_PERFCORE },
+         .to = { FEAT_8000_0022_EAX,         CPUID_8000_0022_EAX_PERFMON_V2 },
++        .compat_prop =
++            { "x-amd-perfmon-always-on",    "false" },
+     },
+ };
+
+@@ -8998,15 +9000,36 @@ void x86_cpu_expand_features(X86CPU *cpu, Error **errp)
+         }
+     }
+
+-    if (!cpu->pdcm_on_even_without_pmu) {
++    if (!cpu->enable_pmu) {
+         /* PDCM is fixed1 bit for TDX */
+-        if (!cpu->enable_pmu && !is_tdx_vm()) {
++        if (!cpu->pdcm_on_even_without_pmu && !is_tdx_vm()) {
+             env->features[FEAT_1_ECX] &= ~CPUID_EXT_PDCM;
+         }
++
++        if (!cpu->amd_perfmon_always_on) {
++            env->features[FEAT_8000_0001_ECX] &= ~CPUID_EXT3_PERFCORE;
++        }
+     }
+
+     for (i = 0; i < ARRAY_SIZE(feature_dependencies); i++) {
+         FeatureDep *d = &feature_dependencies[i];
++        bool compat_omit = false;
++        PropValue *prop = &d->compat_prop;
++
++        if (prop->value) {
++            char *v = object_property_print(OBJECT(cpu), prop->prop, false, NULL);
++            if (v) {
++                compat_omit = !strcmp(prop->value, v);
++                printf("feature_dependencies: v: %s, value: %s, omit: %d\n",
++                       v, prop->value, compat_omit);
++                g_free(v);
++            }
++
++            if (compat_omit) {
++                continue;
++            }
++        }
++
+         if (!(env->features[d->from.index] & d->from.mask)) {
+             uint64_t unavailable_features = env->features[d->to.index] & d->to.mask;
+
+@@ -10065,6 +10088,8 @@ static const Property x86_cpu_properties[] = {
+                      arch_cap_always_on, false),
+     DEFINE_PROP_BOOL("x-pdcm-on-even-without-pmu", X86CPU,
+                      pdcm_on_even_without_pmu, false),
++    DEFINE_PROP_BOOL("x-amd-perfmon-always-on", X86CPU,
++                     amd_perfmon_always_on, false),
+ };
+
+ #ifndef CONFIG_USER_ONLY
+diff --git a/target/i386/cpu.h b/target/i386/cpu.h
+index 6d78f3995b6b..ac8dd92efc59 100644
+--- a/target/i386/cpu.h
++++ b/target/i386/cpu.h
+@@ -696,8 +696,14 @@ typedef struct FeatureMask {
+     uint64_t mask;
+ } FeatureMask;
+
++typedef struct PropValue {
++    const char *prop, *value;
++} PropValue;
++
+ typedef struct FeatureDep {
+     FeatureMask from, to;
++    /* Once set, only when prop is satisfied, dependency can be checked. */
++    PropValue compat_prop;
+ } FeatureDep;
+
+ typedef uint64_t FeatureWordArray[FEATURE_WORDS];
+@@ -2353,6 +2359,16 @@ struct ArchCPU {
+      */
+     bool pdcm_on_even_without_pmu;
+
++    /*
++     * Backwards compatibility with QEMU <10.2. (TODO: change 10.2 to 11.0!)
++     * This flag covers 2 parts:
++     * - The PERFCORE feature is now disabled when PMU is not available, but prior to
++     *   10.2 it was enabled even if PMU is off.
++     * - The PerfMonV2 feature is now disabled when PERFCORE is disabled, but prior to
++     *   10.2 it was enabled even if PERFCORE is off.
++     */
++    bool amd_perfmon_always_on;
++
+     /* Number of physical address bits supported */
+     uint32_t phys_bits;
+
+@@ -2579,9 +2595,7 @@ bool cpu_x86_xrstor(CPUX86State *s, void *host, size_t len, uint64_t rbfm);
+ /* cpu.c */
+ void x86_cpu_vendor_words2str(char *dst, uint32_t vendor1,
+                               uint32_t vendor2, uint32_t vendor3);
+-typedef struct PropValue {
+-    const char *prop, *value;
+-} PropValue;
++
+ void x86_cpu_apply_props(X86CPU *cpu, PropValue *props);
+
+ void x86_cpu_after_reset(X86CPU *cpu);
 
 
-
-> For my own testing, I added -rc6 on top.
->
-> Note that I didn't take your Tested-by: tags, as you are about to
-> retest the whole thing anyway. If all goes well (fingers crossed),
-> Oliver will be able to apply any further tag once I post these
-> patches.
->
-> Thanks,
->
->         M.
->
-> [1] https://git.kernel.org/pub/scm/linux/kernel/git/maz/arm-platforms.git/log/?h=kvm-arm64/vgic-lr-overflow
->
-> --
-> Without deviation from the norm, progress is not possible.
