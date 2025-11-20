@@ -1,37 +1,37 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 53CDE3A1D03;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 00C473A5E7C;
 	Thu, 20 Nov 2025 17:26:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763659562; cv=none; b=HCBwKQ+HBeF6gC0rB/1yQjxW1KbiM5MLDz3WSst8Groabd0nWBZE/oQiXoF6IL2oycA+ldxj8MGvXapRDAdMP6HT/zA6o8YHjR+G1lVNXVY1oNTOb0+llwqBMoCMAexP9o73gkWEWan/KnDvHgD/1EnWVc5EQhJ1NMztc613IFk=
+	t=1763659563; cv=none; b=kVLzFbvddAz4os7BnU0noc0Z05mu3f4LEPP0kTaeK+QAY4/2oqOoH7esgrOlYAr2FFVsbMhDjayFtSDeWdM/pOLg3SJdwUYqKaViTn11bDN/Z3gFWwfCuBZAAgbB7eqHawliEqATQvKJ9WfKp9+qGSxUXINJiV+eYG5uLaqDVeA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763659562; c=relaxed/simple;
-	bh=LSmwy/jJoyDN5XNfzlXa3/7NJpRS/mKXF3x0i2bdOsE=;
+	s=arc-20240116; t=1763659563; c=relaxed/simple;
+	bh=38+3571SsR3/6Au4qfcW65qDAxFokXCMSe41hn2rqc0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Fw6zNJJYn41s3CyazjolwszvxCqHLMCneD18B3f1WJqmFUU5mIpXJ1VsfVEGbw6VuNmv0mt1tIdRJuwmIfpY9W9RsQoOYmclnF1DBuJJEWVnwiLbXweaHh+bdF4y+xo7nsmOaoLuXCzYe0ww6YfcVaPaelj+IhBrLuxw5UPBBp4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=czmBviy6; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version; b=gR81jcAM3LkuNoyG3vZIcc0XGlQrTZTOrNayzB7y6RhfQhdJdOFWWduP+COAroJUQNj4LVuSRSPS/b1Q3V5Sq7jOjVdMS8y3cByXcSky/EO1aDuITxPiHk4cK2fWmPLnNKLKdIcVdc8NVJn4+7r3TvrYwkvnBvBzGX4aJ8GoFZQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DelMbAld; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="czmBviy6"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 36009C19423;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DelMbAld"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B5490C4CEF1;
 	Thu, 20 Nov 2025 17:26:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1763659562;
-	bh=LSmwy/jJoyDN5XNfzlXa3/7NJpRS/mKXF3x0i2bdOsE=;
+	bh=38+3571SsR3/6Au4qfcW65qDAxFokXCMSe41hn2rqc0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=czmBviy6N11hv9dSGjba+aCXNF9cOOSvDQ0VmYm4DU+chbr6/u1VF68qlMaMUYKSP
-	 ZFXeqI0bjjhXtkMn1DxRH42uer7OVb26C+Sd9Bu4xDH9lcVpYmKDyHcA6XGwbYNrtH
-	 2qST+S5LeWrd9ADtOnFk4qZ4nuv1LsgFnNT04o/l6ojMCQ+QBXCgypCCC+N4ZcOOcu
-	 2RpITI+YWNIF5xMBJGIMuKkzy6kC3CMsthcgsAXTiEhNSfhmaxh/341wZCMPNOyIkn
-	 LiFO2MbEO1vgXXkaY1N/KU0W3+5/Ttb1dPC8bmuHd7WLkKi/JBghwLmWd8A+BZ3+JA
-	 AUZEv+O5Tm6NA==
+	b=DelMbAld/iGNCWBlc7SfMxudML3BMl7iIC3SGQ4LzFQNu6L1N53Tw1keIC1k6A3DN
+	 1eiGx6ABUgZrtCy8579OIyQYZ05LtUfML4lwwQJ4rGY9BKERKB+KJ58fR+Axb39X/D
+	 FaujMsO9DYh2wOlvzkEAlhHNOWW3lMAokfHZvMS5CCoUgHC6ZScQc02UDmPdyPQP2g
+	 e5aPAwLHBNG72/YA+0KnrWeilnlYAf9Frcr6K2iWCScNC1WQYI0qngpKPeAmKac8eJ
+	 /uP9kTti8xSvqYGL/7+GNMmwXgamEd1XbE9wCdOfTnY+6XlxCBsa5JmrMLgxYqVqnj
+	 Hcb9KlKGNYw2A==
 Received: from sofa.misterjones.org ([185.219.108.64] helo=valley-girl.lan)
 	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.98.2)
 	(envelope-from <maz@kernel.org>)
-	id 1vM8Pw-00000006y6g-1mMx;
-	Thu, 20 Nov 2025 17:26:00 +0000
+	id 1vM8Pw-00000006y6g-3yac;
+	Thu, 20 Nov 2025 17:26:01 +0000
 From: Marc Zyngier <maz@kernel.org>
 To: kvmarm@lists.linux.dev,
 	linux-arm-kernel@lists.infradead.org,
@@ -43,9 +43,9 @@ Cc: Joey Gouly <joey.gouly@arm.com>,
 	Christoffer Dall <christoffer.dall@arm.com>,
 	Fuad Tabba <tabba@google.com>,
 	Mark Brown <broonie@kernel.org>
-Subject: [PATCH v4 27/49] KVM: arm64: GICv3: Handle LR overflow when EOImode==0
-Date: Thu, 20 Nov 2025 17:25:17 +0000
-Message-ID: <20251120172540.2267180-28-maz@kernel.org>
+Subject: [PATCH v4 29/49] KVM: arm64: GICv3: Add GICv2 SGI handling to deactivation primitive
+Date: Thu, 20 Nov 2025 17:25:19 +0000
+Message-ID: <20251120172540.2267180-30-maz@kernel.org>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20251120172540.2267180-1-maz@kernel.org>
 References: <20251120172540.2267180-1-maz@kernel.org>
@@ -61,87 +61,65 @@ X-SA-Exim-Rcpt-To: kvmarm@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
 X-SA-Exim-Mail-From: maz@kernel.org
 X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
 
-Now that we can identify interrupts that have not made it into the LRs,
-it becomes relatively easy to use EOIcount to walk the overflow list.
-
-What is a bit odd is that we compute a fake LR for the original
-state of the interrupt, clear the active bit, and feed into the existing
-logic for processing. In a way, this is what would have happened if
-the interrupt was in an LR.
+The GICv2 SGIs require additional handling for deactivation, as they
+are effectively multiple interrrupts muxed into one. Make sure we
+check for the source CPU when deactivating.
 
 Tested-by: Fuad Tabba <tabba@google.com>
 Signed-off-by: Marc Zyngier <maz@kernel.org>
 ---
- arch/arm64/kvm/vgic/vgic-v3.c | 46 +++++++++++++++++++++++++++++++++++
- 1 file changed, 46 insertions(+)
+ arch/arm64/kvm/vgic/vgic-v3.c | 20 +++++++++++++++++++-
+ 1 file changed, 19 insertions(+), 1 deletion(-)
 
 diff --git a/arch/arm64/kvm/vgic/vgic-v3.c b/arch/arm64/kvm/vgic/vgic-v3.c
-index 312226cc2565d..d4f27f451c8fb 100644
+index d83edf02d0722..9fcee5121fe5e 100644
 --- a/arch/arm64/kvm/vgic/vgic-v3.c
 +++ b/arch/arm64/kvm/vgic/vgic-v3.c
-@@ -112,16 +112,62 @@ static void vgic_v3_fold_lr(struct kvm_vcpu *vcpu, u64 val)
- 	vgic_put_irq(vcpu->kvm, irq);
- }
- 
-+static u64 vgic_v3_compute_lr(struct kvm_vcpu *vcpu, struct vgic_irq *irq);
-+
-+static void vgic_v3_deactivate_phys(u32 intid)
-+{
-+	if (cpus_have_final_cap(ARM64_HAS_GICV5_LEGACY))
-+		gic_insn(intid | FIELD_PREP(GICV5_GIC_CDDI_TYPE_MASK, 1), CDDI);
-+	else
-+		gic_write_dir(intid);
-+}
-+
- void vgic_v3_fold_lr_state(struct kvm_vcpu *vcpu)
+@@ -176,11 +176,20 @@ void vgic_v3_deactivate(struct kvm_vcpu *vcpu, u64 val)
  {
  	struct vgic_cpu *vgic_cpu = &vcpu->arch.vgic_cpu;
  	struct vgic_v3_cpu_if *cpuif = &vgic_cpu->vgic_v3;
-+	u32 eoicount = FIELD_GET(ICH_HCR_EL2_EOIcount, cpuif->vgic_hcr);
-+	struct vgic_irq *irq;
- 
- 	DEBUG_SPINLOCK_BUG_ON(!irqs_disabled());
- 
- 	for (int lr = 0; lr < cpuif->used_lrs; lr++)
- 		vgic_v3_fold_lr(vcpu, cpuif->vgic_lr[lr]);
- 
-+	/*
-+	 * EOIMode=0: use EOIcount to emulate deactivation. We are
-+	 * guaranteed to deactivate in reverse order of the activation, so
-+	 * just pick one active interrupt after the other in the ap_list,
-+	 * and replay the deactivation as if the CPU was doing it. We also
-+	 * rely on priority drop to have taken place, and the list to be
-+	 * sorted by priority.
-+	 */
-+	list_for_each_entry(irq, &vgic_cpu->ap_list_head, ap_list) {
-+		u64 lr;
++	u32 model = vcpu->kvm->arch.vgic.vgic_model;
+ 	struct kvm_vcpu *target_vcpu = NULL;
++	bool mmio = false, is_v2_sgi;
+ 	struct vgic_irq *irq;
+ 	unsigned long flags;
+-	bool mmio = false;
+ 	u64 lr = 0;
++	u8 cpuid;
 +
-+		/*
-+		 * I would have loved to write this using a scoped_guard(),
-+		 * but using 'continue' here is a total train wreck.
-+		 */
-+		if (!eoicount) {
-+			break;
-+		} else {
-+			guard(raw_spinlock)(&irq->irq_lock);
++	/* Snapshot CPUID, and remove it from the INTID */
++	cpuid = FIELD_GET(GENMASK_ULL(12, 10), val);
++	val &= ~GENMASK_ULL(12, 10);
 +
-+			if (!(likely(vgic_target_oracle(irq) == vcpu) &&
-+			      irq->active))
-+				continue;
-+
-+			lr = vgic_v3_compute_lr(vcpu, irq) & ~ICH_LR_ACTIVE_BIT;
++	is_v2_sgi = (model == KVM_DEV_TYPE_ARM_VGIC_V2 &&
++		     val < VGIC_NR_SGIS);
+ 
+ 	/*
+ 	 * We only deal with DIR when EOIMode==1, and only for SGI,
+@@ -216,6 +225,9 @@ void vgic_v3_deactivate(struct kvm_vcpu *vcpu, u64 val)
+ 	 * - Or the irq is active, but not in an LR, and we can
+ 	 *   directly deactivate it by building a pseudo-LR, fold it,
+ 	 *   and queue a request to prune the resulting ap_list,
++	 *
++	 * Special care must be taken to match the source CPUID when
++	 * deactivating a GICv2 SGI.
+ 	 */
+ 	scoped_guard(raw_spinlock, &irq->irq_lock) {
+ 		target_vcpu = irq->vcpu;
+@@ -233,6 +245,12 @@ void vgic_v3_deactivate(struct kvm_vcpu *vcpu, u64 val)
+ 			goto put;
+ 		}
+ 
++		/* GICv2 SGI: check that the cpuid matches */
++		if (is_v2_sgi && irq->active_source != cpuid) {
++			target_vcpu = NULL;
++			goto put;
 +		}
 +
-+		if (lr & ICH_LR_HW)
-+			vgic_v3_deactivate_phys(FIELD_GET(ICH_LR_PHYS_ID_MASK, lr));
-+
-+		vgic_v3_fold_lr(vcpu, lr);
-+		eoicount--;
-+	}
-+
- 	cpuif->used_lrs = 0;
- }
- 
+ 		/* (with a Dalek voice) DEACTIVATE!!!! */
+ 		lr = vgic_v3_compute_lr(vcpu, irq) & ~ICH_LR_ACTIVE_BIT;
+ 	}
 -- 
 2.47.3
 
