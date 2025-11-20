@@ -1,37 +1,37 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 05F3B286D60;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 360CF2E8DE3;
 	Thu, 20 Nov 2025 17:25:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763659557; cv=none; b=ivRGSWbh1WCLdJj95jM1jWauLKLM0n7G9mTDGGHuvIHnz/6aI/TIhii1Cjes8FZt0p1jsKATEo3keOXl6WaoocwHkQ0usAyUF1c4zEg9SnBJ5wBRR6yydBKkzr7VNNZHs0f9RAhAfuvZtIq7JvY0CMUEbv4J9NG1pKzCIEvHGHY=
+	t=1763659557; cv=none; b=oZTBcjVgDCWkyfQyhvllzkS1CV5iiCWjo40yuKp5DkjTXiYktl6tWpXMshJmpiJQ+hMXQPNEj3HkLOGSqPH6GYepNF2D/MLaep9WdYE6sxJzFPKbTlrsT8knKaqqOXtJJEbaDkjdP+IdXj2lA/Y/Aln+CU6OCw74TmMXBzC/Er4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1763659557; c=relaxed/simple;
-	bh=ORVv4OIeN5y03KqFeUVwlFsCJBbZQlX1+NJbq4SJ0ec=;
+	bh=Earuil5WtmkVRYjuRYbwq4QLfgEPy3EZ1zKptjMuAoI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=U0Tlqxv8eobRkk21wsUx5wW6l9J+OmVdCAIfcb46ycU7BqFexDjHgXenFRehPXmL/o1bIIYYkNUJVYQ7agJ21PD43ecDsDLdkkRLSQoDpVy3X6XniWMZQq1xXVL8KAmxXGsQZUXkCwjRZDK5Y30ve3+mKjMV3zm3fVv4zdnS2CU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=myeV0kP7; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version; b=I9aJbmCKA86xdkKXybl86JUA6Yj7FaKfrR7kkwIYrXcki+xsydneoKrqco9eRVCGUFtzGbj/9/YdwE9DAfQ7ZQqpIFJaEFIsPt/vDbO1SiLGMv0EoRilZQDuVT7Yn3Jq+jsi+CrnHK1tAw/44UZg0kB9iCCQ1m9vn9W6T0ZXIfI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=egfIydpb; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="myeV0kP7"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B4AD9C19421;
-	Thu, 20 Nov 2025 17:25:56 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="egfIydpb"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 14FAAC116C6;
+	Thu, 20 Nov 2025 17:25:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1763659556;
-	bh=ORVv4OIeN5y03KqFeUVwlFsCJBbZQlX1+NJbq4SJ0ec=;
+	s=k20201202; t=1763659557;
+	bh=Earuil5WtmkVRYjuRYbwq4QLfgEPy3EZ1zKptjMuAoI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=myeV0kP7CUTRtAq2bLvv/JmtEEvO60sU+GrgC1POQCUVahWLVATI5KDpeNqyS6Bc+
-	 AduJDfb4R4lrQMuhu6x7klPpBEr55bs/eeHI/rdv7IcOGFqiTxaJfXQGDeOU0b9dSS
-	 3rKofJ3T6/Bbieg7jaA9ShplViQJXbZNdBDG2X9QqYVlrHLZlrKdysmHyd6+8ZqUtr
-	 FXB4AiHIOSH5HY1bLbM2nXsDGAIkES9HlNf78emYN8vwtEYpBc8Og4bYS+yF2iaGmM
-	 2yvjh0YsHmLLOcmZM8YFbMYpCKUYks/+6ej/MeJmbDTFuEV5Rn8ivTFTiWK9lTGVV4
-	 IRiVEQE3xnqtg==
+	b=egfIydpbFHqW4n8S9oN56xIqgZLnbejulYZz7CLWsPWcZuQyDvYteCxP/ksm04fz8
+	 QDBVf8la+65N3pP3fNInCjDp51SdnKMiQOlZAwS678qbCHL84hDH4PQxHG5DHW0Amr
+	 q3ea8QUAM1anfUzzvH/8Z75Z0kV2iho7qxckz0Tw+c1FNNXD1M0xTUbfadyJFOoQz6
+	 wgKwSRzyowUwF3LO69kxJ4NfaNislCoxYFtBgGOXPS1JXesbV4lv70vXrowLM1cyuX
+	 g062T+0XATxPJi7/75/3rMqKRewI/3ZIHcWnpEFifDTgaan0fpCZxpFIRKWY3udgPY
+	 joP6mOrzjUdVA==
 Received: from sofa.misterjones.org ([185.219.108.64] helo=valley-girl.lan)
 	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.98.2)
 	(envelope-from <maz@kernel.org>)
-	id 1vM8Pq-00000006y6g-318C;
-	Thu, 20 Nov 2025 17:25:54 +0000
+	id 1vM8Pr-00000006y6g-0wZO;
+	Thu, 20 Nov 2025 17:25:55 +0000
 From: Marc Zyngier <maz@kernel.org>
 To: kvmarm@lists.linux.dev,
 	linux-arm-kernel@lists.infradead.org,
@@ -43,9 +43,9 @@ Cc: Joey Gouly <joey.gouly@arm.com>,
 	Christoffer Dall <christoffer.dall@arm.com>,
 	Fuad Tabba <tabba@google.com>,
 	Mark Brown <broonie@kernel.org>
-Subject: [PATCH v4 04/49] KVM: arm64: Turn vgic-v3 errata traps into a patched-in constant
-Date: Thu, 20 Nov 2025 17:24:54 +0000
-Message-ID: <20251120172540.2267180-5-maz@kernel.org>
+Subject: [PATCH v4 06/49] KVM: arm64: GICv3: Detect and work around the lack of ICV_DIR_EL1 trapping
+Date: Thu, 20 Nov 2025 17:24:56 +0000
+Message-ID: <20251120172540.2267180-7-maz@kernel.org>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20251120172540.2267180-1-maz@kernel.org>
 References: <20251120172540.2267180-1-maz@kernel.org>
@@ -61,278 +61,161 @@ X-SA-Exim-Rcpt-To: kvmarm@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
 X-SA-Exim-Mail-From: maz@kernel.org
 X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
 
-The trap bits are currently only set to manage CPU errata. However,
-we are about to make use of them for purposes beyond beating broken
-CPUs into submission.
+A long time ago, an unsuspecting architect forgot to add a trap
+bit for ICV_DIR_EL1 in ICH_HCR_EL2. Which was unfortunate, but
+what's a bit of spec between friends? Thankfully, this was fixed
+in a later revision, and ARM "deprecates" the lack of trapping
+ability.
 
-For this purpose, turn these errata-driven bits into a patched-in
-constant that is merged with the KVM-driven value at the point of
-programming the ICH_HCR_EL2 register, rather than being directly
-stored with with the shadow value..
+Unfortuantely, a few (billion) CPUs went out with that defect,
+anything ARMv8.0 from ARM, give or take. And on these CPUs,
+you can't trap DIR on its own, full stop.
 
-This allows the KVM code to distinguish between a trap being handled
-for the purpose of an erratum workaround, or for KVM's own need.
+As the next best thing, we can trap everything in the common group,
+which is a tad expensive, but hey ho, that's what you get. You can
+otherwise recycle the HW in the neaby bin.
 
 Tested-by: Fuad Tabba <tabba@google.com>
 Signed-off-by: Marc Zyngier <maz@kernel.org>
 ---
- arch/arm64/kernel/image-vars.h       |  1 +
- arch/arm64/kvm/hyp/vgic-v3-sr.c      | 21 ++++---
- arch/arm64/kvm/vgic/vgic-v3-nested.c | 12 +---
- arch/arm64/kvm/vgic/vgic-v3.c        | 83 +++++++++++++++++-----------
- arch/arm64/kvm/vgic/vgic.h           | 16 ++++++
- 5 files changed, 84 insertions(+), 49 deletions(-)
+ arch/arm64/include/asm/virt.h  |  7 ++++-
+ arch/arm64/kernel/cpufeature.c | 52 ++++++++++++++++++++++++++++++++++
+ arch/arm64/kernel/hyp-stub.S   |  5 ++++
+ arch/arm64/kvm/vgic/vgic-v3.c  |  3 ++
+ arch/arm64/tools/cpucaps       |  1 +
+ 5 files changed, 67 insertions(+), 1 deletion(-)
 
-diff --git a/arch/arm64/kernel/image-vars.h b/arch/arm64/kernel/image-vars.h
-index 5369763606e71..85bc629270bd9 100644
---- a/arch/arm64/kernel/image-vars.h
-+++ b/arch/arm64/kernel/image-vars.h
-@@ -91,6 +91,7 @@ KVM_NVHE_ALIAS(spectre_bhb_patch_loop_mitigation_enable);
- KVM_NVHE_ALIAS(spectre_bhb_patch_wa3);
- KVM_NVHE_ALIAS(spectre_bhb_patch_clearbhb);
- KVM_NVHE_ALIAS(alt_cb_patch_nops);
-+KVM_NVHE_ALIAS(kvm_compute_ich_hcr_trap_bits);
+diff --git a/arch/arm64/include/asm/virt.h b/arch/arm64/include/asm/virt.h
+index aa280f356b96a..8eb63d3294974 100644
+--- a/arch/arm64/include/asm/virt.h
++++ b/arch/arm64/include/asm/virt.h
+@@ -40,8 +40,13 @@
+  */
+ #define HVC_FINALISE_EL2	3
  
- /* Global kernel state accessed by nVHE hyp code. */
- KVM_NVHE_ALIAS(kvm_vgic_global_state);
-diff --git a/arch/arm64/kvm/hyp/vgic-v3-sr.c b/arch/arm64/kvm/hyp/vgic-v3-sr.c
-index acd909b7f2257..e72d436dd6a36 100644
---- a/arch/arm64/kvm/hyp/vgic-v3-sr.c
-+++ b/arch/arm64/kvm/hyp/vgic-v3-sr.c
-@@ -14,6 +14,8 @@
- #include <asm/kvm_hyp.h>
- #include <asm/kvm_mmu.h>
- 
-+#include "../../vgic/vgic.h"
++/*
++ * HVC_GET_ICH_VTR_EL2 - Retrieve the ICH_VTR_EL2 value
++ */
++#define HVC_GET_ICH_VTR_EL2	4
 +
- #define vtr_to_max_lr_idx(v)		((v) & 0xf)
- #define vtr_to_nr_pre_bits(v)		((((u32)(v) >> 26) & 7) + 1)
- #define vtr_to_nr_apr_regs(v)		(1 << (vtr_to_nr_pre_bits(v) - 5))
-@@ -196,6 +198,11 @@ static u32 __vgic_v3_read_ap1rn(int n)
- 	return val;
- }
+ /* Max number of HYP stub hypercalls */
+-#define HVC_STUB_HCALL_NR 4
++#define HVC_STUB_HCALL_NR 5
  
-+static u64 compute_ich_hcr(struct vgic_v3_cpu_if *cpu_if)
+ /* Error returned when an invalid stub number is passed into x0 */
+ #define HVC_STUB_ERR	0xbadca11
+diff --git a/arch/arm64/kernel/cpufeature.c b/arch/arm64/kernel/cpufeature.c
+index 5ed401ff79e3e..5de51cb1b8fe2 100644
+--- a/arch/arm64/kernel/cpufeature.c
++++ b/arch/arm64/kernel/cpufeature.c
+@@ -2303,6 +2303,49 @@ static bool has_gic_prio_relaxed_sync(const struct arm64_cpu_capabilities *entry
+ }
+ #endif
+ 
++static bool can_trap_icv_dir_el1(const struct arm64_cpu_capabilities *entry,
++				 int scope)
 +{
-+	return cpu_if->vgic_hcr | vgic_ich_hcr_trap_bits();
++	static const struct midr_range has_vgic_v3[] = {
++		MIDR_ALL_VERSIONS(MIDR_APPLE_M1_ICESTORM),
++		MIDR_ALL_VERSIONS(MIDR_APPLE_M1_FIRESTORM),
++		MIDR_ALL_VERSIONS(MIDR_APPLE_M1_ICESTORM_PRO),
++		MIDR_ALL_VERSIONS(MIDR_APPLE_M1_FIRESTORM_PRO),
++		MIDR_ALL_VERSIONS(MIDR_APPLE_M1_ICESTORM_MAX),
++		MIDR_ALL_VERSIONS(MIDR_APPLE_M1_FIRESTORM_MAX),
++		MIDR_ALL_VERSIONS(MIDR_APPLE_M2_BLIZZARD),
++		MIDR_ALL_VERSIONS(MIDR_APPLE_M2_AVALANCHE),
++		MIDR_ALL_VERSIONS(MIDR_APPLE_M2_BLIZZARD_PRO),
++		MIDR_ALL_VERSIONS(MIDR_APPLE_M2_AVALANCHE_PRO),
++		MIDR_ALL_VERSIONS(MIDR_APPLE_M2_BLIZZARD_MAX),
++		MIDR_ALL_VERSIONS(MIDR_APPLE_M2_AVALANCHE_MAX),
++		{},
++	};
++	struct arm_smccc_res res = {};
++
++	BUILD_BUG_ON(ARM64_HAS_ICH_HCR_EL2_TDIR <= ARM64_HAS_GICV3_CPUIF);
++	BUILD_BUG_ON(ARM64_HAS_ICH_HCR_EL2_TDIR <= ARM64_HAS_GICV5_LEGACY);
++	if (!cpus_have_cap(ARM64_HAS_GICV3_CPUIF) &&
++	    !is_midr_in_range_list(has_vgic_v3))
++		return false;
++
++	if (!is_hyp_mode_available())
++		return false;
++
++	if (cpus_have_cap(ARM64_HAS_GICV5_LEGACY))
++		return true;
++
++	if (is_kernel_in_hyp_mode())
++		res.a1 = read_sysreg_s(SYS_ICH_VTR_EL2);
++	else
++		arm_smccc_1_1_hvc(HVC_GET_ICH_VTR_EL2, &res);
++
++	if (res.a0 == HVC_STUB_ERR)
++		return false;
++
++	return res.a1 & ICH_VTR_EL2_TDS;
 +}
 +
- void __vgic_v3_save_state(struct vgic_v3_cpu_if *cpu_if)
+ #ifdef CONFIG_ARM64_BTI
+ static void bti_enable(const struct arm64_cpu_capabilities *__unused)
  {
- 	u64 used_lrs = cpu_if->used_lrs;
-@@ -218,7 +225,7 @@ void __vgic_v3_save_state(struct vgic_v3_cpu_if *cpu_if)
+@@ -2814,6 +2857,15 @@ static const struct arm64_cpu_capabilities arm64_features[] = {
+ 		.matches = has_gic_prio_relaxed_sync,
+ 	},
+ #endif
++	{
++		/*
++		 * Depends on having GICv3
++		 */
++		.desc = "ICV_DIR_EL1 trapping",
++		.capability = ARM64_HAS_ICH_HCR_EL2_TDIR,
++		.type = ARM64_CPUCAP_SYSTEM_FEATURE,
++		.matches = can_trap_icv_dir_el1,
++	},
+ #ifdef CONFIG_ARM64_E0PD
+ 	{
+ 		.desc = "E0PD",
+diff --git a/arch/arm64/kernel/hyp-stub.S b/arch/arm64/kernel/hyp-stub.S
+index 36e2d26b54f5c..085bc9972f6bb 100644
+--- a/arch/arm64/kernel/hyp-stub.S
++++ b/arch/arm64/kernel/hyp-stub.S
+@@ -54,6 +54,11 @@ SYM_CODE_START_LOCAL(elx_sync)
+ 1:	cmp	x0, #HVC_FINALISE_EL2
+ 	b.eq	__finalise_el2
  
- 		elrsr = read_gicreg(ICH_ELRSR_EL2);
- 
--		write_gicreg(cpu_if->vgic_hcr & ~ICH_HCR_EL2_En, ICH_HCR_EL2);
-+		write_gicreg(0, ICH_HCR_EL2);
- 
- 		for (i = 0; i < used_lrs; i++) {
- 			if (elrsr & (1 << i))
-@@ -237,7 +244,7 @@ void __vgic_v3_restore_state(struct vgic_v3_cpu_if *cpu_if)
- 	int i;
- 
- 	if (used_lrs || cpu_if->its_vpe.its_vm) {
--		write_gicreg(cpu_if->vgic_hcr, ICH_HCR_EL2);
-+		write_gicreg(compute_ich_hcr(cpu_if), ICH_HCR_EL2);
- 
- 		for (i = 0; i < used_lrs; i++)
- 			__gic_v3_set_lr(cpu_if->vgic_lr[i], i);
-@@ -307,14 +314,14 @@ void __vgic_v3_activate_traps(struct vgic_v3_cpu_if *cpu_if)
- 	}
- 
- 	/*
--	 * If we need to trap system registers, we must write
--	 * ICH_HCR_EL2 anyway, even if no interrupts are being
--	 * injected. Note that this also applies if we don't expect
--	 * any system register access (no vgic at all).
-+	 * If we need to trap system registers, we must write ICH_HCR_EL2
-+	 * anyway, even if no interrupts are being injected. Note that this
-+	 * also applies if we don't expect any system register access (no
-+	 * vgic at all). In any case, no need to provide MI configuration.
- 	 */
- 	if (static_branch_unlikely(&vgic_v3_cpuif_trap) ||
- 	    cpu_if->its_vpe.its_vm || !cpu_if->vgic_sre)
--		write_gicreg(cpu_if->vgic_hcr, ICH_HCR_EL2);
-+		write_gicreg(vgic_ich_hcr_trap_bits() | ICH_HCR_EL2_En, ICH_HCR_EL2);
- }
- 
- void __vgic_v3_deactivate_traps(struct vgic_v3_cpu_if *cpu_if)
-diff --git a/arch/arm64/kvm/vgic/vgic-v3-nested.c b/arch/arm64/kvm/vgic/vgic-v3-nested.c
-index 7f1259b49c505..1fc9e0780abe6 100644
---- a/arch/arm64/kvm/vgic/vgic-v3-nested.c
-+++ b/arch/arm64/kvm/vgic/vgic-v3-nested.c
-@@ -298,19 +298,9 @@ static void vgic_v3_create_shadow_state(struct kvm_vcpu *vcpu,
- 					struct vgic_v3_cpu_if *s_cpu_if)
- {
- 	struct vgic_v3_cpu_if *host_if = &vcpu->arch.vgic_cpu.vgic_v3;
--	u64 val = 0;
- 	int i;
- 
--	/*
--	 * If we're on a system with a broken vgic that requires
--	 * trapping, propagate the trapping requirements.
--	 *
--	 * Ah, the smell of rotten fruits...
--	 */
--	if (static_branch_unlikely(&vgic_v3_cpuif_trap))
--		val = host_if->vgic_hcr & (ICH_HCR_EL2_TALL0 | ICH_HCR_EL2_TALL1 |
--					   ICH_HCR_EL2_TC | ICH_HCR_EL2_TDIR);
--	s_cpu_if->vgic_hcr = __vcpu_sys_reg(vcpu, ICH_HCR_EL2) | val;
-+	s_cpu_if->vgic_hcr = __vcpu_sys_reg(vcpu, ICH_HCR_EL2);
- 	s_cpu_if->vgic_vmcr = __vcpu_sys_reg(vcpu, ICH_VMCR_EL2);
- 	s_cpu_if->vgic_sre = host_if->vgic_sre;
- 
++	cmp	x0, #HVC_GET_ICH_VTR_EL2
++	b.ne	2f
++	mrs_s	x1, SYS_ICH_VTR_EL2
++	b	9f
++
+ 2:	cmp	x0, #HVC_SOFT_RESTART
+ 	b.ne	3f
+ 	mov	x0, x2
 diff --git a/arch/arm64/kvm/vgic/vgic-v3.c b/arch/arm64/kvm/vgic/vgic-v3.c
-index 6fbb4b0998552..8c14945086821 100644
+index 8c14945086821..1b6c3071ec80f 100644
 --- a/arch/arm64/kvm/vgic/vgic-v3.c
 +++ b/arch/arm64/kvm/vgic/vgic-v3.c
-@@ -301,20 +301,9 @@ void vcpu_set_ich_hcr(struct kvm_vcpu *vcpu)
- 		return;
- 
- 	/* Hide GICv3 sysreg if necessary */
--	if (vcpu->kvm->arch.vgic.vgic_model == KVM_DEV_TYPE_ARM_VGIC_V2) {
-+	if (vcpu->kvm->arch.vgic.vgic_model == KVM_DEV_TYPE_ARM_VGIC_V2)
- 		vgic_v3->vgic_hcr |= (ICH_HCR_EL2_TALL0 | ICH_HCR_EL2_TALL1 |
- 				      ICH_HCR_EL2_TC);
--		return;
--	}
--
--	if (group0_trap)
--		vgic_v3->vgic_hcr |= ICH_HCR_EL2_TALL0;
--	if (group1_trap)
--		vgic_v3->vgic_hcr |= ICH_HCR_EL2_TALL1;
--	if (common_trap)
--		vgic_v3->vgic_hcr |= ICH_HCR_EL2_TC;
--	if (dir_trap)
--		vgic_v3->vgic_hcr |= ICH_HCR_EL2_TDIR;
- }
- 
- int vgic_v3_lpi_sync_pending_status(struct kvm *kvm, struct vgic_irq *irq)
-@@ -635,8 +624,50 @@ static const struct midr_range broken_seis[] = {
- 
- static bool vgic_v3_broken_seis(void)
- {
--	return ((kvm_vgic_global_state.ich_vtr_el2 & ICH_VTR_EL2_SEIS) &&
--		is_midr_in_range_list(broken_seis));
-+	return (is_kernel_in_hyp_mode() &&
-+		is_midr_in_range_list(broken_seis) &&
-+		(read_sysreg_s(SYS_ICH_VTR_EL2) & ICH_VTR_EL2_SEIS));
-+}
-+
-+void noinstr kvm_compute_ich_hcr_trap_bits(struct alt_instr *alt,
-+					   __le32 *origptr, __le32 *updptr,
-+					   int nr_inst)
-+{
-+	u32 insn, oinsn, rd;
-+	u64 hcr = 0;
-+
-+	if (cpus_have_cap(ARM64_WORKAROUND_CAVIUM_30115)) {
-+		group0_trap = true;
-+		group1_trap = true;
-+	}
-+
-+	if (vgic_v3_broken_seis()) {
-+		/* We know that these machines have ICH_HCR_EL2.TDIR */
-+		group0_trap = true;
-+		group1_trap = true;
-+		dir_trap = true;
-+	}
-+
-+	if (group0_trap)
-+		hcr |= ICH_HCR_EL2_TALL0;
-+	if (group1_trap)
-+		hcr |= ICH_HCR_EL2_TALL1;
-+	if (common_trap)
-+		hcr |= ICH_HCR_EL2_TC;
-+	if (dir_trap)
-+		hcr |= ICH_HCR_EL2_TDIR;
-+
-+	/* Compute target register */
-+	oinsn = le32_to_cpu(*origptr);
-+	rd = aarch64_insn_decode_register(AARCH64_INSN_REGTYPE_RD, oinsn);
-+
-+	/* movz rd, #(val & 0xffff) */
-+	insn = aarch64_insn_gen_movewide(rd,
-+					 (u16)hcr,
-+					 0,
-+					 AARCH64_INSN_VARIANT_64BIT,
-+					 AARCH64_INSN_MOVEWIDE_ZERO);
-+	*updptr = cpu_to_le32(insn);
- }
- 
- /**
-@@ -650,6 +681,7 @@ int vgic_v3_probe(const struct gic_kvm_info *info)
- {
- 	u64 ich_vtr_el2 = kvm_call_hyp_ret(__vgic_v3_get_gic_config);
- 	bool has_v2;
-+	u64 traps;
- 	int ret;
- 
- 	has_v2 = ich_vtr_el2 >> 63;
-@@ -708,29 +740,18 @@ int vgic_v3_probe(const struct gic_kvm_info *info)
- 	if (has_v2)
- 		static_branch_enable(&vgic_v3_has_v2_compat);
- 
--	if (cpus_have_final_cap(ARM64_WORKAROUND_CAVIUM_30115)) {
--		group0_trap = true;
--		group1_trap = true;
--	}
--
- 	if (vgic_v3_broken_seis()) {
- 		kvm_info("GICv3 with broken locally generated SEI\n");
--
- 		kvm_vgic_global_state.ich_vtr_el2 &= ~ICH_VTR_EL2_SEIS;
--		group0_trap = true;
--		group1_trap = true;
--		if (ich_vtr_el2 & ICH_VTR_EL2_TDS)
--			dir_trap = true;
--		else
--			common_trap = true;
+@@ -648,6 +648,9 @@ void noinstr kvm_compute_ich_hcr_trap_bits(struct alt_instr *alt,
+ 		dir_trap = true;
  	}
  
--	if (group0_trap || group1_trap || common_trap | dir_trap) {
-+	traps = vgic_ich_hcr_trap_bits();
-+	if (traps) {
- 		kvm_info("GICv3 sysreg trapping enabled ([%s%s%s%s], reduced performance)\n",
--			 group0_trap ? "G0" : "",
--			 group1_trap ? "G1" : "",
--			 common_trap ? "C"  : "",
--			 dir_trap    ? "D"  : "");
-+			 (traps & ICH_HCR_EL2_TALL0) ? "G0" : "",
-+			 (traps & ICH_HCR_EL2_TALL1) ? "G1" : "",
-+			 (traps & ICH_HCR_EL2_TC)    ? "C"  : "",
-+			 (traps & ICH_HCR_EL2_TDIR)  ? "D"  : "");
- 		static_branch_enable(&vgic_v3_cpuif_trap);
- 	}
- 
-diff --git a/arch/arm64/kvm/vgic/vgic.h b/arch/arm64/kvm/vgic/vgic.h
-index ac5f9c5d2b980..0ecadfa00397d 100644
---- a/arch/arm64/kvm/vgic/vgic.h
-+++ b/arch/arm64/kvm/vgic/vgic.h
-@@ -164,6 +164,22 @@ static inline int vgic_write_guest_lock(struct kvm *kvm, gpa_t gpa,
- 	return ret;
- }
- 
-+void kvm_compute_ich_hcr_trap_bits(struct alt_instr *alt,
-+				   __le32 *origptr, __le32 *updptr, int nr_inst);
++	if (!cpus_have_cap(ARM64_HAS_ICH_HCR_EL2_TDIR))
++		common_trap = true;
 +
-+static inline u64 vgic_ich_hcr_trap_bits(void)
-+{
-+	u64 hcr;
-+
-+	/* All the traps are in the bottom 16bits */
-+	asm volatile(ALTERNATIVE_CB("movz %0, #0\n",
-+				    ARM64_ALWAYS_SYSTEM,
-+				    kvm_compute_ich_hcr_trap_bits)
-+		     : "=r" (hcr));
-+
-+	return hcr;
-+}
-+
- /*
-  * This struct provides an intermediate representation of the fields contained
-  * in the GICH_VMCR and ICH_VMCR registers, such that code exporting the GIC
+ 	if (group0_trap)
+ 		hcr |= ICH_HCR_EL2_TALL0;
+ 	if (group1_trap)
+diff --git a/arch/arm64/tools/cpucaps b/arch/arm64/tools/cpucaps
+index 1b32c1232d28d..116d1a7b688cb 100644
+--- a/arch/arm64/tools/cpucaps
++++ b/arch/arm64/tools/cpucaps
+@@ -40,6 +40,7 @@ HAS_GICV5_CPUIF
+ HAS_GICV5_LEGACY
+ HAS_GIC_PRIO_MASKING
+ HAS_GIC_PRIO_RELAXED_SYNC
++HAS_ICH_HCR_EL2_TDIR
+ HAS_HCR_NV1
+ HAS_HCX
+ HAS_LDAPR
 -- 
 2.47.3
 
