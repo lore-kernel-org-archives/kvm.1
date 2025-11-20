@@ -1,36 +1,36 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 62D162F1FF3;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9AE2B371A3B;
 	Thu, 20 Nov 2025 17:25:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763659559; cv=none; b=DCBDtiybT7u5UmuZRYwQkh/5OffMCUZYUa+zt5qVSXW7ZO3caZ1ACvIW/wiCuh3yU3BYPABwsJ97i1Qn9whnyPz0bsqu45uR3ZinBmhbAXSyt0z6I1Zm0Ac5yqo+6KANU/8a8ErdGJ/9kkgkaNoQewYeE0N1er0MMhdq5TnOjh8=
+	t=1763659559; cv=none; b=DvDIFFXPwGwUJvsqHdcInFuofOtrDbfl0glTSYOHHPJRbjZrf9h3Cph+JKLMT0fJB3fsOjUojmlDJ+vz/p+itk3aK8t9u6dSxWalaccBLkx7SVVFIzHIcaKNwUCH7IlrhX7JXx2Pe2raWmFVXFvJ/k2OSIQatBXJonSAX1lEZqs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1763659559; c=relaxed/simple;
-	bh=GJuikNEiM9aYP/YLsdMUrKCS8u0NoKs6DKQCFgpx0+8=;
+	bh=fEboDabzfdT1z+/aMTmm6yEOOvmNnX4iNfBHI1NhwLE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=H5SqhiTlpZJW/QuWF/wyEJgIoJQLbVtj0HPRZ61AFVnkse8tsFLKLrcJRm1PqGFhm1Ko14UV3bDMn//H4crEJjVvAmf/wBoDFHBTYZkLyS7Ed7yhbpjSHkJgEkA6uSwn1duYAEHuT8ZALA9eo0JG6lvDCpImqaM0sW5NTGaphko=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=tyDE/IIp; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version; b=Vjl1hODX3+Nu6HsjVdr+pExOJkrMdF48apDevaHV+vA5dCuarqALS+rWecLr0/8xNR5sbdTbvzJlu3/446kbObD6LhULXNpwlXAp/7FfjTlatLdbwrvVjCGNF50gFggsUeZKZdIcfuznXSVomYDjUL0uSgEJNEGpcqjdKKH0Sk4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FckTF/7V; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="tyDE/IIp"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0A776C16AAE;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FckTF/7V"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7E3A8C116D0;
 	Thu, 20 Nov 2025 17:25:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1763659559;
-	bh=GJuikNEiM9aYP/YLsdMUrKCS8u0NoKs6DKQCFgpx0+8=;
+	bh=fEboDabzfdT1z+/aMTmm6yEOOvmNnX4iNfBHI1NhwLE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tyDE/IIpI1etUWtXxneew0sNRZ5d+61WZbmhdnp5cecxlZiOkGqip40IaDEIghM55
-	 ccC/VtiWPqDsUJue0NWb3T8ME26Y5KY4pAXnU7xYVEDGpAWulBxZtpOng0OIenO/XV
-	 zyOiNl6SQIEiHA23b6C7DjUO9pJTrh1h7AP1v6/O50t2DIeXhmqv9TYBlYlKyLBefm
-	 0No+9cfjTrnUv4W9ecYF+rbC8I8tyiQzip/aW5Lsr6ArmQ33JqRafUfLh+qsxH3yiY
-	 r3uY65IGGPf+icUXheVKsfC66FVDd2hcF5PPxyPlQFVQLS7zOLDW1JKmyOSbZbnw+Y
-	 N3RNMJWFyOW4A==
+	b=FckTF/7VWZ32XbP6p5wjpbKBSNwR/zOVRsK+IEGtbZ1gg+emwHMOr3MqK9p9Pz6c0
+	 p/35HB6+UgmYtaJy7v6sP9XVRZcGeIH4WBB+Jdd+tAO8RD7HdT7hebDAH3mNyFsKnA
+	 kq7H5L1wDCx2vFnIEI+q07WhjGTMLRhHZyy6hUqMxm18JEINhWS50NP4Yt+eB9h436
+	 1k30DMduabELcCDBrmFHXf3iYoBQsLn6CgD67tHxgNUJTQw3Whs45qLnzwlrMGSBst
+	 xJMOSERBHrsAFafPAJR88JIUE45VnvQ44HRuQaz66YIrYIlAPUlqshmPIlIrFpC6+r
+	 uYPGaH86orTcQ==
 Received: from sofa.misterjones.org ([185.219.108.64] helo=valley-girl.lan)
 	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.98.2)
 	(envelope-from <maz@kernel.org>)
-	id 1vM8Pt-00000006y6g-0zBq;
+	id 1vM8Pt-00000006y6g-33bK;
 	Thu, 20 Nov 2025 17:25:57 +0000
 From: Marc Zyngier <maz@kernel.org>
 To: kvmarm@lists.linux.dev,
@@ -43,9 +43,9 @@ Cc: Joey Gouly <joey.gouly@arm.com>,
 	Christoffer Dall <christoffer.dall@arm.com>,
 	Fuad Tabba <tabba@google.com>,
 	Mark Brown <broonie@kernel.org>
-Subject: [PATCH v4 14/49] KVM: arm64: GICv3: Extract LR computing primitive
-Date: Thu, 20 Nov 2025 17:25:04 +0000
-Message-ID: <20251120172540.2267180-15-maz@kernel.org>
+Subject: [PATCH v4 16/49] KVM: arm64: GICv2: Decouple GICH_HCR programming from LRs being loaded
+Date: Thu, 20 Nov 2025 17:25:06 +0000
+Message-ID: <20251120172540.2267180-17-maz@kernel.org>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20251120172540.2267180-1-maz@kernel.org>
 References: <20251120172540.2267180-1-maz@kernel.org>
@@ -61,98 +61,76 @@ X-SA-Exim-Rcpt-To: kvmarm@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
 X-SA-Exim-Mail-From: maz@kernel.org
 X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
 
-Split vgic_v3_populate_lr() into two, so that we have another
-primitive that computes the LR from a vgic_irq, but doesn't
-update anything in the shadow structure.
+Not programming GICH_HCR while no LRs are populated is a bit
+of an issue, as we otherwise don't see any maintenance interrupt
+when the guest interacts with the LRs.
+
+Decouple the two and always program the control register, even when
+we don't have to touch the LRs.
+
+This is very similar to what we are already doing for GICv3.
 
 Tested-by: Fuad Tabba <tabba@google.com>
 Signed-off-by: Marc Zyngier <maz@kernel.org>
 ---
- arch/arm64/kvm/vgic/vgic-v3.c | 49 +++++++++++++++++++++++------------
- 1 file changed, 32 insertions(+), 17 deletions(-)
+ arch/arm64/kvm/vgic/vgic-v2.c | 28 ++++++++++++++--------------
+ 1 file changed, 14 insertions(+), 14 deletions(-)
 
-diff --git a/arch/arm64/kvm/vgic/vgic-v3.c b/arch/arm64/kvm/vgic/vgic-v3.c
-index 6b7d7b4048f03..bcce7f35a6d67 100644
---- a/arch/arm64/kvm/vgic/vgic-v3.c
-+++ b/arch/arm64/kvm/vgic/vgic-v3.c
-@@ -107,7 +107,7 @@ void vgic_v3_fold_lr_state(struct kvm_vcpu *vcpu)
- }
+diff --git a/arch/arm64/kvm/vgic/vgic-v2.c b/arch/arm64/kvm/vgic/vgic-v2.c
+index 5cfbe58983428..a0d803c5b08ae 100644
+--- a/arch/arm64/kvm/vgic/vgic-v2.c
++++ b/arch/arm64/kvm/vgic/vgic-v2.c
+@@ -430,22 +430,25 @@ static void save_lrs(struct kvm_vcpu *vcpu, void __iomem *base)
  
- /* Requires the irq to be locked already */
--void vgic_v3_populate_lr(struct kvm_vcpu *vcpu, struct vgic_irq *irq, int lr)
-+static u64 vgic_v3_compute_lr(struct kvm_vcpu *vcpu, struct vgic_irq *irq)
+ void vgic_v2_save_state(struct kvm_vcpu *vcpu)
  {
- 	u32 model = vcpu->kvm->arch.vgic.vgic_model;
- 	u64 val = irq->intid;
-@@ -154,6 +154,35 @@ void vgic_v3_populate_lr(struct kvm_vcpu *vcpu, struct vgic_irq *irq, int lr)
- 	if (allow_pending && irq_is_pending(irq)) {
- 		val |= ICH_LR_PENDING_BIT;
++	struct vgic_v2_cpu_if *cpu_if = &vcpu->arch.vgic_cpu.vgic_v2;
+ 	void __iomem *base = kvm_vgic_global_state.vctrl_base;
+ 	u64 used_lrs = vcpu->arch.vgic_cpu.vgic_v2.used_lrs;
  
-+		if (is_v2_sgi) {
-+			u32 src = ffs(irq->source);
-+
-+			if (WARN_RATELIMIT(!src, "No SGI source for INTID %d\n",
-+					   irq->intid))
-+				return 0;
-+
-+			val |= (src - 1) << GICH_LR_PHYSID_CPUID_SHIFT;
-+			if (irq->source & ~BIT(src - 1))
-+				val |= ICH_LR_EOI;
-+		}
-+	}
-+
-+	if (irq->group)
-+		val |= ICH_LR_GROUP;
-+
-+	val |= (u64)irq->priority << ICH_LR_PRIORITY_SHIFT;
-+
-+	return val;
-+}
-+
-+void vgic_v3_populate_lr(struct kvm_vcpu *vcpu, struct vgic_irq *irq, int lr)
-+{
-+	u32 model = vcpu->kvm->arch.vgic.vgic_model;
-+	u64 val = vgic_v3_compute_lr(vcpu, irq);
-+
-+	vcpu->arch.vgic_cpu.vgic_v3.vgic_lr[lr] = val;
-+
-+	if (val & ICH_LR_PENDING_BIT) {
- 		if (irq->config == VGIC_CONFIG_EDGE)
- 			irq->pending_latch = false;
+ 	if (!base)
+ 		return;
  
-@@ -161,16 +190,9 @@ void vgic_v3_populate_lr(struct kvm_vcpu *vcpu, struct vgic_irq *irq, int lr)
- 		    model == KVM_DEV_TYPE_ARM_VGIC_V2) {
- 			u32 src = ffs(irq->source);
+-	if (used_lrs) {
+-		if (vcpu->arch.vgic_cpu.vgic_v2.vgic_hcr & GICH_HCR_LRENPIE) {
+-			u32 val = readl_relaxed(base + GICH_HCR);
  
--			if (WARN_RATELIMIT(!src, "No SGI source for INTID %d\n",
--					   irq->intid))
--				return;
--
--			val |= (src - 1) << GICH_LR_PHYSID_CPUID_SHIFT;
--			irq->source &= ~(1 << (src - 1));
--			if (irq->source) {
-+			irq->source &= ~BIT(src - 1);
-+			if (irq->source)
- 				irq->pending_latch = true;
--				val |= ICH_LR_EOI;
--			}
- 		}
+-			vcpu->arch.vgic_cpu.vgic_v2.vgic_hcr &= ~GICH_HCR_EOICOUNT;
+-			vcpu->arch.vgic_cpu.vgic_v2.vgic_hcr |= val & GICH_HCR_EOICOUNT;
+-		}
++	if (used_lrs)
+ 		save_lrs(vcpu, base);
+-		writel_relaxed(0, base + GICH_HCR);
++
++	if (cpu_if->vgic_hcr & GICH_HCR_LRENPIE) {
++		u32 val = readl_relaxed(base + GICH_HCR);
++
++		cpu_if->vgic_hcr &= ~GICH_HCR_EOICOUNT;
++		cpu_if->vgic_hcr |= val & GICH_HCR_EOICOUNT;
  	}
- 
-@@ -183,13 +205,6 @@ void vgic_v3_populate_lr(struct kvm_vcpu *vcpu, struct vgic_irq *irq, int lr)
- 	if (vgic_irq_is_mapped_level(irq) && (val & ICH_LR_PENDING_BIT))
- 		irq->line_level = false;
- 
--	if (irq->group)
--		val |= ICH_LR_GROUP;
--
--	val |= (u64)irq->priority << ICH_LR_PRIORITY_SHIFT;
--
--	vcpu->arch.vgic_cpu.vgic_v3.vgic_lr[lr] = val;
--
- 	irq->on_lr = true;
++
++	writel_relaxed(0, base + GICH_HCR);
  }
  
+ void vgic_v2_restore_state(struct kvm_vcpu *vcpu)
+@@ -458,13 +461,10 @@ void vgic_v2_restore_state(struct kvm_vcpu *vcpu)
+ 	if (!base)
+ 		return;
+ 
+-	if (used_lrs) {
+-		writel_relaxed(cpu_if->vgic_hcr, base + GICH_HCR);
+-		for (i = 0; i < used_lrs; i++) {
+-			writel_relaxed(cpu_if->vgic_lr[i],
+-				       base + GICH_LR0 + (i * 4));
+-		}
+-	}
++	writel_relaxed(cpu_if->vgic_hcr, base + GICH_HCR);
++
++	for (i = 0; i < used_lrs; i++)
++		writel_relaxed(cpu_if->vgic_lr[i], base + GICH_LR0 + (i * 4));
+ }
+ 
+ void vgic_v2_load(struct kvm_vcpu *vcpu)
 -- 
 2.47.3
 
