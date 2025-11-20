@@ -1,49 +1,49 @@
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA100363C6F
-	for <kvm@vger.kernel.org>; Thu, 20 Nov 2025 19:13:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E5E1368E00
+	for <kvm@vger.kernel.org>; Thu, 20 Nov 2025 19:13:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763666036; cv=none; b=h/5jp8mCFlteom1u1nY7kJpzL8n/zIHqUAiPR2kaqTvGqwCQ19ZiHEAl/kzPthHU9hOaIS2GKdZdoftyF1nAoj8hnnUwbVxzO3MME0/bV5r8hebPa9Bt7BtT1kBOhZ2TmCj1TWE3dWbIBtejJRVtcqB4i1WBsoiYhU7lES7h8JM=
+	t=1763666037; cv=none; b=akDO8Rm4PgiOXSajf8WyvsuYlgMdUhcGr5Pr8+xkq7u7AlzapIQtOQDwoR22wHRPY940VNt2Q1T5T5gIi5Lt+n5dcdy3kUQcW+l7SxdWq3G3OVLrbcNb2d3M9fiHZHpUmZ02/8TGaCrwJuKcnf1MyL46qKo5U4f4V7cEojWiE3Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763666036; c=relaxed/simple;
-	bh=kzNgGF7MLjBDUm4uiRa3PKpI2Q0XLJmJQuuxP9HEkbY=;
+	s=arc-20240116; t=1763666037; c=relaxed/simple;
+	bh=fDqBSsb3l9/+HBeW3xGIN8EotdmD0CB7b6IShXTzFvA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JbGwoA6FUPskTO6z6+9Qn467Nmje3SrUJtvxle6MXpcZHjBjxrA0IM9OzteYOkG5v9Y4TPRsARep6uv6xTc2mYhj40DJ8SWaLGOysdIPCI70zYG3X7Wv0kkIQ8hjz5peeapz6479ypwpXtw5KuB6ye7DF8yDLU5MTnVP1F9IqG0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=P5Epx5Kw; arc=none smtp.client-ip=170.10.129.124
+	 MIME-Version; b=XP78bolzlFi1uVU0Euum6y7DA/6TDrnshnI3Gg72AX4KKFQdJ4sfq32hLRVOVC3goyiCtxHa8tZ50RA/YceP7SDYgTcyLbI6NvFAG+UEkBGibBawJWAypWZfcDI3vhINXBrO/NE3RA55MXUFZyMoAgGqeFV/36YI3S0GVQEFIbI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=GhIcUS9K; arc=none smtp.client-ip=170.10.129.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="P5Epx5Kw"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="GhIcUS9K"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1763666033;
+	s=mimecast20190719; t=1763666035;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=4lLXR0s+PhRAM8v+Y3wk6pvI0Xo8xxxorF5WwAF7BFI=;
-	b=P5Epx5KwsPTVicfM1Amcg/HGKTVlq7/jTNYOCaPGj6XlaNnArP/ixXt/f3lbq+E/J3MVsw
-	RD48X7Wzi1xn/o8b3cdtKbowNFxVzG8yyC1G67ARk4Y42KL1CsF25vc2StrkY5Ql3L6TEb
-	qJ8oY6n9H/M0exWxx6PDJzIuBcEtRJE=
-Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+	bh=ECBnpLLCj16fpj21fI+h9tBul9riCpuU3pZvsycdoc0=;
+	b=GhIcUS9Ksoq7tPOnt3raW5KN7LB0CKRsfT9yvMG5cNBhVr6SZXj4H5pnkfcNF2ZOQsp6Iw
+	XvsjCQgMes8QIIJz2rSPjNEL1LnIFPm6ieP1sltkfmCh7x1S5Xgrp9mMgNT5bxlS13h4JE
+	Kx0o5N+QiZnVNeXOEQn9kHiwigCA14c=
+Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-471-QWJXJjopMraUZ211FtOGkg-1; Thu,
- 20 Nov 2025 14:13:48 -0500
-X-MC-Unique: QWJXJjopMraUZ211FtOGkg-1
-X-Mimecast-MFC-AGG-ID: QWJXJjopMraUZ211FtOGkg_1763666024
-Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-657-jEDqh1RKOraiJsp9TZW5JQ-1; Thu,
+ 20 Nov 2025 14:13:51 -0500
+X-MC-Unique: jEDqh1RKOraiJsp9TZW5JQ-1
+X-Mimecast-MFC-AGG-ID: jEDqh1RKOraiJsp9TZW5JQ_1763666027
+Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 6D9F619560A2;
-	Thu, 20 Nov 2025 19:13:43 +0000 (UTC)
+	by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id CAA1218002D0;
+	Thu, 20 Nov 2025 19:13:46 +0000 (UTC)
 Received: from blackfin.pond.sub.org (unknown [10.45.242.18])
-	by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id B20DA1940E82;
-	Thu, 20 Nov 2025 19:13:41 +0000 (UTC)
+	by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 1D23C1801747;
+	Thu, 20 Nov 2025 19:13:46 +0000 (UTC)
 Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
-	id 4AFF521E6741; Thu, 20 Nov 2025 20:13:39 +0100 (CET)
+	id 768B121E65DF; Thu, 20 Nov 2025 20:13:39 +0100 (CET)
 From: Markus Armbruster <armbru@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: arei.gonglei@huawei.com,
@@ -95,9 +95,9 @@ Cc: arei.gonglei@huawei.com,
 	xen-devel@lists.xenproject.org,
 	kvm@vger.kernel.org,
 	qemu-riscv@nongnu.org
-Subject: [PATCH 02/14] hw/usb: Use error_setg_file_open() for a better error message
-Date: Thu, 20 Nov 2025 20:13:27 +0100
-Message-ID: <20251120191339.756429-3-armbru@redhat.com>
+Subject: [PATCH 10/14] net/slirp: Improve file open error message
+Date: Thu, 20 Nov 2025 20:13:35 +0100
+Message-ID: <20251120191339.756429-11-armbru@redhat.com>
 In-Reply-To: <20251120191339.756429-1-armbru@redhat.com>
 References: <20251120191339.756429-1-armbru@redhat.com>
 Precedence: bulk
@@ -107,36 +107,33 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
 
-The error message changes from
-
-    open FILENAME failed
-
-to
-
-    Could not open 'FILENAME': REASON
-
-where REASON is the value of strerror(errno).
+This error reports failure to create a temporary file, and
+error_setg_file_open() would probably be too terse, so merely switch
+to error_setg_errno() to add errno information.
 
 Signed-off-by: Markus Armbruster <armbru@redhat.com>
 ---
- hw/usb/bus.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/slirp.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/hw/usb/bus.c b/hw/usb/bus.c
-index 8dd2ce415e..47d42ca3c1 100644
---- a/hw/usb/bus.c
-+++ b/hw/usb/bus.c
-@@ -262,7 +262,7 @@ static void usb_qdev_realize(DeviceState *qdev, Error **errp)
-         int fd = qemu_open_old(dev->pcap_filename,
-                                O_CREAT | O_WRONLY | O_TRUNC | O_BINARY, 0666);
-         if (fd < 0) {
--            error_setg(errp, "open %s failed", dev->pcap_filename);
-+            error_setg_file_open(errp, errno, dev->pcap_filename);
-             usb_qdev_unrealize(qdev);
-             return;
-         }
+diff --git a/net/slirp.c b/net/slirp.c
+index 120eef6122..5996fec512 100644
+--- a/net/slirp.c
++++ b/net/slirp.c
+@@ -1034,8 +1034,10 @@ static int slirp_smb(SlirpState* s, const char *exported_dir,
+ 
+     f = fopen(smb_conf, "w");
+     if (!f) {
++        int eno = errno;
++
+         slirp_smb_cleanup(s);
+-        error_setg(errp,
++        error_setg_errno(errp, eno,
+                    "Could not create samba server configuration file '%s'",
+                     smb_conf);
+         g_free(smb_conf);
 -- 
 2.49.0
 
