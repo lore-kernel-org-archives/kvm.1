@@ -1,37 +1,37 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2335D3A8D7E;
-	Thu, 20 Nov 2025 17:26:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D25A43A9C05;
+	Thu, 20 Nov 2025 17:26:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763659566; cv=none; b=oWuYUTnl0dPkg0OmGu3rQ5ghVrQEXFlEmOVzKYB3hc+Vio5o+dgTA11VPT+okA6BSPf6M/8D35hwqKDssVb5KjC2mOCAaLLIiDeX+bUo8IBRVu/bu9gVn3pRO95hgiPbSudTG3qwbW5zJqHdfLT8a4b7ubCvCbGciiztWsS/0ow=
+	t=1763659566; cv=none; b=sIpRBuCqNoacZbdPpH++oWM0s+VB5s/8c2B7jeO00MzqWts8WTeLni8494hWjS6UfpLxOSTOYPSTpJSNOPgxeUpA0Wxpy/seCQEmZ01VNBdp46E92Qo+VPfjltOc2TKgC/1uMaZ6r9j+yvgyFJCoQvbHHSNG3bGqS9PTTd4ch14=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1763659566; c=relaxed/simple;
-	bh=74pgP/bZ5hdtuI7lcrAtWgPxkfi9NnSDOfGi5xsnYtE=;
+	bh=I9ccNvnN5tYXZEamHv0x3EQ8Z2CyyHc1QdPzU7e5cnM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MbDy+BbHOyGRzFbLRYanptrcNJTloYDaMhU4RoVyYTZ+ro1SdAwaDzeWnEfjoAF8L9X5fQo2+6zdNgXDX4hnMUWnQImB+kaa0FgdwOF7eAS42Hjcxpzt6/LQ0Td9IJejf+KVyFArdRmFcbYEBSV98RtNSMPtgR9+iUQ8qBJtb+o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hjjmK8AL; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version; b=AL5g2imDpaqgquHyUJFbxG07ewO2O3umG0BrD2elJ+ku2h2UCFVZjnLn8EfN9KUaCksogiIq8GIxnyd7Lz2uA/lyys5c7tydY2Mwryi0NSz1KCf3YrEkQiecNQj4WQgLL7JPp9bz2xQsNE/WI+bYpnQByyyESyLAfImf1s7nAuA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=H13RLatv; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hjjmK8AL"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 70B1AC19423;
-	Thu, 20 Nov 2025 17:26:05 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="H13RLatv"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5C336C116C6;
+	Thu, 20 Nov 2025 17:26:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1763659565;
-	bh=74pgP/bZ5hdtuI7lcrAtWgPxkfi9NnSDOfGi5xsnYtE=;
+	s=k20201202; t=1763659566;
+	bh=I9ccNvnN5tYXZEamHv0x3EQ8Z2CyyHc1QdPzU7e5cnM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hjjmK8AL/kUUOVQaTVLq+uMe210mLkKEF700wRqoNfj7MRrKoB5fhI+TN1whVPxFW
-	 cFKjaPihe0J1Qo6PGYraMVOAm2U0YrfnVQRUqYQMzGzZBq3tYhw2c1nAUkDXV24Nm1
-	 isBX31Cd0T5ZDpCyyWTyDH+JKtNsTys0oZ847KfPK+Z0vMe6nOva+CJmDSXZXZAqCz
-	 L7UQ5p8U+KHyHeqnB+fiTQcvDvl+T6fxZ7zBERv+W85jnQodt/HnXIG65EoHMDURr0
-	 yJBgy/T2BYBpN8fdsCvcsMxNK2JupeKBB4Em7QndY/nml3TPka9xG5zAZTBDpxtU51
-	 UB1DzVeY5TJQg==
+	b=H13RLatvl4ppCYaoGGLVZJf1mrpCf6fRJrwTemH7l7RFusqiWyANCV2Kq9ZFdvZXZ
+	 NLH4CdG4dqRfoLdSyksgsZu7nxjJgjgGjMRVMKHWtYGEun7exyKFv3pfLAfIH7JQyF
+	 /+kLo4XPPzUGY5lqQr+Tl8Izdl9m5ieOszLl/S/Z/6SLy3xceWol86YmeFzeqISp/b
+	 UZBtk3HhScbEo2A2xk4bAuLFYULAtn91Cwho/FENa5g6txDY8DJ7ejzGnE3Bkiu5e4
+	 /gdlPnM1aHKJfYU+LrXGyQvh15FNQdBSc6jn0TG0HODrG0Zo4Ql1nEOrBGybLvmEQi
+	 JCooQJCyCni5A==
 Received: from sofa.misterjones.org ([185.219.108.64] helo=valley-girl.lan)
 	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.98.2)
 	(envelope-from <maz@kernel.org>)
-	id 1vM8Pz-00000006y6g-2sMg;
-	Thu, 20 Nov 2025 17:26:03 +0000
+	id 1vM8Q0-00000006y6g-2Iu4;
+	Thu, 20 Nov 2025 17:26:04 +0000
 From: Marc Zyngier <maz@kernel.org>
 To: kvmarm@lists.linux.dev,
 	linux-arm-kernel@lists.infradead.org,
@@ -43,9 +43,9 @@ Cc: Joey Gouly <joey.gouly@arm.com>,
 	Christoffer Dall <christoffer.dall@arm.com>,
 	Fuad Tabba <tabba@google.com>,
 	Mark Brown <broonie@kernel.org>
-Subject: [PATCH v4 40/49] KVM: arm64: selftests: gic_v3: Add irq group setting helper
-Date: Thu, 20 Nov 2025 17:25:30 +0000
-Message-ID: <20251120172540.2267180-41-maz@kernel.org>
+Subject: [PATCH v4 42/49] KVM: arm64: selftests: vgic_irq: Fix GUEST_ASSERT_IAR_EMPTY() helper
+Date: Thu, 20 Nov 2025 17:25:32 +0000
+Message-ID: <20251120172540.2267180-43-maz@kernel.org>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20251120172540.2267180-1-maz@kernel.org>
 References: <20251120172540.2267180-1-maz@kernel.org>
@@ -61,89 +61,27 @@ X-SA-Exim-Rcpt-To: kvmarm@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
 X-SA-Exim-Mail-From: maz@kernel.org
 X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
 
-Being able to set the group of an interrupt is pretty useful.
-Add such a helper.
+No, 0 is not a spurious INTID. Never been, never was.
 
 Tested-by: Fuad Tabba <tabba@google.com>
 Signed-off-by: Marc Zyngier <maz@kernel.org>
 ---
- tools/testing/selftests/kvm/include/arm64/gic.h   |  1 +
- tools/testing/selftests/kvm/lib/arm64/gic.c       |  6 ++++++
- .../testing/selftests/kvm/lib/arm64/gic_private.h |  1 +
- tools/testing/selftests/kvm/lib/arm64/gic_v3.c    | 15 +++++++++++++++
- 4 files changed, 23 insertions(+)
+ tools/testing/selftests/kvm/arm64/vgic_irq.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/tools/testing/selftests/kvm/include/arm64/gic.h b/tools/testing/selftests/kvm/include/arm64/gic.h
-index baeb3c859389d..cc7a7f34ed377 100644
---- a/tools/testing/selftests/kvm/include/arm64/gic.h
-+++ b/tools/testing/selftests/kvm/include/arm64/gic.h
-@@ -57,6 +57,7 @@ void gic_irq_set_pending(unsigned int intid);
- void gic_irq_clear_pending(unsigned int intid);
- bool gic_irq_get_pending(unsigned int intid);
- void gic_irq_set_config(unsigned int intid, bool is_edge);
-+void gic_irq_set_group(unsigned int intid, bool group);
+diff --git a/tools/testing/selftests/kvm/arm64/vgic_irq.c b/tools/testing/selftests/kvm/arm64/vgic_irq.c
+index 6338f5bbdb705..a77562b2976ae 100644
+--- a/tools/testing/selftests/kvm/arm64/vgic_irq.c
++++ b/tools/testing/selftests/kvm/arm64/vgic_irq.c
+@@ -205,7 +205,7 @@ static void kvm_inject_call(kvm_inject_cmd cmd, uint32_t first_intid,
+ do { 										\
+ 	uint32_t _intid;							\
+ 	_intid = gic_get_and_ack_irq();						\
+-	GUEST_ASSERT(_intid == 0 || _intid == IAR_SPURIOUS);			\
++	GUEST_ASSERT(_intid == IAR_SPURIOUS);					\
+ } while (0)
  
- void gic_rdist_enable_lpis(vm_paddr_t cfg_table, size_t cfg_table_size,
- 			   vm_paddr_t pend_table);
-diff --git a/tools/testing/selftests/kvm/lib/arm64/gic.c b/tools/testing/selftests/kvm/lib/arm64/gic.c
-index 7abbf8866512a..b023868fe0b82 100644
---- a/tools/testing/selftests/kvm/lib/arm64/gic.c
-+++ b/tools/testing/selftests/kvm/lib/arm64/gic.c
-@@ -155,3 +155,9 @@ void gic_irq_set_config(unsigned int intid, bool is_edge)
- 	GUEST_ASSERT(gic_common_ops);
- 	gic_common_ops->gic_irq_set_config(intid, is_edge);
- }
-+
-+void gic_irq_set_group(unsigned int intid, bool group)
-+{
-+	GUEST_ASSERT(gic_common_ops);
-+	gic_common_ops->gic_irq_set_group(intid, group);
-+}
-diff --git a/tools/testing/selftests/kvm/lib/arm64/gic_private.h b/tools/testing/selftests/kvm/lib/arm64/gic_private.h
-index d24e9ecc96c6d..b6a7e30c3eb1f 100644
---- a/tools/testing/selftests/kvm/lib/arm64/gic_private.h
-+++ b/tools/testing/selftests/kvm/lib/arm64/gic_private.h
-@@ -25,6 +25,7 @@ struct gic_common_ops {
- 	void (*gic_irq_clear_pending)(uint32_t intid);
- 	bool (*gic_irq_get_pending)(uint32_t intid);
- 	void (*gic_irq_set_config)(uint32_t intid, bool is_edge);
-+	void (*gic_irq_set_group)(uint32_t intid, bool group);
- };
- 
- extern const struct gic_common_ops gicv3_ops;
-diff --git a/tools/testing/selftests/kvm/lib/arm64/gic_v3.c b/tools/testing/selftests/kvm/lib/arm64/gic_v3.c
-index 66d05506f78b1..3e4e1a6a4f7c3 100644
---- a/tools/testing/selftests/kvm/lib/arm64/gic_v3.c
-+++ b/tools/testing/selftests/kvm/lib/arm64/gic_v3.c
-@@ -293,6 +293,20 @@ static void gicv3_enable_redist(volatile void *redist_base)
- 	}
- }
- 
-+static void gicv3_set_group(uint32_t intid, bool grp)
-+{
-+	uint32_t cpu_or_dist;
-+	uint32_t val;
-+
-+	cpu_or_dist = (get_intid_range(intid) == SPI_RANGE) ? DIST_BIT : guest_get_vcpuid();
-+	val = gicv3_reg_readl(cpu_or_dist, GICD_IGROUPR + (intid / 32) * 4);
-+	if (grp)
-+		val |= BIT(intid % 32);
-+	else
-+		val &= ~BIT(intid % 32);
-+	gicv3_reg_writel(cpu_or_dist, GICD_IGROUPR + (intid / 32) * 4, val);
-+}
-+
- static void gicv3_cpu_init(unsigned int cpu)
- {
- 	volatile void *sgi_base;
-@@ -400,6 +414,7 @@ const struct gic_common_ops gicv3_ops = {
- 	.gic_irq_clear_pending = gicv3_irq_clear_pending,
- 	.gic_irq_get_pending = gicv3_irq_get_pending,
- 	.gic_irq_set_config = gicv3_irq_set_config,
-+	.gic_irq_set_group = gicv3_set_group,
- };
- 
- void gic_rdist_enable_lpis(vm_paddr_t cfg_table, size_t cfg_table_size,
+ #define CAT_HELPER(a, b) a ## b
 -- 
 2.47.3
 
