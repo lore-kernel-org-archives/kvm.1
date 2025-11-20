@@ -1,49 +1,49 @@
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 50E8E364047
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E9DA368DE8
 	for <kvm@vger.kernel.org>; Thu, 20 Nov 2025 19:13:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763666035; cv=none; b=m8EQ94tSI4Wb4SkQKeog9dlYz3Lj8SHo9cDrj6aEN/fy8BDjnd92+rjyodf6AjM5n/Xg8YbKm8H6cgE8rNEqmGMa7C3RSA9AZ7+L2Lqv1dQ21k1Ikm4NQKCFXOyZxeuf7nUbUlx2zlfOmOEcy3G5xTmnmY+I/0JOrQ8wc8JHQ88=
+	t=1763666035; cv=none; b=uGxC5AsoXBRDnr0D8k/SfR6CxyXMH7xbVpv+Nne/YQ9jXsHx3M2YMewsNkkC0BOvYr7+zF31OAsryxcwvn95sJKPoqpeB7+3tdKhTuyspG25YGfScNGb7Lu8hGO5O7LgjgjDvbkor1jzUZrmE8qr9xx7ZeAzSYVXGYPI72bAt0U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1763666035; c=relaxed/simple;
-	bh=9ijGG8m+FELYjaf3MyuBk7g4f5JfU9ssoo2gEJFpswI=;
+	bh=vUEfE8rbgu9z9wRKEmNEehtjAoRbitazjv+qSM4hrLY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=m+whrkoQU9dWfAD5tSEg0fSrXSxiR/xZ2gHSBpt9VdJ9e+s8OfLI8skVpx9PTMKcM806ySY1HTpdSDq4WvyvofbbG5vjGuJE6mZ0n44lKGDtHOZAxCHZcrUoDEWjDNf5CFja37fm6WDpWqjnEl3FVDUmofZ8H2rlHH0S0F1nJpg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=AGjoQtCj; arc=none smtp.client-ip=170.10.129.124
+	 MIME-Version; b=K0RbO/E1qFFkVxU494H5w0SONPxkNXVsHFxkZtLYNE0Zi2POq8SBOn4qxNykplYj5ZzQbGxFYH8i+UAj0c4pPi/ZE57I+kzep9h+Xcy3VnuomzFBBG31Y4Ng1dmWy/z0op6iMbdoS5QfbXzMkw5gdIEmUYOIIl89jjwtXm+w3Zc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=NORBkOno; arc=none smtp.client-ip=170.10.129.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="AGjoQtCj"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="NORBkOno"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1763666030;
+	s=mimecast20190719; t=1763666031;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=sx8qN/rQg9K32+B1nXrTKMNVKMJAAYsg2jr2Y0IDjq8=;
-	b=AGjoQtCjrDqkjEJU4eNe4MxZdOxTojCeaDQPPejx65n1oaX6TYySgmhVF88Mr9S2btXXok
-	QzPDKK5Y6OmTyKPXymIB0dCro68HEcxVdSVGaQ0cEkIAr8iwtUJnaA12xcf1d05Oj4+Pr7
-	+TsZ8psu3ctmrk1UGucXBV2FCyz62Qs=
-Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
+	bh=fcIBzXudHPYvY6QmF4OmsaPzhsA+4LiQymdChLvcMTo=;
+	b=NORBkOnon/JVQip+y/a7yDyQWboJUKb+7j4Fvu4MArwGIJcl75KHiH8BIL4s1H0LNVAqME
+	1Mu99pzrnEf+6HqIwYq+8FrfQMhghCVu1oyRRI2FgOi8CTGhzzjQsButcyX3DzwXcOa+ka
+	b/48l4pZ0JROdryXLPRFfEA8ih/ZjMQ=
+Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-399-AavvAK_sPLGzx3xXYBncyQ-1; Thu,
- 20 Nov 2025 14:13:48 -0500
-X-MC-Unique: AavvAK_sPLGzx3xXYBncyQ-1
-X-Mimecast-MFC-AGG-ID: AavvAK_sPLGzx3xXYBncyQ_1763666024
-Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-581-7Iq_K6oTO5mz-isRrtZO_Q-1; Thu,
+ 20 Nov 2025 14:13:49 -0500
+X-MC-Unique: 7Iq_K6oTO5mz-isRrtZO_Q-1
+X-Mimecast-MFC-AGG-ID: 7Iq_K6oTO5mz-isRrtZO_Q_1763666024
+Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 72F7B19541AF;
+	by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 7BF861956053;
 	Thu, 20 Nov 2025 19:13:43 +0000 (UTC)
 Received: from blackfin.pond.sub.org (unknown [10.45.242.18])
-	by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 8119818004D8;
+	by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 9A8CB30044E7;
 	Thu, 20 Nov 2025 19:13:41 +0000 (UTC)
 Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
-	id 5665A21E66F8; Thu, 20 Nov 2025 20:13:39 +0100 (CET)
+	id 45CE821E6935; Thu, 20 Nov 2025 20:13:39 +0100 (CET)
 From: Markus Armbruster <armbru@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: arei.gonglei@huawei.com,
@@ -95,9 +95,9 @@ Cc: arei.gonglei@huawei.com,
 	xen-devel@lists.xenproject.org,
 	kvm@vger.kernel.org,
 	qemu-riscv@nongnu.org
-Subject: [PATCH 04/14] qga: Use error_setg_file_open() for better error messages
-Date: Thu, 20 Nov 2025 20:13:29 +0100
-Message-ID: <20251120191339.756429-5-armbru@redhat.com>
+Subject: [PATCH 01/14] error: Strip trailing '\n' from error string arguments (again)
+Date: Thu, 20 Nov 2025 20:13:26 +0100
+Message-ID: <20251120191339.756429-2-armbru@redhat.com>
 In-Reply-To: <20251120191339.756429-1-armbru@redhat.com>
 References: <20251120191339.756429-1-armbru@redhat.com>
 Precedence: bulk
@@ -107,68 +107,40 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
 
-Error messages change from
-
-    open("FNAME"): REASON
-
-to
-
-    Could not open 'FNAME': REASON
+Tracked down with scripts/coccinelle/err-bad-newline.cocci.
 
 Signed-off-by: Markus Armbruster <armbru@redhat.com>
 ---
- qga/commands-linux.c | 11 ++++++-----
- 1 file changed, 6 insertions(+), 5 deletions(-)
+ hw/audio/es1370.c | 2 +-
+ ui/gtk.c          | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/qga/commands-linux.c b/qga/commands-linux.c
-index 4a09ddc760..5cf76ca2d9 100644
---- a/qga/commands-linux.c
-+++ b/qga/commands-linux.c
-@@ -1502,14 +1502,15 @@ static void transfer_vcpu(GuestLogicalProcessor *vcpu, bool sys2vcpu,
- 
-     dirfd = open(dirpath, O_RDONLY | O_DIRECTORY);
-     if (dirfd == -1) {
--        error_setg_errno(errp, errno, "open(\"%s\")", dirpath);
-+        error_setg_file_open(errp, errno, dirpath);
-         return;
-     }
- 
-     fd = openat(dirfd, fn, sys2vcpu ? O_RDONLY : O_RDWR);
-     if (fd == -1) {
-         if (errno != ENOENT) {
--            error_setg_errno(errp, errno, "open(\"%s/%s\")", dirpath, fn);
-+            error_setg_errno(errp, errno, "could not open %s/%s",
-+                             dirpath, fn);
-         } else if (sys2vcpu) {
-             vcpu->online = true;
-             vcpu->can_offline = false;
-@@ -1711,7 +1712,7 @@ static void transfer_memory_block(GuestMemoryBlock *mem_blk, bool sys2memblk,
-     dirfd = open(dirpath, O_RDONLY | O_DIRECTORY);
-     if (dirfd == -1) {
-         if (sys2memblk) {
--            error_setg_errno(errp, errno, "open(\"%s\")", dirpath);
-+            error_setg_file_open(errp, errno, dirpath);
-         } else {
-             if (errno == ENOENT) {
-                 result->response = GUEST_MEMORY_BLOCK_RESPONSE_TYPE_NOT_FOUND;
-@@ -1936,7 +1937,7 @@ static GuestDiskStatsInfoList *guest_get_diskstats(Error **errp)
- 
-     fp = fopen(diskstats, "r");
-     if (fp  == NULL) {
--        error_setg_errno(errp, errno, "open(\"%s\")", diskstats);
-+        error_setg_file_open(errp, errno, diskstats);
-         return NULL;
-     }
- 
-@@ -2047,7 +2048,7 @@ GuestCpuStatsList *qmp_guest_get_cpustats(Error **errp)
- 
-     fp = fopen(cpustats, "r");
-     if (fp  == NULL) {
--        error_setg_errno(errp, errno, "open(\"%s\")", cpustats);
-+        error_setg_file_open(errp, errno, cpustats);
-         return NULL;
+diff --git a/hw/audio/es1370.c b/hw/audio/es1370.c
+index 9873ffadab..566f93f1ea 100644
+--- a/hw/audio/es1370.c
++++ b/hw/audio/es1370.c
+@@ -228,7 +228,7 @@ static void print_sctl(uint32_t val)
+ #undef a
+         error_report("es1370: "
+                 "%s p2_end_inc %d, p2_st_inc %d,"
+-                " r1_fmt %s, p2_fmt %s, p1_fmt %s\n",
++                " r1_fmt %s, p2_fmt %s, p1_fmt %s",
+                 buf,
+                 (val & SCTRL_P2ENDINC) >> SCTRL_SH_P2ENDINC,
+                 (val & SCTRL_P2STINC) >> SCTRL_SH_P2STINC,
+diff --git a/ui/gtk.c b/ui/gtk.c
+index 48571bedbf..e83a366625 100644
+--- a/ui/gtk.c
++++ b/ui/gtk.c
+@@ -1197,7 +1197,7 @@ static gboolean gd_touch_event(GtkWidget *widget, GdkEventTouch *touch,
+         type = INPUT_MULTI_TOUCH_TYPE_END;
+         break;
+     default:
+-        warn_report("gtk: unexpected touch event type\n");
++        warn_report("gtk: unexpected touch event type");
+         return FALSE;
      }
  
 -- 
