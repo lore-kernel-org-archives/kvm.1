@@ -1,49 +1,49 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E6318368E1B
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2FE9368E1C
 	for <kvm@vger.kernel.org>; Thu, 20 Nov 2025 19:13:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763666038; cv=none; b=LyJOMFHcT1L1J8Y4lW46H/hVuu1Am7IJtrPi2cbWv9njJ8h+3P15Pct7peyRZhOY2rHM9EhkUZnbzwzPKwmLKJ4BtS3I0VKI9WrvvOvSh6BrOCYzwy89K84LZc/WQiCJPHQ6PrmuKIarky4V2FwrRt84SfF4Uh8ROtcDVSS9o1k=
+	t=1763666038; cv=none; b=PgwDraGL2WllXMdZXQ3Gt4UVlqRKUkSdgaaY51FHqSh0GgIdsgNkWxF2MhOZBeAChi9V3kYl24X8Z/a8OFrv/ddD3D3u0L08y55ESQ5i/y22m5UqQIp3QwqcsU06clHoTqKGhUHBwX6N6L2iI9i4U8q4G0VrdFtHm3XZJJ1FOAE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1763666038; c=relaxed/simple;
-	bh=n5ieai0oOuZYyNZCJeslW+M/vh4VieMur+A1oVEebmI=;
+	bh=7oAAq3P8kQ416abmaYIVobem1hCkFSKNFLYTdDWZjcU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=akEaLM+lcV5PmfO0S//Snt5p9FdTfRWlfOAb8eoDasrITtyXX36FuYP7RDZGFJ41qurGoCFPENwua4DcsAE5smCiNRbPQoYBbKxf89PGcbYQTAxDBt1ajYrK8xNWNz4fPjBP197uE73mQWf3A/lrcV7ZJh6HEpDZTpyLgl3cdrc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=ORB6UC/h; arc=none smtp.client-ip=170.10.129.124
+	 MIME-Version; b=ZzcnPsd+uBeyseWIUQ8kdgRItKY4PjamBIbC1SQLRSWv/6HR0zQJhV3IHR8h63/VUEfvMgHjEL5tg4abU/1WKBn/y9/zwIoJP6Lh5NUGnKTP1afKUCtyoex/bk2n4uZ0OWwe0wi9pkqVGBwoB569qnQgVnUKZ+dGFGsn7bW/qQc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=QofNWpS8; arc=none smtp.client-ip=170.10.133.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="ORB6UC/h"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="QofNWpS8"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
 	s=mimecast20190719; t=1763666036;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=oeDPJTEK/mbRoQ9G1reQyHyjo6pRRwMOwFAV76+b8w0=;
-	b=ORB6UC/haVNSznERM9gxooPixSyCo6vDQb3XxAK7AVc43iTyLxjxVnhLoAMenT3TnSHfH2
-	4eVsBjoonsufUWVGhe1zToUFnSdaUTwfnGYmqXUKe6QYbuZb1KMMfOntBB6ZmNYcOvQd6/
-	201CJrPGiaiGvh8Irnkbvdc9rwu6TQg=
+	bh=qZGp8vuRR8VrNmTSQmIzBXvqSkRg69sI4h/KDVaUFuE=;
+	b=QofNWpS8uLA29ixW7+s300bBUtOuQzkPmSnndpYo4NhkSuTk+wIFN55NLsat1DbDP11XQX
+	SOSeP3VKzAFn+AUaLx90le50doz8B+j8n894I+ZP0JvhvPMLx/yLJETET0x+7Q+2XydQhA
+	vVKKhLHoEladdGasz+4Fceq6UbXdMe4=
 Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-55-M7p59jwPOHWlO-WKfumvYQ-1; Thu,
- 20 Nov 2025 14:13:54 -0500
-X-MC-Unique: M7p59jwPOHWlO-WKfumvYQ-1
-X-Mimecast-MFC-AGG-ID: M7p59jwPOHWlO-WKfumvYQ_1763666027
-Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-564-LvjNWB7rPgenSYGmtZdSaA-1; Thu,
+ 20 Nov 2025 14:13:52 -0500
+X-MC-Unique: LvjNWB7rPgenSYGmtZdSaA-1
+X-Mimecast-MFC-AGG-ID: LvjNWB7rPgenSYGmtZdSaA_1763666027
+Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 3A8F11955F17;
-	Thu, 20 Nov 2025 19:13:47 +0000 (UTC)
+	by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id B5935195607A;
+	Thu, 20 Nov 2025 19:13:46 +0000 (UTC)
 Received: from blackfin.pond.sub.org (unknown [10.45.242.18])
-	by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id DEF1F18009BC;
+	by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id EFDEB1956045;
 	Thu, 20 Nov 2025 19:13:45 +0000 (UTC)
 Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
-	id 8D09221EC346; Thu, 20 Nov 2025 20:13:39 +0100 (CET)
+	id 5BDDA21E66A9; Thu, 20 Nov 2025 20:13:39 +0100 (CET)
 From: Markus Armbruster <armbru@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: arei.gonglei@huawei.com,
@@ -95,9 +95,9 @@ Cc: arei.gonglei@huawei.com,
 	xen-devel@lists.xenproject.org,
 	kvm@vger.kernel.org,
 	qemu-riscv@nongnu.org
-Subject: [PATCH 14/14] block/file-win32: Improve an error message
-Date: Thu, 20 Nov 2025 20:13:39 +0100
-Message-ID: <20251120191339.756429-15-armbru@redhat.com>
+Subject: [PATCH 05/14] hw/scsi: Use error_setg_file_open() for a better error message
+Date: Thu, 20 Nov 2025 20:13:30 +0100
+Message-ID: <20251120191339.756429-6-armbru@redhat.com>
 In-Reply-To: <20251120191339.756429-1-armbru@redhat.com>
 References: <20251120191339.756429-1-armbru@redhat.com>
 Precedence: bulk
@@ -107,31 +107,41 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
 
-Two out of three calls of CreateFile() use error_setg_win32() to
-report errors.  The third uses error_setg_errno(), mapping
-ERROR_ACCESS_DENIED to EACCES, and everything else to EINVAL, throwing
-away detail.  Switch it to error_setg_win32().
+The error message changes from
+
+    vhost-scsi: open vhost char device failed: REASON
+
+to
+
+    Could not open '/dev/vhost-scsi': REASON
+
+I think the exact file name is more useful to know than the file's
+purpose.
+
+We could put back the "vhost-scsi: " prefix with error_prepend().  Not
+worth the bother.
 
 Signed-off-by: Markus Armbruster <armbru@redhat.com>
 ---
- block/file-win32.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ hw/scsi/vhost-scsi.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/block/file-win32.c b/block/file-win32.c
-index 0efb609e1d..78961837c8 100644
---- a/block/file-win32.c
-+++ b/block/file-win32.c
-@@ -904,7 +904,7 @@ static int hdev_open(BlockDriverState *bs, QDict *options, int flags,
-         } else {
-             ret = -EINVAL;
+diff --git a/hw/scsi/vhost-scsi.c b/hw/scsi/vhost-scsi.c
+index cdf405b0f8..239138c931 100644
+--- a/hw/scsi/vhost-scsi.c
++++ b/hw/scsi/vhost-scsi.c
+@@ -245,8 +245,7 @@ static void vhost_scsi_realize(DeviceState *dev, Error **errp)
+     } else {
+         vhostfd = open("/dev/vhost-scsi", O_RDWR);
+         if (vhostfd < 0) {
+-            error_setg(errp, "vhost-scsi: open vhost char device failed: %s",
+-                       strerror(errno));
++            error_setg_file_open(errp, errno, "/dev/vhost-scsi");
+             return;
          }
--        error_setg_errno(errp, -ret, "Could not open device");
-+        error_setg_win32(errp, err, "Could not open device");
-         goto done;
      }
- 
 -- 
 2.49.0
 
