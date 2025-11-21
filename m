@@ -1,49 +1,49 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 61FFE34C9B7
-	for <kvm@vger.kernel.org>; Fri, 21 Nov 2025 12:14:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6184E2FF17D
+	for <kvm@vger.kernel.org>; Fri, 21 Nov 2025 12:14:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763727297; cv=none; b=cSsN8NoZI1vy4IABOMINKsF+taVSjyw9jLO0CWIyRhBBxMvx2X2PiYkHTEMyjpFsPxX4YfByJqmIaTbBLfi+BuK6CMSypVVA6von1LOOJ5ti3TqEODJjinC+IVVPmRwD6SvLlucOkpwb9pPDRYlZkJEU2UCZu0V8n1dou+GU3m4=
+	t=1763727297; cv=none; b=knVlq/BaViYLBExwdk376UtXN0XnM0vj1MAHARlbTZJpV1j3CRIPe8xORGeaKEnWFJkjqoQUcis5pG2h1RFgq7xVx0FAACPeM9Nhyjo1CE/8AkwF8sulcMcZeDisyUtF1BewQCl6ZvRxzhYbydQOOarjUJ1dqIcDSzyY1y0aqp0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1763727297; c=relaxed/simple;
-	bh=fDqBSsb3l9/+HBeW3xGIN8EotdmD0CB7b6IShXTzFvA=;
+	bh=XFGGU1BUQFQrtMap0f5F9BzV6GSKkP67Mnm9FDqdYOQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LEAyiQ0mY0l+Lcgc1aQq27NNXiZX2vj7K6n5kqJGFkr+fE8lPJrf+M6QhSTfhWyf4GgbeCpmgrfDB0YKsAfHJFV8JjYza7QlPxph/sRaxvj24ocyYW+UyE6zuHtmn772IqRJgxr0BKK3Gvk04iAPpssJLGmaoJzY9nL4t3I9Cfg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=exsoh4z6; arc=none smtp.client-ip=170.10.133.124
+	 MIME-Version; b=ZlDLBfhsZvwWpSJaNIzgCoK1Oe98tDKDJj4R82+GyvdCFBvhzBeDl1JO5DW7RwnACC1DHjPwNhsUSzyI78eErLmhCH+xNrcYM3lYA4KPVIKipZYW26yEC1ansFzdBWbhOVSqDlhss6jXB7MzebR1SWNc+2PfrVqTUpXB5yMt6ro=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=FH5wVs9I; arc=none smtp.client-ip=170.10.129.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="exsoh4z6"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="FH5wVs9I"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
 	s=mimecast20190719; t=1763727294;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=ECBnpLLCj16fpj21fI+h9tBul9riCpuU3pZvsycdoc0=;
-	b=exsoh4z6R6yPlzgIs2BSEuPTxUiwmBhRHF+mRgNRK8H+b6MYo+wsc88PVzXQJpWzvvpQhA
-	G4QztL7NT/k/13Sd6HCfudpqTw197UpUMhEHs97TH12Ffam7liQ87yUwE3LFBycvgQ3ACW
-	RbA4PXA1OdY4xCV5sEylcUeoLTjwPy8=
-Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+	bh=jq+qsu9NDrfjYMe8jH6z7ShPmZi4eWzdQ6ZA1QbTE4A=;
+	b=FH5wVs9IKIKVm0+sta350bxaULryvppnGNMqFMH0BCnEBgSklpuqB3MXk779f+YJ/Eerrm
+	tBcHyW/7wHirywgyJFqN7DwPGXULYe6jYKxaFYEbcuSL5g/3aS10Zs4N1WvwxqF1BJe8tH
+	yLR+psCf5c3P1ZV4y1DCrJNg5IJQIC4=
+Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-402-A-3AMTmXM8abc48Y8X2Neg-1; Fri,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-33-xMZFCiGKODWbluovOjm9cg-1; Fri,
  21 Nov 2025 07:14:50 -0500
-X-MC-Unique: A-3AMTmXM8abc48Y8X2Neg-1
-X-Mimecast-MFC-AGG-ID: A-3AMTmXM8abc48Y8X2Neg_1763727286
+X-MC-Unique: xMZFCiGKODWbluovOjm9cg-1
+X-Mimecast-MFC-AGG-ID: xMZFCiGKODWbluovOjm9cg_1763727286
 Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id B7C701801233;
+	by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 6738E1956080;
 	Fri, 21 Nov 2025 12:14:46 +0000 (UTC)
 Received: from blackfin.pond.sub.org (unknown [10.45.242.3])
-	by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id CA2DF1940E88;
+	by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 976641940E8F;
 	Fri, 21 Nov 2025 12:14:45 +0000 (UTC)
 Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
-	id BFCBD21EC342; Fri, 21 Nov 2025 13:14:38 +0100 (CET)
+	id 9B3D421E668C; Fri, 21 Nov 2025 13:14:38 +0100 (CET)
 From: Markus Armbruster <armbru@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: arei.gonglei@huawei.com,
@@ -95,9 +95,9 @@ Cc: arei.gonglei@huawei.com,
 	xen-devel@lists.xenproject.org,
 	kvm@vger.kernel.org,
 	qemu-riscv@nongnu.org
-Subject: [PATCH v2 11/15] net/slirp: Improve file open error message
-Date: Fri, 21 Nov 2025 13:14:34 +0100
-Message-ID: <20251121121438.1249498-12-armbru@redhat.com>
+Subject: [PATCH v2 05/15] qga: Use error_setg_file_open() for better error messages
+Date: Fri, 21 Nov 2025 13:14:28 +0100
+Message-ID: <20251121121438.1249498-6-armbru@redhat.com>
 In-Reply-To: <20251121121438.1249498-1-armbru@redhat.com>
 References: <20251121121438.1249498-1-armbru@redhat.com>
 Precedence: bulk
@@ -109,31 +109,70 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
 
-This error reports failure to create a temporary file, and
-error_setg_file_open() would probably be too terse, so merely switch
-to error_setg_errno() to add errno information.
+Error messages change from
+
+    open("FNAME"): REASON
+
+to
+
+    Could not open 'FNAME': REASON
 
 Signed-off-by: Markus Armbruster <armbru@redhat.com>
+Reviewed-by: Dr. David Alan Gilbert <dave@treblig.org>
+Reviewed-by: Kostiantyn Kostiuk <kkostiuk@redhat.com>
 ---
- net/slirp.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ qga/commands-linux.c | 11 ++++++-----
+ 1 file changed, 6 insertions(+), 5 deletions(-)
 
-diff --git a/net/slirp.c b/net/slirp.c
-index 120eef6122..5996fec512 100644
---- a/net/slirp.c
-+++ b/net/slirp.c
-@@ -1034,8 +1034,10 @@ static int slirp_smb(SlirpState* s, const char *exported_dir,
+diff --git a/qga/commands-linux.c b/qga/commands-linux.c
+index 4a09ddc760..5cf76ca2d9 100644
+--- a/qga/commands-linux.c
++++ b/qga/commands-linux.c
+@@ -1502,14 +1502,15 @@ static void transfer_vcpu(GuestLogicalProcessor *vcpu, bool sys2vcpu,
  
-     f = fopen(smb_conf, "w");
-     if (!f) {
-+        int eno = errno;
-+
-         slirp_smb_cleanup(s);
--        error_setg(errp,
-+        error_setg_errno(errp, eno,
-                    "Could not create samba server configuration file '%s'",
-                     smb_conf);
-         g_free(smb_conf);
+     dirfd = open(dirpath, O_RDONLY | O_DIRECTORY);
+     if (dirfd == -1) {
+-        error_setg_errno(errp, errno, "open(\"%s\")", dirpath);
++        error_setg_file_open(errp, errno, dirpath);
+         return;
+     }
+ 
+     fd = openat(dirfd, fn, sys2vcpu ? O_RDONLY : O_RDWR);
+     if (fd == -1) {
+         if (errno != ENOENT) {
+-            error_setg_errno(errp, errno, "open(\"%s/%s\")", dirpath, fn);
++            error_setg_errno(errp, errno, "could not open %s/%s",
++                             dirpath, fn);
+         } else if (sys2vcpu) {
+             vcpu->online = true;
+             vcpu->can_offline = false;
+@@ -1711,7 +1712,7 @@ static void transfer_memory_block(GuestMemoryBlock *mem_blk, bool sys2memblk,
+     dirfd = open(dirpath, O_RDONLY | O_DIRECTORY);
+     if (dirfd == -1) {
+         if (sys2memblk) {
+-            error_setg_errno(errp, errno, "open(\"%s\")", dirpath);
++            error_setg_file_open(errp, errno, dirpath);
+         } else {
+             if (errno == ENOENT) {
+                 result->response = GUEST_MEMORY_BLOCK_RESPONSE_TYPE_NOT_FOUND;
+@@ -1936,7 +1937,7 @@ static GuestDiskStatsInfoList *guest_get_diskstats(Error **errp)
+ 
+     fp = fopen(diskstats, "r");
+     if (fp  == NULL) {
+-        error_setg_errno(errp, errno, "open(\"%s\")", diskstats);
++        error_setg_file_open(errp, errno, diskstats);
+         return NULL;
+     }
+ 
+@@ -2047,7 +2048,7 @@ GuestCpuStatsList *qmp_guest_get_cpustats(Error **errp)
+ 
+     fp = fopen(cpustats, "r");
+     if (fp  == NULL) {
+-        error_setg_errno(errp, errno, "open(\"%s\")", cpustats);
++        error_setg_file_open(errp, errno, cpustats);
+         return NULL;
+     }
+ 
 -- 
 2.49.0
 
