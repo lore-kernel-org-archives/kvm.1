@@ -1,178 +1,142 @@
-Received: from unimail.uni-dortmund.de (mx1.hrz.uni-dortmund.de [129.217.128.51])
+Received: from canpmsgout04.his.huawei.com (canpmsgout04.his.huawei.com [113.46.200.219])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 571E533C519;
-	Fri, 21 Nov 2025 09:23:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=129.217.128.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A2CC433F8A4;
+	Fri, 21 Nov 2025 09:23:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=113.46.200.219
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763717012; cv=none; b=Y5qtItLOa47Ygq8y4TvfayHM61im1ijlfyq4gLPSC/cu0uFZNoyM+u5T2NgVqVpvfGgf8LTX7coUOHUNUZbNp/UzCl2nXGJb+LrdGDYuD+aS+/wc6UK5ETdef+EENipyM4mFul8oX50FOBna68bzacAScnr0aqtaDT/7gsYNoiA=
+	t=1763717029; cv=none; b=AsgRu0J4vuiqZ14LXvnD/59yi9XHsnk9tz0yY87dGO2pBWXDvVdYUhQ/bhR1QBURUceHfKYy+PKXy1D0kAaaOy7GaYNsOjVWtCgoSyYtvlWxerWIVWm/c2wS8evSB9Vl62hOfibDBlQXuHYp88euDSIzHFOG2KEtJ1BOWq66IcU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763717012; c=relaxed/simple;
-	bh=+5r5M+XjdNfDZF30/xVMNjtVt/AXHifID6EEEYPo0vo=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=EbraUMHeGy8wQGuF+9pIARlPaAhKSOMfamQetOvdeZ4Gsyq7Z9VVrGrjrbqHv+T3yXsrHiNdOUxb9U1jZJcNvRG+SVqWUGXknbElAFW1VBId2ITEHOr/YQiMUE1hAqz3Z/7/hBET8zTb9Cxx5JSPB6bVm2lgScbhZW56lQra7ME=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=tu-dortmund.de; spf=pass smtp.mailfrom=tu-dortmund.de; dkim=pass (1024-bit key) header.d=tu-dortmund.de header.i=@tu-dortmund.de header.b=IuvGVpB0; arc=none smtp.client-ip=129.217.128.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=tu-dortmund.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tu-dortmund.de
+	s=arc-20240116; t=1763717029; c=relaxed/simple;
+	bh=Bt2Hwt9sCR5WG2aRUAwBi8UUiftFYTbEFxblcAUpPr0=;
+	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=r9qRo/hzmYA/eYhe3g34odi7cMXWsjre6oW0UlLWoo5RY+x78L0MzK11rtzNkHP6uC8cjIZjMq2+PcVtqL1FfnAR9vypwhTx9H6z9YXMQu5Bpa+ezKgTUfVPZiG1wur8B+PE+JH7Dfr0pmriahp0wtMEjHt7q6ei/Px5FpqUbqE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b=5adxCFnY; arc=none smtp.client-ip=113.46.200.219
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=tu-dortmund.de header.i=@tu-dortmund.de header.b="IuvGVpB0"
-Received: from [129.217.186.248] ([129.217.186.248])
-	(authenticated bits=0)
-	by unimail.uni-dortmund.de (8.18.1.10/8.18.1.10) with ESMTPSA id 5AL9MsJG001806
-	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
-	Fri, 21 Nov 2025 10:22:55 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=tu-dortmund.de;
-	s=unimail; t=1763716975;
-	bh=+5r5M+XjdNfDZF30/xVMNjtVt/AXHifID6EEEYPo0vo=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=IuvGVpB07VG27ZINKrgDMTA4P73PHOzA7V25P23FKBnR1i0KwG7h4v4TSjlXncbtI
-	 cloKvi/kJwGyEFemOy1PI9PuLbuPhzYEKQJRm73haUYW/qO9NHu/I/n4GSIIAcvO9H
-	 4rusZGlWB2wfvEDid7EQo4nTgG6UEex29KfcDhZ4=
-Message-ID: <b9fff8e1-fb96-4b1f-9767-9d89adf31060@tu-dortmund.de>
-Date: Fri, 21 Nov 2025 10:22:54 +0100
+	dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b="5adxCFnY"
+dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
+	c=relaxed/relaxed; q=dns/txt;
+	h=From;
+	bh=HP4T9Ux78gNIlOGmGsvDsFgk5odPVemp6LKwfalw7UY=;
+	b=5adxCFnYtZP2WE1LbfvuKRRXT1JiztDVoW03rbWUI/v5H9cGRx+kWCpAgaUfizgE9Y6O2HdUE
+	TpGdLfyM9yjlcDiwechxX0z6rWUmBv/yUFhVPOQh75CmwUzlgaQTVHp3gSmbuKwQkJ1SVDidL9w
+	y23dAw0NO6DZhA4Gwb18TsU=
+Received: from mail.maildlp.com (unknown [172.19.162.254])
+	by canpmsgout04.his.huawei.com (SkyGuard) with ESMTPS id 4dCV916Swqz1prkV;
+	Fri, 21 Nov 2025 17:21:57 +0800 (CST)
+Received: from kwepemr100010.china.huawei.com (unknown [7.202.195.125])
+	by mail.maildlp.com (Postfix) with ESMTPS id B0F5018048D;
+	Fri, 21 Nov 2025 17:23:43 +0800 (CST)
+Received: from huawei.com (10.50.163.32) by kwepemr100010.china.huawei.com
+ (7.202.195.125) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Fri, 21 Nov
+ 2025 17:23:43 +0800
+From: Tian Zheng <zhengtian10@huawei.com>
+To: <maz@kernel.org>, <oliver.upton@linux.dev>, <catalin.marinas@arm.com>,
+	<corbet@lwn.net>, <pbonzini@redhat.com>, <will@kernel.org>
+CC: <linux-kernel@vger.kernel.org>, <zhengtian10@huawei.com>,
+	<yuzenghui@huawei.com>, <wangzhou1@hisilicon.com>, <yezhenyu2@huawei.com>,
+	<xiexiangyou@huawei.com>, <zhengchuan@huawei.com>, <linuxarm@huawei.com>,
+	<joey.gouly@arm.com>, <kvmarm@lists.linux.dev>, <kvm@vger.kernel.org>,
+	<linux-arm-kernel@lists.infradead.org>, <linux-doc@vger.kernel.org>,
+	<suzuki.poulose@arm.com>
+Subject: [PATCH v2 1/5] arm64/sysreg: Add HDBSS related register information
+Date: Fri, 21 Nov 2025 17:23:38 +0800
+Message-ID: <20251121092342.3393318-2-zhengtian10@huawei.com>
+X-Mailer: git-send-email 2.33.0
+In-Reply-To: <20251121092342.3393318-1-zhengtian10@huawei.com>
+References: <20251121092342.3393318-1-zhengtian10@huawei.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: [PATCH net-next v6 0/8] tun/tap & vhost-net: netdev queue flow
- control to avoid ptr_ring tail drop
-To: Jason Wang <jasowang@redhat.com>
-Cc: willemdebruijn.kernel@gmail.com, andrew+netdev@lunn.ch,
-        davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
-        pabeni@redhat.com, mst@redhat.com, eperezma@redhat.com,
-        jon@nutanix.com, tim.gebauer@tu-dortmund.de, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
-        virtualization@lists.linux.dev
-References: <20251120152914.1127975-1-simon.schippers@tu-dortmund.de>
- <CACGkMEuboys8sCJFUTGxHUeouPFnVqVLGQBefvmxYDe4ooLfLg@mail.gmail.com>
-Content-Language: en-US
-From: Simon Schippers <simon.schippers@tu-dortmund.de>
-In-Reply-To: <CACGkMEuboys8sCJFUTGxHUeouPFnVqVLGQBefvmxYDe4ooLfLg@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: kwepems100001.china.huawei.com (7.221.188.238) To
+ kwepemr100010.china.huawei.com (7.202.195.125)
 
-On 11/21/25 07:19, Jason Wang wrote:
-> On Thu, Nov 20, 2025 at 11:30 PM Simon Schippers
-> <simon.schippers@tu-dortmund.de> wrote:
->>
->> This patch series deals with tun/tap and vhost-net which drop incoming
->> SKBs whenever their internal ptr_ring buffer is full. Instead, with this
->> patch series, the associated netdev queue is stopped before this happens.
->> This allows the connected qdisc to function correctly as reported by [1]
->> and improves application-layer performance, see our paper [2]. Meanwhile
->> the theoretical performance differs only slightly:
->>
->> +--------------------------------+-----------+----------+
->> | pktgen benchmarks to Debian VM | Stock     | Patched  |
->> | i5 6300HQ, 20M packets         |           |          |
->> +-----------------+--------------+-----------+----------+
->> | TAP             | Transmitted  | 195 Kpps  | 183 Kpps |
->> |                 +--------------+-----------+----------+
->> |                 | Lost         | 1615 Kpps | 0 pps    |
->> +-----------------+--------------+-----------+----------+
->> | TAP+vhost_net   | Transmitted  | 589 Kpps  | 588 Kpps |
->> |                 +--------------+-----------+----------+
->> |                 | Lost         | 1164 Kpps | 0 pps    |
->> +-----------------+--------------+-----------+----------+
-> 
+From: eillon <yezhenyu2@huawei.com>
 
-Hi Jason,
+The ARM architecture added the HDBSS feature and descriptions of
+related registers (HDBSSBR/HDBSSPROD) in the DDI0601(ID121123) version,
+add them to Linux.
 
-thank you for your reply!
+Signed-off-by: eillon <yezhenyu2@huawei.com>
+Signed-off-by: Tian Zheng <zhengtian10@huawei.com>
+---
+ arch/arm64/include/asm/esr.h     |  2 ++
+ arch/arm64/include/asm/kvm_arm.h |  1 +
+ arch/arm64/tools/sysreg          | 28 ++++++++++++++++++++++++++++
+ 3 files changed, 31 insertions(+)
 
-> PPS drops somehow for TAP, any reason for that?
+diff --git a/arch/arm64/include/asm/esr.h b/arch/arm64/include/asm/esr.h
+index e1deed824464..a6f3cf0b9b86 100644
+--- a/arch/arm64/include/asm/esr.h
++++ b/arch/arm64/include/asm/esr.h
+@@ -159,6 +159,8 @@
+ #define ESR_ELx_CM 		(UL(1) << ESR_ELx_CM_SHIFT)
 
-I have no explicit explanation for that except general overheads coming
-with this implementation.
+ /* ISS2 field definitions for Data Aborts */
++#define ESR_ELx_HDBSSF_SHIFT	(11)
++#define ESR_ELx_HDBSSF		(UL(1) << ESR_ELx_HDBSSF_SHIFT)
+ #define ESR_ELx_TnD_SHIFT	(10)
+ #define ESR_ELx_TnD 		(UL(1) << ESR_ELx_TnD_SHIFT)
+ #define ESR_ELx_TagAccess_SHIFT	(9)
+diff --git a/arch/arm64/include/asm/kvm_arm.h b/arch/arm64/include/asm/kvm_arm.h
+index 1da290aeedce..b71122680a03 100644
+--- a/arch/arm64/include/asm/kvm_arm.h
++++ b/arch/arm64/include/asm/kvm_arm.h
+@@ -124,6 +124,7 @@
+ 			 TCR_EL2_ORGN0_MASK | TCR_EL2_IRGN0_MASK)
 
-> 
-> Btw, I had some questions:
-> 
-> 1) most of the patches in this series would introduce non-trivial
-> impact on the performance, we probably need to benchmark each or split
-> the series. What's more we need to run TCP benchmark
-> (throughput/latency) as well as pktgen see the real impact
+ /* VTCR_EL2 Registers bits */
++#define VTCR_EL2_HDBSS		(1UL << 45)
+ #define VTCR_EL2_DS		TCR_EL2_DS
+ #define VTCR_EL2_RES1		(1U << 31)
+ #define VTCR_EL2_HD		(1 << 22)
+diff --git a/arch/arm64/tools/sysreg b/arch/arm64/tools/sysreg
+index 1c6cdf9d54bb..f489703338b5 100644
+--- a/arch/arm64/tools/sysreg
++++ b/arch/arm64/tools/sysreg
+@@ -4408,6 +4408,34 @@ Sysreg	GCSPR_EL2	3	4	2	5	1
+ Fields	GCSPR_ELx
+ EndSysreg
 
-What could be done, IMO, is to activate tun_ring_consume() /
-tap_ring_consume() before enabling tun_ring_produce(). Then we could see
-if this alone drops performance.
++Sysreg	HDBSSBR_EL2	3	4	2	3	2
++Res0	63:56
++Field	55:12	BADDR
++Res0	11:4
++Enum	3:0	SZ
++	0b0001	8KB
++	0b0010	16KB
++	0b0011	32KB
++	0b0100	64KB
++	0b0101	128KB
++	0b0110	256KB
++	0b0111	512KB
++	0b1000	1MB
++	0b1001	2MB
++EndEnum
++EndSysreg
++
++Sysreg	HDBSSPROD_EL2	3	4	2	3	3
++Res0	63:32
++Enum	31:26	FSC
++	0b000000	OK
++	0b010000	ExternalAbort
++	0b101000	GPF
++EndEnum
++Res0	25:19
++Field	18:0	INDEX
++EndSysreg
++
+ Sysreg	DACR32_EL2	3	4	3	0	0
+ Res0	63:32
+ Field	31:30	D15
+--
+2.33.0
 
-For TCP benchmarks, you mean userspace performance like iperf3 between a
-host and a guest system?
-
-> 
-> 2) I see this:
-> 
->         if (unlikely(tun_ring_produce(&tfile->tx_ring, queue, skb))) {
->                 drop_reason = SKB_DROP_REASON_FULL_RING;
->                 goto drop;
->         }
-> 
-> So there could still be packet drop? Or is this related to the XDP path?
-
-Yes, there can be packet drops after a ptr_ring resize or a ptr_ring
-unconsume. Since those two happen so rarely, I figured we should just
-drop in this case.
-
-> 
-> 3) The LLTX change would have performance implications, but the
-> benmark doesn't cover the case where multiple transmission is done in
-> parallel
-
-Do you mean multiple applications that produce traffic and potentially
-run on different CPUs?
-
-> 
-> 4) After the LLTX change, it seems we've lost the synchronization with
-> the XDP_TX and XDP_REDIRECT path?
-
-I must admit I did not take a look at XDP and cannot really judge if/how
-lltx has an impact on XDP. But from my point of view, __netif_tx_lock()
-instead of __netif_tx_acquire(), is executed before the tun_net_xmit()
-call and I do not see the impact for XDP, which calls its own methods.
-> 
-> 5) The series introduces various ptr_ring helpers with lots of
-> ordering stuff which is complicated, I wonder if we first have a
-> simple patch to implement the zero packet loss
-
-I personally don't see how a simpler patch is possible without using
-discouraged practices like returning NETDEV_TX_BUSY in tun_net_xmit or
-spin locking between producer and consumer. But I am open for
-suggestions :)
-
-> 
->>
->> This patch series includes tun/tap, and vhost-net because they share
->> logic. Adjusting only one of them would break the others. Therefore, the
->> patch series is structured as follows:
->> 1+2: new ptr_ring helpers for 3
->> 3: tun/tap: tun/tap: add synchronized ring produce/consume with queue
->> management
->> 4+5+6: tun/tap: ptr_ring wrappers and other helpers to be called by
->> vhost-net
->> 7: tun/tap & vhost-net: only now use the previous implemented functions to
->> not break git bisect
->> 8: tun/tap: drop get ring exports (not used anymore)
->>
->> Possible future work:
->> - Introduction of Byte Queue Limits as suggested by Stephen Hemminger
-> 
-> This seems to be not easy. The tx completion depends on the userspace behaviour.
-
-I agree, but I really would like to reduce the buffer bloat caused by the
-default 500 TUN / 1000 TAP packet queue without losing performance.
-
-> 
->> - Adaption of the netdev queue flow control for ipvtap & macvtap
->>
->> [1] Link: https://unix.stackexchange.com/questions/762935/traffic-shaping-ineffective-on-tun-device
->> [2] Link: https://cni.etit.tu-dortmund.de/storages/cni-etit/r/Research/Publications/2025/Gebauer_2025_VTCFall/Gebauer_VTCFall2025_AuthorsVersion.pdf
->>
-> 
-> Thanks
-> 
-
-Thanks! :)
