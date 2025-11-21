@@ -1,64 +1,64 @@
-Received: from mail-wr1-f43.google.com (mail-wr1-f43.google.com [209.85.221.43])
+Received: from mail-wr1-f50.google.com (mail-wr1-f50.google.com [209.85.221.50])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 622CD346E60
-	for <kvm@vger.kernel.org>; Fri, 21 Nov 2025 11:11:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F2D634B41C
+	for <kvm@vger.kernel.org>; Fri, 21 Nov 2025 11:11:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763723500; cv=none; b=QKg0gFOk+eTyntf6Rhstktpd8HE7yw5sA6VXvS3wNsbv+1Exr7oLXPHEWtS/l1nmImerxd91MbDGGzZFAJl985V+X5jcuv8SfKI1FSCfPdT89lR0YBt5rr6ZlKdVzr03etJRKgh8D4EoZUHyAJnuFhQK5+pIHz0M6K+hSxExw9I=
+	t=1763723503; cv=none; b=mnwu5jcAkO5bvFGfEvBubEjR9hXoFUfaHehZbwpG3S84ShsflSTHcY13b4EAtfbtWdEx/KVM3lvYheqo2wzfW8HDrn0/4JJoWEAp1wAWuHckFpuzhV4W7djEYjDV+VBd07dx7Ego5m2sGH12z4r6g3K14ewhVGzZeS7ZK8kk6I0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763723500; c=relaxed/simple;
-	bh=wgDc98t7P8ZNdoMQOLd5MxQvGkcfkUw91+1rgWMHI5w=;
+	s=arc-20240116; t=1763723503; c=relaxed/simple;
+	bh=Dm+BEBrm/Ll97dS33rHM/QTSbCa8yrcmrrSYYLlbkL8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AZzbRySm1Y5ldaORXfSAp3Lqe8kR28d4yy/ooYMtR4zwEWTxHXrqmZtpyAZvArRe3u0ejsJiV+MvvozSI/Rw5D61W7mXJ/nOZimDvW/rz0zWhSH9TayveQbM2zdNA6ww+PfXMFKdqBS9qVw/nmzJKcrLTIqLBRUw42zf+Z+YimI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=TqNAKXZd; arc=none smtp.client-ip=209.85.221.43
+	 MIME-Version; b=SEBC6qs2CST118akuwN4/SGpsQjLxkU9feklDo+DEXK25zpGptUmU/wDzIFDqUtaN8LNeubYt/ZIYu69B+yPSyK/yJ27zOSZZ0DYmtrZUM0NUZ9Sl9/EFof0+7WtoQ6HeFsWCT6azKCXH9IcqjrVIxYLw9IMfBKFflUrwIL2OyA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=CcrMfjw1; arc=none smtp.client-ip=209.85.221.50
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="TqNAKXZd"
-Received: by mail-wr1-f43.google.com with SMTP id ffacd0b85a97d-42b3c5defb2so1195863f8f.2
-        for <kvm@vger.kernel.org>; Fri, 21 Nov 2025 03:11:35 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="CcrMfjw1"
+Received: by mail-wr1-f50.google.com with SMTP id ffacd0b85a97d-42b387483bbso1263328f8f.1
+        for <kvm@vger.kernel.org>; Fri, 21 Nov 2025 03:11:38 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1763723493; x=1764328293; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1763723496; x=1764328296; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=AY8nf1WqUH91gBpTnhoe8Wrlir/GNvxmhkmTTXd2LOs=;
-        b=TqNAKXZd++x7QtyQxoaA/Id0737RRq82F1ImqELpuveAAor+vfKc6KxbfdxOTQ4Zcy
-         Ux+lDQbRUOzbNs1nKhdks+opTWk5ZwtgJj8iYeHRA2cQmGJDWb+gLpqEPPsMj/nbi3Q0
-         pJxWaMqq3sb3tZ5r/C7h1yzlL4mDYzlcUG6h/Z3ZezgHhf0B2phb+aWF6QJrMtQI6brB
-         yWu+385iy5875UiFfkUp+rC20rAFBEuLekM20+zWLPlA/awWSV8Ewz6vg9lpHyRPjvD7
-         sObr6bBmn+XWEHPiT9uXgj853A44qhw/FRH4phSJ5cU+ZMTAncu8jnFsWWCjoF60wORE
-         gA2Q==
+        bh=VOXJSf/3ZicK6X9zkJJPFnaHL2wXDXQgFML1HXxSOA0=;
+        b=CcrMfjw1T1ztlzc3LgAZjU0G1IDWW8sYXTTWQRIseKGjatAlS7ZMqZJdso9w34eGJS
+         kv4paceZvgX3iE20Y2dvUFjyl3TiXYNPE2LBqgJsUnF9XyV5VX5GkyxGB0GnjAdmO5jt
+         tcaodewIB3tJtukjc1cP2GnDtbBQwLtCchI/roiKEfHW52giBkSftCF4ETE9tLF/HyCA
+         5KCRwJ6wVNYQmE99+SGP44G/D4gRsXBWEltFiz3r1ot1Hd6/66di7JcBOBgCQJgLCbVI
+         ZfHaxWGYI9SsdcNCeDfTjHq1P/U5CTnvMPfj20PVLOegPmKefa+kYdUrvgTfE8zRWRlj
+         CPeQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1763723493; x=1764328293;
+        d=1e100.net; s=20230601; t=1763723496; x=1764328296;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=AY8nf1WqUH91gBpTnhoe8Wrlir/GNvxmhkmTTXd2LOs=;
-        b=j+JhXv/J4TcRsQt8kqFigVhW+Np3n/KF2SfBheLmKk+/Ewsu08Wh7N/oumbHn3dpju
-         TUTubFVZIZ2li009GtLa5lIe5q4tJiiqjFj/yy/0UqaP/IgpaFw25e/PsAsPo5LyYwMW
-         2TuzYlpSvCGFhZyE0N2km2QX/Ws1oSMS8OXuHsxESmlM3lv1me5f52bxpY/I9dhDnvg2
-         b/zPeiQMVm9GZFIkE2e9Z64PMS33FPAYi3ksMEKFAd9+UbQq9f7oynFgEVxTscy6ITgW
-         GklU0Lc1klJ2LU5dI5Udj609OlUSuX8seihyYZK3ABuFGcNAdAWtsG4V+MsC0NnDTdfc
-         l04g==
-X-Gm-Message-State: AOJu0Yyh9LrjbTQ7gW4jd+UtbxN687cY7ui3TPNYBvJYyIX5c4+MnD+I
-	rHpdttYOAL5XvJovUGjrOC1QIHg7uTvAkiQ4wVh/6WzIaudwqFcYN+eQCTQBTFHjbg6Z0g==
-X-Gm-Gg: ASbGncvNbkOGGtJvOK6c4VRx/8Hs9o5qCSSI1G8y98y+fvf2HDGTtohD1fbfymoHUEN
-	sS3X0Ij5q/+dAUw5pQ0lXObN1dn9C8kIrfLzjoYU8UH34DAwh6JJvdoxCzRBvbXGJ91pJRo0O6m
-	1umMmX75j4oO/5E4q702CDk5YxNhXvjUsWD8fz4CcWzmtiB5sQwzKqTliL4JOPY9EoCaHAtK/TQ
-	npJhBKrNCFsrx/2HoqpRGprsOqvzITtXddMKq/e+8/iyZ0hoSOhQ7feqeW7DHCseRvzGfa5hoMb
-	/0p56xCkxy+Q0WC1yeyVtPNq95RWg9HmVH4iB+XN/csMkU0K8B89vrvc1Hd/z+IS/KFlhu/IF+Y
-	+4k/+xThCdbdIyWGnKs9mJ4Uk9nZQ6WMwR64Wab4XSNB0XcrRzMsxHP91HerGCt/k0S+LLJavaY
-	GodO0+/8DfGVokJeU5OstJA6JwhFSOApJNJRwqEt6hv5HwxRj/i/0PDW4vQVQrF0ev0hRy8Z4hW
-	BOhwoTXTnmAoJBO2U2mWm6WrQuwzB/v
-X-Google-Smtp-Source: AGHT+IERzanYCk23RErBiQ6xR2Tl5MpVBZUpbfsKunpb725aVCZGbxpBtIO+KufNWCd0ibXD1qDWgw==
-X-Received: by 2002:a05:6000:2689:b0:42b:2e65:655f with SMTP id ffacd0b85a97d-42cc1cbd2c0mr2002279f8f.19.1763723493221;
-        Fri, 21 Nov 2025 03:11:33 -0800 (PST)
+        bh=VOXJSf/3ZicK6X9zkJJPFnaHL2wXDXQgFML1HXxSOA0=;
+        b=oV4xYG7MNhYk1CYu62CWgDjkQOijQh+uKLc0nsoMRabuDvWwZ3DDmUoWKMJEmr4JaX
+         t5wt5xEdeWyM6XzOrtjHEJBYGUToGTEriujh9H1oGbaLU/o2lPtQD8KDAK03G81CdWR/
+         PktbtPgxrqecDR0cKPorsoL3CwxZMrgczQqXK+wNMomOGaPx+R43XMsrZeE43ZBspT2v
+         FNHVsdn3Hrb4sih1gwBGYmKeqDiyQpE4mGDezqghzU6vNDWtuv5Yas0DK00cLC2/bmjY
+         HQZKThiP6JkTWSQfmrLF98ULF/yPLBcYxo23TxGWC5gIUPdxNXNqTr7MhVE8gIjE3mmS
+         bk+Q==
+X-Gm-Message-State: AOJu0Yyg08FPqFMhPdkyB5c4j2v3W7tdjVaY7I7pGJwf/fmERvOSpkm4
+	tDx+RKhse0QvxyAqMrK+Q5ktZGC/6cDAnMk2U57nA7fX8ikQ4S5PmPusTg7z1tCaQVsd2g==
+X-Gm-Gg: ASbGncsepcqvdSQ9EVEEJkEiaLTUAE2EUPTL+UNprDF27hXStlaugR3GiNF3K7byiQ2
+	7IiJmeP0LJ25/faXQeZbPMKIuu/XoXkMs/ZxfOlSTUpF7DM/PWAHlx3mCd8wDWYIUaR1Ka1TPBn
+	+iiZnfjkyjrbiRsgm9jlhzr4gng+QYT9h7bswiaAx6WXufnL+kdfkyK6w32f+VHk3Pvg8npb1Cy
+	gTzMm21DkUQ/vO4WcntGxGsFBSOADPMBbqDUuOSmmQ0dRhfmZ4j69i2C4H8pXDH5t0J80OtPeHx
+	MU0gCKr3MjMplyPp9/L4CixmEYJFrNGQMVxcXfukkajtDkq56UejiYxXeWbubaweg00h54aaef6
+	N3CWThFnR2/ctyqicr0L4H2O70o7U5cz2dXrMpXHEO51kaqXo1QtlWubN2CPTQNOEqIdKI7Bevf
+	NhOvPa28pazChxfnP0dtjDf7Jph74M+MKeQ7tYlNP0XKht74MmBxxTxLL1gujzoFh9meVEmAtzI
+	lfXxi38Uj5IYt6ZNl7dOITIThYNOFsiTV9/wZ16DSk=
+X-Google-Smtp-Source: AGHT+IEIAoneRkmmi+OfaqjE525Aae3+kzixRpE0ECciHfimaKXtH3N4PTs7XwRIiOOi7OKuLNVHKg==
+X-Received: by 2002:a05:6000:2084:b0:42b:3b62:cd9b with SMTP id ffacd0b85a97d-42cc1d2d52amr1935469f8f.37.1763723496404;
+        Fri, 21 Nov 2025 03:11:36 -0800 (PST)
 Received: from ip-10-0-150-200.eu-west-1.compute.internal (ec2-52-49-196-232.eu-west-1.compute.amazonaws.com. [52.49.196.232])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-42cb7f363e4sm10484180f8f.12.2025.11.21.03.11.32
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-42cb7f363e4sm10484180f8f.12.2025.11.21.03.11.35
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 21 Nov 2025 03:11:32 -0800 (PST)
+        Fri, 21 Nov 2025 03:11:36 -0800 (PST)
 From: Fred Griffoul <griffoul@gmail.com>
 To: kvm@vger.kernel.org
 Cc: seanjc@google.com,
@@ -69,9 +69,9 @@ Cc: seanjc@google.com,
 	linux-kselftest@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	Fred Griffoul <fgriffo@amazon.co.uk>
-Subject: [PATCH v3 07/10] KVM: nVMX: Replace evmcs kvm_host_map with pfncache
-Date: Fri, 21 Nov 2025 11:11:10 +0000
-Message-ID: <20251121111113.456628-8-griffoul@gmail.com>
+Subject: [PATCH v3 09/10] KVM: nVMX: Use nested context for pfncache persistence
+Date: Fri, 21 Nov 2025 11:11:12 +0000
+Message-ID: <20251121111113.456628-10-griffoul@gmail.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20251121111113.456628-1-griffoul@gmail.com>
 References: <20251121111113.456628-1-griffoul@gmail.com>
@@ -85,362 +85,407 @@ Content-Transfer-Encoding: 8bit
 
 From: Fred Griffoul <fgriffo@amazon.co.uk>
 
-Replace the eVMCS kvm_host_map with a gfn_to_pfn_cache to properly
-handle memslot changes and unify with other pfncaches in nVMX.
+Extend the nested context infrastructure to preserve gfn_to_pfn_cache
+objects for nested VMX using kvm_nested_context_load() and
+kvm_nested_context_clear() functions.
 
-The change introduces proper locking/unlocking semantics for eVMCS
-access through nested_lock_evmcs() and nested_unlock_evmcs() helpers.
+The VMX nested context stores gfn_to_pfn_cache structs for:
+- MSR permission bitmaps
+- APIC access page
+- Virtual APIC page
+- Posted interrupt descriptor
+- Enlightened VMCS
+
+For traditional nested VMX, those pfn caches are loaded upon 'vmptrld'
+instruction emulation and the context is cleared upon 'vmclear'. This
+follows the normal L2 vCPU migration sequence of
+'vmclear/vmptrld/vmlaunch'.
+
+For enlightened VMCS (eVMCS) support, both functions are called when
+detecting a change in the eVMCS GPA, ensuring proper context management
+for Hyper-V nested scenarios.
+
+By preserving the gfn_to_pfn_cache objects across L2 context switches,
+we avoid costly cache refresh operations, significantly improving nested
+virtualization performance for workloads with frequent L2 vCPU
+multiplexing on an L1 vCPU or L2 vCPUs migrations between L1 vCPUs.
 
 Signed-off-by: Fred Griffoul <fgriffo@amazon.co.uk>
 ---
- arch/x86/kvm/vmx/hyperv.h |  21 +++----
- arch/x86/kvm/vmx/nested.c | 115 ++++++++++++++++++++++++++------------
- arch/x86/kvm/vmx/vmx.h    |   3 +-
- 3 files changed, 90 insertions(+), 49 deletions(-)
+ arch/x86/kvm/vmx/nested.c | 155 +++++++++++++++++++++++++++++---------
+ arch/x86/kvm/vmx/vmx.c    |   8 ++
+ arch/x86/kvm/vmx/vmx.h    |  10 +--
+ include/linux/kvm_host.h  |   2 +-
+ 4 files changed, 134 insertions(+), 41 deletions(-)
 
-diff --git a/arch/x86/kvm/vmx/hyperv.h b/arch/x86/kvm/vmx/hyperv.h
-index 3c7fea501ca5..3b6fcf8dff64 100644
---- a/arch/x86/kvm/vmx/hyperv.h
-+++ b/arch/x86/kvm/vmx/hyperv.h
-@@ -37,11 +37,6 @@ static inline bool nested_vmx_is_evmptr12_set(struct vcpu_vmx *vmx)
- 	return evmptr_is_set(vmx->nested.hv_evmcs_vmptr);
- }
- 
--static inline struct hv_enlightened_vmcs *nested_vmx_evmcs(struct vcpu_vmx *vmx)
--{
--	return vmx->nested.hv_evmcs;
--}
--
- static inline bool guest_cpu_cap_has_evmcs(struct kvm_vcpu *vcpu)
- {
- 	/*
-@@ -70,6 +65,8 @@ void nested_evmcs_filter_control_msr(struct kvm_vcpu *vcpu, u32 msr_index, u64 *
- int nested_evmcs_check_controls(struct vmcs12 *vmcs12);
- bool nested_evmcs_l2_tlb_flush_enabled(struct kvm_vcpu *vcpu);
- void vmx_hv_inject_synthetic_vmexit_post_tlb_flush(struct kvm_vcpu *vcpu);
-+struct hv_enlightened_vmcs *nested_lock_evmcs(struct vcpu_vmx *vmx);
-+void nested_unlock_evmcs(struct vcpu_vmx *vmx);
- #else
- static inline bool evmptr_is_valid(u64 evmptr)
- {
-@@ -91,11 +88,6 @@ static inline bool nested_vmx_is_evmptr12_set(struct vcpu_vmx *vmx)
- 	return false;
- }
- 
--static inline struct hv_enlightened_vmcs *nested_vmx_evmcs(struct vcpu_vmx *vmx)
--{
--	return NULL;
--}
--
- static inline u32 nested_evmcs_clean_fields(struct vcpu_vmx *vmx)
- {
- 	return 0;
-@@ -105,6 +97,15 @@ static inline bool nested_evmcs_msr_bitmap(struct vcpu_vmx *vmx)
- {
- 	return false;
- }
-+
-+static inline struct hv_enlightened_vmcs *nested_lock_evmcs(struct vcpu_vmx *vmx)
-+{
-+	return NULL;
-+}
-+
-+static inline void nested_unlock_evmcs(struct vcpu_vmx *vmx)
-+{
-+}
- #endif
- 
- #endif /* __KVM_X86_VMX_HYPERV_H */
 diff --git a/arch/x86/kvm/vmx/nested.c b/arch/x86/kvm/vmx/nested.c
-index aec150612818..207780ef0926 100644
+index 207780ef0926..bd600de29031 100644
 --- a/arch/x86/kvm/vmx/nested.c
 +++ b/arch/x86/kvm/vmx/nested.c
-@@ -232,8 +232,6 @@ static inline void nested_release_evmcs(struct kvm_vcpu *vcpu)
- 	struct kvm_vcpu_hv *hv_vcpu = to_hv_vcpu(vcpu);
- 	struct vcpu_vmx *vmx = to_vmx(vcpu);
+@@ -226,6 +226,93 @@ static void vmx_disable_shadow_vmcs(struct vcpu_vmx *vmx)
+ 	vmx->nested.need_vmcs12_to_shadow_sync = false;
+ }
  
--	kvm_vcpu_unmap(vcpu, &vmx->nested.hv_evmcs_map);
--	vmx->nested.hv_evmcs = NULL;
- 	vmx->nested.hv_evmcs_vmptr = EVMPTR_INVALID;
- 	vmx->nested.hv_clean_fields = 0;
- 	vmx->nested.hv_msr_bitmap = false;
-@@ -265,7 +263,7 @@ static bool nested_evmcs_handle_vmclear(struct kvm_vcpu *vcpu, gpa_t vmptr)
- 	    !evmptr_is_valid(nested_get_evmptr(vcpu)))
- 		return false;
- 
--	if (nested_vmx_evmcs(vmx) && vmptr == vmx->nested.hv_evmcs_vmptr)
-+	if (vmptr == vmx->nested.hv_evmcs_vmptr)
- 		nested_release_evmcs(vcpu);
- 
- 	return true;
-@@ -393,6 +391,9 @@ static void free_nested(struct kvm_vcpu *vcpu)
- 	kvm_gpc_deactivate(&vmx->nested.virtual_apic_cache);
- 	kvm_gpc_deactivate(&vmx->nested.apic_access_page_cache);
- 	kvm_gpc_deactivate(&vmx->nested.msr_bitmap_cache);
++struct vmx_nested_context {
++	struct kvm_nested_context base;
++	struct gfn_to_pfn_cache msr_bitmap_cache;
++	struct gfn_to_pfn_cache apic_access_page_cache;
++	struct gfn_to_pfn_cache virtual_apic_cache;
++	struct gfn_to_pfn_cache pi_desc_cache;
 +#ifdef CONFIG_KVM_HYPERV
-+	kvm_gpc_deactivate(&vmx->nested.hv_evmcs_cache);
++	struct gfn_to_pfn_cache evmcs_cache;
 +#endif
- 
- 	free_vpid(vmx->nested.vpid02);
- 	vmx->nested.posted_intr_nv = -1;
-@@ -1735,11 +1736,12 @@ static void copy_vmcs12_to_shadow(struct vcpu_vmx *vmx)
- 	vmcs_load(vmx->loaded_vmcs->vmcs);
- }
- 
--static void copy_enlightened_to_vmcs12(struct vcpu_vmx *vmx, u32 hv_clean_fields)
--{
- #ifdef CONFIG_KVM_HYPERV
-+static void copy_enlightened_to_vmcs12(struct vcpu_vmx *vmx,
-+				       struct hv_enlightened_vmcs *evmcs,
-+				       u32 hv_clean_fields)
++};
++
++static inline struct vmx_nested_context *to_vmx_nested_context(
++		struct kvm_nested_context *base)
 +{
- 	struct vmcs12 *vmcs12 = vmx->nested.cached_vmcs12;
--	struct hv_enlightened_vmcs *evmcs = nested_vmx_evmcs(vmx);
- 	struct kvm_vcpu_hv *hv_vcpu = to_hv_vcpu(&vmx->vcpu);
- 
- 	/* HV_VMX_ENLIGHTENED_CLEAN_FIELD_NONE */
-@@ -1978,16 +1980,14 @@ static void copy_enlightened_to_vmcs12(struct vcpu_vmx *vmx, u32 hv_clean_fields
- 	 */
- 
- 	return;
--#else /* CONFIG_KVM_HYPERV */
--	KVM_BUG_ON(1, vmx->vcpu.kvm);
--#endif /* CONFIG_KVM_HYPERV */
- }
-+#endif /* CONFIG_KVM_HYPERV */
- 
- static void copy_vmcs12_to_enlightened(struct vcpu_vmx *vmx)
++	return base ? container_of(base, struct vmx_nested_context, base) : NULL;
++}
++
++static struct kvm_nested_context *vmx_nested_context_alloc(struct kvm_vcpu *vcpu)
++{
++	struct vmx_nested_context *ctx;
++
++	ctx = kzalloc(sizeof(*ctx), GFP_KERNEL_ACCOUNT);
++	if (!ctx)
++		return NULL;
++
++	kvm_gpc_init(&ctx->msr_bitmap_cache, vcpu->kvm);
++	kvm_gpc_init_for_vcpu(&ctx->apic_access_page_cache, vcpu);
++	kvm_gpc_init_for_vcpu(&ctx->virtual_apic_cache, vcpu);
++	kvm_gpc_init_for_vcpu(&ctx->pi_desc_cache, vcpu);
++#ifdef CONFIG_KVM_HYPERV
++	kvm_gpc_init(&ctx->evmcs_cache, vcpu->kvm);
++#endif
++	return &ctx->base;
++}
++
++static void vmx_nested_context_reset(struct kvm_nested_context *base)
++{
++	/*
++	 * Skip pfncache reinitialization: active ones will be refreshed on
++	 * access.
++	 */
++}
++
++static void vmx_nested_context_free(struct kvm_nested_context *base)
++{
++	struct vmx_nested_context *ctx = to_vmx_nested_context(base);
++
++	kvm_gpc_deactivate(&ctx->pi_desc_cache);
++	kvm_gpc_deactivate(&ctx->virtual_apic_cache);
++	kvm_gpc_deactivate(&ctx->apic_access_page_cache);
++	kvm_gpc_deactivate(&ctx->msr_bitmap_cache);
++#ifdef CONFIG_KVM_HYPERV
++	kvm_gpc_deactivate(&ctx->evmcs_cache);
++#endif
++	kfree(ctx);
++}
++
++static void vmx_nested_context_load(struct vcpu_vmx *vmx, gpa_t vmptr)
++{
++	struct vmx_nested_context *ctx;
++
++	ctx = to_vmx_nested_context(kvm_nested_context_load(&vmx->vcpu, vmptr));
++	if (!ctx) {
++		/*
++		 * The cache could not be allocated. In the unlikely case of no
++		 * available memory, an error will be returned to L1 when
++		 * mapping the vmcs12 pages. More likely the current pfncaches
++		 * will be reused (and refreshed since their GPAs do not
++		 * match).
++		 */
++		return;
++	}
++
++	vmx->nested.msr_bitmap_cache = &ctx->msr_bitmap_cache;
++	vmx->nested.apic_access_page_cache = &ctx->apic_access_page_cache;
++	vmx->nested.virtual_apic_cache = &ctx->virtual_apic_cache;
++	vmx->nested.pi_desc_cache = &ctx->pi_desc_cache;
++#ifdef CONFIG_KVM_HYPERV
++	vmx->nested.hv_evmcs_cache = &ctx->evmcs_cache;
++#endif
++}
++
++static void vmx_nested_context_clear(struct vcpu_vmx *vmx, gpa_t vmptr)
++{
++	kvm_nested_context_clear(&vmx->vcpu, vmptr);
++}
++
+ static inline void nested_release_evmcs(struct kvm_vcpu *vcpu)
  {
  #ifdef CONFIG_KVM_HYPERV
- 	struct vmcs12 *vmcs12 = vmx->nested.cached_vmcs12;
--	struct hv_enlightened_vmcs *evmcs = nested_vmx_evmcs(vmx);
-+	struct hv_enlightened_vmcs *evmcs = nested_lock_evmcs(vmx);
+@@ -325,6 +412,9 @@ static int nested_gpc_lock(struct gfn_to_pfn_cache *gpc, gpa_t gpa)
  
- 	/*
- 	 * Should not be changed by KVM:
-@@ -2155,6 +2155,7 @@ static void copy_vmcs12_to_enlightened(struct vcpu_vmx *vmx)
+ 	if (!PAGE_ALIGNED(gpa))
+ 		return -EINVAL;
++
++	if (WARN_ON_ONCE(!gpc))
++		return -ENOENT;
+ retry:
+ 	read_lock(&gpc->lock);
+ 	if (!kvm_gpc_check(gpc, PAGE_SIZE) || (gpc->gpa != gpa)) {
+@@ -387,14 +477,6 @@ static void free_nested(struct kvm_vcpu *vcpu)
+ 	vmx->nested.smm.vmxon = false;
+ 	vmx->nested.vmxon_ptr = INVALID_GPA;
  
- 	evmcs->guest_bndcfgs = vmcs12->guest_bndcfgs;
+-	kvm_gpc_deactivate(&vmx->nested.pi_desc_cache);
+-	kvm_gpc_deactivate(&vmx->nested.virtual_apic_cache);
+-	kvm_gpc_deactivate(&vmx->nested.apic_access_page_cache);
+-	kvm_gpc_deactivate(&vmx->nested.msr_bitmap_cache);
+-#ifdef CONFIG_KVM_HYPERV
+-	kvm_gpc_deactivate(&vmx->nested.hv_evmcs_cache);
+-#endif
+-
+ 	free_vpid(vmx->nested.vpid02);
+ 	vmx->nested.posted_intr_nv = -1;
+ 	vmx->nested.current_vmptr = INVALID_GPA;
+@@ -697,7 +779,7 @@ static inline bool nested_vmx_prepare_msr_bitmap(struct kvm_vcpu *vcpu,
+ 			return true;
+ 	}
  
-+	nested_unlock_evmcs(vmx);
- 	return;
- #else /* CONFIG_KVM_HYPERV */
- 	KVM_BUG_ON(1, vmx->vcpu.kvm);
-@@ -2171,6 +2172,8 @@ static enum nested_evmptrld_status nested_vmx_handle_enlightened_vmptrld(
- #ifdef CONFIG_KVM_HYPERV
- 	struct vcpu_vmx *vmx = to_vmx(vcpu);
- 	struct hv_enlightened_vmcs *evmcs;
-+	struct gfn_to_pfn_cache *gpc;
-+	enum nested_evmptrld_status status = EVMPTRLD_SUCCEEDED;
- 	bool evmcs_gpa_changed = false;
- 	u64 evmcs_gpa;
+-	gpc = &vmx->nested.msr_bitmap_cache;
++	gpc = vmx->nested.msr_bitmap_cache;
+ 	if (nested_gpc_lock(gpc, vmcs12->msr_bitmap))
+ 		return false;
  
-@@ -2183,17 +2186,19 @@ static enum nested_evmptrld_status nested_vmx_handle_enlightened_vmptrld(
+@@ -2186,7 +2268,13 @@ static enum nested_evmptrld_status nested_vmx_handle_enlightened_vmptrld(
  		return EVMPTRLD_DISABLED;
  	}
  
-+	gpc = &vmx->nested.hv_evmcs_cache;
-+	if (nested_gpc_lock(gpc, evmcs_gpa)) {
-+		nested_release_evmcs(vcpu);
-+		return EVMPTRLD_ERROR;
+-	gpc = &vmx->nested.hv_evmcs_cache;
++	if (evmcs_gpa != vmx->nested.hv_evmcs_vmptr) {
++		vmx_nested_context_clear(vmx, vmx->nested.hv_evmcs_vmptr);
++		vmx_nested_context_load(vmx, evmcs_gpa);
++		evmcs_gpa_changed = true;
 +	}
 +
-+	evmcs = gpc->khva;
-+
- 	if (unlikely(evmcs_gpa != vmx->nested.hv_evmcs_vmptr)) {
- 		vmx->nested.current_vmptr = INVALID_GPA;
++	gpc = vmx->nested.hv_evmcs_cache;
+ 	if (nested_gpc_lock(gpc, evmcs_gpa)) {
+ 		nested_release_evmcs(vcpu);
+ 		return EVMPTRLD_ERROR;
+@@ -2194,9 +2282,8 @@ static enum nested_evmptrld_status nested_vmx_handle_enlightened_vmptrld(
  
+ 	evmcs = gpc->khva;
+ 
+-	if (unlikely(evmcs_gpa != vmx->nested.hv_evmcs_vmptr)) {
++	if (evmcs_gpa_changed) {
+ 		vmx->nested.current_vmptr = INVALID_GPA;
+-
  		nested_release_evmcs(vcpu);
  
--		if (kvm_vcpu_map(vcpu, gpa_to_gfn(evmcs_gpa),
--				 &vmx->nested.hv_evmcs_map))
--			return EVMPTRLD_ERROR;
--
--		vmx->nested.hv_evmcs = vmx->nested.hv_evmcs_map.hva;
--
  		/*
- 		 * Currently, KVM only supports eVMCS version 1
- 		 * (== KVM_EVMCS_VERSION) and thus we expect guest to set this
-@@ -2216,10 +2221,11 @@ static enum nested_evmptrld_status nested_vmx_handle_enlightened_vmptrld(
- 		 * eVMCS version or VMCS12 revision_id as valid values for first
- 		 * u32 field of eVMCS.
- 		 */
--		if ((vmx->nested.hv_evmcs->revision_id != KVM_EVMCS_VERSION) &&
--		    (vmx->nested.hv_evmcs->revision_id != VMCS12_REVISION)) {
-+		if ((evmcs->revision_id != KVM_EVMCS_VERSION) &&
-+		    (evmcs->revision_id != VMCS12_REVISION)) {
- 			nested_release_evmcs(vcpu);
--			return EVMPTRLD_VMFAIL;
-+			status = EVMPTRLD_VMFAIL;
-+			goto unlock;
- 		}
+@@ -2230,7 +2317,6 @@ static enum nested_evmptrld_status nested_vmx_handle_enlightened_vmptrld(
  
  		vmx->nested.hv_evmcs_vmptr = evmcs_gpa;
-@@ -2244,14 +2250,11 @@ static enum nested_evmptrld_status nested_vmx_handle_enlightened_vmptrld(
- 	 * between different L2 guests as KVM keeps a single VMCS12 per L1.
+ 
+-		evmcs_gpa_changed = true;
+ 		/*
+ 		 * Unlike normal vmcs12, enlightened vmcs12 is not fully
+ 		 * reloaded from guest's memory (read only fields, fields not
+@@ -3538,7 +3624,7 @@ static bool nested_get_vmcs12_pages(struct kvm_vcpu *vcpu)
+ 
+ 
+ 	if (nested_cpu_has2(vmcs12, SECONDARY_EXEC_VIRTUALIZE_APIC_ACCESSES)) {
+-		gpc = &vmx->nested.apic_access_page_cache;
++		gpc = vmx->nested.apic_access_page_cache;
+ 
+ 		if (!nested_gpc_hpa(gpc, vmcs12->apic_access_addr, &hpa)) {
+ 			vmcs_write64(APIC_ACCESS_ADDR, hpa);
+@@ -3554,7 +3640,7 @@ static bool nested_get_vmcs12_pages(struct kvm_vcpu *vcpu)
+ 	}
+ 
+ 	if (nested_cpu_has(vmcs12, CPU_BASED_TPR_SHADOW)) {
+-		gpc = &vmx->nested.virtual_apic_cache;
++		gpc = vmx->nested.virtual_apic_cache;
+ 
+ 		if (!nested_gpc_hpa(gpc, vmcs12->virtual_apic_page_addr, &hpa)) {
+ 			vmcs_write64(VIRTUAL_APIC_PAGE_ADDR, hpa);
+@@ -3580,7 +3666,7 @@ static bool nested_get_vmcs12_pages(struct kvm_vcpu *vcpu)
+ 	}
+ 
+ 	if (nested_cpu_has_posted_intr(vmcs12)) {
+-		gpc = &vmx->nested.pi_desc_cache;
++		gpc = vmx->nested.pi_desc_cache;
+ 
+ 		if (!nested_gpc_hpa(gpc, vmcs12->posted_intr_desc_addr & PAGE_MASK, &hpa)) {
+ 			vmx->nested.pi_desc_offset = offset_in_page(vmcs12->posted_intr_desc_addr);
+@@ -3640,9 +3726,9 @@ static bool vmx_is_nested_state_invalid(struct kvm_vcpu *vcpu)
+ 	 * locks. Since kvm_gpc_invalid() doesn't verify gpc memslot
+ 	 * generation, we can also skip acquiring the srcu lock.
  	 */
- 	if (from_launch || evmcs_gpa_changed) {
--		vmx->nested.hv_evmcs->hv_clean_fields &=
--			~HV_VMX_ENLIGHTENED_CLEAN_FIELD_ALL;
--
-+		evmcs->hv_clean_fields &= ~HV_VMX_ENLIGHTENED_CLEAN_FIELD_ALL;
- 		vmx->nested.force_msr_bitmap_recalc = true;
- 	}
+-	return kvm_gpc_invalid(&vmx->nested.apic_access_page_cache) ||
+-		kvm_gpc_invalid(&vmx->nested.virtual_apic_cache) ||
+-		kvm_gpc_invalid(&vmx->nested.pi_desc_cache);
++	return kvm_gpc_invalid(vmx->nested.apic_access_page_cache) ||
++		kvm_gpc_invalid(vmx->nested.virtual_apic_cache) ||
++		kvm_gpc_invalid(vmx->nested.pi_desc_cache);
+ }
  
- 	/* Cache evmcs fields to avoid reading evmcs after copy to vmcs12 */
--	evmcs = vmx->nested.hv_evmcs;
- 	vmx->nested.hv_clean_fields = evmcs->hv_clean_fields;
- 	vmx->nested.hv_flush_hypercall = evmcs->hv_enlightenments_control.nested_flush_hypercall;
- 	vmx->nested.hv_msr_bitmap = evmcs->hv_enlightenments_control.msr_bitmap;
-@@ -2260,13 +2263,15 @@ static enum nested_evmptrld_status nested_vmx_handle_enlightened_vmptrld(
- 		struct vmcs12 *vmcs12 = get_vmcs12(vcpu);
+ static int nested_vmx_write_pml_buffer(struct kvm_vcpu *vcpu, gpa_t gpa)
+@@ -4138,6 +4224,8 @@ void nested_mark_vmcs12_pages_dirty(struct kvm_vcpu *vcpu)
  
- 		if (likely(!vmcs12->hdr.shadow_vmcs)) {
--			copy_enlightened_to_vmcs12(vmx, vmx->nested.hv_clean_fields);
-+			copy_enlightened_to_vmcs12(vmx, evmcs, vmx->nested.hv_clean_fields);
- 			/* Enlightened VMCS doesn't have launch state */
- 			vmcs12->launch_state = !from_launch;
- 		}
- 	}
- 
--	return EVMPTRLD_SUCCEEDED;
-+unlock:
-+	nested_gpc_unlock(gpc);
-+	return status;
- #else
- 	return EVMPTRLD_DISABLED;
- #endif
-@@ -2771,7 +2776,6 @@ static int prepare_vmcs02(struct kvm_vcpu *vcpu, struct vmcs12 *vmcs12,
- 			  enum vm_entry_failure_code *entry_failure_code)
+ static void *nested_gpc_lock_if_active(struct gfn_to_pfn_cache *gpc)
  {
- 	struct vcpu_vmx *vmx = to_vmx(vcpu);
--	struct hv_enlightened_vmcs *evmcs;
- 	bool load_guest_pdptrs_vmcs12 = false;
- 
- 	if (vmx->nested.dirty_vmcs12 || nested_vmx_is_evmptr12_valid(vmx)) {
-@@ -2909,9 +2913,13 @@ static int prepare_vmcs02(struct kvm_vcpu *vcpu, struct vmcs12 *vmcs12,
- 	 * bits when it changes a field in eVMCS. Mark all fields as clean
- 	 * here.
- 	 */
--	evmcs = nested_vmx_evmcs(vmx);
--	if (evmcs)
-+	if (nested_vmx_is_evmptr12_valid(vmx)) {
-+		struct hv_enlightened_vmcs *evmcs;
-+
-+		evmcs = nested_lock_evmcs(vmx);
- 		evmcs->hv_clean_fields |= HV_VMX_ENLIGHTENED_CLEAN_FIELD_ALL;
-+		nested_unlock_evmcs(vmx);
-+	}
- 
- 	return 0;
- }
-@@ -4147,6 +4155,18 @@ static void *nested_gpc_lock_if_active(struct gfn_to_pfn_cache *gpc)
- 	return gpc->khva;
++	if (!gpc)
++		return NULL;
+ retry:
+ 	read_lock(&gpc->lock);
+ 	if (!gpc->active) {
+@@ -4158,12 +4246,12 @@ static void *nested_gpc_lock_if_active(struct gfn_to_pfn_cache *gpc)
+ #ifdef CONFIG_KVM_HYPERV
+ struct hv_enlightened_vmcs *nested_lock_evmcs(struct vcpu_vmx *vmx)
+ {
+-	return nested_gpc_lock_if_active(&vmx->nested.hv_evmcs_cache);
++	return nested_gpc_lock_if_active(vmx->nested.hv_evmcs_cache);
  }
  
-+#ifdef CONFIG_KVM_HYPERV
-+struct hv_enlightened_vmcs *nested_lock_evmcs(struct vcpu_vmx *vmx)
-+{
-+	return nested_gpc_lock_if_active(&vmx->nested.hv_evmcs_cache);
-+}
-+
-+void nested_unlock_evmcs(struct vcpu_vmx *vmx)
-+{
-+	nested_gpc_unlock(&vmx->nested.hv_evmcs_cache);
-+}
-+#endif
-+
- static struct pi_desc *nested_lock_pi_desc(struct vcpu_vmx *vmx)
+ void nested_unlock_evmcs(struct vcpu_vmx *vmx)
+ {
+-	nested_gpc_unlock(&vmx->nested.hv_evmcs_cache);
++	nested_gpc_unlock(vmx->nested.hv_evmcs_cache);
+ }
+ #endif
+ 
+@@ -4171,7 +4259,7 @@ static struct pi_desc *nested_lock_pi_desc(struct vcpu_vmx *vmx)
  {
  	u8 *pi_desc_page;
-@@ -5636,6 +5656,9 @@ static int enter_vmx_operation(struct kvm_vcpu *vcpu)
- 	kvm_gpc_init_for_vcpu(&vmx->nested.virtual_apic_cache, vcpu);
- 	kvm_gpc_init_for_vcpu(&vmx->nested.pi_desc_cache, vcpu);
  
-+#ifdef CONFIG_KVM_HYPERV
-+	kvm_gpc_init(&vmx->nested.hv_evmcs_cache, vcpu->kvm);
-+#endif
+-	pi_desc_page = nested_gpc_lock_if_active(&vmx->nested.pi_desc_cache);
++	pi_desc_page = nested_gpc_lock_if_active(vmx->nested.pi_desc_cache);
+ 	if (!pi_desc_page)
+ 		return NULL;
+ 
+@@ -4180,17 +4268,17 @@ static struct pi_desc *nested_lock_pi_desc(struct vcpu_vmx *vmx)
+ 
+ static void nested_unlock_pi_desc(struct vcpu_vmx *vmx)
+ {
+-	nested_gpc_unlock(&vmx->nested.pi_desc_cache);
++	nested_gpc_unlock(vmx->nested.pi_desc_cache);
+ }
+ 
+ static void *nested_lock_vapic(struct vcpu_vmx *vmx)
+ {
+-	return nested_gpc_lock_if_active(&vmx->nested.virtual_apic_cache);
++	return nested_gpc_lock_if_active(vmx->nested.virtual_apic_cache);
+ }
+ 
+ static void nested_unlock_vapic(struct vcpu_vmx *vmx)
+ {
+-	nested_gpc_unlock(&vmx->nested.virtual_apic_cache);
++	nested_gpc_unlock(vmx->nested.virtual_apic_cache);
+ }
+ 
+ static int vmx_complete_nested_posted_interrupt(struct kvm_vcpu *vcpu)
+@@ -5649,16 +5737,6 @@ static int enter_vmx_operation(struct kvm_vcpu *vcpu)
+ 		      HRTIMER_MODE_ABS_PINNED);
+ 
+ 	vmx->nested.vpid02 = allocate_vpid();
+-
+-	kvm_gpc_init(&vmx->nested.msr_bitmap_cache, vcpu->kvm);
+-
+-	kvm_gpc_init_for_vcpu(&vmx->nested.apic_access_page_cache, vcpu);
+-	kvm_gpc_init_for_vcpu(&vmx->nested.virtual_apic_cache, vcpu);
+-	kvm_gpc_init_for_vcpu(&vmx->nested.pi_desc_cache, vcpu);
+-
+-#ifdef CONFIG_KVM_HYPERV
+-	kvm_gpc_init(&vmx->nested.hv_evmcs_cache, vcpu->kvm);
+-#endif
  	vmx->nested.vmcs02_initialized = false;
  	vmx->nested.vmxon = true;
  
-@@ -5887,6 +5910,8 @@ static int handle_vmread(struct kvm_vcpu *vcpu)
- 		/* Read the field, zero-extended to a u64 value */
- 		value = vmcs12_read_any(vmcs12, field, offset);
- 	} else {
-+		struct hv_enlightened_vmcs *evmcs;
-+
- 		/*
- 		 * Hyper-V TLFS (as of 6.0b) explicitly states, that while an
- 		 * enlightened VMCS is active VMREAD/VMWRITE instructions are
-@@ -5905,7 +5930,9 @@ static int handle_vmread(struct kvm_vcpu *vcpu)
- 			return nested_vmx_fail(vcpu, VMXERR_UNSUPPORTED_VMCS_COMPONENT);
- 
- 		/* Read the field, zero-extended to a u64 value */
--		value = evmcs_read_any(nested_vmx_evmcs(vmx), field, offset);
-+		evmcs = nested_lock_evmcs(vmx);
-+		value = evmcs_read_any(evmcs, field, offset);
-+		nested_unlock_evmcs(vmx);
+@@ -5854,6 +5932,8 @@ static int handle_vmclear(struct kvm_vcpu *vcpu)
+ 					   &zero, sizeof(zero));
  	}
  
- 	/*
-@@ -6935,6 +6962,27 @@ bool nested_vmx_reflect_vmexit(struct kvm_vcpu *vcpu)
- 	return true;
++	vmx_nested_context_clear(vmx, vmptr);
++
+ 	return nested_vmx_succeed(vcpu);
  }
  
-+static void vmx_get_enlightened_to_vmcs12(struct vcpu_vmx *vmx)
-+{
-+#ifdef CONFIG_KVM_HYPERV
-+	struct hv_enlightened_vmcs *evmcs;
-+	struct kvm_vcpu *vcpu = &vmx->vcpu;
+@@ -6098,6 +6178,8 @@ static void set_current_vmptr(struct vcpu_vmx *vmx, gpa_t vmptr)
+ 	}
+ 	vmx->nested.dirty_vmcs12 = true;
+ 	vmx->nested.force_msr_bitmap_recalc = true;
 +
-+	kvm_vcpu_srcu_read_lock(vcpu);
-+	evmcs = nested_lock_evmcs(vmx);
-+	/*
-+	 * L1 hypervisor is not obliged to keep eVMCS
-+	 * clean fields data always up-to-date while
-+	 * not in guest mode, 'hv_clean_fields' is only
-+	 * supposed to be actual upon vmentry so we need
-+	 * to ignore it here and do full copy.
-+	 */
-+	copy_enlightened_to_vmcs12(vmx, evmcs, 0);
-+	nested_unlock_evmcs(vmx);
-+	kvm_vcpu_srcu_read_unlock(vcpu);
-+#endif /* CONFIG_KVM_HYPERV */
-+}
++	vmx_nested_context_load(vmx, vmptr);
+ }
+ 
+ /* Emulate the VMPTRLD instruction */
+@@ -7687,4 +7769,7 @@ struct kvm_x86_nested_ops vmx_nested_ops = {
+ 	.get_evmcs_version = nested_get_evmcs_version,
+ 	.hv_inject_synthetic_vmexit_post_tlb_flush = vmx_hv_inject_synthetic_vmexit_post_tlb_flush,
+ #endif
++	.alloc_context = vmx_nested_context_alloc,
++	.free_context = vmx_nested_context_free,
++	.reset_context = vmx_nested_context_reset,
+ };
+diff --git a/arch/x86/kvm/vmx/vmx.c b/arch/x86/kvm/vmx/vmx.c
+index 546272a5d34d..30b13241ae45 100644
+--- a/arch/x86/kvm/vmx/vmx.c
++++ b/arch/x86/kvm/vmx/vmx.c
+@@ -7666,6 +7666,14 @@ int vmx_vm_init(struct kvm *kvm)
+ 
+ 	if (enable_pml)
+ 		kvm->arch.cpu_dirty_log_size = PML_LOG_NR_ENTRIES;
 +
- static int vmx_get_nested_state(struct kvm_vcpu *vcpu,
- 				struct kvm_nested_state __user *user_kvm_nested_state,
- 				u32 user_data_size)
-@@ -7025,14 +7073,7 @@ static int vmx_get_nested_state(struct kvm_vcpu *vcpu,
- 		copy_vmcs02_to_vmcs12_rare(vcpu, get_vmcs12(vcpu));
- 		if (!vmx->nested.need_vmcs12_to_shadow_sync) {
- 			if (nested_vmx_is_evmptr12_valid(vmx))
--				/*
--				 * L1 hypervisor is not obliged to keep eVMCS
--				 * clean fields data always up-to-date while
--				 * not in guest mode, 'hv_clean_fields' is only
--				 * supposed to be actual upon vmentry so we need
--				 * to ignore it here and do full copy.
--				 */
--				copy_enlightened_to_vmcs12(vmx, 0);
-+				vmx_get_enlightened_to_vmcs12(vmx);
- 			else if (enable_shadow_vmcs)
- 				copy_shadow_to_vmcs12(vmx);
- 		}
++	if (nested) {
++		int err;
++
++		err = kvm_nested_context_table_init(kvm);
++		if (err)
++			return err;
++	}
+ 	return 0;
+ }
+ 
 diff --git a/arch/x86/kvm/vmx/vmx.h b/arch/x86/kvm/vmx/vmx.h
-index 87708af502f3..4da5a42b0c60 100644
+index 4da5a42b0c60..56b96e50290f 100644
 --- a/arch/x86/kvm/vmx/vmx.h
 +++ b/arch/x86/kvm/vmx/vmx.h
-@@ -208,8 +208,7 @@ struct nested_vmx {
+@@ -152,15 +152,15 @@ struct nested_vmx {
+ 
+ 	struct loaded_vmcs vmcs02;
+ 
+-	struct gfn_to_pfn_cache msr_bitmap_cache;
++	struct gfn_to_pfn_cache *msr_bitmap_cache;
+ 
+ 	/*
+ 	 * Guest pages referred to in the vmcs02 with host-physical
+ 	 * pointers, so we must keep them pinned while L2 runs.
+ 	 */
+-	struct gfn_to_pfn_cache apic_access_page_cache;
+-	struct gfn_to_pfn_cache virtual_apic_cache;
+-	struct gfn_to_pfn_cache pi_desc_cache;
++	struct gfn_to_pfn_cache *apic_access_page_cache;
++	struct gfn_to_pfn_cache *virtual_apic_cache;
++	struct gfn_to_pfn_cache *pi_desc_cache;
+ 
+ 	u64 pi_desc_offset;
+ 	bool pi_pending;
+@@ -208,7 +208,7 @@ struct nested_vmx {
  	u32 hv_clean_fields;
  	bool hv_msr_bitmap;
  	bool hv_flush_hypercall;
--	struct hv_enlightened_vmcs *hv_evmcs;
--	struct kvm_host_map hv_evmcs_map;
-+	struct gfn_to_pfn_cache hv_evmcs_cache;
+-	struct gfn_to_pfn_cache hv_evmcs_cache;
++	struct gfn_to_pfn_cache *hv_evmcs_cache;
  #endif
  };
  
+diff --git a/include/linux/kvm_host.h b/include/linux/kvm_host.h
+index b05aace9e295..97e0b949e412 100644
+--- a/include/linux/kvm_host.h
++++ b/include/linux/kvm_host.h
+@@ -1533,7 +1533,7 @@ static inline bool kvm_gpc_is_hva_active(struct gfn_to_pfn_cache *gpc)
+ 
+ static inline bool kvm_gpc_invalid(struct gfn_to_pfn_cache *gpc)
+ {
+-	return gpc->active && !gpc->valid;
++	return gpc && gpc->active && !gpc->valid;
+ }
+ 
+ void kvm_sigset_activate(struct kvm_vcpu *vcpu);
 -- 
 2.43.0
 
