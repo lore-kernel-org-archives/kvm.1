@@ -1,55 +1,55 @@
 Received: from mail-pf1-f202.google.com (mail-pf1-f202.google.com [209.85.210.202])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D1777350A27
-	for <kvm@vger.kernel.org>; Fri, 21 Nov 2025 18:15:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F088352925
+	for <kvm@vger.kernel.org>; Fri, 21 Nov 2025 18:15:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.202
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763748913; cv=none; b=g56iYSZshmWvt+EvLassH3GzPiiFXGI2e3hvtf1+3ZsDYlO7JftFSx5pBwUgWaaUMKcdboJQL2FLnozup+ZkdltQxavifBg84hiL0jiCrDOPmR2KHvDqmCOrizOLCGmfkbyaU8J200lyRVLufi+1yYyuZi+TpvAvM5nK3d+Nctw=
+	t=1763748918; cv=none; b=Dex1vhBdM2f9F9/7q8VC3CB/OhFC64tmbMla60et2z5frfPPLe+5g1PPqOJ8s0L4Eb31xD2TvBPOqRTXRnIng30uq0fU9ZpMEFLeSHZcmJ59zV6BWYX9LR2trrD6IBGVk+A264Q2ECSwVDazz1ICHfzmkVxCHrJ6oJTTStaE66g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763748913; c=relaxed/simple;
-	bh=84mHi93ZLQ9k4F8REV9zDyggwTKGzmB23eWY4/3qtAM=;
+	s=arc-20240116; t=1763748918; c=relaxed/simple;
+	bh=V4XHkK2bSnle1Y5wrDA53Bn139W3GGAfW+sVzBMJc/0=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=qoqa8v0P89YtGbpcttX3nWUVkbb0O7sPVSmBZ/ZAq2NFX/1eFumDnFIU0oitJtnyEJPTv8fp43xe2MpPo2KPv8JnDIp46eo7hDqdvEpuJJmsppb94Yt6UPwv5eJ0Xrypm6ngPoN1Bid99BFzWVJQU+f/Ddz1fw2d8+GrIG+q4ec=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--dmatlack.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=xtP5+IVV; arc=none smtp.client-ip=209.85.210.202
+	 To:Cc:Content-Type; b=K6f/8BhQrInOz2BLGshCUBiABZJ3QRNA2LopwbP6RXa20/HMpRU1/oGyvMDll88J7T5ElJ1uxx1V32CCkSykupY08938DBPh0IotGnMXz0RrAUmv0GH4QuOgKBxpOADCHOfotyuem/GnAsEYDtWOm9SERuUY1nLUkIm5HjPloQ8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--dmatlack.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=wTSa69fP; arc=none smtp.client-ip=209.85.210.202
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--dmatlack.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="xtP5+IVV"
-Received: by mail-pf1-f202.google.com with SMTP id d2e1a72fcca58-7b89ee2c1a4so5408223b3a.2
-        for <kvm@vger.kernel.org>; Fri, 21 Nov 2025 10:15:04 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="wTSa69fP"
+Received: by mail-pf1-f202.google.com with SMTP id d2e1a72fcca58-7b8ed43cd00so2658172b3a.2
+        for <kvm@vger.kernel.org>; Fri, 21 Nov 2025 10:15:10 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1763748901; x=1764353701; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1763748908; x=1764353708; darn=vger.kernel.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=khWHJ2LqkboVnevDsr7KLbtVmUyuMR4Ct+IijuBDu4o=;
-        b=xtP5+IVVpdNDAyHiwxVw803PsID3UCtDllsEK/sn8WGpUciofoaiJi9e36waHFPg19
-         NCJdQBW3aR5fQ1YS8tn0V/eXQ61n5WO/AuQJ8AY7+ViXlhgQyXuv+d/r/NOe/vEzvmA3
-         wyOhiZdSU8xtcE50ULDWXfOSEQvpL4uthntDjNHDqp63u6zKbVp/FIA867+I/l4o8eU9
-         Es3+06b4PNJXmAUAk6Bz/fYcsNVTrpaU/9ImfQEYeFcr6y4AIGML1CZn1H9R4PKpmseY
-         vMPDfQkD5kfEvb2SaXNjMv45nK9m4wT2xKFthc53025Mlr/P/u2807Op39M1w/iOi6GT
-         mt4w==
+        bh=KIDNOWnsgB1X5ZTZsV4DAfAahClNoqJ8rtNtSZXbxtQ=;
+        b=wTSa69fPQcFoELvvGYNW5TH3Jn9BlJTVeM7yeJDUDoGCXy6re/tLfJX2ohlgW44wVv
+         bZiCAQ5RsOWTf+nk7Es1+DzTW+eJ6iU3MR1BxmIsP052U/sbSDzBOfje44e+X2hWkoGA
+         JElTpZ9DqeMuUb7LONr5LsMWhp2mKdAkgVswdeBIWwjk1ioHqKbDNzMnmu3vrwd+beHk
+         iPiyuWbVAgZ5Ieiu7v4NpdUsLNj9MISCFUC13AFDLHuqJolaMWXic/xFx9k3eMuZNHw5
+         oyTtJxti7dyiVmR63Y4TbXWlHGQowRS5GjRsNw10fLOFILB5eiH0cIRLffoq2ruKYO5K
+         9f+A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1763748901; x=1764353701;
+        d=1e100.net; s=20230601; t=1763748908; x=1764353708;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=khWHJ2LqkboVnevDsr7KLbtVmUyuMR4Ct+IijuBDu4o=;
-        b=q2FFuorsEmnr3eJFkz0n5+P4B40qG20HSt7B9ChIQ9K+JfRH27trhyolf89A6ZMHij
-         NGNuUMc1V65guw46OPetLPWLlaH39OSFDF7AacCzFM2fknn7JNen/PlA/NJe9QwvwGev
-         CdEzHSHwxjCpuJcT+AHU83Y+w/xTSh6HzrS7QESj4U7kNLWjATNHLx7cY3Tm1WNwlmmY
-         IOh51qcsS88uTvzWgZ+qUWsNrYEXiv0JYanKm740348c8nfqFblvjFxxzncOOLCKnwSW
-         Wcc5DYfb9IvvdiHHVQ3U8N2ejxOr2eQ2Q01gs6vhOHQqB6EdsLMj8WyTrmN53F1FEams
-         H6jw==
-X-Forwarded-Encrypted: i=1; AJvYcCU4xNODzvazVsARoG4I/a75+lko+FUPG2PZCgPrQAyOuDrEB9am44xDE+AamGkC/wBcWSU=@vger.kernel.org
-X-Gm-Message-State: AOJu0YztsqbHt3ld5wm2UhQDDjKOQvZt8lS5z57ZU2MVrAR5LJve7Aa/
-	Dlj5hSnqB1Xq4SabG1/Xbnqs2JrFpvKWx/xOu4dYXGO6BToQgZ+dv5ZeqVE4OBl5nnEY48ZNkRC
-	5/WyvJRzZ8DFQQw==
-X-Google-Smtp-Source: AGHT+IE/sHqE5MkpF8u8+JSG/iUFG5dj9YeY9VIe7VGm8jPm/U4UHClcjsJ7KBiMY42D4TImrYBUs9DQx8sl0Q==
-X-Received: from pfvb14.prod.google.com ([2002:a05:6a00:cce:b0:76b:f0d4:ac71])
+        bh=KIDNOWnsgB1X5ZTZsV4DAfAahClNoqJ8rtNtSZXbxtQ=;
+        b=HZb3Vxp+M858Y0+iAGPW97x5h8FyM22kRZETn+xeL6sbkCi3/3dJ1slXXF9DIUfJE6
+         GY5151DqOxMfNj6R1sk579g4y0XEaUCvmerei4v+URmNFzZ7Y2fuULnSm9h/efxbK2fG
+         MxAhSeYQvA7z3Yr8XdXNgsINApt+PR36xY16uHwKg4kzonXloXiXgqXq6YAgJbRuEA/M
+         4rjlEdNNbwSoie8VFXnjNB5QGVWLGXjFgiNii6dATSXaj4a+XjK82IBelbgMgVkNiewW
+         GnWxvd9mw92fIdamglOCh8+1kB78xmn8gwv9XYdLl36utcEaLW5X5pJgNvC+T7ujecGl
+         wUKQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVmjGPjjzGXEL4alOdpGMIhXMmoFDYFyDVd0UTTbazSZih1LHWscY9jgKoI+3ePRtIVkJU=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzxX5CMsGw5ItyMCchM7swSgzg6QYLu4SpouT0CmmI966xgdMoW
+	mwDqfjs8kf3DiKcB+myGZMsgBnYtgWAa2udMbB1Jz+2h8mA5EnSbF2shzuMA2F1eyy1krt9S06h
+	N+M83wfzQYNAd3A==
+X-Google-Smtp-Source: AGHT+IFABZs2Jd9R21UXKx2w697+04kRhbUwH2OPtMS6DriemwA5x++r3VjbrjQss9CLbo2vlwmU9jy3U7BxjA==
+X-Received: from pfwz18.prod.google.com ([2002:a05:6a00:1d92:b0:781:1659:e630])
  (user=dmatlack job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:6a00:a17:b0:77f:2efb:11d5 with SMTP id d2e1a72fcca58-7c58c2ac1bdmr3705759b3a.1.1763748901475;
- Fri, 21 Nov 2025 10:15:01 -0800 (PST)
-Date: Fri, 21 Nov 2025 18:14:25 +0000
+ 2002:aa7:8895:0:b0:7bb:272d:a4a9 with SMTP id d2e1a72fcca58-7c58c2b185cmr3896167b3a.1.1763748907629;
+ Fri, 21 Nov 2025 10:15:07 -0800 (PST)
+Date: Fri, 21 Nov 2025 18:14:29 +0000
 In-Reply-To: <20251121181429.1421717-1-dmatlack@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
@@ -59,189 +59,254 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 References: <20251121181429.1421717-1-dmatlack@google.com>
 X-Mailer: git-send-email 2.52.0.rc2.455.g230fcf2819-goog
-Message-ID: <20251121181429.1421717-15-dmatlack@google.com>
-Subject: [PATCH v3 14/18] vfio: selftests: Rename vfio_util.h to libvfio.h
+Message-ID: <20251121181429.1421717-19-dmatlack@google.com>
+Subject: [PATCH v3 18/18] vfio: selftests: Add vfio_pci_device_init_perf_test
 From: David Matlack <dmatlack@google.com>
 To: Alex Williamson <alex@shazbot.org>
 Cc: Alex Mastro <amastro@fb.com>, David Matlack <dmatlack@google.com>, 
 	Jason Gunthorpe <jgg@nvidia.com>, Josh Hilke <jrhilke@google.com>, kvm@vger.kernel.org, 
 	linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org, 
-	Raghavendra Rao Ananta <rananta@google.com>, Vipin Sharma <vipinsh@google.com>
+	Raghavendra Rao Ananta <rananta@google.com>, Vipin Sharma <vipinsh@google.com>, 
+	Aaron Lewis <aaronlewis@google.com>
 Content-Type: text/plain; charset="UTF-8"
 
-Rename vfio_util.h to libvfio.h to match the name of libvfio.mk.
+Add a new VFIO selftest for measuring the time it takes to run
+vfio_pci_device_init() in parallel for one or more devices.
 
-No functional change intended.
+This test serves as manual regression test for the performance
+improvement of commit e908f58b6beb ("vfio/pci: Separate SR-IOV VF
+dev_set"). For example, when running this test with 64 VFs under the
+same PF:
 
+Before:
+
+  $ ./vfio_pci_device_init_perf_test -r vfio_pci_device_init_perf_test.iommufd.init 0000:1a:00.0 0000:1a:00.1 ...
+  ...
+  Wall time: 6.653234463s
+  Min init time (per device): 0.101215344s
+  Max init time (per device): 6.652755941s
+  Avg init time (per device): 3.377609608s
+
+After:
+
+  $ ./vfio_pci_device_init_perf_test -r vfio_pci_device_init_perf_test.iommufd.init 0000:1a:00.0 0000:1a:00.1 ...
+  ...
+  Wall time: 0.122978332s
+  Min init time (per device): 0.108121915s
+  Max init time (per device): 0.122762761s
+  Avg init time (per device): 0.113816748s
+
+This test does not make any assertions about performance, since any such
+assertion is likely to be flaky due to system differences and random
+noise. However this test can be fed into automation to detect
+regressions, and can be used by developers in the future to measure
+performance optimizations.
+
+Suggested-by: Aaron Lewis <aaronlewis@google.com>
 Reviewed-by: Alex Mastro <amastro@fb.com>
 Tested-by: Alex Mastro <amastro@fb.com>
 Signed-off-by: David Matlack <dmatlack@google.com>
 ---
- tools/testing/selftests/vfio/lib/drivers/dsa/dsa.c          | 2 +-
- tools/testing/selftests/vfio/lib/drivers/ioat/ioat.c        | 2 +-
- .../selftests/vfio/lib/include/{vfio_util.h => libvfio.h}   | 6 +++---
- tools/testing/selftests/vfio/lib/iommu.c                    | 2 +-
- tools/testing/selftests/vfio/lib/iova_allocator.c           | 2 +-
- tools/testing/selftests/vfio/lib/vfio_pci_device.c          | 2 +-
- tools/testing/selftests/vfio/lib/vfio_pci_driver.c          | 2 +-
- tools/testing/selftests/vfio/vfio_dma_mapping_test.c        | 2 +-
- tools/testing/selftests/vfio/vfio_iommufd_setup_test.c      | 2 +-
- tools/testing/selftests/vfio/vfio_pci_device_test.c         | 2 +-
- tools/testing/selftests/vfio/vfio_pci_driver_test.c         | 2 +-
- 11 files changed, 13 insertions(+), 13 deletions(-)
- rename tools/testing/selftests/vfio/lib/include/{vfio_util.h => libvfio.h} (98%)
+ tools/testing/selftests/vfio/Makefile         |   3 +
+ .../vfio/vfio_pci_device_init_perf_test.c     | 168 ++++++++++++++++++
+ 2 files changed, 171 insertions(+)
+ create mode 100644 tools/testing/selftests/vfio/vfio_pci_device_init_perf_test.c
 
-diff --git a/tools/testing/selftests/vfio/lib/drivers/dsa/dsa.c b/tools/testing/selftests/vfio/lib/drivers/dsa/dsa.c
-index 0afbab0d82de..c75045bcab79 100644
---- a/tools/testing/selftests/vfio/lib/drivers/dsa/dsa.c
-+++ b/tools/testing/selftests/vfio/lib/drivers/dsa/dsa.c
-@@ -9,7 +9,7 @@
- #include <linux/pci_ids.h>
- #include <linux/sizes.h>
+diff --git a/tools/testing/selftests/vfio/Makefile b/tools/testing/selftests/vfio/Makefile
+index a29f99395206..3c796ca99a50 100644
+--- a/tools/testing/selftests/vfio/Makefile
++++ b/tools/testing/selftests/vfio/Makefile
+@@ -2,6 +2,7 @@ CFLAGS = $(KHDR_INCLUDES)
+ TEST_GEN_PROGS += vfio_dma_mapping_test
+ TEST_GEN_PROGS += vfio_iommufd_setup_test
+ TEST_GEN_PROGS += vfio_pci_device_test
++TEST_GEN_PROGS += vfio_pci_device_init_perf_test
+ TEST_GEN_PROGS += vfio_pci_driver_test
  
--#include <vfio_util.h>
+ TEST_FILES += scripts/cleanup.sh
+@@ -16,6 +17,8 @@ CFLAGS += -I$(top_srcdir)/tools/include
+ CFLAGS += -MD
+ CFLAGS += $(EXTRA_CFLAGS)
+ 
++LDFLAGS += -pthread
++
+ $(TEST_GEN_PROGS): %: %.o $(LIBVFIO_O)
+ 	$(CC) $(CFLAGS) $(CPPFLAGS) $(LDFLAGS) $< $(LIBVFIO_O) $(LDLIBS) -o $@
+ 
+diff --git a/tools/testing/selftests/vfio/vfio_pci_device_init_perf_test.c b/tools/testing/selftests/vfio/vfio_pci_device_init_perf_test.c
+new file mode 100644
+index 000000000000..33b0c31fe2ed
+--- /dev/null
++++ b/tools/testing/selftests/vfio/vfio_pci_device_init_perf_test.c
+@@ -0,0 +1,168 @@
++// SPDX-License-Identifier: GPL-2.0-only
++#include <pthread.h>
++#include <sys/ioctl.h>
++#include <sys/mman.h>
++
++#include <linux/sizes.h>
++#include <linux/time64.h>
++#include <linux/vfio.h>
++
 +#include <libvfio.h>
- 
- #include "registers.h"
- 
-diff --git a/tools/testing/selftests/vfio/lib/drivers/ioat/ioat.c b/tools/testing/selftests/vfio/lib/drivers/ioat/ioat.c
-index c6db311ce64d..a871b935542b 100644
---- a/tools/testing/selftests/vfio/lib/drivers/ioat/ioat.c
-+++ b/tools/testing/selftests/vfio/lib/drivers/ioat/ioat.c
-@@ -7,7 +7,7 @@
- #include <linux/pci_ids.h>
- #include <linux/sizes.h>
- 
--#include <vfio_util.h>
-+#include <libvfio.h>
- 
- #include "hw.h"
- #include "registers.h"
-diff --git a/tools/testing/selftests/vfio/lib/include/vfio_util.h b/tools/testing/selftests/vfio/lib/include/libvfio.h
-similarity index 98%
-rename from tools/testing/selftests/vfio/lib/include/vfio_util.h
-rename to tools/testing/selftests/vfio/lib/include/libvfio.h
-index 5224808201fe..3027af15e316 100644
---- a/tools/testing/selftests/vfio/lib/include/vfio_util.h
-+++ b/tools/testing/selftests/vfio/lib/include/libvfio.h
-@@ -1,6 +1,6 @@
- /* SPDX-License-Identifier: GPL-2.0-only */
--#ifndef SELFTESTS_VFIO_LIB_INCLUDE_VFIO_UTIL_H
--#define SELFTESTS_VFIO_LIB_INCLUDE_VFIO_UTIL_H
-+#ifndef SELFTESTS_VFIO_LIB_INCLUDE_LIBVFIO_H
-+#define SELFTESTS_VFIO_LIB_INCLUDE_LIBVFIO_H
- 
- #include <fcntl.h>
- #include <string.h>
-@@ -352,4 +352,4 @@ void vfio_pci_driver_memcpy_start(struct vfio_pci_device *device,
- int vfio_pci_driver_memcpy_wait(struct vfio_pci_device *device);
- void vfio_pci_driver_send_msi(struct vfio_pci_device *device);
- 
--#endif /* SELFTESTS_VFIO_LIB_INCLUDE_VFIO_UTIL_H */
-+#endif /* SELFTESTS_VFIO_LIB_INCLUDE_LIBVFIO_H */
-diff --git a/tools/testing/selftests/vfio/lib/iommu.c b/tools/testing/selftests/vfio/lib/iommu.c
-index 3933079fc419..52f9cdf5f171 100644
---- a/tools/testing/selftests/vfio/lib/iommu.c
-+++ b/tools/testing/selftests/vfio/lib/iommu.c
-@@ -19,7 +19,7 @@
- #include <linux/iommufd.h>
- 
- #include "../../../kselftest.h"
--#include <vfio_util.h>
-+#include <libvfio.h>
- 
- const char *default_iommu_mode = "iommufd";
- 
-diff --git a/tools/testing/selftests/vfio/lib/iova_allocator.c b/tools/testing/selftests/vfio/lib/iova_allocator.c
-index b3b6b27f5d1e..a12b0a51e9e6 100644
---- a/tools/testing/selftests/vfio/lib/iova_allocator.c
-+++ b/tools/testing/selftests/vfio/lib/iova_allocator.c
-@@ -19,7 +19,7 @@
- #include <linux/types.h>
- #include <linux/vfio.h>
- 
--#include <vfio_util.h>
-+#include <libvfio.h>
- 
- struct iova_allocator *iova_allocator_init(struct iommu *iommu)
- {
-diff --git a/tools/testing/selftests/vfio/lib/vfio_pci_device.c b/tools/testing/selftests/vfio/lib/vfio_pci_device.c
-index a59c86797897..282c14bbdd00 100644
---- a/tools/testing/selftests/vfio/lib/vfio_pci_device.c
-+++ b/tools/testing/selftests/vfio/lib/vfio_pci_device.c
-@@ -20,7 +20,7 @@
- #include <linux/vfio.h>
- 
- #include "../../../kselftest.h"
--#include <vfio_util.h>
-+#include <libvfio.h>
- 
- #define PCI_SYSFS_PATH	"/sys/bus/pci/devices"
- 
-diff --git a/tools/testing/selftests/vfio/lib/vfio_pci_driver.c b/tools/testing/selftests/vfio/lib/vfio_pci_driver.c
-index abb7a62a03ea..ca0e25efbfa1 100644
---- a/tools/testing/selftests/vfio/lib/vfio_pci_driver.c
-+++ b/tools/testing/selftests/vfio/lib/vfio_pci_driver.c
-@@ -1,6 +1,6 @@
- // SPDX-License-Identifier: GPL-2.0-only
- #include "../../../kselftest.h"
--#include <vfio_util.h>
-+#include <libvfio.h>
- 
- #ifdef __x86_64__
- extern struct vfio_pci_driver_ops dsa_ops;
-diff --git a/tools/testing/selftests/vfio/vfio_dma_mapping_test.c b/tools/testing/selftests/vfio/vfio_dma_mapping_test.c
-index c4c2fc36c7b3..213fcd8dcc79 100644
---- a/tools/testing/selftests/vfio/vfio_dma_mapping_test.c
-+++ b/tools/testing/selftests/vfio/vfio_dma_mapping_test.c
-@@ -10,7 +10,7 @@
- #include <linux/sizes.h>
- #include <linux/vfio.h>
- 
--#include <vfio_util.h>
-+#include <libvfio.h>
- 
- #include "../kselftest_harness.h"
- 
-diff --git a/tools/testing/selftests/vfio/vfio_iommufd_setup_test.c b/tools/testing/selftests/vfio/vfio_iommufd_setup_test.c
-index 3655106b912d..caf1c6291f3d 100644
---- a/tools/testing/selftests/vfio/vfio_iommufd_setup_test.c
-+++ b/tools/testing/selftests/vfio/vfio_iommufd_setup_test.c
-@@ -10,7 +10,7 @@
- #include <sys/ioctl.h>
- #include <unistd.h>
- 
--#include <vfio_util.h>
-+#include <libvfio.h>
- #include "../kselftest_harness.h"
- 
- static const char iommu_dev_path[] = "/dev/iommu";
-diff --git a/tools/testing/selftests/vfio/vfio_pci_device_test.c b/tools/testing/selftests/vfio/vfio_pci_device_test.c
-index e95217933c6b..ecbb669b3765 100644
---- a/tools/testing/selftests/vfio/vfio_pci_device_test.c
-+++ b/tools/testing/selftests/vfio/vfio_pci_device_test.c
-@@ -10,7 +10,7 @@
- #include <linux/sizes.h>
- #include <linux/vfio.h>
- 
--#include <vfio_util.h>
-+#include <libvfio.h>
- 
- #include "../kselftest_harness.h"
- 
-diff --git a/tools/testing/selftests/vfio/vfio_pci_driver_test.c b/tools/testing/selftests/vfio/vfio_pci_driver_test.c
-index 229e932a06f8..f0ca8310d6a8 100644
---- a/tools/testing/selftests/vfio/vfio_pci_driver_test.c
-+++ b/tools/testing/selftests/vfio/vfio_pci_driver_test.c
-@@ -5,7 +5,7 @@
- #include <linux/sizes.h>
- #include <linux/vfio.h>
- 
--#include <vfio_util.h>
-+#include <libvfio.h>
- 
- #include "../kselftest_harness.h"
- 
++
++#include "../kselftest_harness.h"
++
++static char **device_bdfs;
++static int nr_devices;
++
++struct thread_args {
++	struct iommu *iommu;
++	int device_index;
++	struct timespec start;
++	struct timespec end;
++	pthread_barrier_t *barrier;
++};
++
++FIXTURE(vfio_pci_device_init_perf_test) {
++	pthread_t *threads;
++	pthread_barrier_t barrier;
++	struct thread_args *thread_args;
++	struct iommu *iommu;
++};
++
++FIXTURE_VARIANT(vfio_pci_device_init_perf_test) {
++	const char *iommu_mode;
++};
++
++#define FIXTURE_VARIANT_ADD_IOMMU_MODE(_iommu_mode)			\
++FIXTURE_VARIANT_ADD(vfio_pci_device_init_perf_test, _iommu_mode) {	\
++	.iommu_mode = #_iommu_mode,					\
++}
++
++FIXTURE_VARIANT_ADD_ALL_IOMMU_MODES();
++
++FIXTURE_SETUP(vfio_pci_device_init_perf_test)
++{
++	int i;
++
++	self->iommu = iommu_init(variant->iommu_mode);
++	self->threads = calloc(nr_devices, sizeof(self->threads[0]));
++	self->thread_args = calloc(nr_devices, sizeof(self->thread_args[0]));
++
++	pthread_barrier_init(&self->barrier, NULL, nr_devices);
++
++	for (i = 0; i < nr_devices; i++) {
++		self->thread_args[i].iommu = self->iommu;
++		self->thread_args[i].barrier = &self->barrier;
++		self->thread_args[i].device_index = i;
++	}
++}
++
++FIXTURE_TEARDOWN(vfio_pci_device_init_perf_test)
++{
++	iommu_cleanup(self->iommu);
++	free(self->threads);
++	free(self->thread_args);
++}
++
++static s64 to_ns(struct timespec ts)
++{
++	return (s64)ts.tv_nsec + NSEC_PER_SEC * (s64)ts.tv_sec;
++}
++
++static struct timespec to_timespec(s64 ns)
++{
++	struct timespec ts = {
++		.tv_nsec = ns % NSEC_PER_SEC,
++		.tv_sec = ns / NSEC_PER_SEC,
++	};
++
++	return ts;
++}
++
++static struct timespec timespec_sub(struct timespec a, struct timespec b)
++{
++	return to_timespec(to_ns(a) - to_ns(b));
++}
++
++static struct timespec timespec_min(struct timespec a, struct timespec b)
++{
++	return to_ns(a) < to_ns(b) ? a : b;
++}
++
++static struct timespec timespec_max(struct timespec a, struct timespec b)
++{
++	return to_ns(a) > to_ns(b) ? a : b;
++}
++
++static void *thread_main(void *__args)
++{
++	struct thread_args *args = __args;
++	struct vfio_pci_device *device;
++
++	pthread_barrier_wait(args->barrier);
++
++	clock_gettime(CLOCK_MONOTONIC, &args->start);
++	device = vfio_pci_device_init(device_bdfs[args->device_index], args->iommu);
++	clock_gettime(CLOCK_MONOTONIC, &args->end);
++
++	pthread_barrier_wait(args->barrier);
++
++	vfio_pci_device_cleanup(device);
++	return NULL;
++}
++
++TEST_F(vfio_pci_device_init_perf_test, init)
++{
++	struct timespec start = to_timespec(INT64_MAX), end = {};
++	struct timespec min = to_timespec(INT64_MAX);
++	struct timespec max = {};
++	struct timespec avg = {};
++	struct timespec wall_time;
++	s64 thread_ns = 0;
++	int i;
++
++	for (i = 0; i < nr_devices; i++) {
++		pthread_create(&self->threads[i], NULL, thread_main,
++			       &self->thread_args[i]);
++	}
++
++	for (i = 0; i < nr_devices; i++) {
++		struct thread_args *args = &self->thread_args[i];
++		struct timespec init_time;
++
++		pthread_join(self->threads[i], NULL);
++
++		start = timespec_min(start, args->start);
++		end = timespec_max(end, args->end);
++
++		init_time = timespec_sub(args->end, args->start);
++		min = timespec_min(min, init_time);
++		max = timespec_max(max, init_time);
++		thread_ns += to_ns(init_time);
++	}
++
++	avg = to_timespec(thread_ns / nr_devices);
++	wall_time = timespec_sub(end, start);
++
++	printf("Wall time: %lu.%09lus\n",
++	       wall_time.tv_sec, wall_time.tv_nsec);
++	printf("Min init time (per device): %lu.%09lus\n",
++	       min.tv_sec, min.tv_nsec);
++	printf("Max init time (per device): %lu.%09lus\n",
++	       max.tv_sec, max.tv_nsec);
++	printf("Avg init time (per device): %lu.%09lus\n",
++	       avg.tv_sec, avg.tv_nsec);
++}
++
++int main(int argc, char *argv[])
++{
++	int i;
++
++	device_bdfs = vfio_selftests_get_bdfs(&argc, argv, &nr_devices);
++
++	printf("Testing parallel initialization of %d devices:\n", nr_devices);
++	for (i = 0; i < nr_devices; i++)
++		printf("    %s\n", device_bdfs[i]);
++
++	return test_harness_run(argc, argv);
++}
 -- 
 2.52.0.rc2.455.g230fcf2819-goog
 
