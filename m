@@ -1,281 +1,134 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
+Received: from out30-130.freemail.mail.aliyun.com (out30-130.freemail.mail.aliyun.com [115.124.30.130])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1886E34403C;
-	Fri, 21 Nov 2025 13:09:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.9
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A2CAF3F9D2;
+	Fri, 21 Nov 2025 13:36:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.30.130
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763730561; cv=none; b=nYtChJoJzaWbBoKzAUbWGwsjBGWpPJyk7597uoXDnNhlSsaYi2y3qV0rJ/OFw+3Yzx6xXBV68zclge8QZrffuejdO/jDzEY1qPbFFc48xrNV01i7qeC6NpoIOIqziW5JopK1H7sFMGOD/6lOXxHXnUyH3Mdsqqk4CdcljumrrPE=
+	t=1763732173; cv=none; b=cE4Ebrin9hhePaOIFB6drPhuqRYdncw2LdBaVw3HVydKBhwj7Gnh4GNTjVFstdjc4wRHgltX2wRxwweXJRSpjIxHkC2rMem9oWtLGRAzL82LhGn9pCNPGyj3FGLVgj6nUCqbrmWZMuHShqythOztbjZ0d78dU5Lw4uKTOQekGvc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763730561; c=relaxed/simple;
-	bh=Mx8HU1WWOmumCvnpOXz2MRvFcRa3p7T/im80j8iH4Jc=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=uTWgghs/9upKn+B3Q2YFPpQu+0SesviGd6rX2mU8LnXrTKRvnApD6jDfMS7TiB54OnE2NG4Im3QfXYyhJOMHRoDeGyyeEbIPv4nQ1NSxQM3Pc0VmtZe3P86P++dAyeVmnletnoKSO0hIewcqwNYoIKjZmCaOY16JOSNP4AKYsBM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=CLJi7yG7; arc=none smtp.client-ip=192.198.163.9
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+	s=arc-20240116; t=1763732173; c=relaxed/simple;
+	bh=l9zY3Y7OLuRdKyHz0EggNJqmADS4gNUNqkhxBTWGjd4=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=B0uOve9y0jrDq6QA8+khAqNYjborvCYTbT63L5Hrp74RShUDGV/kv1YwMSQFtkNys3vDBh7u81WUDWZ0OFOO6xgUoSOXol0b+YdDMekW543QHv3f8YBx0jepsJAjihhlHhLwYOkQxwZ442iqaDQ5xGQVa1RgMYj/rVB2y7JRMwA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; spf=pass smtp.mailfrom=linux.alibaba.com; dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b=mZJhoZ7f; arc=none smtp.client-ip=115.124.30.130
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.alibaba.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="CLJi7yG7"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1763730558; x=1795266558;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=Mx8HU1WWOmumCvnpOXz2MRvFcRa3p7T/im80j8iH4Jc=;
-  b=CLJi7yG7bAdPAIHdMYvdxurMrIkWkuS1gAUgR5E2DxVeyS5AzBUKxcp4
-   RWW38KupGIRGV2WqCexdli4IdIUp//Kbit8lsXGeDWsZ+bgvvr8rSSn1K
-   R/7A/rWJ8Wttu1VKXMC/ewuC5MrUfeRQtL0aE1B8dDoM03SDd5KEnoNdt
-   UfoTZOjIQHfvibuJcFQgbKoiLhxDGAuZbuwz2aNYGrPALiECgkPYbF4Rm
-   GYbjpv161Q7E6LT/Ny8kyDVVWJrRQbnqPxajHm9b9lcIF6nxModBQNZGC
-   Rd0YFSY5LVnydieQyedRd9YiZRj+FuD9c3LhymEERHQVSUdK15sGPhRwS
-   Q==;
-X-CSE-ConnectionGUID: sT3uQNS2Q7GZw+O1lL/9kQ==
-X-CSE-MsgGUID: uyY17x6gSd+jQ4JxrY3FdA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11619"; a="76505775"
-X-IronPort-AV: E=Sophos;i="6.20,215,1758610800"; 
-   d="scan'208";a="76505775"
-Received: from fmviesa007.fm.intel.com ([10.60.135.147])
-  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Nov 2025 05:09:17 -0800
-X-CSE-ConnectionGUID: cglKvljOQ4ad6mlqkP7kKg==
-X-CSE-MsgGUID: rBcSODACTTC7Ti6Rcm0ksg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.20,215,1758610800"; 
-   d="scan'208";a="191368929"
-Received: from yilunxu-optiplex-7050.sh.intel.com (HELO localhost) ([10.239.159.165])
-  by fmviesa007.fm.intel.com with ESMTP; 21 Nov 2025 05:09:14 -0800
-Date: Fri, 21 Nov 2025 20:54:19 +0800
-From: Xu Yilun <yilun.xu@linux.intel.com>
-To: Dave Hansen <dave.hansen@intel.com>
-Cc: linux-coco@lists.linux.dev, linux-pci@vger.kernel.org,
-	chao.gao@intel.com, dave.jiang@intel.com, baolu.lu@linux.intel.com,
-	yilun.xu@intel.com, zhenzhong.duan@intel.com, kvm@vger.kernel.org,
-	rick.p.edgecombe@intel.com, dave.hansen@linux.intel.com,
-	dan.j.williams@intel.com, kas@kernel.org, x86@kernel.org
-Subject: Re: [PATCH v1 08/26] x86/virt/tdx: Add tdx_enable_ext() to enable of
- TDX Module Extensions
-Message-ID: <aSBg+5rS1Y498gHx@yilunxu-OptiPlex-7050>
-References: <20251117022311.2443900-1-yilun.xu@linux.intel.com>
- <20251117022311.2443900-9-yilun.xu@linux.intel.com>
- <cfcfb160-fcd2-4a75-9639-5f7f0894d14b@intel.com>
- <aRyphEW2jpB/3Ht2@yilunxu-OptiPlex-7050>
- <62bec236-4716-4326-8342-1863ad8a3f24@intel.com>
- <aR6ws2yzwQumApb9@yilunxu-OptiPlex-7050>
- <13e894a8-474f-465a-a13a-5d892efbfadb@intel.com>
+	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b="mZJhoZ7f"
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux.alibaba.com; s=default;
+	t=1763732157; h=From:To:Subject:Date:Message-Id:MIME-Version;
+	bh=0Y4Gl8l0oRGBSSOkUyUCKPutDiBDPCRdKNSD2TJIBMU=;
+	b=mZJhoZ7f5PaIaMaxLTD/qqnp/ZJ5IBvYhNd8vniKgLlb5KJ9kF7XBIHQaQDH2a5jDJAIUM4buUmAuNmA9thjqm+Q4x6T/eFcFwbCWKeb0srL/JtD2QV+Aar25+2oWsPjzuKiEdvktPu5z5KP2fQ4XXMCflmAlRA+Vrp4CBcnz9I=
+Received: from localhost.localdomain(mailfrom:fangyu.yu@linux.alibaba.com fp:SMTPD_---0Wt0CGTO_1763732155 cluster:ay36)
+          by smtp.aliyun-inc.com;
+          Fri, 21 Nov 2025 21:35:56 +0800
+From: fangyu.yu@linux.alibaba.com
+To: anup@brainfault.org,
+	atish.patra@linux.dev,
+	pjw@kernel.org,
+	palmer@dabbelt.com,
+	aou@eecs.berkeley.edu,
+	alex@ghiti.fr
+Cc: guoren@kernel.org,
+	ajones@ventanamicro.com,
+	kvm@vger.kernel.org,
+	kvm-riscv@lists.infradead.org,
+	linux-riscv@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	Fangyu Yu <fangyu.yu@linux.alibaba.com>
+Subject: [PATCH v3] RISC-V: KVM: Fix guest page fault within HLV* instructions
+Date: Fri, 21 Nov 2025 21:35:43 +0800
+Message-Id: <20251121133543.46822-1-fangyu.yu@linux.alibaba.com>
+X-Mailer: git-send-email 2.39.3 (Apple Git-146)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <13e894a8-474f-465a-a13a-5d892efbfadb@intel.com>
+Content-Transfer-Encoding: 8bit
 
-> I want an overview of how this new memory fits into the overall scheme.
-> I'd argue that these "control pages" are most similar to the PAMT:
-> There's some back-and-forth with the module about how much memory it
-> needs, the kernel allocates it, hands it over, and never gets it back.
-> 
-> That's the level that this needs to be presented at: a high-level
-> logical overview.
+From: Fangyu Yu <fangyu.yu@linux.alibaba.com>
 
-OK. I can split out a patch dedicate to the memory feeding, and put
-the overview in changelog.
+When executing HLV* instructions at the HS mode, a guest page fault
+may occur when a g-stage page table migration between triggering the
+virtual instruction exception and executing the HLV* instruction.
 
+This may be a corner case, and one simpler way to handle this is to
+re-execute the instruction where the virtual  instruction exception
+occurred, and the guest page fault will be automatically handled.
 
-x86/virt/tdx: Add extra memory to TDX Module for Extentions
+Fixes: b91f0e4cb8a3 ("RISC-V: KVM: Factor-out instruction emulation into separate sources")
+Signed-off-by: Fangyu Yu <fangyu.yu@linux.alibaba.com>
 
-Currently, TDX module memory use is relatively static. But, some new
-features (called "TDX Module Extensions") need to use memory more
-dynamically. While 'static' here means the kernel provides necessary
-amount of memory to TDX Module for its initialization, 'dynamic' means
-extra memory be added after TDX Module initialization and before the
-first optional usage of TDX Module Extension. So add a new memory
-feeding process backed by a new SEAMCALL TDH.EXT.MEM.ADD.
+---
+Changes in v3:
+- Add a helper function to avoid repeating the same paragraph(suggested by drew)
+- Link to v2: https://lore.kernel.org/linux-riscv/20251111135506.8526-1-fangyu.yu@linux.alibaba.com/
 
-The process is mostly the same as adding PAMT. The kernel queries TDX
-Module how much memory needed, allocates it, hands it over and never
-gets it back.
+Changes in v2:
+- Remove unnecessary modifications and add comments(suggested by Anup)
+- Update Fixes tag
+- Link to v1: https://lore.kernel.org/linux-riscv/20250912134332.22053-1-fangyu.yu@linux.alibaba.com/
+---
+ arch/riscv/kvm/vcpu_insn.c | 22 ++++++++++++++++++++++
+ 1 file changed, 22 insertions(+)
 
-more details...
+diff --git a/arch/riscv/kvm/vcpu_insn.c b/arch/riscv/kvm/vcpu_insn.c
+index de1f96ea6225..4d89b94128ae 100644
+--- a/arch/riscv/kvm/vcpu_insn.c
++++ b/arch/riscv/kvm/vcpu_insn.c
+@@ -298,6 +298,22 @@ static int system_opcode_insn(struct kvm_vcpu *vcpu, struct kvm_run *run,
+ 	return (rc <= 0) ? rc : 1;
+ }
+ 
++static bool is_load_guest_page_fault(unsigned long scause)
++{
++	/**
++	 * If a g-stage page fault occurs, the direct approach
++	 * is to let the g-stage page fault handler handle it
++	 * naturally, however, calling the g-stage page fault
++	 * handler here seems rather strange.
++	 * Considering this is a corner case, we can directly
++	 * return to the guest and re-execute the same PC, this
++	 * will trigger a g-stage page fault again and then the
++	 * regular g-stage page fault handler will populate
++	 * g-stage page table.
++	 */
++	return (scause == EXC_LOAD_GUEST_PAGE_FAULT);
++}
++
+ /**
+  * kvm_riscv_vcpu_virtual_insn -- Handle virtual instruction trap
+  *
+@@ -323,6 +339,8 @@ int kvm_riscv_vcpu_virtual_insn(struct kvm_vcpu *vcpu, struct kvm_run *run,
+ 							  ct->sepc,
+ 							  &utrap);
+ 			if (utrap.scause) {
++				if (is_load_guest_page_fault(utrap.scause))
++					return 1;
+ 				utrap.sepc = ct->sepc;
+ 				kvm_riscv_vcpu_trap_redirect(vcpu, &utrap);
+ 				return 1;
+@@ -378,6 +396,8 @@ int kvm_riscv_vcpu_mmio_load(struct kvm_vcpu *vcpu, struct kvm_run *run,
+ 		insn = kvm_riscv_vcpu_unpriv_read(vcpu, true, ct->sepc,
+ 						  &utrap);
+ 		if (utrap.scause) {
++			if (is_load_guest_page_fault(utrap.scause))
++				return 1;
+ 			/* Redirect trap if we failed to read instruction */
+ 			utrap.sepc = ct->sepc;
+ 			kvm_riscv_vcpu_trap_redirect(vcpu, &utrap);
+@@ -504,6 +524,8 @@ int kvm_riscv_vcpu_mmio_store(struct kvm_vcpu *vcpu, struct kvm_run *run,
+ 		insn = kvm_riscv_vcpu_unpriv_read(vcpu, true, ct->sepc,
+ 						  &utrap);
+ 		if (utrap.scause) {
++			if (is_load_guest_page_fault(utrap.scause))
++				return 1;
+ 			/* Redirect trap if we failed to read instruction */
+ 			utrap.sepc = ct->sepc;
+ 			kvm_riscv_vcpu_trap_redirect(vcpu, &utrap);
+-- 
+2.50.1
 
-For now, TDX Module Extensions consume quite large amount of memory
-(12800 pages), print this readout value on TDX Module Extentions
-initialization.
-
-> 
-> ...> I think it may be too heavy. We have a hundred SEAMCALLs and I expect
-> > few needs version 1. I actually think v2 is nothing different from a new
-
-Sorry for typo, there is no v2 yet.
-
-> > leaf. How about something like:
-> > 
-> > --- a/arch/x86/virt/vmx/tdx/tdx.h
-> > +++ b/arch/x86/virt/vmx/tdx/tdx.h
-> > @@ -46,6 +46,7 @@
-> >  #define TDH_PHYMEM_PAGE_WBINVD         41
-> >  #define TDH_VP_WR                      43
-> >  #define TDH_SYS_CONFIG                 45
-> > +#define TDH_SYS_CONFIG_V1              (TDH_SYS_CONFIG | (1ULL << TDX_VERSION_SHIFT))
-> > 
-> > And if a SEAMCALL needs export, add new tdh_foobar() helper. Anyway
-> > the parameter list should be different.
-> 
-> I'd need quite a bit of convincing that this is the right way.
-> 
-> What is the scenario where there's a:
-> 
-> 	TDH_SYS_CONFIG_V1
-> and
-> 	TDH_SYS_CONFIG_V2
-> 
-> in the tree at the same time?
-
-I assume you mean TDH_SYS_CONFIG & TDH_SYS_CONFIG_V1.
-
-If you want to enable optional features via this seamcall, you must use
-v1, otherwise v0 & v1 are all good. Mm... I suddenly don't see usecase
-they must co-exist. Unconditionally use v1 is fine. So does TDH_VP_INIT.
-
-Does that mean we don't have to keep versions, always use the latest is
-good? (Proper Macro to be used...)
-
- -#define TDH_SYS_CONFIG                 45
- +#define TDH_SYS_CONFIG                 (45 | (1ULL << TDX_VERSION_SHIFT))
-
-> 
-> Second, does it hurt to pass the version along with other calls, like
-> ... (naming a random one) ... TDH_PHYMEM_PAGE_WBINVD ?
-
-I see no runtime hurt, just an extra zero parameter passed around.
-
-And version change always goes with more parameters, if we add version
-parameter, it looks like:
-
- u64 tdh_phymem_page_wbinvd_tdr(int version, struct tdx_td *td, int new_param1, int new_param2);
-
-For readability, I prefer the following, they provide clear definitions:
-
- u64 tdh_phymem_page_wbinvd_tdr(struct tdx_td *td);
- u64 tdh_phymem_page_wbinvd_tdr_1(struct tdx_td *td, int new_param1, int new_param2);
-
-
-But I hope eventually we don't have to keep versions, then we don't have to choose:
-
- u64 tdh_phymem_page_wbinvd_tdr(struct tdx_td *td, int new_param1, int new_param2);
-
-
-> 
-> Even if we did this, we wouldn't copy and paste "(1ULL <<
-> TDX_VERSION_SHIFT)" all over the place, right? We'd create a more
-> concise, cleaner macro and then use it everywhere. Right?
-
-Sure. Will do.
-
-...
-
-> >>>> 	while (1)
-> >>>> 		fill(&array);
-> >>>> 	while (1)
-> >>>> 		tell_tdx_module(&array);
-> >>>
-> >>> The consideration is, no need to create as much supporting
-> >>> structures (struct tdx_page_array *, struct page ** and root page) for
-> >>> each 512-page bulk. Use one and re-populate it in loop is efficient.
-
-Sorry, I went through the history again and thought I got off track from
-here. I was trying to explain why I choose to let struct tdx_page_array
-not restricted by 512 pages. But that's not your question.
-
-For your question why:
-
-  while (1) {
-        fill(&array);
-        tell_tdx_module(&array);
-  }
-
-not:
-
-  while (1)
-        fill(&array);
-  while (1)
-        tell_tdx_module(&array);
-
-The TDX Module can only accept one root page (i.e. 512 HPAs at most), while
-struct tdx_page_array contains the whole EXT memory (12800 pages). So we
-can't populate all pages into one root page then tell TDX Module. We need to
-populate one batch, tell tdx module, then populate the next batch, tell
-tdx module...
-
-I assume when you said "Great! That is useful information to have here,
-in the code." The concern was solved.
-
-> I suspect we're not really talking about the same thing here.
-
-Sorry I deviated from the question.
-
-> 
-> In any case, I'm not a super big fan of how tdx_ext_mempool_setup() is
-> written. Can you please take another pass at it and try to simplify it
-> and make it easier to follow?
-
-Yes. I plan to remove the __free(). This gives the chance to re-organize
-things from the start.
-
-> 
-> This would be a great opportunity to bring in some of your colleagues to
-> take a look. You can solicit them for suggestions.
-
-Yes.
-
-...
-
-> >> I'd kinda rather the code was improved. Why cram everything into a
-> >> pointer if you don't need to. This would be just fine, no?
-> >>
-> >> 	ret = tdx_ext_mempool_setup(&mempool);
-> >> 	if (ret)
-> >> 		return ret;
-> > 
-> > It's good.
-> > 
-> > The usage of pointer is still about __free(). In order to auto-free
-> > something, we need an object handler for something. I think this is a
-> > more controversial usage of __free() than pure allocation. We setup
-> > something and want auto-undo something on failure.
-> I'm not sure what you are trying to say here. By saying "It's good" are
-> you agreeing that my suggested structure is good and that you will use
-> it? Or are you saying that the original structure is good?
-
-I mean your suggestion is good. I'll use it since I will remove
-__free().
-
-> 
-> Second, what is an "object handler"? Are you talking about the function
-> that is pointed to by __free()?
-
-Sorry, should be object handle, it refers to the pointer, the
-struct tdx_page_array *mempool
-
-> 
-> Third, are you saying that the original code structure is somehow
-> connected to __free()?
-
-Yes.
-
-> I thought that all of these were logically
-> equivalent:
-> 
-> 	void *foo __free(foofree) = alloc_foo();
-> 
-> 	void *foo __free(foofree) = NULL:
-> 	foo = alloc_foo();
-> 
-> 	void *foo __free(foofree) = NULL;
-> 	populate_foo(&foo);
-> 
-> Is there something special about doing the variable assignment at the
-> variable declaration spot?
-
-Yes, Dan explained it.
