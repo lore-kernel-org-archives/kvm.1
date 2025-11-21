@@ -1,56 +1,56 @@
-Received: from mail-pl1-f201.google.com (mail-pl1-f201.google.com [209.85.214.201])
+Received: from mail-pj1-f74.google.com (mail-pj1-f74.google.com [209.85.216.74])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 385E030CD9B
-	for <kvm@vger.kernel.org>; Fri, 21 Nov 2025 22:34:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B7EB2FFDDB
+	for <kvm@vger.kernel.org>; Fri, 21 Nov 2025 22:34:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.74
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763764499; cv=none; b=cdZ2mU643UtG+hbS3MufP0OJlrynxX0NGaUI6RsdHta/uKpOq2lo+mPNlhp7lvrJggBAa4hEVgdhDE6ZdGmKAzxJsK92FjHKStEa/R85lzfJVLyldJvI8HOjUdmYTBv7YGf0eLb/+CceH4vZZZLIjLTLpLILCKogM9IBRkuNxuM=
+	t=1763764502; cv=none; b=hC6crb2FElP3o5GwnfIyAaTEsZhLya4bF7DajcDkKjrddjwjfVBxYGYl6d8LBmoJbt4j8sNyC2w2FkLf4k4nLowHpcZnavC2Sis5MOoWwS/GQ/DiaSYppZxOut6+Fkmcf9gIv1KV+LLywzFIcBt3W8bX9BU4gqMWgit4VeCKLXI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763764499; c=relaxed/simple;
-	bh=7Xe3qDH6ZKzsQpPuowUY9HUcV1Hk4sOsCTpbpwGJBT0=;
+	s=arc-20240116; t=1763764502; c=relaxed/simple;
+	bh=lsT+viZWqqRjn+PYwPpLEA611TTfzuqAF66ioLEfSpQ=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=LV6iMYy3dxTheP4Z81RvfRZQWY516mV1G2TB6DS+Q34VJza/SRU4TzlT/5q28SDtQsi0d1ACY+1+puDZ1tTZeuv96rOHYP5kOBoWpjN0FH2olRA5cPhMn/whdOdp0BnikYbFZtbBa6jsyoO73hHTe80IWvuPhyckCL660ZOs+Vc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=TURhejT1; arc=none smtp.client-ip=209.85.214.201
+	 To:Cc:Content-Type; b=Jry4zedCPjKrH/fFmbxHIz0hXFAYTonHRpDtPaavco/PgztqtLBi1vQOdNT3h2pXGGBoapxVnu2HHAevqMdD/GjQbNbKvBOEAYtOZvu/ZkweaWYtidots9hbmiojoA38heRnXQMEZjaVnwOmo7pApRRGJ5p7b3xEyPNMkHIPVa4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=NXLZFeaV; arc=none smtp.client-ip=209.85.216.74
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="TURhejT1"
-Received: by mail-pl1-f201.google.com with SMTP id d9443c01a7336-2980ef53fc5so80522685ad.1
-        for <kvm@vger.kernel.org>; Fri, 21 Nov 2025 14:34:53 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="NXLZFeaV"
+Received: by mail-pj1-f74.google.com with SMTP id 98e67ed59e1d1-343e17d7ed5so4721984a91.0
+        for <kvm@vger.kernel.org>; Fri, 21 Nov 2025 14:34:56 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1763764492; x=1764369292; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1763764495; x=1764369295; darn=vger.kernel.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:reply-to:from:to:cc:subject:date:message-id:reply-to;
-        bh=1mfMySPMjnmJsOaOUb/BM+KRAPsIyAYo55wsBBcQK4Q=;
-        b=TURhejT1dvyi7bFcfoIg4SGIYf/svS9dS0ve13WBZBtR7K/nCel45Ckni8MCRtGiU1
-         jOQhsOt4xpDvjnibUthGDitnKOrYG1a1xZCUttPkuim+MzBlwthjW0synzOPE2Y8D8sl
-         jWLj9xzy3f1QlQ7bI3o9POo/+HuhWhunBPxLab2DML+iHuSZl1WBOsmbngjgWld77ZT+
-         OB+iUvKih4nKPWKY37ju1NP81H96nV7oOR2XCNgRLu5VHDIpTNx5CBvaw0fhMmSlrqkN
-         CP1Uw1iFOZCb2gp174xFAHTmDVtRHGA4PqbZ1/r46MiMhlQUlBox9ixp0Sp5EgpdKXs8
-         g99w==
+        bh=FYb4mnjND8uyAYDZTY5jZv6bxtxo+QaDoqsrMNdwfeo=;
+        b=NXLZFeaVw62Dmfs8/WSI3J/igoV5XcFIhPp4d4/2q84vBWoCdcVhT+x3ZGBcPkflii
+         lqKoXDRQcTsZD9+m3Yq2qdOFitiX0vN2Fk0gqCCzYvMLtrzBHNYbSdpKFsrBHEVOtaKH
+         Qj4cBAKWq8sUsPOPNc3bH8HbI2JtqcUqKIgMl8/JN3vsgEpSnQkDiyb/AILlwM/5PTXj
+         bIwJFJpsE3VNA8VageyLf+u+C+UJw76x18Bq4D1x6kWe1zudSWyssMLH6B2RLaMglJqe
+         U1EvsqlnKakJYkT20FErvHl9SP6gWqtaaa8CkucpwR8Z0CvDEe2PWlX+jO+8kM0V5bcq
+         Yjfw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1763764492; x=1764369292;
+        d=1e100.net; s=20230601; t=1763764495; x=1764369295;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:reply-to:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=1mfMySPMjnmJsOaOUb/BM+KRAPsIyAYo55wsBBcQK4Q=;
-        b=aTXmjMfx+EqKF3KZ2R9OTMCptFvPnRxud+bbObiRAzdd8mt6nHwp7KeSu6D8MgKYmY
-         c6DsJCJYnQ34OmtvRZalrnshd8Ay7YwMqjYTURP3s5S7IU6tm243yOvVZuZu+76e8Olq
-         vCWN5POoDRKp4YxKM0XPKXoz/eu2G8Z3nDYoxYjM/+Awx01TdjfQCI4BcrKqWdcR6OQE
-         2+WlC1ND2AoBvtPqKQxfM9Rs/5e4lGv31U9l+VbAPQdO8Q6D/OaStY93xRs9T8Diycjs
-         hGH5g+azE1WUm5jHR8gMvwofxf35+DBkRzS3LEgbVWiBg//+xehYP0YQTQf9vPlbiHOq
-         WkgQ==
-X-Gm-Message-State: AOJu0YyoEC2gDkf8XDZsa6m2xShL/GcroODJvPXlY+NFYSlZeBgZb2l5
-	4gXoON0wmnENK9/3Z1t+scEdIXUUZWqHe4GatWxjYfZAWM0vd0gH2elxNHb8cDM2tsp09wiFPmU
-	Y+HTdQg==
-X-Google-Smtp-Source: AGHT+IFj9RuRV1UAsJsdC2BoWHM8pJJQOrksLgBpTc07xLXfaxVjVM2sIZK/7aS0zyKbjdcsJJO13/uH/RU=
-X-Received: from plot21.prod.google.com ([2002:a17:902:8c95:b0:298:321b:1fa8])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:902:f706:b0:297:c889:ba37
- with SMTP id d9443c01a7336-29b6c6a4a1fmr45042745ad.41.1763764491941; Fri, 21
- Nov 2025 14:34:51 -0800 (PST)
+        bh=FYb4mnjND8uyAYDZTY5jZv6bxtxo+QaDoqsrMNdwfeo=;
+        b=vASICYbjdA5RdqR7sTqAyqGqxu34bcnoHNT4hYD/nPGJ4XyKmjHl3W6baX6RNoSS/T
+         M0JE0btECw56NWwbSJEnlOuX/y40bjCxhzdL1RLH7NFUdIkgsrSS63z6pr6wGO7hWxVr
+         8OAAvntIA+6bJK1g/4XvHzD6gP5z8ymhKqDtIFGCPzZTAlH83JAytNBroyy53ogfhrZ2
+         xn2eGeOn1RdJPS7r0edJNWbydGWnNXdrxVZoVwGXEuD1BVVI6FcuBdzl4a+tQbh9YVuO
+         kG+CsrJ2bSkVkFvMDQmLV6tSlYRhE0r4VODl0GdICxq8LOpAhe5W51b8xdCyMviIgZnG
+         qfgA==
+X-Gm-Message-State: AOJu0YzIIIpqof4SbhEhGwF13Xc9hdzy5YMC3lEYp2bbuL8r9HcqlDFZ
+	vWzvK+pPSgTUb+wdUAWuwOeQPlNv8tRtM0+kWBtaf57oY0yXRsiO0cVqlQqgvLHBMdHC8U2TpI5
+	BcRf14g==
+X-Google-Smtp-Source: AGHT+IEQYvT+Zfk13DHjigZ5Eleetu/W6Uzwhp2vloqyzZ4LXM/6l8ZEnBMwrRp+I5s+uD9g9xfA2IZUjhc=
+X-Received: from pjbsk6.prod.google.com ([2002:a17:90b:2dc6:b0:341:7640:eb1e])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:384f:b0:340:ac7c:6387
+ with SMTP id 98e67ed59e1d1-34733e2d4a5mr5255149a91.7.1763764495318; Fri, 21
+ Nov 2025 14:34:55 -0800 (PST)
 Reply-To: Sean Christopherson <seanjc@google.com>
-Date: Fri, 21 Nov 2025 14:34:42 -0800
+Date: Fri, 21 Nov 2025 14:34:44 -0800
 In-Reply-To: <20251121223444.355422-1-seanjc@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
@@ -60,45 +60,44 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 References: <20251121223444.355422-1-seanjc@google.com>
 X-Mailer: git-send-email 2.52.0.rc2.455.g230fcf2819-goog
-Message-ID: <20251121223444.355422-4-seanjc@google.com>
-Subject: [PATCH v3 3/5] KVM: nVMX: Precisely mark vAPIC and PID maps dirty
- when delivering nested PI
+Message-ID: <20251121223444.355422-6-seanjc@google.com>
+Subject: [PATCH v3 5/5] KVM: nVMX: Mark APIC access page dirty when syncing
+ vmcs12 pages
 From: Sean Christopherson <seanjc@google.com>
 To: Sean Christopherson <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>
 Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
 	Fred Griffoul <fgriffo@amazon.co.uk>
 Content-Type: text/plain; charset="UTF-8"
 
-Explicitly mark the vmcs12 vAPIC and PI descriptor pages as dirty when
-delivering a nested posted interrupt instead of marking all vmcs12 pages
-as dirty.  This will allow marking the APIC access page (and any future
- vmcs12 pages) as dirty in nested_mark_vmcs12_pages_dirty() without over-
-dirtying in the nested PI case.  Manually marking the vAPIC and PID pages
-as dirty also makes the flow a bit more self-documenting, e.g. it's not
-obvious at first glance that vmx->nested.pi_desc is actually a host kernel
-mapping of a vmcs12 page.
+From: Fred Griffoul <fgriffo@amazon.co.uk>
 
-No functional change intended.
+For consistency with commit 7afe79f5734a ("KVM: nVMX: Mark vmcs12's APIC
+access page dirty when unmapping"), which marks the page dirty during
+unmap operations, also mark it dirty during vmcs12 page synchronization.
 
+Signed-off-by: Fred Griffoul <fgriffo@amazon.co.uk>
+[sean: use kvm_vcpu_map_mark_dirty()]
 Signed-off-by: Sean Christopherson <seanjc@google.com>
 ---
- arch/x86/kvm/vmx/nested.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ arch/x86/kvm/vmx/vmx.c | 5 +----
+ 1 file changed, 1 insertion(+), 4 deletions(-)
 
-diff --git a/arch/x86/kvm/vmx/nested.c b/arch/x86/kvm/vmx/nested.c
-index d4ef33578747..d0cf99903971 100644
---- a/arch/x86/kvm/vmx/nested.c
-+++ b/arch/x86/kvm/vmx/nested.c
-@@ -4027,7 +4027,8 @@ static int vmx_complete_nested_posted_interrupt(struct kvm_vcpu *vcpu)
- 		}
- 	}
+diff --git a/arch/x86/kvm/vmx/vmx.c b/arch/x86/kvm/vmx/vmx.c
+index cc38d08935e8..72ac42fdf3b1 100644
+--- a/arch/x86/kvm/vmx/vmx.c
++++ b/arch/x86/kvm/vmx/vmx.c
+@@ -6382,10 +6382,7 @@ static void nested_vmx_mark_all_vmcs12_pages_dirty(struct kvm_vcpu *vcpu)
+ {
+ 	struct vcpu_vmx *vmx = to_vmx(vcpu);
  
--	nested_mark_vmcs12_pages_dirty(vcpu);
-+	kvm_vcpu_map_mark_dirty(vcpu, &vmx->nested.virtual_apic_map);
-+	kvm_vcpu_map_mark_dirty(vcpu, &vmx->nested.pi_desc_map);
- 	return 0;
- 
- mmio_needed:
+-	/*
+-	 * Don't need to mark the APIC access page dirty; it is never
+-	 * written to by the CPU during APIC virtualization.
+-	 */
++	kvm_vcpu_map_mark_dirty(vcpu, &vmx->nested.apic_access_page_map);
+ 	kvm_vcpu_map_mark_dirty(vcpu, &vmx->nested.virtual_apic_map);
+ 	kvm_vcpu_map_mark_dirty(vcpu, &vmx->nested.pi_desc_map);
+ }
 -- 
 2.52.0.rc2.455.g230fcf2819-goog
 
