@@ -1,49 +1,49 @@
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ACA9B34C81E
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC9A734C816
 	for <kvm@vger.kernel.org>; Fri, 21 Nov 2025 12:14:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763727296; cv=none; b=UFjgNW8RwsxicjWeTq/HRTgGgT+3defAcQSRqNqpOFwws062MT6z0iAxAIUOSVnRBy4Ke/g2Y2s0txkELLeF7SSpkQ1UmwzoYUVam6U4DNEpxGplkt4CJJLDnihSRZQJT3UIxHClSLOapG89etknQL57meBO1y2MTUdm4zI5cmM=
+	t=1763727296; cv=none; b=nkILN2zsh64bwaNEUKO7yOx7v0eJ825djsXguc1vHxlct4P5uBVUZkblX5Y2gXYaB2IFBNo93Q8GVGSiIsnq7CoKwe+gwebQbyJb9il6l0qZ6O0HbAbyi7eKJLC23S8aFThwpw3MzZEGf31+2+K6emHwKmSCGLrYx23FIqDsDP0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1763727296; c=relaxed/simple;
-	bh=WWert2UmtSLR+3S7igH5gRbvlm9O/q3RojWG5DGSyXo=;
+	bh=vUEfE8rbgu9z9wRKEmNEehtjAoRbitazjv+qSM4hrLY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BFSOYaqBxEYANHGTJlCTq/ZKeKWEnnuonEoMkP/YNehx/2zDktpDlYr53w4/ayfjVnxiEIm3QEQ5/N0kDcQ01LAw6NjDxf2scnvtamArw4CfeTH2Gv5kQ7AOYPV4qhp/DhU+BpvqGrjaX4B258yaJSgx8vLJGgBFtur6HjLJc8o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=ZSkKcqxj; arc=none smtp.client-ip=170.10.129.124
+	 MIME-Version; b=NYwqeg6fyWnKlVYQggc4kVcrh449DcJWlCETjGiPrlZQrIlmKxTZ+8zFuUenvjn/DbWDJ6jORLzKRVB3kTVwVKmsgL4SHxYiiFXmSAs8mF428C1pG+9zTaZMqQ/af6zliKSPARJbXQz3bQoAt8CkIQfLIUIDkQCvmdndEdCntxE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=T4W2SIFG; arc=none smtp.client-ip=170.10.129.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="ZSkKcqxj"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="T4W2SIFG"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
 	s=mimecast20190719; t=1763727293;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=/xtGdog7VgzIfQmeSQKWrv+vlf3j6c1d+FLveMONGz8=;
-	b=ZSkKcqxj2cPAT14EfJLUsQSHA2vqSbd6Poc1rW8ZuTgdha1sDW4qF+dZUOgEjseS0nJxaQ
-	lcHrg8L6qb9uTrkHCEQhKGr4rdxVi7KOczIKihKXkQYKHRm6SS23H+i0pUHdGWi7MwXojG
-	NP14ih9i8joTjiHIuvdm4+wMav3qEt8=
-Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+	bh=fcIBzXudHPYvY6QmF4OmsaPzhsA+4LiQymdChLvcMTo=;
+	b=T4W2SIFGoX08jlLDUOV/kEe2uLY0RtBaBdyRDrqIQ8cZYdYrBBQvk818qFefH012Jqccp4
+	kstHrv2pmH56sSgrPin4l8kUxijYrjxO3hHwbWTmUCgHIWJRQAngWZ6YvV/zyIc7Au8xkg
+	fgPjPAv1zhmPYpk1v/54xZmKTnQM9N0=
+Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-159-vWwfEYL1PsCGkLjkk410QQ-1; Fri,
- 21 Nov 2025 07:14:51 -0500
-X-MC-Unique: vWwfEYL1PsCGkLjkk410QQ-1
-X-Mimecast-MFC-AGG-ID: vWwfEYL1PsCGkLjkk410QQ_1763727287
-Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-575-Dq2pCknkP6KXf0MRWBD_yw-1; Fri,
+ 21 Nov 2025 07:14:48 -0500
+X-MC-Unique: Dq2pCknkP6KXf0MRWBD_yw-1
+X-Mimecast-MFC-AGG-ID: Dq2pCknkP6KXf0MRWBD_yw_1763727284
+Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id C573E19560A1;
-	Fri, 21 Nov 2025 12:14:46 +0000 (UTC)
+	by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 4FD4B1800650;
+	Fri, 21 Nov 2025 12:14:43 +0000 (UTC)
 Received: from blackfin.pond.sub.org (unknown [10.45.242.3])
-	by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id BA42430044DC;
-	Fri, 21 Nov 2025 12:14:45 +0000 (UTC)
+	by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 19398180049F;
+	Fri, 21 Nov 2025 12:14:41 +0000 (UTC)
 Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
-	id A9C7321E660B; Fri, 21 Nov 2025 13:14:38 +0100 (CET)
+	id 835E221E6935; Fri, 21 Nov 2025 13:14:38 +0100 (CET)
 From: Markus Armbruster <armbru@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: arei.gonglei@huawei.com,
@@ -95,9 +95,9 @@ Cc: arei.gonglei@huawei.com,
 	xen-devel@lists.xenproject.org,
 	kvm@vger.kernel.org,
 	qemu-riscv@nongnu.org
-Subject: [PATCH v2 07/15] hw/virtio: Use error_setg_file_open() for a better error message
-Date: Fri, 21 Nov 2025 13:14:30 +0100
-Message-ID: <20251121121438.1249498-8-armbru@redhat.com>
+Subject: [PATCH v2 01/15] error: Strip trailing '\n' from error string arguments (again)
+Date: Fri, 21 Nov 2025 13:14:24 +0100
+Message-ID: <20251121121438.1249498-2-armbru@redhat.com>
 In-Reply-To: <20251121121438.1249498-1-armbru@redhat.com>
 References: <20251121121438.1249498-1-armbru@redhat.com>
 Precedence: bulk
@@ -107,37 +107,41 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
 
-The error message changes from
-
-    vhost-vsock: failed to open vhost device: REASON
-
-to
-
-    Could not open '/dev/vhost-vsock': REASON
-
-I think the exact file name is more useful to know than the file's
-purpose.
+Tracked down with scripts/coccinelle/err-bad-newline.cocci.
 
 Signed-off-by: Markus Armbruster <armbru@redhat.com>
 ---
- hw/virtio/vhost-vsock.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ hw/audio/es1370.c | 2 +-
+ ui/gtk.c          | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/hw/virtio/vhost-vsock.c b/hw/virtio/vhost-vsock.c
-index 107d88babe..7940b60d8a 100644
---- a/hw/virtio/vhost-vsock.c
-+++ b/hw/virtio/vhost-vsock.c
-@@ -153,8 +153,7 @@ static void vhost_vsock_device_realize(DeviceState *dev, Error **errp)
-     } else {
-         vhostfd = open("/dev/vhost-vsock", O_RDWR);
-         if (vhostfd < 0) {
--            error_setg_errno(errp, errno,
--                             "vhost-vsock: failed to open vhost device");
-+            error_setg_file_open(errp, errno, "/dev/vhost-vsock");
-             return;
-         }
+diff --git a/hw/audio/es1370.c b/hw/audio/es1370.c
+index 9873ffadab..566f93f1ea 100644
+--- a/hw/audio/es1370.c
++++ b/hw/audio/es1370.c
+@@ -228,7 +228,7 @@ static void print_sctl(uint32_t val)
+ #undef a
+         error_report("es1370: "
+                 "%s p2_end_inc %d, p2_st_inc %d,"
+-                " r1_fmt %s, p2_fmt %s, p1_fmt %s\n",
++                " r1_fmt %s, p2_fmt %s, p1_fmt %s",
+                 buf,
+                 (val & SCTRL_P2ENDINC) >> SCTRL_SH_P2ENDINC,
+                 (val & SCTRL_P2STINC) >> SCTRL_SH_P2STINC,
+diff --git a/ui/gtk.c b/ui/gtk.c
+index 48571bedbf..e83a366625 100644
+--- a/ui/gtk.c
++++ b/ui/gtk.c
+@@ -1197,7 +1197,7 @@ static gboolean gd_touch_event(GtkWidget *widget, GdkEventTouch *touch,
+         type = INPUT_MULTI_TOUCH_TYPE_END;
+         break;
+     default:
+-        warn_report("gtk: unexpected touch event type\n");
++        warn_report("gtk: unexpected touch event type");
+         return FALSE;
+     }
  
 -- 
 2.49.0
