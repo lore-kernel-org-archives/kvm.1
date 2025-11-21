@@ -1,108 +1,164 @@
-Received: from mail-pl1-f202.google.com (mail-pl1-f202.google.com [209.85.214.202])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from fhigh-b5-smtp.messagingengine.com (fhigh-b5-smtp.messagingengine.com [202.12.124.156])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B05634C98
-	for <kvm@vger.kernel.org>; Thu, 20 Nov 2025 23:55:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.202
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 302154C97;
+	Fri, 21 Nov 2025 00:04:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.156
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763682908; cv=none; b=a0Iss4jOLn1jE9JpNzUcvkZ86gn282LZ4Z9Ak1L33kFEpS1X+7S/ITags1Oh05jdC5ZUSYOYYNDY2i3DQ0bm3xB1b1I52zkExFZjB99nW/4Lc00S+yy0v5Nk2VO8mvJ2gH0IggynVC63PrrzJ4DEkD1RSkPpSC8EwdBFLezIRXc=
+	t=1763683464; cv=none; b=lTcUXV1R8ICWYjV1OnCFqU6TE7eLspBIuW9m7tZ4wtBt9zSjhm8+EyXyxpwGrAFL++Xo2YdvzSpifuLjGqlyuTWOg7t5RgUfQEFfQukoNSeh4QT719K9n+LPwIzkoMrFyYKl2/mGyOMBhslCgI5MAd0alxTG8YgsrQT82BIin3c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763682908; c=relaxed/simple;
-	bh=4zjy4k3vgeqSg0Yu40MRWtPhRy4GPFmjoybzqM+g/ic=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=f/9c+sU0zFjtS45PaPP9Cq35HUzgDspmF/AqCZIoZCu++Tn8vft3+4OEcy+OGbQxKNlG1iOWt7NVqBMsSP6UxT04lvbSG4jPdlO2SEuz+cw4mSeJW9ruF5RPBvROofr6qYJznifwjtD3Mn3fVJLPc6VAB58eeZ8Bgfen9W0ZLWI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=0e44B1O3; arc=none smtp.client-ip=209.85.214.202
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+	s=arc-20240116; t=1763683464; c=relaxed/simple;
+	bh=kbWt00WptMFSusVetoE1KZTz3B5Wufm06tti5QpupYI=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=YSRDkJbdUhRJ8L+uB7qSVVWrb0QBxb7wuimvaLfryNSaW1wFzJZvC8Z2oaD2NzF1rqT2NTFbCfdk4oC8J0+ON32uTrFTwVpWIuk1N8oIguQava9AHdKjWBNukhM02UjyT8Mp+joMU+UZV4YNPZTBF4CD3wv6Qg/0jg2dMaDW/ZU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=shazbot.org; spf=pass smtp.mailfrom=shazbot.org; dkim=pass (2048-bit key) header.d=shazbot.org header.i=@shazbot.org header.b=A4DQbQTO; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=DdwiK8V+; arc=none smtp.client-ip=202.12.124.156
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=shazbot.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=shazbot.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="0e44B1O3"
-Received: by mail-pl1-f202.google.com with SMTP id d9443c01a7336-297df52c960so42277005ad.1
-        for <kvm@vger.kernel.org>; Thu, 20 Nov 2025 15:55:06 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1763682906; x=1764287706; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=s68Za4hFCTq+nn0V7gl7AkP7K1rYBg/9xd9l27wex74=;
-        b=0e44B1O3ngmtngm+5a7ViT//h2PwAOj+/IKXBWLCZQ5sT5rtPdLqYospqqNsVfpOqZ
-         II/bZ6ACpj+CzUJqckpsYD3+FupW/AyPnN4/UwnMdoy3SVQrZhC//JYnqQbljG5jEQP4
-         /AVGNNQpoDv8Qge1XRROqmQtVStlWtHTQJLoG9YH5HegSBOgURhcOc0ztiV7NrDKTUXe
-         VcE1oKlyM6YJWiQQybPSbgCz6J6+K+b03iqO2+NMbtTiB2tnEp9/l7bletLTJZZ+mSnq
-         U9ZjDq9SDVxhORZEmS4UQS7a0erNbYVRgMo73Use/YiDPPmNy9zONV6d2HTSaRCcOmhV
-         THiA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1763682906; x=1764287706;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=s68Za4hFCTq+nn0V7gl7AkP7K1rYBg/9xd9l27wex74=;
-        b=rcqG42bX9xqHEuoSfOewlrWiPj67ZE/fJ7DkJKBW5FYPIuuuw2XXLtz2y+7OLTBarH
-         vk2Q3ewdlPpaoKhUyiXC8maRPeIs2UHIZae98ZJv2oKVLnoR9DVryr/cx/WNigv6Z7s5
-         F25By9HkFiu8XIIAQH2n6M7yK3uty4FehiwrpCYEe0M+4uJiK8md2Gvo6LnuUptB97P5
-         1qh8Vftj4blF9rM8IB7AeSrmlqBtuqBgRyss4ETVgvozyyO9KcEBFYLhyOGNN741LN34
-         5uBsdAr4WO3zzKnwnSIf8Y/hdgwB/sNuAZSX5za4/yk5ohtxLr97CCjVi78WmRyQaDTO
-         5CYQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVQ9oMLNCnNty4W46yeCpyn/XPtNd2OPeZZYTK3LZ1bpr5yvnsRx6RersjsMlwEVXxzumQ=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yzo1uY53yDHlQcNmewPvWwIQV7KoZP0nUyNci/D2RuP01U+OIwI
-	HONzL/J5ZJZKGDJZoZ6sigjHF4diVGcV96Q+VksM9JAL18yLVYt//8YzLd7t7GIMwja80UMSrSp
-	PK+WiLg==
-X-Google-Smtp-Source: AGHT+IGnE8+xz+DbZR1KrybADk4tLQE+xfefjHvMcNEQiKhOicLrhsjIp7gqnkx8TjVbUL6zV/W/BzjG2Ps=
-X-Received: from pgac15.prod.google.com ([2002:a05:6a02:294f:b0:bac:a20:5eea])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:902:d502:b0:295:9cb5:ae2a
- with SMTP id d9443c01a7336-29b6be8cb22mr5202385ad.9.1763682906026; Thu, 20
- Nov 2025 15:55:06 -0800 (PST)
-Date: Thu, 20 Nov 2025 15:55:04 -0800
-In-Reply-To: <20251021074736.1324328-6-yosry.ahmed@linux.dev>
+	dkim=pass (2048-bit key) header.d=shazbot.org header.i=@shazbot.org header.b="A4DQbQTO";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="DdwiK8V+"
+Received: from phl-compute-04.internal (phl-compute-04.internal [10.202.2.44])
+	by mailfhigh.stl.internal (Postfix) with ESMTP id 879FA7A016A;
+	Thu, 20 Nov 2025 19:04:19 -0500 (EST)
+Received: from phl-mailfrontend-02 ([10.202.2.163])
+  by phl-compute-04.internal (MEProxy); Thu, 20 Nov 2025 19:04:20 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shazbot.org; h=
+	cc:cc:content-transfer-encoding:content-type:content-type:date
+	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to; s=fm2; t=1763683459;
+	 x=1763769859; bh=HjvLzwzMxld1mKMp0zyef95cQ5dfE6rG/eqr2WGdSgw=; b=
+	A4DQbQTOyZxcwypC3+L5HNDKquu8alZqgjdhfxqZhbERLv0+0bVTi2URYY9SzrLO
+	cIA7+3vgf/rnkv+XeyQZkg532nvGvpUxuRuwx8L/Uic271UWSaf9xReKLuEuvY74
+	TXftCb/sHWzhJltogSGXj4K0/ZbPmRRaXRFkmo3sRy+Z4z8++d48fHWnyoTm5Rd9
+	aH/FdoWkLMRiNni0STbqvQYOU5pdxxsY7e52rmKgWsiBf8fqGFqAxCDG3kL1PeG2
+	7GxTPsfg7ei7jvBCMfCyaQh0d+BBQYxa1SY8i0Kfw7zj/+JdqdB22GSLh+Fs90K6
+	u32o+RuLRjdGGSIuhBj9Zg==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=1763683459; x=
+	1763769859; bh=HjvLzwzMxld1mKMp0zyef95cQ5dfE6rG/eqr2WGdSgw=; b=D
+	dwiK8V+/jfQWiXQ4xfgr/qIY0MMzH+L4GlO/SbVTzukbW8v4IZsujct5M/7WHsGU
+	KJYRNfKXTpBUBZzevF7fYkXShA08TaKjEn7NKAD0fgTmLpjMlQw7jiuEY0bMZwZn
+	VccsOxjUPSrk4Ypi3Td2udeXQFCQSKbah3t7VMkpMgQAXlzIHM3l/phBNUmqAbsT
+	DpQzFdvi8RlbqpLR/grhmVmP/RW6ZfN97T+HzwghRhTZ8ofBo2MW2Y7y3xw+jjnc
+	vC3t58oLkrJxxKLSXx/zPq4Pu6J9ROujv6iqpDupZqdrM1VaUpFUxHq5MXTwkadv
+	zU0wpSwt6t6kGWO6qd5gg==
+X-ME-Sender: <xms:gawfaQpKfCI9uTs4scyVMdG0pHsQRE0PiBFHB_XYgFSu1KW_IQsjVA>
+    <xme:gawfaW2e_QMZXgkEpQ4dQAIhH754U_TcX65CFkHK4BzhBZeujWK2leqdh1rKUCtjh
+    4tLTjYQmkHsFx6m9HuoO30v226Seho2vROg9ws3UOb7QkFzwUN8>
+X-ME-Received: <xmr:gawfaX3HsXWu4ErPEmHODuiTinVc3SxzIhtZwD7cdqamrNVqEBbkCxqj>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdeggddvvdekgeejucetufdoteggodetrf
+    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
+    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
+    gurhepfffhvfevuffkjghfgggtgfesthejredttddtvdenucfhrhhomheptehlvgigucgh
+    ihhllhhirghmshhonhcuoegrlhgvgiesshhhrgiisghothdrohhrgheqnecuggftrfgrth
+    htvghrnhepteetudelgeekieegudegleeuvdffgeehleeivddtfeektdekkeehffehudet
+    hffhnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomheprg
+    hlvgigsehshhgriigsohhtrdhorhhgpdhnsggprhgtphhtthhopeeffedpmhhouggvpehs
+    mhhtphhouhhtpdhrtghpthhtoheplhgvohhnsehkvghrnhgvlhdrohhrghdprhgtphhtth
+    hopegshhgvlhhgrggrshesghhoohhglhgvrdgtohhmpdhrtghpthhtoheplhhoghgrnhhg
+    seguvghlthgrthgvvgdrtghomhdprhgtphhtthhopegrgigsohgvsehkvghrnhgvlhdrug
+    hkpdhrtghpthhtoheprhhosghinhdrmhhurhhphhihsegrrhhmrdgtohhmpdhrtghpthht
+    ohepjhhorhhoseeksgihthgvshdrohhrghdprhgtphhtthhopeifihhllheskhgvrhhnvg
+    hlrdhorhhgpdhrtghpthhtohepmhdrshiihihprhhofihskhhisehsrghmshhunhhgrdgt
+    ohhmpdhrtghpthhtohepjhhgghesiihivghpvgdrtggr
+X-ME-Proxy: <xmx:gqwfaTc1qHnh0-i3KO6tJsUVtNtxTcxs3s7vL3whUFJvperGF6WN6g>
+    <xmx:gqwfaT4HBIK9hrr9a_hBvYAFnQ7rPa0nLaI-32DuwCrkmnxah0vROg>
+    <xmx:gqwfaQhMKw1KHBszqSGzGjVlPYaxt6EqZf0UcaWVJr34DnEzzh9nUg>
+    <xmx:gqwfaVrbusXEFt0RPAKnPhFRWA6SjT0BpwWPLXloz2sEwqtMNFS0HQ>
+    <xmx:g6wfae0YvvvtVTx0cpC_54SaFJugeR6HLLLdi1mavPKyN1Xc4JF--XDn>
+Feedback-ID: i03f14258:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
+ 20 Nov 2025 19:04:15 -0500 (EST)
+Date: Thu, 20 Nov 2025 17:04:13 -0700
+From: Alex Williamson <alex@shazbot.org>
+To: Leon Romanovsky <leon@kernel.org>
+Cc: Bjorn Helgaas <bhelgaas@google.com>,
+ Logan Gunthorpe <logang@deltatee.com>, Jens Axboe <axboe@kernel.dk>,
+ Robin Murphy <robin.murphy@arm.com>, Joerg Roedel <joro@8bytes.org>,
+ Will Deacon <will@kernel.org>,
+ Marek Szyprowski <m.szyprowski@samsung.com>,
+ Jason Gunthorpe <jgg@ziepe.ca>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Jonathan Corbet <corbet@lwn.net>, Sumit Semwal <sumit.semwal@linaro.org>,
+ Christian =?UTF-8?B?S8O2bmln?= <christian.koenig@amd.com>,
+ Kees Cook <kees@kernel.org>,
+ "Gustavo A. R. Silva" <gustavoars@kernel.org>,
+ Ankit Agrawal <ankita@nvidia.com>, Yishai Hadas <yishaih@nvidia.com>,
+ Shameer Kolothum <skolothumtho@nvidia.com>,
+ Kevin Tian <kevin.tian@intel.com>, Krishnakant Jaju <kjaju@nvidia.com>,
+ Matt Ochs <mochs@nvidia.com>, linux-pci@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-block@vger.kernel.org,
+ iommu@lists.linux.dev, linux-mm@kvack.org, linux-doc@vger.kernel.org,
+ linux-media@vger.kernel.org, dri-devel@lists.freedesktop.org,
+ linaro-mm-sig@lists.linaro.org, kvm@vger.kernel.org,
+ linux-hardening@vger.kernel.org,
+ Vivek Kasireddy <vivek.kasireddy@intel.com>
+Subject: Re: [PATCH v9 10/11] vfio/pci: Add dma-buf export support for MMIO
+ regions
+Message-ID: <20251120170413.050ccbb5.alex@shazbot.org>
+In-Reply-To: <20251120-dmabuf-vfio-v9-10-d7f71607f371@nvidia.com>
+References: <20251120-dmabuf-vfio-v9-0-d7f71607f371@nvidia.com>
+	<20251120-dmabuf-vfio-v9-10-d7f71607f371@nvidia.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20251021074736.1324328-1-yosry.ahmed@linux.dev> <20251021074736.1324328-6-yosry.ahmed@linux.dev>
-Message-ID: <aR-qWN9uIX3fl5QX@google.com>
-Subject: Re: [PATCH v2 05/23] KVM: selftests: Move nested invalid CR3 check to
- its own test
-From: Sean Christopherson <seanjc@google.com>
-To: Yosry Ahmed <yosry.ahmed@linux.dev>
-Cc: Paolo Bonzini <pbonzini@redhat.com>, Jim Mattson <jmattson@google.com>, kvm@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-On Tue, Oct 21, 2025, Yosry Ahmed wrote:
-> vmx_tsc_adjust_test currently verifies that a nested VMLAUNCH fails with
-> an invalid CR3. This is irrelevant to TSC scaling, move it to a
-> standalone test.
-> 
-> Signed-off-by: Yosry Ahmed <yosry.ahmed@linux.dev>
-> ---
->  tools/testing/selftests/kvm/Makefile.kvm      |  1 +
->  .../kvm/x86/nested_invalid_cr3_test.c         | 81 +++++++++++++++++++
->  .../selftests/kvm/x86/vmx_tsc_adjust_test.c   | 10 ---
->  3 files changed, 82 insertions(+), 10 deletions(-)
->  create mode 100644 tools/testing/selftests/kvm/x86/nested_invalid_cr3_test.c
-> 
-> diff --git a/tools/testing/selftests/kvm/Makefile.kvm b/tools/testing/selftests/kvm/Makefile.kvm
-> index bb2ff7927ef57..b78700c574fc7 100644
-> --- a/tools/testing/selftests/kvm/Makefile.kvm
-> +++ b/tools/testing/selftests/kvm/Makefile.kvm
-> @@ -88,6 +88,7 @@ TEST_GEN_PROGS_x86 += x86/kvm_pv_test
->  TEST_GEN_PROGS_x86 += x86/kvm_buslock_test
->  TEST_GEN_PROGS_x86 += x86/monitor_mwait_test
->  TEST_GEN_PROGS_x86 += x86/msrs_test
-> +TEST_GEN_PROGS_x86 += x86/nested_invalid_cr3_test
+On Thu, 20 Nov 2025 11:28:29 +0200
+Leon Romanovsky <leon@kernel.org> wrote:
+> diff --git a/drivers/vfio/pci/vfio_pci_core.c b/drivers/vfio/pci/vfio_pci_core.c
+> index 142b84b3f225..51a3bcc26f8b 100644
+> --- a/drivers/vfio/pci/vfio_pci_core.c
+> +++ b/drivers/vfio/pci/vfio_pci_core.c
+...
+> @@ -2487,8 +2500,11 @@ static int vfio_pci_dev_set_hot_reset(struct vfio_device_set *dev_set,
+>  
+>  err_undo:
+>  	list_for_each_entry_from_reverse(vdev, &dev_set->device_list,
+> -					 vdev.dev_set_list)
+> +					 vdev.dev_set_list) {
+> +		if (__vfio_pci_memory_enabled(vdev))
+> +			vfio_pci_dma_buf_move(vdev, false);
+>  		up_write(&vdev->memory_lock);
+> +	}
 
-Almost.  A. B. C. D. I? E.  :-D
+I ran into a bug here.  In the hot reset path we can have dev_sets
+where one or more devices are not opened by the user.  The vconfig
+buffer for the device is established on open.  However:
 
->  TEST_GEN_PROGS_x86 += x86/nested_emulation_test
->  TEST_GEN_PROGS_x86 += x86/nested_exceptions_test
->  TEST_GEN_PROGS_x86 += x86/platform_info_test
-> diff --git a/tools/testing/selftests/kvm/x86/nested_invalid_cr3_test.c b/tools/testing/selftests/kvm/x86/nested_invalid_cr3_test.c
-> new file mode 100644
-> index 0000000000000..b9853ab532cfe
-> --- /dev/null
-> +++ b/tools/testing/selftests/kvm/x86/nested_invalid_cr3_test.c
-> @@ -0,0 +1,81 @@
-> +// SPDX-License-Identifier: GPL-2.0-only
-> +/*
-> + * nested_invalid_cr3_test
+bool __vfio_pci_memory_enabled(struct vfio_pci_core_device *vdev)
+{
+        struct pci_dev *pdev = vdev->pdev;
+        u16 cmd = le16_to_cpu(*(__le16 *)&vdev->vconfig[PCI_COMMAND]);
+	...
 
-Boooooh.
+Leads to a NULL pointer dereference.
+
+I think the most straightforward fix is simply to test the open_count
+on the vfio_device, which is also protected by the dev_set->lock that
+we already hold here:
+
+--- a/drivers/vfio/pci/vfio_pci_core.c
++++ b/drivers/vfio/pci/vfio_pci_core.c
+@@ -2501,7 +2501,7 @@ static int vfio_pci_dev_set_hot_reset(struct vfio_device_set *dev_set,
+ err_undo:
+        list_for_each_entry_from_reverse(vdev, &dev_set->device_list,
+                                         vdev.dev_set_list) {
+-               if (__vfio_pci_memory_enabled(vdev))
++               if (vdev->vdev.open_count && __vfio_pci_memory_enabled(vdev))
+                        vfio_pci_dma_buf_move(vdev, false);
+                up_write(&vdev->memory_lock);
+        }
+
+Any other suggestions?  This should be the only reset path with this
+nuance of affecting non-opened devices.  Thanks,
+
+Alex
