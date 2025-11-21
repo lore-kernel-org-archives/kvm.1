@@ -1,49 +1,49 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C5F0F34D386
-	for <kvm@vger.kernel.org>; Fri, 21 Nov 2025 12:14:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 56FD734D38E
+	for <kvm@vger.kernel.org>; Fri, 21 Nov 2025 12:14:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763727298; cv=none; b=inH9V5Ol4gM4kI7b9Zd13Yxe6voRBSrAg0FtoGvY6HmAJ2BD2YLbjWFO2RieimwSL6flXbIWd0hJPraJ+Fp8v9jLZPJV0eXO1IShav7uc5XVGBTot5zt/szJYHDxLc9u4MDGxhUSLpTlph3gHNYjOGz0IcREkdbaaslnMFdAHDo=
+	t=1763727299; cv=none; b=aIOCOoNNzpI2R95rYVacL9YPbOJ8jBZwTv1jqKEzbf61U8y01adqo5GeKJelglvy+SCM4QbyGQamL9Ir5NCAeMmvKetketwCSXnbJR++us5/JHZymEzVt2HeczPxiEMTRPSKGjnAYaO+bW5px/DcMNWgKakKQt1jm3x10/ahJPU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763727298; c=relaxed/simple;
-	bh=n5ieai0oOuZYyNZCJeslW+M/vh4VieMur+A1oVEebmI=;
+	s=arc-20240116; t=1763727299; c=relaxed/simple;
+	bh=ncnIpnq4p53jzYE1FTnhA8sPXcRd78/xTHxJgaXYjYg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BrhqedRl2vhSntTjLFt9wJaq/GTiqCCrEItiU8vm8tOZMGDCW+0ZSh6KYyrRf3TmorJMgx98wmNBkw0c7lv+K2t4qkAiULarEGNm+dDjoidu5Q8gHHUEZSqp6DSH+afAot57m9dl1G03buryB8attyoFcqzbg8z7LUD7+OEAuOw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=gDFYrp2h; arc=none smtp.client-ip=170.10.133.124
+	 MIME-Version; b=ciy8iHWXNyBnGcUpEj5fBHRcvd2mBHB0AZdPMAlIOmS3sKKdYB/8SNFfarfk+FEor6Wyz3Npj1Grc4mU8XF+0sXFLIOSp8b0rQ1knq8B5BD73NBJMs4I5DllIoJdxeVaNnLLXoIPA78D6FnLooYi1VsnFRI5LJ7LhIsZVK+n2ec=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=HdCadvrA; arc=none smtp.client-ip=170.10.129.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="gDFYrp2h"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="HdCadvrA"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1763727295;
+	s=mimecast20190719; t=1763727296;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=oeDPJTEK/mbRoQ9G1reQyHyjo6pRRwMOwFAV76+b8w0=;
-	b=gDFYrp2hetNotCnwDrusBW9leknAAoD8QxGBwGTuvw4fBQ6TcEDfdmdnXA42738eFJiDCE
-	VV/k9BEFGVnIa9QSed0nbzhB/vU8kBeFP0liye+4Jk1izJIW/APbufxMCRMDchxgUo+cmm
-	BrnlEIEViVa1r0HnDZHDsLwTFzsmXSs=
-Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+	bh=s+f/YPMyhiw0MODLrT/W+QVnkFDpo2Q2VNPNda433v0=;
+	b=HdCadvrAwVcEYSDzlkuWYoImsp+xEvRQ7U3SQa8N5yrg+rrJ6UFgDnZjzuyMh1/GNcP+VY
+	wlJvI9Kj9wBc7W7MT9u4c9KIfXLiPrtu0j+Lo0Uea2eK30Rs7zsbsz45tDkWPIwz9um+GN
+	Bq5sP0uXnDobwNG+ztnHyeDDu+dwqNI=
+Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-544-9KVhRz1PNjG4B1qvQhE2_Q-1; Fri,
- 21 Nov 2025 07:14:53 -0500
-X-MC-Unique: 9KVhRz1PNjG4B1qvQhE2_Q-1
-X-Mimecast-MFC-AGG-ID: 9KVhRz1PNjG4B1qvQhE2_Q_1763727289
-Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-63--Cu4SEnVN0iR9hO-VJAOfQ-1; Fri,
+ 21 Nov 2025 07:14:51 -0500
+X-MC-Unique: -Cu4SEnVN0iR9hO-VJAOfQ-1
+X-Mimecast-MFC-AGG-ID: -Cu4SEnVN0iR9hO-VJAOfQ_1763727287
+Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id F29621956061;
-	Fri, 21 Nov 2025 12:14:48 +0000 (UTC)
+	by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 9F51C1800343;
+	Fri, 21 Nov 2025 12:14:46 +0000 (UTC)
 Received: from blackfin.pond.sub.org (unknown [10.45.242.3])
-	by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id A221C1800451;
-	Fri, 21 Nov 2025 12:14:48 +0000 (UTC)
+	by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id A8D84180047F;
+	Fri, 21 Nov 2025 12:14:45 +0000 (UTC)
 Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
-	id D6F9B21EC348; Fri, 21 Nov 2025 13:14:38 +0100 (CET)
+	id B3F5821E65DC; Fri, 21 Nov 2025 13:14:38 +0100 (CET)
 From: Markus Armbruster <armbru@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: arei.gonglei@huawei.com,
@@ -95,9 +95,9 @@ Cc: arei.gonglei@huawei.com,
 	xen-devel@lists.xenproject.org,
 	kvm@vger.kernel.org,
 	qemu-riscv@nongnu.org
-Subject: [PATCH v2 15/15] block/file-win32: Improve an error message
-Date: Fri, 21 Nov 2025 13:14:38 +0100
-Message-ID: <20251121121438.1249498-16-armbru@redhat.com>
+Subject: [PATCH v2 09/15] blkdebug: Use error_setg_file_open() for a better error message
+Date: Fri, 21 Nov 2025 13:14:32 +0100
+Message-ID: <20251121121438.1249498-10-armbru@redhat.com>
 In-Reply-To: <20251121121438.1249498-1-armbru@redhat.com>
 References: <20251121121438.1249498-1-armbru@redhat.com>
 Precedence: bulk
@@ -107,30 +107,36 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
 
-Two out of three calls of CreateFile() use error_setg_win32() to
-report errors.  The third uses error_setg_errno(), mapping
-ERROR_ACCESS_DENIED to EACCES, and everything else to EINVAL, throwing
-away detail.  Switch it to error_setg_win32().
+The error message changes from
+
+    Could not read blkdebug config file: REASON
+
+to
+
+    Could not open 'FNAME': REASON
+
+I think the exact file name is more useful to know than the file's
+purpose.
 
 Signed-off-by: Markus Armbruster <armbru@redhat.com>
 ---
- block/file-win32.c | 2 +-
+ block/blkdebug.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/block/file-win32.c b/block/file-win32.c
-index 0efb609e1d..78961837c8 100644
---- a/block/file-win32.c
-+++ b/block/file-win32.c
-@@ -904,7 +904,7 @@ static int hdev_open(BlockDriverState *bs, QDict *options, int flags,
-         } else {
-             ret = -EINVAL;
+diff --git a/block/blkdebug.c b/block/blkdebug.c
+index c54aee0c84..8a4a8cb85e 100644
+--- a/block/blkdebug.c
++++ b/block/blkdebug.c
+@@ -288,7 +288,7 @@ static int read_config(BDRVBlkdebugState *s, const char *filename,
+     if (filename) {
+         f = fopen(filename, "r");
+         if (f == NULL) {
+-            error_setg_errno(errp, errno, "Could not read blkdebug config file");
++            error_setg_file_open(errp, errno, filename);
+             return -errno;
          }
--        error_setg_errno(errp, -ret, "Could not open device");
-+        error_setg_win32(errp, err, "Could not open device");
-         goto done;
-     }
  
 -- 
 2.49.0
