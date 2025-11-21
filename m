@@ -1,134 +1,88 @@
-Received: from mx.treblig.org (mx.treblig.org [46.235.229.95])
+Received: from out-183.mta0.migadu.com (out-183.mta0.migadu.com [91.218.175.183])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A9FA253951
-	for <kvm@vger.kernel.org>; Fri, 21 Nov 2025 00:24:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.235.229.95
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F057F17E4
+	for <kvm@vger.kernel.org>; Fri, 21 Nov 2025 00:30:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.183
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763684665; cv=none; b=SuX6AWdog+06+U5WHvjgFvlRdoYHQfFY79ZXCbiA2EcUGmtrHsl8E+dPZ63/b661eCHouuU/i+8vtYnhQHryQ96hjUwSUQPp7qNUkCSWW8XFC1B+W1vpDgq5KgXOEfoI3/WemAvvcUksPhJ8GQrhZh7germhHcJOYx1Eiu0SvcQ=
+	t=1763685044; cv=none; b=UaXdr2tQu5iBIh/9jDhSKNpz28ZoptZVWez3FfzJI5rGdJ3DfcrKe63n4ylcstzFXn9Tp3MZNstO+ZVC7Nzicdl1niD53Gg6GWJLFpJiddwbBRJUOMf7f9ycT2mLM/yWfa4khw0VfkY521q4nYKc+YFbr1gxVYxHB++tdqYizdo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763684665; c=relaxed/simple;
-	bh=AHcFWUsLYropoR6mkRkWraNUvMOyjYxiRegP129uRpU=;
+	s=arc-20240116; t=1763685044; c=relaxed/simple;
+	bh=+HlOZLaFYExjHizWpe0HMobVC/i7yy3fyk1ny6u4PNU=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=XyyE4orpliRo5TqLdil+4blXk99F1ONsyZmvPRb6gcRwpOObZdRCdOAmk4fvkfTas0tzVZOoyeANA9IApq5KflMCf2nWHtVg910+drQ7lEVblYPqxIydecJ5xeYY/n8Smp0XLPLr9NmMsPiUE/Tg2p7X3lkDPQ056nO54jT/+GQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=treblig.org; spf=pass smtp.mailfrom=treblig.org; dkim=pass (2048-bit key) header.d=treblig.org header.i=@treblig.org header.b=eynA8kSm; arc=none smtp.client-ip=46.235.229.95
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=treblig.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=treblig.org
+	 Content-Type:Content-Disposition:In-Reply-To; b=RUZct/0FcxwiXXA8QtyxazX7FGu1VmW6x5Q4m1MbolXQVfED/McsEWbkEhErhE5CtDRAj0AguNHYEDEurDJY/GLM5b+/U8VHu2Drz985gEf7vvr+YsCoo8XfJjArvHK277Hqiv165o9mUPQrjzaLtV5XjtyJtBi5PPHsgVLDs6M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=X8mQaEgd; arc=none smtp.client-ip=91.218.175.183
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=treblig.org header.i=@treblig.org header.b="eynA8kSm"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=treblig.org
-	; s=bytemarkmx; h=Content-Type:MIME-Version:Message-ID:Subject:From:Date:From
-	:Subject; bh=KXXaKr3PtFYh8nhHwgchIQAJ3u9wYBNIFydgNDU6Wo4=; b=eynA8kSmvhNEEgT9
-	y0JKtg7iv1DeFQTCEwqE9seSwcVA1Xi7+YLa4mjuKStD0NXdu5S7jQHRij5Rtl9JTltmG+TsTC9Qx
-	lOfNhVdI53+2SguooVed7NpK4gfR+2vbhtKFwSkttQDsraFmllf8Mt/0vctal58hWk1BxvQyIuHeu
-	yCB3kkv3ZI/sZzZy5wcSXhbCuEAwhWxv94eXCJZ1AjXbelxxGWUGT0Ws5Eu3/gJ8ZSKS1ivDgyD9k
-	L2BibqN6dzoj/ed6KSGgmPDpg4ESeaqhl/QfEgTk1Lxhf5r5xJzPuFDmoYjnS5h7I+ddk+xbmKbfj
-	WwRB4DRNuEnYvwwalw==;
-Received: from dg by mx.treblig.org with local (Exim 4.98.2)
-	(envelope-from <dg@treblig.org>)
-	id 1vMEwY-00000005d06-2W0z;
-	Fri, 21 Nov 2025 00:24:06 +0000
-Date: Fri, 21 Nov 2025 00:24:06 +0000
-From: "Dr. David Alan Gilbert" <dave@treblig.org>
-To: Markus Armbruster <armbru@redhat.com>
-Cc: qemu-devel@nongnu.org, arei.gonglei@huawei.com, pizhenwei@bytedance.com,
-	alistair.francis@wdc.com, stefanb@linux.vnet.ibm.com,
-	kwolf@redhat.com, hreitz@redhat.com, sw@weilnetz.de,
-	qemu_oss@crudebyte.com, groug@kaod.org, mst@redhat.com,
-	imammedo@redhat.com, anisinha@redhat.com, kraxel@redhat.com,
-	shentey@gmail.com, npiggin@gmail.com, harshpb@linux.ibm.com,
-	sstabellini@kernel.org, anthony@xenproject.org, paul@xen.org,
-	edgar.iglesias@gmail.com, elena.ufimtseva@oracle.com,
-	jag.raman@oracle.com, sgarzare@redhat.com, pbonzini@redhat.com,
-	fam@euphon.net, philmd@linaro.org, alex@shazbot.org, clg@redhat.com,
-	peterx@redhat.com, farosas@suse.de, lizhijian@fujitsu.com,
-	jasowang@redhat.com, samuel.thibault@ens-lyon.org,
-	michael.roth@amd.com, kkostiuk@redhat.com, zhao1.liu@intel.com,
-	mtosatti@redhat.com, rathc@linux.ibm.com, palmer@dabbelt.com,
-	liwei1518@gmail.com, dbarboza@ventanamicro.com,
-	zhiwei_liu@linux.alibaba.com, marcandre.lureau@redhat.com,
-	qemu-block@nongnu.org, qemu-ppc@nongnu.org,
-	xen-devel@lists.xenproject.org, kvm@vger.kernel.org,
-	qemu-riscv@nongnu.org
-Subject: Re: [PATCH 03/14] tap-solaris: Use error_setg_file_open() for better
- error messages
-Message-ID: <aR-xJgDErvQaN600@gallifrey>
-References: <20251120191339.756429-1-armbru@redhat.com>
- <20251120191339.756429-4-armbru@redhat.com>
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="X8mQaEgd"
+Date: Fri, 21 Nov 2025 00:30:35 +0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1763685039;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=9OvifxekvGheYbevIVJXGiCFhjcYqYtx3Tr1KYlqAnk=;
+	b=X8mQaEgd8GyF+X9bkLfDZevAdICHASYniS4EyZwFqPBhTBMzoFbXwf3vEhiy3k+Jdh4TFX
+	qf+KYkwKVt6qDoQWNX5OgWzhog/4edhQ4DO2bjRPS0xjh3UnCE6NymqIYqVV2hlpUWlWPn
+	Rl71LFIkCsXdIohITDMBJhqPgbGnhyo=
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Yosry Ahmed <yosry.ahmed@linux.dev>
+To: Sean Christopherson <seanjc@google.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>, Jim Mattson <jmattson@google.com>, 
+	kvm@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2 00/23] Extend test coverage for nested SVM
+Message-ID: <vgbuzefu4w5mc7cvqv4xzgqycv4qa46s6wolhau4nc65fgsajx@tzbsrlhu4ltr>
+References: <20251021074736.1324328-1-yosry.ahmed@linux.dev>
+ <aR-pMqVqhgzsERaj@google.com>
+ <t4modyzuwzmlmu4hcwpxzsbprhebjwuz3uc2doc6nauepruczw@vray2facmzks>
+ <aR-xNA0l2ybr0UqC@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20251120191339.756429-4-armbru@redhat.com>
-X-Chocolate: 70 percent or better cocoa solids preferably
-X-Operating-System: Linux/6.12.48+deb13-amd64 (x86_64)
-X-Uptime: 00:23:09 up 24 days, 23:59,  2 users,  load average: 0.00, 0.00,
- 0.00
-User-Agent: Mutt/2.2.13 (2024-03-09)
+In-Reply-To: <aR-xNA0l2ybr0UqC@google.com>
+X-Migadu-Flow: FLOW_OUT
 
-* Markus Armbruster (armbru@redhat.com) wrote:
-> Error messages change from
+On Thu, Nov 20, 2025 at 04:24:20PM -0800, Sean Christopherson wrote:
+> On Fri, Nov 21, 2025, Yosry Ahmed wrote:
+> > On Thu, Nov 20, 2025 at 03:50:10PM -0800, Sean Christopherson wrote:
+> > >   KVM: selftests: Extend vmx_tsc_adjust_test to cover SVM
+> > >   KVM: selftests: Extend nested_invalid_cr3_test to cover SVM
+> > >   KVM: selftests: Move nested invalid CR3 check to its own test
+> > >   KVM: selftests: Extend vmx_nested_tsc_scaling_test to cover SVM
+> > >   KVM: selftests: Extend vmx_close_while_nested_test to cover SVM
+> > 
+> > Not sure I understand how you to proceed. Do you want me to respin these
+> > patches separately (as series A), on top of kvm-x86/next, and then
+> > respin the rest of the series separately (as series B, with your struct
+> > kvm_mmu suggestion)?
 > 
->     Can't open /dev/ip (actually /dev/udp)
->     Can't open /dev/tap
->     Can't open /dev/tap (2)
-> 
-> to
-> 
->     Could not open '/dev/udp': REASON
->     Could not open '/dev/tap': REASON
-> 
-> where REASON is the value of strerror(errno).
+> I'm going to apply a subset "soon", hopefully they'll show up in kvm-x86/next
+> tomorrow.  I think it's patches 3-9?
 
-I guess the new macro has a __LINE__ so the (2) is redundant.
+I think 10 and 11 should also be good to go, unless you have reason to
+think otherwise.
 
 > 
-> Signed-off-by: Markus Armbruster <armbru@redhat.com>
-
-Reviewed-by: Dr. David Alan Gilbert <dave@treblig.org>
-
-> ---
->  net/tap-solaris.c | 6 +++---
->  1 file changed, 3 insertions(+), 3 deletions(-)
+> > As for set_nested_state, if you plan to pickup Jim's EFER fixes I can
+> > just include it as-is in series (A). If not, I can include
+> > generalization of the test, and send covering Jim's fix separately.
 > 
-> diff --git a/net/tap-solaris.c b/net/tap-solaris.c
-> index 75397e6c54..faf7922ea8 100644
-> --- a/net/tap-solaris.c
-> +++ b/net/tap-solaris.c
-> @@ -87,13 +87,13 @@ static int tap_alloc(char *dev, size_t dev_size, Error **errp)
->  
->      ip_fd = RETRY_ON_EINTR(open("/dev/udp", O_RDWR, 0));
->      if (ip_fd < 0) {
-> -        error_setg(errp, "Can't open /dev/ip (actually /dev/udp)");
-> +        error_setg_file_open(errp, errno, "/dev/udp");
->          return -1;
->      }
->  
->      tap_fd = RETRY_ON_EINTR(open("/dev/tap", O_RDWR, 0));
->      if (tap_fd < 0) {
-> -        error_setg(errp, "Can't open /dev/tap");
-> +        error_setg_file_open(errp, errno, "/dev/tap");
->          return -1;
->      }
->  
-> @@ -107,7 +107,7 @@ static int tap_alloc(char *dev, size_t dev_size, Error **errp)
->  
->      if_fd = RETRY_ON_EINTR(open("/dev/tap", O_RDWR, 0));
->      if (if_fd < 0) {
-> -        error_setg(errp, "Can't open /dev/tap (2)");
-> +        error_setg_file_open(errp, errno, "/dev/tap");
->          return -1;
->      }
->      if(ioctl(if_fd, I_PUSH, "ip") < 0){
-> -- 
-> 2.49.0
+> We're likely going to need a v3 of Jim's GIF series no matter what, so let's plan
+> on bundling patches 1-2 with v3 of that series.
 > 
--- 
- -----Open up your eyes, open up your mind, open up your code -------   
-/ Dr. David Alan Gilbert    |       Running GNU/Linux       | Happy  \ 
-\        dave @ treblig.org |                               | In Hex /
- \ _________________________|_____ http://www.treblig.org   |_______/
+> That leaves the paging patches.  Unless you're super duper speedy, I should get
+> patches 3-9 and Jim's LA57 changes+test pushed to kvm-x86 before you're ready to
+> post the next version of those patches.
+> 
+> So:
+>   Fold 1-2 into Jim's GIF series.
+>   Do nothing for 3-9.
+>   Spin a new version of 10+ (the paging patches) after kvm-x86/next is refreshed
+
+Makes sense, I will coordinate with Jim. Thanks!
