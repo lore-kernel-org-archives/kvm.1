@@ -1,565 +1,446 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F44F263C8A;
-	Mon, 24 Nov 2025 09:34:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=198.175.65.9
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763976845; cv=fail; b=TUPIiYt/LHZjftyGweVPWjz+K+ltmSF35n63PB9qqdQ3cHJwCAnn/wzw7PtEbuxkEbd4aFqBUMZ0EeOxTOBXIdYuZngWg71oblPO4hz8yNdrkHfO8OOnaNinu4+o1twNtmlk5941YtLElVVNxa0SpzUXRx8pt1nnfBSElovKshY=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763976845; c=relaxed/simple;
-	bh=8jF/1EIuMWmsmL9IIW+gL6fBGy3Ejw8VcR3Ysaeph50=;
-	h=Date:From:To:CC:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=g1ZbLCI0y+hf6eCAg73wH5uGhsUQ+0fH4K0gWAhgVARKPnsYyWCMaUr8rwcr5ILyUbLxMG1g6xXUgrPmO42LWiB25iIx6ym5Cx8UculwRbbrd6UWCFn1stz6SGlJY+DP7NShi22MWzrWlXuyrw9W/FP5mbrh+HiIKHMhl2Ey06U=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=D3WBl0L2; arc=fail smtp.client-ip=198.175.65.9
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 59E3C2F616E
+	for <kvm@vger.kernel.org>; Mon, 24 Nov 2025 09:42:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1763977381; cv=none; b=ReNuYokqMXwkl0dMkQzcctKLOMFs0yV4Yr7/G2f4vPRLytYPzDCj2ajgeALpNLXPjZCEUUS3ETHuhqqWL1l8rTvrqbm3scuzGo9c+6lFQpIapbX57AENAxjNYsFQ/+nnGr0LtAtd5JcQ6l9NC561nENpmniZkddlxeNEUQM+qbY=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1763977381; c=relaxed/simple;
+	bh=A5ow2gR7SRrzbwsXPsB6yI+XFTtoV4Lp3zqNxZd9nls=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=qGVHfjKMs3z0FeCcSPFDoke7WaoOeF+riBUdyyXDUXtX2Eo+Vl+R8l9PYtM7dnWxVmze8jvaGS1vNIl5vjUMbleg5lgxMd+EM7ODS/IlKmm2ZAWahM4WxfNSt7l+DWy+cMwtVFY2Z7C/7QmCBir8TlQU39lgwqxGykbNh6UwRms=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (1024-bit key) header.d=suse.com header.i=@suse.com header.b=A+sGL1dr; dkim=pass (1024-bit key) header.d=suse.com header.i=@suse.com header.b=A+sGL1dr; arc=none smtp.client-ip=195.135.223.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="D3WBl0L2"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1763976843; x=1795512843;
-  h=date:from:to:cc:subject:message-id:reply-to:references:
-   in-reply-to:mime-version;
-  bh=8jF/1EIuMWmsmL9IIW+gL6fBGy3Ejw8VcR3Ysaeph50=;
-  b=D3WBl0L25Luf3OIsMC2Eyv5EX+tvVyuWuDemDTa/sNmrBkHY3V3VM12T
-   es9/sN0UVue/4HO1uvZTBRNq7Je5pnpd7X9D4FKs+cV2Fx91cd1U0dCz5
-   lrewYaH95znJEwKAZVOjGwzUzb6Cx9d5moi2AXt93U996qGA6+iMK8SqE
-   LAcVdEvPQWnO8shcZ7uzMxtCv1YRJqgcyON6DdTq/u2W/01zqJ6gFJ06q
-   /52HKX9/5N/kHBiIGfHjAV1423AOwpA2bv+zyUgnSQE89T2MafgNb7V3c
-   gnBDMwIuupXAaEDeSSK/rpCHuWsHOvH22zjXDoxP4ue8Q9zH8FdWq0S1L
-   A==;
-X-CSE-ConnectionGUID: ym2ni733SVukfx1fin7K9Q==
-X-CSE-MsgGUID: 2l60iQ4kQRi+yAanLDDbhg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11622"; a="88624049"
-X-IronPort-AV: E=Sophos;i="6.20,222,1758610800"; 
-   d="scan'208";a="88624049"
-Received: from fmviesa004.fm.intel.com ([10.60.135.144])
-  by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Nov 2025 01:34:02 -0800
-X-CSE-ConnectionGUID: fbU8yIebTQGqMkRLLZ93hw==
-X-CSE-MsgGUID: JhZaraUZQdqgZkSDl8fvhA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.20,222,1758610800"; 
-   d="scan'208";a="197211296"
-Received: from orsmsx902.amr.corp.intel.com ([10.22.229.24])
-  by fmviesa004.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Nov 2025 01:34:02 -0800
-Received: from ORSMSX901.amr.corp.intel.com (10.22.229.23) by
- ORSMSX902.amr.corp.intel.com (10.22.229.24) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.29; Mon, 24 Nov 2025 01:34:01 -0800
-Received: from ORSEDG901.ED.cps.intel.com (10.7.248.11) by
- ORSMSX901.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.29 via Frontend Transport; Mon, 24 Nov 2025 01:34:01 -0800
-Received: from MW6PR02CU001.outbound.protection.outlook.com (52.101.48.69) by
- edgegateway.intel.com (134.134.137.111) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.27; Mon, 24 Nov 2025 01:34:01 -0800
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=vVid7Cce7NDR5e0zUaufcJPqhxEKA7OtXS7AwDxPv4Zd9Gt9KOdMqxcpv4G7tkvLFCwbcBG5iNKsmOeUX1oVO3QqRj3Kn0UrDxmhYfXLKqq2nedROFr4GFQVOgnwNr2enN2JLEC0N2mKHLzGpMszHBn85rUmdd9n5eECyyw6H2EjBEX4rKIwpQk5dxFP+CUP3xrkT8Aifzpo54gGKQbfQEQ3BSR/wV3klhr+N5cLyzhkDcAxu32/gwzwTtvoFcmP8uw45RJInYhBm7tuhz7Pi1gRVAjgvlsLdtBYTY2q118cBXTlYo83dFFg2P8tEftGK8+HWEwER4vCc3ILNmuXLA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=YF0rIX7xtIR3jObRnuKuAuvnkV8gnjduQQIOZqIDVP8=;
- b=pn3KiHjh7b4P5abJUSINQcQEUAR1OiTiq+PzdnG7ki+bu840NgO4glKGcXA50YXjdjQ4spKiGi58JkN51wrDpxHAqSzQnoG5lJCCdeHCWjkiubyc9TDG2ejRGXyINZ8M+OkOUbZgHS2tJLGBefjJnpT3zaE3JJwHDJusHaMYASRQ3NYZHatfpjXKFA1gf72XiMDzqg3hjTe3OW25Q/xKUeZ4aGrb5URoMY/mwR4FxlkzsDi3bBQmpgeKxqAkriWgLE+QyPVb88PyD+vp2/nrw/89ZylXHRapK+Ro445bMCDa3Pi84qitXTgpE+5fHeZlYZr0MZbnoYffFZJLFE4O5g==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-Received: from DS7PR11MB5966.namprd11.prod.outlook.com (2603:10b6:8:71::6) by
- CH3PR11MB7346.namprd11.prod.outlook.com (2603:10b6:610:152::12) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9343.17; Mon, 24 Nov
- 2025 09:33:57 +0000
-Received: from DS7PR11MB5966.namprd11.prod.outlook.com
- ([fe80::e971:d8f4:66c4:12ca]) by DS7PR11MB5966.namprd11.prod.outlook.com
- ([fe80::e971:d8f4:66c4:12ca%6]) with mapi id 15.20.9343.016; Mon, 24 Nov 2025
- 09:33:57 +0000
-Date: Mon, 24 Nov 2025 17:31:46 +0800
-From: Yan Zhao <yan.y.zhao@intel.com>
-To: Michael Roth <michael.roth@amd.com>
-CC: <kvm@vger.kernel.org>, <linux-coco@lists.linux.dev>, <linux-mm@kvack.org>,
-	<linux-kernel@vger.kernel.org>, <thomas.lendacky@amd.com>,
-	<pbonzini@redhat.com>, <seanjc@google.com>, <vbabka@suse.cz>,
-	<ashish.kalra@amd.com>, <liam.merwick@oracle.com>, <david@redhat.com>,
-	<vannapurve@google.com>, <ackerleytng@google.com>, <aik@amd.com>,
-	<ira.weiny@intel.com>
-Subject: Re: [PATCH 3/3] KVM: guest_memfd: GUP source pages prior to
- populating guest memory
-Message-ID: <aSQmAuxGK7+MUfRW@yzhao56-desk.sh.intel.com>
-Reply-To: Yan Zhao <yan.y.zhao@intel.com>
-References: <20251113230759.1562024-1-michael.roth@amd.com>
- <20251113230759.1562024-4-michael.roth@amd.com>
- <aR7bVKzM7rH/FSVh@yzhao56-desk.sh.intel.com>
- <20251121130144.u7eeaafonhcqf2bd@amd.com>
-Content-Type: text/plain; charset="us-ascii"
-Content-Disposition: inline
-In-Reply-To: <20251121130144.u7eeaafonhcqf2bd@amd.com>
-X-ClientProxiedBy: SI2P153CA0032.APCP153.PROD.OUTLOOK.COM
- (2603:1096:4:190::23) To DS7PR11MB5966.namprd11.prod.outlook.com
- (2603:10b6:8:71::6)
+	dkim=pass (1024-bit key) header.d=suse.com header.i=@suse.com header.b="A+sGL1dr";
+	dkim=pass (1024-bit key) header.d=suse.com header.i=@suse.com header.b="A+sGL1dr"
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id 6481F5BD77;
+	Mon, 24 Nov 2025 09:42:56 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.com; s=susede1;
+	t=1763977376; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=A5ow2gR7SRrzbwsXPsB6yI+XFTtoV4Lp3zqNxZd9nls=;
+	b=A+sGL1dr7l7VmjFaYtu7yyZBJCek1xS229QbJpQRyY0SEaWfHyv2//EQQVdRujsF6rF5wN
+	sg7Pf9VAroDESXffx7PYVw+JqzxjV7klIF2/ubCUBv7uK/1e9yLRarAJrga56WxGZvJyPq
+	Mppynsla7GTPRm+lYgBhw7nIOqMiGlc=
+Authentication-Results: smtp-out2.suse.de;
+	none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.com; s=susede1;
+	t=1763977376; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=A5ow2gR7SRrzbwsXPsB6yI+XFTtoV4Lp3zqNxZd9nls=;
+	b=A+sGL1dr7l7VmjFaYtu7yyZBJCek1xS229QbJpQRyY0SEaWfHyv2//EQQVdRujsF6rF5wN
+	sg7Pf9VAroDESXffx7PYVw+JqzxjV7klIF2/ubCUBv7uK/1e9yLRarAJrga56WxGZvJyPq
+	Mppynsla7GTPRm+lYgBhw7nIOqMiGlc=
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id C413E3EA61;
+	Mon, 24 Nov 2025 09:42:54 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id ZutXLp4oJGlpeAAAD6G6ig
+	(envelope-from <jgross@suse.com>); Mon, 24 Nov 2025 09:42:54 +0000
+Message-ID: <dec8ee2c-3a00-4027-b762-aada7bc99bd9@suse.com>
+Date: Mon, 24 Nov 2025 10:42:54 +0100
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DS7PR11MB5966:EE_|CH3PR11MB7346:EE_
-X-MS-Office365-Filtering-Correlation-Id: 621fdb85-64d3-4863-9ef1-08de2b3c9783
-X-LD-Processed: 46c98d88-e344-4ed4-8496-4ed7712e255d,ExtAddr
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|7416014|376014|366016|7053199007;
-X-Microsoft-Antispam-Message-Info: =?us-ascii?Q?r/yhARB4dDFWU/N5EOVBXGsP2oT5TMuW/9FCaebkigvZA3xHsRNVnNfV+Oau?=
- =?us-ascii?Q?Evy61mLpgjfl6OBbIBsbSF2qEdfIflReMSEC0k6kUNtMduh+jfKdr+ZTj10f?=
- =?us-ascii?Q?Qz5iL4jIO7X9uecUBoRSm0/aNRL5VlPiUvVLNYl5g7xQwVUInAw5YWAnVMV5?=
- =?us-ascii?Q?z8JyorPPsrSXDRf0JmglWwlOCxUNayy4o9o75BJ1GeqIFgFLEbvAEDbKxy8D?=
- =?us-ascii?Q?ykH2mYpuY3PDJ60nyzD6LfdlVl64ubd2Ne09/bx3NMCUACH12gbXKVfJDIwT?=
- =?us-ascii?Q?AwKL3biwviE1/aY1+jJ8tiGvsrz80eI/HgMeB19sCTZ2gGFCUSLAjZkbR3sF?=
- =?us-ascii?Q?M40Mao0uBWPNYgRMxfrVUSFf3K2sfvHNw5hZ7YEWXLU89xPF8ShckO8s/GQm?=
- =?us-ascii?Q?SNjJFtSmgAHiz61MzLy9gkFmQKuO8p9XB6GsX/q9yVCZl2s2E0Bk4gKcVYOY?=
- =?us-ascii?Q?3Idi7xuBrHRn0Br6tjpuCPMGYkkeoRSqr3VsLHW7sIN2FrG3gmTJhC0tpl5K?=
- =?us-ascii?Q?Vp7mcPBJwgG9cYkBg/Cxr9FEBCmNBzlOp5A+kpq5PmcsB3PzuwobC5170A/q?=
- =?us-ascii?Q?5tqkNEyyPLfW+d96Pit6/ToqgWscPRnjbNS/EUHMX+OnGrZArtq0uzuP6Ep5?=
- =?us-ascii?Q?iU6ZgK/SpAwt03/pV8A8zOAeDp0yWUU4sjq89M+PMHPHMpKFnJSd0YCjp1Vc?=
- =?us-ascii?Q?MQOD9t0ermIvpHLxGthh+3+1gVsCDLQX/X1bw8y8cVWjEt9j//warOKcL3jI?=
- =?us-ascii?Q?1gYBKmtsqm9um+tKkdXAXLhHBgVdl1GNOvZ2vigxywDiY7dlez40L30LjtRn?=
- =?us-ascii?Q?/NMk0JLU4mMya7M9Edwf/PfXBY7L953G9B7PsGFB97VVPxYKl8qEWrqSbPf+?=
- =?us-ascii?Q?dyRsG7CfqVXOntKjxFT+i14bprIDG1Vt+eMmbM0aYLe9RfBC8OzonOgOOsWw?=
- =?us-ascii?Q?uiObD/WwXo6JG8wgmkw9nQpcAzN4x+hfwQlgH+ewwvpqBQK3ifCXVVKwl/kx?=
- =?us-ascii?Q?zvrgJHfGtNHpUpcI9RFvIuknIpMPGYCAE3hVCCYsCZehEkMdrjuhCVtM7Ogb?=
- =?us-ascii?Q?FOEdnCJdcm710ZRO4fmFje/bcVgZrxOuihKlNrlLmEVc4SQnN7Sna1ZhN6Ff?=
- =?us-ascii?Q?urybM/Of0zqxRN5h/PAATLY3CSsEDypy9ZO8sjSl09BuguC5qeUdqCJ3FC00?=
- =?us-ascii?Q?O8Lvdt4CMxAUxcB+QcNnwciUQPv117rPuzt+dBkYbvG4op/vOefuH078yiSB?=
- =?us-ascii?Q?ijR7SeKJ7fHWBQV3ordSHyBaOXZkPJ1zbssHwHsgJ5bqiSh4ke7yWTOJsjRd?=
- =?us-ascii?Q?JqgX5nb+qDUR2BZAFSA6E3ITe59x4k/Gl9R5gV0gcoXSW8OkWgPk63e1/cdP?=
- =?us-ascii?Q?tX/xTC4ZqnrbpUVLQY/0k2hQs0zdwouNumHWYFhlOHoaGh2tnsVN62ZrwaY5?=
- =?us-ascii?Q?ne5U1/fb1+TYv6aPQifKwJsdCZrYF2ygnJqxzxTUhxIakSl7xOgY5Q=3D=3D?=
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS7PR11MB5966.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(7416014)(376014)(366016)(7053199007);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?+DTDBPg0QJ3gAxnjaM6sqSdD7OMigD2Bq5Xe8ZlFaE7qsu0Nv//si3C7rpm7?=
- =?us-ascii?Q?Xb0/8zFu150u17yWBCbFxU48FJyeEUEGKtA/qYIp7kIDL6vmrsv264cs5dx3?=
- =?us-ascii?Q?4uhRatxwvkH11+Zk8us4eskXi2fjxOdbAqsbi6sOnewXkWB1iZDt+VegeKm2?=
- =?us-ascii?Q?L10doHv4eGJw/bEXDJ9lud8ICnv2O6aR1cxTu0A/+jsd5PvuHf1XMaTnHcTv?=
- =?us-ascii?Q?xEleZRXozncq5j5oPvMID3rOG4QSyTGDsF3qbYFq1uPiN8Vkeb05j0NyBxy2?=
- =?us-ascii?Q?CS4MQkxoRc2FlWoEfB2dEIYruqgDpSSihTGd1nnF5YKWzQhUtUdyEFNhtxEi?=
- =?us-ascii?Q?/Lpt1DW0RkjJUzTbtQs2eBZSIiAYX37QzT/zpHij9UZbaJXMcuSrOvGdne+x?=
- =?us-ascii?Q?um3V2oqqzgZZGBrRjW09EH9foQrQeXQY3xMqdmvfI3YZoAsXrd8y1UgI/9ZN?=
- =?us-ascii?Q?XJDwVKBzZMpx0DWGKE2PEGSKQY7OEOXkbt4ZfIfFtAOiSkXxFYCCepyL81XV?=
- =?us-ascii?Q?UreMFDMlpdb0FZKV0coOpds8gJTTbkj0jDLdWwwTfU6agzIpI82k9mroOuTG?=
- =?us-ascii?Q?LLy6EsqBDltUCXCZ1WiP7FxwJ3slpNz04vbD3v1pKfBSWjA87XZSoaKOyP6+?=
- =?us-ascii?Q?TGSBPJDOMCTzKjx15lVlL1R6SSiwbCa/wPJ9JMCwUEKAjRoUSsMLqRG6d8HD?=
- =?us-ascii?Q?8kzheC64Cje4lYibQhtTnbc2ptmKDkQVypyO/tSPQC/kodNi9nxQNXqlAJ+C?=
- =?us-ascii?Q?3vQOPbY40mijwdGYAz6W9ySeacFCI2OWjGC84tO2QNt5Qglok6bmEd+nd5iy?=
- =?us-ascii?Q?sYJ18SPPxDezVNOlFf1mJ9I2I2nD5A32c7opQXxrwNbtLQ05cGD1JB9dD4HC?=
- =?us-ascii?Q?piZxOa5zC/B7RovRKxEi0yyGeOFMtpZmwFm4OU9Z9699eNxY8sM3En+YxePq?=
- =?us-ascii?Q?eBfJIRIY77YaM0bVA1PGQ+KCUQGIVBXktfsdgjYicx2ZUsHVJ8p67KerJisq?=
- =?us-ascii?Q?eMLGl1bg26Ds9VcxL5Gq5p6YgtDjTlvK0jdsB8uR+gw+U5OmzNO+qOqCEAbu?=
- =?us-ascii?Q?C4RsV5Ed/OVQy7y+Ot/ZvFyo68hlnIZwaiiTi1O9HtfIIWkFRzRnzfi0xhfv?=
- =?us-ascii?Q?YwI0OR/vbAq43+Plz/YrtUGVTvuLT1RQfRQISkF3/X9HTMT7Hzo3PSOb51mY?=
- =?us-ascii?Q?GYQ6HtiOaoXoKJbIyPIKQztSjei/55cBOs4+Ixk79AReW6gFElJJ7aYCKY+c?=
- =?us-ascii?Q?SDRaQu9r79GUUWE4TdD2tr74F39UfzqTeieou3DqeSs1AZLnC/0tmRne9dj2?=
- =?us-ascii?Q?J3CZPIoa5gqLMrVSfB+jp4hnZmplGM0LH7XE4yXUL0WKXo/DQbt5vgSN/1Wn?=
- =?us-ascii?Q?ya1H4CLDgndHb4YoLmqgTDD6xxrzb/329QSxnu7ddyPY0CcxfZRMUUoxBTwb?=
- =?us-ascii?Q?ho/ae5e2bhdf0RtYKYA9XSJ1KO2Jw4+sZJsa2sCFW0drETQrOFmsoP7t1Ehd?=
- =?us-ascii?Q?YZKZEm5pAVeG24aa+pgdtgFTirpHLJZ+fDqM7e0Uycuz1EBeXyKjdhZg8YV5?=
- =?us-ascii?Q?zj2v3smQ63nCuijN7tIDKBcjtXKFlR2SBLoJJRhu?=
-X-MS-Exchange-CrossTenant-Network-Message-Id: 621fdb85-64d3-4863-9ef1-08de2b3c9783
-X-MS-Exchange-CrossTenant-AuthSource: DS7PR11MB5966.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 24 Nov 2025 09:33:57.5741
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: nOsTQbx3ZFsJTdxlSkwEvqNSD0ErOkbX/MfNWKiZlcL9HTTjBhJiK7wU5zfUCp3iFOX5BdEeeWXzuQ3y9ZGLZQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH3PR11MB7346
-X-OriginatorOrg: intel.com
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 00/21] paravirt: cleanup and reorg
+To: linux-kernel@vger.kernel.org, x86@kernel.org,
+ linux-hyperv@vger.kernel.org, virtualization@lists.linux.dev,
+ loongarch@lists.linux.dev, linuxppc-dev@lists.ozlabs.org,
+ linux-riscv@lists.infradead.org, kvm@vger.kernel.org
+Cc: Andy Lutomirski <luto@kernel.org>, Thomas Gleixner <tglx@linutronix.de>,
+ Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+ Dave Hansen <dave.hansen@linux.intel.com>, "H. Peter Anvin" <hpa@zytor.com>,
+ "K. Y. Srinivasan" <kys@microsoft.com>,
+ Haiyang Zhang <haiyangz@microsoft.com>, Wei Liu <wei.liu@kernel.org>,
+ Dexuan Cui <decui@microsoft.com>, Peter Zijlstra <peterz@infradead.org>,
+ Will Deacon <will@kernel.org>, Boqun Feng <boqun.feng@gmail.com>,
+ Waiman Long <longman@redhat.com>, Jiri Kosina <jikos@kernel.org>,
+ Josh Poimboeuf <jpoimboe@kernel.org>,
+ Pawan Gupta <pawan.kumar.gupta@linux.intel.com>,
+ Boris Ostrovsky <boris.ostrovsky@oracle.com>,
+ xen-devel@lists.xenproject.org, Ajay Kaher <ajay.kaher@broadcom.com>,
+ Alexey Makhalov <alexey.makhalov@broadcom.com>,
+ Broadcom internal kernel review list
+ <bcm-kernel-feedback-list@broadcom.com>, Russell King
+ <linux@armlinux.org.uk>, Catalin Marinas <catalin.marinas@arm.com>,
+ Huacai Chen <chenhuacai@kernel.org>, WANG Xuerui <kernel@xen0n.name>,
+ Madhavan Srinivasan <maddy@linux.ibm.com>,
+ Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>,
+ Christophe Leroy <christophe.leroy@csgroup.eu>,
+ Paul Walmsley <pjw@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>,
+ Albert Ou <aou@eecs.berkeley.edu>, Alexandre Ghiti <alex@ghiti.fr>,
+ Juri Lelli <juri.lelli@redhat.com>,
+ Vincent Guittot <vincent.guittot@linaro.org>,
+ Dietmar Eggemann <dietmar.eggemann@arm.com>,
+ Steven Rostedt <rostedt@goodmis.org>, Ben Segall <bsegall@google.com>,
+ Mel Gorman <mgorman@suse.de>, Valentin Schneider <vschneid@redhat.com>,
+ linux-arm-kernel@lists.infradead.org, Paolo Bonzini <pbonzini@redhat.com>,
+ Vitaly Kuznetsov <vkuznets@redhat.com>,
+ Stefano Stabellini <sstabellini@kernel.org>,
+ Oleksandr Tyshchenko <oleksandr_tyshchenko@epam.com>,
+ Daniel Lezcano <daniel.lezcano@linaro.org>, Oleg Nesterov <oleg@redhat.com>
+References: <20251006074606.1266-1-jgross@suse.com>
+Content-Language: en-US
+From: Juergen Gross <jgross@suse.com>
+Autocrypt: addr=jgross@suse.com; keydata=
+ xsBNBFOMcBYBCACgGjqjoGvbEouQZw/ToiBg9W98AlM2QHV+iNHsEs7kxWhKMjrioyspZKOB
+ ycWxw3ie3j9uvg9EOB3aN4xiTv4qbnGiTr3oJhkB1gsb6ToJQZ8uxGq2kaV2KL9650I1SJve
+ dYm8Of8Zd621lSmoKOwlNClALZNew72NjJLEzTalU1OdT7/i1TXkH09XSSI8mEQ/ouNcMvIJ
+ NwQpd369y9bfIhWUiVXEK7MlRgUG6MvIj6Y3Am/BBLUVbDa4+gmzDC9ezlZkTZG2t14zWPvx
+ XP3FAp2pkW0xqG7/377qptDmrk42GlSKN4z76ELnLxussxc7I2hx18NUcbP8+uty4bMxABEB
+ AAHNH0p1ZXJnZW4gR3Jvc3MgPGpncm9zc0BzdXNlLmNvbT7CwHkEEwECACMFAlOMcK8CGwMH
+ CwkIBwMCAQYVCAIJCgsEFgIDAQIeAQIXgAAKCRCw3p3WKL8TL8eZB/9G0juS/kDY9LhEXseh
+ mE9U+iA1VsLhgDqVbsOtZ/S14LRFHczNd/Lqkn7souCSoyWsBs3/wO+OjPvxf7m+Ef+sMtr0
+ G5lCWEWa9wa0IXx5HRPW/ScL+e4AVUbL7rurYMfwCzco+7TfjhMEOkC+va5gzi1KrErgNRHH
+ kg3PhlnRY0Udyqx++UYkAsN4TQuEhNN32MvN0Np3WlBJOgKcuXpIElmMM5f1BBzJSKBkW0Jc
+ Wy3h2Wy912vHKpPV/Xv7ZwVJ27v7KcuZcErtptDevAljxJtE7aJG6WiBzm+v9EswyWxwMCIO
+ RoVBYuiocc51872tRGywc03xaQydB+9R7BHPzsBNBFOMcBYBCADLMfoA44MwGOB9YT1V4KCy
+ vAfd7E0BTfaAurbG+Olacciz3yd09QOmejFZC6AnoykydyvTFLAWYcSCdISMr88COmmCbJzn
+ sHAogjexXiif6ANUUlHpjxlHCCcELmZUzomNDnEOTxZFeWMTFF9Rf2k2F0Tl4E5kmsNGgtSa
+ aMO0rNZoOEiD/7UfPP3dfh8JCQ1VtUUsQtT1sxos8Eb/HmriJhnaTZ7Hp3jtgTVkV0ybpgFg
+ w6WMaRkrBh17mV0z2ajjmabB7SJxcouSkR0hcpNl4oM74d2/VqoW4BxxxOD1FcNCObCELfIS
+ auZx+XT6s+CE7Qi/c44ibBMR7hyjdzWbABEBAAHCwF8EGAECAAkFAlOMcBYCGwwACgkQsN6d
+ 1ii/Ey9D+Af/WFr3q+bg/8v5tCknCtn92d5lyYTBNt7xgWzDZX8G6/pngzKyWfedArllp0Pn
+ fgIXtMNV+3t8Li1Tg843EXkP7+2+CQ98MB8XvvPLYAfW8nNDV85TyVgWlldNcgdv7nn1Sq8g
+ HwB2BHdIAkYce3hEoDQXt/mKlgEGsLpzJcnLKimtPXQQy9TxUaLBe9PInPd+Ohix0XOlY+Uk
+ QFEx50Ki3rSDl2Zt2tnkNYKUCvTJq7jvOlaPd6d/W0tZqpyy7KVay+K4aMobDsodB3dvEAs6
+ ScCnh03dDAFgIq5nsB11j3KPKdVoPlfucX2c7kGNH+LUMbzqV6beIENfNexkOfxHfw==
+In-Reply-To: <20251006074606.1266-1-jgross@suse.com>
+Content-Type: multipart/signed; micalg=pgp-sha256;
+ protocol="application/pgp-signature";
+ boundary="------------We5fW6EZMtlKny0A4cau12FQ"
+X-Spam-Level: 
+X-Spamd-Result: default: False [-3.70 / 50.00];
+	BAYES_HAM(-3.00)[100.00%];
+	SIGNED_PGP(-2.00)[];
+	SUSPICIOUS_RECIPS(1.50)[];
+	NEURAL_HAM_LONG(-1.00)[-1.000];
+	MIME_BASE64_TEXT_BOGUS(1.00)[];
+	MIME_GOOD(-0.20)[multipart/signed,multipart/mixed,text/plain];
+	NEURAL_HAM_SHORT(-0.20)[-1.000];
+	MIME_BASE64_TEXT(0.10)[];
+	MIME_UNKNOWN(0.10)[application/pgp-keys];
+	MIME_TRACE(0.00)[0:+,1:+,2:+,3:+,4:~,5:~];
+	FREEMAIL_CC(0.00)[kernel.org,linutronix.de,redhat.com,alien8.de,linux.intel.com,zytor.com,microsoft.com,infradead.org,gmail.com,oracle.com,lists.xenproject.org,broadcom.com,armlinux.org.uk,arm.com,xen0n.name,linux.ibm.com,ellerman.id.au,csgroup.eu,dabbelt.com,eecs.berkeley.edu,ghiti.fr,linaro.org,goodmis.org,google.com,suse.de,lists.infradead.org,epam.com];
+	ARC_NA(0.00)[];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
+	DKIM_SIGNED(0.00)[suse.com:s=susede1];
+	RCVD_TLS_ALL(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	TO_DN_SOME(0.00)[];
+	TO_MATCH_ENVRCPT_SOME(0.00)[];
+	RCVD_COUNT_TWO(0.00)[2];
+	FROM_EQ_ENVFROM(0.00)[];
+	HAS_ATTACHMENT(0.00)[];
+	RCPT_COUNT_GT_50(0.00)[56];
+	TAGGED_RCPT(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[imap1.dmz-prg2.suse.org:helo,suse.com:mid]
+X-Spam-Flag: NO
+X-Spam-Score: -3.70
 
-On Fri, Nov 21, 2025 at 07:01:44AM -0600, Michael Roth wrote:
-> On Thu, Nov 20, 2025 at 05:11:48PM +0800, Yan Zhao wrote:
-> > On Thu, Nov 13, 2025 at 05:07:59PM -0600, Michael Roth wrote:
-> > > Currently the post-populate callbacks handle copying source pages into
-> > > private GPA ranges backed by guest_memfd, where kvm_gmem_populate()
-> > > acquires the filemap invalidate lock, then calls a post-populate
-> > > callback which may issue a get_user_pages() on the source pages prior to
-> > > copying them into the private GPA (e.g. TDX).
-> > > 
-> > > This will not be compatible with in-place conversion, where the
-> > > userspace page fault path will attempt to acquire filemap invalidate
-> > > lock while holding the mm->mmap_lock, leading to a potential ABBA
-> > > deadlock[1].
-> > > 
-> > > Address this by hoisting the GUP above the filemap invalidate lock so
-> > > that these page faults path can be taken early, prior to acquiring the
-> > > filemap invalidate lock.
-> > > 
-> > > It's not currently clear whether this issue is reachable with the
-> > > current implementation of guest_memfd, which doesn't support in-place
-> > > conversion, however it does provide a consistent mechanism to provide
-> > > stable source/target PFNs to callbacks rather than punting to
-> > > vendor-specific code, which allows for more commonality across
-> > > architectures, which may be worthwhile even without in-place conversion.
-> > > 
-> > > Suggested-by: Sean Christopherson <seanjc@google.com>
-> > > Signed-off-by: Michael Roth <michael.roth@amd.com>
-> > > ---
-> > >  arch/x86/kvm/svm/sev.c   | 40 ++++++++++++++++++++++++++------------
-> > >  arch/x86/kvm/vmx/tdx.c   | 21 +++++---------------
-> > >  include/linux/kvm_host.h |  3 ++-
-> > >  virt/kvm/guest_memfd.c   | 42 ++++++++++++++++++++++++++++++++++------
-> > >  4 files changed, 71 insertions(+), 35 deletions(-)
-> > > 
-> > > diff --git a/arch/x86/kvm/svm/sev.c b/arch/x86/kvm/svm/sev.c
-> > > index 0835c664fbfd..d0ac710697a2 100644
-> > > --- a/arch/x86/kvm/svm/sev.c
-> > > +++ b/arch/x86/kvm/svm/sev.c
-> > > @@ -2260,7 +2260,8 @@ struct sev_gmem_populate_args {
-> > >  };
-> > >  
-> > >  static int sev_gmem_post_populate(struct kvm *kvm, gfn_t gfn_start, kvm_pfn_t pfn,
-> > > -				  void __user *src, int order, void *opaque)
-> > > +				  struct page **src_pages, loff_t src_offset,
-> > > +				  int order, void *opaque)
-> > >  {
-> > >  	struct sev_gmem_populate_args *sev_populate_args = opaque;
-> > >  	struct kvm_sev_info *sev = to_kvm_sev_info(kvm);
-> > > @@ -2268,7 +2269,7 @@ static int sev_gmem_post_populate(struct kvm *kvm, gfn_t gfn_start, kvm_pfn_t pf
-> > >  	int npages = (1 << order);
-> > >  	gfn_t gfn;
-> > >  
-> > > -	if (WARN_ON_ONCE(sev_populate_args->type != KVM_SEV_SNP_PAGE_TYPE_ZERO && !src))
-> > > +	if (WARN_ON_ONCE(sev_populate_args->type != KVM_SEV_SNP_PAGE_TYPE_ZERO && !src_pages))
-> > >  		return -EINVAL;
-> > >  
-> > >  	for (gfn = gfn_start, i = 0; gfn < gfn_start + npages; gfn++, i++) {
-> > > @@ -2284,14 +2285,21 @@ static int sev_gmem_post_populate(struct kvm *kvm, gfn_t gfn_start, kvm_pfn_t pf
-> > >  			goto err;
-> > >  		}
-> > >  
-> > > -		if (src) {
-> > > -			void *vaddr = kmap_local_pfn(pfn + i);
-> > > +		if (src_pages) {
-> > > +			void *src_vaddr = kmap_local_pfn(page_to_pfn(src_pages[i]));
-> > > +			void *dst_vaddr = kmap_local_pfn(pfn + i);
-> > >  
-> > > -			if (copy_from_user(vaddr, src + i * PAGE_SIZE, PAGE_SIZE)) {
-> > > -				ret = -EFAULT;
-> > > -				goto err;
-> > > +			memcpy(dst_vaddr, src_vaddr + src_offset, PAGE_SIZE - src_offset);
-> > > +			kunmap_local(src_vaddr);
-> > > +
-> > > +			if (src_offset) {
-> > > +				src_vaddr = kmap_local_pfn(page_to_pfn(src_pages[i + 1]));
-> > > +
-> > > +				memcpy(dst_vaddr + PAGE_SIZE - src_offset, src_vaddr, src_offset);
-> > > +				kunmap_local(src_vaddr);
-> > IIUC, src_offset is the src's offset from the first page. e.g.,
-> > src could be 0x7fea82684100, with src_offset=0x100, while npages could be 512.
-> > 
-> > Then it looks like the two memcpy() calls here only work when npages == 1 ?
-> 
-> src_offset ends up being the offset into the pair of src pages that we
-> are using to fully populate a single dest page with each iteration. So
-> if we start at src_offset, read a page worth of data, then we are now at
-> src_offset in the next src page and the loop continues that way even if
-> npages > 1.
-> 
-> If src_offset is 0 we never have to bother with straddling 2 src pages so
-> the 2nd memcpy is skipped on every iteration.
-> 
-> That's the intent at least. Is there a flaw in the code/reasoning that I
-> missed?
-Oh, I got you. SNP expects a single src_offset applies for each src page.
+This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
+--------------We5fW6EZMtlKny0A4cau12FQ
+Content-Type: multipart/mixed; boundary="------------DrSPxjHRDVvfvpOSxXEGqtrJ";
+ protected-headers="v1"
+From: Juergen Gross <jgross@suse.com>
+To: linux-kernel@vger.kernel.org, x86@kernel.org,
+ linux-hyperv@vger.kernel.org, virtualization@lists.linux.dev,
+ loongarch@lists.linux.dev, linuxppc-dev@lists.ozlabs.org,
+ linux-riscv@lists.infradead.org, kvm@vger.kernel.org
+Cc: Andy Lutomirski <luto@kernel.org>, Thomas Gleixner <tglx@linutronix.de>,
+ Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+ Dave Hansen <dave.hansen@linux.intel.com>, "H. Peter Anvin" <hpa@zytor.com>,
+ "K. Y. Srinivasan" <kys@microsoft.com>,
+ Haiyang Zhang <haiyangz@microsoft.com>, Wei Liu <wei.liu@kernel.org>,
+ Dexuan Cui <decui@microsoft.com>, Peter Zijlstra <peterz@infradead.org>,
+ Will Deacon <will@kernel.org>, Boqun Feng <boqun.feng@gmail.com>,
+ Waiman Long <longman@redhat.com>, Jiri Kosina <jikos@kernel.org>,
+ Josh Poimboeuf <jpoimboe@kernel.org>,
+ Pawan Gupta <pawan.kumar.gupta@linux.intel.com>,
+ Boris Ostrovsky <boris.ostrovsky@oracle.com>,
+ xen-devel@lists.xenproject.org, Ajay Kaher <ajay.kaher@broadcom.com>,
+ Alexey Makhalov <alexey.makhalov@broadcom.com>,
+ Broadcom internal kernel review list
+ <bcm-kernel-feedback-list@broadcom.com>, Russell King
+ <linux@armlinux.org.uk>, Catalin Marinas <catalin.marinas@arm.com>,
+ Huacai Chen <chenhuacai@kernel.org>, WANG Xuerui <kernel@xen0n.name>,
+ Madhavan Srinivasan <maddy@linux.ibm.com>,
+ Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>,
+ Christophe Leroy <christophe.leroy@csgroup.eu>,
+ Paul Walmsley <pjw@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>,
+ Albert Ou <aou@eecs.berkeley.edu>, Alexandre Ghiti <alex@ghiti.fr>,
+ Juri Lelli <juri.lelli@redhat.com>,
+ Vincent Guittot <vincent.guittot@linaro.org>,
+ Dietmar Eggemann <dietmar.eggemann@arm.com>,
+ Steven Rostedt <rostedt@goodmis.org>, Ben Segall <bsegall@google.com>,
+ Mel Gorman <mgorman@suse.de>, Valentin Schneider <vschneid@redhat.com>,
+ linux-arm-kernel@lists.infradead.org, Paolo Bonzini <pbonzini@redhat.com>,
+ Vitaly Kuznetsov <vkuznets@redhat.com>,
+ Stefano Stabellini <sstabellini@kernel.org>,
+ Oleksandr Tyshchenko <oleksandr_tyshchenko@epam.com>,
+ Daniel Lezcano <daniel.lezcano@linaro.org>, Oleg Nesterov <oleg@redhat.com>
+Message-ID: <dec8ee2c-3a00-4027-b762-aada7bc99bd9@suse.com>
+Subject: Re: [PATCH v3 00/21] paravirt: cleanup and reorg
+References: <20251006074606.1266-1-jgross@suse.com>
+In-Reply-To: <20251006074606.1266-1-jgross@suse.com>
 
-So if npages = 2, there're 4 memcpy() calls.
+--------------DrSPxjHRDVvfvpOSxXEGqtrJ
+Content-Type: multipart/mixed; boundary="------------0mve0WRCUDOgkf9JsJIojBKK"
 
-src:  |---------|---------|---------|  (VA contiguous)
-          ^         ^         ^
-          |         |         |
-dst:      |---------|---------|   (PA contiguous)
+--------------0mve0WRCUDOgkf9JsJIojBKK
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: base64
 
+UGluZz8NCg0KSSB0aGluayBhdCBsZWFzdCB0aGUgZmlyc3QgMTIgcGF0Y2hlcyBjYW4ganVz
+dCBnbyBpbi4NCg0KVGhlIG90aGVycyBzdGlsbCBsYWNrIHJldmlldy4NCg0KDQpKdWVyZ2Vu
+DQoNCk9uIDA2LjEwLjI1IDA5OjQ1LCBKdWVyZ2VuIEdyb3NzIHdyb3RlOg0KPiBTb21lIGNs
+ZWFudXBzIGFuZCByZW9yZyBvZiBwYXJhdmlydCBjb2RlIGFuZCBoZWFkZXJzOg0KPiANCj4g
+LSBUaGUgZmlyc3QgMiBwYXRjaGVzIHNob3VsZCBiZSBub3QgY29udHJvdmVyc2lhbCBhdCBh
+bGwsIGFzIHRoZXkNCj4gICAgcmVtb3ZlIGp1c3Qgc29tZSBubyBsb25nZXIgbmVlZGVkICNp
+bmNsdWRlIGFuZCBzdHJ1Y3QgZm9yd2FyZA0KPiAgICBkZWNsYXJhdGlvbnMuDQo+IA0KPiAt
+IFRoZSAzcmQgcGF0Y2ggaXMgcmVtb3ZpbmcgQ09ORklHX1BBUkFWSVJUX0RFQlVHLCB3aGlj
+aCBJTU8gaGFzDQo+ICAgIG5vIHJlYWwgdmFsdWUsIGFzIGl0IGp1c3QgY2hhbmdlcyBhIGNy
+YXNoIHRvIGEgQlVHKCkgKHRoZSBzdGFjaw0KPiAgICB0cmFjZSB3aWxsIGJhc2ljYWxseSBi
+ZSB0aGUgc2FtZSkuIEFzIHRoZSBtYWludGFpbmVyIG9mIHRoZSBtYWluDQo+ICAgIHBhcmF2
+aXJ0IHVzZXIgKFhlbikgSSBoYXZlIG5ldmVyIHNlZW4gdGhpcyBjcmFzaC9CVUcoKSB0byBo
+YXBwZW4uDQo+IA0KPiAtIFRoZSA0dGggcGF0Y2ggaXMganVzdCBhIG1vdmVtZW50IG9mIGNv
+ZGUuDQo+IA0KPiAtIEkgZG9uJ3Qga25vdyBmb3Igd2hhdCByZWFzb24gYXNtL3BhcmF2aXJ0
+X2FwaV9jbG9jay5oIHdhcyBhZGRlZCwNCj4gICAgYXMgYWxsIGFyY2hzIHN1cHBvcnRpbmcg
+aXQgZG8gaXQgZXhhY3RseSBpbiB0aGUgc2FtZSB3YXkuIFBhdGNoDQo+ICAgIDUgaXMgcmVt
+b3ZpbmcgaXQuDQo+IA0KPiAtIFBhdGNoZXMgNi0xNCBhcmUgc3RyZWFtbGluaW5nIHRoZSBw
+YXJhdmlydCBjbG9jayBpbnRlcmZhY2VzIGJ5DQo+ICAgIHVzaW5nIGEgY29tbW9uIGltcGxl
+bWVudGF0aW9uIGFjcm9zcyBhcmNoaXRlY3R1cmVzIHdoZXJlIHBvc3NpYmxlDQo+ICAgIGFu
+ZCBieSBtb3ZpbmcgdGhlIHJlbGF0ZWQgY29kZSBpbnRvIGNvbW1vbiBzY2hlZCBjb2RlLCBh
+cyB0aGlzIGlzDQo+ICAgIHdoZXJlIGl0IHNob3VsZCBsaXZlLg0KPiANCj4gLSBQYXRjaGVz
+IDE1LTIwIGFyZSBtb3JlIGxpa2UgUkZDIG1hdGVyaWFsIHByZXBhcmluZyB0aGUgcGFyYXZp
+cnQNCj4gICAgaW5mcmFzdHJ1Y3R1cmUgdG8gc3VwcG9ydCBtdWx0aXBsZSBwdl9vcHMgZnVu
+Y3Rpb24gYXJyYXlzLg0KPiAgICBBcyBhIHByZXJlcXVpc2l0ZSBmb3IgdGhhdCBpdCBtYWtl
+cyBsaWZlIGluIG9ianRvb2wgbXVjaCBlYXNpZXINCj4gICAgd2l0aCBkcm9wcGluZyB0aGUg
+WGVuIHN0YXRpYyBpbml0aWFsaXplcnMgb2YgdGhlIHB2X29wcyBzdWItDQo+ICAgIHN0cnVj
+dHVyZXMsIHdoaWNoIGlzIGRvbmUgaW4gcGF0Y2hlcyAxNS0xNy4NCj4gICAgUGF0Y2hlcyAx
+OC0yMCBhcmUgZG9pbmcgdGhlIHJlYWwgcHJlcGFyYXRpb25zIGZvciBtdWx0aXBsZSBwdl9v
+cHMNCj4gICAgYXJyYXlzIGFuZCB1c2luZyB0aG9zZSBhcnJheXMgaW4gbXVsdGlwbGUgaGVh
+ZGVycy4NCj4gDQo+IC0gUGF0Y2ggMjEgaXMgYW4gZXhhbXBsZSBob3cgdGhlIG5ldyBzY2hl
+bWUgY2FuIGxvb2sgbGlrZSB1c2luZyB0aGUNCj4gICAgUFYtc3BpbmxvY2tzLg0KPiANCj4g
+Q2hhbmdlcyBpbiBWMjoNCj4gLSBuZXcgcGF0Y2hlcyAxMy0xOCBhbmQgMjANCj4gLSBjb21w
+bGV0ZSByZXdvcmsgb2YgcGF0Y2ggMjENCj4gDQo+IENoYW5nZXMgaW4gVjM6DQo+IC0gZml4
+ZWQgMiBpc3N1ZXMgZGV0ZWN0ZWQgYnkga2VybmVsIHRlc3Qgcm9ib3QNCj4gDQo+IEp1ZXJn
+ZW4gR3Jvc3MgKDIxKToNCj4gICAgeDg2L3BhcmF2aXJ0OiBSZW1vdmUgbm90IG5lZWRlZCBp
+bmNsdWRlcyBvZiBwYXJhdmlydC5oDQo+ICAgIHg4Ni9wYXJhdmlydDogUmVtb3ZlIHNvbWUg
+dW5uZWVkZWQgc3RydWN0IGRlY2xhcmF0aW9ucw0KPiAgICB4ODYvcGFyYXZpcnQ6IFJlbW92
+ZSBQQVJBVklSVF9ERUJVRyBjb25maWcgb3B0aW9uDQo+ICAgIHg4Ni9wYXJhdmlydDogTW92
+ZSB0aHVuayBtYWNyb3MgdG8gcGFyYXZpcnRfdHlwZXMuaA0KPiAgICBwYXJhdmlydDogUmVt
+b3ZlIGFzbS9wYXJhdmlydF9hcGlfY2xvY2suaA0KPiAgICBzY2hlZDogTW92ZSBjbG9jayBy
+ZWxhdGVkIHBhcmF2aXJ0IGNvZGUgdG8ga2VybmVsL3NjaGVkDQo+ICAgIGFybS9wYXJhdmly
+dDogVXNlIGNvbW1vbiBjb2RlIGZvciBwYXJhdmlydF9zdGVhbF9jbG9jaygpDQo+ICAgIGFy
+bTY0L3BhcmF2aXJ0OiBVc2UgY29tbW9uIGNvZGUgZm9yIHBhcmF2aXJ0X3N0ZWFsX2Nsb2Nr
+KCkNCj4gICAgbG9vbmdhcmNoL3BhcmF2aXJ0OiBVc2UgY29tbW9uIGNvZGUgZm9yIHBhcmF2
+aXJ0X3N0ZWFsX2Nsb2NrKCkNCj4gICAgcmlzY3YvcGFyYXZpcnQ6IFVzZSBjb21tb24gY29k
+ZSBmb3IgcGFyYXZpcnRfc3RlYWxfY2xvY2soKQ0KPiAgICB4ODYvcGFyYXZpcnQ6IFVzZSBj
+b21tb24gY29kZSBmb3IgcGFyYXZpcnRfc3RlYWxfY2xvY2soKQ0KPiAgICB4ODYvcGFyYXZp
+cnQ6IE1vdmUgcGFyYXZpcnRfc2NoZWRfY2xvY2soKSByZWxhdGVkIGNvZGUgaW50byB0c2Mu
+Yw0KPiAgICB4ODYvcGFyYXZpcnQ6IEludHJvZHVjZSBuZXcgcGFyYXZpcnQtYmFzZS5oIGhl
+YWRlcg0KPiAgICB4ODYvcGFyYXZpcnQ6IE1vdmUgcHZfbmF0aXZlXyooKSBwcm90b3R5cGVz
+IHRvIHBhcmF2aXJ0LmMNCj4gICAgeDg2L3hlbjogRHJvcCB4ZW5faXJxX29wcw0KPiAgICB4
+ODYveGVuOiBEcm9wIHhlbl9jcHVfb3BzDQo+ICAgIHg4Ni94ZW46IERyb3AgeGVuX21tdV9v
+cHMNCj4gICAgb2JqdG9vbDogQWxsb3cgbXVsdGlwbGUgcHZfb3BzIGFycmF5cw0KPiAgICB4
+ODYvcGFyYXZpcnQ6IEFsbG93IHB2LWNhbGxzIG91dHNpZGUgcGFyYXZpcnQuaA0KPiAgICB4
+ODYvcGFyYXZpcnQ6IFNwZWNpZnkgcHZfb3BzIGFycmF5IGluIHBhcmF2aXJ0IG1hY3Jvcw0K
+PiAgICB4ODYvcHZsb2NrczogTW92ZSBwYXJhdmlydCBzcGlubG9jayBmdW5jdGlvbnMgaW50
+byBvd24gaGVhZGVyDQo+IA0KPiAgIGFyY2gvS2NvbmZpZyAgICAgICAgICAgICAgICAgICAg
+ICAgICAgICAgICAgICB8ICAgMyArDQo+ICAgYXJjaC9hcm0vS2NvbmZpZyAgICAgICAgICAg
+ICAgICAgICAgICAgICAgICAgIHwgICAxICsNCj4gICBhcmNoL2FybS9pbmNsdWRlL2FzbS9w
+YXJhdmlydC5oICAgICAgICAgICAgICAgfCAgMjIgLS0NCj4gICBhcmNoL2FybS9pbmNsdWRl
+L2FzbS9wYXJhdmlydF9hcGlfY2xvY2suaCAgICAgfCAgIDEgLQ0KPiAgIGFyY2gvYXJtL2tl
+cm5lbC9NYWtlZmlsZSAgICAgICAgICAgICAgICAgICAgICB8ICAgMSAtDQo+ICAgYXJjaC9h
+cm0va2VybmVsL3BhcmF2aXJ0LmMgICAgICAgICAgICAgICAgICAgIHwgIDIzIC0tDQo+ICAg
+YXJjaC9hcm02NC9LY29uZmlnICAgICAgICAgICAgICAgICAgICAgICAgICAgIHwgICAxICsN
+Cj4gICBhcmNoL2FybTY0L2luY2x1ZGUvYXNtL3BhcmF2aXJ0LmggICAgICAgICAgICAgfCAg
+MTQgLQ0KPiAgIGFyY2gvYXJtNjQvaW5jbHVkZS9hc20vcGFyYXZpcnRfYXBpX2Nsb2NrLmgg
+ICB8ICAgMSAtDQo+ICAgYXJjaC9hcm02NC9rZXJuZWwvcGFyYXZpcnQuYyAgICAgICAgICAg
+ICAgICAgIHwgIDExICstDQo+ICAgYXJjaC9sb29uZ2FyY2gvS2NvbmZpZyAgICAgICAgICAg
+ICAgICAgICAgICAgIHwgICAxICsNCj4gICBhcmNoL2xvb25nYXJjaC9pbmNsdWRlL2FzbS9w
+YXJhdmlydC5oICAgICAgICAgfCAgMTMgLQ0KPiAgIC4uLi9pbmNsdWRlL2FzbS9wYXJhdmly
+dF9hcGlfY2xvY2suaCAgICAgICAgICB8ICAgMSAtDQo+ICAgYXJjaC9sb29uZ2FyY2gva2Vy
+bmVsL3BhcmF2aXJ0LmMgICAgICAgICAgICAgIHwgIDEwICstDQo+ICAgYXJjaC9wb3dlcnBj
+L2luY2x1ZGUvYXNtL3BhcmF2aXJ0LmggICAgICAgICAgIHwgICAzIC0NCj4gICBhcmNoL3Bv
+d2VycGMvaW5jbHVkZS9hc20vcGFyYXZpcnRfYXBpX2Nsb2NrLmggfCAgIDIgLQ0KPiAgIGFy
+Y2gvcG93ZXJwYy9wbGF0Zm9ybXMvcHNlcmllcy9zZXR1cC5jICAgICAgICB8ICAgNCArLQ0K
+PiAgIGFyY2gvcmlzY3YvS2NvbmZpZyAgICAgICAgICAgICAgICAgICAgICAgICAgICB8ICAg
+MSArDQo+ICAgYXJjaC9yaXNjdi9pbmNsdWRlL2FzbS9wYXJhdmlydC5oICAgICAgICAgICAg
+IHwgIDE0IC0NCj4gICBhcmNoL3Jpc2N2L2luY2x1ZGUvYXNtL3BhcmF2aXJ0X2FwaV9jbG9j
+ay5oICAgfCAgIDEgLQ0KPiAgIGFyY2gvcmlzY3Yva2VybmVsL3BhcmF2aXJ0LmMgICAgICAg
+ICAgICAgICAgICB8ICAxMSArLQ0KPiAgIGFyY2gveDg2L0tjb25maWcgICAgICAgICAgICAg
+ICAgICAgICAgICAgICAgICB8ICAgOCArLQ0KPiAgIGFyY2gveDg2L2VudHJ5L2VudHJ5XzY0
+LlMgICAgICAgICAgICAgICAgICAgICB8ICAgMSAtDQo+ICAgYXJjaC94ODYvZW50cnkvdnN5
+c2NhbGwvdnN5c2NhbGxfNjQuYyAgICAgICAgIHwgICAxIC0NCj4gICBhcmNoL3g4Ni9oeXBl
+cnYvaHZfc3BpbmxvY2suYyAgICAgICAgICAgICAgICAgfCAgMTEgKy0NCj4gICBhcmNoL3g4
+Ni9pbmNsdWRlL2FzbS9hcGljLmggICAgICAgICAgICAgICAgICAgfCAgIDQgLQ0KPiAgIGFy
+Y2gveDg2L2luY2x1ZGUvYXNtL2hpZ2htZW0uaCAgICAgICAgICAgICAgICB8ICAgMSAtDQo+
+ICAgYXJjaC94ODYvaW5jbHVkZS9hc20vbXNoeXBlcnYuaCAgICAgICAgICAgICAgIHwgICAx
+IC0NCj4gICBhcmNoL3g4Ni9pbmNsdWRlL2FzbS9wYXJhdmlydC1iYXNlLmggICAgICAgICAg
+fCAgMjkgKysNCj4gICBhcmNoL3g4Ni9pbmNsdWRlL2FzbS9wYXJhdmlydC1zcGlubG9jay5o
+ICAgICAgfCAxNDYgKysrKysrKysNCj4gICBhcmNoL3g4Ni9pbmNsdWRlL2FzbS9wYXJhdmly
+dC5oICAgICAgICAgICAgICAgfCAzMzEgKysrKystLS0tLS0tLS0tLS0tDQo+ICAgYXJjaC94
+ODYvaW5jbHVkZS9hc20vcGFyYXZpcnRfYXBpX2Nsb2NrLmggICAgIHwgICAxIC0NCj4gICBh
+cmNoL3g4Ni9pbmNsdWRlL2FzbS9wYXJhdmlydF90eXBlcy5oICAgICAgICAgfCAyNjkgKysr
+KysrKy0tLS0tLS0NCj4gICBhcmNoL3g4Ni9pbmNsdWRlL2FzbS9wZ3RhYmxlXzMyLmggICAg
+ICAgICAgICAgfCAgIDEgLQ0KPiAgIGFyY2gveDg2L2luY2x1ZGUvYXNtL3B0cmFjZS5oICAg
+ICAgICAgICAgICAgICB8ICAgMiArLQ0KPiAgIGFyY2gveDg2L2luY2x1ZGUvYXNtL3FzcGlu
+bG9jay5oICAgICAgICAgICAgICB8ICA4OSArLS0tLQ0KPiAgIGFyY2gveDg2L2luY2x1ZGUv
+YXNtL3NwaW5sb2NrLmggICAgICAgICAgICAgICB8ICAgMSAtDQo+ICAgYXJjaC94ODYvaW5j
+bHVkZS9hc20vdGltZXIuaCAgICAgICAgICAgICAgICAgIHwgICAxICsNCj4gICBhcmNoL3g4
+Ni9pbmNsdWRlL2FzbS90bGJmbHVzaC5oICAgICAgICAgICAgICAgfCAgIDQgLQ0KPiAgIGFy
+Y2gveDg2L2tlcm5lbC9NYWtlZmlsZSAgICAgICAgICAgICAgICAgICAgICB8ICAgMiArLQ0K
+PiAgIGFyY2gveDg2L2tlcm5lbC9hcG1fMzIuYyAgICAgICAgICAgICAgICAgICAgICB8ICAg
+MSAtDQo+ICAgYXJjaC94ODYva2VybmVsL2NhbGx0aHVua3MuYyAgICAgICAgICAgICAgICAg
+IHwgICAxIC0NCj4gICBhcmNoL3g4Ni9rZXJuZWwvY3B1L2J1Z3MuYyAgICAgICAgICAgICAg
+ICAgICAgfCAgIDEgLQ0KPiAgIGFyY2gveDg2L2tlcm5lbC9jcHUvdm13YXJlLmMgICAgICAg
+ICAgICAgICAgICB8ICAgMSArDQo+ICAgYXJjaC94ODYva2VybmVsL2t2bS5jICAgICAgICAg
+ICAgICAgICAgICAgICAgIHwgIDExICstDQo+ICAgYXJjaC94ODYva2VybmVsL2t2bWNsb2Nr
+LmMgICAgICAgICAgICAgICAgICAgIHwgICAxICsNCj4gICBhcmNoL3g4Ni9rZXJuZWwvcGFy
+YXZpcnQtc3BpbmxvY2tzLmMgICAgICAgICAgfCAgMjYgKy0NCj4gICBhcmNoL3g4Ni9rZXJu
+ZWwvcGFyYXZpcnQuYyAgICAgICAgICAgICAgICAgICAgfCAgNDIgKy0tDQo+ICAgYXJjaC94
+ODYva2VybmVsL3RzYy5jICAgICAgICAgICAgICAgICAgICAgICAgIHwgIDEwICstDQo+ICAg
+YXJjaC94ODYva2VybmVsL3ZzbXBfNjQuYyAgICAgICAgICAgICAgICAgICAgIHwgICAxIC0N
+Cj4gICBhcmNoL3g4Ni9rZXJuZWwveDg2X2luaXQuYyAgICAgICAgICAgICAgICAgICAgfCAg
+IDEgLQ0KPiAgIGFyY2gveDg2L2xpYi9jYWNoZS1zbXAuYyAgICAgICAgICAgICAgICAgICAg
+ICB8ICAgMSAtDQo+ICAgYXJjaC94ODYvbW0vaW5pdC5jICAgICAgICAgICAgICAgICAgICAg
+ICAgICAgIHwgICAxIC0NCj4gICBhcmNoL3g4Ni94ZW4vZW5saWdodGVuX3B2LmMgICAgICAg
+ICAgICAgICAgICAgfCAgODIgKystLS0NCj4gICBhcmNoL3g4Ni94ZW4vaXJxLmMgICAgICAg
+ICAgICAgICAgICAgICAgICAgICAgfCAgMjAgKy0NCj4gICBhcmNoL3g4Ni94ZW4vbW11X3B2
+LmMgICAgICAgICAgICAgICAgICAgICAgICAgfCAxMDAgKystLS0tDQo+ICAgYXJjaC94ODYv
+eGVuL3NwaW5sb2NrLmMgICAgICAgICAgICAgICAgICAgICAgIHwgIDExICstDQo+ICAgYXJj
+aC94ODYveGVuL3RpbWUuYyAgICAgICAgICAgICAgICAgICAgICAgICAgIHwgICAyICsNCj4g
+ICBkcml2ZXJzL2Nsb2Nrc291cmNlL2h5cGVydl90aW1lci5jICAgICAgICAgICAgfCAgIDIg
+Kw0KPiAgIGRyaXZlcnMveGVuL3RpbWUuYyAgICAgICAgICAgICAgICAgICAgICAgICAgICB8
+ICAgMiArLQ0KPiAgIGluY2x1ZGUvbGludXgvc2NoZWQvY3B1dGltZS5oICAgICAgICAgICAg
+ICAgICB8ICAxOCArDQo+ICAga2VybmVsL3NjaGVkL2NvcmUuYyAgICAgICAgICAgICAgICAg
+ICAgICAgICAgIHwgICA1ICsNCj4gICBrZXJuZWwvc2NoZWQvY3B1dGltZS5jICAgICAgICAg
+ICAgICAgICAgICAgICAgfCAgMTMgKw0KPiAgIGtlcm5lbC9zY2hlZC9zY2hlZC5oICAgICAg
+ICAgICAgICAgICAgICAgICAgICB8ICAgMyArLQ0KPiAgIHRvb2xzL29ianRvb2wvYXJjaC94
+ODYvZGVjb2RlLmMgICAgICAgICAgICAgICB8ICAgOCArLQ0KPiAgIHRvb2xzL29ianRvb2wv
+Y2hlY2suYyAgICAgICAgICAgICAgICAgICAgICAgICB8ICA3OCArKysrLQ0KPiAgIHRvb2xz
+L29ianRvb2wvaW5jbHVkZS9vYmp0b29sL2NoZWNrLmggICAgICAgICB8ICAgMiArDQo+ICAg
+NjcgZmlsZXMgY2hhbmdlZCwgNjU5IGluc2VydGlvbnMoKyksIDgyNyBkZWxldGlvbnMoLSkN
+Cj4gICBkZWxldGUgbW9kZSAxMDA2NDQgYXJjaC9hcm0vaW5jbHVkZS9hc20vcGFyYXZpcnQu
+aA0KPiAgIGRlbGV0ZSBtb2RlIDEwMDY0NCBhcmNoL2FybS9pbmNsdWRlL2FzbS9wYXJhdmly
+dF9hcGlfY2xvY2suaA0KPiAgIGRlbGV0ZSBtb2RlIDEwMDY0NCBhcmNoL2FybS9rZXJuZWwv
+cGFyYXZpcnQuYw0KPiAgIGRlbGV0ZSBtb2RlIDEwMDY0NCBhcmNoL2FybTY0L2luY2x1ZGUv
+YXNtL3BhcmF2aXJ0X2FwaV9jbG9jay5oDQo+ICAgZGVsZXRlIG1vZGUgMTAwNjQ0IGFyY2gv
+bG9vbmdhcmNoL2luY2x1ZGUvYXNtL3BhcmF2aXJ0X2FwaV9jbG9jay5oDQo+ICAgZGVsZXRl
+IG1vZGUgMTAwNjQ0IGFyY2gvcG93ZXJwYy9pbmNsdWRlL2FzbS9wYXJhdmlydF9hcGlfY2xv
+Y2suaA0KPiAgIGRlbGV0ZSBtb2RlIDEwMDY0NCBhcmNoL3Jpc2N2L2luY2x1ZGUvYXNtL3Bh
+cmF2aXJ0X2FwaV9jbG9jay5oDQo+ICAgY3JlYXRlIG1vZGUgMTAwNjQ0IGFyY2gveDg2L2lu
+Y2x1ZGUvYXNtL3BhcmF2aXJ0LWJhc2UuaA0KPiAgIGNyZWF0ZSBtb2RlIDEwMDY0NCBhcmNo
+L3g4Ni9pbmNsdWRlL2FzbS9wYXJhdmlydC1zcGlubG9jay5oDQo+ICAgZGVsZXRlIG1vZGUg
+MTAwNjQ0IGFyY2gveDg2L2luY2x1ZGUvYXNtL3BhcmF2aXJ0X2FwaV9jbG9jay5oDQo+IA0K
+DQo=
+--------------0mve0WRCUDOgkf9JsJIojBKK
+Content-Type: application/pgp-keys; name="OpenPGP_0xB0DE9DD628BF132F.asc"
+Content-Disposition: attachment; filename="OpenPGP_0xB0DE9DD628BF132F.asc"
+Content-Description: OpenPGP public key
+Content-Transfer-Encoding: quoted-printable
 
-I previously incorrectly thought kvm_gmem_populate() should pass in src_offset
-as 0 for the 2nd src page.
+-----BEGIN PGP PUBLIC KEY BLOCK-----
 
-Would you consider checking if params.uaddr is PAGE_ALIGNED() in
-snp_launch_update() to simplify the design?
+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
+kt+z4drzFUyEjLM1vVvIMjkUoJs=3D
+=3DeeAB
+-----END PGP PUBLIC KEY BLOCK-----
 
-> > 
-> > >  			}
-> > > -			kunmap_local(vaddr);
-> > > +
-> > > +			kunmap_local(dst_vaddr);
-> > >  		}
-> > >  
-> > >  		ret = rmp_make_private(pfn + i, gfn << PAGE_SHIFT, PG_LEVEL_4K,
-> > > @@ -2331,12 +2339,20 @@ static int sev_gmem_post_populate(struct kvm *kvm, gfn_t gfn_start, kvm_pfn_t pf
-> > >  	if (!snp_page_reclaim(kvm, pfn + i) &&
-> > >  	    sev_populate_args->type == KVM_SEV_SNP_PAGE_TYPE_CPUID &&
-> > >  	    sev_populate_args->fw_error == SEV_RET_INVALID_PARAM) {
-> > > -		void *vaddr = kmap_local_pfn(pfn + i);
-> > > +		void *src_vaddr = kmap_local_pfn(page_to_pfn(src_pages[i]));
-> > > +		void *dst_vaddr = kmap_local_pfn(pfn + i);
-> > >  
-> > > -		if (copy_to_user(src + i * PAGE_SIZE, vaddr, PAGE_SIZE))
-> > > -			pr_debug("Failed to write CPUID page back to userspace\n");
-> > > +		memcpy(src_vaddr + src_offset, dst_vaddr, PAGE_SIZE - src_offset);
-> > > +		kunmap_local(src_vaddr);
-> > > +
-> > > +		if (src_offset) {
-> > > +			src_vaddr = kmap_local_pfn(page_to_pfn(src_pages[i + 1]));
-> > > +
-> > > +			memcpy(src_vaddr, dst_vaddr + PAGE_SIZE - src_offset, src_offset);
-> > > +			kunmap_local(src_vaddr);
-> > > +		}
-> > >  
-> > > -		kunmap_local(vaddr);
-> > > +		kunmap_local(dst_vaddr);
-> > >  	}
-> > >  
-> > >  	/* pfn + i is hypervisor-owned now, so skip below cleanup for it. */
-> > > diff --git a/arch/x86/kvm/vmx/tdx.c b/arch/x86/kvm/vmx/tdx.c
-> > > index 57ed101a1181..dd5439ec1473 100644
-> > > --- a/arch/x86/kvm/vmx/tdx.c
-> > > +++ b/arch/x86/kvm/vmx/tdx.c
-> > > @@ -3115,37 +3115,26 @@ struct tdx_gmem_post_populate_arg {
-> > >  };
-> > >  
-> > >  static int tdx_gmem_post_populate(struct kvm *kvm, gfn_t gfn, kvm_pfn_t pfn,
-> > > -				  void __user *src, int order, void *_arg)
-> > > +				  struct page **src_pages, loff_t src_offset,
-> > > +				  int order, void *_arg)
-> > >  {
-> > >  	struct tdx_gmem_post_populate_arg *arg = _arg;
-> > >  	struct kvm_tdx *kvm_tdx = to_kvm_tdx(kvm);
-> > >  	u64 err, entry, level_state;
-> > >  	gpa_t gpa = gfn_to_gpa(gfn);
-> > > -	struct page *src_page;
-> > >  	int ret, i;
-> > >  
-> > >  	if (KVM_BUG_ON(kvm_tdx->page_add_src, kvm))
-> > >  		return -EIO;
-> > >  
-> > > -	if (KVM_BUG_ON(!PAGE_ALIGNED(src), kvm))
-> > > +	/* Source should be page-aligned, in which case src_offset will be 0. */
-> > > +	if (KVM_BUG_ON(src_offset))
-> > 	if (KVM_BUG_ON(src_offset, kvm))
-> > 
-> > >  		return -EINVAL;
-> > >  
-> > > -	/*
-> > > -	 * Get the source page if it has been faulted in. Return failure if the
-> > > -	 * source page has been swapped out or unmapped in primary memory.
-> > > -	 */
-> > > -	ret = get_user_pages_fast((unsigned long)src, 1, 0, &src_page);
-> > > -	if (ret < 0)
-> > > -		return ret;
-> > > -	if (ret != 1)
-> > > -		return -ENOMEM;
-> > > -
-> > > -	kvm_tdx->page_add_src = src_page;
-> > > +	kvm_tdx->page_add_src = src_pages[i];
-> > src_pages[0] ? i is not initialized. 
-> 
-> Sorry, I switched on TDX options for compile testing but I must have done a
-> sloppy job confirming it actually built. I'll re-test push these and squash
-> in the fixes in the github tree.
-> 
-> > 
-> > Should there also be a KVM_BUG_ON(order > 0, kvm) ?
-> 
-> Seems reasonable, but I'm not sure this is the right patch. Maybe I
-> could squash it into the preceeding documentation patch so as to not
-> give the impression this patch changes those expectations in any way.
-I don't think it should be documented as a user requirement.
+--------------0mve0WRCUDOgkf9JsJIojBKK--
 
-However, we need to comment out that this assertion is due to that
-tdx_vcpu_init_mem_region() passes npages as 1 to kvm_gmem_populate().
+--------------DrSPxjHRDVvfvpOSxXEGqtrJ--
 
-> > 
-> > >  	ret = kvm_tdp_mmu_map_private_pfn(arg->vcpu, gfn, pfn);
-> > >  	kvm_tdx->page_add_src = NULL;
-> > >  
-> > > -	put_page(src_page);
-> > > -
-> > >  	if (ret || !(arg->flags & KVM_TDX_MEASURE_MEMORY_REGION))
-> > >  		return ret;
-> > >  
-> > > diff --git a/include/linux/kvm_host.h b/include/linux/kvm_host.h
-> > > index d93f75b05ae2..7e9d2403c61f 100644
-> > > --- a/include/linux/kvm_host.h
-> > > +++ b/include/linux/kvm_host.h
-> > > @@ -2581,7 +2581,8 @@ int kvm_arch_gmem_prepare(struct kvm *kvm, gfn_t gfn, kvm_pfn_t pfn, int max_ord
-> > >   * Returns the number of pages that were populated.
-> > >   */
-> > >  typedef int (*kvm_gmem_populate_cb)(struct kvm *kvm, gfn_t gfn, kvm_pfn_t pfn,
-> > > -				    void __user *src, int order, void *opaque);
-> > > +				    struct page **src_pages, loff_t src_offset,
-> > > +				    int order, void *opaque);
-> > >  
-> > >  long kvm_gmem_populate(struct kvm *kvm, gfn_t gfn, void __user *src, long npages,
-> > >  		       kvm_gmem_populate_cb post_populate, void *opaque);
-> > > diff --git a/virt/kvm/guest_memfd.c b/virt/kvm/guest_memfd.c
-> > > index 9160379df378..e9ac3fd4fd8f 100644
-> > > --- a/virt/kvm/guest_memfd.c
-> > > +++ b/virt/kvm/guest_memfd.c
-> > > @@ -814,14 +814,17 @@ int kvm_gmem_get_pfn(struct kvm *kvm, struct kvm_memory_slot *slot,
-> > >  EXPORT_SYMBOL_FOR_KVM_INTERNAL(kvm_gmem_get_pfn);
-> > >  
-> > >  #ifdef CONFIG_HAVE_KVM_ARCH_GMEM_POPULATE
-> > > +
-> > > +#define GMEM_GUP_NPAGES (1UL << PMD_ORDER)
-> > Limiting GMEM_GUP_NPAGES to PMD_ORDER may only work when the max_order of a huge
-> > folio is 2MB. What if the max_order returned from  __kvm_gmem_get_pfn() is 1GB
-> > when src_pages[] can only hold up to 512 pages?
-> 
-> This was necessarily chosen in prep for hugepages, but more about my
-> unease at letting userspace GUP arbitrarilly large ranges. PMD_ORDER
-> happens to align with 2MB hugepages while seeming like a reasonable
-> batching value so that's why I chose it.
->
-> Even with 1GB support, I wasn't really planning to increase it. SNP
-> doesn't really make use of RMP sizes >2MB, and it sounds like TDX
-> handles promotion in a completely different path. So atm I'm leaning
-> toward just letting GMEM_GUP_NPAGES be the cap for the max page size we
-> support for kvm_gmem_populate() path and not bothering to change it
-> until a solid use-case arises.
-The problem is that with hugetlb-based guest_memfd, the folio itself could be
-of 1GB, though SNP and TDX can force mapping at only 4KB.
+--------------We5fW6EZMtlKny0A4cau12FQ
+Content-Type: application/pgp-signature; name="OpenPGP_signature.asc"
+Content-Description: OpenPGP digital signature
+Content-Disposition: attachment; filename="OpenPGP_signature.asc"
 
-Then since max_order = folio_order(folio) (at least in the tree for [1]), 
-WARN_ON() in kvm_gmem_populate() could still be hit:
+-----BEGIN PGP SIGNATURE-----
 
-folio = __kvm_gmem_get_pfn(file, slot, index, &pfn, &max_order);
-WARN_ON(!IS_ALIGNED(gfn, 1 << max_order) ||
-        (npages - i) < (1 << max_order));
+wsB5BAABCAAjFiEEhRJncuj2BJSl0Jf3sN6d1ii/Ey8FAmkkKJ4FAwAAAAAACgkQsN6d1ii/Ey96
+XQf/SZ63IJyquodbQLgO7UOlhatNR0JUxtLBGXtzzD9lLJ9MGtRZn78fU/peXEGHNZEA2wJlcKOY
++2AJ32Xsn9JL/9ZmbQyt014ovVTablifIrv8xlTgAgN99kTtFi2NiYD/AF98VCabwNRx+QK9Vo4n
+N4Eb1eW7YQFGLSAya7T7u2xWNW41xgedaRvQNEMOvGajK6VExI9lo9cXSp5bS+VKZqQWygNsQjAy
+BYg/u1+1sDr7L56331yDxmStB00H20evlCYda5vlv1qP2WpF3CuT+rpLAfQ4Wf1YCS+2ZW6UvLfy
+A6h35oFwyf1ohDIh7OysCxTH57L6hrDqciTpulba8Q==
+=JJbu
+-----END PGP SIGNATURE-----
 
-TDX is even easier to hit this warning because it always passes npages as 1.
-
-[1] https://lore.kernel.org/all/cover.1747264138.git.ackerleytng@google.com
-
- 
-> > Increasing GMEM_GUP_NPAGES to (1UL << PUD_ORDER) is probabaly not a good idea.
-> > 
-> > Given both TDX/SNP map at 4KB granularity, why not just invoke post_populate()
-> > per 4KB while removing the max_order from post_populate() parameters, as done
-> > in Sean's sketch patch [1]?
-> 
-> That's an option too, but SNP can make use of 2MB pages in the
-> post-populate callback so I don't want to shut the door on that option
-> just yet if it's not too much of a pain to work in. Given the guest BIOS
-> lives primarily in 1 or 2 of these 2MB regions the benefits might be
-> worthwhile, and SNP doesn't have a post-post-populate promotion path
-> like TDX (at least, not one that would help much for guest boot times)
-I see.
-
-So, what about below change?
-
---- a/virt/kvm/guest_memfd.c
-+++ b/virt/kvm/guest_memfd.c
-@@ -878,11 +878,10 @@ long kvm_gmem_populate(struct kvm *kvm, gfn_t start_gfn, void __user *src, long
-                }
-
-                folio_unlock(folio);
--               WARN_ON(!IS_ALIGNED(gfn, 1 << max_order) ||
--                       (npages - i) < (1 << max_order));
-
-                ret = -EINVAL;
--               while (!kvm_range_has_memory_attributes(kvm, gfn, gfn + (1 << max_order),
-+               while (!IS_ALIGNED(gfn, 1 << max_order) || (npages - i) < (1 << max_order) ||
-+                      !kvm_range_has_memory_attributes(kvm, gfn, gfn + (1 << max_order),
-                                                        KVM_MEMORY_ATTRIBUTE_PRIVATE,
-                                                        KVM_MEMORY_ATTRIBUTE_PRIVATE)) {
-                        if (!max_order)
-
-
-
-> 
-> > 
-> > Then the WARN_ON() in kvm_gmem_populate() can be removed, which would be easily
-> > triggered by TDX when max_order > 0 && npages == 1:
-> > 
-> >       WARN_ON(!IS_ALIGNED(gfn, 1 << max_order) ||
-> >               (npages - i) < (1 << max_order));
-> > 
-> > 
-> > [1] https://lore.kernel.org/all/aHEwT4X0RcfZzHlt@google.com/
-> > 
-> > >  long kvm_gmem_populate(struct kvm *kvm, gfn_t start_gfn, void __user *src, long npages,
-> > >  		       kvm_gmem_populate_cb post_populate, void *opaque)
-> > >  {
-> > >  	struct kvm_memory_slot *slot;
-> > > -	void __user *p;
-> > > -
-> > > +	struct page **src_pages;
-> > >  	int ret = 0, max_order;
-> > > -	long i;
-> > > +	loff_t src_offset = 0;
-> > > +	long i, src_npages;
-> > >  
-> > >  	lockdep_assert_held(&kvm->slots_lock);
-> > >  
-> > > @@ -836,9 +839,28 @@ long kvm_gmem_populate(struct kvm *kvm, gfn_t start_gfn, void __user *src, long
-> > >  	if (!file)
-> > >  		return -EFAULT;
-> > >  
-> > > +	npages = min_t(ulong, slot->npages - (start_gfn - slot->base_gfn), npages);
-> > > +	npages = min_t(ulong, npages, GMEM_GUP_NPAGES);
-> > > +
-> > > +	if (src) {
-> > > +		src_npages = IS_ALIGNED((unsigned long)src, PAGE_SIZE) ? npages : npages + 1;
-> > > +
-> > > +		src_pages = kmalloc_array(src_npages, sizeof(struct page *), GFP_KERNEL);
-> > > +		if (!src_pages)
-> > > +			return -ENOMEM;
-> > > +
-> > > +		ret = get_user_pages_fast((unsigned long)src, src_npages, 0, src_pages);
-> > > +		if (ret < 0)
-> > > +			return ret;
-> > > +
-> > > +		if (ret != src_npages)
-> > > +			return -ENOMEM;
-> > > +
-> > > +		src_offset = (loff_t)(src - PTR_ALIGN_DOWN(src, PAGE_SIZE));
-> > > +	}
-> > > +
-> > >  	filemap_invalidate_lock(file->f_mapping);
-> > >  
-> > > -	npages = min_t(ulong, slot->npages - (start_gfn - slot->base_gfn), npages);
-> > >  	for (i = 0; i < npages; i += (1 << max_order)) {
-> > >  		struct folio *folio;
-> > >  		gfn_t gfn = start_gfn + i;
-> > > @@ -869,8 +891,8 @@ long kvm_gmem_populate(struct kvm *kvm, gfn_t start_gfn, void __user *src, long
-> > >  			max_order--;
-> > >  		}
-> > >  
-> > > -		p = src ? src + i * PAGE_SIZE : NULL;
-> > > -		ret = post_populate(kvm, gfn, pfn, p, max_order, opaque);
-> > > +		ret = post_populate(kvm, gfn, pfn, src ? &src_pages[i] : NULL,
-> > > +				    src_offset, max_order, opaque);
-> > Why src_offset is not 0 starting from the 2nd page?
-> > 
-> > >  		if (!ret)
-> > >  			folio_mark_uptodate(folio);
-> > >  
-> > > @@ -882,6 +904,14 @@ long kvm_gmem_populate(struct kvm *kvm, gfn_t start_gfn, void __user *src, long
-> > >  
-> > >  	filemap_invalidate_unlock(file->f_mapping);
-> > >  
-> > > +	if (src) {
-> > > +		long j;
-> > > +
-> > > +		for (j = 0; j < src_npages; j++)
-> > > +			put_page(src_pages[j]);
-> > > +		kfree(src_pages);
-> > > +	}
-> > > +
-> > >  	return ret && !i ? ret : i;
-> > >  }
-> > >  EXPORT_SYMBOL_FOR_KVM_INTERNAL(kvm_gmem_populate);
-> > > -- 
-> > > 2.25.1
-> > > 
+--------------We5fW6EZMtlKny0A4cau12FQ--
