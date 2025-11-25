@@ -1,196 +1,178 @@
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A56CB2248B9;
-	Tue, 25 Nov 2025 07:46:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 212C42D5C67;
+	Tue, 25 Nov 2025 08:10:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.17
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764056815; cv=none; b=DMpxZa5LCTnRdfMtpZDakgt8i0UbEdOZejFupumg9DuDhSn9KgIUWiPj6O3PGCN7CN/Ts0Cehd+zKBQjSTWTJr1cSGoXRIew4rmWtHqs6znzq8RhTazPwjJAo4/39gVw7w6XcdSPs6WS7QCITkM0HejVCfoP/FC2XFBOpjiapYk=
+	t=1764058203; cv=none; b=B1gSyZEog5YHLYzG+3rvksjhhtg31cDECYnJLEkEeaW/vDuc3vncHnOmp05t6477CRnTlS768+lPYsb6ku5+PJhvXWd4gzOPyn1Los3Xk9Zk1gcbWwMcOyo4/FbTOZ1HyNLiO50XONcI8pk/m8c4hR2Q4lJDe9loDnoezLPRl6M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764056815; c=relaxed/simple;
-	bh=CVAehinaEnZHYHUhTa9lbfiyB5JcoF0zOenOgH3BQGs=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=qW91Mf1qp5OW0G5KEHILyumhOxrng9p+NA5r7mc731eWSpLzs2+KLvQj/6Jk/SUoEYbQj3f+s0Ossrg02TauTphRBBgExoKqW08/w9MyBl0hjeQUR8Pnx4wi7aXIXFiVX9oaZAJkpoeMJLw+XlLyw8YfKyNkXJhKu5JLrLE15bk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=c/x7l33T; arc=none smtp.client-ip=148.163.156.1
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+	s=arc-20240116; t=1764058203; c=relaxed/simple;
+	bh=hwpDaKWSDHJ2P36LukNL+0xtVFpRjTz2H9WP7hWrNvk=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=hXV/QHwBd4GZunjJN8mjN6APs+XBVXvnZQ69x7VU51o6UvOd8ss2H3EgfkVIBs4HrZpTr+8WenqAQH6yP8SfmVqoEkR0PS7/8IeD7E61528S2Oxr1vPQTSeaT5UoVGnOyf8heSViSRZauc3tTJAuqFTuZRfM0V7ZQimb+ImMsLQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=ED1jUKaM; arc=none smtp.client-ip=198.175.65.17
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="c/x7l33T"
-Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 5AP4kgjN032735;
-	Tue, 25 Nov 2025 07:46:44 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=+5MZso
-	xhQJ3lZmOwjZ3unECkPcyh1PKFDS5e3r7VU7U=; b=c/x7l33TE/M5w6OljhLuN4
-	xu9Xxl0MLHkic/ucMHOTDkmr2XBwmboA6IOcm3WF3r7t/s8IPRT4EGFb3huZrtR/
-	vAmOZZbpn4JIlOvTLBuOh6C6Zdr42si+cDElg8NWJUpa82ev9g/Bd3X4SO5nTmtE
-	nDSA2OsqRosZ53UzRZBiHr1yUcjOjVXbKQTFwnovbO9jCqRBIF93Eqp6wq294Ni6
-	+fA3kdvHw6dsdNSB0VXeEtdjoyv7H6cbn4+Muntogt7RbJYmJHezyJvsxgb+ysrj
-	9s52rpYs0SFY2jwXLWcRosQF0SS7q5KKhT3WurMgCCLxDYfxxlupqex1Hw4LINSQ
-	==
-Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4ak4uv41sn-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 25 Nov 2025 07:46:44 +0000 (GMT)
-Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma23.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 5AP6V6gm016418;
-	Tue, 25 Nov 2025 07:46:25 GMT
-Received: from smtprelay07.wdc07v.mail.ibm.com ([172.16.1.74])
-	by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4aks0k29u3-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 25 Nov 2025 07:46:25 +0000
-Received: from smtpav04.dal12v.mail.ibm.com (smtpav04.dal12v.mail.ibm.com [10.241.53.103])
-	by smtprelay07.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 5AP7kNH229360748
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 25 Nov 2025 07:46:23 GMT
-Received: from smtpav04.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 600B05805E;
-	Tue, 25 Nov 2025 07:46:23 +0000 (GMT)
-Received: from smtpav04.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 911B258052;
-	Tue, 25 Nov 2025 07:46:16 +0000 (GMT)
-Received: from jarvis.ozlabs.ibm.com (unknown [9.150.29.34])
-	by smtpav04.dal12v.mail.ibm.com (Postfix) with ESMTP;
-	Tue, 25 Nov 2025 07:46:16 +0000 (GMT)
-From: Andrew Donnellan <ajd@linux.ibm.com>
-Date: Tue, 25 Nov 2025 18:45:53 +1100
-Subject: [PATCH 2/3] KVM: s390: Enable and disable interrupts in entry code
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="ED1jUKaM"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1764058201; x=1795594201;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=hwpDaKWSDHJ2P36LukNL+0xtVFpRjTz2H9WP7hWrNvk=;
+  b=ED1jUKaMDu9GD3iAILS/U8oNLxZt5+IrpKCnKRvsuDEy30eVHVHMjIto
+   wH+3TJ9DYzcxIx5KDFOVJKjIJbrBB6zI8U5bMCSr1MnqlRVZYRx8APDQB
+   wm6kU/FEPr7TMmmBasKvpRiQ3+7ijPFLpHSf1kjeum7O8wbGcmMVeG9si
+   SUGUAWcNl3pGS8kPeuBe3PQQYh7p2sAdfBwcjNrD1ZT7vyj6O92Kd5NNB
+   1UYLMpXvNgT8HNggZCc0Ay4p6RDpNdHsiMOVkKPyGnNN/BMhXGIHl9sWy
+   +8D4AqkQ50dyx3pkW+R4B/wbqa5AS9XOVD0NCr5SjqttZJrDKFEtYTmjb
+   Q==;
+X-CSE-ConnectionGUID: qUUXqi1lQJqnEHVd2LYu8A==
+X-CSE-MsgGUID: 4BaBUyq3S/evqmhTNDk56A==
+X-IronPort-AV: E=McAfee;i="6800,10657,11623"; a="66024293"
+X-IronPort-AV: E=Sophos;i="6.20,224,1758610800"; 
+   d="scan'208";a="66024293"
+Received: from orviesa007.jf.intel.com ([10.64.159.147])
+  by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Nov 2025 00:10:01 -0800
+X-CSE-ConnectionGUID: f1yzQwdhQkqM3HQS9JkInw==
+X-CSE-MsgGUID: sO+iD+y6R62C1FCxq50Rgg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.20,224,1758610800"; 
+   d="scan'208";a="192571594"
+Received: from yinghaoj-desk.ccr.corp.intel.com (HELO [10.238.1.225]) ([10.238.1.225])
+  by orviesa007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Nov 2025 00:09:56 -0800
+Message-ID: <12144256-b71a-4331-8309-2e805dc120d1@linux.intel.com>
+Date: Tue, 25 Nov 2025 16:09:53 +0800
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20251125-s390-kvm-xfer-to-guest-work-v1-2-091281a34611@linux.ibm.com>
-References: <20251125-s390-kvm-xfer-to-guest-work-v1-0-091281a34611@linux.ibm.com>
-In-Reply-To: <20251125-s390-kvm-xfer-to-guest-work-v1-0-091281a34611@linux.ibm.com>
-To: kvm@vger.kernel.org, linux-s390@vger.kernel.org,
-        linux-kernel@vger.kernel.org,
-        Christian Borntraeger <borntraeger@linux.ibm.com>,
-        Janosch Frank <frankja@linux.ibm.com>,
-        Claudio Imbrenda <imbrenda@linux.ibm.com>,
-        Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>,
-        Alexander Gordeev <agordeev@linux.ibm.com>,
-        Sven Schnelle <svens@linux.ibm.com>
-Cc: Nicholas Miehlbradt <nicholas@linux.ibm.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Andy Lutomirski <luto@kernel.org>,
-        David Hildenbrand <david@kernel.org>
-X-Mailer: b4 0.14.2
-X-TM-AS-GCONF: 00
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMTIyMDAyMSBTYWx0ZWRfXz4Mfstm8Bt3m
- 8xp6p8RpeZxLCJv4jvbN/EtPuTtSzmCDvzglGlm6u56ii0F/yq7OtVGMB6xVOlYU4OsOpOwTSNS
- IBJBRi3OBDxZ3wHlswz3PMTDSi9Q9NHGCalpYo0F+c3wZAXGUJlZds3cR94n8dzZEwv28D4K5Qf
- q0y7IatIw5ewf4JQrjdq9qWuLzQumZ/XxaPqG8FxzQwPpSls6obB6pAKSHyTOujR+U7B1sq9ucx
- R4+ftiiYfGZUEtfUoDGUMTb6ev6sto2zm1MJtT+XiRghzJ+orlzphUZOcvCpZwfrjCs9/w5WPnw
- L5s9ISeATNI/cdTcgs0lpWyfB+ZlzivJVpSDyuwMVJCL8I9uRJZKMRc8RZMGitLg2Bcr4e5fkz3
- GSDW73A5FED712qr6pkBGhTa1Ca/9w==
-X-Authority-Analysis: v=2.4 cv=PLoCOPqC c=1 sm=1 tr=0 ts=69255ee4 cx=c_pps
- a=3Bg1Hr4SwmMryq2xdFQyZA==:117 a=3Bg1Hr4SwmMryq2xdFQyZA==:17
- a=IkcTkHD0fZMA:10 a=6UeiqGixMTsA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=VnNF1IyMAAAA:8 a=eOUov4wa0NbOG_Jv4UoA:9 a=QEXdDO2ut3YA:10
-X-Proofpoint-ORIG-GUID: oSgQibWHqXzxYrFp_LWcyzhiqOmvlfaB
-X-Proofpoint-GUID: oSgQibWHqXzxYrFp_LWcyzhiqOmvlfaB
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
- definitions=2025-11-25_02,2025-11-24_02,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- phishscore=0 lowpriorityscore=0 spamscore=0 adultscore=0 impostorscore=0
- priorityscore=1501 bulkscore=0 malwarescore=0 clxscore=1015 suspectscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.19.0-2510240000 definitions=main-2511220021
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4 07/16] x86/virt/tdx: Add tdx_alloc/free_page() helpers
+To: Rick Edgecombe <rick.p.edgecombe@intel.com>
+Cc: bp@alien8.de, chao.gao@intel.com, dave.hansen@intel.com,
+ isaku.yamahata@intel.com, kai.huang@intel.com, kas@kernel.org,
+ kvm@vger.kernel.org, linux-coco@lists.linux.dev,
+ linux-kernel@vger.kernel.org, mingo@redhat.com, pbonzini@redhat.com,
+ seanjc@google.com, tglx@linutronix.de, vannapurve@google.com,
+ x86@kernel.org, yan.y.zhao@intel.com, xiaoyao.li@intel.com,
+ binbin.wu@intel.com
+References: <20251121005125.417831-1-rick.p.edgecombe@intel.com>
+ <20251121005125.417831-8-rick.p.edgecombe@intel.com>
+Content-Language: en-US
+From: Binbin Wu <binbin.wu@linux.intel.com>
+In-Reply-To: <20251121005125.417831-8-rick.p.edgecombe@intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-From: Heiko Carstens <hca@linux.ibm.com>
 
-Move enabling and disabling of interrupts around the SIE instruction to
-entry code. Enabling interrupts only after the __TI_sie flag has been set
-guarantees that the SIE instruction is not executed if an interrupt happens
-between enabling interrupts and the execution of the SIE instruction.
-Interrupt handlers and machine check handler forward the PSW to the
-sie_exit label in such cases.
 
-This is a prerequisite for VIRT_XFER_TO_GUEST_WORK to prevent that guest
-context is entered when e.g. a scheduler IPI, indicating that a reschedule
-is required, happens right before the SIE instruction, which could lead to
-long delays.
+On 11/21/2025 8:51 AM, Rick Edgecombe wrote:
+[...]
+>   
+> +/* Number PAMT pages to be provided to TDX module per 2M region of PA */
+           ^                                             ^
+           of                                           2MB
+> +static int tdx_dpamt_entry_pages(void)
+> +{
+> +	if (!tdx_supports_dynamic_pamt(&tdx_sysinfo))
+> +		return 0;
+> +
+> +	return tdx_sysinfo.tdmr.pamt_4k_entry_size * PTRS_PER_PTE / PAGE_SIZE;
+> +}
+> +
+> +/*
+> + * The TDX spec treats the registers like an array, as they are ordered
+> + * in the struct. The array size is limited by the number or registers,
+> + * so define the max size it could be for worst case allocations and sanity
+> + * checking.
+> + */
+> +#define MAX_TDX_ARG_SIZE(reg) (sizeof(struct tdx_module_args) - \
+> +			       offsetof(struct tdx_module_args, reg))
 
-Signed-off-by: Heiko Carstens <hca@linux.ibm.com>
-Tested-by: Andrew Donnellan <ajd@linux.ibm.com>
-Signed-off-by: Andrew Donnellan <ajd@linux.ibm.com>
----
- arch/s390/include/asm/stacktrace.h | 1 +
- arch/s390/kernel/asm-offsets.c     | 1 +
- arch/s390/kernel/entry.S           | 2 ++
- arch/s390/kvm/kvm-s390.c           | 5 -----
- 4 files changed, 4 insertions(+), 5 deletions(-)
+This should be the maximum number of registers could be used to pass the
+addresses of the pages (or other information), it needs to be divided by sizeof(u64).
 
-diff --git a/arch/s390/include/asm/stacktrace.h b/arch/s390/include/asm/stacktrace.h
-index 810a6b9d96280f73311de873ad180c59a0cfbd5f..c9ae680a28af910c4703eee179be4db6c1ec9ad1 100644
---- a/arch/s390/include/asm/stacktrace.h
-+++ b/arch/s390/include/asm/stacktrace.h
-@@ -66,6 +66,7 @@ struct stack_frame {
- 			unsigned long sie_flags;
- 			unsigned long sie_control_block_phys;
- 			unsigned long sie_guest_asce;
-+			unsigned long sie_irq;
- 		};
- 	};
- 	unsigned long gprs[10];
-diff --git a/arch/s390/kernel/asm-offsets.c b/arch/s390/kernel/asm-offsets.c
-index a8915663e917faed4551276b64013ee073662cc9..730449f464aff25761264b00d63d92e907f17f78 100644
---- a/arch/s390/kernel/asm-offsets.c
-+++ b/arch/s390/kernel/asm-offsets.c
-@@ -64,6 +64,7 @@ int main(void)
- 	OFFSET(__SF_SIE_FLAGS, stack_frame, sie_flags);
- 	OFFSET(__SF_SIE_CONTROL_PHYS, stack_frame, sie_control_block_phys);
- 	OFFSET(__SF_SIE_GUEST_ASCE, stack_frame, sie_guest_asce);
-+	OFFSET(__SF_SIE_IRQ, stack_frame, sie_irq);
- 	DEFINE(STACK_FRAME_OVERHEAD, sizeof(struct stack_frame));
- 	BLANK();
- 	OFFSET(__SFUSER_BACKCHAIN, stack_frame_user, back_chain);
-diff --git a/arch/s390/kernel/entry.S b/arch/s390/kernel/entry.S
-index 75b0fbb236d05f420b20cac6bac925e8ac36fa68..e906f4ab6cf35e53061a27192911629c10c347ed 100644
---- a/arch/s390/kernel/entry.S
-+++ b/arch/s390/kernel/entry.S
-@@ -189,6 +189,7 @@ SYM_FUNC_START(__sie64a)
- 	mvc	__SF_SIE_FLAGS(8,%r15),__TI_flags(%r14) # copy thread flags
- 	lmg	%r0,%r13,0(%r4)			# load guest gprs 0-13
- 	mvi	__TI_sie(%r14),1
-+	stosm	__SF_SIE_IRQ(%r15),0x03		# enable interrupts
- 	lctlg	%c1,%c1,__SF_SIE_GUEST_ASCE(%r15) # load primary asce
- 	lg	%r14,__SF_SIE_CONTROL(%r15)	# get control block pointer
- 	oi	__SIE_PROG0C+3(%r14),1		# we are going into SIE now
-@@ -212,6 +213,7 @@ SYM_FUNC_START(__sie64a)
- 	lg	%r14,__LC_CURRENT(%r14)
- 	mvi	__TI_sie(%r14),0
- SYM_INNER_LABEL(sie_exit, SYM_L_GLOBAL)
-+	stnsm	__SF_SIE_IRQ(%r15),0xfc		# disable interrupts
- 	lg	%r14,__SF_SIE_SAVEAREA(%r15)	# load guest register save area
- 	stmg	%r0,%r13,0(%r14)		# save guest gprs 0-13
- 	xgr	%r0,%r0				# clear guest registers to
-diff --git a/arch/s390/kvm/kvm-s390.c b/arch/s390/kvm/kvm-s390.c
-index fa6b5150ca31e4d9f0bdafabc1fb1d90ef3f3d0d..3cad08662b3d80aaf6f5f8891fc08b383c3c44d4 100644
---- a/arch/s390/kvm/kvm-s390.c
-+++ b/arch/s390/kvm/kvm-s390.c
-@@ -5075,13 +5075,8 @@ int noinstr kvm_s390_enter_exit_sie(struct kvm_s390_sie_block *scb,
- 	 * The guest_state_{enter,exit}_irqoff() functions inform lockdep and
- 	 * tracing that entry to the guest will enable host IRQs, and exit from
- 	 * the guest will disable host IRQs.
--	 *
--	 * We must not use lockdep/tracing/RCU in this critical section, so we
--	 * use the low-level arch_local_irq_*() helpers to enable/disable IRQs.
- 	 */
--	arch_local_irq_enable();
- 	ret = sie64a(scb, gprs, gasce);
--	arch_local_irq_disable();
- 
- 	guest_state_exit_irqoff();
- 
+Also, "SIZE" in the name could be confusing.
 
--- 
-2.52.0
+> +#define TDX_ARG_INDEX(reg) (offsetof(struct tdx_module_args, reg) / \
+> +			    sizeof(u64))
+> +
+> +/*
+> + * Treat struct the registers like an array that starts at RDX, per
+> + * TDX spec. Do some sanitychecks, and return an indexable type.
+sanitychecks -> sanity checks
 
+> + */
+[...]
+> +/* Serializes adding/removing PAMT memory */
+> +static DEFINE_SPINLOCK(pamt_lock);
+> +
+> +/* Bump PAMT refcount for the given page and allocate PAMT memory if needed */
+> +int tdx_pamt_get(struct page *page)
+> +{
+> +	u64 pamt_pa_array[MAX_TDX_ARG_SIZE(rdx)];
+> +	atomic_t *pamt_refcount;
+> +	u64 tdx_status;
+> +	int ret;
+> +
+> +	if (!tdx_supports_dynamic_pamt(&tdx_sysinfo))
+> +		return 0;
+> +
+> +	ret = alloc_pamt_array(pamt_pa_array);
+> +	if (ret)
+> +		goto out_free;
+> +
+> +	pamt_refcount = tdx_find_pamt_refcount(page_to_pfn(page));
+> +
+> +	scoped_guard(spinlock, &pamt_lock) {
+> +		/*
+> +		 * If the pamt page is already added (i.e. refcount >= 1),
+> +		 * then just increment the refcount.
+> +		 */
+> +		if (atomic_read(pamt_refcount)) {
+> +			atomic_inc(pamt_refcount);
+
+So far, all atomic operations are inside the spinlock.
+May be better to add some info in the change log that atomic is needed due to
+the optimization in the later patch?
+
+> +			goto out_free;
+> +		}
+> +
+> +		/* Try to add the pamt page and take the refcount 0->1. */
+> +
+> +		tdx_status = tdh_phymem_pamt_add(page, pamt_pa_array);
+> +		if (!IS_TDX_SUCCESS(tdx_status)) {
+> +			pr_err("TDH_PHYMEM_PAMT_ADD failed: %#llx\n", tdx_status);
+
+Can use pr_tdx_error().
+
+Aslo, so for in this patch, when this SEAMCALL failed, does it indicate a bug?
+
+> +			goto out_free;
+> +		}
+> +
+> +		atomic_inc(pamt_refcount);
+> +	}
+> +
+> +	return ret;
+
+Maybe just return 0 here since all error paths must be directed to out_free.
+
+> +out_free:
+> +	/*
+> +	 * pamt_pa_array is populated or zeroed up to tdx_dpamt_entry_pages()
+> +	 * above. free_pamt_array() can handle either case.
+> +	 */
+> +	free_pamt_array(pamt_pa_array);
+> +	return ret;
+> +}
+> +EXPORT_SYMBOL_GPL(tdx_pamt_get);
+> +
+>
+[...]
