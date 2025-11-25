@@ -1,230 +1,116 @@
-Received: from mail-pl1-f173.google.com (mail-pl1-f173.google.com [209.85.214.173])
+Received: from mail-il1-f207.google.com (mail-il1-f207.google.com [209.85.166.207])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D863F31ED65
-	for <kvm@vger.kernel.org>; Tue, 25 Nov 2025 20:19:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.173
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B72BB2367D1
+	for <kvm@vger.kernel.org>; Tue, 25 Nov 2025 20:29:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.207
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764101985; cv=none; b=pBFZD4DGviJC3Anhf1oNj486Xs2n0EuuLrTfQRo+OMUqT3NHMW/Z0DfxY4pMZnt1jJ5eVkiA16m7mfwK2wJmHDyrEWvDbNQWMEH8L7IO5hkpFI6/JFqzDNHIshnciWcdCuNpd/kvOjWZXYp1LJQn7o+vXvgkk4MVFAWWoJZe4WM=
+	t=1764102575; cv=none; b=otpT80/uUAovbKrKP0W42Wzah3mOUIM5VoEAXL3ifu+EIboNzhjf0Cuyy4P2iusPmF7b0z+iLjC/5B9e8eez0fT49I+tWK0LypkRAQUEKqIoAqb8ehRPdJXsb51aw6dT9eAfYH1PwdGmo6g93/denlmC4FMoqMogwctXKpzJC+I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764101985; c=relaxed/simple;
-	bh=TfXLQ7eMP7rkYU5fTK9bIte/OyK7lqXUWNtmDfb3dac=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Xl6T4MIhZ0tDmscbHV35O0dHLuwYxI5TL7mSmzFEeRLN9mQZtaSI8f9uIybeV9I7NRcododVkjisc7yge20gT/hqldOkbzF86P6Y2BeHjqNF9puqYjALPtInYY6ZNUOMIdtt2YYFSykV4FqO6nB6VjjMOOw9mRa8iA7f5Ol5RGE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=2jWibM3G; arc=none smtp.client-ip=209.85.214.173
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="2jWibM3G"
-Received: by mail-pl1-f173.google.com with SMTP id d9443c01a7336-2980343d9d1so415ad.1
-        for <kvm@vger.kernel.org>; Tue, 25 Nov 2025 12:19:43 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1764101983; x=1764706783; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=RHnBbe3Vz2qssfWJEc+r2TwEWDPYjkvuNmONn0WVHOs=;
-        b=2jWibM3GQ0Pu7ZHoarxXcg/6fB2y2iHvQgxPbjI0wi6TN9jChR9cye8JnRKkGGT6uN
-         kFHUS7kb2wYLSTqmh341wl/AN0gydXDvHiINdQflfXJoCmWDbaoWHVdHTMLn9sCQ2Ywc
-         TdogwyRx72yBa4cZsaAJtmgn5+loYBTf5teg1T6otPWn+SSq0iA+2UmHDD2ZLKY3Zkp+
-         gTXQ2VpM7TCTlFMxTymEuQ8RCz+9PFq1k6h1WA5E2TBiOnOnD7L1//PU8Kmx+nIIZyzA
-         H8WjGHtmY4d5c/r+XwQMw2rVcaF0SxKpqASTg/Cj7qj6jBa+oF+vCnhLqNyI+dDGoc8O
-         ++yw==
+	s=arc-20240116; t=1764102575; c=relaxed/simple;
+	bh=OUyUBXnAG9oYinRHzdxSWLiEg7I40n25FlLumq6F0FA=;
+	h=MIME-Version:Date:In-Reply-To:Message-ID:Subject:From:To:
+	 Content-Type; b=dwmB3jAMnzXFEKEwQBZZGbbbF1xNovbNagkMmDrzGUEOF7jlgpVvBsB0MHZWOXWEr1n4SLX9RKr243QM5TFp8VW+Am1PefXdK+7dGuUpHbshXB1/yBLFYsuCCChEVjd0CibSm87fDivx3BIU2GnhAL/yhTNYCXRlJ4tDb6Wlm4U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.166.207
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
+Received: by mail-il1-f207.google.com with SMTP id e9e14a558f8ab-435a145a992so44554755ab.3
+        for <kvm@vger.kernel.org>; Tue, 25 Nov 2025 12:29:33 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1764101983; x=1764706783;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=RHnBbe3Vz2qssfWJEc+r2TwEWDPYjkvuNmONn0WVHOs=;
-        b=Suk7iC7tQgRoViM1BAuJFlrjJm3lmrV+M36eV1ePFb49aKPS8T+LePNGrKe6NQNFTc
-         N+apeponTxjc4eW/EbQaE7IAX+6TTIeTNGco++ieVxgstN2oQlmC9DT+11WpkXRSaV2q
-         Mdy2cYJjJveigzdivBGlYaoJUsIwHc05DFqirWi8DRHqRYVEcabvLUakYauBfrPOvIDN
-         A/uDf4iSUfPrAQN8WC3RJXd/R2ma4jj3IgsO3Q/sTItbYgS9zgTU46RSiFW7ZobWZzc0
-         xYfsKK+YkV5l8pAxpoInGFI9ZfdWgLEIJS9XdEALSN3tAwqTTOkYs4miCJ2CnXcmN35E
-         UjsA==
-X-Forwarded-Encrypted: i=1; AJvYcCWjR9GosOr928iJ56G+R1GHYxYesnCCW2v6TcZZQcc8mvddipQUHpDrZLqmLExQyCk8jTQ=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyWF7wf4atPv2ka+0CP95axyNEz6Abg80QV2jjwadA0Tc1HkAv5
-	HLcSa9devassGWPfPcD1Q9edIQyafuVDUtHrK0+ivUJ4qrYRsvgUbcKwluSHTbUz3OS5D6uYiqW
-	MlMkzQ1+ksEW6VXtwkxfVEaaS/dfMrHRiuwZq4TT3oigsFcqrqoeEhLSs
-X-Gm-Gg: ASbGncvP2g+X4WQtD1JCrf7TjMwyxlaFGMkUcI5UCx8qc3lFEAKYu3YlvM5hBa1UH8y
-	/yiiyjGBjE4i5K1oKosdEsb1oTXIirZ5wfB3s/XtyG5Ui9Agpen/dOxq/pcYZTWoNBACfZP7yeK
-	lF0CqR0lDC53ufBYdatvpeXUYe34K835G++duDZUfl7sDw0aLONTPEiyCU1WOEeyG4KpenjI4nA
-	JUNCGbilZS1XVXImffAfGYtW0xaUHMsdunaBGx4ans8FcHakdojGCxaWxFPEOGwaxzHfhkYdDHu
-	AKKkQQycGO4LXuyXO7L7DRgI
-X-Google-Smtp-Source: AGHT+IF779IW4vsIcrs2I3YvHsOxMox3kgZbhhBFciEEFQDtvBW9XhXWERcz3VmUskBP6M6LUqEOOJF1Dsvqi8UvFOM=
-X-Received: by 2002:a05:7022:6289:b0:11a:2c18:9e70 with SMTP id
- a92af1059eb24-11dc328a4c5mr20026c88.11.1764101982376; Tue, 25 Nov 2025
- 12:19:42 -0800 (PST)
+        d=1e100.net; s=20230601; t=1764102573; x=1764707373;
+        h=to:from:subject:message-id:in-reply-to:date:mime-version
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=EGRbFBGY+j4v+PO+24zcOmYHiPkvq5dreksnw2ehrhk=;
+        b=tyMLMOC5Z+jbxWF3qBaDlp9fJ1O0rhEutRdgpdskStpofvLm/wmVpsetUS6Db5154r
+         ZYWy+0WvT2A3xtjGHvfHrZfAHXyjyAUTjwOncfWRTWNQxdxMjN7k/noB6qefDidbF2qy
+         nbUZVhG2vWjITVnc/osDRUOsfWQVvsJ7JlofVpERc0UPpcmmh/TzhHd99cEaKKyQme1k
+         vorowzm7L0GOX6WPAyRdTD/kCbiQN0PA9B40HKbVoPa8bUuqRe0hrN/Ywuhcv9Gu7CXp
+         PcQhuJz157TnnlPZik/XAXc05s4s7Z1eVGnUoWWA2kBQ/+3WSGhAL4mBhQvCuKI5l2sS
+         +hXA==
+X-Forwarded-Encrypted: i=1; AJvYcCWO2nGfIePCdEslFfGzZATmsVwzxleoSZS9nSeCPippcMuxZhqgV0r3Gz0ubey5WBVUbKw=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyUB7sdr/BHCilu4TAsg9JxV+gmnuwRTdQWI3liUX1lUScBXQ2Y
+	94F/Jcm+t1fr+U8QDCvuMomBAfV+b+Mk849Rhi+2HtMpo3iER/T8VHK4I6jWsC3Rx+fRPWtuAld
+	DV96J81N+VWNS9pTuXqwzoRRsrrr5BvJMUQXuo50DtcpRVpWPP+E6LXiDgzQ=
+X-Google-Smtp-Source: AGHT+IHzRbnmNJDYVGlbeFMimIOBG2/NLfXER7MzwyuSdhszWuuaI2hX7gA0l86Xx7MiOVQ/RlzUt1NXFoI/AYYSlI8+is1vumoT
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20251121005125.417831-1-rick.p.edgecombe@intel.com>
-In-Reply-To: <20251121005125.417831-1-rick.p.edgecombe@intel.com>
-From: Vishal Annapurve <vannapurve@google.com>
-Date: Tue, 25 Nov 2025 12:19:30 -0800
-X-Gm-Features: AWmQ_bkGaBaAKmGuHN0VfSyMJxYxC_cB_ZllFi8Kt1CG5QaGEqyEGvIM4EGFCOo
-Message-ID: <CAGtprH9=p03WtA8-cf8xL4F48jdtD046AwRV3bigMjc-JD=0=w@mail.gmail.com>
-Subject: Re: [PATCH v4 00/16] TDX: Enable Dynamic PAMT
-To: Rick Edgecombe <rick.p.edgecombe@intel.com>
-Cc: bp@alien8.de, chao.gao@intel.com, dave.hansen@intel.com, 
-	isaku.yamahata@intel.com, kai.huang@intel.com, kas@kernel.org, 
-	kvm@vger.kernel.org, linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org, 
-	mingo@redhat.com, pbonzini@redhat.com, seanjc@google.com, tglx@linutronix.de, 
-	x86@kernel.org, yan.y.zhao@intel.com, xiaoyao.li@intel.com, 
-	binbin.wu@intel.com
+X-Received: by 2002:a05:6e02:19cc:b0:434:7cf6:6d20 with SMTP id
+ e9e14a558f8ab-435b8c0991fmr145721565ab.11.1764102572730; Tue, 25 Nov 2025
+ 12:29:32 -0800 (PST)
+Date: Tue, 25 Nov 2025 12:29:32 -0800
+In-Reply-To: <6925da1b.a70a0220.d98e3.00b0.GAE@google.com>
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <692611ac.a70a0220.2ea503.0091.GAE@google.com>
+Subject: Re: [syzbot] [kvm-x86?] WARNING in kvm_apic_accept_events (2)
+From: syzbot <syzbot+59f2c3a3fc4f6c09b8cd@syzkaller.appspotmail.com>
+To: bp@alien8.de, dave.hansen@linux.intel.com, hpa@zytor.com, 
+	kvm@vger.kernel.org, linux-kernel@vger.kernel.org, mingo@redhat.com, 
+	pbonzini@redhat.com, seanjc@google.com, syzkaller-bugs@googlegroups.com, 
+	tglx@linutronix.de, x86@kernel.org
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 
-On Thu, Nov 20, 2025 at 4:51=E2=80=AFPM Rick Edgecombe
-<rick.p.edgecombe@intel.com> wrote:
->
-> Hi,
->
-> This is 4th revision of Dynamic PAMT, which is a new feature that reduces
-> the memory use of TDX. For background information, see the v3
-> coverletter[0]. V4 mostly consists of incorporating the feedback from v3.
-> Notably what it *doesn=E2=80=99t* change is the solution for pre-allocati=
-ng DPAMT
-> backing pages. (more info below in =E2=80=9CChanges=E2=80=9D)
->
-> I think this series isn=E2=80=99t quite ready to ask for merging just yet=
-. I=E2=80=99d
-> appreciate another round of review especially looking for any issues in t=
-he
-> refcount allocation/mapping and the pamt get/put lock-refcount dance. And
-> hopefully collect some RBs.
->
-> Sean/Paolo, we have mostly banished this all to TDX code except for =E2=
-=80=9CKVM:
-> TDX: Add x86 ops for external spt cache=E2=80=9D patch. That and =E2=80=
-=9Cx86/virt/tdx:
-> Add helpers to allow for pre-allocating pages=E2=80=9D are probably the r=
-emaining
-> possibly controversial parts of your domain. If you only have a short tim=
-e
-> to spend at this point, I=E2=80=99d point you at those two patches.
->
-> Since most of the changes are in arch/x86, I=E2=80=99d think this feature=
- could be
-> a candidate for eventually merging through tip with Sean or Paolo=E2=80=
-=99s ack.
-> But it is currently based on kvm-x86/next in order to build on top of the
-> post-populate cleanup series. Next time I=E2=80=99ll probably target tip =
-if people
-> think that is a good way forward.
->
-> Changes
-> =3D=3D=3D=3D=3D=3D=3D
-> There were two good suggestions around the pre-allocated pages solution
-> last time, but neither ended up working out:
->
-> 1. Dave suggested to use mempool_t instead of the linked list based
-> structure, in order to not re-invent the wheel. This turned out to not
-> quite fit. The problems were that there wasn=E2=80=99t really a =E2=80=9C=
-topup=E2=80=9D mechanism,
-> or an atomic fallback (which matches the kvm cache behavior). This result=
-s
-> in very similar code being built around mempool that was built around the
-> linked list. It was an overall harder to follow solution for not much cod=
-e
-> savings.
->
-> I strongly considered going back to Kiryl=E2=80=99s original solution whi=
-ch passed
-> a callback function pointer for allocating DPAMT pages, and an opaque
-> void * that the callback could use to find the kvm_mmu_memory_cache. I
-> thought that readability issues of passing the opaque void * between
-> subsystems outweighed the small code duplication in the simple, familiar
-> patterned linked list-based code. So I ended up leaving it.
->
-> 2. Kai suggested (but later retracted the idea) that since the external
-> page table cache was moved to TDX code, it could simply install DPAMT
-> pages for the cache at topup time. Then the installation of DPAMT backing
-> for S-EPT page tables could be done outside of the mmu_lock. It could als=
-o
-> be argued that it makes the design simpler in a way, because the external
-> page table cache acts like it did before. Anything in there could be simp=
-ly
-> used.
->
-> At the time my argument against this was that whether a huge page would b=
-e
-> installed (and thus, whether DPAMT backing was needed) for the guest
-> private memory would not be known until later, so early install solution
-> would need special late handling for TDX huge pages. After some internal
-> discussions I at looked how we could simplify the series by punting on TD=
-X
-> huge pages needs.
->
-> But it turns out that this other design was actually more complex and had
-> more LOC than the previous solution. So it was dropped, and again, I went
-> back to the original solution.
->
->
-> I=E2=80=99m really starting to think that, while the overall solution her=
-e isn=E2=80=99t
-> the most elegant, we might not have much more to squeeze from it. So
-> design-wise, I think we should think about calling it done.
->
-> Testing
-> =3D=3D=3D=3D=3D=3D=3D
-> Based on kvm-x86/next (4531ff85d925). Testing was the usual, except I als=
-o
-> tested with TDX modules that don't support DPAMT, and with the two
-> optimization patches removed: =E2=80=9CImprove PAMT refcounters allocatio=
-n for
-> sparse memory=E2=80=9D and =E2=80=9Cx86/virt/tdx: Optimize tdx_alloc/free=
-_page() helpers=E2=80=9D.
->
-> [0] https://lore.kernel.org/kvm/20250918232224.2202592-1-rick.p.edgecombe=
-@intel.com/
->
->
-> Kirill A. Shutemov (13):
->   x86/tdx: Move all TDX error defines into <asm/shared/tdx_errno.h>
->   x86/tdx: Add helpers to check return status codes
->   x86/virt/tdx: Allocate page bitmap for Dynamic PAMT
->   x86/virt/tdx: Allocate reference counters for PAMT memory
->   x86/virt/tdx: Improve PAMT refcounts allocation for sparse memory
->   x86/virt/tdx: Add tdx_alloc/free_page() helpers
->   x86/virt/tdx: Optimize tdx_alloc/free_page() helpers
->   KVM: TDX: Allocate PAMT memory for TD control structures
->   KVM: TDX: Allocate PAMT memory for vCPU control structures
->   KVM: TDX: Handle PAMT allocation in fault path
->   KVM: TDX: Reclaim PAMT memory
->   x86/virt/tdx: Enable Dynamic PAMT
->   Documentation/x86: Add documentation for TDX's Dynamic PAMT
->
-> Rick Edgecombe (3):
->   x86/virt/tdx: Simplify tdmr_get_pamt_sz()
->   KVM: TDX: Add x86 ops for external spt cache
->   x86/virt/tdx: Add helpers to allow for pre-allocating pages
->
->  Documentation/arch/x86/tdx.rst              |  21 +
->  arch/x86/coco/tdx/tdx.c                     |  10 +-
->  arch/x86/include/asm/kvm-x86-ops.h          |   3 +
->  arch/x86/include/asm/kvm_host.h             |  14 +-
->  arch/x86/include/asm/shared/tdx.h           |   8 +
->  arch/x86/include/asm/shared/tdx_errno.h     | 104 ++++
->  arch/x86/include/asm/tdx.h                  |  78 ++-
->  arch/x86/include/asm/tdx_global_metadata.h  |   1 +
->  arch/x86/kvm/mmu/mmu.c                      |   6 +-
->  arch/x86/kvm/mmu/mmu_internal.h             |   2 +-
->  arch/x86/kvm/vmx/tdx.c                      | 160 ++++--
->  arch/x86/kvm/vmx/tdx.h                      |   3 +-
->  arch/x86/kvm/vmx/tdx_errno.h                |  40 --
->  arch/x86/virt/vmx/tdx/tdx.c                 | 587 +++++++++++++++++---
->  arch/x86/virt/vmx/tdx/tdx.h                 |   5 +-
->  arch/x86/virt/vmx/tdx/tdx_global_metadata.c |   7 +
->  16 files changed, 854 insertions(+), 195 deletions(-)
->  create mode 100644 arch/x86/include/asm/shared/tdx_errno.h
->  delete mode 100644 arch/x86/kvm/vmx/tdx_errno.h
->
-> --
-> 2.51.2
->
+syzbot has found a reproducer for the following issue on:
 
-acked-by: Vishal Annapurve <vannapurve@google.com>.
+HEAD commit:    8a2bcda5e139 Merge tag 'for-6.18/dm-fixes' of git://git.ke..
+git tree:       upstream
+console output: https://syzkaller.appspot.com/x/log.txt?x=1604f8b4580000
+kernel config:  https://syzkaller.appspot.com/x/.config?x=a1db0fea040c2a9f
+dashboard link: https://syzkaller.appspot.com/bug?extid=59f2c3a3fc4f6c09b8cd
+compiler:       Debian clang version 20.1.8 (++20250708063551+0c9f909b7976-1~exp1~20250708183702.136), Debian LLD 20.1.8
+syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=13ecf612580000
+C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=13d9cf42580000
+
+Downloadable assets:
+disk image (non-bootable): https://storage.googleapis.com/syzbot-assets/d900f083ada3/non_bootable_disk-8a2bcda5.raw.xz
+vmlinux: https://storage.googleapis.com/syzbot-assets/fc3f96645396/vmlinux-8a2bcda5.xz
+kernel image: https://storage.googleapis.com/syzbot-assets/e20aa7be5d33/bzImage-8a2bcda5.xz
+
+IMPORTANT: if you fix the issue, please add the following tag to the commit:
+Reported-by: syzbot+59f2c3a3fc4f6c09b8cd@syzkaller.appspotmail.com
+
+------------[ cut here ]------------
+WARNING: CPU: 0 PID: 5495 at arch/x86/kvm/lapic.c:3483 kvm_apic_accept_events+0x341/0x490 arch/x86/kvm/lapic.c:3483
+Modules linked in:
+CPU: 0 UID: 0 PID: 5495 Comm: syz.0.17 Not tainted syzkaller #0 PREEMPT(full) 
+Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.3-debian-1.16.3-2~bpo12+1 04/01/2014
+RIP: 0010:kvm_apic_accept_events+0x341/0x490 arch/x86/kvm/lapic.c:3483
+Code: eb 0c e8 32 da 71 00 eb 05 e8 2b da 71 00 45 31 ff 44 89 f8 5b 41 5c 41 5d 41 5e 41 5f 5d c3 cc cc cc cc cc e8 10 da 71 00 90 <0f> 0b 90 e9 ec fd ff ff 44 89 f9 80 e1 07 80 c1 03 38 c1 0f 8c 4f
+RSP: 0018:ffffc90002b2fbf0 EFLAGS: 00010293
+RAX: ffffffff814e3940 RBX: 0000000000000002 RCX: ffff88801f8ca480
+RDX: 0000000000000000 RSI: 0000000000000002 RDI: 0000000000000002
+RBP: 0000000000000000 R08: 0000000000000000 R09: ffffffff814689b6
+R10: dffffc0000000000 R11: ffffed1002268008 R12: 0000000000000002
+R13: dffffc0000000000 R14: ffff888042c95c00 R15: ffff8880113402d8
+FS:  000055558ab60500(0000) GS:ffff88808d72f000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 0000200000002000 CR3: 0000000058d0b000 CR4: 0000000000352ef0
+Call Trace:
+ <TASK>
+ kvm_arch_vcpu_ioctl_get_mpstate+0x128/0x480 arch/x86/kvm/x86.c:12147
+ kvm_vcpu_ioctl+0x625/0xe90 virt/kvm/kvm_main.c:4539
+ vfs_ioctl fs/ioctl.c:51 [inline]
+ __do_sys_ioctl fs/ioctl.c:597 [inline]
+ __se_sys_ioctl+0xfc/0x170 fs/ioctl.c:583
+ do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
+ do_syscall_64+0xfa/0xfa0 arch/x86/entry/syscall_64.c:94
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+RIP: 0033:0x7f918bd8f749
+Code: ff ff c3 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 40 00 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 a8 ff ff ff f7 d8 64 89 01 48
+RSP: 002b:00007ffc74a3c2a8 EFLAGS: 00000246 ORIG_RAX: 0000000000000010
+RAX: ffffffffffffffda RBX: 00007f918bfe5fa0 RCX: 00007f918bd8f749
+RDX: 0000000000000000 RSI: 000000008004ae98 RDI: 0000000000000005
+RBP: 00007f918be13f91 R08: 0000000000000000 R09: 0000000000000000
+R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000000
+R13: 00007f918bfe5fa0 R14: 00007f918bfe5fa0 R15: 0000000000000003
+ </TASK>
+
+
+---
+If you want syzbot to run the reproducer, reply with:
+#syz test: git://repo/address.git branch-or-commit-hash
+If you attach or paste a git patch, syzbot will apply it before testing.
