@@ -1,116 +1,195 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from unimail.uni-dortmund.de (mx1.hrz.uni-dortmund.de [129.217.128.51])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DFFF13054DF;
-	Wed, 26 Nov 2025 16:00:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D732C13B;
+	Wed, 26 Nov 2025 16:04:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=129.217.128.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764172802; cv=none; b=EDgnUqKpaec64WyvmMb9f40KfNjHRsDK5hDoVBxxk4r26uyI+QpwmBng+IauXPZWoVfO5zguKUZs4Yg2SmKiJUub3RS/VriP3CD+4sttvmwIQtNaBOxdC7sZvsD/8xAcQlXcgaBcOWURQ5Nxoy9u6ttHIVeRY73whSsSRUwk4U4=
+	t=1764173088; cv=none; b=DGDCcwHzHbeIuj6zWCG2eSYFEkbe9dvptpiomAkuyXHnPPX3hccoUL7i4lwGRtrTuzk9eXerjjxIMogduAyzO9BmRtdkXFT521HGZTVkEeRZKg+1uXIhPmLVEYlGTYIH94fhMk4YZp/arZXFHyailMDcOcnakkX3sw5CX557sQc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764172802; c=relaxed/simple;
-	bh=lG82/RXgkPqZWZ9aTc82QWQFUkM4bvI4ZqnGwoup1FM=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=URC3GV0lSegj6lSWVuQoi30vpL99/Kt/xAqEmPdwvzRsiHlxHuD0QLBh8bi79I7nDQ//rzupNbFAg/ShtOPuAx22BP2QrYpUp9z+uk7nV9RAoiioF7dPU7mvdF3O9DNna7tfyppYlOAsHphZ+Ticxmn4KiL3MCQtpzT46XEutiU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=tsHZeA3D; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1764173088; c=relaxed/simple;
+	bh=ScIjvDQM0tIm6p0ZsQW1B/rH8dMtLMvsxViZMEtoW9c=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=rvVOj/gNzqRVAgJjhSv0MngfxbX4S5CJTdYo6zWGc5/IsIXhv5MDFC71hl7xnwsdrSqjmIyJa96LEGbMg3KCj7JmVcV8wrH0bbKu7wgNpXXutABKNxPsZ9hlZPoBNwG5Jh8UPySnzdI3P27MrKuluQv/Ngl5I53M/ZiXuOVNAL8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=tu-dortmund.de; spf=pass smtp.mailfrom=tu-dortmund.de; dkim=pass (1024-bit key) header.d=tu-dortmund.de header.i=@tu-dortmund.de header.b=IRFNm+rG; arc=none smtp.client-ip=129.217.128.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=tu-dortmund.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tu-dortmund.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="tsHZeA3D"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 60AEEC4CEF8;
-	Wed, 26 Nov 2025 16:00:01 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1764172801;
-	bh=lG82/RXgkPqZWZ9aTc82QWQFUkM4bvI4ZqnGwoup1FM=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tsHZeA3DuZqbjciM77jiElM91agDFeS851U5NSeB1UqRqSVMsvpzz3hLdtwAEVMAX
-	 JTQTNmdNELRr6ZAWia7dtpfCy9fRbgtOqKcS/ID+/AuxzwyRm9GFr/sVjbDV6zU9Hj
-	 XO4LQS/HhcYIO0O8CB+HupwfvSwgL6Uwm5A5oY9cUmXC9LLOd1j62m7zXQ2nPOu6/A
-	 oqmgGz/rn780uUSXLMBmHgoE2llN6wwXFHxu/1b9DKyDa1BGCwS66A8MpvrH1tN8uH
-	 dPqIZNcS5WBs2Y/o1jbCz4iJAaHliZNd+w4tYk8qUtrJXdGZv7KiXsHTVMbIoWZmmb
-	 IdiAAGD/32Nog==
-Received: from sofa.misterjones.org ([185.219.108.64] helo=valley-girl.lan)
-	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.98.2)
-	(envelope-from <maz@kernel.org>)
-	id 1vOHvz-00000008WrH-0wRD;
-	Wed, 26 Nov 2025 15:59:59 +0000
-From: Marc Zyngier <maz@kernel.org>
-To: kvmarm@lists.linux.dev,
-	kvm@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org
-Cc: Joey Gouly <joey.gouly@arm.com>,
-	Suzuki K Poulose <suzuki.poulose@arm.com>,
-	Oliver Upton <oupton@kernel.org>,
-	Zenghui Yu <yuzenghui@huawei.com>,
-	Ben Horgan <ben.horgan@arm.com>
-Subject: [PATCH v2 4/5] KVM: arm64: Report optional ID register traps with a 0x18 syndrome
-Date: Wed, 26 Nov 2025 15:59:50 +0000
-Message-ID: <20251126155951.1146317-5-maz@kernel.org>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20251126155951.1146317-1-maz@kernel.org>
-References: <20251126155951.1146317-1-maz@kernel.org>
+	dkim=pass (1024-bit key) header.d=tu-dortmund.de header.i=@tu-dortmund.de header.b="IRFNm+rG"
+Received: from [172.31.100.153] ([172.31.100.153])
+	(authenticated bits=0)
+	by unimail.uni-dortmund.de (8.18.1.15/8.18.1.15) with ESMTPSA id 5AQG4PN6025014
+	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
+	Wed, 26 Nov 2025 17:04:25 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=tu-dortmund.de;
+	s=unimail; t=1764173067;
+	bh=ScIjvDQM0tIm6p0ZsQW1B/rH8dMtLMvsxViZMEtoW9c=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=IRFNm+rGytp+ISpV6CwIJ0zuac9Fx7rM/wcTaCHG6iyk8fB4h+sVjqAdxFtXNRcwX
+	 3fFQHh2LO62L+bfs0b8PCAAHroG1ebAPhXYeHdO7gMKWqxt1ZEY8p04wa6i9gIWgIT
+	 zsDLB597xk77JyQCo2MmXyFyzM4L1PDrta5Ns8gQ=
+Message-ID: <c0fc512a-5bee-48da-9dfb-2b8101f3dec6@tu-dortmund.de>
+Date: Wed, 26 Nov 2025 17:04:25 +0100
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-SA-Exim-Connect-IP: 185.219.108.64
-X-SA-Exim-Rcpt-To: kvmarm@lists.linux.dev, kvm@vger.kernel.org, linux-arm-kernel@lists.infradead.org, joey.gouly@arm.com, suzuki.poulose@arm.com, oupton@kernel.org, yuzenghui@huawei.com, ben.horgan@arm.com
-X-SA-Exim-Mail-From: maz@kernel.org
-X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net-next v6 3/8] tun/tap: add synchronized ring
+ produce/consume with queue management
+To: "Michael S. Tsirkin" <mst@redhat.com>
+Cc: willemdebruijn.kernel@gmail.com, jasowang@redhat.com,
+        andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
+        kuba@kernel.org, pabeni@redhat.com, eperezma@redhat.com,
+        jon@nutanix.com, tim.gebauer@tu-dortmund.de, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
+        virtualization@lists.linux.dev
+References: <20251120152914.1127975-1-simon.schippers@tu-dortmund.de>
+ <20251120152914.1127975-4-simon.schippers@tu-dortmund.de>
+ <20251125100655-mutt-send-email-mst@kernel.org>
+ <4db234bd-ebd7-4325-9157-e74eccb58616@tu-dortmund.de>
+ <20251126100007-mutt-send-email-mst@kernel.org>
+Content-Language: en-US
+From: Simon Schippers <simon.schippers@tu-dortmund.de>
+In-Reply-To: <20251126100007-mutt-send-email-mst@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-With FEAT_IDST, unimplemented system registers in the feature ID space
-must be reported using EC=0x18 at the closest handling EL, rather than
-with an UNDEF.
+On 11/26/25 16:25, Michael S. Tsirkin wrote:
+> On Wed, Nov 26, 2025 at 10:23:50AM +0100, Simon Schippers wrote:
+>> On 11/25/25 17:54, Michael S. Tsirkin wrote:
+>>> On Thu, Nov 20, 2025 at 04:29:08PM +0100, Simon Schippers wrote:
+>>>> Implement new ring buffer produce and consume functions for tun and tap
+>>>> drivers that provide lockless producer-consumer synchronization and
+>>>> netdev queue management to prevent ptr_ring tail drop and permanent
+>>>> starvation.
+>>>>
+>>>> - tun_ring_produce(): Produces packets to the ptr_ring with proper memory
+>>>>   barriers and proactively stops the netdev queue when the ring is about
+>>>>   to become full.
+>>>>
+>>>> - __tun_ring_consume() / __tap_ring_consume(): Internal consume functions
+>>>>   that check if the netdev queue was stopped due to a full ring, and wake
+>>>>   it when space becomes available. Uses memory barriers to ensure proper
+>>>>   ordering between producer and consumer.
+>>>>
+>>>> - tun_ring_consume() / tap_ring_consume(): Wrapper functions that acquire
+>>>>   the consumer lock before calling the internal consume functions.
+>>>>
+>>>> Key features:
+>>>> - Proactive queue stopping using __ptr_ring_full_next() to stop the queue
+>>>>   before it becomes completely full.
+>>>> - Not stopping the queue when the ptr_ring is full already, because if
+>>>>   the consumer empties all entries in the meantime, stopping the queue
+>>>>   would cause permanent starvation.
+>>>
+>>> what is permanent starvation? this comment seems to answer this
+>>> question:
+>>>
+>>>
+>>> 	/* Do not stop the netdev queue if the ptr_ring is full already.
+>>> 	 * The consumer could empty out the ptr_ring in the meantime
+>>> 	 * without noticing the stopped netdev queue, resulting in a
+>>> 	 * stopped netdev queue and an empty ptr_ring. In this case the
+>>> 	 * netdev queue would stay stopped forever.
+>>> 	 */
+>>>
+>>>
+>>> why having a single entry in
+>>> the ring we never use helpful to address this?
+>>>
+>>>
+>>>
+>>>
+>>> In fact, all your patch does to solve it, is check
+>>> netif_tx_queue_stopped on every consumed packet.
+>>>
+>>>
+>>> I already proposed:
+>>>
+>>> static inline int __ptr_ring_peek_producer(struct ptr_ring *r)
+>>> {
+>>>         if (unlikely(!r->size) || r->queue[r->producer])
+>>>                 return -ENOSPC;
+>>>         return 0;
+>>> }
+>>>
+>>> And with that, why isn't avoiding the race as simple as
+>>> just rechecking after stopping the queue?
+>>  
+>> I think you are right and that is quite similar to what veth [1] does.
+>> However, there are two differences:
+>>
+>> - Your approach avoids returning NETDEV_TX_BUSY by already stopping
+>>   when the ring becomes full (and not when the ring is full already)
+>> - ...and the recheck of the producer wakes on !full instead of empty.
+>>
+>> I like both aspects better than the veth implementation.
+> 
+> Right.
+> 
+> Though frankly, someone should just fix NETDEV_TX_BUSY already
+> at least with the most popular qdiscs.
+> 
+> It is a common situation and it is just annoying that every driver has
+> to come up with its own scheme.
 
-Most of these system registers are always implemented thanks to their
-dependency on FEAT_AA64, except for a set of (currently) three registers:
-GMID_EL1 (depending on MTE2), CCSIDR2_EL1 (depending on FEAT_CCIDX),
-and SMIDR_EL1 (depending on SME).
+I can not judge it, but yes, it would have made this patchset way
+simpler.
 
-For these three registers, report their trap as EC=0x18 if they
-end-up trapping into KVM and that FEAT_IDST is not implemented in the
-guest. Otherwise, just make them UNDEF.
+> 
+> 
+> 
+> 
+> 
+>> Just one thing: like the veth implementation, we probably need a
+>> smp_mb__after_atomic() after netif_tx_stop_queue() as they also discussed
+>> in their v6 [2].
+> 
+> yea makes sense.
+> 
+>>
+>> On the consumer side, I would then just do:
+>>
+>> __ptr_ring_consume();
+>> if (unlikely(__ptr_ring_consume_created_space()))
+>>     netif_tx_wake_queue(txq);
+>>
+>> Right?
+>>
+>> And for the batched consume method, I would just call this in a loop.
+> 
+> Well tun does not use batched consume does it?
 
-Signed-off-by: Marc Zyngier <maz@kernel.org>
----
- arch/arm64/kvm/sys_regs.c | 16 +++++++++++++---
- 1 file changed, 13 insertions(+), 3 deletions(-)
+tun does not but vhost-net does.
 
-diff --git a/arch/arm64/kvm/sys_regs.c b/arch/arm64/kvm/sys_regs.c
-index 2ca6862e935b5..7705f703e7c6d 100644
---- a/arch/arm64/kvm/sys_regs.c
-+++ b/arch/arm64/kvm/sys_regs.c
-@@ -82,6 +82,16 @@ static bool write_to_read_only(struct kvm_vcpu *vcpu,
- 			"sys_reg write to read-only register");
- }
- 
-+static bool idst_access(struct kvm_vcpu *vcpu, struct sys_reg_params *p,
-+			const struct sys_reg_desc *r)
-+{
-+	if (kvm_has_feat_enum(vcpu->kvm, ID_AA64MMFR2_EL1, IDS, 0x0))
-+		return undef_access(vcpu, p, r);
-+
-+	kvm_inject_sync(vcpu, kvm_vcpu_get_esr(vcpu));
-+	return false;
-+}
-+
- enum sr_loc_attr {
- 	SR_LOC_MEMORY	= 0,	  /* Register definitely in memory */
- 	SR_LOC_LOADED	= BIT(0), /* Register on CPU, unless it cannot */
-@@ -3399,9 +3409,9 @@ static const struct sys_reg_desc sys_reg_descs[] = {
- 	{ SYS_DESC(SYS_CCSIDR_EL1), access_ccsidr },
- 	{ SYS_DESC(SYS_CLIDR_EL1), access_clidr, reset_clidr, CLIDR_EL1,
- 	  .set_user = set_clidr, .val = ~CLIDR_EL1_RES0 },
--	{ SYS_DESC(SYS_CCSIDR2_EL1), undef_access },
--	{ SYS_DESC(SYS_GMID_EL1), undef_access },
--	{ SYS_DESC(SYS_SMIDR_EL1), undef_access },
-+	{ SYS_DESC(SYS_CCSIDR2_EL1), idst_access },
-+	{ SYS_DESC(SYS_GMID_EL1), idst_access },
-+	{ SYS_DESC(SYS_SMIDR_EL1), idst_access },
- 	IMPLEMENTATION_ID(AIDR_EL1, GENMASK_ULL(63, 0)),
- 	{ SYS_DESC(SYS_CSSELR_EL1), access_csselr, reset_unknown, CSSELR_EL1 },
- 	ID_FILTERED(CTR_EL0, ctr_el0,
--- 
-2.47.3
+Since vhost-net also uses tun_net_xmit() as its ndo_start_xmit in a
+tap+vhost-net setup, its consumer must also be changed. Else
+tun_net_xmit() would stop the queue, but it would never be woken again.
 
+> 
+> 
+>> Thank you!
+>>
+>> [1] Link: https://lore.kernel.org/netdev/174559288731.827981.8748257839971869213.stgit@firesoul/T/#m2582fcc48901e2e845b20b89e0e7196951484e5f
+>> [2] Link: https://lore.kernel.org/all/174549933665.608169.392044991754158047.stgit@firesoul/T/#m63f2deb86ffbd9ff3a27e1232077a3775606c14d
+>>
+>>>
+>>> __ptr_ring_produce();
+>>> if (__ptr_ring_peek_producer())
+>>> 	netif_tx_stop_queue
+>>
+>> smp_mb__after_atomic(); // Right here
+>>
+>>> 	if (!__ptr_ring_peek_producer())
+>>> 		netif_tx_wake_queue(txq);
+>>>
+>>>
+>>>
+>>>
+>>>
+>>>
+>>>
+> 
