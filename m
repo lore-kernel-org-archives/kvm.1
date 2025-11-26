@@ -1,55 +1,55 @@
-Received: from mail-pl1-f201.google.com (mail-pl1-f201.google.com [209.85.214.201])
+Received: from mail-pf1-f201.google.com (mail-pf1-f201.google.com [209.85.210.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3DBD0304BDC
-	for <kvm@vger.kernel.org>; Wed, 26 Nov 2025 23:17:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 68D45304BDC
+	for <kvm@vger.kernel.org>; Wed, 26 Nov 2025 23:17:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764199065; cv=none; b=K282+0PJsFPRSSmIFADI4r23oAoKaYJzJ9hL5xNUmnAfudGy9ypk1VC/wvP48jhf2Spg8R1JVS/4jIy0oCWxCCpJO0n2ewJQ6JqSHSuIQHqN1s+E4H3Pb5dKxkJWpkdYVGSP6eVfD5wRPOMQqjJGDRt9w7Y+8bruIgYCf4G7Seo=
+	t=1764199069; cv=none; b=aDBClYzhwyKinNJyoEKh69wPbwwBmdxkyU845dCUuxV6Tz3Ce3oiv3Ld6DitKKerc22KhDTgCO0mwNr2uk6ISUPKCMnCYWQOFNFhRqgrnASa9xEBNMdZ8+zxvPs1jmuQRxMsYLzCS6aTkjT6O07wktxK6cE1FOLZCFMb9GszoRI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764199065; c=relaxed/simple;
-	bh=syip/vtxgc0scKvCnUJN/SD/jcLGmSspCTDS/9yj+FU=;
+	s=arc-20240116; t=1764199069; c=relaxed/simple;
+	bh=AvSFNKiKL+c7A+jWVKE0Bg18iz3X2ZUYRCg6aF1PgR4=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=lVzYrz+7BYeeDIlanMxNA49rquYmZnf1O82RUy/o05Vi4Y/+lwtRmgFhvuMpcyYA33v7YRh/wmo+AOowiKpxjEbwuuaShPTk59R/d60NSbqgugY68y6VnvBkLlpRYkDFX9gvIxQKRIsbJWjCyZ3yKiswK9cjxNNRBk6XWDLimqk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--dmatlack.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=xcwit3Vd; arc=none smtp.client-ip=209.85.214.201
+	 To:Cc:Content-Type; b=qKGiiUbpWiepB+Uj2V0oeenwSgO5F/DV1931eU181yUJFh9y0jnx7yvi/Q+wNBFXKIx/+L1fUH6yAH5VG1PD9yYdb2Dhd2Dg9Wpw0vQkdjUonWo702e0doL597lbT37tYlVJpiZ9jkkVoslPoQ9AwZQhSTM2dBZk/zM4bnkeLWw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--dmatlack.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=rLcrkCNb; arc=none smtp.client-ip=209.85.210.201
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--dmatlack.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="xcwit3Vd"
-Received: by mail-pl1-f201.google.com with SMTP id d9443c01a7336-29848363458so4241475ad.2
-        for <kvm@vger.kernel.org>; Wed, 26 Nov 2025 15:17:44 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="rLcrkCNb"
+Received: by mail-pf1-f201.google.com with SMTP id d2e1a72fcca58-7be3d08f863so340336b3a.2
+        for <kvm@vger.kernel.org>; Wed, 26 Nov 2025 15:17:47 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1764199064; x=1764803864; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1764199067; x=1764803867; darn=vger.kernel.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=7657QzqYC5tw1S9kkHW7dfOPGuJbn/ahSFH3Z3YWAgY=;
-        b=xcwit3VdnRnzCsxBGwOarx6fKCa75dUTzjuAs8tuatDMd73PW0rlr3GDGChX/CaLn7
-         YCqZP9GqCla5CyirXwR/ICBN8ZKFf20sPXjvUAYUmyEjywmfy9MgdEFNLWgqkA1N1ymQ
-         oh2akUXrt73j7dpJDZdQ7T1O4qPzFlw7ucSQ0pjJ5YBg2jAhmCTOQvb7MEwFwX+9IJgy
-         jgIPAv5Ovuw+viR0gZ9SPB250t7xLUnjNvmMhh7o61+dW6Mp7udd0bz0Ydb+txyJew5m
-         ICkV1PqxQJ4NcnrDvgR5wZtIj6ZN9nIKpdCpDc9KLitGkDHP0xa4dy/4s6/z4mGIQulW
-         T6MA==
+        bh=2NmqlILt/SIZo48TbaGQlmIwJAUYztjRVDmwIOHsj6Y=;
+        b=rLcrkCNb0Qi94JuYAhH244e6Kr3e44p9lGcPro1K2c8iiX0iL88o6qtJqIFYFm1wDh
+         s0C8h8TJHWYh+W5UPgVSkYasPPrPBVSv7yobkQwhE6oN+thUELA8URoZ0Qq1UjL9zyNC
+         uEZ9mrI0TEXEAZ7Zxtl9zemUkdw2RFRt4NkxHLA7OrJhqb+GXbTbCxvHyiFeOTnZ967p
+         GC6N/lTtKx6nEdvC2NVtzoyD2sJKvrwA9KYl4SzfUENpYNf0egcoBWGon5GqsjaEzxgJ
+         P/PgQegCfv31AYb4rx2r4NjLq6nYoY/pU2L5+I+E7vWtRJzM6kd4jFHRiEjj6wExMRjI
+         F0HQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1764199064; x=1764803864;
+        d=1e100.net; s=20230601; t=1764199067; x=1764803867;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=7657QzqYC5tw1S9kkHW7dfOPGuJbn/ahSFH3Z3YWAgY=;
-        b=BdxgK9CajG1GBL3JZpNfyc4EUtKZMAWiIi7LQaCSYtahIL0YiIE34e0W/fCTO8WWgo
-         Z3hOXyfu5kiV2ME9HMvDKLiz4otBR2pwaQ/7o6aPQeBXCh8ajr7te35QEhYdoFs2FmMO
-         EbFJV5Yk5spFg6iCgcO4goemERb0gDEAxGJHsShe/yts5f11TGeuTRojoaRo+IwPYZBZ
-         +QCTJ8820tnDox/sWOTB3VPpEUcbV6Scjv5xS2TiJ9boytJaKNTy+Y4USY53Ao2Ai1tG
-         KtLX3GTVpEo/9Nz17bQPCh/PTerVC/i7tbLCeLWHIR3fh1spgo4wn2xSWBmeI+psXNRZ
-         XB7w==
-X-Forwarded-Encrypted: i=1; AJvYcCVQ94Iksgxgei/heQ9uOGAeK13jLFLee7e6U+GapU7nxRKVK2hHinkyJpdQrsNicOXjcFg=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yysx9xus1OdvPQS6HkABdX1DxLIASMfmybI1oNmRVlaq56417FJ
-	afikrzMwfT6yUEiTMl3OjbmCUwxuFbyDaA6c/ZKCgoTtubSePKAsk7RNdPljzF4gDjIlVxJX8ys
-	PFB2tOn1TEYGkDQ==
-X-Google-Smtp-Source: AGHT+IFrqvW2CE4KsCsRkyATGhzcCKUihm9f3LYFtC7yBj8cCKiJpFrrrqtrKxxf/wwvyfsKZ1awzoJWJb7HZg==
-X-Received: from plda10.prod.google.com ([2002:a17:902:ee8a:b0:298:38d:87a6])
+        bh=2NmqlILt/SIZo48TbaGQlmIwJAUYztjRVDmwIOHsj6Y=;
+        b=gwrXNCGZ1vi4eRnLoEy/SW+UAAl13cLnbiMra2AfNJOERIoj49hyupK4n1W3kMCggC
+         qXQ9+4ukvbY82vEvR8WkGrf31Rz1nptO9iGmAovuXTRi2piRq6SmpoW3uTeq/CtZORdc
+         ZYN2v4kMtSqlmLkBFye2NcU+fKCJ/idZDdE/WBQd2nAHfJqbjT2hFd2qNAC4W03Dr5Rj
+         brtnw47417U1LiDVY/hwHF6i9fO8GkWEIMO8bAulrXxbNrMFoQQPO2oEjuYuwrbUL6IG
+         LhjHv8gnVbBiFlWRmjR/hsF31vMYf+wTQLEWGBtTkAuu/hBALOLdckTHAlzNoKhpkqtb
+         zYdQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWv2cZMbnFhKOXnxyPqxDDS853x8HlBtOigP9eGrBiUc6AbyCEFGZZ5qCQ2kTVzIepNpT0=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx/mRr+WhA/v7JCFC45htc4RH51NbxaSVoiJsGzdHmsPoE93x+W
+	CgQ67bpQA/Dmdh1IMR/oWDoOFx8FffrA4b9PibaXcUMzLKFfFKwgh9EnZRx7h6QrZb/x0jELgA9
+	152rJxgoEdCHTNA==
+X-Google-Smtp-Source: AGHT+IFe/Mo3B5TgFhtPN43rvpR/V3Sb3frYIJR1W12Kqz3wnQ9iJPaORUJ41nbeEG+8jvATbp+GIwQQjnw/uw==
+X-Received: from pfbhj14.prod.google.com ([2002:a05:6a00:870e:b0:77d:4a42:1179])
  (user=dmatlack job=prod-delivery.src-stubby-dispatcher) by
- 2002:a17:903:b84:b0:290:cd9c:1229 with SMTP id d9443c01a7336-29b6bec4961mr206414255ad.19.1764199063649;
- Wed, 26 Nov 2025 15:17:43 -0800 (PST)
-Date: Wed, 26 Nov 2025 23:17:16 +0000
+ 2002:a05:6a00:390d:b0:7aa:9e4d:b693 with SMTP id d2e1a72fcca58-7c58e113a8amr24159761b3a.17.1764199066615;
+ Wed, 26 Nov 2025 15:17:46 -0800 (PST)
+Date: Wed, 26 Nov 2025 23:17:18 +0000
 In-Reply-To: <20251126231733.3302983-1-dmatlack@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
@@ -59,8 +59,9 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 References: <20251126231733.3302983-1-dmatlack@google.com>
 X-Mailer: git-send-email 2.52.0.487.g5c8c507ade-goog
-Message-ID: <20251126231733.3302983-2-dmatlack@google.com>
-Subject: [PATCH v4 01/18] vfio: selftests: Move run.sh into scripts directory
+Message-ID: <20251126231733.3302983-4-dmatlack@google.com>
+Subject: [PATCH v4 03/18] vfio: selftests: Allow passing multiple BDFs on the
+ command line
 From: David Matlack <dmatlack@google.com>
 To: Alex Williamson <alex@shazbot.org>
 Cc: Alex Mastro <amastro@fb.com>, David Matlack <dmatlack@google.com>, 
@@ -69,45 +70,124 @@ Cc: Alex Mastro <amastro@fb.com>, David Matlack <dmatlack@google.com>,
 	Raghavendra Rao Ananta <rananta@google.com>, Vipin Sharma <vipinsh@google.com>
 Content-Type: text/plain; charset="UTF-8"
 
-Move run.sh in a new sub-directory scripts/. This directory will be used
-to house various helper scripts to be used by humans and automation for
-running VFIO selftests.
+Add support for passing multiple device BDFs to a test via the command
+line. This is a prerequisite for multi-device tests.
 
-Opportunistically also switch run.sh from TEST_PROGS_EXTENDED to
-TEST_FILES. The former is for actual test executables that are just not
-run by default. TEST_FILES is a better fit for helper scripts.
+Single-device tests can continue using vfio_selftests_get_bdf(), which
+will continue to return argv[argc - 1] (if it is a BDF string), or the
+environment variable $VFIO_SELFTESTS_BDF otherwise.
 
-No functional change intended.
+For multi-device tests, a new helper called vfio_selftests_get_bdfs() is
+introduced which will return an array of all BDFs found at the end of
+argv[], as well as the number of BDFs found (passed back to the caller
+via argument). The array of BDFs returned does not need to be freed by
+the caller.
+
+The environment variable VFIO_SELFTESTS_BDF continues to support only a
+single BDF for the time being.
 
 Reviewed-by: Alex Mastro <amastro@fb.com>
 Tested-by: Alex Mastro <amastro@fb.com>
 Reviewed-by: Raghavendra Rao Ananta <rananta@google.com>
 Signed-off-by: David Matlack <dmatlack@google.com>
 ---
- tools/testing/selftests/vfio/Makefile             | 4 +++-
- tools/testing/selftests/vfio/{ => scripts}/run.sh | 0
- 2 files changed, 3 insertions(+), 1 deletion(-)
- rename tools/testing/selftests/vfio/{ => scripts}/run.sh (100%)
+ .../selftests/vfio/lib/include/vfio_util.h    |  2 +
+ .../selftests/vfio/lib/vfio_pci_device.c      | 57 +++++++++++++++----
+ 2 files changed, 48 insertions(+), 11 deletions(-)
 
-diff --git a/tools/testing/selftests/vfio/Makefile b/tools/testing/selftests/vfio/Makefile
-index 324ba0175a33..ad7fa4071c20 100644
---- a/tools/testing/selftests/vfio/Makefile
-+++ b/tools/testing/selftests/vfio/Makefile
-@@ -3,7 +3,9 @@ TEST_GEN_PROGS += vfio_dma_mapping_test
- TEST_GEN_PROGS += vfio_iommufd_setup_test
- TEST_GEN_PROGS += vfio_pci_device_test
- TEST_GEN_PROGS += vfio_pci_driver_test
--TEST_PROGS_EXTENDED := run.sh
+diff --git a/tools/testing/selftests/vfio/lib/include/vfio_util.h b/tools/testing/selftests/vfio/lib/include/vfio_util.h
+index 69ec0c856481..0b9a5628d23e 100644
+--- a/tools/testing/selftests/vfio/lib/include/vfio_util.h
++++ b/tools/testing/selftests/vfio/lib/include/vfio_util.h
+@@ -208,6 +208,8 @@ struct iova_allocator {
+  * If BDF cannot be determined then the test will exit with KSFT_SKIP.
+  */
+ const char *vfio_selftests_get_bdf(int *argc, char *argv[]);
++char **vfio_selftests_get_bdfs(int *argc, char *argv[], int *nr_bdfs);
 +
-+TEST_FILES += scripts/run.sh
-+
- include ../lib.mk
- include lib/libvfio.mk
+ const char *vfio_pci_get_cdev_path(const char *bdf);
  
-diff --git a/tools/testing/selftests/vfio/run.sh b/tools/testing/selftests/vfio/scripts/run.sh
-similarity index 100%
-rename from tools/testing/selftests/vfio/run.sh
-rename to tools/testing/selftests/vfio/scripts/run.sh
+ extern const char *default_iommu_mode;
+diff --git a/tools/testing/selftests/vfio/lib/vfio_pci_device.c b/tools/testing/selftests/vfio/lib/vfio_pci_device.c
+index b479a359da12..eda8f14de797 100644
+--- a/tools/testing/selftests/vfio/lib/vfio_pci_device.c
++++ b/tools/testing/selftests/vfio/lib/vfio_pci_device.c
+@@ -868,29 +868,64 @@ static bool is_bdf(const char *str)
+ 	return count == 4 && length == strlen(str);
+ }
+ 
+-const char *vfio_selftests_get_bdf(int *argc, char *argv[])
++static char **get_bdfs_cmdline(int *argc, char *argv[], int *nr_bdfs)
+ {
+-	char *bdf;
++	int i;
+ 
+-	if (*argc > 1 && is_bdf(argv[*argc - 1]))
+-		return argv[--(*argc)];
++	for (i = *argc - 1; i > 0 && is_bdf(argv[i]); i--)
++		continue;
++
++	i++;
++	*nr_bdfs = *argc - i;
++	*argc -= *nr_bdfs;
++
++	return *nr_bdfs ? &argv[i] : NULL;
++}
++
++static char *get_bdf_env(void)
++{
++	char *bdf;
+ 
+ 	bdf = getenv("VFIO_SELFTESTS_BDF");
+-	if (bdf) {
+-		VFIO_ASSERT_TRUE(is_bdf(bdf), "Invalid BDF: %s\n", bdf);
+-		return bdf;
++	if (!bdf)
++		return NULL;
++
++	VFIO_ASSERT_TRUE(is_bdf(bdf), "Invalid BDF: %s\n", bdf);
++	return bdf;
++}
++
++char **vfio_selftests_get_bdfs(int *argc, char *argv[], int *nr_bdfs)
++{
++	static char *env_bdf;
++	char **bdfs;
++
++	bdfs = get_bdfs_cmdline(argc, argv, nr_bdfs);
++	if (bdfs)
++		return bdfs;
++
++	env_bdf = get_bdf_env();
++	if (env_bdf) {
++		*nr_bdfs = 1;
++		return &env_bdf;
+ 	}
+ 
+-	fprintf(stderr, "Unable to determine which device to use, skipping test.\n");
++	fprintf(stderr, "Unable to determine which device(s) to use, skipping test.\n");
+ 	fprintf(stderr, "\n");
+ 	fprintf(stderr, "To pass the device address via environment variable:\n");
+ 	fprintf(stderr, "\n");
+-	fprintf(stderr, "    export VFIO_SELFTESTS_BDF=segment:bus:device.function\n");
++	fprintf(stderr, "    export VFIO_SELFTESTS_BDF=\"segment:bus:device.function\"\n");
+ 	fprintf(stderr, "    %s [options]\n", argv[0]);
+ 	fprintf(stderr, "\n");
+-	fprintf(stderr, "To pass the device address via argv:\n");
++	fprintf(stderr, "To pass the device address(es) via argv:\n");
+ 	fprintf(stderr, "\n");
+-	fprintf(stderr, "    %s [options] segment:bus:device.function\n", argv[0]);
++	fprintf(stderr, "    %s [options] segment:bus:device.function ...\n", argv[0]);
+ 	fprintf(stderr, "\n");
+ 	exit(KSFT_SKIP);
+ }
++
++const char *vfio_selftests_get_bdf(int *argc, char *argv[])
++{
++	int nr_bdfs;
++
++	return vfio_selftests_get_bdfs(argc, argv, &nr_bdfs)[0];
++}
 -- 
 2.52.0.487.g5c8c507ade-goog
 
