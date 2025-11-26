@@ -1,178 +1,343 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E15432264CF
-	for <kvm@vger.kernel.org>; Wed, 26 Nov 2025 21:17:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E50FF3064B9;
+	Wed, 26 Nov 2025 21:43:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764191828; cv=none; b=HtqL3o/58fwvjB7PRw3HZWPpIWydNg7MM3TrThBMJSJrZDLvE58lInhF/P40HrZ70neAbB3XJ85wQBuh3MJSiQSgBLiAlk0mxV2XIAVslOqCv3IdsJdhh30FuM9TLDLsNQqsLw9P0WTGkXSgZDE3IM7kzkv/wDg1iMynpF6S610=
+	t=1764193395; cv=none; b=FC01PlUEqdkeXCzj0ZLitX3HDPy997GvgPXqEQDodHOWX74FLIh9yyV03KOi1hFanNU3X1j9Hw2zUaEqpwvbw1UUWCYUYIdmAv8Gr1TqJ4tXaY6XzP7fwoq62G33lFOCMGpZ7/79r4rIxeiqf/Zb0eeAw8oX3uLh75LmAb5qdEs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764191828; c=relaxed/simple;
-	bh=Tu9UoJab2N9aOFK02uU2NH64dAR7qMBaHBTPor6ABm8=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=VE+T+nH2qh7hK2QWSUQoDFT8y6XAtLpUomn1Ih53MnAxvYTij1v0kKPlQ1OfznNpmMH4Phxu8ox9N7fdqT/Epuui7hgIPGFKLU+MR/McxbotUtweHvrLlXRyTOKbYVpZO9QDM32VZtxx0GXizskw1/V/4ftyl+WV9Ewuh0RGstw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=cjfb+O2k; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1764193395; c=relaxed/simple;
+	bh=hOrNQuqwLs9HpX+NGhQcIxOyOPGBm6qzJkrnYzen8Og=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition:In-Reply-To; b=XwAR+0QvbNSqQlM1L/VVngx4kMqUCTnmbZZ7WJ9XE293alqjv9M9S5yoegzUcPBTjuVcJlcFEBNouPXJP/O2rD4KcdJ/3YlszAOvOQHwu3rBBT9IutniY/FLsUQxKvMrTo+sOVdi+Wi9mjMFqH0xNvya18CxMxUun3RocFgPqtw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bFwMcNF8; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="cjfb+O2k"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1764191824;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=5bX/0i7tj4y+cgcP++a7Y4BBxU58ei/TXceewZURiUM=;
-	b=cjfb+O2khbN6XVcQZjZpGLPX4PKrOcSob7iS+lea4qfOb15ruyYGqCjMn7pWKdIn9qFYVu
-	ySvvprqFF5paU6/a1LjID6cZ9+Gk8iYJkoner7HXP2OW5NXEjNe8xK3SDRvntEwIpd604c
-	59aLFGdfa0Jp/sn48csL9VKbj9RVN2k=
-Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-673-OSoQCYNGNvK3Jpe5w-JuHA-1; Wed,
- 26 Nov 2025 16:17:03 -0500
-X-MC-Unique: OSoQCYNGNvK3Jpe5w-JuHA-1
-X-Mimecast-MFC-AGG-ID: OSoQCYNGNvK3Jpe5w-JuHA_1764191822
-Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id C749419560B0;
-	Wed, 26 Nov 2025 21:17:01 +0000 (UTC)
-Received: from localhost (unknown [10.2.16.34])
-	by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id AF10F1800451;
-	Wed, 26 Nov 2025 21:17:00 +0000 (UTC)
-Date: Wed, 26 Nov 2025 16:03:13 -0500
-From: Stefan Hajnoczi <stefanha@redhat.com>
-To: Stefano Garzarella <sgarzare@redhat.com>
-Cc: virtualization@lists.linux.dev, Jason Wang <jasowang@redhat.com>,
-	"Michael S. Tsirkin" <mst@redhat.com>,
-	Eugenio =?iso-8859-1?Q?P=E9rez?= <eperezma@redhat.com>,
-	netdev@vger.kernel.org, kvm@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] vhost/vsock: improve RCU read sections around
- vhost_vsock_get()
-Message-ID: <20251126210313.GA499503@fedora>
-References: <20251126133826.142496-1-sgarzare@redhat.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bFwMcNF8"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 49EC8C4CEF7;
+	Wed, 26 Nov 2025 21:43:14 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1764193394;
+	bh=hOrNQuqwLs9HpX+NGhQcIxOyOPGBm6qzJkrnYzen8Og=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:From;
+	b=bFwMcNF8c8nXGrBt3lcqVsIh2ehDocCqEmlgsB8lulGtp94yxvlaZ2Gt4SVPFboKq
+	 69UnISVTzS2U/kEnkW/e0HZrNaWLlpH/9ymwdvitsRSAKNg4QT56jbXgX4Pvbw8ebA
+	 IfjATCYR0ZvcFExeeMrqn2f7TdmVnkhMZgtTZs0udr6rrceW67a22ElrKOnO0uEqSz
+	 xdWImBogihWMXmZ9hfbg0sfJWMh1JXnE2i/js1nHnEbO8uDXNSJeqF0ZFzUZCd9SMt
+	 7am8IwxDK5149+afLj34cdw56KIplcfLBedPT4jChFtvFxBlZJh9qZgSRMesgF5VH5
+	 cwe1Ac4VDJCxg==
+Date: Wed, 26 Nov 2025 15:43:13 -0600
+From: Bjorn Helgaas <helgaas@kernel.org>
+To: Nicolin Chen <nicolinc@nvidia.com>
+Cc: joro@8bytes.org, rafael@kernel.org, bhelgaas@google.com,
+	alex@shazbot.org, jgg@nvidia.com, will@kernel.org,
+	robin.murphy@arm.com, lenb@kernel.org, kevin.tian@intel.com,
+	baolu.lu@linux.intel.com, linux-arm-kernel@lists.infradead.org,
+	iommu@lists.linux.dev, linux-kernel@vger.kernel.org,
+	linux-acpi@vger.kernel.org, linux-pci@vger.kernel.org,
+	kvm@vger.kernel.org, patches@lists.linux.dev,
+	pjaroszynski@nvidia.com, vsethi@nvidia.com, etzhao1900@gmail.com
+Subject: Re: [PATCH v7 5/5] PCI: Suspend iommu function prior to resetting a
+ device
+Message-ID: <20251126213204.GA2852059@bhelgaas>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="g1JPwMl4XCtaMV09"
-Content-Disposition: inline
-In-Reply-To: <20251126133826.142496-1-sgarzare@redhat.com>
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
-
-
---g1JPwMl4XCtaMV09
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <4d2444cc52cf3885bfd5c8d86d5eeea8a5f67df8.1763775108.git.nicolinc@nvidia.com>
 
-On Wed, Nov 26, 2025 at 02:38:26PM +0100, Stefano Garzarella wrote:
-> From: Stefano Garzarella <sgarzare@redhat.com>
->=20
-> vhost_vsock_get() uses hash_for_each_possible_rcu() to find the
-> `vhost_vsock` associated with the `guest_cid`. hash_for_each_possible_rcu=
-()
-> should only be called within an RCU read section, as mentioned in the
-> following comment in include/linux/rculist.h:
->=20
-> /**
->  * hlist_for_each_entry_rcu - iterate over rcu list of given type
->  * @pos:	the type * to use as a loop cursor.
->  * @head:	the head for your list.
->  * @member:	the name of the hlist_node within the struct.
->  * @cond:	optional lockdep expression if called from non-RCU protection.
->  *
->  * This list-traversal primitive may safely run concurrently with
->  * the _rcu list-mutation primitives such as hlist_add_head_rcu()
->  * as long as the traversal is guarded by rcu_read_lock().
->  */
->=20
-> Currently, all calls to vhost_vsock_get() are between rcu_read_lock()
-> and rcu_read_unlock() except for calls in vhost_vsock_set_cid() and
-> vhost_vsock_reset_orphans(). In both cases, the current code is safe,
-> but we can make improvements to make it more robust.
->=20
-> About vhost_vsock_set_cid(), when building the kernel with
-> CONFIG_PROVE_RCU_LIST enabled, we get the following RCU warning when the
-> user space issues `ioctl(dev, VHOST_VSOCK_SET_GUEST_CID, ...)` :
->=20
->   WARNING: suspicious RCU usage
->   6.18.0-rc7 #62 Not tainted
->   -----------------------------
->   drivers/vhost/vsock.c:74 RCU-list traversed in non-reader section!!
->=20
->   other info that might help us debug this:
->=20
->   rcu_scheduler_active =3D 2, debug_locks =3D 1
->   1 lock held by rpc-libvirtd/3443:
->    #0: ffffffffc05032a8 (vhost_vsock_mutex){+.+.}-{4:4}, at: vhost_vsock_=
-dev_ioctl+0x2ff/0x530 [vhost_vsock]
->=20
->   stack backtrace:
->   CPU: 2 UID: 0 PID: 3443 Comm: rpc-libvirtd Not tainted 6.18.0-rc7 #62 P=
-REEMPT(none)
->   Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.17.0-7.fc=
-42 06/10/2025
->   Call Trace:
->    <TASK>
->    dump_stack_lvl+0x75/0xb0
->    dump_stack+0x14/0x1a
->    lockdep_rcu_suspicious.cold+0x4e/0x97
->    vhost_vsock_get+0x8f/0xa0 [vhost_vsock]
->    vhost_vsock_dev_ioctl+0x307/0x530 [vhost_vsock]
->    __x64_sys_ioctl+0x4f2/0xa00
->    x64_sys_call+0xed0/0x1da0
->    do_syscall_64+0x73/0xfa0
->    entry_SYSCALL_64_after_hwframe+0x76/0x7e
->    ...
->    </TASK>
->=20
-> This is not a real problem, because the vhost_vsock_get() caller, i.e.
-> vhost_vsock_set_cid(), holds the `vhost_vsock_mutex` used by the hash
-> table writers. Anyway, to prevent that warning, add lockdep_is_held()
-> condition to hash_for_each_possible_rcu() to verify that either the
-> caller is in an RCU read section or `vhost_vsock_mutex` is held when
-> CONFIG_PROVE_RCU_LIST is enabled; and also clarify the comment for
-> vhost_vsock_get() to better describe the locking requirements and the
-> scope of the returned pointer validity.
->=20
-> About vhost_vsock_reset_orphans(), currently this function is only
-> called via vsock_for_each_connected_socket(), which holds the
-> `vsock_table_lock` spinlock (which is also an RCU read-side critical
-> section). However, add an explicit RCU read lock there to make the code
-> more robust and explicit about the RCU requirements, and to prevent
-> issues if the calling context changes in the future or if
-> vhost_vsock_reset_orphans() is called from other contexts.
->=20
-> Fixes: 834e772c8db0 ("vhost/vsock: fix use-after-free in network stack ca=
-llers")
-> Cc: stefanha@redhat.com
-> Signed-off-by: Stefano Garzarella <sgarzare@redhat.com>
+On Fri, Nov 21, 2025 at 05:57:32PM -0800, Nicolin Chen wrote:
+> PCIe permits a device to ignore ATS invalidation TLPs while processing a
+> reset. This creates a problem visible to the OS where an ATS invalidation
+> command will time out: e.g. an SVA domain will have no coordination with a
+> reset event and can racily issue ATS invalidations to a resetting device.
+> 
+> The PCIe r6.0, sec 10.3.1 IMPLEMENTATION NOTE recommends SW to disable and
+> block ATS before initiating a Function Level Reset. It also mentions that
+> other reset methods could have the same vulnerability as well.
+> 
+> The IOMMU subsystem provides pci_dev_reset_iommu_prepare/done() callback
+> helpers for this matter. Use them in all the existing reset functions.
+> 
+> This will attach the device to its iommu_group->blocking_domain during the
+> device reset, so as to allow IOMMU driver to:
+>  - invoke pci_disable_ats() and pci_enable_ats(), if necessary
+>  - wait for all ATS invalidations to complete
+>  - stop issuing new ATS invalidations
+>  - fence any incoming ATS queries
+> 
+> Reviewed-by: Kevin Tian <kevin.tian@intel.com>
+> Signed-off-by: Nicolin Chen <nicolinc@nvidia.com>
+
+Acked-by: Bjorn Helgaas <bhelgaas@google.com>
+
 > ---
->  drivers/vhost/vsock.c | 15 +++++++++++----
->  1 file changed, 11 insertions(+), 4 deletions(-)
-
-Reviewed-by: Stefan Hajnoczi <stefanha@redhat.com>
-
---g1JPwMl4XCtaMV09
-Content-Type: application/pgp-signature; name=signature.asc
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAEBCgAdFiEEhpWov9P5fNqsNXdanKSrs4Grc8gFAmknaxEACgkQnKSrs4Gr
-c8gttwf/ZJ0Ara63zkxpEWCtgFN92fZknjdxSfwNZ2z6NsKZDwPYCnI5BYYU+7aN
-RYICx39augMRLy430bN6PQJjaMJsGeAWuXegBNEKPe7U4lCjCKiNoU3sgpMbr/Rj
-iyFJLkTK4umOp04jeODZBVDjd5vRp9dUvu1/zkuDriRn7HWry51Rbk/Ib1F3h9IP
-qK5iVrjTRXliuSAtnokc0Kk1Ff41kyZnb6bLK1obA5h93W2RZIppBj2jLcrX8PLF
-I0z2g79tY2zw03KhtvE29Faf5K6FD92KTkdZEa5K2oQkosI4b+56MmoQMyhxRkgp
-M839LQbIdZnpzGHw6Liu9a3FC9i9HA==
-=vy3f
------END PGP SIGNATURE-----
-
---g1JPwMl4XCtaMV09--
-
+>  drivers/pci/pci-acpi.c | 13 +++++++--
+>  drivers/pci/pci.c      | 65 +++++++++++++++++++++++++++++++++++++-----
+>  drivers/pci/quirks.c   | 19 +++++++++++-
+>  3 files changed, 87 insertions(+), 10 deletions(-)
+> 
+> diff --git a/drivers/pci/pci-acpi.c b/drivers/pci/pci-acpi.c
+> index 9369377725fa0..651d9b5561fff 100644
+> --- a/drivers/pci/pci-acpi.c
+> +++ b/drivers/pci/pci-acpi.c
+> @@ -9,6 +9,7 @@
+>  
+>  #include <linux/delay.h>
+>  #include <linux/init.h>
+> +#include <linux/iommu.h>
+>  #include <linux/irqdomain.h>
+>  #include <linux/pci.h>
+>  #include <linux/msi.h>
+> @@ -971,6 +972,7 @@ void pci_set_acpi_fwnode(struct pci_dev *dev)
+>  int pci_dev_acpi_reset(struct pci_dev *dev, bool probe)
+>  {
+>  	acpi_handle handle = ACPI_HANDLE(&dev->dev);
+> +	int ret;
+>  
+>  	if (!handle || !acpi_has_method(handle, "_RST"))
+>  		return -ENOTTY;
+> @@ -978,12 +980,19 @@ int pci_dev_acpi_reset(struct pci_dev *dev, bool probe)
+>  	if (probe)
+>  		return 0;
+>  
+> +	ret = pci_dev_reset_iommu_prepare(dev);
+> +	if (ret) {
+> +		pci_err(dev, "failed to stop IOMMU for a PCI reset: %d\n", ret);
+> +		return ret;
+> +	}
+> +
+>  	if (ACPI_FAILURE(acpi_evaluate_object(handle, "_RST", NULL, NULL))) {
+>  		pci_warn(dev, "ACPI _RST failed\n");
+> -		return -ENOTTY;
+> +		ret = -ENOTTY;
+>  	}
+>  
+> -	return 0;
+> +	pci_dev_reset_iommu_done(dev);
+> +	return ret;
+>  }
+>  
+>  bool acpi_pci_power_manageable(struct pci_dev *dev)
+> diff --git a/drivers/pci/pci.c b/drivers/pci/pci.c
+> index b14dd064006cc..da0cf0f041516 100644
+> --- a/drivers/pci/pci.c
+> +++ b/drivers/pci/pci.c
+> @@ -13,6 +13,7 @@
+>  #include <linux/delay.h>
+>  #include <linux/dmi.h>
+>  #include <linux/init.h>
+> +#include <linux/iommu.h>
+>  #include <linux/msi.h>
+>  #include <linux/of.h>
+>  #include <linux/pci.h>
+> @@ -25,6 +26,7 @@
+>  #include <linux/logic_pio.h>
+>  #include <linux/device.h>
+>  #include <linux/pm_runtime.h>
+> +#include <linux/pci-ats.h>
+>  #include <linux/pci_hotplug.h>
+>  #include <linux/vmalloc.h>
+>  #include <asm/dma.h>
+> @@ -4478,13 +4480,22 @@ EXPORT_SYMBOL(pci_wait_for_pending_transaction);
+>   */
+>  int pcie_flr(struct pci_dev *dev)
+>  {
+> +	int ret;
+> +
+>  	if (!pci_wait_for_pending_transaction(dev))
+>  		pci_err(dev, "timed out waiting for pending transaction; performing function level reset anyway\n");
+>  
+> +	/* Have to call it after waiting for pending DMA transaction */
+> +	ret = pci_dev_reset_iommu_prepare(dev);
+> +	if (ret) {
+> +		pci_err(dev, "failed to stop IOMMU for a PCI reset: %d\n", ret);
+> +		return ret;
+> +	}
+> +
+>  	pcie_capability_set_word(dev, PCI_EXP_DEVCTL, PCI_EXP_DEVCTL_BCR_FLR);
+>  
+>  	if (dev->imm_ready)
+> -		return 0;
+> +		goto done;
+>  
+>  	/*
+>  	 * Per PCIe r4.0, sec 6.6.2, a device must complete an FLR within
+> @@ -4493,7 +4504,10 @@ int pcie_flr(struct pci_dev *dev)
+>  	 */
+>  	msleep(100);
+>  
+> -	return pci_dev_wait(dev, "FLR", PCIE_RESET_READY_POLL_MS);
+> +	ret = pci_dev_wait(dev, "FLR", PCIE_RESET_READY_POLL_MS);
+> +done:
+> +	pci_dev_reset_iommu_done(dev);
+> +	return ret;
+>  }
+>  EXPORT_SYMBOL_GPL(pcie_flr);
+>  
+> @@ -4521,6 +4535,7 @@ EXPORT_SYMBOL_GPL(pcie_reset_flr);
+>  
+>  static int pci_af_flr(struct pci_dev *dev, bool probe)
+>  {
+> +	int ret;
+>  	int pos;
+>  	u8 cap;
+>  
+> @@ -4547,10 +4562,17 @@ static int pci_af_flr(struct pci_dev *dev, bool probe)
+>  				 PCI_AF_STATUS_TP << 8))
+>  		pci_err(dev, "timed out waiting for pending transaction; performing AF function level reset anyway\n");
+>  
+> +	/* Have to call it after waiting for pending DMA transaction */
+> +	ret = pci_dev_reset_iommu_prepare(dev);
+> +	if (ret) {
+> +		pci_err(dev, "failed to stop IOMMU for a PCI reset: %d\n", ret);
+> +		return ret;
+> +	}
+> +
+>  	pci_write_config_byte(dev, pos + PCI_AF_CTRL, PCI_AF_CTRL_FLR);
+>  
+>  	if (dev->imm_ready)
+> -		return 0;
+> +		goto done;
+>  
+>  	/*
+>  	 * Per Advanced Capabilities for Conventional PCI ECN, 13 April 2006,
+> @@ -4560,7 +4582,10 @@ static int pci_af_flr(struct pci_dev *dev, bool probe)
+>  	 */
+>  	msleep(100);
+>  
+> -	return pci_dev_wait(dev, "AF_FLR", PCIE_RESET_READY_POLL_MS);
+> +	ret = pci_dev_wait(dev, "AF_FLR", PCIE_RESET_READY_POLL_MS);
+> +done:
+> +	pci_dev_reset_iommu_done(dev);
+> +	return ret;
+>  }
+>  
+>  /**
+> @@ -4581,6 +4606,7 @@ static int pci_af_flr(struct pci_dev *dev, bool probe)
+>  static int pci_pm_reset(struct pci_dev *dev, bool probe)
+>  {
+>  	u16 csr;
+> +	int ret;
+>  
+>  	if (!dev->pm_cap || dev->dev_flags & PCI_DEV_FLAGS_NO_PM_RESET)
+>  		return -ENOTTY;
+> @@ -4595,6 +4621,12 @@ static int pci_pm_reset(struct pci_dev *dev, bool probe)
+>  	if (dev->current_state != PCI_D0)
+>  		return -EINVAL;
+>  
+> +	ret = pci_dev_reset_iommu_prepare(dev);
+> +	if (ret) {
+> +		pci_err(dev, "failed to stop IOMMU for a PCI reset: %d\n", ret);
+> +		return ret;
+> +	}
+> +
+>  	csr &= ~PCI_PM_CTRL_STATE_MASK;
+>  	csr |= PCI_D3hot;
+>  	pci_write_config_word(dev, dev->pm_cap + PCI_PM_CTRL, csr);
+> @@ -4605,7 +4637,9 @@ static int pci_pm_reset(struct pci_dev *dev, bool probe)
+>  	pci_write_config_word(dev, dev->pm_cap + PCI_PM_CTRL, csr);
+>  	pci_dev_d3_sleep(dev);
+>  
+> -	return pci_dev_wait(dev, "PM D3hot->D0", PCIE_RESET_READY_POLL_MS);
+> +	ret = pci_dev_wait(dev, "PM D3hot->D0", PCIE_RESET_READY_POLL_MS);
+> +	pci_dev_reset_iommu_done(dev);
+> +	return ret;
+>  }
+>  
+>  /**
+> @@ -5033,10 +5067,20 @@ static int pci_reset_bus_function(struct pci_dev *dev, bool probe)
+>  		return -ENOTTY;
+>  	}
+>  
+> +	rc = pci_dev_reset_iommu_prepare(dev);
+> +	if (rc) {
+> +		pci_err(dev, "failed to stop IOMMU for a PCI reset: %d\n", rc);
+> +		return rc;
+> +	}
+> +
+>  	rc = pci_dev_reset_slot_function(dev, probe);
+>  	if (rc != -ENOTTY)
+> -		return rc;
+> -	return pci_parent_bus_reset(dev, probe);
+> +		goto done;
+> +
+> +	rc = pci_parent_bus_reset(dev, probe);
+> +done:
+> +	pci_dev_reset_iommu_done(dev);
+> +	return rc;
+>  }
+>  
+>  static int cxl_reset_bus_function(struct pci_dev *dev, bool probe)
+> @@ -5060,6 +5104,12 @@ static int cxl_reset_bus_function(struct pci_dev *dev, bool probe)
+>  	if (rc)
+>  		return -ENOTTY;
+>  
+> +	rc = pci_dev_reset_iommu_prepare(dev);
+> +	if (rc) {
+> +		pci_err(dev, "failed to stop IOMMU for a PCI reset: %d\n", rc);
+> +		return rc;
+> +	}
+> +
+>  	if (reg & PCI_DVSEC_CXL_PORT_CTL_UNMASK_SBR) {
+>  		val = reg;
+>  	} else {
+> @@ -5074,6 +5124,7 @@ static int cxl_reset_bus_function(struct pci_dev *dev, bool probe)
+>  		pci_write_config_word(bridge, dvsec + PCI_DVSEC_CXL_PORT_CTL,
+>  				      reg);
+>  
+> +	pci_dev_reset_iommu_done(dev);
+>  	return rc;
+>  }
+>  
+> diff --git a/drivers/pci/quirks.c b/drivers/pci/quirks.c
+> index b9c252aa6fe08..c6b999045c70a 100644
+> --- a/drivers/pci/quirks.c
+> +++ b/drivers/pci/quirks.c
+> @@ -21,6 +21,7 @@
+>  #include <linux/pci.h>
+>  #include <linux/isa-dma.h> /* isa_dma_bridge_buggy */
+>  #include <linux/init.h>
+> +#include <linux/iommu.h>
+>  #include <linux/delay.h>
+>  #include <linux/acpi.h>
+>  #include <linux/dmi.h>
+> @@ -4228,6 +4229,22 @@ static const struct pci_dev_reset_methods pci_dev_reset_methods[] = {
+>  	{ 0 }
+>  };
+>  
+> +static int __pci_dev_specific_reset(struct pci_dev *dev, bool probe,
+> +				    const struct pci_dev_reset_methods *i)
+> +{
+> +	int ret;
+> +
+> +	ret = pci_dev_reset_iommu_prepare(dev);
+> +	if (ret) {
+> +		pci_err(dev, "failed to stop IOMMU for a PCI reset: %d\n", ret);
+> +		return ret;
+> +	}
+> +
+> +	ret = i->reset(dev, probe);
+> +	pci_dev_reset_iommu_done(dev);
+> +	return ret;
+> +}
+> +
+>  /*
+>   * These device-specific reset methods are here rather than in a driver
+>   * because when a host assigns a device to a guest VM, the host may need
+> @@ -4242,7 +4259,7 @@ int pci_dev_specific_reset(struct pci_dev *dev, bool probe)
+>  		     i->vendor == (u16)PCI_ANY_ID) &&
+>  		    (i->device == dev->device ||
+>  		     i->device == (u16)PCI_ANY_ID))
+> -			return i->reset(dev, probe);
+> +			return __pci_dev_specific_reset(dev, probe, i);
+>  	}
+>  
+>  	return -ENOTTY;
+> -- 
+> 2.43.0
+> 
