@@ -1,259 +1,228 @@
-Received: from fout-a8-smtp.messagingengine.com (fout-a8-smtp.messagingengine.com [103.168.172.151])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A28DD332EAD;
-	Wed, 26 Nov 2025 15:24:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.151
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77E353321AD
+	for <kvm@vger.kernel.org>; Wed, 26 Nov 2025 15:25:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764170658; cv=none; b=PRIRBijrLufqH6mrr5AAJfjW73NItKVZwzpC8fEvzjt1z1w7mJdA3KNsaR93Ma/b2yDsyd3jit/Frj9ldICtWwotocz0eL0hvBHFB/lDzkU/Irv8tG1rbBtgVKStBUsixKpwakmnZ1kTRMvpskbfhEFL8QMlncnjwjwOYm0P+NA=
+	t=1764170756; cv=none; b=GXpfagPendobMaGz3NyqK0qzm8ew1S8hnrZG6nJILvroZyljgQiL/zgMghHIDD2YVYeDjYHGDL6Smkem7hefimWUq9ehf3JEu4dbahK1W9N1evJTfW6ouCUmF3EaJmoYePzLPgZHuxOztH3CmQAmq41/CG+4aibUb/21r4UYuRM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764170658; c=relaxed/simple;
-	bh=AzhzpAIugeRffXjXI7tbB1YjBWe+OkWiUb9Mm5gxeVw=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=gwGuXWPxGHlYChNmqYB1ril07otzliUvQKW2k658V0ejt/f/di15f0leRDg2Q9hR32NfWCoBcekC2x/RjKwCYvFXPubmi/bKfEvbsj+6LbJpEIDWWUM9PTeK0UNuOF3ubJ1V4s8VovJDlOmaU3RGj303e4kfjuDJEG9mpfy3bIo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=shazbot.org; spf=pass smtp.mailfrom=shazbot.org; dkim=pass (2048-bit key) header.d=shazbot.org header.i=@shazbot.org header.b=k3P6E3qW; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=MwcixTV8; arc=none smtp.client-ip=103.168.172.151
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=shazbot.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=shazbot.org
+	s=arc-20240116; t=1764170756; c=relaxed/simple;
+	bh=MlNy/atfOJbZCeA0q/MGoSHM0JWfj9pD6YlEmXsdmCA=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=rMmqHDeJHXsG4BugT8wFUsGrs+igbHJMgaURXKvuVPDbIdvnwJeuwm6p59666PlZTLEZBLnDce7NZcqQLWrIhH8gAbCCLmuWphOakSaFKhggmCBc9yPfJpXPET5BHVuTELpl/2HJYPW0OP5Rt6F4rnIHVxUuZDoKXsLtpmsdmbU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=AVmbCXjz; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=CrFKSehg; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=shazbot.org header.i=@shazbot.org header.b="k3P6E3qW";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="MwcixTV8"
-Received: from phl-compute-05.internal (phl-compute-05.internal [10.202.2.45])
-	by mailfout.phl.internal (Postfix) with ESMTP id E1D53EC01E5;
-	Wed, 26 Nov 2025 10:24:14 -0500 (EST)
-Received: from phl-mailfrontend-02 ([10.202.2.163])
-  by phl-compute-05.internal (MEProxy); Wed, 26 Nov 2025 10:24:14 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shazbot.org; h=
-	cc:cc:content-transfer-encoding:content-type:content-type:date
-	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to; s=fm3; t=1764170654;
-	 x=1764257054; bh=Xmwqn12bY3OMRLTnJpQ3xcxGDFxiCK7G7qPUg2ggkNQ=; b=
-	k3P6E3qWxE6Eu+Y0vJAZEwZw7sdvQ6azRj7QtC+CbD0OMd79vihW/23vVrIBKPxS
-	TuHi+gtuPIQZlVTWllB7chzsstqgHtqXTIBY3VHkN714Uamzuy03bCWGqMRHPSX7
-	wX3czTsQjlOG+yd3XKC7UuRCpc3nqwh+o3EQOH08er7e3tVNfa1KtRIYnFRyeuFs
-	gPZhgjNuMjPmIVb+O/+QSGKZtX3knxW3Qm98HJhRkSxA/KqZTwhhvI0CdM04wog9
-	NQPDfnLuUCvacskU15nIvqZ0erwLmJ6IWn66V6MceJqmWf+2pWEnq2DupnsA3+7T
-	8dwh8iBbUNY1dLbzig+4Vg==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=1764170654; x=
-	1764257054; bh=Xmwqn12bY3OMRLTnJpQ3xcxGDFxiCK7G7qPUg2ggkNQ=; b=M
-	wcixTV86GybKiVSX1oJ/88GZ9ed0FJfvvIvegOPbTZh490xEfVUnYJopJ5aSPr06
-	E8zELhekUPtVNrOmD3hD7i4+EUn/D2yEAHRxEG0nHNZvg3q2PI/nWJTRBbYEE8MI
-	Ny4sHIMdawGt6thTmKvuh0LIKGulSzjRXAN3H0y4nNo1b4Q7TQ8z5BMDDER88q+2
-	gwqPX5tQX1k41wq8f9sIOU358hs/EXATGCBxj8x3IT44eROl/JkLq8mAot60ON5x
-	+OW7IZ/Z9+6H6YgP75890lcynV+1v1Y4VnIH0AAg5LnbJxd+6Hy44CUFcXntu3Hn
-	fld2EFDWzZFC25LA0LMeA==
-X-ME-Sender: <xms:nhsnaSnXjwSGVm9gY9d9L2zTsxhgXsni8utzVqLzybMmeQyjyqM-vg>
-    <xme:nhsnaU2DNYaH7zl7isRDKSA2MIbwvYFQbpWn4uisaroo9CdfgMTeSBpx8RtnWaQYO
-    oq1gSHn_fTfbJK1G6-APYGlwyP7Zb9UUm_2aB8Z8v7DnxnyJzRxeg>
-X-ME-Received: <xmr:nhsnaXRohNh0v5mKfcjJTr8V98ce-RkRsBE2DNEF2u9njNS8pezXGpxU>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdeggddvgeegjedtucetufdoteggodetrf
-    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
-    rghilhhouhhtmecufedttdenucenucfjughrpeffhffvvefukfgjfhggtgfgsehtjeertd
-    dttddvnecuhfhrohhmpeetlhgvgicuhghilhhlihgrmhhsohhnuceorghlvgigsehshhgr
-    iigsohhtrdhorhhgqeenucggtffrrghtthgvrhhnpeetteduleegkeeigedugeeluedvff
-    egheeliedvtdefkedtkeekheffhedutefhhfenucevlhhushhtvghrufhiiigvpedtnecu
-    rfgrrhgrmhepmhgrihhlfhhrohhmpegrlhgvgiesshhhrgiisghothdrohhrghdpnhgspg
-    hrtghpthhtohepvdehpdhmohguvgepshhmthhpohhuthdprhgtphhtthhopegrnhhkihht
-    rgesnhhvihguihgrrdgtohhmpdhrtghpthhtohepjhhgghesiihivghpvgdrtggrpdhrtg
-    hpthhtohephihishhhrghihhesnhhvihguihgrrdgtohhmpdhrtghpthhtohepshhkohhl
-    ohhthhhumhhthhhosehnvhhiughirgdrtghomhdprhgtphhtthhopehkvghvihhnrdhtih
-    grnhesihhnthgvlhdrtghomhdprhgtphhtthhopegrnhhikhgvthgrsehnvhhiughirgdr
-    tghomhdprhgtphhtthhopehvshgvthhhihesnhhvihguihgrrdgtohhmpdhrtghpthhtoh
-    epmhhotghhshesnhhvihguihgrrdgtohhmpdhrtghpthhtohephihunhigihgrnhhgrdhl
-    ihesrghmugdrtghomh
-X-ME-Proxy: <xmx:nhsnaUPDcQjWsh06dz-0lNxb9EJCzKcgc51W_p5dS9h8S7ug9uwghA>
-    <xmx:nhsnabh7kznK6soCE5YFauXZHQBZmCFyORKx9OxUF50wEedYAFOBeA>
-    <xmx:nhsnaUIsNfstWNYnks7j2TungUJBPQ1SHA9AincSZQETughUoIvUXQ>
-    <xmx:nhsnaW5wiex6vgqYkeu_0c-Xqz2mj4OXcbX_80BZVNpWWc0RIfiMmw>
-    <xmx:nhsnaUhOtKWQNQL0PdDuSGj94QCerUMJ9h2JjJ0iwO0mRlIXpMJxG9EY>
-Feedback-ID: i03f14258:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
- 26 Nov 2025 10:24:12 -0500 (EST)
-Date: Wed, 26 Nov 2025 08:22:35 -0700
-From: Alex Williamson <alex@shazbot.org>
-To: <ankita@nvidia.com>
-Cc: <jgg@ziepe.ca>, <yishaih@nvidia.com>, <skolothumtho@nvidia.com>,
- <kevin.tian@intel.com>, <aniketa@nvidia.com>, <vsethi@nvidia.com>,
- <mochs@nvidia.com>, <Yunxiang.Li@amd.com>, <yi.l.liu@intel.com>,
- <zhangdongdong@eswincomputing.com>, <avihaih@nvidia.com>,
- <bhelgaas@google.com>, <peterx@redhat.com>, <pstanner@redhat.com>,
- <apopple@nvidia.com>, <kvm@vger.kernel.org>,
- <linux-kernel@vger.kernel.org>, <cjia@nvidia.com>, <kwankhede@nvidia.com>,
- <targupta@nvidia.com>, <zhiw@nvidia.com>, <danw@nvidia.com>,
- <dnigam@nvidia.com>, <kjaju@nvidia.com>
-Subject: Re: [PATCH v7 1/6] vfio: refactor vfio_pci_mmap_huge_fault function
-Message-ID: <20251126082235.49edd6d7.alex@shazbot.org>
-In-Reply-To: <20251126052627.43335-2-ankita@nvidia.com>
-References: <20251126052627.43335-1-ankita@nvidia.com>
-	<20251126052627.43335-2-ankita@nvidia.com>
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="AVmbCXjz";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="CrFKSehg"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1764170753;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=IdOd/whsaB5ha6Xltts70lCb5PGc5f2tglKc7q062f4=;
+	b=AVmbCXjzydvNmn1c7t0JhKY3pkumBZdQb4lF+A6FRqFbpjf32ufR8lZXmK4hZeKEzRlmzs
+	F/Rya2/PDPpPy9Mhm7JpBpDW2SE/ofthb3ti+YD6rf/VkvxRSe9u3Kj5HUx64Co8D5cfL1
+	JO2Fl17NiK6Z5gTSpQxt7cylT1DCROU=
+Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
+ [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-610-4U0ymmfxO26ncOa2tDv3Sg-1; Wed, 26 Nov 2025 10:25:52 -0500
+X-MC-Unique: 4U0ymmfxO26ncOa2tDv3Sg-1
+X-Mimecast-MFC-AGG-ID: 4U0ymmfxO26ncOa2tDv3Sg_1764170751
+Received: by mail-wr1-f70.google.com with SMTP id ffacd0b85a97d-42b3c965ce5so6246776f8f.2
+        for <kvm@vger.kernel.org>; Wed, 26 Nov 2025 07:25:51 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=redhat.com; s=google; t=1764170749; x=1764775549; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=IdOd/whsaB5ha6Xltts70lCb5PGc5f2tglKc7q062f4=;
+        b=CrFKSehgTVATz5ItZ3SW5aIMvHYoe8RmV8ykOb+wphhtyd6jYk3JwjvcVP5LpU/vBV
+         6vf6/+SmcGGExXk67kp1vuUIyCPFL3MR7wNn3jvH2x17yiML7NFG5VmZzq0AHG7BN3TL
+         /+3zXLS2qaOFDMsqaqBzFLAhPBlTYz/EM99xszc598B/fuZzM9ea9qj79L+xjNISad5r
+         eUxB8HtW4ZxYHccmBzymAOywYtFcurY6gOaBaFcRyAkdsI4Ly8UBzFVgKO/zJT6Ulyy2
+         IYstD/lFXO3B5HowxI3AlwJq/DA3kbNY3ay8z7xxU+rYmg1PD8UPLUGvdnh/ylL8xY2d
+         8ypQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1764170749; x=1764775549;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=IdOd/whsaB5ha6Xltts70lCb5PGc5f2tglKc7q062f4=;
+        b=az8PxlZPqrgMtXjmTsZHLyMh5dwsh77RqjzZdFVGEDUyji8foRd6MFJZl4fcnJFtZB
+         ZeQ8wladauZAYWW/yIxupre/19SRpwEq190JRQ3MjQ5B5hg2EYoZk7YqAD8vJwsvKv2y
+         r4iwm1FPtaendNUAEf9NER39oT1VJzap6MNGE2LSUd641e1v+0R0yjWQUjClmsTcXe0h
+         Cq7Vrz+jRg3+YXiVjKGdiCZrhGrT/nDQkff5OUYzfGbwfiFTUTC2Y4nKoG7P7L31XGw/
+         OUBrJI9iZjLOHHFuygBppbmN9ZNeshZIlU7jT8zNacz3E3CFcbh1b8auXDo4cSkbIVHe
+         BuWA==
+X-Forwarded-Encrypted: i=1; AJvYcCVfxw34Hh870EkjF0OAhN656Ua9br0y+eRNrxRh+nI8C6rI/+ZhUOWAmyIxgG5mIbzzfBg=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwuQTfQStnFnC+7mgDDzYvQuk/v8nZL9O7XZKu9Odlqb9VVzobb
+	LTD2AIYkjrJqgmaiPBU7pN8F2nFzpS6ZGOHDz1vV/HpUgic5kWtxTHSgMoUF5+l7bMuedOozMaN
+	eN4Hw+LeoqiJD5+RsK2lOcFzV6aNxSdZVN2AVh6PNx6iwPvKsw7KGQg==
+X-Gm-Gg: ASbGnctJ4NcI/9qY9S3souNyiip81YCW7K0iYi/s6nBlikhfcMm4XddezqtnxHrlCFx
+	WhRZ380mZWkTNrfXsWrSZU4I1LiJHWRXCdjbdVkNcwiZjNGbah1qeX/zCRCnRjaWyM/4YEjKicK
+	gQBzC0DuMzMELgXqBX0SMnT1Vmv07SsrFgcmPWQb2XNWyeMOc29hrYAkSlUEJUqLD0f87OC9b5z
+	GaNMMMKvZgDyDVd2CADQd4ERKTWg+bI/8gJE5USsHes6R/MSybSX4ZLLltP4s4ij6lrcBBFls82
+	1gKvTLEMYhz1h5ETWOPeF8IeLNeUbDF2Uyvo9rg7O4+ViSFJT7Oiyx3w1fvQfBQrdLPjkBGB6dE
+	wh2BWoREB0IOMXrt3UjtAlHNrpYSIOw==
+X-Received: by 2002:a05:6000:2489:b0:42b:3a84:1ee6 with SMTP id ffacd0b85a97d-42e0f22a2c8mr8023534f8f.24.1764170748932;
+        Wed, 26 Nov 2025 07:25:48 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IG+KQvLghlDUQh9afZD+PVNCo1iNTuBYw29hyUe/fgigkK4QndBh9YrGoJcdMGDn9uA+ZGhNA==
+X-Received: by 2002:a05:6000:2489:b0:42b:3a84:1ee6 with SMTP id ffacd0b85a97d-42e0f22a2c8mr8023493f8f.24.1764170748385;
+        Wed, 26 Nov 2025 07:25:48 -0800 (PST)
+Received: from redhat.com (IGLD-80-230-39-63.inter.net.il. [80.230.39.63])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-42cb7f2e581sm38903906f8f.8.2025.11.26.07.25.46
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 26 Nov 2025 07:25:47 -0800 (PST)
+Date: Wed, 26 Nov 2025 10:25:44 -0500
+From: "Michael S. Tsirkin" <mst@redhat.com>
+To: Simon Schippers <simon.schippers@tu-dortmund.de>
+Cc: willemdebruijn.kernel@gmail.com, jasowang@redhat.com,
+	andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
+	kuba@kernel.org, pabeni@redhat.com, eperezma@redhat.com,
+	jon@nutanix.com, tim.gebauer@tu-dortmund.de, netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
+	virtualization@lists.linux.dev
+Subject: Re: [PATCH net-next v6 3/8] tun/tap: add synchronized ring
+ produce/consume with queue management
+Message-ID: <20251126100007-mutt-send-email-mst@kernel.org>
+References: <20251120152914.1127975-1-simon.schippers@tu-dortmund.de>
+ <20251120152914.1127975-4-simon.schippers@tu-dortmund.de>
+ <20251125100655-mutt-send-email-mst@kernel.org>
+ <4db234bd-ebd7-4325-9157-e74eccb58616@tu-dortmund.de>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <4db234bd-ebd7-4325-9157-e74eccb58616@tu-dortmund.de>
 
-On Wed, 26 Nov 2025 05:26:22 +0000
-<ankita@nvidia.com> wrote:
-
-> From: Ankit Agrawal <ankita@nvidia.com>
-> 
-> Refactor vfio_pci_mmap_huge_fault to take out the implementation
-> to map the VMA to the PTE/PMD/PUD as a separate function.
-> 
-> Export the new function to be used by nvgrace-gpu module.
-> 
-> No functional change is intended.
-> 
-> Cc: Shameer Kolothum <skolothumtho@nvidia.com>
-> Cc: Alex Williamson <alex@shazbot.org>
-> Cc: Jason Gunthorpe <jgg@ziepe.ca>
-> Reviewed-by: Shameer Kolothum <skolothumtho@nvidia.com>
-> Signed-off-by: Ankit Agrawal <ankita@nvidia.com>
-> ---
->  drivers/vfio/pci/vfio_pci_core.c | 54 +++++++++++++++++---------------
->  include/linux/vfio_pci_core.h    | 16 ++++++++++
->  2 files changed, 45 insertions(+), 25 deletions(-)
-> 
-> diff --git a/drivers/vfio/pci/vfio_pci_core.c b/drivers/vfio/pci/vfio_pci_core.c
-> index 7dcf5439dedc..52e3a10d776b 100644
-> --- a/drivers/vfio/pci/vfio_pci_core.c
-> +++ b/drivers/vfio/pci/vfio_pci_core.c
-> @@ -1640,48 +1640,52 @@ static unsigned long vma_to_pfn(struct vm_area_struct *vma)
->  	return (pci_resource_start(vdev->pdev, index) >> PAGE_SHIFT) + pgoff;
->  }
+On Wed, Nov 26, 2025 at 10:23:50AM +0100, Simon Schippers wrote:
+> On 11/25/25 17:54, Michael S. Tsirkin wrote:
+> > On Thu, Nov 20, 2025 at 04:29:08PM +0100, Simon Schippers wrote:
+> >> Implement new ring buffer produce and consume functions for tun and tap
+> >> drivers that provide lockless producer-consumer synchronization and
+> >> netdev queue management to prevent ptr_ring tail drop and permanent
+> >> starvation.
+> >>
+> >> - tun_ring_produce(): Produces packets to the ptr_ring with proper memory
+> >>   barriers and proactively stops the netdev queue when the ring is about
+> >>   to become full.
+> >>
+> >> - __tun_ring_consume() / __tap_ring_consume(): Internal consume functions
+> >>   that check if the netdev queue was stopped due to a full ring, and wake
+> >>   it when space becomes available. Uses memory barriers to ensure proper
+> >>   ordering between producer and consumer.
+> >>
+> >> - tun_ring_consume() / tap_ring_consume(): Wrapper functions that acquire
+> >>   the consumer lock before calling the internal consume functions.
+> >>
+> >> Key features:
+> >> - Proactive queue stopping using __ptr_ring_full_next() to stop the queue
+> >>   before it becomes completely full.
+> >> - Not stopping the queue when the ptr_ring is full already, because if
+> >>   the consumer empties all entries in the meantime, stopping the queue
+> >>   would cause permanent starvation.
+> > 
+> > what is permanent starvation? this comment seems to answer this
+> > question:
+> > 
+> > 
+> > 	/* Do not stop the netdev queue if the ptr_ring is full already.
+> > 	 * The consumer could empty out the ptr_ring in the meantime
+> > 	 * without noticing the stopped netdev queue, resulting in a
+> > 	 * stopped netdev queue and an empty ptr_ring. In this case the
+> > 	 * netdev queue would stay stopped forever.
+> > 	 */
+> > 
+> > 
+> > why having a single entry in
+> > the ring we never use helpful to address this?
+> > 
+> > 
+> > 
+> > 
+> > In fact, all your patch does to solve it, is check
+> > netif_tx_queue_stopped on every consumed packet.
+> > 
+> > 
+> > I already proposed:
+> > 
+> > static inline int __ptr_ring_peek_producer(struct ptr_ring *r)
+> > {
+> >         if (unlikely(!r->size) || r->queue[r->producer])
+> >                 return -ENOSPC;
+> >         return 0;
+> > }
+> > 
+> > And with that, why isn't avoiding the race as simple as
+> > just rechecking after stopping the queue?
 >  
-> -static vm_fault_t vfio_pci_mmap_huge_fault(struct vm_fault *vmf,
-> -					   unsigned int order)
-> +vm_fault_t vfio_pci_vmf_insert_pfn(struct vfio_pci_core_device *vdev,
-> +				   struct vm_fault *vmf,
-> +				   unsigned long pfn,
-> +				   unsigned int order)
->  {
-> -	struct vm_area_struct *vma = vmf->vma;
-> -	struct vfio_pci_core_device *vdev = vma->vm_private_data;
-> -	unsigned long addr = vmf->address & ~((PAGE_SIZE << order) - 1);
-> -	unsigned long pgoff = (addr - vma->vm_start) >> PAGE_SHIFT;
-> -	unsigned long pfn = vma_to_pfn(vma) + pgoff;
-> -	vm_fault_t ret = VM_FAULT_SIGBUS;
-> -
-> -	if (order && (addr < vma->vm_start ||
-> -		      addr + (PAGE_SIZE << order) > vma->vm_end ||
-> -		      pfn & ((1 << order) - 1))) {
-> -		ret = VM_FAULT_FALLBACK;
-> -		goto out;
-> -	}
-> -
-> -	down_read(&vdev->memory_lock);
-> +	lockdep_assert_held_read(&vdev->memory_lock);
->  
->  	if (vdev->pm_runtime_engaged || !__vfio_pci_memory_enabled(vdev))
-> -		goto out_unlock;
-> +		return VM_FAULT_SIGBUS;
->  
->  	switch (order) {
->  	case 0:
-> -		ret = vmf_insert_pfn(vma, vmf->address, pfn);
-> -		break;
-> +		return vmf_insert_pfn(vmf->vma, vmf->address, pfn);
->  #ifdef CONFIG_ARCH_SUPPORTS_PMD_PFNMAP
->  	case PMD_ORDER:
-> -		ret = vmf_insert_pfn_pmd(vmf, pfn, false);
-> -		break;
-> +		return vmf_insert_pfn_pmd(vmf, pfn, false);
->  #endif
->  #ifdef CONFIG_ARCH_SUPPORTS_PUD_PFNMAP
->  	case PUD_ORDER:
-> -		ret = vmf_insert_pfn_pud(vmf, pfn, false);
-> +		return vmf_insert_pfn_pud(vmf, pfn, false);
->  		break;
->  #endif
->  	default:
-> +		return VM_FAULT_FALLBACK;
-> +	}
-> +}
-> +EXPORT_SYMBOL_GPL(vfio_pci_vmf_insert_pfn);
-> +
-> +static vm_fault_t vfio_pci_mmap_huge_fault(struct vm_fault *vmf,
-> +					   unsigned int order)
-> +{
-> +	struct vm_area_struct *vma = vmf->vma;
-> +	struct vfio_pci_core_device *vdev = vma->vm_private_data;
-> +	unsigned long addr = vmf->address & ~((PAGE_SIZE << order) - 1);
-> +	unsigned long pgoff = (addr - vma->vm_start) >> PAGE_SHIFT;
-> +	unsigned long pfn = vma_to_pfn(vma) + pgoff;
-> +	vm_fault_t ret;
-> +
-> +	if (unmappable_for_order(vma, addr, pfn, order)) {
->  		ret = VM_FAULT_FALLBACK;
-> +		goto out;
->  	}
->  
-> -out_unlock:
-> -	up_read(&vdev->memory_lock);
-> +	scoped_guard(rwsem_read, &vdev->memory_lock)
-> +		ret = vfio_pci_vmf_insert_pfn(vdev, vmf, pfn, order);
-> +
->  out:
+> I think you are right and that is quite similar to what veth [1] does.
+> However, there are two differences:
+> 
+> - Your approach avoids returning NETDEV_TX_BUSY by already stopping
+>   when the ring becomes full (and not when the ring is full already)
+> - ...and the recheck of the producer wakes on !full instead of empty.
+> 
+> I like both aspects better than the veth implementation.
 
-We really don't need a goto to jump over this tiny section of code.
-With the naming/polarity change below this can just be:
+Right.
 
-	vm_fault_t ret = VM_FAULT_FALLBACK;
+Though frankly, someone should just fix NETDEV_TX_BUSY already
+at least with the most popular qdiscs.
 
-	if (is_aligned_for_order(vma, addr, pfn, order)) {
-		scoped_guard(rwsem_read, &vdev->memory_lock)
-			ret = vfio_pci_vmf_insert_pfn(vdev, vmf, pfn, order);
-	}
+It is a common situation and it is just annoying that every driver has
+to come up with its own scheme.
 
 
->  	dev_dbg_ratelimited(&vdev->pdev->dev,
->  			   "%s(,order = %d) BAR %ld page offset 0x%lx: 0x%x\n",
-> diff --git a/include/linux/vfio_pci_core.h b/include/linux/vfio_pci_core.h
-> index f541044e42a2..1d457216ce4d 100644
-> --- a/include/linux/vfio_pci_core.h
-> +++ b/include/linux/vfio_pci_core.h
-> @@ -119,6 +119,9 @@ ssize_t vfio_pci_core_read(struct vfio_device *core_vdev, char __user *buf,
->  		size_t count, loff_t *ppos);
->  ssize_t vfio_pci_core_write(struct vfio_device *core_vdev, const char __user *buf,
->  		size_t count, loff_t *ppos);
-> +vm_fault_t vfio_pci_vmf_insert_pfn(struct vfio_pci_core_device *vdev,
-> +				   struct vm_fault *vmf, unsigned long pfn,
-> +				   unsigned int order);
->  int vfio_pci_core_mmap(struct vfio_device *core_vdev, struct vm_area_struct *vma);
->  void vfio_pci_core_request(struct vfio_device *core_vdev, unsigned int count);
->  int vfio_pci_core_match(struct vfio_device *core_vdev, char *buf);
-> @@ -161,4 +164,17 @@ VFIO_IOREAD_DECLARATION(32)
->  VFIO_IOREAD_DECLARATION(64)
->  #endif
->  
-> +static inline bool unmappable_for_order(struct vm_area_struct *vma,
-> +					unsigned long addr,
-> +					unsigned long pfn,
-> +					unsigned int order)
-> +{
-> +	if (order && (addr < vma->vm_start ||
-> +		      addr + (PAGE_SIZE << order) > vma->vm_end ||
-> +		      !IS_ALIGNED(pfn, 1 << order)))
-> +		return true;
-> +
-> +	return false;
-> +}
 
 
-Change polarity and rename to is_aligned_for_order()?  No need for
-branched return.
 
-	return !(order && (addr < vma->vm_start ||
-			   addr + (PAGE_SIZE << order) > vma->vm_end ||
-			   !IS_ALIGNED(pfn, 1 << order)));
+> Just one thing: like the veth implementation, we probably need a
+> smp_mb__after_atomic() after netif_tx_stop_queue() as they also discussed
+> in their v6 [2].
 
-Describe this change in the commit log.  Thanks,
+yea makes sense.
 
-Alex
+> 
+> On the consumer side, I would then just do:
+> 
+> __ptr_ring_consume();
+> if (unlikely(__ptr_ring_consume_created_space()))
+>     netif_tx_wake_queue(txq);
+> 
+> Right?
+> 
+> And for the batched consume method, I would just call this in a loop.
+
+Well tun does not use batched consume does it?
+
+
+> Thank you!
+> 
+> [1] Link: https://lore.kernel.org/netdev/174559288731.827981.8748257839971869213.stgit@firesoul/T/#m2582fcc48901e2e845b20b89e0e7196951484e5f
+> [2] Link: https://lore.kernel.org/all/174549933665.608169.392044991754158047.stgit@firesoul/T/#m63f2deb86ffbd9ff3a27e1232077a3775606c14d
+> 
+> > 
+> > __ptr_ring_produce();
+> > if (__ptr_ring_peek_producer())
+> > 	netif_tx_stop_queue
+> 
+> smp_mb__after_atomic(); // Right here
+> 
+> > 	if (!__ptr_ring_peek_producer())
+> > 		netif_tx_wake_queue(txq);
+> > 
+> > 
+> > 
+> > 
+> > 
+> > 
+> > 
+
