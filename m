@@ -1,92 +1,85 @@
 Received: from fout-b1-smtp.messagingengine.com (fout-b1-smtp.messagingengine.com [202.12.124.144])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 95ACA2EA174;
-	Fri, 28 Nov 2025 19:44:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0163C27587E;
+	Fri, 28 Nov 2025 19:44:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.144
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764359099; cv=none; b=QGIjchFxMdXlmY8V+DXX87eiAIqk3FO4TGstLY23Q5wNnSTXBKPpcHXYBEQfwvIcyj7BAG86NSsjq9zDusB+HhQ7LRdFyQrrXHtse2jNqIzggRtL1pSO8VD2lowP+RWC+A4lWB+zmkbtsmlzB9tNjAb8DkayMnrlDClMFDhERb0=
+	t=1764359100; cv=none; b=FPyxDpDvVPcrdeeNxxV/guQGKZDTpv2+3yNZxR2cDL3afvaNGbJowy0gvFjQVy+28qT32zPxMH1Q8grviaV0W2frnzaM41pmkcKNsjBnh9tv5jyCNfavZamxxRJq+TKJaV33uEN3hie+V4NJ25l36cRyfaqoYR1/NXyW6f6hiuo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764359099; c=relaxed/simple;
-	bh=mUqpQ759I3HIGy8T1URVCL1cN+7lpFuxMiJ0JpZEQkg=;
+	s=arc-20240116; t=1764359100; c=relaxed/simple;
+	bh=C9i7awpzYDU/ou8oDCf3F4sKL9eNqr+aOvKa80iZkvk=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=hFLHQkLEKbz/IVsPOqdcduL+0bj285TCfkLTr9IVJUOEQbqOG+tL42/fzNHa5Xg6aYxK93ICW2qgH8V+6KvWAXSrQ1aGTBB9Gr0z9+ujehO5JYepXMCQHRFKoBMIdBL7agigg9O22rG4iop7KgpIW+yA4suuM3201c1ISUcRRb4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=shazbot.org; spf=pass smtp.mailfrom=shazbot.org; dkim=pass (2048-bit key) header.d=shazbot.org header.i=@shazbot.org header.b=m/WretVL; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=aRdn8zLl; arc=none smtp.client-ip=202.12.124.144
+	 MIME-Version:Content-Type; b=EPH6w+cMQyyTfOJy2Sl3ZY3f+uX//duBitG+pGr79X9PSwaU2/7RK6rerPY6RU3/tl5NLwWqmBjCn10sB+3QXc7T+cfcOWSqycPM5EyY2Z2IZzcUIqPqUlPi+jgavs04lLguH76ewxurROVWGq50nQGNv6UCZi17ZIcJm8n1qAQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=shazbot.org; spf=pass smtp.mailfrom=shazbot.org; dkim=pass (2048-bit key) header.d=shazbot.org header.i=@shazbot.org header.b=X/W4zJ4a; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=km8V7Piy; arc=none smtp.client-ip=202.12.124.144
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=shazbot.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=shazbot.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=shazbot.org header.i=@shazbot.org header.b="m/WretVL";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="aRdn8zLl"
+	dkim=pass (2048-bit key) header.d=shazbot.org header.i=@shazbot.org header.b="X/W4zJ4a";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="km8V7Piy"
 Received: from phl-compute-02.internal (phl-compute-02.internal [10.202.2.42])
-	by mailfout.stl.internal (Postfix) with ESMTP id 69FDA1D00753;
-	Fri, 28 Nov 2025 14:44:55 -0500 (EST)
+	by mailfout.stl.internal (Postfix) with ESMTP id 115D71D0072E;
+	Fri, 28 Nov 2025 14:44:57 -0500 (EST)
 Received: from phl-mailfrontend-01 ([10.202.2.162])
-  by phl-compute-02.internal (MEProxy); Fri, 28 Nov 2025 14:44:55 -0500
+  by phl-compute-02.internal (MEProxy); Fri, 28 Nov 2025 14:44:57 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shazbot.org; h=
 	cc:cc:content-transfer-encoding:content-type:content-type:date
 	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to; s=fm3; t=1764359095;
-	 x=1764445495; bh=H6PYwJK0pvsCaVg7EUDSTlJ2qBBCFgF54ku7DGRNDyQ=; b=
-	m/WretVLxfUXue8pM5MgYVjsN1pfAarKGDNrDRnFvZWY88DbBH6yu2pV27cSCf0H
-	h55/yw6qDvJWk1URaYHvmvKBrOhY+5+tCncZy4uaSUFfynPnridhlWWNpIuRIB50
-	nQsXiryOHj2lQhYGwepcrSYBZKIrP5QOzewKZHgKxiYn5598dNZ2Ya6oVvuql0TW
-	euY9FHQrDErbbUCxKui3qobc8XEz2YQ/y//PGix8rqDC8nXhYQZ6qU67ESJhgcst
-	25+cyvbnrIw+c43g5eSDpJYSEWCIACwizrxZRh16m1lP7E2E3gkMo6YUuMwsazCL
-	PAf9kKRU6Lnbj8ZkVE24AA==
+	:references:reply-to:subject:subject:to:to; s=fm3; t=1764359096;
+	 x=1764445496; bh=4O1Anyo7QeOiltfx0oBC8JHG7P4eCCuZHh1FdGOKm3Y=; b=
+	X/W4zJ4aTasE/9/y+3S5whAkYD7EU7Hv3RzDmwseMFN4Ezel58Q03KAI2eOiVA7S
+	dmaOZPD++0+25TxxuuM6OupWJuTSKd/eDCKT1rMY6ZiEEVIkIP8PQNqPfSwtysyP
+	EfLcpweFVPxq9GSbawEXq0emAb7Ntn3rkVq5PbbUKBU9Xnew56aLlELn6/yyNOqN
+	fgxCPYe48JvkvasCfjF0GMn1Bx5P2TaMxZyBarrSUh8JzeHlucDKQbj4xUJSE7tC
+	12bzByWqUKfYfMlADCHlqv/qJLw5SlYSwiNoEgpGsn4t+2Lx4iS0i6+QGcTLu5Oy
+	sDWXFRbqQft5SzehlVlLDw==
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
 	messagingengine.com; h=cc:cc:content-transfer-encoding
 	:content-type:content-type:date:date:feedback-id:feedback-id
 	:from:from:in-reply-to:in-reply-to:message-id:mime-version
 	:references:reply-to:subject:subject:to:to:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=1764359095; x=
-	1764445495; bh=H6PYwJK0pvsCaVg7EUDSTlJ2qBBCFgF54ku7DGRNDyQ=; b=a
-	Rdn8zLlUrtxzVpQPmOdIoidQ3DuwESwPcnCBCUxyLPNCu8tJwJ+9uUQYyhyJobXM
-	PMH0hCQDCqT0RD06GXeJcrCsCIi9B2wlt6iPbI/mxy6a6tn93AFYnnXM+QnBt1fB
-	+sMSmoBx1gtYoAM/HE8nmwbCMNLngTLeXK26geAHs7qSY5x3byxeQWdRej5eNdvU
-	Mz+Gvz7ZmAG46V8xrRtPp9VgyJPqsrYZjbo2s2XOyGvQFkkx/TcWjUDTeiBkteOL
-	ByqBZx4f4WzKRXcfo6DEqKAzeUwMZncEWOucfnsS+fDNAInSd/PdzZL6rfliYQfx
-	886lLMsvhYZBGGx9hAYxg==
-X-ME-Sender: <xms:tvspaeQCh98qaD_3FbnqT4sm6H7K3xB1eVbaqM3vNs6nGGTkCX6I1Q>
-    <xme:tvspaUPJ5uzVMk1KbX6gGSTM3FuI3eZWktikGXNYMaoqnsjYfnLWn-s7MeDYzQw3T
-    91NJYRq5CEgOWdQ914AuzJm1QFEMs9Ox_wD3ZLjyZ4nB0HOqcb63w>
-X-ME-Received: <xmr:tvspacjf4KNWpX3wLSFCz-_DrJ2-B81Q04MaYZ0SCru_0M2j6GrlGl05>
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=1764359096; x=
+	1764445496; bh=4O1Anyo7QeOiltfx0oBC8JHG7P4eCCuZHh1FdGOKm3Y=; b=k
+	m8V7Piy93qQy9IvtDufhNpUlxzl1l4giy2QDv7MhsKtf7fRxI9flsO03k9PQMgJL
+	A5uEvw6QnR3qR8XC20sWgpu0WPJAPFuHa4e1dVxP+d72U1FfOfLU/I79BHNLlYi5
+	bV0IX/ZsgdQ+Kg3kXQX9n9EqsUH++gK3weAUscqxM6netcrPGvpdHcMI5cDF+jB1
+	DAgfyfTB/oJFj2/sBK4DcIrNXClwt3cbd7i2evnn18nVvj7YPFrXRaaQUJIwxUVR
+	jLvCIRyc8QJzQar7nJbGd4dkIiCg4EvgbtJpw+8GQIhTrTOlCY4voKD95KKZt7nE
+	7r4DF3TForwpiS2c9xVAA==
+X-ME-Sender: <xms:uPspaQ8ThisG_B22jbKylJgSviNTpkkUbEgL_tv0hGIybayk1i1q5A>
+    <xme:uPspaaPBqhYjcjvZqVGKkcQwd282ffxDvhE_QYEdupLb584ZzBZR4woKEDRz8o5XH
+    FVgXXvcAODRj4KKu2_fomB3FXxYod4pnQ34GXeE-eaO41Hc_knm6Q>
+X-ME-Received: <xmr:uPspaWGhBiJyYW9Trefk1OKK4TLLjkODcthBHVgb5RFpWN9VDG49-DnE>
 X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdeggddvhedtjeehucetufdoteggodetrf
     dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
-    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
-    gurhepfffhvfevuffkjghfgggtgfesthejredttddtvdenucfhrhhomheptehlvgigucgh
-    ihhllhhirghmshhonhcuoegrlhgvgiesshhhrgiisghothdrohhrgheqnecuggftrfgrth
-    htvghrnhepueehgffgteeuleeiheevleegjeetvdfhffetvedtvedvgeegleekvdelffeh
-    ieetnecuffhomhgrihhnpehgihhthhhusgdrtghomhdpkhgvrhhnvghlrdhorhhgnecuve
-    hluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomheprghlvgigsehs
-    hhgriigsohhtrdhorhhgpdhnsggprhgtphhtthhopeelpdhmohguvgepshhmthhpohhuth
-    dprhgtphhtthhopegumhgrthhlrggtkhesghhoohhglhgvrdgtohhmpdhrtghpthhtohep
-    rghmrghsthhrohesfhgsrdgtohhmpdhrtghpthhtohepjhhgghesnhhvihguihgrrdgtoh
-    hmpdhrtghpthhtohepjhhrhhhilhhkvgesghhoohhglhgvrdgtohhmpdhrtghpthhtohep
-    khhvmhesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehlihhnuhigqdhkvg
-    hrnhgvlhesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehlihhnuhigqdhk
-    shgvlhhfthgvshhtsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtoheprhgrnh
-    grnhhtrgesghhoohhglhgvrdgtohhmpdhrtghpthhtohepvhhiphhinhhshhesghhoohhg
-    lhgvrdgtohhm
-X-ME-Proxy: <xmx:tvspaRnf-APuWHNWIvMtc51LeV23YK66sfcCv11vWEEfRLCJ3GEaig>
-    <xmx:tvspaYisGRYgvgKsJ_4wv2pq1sADiBLcm0QCLsdjauyj-krwFHPqFQ>
-    <xmx:tvspaUGnxadvAf-Rw4u3jTqah6SkQ_7UuRqyBs4nPzPL-k0_a15b3Q>
-    <xmx:tvspaat0du2sH8zlj8IlfgODx1wY-R82fFXohalnYr0rgu-AW7XgwQ>
-    <xmx:t_spaR_Z_YbJBqAJwzq-gQYa1wflBAbrrXwovvYWFHMFqwdtCxGD7a8k>
+    rghilhhouhhtmecufedttdenucgoteeftdduqddtudculdduhedmnecujfgurhepfffhvf
+    evuffkjghfgggtgfesthejredttddtvdenucfhrhhomheptehlvgigucghihhllhhirghm
+    shhonhcuoegrlhgvgiesshhhrgiisghothdrohhrgheqnecuggftrfgrthhtvghrnhepte
+    etudelgeekieegudegleeuvdffgeehleeivddtfeektdekkeehffehudethffhnecuvehl
+    uhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomheprghlvgigsehshh
+    griigsohhtrdhorhhgpdhnsggprhgtphhtthhopeehpdhmohguvgepshhmthhpohhuthdp
+    rhgtphhtthhopegrlhgvgiesshhhrgiisghothdrohhrghdprhgtphhtthhopehkvhhmse
+    hvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtohepjhhgghesiihivghpvgdrtggr
+    pdhrtghpthhtohepkhgvvhhinhdrthhirghnsehinhhtvghlrdgtohhmpdhrtghpthhtoh
+    eplhhinhhugidqkhgvrhhnvghlsehvghgvrhdrkhgvrhhnvghlrdhorhhg
+X-ME-Proxy: <xmx:uPspaQQ2OFmr21Qthg4S5ytLDjRaRzYZy_ptSCZI4k2xMupE1ajQjQ>
+    <xmx:uPspabvfXxfU5lgAFiISQtjX7O_iKGSSUwsqVxAXD0XaqnMrIPajFQ>
+    <xmx:uPspaQKGqXjNn9CN4Ecmh1u5D7Ghr-LUzk8Gp2JCnWU_UQzaIYKaRw>
+    <xmx:uPspaYk1Lz2eobB7JCgJ_0diQ_AvC6C4wGAr4rYcp0g3PGtyKVp84w>
+    <xmx:uPspaTL2Mz4LKDAlQFLotxWJ-7SfCSPEdyGFa7JQCWidwbwZF4EEPMle>
 Feedback-ID: i03f14258:Fastmail
 Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
- 28 Nov 2025 14:44:54 -0500 (EST)
-Date: Fri, 28 Nov 2025 12:44:44 -0700
+ 28 Nov 2025 14:44:55 -0500 (EST)
+Date: Fri, 28 Nov 2025 12:44:49 -0700
 From: Alex Williamson <alex@shazbot.org>
-To: David Matlack <dmatlack@google.com>
-Cc: Alex Mastro <amastro@fb.com>, Jason Gunthorpe <jgg@nvidia.com>, Josh
- Hilke <jrhilke@google.com>, kvm@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org, Raghavendra
- Rao Ananta <rananta@google.com>, Vipin Sharma <vipinsh@google.com>
-Subject: Re: [PATCH v4 00/18] vfio: selftests: Support for multi-device
- tests
-Message-ID: <20251128124444.2d6abe55.alex@shazbot.org>
-In-Reply-To: <20251126231733.3302983-1-dmatlack@google.com>
-References: <20251126231733.3302983-1-dmatlack@google.com>
+To: alex@shazbot.org
+Cc: kvm@vger.kernel.org, jgg@ziepe.ca, kevin.tian@intel.com,
+ linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] vfio/pci: Use RCU for error/request triggers to avoid
+ circular locking
+Message-ID: <20251128124449.37a27d86.alex@shazbot.org>
+In-Reply-To: <20251124223623.2770706-1-alex@shazbot.org>
+References: <20251124223623.2770706-1-alex@shazbot.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -96,56 +89,31 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Wed, 26 Nov 2025 23:17:15 +0000
-David Matlack <dmatlack@google.com> wrote:
+On Mon, 24 Nov 2025 15:36:22 -0700
+Alex Williamson <alex@shazbot.org> wrote:
 
-> This series adds support for tests that use multiple devices, and adds
-> one new test, vfio_pci_device_init_perf_test, which measures parallel
-> device initialization time to demonstrate the improvement from commit
-> e908f58b6beb ("vfio/pci: Separate SR-IOV VF dev_set").
+> From: Alex Williamson <alex.williamson@nvidia.com>
 > 
-> This series also breaks apart the monolithic vfio_util.h and
-> vfio_pci_device.c into separate files, to account for all the new code.
-> This required quite a bit of code motion so the diffstat looks large.
-> The final layout is more granular and provides a better separation of
-> the IOMMU code from the device code.
+> Thanks to a device generating an ACS violation during bus reset,
+> lockdep reported the following circular locking issue:
 > 
-> Final layout:
+> CPU0: SET_IRQS (MSI/X): holds igate, acquires memory_lock
+> CPU1: HOT_RESET: holds memory_lock, acquires pci_bus_sem
+> CPU2: AER: holds pci_bus_sem, acquires igate
 > 
->   C files:
->     - tools/testing/selftests/vfio/lib/libvfio.c
->     - tools/testing/selftests/vfio/lib/iommu.c
->     - tools/testing/selftests/vfio/lib/iova_allocator.c
->     - tools/testing/selftests/vfio/lib/vfio_pci_device.c
->     - tools/testing/selftests/vfio/lib/vfio_pci_driver.c
+> This results in a potential 3-way deadlock.
 > 
->   H files:
->    - tools/testing/selftests/vfio/lib/include/libvfio.h
->    - tools/testing/selftests/vfio/lib/include/libvfio/assert.h
->    - tools/testing/selftests/vfio/lib/include/libvfio/iommu.h
->    - tools/testing/selftests/vfio/lib/include/libvfio/iova_allocator.h
->    - tools/testing/selftests/vfio/lib/include/libvfio/vfio_pci_device.h
->    - tools/testing/selftests/vfio/lib/include/libvfio/vfio_pci_driver.h
+> Remove the pci_bus_sem->igate leg of the triangle by using RCU
+> to peek at the eventfd rather than locking it with igate.
 > 
-> Notably, vfio_util.h is now gone and replaced with libvfio.h.
-> 
-> This series is based on vfio/next plus Alex Mastro's series to add the
-> IOVA allocator [1]. It should apply cleanly to vfio/next once Alex's
-> series makes its way to vfio/next via Linus' tree.
-> 
-> This series can be found on GitHub:
-> 
->   https://github.com/dmatlack/linux/tree/vfio/selftests/init_perf_test/v4
-> 
-> [1] https://lore.kernel.org/kvm/20251111-iova-ranges-v3-0-7960244642c5@fb.com/
-> 
-> Cc: Alex Mastro <amastro@fb.com>
-> Cc: Jason Gunthorpe <jgg@nvidia.com>
-> Cc: Josh Hilke <jrhilke@google.com>
-> Cc: Raghavendra Rao Ananta <rananta@google.com>
-> Cc: Vipin Sharma <vipinsh@google.com>
-> 
-> v4:
+> Fixes: 3be3a074cf5b ("vfio-pci: Don't use device_lock around AER interrupt setup")
+> Signed-off-by: Alex Williamson <alex.williamson@nvidia.com>
+> ---
+>  drivers/vfio/pci/vfio_pci_core.c  | 68 ++++++++++++++++++++++---------
+>  drivers/vfio/pci/vfio_pci_intrs.c | 52 ++++++++++++++---------
+>  drivers/vfio/pci/vfio_pci_priv.h  |  4 ++
+>  include/linux/vfio_pci_core.h     | 10 ++++-
+>  4 files changed, 93 insertions(+), 41 deletions(-)
 
 Applied to vfio next branch for v6.19.  Thanks,
 
