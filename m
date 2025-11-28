@@ -1,85 +1,95 @@
-Received: from fout-b1-smtp.messagingengine.com (fout-b1-smtp.messagingengine.com [202.12.124.144])
+Received: from fhigh-b1-smtp.messagingengine.com (fhigh-b1-smtp.messagingengine.com [202.12.124.152])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0163C27587E;
-	Fri, 28 Nov 2025 19:44:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.144
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 033F6334694;
+	Fri, 28 Nov 2025 19:45:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.152
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764359100; cv=none; b=FPyxDpDvVPcrdeeNxxV/guQGKZDTpv2+3yNZxR2cDL3afvaNGbJowy0gvFjQVy+28qT32zPxMH1Q8grviaV0W2frnzaM41pmkcKNsjBnh9tv5jyCNfavZamxxRJq+TKJaV33uEN3hie+V4NJ25l36cRyfaqoYR1/NXyW6f6hiuo=
+	t=1764359103; cv=none; b=LxUHpnM7AHkqn2/WI24m8EZZPNUcsB/guO1mSWGiHesF/YaKgH3sL7ayc3Dfb+rWSLXpS5ZNSW+pTowvU7GtfjCzKJWVBhNM/megDrRYYrJvGBrTLH4XA3m2vw7o5eFzz/mxTF0G6HDi0hmiTq7YRZqIfCseG6kVehkZDnKLCW8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764359100; c=relaxed/simple;
-	bh=C9i7awpzYDU/ou8oDCf3F4sKL9eNqr+aOvKa80iZkvk=;
+	s=arc-20240116; t=1764359103; c=relaxed/simple;
+	bh=+wkljG214Hz09hs256WV1z8aBU3cBewNwN5l3xYeLhY=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=EPH6w+cMQyyTfOJy2Sl3ZY3f+uX//duBitG+pGr79X9PSwaU2/7RK6rerPY6RU3/tl5NLwWqmBjCn10sB+3QXc7T+cfcOWSqycPM5EyY2Z2IZzcUIqPqUlPi+jgavs04lLguH76ewxurROVWGq50nQGNv6UCZi17ZIcJm8n1qAQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=shazbot.org; spf=pass smtp.mailfrom=shazbot.org; dkim=pass (2048-bit key) header.d=shazbot.org header.i=@shazbot.org header.b=X/W4zJ4a; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=km8V7Piy; arc=none smtp.client-ip=202.12.124.144
+	 MIME-Version:Content-Type; b=Yt8zKUljZ88Xek1PcHCvLOQciZJpfnyKUYWJ5OUEtdYRw8tcbs/itQQrQxXZQgYo9/QUDt0G8uZf1+8KOaKLQjxYmwSZ7JpH8u1gp9t1uaZT3tTxZkSMRvFhU6jIyJG8dFOI+GEy8lEoT7nmDE9JkmosZtbwg1b50ElZcnSw/k4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=shazbot.org; spf=pass smtp.mailfrom=shazbot.org; dkim=pass (2048-bit key) header.d=shazbot.org header.i=@shazbot.org header.b=bdVv6Tvc; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=Sovxl52B; arc=none smtp.client-ip=202.12.124.152
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=shazbot.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=shazbot.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=shazbot.org header.i=@shazbot.org header.b="X/W4zJ4a";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="km8V7Piy"
+	dkim=pass (2048-bit key) header.d=shazbot.org header.i=@shazbot.org header.b="bdVv6Tvc";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="Sovxl52B"
 Received: from phl-compute-02.internal (phl-compute-02.internal [10.202.2.42])
-	by mailfout.stl.internal (Postfix) with ESMTP id 115D71D0072E;
-	Fri, 28 Nov 2025 14:44:57 -0500 (EST)
+	by mailfhigh.stl.internal (Postfix) with ESMTP id 958747A07D9;
+	Fri, 28 Nov 2025 14:44:59 -0500 (EST)
 Received: from phl-mailfrontend-01 ([10.202.2.162])
-  by phl-compute-02.internal (MEProxy); Fri, 28 Nov 2025 14:44:57 -0500
+  by phl-compute-02.internal (MEProxy); Fri, 28 Nov 2025 14:45:00 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shazbot.org; h=
 	cc:cc:content-transfer-encoding:content-type:content-type:date
 	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to; s=fm3; t=1764359096;
-	 x=1764445496; bh=4O1Anyo7QeOiltfx0oBC8JHG7P4eCCuZHh1FdGOKm3Y=; b=
-	X/W4zJ4aTasE/9/y+3S5whAkYD7EU7Hv3RzDmwseMFN4Ezel58Q03KAI2eOiVA7S
-	dmaOZPD++0+25TxxuuM6OupWJuTSKd/eDCKT1rMY6ZiEEVIkIP8PQNqPfSwtysyP
-	EfLcpweFVPxq9GSbawEXq0emAb7Ntn3rkVq5PbbUKBU9Xnew56aLlELn6/yyNOqN
-	fgxCPYe48JvkvasCfjF0GMn1Bx5P2TaMxZyBarrSUh8JzeHlucDKQbj4xUJSE7tC
-	12bzByWqUKfYfMlADCHlqv/qJLw5SlYSwiNoEgpGsn4t+2Lx4iS0i6+QGcTLu5Oy
-	sDWXFRbqQft5SzehlVlLDw==
+	:references:reply-to:subject:subject:to:to; s=fm3; t=1764359099;
+	 x=1764445499; bh=Gzbi9f31LeGeuZleDQErpK+oNVqUxLg4p18tyJY+ZXg=; b=
+	bdVv6Tvcr/5gbvnGuzW5VTtVR3ID+5xOleZ9ONKpEOADnsecJCgiO8KROyFJiFZz
+	vuhsFXuCrJwW1nSuku7L0PVXfhb+DH2bp2E2hH1ShAOO9JQtJbEo5E/96jU1qavZ
+	rvXMYuQNZcltRTCiP2TD/vC7jA7BSGe/WrpVGwW4QSKOlJuFxcZJmg4ppZWhFG2+
+	KOzjZVIPsPiKH8HQBQVeK9TZRAKIaOAd3owY563gAQRrZ4aUHRy0++c5NeE+7dsP
+	HyAE2cMzk94rktui2nXZO8fFsk1JAhHMaJDSbw+WKm5VYA+3F+daF9PGQ/R0fYNk
+	Flzn83+d0z5+iKVP8qGz8Q==
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
 	messagingengine.com; h=cc:cc:content-transfer-encoding
 	:content-type:content-type:date:date:feedback-id:feedback-id
 	:from:from:in-reply-to:in-reply-to:message-id:mime-version
 	:references:reply-to:subject:subject:to:to:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=1764359096; x=
-	1764445496; bh=4O1Anyo7QeOiltfx0oBC8JHG7P4eCCuZHh1FdGOKm3Y=; b=k
-	m8V7Piy93qQy9IvtDufhNpUlxzl1l4giy2QDv7MhsKtf7fRxI9flsO03k9PQMgJL
-	A5uEvw6QnR3qR8XC20sWgpu0WPJAPFuHa4e1dVxP+d72U1FfOfLU/I79BHNLlYi5
-	bV0IX/ZsgdQ+Kg3kXQX9n9EqsUH++gK3weAUscqxM6netcrPGvpdHcMI5cDF+jB1
-	DAgfyfTB/oJFj2/sBK4DcIrNXClwt3cbd7i2evnn18nVvj7YPFrXRaaQUJIwxUVR
-	jLvCIRyc8QJzQar7nJbGd4dkIiCg4EvgbtJpw+8GQIhTrTOlCY4voKD95KKZt7nE
-	7r4DF3TForwpiS2c9xVAA==
-X-ME-Sender: <xms:uPspaQ8ThisG_B22jbKylJgSviNTpkkUbEgL_tv0hGIybayk1i1q5A>
-    <xme:uPspaaPBqhYjcjvZqVGKkcQwd282ffxDvhE_QYEdupLb584ZzBZR4woKEDRz8o5XH
-    FVgXXvcAODRj4KKu2_fomB3FXxYod4pnQ34GXeE-eaO41Hc_knm6Q>
-X-ME-Received: <xmr:uPspaWGhBiJyYW9Trefk1OKK4TLLjkODcthBHVgb5RFpWN9VDG49-DnE>
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=1764359099; x=
+	1764445499; bh=Gzbi9f31LeGeuZleDQErpK+oNVqUxLg4p18tyJY+ZXg=; b=S
+	ovxl52BqMKlkHx/Ynu4ane2yTRfYTL6cB93dKngadfqbf134evyg+L+VpA5RrCEB
+	MMxASAalOEsXDCucPpWIWWmif7wjzfSJp5n3t813gD4hEtrqJEYap2BfzTLv7iG4
+	hbOE6rRKEMocRisUmumpRoWMUioyf6lIyiZNcoSrz9IMcb4brZzJpPsNhOvI44iT
+	08pYU+q2guz5qnXg59te3f9GK0FC75WNY30vvULqAinvrY5v/BxDJUOLcGhmKhpa
+	vJHx9cJj1z6NCHoHfNxAAXZnKhaycifXuXFL4fpww8HxJgRMPs4RtclvHQGfHhw3
+	Z3NdRSnOQvYG7mnYXXx7g==
+X-ME-Sender: <xms:u_spaaiUp33cP5h-9vnXBTGmBmX1pxg6Avq6ivq-qoxYPOiFsMLkuw>
+    <xme:u_spaTOOkZn9xqNEJSGf5mzA2MDsZtdEGbAkFRH2eSnRTT6E00Xq-6URAsaG82kAz
+    iwy4EKh7TctIAdA-hiqigm-TOsO2cswxl_NwSbc3u-ZRUl2CDk2e_w>
+X-ME-Received: <xmr:u_spaZZvCHnmykFi5W718BokILHcZiridgnIRZPyk75-omm8qMpNbDTM>
 X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdeggddvhedtjeehucetufdoteggodetrf
     dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
-    rghilhhouhhtmecufedttdenucgoteeftdduqddtudculdduhedmnecujfgurhepfffhvf
-    evuffkjghfgggtgfesthejredttddtvdenucfhrhhomheptehlvgigucghihhllhhirghm
-    shhonhcuoegrlhgvgiesshhhrgiisghothdrohhrgheqnecuggftrfgrthhtvghrnhepte
-    etudelgeekieegudegleeuvdffgeehleeivddtfeektdekkeehffehudethffhnecuvehl
-    uhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomheprghlvgigsehshh
-    griigsohhtrdhorhhgpdhnsggprhgtphhtthhopeehpdhmohguvgepshhmthhpohhuthdp
-    rhgtphhtthhopegrlhgvgiesshhhrgiisghothdrohhrghdprhgtphhtthhopehkvhhmse
-    hvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtohepjhhgghesiihivghpvgdrtggr
-    pdhrtghpthhtohepkhgvvhhinhdrthhirghnsehinhhtvghlrdgtohhmpdhrtghpthhtoh
-    eplhhinhhugidqkhgvrhhnvghlsehvghgvrhdrkhgvrhhnvghlrdhorhhg
-X-ME-Proxy: <xmx:uPspaQQ2OFmr21Qthg4S5ytLDjRaRzYZy_ptSCZI4k2xMupE1ajQjQ>
-    <xmx:uPspabvfXxfU5lgAFiISQtjX7O_iKGSSUwsqVxAXD0XaqnMrIPajFQ>
-    <xmx:uPspaQKGqXjNn9CN4Ecmh1u5D7Ghr-LUzk8Gp2JCnWU_UQzaIYKaRw>
-    <xmx:uPspaYk1Lz2eobB7JCgJ_0diQ_AvC6C4wGAr4rYcp0g3PGtyKVp84w>
-    <xmx:uPspaTL2Mz4LKDAlQFLotxWJ-7SfCSPEdyGFa7JQCWidwbwZF4EEPMle>
+    rghilhhouhhtmecufedttdenucenucfjughrpeffhffvvefukfgjfhggtgfgsehtjeertd
+    dttddvnecuhfhrohhmpeetlhgvgicuhghilhhlihgrmhhsohhnuceorghlvgigsehshhgr
+    iigsohhtrdhorhhgqeenucggtffrrghtthgvrhhnpeehvddtueevjeduffejfeduhfeufe
+    ejvdetgffftdeiieduhfejjefhhfefueevudenucffohhmrghinhepkhgvrhhnvghlrdho
+    rhhgnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomheprg
+    hlvgigsehshhgriigsohhtrdhorhhgpdhnsggprhgtphhtthhopedvhedpmhhouggvpehs
+    mhhtphhouhhtpdhrtghpthhtoheprghnkhhithgrsehnvhhiughirgdrtghomhdprhgtph
+    htthhopehjghhgseiiihgvphgvrdgtrgdprhgtphhtthhopeihihhshhgrihhhsehnvhhi
+    ughirgdrtghomhdprhgtphhtthhopehskhholhhothhhuhhmthhhohesnhhvihguihgrrd
+    gtohhmpdhrtghpthhtohepkhgvvhhinhdrthhirghnsehinhhtvghlrdgtohhmpdhrtghp
+    thhtoheprghnihhkvghtrgesnhhvihguihgrrdgtohhmpdhrtghpthhtohepvhhsvghthh
+    hisehnvhhiughirgdrtghomhdprhgtphhtthhopehmohgthhhssehnvhhiughirgdrtgho
+    mhdprhgtphhtthhopeihuhhngihirghnghdrlhhisegrmhgurdgtohhm
+X-ME-Proxy: <xmx:u_spaQ9tEV8cDlevZ-v0OB2LshaM7YBMge0ziiPXrDgaMMhdXAZKXg>
+    <xmx:u_spaU0Y3QbWvnuK6g2cWmy1jF1AjsorD-4gNMMMWsepnUTkx0LbgA>
+    <xmx:u_spaR3TPuVhaTlmfGiqH2efNkdmRrPZq4IsbttP0XtbKfw3ln2XNg>
+    <xmx:u_spaZyMhGUx0E5qy58q3ECjndNRSzvYGrpmTfpknqiYcT8OnIjNuA>
+    <xmx:u_spacX-Xbc36IuYK9S2lKzEpsTg7DcMBuA9HbW4kKZeyS3EwFbA-xAd>
 Feedback-ID: i03f14258:Fastmail
 Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
- 28 Nov 2025 14:44:55 -0500 (EST)
-Date: Fri, 28 Nov 2025 12:44:49 -0700
+ 28 Nov 2025 14:44:57 -0500 (EST)
+Date: Fri, 28 Nov 2025 12:44:39 -0700
 From: Alex Williamson <alex@shazbot.org>
-To: alex@shazbot.org
-Cc: kvm@vger.kernel.org, jgg@ziepe.ca, kevin.tian@intel.com,
- linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] vfio/pci: Use RCU for error/request triggers to avoid
- circular locking
-Message-ID: <20251128124449.37a27d86.alex@shazbot.org>
-In-Reply-To: <20251124223623.2770706-1-alex@shazbot.org>
-References: <20251124223623.2770706-1-alex@shazbot.org>
+To: <ankita@nvidia.com>
+Cc: <jgg@ziepe.ca>, <yishaih@nvidia.com>, <skolothumtho@nvidia.com>,
+ <kevin.tian@intel.com>, <aniketa@nvidia.com>, <vsethi@nvidia.com>,
+ <mochs@nvidia.com>, <Yunxiang.Li@amd.com>, <yi.l.liu@intel.com>,
+ <zhangdongdong@eswincomputing.com>, <avihaih@nvidia.com>,
+ <bhelgaas@google.com>, <peterx@redhat.com>, <pstanner@redhat.com>,
+ <apopple@nvidia.com>, <kvm@vger.kernel.org>,
+ <linux-kernel@vger.kernel.org>, <cjia@nvidia.com>, <kwankhede@nvidia.com>,
+ <targupta@nvidia.com>, <zhiw@nvidia.com>, <danw@nvidia.com>,
+ <dnigam@nvidia.com>, <kjaju@nvidia.com>
+Subject: Re: [PATCH v9 0/6] vfio/nvgrace-gpu: Support huge PFNMAP and wait
+ for GPU ready post reset
+Message-ID: <20251128124439.3a30cf93.alex@shazbot.org>
+In-Reply-To: <20251127170632.3477-1-ankita@nvidia.com>
+References: <20251127170632.3477-1-ankita@nvidia.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -89,31 +99,53 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Mon, 24 Nov 2025 15:36:22 -0700
-Alex Williamson <alex@shazbot.org> wrote:
+On Thu, 27 Nov 2025 17:06:26 +0000
+<ankita@nvidia.com> wrote:
 
-> From: Alex Williamson <alex.williamson@nvidia.com>
+> From: Ankit Agrawal <ankita@nvidia.com>
 > 
-> Thanks to a device generating an ACS violation during bus reset,
-> lockdep reported the following circular locking issue:
+> NVIDIA's Grace based system have large GPU device memory. The device
+> memory is mapped as VM_PFNMAP in the VMM VMA. The nvgrace-gpu
+> module could make use of the huge PFNMAP support added in mm [1].
 > 
-> CPU0: SET_IRQS (MSI/X): holds igate, acquires memory_lock
-> CPU1: HOT_RESET: holds memory_lock, acquires pci_bus_sem
-> CPU2: AER: holds pci_bus_sem, acquires igate
+> To achieve this, nvgrace-gpu module is updated to implement huge_fault ops.
+> The implementation establishes mapping according to the order request.
+> Note that if the PFN or the VMA address is unaligned to the order, the
+> mapping fallbacks to the PTE level.
 > 
-> This results in a potential 3-way deadlock.
+> Secondly, it is expected that the mapping not be re-established until
+> the GPU is ready post reset. Presence of the mappings during that time
+> could potentially leads to harmless corrected RAS events to be logged if
+> the CPU attempts to do speculative reads on the GPU memory on the Grace
+> systems.
 > 
-> Remove the pci_bus_sem->igate leg of the triangle by using RCU
-> to peek at the eventfd rather than locking it with igate.
+> It can take several seconds for the GPU to be ready. So it is desirable
+> that the time overlaps as much of the VM startup as possible to reduce
+> impact on the VM bootup time. The GPU readiness state is thus checked
+> on the first fault/huge_fault request which amortizes the GPU readiness
+> time. The GPU readiness is checked through BAR0 registers as is done
+> at the device probe.
 > 
-> Fixes: 3be3a074cf5b ("vfio-pci: Don't use device_lock around AER interrupt setup")
-> Signed-off-by: Alex Williamson <alex.williamson@nvidia.com>
-> ---
->  drivers/vfio/pci/vfio_pci_core.c  | 68 ++++++++++++++++++++++---------
->  drivers/vfio/pci/vfio_pci_intrs.c | 52 ++++++++++++++---------
->  drivers/vfio/pci/vfio_pci_priv.h  |  4 ++
->  include/linux/vfio_pci_core.h     | 10 ++++-
->  4 files changed, 93 insertions(+), 41 deletions(-)
+> Patch 1 Refactor vfio_pci_mmap_huge_fault and export the code to map
+> at the various levels.
+> 
+> Patch 2 implements support for huge pfnmap.
+> 
+> Patch 3 vfio_pci_core_mmap cleanup.
+> 
+> Patch 4 split the code to check the device readiness.
+> 
+> Patch 5 reset_done handler implementation
+> 
+> Patch 6 Ensures that the GPU is ready before re-establishing the mapping
+> after reset.
+> 
+> Applied over 6.18-rc6.
+> 
+> Link: https://lore.kernel.org/all/20240826204353.2228736-1-peterx@redhat.com/ [1]
+> 
+> Changelog:
+> [v9]
 
 Applied to vfio next branch for v6.19.  Thanks,
 
