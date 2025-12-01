@@ -1,148 +1,133 @@
-Received: from cstnet.cn (smtp21.cstnet.cn [159.226.251.21])
-	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
+Received: from mail-pl1-f182.google.com (mail-pl1-f182.google.com [209.85.214.182])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 09EA417A2FB;
-	Mon,  1 Dec 2025 01:46:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.21
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CAF6641C63
+	for <kvm@vger.kernel.org>; Mon,  1 Dec 2025 01:47:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764553614; cv=none; b=XrFrIcx88PbV7UAcgs9RQbt56GOZz9q/w17OOy4AjCwiGgaLGIEM5Hfl59UbmZqp8np+uCbemIY6XTyes1lv+vUFPYcRsAlAQeE6+5Tx9SHVVOFVkLjSnEgNPJD4ZktQ8P0n38QHlfn5LQMEcCLSEoR/ZhUWGKSqvhYQ0IgyZbM=
+	t=1764553674; cv=none; b=t/cjkk/nnvdCAigRLNN28+vlHMDhp0Opzr0oEa8o1y2BfjFLmCxOF/WEuMFACrwJ4FLMobtMfpNTYpcE5vecUkf/vdC0EQXieaueu0uHGvI7V3JKgG+uVRqaAham6cVm5fPwhjDa2t3QcYIbwpPsv1X8bKCiLa6MEIvlt/WDv7E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764553614; c=relaxed/simple;
-	bh=8jfTpgaO22r45eCZ7WVt47x1jnjJkgLrg7mBE1ra28Q=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=hm750PzqVfa1CHWlSHgXUiLlHnqDcCMHRD73SVYG/PQ3fF4h7gIW+hd0KCkvuuBD1jBPtv9f+Y7/PVgpi5L6DM0dM0d8UUzKMBNoL2X2Z/h6Jqz8rhrkqdRtGfSXp/NhYvrdD9unUk4qPfcjyaEGjdIkBxz5ADEPy3KHmZWXtL8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.21
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iscas.ac.cn
-Received: from zq-Legion-Y7000.. (unknown [121.237.244.238])
-	by APP-01 (Coremail) with SMTP id qwCowAC3SMiC8yxpZOGvAg--.12442S2;
-	Mon, 01 Dec 2025 09:46:44 +0800 (CST)
-From: zhouquan@iscas.ac.cn
-To: anup@brainfault.org,
-	ajones@ventanamicro.com,
-	atishp@atishpatra.org,
-	paul.walmsley@sifive.com,
-	palmer@dabbelt.com
-Cc: linux-kernel@vger.kernel.org,
-	linux-riscv@lists.infradead.org,
-	kvm@vger.kernel.org,
-	kvm-riscv@lists.infradead.org,
-	Quan Zhou <zhouquan@iscas.ac.cn>
-Subject: [PATCH 4/4] KVM: riscv: selftests: Add zicfiss/zicfilp/svadu and SBI FWFT to get-reg-list test
-Date: Mon,  1 Dec 2025 09:29:07 +0800
-Message-Id: <aa8d1ac8956ecbf23372e5c9fd26e7c21ce212bc.1764509485.git.zhouquan@iscas.ac.cn>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <cover.1764509485.git.zhouquan@iscas.ac.cn>
-References: <cover.1764509485.git.zhouquan@iscas.ac.cn>
+	s=arc-20240116; t=1764553674; c=relaxed/simple;
+	bh=WkMG6KInPajZw+SCHLY6xyyqfgd7/gSlU2Diz+y04ck=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=C2jAGVD1fK9OF+ct+F50uo+2rECDGMjh39SAgWFemZq8ZIYMhPBTqd350tCgE1tDV592dTuyOlO6sHbE1Mma7J7YOz0OgrMtJFAZJ7MqByxKEolJd3tOz1I5Pvl65ZTCLFYekVwfJK9F9DYCKPaKhy/FModRabphbRoYZ+22wpk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=pJU3l4KN; arc=none smtp.client-ip=209.85.214.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="pJU3l4KN"
+Received: by mail-pl1-f182.google.com with SMTP id d9443c01a7336-29852dafa7dso623775ad.1
+        for <kvm@vger.kernel.org>; Sun, 30 Nov 2025 17:47:51 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1764553671; x=1765158471; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=RubrtJY1nBr7co+TN5Cf36o/x/R4Bh4y+nkU3tUAkHg=;
+        b=pJU3l4KN1ZBlhprAArEKzGUq4yKE+7cuRNn8ymR6JpB4ZTWEolAlwyMgm8Pp496Ld9
+         WZRSfizxabijFcwLKQHlxWvaf8Z6SqmumAzK8wb0LQZy8VE2s/mvM1tu+2Ld3586gGza
+         6L1im5lrYOIwbnlTXHuQuoXh6SRSHIgnDxJLceJgQSUVmqhUtQ90npVd4lunuvHqUzON
+         knn+CByq9785fmwIqkdO2SgbIyQRk7wqSFmVQDpaMduIDrLz+ZE1W3DSeC8kDwl3LLwW
+         OU4Ls0mSMm5hdXmkrif9JZxIo1zZe7Dwzy9KvKH7SleoVurWG1tu94EKF3uQr2isZ+CK
+         6Mpg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1764553671; x=1765158471;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=RubrtJY1nBr7co+TN5Cf36o/x/R4Bh4y+nkU3tUAkHg=;
+        b=tl6gqcI50s4SUy2aQaS+qsUTWqxcfJcPY+1zLRnquCgFtkDzn0+Ty7C1KNx6kg8X9i
+         sibediVh4eabyuJy9VXc9iHyT9+ixhY60BshKBZOcjgABxhJxUh21yKxjagR5jovmeoT
+         ZK8tChDaHdtukurFnip4qKDP+hk86lhsrpQPe5mmyOACAX5eyFB7HHYAZPz6ePCEwOMx
+         lDUQNW+fhuCnqkf/GdD5lU6miy8YIKbnwBnI1EFfYlJUCs2OzGZ0h3aquPb3+RP4e4wP
+         aJgaBh/ZUGEcUiJEJ1VJxzk0+LlQ39xHvLcB9kN2PVMx74tryqyKdcaJFKK+AioSIEYV
+         TJ2Q==
+X-Forwarded-Encrypted: i=1; AJvYcCU0E9uaHRLnB9OxoSNediGKyfbQQGKknB+j/jnjMVhynG62alE5MWQkHpGZCbCKfCIhPh8=@vger.kernel.org
+X-Gm-Message-State: AOJu0YykG0CTR8xCUPLsJI0M5caCrXmOGLXb5uZsU3xBJ151l/9eIkpP
+	6Ud6gN4UTWQRCbxK7O/sm9p4K/ZrANZnNrlJz+SQ5rxknz2gl2iedBGFHxCsyp0thGGzl8O9Qxz
+	Tesb/nW3Nbz7wL18SyZz80L1tsAfFEXxqBNxLHmuZ
+X-Gm-Gg: ASbGncs4yz8QOpREPX1HLE3Zc/MuVD9s+1NuYUa6oWN9lZlnubVxeP7amzblfFMi+Mb
+	3kpzlBAdOzhKbpcNisRSuRJPALEW1rPUo+B+78mdb0mWxIhWOoZCMDfVxheKWUhA9aL6pdKGjdQ
+	FTatPe2aWmHUKUL8b7VJqkLJmauOXaWXfPBrM6kurTuvCY/ZS4lD5BgNPVV4Vbpr7WXTcQcTler
+	+1zEm55ple9a+LxBQHhdysFMf0FLTC74IknyHVIVGWrsyZSoeP95QCsTuN6Zd7GY8c19rKML7ne
+	XlU9+lNTdZ4FPI2DQXoOr4xsA2i7
+X-Google-Smtp-Source: AGHT+IGVKWbjRmm9tgU6uLDNVHu5xkhvGzmzSejdcqRBFvmWHeadfJ39slfnN2SFI/bj9haEVWPhElX75HTn7j06Rtw=
+X-Received: by 2002:a05:7022:4a:b0:11a:fcc8:c311 with SMTP id
+ a92af1059eb24-11dc9c5d1ffmr422435c88.5.1764553670544; Sun, 30 Nov 2025
+ 17:47:50 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:qwCowAC3SMiC8yxpZOGvAg--.12442S2
-X-Coremail-Antispam: 1UD129KBjvJXoW3Jw1DGF1xCw1fZF1fAF45GFg_yoW7trWUpr
-	yqyanI9r1kAwnYyrWvka4DWF4xZw4UAws5ua1xuw18tFyjyFyIqw1qyF1DGF1DJr18XrWS
-	yFWrJr4Yya1FywUanT9S1TB71UUUUUDqnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDU0xBIdaVrnRJUUUBK14x267AKxVW8JVW5JwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
-	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
-	1l84ACjcxK6xIIjxv20xvE14v26ryj6F1UM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26r4U
-	JVWxJr1l84ACjcxK6I8E87Iv67AKxVW8Jr0_Cr1UM28EF7xvwVC2z280aVCY1x0267AKxV
-	WxJr0_GcWle2I262IYc4CY6c8Ij28IcVAaY2xG8wAqx4xG64xvF2IEw4CE5I8CrVC2j2Wl
-	Yx0E2Ix0cI8IcVAFwI0_JF0_Jw1lYx0Ex4A2jsIE14v26r4j6F4UMcvjeVCFs4IE7xkEbV
-	WUJVW8JwACjcxG0xvY0x0EwIxGrwACjI8F5VA0II8E6IAqYI8I648v4I1lFIxGxcIEc7Cj
-	xVA2Y2ka0xkIwI1lw4CEc2x0rVAKj4xxMxkF7I0En4kS14v26r1q6r43MxkIecxEwVAFwV
-	WkMxAIw28IcxkI7VAKI48JMxC20s026xCaFVCjc4AY6r1j6r4UMI8I3I0E5I8CrVAFwI0_
-	Jr0_Jr4lx2IqxVCjr7xvwVAFwI0_JrI_JrWlx4CE17CEb7AF67AKxVWUtVW8ZwCIc40Y0x
-	0EwIxGrwCI42IY6xIIjxv20xvE14v26r1j6r1xMIIF0xvE2Ix0cI8IcVCY1x0267AKxVW8
-	JVWxJwCI42IY6xAIw20EY4v20xvaj40_Jr0_JF4lIxAIcVC2z280aVAFwI0_Jr0_Gr1lIx
-	AIcVC2z280aVCY1x0267AKxVW8JVW8JrUvcSsGvfC2KfnxnUUI43ZEXa7VUjKZX7UUUUU=
-	=
-X-CM-SenderInfo: 52kr31xxdqqxpvfd2hldfou0/1tbiBwkDBmks7NMaQgABso
+References: <20251113230759.1562024-1-michael.roth@amd.com>
+ <20251113230759.1562024-4-michael.roth@amd.com> <aR7bVKzM7rH/FSVh@yzhao56-desk.sh.intel.com>
+ <20251121130144.u7eeaafonhcqf2bd@amd.com> <aSQmAuxGK7+MUfRW@yzhao56-desk.sh.intel.com>
+In-Reply-To: <aSQmAuxGK7+MUfRW@yzhao56-desk.sh.intel.com>
+From: Vishal Annapurve <vannapurve@google.com>
+Date: Sun, 30 Nov 2025 17:47:37 -0800
+X-Gm-Features: AWmQ_bndv783uhaZZ_oV6Xm0iV6cY4XqsD5JvxFNZOjPYdlSyliY7wOlOHpUWNk
+Message-ID: <CAGtprH9_yo4P+oTaGzhHkC3gSdFPTYkvwHkwN66gQhQXX9fhRQ@mail.gmail.com>
+Subject: Re: [PATCH 3/3] KVM: guest_memfd: GUP source pages prior to
+ populating guest memory
+To: Yan Zhao <yan.y.zhao@intel.com>
+Cc: Michael Roth <michael.roth@amd.com>, kvm@vger.kernel.org, linux-coco@lists.linux.dev, 
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org, thomas.lendacky@amd.com, 
+	pbonzini@redhat.com, seanjc@google.com, vbabka@suse.cz, ashish.kalra@amd.com, 
+	liam.merwick@oracle.com, david@redhat.com, ackerleytng@google.com, 
+	aik@amd.com, ira.weiny@intel.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-From: Quan Zhou <zhouquan@iscas.ac.cn>
+On Mon, Nov 24, 2025 at 1:34=E2=80=AFAM Yan Zhao <yan.y.zhao@intel.com> wro=
+te:
+>
+> > > > +                 if (src_offset) {
+> > > > +                         src_vaddr =3D kmap_local_pfn(page_to_pfn(=
+src_pages[i + 1]));
+> > > > +
+> > > > +                         memcpy(dst_vaddr + PAGE_SIZE - src_offset=
+, src_vaddr, src_offset);
+> > > > +                         kunmap_local(src_vaddr);
+> > > IIUC, src_offset is the src's offset from the first page. e.g.,
+> > > src could be 0x7fea82684100, with src_offset=3D0x100, while npages co=
+uld be 512.
+> > >
+> > > Then it looks like the two memcpy() calls here only work when npages =
+=3D=3D 1 ?
+> >
+> > src_offset ends up being the offset into the pair of src pages that we
+> > are using to fully populate a single dest page with each iteration. So
+> > if we start at src_offset, read a page worth of data, then we are now a=
+t
+> > src_offset in the next src page and the loop continues that way even if
+> > npages > 1.
+> >
+> > If src_offset is 0 we never have to bother with straddling 2 src pages =
+so
+> > the 2nd memcpy is skipped on every iteration.
+> >
+> > That's the intent at least. Is there a flaw in the code/reasoning that =
+I
+> > missed?
+> Oh, I got you. SNP expects a single src_offset applies for each src page.
+>
+> So if npages =3D 2, there're 4 memcpy() calls.
+>
+> src:  |---------|---------|---------|  (VA contiguous)
+>           ^         ^         ^
+>           |         |         |
+> dst:      |---------|---------|   (PA contiguous)
+>
+>
+> I previously incorrectly thought kvm_gmem_populate() should pass in src_o=
+ffset
+> as 0 for the 2nd src page.
+>
+> Would you consider checking if params.uaddr is PAGE_ALIGNED() in
+> snp_launch_update() to simplify the design?
+>
 
-The KVM RISC-V allows zicfiss/zicfilp/svadu and SBI FWFT for Guest/VM,
-so add them to get-reg-list test.
-
-Signed-off-by: Quan Zhou <zhouquan@iscas.ac.cn>
----
- .../selftests/kvm/riscv/get-reg-list.c        | 26 +++++++++++++++++++
- 1 file changed, 26 insertions(+)
-
-diff --git a/tools/testing/selftests/kvm/riscv/get-reg-list.c b/tools/testing/selftests/kvm/riscv/get-reg-list.c
-index 705ab3d7778b..cd9304943c9c 100644
---- a/tools/testing/selftests/kvm/riscv/get-reg-list.c
-+++ b/tools/testing/selftests/kvm/riscv/get-reg-list.c
-@@ -87,6 +87,8 @@ bool filter_reg(__u64 reg)
- 	case KVM_REG_RISCV_ISA_EXT | KVM_REG_RISCV_ISA_SINGLE | KVM_RISCV_ISA_EXT_ZICBOP:
- 	case KVM_REG_RISCV_ISA_EXT | KVM_REG_RISCV_ISA_SINGLE | KVM_RISCV_ISA_EXT_ZICBOZ:
- 	case KVM_REG_RISCV_ISA_EXT | KVM_REG_RISCV_ISA_SINGLE | KVM_RISCV_ISA_EXT_ZICCRSE:
-+	case KVM_REG_RISCV_ISA_EXT | KVM_REG_RISCV_ISA_SINGLE | KVM_RISCV_ISA_EXT_ZICFILP:
-+	case KVM_REG_RISCV_ISA_EXT | KVM_REG_RISCV_ISA_SINGLE | KVM_RISCV_ISA_EXT_ZICFISS:
- 	case KVM_REG_RISCV_ISA_EXT | KVM_REG_RISCV_ISA_SINGLE | KVM_RISCV_ISA_EXT_ZICNTR:
- 	case KVM_REG_RISCV_ISA_EXT | KVM_REG_RISCV_ISA_SINGLE | KVM_RISCV_ISA_EXT_ZICOND:
- 	case KVM_REG_RISCV_ISA_EXT | KVM_REG_RISCV_ISA_SINGLE | KVM_RISCV_ISA_EXT_ZICSR:
-@@ -546,6 +548,8 @@ static const char *isa_ext_single_id_to_str(__u64 reg_off)
- 		KVM_ISA_EXT_ARR(ZICBOP),
- 		KVM_ISA_EXT_ARR(ZICBOZ),
- 		KVM_ISA_EXT_ARR(ZICCRSE),
-+		KVM_ISA_EXT_ARR(ZICFILP),
-+		KVM_ISA_EXT_ARR(ZICFISS),
- 		KVM_ISA_EXT_ARR(ZICNTR),
- 		KVM_ISA_EXT_ARR(ZICOND),
- 		KVM_ISA_EXT_ARR(ZICSR),
-@@ -704,6 +708,15 @@ static const char *sbi_fwft_id_to_str(__u64 reg_off)
- 	case 3: return "KVM_REG_RISCV_SBI_FWFT | KVM_REG_RISCV_SBI_FWFT_REG(pointer_masking.enable)";
- 	case 4: return "KVM_REG_RISCV_SBI_FWFT | KVM_REG_RISCV_SBI_FWFT_REG(pointer_masking.flags)";
- 	case 5: return "KVM_REG_RISCV_SBI_FWFT | KVM_REG_RISCV_SBI_FWFT_REG(pointer_masking.value)";
-+	case 6: return "KVM_REG_RISCV_SBI_FWFT | KVM_REG_RISCV_SBI_FWFT_REG(landing_pad.enable)";
-+	case 7: return "KVM_REG_RISCV_SBI_FWFT | KVM_REG_RISCV_SBI_FWFT_REG(landing_pad.flags)";
-+	case 8: return "KVM_REG_RISCV_SBI_FWFT | KVM_REG_RISCV_SBI_FWFT_REG(landing_pad.value)";
-+	case 9: return "KVM_REG_RISCV_SBI_FWFT | KVM_REG_RISCV_SBI_FWFT_REG(shadow_stack.enable)";
-+	case 10: return "KVM_REG_RISCV_SBI_FWFT | KVM_REG_RISCV_SBI_FWFT_REG(shadow_stack.flags)";
-+	case 11: return "KVM_REG_RISCV_SBI_FWFT | KVM_REG_RISCV_SBI_FWFT_REG(shadow_stack.value)";
-+	case 12: return "KVM_REG_RISCV_SBI_FWFT | KVM_REG_RISCV_SBI_FWFT_REG(pte_ad_hw_updating.enable)";
-+	case 13: return "KVM_REG_RISCV_SBI_FWFT | KVM_REG_RISCV_SBI_FWFT_REG(pte_ad_hw_updating.flags)";
-+	case 14: return "KVM_REG_RISCV_SBI_FWFT | KVM_REG_RISCV_SBI_FWFT_REG(pte_ad_hw_updating.value)";
- 	}
- 	return strdup_printf("KVM_REG_RISCV_SBI_FWFT | %lld /* UNKNOWN */", reg_off);
- }
-@@ -897,6 +910,15 @@ static __u64 sbi_fwft_regs[] = {
- 	KVM_REG_RISCV | KVM_REG_SIZE_ULONG | KVM_REG_RISCV_SBI_STATE | KVM_REG_RISCV_SBI_FWFT | KVM_REG_RISCV_SBI_FWFT_REG(pointer_masking.enable),
- 	KVM_REG_RISCV | KVM_REG_SIZE_ULONG | KVM_REG_RISCV_SBI_STATE | KVM_REG_RISCV_SBI_FWFT | KVM_REG_RISCV_SBI_FWFT_REG(pointer_masking.flags),
- 	KVM_REG_RISCV | KVM_REG_SIZE_ULONG | KVM_REG_RISCV_SBI_STATE | KVM_REG_RISCV_SBI_FWFT | KVM_REG_RISCV_SBI_FWFT_REG(pointer_masking.value),
-+	KVM_REG_RISCV | KVM_REG_SIZE_ULONG | KVM_REG_RISCV_SBI_STATE | KVM_REG_RISCV_SBI_FWFT | KVM_REG_RISCV_SBI_FWFT_REG(landing_pad.enable),
-+	KVM_REG_RISCV | KVM_REG_SIZE_ULONG | KVM_REG_RISCV_SBI_STATE | KVM_REG_RISCV_SBI_FWFT | KVM_REG_RISCV_SBI_FWFT_REG(landing_pad.flags),
-+	KVM_REG_RISCV | KVM_REG_SIZE_ULONG | KVM_REG_RISCV_SBI_STATE | KVM_REG_RISCV_SBI_FWFT | KVM_REG_RISCV_SBI_FWFT_REG(landing_pad.value),
-+	KVM_REG_RISCV | KVM_REG_SIZE_ULONG | KVM_REG_RISCV_SBI_STATE | KVM_REG_RISCV_SBI_FWFT | KVM_REG_RISCV_SBI_FWFT_REG(shadow_stack.enable),
-+	KVM_REG_RISCV | KVM_REG_SIZE_ULONG | KVM_REG_RISCV_SBI_STATE | KVM_REG_RISCV_SBI_FWFT | KVM_REG_RISCV_SBI_FWFT_REG(shadow_stack.flags),
-+	KVM_REG_RISCV | KVM_REG_SIZE_ULONG | KVM_REG_RISCV_SBI_STATE | KVM_REG_RISCV_SBI_FWFT | KVM_REG_RISCV_SBI_FWFT_REG(shadow_stack.value),
-+	KVM_REG_RISCV | KVM_REG_SIZE_ULONG | KVM_REG_RISCV_SBI_STATE | KVM_REG_RISCV_SBI_FWFT | KVM_REG_RISCV_SBI_FWFT_REG(pte_ad_hw_updating.enable),
-+	KVM_REG_RISCV | KVM_REG_SIZE_ULONG | KVM_REG_RISCV_SBI_STATE | KVM_REG_RISCV_SBI_FWFT | KVM_REG_RISCV_SBI_FWFT_REG(pte_ad_hw_updating.flags),
-+	KVM_REG_RISCV | KVM_REG_SIZE_ULONG | KVM_REG_RISCV_SBI_STATE | KVM_REG_RISCV_SBI_FWFT | KVM_REG_RISCV_SBI_FWFT_REG(pte_ad_hw_updating.value),
- };
- 
- static __u64 zicbom_regs[] = {
-@@ -1185,6 +1207,8 @@ KVM_ISA_EXT_SUBLIST_CONFIG(zicbom, ZICBOM);
- KVM_ISA_EXT_SUBLIST_CONFIG(zicbop, ZICBOP);
- KVM_ISA_EXT_SUBLIST_CONFIG(zicboz, ZICBOZ);
- KVM_ISA_EXT_SIMPLE_CONFIG(ziccrse, ZICCRSE);
-+KVM_ISA_EXT_SIMPLE_CONFIG(zicfilp, ZICFILP);
-+KVM_ISA_EXT_SIMPLE_CONFIG(zicfiss, ZICFISS);
- KVM_ISA_EXT_SIMPLE_CONFIG(zicntr, ZICNTR);
- KVM_ISA_EXT_SIMPLE_CONFIG(zicond, ZICOND);
- KVM_ISA_EXT_SIMPLE_CONFIG(zicsr, ZICSR);
-@@ -1264,6 +1288,8 @@ struct vcpu_reg_list *vcpu_configs[] = {
- 	&config_zicbop,
- 	&config_zicboz,
- 	&config_ziccrse,
-+	&config_zicfilp,
-+	&config_zicfiss,
- 	&config_zicntr,
- 	&config_zicond,
- 	&config_zicsr,
--- 
-2.34.1
-
+IIUC, this ship has sailed, as asserting this would break existing
+userspace which can pass unaligned userspace buffers.
