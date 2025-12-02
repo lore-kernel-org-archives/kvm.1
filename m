@@ -1,281 +1,202 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
+Received: from desiato.infradead.org (desiato.infradead.org [90.155.92.199])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED354248896
-	for <kvm@vger.kernel.org>; Tue,  2 Dec 2025 16:04:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.7
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 216E6248896;
+	Tue,  2 Dec 2025 16:04:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.92.199
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764691450; cv=none; b=KHbBvcDAoO5RyjWlQtffim0b1VkNcrWa8vxfgKkBUY1+4tDelLj7/0SdO2thLgTIynA6wNa3UMAWDnNLmAye92+RXL63CkSaYJWiZTOfNkTlQbLGxOZi9O1iYUZ60ekUGkUKa8tMaFAdg1f6Ymasn1CTbZiHiPMfU0lxgbX62tk=
+	t=1764691457; cv=none; b=fb9DYPt28f0wxJ9Ggz8tCqUJCsNQq2/8CJiY/tob445GkLzOBaYyaW057tTchZlNwp5ZC8qO90JwFMff1+HkaMkkpxF+igqL+n0VIRSRqzpoo1s0zgQrIPgbqYI6pes+R/cX7yE2Il2wIMX0fUPdtpyxMCBe5y1brJjz1czP3xk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764691450; c=relaxed/simple;
-	bh=gl+I3qRUk/2kD6tcKA1cj0SEcivTN17lu7FLN59Ycg4=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version:Content-Type; b=E8jyAJ906hm9Fl2ZntWPgWFlGFe21f+dL+M3CE6hOUrYLAaOIbg4sIMMGkPNmIWS8QEsDO6t0tRDpiqvM7nieFy7ht22Zs3xhGZGTd6Cq4vQ44uYkDfoYslSTSbLLdXwPURG4guQ8B60H99TNV+q+SO7FdhQ/Eu4ItZGTjz1XA0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=J0BcIto9; arc=none smtp.client-ip=192.198.163.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1764691457; c=relaxed/simple;
+	bh=FLBOjdDkLoK5GjZCu6Bua2VHm+eoFAo3zhRcJ3nlBmY=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=c5Gxv8KYVGBYF6M+19EMKqkruPwdeyX6xuYrG58uYZtrTDhvjejraV56OmMlYbZC9r23wVHRGRdjeFa1A7kQnr11N9snhl5r/qoBBBpfPwqususd9IO2UKHwqOXDwZezVO31vHLPrpujHAqaO7mn8alka1I069goSDhkR38ucGw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=desiato.srs.infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=Ldx09R1G; arc=none smtp.client-ip=90.155.92.199
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=desiato.srs.infradead.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="J0BcIto9"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1764691449; x=1796227449;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=gl+I3qRUk/2kD6tcKA1cj0SEcivTN17lu7FLN59Ycg4=;
-  b=J0BcIto9f8Nzxd5yX8vv81Z7Qde1S3urGC0jL9PAVzhx18WKAWt+0kcX
-   LYBJ4QbDMu7Vw//hXT28qr3T4JgjH9ArHHtsvh3Gj822JkkitH8dpm7DX
-   yGWqs5pN0agp2jwXb1nV8t172Ai3kqd7CRxOp9AmpH+ygf2MsPkvf933g
-   /ogK4gyMLqUiTTK4M9EEMwgusambL9K78nHR5HXeg7JM3MZ7nmPhQ/LMe
-   eN0oeG7hwcqrTOhy7qcwDKmg2o6PHSBa77ltz5h197urKbu7pwD1De9UD
-   NEGNQ2yjfR6LwANJ3SwCHll8+wZjI//9mwDXLg7u+01HzQ7X4aC+262Rz
-   w==;
-X-CSE-ConnectionGUID: Bu4Y6IXjT4GHDlGXXOaltw==
-X-CSE-MsgGUID: qnUs08y2Q1OufiL4KqBwxQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11630"; a="92142172"
-X-IronPort-AV: E=Sophos;i="6.20,243,1758610800"; 
-   d="scan'208";a="92142172"
-Received: from orviesa005.jf.intel.com ([10.64.159.145])
-  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Dec 2025 08:04:08 -0800
-X-CSE-ConnectionGUID: bzzD33gAS+6lPd5xdA7mbA==
-X-CSE-MsgGUID: IhCA6L4sQFiUFoTfizwXUQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.20,243,1758610800"; 
-   d="scan'208";a="199536863"
-Received: from liuzhao-optiplex-7080.sh.intel.com ([10.239.160.39])
-  by orviesa005.jf.intel.com with ESMTP; 02 Dec 2025 08:03:59 -0800
-From: Zhao Liu <zhao1.liu@intel.com>
-To: Paolo Bonzini <pbonzini@redhat.com>,
-	"Michael S . Tsirkin" <mst@redhat.com>,
-	Igor Mammedov <imammedo@redhat.com>,
-	=?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
-	Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
-	Thomas Huth <thuth@redhat.com>
-Cc: qemu-devel@nongnu.org,
-	devel@lists.libvirt.org,
-	kvm@vger.kernel.org,
-	qemu-riscv@nongnu.org,
-	qemu-arm@nongnu.org,
-	Richard Henderson <richard.henderson@linaro.org>,
-	Sergio Lopez <slp@redhat.com>,
-	Gerd Hoffmann <kraxel@redhat.com>,
-	Peter Maydell <peter.maydell@linaro.org>,
-	Laurent Vivier <lvivier@redhat.com>,
-	Jiaxun Yang <jiaxun.yang@flygoat.com>,
-	Yi Liu <yi.l.liu@intel.com>,
-	Eduardo Habkost <eduardo@habkost.net>,
-	Alistair Francis <alistair.francis@wdc.com>,
-	Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
-	Marcelo Tosatti <mtosatti@redhat.com>,
-	Weiwei Li <liwei1518@gmail.com>,
-	Amit Shah <amit@kernel.org>,
-	Xiaoyao Li <xiaoyao.li@intel.com>,
-	Yanan Wang <wangyanan55@huawei.com>,
-	Helge Deller <deller@gmx.de>,
-	Palmer Dabbelt <palmer@dabbelt.com>,
-	=?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
-	Ani Sinha <anisinha@redhat.com>,
-	Fabiano Rosas <farosas@suse.de>,
-	Liu Zhiwei <zhiwei_liu@linux.alibaba.com>,
-	=?UTF-8?q?Cl=C3=A9ment=20Mathieu--Drif?= <clement.mathieu--drif@eviden.com>,
-	=?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
-	Huacai Chen <chenhuacai@kernel.org>,
-	Jason Wang <jasowang@redhat.com>,
-	Mark Cave-Ayland <mark.caveayland@nutanix.com>,
-	BALATON Zoltan <balaton@eik.bme.hu>,
-	Peter Krempa <pkrempa@redhat.com>,
-	Jiri Denemark <jdenemar@redhat.com>,
-	Zhao Liu <zhao1.liu@intel.com>
-Subject: [PATCH v5 00/28] hw/i386/pc: Remove deprecated 2.6 and 2.7 PC machines
-Date: Wed,  3 Dec 2025 00:28:07 +0800
-Message-Id: <20251202162835.3227894-1-zhao1.liu@intel.com>
-X-Mailer: git-send-email 2.34.1
+	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="Ldx09R1G"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=desiato.20200630; h=MIME-Version:Content-Type:References:
+	In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=FLBOjdDkLoK5GjZCu6Bua2VHm+eoFAo3zhRcJ3nlBmY=; b=Ldx09R1GBjA2Z6x4B3C6ht8ftW
+	j1QfmDEfanHcomy4g8dvZrBuyTam5QDAiR/w+v457HNWUC9Wdz0qREiNMnflgMwnSPq5YofGpExHW
+	F/mh2TWpg1aVee4weENIbm9HICh3JGUmQrZ2siJpQYKR+HY+uaE2OQ3PtM9nuGmlHoiWVgx9iUVsT
+	plVr83XVKpGxt+/zxzRlfs/fZNutON8B5uKa0m8eo4FmuriyKmwtZgpfjrAZ0tDx1UP3biDJtHWVk
+	95ooojAzDLBT8g4P/3NOUn+cu+r9RxujTV9WSU1UYNl+xfpZ48wPA66AbV9JcK4pHj6pcH2n9p6Km
+	cThWNXNA==;
+Received: from [172.31.31.148] (helo=u09cd745991455d.ant.amazon.com)
+	by desiato.infradead.org with esmtpsa (Exim 4.98.2 #2 (Red Hat Linux))
+	id 1vQRzi-00000000bzY-0y6p;
+	Tue, 02 Dec 2025 15:08:46 +0000
+Message-ID: <7c35e9e79c62803e3cb61be9cd013daf1e5aa4d1.camel@infradead.org>
+Subject: Re: [PATCH v3] KVM: x86: Add x2APIC "features" to control EOI
+ broadcast suppression
+From: David Woodhouse <dwmw2@infradead.org>
+To: Sean Christopherson <seanjc@google.com>
+Cc: Khushit Shah <khushit.shah@nutanix.com>, "pbonzini@redhat.com"
+ <pbonzini@redhat.com>, "kai.huang@intel.com" <kai.huang@intel.com>, 
+ "mingo@redhat.com" <mingo@redhat.com>, "x86@kernel.org" <x86@kernel.org>,
+ "bp@alien8.de" <bp@alien8.de>, "hpa@zytor.com" <hpa@zytor.com>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ "kvm@vger.kernel.org" <kvm@vger.kernel.org>,  "dave.hansen@linux.intel.com"
+ <dave.hansen@linux.intel.com>, "tglx@linutronix.de" <tglx@linutronix.de>, 
+ Jon Kohler <jon@nutanix.com>, Shaju Abraham <shaju.abraham@nutanix.com>,
+ "stable@vger.kernel.org" <stable@vger.kernel.org>
+Date: Tue, 02 Dec 2025 16:04:06 +0000
+In-Reply-To: <aS8I6T3WtM1pvPNl@google.com>
+References: <20251125180557.2022311-1-khushit.shah@nutanix.com>
+	 <6353f43f3493b436064068e6a7f55543a2cd7ae1.camel@infradead.org>
+	 <A922DCC2-4CB4-4DE8-82FA-95B502B3FCD4@nutanix.com>
+	 <118998075677b696104dcbbcda8d51ab7f1ffdfd.camel@infradead.org>
+	 <aS8I6T3WtM1pvPNl@google.com>
+Content-Type: multipart/signed; micalg="sha-256"; protocol="application/pkcs7-signature";
+	boundary="=-8oCwVFx4Ws1Orl5OCHZt"
+User-Agent: Evolution 3.52.3-0ubuntu1 
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+X-SRS-Rewrite: SMTP reverse-path rewritten from <dwmw2@infradead.org> by desiato.infradead.org. See http://www.infradead.org/rpr.html
 
-Hi,
 
-A brief introduction from Philippe's v4:
+--=-8oCwVFx4Ws1Orl5OCHZt
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-The versioned 'pc' and 'q35' machines up to 2.12 been marked
-as deprecated three releases ago, and are older than 6 years,
-so according to our support policy we can remove them.
+On Tue, 2025-12-02 at 07:42 -0800, Sean Christopherson wrote:
+>=20
+> The issue is that KVM "enables" SUPPRESS_EOI_BROADCAST in that the featur=
+e is
+> exposed to the guest and can be enabled in local APICs, and that's one of=
+ the
+> behaviors/configurations I want to preserve so that guests don't observe =
+a feature
+> change.=C2=A0 Having an on/off switch doesn't work because KVM isn't full=
+y disabling
+> the feature, nor is KVM fully enabling the feature.=C2=A0 It's a weird, h=
+alf-baked
+> state, hence the QUIRK.
+>=20
+> More importantly, we can't use ENABLE bits because I want to preserve exi=
+sting
+> behavior exactly as-is.=C2=A0 I.e. userspace needs to opt-in to disabling
+> SUPPRESS_EOI_BROADCAST and/or to disabling IGNORE_SUPPRESS_EOI_BROADCAST_=
+QUIRK.
 
-This series only includes the 2.6 and 2.7 machines removal,
-as it is a big enough number of LoC removed. Rest will
-follow.
+To respond to that part directly...
 
-This v5 is based on the master branch at the commit 66ec38b6fa59
-("Merge tag 'pull-target-arm-20251201' of https://gitlab.com/pm215/qemu
-into staging").
+The legacy behaviour we need to preserve is neither fully enabled, nor
+fully disabled. I agree that the default needs to remain this weird
+half-baked quirk.
 
-(Main) changes since v4:
- * Completely remove the legacy CPU hotplug approach.
-   - New patch 2-8.
-   - Test CPU hot-plug & hot-unplug via qmp.
+But now we are giving userspace a chance to explicitly choose either a
+proper ENABLE or a proper DISABLE, and isn't that what those flags
+should be called?
 
- * Keep "dma_enabled" property in fw_cfg_io_properties[] since Sun4u &
-   Sun4v are still using it.
-   - About more details, please see commit message of patch 15.
+You have ENABLE, you have DISABLE, and you have a warning that you
+probably ought to choose one of them because the default you get
+otherwise is weirdly broken (but there for legacy compatibility).
 
- * Temporarily keep these properties: "cpuid-0xb" (of X86CPU),
-   "fill-mtrr-mask" (of X86CPU), "version" (of IOAPICCommonState).
-   - These properties will be deprecated first before removal, in
-     another series.
 
- * Keep "l3-cache" (of X86CPU) and "page-per-vq" (of VirtIOPCIProxy),
-   since they are still in use (e.g., libvirt).
 
-Thank you everyone for the reviews and patience, and also thank you
-Philippe for the guidance and Igor for the patch.
+--=-8oCwVFx4Ws1Orl5OCHZt
+Content-Type: application/pkcs7-signature; name="smime.p7s"
+Content-Disposition: attachment; filename="smime.p7s"
+Content-Transfer-Encoding: base64
 
-Best Regards,
-Zhao
----
-Igor Mammedov (3):
-  tests/acpi: Allow DSDT table change for x86 machines
-  pc: Start with modern CPU hotplug interface by default
-  acpi: Remove legacy cpu hotplug utilities
+MIAGCSqGSIb3DQEHAqCAMIACAQExDzANBglghkgBZQMEAgEFADCABgkqhkiG9w0BBwEAAKCCD9Aw
+ggSOMIIDdqADAgECAhAOmiw0ECVD4cWj5DqVrT9PMA0GCSqGSIb3DQEBCwUAMGUxCzAJBgNVBAYT
+AlVTMRUwEwYDVQQKEwxEaWdpQ2VydCBJbmMxGTAXBgNVBAsTEHd3dy5kaWdpY2VydC5jb20xJDAi
+BgNVBAMTG0RpZ2lDZXJ0IEFzc3VyZWQgSUQgUm9vdCBDQTAeFw0yNDAxMzAwMDAwMDBaFw0zMTEx
+MDkyMzU5NTlaMEExCzAJBgNVBAYTAkFVMRAwDgYDVQQKEwdWZXJva2V5MSAwHgYDVQQDExdWZXJv
+a2V5IFNlY3VyZSBFbWFpbCBHMjCCASIwDQYJKoZIhvcNAQEBBQADggEPADCCAQoCggEBAMjvgLKj
+jfhCFqxYyRiW8g3cNFAvltDbK5AzcOaR7yVzVGadr4YcCVxjKrEJOgi7WEOH8rUgCNB5cTD8N/Et
+GfZI+LGqSv0YtNa54T9D1AWJy08ZKkWvfGGIXN9UFAPMJ6OLLH/UUEgFa+7KlrEvMUupDFGnnR06
+aDJAwtycb8yXtILj+TvfhLFhafxroXrflspavejQkEiHjNjtHnwbZ+o43g0/yxjwnarGI3kgcak7
+nnI9/8Lqpq79tLHYwLajotwLiGTB71AGN5xK+tzB+D4eN9lXayrjcszgbOv2ZCgzExQUAIt98mre
+8EggKs9mwtEuKAhYBIP/0K6WsoMnQCcCAwEAAaOCAVwwggFYMBIGA1UdEwEB/wQIMAYBAf8CAQAw
+HQYDVR0OBBYEFIlICOogTndrhuWByNfhjWSEf/xwMB8GA1UdIwQYMBaAFEXroq/0ksuCMS1Ri6en
+IZ3zbcgPMA4GA1UdDwEB/wQEAwIBhjAdBgNVHSUEFjAUBggrBgEFBQcDBAYIKwYBBQUHAwIweQYI
+KwYBBQUHAQEEbTBrMCQGCCsGAQUFBzABhhhodHRwOi8vb2NzcC5kaWdpY2VydC5jb20wQwYIKwYB
+BQUHMAKGN2h0dHA6Ly9jYWNlcnRzLmRpZ2ljZXJ0LmNvbS9EaWdpQ2VydEFzc3VyZWRJRFJvb3RD
+QS5jcnQwRQYDVR0fBD4wPDA6oDigNoY0aHR0cDovL2NybDMuZGlnaWNlcnQuY29tL0RpZ2lDZXJ0
+QXNzdXJlZElEUm9vdENBLmNybDARBgNVHSAECjAIMAYGBFUdIAAwDQYJKoZIhvcNAQELBQADggEB
+ACiagCqvNVxOfSd0uYfJMiZsOEBXAKIR/kpqRp2YCfrP4Tz7fJogYN4fxNAw7iy/bPZcvpVCfe/H
+/CCcp3alXL0I8M/rnEnRlv8ItY4MEF+2T/MkdXI3u1vHy3ua8SxBM8eT9LBQokHZxGUX51cE0kwa
+uEOZ+PonVIOnMjuLp29kcNOVnzf8DGKiek+cT51FvGRjV6LbaxXOm2P47/aiaXrDD5O0RF5SiPo6
+xD1/ClkCETyyEAE5LRJlXtx288R598koyFcwCSXijeVcRvBB1cNOLEbg7RMSw1AGq14fNe2cH1HG
+W7xyduY/ydQt6gv5r21mDOQ5SaZSWC/ZRfLDuEYwggWbMIIEg6ADAgECAhAH5JEPagNRXYDiRPdl
+c1vgMA0GCSqGSIb3DQEBCwUAMEExCzAJBgNVBAYTAkFVMRAwDgYDVQQKEwdWZXJva2V5MSAwHgYD
+VQQDExdWZXJva2V5IFNlY3VyZSBFbWFpbCBHMjAeFw0yNDEyMzAwMDAwMDBaFw0yODAxMDQyMzU5
+NTlaMB4xHDAaBgNVBAMME2R3bXcyQGluZnJhZGVhZC5vcmcwggIiMA0GCSqGSIb3DQEBAQUAA4IC
+DwAwggIKAoICAQDali7HveR1thexYXx/W7oMk/3Wpyppl62zJ8+RmTQH4yZeYAS/SRV6zmfXlXaZ
+sNOE6emg8WXLRS6BA70liot+u0O0oPnIvnx+CsMH0PD4tCKSCsdp+XphIJ2zkC9S7/yHDYnqegqt
+w4smkqUqf0WX/ggH1Dckh0vHlpoS1OoxqUg+ocU6WCsnuz5q5rzFsHxhD1qGpgFdZEk2/c//ZvUN
+i12vPWipk8TcJwHw9zoZ/ZrVNybpMCC0THsJ/UEVyuyszPtNYeYZAhOJ41vav1RhZJzYan4a1gU0
+kKBPQklcpQEhq48woEu15isvwWh9/+5jjh0L+YNaN0I//nHSp6U9COUG9Z0cvnO8FM6PTqsnSbcc
+0j+GchwOHRC7aP2t5v2stVx3KbptaYEzi4MQHxm/0+HQpMEVLLUiizJqS4PWPU6zfQTOMZ9uLQRR
+ci+c5xhtMEBszlQDOvEQcyEG+hc++fH47K+MmZz21bFNfoBxLP6bjR6xtPXtREF5lLXxp+CJ6KKS
+blPKeVRg/UtyJHeFKAZXO8Zeco7TZUMVHmK0ZZ1EpnZbnAhKE19Z+FJrQPQrlR0gO3lBzuyPPArV
+hvWxjlO7S4DmaEhLzarWi/ze7EGwWSuI2eEa/8zU0INUsGI4ywe7vepQz7IqaAovAX0d+f1YjbmC
+VsAwjhLmveFjNwIDAQABo4IBsDCCAawwHwYDVR0jBBgwFoAUiUgI6iBOd2uG5YHI1+GNZIR//HAw
+HQYDVR0OBBYEFFxiGptwbOfWOtMk5loHw7uqWUOnMDAGA1UdEQQpMCeBE2R3bXcyQGluZnJhZGVh
+ZC5vcmeBEGRhdmlkQHdvb2Rob3Uuc2UwFAYDVR0gBA0wCzAJBgdngQwBBQEBMA4GA1UdDwEB/wQE
+AwIF4DAdBgNVHSUEFjAUBggrBgEFBQcDAgYIKwYBBQUHAwQwewYDVR0fBHQwcjA3oDWgM4YxaHR0
+cDovL2NybDMuZGlnaWNlcnQuY29tL1Zlcm9rZXlTZWN1cmVFbWFpbEcyLmNybDA3oDWgM4YxaHR0
+cDovL2NybDQuZGlnaWNlcnQuY29tL1Zlcm9rZXlTZWN1cmVFbWFpbEcyLmNybDB2BggrBgEFBQcB
+AQRqMGgwJAYIKwYBBQUHMAGGGGh0dHA6Ly9vY3NwLmRpZ2ljZXJ0LmNvbTBABggrBgEFBQcwAoY0
+aHR0cDovL2NhY2VydHMuZGlnaWNlcnQuY29tL1Zlcm9rZXlTZWN1cmVFbWFpbEcyLmNydDANBgkq
+hkiG9w0BAQsFAAOCAQEAQXc4FPiPLRnTDvmOABEzkIumojfZAe5SlnuQoeFUfi+LsWCKiB8Uextv
+iBAvboKhLuN6eG/NC6WOzOCppn4mkQxRkOdLNThwMHW0d19jrZFEKtEG/epZ/hw/DdScTuZ2m7im
+8ppItAT6GXD3aPhXkXnJpC/zTs85uNSQR64cEcBFjjoQDuSsTeJ5DAWf8EMyhMuD8pcbqx5kRvyt
+JPsWBQzv1Dsdv2LDPLNd/JUKhHSgr7nbUr4+aAP2PHTXGcEBh8lTeYea9p4d5k969pe0OHYMV5aL
+xERqTagmSetuIwolkAuBCzA9vulg8Y49Nz2zrpUGfKGOD0FMqenYxdJHgDCCBZswggSDoAMCAQIC
+EAfkkQ9qA1FdgOJE92VzW+AwDQYJKoZIhvcNAQELBQAwQTELMAkGA1UEBhMCQVUxEDAOBgNVBAoT
+B1Zlcm9rZXkxIDAeBgNVBAMTF1Zlcm9rZXkgU2VjdXJlIEVtYWlsIEcyMB4XDTI0MTIzMDAwMDAw
+MFoXDTI4MDEwNDIzNTk1OVowHjEcMBoGA1UEAwwTZHdtdzJAaW5mcmFkZWFkLm9yZzCCAiIwDQYJ
+KoZIhvcNAQEBBQADggIPADCCAgoCggIBANqWLse95HW2F7FhfH9bugyT/danKmmXrbMnz5GZNAfj
+Jl5gBL9JFXrOZ9eVdpmw04Tp6aDxZctFLoEDvSWKi367Q7Sg+ci+fH4KwwfQ8Pi0IpIKx2n5emEg
+nbOQL1Lv/IcNiep6Cq3DiyaSpSp/RZf+CAfUNySHS8eWmhLU6jGpSD6hxTpYKye7PmrmvMWwfGEP
+WoamAV1kSTb9z/9m9Q2LXa89aKmTxNwnAfD3Ohn9mtU3JukwILRMewn9QRXK7KzM+01h5hkCE4nj
+W9q/VGFknNhqfhrWBTSQoE9CSVylASGrjzCgS7XmKy/BaH3/7mOOHQv5g1o3Qj/+cdKnpT0I5Qb1
+nRy+c7wUzo9OqydJtxzSP4ZyHA4dELto/a3m/ay1XHcpum1pgTOLgxAfGb/T4dCkwRUstSKLMmpL
+g9Y9TrN9BM4xn24tBFFyL5znGG0wQGzOVAM68RBzIQb6Fz758fjsr4yZnPbVsU1+gHEs/puNHrG0
+9e1EQXmUtfGn4InoopJuU8p5VGD9S3Ikd4UoBlc7xl5yjtNlQxUeYrRlnUSmdlucCEoTX1n4UmtA
+9CuVHSA7eUHO7I88CtWG9bGOU7tLgOZoSEvNqtaL/N7sQbBZK4jZ4Rr/zNTQg1SwYjjLB7u96lDP
+sipoCi8BfR35/ViNuYJWwDCOEua94WM3AgMBAAGjggGwMIIBrDAfBgNVHSMEGDAWgBSJSAjqIE53
+a4blgcjX4Y1khH/8cDAdBgNVHQ4EFgQUXGIam3Bs59Y60yTmWgfDu6pZQ6cwMAYDVR0RBCkwJ4ET
+ZHdtdzJAaW5mcmFkZWFkLm9yZ4EQZGF2aWRAd29vZGhvdS5zZTAUBgNVHSAEDTALMAkGB2eBDAEF
+AQEwDgYDVR0PAQH/BAQDAgXgMB0GA1UdJQQWMBQGCCsGAQUFBwMCBggrBgEFBQcDBDB7BgNVHR8E
+dDByMDegNaAzhjFodHRwOi8vY3JsMy5kaWdpY2VydC5jb20vVmVyb2tleVNlY3VyZUVtYWlsRzIu
+Y3JsMDegNaAzhjFodHRwOi8vY3JsNC5kaWdpY2VydC5jb20vVmVyb2tleVNlY3VyZUVtYWlsRzIu
+Y3JsMHYGCCsGAQUFBwEBBGowaDAkBggrBgEFBQcwAYYYaHR0cDovL29jc3AuZGlnaWNlcnQuY29t
+MEAGCCsGAQUFBzAChjRodHRwOi8vY2FjZXJ0cy5kaWdpY2VydC5jb20vVmVyb2tleVNlY3VyZUVt
+YWlsRzIuY3J0MA0GCSqGSIb3DQEBCwUAA4IBAQBBdzgU+I8tGdMO+Y4AETOQi6aiN9kB7lKWe5Ch
+4VR+L4uxYIqIHxR7G2+IEC9ugqEu43p4b80LpY7M4KmmfiaRDFGQ50s1OHAwdbR3X2OtkUQq0Qb9
+6ln+HD8N1JxO5nabuKbymki0BPoZcPdo+FeRecmkL/NOzzm41JBHrhwRwEWOOhAO5KxN4nkMBZ/w
+QzKEy4PylxurHmRG/K0k+xYFDO/UOx2/YsM8s138lQqEdKCvudtSvj5oA/Y8dNcZwQGHyVN5h5r2
+nh3mT3r2l7Q4dgxXlovERGpNqCZJ624jCiWQC4ELMD2+6WDxjj03PbOulQZ8oY4PQUyp6djF0keA
+MYIDuzCCA7cCAQEwVTBBMQswCQYDVQQGEwJBVTEQMA4GA1UEChMHVmVyb2tleTEgMB4GA1UEAxMX
+VmVyb2tleSBTZWN1cmUgRW1haWwgRzICEAfkkQ9qA1FdgOJE92VzW+AwDQYJYIZIAWUDBAIBBQCg
+ggE3MBgGCSqGSIb3DQEJAzELBgkqhkiG9w0BBwEwHAYJKoZIhvcNAQkFMQ8XDTI1MTIwMjE2MDQw
+NlowLwYJKoZIhvcNAQkEMSIEIL0QfGY20pJXmXWoliZgtMOh5uOftadc34V8VZQu6jqDMGQGCSsG
+AQQBgjcQBDFXMFUwQTELMAkGA1UEBhMCQVUxEDAOBgNVBAoTB1Zlcm9rZXkxIDAeBgNVBAMTF1Zl
+cm9rZXkgU2VjdXJlIEVtYWlsIEcyAhAH5JEPagNRXYDiRPdlc1vgMGYGCyqGSIb3DQEJEAILMVeg
+VTBBMQswCQYDVQQGEwJBVTEQMA4GA1UEChMHVmVyb2tleTEgMB4GA1UEAxMXVmVyb2tleSBTZWN1
+cmUgRW1haWwgRzICEAfkkQ9qA1FdgOJE92VzW+AwDQYJKoZIhvcNAQEBBQAEggIACQIqCHK5id/9
+BvgpqSVJhBCaG5QG+XhDSRepr+S7D3MCyf8wQidPKSapVWlR6hdDa2WS+4RBTtYAzI/XBYNijMH2
+NHo8wHE6bAY8bOstP8//cVBkuDUD7wQqekwaPVr+Fv1QG2kTikMnhcHN2MKqPuHC8plbT9TX2GwZ
+MzZXE3Q6pbDzFlm+1wLAY+8RyV1/XwqbId81Za3j7Tqmr5pshccBuR/UhNcYkGw7P0knZBhnDVsz
+h1B8Q68v/q04MuEy2cHoJjVdFq2z/WkWEer4mnSJMPO3qEsWfF1bt0IoedLm0tSnqTDGfLep9uU8
+SOVGEpwXaLPwTHrk3brNmjEnBqewhI8ay7DExc91i2vg1h0PSK2fwIQDmUc2rO0hoTO2p9ZeSKvs
+Ev265flfbja6IA87+ziV5X4a8WKQ1+YpmKILJeKmjl5vWC9EKnrY3GLljCt+yUKOw6gnTBVZ2B7e
+Wll6WY9bUkidfJb99+TUDlqSLCvSavtdqwUnegxdAAMUTeQrwZUPNNEVGewEETtxF2g9/HavsZSk
+vxTwCXf/DVHCuLIYL0hx63jVCCo042swHsdjPEffs1R8EQQlUnksPfYmDLVtGqBZOSaUtfDPTBVm
+W+E8iJTrVvxyyvEuDReA+yof/pXG7MUWYiYRCsjwKAD1+GJvqtDb+gJe2QTEJMsAAAAAAAA=
 
-Philippe Mathieu-Daudé (22):
-  hw/i386/pc: Remove deprecated pc-q35-2.6 and pc-i440fx-2.6 machines
-  hw/i386/pc: Remove PCMachineClass::legacy_cpu_hotplug field
-  hw/nvram/fw_cfg: Rename fw_cfg_init_mem() with '_nodma' suffix
-  hw/mips/loongson3_virt: Prefer using fw_cfg_init_mem_nodma()
-  hw/nvram/fw_cfg: Factor fw_cfg_init_mem_internal() out
-  hw/nvram/fw_cfg: Rename fw_cfg_init_mem_wide() ->
-    fw_cfg_init_mem_dma()
-  hw/i386/x86: Remove X86MachineClass::fwcfg_dma_enabled field
-  hw/i386/pc: Remove multiboot.bin
-  hw/i386: Assume fw_cfg DMA is always enabled
-  hw/i386: Remove linuxboot.bin
-  hw/i386/pc: Remove pc_compat_2_6[] array
-  hw/intc/apic: Remove APICCommonState::legacy_instance_id field
-  hw/core/machine: Remove hw_compat_2_6[] array
-  hw/virtio/virtio-mmio: Remove
-    VirtIOMMIOProxy::format_transport_address field
-  hw/i386/pc: Remove deprecated pc-q35-2.7 and pc-i440fx-2.7 machines
-  hw/i386/pc: Remove pc_compat_2_7[] array
-  target/i386/cpu: Remove CPUX86State::full_cpuid_auto_level field
-  hw/audio/pcspk: Remove PCSpkState::migrate field
-  hw/core/machine: Remove hw_compat_2_7[] array
-  hw/i386/intel_iommu: Remove IntelIOMMUState::buggy_eim field
-  hw/virtio/virtio-pci: Remove VirtIOPCIProxy::ignore_backend_features
-    field
-  hw/char/virtio-serial: Do not expose the 'emergency-write' property
 
-Zhao Liu (3):
-  docs/specs/acpi_cpu_hotplug: Remove legacy cpu hotplug descriptions
-  tests/acpi: Update DSDT tables for pc machine
-  tests/acpi: Update DSDT tables for q35 machine
-
- docs/specs/acpi_cpu_hotplug.rst               |  28 +-
- hw/acpi/acpi-cpu-hotplug-stub.c               |  19 +-
- hw/acpi/cpu.c                                 |  10 -
- hw/acpi/cpu_hotplug.c                         | 348 ------------------
- hw/acpi/generic_event_device.c                |   1 +
- hw/acpi/ich9.c                                |  61 +--
- hw/acpi/meson.build                           |   2 +-
- hw/acpi/piix4.c                               |  61 +--
- hw/arm/virt.c                                 |   2 +-
- hw/audio/pcspk.c                              |  10 -
- hw/char/virtio-serial-bus.c                   |   9 +-
- hw/core/machine.c                             |  17 -
- hw/hppa/machine.c                             |   2 +-
- hw/i386/acpi-build.c                          |   7 +-
- hw/i386/fw_cfg.c                              |  16 +-
- hw/i386/intel_iommu.c                         |   5 +-
- hw/i386/microvm.c                             |   3 -
- hw/i386/multiboot.c                           |   7 +-
- hw/i386/pc.c                                  |  25 +-
- hw/i386/pc_piix.c                             |  23 --
- hw/i386/pc_q35.c                              |  24 --
- hw/i386/x86-common.c                          |   8 +-
- hw/i386/x86.c                                 |   2 -
- hw/intc/apic_common.c                         |   5 -
- hw/loongarch/fw_cfg.c                         |   4 +-
- hw/loongarch/virt-acpi-build.c                |   1 -
- hw/mips/loongson3_virt.c                      |   2 +-
- hw/nvram/fw_cfg.c                             |  22 +-
- hw/riscv/virt.c                               |   4 +-
- hw/virtio/virtio-mmio.c                       |  15 -
- hw/virtio/virtio-pci.c                        |   5 +-
- include/hw/acpi/cpu.h                         |   1 -
- include/hw/acpi/cpu_hotplug.h                 |  40 --
- include/hw/acpi/ich9.h                        |   4 +-
- include/hw/acpi/piix4.h                       |   4 +-
- include/hw/boards.h                           |   6 -
- include/hw/i386/apic_internal.h               |   1 -
- include/hw/i386/intel_iommu.h                 |   1 -
- include/hw/i386/pc.h                          |   9 -
- include/hw/i386/x86.h                         |   2 -
- include/hw/nvram/fw_cfg.h                     |   9 +-
- include/hw/virtio/virtio-mmio.h               |   1 -
- include/hw/virtio/virtio-pci.h                |   1 -
- include/hw/virtio/virtio-serial.h             |   2 -
- pc-bios/meson.build                           |   2 -
- pc-bios/multiboot.bin                         | Bin 1024 -> 0 bytes
- pc-bios/optionrom/Makefile                    |   2 +-
- pc-bios/optionrom/linuxboot.S                 | 195 ----------
- pc-bios/optionrom/multiboot.S                 | 232 ------------
- pc-bios/optionrom/multiboot_dma.S             | 234 +++++++++++-
- pc-bios/optionrom/optionrom.h                 |   4 -
- target/i386/cpu.c                             | 111 +++---
- target/i386/cpu.h                             |   3 -
- tests/data/acpi/x86/pc/DSDT                   | Bin 8611 -> 8598 bytes
- tests/data/acpi/x86/pc/DSDT.acpierst          | Bin 8522 -> 8509 bytes
- tests/data/acpi/x86/pc/DSDT.acpihmat          | Bin 9936 -> 9923 bytes
- tests/data/acpi/x86/pc/DSDT.bridge            | Bin 15482 -> 15469 bytes
- tests/data/acpi/x86/pc/DSDT.cphp              | Bin 9075 -> 9062 bytes
- tests/data/acpi/x86/pc/DSDT.dimmpxm           | Bin 10265 -> 10252 bytes
- tests/data/acpi/x86/pc/DSDT.hpbridge          | Bin 8562 -> 8549 bytes
- tests/data/acpi/x86/pc/DSDT.hpbrroot          | Bin 5100 -> 5087 bytes
- tests/data/acpi/x86/pc/DSDT.ipmikcs           | Bin 8683 -> 8670 bytes
- tests/data/acpi/x86/pc/DSDT.memhp             | Bin 9970 -> 9957 bytes
- tests/data/acpi/x86/pc/DSDT.nohpet            | Bin 8469 -> 8456 bytes
- tests/data/acpi/x86/pc/DSDT.numamem           | Bin 8617 -> 8604 bytes
- tests/data/acpi/x86/pc/DSDT.roothp            | Bin 12404 -> 12391 bytes
- tests/data/acpi/x86/q35/DSDT                  | Bin 8440 -> 8427 bytes
- tests/data/acpi/x86/q35/DSDT.acpierst         | Bin 8457 -> 8444 bytes
- tests/data/acpi/x86/q35/DSDT.acpihmat         | Bin 9765 -> 9752 bytes
- .../data/acpi/x86/q35/DSDT.acpihmat-generic-x | Bin 12650 -> 12637 bytes
- .../acpi/x86/q35/DSDT.acpihmat-noinitiator    | Bin 8719 -> 8706 bytes
- tests/data/acpi/x86/q35/DSDT.applesmc         | Bin 8486 -> 8473 bytes
- tests/data/acpi/x86/q35/DSDT.bridge           | Bin 12053 -> 12040 bytes
- tests/data/acpi/x86/q35/DSDT.core-count       | Bin 12998 -> 12985 bytes
- tests/data/acpi/x86/q35/DSDT.core-count2      | Bin 33855 -> 33842 bytes
- tests/data/acpi/x86/q35/DSDT.cphp             | Bin 8904 -> 8891 bytes
- tests/data/acpi/x86/q35/DSDT.cxl              | Bin 13231 -> 13218 bytes
- tests/data/acpi/x86/q35/DSDT.dimmpxm          | Bin 10094 -> 10081 bytes
- tests/data/acpi/x86/q35/DSDT.ipmibt           | Bin 8515 -> 8502 bytes
- tests/data/acpi/x86/q35/DSDT.ipmismbus        | Bin 8528 -> 8515 bytes
- tests/data/acpi/x86/q35/DSDT.ivrs             | Bin 8457 -> 8444 bytes
- tests/data/acpi/x86/q35/DSDT.memhp            | Bin 9799 -> 9786 bytes
- tests/data/acpi/x86/q35/DSDT.mmio64           | Bin 9570 -> 9557 bytes
- tests/data/acpi/x86/q35/DSDT.multi-bridge     | Bin 13293 -> 13280 bytes
- tests/data/acpi/x86/q35/DSDT.noacpihp         | Bin 8302 -> 8289 bytes
- tests/data/acpi/x86/q35/DSDT.nohpet           | Bin 8298 -> 8285 bytes
- tests/data/acpi/x86/q35/DSDT.numamem          | Bin 8446 -> 8433 bytes
- tests/data/acpi/x86/q35/DSDT.pvpanic-isa      | Bin 8541 -> 8528 bytes
- tests/data/acpi/x86/q35/DSDT.thread-count     | Bin 12998 -> 12985 bytes
- tests/data/acpi/x86/q35/DSDT.thread-count2    | Bin 33855 -> 33842 bytes
- tests/data/acpi/x86/q35/DSDT.tis.tpm12        | Bin 9046 -> 9033 bytes
- tests/data/acpi/x86/q35/DSDT.tis.tpm2         | Bin 9072 -> 9059 bytes
- tests/data/acpi/x86/q35/DSDT.type4-count      | Bin 18674 -> 18661 bytes
- tests/data/acpi/x86/q35/DSDT.viot             | Bin 14697 -> 14684 bytes
- tests/data/acpi/x86/q35/DSDT.xapic            | Bin 35803 -> 35790 bytes
- tests/qtest/test-x86-cpuid-compat.c           |  11 -
- 96 files changed, 359 insertions(+), 1264 deletions(-)
- delete mode 100644 hw/acpi/cpu_hotplug.c
- delete mode 100644 include/hw/acpi/cpu_hotplug.h
- delete mode 100644 pc-bios/multiboot.bin
- delete mode 100644 pc-bios/optionrom/linuxboot.S
- delete mode 100644 pc-bios/optionrom/multiboot.S
-
--- 
-2.34.1
-
+--=-8oCwVFx4Ws1Orl5OCHZt--
