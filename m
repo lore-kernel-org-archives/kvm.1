@@ -1,65 +1,64 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
+Received: from bmailout2.hostsharing.net (bmailout2.hostsharing.net [83.223.78.240])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A1BC92FFDF4;
-	Tue,  2 Dec 2025 06:21:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 870DB2FFFB5;
+	Tue,  2 Dec 2025 06:26:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=83.223.78.240
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764656484; cv=none; b=LRWj+TtBenqu+Wp50rfS9DjHKRUNs/gzHOVezRzm3w7w91hCr9VN2RCdG9m1RgKv6g96sqsqClymDsA6ZoFvFB7dY2w6OCGuYtFRjXtnOjr7NsQJTH3306Cjmkcy3sP25N2fPGFJJ+GIGir7JHP9yeI2mfJi8UWQqRyVsIezLr0=
+	t=1764656764; cv=none; b=bvyLOxNWtRAGIChwfXs+a2/lBpqbOfD6A9/xYcITOmS5VUKhCIKy7tcJLs51aCGBH+g9MvDyl5uC4D5+zIpM1CXE1ty7VBnxWNhS/QO7aFuJ+NNax0QQsRAxXcIlVztWswZdMPmufZFoqrxBxKScXv3lm0w4IO7HUPckaqDmNek=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764656484; c=relaxed/simple;
-	bh=PrK+AMN/Tnlv4FHU76kjXMTZzreOCQkhyKRZczt3/0w=;
+	s=arc-20240116; t=1764656764; c=relaxed/simple;
+	bh=aQTKNlLrS6sBh+ULcE7sNUYYJuTlGIWn6fq6APmTvNM=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=poE+cjmCceqlOsc/FN/QiOhJu5J5jM3SHPtcbNLE4W0BMiZ0hkxNcAPok8trAHDx9g2LEbNfcYlPG+BOiv/DNhzWp7Hc8QeV95l6GZ+EA+Cef1rTI6XOfk3HSBV2K+OgDnYCN9lvEbVn0Ypa0A75hvrNQrWMcwQ9gTLHVQJlLJo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=HhXwGEn0; arc=none smtp.client-ip=192.198.163.18
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="HhXwGEn0"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1764656483; x=1796192483;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=PrK+AMN/Tnlv4FHU76kjXMTZzreOCQkhyKRZczt3/0w=;
-  b=HhXwGEn07Z2xHqUFu0qjpaD5sYW7xzt5yG5m00eBjeMnZh9RjguHNcMX
-   YsHUcuT2Pac/69vxuTwRMkmwsEgmG1E+dqa3s36ECqFY+95jVj10tNb4l
-   6Y1zQnWe1yX5nT/h4qJMEfrkWSen332eeYh/Sd2xWqP8XZQAYhMO2ZjYE
-   PTj6YZHnBbNamOH2bsd92yMgxG2jw56HpSLNlaN+nelQfsFLGKl5oy6tz
-   +o0QfYz/wt9cfMhPTTuz9aRF8tUAyn8iuKdh+cyeQz7j++tonrOphhWQi
-   gq0JHcA6vkuEUvfBTjtnHE58iVztOawscmBSKqy/vdjzyAFZPdY6wQ7j9
-   g==;
-X-CSE-ConnectionGUID: j3DStMtTQ3quCJO4YplsrA==
-X-CSE-MsgGUID: YnIZxM++RNOeXtzkmdfy3w==
-X-IronPort-AV: E=McAfee;i="6800,10657,11630"; a="65801241"
-X-IronPort-AV: E=Sophos;i="6.20,242,1758610800"; 
-   d="scan'208";a="65801241"
-Received: from fmviesa002.fm.intel.com ([10.60.135.142])
-  by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Dec 2025 22:21:21 -0800
-X-CSE-ConnectionGUID: bahEhZniTSuwstCvo4+PBQ==
-X-CSE-MsgGUID: 3MY/cSb8SW+32E5Fhplvkg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.20,242,1758610800"; 
-   d="scan'208";a="217625072"
-Received: from guptapa-desk.jf.intel.com (HELO desk) ([10.165.239.46])
-  by fmviesa002-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Dec 2025 22:21:02 -0800
-Date: Mon, 1 Dec 2025 22:21:02 -0800
-From: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
-To: x86@kernel.org, David Kaplan <david.kaplan@amd.com>,
-	Nikolay Borisov <nik.borisov@suse.com>,
-	"H. Peter Anvin" <hpa@zytor.com>,
-	Josh Poimboeuf <jpoimboe@kernel.org>,
-	Sean Christopherson <seanjc@google.com>,
-	Paolo Bonzini <pbonzini@redhat.com>, Borislav Petkov <bp@alien8.de>,
-	Dave Hansen <dave.hansen@linux.intel.com>
-Cc: linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
-	Asit Mallick <asit.k.mallick@intel.com>,
-	Tao Zhang <tao1.zhang@intel.com>
-Subject: [PATCH v6 9/9] x86/vmscape: Add cmdline vmscape=on to override
- attack vector controls
-Message-ID: <20251201-vmscape-bhb-v6-9-d610dd515714@linux.intel.com>
-X-Mailer: b4 0.14.2
-References: <20251201-vmscape-bhb-v6-0-d610dd515714@linux.intel.com>
+	 Content-Type:Content-Disposition:In-Reply-To; b=gSOcCAKDfeaV9nS6TPtPIM0l0hePP/1CJna3OhFIY/tbA/mVn6gfdSSB0xz0DN4l/d97PcjalIYX+2tcMxYhKKWwdxMlb9xD1bTEo6Iozp/vo9rBK86sI2ORJYV42cVgD6vt2n3lRIFCOaBmumqtL6icVZ/iEfezME9GQ077SvA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=wunner.de; spf=none smtp.mailfrom=h08.hostsharing.net; arc=none smtp.client-ip=83.223.78.240
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=wunner.de
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=h08.hostsharing.net
+Received: from h08.hostsharing.net (h08.hostsharing.net [IPv6:2a01:37:1000::53df:5f1c:0])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (secp384r1) server-digest SHA384
+	 client-signature ECDSA (secp384r1) client-digest SHA384)
+	(Client CN "*.hostsharing.net", Issuer "GlobalSign GCC R6 AlphaSSL CA 2025" (verified OK))
+	by bmailout2.hostsharing.net (Postfix) with ESMTPS id 348442009D2F;
+	Tue,  2 Dec 2025 07:20:23 +0100 (CET)
+Received: by h08.hostsharing.net (Postfix, from userid 100393)
+	id 1754D1F008; Tue,  2 Dec 2025 07:20:23 +0100 (CET)
+Date: Tue, 2 Dec 2025 07:20:23 +0100
+From: Lukas Wunner <lukas@wunner.de>
+To: David Matlack <dmatlack@google.com>
+Cc: Jason Gunthorpe <jgg@nvidia.com>,
+	Pasha Tatashin <pasha.tatashin@soleen.com>,
+	Alex Williamson <alex@shazbot.org>,
+	Adithya Jayachandran <ajayachandra@nvidia.com>,
+	Alex Mastro <amastro@fb.com>, Alistair Popple <apopple@nvidia.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Bjorn Helgaas <bhelgaas@google.com>, Chris Li <chrisl@kernel.org>,
+	David Rientjes <rientjes@google.com>,
+	Jacob Pan <jacob.pan@linux.microsoft.com>,
+	Josh Hilke <jrhilke@google.com>, Kevin Tian <kevin.tian@intel.com>,
+	kvm@vger.kernel.org, Leon Romanovsky <leonro@nvidia.com>,
+	linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org,
+	linux-pci@vger.kernel.org, Mike Rapoport <rppt@kernel.org>,
+	Parav Pandit <parav@nvidia.com>,
+	Philipp Stanner <pstanner@redhat.com>,
+	Pratyush Yadav <pratyush@kernel.org>,
+	Saeed Mahameed <saeedm@nvidia.com>,
+	Samiullah Khawaja <skhawaja@google.com>,
+	Shuah Khan <shuah@kernel.org>, Tomita Moeko <tomitamoeko@gmail.com>,
+	Vipin Sharma <vipinsh@google.com>, William Tu <witu@nvidia.com>,
+	Yi Liu <yi.l.liu@intel.com>, Yunxiang Li <Yunxiang.Li@amd.com>,
+	Zhu Yanjun <yanjun.zhu@linux.dev>,
+	Ilpo =?iso-8859-1?Q?J=E4rvinen?= <ilpo.jarvinen@linux.intel.com>
+Subject: Re: [PATCH 02/21] PCI: Add API to track PCI devices preserved across
+ Live Update
+Message-ID: <aS6FJz0725VRLF00@wunner.de>
+References: <20251126193608.2678510-1-dmatlack@google.com>
+ <20251126193608.2678510-3-dmatlack@google.com>
+ <aSrMSRd8RJn2IKF4@wunner.de>
+ <20251130005113.GB760268@nvidia.com>
+ <CA+CK2bB0V9jdmrcNjgsmWHmSFQpSpxdVahf1pb3Bz2WA3rKcng@mail.gmail.com>
+ <20251201132934.GA1075897@nvidia.com>
+ <aS3kUwlVV_WGT66w@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -68,69 +67,29 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20251201-vmscape-bhb-v6-0-d610dd515714@linux.intel.com>
+In-Reply-To: <aS3kUwlVV_WGT66w@google.com>
 
-In general, individual mitigation controls can be used to override the
-attack vector controls. But, nothing exists to select BHB clearing
-mitigation for VMSCAPE. The =force option comes close, but with a
-side-effect of also forcibly setting the bug, hence deploying the
-mitigation on unaffected parts too.
+On Mon, Dec 01, 2025 at 06:54:11PM +0000, David Matlack wrote:
+> To handle pci=assign-busses, perhaps something like this? Are there any
+> other places where the kernel could change busses?
 
-Add a new cmdline option vmscape=on to enable the mitigation based on the
-VMSCAPE variant the CPU is affected by.
+In theory the algorithm to assign bus numbers could change from
+one kernel version to the next.  Ilpo (+cc) is currently reworking
+the resource allocation algorithm.  That work primarily covers
+MMIO window sizing, but bus numbers are resources as well and
+could be affected by changes.  Resource allocation code is
+already quite convoluted and sprinkling liveupdate special cases
+all over it may not be received with enthusiasm. ;)
 
-Reviewed-by: Nikolay Borisov <nik.borisov@suse.com>
-Signed-off-by: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
----
- Documentation/admin-guide/hw-vuln/vmscape.rst   | 4 ++++
- Documentation/admin-guide/kernel-parameters.txt | 4 +++-
- arch/x86/kernel/cpu/bugs.c                      | 2 ++
- 3 files changed, 9 insertions(+), 1 deletion(-)
+Of course in practice, changes to the algorithm do not happen often
+and the kernel will preserve bus numbers as set by BIOS.  Only if it
+detects incorrect bus assignments or if forced via the command line
+will the kernel re-assign bus numbers.
 
-diff --git a/Documentation/admin-guide/hw-vuln/vmscape.rst b/Documentation/admin-guide/hw-vuln/vmscape.rst
-index dc63a0bac03d43d1e295de0791dd6497d101f986..580f288ae8bfc601ff000d6d95d711bb9084459e 100644
---- a/Documentation/admin-guide/hw-vuln/vmscape.rst
-+++ b/Documentation/admin-guide/hw-vuln/vmscape.rst
-@@ -112,3 +112,7 @@ The mitigation can be controlled via the ``vmscape=`` command line parameter:
- 
-    Force vulnerability detection and mitigation even on processors that are
-    not known to be affected.
-+
-+ * ``vmscape=on``:
-+
-+   Choose the mitigation based on the VMSCAPE variant the CPU is affected by.
-diff --git a/Documentation/admin-guide/kernel-parameters.txt b/Documentation/admin-guide/kernel-parameters.txt
-index 6c42061ca20e581b5192b66c6f25aba38d4f8ff8..d2ccec6e10f3ea094c01083d4c133b837c7fc7d7 100644
---- a/Documentation/admin-guide/kernel-parameters.txt
-+++ b/Documentation/admin-guide/kernel-parameters.txt
-@@ -8104,9 +8104,11 @@
- 
- 			off		- disable the mitigation
- 			ibpb		- use Indirect Branch Prediction Barrier
--					  (IBPB) mitigation (default)
-+					  (IBPB) mitigation
- 			force		- force vulnerability detection even on
- 					  unaffected processors
-+			on		- (default) selects IBPB or BHB clear
-+					  mitigation based on CPU
- 
- 	vsyscall=	[X86-64,EARLY]
- 			Controls the behavior of vsyscalls (i.e. calls to
-diff --git a/arch/x86/kernel/cpu/bugs.c b/arch/x86/kernel/cpu/bugs.c
-index 58cd26e4f4c385a10230912666c02dbb05e71cba..5870bb67baf3bb54be80a7c193c26b6f6eb246d5 100644
---- a/arch/x86/kernel/cpu/bugs.c
-+++ b/arch/x86/kernel/cpu/bugs.c
-@@ -3227,6 +3227,8 @@ static int __init vmscape_parse_cmdline(char *str)
- 	} else if (!strcmp(str, "force")) {
- 		setup_force_cpu_bug(X86_BUG_VMSCAPE);
- 		vmscape_mitigation = VMSCAPE_MITIGATION_ON;
-+	} else if (!strcmp(str, "on")) {
-+		vmscape_mitigation = VMSCAPE_MITIGATION_ON;
- 	} else {
- 		pr_err("Ignoring unknown vmscape=%s option.\n", str);
- 	}
+But you do gain a bit of reliability if you don't assume bus numbers
+to stay the same and instead use the "path from root" approach to
+identify devices.
 
--- 
-2.34.1
+Thanks,
 
-
+Lukas
