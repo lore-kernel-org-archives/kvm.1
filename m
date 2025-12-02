@@ -1,177 +1,136 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0108D29B77C
-	for <kvm@vger.kernel.org>; Tue,  2 Dec 2025 16:08:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.7
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6320527FD49
+	for <kvm@vger.kernel.org>; Tue,  2 Dec 2025 16:09:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764691704; cv=none; b=dz1HZsuC2L0gfJFWzM68H5qKYWg1ekBr/Wqv81dZAPDQA2Y+Ex6gGVc8UwDNVXX+pt4g8nVhP81S4vxPqMe+KfUdQ3mxwkaBGnUcpZYEpUOXAZ0nJdz13ON5y7kuLWgKvd8TVMyMyC7m+20GgFRI5/HtKTyqXQj9R4qixfogPeU=
+	t=1764691744; cv=none; b=uiv/xQo2GQ4zjWYjIzxL6LS7Xz0uMsiuvX2m2Wf55lePED42sGAm+D/efqhj3QZapcVuT8ZDGTq9aBAb2T1+PuYfjZGGKy1qqvuORM3NtUoLNRhnpMhG+F406Cls2KB1qnWjEauWcA1XIybXF0ZvphD6MygDDriy5QX2+rZI1Vs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764691704; c=relaxed/simple;
-	bh=jqtFvxj+10vNXec+3ARQzdivBUizNnzSIyg2+TGZekw=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=NdN2/KQCw7CgefzuzAMC9we8ZhSgM/y9Kn4QTTwZykjafOvEY5wQVZYoHGNATu3t8+qyeLu31i0TitpK62VQxHbO33xb443Dr3e0/aHOXvZDk9tI2pW6yer7TScylsNtC0/eDeIWWo7tJ4+w52hvqEGjqEEphXzGqCfaR9wQ0DQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=f22qVNom; arc=none smtp.client-ip=192.198.163.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1764691744; c=relaxed/simple;
+	bh=gC6Q+HMpFAJH1tp5fCDIRqEJ1MHUxFI/yXEXmBCtKx0=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=C0+iItZxItY/2DlMMb+fHLYSXWg8fkqH8cgl4uxQzomlwV1MR+T8oWeJCsJ55ir3zweeFdCuOsRxQ5EhVYuZKXqmjuZ7pnIFaBaRqBCScNyppSMhPsZs3RJyOu8KLA5c0Fh84hlVIgogeQmd4l5UC+I+SIqRAU50nw9h4HW7rvQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=UCfzE55b; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=LUkPleRA; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="f22qVNom"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1764691703; x=1796227703;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=jqtFvxj+10vNXec+3ARQzdivBUizNnzSIyg2+TGZekw=;
-  b=f22qVNomdN8Rgi1DliL3AfDj7xht9qAZ0sWJVxF7mdJefwBAvzaOgwQJ
-   uT5qGBPjCwCyVTBH/Jy3ajXh9S+Rj+4wXeXkuyC8zoehNk+wKy2IDnOaw
-   5eaKNwrDsFcUC+pql13BjhOiYwY6sFYb+/gEXrbKi2Xxia1r0OE+LrF8i
-   R8RAT0cAaGwcVth8BXxWDEg9sgQ2W6TRdOqbr1/N27lGC6e56CrsMl4Uo
-   1KXM8mGTUR+0j2ekpU3KgvusGjue+brcFE/FX5jhuEwrjETFZzwWXqGbP
-   0psth6LtH9LMY4cXvcUY4/f0U48sypz5BHqSceiEDtkEnkVUHlRsNwudY
-   A==;
-X-CSE-ConnectionGUID: ZRhPpdFZThCoazhwXfaWgA==
-X-CSE-MsgGUID: NEXHMma7QMyeqJiTTZrW5w==
-X-IronPort-AV: E=McAfee;i="6800,10657,11630"; a="92143172"
-X-IronPort-AV: E=Sophos;i="6.20,243,1758610800"; 
-   d="scan'208";a="92143172"
-Received: from orviesa005.jf.intel.com ([10.64.159.145])
-  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Dec 2025 08:08:22 -0800
-X-CSE-ConnectionGUID: SjU4LmDdQTiDLSlfpBYPSQ==
-X-CSE-MsgGUID: ZAw4+8F8SNSUfxJX7KFWXA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.20,243,1758610800"; 
-   d="scan'208";a="199538081"
-Received: from liuzhao-optiplex-7080.sh.intel.com ([10.239.160.39])
-  by orviesa005.jf.intel.com with ESMTP; 02 Dec 2025 08:08:13 -0800
-From: Zhao Liu <zhao1.liu@intel.com>
-To: Paolo Bonzini <pbonzini@redhat.com>,
-	"Michael S . Tsirkin" <mst@redhat.com>,
-	Igor Mammedov <imammedo@redhat.com>,
-	=?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
-	Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
-	Thomas Huth <thuth@redhat.com>
-Cc: qemu-devel@nongnu.org,
-	devel@lists.libvirt.org,
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="UCfzE55b";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="LUkPleRA"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1764691741;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=VN5D96R/t76acLMeIjKxcWybmi4kuwmjRsxRAB7XktE=;
+	b=UCfzE55bIOhuT395iNYjQbkKzLXK/VpND2cG2aMfq7CZHJ25UWEJ/7461fWaMVk8h4FTUE
+	zFZ6CVQL9lB5I3/MoYgA2PHKQvKoCwe5+6upmHVP3QxxB4Snb9U3gOkOwbTh4e9JmSqIsC
+	HxfuJZK1yHTPT733SGNSDKQrE7wpODo=
+Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
+ [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-391-1FrhImXSOoOvcgzIutpZAg-1; Tue, 02 Dec 2025 11:09:00 -0500
+X-MC-Unique: 1FrhImXSOoOvcgzIutpZAg-1
+X-Mimecast-MFC-AGG-ID: 1FrhImXSOoOvcgzIutpZAg_1764691739
+Received: by mail-wr1-f69.google.com with SMTP id ffacd0b85a97d-42b2c8fb84fso3459578f8f.2
+        for <kvm@vger.kernel.org>; Tue, 02 Dec 2025 08:08:59 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=redhat.com; s=google; t=1764691739; x=1765296539; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=VN5D96R/t76acLMeIjKxcWybmi4kuwmjRsxRAB7XktE=;
+        b=LUkPleRA3XV0tht0nK3IaQ46m24LZQF8EsnOfwNpLD9lQhlz+aljMWSivL6LVCdT17
+         8Igq+9KJvH6OZDwarwSU5BSebS9PXpVZ9pSNUBO4D+t00rpKRVbqs94WKjP0932oAH55
+         UPfsWoJgGtdW6n5UDW/sSW1d4gyVsqxOwEzLWTSjW30SZ+01ooJTwYNQuqwQ1hZLQrUW
+         fl2TEJF2HOS+ZlNKki456vp9lJur4AwOgs6adeuXaFfZujkEeewTGntbG33zP6t/W4V7
+         i/f6df2FpYgEPd0UGjWpJ4fIKINVBkFSDk2CnrCWsmo64LeYFdonPAh1ciT+MOIQdD99
+         kPEg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1764691739; x=1765296539;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=VN5D96R/t76acLMeIjKxcWybmi4kuwmjRsxRAB7XktE=;
+        b=qy2sDsfzjxkowNVTgpLcgk+A1SqdSCue/E7RBk0K/T3j1ufoBsLlQRC+Dm39QJ42bt
+         8flA6OFXI4LMjnXrte2hKRDAMNgN01MCS1oYV4uaKp7Q5mboSUT+5DTZ4FOZAy/P2u9m
+         5hcKzMJ+2QPXLaxypqpQuom05LL5iBZn4cAeZhgr+YL5a6fLrCP26PGkfFXk8WAL3++2
+         shjJevY8Wd94qMNuXef2KxUxRaX6OZr4y7ayP0976jJDHoQm2GG5Wlrwd+WRipgqozQT
+         kte5EjyMVYdxGa/2XNYJlA5UXQWUSAFgJHvfQoLQDEzfaqYJmjmNN7RbRh9gNdvpgcYK
+         SJGA==
+X-Forwarded-Encrypted: i=1; AJvYcCVGHytBF/S80lC4KT7bCRl1gQ7TC7cXHGnBjlc/+gQBdGAzrJGfzkjbT3EoL6Y9zfmEOb4=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxcFTBB7dLgDUsMMSUt1Zrr5WDozoEi4JpNzRlwpxkRgBQWi3Ym
+	Gq4szYhykm1Lv7c1eqfijdixdzyJqp+/DP46TuB/j2m74JU/XcfvTzUwlz90cec8HzMtmNMqX/v
+	jG8l1I8HQ7jy439AUH39jD1oesy3iXkB2kr9V3T5T1qEx+5SLyq7o6A==
+X-Gm-Gg: ASbGncs1fkRD+7oMUYUafy8ydLjEWbCB6A5KsYznkRM/fHxdzZ03ynNtCCk9Yis0GOZ
+	JuS45CRY12tyJM7pFV24ryh4wBgQijBLIJErLhFJFjPhv8L/wE6xQXmadxHQEXD//m469AFp/fa
+	X0mXHeTQvGeBZxDmvuu2kVKrTaUlJOSnZXuNMEwsq5uF7g//QtuGehjMCT4VA3ntHRmEe8XDR2n
+	6e/tydwxHqEYG3csa+1ZOcl271XMwVbr94kKdz25Q3MFTyuOZorE/iyw6cFCiSsitK3wHW/Sv3Y
+	RoIj5tlSe4Cy3zyLw+5J+i5Ulxw+lLQI8E1q+Gt6XEZE5pl4oNj8I1K44Sozt4TQYq8N1Lp+MbK
+	sKDOcpc1VHTtWboJg7VTqQz16mhMvnoc1CBKqnwmerwauCq1fcNc1iPRIRZS4rRbmQqvlaO+c
+X-Received: by 2002:a05:6000:2307:b0:42b:3bc4:16dc with SMTP id ffacd0b85a97d-42e0f213b9emr32166637f8f.21.1764691738817;
+        Tue, 02 Dec 2025 08:08:58 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IFlWgvgyCrCdB68a/vDVtdUnY3Hzqt9cNDCyK0z8du3Hyb0hPWF5OXcMS0TvNkdQ42xNIogkQ==
+X-Received: by 2002:a05:6000:2307:b0:42b:3bc4:16dc with SMTP id ffacd0b85a97d-42e0f213b9emr32166604f8f.21.1764691738387;
+        Tue, 02 Dec 2025 08:08:58 -0800 (PST)
+Received: from rh.redhat.com (p200300f6af35a800883b071bf1f3e4b6.dip0.t-ipconnect.de. [2003:f6:af35:a800:883b:71b:f1f3:e4b6])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-42e1caa767dsm34300899f8f.38.2025.12.02.08.08.57
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 02 Dec 2025 08:08:58 -0800 (PST)
+From: Sebastian Ott <sebott@redhat.com>
+To: Peter Maydell <peter.maydell@linaro.org>,
+	Paolo Bonzini <pbonzini@redhat.com>,
+	Eric Auger <eric.auger@redhat.com>
+Cc: qemu-arm@nongnu.org,
+	qemu-devel@nongnu.org,
 	kvm@vger.kernel.org,
-	qemu-riscv@nongnu.org,
-	qemu-arm@nongnu.org,
-	Richard Henderson <richard.henderson@linaro.org>,
-	Sergio Lopez <slp@redhat.com>,
-	Gerd Hoffmann <kraxel@redhat.com>,
-	Peter Maydell <peter.maydell@linaro.org>,
-	Laurent Vivier <lvivier@redhat.com>,
-	Jiaxun Yang <jiaxun.yang@flygoat.com>,
-	Yi Liu <yi.l.liu@intel.com>,
-	Eduardo Habkost <eduardo@habkost.net>,
-	Alistair Francis <alistair.francis@wdc.com>,
-	Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
-	Marcelo Tosatti <mtosatti@redhat.com>,
-	Weiwei Li <liwei1518@gmail.com>,
-	Amit Shah <amit@kernel.org>,
-	Xiaoyao Li <xiaoyao.li@intel.com>,
-	Yanan Wang <wangyanan55@huawei.com>,
-	Helge Deller <deller@gmx.de>,
-	Palmer Dabbelt <palmer@dabbelt.com>,
-	=?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
-	Ani Sinha <anisinha@redhat.com>,
-	Fabiano Rosas <farosas@suse.de>,
-	Liu Zhiwei <zhiwei_liu@linux.alibaba.com>,
-	=?UTF-8?q?Cl=C3=A9ment=20Mathieu--Drif?= <clement.mathieu--drif@eviden.com>,
-	=?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
-	Huacai Chen <chenhuacai@kernel.org>,
-	Jason Wang <jasowang@redhat.com>,
-	Mark Cave-Ayland <mark.caveayland@nutanix.com>,
-	BALATON Zoltan <balaton@eik.bme.hu>,
-	Peter Krempa <pkrempa@redhat.com>,
-	Jiri Denemark <jdenemar@redhat.com>,
-	Zhao Liu <zhao1.liu@intel.com>
-Subject: [PATCH v5 28/28] hw/char/virtio-serial: Do not expose the 'emergency-write' property
-Date: Wed,  3 Dec 2025 00:28:35 +0800
-Message-Id: <20251202162835.3227894-29-zhao1.liu@intel.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20251202162835.3227894-1-zhao1.liu@intel.com>
-References: <20251202162835.3227894-1-zhao1.liu@intel.com>
+	kvmarm@lists.linux.dev,
+	Sebastian Ott <sebott@redhat.com>
+Subject: [PATCH v4 0/2] arm: add kvm-psci-version vcpu property
+Date: Tue,  2 Dec 2025 17:08:51 +0100
+Message-ID: <20251202160853.22560-1-sebott@redhat.com>
+X-Mailer: git-send-email 2.52.0
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-From: Philippe Mathieu-Daudé <philmd@linaro.org>
+This series adds a vcpu knob to request a specific PSCI version
+from KVM via the KVM_REG_ARM_PSCI_VERSION FW register.
 
-The VIRTIO_CONSOLE_F_EMERG_WRITE feature bit was only set
-in the hw_compat_2_7[] array, via the 'emergency-write=off'
-property. We removed all machines using that array, lets remove
-that property. All instances have this feature bit set and
-it can not be disabled. VirtIOSerial::host_features mask is
-now unused, remove it.
+The use case for this is to support migration between host kernels
+that differ in their default (a.k.a. most recent) PSCI version.
 
-Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Reviewed-by: Mark Cave-Ayland <mark.caveayland@nutanix.com>
-Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
-Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
----
- hw/char/virtio-serial-bus.c       | 9 +++------
- include/hw/virtio/virtio-serial.h | 2 --
- 2 files changed, 3 insertions(+), 8 deletions(-)
+Note: in order to support PSCI v0.1 we need to drop vcpu
+initialization with KVM_CAP_ARM_PSCI_0_2 in that case.
+Alternatively we could limit support to versions >=0.2 .
 
-diff --git a/hw/char/virtio-serial-bus.c b/hw/char/virtio-serial-bus.c
-index 673c50f0be08..7abb7b5e31bf 100644
---- a/hw/char/virtio-serial-bus.c
-+++ b/hw/char/virtio-serial-bus.c
-@@ -557,7 +557,7 @@ static uint64_t get_features(VirtIODevice *vdev, uint64_t features,
- 
-     vser = VIRTIO_SERIAL(vdev);
- 
--    features |= vser->host_features;
-+    features |= BIT_ULL(VIRTIO_CONSOLE_F_EMERG_WRITE);
-     if (vser->bus.max_nr_ports > 1) {
-         virtio_add_feature(&features, VIRTIO_CONSOLE_F_MULTIPORT);
-     }
-@@ -587,8 +587,7 @@ static void set_config(VirtIODevice *vdev, const uint8_t *config_data)
-     VirtIOSerialPortClass *vsc;
-     uint8_t emerg_wr_lo;
- 
--    if (!virtio_has_feature(vser->host_features,
--        VIRTIO_CONSOLE_F_EMERG_WRITE) || !config->emerg_wr) {
-+    if (!config->emerg_wr) {
-         return;
-     }
- 
-@@ -1040,7 +1039,7 @@ static void virtio_serial_device_realize(DeviceState *dev, Error **errp)
-         return;
-     }
- 
--    if (!virtio_has_feature(vser->host_features,
-+    if (!virtio_has_feature(vdev->host_features,
-                             VIRTIO_CONSOLE_F_EMERG_WRITE)) {
-         config_size = offsetof(struct virtio_console_config, emerg_wr);
-     }
-@@ -1156,8 +1155,6 @@ static const VMStateDescription vmstate_virtio_console = {
- static const Property virtio_serial_properties[] = {
-     DEFINE_PROP_UINT32("max_ports", VirtIOSerial, serial.max_virtserial_ports,
-                                                   31),
--    DEFINE_PROP_BIT64("emergency-write", VirtIOSerial, host_features,
--                      VIRTIO_CONSOLE_F_EMERG_WRITE, true),
- };
- 
- static void virtio_serial_class_init(ObjectClass *klass, const void *data)
-diff --git a/include/hw/virtio/virtio-serial.h b/include/hw/virtio/virtio-serial.h
-index 60641860bf83..da0c91e1a403 100644
---- a/include/hw/virtio/virtio-serial.h
-+++ b/include/hw/virtio/virtio-serial.h
-@@ -186,8 +186,6 @@ struct VirtIOSerial {
-     struct VirtIOSerialPostLoad *post_load;
- 
-     virtio_serial_conf serial;
--
--    uint64_t host_features;
- };
- 
- /* Interface to the virtio-serial bus */
+Changes since V3 [3]:
+* changed variable name as requested by Eric
+* added R-B
+Changes since V2 [2]:
+* fix kvm_get_psci_version() when the prop is not specified - thanks Eric!
+* removed the assertion in kvm_get_psci_version() so that this also works
+  with a future kernel/psci version
+* added R-B
+Changes since V1 [1]:
+* incorporated feedback from Peter and Eric
+
+[1] https://lore.kernel.org/kvmarm/20250911144923.24259-1-sebott@redhat.com/
+[2] https://lore.kernel.org/kvmarm/20251030165905.73295-1-sebott@redhat.com/
+[3] https://lore.kernel.org/kvmarm/20251112181357.38999-1-sebott@redhat.com/
+
+Sebastian Ott (2):
+  target/arm/kvm: add constants for new PSCI versions
+  target/arm/kvm: add kvm-psci-version vcpu property
+
+ docs/system/arm/cpu-features.rst |  5 +++
+ target/arm/cpu.h                 |  6 +++
+ target/arm/kvm-consts.h          |  2 +
+ target/arm/kvm.c                 | 64 +++++++++++++++++++++++++++++++-
+ 4 files changed, 76 insertions(+), 1 deletion(-)
+
 -- 
-2.34.1
+2.42.0
 
