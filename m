@@ -1,171 +1,122 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F851274646
-	for <kvm@vger.kernel.org>; Tue,  2 Dec 2025 03:48:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4755B2BE02D;
+	Tue,  2 Dec 2025 05:24:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.11
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764647300; cv=none; b=Jqkb+yZkRkIMleKzwfjnK6yI5xrzggdM4MPQJoZtRIupX7D52MxhqtQl5w35HmQxTZuTl5MbQxPEprLugLZymXYpsay280rpEsIrCitN/62BEkDZ1gj3xlTIqMkcos/racFiquga53X76BHzzfbvBliYaOFtlfS6+aRBUz8oeEk=
+	t=1764653063; cv=none; b=b8MSLFplQU74oiRgBLTjpfpwqscgofn6ZSgsghhEEu8Fw/OWlxqAb2IMde/SUFlblqlB7zaqXQn+y4xlnQ8XKe8+cZSDLSZjCb7nzWSpAur1CCdzGJpnkz9yAMlukpQGhNQEaJ3L3nfozwLIYkWSue5UOxDFZ6qA1fT/mishTDw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764647300; c=relaxed/simple;
-	bh=ZMfx66bdpaJivIFLmf32uKiPzwqpTL0M5QjJ0HjLuts=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=KJcTgvUgbeTsMGs/UD8zDjVTaUrc9mKmUTA25bKD9SdkoCmY60Iinkua6R2mSIw7ic69UfdZ804m9oybW9+MITBssmjvVT9GGoiocvzMfhsG7d9JO7koqAHiMBE0J2xNuYAvIwe0x88aiPrFpENHft9IH0qGZrZ2J4tDUhPajnQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=B1QXDvL2; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=lyfcAQ4w; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1764653063; c=relaxed/simple;
+	bh=wiBckAWV96SNiwkvHWDY1PwWuaniEJfOqlpJvVlQuAU=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=GyH/LUCiXqPVWVOF9yRjmP9enq4pRUWIL41a0/nIXJArK6qs5pCY56xFXf2wnbQnnQwQCoK/SK9HOTi6tY9M9cRTx7/GARZeJRAVPK+OIEeSZFPd5OzaiULuIY3rVKx3KYxqDA0IAsu5GB7J4NIrtaDOk4hJVpj3OVPjF4d7BTM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=ABVtFQCx; arc=none smtp.client-ip=198.175.65.11
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="B1QXDvL2";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="lyfcAQ4w"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1764647297;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=H18A+0RmYy7qzAd6no2pQnFAn6q5fxVYh0auTgIufyI=;
-	b=B1QXDvL2cpAg+C6l6SZWonY2NM9rVBkT8iG9xKsnv5/MSY8jsLrA2sQObY/NXOwEAeBtk+
-	y8szKhrfqKtn5B7m+ekjEByIb6EpYTD09eQLepF4qu5YEF9vlzqvdIq6tDT9YXrZBuaRAX
-	Zyz9Eqv6BkXalcR7TlKhnv6yi9vds2c=
-Received: from mail-pl1-f200.google.com (mail-pl1-f200.google.com
- [209.85.214.200]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-196-Cv2aX32GPxGZgFKMlvCQUA-1; Mon, 01 Dec 2025 22:48:16 -0500
-X-MC-Unique: Cv2aX32GPxGZgFKMlvCQUA-1
-X-Mimecast-MFC-AGG-ID: Cv2aX32GPxGZgFKMlvCQUA_1764647295
-Received: by mail-pl1-f200.google.com with SMTP id d9443c01a7336-297dfae179bso103268605ad.1
-        for <kvm@vger.kernel.org>; Mon, 01 Dec 2025 19:48:16 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1764647295; x=1765252095; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=H18A+0RmYy7qzAd6no2pQnFAn6q5fxVYh0auTgIufyI=;
-        b=lyfcAQ4wOAHkIrObkX7rppETAs9q5CM7vGPlvtjApeGDNozp1lWBJXT2hKalW64nOp
-         3Z0AG4mcpdYUNutaZOt6k9MXoDoqBNiSI4EYBicPHJQpSVdk5I962mQrnUa4yErsq1Bi
-         Bw09xIz9nW+gsSWfQUfs0ulTg9An1Oi3PQtqE1xUCyWPRUVLH4fx2t4RczI1KSQDhzPR
-         sEpaLgN07u9e37poc4UQjjZviJ0rC5oxlOfVOlaCIAMffSdehEo8clqkvtbdQTfhrvwP
-         DE3Qoo7EadJB5yH5NIQPH1DyTRE1f+4fDNVXlg5yF9tgXR83FED0VzRZ66TVKsV7havb
-         7Ehg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1764647295; x=1765252095;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=H18A+0RmYy7qzAd6no2pQnFAn6q5fxVYh0auTgIufyI=;
-        b=be8yUI1raHCO0BSzRV1ZXVPBotMHdnVL6ajEKY75/lEXJRD39JtTY1bkn/mboGSI9h
-         YtwsbQo9JfQJ3UAJW3zgMbXhgwLLcuPVS+M+t5dhO/4ybakbUvwTa+6esTO14e5qj8wa
-         3LJ/XdWPN4mQXykfF6MqpiXdy9NElzZYXGewElFTvp2LsoFlRykSjN79Yv/183V0XLKC
-         55WYhkU15zlqkKxkpCqvKhqMC576m6ruOPl7jN3ZBgzK3d6/BNMfPacUtUNUHh1zgS37
-         TAn5LTRRYXjW8Grmi7MXa91jZXnFN+ZkpBk8sdR1oPFNex839j+9BImtKHr+8SzRS7/u
-         poFA==
-X-Forwarded-Encrypted: i=1; AJvYcCVj+98PWCmCBLbWaysafwurF/9yFLPTR2GY/a4/aRPeqZgpe2gG1aZROq2pVswql+PjKVo=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxDvr7onWHBnMyPBSqGShbAoSi5IocJGcnN7E/prv8as16TrvwL
-	XHRY1xtLMparqfXRrhEuJ/OWhtZSh1jRkD6hCQY/Yp75KcIJT9UhN3tqcWX0YoHQwPA0CeMZdZx
-	K82Sxjm4Ce7uUs4nxMAI9IWBeEHgo1yehgoB6vnt2/vs8XcHhTrsBSg==
-X-Gm-Gg: ASbGncv0QPAmtTvlzXpZ2Vqx4Eel7rkZOyrnDwZiURQKXmTaEjPVx3TH7YmSIlXshfA
-	q9csq6AWRLbrqF5YBX5IfAzcyYF8HMIj0Osw21SOknXBf9nMKrViGJoj0SpZfb3Vu/+4wolSEQn
-	KfTKPTAtcZBXl0nzEGHRSoHrFvO8dfbeCxIxURT8HIR/Bq/MHd1q2quA3AaPXdFspjiNwLKa2vP
-	n/+GzStEF3aCdCsCdb41JB2tGkjboU/KNVyroSEu3yROe/ojM8YfMp03MFjEu+2vXbT7ThODSim
-	73RpVU6i9LieAP6+xYBNd5Pnw2Tnvlz7O21fUr7z8Nx27jCUnQ6QwKAbSjC9mMRvrJVRROkjuDZ
-	VC40u
-X-Received: by 2002:a17:903:4b04:b0:297:f527:a38f with SMTP id d9443c01a7336-29b6bec3fcfmr425510415ad.18.1764647295287;
-        Mon, 01 Dec 2025 19:48:15 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IGO/Mnp57Xj9CDlhkU9TdtnPMdRJNu7iIsNI+FeGU9EsPa5P4IulqY35znPbwdyF9adk2BbZQ==
-X-Received: by 2002:a17:903:4b04:b0:297:f527:a38f with SMTP id d9443c01a7336-29b6bec3fcfmr425510275ad.18.1764647294921;
-        Mon, 01 Dec 2025 19:48:14 -0800 (PST)
-Received: from zeus ([2405:6580:83a0:7600:6e93:a15a:9134:ae1f])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-29bceb559d6sm138403325ad.94.2025.12.01.19.48.12
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 01 Dec 2025 19:48:14 -0800 (PST)
-Date: Tue, 2 Dec 2025 12:48:10 +0900
-From: Ryosuke Yasuoka <ryasuoka@redhat.com>
-To: pbonzini@redhat.com, vkuznets@redhat.com, tglx@linutronix.de,
-	mingo@redhat.com, bp@alien8.de, dave.hansen@linux.intel.com,
-	hpa@zytor.com
-Cc: x86@kernel.org, kvm@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] x86/kvm: Avoid freeing stack-allocated node in
- kvm_async_pf_queue_task
-Message-ID: <aS5hekMmIrsJPK-L@zeus>
-References: <20251122090828.1416464-1-ryasuoka@redhat.com>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="ABVtFQCx"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1764653061; x=1796189061;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=wiBckAWV96SNiwkvHWDY1PwWuaniEJfOqlpJvVlQuAU=;
+  b=ABVtFQCxvehpHEMGKSYQp1hqWYJTsoy+hTMEtxi2IYipB56s52JNNO3q
+   IsOqfXQf/G4oATLrzQlCE9//Ki02F9Ja5Af/6WlfxOFj5oXand+uaQEXI
+   eZRmGAVxzQau7oB+5scB3LGdZWS3rXBGgH/I77RDboJ2QTJb2G3ax4Nou
+   z74ZJG7PFd/fwI7sA8cFSRhMyEhzNni1V7hbq1dvFpe/JM1pSZ/FWEA7V
+   06nutAhywePLrzeiQ88s7LSu1POdW8Np8Gre7T+Owx9KOMZXAMVViuTKY
+   mFis/myhDYDPrLWcT8mgBfUTXFGDQFYoMBDfzZloGcOQxvFxbVGjdfsFR
+   Q==;
+X-CSE-ConnectionGUID: lD65vMY8Tv6+/EkWBhUKdQ==
+X-CSE-MsgGUID: P/N1Dz6MSGOzRiTc+QCtqQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11630"; a="76929817"
+X-IronPort-AV: E=Sophos;i="6.20,242,1758610800"; 
+   d="scan'208";a="76929817"
+Received: from orviesa005.jf.intel.com ([10.64.159.145])
+  by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Dec 2025 21:24:15 -0800
+X-CSE-ConnectionGUID: lrhr8EogTWiPpKyzC1w9Uw==
+X-CSE-MsgGUID: H4nXtRgxTT6O5+1R8PpZKg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.20,242,1758610800"; 
+   d="scan'208";a="199399236"
+Received: from yilunxu-optiplex-7050.sh.intel.com ([10.239.159.165])
+  by orviesa005.jf.intel.com with ESMTP; 01 Dec 2025 21:24:13 -0800
+From: Xu Yilun <yilun.xu@linux.intel.com>
+To: x86@kernel.org,
+	dave.hansen@linux.intel.com,
+	kas@kernel.org,
+	linux-kernel@vger.kernel.org
+Cc: chao.gao@intel.com,
+	rick.p.edgecombe@intel.com,
+	dan.j.williams@intel.com,
+	baolu.lu@linux.intel.com,
+	yilun.xu@linux.intel.com,
+	yilun.xu@intel.com,
+	zhenzhong.duan@intel.com,
+	kvm@vger.kernel.org,
+	adrian.hunter@intel.com
+Subject: [PATCH 1/6] x86/virt/tdx: Move bit definitions of TDX_FEATURES0 to public header
+Date: Tue,  2 Dec 2025 13:08:39 +0800
+Message-Id: <20251202050844.2520762-2-yilun.xu@linux.intel.com>
+X-Mailer: git-send-email 2.25.1
+In-Reply-To: <20251202050844.2520762-1-yilun.xu@linux.intel.com>
+References: <20251202050844.2520762-1-yilun.xu@linux.intel.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251122090828.1416464-1-ryasuoka@redhat.com>
+Content-Transfer-Encoding: 8bit
 
-On Sat, Nov 22, 2025 at 06:08:24PM +0900, Ryosuke Yasuoka wrote:
-> kvm_async_pf_queue_task() can incorrectly remove a node allocated on the
-> stack of kvm_async_pf_task_wait_schedule(). This occurs when a task
-> request a PF while another task's PF request with the same token is
-> still pending. Currently, kvm_async_pf_queue_task() assumes that any
-> entry in the list is a dummy entry and tries to kfree(). To fix this,
-> add a dummy flag to the node structure and the function should check
-> this flag and kfree() only if it is a dummy entry.
-> 
-> Signed-off-by: Ryosuke Yasuoka <ryasuoka@redhat.com>
-> ---
->  arch/x86/kernel/kvm.c | 13 +++++++++++--
->  1 file changed, 11 insertions(+), 2 deletions(-)
-> 
-> diff --git a/arch/x86/kernel/kvm.c b/arch/x86/kernel/kvm.c
-> index b67d7c59dca0..2c92ec528379 100644
-> --- a/arch/x86/kernel/kvm.c
-> +++ b/arch/x86/kernel/kvm.c
-> @@ -88,6 +88,7 @@ struct kvm_task_sleep_node {
->  	struct swait_queue_head wq;
->  	u32 token;
->  	int cpu;
-> +	bool dummy;
->  };
->  
->  static struct kvm_task_sleep_head {
-> @@ -119,10 +120,17 @@ static bool kvm_async_pf_queue_task(u32 token, struct kvm_task_sleep_node *n)
->  	raw_spin_lock(&b->lock);
->  	e = _find_apf_task(b, token);
->  	if (e) {
-> +		struct kvm_task_sleep_node *dummy = NULL;
-> +
->  		/* dummy entry exist -> wake up was delivered ahead of PF */
-> -		hlist_del(&e->link);
-> +		/* Otherwise it should not be freed here. */
-> +		if (e->dummy) {
-> +			hlist_del(&e->link);
-> +			dummy = e;
-> +		}
-> +
->  		raw_spin_unlock(&b->lock);
-> -		kfree(e);
-> +		kfree(dummy);
->  		return false;
->  	}
->  
-> @@ -230,6 +238,7 @@ static void kvm_async_pf_task_wake(u32 token)
->  		}
->  		dummy->token = token;
->  		dummy->cpu = smp_processor_id();
-> +		dummy->dummy = true;
->  		init_swait_queue_head(&dummy->wq);
->  		hlist_add_head(&dummy->link, &b->list);
->  		dummy = NULL;
-> 
-> base-commit: 2eba5e05d9bcf4cdea995ed51b0f07ba0275794a
-> -- 
-> 2.51.0
+Move bit definitions of TDX_FEATURES0 to TDX core public header.
 
-Hi all,
+Kernel users get TDX_FEATURES0 bitmap via tdx_get_sysinfo(). It is
+reasonable to also public the definitions of each bit. TDX Connect (a
+new TDX feature to enable Trusted I/O virtualization) will add new bits
+and check them in separate kernel modules.
 
-It's just a gentle ping on this patch.
+Take the opportunity to change its type to BIT_ULL since TDX_FEATURES0
+is explicitly defined as 64-bit in both TDX Module Specification and
+TDX core code.
 
-Please let me know if thare any changes required. Any feedbacks are
-welcome.
+Signed-off-by: Xu Yilun <yilun.xu@linux.intel.com>
+---
+ arch/x86/include/asm/tdx.h  | 4 ++++
+ arch/x86/virt/vmx/tdx/tdx.h | 3 ---
+ 2 files changed, 4 insertions(+), 3 deletions(-)
 
-Here is a original patch's link:
-
-https://lore.kernel.org/all/20251122090828.1416464-1-ryasuoka@redhat.com/
-
-Thank you
-Ryosuke
+diff --git a/arch/x86/include/asm/tdx.h b/arch/x86/include/asm/tdx.h
+index 6b338d7f01b7..96565f6b69b9 100644
+--- a/arch/x86/include/asm/tdx.h
++++ b/arch/x86/include/asm/tdx.h
+@@ -148,6 +148,10 @@ static __always_inline u64 sc_retry(sc_func_t func, u64 fn,
+ int tdx_cpu_enable(void);
+ int tdx_enable(void);
+ const char *tdx_dump_mce_info(struct mce *m);
++
++/* Bit definitions of TDX_FEATURES0 metadata field */
++#define TDX_FEATURES0_NO_RBP_MOD	BIT_ULL(18)
++
+ const struct tdx_sys_info *tdx_get_sysinfo(void);
+ 
+ int tdx_guest_keyid_alloc(void);
+diff --git a/arch/x86/virt/vmx/tdx/tdx.h b/arch/x86/virt/vmx/tdx/tdx.h
+index 82bb82be8567..c641b4632826 100644
+--- a/arch/x86/virt/vmx/tdx/tdx.h
++++ b/arch/x86/virt/vmx/tdx/tdx.h
+@@ -84,9 +84,6 @@ struct tdmr_info {
+ 	DECLARE_FLEX_ARRAY(struct tdmr_reserved_area, reserved_areas);
+ } __packed __aligned(TDMR_INFO_ALIGNMENT);
+ 
+-/* Bit definitions of TDX_FEATURES0 metadata field */
+-#define TDX_FEATURES0_NO_RBP_MOD	BIT(18)
+-
+ /*
+  * Do not put any hardware-defined TDX structure representations below
+  * this comment!
+-- 
+2.25.1
 
