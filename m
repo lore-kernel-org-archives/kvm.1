@@ -1,47 +1,48 @@
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B3572F60C1;
-	Tue,  2 Dec 2025 05:24:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 606E52F60B3;
+	Tue,  2 Dec 2025 05:24:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.11
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764653065; cv=none; b=FG9JlaoeZF3Xgpt+4F8pGU330yyaSaDuN8R+JHvyuMCt4Jn2i/PQFNRCyu41hCy3eugMT+mqWbMnT182kWT4F31inGgKNRndi5wGicSs7yhtfbIEptKrIBhQOSq8e3vpD5bUEiwbRFPLz2JbWEX/ZVWazzd4WzaWxJuEs+ZI2oY=
+	t=1764653065; cv=none; b=an9fnFxTrnqqlr4rx/mS1MF/1xEbMb2nntYHuee08ASS7UxxYYBHEUfXGIN6p/Ur3czNXUd7fMpYZz8bhwFYUQOTC02zLbUW0BOL80Ys8ZuhLKvth6kufZUVrEtkbnMZNhhjtcWwic/v9RBlqKyBJR0WY6MvjnExF5Y0wx9Pueo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1764653065; c=relaxed/simple;
-	bh=2JnN+LWHudvTEWaawiNNu3VLxzIQWgftiKGm/gBSJJU=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=S0sX67wDxNY9z9T+0QlTqLCkYwWUQYanvUvsuFG/w4m5z1JnjTLJqLfgIqdNHR+8X7lOPeASpgci6HWYz3im5Uq4+9kaAPQaCNqqlWHMo9Emx+Zt0Ki3OxJWC52fPUhW5WbTbU/NAjcJ0+pIMvo2VLq0lYIW/5ufMR8VNLd411M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=KCLByWe4; arc=none smtp.client-ip=198.175.65.11
+	bh=h53ncUol0tv0NPlX/HBkG5nr7VwVBGm5wiQ32WEK1gc=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=dQ4A34IpsNJKHZ39S6eM03O3SH7DFQAa+X7OAPvmaslBdm6fSvCjdi7338ka0Hgbh0Bd/fdLjVASsMwqyHPOtoicXEbQvI8j0bLBOyd7QO6JbASsSKoUNI2rd07eUttKE/ahkNulTN8jrEp0VAArbd9iTtoskAerFSZzs5XHCsk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=CJfFBpgF; arc=none smtp.client-ip=198.175.65.11
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="KCLByWe4"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="CJfFBpgF"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
   t=1764653063; x=1796189063;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=2JnN+LWHudvTEWaawiNNu3VLxzIQWgftiKGm/gBSJJU=;
-  b=KCLByWe49YMSxpIBZoThKEUaBWt24VB7HLk/ZZPZ5lql+TUdTW1ydoQm
-   HzK5Ts8kgn3jGzun9wrrIatrfH++P3iqjS5lXZcU5HYNQ+oKug24Ox2FJ
-   TdyvnM/mWM7dUbQF6JtFilmQVqqVQnQQB8jlH+WTxWryEQrzFt8r7x1bo
-   VK7J76cBaonlF4Q208Pw0zS2J5qRi22YfgjUdMUrRFPe0V006f9UHo/Ja
-   EwOwuG4Q/vfvdol28hTpFexcm7+K02cCuNtCcpSHzfZoX4A8Xf7u7ujO2
-   FehOLTNLhdywWqkuscCTBfvtI0ob3umCZUOGHXo3vF7DqtO2X9Y8bfuKU
-   g==;
-X-CSE-ConnectionGUID: UkHgnzWCT+GUBRayWjqDzQ==
-X-CSE-MsgGUID: ygLE7tZ6Tpmn44VX/d52ww==
-X-IronPort-AV: E=McAfee;i="6800,10657,11630"; a="76929815"
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=h53ncUol0tv0NPlX/HBkG5nr7VwVBGm5wiQ32WEK1gc=;
+  b=CJfFBpgFTOxKG9XEef/i/JfhQ99M3UGeoGmNmNRsz2pIpYI8zUJDk12p
+   uyNFhZ7+uqVafVdIs+qDgObyAdPjfbuTE2aKbybbiobmcyfI/ztEOGAkU
+   BtgTdUaSLfaG2nG5L+TPifsk0kBuF2AFKJiLZAEqB+hdlaKZ0np3vuf9K
+   yw+++Bgqjqn3SkqEQ1hbWeTzuJvmIMtFsgmQqEc1WHeex3WFjQdy0VVCY
+   GgYFHydnWr1ncUkibc0TjLSRwftHWf73kgFhR5OaIBX5fr3tgNo0hWA8E
+   pH0IxTiczRKrsD8qP24KGYVADm0k9nRouq0agDVs5ohM4XLHZXcwl1/Oa
+   A==;
+X-CSE-ConnectionGUID: /R5A9lsQRJiHb6CSoSX+SQ==
+X-CSE-MsgGUID: LA51VMAdSlCKxU1oTQAKKg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11630"; a="76929820"
 X-IronPort-AV: E=Sophos;i="6.20,242,1758610800"; 
-   d="scan'208";a="76929815"
+   d="scan'208";a="76929820"
 Received: from orviesa005.jf.intel.com ([10.64.159.145])
-  by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Dec 2025 21:24:15 -0800
-X-CSE-ConnectionGUID: MdXwg0dZQHusGG3x3cl4Iw==
-X-CSE-MsgGUID: 3RmeRrYWQHK7GM/fvh6XaQ==
+  by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Dec 2025 21:24:19 -0800
+X-CSE-ConnectionGUID: Wyx3EsBRT4a+naEi+TPAvg==
+X-CSE-MsgGUID: DWmqWiK8RvGcXMcpxyk1qg==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.20,242,1758610800"; 
-   d="scan'208";a="199399223"
+   d="scan'208";a="199399241"
 Received: from yilunxu-optiplex-7050.sh.intel.com ([10.239.159.165])
-  by orviesa005.jf.intel.com with ESMTP; 01 Dec 2025 21:24:10 -0800
+  by orviesa005.jf.intel.com with ESMTP; 01 Dec 2025 21:24:16 -0800
 From: Xu Yilun <yilun.xu@linux.intel.com>
 To: x86@kernel.org,
 	dave.hansen@linux.intel.com,
@@ -56,10 +57,12 @@ Cc: chao.gao@intel.com,
 	zhenzhong.duan@intel.com,
 	kvm@vger.kernel.org,
 	adrian.hunter@intel.com
-Subject: [PATCH 0/6] TDX: Stop metadata auto-generation, improve readability
-Date: Tue,  2 Dec 2025 13:08:38 +0800
-Message-Id: <20251202050844.2520762-1-yilun.xu@linux.intel.com>
+Subject: [PATCH 2/6] x86/virt/tdx: Move read_sys_metadata_field() to where it is called
+Date: Tue,  2 Dec 2025 13:08:40 +0800
+Message-Id: <20251202050844.2520762-3-yilun.xu@linux.intel.com>
 X-Mailer: git-send-email 2.25.1
+In-Reply-To: <20251202050844.2520762-1-yilun.xu@linux.intel.com>
+References: <20251202050844.2520762-1-yilun.xu@linux.intel.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -68,51 +71,108 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Hi:
+Moving read_sys_metadata_field() to tdx_global_metadata.c marks the end
+of auto-generating global metadata parsing code. The source of the
+auto-generation, the JSON file, is not stable and not authoritative
+enough. Switch back to manual editing and improve code readability.
 
-This addresses the common need [1][2] to stop auto-generating metadata
-reading code, improve readability, allowing us to manually edit and
-review metadata code in a comfortable way. TDX Connect needs to add more
-metadata fields based on this series, and I believe also for DPAMT and
-TDX Module runtime update.
+The only possible usage of read_sys_metadata_field() is to cache all
+global metadata in system memory on TDX Module initialization. Moving it
+alongside other metadata reading code improves readability.
 
-The main changes derive from previous code & discussions before
-auto-generation is introduced, including the usage of
-struct field_mapping table, the build-time field size check, the concern
-about awkward "ret = ret ?: " code pattern. [3]
+Take the opportunity to remove any description for auto-generation.
 
-Another concern from DPAMT [4] leads to the last patch and I realize all
-optional features may face with the same problem - Optional metadata
-reading should be skipped when a TDX Module doesn't support, don't fail
-the whole TDX Module initialization. I use "TDX Module Extensions" as
-the example and test case just because I have the TDX Connect ENV on
-hand.
+Signed-off-by: Xu Yilun <yilun.xu@linux.intel.com>
+---
+ arch/x86/include/asm/tdx_global_metadata.h  |  6 +++---
+ arch/x86/virt/vmx/tdx/tdx.c                 | 20 -------------------
+ arch/x86/virt/vmx/tdx/tdx_global_metadata.c | 22 ++++++++++++++++++++-
+ 3 files changed, 24 insertions(+), 24 deletions(-)
 
-This series is based on Dan's tsm#devsec-phase1 [5] (convenient for my
-testing), but is clean to apply to v6.18-rc7.
-
-[1] https://lore.kernel.org/kvm/1e7bcbad-eb26-44b7-97ca-88ab53467212@intel.com/
-[2] https://lore.kernel.org/all/89a4e42d-b0fd-49b0-8d51-df7bac0d5e5b@intel.com/
-[3] https://lore.kernel.org/kvm/9a06e2cf469cbca2777ac2c4ef70579e6bb934d5.camel@intel.com/
-[4] https://lore.kernel.org/kvm/850f7ce0571cb54bc984c79861bdfd104e097eb9.camel@intel.com/
-[5] https://git.kernel.org/pub/scm/linux/kernel/git/devsec/tsm.git/log/?h=devsec-phase1
-
-
-Xu Yilun (6):
-  x86/virt/tdx: Move bit definitions of TDX_FEATURES0 to public header
-  x86/virt/tdx: Move read_sys_metadata_field() to where it is called
-  x86/virt/tdx: Refactor metadata reading with a clearer for loop
-  x86/virt/tdx: Sanity check the size of each metadata field
-  x86/virt/tdx: Add generic support for reading array-typed metadata
-  x86/virt/tdx: Skip unsupported metadata by querying tdx_feature0
-
- arch/x86/include/asm/tdx.h                  |   5 +
- arch/x86/include/asm/tdx_global_metadata.h  |  12 +-
- arch/x86/virt/vmx/tdx/tdx.h                 |   3 -
- arch/x86/virt/vmx/tdx/tdx.c                 |  20 --
- arch/x86/virt/vmx/tdx/tdx_global_metadata.c | 194 ++++++++++++--------
- 5 files changed, 134 insertions(+), 100 deletions(-)
-
+diff --git a/arch/x86/include/asm/tdx_global_metadata.h b/arch/x86/include/asm/tdx_global_metadata.h
+index 060a2ad744bf..b44f1df013b2 100644
+--- a/arch/x86/include/asm/tdx_global_metadata.h
++++ b/arch/x86/include/asm/tdx_global_metadata.h
+@@ -1,7 +1,7 @@
+ /* SPDX-License-Identifier: GPL-2.0 */
+-/* Automatically generated TDX global metadata structures. */
+-#ifndef _X86_VIRT_TDX_AUTO_GENERATED_TDX_GLOBAL_METADATA_H
+-#define _X86_VIRT_TDX_AUTO_GENERATED_TDX_GLOBAL_METADATA_H
++/* TDX global metadata structures. */
++#ifndef _X86_VIRT_TDX_GLOBAL_METADATA_H
++#define _X86_VIRT_TDX_GLOBAL_METADATA_H
+ 
+ #include <linux/types.h>
+ 
+diff --git a/arch/x86/virt/vmx/tdx/tdx.c b/arch/x86/virt/vmx/tdx/tdx.c
+index eac403248462..0d7f9bdac8a4 100644
+--- a/arch/x86/virt/vmx/tdx/tdx.c
++++ b/arch/x86/virt/vmx/tdx/tdx.c
+@@ -257,26 +257,6 @@ static int build_tdx_memlist(struct list_head *tmb_list)
+ 	return ret;
+ }
+ 
+-static int read_sys_metadata_field(u64 field_id, u64 *data)
+-{
+-	struct tdx_module_args args = {};
+-	int ret;
+-
+-	/*
+-	 * TDH.SYS.RD -- reads one global metadata field
+-	 *  - RDX (in): the field to read
+-	 *  - R8 (out): the field data
+-	 */
+-	args.rdx = field_id;
+-	ret = seamcall_prerr_ret(TDH_SYS_RD, &args);
+-	if (ret)
+-		return ret;
+-
+-	*data = args.r8;
+-
+-	return 0;
+-}
+-
+ #include "tdx_global_metadata.c"
+ 
+ static int check_features(struct tdx_sys_info *sysinfo)
+diff --git a/arch/x86/virt/vmx/tdx/tdx_global_metadata.c b/arch/x86/virt/vmx/tdx/tdx_global_metadata.c
+index 13ad2663488b..0dfb3a9995fe 100644
+--- a/arch/x86/virt/vmx/tdx/tdx_global_metadata.c
++++ b/arch/x86/virt/vmx/tdx/tdx_global_metadata.c
+@@ -1,12 +1,32 @@
+ // SPDX-License-Identifier: GPL-2.0
+ /*
+- * Automatically generated functions to read TDX global metadata.
++ * Functions to read TDX global metadata.
+  *
+  * This file doesn't compile on its own as it lacks of inclusion
+  * of SEAMCALL wrapper primitive which reads global metadata.
+  * Include this file to other C file instead.
+  */
+ 
++static int read_sys_metadata_field(u64 field_id, u64 *data)
++{
++	struct tdx_module_args args = {};
++	int ret;
++
++	/*
++	 * TDH.SYS.RD -- reads one global metadata field
++	 *  - RDX (in): the field to read
++	 *  - R8 (out): the field data
++	 */
++	args.rdx = field_id;
++	ret = seamcall_prerr_ret(TDH_SYS_RD, &args);
++	if (ret)
++		return ret;
++
++	*data = args.r8;
++
++	return 0;
++}
++
+ static int get_tdx_sys_info_features(struct tdx_sys_info_features *sysinfo_features)
+ {
+ 	int ret = 0;
 -- 
 2.25.1
 
