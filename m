@@ -1,87 +1,223 @@
-Received: from mail-pg1-f202.google.com (mail-pg1-f202.google.com [209.85.215.202])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from fra-out-006.esa.eu-central-1.outbound.mail-perimeter.amazon.com (fra-out-006.esa.eu-central-1.outbound.mail-perimeter.amazon.com [18.197.217.180])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B1B734B190
-	for <kvm@vger.kernel.org>; Fri,  5 Dec 2025 17:00:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.202
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5BD6D2FD1C5;
+	Fri,  5 Dec 2025 17:00:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=18.197.217.180
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764954031; cv=none; b=d64VDk7xLVYDwbD2vmA44bFhxYhlapywf9nV6LfWE2gb1YWbkoEdDwbEFblVRWy7RwDAozvjfm3kFTWKoD3AlZco/Cp3ieprKuvT/6WEYcJQt5tLTGwFcR3yxrGLRR/MpXBOg10myIOq8YGQ1OhjiJZ5cmH3onueiAvQcCVRNlk=
+	t=1764954024; cv=none; b=EPNZPR/HWyPer2ui1rQVngzC5T42acIwoQHiTIdejjtDhBuaoIJY+PlTDEJ/E+ufznXkN0H5Wht5vqThY67p9FUmkOQoBK1VAEDyhB0mIpf3J8iMMT3ES0EgzE0rUO6X5ff9FJtNB62UiUPVcWW18AQaHDYtG8q9Y8tzgIxh69s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764954031; c=relaxed/simple;
-	bh=pJ8yFcPnJVTemBH5LLrP0aRwqGd9ZLrLD2YAijIxors=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=K4Kinqg9PFY8gmjZb25mYmN1LAQw0v/1K8PHgMv8d+j9IZaAZjnkIzheGf9OGlttkl2Hz8eq8gAPUZR6WiLnhF31iiw9TCfxCbQrPtnJVnOmAcSZzbkxZIuLbI0xbNbYWVLMjwT6jve/nf+34f3JqIurqyCyGCEFRrP6k9Jp0YU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=rQF5bwLC; arc=none smtp.client-ip=209.85.215.202
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+	s=arc-20240116; t=1764954024; c=relaxed/simple;
+	bh=5UpnxnEVgU0Oy/yU6lakZ+7I/hP5dkdcXUkzHcJlwzI=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=aLH30B/+AeIcEgwnU6Z9LucdqDjIop2o+SrTeuHKeq/4g0CTgQznXwIeuozmbPrpn6baXC6WVl/P1Wqmtn4qba2PmScKqkudUmhePxVCEgtyb5Y6ZF9/rsNam8oJwBoFLGs9fcFH+xwfiaqVHu4mVhNV9Z7wNbsNDsrTjPa6QWU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.co.uk; spf=pass smtp.mailfrom=amazon.co.uk; dkim=pass (2048-bit key) header.d=amazon.co.uk header.i=@amazon.co.uk header.b=Lzn5FLGC; arc=none smtp.client-ip=18.197.217.180
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.co.uk
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amazon.co.uk
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="rQF5bwLC"
-Received: by mail-pg1-f202.google.com with SMTP id 41be03b00d2f7-bd74e95f05aso1961385a12.1
-        for <kvm@vger.kernel.org>; Fri, 05 Dec 2025 09:00:24 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=amazon.co.uk header.i=@amazon.co.uk header.b="Lzn5FLGC"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1764954020; x=1765558820; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=j/nv/S0AF1aww/PpL3h7iNG9Cj3Ek+VrZ+ocMBY/e3g=;
-        b=rQF5bwLC+hNbcM/gV0+GFAmEblmsbbhI9e5obXCSbrcayizSH+4XDatnwFsikanSKS
-         7o2aQ6GfnZKuotKTwdHI86KuhEL4R7YKeRQ80+9jGTPNnQsjfSxvwZNOlOsAlOre6znK
-         5PZbF7btaVYHBODZ7jfXekAMZxuVadAogL4qZ/X3Ofz4sgL9X6Usf0eIGVdjtavaRciL
-         xdJB3vVMc/XSD+xZTLAxB3wMrNq00vIePp75djSpNeYFnvDwpAguqGO6G1ImZ+A5qGua
-         CUTzYBLMNJARtmPySWlt1o2041D/E2zWOOcqO/lY3NaT75r0CRXao712POtflh9pqpav
-         PH6g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1764954020; x=1765558820;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=j/nv/S0AF1aww/PpL3h7iNG9Cj3Ek+VrZ+ocMBY/e3g=;
-        b=SchSVUGKJmWXRcb6Ff/plKzEwZpiLhpjeswpr8p/crgdGWs9yZVWMdVhhchQC8TYJI
-         Nh0pM17RdBP1eGBQn0DgP+VMYpNrgK98BYpQqObavjZg6OgbtSPOnjjMvlrNg69dJ9ug
-         ZAU3oDhjEnd7kPxXAGursUSWXXc75/X4SuXBOzwRm2zI2ZNgeGiJcwaMaLaL1togkRat
-         yvNZsPbGZCaiFuAsWNsuU/SrD1bEphJRWMTUm3kUZOxyso/S/x1uNxGOJBOeoZaA8+L/
-         KYTVBcYfNf3xJcXL0HERdnDO6t8XRTphVFyPhJlHCsVJFb1auq+fbB0tz6q63i5EX+hJ
-         l+fg==
-X-Gm-Message-State: AOJu0Ywh6MRm7jGiHEEnX7Sp+YNmU14V4sLWj1brSejBfjTNpIJG/xKW
-	2YAp6F2goiRQp+kFYDe8OGEBDfgQg2Nvt68HcU4AvDHD/3l5pXIBJ265KqzMW/OxUYzQY+VETiM
-	rGn2Z6g==
-X-Google-Smtp-Source: AGHT+IFYjMQLTRpb/CMPNwPd79bJ1+pRxDeYiCcgaN7JU4cjSSguLVy9KKfRzmOTpZ9lCz6rJb8slQ9scnQ=
-X-Received: from pgcq11.prod.google.com ([2002:a63:750b:0:b0:bac:a20:5edf])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a20:72a5:b0:364:14f3:a5b
- with SMTP id adf61e73a8af0-36414f30ac0mr3768954637.2.1764954020258; Fri, 05
- Dec 2025 09:00:20 -0800 (PST)
-Date: Fri,  5 Dec 2025 08:59:29 -0800
-In-Reply-To: <20251202015049.1167490-1-seanjc@google.com>
+  d=amazon.co.uk; i=@amazon.co.uk; q=dns/txt;
+  s=amazoncorp2; t=1764954020; x=1796490020;
+  h=from:to:cc:subject:date:message-id:references:
+   in-reply-to:content-transfer-encoding:mime-version;
+  bh=sUXffJ10pcwposVmC9vM2kcbCnj2+0WuRal0d/tv1pE=;
+  b=Lzn5FLGC6ghtL8M3CSFradccijxjrsRnwlzD231N5unmDCDd3edABjzU
+   b9WA+8CaZPLXFw9lrcJDdhWY4NkPGBmOV62Lf7qipimQjC7VwhLTYkn2U
+   KkK2zkodVlnqk2CSiTI5zM9go4ZpTOcbXbtc9ChJMuhmgTV7JOEz3Mhz3
+   AxtrRq5Pr347+Xd438zbB2M4Wym2miQnwQqp8s38qu9u4kQ/eisxoh3S2
+   R/VARxM6IA5Qknbt/Il5RfW0OGklj5i4nFEOdkKtTi+mJ5VBwd5Dr90x3
+   kRwkX6H00t7fA+xtD5mn1gQF1rRzJnpdwYRArwSVt47+MwvGOIzlQ0iWF
+   A==;
+X-CSE-ConnectionGUID: P9803+feTBiSUBA+N8ttpw==
+X-CSE-MsgGUID: Pg8pNwcjQpCugjo7oQu4Vw==
+X-IronPort-AV: E=Sophos;i="6.20,252,1758585600"; 
+   d="scan'208";a="6301836"
+Received: from ip-10-6-6-97.eu-central-1.compute.internal (HELO smtpout.naws.eu-central-1.prod.farcaster.email.amazon.dev) ([10.6.6.97])
+  by internal-fra-out-006.esa.eu-central-1.outbound.mail-perimeter.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Dec 2025 17:00:15 +0000
+Received: from EX19MTAEUC002.ant.amazon.com [54.240.197.236:1229]
+ by smtpin.naws.eu-central-1.prod.farcaster.email.amazon.dev [10.0.34.107:2525] with esmtp (Farcaster)
+ id bb13a913-5eca-4334-b10b-a564cc743b40; Fri, 5 Dec 2025 17:00:14 +0000 (UTC)
+X-Farcaster-Flow-ID: bb13a913-5eca-4334-b10b-a564cc743b40
+Received: from EX19D005EUB002.ant.amazon.com (10.252.51.103) by
+ EX19MTAEUC002.ant.amazon.com (10.252.51.181) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.29;
+ Fri, 5 Dec 2025 17:00:14 +0000
+Received: from EX19D005EUB003.ant.amazon.com (10.252.51.31) by
+ EX19D005EUB002.ant.amazon.com (10.252.51.103) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.29;
+ Fri, 5 Dec 2025 17:00:14 +0000
+Received: from EX19D005EUB003.ant.amazon.com ([fe80::b825:becb:4b38:da0c]) by
+ EX19D005EUB003.ant.amazon.com ([fe80::b825:becb:4b38:da0c%3]) with mapi id
+ 15.02.2562.029; Fri, 5 Dec 2025 17:00:14 +0000
+From: "Kalyazin, Nikita" <kalyazin@amazon.co.uk>
+To: "kvm@vger.kernel.org" <kvm@vger.kernel.org>, "linux-doc@vger.kernel.org"
+	<linux-doc@vger.kernel.org>, "linux-kernel@vger.kernel.org"
+	<linux-kernel@vger.kernel.org>, "kvmarm@lists.linux.dev"
+	<kvmarm@lists.linux.dev>, "linux-fsdevel@vger.kernel.org"
+	<linux-fsdevel@vger.kernel.org>, "linux-mm@kvack.org" <linux-mm@kvack.org>,
+	"bpf@vger.kernel.org" <bpf@vger.kernel.org>,
+	"linux-kselftest@vger.kernel.org" <linux-kselftest@vger.kernel.org>
+CC: "pbonzini@redhat.com" <pbonzini@redhat.com>, "corbet@lwn.net"
+	<corbet@lwn.net>, "maz@kernel.org" <maz@kernel.org>, "oupton@kernel.org"
+	<oupton@kernel.org>, "joey.gouly@arm.com" <joey.gouly@arm.com>,
+	"suzuki.poulose@arm.com" <suzuki.poulose@arm.com>, "yuzenghui@huawei.com"
+	<yuzenghui@huawei.com>, "catalin.marinas@arm.com" <catalin.marinas@arm.com>,
+	"will@kernel.org" <will@kernel.org>, "seanjc@google.com" <seanjc@google.com>,
+	"tglx@linutronix.de" <tglx@linutronix.de>, "mingo@redhat.com"
+	<mingo@redhat.com>, "bp@alien8.de" <bp@alien8.de>,
+	"dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>, "x86@kernel.org"
+	<x86@kernel.org>, "hpa@zytor.com" <hpa@zytor.com>, "luto@kernel.org"
+	<luto@kernel.org>, "peterz@infradead.org" <peterz@infradead.org>,
+	"willy@infradead.org" <willy@infradead.org>, "akpm@linux-foundation.org"
+	<akpm@linux-foundation.org>, "david@kernel.org" <david@kernel.org>,
+	"lorenzo.stoakes@oracle.com" <lorenzo.stoakes@oracle.com>,
+	"Liam.Howlett@oracle.com" <Liam.Howlett@oracle.com>, "vbabka@suse.cz"
+	<vbabka@suse.cz>, "rppt@kernel.org" <rppt@kernel.org>, "surenb@google.com"
+	<surenb@google.com>, "mhocko@suse.com" <mhocko@suse.com>, "ast@kernel.org"
+	<ast@kernel.org>, "daniel@iogearbox.net" <daniel@iogearbox.net>,
+	"andrii@kernel.org" <andrii@kernel.org>, "martin.lau@linux.dev"
+	<martin.lau@linux.dev>, "eddyz87@gmail.com" <eddyz87@gmail.com>,
+	"song@kernel.org" <song@kernel.org>, "yonghong.song@linux.dev"
+	<yonghong.song@linux.dev>, "john.fastabend@gmail.com"
+	<john.fastabend@gmail.com>, "kpsingh@kernel.org" <kpsingh@kernel.org>,
+	"sdf@fomichev.me" <sdf@fomichev.me>, "haoluo@google.com" <haoluo@google.com>,
+	"jolsa@kernel.org" <jolsa@kernel.org>, "jgg@ziepe.ca" <jgg@ziepe.ca>,
+	"jhubbard@nvidia.com" <jhubbard@nvidia.com>, "peterx@redhat.com"
+	<peterx@redhat.com>, "jannh@google.com" <jannh@google.com>,
+	"pfalcato@suse.de" <pfalcato@suse.de>, "shuah@kernel.org" <shuah@kernel.org>,
+	"riel@surriel.com" <riel@surriel.com>, "baohua@kernel.org"
+	<baohua@kernel.org>, "ryan.roberts@arm.com" <ryan.roberts@arm.com>,
+	"jgross@suse.com" <jgross@suse.com>, "yu-cheng.yu@intel.com"
+	<yu-cheng.yu@intel.com>, "kas@kernel.org" <kas@kernel.org>, "coxu@redhat.com"
+	<coxu@redhat.com>, "kevin.brodsky@arm.com" <kevin.brodsky@arm.com>,
+	"ackerleytng@google.com" <ackerleytng@google.com>, "maobibo@loongson.cn"
+	<maobibo@loongson.cn>, "prsampat@amd.com" <prsampat@amd.com>,
+	"mlevitsk@redhat.com" <mlevitsk@redhat.com>, "isaku.yamahata@intel.com"
+	<isaku.yamahata@intel.com>, "jmattson@google.com" <jmattson@google.com>,
+	"jthoughton@google.com" <jthoughton@google.com>,
+	"linux-arm-kernel@lists.infradead.org"
+	<linux-arm-kernel@lists.infradead.org>, "vannapurve@google.com"
+	<vannapurve@google.com>, "jackmanb@google.com" <jackmanb@google.com>,
+	"aneesh.kumar@kernel.org" <aneesh.kumar@kernel.org>, "patrick.roy@linux.dev"
+	<patrick.roy@linux.dev>, "Thomson, Jack" <jackabt@amazon.co.uk>, "Itazuri,
+ Takahiro" <itazur@amazon.co.uk>, "Manwaring, Derek" <derekmn@amazon.com>,
+	"Cali, Marco" <xmarcalx@amazon.co.uk>, "Kalyazin, Nikita"
+	<kalyazin@amazon.co.uk>
+Subject: [PATCH v8 13/13] KVM: selftests: Test guest execution from direct map
+ removed gmem
+Thread-Topic: [PATCH v8 13/13] KVM: selftests: Test guest execution from
+ direct map removed gmem
+Thread-Index: AQHcZgifgxQmXVCcFkmA//3xLcHAXw==
+Date: Fri, 5 Dec 2025 17:00:14 +0000
+Message-ID: <20251205165743.9341-14-kalyazin@amazon.com>
+References: <20251205165743.9341-1-kalyazin@amazon.com>
+In-Reply-To: <20251205165743.9341-1-kalyazin@amazon.com>
+Accept-Language: en-GB, en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20251202015049.1167490-1-seanjc@google.com>
-X-Mailer: git-send-email 2.52.0.223.gf5cc29aaa4-goog
-Message-ID: <176494721851.296449.6639753862362613097.b4-ty@google.com>
-Subject: Re: [PATCH 0/2] KVM: x86: Do runtime updates during KVM_SET_CPUID2
-From: Sean Christopherson <seanjc@google.com>
-To: Sean Christopherson <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>
-Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	Igor Mammedov <imammedo@redhat.com>
-Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
 
-On Mon, 01 Dec 2025 17:50:47 -0800, Sean Christopherson wrote:
-> Do runtime updates (if necessary) when userspace sets CPUID to fix a bug
-> where KVM drops a pending update (KVM will clear the dirty flag when doing
-> updates on the new/incoming CPUID).  The bug most visibly manifests as an
-> -EINVAL failure on KVM_SET_CPUID{,2} due to the old/current CPUID not
-> matching the new/incoming CPUID, but if userspace were to continue running
-> past the failure, the vCPU would run with stale CPUID/caps.
-> 
-> [...]
-
-Applied to kvm-x86 fixes, thanks!
-
-[1/2] KVM: x86: Apply runtime updates to current CPUID during KVM_SET_CPUID{,2}
-      https://github.com/kvm-x86/linux/commit/e2b43fb25243
-[2/2] KVM: selftests: Add a CPUID testcase for KVM_SET_CPUID2 with runtime updates
-      https://github.com/kvm-x86/linux/commit/824d227324dc
-
---
-https://github.com/kvm-x86/linux/tree/next
+From: Patrick Roy <patrick.roy@linux.dev>=0A=
+=0A=
+Add a selftest that loads itself into guest_memfd (via=0A=
+GUEST_MEMFD_FLAG_MMAP) and triggers an MMIO exit when executed. This=0A=
+exercises x86 MMIO emulation code inside KVM for guest_memfd-backed=0A=
+memslots where the guest_memfd folios are direct map removed.=0A=
+Particularly, it validates that x86 MMIO emulation code (guest page=0A=
+table walks + instruction fetch) correctly accesses gmem through the VMA=0A=
+that's been reflected into the memslot's userspace_addr field (instead=0A=
+of trying to do direct map accesses).=0A=
+=0A=
+Signed-off-by: Patrick Roy <patrick.roy@linux.dev>=0A=
+Signed-off-by: Nikita Kalyazin <kalyazin@amazon.com>=0A=
+---=0A=
+ .../selftests/kvm/set_memory_region_test.c    | 52 +++++++++++++++++--=0A=
+ 1 file changed, 48 insertions(+), 4 deletions(-)=0A=
+=0A=
+diff --git a/tools/testing/selftests/kvm/set_memory_region_test.c b/tools/t=
+esting/selftests/kvm/set_memory_region_test.c=0A=
+index 7fe427ff9b38..6c57fb036b20 100644=0A=
+--- a/tools/testing/selftests/kvm/set_memory_region_test.c=0A=
++++ b/tools/testing/selftests/kvm/set_memory_region_test.c=0A=
+@@ -602,6 +602,41 @@ static void test_mmio_during_vectoring(void)=0A=
+ =0A=
+ 	kvm_vm_free(vm);=0A=
+ }=0A=
++=0A=
++static void guest_code_trigger_mmio(void)=0A=
++{=0A=
++	/*=0A=
++	 * Read some GPA that is not backed by a memslot. KVM consider this=0A=
++	 * as MMIO and tell userspace to emulate the read.=0A=
++	 */=0A=
++	READ_ONCE(*((uint64_t *)MEM_REGION_GPA));=0A=
++=0A=
++	GUEST_DONE();=0A=
++}=0A=
++=0A=
++static void test_guest_memfd_mmio(void)=0A=
++{=0A=
++	struct kvm_vm *vm;=0A=
++	struct kvm_vcpu *vcpu;=0A=
++	struct vm_shape shape =3D {=0A=
++		.mode =3D VM_MODE_DEFAULT,=0A=
++		.src_type =3D VM_MEM_SRC_GUEST_MEMFD_NO_DIRECT_MAP,=0A=
++	};=0A=
++	pthread_t vcpu_thread;=0A=
++=0A=
++	pr_info("Testing MMIO emulation for instructions in gmem\n");=0A=
++=0A=
++	vm =3D __vm_create_shape_with_one_vcpu(shape, &vcpu, 0, guest_code_trigge=
+r_mmio);=0A=
++=0A=
++	virt_map(vm, MEM_REGION_GPA, MEM_REGION_GPA, 1);=0A=
++=0A=
++	pthread_create(&vcpu_thread, NULL, vcpu_worker, vcpu);=0A=
++=0A=
++	/* If the MMIO read was successfully emulated, the vcpu thread will exit =
+*/=0A=
++	pthread_join(vcpu_thread, NULL);=0A=
++=0A=
++	kvm_vm_free(vm);=0A=
++}=0A=
+ #endif=0A=
+ =0A=
+ int main(int argc, char *argv[])=0A=
+@@ -625,10 +660,19 @@ int main(int argc, char *argv[])=0A=
+ 	test_add_max_memory_regions();=0A=
+ =0A=
+ #ifdef __x86_64__=0A=
+-	if (kvm_has_cap(KVM_CAP_GUEST_MEMFD) &&=0A=
+-	    (kvm_check_cap(KVM_CAP_VM_TYPES) & BIT(KVM_X86_SW_PROTECTED_VM))) {=
+=0A=
+-		test_add_private_memory_region();=0A=
+-		test_add_overlapping_private_memory_regions();=0A=
++	if (kvm_has_cap(KVM_CAP_GUEST_MEMFD)) {=0A=
++		uint64_t valid_flags =3D kvm_check_cap(KVM_CAP_GUEST_MEMFD_FLAGS);=0A=
++=0A=
++		if (kvm_check_cap(KVM_CAP_VM_TYPES) & BIT(KVM_X86_SW_PROTECTED_VM)) {=0A=
++			test_add_private_memory_region();=0A=
++			test_add_overlapping_private_memory_regions();=0A=
++		}=0A=
++=0A=
++		if ((valid_flags & GUEST_MEMFD_FLAG_MMAP)=0A=
++			&& (valid_flags & GUEST_MEMFD_FLAG_NO_DIRECT_MAP))=0A=
++			test_guest_memfd_mmio();=0A=
++		else=0A=
++			pr_info("Skipping tests requiring GUEST_MEMFD_FLAG_MMAP | GUEST_MEMFD_F=
+LAG_NO_DIRECT_MAP");=0A=
+ 	} else {=0A=
+ 		pr_info("Skipping tests for KVM_MEM_GUEST_MEMFD memory regions\n");=0A=
+ 	}=0A=
+-- =0A=
+2.50.1=0A=
+=0A=
