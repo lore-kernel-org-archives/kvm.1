@@ -1,338 +1,639 @@
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+Received: from mail-pj1-f74.google.com (mail-pj1-f74.google.com [209.85.216.74])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B5E833A6F2
-	for <kvm@vger.kernel.org>; Fri,  5 Dec 2025 07:47:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF8A8349AE6
+	for <kvm@vger.kernel.org>; Fri,  5 Dec 2025 08:02:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.74
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764920868; cv=none; b=KgMYkRlyJGhnNubFNapgID2Ll+T4c5ZQoo2+niANNnBJ1t69J7h3NAGKP4SjTFENbPwNlVlpyhKkTQ81YJgkPpaNWvSXHYPCWbY9q3TZVyl470s+X8d6jeCMoawiRqKrW6x0jB7nyCABGfiTb5OTtuonhaVu8h+qHx17zZ3AXLA=
+	t=1764921777; cv=none; b=GBM5W5F0guOcIi2akaC9v0NQ34E6L5W8t3SXUY2kokrsZB0HFhoSAMvVw8Qe8IGdIsiFWu82/tgfmR9FApfP8Rc1DWnC3b6pUZQIdVaPIZouQ+AodC4UeUYKSpo8N4tpcQnYeIgCkFZFrfI1KvKJlFyYLBKDuTghU86QN2AcG7E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764920868; c=relaxed/simple;
-	bh=NwiX+ZQg9gJbuusYmUR7cZPd6vYzVTazUYgfNq67lFc=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OAh2k711eIfBSjKJjFFnFDULjfGeAjJMSig7jl+VB0eZTIHnuNvwVkrX844ZgLxxpNt42gTqLlzn/ySSks9rjFdKsH+fYKKFXvIOD23gM6fQE+TvvnjK7gzcMbngi/rAv4QL3NujBrjiKtIUn95600oumYVMC9OKZAJHDBvt2l8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (1024-bit key) header.d=suse.com header.i=@suse.com header.b=eR6BnLvJ; dkim=pass (1024-bit key) header.d=suse.com header.i=@suse.com header.b=eR6BnLvJ; arc=none smtp.client-ip=195.135.223.130
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
+	s=arc-20240116; t=1764921777; c=relaxed/simple;
+	bh=Igfr9FW+KmyTlZ9iAwlpuwagrbjJS3n7xHM51/mhOTo=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=B8ZydS0jBTQNTZlGuHFYv6/CxnGRGc/FkSlG1br8cFQvDy/3e0NA87fxozlwt8rLJ9JVBaFxNuN6eJaOS4TI8EO2TEKLVOFamwBpaO+VaPKn5BANcVxNinLXNhbqKwbmBDD8KDKYlejoCKBFrrNareWNclTJZK9Uf18wjOOD3Jk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--chengkev.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=TXGpyPiT; arc=none smtp.client-ip=209.85.216.74
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--chengkev.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.com header.i=@suse.com header.b="eR6BnLvJ";
-	dkim=pass (1024-bit key) header.d=suse.com header.i=@suse.com header.b="eR6BnLvJ"
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id BA73A336D9;
-	Fri,  5 Dec 2025 07:46:32 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.com; s=susede1;
-	t=1764920792; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=Knqe8SmxlIRac6xSSjl2afoYr8y/15Xf9OoZi/a4HLY=;
-	b=eR6BnLvJoEyoE1pTueqBai9jS1rzz5JNjQBa14cPAADRiPPkdRsvzaaLmxoirWLG8oZONg
-	ojtLh8biq/wj3FwrsJfEp9bhwuYgZ53lyPTk4pOXjXoAX7xXjbvjekDWN2UgBkEEeEgmWg
-	0TIolkuzb+ZB40MPFB2FnMZ8YuIF2VU=
-Authentication-Results: smtp-out1.suse.de;
-	none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.com; s=susede1;
-	t=1764920792; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=Knqe8SmxlIRac6xSSjl2afoYr8y/15Xf9OoZi/a4HLY=;
-	b=eR6BnLvJoEyoE1pTueqBai9jS1rzz5JNjQBa14cPAADRiPPkdRsvzaaLmxoirWLG8oZONg
-	ojtLh8biq/wj3FwrsJfEp9bhwuYgZ53lyPTk4pOXjXoAX7xXjbvjekDWN2UgBkEEeEgmWg
-	0TIolkuzb+ZB40MPFB2FnMZ8YuIF2VU=
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 59BBE3EA63;
-	Fri,  5 Dec 2025 07:46:32 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id XjVIFNiNMmmaEgAAD6G6ig
-	(envelope-from <jgross@suse.com>); Fri, 05 Dec 2025 07:46:32 +0000
-From: Juergen Gross <jgross@suse.com>
-To: linux-kernel@vger.kernel.org,
-	x86@kernel.org,
-	kvm@vger.kernel.org
-Cc: Juergen Gross <jgross@suse.com>,
-	Sean Christopherson <seanjc@google.com>,
-	Paolo Bonzini <pbonzini@redhat.com>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Ingo Molnar <mingo@redhat.com>,
-	Borislav Petkov <bp@alien8.de>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	"H. Peter Anvin" <hpa@zytor.com>
-Subject: [PATCH 09/10] KVM/x86: Use defines for SVM related MSR emulation
-Date: Fri,  5 Dec 2025 08:45:36 +0100
-Message-ID: <20251205074537.17072-10-jgross@suse.com>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251205074537.17072-1-jgross@suse.com>
-References: <20251205074537.17072-1-jgross@suse.com>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="TXGpyPiT"
+Received: by mail-pj1-f74.google.com with SMTP id 98e67ed59e1d1-343823be748so1901182a91.0
+        for <kvm@vger.kernel.org>; Fri, 05 Dec 2025 00:02:50 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1764921768; x=1765526568; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=IUvvvCBHNNoC1LgckOuWigEL11VxlQY1p2ZyqITLXPM=;
+        b=TXGpyPiTqOTrryOpHpdVUYItwtHL1VPNZWdfkruoaSLz2ZIe/zQfqe4XL6JXAvsjwQ
+         edzmY9X4UDn9yLQmTd4HZvnnnm+MGEJt30nSviqF9jNIawJT7OZqffYuXXm5PTazvNxI
+         3o0Uh6S3XZPBatPUbaWa5z7bOJsORAaVu+PP9b1Am71daK4Y6kegx8ZWRuslZtccejY0
+         FYN1nqClhZgUkrY2k3a95PthewTjAqibX0i/3eC3WqFFdjkxVUHXd/kOhgWM3AqrI+62
+         gYU24zhOML0wQkPbSxvCgqrv8t5GQ1Wv+Fcx1lAZ0yA9hJdR8/WCYdyY8Px9j5kYamgA
+         Ra9w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1764921768; x=1765526568;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=IUvvvCBHNNoC1LgckOuWigEL11VxlQY1p2ZyqITLXPM=;
+        b=Q8+dTg5LNhvC/DiE0OU+2VJ+5hn5h2Cgaka/5htWncpv9jMHz/4PkTPYZc06zokz1c
+         8iGb//LvhhDnk4fFs7JPfGevnCgO4EtifMOYVV4dEeY+Ud3d2hRccerPZOqdizh5csTE
+         I/lV8jzFA5GAm+fm5ujIL/TzBKdGiH5ZwKzTQLKD4abz2npXmfGtCZJokQnrvJTU0sDm
+         fX8WgC//VYKlTPnSp3PV8Jrs32Y26ZEoKGQaDAVL+gT6xQYNTWm/DXD15TUORel6HDuO
+         QDSFsds4+1AW9kVcgXgzvFDPk/nArawbKaU3HTWyazZMzvSFJlTWivg41qZ2buCYU5RX
+         T8Iw==
+X-Gm-Message-State: AOJu0YzFezfogsZ+h+zAq3RvNQWyTSOjgKmC8YfeNpK+Cb5cH3WetGJ9
+	URZm6yb6CBMbqa0EAmTYt6yzkk1WP7lQE0do4RsN8QdctfoWNTHTudS2qA6SocKAqxn2Oyfl2cv
+	TUGhgPuT/bfFez+zHE2OrHXwSpgCCPNkfmn/dBCz/gHCKWfUhAcRvtb9tescyOmip4+VQCvyhPN
+	gwVbKCG1Q+sdKJAfgZEES0e4alckyMK4ZfwSyv2jDqkhM=
+X-Google-Smtp-Source: AGHT+IETHTn/t9Lydhk+3tSUbxuPAVqDkTu932dO/N7X4CCWMx79J/WT5922MVET7KIYLbx+UpmGvkV/NRoYUA==
+X-Received: from pjbsc13.prod.google.com ([2002:a17:90b:510d:b0:341:bc50:b0c5])
+ (user=chengkev job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a17:90b:3849:b0:340:4abf:391d with SMTP id 98e67ed59e1d1-34947dc8cd9mr6379891a91.16.1764921767920;
+ Fri, 05 Dec 2025 00:02:47 -0800 (PST)
+Date: Fri,  5 Dec 2025 08:02:27 +0000
+In-Reply-To: <20251205080228.4055341-1-chengkev@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-2.80 / 50.00];
-	BAYES_HAM(-3.00)[100.00%];
-	NEURAL_HAM_LONG(-1.00)[-1.000];
-	MID_CONTAINS_FROM(1.00)[];
-	R_MISSING_CHARSET(0.50)[];
-	NEURAL_HAM_SHORT(-0.20)[-0.988];
-	MIME_GOOD(-0.10)[text/plain];
-	TO_MATCH_ENVRCPT_ALL(0.00)[];
-	ARC_NA(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.com:mid,suse.com:email,imap1.dmz-prg2.suse.org:helo];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	RCPT_COUNT_SEVEN(0.00)[11];
-	RCVD_COUNT_TWO(0.00)[2];
-	FROM_EQ_ENVFROM(0.00)[];
-	DKIM_SIGNED(0.00)[suse.com:s=susede1];
-	R_RATELIMIT(0.00)[to_ip_from(RLfdszjqhz8kzzb9uwpzdm8png)];
-	RCVD_TLS_ALL(0.00)[]
-X-Spam-Level: 
-X-Spam-Flag: NO
-X-Spam-Score: -2.80
+Mime-Version: 1.0
+References: <20251205080228.4055341-1-chengkev@google.com>
+X-Mailer: git-send-email 2.52.0.223.gf5cc29aaa4-goog
+Message-ID: <20251205080228.4055341-2-chengkev@google.com>
+Subject: [kvm-unit-tests PATCH 1/2] x86/svm: Add missing svm intercepts
+From: Kevin Cheng <chengkev@google.com>
+To: kvm@vger.kernel.org
+Cc: yosryahmed@google.com, andrew.jones@linux.dev, thuth@redhat.com, 
+	pbonzini@redhat.com, seanjc@google.com, Kevin Cheng <chengkev@google.com>
+Content-Type: text/plain; charset="UTF-8"
 
-Instead of "0" and "1" use the related KVM_MSR_RET_* defines in the
-emulation code of SVM related MSR registers.
+Some intercepts are missing from the KUT svm testing. Add all missing
+intercepts and reorganize the svm intercept definition/setting/clearing.
 
-No change of functionality intended.
-
-Signed-off-by: Juergen Gross <jgross@suse.com>
+Signed-off-by: Kevin Cheng <chengkev@google.com>
 ---
- arch/x86/kvm/svm/pmu.c | 12 ++++++------
- arch/x86/kvm/svm/svm.c | 44 +++++++++++++++++++++---------------------
- 2 files changed, 28 insertions(+), 28 deletions(-)
+ x86/svm.c       |   6 +--
+ x86/svm.h       |  82 +++++++++++++++++++++++++++++++----
+ x86/svm_tests.c | 111 ++++++++++++++++++++++++------------------------
+ 3 files changed, 131 insertions(+), 68 deletions(-)
 
-diff --git a/arch/x86/kvm/svm/pmu.c b/arch/x86/kvm/svm/pmu.c
-index bc062285fbf5..c4b2fe77cc27 100644
---- a/arch/x86/kvm/svm/pmu.c
-+++ b/arch/x86/kvm/svm/pmu.c
-@@ -135,16 +135,16 @@ static int amd_pmu_get_msr(struct kvm_vcpu *vcpu, struct msr_data *msr_info)
- 	pmc = get_gp_pmc_amd(pmu, msr, PMU_TYPE_COUNTER);
- 	if (pmc) {
- 		msr_info->data = pmc_read_counter(pmc);
--		return 0;
-+		return KVM_MSR_RET_OK;
- 	}
- 	/* MSR_EVNTSELn */
- 	pmc = get_gp_pmc_amd(pmu, msr, PMU_TYPE_EVNTSEL);
- 	if (pmc) {
- 		msr_info->data = pmc->eventsel;
--		return 0;
-+		return KVM_MSR_RET_OK;
- 	}
+diff --git a/x86/svm.c b/x86/svm.c
+index de9eb19443caa..9a4c14e368cd4 100644
+--- a/x86/svm.c
++++ b/x86/svm.c
+@@ -193,9 +193,9 @@ void vmcb_ident(struct vmcb *vmcb)
+ 	save->cr2 = read_cr2();
+ 	save->g_pat = rdmsr(MSR_IA32_CR_PAT);
+ 	save->dbgctl = rdmsr(MSR_IA32_DEBUGCTLMSR);
+-	ctrl->intercept = (1ULL << INTERCEPT_VMRUN) |
+-		(1ULL << INTERCEPT_VMMCALL) |
+-		(1ULL << INTERCEPT_SHUTDOWN);
++	vmcb_set_intercept(INTERCEPT_VMRUN);
++	vmcb_set_intercept(INTERCEPT_VMMCALL);
++	vmcb_set_intercept(INTERCEPT_SHUTDOWN);
+ 	ctrl->iopm_base_pa = virt_to_phys(io_bitmap);
+ 	ctrl->msrpm_base_pa = virt_to_phys(msr_bitmap);
  
--	return 1;
-+	return KVM_MSR_RET_ERR;
- }
+diff --git a/x86/svm.h b/x86/svm.h
+index 264583a6547ef..93ef6f772c6ee 100644
+--- a/x86/svm.h
++++ b/x86/svm.h
+@@ -2,9 +2,49 @@
+ #define X86_SVM_H
  
- static int amd_pmu_set_msr(struct kvm_vcpu *vcpu, struct msr_data *msr_info)
-@@ -158,7 +158,7 @@ static int amd_pmu_set_msr(struct kvm_vcpu *vcpu, struct msr_data *msr_info)
- 	pmc = get_gp_pmc_amd(pmu, msr, PMU_TYPE_COUNTER);
- 	if (pmc) {
- 		pmc_write_counter(pmc, data);
--		return 0;
-+		return KVM_MSR_RET_OK;
- 	}
- 	/* MSR_EVNTSELn */
- 	pmc = get_gp_pmc_amd(pmu, msr, PMU_TYPE_EVNTSEL);
-@@ -168,10 +168,10 @@ static int amd_pmu_set_msr(struct kvm_vcpu *vcpu, struct msr_data *msr_info)
- 			pmc->eventsel = data;
- 			kvm_pmu_request_counter_reprogram(pmc);
- 		}
--		return 0;
-+		return KVM_MSR_RET_OK;
- 	}
+ #include "libcflat.h"
++#include "bitops.h"
++
++enum intercept_words {
++	INTERCEPT_CR = 0,
++	INTERCEPT_DR,
++	INTERCEPT_EXCEPTION,
++	INTERCEPT_WORD3,
++	INTERCEPT_WORD4,
++	INTERCEPT_WORD5,
++	MAX_INTERCEPT,
++};
  
--	return 1;
-+	return KVM_MSR_RET_ERR;
- }
+ enum {
+-	INTERCEPT_INTR,
++	/* Byte offset 000h (word 0) */
++	INTERCEPT_CR0_READ = 0,
++	INTERCEPT_CR3_READ = 3,
++	INTERCEPT_CR4_READ = 4,
++	INTERCEPT_CR8_READ = 8,
++	INTERCEPT_CR0_WRITE = 16,
++	INTERCEPT_CR3_WRITE = 16 + 3,
++	INTERCEPT_CR4_WRITE = 16 + 4,
++	INTERCEPT_CR8_WRITE = 16 + 8,
++	/* Byte offset 004h (word 1) */
++	INTERCEPT_DR0_READ = 32,
++	INTERCEPT_DR1_READ,
++	INTERCEPT_DR2_READ,
++	INTERCEPT_DR3_READ,
++	INTERCEPT_DR4_READ,
++	INTERCEPT_DR5_READ,
++	INTERCEPT_DR6_READ,
++	INTERCEPT_DR7_READ,
++	INTERCEPT_DR0_WRITE = 48,
++	INTERCEPT_DR1_WRITE,
++	INTERCEPT_DR2_WRITE,
++	INTERCEPT_DR3_WRITE,
++	INTERCEPT_DR4_WRITE,
++	INTERCEPT_DR5_WRITE,
++	INTERCEPT_DR6_WRITE,
++	INTERCEPT_DR7_WRITE,
++	/* Byte offset 008h (word 2) */
++	INTERCEPT_EXCEPTION_OFFSET = 64,
++	/* Byte offset 00Ch (word 3) */
++	INTERCEPT_INTR = 96,
+ 	INTERCEPT_NMI,
+ 	INTERCEPT_SMI,
+ 	INTERCEPT_INIT,
+@@ -36,7 +76,8 @@ enum {
+ 	INTERCEPT_TASK_SWITCH,
+ 	INTERCEPT_FERR_FREEZE,
+ 	INTERCEPT_SHUTDOWN,
+-	INTERCEPT_VMRUN,
++	/* Byte offset 010h (word 4) */
++	INTERCEPT_VMRUN = 128,
+ 	INTERCEPT_VMMCALL,
+ 	INTERCEPT_VMLOAD,
+ 	INTERCEPT_VMSAVE,
+@@ -49,6 +90,24 @@ enum {
+ 	INTERCEPT_MONITOR,
+ 	INTERCEPT_MWAIT,
+ 	INTERCEPT_MWAIT_COND,
++	INTERCEPT_XSETBV,
++	INTERCEPT_RDPRU,
++	TRAP_EFER_WRITE,
++	TRAP_CR0_WRITE,
++	TRAP_CR1_WRITE,
++	TRAP_CR2_WRITE,
++	TRAP_CR3_WRITE,
++	TRAP_CR4_WRITE,
++	TRAP_CR5_WRITE,
++	TRAP_CR6_WRITE,
++	TRAP_CR7_WRITE,
++	TRAP_CR8_WRITE,
++	/* Byte offset 014h (word 5) */
++	INTERCEPT_INVLPGB = 160,
++	INTERCEPT_INVLPGB_ILLEGAL,
++	INTERCEPT_INVPCID,
++	INTERCEPT_MCOMMIT,
++	INTERCEPT_TLBSYNC,
+ };
  
- static void amd_pmu_refresh(struct kvm_vcpu *vcpu)
-diff --git a/arch/x86/kvm/svm/svm.c b/arch/x86/kvm/svm/svm.c
-index 7cbf4d686415..73ff38617311 100644
---- a/arch/x86/kvm/svm/svm.c
-+++ b/arch/x86/kvm/svm/svm.c
-@@ -2638,7 +2638,7 @@ static int svm_get_feature_msr(u32 msr, u64 *data)
- 		return KVM_MSR_RET_UNSUPPORTED;
- 	}
+ enum {
+@@ -69,13 +128,8 @@ enum {
+ };
  
--	return 0;
-+	return KVM_MSR_RET_OK;
- }
+ struct __attribute__ ((__packed__)) vmcb_control_area {
+-	u16 intercept_cr_read;
+-	u16 intercept_cr_write;
+-	u16 intercept_dr_read;
+-	u16 intercept_dr_write;
+-	u32 intercept_exceptions;
+-	u64 intercept;
+-	u8 reserved_1[40];
++	u32 intercept[MAX_INTERCEPT];
++	u8 reserved_1[36];
+ 	u16 pause_filter_thresh;
+ 	u16 pause_filter_count;
+ 	u64 iopm_base_pa;
+@@ -441,6 +495,16 @@ void test_set_guest(test_guest_func func);
  
- static bool sev_es_prevent_msr_access(struct kvm_vcpu *vcpu,
-@@ -2655,14 +2655,14 @@ static int svm_get_msr(struct kvm_vcpu *vcpu, struct msr_data *msr_info)
+ extern struct vmcb *vmcb;
  
- 	if (sev_es_prevent_msr_access(vcpu, msr_info)) {
- 		msr_info->data = 0;
--		return vcpu->kvm->arch.has_protected_state ? -EINVAL : 0;
-+		return vcpu->kvm->arch.has_protected_state ? -EINVAL : KVM_MSR_RET_OK;
- 	}
- 
- 	switch (msr_info->index) {
- 	case MSR_AMD64_TSC_RATIO:
- 		if (!msr_info->host_initiated &&
- 		    !guest_cpu_cap_has(vcpu, X86_FEATURE_TSCRATEMSR))
--			return 1;
-+			return KVM_MSR_RET_ERR;
- 		msr_info->data = svm->tsc_ratio_msr;
- 		break;
- 	case MSR_STAR:
-@@ -2737,7 +2737,7 @@ static int svm_get_msr(struct kvm_vcpu *vcpu, struct msr_data *msr_info)
- 	case MSR_IA32_SPEC_CTRL:
- 		if (!msr_info->host_initiated &&
- 		    !guest_has_spec_ctrl_msr(vcpu))
--			return 1;
-+			return KVM_MSR_RET_ERR;
- 
- 		if (boot_cpu_has(X86_FEATURE_V_SPEC_CTRL))
- 			msr_info->data = svm->vmcb->save.spec_ctrl;
-@@ -2747,7 +2747,7 @@ static int svm_get_msr(struct kvm_vcpu *vcpu, struct msr_data *msr_info)
- 	case MSR_AMD64_VIRT_SPEC_CTRL:
- 		if (!msr_info->host_initiated &&
- 		    !guest_cpu_cap_has(vcpu, X86_FEATURE_VIRT_SSBD))
--			return 1;
-+			return KVM_MSR_RET_ERR;
- 
- 		msr_info->data = svm->virt_spec_ctrl;
- 		break;
-@@ -2774,7 +2774,7 @@ static int svm_get_msr(struct kvm_vcpu *vcpu, struct msr_data *msr_info)
- 	default:
- 		return kvm_get_msr_common(vcpu, msr_info);
- 	}
--	return 0;
-+	return KVM_MSR_RET_OK;
- }
- 
- static int svm_complete_emulated_msr(struct kvm_vcpu *vcpu, bool err)
-@@ -2793,7 +2793,7 @@ static int svm_set_vm_cr(struct kvm_vcpu *vcpu, u64 data)
- 	int svm_dis, chg_mask;
- 
- 	if (data & ~SVM_VM_CR_VALID_MASK)
--		return 1;
-+		return KVM_MSR_RET_ERR;
- 
- 	chg_mask = SVM_VM_CR_VALID_MASK;
- 
-@@ -2807,21 +2807,21 @@ static int svm_set_vm_cr(struct kvm_vcpu *vcpu, u64 data)
- 
- 	/* check for svm_disable while efer.svme is set */
- 	if (svm_dis && (vcpu->arch.efer & EFER_SVME))
--		return 1;
-+		return KVM_MSR_RET_ERR;
- 
--	return 0;
-+	return KVM_MSR_RET_OK;
- }
- 
- static int svm_set_msr(struct kvm_vcpu *vcpu, struct msr_data *msr)
++static inline void vmcb_set_intercept(u64 val)
++{
++	__set_bit(val, vmcb->control.intercept);
++}
++
++static inline void vmcb_clear_intercept(u64 val)
++{
++	__clear_bit(val, vmcb->control.intercept);
++}
++
+ static inline void stgi(void)
  {
- 	struct vcpu_svm *svm = to_svm(vcpu);
--	int ret = 0;
-+	int ret = KVM_MSR_RET_OK;
+     asm volatile ("stgi");
+diff --git a/x86/svm_tests.c b/x86/svm_tests.c
+index 3761647642542..ccc89d45d4db9 100644
+--- a/x86/svm_tests.c
++++ b/x86/svm_tests.c
+@@ -63,7 +63,7 @@ static bool null_check(struct svm_test *test)
  
- 	u32 ecx = msr->index;
- 	u64 data = msr->data;
+ static void prepare_no_vmrun_int(struct svm_test *test)
+ {
+-	vmcb->control.intercept &= ~(1ULL << INTERCEPT_VMRUN);
++	vmcb_clear_intercept(INTERCEPT_VMRUN);
+ }
  
- 	if (sev_es_prevent_msr_access(vcpu, msr))
--		return vcpu->kvm->arch.has_protected_state ? -EINVAL : 0;
-+		return vcpu->kvm->arch.has_protected_state ? -EINVAL : KVM_MSR_RET_OK;
+ static bool check_no_vmrun_int(struct svm_test *test)
+@@ -84,8 +84,8 @@ static bool check_vmrun(struct svm_test *test)
+ static void prepare_rsm_intercept(struct svm_test *test)
+ {
+ 	default_prepare(test);
+-	vmcb->control.intercept |= 1 << INTERCEPT_RSM;
+-	vmcb->control.intercept_exceptions |= (1ULL << UD_VECTOR);
++	vmcb_set_intercept(INTERCEPT_RSM);
++	vmcb_set_intercept(INTERCEPT_EXCEPTION_OFFSET + UD_VECTOR);
+ }
  
- 	switch (ecx) {
- 	case MSR_AMD64_TSC_RATIO:
-@@ -2829,7 +2829,7 @@ static int svm_set_msr(struct kvm_vcpu *vcpu, struct msr_data *msr)
- 		if (!guest_cpu_cap_has(vcpu, X86_FEATURE_TSCRATEMSR)) {
+ static void test_rsm_intercept(struct svm_test *test)
+@@ -107,7 +107,7 @@ static bool finished_rsm_intercept(struct svm_test *test)
+ 				    vmcb->control.exit_code);
+ 			return true;
+ 		}
+-		vmcb->control.intercept &= ~(1 << INTERCEPT_RSM);
++		vmcb_clear_intercept(INTERCEPT_RSM);
+ 		inc_test_stage(test);
+ 		break;
  
- 			if (!msr->host_initiated)
--				return 1;
-+				return KVM_MSR_RET_ERR;
- 			/*
- 			 * In case TSC scaling is not enabled, always
- 			 * leave this MSR at the default value.
-@@ -2839,12 +2839,12 @@ static int svm_set_msr(struct kvm_vcpu *vcpu, struct msr_data *msr)
- 			 * Ignore this value as well.
- 			 */
- 			if (data != 0 && data != svm->tsc_ratio_msr)
--				return 1;
-+				return KVM_MSR_RET_ERR;
- 			break;
+@@ -132,7 +132,7 @@ static void prepare_sel_cr0_intercept(struct svm_test *test)
+ 	/* Clear CR0.MP and CR0.CD as the tests will set either of them */
+ 	vmcb->save.cr0 &= ~X86_CR0_MP;
+ 	vmcb->save.cr0 &= ~X86_CR0_CD;
+-	vmcb->control.intercept |= (1ULL << INTERCEPT_SELECTIVE_CR0);
++	vmcb_set_intercept(INTERCEPT_SELECTIVE_CR0);
+ }
+ 
+ static void prepare_sel_nonsel_cr0_intercepts(struct svm_test *test)
+@@ -140,8 +140,8 @@ static void prepare_sel_nonsel_cr0_intercepts(struct svm_test *test)
+ 	/* Clear CR0.MP and CR0.CD as the tests will set either of them */
+ 	vmcb->save.cr0 &= ~X86_CR0_MP;
+ 	vmcb->save.cr0 &= ~X86_CR0_CD;
+-	vmcb->control.intercept_cr_write |= (1ULL << 0);
+-	vmcb->control.intercept |= (1ULL << INTERCEPT_SELECTIVE_CR0);
++	vmcb_set_intercept(INTERCEPT_CR0_WRITE);
++	vmcb_set_intercept(INTERCEPT_SELECTIVE_CR0);
+ }
+ 
+ static void __test_cr0_write_bit(struct svm_test *test, unsigned long bit,
+@@ -218,7 +218,7 @@ static bool check_cr0_nointercept(struct svm_test *test)
+ static void prepare_cr3_intercept(struct svm_test *test)
+ {
+ 	default_prepare(test);
+-	vmcb->control.intercept_cr_read |= 1 << 3;
++	vmcb_set_intercept(INTERCEPT_CR3_READ);
+ }
+ 
+ static void test_cr3_intercept(struct svm_test *test)
+@@ -252,7 +252,7 @@ static void corrupt_cr3_intercept_bypass(void *_test)
+ static void prepare_cr3_intercept_bypass(struct svm_test *test)
+ {
+ 	default_prepare(test);
+-	vmcb->control.intercept_cr_read |= 1 << 3;
++	vmcb_set_intercept(INTERCEPT_CR3_READ);
+ 	on_cpu_async(1, corrupt_cr3_intercept_bypass, test);
+ }
+ 
+@@ -272,8 +272,7 @@ static void test_cr3_intercept_bypass(struct svm_test *test)
+ static void prepare_dr_intercept(struct svm_test *test)
+ {
+ 	default_prepare(test);
+-	vmcb->control.intercept_dr_read = 0xff;
+-	vmcb->control.intercept_dr_write = 0xff;
++	vmcb->control.intercept[INTERCEPT_DR] = 0xff00ff;
+ }
+ 
+ static void test_dr_intercept(struct svm_test *test)
+@@ -390,7 +389,7 @@ static bool next_rip_supported(void)
+ 
+ static void prepare_next_rip(struct svm_test *test)
+ {
+-	vmcb->control.intercept |= (1ULL << INTERCEPT_RDTSC);
++	vmcb_set_intercept(INTERCEPT_RDTSC);
+ }
+ 
+ 
+@@ -416,7 +415,7 @@ static bool is_x2apic;
+ static void prepare_msr_intercept(struct svm_test *test)
+ {
+ 	default_prepare(test);
+-	vmcb->control.intercept |= (1ULL << INTERCEPT_MSR_PROT);
++	vmcb_set_intercept(INTERCEPT_MSR_PROT);
+ 
+ 	memset(msr_bitmap, 0, MSR_BITMAP_SIZE);
+ 
+@@ -663,10 +662,10 @@ static bool check_msr_intercept(struct svm_test *test)
+ 
+ static void prepare_mode_switch(struct svm_test *test)
+ {
+-	vmcb->control.intercept_exceptions |= (1ULL << GP_VECTOR)
+-		|  (1ULL << UD_VECTOR)
+-		|  (1ULL << DF_VECTOR)
+-		|  (1ULL << PF_VECTOR);
++	vmcb_set_intercept(INTERCEPT_EXCEPTION_OFFSET + GP_VECTOR);
++	vmcb_set_intercept(INTERCEPT_EXCEPTION_OFFSET + UD_VECTOR);
++	vmcb_set_intercept(INTERCEPT_EXCEPTION_OFFSET + DF_VECTOR);
++	vmcb_set_intercept(INTERCEPT_EXCEPTION_OFFSET + DF_VECTOR);
+ 	test->scratch = 0;
+ }
+ 
+@@ -773,7 +772,7 @@ extern u8 *io_bitmap;
+ 
+ static void prepare_ioio(struct svm_test *test)
+ {
+-	vmcb->control.intercept |= (1ULL << INTERCEPT_IOIO_PROT);
++	vmcb_set_intercept(INTERCEPT_IOIO_PROT);
+ 	test->scratch = 0;
+ 	memset(io_bitmap, 0, 8192);
+ 	io_bitmap[8192] = 0xFF;
+@@ -1171,7 +1170,7 @@ static void pending_event_prepare(struct svm_test *test)
+ 
+ 	pending_event_guest_run = false;
+ 
+-	vmcb->control.intercept |= (1ULL << INTERCEPT_INTR);
++	vmcb_set_intercept(INTERCEPT_INTR);
+ 	vmcb->control.int_ctl |= V_INTR_MASKING_MASK;
+ 
+ 	apic_icr_write(APIC_DEST_SELF | APIC_DEST_PHYSICAL |
+@@ -1195,7 +1194,7 @@ static bool pending_event_finished(struct svm_test *test)
+ 			return true;
  		}
  
- 		if (data & SVM_TSC_RATIO_RSVD)
--			return 1;
-+			return KVM_MSR_RET_ERR;
+-		vmcb->control.intercept &= ~(1ULL << INTERCEPT_INTR);
++		vmcb_clear_intercept(INTERCEPT_INTR);
+ 		vmcb->control.int_ctl &= ~V_INTR_MASKING_MASK;
  
- 		svm->tsc_ratio_msr = data;
- 
-@@ -2866,10 +2866,10 @@ static int svm_set_msr(struct kvm_vcpu *vcpu, struct msr_data *msr)
- 	case MSR_IA32_SPEC_CTRL:
- 		if (!msr->host_initiated &&
- 		    !guest_has_spec_ctrl_msr(vcpu))
--			return 1;
-+			return KVM_MSR_RET_ERR;
- 
- 		if (kvm_spec_ctrl_test_value(data))
--			return 1;
-+			return KVM_MSR_RET_ERR;
- 
- 		if (boot_cpu_has(X86_FEATURE_V_SPEC_CTRL))
- 			svm->vmcb->save.spec_ctrl = data;
-@@ -2894,10 +2894,10 @@ static int svm_set_msr(struct kvm_vcpu *vcpu, struct msr_data *msr)
- 	case MSR_AMD64_VIRT_SPEC_CTRL:
- 		if (!msr->host_initiated &&
- 		    !guest_cpu_cap_has(vcpu, X86_FEATURE_VIRT_SSBD))
--			return 1;
-+			return KVM_MSR_RET_ERR;
- 
- 		if (data & ~SPEC_CTRL_SSBD)
--			return 1;
-+			return KVM_MSR_RET_ERR;
- 
- 		svm->virt_spec_ctrl = data;
- 		break;
-@@ -2992,7 +2992,7 @@ static int svm_set_msr(struct kvm_vcpu *vcpu, struct msr_data *msr)
+ 		if (pending_event_guest_run) {
+@@ -1400,7 +1399,7 @@ static bool interrupt_finished(struct svm_test *test)
  		}
+ 		vmcb->save.rip += 3;
  
- 		if (data & DEBUGCTL_RESERVED_BITS)
--			return 1;
-+			return KVM_MSR_RET_ERR;
- 
- 		if (svm->vmcb->save.dbgctl == data)
- 			break;
-@@ -3009,7 +3009,7 @@ static int svm_set_msr(struct kvm_vcpu *vcpu, struct msr_data *msr)
- 		 * originating from those kernels.
- 		 */
- 		if (!msr->host_initiated && !page_address_valid(vcpu, data))
--			return 1;
-+			return KVM_MSR_RET_ERR;
- 
- 		svm->nested.hsave_msr = data & PAGE_MASK;
+-		vmcb->control.intercept |= (1ULL << INTERCEPT_INTR);
++		vmcb_set_intercept(INTERCEPT_INTR);
+ 		vmcb->control.int_ctl |= V_INTR_MASKING_MASK;
  		break;
-@@ -3022,10 +3022,10 @@ static int svm_set_msr(struct kvm_vcpu *vcpu, struct msr_data *msr)
- 		u64 supported_de_cfg;
  
- 		if (svm_get_feature_msr(ecx, &supported_de_cfg))
--			return 1;
-+			return KVM_MSR_RET_ERR;
+@@ -1414,7 +1413,7 @@ static bool interrupt_finished(struct svm_test *test)
  
- 		if (data & ~supported_de_cfg)
--			return 1;
-+			return KVM_MSR_RET_ERR;
+ 		sti_nop_cli();
  
- 		svm->msr_decfg = data;
+-		vmcb->control.intercept &= ~(1ULL << INTERCEPT_INTR);
++		vmcb_clear_intercept(INTERCEPT_INTR);
+ 		vmcb->control.int_ctl &= ~V_INTR_MASKING_MASK;
  		break;
+ 
+@@ -1476,7 +1475,7 @@ static bool nmi_finished(struct svm_test *test)
+ 		}
+ 		vmcb->save.rip += 3;
+ 
+-		vmcb->control.intercept |= (1ULL << INTERCEPT_NMI);
++		vmcb_set_intercept(INTERCEPT_NMI);
+ 		break;
+ 
+ 	case 1:
+@@ -1569,7 +1568,7 @@ static bool nmi_hlt_finished(struct svm_test *test)
+ 		}
+ 		vmcb->save.rip += 3;
+ 
+-		vmcb->control.intercept |= (1ULL << INTERCEPT_NMI);
++		vmcb_set_intercept(INTERCEPT_NMI);
+ 		break;
+ 
+ 	case 2:
+@@ -1605,7 +1604,7 @@ static void vnmi_prepare(struct svm_test *test)
+ 	 * Disable NMI interception to start.  Enabling vNMI without
+ 	 * intercepting "real" NMIs should result in an ERR VM-Exit.
+ 	 */
+-	vmcb->control.intercept &= ~(1ULL << INTERCEPT_NMI);
++	vmcb_clear_intercept(INTERCEPT_NMI);
+ 	vmcb->control.int_ctl = V_NMI_ENABLE_MASK;
+ 	vmcb->control.int_vector = NMI_VECTOR;
+ }
+@@ -1629,7 +1628,7 @@ static bool vnmi_finished(struct svm_test *test)
+ 			return true;
+ 		}
+ 		report(!nmi_fired, "vNMI enabled but NMI_INTERCEPT unset!");
+-		vmcb->control.intercept |= (1ULL << INTERCEPT_NMI);
++		vmcb_set_intercept(INTERCEPT_NMI);
+ 		vmcb->save.rip += 3;
+ 		break;
+ 
+@@ -1804,7 +1803,7 @@ static bool virq_inject_finished(struct svm_test *test)
+ 			return true;
+ 		}
+ 		virq_fired = false;
+-		vmcb->control.intercept |= (1ULL << INTERCEPT_VINTR);
++		vmcb_set_intercept(INTERCEPT_VINTR);
+ 		vmcb->control.int_ctl = V_INTR_MASKING_MASK | V_IRQ_MASK |
+ 			(0x0f << V_INTR_PRIO_SHIFT);
+ 		break;
+@@ -1819,7 +1818,7 @@ static bool virq_inject_finished(struct svm_test *test)
+ 			report_fail("V_IRQ fired before SVM_EXIT_VINTR");
+ 			return true;
+ 		}
+-		vmcb->control.intercept &= ~(1ULL << INTERCEPT_VINTR);
++		vmcb_clear_intercept(INTERCEPT_VINTR);
+ 		break;
+ 
+ 	case 2:
+@@ -1842,7 +1841,7 @@ static bool virq_inject_finished(struct svm_test *test)
+ 				    vmcb->control.exit_code);
+ 			return true;
+ 		}
+-		vmcb->control.intercept |= (1ULL << INTERCEPT_VINTR);
++		vmcb_set_intercept(INTERCEPT_VINTR);
+ 		break;
+ 
+ 	case 4:
+@@ -1943,7 +1942,7 @@ static void reg_corruption_prepare(struct svm_test *test)
+ 	set_test_stage(test, 0);
+ 
+ 	vmcb->control.int_ctl = V_INTR_MASKING_MASK;
+-	vmcb->control.intercept |= (1ULL << INTERCEPT_INTR);
++	vmcb_set_intercept(INTERCEPT_INTR);
+ 
+ 	handle_irq(TIMER_VECTOR, reg_corruption_isr);
+ 
+@@ -2050,7 +2049,7 @@ static volatile bool init_intercept;
+ static void init_intercept_prepare(struct svm_test *test)
+ {
+ 	init_intercept = false;
+-	vmcb->control.intercept |= (1ULL << INTERCEPT_INIT);
++	vmcb_set_intercept(INTERCEPT_INIT);
+ }
+ 
+ static void init_intercept_test(struct svm_test *test)
+@@ -2547,7 +2546,7 @@ static void test_dr(void)
+ /* TODO: verify if high 32-bits are sign- or zero-extended on bare metal */
+ #define	TEST_BITMAP_ADDR(save_intercept, type, addr, exit_code,		\
+ 			 msg) {						\
+-		vmcb->control.intercept = saved_intercept | 1ULL << type; \
++		vmcb_set_intercept(type); \
+ 		if (type == INTERCEPT_MSR_PROT)				\
+ 			vmcb->control.msrpm_base_pa = addr;		\
+ 		else							\
+@@ -2574,7 +2573,7 @@ static void test_dr(void)
+  */
+ static void test_msrpm_iopm_bitmap_addrs(void)
+ {
+-	u64 saved_intercept = vmcb->control.intercept;
++	u32 saved_intercept = vmcb->control.intercept[INTERCEPT_WORD3];
+ 	u64 addr_beyond_limit = 1ull << cpuid_maxphyaddr();
+ 	u64 addr = virt_to_phys(msr_bitmap) & (~((1ull << 12) - 1));
+ 
+@@ -2615,7 +2614,7 @@ static void test_msrpm_iopm_bitmap_addrs(void)
+ 	TEST_BITMAP_ADDR(saved_intercept, INTERCEPT_IOIO_PROT, addr,
+ 			 SVM_EXIT_VMMCALL, "IOPM");
+ 
+-	vmcb->control.intercept = saved_intercept;
++	vmcb->control.intercept[INTERCEPT_WORD3] = saved_intercept;
+ }
+ 
+ /*
+@@ -2811,7 +2810,7 @@ static void vmload_vmsave_guest_main(struct svm_test *test)
+ 
+ static void svm_vmload_vmsave(void)
+ {
+-	u32 intercept_saved = vmcb->control.intercept;
++	u32 intercept_saved = vmcb->control.intercept[INTERCEPT_WORD4];
+ 
+ 	test_set_guest(vmload_vmsave_guest_main);
+ 
+@@ -2819,8 +2818,8 @@ static void svm_vmload_vmsave(void)
+ 	 * Disabling intercept for VMLOAD and VMSAVE doesn't cause
+ 	 * respective #VMEXIT to host
+ 	 */
+-	vmcb->control.intercept &= ~(1ULL << INTERCEPT_VMLOAD);
+-	vmcb->control.intercept &= ~(1ULL << INTERCEPT_VMSAVE);
++	vmcb_clear_intercept(INTERCEPT_VMLOAD);
++	vmcb_clear_intercept(INTERCEPT_VMSAVE);
+ 	svm_vmrun();
+ 	report(vmcb->control.exit_code == SVM_EXIT_VMMCALL, "Test "
+ 	       "VMLOAD/VMSAVE intercept: Expected VMMCALL #VMEXIT");
+@@ -2829,39 +2828,39 @@ static void svm_vmload_vmsave(void)
+ 	 * Enabling intercept for VMLOAD and VMSAVE causes respective
+ 	 * #VMEXIT to host
+ 	 */
+-	vmcb->control.intercept |= (1ULL << INTERCEPT_VMLOAD);
++	vmcb_set_intercept(INTERCEPT_VMLOAD);
+ 	svm_vmrun();
+ 	report(vmcb->control.exit_code == SVM_EXIT_VMLOAD, "Test "
+ 	       "VMLOAD/VMSAVE intercept: Expected VMLOAD #VMEXIT");
+-	vmcb->control.intercept &= ~(1ULL << INTERCEPT_VMLOAD);
+-	vmcb->control.intercept |= (1ULL << INTERCEPT_VMSAVE);
++	vmcb_clear_intercept(INTERCEPT_VMLOAD);
++	vmcb_set_intercept(INTERCEPT_VMSAVE);
+ 	svm_vmrun();
+ 	report(vmcb->control.exit_code == SVM_EXIT_VMSAVE, "Test "
+ 	       "VMLOAD/VMSAVE intercept: Expected VMSAVE #VMEXIT");
+-	vmcb->control.intercept &= ~(1ULL << INTERCEPT_VMSAVE);
++	vmcb_clear_intercept(INTERCEPT_VMSAVE);
+ 	svm_vmrun();
+ 	report(vmcb->control.exit_code == SVM_EXIT_VMMCALL, "Test "
+ 	       "VMLOAD/VMSAVE intercept: Expected VMMCALL #VMEXIT");
+ 
+-	vmcb->control.intercept |= (1ULL << INTERCEPT_VMLOAD);
++	vmcb_set_intercept(INTERCEPT_VMLOAD);
+ 	svm_vmrun();
+ 	report(vmcb->control.exit_code == SVM_EXIT_VMLOAD, "Test "
+ 	       "VMLOAD/VMSAVE intercept: Expected VMLOAD #VMEXIT");
+-	vmcb->control.intercept &= ~(1ULL << INTERCEPT_VMLOAD);
++	vmcb_clear_intercept(INTERCEPT_VMLOAD);
+ 	svm_vmrun();
+ 	report(vmcb->control.exit_code == SVM_EXIT_VMMCALL, "Test "
+ 	       "VMLOAD/VMSAVE intercept: Expected VMMCALL #VMEXIT");
+ 
+-	vmcb->control.intercept |= (1ULL << INTERCEPT_VMSAVE);
++	vmcb_set_intercept(INTERCEPT_VMSAVE);
+ 	svm_vmrun();
+ 	report(vmcb->control.exit_code == SVM_EXIT_VMSAVE, "Test "
+ 	       "VMLOAD/VMSAVE intercept: Expected VMSAVE #VMEXIT");
+-	vmcb->control.intercept &= ~(1ULL << INTERCEPT_VMSAVE);
++	vmcb_clear_intercept(INTERCEPT_VMSAVE);
+ 	svm_vmrun();
+ 	report(vmcb->control.exit_code == SVM_EXIT_VMMCALL, "Test "
+ 	       "VMLOAD/VMSAVE intercept: Expected VMMCALL #VMEXIT");
+ 
+-	vmcb->control.intercept = intercept_saved;
++	vmcb->control.intercept[INTERCEPT_WORD4] = intercept_saved;
+ }
+ 
+ static void prepare_vgif_enabled(struct svm_test *test)
+@@ -2974,7 +2973,7 @@ static void pause_filter_test(void)
+ 		return;
+ 	}
+ 
+-	vmcb->control.intercept |= (1 << INTERCEPT_PAUSE);
++	vmcb_set_intercept(INTERCEPT_PAUSE);
+ 
+ 	// filter count more that pause count - no VMexit
+ 	pause_filter_run_test(10, 9, 0, 0);
+@@ -3356,7 +3355,7 @@ static void svm_intr_intercept_mix_if(void)
+ 	// make a physical interrupt to be pending
+ 	handle_irq(0x55, dummy_isr);
+ 
+-	vmcb->control.intercept |= (1 << INTERCEPT_INTR);
++	vmcb_set_intercept(INTERCEPT_INTR);
+ 	vmcb->control.int_ctl &= ~V_INTR_MASKING_MASK;
+ 	vmcb->save.rflags &= ~X86_EFLAGS_IF;
+ 
+@@ -3389,7 +3388,7 @@ static void svm_intr_intercept_mix_gif(void)
+ {
+ 	handle_irq(0x55, dummy_isr);
+ 
+-	vmcb->control.intercept |= (1 << INTERCEPT_INTR);
++	vmcb_set_intercept(INTERCEPT_INTR);
+ 	vmcb->control.int_ctl &= ~V_INTR_MASKING_MASK;
+ 	vmcb->save.rflags &= ~X86_EFLAGS_IF;
+ 
+@@ -3419,7 +3418,7 @@ static void svm_intr_intercept_mix_gif2(void)
+ {
+ 	handle_irq(0x55, dummy_isr);
+ 
+-	vmcb->control.intercept |= (1 << INTERCEPT_INTR);
++	vmcb_set_intercept(INTERCEPT_INTR);
+ 	vmcb->control.int_ctl &= ~V_INTR_MASKING_MASK;
+ 	vmcb->save.rflags |= X86_EFLAGS_IF;
+ 
+@@ -3448,7 +3447,7 @@ static void svm_intr_intercept_mix_nmi(void)
+ {
+ 	handle_exception(2, dummy_nmi_handler);
+ 
+-	vmcb->control.intercept |= (1 << INTERCEPT_NMI);
++	vmcb_set_intercept(INTERCEPT_NMI);
+ 	vmcb->control.int_ctl &= ~V_INTR_MASKING_MASK;
+ 	vmcb->save.rflags |= X86_EFLAGS_IF;
+ 
+@@ -3472,7 +3471,7 @@ static void svm_intr_intercept_mix_smi_guest(struct svm_test *test)
+ 
+ static void svm_intr_intercept_mix_smi(void)
+ {
+-	vmcb->control.intercept |= (1 << INTERCEPT_SMI);
++	vmcb_set_intercept(INTERCEPT_SMI);
+ 	vmcb->control.int_ctl &= ~V_INTR_MASKING_MASK;
+ 	test_set_guest(svm_intr_intercept_mix_smi_guest);
+ 	svm_intr_intercept_mix_run_guest(NULL, SVM_EXIT_SMI);
+@@ -3530,14 +3529,14 @@ static void handle_exception_in_l2(u8 vector)
+ 
+ static void handle_exception_in_l1(u32 vector)
+ {
+-	u32 old_ie = vmcb->control.intercept_exceptions;
++	u32 old_ie = vmcb->control.intercept[INTERCEPT_EXCEPTION];
+ 
+-	vmcb->control.intercept_exceptions |= (1ULL << vector);
++	vmcb_set_intercept(INTERCEPT_EXCEPTION_OFFSET + vector);
+ 
+ 	report(svm_vmrun() == (SVM_EXIT_EXCP_BASE + vector),
+ 		"%s handled by L1",  exception_mnemonic(vector));
+ 
+-	vmcb->control.intercept_exceptions = old_ie;
++	vmcb->control.intercept[INTERCEPT_EXCEPTION] = old_ie;
+ }
+ 
+ static void svm_exception_test(void)
+@@ -3568,7 +3567,7 @@ static void svm_shutdown_intercept_test(void)
+ {
+ 	test_set_guest(shutdown_intercept_test_guest);
+ 	vmcb->save.idtr.base = (u64)alloc_vpage();
+-	vmcb->control.intercept |= (1ULL << INTERCEPT_SHUTDOWN);
++	vmcb_set_intercept(INTERCEPT_SHUTDOWN);
+ 	svm_vmrun();
+ 	report(vmcb->control.exit_code == SVM_EXIT_SHUTDOWN, "shutdown test passed");
+ }
 -- 
-2.51.0
+2.52.0.223.gf5cc29aaa4-goog
 
