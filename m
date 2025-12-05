@@ -1,89 +1,87 @@
-Received: from mail-pl1-f202.google.com (mail-pl1-f202.google.com [209.85.214.202])
+Received: from mail-pg1-f202.google.com (mail-pg1-f202.google.com [209.85.215.202])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6E2034250F
-	for <kvm@vger.kernel.org>; Fri,  5 Dec 2025 17:00:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.202
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B1B734B190
+	for <kvm@vger.kernel.org>; Fri,  5 Dec 2025 17:00:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.202
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764954024; cv=none; b=gDfGnWdN7BrHO3eNwLybrcmF59za9LpGK2d/jL5WIZmZ3Eb7DhpKo2enHCKxwKeL1piS1jDJlkZRr3FPOy7jZM+pxrNXAzKqxRKqTE2UH9codX7KHDOGzBrkyA5h68RiTBlIAMr6jzUnZyP4t9jepTGOCGeRnPA56Jf+x30/tuU=
+	t=1764954031; cv=none; b=d64VDk7xLVYDwbD2vmA44bFhxYhlapywf9nV6LfWE2gb1YWbkoEdDwbEFblVRWy7RwDAozvjfm3kFTWKoD3AlZco/Cp3ieprKuvT/6WEYcJQt5tLTGwFcR3yxrGLRR/MpXBOg10myIOq8YGQ1OhjiJZ5cmH3onueiAvQcCVRNlk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764954024; c=relaxed/simple;
-	bh=DHNk5w9XwMwbV9CixJzEXeub5jf6A4O9Fnq+bSSpvBc=;
+	s=arc-20240116; t=1764954031; c=relaxed/simple;
+	bh=pJ8yFcPnJVTemBH5LLrP0aRwqGd9ZLrLD2YAijIxors=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=IgX3RRvNKsaxRFnUae092X5MXPCt+zAkx75XAW4RqIBPP1b/QGC4l/IaNqeYkbp0tGn7Wpg4ZNmYK1nnBMyOOscVEMlc3qIhl7mYm1KRe5HTlORn3+Lfqw0QDrHlN6/Pw2Mx8mbdwrRn1guZf9K+uyD5GYzVDU5Lk9mI/E/U85c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=GpBvGa8l; arc=none smtp.client-ip=209.85.214.202
+	 To:Cc:Content-Type; b=K4Kinqg9PFY8gmjZb25mYmN1LAQw0v/1K8PHgMv8d+j9IZaAZjnkIzheGf9OGlttkl2Hz8eq8gAPUZR6WiLnhF31iiw9TCfxCbQrPtnJVnOmAcSZzbkxZIuLbI0xbNbYWVLMjwT6jve/nf+34f3JqIurqyCyGCEFRrP6k9Jp0YU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=rQF5bwLC; arc=none smtp.client-ip=209.85.215.202
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="GpBvGa8l"
-Received: by mail-pl1-f202.google.com with SMTP id d9443c01a7336-2958c80fcabso52155365ad.0
-        for <kvm@vger.kernel.org>; Fri, 05 Dec 2025 09:00:17 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="rQF5bwLC"
+Received: by mail-pg1-f202.google.com with SMTP id 41be03b00d2f7-bd74e95f05aso1961385a12.1
+        for <kvm@vger.kernel.org>; Fri, 05 Dec 2025 09:00:24 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1764954013; x=1765558813; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1764954020; x=1765558820; darn=vger.kernel.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=n2gYfoz6OBxfy2iG9IvxpX8oLw5cF4SiJlpoRIbvvvo=;
-        b=GpBvGa8l4ByrboR6idAncBNLiyvzMX+qPDbskI7ghdMUmX16GWz6jvrwCruNokTt0I
-         DcNVVbvP+jEiLEkhUm5WGB2Dd1AWI8Zgl1eJ6L/j5aiOj52xH3XgzxtEMIfMWblEmf1K
-         2FCPH1x9RgRSa/hipVTMFbTZfi9jyriFZukB+Pnr3vViTxnIT/f4OJMva/q/6HRSKa9V
-         GnEbSp6Y9tPKLhJHNx4mr34VgW3E5mVFBIGDTAW0DKFoUOOqVwS+YdPmeHwQBt9KO0nP
-         g6ouAHXidFFEoCtbHglfWbmMJGTspKkynN07rOHai254FzEJ/eOKZ8YJJfkem4HTm9pP
-         YqHQ==
+        bh=j/nv/S0AF1aww/PpL3h7iNG9Cj3Ek+VrZ+ocMBY/e3g=;
+        b=rQF5bwLC+hNbcM/gV0+GFAmEblmsbbhI9e5obXCSbrcayizSH+4XDatnwFsikanSKS
+         7o2aQ6GfnZKuotKTwdHI86KuhEL4R7YKeRQ80+9jGTPNnQsjfSxvwZNOlOsAlOre6znK
+         5PZbF7btaVYHBODZ7jfXekAMZxuVadAogL4qZ/X3Ofz4sgL9X6Usf0eIGVdjtavaRciL
+         xdJB3vVMc/XSD+xZTLAxB3wMrNq00vIePp75djSpNeYFnvDwpAguqGO6G1ImZ+A5qGua
+         CUTzYBLMNJARtmPySWlt1o2041D/E2zWOOcqO/lY3NaT75r0CRXao712POtflh9pqpav
+         PH6g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1764954013; x=1765558813;
+        d=1e100.net; s=20230601; t=1764954020; x=1765558820;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=n2gYfoz6OBxfy2iG9IvxpX8oLw5cF4SiJlpoRIbvvvo=;
-        b=mek+OKkrjDEM0P/ftFXMVG4+cykFGSCMlCz2gUDVztBiVGA7Kj8yNCHUW2IRUV9A6/
-         NUmuxoZZhaAEr/qEdjjooKij3U9UZUB3oOaX03jqOzF0WGbGccYSXhOAMMyf7XAp6tiH
-         eL5s5Fdr9nbkskVEv9qf0ZhRrlCn0024l8w09V0az+zHSkljRZTXkXGezYtVCVHtCwZF
-         Tot8anKuqm065YEgnnZIQVgvZ29doRYTr4OcVNTGcRVRX3IuCND7y0AqCWlFQDJ9NKx8
-         nIe3I4yc9Dn+UUGNqNWXG92aJfeuNi1l6X3pz0TEFHCOlMzVEJS9La6CEpwzB6YYu6Qa
-         E+EA==
-X-Gm-Message-State: AOJu0YwzBVa6tUgCYCMQ4P5WOPYflmnKLDe95VUIfxAp24WORt8ufpc0
-	6sqd+82vJ77xMzs9FiMKZygekCT28Qz2xO5XHLu3SbW3ZsA98xL8PcgqVNVSlzSNrvGFUl01Xg7
-	3kC2fpA==
-X-Google-Smtp-Source: AGHT+IHTewcuK4468H9YP/872oeRWG0b+MNWtRerydq5/7oXw7h4HToXu6iciqteusC+zbCGaDlYOaNUKM8=
-X-Received: from pgc2.prod.google.com ([2002:a05:6a02:2f82:b0:bc0:a646:a342])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6300:8b0f:b0:366:14ac:e1f4
- with SMTP id adf61e73a8af0-36614ace6dcmr824505637.70.1764954012983; Fri, 05
- Dec 2025 09:00:12 -0800 (PST)
-Date: Fri,  5 Dec 2025 08:59:27 -0800
-In-Reply-To: <20251202020334.1171351-1-seanjc@google.com>
+        bh=j/nv/S0AF1aww/PpL3h7iNG9Cj3Ek+VrZ+ocMBY/e3g=;
+        b=SchSVUGKJmWXRcb6Ff/plKzEwZpiLhpjeswpr8p/crgdGWs9yZVWMdVhhchQC8TYJI
+         Nh0pM17RdBP1eGBQn0DgP+VMYpNrgK98BYpQqObavjZg6OgbtSPOnjjMvlrNg69dJ9ug
+         ZAU3oDhjEnd7kPxXAGursUSWXXc75/X4SuXBOzwRm2zI2ZNgeGiJcwaMaLaL1togkRat
+         yvNZsPbGZCaiFuAsWNsuU/SrD1bEphJRWMTUm3kUZOxyso/S/x1uNxGOJBOeoZaA8+L/
+         KYTVBcYfNf3xJcXL0HERdnDO6t8XRTphVFyPhJlHCsVJFb1auq+fbB0tz6q63i5EX+hJ
+         l+fg==
+X-Gm-Message-State: AOJu0Ywh6MRm7jGiHEEnX7Sp+YNmU14V4sLWj1brSejBfjTNpIJG/xKW
+	2YAp6F2goiRQp+kFYDe8OGEBDfgQg2Nvt68HcU4AvDHD/3l5pXIBJ265KqzMW/OxUYzQY+VETiM
+	rGn2Z6g==
+X-Google-Smtp-Source: AGHT+IFYjMQLTRpb/CMPNwPd79bJ1+pRxDeYiCcgaN7JU4cjSSguLVy9KKfRzmOTpZ9lCz6rJb8slQ9scnQ=
+X-Received: from pgcq11.prod.google.com ([2002:a63:750b:0:b0:bac:a20:5edf])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a20:72a5:b0:364:14f3:a5b
+ with SMTP id adf61e73a8af0-36414f30ac0mr3768954637.2.1764954020258; Fri, 05
+ Dec 2025 09:00:20 -0800 (PST)
+Date: Fri,  5 Dec 2025 08:59:29 -0800
+In-Reply-To: <20251202015049.1167490-1-seanjc@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-References: <20251202020334.1171351-1-seanjc@google.com>
+References: <20251202015049.1167490-1-seanjc@google.com>
 X-Mailer: git-send-email 2.52.0.223.gf5cc29aaa4-goog
-Message-ID: <176494720872.296359.3976381514002984346.b4-ty@google.com>
-Subject: Re: [PATCH 0/2] KVM: Fix a guest_memfd memslot UAF
+Message-ID: <176494721851.296449.6639753862362613097.b4-ty@google.com>
+Subject: Re: [PATCH 0/2] KVM: x86: Do runtime updates during KVM_SET_CPUID2
 From: Sean Christopherson <seanjc@google.com>
 To: Sean Christopherson <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>
 Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	Alexander Potapenko <glider@google.com>
+	Igor Mammedov <imammedo@redhat.com>
 Content-Type: text/plain; charset="utf-8"
 
-On Mon, 01 Dec 2025 18:03:32 -0800, Sean Christopherson wrote:
-> Fix a UAF due to leaving a dangling guest_memfd memslot binding by
-> disallowing clearing KVM_MEM_GUEST_MEMFD on a memslot.  The intent was
-> that guest_memfd memslots would be immutable (could only be deleted),
-> but somewhat ironically we missed the case where KVM_MEM_GUEST_MEMFD
-> itself is the only flag that's toggled.
-> 
-> This is an ABI change, but I can't imagine anyone was relying on
-> disappearing a guest_memfd memslot.
+On Mon, 01 Dec 2025 17:50:47 -0800, Sean Christopherson wrote:
+> Do runtime updates (if necessary) when userspace sets CPUID to fix a bug
+> where KVM drops a pending update (KVM will clear the dirty flag when doing
+> updates on the new/incoming CPUID).  The bug most visibly manifests as an
+> -EINVAL failure on KVM_SET_CPUID{,2} due to the old/current CPUID not
+> matching the new/incoming CPUID, but if userspace were to continue running
+> past the failure, the vCPU would run with stale CPUID/caps.
 > 
 > [...]
 
-Applied to kvm-x86 fixes (I'm feeling lucky with the ABI change).
+Applied to kvm-x86 fixes, thanks!
 
-[1/2] KVM: Disallow toggling KVM_MEM_GUEST_MEMFD on an existing memslot
-      https://github.com/kvm-x86/linux/commit/9935df5333aa
-[2/2] KVM: Harden and prepare for modifying existing guest_memfd memslots
-      https://github.com/kvm-x86/linux/commit/af62fe2494da
+[1/2] KVM: x86: Apply runtime updates to current CPUID during KVM_SET_CPUID{,2}
+      https://github.com/kvm-x86/linux/commit/e2b43fb25243
+[2/2] KVM: selftests: Add a CPUID testcase for KVM_SET_CPUID2 with runtime updates
+      https://github.com/kvm-x86/linux/commit/824d227324dc
 
 --
 https://github.com/kvm-x86/linux/tree/next
