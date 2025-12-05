@@ -1,58 +1,58 @@
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE908339709
-	for <kvm@vger.kernel.org>; Fri,  5 Dec 2025 07:46:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D9A733A6EB
+	for <kvm@vger.kernel.org>; Fri,  5 Dec 2025 07:46:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764920812; cv=none; b=e7wJZ5cTjkdF+A+Ac4UyROEmIR4bWp1RWsk8p+BOh7MwFY3/36HWkQ4pzpQQ+p9yp9F/ajuLxnF2N+2lNkXcAh0LIv8FhEOIo+AEcjhuT2MbJZQHoeSe5d4+BpYTKnXEadfPKLNO44EGF4jvSjvz5K7GOZjGk/fMben1Flthy90=
+	t=1764920825; cv=none; b=eVayFJJqJXWVSlkpSf3IDCiy5hD9X1tf4Bl77wbvIERJw9tmytcs/j74o6oLiF/jt3bMWKTf42pLqOQQVahA9MGT39Kvt5FejS+/uwVpHxfg2Hs/dEYM6uzKokt1W/9GabMqv0YOXoXm4kgculzJ4iG5AK30pyjD2MeLlHtqOSM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764920812; c=relaxed/simple;
-	bh=CmxEd3gwC/8Nz/x9nvFR4obE78Cdg8JtwhxAC4uFGFQ=;
+	s=arc-20240116; t=1764920825; c=relaxed/simple;
+	bh=RMjuG9xOZRWYBTkXU1xw9IPvj7yQt8tlIIIO2zZ9c5c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hBGkhPGFDK9F5wg3g1IaUgIgr1cuWSfhXhhMOKlRPbibbmMb6VmGdYSGwysXU4OaJzN6Gbh7ngjjq8waax1lIgAzaOeQfNa6NcRHzbBKoUy+8aizEdqEKZljIY0dDW+XjZDcuz9DK2yy7dZSNWt/k2QK/iD+cARi7iz8T+mMDVM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (1024-bit key) header.d=suse.com header.i=@suse.com header.b=XZuoENj7; dkim=pass (1024-bit key) header.d=suse.com header.i=@suse.com header.b=XZuoENj7; arc=none smtp.client-ip=195.135.223.131
+	 MIME-Version; b=QBCUpJasi4W4OBE+c1aaFTXKNqpibUhPHq8vDvVDlWo954mwlPk/CHs3BEoZuZ8R9Z9MdC3FlxbcNM9v+te/elNb986OIBxy0nWo9S5A4AEA4npMs7qJrQNs33pM+bPRXFazeiPES0e/7aUS7JtCT4V1Sm/MhyXKf5Qb8GIaLOM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (1024-bit key) header.d=suse.com header.i=@suse.com header.b=J6u72zd8; dkim=pass (1024-bit key) header.d=suse.com header.i=@suse.com header.b=J6u72zd8; arc=none smtp.client-ip=195.135.223.130
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.com header.i=@suse.com header.b="XZuoENj7";
-	dkim=pass (1024-bit key) header.d=suse.com header.i=@suse.com header.b="XZuoENj7"
+	dkim=pass (1024-bit key) header.d=suse.com header.i=@suse.com header.b="J6u72zd8";
+	dkim=pass (1024-bit key) header.d=suse.com header.i=@suse.com header.b="J6u72zd8"
 Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id 2D3C25BD1E;
-	Fri,  5 Dec 2025 07:46:15 +0000 (UTC)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id 754D3336D3;
+	Fri,  5 Dec 2025 07:46:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.com; s=susede1;
-	t=1764920775; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	t=1764920763; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=wNVZfctafYmu8yiKdSAno+os0/M8AOzDx0NA54YEouo=;
-	b=XZuoENj7PRNgEvavCSBK382SMW36i9zpaARDYnzy6XHF3C1i701lNf6GQEGlzMTSZCVz+L
-	i5zt0gBM4k/kqtHQnGVaUtFkPYNfCO2D8xqyiSsLAZFHZi54fewodFB+a1pshhxFBWliKj
-	pjO8E/HUr21PMSGLRCl3JxlNW6/UKo8=
-Authentication-Results: smtp-out2.suse.de;
+	bh=O2QI2tXA+nx1LW7woBCHJciBt//PT9QL/iecUqx6nPQ=;
+	b=J6u72zd8qDKeNP9YKy6a8htKzGol2VNaGLVElMZjSWLxGz5dkCVX16ZkJOMCtkXhBSS4ln
+	SvbCX5dBW7pDAWuuCksVqI+9w0YaD9PcbtQmAqHGZ3b8WN4axT8yJFIIAq5Vle3xbFmlqJ
+	ZfnNJv0hLp51U1ZtO8FunG4ImpDLexI=
+Authentication-Results: smtp-out1.suse.de;
 	none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.com; s=susede1;
-	t=1764920775; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	t=1764920763; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=wNVZfctafYmu8yiKdSAno+os0/M8AOzDx0NA54YEouo=;
-	b=XZuoENj7PRNgEvavCSBK382SMW36i9zpaARDYnzy6XHF3C1i701lNf6GQEGlzMTSZCVz+L
-	i5zt0gBM4k/kqtHQnGVaUtFkPYNfCO2D8xqyiSsLAZFHZi54fewodFB+a1pshhxFBWliKj
-	pjO8E/HUr21PMSGLRCl3JxlNW6/UKo8=
+	bh=O2QI2tXA+nx1LW7woBCHJciBt//PT9QL/iecUqx6nPQ=;
+	b=J6u72zd8qDKeNP9YKy6a8htKzGol2VNaGLVElMZjSWLxGz5dkCVX16ZkJOMCtkXhBSS4ln
+	SvbCX5dBW7pDAWuuCksVqI+9w0YaD9PcbtQmAqHGZ3b8WN4axT8yJFIIAq5Vle3xbFmlqJ
+	ZfnNJv0hLp51U1ZtO8FunG4ImpDLexI=
 Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id C904F3EA63;
-	Fri,  5 Dec 2025 07:46:14 +0000 (UTC)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 1DA183EA63;
+	Fri,  5 Dec 2025 07:46:03 +0000 (UTC)
 Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
 	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id EL2KL8aNMmmBEgAAD6G6ig
-	(envelope-from <jgross@suse.com>); Fri, 05 Dec 2025 07:46:14 +0000
+	id 0amiBbuNMml3EgAAD6G6ig
+	(envelope-from <jgross@suse.com>); Fri, 05 Dec 2025 07:46:03 +0000
 From: Juergen Gross <jgross@suse.com>
 To: linux-kernel@vger.kernel.org,
 	x86@kernel.org,
@@ -65,9 +65,9 @@ Cc: Juergen Gross <jgross@suse.com>,
 	Borislav Petkov <bp@alien8.de>,
 	Dave Hansen <dave.hansen@linux.intel.com>,
 	"H. Peter Anvin" <hpa@zytor.com>
-Subject: [PATCH 06/10] KVM/x86: Use defines for APIC related MSR emulation
-Date: Fri,  5 Dec 2025 08:45:33 +0100
-Message-ID: <20251205074537.17072-7-jgross@suse.com>
+Subject: [PATCH 04/10] KVM/x86: Let x86_emulate_ops.set_dr() return a bool
+Date: Fri,  5 Dec 2025 08:45:31 +0100
+Message-ID: <20251205074537.17072-5-jgross@suse.com>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20251205074537.17072-1-jgross@suse.com>
 References: <20251205074537.17072-1-jgross@suse.com>
@@ -83,13 +83,12 @@ X-Spamd-Result: default: False [-2.80 / 50.00];
 	NEURAL_HAM_LONG(-1.00)[-1.000];
 	MID_CONTAINS_FROM(1.00)[];
 	R_MISSING_CHARSET(0.50)[];
-	NEURAL_HAM_SHORT(-0.20)[-0.988];
+	NEURAL_HAM_SHORT(-0.20)[-0.989];
 	MIME_GOOD(-0.10)[text/plain];
 	TO_MATCH_ENVRCPT_ALL(0.00)[];
 	ARC_NA(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DBL_BLOCKED_OPENRESOLVER(0.00)[imap1.dmz-prg2.suse.org:helo,suse.com:mid,suse.com:email];
 	FUZZY_RATELIMITED(0.00)[rspamd.com];
@@ -97,214 +96,153 @@ X-Spamd-Result: default: False [-2.80 / 50.00];
 	RCVD_COUNT_TWO(0.00)[2];
 	FROM_EQ_ENVFROM(0.00)[];
 	DKIM_SIGNED(0.00)[suse.com:s=susede1];
-	R_RATELIMIT(0.00)[to_ip_from(RLfdszjqhz8kzzb9uwpzdm8png)];
+	TO_DN_SOME(0.00)[];
 	RCVD_TLS_ALL(0.00)[]
 X-Spam-Level: 
 X-Spam-Flag: NO
 X-Spam-Score: -2.80
 
-Instead of "0" and "1" use the related KVM_MSR_RET_* defines in the
-emulation code of APIC related MSR registers.
+Today x86_emulate_ops.set_dr() is returning "0" for okay and "1" in
+case of an error. In order to get rid of the literal numbers, use bool
+as return type for x86_emulate_ops.set_dr() and related sub-functions.
+
+As x86_emulate_ops.set_dr() only ever returns 0 or 1, the test for its
+return value less than 0 in em_dr_write() seems to be a bug. It should
+probably be just a test for not 0.
 
 No change of functionality intended.
 
 Signed-off-by: Juergen Gross <jgross@suse.com>
 ---
- arch/x86/kvm/lapic.c | 48 ++++++++++++++++++++++----------------------
- 1 file changed, 24 insertions(+), 24 deletions(-)
+ arch/x86/include/asm/kvm_host.h |  2 +-
+ arch/x86/kvm/emulate.c          |  2 +-
+ arch/x86/kvm/kvm_emulate.h      |  2 +-
+ arch/x86/kvm/svm/svm.c          |  2 +-
+ arch/x86/kvm/vmx/vmx.c          |  4 ++--
+ arch/x86/kvm/x86.c              | 12 ++++++------
+ 6 files changed, 12 insertions(+), 12 deletions(-)
 
-diff --git a/arch/x86/kvm/lapic.c b/arch/x86/kvm/lapic.c
-index 0ae7f913d782..bd4c0768b270 100644
---- a/arch/x86/kvm/lapic.c
-+++ b/arch/x86/kvm/lapic.c
-@@ -2339,7 +2339,7 @@ static int get_lvt_index(u32 reg)
+diff --git a/arch/x86/include/asm/kvm_host.h b/arch/x86/include/asm/kvm_host.h
+index 7997ed36de38..acb8353b97a4 100644
+--- a/arch/x86/include/asm/kvm_host.h
++++ b/arch/x86/include/asm/kvm_host.h
+@@ -2207,7 +2207,7 @@ bool kvm_set_cr0(struct kvm_vcpu *vcpu, unsigned long cr0);
+ bool kvm_set_cr3(struct kvm_vcpu *vcpu, unsigned long cr3);
+ bool kvm_set_cr4(struct kvm_vcpu *vcpu, unsigned long cr4);
+ bool kvm_set_cr8(struct kvm_vcpu *vcpu, unsigned long cr8);
+-int kvm_set_dr(struct kvm_vcpu *vcpu, int dr, unsigned long val);
++bool kvm_set_dr(struct kvm_vcpu *vcpu, int dr, unsigned long val);
+ unsigned long kvm_get_dr(struct kvm_vcpu *vcpu, int dr);
+ unsigned long kvm_get_cr8(struct kvm_vcpu *vcpu);
+ void kvm_lmsw(struct kvm_vcpu *vcpu, unsigned long msw);
+diff --git a/arch/x86/kvm/emulate.c b/arch/x86/kvm/emulate.c
+index 4e3da5b497b8..f5cae7335c26 100644
+--- a/arch/x86/kvm/emulate.c
++++ b/arch/x86/kvm/emulate.c
+@@ -3280,7 +3280,7 @@ static int em_dr_write(struct x86_emulate_ctxt *ctxt)
+ 		val = ctxt->src.val & ~0U;
  
- static int kvm_lapic_reg_write(struct kvm_lapic *apic, u32 reg, u32 val)
+ 	/* #UD condition is already handled. */
+-	if (ctxt->ops->set_dr(ctxt, ctxt->modrm_reg, val) < 0)
++	if (ctxt->ops->set_dr(ctxt, ctxt->modrm_reg, val))
+ 		return emulate_gp(ctxt, 0);
+ 
+ 	/* Disable writeback. */
+diff --git a/arch/x86/kvm/kvm_emulate.h b/arch/x86/kvm/kvm_emulate.h
+index efc64396d717..eafc91207b45 100644
+--- a/arch/x86/kvm/kvm_emulate.h
++++ b/arch/x86/kvm/kvm_emulate.h
+@@ -212,7 +212,7 @@ struct x86_emulate_ops {
+ 	bool (*set_cr)(struct x86_emulate_ctxt *ctxt, int cr, ulong val);
+ 	int (*cpl)(struct x86_emulate_ctxt *ctxt);
+ 	ulong (*get_dr)(struct x86_emulate_ctxt *ctxt, int dr);
+-	int (*set_dr)(struct x86_emulate_ctxt *ctxt, int dr, ulong value);
++	bool (*set_dr)(struct x86_emulate_ctxt *ctxt, int dr, ulong value);
+ 	int (*set_msr_with_filter)(struct x86_emulate_ctxt *ctxt, u32 msr_index, u64 data);
+ 	int (*get_msr_with_filter)(struct x86_emulate_ctxt *ctxt, u32 msr_index, u64 *pdata);
+ 	int (*get_msr)(struct x86_emulate_ctxt *ctxt, u32 msr_index, u64 *pdata);
+diff --git a/arch/x86/kvm/svm/svm.c b/arch/x86/kvm/svm/svm.c
+index 98bd087dda9c..7cbf4d686415 100644
+--- a/arch/x86/kvm/svm/svm.c
++++ b/arch/x86/kvm/svm/svm.c
+@@ -2556,7 +2556,7 @@ static int dr_interception(struct kvm_vcpu *vcpu)
  {
--	int ret = 0;
-+	int ret = KVM_MSR_RET_OK;
- 
- 	trace_kvm_apic_write(reg, val);
- 
-@@ -2348,7 +2348,7 @@ static int kvm_lapic_reg_write(struct kvm_lapic *apic, u32 reg, u32 val)
- 		if (!apic_x2apic_mode(apic)) {
- 			kvm_apic_set_xapic_id(apic, val >> 24);
- 		} else {
--			ret = 1;
-+			ret = KVM_MSR_RET_ERR;
- 		}
- 		break;
- 
-@@ -2365,14 +2365,14 @@ static int kvm_lapic_reg_write(struct kvm_lapic *apic, u32 reg, u32 val)
- 		if (!apic_x2apic_mode(apic))
- 			kvm_apic_set_ldr(apic, val & APIC_LDR_MASK);
- 		else
--			ret = 1;
-+			ret = KVM_MSR_RET_ERR;
- 		break;
- 
- 	case APIC_DFR:
- 		if (!apic_x2apic_mode(apic))
- 			kvm_apic_set_dfr(apic, val | 0x0FFFFFFF);
- 		else
--			ret = 1;
-+			ret = KVM_MSR_RET_ERR;
- 		break;
- 
- 	case APIC_SPIV: {
-@@ -2403,7 +2403,7 @@ static int kvm_lapic_reg_write(struct kvm_lapic *apic, u32 reg, u32 val)
- 		break;
- 	case APIC_ICR2:
- 		if (apic_x2apic_mode(apic))
--			ret = 1;
-+			ret = KVM_MSR_RET_ERR;
- 		else
- 			kvm_lapic_set_reg(apic, APIC_ICR2, val & 0xff000000);
- 		break;
-@@ -2418,7 +2418,7 @@ static int kvm_lapic_reg_write(struct kvm_lapic *apic, u32 reg, u32 val)
- 	case APIC_LVTCMCI: {
- 		u32 index = get_lvt_index(reg);
- 		if (!kvm_lapic_lvt_supported(apic, index)) {
--			ret = 1;
-+			ret = KVM_MSR_RET_ERR;
- 			break;
- 		}
- 		if (!kvm_apic_sw_enabled(apic))
-@@ -2460,7 +2460,7 @@ static int kvm_lapic_reg_write(struct kvm_lapic *apic, u32 reg, u32 val)
- 	}
- 	case APIC_ESR:
- 		if (apic_x2apic_mode(apic) && val != 0)
--			ret = 1;
-+			ret = KVM_MSR_RET_ERR;
- 		break;
- 
- 	case APIC_SELF_IPI:
-@@ -2469,12 +2469,12 @@ static int kvm_lapic_reg_write(struct kvm_lapic *apic, u32 reg, u32 val)
- 		 * the vector, everything else is reserved.
- 		 */
- 		if (!apic_x2apic_mode(apic) || (val & ~APIC_VECTOR_MASK))
--			ret = 1;
-+			ret = KVM_MSR_RET_ERR;
- 		else
- 			kvm_apic_send_ipi(apic, APIC_DEST_SELF | val, 0);
- 		break;
- 	default:
--		ret = 1;
-+		ret = KVM_MSR_RET_ERR;
- 		break;
- 	}
- 
-@@ -2532,7 +2532,7 @@ EXPORT_SYMBOL_FOR_KVM_INTERNAL(kvm_lapic_set_eoi);
- static int __kvm_x2apic_icr_write(struct kvm_lapic *apic, u64 data, bool fast)
- {
- 	if (data & X2APIC_ICR_RESERVED_BITS)
--		return 1;
-+		return KVM_MSR_RET_ERR;
+ 	struct vcpu_svm *svm = to_svm(vcpu);
+ 	int reg, dr;
+-	int err = 0;
++	bool err = false;
  
  	/*
- 	 * The BUSY bit is reserved on both Intel and AMD in x2APIC mode, but
-@@ -2565,7 +2565,7 @@ static int __kvm_x2apic_icr_write(struct kvm_lapic *apic, u64 data, bool fast)
- 		kvm_lapic_set_reg64(apic, APIC_ICR, data);
- 	}
- 	trace_kvm_apic_write(APIC_ICR, data);
--	return 0;
-+	return KVM_MSR_RET_OK;
- }
- 
- static int kvm_x2apic_icr_write(struct kvm_lapic *apic, u64 data)
-@@ -2728,23 +2728,23 @@ int kvm_apic_set_base(struct kvm_vcpu *vcpu, u64 value, bool host_initiated)
- 	enum lapic_mode new_mode = kvm_apic_mode(value);
- 
- 	if (vcpu->arch.apic_base == value)
--		return 0;
-+		return KVM_MSR_RET_OK;
- 
- 	u64 reserved_bits = kvm_vcpu_reserved_gpa_bits_raw(vcpu) | 0x2ff |
- 		(guest_cpu_cap_has(vcpu, X86_FEATURE_X2APIC) ? 0 : X2APIC_ENABLE);
- 
- 	if ((value & reserved_bits) != 0 || new_mode == LAPIC_MODE_INVALID)
--		return 1;
-+		return KVM_MSR_RET_ERR;
- 	if (!host_initiated) {
- 		if (old_mode == LAPIC_MODE_X2APIC && new_mode == LAPIC_MODE_XAPIC)
--			return 1;
-+			return KVM_MSR_RET_ERR;
- 		if (old_mode == LAPIC_MODE_DISABLED && new_mode == LAPIC_MODE_X2APIC)
--			return 1;
-+			return KVM_MSR_RET_ERR;
- 	}
- 
- 	__kvm_apic_set_base(vcpu, value);
- 	kvm_recalculate_apic_map(vcpu->kvm);
--	return 0;
-+	return KVM_MSR_RET_OK;
- }
- EXPORT_SYMBOL_FOR_KVM_INTERNAL(kvm_apic_set_base);
- 
-@@ -3362,15 +3362,15 @@ static int kvm_lapic_msr_read(struct kvm_lapic *apic, u32 reg, u64 *data)
- 
- 	if (reg == APIC_ICR) {
- 		*data = kvm_x2apic_icr_read(apic);
--		return 0;
-+		return KVM_MSR_RET_OK;
- 	}
- 
- 	if (kvm_lapic_reg_read(apic, reg, 4, &low))
--		return 1;
-+		return KVM_MSR_RET_ERR;
- 
- 	*data = low;
- 
--	return 0;
-+	return KVM_MSR_RET_OK;
- }
- 
- static int kvm_lapic_msr_write(struct kvm_lapic *apic, u32 reg, u64 data)
-@@ -3385,7 +3385,7 @@ static int kvm_lapic_msr_write(struct kvm_lapic *apic, u32 reg, u64 data)
- 
- 	/* Bits 63:32 are reserved in all other registers. */
- 	if (data >> 32)
--		return 1;
-+		return KVM_MSR_RET_ERR;
- 
- 	return kvm_lapic_reg_write(apic, reg, (u32)data);
- }
-@@ -3396,7 +3396,7 @@ int kvm_x2apic_msr_write(struct kvm_vcpu *vcpu, u32 msr, u64 data)
- 	u32 reg = (msr - APIC_BASE_MSR) << 4;
- 
- 	if (!lapic_in_kernel(vcpu) || !apic_x2apic_mode(apic))
--		return 1;
-+		return KVM_MSR_RET_ERR;
- 
- 	return kvm_lapic_msr_write(apic, reg, data);
- }
-@@ -3407,7 +3407,7 @@ int kvm_x2apic_msr_read(struct kvm_vcpu *vcpu, u32 msr, u64 *data)
- 	u32 reg = (msr - APIC_BASE_MSR) << 4;
- 
- 	if (!lapic_in_kernel(vcpu) || !apic_x2apic_mode(apic))
--		return 1;
-+		return KVM_MSR_RET_ERR;
- 
- 	return kvm_lapic_msr_read(apic, reg, data);
- }
-@@ -3415,7 +3415,7 @@ int kvm_x2apic_msr_read(struct kvm_vcpu *vcpu, u32 msr, u64 *data)
- int kvm_hv_vapic_msr_write(struct kvm_vcpu *vcpu, u32 reg, u64 data)
+ 	 * SEV-ES intercepts DR7 only to disable guest debugging and the guest issues a VMGEXIT
+diff --git a/arch/x86/kvm/vmx/vmx.c b/arch/x86/kvm/vmx/vmx.c
+index ff0c684d9c28..365c4ce283e5 100644
+--- a/arch/x86/kvm/vmx/vmx.c
++++ b/arch/x86/kvm/vmx/vmx.c
+@@ -5533,7 +5533,7 @@ static int handle_dr(struct kvm_vcpu *vcpu)
  {
- 	if (!lapic_in_kernel(vcpu))
--		return 1;
-+		return KVM_MSR_RET_ERR;
+ 	unsigned long exit_qualification;
+ 	int dr, dr7, reg;
+-	int err = 1;
++	bool err = true;
  
- 	return kvm_lapic_msr_write(vcpu->arch.apic, reg, data);
+ 	exit_qualification = vmx_get_exit_qual(vcpu);
+ 	dr = exit_qualification & DEBUG_REG_ACCESS_NUM;
+@@ -5580,7 +5580,7 @@ static int handle_dr(struct kvm_vcpu *vcpu)
+ 	reg = DEBUG_REG_ACCESS_REG(exit_qualification);
+ 	if (exit_qualification & TYPE_MOV_FROM_DR) {
+ 		kvm_register_write(vcpu, reg, kvm_get_dr(vcpu, dr));
+-		err = 0;
++		err = false;
+ 	} else {
+ 		err = kvm_set_dr(vcpu, dr, kvm_register_read(vcpu, reg));
+ 	}
+diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
+index 462954633c1d..e733cb923312 100644
+--- a/arch/x86/kvm/x86.c
++++ b/arch/x86/kvm/x86.c
+@@ -1550,7 +1550,7 @@ static u64 kvm_dr6_fixed(struct kvm_vcpu *vcpu)
+ 	return fixed;
  }
-@@ -3423,7 +3423,7 @@ int kvm_hv_vapic_msr_write(struct kvm_vcpu *vcpu, u32 reg, u64 data)
- int kvm_hv_vapic_msr_read(struct kvm_vcpu *vcpu, u32 reg, u64 *data)
+ 
+-int kvm_set_dr(struct kvm_vcpu *vcpu, int dr, unsigned long val)
++bool kvm_set_dr(struct kvm_vcpu *vcpu, int dr, unsigned long val)
  {
- 	if (!lapic_in_kernel(vcpu))
--		return 1;
-+		return KVM_MSR_RET_ERR;
+ 	size_t size = ARRAY_SIZE(vcpu->arch.db);
  
- 	return kvm_lapic_msr_read(vcpu->arch.apic, reg, data);
+@@ -1563,19 +1563,19 @@ int kvm_set_dr(struct kvm_vcpu *vcpu, int dr, unsigned long val)
+ 	case 4:
+ 	case 6:
+ 		if (!kvm_dr6_valid(val))
+-			return 1; /* #GP */
++			return true; /* #GP */
+ 		vcpu->arch.dr6 = (val & DR6_VOLATILE) | kvm_dr6_fixed(vcpu);
+ 		break;
+ 	case 5:
+ 	default: /* 7 */
+ 		if (!kvm_dr7_valid(val))
+-			return 1; /* #GP */
++			return true; /* #GP */
+ 		vcpu->arch.dr7 = (val & DR7_VOLATILE) | DR7_FIXED_1;
+ 		kvm_update_dr7(vcpu);
+ 		break;
+ 	}
+ 
+-	return 0;
++	return false;
  }
+ EXPORT_SYMBOL_FOR_KVM_INTERNAL(kvm_set_dr);
+ 
+@@ -8530,8 +8530,8 @@ static unsigned long emulator_get_dr(struct x86_emulate_ctxt *ctxt, int dr)
+ 	return kvm_get_dr(emul_to_vcpu(ctxt), dr);
+ }
+ 
+-static int emulator_set_dr(struct x86_emulate_ctxt *ctxt, int dr,
+-			   unsigned long value)
++static bool emulator_set_dr(struct x86_emulate_ctxt *ctxt, int dr,
++			    unsigned long value)
+ {
+ 
+ 	return kvm_set_dr(emul_to_vcpu(ctxt), dr, value);
 -- 
 2.51.0
 
