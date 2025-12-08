@@ -1,92 +1,104 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B5EA2E611B;
-	Mon,  8 Dec 2025 10:33:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.12
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB5A5286891;
+	Mon,  8 Dec 2025 10:42:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765190019; cv=none; b=k4IW8uFbZJTeTSXKj8Y+Z1AkYrTqMkVDTjsulV1T/iPK1n/2RfJBnM8CrcCsZK2xic8wav9Dgam0eJ5C9WJ/YOgGT2T6dOETrepwFiSNTCkALXBG7XtZyCFHejh1ph/3i/6XGQ23D/2qD6u3mcKBhOqVp4mOxVm0yKwqdEUlUog=
+	t=1765190539; cv=none; b=t4nbCn4wLHVbxbR62MHDyWgFu3anmVDopwpyqFA91R79eNsHbBHgDi1njV4i68NLvwoEA/UhNfHi6dGzoUYXW4PRaF21w6SdAdi47iAxIs2B0pBcCgqK29xHRi4LkLnOywnY0Zlpi5qwHX0w/ktz/lgBBY/wOzJDGrLKV4ftbIE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765190019; c=relaxed/simple;
-	bh=c9l9ce6UYP/otnK59dV0eUb1DOzxB9nYVZ9wNE6XKIc=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=aTs4mwNI7Aq8vOul9VbzL6VHxQPWmnLGoikSkRkFkmIm2DmdTD60xYvKj9LAfdHElW/ADcynligOYqrJe6axcHvF6BkhRpMgDiXVNq3VQkR3ihS4s0P1jT8ANoh5H2n0J7BREb4VicH2xQdCzaCwv/rA7Gg57GGmaVyefRBmtH4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=N2b9QPP5; arc=none smtp.client-ip=198.175.65.12
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+	s=arc-20240116; t=1765190539; c=relaxed/simple;
+	bh=TAnDl6sPhcy+IUlbX2x8cziKUCBVlmn2sw/09aCCSsI=;
+	h=Date:Message-ID:From:To:Cc:Subject:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=B924UxaXOUjijxYwhnmdQaAFYc/Bnk+hUuky+Y+6CiDGUYkHlPxWP2c/1TwfepD+5vPoA2m91RR3AZdOZxp3uZybjdTfgojeKtj1xGccX5KpdLQvRM3hj4xprDRiuaAVTeyXu7/tuHrjCJseUIV1KgIpFJ3kFVCbvtpBHXLuuLk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=X39h8sTJ; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="N2b9QPP5"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1765190018; x=1796726018;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=c9l9ce6UYP/otnK59dV0eUb1DOzxB9nYVZ9wNE6XKIc=;
-  b=N2b9QPP5YqlpnCLhIJtQTwujsmyOWSSR1CnnluzRQF4O+Plwp2S7wXml
-   15auyO2lrCA4hLAtaUNJ5xiUcBP+waROqp5n/Wm2gwZy65B/XuzRnXKlo
-   VVDZMtwAekKJTs7VLQX6a7+IBC2VzW30yjNA3EwWWG8Mv3fb5TV4bdyc/
-   bW1IDu2EbDy6Xegdds/nveINco5+EKQhuY39B/Vpz+N0yWTzIEaQ2aGjz
-   rJYoUFyTC9pWRfVEG5DNPw3SQZkWlK6ks4UiIbTn/GmWBhGxxOjrD39P3
-   z+AbsXuE4E/8Lizn8SOv4bDzW04qe83jpanT+s3bH6Zmtp5a/+45OGmGW
-   w==;
-X-CSE-ConnectionGUID: ksSslthDT56m4rTt1yTLSw==
-X-CSE-MsgGUID: rPckdfFeSv2hPDBpkKlqkA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11635"; a="78594106"
-X-IronPort-AV: E=Sophos;i="6.20,258,1758610800"; 
-   d="scan'208";a="78594106"
-Received: from orviesa006.jf.intel.com ([10.64.159.146])
-  by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Dec 2025 02:33:37 -0800
-X-CSE-ConnectionGUID: e6nxTTSbT22YX5Eez07vfA==
-X-CSE-MsgGUID: fv/G4m+TT/m2CAbeXx+M8g==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.20,258,1758610800"; 
-   d="scan'208";a="194957582"
-Received: from yilunxu-optiplex-7050.sh.intel.com (HELO localhost) ([10.239.159.165])
-  by orviesa006.jf.intel.com with ESMTP; 08 Dec 2025 02:33:35 -0800
-Date: Mon, 8 Dec 2025 18:17:51 +0800
-From: Xu Yilun <yilun.xu@linux.intel.com>
-To: dan.j.williams@intel.com
-Cc: x86@kernel.org, dave.hansen@linux.intel.com, kas@kernel.org,
-	linux-kernel@vger.kernel.org, chao.gao@intel.com,
-	rick.p.edgecombe@intel.com, baolu.lu@linux.intel.com,
-	yilun.xu@intel.com, zhenzhong.duan@intel.com, kvm@vger.kernel.org,
-	adrian.hunter@intel.com
-Subject: Re: [PATCH 0/6] TDX: Stop metadata auto-generation, improve
- readability
-Message-ID: <aTalzz/eE9xFIwSN@yilunxu-OptiPlex-7050>
-References: <20251202050844.2520762-1-yilun.xu@linux.intel.com>
- <69353071424df_1e0210079@dwillia2-mobl4.notmuch>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="X39h8sTJ"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DDA12C4CEF1;
+	Mon,  8 Dec 2025 10:42:18 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1765190538;
+	bh=TAnDl6sPhcy+IUlbX2x8cziKUCBVlmn2sw/09aCCSsI=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=X39h8sTJnWGPt8aAvzjUIiETMHFCA3RazvKyqIgwrxEc58CgplJjrACjAAoXNDu9v
+	 Mf4FaQLF71Mpzddiqh8kUrRua4Tc83Ql8bVBgkYb1NwV/s948y0TBK6H1F/bs9Ola/
+	 sZu+jSyI5iZIZdEKwdjRFL1iArddlpoE9LJVlY5w70w1lpY2RFr5VT3HWhCLjjqgO/
+	 7UHZkgAfe6RkxZmmdW+6fR624bPxRz7mmacB9JWaHHKj3qGDASLOxRB1uz0L/yo7E6
+	 bJOkeoaduri8FaD9L2jy/l1FCprmQ0KANGIOHDqKa2svuZK9Ni4EKDeVCuLiDQBGK1
+	 trQavZzLM6zlg==
+Received: from sofa.misterjones.org ([185.219.108.64] helo=goblin-girl.misterjones.org)
+	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.98.2)
+	(envelope-from <maz@kernel.org>)
+	id 1vSYh6-0000000BGKA-1nWA;
+	Mon, 08 Dec 2025 10:42:16 +0000
+Date: Mon, 08 Dec 2025 10:42:15 +0000
+Message-ID: <865xahp854.wl-maz@kernel.org>
+From: Marc Zyngier <maz@kernel.org>
+To: Sean Christopherson <seanjc@google.com>
+Cc: Oliver Upton <oupton@kernel.org>,
+	Tianrui Zhao <zhaotianrui@loongson.cn>,
+	Bibo Mao <maobibo@loongson.cn>,
+	Huacai Chen <chenhuacai@kernel.org>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Anup Patel <anup@brainfault.org>,
+	Paul Walmsley <pjw@kernel.org>,
+	Palmer Dabbelt <palmer@dabbelt.com>,
+	Albert Ou <aou@eecs.berkeley.edu>,
+	Christian Borntraeger <borntraeger@linux.ibm.com>,
+	Janosch Frank <frankja@linux.ibm.com>,
+	Claudio Imbrenda <imbrenda@linux.ibm.com>,
+	Paolo Bonzini <pbonzini@redhat.com>,
+	linux-arm-kernel@lists.infradead.org,
+	kvmarm@lists.linux.dev,
+	kvm@vger.kernel.org,
+	loongarch@lists.linux.dev,
+	linux-mips@vger.kernel.org,
+	linuxppc-dev@lists.ozlabs.org,
+	kvm-riscv@lists.infradead.org,
+	linux-riscv@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	"Gustavo A . R . Silva" <gustavoars@kernel.org>
+Subject: Re: [PATCH] KVM: Remove subtle "struct kvm_stats_desc" pseudo-overlay
+In-Reply-To: <20251205232655.445294-1-seanjc@google.com>
+References: <20251205232655.445294-1-seanjc@google.com>
+User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
+ FLIM-LB/1.14.9 (=?UTF-8?B?R29qxY0=?=) APEL-LB/10.8 EasyPG/1.0.0 Emacs/30.1
+ (aarch64-unknown-linux-gnu) MULE/6.0 (HANACHIRUSATO)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <69353071424df_1e0210079@dwillia2-mobl4.notmuch>
+MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
+Content-Type: text/plain; charset=US-ASCII
+X-SA-Exim-Connect-IP: 185.219.108.64
+X-SA-Exim-Rcpt-To: seanjc@google.com, oupton@kernel.org, zhaotianrui@loongson.cn, maobibo@loongson.cn, chenhuacai@kernel.org, maddy@linux.ibm.com, anup@brainfault.org, pjw@kernel.org, palmer@dabbelt.com, aou@eecs.berkeley.edu, borntraeger@linux.ibm.com, frankja@linux.ibm.com, imbrenda@linux.ibm.com, pbonzini@redhat.com, linux-arm-kernel@lists.infradead.org, kvmarm@lists.linux.dev, kvm@vger.kernel.org, loongarch@lists.linux.dev, linux-mips@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, kvm-riscv@lists.infradead.org, linux-riscv@lists.infradead.org, linux-kernel@vger.kernel.org, gustavoars@kernel.org
+X-SA-Exim-Mail-From: maz@kernel.org
+X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
 
-On Sat, Dec 06, 2025 at 11:44:49PM -0800, dan.j.williams@intel.com wrote:
-> Xu Yilun wrote:
-> > Hi:
-> > 
-> > This addresses the common need [1][2] to stop auto-generating metadata
-> > reading code, improve readability, allowing us to manually edit and
-> > review metadata code in a comfortable way. TDX Connect needs to add more
-> > metadata fields based on this series, and I believe also for DPAMT and
-> > TDX Module runtime update.
+On Fri, 05 Dec 2025 23:26:55 +0000,
+Sean Christopherson <seanjc@google.com> wrote:
 > 
-> While the writing is on the wall that the autogenerated metadata
-> infrastructure has become more trouble than it is worth, that work can
-> come after some of the backlog built on the old way has cleared out.
-> These in-flight sets of DPAMT, Module Update, and TDX PCIe Linux
-> Encryption can stay with what they started.
+> Remove KVM's internal pseudo-overlay of kvm_stats_desc, which subtly
+> aliases the flexible name[] in the uAPI definition with a fixed-size array
+> of the same name.  The unusual embedded structure results in compiler
+> warnings due to -Wflex-array-member-not-at-end, and also necessitates an
+> extra level of dereferencing in KVM.  To avoid the "overlay", define the
+> uAPI structure to have a fixed-size name when building for the kernel.
 > 
-> I.e. let us not start injecting new dependencies into in-flight review.
+> Opportunistically clean up the indentation for the stats macros, and
+> replace spaces with tabs.
+> 
+> No functional change intended.
+> 
+> Reported-by: Gustavo A. R. Silva <gustavoars@kernel.org>
+> Closes: https://lore.kernel.org/all/aPfNKRpLfhmhYqfP@kspp
+> Signed-off-by: Sean Christopherson <seanjc@google.com>
 
-Yes, I agree. One of the goal is to minimize the manual changes when a
-new metadata is to be added, so I expect minor work for the switching
-later.
+Acked-by: Marc Zyngier <maz@kernel.org>
 
-Thanks,
-Yilun
+	M.
+
+-- 
+Without deviation from the norm, progress is not possible.
