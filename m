@@ -1,55 +1,55 @@
-Received: from mail-ot1-f73.google.com (mail-ot1-f73.google.com [209.85.210.73])
+Received: from mail-oa1-f73.google.com (mail-oa1-f73.google.com [209.85.160.73])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B18B2FFF8F
-	for <kvm@vger.kernel.org>; Tue,  9 Dec 2025 20:52:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.73
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9594C307486
+	for <kvm@vger.kernel.org>; Tue,  9 Dec 2025 20:52:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.73
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765313579; cv=none; b=KmhtBa44I9tf+IfPsc2a/JGyb8STschpgeh00z92Fg9vRoxX2VRM9RwWtl9UutMZhYGL6reEybQcsD2zn1/1ViIfifzhrQqiZbkajiik69nYO7koFkzUbxcmse1tDNctHi8iQsJfiyQM9pCpV4UctUHVhVqo0ahYzPYH8nTTuj0=
+	t=1765313579; cv=none; b=UCosvhAP7f+HOPgk1fmOB6AO6gWpwekkm5xilJ1Q9tz/dyIQuINn+vx5Ix25x7j6TVmq/Aeb1TYHIdMnmLOAjEVgJLHFy4XTNjzKGeHcrcac+bGB9KuPJY3GXfFbxJTx+NC2HdzQGcOCNH8HkSfNBYRfqhTyN4+cSDhNL3rCSJo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1765313579; c=relaxed/simple;
-	bh=B0rHT03/ykxaZJBQkB+M/HLVKmH/k1hRDjrVKkpI4FE=;
+	bh=0i/XVALUfLVfonlnN8cOfbbK0RivHhuamyQe6SmIzEY=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=VDmZ2Sfymh66d5RS831zeTRIcelw87GlVwdYKzq0ayE4FD0b/oC/KEo9eeh02esU41C9rc+BcCw7ew+IfUrr2cJt+/yJFQ9cNq1ci9SjBzJmVWKh5mQhhdcA6ZQ9Ff3sM7DlwCTs6St4UCCLtRZ/OSALkOLM9gHdHGHOJH6inqQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--coltonlewis.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=o4+T61qg; arc=none smtp.client-ip=209.85.210.73
+	 To:Cc:Content-Type; b=Lw10B1UvlEDSLh03E6lerE48WdWNvlzxtu7ArE65bV6qG+EnYYgMQAKRh1AwTxHCgE+ip4nDOd5j2aeeXd3Wr2W/thuQqOzh7raBD8Fz5Y6ahBAxQfF6PAiPR4hii8Makk9xvUY5ZVikR2XSugt6JP7oJL+LoZ334CvVz8gsSh0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--coltonlewis.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=p8yCYit0; arc=none smtp.client-ip=209.85.160.73
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--coltonlewis.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="o4+T61qg"
-Received: by mail-ot1-f73.google.com with SMTP id 46e09a7af769-7c7593b5c93so10335398a34.3
-        for <kvm@vger.kernel.org>; Tue, 09 Dec 2025 12:52:53 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="p8yCYit0"
+Received: by mail-oa1-f73.google.com with SMTP id 586e51a60fabf-3ec7ae153faso3972233fac.0
+        for <kvm@vger.kernel.org>; Tue, 09 Dec 2025 12:52:47 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1765313567; x=1765918367; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1765313564; x=1765918364; darn=vger.kernel.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=OtKUAKNDvUk1bFrFUkDSMLUOkfepy8OH/MA9DzHIeSk=;
-        b=o4+T61qgABSrPpax8i4pYdR5z341Bnb+raSPBAB0e9Ba5SNiP8uvWuwy11dBTZF9MX
-         6mpZjAPAosqy0A3eWVtvzaqr3JtWqmxr//8xIQbHVm9A8g6Cjb7UrvhBdkv23ptXvnLB
-         22hTWRUX1ehZLJv6huQI3Nop7gHcohPUHZXTlT6wgQpsxmTUSLLKmtZVD7yI02dM5hB2
-         WvvsLRUqKoOeZt0krb/9J+bD1EBD4jizhAyguxlPxL/l4GUb8MsL1oP5Y3i0U96sYFpE
-         S3rsJDdd0FW/+FupLYsNsVm7qS/uU3x+18ncYEMeJKKw5+I1hvlZFLHMeEW7rysCZZxA
-         T7PQ==
+        bh=ihXpQp4YbEFBpuWRcFtm84jVRjsgBgDbq/Ms0l8x8e0=;
+        b=p8yCYit0q0/NYoK/RSE56lgArZmffC2RUnjc3avCDel7JbfOtadDw14NvTscZZyOxe
+         ElaBo+2k29JW8SwmTsrWtEWCaMI5oTakgbZ4eCf3kQ7HfFHVUPi+P3C5gBBlSgkEL741
+         kd/0QRfdSSNoxuaNx/fLwq5XKfWTldNF9J+OwA5Anu++BhkdJLXeLa+dIPQKlNTi/Gki
+         Bl95OY8Y4HyZPu3hK4F6ROZEkYvbXs5t+yTsv/EQ5rSgXpRtAVLXqIA7Gr8tS0mxIaka
+         xUEeaMQB6vVguFgc3BXI4Bl5jwBDaNOzOdSdKiZzeKmJ7vRc6ijKt7mjJapPxXkpbnzy
+         nW+w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1765313567; x=1765918367;
+        d=1e100.net; s=20230601; t=1765313564; x=1765918364;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=OtKUAKNDvUk1bFrFUkDSMLUOkfepy8OH/MA9DzHIeSk=;
-        b=XJxy2ivWRd725igzd6xOEq2hw2b/g6PPj2Xn4OUiQH+13HuHXc8kNWgjrGFVm07ixq
-         dBBr3U5P5hOtvGPbjCDJpMuwX8B/17Y60zylB3kXOXJxIGG/JD/CgqyQWDNuExb39hxp
-         FQmwxzszMDoKTuD00gOHOYNad07Pee5Qf6DjIKPQsTyNCIAQnH8rkZnrvnk/upjFUBe+
-         G79K9pUbjX1tID9zkHPQ4kl78oV5M14eMlAEHoDUcUsmNOIMhKvGB1h0P81zp21bq8ar
-         NefH9fUY6Snpoi3PWrI8S4rg2UTfqXlnr2bempn0hMOoGeO/Cppb+VAf/mskgjl5eivh
-         z+Ag==
-X-Gm-Message-State: AOJu0YwA+v1BirKzhMJslBmOTG4G8+oarUMr1y3X9fMMvz53qTWAQoK1
-	I590EvuCxcuv82TZ30MfUVoyJD0KhLx+L3en1w332XH4BWCm32YKBNl+kiwPJZbFwroMwk8Rioa
-	L+yd2w/LzVtB01JS/YQ2jXN8tLamcqr4eJCs79FXl82GTWih33qvHjJjSlOg5S43tBSN07DrjhK
-	ECm7YHtnlviCPmLZIyAQG9Sa83LUzpKiGzeBbuZs2fNeXXnvB9wJgF35bbMnI=
-X-Google-Smtp-Source: AGHT+IElus7zwyOd6GpcWSRDylwpIxEDMWdFHeMbdxYXsYAzEkLnXoWZD854plNF0r3PILxeHcsu/DPU8yH50AgLyg==
-X-Received: from jabfa16.prod.google.com ([2002:a05:6638:6190:b0:5b7:56fc:a47f])
+        bh=ihXpQp4YbEFBpuWRcFtm84jVRjsgBgDbq/Ms0l8x8e0=;
+        b=Ntv1BVSsU+ti8dskDUdAb0FkmzRu50T4PrFFfHA7Pl8/WM5hgzn80Y1zrMJmHBrapw
+         H13rSHYlS7QlR/uebHCXYNV2ZvenaZH1SKmw8H26sEf5NP0LG1fFpLHV9f9da015jMAH
+         DmQK+pILY1JRsuui7TJID3tQBgg0JisyNsxnRIEZFGsxnzBzMbt3aQnEbLwHNyyP+VNx
+         lk6vzi6MB/zY2ZfAeGkcaAOPW5GvG9eLZrVqdA1FU3mI3CXlQ+jD4DoJi4jHgDNbVfsk
+         ad3ITrj2We9klfw75Px8R4XArtOTGZJjWP0IfgRHoWT/72DuL4QW0CI/88QjCGlzszw1
+         ofsA==
+X-Gm-Message-State: AOJu0YyQf6EOM5oe3HsDPQ2vHqPlWL+5Z7WhqA6ksxkVg0cf4FTXryuy
+	nGUCVRASHBVQ7Xg2jdVsu5qBJO8O2eXguXnNq5R6jBGjPOR5lHTQVMXeiOqSnhiZMY/NQJM+gOq
+	6OwhkDg3lbcaG0ie1pDGAnXnQ7Rl88U62XPRXIf0D6W0RcVzDNNc9vI3MNvd+OVH3W9izCL1gAD
+	4QWD8nN+NWWilrVAOayVmjf3WrSN+IduJf26zHF6G36aEWFfWXbl+g6TprwaQ=
+X-Google-Smtp-Source: AGHT+IHxM7HDFMt11Fktl9vAFCiqioFJsGX2hMXvHLM0Q/bfIgLNdr5sCpLbQ+drd5Dfesj8Rx6njSPwYNcP8RB94g==
+X-Received: from ilbck7.prod.google.com ([2002:a05:6e02:3707:b0:430:c858:3dd3])
  (user=coltonlewis job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:6820:c92:b0:659:9a49:8f68 with SMTP id 006d021491bc7-65b2aca3bc6mr107540eaf.45.1765313567368;
- Tue, 09 Dec 2025 12:52:47 -0800 (PST)
-Date: Tue,  9 Dec 2025 20:51:18 +0000
+ 2002:a05:6820:20e:b0:657:64ce:b40f with SMTP id 006d021491bc7-65b2ac06416mr132080eaf.4.1765313564200;
+ Tue, 09 Dec 2025 12:52:44 -0800 (PST)
+Date: Tue,  9 Dec 2025 20:51:15 +0000
 In-Reply-To: <20251209205121.1871534-1-coltonlewis@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
@@ -59,8 +59,8 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 References: <20251209205121.1871534-1-coltonlewis@google.com>
 X-Mailer: git-send-email 2.52.0.239.gd5f0c6e74e-goog
-Message-ID: <20251209205121.1871534-22-coltonlewis@google.com>
-Subject: [PATCH v5 21/24] KVM: arm64: Inject recorded guest interrupts
+Message-ID: <20251209205121.1871534-19-coltonlewis@google.com>
+Subject: [PATCH v5 18/24] KVM: arm64: Enforce PMU event filter at vcpu_load()
 From: Colton Lewis <coltonlewis@google.com>
 To: kvm@vger.kernel.org
 Cc: Paolo Bonzini <pbonzini@redhat.com>, Jonathan Corbet <corbet@lwn.net>, 
@@ -75,98 +75,79 @@ Cc: Paolo Bonzini <pbonzini@redhat.com>, Jonathan Corbet <corbet@lwn.net>,
 	linux-kselftest@vger.kernel.org, Colton Lewis <coltonlewis@google.com>
 Content-Type: text/plain; charset="UTF-8"
 
-When we re-enter the VM after handling a PMU interrupt, calculate
-whether it was any of the guest counters that overflowed and inject an
-interrupt into the guest if so.
+The KVM API for event filtering says that counters do not count when
+blocked by the event filter. To enforce that, the event filter must be
+rechecked on every load since it might have changed since the last
+time the guest wrote a value. If the event is filtered, exclude
+counting at all exception levels before writing the hardware.
 
 Signed-off-by: Colton Lewis <coltonlewis@google.com>
 ---
- arch/arm64/include/asm/kvm_pmu.h |  2 ++
- arch/arm64/kvm/pmu-direct.c      | 20 ++++++++++++++++++++
- arch/arm64/kvm/pmu-emul.c        |  4 ++--
- arch/arm64/kvm/pmu.c             |  6 +++++-
- 4 files changed, 29 insertions(+), 3 deletions(-)
+ arch/arm64/kvm/pmu-direct.c | 44 +++++++++++++++++++++++++++++++++++++
+ 1 file changed, 44 insertions(+)
 
-diff --git a/arch/arm64/include/asm/kvm_pmu.h b/arch/arm64/include/asm/kvm_pmu.h
-index e4cbab0fd09cf..47e6f2a14e381 100644
---- a/arch/arm64/include/asm/kvm_pmu.h
-+++ b/arch/arm64/include/asm/kvm_pmu.h
-@@ -92,6 +92,8 @@ bool pmu_counter_idx_valid(struct kvm_vcpu *vcpu, u64 idx);
- void kvm_vcpu_pmu_restore_guest(struct kvm_vcpu *vcpu);
- void kvm_vcpu_pmu_restore_host(struct kvm_vcpu *vcpu);
- void kvm_vcpu_pmu_resync_el0(void);
-+bool kvm_pmu_emul_overflow_status(struct kvm_vcpu *vcpu);
-+bool kvm_pmu_part_overflow_status(struct kvm_vcpu *vcpu);
- 
- #define kvm_vcpu_has_pmu(vcpu)					\
- 	(vcpu_has_feature(vcpu, KVM_ARM_VCPU_PMU_V3))
 diff --git a/arch/arm64/kvm/pmu-direct.c b/arch/arm64/kvm/pmu-direct.c
-index 76d8ed24c8646..2ee99d6d2b6c1 100644
+index 71977d24f489a..8d0d6d1a0d851 100644
 --- a/arch/arm64/kvm/pmu-direct.c
 +++ b/arch/arm64/kvm/pmu-direct.c
-@@ -413,3 +413,23 @@ void kvm_pmu_handle_guest_irq(u64 govf)
- 
- 	__vcpu_rmw_sys_reg(vcpu, PMOVSSET_EL0, |=, govf);
+@@ -221,6 +221,49 @@ u8 kvm_pmu_hpmn(struct kvm_vcpu *vcpu)
+ 	return nr_host_cnt_max;
  }
-+
+ 
 +/**
-+ * kvm_pmu_part_overflow_status() - Determine if any guest counters have overflowed
-+ * @vcpu: Ponter to struct kvm_vcpu
++ * kvm_pmu_apply_event_filter()
++ * @vcpu: Pointer to vcpu struct
 + *
-+ * Determine if any guest counters have overflowed and therefore an
-+ * IRQ needs to be injected into the guest.
-+ *
-+ * Return: True if there was an overflow, false otherwise
++ * To uphold the guarantee of the KVM PMU event filter, we must ensure
++ * no counter counts if the event is filtered. Accomplish this by
++ * filtering all exception levels if the event is filtered.
 + */
-+bool kvm_pmu_part_overflow_status(struct kvm_vcpu *vcpu)
++static void kvm_pmu_apply_event_filter(struct kvm_vcpu *vcpu)
 +{
 +	struct arm_pmu *pmu = vcpu->kvm->arch.arm_pmu;
-+	u64 mask = kvm_pmu_guest_counter_mask(pmu);
-+	u64 pmovs = __vcpu_sys_reg(vcpu, PMOVSSET_EL0);
-+	u64 pmint = read_pmintenset();
-+	u64 pmcr = read_pmcr();
++	u64 evtyper_set = ARMV8_PMU_EXCLUDE_EL0 |
++		ARMV8_PMU_EXCLUDE_EL1;
++	u64 evtyper_clr = ARMV8_PMU_INCLUDE_EL2;
++	u8 i;
++	u64 val;
++	u64 evsel;
 +
-+	return (pmcr & ARMV8_PMU_PMCR_E) && (mask & pmovs & pmint);
++	if (!pmu)
++		return;
++
++	for (i = 0; i < pmu->hpmn_max; i++) {
++		val = __vcpu_sys_reg(vcpu, PMEVTYPER0_EL0 + i);
++		evsel = val & kvm_pmu_event_mask(vcpu->kvm);
++
++		if (vcpu->kvm->arch.pmu_filter &&
++		    !test_bit(evsel, vcpu->kvm->arch.pmu_filter))
++			val |= evtyper_set;
++
++		val &= ~evtyper_clr;
++		write_pmevtypern(i, val);
++	}
++
++	val = __vcpu_sys_reg(vcpu, PMCCFILTR_EL0);
++
++	if (vcpu->kvm->arch.pmu_filter &&
++	    !test_bit(ARMV8_PMUV3_PERFCTR_CPU_CYCLES, vcpu->kvm->arch.pmu_filter))
++		val |= evtyper_set;
++
++	val &= ~evtyper_clr;
++	write_pmccfiltr(val);
 +}
-diff --git a/arch/arm64/kvm/pmu-emul.c b/arch/arm64/kvm/pmu-emul.c
-index bcaa9f7a8ca28..6f41fc3e3f74b 100644
---- a/arch/arm64/kvm/pmu-emul.c
-+++ b/arch/arm64/kvm/pmu-emul.c
-@@ -268,7 +268,7 @@ void kvm_pmu_reprogram_counter_mask(struct kvm_vcpu *vcpu, u64 val)
-  * counter where the values of the global enable control, PMOVSSET_EL0[n], and
-  * PMINTENSET_EL1[n] are all 1.
-  */
--bool kvm_pmu_overflow_status(struct kvm_vcpu *vcpu)
-+bool kvm_pmu_emul_overflow_status(struct kvm_vcpu *vcpu)
- {
- 	u64 reg = __vcpu_sys_reg(vcpu, PMOVSSET_EL0);
- 
-@@ -405,7 +405,7 @@ static void kvm_pmu_perf_overflow(struct perf_event *perf_event,
- 		kvm_pmu_counter_increment(vcpu, BIT(idx + 1),
- 					  ARMV8_PMUV3_PERFCTR_CHAIN);
- 
--	if (kvm_pmu_overflow_status(vcpu)) {
-+	if (kvm_pmu_emul_overflow_status(vcpu)) {
- 		kvm_make_request(KVM_REQ_IRQ_PENDING, vcpu);
- 
- 		if (!in_nmi())
-diff --git a/arch/arm64/kvm/pmu.c b/arch/arm64/kvm/pmu.c
-index c9862e55a4049..e1332a158dfc8 100644
---- a/arch/arm64/kvm/pmu.c
-+++ b/arch/arm64/kvm/pmu.c
-@@ -407,7 +407,11 @@ static void kvm_pmu_update_state(struct kvm_vcpu *vcpu)
- 	struct kvm_pmu *pmu = &vcpu->arch.pmu;
- 	bool overflow;
- 
--	overflow = kvm_pmu_overflow_status(vcpu);
-+	if (kvm_vcpu_pmu_is_partitioned(vcpu))
-+		overflow = kvm_pmu_part_overflow_status(vcpu);
-+	else
-+		overflow = kvm_pmu_emul_overflow_status(vcpu);
 +
- 	if (pmu->irq_level == overflow)
+ /**
+  * kvm_pmu_load() - Load untrapped PMU registers
+  * @vcpu: Pointer to struct kvm_vcpu
+@@ -244,6 +287,7 @@ void kvm_pmu_load(struct kvm_vcpu *vcpu)
  		return;
  
+ 	pmu = vcpu->kvm->arch.arm_pmu;
++	kvm_pmu_apply_event_filter(vcpu);
+ 
+ 	for (i = 0; i < pmu->hpmn_max; i++) {
+ 		val = __vcpu_sys_reg(vcpu, PMEVCNTR0_EL0 + i);
 -- 
 2.52.0.239.gd5f0c6e74e-goog
 
