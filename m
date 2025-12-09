@@ -1,217 +1,83 @@
-Received: from mail-vs1-f47.google.com (mail-vs1-f47.google.com [209.85.217.47])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2FE092F6909
-	for <kvm@vger.kernel.org>; Tue,  9 Dec 2025 01:34:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.217.47
+Received: from mail.loongson.cn (mail.loongson.cn [114.242.206.163])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DE36812E1DC;
+	Tue,  9 Dec 2025 02:23:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=114.242.206.163
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765244080; cv=none; b=Ykk3ajio2gauhQay/IE3PwxqDSSj6B/wkCI/S4jEQB60JjRhNZ3KJrzfWuSGeMbKHDYaXsp3Y6cacIzgwh5i2l2GVrnvhDsyDBOjt8QZ4WXBYngdsaZ7TUQVtTN88OdvMP8y+Jv9IzDj0uqIAMAIodknk1O/VTGyqPhaBnCWqIQ=
+	t=1765246990; cv=none; b=je6a0UAIjCOmAfsZBgiqX4FnZRLAuHfUZ+rpMuwpaKZIXYxVHNdQB87LdQeza+1Bv/kWHtsVQztVH+cnXfB318lHadVgiHHniMA+QyEz9CNDl2p0o2n6SXky4rMg3B1+c8OnG1af9n51QOYVZqlE1Rf25eBv3C5kBsxktaiT//o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765244080; c=relaxed/simple;
-	bh=Jr4xd6vxTra+2D4ihKldvhRemopiEEj1gA2UEqKxA+0=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=VTpEQJ8J4VsNCfrFnvp9KgxpXVmAZ2d82MjlSNmhxbE1qaj7wi8plQKotMQ6Pqs76ixzM1LQD0e9m275F8z+nzTFhsrOJ+2hWvflsR/tf5KIAGfvD7duQEoYecu9YS8iwYXn0mTT5Vfkdn7qaSpDhygAntwmpaovmISSgLQQNmQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=b6YC74pL; arc=none smtp.client-ip=209.85.217.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="b6YC74pL"
-Received: by mail-vs1-f47.google.com with SMTP id ada2fe7eead31-5e55bd6f5bbso451883137.0
-        for <kvm@vger.kernel.org>; Mon, 08 Dec 2025 17:34:39 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1765244078; x=1765848878; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=ohtTORJZXPkEpJ8mzg4TFtgbJz9CY3tidmFprVbSxnw=;
-        b=b6YC74pLEi/kRnYIZs8rBwi0pXO6P+ZuXjpL99xbQFVL05oldU9wpyJO2qdqRp7ZwN
-         GJEy3D9rShzcCuq2Y0BwPPsIcq6L8fyaSIXn/EXDOHs/i2yFPkKv/uMXreMEbkKADABN
-         NWWjpF9HZi6mhOljLhbeBZpufCfpuwuxCUSBSOOC+cNmOO5x8oZvl0L+Dm/GfS3Kty/u
-         ygT745xhXaF2TDVDtqhD2YqznCgr6gqGRmJ2VvnTu/vr18tIHAi7tLoQHkjg0xa3GRL3
-         63ktGiSdDmTC8fBYBqd2aD8/s7xblCE5SO3VxK05UEH44sXJxa2ub/zguPvTgeNoid+g
-         tpGA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1765244078; x=1765848878;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=ohtTORJZXPkEpJ8mzg4TFtgbJz9CY3tidmFprVbSxnw=;
-        b=Nr8KIOOQ2CsnIuoj3PLmCm2nHSOwKFTNikRvh8lJGgMG2KtefpfgKlSgGWq5UcN5Wj
-         5QYrdyAO0PvB4YptbPP1F6VbEskqJeSb5HwjsfXAoTTsJ7zEdDHcw0F89YBCtW1G7e0d
-         qNALEljIc9s5fzHEXhj/lB4JFPOmWJcmrSEC6SE/WHEG5yK1sMsk+Zdc9Kc0KIsfVrxW
-         aqgXdskg5BsdeSx9rBufwNA+6D/jX7mjnfPjwZ7TO9NvM6KuP77wn+ciGr/XbzfX4n5X
-         2DxYr0kaoR5dWTA3rnjXvlMonfDCFTYiWuj9HIMhLcf2FMVBsiB6XytREr44hfNCMKzf
-         i+Fw==
-X-Gm-Message-State: AOJu0Yw0pvkJX+GtWndSjWsHvTvwhLeCCA+CZ6GnPybdmjDsJsKil2B2
-	NVdfJtAwu5cWAmT2R8XYmFWtJ5SR3Nu4FHHPyP7hLw0ia1YPJScEqxXAnPfqSZwQOUuxJgNR5dO
-	iBSBW/ixeRvA7j6ArfCvXNSfhFw74XkZPuVTCXDPD
-X-Gm-Gg: ASbGnctQbs8pjNkvEoG9wXuRlWdINAhLJjTTFEOMw5NGYEAFiDOjMBX0SIAA5CHkt4T
-	wPSPepx9u6xmbmTuhX1j5SL9K081jVzRktEnjZXQos7C1OI1Oe4xtOdXgD444NW4ZSm+F3IL6Kc
-	8fdbyj1jwtLsAtWgGz5bwO6W94ZZIyMfFFUJQkQ0OKyIttdQ0lmpQB+iD9ftZ+HYqpZv8p8PD86
-	c2ClMDC6ya5imMwCaKB73tpWg9i5tfREDfgOaz5rchgqnuc6ZlGrJYBvcwvgQut0c05Fw==
-X-Google-Smtp-Source: AGHT+IF6sjE/JjXvhn5X51jTZr9/Gmhnl82XWN08n6TP0d9HArHBaAFRVWyel0bOQWry80a/+lFD/BItSCZMzr8nBrA=
-X-Received: by 2002:a05:6102:4420:b0:5db:cec7:810b with SMTP id
- ada2fe7eead31-5e52cc20a03mr3209749137.29.1765244077812; Mon, 08 Dec 2025
- 17:34:37 -0800 (PST)
+	s=arc-20240116; t=1765246990; c=relaxed/simple;
+	bh=ypMaCA1mNX+qMxlyzi4ApOsO9ZIx73wbxsRkTklSgh4=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=lB6LJPwQB1EzIBh1B15LkxUQt+LVcn5wzmKipYL3HuItAUMqNf401/lDcQB0Y3nd3fy88FkTlNa1kxrFWUKmAyZpihuci9uTaOL3fXft7OFa+vc4UIR8Gw5CB+OgL5INLa8Z9ZnzU2mwMiFK3KZYkcQz9enrb7XaPYqnNny7Xt0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn; spf=pass smtp.mailfrom=loongson.cn; arc=none smtp.client-ip=114.242.206.163
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=loongson.cn
+Received: from loongson.cn (unknown [10.2.5.213])
+	by gateway (Coremail) with SMTP id _____8DxvtMGiDdpqYIsAA--.25304S3;
+	Tue, 09 Dec 2025 10:23:02 +0800 (CST)
+Received: from localhost.localdomain (unknown [10.2.5.213])
+	by front1 (Coremail) with SMTP id qMiowJCxdOQDiDdpykFHAQ--.59037S2;
+	Tue, 09 Dec 2025 10:22:59 +0800 (CST)
+From: Bibo Mao <maobibo@loongson.cn>
+To: Gonglei <arei.gonglei@huawei.com>,
+	"Michael S . Tsirkin" <mst@redhat.com>,
+	Jason Wang <jasowang@redhat.com>
+Cc: kvm@vger.kernel.org,
+	linux-crypto@vger.kernel.org
+Subject: [PATCH v3 00/10] crypto: virtio: Add ecb aes algo support
+Date: Tue,  9 Dec 2025 10:22:48 +0800
+Message-Id: <20251209022258.4183415-1-maobibo@loongson.cn>
+X-Mailer: git-send-email 2.39.3
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20251205081448.4062096-1-chengkev@google.com> <20251205081448.4062096-3-chengkev@google.com>
-In-Reply-To: <20251205081448.4062096-3-chengkev@google.com>
-From: Yosry Ahmed <yosryahmed@google.com>
-Date: Mon, 8 Dec 2025 17:34:01 -0800
-X-Gm-Features: AQt7F2oqIlcHjVdbAW6BbFZdnW5E8D0CXRqb47bCMdt_NanYUQxr-uLsfVgu6Hk
-Message-ID: <CAJD7tkbiATfUizn8T2+b3=K8KswMWgg3iEvpE6HfHBsCtJmB8A@mail.gmail.com>
-Subject: Re: [kvm-unit-tests PATCH 2/2] x86/svm: Add unsupported instruction
- intercept test
-To: Kevin Cheng <chengkev@google.com>
-Cc: kvm@vger.kernel.org, andrew.jones@linux.dev, thuth@redhat.com, 
-	pbonzini@redhat.com, seanjc@google.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:qMiowJCxdOQDiDdpykFHAQ--.59037S2
+X-CM-SenderInfo: xpdruxter6z05rqj20fqof0/
+X-Coremail-Antispam: 1Uk129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7KY7
+	ZEXasCq-sGcSsGvfJ3UbIjqfuFe4nvWSU5nxnvy29KBjDU0xBIdaVrnUUvcSsGvfC2Kfnx
+	nUUI43ZEXa7xR_UUUUUUUUU==
 
-On Fri, Dec 5, 2025 at 12:14=E2=80=AFAM Kevin Cheng <chengkev@google.com> w=
-rote:
->
-> Add tests that expect a nested vm exit, due to an unsupported
-> instruction, to be handled by L0 even if L1 intercepts are set for that
-> instruction.
->
-> The new test exercises bug fixed by:
-> https://lore.kernel.org/all/20251205070630.4013452-1-chengkev@google.com/
->
-> Signed-off-by: Kevin Cheng <chengkev@google.com>
-[..]
-> @@ -3572,6 +3572,80 @@ static void svm_shutdown_intercept_test(void)
->         report(vmcb->control.exit_code =3D=3D SVM_EXIT_SHUTDOWN, "shutdow=
-n test passed");
->  }
->
-> +struct InvpcidDesc {
-> +       uint64_t pcid : 12;
-> +       uint64_t reserved : 52;
-> +       uint64_t addr;
-> +};
-> +
-> +static void insn_invpcid(struct svm_test *test)
-> +{
-> +       struct InvpcidDesc desc =3D {0};
-> +       unsigned long type =3D 0;
-> +
-> +       __asm__ volatile (
-> +               "invpcid %1, %0"
-> +               :
-> +               : "r" (type), "m" (desc)
-> +               : "memory"
-> +       );
-> +}
+Here add ecb aes algo support with virtio crypto device, also it fixes
+one problem when multiple processes execute cipher operation. Most of work
+is code clean up, such as use common APIs for block size and iv size etc.
 
-Can we use invpcid_safe() and the descriptor already defined in processor.h=
-?
+---
+v2 ... v3:
+  1. Remove NULL checking with req_data where kfree() is called, since
+     NULL pointer is workable with kfree() API.
+  2. In patch 7 and patch 8, req_data and IV buffer which are preallocated
+     are sensitive data, memzero_explicit() is used even on error path
+     handling.
+  3. Remove duplicated virtqueue_kick() in new patch 2, since it is
+     already called in previous __virtio_crypto_skcipher_do_req().
 
-> +
-> +asm(
-> +       "insn_rdtscp: rdtscp;ret\n\t"
-> +       "insn_skinit: skinit;ret\n\t"
-> +       "insn_xsetbv: xor %eax, %eax; xor %edx, %edx; xor %ecx, %ecx; xse=
-tbv;ret\n\t"
-> +       "insn_rdpru: xor %ecx, %ecx; rdpru;ret\n\t"
-> +);
-> +
-> +extern void insn_rdtscp(struct svm_test *test);
-> +extern void insn_skinit(struct svm_test *test);
-> +extern void insn_xsetbv(struct svm_test *test);
-> +extern void insn_rdpru(struct svm_test *test);
-> +
-> +struct insn_table {
-> +       const char *name;
-> +       u64 intercept;
-> +       void (*insn_func)(struct svm_test *test);
-> +       u32 reason;
-> +};
-> +
-> +static struct insn_table insn_table[] =3D {
-> +       { "RDTSCP", INTERCEPT_RDTSCP, insn_rdtscp, SVM_EXIT_RDTSCP},
-> +       { "SKINIT", INTERCEPT_SKINIT, insn_skinit, SVM_EXIT_SKINIT},
-> +       { "XSETBV", INTERCEPT_XSETBV, insn_xsetbv, SVM_EXIT_XSETBV},
-> +       { "RDPRU", INTERCEPT_RDPRU, insn_rdpru, SVM_EXIT_RDPRU},
-> +       { "INVPCID", INTERCEPT_INVPCID, insn_invpcid, SVM_EXIT_INVPCID},
-> +       { NULL },
-> +};
-> +
-> +/*
-> + * Test that L1 does not intercept instructions that are not advertised =
-in
-> + * guest CPUID.
-> + */
-> +static void svm_unsupported_instruction_intercept_test(void)
-> +{
-> +       u32 cur_insn;
-> +       u32 exit_code;
-> +
-> +       vmcb_set_intercept(INTERCEPT_EXCEPTION_OFFSET + UD_VECTOR);
-> +
-> +       for (cur_insn =3D 0; insn_table[cur_insn].name !=3D NULL; ++cur_i=
-nsn) {
-> +               test_set_guest(insn_table[cur_insn].insn_func);
-> +               vmcb_set_intercept(insn_table[cur_insn].intercept);
-> +               svm_vmrun();
-> +               exit_code =3D vmcb->control.exit_code;
-> +
-> +               if (exit_code =3D=3D SVM_EXIT_EXCP_BASE + UD_VECTOR)
-> +                       report_pass("UD Exception injected");
-> +               else if (exit_code =3D=3D insn_table[cur_insn].reason)
-> +                       report_fail("L1 should not intercept %s when inst=
-ruction is not advertised in guest CPUID",
-> +                                   insn_table[cur_insn].name);
-> +               else
-> +                       report_fail("Unknown exit reason, 0x%x", exit_cod=
-e);
-> +       }
-> +}
-> +
->  struct svm_test svm_tests[] =3D {
->         { "null", default_supported, default_prepare,
->           default_prepare_gif_clear, null_test,
-> @@ -3713,6 +3787,7 @@ struct svm_test svm_tests[] =3D {
->         TEST(svm_tsc_scale_test),
->         TEST(pause_filter_test),
->         TEST(svm_shutdown_intercept_test),
-> +       TEST(svm_unsupported_instruction_intercept_test),
->         { NULL, NULL, NULL, NULL, NULL, NULL, NULL }
->  };
->
-> diff --git a/x86/unittests.cfg b/x86/unittests.cfg
-> index 522318d32bf68..ec456d779b35c 100644
-> --- a/x86/unittests.cfg
-> +++ b/x86/unittests.cfg
-> @@ -253,11 +253,18 @@ arch =3D x86_64
->  [svm]
->  file =3D svm.flat
->  smp =3D 2
-> -test_args =3D "-pause_filter_test"
-> +test_args =3D "-pause_filter_test -svm_unsupported_instruction_intercept=
-_test"
->  qemu_params =3D -cpu max,+svm -m 4g
->  arch =3D x86_64
->  groups =3D svm
->
-> +[svm_unsupported_instruction_intercept_test]
-> +file =3D svm.flat
-> +test_args =3D "svm_unsupported_instruction_intercept_test"
-> +qemu_params =3D -cpu max,+svm,-rdtscp,-xsave,-invpcid
+v1 ... v2:
+  1. Add Fixes tag with patch 1.
+  2. Add new patch 2 - patch 9 to add ecb aes algo support.
+---
+Bibo Mao (10):
+  crypto: virtio: Add spinlock protection with virtqueue notification
+  crypto: virtio: Remove duplicated virtqueue_kick in
+    virtio_crypto_skcipher_crypt_req
+  crypto: virtio: Replace package id with numa node id
+  crypto: virtio: Add algo pointer in virtio_crypto_skcipher_ctx
+  crypto: virtio: Use generic API aes_check_keylen()
+  crypto: virtio: Remove AES specified marcro AES_BLOCK_SIZE
+  crypto: virtio: Add req_data with structure virtio_crypto_sym_request
+  crypto: virtio: Add IV buffer in structure virtio_crypto_sym_request
+  crypto: virtio: Add skcipher support without IV
+  crypto: virtio: Add ecb aes algo support
 
-Does this cover all 5 instructions being tested?
+ drivers/crypto/virtio/virtio_crypto_common.h  |   2 +-
+ drivers/crypto/virtio/virtio_crypto_core.c    |   5 +
+ .../virtio/virtio_crypto_skcipher_algs.c      | 187 ++++++++++--------
+ 3 files changed, 112 insertions(+), 82 deletions(-)
 
-> +arch =3D x86_64
-> +groups =3D svm
-> +
->  [svm_pause_filter]
->  file =3D svm.flat
->  test_args =3D pause_filter_test
-> --
-> 2.52.0.223.gf5cc29aaa4-goog
->
+
+base-commit: 67a454e6b1c604555c04501c77b7fedc5d98a779
+-- 
+2.39.3
+
