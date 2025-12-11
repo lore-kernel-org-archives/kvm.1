@@ -1,62 +1,63 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 55F021A23AC
-	for <kvm@vger.kernel.org>; Thu, 11 Dec 2025 11:16:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9B8729C351
+	for <kvm@vger.kernel.org>; Thu, 11 Dec 2025 11:18:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.9
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765451771; cv=none; b=r4QLKB4UKg/ObbYAEcfnn96Ie30IX1NkmAVzTi0V7w5QXdwCoaqwlBm+V4gjeJMXzuu/hfmSsRgnig4J0pG5fgpmbi4/1XfplHjw+BO43XqzQis3t2ssxabye374B2fK3VrtVMv9dxFPtHG8s9fD/1CkHHLHAZZG/epf5SFwZXM=
+	t=1765451894; cv=none; b=bc0YHcqZwm8Vyq4KCXmHIA8d+l3ZdLoduRpLT/dkfIKkKjxk1g5eYyBBB5sfyBXYtJ40PULeM93uXI13lAMSi9osq25pe+ePHlPXV65FiMcY5V8t/5jzcOt8882OPiywJatpdPxGPysV2QxRnmdrywg2waJLNKwSNo5Vct7X8TA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765451771; c=relaxed/simple;
-	bh=JDBjZhXx+GXedv5pqLc4BUMGTJ+cbAvfOj45sEse3EE=;
+	s=arc-20240116; t=1765451894; c=relaxed/simple;
+	bh=/PavwmTPXgf2RFgfCgkbjsWUgrq8AQllM7S/czmU9N0=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=OYAhUGo74J6L/pJYWklc8v9h12ExVmVhDYeUYnGiC8Rdn7Hb3DwzjvEZkn8P8H2XcX3PZH+i2vJLF7As2sQUuXxrof5i9gjPzwqXwfObfthDQX+YRGBTv36qJZaniV94144MtpoqtboYBEZPnprXduWRVKxXB5T6oBDnmb0w6Qo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=ejIAMV2x; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	 Content-Type:Content-Disposition:In-Reply-To; b=kI2fnWkfq0KE0aSLkDuZztmlXpWJLKwErsRFv2GZeg5STu/+zJraSKJlh/icG3I1SJ3wd/koxS2xXiH+8nLlsqaGBrK3g8vysckPvC+fhcDsQGWJCeuLebPqk6UShH3qvO3D1fZgXiL0DOj/iBxJk3vCzHOvNBhlxSgi8MmUN9E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=N1Q/dmBI; arc=none smtp.client-ip=192.198.163.9
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="ejIAMV2x"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1765451768;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=PGjKevl2KNgfC8tVMV5G7TSSLfkSd+O3wEhDxq6nPVM=;
-	b=ejIAMV2xGKx9qasi1gfyFnRo/wDrnqz0NRgahswVdfmFYJBthEKgV2jAso0sWRuSoD1dVh
-	cy+5T98slLAc3rNO2gZ3zISffdJnCjWUlJZhYIu3oG88DQbBXDBqaCEFhPEfeKCoHxoinI
-	Sm0vvg+e6Ldbbe3sJKVlQ6VeLdJc7mY=
-Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-252-QTT-Q78QM-mQL3ppn45-qQ-1; Thu,
- 11 Dec 2025 06:16:05 -0500
-X-MC-Unique: QTT-Q78QM-mQL3ppn45-qQ-1
-X-Mimecast-MFC-AGG-ID: QTT-Q78QM-mQL3ppn45-qQ_1765451763
-Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 1778C1956058;
-	Thu, 11 Dec 2025 11:16:03 +0000 (UTC)
-Received: from sirius.home.kraxel.org (unknown [10.44.32.156])
-	by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 003FD1953984;
-	Thu, 11 Dec 2025 11:16:01 +0000 (UTC)
-Received: by sirius.home.kraxel.org (Postfix, from userid 1000)
-	id A65161800608; Thu, 11 Dec 2025 12:15:59 +0100 (CET)
-Date: Thu, 11 Dec 2025 12:15:59 +0100
-From: Gerd Hoffmann <kraxel@redhat.com>
-To: Oliver Steffen <osteffen@redhat.com>
-Cc: qemu-devel@nongnu.org, 
-	Richard Henderson <richard.henderson@linaro.org>, Paolo Bonzini <pbonzini@redhat.com>, 
-	Igor Mammedov <imammedo@redhat.com>, "Michael S. Tsirkin" <mst@redhat.com>, 
-	Joerg Roedel <joerg.roedel@amd.com>, kvm@vger.kernel.org, Zhao Liu <zhao1.liu@intel.com>, 
-	Eduardo Habkost <eduardo@habkost.net>, Marcelo Tosatti <mtosatti@redhat.com>, 
-	Luigi Leonardi <leonardi@redhat.com>, Stefano Garzarella <sgarzare@redhat.com>, 
-	Ani Sinha <anisinha@redhat.com>, Marcel Apfelbaum <marcel.apfelbaum@gmail.com>
-Subject: Re: [PATCH v2 3/3] igvm: Fill MADT IGVM parameter field
-Message-ID: <h4256m67shwdq4aouxpqadb2zozhq2f5dfeo74c5jnet5f26kz@a3av5xjfyfow>
-References: <20251211103136.1578463-1-osteffen@redhat.com>
- <20251211103136.1578463-4-osteffen@redhat.com>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="N1Q/dmBI"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1765451893; x=1796987893;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=/PavwmTPXgf2RFgfCgkbjsWUgrq8AQllM7S/czmU9N0=;
+  b=N1Q/dmBIlx/VApiCXEFj2K3rLJ3CnTHSHPk5dMXcDw5TUrF6uOrRYZju
+   9+Wd/D+9XXmvEyAyp/DkRjhJX4/tX6zzblICCxnFvMlW/Riu5p4JmOK32
+   q/4RQZp4RiqWGtZq/KpQHfVUx+Kz8hVz5pe3XE1OcOUtDf+0Qeu4C/N8l
+   c6L7phRtzkyJnj6tj7g+/NruKaJZyp1zFOVjPg1OL2JvHI2W10b57xlzv
+   VCHtwrAKSU70ytzzQG4pFVK1DCrqB/Tit0wLGZxw6S4Fawik+ZrQhZk6w
+   lSdGSboxMY5Ps6ksI7tPoOmf3/E6OYt/OSFwjVOITZlNAcVVCkEkSHq4C
+   g==;
+X-CSE-ConnectionGUID: bXH4foZmQG+Gr8qxM5/F8w==
+X-CSE-MsgGUID: 4c1cIsa9RV+GhUt6hahJkQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11638"; a="78135215"
+X-IronPort-AV: E=Sophos;i="6.20,265,1758610800"; 
+   d="scan'208";a="78135215"
+Received: from fmviesa007.fm.intel.com ([10.60.135.147])
+  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Dec 2025 03:18:12 -0800
+X-CSE-ConnectionGUID: n7oOztxsS0C0JqrUfAh9tQ==
+X-CSE-MsgGUID: yNbwLSB4TqaHeCzHM6soxQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.20,265,1758610800"; 
+   d="scan'208";a="196384546"
+Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost) ([10.239.160.39])
+  by fmviesa007.fm.intel.com with ESMTP; 11 Dec 2025 03:18:10 -0800
+Date: Thu, 11 Dec 2025 19:42:56 +0800
+From: Zhao Liu <zhao1.liu@intel.com>
+To: Paolo Bonzini <pbonzini@redhat.com>
+Cc: Alex =?iso-8859-1?Q?Benn=E9e?= <alex.bennee@linaro.org>,
+	Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>,
+	Peter Xu <peterx@redhat.com>, Fabiano Rosas <farosas@suse.de>,
+	qemu-devel@nongnu.org, kvm@vger.kernel.org,
+	"Chang S . Bae" <chang.seok.bae@intel.com>,
+	Zide Chen <zide.chen@intel.com>, Xudong Hao <xudong.hao@intel.com>
+Subject: Re: [PATCH v2 0/9] i386/cpu: Support APX for KVM
+Message-ID: <aTquQJkiwKmuqCG2@intel.com>
+References: <20251211070942.3612547-1-zhao1.liu@intel.com>
+ <16e0fc49-0cdf-4e54-b692-5f58e18c747b@redhat.com>
+ <aTqMBtkOxx6mZhn+@intel.com>
+ <df96afb2-f99c-48ae-81be-ccadf0fc3496@redhat.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -65,57 +66,24 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20251211103136.1578463-4-osteffen@redhat.com>
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
+In-Reply-To: <df96afb2-f99c-48ae-81be-ccadf0fc3496@redhat.com>
 
-  Hi,
+> No problem, I have done a quick pass with "sed" on the patches and reapplied
+> them.  I do ask you to respin the Diamond Rapids series though, on top of
+> the for-upstream tag of https://gitlab.com/bonzini/qemu (currently going
+> through CI).
+> 
+> Applied for 11.0!
 
-> +static int qigvm_initialization_madt(QIgvm *ctx,
-> +                                     const uint8_t *header_data, Error **errp)
-> +{
-> +    const IGVM_VHS_PARAMETER *param = (const IGVM_VHS_PARAMETER *)header_data;
-> +    QIgvmParameterData *param_entry;
-> +
-> +    if (ctx->madt == NULL) {
-> +        return 0;
-> +    }
-> +
-> +    /* Find the parameter area that should hold the device tree */
+Thank you!
 
-cut+paste error in the comment.
+BTW, could you please have a look at this clean up on outdated SPR
+comments:
 
-> +    QTAILQ_FOREACH(param_entry, &ctx->parameter_data, next)
-> +    {
-> +        if (param_entry->index == param->parameter_area_index) {
+https://lore.kernel.org/qemu-devel/20251118080837.837505-1-zhao1.liu@intel.com/
 
-Hmm, that is a pattern repeated a number of times already in the igvm
-code.  Should we factor that out into a helper function?
+I feel it's better to clear SPR comments before DMR touches AMX.
 
->  static int qigvm_supported_platform_compat_mask(QIgvm *ctx, Error **errp)
->  {
->      int32_t header_count;
-> @@ -892,7 +925,7 @@ IgvmHandle qigvm_file_init(char *filename, Error **errp)
->  }
->  
->  int qigvm_process_file(IgvmCfg *cfg, ConfidentialGuestSupport *cgs,
-> -                       bool onlyVpContext, Error **errp)
-> +                       bool onlyVpContext, GArray *madt, Error **errp)
-
-I'd like to see less parameters for this function, not more.
-
-I think sensible options here are:
-
-  (a) store the madt pointer in IgvmCfg, or
-  (b) pass MachineState instead of ConfidentialGuestSupport, so
-      we can use the MachineState here to generate the madt.
-
-Luigi, any opinion?  I think device tree support will need access to
-MachineState too, and I think both madt and dt should take the same
-approach here.
-
-Long-term I'd like to also get rid of the onlyVpContext parameter.
-That cleanup is something for another patch series though.
-
-take care,
-  Gerd
+Thanks,
+Zhao
 
