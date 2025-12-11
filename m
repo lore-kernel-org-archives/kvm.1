@@ -1,82 +1,93 @@
-Received: from mail-ot1-f71.google.com (mail-ot1-f71.google.com [209.85.210.71])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from out203-205-221-192.mail.qq.com (out203-205-221-192.mail.qq.com [203.205.221.192])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67FEA7E0E4
-	for <kvm@vger.kernel.org>; Thu, 11 Dec 2025 05:58:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.71
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B174F24169D;
+	Thu, 11 Dec 2025 06:32:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=203.205.221.192
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765432708; cv=none; b=p5l8d0TCmw0Kzg3Bydw/B9ezqZTQCS6S3O3c3Qd8Rk//Pi6lTjSVsCjGZn6ONZ+JXNSHQ7GZ5sYGXa3KwFBhRVJu9rLUn3YlcGuAboI0WEZOyUYFMyiMRmClwGxX0x1z8Mr/CIrnWV6slgG8nqj7rFe4kr+eeSR8b7r22JEc/Lk=
+	t=1765434753; cv=none; b=NdEFWDRr7TtEt3+4tNgipmzXaW76YqZd/P6JaRyNtEqMt2YY8mgZVjNv3ckNOn6Yq2erzeWOQlF3gksoUyU+HFEhJLUpHKNQDUh/Xt7/pM/V4SxKwjUlUkWbNTq/VTGX/bNhYRgsU0ue/WEGln5ac3HaVTqnmMJiSf3kCaPzb+A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765432708; c=relaxed/simple;
-	bh=da77VZxsIHOPfFF/2Fm0ZWf4tIlepJXfqpfMHSJHmjc=;
-	h=MIME-Version:Date:Message-ID:Subject:From:To:Content-Type; b=lr1xZ4Oh7FX1QwyZ12IW6aWEpStGIOwMLfbZ58TP9BNlfrZApfIGzlRbcL1nBSjJH4IxzqiY5TJmiJf3wOBzT+qJt/30mKIfVKpXlcF1rQ/wVmH1mONbTSZtYMFwq+qQiz5BcpOwV2B645Cnh6TKF1KXPYdRjkCirt4Y8HCCOao=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.210.71
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
-Received: by mail-ot1-f71.google.com with SMTP id 46e09a7af769-7c705ffd76fso663549a34.3
-        for <kvm@vger.kernel.org>; Wed, 10 Dec 2025 21:58:27 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1765432706; x=1766037506;
-        h=to:from:subject:message-id:date:mime-version:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=iJ8Da8sF3hVYNvp53TAUxY1WluOPp3L1zftzfOUJ8Sw=;
-        b=bv6efQfGSTjcZwwzRL97xMZTYaC2GGvVFG2qNwAeFVLRIerwGU8TLF4m8tTO3GcLiy
-         lXqJA78DsGbmQ3FXZbG4retYPoIQ1ZDGMOXcG1VWRXNE2zT+VTld2YEFcAv5QiO4YUsI
-         Q4Jk7myBEbAm0+dGc6uHgSX+LjHF3ianOqU99rSJ51TGrTyooKwoGTm+gKgKLHvkMKv5
-         ySID6DTSRgBRRUYCLWQC5vmPT/zl8TUsok7qmKojFIrzbI22jke6C5ofiW4A6K1PXNGh
-         NRmR7SNNTO+IcwdOBRsTV19fhwZqZJP94XhQRazCHC6RCHpycHxeEMohCsVMx1ceLejD
-         wAIQ==
-X-Gm-Message-State: AOJu0Yyjmv9UIRkB1rj+jG5lAf5egoYj9AEoCivMlI3ImVw+o39dpWgt
-	Xtp4jZfGv5vAorxzVBZc+XHd+eCLJR7uQ49kbSqPNCkkab/AhVeURd5rnajLHrzd5jDAMu2rMjy
-	qFoHSvP7PMW0xvasizai3bOBrqUDgQtwesJxBtX0aOrXWKdSQX04l/ebVLUA=
-X-Google-Smtp-Source: AGHT+IEgSBXFMRzk0pKjDSFzb3woEajCvgpnab23lyPdxIDY4W9o3ReetHTcCwLAjrQhcmnZUleRA846LD0aD6fwrI8D42X/mYLT
+	s=arc-20240116; t=1765434753; c=relaxed/simple;
+	bh=fIvPNLHeDzWJF31MVDenOR42FEqmZ79q0H8utAhI720=;
+	h=Message-ID:From:To:Cc:Subject:Date:In-Reply-To:References:
+	 MIME-Version; b=GtJ5JtPEY1VKyOT9yLqWzVHwgr0rvWdqSljhrl8wi7B+UvGKovITCN2s79MpcMF65AMdQ9qWDxykM7e4pJ+RQdUFCIOvqJqYD1U6DRXmYvJXdN9E23G19+G7u+xwIEUr64NCdcmWjSMFuMCL0NO1iG0/k/L6PMBcZkxJ4YKaM9I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=qq.com; spf=pass smtp.mailfrom=qq.com; dkim=pass (1024-bit key) header.d=qq.com header.i=@qq.com header.b=eaJeKcQB; arc=none smtp.client-ip=203.205.221.192
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=qq.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=qq.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=qq.com header.i=@qq.com header.b="eaJeKcQB"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qq.com; s=s201512;
+	t=1765434742; bh=j9YJeKxZIVNEPnjmawJSw8tc2oM/QEMGoWkZljnyWFE=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=eaJeKcQBlF8VpzSaRSU9J9OfWnQgEuBFJrBu4Ll2j9zInAuK/I+KUVNrougxX/qKF
+	 UBlXY9InI2/0SYygm8WnMCNZ1CqPv6pMVxWcyFGu92kXud/4Y0ua1U52Q/a/EiFRVX
+	 uf0Vj7bDbMzxdYEkA1UtsYwp9hxa+CdSwN4uCD2M=
+Received: from lxu-ped-host.. ([111.201.7.117])
+	by newxmesmtplogicsvrsza53-0.qq.com (NewEsmtp) with SMTP
+	id 81197280; Thu, 11 Dec 2025 14:32:17 +0800
+X-QQ-mid: xmsmtpt1765434737t9ud65iy0
+Message-ID: <tencent_62102EE16E389458E93EED06CEBC780A6D0A@qq.com>
+X-QQ-XMAILINFO: N1p/MiiOj+Nxnc8ixv9aB6Cuhh1Kg38gNO1ezC8t5gz9BfwdrqVb1jlDr2wZOA
+	 ERbWwQzhvvNcEptlPvLm+td0AOlAyg5AN2J3aaF8+idRx3D+9zZdJ19JMlV7n2dKYbqq9EAk/4qt
+	 OBUcHMcc0ldyIbIKMEbz6NcMNQgTMhpHzF/NSxxJ7nuWQYHd+uos5B55s7giqxd7OTue4Gw1KqBa
+	 J8VGyUfnDGp/Z7iTKEpGuJvKxo6PSGRvs/EWsK0FYUDg7ikGKsaAVcnRb3KFQKd8rn381898ajKy
+	 d4/BXPOuxqQWaSCsu6UjF3kiCpDSUKdD38SvmaTjP9jkfwC14cVe8F1pOf26FlgkCfCar2nytGH+
+	 Blld7Yx4IIpAu+ceG+ya6CPzlAgqdLgsf0cX0znwYWoQ7gXM+wG83ffi8njN6BRdhFXlDcyk53o2
+	 q12DIDhLUwwo8B3pmgLgoz9Ds2M8seYyY7P+hJe+MIWjuFNcpZicMKJ1sVlPdiW4BQX6WOTO8/ap
+	 MVsBTpiPS6WcOjqngH8JtQyW4LI70PWVBfCvMD4M0l1tfi3smcXoUBbvzBy+UzFP9lBOrvBucnJf
+	 hV7jETV8CRccEMNhJslep92QxBwezHtEcIX0IcrGfdKeS4gjSuiioL6zM7RAegeA2TCaWuN7p4Bh
+	 xBJpM7TVFvCc3g1cjKCUZ9qbFqWYDCFIOk90wElp1MyHI8AnwFWuJPdBt2l/ai59w7meXhM/X+kc
+	 MVTLl0kOOrd3sKN1AHO1Wty8xTYp0SA+p45I4lKoXIzffhbpYGpmDGaW/GbuEKkDkJvUKv2OvS6Z
+	 9fElMXys2KLlGlCeehKEfc9mWC+8YM0NRTSnfhHrtwRLngvT6xWcVV0mJbsM8MlRVw9SAJlaukBg
+	 C9fSE7MK2Jss8MctRniiF4aN9pCLmfyorNNOQeQb72xZmSlKYwl4kyvhuiu+QKyVFOctV9yIiL2V
+	 3Ks5p1rCHknj7egVgRAg0UaFbfunHL5A8hesQWabzOHpWpLHjgTvFeIaIYeHErVzMhlZYCF7laAM
+	 OOpTW77eg+7hhJAW2W1ya4q00FRTEae03LaB6/zA==
+X-QQ-XMRINFO: Mp0Kj//9VHAxr69bL5MkOOs=
+From: Edward Adam Davis <eadavis@qq.com>
+To: kuba@kernel.org
+Cc: davem@davemloft.net,
+	eadavis@qq.com,
+	edumazet@google.com,
+	eperezma@redhat.com,
+	horms@kernel.org,
+	jasowang@redhat.com,
+	kvm@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	mst@redhat.com,
+	netdev@vger.kernel.org,
+	pabeni@redhat.com,
+	sgarzare@redhat.com,
+	stefanha@redhat.com,
+	syzbot+ci3edb9412aeb2e703@syzkaller.appspotmail.com,
+	syzbot@lists.linux.dev,
+	syzbot@syzkaller.appspotmail.com,
+	syzkaller-bugs@googlegroups.com,
+	virtualization@lists.linux.dev,
+	xuanzhuo@linux.alibaba.com
+Subject: Re: [PATCH net-next V3] net: restore the iterator to its original state when an error occurs
+Date: Thu, 11 Dec 2025 14:32:18 +0800
+X-OQ-MSGID: <20251211063217.38761-2-eadavis@qq.com>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20251211142142.18a4a0b2@kernel.org>
+References: <20251211142142.18a4a0b2@kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Received: by 2002:a05:6820:a0c:b0:65b:25e8:13e9 with SMTP id
- 006d021491bc7-65b2ad00ca0mr2959496eaf.70.1765432706596; Wed, 10 Dec 2025
- 21:58:26 -0800 (PST)
-Date: Wed, 10 Dec 2025 21:58:26 -0800
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <693a5d82.a70a0220.33cd7b.0024.GAE@google.com>
-Subject: [syzbot] Monthly kvm report (Dec 2025)
-From: syzbot <syzbot+list5017e134bce051795ccc@syzkaller.appspotmail.com>
-To: kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	syzkaller-bugs@googlegroups.com
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
 
-Hello kvm maintainers/developers,
+On Thu, 11 Dec 2025 14:21:42 +0900, Jakub Kicinski wrote:
+> > > Have you investigated the other callers? Given problems with previous
+> > > version of this patch I'm worried you have not. If you did please extend
+> > > the commit message with the appropriate explanation.
+> > Are you asking if I investigated other zerocopy tests? NO.
+> 
+> I said callers. You're changing behavior of a function, is it going
+> to break any of the callers.
+I investigated the relevant callers and found no similar restore/revert
+operations. Furthermore, if such a restore action existed, the ZC
+related test programs would have detected it, just as the tests
+detected the revert operation in skb_zerocopy_iter_stream().
 
-This is a 31-day syzbot report for the kvm subsystem.
-All related reports/information can be found at:
-https://syzkaller.appspot.com/upstream/s/kvm
-
-During the period, 2 new issues were detected and 0 were fixed.
-In total, 6 issues are still open and 65 have already been fixed.
-
-Some of the still happening issues:
-
-Ref Crashes Repro Title
-<1> 658     Yes   WARNING: locking bug in kvm_xen_set_evtchn_fast
-                  https://syzkaller.appspot.com/bug?extid=919877893c9d28162dc2
-<2> 38      Yes   WARNING in __kvm_gpc_refresh (3)
-                  https://syzkaller.appspot.com/bug?extid=cde12433b6c56f55d9ed
-<3> 6       No    INFO: task hung in kvm_swap_active_memslots (2)
-                  https://syzkaller.appspot.com/bug?extid=5c566b850d6ab6f0427a
-
----
-This report is generated by a bot. It may contain errors.
-See https://goo.gl/tpsmEJ for more information about syzbot.
-syzbot engineers can be reached at syzkaller@googlegroups.com.
-
-To disable reminders for individual bugs, reply with the following command:
-#syz set <Ref> no-reminders
-
-To change bug's subsystems, reply with:
-#syz set <Ref> subsystems: new-subsystem
-
-You may send multiple commands in a single email message.
