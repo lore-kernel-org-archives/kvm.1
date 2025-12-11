@@ -1,110 +1,82 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ot1-f71.google.com (mail-ot1-f71.google.com [209.85.210.71])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE1E02D6624
-	for <kvm@vger.kernel.org>; Thu, 11 Dec 2025 05:44:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.19
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67FEA7E0E4
+	for <kvm@vger.kernel.org>; Thu, 11 Dec 2025 05:58:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.71
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765431889; cv=none; b=oy30zEwBEvlbkN2xO60aVpNgMuj8qCF6ryJcxLuID6ulQvdKk/MPla41sAwhLgmTieWlgVyQqM+2PzYG0kopI1+YgVZqKDecIY9ifY6W8OVFRY3z7BXENm7inbJ3taHkytaTXGrAxrmEm71f/bJtabIBX6K0zzudPjj+AF7YYBg=
+	t=1765432708; cv=none; b=p5l8d0TCmw0Kzg3Bydw/B9ezqZTQCS6S3O3c3Qd8Rk//Pi6lTjSVsCjGZn6ONZ+JXNSHQ7GZ5sYGXa3KwFBhRVJu9rLUn3YlcGuAboI0WEZOyUYFMyiMRmClwGxX0x1z8Mr/CIrnWV6slgG8nqj7rFe4kr+eeSR8b7r22JEc/Lk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765431889; c=relaxed/simple;
-	bh=0uF8jj575zYxVcWmkztmsgjmlH5SFSks+bBKxFEAv3A=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=UoxVBKlSlkiKMLc3hWvrV0jDLbUSx+U+IivBZUrBPh6qrVZmKOLpgMONb+qHhcmVNVGwzwGILevvZ05bdtqKnVTnEQKIl3S9jScZYXCBZzDogq4F+h43ayJX6Yws7KHUyIqtUZj7q+h77xD0bWTKhgdw+UD8yclJH4fnlZ62pfw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=oHOwMsq7; arc=none smtp.client-ip=192.198.163.19
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="oHOwMsq7"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1765431888; x=1796967888;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=0uF8jj575zYxVcWmkztmsgjmlH5SFSks+bBKxFEAv3A=;
-  b=oHOwMsq7DLPjcY5QA4388xUzR9VdeteObs0cLdpOeGZkEsOWpUpSe33N
-   7Lr1Bw8dJW1yNvcLvMYC1u8LMKqjpuDzSRQLK+9M69onin4NvyA3wq8dy
-   4mb8YnO/+yEy88mjHrPlj4oD/bTyB0RGEGyQiAuEj7jTSX7yLHY8EDI61
-   TVgclV3C8Yg7SmogOmABa0XRED3JjdlmfHPWby12ry8a47N6SZ2OVcQel
-   kiaWfml6jxhwtemQXvGFlf4V2AEajHSJSOFmHobpEAiu8dFedCrkQbEds
-   vPMQzvsP1fQ46EmJM4XtqpVv7Cxc087tSelK3FuwNeUT14s5/fxfehMb4
-   Q==;
-X-CSE-ConnectionGUID: 1C2aAZKKQ16u8y4wA3Mp0Q==
-X-CSE-MsgGUID: mWcctg8YSKK2g7AzD3GPeg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11638"; a="66410020"
-X-IronPort-AV: E=Sophos;i="6.20,265,1758610800"; 
-   d="scan'208";a="66410020"
-Received: from orviesa002.jf.intel.com ([10.64.159.142])
-  by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Dec 2025 21:44:48 -0800
-X-CSE-ConnectionGUID: R+WptcuRQoWiK19k3FqoBQ==
-X-CSE-MsgGUID: LYgSZ0qYRROV8ROnrBh0cQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.20,265,1758610800"; 
-   d="scan'208";a="227366269"
-Received: from liuzhao-optiplex-7080.sh.intel.com ([10.239.160.39])
-  by orviesa002.jf.intel.com with ESMTP; 10 Dec 2025 21:44:44 -0800
-From: Zhao Liu <zhao1.liu@intel.com>
-To: Paolo Bonzini <pbonzini@redhat.com>,
-	Marcelo Tosatti <mtosatti@redhat.com>
-Cc: qemu-devel@nongnu.org,
-	kvm@vger.kernel.org,
-	Chao Gao <chao.gao@intel.com>,
-	Xin Li <xin@zytor.com>,
-	John Allen <john.allen@amd.com>,
-	Babu Moger <babu.moger@amd.com>,
-	Mathias Krause <minipli@grsecurity.net>,
-	Dapeng Mi <dapeng1.mi@intel.com>,
-	Zide Chen <zide.chen@intel.com>,
-	Xiaoyao Li <xiaoyao.li@intel.com>,
-	Chenyi Qiang <chenyi.qiang@intel.com>,
-	Farrah Chen <farrah.chen@intel.com>,
-	Zhao Liu <zhao1.liu@intel.com>
-Subject: [PATCH v5 22/22] i386/tdx: Add CET SHSTK/IBT into the supported CPUID by XFAM
-Date: Thu, 11 Dec 2025 14:08:01 +0800
-Message-Id: <20251211060801.3600039-23-zhao1.liu@intel.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20251211060801.3600039-1-zhao1.liu@intel.com>
-References: <20251211060801.3600039-1-zhao1.liu@intel.com>
+	s=arc-20240116; t=1765432708; c=relaxed/simple;
+	bh=da77VZxsIHOPfFF/2Fm0ZWf4tIlepJXfqpfMHSJHmjc=;
+	h=MIME-Version:Date:Message-ID:Subject:From:To:Content-Type; b=lr1xZ4Oh7FX1QwyZ12IW6aWEpStGIOwMLfbZ58TP9BNlfrZApfIGzlRbcL1nBSjJH4IxzqiY5TJmiJf3wOBzT+qJt/30mKIfVKpXlcF1rQ/wVmH1mONbTSZtYMFwq+qQiz5BcpOwV2B645Cnh6TKF1KXPYdRjkCirt4Y8HCCOao=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.210.71
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
+Received: by mail-ot1-f71.google.com with SMTP id 46e09a7af769-7c705ffd76fso663549a34.3
+        for <kvm@vger.kernel.org>; Wed, 10 Dec 2025 21:58:27 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1765432706; x=1766037506;
+        h=to:from:subject:message-id:date:mime-version:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=iJ8Da8sF3hVYNvp53TAUxY1WluOPp3L1zftzfOUJ8Sw=;
+        b=bv6efQfGSTjcZwwzRL97xMZTYaC2GGvVFG2qNwAeFVLRIerwGU8TLF4m8tTO3GcLiy
+         lXqJA78DsGbmQ3FXZbG4retYPoIQ1ZDGMOXcG1VWRXNE2zT+VTld2YEFcAv5QiO4YUsI
+         Q4Jk7myBEbAm0+dGc6uHgSX+LjHF3ianOqU99rSJ51TGrTyooKwoGTm+gKgKLHvkMKv5
+         ySID6DTSRgBRRUYCLWQC5vmPT/zl8TUsok7qmKojFIrzbI22jke6C5ofiW4A6K1PXNGh
+         NRmR7SNNTO+IcwdOBRsTV19fhwZqZJP94XhQRazCHC6RCHpycHxeEMohCsVMx1ceLejD
+         wAIQ==
+X-Gm-Message-State: AOJu0Yyjmv9UIRkB1rj+jG5lAf5egoYj9AEoCivMlI3ImVw+o39dpWgt
+	Xtp4jZfGv5vAorxzVBZc+XHd+eCLJR7uQ49kbSqPNCkkab/AhVeURd5rnajLHrzd5jDAMu2rMjy
+	qFoHSvP7PMW0xvasizai3bOBrqUDgQtwesJxBtX0aOrXWKdSQX04l/ebVLUA=
+X-Google-Smtp-Source: AGHT+IEgSBXFMRzk0pKjDSFzb3woEajCvgpnab23lyPdxIDY4W9o3ReetHTcCwLAjrQhcmnZUleRA846LD0aD6fwrI8D42X/mYLT
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-Received: by 2002:a05:6820:a0c:b0:65b:25e8:13e9 with SMTP id
+ 006d021491bc7-65b2ad00ca0mr2959496eaf.70.1765432706596; Wed, 10 Dec 2025
+ 21:58:26 -0800 (PST)
+Date: Wed, 10 Dec 2025 21:58:26 -0800
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <693a5d82.a70a0220.33cd7b.0024.GAE@google.com>
+Subject: [syzbot] Monthly kvm report (Dec 2025)
+From: syzbot <syzbot+list5017e134bce051795ccc@syzkaller.appspotmail.com>
+To: kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	syzkaller-bugs@googlegroups.com
+Content-Type: text/plain; charset="UTF-8"
 
-From: Chenyi Qiang <chenyi.qiang@intel.com>
+Hello kvm maintainers/developers,
 
-So that it can be configured in TD guest.
+This is a 31-day syzbot report for the kvm subsystem.
+All related reports/information can be found at:
+https://syzkaller.appspot.com/upstream/s/kvm
 
-And considerring CET_U and CET_S bits are always same in supported
-XFAM reported by TDX module, i.e., either 00 or 11. So, only need to
-choose one of them.
+During the period, 2 new issues were detected and 0 were fixed.
+In total, 6 issues are still open and 65 have already been fixed.
 
-Tested-by: Farrah Chen <farrah.chen@intel.com>
-Reviewed-by: Xiaoyao Li <xiaoyao.li@intel.com>
-Signed-off-by: Chenyi Qiang <chenyi.qiang@intel.com>
-Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
+Some of the still happening issues:
+
+Ref Crashes Repro Title
+<1> 658     Yes   WARNING: locking bug in kvm_xen_set_evtchn_fast
+                  https://syzkaller.appspot.com/bug?extid=919877893c9d28162dc2
+<2> 38      Yes   WARNING in __kvm_gpc_refresh (3)
+                  https://syzkaller.appspot.com/bug?extid=cde12433b6c56f55d9ed
+<3> 6       No    INFO: task hung in kvm_swap_active_memslots (2)
+                  https://syzkaller.appspot.com/bug?extid=5c566b850d6ab6f0427a
+
 ---
-Changes Since v3:
- - Refine the commit message.
----
- target/i386/kvm/tdx.c | 2 ++
- 1 file changed, 2 insertions(+)
+This report is generated by a bot. It may contain errors.
+See https://goo.gl/tpsmEJ for more information about syzbot.
+syzbot engineers can be reached at syzkaller@googlegroups.com.
 
-diff --git a/target/i386/kvm/tdx.c b/target/i386/kvm/tdx.c
-index a3444623657f..01619857685b 100644
---- a/target/i386/kvm/tdx.c
-+++ b/target/i386/kvm/tdx.c
-@@ -526,6 +526,8 @@ TdxXFAMDep tdx_xfam_deps[] = {
-     { XSTATE_OPMASK_BIT,    { FEAT_7_0_EDX, CPUID_7_0_EDX_AVX512_FP16 } },
-     { XSTATE_PT_BIT,        { FEAT_7_0_EBX, CPUID_7_0_EBX_INTEL_PT } },
-     { XSTATE_PKRU_BIT,      { FEAT_7_0_ECX, CPUID_7_0_ECX_PKU } },
-+    { XSTATE_CET_U_BIT,     { FEAT_7_0_ECX, CPUID_7_0_ECX_CET_SHSTK } },
-+    { XSTATE_CET_U_BIT,     { FEAT_7_0_EDX, CPUID_7_0_EDX_CET_IBT } },
-     { XSTATE_XTILE_CFG_BIT, { FEAT_7_0_EDX, CPUID_7_0_EDX_AMX_BF16 } },
-     { XSTATE_XTILE_CFG_BIT, { FEAT_7_0_EDX, CPUID_7_0_EDX_AMX_TILE } },
-     { XSTATE_XTILE_CFG_BIT, { FEAT_7_0_EDX, CPUID_7_0_EDX_AMX_INT8 } },
--- 
-2.34.1
+To disable reminders for individual bugs, reply with the following command:
+#syz set <Ref> no-reminders
 
+To change bug's subsystems, reply with:
+#syz set <Ref> subsystems: new-subsystem
+
+You may send multiple commands in a single email message.
