@@ -1,279 +1,315 @@
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A26402D97AC
-	for <kvm@vger.kernel.org>; Thu, 11 Dec 2025 09:10:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 58CB72E62C3
+	for <kvm@vger.kernel.org>; Thu, 11 Dec 2025 09:24:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765444260; cv=none; b=sSq3vvVeGuQvUEbNVk2mLdfi3USCkaBXy5wWaVwwMFBW0BeRhKtqcv6LOuG/kL9/QA6YZY5gKUiyhlQ6ZhyeHtwy9gRot3Is2vbdmls78PUMVO0xBdxiL2d7AHBajfnDm+OSml6hUY9m2jCu2LIPKfEmvHsGmI+xRv6FoGChPAA=
+	t=1765445092; cv=none; b=VTze6UqRJSoJ8lWXoobtGthlpWN4UpV6WiHwjwAXP2w59av5Vb1MzEiIrCUl2xj6VBY2kma5UfbcQd2EiBGPsLA6rwa47wENXHNxvt366MgscVab+ZcXN37WgjddbsFxezYFfsm5655h9qTEMezF6JeOMDDD/g6LdvTc7LLF7sM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765444260; c=relaxed/simple;
-	bh=2bjsuHgqR2pBqJTjwbviCLdqZiOgEWxTUpAVbpAw2Zg=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=fpj0LqACfxc8b3uEHb/8Gv1zmCAAvtk8QkFT8e0qZx286JBuz9dK/d2R9E8y5SF9cUQ8FVXJp2rH6EwWgSoZaOs0ix7cWvyRssc4fnsjMwT/qw3MPBQaLa/ic6v8n2+6BHO5ZwM4fgFtIzMVtCprxkjesfqf9F3L/zmqk0W/a9Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=LQYJhjHu; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=AwjIrvlS; arc=none smtp.client-ip=170.10.133.124
+	s=arc-20240116; t=1765445092; c=relaxed/simple;
+	bh=q0QZZa/5lghuPj56lCuS3I5n7DQlBfUD+babd/i6LuE=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=jl/oGPCKoLeDChKITwdT5i7diC81u5YSeKvATSRd6O/qZUOXhIVkRx3fLNIhAeUMhkfeKCOiOivw7gGGhJF5/QfSW7xBUXT9XismQF9bGMYTWA6mgIS4SH4jUCzwNtmhsW3ax7/pJnVaDqxat8Dg6VvwsllwiBSfPN07uLnPKcY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=aUfVXXKe; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=QovNNGYP; arc=none smtp.client-ip=170.10.133.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="LQYJhjHu";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="AwjIrvlS"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="aUfVXXKe";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="QovNNGYP"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1765444257;
+	s=mimecast20190719; t=1765445089;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=69iEnCdCnSl1sInX4QnhnjanZznNSbsv0LHo8vEaadA=;
-	b=LQYJhjHuxKIua+Q6QzVHPJMLEjLY0zW1F9c5SuTy3yyBpNZJQhikQ3eYbL32c1ig2WXZDt
-	NE2a5MFWvKxQE4iMGY34lwhsje/+4gzmHgF5ZTZCWSvQBjDuvbodU1ktC46zajw6LeEjhR
-	ox2tBKSM5Rz/9Lmm5ZzXjjoWD1Lzr+8=
-Received: from mail-ed1-f70.google.com (mail-ed1-f70.google.com
- [209.85.208.70]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=0snxFkyLEAfiYVoWaiM2k5L4Pd3JDbOzuok+0AcP2Oc=;
+	b=aUfVXXKeHowps9+4WdcGQFC7cQPvD33usxcQDDs2JqDudSjwcY1CTdMFkyIBjfyP3fcI1R
+	4Vc75M8r1BPHluQsgfgdPVn62EAsNBnC2t8Yk1O1/HPq47yinT93gJjqUI96KsPVQzBPFe
+	zDWWUtdHl7oUHWjwYf94HhaqCkd1pXw=
+Received: from mail-yx1-f70.google.com (mail-yx1-f70.google.com
+ [74.125.224.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-86-1c3WJmKgPj-cbGWkM0bPug-1; Thu, 11 Dec 2025 04:10:55 -0500
-X-MC-Unique: 1c3WJmKgPj-cbGWkM0bPug-1
-X-Mimecast-MFC-AGG-ID: 1c3WJmKgPj-cbGWkM0bPug_1765444254
-Received: by mail-ed1-f70.google.com with SMTP id 4fb4d7f45d1cf-64537824851so642285a12.1
-        for <kvm@vger.kernel.org>; Thu, 11 Dec 2025 01:10:55 -0800 (PST)
+ us-mta-62-akhC2PYyP2-gyRvp_DOdsw-1; Thu, 11 Dec 2025 04:24:48 -0500
+X-MC-Unique: akhC2PYyP2-gyRvp_DOdsw-1
+X-Mimecast-MFC-AGG-ID: akhC2PYyP2-gyRvp_DOdsw_1765445087
+Received: by mail-yx1-f70.google.com with SMTP id 956f58d0204a3-644721f9e7aso860828d50.3
+        for <kvm@vger.kernel.org>; Thu, 11 Dec 2025 01:24:48 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1765444254; x=1766049054; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=69iEnCdCnSl1sInX4QnhnjanZznNSbsv0LHo8vEaadA=;
-        b=AwjIrvlSGIfOsHi0FNVysIQaUpecNf2erisMl7Uz0KtOTvzHGkORYpDAxKH7KMm+o0
-         hB9Sh7Ohb0B0dHFdUMzzfl3pWRqMYHF5KtwBzKai3CnMCO31U/yiYgkUnid4cC0xr/Ki
-         j2B4NEcOApBFYJqvQqCcYJaJqiAb3AvfpfWhorxHpVTJouPpiGn/0jREVMx7Eyg7OLAw
-         5pntfLKpZ/ziMfLL9VNRfwjk/PrQA3bnfIT5heWRKJnNRDUiC3Zkys7l7/bYZdRSG9ZJ
-         +BYM2gNLlWahFvvmiRBynU9VyX9eGdsM7/MxvKgMfrNijkUcTS8ftlxpgh6xpwbHIaaw
-         4vcw==
+        d=redhat.com; s=google; t=1765445087; x=1766049887; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=0snxFkyLEAfiYVoWaiM2k5L4Pd3JDbOzuok+0AcP2Oc=;
+        b=QovNNGYPBBFyv4bFvpatZEDozE1VIPzCIdKc6xfailJ+zVLOUfB6u/jXroWmBHegY+
+         af5jqeJfe8mOl5HlGIZ5HRglijMlLjZQzKC97xpjz8nRZXHGPUlxkbFAF7tlHuRY3b5R
+         9+1VuEibnPXJOx4nTZp+crxdxNkenpgjmTRSY6q41Rtxx6qRLsreUSitmD/ogNcW96WF
+         exIrD1n8sLfRY9Pn1eqgRRxivx0McRqudNx8rVhH6fgRdIam41J/YMp4jCAtgEJ1ocY4
+         MXYScMGhGyqCK8uYzwvF4l+nlcBHhXg0IVM71FlJPY/5XTW9pbGgIvV9GE9doVcStneR
+         jueA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1765444254; x=1766049054;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=69iEnCdCnSl1sInX4QnhnjanZznNSbsv0LHo8vEaadA=;
-        b=c5jYQg77Nwwkk6Y/auzCmgenAE0FLtqkm+sbyccbe8DjKif28a05dXBVZmiHg6UXDm
-         7czBJFTvo2aXEhEf871I+FesZlmNDsHN488tlMIUFn/YUjCIPtJtNGXF56KHDzH7pV/1
-         /R94rW74T8lEwLJNRBIuaIqchShmtPEkm7Y4UCgp4voZBv0/kw0NxpB4LP6Y/SF7gbFj
-         q6lp5ANqmtLmtPAB97gRpLO4ZmGhR0tWCpPPO1yadAuLUkS5bALbJe2l3RsHW/U8y4PM
-         X+7PMQ2g4wsXNuWBUSzbgNTY25LkzTdosmHo5+VHk9Yq9jx2aHYe2D6mg0kB7j0JkDhj
-         x33Q==
-X-Forwarded-Encrypted: i=1; AJvYcCXE0j/quNOI/qXAtadvN/pkb+GIE8AnbQ/uW+mJnfqgCo9icV99xN8WkflvcHd1Zlgq3wM=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwUTk7WcwqlOPCMJMit7wHjc6m9jfWl4MZahawF+RapnYOl7tEo
-	emOMVNtlfRMJJVOKSZVateqEcEtIrVwt1UVcTbY3twTYDDAREoac9YIk2CCoRP3IOE2LdxfCA68
-	l7p8oyZuvvuLNxtqtmr6W/DSZUVuk3wVDcektdeBQv3Y8LV7NSZzhYQ==
-X-Gm-Gg: ASbGncu9yvh5NdBTcfHm8SqBSrE8vMpHnUHvw3GOukG/twPH1WzvmMovpCbqXy6Dv0e
-	bZiraBtGF5Gu30vLHh489eaWznlLDUYwRn3V+AQAA/wLshFHYxT6jXyOrSjHL/AtlStkznrOzCY
-	tGlwk6wyL3wyQwPqG8xxLNPvmeZtKiZZknlerCVUJxIuJSDKRN9c595kLm1cvNWMWTiO8altsKz
-	pVpSIAcDPvTptlPCguZ+Av+wpseUzww0gRcNe96Gi/ZTRQQO1yR6mw5yxBEIy94USVRmCOiinzK
-	zIqOtXihxqO9f7CMT1iDoHrIJKFmyxuaCLOF2fM9EbWQBfVdLVjxrXgsUCirmXq11PcKkEpQWaX
-	9c8TuMbHF8Ch8kBS/IlNbDt4lcrbFwRftDRfzkGzTM/Rob0J0vHrAM6+UwEC9Nw==
-X-Received: by 2002:a17:906:d551:b0:b73:301c:b158 with SMTP id a640c23a62f3a-b7ce823a81dmr540584966b.6.1765444253882;
-        Thu, 11 Dec 2025 01:10:53 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IEew10O4bon7Xzeax0PYRU5JDJoxS0/dSqVq0TxsHXl0IJlpZHr0G2pLqtxoNtfkJvXUfn7Sg==
-X-Received: by 2002:a17:906:d551:b0:b73:301c:b158 with SMTP id a640c23a62f3a-b7ce823a81dmr540582966b.6.1765444253322;
-        Thu, 11 Dec 2025 01:10:53 -0800 (PST)
-Received: from sgarzare-redhat (host-87-12-139-91.business.telecomitalia.it. [87.12.139.91])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b7cfa56c152sm203140766b.56.2025.12.11.01.10.51
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 11 Dec 2025 01:10:52 -0800 (PST)
-Date: Thu, 11 Dec 2025 10:10:38 +0100
-From: Stefano Garzarella <sgarzare@redhat.com>
-To: Melbin K Mathew <mlbnkm1@gmail.com>
-Cc: stefanha@redhat.com, kvm@vger.kernel.org, netdev@vger.kernel.org, 
-	virtualization@lists.linux.dev, linux-kernel@vger.kernel.org, mst@redhat.com, 
-	jasowang@redhat.com, xuanzhuo@linux.alibaba.com, eperezma@redhat.com, 
-	davem@davemloft.net, edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, 
-	horms@kernel.org
-Subject: Re: [PATCH] vsock/virtio: cap TX credit to local buffer size
-Message-ID: <ctubihgjn65za4hbmanhkzg7psr6kmj3jeqfj5sfxnnxjjvrsy@l6644u74vrn6>
-References: <20251210150019.48458-1-mlbnkm1@gmail.com>
+        d=1e100.net; s=20230601; t=1765445087; x=1766049887;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=0snxFkyLEAfiYVoWaiM2k5L4Pd3JDbOzuok+0AcP2Oc=;
+        b=oXgJ3vrsIlfRX78EimpcqUTTR0h3fsBGyA+wnh8lwnHthEUvhIsQeLCkiOoHmKRRtX
+         gwlTo57+AqKfGZ3K4ZjpSYHI4zIfnS3+q/cGWCcffhEWSuyVSsOv+iRA70DdDYtk3rpV
+         16WxLOItdjV4ob3nJLEOigqcftm/TeG5BRX7BUPlyOcQXKTGr1BQE47Xin5s5GE3CNkR
+         s3hD1LmZ+XuKQlBcylSfzV0yNaToFd5taFiDngHrfWRL57+iiAz7EkDnUiyYTudCB/Uo
+         +ObvW/4NHg0pHb1IwNnQZznMIEjfBpGU56SxllU8bOwO1xG7OLYK0+xhksZ6AoYOSW5T
+         2jIw==
+X-Forwarded-Encrypted: i=1; AJvYcCWVxijOqoMIATZxH4qTebE9NEFTEyPeSW4GiPZSZuRP4M8DecMvNqQKFh5aulYuhJHFFeQ=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxH6H2yzx7dUIGqwGsFvFfOhxNxf4qDs4L5HuMPIluyt7QayFiz
+	RPETBgpGQdflPfdJyh5SCnXZkYpcPLPCSIIO1lAqCCcRkRdRIBIcG2vSNy0ApAcogltAGTzUGPL
+	CwMhi7ekAzpJ7ujuuxOxp9BZyf9htUwiKxbF7NPMpI0qVUoiifVH+d6FAHNY42xH2QjDTEhTd+g
+	Osg9LqdQLbhfppf1BIGSfDZJt13pkB
+X-Gm-Gg: AY/fxX4cBS13l2DKc3JJELXzkNaNubfjoaDXYDCqjs/xJNZ6suj+Y1tjJPG8HoBepJU
+	mXnqT+CDXd431I1sz7cjc759A1juli/IJi7QNGU1UywphGq1Uii+GpPMUOWZH9ShZaQzMvs+/Hj
+	PAN71NB6xubz9U0ciBtGmD7QVZ45vN5PDmtIO+DX9HIqhUmscVMDfoM8ekla2TcBwZ+pTrxKwL9
+	umQNe2yL42lQZiYHpWqbFE15w==
+X-Received: by 2002:a05:690e:169c:b0:644:4b86:e7d1 with SMTP id 956f58d0204a3-6446e9112cdmr4390103d50.10.1765445087543;
+        Thu, 11 Dec 2025 01:24:47 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IHuU+tJU4RQI4z4yFpZ1UYeqalsybBdqY89RuI7I4f/urGG/hT/MLALuw19mg01Z/CyuoXg5Nl/u6DdbBEpUwM=
+X-Received: by 2002:a05:690e:169c:b0:644:4b86:e7d1 with SMTP id
+ 956f58d0204a3-6446e9112cdmr4390087d50.10.1765445087159; Thu, 11 Dec 2025
+ 01:24:47 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii; format=flowed
-Content-Disposition: inline
-In-Reply-To: <20251210150019.48458-1-mlbnkm1@gmail.com>
+References: <20251211081517.1546957-1-osteffen@redhat.com> <20251211081517.1546957-4-osteffen@redhat.com>
+ <26ptyaovy6mlbvuzri4v2ea3xhyvdc5elqsau34upvswarrbop@bhtzvxpb5aad>
+In-Reply-To: <26ptyaovy6mlbvuzri4v2ea3xhyvdc5elqsau34upvswarrbop@bhtzvxpb5aad>
+From: Oliver Steffen <osteffen@redhat.com>
+Date: Thu, 11 Dec 2025 10:24:35 +0100
+X-Gm-Features: AQt7F2o4BrxakdvFlwlUEfCcnANEG9Lzb5oq3NPgqEav-Whxr7VdFlfL-f-2z9w
+Message-ID: <CA+bRGFqnT=Es1GE6w4U2edaJXpDaSV1bhZ89vcaP5TDfFU8a+Q@mail.gmail.com>
+Subject: Re: [PATCH 3/3] igvm: Fill MADT IGVM parameter field
+To: Stefano Garzarella <sgarzare@redhat.com>
+Cc: qemu-devel@nongnu.org, Joerg Roedel <joerg.roedel@amd.com>, 
+	Marcel Apfelbaum <marcel.apfelbaum@gmail.com>, Gerd Hoffmann <kraxel@redhat.com>, 
+	Paolo Bonzini <pbonzini@redhat.com>, Marcelo Tosatti <mtosatti@redhat.com>, kvm@vger.kernel.org, 
+	Richard Henderson <richard.henderson@linaro.org>, Zhao Liu <zhao1.liu@intel.com>, 
+	Eduardo Habkost <eduardo@habkost.net>, Ani Sinha <anisinha@redhat.com>, 
+	"Michael S. Tsirkin" <mst@redhat.com>, Luigi Leonardi <leonardi@redhat.com>, 
+	Igor Mammedov <imammedo@redhat.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Wed, Dec 10, 2025 at 04:00:19PM +0100, Melbin K Mathew wrote:
->The virtio vsock transport currently derives its TX credit directly
->from peer_buf_alloc, which is set from the remote endpoint's
->SO_VM_SOCKETS_BUFFER_SIZE value.
+On Thu, Dec 11, 2025 at 9:46=E2=80=AFAM Stefano Garzarella <sgarzare@redhat=
+.com> wrote:
+>
+> On Thu, Dec 11, 2025 at 09:15:17AM +0100, Oliver Steffen wrote:
+> >Use the new acpi_build_madt_standalone() function to fill the MADT
+> >parameter field.
+>
+> The cover letter will not usually be part of the git history, so IMO it
+> is better to include also here the information that you have rightly
+> written there, explaining why we are adding this change.
 
-Why removing the target tree [net] from the tags?
+Will do.
 
-Also this is a v2, so the tags should have been [PATCH net v2], please 
-check it in next versions, more info:
+> >
+> >Signed-off-by: Oliver Steffen <osteffen@redhat.com>
+> >---
+> > backends/igvm-cfg.c       |  8 +++++++-
+> > backends/igvm.c           | 37 ++++++++++++++++++++++++++++++++++++-
+> > include/system/igvm-cfg.h |  4 ++--
+> > include/system/igvm.h     |  2 +-
+> > target/i386/sev.c         |  2 +-
+> > 5 files changed, 47 insertions(+), 6 deletions(-)
+> >
+> >diff --git a/backends/igvm-cfg.c b/backends/igvm-cfg.c
+> >index c1b45401f4..0a77f7b7a1 100644
+> >--- a/backends/igvm-cfg.c
+> >+++ b/backends/igvm-cfg.c
+> >@@ -17,6 +17,7 @@
+> > #include "qom/object_interfaces.h"
+> > #include "hw/qdev-core.h"
+> > #include "hw/boards.h"
+> >+#include "hw/i386/acpi-build.h"
+> >
+> > #include "trace.h"
+> >
+> >@@ -48,10 +49,15 @@ static void igvm_reset_hold(Object *obj, ResetType t=
+ype)
+> > {
+> >     MachineState *ms =3D MACHINE(qdev_get_machine());
+> >     IgvmCfg *igvm =3D IGVM_CFG(obj);
+> >+    GArray *madt =3D NULL;
+> >
+> >     trace_igvm_reset_hold(type);
+> >
+> >-    qigvm_process_file(igvm, ms->cgs, false, &error_fatal);
+> >+    madt =3D acpi_build_madt_standalone(ms);
+> >+
+> >+    qigvm_process_file(igvm, ms->cgs, false, madt, &error_fatal);
+> >+
+> >+    g_array_free(madt, true);
+> > }
+> >
+> > static void igvm_reset_exit(Object *obj, ResetType type)
+> >diff --git a/backends/igvm.c b/backends/igvm.c
+> >index a350c890cc..7e56b19b0a 100644
+> >--- a/backends/igvm.c
+> >+++ b/backends/igvm.c
+> >@@ -93,6 +93,7 @@ typedef struct QIgvm {
+> >     unsigned region_start_index;
+> >     unsigned region_last_index;
+> >     unsigned region_page_count;
+> >+    GArray *madt;
+> > } QIgvm;
+> >
+> > static int qigvm_directive_page_data(QIgvm *ctx, const uint8_t *header_=
+data,
+> >@@ -120,6 +121,8 @@ static int qigvm_directive_snp_id_block(QIgvm *ctx, =
+const uint8_t *header_data,
+> > static int qigvm_initialization_guest_policy(QIgvm *ctx,
+> >                                        const uint8_t *header_data,
+> >                                        Error **errp);
+> >+static int qigvm_initialization_madt(QIgvm *ctx,
+> >+                                     const uint8_t *header_data, Error =
+**errp);
+> >
+> > struct QIGVMHandler {
+> >     uint32_t type;
+> >@@ -148,6 +151,8 @@ static struct QIGVMHandler handlers[] =3D {
+> >       qigvm_directive_snp_id_block },
+> >     { IGVM_VHT_GUEST_POLICY, IGVM_HEADER_SECTION_INITIALIZATION,
+> >       qigvm_initialization_guest_policy },
+> >+    { IGVM_VHT_MADT, IGVM_HEADER_SECTION_DIRECTIVE,
+> >+      qigvm_initialization_madt },
+> > };
+> >
+> > static int qigvm_handler(QIgvm *ctx, uint32_t type, Error **errp)
+> >@@ -764,6 +769,34 @@ static int qigvm_initialization_guest_policy(QIgvm =
+*ctx,
+> >     return 0;
+> > }
+> >
+> >+static int qigvm_initialization_madt(QIgvm *ctx,
+> >+                                     const uint8_t *header_data, Error =
+**errp)
+> >+{
+> >+    const IGVM_VHS_PARAMETER *param =3D (const IGVM_VHS_PARAMETER *)hea=
+der_data;
+> >+    QIgvmParameterData *param_entry;
+> >+
+> >+    if (ctx->madt =3D=3D NULL) {
+> >+        return 0;
+> >+    }
+> >+
+> >+    /* Find the parameter area that should hold the device tree */
+> >+    QTAILQ_FOREACH(param_entry, &ctx->parameter_data, next)
+> >+    {
+> >+        if (param_entry->index =3D=3D param->parameter_area_index) {
+> >+
+> >+            if (ctx->madt->len > param_entry->size) {
+> >+                error_setg(
+> >+                    errp,
+> >+                    "IGVM: MADT size exceeds parameter area defined in =
+IGVM file");
+> >+                return -1;
+> >+            }
+> >+            memcpy(param_entry->data, ctx->madt->data, ctx->madt->len);
+> >+            break;
+> >+        }
+> >+    }
+> >+    return 0;
+> >+}
+> >+
+> > static int qigvm_supported_platform_compat_mask(QIgvm *ctx, Error **err=
+p)
+> > {
+> >     int32_t header_count;
+> >@@ -892,7 +925,7 @@ IgvmHandle qigvm_file_init(char *filename, Error **e=
+rrp)
+> > }
+> >
+> > int qigvm_process_file(IgvmCfg *cfg, ConfidentialGuestSupport *cgs,
+> >-                       bool onlyVpContext, Error **errp)
+> >+                       bool onlyVpContext, GArray *madt, Error **errp)
+> > {
+> >     int32_t header_count;
+> >     QIgvmParameterData *parameter;
+> >@@ -915,6 +948,8 @@ int qigvm_process_file(IgvmCfg *cfg, ConfidentialGue=
+stSupport *cgs,
+> >     ctx.cgs =3D cgs;
+> >     ctx.cgsc =3D cgs ? CONFIDENTIAL_GUEST_SUPPORT_GET_CLASS(cgs) : NULL=
+;
+> >
+> >+    ctx.madt =3D madt;
+> >+
+> >     /*
+> >      * Check that the IGVM file provides configuration for the current
+> >      * platform
+> >diff --git a/include/system/igvm-cfg.h b/include/system/igvm-cfg.h
+> >index 7dc48677fd..1a04302beb 100644
+> >--- a/include/system/igvm-cfg.h
+> >+++ b/include/system/igvm-cfg.h
+> >@@ -42,8 +42,8 @@ typedef struct IgvmCfgClass {
+> >      *
+> >      * Returns 0 for ok and -1 on error.
+> >      */
+>
+> Should we update the documentation of this function now that we have a
+> new parameter, also explaining that it's optional.
+>
+Will do.
 
-https://www.kernel.org/doc/html/latest/process/submitting-patches.html#subject-line
+> >-    int (*process)(IgvmCfg *cfg, ConfidentialGuestSupport *cgs,
+> >-                   bool onlyVpContext, Error **errp);
+> >+    int (*process)(IgvmCfg *cfg, ConfidentialGuestSupport *cgs,
+> >+                   bool onlyVpContext, GArray *madt, Error **errp);
+> >
+> > } IgvmCfgClass;
+> >
+> >diff --git a/include/system/igvm.h b/include/system/igvm.h
+> >index ec2538daa0..f2e580e4ee 100644
+> >--- a/include/system/igvm.h
+> >+++ b/include/system/igvm.h
+> >@@ -18,7 +18,7 @@
+> >
+> > IgvmHandle qigvm_file_init(char *filename, Error **errp);
+> > int qigvm_process_file(IgvmCfg *igvm, ConfidentialGuestSupport *cgs,
+> >-                      bool onlyVpContext, Error **errp);
+> >+                      bool onlyVpContext, GArray *madt, Error **errp);
+> >
+> > /* x86 native */
+> > int qigvm_x86_get_mem_map_entry(int index,
+> >diff --git a/target/i386/sev.c b/target/i386/sev.c
+> >index fd2dada013..ffeb9f52a2 100644
+> >--- a/target/i386/sev.c
+> >+++ b/target/i386/sev.c
+> >@@ -1892,7 +1892,7 @@ static int sev_common_kvm_init(ConfidentialGuestSu=
+pport *cgs, Error **errp)
+> >          */
+> >         if (x86machine->igvm) {
+> >             if (IGVM_CFG_GET_CLASS(x86machine->igvm)
+> >-                    ->process(x86machine->igvm, machine->cgs, true, err=
+p) =3D=3D
+> >+                    ->process(x86machine->igvm, machine->cgs, true, NUL=
+L, errp) =3D=3D
+>
+> Why here we don't need to pass it?
+
+Here we only read the IGVM to figure out the initial vcpu configuration
+(the `onlyVpContext` parameter is true) to initialize kvm,
+The actual IGVM processing is done later.
+Should I mention in the comment above why madt is NULL here ?
 
 >
->On the host side this means that the amount of data we are willing to
->queue for a connection is scaled by a guest-chosen buffer size,
->rather than the host's own vsock configuration. A malicious guest can
->advertise a large buffer and read slowly, causing the host to allocate
->a correspondingly large amount of sk_buff memory.
+> Thanks,
+> Stefano
 >
->Introduce a small helper, virtio_transport_peer_buf_alloc(), that
->returns min(peer_buf_alloc, buf_alloc), and use it wherever we consume
->peer_buf_alloc:
->
->  - virtio_transport_get_credit()
->  - virtio_transport_has_space()
->  - virtio_transport_seqpacket_enqueue()
->
->This ensures the effective TX window is bounded by both the peer's
->advertised buffer and our own buf_alloc (already clamped to
->buffer_max_size via SO_VM_SOCKETS_BUFFER_MAX_SIZE), so a remote guest
->cannot force the host to queue more data than allowed by the host's
->own vsock settings.
->
->On an unpatched Ubuntu 22.04 host (~64 GiB RAM), running a PoC with
->32 guest vsock connections advertising 2 GiB each and reading slowly
->drove Slab/SUnreclaim from ~0.5 GiB to ~57 GiB and the system only
->recovered after killing the QEMU process.
->
->With this patch applied, rerunning the same PoC yields:
->
->  Before:
->    MemFree:        ~61.6 GiB
->    MemAvailable:   ~62.3 GiB
->    Slab:           ~142 MiB
->    SUnreclaim:     ~117 MiB
->
->  After 32 high-credit connections:
->    MemFree:        ~61.5 GiB
->    MemAvailable:   ~62.3 GiB
->    Slab:           ~178 MiB
->    SUnreclaim:     ~152 MiB
->
->i.e. only ~35 MiB increase in Slab/SUnreclaim, no host OOM, and the
->guest remains responsive.
-
-I think we should include here a summary of what you replied to Michael 
-about other transports.
-
-I can't find your reply in the archive, but I mean the reply to
-https://lore.kernel.org/netdev/20251210084318-mutt-send-email-mst@kernel.org/
-
->
->Fixes: 06a8fc78367d ("VSOCK: Introduce virtio_vsock_common.ko")
->Suggested-by: Stefano Garzarella <sgarzare@redhat.com>
->Signed-off-by: Melbin K Mathew <mlbnkm1@gmail.com>
->---
-> net/vmw_vsock/virtio_transport_common.c | 27 ++++++++++++++++++++++---
-> 1 file changed, 24 insertions(+), 3 deletions(-)
->
->diff --git a/net/vmw_vsock/virtio_transport_common.c b/net/vmw_vsock/virtio_transport_common.c
->index dcc8a1d58..02eeb96dd 100644
->--- a/net/vmw_vsock/virtio_transport_common.c
->+++ b/net/vmw_vsock/virtio_transport_common.c
->@@ -491,6 +491,25 @@ void virtio_transport_consume_skb_sent(struct sk_buff *skb, bool consume)
-> }
-> EXPORT_SYMBOL_GPL(virtio_transport_consume_skb_sent);
->
->+/*
->+ * Return the effective peer buffer size for TX credit computation.
-
-nit: block comment in this file doesn't leave empty line, so I'd follow
-it:
-
-@@ -491,8 +491,7 @@ void virtio_transport_consume_skb_sent(struct sk_buff *skb, bool consume)
-  }
-  EXPORT_SYMBOL_GPL(virtio_transport_consume_skb_sent);
-
--/*
-- * Return the effective peer buffer size for TX credit computation.
-+/* Return the effective peer buffer size for TX credit computation.
-   *
-   * The peer advertises its receive buffer via peer_buf_alloc, but we
-   * cap that to our local buf_alloc (derived from
-
->+ *
->+ * The peer advertises its receive buffer via peer_buf_alloc, but we
->+ * cap that to our local buf_alloc (derived from
->+ * SO_VM_SOCKETS_BUFFER_SIZE and already clamped to buffer_max_size)
->+ * so that a remote endpoint cannot force us to queue more data than
->+ * our own configuration allows.
->+ */
->+static u32 virtio_transport_tx_buf_alloc(struct virtio_vsock_sock *vvs)
->+{
->+	u32 peer  = vvs->peer_buf_alloc;
->+	u32 local = vvs->buf_alloc;
->+
->+	if (peer > local)
->+		return local;
->+	return peer;
->+}
->+
-
-I think here Michael was suggesting this:
-
-@@ -502,12 +502,7 @@ EXPORT_SYMBOL_GPL(virtio_transport_consume_skb_sent);
-   */
-  static u32 virtio_transport_tx_buf_alloc(struct virtio_vsock_sock *vvs)
-  {
--       u32 peer  = vvs->peer_buf_alloc;
--       u32 local = vvs->buf_alloc;
--
--       if (peer > local)
--               return local;
--       return peer;
-+       return min(vvs->peer_buf_alloc, vvs->buf_alloc);
-  }
-
-
-> u32 virtio_transport_get_credit(struct virtio_vsock_sock *vvs, u32 credit)
-> {
-> 	u32 ret;
->@@ -499,7 +518,8 @@ u32 virtio_transport_get_credit(struct virtio_vsock_sock *vvs, u32 credit)
-> 		return 0;
->
-> 	spin_lock_bh(&vvs->tx_lock);
->-	ret = vvs->peer_buf_alloc - (vvs->tx_cnt - vvs->peer_fwd_cnt);
->+	ret = virtio_transport_tx_buf_alloc(vvs) -
->+	      (vvs->tx_cnt - vvs->peer_fwd_cnt);
-> 	if (ret > credit)
-> 		ret = credit;
-> 	vvs->tx_cnt += ret;
->@@ -831,7 +851,7 @@ virtio_transport_seqpacket_enqueue(struct vsock_sock *vsk,
->
-> 	spin_lock_bh(&vvs->tx_lock);
->
->-	if (len > vvs->peer_buf_alloc) {
->+	if (len > virtio_transport_tx_buf_alloc(vvs)) {
-> 		spin_unlock_bh(&vvs->tx_lock);
-> 		return -EMSGSIZE;
-> 	}
->@@ -882,7 +902,8 @@ static s64 virtio_transport_has_space(struct vsock_sock *vsk)
-> 	struct virtio_vsock_sock *vvs = vsk->trans;
-> 	s64 bytes;
->
->-	bytes = (s64)vvs->peer_buf_alloc - (vvs->tx_cnt - vvs->peer_fwd_cnt);
->+	bytes = (s64)virtio_transport_tx_buf_alloc(vvs) -
->+	      (vvs->tx_cnt - vvs->peer_fwd_cnt);
-
-nit: please align this:
-
-@@ -903,7 +898,7 @@ static s64 virtio_transport_has_space(struct vsock_sock *vsk)
-         s64 bytes;
-
-         bytes = (s64)virtio_transport_tx_buf_alloc(vvs) -
--             (vvs->tx_cnt - vvs->peer_fwd_cnt);
-+               (vvs->tx_cnt - vvs->peer_fwd_cnt);
-         if (bytes < 0)
-                 bytes = 0;
-
-
-Just minor things, but the patch LGTM, thanks!
-Stefano
-
-> 	if (bytes < 0)
-> 		bytes = 0;
->
->-- 
->2.34.1
+> >                 -1) {
+> >                 return -1;
+> >             }
+> >--
+> >2.52.0
+> >
 >
 
