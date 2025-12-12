@@ -1,300 +1,205 @@
-Received: from DUZPR83CU001.outbound.protection.outlook.com (mail-northeuropeazon11012033.outbound.protection.outlook.com [52.101.66.33])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yw1-f180.google.com (mail-yw1-f180.google.com [209.85.128.180])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F3CB313285
-	for <kvm@vger.kernel.org>; Fri, 12 Dec 2025 15:24:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.66.33
-ARC-Seal:i=3; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765553084; cv=fail; b=mXKF1dBQ6wal+R3m7qaQJnXhYu9qz/45+rZdN+dXbN3Zx/G5A2LTrWuo7nvKsSfNDa0HLtMujhIs9+9Nfw2uB798le2IPEZWXGWrTVyJYvw5xAdfr9MT2ljcDXuiajpnsNNeEpV4H2X5N6L+TTpZ1/eldBxUGjH8WrpJg5rbPRI=
-ARC-Message-Signature:i=3; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765553084; c=relaxed/simple;
-	bh=9JuWMH2eLVo24KIlAEMiedGIoYHaEMNyI0AYA8Gg0v0=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=k76Fb+7e50z5UhQB+o73UGba+0gs55APeC5u+drrjejTasfK9y1EuRuEOha6G3gaNe3S4+4sTeJ+gInKW2++E+VD2Ks91Tg0IqVhQldiLpkcRZ3jOmL6VLddhVNzKixcejULb4gxAred/righqzhlfKrBDk92TGZ+20+b4UBh80=
-ARC-Authentication-Results:i=3; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=QR/oS4xq; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=QR/oS4xq; arc=fail smtp.client-ip=52.101.66.33
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A26D30EF92
+	for <kvm@vger.kernel.org>; Fri, 12 Dec 2025 15:26:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.180
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1765553184; cv=none; b=NKyzPRdPBCikvZBWD4uWYX/A0Uni8+qFFH9ZcwrSJgvgbiSGFgDWlBqMOLM/Ngf3vZfGOYf7AmZ56vmSOuBwZboVra22s0uLKgbw9tlzOhx6AE1vrjX3hPQn98y7hbqWU4K67//v/bUSbGj2y01PrW9qUI7wSEcoyFF7ZrKdmAE=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1765553184; c=relaxed/simple;
+	bh=260eGi6QkxDk8QQfOLsKhm09EI+KZGuf0yseurtGq/Y=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=k8ORZP87sZuhNVM8r8eeTUZGZacxeyUKQn5W+s5CAZDV9qcq2sR9C8G9XD8RYfwgl4Rj7vrkoToGG9Cn0O+/LuYvx/DnLY+rb8hfsiBZlPBRu/WpiTbS+X48PRlJmUyExLhY48Nh+Oj7+dGM8g9zPf05b8y3HjZCCXm7e0QON7I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=FnNSwg4J; arc=none smtp.client-ip=209.85.128.180
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="QR/oS4xq";
-	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="QR/oS4xq"
-ARC-Seal: i=2; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=pass;
- b=CAMMZhjqoDqBkfUfYY3dAi0CTXvD3wHPml/rnGdAdgtZBFtoNf2X/L0p7T0qpXAcnPliNqVTBF7kBXqm+Kv0jgjjZVzyXgTc50SxWt4VSkw725OEAKO7Egump/XQUW6DclggTdFcO3+EtyZ0KX3Y7XR8flTVCjOmamjAXrMjDfoufJVUjfVVRBsKMTIgywg6cojmUYZi2mcT0w5VCuycvjhAZ5GWkL69YNt8WOIu+63kH7YzCVAxBdWtCkTluR0GrXbI1T49vd1BnrvCX3Ig5vdxS8RMpzrrVgjCaaW1bFfgA1BLGS7EpaVusDmByYmeNbF1GqhkZuwtjNpqzZoQkA==
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=KlgDns31DxdHVmqVubxBK4gY3fhW1oWLf/ohKdwhlGA=;
- b=KFM/eH2vpayhaklhKPYS3Ch2ReeffjJqVcOVt1JuQS4A2nkMI+kW1Mfper4pVDMG2/OiDn/IAi0jGN18xWkTyx68CTNNfD2SVAwqZv4ptITGsfRnqESYXDRJu9MElmlC6sWoQRZueF5s/2qps+2k58I8Tjf+tA932Z3mjQFRL2YpzO8xibJtGjk8xAN/Pllm5ndg0OfVgVTwbmjVn5mXsC1S4NJu+s7M8OiVNM8h9EXANlubVFRjSbRNg4XH5yHCv6m7uWDtZYaYGxSNnANrWYzTmYLg6yQrR/lArqUMwQqqhPnRGbIJU98+dnA1xkOd0VVg1UZD5v+F68hEH0CpCA==
-ARC-Authentication-Results: i=2; mx.microsoft.com 1; spf=pass (sender ip is
- 4.158.2.129) smtp.rcpttodomain=lists.infradead.org smtp.mailfrom=arm.com;
- dmarc=pass (p=none sp=none pct=100) action=none header.from=arm.com;
- dkim=pass (signature was verified) header.d=arm.com; arc=pass (0 oda=1 ltdi=1
- spf=[1,1,smtp.mailfrom=arm.com] dkim=[1,1,header.d=arm.com]
- dmarc=[1,1,header.from=arm.com])
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arm.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=KlgDns31DxdHVmqVubxBK4gY3fhW1oWLf/ohKdwhlGA=;
- b=QR/oS4xqOJKIZtM5dkx8RpqratPUDZyM4Z2fERiywPEJYpi+lX4AW6zCEZdkhNYh2KguSVlALpvGHkQjPxjnaSq9rNdPjzdR0Oa0Iz49rR1H6IuBdQev4pTpYSq4GKzM9oOa86tTBSDwLxo9dERkukhaXdBmlNx9QtZyE9w83HU=
-Received: from AS4PR10CA0006.EURPRD10.PROD.OUTLOOK.COM (2603:10a6:20b:5dc::6)
- by AS8PR08MB7840.eurprd08.prod.outlook.com (2603:10a6:20b:52f::5) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9366.17; Fri, 12 Dec
- 2025 15:24:25 +0000
-Received: from AM4PEPF00027A5D.eurprd04.prod.outlook.com
- (2603:10a6:20b:5dc:cafe::b4) by AS4PR10CA0006.outlook.office365.com
- (2603:10a6:20b:5dc::6) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.20.9412.9 via Frontend Transport; Fri,
- 12 Dec 2025 15:24:15 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 4.158.2.129)
- smtp.mailfrom=arm.com; dkim=pass (signature was verified)
- header.d=arm.com;dmarc=pass action=none header.from=arm.com;
-Received-SPF: Pass (protection.outlook.com: domain of arm.com designates
- 4.158.2.129 as permitted sender) receiver=protection.outlook.com;
- client-ip=4.158.2.129; helo=outbound-uk1.az.dlp.m.darktrace.com; pr=C
-Received: from outbound-uk1.az.dlp.m.darktrace.com (4.158.2.129) by
- AM4PEPF00027A5D.mail.protection.outlook.com (10.167.16.69) with Microsoft
- SMTP Server (version=TLS1_3, cipher=TLS_AES_256_GCM_SHA384) id 15.20.9412.4
- via Frontend Transport; Fri, 12 Dec 2025 15:24:24 +0000
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=XZKBF5lNggPwfkW3oAwaNOHeA0/pfwmCtvlq/tC+8NXbUR16U/Po8lhfCpQ+5TNtZkZdZIfsmhVM2ZqmgTu/urf4IaZLmLluJhORXXm94wBr/bNsAyflOBm+h5A6xu8xVGbzVG0vi27TrmRRhR8J6/miLpeA+2hiK7TSesvWz1hVdu6htRTSMKlekO0rWm4Lv02LVs9s3M2WcbLx0rs06Pjl/SobVNKYe2CjG9WPf3C/r+za9fQaNV/G2wJtYNAdF5hROln6AWPi8ZLHWPECsS3MzyMCMnoJy00lLDBsRqljbpKVRJVQpivBcW4I4L4l4pbe9hhuczBnLNhTDydA2Q==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=KlgDns31DxdHVmqVubxBK4gY3fhW1oWLf/ohKdwhlGA=;
- b=x2mP2iS5P4xZUT6Y+QxrCAQEHEqk1s860TJytnI380P9yqIUShnMkgWiPOu+7tp7z5y1BGQ+CoXaFF/jcpxVQfRTHWcy/fKQwTZFnh2t2nbVNM27GSaAxkBoIY+v76KaZXQy+s7gPLV4zpCpxTheJjCRDehcn3zH7ZmeVe/bumzaFnhN1+Of6XobBi4/Fe/9D62776GyIdy+vgZqDFphioYbFWjybYY1WKI8hcbPmU0wdmiqJUpW36ZyDXUlPSe7i5XE0beagw554rq7IE5vbzBGucus+v2rM4kO0GjIknzrGwUBS/qrtc3OBwUYhiyG4yKYi99UUlWi0eo2TGt6ZA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=arm.com; dmarc=pass action=none header.from=arm.com; dkim=pass
- header.d=arm.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arm.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=KlgDns31DxdHVmqVubxBK4gY3fhW1oWLf/ohKdwhlGA=;
- b=QR/oS4xqOJKIZtM5dkx8RpqratPUDZyM4Z2fERiywPEJYpi+lX4AW6zCEZdkhNYh2KguSVlALpvGHkQjPxjnaSq9rNdPjzdR0Oa0Iz49rR1H6IuBdQev4pTpYSq4GKzM9oOa86tTBSDwLxo9dERkukhaXdBmlNx9QtZyE9w83HU=
-Received: from VI1PR08MB3871.eurprd08.prod.outlook.com (2603:10a6:803:b7::17)
- by AS8PR08MB9386.eurprd08.prod.outlook.com (2603:10a6:20b:5a9::18) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9412.7; Fri, 12 Dec
- 2025 15:23:21 +0000
-Received: from VI1PR08MB3871.eurprd08.prod.outlook.com
- ([fe80::98c3:33df:8fd4:b704]) by VI1PR08MB3871.eurprd08.prod.outlook.com
- ([fe80::98c3:33df:8fd4:b704%4]) with mapi id 15.20.9412.005; Fri, 12 Dec 2025
- 15:23:21 +0000
-From: Sascha Bischoff <Sascha.Bischoff@arm.com>
-To: "linux-arm-kernel@lists.infradead.org"
-	<linux-arm-kernel@lists.infradead.org>, "kvmarm@lists.linux.dev"
-	<kvmarm@lists.linux.dev>, "kvm@vger.kernel.org" <kvm@vger.kernel.org>
-CC: nd <nd@arm.com>, "maz@kernel.org" <maz@kernel.org>,
-	"oliver.upton@linux.dev" <oliver.upton@linux.dev>, Joey Gouly
-	<Joey.Gouly@arm.com>, Suzuki Poulose <Suzuki.Poulose@arm.com>,
-	"yuzenghui@huawei.com" <yuzenghui@huawei.com>, "peter.maydell@linaro.org"
-	<peter.maydell@linaro.org>, "lpieralisi@kernel.org" <lpieralisi@kernel.org>,
-	Timothy Hayes <Timothy.Hayes@arm.com>
-Subject: [PATCH 30/32] KVM: arm64: gic-v5: Probe for GICv5 device
-Thread-Topic: [PATCH 30/32] KVM: arm64: gic-v5: Probe for GICv5 device
-Thread-Index: AQHca3sqOswV0bGDWUCYoVkka62APw==
-Date: Fri, 12 Dec 2025 15:22:45 +0000
-Message-ID: <20251212152215.675767-31-sascha.bischoff@arm.com>
-References: <20251212152215.675767-1-sascha.bischoff@arm.com>
-In-Reply-To: <20251212152215.675767-1-sascha.bischoff@arm.com>
-Accept-Language: en-GB, en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-x-mailer: git-send-email 2.34.1
-Authentication-Results-Original: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=arm.com;
-x-ms-traffictypediagnostic:
-	VI1PR08MB3871:EE_|AS8PR08MB9386:EE_|AM4PEPF00027A5D:EE_|AS8PR08MB7840:EE_
-X-MS-Office365-Filtering-Correlation-Id: 23fe111d-2b56-4831-f1f2-08de3992881b
-x-checkrecipientrouted: true
-nodisclaimer: true
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam-Untrusted:
- BCL:0;ARA:13230040|366016|376014|1800799024|38070700021;
-X-Microsoft-Antispam-Message-Info-Original:
- =?iso-8859-1?Q?FJFlAtsqClq6L67rZ0xbs7UcLIYVA2YJsowtRUjR+wUMjzrNEjKRAKrpmA?=
- =?iso-8859-1?Q?6leUnkN5GoS3NC41QBFEYOU8E6BUUObb77SHVye93cKaGJvmLc7aB5st72?=
- =?iso-8859-1?Q?zyKDocVBGh6S8XZUFCP3A/9FximWop6l064LqnadU6ny43zwgXfJvru6pj?=
- =?iso-8859-1?Q?MyBu9+WDYfm2Av8KS83zybRq5XyXOorc9AriYaHr5jeV4uAl9gp4NDATfY?=
- =?iso-8859-1?Q?flYizCj9v/A/OT7svBXGo9rfs6ulWv8aXs1P2xGS553ekZ812L8rOQS0iH?=
- =?iso-8859-1?Q?Xs4D0vfj4rSTbjId6B7d0enogtLXZW6jFFmczPwuaTbVgSoDj7qRruGVmU?=
- =?iso-8859-1?Q?aAcVHvXBnXNa2o1S1S6bQp5TFFHp/0t2jh9xkBmtZJNj1ivqldRnj8J0mZ?=
- =?iso-8859-1?Q?BE1L8yPCFZCrctjLbd/vtWUkrZoB7yfwZTnZF1Oz/6gXsALGYF1/2QlXjP?=
- =?iso-8859-1?Q?GS4hJVkNNFZOoSFzQYd+UzNDBRGPbKD777Nvoa6nEWe3aoxscxHNoB+Vyi?=
- =?iso-8859-1?Q?IVrqXEputSO5VAadLy4ITZJOJ0nqVIO6A7B12obJAU2+Egb24npyobrABp?=
- =?iso-8859-1?Q?/gxN0sz9eH2FAADzgiwZr+yWVuvATiRVx9cw2LPKc+F0ew2PDg1d1CkH30?=
- =?iso-8859-1?Q?k4aNFK3yEN78qLykZAkzJkcTpaOEnMtEbcwhbL/cRjTn+aZ61+ljW/S7p9?=
- =?iso-8859-1?Q?wS1lkvL8Lk5UUJO/Eg/IABY+TYZhdaitp5+5X1lT5nofoYuLQi+ZuJVzBO?=
- =?iso-8859-1?Q?Rn1nKOm18ke4q1eel5MMNN1Ct8xo/jkegO0CBKqUy1tA2IN5AZjk4c2mQQ?=
- =?iso-8859-1?Q?jdmWnKm2ObKFXU1wm7J05B22vQeX0Lc7jKA8vOVY1xjORr0glAyhSliApN?=
- =?iso-8859-1?Q?+KVdPuLfTVQpn5PvRM8wWQ3fOuQkvRSzhUUTSCNGq3wOqQlQuLybtUoKoU?=
- =?iso-8859-1?Q?TF4nwOZhnio6y/ACGhCQB5rvqaFRDYJT8Yqrj3w4PLYoPu6FGyNU7Nmg/A?=
- =?iso-8859-1?Q?4xOt55fXGkJrgG/9GX6aQdEl83F2FPqTZcQHYHxrogIgpwzk2yFbBx0sSO?=
- =?iso-8859-1?Q?yoqZNiUkuGPLLTZs5J69IhtD7jRgW2B++6VQFlKTa7AjuwxOJtX70GXB4j?=
- =?iso-8859-1?Q?VWII8UmCU4+q+YgJy8Ed5H3VMV3XERaeNC0s8vZMmfT73V29WSOgKcN3Ur?=
- =?iso-8859-1?Q?3mceAPjEfOa2hQXt9Ysay+Uxrmdj036bp8EOor36ZQpS6vhh1YKgtvtRbf?=
- =?iso-8859-1?Q?N7IWci8/gBkdlC1/4gqASccEmZ4DVJC+6W7hHxvC2wdsH9h01R1IzZtTO5?=
- =?iso-8859-1?Q?9c32A4QfcD82GUMxeCe1OZuyJkMpOh6WfSEMh22NXRy5CaSODeZmMV4kAm?=
- =?iso-8859-1?Q?3LmY3Ezmso4GZqZCLjURYB4zZpiMUiZ/Rb/7wu95xCNgsWlZ+E/KqxLtJ4?=
- =?iso-8859-1?Q?qnejlt32TBAdKH8MusR5DmGh0t2W5DWPcjYirhEiau3xPTUjXxBQ+nVjrx?=
- =?iso-8859-1?Q?vwZC8EJY0ldyY3N5MAW1eMg0P/d4pR5wSFQlvTGNlshU5kml8Q0ThMYx6v?=
- =?iso-8859-1?Q?2vcGCJ9qYVY7LNuAJQum/HHUSVBf?=
-X-Forefront-Antispam-Report-Untrusted:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:VI1PR08MB3871.eurprd08.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(376014)(1800799024)(38070700021);DIR:OUT;SFP:1101;
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="FnNSwg4J"
+Received: by mail-yw1-f180.google.com with SMTP id 00721157ae682-787da30c50fso13697607b3.3
+        for <kvm@vger.kernel.org>; Fri, 12 Dec 2025 07:26:22 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1765553182; x=1766157982; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=IK+CEXtkA15N8VNwOIEfZTiLVNxEPNXHwf9eEh9q2mY=;
+        b=FnNSwg4JbGsXkFe2tJ+5wJjgau4I9z1jnEAOZjvIh8PXvGDoAjUCWWLmSpFH/N82gY
+         ks3SKSB4ltqh8wZT6J060+2vd396uQqB/mO7viVGUwRYaszMJ3Hs6XWWew9C1RTByoDk
+         5gAKq9Hcy3WSv2OAoMdqu5h+mhp/7kKMJ+Ot6eKE20kHrCmNFPOOEaRjLiAjdxc4tCKl
+         kfbybaS35zpMVppWtd2/nNOPqkFAWdxc0v6WvqBYIbQnAB8I1wYx4DrxpzSR5mjaBMHE
+         sNCze75T+kVtEK1ywH0wbBsBhtSfD4w9BT9W/Jsl9MB7+W8JOgLk8x3JKGd0P7qBom7b
+         w//g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1765553182; x=1766157982;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=IK+CEXtkA15N8VNwOIEfZTiLVNxEPNXHwf9eEh9q2mY=;
+        b=FxDSmkKawLk6oAzy2ZhfWD2PKB0pteQaGii8PbczsmYX8fUCsTqOWuh/und34x82Qg
+         xVXeSfGcn9SZqxUvD626rDiHegOp+HtCaOft4MQH2gsGpg5rIkiRSRUjGZtJEaNWo1mj
+         GAhvQtpd1sBkxmzkqI/+8ewfKnFlRfkI1LUlSgfZRPyHThk2ygmHNRLT2yvqItPHEzt0
+         5iRj+NnHnZxLn7jcgiXFJzpOC2V1oF0d2ZTvchNLia5v/P9f4ReeN/bnxpEjY8TqQZCT
+         3TFW3HmJLMvUDGxgorQDSsUYc+WPuWBePTtz/LsSjG8nU+UjBaQ6CHF4oEj8FTJclBUR
+         IHgw==
+X-Forwarded-Encrypted: i=1; AJvYcCWnb8P9G55eoG4Ezs5R23wpzX1N7IOIILtq6LVmM2rwxZ+tilUbOlckgnNru68h7AyybH8=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxGAnirqvE+CB8nMIRmf39PwDgbyMfx2jU02StaYOjTZHvQHTn+
+	W32MA8p58NWYf70ovq68hMs3gpP70Gwar0hR4FIoiuek2b1IcBI34DAU
+X-Gm-Gg: AY/fxX5yE3t5s61P7Et2vSO9iU1OCYIGvn/KphNBpuYWU6Fk52bCbbnf9s7kp4/hOYK
+	62m2yea8mpuX1jlzpEVPjgSGgvotVocrNrTc0pUDMS57G/+2RbXG2a/54xRMKMkx1PoYnJ5tdRh
+	u/POgc66SUVyH3qtPhV4DiC3FomWU2yKuWL6suLIkXaOUq5ywImLBm9+XyU3aZUxn5Xac3LMKfK
+	N25mZCQ16hMpcVD7Ooh1xq/XJnmr3EfNkE4jv9T+YgzayG6JTwE85CTuGMrxd1Gm6YRNcgvM9cS
+	yLF0vO3Xt9dG4lh1tJ8GNZw5TXSSKobDPqsHebDLvFWhn1rY4JSguDvTnY89t04WdkTtJD5bke+
+	56DbqmRq0pvr2CnPveRNctoLys/VLl/8kgOIEuZhVLoNHV9e7V3PT2u0zIBQwKhTMqkRSXxJVBi
+	Zi6EaFpRFjbWg54SSFsnZJr0Bs+9bFJG1kW93Uyq88pkY5OJsPy87ODVla53bXKKAZ12A=
+X-Google-Smtp-Source: AGHT+IHPDxMRz+sSHQa8GJSWOVqErHefuxKsetCMbgKHq77F9IKQFOzGirnG2+UwGG15ipBxTc+SEQ==
+X-Received: by 2002:a05:690c:7402:b0:789:61ca:88f6 with SMTP id 00721157ae682-78e66cab887mr39877247b3.4.1765553181789;
+        Fri, 12 Dec 2025 07:26:21 -0800 (PST)
+Received: from devvm11784.nha0.facebook.com ([2a03:2880:25ff:3::])
+        by smtp.gmail.com with ESMTPSA id 956f58d0204a3-64477d3a32bsm2613584d50.5.2025.12.12.07.26.21
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 12 Dec 2025 07:26:21 -0800 (PST)
+Date: Fri, 12 Dec 2025 07:26:15 -0800
+From: Bobby Eshleman <bobbyeshleman@gmail.com>
+To: Paolo Abeni <pabeni@redhat.com>
+Cc: Stefano Garzarella <sgarzare@redhat.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Simon Horman <horms@kernel.org>,
+	Stefan Hajnoczi <stefanha@redhat.com>,
+	"Michael S. Tsirkin" <mst@redhat.com>,
+	Jason Wang <jasowang@redhat.com>,
+	Eugenio =?iso-8859-1?Q?P=E9rez?= <eperezma@redhat.com>,
+	Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
+	"K. Y. Srinivasan" <kys@microsoft.com>,
+	Haiyang Zhang <haiyangz@microsoft.com>,
+	Wei Liu <wei.liu@kernel.org>, Dexuan Cui <decui@microsoft.com>,
+	Bryan Tan <bryan-bt.tan@broadcom.com>,
+	Vishnu Dasa <vishnu.dasa@broadcom.com>,
+	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>,
+	Shuah Khan <shuah@kernel.org>, linux-kernel@vger.kernel.org,
+	virtualization@lists.linux.dev, netdev@vger.kernel.org,
+	kvm@vger.kernel.org, linux-hyperv@vger.kernel.org,
+	linux-kselftest@vger.kernel.org, berrange@redhat.com,
+	Sargun Dhillon <sargun@sargun.me>,
+	Bobby Eshleman <bobbyeshleman@meta.com>
+Subject: Re: [PATCH net-next v12 04/12] vsock: add netns support to virtio
+ transports
+Message-ID: <aTw0F6lufR/nT7OY@devvm11784.nha0.facebook.com>
+References: <20251126-vsock-vmtest-v12-0-257ee21cd5de@meta.com>
+ <20251126-vsock-vmtest-v12-4-257ee21cd5de@meta.com>
+ <6cef5a68-375a-4bb6-84f8-fccc00cf7162@redhat.com>
+ <aS8oMqafpJxkRKW5@devvm11784.nha0.facebook.com>
+ <06b7cfea-d366-44f7-943e-087ead2f25c2@redhat.com>
+ <aS9hoOKb7yA5Qgod@devvm11784.nha0.facebook.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS8PR08MB9386
-X-EOPAttributedMessage: 0
-X-MS-Exchange-Transport-CrossTenantHeadersStripped:
- AM4PEPF00027A5D.eurprd04.prod.outlook.com
-X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id-Prvs:
-	9edb9214-f71b-45d8-67b2-08de399262c0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|36860700013|14060799003|35042699022|1800799024|376014|82310400026;
-X-Microsoft-Antispam-Message-Info:
-	=?iso-8859-1?Q?qcQGI2vh6So2sPYvyC7UrAUi0WuBSO0MCZOAYx1HIAF773uIpagSSjS/vK?=
- =?iso-8859-1?Q?WVjEnjqwoQRQstAK+3HOVNM5pXt5BTM6dGhRUZPNuxW/AU38BqhB88lJWH?=
- =?iso-8859-1?Q?fJdeN+DbSnwkLQMLaf4XmHBdQg9RLcNfKiVDzekPEHmnObGS0cNhCVO7CF?=
- =?iso-8859-1?Q?W6oo/CNdZBnq3DvQqj94USIfwgCvkPxUKO2M+dZxIdSGRlOciQ6HVOop7D?=
- =?iso-8859-1?Q?0vOz9RC3SkwSkyT2knpGSJEKJCrh4pn81LM2apE9uWrzO+5dRC5urHNmXD?=
- =?iso-8859-1?Q?65NQOrEFkSFLqRNfgSJl/3fydpU4zqXJzouMILqRd6Q2rgRkfxHlmxJGDh?=
- =?iso-8859-1?Q?RpolD/XElrSau/xxlSPOWD2EHc/D/geHzgGW1q9koBcJSwO/vQB3ylALa7?=
- =?iso-8859-1?Q?8HZLeSh1hcy9/VQReXqA2gyE0dV1Gug/OZ5Qhh0xfM4otpyT4FHzhmh8+w?=
- =?iso-8859-1?Q?i3lIRRY5hnBnpfgrIi8OHOWsxyuf5raBHL8TbIKyH5/eRlosG6Sok9bv2K?=
- =?iso-8859-1?Q?5LiQuMHUuFYOoUreyHXxMER+pYBFkdQ/K2mTUvdwc7UjvmSY70DgNviYTL?=
- =?iso-8859-1?Q?GJF1QqmeeY+RgUCnsfrdwd8+uFhG8ElT5rc/1R6P39Q/J45fC3ICipU5I3?=
- =?iso-8859-1?Q?Hw+i+INTRx1lVmwSNDICiMb/oezR7RxEht8U2XKcDaRNA2SUO6dQuE6ytm?=
- =?iso-8859-1?Q?mUrXOU/xqHot6hSEnjXU1vG7T/rhIGSFZjbO0nj/a8kKuxEF5RoN92lUTL?=
- =?iso-8859-1?Q?nmwIbUc1csAcOS3ti9aCFvUnO6Em5Ed51vXS0GWKBBCzdm3blc8zP/nW7X?=
- =?iso-8859-1?Q?aYkyuIgIyU4DcQyz5iVWsm6PyuJuZ1Yi2uI3+KIbLVdU27yjAsoBJCnCm8?=
- =?iso-8859-1?Q?ethc65flssJWqddRCrxFm8zfAsMs79RBHVcqz/0amQdt01MOzHSPDS/8El?=
- =?iso-8859-1?Q?b/+Z/YAIhSo+9jNI8HXkR9l+6FdRFyBuLZP1/y3qw+QnD2AEnwFwUw9JDt?=
- =?iso-8859-1?Q?50JrO4zT+i2qOhi1kqahkrsnxJpX1ws3Os3R9BDLBDXDINSQUNZi0iZnUs?=
- =?iso-8859-1?Q?rs99h24igR/21+xP/Ky0EkCyDN8uXaFMSzDNmACI/oHWFP2BFBZSAD5h69?=
- =?iso-8859-1?Q?J84ZhVtB3udFlKh5OOUtD2d+TJA47rSUs5uZH3hjsRnXuEjDjcoyu398os?=
- =?iso-8859-1?Q?q226sCJOX27tgsTD1PtnLsbFcrArf/xIoIoITv8ye6WNpNkfbXpShxqvvz?=
- =?iso-8859-1?Q?MnJ/VnN1T7pYux98zfYjoffW6rlnelwtKGQwq/cGl8CyTmE8Wlwlhf/bt0?=
- =?iso-8859-1?Q?Ly6csZRWQBCtnficRX7ZsBMhRrnEQssEIRKi/7Ele5P6GYC6mZ90abLmJ/?=
- =?iso-8859-1?Q?OUw6owNYI5aX/u5FBx8AplRlOLqHun1rrn5Ktm1xpWJoSWsQU79S2JA/H7?=
- =?iso-8859-1?Q?ZnEo/krjqoCn3nq76YtQvCpsQYVvOqgR8kSDq10BZyxNR8gqVdLSjarPSH?=
- =?iso-8859-1?Q?PmbSteAjLLaGVfvD7p+9JNQh8RAkXHPugyl3+LxPz8Ti51l435JZHAEzcq?=
- =?iso-8859-1?Q?rd1UoHGL6esEOCBgOrw1gyiALsa31Xri8bLxHJrVu2CNlldQzkcYwE1HJM?=
- =?iso-8859-1?Q?xud/499OmXiT8=3D?=
-X-Forefront-Antispam-Report:
-	CIP:4.158.2.129;CTRY:GB;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:outbound-uk1.az.dlp.m.darktrace.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(36860700013)(14060799003)(35042699022)(1800799024)(376014)(82310400026);DIR:OUT;SFP:1101;
-X-OriginatorOrg: arm.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 12 Dec 2025 15:24:24.3819
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 23fe111d-2b56-4831-f1f2-08de3992881b
-X-MS-Exchange-CrossTenant-Id: f34e5979-57d9-4aaa-ad4d-b122a662184d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=f34e5979-57d9-4aaa-ad4d-b122a662184d;Ip=[4.158.2.129];Helo=[outbound-uk1.az.dlp.m.darktrace.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	AM4PEPF00027A5D.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS8PR08MB7840
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <aS9hoOKb7yA5Qgod@devvm11784.nha0.facebook.com>
 
-The basic GICv5 PPI support is now complete. Allow probing for a
-native GICv5 rather than just the legacy support.
+On Tue, Dec 02, 2025 at 02:01:04PM -0800, Bobby Eshleman wrote:
+> On Tue, Dec 02, 2025 at 09:47:19PM +0100, Paolo Abeni wrote:
+> > On 12/2/25 6:56 PM, Bobby Eshleman wrote:
+> > > On Tue, Dec 02, 2025 at 11:18:14AM +0100, Paolo Abeni wrote:
+> > >> On 11/27/25 8:47 AM, Bobby Eshleman wrote:
+> > >>> @@ -674,6 +689,17 @@ static int vhost_vsock_dev_open(struct inode *inode, struct file *file)
+> > >>>  		goto out;
+> > >>>  	}
+> > >>>  
+> > >>> +	net = current->nsproxy->net_ns;
+> > >>> +	vsock->net = get_net_track(net, &vsock->ns_tracker, GFP_KERNEL);
+> > >>> +
+> > >>> +	/* Store the mode of the namespace at the time of creation. If this
+> > >>> +	 * namespace later changes from "global" to "local", we want this vsock
+> > >>> +	 * to continue operating normally and not suddenly break. For that
+> > >>> +	 * reason, we save the mode here and later use it when performing
+> > >>> +	 * socket lookups with vsock_net_check_mode() (see vhost_vsock_get()).
+> > >>> +	 */
+> > >>> +	vsock->net_mode = vsock_net_mode(net);
+> > >>
+> > >> I'm sorry for the very late feedback. I think that at very least the
+> > >> user-space needs a way to query if the given transport is in local or
+> > >> global mode, as AFAICS there is no way to tell that when socket creation
+> > >> races with mode change.
+> > > 
+> > > Are you thinking something along the lines of sockopt?
+> > 
+> > I'd like to see a way for the user-space to query the socket 'namespace
+> > mode'.
+> > 
+> > sockopt could be an option; a possibly better one could be sock_diag. Or
+> > you could do both using dumping the info with a shared helper invoked by
+> > both code paths, alike what TCP is doing.
+> > >> Also I'm a bit uneasy with the model implemented here, as 'local' socket
+> > >> may cross netns boundaris and connect to 'local' socket in other netns
+> > >> (if I read correctly patch 2/12). That in turns AFAICS break the netns
+> > >> isolation.
+> > > 
+> > > Local mode sockets are unable to communicate with local mode (and global
+> > > mode too) sockets that are in other namespaces. The key piece of code
+> > > for that is vsock_net_check_mode(), where if either modes is local the
+> > > namespaces must be the same.
+> > 
+> > Sorry, I likely misread the large comment in patch 2:
+> > 
+> > https://lore.kernel.org/netdev/20251126-vsock-vmtest-v12-2-257ee21cd5de@meta.com/
+> > 
+> > >> Have you considered instead a slightly different model, where the
+> > >> local/global model is set in stone at netns creation time - alike what
+> > >> /proc/sys/net/ipv4/tcp_child_ehash_entries is doing[1] - and
+> > >> inter-netns connectivity is explicitly granted by the admin (I guess
+> > >> you will need new transport operations for that)?
+> > >>
+> > >> /P
+> > >>
+> > >> [1] tcp allows using per-netns established socket lookup tables - as
+> > >> opposed to the default global lookup table (even if match always takes
+> > >> in account the netns obviously). The mentioned sysctl specify such
+> > >> configuration for the children namespaces, if any.
+> > > 
+> > > I'll save this discussion if the above doesn't resolve your concerns.
+> > I still have some concern WRT the dynamic mode change after netns
+> > creation. I fear some 'unsolvable' (or very hard to solve) race I can't
+> > see now. A tcp_child_ehash_entries-like model will avoid completely the
+> > issue, but I understand it would be a significant change over the
+> > current status.
+> > 
+> > "Luckily" the merge window is on us and we have some time to discuss. Do
+> > you have a specific use-case for the ability to change the netns mode
+> > after creation?
+> > 
+> > /P
+> 
+> I don't think there is a hard requirement that the mode be change-able
+> after creation. Though I'd love to avoid such a big change... or at
+> least leave unchanged as much of what we've already reviewed as
+> possible.
+> 
+> In the scheme of defining the mode at creation and following the
+> tcp_child_ehash_entries-ish model, what I'm imagining is:
+> - /proc/sys/net/vsock/child_ns_mode can be set to "local" or "global"
+> - /proc/sys/net/vsock/child_ns_mode is not immutable, can change any
+>   number of times
+> 
+> - when a netns is created, the new netns mode is inherited from
+>   child_ns_mode, being assigned using something like:
+> 
+> 	  net->vsock.ns_mode =
+> 		get_net_ns_by_pid(current->pid)->child_ns_mode
+> 
+> - /proc/sys/net/vsock/ns_mode queries the current mode, returning
+>   "local" or "global", returning value of net->vsock.ns_mode
+> - /proc/sys/net/vsock/ns_mode and net->vsock.ns_mode are immutable and
+>   reject writes
+> 
+> Does that align with what you have in mind?
 
-The implementation doesn't support protected VMs with GICv5 at this
-time. Therefore, if KVM has protected mode enabled the native GICv5
-init is skipped, but legacy VMs are allowed if the hardware supports
-it.
+Hey Paolo, I just wanted to sync up on this one. Does the above align
+with what you envision?
 
-At this stage the GICv5 KVM implementation only supports PPIs, and
-doesn't interact with the host IRS at all. This means that there is no
-need to check how many concurrent VMs or vCPUs per VM are supported by
-the IRS - the PPI support only requires the CPUIF. The support is
-artificially limited to VGIC_V5_MAX_CPUS, i.e. 512, vCPUs per VM.
-
-With this change it becomes possible to run basic GICv5-based VMs,
-provided that they only use PPIs.
-
-Co-authored-by: Timothy Hayes <timothy.hayes@arm.com>
-Signed-off-by: Timothy Hayes <timothy.hayes@arm.com>
-Signed-off-by: Sascha Bischoff <sascha.bischoff@arm.com>
----
- arch/arm64/kvm/vgic/vgic-v5.c | 39 +++++++++++++++++++++++++++--------
- 1 file changed, 30 insertions(+), 9 deletions(-)
-
-diff --git a/arch/arm64/kvm/vgic/vgic-v5.c b/arch/arm64/kvm/vgic/vgic-v5.c
-index 1a6c9fc86ed07..d74cc3543b9a4 100644
---- a/arch/arm64/kvm/vgic/vgic-v5.c
-+++ b/arch/arm64/kvm/vgic/vgic-v5.c
-@@ -10,22 +10,13 @@
-=20
- /*
-  * Probe for a vGICv5 compatible interrupt controller, returning 0 on succ=
-ess.
-- * Currently only supports GICv3-based VMs on a GICv5 host, and hence only
-- * registers a VGIC_V3 device.
-  */
- int vgic_v5_probe(const struct gic_kvm_info *info)
- {
- 	u64 ich_vtr_el2;
- 	int ret;
-=20
--	if (!cpus_have_final_cap(ARM64_HAS_GICV5_LEGACY))
--		return -ENODEV;
--
- 	kvm_vgic_global_state.type =3D VGIC_V5;
--	kvm_vgic_global_state.has_gcie_v3_compat =3D true;
--
--	/* We only support v3 compat mode - use vGICv3 limits */
--	kvm_vgic_global_state.max_gic_vcpus =3D VGIC_V3_MAX_CPUS;
-=20
- 	kvm_vgic_global_state.vcpu_base =3D 0;
- 	kvm_vgic_global_state.vctrl_base =3D NULL;
-@@ -33,6 +24,32 @@ int vgic_v5_probe(const struct gic_kvm_info *info)
- 	kvm_vgic_global_state.has_gicv4 =3D false;
- 	kvm_vgic_global_state.has_gicv4_1 =3D false;
-=20
-+	/*
-+	 * GICv5 is currently not supported in Protected mode. Skip the
-+	 * registration of GICv5 completely to make sure no guests can create a
-+	 * GICv5-based guest.
-+	 */
-+	if (is_protected_kvm_enabled()) {
-+		kvm_info("GICv5-based guests are not supported with pKVM\n");
-+		goto skip_v5;
-+	}
-+
-+	kvm_vgic_global_state.max_gic_vcpus =3D VGIC_V5_MAX_CPUS;
-+
-+	ret =3D kvm_register_vgic_device(KVM_DEV_TYPE_ARM_VGIC_V5);
-+	if (ret) {
-+		kvm_err("Cannot register GICv5 KVM device.\n");
-+		goto skip_v5;
-+	}
-+
-+	kvm_info("GCIE system register CPU interface\n");
-+
-+skip_v5:
-+	/* If we don't support the GICv3 compat mode we're done. */
-+	if (!cpus_have_final_cap(ARM64_HAS_GICV5_LEGACY))
-+		return 0;
-+
-+	kvm_vgic_global_state.has_gcie_v3_compat =3D true;
- 	ich_vtr_el2 =3D  kvm_call_hyp_ret(__vgic_v3_get_gic_config);
- 	kvm_vgic_global_state.ich_vtr_el2 =3D (u32)ich_vtr_el2;
-=20
-@@ -48,6 +65,10 @@ int vgic_v5_probe(const struct gic_kvm_info *info)
- 		return ret;
- 	}
-=20
-+	/* We potentially limit the max VCPUs further than we need to here */
-+	kvm_vgic_global_state.max_gic_vcpus =3D min(VGIC_V3_MAX_CPUS,
-+						  VGIC_V5_MAX_CPUS);
-+
- 	static_branch_enable(&kvm_vgic_global_state.gicv3_cpuif);
- 	kvm_info("GCIE legacy system register CPU interface\n");
-=20
---=20
-2.34.1
+Best,
+Bobby
