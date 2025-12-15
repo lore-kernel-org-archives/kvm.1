@@ -1,436 +1,143 @@
-Received: from BN1PR04CU002.outbound.protection.outlook.com (mail-eastus2azon11010050.outbound.protection.outlook.com [52.101.56.50])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3751B336EF4;
-	Mon, 15 Dec 2025 15:36:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.56.50
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765812995; cv=fail; b=A8x4UfLxSa5RPpMKwWfjS3wn//PqTv4hqnqp21iOMUepVhLC+SVabBmWmYvNVvVHBKS2j8OH9BcLEvajA3PiSVKR6rChHCvPgWvXdv6UfpICaEoanrFFRpd/nUI6n+Kh9Z7VIhr2W2J4s3+aUGFgLCrs42TJCYhFXmlcXmr4rxo=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765812995; c=relaxed/simple;
-	bh=iAULoiCvl4T8KeLgcjXG30xwdtU6IpoiSbtll/VkyaA=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=BghEoiXEA2Z7br/FPqth1Qa+5xNNwpYHQM4kdg63nDOIkJiApObG3AGtSCK4soRHpMH0dbkfvFYrXaPpuCF+mXpNsHbGeTDjjYZKnh2j0eyIDw7OFp6g/BaadAZvfL4mMVHFpxCn9ZTKcsW5eQ9R/mv0gbZgcqpJ3JHT9zYuibk=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=GLODJRBA; arc=fail smtp.client-ip=52.101.56.50
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C3F0D2D73B2;
+	Mon, 15 Dec 2025 15:50:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1765813805; cv=none; b=FEdpi6MC9bxBW12Azt3/jdheh/+gns3y/kSnJdSODXEd6EdJsQCSb3ETP1ZdHwhVLeRnY6zY5gMDiAo65k8S0GUFl4r5NAGRoSMjSWAB5VwVgWLFYgGxRouBvvv3gyZDxiTUME84MS95kZc3JP7Fs1surkE4jOQEozd5llJG4jQ=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1765813805; c=relaxed/simple;
+	bh=6lXuSDV9n2orlCipXDqKPqEz8td46vUDn+RSqCKCvFE=;
+	h=Date:Message-ID:From:To:Cc:Subject:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=a4Y2PiRJM5KZPt6fvZ3P1yxDGScqiTXNEtNzC51Pe83hZwvH+h4cS+A6b0YME2mis0wqNrXn9hucyeVhZqhhYcoRq48ZtRc1oIWZ7112lZupxkgAtHvqFFDq62KJP4AOKjuo1mJMTTHJuQOsCRn3z8i50mrjcEzQcu+o9xpjSuI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DgTYehs+; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="GLODJRBA"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=wNjuBGC1K2fGVFchZMNQbCqH1O9GA1bVFdw+O/MPv2TGtyi3ct8pI0a9PNueOjTm+kqvnnWCtp05kG6BKIfxAXSYvvRGHI+rWters2dHPObyezMK8F47Lldjx6we0wzcAQVQEQELL9kDGdcQFOXrws/aHxDjeacjWvVzjCUa1dq49HqDFSZuf23BObzAHc2PM8fyZ7S+tE+ay664ljh/FxwuA5j49su4Ob6wKhFPYHGgo3BS5O/Yz+mT6jhDNVoDvTnL/m7Oz5lN14Oqk1+7bMmui9qeMjJUby08nWJ/gFoASiN9JFJs17la294JH1wScg8DkMWmO8TKW2l2Ro9arw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=mHXLvpskxx0bRdQ0BUCSb1gmFjPsUkheEL7AmaZm+zo=;
- b=FCYEiISZguDum4VsuPxg4kuxnv0LvyYJP1naFGZhkMcMWW/Si2v1cnsR0l08g3n24aUvTajV4H+5WbVK85R3iRGYq5GaeBqoDu76661WBzdreLOsnM4XquC7ZoIphfA38SDRdDPPzmOPEwJrZOdDqoUu0gptv7/I0pQdlZzMVH4wZjvU7gwel8yg6BKHmItpkKzPwpqmibnSxbfLXPrAMY710V9itay4e4eiDhDym2yhwEzXpTr8ZuTIFc8maiLmeKphCKJKoEKI6a6YbVdzevgPhL6gcBvj7srxBhogsrsZFYwpnEyKbaoXrAwTC7Y+MhToJcQQG8pGZ2dNCXYGGQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 165.204.84.17) smtp.rcpttodomain=vger.kernel.org smtp.mailfrom=amd.com;
- dmarc=pass (p=quarantine sp=quarantine pct=100) action=none
- header.from=amd.com; dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=mHXLvpskxx0bRdQ0BUCSb1gmFjPsUkheEL7AmaZm+zo=;
- b=GLODJRBAh/WJ81otuHNjqaWiW0IfuROr5H+Pm9GHMLBiFOxBCT14w+yYmxYjJsezJBHOdv+zPA34Rhtm5f+UfNIqzoSdfnFpb+JwXcU4okyLgaG9Lcc+7Fe11vT+wj9JiEUyyH50jyPDrGDkaj3ZjairvRtWEkHwvFNVSSwihms=
-Received: from PH8P220CA0003.NAMP220.PROD.OUTLOOK.COM (2603:10b6:510:345::27)
- by CY5PR12MB6552.namprd12.prod.outlook.com (2603:10b6:930:40::16) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9412.13; Mon, 15 Dec
- 2025 15:36:22 +0000
-Received: from SN1PEPF000252A0.namprd05.prod.outlook.com
- (2603:10b6:510:345:cafe::89) by PH8P220CA0003.outlook.office365.com
- (2603:10b6:510:345::27) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.20.9412.13 via Frontend Transport; Mon,
- 15 Dec 2025 15:36:15 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
- smtp.mailfrom=amd.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=amd.com;
-Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
- 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=satlexmb07.amd.com; pr=C
-Received: from satlexmb07.amd.com (165.204.84.17) by
- SN1PEPF000252A0.mail.protection.outlook.com (10.167.242.7) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.9434.6 via Frontend Transport; Mon, 15 Dec 2025 15:36:22 +0000
-Received: from localhost (10.180.168.240) by satlexmb07.amd.com
- (10.181.42.216) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.17; Mon, 15 Dec
- 2025 09:36:21 -0600
-From: Michael Roth <michael.roth@amd.com>
-To: <kvm@vger.kernel.org>
-CC: <linux-coco@lists.linux.dev>, <linux-mm@kvack.org>,
-	<linux-kernel@vger.kernel.org>, <thomas.lendacky@amd.com>,
-	<pbonzini@redhat.com>, <seanjc@google.com>, <vbabka@suse.cz>,
-	<ashish.kalra@amd.com>, <liam.merwick@oracle.com>, <david@redhat.com>,
-	<vannapurve@google.com>, <ackerleytng@google.com>, <aik@amd.com>,
-	<ira.weiny@intel.com>, <yan.y.zhao@intel.com>
-Subject: [PATCH v2 5/5] KVM: guest_memfd: GUP source pages prior to populating guest memory
-Date: Mon, 15 Dec 2025 09:34:11 -0600
-Message-ID: <20251215153411.3613928-6-michael.roth@amd.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20251215153411.3613928-1-michael.roth@amd.com>
-References: <20251215153411.3613928-1-michael.roth@amd.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DgTYehs+"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B8E1C4CEF5;
+	Mon, 15 Dec 2025 15:50:05 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1765813805;
+	bh=6lXuSDV9n2orlCipXDqKPqEz8td46vUDn+RSqCKCvFE=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=DgTYehs+enlChOQva9sp3QMiEhj361iK+nVkuPSwHOPJTdPc2HF8vtcufPbn6ewzf
+	 K0kl1TnmEh1h2AW6peaqXC78yPIi9GoHJU6VzzGSGh1xgFnOdenxdA9krxEgT+/K8d
+	 sd0tXie6Ln+4ou2Bljmq/J/eBipSlJFP/wtlnrLfKFCBWTDu5JsK2cSLULYI87DDGu
+	 HK3hi3sO1Ef+Y7m/K9+Xrxb2R4MpFSov8Y6G1kQhwbiDbvOg06pKEr/muzecN2SqFv
+	 qQq8Q6EcmC+rhR+lh+meIO0ajEV+sK+5W9mK4FRA8DYNvu/hEv4mLMP271GcqgS+In
+	 ITPxGdtQ0ksTQ==
+Received: from sofa.misterjones.org ([185.219.108.64] helo=goblin-girl.misterjones.org)
+	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.98.2)
+	(envelope-from <maz@kernel.org>)
+	id 1vVApn-0000000CoVQ-0LU0;
+	Mon, 15 Dec 2025 15:50:03 +0000
+Date: Mon, 15 Dec 2025 15:50:02 +0000
+Message-ID: <86fr9boic5.wl-maz@kernel.org>
+From: Marc Zyngier <maz@kernel.org>
+To: Sascha Bischoff <Sascha.Bischoff@arm.com>
+Cc: "linux-arm-kernel@lists.infradead.org"
+	<linux-arm-kernel@lists.infradead.org>,
+	"kvmarm@lists.linux.dev"
+	<kvmarm@lists.linux.dev>,
+	"kvm@vger.kernel.org" <kvm@vger.kernel.org>,
+	nd <nd@arm.com>,
+	"oliver.upton@linux.dev" <oliver.upton@linux.dev>,
+	Joey Gouly
+	<Joey.Gouly@arm.com>,
+	Suzuki Poulose <Suzuki.Poulose@arm.com>,
+	"yuzenghui@huawei.com" <yuzenghui@huawei.com>,
+	"peter.maydell@linaro.org"
+	<peter.maydell@linaro.org>,
+	"lpieralisi@kernel.org" <lpieralisi@kernel.org>,
+	Timothy Hayes <Timothy.Hayes@arm.com>
+Subject: Re: [PATCH 23/32] KVM: arm64: gic-v5: Bump arch timer for GICv5
+In-Reply-To: <20251212152215.675767-24-sascha.bischoff@arm.com>
+References: <20251212152215.675767-1-sascha.bischoff@arm.com>
+	<20251212152215.675767-24-sascha.bischoff@arm.com>
+User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
+ FLIM-LB/1.14.9 (=?UTF-8?B?R29qxY0=?=) APEL-LB/10.8 EasyPG/1.0.0 Emacs/30.1
+ (aarch64-unknown-linux-gnu) MULE/6.0 (HANACHIRUSATO)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: satlexmb07.amd.com (10.181.42.216) To satlexmb07.amd.com
- (10.181.42.216)
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SN1PEPF000252A0:EE_|CY5PR12MB6552:EE_
-X-MS-Office365-Filtering-Correlation-Id: bfb4c022-dcb2-48fe-39bb-08de3befb326
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|82310400026|7416014|376014|36860700013;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?ZKDEzTVxE7kBfkBWkswbp6mMEbXXENfKmkjzGW+m7elk9dOyT64UmXxksOPU?=
- =?us-ascii?Q?pTC9C/T9b2pHEkh4jrT63AAfFgvI/9F//p4bPi+/Dk8welpkdrTVrCCMg1Mt?=
- =?us-ascii?Q?Z8uyLDzoSFhbZj8z54qwb65U+3V2XzGeqQaKhYp6CX4QN5jehajGyh4mSi+1?=
- =?us-ascii?Q?C6OK5wzjfhShQbbbgIZQN9zJTNT1B2MDr1xKen88Q0x8B4d17S1upQ7U36A6?=
- =?us-ascii?Q?1AC+GUZVIbnongzEfLMXjHyX2uQBq2JMdkSwdPKTKBAytBBRfgmxowD70H9T?=
- =?us-ascii?Q?MaTOuQ0JZ8xOK41lOOrsE6K/ks6ZVpj3mOlHEDAYhNghCC+V8eZhfmhKSPvY?=
- =?us-ascii?Q?i7JlFqXskQlOvzthdcpVnILylhkXPL7wJu80E+aQS2HAiDsxLtPxl5PWKZC9?=
- =?us-ascii?Q?ijoZDPV5Ix0QF13eFVRCQK6zlnw1FgXXEAxcc1ye49ly9XjFhjHxgrnh798k?=
- =?us-ascii?Q?sQwNUNRerm612+gEvGV462koPm/NhQ5IIU3xpq7kChPc7HwsP7Zwc2ObLFvG?=
- =?us-ascii?Q?U3bsHnvSsATkPpHxs6IJtFr73Mq1nYtyZaOvEGG5KBuh0qqPTaf2oN1SMVxW?=
- =?us-ascii?Q?E0pcJ2LvudEgDKpvN4ldURFPcsndJmlOE2iuTJsfm4C7TbKPYya0DfNBzSPt?=
- =?us-ascii?Q?8N+/RKw3J9j9FkcIALvQ7pOrZBfjM2uwf/msib8mluKV55HD5lXzRJqGz2kZ?=
- =?us-ascii?Q?BNcyt00z4MV/mvI7Smf0ykWI8pdOhWbXRi7cVW3qK+56XUiO6QV4ZeRqu7O9?=
- =?us-ascii?Q?EMrKQr4LKx3kG2+x3WS+w/b9kg/W0z5b/6ozl1SC2Wl4Ej6nToiHHV6HbBUv?=
- =?us-ascii?Q?PgTDOzi/oKcf8WSVW+8iBytzV7iT/6LgVWyeLK43rsXuF3YRdh1DFUDAc3Ur?=
- =?us-ascii?Q?CkVKkeGCH56Ltzjv4SOX6QodLE+aTGBGB8pqSbccP6QjetETKHwysu8cY/iO?=
- =?us-ascii?Q?hERSkTHxFDZ/8Yc+VsvTukEbYWLEIGzJwXvWgwXj6AO+TCfGMY1lQadjFxSQ?=
- =?us-ascii?Q?8ZB5d0kBWAOfPNInaaIbi9ShwXfiid3q+7li0llfJNrRm8Nu2lGMX5Hexqdy?=
- =?us-ascii?Q?v+OlAuOQ0amjTZqhOrbv7JXBr+JxwIWrMMyfsdlCkEL0/pgNnzeWLVP5W415?=
- =?us-ascii?Q?aW4bZIjl95YQ3ojU2xuJ0OrA38lz4aBKlwg44EzgQbegVR7g2881CiiX+Hr6?=
- =?us-ascii?Q?U7HThuwgKWw97vbPk5xXRQ1dADRGYdLFosocPeMMThSpo8zMSzgUZM1cPfvV?=
- =?us-ascii?Q?SkXPTsdAsPMz8nhqtIaj4MLq7+rRzWpxz175RqIw34mnE3FtOWPNh8rDG9f7?=
- =?us-ascii?Q?IiUBzz0Rgk3x4xJ1P+UbIqNm0T3XES28wFzPfha+QXV5E9EGidr3QXx0sMnh?=
- =?us-ascii?Q?NTSn0F08hRL2oXSeR7DWU/36XD6kezt60UF8w62xzLuLFAw+q+7XHiYxeSeW?=
- =?us-ascii?Q?w2EOVNYdANgtrdF4J3hvbFP9LAzvFog5vAezJOR7Asfjs1gRMdsibx28mFTe?=
- =?us-ascii?Q?S2IOrAR1DWID+d2B8mjXhMoIvD8gG3K7XRjaQB9bDxC7tJoTDEu3wrEa0V7q?=
- =?us-ascii?Q?nJzpYMj6O1EAJCENN8U=3D?=
-X-Forefront-Antispam-Report:
-	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb07.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(1800799024)(82310400026)(7416014)(376014)(36860700013);DIR:OUT;SFP:1101;
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 15 Dec 2025 15:36:22.1407
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: bfb4c022-dcb2-48fe-39bb-08de3befb326
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[satlexmb07.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	SN1PEPF000252A0.namprd05.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CY5PR12MB6552
+MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
+Content-Type: text/plain; charset=US-ASCII
+X-SA-Exim-Connect-IP: 185.219.108.64
+X-SA-Exim-Rcpt-To: Sascha.Bischoff@arm.com, linux-arm-kernel@lists.infradead.org, kvmarm@lists.linux.dev, kvm@vger.kernel.org, nd@arm.com, oliver.upton@linux.dev, Joey.Gouly@arm.com, Suzuki.Poulose@arm.com, yuzenghui@huawei.com, peter.maydell@linaro.org, lpieralisi@kernel.org, Timothy.Hayes@arm.com
+X-SA-Exim-Mail-From: maz@kernel.org
+X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
 
-Currently the post-populate callbacks handle copying source pages into
-private GPA ranges backed by guest_memfd, where kvm_gmem_populate()
-acquires the filemap invalidate lock, then calls a post-populate
-callback which may issue a get_user_pages() on the source pages prior to
-copying them into the private GPA (e.g. TDX).
+On Fri, 12 Dec 2025 15:22:43 +0000,
+Sascha Bischoff <Sascha.Bischoff@arm.com> wrote:
+> 
+> Now that GICv5 has arrived, the arch timer requires some TLC to
+> address some of the key differences introduced with GICv5.
+> 
+> For PPIs on GICv5, the set_pending_state and queue_irq_unlock irq_ops
+> are used as AP lists are not required at all for GICv5. The arch timer
+> also introduces an irq_op - get_input_level. Extend the
+> arch-timer-provided irq_ops to include the two PPI ops for vgic_v5
+> guests.
+> 
+> When possible, DVI (Direct Virtual Interrupt) is set for PPIs when
+> using a vgic_v5, which directly inject the pending state in to the
+> guest. This means that the host never sees the interrupt for the guest
+> for these interrupts. This has two impacts.
+> 
+> * First of all, the kvm_cpu_has_pending_timer check is updated to
+>   explicitly check if the timers are expected to fire.
+> 
+> * Secondly, for mapped timers (which use DVI) they must be masked on
+>   the host prior to entering a GICv5 guest, and unmasked on the return
+>   path. This is handled in set_timer_irq_phys_masked.
+> 
+> The final, but rather important, change is that the architected PPIs
+> for the timers are made mandatory for a GICv5 guest. Attempts to set
+> them to anything else are actively rejected. Once a vgic_v5 is
+> initialised, the arch timer PPIs are also explicitly reinitialised to
+> ensure the correct GICv5-compatible PPIs are used - this also adds in
+> the GICv5 PPI type to the intid.
+> 
+> Signed-off-by: Sascha Bischoff <sascha.bischoff@arm.com>
+> ---
+>  arch/arm64/kvm/arch_timer.c     | 114 +++++++++++++++++++++++++++-----
+>  arch/arm64/kvm/vgic/vgic-init.c |   9 +++
+>  arch/arm64/kvm/vgic/vgic-v5.c   |   6 +-
+>  include/kvm/arm_arch_timer.h    |   7 +-
+>  include/kvm/arm_vgic.h          |   5 ++
+>  5 files changed, 119 insertions(+), 22 deletions(-)
+> 
+> diff --git a/arch/arm64/kvm/arch_timer.c b/arch/arm64/kvm/arch_timer.c
+> index 6f033f6644219..b0a5a6c6bf8da 100644
+> --- a/arch/arm64/kvm/arch_timer.c
+> +++ b/arch/arm64/kvm/arch_timer.c
+> @@ -56,6 +56,17 @@ static struct irq_ops arch_timer_irq_ops = {
+>  	.get_input_level = kvm_arch_timer_get_input_level,
+>  };
+>  
+> +static struct irq_ops arch_timer_irq_ops_vgic_v5 = {
+> +	.get_input_level = kvm_arch_timer_get_input_level,
+> +	.set_pending_state = vgic_v5_ppi_set_pending_state,
+> +	.queue_irq_unlock = vgic_v5_ppi_queue_irq_unlock,
+> +};
+> +
+> +static bool vgic_is_v5(struct kvm_vcpu *vcpu)
+> +{
+> +	return vcpu->kvm->arch.vgic.vgic_model == KVM_DEV_TYPE_ARM_VGIC_V5;
+> +}
+> +
 
-This will not be compatible with in-place conversion, where the
-userspace page fault path will attempt to acquire filemap invalidate
-lock while holding the mm->mmap_lock, leading to a potential ABBA
-deadlock[1].
+Drive-by comment: you also have
 
-Address this by hoisting the GUP above the filemap invalidate lock so
-that these page faults path can be taken early, prior to acquiring the
-filemap invalidate lock.
+arch/arm64/kvm/vgic/vgic.h:static inline bool vgic_is_v5(struct kvm *kvm)
+include/kvm/arm_vgic.h:#define gic_is_v5(k) ((k)->arch.vgic.vgic_model == KVM_DEV_TYPE_ARM_VGIC_V5)
 
-It's not currently clear whether this issue is reachable with the
-current implementation of guest_memfd, which doesn't support in-place
-conversion, however it does provide a consistent mechanism to provide
-stable source/target PFNs to callbacks rather than punting to
-vendor-specific code, which allows for more commonality across
-architectures, which may be worthwhile even without in-place conversion.
+At least two of them have to die.
 
-As part of this change, also begin enforcing that the 'src' argument to
-kvm_gmem_populate() must be page-aligned, as this greatly reduces the
-complexity around how the post-populate callbacks are implemented, and
-since no current in-tree users support using a non-page-aligned 'src'
-argument.
+	M.
 
-Suggested-by: Sean Christopherson <seanjc@google.com>
-Co-developed-by: Sean Christopherson <seanjc@google.com>
-Signed-off-by: Sean Christopherson <seanjc@google.com>
-Co-developed-by: Vishal Annapurve <vannapurve@google.com>
-Signed-off-by: Vishal Annapurve <vannapurve@google.com>
-Signed-off-by: Michael Roth <michael.roth@amd.com>
----
- arch/x86/kvm/svm/sev.c   | 32 ++++++++-------
- arch/x86/kvm/vmx/tdx.c   | 15 +------
- include/linux/kvm_host.h |  4 +-
- virt/kvm/guest_memfd.c   | 84 +++++++++++++++++++++++++++-------------
- 4 files changed, 77 insertions(+), 58 deletions(-)
-
-diff --git a/arch/x86/kvm/svm/sev.c b/arch/x86/kvm/svm/sev.c
-index 90c512ca24a9..11ae008aec8a 100644
---- a/arch/x86/kvm/svm/sev.c
-+++ b/arch/x86/kvm/svm/sev.c
-@@ -2268,7 +2268,7 @@ struct sev_gmem_populate_args {
- };
- 
- static int sev_gmem_post_populate(struct kvm *kvm, gfn_t gfn, kvm_pfn_t pfn,
--				  void __user *src, void *opaque)
-+				  struct page *src_page, void *opaque)
- {
- 	struct sev_gmem_populate_args *sev_populate_args = opaque;
- 	struct sev_data_snp_launch_update fw_args = {0};
-@@ -2277,7 +2277,7 @@ static int sev_gmem_post_populate(struct kvm *kvm, gfn_t gfn, kvm_pfn_t pfn,
- 	int level;
- 	int ret;
- 
--	if (WARN_ON_ONCE(sev_populate_args->type != KVM_SEV_SNP_PAGE_TYPE_ZERO && !src))
-+	if (WARN_ON_ONCE(sev_populate_args->type != KVM_SEV_SNP_PAGE_TYPE_ZERO && !src_page))
- 		return -EINVAL;
- 
- 	ret = snp_lookup_rmpentry((u64)pfn, &assigned, &level);
-@@ -2288,14 +2288,14 @@ static int sev_gmem_post_populate(struct kvm *kvm, gfn_t gfn, kvm_pfn_t pfn,
- 		goto out;
- 	}
- 
--	if (src) {
--		void *vaddr = kmap_local_pfn(pfn);
-+	if (src_page) {
-+		void *src_vaddr = kmap_local_pfn(page_to_pfn(src_page));
-+		void *dst_vaddr = kmap_local_pfn(pfn);
- 
--		if (copy_from_user(vaddr, src, PAGE_SIZE)) {
--			ret = -EFAULT;
--			goto out;
--		}
--		kunmap_local(vaddr);
-+		memcpy(dst_vaddr, src_vaddr, PAGE_SIZE);
-+
-+		kunmap_local(src_vaddr);
-+		kunmap_local(dst_vaddr);
- 	}
- 
- 	ret = rmp_make_private(pfn, gfn << PAGE_SHIFT, PG_LEVEL_4K,
-@@ -2325,17 +2325,19 @@ static int sev_gmem_post_populate(struct kvm *kvm, gfn_t gfn, kvm_pfn_t pfn,
- 	if (ret && !snp_page_reclaim(kvm, pfn) &&
- 	    sev_populate_args->type == KVM_SEV_SNP_PAGE_TYPE_CPUID &&
- 	    sev_populate_args->fw_error == SEV_RET_INVALID_PARAM) {
--		void *vaddr = kmap_local_pfn(pfn);
-+		void *src_vaddr = kmap_local_pfn(page_to_pfn(src_page));
-+		void *dst_vaddr = kmap_local_pfn(pfn);
- 
--		if (copy_to_user(src, vaddr, PAGE_SIZE))
--			pr_debug("Failed to write CPUID page back to userspace\n");
-+		memcpy(src_vaddr, dst_vaddr, PAGE_SIZE);
- 
--		kunmap_local(vaddr);
-+		kunmap_local(src_vaddr);
-+		kunmap_local(dst_vaddr);
- 	}
- 
- out:
--	pr_debug("%s: exiting with return code %d (fw_error %d)\n",
--		 __func__, ret, sev_populate_args->fw_error);
-+	if (ret)
-+		pr_debug("%s: error updating GFN %llx, return code %d (fw_error %d)\n",
-+			 __func__, gfn, ret, sev_populate_args->fw_error);
- 	return ret;
- }
- 
-diff --git a/arch/x86/kvm/vmx/tdx.c b/arch/x86/kvm/vmx/tdx.c
-index 4fb042ce8ed1..3eb597c0e79f 100644
---- a/arch/x86/kvm/vmx/tdx.c
-+++ b/arch/x86/kvm/vmx/tdx.c
-@@ -3118,34 +3118,21 @@ struct tdx_gmem_post_populate_arg {
- };
- 
- static int tdx_gmem_post_populate(struct kvm *kvm, gfn_t gfn, kvm_pfn_t pfn,
--				  void __user *src, void *_arg)
-+				  struct page *src_page, void *_arg)
- {
- 	struct tdx_gmem_post_populate_arg *arg = _arg;
- 	struct kvm_tdx *kvm_tdx = to_kvm_tdx(kvm);
- 	u64 err, entry, level_state;
- 	gpa_t gpa = gfn_to_gpa(gfn);
--	struct page *src_page;
- 	int ret, i;
- 
- 	if (KVM_BUG_ON(kvm_tdx->page_add_src, kvm))
- 		return -EIO;
- 
--	/*
--	 * Get the source page if it has been faulted in. Return failure if the
--	 * source page has been swapped out or unmapped in primary memory.
--	 */
--	ret = get_user_pages_fast((unsigned long)src, 1, 0, &src_page);
--	if (ret < 0)
--		return ret;
--	if (ret != 1)
--		return -ENOMEM;
--
- 	kvm_tdx->page_add_src = src_page;
- 	ret = kvm_tdp_mmu_map_private_pfn(arg->vcpu, gfn, pfn);
- 	kvm_tdx->page_add_src = NULL;
- 
--	put_page(src_page);
--
- 	if (ret || !(arg->flags & KVM_TDX_MEASURE_MEMORY_REGION))
- 		return ret;
- 
-diff --git a/include/linux/kvm_host.h b/include/linux/kvm_host.h
-index 1d0cee72e560..49c0cfe24fd8 100644
---- a/include/linux/kvm_host.h
-+++ b/include/linux/kvm_host.h
-@@ -2566,7 +2566,7 @@ int kvm_arch_gmem_prepare(struct kvm *kvm, gfn_t gfn, kvm_pfn_t pfn, int max_ord
-  * @gfn: starting GFN to be populated
-  * @src: userspace-provided buffer containing data to copy into GFN range
-  *       (passed to @post_populate, and incremented on each iteration
-- *       if not NULL)
-+ *       if not NULL). Must be page-aligned.
-  * @npages: number of pages to copy from userspace-buffer
-  * @post_populate: callback to issue for each gmem page that backs the GPA
-  *                 range
-@@ -2581,7 +2581,7 @@ int kvm_arch_gmem_prepare(struct kvm *kvm, gfn_t gfn, kvm_pfn_t pfn, int max_ord
-  * Returns the number of pages that were populated.
-  */
- typedef int (*kvm_gmem_populate_cb)(struct kvm *kvm, gfn_t gfn, kvm_pfn_t pfn,
--				    void __user *src, void *opaque);
-+				    struct page *page, void *opaque);
- 
- long kvm_gmem_populate(struct kvm *kvm, gfn_t gfn, void __user *src, long npages,
- 		       kvm_gmem_populate_cb post_populate, void *opaque);
-diff --git a/virt/kvm/guest_memfd.c b/virt/kvm/guest_memfd.c
-index 8b1248f42aae..18ae59b92257 100644
---- a/virt/kvm/guest_memfd.c
-+++ b/virt/kvm/guest_memfd.c
-@@ -820,12 +820,48 @@ int kvm_gmem_get_pfn(struct kvm *kvm, struct kvm_memory_slot *slot,
- EXPORT_SYMBOL_FOR_KVM_INTERNAL(kvm_gmem_get_pfn);
- 
- #ifdef CONFIG_HAVE_KVM_ARCH_GMEM_POPULATE
-+
-+static long __kvm_gmem_populate(struct kvm *kvm, struct kvm_memory_slot *slot,
-+				struct file *file, gfn_t gfn, struct page *src_page,
-+				kvm_gmem_populate_cb post_populate, void *opaque)
-+{
-+	pgoff_t index = kvm_gmem_get_index(slot, gfn);
-+	struct folio *folio;
-+	kvm_pfn_t pfn;
-+	int ret;
-+
-+	filemap_invalidate_lock(file->f_mapping);
-+
-+	folio = __kvm_gmem_get_pfn(file, slot, index, &pfn, NULL);
-+	if (IS_ERR(folio)) {
-+		ret = PTR_ERR(folio);
-+		goto out_unlock;
-+	}
-+
-+	folio_unlock(folio);
-+
-+	if (!kvm_range_has_memory_attributes(kvm, gfn, gfn + 1,
-+					     KVM_MEMORY_ATTRIBUTE_PRIVATE,
-+					     KVM_MEMORY_ATTRIBUTE_PRIVATE)) {
-+		ret = -EINVAL;
-+		goto out_put_folio;
-+	}
-+
-+	ret = post_populate(kvm, gfn, pfn, src_page, opaque);
-+	if (!ret)
-+		folio_mark_uptodate(folio);
-+
-+out_put_folio:
-+	folio_put(folio);
-+out_unlock:
-+	filemap_invalidate_unlock(file->f_mapping);
-+	return ret;
-+}
-+
- long kvm_gmem_populate(struct kvm *kvm, gfn_t start_gfn, void __user *src, long npages,
- 		       kvm_gmem_populate_cb post_populate, void *opaque)
- {
- 	struct kvm_memory_slot *slot;
--	void __user *p;
--
- 	int ret = 0;
- 	long i;
- 
-@@ -834,6 +870,9 @@ long kvm_gmem_populate(struct kvm *kvm, gfn_t start_gfn, void __user *src, long
- 	if (WARN_ON_ONCE(npages <= 0))
- 		return -EINVAL;
- 
-+	if (WARN_ON_ONCE(!PAGE_ALIGNED(src)))
-+		return -EINVAL;
-+
- 	slot = gfn_to_memslot(kvm, start_gfn);
- 	if (!kvm_slot_has_gmem(slot))
- 		return -EINVAL;
-@@ -842,47 +881,38 @@ long kvm_gmem_populate(struct kvm *kvm, gfn_t start_gfn, void __user *src, long
- 	if (!file)
- 		return -EFAULT;
- 
--	filemap_invalidate_lock(file->f_mapping);
--
- 	npages = min_t(ulong, slot->npages - (start_gfn - slot->base_gfn), npages);
- 	for (i = 0; i < npages; i++) {
--		struct folio *folio;
--		gfn_t gfn = start_gfn + i;
--		pgoff_t index = kvm_gmem_get_index(slot, gfn);
--		kvm_pfn_t pfn;
-+		struct page *src_page = NULL;
-+		void __user *p;
- 
- 		if (signal_pending(current)) {
- 			ret = -EINTR;
- 			break;
- 		}
- 
--		folio = __kvm_gmem_get_pfn(file, slot, index, &pfn, NULL);
--		if (IS_ERR(folio)) {
--			ret = PTR_ERR(folio);
--			break;
--		}
-+		p = src ? src + i * PAGE_SIZE : NULL;
- 
--		folio_unlock(folio);
-+		if (p) {
-+			ret = get_user_pages_fast((unsigned long)p, 1, 0, &src_page);
-+			if (ret < 0)
-+				break;
-+			if (ret != 1) {
-+				ret = -ENOMEM;
-+				break;
-+			}
-+		}
- 
--		ret = -EINVAL;
--		if (!kvm_range_has_memory_attributes(kvm, gfn, gfn + 1,
--						     KVM_MEMORY_ATTRIBUTE_PRIVATE,
--						     KVM_MEMORY_ATTRIBUTE_PRIVATE))
--			goto put_folio_and_exit;
-+		ret = __kvm_gmem_populate(kvm, slot, file, start_gfn + i, src_page,
-+					  post_populate, opaque);
- 
--		p = src ? src + i * PAGE_SIZE : NULL;
--		ret = post_populate(kvm, gfn, pfn, p, opaque);
--		if (!ret)
--			folio_mark_uptodate(folio);
-+		if (src_page)
-+			put_page(src_page);
- 
--put_folio_and_exit:
--		folio_put(folio);
- 		if (ret)
- 			break;
- 	}
- 
--	filemap_invalidate_unlock(file->f_mapping);
--
- 	return ret && !i ? ret : i;
- }
- EXPORT_SYMBOL_FOR_KVM_INTERNAL(kvm_gmem_populate);
 -- 
-2.25.1
-
+Without deviation from the norm, progress is not possible.
