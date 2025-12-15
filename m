@@ -1,32 +1,30 @@
-Received: from out-179.mta0.migadu.com (out-179.mta0.migadu.com [91.218.175.179])
+Received: from out-186.mta0.migadu.com (out-186.mta0.migadu.com [91.218.175.186])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B723F3321C7
-	for <kvm@vger.kernel.org>; Mon, 15 Dec 2025 19:27:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.179
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 757183242A5;
+	Mon, 15 Dec 2025 19:27:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.186
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765826878; cv=none; b=ME5iKy0jEKJp0VujDzZ3KFGIvih3JdaIEltWG7XZSiRz3AXqB82dFDjWv+6sGYu5E+uFIoWxAcsRVuuXrrJ+vba+jf/R5JD0VAWHmvXNp6eDLbxRTqToWL7xLdhnonFwkA81eLrIi+TbZg81Uw8Ss4xvWEzXCFfa1GGH/a+Ml3Q=
+	t=1765826878; cv=none; b=CQfYADiZvDCIugT3X6+fLONIB1mZoH58m/cYQKXU2XUfmcMCQ3oPJH7Dhw9Ntb6Hmq4Bx3tB3UqmJCvue8qEFTK90UtqoYmW84N/2nZLPG6UBzXdh996ST5NZ+UREkL9x+caBKYKB3rUJGLZSpq03gWmDkQgbO930re0l8cIEWo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1765826878; c=relaxed/simple;
-	bh=NGHrmOF8yFpm0L4uizjQh/M5VuoPY7ravOo2U7Kf+mE=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WN+aCSJcHeUynrrPbc/fcL75nm4KH9Xx/GkwZr4eTjKx9o4EeOl//hlAZmCidmjS0p2hC0P74FOW+I/Pqx+nmkLVZSto7SOjKi06svy/wIZ9Yf9kN0ifuthGuBOmQZraNkBKAv+LAgSL6+bo0xmIvjZ5GGsWm7fvH5gZM8RGZuE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=h3u/BkYX; arc=none smtp.client-ip=91.218.175.179
+	bh=xhfGb6ZycktLx6DtRtGPeWPXRKJb3uLgZoLIbraIZjw=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Olpw54JY893nsVDZFSSHzG34PsfRnq+Hxd/3ubLhoqIn5XMmOD2i44UiYKQn7v0GvElHnsOfnkoQiNyYNtfPTtxzpXlbsFhmbQvRjPApdH8CCzr75BlU8SJRePPExCqgxYxFgpa0ERrZwzGDX3puRMsc/M1EzqWRQxIv4EgF8bs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=i2g9Tky3; arc=none smtp.client-ip=91.218.175.186
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="h3u/BkYX"
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="i2g9Tky3"
 X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1765826868;
+	t=1765826860;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=W01yE1XUVHFJjvT19V74JaE/KzEZ45eC2p6bPSeAEX8=;
-	b=h3u/BkYXWNQfiDZJp97JJp6qtIuZezLCjxtmzupmrbZq9sSEBNOKzMUgWc+Ju6i8l+4zBP
-	iZSk8dX9zsfAixvxgBk59XOQnDnXK1IFxjyeug+6e5FyfAkxQ/bRUCPFuEtPLqSwgT8j4V
-	Vh8w8cL0baEfyLzod+RKKUI9bhje118=
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=tESTeWnloD3F0ybR0jqLCnFnlk32UlwI6uI9VspQVOg=;
+	b=i2g9Tky3vAVzaamIP74QGyCrf28qHb+FUKZlTry9Fg2wDOPH1MxABw9ljI1dgbbSCTl9Fi
+	SpUQzIE+pCZ1WPPV4vdkl54N8Zq4JqZixH5okk+mq/liLT64WG7QIKYAofy6fBOf2CYlWc
+	fW9L0cr7+KXu6hAy7eqSUEw/oGFbaAc=
 From: Yosry Ahmed <yosry.ahmed@linux.dev>
 To: Paolo Bonzini <pbonzini@redhat.com>,
 	Sean Christopherson <seanjc@google.com>
@@ -34,11 +32,9 @@ Cc: kvm@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	Yosry Ahmed <yosry.ahmed@linux.dev>,
 	stable@vger.kernel.org
-Subject: [PATCH v3 01/26] KVM: SVM: Switch svm_copy_lbrs() to a macro
-Date: Mon, 15 Dec 2025 19:26:56 +0000
-Message-ID: <20251215192722.3654335-3-yosry.ahmed@linux.dev>
-In-Reply-To: <20251215192722.3654335-1-yosry.ahmed@linux.dev>
-References: <20251215192722.3654335-1-yosry.ahmed@linux.dev>
+Subject: [PATCH] KVM: SVM: Fix redundant updates of LBR MSR intercepts
+Date: Mon, 15 Dec 2025 19:26:54 +0000
+Message-ID: <20251215192722.3654335-1-yosry.ahmed@linux.dev>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -48,113 +44,78 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Migadu-Flow: FLOW_OUT
 
-In preparation for using svm_copy_lbrs() with 'struct vmcb_save_area'
-without a containing 'struct vmcb', and later even 'struct
-vmcb_save_area_cached', make it a macro. Pull the call to
-vmcb_mark_dirty() out to the callers.
+svm_update_lbrv() always updates LBR MSRs intercepts, even when they are
+already set correctly. This results in force_msr_bitmap_recalc always
+being set to true on every nested transition, essentially undoing the
+hyperv optimization in nested_svm_merge_msrpm().
 
-Macros are generally not preferred compared to functions, mainly due to
-type-safety. However, in this case it seems like having a simple macro
-copying a few fields is better than copy-pasting the same 5 lines of
-code in different places.
+Fix it by keeping track of whether LBR MSRs are intercepted or not and
+only doing the update if needed, similar to x2avic_msrs_intercepted.
 
-On the bright side, pulling vmcb_mark_dirty() calls to the callers makes
-it clear that in one case, vmcb_mark_dirty() was being called on VMCB12.
-It is not architecturally defined for the CPU to clear arbitrary clean
-bits, and it is not needed, so drop that one call.
+Avoid using svm_test_msr_bitmap_*() to check the status of the
+intercepts, as an arbitrary MSR will need to be chosen as a
+representative of all LBR MSRs, and this could theoretically break if
+some of the MSRs intercepts are handled differently from the rest.
 
-Technically fixes the non-architectural behavior of setting the dirty
-bit on VMCB12.
+Also, using svm_test_msr_bitmap_*() makes backports difficult as it was
+only recently introduced with no direct alternatives in older kernels.
 
-Fixes: d20c796ca370 ("KVM: x86: nSVM: implement nested LBR virtualization")
+Fixes: fbe5e5f030c2 ("KVM: nSVM: Always recalculate LBR MSR intercepts in svm_update_lbrv()")
 Cc: stable@vger.kernel.org
 Signed-off-by: Yosry Ahmed <yosry.ahmed@linux.dev>
 ---
- arch/x86/kvm/svm/nested.c | 16 ++++++++++------
- arch/x86/kvm/svm/svm.c    | 11 -----------
- arch/x86/kvm/svm/svm.h    | 10 +++++++++-
- 3 files changed, 19 insertions(+), 18 deletions(-)
+ arch/x86/kvm/svm/svm.c | 9 ++++++++-
+ arch/x86/kvm/svm/svm.h | 1 +
+ 2 files changed, 9 insertions(+), 1 deletion(-)
 
-diff --git a/arch/x86/kvm/svm/nested.c b/arch/x86/kvm/svm/nested.c
-index ba0f11c68372..8e157ffbf4b1 100644
---- a/arch/x86/kvm/svm/nested.c
-+++ b/arch/x86/kvm/svm/nested.c
-@@ -676,10 +676,12 @@ static void nested_vmcb02_prepare_save(struct vcpu_svm *svm, struct vmcb *vmcb12
- 		 * Reserved bits of DEBUGCTL are ignored.  Be consistent with
- 		 * svm_set_msr's definition of reserved bits.
- 		 */
--		svm_copy_lbrs(vmcb02, vmcb12);
-+		svm_copy_lbrs(&vmcb02->save, &vmcb12->save);
-+		vmcb_mark_dirty(vmcb02, VMCB_LBR);
- 		vmcb02->save.dbgctl &= ~DEBUGCTL_RESERVED_BITS;
- 	} else {
--		svm_copy_lbrs(vmcb02, vmcb01);
-+		svm_copy_lbrs(&vmcb02->save, &vmcb01->save);
-+		vmcb_mark_dirty(vmcb02, VMCB_LBR);
- 	}
- 	svm_update_lbrv(&svm->vcpu);
- }
-@@ -1186,10 +1188,12 @@ int nested_svm_vmexit(struct vcpu_svm *svm)
- 		kvm_make_request(KVM_REQ_EVENT, &svm->vcpu);
- 
- 	if (unlikely(guest_cpu_cap_has(vcpu, X86_FEATURE_LBRV) &&
--		     (svm->nested.ctl.virt_ext & LBR_CTL_ENABLE_MASK)))
--		svm_copy_lbrs(vmcb12, vmcb02);
--	else
--		svm_copy_lbrs(vmcb01, vmcb02);
-+		     (svm->nested.ctl.virt_ext & LBR_CTL_ENABLE_MASK))) {
-+		svm_copy_lbrs(&vmcb12->save, &vmcb02->save);
-+	} else {
-+		svm_copy_lbrs(&vmcb01->save, &vmcb02->save);
-+		vmcb_mark_dirty(vmcb01, VMCB_LBR);
-+	}
- 
- 	svm_update_lbrv(vcpu);
- 
 diff --git a/arch/x86/kvm/svm/svm.c b/arch/x86/kvm/svm/svm.c
-index 24d59ccfa40d..2428b772546f 100644
+index 10c21e4c5406f..9d29b2e7e855d 100644
 --- a/arch/x86/kvm/svm/svm.c
 +++ b/arch/x86/kvm/svm/svm.c
-@@ -804,17 +804,6 @@ static void svm_recalc_msr_intercepts(struct kvm_vcpu *vcpu)
- 	 */
+@@ -705,7 +705,11 @@ void *svm_alloc_permissions_map(unsigned long size, gfp_t gfp_mask)
+ 
+ static void svm_recalc_lbr_msr_intercepts(struct kvm_vcpu *vcpu)
+ {
+-	bool intercept = !(to_svm(vcpu)->vmcb->control.virt_ext & LBR_CTL_ENABLE_MASK);
++	struct vcpu_svm *svm = to_svm(vcpu);
++	bool intercept = !(svm->vmcb->control.virt_ext & LBR_CTL_ENABLE_MASK);
++
++	if (intercept == svm->lbr_msrs_intercepted)
++		return;
+ 
+ 	svm_set_intercept_for_msr(vcpu, MSR_IA32_LASTBRANCHFROMIP, MSR_TYPE_RW, intercept);
+ 	svm_set_intercept_for_msr(vcpu, MSR_IA32_LASTBRANCHTOIP, MSR_TYPE_RW, intercept);
+@@ -714,6 +718,8 @@ static void svm_recalc_lbr_msr_intercepts(struct kvm_vcpu *vcpu)
+ 
+ 	if (sev_es_guest(vcpu->kvm))
+ 		svm_set_intercept_for_msr(vcpu, MSR_IA32_DEBUGCTLMSR, MSR_TYPE_RW, intercept);
++
++	svm->lbr_msrs_intercepted = intercept;
  }
  
--void svm_copy_lbrs(struct vmcb *to_vmcb, struct vmcb *from_vmcb)
--{
--	to_vmcb->save.dbgctl		= from_vmcb->save.dbgctl;
--	to_vmcb->save.br_from		= from_vmcb->save.br_from;
--	to_vmcb->save.br_to		= from_vmcb->save.br_to;
--	to_vmcb->save.last_excp_from	= from_vmcb->save.last_excp_from;
--	to_vmcb->save.last_excp_to	= from_vmcb->save.last_excp_to;
--
--	vmcb_mark_dirty(to_vmcb, VMCB_LBR);
--}
--
- static void __svm_enable_lbrv(struct kvm_vcpu *vcpu)
- {
- 	to_svm(vcpu)->vmcb->control.virt_ext |= LBR_CTL_ENABLE_MASK;
+ void svm_vcpu_free_msrpm(void *msrpm)
+@@ -1221,6 +1227,7 @@ static int svm_vcpu_create(struct kvm_vcpu *vcpu)
+ 	}
+ 
+ 	svm->x2avic_msrs_intercepted = true;
++	svm->lbr_msrs_intercepted = true;
+ 
+ 	svm->vmcb01.ptr = page_address(vmcb01_page);
+ 	svm->vmcb01.pa = __sme_set(page_to_pfn(vmcb01_page) << PAGE_SHIFT);
 diff --git a/arch/x86/kvm/svm/svm.h b/arch/x86/kvm/svm/svm.h
-index 01be93a53d07..8a642ab2936a 100644
+index c856d8e0f95e7..dd78e64023450 100644
 --- a/arch/x86/kvm/svm/svm.h
 +++ b/arch/x86/kvm/svm/svm.h
-@@ -685,8 +685,16 @@ static inline void *svm_vcpu_alloc_msrpm(void)
- 	return svm_alloc_permissions_map(MSRPM_SIZE, GFP_KERNEL_ACCOUNT);
- }
+@@ -336,6 +336,7 @@ struct vcpu_svm {
+ 	bool guest_state_loaded;
  
-+#define svm_copy_lbrs(to, from)					\
-+({								\
-+	(to)->dbgctl		= (from)->dbgctl;		\
-+	(to)->br_from		= (from)->br_from;		\
-+	(to)->br_to		= (from)->br_to;		\
-+	(to)->last_excp_from	= (from)->last_excp_from;	\
-+	(to)->last_excp_to	= (from)->last_excp_to;		\
-+})
-+
- void svm_vcpu_free_msrpm(void *msrpm);
--void svm_copy_lbrs(struct vmcb *to_vmcb, struct vmcb *from_vmcb);
- void svm_enable_lbrv(struct kvm_vcpu *vcpu);
- void svm_update_lbrv(struct kvm_vcpu *vcpu);
+ 	bool x2avic_msrs_intercepted;
++	bool lbr_msrs_intercepted;
  
+ 	/* Guest GIF value, used when vGIF is not enabled */
+ 	bool guest_gif;
+
+base-commit: 8a4821412cf2c1429fffa07c012dd150f2edf78c
 -- 
-2.52.0.239.gd5f0c6e74e-goog
+2.51.2.1041.gc1ab5b90ca-goog
 
