@@ -1,221 +1,147 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f201.google.com (mail-pl1-f201.google.com [209.85.214.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 987C9BE5E
-	for <kvm@vger.kernel.org>; Tue, 16 Dec 2025 16:01:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E8F22EFD9E
+	for <kvm@vger.kernel.org>; Tue, 16 Dec 2025 16:17:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765900876; cv=none; b=H3tP77GBYrSNLxbnoll1HFPWT/afmFZSSX1CfbNBuHOHHdoT44rmRK68uRsXrM+I70qzOropFDiIeAju+khe1QLkaYNcEMMUCS62bpcwChMh6ngwFHQm3qXB7ZRL4KhYrOtYTUzWD4HUI43OeHd6SpX1RhILBnzi9VVzQShk0v4=
+	t=1765901880; cv=none; b=boMyG7xbtO7Knmd+dL+Lr0ZhHEk/utCRCJ4SZ+2ckNCRmQp297yarOQZI0QZ/pBCcvMntlD0HrSySyDExz7DcNIHHyh1eVN5fmIh/MMDdNQjcU2vF+nxPQdc4/UefAlVn2dQm5Y1T39kw1vfiTVwoMARUsWhMtE+6oWmG1rI+64=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765900876; c=relaxed/simple;
-	bh=m88QLC+oVnYPsufMnNon6VNqltsXTCx4ykwu3hUkxX8=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=so+lsvG3DAgHEJ6ovzUIMIsW2WTUApliS2MaHUTRJQDv5P9LE1ges+jFcyyvIzZcEGxlfjtqhbWMVEReXVR22HKUL6BUiRXKMh6G2tdkEdksOTHFyhisXIcU8RPmoxQ4yj7wNfT1KwbdT7P3BuSP/mwiglVCikl0+RWIdlysuOc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=E8CYQtc0; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=FBbjbNbA; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1765901880; c=relaxed/simple;
+	bh=oDad10tBgsXtNCipQDkssrcR7fxfDa9VYoz3N7fHVIE=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=ZpV0AiYONC+WBfJz6Y4OQ0IUqAQYZDddbN4ykT8GbKwoS0MuwFWFWpXcTvxLKH2Hk28jXN3z3hy/X8Lx8zTiaJgyIxXUUsgnJitjhcOHegQ7eR13562Ba5hplE/wf5IoePmhq703QKf1rL5DTMme5IjEzQfv6idzeMECiQdjRMY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=FfQvTcpy; arc=none smtp.client-ip=209.85.214.201
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="E8CYQtc0";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="FBbjbNbA"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1765900873;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=7n/t6p/jvZYpUfKx4Fl0OmmPDhqaugBP8Gk8GNKqtjk=;
-	b=E8CYQtc0/MIWjW71TzVODfL0UxCSzlbUiOCMMW59Fx+2tg2IOmzBXp+JAckRb7tv+CQCmQ
-	/UrkZAU4p9BpyLsPAqTbdzrWpiNw1MrFS0kpOUi4VvRLtgJwEMO4n2e1dy0ctHGZF8ZTqa
-	YygrsAUBgJxVz90qK6ukDzoUv/J7xXE=
-Received: from mail-pf1-f200.google.com (mail-pf1-f200.google.com
- [209.85.210.200]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-456-FH1YebelP3KbndQDFWQ41g-1; Tue, 16 Dec 2025 11:01:12 -0500
-X-MC-Unique: FH1YebelP3KbndQDFWQ41g-1
-X-Mimecast-MFC-AGG-ID: FH1YebelP3KbndQDFWQ41g_1765900871
-Received: by mail-pf1-f200.google.com with SMTP id d2e1a72fcca58-7ba92341f38so5501716b3a.0
-        for <kvm@vger.kernel.org>; Tue, 16 Dec 2025 08:01:11 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="FfQvTcpy"
+Received: by mail-pl1-f201.google.com with SMTP id d9443c01a7336-2a0a0bad5dfso62627535ad.0
+        for <kvm@vger.kernel.org>; Tue, 16 Dec 2025 08:17:58 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1765900871; x=1766505671; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=7n/t6p/jvZYpUfKx4Fl0OmmPDhqaugBP8Gk8GNKqtjk=;
-        b=FBbjbNbAdBkdmPeUHsvImi5NyKQfrour3Tk5JvZ6wq1D71mY50xMzCg6nXRXMaZ4we
-         mEkhtnsDQlRXU+bljA1hq3LUtHBC5TqrJxdtvtZzB7IvhYfJJQRVaU/LWmTaKbDInBdd
-         lSRF0WJ5j3dkcmEPwslNAT5zsoix84iBGtbGdG0i7GxMvaNO9x+XquOhiu+sLkFxXDm1
-         9S+RvYiMpoc6GtohkLgBwM1unlsQvSCPm4fmIO3Wg6FCoInCMoNJnTUBV7InMGzNL1rM
-         7GHukrt/LIDNeCVQjDnYIcUPUocFAQYpUGx5wkT9xMgwu1cNrnwvPNPK8mmWwkpR6KwZ
-         jHNQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1765900871; x=1766505671;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+        d=google.com; s=20230601; t=1765901878; x=1766506678; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:mime-version:date:reply-to:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=7n/t6p/jvZYpUfKx4Fl0OmmPDhqaugBP8Gk8GNKqtjk=;
-        b=N8LNjHqVJy/4ELKykv30UZQVuHpFjYnfmf8ysiTfR8sl+E6bDRZI5FCnlvMvQBzew/
-         rJ1/9LHo6nItMLGwUlPhV5VOSWtgXtS3JtsZZQtioa/qm7JsFC5EhISS31F7vyMHhgQC
-         RKOqB/WFvnZRMkGisUvKMYRedPOnDwfiwqBAAVjs4opS8bpFIKWswm/63DRzlhJckHxe
-         pvBuXeYFIi9ughAucLIhlTRXrkG18KB6ZNkOWmDMSXn2JUIS3DRGl2NF6ogCyiV/Nmps
-         WLCSpqYElqncaRn4uexpD9GbTYGd9r5L5zQRwfQjA6D6ecwXIHKTKhA5ByHmfyLM4dMp
-         g3CA==
-X-Gm-Message-State: AOJu0Yxnpv3b1mkdWlVUMTkMXwi6grS2vH45q8TgfUtM6k1pon4hlgjG
-	LsRc/0px/6O9Qa6zmwwoGXzEVQjdjlt3eSdw/DR8SqKf34KLbC1cE5n/c+5amCQT3/dI+usYIVn
-	i4ETLOrO7FKS28h+SrcDln3Zqqm9Do2Mf5jV5POybHeTbEUYgcJXloA==
-X-Gm-Gg: AY/fxX54h+W380VZCC8n8I0/yOfRKeC0iwT7baM6a7khAJwQXd27AEE4rkemxoV+67L
-	zRL5NFXXRgFpH4cWHsRQnhE42QaJz9hkE2q5/gBrQIBWYVxMR1jrnaODi/Cc+bkgT8ZryhVqfTn
-	d0UVqZo7jWwJsBt8/y1pMiD9cg0nBgCvhTW3YiiwEZaRpizgRRNwtZbdcgvM4pPfy8gqZlvVceG
-	/LpePBOrbLYtM8JofWq0qNSd82TU39VvVtXFoMvhQa1chThmI7cbg56afcOOkbpSufDUms+AEKK
-	uH/ashaZR5gZ2GG30WQMyyrC6+Q58EcOi25IiCWDjReu4xtxfBxsi2v8cAAEftEplmYIqYakyVk
-	ji14=
-X-Received: by 2002:a05:6a00:2993:b0:781:4f0b:9c58 with SMTP id d2e1a72fcca58-7f667935e19mr15661160b3a.15.1765900870463;
-        Tue, 16 Dec 2025 08:01:10 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IFETgvpZCauQRnRvkaRDXoTYEkmrTUKb8yH8PJYSGK8XQagrI3k5h20qj2x7yaO23LdoS5X+w==
-X-Received: by 2002:a05:6a00:2993:b0:781:4f0b:9c58 with SMTP id d2e1a72fcca58-7f667935e19mr15661042b3a.15.1765900869272;
-        Tue, 16 Dec 2025 08:01:09 -0800 (PST)
-Received: from x1.local ([142.188.210.156])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-7f4c53834a7sm15772514b3a.55.2025.12.16.08.01.03
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 16 Dec 2025 08:01:08 -0800 (PST)
-Date: Tue, 16 Dec 2025 11:01:00 -0500
-From: Peter Xu <peterx@redhat.com>
-To: Jason Gunthorpe <jgg@nvidia.com>
-Cc: kvm@vger.kernel.org, linux-mm@kvack.org, linux-kernel@vger.kernel.org,
-	Nico Pache <npache@redhat.com>, Zi Yan <ziy@nvidia.com>,
-	Alex Mastro <amastro@fb.com>, David Hildenbrand <david@redhat.com>,
-	Alex Williamson <alex@shazbot.org>, Zhi Wang <zhiw@nvidia.com>,
-	David Laight <david.laight.linux@gmail.com>,
-	Yi Liu <yi.l.liu@intel.com>, Ankit Agrawal <ankita@nvidia.com>,
-	Kevin Tian <kevin.tian@intel.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: Re: [PATCH v2 4/4] vfio-pci: Best-effort huge pfnmaps with
- !MAP_FIXED mappings
-Message-ID: <aUGCPN2ngvWMG2Ta@x1.local>
-References: <20251204151003.171039-1-peterx@redhat.com>
- <20251204151003.171039-5-peterx@redhat.com>
- <aTWqvfYHWWMgKHPQ@nvidia.com>
- <aTnbf_dtwOo_gaVM@x1.local>
- <20251216144224.GE6079@nvidia.com>
+        bh=rtWUnpShPmQzTtydQTzJbAldqFRML+Ujl+KavI+WO84=;
+        b=FfQvTcpyAkAJ7Fx9tC4Dp9qEZ//vFmUJ/0blEbV4aItOGqc36kx3KwNlBHh9v5Mv2a
+         6bMc9tu4L4Erv7mEP+LlCrMw+diFTRypZ0/xj4iNJg3duVitnyryHuxtuuHWGg8xpaZB
+         yWPIBH8Zc1WOxuk2MF8NIb6X7hUULhPvGVWq8gdeVRjVhzcklcCV5yvdSc7pXbwBfBuF
+         /MxDJS2yta8G6qDabEdeSTtaWGil503py9u/3+jx33SwZhsgUHG8q2YyfC/fuVJCH9ho
+         CiUHLO7x6YAoxh9Xag7umtjdxTVe982xdJwvpMj2iATrLANDfgRyV43vVEhGs7jWvuCh
+         +8AQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1765901878; x=1766506678;
+        h=cc:to:from:subject:message-id:mime-version:date:reply-to
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=rtWUnpShPmQzTtydQTzJbAldqFRML+Ujl+KavI+WO84=;
+        b=DmR+ye3lWpp+NMVpMNcCRvXO58LCSq4KITvof/tYPk/JidIp7FVEQzmKm5mPYFOVhy
+         pfXsnKJSzIYxghVRxn6xM80edWCNPwfl5zAreVvczx+Z5iGLgbFcN3VM+z21dH+x3hU0
+         xjMdGtFuh11smE872CvAstazfEjmanbu+IjlUpYFzz4hbVufD0RkNs6VyijFLy21bp/8
+         YipGc8ykAmw0jBCuiakJ09LJ5w9DnkxqUcM8Y+EwjLrKEFk2CBHRiIWNsjycNF9vxLEp
+         ALf9pQU+/VsnYs/UVYfDGWekYXpXd+SX8Ud16dlomPL2eMar1y3jpB4/+ehm/bOEDkor
+         VRBw==
+X-Gm-Message-State: AOJu0YyYHlBUxr+qaXD9LJk7+j54jV0K4ow3huet7Oo0uulTbg+5HPD/
+	H6SfCd8c67nhqBcx3mKjKrNLDHJKidvZsVMAc0MJE+0VRmgF3kZz/+i9nBrmKcXzsFxXB+ttsl3
+	hPLRd8Q==
+X-Google-Smtp-Source: AGHT+IFIHdd5EBZw97/XxjgHRkRU72Rd47o3FMvs4D/9pReBVAObAAfwIFJkMxwjEPiuwoLnbiC2EuCaU68=
+X-Received: from plmn1.prod.google.com ([2002:a17:903:1881:b0:29f:2f99:afb9])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:902:c403:b0:29d:9db2:f833
+ with SMTP id d9443c01a7336-29f23b77308mr157629785ad.25.1765901878390; Tue, 16
+ Dec 2025 08:17:58 -0800 (PST)
+Reply-To: Sean Christopherson <seanjc@google.com>
+Date: Tue, 16 Dec 2025 08:17:54 -0800
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20251216144224.GE6079@nvidia.com>
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.52.0.239.gd5f0c6e74e-goog
+Message-ID: <20251216161755.1775409-1-seanjc@google.com>
+Subject: [PATCH] KVM: nSVM: Remove a user-triggerable WARN on
+ nested_svm_load_cr3() succeeding
+From: Sean Christopherson <seanjc@google.com>
+To: Sean Christopherson <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>
+Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	Yosry Ahmed <yosry.ahmed@linux.dev>
+Content-Type: text/plain; charset="UTF-8"
 
-On Tue, Dec 16, 2025 at 10:42:24AM -0400, Jason Gunthorpe wrote:
-> On Wed, Dec 10, 2025 at 03:43:43PM -0500, Peter Xu wrote:
-> > > This seems a bit weird, the vma length is already known, it is len,
-> > > why do we go to all this trouble to recalculate len in terms of phys?
-> > > 
-> > > If the length is wrong the mmap will fail, so there is no issue with
-> > > returning a larger order here.
-> > > 
-> > > I feel this should just return the order based on pci_resource_len()?
-> > 
-> > IIUC there's a trivial difference when partial of a huge bar is mapped.
-> > 
-> > Example: 1G bar, map range (pgoff=2M, size=1G-2M).
-> > 
-> > If we return bar size order, we'd say 1G, however then it means we'll do
-> > the alignment with 1G. __thp_get_unmapped_area() will think it's not
-> > proper, because:
-> > 
-> > 	loff_t off_end = off + len;
-> > 	loff_t off_align = round_up(off, size);
-> > 
-> > 	if (off_end <= off_align || (off_end - off_align) < size)
-> > 		return 0;
-> > 
-> > Here what we really want is to map (2M, 1G-2M) with 2M huge, not 1G, nor
-> > 4K.
-> 
-> This was the point of my prior email, the alignment calculation can't
-> just be 'align to a size'. The core code needs to choose a VA such
-> that:
+Drop the WARN in svm_set_nested_state() on nested_svm_load_cr3() failing
+as it is trivially easy to trigger from userspace by modifying CPUID after
+loading CR3.  E.g. modifying the state restoration selftest like so:
 
-IMHO these are two different things we're discussing here.  I've replied in
-the other email about pgoff alignments, I think it's properly done, let's
-keep the discussion there.  I'll reply to the other issue raised.
+  --- tools/testing/selftests/kvm/x86/state_test.c
+  +++ tools/testing/selftests/kvm/x86/state_test.c
+  @@ -280,7 +280,16 @@ int main(int argc, char *argv[])
 
-> 
->    VA % (1 << order) == pg_off % (1 << order)
-> 
-> So if VFIO returns 1G then the VA should be aligned to 2M within a 1G
-> region. This allows opportunities to increase the alignment as the
-> mapping continues, eg if the arch supports a 32M 16x2M contiguous page
-> then we'd get 32M mappings with your example.
-> 
-> The core code should adjust the target order from the driver by:
->    lowest of order or size rounded down to a power of two
->  then
->    highest arch supported leaf size below the above
+                 /* Restore state in a new VM.  */
+                  vcpu = vm_recreate_with_one_vcpu(vm);
+  -               vcpu_load_state(vcpu, state);
+  +
+  +               if (stage == 4) {
+  +                       state->sregs.cr3 = BIT(44);
+  +                       vcpu_load_state(vcpu, state);
+  +
+  +                       vcpu_set_cpuid_property(vcpu, X86_PROPERTY_MAX_PHY_ADDR, 36);
+  +                       __vcpu_nested_state_set(vcpu, &state->nested);
+  +               } else {
+  +                       vcpu_load_state(vcpu, state);
+  +               }
 
-Yes, maybe this would be better.
+                  /*
+                   * Restore XSAVE state in a dummy vCPU, first without doing
 
-E.g. I would expect if a driver has 32M returned (order=13), then on x86_64
-it should be adjusted to 2M (order=9), but on a 4K pgsize arm64 it should
-be kept as 32M (order=13) as it matches contpmds.
+generates:
 
-Do we have any function that we can fetch the best mapping lower than a
-specific order?
+  WARNING: CPU: 30 PID: 938 at arch/x86/kvm/svm/nested.c:1877 svm_set_nested_state+0x34a/0x360 [kvm_amd]
+  Modules linked in: kvm_amd kvm irqbypass [last unloaded: kvm]
+  CPU: 30 UID: 1000 PID: 938 Comm: state_test Tainted: G        W           6.18.0-rc7-58e10b63777d-next-vm
+  Tainted: [W]=WARN
+  Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 0.0.0 02/06/2015
+  RIP: 0010:svm_set_nested_state+0x34a/0x360 [kvm_amd]
+  Call Trace:
+   <TASK>
+   kvm_arch_vcpu_ioctl+0xf33/0x1700 [kvm]
+   kvm_vcpu_ioctl+0x4e6/0x8f0 [kvm]
+   __x64_sys_ioctl+0x8f/0xd0
+   do_syscall_64+0x61/0xad0
+   entry_SYSCALL_64_after_hwframe+0x4b/0x53
 
-> 
-> None of this logic should be in drivers.
+Simply delete the WARN instead of trying to prevent userspace from shoving
+"illegal" state into CR3.  For better or worse, KVM's ABI allows userspace
+to set CPUID after SREGS, and vice versa, and KVM is very permissive when
+it comes to guest CPUID.  I.e. attempting to enforce the virtual CPU model
+when setting CPUID could break userspace.  Given that the WARN doesn't
+provide any meaningful protection for KVM or benefit for userspace, simply
+drop it even though the odds of breaking userspace are minuscule.
 
-I still think it's the driver's decision to have its own macro controlling
-the huge pfnmap behavior.  I agree with you core mm can have it, I don't
-see it blocks the driver not returning huge order if huge pfnmap is turned
-off.  VFIO-PCI currently indeed only depends directly on global THP
-configs, but I don't see why it's strictly needed.  So I think it's fine if
-a driver (even if global THP enabled for pmd/pud) deselect huge pfnmap for
-other reasons, then here the order returned can still always be PSIZE for
-the driver.  It's really not a huge deal to me.
+Opportunistically delete a spurious newline.
 
-> 
-> The way to think about this is that the driver is returning an order
-> which indicates the maximum case where:
-> 
->    VA % (1 << order) == pg_off % (1 << order)
-> 
-> Could be true. Eg a PCI BAR returns an order that is the size of the
-> BAR because it is always true. Something that stores at most 1G pages
-> would return 1G pages, etc.
-> 
-> > Note that here checking CONFIG_ARCH_SUPPORTS_P*D_PFNMAP is a vfio behavior,
-> > pairing with the huge_fault() of vfio-pci driver.  It implies if vfio-pci's
-> > huge pfnmap is enabled or not.  If it's not enabled, we don't need to
-> > report larger orders here.
-> 
-> Honestly, I'd ignore this, and I'm not sure VFIO should be testing
-> those in the huge_fault either. Again the core code should deal with
-> it.
-> 
-> > Shall I keep it simple to leave it to drivers, until we have something more
-> > solid (I think we need HAVE_ARCH_HUGE_P*D_LEAVES here)?
-> 
-> Logic like this should not be in drivers.
-> 
-> > Even with that config ready, drivers should always still do proper check on
-> > its own (drivers need to support huge pfnmaps here first before reporting
-> > high orders).  
-> 
-> Drivers shouldn't implement this alignment function without also
-> implementing huge fault, it is pointless. Don't see a reason to add
-> extra complexity.
+Fixes: b222b0b88162 ("KVM: nSVM: refactor the CR3 reload on migration")
+Cc: stable@vger.kernel.org
+Cc: Yosry Ahmed <yosry.ahmed@linux.dev>
+Signed-off-by: Sean Christopherson <seanjc@google.com>
+---
+ arch/x86/kvm/svm/nested.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-It's not implementing the order hint without huge fault.  It's when both
-are turned off in a kernel config.. then the order hint (even from driver
-POV) shouldn't need to be reported.
+diff --git a/arch/x86/kvm/svm/nested.c b/arch/x86/kvm/svm/nested.c
+index ba0f11c68372..9be67040e94d 100644
+--- a/arch/x86/kvm/svm/nested.c
++++ b/arch/x86/kvm/svm/nested.c
+@@ -1870,10 +1870,9 @@ static int svm_set_nested_state(struct kvm_vcpu *vcpu,
+ 	 * thus MMU might not be initialized correctly.
+ 	 * Set it again to fix this.
+ 	 */
+-
+ 	ret = nested_svm_load_cr3(&svm->vcpu, vcpu->arch.cr3,
+ 				  nested_npt_enabled(svm), false);
+-	if (WARN_ON_ONCE(ret))
++	if (ret)
+ 		goto out_free;
+ 
+ 	svm->nested.force_msr_bitmap_recalc = true;
 
-I don't know why you have so strong feeling on having a config check in
-vfio-pci drivers is bad.  I still think it's good to have it pairing with
-the same macro in huge_fault(), because it's essentially part of the whole
-pfnmap feature so it's fair they're guarded by the same kernel config, but
-I'm ok either way in case of current case of vfio-pci where it 100% depends
-on global THP setups.
-
+base-commit: 2111f7ca0e92dec60f0a3644ff3b164342af33c1
 -- 
-Peter Xu
+2.52.0.239.gd5f0c6e74e-goog
 
