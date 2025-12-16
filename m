@@ -1,196 +1,161 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f74.google.com (mail-pj1-f74.google.com [209.85.216.74])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D77436921B
-	for <kvm@vger.kernel.org>; Tue, 16 Dec 2025 15:42:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B8DF2BE5E
+	for <kvm@vger.kernel.org>; Tue, 16 Dec 2025 16:01:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.74
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765899777; cv=none; b=km2nyCDE8YYmdm5+/w+Yj79WymTICa3kGve+bi3Fr0ce9G1mP9FzQfgITMn3Snj8h07FFMphRFguBAqf92oNx7GsjygCO3kIca1a8utHgXn9lwFXXSuZ2IPulNONnsPnVPukalCkvo6XjbhopowUi1QCZJAuLXJCFac27ANB3uQ=
+	t=1765900867; cv=none; b=qcLX8rxuXYhQrIjop9I3Il8IlZQGMpI6/qfSZNUlfVpfa4HruPcdnSPr+7WNHJMYQLBFDHRvXh6M5/ZVVHwvidRDId4nY8T4uyQtzEt1WXdsLFmxKTAdTmqeGmQricM8vgOeyo7IK7x8lEP9GTlAG/Q/4X9/hKMic8MKpvTmFsI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765899777; c=relaxed/simple;
-	bh=vcO6HszvwJxaLe/TLAMxB7qkLbIRFDw6Qyk1sxR8iy8=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=GwFWbSJdV/Zln5fIDSlxCoxwgO5CsuaY4sM4JiUUR7xVb71cCZdKT9Kn/1Qwj7eQNjQaKFGpPfcmOxKANWajJNpbu8ekfbKfIg1LOY8EKYZFPImGcLzaSZavQP++Q9pyLJn5JSF19ZqPtTXXEALtg5OHEFKn0pB03vtqDabKdRY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=PfJlJkg2; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=QwMzBvMq; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1765900867; c=relaxed/simple;
+	bh=yNFnE3QRWlC1z1b1Pzzpu0pYl/KVYC+2f5/9GLoa/4w=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=RhFHI/S94jgZ8AwI0ttiTvG82ZNr138ZxfVfIoe8oTqWVMODW/oQbCsNhZSsnze0DLclngpKgDRSJXn3ug7goSnvK4w018pLISIysBhFtM57pjfzLvfQGMScIFJ2Oix+1SEjb97d5aQcvSag6xVyjokIpFp43pTKhf4wCx/uxsY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=W5DKYl8t; arc=none smtp.client-ip=209.85.216.74
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="PfJlJkg2";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="QwMzBvMq"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1765899774;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=d5KXOzuQhkZAaENyDSkIPF8i/y4z+WQGbelXRyoz6Cc=;
-	b=PfJlJkg2WEErTavn4vJ7ROusSpZ2urA2588iH95X3BBQ35C5YXl6yh1FIX3WYs48QCyfjC
-	0Orz/pD+KUgF2CjXRKfMnS/4X5+CbKwz9Spp422wdfpmMsyOZAi+0orjPOCmu/1DfostPD
-	AwmZeos+Kol92knMmxuiCf9pL0zyrf4=
-Received: from mail-pf1-f199.google.com (mail-pf1-f199.google.com
- [209.85.210.199]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-61-dN8ny-CJNNSRW4u1Lqjw4Q-1; Tue, 16 Dec 2025 10:42:52 -0500
-X-MC-Unique: dN8ny-CJNNSRW4u1Lqjw4Q-1
-X-Mimecast-MFC-AGG-ID: dN8ny-CJNNSRW4u1Lqjw4Q_1765899771
-Received: by mail-pf1-f199.google.com with SMTP id d2e1a72fcca58-7ae3e3e0d06so3973721b3a.0
-        for <kvm@vger.kernel.org>; Tue, 16 Dec 2025 07:42:52 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="W5DKYl8t"
+Received: by mail-pj1-f74.google.com with SMTP id 98e67ed59e1d1-34ab459c051so11539786a91.0
+        for <kvm@vger.kernel.org>; Tue, 16 Dec 2025 08:01:05 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1765899771; x=1766504571; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=d5KXOzuQhkZAaENyDSkIPF8i/y4z+WQGbelXRyoz6Cc=;
-        b=QwMzBvMqJuZ+4YBPJysefAwOXenrC5Pn1lDgB3XLmjquaJiLJjEfTJQJlyVK2iUif+
-         8Dh1/wZU1CLV1Kvq+zqT22vPYGuPFDw6R9aEr3bpOkfviE/sb4LPT9X4+sHK0LhSjCq2
-         hcm73bqza4IXE0BZEEBDQWbsC/Gs7ZmMyfQJuLAOZ4lMUAhKZWBxpxWZFYqrqYSRTvsr
-         Bsa/AIq3B/IXrq1nwW0XZvduunYx5PEXC5Z2E5nt/2dE1ZNVoBYBqxI8HjWBMJxeZVFZ
-         ijAmIH820Tt9XBewv17IOXV3yAUWdU3JINFDEDK0igCh62o1Ji0/p8vi35SxD4jGmVbh
-         UizA==
+        d=google.com; s=20230601; t=1765900865; x=1766505665; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:from:subject:message-id:references
+         :mime-version:in-reply-to:date:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=ed0NKnHXDUx6y67ShmBXuv80GX62o6+xq78eUXQD85M=;
+        b=W5DKYl8tlV1YqJlX20UbYj5sbOZ3rtQsFDAAWEMDGiAJc/gvpmXmzCTNh09o7uRn8y
+         h13hCy1/lfk38zguFoV6CRQAodYP0Ft89Ecn/jB4tirNfcTZwsWkr0vMOc58UPZTF2iI
+         4sqLCHIJhTgulsUNCdjTDdiGGwiLyBE6vB2oYxOxn8j1RVePvaNuzjxVJHL4OgLo91Is
+         enxHbTx1xhuTP2myZOpnVumgHuFJ9bX504WxbQQtF/FKhgSgP8wmxZoCW0QE9NrOUWpi
+         Jy3ePjNgyJJ8EfrmcXDWpADtDXR19W38OFkE8zFtpcp0Xc2QT+9req7N03HHYS4RNMJv
+         S3sw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1765899771; x=1766504571;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=d5KXOzuQhkZAaENyDSkIPF8i/y4z+WQGbelXRyoz6Cc=;
-        b=Pd3tCTx0Dw+4vmpIrnKBS+k/Q6PMcCQ4IrGJvfXNdxScb3ShbUtK6MmmqxD5LL4IOB
-         KEJ1GQsQHZ/EoyOZ1AviijvvsWT7eekJLj2fRllTr0dAJiiHPeMrV4dwx6Nx6NujNuhj
-         GQaJ5CdNdjVsYDDKUFubHNd60Q4/qMrrzqMp8FDsd5lbT0IRtiFu1SPzcu3/XbD5xGvr
-         pU7oj7c9f2gGmzAxvnivSh7CHGS0SrElQgyQYmnZ6kpHj0l2GUbkBkr0x9cmVsZLBE/9
-         jMi9Op/I5PkWKAdd8xKbZ8Q5bZt6gTO7Zp4ahRzDAptseFKgEExa9FemvCAGVn1YIvyw
-         vMJQ==
-X-Gm-Message-State: AOJu0YzNW27zH5mJwk/65BkMm0YVSml6gimAZ6YligReQvXAblxcIg8c
-	9gmMMoEXuDsdYU9ifKLtYkqandPAE91JX750eYDJvUVSOydFDWChiUu9Gc046zzvTXT0ywb9Or/
-	g5AXepRHuUc2UAA07rYbZUKvX4nzHdDNW/M4yzoL5yiTw+SQseLc/7w==
-X-Gm-Gg: AY/fxX7VHvkkfT/o6DldYKe55K1qXbB2PMIRWML+Dd8QVnCZi+kgyjRGq/qIbave7WZ
-	lYepHT/q5vC0/dg3NSA7VuOPQFwKlQNin4DLd5NYO1Qo57jyhnk31FWl+MsoMM9BsnsZHlFRkXE
-	n6X2LP19oPCyGwTf/+wEgaDXMAACZitMJr/I79j2sA2C5hvZbf00Bg93U+lN/LiYV00Qo/g+pUN
-	dm7r7qmtk+qC9hRsURFTGGU6wDdWBuSx8fzO566WrmTxfGHK1XQ5TL55gM+BZbH2or9r/a51f7k
-	Ra+33jLUc4IikRP4owOn7QRm3B3MpwhW2oJ9j3ZVV0UmwsefD/xrzifighr0UWfPanmcW6hAQNh
-	dEj8=
-X-Received: by 2002:a05:6a00:f0d:b0:7aa:ac12:2c2e with SMTP id d2e1a72fcca58-7f667d17b97mr13569092b3a.25.1765899771114;
-        Tue, 16 Dec 2025 07:42:51 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IFLCCVgc3/X1w3LsrtnhDoEJCb55PbVIq0LxCDKAJ9JaT01nvcCM+COudpJkrEncaDLaUIQCQ==
-X-Received: by 2002:a05:6a00:f0d:b0:7aa:ac12:2c2e with SMTP id d2e1a72fcca58-7f667d17b97mr13569056b3a.25.1765899770643;
-        Tue, 16 Dec 2025 07:42:50 -0800 (PST)
-Received: from x1.local ([142.188.210.156])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-7f4c5481289sm15994024b3a.64.2025.12.16.07.42.42
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 16 Dec 2025 07:42:50 -0800 (PST)
-Date: Tue, 16 Dec 2025 10:42:39 -0500
-From: Peter Xu <peterx@redhat.com>
-To: Jason Gunthorpe <jgg@nvidia.com>
-Cc: kvm@vger.kernel.org, linux-mm@kvack.org, linux-kernel@vger.kernel.org,
-	Nico Pache <npache@redhat.com>, Zi Yan <ziy@nvidia.com>,
-	Alex Mastro <amastro@fb.com>, David Hildenbrand <david@redhat.com>,
-	Alex Williamson <alex@shazbot.org>, Zhi Wang <zhiw@nvidia.com>,
-	David Laight <david.laight.linux@gmail.com>,
-	Yi Liu <yi.l.liu@intel.com>, Ankit Agrawal <ankita@nvidia.com>,
-	Kevin Tian <kevin.tian@intel.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: Re: [PATCH v2 2/4] mm: Add file_operations.get_mapping_order()
-Message-ID: <aUF97-BQ8X45IDqE@x1.local>
-References: <20251204151003.171039-1-peterx@redhat.com>
- <20251204151003.171039-3-peterx@redhat.com>
- <aTWpjOhLOMOB2e74@nvidia.com>
- <aTnWphMGVwWl12FX@x1.local>
- <20251216144427.GF6079@nvidia.com>
+        d=1e100.net; s=20230601; t=1765900865; x=1766505665;
+        h=content-transfer-encoding:cc:to:from:subject:message-id:references
+         :mime-version:in-reply-to:date:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=ed0NKnHXDUx6y67ShmBXuv80GX62o6+xq78eUXQD85M=;
+        b=BE/g80F2eFoQKPLbgjehE7ycnHLs8Qiae06+L/mrvR/MTkjAuhPHeLBgeGF5ZJSNPj
+         /3jkKCWqXQrOfCWAAFK3GCmbXt26tY7jguf1H47CyO+/8EGgYIw/naW+na/EsgB1DhRZ
+         SlaBo4XRtWBaQ+AwBdb2Dfe83jSpW3lCdj0ohH+gTIEc7Dm9h54jDC+T+ONXRovHiVBZ
+         dhMTf0pkJO5xLuX8k2WSMQQ1GmQMjGe+pJMAliLi1EgRxO5c496lAgm2UZptP1EWlXnI
+         fVVMmhkJwwLb/NI7T+JckzKaqxfyaI0JyFajvoqifbdSle9Ah1XWQmw7lDc7oRqA7t6e
+         q8TA==
+X-Forwarded-Encrypted: i=1; AJvYcCWAEGOwPxyz1nW+51C8dyHrXlXPBoYR+geg0Ru9Pryy94IRdSlPs+SmqWn0mz5FPtEELEE=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzryRNjOowXOEHBvxqCA5gUhlurE82XakvLQsstdW7jX2ecZQsE
+	+RJyrbsm77TC0CWWw07z/nefFdpwGdKHLd0T3P5IAQWRXBqFWP+qT2KghPiOaWX/IYzXQ9N+AQU
+	/VWx4ew==
+X-Google-Smtp-Source: AGHT+IHxGgJVMrExe1w1FALuUErnemaqW+x4EsczgP3V99F1HVfGLEgM+LG40KSurJS2g3VWhV/ZeVpDzeA=
+X-Received: from pjbqx13.prod.google.com ([2002:a17:90b:3e4d:b0:34c:811d:e3ca])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90a:d450:b0:34c:f92a:ad05
+ with SMTP id 98e67ed59e1d1-34cf92ac1ebmr161260a91.11.1765900864883; Tue, 16
+ Dec 2025 08:01:04 -0800 (PST)
+Date: Tue, 16 Dec 2025 08:01:03 -0800
+In-Reply-To: <CAE6NW_ZwdpGN0F_8NVe77tgGPw7nO5Mi-t1455gGoLcUVpVbpw@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20251216144427.GF6079@nvidia.com>
+Mime-Version: 1.0
+References: <20251205070630.4013452-1-chengkev@google.com> <aThT5d5WdMSszN9b@google.com>
+ <CAE6NW_ZwdpGN0F_8NVe77tgGPw7nO5Mi-t1455gGoLcUVpVbpw@mail.gmail.com>
+Message-ID: <aUGCP_n74pzTKLY6@google.com>
+Subject: Re: [PATCH] KVM: SVM: Don't allow L1 intercepts for instructions not advertised
+From: Sean Christopherson <seanjc@google.com>
+To: Kevin Cheng <chengkev@google.com>
+Cc: pbonzini@redhat.com, jmattson@google.com, yosry.ahmed@linux.dev, 
+	kvm@vger.kernel.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Tue, Dec 16, 2025 at 10:44:27AM -0400, Jason Gunthorpe wrote:
-> On Wed, Dec 10, 2025 at 03:23:02PM -0500, Peter Xu wrote:
-> > On Sun, Dec 07, 2025 at 12:21:32PM -0400, Jason Gunthorpe wrote:
-> > > On Thu, Dec 04, 2025 at 10:10:01AM -0500, Peter Xu wrote:
-> > > > Add one new file operation, get_mapping_order().  It can be used by file
-> > > > backends to report mapping order hints.
-> > > > 
-> > > > By default, Linux assumed we will map in PAGE_SIZE chunks.  With this hint,
-> > > > the driver can report the possibility of mapping chunks that are larger
-> > > > than PAGE_SIZE.  Then, the VA allocator will try to use that as alignment
-> > > > when allocating the VA ranges.
-> > > > 
-> > > > This is useful because when chunks to be mapped are larger than PAGE_SIZE,
-> > > > VA alignment matters and it needs to be aligned with the size of the chunk
-> > > > to be mapped.
-> > > > 
-> > > > Said that, no matter what is the alignment used for the VA allocation, the
-> > > > driver can still decide which size to map the chunks.  It is also not an
-> > > > issue if it keeps mapping in PAGE_SIZE.
-> > > > 
-> > > > get_mapping_order() is defined to take three parameters.  Besides the 1st
-> > > > parameter which will be the file object pointer, the 2nd + 3rd parameters
-> > > > being the pgoff + size of the mmap() request.  Its retval is defined as the
-> > > > order, which must be non-negative to enable the alignment.  When zero is
-> > > > returned, it should behave like when the hint is not provided, IOW,
-> > > > alignment will still be PAGE_SIZE.
-> > > 
-> > > This should explain how it works when the incoming pgoff is not
-> > > aligned..
-> > 
-> > Hmm, I thought the charm of this new proposal (based on suggestions of your
-> > v1 reviews) is to not need to worry on this..  Or maybe you meant I should
-> > add some doc comments in the commit message?
-> 
-> It can't be ignored, I don't think I ever said that. I said the driver
-> shouldn't have to worry about it, the core MM should deal with this.
-> 
-> > > I think for dpdk we want to support mapping around the MSI hole so
-> > > something like
-> > > 
-> > >  pgoff 0 -> 2M
-> > >  skip 4k
-> > >  2m + 4k -> 64M
-> > > 
-> > > Should setup the last VMA to align to 2M + 4k so the first PMD is
-> > > fragmented to 4k pages but the remaning part is 2M sized or better.
-> > > 
-> > > We just noticed a bug very similer to this in qemu around it's manual
-> > > alignment scheme where it would de-align things around the MSI window
-> > > and spoil the PMDs.
-> > 
-> > Right, IIUC this series should work all fine exactly as you said.
-> 
-> Are you sure? I did not see code doing this. The second mapping needs
-> to select a VA such that
-> 
->   VA % 2M == 4k
-> 
-> And I don't see it doing that.
+On Sat, Dec 13, 2025, Kevin Cheng wrote:
+> On Tue, Dec 9, 2025 at 11:52=E2=80=AFAM Sean Christopherson <seanjc@googl=
+e.com> wrote:
+> > On Fri, Dec 05, 2025, Kevin Cheng wrote:
+> > static
+> > void __nested_copy_vmcb_control_to_cache(struct kvm_vcpu *vcpu,
+> >                                          struct vmcb_ctrl_area_cached *=
+to,
+> >                                          struct vmcb_control_area *from=
+)
+> > {
+> >         unsigned int i;
+> >
+> >         for (i =3D 0; i < MAX_INTERCEPT; i++)
+> >                 to->intercepts[i] =3D from->intercepts[i];
+> >
+> >         nested_svm_sanitize_intercept(vcpu, to, RDTSCP);
+> >         nested_svm_sanitize_intercept(vcpu, to, SKINIT);
+> >         __nested_svm_sanitize_intercept(vcpu, to, XSAVE, XSETBV);
+> >         nested_svm_sanitize_intercept(vcpu, to, RDPRU);
+> >         nested_svm_sanitize_intercept(vcpu, to, INVPCID);
+> >
+> > Side topic, do we care about handling the case where userspace sets CPU=
+ID after
+> > stuffing guest state?  I'm very tempted to send a patch disallowing KVM=
+_SET_CPUID
+> > if is_guest_mode() is true, and hoping no one cares.
+>=20
+> Hmm good point I haven't thought about that. Would it be better to
+> instead update the nested state in svm_vcpu_after_set_cpuid() if
+> KVM_SET_CPUID is executed when is_guest_mode() is true?
 
-I have an old program tested this, I ran it but I didn't mention it in the
-cover letter.  I'm 99% sure it works like it, unless I'm seriously wrong
-somewhere.
+Allowing CPUID to change (or VMX feature MSRs) when the vCPU is in L2 creat=
+es a
+massive set of potential complications that would be all but impossible to =
+handle.
+E.g. if userspace clears features that are being used to run L2, then KVM c=
+ould
+end up with conflicting/nonsensical state for the vCPU.
 
-See:
+Note, the same holds true for non-nested features, which is largely what le=
+d to
+63f5a1909f9e ("KVM: x86: Alert userspace that KVM_SET_CPUID{,2} after KVM_R=
+UN is
+broken") and feb627e8d6f6 ("KVM: x86: Forbid KVM_SET_CPUID{,2} after KVM_RU=
+N").
 
-https://github.com/xzpeter/clibs/blob/master/misc/vfio-pci-nofix.c
+> Also sorry if this is a dumb question, but in general if KVM_SET_CPUID
+> is disallowed, then how does userspace handle a failed IOCTL call?
 
-mmap BAR with memory ENABLED and read (offset=0x0, size=0x8000000)
-mmap()=0x7f4395a00000 - 0.000117s
-read(32768) - 0.085376s
-mmap BAR with memory ENABLED and read (offset=0x1000, size=0x7fff000)
-mmap()=0x7f4395a01000 - 0.000012s
-read(32767) - 0.088642s
-mmap BAR with memory ENABLED and read (offset=0x0, size=0x7fff000)
-mmap()=0x7f4395a00000 - 0.000015s
-read(32767) - 0.093850s
-mmap BAR with memory ENABLED and read (offset=0x1000, size=0x7ffe000)
-mmap()=0x7f4395a01000 - 0.000011s
-read(32766) - 0.093248s
+The VMM logs an error and exits.
 
-Also see __thp_get_unmapped_area() processed such pgoff, it allocates VA
-with len_pad (not len), and pad the retval at last.
+> Do they just try again later or accept that the call has failed? Or is th=
+ere
+> an error code that signals that the vcpu is executing in guest mode and
+> should wait until not in guest mode to call the IOCTL?
 
-Please let me know if it didn't work like it, then it might be a bug.
+In practice, CPUID (and feature MSRs) are set very early on, when userspace=
+ is
+creating vCPUs.  With one exception, any other approach simply can't work, =
+because
+as above CPUID can't be configured after the vCPU has run.  The only way fo=
+r the
+vCPU to be "running" L2 is if userspace stuffed guest state via KVM_SET_NES=
+TED_STATE,
+and actually changing CPUID after that point simply can't work (it'll "succ=
+eed",
+but KVM provides no guarantees as to the viability of the vCPU).
 
-Thanks,
+The exception is that KVM allows setting _identical_ CPUID after KVM_RUN to
+support QEMU's vCPU hotplug implementation, which is what commit c6617c61e8=
+fe
+("KVM: x86: Partially allow KVM_SET_CPUID{,2} after KVM_RUN") is all about.
 
--- 
-Peter Xu
+Trying to _completely_ protect userspace from itself is a fool's errand, as=
+ KVM's
+granular set of ioctls for loading vCPU state and the subjectivity of what =
+is a
+"sane" vCPU model make it all but impossible to fully prevent userspace fro=
+m
+hurting itself without creating a maintenance nightmare.  But I can't think=
+ of
+any scenario where it would be useful for userspace to set nested state, th=
+en go
+back and change the vCPU model.
 
+I'll send a patch and see what happens.  Worst case scenario we break users=
+pace
+and get to learn about crazy VMM behavior :-)
