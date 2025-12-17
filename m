@@ -1,190 +1,307 @@
-Received: from CO1PR03CU002.outbound.protection.outlook.com (mail-westus2azon11010052.outbound.protection.outlook.com [52.101.46.52])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-oa1-f74.google.com (mail-oa1-f74.google.com [209.85.160.74])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 74CEB32D43E;
-	Wed, 17 Dec 2025 22:45:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.46.52
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1766011551; cv=fail; b=IuIzIp3bP5UzSgMM8shevYP/zsIiZ1dlOab4FLWORsNJMOHukZQxNf53DRn2dDGRewObmhiaED4Husf5gxgD/NmsGFireKR3r7vvRkxe9VlR/dHnXP7/QoPpcikUDoAK/bHoAsAfTljT18UIy4E5FmlswuDc/RJvZZ9drTD+bzs=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1766011551; c=relaxed/simple;
-	bh=FmjOY8YZbZbWQ9GMKtdXdPlPz3rK6FGqYrMeiUdhqw8=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=skXcWomumSe3dduMVXA1v+VtP64i82azhJpFNqpiJy4WETV4TU4KU4HmH4pJD51tlMua8q0WLGHvA7DVN6KKDarABpsB5HaymTfETc7eDgVLDnV83H4zmp5gu4DAYZRG0opDshrbsIbddlWFJ/4Lv4/d66T0y546nTquDOBqalA=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=oyrYMwIB; arc=fail smtp.client-ip=52.101.46.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2EA911DB54C
+	for <kvm@vger.kernel.org>; Wed, 17 Dec 2025 23:03:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.74
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1766012625; cv=none; b=B6hXLDj2MfiDgPsnjT85WvEyI5nlqisPmL0qvhtbjgdQY96eUnwFG+O+PrHNNpKv20vzUgkxpTPIdQCqis9bRjw0dyie4A8NMps3nJhHU6tp1Ee2fwYA6njhJCn4gvnyKrJ97Xla3QrezJH7gOH7TeVlkxgKlaf9SW6LLKeCdSo=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1766012625; c=relaxed/simple;
+	bh=GcH2YU9svXn1lwAwNWQlWL84mdn4ZPEmHup1iY+NLn4=;
+	h=Date:In-Reply-To:Mime-Version:Message-ID:Subject:From:To:Cc:
+	 Content-Type; b=lrWp/wAohbOwJ9RHAzXzuzFRqKEu4KPIuKwSlmW3O57aJyjFOJHbBdtuLi/ozD+NFxxmEa5psysizsH0oZTC2funwPLX/XqOmXe67jjRwhDaEHraODAUhFvvefOrNxM7VDZu3z2wBorl7AY1njCISA2ngtr5x+IR36kcmegX0X4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--coltonlewis.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=rIPrPCAK; arc=none smtp.client-ip=209.85.160.74
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--coltonlewis.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="oyrYMwIB"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=AF9H4Mv4C5yYvY4HXdX7j980smUKnOBUIkVI9jFf5xB94VmdQFUsKlMJNI3g6m3v1d1136LmTOpd8Q67lXX7baWJe6gF8nKwharXvxPaAEa1RSW3R9lDdGAqLe3C50BtaGci359YQtGqpAcPBnlzR7oIVr4pU+SrTYzgX++BYXOScqvooSZpW4zHFGSUzDx9wSHXU+mimWlyGw7HnOQSnQJFC4fUC2xM99gMCDzFhHiH/AWxQ3ICD/JsyPMCwMKZfJCdZKEgHCBlNjz8dphA17Kdy4THeCAEDMUY4MmGVXvdLX1T/jSTQdzbfxkIJKKeHYNoRUTJ277LQk5BxHgfDg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=FmjOY8YZbZbWQ9GMKtdXdPlPz3rK6FGqYrMeiUdhqw8=;
- b=A8Fv7A0XYvkFngnrpMoRduUlrmIJPTl6iEaIqrqZfziN8iNxRnFp5phcdGMFcE1v6b7TNruo1x0QBoaxXWhQJbaZu7Lv0rbWUKS6ih3dVppn2IhMEJ1l2yIAUCxNVWoHPqRUruPd2vkikLhk/2wl27l4aZH3lxDNpHcO6T3PENBOKLCV2b0l3B98bGbM4YkNnkTQgKsyU/14HV3Io+RocwUVAwa3if3xklCuZpky/rDVvsY+h7zF9Seoij8Lki3C8HnPE2IMAp3yDQAmDzvEr61MtGl7ZGJuJ3tSktROUHyZHOXmJ4t9gi7tArM/d7biW/zIurzvaVtXKECTz1MQ1Q==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=FmjOY8YZbZbWQ9GMKtdXdPlPz3rK6FGqYrMeiUdhqw8=;
- b=oyrYMwIBDItEVdTKp+omXEtMZcIEwl1YiAmD/4ndoWlGXYKxKHYOvZtVJ4ftwalejhDJcTxefdN++iqmAwOI83AdRvTfluM6NS2hTrDnAzqmSlppjn9ZG0MCGO+q3/fuLOqdM0tXBng1H6YETjqUoJ3Esr8ab22IVO/zofX7taDLkFZiWTQdhaPRVpptMn5qn8r7bRGfJJ3bh2qtIuYWYCvaZOWqXn1nRHKwZCjp09Yf95Gi+tZ5/iiyh9WXeyvmC+bhghmXr1ykfQ1CgxYPRv8qHoP928SF4DT0A8ZIFyHGcdQra0ZPNYc6FlLgul+YJfrxEWoC+8qT4Kb06w4mjw==
-Received: from SA1PR12MB7199.namprd12.prod.outlook.com (2603:10b6:806:2bc::21)
- by SN7PR12MB7934.namprd12.prod.outlook.com (2603:10b6:806:346::16) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9434.6; Wed, 17 Dec
- 2025 18:10:34 +0000
-Received: from SA1PR12MB7199.namprd12.prod.outlook.com
- ([fe80::928c:89d8:e8d6:72dd]) by SA1PR12MB7199.namprd12.prod.outlook.com
- ([fe80::928c:89d8:e8d6:72dd%6]) with mapi id 15.20.9412.011; Wed, 17 Dec 2025
- 18:10:34 +0000
-From: Ankit Agrawal <ankita@nvidia.com>
-To: Miaohe Lin <linmiaohe@huawei.com>
-CC: Neo Jia <cjia@nvidia.com>, Zhi Wang <zhiw@nvidia.com>, Krishnakant Jaju
-	<kjaju@nvidia.com>, Yishai Hadas <yishaih@nvidia.com>, "kevin.tian@intel.com"
-	<kevin.tian@intel.com>, "kvm@vger.kernel.org" <kvm@vger.kernel.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"linux-mm@kvack.org" <linux-mm@kvack.org>, Vikram Sethi <vsethi@nvidia.com>,
-	Jason Gunthorpe <jgg@nvidia.com>, Matt Ochs <mochs@nvidia.com>,
-	"jgg@ziepe.ca" <jgg@ziepe.ca>, Shameer Kolothum <skolothumtho@nvidia.com>,
-	"alex@shazbot.org" <alex@shazbot.org>, "akpm@linux-foundation.org"
-	<akpm@linux-foundation.org>, "nao.horiguchi@gmail.com"
-	<nao.horiguchi@gmail.com>
-Subject: Re: [PATCH v2 1/3] mm: fixup pfnmap memory failure handling to use
- pgoff
-Thread-Topic: [PATCH v2 1/3] mm: fixup pfnmap memory failure handling to use
- pgoff
-Thread-Index: AQHca+uU78WraO9/5EOAmO3/L1n94LUlLXGAgAD5j7Y=
-Date: Wed, 17 Dec 2025 18:10:34 +0000
-Message-ID:
- <SA1PR12MB7199065CD785B5FD0BFE6FB9B0ABA@SA1PR12MB7199.namprd12.prod.outlook.com>
-References: <20251213044708.3610-1-ankita@nvidia.com>
- <20251213044708.3610-2-ankita@nvidia.com>
- <f871d90d-11e0-1719-c946-1c0bf341042a@huawei.com>
-In-Reply-To: <f871d90d-11e0-1719-c946-1c0bf341042a@huawei.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-msip_labels:
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: SA1PR12MB7199:EE_|SN7PR12MB7934:EE_
-x-ms-office365-filtering-correlation-id: 14b4d720-0a22-4b04-321d-08de3d9792eb
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;ARA:13230040|376014|366016|1800799024|38070700021;
-x-microsoft-antispam-message-info:
- =?iso-8859-1?Q?5CU3YVifES8PK01TdzXZz90Uz/wG1dpGfhanHjmGwg/RXOUxsLh046AQZC?=
- =?iso-8859-1?Q?0C5iG/uOxzfvlF5x1PgWPxIVK229Xp+qe5eC93yUj0P7eJRIUSzjqnWp2d?=
- =?iso-8859-1?Q?oUGMv1eo3n1EEdn8e+bxdvZTwFWwSyDzGjTDbois7Eav8RVbDd0xUR4vg1?=
- =?iso-8859-1?Q?Xpdcs2s4QlNMaaOOX6RytTj4hJc4asqdDxdxqWmoMi+6iMoMifYQ2DwTB+?=
- =?iso-8859-1?Q?gDYSmFPF5oLIgqARGskGSVrXJexxzfVzxxnyiv7Ho5FElroo7qFwIsePot?=
- =?iso-8859-1?Q?4DVCHAUqb7GvKNR1Mcwde6SJTAioGkGIVMlAWHGOvJ8fOBrjWlvKJw5dLa?=
- =?iso-8859-1?Q?wPrKbwCM4bLk1WJLUkw5oAI4MMhAsDZlOvAVp7Z5QcyDA6xl9jbltz/wKP?=
- =?iso-8859-1?Q?nQMSJcluTsbxYAudZffU2FCoXJyoBasSNPiIxhhpxZKJkKZtNzCz+V7FeI?=
- =?iso-8859-1?Q?m7kFEj4ToTkkiAOsqES6CRON/igBfcZ7mkeiV4kgangnePOUHPZLvMtQqG?=
- =?iso-8859-1?Q?BlU/wS2zpmIyogLOjMuGcrXQYE/WFMFe76mRpCnfqB9PTGcDgtmDE0PNVK?=
- =?iso-8859-1?Q?QZ1m3ez/YMLL78ve1nuJWrYlZqCNZLGphfsQ3cQI4jcQ/Hdl0CIedHczI0?=
- =?iso-8859-1?Q?pszRfZOlHTt+bdNw/F81k+GgD3tBrj+p2rITbOAaOgXVpUVgsIT/PlKp3c?=
- =?iso-8859-1?Q?IU4HR17XLTjZsBsQTqqzmidoU5UL3Bvek1qDlt6FeflZDPRxy1122OZUoz?=
- =?iso-8859-1?Q?2kn0EOygT8b+lhhLnz/GfW2TTLdmX2+ephERG9vqmLIOsfqvwegLVP58tL?=
- =?iso-8859-1?Q?MhixaY7ptB7hjr3hDOCttqgGzxr9rLRcTgfBMtfq417PNR6XoUwiQlmkAG?=
- =?iso-8859-1?Q?67tdMyxW7XVZ+hxT991LhOu2lFLBEHk1Ru4Y62mmXc5Qopzk1svzqKOUd3?=
- =?iso-8859-1?Q?ryP56c4TcF0pVGhpWUEkQ5wIpaS4dJoFOU0iV/d4DJ8lQ9wrV0wCuFQLdo?=
- =?iso-8859-1?Q?hQub3HUfrD/3BYTl42FYzeLpClwuwclFYa85VzHO5PDsYGVWPRDScmM0FK?=
- =?iso-8859-1?Q?5R/SlJ0sCIjVJpCrZVo9L6n5JerOlBSzWcojFTb/PLL/mJjFDYCQ9hctW6?=
- =?iso-8859-1?Q?PYrVXV+pYpYX+iCOZ4SziOQgeJo0aaK43p9TjrCV+Fgn7AlAeFFRJZG2rQ?=
- =?iso-8859-1?Q?QK0Y7ZkOno0Z7EcMAzCraWvDdAK7adJJxJ26c+6kt02BYKycOwTHjjJcBf?=
- =?iso-8859-1?Q?uBlG2LUuuKaq2kzOqKrUE0hFf7eWbvcdNPfaEqIS1Yj0s4rqC+/7lzVlSr?=
- =?iso-8859-1?Q?vGhHGLDU1aC3Q01Sr3nnXNjU06MV8zGAbd2eRNRv1lpkNbEPewERk/kAvU?=
- =?iso-8859-1?Q?wzHl34eN66UoDdrlF/FRgzaT6im9hoa90N+LpMyA6AGtHJ3sLQtiug5u1F?=
- =?iso-8859-1?Q?3pab/bUlToPCvQYhv6jzYT3OImEzeTPkWi1rTk0jirkRfpnr42GSFrLROt?=
- =?iso-8859-1?Q?4YQQwrcziF0J8YXr+dogLR4zGoYnMtBk4D45smT8U46IHr8ytPBAUdN/1v?=
- =?iso-8859-1?Q?AWaEvs0boDE3lG4X/6d1NRe5RpzX?=
-x-forefront-antispam-report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SA1PR12MB7199.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(366016)(1800799024)(38070700021);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0:
- =?iso-8859-1?Q?8skR0hDqJc8nwYANzixzHKCb4F2kgyftYJJgWLqS/m62jWjiPLGyuch10Q?=
- =?iso-8859-1?Q?wME55kcMovxOq/Xo7ifXZ/xp/KljHqpnmOJUyCZQBW8Ws99yf4TzK+cJH3?=
- =?iso-8859-1?Q?UK7c1qyxO5sm2qgNO5Ns2sbbzMWerl/Ycksg2oohUpynw9sOMktPQODMnV?=
- =?iso-8859-1?Q?OjioEIFudIZt44dDjD62bIEn75WSPvFMhY9dsoXCqEHkE6atVDAKFaYM7d?=
- =?iso-8859-1?Q?H20s1FvvWnQrAMPp3lK3suQEHQelSFrEO5kuEsm4szBQVprzOYokFMKzTV?=
- =?iso-8859-1?Q?Jzca3tnxPWr0FraxRcNmn1Jn1WLEKZfkRymiHjsMYA6uM9qIVJmP9jpYff?=
- =?iso-8859-1?Q?8g7FGNNEsjY35SZzKtBHIoA4nUHxpxOBJJkHvOftwbcDCt74iD4b5t22dD?=
- =?iso-8859-1?Q?5+G72XWMlaZ5HQiwX8f6mEq9zPdW2igfEhBT9xScPwSEvNOkqlSFhbsT8U?=
- =?iso-8859-1?Q?WHo2sQ8fFHeGCv+5dk4/WAHZj5I4CCimU2G4RRKtEgpNXxJlItUM/uVLAh?=
- =?iso-8859-1?Q?0+Tq2WXAEqtFiVwZVYo0Am16U4nD2uiBNXsyRyJmRGr6dGSCb78VHl7reV?=
- =?iso-8859-1?Q?v/tzI3gKnVZdVYXwJa+9KtHbeKzUpRkaDGK4ocHufJEAQu+hM9hdXZpetm?=
- =?iso-8859-1?Q?+uJ0Hl9ttpmefEXTkTjeG1IOUZlebEksUXTzhKWA+0+v6d+CdmVmcK3IO8?=
- =?iso-8859-1?Q?LvzlgEJzhPV3jNUnkvM47kleUdY6gPpQszUJsBxtSpBjyglfsGywfnqM8y?=
- =?iso-8859-1?Q?UiI6628+HW1kglSQz16Ta+clB4Lcn+LcRDHyK5pTwHX01ZcuJqLXBBhmai?=
- =?iso-8859-1?Q?NOBqjzb54vRfaN6cj9b0Bd1jyFnMeCTtKL2eUXn49YfT8z4n+mthymRdE4?=
- =?iso-8859-1?Q?F9pRNmVSSKoESc5xd6HiukhgIWZP0/cJzNAuoDNU1mwXjKAr88C8m9hHg1?=
- =?iso-8859-1?Q?z2CxnGksg8XXOCcKMhvihpkxwmTH5wbSGuKbToxlHwzfAr0PbBqfyVww9n?=
- =?iso-8859-1?Q?tvzi5KdRN1HPOwgIym7GpTwyD422iQaHWL8k9K2r936eSMTwl1wJW4zW+w?=
- =?iso-8859-1?Q?CwEmpr8VNe8iuDgRVALNmp4QmZ7gmDfaH5Wjz0Dl3xltPDeSwVAHMFdA7X?=
- =?iso-8859-1?Q?rLqwuLqRy3JejFzLc23fITcb1v4/ccsbaCRYVnLTGoeO781RkJJSkN3zHd?=
- =?iso-8859-1?Q?sitHzyLMgZ9W/GI6+8luwAPHy6owh8xlon/D+SZkgC19xNzPJ9RdMzqm7T?=
- =?iso-8859-1?Q?pVUPWTCdfiJrVCuiMKQfnwfAaPQqILGt1pul/WDIvpaq2vkjgFzql2TztG?=
- =?iso-8859-1?Q?PPynC1Wz3hstVt6lROnZygU9ViLanjKaKETN+ni+qpuSiIU/08sGDP78tm?=
- =?iso-8859-1?Q?zK4lpDVL3RJqE895cwh0EoPaxyYXNLIF/zA0WhJt9/qYqvoLsaTFP+W/Xl?=
- =?iso-8859-1?Q?CRSJWU5Lcs7zCSUH73tH77WY2ebBVzwengvyGsWNpTx/Tns0FQsLptriv5?=
- =?iso-8859-1?Q?A+geYovN26m64KEsAcJ8lo7TsrzqzSsVi7O0XDg8R33AyCrxCfm8ZF/g0z?=
- =?iso-8859-1?Q?xf9B1B0ka3ikUGJ9ATXGscFNdVvA0EUpPFTr9gFB1Dij66UIWEYo8uxM9U?=
- =?iso-8859-1?Q?CG9XH9Viu3dmk=3D?=
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="rIPrPCAK"
+Received: by mail-oa1-f74.google.com with SMTP id 586e51a60fabf-3f578b8136fso99201fac.0
+        for <kvm@vger.kernel.org>; Wed, 17 Dec 2025 15:03:42 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1766012622; x=1766617422; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:mime-version:in-reply-to:date:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=aRTGpXalCpTw9EJ3jwwqmWQTyjHYa0HLkPGjExiFjCQ=;
+        b=rIPrPCAKLA8TVt8dJxvDb+V4hecsW6IZV/IKE1B7Wyao84NDPJag6rll8HfyFWh72T
+         QQ7q1kA1ZgcGll/QN81Eb1F/X3ZzdXDd6StpuJEiv4w/GmbYGvWMS0WvBZ0XCgeWae43
+         cstm9EcONBmeCEQtQ3uLgmE8qEzjvnE3TPT4rC7d62x/HIFdzzXsjeeT6KeawWNJYmlc
+         Guywernkj//1zm54qgEN0bn/sOUNOsBXLbQHG7H13AsEYJonMTIXH3r+kb8rfVMtYj7q
+         N9TxMrwAtpR7GU13YA12cZ3/Fh/BttjHwuYmQ8pD/KD8zJcWMSXgp4wnWZKCMEKa+fAU
+         zwCA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1766012622; x=1766617422;
+        h=cc:to:from:subject:message-id:mime-version:in-reply-to:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=aRTGpXalCpTw9EJ3jwwqmWQTyjHYa0HLkPGjExiFjCQ=;
+        b=TpgjXYSVKdNKzZJAYLUCORXSvI5yOfrwMT97K23kbUpv4WNnguSD0Ta65SjK8Wu/uV
+         S8PvSnot2JrG8GHkwThasScU19wf7ZlNl7wjxe32dN3uE1UJY3ldyZsHxQfmUtxV/dcw
+         UstBL9BmZv9H4RTVY11GpnzVhaKs14EdBLwCqufxamjthvo+D9Vr5X80dcjDyfeCqx+F
+         GZ75z7Uqk3+jxYNZhWbeW+E8nGI5YOS1RnTsy0PHwxhbuVhyu2ZJvJxRyiuB0snCE0Uc
+         cC/W9tnPu+UG14fx1Gg2XNlmvfjQJy5ExNzhAoiCDVIAI6cWGxkcmXb9g3nK9A3NCCYS
+         EqfQ==
+X-Gm-Message-State: AOJu0YzoGKA7vZu+QKCl5HfpYFda0djrNXKir3Quu8JLnpFVLWo/fR6C
+	YehMQHYU22Thp4kBiKCwo6QBKz5ASccHxvoE9BSEGy22EQZLczUzZW5LTGYZtCRBcVgzri/Sa1/
+	pg4pr7hkdzbRg30AN5Vx/4h3kwA==
+X-Google-Smtp-Source: AGHT+IFQs5k1bWdHtz7tc4/8DEUyRxbCe8MSuSfyN2BvguDIeAIIerMywbvjRsitUO6G8RkTOEE+yjjKcwPQBwUtTA==
+X-Received: from jaii7.prod.google.com ([2002:a05:6638:4007:b0:5c6:3249:f8ff])
+ (user=coltonlewis job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:6820:2915:b0:659:9a49:8fb7 with SMTP id 006d021491bc7-65b452574dfmr8508202eaf.48.1766012622152;
+ Wed, 17 Dec 2025 15:03:42 -0800 (PST)
+Date: Wed, 17 Dec 2025 23:03:41 +0000
+In-Reply-To: <aUH7oC41XaEMsXf_@kernel.org> (message from Oliver Upton on Tue,
+ 16 Dec 2025 16:38:56 -0800)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: SA1PR12MB7199.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 14b4d720-0a22-4b04-321d-08de3d9792eb
-X-MS-Exchange-CrossTenant-originalarrivaltime: 17 Dec 2025 18:10:34.7369
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: rhAyYvEM/UW7hsw02rGD2neCJllsJEfMhMaGrSepYSWdZDhRikGMFhY8NrJtOmZzVBjIP7r580nvGukawvnBLg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SN7PR12MB7934
+Mime-Version: 1.0
+Message-ID: <gsnt34583e42.fsf@coltonlewis-kvm.c.googlers.com>
+Subject: Re: [PATCH v5 14/24] KVM: arm64: Write fast path PMU register handlers
+From: Colton Lewis <coltonlewis@google.com>
+To: Oliver Upton <oupton@kernel.org>
+Cc: kvm@vger.kernel.org, pbonzini@redhat.com, corbet@lwn.net, 
+	linux@armlinux.org.uk, catalin.marinas@arm.com, will@kernel.org, 
+	maz@kernel.org, oliver.upton@linux.dev, mizhang@google.com, 
+	joey.gouly@arm.com, suzuki.poulose@arm.com, yuzenghui@huawei.com, 
+	mark.rutland@arm.com, shuah@kernel.org, gankulkarni@os.amperecomputing.com, 
+	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-arm-kernel@lists.infradead.org, kvmarm@lists.linux.dev, 
+	linux-perf-users@vger.kernel.org, linux-kselftest@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"; format=flowed; delsp=yes
 
->>=A0=A0=A0=A0=A0=A0 i_mmap_lock_read(mapping);=0A=
->>=A0=A0=A0=A0=A0=A0 rcu_read_lock();=0A=
->> @@ -2226,9 +2230,12 @@ static void collect_procs_pfn(struct address_spac=
-e *mapping,=0A=
->>=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 t =3D task_early_kill(tsk, tru=
-e);=0A=
->>=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 if (!t)=0A=
->>=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 contin=
-ue;=0A=
->> -=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 vma_interval_tree_foreach(vma, &ma=
-pping->i_mmap, pfn, pfn) {=0A=
->> -=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 if (vma->v=
-m_mm =3D=3D t->mm)=0A=
->> -=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=
-=A0=A0=A0=A0=A0 add_to_kill_pfn(t, vma, to_kill, pfn);=0A=
->> +=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 vma_interval_tree_foreach(vma, &ma=
-pping->i_mmap, 0, ULONG_MAX) {=0A=
->> +=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 pgoff_t pg=
-off;=0A=
->=0A=
-> IIUC, all vma will be traversed to find the final pgoff. This might not b=
-e a good idea=0A=
-> because rcu lock is held and this traversal might take a really long time=
-. Or am I miss=0A=
-> something?=0A=
-=0A=
-Hi Miaohe, the VMAs on the registered address space will be checked. For th=
-e nvgrace-gpu=0A=
-user of this API in 3/3, there are only 3 VMAs on the registered address sp=
-ace (that are=0A=
-associated with the vfio file).=0A=
+Oliver Upton <oupton@kernel.org> writes:
+
+> On Tue, Dec 09, 2025 at 08:51:11PM +0000, Colton Lewis wrote:
+>> diff --git a/arch/arm64/include/asm/arm_pmuv3.h  
+>> b/arch/arm64/include/asm/arm_pmuv3.h
+>> index 3e25c0313263c..41ec6730ebc62 100644
+>> --- a/arch/arm64/include/asm/arm_pmuv3.h
+>> +++ b/arch/arm64/include/asm/arm_pmuv3.h
+>> @@ -39,6 +39,16 @@ static inline unsigned long read_pmevtypern(int n)
+>>   	return 0;
+>>   }
+
+>> +static inline void write_pmxevcntr(u64 val)
+>> +{
+>> +	write_sysreg(val, pmxevcntr_el0);
+>> +}
+>> +
+>> +static inline u64 read_pmxevcntr(void)
+>> +{
+>> +	return read_sysreg(pmxevcntr_el0);
+>> +}
+>> +
+>>   static inline unsigned long read_pmmir(void)
+>>   {
+>>   	return read_cpuid(PMMIR_EL1);
+>> @@ -105,21 +115,41 @@ static inline void write_pmcntenset(u64 val)
+>>   	write_sysreg(val, pmcntenset_el0);
+>>   }
+
+>> +static inline u64 read_pmcntenset(void)
+>> +{
+>> +	return read_sysreg(pmcntenset_el0);
+>> +}
+>> +
+>>   static inline void write_pmcntenclr(u64 val)
+>>   {
+>>   	write_sysreg(val, pmcntenclr_el0);
+>>   }
+
+>> +static inline u64 read_pmcntenclr(void)
+>> +{
+>> +	return read_sysreg(pmcntenclr_el0);
+>> +}
+>> +
+>>   static inline void write_pmintenset(u64 val)
+>>   {
+>>   	write_sysreg(val, pmintenset_el1);
+>>   }
+
+>> +static inline u64 read_pmintenset(void)
+>> +{
+>> +	return read_sysreg(pmintenset_el1);
+>> +}
+>> +
+>>   static inline void write_pmintenclr(u64 val)
+>>   {
+>>   	write_sysreg(val, pmintenclr_el1);
+>>   }
+
+>> +static inline u64 read_pmintenclr(void)
+>> +{
+>> +	return read_sysreg(pmintenclr_el1);
+>> +}
+>> +
+>>   static inline void write_pmccfiltr(u64 val)
+>>   {
+>>   	write_sysreg(val, pmccfiltr_el0);
+>> @@ -160,11 +190,16 @@ static inline u64 read_pmovsclr(void)
+>>   	return read_sysreg(pmovsclr_el0);
+>>   }
+
+>> -static inline void write_pmuserenr(u32 val)
+>> +static inline void write_pmuserenr(u64 val)
+>>   {
+>>   	write_sysreg(val, pmuserenr_el0);
+>>   }
+
+>> +static inline u64 read_pmuserenr(void)
+>> +{
+>> +	return read_sysreg(pmuserenr_el0);
+>> +}
+>> +
+>>   static inline void write_pmuacr(u64 val)
+>>   {
+>>   	write_sysreg_s(val, SYS_PMUACR_EL1);
+
+> I wouldn't bother with adding accessors to the PMUv3 driver header, this
+> gets a bit confusing when the 32-bit counterpart lacks matching  
+> definitions.
+> Additionally, the part of KVM you're modifying is very much an
+> "internal" part meant to run in a not-quite-kernel context.
+
+> Considering this, I'd prefer KVM directly accessed the PMU registers to
+> avoid the possibility of taking some instrumented codepath in the
+> future.
+
+Will do.
+
+>> +	if (!kvm_vcpu_pmu_is_partitioned(vcpu)
+>> +	    || pmu_access_el0_disabled(vcpu))
+
+> Always put operators on the preceding line for line continuations.
+
+> Also, don't call pmu_access_el0_disabled() from here. It can potentially
+> do a full emulated exception entry even though the vCPU is in an
+> extremely inconsistent state (i.e. haven't returned to kernel context
+> yet). Isn't the current value for PMUSERENR_EL0 on the CPU instead of in
+> the vCPU's saved context anyway?
+
+> The fast-path accessors really need to be *just* accessors, reading
+> state from the CPU in the unfortunate situation that a TPM trap has been
+> forced upon us.
+
+Understood.
+
+>> +	case SYS_PMXEVCNTR_EL0:
+>> +		idx = FIELD_GET(PMSELR_EL0_SEL, read_pmselr());
+>> +
+>> +		if (pmu_access_event_counter_el0_disabled(vcpu))
+>> +			return false;
+>> +
+>> +		if (!pmu_counter_idx_valid(vcpu, idx))
+>> +			return false;
+>> +
+>> +		ret = handle_pmu_reg(vcpu, &p, PMEVCNTR0_EL0 + idx, rt, val,
+>> +				     &read_pmxevcntr, &write_pmxevcntr);
+>> +		break;
+
+> It is a bit odd to handle the muxing for finding the in-memory value yet
+> using the selector-based register for hardware.
+
+Agreed
+
+>> +	case SYS_PMEVCNTRn_EL0(0) ... SYS_PMEVCNTRn_EL0(30):
+>> +		idx = ((p.CRm & 3) << 3) | (p.Op2 & 7);
+>> +
+>> +		if (pmu_access_event_counter_el0_disabled(vcpu))
+>> +			return false;
+>> +
+>> +		if (!pmu_counter_idx_valid(vcpu, idx))
+>> +			return false;
+>> +
+>> +		if (p.is_write) {
+>> +			write_pmevcntrn(idx, val);
+>> +			__vcpu_assign_sys_reg(vcpu, PMEVCNTR0_EL0 + idx, val);
+>> +		} else {
+>> +			vcpu_set_reg(vcpu, rt, read_pmevcntrn(idx));
+>> +		}
+>> +
+>> +		ret = true;
+>> +		break;
+
+> Can't both of these cases share a helper once you've worked out the
+> index? Same for PMEVTYPERn_EL0.
+
+Agreed
+
+>> +	default:
+>> +		ret = false;
+>> +	}
+>> +
+>> +	if (ret)
+>> +		__kvm_skip_instr(vcpu);
+>> +
+>> +	return ret;
+>> +}
+>> +
+>>   static inline bool kvm_hyp_handle_sysreg(struct kvm_vcpu *vcpu, u64  
+>> *exit_code)
+>>   {
+>>   	if (cpus_have_final_cap(ARM64_WORKAROUND_CAVIUM_TX2_219_TVM) &&
+>> @@ -785,6 +983,9 @@ static inline bool kvm_hyp_handle_sysreg(struct  
+>> kvm_vcpu *vcpu, u64 *exit_code)
+>>   	if (kvm_handle_cntxct(vcpu))
+>>   		return true;
+
+>> +	if (kvm_hyp_handle_pmu_regs(vcpu))
+>> +		return true;
+>> +
+
+> Since the whole partitioned PMU feature is constrained to VHE-only you
+> should call this from kvm_hyp_handle_sysreg_vhe().
+
+Will do.
+
+>> +
+>> +bool check_pmu_access_disabled(struct kvm_vcpu *vcpu, u64 flags)
+>> +{
+>> +	u64 reg = __vcpu_sys_reg(vcpu, PMUSERENR_EL0);
+>> +	bool enabled = (reg & flags) || vcpu_mode_priv(vcpu);
+>> +
+>> +	if (!enabled)
+>> +		kvm_inject_undefined(vcpu);
+>> +
+>> +	return !enabled;
+>> +}
+>> +
+>> +bool pmu_access_el0_disabled(struct kvm_vcpu *vcpu)
+>> +{
+>> +	return check_pmu_access_disabled(vcpu, ARMV8_PMU_USERENR_EN);
+>> +}
+>> +
+>> +bool pmu_counter_idx_valid(struct kvm_vcpu *vcpu, u64 idx)
+>> +{
+>> +	u64 pmcr, val;
+>> +
+>> +	pmcr = kvm_vcpu_read_pmcr(vcpu);
+>> +	val = FIELD_GET(ARMV8_PMU_PMCR_N, pmcr);
+>> +	if (idx >= val && idx != ARMV8_PMU_CYCLE_IDX) {
+>> +		kvm_inject_undefined(vcpu);
+>> +		return false;
+>> +	}
+>> +
+>> +	return true;
+>> +}
+>> +
+>> +bool pmu_access_cycle_counter_el0_disabled(struct kvm_vcpu *vcpu)
+>> +{
+>> +	return check_pmu_access_disabled(vcpu, ARMV8_PMU_USERENR_CR |  
+>> ARMV8_PMU_USERENR_EN);
+>> +}
+>> +
+>> +bool pmu_access_event_counter_el0_disabled(struct kvm_vcpu *vcpu)
+>> +{
+>> +	return check_pmu_access_disabled(vcpu, ARMV8_PMU_USERENR_ER |  
+>> ARMV8_PMU_USERENR_EN);
+>> +}
+
+> Refactorings need to happen in a separate patch.
+
+Will do
+
+> Thanks,
+> Oliver
