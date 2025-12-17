@@ -1,125 +1,107 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lf1-f42.google.com (mail-lf1-f42.google.com [209.85.167.42])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 415FC349B07;
-	Wed, 17 Dec 2025 17:13:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 31B242765F5
+	for <kvm@vger.kernel.org>; Wed, 17 Dec 2025 18:12:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765991631; cv=none; b=E31cYBGdA3re4g2pwVI/FoReWSxfe4KvaqMzszQ4YEZ9Us+94kv8Rfc6C5D36g4R88X4OVHg0+x8tlYVI/L3KD5BSx5h3M3Bm5F4KxD2tbCt6dyP6p2Fxp6zcHexp2f+bqXq7ffml6q5G2oLpHSVePlg4yRcYe8DfhqypoYjXHQ=
+	t=1765995154; cv=none; b=ga4V4VfusGPUxdqXj65q7mhAe9nGp1IKC+nJQaHRz0hTpmZa856mm44IRNvMh7s+/1BASepGTTePaXlUhotEx4V1ZjbIzFTV/zqa9kmw/BNKtLka/gZQ1bCC3iWTYU6iDXqro4Z0holmsjpVDsn1mhZPTvDgky7MfIj+jctOjvs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765991631; c=relaxed/simple;
-	bh=hP6aS6dR1CxDFuuYxfZTxYd+l+xS+uH+myfD+TNx5mg=;
-	h=Date:Message-ID:From:To:Cc:Subject:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=dfxdU356A7n+Oybs057F+ZNnnnSPZldDYfexYUoioX+HVO2QMtwBp8fk7ooEqIrVu/U8yeBuThMA8442DA4p1nupaRASABMEcsM040gKLMTyw2umIc0UYMC21VuQYsyA8xUgJ7VkOxfqU/QgxkVnqIQtTc/AUjEa4bcZ2RoTd0Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=a58XlnQB; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1765995154; c=relaxed/simple;
+	bh=+7N+VHpTGzHKRYSzDk2OOTGyoErfwnToIvY7+I5OyWA=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=l2INmTykG+KcwfuzIh4nQbPNDoVkapmWb3Ka3Q+N9g7JtvJQmM+Zt/dT/4ntmS4y1+vAMyi4WiylS9dlDlUEQ1+xqC/g6k31o6KV/Rl5FONaahUCvUKiUBodgwlrGAMAzSrG44hG6X3mgKVentRmevM7uuNDVFIWLvQ6v1eN6k4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Iu7vhMYN; arc=none smtp.client-ip=209.85.167.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="a58XlnQB"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D346EC4CEF5;
-	Wed, 17 Dec 2025 17:13:50 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1765991630;
-	bh=hP6aS6dR1CxDFuuYxfZTxYd+l+xS+uH+myfD+TNx5mg=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=a58XlnQB5gxYoKgEQXiEJRyLri+G4zKwum8Y4f5pEz+1OoHI+nzMxMPsb1eMLRL/k
-	 XMeeNWqKe/5/kABESM8eQh1eV064kUQz1gsyU8SIlPI/8HkRphsbFa2TfU/ekpuqjR
-	 6v+aNs1Iajp4c6NEWQ6yeSUHPK7pGrYPrlRFMIk4HI+Z2ZaniFTchj1pzg54/LsXZo
-	 gFT5e3lSPRfQ/+5u8iGtY7GmUaK/b3xj0Jvv/ZH3h47aNdT8lRHnA/jadbUrMMJ8di
-	 FtJtOISys39iTsREWd82FBfcS9B4a2Q3FMy2gzegNHD4/IUov93W9GgER29Z7aorhp
-	 4vYhRL+ZDIWmg==
-Received: from sofa.misterjones.org ([185.219.108.64] helo=goblin-girl.misterjones.org)
-	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.98.2)
-	(envelope-from <maz@kernel.org>)
-	id 1vVv5w-0000000DRqF-1tHd;
-	Wed, 17 Dec 2025 17:13:48 +0000
-Date: Wed, 17 Dec 2025 17:13:47 +0000
-Message-ID: <86v7i5m3p0.wl-maz@kernel.org>
-From: Marc Zyngier <maz@kernel.org>
-To: Sascha Bischoff <Sascha.Bischoff@arm.com>
-Cc: "linux-arm-kernel@lists.infradead.org"
-	<linux-arm-kernel@lists.infradead.org>,
-	"kvmarm@lists.linux.dev"
-	<kvmarm@lists.linux.dev>,
-	"kvm@vger.kernel.org" <kvm@vger.kernel.org>,
-	nd <nd@arm.com>,
-	"oliver.upton@linux.dev" <oliver.upton@linux.dev>,
-	Joey Gouly
-	<Joey.Gouly@arm.com>,
-	Suzuki Poulose <Suzuki.Poulose@arm.com>,
-	"yuzenghui@huawei.com" <yuzenghui@huawei.com>,
-	"peter.maydell@linaro.org"
-	<peter.maydell@linaro.org>,
-	"lpieralisi@kernel.org" <lpieralisi@kernel.org>,
-	Timothy Hayes <Timothy.Hayes@arm.com>
-Subject: Re: [PATCH 19/32] KVM: arm64: gic-v5: Init Private IRQs (PPIs) for GICv5
-In-Reply-To: <20251212152215.675767-20-sascha.bischoff@arm.com>
-References: <20251212152215.675767-1-sascha.bischoff@arm.com>
-	<20251212152215.675767-20-sascha.bischoff@arm.com>
-User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
- FLIM-LB/1.14.9 (=?UTF-8?B?R29qxY0=?=) APEL-LB/10.8 EasyPG/1.0.0 Emacs/30.1
- (aarch64-unknown-linux-gnu) MULE/6.0 (HANACHIRUSATO)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Iu7vhMYN"
+Received: by mail-lf1-f42.google.com with SMTP id 2adb3069b0e04-5957c929a5eso8767003e87.1
+        for <kvm@vger.kernel.org>; Wed, 17 Dec 2025 10:12:31 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1765995149; x=1766599949; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=ZFgy+A0O8xnRgJd7v+RUa9QU+8qq09tdOiliLPIqEb4=;
+        b=Iu7vhMYNgxbF12w4HqrH0YR9nOf1UVbPkz8Nkuo+p1MRcl1gf3rUHEnA5TvhReMU7T
+         N42IMGKa1/vB0ngF3/TXDsAzMDRGvN6PS925tFybHU3LqllK4S3R9yf1nVvu11McOx8o
+         v2LcjzDbZEzYQTxitGVftesUc0L11eHmexMKiQbsR5yPWwLilDyEQfhAMA4h9U6LutB4
+         P4PRIHmT+tGX2LAZEnouynClP+dHCHe+Q/MMKeqjzDjBZGZJPhh8qElPF7ID71D+Yrm7
+         Jq8SdtBNh1FbXnrW2y3wFm8vUE9jHbPt9td/fUytFuPUnJ193vgoB3q+xN/cgtVuJz87
+         YJEg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1765995149; x=1766599949;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=ZFgy+A0O8xnRgJd7v+RUa9QU+8qq09tdOiliLPIqEb4=;
+        b=GDeANEH9IpUQhy4qByP607I3+M2IGNhot5VKlRxqJqUIZtZ54ygbVsrLEFchajMilD
+         B39xsycCflKYBZa9tIKX3j1ASXefWHQzQ3S2QLPie76lJvTgAR4sSGxY1B7NfZhGKU4c
+         NRSRQvIA/lD8Db9181ZqqMr55ftDjmAnlneFLWRe/lcV+iG3+RpZQr7z72GF3RH/gd3u
+         P8BDDLl/9K6zmcbFC4aq0mrX5F6cp1PontSJvcOG7ypoS6m+cIrtjc6yVV4n0Xh+JtqQ
+         uh9bUFQ0atVHfk+f0mm+/eEGMnSrVEIQ8usQfiKX7fC0nfj3XALUa4eXFyosNtRC9ORY
+         ZtCg==
+X-Gm-Message-State: AOJu0YyCA+BeaY1G+TzxsdjH+LK/VDtoJsHCR4FuSuchPmSoRepS2E51
+	paAXEqfl6Qol2uyIg/GhaxZ3wZmuNf2p9PLdthwhJagOnXtXuIKYr8SR
+X-Gm-Gg: AY/fxX7W9Oao3mJsG7uOOvv5ULFnDALEMzhTkAjJf7LxjtyBMNJ8Tbe0xncZ43A+LQV
+	ZOg0Rwz9RjsnwnPAhSU87a+1Yqw+n1YLGmrXrjX9U52zHgvyzlvdmn69o+DO4V4cm4hRs6tdNHZ
+	TodieJVV69uH2+BevOOry69DOQxJY26ROnTJGwouaj/rW+Y4tbDttyYy/t9hMCTQlT+rQ0NguWB
+	rtK2SFTzO9RC/Imrq8SZ0YZtaK0R623A3d5U07sHr23OMXEFK7abnaCIupkf6vZvVJrfccqO/JT
+	VfwCORhEBqy6N3DhXV7NBozjP6e/HyrugGIO8I41+zsMWC8BsRbyzUuV4BJg9obWCmuBGzLruNW
+	ILP++KGu7umsjjO9bdm33smX6A1qu6lNYVD9zcagaHaPyumPP9djjYXVbi+N3+FrvNak2YwEM8J
+	w21cMSRnV1FOs=
+X-Google-Smtp-Source: AGHT+IFfAzzjL2doo80fXCqAexQGKSYqtRni1yb9UdVue4KNR9zAwS0Jwg1qOwIOBuF7UQ4BiHcjjQ==
+X-Received: by 2002:a19:f60b:0:b0:598:ffd9:9da with SMTP id 2adb3069b0e04-598ffd90b06mr3767074e87.7.1765995148960;
+        Wed, 17 Dec 2025 10:12:28 -0800 (PST)
+Received: from Ubuntu-2204-jammy-amd64-base.. ([2a01:4f9:6a:4e9f::2])
+        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-5990da790efsm2591419e87.102.2025.12.17.10.12.27
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 17 Dec 2025 10:12:28 -0800 (PST)
+From: Melbin K Mathew <mlbnkm1@gmail.com>
+To: stefanha@redhat.com,
+	sgarzare@redhat.com
+Cc: kvm@vger.kernel.org,
+	netdev@vger.kernel.org,
+	virtualization@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	mst@redhat.com,
+	jasowang@redhat.com,
+	xuanzhuo@linux.alibaba.com,
+	eperezma@redhat.com,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	horms@kernel.org,
+	Melbin K Mathew <mlbnkm1@gmail.com>
+Subject: [PATCH net v4 0/4] vsock/virtio: fix TX credit handling
+Date: Wed, 17 Dec 2025 19:12:02 +0100
+Message-Id: <20251217181206.3681159-1-mlbnkm1@gmail.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
-Content-Type: text/plain; charset=US-ASCII
-X-SA-Exim-Connect-IP: 185.219.108.64
-X-SA-Exim-Rcpt-To: Sascha.Bischoff@arm.com, linux-arm-kernel@lists.infradead.org, kvmarm@lists.linux.dev, kvm@vger.kernel.org, nd@arm.com, oliver.upton@linux.dev, Joey.Gouly@arm.com, Suzuki.Poulose@arm.com, yuzenghui@huawei.com, peter.maydell@linaro.org, lpieralisi@kernel.org, Timothy.Hayes@arm.com
-X-SA-Exim-Mail-From: maz@kernel.org
-X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
-On Fri, 12 Dec 2025 15:22:41 +0000,
-Sascha Bischoff <Sascha.Bischoff@arm.com> wrote:
-> 
-> Initialise the private interrupts (PPIs, only) for GICv5. This means
-> that a GICv5-style intid is generated (which encodes the PPI type in
-> the top bits) instead of the 0-based index that is used for older
-> GICs.
-> 
-> Additionally, set all of the GICv5 PPIs to use Level for the handling
-> mode, with the exception of the SW_PPI which uses Edge. This matches
-> the architecturally-defined set in the GICv5 specification (the CTIIRQ
-> handling mode is IMPDEF, so pick Level has been picked for that).
-> 
-> Signed-off-by: Sascha Bischoff <sascha.bischoff@arm.com>
-> ---
->  arch/arm64/kvm/vgic/vgic-init.c    | 41 +++++++++++++++++++++++-------
->  include/linux/irqchip/arm-gic-v5.h |  2 ++
->  2 files changed, 34 insertions(+), 9 deletions(-)
-> 
-> diff --git a/arch/arm64/kvm/vgic/vgic-init.c b/arch/arm64/kvm/vgic/vgic-init.c
-> index b246cb6eae71b..51f4443cebcef 100644
-> --- a/arch/arm64/kvm/vgic/vgic-init.c
-> +++ b/arch/arm64/kvm/vgic/vgic-init.c
-> @@ -263,13 +263,19 @@ static int vgic_allocate_private_irqs_locked(struct kvm_vcpu *vcpu, u32 type)
->  {
->  	struct vgic_cpu *vgic_cpu = &vcpu->arch.vgic_cpu;
->  	int i;
-> +	u32 num_private_irqs;
-> +
-> +	if (vgic_is_v5(vcpu->kvm))
-> +		num_private_irqs = VGIC_V5_NR_PRIVATE_IRQS;
-> +	else
-> +		num_private_irqs = VGIC_NR_PRIVATE_IRQS;
+This series fixes TX credit handling in virtio-vsock:
 
-This is another case where we need to do something about
-PPIs. Allocating the full complement of PPIs (all 128 of them) is
-starting to be mildly visible (at 96 bytes a pop, that's 12kB of
-storage per vcpu).
+Patch 1: Fix potential underflow in get_credit() using s64 arithmetic
+Patch 2: Cap TX credit to local buffer size (security hardening)
+Patch 3: Fix vsock_test seqpacket bounds test
+Patch 4: Add stream TX credit bounds regression test
 
-And 95% of that is guaranteed to be wasted... XArray anyone?
+The core issue is that a malicious guest can advertise a huge buffer
+size via SO_VM_SOCKETS_BUFFER_SIZE, causing the host to allocate
+excessive sk_buff memory when sending data to that guest.
 
->  
->  	lockdep_assert_held(&vcpu->kvm->arch.config_lock);
+On an unpatched Ubuntu 22.04 host (~64 GiB RAM), running a PoC with
+32 guest vsock connections advertising 2 GiB each and reading slowly
+drove Slab/SUnreclaim from ~0.5 GiB to ~57 GiB; the system only
+recovered after killing the QEMU process.
 
-It is good practice to leave this sort of assertions at the beginning
-of the function.
-
-Thanks,
-
-	M.
-
+With this series applied, the same PoC shows only ~35 MiB increase in
+Slab/SUnreclaim, no host OOM, and the guest remains responsive.
 -- 
-Without deviation from the norm, progress is not possible.
+2.34.1
