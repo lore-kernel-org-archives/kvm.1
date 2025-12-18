@@ -1,29 +1,28 @@
-Received: from out28-221.mail.aliyun.com (out28-221.mail.aliyun.com [115.124.28.221])
+Received: from out198-20.us.a.mail.aliyun.com (out198-20.us.a.mail.aliyun.com [47.90.198.20])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 861633431E6;
-	Thu, 18 Dec 2025 14:01:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.28.221
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C882034403F;
+	Thu, 18 Dec 2025 14:01:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=47.90.198.20
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1766066478; cv=none; b=j8lD5PnV+CyFiiZK6xyhkLfvPQocITcb56qdQ8ogAcp8yJpea5onlVHWLkluYLoevdE3HX3hxyyXx3V675LgLuSqJUgHjUKJ7AAZwefTaMZY6aQQe0IdcpqM3/eaTwNYwY6RhNOSIJ7CGQRT9uFm2qTy7/H+5teLzYoI9EzyOzQ=
+	t=1766066480; cv=none; b=Y0oQE5bRlL3wIHcmbYeOjcGyb8ZJ6tmsd1iNv5sh+7MbSIGD1dSCoLZMpAaKcCXukQeMalDEL5TvaXsfKHC6PP7+Qw2ZqYikAQWo5NTPt0cI6HUDPmmkJeKYf3AQVq5XoSxg7lSO0X6yR4qqvY0TW2KzV4bj/TXBfRuix/7Q7ag=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1766066478; c=relaxed/simple;
-	bh=Uz8/j1l7dC96sfyXq+AD4fX6cqO+4WKg7++VqzGmYaQ=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=UA+iieBEXc+oDwkKz3aIBHNL1FdvSO5T/gwBc9RxpmXo9PIeQQ8mGJbu/fFIZgOf/lbWKKW5WXvqVX6CAx4xTqCqo+945FF6USeriocwDPAjNbyyY3Qz/3Kim8aaSVrDE3eByMDshyAlFiKen6+tvDrcv20QD9IzOm1oxr3m08s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=antgroup.com; spf=pass smtp.mailfrom=antgroup.com; dkim=pass (1024-bit key) header.d=antgroup.com header.i=@antgroup.com header.b=K3zzeg8Q; arc=none smtp.client-ip=115.124.28.221
+	s=arc-20240116; t=1766066480; c=relaxed/simple;
+	bh=Zj2x2WczkgoB0wJ6yqJAX3yn0pXp9GCR3SIIVslacS0=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=H3qJihUqaZ//nhsobNZsZGcniV0MgzZPcqQ02U0spdsh8Vv+bmvZzOzCElYY0sU77YDabcKJak3ig7+o20urs/F6dYrUFjQesQEWxhVKCv5hMtmHzI/ZUUuodIi//mKappnT9wsQsevAiwGPlaqc0+iml1L6e0drRcDEGhOx1eU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=antgroup.com; spf=pass smtp.mailfrom=antgroup.com; dkim=pass (1024-bit key) header.d=antgroup.com header.i=@antgroup.com header.b=WjwtDyNE; arc=none smtp.client-ip=47.90.198.20
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=antgroup.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=antgroup.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=antgroup.com header.i=@antgroup.com header.b="K3zzeg8Q"
+	dkim=pass (1024-bit key) header.d=antgroup.com header.i=@antgroup.com header.b="WjwtDyNE"
 DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
 	d=antgroup.com; s=default;
-	t=1766066464; h=From:To:Subject:Date:Message-Id:MIME-Version;
-	bh=iIJgsaJAJFg81C2Ck2lA9fwsw0HWn+BnyWHs7EtssAg=;
-	b=K3zzeg8QzpF6hIV30tmEbuEtd8g3211MtbDnw4k/bauM47T4Inxg/kSxETf04yyBkdhR/drqTukS+UMH/AqhGI6c46PYJtY0tQT9Ex38UNv0reXq42BewKXNFlF3ut1Eob4IxeFblkTjWdQCW0TiCamVOHt08EDHdc8ZgykSL0k=
-Received: from localhost(mailfrom:houwenlong.hwl@antgroup.com fp:SMTPD_---.fnj5fA3_1766066463 cluster:ay29)
+	t=1766066454; h=From:To:Subject:Date:Message-Id:MIME-Version;
+	bh=JGjyl52eVJxyEoU0zaj329p7+Mpj9y+2N634ae6VlMc=;
+	b=WjwtDyNEHhkK9mcV+2GyOpLYrLZhS1LHvtkwHdHM44Psq7uPisMdXlfeQ6PsWYvvpSkCEtK9FuxhvsphYu3BD3v9oqg6Ob6oAXSlEtPLZwSoicltkWH7z3v7kAsO+2kzskWnBhOifmuZBcJicAyn89p7m+4/dVZfl8pHY6I+MUs=
+Received: from localhost(mailfrom:houwenlong.hwl@antgroup.com fp:SMTPD_---.fnicD1Y_1766066453 cluster:ay29)
           by smtp.aliyun-inc.com;
-          Thu, 18 Dec 2025 22:01:03 +0800
+          Thu, 18 Dec 2025 22:00:54 +0800
 From: Hou Wenlong <houwenlong.hwl@antgroup.com>
 To: kvm@vger.kernel.org
 Cc: Lai Jiangshan <jiangshan.ljs@antgroup.com>,
@@ -35,13 +34,13 @@ Cc: Lai Jiangshan <jiangshan.ljs@antgroup.com>,
 	Dave Hansen <dave.hansen@linux.intel.com>,
 	x86@kernel.org,
 	"H. Peter Anvin" <hpa@zytor.com>,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH v2 5/9] KVM: x86: Consolidate KVM_GUESTDBG_SINGLESTEP check into the kvm_inject_emulated_db()
-Date: Thu, 18 Dec 2025 22:00:40 +0800
-Message-Id: <f5c495a43a03a20e04fbc9f1f78fd490e1f6ad50.1766066076.git.houwenlong.hwl@antgroup.com>
+	Shuah Khan <shuah@kernel.org>,
+	linux-kernel@vger.kernel.org,
+	linux-kselftest@vger.kernel.org
+Subject: [PATCH v2 0/9] KVM: x86: Improve the handling of debug exceptions during instruction emulation
+Date: Thu, 18 Dec 2025 22:00:35 +0800
+Message-Id: <cover.1766066076.git.houwenlong.hwl@antgroup.com>
 X-Mailer: git-send-email 2.31.1
-In-Reply-To: <cover.1766066076.git.houwenlong.hwl@antgroup.com>
-References: <cover.1766066076.git.houwenlong.hwl@antgroup.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -50,50 +49,73 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Use kvm_inject_emulated_db() in kvm_vcpu_do_singlestep() to consolidate
-'KVM_GUESTDBG_SINGLESTEP' check into kvm_inject_emulated_db() during
-emulation.
+During my testing, I found that guest debugging with 'DR6.BD' does not
+work in instruction emulation, as the current code only considers the
+guest's DR7. Upon reviewing the code, I also observed that the checks
+for the userspace guest debugging feature and the guest's own debugging
+feature are repeated in different places during instruction
+emulation, but the overall logic is the same. If guest debug
+is enabled, it needs to exit to userspace; otherwise, a #DB
+exception needs to be injected into the guest. Therefore, as
+suggested by Jiangshan Lai, some cleanup has been done for #DB
+handling in instruction emulation in this patchset. A new
+function named 'kvm_inject_emulated_db()' is introduced to
+consolidate all the checking logic. Moreover, I hope we can make
+the #DB interception path use the same function as well.
 
-No functional change intended.
+Additionally, when I looked into the single-step #DB handling in
+instruction emulation, I noticed that the interrupt shadow is toggled,
+but it is not considered in the single-step #DB injection. This
+oversight causes VM entry to fail on VMX (due to pending debug
+exceptions state checking).
 
-Suggested-by: Lai Jiangshan <jiangshan.ljs@antgroup.com>
-Signed-off-by: Hou Wenlong <houwenlong.hwl@antgroup.com>
----
- arch/x86/kvm/x86.c | 14 ++------------
- 1 file changed, 2 insertions(+), 12 deletions(-)
+As pointed out by Sean, fault-like code #DBs can be coincident with
+trap-like single-step #DBs at the instruction boundary on the hardware.
+However it is difficult to emulate this in the emulator, as
+kvm_vcpu_check_code_breakpoint() is called at the start of the next
+instruction while the single-step #DB for the previous instruction has
+already been injected.
 
-diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
-index 3000139a19db..44c2886589d7 100644
---- a/arch/x86/kvm/x86.c
-+++ b/arch/x86/kvm/x86.c
-@@ -8947,7 +8947,7 @@ static int kvm_inject_emulated_db(struct kvm_vcpu *vcpu, unsigned long dr6)
- {
- 	struct kvm_run *kvm_run = vcpu->run;
- 
--	if (vcpu->guest_debug & KVM_GUESTDBG_USE_HW_BP) {
-+	if (vcpu->guest_debug & (KVM_GUESTDBG_USE_HW_BP | KVM_GUESTDBG_SINGLESTEP)) {
- 		kvm_run->debug.arch.dr6 = dr6 | DR6_ACTIVE_LOW;
- 		kvm_run->debug.arch.pc = kvm_get_linear_rip(vcpu);
- 		kvm_run->debug.arch.exception = DB_VECTOR;
-@@ -9232,17 +9232,7 @@ static int kvm_vcpu_check_hw_bp(unsigned long addr, u32 type, u32 dr7,
- 
- static int kvm_vcpu_do_singlestep(struct kvm_vcpu *vcpu)
- {
--	struct kvm_run *kvm_run = vcpu->run;
--
--	if (vcpu->guest_debug & KVM_GUESTDBG_SINGLESTEP) {
--		kvm_run->debug.arch.dr6 = DR6_BS | DR6_ACTIVE_LOW;
--		kvm_run->debug.arch.pc = kvm_get_linear_rip(vcpu);
--		kvm_run->debug.arch.exception = DB_VECTOR;
--		kvm_run->exit_reason = KVM_EXIT_DEBUG;
--		return 0;
--	}
--	kvm_queue_exception_p(vcpu, DB_VECTOR, DR6_BS);
--	return 1;
-+	return kvm_inject_emulated_db(vcpu, DR6_BS);
- }
- 
- int kvm_skip_emulated_instruction(struct kvm_vcpu *vcpu)
--- 
+v1->v2:
+  - cleanup in inject_emulated_exception().
+  - rename 'set_pending_dbg' callback as 'refresh_pending_dbg_exceptions'.
+  - fold refresh_pending_dbg_exceptions() call into
+    kvm_vcpu_do_singlestep().
+  - Split the change to move up kvm_set_rflags() into a single patch.
+  - Move the #DB and IRQ handler registration after guest debug testcases.
+
+Hou Wenlong (9):
+  KVM: x86: Capture "struct x86_exception" in
+    inject_emulated_exception()
+  KVM: x86: Set guest DR6 by kvm_queue_exception_p() in instruction
+    emulation
+  KVM: x86: Check guest debug in DR access instruction emulation
+  KVM: x86: Only check effective code breakpoint in emulation
+  KVM: x86: Consolidate KVM_GUESTDBG_SINGLESTEP check into the
+    kvm_inject_emulated_db()
+  KVM: x86: Move kvm_set_rflags() up before kvm_vcpu_do_singlestep()
+  KVM: VMX: Refresh 'PENDING_DBG_EXCEPTIONS.BS' bit during instruction
+    emulation
+  KVM: selftests: Verify guest debug DR7.GD checking during instruction
+    emulation
+  KVM: selftests: Verify 'BS' bit checking in pending debug exception
+    during VM entry
+
+ arch/x86/include/asm/kvm-x86-ops.h            |   1 +
+ arch/x86/include/asm/kvm_host.h               |   1 +
+ arch/x86/kvm/emulate.c                        |  14 +--
+ arch/x86/kvm/kvm_emulate.h                    |   7 +-
+ arch/x86/kvm/vmx/main.c                       |   9 ++
+ arch/x86/kvm/vmx/vmx.c                        |  15 ++-
+ arch/x86/kvm/vmx/x86_ops.h                    |   1 +
+ arch/x86/kvm/x86.c                            | 116 ++++++++++--------
+ arch/x86/kvm/x86.h                            |   7 ++
+ .../selftests/kvm/include/x86/processor.h     |   3 +-
+ tools/testing/selftests/kvm/x86/debug_regs.c  |  72 ++++++++++-
+ 11 files changed, 178 insertions(+), 68 deletions(-)
+
+
+base-commit: 5d3e2d9ba9ed68576c70c127e4f7446d896f2af2
+--
 2.31.1
 
