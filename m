@@ -1,29 +1,29 @@
-Received: from out198-23.us.a.mail.aliyun.com (out198-23.us.a.mail.aliyun.com [47.90.198.23])
+Received: from out28-97.mail.aliyun.com (out28-97.mail.aliyun.com [115.124.28.97])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 566012FF151;
-	Thu, 18 Dec 2025 14:06:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=47.90.198.23
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 886BC349B0D;
+	Thu, 18 Dec 2025 14:06:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.28.97
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1766066796; cv=none; b=rlHIj9dXnKwi3NOraHdS2mWqzVY4Ske0a0hNAtAV4DaKPRpxmfaUmKPqSpsqqOrJ28nn33wBmLUy8FB/p2Dv/A/JSwhM/41CwLNAbicGOF7uQMFpaXRk+NhR0eYaEbtGqneQg+DMpbVmBC/Ve4//6NP0o2QZon8IAjpKLGKUXQI=
+	t=1766066801; cv=none; b=hmznC+q7L0W7Ntx0sadsvrlPoZmhzoVNX+gosPSE69QF/UFshyjEioRlE0CjzWlr2rcHT0q2kadTf1m93rXFG/pE2Skwjh8Nsw2I+tp3ECTN8GtYEqQJrp33uH6rSPwJul84RWDR63zFjdKyJPj2i3M690XGZ8GcxeIqr3zddG4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1766066796; c=relaxed/simple;
-	bh=pWUh6X2uIwuPfuUOXox7Y8U6Mi14kyXOIl29B7mzdDs=;
+	s=arc-20240116; t=1766066801; c=relaxed/simple;
+	bh=Lz4tUE8I3RA2w3B1SwUrddlbtllDhQGDdBmoIIjuP2o=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=SsK2DrsYZJKAWlbyHXgms9Xe4qRLVVWjoG/H63BRBaIXawaQk/7sAdejNDu03T8TfZyp0ZfFgfQTm6N79FKB5qZjlRg5gPfY/RN4hXPhj13jsmfYJ3S4+HlLZRpIDDfW4lCPnT7BRgmORHq4b2JgVKoBLUqo/aNZg/XEnI9RnXg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=antgroup.com; spf=pass smtp.mailfrom=antgroup.com; dkim=pass (1024-bit key) header.d=antgroup.com header.i=@antgroup.com header.b=bu8/T792; arc=none smtp.client-ip=47.90.198.23
+	 MIME-Version; b=mSMXREMAaap+EoSYTfdjmiLfjt7dDg5LaGLgNoZFToVpHzFJRAGKMH+umxwpCo6EDyu+i9MyR1ryffndmVZD4rxuJzWZKo9OqMwNCFJvTtuur4lbZp3ZEqlAKcz5/zUMkw+KTBiJqjYykj2tKO2kTeYLJ48876XKMIJB6vUEdH8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=antgroup.com; spf=pass smtp.mailfrom=antgroup.com; dkim=pass (1024-bit key) header.d=antgroup.com header.i=@antgroup.com header.b=tJPFdvL5; arc=none smtp.client-ip=115.124.28.97
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=antgroup.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=antgroup.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=antgroup.com header.i=@antgroup.com header.b="bu8/T792"
+	dkim=pass (1024-bit key) header.d=antgroup.com header.i=@antgroup.com header.b="tJPFdvL5"
 DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
 	d=antgroup.com; s=default;
-	t=1766066781; h=From:To:Subject:Date:Message-Id:MIME-Version;
-	bh=C2RClvngFiAizt3Rruo0eAfrLEJ721g2lfOtWib8nK8=;
-	b=bu8/T792PQqWfRoXBKGn0XhCvMP5/zSWjdLSmJY4cgsVfM+iNKQxx/D7jeurgVlXtxFiVcJM4G/EEDl50LQOPfVJYjLmGZkJ5yH20mFDkU3fA7GgfsFOkbnLX0BIhYcIjGI+ZTp/ccUEx6nKVYasD5Bedr5leWJMU6D75MIIFEQ=
-Received: from localhost(mailfrom:houwenlong.hwl@antgroup.com fp:SMTPD_---.fniMiGa_1766066455 cluster:ay29)
+	t=1766066788; h=From:To:Subject:Date:Message-Id:MIME-Version;
+	bh=msS+hfWmRvmoDkryeJAbAJ641aMX4QZHGIKrKvHKroA=;
+	b=tJPFdvL5LrNF9BpQ4+uvgvcs8pp+1ed0GDXwgZ8R6NktgfX1AaKAzSFbv5kLx4FXeU5wjJCne/ebeIntzUjWxtwS3xzvugn4TRd1hMJIVEAjyufZ7t5CLNmlIjoAVXslpCsq/EY4rAdQUfVusvbRBoJHeczSG91TxPav6oMvDxY=
+Received: from localhost(mailfrom:houwenlong.hwl@antgroup.com fp:SMTPD_---.fniMiRB_1766066464 cluster:ay29)
           by smtp.aliyun-inc.com;
-          Thu, 18 Dec 2025 22:00:55 +0800
+          Thu, 18 Dec 2025 22:01:05 +0800
 From: Hou Wenlong <houwenlong.hwl@antgroup.com>
 To: kvm@vger.kernel.org
 Cc: Lai Jiangshan <jiangshan.ljs@antgroup.com>,
@@ -36,9 +36,9 @@ Cc: Lai Jiangshan <jiangshan.ljs@antgroup.com>,
 	x86@kernel.org,
 	"H. Peter Anvin" <hpa@zytor.com>,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH v2 1/9] KVM: x86: Capture "struct x86_exception" in inject_emulated_exception()
-Date: Thu, 18 Dec 2025 22:00:36 +0800
-Message-Id: <995f9d8fbc93afb86920ad294124e917ddab30d3.1766066076.git.houwenlong.hwl@antgroup.com>
+Subject: [PATCH v2 6/9] KVM: x86: Move kvm_set_rflags() up before kvm_vcpu_do_singlestep()
+Date: Thu, 18 Dec 2025 22:00:41 +0800
+Message-Id: <30964c504cb4683f53093f5f37c2081825db35dc.1766066076.git.houwenlong.hwl@antgroup.com>
 X-Mailer: git-send-email 2.31.1
 In-Reply-To: <cover.1766066076.git.houwenlong.hwl@antgroup.com>
 References: <cover.1766066076.git.houwenlong.hwl@antgroup.com>
@@ -50,43 +50,36 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-As all callers in inject_emulated_exception() use "struct x86_exception"
-directly, capture it locally instead of using the context.
+The single-step trap #DB should be injected after the instruction
+completes, as 'ctxt->tf' already records the old value of
+'X86_EFLAGS_TF'.  Therefore, it's okay to move kvm_set_rflags() up
+before kvm_vcpu_do_single_step() to align it more closely with hardware
+behavior.
 
 No functional change intended.
 
 Suggested-by: Sean Christopherson <seanjc@google.com>
 Signed-off-by: Hou Wenlong <houwenlong.hwl@antgroup.com>
 ---
- arch/x86/kvm/x86.c | 13 ++++++-------
- 1 file changed, 6 insertions(+), 7 deletions(-)
+ arch/x86/kvm/x86.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
-index 0c6d899d53dd..ab298bfa7d9f 100644
+index 44c2886589d7..7352c2114bab 100644
 --- a/arch/x86/kvm/x86.c
 +++ b/arch/x86/kvm/x86.c
-@@ -8923,15 +8923,14 @@ static void toggle_interruptibility(struct kvm_vcpu *vcpu, u32 mask)
+@@ -9593,10 +9593,10 @@ int x86_emulate_instruction(struct kvm_vcpu *vcpu, gpa_t cr2_or_gpa,
+ 			if (ctxt->is_branch)
+ 				kvm_pmu_branch_retired(vcpu);
+ 			kvm_rip_write(vcpu, ctxt->eip);
++			__kvm_set_rflags(vcpu, ctxt->eflags);
+ 			if (r && (ctxt->tf || (vcpu->guest_debug & KVM_GUESTDBG_SINGLESTEP)))
+ 				r = kvm_vcpu_do_singlestep(vcpu);
+ 			kvm_x86_call(update_emulated_instruction)(vcpu);
+-			__kvm_set_rflags(vcpu, ctxt->eflags);
+ 		}
  
- static void inject_emulated_exception(struct kvm_vcpu *vcpu)
- {
--	struct x86_emulate_ctxt *ctxt = vcpu->arch.emulate_ctxt;
-+	struct x86_exception *ex = &vcpu->arch.emulate_ctxt->exception;
- 
--	if (ctxt->exception.vector == PF_VECTOR)
--		kvm_inject_emulated_page_fault(vcpu, &ctxt->exception);
--	else if (ctxt->exception.error_code_valid)
--		kvm_queue_exception_e(vcpu, ctxt->exception.vector,
--				      ctxt->exception.error_code);
-+	if (ex->vector == PF_VECTOR)
-+		kvm_inject_emulated_page_fault(vcpu, ex);
-+	else if (ex->error_code_valid)
-+		kvm_queue_exception_e(vcpu, ex->vector, ex->error_code);
- 	else
--		kvm_queue_exception(vcpu, ctxt->exception.vector);
-+		kvm_queue_exception(vcpu, ex->vector);
- }
- 
- static struct x86_emulate_ctxt *alloc_emulate_ctxt(struct kvm_vcpu *vcpu)
+ 		/*
 -- 
 2.31.1
 
