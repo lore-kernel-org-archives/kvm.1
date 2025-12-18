@@ -1,44 +1,40 @@
-Received: from out28-97.mail.aliyun.com (out28-97.mail.aliyun.com [115.124.28.97])
+Received: from out28-197.mail.aliyun.com (out28-197.mail.aliyun.com [115.124.28.197])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 886BC349B0D;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8CF5D34C804;
 	Thu, 18 Dec 2025 14:06:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.28.97
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.28.197
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1766066801; cv=none; b=hmznC+q7L0W7Ntx0sadsvrlPoZmhzoVNX+gosPSE69QF/UFshyjEioRlE0CjzWlr2rcHT0q2kadTf1m93rXFG/pE2Skwjh8Nsw2I+tp3ECTN8GtYEqQJrp33uH6rSPwJul84RWDR63zFjdKyJPj2i3M690XGZ8GcxeIqr3zddG4=
+	t=1766066801; cv=none; b=JonUSbzMeV2sKytERNRvqrWetMVBnBzwDsbyaL1sYMR4Q555Zr9q1HX0nr6JQ4qXFCy8a6umIX6i99UI3G5fBCPiFAWaWEnj9x/ylBBFYmzn0AM28/0dLoIspPhEkYvSEoOn+YWMekRkxZyJP9xXOlIPX1KJi4EFVXhDZr6ojBs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1766066801; c=relaxed/simple;
-	bh=Lz4tUE8I3RA2w3B1SwUrddlbtllDhQGDdBmoIIjuP2o=;
+	bh=PYx8mw8jcMhldgO20ghRP6zsMW7Xykx16g9vZLu2V9k=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=mSMXREMAaap+EoSYTfdjmiLfjt7dDg5LaGLgNoZFToVpHzFJRAGKMH+umxwpCo6EDyu+i9MyR1ryffndmVZD4rxuJzWZKo9OqMwNCFJvTtuur4lbZp3ZEqlAKcz5/zUMkw+KTBiJqjYykj2tKO2kTeYLJ48876XKMIJB6vUEdH8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=antgroup.com; spf=pass smtp.mailfrom=antgroup.com; dkim=pass (1024-bit key) header.d=antgroup.com header.i=@antgroup.com header.b=tJPFdvL5; arc=none smtp.client-ip=115.124.28.97
+	 MIME-Version; b=ZW3tMc2CP+pGbFSLVKg/kawIvswoBPo2RivpcelTut7tKeuAF+QHne/G2yVgM821z9fisYR/UUigN3Tp5lxPWH1wtASbclop+qFcJNzMxON04GUoxDmdMPmeHvD2TBh/bt9a5qFd9tsGQhFT+A5Lq+bekVl3XHAnZr4SihB6L/w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=antgroup.com; spf=pass smtp.mailfrom=antgroup.com; dkim=pass (1024-bit key) header.d=antgroup.com header.i=@antgroup.com header.b=tyIcFHvj; arc=none smtp.client-ip=115.124.28.197
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=antgroup.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=antgroup.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=antgroup.com header.i=@antgroup.com header.b="tJPFdvL5"
+	dkim=pass (1024-bit key) header.d=antgroup.com header.i=@antgroup.com header.b="tyIcFHvj"
 DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
 	d=antgroup.com; s=default;
-	t=1766066788; h=From:To:Subject:Date:Message-Id:MIME-Version;
-	bh=msS+hfWmRvmoDkryeJAbAJ641aMX4QZHGIKrKvHKroA=;
-	b=tJPFdvL5LrNF9BpQ4+uvgvcs8pp+1ed0GDXwgZ8R6NktgfX1AaKAzSFbv5kLx4FXeU5wjJCne/ebeIntzUjWxtwS3xzvugn4TRd1hMJIVEAjyufZ7t5CLNmlIjoAVXslpCsq/EY4rAdQUfVusvbRBoJHeczSG91TxPav6oMvDxY=
-Received: from localhost(mailfrom:houwenlong.hwl@antgroup.com fp:SMTPD_---.fniMiRB_1766066464 cluster:ay29)
+	t=1766066796; h=From:To:Subject:Date:Message-Id:MIME-Version;
+	bh=MdcZ9dB/ZZC2s3JBcz4u+PMPg0Oky+AgJqGJUglEwiU=;
+	b=tyIcFHvjWB2kmUOyZDVGsQv2jxXy4Zpw9cg+eMu+ktltfHxIHwltNRxiiGGswikUMKTaMR6m22Ii9EEbaQlymoJIpF3+NpVseDspsLdA1iopygsFpUXF4Ne531mVG0fZH5gFoHsuPDZhedBBOtvp+63ARKd5165BmdSt+OJtwlc=
+Received: from localhost(mailfrom:houwenlong.hwl@antgroup.com fp:SMTPD_---.fniSlgz_1766066469 cluster:ay29)
           by smtp.aliyun-inc.com;
-          Thu, 18 Dec 2025 22:01:05 +0800
+          Thu, 18 Dec 2025 22:01:09 +0800
 From: Hou Wenlong <houwenlong.hwl@antgroup.com>
 To: kvm@vger.kernel.org
 Cc: Lai Jiangshan <jiangshan.ljs@antgroup.com>,
 	Sean Christopherson <seanjc@google.com>,
 	Paolo Bonzini <pbonzini@redhat.com>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Ingo Molnar <mingo@redhat.com>,
-	Borislav Petkov <bp@alien8.de>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	x86@kernel.org,
-	"H. Peter Anvin" <hpa@zytor.com>,
+	Shuah Khan <shuah@kernel.org>,
+	linux-kselftest@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH v2 6/9] KVM: x86: Move kvm_set_rflags() up before kvm_vcpu_do_singlestep()
-Date: Thu, 18 Dec 2025 22:00:41 +0800
-Message-Id: <30964c504cb4683f53093f5f37c2081825db35dc.1766066076.git.houwenlong.hwl@antgroup.com>
+Subject: [PATCH v2 8/9] KVM: selftests: Verify guest debug DR7.GD checking during instruction emulation
+Date: Thu, 18 Dec 2025 22:00:43 +0800
+Message-Id: <f4b5af2580a1acd4b5fe0225fc44b44d6b0ecfae.1766066076.git.houwenlong.hwl@antgroup.com>
 X-Mailer: git-send-email 2.31.1
 In-Reply-To: <cover.1766066076.git.houwenlong.hwl@antgroup.com>
 References: <cover.1766066076.git.houwenlong.hwl@antgroup.com>
@@ -50,36 +46,70 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-The single-step trap #DB should be injected after the instruction
-completes, as 'ctxt->tf' already records the old value of
-'X86_EFLAGS_TF'.  Therefore, it's okay to move kvm_set_rflags() up
-before kvm_vcpu_do_single_step() to align it more closely with hardware
-behavior.
+Similar to the global disable test case in x86's debug_regs test, use
+'KVM_FEP' to trigger instruction emulation in order to verify the guest
+debug DR7.GD checking during instruction emulation.
 
-No functional change intended.
-
-Suggested-by: Sean Christopherson <seanjc@google.com>
 Signed-off-by: Hou Wenlong <houwenlong.hwl@antgroup.com>
 ---
- arch/x86/kvm/x86.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ tools/testing/selftests/kvm/x86/debug_regs.c | 23 +++++++++++++++++++-
+ 1 file changed, 22 insertions(+), 1 deletion(-)
 
-diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
-index 44c2886589d7..7352c2114bab 100644
---- a/arch/x86/kvm/x86.c
-+++ b/arch/x86/kvm/x86.c
-@@ -9593,10 +9593,10 @@ int x86_emulate_instruction(struct kvm_vcpu *vcpu, gpa_t cr2_or_gpa,
- 			if (ctxt->is_branch)
- 				kvm_pmu_branch_retired(vcpu);
- 			kvm_rip_write(vcpu, ctxt->eip);
-+			__kvm_set_rflags(vcpu, ctxt->eflags);
- 			if (r && (ctxt->tf || (vcpu->guest_debug & KVM_GUESTDBG_SINGLESTEP)))
- 				r = kvm_vcpu_do_singlestep(vcpu);
- 			kvm_x86_call(update_emulated_instruction)(vcpu);
--			__kvm_set_rflags(vcpu, ctxt->eflags);
- 		}
+diff --git a/tools/testing/selftests/kvm/x86/debug_regs.c b/tools/testing/selftests/kvm/x86/debug_regs.c
+index 2d814c1d1dc4..bd34cf2a96b7 100644
+--- a/tools/testing/selftests/kvm/x86/debug_regs.c
++++ b/tools/testing/selftests/kvm/x86/debug_regs.c
+@@ -19,6 +19,7 @@
+ uint32_t guest_value;
  
- 		/*
+ extern unsigned char sw_bp, hw_bp, write_data, ss_start, bd_start;
++extern unsigned char fep_bd_start;
+ 
+ static void guest_code(void)
+ {
+@@ -64,6 +65,10 @@ static void guest_code(void)
+ 
+ 	/* DR6.BD test */
+ 	asm volatile("bd_start: mov %%dr0, %%rax" : : : "rax");
++
++	if (is_forced_emulation_enabled)
++		asm volatile(KVM_FEP "fep_bd_start: mov %%dr0, %%rax" : : : "rax");
++
+ 	GUEST_DONE();
+ }
+ 
+@@ -185,7 +190,7 @@ int main(void)
+ 			    target_dr6);
+ 	}
+ 
+-	/* Finally test global disable */
++	/* test global disable */
+ 	memset(&debug, 0, sizeof(debug));
+ 	debug.control = KVM_GUESTDBG_ENABLE | KVM_GUESTDBG_USE_HW_BP;
+ 	debug.arch.debugreg[7] = 0x400 | DR7_GD;
+@@ -202,6 +207,22 @@ int main(void)
+ 			    run->debug.arch.pc, target_rip, run->debug.arch.dr6,
+ 			    target_dr6);
+ 
++	/* test global disable in emulation */
++	if (is_forced_emulation_enabled) {
++		/* Skip the 3-bytes "mov dr0" */
++		vcpu_skip_insn(vcpu, 3);
++		vcpu_run(vcpu);
++		TEST_ASSERT(run->exit_reason == KVM_EXIT_DEBUG &&
++			    run->debug.arch.exception == DB_VECTOR &&
++			    run->debug.arch.pc == CAST_TO_RIP(fep_bd_start) &&
++			    run->debug.arch.dr6 == target_dr6,
++			    "DR7.GD: exit %d exception %d rip 0x%llx "
++			    "(should be 0x%llx) dr6 0x%llx (should be 0x%llx)",
++			    run->exit_reason, run->debug.arch.exception,
++			    run->debug.arch.pc, target_rip, run->debug.arch.dr6,
++			    target_dr6);
++	}
++
+ 	/* Disable all debug controls, run to the end */
+ 	memset(&debug, 0, sizeof(debug));
+ 	vcpu_guest_debug_set(vcpu, &debug);
 -- 
 2.31.1
 
