@@ -1,176 +1,158 @@
-Received: from mail-pg1-f201.google.com (mail-pg1-f201.google.com [209.85.215.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 604293191D0
-	for <kvm@vger.kernel.org>; Fri, 19 Dec 2025 15:40:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F808361DB0
+	for <kvm@vger.kernel.org>; Fri, 19 Dec 2025 15:53:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1766158814; cv=none; b=XAfzKnnqyaoYNAgXmU+Ma+bvCDMOdFTDofhGsaRb9uFq9CEwhBYT7fpSMl9b42XEnhtELg5paCUGYoU+MmWBxqotMpwhFSCBEVzlxoWRH39f1gNIOFvobzrHnoiV69K/qD0VuruqFQk/PpPkM7OEESvSjcAoUjIfNYmurkBCYIE=
+	t=1766159620; cv=none; b=nDylT0xyKWlk7L87sf+CwlVwI6HO2bpMEw4bmnbd5t7FfTX3hHkg+6muo072YM4ws6pRyYJyuIQ9bWCWVOinVIb7fU1yrbfoWlCSzftJxXGq2dE2sUjOtgNloXz2o2EXidDmPUrc/FxjmRVjiJgpTQX+8hcfhkH00D/+lPpuAus=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1766158814; c=relaxed/simple;
-	bh=V2R/B0gbkwCbHmdCAP2SACbfVHm0/ziCWsigAtAnjaM=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=J7rnx5rhQ73bLab1wZEWuGeBF/paKPd3qy2wlwVFh/HPtnMnRLPF7toPlVvdPPR/Al+QSrF2OjPZ4piAjEeTUV0KWA7urjfL3U7vWLdhfo1emBPDSJbI0s1AtunKHCUDiDtuEFDW3EDh61475btjaDv1uzAsuX/a/11MoiitplQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=il+4XGsq; arc=none smtp.client-ip=209.85.215.201
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+	s=arc-20240116; t=1766159620; c=relaxed/simple;
+	bh=HGu5ujBF26oUozqxf92lQiU8WCo4Uwymerm0mV/65Io=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=ir/jtzzM+bKqd2F2MkMAPiFwxpmAKtHTpfqR9FIq00Wzt2GzRVtMMJBT2P1FD3frVdMKxNE5hbbBxqscX66ImGWGCco/mVSZkO1GKTevlM9tLCnjE+o5kvD54mVIIoWBWgSWeGKZibSGr/NzFbThuoKUQVx6lwnao0HOR+H6BnA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=XoexSVUm; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=cYpuoG96; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="il+4XGsq"
-Received: by mail-pg1-f201.google.com with SMTP id 41be03b00d2f7-c196fa94049so1793717a12.0
-        for <kvm@vger.kernel.org>; Fri, 19 Dec 2025 07:40:13 -0800 (PST)
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="XoexSVUm";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="cYpuoG96"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1766159617;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=L/jqv3cJiOiniBhqPGj3ePpHhUWqhzpVBGmNIJAgyrQ=;
+	b=XoexSVUmXXpVnWG6JzICABwjYTRotfwSJpfIvc/pRR0lqprz5RVF3/WbflWybAllq1fmCM
+	ZdGmBQUX14X+ThQBuE8Xt2CIFmXqASAOPHRH1obBKihFGLZ8UUPb5UHfQtTf4Vd9Qg1Ie/
+	45HaOUMTTosHTd5KRJCkaAfIfSLovYU=
+Received: from mail-qt1-f198.google.com (mail-qt1-f198.google.com
+ [209.85.160.198]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-54-9UaC-xmBOlK5tfhR7Jja0w-1; Fri, 19 Dec 2025 10:53:36 -0500
+X-MC-Unique: 9UaC-xmBOlK5tfhR7Jja0w-1
+X-Mimecast-MFC-AGG-ID: 9UaC-xmBOlK5tfhR7Jja0w_1766159615
+Received: by mail-qt1-f198.google.com with SMTP id d75a77b69052e-4f4a5dba954so35559461cf.0
+        for <kvm@vger.kernel.org>; Fri, 19 Dec 2025 07:53:36 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1766158813; x=1766763613; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=Yxrrp2oMgVkK17s+eJEUzU1udWIn66K3HBKvgT0GfUc=;
-        b=il+4XGsqsIBVWQKnxl3E0pqvy9ebNJ35jQDJqviix3y88KIrdwC4/IWC60ouSJREBh
-         PWB7qXSNLjKRHqkL7MqF34y4vqoAv6mIOCdyhUhs7ZmKR1zl41Ae7hjVh5JmTBB8gtAh
-         k7L3xnl/hPA5T6qitHvolwwuSdYuKUYMIIbViEU3yKMHTeaerj8nttQRh0SSpAVhILeY
-         TSka5uT1Q4IB3dcbEh04t/ahII1ru01nIpHyzNNjk2qnQE5NklBq01Kxdfu7QQSr3aOH
-         L5xRW6FQyqKFQn+vAZevFQY+s+qME+cTCH+Zdc4qC8FtZcZ4+fzMZ2KZPIgeG0Jy+H5n
-         LU5g==
+        d=redhat.com; s=google; t=1766159615; x=1766764415; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=L/jqv3cJiOiniBhqPGj3ePpHhUWqhzpVBGmNIJAgyrQ=;
+        b=cYpuoG96qs5PIwY7b/UYWdPGN9Y0jHbd37uCxB3klz1jHElpqq5qONCbb9npaN6FjC
+         m/W52CNTF6IiVjWXDdNcAbcFbd4FcnFT0My6iOHySTg4kuyC4s6Z1mhto0p4zkk7vyUa
+         C+EkBVrSmNyOA5iZuqlFp9cePIFG4fo56zbeFY1HtyM0VkpSvYKrd8UdrewyJK6GIb6q
+         oD1HsNYYF3AHnYJ5J5gMBO2l00BlvVRTBoZ2aPbVNeTUXdjeKqG2d9ptJ9yeV7Rw5jg4
+         xAsd+3ViR9s++51J8EHNeS6arCQtWouoMylHQzC9kozjmA5Ns/fBHOZVWfQJbOC4GB8q
+         jY9w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1766158813; x=1766763613;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=Yxrrp2oMgVkK17s+eJEUzU1udWIn66K3HBKvgT0GfUc=;
-        b=tCJVlkoYj6UJE9phfHFb0gWRjX3CQDGdAKd5ksar7x/E7BTuCiWBiHgVG48g7Yqgdn
-         gN83oWeUDdiZ3T7T6jX8wFg8+rjEAVN7m9PdPx8iVpPWJBX96AqE2qAWTNgto7ap5J5I
-         Z04Oodz7lwh6I9VFDkMAtX8ccV2aL6KYppDffTAQa6cJaqgeuiOi+YOtX+fVF78UC/DD
-         rtz8j9IQUADT6ClxjBofzBDI/EmbpSDnoM0dzGkivHeH9w2C7CeLJ7LNTeh82FMohNcy
-         qoqwTHUjKh6FX72DUX7/MkwwptzKtQe6uv+vwEiXZ0W0UwRSLsn1qKmrb45g0Hz/lZl3
-         hQ+Q==
-X-Forwarded-Encrypted: i=1; AJvYcCU/VFnIW1JwymVLnCvVTSP4ch/+nwBuGfJDeLqFnGnYtiozH7tb1OCAGKDvhdo/SYTLoVw=@vger.kernel.org
-X-Gm-Message-State: AOJu0YymHOJizhdQ66x/iX/YAsj1knWa4vnEgfL0bPrFeTl8E1DZ5Kjv
-	tMHiN+5eaGzpClGMQWgWHrUve9X3M35ZqHGnpGH3TMi70VBQRlgX3/udlSQ8uePOT5pFQk/VU4g
-	8fmoa9w==
-X-Google-Smtp-Source: AGHT+IGtRE55TsKHeelPCRMsIlRwSp4fhqX1YpQo/KjGsELaRWS0xMViHMtopyhh3Du+2psPLE3aTf/OtFw=
-X-Received: from pjbhl13.prod.google.com ([2002:a17:90b:134d:b0:34c:5d1d:4e95])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90a:c106:b0:34c:2f40:c662
- with SMTP id 98e67ed59e1d1-34e71e2955bmr5999291a91.14.1766158812676; Fri, 19
- Dec 2025 07:40:12 -0800 (PST)
-Date: Fri, 19 Dec 2025 07:40:11 -0800
-In-Reply-To: <aUS06wE6IvFti8Le@yilunxu-OptiPlex-7050>
+        d=1e100.net; s=20230601; t=1766159615; x=1766764415;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=L/jqv3cJiOiniBhqPGj3ePpHhUWqhzpVBGmNIJAgyrQ=;
+        b=lUo+xcF3z59eHTGHWk1caGeIsLUQn24bKrfAO4y7tRz5ToPj3LaLAcqtjYtXbsNr9f
+         HPNgKEbGI5MjE61NRoGAux3X+NaEw90bXN4Ofvt/cUwMZYMnB+R6J8qasYOz5lzwzCO3
+         R9wTIMofgMC3LVkjOvQh7PbTmJIew289Ewd/gQqjdYkuA+v5xtiep7jLZ08X6njd8V7B
+         eE1FAwoYsY/KHUWXpNpATzZ6VzNL86/Yy05Ui+y7X/GFMh0roqdCvqnpw9y1uFc2LzmW
+         AGYnYwkXpPqWgnVWIcVBE+aP8r8rf320Q86HpsapZ+sFtWCv7dujI5DZJlVogUiuWazk
+         BPGA==
+X-Gm-Message-State: AOJu0YweG9TKDrZO19VvTQkOyu82V9q205Wh7tCeYfvfgrEyHD+Dkf9O
+	9p/Ki8J4WdwTUgOUJyF04OtniUc0UcXErdfhjRpKZ4UA0PdHoK6dYs8EtCsLDgu1HxKKVqSf46k
+	UE/tLeW8RKbkWg6mR9vZAQNg6Py8pPDgjOs7EuQv/R4xHE99fFWQyaA==
+X-Gm-Gg: AY/fxX7tgxzcYnRXFit49DDmwepyPvBvTbyV323kP90/MforG/GV7GKuLdzXbxVsF78
+	uo/wNxguwxs0/B0iYUWLwSN3V+Y2a3dl26v7wje6L8NJeTDEI39wMmuJqU96ysp+TV+rQPn3CfD
+	kC67XSScHwFTmpJ88CYHhIT+bDU/tshnXGmVgHdHaPlKwgURjh8LDf3O4hxkbyZlAbD7+aBjJiB
+	8K3c6o+ZyYzPoy51VqjdCxozaM7j9eU84BTQjVkMkYB54CKjApN1/2sia1ceefEBcdRXEM1FITC
+	bqNsf5cn1062zZaf9mZLH6vy2rPeNV93KVja9Nq1aabTIB9zGBAVL99cSe1ofq4yPkfEfFll844
+	Y9Y4=
+X-Received: by 2002:a05:622a:613:b0:4ee:2423:d538 with SMTP id d75a77b69052e-4f4abcf11f4mr44817061cf.18.1766159615310;
+        Fri, 19 Dec 2025 07:53:35 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IFouxtlBTlJ/HrUU+MwNoFw+6sCgUDeVcjckP1nM19pQghsLhFECfIT9+YLku6qXfDkEDxFlQ==
+X-Received: by 2002:a05:622a:613:b0:4ee:2423:d538 with SMTP id d75a77b69052e-4f4abcf11f4mr44816581cf.18.1766159614863;
+        Fri, 19 Dec 2025 07:53:34 -0800 (PST)
+Received: from x1.local ([142.188.210.156])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-88d9623fdd8sm21404906d6.4.2025.12.19.07.53.33
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 19 Dec 2025 07:53:34 -0800 (PST)
+Date: Fri, 19 Dec 2025 10:53:33 -0500
+From: Peter Xu <peterx@redhat.com>
+To: Jason Gunthorpe <jgg@nvidia.com>
+Cc: kvm@vger.kernel.org, linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+	Nico Pache <npache@redhat.com>, Zi Yan <ziy@nvidia.com>,
+	Alex Mastro <amastro@fb.com>, David Hildenbrand <david@redhat.com>,
+	Alex Williamson <alex@shazbot.org>, Zhi Wang <zhiw@nvidia.com>,
+	David Laight <david.laight.linux@gmail.com>,
+	Yi Liu <yi.l.liu@intel.com>, Ankit Agrawal <ankita@nvidia.com>,
+	Kevin Tian <kevin.tian@intel.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: Re: [PATCH v2 2/4] mm: Add file_operations.get_mapping_order()
+Message-ID: <aUV0_TH56QeZIBXU@x1.local>
+References: <aTnWphMGVwWl12FX@x1.local>
+ <20251216144427.GF6079@nvidia.com>
+ <aUF97-BQ8X45IDqE@x1.local>
+ <20251216171944.GG6079@nvidia.com>
+ <aUGYjfE7mlSUfL_3@x1.local>
+ <20251216185850.GH6079@nvidia.com>
+ <aUG2ne_zMyR0eCLX@x1.local>
+ <20251219145957.GD254720@nvidia.com>
+ <aUVrfs1w6Sg0jfRw@x1.local>
+ <20251219152030.GA371266@nvidia.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20251206011054.494190-1-seanjc@google.com> <20251206011054.494190-3-seanjc@google.com>
- <aTe4QyE3h8LHOAMb@intel.com> <aUJUbcyz2DXmphtU@yilunxu-OptiPlex-7050>
- <aUL-J-MvdCrCtDp4@google.com> <aUS06wE6IvFti8Le@yilunxu-OptiPlex-7050>
-Message-ID: <aUVx20ZRjOzKgKqy@google.com>
-Subject: Re: [PATCH v2 2/7] KVM: x86: Extract VMXON and EFER.SVME enablement
- to kernel
-From: Sean Christopherson <seanjc@google.com>
-To: Xu Yilun <yilun.xu@linux.intel.com>
-Cc: Chao Gao <chao.gao@intel.com>, Thomas Gleixner <tglx@linutronix.de>, 
-	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
-	Kiryl Shutsemau <kas@kernel.org>, Paolo Bonzini <pbonzini@redhat.com>, linux-kernel@vger.kernel.org, 
-	linux-coco@lists.linux.dev, kvm@vger.kernel.org, 
-	Dan Williams <dan.j.williams@intel.com>
-Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20251219152030.GA371266@nvidia.com>
 
-On Fri, Dec 19, 2025, Xu Yilun wrote:
-> On Wed, Dec 17, 2025 at 11:01:59AM -0800, Sean Christopherson wrote:
-> > On Wed, Dec 17, 2025, Xu Yilun wrote:
-> > > Is it better we explicitly assert the preemption for x86_virt_get_cpu()
-> > > rather than embed the check in __this_cpu_inc_return()? We are not just
-> > > protecting the racing for the reference counter. We should ensure the
-> > > "counter increase + x86_virt_call(get_cpu)" can't be preempted.
+On Fri, Dec 19, 2025 at 11:20:30AM -0400, Jason Gunthorpe wrote:
+> On Fri, Dec 19, 2025 at 10:13:02AM -0500, Peter Xu wrote:
+> > On Fri, Dec 19, 2025 at 10:59:57AM -0400, Jason Gunthorpe wrote:
+> > > On Tue, Dec 16, 2025 at 02:44:29PM -0500, Peter Xu wrote:
+> > > > > > Or maybe I misunderstood what you're suggesting to document?  If so, please
+> > > > > > let me know; some example would be greatly helpful.
+> > > > > 
+> > > > > Just document the 'VA % order = pgoff % order' equation in the kdoc
+> > > > > for the new op.
+> > > > 
+> > > > When it's "related to PTEs", it's talking about (2) above, so that's really
+> > > > what I want to avoid mentioning.
+> > > 
+> > > You can't avoid it. Drivers must ensure that
+> > > 
+> > >   pgoff % order == physical % order
+> > > 
+> > > And that is something only drivers can do by knowing about this
+> > > requirement.
 > > 
-> > I don't have a strong preference.  Using __this_cpu_inc_return() without any
-> > nearby preemption_{enable,disable}() calls makes it quite clears that preemption
-> > is expected to be disabled by the caller.  But I'm also ok being explicit.
+> > This is a current limitation that above must be guaranteed, there's not
+> > much the driver can do, IMHO.
 > 
-> Looking into __this_cpu_inc_return(), it finally calls
-> check_preemption_disabled() which doesn't strictly requires preemption.
-> It only ensures the context doesn't switch to another CPU. If the caller
-> is in cpuhp context, preemption is possible.
+> There is alot the driver can do! The driver decides on the pgoff
+> values it is using, it needs to keep the above in mind when it builds
+> its pgoff number space!
 
-Hmm, right, the cpuhp thread is is_percpu_thread(), and KVM's hooks aren't
-considered atomic and so run with IRQs enabled.  In practice, it's "fine", because
-TDX also exclusively does x86_virt_get_cpu() from cpuhp, i.e. the two users are
-mutually exclusive, but relying on that behavior is gross.
+Yeah, if so, it's reassuring. :)
 
-> But in this x86_virt_get_cpu(), we need to ensure preemption disabled,
-> otherwise caller A increases counter but hasn't do actual VMXON yet and
-> get preempted. Caller B opts in and get the wrong info that VMX is
-> already on, and fails on following vmx operations.
 > 
-> On a second thought, maybe we disable preemption inside
-> x86_virt_get_cpu() to protect the counter-vmxon racing, this is pure
-> internal thing for this kAPI.
+> > If you could remember, that's the only reason why I used to suggest (while
+> > we were discussing this in v1) to make it *pgoff instead of pgoff, so that
+> > drivers can change *pgoff to make it relevant to HPA.
+> 
+> What? That's nonsense. The pgoff space is assigned by the driver and
+> needs to remain a fixed relationship to the underlying phys the driver
+> is mapping in. It shouldn't be changing pgoff during mmap!
 
-Ya, that'd be my preference.
+I meant, return *pgoff as a hint, not changing the pgoff to be used.. Only
+changing the pgoff (as an integer) to be used in the VA calculations.
 
+Thanks for sharing above information to ease my mind, if drivers are all
+smart enough (I'll trust you more than myself on driver knowledges!) I
+think we're all good..
 
-Kai, question for you (or anyone else that might know):
+-- 
+Peter Xu
 
-Is there any **need** for tdx_cpu_enable() and try_init_module_global() to run
-with IRQs disabled?  AFAICT, the lockdep_assert_irqs_disabled() checks added by
-commit 6162b310bc21 ("x86/virt/tdx: Add skeleton to enable TDX on demand") were
-purely because, _when the code was written_, KVM enabled virtualization via IPI
-function calls.
-
-But by the time the KVM code landed upstream in commit fcdbdf63431c ("KVM: VMX:
-Initialize TDX during KVM module load"), that was no longer true, thanks to
-commit 9a798b1337af ("KVM: Register cpuhp and syscore callbacks when enabling
-hardware") setting the stage for doing everything from task context.
-
-However, rather than update the kernel side, e.g. to drop the lockdep assertions
-and related comments, commit 9a798b1337af instead did this:
-
-	local_irq_save(flags);
-	r = tdx_cpu_enable();
-	local_irq_restore(flags);
-
-Somewhat frustratingly, I poked at this when the reworked code was first posted
-(https://lore.kernel.org/all/ZyJOiPQnBz31qLZ7@google.com), but it just got swept
-under the rug :-(
-
-  : > > +	/* tdx_cpu_enable() must be called with IRQ disabled */
-  : > 
-  : > I don't find this comment helpfu.  If it explained _why_ tdx_cpu_enable() requires
-  : > IRQs to be disabled, then I'd feel differently, but as is, IMO it doesn't add value.
-  : 
-  : I'll remove the comment.
-  : 
-  : > 
-  : > > +	local_irq_save(flags);
-  : > > +	r = tdx_cpu_enable();
-  : > > +	local_irq_restore(flags);
-
-Unless TDX _needs_ IRQs to be disabled, I would strongly prefer to drop that code
-in prep patches so that it doesn't become even harder to disentagle the history
-to figure out why tdx_online_cpu() disables IRQs:
-
-  static int tdx_online_cpu(unsigned int cpu)
-  {
-	int ret;
-
-	guard(irqsave)();  <=============== why is this here!?!?!
-
-	ret = x86_virt_get_cpu(X86_FEATURE_VMX);
-	if (ret)
-		return ret;
-
-	ret = tdx_cpu_enable();
-	if (ret)
-		x86_virt_put_cpu(X86_FEATURE_VMX);
-
-	return ret;
-  }
-
-Side topic, KVM's change in behavior also means this comment is stale (though I
-think it's worth keeping the assertion, but with a comment saying it's hardening
-and paranoia, not a strick requirement).
-
-	/*
-	 * IRQs must be disabled as virtualization is enabled in hardware via
-	 * function call IPIs, i.e. IRQs need to be disabled to guarantee
-	 * virtualization stays disabled.
-	 */
-	lockdep_assert_irqs_disabled();
