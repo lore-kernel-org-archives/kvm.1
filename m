@@ -1,141 +1,84 @@
-Received: from mail.loongson.cn (mail.loongson.cn [114.242.206.163])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA6602DA75F;
-	Fri, 19 Dec 2025 06:30:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=114.242.206.163
+Received: from desiato.infradead.org (desiato.infradead.org [90.155.92.199])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6FF12D6E5C;
+	Fri, 19 Dec 2025 07:52:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.92.199
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1766125844; cv=none; b=jkdQG2r56jMTFuDEXuiYDv9BruKHFyoCnTTsxMUwAZRApS8EWj2cHiHVAWA4CA8hjGz3fQxdCya0B1jXLGnWayIGpNUegFoUyWOfWSl7WO9hIyNTuHEHVmS9Np4Mi9LAye7iBzD//7ZdsxR22vTnwlMrFV7BabuWrCF3kl48VnM=
+	t=1766130774; cv=none; b=rP60zL+mxQL0xB+dmsVJERAQf8FJ7eVTe1kpK2axKmZAkArwkPtL8o4TOoOon54RFCBNPFvGnywF46lJjT0lt44bFx79S0rJeE9nMkU2/TyZ1fzzql90iaJAH6QJ86xDIVtnX1X6VqZv97b/QOdtLQQ/moZX1SIODk++kOHdlqI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1766125844; c=relaxed/simple;
-	bh=3cuMPz6ATxGaiqM4JNQ+xrnm7gl4HpleDzVq7J7439Q=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=dcxcl5k4vwWpGSx1QY/ULtYgAdKiGBYfFw5LqtSOSQQ2j36e/qfzwJ8maErjtC/ErZHq1GthmDvTnQ26b38OQx0Irfa+Mirr4Tc1fJ75DtKtNAZvxUjpVpoNNi8ikD2X7IfKuy1NZTzFhrvGKhjS9I13+ZPoH6/+oZEybBZQLrw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn; spf=pass smtp.mailfrom=loongson.cn; arc=none smtp.client-ip=114.242.206.163
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=loongson.cn
-Received: from loongson.cn (unknown [10.2.5.213])
-	by gateway (Coremail) with SMTP id _____8CxqsL_8ERpO8EAAA--.2502S3;
-	Fri, 19 Dec 2025 14:30:23 +0800 (CST)
-Received: from localhost.localdomain (unknown [10.2.5.213])
-	by front1 (Coremail) with SMTP id qMiowJBx68H+8ERpt6kBAA--.3572S2;
-	Fri, 19 Dec 2025 14:30:22 +0800 (CST)
-From: Bibo Mao <maobibo@loongson.cn>
-To: Huacai Chen <chenhuacai@kernel.org>,
-	Juergen Gross <jgross@suse.com>,
-	Tianrui Zhao <zhaotianrui@loongson.cn>,
-	WANG Xuerui <kernel@xen0n.name>
-Cc: kvm@vger.kernel.org,
-	loongarch@lists.linux.dev,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH v4 0/2] LoongArch: KVM: Add paravirt preempt support
-Date: Fri, 19 Dec 2025 14:30:19 +0800
-Message-Id: <20251219063021.1778659-1-maobibo@loongson.cn>
-X-Mailer: git-send-email 2.39.3
+	s=arc-20240116; t=1766130774; c=relaxed/simple;
+	bh=HEaeeIQnzZQnWQcIIE4Yd/QM16AqjSH39Wr7nOHQ/xE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=k4psMb4cS1ukLcnNHSyhXERtLb8mDf4g+AG18CXtkMVJW6VRdULXIPL0QAVuZDi68/0j+83zdFGw3q4wRMVmLMebuHpgTC6Ug/oFPkNtnYNQP6EHS3Xvs1HsB+Qu1GDqQ24EcAESBHDiY3gmQ1Zw//mYdZZQbhAVN6TJ8uxNlxM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=IbLMRfLL; arc=none smtp.client-ip=90.155.92.199
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=infradead.org
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="IbLMRfLL"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=desiato.20200630; h=In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=HEaeeIQnzZQnWQcIIE4Yd/QM16AqjSH39Wr7nOHQ/xE=; b=IbLMRfLLvj2PfqQVrwUd26x7Rh
+	QCiy/mVp+0HKdiDmfE2TCQInnOl6NzxskL95j4WAz2oPrGA5AJ2raAkK1xhPIUZV2a/SAw+uqjP1y
+	pqn3U0hl+J2ValUExcih/C7oOrXtCX/FBrmzLTu75eCOSBe54Nw793aUUOoT5nZtpKmtdiTr4zoIG
+	uqm4mjWNz3NExzdSJjwHsTvGJyOr33XgL+UM7qAoqqnrbLfvFd1aIXjDTvmxo+oj24aAZcSunWIuq
+	QhwuOs5UH6G80JFEfM7SHWAwslizMJE7ur7btC0LkTlaXIXRibxlzDipINmy0lpzuwxBII+Mmocpg
+	X4WTTCWg==;
+Received: from 77-249-17-252.cable.dynamic.v4.ziggo.nl ([77.249.17.252] helo=noisy.programming.kicks-ass.net)
+	by desiato.infradead.org with esmtpsa (Exim 4.98.2 #2 (Red Hat Linux))
+	id 1vWUQU-0000000AM2O-36LO;
+	Fri, 19 Dec 2025 06:57:25 +0000
+Received: by noisy.programming.kicks-ass.net (Postfix, from userid 1000)
+	id E4F9830057C; Fri, 19 Dec 2025 08:52:35 +0100 (CET)
+Date: Fri, 19 Dec 2025 08:52:35 +0100
+From: Peter Zijlstra <peterz@infradead.org>
+To: Sean Christopherson <seanjc@google.com>
+Cc: linux-kernel@vger.kernel.org, sfr@canb.auug.org.au,
+	linux-tip-commits@vger.kernel.org, x86@kernel.org,
+	pbonzini@redhat.com, kvm@vger.kernel.org
+Subject: Re: [tip: perf/core] perf: Use EXPORT_SYMBOL_FOR_KVM() for the
+ mediated APIs
+Message-ID: <20251219075235.GV3911114@noisy.programming.kicks-ass.net>
+References: <20251208115156.GE3707891@noisy.programming.kicks-ass.net>
+ <176597507731.510.6380001909229389563.tip-bot2@tip-bot2>
+ <20251218083109.GH3707891@noisy.programming.kicks-ass.net>
+ <20251218083346.GG3708021@noisy.programming.kicks-ass.net>
+ <aURKsxhxpJ0oHDok@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:qMiowJBx68H+8ERpt6kBAA--.3572S2
-X-CM-SenderInfo: xpdruxter6z05rqj20fqof0/
-X-Coremail-Antispam: 1Uk129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7KY7
-	ZEXasCq-sGcSsGvfJ3UbIjqfuFe4nvWSU5nxnvy29KBjDU0xBIdaVrnUUvcSsGvfC2Kfnx
-	nUUI43ZEXa7xR_UUUUUUUUU==
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <aURKsxhxpJ0oHDok@google.com>
 
-vCPU preempt hint is useful with sched and lock on some platforms, here
-new feature KVM_FEATURE_PREEMPT_HINT is added and VMM can selectively
-enable it.
+On Thu, Dec 18, 2025 at 10:40:51AM -0800, Sean Christopherson wrote:
 
-Test case kcbench is used to compile Linux kernel code, the test result
-shows that it is useful on 3D6000 Dual-way machine with 64 cores and 128
-hyperthreads, however no improvemet on 3C5000 Dual-way machine with 32
-cores. With perf top command when running test case, the main difference
-between over-commited VM and host is osq_lock(). if vcpu_is_preempted()
-is implemented on VM, it can avoid  unnecessary busy-loop waiting and
-enter sleep state quickly if lock-hold vCPU is preempted.
 
-Here is test result with kcbench on 3D6000 and 3C6000 hardware machines,
-time unit is second to compile kernel with defconfig, performance is
-better with smaller value.
-3D6000 Dual-way 64 Core 128 Threads
- One VM with 128 vCPUs, no overcommit, NUMA
-             Orginal       With-patch       Improvement
-  VM         91.72         92.4             < -1%
-  Host       89.7          89.75            < -0.1%
- Two VMs overcommit with 128 vCPUs, UMA
-             Orginal       With-patch       Improvement
-  VM1        306.9         197.5            +36%
-  VM2        303.7         197.8            +35%
-  Host       89.7          89.75             < -0.1%
- Two VMs overcommit with 128 vCPUs, NUMA
-             Orginal       With-patch       Improvement
-  VM1        317.1         159              +50%
-  VM2        317.5         158              +50%
-  Host       89.7          89.75            < -0.1%
-3C5000  Dual-way 32 Core
- One VM with 32 vCPUs, NUMA
-             Orginal       With-patch       Improvement
-  VM         208           207              < +0.5%
-  Host       184           185              < -0.5%
- Two VMs overcommit with 32 vCPUs, UMA
-             Orginal       With-patch       Improvement
-  VM1        439           444              -1%
-  VM2        437           438              < -0.2%
-  Host       184           185              < -0.5%
- Two VMs overcommit with 32 vCPUs, NUMA
-             Orginal       With-patch       Improvement
-  VM1        422           425              < -1%
-  VM2        418           415              < -1%
-  Host       184           185              < -0.5%
+> Include the arch-defined asm/kvm_types.h if and only if the kernel is
+> being compiled for an architecture that supports KVM so that kvm_types.h
+> can be included in generic code without having to guard _those_ includes,
+> and without having to add "generic-y += kvm_types.h" for all architectures
+> that don't support KVM.
+
+Something jogged my brain and the below seems to work for the few
+architectures I've tried. Let me update the patch and see if the build
+robot still finds fail.
 
 ---
-v3 ... v4:
-  1. Base on the latest version 6.19.0-rc1, and solve some confliction
-     issues.
-  2. Move definition and usage about variable virt_preempt_key outside of
-     CONFIG_SMP.
-
-v2 ... v3:
-  1. Remove CONFIG_SMP checking in header file asm/qspinlock.h, since
-     this file is included only if CONFIG_SMP is defined.
-  2. Replace internal variable pv_preempted with static_key_enabled()
-     method.
-  3. Add static type define with variable virt_preempt_key.
-  4. Merge previous patch 2 and patch 3 into one patch.
-
-v1 ... v2:
-  1. Rename feature KVM_FEATURE_PREEMPT_HINT with KVM_FEATURE_PREEMPT,
-     remove HINT in feature name.
-  2. Rename reverve field with __u8 pad[47] rather than combination of
-     __u8  u8_pad[3] and __u32 pad[11]
-  3. Rename internal function _kvm_set_vcpu_preempted() with
-     kvm_vcpu_set_pv_preempted(), remove prefix "_" and also in order to
-     avoid duplication name with common API in future.
-  4. Remove static variable u8 preempted and macro KVM_VCPU_PREEMPTED is
-     used directly.
-  5. Move definition of vcpu_is_preempted() from file spinlock.h to
-     qspinlock.h, since CONFIG_PARAVIRT is used in qspinlock.h already.
-  6. Add CONFIG_SMP checking with vcpu_is_preempted() to solve compile
-     issue reported by LKP if CONFIG_SMP is disabled.
-  7. Add static key virt_preempt_key with vcpu_is_preempted(), remove
-     mp_ops.vcpu_is_preempted method.
----
-Bibo Mao (2):
-  LoongArch: KVM: Add paravirt preempt feature in hypervisor side
-  LoongArch: Add paravirt support with vcpu_is_preempted() in guest side
-
- arch/loongarch/include/asm/kvm_host.h      |  2 +
- arch/loongarch/include/asm/kvm_para.h      |  4 +-
- arch/loongarch/include/asm/qspinlock.h     |  3 ++
- arch/loongarch/include/uapi/asm/kvm.h      |  1 +
- arch/loongarch/include/uapi/asm/kvm_para.h |  1 +
- arch/loongarch/kernel/paravirt.c           | 21 ++++++++-
- arch/loongarch/kvm/vcpu.c                  | 53 +++++++++++++++++++++-
- arch/loongarch/kvm/vm.c                    |  3 ++
- 8 files changed, 85 insertions(+), 3 deletions(-)
-
-
-base-commit: dd9b004b7ff3289fb7bae35130c0a5c0537266af
--- 
-2.39.3
-
+diff --git a/include/asm-generic/Kbuild b/include/asm-generic/Kbuild
+index 295c94a3ccc1..9aff61e7b8f2 100644
+--- a/include/asm-generic/Kbuild
++++ b/include/asm-generic/Kbuild
+@@ -32,6 +32,7 @@ mandatory-y += irq_work.h
+ mandatory-y += kdebug.h
+ mandatory-y += kmap_size.h
+ mandatory-y += kprobes.h
++mandatory-y += kvm_types.h
+ mandatory-y += linkage.h
+ mandatory-y += local.h
+ mandatory-y += local64.h
