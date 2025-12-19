@@ -1,309 +1,86 @@
-Received: from mail-pj1-f73.google.com (mail-pj1-f73.google.com [209.85.216.73])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from m16.mail.163.com (m16.mail.163.com [117.135.210.3])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5CBA5288D2
-	for <kvm@vger.kernel.org>; Fri, 19 Dec 2025 01:20:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.73
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 33C9E17BA6;
+	Fri, 19 Dec 2025 02:28:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=117.135.210.3
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1766107248; cv=none; b=iXKwB6qz4f7UgqFEJG7YxH0XFs+LD+fMUaO9dhIQ9rbTBFgsp/kiM3DJSHKKQz6AI0Bbf7NDiufB5qLDQQZyZGsrtVBUzLmOSmfEc0rpcRUDeotbnd910+HlCK418Di+8Af3fkB83T3LwL7hSU+JACGd3Cmab0dbYY2iCOTtwXo=
+	t=1766111290; cv=none; b=UXnosE11xu/UwIT4oZfYInsvoZl+ZXwpUAE+mFSjVGF6BUpW2us73wI5nNdRQnQB1+wDozsvz+861rIO46HGFrbdU9mq+wFPhGHE1CqAFfvZkMCXo5HkHyZ1GzgnkqV+gtg69MuPJ+DEj5VHlCR/NyTr97em7t8kmEpr9n14psw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1766107248; c=relaxed/simple;
-	bh=CrLw4VBrWjUWwrcAbgLxBCMhqzVtML6nTp4cl92xOqw=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=myDlqimroqORgPftGfAEj3UsbawVSLf1EP1apaCX/gnz+WDzA1xaE2iNqA0NHVWqyV2exwPlqcjpsAGnQYJqf7piwabh2f11OdT3dGRGd41ygzFYOQPlVpn8m1Pyeb753/5p7IpiBadHIDTGMBj11Z1Of3Y/axEWuPG8WU9oR/U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=awyfdZlM; arc=none smtp.client-ip=209.85.216.73
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+	s=arc-20240116; t=1766111290; c=relaxed/simple;
+	bh=zzWTfLen8COuX/q/sKLUzJAtj9cSvrwCqbBUYVz6l10=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:Content-Type:
+	 MIME-Version:Message-ID; b=I5G29TdC8gOZBDnC68qr5FIncKImMIi+EDXI3W59NThfcjLpkimx27qrQr3ZEFSBafrLu9PfhbF17nAsjClV+crIl2N6H08/4eLo6Fm5irUPMJ5irElG3Qi7ccO8qG5bhUVhcxMkD0XqGvK0MZbd/qLXX2upzNF4J29FRUihEGY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=f9b6Yn9l; arc=none smtp.client-ip=117.135.210.3
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="awyfdZlM"
-Received: by mail-pj1-f73.google.com with SMTP id 98e67ed59e1d1-34c43f8ef9bso2172877a91.1
-        for <kvm@vger.kernel.org>; Thu, 18 Dec 2025 17:20:46 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1766107246; x=1766712046; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=e1oi4mnuLLL6bf0wFuVJldfb0uYmu/pj+f61oQSJDA4=;
-        b=awyfdZlM0JlQyZsn4VtvoBZY/Am538l/fqesSuQlECoTDyXWsKKcPYNe1r/fdFCkYf
-         XfV9dJ1JOx2PPK7hU3LnVkmoKqKnVBOwt3hGZQlyXhRb87mKa17DUh5NxOjA8Sj8dA95
-         tMQIbK2r7x3/131y/lD5RFJI+sDB5cwJEWkdhX5G0maL34tqkrgWpfDhmeaOSQ0onnOx
-         LoTRtWX/hATagY2MxxtSC+5endHdRgZlqBJumawKpjIKM7VNS9IU6k0pwDHzahjM9hvk
-         zxE9kWDhGEtbaniUxZwUGObuNz5zs83zI2ROxDmpCPZ1EvDhTKO94zTW+Fau9Q0OqF9A
-         vRDg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1766107246; x=1766712046;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=e1oi4mnuLLL6bf0wFuVJldfb0uYmu/pj+f61oQSJDA4=;
-        b=N0T5nMwXzDoUuV8xhkdnzz9OLUSEVbaf+KlYwrUH9HFppkxrsSrQBtN9CtUwiW9KRi
-         hfpMEgYfSzUTfaV01zc78TqpgftB/btQeGdbgQucSC9yL8juoDqDsDdn0yeyBhTnS/xR
-         TDflP9Pe2+W5xuM2V2C4Ejf3q6nvoP5KPgYsUWG8ku+7ZZGU7AuuRwQjBVZ6Pley+3fJ
-         aZiSDwBMfYfFCDrXmQ/Rm4INWlRzOZTM1tKYgFVy20y3GGC3pEoDOfNmVRcSw1k38BQc
-         FHS2IAWPEbJYc7rAALt9yDNx0Wor41jikrjZkd98yS0kcIz+0WYRd/wZv42fhfuVli/F
-         jmUQ==
-X-Gm-Message-State: AOJu0Ywq/SI4FoGNqFxJFQKLsZlmvbsZ384Gj2LVuDNViBKzDkHAwpgx
-	tiJgyOB/JhdbxbgtRrNBo+bZ7Ve9/ZQkYGA91SF4/urr3Pv1esDtppcRQnfQxLpWdyilgcIJfy7
-	GrWxS1w==
-X-Google-Smtp-Source: AGHT+IGLTrkeHUpYZnEoFTF29YffsALKfo6ydvjvl5TSAkMMUt/GVaCCR6jGLVhothpsyiRu5euzCVWGq5c=
-X-Received: from pjsg8.prod.google.com ([2002:a17:90a:7148:b0:340:c53d:2599])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:57c6:b0:340:b501:7b83
- with SMTP id 98e67ed59e1d1-34e90dcfcd2mr1085541a91.10.1766107245633; Thu, 18
- Dec 2025 17:20:45 -0800 (PST)
-Date: Thu, 18 Dec 2025 17:20:44 -0800
-In-Reply-To: <DS0PR02MB9321EA7B6AB2B559CA1CDFDD8BD9A@DS0PR02MB9321.namprd02.prod.outlook.com>
+	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="f9b6Yn9l"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
+	s=s110527; h=Date:From:To:Subject:Content-Type:MIME-Version:
+	Message-ID; bh=zzWTfLen8COuX/q/sKLUzJAtj9cSvrwCqbBUYVz6l10=; b=f
+	9b6Yn9lpfldBIebFac8ZhjCAfipn5whg40ODcftNj/pMJAS2/R1nEXKECOUF7mwa
+	7En0Kk5Lg4n9rU5PPO6f68NY4XANcZg8Fzn5k6pqs6vSexPCUr0vRBgls48z1Tnh
+	g5amu67ah9mCP9PLJqN6C0uL0XSMwEiycAExhK7HFg=
+Received: from 15927021679$163.com ( [116.128.244.169] ) by
+ ajax-webmail-wmsvr-40-107 (Coremail) ; Fri, 19 Dec 2025 10:27:09 +0800
+ (CST)
+Date: Fri, 19 Dec 2025 10:27:09 +0800 (CST)
+From: =?GBK?B?0NzOsMPxICA=?= <15927021679@163.com>
+To: "Leon Romanovsky" <leon@kernel.org>,
+	"Michael S . Tsirkin" <mst@redhat.com>,
+	"David Hildenbrand" <david@redhat.com>,
+	"Jason Wang" <jasowang@redhat.com>,
+	"Stefano Garzarella" <sgarzare@redhat.com>,
+	"Thomas Monjalon" <thomas@monjalon.net>,
+	"David Marchand" <david.marchand@redhat.com>,
+	"Luca Boccassi" <bluca@debian.org>,
+	"Kevin Traynor" <ktraynor@redhat.com>,
+	"Christian Ehrhardt" <christian.ehrhardt@canonical.com>,
+	"Xuan Zhuo" <xuanzhuo@linux.alibaba.com>,
+	=?GBK?Q?Eugenio_P=A8=A6rez?= <eperezma@redhat.com>,
+	"Xueming Li" <xuemingl@nvidia.com>,
+	"Maxime Coquelin" <maxime.coquelin@redhat.com>,
+	"Chenbo Xia" <chenbox@nvidia.com>,
+	"Bruce Richardson" <bruce.richardson@intel.com>
+Cc: kvm@vger.kernel.org, virtualization@lists.linux.dev,
+	netdev@vger.kernel.org,
+	"RDMA mailing list" <linux-rdma@vger.kernel.org>
+Subject: Re:Re: Implement initial driver for virtio-RDMA device(kernel)
+X-Priority: 3
+X-Mailer: Coremail Webmail Server Version 2023.4-cmXT build
+ 20250723(a044bf12) Copyright (c) 2002-2025 www.mailtech.cn 163com
+In-Reply-To: <20251218163008.GH400630@unreal>
+References: <20251218091050.55047-1-15927021679@163.com>
+ <20251218163008.GH400630@unreal>
+X-NTES-SC: AL_Qu2dBP2avkop7yKcYukfmU0VgOc9XsWwu/Uk2YRXc+AEvhn91i0NcGBfB13x3/C3Cw2orgSHdD9v4+NFc5ZjnscnuIaIph6uoKKQX33d3Q==
+Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset=GBK
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20221005211551.152216-1-thanos.makatos@nutanix.com>
- <aLrvLfkiz6TwR4ML@google.com> <DS0PR02MB93218C62840E0E9FA240FAF68BD8A@DS0PR02MB9321.namprd02.prod.outlook.com>
- <aS9uBw_w7NM_Vnw1@google.com> <DS0PR02MB9321EA7B6AB2B559CA1CDFDD8BD9A@DS0PR02MB9321.namprd02.prod.outlook.com>
-Message-ID: <aUSobNVZ9VEaLN79@google.com>
-Subject: Re: [RFC PATCH] KVM: optionally commit write on ioeventfd write
-From: Sean Christopherson <seanjc@google.com>
-To: Thanos Makatos <thanos.makatos@nutanix.com>
-Cc: "kvm@vger.kernel.org" <kvm@vger.kernel.org>, John Levon <john.levon@nutanix.com>, 
-	"mst@redhat.com" <mst@redhat.com>, "dinechin@redhat.com" <dinechin@redhat.com>, 
-	"cohuck@redhat.com" <cohuck@redhat.com>, "jasowang@redhat.com" <jasowang@redhat.com>, 
-	"stefanha@redhat.com" <stefanha@redhat.com>, "jag.raman@oracle.com" <jag.raman@oracle.com>, 
-	"eafanasova@gmail.com" <eafanasova@gmail.com>, 
-	"elena.ufimtseva@oracle.com" <elena.ufimtseva@oracle.com>, Paolo Bonzini <pbonzini@redhat.com>
-Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Message-ID: <7076944c.4ac4.19b346eb549.Coremail.15927021679@163.com>
+X-Coremail-Locale: zh_CN
+X-CM-TRANSID:aygvCgBnhST9t0Rps8U_AA--.11607W
+X-CM-SenderInfo: jprvmjixqsilmxzbiqqrwthudrp/xtbC0R2YIWlEt-1cmgAA3U
+X-Coremail-Antispam: 1U5529EdanIXcx71UUUUU7vcSsGvfC2KfnxnUU==
 
-+Paolo (just realized Paolo isn't on the Cc)
-
-On Wed, Dec 03, 2025, Thanos Makatos wrote:
-> > From: Sean Christopherson <seanjc@google.com>
-> > Side topic, Paolo had an off-the-cuff idea of adding uAPI to support
-> > notifications on memslot ranges, as opposed to posting writes via
-> > ioeventfd.  E.g. add a memslot flag, or maybe a memory attribute, that
-> > causes KVM to write-protect a region, emulate in response to writes, and
-> > then notify an eventfd after emulating the write.  It'd be a lot like
-> > KVM_MEM_READONLY, except that KVM would commit the write to memory and
-> > notify, as opposed to exiting to userspace.
-> 
-> Are you thinking for reusing/adapting the mechanism in this patch for that?
-
-Paolo's idea was to forego this patch entirely and instead add a more generic
-write-notify mechanism.  In practice, the only real difference is that the writes
-would be fully in-place instead of a redirection, which in turn would allow the
-guest to read without triggering a VM-Exit, and I suppose might save userspace
-from some dirty logging operations.
- 
-While I really like the mechanics of the idea, after sketching out the basic
-gist (see below), I'm not convinced the additional complexity is worth the gains.
-Unless reading from NVMe submission queues is a common operation, it doesn't seem
-like eliding VM-Exits on reads buys much.
-
-Every arch would need to be updated to handle the new way of handling emulated
-writes, with varying degrees of complexity.  E.g. on x86 I think it would just be
-teaching the MMU about the new "emulate on write" behavior, but for arm64 (and
-presumably any other architecture without a generic emulator), it would be that
-plus new code to actually commit the write to guest memory.
-
-The other scary aspect is correctly handling "writable from KVM" and "can't be
-mapped writable".  Getting that correct in all places is non-trivial, and seems
-like it could be a pain to maintain, which potentially fatal failure modes, e.g.
-if KVM writes guest memory but fails to notify, tracking down the bug would be
-"fun".
-
-So my vote is to add POST_WRITE functionality to I/O eventfd, and hold off on a
-generic write-notify mechanism until there's a (really) strong use case.
-
-Paolo, thoughts?
-
-
----
- arch/x86/kvm/mmu/mmu.c   |  6 +++--
- include/linux/kvm_host.h |  2 ++
- include/uapi/linux/kvm.h |  3 ++-
- virt/kvm/kvm_main.c      | 51 +++++++++++++++++++++++++++++++++-------
- 4 files changed, 51 insertions(+), 11 deletions(-)
-
-diff --git a/arch/x86/kvm/mmu/mmu.c b/arch/x86/kvm/mmu/mmu.c
-index 02c450686b4a..acad277ba2a1 100644
---- a/arch/x86/kvm/mmu/mmu.c
-+++ b/arch/x86/kvm/mmu/mmu.c
-@@ -3493,7 +3493,8 @@ static int kvm_handle_error_pfn(struct kvm_vcpu *vcpu, struct kvm_page_fault *fa
- 	 * into the spte otherwise read access on readonly gfn also can
- 	 * caused mmio page fault and treat it as mmio access.
- 	 */
--	if (fault->pfn == KVM_PFN_ERR_RO_FAULT)
-+	if (fault->pfn == KVM_PFN_ERR_RO_FAULT ||
-+	    fault->pfn == KVM_PFN_ERR_WRITE_NOTIFY)
- 		return RET_PF_EMULATE;
- 
- 	if (fault->pfn == KVM_PFN_ERR_HWPOISON) {
-@@ -4582,7 +4583,8 @@ static int kvm_mmu_faultin_pfn_gmem(struct kvm_vcpu *vcpu,
- 		return r;
- 	}
- 
--	fault->map_writable = !(fault->slot->flags & KVM_MEM_READONLY);
-+	fault->map_writable = !(fault->slot->flags &
-+				(KVM_MEM_READONLY | KVM_MEM_WRITE_NOTIFY));
- 	fault->max_level = kvm_max_level_for_order(max_order);
- 
- 	return RET_PF_CONTINUE;
-diff --git a/include/linux/kvm_host.h b/include/linux/kvm_host.h
-index d93f75b05ae2..e75dc5c2a279 100644
---- a/include/linux/kvm_host.h
-+++ b/include/linux/kvm_host.h
-@@ -99,6 +99,7 @@
- #define KVM_PFN_ERR_RO_FAULT	(KVM_PFN_ERR_MASK + 2)
- #define KVM_PFN_ERR_SIGPENDING	(KVM_PFN_ERR_MASK + 3)
- #define KVM_PFN_ERR_NEEDS_IO	(KVM_PFN_ERR_MASK + 4)
-+#define KVM_PFN_ERR_WRITE_NOTIFY (KVM_PFN_ERR_MASK + 5)
- 
- /*
-  * error pfns indicate that the gfn is in slot but faild to
-@@ -615,6 +616,7 @@ struct kvm_memory_slot {
- 		pgoff_t pgoff;
- 	} gmem;
- #endif
-+	struct eventfd_ctx *eventfd;
- };
- 
- static inline bool kvm_slot_has_gmem(const struct kvm_memory_slot *slot)
-diff --git a/include/uapi/linux/kvm.h b/include/uapi/linux/kvm.h
-index dddb781b0507..c3d084a09d6c 100644
---- a/include/uapi/linux/kvm.h
-+++ b/include/uapi/linux/kvm.h
-@@ -39,7 +39,7 @@ struct kvm_userspace_memory_region2 {
- 	__u64 userspace_addr;
- 	__u64 guest_memfd_offset;
- 	__u32 guest_memfd;
--	__u32 pad1;
-+	__u32 eventfd;
- 	__u64 pad2[14];
- };
- 
-@@ -51,6 +51,7 @@ struct kvm_userspace_memory_region2 {
- #define KVM_MEM_LOG_DIRTY_PAGES	(1UL << 0)
- #define KVM_MEM_READONLY	(1UL << 1)
- #define KVM_MEM_GUEST_MEMFD	(1UL << 2)
-+#define KVM_MEM_WRITE_NOTIFY	(1UL << 3)
- 
- /* for KVM_IRQ_LINE */
- struct kvm_irq_level {
-diff --git a/virt/kvm/kvm_main.c b/virt/kvm/kvm_main.c
-index f1f6a71b2b5f..e58d43bae757 100644
---- a/virt/kvm/kvm_main.c
-+++ b/virt/kvm/kvm_main.c
-@@ -953,6 +953,8 @@ static void kvm_destroy_dirty_bitmap(struct kvm_memory_slot *memslot)
- /* This does not remove the slot from struct kvm_memslots data structures */
- static void kvm_free_memslot(struct kvm *kvm, struct kvm_memory_slot *slot)
- {
-+	if (slot->flags & KVM_MEM_WRITE_NOTIFY)
-+		eventfd_ctx_put(slot->eventfd);
- 	if (slot->flags & KVM_MEM_GUEST_MEMFD)
- 		kvm_gmem_unbind(slot);
- 
-@@ -1607,11 +1609,15 @@ static int check_memory_region_flags(struct kvm *kvm,
- 	/*
- 	 * GUEST_MEMFD is incompatible with read-only memslots, as writes to
- 	 * read-only memslots have emulated MMIO, not page fault, semantics,
--	 * and KVM doesn't allow emulated MMIO for private memory.
-+	 * and KVM doesn't allow emulated MMIO for private memory.  Ditto for
-+	 * write-notify memslots (emulated exitless MMIO).
- 	 */
--	if (kvm_arch_has_readonly_mem(kvm) &&
--	    !(mem->flags & KVM_MEM_GUEST_MEMFD))
--		valid_flags |= KVM_MEM_READONLY;
-+	if (!mem->flags & KVM_MEM_GUEST_MEMFD) {
-+		if (kvm_arch_has_readonly_mem(kvm))
-+			valid_flags |= KVM_MEM_READONLY;
-+		if (kvm_arch_has_write_notify_mem(kvm))
-+			valid_flags |= KVM_MEM_WRITE_NOTIFY;
-+	}
- 
- 	if (mem->flags & ~valid_flags)
- 		return -EINVAL;
-@@ -2100,7 +2106,9 @@ static int kvm_set_memory_region(struct kvm *kvm,
- 			return -EINVAL;
- 		if ((mem->userspace_addr != old->userspace_addr) ||
- 		    (npages != old->npages) ||
--		    ((mem->flags ^ old->flags) & (KVM_MEM_READONLY | KVM_MEM_GUEST_MEMFD)))
-+		    ((mem->flags ^ old->flags) & (KVM_MEM_READONLY |
-+						  KVM_MEM_GUEST_MEMFD |
-+						  KVM_MEM_WRITE_NOTIFY)))
- 			return -EINVAL;
- 
- 		if (base_gfn != old->base_gfn)
-@@ -2131,13 +2139,29 @@ static int kvm_set_memory_region(struct kvm *kvm,
- 		if (r)
- 			goto out;
- 	}
-+	if (mem->flags & KVM_MEM_WRITE_NOTIFY) {
-+		CLASS(fd, f)(mem->eventfd);
-+		if (fd_empty(f)) {
-+			r = -EBADF;
-+			goto out_unbind;
-+		}
-+
-+		new->eventfd = eventfd_ctx_fileget(fd_file(f));
-+		if (IS_ERR(new->eventfd)) {
-+			r = PTR_ERR(new->eventfd);
-+			goto out_unbind;
-+		}
-+	}
- 
- 	r = kvm_set_memslot(kvm, old, new, change);
- 	if (r)
--		goto out_unbind;
-+		goto out_eventfd;
- 
- 	return 0;
- 
-+out_eventfd:
-+	if (mem->flags & KVM_MEM_WRITE_NOTIFY)
-+		eventfd_ctx_put(new->eventfd);
- out_unbind:
- 	if (mem->flags & KVM_MEM_GUEST_MEMFD)
- 		kvm_gmem_unbind(new);
-@@ -2727,6 +2751,11 @@ unsigned long kvm_host_page_size(struct kvm_vcpu *vcpu, gfn_t gfn)
- 	return size;
- }
- 
-+static bool memslot_is_write_notify(const struct kvm_memory_slot *slot)
-+{
-+	return slot->flags & KVM_MEM_WRITE_NOTIFY;
-+}
-+
- static bool memslot_is_readonly(const struct kvm_memory_slot *slot)
- {
- 	return slot->flags & KVM_MEM_READONLY;
-@@ -2786,7 +2815,7 @@ unsigned long gfn_to_hva_memslot_prot(struct kvm_memory_slot *slot,
- 	unsigned long hva = __gfn_to_hva_many(slot, gfn, NULL, false);
- 
- 	if (!kvm_is_error_hva(hva) && writable)
--		*writable = !memslot_is_readonly(slot);
-+		*writable = !memslot_is_readonly(slot)
- 
- 	return hva;
- }
-@@ -3060,7 +3089,11 @@ static kvm_pfn_t kvm_follow_pfn(struct kvm_follow_pfn *kfp)
- 	if (kvm_is_error_hva(kfp->hva))
- 		return KVM_PFN_NOSLOT;
- 
--	if (memslot_is_readonly(kfp->slot) && kfp->map_writable) {
-+	if ((kfp->flags & FOLL_WRITE) && memslot_is_write_notify(kfp->slot))
-+		return KVM_PFN_ERR_WRITE_NOTIFY;
-+
-+	if (kfp->map_writable &&
-+	    (memslot_is_readonly(kfp->slot) || memslot_is_write_notify(kfp->slot)) {
- 		*kfp->map_writable = false;
- 		kfp->map_writable = NULL;
- 	}
-@@ -3324,6 +3357,8 @@ static int __kvm_write_guest_page(struct kvm *kvm,
- 	r = __copy_to_user((void __user *)addr + offset, data, len);
- 	if (r)
- 		return -EFAULT;
-+	if (memslot_is_write_notify(memslot))
-+		eventfd_signal(memslot->eventfd);
- 	mark_page_dirty_in_slot(kvm, memslot, gfn);
- 	return 0;
- }
-
-base-commit: 58e10b63777d0aebee2cf4e6c67e1a83e7edbe0f
---
+CgoKCgoKCgoKCgoKCgoKCgoKQXQgMjAyNS0xMi0xOSAwMDozMDowOCwgIkxlb24gUm9tYW5vdnNr
+eSIgPGxlb25Aa2VybmVsLm9yZz4gd3JvdGU6Cj5PbiBUaHUsIERlYyAxOCwgMjAyNSBhdCAwNTow
+OTo0MFBNICswODAwLCBYaW9uZyBXZWltaW4gd3JvdGU6Cj4+IEhpIGFsbCwKPj4gCj4+IFRoaXMg
+dGVzdGluZyBpbnN0cnVjdGlvbnMgYWltcyB0byBpbnRyb2R1Y2UgYW4gZW11bGF0aW5nIGEgc29m
+dCBST0NFIAo+PiBkZXZpY2Ugd2l0aCBub3JtYWwgTklDKG5vIFJETUEpLCB3ZSBoYXZlIGZpbmlz
+aGVkIGEgdmhvc3QtdXNlciBSRE1BCj4+IGRldmljZSBkZW1vLCB3aGljaCBjYW4gd29yayB3aXRo
+IFJETUEgZmVhdHVyZXMgc3VjaCBhcyBDTSwgUVAgdHlwZSBvZiAKPj4gVUMvVUQgYW5kIHNvIG9u
+Lgo+Cj5TYW1lIHF1ZXN0aW9uIGFzIG9uIHlvdXIgUUVNVSBwYXRjaGVzLgo+aHR0cHM6Ly9sb3Jl
+Lmtlcm5lbC5vcmcvYWxsLzIwMjUxMjE4MTYyMDI4LkdHNDAwNjMwQHVucmVhbC8KPgo+QW5kIGFz
+IGEgYmFyZSBtaW5pbXVtLCB5b3Ugc2hvdWxkIHJ1biBnZXRfbWFpbnRhaW5lcnMucGwgc2NyaXB0
+IG9uIHlvdXIKPnBhdGNoZXMgYW5kIGFkZCB0aGUgcmlnaHQgcGVvcGxlIGFuZCBNTCB0byB0aGUg
+Q0MvVE8gZmllbGRzLgo+Cgo+VGhhbmtzCgoKU2luY2UgdGhpcyBmZWF0dXJlIGludm9sdmVzIGNv
+b3JkaW5hdGVkIGNoYW5nZXMgYWNyb3NzIFFFTVUsIERQREssIGFuZCB0aGUga2VybmVsLCAKSSBo
+YXZlIHN1Ym1pdHRlZCBwYXRjaGVzIGZvciBhbGwgdGhyZWUgY29tcG9uZW50cyB0byBldmVyeSBt
+YWludGFpbmVyLiBUaGlzIGlzIHRvIAplbnN1cmUgdGhhdCBzZW5pb3IgZGV2ZWxvcGVycyBjYW4g
+cmV2aWV3IHRoZSBjb21wbGV0ZSBhcmNoaXRlY3R1cmUgYW5kIGNvZGUuCgoKVGhhbmtzLg==
