@@ -1,70 +1,96 @@
-Received: from movementarian.org (ssh.movementarian.org [139.162.205.133])
+Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 27AE62F6199
-	for <kvm@vger.kernel.org>; Fri, 19 Dec 2025 11:19:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=139.162.205.133
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9DE272F6199;
+	Fri, 19 Dec 2025 11:19:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.176.79.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1766143143; cv=none; b=fkNm2Y5gFsfWDBTMz/erS74BoFRUlOLYbmEBPFGzjgsO5M1UEzAIOlOOZ4HCXRBkXY074YXS0wRPIMYTWQSpil/u9BUbccZxUYVUMRLht4sL/I+eZZ1sTav6lJLf0kOh/53kgUQr68qOvD/hhiQbbqWvt2/QIpRiYw8e8xpXts0=
+	t=1766143189; cv=none; b=SR1FUKlK6LuK1XtVpT89vlGuRAnbijnqoDhEInIubYvbc4O+H5zvsntCKM8podletufkmqyUZslEeWgAg7wzrwlV2qo0QYvW7TS5zb9eKxrndByY6/+2pUNeh0UKtSC+WNLkqsyASNXDt08RnMjNB3hBU1wIf84DYjkpnfWvJFU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1766143143; c=relaxed/simple;
-	bh=H4A2zXrMlc8wNWYnhwCQMBkOYa5zrg7uPyoA3MGcdic=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=cebjDGMhgQrmAUspAfa17fn5/OtKAvGc8i0Xcu/sNxoK3dI/6kus129uIoaYbaOGefmeLVf7WT9xlIazRmOeUUGTaztHwa4NhQtsn6lutuR6BDjZ72V7CPDUsC8uo03vWmeYQ78DChZ4uS5GDuz+oGAgAkxkgMc/zwQJ9O0q5ys=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=movementarian.org; spf=pass smtp.mailfrom=movementarian.org; arc=none smtp.client-ip=139.162.205.133
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=movementarian.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=movementarian.org
-Received: from movement by movementarian.org with local (Exim 4.97)
-	(envelope-from <movement@movementarian.org>)
-	id 1vWXqr-00000003NGR-3ibE;
-	Fri, 19 Dec 2025 10:36:49 +0000
-Date: Fri, 19 Dec 2025 10:36:49 +0000
-From: John Levon <levon@movementarian.org>
-To: Sean Christopherson <seanjc@google.com>
-Cc: Thanos Makatos <thanos.makatos@nutanix.com>,
-	"kvm@vger.kernel.org" <kvm@vger.kernel.org>,
-	"mst@redhat.com" <mst@redhat.com>,
-	"dinechin@redhat.com" <dinechin@redhat.com>,
-	"cohuck@redhat.com" <cohuck@redhat.com>,
-	"jasowang@redhat.com" <jasowang@redhat.com>,
-	"stefanha@redhat.com" <stefanha@redhat.com>,
-	"jag.raman@oracle.com" <jag.raman@oracle.com>,
-	"eafanasova@gmail.com" <eafanasova@gmail.com>,
-	"elena.ufimtseva@oracle.com" <elena.ufimtseva@oracle.com>,
-	Paolo Bonzini <pbonzini@redhat.com>
-Subject: Re: [RFC PATCH] KVM: optionally commit write on ioeventfd write
-Message-ID: <aUUqwf4GXHHXYJ9w@movementarian.org>
-References: <20221005211551.152216-1-thanos.makatos@nutanix.com>
- <aLrvLfkiz6TwR4ML@google.com>
- <DS0PR02MB93218C62840E0E9FA240FAF68BD8A@DS0PR02MB9321.namprd02.prod.outlook.com>
- <aS9uBw_w7NM_Vnw1@google.com>
- <DS0PR02MB9321EA7B6AB2B559CA1CDFDD8BD9A@DS0PR02MB9321.namprd02.prod.outlook.com>
- <aUSobNVZ9VEaLN79@google.com>
+	s=arc-20240116; t=1766143189; c=relaxed/simple;
+	bh=ruHRsdlqnlZ041j7NKcKTYoo1k6EESLmoqH/3W6LTbI=;
+	h=Date:From:To:CC:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=n3Mhao6d237zKt9a3f1QetjnAQgMFaMWglOmy8b5s+BWZvOuIvUXAtwUYxKFJodJ+xqgjG2RKfIbD60gOnn5U2N+AFi9g8Ujksm9CYtFbY4FBYUsHAj59Zx/PF1g89Vnx/jvXsIGyT1bfffx7a93RBMGWiDt8h3w5ypt+sWelPM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=185.176.79.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+Received: from mail.maildlp.com (unknown [172.18.224.107])
+	by frasgout.his.huawei.com (SkyGuard) with ESMTPS id 4dXlRR02wczHnGgv;
+	Fri, 19 Dec 2025 19:19:15 +0800 (CST)
+Received: from dubpeml100005.china.huawei.com (unknown [7.214.146.113])
+	by mail.maildlp.com (Postfix) with ESMTPS id 06C2A40570;
+	Fri, 19 Dec 2025 19:19:44 +0800 (CST)
+Received: from localhost (10.203.177.15) by dubpeml100005.china.huawei.com
+ (7.214.146.113) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.36; Fri, 19 Dec
+ 2025 11:19:43 +0000
+Date: Fri, 19 Dec 2025 11:19:41 +0000
+From: Jonathan Cameron <jonathan.cameron@huawei.com>
+To: Xu Yilun <yilun.xu@linux.intel.com>
+CC: <linux-coco@lists.linux.dev>, <linux-pci@vger.kernel.org>,
+	<chao.gao@intel.com>, <dave.jiang@intel.com>, <baolu.lu@linux.intel.com>,
+	<yilun.xu@intel.com>, <zhenzhong.duan@intel.com>, <kvm@vger.kernel.org>,
+	<rick.p.edgecombe@intel.com>, <dave.hansen@linux.intel.com>,
+	<dan.j.williams@intel.com>, <kas@kernel.org>, <x86@kernel.org>
+Subject: Re: [PATCH v1 01/26] coco/tdx-host: Introduce a "tdx_host" device
+Message-ID: <20251219111941.00005bd7@huawei.com>
+In-Reply-To: <20251117022311.2443900-2-yilun.xu@linux.intel.com>
+References: <20251117022311.2443900-1-yilun.xu@linux.intel.com>
+	<20251117022311.2443900-2-yilun.xu@linux.intel.com>
+X-Mailer: Claws Mail 4.3.0 (GTK 3.24.42; x86_64-w64-mingw32)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <aUSobNVZ9VEaLN79@google.com>
-X-Url: http://www.movementarian.org/
+Content-Type: text/plain; charset="US-ASCII"
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: lhrpeml100010.china.huawei.com (7.191.174.197) To
+ dubpeml100005.china.huawei.com (7.214.146.113)
 
-On Thu, Dec 18, 2025 at 05:20:44PM -0800, Sean Christopherson wrote:
+On Mon, 17 Nov 2025 10:22:45 +0800
+Xu Yilun <yilun.xu@linux.intel.com> wrote:
 
-> > Are you thinking for reusing/adapting the mechanism in this patch for that?
+> From: Chao Gao <chao.gao@intel.com>
 > 
-> While I really like the mechanics of the idea, after sketching out the basic
-> gist (see below), I'm not convinced the additional complexity is worth the gains.
-> Unless reading from NVMe submission queues is a common operation
+> TDX depends on a platform firmware module that is invoked via instructions
+> similar to vmenter (i.e. enter into a new privileged "root-mode" context to
+> manage private memory and private device mechanisms). It is a software
+> construct that depends on the CPU vmxon state to enable invocation of
+> TDX-module ABIs. Unlike other Trusted Execution Environment (TEE) platform
+> implementations that employ a firmware module running on a PCI device with
+> an MMIO mailbox for communication, TDX has no hardware device to point to
+> as the TEE Secure Manager (TSM).
+> 
+> Create a virtual device not only to align with other implementations but
+> also to make it easier to
+> 
+>  - expose metadata (e.g., TDX module version, seamldr version etc) to
+>    the userspace as device attributes
+> 
+>  - implement firmware uploader APIs which are tied to a device. This is
+>    needed to support TDX module runtime updates
+> 
+>  - enable TDX Connect which will share a common infrastructure with other
+>    platform implementations. In the TDX Connect context, every
+>    architecture has a TSM, represented by a PCIe or virtual device. The
+>    new "tdx_host" device will serve the TSM role.
+> 
+> A faux device is used as for TDX because the TDX module is singular within
+> the system and lacks associated platform resources. Using a faux device
+> eliminates the need to create a stub bus.
+> 
+> The call to tdx_enable() makes the new module independent of kvm_intel.ko.
+> For example, TDX Connect may be used to established to PCIe link encryption
+> even if a TVM is never launched.  For now, just create the common loading
+> infrastructure.
+> 
+> [ Yilun: Remove unnecessary head files ]
+> Co-developed-by: Xu Yilun <yilun.xu@linux.intel.com>
+> Signed-off-by: Xu Yilun <yilun.xu@linux.intel.com>
+> Signed-off-by: Chao Gao <chao.gao@intel.com>
+> Signed-off-by: Dan Williams <dan.j.williams@intel.com>
+LGTM
+Reviewed-by: Jonathan Cameron <jonathan.cameron@huawei.com>
 
-NVMe over PCIe, 3.1.2.1:
-
-"...The host should not read the doorbell registers. If a doorbell register is
-read, the value returned is vendor specific."
-
-So, no, not common for NVMe at least.
-
-regards
-john
