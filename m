@@ -1,195 +1,213 @@
-Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 88BBB318120;
-	Fri, 19 Dec 2025 11:32:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.176.79.56
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 47D7D30100B
+	for <kvm@vger.kernel.org>; Fri, 19 Dec 2025 11:43:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1766143978; cv=none; b=CiuPtEf2byrKzwMz02Wp7u3p9Fo0uH3fncTT7Yo64IbaPeWPySzDNx8kOT/oXwFiNV14xPVBsCuT2HIxHP4NFSw6QUkv6SD5ZPPSXSISG6LT7i1/S7ComisGD1mqH2UT3zOaeP+N0a1ACV2tutSz6hot3R9CgjjaN7DlZ+02WFA=
+	t=1766144623; cv=none; b=H8HPj9hf+HvefaDgq5sdoHCrSotrTPfmPV3MWGmnjMPksQFPoBeMkI5RgnJenwh/5+sGFyUScnJ/1VMCJVwUmHDWstsk7GCOH+v1Nz7Um3duMwjOfLHQhhlqXcG1I4j6GxK9oyVu4LgGgxiHkiR5IR4GqjYAiJt9duB08s97cEE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1766143978; c=relaxed/simple;
-	bh=zsGtn4YBzXG1VfglMkgDfgLaf4t1KSCz+999jmvI7B0=;
-	h=Date:From:To:CC:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Y6B/o16o8MUrUlpiSSwhb42dHRO99Izs7yo+hiS1B+mNMYDzeDE0JSk7sbLG08vvaR+18AbvJep6RRBtDo7PyrsWwshzZJ3z//rZxrSuYQ8muvzNRBtl6OycKYVXDNGCqdBdS8NfxzcsezqWsNFBmpUSxR9R37Zk05ZEJKWnR6Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=185.176.79.56
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-Received: from mail.maildlp.com (unknown [172.18.224.150])
-	by frasgout.his.huawei.com (SkyGuard) with ESMTPS id 4dXlkW0YQ1zJ46C5;
-	Fri, 19 Dec 2025 19:32:19 +0800 (CST)
-Received: from dubpeml100005.china.huawei.com (unknown [7.214.146.113])
-	by mail.maildlp.com (Postfix) with ESMTPS id 957F440539;
-	Fri, 19 Dec 2025 19:32:51 +0800 (CST)
-Received: from localhost (10.203.177.15) by dubpeml100005.china.huawei.com
- (7.214.146.113) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.36; Fri, 19 Dec
- 2025 11:32:50 +0000
-Date: Fri, 19 Dec 2025 11:32:49 +0000
-From: Jonathan Cameron <jonathan.cameron@huawei.com>
-To: Xu Yilun <yilun.xu@linux.intel.com>
-CC: <linux-coco@lists.linux.dev>, <linux-pci@vger.kernel.org>,
-	<chao.gao@intel.com>, <dave.jiang@intel.com>, <baolu.lu@linux.intel.com>,
-	<yilun.xu@intel.com>, <zhenzhong.duan@intel.com>, <kvm@vger.kernel.org>,
-	<rick.p.edgecombe@intel.com>, <dave.hansen@linux.intel.com>,
-	<dan.j.williams@intel.com>, <kas@kernel.org>, <x86@kernel.org>
-Subject: Re: [PATCH v1 06/26] x86/virt/tdx: Add tdx_page_array helpers for
- new TDX Module objects
-Message-ID: <20251219113249.000040b1@huawei.com>
-In-Reply-To: <20251117022311.2443900-7-yilun.xu@linux.intel.com>
-References: <20251117022311.2443900-1-yilun.xu@linux.intel.com>
-	<20251117022311.2443900-7-yilun.xu@linux.intel.com>
-X-Mailer: Claws Mail 4.3.0 (GTK 3.24.42; x86_64-w64-mingw32)
+	s=arc-20240116; t=1766144623; c=relaxed/simple;
+	bh=spCH2RG+AhZVozNevZ6i3mngQBX2bSM3d9ry14WgBX4=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=kno0NgYWUFeUfXpp/x70gamzLJ2SjowBGNCiEvZtg4nDJuJoO9nTac3vVlRVBt69zM23ZV/NWMsB9eybL5OL7wYdP1gSLqYiRyUjNm6cSZkqw4DSxZmx3ErTCv8DQ4q3vjyU04r0+TV5WTRBP5ck0/hRsAEXD4ITustRZIye08I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=bGK8jW1X; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=z4c40GeC; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=bGK8jW1X; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=z4c40GeC; arc=none smtp.client-ip=195.135.223.130
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="bGK8jW1X";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="z4c40GeC";
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="bGK8jW1X";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="z4c40GeC"
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id 2482C33700;
+	Fri, 19 Dec 2025 11:43:39 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1766144619; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=/Zv71gwQn0bju/h7RL9kNTPKzfgg8WZO15eDlR04yHM=;
+	b=bGK8jW1XSsWaxFvYMTdc3acVUOMF8q8aKrEgs2hzK8A4gFvAiwtc/vLIdjTicEp+4rVIWh
+	dRfeuLpoGB1CmMg+L9VTpgfEwPmXMUSZMlbGAxRSQZQwDbFoFimUdsxp69bqnKf3fL/88t
+	VtT8XhqqLMVwHOGtSj/fzL1TJLGVI0A=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1766144619;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=/Zv71gwQn0bju/h7RL9kNTPKzfgg8WZO15eDlR04yHM=;
+	b=z4c40GeCEMr/TW1oHB73U4B5WcnJSedcurQAE94MyBo6WFgK42HxcKhqjmp2lpb5ZdWbVi
+	7277un7GXALgZjCA==
+Authentication-Results: smtp-out1.suse.de;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=bGK8jW1X;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=z4c40GeC
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1766144619; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=/Zv71gwQn0bju/h7RL9kNTPKzfgg8WZO15eDlR04yHM=;
+	b=bGK8jW1XSsWaxFvYMTdc3acVUOMF8q8aKrEgs2hzK8A4gFvAiwtc/vLIdjTicEp+4rVIWh
+	dRfeuLpoGB1CmMg+L9VTpgfEwPmXMUSZMlbGAxRSQZQwDbFoFimUdsxp69bqnKf3fL/88t
+	VtT8XhqqLMVwHOGtSj/fzL1TJLGVI0A=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1766144619;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=/Zv71gwQn0bju/h7RL9kNTPKzfgg8WZO15eDlR04yHM=;
+	b=z4c40GeCEMr/TW1oHB73U4B5WcnJSedcurQAE94MyBo6WFgK42HxcKhqjmp2lpb5ZdWbVi
+	7277un7GXALgZjCA==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 8027B3EA65;
+	Fri, 19 Dec 2025 11:43:38 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id gMqOHGo6RWnWGgAAD6G6ig
+	(envelope-from <clopez@suse.de>); Fri, 19 Dec 2025 11:43:38 +0000
+From: =?UTF-8?q?Carlos=20L=C3=B3pez?= <clopez@suse.de>
+To: kvm@vger.kernel.org,
+	seanjc@google.com,
+	pbonzini@redhat.com
+Cc: tglx@linutronix.de,
+	mingo@redhat.com,
+	bp@alien8.de,
+	dave.hansen@linux.intel.com,
+	x86@kernel.org,
+	hpa@zytor.com,
+	linux-kernel@vger.kernel.org,
+	=?UTF-8?q?Carlos=20L=C3=B3pez?= <clopez@suse.de>
+Subject: [PATCH 1/6] KVM: SEV: use mutex guard in snp_launch_update()
+Date: Fri, 19 Dec 2025 12:41:56 +0100
+Message-ID: <20251219114238.3797364-2-clopez@suse.de>
+X-Mailer: git-send-email 2.51.0
+In-Reply-To: <20251219114238.3797364-1-clopez@suse.de>
+References: <20251219114238.3797364-1-clopez@suse.de>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: lhrpeml100010.china.huawei.com (7.191.174.197) To
- dubpeml100005.china.huawei.com (7.214.146.113)
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Spamd-Result: default: False [-4.51 / 50.00];
+	BAYES_HAM(-3.00)[100.00%];
+	DWL_DNSWL_LOW(-1.00)[suse.de:dkim];
+	MID_CONTAINS_FROM(1.00)[];
+	NEURAL_HAM_LONG(-1.00)[-1.000];
+	R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+	NEURAL_HAM_SHORT(-0.20)[-0.998];
+	MIME_GOOD(-0.10)[text/plain];
+	MX_GOOD(-0.01)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
+	ARC_NA(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	RCVD_TLS_ALL(0.00)[];
+	DNSWL_BLOCKED(0.00)[2a07:de40:b281:104:10:150:64:97:from];
+	TO_DN_SOME(0.00)[];
+	FROM_EQ_ENVFROM(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[11];
+	RCVD_COUNT_TWO(0.00)[2];
+	TO_MATCH_ENVRCPT_ALL(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:email,suse.de:dkim,suse.de:mid,imap1.dmz-prg2.suse.org:helo,imap1.dmz-prg2.suse.org:rdns];
+	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+	DKIM_TRACE(0.00)[suse.de:+]
+X-Rspamd-Action: no action
+X-Rspamd-Server: rspamd2.dmz-prg2.suse.org
+X-Spam-Level: 
+X-Rspamd-Queue-Id: 2482C33700
+X-Spam-Flag: NO
+X-Spam-Score: -4.51
 
-On Mon, 17 Nov 2025 10:22:50 +0800
-Xu Yilun <yilun.xu@linux.intel.com> wrote:
+Simplify the error paths in snp_launch_update() by using a mutex guard,
+allowing early return instead of using gotos.
 
-> Add struct tdx_page_array definition for new TDX Module object
-> types - HPA_ARRAY_T and HPA_LIST_INFO. They are used as input/output
-> parameters in newly defined SEAMCALLs. Also define some helpers to
-> allocate, setup and free tdx_page_array.
-> 
-> HPA_ARRAY_T and HPA_LIST_INFO are similar in most aspects. They both
-> represent a list of pages for TDX Module accessing. There are several
-> use cases for these 2 structures:
-> 
->  - As SEAMCALL inputs. They are claimed by TDX Module as control pages.
->  - As SEAMCALL outputs. They were TDX Module control pages and now are
->    released.
->  - As SEAMCALL inputs. They are just temporary buffers for exchanging
->    data blobs in one SEAMCALL. TDX Module will not hold them as control
->    pages.
-> 
-> The 2 structures both need a 'root page' which contains a list of HPAs.
-> They collapse the HPA of the root page and the number of valid HPAs
-> into a 64 bit raw value for SEAMCALL parameters. The root page is
-> always a medium for passing data pages, TDX Module never keeps the root
-> page.
-> 
-> A main difference is HPA_ARRAY_T requires singleton mode when
-> containing just 1 functional page (page0). In this mode the root page is
-> not needed and the HPA field of the raw value directly points to the
-> page0. But in this patch, root page is always allocated for user
-> friendly kAPIs.
-> 
-> Another small difference is HPA_LIST_INFO contains a 'first entry' field
-> which could be filled by TDX Module. This simplifies host by providing
-> the same structure when re-invoke the interrupted SEAMCALL. No need for
-> host to touch this field.
-> 
-> Typical usages of the tdx_page_array:
-> 
-> 1. Add control pages:
->  - struct tdx_page_array *array = tdx_page_array_create(nr_pages);
->  - seamcall(TDH_XXX_CREATE, array, ...);
-> 
-> 2. Release control pages:
->  - seamcall(TDX_XXX_DELETE, array, &nr_released, &released_hpa);
->  - tdx_page_array_ctrl_release(array, nr_released, released_hpa);
-> 
-> 3. Exchange data blobs:
->  - struct tdx_page_array *array = tdx_page_array_create(nr_pages);
->  - seamcall(TDX_XXX, array, ...);
->  - Read data from array.
->  - tdx_page_array_free(array);
-> 
-> 4. Note the root page contains 512 HPAs at most, if more pages are
->    required, refilling the tdx_page_array is needed.
-> 
->  - struct tdx_page_array *array = tdx_page_array_alloc(nr_pages);
->  - for each 512-page bulk
->    - tdx_page_array_fill_root(array, offset);
->    - seamcall(TDH_XXX_ADD, array, ...);
-> 
-> In case 2, SEAMCALLs output the released page array in the form of
-> HPA_ARRAY_T or PAGE_LIST_INFO. tdx_page_array_ctrl_release() is
-> responsible for checking if the output pages match the original input
-> pages. If failed to match, the safer way is to leak the control pages,
-> tdx_page_array_ctrl_leak() should be called.
-> 
-> The usage of tdx_page_array will be in following patches.
-> 
-> Co-developed-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
-> Signed-off-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
-> Signed-off-by: Xu Yilun <yilun.xu@linux.intel.com>
-> Signed-off-by: Dan Williams <dan.j.williams@intel.com>
+Signed-off-by: Carlos López <clopez@suse.de>
+---
+ arch/x86/kvm/svm/sev.c | 32 +++++++++++++-------------------
+ 1 file changed, 13 insertions(+), 19 deletions(-)
 
-One trivial comment below. I'm not going to look into tdx specifics
-enough to do a detailed review of this patch.
-
-> diff --git a/arch/x86/virt/vmx/tdx/tdx.c b/arch/x86/virt/vmx/tdx/tdx.c
-> index 09c766e60962..9a5c32dc1767 100644
-> --- a/arch/x86/virt/vmx/tdx/tdx.c
-> +++ b/arch/x86/virt/vmx/tdx/tdx.c
-
-> +static bool tdx_page_array_validate_release(struct tdx_page_array *array,
-> +					    unsigned int offset,
-> +					    unsigned int nr_released,
-> +					    u64 released_hpa)
-> +{
-> +	unsigned int nents;
-> +	u64 *entries;
-> +	int i;
-> +
-> +	if (offset >= array->nr_pages)
-> +		return false;
-> +
-> +	nents = umin(array->nr_pages - offset, TDX_PAGE_ARRAY_MAX_NENTS);
-> +
-> +	if (nents != nr_released) {
-> +		pr_err("%s nr_released [%d] doesn't match page array nents [%d]\n",
-> +		       __func__, nr_released, nents);
-> +		return false;
-> +	}
-> +
-> +	/*
-> +	 * Unfortunately TDX has multiple page allocation protocols, check the
-> +	 * "singleton" case required for HPA_ARRAY_T.
-> +	 */
-> +	if (page_to_phys(array->pages[0]) == released_hpa &&
-> +	    array->nr_pages == 1)
-> +		return true;
-> +
-> +	/* Then check the "non-singleton" case */
-> +	if (page_to_phys(array->root) == released_hpa) {
-> +		entries = (u64 *)page_address(array->root);
-
-page_address() returns a void * so the cast here isn't needed and (to me
-at least) doesn't add value from readability point of view.
-
-I haven't checked later patches, but if this code doesn't change to use
-entries outside this scope then,
-		u64 *entries = page_address(array->root);
-would be nice to restrict the scope and make the type here immediately
-visible.
-
-> +		for (i = 0; i < nents; i++) {
-> +			struct page *page = array->pages[offset + i];
-> +			u64 val = page_to_phys(page);
-> +
-> +			if (val != entries[i]) {
-> +				pr_err("%s entry[%d] [0x%llx] doesn't match page hpa [0x%llx]\n",
-> +				       __func__, i, entries[i], val);
-> +				return false;
-> +			}
-> +		}
-> +
-> +		return true;
-> +	}
-> +
-> +	pr_err("%s failed to validate, released_hpa [0x%llx], root page hpa [0x%llx], page0 hpa [%#llx], number pages %u\n",
-> +	       __func__, released_hpa, page_to_phys(array->root),
-> +	       page_to_phys(array->pages[0]), array->nr_pages);
-> +
-> +	return false;
-> +}
+diff --git a/arch/x86/kvm/svm/sev.c b/arch/x86/kvm/svm/sev.c
+index f59c65abe3cf..1b325ae61d15 100644
+--- a/arch/x86/kvm/svm/sev.c
++++ b/arch/x86/kvm/svm/sev.c
+@@ -8,6 +8,7 @@
+  */
+ #define pr_fmt(fmt) KBUILD_MODNAME ": " fmt
+ 
++#include <linux/cleanup.h>
+ #include <linux/kvm_types.h>
+ #include <linux/kvm_host.h>
+ #include <linux/kernel.h>
+@@ -2367,7 +2368,6 @@ static int snp_launch_update(struct kvm *kvm, struct kvm_sev_cmd *argp)
+ 	struct kvm_memory_slot *memslot;
+ 	long npages, count;
+ 	void __user *src;
+-	int ret = 0;
+ 
+ 	if (!sev_snp_guest(kvm) || !sev->snp_context)
+ 		return -EINVAL;
+@@ -2407,13 +2407,11 @@ static int snp_launch_update(struct kvm *kvm, struct kvm_sev_cmd *argp)
+ 	 * initial expected state and better guard against unexpected
+ 	 * situations.
+ 	 */
+-	mutex_lock(&kvm->slots_lock);
++	guard(mutex)(&kvm->slots_lock);
+ 
+ 	memslot = gfn_to_memslot(kvm, params.gfn_start);
+-	if (!kvm_slot_has_gmem(memslot)) {
+-		ret = -EINVAL;
+-		goto out;
+-	}
++	if (!kvm_slot_has_gmem(memslot))
++		return -EINVAL;
+ 
+ 	sev_populate_args.sev_fd = argp->sev_fd;
+ 	sev_populate_args.type = params.type;
+@@ -2425,22 +2423,18 @@ static int snp_launch_update(struct kvm *kvm, struct kvm_sev_cmd *argp)
+ 		argp->error = sev_populate_args.fw_error;
+ 		pr_debug("%s: kvm_gmem_populate failed, ret %ld (fw_error %d)\n",
+ 			 __func__, count, argp->error);
+-		ret = -EIO;
+-	} else {
+-		params.gfn_start += count;
+-		params.len -= count * PAGE_SIZE;
+-		if (params.type != KVM_SEV_SNP_PAGE_TYPE_ZERO)
+-			params.uaddr += count * PAGE_SIZE;
+-
+-		ret = 0;
+-		if (copy_to_user(u64_to_user_ptr(argp->data), &params, sizeof(params)))
+-			ret = -EFAULT;
++		return -EIO;
+ 	}
+ 
+-out:
+-	mutex_unlock(&kvm->slots_lock);
++	params.gfn_start += count;
++	params.len -= count * PAGE_SIZE;
++	if (params.type != KVM_SEV_SNP_PAGE_TYPE_ZERO)
++		params.uaddr += count * PAGE_SIZE;
+ 
+-	return ret;
++	if (copy_to_user(u64_to_user_ptr(argp->data), &params, sizeof(params)))
++		return -EFAULT;
++
++	return 0;
+ }
+ 
+ static int snp_launch_update_vmsa(struct kvm *kvm, struct kvm_sev_cmd *argp)
+-- 
+2.51.0
 
