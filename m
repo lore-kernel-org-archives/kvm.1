@@ -1,133 +1,307 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
+Received: from mailbox.box.xen0n.name (mail.xen0n.name [115.28.160.31])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE23C20459A;
-	Fri, 19 Dec 2025 02:30:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.17
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D2C4286416;
+	Fri, 19 Dec 2025 03:26:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.28.160.31
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1766111422; cv=none; b=kZJjPuvh/DQT5QW1iugnFiiBbTVJeD6sb43pzNW28GSrhpHJzMu3qhHCNJV2guMqmGGmN5KTSuk6EmFO4m9dVR6dZU7mCE+Jarqlo3eD1BKEGG1YOr32O6OEz8HqH/XZtxSYNf3xsrBvoNiduy6bg/JEpG/dvzFO5OiV/BFLfPk=
+	t=1766114766; cv=none; b=LqsyrU3goKcaE0cTHHpAVUFn/7IX2A5o7xPmn7Zi4NcBW/zAZf8pacoXYeje/pnM1tGE1GfCxdA2RFYjvjEuKKuEI5+a2Cka/Td9npX4Ywe7TljgLiZtpMFXzeDBdCepNIcGV8nj5a+4p+yf0k0PdnPvcI2nn4hRdAbeFBmVNYs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1766111422; c=relaxed/simple;
-	bh=xm94Esx+kRHRfSH0LHzzyc9t4VebPhPKDiK8jQ4Wbrg=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=OMnsx8tOb/V51zzjK8T84Q9PjsxPX5Fd9P5lI0bR+IrjhAp1xEI0FdxKLA75mhUtNhqBa4K2Sw614IfBY6XWjdfqmXnrjMlSHuwQ9LNy4U6WXew/WFyujBTCn0VIsogYlNAw70iD/UMDjCcxMyH4PvavC5w20FcfqTmUb6bvN5I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=oEigF6zf; arc=none smtp.client-ip=198.175.65.17
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+	s=arc-20240116; t=1766114766; c=relaxed/simple;
+	bh=kYmtpufhJKhAKeX0q5dQjGDQPr7GQvGMR+Gtv3xNNi0=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=DrvbO9AoBDRLPrFlZI9A41VAqgjFjhpvP0pSkq7IunLx3JmGu/LnzO4RXHVAKkpwz8xFe6C0qJy5RAVICLv2QL3hhCJj+cOJZP4HG/Pp/yjgq1aCVJ+XW+Wb+scE6TGYnol7fEemiY84ApxXbJdc3O2ciMa9tLV5MPTQwK/pnu4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=xen0n.name; spf=pass smtp.mailfrom=xen0n.name; dkim=pass (1024-bit key) header.d=xen0n.name header.i=@xen0n.name header.b=AySTbkGJ; arc=none smtp.client-ip=115.28.160.31
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=xen0n.name
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=xen0n.name
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="oEigF6zf"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1766111421; x=1797647421;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=xm94Esx+kRHRfSH0LHzzyc9t4VebPhPKDiK8jQ4Wbrg=;
-  b=oEigF6zfiLtzA4h2x2OLUWUvjZJyGGEINRhptbYzz1ug7uOZQCvo6y3P
-   YPfopj+woSjG+rhq7D0bgL6W5MfiQJ7DeNE1iZ+JwYRqIm3l5SZ2RiBDU
-   brkyC7nI+1d3MmwYXgM8kvyvCvML8HvO21WOV1JmJsxE3UTrGKUMsXj8p
-   WTHubl6sGZ6mVYWzZ/weex4KVtnqtw6nnakFjBSVuwPc3j4n3dGtcEhH6
-   qZm70zRKLp4UZA5IAMlyGRyS796cZb1tv9MmXhyG2D+KU+FUjmtV7CpdA
-   1Zn84AGsSZZKh8L9oLhcM0raF+BUlvzt1UiVGrc01m365i2YYrpDEBeJL
-   Q==;
-X-CSE-ConnectionGUID: yAdla1xcTCGmhXTTHQ452Q==
-X-CSE-MsgGUID: 3T/8GaBHR6aCh5GcQhqTfg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11646"; a="68047573"
-X-IronPort-AV: E=Sophos;i="6.21,159,1763452800"; 
-   d="scan'208";a="68047573"
-Received: from fmviesa004.fm.intel.com ([10.60.135.144])
-  by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Dec 2025 18:30:20 -0800
-X-CSE-ConnectionGUID: Q5cTNuFSRZmTnDClp5p7iQ==
-X-CSE-MsgGUID: 1BXdbgLJTIS6pg0VcnESMA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,159,1763452800"; 
-   d="scan'208";a="203641828"
-Received: from yilunxu-optiplex-7050.sh.intel.com (HELO localhost) ([10.239.159.165])
-  by fmviesa004.fm.intel.com with ESMTP; 18 Dec 2025 18:30:17 -0800
-Date: Fri, 19 Dec 2025 10:14:03 +0800
-From: Xu Yilun <yilun.xu@linux.intel.com>
-To: Sean Christopherson <seanjc@google.com>
-Cc: Chao Gao <chao.gao@intel.com>, Thomas Gleixner <tglx@linutronix.de>,
-	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
-	Kiryl Shutsemau <kas@kernel.org>,
-	Paolo Bonzini <pbonzini@redhat.com>, linux-kernel@vger.kernel.org,
-	linux-coco@lists.linux.dev, kvm@vger.kernel.org,
-	Dan Williams <dan.j.williams@intel.com>
-Subject: Re: [PATCH v2 2/7] KVM: x86: Extract VMXON and EFER.SVME enablement
- to kernel
-Message-ID: <aUS06wE6IvFti8Le@yilunxu-OptiPlex-7050>
-References: <20251206011054.494190-1-seanjc@google.com>
- <20251206011054.494190-3-seanjc@google.com>
- <aTe4QyE3h8LHOAMb@intel.com>
- <aUJUbcyz2DXmphtU@yilunxu-OptiPlex-7050>
- <aUL-J-MvdCrCtDp4@google.com>
+	dkim=pass (1024-bit key) header.d=xen0n.name header.i=@xen0n.name header.b="AySTbkGJ"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=xen0n.name; s=mail;
+	t=1766114441; bh=kYmtpufhJKhAKeX0q5dQjGDQPr7GQvGMR+Gtv3xNNi0=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=AySTbkGJ8FAHK9KJO9inCKRb58MLnb+gpKR0jsK4hwPa0eT99YxZybm5jsKyUR54p
+	 I1AYRpJ7iSFMPYKpyQamrpm1coGevg4AVRPWL/+ZB40TCwnmcmbJD6S7Ss9c7nnm1T
+	 g281XYQ0DK2q81hRn2iBXf/tbOLa20jampTj5sIY=
+Received: from [IPV6:240e:b8f:939d:bb00::8c0] (unknown [IPv6:240e:b8f:939d:bb00::8c0])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
+	(No client certificate requested)
+	by mailbox.box.xen0n.name (Postfix) with ESMTPSA id EE5EE600F4;
+	Fri, 19 Dec 2025 11:20:40 +0800 (CST)
+Message-ID: <af2d9f9c-1931-484f-ab67-849093c3a760@xen0n.name>
+Date: Fri, 19 Dec 2025 11:20:40 +0800
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <aUL-J-MvdCrCtDp4@google.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4 1/3] LongArch: KVM: Add DMSINTC device support
+To: Song Gao <gaosong@loongson.cn>, maobibo@loongson.cn, chenhuacai@kernel.org
+Cc: kvm@vger.kernel.org, loongarch@lists.linux.dev,
+ linux-kernel@vger.kernel.org
+References: <20251218111822.975455-1-gaosong@loongson.cn>
+ <20251218111822.975455-2-gaosong@loongson.cn>
+Content-Language: en-US
+From: WANG Xuerui <kernel@xen0n.name>
+In-Reply-To: <20251218111822.975455-2-gaosong@loongson.cn>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On Wed, Dec 17, 2025 at 11:01:59AM -0800, Sean Christopherson wrote:
-> On Wed, Dec 17, 2025, Xu Yilun wrote:
-> > > >+#define x86_virt_call(fn)				\
-> > > >+({							\
-> > > >+	int __r;					\
-> > > >+							\
-> > > >+	if (IS_ENABLED(CONFIG_KVM_INTEL) &&		\
-> > > >+	    cpu_feature_enabled(X86_FEATURE_VMX))	\
-> > > >+		__r = x86_vmx_##fn();			\
-> > > >+	else if (IS_ENABLED(CONFIG_KVM_AMD) &&		\
-> > > >+		 cpu_feature_enabled(X86_FEATURE_SVM))	\
-> > > >+		__r = x86_svm_##fn();			\
-> > > >+	else						\
-> > > >+		__r = -EOPNOTSUPP;			\
-> > > >+							\
-> > > >+	__r;						\
-> > > >+})
-> > > >+
-> > > >+int x86_virt_get_cpu(int feat)
-> > > >+{
-> > > >+	int r;
-> > > >+
-> > > >+	if (!x86_virt_feature || x86_virt_feature != feat)
-> > > >+		return -EOPNOTSUPP;
-> > > >+
-> > > >+	if (this_cpu_inc_return(virtualization_nr_users) > 1)
-> > > >+		return 0;
-> > > 
-> > > Should we assert that preemption is disabled? Calling this API when preemption
-> > > is enabled is wrong.
-> > > 
-> > > Maybe use __this_cpu_inc_return(), which already verifies preemption status.
+On 12/18/25 19:18, Song Gao wrote:
+> Add device model for DMSINTC interrupt controller, implement basic
+> create/destroy/set_attr interfaces, and register device model to kvm
+> device table.
 > 
-> I always forget that the double-underscores have the checks.  
+> Reviewed-by: Bibo Mao <maobibo@loongson.cn>
+> Signed-off-by: Song Gao <gaosong@loongson.cn>
+> ---
+>   arch/loongarch/include/asm/kvm_dmsintc.h |  21 +++++
+>   arch/loongarch/include/asm/kvm_host.h    |   3 +
+>   arch/loongarch/include/uapi/asm/kvm.h    |   4 +
+>   arch/loongarch/kvm/Makefile              |   1 +
+>   arch/loongarch/kvm/intc/dmsintc.c        | 110 +++++++++++++++++++++++
+>   arch/loongarch/kvm/main.c                |   5 ++
+>   include/uapi/linux/kvm.h                 |   2 +
+>   7 files changed, 146 insertions(+)
+>   create mode 100644 arch/loongarch/include/asm/kvm_dmsintc.h
+>   create mode 100644 arch/loongarch/kvm/intc/dmsintc.c
 > 
-> > Is it better we explicitly assert the preemption for x86_virt_get_cpu()
-> > rather than embed the check in __this_cpu_inc_return()? We are not just
-> > protecting the racing for the reference counter. We should ensure the
-> > "counter increase + x86_virt_call(get_cpu)" can't be preempted.
-> 
-> I don't have a strong preference.  Using __this_cpu_inc_return() without any
-> nearby preemption_{enable,disable}() calls makes it quite clears that preemption
-> is expected to be disabled by the caller.  But I'm also ok being explicit.
+> diff --git a/arch/loongarch/include/asm/kvm_dmsintc.h b/arch/loongarch/include/asm/kvm_dmsintc.h
+> new file mode 100644
+> index 000000000000..1d4f66996f3c
+> --- /dev/null
+> +++ b/arch/loongarch/include/asm/kvm_dmsintc.h
+> @@ -0,0 +1,21 @@
+> +/* SPDX-License-Identifier: GPL-2.0 */
+> +/*
+> + * Copyright (C) 2025 Loongson Technology Corporation Limited
+> + */
+> +
+> +#ifndef __ASM_KVM_DMSINTC_H
+> +#define __ASM_KVM_DMSINTC_H
+> +
+> +
+> +struct loongarch_dmsintc  {
+> +	struct kvm *kvm;
+> +	uint64_t msg_addr_base;
+> +	uint64_t msg_addr_size;
+> +};
+> +
+> +struct dmsintc_state {
+> +	atomic64_t  vector_map[4];
+> +};
+> +
+> +int kvm_loongarch_register_dmsintc_device(void);
+> +#endif
+> diff --git a/arch/loongarch/include/asm/kvm_host.h b/arch/loongarch/include/asm/kvm_host.h
+> index e4fe5b8e8149..5e9e2af7312f 100644
+> --- a/arch/loongarch/include/asm/kvm_host.h
+> +++ b/arch/loongarch/include/asm/kvm_host.h
+> @@ -22,6 +22,7 @@
+>   #include <asm/kvm_ipi.h>
+>   #include <asm/kvm_eiointc.h>
+>   #include <asm/kvm_pch_pic.h>
+> +#include <asm/kvm_dmsintc.h>
+>   #include <asm/loongarch.h>
+>   
+>   #define __KVM_HAVE_ARCH_INTC_INITIALIZED
+> @@ -134,6 +135,7 @@ struct kvm_arch {
+>   	struct loongarch_ipi *ipi;
+>   	struct loongarch_eiointc *eiointc;
+>   	struct loongarch_pch_pic *pch_pic;
+> +	struct loongarch_dmsintc *dmsintc;
+>   };
+>   
+>   #define CSR_MAX_NUMS		0x800
+> @@ -244,6 +246,7 @@ struct kvm_vcpu_arch {
+>   	struct kvm_mp_state mp_state;
+>   	/* ipi state */
+>   	struct ipi_state ipi_state;
+> +	struct dmsintc_state dmsintc_state;
+>   	/* cpucfg */
+>   	u32 cpucfg[KVM_MAX_CPUCFG_REGS];
+>   
+> diff --git a/arch/loongarch/include/uapi/asm/kvm.h b/arch/loongarch/include/uapi/asm/kvm.h
+> index de6c3f18e40a..0a370d018b08 100644
+> --- a/arch/loongarch/include/uapi/asm/kvm.h
+> +++ b/arch/loongarch/include/uapi/asm/kvm.h
+> @@ -154,4 +154,8 @@ struct kvm_iocsr_entry {
+>   #define KVM_DEV_LOONGARCH_PCH_PIC_GRP_CTRL	        0x40000006
+>   #define KVM_DEV_LOONGARCH_PCH_PIC_CTRL_INIT	        0
+>   
+> +#define KVM_DEV_LOONGARCH_DMSINTC_CTRL			0x40000007
+> +#define KVM_DEV_LOONGARCH_DMSINTC_MSG_ADDR_BASE		0x0
+> +#define KVM_DEV_LOONGARCH_DMSINTC_MSG_ADDR_SIZE		0x1
+> +
+>   #endif /* __UAPI_ASM_LOONGARCH_KVM_H */
+> diff --git a/arch/loongarch/kvm/Makefile b/arch/loongarch/kvm/Makefile
+> index cb41d9265662..6e184e24443c 100644
+> --- a/arch/loongarch/kvm/Makefile
+> +++ b/arch/loongarch/kvm/Makefile
+> @@ -19,6 +19,7 @@ kvm-y += vm.o
+>   kvm-y += intc/ipi.o
+>   kvm-y += intc/eiointc.o
+>   kvm-y += intc/pch_pic.o
+> +kvm-y += intc/dmsintc.o
+>   kvm-y += irqfd.o
+>   
+>   CFLAGS_exit.o	+= $(call cc-disable-warning, override-init)
+> diff --git a/arch/loongarch/kvm/intc/dmsintc.c b/arch/loongarch/kvm/intc/dmsintc.c
+> new file mode 100644
+> index 000000000000..3fdea81a08c8
+> --- /dev/null
+> +++ b/arch/loongarch/kvm/intc/dmsintc.c
+> @@ -0,0 +1,110 @@
+> +// SPDX-License-Identifier: GPL-2.0
+> +/*
+> + * Copyright (C) 2025 Loongson Technology Corporation Limited
+> + */
+> +
+> +#include <linux/kvm_host.h>
+> +#include <asm/kvm_dmsintc.h>
+> +#include <asm/kvm_vcpu.h>
+> +
+> +static int kvm_dmsintc_ctrl_access(struct kvm_device *dev,
+> +				struct kvm_device_attr *attr,
+> +				bool is_write)
+> +{
+> +	int addr = attr->attr;
+> +	void __user *data;
+> +	struct loongarch_dmsintc *s = dev->kvm->arch.dmsintc;
+> +	u64 tmp;
+> +
+> +	data = (void __user *)attr->addr;
+> +	switch (addr) {
+> +	case KVM_DEV_LOONGARCH_DMSINTC_MSG_ADDR_BASE:
+> +		if (is_write) {
+> +			if (copy_from_user(&tmp, data, sizeof(s->msg_addr_base)))
+> +				return -EFAULT;
+> +			if (s->msg_addr_base) {
+> +				/* Duplicate setting are not allowed. */
+> +				return -EFAULT;
+> +			}
+> +			if ((tmp & (BIT(AVEC_CPU_SHIFT) - 1)) == 0)
+> +				s->msg_addr_base = tmp;
+> +			else
+> +				return  -EFAULT;
+> +		}
+> +		break;
+> +	case KVM_DEV_LOONGARCH_DMSINTC_MSG_ADDR_SIZE:
+> +		if (is_write) {
+> +			if (copy_from_user(&tmp, data, sizeof(s->msg_addr_size)))
+> +				return -EFAULT;
+> +			if (s->msg_addr_size) {
+> +				/*Duplicate setting are not allowed. */
+> +				return -EFAULT;
+> +			}
+> +			s->msg_addr_size = tmp;
+> +		}
+> +		break;
+> +	default:
+> +		kvm_err("%s: unknown dmsintc register, addr = %d\n", __func__, addr);
+> +		return -ENXIO;
+> +	}
+> +
+> +	return 0;
+> +}
+> +
+> +static int kvm_dmsintc_set_attr(struct kvm_device *dev,
+> +			struct kvm_device_attr *attr)
+> +{
+> +	switch (attr->group) {
+> +	case KVM_DEV_LOONGARCH_DMSINTC_CTRL:
+> +		return kvm_dmsintc_ctrl_access(dev, attr, true);
+> +	default:
+> +		kvm_err("%s: unknown group (%d)\n", __func__, attr->group);
+> +		return -EINVAL;
+> +	}
+> +}
+> +
+> +static int kvm_dmsintc_create(struct kvm_device *dev, u32 type)
+> +{
+> +	struct kvm *kvm;
+> +	struct loongarch_dmsintc *s;
+> +
+> +	if (!dev) {
+> +		kvm_err("%s: kvm_device ptr is invalid!\n", __func__);
+> +		return -EINVAL;
+> +	}
+> +
+> +	kvm = dev->kvm;
+> +	if (kvm->arch.dmsintc) {
+> +		kvm_err("%s: LoongArch DMSINTC has already been created!\n", __func__);
+> +		return -EINVAL;
+> +	}
+> +
+> +	s = kzalloc(sizeof(struct loongarch_dmsintc), GFP_KERNEL);
+> +	if (!s)
+> +		return -ENOMEM;
+> +
+> +	s->kvm = kvm;
+> +	kvm->arch.dmsintc = s;
+> +	return 0;
+> +}
+> +
+> +static void kvm_dmsintc_destroy(struct kvm_device *dev)
+> +{
+> +
+> +	if (!dev || !dev->kvm || !dev->kvm->arch.dmsintc)
+> +		return;
+> +
+> +	kfree(dev->kvm->arch.dmsintc);
+> +}
+> +
+> +static struct kvm_device_ops kvm_dmsintc_dev_ops = {
+> +	.name = "kvm-loongarch-dmsintc",
+> +	.create = kvm_dmsintc_create,
+> +	.destroy = kvm_dmsintc_destroy,
+> +	.set_attr = kvm_dmsintc_set_attr,
+> +};
+> +
+> +int kvm_loongarch_register_dmsintc_device(void)
+> +{
+> +	return kvm_register_device_ops(&kvm_dmsintc_dev_ops, KVM_DEV_TYPE_LOONGARCH_DMSINTC);
+> +}
+> diff --git a/arch/loongarch/kvm/main.c b/arch/loongarch/kvm/main.c
+> index 80ea63d465b8..2e26d4fd9000 100644
+> --- a/arch/loongarch/kvm/main.c
+> +++ b/arch/loongarch/kvm/main.c
+> @@ -408,6 +408,11 @@ static int kvm_loongarch_env_init(void)
+>   
+>   	/* Register LoongArch PCH-PIC interrupt controller interface. */
+>   	ret = kvm_loongarch_register_pch_pic_device();
+> +	if (ret)
+> +		return ret;
+> +
+> +	/* Register LoongArch DMSINTC interrupt contrroller interface */
+> +	ret = kvm_loongarch_register_dmsintc_device();
+>   
+>   	return ret;
+>   }
+> diff --git a/include/uapi/linux/kvm.h b/include/uapi/linux/kvm.h
+> index dddb781b0507..7c56e7e36265 100644
+> --- a/include/uapi/linux/kvm.h
+> +++ b/include/uapi/linux/kvm.h
+> @@ -1209,6 +1209,8 @@ enum kvm_device_type {
+>   #define KVM_DEV_TYPE_LOONGARCH_EIOINTC	KVM_DEV_TYPE_LOONGARCH_EIOINTC
+>   	KVM_DEV_TYPE_LOONGARCH_PCHPIC,
+>   #define KVM_DEV_TYPE_LOONGARCH_PCHPIC	KVM_DEV_TYPE_LOONGARCH_PCHPIC
+> +	KVM_DEV_TYPE_LOONGARCH_DMSINTC,
+> +#define KVM_DEV_TYPE_LOONGARCH_DMSINTC   KVM_DEV_TYPE_LOONGARCH_DMSINTC
+>   
+>   	KVM_DEV_TYPE_MAX,
+>   
 
-Looking into __this_cpu_inc_return(), it finally calls
-check_preemption_disabled() which doesn't strictly requires preemption.
-It only ensures the context doesn't switch to another CPU. If the caller
-is in cpuhp context, preemption is possible.
+Not a single line explaining what "DMSINTC" is? I checked v1, v2, and 
+v3, no documentation regarding DINTC or DMSINTC at all. We can see (and 
+Huacai explained in v3 review comment) "MSINTC" means "message-signaled 
+interrupt controller", but what does "D" mean? You may want to update 
+Documentation/arch/loongarch/irq-chip-model.rst for that.
 
-But in this x86_virt_get_cpu(), we need to ensure preemption disabled,
-otherwise caller A increases counter but hasn't do actual VMXON yet and
-get preempted. Caller B opts in and get the wrong info that VMX is
-already on, and fails on following vmx operations.
+-- 
+Regards,
+WANG "xen0n" Xuerui
 
-On a second thought, maybe we disable preemption inside
-x86_virt_get_cpu() to protect the counter-vmxon racing, this is pure
-internal thing for this kAPI.
-
-Thanks,
-Yilun
+Linux/LoongArch mailing list: https://lore.kernel.org/loongarch/
