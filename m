@@ -1,127 +1,136 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qv1-f46.google.com (mail-qv1-f46.google.com [209.85.219.46])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A099230FF3A;
-	Mon, 22 Dec 2025 22:57:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E824C2FFFBE
+	for <kvm@vger.kernel.org>; Mon, 22 Dec 2025 23:37:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1766444241; cv=none; b=cpVQWVcqgWcdAKwi3X0c44hBeBRghEoE/S10mMNT3hxCPk53Rffw0hM8jn4T9WWc2PNm4dOI+UA624pslpNknUWBFxttjoMsK9lzhlxCvUbhfMGYgl/CkH3ns3xHFmffLis98C2bzTG082GIRPDkmYjOvKRMX5EbiIrhyVK8yP8=
+	t=1766446666; cv=none; b=fRMKhEQz0rTyDEIHYsl6LLAOHIR5yubrGUwcBbOcv5IXYHd5S/DoZZcXq7ToEGzQHpqNs6DDrrLWrNm48EiwtxnXU61nmZ75Yo0Dr7O2fmB7ZiP6INhh9FPXqVcF+X3phYiC+VRKUmcSgBr9rtru0m8F+JcIZd8wx4FUVHfki0s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1766444241; c=relaxed/simple;
-	bh=FUn0OR5YuUpOyGicuQ/+P8CxhpRvnEK0ByM4pk9sBBk=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=S0cOm7vjlAxd3NZq0L+JvyCdQ6MsguNMJ23MiUEJa10k2s95axjnNJX0gOyNm1jtpBBP3NZmhtOagBqSvYfJcT59Lg9rCFQbmEtoZyXYIO+5ZFG6yCUi+eORi0pu0fgUJRaLvA0ziOAyK5BgIa4dxS/SnOpr4KbxDtqkzboyhyY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jkDIdYfn; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1766446666; c=relaxed/simple;
+	bh=nY66VQOhbvqdzZgeGL+/FZXbOwO7nvJBigVU8eFU+VU=;
+	h=From:Content-Type:Mime-Version:Subject:Date:References:Cc:To:
+	 Message-Id; b=sMvOdFiXTfGgwLLQrm+B7x6AYXb5KP2fQHp0btWPva9cA14uFBe/bVfiqHcMcxSRP3mbv1ZjtIqvOBlSTWkUjxAMqB2Yh0sWBwXlYrXEZ/vodVKmaLBxVs44el5F2x+ZvbAKhmTjTl4nfZe4ZVSJV/hutFqyLYM0pxQBr3FraH0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Swuj+OYA; arc=none smtp.client-ip=209.85.219.46
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jkDIdYfn"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CEB36C19422;
-	Mon, 22 Dec 2025 22:57:20 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1766444241;
-	bh=FUn0OR5YuUpOyGicuQ/+P8CxhpRvnEK0ByM4pk9sBBk=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jkDIdYfnBqcXbdVlEcYHR8rr8eyFgbFLksExGZOipWUuaszxxf8NXXERC4E3BOd1d
-	 csaPAD/ejsi3V1RA96mDKBsERN+6mMRSNintABqnX79yeUt7uag4SPoBFioRtLEyyL
-	 HJ+TebQlu/5ZdCXFp5SuTN2IZRRXfjFlrgJeFB5+2wNVfORL5NiJQUgJDXUKbloQIU
-	 a6HXfvKzlLYbWQrXvsk/Lne8dMl4klJ8gmsAjw4Xxt3zSaHVF9eY7AdZJTeMf6kjpa
-	 XiDv/qrNjeCIkPAjjCy6c6xgWPmqqYRmDa55H+oTGdOqcBfGptmm9dZLcuFtqp7Uje
-	 3El3eqVE7twsw==
-From: Namhyung Kim <namhyung@kernel.org>
-To: Arnaldo Carvalho de Melo <acme@kernel.org>
-Cc: Ian Rogers <irogers@google.com>,
-	Jiri Olsa <jolsa@kernel.org>,
-	Adrian Hunter <adrian.hunter@intel.com>,
-	James Clark <james.clark@linaro.org>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Ingo Molnar <mingo@kernel.org>,
-	LKML <linux-kernel@vger.kernel.org>,
-	linux-perf-users@vger.kernel.org,
-	kvm@vger.kernel.org
-Subject: [PATCH 02/11] tools headers: Sync UAPI KVM headers with kernel sources
-Date: Mon, 22 Dec 2025 14:57:07 -0800
-Message-ID: <20251222225716.3565649-2-namhyung@kernel.org>
-X-Mailer: git-send-email 2.52.0.351.gbe84eed79e-goog
-In-Reply-To: <20251222225716.3565649-1-namhyung@kernel.org>
-References: <20251222225716.3565649-1-namhyung@kernel.org>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Swuj+OYA"
+Received: by mail-qv1-f46.google.com with SMTP id 6a1803df08f44-88860551e39so35787096d6.3
+        for <kvm@vger.kernel.org>; Mon, 22 Dec 2025 15:37:44 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1766446664; x=1767051464; darn=vger.kernel.org;
+        h=message-id:to:cc:references:date:subject:mime-version
+         :content-transfer-encoding:from:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=FJvGwq+7Pamxnffgvl/Xh+Dw+LtLBntFoSfEkNe0+74=;
+        b=Swuj+OYAPk+niqiClQn7cXdOSe0RYifqTLp+49YcHpXFJ3F+z/+lKk+J7PqHN62TK7
+         awYbXttrcjGQbiY83e9ngG2ZVc/eGpJ0jthG3RBiJKUxdCV/PGQoJGQOPFXr+a/Y+qhj
+         aH5bSu/WOLyXSw+TJpiV+jQ1StOJUT3ccC9q+AUS0sQ+TE/rXK6GD35+vTcIslLfh4jH
+         AJ/XO9jezw9gTciHuz+4LNpyfmwRsTM3gomXPBAwMKOowdO3nQjpsltbAuPuzkFB7lov
+         9a+M/cEXeeZH+WG85yuADxvI4jeOEwKuAMzcZYrQxO5NnJn7o6cPI2qW7qTdHmKO39Fp
+         7iIQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1766446664; x=1767051464;
+        h=message-id:to:cc:references:date:subject:mime-version
+         :content-transfer-encoding:from:x-gm-gg:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=FJvGwq+7Pamxnffgvl/Xh+Dw+LtLBntFoSfEkNe0+74=;
+        b=pHks8Y0PcoS2bJ4NQ/09FHCasfcL+5tKPibVTG/KtBdWQX3fs1mxXuHYxT6juC0Huz
+         bfpvlM/CB4EDioOH8bsrhHgaY6dOPe1aciK3vDEc7Gpp9mcAAK0OJTO89jH6cIACYJUe
+         yK3PNvtQqlUbltB9RR+nf+x3M0EpwZRoLMslJw+jU8rC8q99/r/Qv6NxOgOSyoUZjsCg
+         Cau/IyZ+8z1/B2/lVsEpuswKsA6R7DckV1e+mQ/uSNY6bo+EDFMs/FF3e/yGEdL8cpNL
+         xS+0gSIUX8RUhA7L26XsRaC/bBQbnKYF1hrF2WLEjl3i5dQK1IrZlFlUq+dgv2Erge5q
+         SvOw==
+X-Forwarded-Encrypted: i=1; AJvYcCVptffFtdH5ecOhq0A7Hq3dF/has8lXZd8riRKAdyTDtroegAxszBPVANMYh7coHGp5Vso=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwSkIFR2oIbmQFXOVW209U9Kh8QaueKrkVAQOLVLM2vjaY2eZ+S
+	XNy0wLyuHIccCiF+0kA0jAoyzeUwO2a8YxeUjjz4z4LvG7zmiqZs747JbxjjKA==
+X-Gm-Gg: AY/fxX7iAfKtbjWzmCz/Ln7Tz6ZHsJmIgpe1Zs6GFbNCbCD1gnLotSzayNfbfsBYJE4
+	d2oil/U51DN4FgXuza/vGiWSKmedoXxxnAr+IVim8WRkeX/szLwJFGyDidN0CTRzDR6Yh6vEcIb
+	8JjL9LC2J9g1bUcfwPE0/jCxT6OcGQg32uhHUvnhXFCaEc+36rNOkZl1OBNu3YG+NeWR3ZUB+IN
+	9w5wWosNnE7feZ+W2A97krqNdtQe7oPsb89zNgnvhFczxoL88eNMXcrCTk1NAZp5lMzuYD6pRsb
+	jJ6LYSfan+VI+lF4mDbiUyf+EGtFIhAoks4bX15Y/qhRYQ+lKciJqEzricuOpahQPHzOKHZg7Yh
+	EeUmqUvC4pxkrLa1Oogpv2zM4Nh3Bun7foqhUA4MDLdqA+/hCyOSVyF+/txERyDIg+GvHd1a9v+
+	kZFFKpu0bRP260zKjNdNiGqC2UebzBWo8BEzyxKQ8C8fl5nhZJ
+X-Google-Smtp-Source: AGHT+IH04yosElyDXNujxX0PrNcUfcACTFFNNR9hYLNll/S61gWZPfwdzqxkwHHQqV8TVPhTPC/bVQ==
+X-Received: by 2002:a05:622a:4d08:b0:4ee:1879:e473 with SMTP id d75a77b69052e-4f4abcf3b54mr205212151cf.32.1766446663663;
+        Mon, 22 Dec 2025 15:37:43 -0800 (PST)
+Received: from smtpclient.apple ([2600:4041:45af:2c00:59d7:91be:c779:cc7e])
+        by smtp.gmail.com with ESMTPSA id d75a77b69052e-4f4ac62fa56sm93666341cf.17.2025.12.22.15.37.42
+        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
+        Mon, 22 Dec 2025 15:37:43 -0800 (PST)
+From: Patrick Bianchi <patrick.w.bianchi@gmail.com>
+Content-Type: text/plain;
+	charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.700.81.1.3\))
+Subject: Fwd: PCI Quirk - UGreen DXP8800 Plus
+Date: Mon, 22 Dec 2025 18:37:32 -0500
+References: <A005FF97-BB8D-49F6-994F-36C4A373FA59@gmail.com>
+Cc: alex@shazbot.org,
+ kvm@vger.kernel.org,
+ Bjorn Helgaas <bhelgaas@google.com>
+To: linux-pci@vger.kernel.org
+Message-Id: <26F3F2EE-37D4-4F73-9A51-EDD662EBEFF2@gmail.com>
+X-Mailer: Apple Mail (2.3826.700.81.1.3)
 
-To pick up changes from:
+Hello everyone.  At the advice of Bjorn Helgaas, I=E2=80=99m forwarding =
+this message to all of you.  Hope it=E2=80=99s helpful for future kernel =
+revisions!
 
-  ad9c62bd8946621e ("KVM: arm64: VM exit to userspace to handle SEA")
-  8e8678e740ecde2a ("KVM: s390: Add capability that forwards operation exceptions")
-  e0c26d47def7382d ("Merge tag 'kvm-s390-next-6.19-1' of https://git.kernel.org/pub/scm/linux/kernel/git/kvms390/linux into HEAD")
-  7a61d61396b97fd6 ("KVM: SEV: Publish supported SEV-SNP policy bits")
 
-This should be used to beautify DRM syscall arguments and it addresses
-these tools/perf build warnings:
 
-  Warning: Kernel ABI header differences:
-    diff -u tools/include/uapi/linux/kvm.h include/uapi/linux/kvm.h
-    diff -u tools/arch/x86/include/uapi/asm/kvm.h arch/x86/include/uapi/asm/kvm.h
+Begin forwarded message:
 
-Please see tools/include/README.kernel-copies.
+From: Patrick Bianchi <patrick.w.bianchi@gmail.com>
+Subject: PCI Quirk - UGreen DXP8800 Plus
+Date: December 20, 2025 at 9:56:10=E2=80=AFPM EST
+To: bhelgaas@google.com
 
-Cc: kvm@vger.kernel.org
-Signed-off-by: Namhyung Kim <namhyung@kernel.org>
----
- tools/arch/x86/include/uapi/asm/kvm.h |  1 +
- tools/include/uapi/linux/kvm.h        | 11 +++++++++++
- 2 files changed, 12 insertions(+)
+Hello!
 
-diff --git a/tools/arch/x86/include/uapi/asm/kvm.h b/tools/arch/x86/include/uapi/asm/kvm.h
-index d420c9c066d48c98..7ceff65836525c74 100644
---- a/tools/arch/x86/include/uapi/asm/kvm.h
-+++ b/tools/arch/x86/include/uapi/asm/kvm.h
-@@ -502,6 +502,7 @@ struct kvm_sync_regs {
- /* vendor-specific groups and attributes for system fd */
- #define KVM_X86_GRP_SEV			1
- #  define KVM_X86_SEV_VMSA_FEATURES	0
-+#  define KVM_X86_SNP_POLICY_BITS	1
- 
- struct kvm_vmx_nested_state_data {
- 	__u8 vmcs12[KVM_STATE_NESTED_VMX_VMCS_SIZE];
-diff --git a/tools/include/uapi/linux/kvm.h b/tools/include/uapi/linux/kvm.h
-index 52f6000ab020840e..dddb781b0507dcfe 100644
---- a/tools/include/uapi/linux/kvm.h
-+++ b/tools/include/uapi/linux/kvm.h
-@@ -179,6 +179,7 @@ struct kvm_xen_exit {
- #define KVM_EXIT_LOONGARCH_IOCSR  38
- #define KVM_EXIT_MEMORY_FAULT     39
- #define KVM_EXIT_TDX              40
-+#define KVM_EXIT_ARM_SEA          41
- 
- /* For KVM_EXIT_INTERNAL_ERROR */
- /* Emulate instruction failed. */
-@@ -473,6 +474,14 @@ struct kvm_run {
- 				} setup_event_notify;
- 			};
- 		} tdx;
-+		/* KVM_EXIT_ARM_SEA */
-+		struct {
-+#define KVM_EXIT_ARM_SEA_FLAG_GPA_VALID	(1ULL << 0)
-+			__u64 flags;
-+			__u64 esr;
-+			__u64 gva;
-+			__u64 gpa;
-+		} arm_sea;
- 		/* Fix the size of the union. */
- 		char padding[256];
- 	};
-@@ -963,6 +972,8 @@ struct kvm_enable_cap {
- #define KVM_CAP_RISCV_MP_STATE_RESET 242
- #define KVM_CAP_ARM_CACHEABLE_PFNMAP_SUPPORTED 243
- #define KVM_CAP_GUEST_MEMFD_FLAGS 244
-+#define KVM_CAP_ARM_SEA_TO_USER 245
-+#define KVM_CAP_S390_USER_OPEREXEC 246
- 
- struct kvm_irq_routing_irqchip {
- 	__u32 irqchip;
--- 
-2.52.0.351.gbe84eed79e-goog
+Let me start this off by saying that I=E2=80=99ve never submitted =
+anything like this before and I am not 100% sure I=E2=80=99m even in the =
+right place.  I was advised by a member on the Proxmox community forums =
+to submit my findings/request to the PCI subsystem maintainer and they =
+gave me a link to this e-mail.  If I=E2=80=99m in the wrong place, =
+please feel free to redirect me.
+
+I stumbled upon this thread =
+(https://forum.proxmox.com/threads/problems-with-pcie-passthrough-with-two=
+-identical-devices.149003/) when looking for solutions to passing =
+through the SATA controllers in my UGreen DXP8800 Plus NAS to a Proxmox =
+VM.  In post #12 by user =E2=80=9Ccelemine1gig=E2=80=9D they explain =
+that adding a PCI quirk and building a test kernel, which I did - over =
+the course of three days and with a lot of help from Google Gemini!  =
+I=E2=80=99m not very fluent in Linux or this type of thing at all, but =
+I=E2=80=99m also not afraid to try by following some directions.  =
+Thankfully, the proposed solution did work and now both of the NAS=E2=80=99=
+s SATA controllers stay awake and are passed through to the VM.  I=E2=80=99=
+ve pasted the quirk below.
+
+I guess the end goal would be to have this added to future kernels so =
+that people with this particular hardware combination don=E2=80=99t run =
+into PCI reset problems and don=E2=80=99t have to build their own =
+kernels at ever update.  Or at least that=E2=80=99s how I understand it =
+from reading through that thread a few times.
+
+I hope this was the right procedure for making this request.  Please let =
+me know if there=E2=80=99s anything else you need from me.  Thank you!
+
+-Patrick Bianchi
+
+
+
+C:
+/*
+* Test patch for Asmedia SATA controller issues with PCI-pass-through
+* Some Asmedia ASM1164 controllers do not seem to successfully
+* complete a bus reset.
+*/
 
