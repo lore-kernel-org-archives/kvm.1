@@ -1,78 +1,41 @@
-Received: from mail-pl1-f180.google.com (mail-pl1-f180.google.com [209.85.214.180])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A829F30F949
-	for <kvm@vger.kernel.org>; Mon, 22 Dec 2025 09:37:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.180
+Received: from mail.loongson.cn (mail.loongson.cn [114.242.206.163])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E90D11E9B1A;
+	Mon, 22 Dec 2025 11:59:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=114.242.206.163
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1766396252; cv=none; b=QzkndO4Ir0KKmOYe77ktJ0OKpXQEP2Uj5BHqRG8qeuuOya5J6+/06I3sg23tveIX4QfOOxr0bfuIlCEsp6aSe2rdtpkRERCLW25/VqqBNzV29gK+1wPCdCYVWP7Ci4c8JCv85ah7TdztFGgWIlu3ROlZ/fKOYm/9hEIyYRs/0r8=
+	t=1766404747; cv=none; b=ZbEOMAfaTCC3p+XQ0RD2z+E4ACE1oxjdmymBPb8mMxEItHnk5fA5T00cJyHYKtmfhi3/u+DeETqQutF/1/WIWyKgCbOLyG04NSjQsgIX8WUpiN+exqZSBNQRUwk4Ceq7p0nLzoR856yMtl2CR6T1lTUPPsPLqH8frXqXGfs19gI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1766396252; c=relaxed/simple;
-	bh=c1+ZAMdzh02vWjeiTFaMbNLB9tl3xJthxXA9iBlQ6NI=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=G/eE/QleNDipB3hXeX1UZPyzF7SkUTuF30+I85IFYLmXwNDey4Pqj68h55pQKCgtTmGiyENb7VeSqbb4J5Ny29eNp4IxtCwN/+CUsYwaP+4rO0yMFI/Cy4OkvPxa1Kyawgpm6EBygSlcKM7pjoWoYwKnQ6myECHzDFyGErGrtdY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=bytedance.com; spf=pass smtp.mailfrom=bytedance.com; dkim=pass (2048-bit key) header.d=bytedance.com header.i=@bytedance.com header.b=MwDvHCMj; arc=none smtp.client-ip=209.85.214.180
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=bytedance.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bytedance.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bytedance.com header.i=@bytedance.com header.b="MwDvHCMj"
-Received: by mail-pl1-f180.google.com with SMTP id d9443c01a7336-2a09757004cso47599195ad.3
-        for <kvm@vger.kernel.org>; Mon, 22 Dec 2025 01:37:29 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=bytedance.com; s=google; t=1766396249; x=1767001049; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=e+eYOQ9Z1GWGVQPVaVWjHQDJybI+c8ckkcfPVYmzYak=;
-        b=MwDvHCMjChZkRJuerRcUwVfqsZsw3DJ14clm33uY7JcfrzvkuLCCaJDB6W3dZzwSbs
-         kecr9jj4oMu+Su9La/wghpnWU3X0zmuA1i4stXG8iwFkBbLrSnUU5i6ITSOSg4vBGQth
-         KkljutFBB/DYGTB7tMOHJ4SNfnJwpHkJ4NnipDlKrPCAMaZRqBipXsUwp1fq5Hd/t75T
-         YiZDHEr4b4Unp0T38VtzJbftfi7XXZ+/HXAtSO6lvOskc7cDu1dBhdawS3X6hPp9IU4H
-         sA9qAgtoN/T6mVRmXTnJ/QrLrO16bqWcHyuy5bH91KM6D9AdkmuHI8+rzJO+kvBCQrE3
-         atSw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1766396249; x=1767001049;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=e+eYOQ9Z1GWGVQPVaVWjHQDJybI+c8ckkcfPVYmzYak=;
-        b=OGgi0dI8ojVsyBmFscMPxv/DYkBt1JiEij8lgaWKHw3EkU0KzTWFwFX9IrCQkVDDvx
-         xuKQg6kmDZLdYIEBg2RdQb0qsw6eso5EMja0RrWvoEDq8iKTtnBeiMCyHM8OUHRFfCw6
-         JFuvzT3ezdjKcWLkLp2709+Ktpj6Twh8pVBBIj9sWaOISQEj8J0Z2LVtTfQNUbjamgzs
-         xuBQHea+v6AZcQ8VTtBYCP+o2sFOkp0FbSnnX3rglxuLNMYCpQAu02L1HbUGBQrU/dMI
-         Inyj6TgoL7vY3gInBXNO1Zn1mmWLEU4XPt3Uk9zDPYhl6eY4wJMcySWscWlrcffzo/3b
-         F5QQ==
-X-Gm-Message-State: AOJu0Yx5/7FxPeNOnfynLyOmAdfb306EVdEtxVDO/I1plEJZfmpOIGQa
-	fTVu1sBJ1iAZECVZo9q9NRDdCcIoZFrj0HHnkv1WX0VGg/8g8piYzPicE56zQq5V+tk=
-X-Gm-Gg: AY/fxX4RNoRloUptdzO2k1CueAdXxVxYrzqjG9fwYaQwfRnrwWQxCQ/R7sbw+H/pRkM
-	SR8zGB7N63ffWQqvoDtiJWCH5x6mV+o1eRqd8zhRCvD4OCUETKuaPvmaRxogmzTXUvhOjM+pw95
-	nOBkTZO4Aj7uNCLu+2QLeWAxwVUwEV1q3h2fj+ghPmDym1bYPaUUXtJjo+ysHOnum1U/zhcaHsB
-	xjzRY3cPCrcfEIJNrSXSGB/EI74cND1Uh7SZxZhDeTpRuRhY5kHVqCAT4L+LjytCwsn6y0TM/Uj
-	Kdq/zHEGFMs9klfJLujzrURA6EIWbOtFxWZ3oKkveYJ7Nyt5EOwiDfXO+8S9Q6GJLpXm2B9w86m
-	jGge3ayPBu/XGggXbtFMcJQVyuRe6QMNBp2ulGed82XYB7M4mauAG8jirhltP0sCRnrYzJYgk71
-	gTGkIjU/USd7W6BTOn/DYJrj4A6bCRboiCgIcPwcvm6/R+ufsG5lFi
-X-Google-Smtp-Source: AGHT+IHbAevZrh677mrcs/s1RBp0r3uPnm7MKiIYh2aKgk+Y2T5BWPJU1+fmAHdSaxWnaMOTu2Gp8g==
-X-Received: by 2002:a17:902:f607:b0:2a1:4c31:335 with SMTP id d9443c01a7336-2a2f2717b88mr102674405ad.26.1766396248789;
-        Mon, 22 Dec 2025 01:37:28 -0800 (PST)
-Received: from J9GPGXL7NT.bytedance.net ([139.177.225.255])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2a2f3d5d20dsm92611765ad.67.2025.12.22.01.37.23
-        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Mon, 22 Dec 2025 01:37:28 -0800 (PST)
-From: Xu Lu <luxu.kernel@bytedance.com>
-To: anup@brainfault.org,
-	atish.patra@linux.dev,
-	pjw@kernel.org,
-	palmer@dabbelt.com,
-	aou@eecs.berkeley.edu,
-	alex@ghiti.fr,
-	tglx@linutronix.de
-Cc: kvm@vger.kernel.org,
-	kvm-riscv@lists.infradead.org,
-	linux-riscv@lists.infradead.org,
+	s=arc-20240116; t=1766404747; c=relaxed/simple;
+	bh=fdJPxij8jDIaVPfVDkSyubT82n1sshBMZXGM9mD5mlk=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=dhBaD4uD8hSIXPLD5zICTKVRyYTDRqVgeNB5PKCDnJqHGY7aXQKA1R0o+RjRUDTDhdmVlTfWilw4v30g8UbSt5OCYq/VZXu9d6MkoZNxND5DzjXcgQqVLxGou2Z0yt9/rAqr4iyd2Ajp4HPCbhjRIJLBktPH+4rXelrOPsv1HLk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn; spf=pass smtp.mailfrom=loongson.cn; arc=none smtp.client-ip=114.242.206.163
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=loongson.cn
+Received: from loongson.cn (unknown [10.2.5.185])
+	by gateway (Coremail) with SMTP id _____8CxqsJ_MklpvfEBAA--.6022S3;
+	Mon, 22 Dec 2025 19:58:55 +0800 (CST)
+Received: from localhost.localdomain (unknown [10.2.5.185])
+	by front1 (Coremail) with SMTP id qMiowJCxGOB6MklpP2IDAA--.10467S3;
+	Mon, 22 Dec 2025 19:58:52 +0800 (CST)
+From: Xianglai Li <lixianglai@loongson.cn>
+To: loongarch@lists.linux.dev,
 	linux-kernel@vger.kernel.org,
-	Xu Lu <luxu.kernel@bytedance.com>
-Subject: [PATCH v4] irqchip/riscv-imsic: Adjust the number of available guest irq files
-Date: Mon, 22 Dec 2025 17:37:18 +0800
-Message-ID: <20251222093718.26223-1-luxu.kernel@bytedance.com>
-X-Mailer: git-send-email 2.50.1
+	kvm@vger.kernel.org,
+	lixianglai@loongson.cn
+Cc: stable@vger.kernel.org,
+	Huacai Chen <chenhuacai@kernel.org>,
+	WANG Xuerui <kernel@xen0n.name>,
+	Tianrui Zhao <zhaotianrui@loongson.cn>,
+	Bibo Mao <maobibo@loongson.cn>,
+	Charlie Jenkins <charlie@rivosinc.com>,
+	Thomas Gleixner <tglx@linutronix.de>
+Subject: [PATCH V2 1/2] LoongArch: KVM: Compile the switch.S file directly into the kernel
+Date: Mon, 22 Dec 2025 19:34:08 +0800
+Message-Id: <20251222113409.2343711-2-lixianglai@loongson.cn>
+X-Mailer: git-send-email 2.39.1
+In-Reply-To: <20251222113409.2343711-1-lixianglai@loongson.cn>
+References: <20251222113409.2343711-1-lixianglai@loongson.cn>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -80,88 +43,283 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:qMiowJCxGOB6MklpP2IDAA--.10467S3
+X-CM-SenderInfo: 5ol0xt5qjotxo6or00hjvr0hdfq/
+X-Coremail-Antispam: 1Uk129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7KY7
+	ZEXasCq-sGcSsGvfJ3UbIjqfuFe4nvWSU5nxnvy29KBjDU0xBIdaVrnUUvcSsGvfC2Kfnx
+	nUUI43ZEXa7xR_UUUUUUUUU==
 
-Currently, KVM assumes the minimum of implemented HGEIE bits and
-"BIT(gc->guest_index_bits) - 1" as the number of guest files available
-across all CPUs. This will not work when CPUs have different number
-of guest files because KVM may incorrectly allocate a guest file on a CPU
-with fewer guest files.
+If we directly compile the switch.S file into the kernel, the address of
+the kvm_exc_entry function will definitely be within the DMW memory area.
+Therefore, we will no longer need to perform a copy relocation of
+kvm_exc_entry.
 
-To address above, during initialization, we calculate the number of
-available guest interrupt files according to MMIO resources and constrain
-the number of guest interrupt files that can be allocated by KVM.
+Based on the above description, compile switch.S directly into the kernel,
+and then remove the copy relocation execution logic for the kvm_exc_entry
+function.
 
-Signed-off-by: Xu Lu <luxu.kernel@bytedance.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: Xianglai Li <lixianglai@loongson.cn>
 ---
- arch/riscv/kvm/aia.c                    |  2 +-
- drivers/irqchip/irq-riscv-imsic-state.c | 12 +++++++++++-
- include/linux/irqchip/riscv-imsic.h     |  3 +++
- 3 files changed, 15 insertions(+), 2 deletions(-)
+Cc: Huacai Chen <chenhuacai@kernel.org>
+Cc: WANG Xuerui <kernel@xen0n.name>
+Cc: Tianrui Zhao <zhaotianrui@loongson.cn>
+Cc: Bibo Mao <maobibo@loongson.cn>
+Cc: Charlie Jenkins <charlie@rivosinc.com>
+Cc: Xianglai Li <lixianglai@loongson.cn>
+Cc: Thomas Gleixner <tglx@linutronix.de>
 
-diff --git a/arch/riscv/kvm/aia.c b/arch/riscv/kvm/aia.c
-index dad3181856600..cac3c2b51d724 100644
---- a/arch/riscv/kvm/aia.c
-+++ b/arch/riscv/kvm/aia.c
-@@ -630,7 +630,7 @@ int kvm_riscv_aia_init(void)
- 	 */
- 	if (gc)
- 		kvm_riscv_aia_nr_hgei = min((ulong)kvm_riscv_aia_nr_hgei,
--					    BIT(gc->guest_index_bits) - 1);
-+					    gc->nr_guest_files);
- 	else
- 		kvm_riscv_aia_nr_hgei = 0;
+ arch/loongarch/Kbuild                       |  2 +-
+ arch/loongarch/include/asm/asm-prototypes.h | 21 +++++++++++++
+ arch/loongarch/include/asm/kvm_host.h       |  3 --
+ arch/loongarch/kvm/Makefile                 |  2 +-
+ arch/loongarch/kvm/main.c                   | 35 ++-------------------
+ arch/loongarch/kvm/switch.S                 | 22 ++++++++++---
+ 6 files changed, 43 insertions(+), 42 deletions(-)
+
+diff --git a/arch/loongarch/Kbuild b/arch/loongarch/Kbuild
+index beb8499dd8ed..1c7a0dbe5e72 100644
+--- a/arch/loongarch/Kbuild
++++ b/arch/loongarch/Kbuild
+@@ -3,7 +3,7 @@ obj-y += mm/
+ obj-y += net/
+ obj-y += vdso/
  
-diff --git a/drivers/irqchip/irq-riscv-imsic-state.c b/drivers/irqchip/irq-riscv-imsic-state.c
-index dc95ad856d80a..cccca38983577 100644
---- a/drivers/irqchip/irq-riscv-imsic-state.c
-+++ b/drivers/irqchip/irq-riscv-imsic-state.c
-@@ -794,7 +794,7 @@ static int __init imsic_parse_fwnode(struct fwnode_handle *fwnode,
+-obj-$(CONFIG_KVM) += kvm/
++obj-$(subst m,y,$(CONFIG_KVM)) += kvm/
  
- int __init imsic_setup_state(struct fwnode_handle *fwnode, void *opaque)
- {
--	u32 i, j, index, nr_parent_irqs, nr_mmios, nr_handlers = 0;
-+	u32 i, j, index, nr_parent_irqs, nr_mmios, nr_guest_files, nr_handlers = 0;
- 	struct imsic_global_config *global;
- 	struct imsic_local_config *local;
- 	void __iomem **mmios_va = NULL;
-@@ -888,6 +888,7 @@ int __init imsic_setup_state(struct fwnode_handle *fwnode, void *opaque)
- 	}
- 
- 	/* Configure handlers for target CPUs */
-+	global->nr_guest_files = BIT(global->guest_index_bits) - 1;
- 	for (i = 0; i < nr_parent_irqs; i++) {
- 		rc = imsic_get_parent_hartid(fwnode, i, &hartid);
- 		if (rc) {
-@@ -928,6 +929,15 @@ int __init imsic_setup_state(struct fwnode_handle *fwnode, void *opaque)
- 		local->msi_pa = mmios[index].start + reloff;
- 		local->msi_va = mmios_va[index] + reloff;
- 
-+		/*
-+		 * KVM uses global->nr_guest_files to determine the available guest
-+		 * interrupt files on each CPU. Take the minimum number of guest
-+		 * interrupt files across all CPUs to avoid KVM incorrectly allocatling
-+		 * an unexisted or unmapped guest interrupt file on some CPUs.
-+		 */
-+		nr_guest_files = (resource_size(&mmios[index]) - reloff) / IMSIC_MMIO_PAGE_SZ - 1;
-+		global->nr_guest_files = min(global->nr_guest_files, nr_guest_files);
+ # for cleaning
+ subdir- += boot
+diff --git a/arch/loongarch/include/asm/asm-prototypes.h b/arch/loongarch/include/asm/asm-prototypes.h
+index 704066b4f736..e8ce153691e5 100644
+--- a/arch/loongarch/include/asm/asm-prototypes.h
++++ b/arch/loongarch/include/asm/asm-prototypes.h
+@@ -20,3 +20,24 @@ asmlinkage void noinstr __no_stack_protector ret_from_kernel_thread(struct task_
+ 								    struct pt_regs *regs,
+ 								    int (*fn)(void *),
+ 								    void *fn_arg);
 +
- 		nr_handlers++;
- 	}
- 
-diff --git a/include/linux/irqchip/riscv-imsic.h b/include/linux/irqchip/riscv-imsic.h
-index 7494952c55187..43aed52385008 100644
---- a/include/linux/irqchip/riscv-imsic.h
-+++ b/include/linux/irqchip/riscv-imsic.h
-@@ -69,6 +69,9 @@ struct imsic_global_config {
- 	/* Number of guest interrupt identities */
- 	u32					nr_guest_ids;
- 
-+	/* Number of guest interrupt files per core */
-+	u32					nr_guest_files;
++struct kvm_run;
++struct kvm_vcpu;
 +
- 	/* Per-CPU IMSIC addresses */
- 	struct imsic_local_config __percpu	*local;
++void kvm_exc_entry(void);
++int  kvm_enter_guest(struct kvm_run *run, struct kvm_vcpu *vcpu);
++
++struct loongarch_fpu;
++
++#ifdef CONFIG_CPU_HAS_LSX
++void kvm_save_lsx(struct loongarch_fpu *fpu);
++void kvm_restore_lsx(struct loongarch_fpu *fpu);
++#endif
++
++#ifdef CONFIG_CPU_HAS_LASX
++void kvm_save_lasx(struct loongarch_fpu *fpu);
++void kvm_restore_lasx(struct loongarch_fpu *fpu);
++#endif
++
++void kvm_save_fpu(struct loongarch_fpu *fpu);
++void kvm_restore_fpu(struct loongarch_fpu *fpu);
+diff --git a/arch/loongarch/include/asm/kvm_host.h b/arch/loongarch/include/asm/kvm_host.h
+index e4fe5b8e8149..1a1be10e3803 100644
+--- a/arch/loongarch/include/asm/kvm_host.h
++++ b/arch/loongarch/include/asm/kvm_host.h
+@@ -85,7 +85,6 @@ struct kvm_context {
+ struct kvm_world_switch {
+ 	int (*exc_entry)(void);
+ 	int (*enter_guest)(struct kvm_run *run, struct kvm_vcpu *vcpu);
+-	unsigned long page_order;
  };
+ 
+ #define MAX_PGTABLE_LEVELS	4
+@@ -347,8 +346,6 @@ void kvm_exc_entry(void);
+ int  kvm_enter_guest(struct kvm_run *run, struct kvm_vcpu *vcpu);
+ 
+ extern unsigned long vpid_mask;
+-extern const unsigned long kvm_exception_size;
+-extern const unsigned long kvm_enter_guest_size;
+ extern struct kvm_world_switch *kvm_loongarch_ops;
+ 
+ #define SW_GCSR		(1 << 0)
+diff --git a/arch/loongarch/kvm/Makefile b/arch/loongarch/kvm/Makefile
+index cb41d9265662..fe665054f824 100644
+--- a/arch/loongarch/kvm/Makefile
++++ b/arch/loongarch/kvm/Makefile
+@@ -11,7 +11,7 @@ kvm-y += exit.o
+ kvm-y += interrupt.o
+ kvm-y += main.o
+ kvm-y += mmu.o
+-kvm-y += switch.o
++obj-y += switch.o
+ kvm-y += timer.o
+ kvm-y += tlb.o
+ kvm-y += vcpu.o
+diff --git a/arch/loongarch/kvm/main.c b/arch/loongarch/kvm/main.c
+index 80ea63d465b8..67d234540ed4 100644
+--- a/arch/loongarch/kvm/main.c
++++ b/arch/loongarch/kvm/main.c
+@@ -340,8 +340,7 @@ void kvm_arch_disable_virtualization_cpu(void)
+ 
+ static int kvm_loongarch_env_init(void)
+ {
+-	int cpu, order, ret;
+-	void *addr;
++	int cpu, ret;
+ 	struct kvm_context *context;
+ 
+ 	vmcs = alloc_percpu(struct kvm_context);
+@@ -357,30 +356,8 @@ static int kvm_loongarch_env_init(void)
+ 		return -ENOMEM;
+ 	}
+ 
+-	/*
+-	 * PGD register is shared between root kernel and kvm hypervisor.
+-	 * So world switch entry should be in DMW area rather than TLB area
+-	 * to avoid page fault reenter.
+-	 *
+-	 * In future if hardware pagetable walking is supported, we won't
+-	 * need to copy world switch code to DMW area.
+-	 */
+-	order = get_order(kvm_exception_size + kvm_enter_guest_size);
+-	addr = (void *)__get_free_pages(GFP_KERNEL, order);
+-	if (!addr) {
+-		free_percpu(vmcs);
+-		vmcs = NULL;
+-		kfree(kvm_loongarch_ops);
+-		kvm_loongarch_ops = NULL;
+-		return -ENOMEM;
+-	}
+-
+-	memcpy(addr, kvm_exc_entry, kvm_exception_size);
+-	memcpy(addr + kvm_exception_size, kvm_enter_guest, kvm_enter_guest_size);
+-	flush_icache_range((unsigned long)addr, (unsigned long)addr + kvm_exception_size + kvm_enter_guest_size);
+-	kvm_loongarch_ops->exc_entry = addr;
+-	kvm_loongarch_ops->enter_guest = addr + kvm_exception_size;
+-	kvm_loongarch_ops->page_order = order;
++	kvm_loongarch_ops->exc_entry = (void *)kvm_exc_entry;
++	kvm_loongarch_ops->enter_guest = (void *)kvm_enter_guest;
+ 
+ 	vpid_mask = read_csr_gstat();
+ 	vpid_mask = (vpid_mask & CSR_GSTAT_GIDBIT) >> CSR_GSTAT_GIDBIT_SHIFT;
+@@ -414,16 +391,10 @@ static int kvm_loongarch_env_init(void)
+ 
+ static void kvm_loongarch_env_exit(void)
+ {
+-	unsigned long addr;
+-
+ 	if (vmcs)
+ 		free_percpu(vmcs);
+ 
+ 	if (kvm_loongarch_ops) {
+-		if (kvm_loongarch_ops->exc_entry) {
+-			addr = (unsigned long)kvm_loongarch_ops->exc_entry;
+-			free_pages(addr, kvm_loongarch_ops->page_order);
+-		}
+ 		kfree(kvm_loongarch_ops);
+ 	}
+ 
+diff --git a/arch/loongarch/kvm/switch.S b/arch/loongarch/kvm/switch.S
+index f1768b7a6194..93845ce53651 100644
+--- a/arch/loongarch/kvm/switch.S
++++ b/arch/loongarch/kvm/switch.S
+@@ -5,6 +5,7 @@
+ 
+ #include <linux/linkage.h>
+ #include <asm/asm.h>
++#include <asm/page.h>
+ #include <asm/asmmacro.h>
+ #include <asm/loongarch.h>
+ #include <asm/regdef.h>
+@@ -100,10 +101,18 @@
+ 	 *  -        is still in guest mode, such as pgd table/vmid registers etc,
+ 	 *  -        will fix with hw page walk enabled in future
+ 	 * load kvm_vcpu from reserved CSR KVM_VCPU_KS, and save a2 to KVM_TEMP_KS
++	 *
++	 * PGD register is shared between root kernel and kvm hypervisor.
++	 * So world switch entry should be in DMW area rather than TLB area
++	 * to avoid page fault reenter.
++	 *
++	 * In future if hardware pagetable walking is supported, we won't
++	 * need to copy world switch code to DMW area.
+ 	 */
+ 	.text
+ 	.cfi_sections	.debug_frame
+ SYM_CODE_START(kvm_exc_entry)
++	.p2align PAGE_SHIFT
+ 	UNWIND_HINT_UNDEFINED
+ 	csrwr	a2,   KVM_TEMP_KS
+ 	csrrd	a2,   KVM_VCPU_KS
+@@ -190,8 +199,8 @@ ret_to_host:
+ 	kvm_restore_host_gpr    a2
+ 	jr      ra
+ 
+-SYM_INNER_LABEL(kvm_exc_entry_end, SYM_L_LOCAL)
+ SYM_CODE_END(kvm_exc_entry)
++EXPORT_SYMBOL(kvm_exc_entry)
+ 
+ /*
+  * int kvm_enter_guest(struct kvm_run *run, struct kvm_vcpu *vcpu)
+@@ -215,8 +224,8 @@ SYM_FUNC_START(kvm_enter_guest)
+ 	/* Save kvm_vcpu to kscratch */
+ 	csrwr	a1, KVM_VCPU_KS
+ 	kvm_switch_to_guest
+-SYM_INNER_LABEL(kvm_enter_guest_end, SYM_L_LOCAL)
+ SYM_FUNC_END(kvm_enter_guest)
++EXPORT_SYMBOL(kvm_enter_guest)
+ 
+ SYM_FUNC_START(kvm_save_fpu)
+ 	fpu_save_csr	a0 t1
+@@ -224,6 +233,7 @@ SYM_FUNC_START(kvm_save_fpu)
+ 	fpu_save_cc	a0 t1 t2
+ 	jr              ra
+ SYM_FUNC_END(kvm_save_fpu)
++EXPORT_SYMBOL(kvm_save_fpu)
+ 
+ SYM_FUNC_START(kvm_restore_fpu)
+ 	fpu_restore_double a0 t1
+@@ -231,6 +241,7 @@ SYM_FUNC_START(kvm_restore_fpu)
+ 	fpu_restore_cc	   a0 t1 t2
+ 	jr                 ra
+ SYM_FUNC_END(kvm_restore_fpu)
++EXPORT_SYMBOL(kvm_restore_fpu)
+ 
+ #ifdef CONFIG_CPU_HAS_LSX
+ SYM_FUNC_START(kvm_save_lsx)
+@@ -239,6 +250,7 @@ SYM_FUNC_START(kvm_save_lsx)
+ 	lsx_save_data   a0 t1
+ 	jr              ra
+ SYM_FUNC_END(kvm_save_lsx)
++EXPORT_SYMBOL(kvm_save_lsx)
+ 
+ SYM_FUNC_START(kvm_restore_lsx)
+ 	lsx_restore_data a0 t1
+@@ -246,6 +258,7 @@ SYM_FUNC_START(kvm_restore_lsx)
+ 	fpu_restore_csr  a0 t1 t2
+ 	jr               ra
+ SYM_FUNC_END(kvm_restore_lsx)
++EXPORT_SYMBOL(kvm_restore_lsx)
+ #endif
+ 
+ #ifdef CONFIG_CPU_HAS_LASX
+@@ -255,6 +268,7 @@ SYM_FUNC_START(kvm_save_lasx)
+ 	lasx_save_data  a0 t1
+ 	jr              ra
+ SYM_FUNC_END(kvm_save_lasx)
++EXPORT_SYMBOL(kvm_save_lasx)
+ 
+ SYM_FUNC_START(kvm_restore_lasx)
+ 	lasx_restore_data a0 t1
+@@ -262,10 +276,8 @@ SYM_FUNC_START(kvm_restore_lasx)
+ 	fpu_restore_csr   a0 t1 t2
+ 	jr                ra
+ SYM_FUNC_END(kvm_restore_lasx)
++EXPORT_SYMBOL(kvm_restore_lasx)
+ #endif
+-	.section ".rodata"
+-SYM_DATA(kvm_exception_size, .quad kvm_exc_entry_end - kvm_exc_entry)
+-SYM_DATA(kvm_enter_guest_size, .quad kvm_enter_guest_end - kvm_enter_guest)
+ 
+ #ifdef CONFIG_CPU_HAS_LBT
+ STACK_FRAME_NON_STANDARD kvm_restore_fpu
 -- 
-2.20.1
+2.39.1
 
