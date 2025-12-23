@@ -1,82 +1,76 @@
 Received: from mx0b-002c1b01.pphosted.com (mx0b-002c1b01.pphosted.com [148.163.155.12])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2DC32F1FC4;
-	Tue, 23 Dec 2025 05:05:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2AF932F3C31
+	for <kvm@vger.kernel.org>; Tue, 23 Dec 2025 05:05:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=148.163.155.12
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1766466302; cv=fail; b=mmYRrFjK667E0zw1XE7TeCJiJQIxysbWxqPkdZSRLJN4pfMXl5aQtrJ09gylY6i/CFgDEbOieHuuGwGPfXPuGIEoDp2y3Us1xE1rGCQ3mujs7N98NTAJe5S8c0FED+1BshfA+Q/4hnq7+qVDSnPGNNUBIrhoYKV6o8zRRTRwyKI=
+	t=1766466304; cv=fail; b=M3lZV3YX046RZm6+9hueifDeWVTG4uKAnAuIQo+k37e0fpVe75+gn+k/DpBx42D5IXPkOE4ukJubX10x4xEWKaPC8C6tnOs43I545cBYu+qYuG5/fF+zcXiAnXdWsM4fpL1b25Avr2/pD1E/eazGcwvFyUK23Bg35tO5t4f8e8I=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1766466302; c=relaxed/simple;
-	bh=T/iLOj34LKHWEQ9jY9i2CZZKG4SmZHucSalL4Bh/PFY=;
+	s=arc-20240116; t=1766466304; c=relaxed/simple;
+	bh=OfTdKq633ux0NXedgF2Uc8XjT3mdfp5ZM+2ECPyjflY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=koo41IiJAlvB3/nnsYDqc6asB0sOy1TdDCOvQOVDVd78vo+fdwdYd4ErMkGOeQEupCC0gktRmItsj3+lpUAERBdOGoLQ3UB3x9oC1IJpzevb7sBhZBSQXZJfGyFQPCAd8O56asqpVLKLqoLtuO1UfA56bLxS0V4QLmu6705xyco=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nutanix.com; spf=pass smtp.mailfrom=nutanix.com; dkim=pass (2048-bit key) header.d=nutanix.com header.i=@nutanix.com header.b=qmA8p2UB; dkim=pass (2048-bit key) header.d=nutanix.com header.i=@nutanix.com header.b=V/2M3TOP; arc=fail smtp.client-ip=148.163.155.12
+	 Content-Type:MIME-Version; b=P2GYyotvsJyVVBJ4Ox5R7P9jftnnVhNuPxV/56alsGP6Bcnm4s2TWKN14TNzweWuoGB4NDX+/kiDo7F0Ps7yhIToP/3ST9aKKvFmbHC8IJlDrTuGltYCRR94cUMlzYxYynx6nLSnrDy7Y1OxJ/1gXYMM8nAQT5FqFnPB9JRtilQ=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nutanix.com; spf=pass smtp.mailfrom=nutanix.com; dkim=pass (2048-bit key) header.d=nutanix.com header.i=@nutanix.com header.b=cD43jLLF; dkim=pass (2048-bit key) header.d=nutanix.com header.i=@nutanix.com header.b=ZpXD1gkI; arc=fail smtp.client-ip=148.163.155.12
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nutanix.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nutanix.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nutanix.com header.i=@nutanix.com header.b="qmA8p2UB";
-	dkim=pass (2048-bit key) header.d=nutanix.com header.i=@nutanix.com header.b="V/2M3TOP"
-Received: from pps.filterd (m0127842.ppops.net [127.0.0.1])
-	by mx0b-002c1b01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 5BMLwnIw3941949;
-	Mon, 22 Dec 2025 21:04:28 -0800
+	dkim=pass (2048-bit key) header.d=nutanix.com header.i=@nutanix.com header.b="cD43jLLF";
+	dkim=pass (2048-bit key) header.d=nutanix.com header.i=@nutanix.com header.b="ZpXD1gkI"
+Received: from pps.filterd (m0127843.ppops.net [127.0.0.1])
+	by mx0b-002c1b01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 5BMLNNoO723792;
+	Mon, 22 Dec 2025 21:04:59 -0800
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nutanix.com; h=
 	cc:content-transfer-encoding:content-type:date:from:in-reply-to
 	:message-id:mime-version:references:subject:to; s=
-	proofpoint20171006; bh=8WfUqrS/0KsRBybful0VtNRlL9pxUCy+NuII3m8/e
-	cE=; b=qmA8p2UBc7gNjPw4rN23UX9YZEMBb3D79Adn1mmdVc6xbExzE2ZMaQ01Q
-	mT5RqOd/bM1bjL3wziwbBcuiadPTX8w//nciyf8HZBOYVBzYb79Oqd4DfuzIAYbo
-	ZTHYiX2jXQhzibVZIDi16GUs5egkzRAnVuMz+j6t3bZKIQYJbPN3u+XGQkew2Xt6
-	tzuDhMbofEaTo1KRVus3SjG8Rt4Lnxtb6/v5+OMdHgCY4Q99Zwic+pZDrg0x1Ylu
-	0G9lsdE/+bn4zUemv2Mb6uxgI5PK76iFYuYK8Tw02S8TUD3QdjWay3Jz6nluLJam
-	cvLB1YcHVkRdI24JKLWbXXosa5kAw==
-Received: from dm1pr04cu001.outbound.protection.outlook.com (mail-centralusazon11020107.outbound.protection.outlook.com [52.101.61.107])
-	by mx0b-002c1b01.pphosted.com (PPS) with ESMTPS id 4b7ecgrr1k-1
+	proofpoint20171006; bh=yYllDhxiGqDnCuUMXBYB3tPhRH5KjWGAiObRcHaPV
+	Gg=; b=cD43jLLFC5MBOlokdLDYtPoBUteSqSm10fy6rirK1nG/IXcYwKlcmWIgP
+	atux+VzXNE0JApJDwRKiSQqUsdJHOEl+3efsyHqF5i1yF71RZAxVJ0nVmQrQ/aww
+	Ptr+X7S4sakXvpSmHzU19JPpAhYkKHN+fip5gcy9H6Q/Ah9Tou5pTYDP1vAj6WnK
+	s6wlNhCOQbbez1i3cfQ6z1ZFPGdvaM6EVXfIUDd7kkUDH2jSWdFNHqNEpQpXxIAd
+	cBlxUMKOpDjv7gsdBzxj+rsL43g9mb0+CR3XPILvTMxkxtBz6F8rCrmNf8oDQeJH
+	QPu3w5E+/VR1wAHarO9eUVyx6seKQ==
+Received: from sn4pr0501cu005.outbound.protection.outlook.com (mail-southcentralusazon11021103.outbound.protection.outlook.com [40.93.194.103])
+	by mx0b-002c1b01.pphosted.com (PPS) with ESMTPS id 4b5tsjmwva-2
 	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
-	Mon, 22 Dec 2025 21:04:28 -0800 (PST)
+	Mon, 22 Dec 2025 21:04:59 -0800 (PST)
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=G2G3/EiIUfcmw5cYJnUcUugmePiOpgb7BdeOlKHmh/WHe7T61/bLmFPZkbI9S8c/y6jAvUmp5PKGtEH7WLVOinzllFsnEQzkcMXrQqomrrvQkhzFmAnmrProHIPQIOOmiZTmlRhcwg0mDPPCo61KtfWLPv4hPOkdFTXKi6yvAOzhgmH+I95F53rxrdxcAzMfEFIxs5dZ57gIT3+tqbyEtDukZyTVh2OmGWrTNVxuGSK0QNwfD2mXuqY2/jonBWzs5lsNLObQMbxLPWkxs7l9R89pi6K8DsENzSJadBgVwXykDfdSg4p+1ezthOyVVV8t1pNMxiz105Nmn5awcmkAhA==
+ b=Om/C9UqRGKmdc2Wt0rMUFNiOTSG5Sx6lO8FUtAMXumy7HZKjo0qHaQzj5nelDr2ZqCjwIAvkQWMekbDMAn2g8MoD3QKFqKrufTb0iA5wyxPc48f7+xrMoxFAypknio8h86E/E6ujoaF2EaNxmG6GprR0PtylaaZ2R1zDAt4FLS2C4EJSCZkHIaqMYqVk/MLuDZpNHl9pel1WaxzIHttJzMMB9fYw1xiufpqb4TyLPeVvAYhqO715GxyRdXgVAOB7M5qoherlXy72F42SFqu7ql5qZyjjtANd9tX7Q9UCnpeR4TKczqhkL+bn10YxiONVYTUzp7z3nPnnThIrBFMY5Q==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=8WfUqrS/0KsRBybful0VtNRlL9pxUCy+NuII3m8/ecE=;
- b=U+tXc1B/dt4eVPowBFG5alLgGYv1PhLF2/O4ku8OcK5JjxVPHNStaK4Kd9r4DlfpNwvWg/NmWD383LiRic6wtQlhAPzerLFs+fhShFZ/dZPtDuglMqMzt43wO9DroXJGFLx/KAA4vNKbeYNbKMKfOinBndD1ZfArd3i7fLWC4Kc/OIoXXAf6lJxUSiGtF11jFMn0sGV1XCGsMPJJ9SUE69cxzjGC6yMrSdDPeVqzirhI9UAWAtvuqVJX7Mk7haS2XHGd9c3wkxF3mgW9PQI5mkV/zf/aArDqooUa0EwlM+JcUiOo74iEYxp/sq+84q1OUVpEFAqL5xMY6dWMoPZISA==
+ bh=yYllDhxiGqDnCuUMXBYB3tPhRH5KjWGAiObRcHaPVGg=;
+ b=rby1uY2SVmYPckYuqBdKeoQH+qcVfVHQz3gd5qnCdnEPLYwVQ8+IUswk4uZp0FrZ8uD5XRKNtqSrRALdxC7FY70aTGZsBNK7O0FGO901czQ1iHIgNdUmokrqnF6S78GxKyd8+thyEFnj1hU6xqUW1WwL8I3QihOLOg/p6bNAkmqYSzl7P0W62sGiPYz7ZVm++JsQexLLV5CzRZZESfEmMP/khk/sMeaT293y5Gd7RTQLNkhAb9JjnCRaY0pcrFVCZ9+pAS1FfsND+mW8OSe/iE3cCvMbOi+NfOVNSqBX8aTAQNUDDZ4Z6iwCBbKI6e+ssSYS25iijVKgbjulcbGR2w==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=nutanix.com; dmarc=pass action=none header.from=nutanix.com;
  dkim=pass header.d=nutanix.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nutanix.com;
  s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=8WfUqrS/0KsRBybful0VtNRlL9pxUCy+NuII3m8/ecE=;
- b=V/2M3TOPWFJuzxykThLUwXiVamv7UCigjrnA3KweBVG41gEsLNlrCtlA8Xp5UJZKLuTzsnIHWRP++CeqSj4isS+idCm66FTES20Ng2y63bjyCrYiBfdfl9pdgF/OBHTk0/0aJVm5fxHDG4/+TowVmep3dEF+IFrNfL58PPJrsjghO12BNk1TtFx2Vg/XRVcndgaOVMGMw0JZThcCQ0OFKU6EpRl/ncEJGbxvAOF0XJDNETX4ZnwS+rxgeAyqpJOTAa47kEi2NCXqUtCwL8JdEZeg8od0jX07rHw90d/RfKUQDbzjgq8Er7XpkL2Z8PD6n7bgx1ktgdRbEljZpf2B8g==
+ bh=yYllDhxiGqDnCuUMXBYB3tPhRH5KjWGAiObRcHaPVGg=;
+ b=ZpXD1gkIUtuVXQAG0wHC3KRpIkCDr5B6DldPr46cHiy7y1Sw/EiAq6EjGeidrwoi9bCkrFq4/yUh2HFWtLkckdLtXfmJNkhl4mompgu79RURs+7eJbC7Zucu7FLG1zaumm3Bo75/y4u93GlpxM6uDU0ERiDFOUaQVJHc6ish2FcL+8Uvd2VsQHHy75L2B1qqal9Rze8l05UzasvE09rYL6iWhqNMbhQr0dZ9LztYvrXCpO82EO11mIPIKbCc0gvj8jZznU7V5JqGSURFoFrAx24KHF8vw8wYek0ql511ExfUO7rUtjKT9ufpWi/dsZFoa8t5PXpAlTkhIlwqbogabw==
 Received: from LV0PR02MB11133.namprd02.prod.outlook.com
  (2603:10b6:408:333::18) by SA1PR02MB8560.namprd02.prod.outlook.com
  (2603:10b6:806:1fb::24) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9434.11; Tue, 23 Dec
- 2025 05:04:27 +0000
+ 2025 05:04:58 +0000
 Received: from LV0PR02MB11133.namprd02.prod.outlook.com
  ([fe80::10e5:8031:1b1b:b2dc]) by LV0PR02MB11133.namprd02.prod.outlook.com
  ([fe80::10e5:8031:1b1b:b2dc%4]) with mapi id 15.20.9434.009; Tue, 23 Dec 2025
- 05:04:27 +0000
+ 05:04:58 +0000
 From: Jon Kohler <jon@nutanix.com>
-To: seanjc@google.com, pbonzini@redhat.com, tglx@linutronix.de,
-        mingo@redhat.com, bp@alien8.de, dave.hansen@linux.intel.com,
-        x86@kernel.org, hpa@zytor.com, kvm@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Cc: ken@codelabs.ch, Alexander.Grest@microsoft.com, chao.gao@intel.com,
-        madvenka@linux.microsoft.com, mic@digikod.net, nsaenz@amazon.es,
-        tao1.su@linux.intel.com, xiaoyao.li@intel.com, zhao1.liu@intel.com,
-        Jon Kohler <jon@nutanix.com>, Kai Huang <kai.huang@intel.com>
-Subject: [PATCH 3/8] KVM: x86/mmu: adjust MMIO generation bit allocation and allowed mask
-Date: Mon, 22 Dec 2025 22:47:56 -0700
-Message-ID: <20251223054806.1611168-4-jon@nutanix.com>
+To: seanjc@google.com, pbonzini@redhat.com, kvm@vger.kernel.org
+Cc: Jon Kohler <jon@nutanix.com>
+Subject: [kvm-unit-tests PATCH 01/10] x86/vmx: add mode-based execute control test for Skylake and above
+Date: Mon, 22 Dec 2025 22:48:41 -0700
+Message-ID: <20251223054850.1611618-2-jon@nutanix.com>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20251223054806.1611168-1-jon@nutanix.com>
-References: <20251223054806.1611168-1-jon@nutanix.com>
+In-Reply-To: <20251223054850.1611618-1-jon@nutanix.com>
+References: <20251223054850.1611618-1-jon@nutanix.com>
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
-X-ClientProxiedBy: PH0P220CA0016.NAMP220.PROD.OUTLOOK.COM
- (2603:10b6:510:d3::19) To LV0PR02MB11133.namprd02.prod.outlook.com
+X-ClientProxiedBy: PH8PR07CA0018.namprd07.prod.outlook.com
+ (2603:10b6:510:2cd::15) To LV0PR02MB11133.namprd02.prod.outlook.com
  (2603:10b6:408:333::18)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
@@ -86,165 +80,292 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
 X-MS-TrafficTypeDiagnostic: LV0PR02MB11133:EE_|SA1PR02MB8560:EE_
-X-MS-Office365-Filtering-Correlation-Id: 9fe5d98e-9bfd-4628-0d64-08de41e0bf4b
+X-MS-Office365-Filtering-Correlation-Id: 1167ee1e-4dae-4cae-e22d-08de41e0d19c
 x-proofpoint-crosstenant: true
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|52116014|1800799024|376014|7416014|366016|921020|38350700014;
+	BCL:0;ARA:13230040|52116014|1800799024|376014|366016|38350700014;
 X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?UObGCVnJdFupsE9pu1c3jH2JbWrppBZoiBtQHl/DnTwhGHfqC6TxRe3wuEtl?=
- =?us-ascii?Q?Tm1SC53d7MV03aOtSbl96JVV8Jq6X4nSU4GccVkSypNoj+FiO+bIDew46qLM?=
- =?us-ascii?Q?kg//nVsqLPOjkeNK/QFrt0h0JP5j42FI8wl8mDQKTlFXuFeAsjBCsB4S6yrl?=
- =?us-ascii?Q?AvvMKcmB4ucZTpuqHrpLt73meC5Bk2b7/mFEy0z1QTHhZC7XcKb8DRwabbeK?=
- =?us-ascii?Q?BN/+uKfs76W4gz9IIeZSXRyxUC94nXr8fGR0UNn4A2WFtXWkE1yV4TQnxwBb?=
- =?us-ascii?Q?Szl+nd61aMkbLbmyAut4L0xkbPYo42qdurtSfXSgwp+pWjNlMUh5/ndFMUQJ?=
- =?us-ascii?Q?uGCRHvSuihyhdKq4KC0uTP/lUwsFvOW3iPXgqURwQ/h7L8OpPqQZjHxngR8z?=
- =?us-ascii?Q?67AoVI4yCm1CIafAeBybhR7p7hxNsud9N3risMXkTkpdln9qP9MWlE070eDd?=
- =?us-ascii?Q?rSbZ4CjDSwravCoogXYpLz+NHg5C/RiLm49nWgIYgyjte20+1X7PjmHGlrM8?=
- =?us-ascii?Q?v4quQfXmqk8oEhLyy9oBpPABYg9tQHyZKNwVkAQXDSexE8VbiOJkLw/+4cUN?=
- =?us-ascii?Q?X/WJyZFMT4bbDk1MC3a3pwMtGgrhfMgo55Us6fBW4WBpQoTlof0eIGcOksaU?=
- =?us-ascii?Q?OfbmhJGrSf6Xq5ItEw+tBAzmLkTWwk8IVEBXUNhkunHJgcUh9PrD7z8pSYAF?=
- =?us-ascii?Q?7Ii3cmIrI6aLOwbLNcmS683K4IhxpJC8mrEYjEuAEGgYqPvhh9lGuH912vn1?=
- =?us-ascii?Q?6usnVGVTG5g4fALUfF3/Sa4E13g7cIjmPEUP7wIApDnTs6MKbTNspEa4dbsy?=
- =?us-ascii?Q?EjEySOq/srh16ckwl1zKVGsaiJq9WP7uiFPsiDfR4Zo5L4NaAHj/43aETltv?=
- =?us-ascii?Q?i4z8f3rx8Do2MOuUQ2F9GpD/M18wccMmntN0+SqXJU2VDMfP2Bm2C28N94WL?=
- =?us-ascii?Q?sdg7X/5evjTKbiKs2J4BVFK5Rx31tJ+xuhnuGiJP4EIeFfrXe3i8nU885zNC?=
- =?us-ascii?Q?i9WKay0sT50PPpXpaBbBkxKCqLTtrqVPpapPQlzUOn8WwVfHZz2vVvPCh5px?=
- =?us-ascii?Q?EXoihv43ttBXln0fM9U64wnAUBuLo0Dd4Q9vL1E3xMZoXdrhEqh7YEMw3lzC?=
- =?us-ascii?Q?fargmI/wrHcOQqnBlWVXV9dtWZu5OL0k8K/bVzEbg4YMNoTXtj9e72A3tKuH?=
- =?us-ascii?Q?VtkCdh7oymQPVaCQoaKRuODpBFpEVchpIWrzdyMSnvXuGCuCEb64nA9mbwK2?=
- =?us-ascii?Q?2kE1lsN4g6UqLxaV5ybKueeRJaDDHeeH2k5ZhuyQaLxRsHjrVluK2vguOxfC?=
- =?us-ascii?Q?uS4g1bTDW4159i/T37iV9ESHYU2wYExDF2KsMxbo5iLJo4hhvJ8B7m+qic24?=
- =?us-ascii?Q?ByKpcmfW7v6jbzMmvprtZypH6gQKAgsxL8etypV8AU6CzU3aNKIMu07SIyVz?=
- =?us-ascii?Q?g/ebq017vKcIAjTeZQVysnKYzviPYFkFyF+7ZH1QSCZtzjGttLZjBI228d2y?=
- =?us-ascii?Q?r/PzFZ17Zu+jydiF8o6zSsbwqE756ZLCA0DBzWuvwc5TzrofuefltBfwlQ?=
- =?us-ascii?Q?=3D=3D?=
+	=?us-ascii?Q?OnqKMh41FVXJ7rJN0XbqneTLOXGeQ6MejqDDUk6mUtX8yOw02FcoCh0rgz84?=
+ =?us-ascii?Q?9x4Lm9iyOM8CLKoOa8I9UvzCiDzQBUp+AdMB6KRfYGpxMkbwreFxYemlxkQz?=
+ =?us-ascii?Q?81Q6Ni+Dj5XrGa6l+2b3HmHFznlwBTZGAb7F1IcOrmVYh8mS5C9V5ujWOFbQ?=
+ =?us-ascii?Q?wpUZnLEHu/1EqzC4FRqXlPDM2ND0BsjO0hD9dXka2cYq2N8FntHUzPrrjrsy?=
+ =?us-ascii?Q?J8FdENjfa69PD8cSuzDtQebgllE1GVcpz6YPLRDz7nAmMFOoq+kgEdji9YeD?=
+ =?us-ascii?Q?lPbl4czQfpiTYrNlPPbQct2bgV0GPRrqaF7++whctI5qZ/immlRZjbBXG1Vn?=
+ =?us-ascii?Q?ZXZNrhOX4j3Kyv6fjkZaP/jhSueFAKBdN+6yKEDu//kzh3fqUajVaDMdivPU?=
+ =?us-ascii?Q?jQapWcXoASEuFlPDpWm+7Y7jrt6mrrWPtPxoP6H3RztLqNWq371mxKEV8ejy?=
+ =?us-ascii?Q?uwO3FLVdKj4PDxCrkBM9eU+YskPBmvOYpmk2k115zP7W0Hh/7qwm+ZNyrQEz?=
+ =?us-ascii?Q?Po14vSpomf3AZVae2+Ye6S8Zm5gnFtU0dmFeIBWbORMd2gQPL8CeuvfjJ0Eu?=
+ =?us-ascii?Q?xnuJgS7dHvoAU/aYkBx4Hy5BuVmyU5pRsOX0ooQbIesXgLmnD6MaH+5sQK63?=
+ =?us-ascii?Q?Cm05pkiyUI6yl61GRPkGJAitIbv3IBJ7P0AlJUaFrWUXHlI8bWCGfql8IBAm?=
+ =?us-ascii?Q?kkMNadnWmg+TgTfrepdUHoQwHstU+WDAdPhsBUcNUsuVOOdLWZpFiKPOZjfx?=
+ =?us-ascii?Q?HY2DK2CA38hnXDiyLYBOmqDyXi0xi79LD66I0HIkEQKwCqMMF8MJ76panjQs?=
+ =?us-ascii?Q?OYCOpj90cG06F+pcOd3nyQj9sz6hLlVE4sxdAlC8tKSSORwjeb+uqYzcVilX?=
+ =?us-ascii?Q?Tce78+3+8dk/xRm2/56Z6bgbNbJP1pfOrG7OFpmWWsEi6nJaDCZhEoZwyxxh?=
+ =?us-ascii?Q?ztElNoYpCDYlxheqMJpKbaeZtLv0WCmyCm82ACMMBsUfB+lRT9fhhYOvVW+V?=
+ =?us-ascii?Q?+Uj7rG3cXb7C1oHso/0/GPNa92XUPBwwrJ8ckFMpfn9BBD8ahEfVks0Hi/l8?=
+ =?us-ascii?Q?YLpGEf4p3cDAi+PrB0he7JbAZ7I3nKesQH7ElPGfLX6Mt3Q7xoIof0sgjhtc?=
+ =?us-ascii?Q?Au0Ka3iCyEOeBU2DGK3uoiwABO45Llqrzkqt07Zb3pcjFOfAsqt8XWs6MHo5?=
+ =?us-ascii?Q?Z9d3Zm889TIo6BJKoodZeBPEHE7eEx4yC57A0AU7wcVt8QGBM29jy+EV8C+h?=
+ =?us-ascii?Q?x2E1Kj67a9oQL1D0NgzffNTCavY/rGJciBmGbquCf/tE7lcGyB9M1IbkcRcw?=
+ =?us-ascii?Q?Woi3PpGQu34DEpZSuFMgHfu88plsVZAx6F1PzssIydHD9lamrWqx4sRflfCf?=
+ =?us-ascii?Q?UT2NGsWxVzvcTi7l+5cr2q6HLCLUlwoEviMtWJMqV6iuAStpaX71klrAzKA6?=
+ =?us-ascii?Q?nl03uL9WKGegGCqSxbG3U7fZEpUCuDeaoKn+qfuQ/4HbW93Dqxk4iOrhS3l1?=
+ =?us-ascii?Q?2xBGbpzGhGpiJaSRI7l2YapA/sQeofv9M3lw?=
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LV0PR02MB11133.namprd02.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(52116014)(1800799024)(376014)(7416014)(366016)(921020)(38350700014);DIR:OUT;SFP:1102;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LV0PR02MB11133.namprd02.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(52116014)(1800799024)(376014)(366016)(38350700014);DIR:OUT;SFP:1102;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?8SarLUVP6PqozJMPEc+DBhzCnTVzwRSYIBAywP2cOVPyDkr/7U0Go1ywAKlv?=
- =?us-ascii?Q?aoJHwvDNb0zwo1nJXnQTxlVzUcbGXruRuoIsNJdaWUxJFMoWqOATGz2kochS?=
- =?us-ascii?Q?c1oiNJjctkF8/qZeHXzotJsEmARqhgddgrQmcAj09X93dBzKI0wkD9g+kNjN?=
- =?us-ascii?Q?Ac5iEp/bo7y3xKH3gv1dqeVa62bH+SZq2wkn9IdnAsoBWwhoS1PbksmGRDo0?=
- =?us-ascii?Q?/alo5VFYrK2pS0z5Ub6KEaVxWVKzVGyf6ineHh/1YMUZV0c+SDSQKRWMtcCx?=
- =?us-ascii?Q?lFaKvCvc2qJt0HFzsbTIquO+3907Tsj63BZeGQz7n0sLGyRl0woM9FjvGBMO?=
- =?us-ascii?Q?P6/80qEykT9hQ1G8hZABP7K1vvOTBLX8faC+VwrfXtx8n0anYOFBjm9zFPFO?=
- =?us-ascii?Q?TYb6Y8g/Q39EieqckdkIH6AfJQnMwL4i12lL13MjvpLLbOQ6VPP4TaWBPxiO?=
- =?us-ascii?Q?wyBHlal2w0Z/qia4SZWrOBN2XhquRbwZ9vy0cRqgFBdN9BHBs5yhNypnEGp7?=
- =?us-ascii?Q?zJyRyR4P4CS7jb07fAy7BwYTXipvK/7bIoPne/shKA+a5fpVZZDFeaMJSR+R?=
- =?us-ascii?Q?19mHgd+Zlb2JdN1wl/DOVM3B27LU4xCrAlLGcFV2hdw2vlZhtulshCAisVeL?=
- =?us-ascii?Q?PXcHJIdcIX39fDHol/ms0ZruyI6BxIwHEXj+yn54lt5ItgPOjPSX7DDPYwS2?=
- =?us-ascii?Q?byqBJQPwFkQo+SzUV+Ac+GHdtdRm3DLplBwuZFACqMf2JFeq45Y3cgK+E45V?=
- =?us-ascii?Q?0MLBbIZ4BdGTkqfiAZ75czYt1rGjS1lWcdIvpiySoky3x81NdpR5SnLcTCXH?=
- =?us-ascii?Q?6PTSrpaZ8CYBmLZHieRa/o0IIZS9kZWO3oPuuguea9bzWZlnWjTlh8VwFveg?=
- =?us-ascii?Q?8UnNrxUG0ZW2yXXCFawf4or10FNVd/Znr8Hs8BkNNJqQT2W21ENSoo62mAEF?=
- =?us-ascii?Q?t0VbKuz0fXw1M/2c/ce70T8e29KLtCxUVEP1j0RV2MoSBIHLFzKJX/e5TRHk?=
- =?us-ascii?Q?lDMCKtv/HwhOXfgpeY9f8fGe7EVKsgZXwi+CRVUHukgN6/1+HrLYhgnEKzLr?=
- =?us-ascii?Q?rQs8SLaJbu/GKvhuRKCfIqzwVUUVIEusxaSb0TXTHHLyL9MHWvgqQWVw6JBE?=
- =?us-ascii?Q?PUH2DKcR/dJ/6SYTcmAlfcIHKk60xZfzgrBh1E/f2+g+4WJnhad2gIzumIym?=
- =?us-ascii?Q?f6e0prZmyYFooq/3Gko2jcxgv1rj8jEhEP2TIXHM9RvTtkcB3XwQhaJF50PM?=
- =?us-ascii?Q?DdMhpYt1U6gTeb6rXL1Aalp+aZqyV9fUpyhg6H/nLTzi03y+meqnOUL1kV+T?=
- =?us-ascii?Q?/k8AcajBueOXQ/o4bYbRTrghTUBAgr987iLGM/RVJB7STk/iBN1hiMuYr4LE?=
- =?us-ascii?Q?4PJqq5jk1isDyeXx3epeAkW/1CL6aPJpuORdjS6e8hXVbwcUFkjq6BXLrFCY?=
- =?us-ascii?Q?d4Wl90yjJiBeftUvLyWljZJjCIK3w4l5yTDbcjS9fHQNUVrD6QY7Wk3vRndG?=
- =?us-ascii?Q?bv7oEkSLZsVcDnmPhz7pN/LT2R6moTy1zQIhfpEr4aaFaDMlgHUBE0SYckX0?=
- =?us-ascii?Q?zEUl9EBCuh59c1EI1aQgabx0wT6YUEHDPRYl6XPPLkolOncyItAWYutXpCmV?=
- =?us-ascii?Q?kZ24IRL//UqsyKHyH3yg9ImbfIVCwkkSuIW9GKCi0H/HpPQ1B/vOPNmo+T1f?=
- =?us-ascii?Q?jrb+dmq1Itf6MyN+7zAx//piqEhrikag+8xALKtHuZCuO8csMU+g+ohIl8DM?=
- =?us-ascii?Q?xHw3HdEfmPjzyDml+j2929yBstBQzI4=3D?=
+	=?us-ascii?Q?SIiHRGvPxg8EEdoQHaFtd3fEsT9kyl58gsD9jnOFgsTN4k8qOABYkJGvJpdF?=
+ =?us-ascii?Q?AoYZeApwbsSvjBaybG9lL9/03X+NwhiontzYYKCDe3IXL5CReQHavsSWd1Jd?=
+ =?us-ascii?Q?gkPnEjixBnUYSNyebdnsRajHc1Sxfa2Z6WgG9r15h+LyJ35cFySS0O9hD4kY?=
+ =?us-ascii?Q?zSCCM0cziUVBwiCZYFoVIpQlcZwLLPrH9brc1cXCYA5ZKeRXD9UnVeCVoMx0?=
+ =?us-ascii?Q?Kag09fSi2Z2GizrU24hdkm9NRuR6ta78Zx7ijq/snEB0pITlbAUOAUjz5caV?=
+ =?us-ascii?Q?dqMzK2gcYozfNhn6vctQdM38udJr9ffxaIcbrCiEZlFwk6S0pGjlc1rQMMkg?=
+ =?us-ascii?Q?2g/Y4BlozDmW2a38kDbm/fcKGWyTVE9yF3W6FjgsO+jCyn4bDuNJtvNV0MSW?=
+ =?us-ascii?Q?pg9Uo71HIfH9gC40kYD2XKNej1Xyb6Hr3d6P2C+91eTVknMTvTOX5lbTReCV?=
+ =?us-ascii?Q?UbmJ4HGa5wqIShMdnIdSkFpcsKCeb31VKpIPss2oFJqUH/0kZwktZkQrjWUF?=
+ =?us-ascii?Q?qCuoYlZncJviNA3Ij3PVthtA6/PXu1BkHbsfl9J60Hz7e0DIvq6Wml05bIns?=
+ =?us-ascii?Q?lOHcRSF9mmp5UBScBFs+OpXXdASU5umZ7Yw+jxx7b+ly+BnylYgiKlnVoy8F?=
+ =?us-ascii?Q?A8hM1PhkdBahu6Y1Vz5koYj92+1t271lpQBds4NGCI6bpzyrBeGBjGVaRKtX?=
+ =?us-ascii?Q?c17GpiGoNbnBKgbwkdsnVcv6sxzfrLakj4jQY3TU9xGusM15qtncAySh1XVQ?=
+ =?us-ascii?Q?D866zDnH4xQwgNn2O8AdDioTr02Ry1PzeHGNg6pEW0JhGJ34LWXUg78ccGG9?=
+ =?us-ascii?Q?fwmkLJNxGKJFI/cngZNI7tHLZtW9/LMuNerRQ5pVxOgzhh83h1tlNWoyFjfb?=
+ =?us-ascii?Q?l105+WxBKa7otdkxejQhCc3syaV2c211XF2a4mBYwV61AVmwGtvAaHT9ZYas?=
+ =?us-ascii?Q?NXP4xA9L/jBFX90/oCPeBRLZ2HeAO2ZJFKRcVGF4lgQVsIPu3t5l/cq6mmf6?=
+ =?us-ascii?Q?/9huJfWYkT7+lbNwVbCfuSIFA3mbpjVE5+lj95sLTcrFHuqcMwz3ZG39nq2I?=
+ =?us-ascii?Q?ULZ/iOi27g9yQhYamSAQUhf0GSI2w67QDLvdKvfchdtkCYQdQaJIQHBYQQcZ?=
+ =?us-ascii?Q?h4kf0TzqxMEBap5ib7XAJ6ftXZ3H8PBWVpcJNGDL9mqWM8CATcQXamSRWsqS?=
+ =?us-ascii?Q?bAFzr3wKzMyxwA2i1n6ihjEPrS/p4AMhnpobua85qJOFSYjlpgYwM1Efljt0?=
+ =?us-ascii?Q?npGyFTFgYWIK6iG0sRHFr3fZSKeeFxgAZPgSCf3IIoRoC6hBv52HDP9JZnnS?=
+ =?us-ascii?Q?HM7HhHN0j69NAY+Qi9N4w9DM1EG8D+XMCnqBPPzBIzVuPIy4ThMq8Gv8q0/X?=
+ =?us-ascii?Q?RAMCAwT59tZ1rtL07hd28pCDFvZzJ/SAoe4UXqIGPxuOntFGcq6MoZbHzTu5?=
+ =?us-ascii?Q?ldzrAVkAUg2/Grc4Eb/NCuWDden6+V/6nSfp3xDZbQ/D+quqU/dkSKCviJEL?=
+ =?us-ascii?Q?OOp4SfezBzQm1dWAfNtQYvFmpOHtd6TRHKTfAYwL0D+/PMthAV7C91Mz6hkI?=
+ =?us-ascii?Q?X+20nd5p4z8xi+wOtxlUuMTSyMjxrKgWk/JcgvcxbvEoVqcKMZlIzK65D2do?=
+ =?us-ascii?Q?cObzJLw4nBVWtP/6893daDP8C7gYtW9zdLWVgcl3R6aSEC1K5eT4NWIXTXSu?=
+ =?us-ascii?Q?22uSqJTo0ynz1RvE6oNYeJUi7e1Zj6Td0QAGrA3SZNlSZuPYeDqtwtdqCPuE?=
+ =?us-ascii?Q?2ZDMi9UlzV+OOOwu5PDyCx1grTrRe6k=3D?=
 X-OriginatorOrg: nutanix.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 9fe5d98e-9bfd-4628-0d64-08de41e0bf4b
+X-MS-Exchange-CrossTenant-Network-Message-Id: 1167ee1e-4dae-4cae-e22d-08de41e0d19c
 X-MS-Exchange-CrossTenant-AuthSource: LV0PR02MB11133.namprd02.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 23 Dec 2025 05:04:27.1620
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 23 Dec 2025 05:04:57.8934
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: bb047546-786f-4de1-bd75-24e5b6f79043
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 30bWsvLfko5wz5qN1sMkOkPWKrPtfvCKMmI9KpD0pBoue3Dm0Ke1Oxq362216RbPnDLm1ArTel2oZpTzeb9RSQqQj2NdiPG4c2feAze4QOI=
+X-MS-Exchange-CrossTenant-UserPrincipalName: e7b2sKZ4wSCG3YugrWqt2ZML2kpDHox0xzlX6lNIIuwOfecTTWcO7rdpckkGhr5qCQPlBFRP8Di/CBIVco6btJxmV6VsPXOyEZzYQijlxgY=
 X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA1PR02MB8560
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMjIzMDA0MCBTYWx0ZWRfXwFr0XeKUfOmi
- tPWSYM6ynXTKdnKeBB7YLuUOvPm6c2OSKta8IMFpX4OSu4T71pjm/peSBA+918l2Dub5iMB/rZ3
- FyS0mqnSQstRqjvOdO8BeiViKRLBwVLZvtkhVBjind7s6LxS0s9NzTv3Sylhah89X5iWvYbON0I
- USXe6+KlwUb8/Yd4Lg2wtaQaYWV9AQT5Sq4Um020zLB5Cr3c6dAa3+PzPOc1f+TsCtUTTygjrCW
- UlzXyDQ4zY+0Z1Yh2bYlYTB3W97Z23d36DcDqQc3rNqBwlFis6Quk6t70DwhSdf5iluikp04tER
- Ch698TS1/lQznmDLBg7tzUTbafd4RgS76MKYOf7VqTT1supgKw33NGdZiWaS7CvpjOHr1qTF5+u
- O5J8dLLhdzEm1oNvOA7mESXZzGb5igYpVjgA2pxRGlHV79wfJ0CzhmugQ9k+w5HVhH0AVJc1YWe
- bwVswAOWH+Q5Le1LkBQ==
-X-Proofpoint-ORIG-GUID: UkT3lmH2NwcVhqLYtC06PybvZNutd-uw
-X-Proofpoint-GUID: UkT3lmH2NwcVhqLYtC06PybvZNutd-uw
-X-Authority-Analysis: v=2.4 cv=R7YO2NRX c=1 sm=1 tr=0 ts=694a22dc cx=c_pps
- a=5R/USArCWZnskgXodYG4KA==:117 a=6eWqkTHjU83fiwn7nKZWdM+Sl24=:19
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMjIzMDA0MCBTYWx0ZWRfX0da0+Rw3bABy
+ HgEEW8enygDohna0Bu2BIncI8gH4xpOuEQOLFZ8x4tjXGpcyFQdv5Im/uKYduhRLZR0r2D4jRLT
+ zy3Uz11SZZQ22XZNefUUA1laHUiq9X/n6A37Z3WT5zY1TRjm9eyvZ6pJ8LZfYTkblFumT6nyoyK
+ louP2pqnc1oOM5Bhh41ag9rZwvQqQNnOSNZkQo+KkaB2FLEwZPaBgoApOIk+CDDr7VGum4SGqHq
+ o5DUtGDvZJpzfbhB2hsoIFGUi85ES8GvxrtHmqcgzYnX5Yf7F3YIP+/xIij+d5RjavrM20ijz+u
+ mYMKarKDaMjbawj8eTWU6Qoq8OYsv7yK334gT60vL949HwN7OWl62PtyNrggXPAhH5mzw9pxVeR
+ h9SFoSn601wu0k1QtEIYFTq1mHJ6H9fztZR/y0kfhtx63k5ZWT720KGKHR0TuqyKL/nbXsHDX6h
+ 3y/BI+q5SMPQjAFJ3Hw==
+X-Proofpoint-GUID: M89uCCDfKFFPn0ikq6yNN_gbQhV1-J32
+X-Proofpoint-ORIG-GUID: M89uCCDfKFFPn0ikq6yNN_gbQhV1-J32
+X-Authority-Analysis: v=2.4 cv=Xr73+FF9 c=1 sm=1 tr=0 ts=694a22fb cx=c_pps
+ a=GZ5nxs7iJwyXCG4rR3qJ+A==:117 a=6eWqkTHjU83fiwn7nKZWdM+Sl24=:19
  a=z/mQ4Ysz8XfWz/Q5cLBRGdckG28=:19 a=lCpzRmAYbLLaTzLvsPZ7Mbvzbb8=:19
  a=xqWC_Br6kY4A:10 a=wP3pNCr1ah4A:10 a=0kUYKlekyDsA:10
- a=VkNPw1HP01LnGYTKEx00:22 a=QyXUC8HyAAAA:8 a=64Cc0HZtAAAA:8
- a=EwT1G5GB7KXMQQH4ZFIA:9
+ a=VkNPw1HP01LnGYTKEx00:22 a=64Cc0HZtAAAA:8 a=zKBhIuo6mipeLcZBzDAA:9
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
  definitions=2025-12-23_01,2025-12-22_01,2025-10-01_01
 X-Proofpoint-Spam-Reason: safe
 
-Update SPTE_MMIO_ALLOWED_MASK to allow EPT user executable (bit 10) to
-be treated like EPT RWX bit2:0, as when mode-based execute control is
-enabled, bit 10 can act like a "present" bit.
+Introduce a new test for mode-based execute control (MBEC) in the VMX
+controls, validating the dependency between MBEC and EPT VM-execution
+controls. The test ensures that VM entry fails when MBEC is enabled
+without EPT, and succeeds in valid combinations.
 
-No functional changes intended.
+Update the unit test configuration to include a specific test case for
+MBEC on Skylake-Server CPU model, as that was the first CPU series to
+have MBEC.
 
-Cc: Kai Huang <kai.huang@intel.com>
+Tested on Intel SPR Gold 5416S.
+
+Passing test result
+Test suite: vmx_controls_test_mbec
+PASS: MBEC disabled, EPT disabled (valid combination): vmlaunch succeeds
+PASS: MBEC enabled, EPT disabled (invalid combination): vmlaunch fails
+PASS: MBEC enabled, EPT disabled (invalid combination): VMX inst error is 7 (actual 7)
+PASS: MBEC enabled, EPT enabled (valid combination): vmlaunch succeeds
+PASS: MBEC disabled, EPT enabled (valid combination): vmlaunch succeeds
+
+Test ran with "-vmx-mbec":
+Test suite: vmx_controls_test_mbec
+SKIP: test_mode_based_execute_control : "Secondary execution" or
+"enable EPT" or "enable mode-based execute control" control not supported
+
+Note, all other tests pass (including EPT with MBEC enabled and
+disabled) with MBEC v1 series.
+
 Signed-off-by: Jon Kohler <jon@nutanix.com>
 ---
- arch/x86/kvm/mmu/spte.h | 13 +++++++------
- 1 file changed, 7 insertions(+), 6 deletions(-)
+ x86/unittests.cfg |  9 ++++++
+ x86/vmx.h         |  8 +++++
+ x86/vmx_tests.c   | 76 +++++++++++++++++++++++++++++++++++++++++++++++
+ 3 files changed, 93 insertions(+)
 
-diff --git a/arch/x86/kvm/mmu/spte.h b/arch/x86/kvm/mmu/spte.h
-index 0fc83c9064c5..b60666778f61 100644
---- a/arch/x86/kvm/mmu/spte.h
-+++ b/arch/x86/kvm/mmu/spte.h
-@@ -96,11 +96,11 @@ static_assert(!(EPT_SPTE_MMU_WRITABLE & SHADOW_ACC_TRACK_SAVED_MASK));
- #undef SHADOW_ACC_TRACK_SAVED_MASK
+diff --git a/x86/unittests.cfg b/x86/unittests.cfg
+index 522318d3..b82bbc4e 100644
+--- a/x86/unittests.cfg
++++ b/x86/unittests.cfg
+@@ -324,6 +324,15 @@ qemu_params = -cpu max,+vmx
+ arch = x86_64
+ groups = vmx
  
++# VMX controls is a generic test; however, mode-based execute control
++# aka MBEC is only available on Skylake and above, be specific about
++# the CPU model and test it directly.
++[vmx_controls_test_mbec]
++file = vmx.flat
++extra_params = -cpu Skylake-Server,+vmx,+vmx-mbec -append "vmx_controls_test_mbec"
++arch = x86_64
++groups = vmx
++
+ [ept]
+ file = vmx.flat
+ test_args = "ept_access*"
+diff --git a/x86/vmx.h b/x86/vmx.h
+index 33373bd1..75667ccc 100644
+--- a/x86/vmx.h
++++ b/x86/vmx.h
+@@ -510,6 +510,7 @@ enum Ctrl1 {
+ 	CPU_SHADOW_VMCS		= 1ul << 14,
+ 	CPU_RDSEED		= 1ul << 16,
+ 	CPU_PML                 = 1ul << 17,
++	CPU_MODE_BASED_EPT_EXEC = 1ul << 22,
+ 	CPU_USE_TSC_SCALING	= 1ul << 25,
+ };
+ 
+@@ -842,6 +843,13 @@ static inline bool is_invvpid_type_supported(unsigned long type)
+ 	return ept_vpid.val & (VPID_CAP_INVVPID_ADDR << (type - INVVPID_ADDR));
+ }
+ 
++static inline bool is_mbec_supported(void)
++{
++	return (ctrl_cpu_rev[0].clr & CPU_SECONDARY) &&
++	       (ctrl_cpu_rev[1].clr & CPU_EPT) &&
++	       (ctrl_cpu_rev[1].clr & CPU_MODE_BASED_EPT_EXEC);
++}
++
+ extern u64 *bsp_vmxon_region;
+ extern bool launched;
+ 
+diff --git a/x86/vmx_tests.c b/x86/vmx_tests.c
+index 5ffb80a3..ad7cfe83 100644
+--- a/x86/vmx_tests.c
++++ b/x86/vmx_tests.c
+@@ -4867,6 +4867,69 @@ skip_unrestricted_guest:
+ 	vmcs_write(EPTP, eptp_saved);
+ }
+ 
++/*
++ * Test the dependency between mode-based execute control for EPT (MBEC) and
++ * enable EPT VM-execution controls.
++ *
++ * When MBEC (bit 22 of secondary processor-based VM-execution controls) is enabled,
++ * it allows separate execute permissions for supervisor-mode and user-mode linear
++ * addresses in EPT paging structures. However, per Intel SDM requirement:
++ *
++ * "If the 'mode-based execute control for EPT' VM-execution control is 1,
++ * the 'enable EPT' VM-execution control must also be 1."
++ *
++ * This test validates that VM entry fails when MBEC is enabled without EPT,
++ * and succeeds in all other valid combinations.
++ *
++ * [Intel SDM Vol. 3C, Section 26.6.2, Table 26-7]
++ */
++static void test_mode_based_execute_control(void)
++{
++	u32 primary_saved = vmcs_read(CPU_EXEC_CTRL0);
++	u32 secondary_saved = vmcs_read(CPU_EXEC_CTRL1);
++	u32 primary = primary_saved;
++	u32 secondary = secondary_saved;
++
++	/* Skip test if required VM-execution controls are not supported */
++	if (!is_mbec_supported()) {
++		report_skip("MBEC not supported");
++		return;
++	}
++
++	/* Test case 1: MBEC disabled, EPT disabled - should be valid */
++	primary |= CPU_SECONDARY;
++	vmcs_write(CPU_EXEC_CTRL0, primary);
++	secondary &= ~(CPU_MODE_BASED_EPT_EXEC | CPU_EPT);
++	vmcs_write(CPU_EXEC_CTRL1, secondary);
++	report_prefix_pushf("MBEC disabled, EPT disabled (valid combination)");
++	test_vmx_valid_controls();
++	report_prefix_pop();
++
++	/* Test case 2: MBEC enabled, EPT disabled - should be invalid per SDM */
++	secondary |= CPU_MODE_BASED_EPT_EXEC;
++	vmcs_write(CPU_EXEC_CTRL1, secondary);
++	report_prefix_pushf("MBEC enabled, EPT disabled (invalid combination)");
++	test_vmx_invalid_controls();
++	report_prefix_pop();
++
++	/* Test case 3: MBEC enabled, EPT enabled - should be valid */
++	secondary |= CPU_EPT;
++	setup_dummy_ept();
++	report_prefix_pushf("MBEC enabled, EPT enabled (valid combination)");
++	test_vmx_valid_controls();
++	report_prefix_pop();
++
++	/* Test case 4: MBEC disabled, EPT enabled - should be valid */
++	secondary &= ~CPU_MODE_BASED_EPT_EXEC;
++	vmcs_write(CPU_EXEC_CTRL1, secondary);
++	report_prefix_pushf("MBEC disabled, EPT enabled (valid combination)");
++	test_vmx_valid_controls();
++	report_prefix_pop();
++
++	vmcs_write(CPU_EXEC_CTRL0, primary_saved);
++	vmcs_write(CPU_EXEC_CTRL1, secondary_saved);
++}
++
  /*
-- * Due to limited space in PTEs, the MMIO generation is a 19 bit subset of
-+ * Due to limited space in PTEs, the MMIO generation is an 18 bit subset of
-  * the memslots generation and is derived as follows:
-  *
-- * Bits 0-7 of the MMIO generation are propagated to spte bits 3-10
-- * Bits 8-18 of the MMIO generation are propagated to spte bits 52-62
-+ * Bits 0-6 of the MMIO generation are propagated to spte bits 3-9
-+ * Bits 7-17 of the MMIO generation are propagated to spte bits 52-62
-  *
-  * The KVM_MEMSLOT_GEN_UPDATE_IN_PROGRESS flag is intentionally not included in
-  * the MMIO generation number, as doing so would require stealing a bit from
-@@ -111,7 +111,7 @@ static_assert(!(EPT_SPTE_MMU_WRITABLE & SHADOW_ACC_TRACK_SAVED_MASK));
-  */
+  * If the 'enable PML' VM-execution control is 1, the 'enable EPT'
+  * VM-execution control must also be 1. In addition, the PML address
+@@ -5327,6 +5390,7 @@ static void test_vm_execution_ctls(void)
+ 	test_pml();
+ 	test_vpid();
+ 	test_ept_eptp();
++	test_mode_based_execute_control();
+ 	test_vmx_preemption_timer();
+ }
  
- #define MMIO_SPTE_GEN_LOW_START		3
--#define MMIO_SPTE_GEN_LOW_END		10
-+#define MMIO_SPTE_GEN_LOW_END		9
+@@ -5551,6 +5615,17 @@ static void vmx_controls_test(void)
+ 	test_vm_entry_ctls();
+ }
  
- #define MMIO_SPTE_GEN_HIGH_START	52
- #define MMIO_SPTE_GEN_HIGH_END		62
-@@ -133,7 +133,8 @@ static_assert(!(SPTE_MMU_PRESENT_MASK &
-  * and so they're off-limits for generation; additional checks ensure the mask
-  * doesn't overlap legal PA bits), and bit 63 (carved out for future usage).
-  */
--#define SPTE_MMIO_ALLOWED_MASK (BIT_ULL(63) | GENMASK_ULL(51, 12) | GENMASK_ULL(2, 0))
-+#define SPTE_MMIO_ALLOWED_MASK (BIT_ULL(63) | GENMASK_ULL(51, 12) | \
-+				BIT_ULL(10) | GENMASK_ULL(2, 0))
- static_assert(!(SPTE_MMIO_ALLOWED_MASK &
- 		(SPTE_MMU_PRESENT_MASK | MMIO_SPTE_GEN_LOW_MASK | MMIO_SPTE_GEN_HIGH_MASK)));
- 
-@@ -141,7 +142,7 @@ static_assert(!(SPTE_MMIO_ALLOWED_MASK &
- #define MMIO_SPTE_GEN_HIGH_BITS		(MMIO_SPTE_GEN_HIGH_END - MMIO_SPTE_GEN_HIGH_START + 1)
- 
- /* remember to adjust the comment above as well if you change these */
--static_assert(MMIO_SPTE_GEN_LOW_BITS == 8 && MMIO_SPTE_GEN_HIGH_BITS == 11);
-+static_assert(MMIO_SPTE_GEN_LOW_BITS == 7 && MMIO_SPTE_GEN_HIGH_BITS == 11);
- 
- #define MMIO_SPTE_GEN_LOW_SHIFT		(MMIO_SPTE_GEN_LOW_START - 0)
- #define MMIO_SPTE_GEN_HIGH_SHIFT	(MMIO_SPTE_GEN_HIGH_START - MMIO_SPTE_GEN_LOW_BITS)
++/*
++ * Check that Intel MBEC controls function properly, which is a
++ * Skylake and above feature, and is not supported on older CPUs.
++ */
++static void vmx_controls_test_mbec(void)
++{
++	vmcs_write(GUEST_RFLAGS, 0);
++
++	test_mode_based_execute_control();
++}
++
+ struct apic_reg_virt_config {
+ 	bool apic_register_virtualization;
+ 	bool use_tpr_shadow;
+@@ -11506,6 +11581,7 @@ struct vmx_test vmx_tests[] = {
+ 	TEST(invvpid_test),
+ 	/* VM-entry tests */
+ 	TEST(vmx_controls_test),
++	TEST(vmx_controls_test_mbec),
+ 	TEST(vmx_host_state_area_test),
+ 	TEST(vmx_guest_state_area_test),
+ 	TEST(vmentry_movss_shadow_test),
 -- 
 2.43.0
 
