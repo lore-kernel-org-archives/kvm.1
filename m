@@ -1,96 +1,90 @@
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4118A137932
-	for <kvm@vger.kernel.org>; Wed, 24 Dec 2025 00:13:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 587EB2BAF7
+	for <kvm@vger.kernel.org>; Wed, 24 Dec 2025 00:13:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1766535183; cv=none; b=pHhdvsNp8WdZFdNq1gOZtCQmcbXjR5xshg6onAb7niuGZVwFGS0Qlic4tPqgYUL0HMzYsPgtcYkI41ZAdIChzooQSi8P9MWqZk8jCLg5mBwvLHZHLhjXvEuwfuLN8WfYWSTM1a2HgJrfmdCVv8jhYZaJhyZIh1gaCkr1c+y3AjI=
+	t=1766535184; cv=none; b=KF3z27NNibLOo9q+pC3VyMMDsgGIrwy4l+Ux+vrnHMrtlZpVBSA2SoFTS2GEI9kzpCEM8zOp9pRKJ6zdQlfHeY8p4NyNh2W9pZA88z68MaUjSBy0b3k/jGfzpU/SjZwPIsmXN58cHeTfnIuDdd1kYw9BdyjD16DUdCyFeE3aWtM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1766535183; c=relaxed/simple;
-	bh=SUxMB9io5kUL3hiZuCM9QEc8yZLw0GrSlV7GpF2gspc=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CTMCOk27C07mqcoQev3fdJEIWpouOkT93zotqyUVD72Juy2Gdr4Z2vG4CfsYbUCe9IWabrZGG6QSjUcLgWG6iysQcm3Pm3gS5SZEXtR5AScnTL9F165UyJiMJlvX2mJt4dQn1m8k91vwWhbCcQoz19RXugMJhP3ZpLtkLHsJ+sA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=NMKS1vzf; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=Jds33bok; arc=none smtp.client-ip=170.10.133.124
+	s=arc-20240116; t=1766535184; c=relaxed/simple;
+	bh=fYaLHYmUCZkuTRnEeWO5eq/4i+YwBbxZKhmvbBJEKAQ=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=kI8OCJB3CAyglGxjiwEEm9fvUrxH3klaWc3f1uT1lubud7gefYg+uzhHAs286V0ptXdKlcraEvTAttJHUkkh5HilYiHexPTVzjkdp//vZ2fBaOvG3JPCwHnuBGWImjGTbdsCAwLZ6EopGE+x01948InVzyOFsDvAApHDDRMP9SA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=JtPIc71K; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=cF+f/11I; arc=none smtp.client-ip=170.10.133.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="NMKS1vzf";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="Jds33bok"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="JtPIc71K";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="cF+f/11I"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1766535179;
+	s=mimecast20190719; t=1766535180;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=Cd2rAlHvk2Fc3rUlxPP7c9W8eyWSusr3FNKcOYNwGnk=;
-	b=NMKS1vzfrtsh31CTW0ktQvl7KEif3n3aG51xi+JwWhDM8D2/TlZRyEA1okC/IeL9DPCE9b
-	5lVqsfBAiPX27rOobDCOpBsZwikFWyq8U4+Yx65fKy//wT31Ch7WCQjGH9rkwv4wZY5Tc9
-	IfHmxAwJhWUaYmpiubwSZwlJ4JksVNE=
-Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
- [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=D3w8awz61JbT+kpcuwhPMHcwc/CMTSaTS9NVxMEQYnw=;
+	b=JtPIc71KqrsRA+bdcrIQPvMl7cwz/4JVrHj9GbARMcP06WWZS9jjJkQnhtspU7N8Ehsex/
+	UmtRpmiQgoHdrVBOCfWmrLQ17N0CW3YumLdNpZvJqsdSei1xPkjLcT+7qS618NS23Pi9nD
+	tq3/V2SJzGJA525V5wXQXJmQOv017io=
+Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
+ [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-108-IEY_nD5wOT2bVZS0GGabhQ-1; Tue, 23 Dec 2025 19:12:58 -0500
-X-MC-Unique: IEY_nD5wOT2bVZS0GGabhQ-1
-X-Mimecast-MFC-AGG-ID: IEY_nD5wOT2bVZS0GGabhQ_1766535177
-Received: by mail-wr1-f69.google.com with SMTP id ffacd0b85a97d-43100a07eb1so2867168f8f.3
-        for <kvm@vger.kernel.org>; Tue, 23 Dec 2025 16:12:58 -0800 (PST)
+ us-mta-274-2X1JAfgFNZCd3ssTfr2sAQ-1; Tue, 23 Dec 2025 19:12:53 -0500
+X-MC-Unique: 2X1JAfgFNZCd3ssTfr2sAQ-1
+X-Mimecast-MFC-AGG-ID: 2X1JAfgFNZCd3ssTfr2sAQ_1766535172
+Received: by mail-wm1-f70.google.com with SMTP id 5b1f17b1804b1-47a97b719ccso31115845e9.2
+        for <kvm@vger.kernel.org>; Tue, 23 Dec 2025 16:12:52 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1766535177; x=1767139977; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Cd2rAlHvk2Fc3rUlxPP7c9W8eyWSusr3FNKcOYNwGnk=;
-        b=Jds33bok7nUlvbx3in6cNYI1t3Y/UP3b64r+trS8YhRuZTRPdxuDPvS3c+zTdlgoP/
-         f06T9gAreEMqjiHvbJevRoUeFkyrDArh/7m8FN7m21myh01DTvO8jsXmj2GqQUies7gr
-         hrIpcXJOF2U7ersStViJ2+WEJtsribg1dgDLKU+qRrin4XSUDutcyJLr177FXr8ULYhR
-         0RaWgUmnQgN6T2uvihETJ/BEnG1wVM5fcEaTPxr0rqdxcwfXJraa9TVPnyvSDOcIJIFJ
-         RF7gHBcwMvqWi5kbHo/ruItPqvDl2DGsleEtjNKXLatmzdD665M0MhKYyWcZBpbxc/l2
-         1pNw==
+        d=redhat.com; s=google; t=1766535171; x=1767139971; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=D3w8awz61JbT+kpcuwhPMHcwc/CMTSaTS9NVxMEQYnw=;
+        b=cF+f/11IZgnD/8cGWTh8vGdhfTZKZHMyjSu2ujHd5JC59L21hG2EIlxepqsbOpQCYk
+         tafIhemFm/PzEu+SFPg7rktp9UXjGBX8hAArzBtc+rxpfyC0iJtxLz7STnjhVZQc5Loq
+         yc6J6sHMrQ2ZUBtYut42Qn+GIZaesRMk3GyrEDriswC2NnUjA+Ejv6mVtlMMoFazrvcR
+         DYfHM+TcHWehHK9hcjXQJiSlfyy1MWwiw7if7WX/7WvivYp5hndrbCEmZl3t+8/A4rR8
+         R9jos//HhqPlpC0VxrCuJuhdvfUEKH3jAXeErdGkwBCn9rrIFMEA13SrmKUadtif8FbP
+         TsbA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1766535177; x=1767139977;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=Cd2rAlHvk2Fc3rUlxPP7c9W8eyWSusr3FNKcOYNwGnk=;
-        b=q2Jh/qiockISUMMArzTf5xUZdn16q2V23RqQkGVfJ5gkSz63XNAZltFskNvRdVFizx
-         dyEekpkDe9++f1+Zj5xIwSZvddkjZdix7KKMHJi8Nedn851v9BHwOW1dVBMa6QjQLffr
-         KYuWdENQ9YV3l65R/mW0LxnS9YOl4c5mrB6qaaZG6dkqIuvu+vgSXc1dDmoEGZ23DLs9
-         6OG0fxCMmVEmDzX1VUSvHJdsoSo4OMLlHR65U/hFE7xYyE6Em1uUguJnHa+3nHK76ZS+
-         nLgJQZRoiijY2au6fLgrFMKXQW7qYTSCiVfhqNc3D5lrP4zbl0kB/xV2d3QUfDur6i3K
-         Z6Qw==
-X-Forwarded-Encrypted: i=1; AJvYcCXeBS3qy6slv6ErrjfKA2N3moAPa/hgqv25Mz3tco8jN9Kyzzj8XNisY3Qo2p9UlrlIfA8=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyHgt08+2jHje6qr3AhR29ooyaGoN6JeIK+8Z9WYgSCVOtpFEvZ
-	h1oIn2XqZrDWA2ajiVTiNwCYfqyPHqvIf1DqEOYQZN9N785Lwq/hTdxl+ROblSp92hYvucHtSSq
-	1pdpmr/kZhTN4ZqK2CEeBHLdUFKjk17PxLTlFFOvmmjw618SjG/5LrkhB8XLHTg==
-X-Gm-Gg: AY/fxX45aPQ2KgzfbB5OPeRrzlokEk1TvocaSOuEpO8vFOtOE/KP1OEI4j9v2ngsIJU
-	xAOykplpNLhQ4YHywG7D7vmc8/8tpOpYm9rlIDBC0h51IIqubK3E6jDbFsH7e3oxpGzruLtAUNR
-	GJUwIBCFYwanq3xigd76DfeGvljtQxFNCCPAOuOirTkWiXPZqQc6GxbREIArSdz7q+0IUOC5NSS
-	2vXHhyDSyjBRlelYieoZCKAvOrsAzCP8k6GzS6jJdpJm3zI4sAFQo47uwsufrfwvFq2xS0qwmKZ
-	ralUDALaJ56Lzxk0C2Z2wFbtp02ADoybMQcAbey8rwnSIXTGsb7ombPFFu2uVN5RkYDv/siWbiv
-	F78RaW2wGKaa2QIkpLd4ft5DZKIayBhAkXa0yGRNNYHQRQQBwBrBODkToFPFTYcMPbR6/zN1W5l
-	ecmzMGth+An8RR9+g=
-X-Received: by 2002:a05:600c:628c:b0:47a:7fbf:d5c8 with SMTP id 5b1f17b1804b1-47d1958296bmr142012595e9.26.1766535176818;
-        Tue, 23 Dec 2025 16:12:56 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IH7q/9gwLnCQEkdKpL0Em0GJ2ocZ6ifEAr9yGLRCJjag6irdREePfiliIJO9d7U2xigRdDUJA==
-X-Received: by 2002:a05:600c:628c:b0:47a:7fbf:d5c8 with SMTP id 5b1f17b1804b1-47d1958296bmr142012415e9.26.1766535176377;
-        Tue, 23 Dec 2025 16:12:56 -0800 (PST)
+        d=1e100.net; s=20230601; t=1766535171; x=1767139971;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=D3w8awz61JbT+kpcuwhPMHcwc/CMTSaTS9NVxMEQYnw=;
+        b=CoHB7JfIqL+kf1olQcFC8MeUlGZgJZLPxgW73FgHsSbfzPRa0hux9V6I0e9s1IvRwC
+         gES/tdyquJwpgWTWjpeG8VXMcySWuvU2zvoprUxwiFgSL5/sl062fGdo0yzrrN/9g7Y1
+         7oZI01R8VVoMXbjmcPiF4duIgzZrZCug8i9qXozAX3dXdkIaDw5yD4v7NX8pECzx05eq
+         SYJJAiRIkO/wbHBjYosZtht3sdSTxZZ3BlVYGpg+T/v8ia1cT63bNUUEZndQKj7wJxse
+         gPZpLaesS9ivEpllg/DqUo1pavlo2VlK4YfVZKb7e8mflgWi/Qfk7YHttwv/xWqhs+tL
+         qSgg==
+X-Forwarded-Encrypted: i=1; AJvYcCXq8wmeCu4wLILyU9UPwaMI4gNEUiqQ33jHcSCeY1cCetqBPy2yI9L+WjaGEF3/NW5/vcA=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yzs4uGZRSHfmsZd7r/ybZst7i8Fo864CyIl2peepbl3Qb73cHm7
+	oX1Tnk4jlqdxEN3JEpd5IwVWYRFZ4Yj/faSOqXLqEdaFEK3ix3G+ZgLUBKco/S6yyQtyhbdyDgu
+	Lfvp2BtDVHDB4hqesRiNKF1xeYIcwgtA58M8VzXKntnPwiUi8h/fw9g==
+X-Gm-Gg: AY/fxX4Gg58A9AiD0SOodk6QPT7kI8pgOgypHK4G++1WptflWB9nQn3uir+9fJm0fy5
+	qZl2mOA1g82mC148kYHb+kRnW1dkRXZeO6picLuYR0xQckPzwDwv2UjQnSYtU8RliB/ig+6R7wA
+	yOr+SwTT65OU6F8J2VcgGmHbHJV2l+D5LWqmQHEh1tM4LjRen9lJkbjr5qYLpI2YYViPx1IzFZf
+	uxotMl5pw2sqHT5WT+uyQtYI/uFm36yp3BcUfWDRJGBzi7vRJk84UQwsHIUNJ4MBXwtkqDIO14O
+	EDUQQgo5Lvx8Mlh6Ze5qWS6m2SWXXqS6E4+EIZ2xYd16AE0kq8w+j9RGPpgE5QXnryQRX/bcixx
+	DJKCDVmY9K+kfIMzQcrdswefjNG/8Bl0UGGRtlSZ14h1OQbwx0goHqzFVz6g3l92LG8AgGuUORE
+	0NHdR2g5AsIQnvpOI=
+X-Received: by 2002:a05:600c:1550:b0:477:9fcf:3ff9 with SMTP id 5b1f17b1804b1-47d19589575mr148336045e9.27.1766535171600;
+        Tue, 23 Dec 2025 16:12:51 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IHQwog6xqznJWl5aO/kzVu6RKVZ5oUdGcQc1rlrp6C+FbHczmkno5KYtI87pYv3rPb69yQ0qQ==
+X-Received: by 2002:a05:600c:1550:b0:477:9fcf:3ff9 with SMTP id 5b1f17b1804b1-47d19589575mr148335945e9.27.1766535171234;
+        Tue, 23 Dec 2025 16:12:51 -0800 (PST)
 Received: from [192.168.10.48] ([151.95.145.106])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-4324eaa0908sm30285139f8f.31.2025.12.23.16.12.54
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-47d193cbc0bsm267406775e9.11.2025.12.23.16.12.50
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 23 Dec 2025 16:12:54 -0800 (PST)
+        Tue, 23 Dec 2025 16:12:50 -0800 (PST)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: linux-kernel@vger.kernel.org,
 	kvm@vger.kernel.org
 Cc: seanjc@google.com,
-	x86@kernel.org,
-	stable@vger.kernel.org
-Subject: [PATCH 2/5] x86, fpu: separate fpstate->xfd and guest XFD
-Date: Wed, 24 Dec 2025 01:12:46 +0100
-Message-ID: <20251224001249.1041934-3-pbonzini@redhat.com>
+	x86@kernel.org
+Subject: [PATCH 0/5] x86, fpu/kvm: fix crash with AMX
+Date: Wed, 24 Dec 2025 01:12:44 +0100
+Message-ID: <20251224001249.1041934-1-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251224001249.1041934-1-pbonzini@redhat.com>
-References: <20251224001249.1041934-1-pbonzini@redhat.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -99,183 +93,50 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Until now, fpstate->xfd has acted as both the guest value and the value
-that the host used when executing XSAVES and XRSTORS.  This is wrong: the
-data in the guest's FPU might not be initialized even if a bit is
-set in XFD and, when that happens, XRSTORing the guest FPU will fail
-with a #NM exception *on the host*.
+Fix a possible host panic, due to an unexpected #NM, when a KVM guest
+is using AMX features.
 
-Instead, store the value of XFD together with XFD_ERR in struct
-fpu_guest; it will still be synchronized in fpu_load_guest_fpstate(), but
-the XRSTOR(S) operation will be able to load any valid state of the FPU
-independent of the XFD value.
+The guest's XFD value, which is stored in fpstate->xfd, is used for both
+guest execution and host XSAVE operations.  However, the guest-configured
+XFD setting can disable features that the host needs enabled to successfully
+XRSTOR the guest FPU state.
 
-Cc: stable@vger.kernel.org
-Fixes: 820a6ee944e7 ("kvm: x86: Add emulation for IA32_XFD", 2022-01-14)
-Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
----
- arch/x86/include/asm/fpu/api.h   |  6 ++----
- arch/x86/include/asm/fpu/types.h |  7 +++++++
- arch/x86/kernel/fpu/core.c       | 19 ++++---------------
- arch/x86/kernel/fpu/xstate.h     | 18 ++++++++++--------
- arch/x86/kvm/x86.c               |  6 +++---
- 5 files changed, 26 insertions(+), 30 deletions(-)
+The first patch replaces inline code in vcpu_enter_guest() with a new
+function exported by kernel/fpu.  The new function is similar to
+fpregs_lock_and_load() but operates with preemption disabled and
+also restores the extra state (currently xfd_err) in struct guest_fpu.
 
-diff --git a/arch/x86/include/asm/fpu/api.h b/arch/x86/include/asm/fpu/api.h
-index 0820b2621416..ee9ba06b7dbe 100644
---- a/arch/x86/include/asm/fpu/api.h
-+++ b/arch/x86/include/asm/fpu/api.h
-@@ -152,11 +152,9 @@ extern int fpu_swap_kvm_fpstate(struct fpu_guest *gfpu, bool enter_guest);
- extern int fpu_enable_guest_xfd_features(struct fpu_guest *guest_fpu, u64 xfeatures);
- 
- #ifdef CONFIG_X86_64
--extern void fpu_update_guest_xfd(struct fpu_guest *guest_fpu, u64 xfd);
--extern void fpu_sync_guest_vmexit_xfd_state(void);
-+extern void fpu_sync_guest_vmexit_xfd_state(struct fpu_guest *gfpu);
- #else
--static inline void fpu_update_guest_xfd(struct fpu_guest *guest_fpu, u64 xfd) { }
--static inline void fpu_sync_guest_vmexit_xfd_state(void) { }
-+static inline void fpu_sync_guest_vmexit_xfd_state(struct fpu_guest *gfpu) { }
- #endif
- 
- extern void fpu_copy_guest_fpstate_to_uabi(struct fpu_guest *gfpu, void *buf,
-diff --git a/arch/x86/include/asm/fpu/types.h b/arch/x86/include/asm/fpu/types.h
-index 93e99d2583d6..7abe231e2ffe 100644
---- a/arch/x86/include/asm/fpu/types.h
-+++ b/arch/x86/include/asm/fpu/types.h
-@@ -545,6 +545,13 @@ struct fpu_guest {
- 	 */
- 	u64				xfeatures;
- 
-+	/*
-+	 * @xfd:			Save the guest value.  Note that this is
-+	 *				*not* fpstate->xfd, which is the value
-+	 *				the host uses when doing XSAVE/XRSTOR.
-+	 */
-+	u64				xfd;
-+
- 	/*
- 	 * @xfd_err:			Save the guest value.
- 	 */
-diff --git a/arch/x86/kernel/fpu/core.c b/arch/x86/kernel/fpu/core.c
-index a480fa8c65d5..ff17c96d290a 100644
---- a/arch/x86/kernel/fpu/core.c
-+++ b/arch/x86/kernel/fpu/core.c
-@@ -317,16 +317,6 @@ int fpu_enable_guest_xfd_features(struct fpu_guest *guest_fpu, u64 xfeatures)
- EXPORT_SYMBOL_FOR_KVM(fpu_enable_guest_xfd_features);
- 
- #ifdef CONFIG_X86_64
--void fpu_update_guest_xfd(struct fpu_guest *guest_fpu, u64 xfd)
--{
--	fpregs_lock();
--	guest_fpu->fpstate->xfd = xfd;
--	if (guest_fpu->fpstate->in_use)
--		xfd_update_state(guest_fpu->fpstate);
--	fpregs_unlock();
--}
--EXPORT_SYMBOL_FOR_KVM(fpu_update_guest_xfd);
--
- /**
-  * fpu_sync_guest_vmexit_xfd_state - Synchronize XFD MSR and software state
-  *
-@@ -339,14 +329,12 @@ EXPORT_SYMBOL_FOR_KVM(fpu_update_guest_xfd);
-  * Note: It can be invoked unconditionally even when write emulation is
-  * enabled for the price of a then pointless MSR read.
-  */
--void fpu_sync_guest_vmexit_xfd_state(void)
-+void fpu_sync_guest_vmexit_xfd_state(struct fpu_guest *gfpu)
- {
--	struct fpstate *fpstate = x86_task_fpu(current)->fpstate;
--
- 	lockdep_assert_irqs_disabled();
- 	if (fpu_state_size_dynamic()) {
--		rdmsrq(MSR_IA32_XFD, fpstate->xfd);
--		__this_cpu_write(xfd_state, fpstate->xfd);
-+		rdmsrq(MSR_IA32_XFD, gfpu->xfd);
-+		__this_cpu_write(xfd_state, gfpu->xfd);
- 	}
- }
- EXPORT_SYMBOL_FOR_KVM(fpu_sync_guest_vmexit_xfd_state);
-@@ -890,6 +878,7 @@ void fpu_load_guest_fpstate(struct fpu_guest *gfpu)
- 		fpregs_restore_userregs();
- 
- 	fpregs_assert_state_consistent();
-+	xfd_set_state(gfpu->xfd);
- 	if (gfpu->xfd_err)
- 		wrmsrq(MSR_IA32_XFD_ERR, gfpu->xfd_err);
- }
-diff --git a/arch/x86/kernel/fpu/xstate.h b/arch/x86/kernel/fpu/xstate.h
-index 52ce19289989..c0ce05bee637 100644
---- a/arch/x86/kernel/fpu/xstate.h
-+++ b/arch/x86/kernel/fpu/xstate.h
-@@ -180,26 +180,28 @@ static inline void xfd_validate_state(struct fpstate *fpstate, u64 mask, bool rs
- #endif
- 
- #ifdef CONFIG_X86_64
--static inline void xfd_set_state(u64 xfd)
-+static inline void __xfd_set_state(u64 xfd)
- {
- 	wrmsrq(MSR_IA32_XFD, xfd);
- 	__this_cpu_write(xfd_state, xfd);
- }
- 
-+static inline void xfd_set_state(u64 xfd)
-+{
-+	if (__this_cpu_read(xfd_state) != xfd)
-+		__xfd_set_state(xfd);
-+}
-+
- static inline void xfd_update_state(struct fpstate *fpstate)
- {
--	if (fpu_state_size_dynamic()) {
--		u64 xfd = fpstate->xfd;
--
--		if (__this_cpu_read(xfd_state) != xfd)
--			xfd_set_state(xfd);
--	}
-+	if (fpu_state_size_dynamic())
-+		xfd_set_state(fpstate->xfd);
- }
- 
- extern int __xfd_enable_feature(u64 which, struct fpu_guest *guest_fpu);
- #else
- static inline void xfd_set_state(u64 xfd) { }
--
-+static inline void __xfd_set_state(u64 xfd) { }
- static inline void xfd_update_state(struct fpstate *fpstate) { }
- 
- static inline int __xfd_enable_feature(u64 which, struct fpu_guest *guest_fpu) {
-diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
-index 01d95192dfc5..56fd082859bc 100644
---- a/arch/x86/kvm/x86.c
-+++ b/arch/x86/kvm/x86.c
-@@ -4261,7 +4261,7 @@ int kvm_set_msr_common(struct kvm_vcpu *vcpu, struct msr_data *msr_info)
- 		if (data & ~kvm_guest_supported_xfd(vcpu))
- 			return 1;
- 
--		fpu_update_guest_xfd(&vcpu->arch.guest_fpu, data);
-+		vcpu->arch.guest_fpu.xfd = data;
- 		break;
- 	case MSR_IA32_XFD_ERR:
- 		if (!msr_info->host_initiated &&
-@@ -4617,7 +4617,7 @@ int kvm_get_msr_common(struct kvm_vcpu *vcpu, struct msr_data *msr_info)
- 		    !guest_cpu_cap_has(vcpu, X86_FEATURE_XFD))
- 			return 1;
- 
--		msr_info->data = vcpu->arch.guest_fpu.fpstate->xfd;
-+		msr_info->data = vcpu->arch.guest_fpu.xfd;
- 		break;
- 	case MSR_IA32_XFD_ERR:
- 		if (!msr_info->host_initiated &&
-@@ -11405,7 +11405,7 @@ static int vcpu_enter_guest(struct kvm_vcpu *vcpu)
- 	 * in #NM irqoff handler).
- 	 */
- 	if (vcpu->arch.xfd_no_write_intercept)
--		fpu_sync_guest_vmexit_xfd_state();
-+		fpu_sync_guest_vmexit_xfd_state(&vcpu->arch.guest_fpu);
- 
- 	kvm_x86_call(handle_exit_irqoff)(vcpu);
- 
+The second patch then introduces a new xfd field in struct guest_fpu,
+so that the guest's XFD setting can be swapped while leaving the host
+value untouched in fpstate->xfd.
+
+Patches 3 and 4 introduce a test.
+
+Patch 5 makes KVM use fpregs_lock_and_load(), exporting it in place of
+two lower-level functions whose other uses are now gone.
+
+Reviews and acks are welcome (this could go in through either
+the x86 or KVM trees).
+
+Paolo
+
+
+Paolo Bonzini (5):
+  x86, fpu: introduce fpu_load_guest_fpstate()
+  x86, fpu: separate fpstate->xfd and guest XFD
+  selftests: kvm: renumber some sync points in amx_test
+  selftests, kvm: try getting XFD and XSAVE state out of sync
+  KVM: x86: kvm_fpu_get() is fpregs_lock_and_load()
+
+ arch/x86/include/asm/fpu/api.h             |  7 ++--
+ arch/x86/include/asm/fpu/types.h           |  7 ++++
+ arch/x86/kernel/fpu/core.c                 | 38 ++++++++++-------
+ arch/x86/kernel/fpu/xstate.h               | 18 ++++----
+ arch/x86/kvm/fpu.h                         |  6 +--
+ arch/x86/kvm/x86.c                         | 14 ++-----
+ tools/testing/selftests/kvm/x86/amx_test.c | 49 +++++++++++++++-------
+ 7 files changed, 82 insertions(+), 57 deletions(-)
+
 -- 
 2.52.0
 
