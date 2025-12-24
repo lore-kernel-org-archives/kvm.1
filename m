@@ -1,239 +1,115 @@
-Received: from mail-pf1-f180.google.com (mail-pf1-f180.google.com [209.85.210.180])
+Received: from mail-pj1-f73.google.com (mail-pj1-f73.google.com [209.85.216.73])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F90E2882B2
-	for <kvm@vger.kernel.org>; Wed, 24 Dec 2025 00:29:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.180
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A0023254849
+	for <kvm@vger.kernel.org>; Wed, 24 Dec 2025 01:43:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.73
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1766536157; cv=none; b=nJshMoLr1aJ4+nhdI/LgQ8kA5BI4hq1Ou+iq7nT3q6no/29Ex9900HsTnEzRUe+5d45GL32ALUqGOxD+rwbsZ1+Fus/m7Pt2MML3AmFIdJ1cd7Gf7WsH0AEZr7m74qPXEeGStTyO59WD20riFy95DS4Q2WHTh8zYC/a6xSHuUrk=
+	t=1766540609; cv=none; b=KFLIAr40BA2eDcY7a2zf/FwMJf1/tBiTcjFC9ObR4zNL76JZGpJ0MSYQ7R3cHeod7MrKCoPOfYvVzbh2q99uD7aeXsC9U8mh/BhUWatTbAcZmQ9vAXZ/VaFNfVjO2QEOqPYKjIQAw1r3vHhhsBJJBAK5gcdZvpAc1cK5P5LgS04=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1766536157; c=relaxed/simple;
-	bh=ucIpPosqEiSMdZEyChVr+4AmgFcQlUgInXBmbAzH57o=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=kjPHIyl6Ggj4DOGiBDrEiN9wVQh+ZKvWoCulRSeZc5MJ8t+RYsrHOUOZO6IK6fBSvEl8l+SDq6izxd3uQOMbS9gVjUEro3wgaGC2w2msZ2uu4RxVS01OtsaVQRWZNvVfTOov1V0qV7GJyHcS7q80OI2xjryiEksopxFLFeshquE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=YCkClzuW; arc=none smtp.client-ip=209.85.210.180
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1766540609; c=relaxed/simple;
+	bh=cWqFyWyoh0aoEMSSvb101uz+ubfMW/xxbIhBEF773SM=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=iXTwoARkHicvKchqS35zcYyoOLNxm9nc5mnaZKHVktRZewbcKNf9GnbtsR4amBxFAbqz3/6mfXNPbMIyTKbEDsaO5+WNfG+avVmhb6Xc5g03gNcPaWVo+xTtd95SRoDGVJ1F1ej1nGuFqDfmQ3avHwu1kFxE0WSn7+MGqw6bLYo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--chengkev.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=p3NJjLTd; arc=none smtp.client-ip=209.85.216.73
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--chengkev.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="YCkClzuW"
-Received: by mail-pf1-f180.google.com with SMTP id d2e1a72fcca58-7f121c00dedso7350519b3a.0
-        for <kvm@vger.kernel.org>; Tue, 23 Dec 2025 16:29:11 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="p3NJjLTd"
+Received: by mail-pj1-f73.google.com with SMTP id 98e67ed59e1d1-34ab8693a2cso15100891a91.0
+        for <kvm@vger.kernel.org>; Tue, 23 Dec 2025 17:43:27 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1766536150; x=1767140950; darn=vger.kernel.org;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=sNxNvDBVFHGq590i7LC9o7diq8A3tmTtfQIAa+Qj48w=;
-        b=YCkClzuWa0dohbxJhDpKDpGU2nayGLYWt65Q1nq1mCRXFmqaSICDMPkK79PQLZNxyQ
-         XgD9fTSB9Y2xXyP7j2B6VeWey7Vy8+ntwCChKmB/WaenrUiN0pPORSBbZaWVW0s7dC88
-         aDc+mOIDxd4GAzcqGRuy9pC8IXd/oJ02p1v1wGkr/wBcwtcpMsZcZ38u6BxbJ1L+SpmE
-         ZctlakSEVjYfduvH7lXnWh7+1vIWxNBkW9j0jIV+1KBoyk4+7GquI3y/uXIDVLB1Mw1S
-         ZVPeWHwRAATxDT80pWTY3r8E+Qdu3PHhn3Q7bOcWOdPTv1/fAX2MKQzR/PAupqiWW3X7
-         SuJw==
+        d=google.com; s=20230601; t=1766540607; x=1767145407; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=shVBRO0tg4IZht2oazeN9bflZfY3SScEvXNjAqoYZi8=;
+        b=p3NJjLTd+lDNrCxuVgtYQvoFZKzA3gGow8WQaP3471GJUdJUoYiMXd/Irf+S3lfOd7
+         O1n1p9QNaqpLmDwMM2zly+5p0sFzgRtHSbw6R03drxyK2kpNc3GYoOJ9CK6td06C9Hgm
+         NDuyZ/zkqbHamItemzU4zEBq2Vx0DLHBtBUm/9Dbsr3jRnwXAzwMwrI8CtV/FAKtnyvj
+         leLylLdoAS9O32rP35Zyptz12agX1BHXeNoauV76X42GLE/ewnXi8DX/JXcwKMmuC9nJ
+         G7xA+onar3Y0gJx5I0hsx3rGLhgZIc9/ydoj//M2SaoaCOu33+HY3Aa6TLRtl+DZyNDh
+         dRsw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1766536150; x=1767140950;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:x-gm-gg:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=sNxNvDBVFHGq590i7LC9o7diq8A3tmTtfQIAa+Qj48w=;
-        b=nCe3AbT0K0oAZ/8ntdys+o9lStejdCiACLVFHsBOVREj8dABc9r5KRzQT0cFsNBLvA
-         ffB44m5oDE7VKRxt3zeCcZQwkWH+zVAenT+4l/NlJlLZqg8HY/VBqcWwBtwRPNWQB7O7
-         tB2lmEfGP+smIfmTVFda+sAJ/KM9EKLRNOJGZrpouIUKjtxl427ib9Yas6XtrryRaxXg
-         6Jb5ToQ4rd+YKDKlUb+hK0CuyyuIdLuwnv578IrquqrsgpQN75X7NwCp7XD/NEiZaXWT
-         EVOW2JhSq9C9QlAPYf+UKgjEoyWv0VTQAEUqYBp2zYDutI3tCyZybEzOxweEe/v+2s6n
-         USQA==
-X-Forwarded-Encrypted: i=1; AJvYcCVeVUz54olcmfJ13ed9fFHXAkbzLVu6au2g8Xo0dXUU1Zu+GJ68O48KeW1G7SKDABTubkU=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzXYgMcS7BB2MlnlRd+C7s5sIr0hU8qpiM+ln77NLMKRKVxKqdX
-	SvKFuNpMamEPA/tyoyJL1czE36pDzXh2CCTkjWLxqCzuSvJnGGuoTv5qiFHx3Q==
-X-Gm-Gg: AY/fxX6olJdYjKjgzywKhY3AYwLRWiyHn2Mz6Sk+4kH5seZYiJMjr9Kt2KAQVvmTG+R
-	HTp4Ttc3JmnJFtQocRAv7Zjjli+4P1LaP2VCBrcTVG6/3RhO+LOS6nHVHWKcCStb+eHdv0ltTob
-	nYXVhTXLfxiIIuhLwyaacEhDEVD2m6T+cbwQzuMP4yqGA1gK/q5QAjk3O810LVqHq/2c6TBJw+k
-	KkOW0r4CqBOwWl722njpKN9HrvOz9wdTcqDc8BAq9eS7Eprm1J5t3lCIuau+f9MHLHWsP5nv3cW
-	39eusOSnlCIYcoVvi4NXvA7dGhrmmaM4Le28UgXGBZFarz0zTe19BpLh5bhqrXFBtFh/65cxEcq
-	OKERAif84JhW5d4wy7JQUyl9MueGaNTW5cD0WVcfQZUfP48jpEwKkQMSt5FhWBrhhyxNMdUtzTb
-	oP0XySJKblvbwnOdCbijYD
-X-Google-Smtp-Source: AGHT+IGKtnBjY8qVMQri7rK2UM9kYsU1JWM0jsDUq4zxMWO7Sx0v5+rbDtIzGBXE3bX4EOFk1Fr9Zg==
-X-Received: by 2002:a05:6a00:e11:b0:7b8:ac7f:5969 with SMTP id d2e1a72fcca58-7ff646f92f6mr15898637b3a.4.1766536149791;
-        Tue, 23 Dec 2025 16:29:09 -0800 (PST)
-Received: from localhost ([2a03:2880:2ff:71::])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-7ff7e48cea1sm15118831b3a.45.2025.12.23.16.29.09
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 23 Dec 2025 16:29:09 -0800 (PST)
-From: Bobby Eshleman <bobbyeshleman@gmail.com>
-Date: Tue, 23 Dec 2025 16:28:47 -0800
-Subject: [PATCH RFC net-next v13 13/13] selftests/vsock: add tests for
- namespace deletion
+        d=1e100.net; s=20230601; t=1766540607; x=1767145407;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=shVBRO0tg4IZht2oazeN9bflZfY3SScEvXNjAqoYZi8=;
+        b=wDKHcrx69KOA27+zs11/a3AAkZX6mCuVJ3opCorARpLQsVKYZpFbRLMS+x4+/95XSO
+         3gotr0elIRcMdG/SxvDyyheL8Hxod03/xpVemdx9ebBFVxg+HX+yh0n/+WCyg+LpItDf
+         tAUJ6sh4Nlg57tBfe8ntLg/ZuivPWeanFM/j8q3bSWHREPyRXZjsuJ5HsobkrVTmJcys
+         M4eX3M1bx+zkO5JD9fykTylPFQhggvZ1KFQCzpcnfs/Ur8Guf43fy6ehBDfC9Xx1jMgR
+         q4P3qxgPlWRKbYu4cya9tVjmCoCj//ARvy6p4OC1uReMfkS8CdapEODWd+0w1ezKqx5m
+         toRA==
+X-Gm-Message-State: AOJu0Yx951mS97wEvr5OFnqCQFO/fSw3u1PqeJewgv4DP8kAa5XdC+l5
+	AjELyifXf1JPnsfjRO8u83q7lV7Qe1jSFyyr24mTAuXXVOP8cW7FgJR7POUezxLnlConijGvC8b
+	+xFY80CoZhM46lBmiwdtg9M0n+Mb/+Wnl4jVpJb4a6lmpl8P71hCkOqqQYMq9AVd5r1EOJW/TjF
+	UsNynM0jPkvVb9xrL82Si5jnR2Eq98dfqFGVxE9TFPkV0=
+X-Google-Smtp-Source: AGHT+IHWqE4oawu3zcvN9sxzHfJ831RswugVhDLvDTOz63fz+DElsSYgVC+FwnX3psoyBsd5yLSajNZbfAbUTA==
+X-Received: from pjcc16.prod.google.com ([2002:a17:90b:5750:b0:340:6b70:821e])
+ (user=chengkev job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a17:90b:28cf:b0:339:ec9c:b275 with SMTP id 98e67ed59e1d1-34e92121d91mr14090691a91.6.1766540606857;
+ Tue, 23 Dec 2025 17:43:26 -0800 (PST)
+Date: Wed, 24 Dec 2025 01:43:22 +0000
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20251223-vsock-vmtest-v13-13-9d6db8e7c80b@meta.com>
-References: <20251223-vsock-vmtest-v13-0-9d6db8e7c80b@meta.com>
-In-Reply-To: <20251223-vsock-vmtest-v13-0-9d6db8e7c80b@meta.com>
-To: Stefano Garzarella <sgarzare@redhat.com>, 
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
- Simon Horman <horms@kernel.org>, Stefan Hajnoczi <stefanha@redhat.com>, 
- "Michael S. Tsirkin" <mst@redhat.com>, Jason Wang <jasowang@redhat.com>, 
- =?utf-8?q?Eugenio_P=C3=A9rez?= <eperezma@redhat.com>, 
- Xuan Zhuo <xuanzhuo@linux.alibaba.com>, 
- "K. Y. Srinivasan" <kys@microsoft.com>, 
- Haiyang Zhang <haiyangz@microsoft.com>, Wei Liu <wei.liu@kernel.org>, 
- Dexuan Cui <decui@microsoft.com>, Bryan Tan <bryan-bt.tan@broadcom.com>, 
- Vishnu Dasa <vishnu.dasa@broadcom.com>, 
- Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>, 
- Shuah Khan <shuah@kernel.org>, Long Li <longli@microsoft.com>
-Cc: linux-kernel@vger.kernel.org, virtualization@lists.linux.dev, 
- netdev@vger.kernel.org, kvm@vger.kernel.org, linux-hyperv@vger.kernel.org, 
- linux-kselftest@vger.kernel.org, berrange@redhat.com, 
- Sargun Dhillon <sargun@sargun.me>, Bobby Eshleman <bobbyeshleman@gmail.com>, 
- Bobby Eshleman <bobbyeshleman@meta.com>
-X-Mailer: b4 0.14.3
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.52.0.351.gbe84eed79e-goog
+Message-ID: <20251224014324.1307211-1-chengkev@google.com>
+Subject: [kvm-unit-tests PATCH v3 0/2] x86/svm: Add testing for L1 intercept bug
+From: Kevin Cheng <chengkev@google.com>
+To: kvm@vger.kernel.org
+Cc: yosryahmed@google.com, andrew.jones@linux.dev, thuth@redhat.com, 
+	pbonzini@redhat.com, seanjc@google.com, Kevin Cheng <chengkev@google.com>
+Content-Type: text/plain; charset="UTF-8"
 
-From: Bobby Eshleman <bobbyeshleman@meta.com>
+If a feature is not advertised to L1, L1 intercepts for instructions
+controlled by this feature should be ignored. Currently, the added test
+fails due to a bug in nested vm exit handling where vmcb12 intercepts
+are checked before vmcb02 intercepts, causing the #UD exception to never
+be injected into L2 if the L1 intercept is set. This is fixed in [0]
 
-Add tests that validate vsock sockets are resilient to deleting
-namespaces. The vsock sockets should still function normally.
+The first patch just adds the missing intercepts needed for testing and
+restructures the vmcb_control_area struct to make adding the missing
+intercepts less ugly. The second patch adds the test which disables all
+relevant features that have available instruction intercepts, and checks
+that the #UD exception is correctly delivered despite the L1 intercept
+being set.
 
-The function check_ns_delete_doesnt_break_connection() is added to
-re-use the step-by-step logic of 1) setup connections, 2) delete ns,
-3) check that the connections are still ok.
+[0] https://lore.kernel.org/all/20251205070630.4013452-1-chengkev@google.com/
 
-Signed-off-by: Bobby Eshleman <bobbyeshleman@meta.com>
----
-Changes in v13:
-- remove tests that change the mode after socket creation (this is not
-  supported behavior now and the immutability property is tested in other
-  tests)
-- remove "change_mode" behavior of
-  check_ns_changes_dont_break_connection() and rename to
-  check_ns_delete_doesnt_break_connection() because we only need to test
-  namespace deletion (other tests confirm that the mode cannot change)
+v2 -> v3:
+  - Added assertions to unsupported instructions test to verify that CPU
+    does not support features enabling tested instructions [Yosry Ahmed]
+  - Added some comments [Yosry Ahmed]
+  - Changed insn_invpcid() into assembly [Yosry Ahmed]
+  - Added a check to the unsupported instruction test to ensure that
+    L1's vmcb is not modified by KVM [Yosry Ahmed]
+  - Redacted reviewed-by tag for 2nd patch in series. I mistakingly
+    added that
 
-Changes in v11:
-- remove pipefile (Stefano)
+v2: https://lore.kernel.org/all/20251215210026.2422155-1-chengkev@google.com/
 
-Changes in v9:
-- more consistent shell style
-- clarify -u usage comment for pipefile
----
- tools/testing/selftests/vsock/vmtest.sh | 84 +++++++++++++++++++++++++++++++++
- 1 file changed, 84 insertions(+)
+v1 -> v2:
+  - Added save/restore helpers for all intercepts as suggested by Yosry
+  - Reuse invpcid_safe() for added test as suggested by Yosry
+  - Include '-skinit' in unittests.cfg for added test target as pointed
+    out by Yosry
 
-diff --git a/tools/testing/selftests/vsock/vmtest.sh b/tools/testing/selftests/vsock/vmtest.sh
-index a9eaf37bc31b..dc8dbe74a6d0 100755
---- a/tools/testing/selftests/vsock/vmtest.sh
-+++ b/tools/testing/selftests/vsock/vmtest.sh
-@@ -68,6 +68,9 @@ readonly TEST_NAMES=(
- 	ns_same_local_loopback_ok
- 	ns_same_local_host_connect_to_local_vm_ok
- 	ns_same_local_vm_connect_to_local_host_ok
-+	ns_delete_vm_ok
-+	ns_delete_host_ok
-+	ns_delete_both_ok
- )
- readonly TEST_DESCS=(
- 	# vm_server_host_client
-@@ -135,6 +138,15 @@ readonly TEST_DESCS=(
- 
- 	# ns_same_local_vm_connect_to_local_host_ok
- 	"Run vsock_test client in VM in a local ns with server in same ns."
-+
-+	# ns_delete_vm_ok
-+	"Check that deleting the VM's namespace does not break the socket connection"
-+
-+	# ns_delete_host_ok
-+	"Check that deleting the host's namespace does not break the socket connection"
-+
-+	# ns_delete_both_ok
-+	"Check that deleting the VM and host's namespaces does not break the socket connection"
- )
- 
- readonly USE_SHARED_VM=(
-@@ -1287,6 +1299,78 @@ test_vm_loopback() {
- 	return "${KSFT_PASS}"
- }
- 
-+check_ns_delete_doesnt_break_connection() {
-+	local pipefile pidfile outfile
-+	local ns0="global0"
-+	local ns1="global1"
-+	local port=12345
-+	local pids=()
-+	local rc=0
-+
-+	init_namespaces
-+
-+	pidfile="$(create_pidfile)"
-+	if ! vm_start "${pidfile}" "${ns0}"; then
-+		return "${KSFT_FAIL}"
-+	fi
-+	vm_wait_for_ssh "${ns0}"
-+
-+	outfile=$(mktemp)
-+	vm_ssh "${ns0}" -- \
-+		socat VSOCK-LISTEN:"${port}",fork STDOUT > "${outfile}" 2>/dev/null &
-+	pids+=($!)
-+	vm_wait_for_listener "${ns0}" "${port}" "vsock"
-+
-+	# We use a pipe here so that we can echo into the pipe instead of using
-+	# socat and a unix socket file. We just need a name for the pipe (not a
-+	# regular file) so use -u.
-+	pipefile=$(mktemp -u /tmp/vmtest_pipe_XXXX)
-+	ip netns exec "${ns1}" \
-+		socat PIPE:"${pipefile}" VSOCK-CONNECT:"${VSOCK_CID}":"${port}" &
-+	pids+=($!)
-+
-+	timeout "${WAIT_PERIOD}" \
-+		bash -c 'while [[ ! -e '"${pipefile}"' ]]; do sleep 1; done; exit 0'
-+
-+	if [[ "$1" == "vm" ]]; then
-+		ip netns del "${ns0}"
-+	elif [[ "$1" == "host" ]]; then
-+		ip netns del "${ns1}"
-+	elif [[ "$1" == "both" ]]; then
-+		ip netns del "${ns0}"
-+		ip netns del "${ns1}"
-+	fi
-+
-+	echo "TEST" > "${pipefile}"
-+
-+	timeout "${WAIT_PERIOD}" \
-+		bash -c 'while [[ ! -s '"${outfile}"' ]]; do sleep 1; done; exit 0'
-+
-+	if grep -q "TEST" "${outfile}"; then
-+		rc="${KSFT_PASS}"
-+	else
-+		rc="${KSFT_FAIL}"
-+	fi
-+
-+	terminate_pidfiles "${pidfile}"
-+	terminate_pids "${pids[@]}"
-+	rm -f "${outfile}" "${pipefile}"
-+
-+	return "${rc}"
-+}
-+
-+test_ns_delete_vm_ok() {
-+	check_ns_delete_doesnt_break_connection "vm"
-+}
-+
-+test_ns_delete_host_ok() {
-+	check_ns_delete_doesnt_break_connection "host"
-+}
-+
-+test_ns_delete_both_ok() {
-+	check_ns_delete_doesnt_break_connection "both"
-+}
-+
- shared_vm_test() {
- 	local tname
- 
+v1: https://lore.kernel.org/all/20251205081448.4062096-1-chengkev@google.com/
 
--- 
-2.47.3
+Kevin Cheng (2):
+  x86/svm: Add missing svm intercepts
+  x86/svm: Add unsupported instruction intercept test
+
+ lib/x86/processor.h |   1 +
+ x86/svm.c           |  18 +++-
+ x86/svm.h           |  89 ++++++++++++++++--
+ x86/svm_tests.c     | 224 +++++++++++++++++++++++++++++++-------------
+ x86/unittests.cfg   |  11 ++-
+ 5 files changed, 262 insertions(+), 81 deletions(-)
+
+--
+2.52.0.351.gbe84eed79e-goog
 
