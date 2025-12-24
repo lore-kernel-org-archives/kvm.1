@@ -1,159 +1,279 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f173.google.com (mail-pf1-f173.google.com [209.85.210.173])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C7C018DB26
-	for <kvm@vger.kernel.org>; Wed, 24 Dec 2025 00:13:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D0591E7C03
+	for <kvm@vger.kernel.org>; Wed, 24 Dec 2025 00:28:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1766535190; cv=none; b=qGuT6bJGARkegQiIiQDmhcruoTTfE/AeyCvh0mHWUrf8Dt1W/El/JP1C9gepGhFqJfFyqvr4p5tr2y+APUI1mF5g1MVgK4H/rNDVwwbKNGQH2jhSJa97Oj4a61nbwyCEKHwk2ICTLla+TCDAz+dTmxzuQBjEUVZYq/SMjvmGApc=
+	t=1766536138; cv=none; b=rpS18rsbFjOJ6Wks1YpkcNR5kj2fvA0HAW1u3wbCAHKu8Ayhw72pDovK2WnrYC3mRDJyXCQ1kA7TpsGCy3uIDFNXm2LDctnHMuknMBZVIMzde+BqkdH1cOglUZuBtU4Sr4L/JqCdyO6WNPFqDihO7Mp5JjaS4EocwTT9t+INRoQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1766535190; c=relaxed/simple;
-	bh=c9wGy9F+ZumVy4Jv5wQ/Y4sWu0FPsWAgkyF5DR5pTaM=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qaMm7EJofNPEkzEOuJItBFJy6VBuBO0jgRZLeTiC/MNwioJjqQpTYHhoHVOSjAPEo3E/ANBz7d6J1di3j2HKrHhfLT1/p+iaqdVojKXp2WoaRKEKd6BopnFXp5CvASl9tC9Rr2IiaPxOkB204upPKkKTZjN0HV/BJnKvSdT/DZs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=d721B4Pj; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=mraKw6va; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1766536138; c=relaxed/simple;
+	bh=7wDYgNx+BgqVnuE0T2X8agHCrv8JLpc6NaCVH5tP4l0=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=rcUVxmg1se/W5nwk8TuO4iFllrj95OgGDl3CE0op+qT8Dt2kYAbleIK/VgZ1Vybe+vBHY4yl7pat8AqkBkvixAtk5UWoqfMhWQ02m/WwVp741wgW+Uyiz93KtLIZCgl3WeW4i/86hEVRGVH/sl/aaoTKMMkqieAk5uUIMKbVLvA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=CWh3lOE+; arc=none smtp.client-ip=209.85.210.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="d721B4Pj";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="mraKw6va"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1766535187;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=ZP7S2GMgajruIhbPgbnDsTvupUVzprH0sZEYwfNJjmw=;
-	b=d721B4Pj+XM+vzNJImK/7IIgiWUrFq+DfXW04b9aU8fFFgbQ4Kch8AvH/8ZT6F5499TP/z
-	1/QznSkHn+KQwMKxCsks5lmXLYrkpSadQA9KBmFuRq7xzdUOw0wbaD9cWJWg9R1WTegCay
-	PBHyXAk3ib1HgquTWPvUqly4CaYEipE=
-Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
- [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-677-oon1BG_-PZqJaIBopOMxDg-1; Tue, 23 Dec 2025 19:13:05 -0500
-X-MC-Unique: oon1BG_-PZqJaIBopOMxDg-1
-X-Mimecast-MFC-AGG-ID: oon1BG_-PZqJaIBopOMxDg_1766535185
-Received: by mail-wm1-f71.google.com with SMTP id 5b1f17b1804b1-47788165c97so30878715e9.0
-        for <kvm@vger.kernel.org>; Tue, 23 Dec 2025 16:13:05 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="CWh3lOE+"
+Received: by mail-pf1-f173.google.com with SMTP id d2e1a72fcca58-7b89c1ce9easo6287473b3a.2
+        for <kvm@vger.kernel.org>; Tue, 23 Dec 2025 16:28:56 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1766535185; x=1767139985; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=ZP7S2GMgajruIhbPgbnDsTvupUVzprH0sZEYwfNJjmw=;
-        b=mraKw6va4ADsqNiCSXbk+ibeHd68aAL/MRNisXQG+ZvCU2wM2Uc3w4Sx1ivJz/Xb08
-         sMDu+Grw3pTmqgdCRSqdVew1d3CxlxZ2OC1+YD9aIoWJEJjAS4yqUjJO0xTVqmjIJ9LG
-         94saEuW6EU/947QzPWS4J5x6DvnPcH4hHa2oktENgKybbjg27yoiDkK/WnCp9be4+P3N
-         C31Y5jrZEtUY5p3bssPG5j5sDI6U8iHDZ1pAWForE7cTsL6EpB4bJTax4eXEV9YTSoBd
-         /sW2DnHBgtjJ3FkgM1fJXvX/REcI8uCvnCYdMFiPrDsPzoFS1m3PhWlM68J+ilc0a0/r
-         hLXA==
+        d=gmail.com; s=20230601; t=1766536136; x=1767140936; darn=vger.kernel.org;
+        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
+         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=1idDMvZTSBBVNr5LBgZDXh7c7n41TkvVwZ0J4jmyayA=;
+        b=CWh3lOE+nnquhJ6m0WJ/7svTap0DUEs+RT3Knkla5u85yK06YmHw4g3Zpsl57lpQEU
+         2FO3AvfWrxmqFrtbIkGYW8jAOOe6atIp8AF40SSipgsbvi73MOUf8OgUAwajLpPPylgN
+         37DjAf3PBUTyWV69KYgDl2NEEjXZgfxgmLklrBk2GsUsoSml8yoEvmwhEi8R29wZX3fl
+         tjsTRKJjeMQqfNOn9jGPRRQlg1zotuX/Q6YRgIKK4H2ltTK9SV0eto4cpqrEpVIW/XXd
+         aQJqNFH5P9aX0FMmAAewYLTRbyZ3jQj7NtGfSYjxuKwyAnwbpLHSb/w1U+26JJRUDTAO
+         R35Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1766535185; x=1767139985;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=ZP7S2GMgajruIhbPgbnDsTvupUVzprH0sZEYwfNJjmw=;
-        b=BIppTydhDtGkyH0AhDPdxqtz/TfLd6rBB47OkI32L2TFLsC2GD3HKBwDrbscutckOY
-         Y3z6Omd62mTG2jtOOFREvXxFDQE7jks3jnhUTAWXpg8XreAmoHx69qu6yZ36w5DpdaSa
-         mMslfPIqfxmE7ao6Vl0tsKkFZ88aumk4v3Si3OD00byfiPru2S+Za8yK1ja34ulBKHIP
-         DP099z811OOGF5ZCvJDQb5qfY/50VX7O0giRvG4d3RtKRrlKN5aKpr2pNfCrd8MVyrVa
-         xqxzvpHFHK3iibe3NRB5IAW4GnbHTncHG0jkuOV8uru8jHzkZOMwU9N2v+1UiIbQW8Yn
-         gVzg==
-X-Forwarded-Encrypted: i=1; AJvYcCWNo8wNbuIgZzFChwhvHPuj5l3qXKAUfbp9QFVHl5mj4jz4sqCbelhaGODqsR+nTn5tBPg=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxE7AkpWmZFraT+EuMVut/8VB2KmPax/jiD6/hmjpNkbN9S2xTX
-	Es11nLcSnc7mmyzCwC98SsCTVCdEwLFbrWurninz65XIb2P6QZj508KM4liTvN9yNoKq6nUWbzi
-	7UxTN6AUiLa0GPCGnnqH9wsHbv/vdPDoXyUEQW5To8FLJGEyrqQaqlg==
-X-Gm-Gg: AY/fxX4MSGwLXMo25VihUayQm/dSejwtJRGiJmuS0aiqK7WzFlWCwLaD/oN5l4R19xl
-	7y5YGtqPDnBq5ihgfyNjpnToq3qfPv+7gy0UOiJIaLbICrVEyEhsJMnZorzJhCReY2wEe888SXW
-	1utmCPnyNHDLuJYWhvX7CJBUGNpyAPGuG6pfuh03Vou5vP1XxO2z20PnWOfbC2eISeN+XlFo6wS
-	FD72ItBDKBHzXux3FR1HA9hwbBkoFskhklGt4O9jAdwAICSwKrOlVfQrOZpzNScWAI9pAmvD73D
-	B0vQQO8tyumx+9UIPT8F5hVo33wNRE1RouGEnVgxGIemrNNSijKf5UIQ77+hIVUFlqJZbzJMmt4
-	ShsnkFy8s4I8QIuomhWj487YUXDV01FX7KQBJgm1GBCrylGBXiZID4nnWwumRfvbD1m3Gpbl4Rr
-	wmkKdxDEqXtzVMKwM=
-X-Received: by 2002:a05:600c:4506:b0:477:79f8:daa8 with SMTP id 5b1f17b1804b1-47d1957da6cmr164308955e9.17.1766535184668;
-        Tue, 23 Dec 2025 16:13:04 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IEAOTNMaYX6wvIpavXVkFRAXB61rUrOXBtv+ITgW4CWC1Dw0QYGzvTLybENg3XQ7l3vGJWmlQ==
-X-Received: by 2002:a05:600c:4506:b0:477:79f8:daa8 with SMTP id 5b1f17b1804b1-47d1957da6cmr164308795e9.17.1766535184278;
-        Tue, 23 Dec 2025 16:13:04 -0800 (PST)
-Received: from [192.168.10.48] ([151.95.145.106])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-4324eab2a94sm30897852f8f.43.2025.12.23.16.13.02
+        d=1e100.net; s=20230601; t=1766536136; x=1767140936;
+        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
+         :mime-version:subject:date:from:x-gm-gg:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=1idDMvZTSBBVNr5LBgZDXh7c7n41TkvVwZ0J4jmyayA=;
+        b=PoUsSG4YJcUsjMJOuERGZE1uqe4SyL+eDIp3UyIEVTofFlX0cTu+uLAssW0G7xN8Eh
+         ijaDDkZjOATWAoHI8XZzA+HSXI3Q57RK4EVFB32vc/8G7d9y2aPF6j/s85R2JqF0reWR
+         x09Lj+UJK/Nya3EAh6bJ3Y7I3YC66oa8e0cgM6FKEPSWHL3X+YBsiozc7DX/7eKWyTJo
+         fosSNuNnJAyX0P3Lcpn2bWb3EC88nVFyZOBKUOZMvJtorDJIe7jpkn7VdZbnJvviX4Fl
+         7BxUOUw1/tUlxa0Si5dfIqvGvd2Uf14P+/kelXA+Ybtxd8aC9m/l6GQQPmESzXINbYIQ
+         MDOw==
+X-Forwarded-Encrypted: i=1; AJvYcCXltXfkMYY9HZgWlhLRLpmfsP6xJdvi/FCRJbR9J9442M4KtrZtG0crBze1uYMFSAspsVk=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzsivWpCP5vE7M/AwF9wnt4X5tY2yAVZIszx/07mUhpKVGeXCGb
+	dfWQkQBGkEQu2rUNiz+yMQHxh6t6Rnkx6bRFKAADKCMcZd9gsh0dUlfk
+X-Gm-Gg: AY/fxX4r0SZazZsEdiF99Qw8vXJTRNRY9RjwGbzYgyzeZhsF0vvxQBbi4W06AXJQmyU
+	/OLG+uXdmQ1ponCUcuw9Unl8scXEsmCQDGKtgSyEsvUSzIAeSffyxpKoZo9tsaN+f5x0855tuU+
+	R+J3csWFifsnlIMUuELKx9gmYbvVq57mlrUf81Gar2PCq5mJ3J4GmWdGW8tZ1MFmHnx/FKGyiAV
+	FLzTVdapZcRCDT4gqc9ZWhral8FvAGFYd5bhVGQ6LEWONr7j0JGomJ7cYzPuadK9y8fx7ripR4K
+	ijzxFLpItj4rpVEAOU87NEGUvWj9HXlE9kNhczhNZzvXJQKiFtJDf3QQRrEB+C1R1PbCOheQqYi
+	YtJM+UFPPSYqegniMpOO3kFKbw7CeKw7s1RPl/4cp4At3V/F5Dci63WAaWGJASdjgb0qvqyXXTq
+	pApovQNHSrI6ISRzs9HkE=
+X-Google-Smtp-Source: AGHT+IFf9PGpVgIYi53KgiXyi1OO/xQjeYSDD1E1/gFj625d4hHvxV/oBQyq3/8jVDfT3E7MmlVH9w==
+X-Received: by 2002:a05:6a00:8013:b0:7e8:4471:ae61 with SMTP id d2e1a72fcca58-7ff67654e35mr13734006b3a.45.1766536136203;
+        Tue, 23 Dec 2025 16:28:56 -0800 (PST)
+Received: from localhost ([2a03:2880:2ff:6::])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-7ff7e8947a1sm14718466b3a.67.2025.12.23.16.28.55
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 23 Dec 2025 16:13:02 -0800 (PST)
-From: Paolo Bonzini <pbonzini@redhat.com>
-To: linux-kernel@vger.kernel.org,
-	kvm@vger.kernel.org
-Cc: seanjc@google.com,
-	x86@kernel.org
-Subject: [PATCH 5/5] KVM: x86: kvm_fpu_get() is fpregs_lock_and_load()
-Date: Wed, 24 Dec 2025 01:12:49 +0100
-Message-ID: <20251224001249.1041934-6-pbonzini@redhat.com>
-X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251224001249.1041934-1-pbonzini@redhat.com>
-References: <20251224001249.1041934-1-pbonzini@redhat.com>
+        Tue, 23 Dec 2025 16:28:55 -0800 (PST)
+From: Bobby Eshleman <bobbyeshleman@gmail.com>
+Date: Tue, 23 Dec 2025 16:28:35 -0800
+Subject: [PATCH RFC net-next v13 01/13] vsock: add per-net vsock NS mode
+ state
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20251223-vsock-vmtest-v13-1-9d6db8e7c80b@meta.com>
+References: <20251223-vsock-vmtest-v13-0-9d6db8e7c80b@meta.com>
+In-Reply-To: <20251223-vsock-vmtest-v13-0-9d6db8e7c80b@meta.com>
+To: Stefano Garzarella <sgarzare@redhat.com>, 
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+ Simon Horman <horms@kernel.org>, Stefan Hajnoczi <stefanha@redhat.com>, 
+ "Michael S. Tsirkin" <mst@redhat.com>, Jason Wang <jasowang@redhat.com>, 
+ =?utf-8?q?Eugenio_P=C3=A9rez?= <eperezma@redhat.com>, 
+ Xuan Zhuo <xuanzhuo@linux.alibaba.com>, 
+ "K. Y. Srinivasan" <kys@microsoft.com>, 
+ Haiyang Zhang <haiyangz@microsoft.com>, Wei Liu <wei.liu@kernel.org>, 
+ Dexuan Cui <decui@microsoft.com>, Bryan Tan <bryan-bt.tan@broadcom.com>, 
+ Vishnu Dasa <vishnu.dasa@broadcom.com>, 
+ Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>, 
+ Shuah Khan <shuah@kernel.org>, Long Li <longli@microsoft.com>
+Cc: linux-kernel@vger.kernel.org, virtualization@lists.linux.dev, 
+ netdev@vger.kernel.org, kvm@vger.kernel.org, linux-hyperv@vger.kernel.org, 
+ linux-kselftest@vger.kernel.org, berrange@redhat.com, 
+ Sargun Dhillon <sargun@sargun.me>, Bobby Eshleman <bobbyeshleman@gmail.com>, 
+ Bobby Eshleman <bobbyeshleman@meta.com>
+X-Mailer: b4 0.14.3
 
-The only difference is the usage of switch_fpu_return() vs.
-fpregs_restore_userregs().  In turn, these are only different
-if there is no FPU at all, but KVM requires one.  Therefore use the
-pre-made export---the code is simpler and there is no functional change.
+From: Bobby Eshleman <bobbyeshleman@meta.com>
 
-Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+Add the per-net vsock NS mode state. This only adds the structure for
+holding the mode and some of the functions for setting/getting and
+checking the mode, but does not integrate the functionality yet.
+
+Future patches add the uAPI and transport-specific usage of these
+structures and helpers.
+
+Signed-off-by: Bobby Eshleman <bobbyeshleman@meta.com>
 ---
- arch/x86/kernel/fpu/core.c | 2 +--
- arch/x86/kvm/fpu.h         | 6 +-----
- 2 files changed, 3 insertions(+), 6 deletions(-)
+Changes in v13:
+- remove net_mode because net->vsock.mode becomes immutable, no need to
+  save the mode when vsocks are created.
+- add the new helpers for child_ns_mode to support ns_mode inheriting
+  the mode from child_ns_mode.
+- because ns_mode is immutable and child_ns_mode can be changed multiple
+  times, remove the write-once lock.
+- simplify vsock_net_check_mode() to no longer take mode arguments since
+  the mode can be accessed via the net pointers without fear of the mode
+  changing.
+- add logic in vsock_net_check_mode() to infer VSOCK_NET_MODE_GLOBAL
+  from NULL namespaces in order to allow only net pointers to be passed
+  to vsock_net_check_mode(), while still allowing namespace-unaware
+  transports to force global mode.
 
-diff --git a/arch/x86/kernel/fpu/core.c b/arch/x86/kernel/fpu/core.c
-index ff17c96d290a..6571952c6ef1 100644
---- a/arch/x86/kernel/fpu/core.c
-+++ b/arch/x86/kernel/fpu/core.c
-@@ -846,7 +846,6 @@ void switch_fpu_return(void)
+Changes in v10:
+- change mode_locked to int (Stefano)
+
+Changes in v9:
+- use xchg(), WRITE_ONCE(), READ_ONCE() for mode and mode_locked (Stefano)
+- clarify mode0/mode1 meaning in vsock_net_check_mode() comment
+- remove spin lock in net->vsock (not used anymore)
+- change mode from u8 to enum vsock_net_mode in vsock_net_write_mode()
+
+Changes in v7:
+- clarify vsock_net_check_mode() comments
+- change to `orig_net_mode == VSOCK_NET_MODE_GLOBAL && orig_net_mode == vsk->orig_net_mode`
+- remove extraneous explanation of `orig_net_mode`
+- rename `written` to `mode_locked`
+- rename `vsock_hdr` to `sysctl_hdr`
+- change `orig_net_mode` to `net_mode`
+- make vsock_net_check_mode() more generic by taking just net pointers
+  and modes, instead of a vsock_sock ptr, for reuse by transports
+  (e.g., vhost_vsock)
+
+Changes in v6:
+- add orig_net_mode to store mode at creation time which will be used to
+  avoid breakage when namespace changes mode during socket/VM lifespan
+
+Changes in v5:
+- use /proc/sys/net/vsock/ns_mode instead of /proc/net/vsock_ns_mode
+- change from net->vsock.ns_mode to net->vsock.mode
+- change vsock_net_set_mode() to vsock_net_write_mode()
+- vsock_net_write_mode() returns bool for write success to avoid
+  need to use vsock_net_mode_can_set()
+- remove vsock_net_mode_can_set()
+---
+ MAINTAINERS                 |  1 +
+ include/net/af_vsock.h      | 42 ++++++++++++++++++++++++++++++++++++++++++
+ include/net/net_namespace.h |  4 ++++
+ include/net/netns/vsock.h   | 17 +++++++++++++++++
+ 4 files changed, 64 insertions(+)
+
+diff --git a/MAINTAINERS b/MAINTAINERS
+index 454b8ed119e9..38d24e5a957c 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -27516,6 +27516,7 @@ L:	netdev@vger.kernel.org
+ S:	Maintained
+ F:	drivers/vhost/vsock.c
+ F:	include/linux/virtio_vsock.h
++F:	include/net/netns/vsock.h
+ F:	include/uapi/linux/virtio_vsock.h
+ F:	net/vmw_vsock/virtio_transport.c
+ F:	net/vmw_vsock/virtio_transport_common.c
+diff --git a/include/net/af_vsock.h b/include/net/af_vsock.h
+index d40e978126e3..6f5bc9dbefa5 100644
+--- a/include/net/af_vsock.h
++++ b/include/net/af_vsock.h
+@@ -10,6 +10,7 @@
  
- 	fpregs_restore_userregs();
- }
--EXPORT_SYMBOL_FOR_KVM(switch_fpu_return);
+ #include <linux/kernel.h>
+ #include <linux/workqueue.h>
++#include <net/netns/vsock.h>
+ #include <net/sock.h>
+ #include <uapi/linux/vm_sockets.h>
  
- void fpregs_lock_and_load(void)
+@@ -256,4 +257,45 @@ static inline bool vsock_msgzerocopy_allow(const struct vsock_transport *t)
  {
-@@ -865,6 +864,7 @@ void fpregs_lock_and_load(void)
- 
- 	fpregs_assert_state_consistent();
+ 	return t->msgzerocopy_allow && t->msgzerocopy_allow();
  }
-+EXPORT_SYMBOL_FOR_KVM(fpregs_lock_and_load);
- 
- void fpu_load_guest_fpstate(struct fpu_guest *gfpu)
- {
-@@ -899,7 +899,6 @@ void fpregs_assert_state_consistent(void)
- 
- 	WARN_ON_FPU(!fpregs_state_valid(fpu, smp_processor_id()));
- }
--EXPORT_SYMBOL_FOR_KVM(fpregs_assert_state_consistent);
++
++static inline enum vsock_net_mode vsock_net_mode(struct net *net)
++{
++	return READ_ONCE(net->vsock.mode);
++}
++
++static inline void vsock_net_set_child_mode(struct net *net,
++					    enum vsock_net_mode mode)
++{
++	WRITE_ONCE(net->vsock.child_ns_mode, mode);
++}
++
++static inline enum vsock_net_mode vsock_net_child_mode(struct net *net)
++{
++	return READ_ONCE(net->vsock.child_ns_mode);
++}
++
++/* Return true if two namespaces pass the mode rules. Otherwise, return false.
++ *
++ * A NULL namespace is treated as VSOCK_NET_MODE_GLOBAL.
++ *
++ * Read more about modes in the comment header of net/vmw_vsock/af_vsock.c.
++ */
++static inline bool vsock_net_check_mode(struct net *ns0, struct net *ns1)
++{
++	enum vsock_net_mode mode0, mode1;
++
++	/* Any vsocks within the same network namespace are always reachable,
++	 * regardless of the mode.
++	 */
++	if (net_eq(ns0, ns1))
++		return true;
++
++	mode0 = ns0 ? vsock_net_mode(ns0) : VSOCK_NET_MODE_GLOBAL;
++	mode1 = ns1 ? vsock_net_mode(ns1) : VSOCK_NET_MODE_GLOBAL;
++
++	/* Different namespaces are only reachable if they are both
++	 * global mode.
++	 */
++	return mode0 == VSOCK_NET_MODE_GLOBAL && mode0 == mode1;
++}
+ #endif /* __AF_VSOCK_H__ */
+diff --git a/include/net/net_namespace.h b/include/net/net_namespace.h
+index cb664f6e3558..66d3de1d935f 100644
+--- a/include/net/net_namespace.h
++++ b/include/net/net_namespace.h
+@@ -37,6 +37,7 @@
+ #include <net/netns/smc.h>
+ #include <net/netns/bpf.h>
+ #include <net/netns/mctp.h>
++#include <net/netns/vsock.h>
+ #include <net/net_trackers.h>
+ #include <linux/ns_common.h>
+ #include <linux/idr.h>
+@@ -196,6 +197,9 @@ struct net {
+ 	/* Move to a better place when the config guard is removed. */
+ 	struct mutex		rtnl_mutex;
  #endif
++#if IS_ENABLED(CONFIG_VSOCKETS)
++	struct netns_vsock	vsock;
++#endif
+ } __randomize_layout;
  
- void fpregs_mark_activate(void)
-diff --git a/arch/x86/kvm/fpu.h b/arch/x86/kvm/fpu.h
-index f898781b6a06..b6a03d8fa8af 100644
---- a/arch/x86/kvm/fpu.h
-+++ b/arch/x86/kvm/fpu.h
-@@ -149,11 +149,7 @@ static inline void _kvm_write_mmx_reg(int reg, const u64 *data)
- 
- static inline void kvm_fpu_get(void)
- {
--	fpregs_lock();
--
--	fpregs_assert_state_consistent();
--	if (test_thread_flag(TIF_NEED_FPU_LOAD))
--		switch_fpu_return();
-+	fpregs_lock_and_load();
- }
- 
- static inline void kvm_fpu_put(void)
+ #include <linux/seq_file_net.h>
+diff --git a/include/net/netns/vsock.h b/include/net/netns/vsock.h
+new file mode 100644
+index 000000000000..e2325e2d6ec5
+--- /dev/null
++++ b/include/net/netns/vsock.h
+@@ -0,0 +1,17 @@
++/* SPDX-License-Identifier: GPL-2.0 */
++#ifndef __NET_NET_NAMESPACE_VSOCK_H
++#define __NET_NET_NAMESPACE_VSOCK_H
++
++#include <linux/types.h>
++
++enum vsock_net_mode {
++	VSOCK_NET_MODE_GLOBAL,
++	VSOCK_NET_MODE_LOCAL,
++};
++
++struct netns_vsock {
++	struct ctl_table_header *sysctl_hdr;
++	enum vsock_net_mode mode;
++	enum vsock_net_mode child_ns_mode;
++};
++#endif /* __NET_NET_NAMESPACE_VSOCK_H */
+
 -- 
-2.52.0
+2.47.3
 
