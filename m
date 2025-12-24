@@ -1,248 +1,199 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 901EB32E728
-	for <kvm@vger.kernel.org>; Wed, 24 Dec 2025 08:30:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+Received: from mail.loongson.cn (mail.loongson.cn [114.242.206.163])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EB27B2F1FDB;
+	Wed, 24 Dec 2025 09:16:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=114.242.206.163
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1766565012; cv=none; b=J3nGQDhx48DTnsarwE9CEjLI8lYQszEkO69334LEi44IRtGmoP06Mg/o7Bj9Q4rF2mXjnp/0pelVsdBfZiHVrJyrVbekt6nlQFaRn0uyg0FEPXapY+Z5bZmL+RMNJ4KE/lGY6i3ONhbxV5mcXbB6Xr2tRTGZfwNS77Pj6LL9gtI=
+	t=1766567823; cv=none; b=EREcqSyH8aaFKIeQELOPwMkJ5pEY4r+Nb4JctqaNvKHEFkmaQ7P+ODDmT7HHI+biq7RyyqngqkzLdk47vL7F46MF/s7Ni08Ku2ur1vU9jZc+rX61xiWAvnTdXgoLbzKVYQ5fHs8jQ1K43XdTE+xFSH/xZuHrcrj8egoI0eXHy7I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1766565012; c=relaxed/simple;
-	bh=3cMlosX90tbr0LQx7VZgj7j/6noF326aNMjHBzxoe9U=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=ee5rHXSrkPR/NGyvg8i6PwCDDhwJiem+KnKesil4TTyUpty5fwoxPMGctWmdNvL8cd6LNf8gtFO1O/rFQyasHi0lKK4XI3fhKoz43MJaP8GlvvVhmhaNHXtj5gKr7Im0dcENjTtRt3ftx/r6lrcKB8b0N0BzbvJ0UR2grE6AIvY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QWpbYTtJ; arc=none smtp.client-ip=10.30.226.201
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QWpbYTtJ"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 29BABC16AAE
-	for <kvm@vger.kernel.org>; Wed, 24 Dec 2025 08:30:12 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1766565012;
-	bh=3cMlosX90tbr0LQx7VZgj7j/6noF326aNMjHBzxoe9U=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=QWpbYTtJmmXA6JEaSBs3NbgMQZvmWdv5xR9CUKwn/omc9c35RTqCyGhG1bagHzbOw
-	 Ao2/xVB3jVF+9+LzZv/wBEreL5VTaMolqX9ukXJBUr9cJXzHg0n1wkPFDT1/9phIyO
-	 Lme1CGvlPmyNTcLT9JdDZRuAGPQgog81CQ+CrUO3bUdm7f/l88K+XeU04wfQ7K54QX
-	 HxnUDZRhc4e6nbJCnonjHYLY6J4HXOuusPxfN3YXqIlIjlLyqEVDzLqAxb1bRUlLPX
-	 6dFrb7o3BnAmBqkwFZPQOzGJwKiK9lgwfVpUVFvQ0SRsMDWup46XwYRSgFYa/gMA5Q
-	 AeSgGV6X5YdMA==
-Received: by mail-ej1-f46.google.com with SMTP id a640c23a62f3a-b734fcbf1e3so1138513466b.3
-        for <kvm@vger.kernel.org>; Wed, 24 Dec 2025 00:30:12 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCXD4NQeoTtP1JSfNOjHgBvZeXxa2qXAN3H3wKuaPdtMNTaMMU+OjGMQfdkTzWLLurWuwXM=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxZpDrtuhunLLUqax2FeG2yVbWdYj17W41JMg8CReoECrR1Qgz1
-	twOkEtOkaWBu7CAfFG4WpF+HqgN0t7fgN1mQMQNTMg/40AjeFCt51f0oExKfdv0hLXlwMouJws/
-	7kdvj2gDhoscOLuA+fhZTH94jJPWXeNs=
-X-Google-Smtp-Source: AGHT+IFE05z2xzUe0jeSzGoM1cwZ6c3XW5AreZuEZuoLUq/w20efSuucNxMi0mQsrbAl0xQX/eKVp4faLmJfX5vftP8=
-X-Received: by 2002:a17:907:9447:b0:b71:df18:9fb6 with SMTP id
- a640c23a62f3a-b8036f5bb39mr1805581566b.26.1766565010739; Wed, 24 Dec 2025
- 00:30:10 -0800 (PST)
+	s=arc-20240116; t=1766567823; c=relaxed/simple;
+	bh=ZtWziJiqrZ0cuml3s+jrt4nWYfRTL4Qwsi5NxHwTfqc=;
+	h=Subject:From:To:Cc:References:Message-ID:Date:MIME-Version:
+	 In-Reply-To:Content-Type; b=jt2vJDYOojhDKgtMKlI2V45PbwIXt8qO3JZlKcauZMKjVY6gkutu+/nMJ/F4ki/xLBMNrkPCiXOdoR3/ix1DuAFMfCbHL6ho3+1wcucXDV+MyPtzpbPt0jW9I8X5bPjCIDa5hOZaMTU/pl4fRJC/JErtwB8bMxN+2MlvZS3cCqc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn; spf=pass smtp.mailfrom=loongson.cn; arc=none smtp.client-ip=114.242.206.163
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=loongson.cn
+Received: from loongson.cn (unknown [10.20.42.126])
+	by gateway (Coremail) with SMTP id _____8BxXcOBr0tp1rUCAA--.8779S3;
+	Wed, 24 Dec 2025 17:16:49 +0800 (CST)
+Received: from [10.20.42.126] (unknown [10.20.42.126])
+	by front1 (Coremail) with SMTP id qMiowJBxbcJ6r0tpDzUEAA--.9953S3;
+	Wed, 24 Dec 2025 17:16:45 +0800 (CST)
+Subject: Re: [PATCH V2 2/2] LoongArch: KVM: fix "unreliable stack" issue
+From: lixianglai <lixianglai@loongson.cn>
+To: Bibo Mao <maobibo@loongson.cn>, Huacai Chen <chenhuacai@kernel.org>,
+ yangtiezhu@loongson.cn
+Cc: loongarch@lists.linux.dev, linux-kernel@vger.kernel.org,
+ kvm@vger.kernel.org, stable@vger.kernel.org, WANG Xuerui
+ <kernel@xen0n.name>, Tianrui Zhao <zhaotianrui@loongson.cn>,
+ Charlie Jenkins <charlie@rivosinc.com>, Thomas Gleixner <tglx@linutronix.de>
+References: <20251222113409.2343711-1-lixianglai@loongson.cn>
+ <20251222113409.2343711-3-lixianglai@loongson.cn>
+ <e1f4b85e-0177-91b7-c422-22ed60607260@loongson.cn>
+ <CAAhV-H4PehwGm-WwEuu4ZPbQutJR6m62tOSUxLcGQAxR_YX0Eg@mail.gmail.com>
+ <7b8799d1-a4b2-58dc-187a-19c772612351@loongson.cn>
+ <33541c5f-82ca-c86d-fcf9-437c4071c6b8@loongson.cn>
+Message-ID: <9974d03b-bd07-04b0-c1e3-d76123c9cd2f@loongson.cn>
+Date: Wed, 24 Dec 2025 17:13:15 +0800
+User-Agent: Mozilla/5.0 (X11; Linux loongarch64; rv:68.0) Gecko/20100101
+ Thunderbird/68.7.0
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20251218111822.975455-1-gaosong@loongson.cn> <20251218111822.975455-3-gaosong@loongson.cn>
- <CAAhV-H4oZJ-t2_sWQ+nkimv6htrBw5-rgG+Omuy2z2chWzK_MA@mail.gmail.com> <4c34fb99-d8d6-826c-3f41-831f2587039b@loongson.cn>
-In-Reply-To: <4c34fb99-d8d6-826c-3f41-831f2587039b@loongson.cn>
-From: Huacai Chen <chenhuacai@kernel.org>
-Date: Wed, 24 Dec 2025 16:30:26 +0800
-X-Gmail-Original-Message-ID: <CAAhV-H4umT=NYa45EuywN_L6fR_vNUZKtPB5RR-GuD67Tpbf0A@mail.gmail.com>
-X-Gm-Features: AQt7F2rRpRBC6JD7WH00FSOgOPLl6DauI25QWZvlOfXK8SrLSzmIwBeR0h71D1o
-Message-ID: <CAAhV-H4umT=NYa45EuywN_L6fR_vNUZKtPB5RR-GuD67Tpbf0A@mail.gmail.com>
-Subject: Re: [PATCH v4 2/3] LongArch: KVM: Add irqfd set dmsintc msg irq
-To: gaosong <gaosong@loongson.cn>
-Cc: maobibo@loongson.cn, kvm@vger.kernel.org, loongarch@lists.linux.dev, 
-	kernel@xen0n.name, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <33541c5f-82ca-c86d-fcf9-437c4071c6b8@loongson.cn>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Content-Language: en-US
+X-CM-TRANSID:qMiowJBxbcJ6r0tpDzUEAA--.9953S3
+X-CM-SenderInfo: 5ol0xt5qjotxo6or00hjvr0hdfq/
+X-Coremail-Antispam: 1Uk129KBj93XoWxZF13WrW8Gry7WrWfWF15Awc_yoWrtFyfp3
+	WFyF1DtFWDtw18Jw4Dta4DAFyUtrWkG3WDWr1xJFy8Jr1qgr1YgryUXw1q9F1DJw48GF1k
+	XFy5tr9xZayUAwcCm3ZEXasCq-sJn29KB7ZKAUJUUUU7529EdanIXcx71UUUUU7KY7ZEXa
+	sCq-sGcSsGvfJ3Ic02F40EFcxC0VAKzVAqx4xG6I80ebIjqfuFe4nvWSU5nxnvy29KBjDU
+	0xBIdaVrnRJUUUB2b4IE77IF4wAFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2
+	IYs7xG6rWj6s0DM7CIcVAFz4kK6r1Y6r17M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48v
+	e4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_JFI_Gr1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI
+	0_Gr0_Cr1l84ACjcxK6I8E87Iv67AKxVW8Jr0_Cr1UM28EF7xvwVC2z280aVCY1x0267AK
+	xVW8Jr0_Cr1UM2kKe7AKxVWUXVWUAwAS0I0E0xvYzxvE52x082IY62kv0487Mc804VCY07
+	AIYIkI8VC2zVCFFI0UMc02F40EFcxC0VAKzVAqx4xG6I80ewAv7VC0I7IYx2IY67AKxVWU
+	AVWUtwAv7VC2z280aVAFwI0_Gr0_Cr1lOx8S6xCaFVCjc4AY6r1j6r4UM4x0Y48IcVAKI4
+	8JMxk0xIA0c2IEe2xFo4CEbIxvr21l42xK82IYc2Ij64vIr41l4I8I3I0E4IkC6x0Yz7v_
+	Jr0_Gr1l4IxYO2xFxVAFwI0_Jrv_JF1lx2IqxVAqx4xG67AKxVWUJVWUGwC20s026x8Gjc
+	xK67AKxVWUGVWUWwC2zVAF1VAY17CE14v26r1q6r43MIIYrxkI7VAKI48JMIIF0xvE2Ix0
+	cI8IcVAFwI0_Jr0_JF4lIxAIcVC0I7IYx2IY6xkF7I0E14v26r1j6r4UMIIF0xvE42xK8V
+	AvwI8IcIk0rVWUJVWUCwCI42IY6I8E87Iv67AKxVW8JVWxJwCI42IY6I8E87Iv6xkF7I0E
+	14v26r4j6r4UJbIYCTnIWIevJa73UjIFyTuYvjxU466zUUUUU
 
-On Wed, Dec 24, 2025 at 3:25=E2=80=AFPM gaosong <gaosong@loongson.cn> wrote=
-:
+Hi:
+> Add yangtiezhu@loongson.cn
 >
-> Hi,
+> Hi :
+>>
+>>
+>> On 2025/12/23 上午10:46, Huacai Chen wrote:
+>>> On Tue, Dec 23, 2025 at 9:27 AM Bibo Mao <maobibo@loongson.cn> wrote:
+>>>>
+>>>>
+>>>>
+>>>> On 2025/12/22 下午7:34, Xianglai Li wrote:
+>>>>> Insert the appropriate UNWIND macro definition into the 
+>>>>> kvm_exc_entry in
+>>>>> the assembly function to guide the generation of correct ORC table 
+>>>>> entries,
+>>>>> thereby solving the timeout problem of loading the 
+>>>>> livepatch-sample module
+>>>>> on a physical machine running multiple vcpus virtual machines.
+>>>>>
+>>>>> While solving the above problems, we have gained an additional 
+>>>>> benefit,
+>>>>> that is, we can obtain more call stack information
+>>>>>
+>>>>> Stack information that can be obtained before the problem is fixed:
+>>>>> [<0>] kvm_vcpu_block+0x88/0x120 [kvm]
+>>>>> [<0>] kvm_vcpu_halt+0x68/0x580 [kvm]
+>>>>> [<0>] kvm_emu_idle+0xd4/0xf0 [kvm]
+>>>>> [<0>] kvm_handle_gspr+0x7c/0x700 [kvm]
+>>>>> [<0>] kvm_handle_exit+0x160/0x270 [kvm]
+>>>>> [<0>] kvm_exc_entry+0x100/0x1e0
+>>>>>
+>>>>> Stack information that can be obtained after the problem is fixed:
+>>>>> [<0>] kvm_vcpu_block+0x88/0x120 [kvm]
+>>>>> [<0>] kvm_vcpu_halt+0x68/0x580 [kvm]
+>>>>> [<0>] kvm_emu_idle+0xd4/0xf0 [kvm]
+>>>>> [<0>] kvm_handle_gspr+0x7c/0x700 [kvm]
+>>>>> [<0>] kvm_handle_exit+0x160/0x270 [kvm]
+>>>>> [<0>] kvm_exc_entry+0x100/0x1e0
+>>>>> [<0>] kvm_arch_vcpu_ioctl_run+0x260/0x488 [kvm]
+>>>>> [<0>] kvm_vcpu_ioctl+0x200/0xcd8 [kvm]
+>>>>> [<0>] sys_ioctl+0x498/0xf00
+>>>>> [<0>] do_syscall+0x94/0x190
+>>>>> [<0>] handle_syscall+0xb8/0x158
+>>>>>
+>>>>> Cc: stable@vger.kernel.org
+>>>>> Signed-off-by: Xianglai Li <lixianglai@loongson.cn>
+>>>>> ---
+>>>>> Cc: Huacai Chen <chenhuacai@kernel.org>
+>>>>> Cc: WANG Xuerui <kernel@xen0n.name>
+>>>>> Cc: Tianrui Zhao <zhaotianrui@loongson.cn>
+>>>>> Cc: Bibo Mao <maobibo@loongson.cn>
+>>>>> Cc: Charlie Jenkins <charlie@rivosinc.com>
+>>>>> Cc: Xianglai Li <lixianglai@loongson.cn>
+>>>>> Cc: Thomas Gleixner <tglx@linutronix.de>
+>>>>>
+>>>>>    arch/loongarch/kvm/switch.S | 2 ++
+>>>>>    1 file changed, 2 insertions(+)
+>>>>>
+>>>>> diff --git a/arch/loongarch/kvm/switch.S 
+>>>>> b/arch/loongarch/kvm/switch.S
+>>>>> index 93845ce53651..e3ecb24a3bc5 100644
+>>>>> --- a/arch/loongarch/kvm/switch.S
+>>>>> +++ b/arch/loongarch/kvm/switch.S
+>>>>> @@ -170,6 +170,7 @@ SYM_CODE_START(kvm_exc_entry)
+>>>>>        /* restore per cpu register */
+>>>>>        ld.d    u0, a2, KVM_ARCH_HPERCPU
+>>>>>        addi.d  sp, sp, -PT_SIZE
+>>>>> +     UNWIND_HINT_REGS
+>>>>>
+>>>>>        /* Prepare handle exception */
+>>>>>        or      a0, s0, zero
+>>>>> @@ -214,6 +215,7 @@ SYM_FUNC_START(kvm_enter_guest)
+>>>>>        addi.d  a2, sp, -PT_SIZE
+>>>>>        /* Save host GPRs */
+>>>>>        kvm_save_host_gpr a2
+>>>>> +     st.d    ra, a2, PT_ERA
+>>>> Had better add some comments here to show that it is special for 
+>>>> unwind
+>>>> usage since there is "st.d ra, a2, PT_R1" already in macro
+>>>> kvm_save_host_gpr().
+>>> Then there is a new problem, why can unwinder not recognize the
+>>> instruction in  kvm_save_host_gpr()?
+>> maybe it need unwinder owner to answer this question.
+>>
+> kvm_save_host_gpr() is an assembler macro that has already been 
+> executed and is no longer normal on the stack.
+> Am I explaining correctly? @tiezhu
 >
-> =E5=9C=A8 2025/12/19 =E4=B8=8B=E5=8D=888:55, Huacai Chen =E5=86=99=E9=81=
-=93:
-> > Hi, Song,
-> >
-> > On Thu, Dec 18, 2025 at 7:43=E2=80=AFPM Song Gao <gaosong@loongson.cn> =
-wrote:
-> >> Add irqfd choice dmsintc to set msi irq by the msg_addr and
-> >> implement dmsintc set msi irq.
-> >>
-> >> Reviewed-by: Bibo Mao <maobibo@loongson.cn>
-> >> Signed-off-by: Song Gao <gaosong@loongson.cn>
-> >> ---
-> >>   arch/loongarch/include/asm/kvm_dmsintc.h |  1 +
-> >>   arch/loongarch/kvm/intc/dmsintc.c        |  6 ++++
-> >>   arch/loongarch/kvm/irqfd.c               | 45 ++++++++++++++++++++--=
---
-> >>   3 files changed, 45 insertions(+), 7 deletions(-)
-> >>
-> >> diff --git a/arch/loongarch/include/asm/kvm_dmsintc.h b/arch/loongarch=
-/include/asm/kvm_dmsintc.h
-> >> index 1d4f66996f3c..9b5436a2fcbe 100644
-> >> --- a/arch/loongarch/include/asm/kvm_dmsintc.h
-> >> +++ b/arch/loongarch/include/asm/kvm_dmsintc.h
-> >> @@ -11,6 +11,7 @@ struct loongarch_dmsintc  {
-> >>          struct kvm *kvm;
-> >>          uint64_t msg_addr_base;
-> >>          uint64_t msg_addr_size;
-> >> +       uint32_t cpu_mask;
-> >>   };
-> >>
-> >>   struct dmsintc_state {
-> >> diff --git a/arch/loongarch/kvm/intc/dmsintc.c b/arch/loongarch/kvm/in=
-tc/dmsintc.c
-> >> index 3fdea81a08c8..9ecb2e3e352d 100644
-> >> --- a/arch/loongarch/kvm/intc/dmsintc.c
-> >> +++ b/arch/loongarch/kvm/intc/dmsintc.c
-> >> @@ -15,6 +15,7 @@ static int kvm_dmsintc_ctrl_access(struct kvm_device=
- *dev,
-> >>          void __user *data;
-> >>          struct loongarch_dmsintc *s =3D dev->kvm->arch.dmsintc;
-> >>          u64 tmp;
-> >> +       u32 cpu_bit;
-> >>
-> >>          data =3D (void __user *)attr->addr;
-> >>          switch (addr) {
-> >> @@ -30,6 +31,11 @@ static int kvm_dmsintc_ctrl_access(struct kvm_devic=
-e *dev,
-> >>                                  s->msg_addr_base =3D tmp;
-> >>                          else
-> >>                                  return  -EFAULT;
-> >> +                       s->msg_addr_base =3D tmp;
-> >> +                       cpu_bit =3D find_first_bit((unsigned long *)&(=
-s->msg_addr_base), 64)
-> >> +                                               - AVEC_CPU_SHIFT;
-> >> +                       cpu_bit =3D min(cpu_bit, AVEC_CPU_BIT);
-> >> +                       s->cpu_mask =3D GENMASK(cpu_bit - 1, 0) & AVEC=
-_CPU_MASK;
-> >>                  }
-> >>                  break;
-> >>          case KVM_DEV_LOONGARCH_DMSINTC_MSG_ADDR_SIZE:
-> >> diff --git a/arch/loongarch/kvm/irqfd.c b/arch/loongarch/kvm/irqfd.c
-> >> index 9a39627aecf0..11f980474552 100644
-> >> --- a/arch/loongarch/kvm/irqfd.c
-> >> +++ b/arch/loongarch/kvm/irqfd.c
-> >> @@ -6,6 +6,7 @@
-> >>   #include <linux/kvm_host.h>
-> >>   #include <trace/events/kvm.h>
-> >>   #include <asm/kvm_pch_pic.h>
-> >> +#include <asm/kvm_vcpu.h>
-> >>
-> >>   static int kvm_set_pic_irq(struct kvm_kernel_irq_routing_entry *e,
-> >>                  struct kvm *kvm, int irq_source_id, int level, bool l=
-ine_status)
-> >> @@ -16,6 +17,41 @@ static int kvm_set_pic_irq(struct kvm_kernel_irq_ro=
-uting_entry *e,
-> >>          return 0;
-> >>   }
-> >>
-> >> +static int kvm_dmsintc_set_msi_irq(struct kvm *kvm, u32 addr, int dat=
-a, int level)
-> >> +{
-> >> +       unsigned int virq, dest;
-> >> +       struct kvm_vcpu *vcpu;
-> >> +
-> >> +       virq =3D (addr >> AVEC_IRQ_SHIFT) & AVEC_IRQ_MASK;
-> >> +       dest =3D (addr >> AVEC_CPU_SHIFT) & kvm->arch.dmsintc->cpu_mas=
-k;
-> >> +       if (dest > KVM_MAX_VCPUS)
-> >> +               return -EINVAL;
-> >> +       vcpu =3D kvm_get_vcpu_by_cpuid(kvm, dest);
-> >> +       if (!vcpu)
-> >> +               return -EINVAL;
-> >> +       return kvm_loongarch_deliver_msi_to_vcpu(kvm, vcpu, virq, leve=
-l);
-> > kvm_loongarch_deliver_msi_to_vcpu() is used in this patch but defined
-> > in the last patch, this is not acceptable, you can consider to combine
-> > these two, and I don't know whether vcpu.c is the best place for it.
-> how about just change patch3 before patch 2?  and  deined them in
-> kvm/interrupt.c ?
-I think combining them is better, and the dmsintc.c part in this patch
-seems should go to Patch-1.
+> I guess you might be wondering why unwinder didn't recognize 
+> kvm_enter_guest().
+>
+> There's something wrong with the logic that we're implementing here 
+> that we should put the current pc in era instead of ra.
+> This will allow unwind to identify the symbol kvm_enter_guest.
+>
+> So I will fix it in the next version like this:
+>
+> @@ -214,6 +215,7 @@ SYM_FUNC_START(kvm_enter_guest)
+>        addi.d  a2, sp, -PT_SIZE
+>        /* Save host GPRs */
+>        kvm_save_host_gpr a2
+>
+> +    /*
+> +     * The csr_era member variable of the pt_regs structure is required
+> +     * for unwinding orc to perform stack traceback, so we need to put
+> +     * pc into csr_era member variable here.
+> +     */
+> +    pcaddi    t0, 0
+> +    st.d    t0, a2, PT_ERA
+> +
+>
+We discussed it with @tiezhu internally and he was OK with the change!
 
-Huacai
+Thanks,
+Xianglai.
 
-> >> +}
-> >> +
-> >> +static int loongarch_set_msi(struct kvm_kernel_irq_routing_entry *e,
-> >> +                       struct kvm *kvm, int level)
-> >> +{
-> >> +       u64 msg_addr;
-> >> +
-> >> +       if (!level)
-> >> +               return -1;
-> > Before this patch, this check is in the caller, with this patch it is
-> > in the callee, is this suitable? This will add a check in
-> > kvm_arch_set_irq_inatomic().
-> if check in the caller, like kvm_set_msi,  we also need a check in
-> kvm_arch_set_irq_inatomic(), like arm64 or riscv.
-I don't know whether it is better to check in the caller or the
-callee, I just point out that the logic is changed by this patch.
-You can choose the best way with your own knowledge.
+> Thanks,
+> Xianglai.
+>>>
+>>> Huacai
+>>>>
+>>>> Regards
+>>>> Bibo Mao
+>>>>>
+>>>>>        addi.d  a2, a1, KVM_VCPU_ARCH
+>>>>>        st.d    sp, a2, KVM_ARCH_HSP
+>>>>>
+>>>>
+>
 
-
-Huacai
-
->
-> I will correct it on v5.
->
-> Thanks
-> Song Gao
->
-> > Huacai
-> >
-> >> +
-> >> +       msg_addr =3D (((u64)e->msi.address_hi) << 32) | e->msi.address=
-_lo;
-> >> +       if (cpu_has_msgint && kvm->arch.dmsintc &&
-> >> +               msg_addr >=3D kvm->arch.dmsintc->msg_addr_base &&
-> >> +               msg_addr < (kvm->arch.dmsintc->msg_addr_base  + kvm->a=
-rch.dmsintc->msg_addr_size)) {
-> >> +               return kvm_dmsintc_set_msi_irq(kvm, msg_addr, e->msi.d=
-ata, level);
-> >> +       } else {
-> >> +               pch_msi_set_irq(kvm, e->msi.data, level);
-> >> +       }
-> >> +
-> >> +       return 0;
-> >> +}
-> >> +
-> >>   /*
-> >>    * kvm_set_msi: inject the MSI corresponding to the
-> >>    * MSI routing entry
-> >> @@ -26,12 +62,7 @@ static int kvm_set_pic_irq(struct kvm_kernel_irq_ro=
-uting_entry *e,
-> >>   int kvm_set_msi(struct kvm_kernel_irq_routing_entry *e,
-> >>                  struct kvm *kvm, int irq_source_id, int level, bool l=
-ine_status)
-> >>   {
-> >> -       if (!level)
-> >> -               return -1;
-> >> -
-> >> -       pch_msi_set_irq(kvm, e->msi.data, level);
-> >> -
-> >> -       return 0;
-> >> +       return loongarch_set_msi(e, kvm, level);
-> >>   }
-> >>
-> >>   /*
-> >> @@ -76,7 +107,7 @@ int kvm_arch_set_irq_inatomic(struct kvm_kernel_irq=
-_routing_entry *e,
-> >>                  pch_pic_set_irq(kvm->arch.pch_pic, e->irqchip.pin, le=
-vel);
-> >>                  return 0;
-> >>          case KVM_IRQ_ROUTING_MSI:
-> >> -               pch_msi_set_irq(kvm, e->msi.data, level);
-> >> +               loongarch_set_msi(e, kvm, level);
-> >>                  return 0;
-> >>          default:
-> >>                  return -EWOULDBLOCK;
-> >> --
-> >> 2.39.3
-> >>
-> >>
->
