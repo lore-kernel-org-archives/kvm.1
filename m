@@ -1,345 +1,225 @@
-Received: from mail-pf1-f173.google.com (mail-pf1-f173.google.com [209.85.210.173])
+Received: from mail-oi1-f176.google.com (mail-oi1-f176.google.com [209.85.167.176])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 42DDD274B44
-	for <kvm@vger.kernel.org>; Wed, 24 Dec 2025 02:12:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.173
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9707F279DCA
+	for <kvm@vger.kernel.org>; Wed, 24 Dec 2025 02:26:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.176
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1766542338; cv=none; b=VW4CLfuV1DewoIvVpK1Bf40f3mJj1OHPOVwVeRDMFvsNovO7S0XgDqxfFQNEUDGUQOcl6p6hJPFpJxKcYJ3f81dZvnvgdDdbSrRvRbOU5jeo+YOMM+88uKmdz7prgpk3PxspqdhSYpXXjbrbrTwlynFEqkSLOSk72d+ITWUdrqM=
+	t=1766543186; cv=none; b=aPJByiDzyuoR9JkARuLcc8laab5J+YbHMT1zXFsXcZa0Dsn60wKidrycdHZvdw9I18vdjp+H4SbKntfi4NRVBZYi+Hg5ZHyOAmJewAQMD0EVKn76cHrLTzmdihA+7IGM6VB8iu+DeGz48Yt692ojBp7Qu0da00nW28tLl7CD6hA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1766542338; c=relaxed/simple;
-	bh=4D1ql5NGQCt0c3ZbFdk1vgbuuqPn91ZETB157vg93SM=;
-	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=XMmC8YO/XcWZ/Ze+bIsTmpm55XKEmZ95Qeg6z9rxlsTJQLb0rmoYP9LBOBGowqmNlPsI+4k297TW8x2oFL3nTbdm4DBqNt2xQcW00thUJfYXQ86d/PKrHvsjh3tpN0AlLjZqM4wRawu5jf/wUyFt0Ad03fmDZIAYHCYO6ZX8Kl8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=CXcXzNss; arc=none smtp.client-ip=209.85.210.173
+	s=arc-20240116; t=1766543186; c=relaxed/simple;
+	bh=fag3FxlJG3ZXO56Q4uis4IXo7o2vEhpJMwuQCgBCfc8=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=pSAXc7F66xNFJRKHTk+bE+7C6WOd1Fru8cfoFU3ptE02sNhYyRXGubBaEgCpeU14qjIjCpi1OPqyKW6jD6DI+hOJnGMyHgnpfwqpunXrLIMiAOSnkHMfMv5Li4sRcQUgYGKI+z9DIyqpov4PrLbwINfTkTN6bBeYH7mhRFggi7U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=cMdCb7jG; arc=none smtp.client-ip=209.85.167.176
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="CXcXzNss"
-Received: by mail-pf1-f173.google.com with SMTP id d2e1a72fcca58-7bb710d1d1dso7691150b3a.1
-        for <kvm@vger.kernel.org>; Tue, 23 Dec 2025 18:12:15 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="cMdCb7jG"
+Received: by mail-oi1-f176.google.com with SMTP id 5614622812f47-45391956bfcso4452928b6e.3
+        for <kvm@vger.kernel.org>; Tue, 23 Dec 2025 18:26:24 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1766542335; x=1767147135; darn=vger.kernel.org;
-        h=cc:to:content-transfer-encoding:mime-version:message-id:date
-         :subject:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=ErnBMeWj6PhyaT5jVXiuqdZficH0P4n6mk5CWzq0oeI=;
-        b=CXcXzNssyuxDgzk9fVB/9vceDs5Gl6btaNp2IjzkeIkQIRzSDKW7fMK17TnfXysfrh
-         1rBtg0XW0Goy3rmtz9hKAFS35v8TDWfUF0fDwZroANotPi5M0aXc7hmHuiD7XvnZiMJl
-         QHzDJvPToM6iItGns60lVpWZk78rIMyQ2XWfHwhuLXV6/J8di49G/EgqyyCcGpVpX2zQ
-         EBsrGh5RC1zNyVBh+AqxWnC3654BwBPv/eOFAHoKKznNv+eY5nTWreLllbimI0lXGLsz
-         i7nNIhlWcUnNlJBzNC2x0TR5Ud7jSW2tzoJ8CA6S4O07TXXpLEhFB6V85GeGaGxuwDty
-         Yjrw==
+        d=gmail.com; s=20230601; t=1766543183; x=1767147983; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=Mn5gdOJNVLCgqxTAZaOj5KghlS4vIZEHYcNf0bwJm28=;
+        b=cMdCb7jGNTobfpUWo0SruY8GR1VJ83xM6hgzqLHYr6x5UZf7ZGPHugl69hYZQPgFNc
+         s3mzx9/Zwf4ILroPEPsbMb69FwPIeMLAvxfcccQjDAXiOpZQVphodwAyHRPBJM0WydwQ
+         b48zxteORTrlnBJHShWRaBGUAV9olldH3EJqlw1lnTRV2P8DyZnP6B1F69afqEgcWOs+
+         sr8bgxEBn0W+4r7SYgDjHLUtHTXSw9rRdr0JbvDLpQw/7393lt9SAP9zaDfV3Lig09L8
+         rs7TWG2J04YrvRMF+xhKU9jFca7QMNNFlQceRqwU8lGp/HzTckp4FH1xYB54VBkMpYCI
+         BDOw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1766542335; x=1767147135;
-        h=cc:to:content-transfer-encoding:mime-version:message-id:date
-         :subject:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=ErnBMeWj6PhyaT5jVXiuqdZficH0P4n6mk5CWzq0oeI=;
-        b=kqRmjrzcBcTv75zVlItciyXMk2Z4ulFQIXVUm7YICjDN4dPkKkFeYBqDz2gxHtyDra
-         ZSPBgUQ397PKdYOZAvV3Mqz/0beMwQj10D/6w52JAEqv+4Ffh4XsFd2dzNj4a2ipeSDH
-         bjCQHBs6lURe8XyS0/opAswZE0itQePfz7I8jF65hBFIjZYIuy8uvu78TK57sCF8qqQR
-         TtBxO+bwlpnsjqGWK7e6iFdSSweCqYefwaafBLgicWcAxavQm2d04N/1ftY3wpIiVaqM
-         4aB6OobaI2vDItDzXcrdxkUU5ftlzrj/Bo5p+CgSnkl9eIYZkgcdEUdAzxNi8HFnBp8m
-         zAFw==
-X-Forwarded-Encrypted: i=1; AJvYcCXBrlOArDgEv1czL1zVKsJdPRAHheyLtyxCRQnNsywadEIpHl7PGzhxQ8Qu4zg81HtuMV8=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwL/PpmPmZYbCEJqNtM3UcaiBXxVpuGN17fJh854qtFAG7cxV9+
-	XHyM0khwr0ViXw2wmrU5POoQPqj3YHDAGebUIeZhoLgcItAmvWow6k6dIn7K9w==
-X-Gm-Gg: AY/fxX6NDVWcZTbEpQ+mMiZ6sEadIevSHGESK9JJibPhlsc+61RA5OjghwXivUSUjFD
-	s05LKak3HCQcH1w+c+86ODooebPmlD0LU9XUSorW/1NoWHzCBwuV1Qehh/5wHSNz6NfemT4LY4Z
-	OCNgp8PjR2HNiqq5m6yae6EKj46GpcMLjt+nVZddc+tnzT7Ig500e/dvVHXYRzCyyaizsC/RGzA
-	BNNJHu7H8wvBRvWmfwGc25d4ucHsKSMia4Zcd0rYSeFHaIn43MI+R2O3EU5mwE7lmVpLhxhw3er
-	q0GUOQjphFYFYkJX15LLNa2SKFljPLIPTXKVfaCifRuaIoX1E4A4G18vOjhf8r/7wPVGL1VWh2U
-	NLWzo0abev4oQLYnKhnBt5KtgYcwdQJN6pxYxJEbu+j7rUvCmt3SKc0Xd8qs1IMmw9tO0D0p/pE
-	esSa3GiC6q4eKEs/3hsdhtYXs+1HsL5w==
-X-Google-Smtp-Source: AGHT+IEzm/ibZMvW0WDYod06cdGDdF17eottIlsNSCoG3mOTQ5rlmwiFEkCEyiy9R06vh/9NSDfGJg==
-X-Received: by 2002:a17:902:f542:b0:2a0:c20e:e4d6 with SMTP id d9443c01a7336-2a2f283de1amr147271975ad.39.1766536134920;
-        Tue, 23 Dec 2025 16:28:54 -0800 (PST)
-Received: from localhost ([2a03:2880:2ff:7::])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2a2f3c9b51esm135955525ad.43.2025.12.23.16.28.54
+        d=1e100.net; s=20230601; t=1766543183; x=1767147983;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=Mn5gdOJNVLCgqxTAZaOj5KghlS4vIZEHYcNf0bwJm28=;
+        b=qpoOKu1LEpZ8UbFcEXqzlQMo0BwhWjyUhUiqhaClCalbHJWKRwe5/xR7IKnwnMFUQz
+         0lfYe2pjFMRxwqkGbBymf0kUKBcoFrDHtdBjWthIztfH16ne+TWBfm80BHpSDSN3Ys9n
+         1ANKiL7P3FgreZLbXl3FdUiyCQ7hmZXGEFTInXBhncq9HAv6+8nG2cUJnoeexBieXuk4
+         gpme4EEZJ51UTxlxz6GkKYSWthl97kebF6r5LQELrvIQTj+epOJ/LyoUf1qjSgWhhp+8
+         7eDFg8A8BPuZJ63YmJw7Vc8H77480zAhG0+MH6sjqrLdyNvuNvNkccZGJopZcg9sshEW
+         DjdA==
+X-Forwarded-Encrypted: i=1; AJvYcCXIphoxipl+TIvks7K6Ss/Uia0/8BhwRAuNeuRUjcFuioZ9eZ8h8kZxcxXJ4asNGqb86ys=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxnpZEDmfONy51s2kstUt8FOQxmUlsSggYLz6ZxvTlBR5tm4nNj
+	Xoj6hFKE4InGm/rVhAIuCJJcxK4OdUoy6508n0fdvQFu1BFWP1+PtwhsqMUcow==
+X-Gm-Gg: AY/fxX5aYCjQHqKiP2dVlJo5G9yRrTf251+lYyJJfnnrA+TMcdbaShnrl5F45rfq5M+
+	dr8FMuQ8Tbwhkgp1uJtEWagYbPRqLErazQfRCNzmDRvx62zxvrpU+978WF3mnz0OJ9jUPDbGdzv
+	n9kukgBrjzwkZugWRzw7gUElxr+Xy0Vs0+pW5PqQcgBiUDQ7aR6DRe6+MFM2zPsSI+lw1vOcQJt
+	7SBOwOezeIpTHs65N8qHDNI6/c04hcdMNMBwb1wipi6DJmyvejZvW5lksQDO2Yw0t1omVCxXm0p
+	gbMD2S0iU7mupSsl8WbY+sv/vvXTE9Z2Ps/rO2SPrrBNCjr5iImifWsZlC1QnFJW3/rBKHTpxFT
+	rofXwyXMif6mhJT/t2Ib7jAVQIfqwFJRB9F610vydPfcIjwgAS11aYc5Z5ej/NLk0Ys1rwK6zh5
+	xh1uauhx878uHAxV6SmJACSo5aXj9Rupv4idaIUNnbzLzFkAM=
+X-Google-Smtp-Source: AGHT+IGl4lY3C5uaIhAdAeU51l9QnKvRP/mJp5bbTNMXCgmCDrIGHmPARt/rlh3H/cQnB4TIEc9mUg==
+X-Received: by 2002:a05:690c:d96:b0:78f:aa6d:48cd with SMTP id 00721157ae682-78fb3d52b45mr134838347b3.0.1766536355576;
+        Tue, 23 Dec 2025 16:32:35 -0800 (PST)
+Received: from devvm11784.nha0.facebook.com ([2a03:2880:25ff:5f::])
+        by smtp.gmail.com with ESMTPSA id 00721157ae682-78fb4378372sm59887097b3.12.2025.12.23.16.32.34
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 23 Dec 2025 16:28:54 -0800 (PST)
+        Tue, 23 Dec 2025 16:32:35 -0800 (PST)
+Date: Tue, 23 Dec 2025 16:32:30 -0800
 From: Bobby Eshleman <bobbyeshleman@gmail.com>
-Subject: [PATCH RFC net-next v13 00/13] vsock: add namespace support to
- vhost-vsock and loopback
-Date: Tue, 23 Dec 2025 16:28:34 -0800
-Message-Id: <20251223-vsock-vmtest-v13-0-9d6db8e7c80b@meta.com>
+To: Stefano Garzarella <sgarzare@redhat.com>
+Cc: Paolo Abeni <pabeni@redhat.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Simon Horman <horms@kernel.org>,
+	Stefan Hajnoczi <stefanha@redhat.com>,
+	"Michael S. Tsirkin" <mst@redhat.com>,
+	Jason Wang <jasowang@redhat.com>,
+	Eugenio =?iso-8859-1?Q?P=E9rez?= <eperezma@redhat.com>,
+	Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
+	"K. Y. Srinivasan" <kys@microsoft.com>,
+	Haiyang Zhang <haiyangz@microsoft.com>,
+	Wei Liu <wei.liu@kernel.org>, Dexuan Cui <decui@microsoft.com>,
+	Bryan Tan <bryan-bt.tan@broadcom.com>,
+	Vishnu Dasa <vishnu.dasa@broadcom.com>,
+	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>,
+	Shuah Khan <shuah@kernel.org>, linux-kernel@vger.kernel.org,
+	virtualization@lists.linux.dev, netdev@vger.kernel.org,
+	kvm@vger.kernel.org, linux-hyperv@vger.kernel.org,
+	linux-kselftest@vger.kernel.org, berrange@redhat.com,
+	Sargun Dhillon <sargun@sargun.me>,
+	Bobby Eshleman <bobbyeshleman@meta.com>
+Subject: Re: [PATCH net-next v12 04/12] vsock: add netns support to virtio
+ transports
+Message-ID: <aUs0no+ni8/R8/1N@devvm11784.nha0.facebook.com>
+References: <20251126-vsock-vmtest-v12-0-257ee21cd5de@meta.com>
+ <20251126-vsock-vmtest-v12-4-257ee21cd5de@meta.com>
+ <6cef5a68-375a-4bb6-84f8-fccc00cf7162@redhat.com>
+ <aS8oMqafpJxkRKW5@devvm11784.nha0.facebook.com>
+ <06b7cfea-d366-44f7-943e-087ead2f25c2@redhat.com>
+ <aS9hoOKb7yA5Qgod@devvm11784.nha0.facebook.com>
+ <aTw0F6lufR/nT7OY@devvm11784.nha0.facebook.com>
+ <uidarlot7opjsuozylevyrlgdpjd32tsi7mwll2lsvce226v24@75sq4jdo5tgv>
+ <aUC0Op2trtt3z405@devvm11784.nha0.facebook.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIALUzS2kC/5WTy2rcQBBFf0VoPRWqqt9DCIZAPiDb4EU/SrawN
- eNMK8LB+N/DKIOt9HiTrdC5R1zVfemrnEap/b576U+yjHU8Hvp9R2rX9fk+Hu4ExtLvu56RDSo
- 2sNRjfoBlmqXOkFRkKkzImftd1z+dZBif17wf/fdvX8/PDjLDQZ7n/nbX9fdjnY+n36tvofW1N
- VkT/pu8EBAMykRPJabg883dFMfHT/k4rUELb2HXwAwEKiBFdkqR+BZWG5h9AysgIE9xsGTVoKS
- F9TtssDVrILDCMTi2nIvdwLtLix7NFYSAJkg2FBMR3Uwyx3eh2QhJNawBAi3OZB21yZI+ErK7g
- hAwReMxSRGTGqHdCtuPtUAQ4kA5I6uA+IEwkL2CENDqwpIw+1AaoXsTEjI1rFtZS8klO6DftHP
- x/Rez+vzW1zbqAaFIDF4X5JSwYQnfYbq6PMIzPaAfyJp0vp6Gpg3NV0dPgGBMTtkj6xBdS/OWb
- ksmBgQ2ToQpF1O27te/6zzJz19jHefLRCepNa4b33efL3XwJbXK43DOrbBOGuKhwDg9nY6LTHK
- Y63miCFIkkQvFaqvedF/OfybFKpCP0zTO+y5YjtnkGEI0WYnTNjCZNGhnHGuNGrkMxYT+9vX1D
- 4bMxe2VBAAA
-X-Change-ID: 20250325-vsock-vmtest-b3a21d2102c2
-To: Stefano Garzarella <sgarzare@redhat.com>, 
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
- Simon Horman <horms@kernel.org>, Stefan Hajnoczi <stefanha@redhat.com>, 
- "Michael S. Tsirkin" <mst@redhat.com>, Jason Wang <jasowang@redhat.com>, 
- =?utf-8?q?Eugenio_P=C3=A9rez?= <eperezma@redhat.com>, 
- Xuan Zhuo <xuanzhuo@linux.alibaba.com>, 
- "K. Y. Srinivasan" <kys@microsoft.com>, 
- Haiyang Zhang <haiyangz@microsoft.com>, Wei Liu <wei.liu@kernel.org>, 
- Dexuan Cui <decui@microsoft.com>, Bryan Tan <bryan-bt.tan@broadcom.com>, 
- Vishnu Dasa <vishnu.dasa@broadcom.com>, 
- Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>, 
- Shuah Khan <shuah@kernel.org>, Long Li <longli@microsoft.com>
-Cc: linux-kernel@vger.kernel.org, virtualization@lists.linux.dev, 
- netdev@vger.kernel.org, kvm@vger.kernel.org, linux-hyperv@vger.kernel.org, 
- linux-kselftest@vger.kernel.org, berrange@redhat.com, 
- Sargun Dhillon <sargun@sargun.me>, Bobby Eshleman <bobbyeshleman@gmail.com>, 
- Bobby Eshleman <bobbyeshleman@meta.com>
-X-Mailer: b4 0.14.3
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <aUC0Op2trtt3z405@devvm11784.nha0.facebook.com>
 
-This series adds namespace support to vhost-vsock and loopback. It does
-not add namespaces to any of the other guest transports (virtio-vsock,
-hyperv, or vmci).
+On Mon, Dec 15, 2025 at 05:22:02PM -0800, Bobby Eshleman wrote:
+> On Mon, Dec 15, 2025 at 03:11:22PM +0100, Stefano Garzarella wrote:
+> > On Fri, Dec 12, 2025 at 07:26:15AM -0800, Bobby Eshleman wrote:
+> > > On Tue, Dec 02, 2025 at 02:01:04PM -0800, Bobby Eshleman wrote:
+> > > > On Tue, Dec 02, 2025 at 09:47:19PM +0100, Paolo Abeni wrote:
+> > > > > On 12/2/25 6:56 PM, Bobby Eshleman wrote:
+> > > > > > On Tue, Dec 02, 2025 at 11:18:14AM +0100, Paolo Abeni wrote:
+> > > > > >> On 11/27/25 8:47 AM, Bobby Eshleman wrote:
+> > > > > >>> @@ -674,6 +689,17 @@ static int vhost_vsock_dev_open(struct inode *inode, struct file *file)
+> > > > > >>>  		goto out;
+> > > > > >>>  	}
+> > > > > >>>
+> > > > > >>> +	net = current->nsproxy->net_ns;
+> > > > > >>> +	vsock->net = get_net_track(net, &vsock->ns_tracker, GFP_KERNEL);
+> > > > > >>> +
+> > > > > >>> +	/* Store the mode of the namespace at the time of creation. If this
+> > > > > >>> +	 * namespace later changes from "global" to "local", we want this vsock
+> > > > > >>> +	 * to continue operating normally and not suddenly break. For that
+> > > > > >>> +	 * reason, we save the mode here and later use it when performing
+> > > > > >>> +	 * socket lookups with vsock_net_check_mode() (see vhost_vsock_get()).
+> > > > > >>> +	 */
+> > > > > >>> +	vsock->net_mode = vsock_net_mode(net);
+> > > > > >>
+> > > > > >> I'm sorry for the very late feedback. I think that at very least the
+> > > > > >> user-space needs a way to query if the given transport is in local or
+> > > > > >> global mode, as AFAICS there is no way to tell that when socket creation
+> > > > > >> races with mode change.
+> > > > > >
+> > > > > > Are you thinking something along the lines of sockopt?
+> > > > >
+> > > > > I'd like to see a way for the user-space to query the socket 'namespace
+> > > > > mode'.
+> > > > >
+> > > > > sockopt could be an option; a possibly better one could be sock_diag. Or
+> > > > > you could do both using dumping the info with a shared helper invoked by
+> > > > > both code paths, alike what TCP is doing.
+> > > > > >> Also I'm a bit uneasy with the model implemented here, as 'local' socket
+> > > > > >> may cross netns boundaris and connect to 'local' socket in other netns
+> > > > > >> (if I read correctly patch 2/12). That in turns AFAICS break the netns
+> > > > > >> isolation.
+> > > > > >
+> > > > > > Local mode sockets are unable to communicate with local mode (and global
+> > > > > > mode too) sockets that are in other namespaces. The key piece of code
+> > > > > > for that is vsock_net_check_mode(), where if either modes is local the
+> > > > > > namespaces must be the same.
+> > > > >
+> > > > > Sorry, I likely misread the large comment in patch 2:
+> > > > >
+> > > > > https://lore.kernel.org/netdev/20251126-vsock-vmtest-v12-2-257ee21cd5de@meta.com/
+> > > > >
+> > > > > >> Have you considered instead a slightly different model, where the
+> > > > > >> local/global model is set in stone at netns creation time - alike what
+> > > > > >> /proc/sys/net/ipv4/tcp_child_ehash_entries is doing[1] - and
+> > > > > >> inter-netns connectivity is explicitly granted by the admin (I guess
+> > > > > >> you will need new transport operations for that)?
+> > > > > >>
+> > > > > >> /P
+> > > > > >>
+> > > > > >> [1] tcp allows using per-netns established socket lookup tables - as
+> > > > > >> opposed to the default global lookup table (even if match always takes
+> > > > > >> in account the netns obviously). The mentioned sysctl specify such
+> > > > > >> configuration for the children namespaces, if any.
+> > > > > >
+> > > > > > I'll save this discussion if the above doesn't resolve your concerns.
+> > > > > I still have some concern WRT the dynamic mode change after netns
+> > > > > creation. I fear some 'unsolvable' (or very hard to solve) race I can't
+> > > > > see now. A tcp_child_ehash_entries-like model will avoid completely the
+> > > > > issue, but I understand it would be a significant change over the
+> > > > > current status.
+> > > > >
+> > > > > "Luckily" the merge window is on us and we have some time to discuss. Do
+> > > > > you have a specific use-case for the ability to change the netns >
+> > > > mode
+> > > > > after creation?
+> > > > >
+> > > > > /P
+> > > > 
+> > > > I don't think there is a hard requirement that the mode be change-able
+> > > > after creation. Though I'd love to avoid such a big change... or at
+> > > > least leave unchanged as much of what we've already reviewed as
+> > > > possible.
+> > > > 
+> > > > In the scheme of defining the mode at creation and following the
+> > > > tcp_child_ehash_entries-ish model, what I'm imagining is:
+> > > > - /proc/sys/net/vsock/child_ns_mode can be set to "local" or "global"
+> > > > - /proc/sys/net/vsock/child_ns_mode is not immutable, can change any
+> > > >   number of times
+> > > > 
+> > > > - when a netns is created, the new netns mode is inherited from
+> > > >   child_ns_mode, being assigned using something like:
+> > > > 
+> > > > 	  net->vsock.ns_mode =
+> > > > 		get_net_ns_by_pid(current->pid)->child_ns_mode
+> > > > 
+> > > > - /proc/sys/net/vsock/ns_mode queries the current mode, returning
+> > > >   "local" or "global", returning value of net->vsock.ns_mode
+> > > > - /proc/sys/net/vsock/ns_mode and net->vsock.ns_mode are immutable and
+> > > >   reject writes
+> > > > 
+> > > > Does that align with what you have in mind?
+> > > 
+> > > Hey Paolo, I just wanted to sync up on this one. Does the above align
+> > > with what you envision?
+> > 
+> > Hi Bobby, AFAIK Paolo was at LPC, so there could be some delay.
+> > 
+> > FYI I'll be off from Dec 25 to Jan 6, so if we want to do an RFC in the
+> > middle, I'll do my best to take a look before my time off.
+> > 
+> > Thanks,
+> > Stefano
 
-The current revision supports two modes: local and global. Local
-mode is complete isolation of namespaces, while global mode is complete
-sharing between namespaces of CIDs (the original behavior).
+Just sent this out, though I acknowledge its pretty last minute WRT
+your time off.
 
-The mode is set using the parent namespace's
-/proc/sys/net/vsock/child_ns_mode and inherited when a new namespace is
-created. The mode of the current namespace can be queried by reading
-/proc/sys/net/vsock/ns_mode. The mode can not change after the namespace
-has been created.
+If I don't hear from you before then, have a good holiday!
 
-Modes are per-netns. This allows a system to configure namespaces
-independently (some may share CIDs, others are completely isolated).
-This also supports future possible mixed use cases, where there may be
-namespaces in global mode spinning up VMs while there are mixed mode
-namespaces that provide services to the VMs, but are not allowed to
-allocate from the global CID pool (this mode is not implemented in this
-series).
-
-Additionally, added tests for the new namespace features:
-
-tools/testing/selftests/vsock/vmtest.sh
-1..25
-ok 1 vm_server_host_client
-ok 2 vm_client_host_server
-ok 3 vm_loopback
-ok 4 ns_host_vsock_ns_mode_ok
-ok 5 ns_host_vsock_child_ns_mode_ok
-ok 6 ns_global_same_cid_fails
-ok 7 ns_local_same_cid_ok
-ok 8 ns_global_local_same_cid_ok
-ok 9 ns_local_global_same_cid_ok
-ok 10 ns_diff_global_host_connect_to_global_vm_ok
-ok 11 ns_diff_global_host_connect_to_local_vm_fails
-ok 12 ns_diff_global_vm_connect_to_global_host_ok
-ok 13 ns_diff_global_vm_connect_to_local_host_fails
-ok 14 ns_diff_local_host_connect_to_local_vm_fails
-ok 15 ns_diff_local_vm_connect_to_local_host_fails
-ok 16 ns_diff_global_to_local_loopback_local_fails
-ok 17 ns_diff_local_to_global_loopback_fails
-ok 18 ns_diff_local_to_local_loopback_fails
-ok 19 ns_diff_global_to_global_loopback_ok
-ok 20 ns_same_local_loopback_ok
-ok 21 ns_same_local_host_connect_to_local_vm_ok
-ok 22 ns_same_local_vm_connect_to_local_host_ok
-ok 23 ns_delete_vm_ok
-ok 24 ns_delete_host_ok
-ok 25 ns_delete_both_ok
-SUMMARY: PASS=25 SKIP=0 FAIL=0
-
-Thanks again for everyone's help and reviews!
-
-Suggested-by: Sargun Dhillon <sargun@sargun.me>
-Signed-off-by: Bobby Eshleman <bobbyeshleman@gmail.com>
-
-Changes in v13:
-- add support for immutable sysfs ns_mode and inheritance from sysfs child_ns_mode
-- remove passing around of net_mode, can be accessed now via
-  vsock_net_mode(net) since it is immutable
-- update tests for new uAPI
-- add one patch to extend the kselftest timeout (it was starting to
-  fail with the new tests added)
-- Link to v12: https://lore.kernel.org/r/20251126-vsock-vmtest-v12-0-257ee21cd5de@meta.com
-
-Changes in v12:
-- add ns mode checking to _allow() callbacks to reject local mode for
-  incompatible transports (Stefano)
-- flip vhost/loopback to return true for stream_allow() and
-  seqpacket_allow() in "vsock: add netns support to virtio transports"
-  (Stefano)
-- add VMADDR_CID_ANY + local mode documentation in af_vsock.c (Stefano)
-- change "selftests/vsock: add tests for host <-> vm connectivity with
-  namespaces" to skip test 29 in vsock_test for namespace local
-  vsock_test calls in a host local-mode namespace. There is a
-  false-positive edge case for that test encountered with the
-  ->stream_allow() approach. More details in that patch.
-- updated cover letter with new test output
-- Link to v11: https://lore.kernel.org/r/20251120-vsock-vmtest-v11-0-55cbc80249a7@meta.com
-
-Changes in v11:
-- vmtest: add a patch to use ss in wait_for_listener functions and
-  support vsock, tcp, and unix. Change all patches to use the new
-  functions.
-- vmtest: add a patch to re-use vm dmesg / warn counting functions
-- Link to v10: https://lore.kernel.org/r/20251117-vsock-vmtest-v10-0-df08f165bf3e@meta.com
-
-Changes in v10:
-- Combine virtio common patches into one (Stefano)
-- Resolve vsock_loopback virtio_transport_reset_no_sock() issue
-  with info->vsk setting. This eliminates the need for skb->cb,
-  so remove skb->cb patches.
-- many line width 80 fixes
-- Link to v9: https://lore.kernel.org/all/20251111-vsock-vmtest-v9-0-852787a37bed@meta.com
-
-Changes in v9:
-- reorder loopback patch after patch for virtio transport common code
-- remove module ordering tests patch because loopback no longer depends
-  on pernet ops
-- major simplifications in vsock_loopback
-- added a new patch for blocking local mode for guests, added test case
-  to check
-- add net ref tracking to vsock_loopback patch
-- Link to v8: https://lore.kernel.org/r/20251023-vsock-vmtest-v8-0-dea984d02bb0@meta.com
-
-Changes in v8:
-- Break generic cleanup/refactoring patches into standalone series,
-  remove those from this series
-- Link to dependency: https://lore.kernel.org/all/20251022-vsock-selftests-fixes-and-improvements-v1-0-edeb179d6463@meta.com/
-- Link to v7: https://lore.kernel.org/r/20251021-vsock-vmtest-v7-0-0661b7b6f081@meta.com
-
-Changes in v7:
-- fix hv_sock build
-- break out vmtest patches into distinct, more well-scoped patches
-- change `orig_net_mode` to `net_mode`
-- many fixes and style changes in per-patch change sets (see individual
-  patches for specific changes)
-- optimize `virtio_vsock_skb_cb` layout
-- update commit messages with more useful descriptions
-- vsock_loopback: use orig_net_mode instead of current net mode
-- add tests for edge cases (ns deletion, mode changing, loopback module
-  load ordering)
-- Link to v6: https://lore.kernel.org/r/20250916-vsock-vmtest-v6-0-064d2eb0c89d@meta.com
-
-Changes in v6:
-- define behavior when mode changes to local while socket/VM is alive
-- af_vsock: clarify description of CID behavior
-- af_vsock: use stronger langauge around CID rules (dont use "may")
-- af_vsock: improve naming of buf/buffer
-- af_vsock: improve string length checking on proc writes
-- vsock_loopback: add space in struct to clarify lock protection
-- vsock_loopback: do proper cleanup/unregister on vsock_loopback_exit()
-- vsock_loopback: use virtio_vsock_skb_net() instead of sock_net()
-- vsock_loopback: set loopback to NULL after kfree()
-- vsock_loopback: use pernet_operations and remove callback mechanism
-- vsock_loopback: add macros for "global" and "local"
-- vsock_loopback: fix length checking
-- vmtest.sh: check for namespace support in vmtest.sh
-- Link to v5: https://lore.kernel.org/r/20250827-vsock-vmtest-v5-0-0ba580bede5b@meta.com
-
-Changes in v5:
-- /proc/net/vsock_ns_mode -> /proc/sys/net/vsock/ns_mode
-- vsock_global_net -> vsock_global_dummy_net
-- fix netns lookup in vhost_vsock to respect pid namespaces
-- add callbacks for vsock_loopback to avoid circular dependency
-- vmtest.sh loads vsock_loopback module
-- remove vsock_net_mode_can_set()
-- change vsock_net_write_mode() to return true/false based on success
-- make vsock_net_mode enum instead of u8
-- Link to v4: https://lore.kernel.org/r/20250805-vsock-vmtest-v4-0-059ec51ab111@meta.com
-
-Changes in v4:
-- removed RFC tag
-- implemented loopback support
-- renamed new tests to better reflect behavior
-- completed suite of tests with permutations of ns modes and vsock_test
-  as guest/host
-- simplified socat bridging with unix socket instead of tcp + veth
-- only use vsock_test for success case, socat for failure case (context
-  in commit message)
-- lots of cleanup
-
-Changes in v3:
-- add notion of "modes"
-- add procfs /proc/net/vsock_ns_mode
-- local and global modes only
-- no /dev/vhost-vsock-netns
-- vmtest.sh already merged, so new patch just adds new tests for NS
-- Link to v2:
-  https://lore.kernel.org/kvm/20250312-vsock-netns-v2-0-84bffa1aa97a@gmail.com
-
-Changes in v2:
-- only support vhost-vsock namespaces
-- all g2h namespaces retain old behavior, only common API changes
-  impacted by vhost-vsock changes
-- add /dev/vhost-vsock-netns for "opt-in"
-- leave /dev/vhost-vsock to old behavior
-- removed netns module param
-- Link to v1:
-  https://lore.kernel.org/r/20200116172428.311437-1-sgarzare@redhat.com
-
-Changes in v1:
-- added 'netns' module param to vsock.ko to enable the
-  network namespace support (disabled by default)
-- added 'vsock_net_eq()' to check the "net" assigned to a socket
-  only when 'netns' support is enabled
-- Link to RFC: https://patchwork.ozlabs.org/cover/1202235/
-
----
-Bobby Eshleman (13):
-      vsock: add per-net vsock NS mode state
-      vsock: add netns to vsock core
-      virtio: set skb owner of virtio_transport_reset_no_sock() reply
-      vsock: add netns support to virtio transports
-      selftests/vsock: increase timeout to 1200
-      selftests/vsock: add namespace helpers to vmtest.sh
-      selftests/vsock: prepare vm management helpers for namespaces
-      selftests/vsock: add vm_dmesg_{warn,oops}_count() helpers
-      selftests/vsock: use ss to wait for listeners instead of /proc/net
-      selftests/vsock: add tests for proc sys vsock ns_mode
-      selftests/vsock: add namespace tests for CID collisions
-      selftests/vsock: add tests for host <-> vm connectivity with namespaces
-      selftests/vsock: add tests for namespace deletion
-
- MAINTAINERS                             |    1 +
- drivers/vhost/vsock.c                   |   44 +-
- include/linux/virtio_vsock.h            |    9 +-
- include/net/af_vsock.h                  |   53 +-
- include/net/net_namespace.h             |    4 +
- include/net/netns/vsock.h               |   17 +
- net/vmw_vsock/af_vsock.c                |  296 ++++++++-
- net/vmw_vsock/hyperv_transport.c        |    7 +-
- net/vmw_vsock/virtio_transport.c        |   22 +-
- net/vmw_vsock/virtio_transport_common.c |   62 +-
- net/vmw_vsock/vmci_transport.c          |   26 +-
- net/vmw_vsock/vsock_loopback.c          |   22 +-
- tools/testing/selftests/vsock/settings  |    2 +-
- tools/testing/selftests/vsock/vmtest.sh | 1055 +++++++++++++++++++++++++++++--
- 14 files changed, 1487 insertions(+), 133 deletions(-)
----
-base-commit: 962ac5ca99a5c3e7469215bf47572440402dfd59
-change-id: 20250325-vsock-vmtest-b3a21d2102c2
-prerequisite-message-id: <20251022-vsock-selftests-fixes-and-improvements-v1-0-edeb179d6463@meta.com>
-prerequisite-patch-id: a2eecc3851f2509ed40009a7cab6990c6d7cfff5
-prerequisite-patch-id: 501db2100636b9c8fcb3b64b8b1df797ccbede85
-prerequisite-patch-id: ba1a2f07398a035bc48ef72edda41888614be449
-prerequisite-patch-id: fd5cc5445aca9355ce678e6d2bfa89fab8a57e61
-prerequisite-patch-id: 795ab4432ffb0843e22b580374782e7e0d99b909
-prerequisite-patch-id: 1499d263dc933e75366c09e045d2125ca39f7ddd
-prerequisite-patch-id: f92d99bb1d35d99b063f818a19dcda999152d74c
-prerequisite-patch-id: e3296f38cdba6d903e061cff2bbb3e7615e8e671
-prerequisite-patch-id: bc4662b4710d302d4893f58708820fc2a0624325
-prerequisite-patch-id: f8991f2e98c2661a706183fde6b35e2b8d9aedcf
-prerequisite-patch-id: 44bf9ed69353586d284e5ee63d6fffa30439a698
-prerequisite-patch-id: d50621bc630eeaf608bbaf260370c8dabf6326df
-
-Best regards,
--- 
-Bobby Eshleman <bobbyeshleman@meta.com>
-
+Best,
+Bobby
