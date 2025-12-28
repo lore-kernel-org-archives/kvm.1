@@ -1,29 +1,29 @@
-Received: from outbound.pv.icloud.com (p-west1-cluster5-host9-snip4-10.eps.apple.com [57.103.66.201])
+Received: from outbound.pv.icloud.com (p-west1-cluster3-host8-snip4-10.eps.apple.com [57.103.66.63])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D9272E613A
-	for <kvm@vger.kernel.org>; Sun, 28 Dec 2025 23:58:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=57.103.66.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F2312E7161
+	for <kvm@vger.kernel.org>; Sun, 28 Dec 2025 23:58:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=57.103.66.63
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1766966296; cv=none; b=CyM+n9RAMGayLmk+y7ku1jiqKSQCA13ZdoOhC1ZnR+lypIMZYALYunNIsrJ+3CmSITMFBIB7rRV99+X2CLfwBqAqp645QRI/awR+O9ojR/e2iGRm/YoTV9g6AqeQ6SDNsjct8b/HDAkGdxthw+KqiPAioojPQktvYgJDuj7NVgQ=
+	t=1766966300; cv=none; b=hpZc1/SwvhIE4iMGZmkoPpZ0TgE7u/tRjbFacwDDejVyQhQhLW7H20neb4OD2eKpxwSy7J8ZMbIX92jLVRdn6WYLblf6HwwWiesuEtV8Osjmplsm6KOFcA864yoy+ItZ1BcPzvzAaUNhDxpX8I+rko+Xd183z+xXXlqX9NbdMx4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1766966296; c=relaxed/simple;
-	bh=3MBWmOuS36ltBs6IVmw/mc/3ftEDOleFMNQm8tXwy8s=;
+	s=arc-20240116; t=1766966300; c=relaxed/simple;
+	bh=xilhZDuSkA7eGtOZC7tjHtfk4fpXjCmpCFDIaTzGv1Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uFCFREJQ9Hsy15RiHli5G+FfdeH5SGF8UIoB3AnxlRtWHUaq6sH1fMhdFcSTSu/S8yKvaPai+C7uxrKlm1a+gfSmBcgBwFGxRkgPRaOQ8PgmvqdlwOIgfEFzsHvU650EollgseCvCMjqkq0tj7xWe3wOhLYUm118wydJ8WiziIk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=unpredictable.fr; spf=pass smtp.mailfrom=unpredictable.fr; dkim=pass (2048-bit key) header.d=unpredictable.fr header.i=@unpredictable.fr header.b=Cc80Y0vB; arc=none smtp.client-ip=57.103.66.201
+	 MIME-Version; b=DopCzhPC8POoC70/jBNRDQwphGKms5IiFG7sKnYdSZRfU8ZiZ3y/cjvc3VK0jiJ8moatvSHForUO+aXcO9JS9nZ1KjNS6pCdisM+zUYTsV/1efRPny2yYOoNdpX239biGq7T3O4AhWObEYrjjk43cU5vs2nTT77pk9vFgfB7V4A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=unpredictable.fr; spf=pass smtp.mailfrom=unpredictable.fr; dkim=pass (2048-bit key) header.d=unpredictable.fr header.i=@unpredictable.fr header.b=eKqhoxot; arc=none smtp.client-ip=57.103.66.63
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=unpredictable.fr
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=unpredictable.fr
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=unpredictable.fr header.i=@unpredictable.fr header.b="Cc80Y0vB"
+	dkim=pass (2048-bit key) header.d=unpredictable.fr header.i=@unpredictable.fr header.b="eKqhoxot"
 Received: from outbound.pv.icloud.com (unknown [127.0.0.2])
-	by p00-icloudmta-asmtp-us-west-1a-60-percent-5 (Postfix) with ESMTPS id 09367180075F;
-	Sun, 28 Dec 2025 23:58:07 +0000 (UTC)
-Dkim-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=unpredictable.fr; s=sig1; bh=KNda2FnGVdB+1PuvMJJo6JwnL0/5/2Oo7u+nyBw0Jtc=; h=From:To:Subject:Date:Message-ID:MIME-Version:x-icloud-hme; b=Cc80Y0vB5ZSeGN8OuhTNFNsqRAyw1TtlVWmhCPuAoE5YBOgb4dEUJKBWFRbd9aQuR5Ss9mvu6jocfbTyjcbpZsVcRjFQh3sUhZFtYZXgIj6ri9PM1n1KlCOXXyOjaHluMraUN6dcGk4uPibgB8Ll/iRQGRwSUEE/ugoAcgrnFF1f02nspHi1OtJvnrXBMvRUDtGc756LpcPkomH3qqSyX3rNfHlU5ZCE5GYp/HN2rctl4UBJOUcTOJ73l00dkBjBMGvqu+62teqMAGvd/OM7hJ+1BSLJcZubCcbGt7GUsASzzYgOL49wG3Xe6i09GWuBA6bOcVvfo9tR7u/2RrH0Gg==
+	by p00-icloudmta-asmtp-us-west-1a-60-percent-5 (Postfix) with ESMTPS id 003BC1800755;
+	Sun, 28 Dec 2025 23:58:17 +0000 (UTC)
+Dkim-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=unpredictable.fr; s=sig1; bh=SIxSFA0VmEGoMlWfyikaE4kpHd7S/1I8D1yFZzd3Z5s=; h=From:To:Subject:Date:Message-ID:MIME-Version:x-icloud-hme; b=eKqhoxotfXAO3nZzopBIkf9KhYF46ZtdlAdLucLly6TEBahnqAZUBxpyXxvUtYi5lOayv9gS9KKReP7FjUDeqlKUfrpORrQ65shfQkP2UfvSMxdEFvD/CGkMXXQQx2JvEk3JU11J/f1fwwWT/LQrAZ/rsC2Novjw9tQmiD+zpLy5Iwj2sn6jsORXrmiq269UJ+a7oqOZo0LJ/dawAr+MpD4T0gignjPf0EmNnpr5KOynAVKyc9QYm9BpBrjJIGfPhZFz+oXskzmGFqHq9Y09gIFWYYbEZBkiX9CyyG5tPBE0kwxuma59offKlaM0Hv6uBU1QvCF1X93oQ4SGrzy7ZQ==
 mail-alias-created-date: 1752046281608
 Received: from localhost.localdomain (unknown [17.56.9.36])
-	by p00-icloudmta-asmtp-us-west-1a-60-percent-5 (Postfix) with ESMTPSA id 37F5B1800755;
-	Sun, 28 Dec 2025 23:58:02 +0000 (UTC)
+	by p00-icloudmta-asmtp-us-west-1a-60-percent-5 (Postfix) with ESMTPSA id 08541180075D;
+	Sun, 28 Dec 2025 23:58:12 +0000 (UTC)
 From: Mohamed Mediouni <mohamed@unpredictable.fr>
 To: qemu-devel@nongnu.org,
 	mohamed@unpredictable.fr
@@ -51,11 +51,10 @@ Cc: Alexander Graf <agraf@csgraf.de>,
 	Ani Sinha <anisinha@redhat.com>,
 	"Michael S. Tsirkin" <mst@redhat.com>,
 	Mads Ynddal <mads@ynddal.dk>,
-	Cameron Esfahani <dirty@apple.com>,
-	Pierrick Bouvier <pierrick.bouvier@linaro.org>
-Subject: [PATCH v12 24/28] whpx: enable arm64 builds
-Date: Mon, 29 Dec 2025 00:54:18 +0100
-Message-ID: <20251228235422.30383-25-mohamed@unpredictable.fr>
+	Cameron Esfahani <dirty@apple.com>
+Subject: [PATCH v12 26/28] whpx: arm64: check for physical address width after WHPX availability
+Date: Mon, 29 Dec 2025 00:54:20 +0100
+Message-ID: <20251228235422.30383-27-mohamed@unpredictable.fr>
 X-Mailer: git-send-email 2.50.1
 In-Reply-To: <20251228235422.30383-1-mohamed@unpredictable.fr>
 References: <20251228235422.30383-1-mohamed@unpredictable.fr>
@@ -66,75 +65,78 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMjI4MDIyMyBTYWx0ZWRfX96raMmH+vzwi
- vMDNQYRvozKfq0YvcbS2rScyJjDnp+3SfE4fTlk8ZgCwdgHjFBT0bR3NFxr2Mf3e6665/wP5zFj
- xu22+CZc7Vgib0IC1x0YBDy/cmJGFIw3XOpgRO9JALlDU2mRuuTrAaQTNQU1EwI/j2g1Lprq+Gu
- xdk/CDOu1LakFGjqPF3iqlNmM7R0rpIgG3nBICFl6okhzKGC7OipSRf3rXCy/sU+7CeuOhuL86g
- EDjSueR4tmXCp8NOf59XJps6qXQwBLbbTYoXsCW/kJ37vLfdbryzEWQ1yhAPnGMp30C1Mj1Pz0Y
- m80V4TO5uizQKtl1DsL
-X-Authority-Info: v=2.4 cv=csSWUl4i c=1 sm=1 tr=0 ts=6951c413 cx=c_apl:c_pps
+X-Proofpoint-ORIG-GUID: R22yr3iHXzbLNSOLcCo-r4Muc--TW-k5
+X-Proofpoint-GUID: R22yr3iHXzbLNSOLcCo-r4Muc--TW-k5
+X-Authority-Info: v=2.4 cv=FrsIPmrq c=1 sm=1 tr=0 ts=6951c41a cx=c_apl:c_pps
  a=azHRBMxVc17uSn+fyuI/eg==:117 a=azHRBMxVc17uSn+fyuI/eg==:17
- a=wP3pNCr1ah4A:10 a=VkNPw1HP01LnGYTKEx00:22 a=KKAkSRfTAAAA:8
- a=Ck9h3XeVBPDugYI9Na4A:9 a=cvBusfyB2V15izCimMoJ:22
-X-Proofpoint-GUID: 3SD7tV2nlMz17eNSRBslENJ6_NVMFYEe
-X-Proofpoint-ORIG-GUID: 3SD7tV2nlMz17eNSRBslENJ6_NVMFYEe
+ a=wP3pNCr1ah4A:10 a=VkNPw1HP01LnGYTKEx00:22 a=GePjjIfFpqe_pMnJkREA:9
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMjI4MDIyMyBTYWx0ZWRfXyia9Ph/XIE5b
+ gX7U8FhaMOWQgb7T0GrUdK6u91rA1ige7YFnNw8p++CVtnlKyteqjJAXoENWyMWKkFviPqQjImU
+ /gQeBvLoirvEx66BRoFeM2HHM8jCu8vOoFamQetyJEzkN48O7WFkjFFUaxnnHO+962Irw4AI4dz
+ L2rscAevsw69KOpDJ9EeVNJCwnZiT/VktU0uM/7heetB+BWScjBe2r5edwk+yjTpCGTD0IZu0eY
+ QjfEOm+149qPyaRT3jPM/q/MSTp/juIMPVedjnySBw9ywW+oaLNiGd/TNnk4W7KzpdaEzI70FWF
+ rCHoW7YuhDKgO8EoNcz
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
  definitions=2025-12-28_07,2025-12-26_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxscore=0
- clxscore=1030 spamscore=0 mlxlogscore=742 phishscore=0 adultscore=0
- malwarescore=0 bulkscore=0 suspectscore=0 classifier=spam authscore=0
- adjust=0 reason=mlx scancount=1 engine=8.22.0-2510240001
- definitions=main-2512280223
-X-JNJ: AAAAAAAB1MFkOMbyechtoT4PwmZrc8w0/Vg8fgnzC4Q0PTdLdt9m1VZPYcQO71wwrJcns4HsQrOydKJW0jrScbNCIP6AFMa545b1keyhQgagz8Th1Ic+djLkegagsECOq7/z33VPofv+tQcjUxxIXPA97/zPi4qY456A0zRyULiD+18W1f6UdAyyFLJeHZGPHkDW9KP5GT628BnpRI+3/EsfX5kV+eKuETvzy/4ificohvyIBBqEf4KxXvDgR9fbCcSrgdxeZ9qJ+Xy50iBA6jiKKgFY333iCpYDyy7vm32wKjsqTK5G98zLLGVyHKBr8aPicwscX6sb+j+N5q5GQtb4cwAcj0QrmhhukyjCmYXYxuLH5g6PxlNaLYO7XnNG8OIIb8UVdL2BxHmd5pmdlKIeMAbyOgDDywKi5PWDUIC6Zy6QJ2wxo5qUCXUK6TUFJm5RfBCgepWF9HPRaU7GQr5V7gaOi5lUJGNhy1QZsIfDu2XCHC08IkMeDihEHzYL7uelW2bRBZhExSJcZ0jeWOevxCIi4lxboqpRjdhHBL+wiO6nMDeR+CIg66xt2TmfmLWMncGGMUWnhVsM7z9WvHdVfm+NH7aKodeYXSFg0en8o7v/WRtg82vQbElJyx5lLhhS++VFmxwwobGMSkTQfx9Os7gbUUnXey2ziEntvxGglkvc1ATXyq9S2SpHyVLEMUAsaOOJksDeW2SsXS+I8Mkvayu/PKLGbh9E9sicXZf+ZMA8KM6Nhk3UDvXg/egmk18Qu+K1DqWBn50ueHD0EnyBuP/1qz5Daw6xsT33ACz0e7gKm5idWC55rCyXdsjZBRTs11FBzbfakXHmz1e5poa5jNyHZKi992U9y52l+cbmhCM03FgQeC02RQJ3fB4lqh5oB5+uAepIhYviw1l8l2Xo/5T6PHPyMkOSuXiJ+eWjO7UfMZdnAciGvDbjc3JxXBYW1QC88vQ16xU4n+Ne0ZOh7c09E57
- D6WoO
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 adultscore=0
+ malwarescore=0 suspectscore=0 mlxscore=0 mlxlogscore=999 spamscore=0
+ bulkscore=0 phishscore=0 clxscore=1030 classifier=spam authscore=0 adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2510240001 definitions=main-2512280223
+X-JNJ: AAAAAAABbaj3v0A0TchpYF6qqu17QHycPjpvNl4Vv4ZKOOb1vxROCTqOgETSoB0V79Nq2CbW+AhFlKX4uK9ksr+JSmmFuRkM4uXB4cf2AJXvtNYXCXChW4AX1+jPOyWPxnpcpzUYq3jfHeGjiz1xfI++RjkjNoLqMd2qt/J+4+HicVKEQkzg3iiAY6kFwYmjetphmRprl7DYd1G5cOaGwlP8zZpYfEE75KEn60s8bSi62fFMrNDPUbYB6zvrVXPWMrRdDHGIV3b/+08LExWIM4UcaXDTdIVCI53GVh0FPOcHvy/zOtpFuEhXAEunYnCkKjofQdHXwSrQ6+ZJ9wQQc/cC1QdvjUQilFdgNBtn1a15EsabALlV1gL/eneBQwPq1ANiUMy4HwlDa0L+3dciRCqLIz1CZlM2OQV7pPrjtbGUUeD2IqL7UiEryUNbu8bTYtVsyZSnkJ6Ac7hfhBg9qD7kYqUQMvKnoITDKlCZyCIOQAp+TcPmtyhBnQaFgLIye4nMFNU9F7KPaEoegX8os8qGr4qRWALY3O/EPKGGCH6hHRbkQjcsJxN1rYppBaciH2Os1+k3daUPccpAp3q/E2UEQ20+xOUtzsj/ZtR9V6iekg5ryULGOVarCjkXWVTDKQO6mFyHOOUbJSbLc/YX4Wg/whOhqqvG2LCKpjSyS7xwQLUZ0BbZ4/K9uzY7VYH7WuaX5Y2pRfAlCKyqHLw7cnVt/zhPM4tr5RW2jLCWHlfDjRBVk0TmCACV11dqfg3LNVqbgJ12l8NMLgfr6g2ouehvWkcfMO9605UdcgJI74dLLDtjLrpYFrRhxPQ9DAKMdAY+t4CZDE7bT7ZKHEw4R3UqkiRz3ivhDD4+tnz49s5NxEcgKVIxAQx42RFB4Hg7lilpSBG3kZmDQ2xNnwslgq73k/iQ5eQWsQmk+i1at61U3HleaNOxSqU2lOl7mN77iS86r2p+og0YUSjkg1++skTDLnLVyJZ
+ 6
+
+In the case where WHPX isn't supported on the platform, makes the
+intended error appear instead of failing at getting the IPA width.
 
 Signed-off-by: Mohamed Mediouni <mohamed@unpredictable.fr>
-
-Reviewed-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 ---
- meson.build | 20 +++++++++++++-------
- 1 file changed, 13 insertions(+), 7 deletions(-)
+ target/arm/whpx/whpx-all.c | 18 +++++++++---------
+ 1 file changed, 9 insertions(+), 9 deletions(-)
 
-diff --git a/meson.build b/meson.build
-index 14b1160c15..7421ead19e 100644
---- a/meson.build
-+++ b/meson.build
-@@ -317,7 +317,8 @@ accelerator_targets += { 'CONFIG_XEN': xen_targets }
+diff --git a/target/arm/whpx/whpx-all.c b/target/arm/whpx/whpx-all.c
+index eea20f5e5e..2e5ece45ea 100644
+--- a/target/arm/whpx/whpx-all.c
++++ b/target/arm/whpx/whpx-all.c
+@@ -678,7 +678,7 @@ uint32_t whpx_arm_get_ipa_bit_size(void)
+         WHvCapabilityCodePhysicalAddressWidth, &whpx_cap,
+         sizeof(whpx_cap), &whpx_cap_size);
+     if (FAILED(hr)) {
+-        error_report("WHPX: failed to get supported"
++        error_report("WHPX: failed to get supported "
+              "physical address width, hr=%08lx", hr);
+     }
  
- if cpu == 'aarch64'
-   accelerator_targets += {
--    'CONFIG_HVF': ['aarch64-softmmu']
-+    'CONFIG_HVF': ['aarch64-softmmu'],
-+    'CONFIG_WHPX': ['aarch64-softmmu']
-   }
- elif cpu == 'x86_64'
-   accelerator_targets += {
-@@ -883,13 +884,18 @@ if get_option('mshv').allowed() and host_os == 'linux'
- endif
+@@ -909,14 +909,6 @@ int whpx_accel_init(AccelState *as, MachineState *ms)
+         goto error;
+     }
  
- if get_option('whpx').allowed() and host_os == 'windows'
--  if get_option('whpx').enabled() and host_machine.cpu() != 'x86_64'
--    error('WHPX requires 64-bit host')
--  elif cc.has_header('winhvplatform.h', required: get_option('whpx')) and \
--       cc.has_header('winhvemulation.h', required: get_option('whpx'))
--    accelerators += 'CONFIG_WHPX'
-+  if cpu == 'i386'
-+    if get_option('whpx').enabled()
-+     error('WHPX requires 64-bit host')
-+    endif
-+   # Leave CONFIG_WHPX disabled
-+  else
-+    if cc.has_header('winhvplatform.h', required: get_option('whpx')) and \
-+      cc.has_header('winhvemulation.h', required: get_option('whpx'))
-+      accelerators += 'CONFIG_WHPX'
-+    endif
-   endif
--endif
-+ endif
+-    if (mc->get_physical_address_range) {
+-        pa_range = mc->get_physical_address_range(ms,
+-            whpx_arm_get_ipa_bit_size(), whpx_arm_get_ipa_bit_size());
+-        if (pa_range < 0) {
+-            return -EINVAL;
+-        }
+-    }
+-
+     whpx->mem_quota = ms->ram_size;
  
- hvf = not_found
- if get_option('hvf').allowed()
+     hr = whp_dispatch.WHvGetCapability(
+@@ -943,6 +935,14 @@ int whpx_accel_init(AccelState *as, MachineState *ms)
+         goto error;
+     }
+ 
++    if (mc->get_physical_address_range) {
++        pa_range = mc->get_physical_address_range(ms,
++            whpx_arm_get_ipa_bit_size(), whpx_arm_get_ipa_bit_size());
++        if (pa_range < 0) {
++            return -EINVAL;
++        }
++    }
++
+     hr = whp_dispatch.WHvCreatePartition(&whpx->partition);
+     if (FAILED(hr)) {
+         error_report("WHPX: Failed to create partition, hr=%08lx", hr);
 -- 
 2.50.1 (Apple Git-155)
 
