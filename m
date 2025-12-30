@@ -1,221 +1,165 @@
-Received: from mx0a-00069f02.pphosted.com (mx0a-00069f02.pphosted.com [205.220.165.32])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A32642FA0DF
-	for <kvm@vger.kernel.org>; Tue, 30 Dec 2025 07:55:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.165.32
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA448212557
+	for <kvm@vger.kernel.org>; Tue, 30 Dec 2025 10:15:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767081337; cv=none; b=srCoicUOnInKbzG2fnvr79dpiNf9b+a29UebuRDZUsMGorSm2brNBN8DoDrlpkAPFl484m0QwGWli23JfdmlvchrmAXyEaYKQXYq1i9kJFJN9vT05N1+E8kxRr0KH/6FgHBV31afp6stoHYzukuinU5Pu6fuHtbaO46h3UrfSbo=
+	t=1767089752; cv=none; b=L0dT6IYXS5MbFCtlYd6NpkC7XLzogMgH65pSoF6lhJKFejd2+rdEbHoJqXfJc610INdiP4KxnHWTk3wR2zmGobCAa49abPrgEkZLgAxegPkesszKlpU9pdH3JePNi+deiuNphVNRbtnjJlV6BJLXvyrCdqTrDkE70osws93DvHc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767081337; c=relaxed/simple;
-	bh=xhz2EhKi8+6WFLdKyXlMy4zufz/oNnEdbwk6q4gL1lI=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lSzLqYE64dg85atsYu77I6pK2P2RWWMGA4JeT84f9I6O9LzlqpG+o7LoZvlGdvVdwg4FNylpoTUD3kvNcdrjkRi725/09mjHzJKM0si/RHFI/Ep88I+wDRzi8HhtAYfzGsWYrFnLwn9zamOXodhUX3vV3lt1RTD5B3PbuPY2Mgo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com; spf=pass smtp.mailfrom=oracle.com; dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b=SAB9RDBF; arc=none smtp.client-ip=205.220.165.32
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oracle.com
+	s=arc-20240116; t=1767089752; c=relaxed/simple;
+	bh=LCt+6pV3SVXX+jVlhPofZ+B+PV2iA9I/7Ha5xrB3hCU=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition; b=St36WZMtz/9pEpuo79Y2iDmEGsM7VnOB6T//K9X5fbLNq4xnCPdqXEbefTbMHin/jg2ssrNKcvdWHVvJZpC1wt+ITr19ip1t0PYFmBbUDaMqw1KzUbMvmICGZHalFeKvUWzyJ4Aqft78Sbd+fi+P/xo4Ws5Kg5J83PY1OCjg4V4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=P0yYMVW3; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=bQ/HbEYj; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b="SAB9RDBF"
-Received: from pps.filterd (m0246629.ppops.net [127.0.0.1])
-	by mx0b-00069f02.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 5BU4VWOq3486435;
-	Tue, 30 Dec 2025 07:54:59 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
-	:content-transfer-encoding:date:from:in-reply-to:message-id
-	:mime-version:references:subject:to; s=corp-2025-04-25; bh=PpqfX
-	O0AE4nhZ3bjaEad9PiibU5jbVkYjn8NJtzC0+U=; b=SAB9RDBFp1FzxyD2eOaFU
-	A07rTbQ2+nmoi+ENzjpghq8ktdi7KNEWI0/4+bRnNAs0xEWdTSB2EuT6DkKflvCZ
-	xs4U/AuCFTAc81IO+T522oetFAz1S7RoBmzOyUQrFRB7e491rZQPe+kwKKPahk1B
-	jq/EpSlzKHH0cq5ZIsLeGVcvZFOvyFr0YdoZTdFO+hLibpyi5MXCn/cpxC2FJIM9
-	i7sA/K8lFtE2W68kvu9106hV9LDmr85sUBsUJ4zBLmgfw9p0cmmdT4vOEhN0yyRU
-	3JYxE397iC5wH9SgpTPKRfxO+FxZMwSPIuoS1gFW9yl+ECk1Nb2pi+9YVJhnjf4P
-	A==
-Received: from iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (iadpaimrmta01.appoci.oracle.com [130.35.100.223])
-	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 4ba7b5j9ku-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 30 Dec 2025 07:54:58 +0000 (GMT)
-Received: from pps.filterd (iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
-	by iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 5BU4lqTD034055;
-	Tue, 30 Dec 2025 07:54:57 GMT
-Received: from pps.reinject (localhost [127.0.0.1])
-	by iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTPS id 4ba5wbp6bs-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 30 Dec 2025 07:54:57 +0000
-Received: from iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
-	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 5BU7smZr005421;
-	Tue, 30 Dec 2025 07:54:56 GMT
-Received: from localhost.localdomain (ca-dev80.us.oracle.com [10.211.9.80])
-	by iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTP id 4ba5wbp6aa-5;
-	Tue, 30 Dec 2025 07:54:56 +0000
-From: Dongli Zhang <dongli.zhang@oracle.com>
-To: qemu-devel@nongnu.org, kvm@vger.kernel.org
-Cc: pbonzini@redhat.com, zhao1.liu@intel.com, mtosatti@redhat.com,
-        sandipan.das@amd.com, babu.moger@amd.com, likexu@tencent.com,
-        like.xu.linux@gmail.com, groug@kaod.org, khorenko@virtuozzo.com,
-        alexander.ivanov@virtuozzo.com, den@virtuozzo.com,
-        davydov-max@yandex-team.ru, xiaoyao.li@intel.com,
-        dapeng1.mi@linux.intel.com, joe.jin@oracle.com, ewanhai-oc@zhaoxin.com,
-        ewanhai@zhaoxin.com
-Subject: [PATCH v8 4/7] target/i386/kvm: query kvm.enable_pmu parameter
-Date: Mon, 29 Dec 2025 23:42:43 -0800
-Message-ID: <20251230074354.88958-5-dongli.zhang@oracle.com>
-X-Mailer: git-send-email 2.43.5
-In-Reply-To: <20251230074354.88958-1-dongli.zhang@oracle.com>
-References: <20251230074354.88958-1-dongli.zhang@oracle.com>
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="P0yYMVW3";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="bQ/HbEYj"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1767089749;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type;
+	bh=QPeHJm+twCiufdOXqLeCn+SgUmZXimx3Kj8OMbSgWcg=;
+	b=P0yYMVW35jxYgBF3YWX+d5Ks1WvgEpHVbY7hSsHdHk78Zw0WyrCeBBSmS2yyK5oTbRjjF3
+	I2ThzC+UAqPDYagw+qh9Y0x6x56cCzUJauXeqWrqndmgRCxf/08HSGzrcABR2iQB8QGVxM
+	4lSXGaXGdADw9gUk4PbTfeYlI1of3DM=
+Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
+ [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-659-44A5UbFqPMW-mHa_C8s4Dg-1; Tue, 30 Dec 2025 05:15:48 -0500
+X-MC-Unique: 44A5UbFqPMW-mHa_C8s4Dg-1
+X-Mimecast-MFC-AGG-ID: 44A5UbFqPMW-mHa_C8s4Dg_1767089747
+Received: by mail-wr1-f70.google.com with SMTP id ffacd0b85a97d-430ffa9fccaso7718805f8f.1
+        for <kvm@vger.kernel.org>; Tue, 30 Dec 2025 02:15:47 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=redhat.com; s=google; t=1767089747; x=1767694547; darn=vger.kernel.org;
+        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=QPeHJm+twCiufdOXqLeCn+SgUmZXimx3Kj8OMbSgWcg=;
+        b=bQ/HbEYjNkNw4GOqt29NjfpwNJkMUoztoEvr64Ppr8lbJ3224HO5X8wrOAe+mil+Pz
+         Tz1I0PKlgmqhMtQFmBGBSCLC/Omr1qWBkrAkVME27WwwXQ/vtgA7j1IqAHRWqRWFRl2G
+         /ns5g2z/FMVxRZEozM550fAkUewyL5nAUJj1T5/Z70GbdMjHTHLhG7+DiZfqEvKPctjV
+         KVM6uHGAP0ULWx1FjNINl3cd7Gcx7vwi7I/xJ84jnZygb5VPe50x62PvVKLT60UjIM3v
+         mGBb0I2g9F9gw0qbl+/IdaOhP4baFcH3/2DCOkfKmwfkVjObQk103KmD6GGz0GXvuTFS
+         a/QQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1767089747; x=1767694547;
+        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=QPeHJm+twCiufdOXqLeCn+SgUmZXimx3Kj8OMbSgWcg=;
+        b=dCf/ekA6xiBhSxj+v22SOpgTgvJ6/6BH8dI2L1Oyn22G8cC7KsQn5YHZAhbH0/HsuO
+         ed9WIVhqPyLM6paj4FaZXPckKdffh7t1FT4SXlInVBL/Svf4/wyakjQl9KmiNi8SE3zI
+         bxJgT65HtEeB3ZxtEYQXEkASj/QREFqphJO/C1YoiGHaGPWpKI2kaxMXPQkkPa6PexQ8
+         qVINbkcIyj8RyY/AdIXyMnF4yPY6SNlcr3gqFSrcu5PsC5Wbf5PIxPXm4oFoIWX6ha3P
+         pskGfibaDOivlQc5iFwiIEJkYlPaXtE9PXciI+1v4AJjysj2sUOXjW0daIRFhcNTY2eR
+         q1fw==
+X-Forwarded-Encrypted: i=1; AJvYcCVZcLbXAxWn3vSwwhzZdwsjDzT6StejgHLJu6QW1n4z4WdzIc2ZhEuqNzHjHgqO7xseUZQ=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyLZXxTvcOhoQV1lP+H8OHsKvx/elqHZivoimoRTv5T8EU5cGm6
+	dTwkVxnD9ZfDGQnMWPawDpaHWHXK7WSrUxJolRdiOUbTM9F+CjGRR4GuTAFTHWIYa1khBa2tcJU
+	6mraaD6zNkBbiNaTzGAU1XNdlIqSn+P0C4FXEdoYDAjooIDX+/4Mr7g==
+X-Gm-Gg: AY/fxX5QpBZVdPLcQBUtIA3A6KlY4aF3Xqz5phrH8gFHFRy2jHNo5dSUiXskMsD73+M
+	viGa7oM77pZtmStNIj9nybMmgWJ3jRV/sd4Cp6p3P82c+tNhoJButPepboxFBF/2ZhkTn1k5Nq7
+	db4csEuXf9Fj3IGXGgNp/hJ03Q89k2GoD+gls6iaNUWGvviGAGdeLm3jUXBM31On+/TpPDnDuuL
+	HFfuMp1IotJVcGJTJvkuZQV+Jzq6aq4Wn/c8F3NKlQwSWEWU5V89vq6lkD1GUBYv24/d/Z4BlO0
+	i/4Gu2gd7ZxtQOWzGxyRZoBLPqL9RfGOKeK38GJ8BR1A5mtktojCXV2hBVBamfKoq0gNdXDVPh4
+	9o1aKQ2HN1Rmm3onmqtbyTsyN+PT2LJNs3Q==
+X-Received: by 2002:a05:6000:2503:b0:431:a33:d872 with SMTP id ffacd0b85a97d-4324e4c1219mr30005604f8f.8.1767089746604;
+        Tue, 30 Dec 2025 02:15:46 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IEbvOFHJ91a0TKLxq+k7tMABBS8U1GQCYZPCELRU5Zsc1Gaj+GYCwYcD6RmChYOtX8+5x3fqQ==
+X-Received: by 2002:a05:6000:2503:b0:431:a33:d872 with SMTP id ffacd0b85a97d-4324e4c1219mr30005566f8f.8.1767089746108;
+        Tue, 30 Dec 2025 02:15:46 -0800 (PST)
+Received: from redhat.com (IGLD-80-230-31-118.inter.net.il. [80.230.31.118])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-4324e9ba877sm67681523f8f.0.2025.12.30.02.15.43
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 30 Dec 2025 02:15:45 -0800 (PST)
+Date: Tue, 30 Dec 2025 05:15:42 -0500
+From: "Michael S. Tsirkin" <mst@redhat.com>
+To: linux-kernel@vger.kernel.org
+Cc: Cong Wang <xiyou.wangcong@gmail.com>, Jonathan Corbet <corbet@lwn.net>,
+	Olivia Mackall <olivia@selenic.com>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
+	Jason Wang <jasowang@redhat.com>,
+	Paolo Bonzini <pbonzini@redhat.com>,
+	Stefan Hajnoczi <stefanha@redhat.com>,
+	Eugenio =?utf-8?B?UMOpcmV6?= <eperezma@redhat.com>,
+	"James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Gerd Hoffmann <kraxel@redhat.com>,
+	Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
+	Marek Szyprowski <m.szyprowski@samsung.com>,
+	Robin Murphy <robin.murphy@arm.com>,
+	Stefano Garzarella <sgarzare@redhat.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>, Petr Tesarik <ptesarik@suse.com>,
+	Leon Romanovsky <leon@kernel.org>, Jason Gunthorpe <jgg@ziepe.ca>,
+	linux-doc@vger.kernel.org, linux-crypto@vger.kernel.org,
+	virtualization@lists.linux.dev, linux-scsi@vger.kernel.org,
+	iommu@lists.linux.dev, kvm@vger.kernel.org, netdev@vger.kernel.org
+Subject: [PATCH RFC 00/13] fix DMA aligment issues around virtio
+Message-ID: <cover.1767089672.git.mst@redhat.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
- definitions=2025-12-29_07,2025-12-30_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 spamscore=0 suspectscore=0
- malwarescore=0 bulkscore=0 mlxlogscore=999 phishscore=0 adultscore=0
- mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2512120000 definitions=main-2512300070
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMjMwMDA3MCBTYWx0ZWRfX0xvmm9z2S7Kc
- /wghXo5W5pyH69HCAxYN4dRAAdZkx7i77yNOqj59MZWN0xyCXBvabgOLobiCjWT2Nr3++KdEe2b
- 7KbQPV0J4Hx3PcUeBGyZwRxtmCmwhoeZLWHGht3j4t9fA9ZXy68SeUsCd9RV7FBYK4tp5W1KI8h
- W82a++Fzf799ZpxWLrU4eAiz2spGd8wXQXugrMQIhCJlhBFBwQHSYtdxQEiTkyOcmknHlXuzRBi
- f3XbCZ0lyUbQzmTdIVFx1MfEf84FTTZmzuEUX0WTOg7PbBToguFQUsrGYAjIjCRSbF5EnokiBmB
- UDrkFVfRFg2YmegzUWM6HnoNB5+qOemvZ1wlOX4C+vHODjav8bMzh/maSN2iUOnYErc7BbiLXDr
- HeF6cUI7aIYqiLSXkLCfZ4SL7pElzpVTnA6j8JvzPH8Io7hjaR0B7ZuhxACIa7QgCj40K4fTq+Y
- BZ8vXiyUWvlGoq3xyAqXNXB8y2hSHNzoNljHmoxk=
-X-Proofpoint-GUID: qwBV52epYMs73KYzsSzZxz6GOfYKSNWf
-X-Authority-Analysis: v=2.4 cv=ccjfb3DM c=1 sm=1 tr=0 ts=69538553 b=1 cx=c_pps
- a=zPCbziy225d3KhSqZt3L1A==:117 a=zPCbziy225d3KhSqZt3L1A==:17
- a=wP3pNCr1ah4A:10 a=VkNPw1HP01LnGYTKEx00:22 a=yPCof4ZbAAAA:8 a=QyXUC8HyAAAA:8
- a=nU8S68INVtu7FNaSrVIA:9 cc=ntf awl=host:12109
-X-Proofpoint-ORIG-GUID: qwBV52epYMs73KYzsSzZxz6GOfYKSNWf
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+X-Mailer: git-send-email 2.27.0.106.g8ac3dc51b1
+X-Mutt-Fcc: =sent
 
-When PMU is enabled in QEMU, there is a chance that PMU virtualization is
-completely disabled by the KVM module parameter kvm.enable_pmu=N.
 
-The kvm.enable_pmu parameter is introduced since Linux v5.17.
-Its permission is 0444. It does not change until a reload of the KVM
-module.
+Cong Wang reported dma debug warnings with virtio-vsock
+and proposed a patch, see:
 
-Read the kvm.enable_pmu value from the module sysfs to give a chance to
-provide more information about vPMU enablement.
+https://lore.kernel.org/all/20251228015451.1253271-1-xiyou.wangcong@gmail.com/
 
-Signed-off-by: Dongli Zhang <dongli.zhang@oracle.com>
-Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
-Reviewed-by: Dapeng Mi <dapeng1.mi@linux.intel.com>
----
-Changed since v2:
-  - Rework the code flow following Zhao's suggestion.
-  - Return error when:
-    (*kvm_enable_pmu == 'N' && X86_CPU(cpu)->enable_pmu)
-Changed since v3:
-  - Re-split the cases into enable_pmu and !enable_pmu, following Zhao's
-    suggestion.
-  - Rework the commit messages.
-  - Bring back global static variable 'kvm_pmu_disabled' from v2.
-Changed since v4:
-  - Add Reviewed-by from Zhao.
-Changed since v5:
-  - Rebase on top of most recent QEMU.
-Changed since v6:
-  - Add Reviewed-by from Dapeng Mi.
+however, the issue is more widespread.
+This is an attempt to fix it systematically.
+Note: i2c and gio might also be affected, I am still looking
+into it. Help from maintainers welcome.
 
- target/i386/kvm/kvm.c | 61 +++++++++++++++++++++++++++++++------------
- 1 file changed, 44 insertions(+), 17 deletions(-)
+Early RFC, compile tested only. Sending for early feedback/flames.
+Cursor/claude used liberally mostly for refactoring, and english.
 
-diff --git a/target/i386/kvm/kvm.c b/target/i386/kvm/kvm.c
-index 3b803c662d..338b9558e4 100644
---- a/target/i386/kvm/kvm.c
-+++ b/target/i386/kvm/kvm.c
-@@ -187,6 +187,10 @@ static int has_triple_fault_event;
- static bool has_msr_mcg_ext_ctl;
- 
- static int pmu_cap;
-+/*
-+ * Read from /sys/module/kvm/parameters/enable_pmu.
-+ */
-+static bool kvm_pmu_disabled;
- 
- static struct kvm_cpuid2 *cpuid_cache;
- static struct kvm_cpuid2 *hv_cpuid_cache;
-@@ -2068,23 +2072,30 @@ int kvm_arch_pre_create_vcpu(CPUState *cpu, Error **errp)
-     if (first) {
-         first = false;
- 
--        /*
--         * Since Linux v5.18, KVM provides a VM-level capability to easily
--         * disable PMUs; however, QEMU has been providing PMU property per
--         * CPU since v1.6. In order to accommodate both, have to configure
--         * the VM-level capability here.
--         *
--         * KVM_PMU_CAP_DISABLE doesn't change the PMU
--         * behavior on Intel platform because current "pmu" property works
--         * as expected.
--         */
--        if ((pmu_cap & KVM_PMU_CAP_DISABLE) && !X86_CPU(cpu)->enable_pmu) {
--            ret = kvm_vm_enable_cap(kvm_state, KVM_CAP_PMU_CAPABILITY, 0,
--                                    KVM_PMU_CAP_DISABLE);
--            if (ret < 0) {
--                error_setg_errno(errp, -ret,
--                                 "Failed to set KVM_PMU_CAP_DISABLE");
--                return ret;
-+        if (X86_CPU(cpu)->enable_pmu) {
-+            if (kvm_pmu_disabled) {
-+                warn_report("Failed to enable PMU since "
-+                            "KVM's enable_pmu parameter is disabled");
-+            }
-+        } else {
-+            /*
-+             * Since Linux v5.18, KVM provides a VM-level capability to easily
-+             * disable PMUs; however, QEMU has been providing PMU property per
-+             * CPU since v1.6. In order to accommodate both, have to configure
-+             * the VM-level capability here.
-+             *
-+             * KVM_PMU_CAP_DISABLE doesn't change the PMU
-+             * behavior on Intel platform because current "pmu" property works
-+             * as expected.
-+             */
-+            if (pmu_cap & KVM_PMU_CAP_DISABLE) {
-+                ret = kvm_vm_enable_cap(kvm_state, KVM_CAP_PMU_CAPABILITY, 0,
-+                                        KVM_PMU_CAP_DISABLE);
-+                if (ret < 0) {
-+                    error_setg_errno(errp, -ret,
-+                                     "Failed to set KVM_PMU_CAP_DISABLE");
-+                    return ret;
-+                }
-             }
-         }
-     }
-@@ -3302,6 +3313,7 @@ int kvm_arch_init(MachineState *ms, KVMState *s)
-     int ret;
-     struct utsname utsname;
-     Error *local_err = NULL;
-+    g_autofree char *kvm_enable_pmu;
- 
-     /*
-      * Initialize confidential guest (SEV/TDX) context, if required
-@@ -3437,6 +3449,21 @@ int kvm_arch_init(MachineState *ms, KVMState *s)
- 
-     pmu_cap = kvm_check_extension(s, KVM_CAP_PMU_CAPABILITY);
- 
-+    /*
-+     * The enable_pmu parameter is introduced since Linux v5.17,
-+     * give a chance to provide more information about vPMU
-+     * enablement.
-+     *
-+     * The kvm.enable_pmu's permission is 0444. It does not change
-+     * until a reload of the KVM module.
-+     */
-+    if (g_file_get_contents("/sys/module/kvm/parameters/enable_pmu",
-+                            &kvm_enable_pmu, NULL, NULL)) {
-+        if (*kvm_enable_pmu == 'N') {
-+            kvm_pmu_disabled = true;
-+        }
-+    }
-+
-     return 0;
- }
- 
+DMA maintainers, could you please confirm the DMA core changes
+are ok with you?
+
+Thanks!
+
+
+Michael S. Tsirkin (13):
+  dma-mapping: add __dma_from_device_align_begin/end
+  docs: dma-api: document __dma_align_begin/end
+  dma-mapping: add DMA_ATTR_CPU_CACHE_CLEAN
+  docs: dma-api: document DMA_ATTR_CPU_CACHE_CLEAN
+  dma-debug: track cache clean flag in entries
+  virtio: add virtqueue_add_inbuf_cache_clean API
+  vsock/virtio: fix DMA alignment for event_list
+  vsock/virtio: use virtqueue_add_inbuf_cache_clean for events
+  virtio_input: fix DMA alignment for evts
+  virtio_scsi: fix DMA cacheline issues for events
+  virtio-rng: fix DMA alignment for data buffer
+  virtio_input: use virtqueue_add_inbuf_cache_clean for events
+  vsock/virtio: reorder fields to reduce struct padding
+
+ Documentation/core-api/dma-api-howto.rst  | 42 +++++++++++++
+ Documentation/core-api/dma-attributes.rst |  9 +++
+ drivers/char/hw_random/virtio-rng.c       |  2 +
+ drivers/scsi/virtio_scsi.c                | 18 ++++--
+ drivers/virtio/virtio_input.c             |  5 +-
+ drivers/virtio/virtio_ring.c              | 72 +++++++++++++++++------
+ include/linux/dma-mapping.h               | 17 ++++++
+ include/linux/virtio.h                    |  5 ++
+ kernel/dma/debug.c                        | 26 ++++++--
+ net/vmw_vsock/virtio_transport.c          |  8 ++-
+ 10 files changed, 172 insertions(+), 32 deletions(-)
+
 -- 
-2.39.3
+MST
 
