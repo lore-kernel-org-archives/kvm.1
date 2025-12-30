@@ -1,56 +1,56 @@
 Received: from mail-pj1-f74.google.com (mail-pj1-f74.google.com [209.85.216.74])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 721402E36F1
-	for <kvm@vger.kernel.org>; Tue, 30 Dec 2025 23:02:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 30E913043BE
+	for <kvm@vger.kernel.org>; Tue, 30 Dec 2025 23:02:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.74
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767135733; cv=none; b=X1ZmvAhXrDe3h0Mdd01aGEtMEZ3B+n03vZYKKWpM1jZQiIvnEgRrfjjqSrBtkYqQpmqy1CzseVm4T7U5SrZbxLzupKWjWFNhf6VQ1PK41z5hFfINRsBUyp3OFvbGv7XqU87hiu1BMS5gKprTS4EudMk594iv9ZLTnIgFTgXoJwc=
+	t=1767135736; cv=none; b=eEmRAPIxfY0uAgZvE9zGXz6kiW5XCecNTaYLuhSn4+5S+5Oad/dTZC8OBR2R5ULWtD5qRIJCOXnDlxUh8fGJujJFxY85GkybIglF1OFWq8Sjwxq0WqBO1+QaKrGYlD8pcw7ZiBJew/I6/oJH1NOHriWQI/fAAj0efEGGiSnvfc4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767135733; c=relaxed/simple;
-	bh=BhtOyCRfzVpLTFESld4Vi5QuDQZcBRxr4LUMT100+ew=;
+	s=arc-20240116; t=1767135736; c=relaxed/simple;
+	bh=Yh8Qab0Gq4P0gx+ZK5aVX/2lf28QcgZxjaey8n2Vr4c=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=RiztdCKUX5Xv9/PZMVfMQHyFMyPy69q3F0g44C9hWuf5ZXvWTeR/gV21H34OGKv5DgJw3cT9KsII2WipIAk7wtDdcdRtNlcweq2LMPJk+NuA1bIFxY/dG0L3Tcyye/AA7WwaCWyDYKH6djAt7sPGqC9po/PiV6jUSAa17/A5IQE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=p1xE+NvE; arc=none smtp.client-ip=209.85.216.74
+	 To:Cc:Content-Type; b=gbA6+AcAIH0y8RJw/yEhjhKlV5Iygwpxr3WIyDpA1LHxczmYpSVczy+BifElza46127s/wdYegv/0hwh5f1+4yETgXBiQg3Krp45RcFbXS6LSK2JBL70f2fwYN2lriDSgw5bDYnW9kkodnNW0NWJi3LQImknT9F7dlHNBbPmU/A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=NM4tcSTQ; arc=none smtp.client-ip=209.85.216.74
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="p1xE+NvE"
-Received: by mail-pj1-f74.google.com with SMTP id 98e67ed59e1d1-34c38781efcso20738396a91.2
-        for <kvm@vger.kernel.org>; Tue, 30 Dec 2025 15:02:10 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="NM4tcSTQ"
+Received: by mail-pj1-f74.google.com with SMTP id 98e67ed59e1d1-34eff656256so7531925a91.2
+        for <kvm@vger.kernel.org>; Tue, 30 Dec 2025 15:02:12 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1767135729; x=1767740529; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1767135732; x=1767740532; darn=vger.kernel.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:reply-to:from:to:cc:subject:date:message-id:reply-to;
-        bh=rp9dO+QiHStaM2noTobEg1WWV0+ff87sBjqkUH1s1So=;
-        b=p1xE+NvEZFNo+uzEKeKG7WX32FBEmlqi+fM1DR9LZWG7dIwa9rt+S0ZQB/30QlhTdx
-         ezEhWhTIwObXXK6EiEefm02R6yqy9oXaB5/0lTKEKpRT8zONR1fQutjRhQ9MLJZvEcsE
-         k4IIkV+LhiNtTzcuEsI3PKTx4KRnorGgCbxnDMSMfPrdFbceEEt/wWuIuuA3nY+5Asop
-         l1AXwBLsUj+fz5XyO1WLGXLD/RnLXBvI5q/z6rBT1y7bXiX7oR3mg7rN/nNnPaCwJpmQ
-         xIuZOv0QdsDAqJ7VGc44PjqOtbsB/tzuPwB6VaYoH9CB9m4tx9zdYWU8xZMSn1milE5H
-         JU1w==
+        bh=ja2t3RddJQQ9WtlMGrZPDGGnut4pYDpTPLHSPL1hvlg=;
+        b=NM4tcSTQsnog7kEFqij1HPgUespL5azjSD2YAmvQ16xjGL+BCaCYFxoIACilYFosNi
+         J9YuTRwp53KWD5jEeSjdhngm7TqKnNngnr2iT4wfkODJPBNQwxOYpib1Sc6ypHSbsFjZ
+         5fdNN0Tk9b1bdBD1tdS7zQEYncVPcRiYZpSGe9S1lMj0K+AKs7FPcmv2u+2jc/b7QEQI
+         91vCaSlKw3lo9RIR0sOU9jdfw25Xfu7PhDhYvQSaiKPHYR1bKZ/izvJWuJDHja/pIH7H
+         axIQZzcWnzm+oTOxVKxO6m1dtNiFaH9u7SIriNhgeZLU+BHXhzumlaykruDm1pu+Cuys
+         v9+g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1767135729; x=1767740529;
+        d=1e100.net; s=20230601; t=1767135732; x=1767740532;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:reply-to:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=rp9dO+QiHStaM2noTobEg1WWV0+ff87sBjqkUH1s1So=;
-        b=K/oPqLhw7sAdpmJ1VoxyzCmrS6pEUiYi/hJmfE/guT4YRmPct7ZdeSvE+qIAapj3W6
-         lofi3dI/rpufVrK5EntyIDYZWqPsjLUmV2Hl8cGqpgwlCo2XwcC7UaJlF4awgqJv8U9d
-         Uqbbt5NEDqyrVjAwRY62r9kVvxIx8r0v40LYld/NLgzq1He9Gz17HomwXpTprOkeqK6W
-         30aEB3vnHIXywT7gzmMlESxsCqBlUYEXjcF0f7Xn9MSQt/+JFAD19yRaEwW88rg2N8FH
-         Iz3xvYzPVF2zomnZBR3ZlIse78z/uuYTYuk9OUc9kVymF4Oov3+nqjPCWToR6naBaNwe
-         7Y2g==
-X-Gm-Message-State: AOJu0YxR56xpMcCi0F4KB34KFox306bHC8C1U8PO6T/BDUf7QFZl+AF8
-	RV4sGLlPjkLBl6qiV/wTnSLVBs/juj8TM/lhSfDKSi/nO6TEaBilD17hSMvH7s77vEGK9/DqNXT
-	PGtjfMw==
-X-Google-Smtp-Source: AGHT+IHXiVGp+aLiRnfsWKk0NFKmgA3+F+MNTAgUXfHua357amgtXMsohsm9V2nYhNe7Fz2ha8uNgJNsSiU=
-X-Received: from pjbci19.prod.google.com ([2002:a17:90a:fc93:b0:34a:c039:1428])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:524b:b0:32d:f352:f764
- with SMTP id 98e67ed59e1d1-34e9212a45cmr24810424a91.2.1767135728615; Tue, 30
- Dec 2025 15:02:08 -0800 (PST)
+        bh=ja2t3RddJQQ9WtlMGrZPDGGnut4pYDpTPLHSPL1hvlg=;
+        b=iKBmmVX8lFaVFrxQGTU1hRIDaHIPuDDZJmDUiZpaUolbx0nbSfPHfffYNPPhPA9Nnm
+         QkJOdoxQZM29MpP3JcwIv7osNP2+/KByNdtUjIJgH+9ORKXHOgWLMw2yOktJvasmPRMg
+         wW/NX6SDvQBUAnurt4mADFAU1urrrYbFsq+PZETAeH5uHiOKIjgXWTf2sU/osSjKS7tD
+         Zk7ySnuLsc6JZDI92/SZoH11WltjiTfrBo3zI8USdZSnBmRFjvDumQaaPHHpufB0FQOd
+         ngd3/pXDiRByp0qE8HoZBb5kqTVOGA3lMWFkikUaTIjmpmko71r0udBdoWq/UA+ugUXY
+         HXow==
+X-Gm-Message-State: AOJu0YzTRucjLWyf68y1RFxE60A/6JYA3lbxEJOTaZiHAdYWr/tvba1J
+	TURk8OlBS3L4uDfXFv7CKzKAr2bBF9hPnbx8fiEw6cIV7mvAE8dfK8F3Uv7XGCnM7gxooKJcl0v
+	I/BJdJw==
+X-Google-Smtp-Source: AGHT+IFlmvuQfNmiHzFuNq9XlPth424WfhGaGaW+Waxyx9tMx4HEJVVNAsbuKBuWKPaCjxwrIKXmvslHERQ=
+X-Received: from pjbnw17.prod.google.com ([2002:a17:90b:2551:b0:34c:30f1:8d54])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:3882:b0:340:d511:e167
+ with SMTP id 98e67ed59e1d1-34e9207378fmr28865851a91.0.1767135731850; Tue, 30
+ Dec 2025 15:02:11 -0800 (PST)
 Reply-To: Sean Christopherson <seanjc@google.com>
-Date: Tue, 30 Dec 2025 15:01:38 -0800
+Date: Tue, 30 Dec 2025 15:01:40 -0800
 In-Reply-To: <20251230230150.4150236-1-seanjc@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
@@ -60,8 +60,9 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 References: <20251230230150.4150236-1-seanjc@google.com>
 X-Mailer: git-send-email 2.52.0.351.gbe84eed79e-goog
-Message-ID: <20251230230150.4150236-10-seanjc@google.com>
-Subject: [PATCH v4 09/21] KVM: selftests: Move PTE bitmasks to kvm_mmu
+Message-ID: <20251230230150.4150236-12-seanjc@google.com>
+Subject: [PATCH v4 11/21] KVM: selftests: Stop passing VMX metadata to TDP
+ mapping functions
 From: Sean Christopherson <seanjc@google.com>
 To: Paolo Bonzini <pbonzini@redhat.com>, Marc Zyngier <maz@kernel.org>, 
 	Oliver Upton <oupton@kernel.org>, Tianrui Zhao <zhaotianrui@loongson.cn>, 
@@ -78,314 +79,214 @@ Content-Type: text/plain; charset="UTF-8"
 
 From: Yosry Ahmed <yosry.ahmed@linux.dev>
 
-Move the PTE bitmasks into kvm_mmu to parameterize them for virt mapping
-functions. Introduce helpers to read/write different PTE bits given a
-kvm_mmu.
+The root GPA can now be retrieved from the nested MMU, stop passing VMX
+metadata. This is in preparation for making these functions work for
+NPTs as well.
 
-Drop the 'global' bit definition as it's currently unused, but leave the
-'user' bit as it will be used in coming changes. Opportunisitcally
-rename 'large' to 'huge' as it's more consistent with the kernel naming.
-
-Leave PHYSICAL_PAGE_MASK alone, it's fixed in all page table formats and
-a lot of other macros depend on it. It's tempting to move all the other
-macros to be per-struct instead, but it would be too much noise for
-little benefit.
-
-Keep c_bit and s_bit in vm->arch as they used before the MMU is
-initialized, through  __vmcreate() -> vm_userspace_mem_region_add() ->
-vm_mem_add() -> vm_arch_has_protected_memory().
+Opportunistically drop tdp_pg_map() since it's unused.
 
 No functional change intended.
 
 Signed-off-by: Yosry Ahmed <yosry.ahmed@linux.dev>
-[sean: rename accessors to is_<adjective>_pte()]
 Signed-off-by: Sean Christopherson <seanjc@google.com>
 ---
- .../selftests/kvm/include/x86/kvm_util_arch.h | 16 ++++-
- .../selftests/kvm/include/x86/processor.h     | 28 +++++---
- .../testing/selftests/kvm/lib/x86/processor.c | 71 +++++++++++--------
- 3 files changed, 76 insertions(+), 39 deletions(-)
+ tools/testing/selftests/kvm/include/x86/vmx.h | 11 ++-----
+ .../testing/selftests/kvm/lib/x86/memstress.c | 11 +++----
+ tools/testing/selftests/kvm/lib/x86/vmx.c     | 33 +++++++------------
+ .../selftests/kvm/x86/vmx_dirty_log_test.c    |  9 +++--
+ 4 files changed, 24 insertions(+), 40 deletions(-)
 
-diff --git a/tools/testing/selftests/kvm/include/x86/kvm_util_arch.h b/tools/testing/selftests/kvm/include/x86/kvm_util_arch.h
-index 456e5ca170df..bad381d63b6a 100644
---- a/tools/testing/selftests/kvm/include/x86/kvm_util_arch.h
-+++ b/tools/testing/selftests/kvm/include/x86/kvm_util_arch.h
-@@ -10,7 +10,21 @@
+diff --git a/tools/testing/selftests/kvm/include/x86/vmx.h b/tools/testing/selftests/kvm/include/x86/vmx.h
+index 1fd83c23529a..4dd4c2094ee6 100644
+--- a/tools/testing/selftests/kvm/include/x86/vmx.h
++++ b/tools/testing/selftests/kvm/include/x86/vmx.h
+@@ -557,14 +557,9 @@ bool load_vmcs(struct vmx_pages *vmx);
  
- extern bool is_forced_emulation_enabled;
+ bool ept_1g_pages_supported(void);
  
--struct kvm_mmu_arch {};
-+struct pte_masks {
-+	uint64_t present;
-+	uint64_t writable;
-+	uint64_t user;
-+	uint64_t accessed;
-+	uint64_t dirty;
-+	uint64_t huge;
-+	uint64_t nx;
-+	uint64_t c;
-+	uint64_t s;
-+};
-+
-+struct kvm_mmu_arch {
-+	struct pte_masks pte_masks;
-+};
- 
- struct kvm_vm_arch {
- 	vm_vaddr_t gdt;
-diff --git a/tools/testing/selftests/kvm/include/x86/processor.h b/tools/testing/selftests/kvm/include/x86/processor.h
-index cbac9de29074..b2084434dd8b 100644
---- a/tools/testing/selftests/kvm/include/x86/processor.h
-+++ b/tools/testing/selftests/kvm/include/x86/processor.h
-@@ -362,16 +362,6 @@ static inline unsigned int x86_model(unsigned int eax)
- 	return ((eax >> 12) & 0xf0) | ((eax >> 4) & 0x0f);
+-void tdp_pg_map(struct vmx_pages *vmx, struct kvm_vm *vm, uint64_t nested_paddr,
+-		uint64_t paddr);
+-void tdp_map(struct vmx_pages *vmx, struct kvm_vm *vm, uint64_t nested_paddr,
+-	     uint64_t paddr, uint64_t size);
+-void tdp_identity_map_default_memslots(struct vmx_pages *vmx,
+-				       struct kvm_vm *vm);
+-void tdp_identity_map_1g(struct vmx_pages *vmx, struct kvm_vm *vm,
+-			 uint64_t addr, uint64_t size);
++void tdp_map(struct kvm_vm *vm, uint64_t nested_paddr, uint64_t paddr, uint64_t size);
++void tdp_identity_map_default_memslots(struct kvm_vm *vm);
++void tdp_identity_map_1g(struct kvm_vm *vm,  uint64_t addr, uint64_t size);
+ bool kvm_cpu_has_ept(void);
+ void vm_enable_ept(struct kvm_vm *vm);
+ void prepare_virtualize_apic_accesses(struct vmx_pages *vmx, struct kvm_vm *vm);
+diff --git a/tools/testing/selftests/kvm/lib/x86/memstress.c b/tools/testing/selftests/kvm/lib/x86/memstress.c
+index 00f7f11e5f0e..3319cb57a78d 100644
+--- a/tools/testing/selftests/kvm/lib/x86/memstress.c
++++ b/tools/testing/selftests/kvm/lib/x86/memstress.c
+@@ -59,7 +59,7 @@ uint64_t memstress_nested_pages(int nr_vcpus)
+ 	return 513 + 10 * nr_vcpus;
  }
  
--/* Page table bitfield declarations */
--#define PTE_PRESENT_MASK        BIT_ULL(0)
--#define PTE_WRITABLE_MASK       BIT_ULL(1)
--#define PTE_USER_MASK           BIT_ULL(2)
--#define PTE_ACCESSED_MASK       BIT_ULL(5)
--#define PTE_DIRTY_MASK          BIT_ULL(6)
--#define PTE_LARGE_MASK          BIT_ULL(7)
--#define PTE_GLOBAL_MASK         BIT_ULL(8)
--#define PTE_NX_MASK             BIT_ULL(63)
--
- #define PHYSICAL_PAGE_MASK      GENMASK_ULL(51, 12)
- 
- #define PAGE_SHIFT		12
-@@ -1449,6 +1439,24 @@ enum pg_level {
- #define PG_SIZE_2M PG_LEVEL_SIZE(PG_LEVEL_2M)
- #define PG_SIZE_1G PG_LEVEL_SIZE(PG_LEVEL_1G)
- 
-+#define PTE_PRESENT_MASK(mmu)		((mmu)->arch.pte_masks.present)
-+#define PTE_WRITABLE_MASK(mmu)		((mmu)->arch.pte_masks.writable)
-+#define PTE_USER_MASK(mmu)		((mmu)->arch.pte_masks.user)
-+#define PTE_ACCESSED_MASK(mmu)		((mmu)->arch.pte_masks.accessed)
-+#define PTE_DIRTY_MASK(mmu)		((mmu)->arch.pte_masks.dirty)
-+#define PTE_HUGE_MASK(mmu)		((mmu)->arch.pte_masks.huge)
-+#define PTE_NX_MASK(mmu)		((mmu)->arch.pte_masks.nx)
-+#define PTE_C_BIT_MASK(mmu)		((mmu)->arch.pte_masks.c)
-+#define PTE_S_BIT_MASK(mmu)		((mmu)->arch.pte_masks.s)
-+
-+#define is_present_pte(mmu, pte)	(!!(*(pte) & PTE_PRESENT_MASK(mmu)))
-+#define is_writable_pte(mmu, pte)	(!!(*(pte) & PTE_WRITABLE_MASK(mmu)))
-+#define is_user_pte(mmu, pte)		(!!(*(pte) & PTE_USER_MASK(mmu)))
-+#define is_accessed_pte(mmu, pte)	(!!(*(pte) & PTE_ACCESSED_MASK(mmu)))
-+#define is_dirty_pte(mmu, pte)		(!!(*(pte) & PTE_DIRTY_MASK(mmu)))
-+#define is_huge_pte(mmu, pte)		(!!(*(pte) & PTE_HUGE_MASK(mmu)))
-+#define is_nx_pte(mmu, pte)		(!!(*(pte) & PTE_NX_MASK(mmu)))
-+
- void __virt_pg_map(struct kvm_vm *vm, struct kvm_mmu *mmu, uint64_t vaddr,
- 		   uint64_t paddr,  int level);
- void virt_map_level(struct kvm_vm *vm, uint64_t vaddr, uint64_t paddr,
-diff --git a/tools/testing/selftests/kvm/lib/x86/processor.c b/tools/testing/selftests/kvm/lib/x86/processor.c
-index f25742a804b0..3800f4ff6770 100644
---- a/tools/testing/selftests/kvm/lib/x86/processor.c
-+++ b/tools/testing/selftests/kvm/lib/x86/processor.c
-@@ -156,12 +156,14 @@ bool kvm_is_tdp_enabled(void)
- 		return get_kvm_amd_param_bool("npt");
- }
- 
--static void virt_mmu_init(struct kvm_vm *vm, struct kvm_mmu *mmu)
-+static void virt_mmu_init(struct kvm_vm *vm, struct kvm_mmu *mmu,
-+			  struct pte_masks *pte_masks)
+-static void memstress_setup_ept_mappings(struct vmx_pages *vmx, struct kvm_vm *vm)
++static void memstress_setup_ept_mappings(struct kvm_vm *vm)
  {
- 	/* If needed, create the top-level page table. */
- 	if (!mmu->pgd_created) {
- 		mmu->pgd = vm_alloc_page_table(vm);
- 		mmu->pgd_created = true;
-+		mmu->arch.pte_masks = *pte_masks;
- 	}
- }
+ 	uint64_t start, end;
  
-@@ -170,7 +172,19 @@ void virt_arch_pgd_alloc(struct kvm_vm *vm)
- 	TEST_ASSERT(vm->mode == VM_MODE_PXXVYY_4K,
- 		    "Unknown or unsupported guest mode: 0x%x", vm->mode);
- 
--	virt_mmu_init(vm, &vm->mmu);
-+	struct pte_masks pte_masks = (struct pte_masks){
-+		.present	=	BIT_ULL(0),
-+		.writable	=	BIT_ULL(1),
-+		.user		=	BIT_ULL(2),
-+		.accessed	=	BIT_ULL(5),
-+		.dirty		=	BIT_ULL(6),
-+		.huge		=	BIT_ULL(7),
-+		.nx		=	BIT_ULL(63),
-+		.c		=	vm->arch.c_bit,
-+		.s		=	vm->arch.s_bit,
-+	};
-+
-+	virt_mmu_init(vm, &vm->mmu, &pte_masks);
- }
- 
- static void *virt_get_pte(struct kvm_vm *vm, struct kvm_mmu *mmu,
-@@ -180,7 +194,7 @@ static void *virt_get_pte(struct kvm_vm *vm, struct kvm_mmu *mmu,
- 	uint64_t *page_table = addr_gpa2hva(vm, pt_gpa);
- 	int index = (vaddr >> PG_LEVEL_SHIFT(level)) & 0x1ffu;
- 
--	TEST_ASSERT((*parent_pte == mmu->pgd) || (*parent_pte & PTE_PRESENT_MASK),
-+	TEST_ASSERT((*parent_pte == mmu->pgd) || is_present_pte(mmu, parent_pte),
- 		    "Parent PTE (level %d) not PRESENT for gva: 0x%08lx",
- 		    level + 1, vaddr);
- 
-@@ -199,10 +213,10 @@ static uint64_t *virt_create_upper_pte(struct kvm_vm *vm,
- 
- 	paddr = vm_untag_gpa(vm, paddr);
- 
--	if (!(*pte & PTE_PRESENT_MASK)) {
--		*pte = PTE_PRESENT_MASK | PTE_WRITABLE_MASK;
-+	if (!is_present_pte(mmu, pte)) {
-+		*pte = PTE_PRESENT_MASK(mmu) | PTE_WRITABLE_MASK(mmu);
- 		if (current_level == target_level)
--			*pte |= PTE_LARGE_MASK | (paddr & PHYSICAL_PAGE_MASK);
-+			*pte |= PTE_HUGE_MASK(mmu) | (paddr & PHYSICAL_PAGE_MASK);
- 		else
- 			*pte |= vm_alloc_page_table(vm) & PHYSICAL_PAGE_MASK;
- 	} else {
-@@ -214,7 +228,7 @@ static uint64_t *virt_create_upper_pte(struct kvm_vm *vm,
- 		TEST_ASSERT(current_level != target_level,
- 			    "Cannot create hugepage at level: %u, vaddr: 0x%lx",
- 			    current_level, vaddr);
--		TEST_ASSERT(!(*pte & PTE_LARGE_MASK),
-+		TEST_ASSERT(!is_huge_pte(mmu, pte),
- 			    "Cannot create page table at level: %u, vaddr: 0x%lx",
- 			    current_level, vaddr);
- 	}
-@@ -255,24 +269,24 @@ void __virt_pg_map(struct kvm_vm *vm, struct kvm_mmu *mmu, uint64_t vaddr,
- 	     current_level--) {
- 		pte = virt_create_upper_pte(vm, mmu, pte, vaddr, paddr,
- 					    current_level, level);
--		if (*pte & PTE_LARGE_MASK)
-+		if (is_huge_pte(mmu, pte))
- 			return;
- 	}
- 
- 	/* Fill in page table entry. */
- 	pte = virt_get_pte(vm, mmu, pte, vaddr, PG_LEVEL_4K);
--	TEST_ASSERT(!(*pte & PTE_PRESENT_MASK),
-+	TEST_ASSERT(!is_present_pte(mmu, pte),
- 		    "PTE already present for 4k page at vaddr: 0x%lx", vaddr);
--	*pte = PTE_PRESENT_MASK | PTE_WRITABLE_MASK | (paddr & PHYSICAL_PAGE_MASK);
-+	*pte = PTE_PRESENT_MASK(mmu) | PTE_WRITABLE_MASK(mmu) | (paddr & PHYSICAL_PAGE_MASK);
- 
- 	/*
- 	 * Neither SEV nor TDX supports shared page tables, so only the final
- 	 * leaf PTE needs manually set the C/S-bit.
+@@ -68,16 +68,15 @@ static void memstress_setup_ept_mappings(struct vmx_pages *vmx, struct kvm_vm *v
+ 	 * KVM can shadow the EPT12 with the maximum huge page size supported
+ 	 * by the backing source.
  	 */
- 	if (vm_is_gpa_protected(vm, paddr))
--		*pte |= vm->arch.c_bit;
-+		*pte |= PTE_C_BIT_MASK(mmu);
- 	else
--		*pte |= vm->arch.s_bit;
-+		*pte |= PTE_S_BIT_MASK(mmu);
+-	tdp_identity_map_1g(vmx, vm, 0, 0x100000000ULL);
++	tdp_identity_map_1g(vm, 0, 0x100000000ULL);
+ 
+ 	start = align_down(memstress_args.gpa, PG_SIZE_1G);
+ 	end = align_up(memstress_args.gpa + memstress_args.size, PG_SIZE_1G);
+-	tdp_identity_map_1g(vmx, vm, start, end - start);
++	tdp_identity_map_1g(vm, start, end - start);
  }
  
- void virt_arch_pg_map(struct kvm_vm *vm, uint64_t vaddr, uint64_t paddr)
-@@ -304,7 +318,7 @@ void virt_map_level(struct kvm_vm *vm, uint64_t vaddr, uint64_t paddr,
- static bool vm_is_target_pte(struct kvm_mmu *mmu, uint64_t *pte,
- 			     int *level, int current_level)
+ void memstress_setup_nested(struct kvm_vm *vm, int nr_vcpus, struct kvm_vcpu *vcpus[])
  {
--	if (*pte & PTE_LARGE_MASK) {
-+	if (is_huge_pte(mmu, pte)) {
- 		TEST_ASSERT(*level == PG_LEVEL_NONE ||
- 			    *level == current_level,
- 			    "Unexpected hugepage at level %d", current_level);
-@@ -362,12 +376,13 @@ uint64_t *vm_get_page_table_entry(struct kvm_vm *vm, uint64_t vaddr)
+-	struct vmx_pages *vmx;
+ 	struct kvm_regs regs;
+ 	vm_vaddr_t vmx_gva;
+ 	int vcpu_id;
+@@ -87,11 +86,11 @@ void memstress_setup_nested(struct kvm_vm *vm, int nr_vcpus, struct kvm_vcpu *vc
  
- void virt_arch_dump(FILE *stream, struct kvm_vm *vm, uint8_t indent)
+ 	vm_enable_ept(vm);
+ 	for (vcpu_id = 0; vcpu_id < nr_vcpus; vcpu_id++) {
+-		vmx = vcpu_alloc_vmx(vm, &vmx_gva);
++		vcpu_alloc_vmx(vm, &vmx_gva);
+ 
+ 		/* The EPTs are shared across vCPUs, setup the mappings once */
+ 		if (vcpu_id == 0)
+-			memstress_setup_ept_mappings(vmx, vm);
++			memstress_setup_ept_mappings(vm);
+ 
+ 		/*
+ 		 * Override the vCPU to run memstress_l1_guest_code() which will
+diff --git a/tools/testing/selftests/kvm/lib/x86/vmx.c b/tools/testing/selftests/kvm/lib/x86/vmx.c
+index 9d4e391fdf2c..ea1c09f9e8ab 100644
+--- a/tools/testing/selftests/kvm/lib/x86/vmx.c
++++ b/tools/testing/selftests/kvm/lib/x86/vmx.c
+@@ -409,8 +409,8 @@ static void tdp_create_pte(struct kvm_vm *vm,
+ }
+ 
+ 
+-void __tdp_pg_map(struct vmx_pages *vmx, struct kvm_vm *vm,
+-		  uint64_t nested_paddr, uint64_t paddr, int target_level)
++void __tdp_pg_map(struct kvm_vm *vm, uint64_t nested_paddr, uint64_t paddr,
++		  int target_level)
  {
-+	struct kvm_mmu *mmu = &vm->mmu;
- 	uint64_t *pml4e, *pml4e_start;
- 	uint64_t *pdpe, *pdpe_start;
- 	uint64_t *pde, *pde_start;
- 	uint64_t *pte, *pte_start;
+ 	const uint64_t page_size = PG_LEVEL_SIZE(target_level);
+ 	void *eptp_hva = addr_gpa2hva(vm, vm->arch.tdp_mmu->pgd);
+@@ -453,12 +453,6 @@ void __tdp_pg_map(struct vmx_pages *vmx, struct kvm_vm *vm,
+ 	}
+ }
  
--	if (!vm->mmu.pgd_created)
-+	if (!mmu->pgd_created)
- 		return;
+-void tdp_pg_map(struct vmx_pages *vmx, struct kvm_vm *vm,
+-		uint64_t nested_paddr, uint64_t paddr)
+-{
+-	__tdp_pg_map(vmx, vm, nested_paddr, paddr, PG_LEVEL_4K);
+-}
+-
+ /*
+  * Map a range of EPT guest physical addresses to the VM's physical address
+  *
+@@ -476,9 +470,8 @@ void tdp_pg_map(struct vmx_pages *vmx, struct kvm_vm *vm,
+  * Within the VM given by vm, creates a nested guest translation for the
+  * page range starting at nested_paddr to the page range starting at paddr.
+  */
+-void __tdp_map(struct vmx_pages *vmx, struct kvm_vm *vm,
+-	       uint64_t nested_paddr, uint64_t paddr, uint64_t size,
+-		  int level)
++void __tdp_map(struct kvm_vm *vm, uint64_t nested_paddr, uint64_t paddr,
++	       uint64_t size, int level)
+ {
+ 	size_t page_size = PG_LEVEL_SIZE(level);
+ 	size_t npages = size / page_size;
+@@ -487,23 +480,22 @@ void __tdp_map(struct vmx_pages *vmx, struct kvm_vm *vm,
+ 	TEST_ASSERT(paddr + size > paddr, "Paddr overflow");
  
- 	fprintf(stream, "%*s                                          "
-@@ -375,47 +390,47 @@ void virt_arch_dump(FILE *stream, struct kvm_vm *vm, uint8_t indent)
- 	fprintf(stream, "%*s      index hvaddr         gpaddr         "
- 		"addr         w exec dirty\n",
- 		indent, "");
--	pml4e_start = (uint64_t *) addr_gpa2hva(vm, vm->mmu.pgd);
-+	pml4e_start = (uint64_t *) addr_gpa2hva(vm, mmu->pgd);
- 	for (uint16_t n1 = 0; n1 <= 0x1ffu; n1++) {
- 		pml4e = &pml4e_start[n1];
--		if (!(*pml4e & PTE_PRESENT_MASK))
-+		if (!is_present_pte(mmu, pml4e))
- 			continue;
- 		fprintf(stream, "%*spml4e 0x%-3zx %p 0x%-12lx 0x%-10llx %u "
- 			" %u\n",
- 			indent, "",
- 			pml4e - pml4e_start, pml4e,
- 			addr_hva2gpa(vm, pml4e), PTE_GET_PFN(*pml4e),
--			!!(*pml4e & PTE_WRITABLE_MASK), !!(*pml4e & PTE_NX_MASK));
-+			is_writable_pte(mmu, pml4e), is_nx_pte(mmu, pml4e));
+ 	while (npages--) {
+-		__tdp_pg_map(vmx, vm, nested_paddr, paddr, level);
++		__tdp_pg_map(vm, nested_paddr, paddr, level);
+ 		nested_paddr += page_size;
+ 		paddr += page_size;
+ 	}
+ }
  
- 		pdpe_start = addr_gpa2hva(vm, *pml4e & PHYSICAL_PAGE_MASK);
- 		for (uint16_t n2 = 0; n2 <= 0x1ffu; n2++) {
- 			pdpe = &pdpe_start[n2];
--			if (!(*pdpe & PTE_PRESENT_MASK))
-+			if (!is_present_pte(mmu, pdpe))
- 				continue;
- 			fprintf(stream, "%*spdpe  0x%-3zx %p 0x%-12lx 0x%-10llx "
- 				"%u  %u\n",
- 				indent, "",
- 				pdpe - pdpe_start, pdpe,
- 				addr_hva2gpa(vm, pdpe),
--				PTE_GET_PFN(*pdpe), !!(*pdpe & PTE_WRITABLE_MASK),
--				!!(*pdpe & PTE_NX_MASK));
-+				PTE_GET_PFN(*pdpe), is_writable_pte(mmu, pdpe),
-+				is_nx_pte(mmu, pdpe));
+-void tdp_map(struct vmx_pages *vmx, struct kvm_vm *vm,
+-	     uint64_t nested_paddr, uint64_t paddr, uint64_t size)
++void tdp_map(struct kvm_vm *vm, uint64_t nested_paddr, uint64_t paddr,
++	     uint64_t size)
+ {
+-	__tdp_map(vmx, vm, nested_paddr, paddr, size, PG_LEVEL_4K);
++	__tdp_map(vm, nested_paddr, paddr, size, PG_LEVEL_4K);
+ }
  
- 			pde_start = addr_gpa2hva(vm, *pdpe & PHYSICAL_PAGE_MASK);
- 			for (uint16_t n3 = 0; n3 <= 0x1ffu; n3++) {
- 				pde = &pde_start[n3];
--				if (!(*pde & PTE_PRESENT_MASK))
-+				if (!is_present_pte(mmu, pde))
- 					continue;
- 				fprintf(stream, "%*spde   0x%-3zx %p "
- 					"0x%-12lx 0x%-10llx %u  %u\n",
- 					indent, "", pde - pde_start, pde,
- 					addr_hva2gpa(vm, pde),
--					PTE_GET_PFN(*pde), !!(*pde & PTE_WRITABLE_MASK),
--					!!(*pde & PTE_NX_MASK));
-+					PTE_GET_PFN(*pde), is_writable_pte(mmu, pde),
-+					is_nx_pte(mmu, pde));
+ /* Prepare an identity extended page table that maps all the
+  * physical pages in VM.
+  */
+-void tdp_identity_map_default_memslots(struct vmx_pages *vmx,
+-				       struct kvm_vm *vm)
++void tdp_identity_map_default_memslots(struct kvm_vm *vm)
+ {
+ 	uint32_t s, memslot = 0;
+ 	sparsebit_idx_t i, last;
+@@ -520,16 +512,15 @@ void tdp_identity_map_default_memslots(struct vmx_pages *vmx,
+ 		if (i > last)
+ 			break;
  
- 				pte_start = addr_gpa2hva(vm, *pde & PHYSICAL_PAGE_MASK);
- 				for (uint16_t n4 = 0; n4 <= 0x1ffu; n4++) {
- 					pte = &pte_start[n4];
--					if (!(*pte & PTE_PRESENT_MASK))
-+					if (!is_present_pte(mmu, pte))
- 						continue;
- 					fprintf(stream, "%*spte   0x%-3zx %p "
- 						"0x%-12lx 0x%-10llx %u  %u "
-@@ -424,9 +439,9 @@ void virt_arch_dump(FILE *stream, struct kvm_vm *vm, uint8_t indent)
- 						pte - pte_start, pte,
- 						addr_hva2gpa(vm, pte),
- 						PTE_GET_PFN(*pte),
--						!!(*pte & PTE_WRITABLE_MASK),
--						!!(*pte & PTE_NX_MASK),
--						!!(*pte & PTE_DIRTY_MASK),
-+						is_writable_pte(mmu, pte),
-+						is_nx_pte(mmu, pte),
-+						is_dirty_pte(mmu, pte),
- 						((uint64_t) n1 << 27)
- 							| ((uint64_t) n2 << 18)
- 							| ((uint64_t) n3 << 9)
-@@ -509,7 +524,7 @@ vm_paddr_t addr_arch_gva2gpa(struct kvm_vm *vm, vm_vaddr_t gva)
- 	int level = PG_LEVEL_NONE;
- 	uint64_t *pte = __vm_get_page_table_entry(vm, &vm->mmu, gva, &level);
+-		tdp_map(vmx, vm, (uint64_t)i << vm->page_shift,
++		tdp_map(vm, (uint64_t)i << vm->page_shift,
+ 			(uint64_t)i << vm->page_shift, 1 << vm->page_shift);
+ 	}
+ }
  
--	TEST_ASSERT(*pte & PTE_PRESENT_MASK,
-+	TEST_ASSERT(is_present_pte(&vm->mmu, pte),
- 		    "Leaf PTE not PRESENT for gva: 0x%08lx", gva);
+ /* Identity map a region with 1GiB Pages. */
+-void tdp_identity_map_1g(struct vmx_pages *vmx, struct kvm_vm *vm,
+-			    uint64_t addr, uint64_t size)
++void tdp_identity_map_1g(struct kvm_vm *vm, uint64_t addr, uint64_t size)
+ {
+-	__tdp_map(vmx, vm, addr, addr, size, PG_LEVEL_1G);
++	__tdp_map(vm, addr, addr, size, PG_LEVEL_1G);
+ }
  
- 	/*
+ bool kvm_cpu_has_ept(void)
+diff --git a/tools/testing/selftests/kvm/x86/vmx_dirty_log_test.c b/tools/testing/selftests/kvm/x86/vmx_dirty_log_test.c
+index 5c8cf8ac42a2..370f8d3117c2 100644
+--- a/tools/testing/selftests/kvm/x86/vmx_dirty_log_test.c
++++ b/tools/testing/selftests/kvm/x86/vmx_dirty_log_test.c
+@@ -80,7 +80,6 @@ void l1_guest_code(struct vmx_pages *vmx)
+ static void test_vmx_dirty_log(bool enable_ept)
+ {
+ 	vm_vaddr_t vmx_pages_gva = 0;
+-	struct vmx_pages *vmx;
+ 	unsigned long *bmap;
+ 	uint64_t *host_test_mem;
+ 
+@@ -96,7 +95,7 @@ static void test_vmx_dirty_log(bool enable_ept)
+ 	if (enable_ept)
+ 		vm_enable_ept(vm);
+ 
+-	vmx = vcpu_alloc_vmx(vm, &vmx_pages_gva);
++	vcpu_alloc_vmx(vm, &vmx_pages_gva);
+ 	vcpu_args_set(vcpu, 1, vmx_pages_gva);
+ 
+ 	/* Add an extra memory slot for testing dirty logging */
+@@ -120,9 +119,9 @@ static void test_vmx_dirty_log(bool enable_ept)
+ 	 * GPAs as the EPT enabled case.
+ 	 */
+ 	if (enable_ept) {
+-		tdp_identity_map_default_memslots(vmx, vm);
+-		tdp_map(vmx, vm, NESTED_TEST_MEM1, GUEST_TEST_MEM, PAGE_SIZE);
+-		tdp_map(vmx, vm, NESTED_TEST_MEM2, GUEST_TEST_MEM, PAGE_SIZE);
++		tdp_identity_map_default_memslots(vm);
++		tdp_map(vm, NESTED_TEST_MEM1, GUEST_TEST_MEM, PAGE_SIZE);
++		tdp_map(vm, NESTED_TEST_MEM2, GUEST_TEST_MEM, PAGE_SIZE);
+ 	}
+ 
+ 	bmap = bitmap_zalloc(TEST_MEM_PAGES);
 -- 
 2.52.0.351.gbe84eed79e-goog
 
