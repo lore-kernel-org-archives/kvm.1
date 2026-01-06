@@ -1,185 +1,136 @@
-Received: from mail-ed1-f52.google.com (mail-ed1-f52.google.com [209.85.208.52])
+Received: from mail-wm1-f73.google.com (mail-wm1-f73.google.com [209.85.128.73])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0049229B8E6
-	for <kvm@vger.kernel.org>; Tue,  6 Jan 2026 09:17:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D59A330C637
+	for <kvm@vger.kernel.org>; Tue,  6 Jan 2026 09:24:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.73
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767691060; cv=none; b=Un16chZhhEVkzuja8xYzzlqpUzazhDRsCt+al08Vn+/UBJk1b4IKJGkCmOsXgXVXL1Yq0X72KYBOjJFVV7wHBaNVh5fwFJa7jApVzGVxKV/AAKEtdZOaXNUgm581IiORnA5iy6pd+f5ERkTikdbLrOmgefgI+3EG+gbHkfNRF0Q=
+	t=1767691472; cv=none; b=Mbyd4GNnpbLcvE4crY1c3cEvvLweDJvxkGH4YaFDNWZ0uyMl0oq3pbEMTZ8W2H/UncWpg16pfWOXcvzic3V2X/tfG3cRZhT1j7d9XLOY95tuFJ9TBseqWIQAmeQm05yKMxH460J5hmw226vo83u5ePX+1NKsRhX1//+YIO5VIQU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767691060; c=relaxed/simple;
-	bh=tw2hLstPcGoxyMqlV5vBTgZTYVnWRaiXTe3i7r6TMhc=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=tRbQA3tCRyMcMwSLdzHJYIoypj1NBeTGF54+P+p05Y/q1JsIDDZq2VW3faeYlgM01oUCnAAdSudswMLYLHy+X0Mdf0ZAAAKUEtf3+Z+XvChIpa58Yu/fs5PQGBeDNdOWeTGd33ixiiKnULj9PoMAXTraRlJyOVcWXGjdmLXOX0c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b=aN6avMji; arc=none smtp.client-ip=209.85.208.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
+	s=arc-20240116; t=1767691472; c=relaxed/simple;
+	bh=K7c4pi6jwjpb2UDOULlAxegszb3LTOJLg8FVDuHxR3w=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=Aqk7BJnxZR8dH2kmRol7f0PkFHmmJCooKvDphOa0VGx29215QgWS7O4lp8k4Q2dR/oJL16VBQ/MCsROkuSxrp4mi/rR82otD6Ppp/1q2ZaChr0X4UREAzuzix9MA+q46IlHeBN6/c+FFbLy5R2OKv0UUDcZLJ61hJIRvjo6t2VE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--tabba.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=foCTDXd4; arc=none smtp.client-ip=209.85.128.73
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--tabba.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b="aN6avMji"
-Received: by mail-ed1-f52.google.com with SMTP id 4fb4d7f45d1cf-64fabaf9133so1294008a12.3
-        for <kvm@vger.kernel.org>; Tue, 06 Jan 2026 01:17:37 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="foCTDXd4"
+Received: by mail-wm1-f73.google.com with SMTP id 5b1f17b1804b1-47d3ffa98fcso5341085e9.3
+        for <kvm@vger.kernel.org>; Tue, 06 Jan 2026 01:24:28 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=suse.com; s=google; t=1767691056; x=1768295856; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:autocrypt:content-language
-         :from:references:cc:to:subject:user-agent:mime-version:date
-         :message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=s7izs/QBqA/9qzcQySCn57ldKOvgzvpUdSneZzovDgc=;
-        b=aN6avMjiXVmn4D/WEOQKtXdidK7FWjpeG/kC47nIJkdGdqQzy7/4HcQ2fV4Rjorm83
-         Rr5qBIyMeiWKLKQEbqJgCNkNfEBGQzt8vhNTUoAlh+8NsURVu2ts4F1E2xbgNNEVX/JQ
-         uEcHwBWWiw9+pJcGCKELZW8rLw5g5c/9H2swHVrNMzQsXavJdnTCJQtaQYW5faSI1PvG
-         TK0NdHqpQHtYn8cEgZQlqPiCWN2dudRmeexnPIoPgXeYE22E+/lPbZ1EmrgqWFM5KDRr
-         Z0B8D+uRz160kvCzkKN2vI8PcBnAvMA+a8DDRGrmk6qAyKD8ogr8SC+m7S7fYYmC2Ctl
-         XY/w==
+        d=google.com; s=20230601; t=1767691467; x=1768296267; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=kq1IjMSjoMKjdw0XAwlPesXU4TmV0d7vJwGMiICzk6g=;
+        b=foCTDXd4DOfUt8ACj56xdCMnxiDn33eVmTcSx11hmWx11N0ZDC9NLMzBlcjRelGIjn
+         TtAOWZlhjyb3Dte622wJDwoDETkygxivK2RC+luseIvj9LHPxZaN5x/VWOE0JHjxj6bt
+         mIvdFxgc0q5sFQHT11L/wUPQb3lm9k0Kujz0NK4Y5gXPwoca2YpdwvQvrWxbrs/eVv1W
+         Se9H2HQ46eNvANgzAmjeHnqh3QlQoPUt14N8dxgikpcXyDnCyUcbqATxuPe0EF0Y3cqd
+         Mt0f5u4p4y8PpkBy/jbFbMJnkKWer7RXaKWzx66R2h4QTrbJh+i3+uiCGJu/s8Hh4GFk
+         SU1w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1767691056; x=1768295856;
-        h=content-transfer-encoding:in-reply-to:autocrypt:content-language
-         :from:references:cc:to:subject:user-agent:mime-version:date
-         :message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=s7izs/QBqA/9qzcQySCn57ldKOvgzvpUdSneZzovDgc=;
-        b=vd8N5UnwHO43ZHumyskUDhKKaBgn9z2mRA45UDCGLCLsykPJdxf6aE7SJRyO/WduVC
-         FPv3cczsBxdMOg2I07YRrVhPifK0K5nnKjl+29mMtpKbGHunDswUBgJKyXJD56m+P4K7
-         wRZt4AM6Zeeh5hC9jnDIlME6ESEBHtv5VZxr6CEuA6k967aNgbd5ipu73aT1AWQLvLaI
-         qM6tIhmIHEBKWVzUN9CsKb6Kw5XOb/ajkVjIZrFULISchL3BiUgZmNdEwh4KzDiDXMFD
-         gE2l1pVT0TAy4pngmmjxAgzEqt5ujpUkc23ka5Eo0UHvyuhQjMVNyO6L2F2j2mIOiN0n
-         iaJg==
-X-Gm-Message-State: AOJu0YySUR579Qvl5Qw2leOZKrui7M96+6oX7RqdIrFD+e/xVXv3LA+E
-	ojcoQ4BRtV80tMT4y5fgDJ9wV/gbGruWctlLeKx17ywqsMkmvAdQgp1b/l5t4H7qABU=
-X-Gm-Gg: AY/fxX78LzPdO8P2ccfZ5U7QbCarMj9XJatvLhVzdcYbEHmleIz/TdVufu1Cio411PU
-	ME/kXG/UtcUyHuEopOb0jN8oc7rXJP+JFivN+11WsD6+xwlDVvNnBuToa9oTd9cyj3rivNYs9cs
-	DE29qc1LV3wolr2PJB7Shx/NUe+TOncQO+hAv6nH5b3fTwgBCx1dvPvr5pqkUPwjbXlmtOiNsnM
-	Lycrb5I41Dwv9OGWZaQt8VICa0NzF827waevv91S7XGxCBBW6gR9NNA+E+GiFBILSqdN8bLLDxa
-	SvThEZSaxGY8yuDd63EcbwZWVvH7LKccveR7rVe7tKzNIclGJjzRfBtBwLMJrRBPM5XtsELIwCg
-	hLCtJdbFAQyJu1XXOVGKyDbRbkSyAID5Ghf0Nr7WjDp9ciqe+8GhXZcsgsOdMtevOYlvQKWYEsI
-	KOvioXI51UijqUSUzpVGFoD0DjkItjS0by02FH
-X-Google-Smtp-Source: AGHT+IF9eBUjz6yWDKn2sktCdtPRUbAo/NlH5vaF3AkhgFLe4K1iKSFYhijP67fnU1wCRBNIzSg91w==
-X-Received: by 2002:a05:6402:1a25:b0:640:f2cd:831 with SMTP id 4fb4d7f45d1cf-65079221959mr1539076a12.10.1767691056291;
-        Tue, 06 Jan 2026 01:17:36 -0800 (PST)
-Received: from [192.168.0.20] (nborisov.ddns.nbis.net. [85.187.217.240])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-6507b8c4479sm1623607a12.1.2026.01.06.01.17.35
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 06 Jan 2026 01:17:35 -0800 (PST)
-Message-ID: <619dc952-fa51-4134-ad48-f26d127e80bf@suse.com>
-Date: Tue, 6 Jan 2026 11:17:33 +0200
+        d=1e100.net; s=20230601; t=1767691467; x=1768296267;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=kq1IjMSjoMKjdw0XAwlPesXU4TmV0d7vJwGMiICzk6g=;
+        b=bLI03LOgHkMRSNBXV1XJJ658n4QwwODvDPJTdvXKukOneAobRp73vEL60cnfPKGoFA
+         npCAvZ0KNr/z5ud8qHNaA+T82Gi26pTnyOGRi6ykEHp8bep2BSQzFmnHHseP+ryR6Vqw
+         LWu2xS/bInlUlRHgHqDQotOVhSddsYqQHHDH6Pk7tEnQZLptAQ2IfdFfwYDqwFQsSzna
+         t306tDDuOgm+ogphQGOCrxcigZzoFzFeX1pZgftdd/pEAZcAq9J7CgmzQwmIvfdPy5QU
+         8tSLWOnkp0t6WOqff/FTNRTatOixhIQAJUgtkJ+NJN1prMJTYBPrDSxZ0jIJ/h60rw9J
+         ScrQ==
+X-Gm-Message-State: AOJu0YzLUPejUi6qj874xwfT2RJQ0CvNC9yg1tCgmO7RNUrVOfrXMQV+
+	OigSe66IdHkAIfmHjikLqfME6WjFG9K44PZ69opAbUH2QAkiOO5vDHxPZHyeKAH2DFBnkq7Iqkn
+	53zjAghhWYlYHtCGbSN2cqgXINDRqlt8ztmtNTVDKxUrmUZZm3uI4UeluK2oaG39egSKufcaDKi
+	h1425bCCK21w8ESkfmhFnI+s/uDhM=
+X-Google-Smtp-Source: AGHT+IHAvLyAn1VJG2+pLIU7Jm982X3rmXgnqbZGLYkM+N3EFPWYk9emuP+KfsGs4jFnJ/EzGlOPeeJ+Fg==
+X-Received: from wmqo19.prod.google.com ([2002:a05:600c:4fd3:b0:47a:7586:4faa])
+ (user=tabba job=prod-delivery.src-stubby-dispatcher) by 2002:a05:600c:3554:b0:46e:33b2:c8da
+ with SMTP id 5b1f17b1804b1-47d7f09fac3mr25123345e9.32.1767691466959; Tue, 06
+ Jan 2026 01:24:26 -0800 (PST)
+Date: Tue,  6 Jan 2026 09:24:21 +0000
+In-Reply-To: <20260106092425.1529428-1-tabba@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 0/3] Expose TDX Module version
-To: Chao Gao <chao.gao@intel.com>, Kiryl Shutsemau <kas@kernel.org>
-Cc: kvm@vger.kernel.org, linux-coco@lists.linux.dev,
- linux-kernel@vger.kernel.org, x86@kernel.org, vishal.l.verma@intel.com,
- kai.huang@intel.com, dan.j.williams@intel.com, yilun.xu@linux.intel.com,
- vannapurve@google.com, Borislav Petkov <bp@alien8.de>,
- Dave Hansen <dave.hansen@linux.intel.com>, "H. Peter Anvin" <hpa@zytor.com>,
- Ingo Molnar <mingo@redhat.com>, Rick Edgecombe <rick.p.edgecombe@intel.com>,
- Thomas Gleixner <tglx@linutronix.de>
-References: <20260105074350.98564-1-chao.gao@intel.com>
- <dfb66mcbxqw2a6qjyg74jqp7aucmnkztl224rj3u6znrcr7ukw@yy65kqagdsoh>
- <aVywHbHlcRw2tM/X@intel.com>
-From: Nikolay Borisov <nik.borisov@suse.com>
-Content-Language: en-US
-Autocrypt: addr=nik.borisov@suse.com; keydata=
- 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
-In-Reply-To: <aVywHbHlcRw2tM/X@intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Mime-Version: 1.0
+References: <20260106092425.1529428-1-tabba@google.com>
+X-Mailer: git-send-email 2.52.0.351.gbe84eed79e-goog
+Message-ID: <20260106092425.1529428-2-tabba@google.com>
+Subject: [PATCH v3 1/5] KVM: arm64: selftests: Disable unused TTBR1_EL1 translations
+From: Fuad Tabba <tabba@google.com>
+To: kvm@vger.kernel.org, kvm-riscv@lists.infradead.org, kvmarm@lists.linux.dev, 
+	linux-arm-kernel@lists.infradead.org
+Cc: maz@kernel.org, oliver.upton@linux.dev, joey.gouly@arm.com, 
+	suzuki.poulose@arm.com, yuzenghui@huawei.com, will@kernel.org, 
+	pbonzini@redhat.com, shuah@kernel.org, anup@brainfault.org, 
+	itaru.kitayama@fujitsu.com, andrew.jones@linux.dev, tabba@google.com
+Content-Type: text/plain; charset="UTF-8"
 
+KVM selftests map all guest code and data into the lower virtual address
+range (0x0000...) managed by TTBR0_EL1. The upper range (0xFFFF...)
+managed by TTBR1_EL1 is unused and uninitialized.
 
+If a guest accesses the upper range, the MMU attempts a translation
+table walk using uninitialized registers, leading to unpredictable
+behavior.
 
-On 6.01.26 г. 8:47 ч., Chao Gao wrote:
-> On Mon, Jan 05, 2026 at 10:38:19AM +0000, Kiryl Shutsemau wrote:
->> On Sun, Jan 04, 2026 at 11:43:43PM -0800, Chao Gao wrote:
->>> Hi reviewers,
->>>
->>> This series is quite straightforward and I believe it's well-polished.
->>> Please consider providing your ack tags. However, since it depends on
->>> two other series (listed below), please review those dependencies first if
->>> you haven't already.
->>>
->>> Changes in v2:
->>>   - Print TDX Module version in demsg (Vishal)
->>>   - Remove all descriptions about autogeneration (Rick)
->>>   - Fix typos (Kai)
->>>   - Stick with TDH.SYS.RD (Dave/Yilun)
->>>   - Rebase onto Sean's VMXON v2 series
->>>
->>> === Problem & Solution ===
->>>
->>> Currently, there is no user interface to get the TDX Module version.
->>> However, in bug reporting or analysis scenarios, the first question
->>> normally asked is which TDX Module version is on your system, to determine
->>> if this is a known issue or a new regression.
->>>
->>> To address this issue, this series exposes the TDX Module version as
->>> sysfs attributes of the tdx_host device [*] and also prints it in dmesg
->>> to keep a record.
->>
->> The version information is also useful for the guest. Maybe we should
->> provide consistent interface for both sides?
-> 
-> Note that only the Major and Minor versions (like 1.5 or 2.0) are available to
-> the guest; the TDX Module doesn't allow guests to read the update version.
-> Given this limitation, exposing version information to guests isn't
-> particularly useful.
-> 
-> And in my opinion, exposing version information to guests is also unnecessary
-> since the module version can already be read from the host with this series.
-> In debugging scenarios, I'm not sure why the TDX module would be so special
-> that guests should know its version but not other host information, such as
-> host kernel version, microcode version, etc. None of these are exposed to guest
-> kernel (not to mention guest userspace).
-> 
+Set `TCR_EL1.EPD1` to disable translation table walks for TTBR1_EL1,
+ensuring that any access to the upper range generates an immediate
+Translation Fault. Additionally, set `TCR_EL1.TBI1` (Top Byte Ignore) to
+ensure that tagged pointers in the upper range also deterministically
+trigger a Translation Fault via EPD1.
 
-Just my 2 cents  on the topic:
+Define `TCR_EPD1_MASK`, `TCR_EPD1_SHIFT`, and `TCR_TBI1` in
+`processor.h` to support this configuration. These are based on their
+definitions in `arch/arm64/include/asm/pgtable-hwdef.h`.
 
-One thing which comes to mind is that the information to be provided to 
-the guest should ideally come from the hypervisor, for debugging 
-purposes at least, i.e via some sort of hypercall. The security model of 
-TDX is to ascertain information about the host via the attestation 
-mechanism, no? So I'd argue that the version information provided to the 
-guest is of no importance
+Suggested-by: Will Deacon <will@kernel.org>
+Reviewed-by: Itaru Kitayama <itaru.kitayama@fujitsu.com>
+Signed-off-by: Fuad Tabba <tabba@google.com>
+---
+ tools/testing/selftests/kvm/include/arm64/processor.h | 4 ++++
+ tools/testing/selftests/kvm/lib/arm64/processor.c     | 2 ++
+ 2 files changed, 6 insertions(+)
+
+diff --git a/tools/testing/selftests/kvm/include/arm64/processor.h b/tools/testing/selftests/kvm/include/arm64/processor.h
+index ff928716574d..ac97a1c436fc 100644
+--- a/tools/testing/selftests/kvm/include/arm64/processor.h
++++ b/tools/testing/selftests/kvm/include/arm64/processor.h
+@@ -90,6 +90,9 @@
+ #define TCR_TG0_64K		(UL(1) << TCR_TG0_SHIFT)
+ #define TCR_TG0_16K		(UL(2) << TCR_TG0_SHIFT)
+ 
++#define TCR_EPD1_SHIFT		23
++#define TCR_EPD1_MASK		(UL(1) << TCR_EPD1_SHIFT)
++
+ #define TCR_IPS_SHIFT		32
+ #define TCR_IPS_MASK		(UL(7) << TCR_IPS_SHIFT)
+ #define TCR_IPS_52_BITS	(UL(6) << TCR_IPS_SHIFT)
+@@ -97,6 +100,7 @@
+ #define TCR_IPS_40_BITS	(UL(2) << TCR_IPS_SHIFT)
+ #define TCR_IPS_36_BITS	(UL(1) << TCR_IPS_SHIFT)
+ 
++#define TCR_TBI1		(UL(1) << 38)
+ #define TCR_HA			(UL(1) << 39)
+ #define TCR_DS			(UL(1) << 59)
+ 
+diff --git a/tools/testing/selftests/kvm/lib/arm64/processor.c b/tools/testing/selftests/kvm/lib/arm64/processor.c
+index d46e4b13b92c..5b379da8cb90 100644
+--- a/tools/testing/selftests/kvm/lib/arm64/processor.c
++++ b/tools/testing/selftests/kvm/lib/arm64/processor.c
+@@ -384,6 +384,8 @@ void aarch64_vcpu_setup(struct kvm_vcpu *vcpu, struct kvm_vcpu_init *init)
+ 
+ 	tcr_el1 |= TCR_IRGN0_WBWA | TCR_ORGN0_WBWA | TCR_SH0_INNER;
+ 	tcr_el1 |= TCR_T0SZ(vm->va_bits);
++	tcr_el1 |= TCR_TBI1;
++	tcr_el1 |= TCR_EPD1_MASK;
+ 	if (use_lpa2_pte_format(vm))
+ 		tcr_el1 |= TCR_DS;
+ 
+-- 
+2.52.0.351.gbe84eed79e-goog
+
