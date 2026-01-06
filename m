@@ -1,82 +1,103 @@
-Received: from mail-pj1-f73.google.com (mail-pj1-f73.google.com [209.85.216.73])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from sinmsgout02.his.huawei.com (sinmsgout02.his.huawei.com [119.8.177.37])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C42DD2F6574
-	for <kvm@vger.kernel.org>; Tue,  6 Jan 2026 17:34:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.73
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 391F71E4BE
+	for <kvm@vger.kernel.org>; Tue,  6 Jan 2026 17:43:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=119.8.177.37
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767720888; cv=none; b=eP+XIfbmwbAIQNcsadsPbl2/hRtvG75lYp8zBLg5xvR52b+gX0AO7qye6wdylsD3yU40h2PpYpbV8l+4RaxbsLXvfSW40r9X2KO7TbPRRcp6GNpPEvTgMPnJsb/xE32FX/J0R22wkBHI6nhdJjsYtsGikWv2DV1h4PEc2ew3h88=
+	t=1767721395; cv=none; b=aRNeiyrXr6Xy2EJpxYTaOIkA75NugEwkAncB6d3O3usH0COaWG7lmkkBH6VcOm/UCbgmwty9zZ/F8fsIndeW7qqcdfhr1iHpdw669UvkApzNB4RMTlxVWf1ijtSBc69+jWJSGbysDQ/ZX6z8w8kiaqvmyzKLfLTfMKlDIBtgPEA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767720888; c=relaxed/simple;
-	bh=oG+5BObDcTDi1x+Km41qa3lPinM+Zu9ZcLwgxUaBtls=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=SQJA5xMbFF1OHn0sQ8+z46WmbQ1TPXZAsUhFwPeK/GZwJGU+kqSBZUsV5XyQhW138D8/M6wc+M29aC6xIdyS7R9zS8lGL5R5xrm45SBUH8LXNlafOelPMRhSanNbILAHwEDyCShksZPchOVM52iJkGoyTqspktDCQ+BIPTW4N+Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=vFA67m4L; arc=none smtp.client-ip=209.85.216.73
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+	s=arc-20240116; t=1767721395; c=relaxed/simple;
+	bh=RF1u3eonBZzegDg1PZuS6BezgVys09l39qBCJ0/zL0U=;
+	h=Date:From:To:CC:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=Bs7UDXveUMcXO8gNY+kbzEXrThDXfczHw/+ABQqkKTkNZaUeYc1qqG1ohtd0JwpAOt3/nbDCCkftap3o4zRFOTn6KhfXOVBTKZpcXJwjBU8oubZStyxuoSCZOymgZQqKZzPq8Qg+9M4Y+jo/ba5GiaejDJvIRK1LkE5aElAw1OU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b=wA8AGwnU; arc=none smtp.client-ip=119.8.177.37
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="vFA67m4L"
-Received: by mail-pj1-f73.google.com with SMTP id 98e67ed59e1d1-34c37b8dc4fso2544673a91.2
-        for <kvm@vger.kernel.org>; Tue, 06 Jan 2026 09:34:46 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1767720886; x=1768325686; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=3u/SRXiaOkDG6uvCHXyBdLmp6hdaJa1OYUaHTRQhklQ=;
-        b=vFA67m4L7AOOx9/+TL/Jx2QVjjGTI66vHJr6gjO6y16zX39ySg71db+hHqLjvAWOro
-         CuEOTCX5eQXkoDxDJH7bYKr67C+eVYyMI4T5pA1GEwPe6G/fAFbDv6YEMparCYiroSis
-         FzeV/6/QMRxQgx495+2NfP+DJZuU8cGkVoVolDEGylg8uIl1qvOFr8XibFR+DMGrB3u/
-         C1dqyMmH0bHFwveF0obNkRkv8py2Xd/SuaJSgYOzR1ugJIpv4stucrdG8NKAT6x8U8KQ
-         Z0hcJ06/x+oROCkgGzzxmYcjDAIAM1zUqCu20MpHaJ+TQZZG7C7n7DuxcHRPsNAQrQRY
-         LVQA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1767720886; x=1768325686;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=3u/SRXiaOkDG6uvCHXyBdLmp6hdaJa1OYUaHTRQhklQ=;
-        b=Rfo9F+vjQXmWmsw67KWq0PPqdn3S/wAdL/L0DRl2UwTn7bNsvn9rxNSy38KYT1MitQ
-         imprFdXD7cTRjZ0QW4zesy3Geqnz6BSgi8LRbr72T0nb0Dtmam0dW376B3FlFPt5WY0x
-         9wATN5btQ7LTZG5VlGmqt6kFZrkFQca/jLldQhWhnFxwQ+9nrLK7vgnvU0bQWpOrWgVY
-         iDIsz+lQ+P3aibN8xaeFwRWLrIfhSF9sBKpankbZGx9Q8rkaDDmnZ52/XwsfDNu6AmdG
-         mevJfYYh667Mggzq/GwD2NkeNE3vHMsRS5yo2F9wtAk/Z4KPUCnsRgVVdRo8jVZni5FC
-         JmiQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUcmNq8E0ee9V6pAYStrioBj8mWrPOHki4V4FR7ymfS53F4lEtfHunqQnO5nMuSF5tc+8Q=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx2bG3LtLDQ7A/LvlvBvaS4rTub/TOjPaAR1ZjFMvCqpbK5qv8v
-	mOi8bZarXnFFkzyDl5ZnKbrw8jIwG+8apSlUM7ZlrSpEy023zsDVhsibgao4GLSl+B3h8WqgWBs
-	uoCrtMQ==
-X-Google-Smtp-Source: AGHT+IEPNTpv7HvlOHxKD/0Uliz6EXEzXccXZp3/d4Ho/3M791oWBuctzoLTQdPVExufzvSsYW/MQKp+4uQ=
-X-Received: from pjbqb12.prod.google.com ([2002:a17:90b:280c:b0:34a:4aa7:b774])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:58d0:b0:340:fb6a:cb4c
- with SMTP id 98e67ed59e1d1-34f5f2fb2camr2910890a91.30.1767720886019; Tue, 06
- Jan 2026 09:34:46 -0800 (PST)
-Date: Tue, 6 Jan 2026 09:34:44 -0800
-In-Reply-To: <aV1EF5DU5e66NTK0@google.com>
+	dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b="wA8AGwnU"
+dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
+	c=relaxed/relaxed; q=dns/txt;
+	h=From;
+	bh=lC/vPrppfWWJLMXtqrkEQhEuGW9UilLVWhfYhsLXqlM=;
+	b=wA8AGwnUx1Vq5QigHCn0VYFfK4J5ZNl8Ntb+EC5rG1ToX7ySH9N0CRiIQpm75yRmrrJxMpPRs
+	/2H/zmJxLE+C3vnLaJKQQtOfJbYl98JaAprg+qmVkx5lo4yoYhpqh+3KKM4G26tGMTna1y6Zc5T
+	56A9cor4yPwLMcOXjD90jVI=
+Received: from frasgout.his.huawei.com (unknown [172.18.146.33])
+	by sinmsgout02.his.huawei.com (SkyGuard) with ESMTPS id 4dlycr0KYxz1vp16;
+	Wed,  7 Jan 2026 01:21:15 +0800 (CST)
+Received: from mail.maildlp.com (unknown [172.18.224.83])
+	by frasgout.his.huawei.com (SkyGuard) with ESMTPS id 4dlygD270QzJ46Bs;
+	Wed,  7 Jan 2026 01:23:20 +0800 (CST)
+Received: from dubpeml100005.china.huawei.com (unknown [7.214.146.113])
+	by mail.maildlp.com (Postfix) with ESMTPS id 2DFD440086;
+	Wed,  7 Jan 2026 01:23:22 +0800 (CST)
+Received: from localhost (10.195.245.156) by dubpeml100005.china.huawei.com
+ (7.214.146.113) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.36; Tue, 6 Jan
+ 2026 17:23:21 +0000
+Date: Tue, 6 Jan 2026 17:23:17 +0000
+From: Jonathan Cameron <jonathan.cameron@huawei.com>
+To: Sascha Bischoff <Sascha.Bischoff@arm.com>
+CC: "linux-arm-kernel@lists.infradead.org"
+	<linux-arm-kernel@lists.infradead.org>, "kvmarm@lists.linux.dev"
+	<kvmarm@lists.linux.dev>, "kvm@vger.kernel.org" <kvm@vger.kernel.org>, nd
+	<nd@arm.com>, "maz@kernel.org" <maz@kernel.org>, "oliver.upton@linux.dev"
+	<oliver.upton@linux.dev>, Joey Gouly <Joey.Gouly@arm.com>, Suzuki Poulose
+	<Suzuki.Poulose@arm.com>, "yuzenghui@huawei.com" <yuzenghui@huawei.com>,
+	"peter.maydell@linaro.org" <peter.maydell@linaro.org>,
+	"lpieralisi@kernel.org" <lpieralisi@kernel.org>, Timothy Hayes
+	<Timothy.Hayes@arm.com>
+Subject: Re: [PATCH v2 01/36] KVM: arm64: Account for RES1 bits in
+ DECLARE_FEAT_MAP() and co
+Message-ID: <20260106172317.00001463@huawei.com>
+In-Reply-To: <20251219155222.1383109-2-sascha.bischoff@arm.com>
+References: <20251219155222.1383109-1-sascha.bischoff@arm.com>
+	<20251219155222.1383109-2-sascha.bischoff@arm.com>
+X-Mailer: Claws Mail 4.3.0 (GTK 3.24.42; x86_64-w64-mingw32)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20260104093221.494510-1-alessandro@0x65c.net> <aV1EF5DU5e66NTK0@google.com>
-Message-ID: <aV1HtKXlePEJ7CJd@google.com>
-Subject: Re: [PATCH] KVM: x86: Retry guest entry on -EBUSY from kvm_check_nested_events()
-From: Sean Christopherson <seanjc@google.com>
-To: Alessandro Ratti <alessandro@0x65c.net>
-Cc: pbonzini@redhat.com, kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	syzbot+1522459a74d26b0ac33a@syzkaller.appspotmail.com
-Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Type: text/plain; charset="US-ASCII"
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: lhrpeml100009.china.huawei.com (7.191.174.83) To
+ dubpeml100005.china.huawei.com (7.214.146.113)
 
-On Tue, Jan 06, 2026, Sean Christopherson wrote:
-> On Sun, Jan 04, 2026, Alessandro Ratti wrote:
-> I'll post the below as part of a series, as there is at least one cleanup that
-> can be done on top to consolidate handling of EBUSY,
+On Fri, 19 Dec 2025 15:52:36 +0000
+Sascha Bischoff <Sascha.Bischoff@arm.com> wrote:
 
-Gah, I was wrong.  I was thinking that morphing EBUSY to '0' could be moved into
-a common helper, but kvm_apic_accept_events() needs to bail immediately on EBUSY,
-i.e. needs to see EBUSY, not '0'.
+> From: Marc Zyngier <maz@kernel.org>
+> 
+> None of the registers we manage in the feature dependency infrastructure
+> so far has any RES1 bit. This is about to change, as VTCR_EL2 has
+> its bit 31 being RES1.
 
-I'll post this as a standalone patch and then try to add WARNs in a separate
-series.
+Oh goody.
 
-> and I'm hopeful that the spirit of the WARN can be preserved, e.g. by
-> adding/extending WARNs in paths where KVM (re)injects events.
+> 
+> In order to not fail the consistency checks by not describing a bit,
+> add RES1 bits to the set of immutable bits. This requires some extra
+> surgery for the FGT handling, as we now need to track RES1 bits there
+> as well.
+> 
+> There are no RES1 FGT bits *yet*. Watch this space.
+> 
+> Signed-off-by: Marc Zyngier <maz@kernel.org>
+FWIW it seems correct.  The only thing I wondered about is
+the assumption that if there is an error best thing to do is
+to assume it was res0 that was wrong and paper over it.
+I guess we can't do anything better if that does happen.
+
+Reviewed-by: Jonathan Cameron <jonathan.cameron@huawei.com>
+
+Process thing though: before anyone can merge this, Sasha
+please take a look at submitting patches documentation.
+
+When you 'post' a patch that was written by someone else you have
+handled the patch and for the Developer Certificate of origin stuff
+to work you have to add your Signed-off-by after theirs.
+
+Jonathan
