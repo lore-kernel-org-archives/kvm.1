@@ -1,48 +1,48 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4EC00327C00;
-	Tue,  6 Jan 2026 10:22:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.13
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 527EC309F19;
+	Tue,  6 Jan 2026 10:23:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.15
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767694979; cv=none; b=BsRF+EXhgXdqYwoxMprnhlOGcQ/I5iG3PYozrEbZrDqic1EeZVr6PWupQoOJnrPaUCFrr702JJ5MX9Yar6o0cSuGW4F95Yna6RrInM5vAma86wY68+CnE4LegKyJ5X1iorMAkNAWHeGz/7euTU4HgmGwFmUyVk4vW6G3H7GS+Q4=
+	t=1767694993; cv=none; b=U6wlKk5c2fEPyOf5KMy4t0m14ESUHITElY2Uz8E1SGI1SR3CXBINtAkqICdIRCzCqxNcMvcpIAsP3qF4tFg2CRntSEjhJeMRcEYliAt4AhttKSVAFiJg1s9WCla4YpJB3Ij2Ggvb1E008CtPrw1Um96bj+JVoeK7JpEQp9HBjT4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767694979; c=relaxed/simple;
-	bh=zxX1DVIirvSLgAHnUL44AWniee+nugavXFptHQZ63Ac=;
+	s=arc-20240116; t=1767694993; c=relaxed/simple;
+	bh=hU+1lBfPRw+55UuvRNPjJw1DjBSK19bueoWEonOZS1Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=txtg/Qsnk/Rj3MjxvBSEHbz2Sa6k7bqAx4RFFryUem9VJXbvHTz6q1crt3bxOpj91RvUFb8diF4MkM4XE2KxHnqcon/ZlSCkbyrMGip4mZusJp3ug7l2mj+J3mAIofdNqWRlMhg7KhKjQA5iob/hIvtDSkAH4a5/fvBvkj51E9E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=SSaE+B0O; arc=none smtp.client-ip=198.175.65.13
+	 MIME-Version; b=eqTK3zNnKJ4L/87gp2ckCqzhAsIQ8wLC0weEaxk4J7HnBKy1JZKPBbFkpIiUBkw1L+Qwg37A3sACGamCQmxjYPPa00Q1xzGQ0lGhpLvlY+vLyhH/LOOHfCAM0WEQGglMCIVeRp8+Cueudidvo96LTcV9m5YBcxCgC5T0uvbiKV4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=LOb9WAiy; arc=none smtp.client-ip=198.175.65.15
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="SSaE+B0O"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="LOb9WAiy"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1767694978; x=1799230978;
+  t=1767694992; x=1799230992;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=zxX1DVIirvSLgAHnUL44AWniee+nugavXFptHQZ63Ac=;
-  b=SSaE+B0O/Rqb72+0ToNQ4mzV3wsORYA+urVK/PwSrt+mRNRDcd7Ijc3B
-   hrsT9ZGbwcw5ahGiSKKzTgXs9iecEQQfEwORSkloBnlbtFWB7n+7qBqbS
-   4ulnzDTGyhjoviNEvrjIr9Xm5MTehupur7wMf+TB6+rn4/EZr1ymo9x8m
-   owvlf06uOyUgV20eSEoKcK5bOxADLxq4O/diB4neAkiZ0DFpKuV1/PeZs
-   sCZ9+NLYXGrlbckM2dzvGCEN4OJaHv9+gp+K0j4l/91O0bNODtFx/BLWL
-   KCXy4y6OC1mUiO6e/WUfGzrZBWiLY60SfDBNByabBxJB7PBoKgRLInlDG
-   w==;
-X-CSE-ConnectionGUID: 2YDCRk8uR7qvThRfxPx/3Q==
-X-CSE-MsgGUID: AKz5K+myT7m7INLuXuLKnA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11662"; a="80176859"
+  bh=hU+1lBfPRw+55UuvRNPjJw1DjBSK19bueoWEonOZS1Y=;
+  b=LOb9WAiysTgaH6jXO3uDwHe7yp2PPgvR/e6ldCyKh+FVbKCIJIkzK3Sg
+   hm0k5oManHq6Ed5Zo2ZNkAuyHOIqHhJ88UE7z8v31mmPjwHNK0JgQ2gpi
+   KnjbUNfPqRf0wh0MG03FYk+PoNrs3AJbBajfRgMGfk50VQKjhjY9PwblV
+   EcjKqZHH8M5V/Ky1y2LcgdRMgaDUZ4jaMp4oypOe5uTHpYujI4QJekMD8
+   hbo3DE2CA+mJi/J8ThvB4hgGCwVI5ikH2/kxoE6IhzuG6x9xwHC0bmT9Z
+   Otr/1cZwB/dXCTkA0O4vItIrMWAD3Vv9zt2oKLSWBgxvqqs+/NKC4P+BA
+   A==;
+X-CSE-ConnectionGUID: 7jnqZsrJQYOfOZCIHtmSHA==
+X-CSE-MsgGUID: rHDftlT5QnS0W1FJWSZAug==
+X-IronPort-AV: E=McAfee;i="6800,10657,11662"; a="72689564"
 X-IronPort-AV: E=Sophos;i="6.21,204,1763452800"; 
-   d="scan'208";a="80176859"
-Received: from fmviesa009.fm.intel.com ([10.60.135.149])
-  by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Jan 2026 02:22:58 -0800
-X-CSE-ConnectionGUID: b5vPav7MS26oI6wqed3aTg==
-X-CSE-MsgGUID: 6bgZCcwOSBCtLJTPYmtgRA==
+   d="scan'208";a="72689564"
+Received: from orviesa010.jf.intel.com ([10.64.159.150])
+  by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Jan 2026 02:23:11 -0800
+X-CSE-ConnectionGUID: h1TlaHITShCLs+g8Doza7g==
+X-CSE-MsgGUID: p/ac4WuaRKCehoEo7ec8mA==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.21,204,1763452800"; 
-   d="scan'208";a="203085166"
+   d="scan'208";a="201847465"
 Received: from yzhao56-desk.sh.intel.com ([10.239.47.19])
-  by fmviesa009-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Jan 2026 02:22:51 -0800
+  by orviesa010-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Jan 2026 02:23:06 -0800
 From: Yan Zhao <yan.y.zhao@intel.com>
 To: pbonzini@redhat.com,
 	seanjc@google.com
@@ -74,9 +74,9 @@ Cc: linux-kernel@vger.kernel.org,
 	chao.p.peng@intel.com,
 	chao.gao@intel.com,
 	yan.y.zhao@intel.com
-Subject: [PATCH v3 08/24] KVM: TDX: Enable huge page splitting under write mmu_lock
-Date: Tue,  6 Jan 2026 18:20:55 +0800
-Message-ID: <20260106102055.25058-1-yan.y.zhao@intel.com>
+Subject: [PATCH v3 09/24] KVM: x86: Reject splitting huge pages under shared mmu_lock in TDX
+Date: Tue,  6 Jan 2026 18:21:08 +0800
+Message-ID: <20260106102108.25074-1-yan.y.zhao@intel.com>
 X-Mailer: git-send-email 2.43.2
 In-Reply-To: <20260106101646.24809-1-yan.y.zhao@intel.com>
 References: <20260106101646.24809-1-yan.y.zhao@intel.com>
@@ -88,98 +88,207 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Implement kvm_x86_ops.split_external_spte() under TDX to enable huge page
-splitting under write mmu_lock.
+Allow propagating SPTE splitting changes from the mirror page table to the
+external page table in the fault path under shared mmu_lock, while
+rejecting this splitting request in TDX's implementation of
+kvm_x86_ops.split_external_spte().
 
-Invoke tdh_mem_range_block(), tdh_mem_track(), kicking off vCPUs, and
-tdh_mem_page_demote() in sequence. All operations are performed under
-kvm->mmu_lock held for writing, similar to those in page removal.
+Allow tdp_mmu_split_huge_page() to be invoked for the mirror page table in
+the fault path by removing the KVM_BUG_ON() immediately before it.
 
-Though with kvm->mmu_lock held for writing, tdh_mem_page_demote() may still
-contend with tdh_vp_enter() and potentially with the guest's S-EPT entry
-operations. Therefore, kick off other vCPUs and prevent tdh_vp_enter()
-from being called on them to ensure success on the second attempt. Use
-KVM_BUG_ON() for any other unexpected errors.
+set_external_spte_present() is invoked in the fault path under shared
+mmu_lock to propagate transitions from the mirror page table to the
+external page table when the target SPTE is present. Add "splitting" as a
+valid transition case in set_external_spte_present() and invoke the helper
+split_external_spte() to perform the propagation.
 
-Signed-off-by: Xiaoyao Li <xiaoyao.li@intel.com>
-Signed-off-by: Isaku Yamahata <isaku.yamahata@intel.com>
+Pass shared mmu_lock information to kvm_x86_ops.split_external_spte() and
+reject the splitting request in TDX's implementation of
+kvm_x86_ops.split_external_spte() when under shared mmu_lock.
+
+This is because TDX requires different handling for splitting under shared
+versus exclusive mmu_lock: under shared mmu_lock, TDX cannot kick off all
+vCPUs to avoid BUSY errors from DEMOTE. Since the current TDX module
+(i.e., without feature NON-BLOCKING-RESIZE) requires BLOCK/TRACK/kicking
+off vCPUs to be invoked before each DEMOTE, if a BUSY error occurs from
+DEMOTE, TDX must call UNBLOCK before returning the error to the KVM MMU
+core to roll back the old SPTE and retry. However, UNBLOCK itself may also
+fail due to contentions.
+
+Rejecting splitting of private huge pages under shared mmu_lock in TDX
+rather than using KVM_BUG_ON() in the KVM MMU core allows for splitting
+under shared mmu_lock once the TDX module supports the NON-BLOCKING-RESIZE
+feature, keeping the KVM MMU core framework stable across TDX module
+implementation changes.
+
 Signed-off-by: Yan Zhao <yan.y.zhao@intel.com>
 ---
 v3:
 - Rebased on top of Sean's cleanup series.
-- Call out UNBLOCK is not required after DEMOTE. (Kai)
-- tdx_sept_split_private_spt() --> tdx_sept_split_private_spte().
+- split_external_spte --> kvm_x86_ops.split_external_spte(). (Kai)
 
 RFC v2:
-- Split out the code to handle the error TDX_INTERRUPTED_RESTARTABLE.
-- Rebased to 6.16.0-rc6 (the way of defining TDX hook changes).
+- WARN_ON_ONCE() and return error in tdx_sept_split_private_spt() if it's
+  invoked under shared mmu_lock. (rather than increase the next fault's
+  max_level in current vCPU via tdx->violation_gfn_start/end and
+  tdx->violation_request_level).
+- TODO: Perform the real implementation of demote under shared mmu_lock
+        when new version of TDX module supporting non-blocking demote is
+        available.
 
 RFC v1:
-- Split patch for exclusive mmu_lock only,
-- Invoke tdx_sept_zap_private_spte() and tdx_track() for splitting.
-- Handled busy error of tdh_mem_page_demote() by kicking off vCPUs.
+- New patch.
 ---
- arch/x86/kvm/vmx/tdx.c | 40 ++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 40 insertions(+)
+ arch/x86/include/asm/kvm_host.h |  3 +-
+ arch/x86/kvm/mmu/tdp_mmu.c      | 51 +++++++++++++++++++++------------
+ arch/x86/kvm/vmx/tdx.c          |  9 +++++-
+ 3 files changed, 42 insertions(+), 21 deletions(-)
 
-diff --git a/arch/x86/kvm/vmx/tdx.c b/arch/x86/kvm/vmx/tdx.c
-index 405afd2a56b7..b41793402769 100644
---- a/arch/x86/kvm/vmx/tdx.c
-+++ b/arch/x86/kvm/vmx/tdx.c
-@@ -1914,6 +1914,45 @@ static void tdx_sept_remove_private_spte(struct kvm *kvm, gfn_t gfn,
- 	tdx_pamt_put(page);
+diff --git a/arch/x86/include/asm/kvm_host.h b/arch/x86/include/asm/kvm_host.h
+index 56089d6b9b51..315ffb23e9d8 100644
+--- a/arch/x86/include/asm/kvm_host.h
++++ b/arch/x86/include/asm/kvm_host.h
+@@ -1850,7 +1850,8 @@ struct kvm_x86_ops {
+ 
+ 	/* Split a huge mapping into smaller mappings in external page table */
+ 	int (*split_external_spte)(struct kvm *kvm, gfn_t gfn, enum pg_level level,
+-				   u64 old_mirror_spte, void *new_external_spt);
++				   u64 old_mirror_spte, void *new_external_spt,
++				   bool mmu_lock_shared);
+ 
+ 	/* Allocation a pages from the external page cache. */
+ 	void *(*alloc_external_fault_cache)(struct kvm_vcpu *vcpu);
+diff --git a/arch/x86/kvm/mmu/tdp_mmu.c b/arch/x86/kvm/mmu/tdp_mmu.c
+index 977914b2627f..9b45ffb8585f 100644
+--- a/arch/x86/kvm/mmu/tdp_mmu.c
++++ b/arch/x86/kvm/mmu/tdp_mmu.c
+@@ -509,7 +509,7 @@ static void *get_external_spt(gfn_t gfn, u64 new_spte, int level)
  }
  
-+/*
-+ * Split a 2MB huge mapping.
-+ *
-+ * Invoke "BLOCK + TRACK + kick off vCPUs (inside tdx_track())" since DEMOTE
-+ * now does not support yet the NON-BLOCKING-RESIZE feature. No UNBLOCK is
-+ * needed after a successful DEMOTE.
-+ *
-+ * Under write mmu_lock, kick off all vCPUs (inside tdh_do_no_vcpus()) to ensure
-+ * DEMOTE will succeed on the second invocation if the first invocation returns
-+ * BUSY.
-+ */
-+static int tdx_sept_split_private_spte(struct kvm *kvm, gfn_t gfn, enum pg_level level,
-+				       u64 old_mirror_spte, void *new_private_spt)
-+{
-+	struct page *new_sept_page = virt_to_page(new_private_spt);
-+	int tdx_level = pg_level_to_tdx_sept_level(level);
-+	struct kvm_tdx *kvm_tdx = to_kvm_tdx(kvm);
-+	gpa_t gpa = gfn_to_gpa(gfn);
-+	u64 err, entry, level_state;
-+
-+	if (KVM_BUG_ON(kvm_tdx->state != TD_STATE_RUNNABLE ||
-+		       level != PG_LEVEL_2M, kvm))
-+		return -EIO;
-+
-+	err = tdh_do_no_vcpus(tdh_mem_range_block, kvm, &kvm_tdx->td, gpa,
-+			      tdx_level, &entry, &level_state);
-+	if (TDX_BUG_ON_2(err, TDH_MEM_RANGE_BLOCK, entry, level_state, kvm))
-+		return -EIO;
-+
-+	tdx_track(kvm);
-+
-+	err = tdh_do_no_vcpus(tdh_mem_page_demote, kvm, &kvm_tdx->td, gpa,
-+			      tdx_level, new_sept_page, &entry, &level_state);
-+	if (TDX_BUG_ON_2(err, TDH_MEM_PAGE_DEMOTE, entry, level_state, kvm))
-+		return -EIO;
-+
-+	return 0;
-+}
-+
- void tdx_deliver_interrupt(struct kvm_lapic *apic, int delivery_mode,
- 			   int trig_mode, int vector)
+ static int split_external_spte(struct kvm *kvm, gfn_t gfn, u64 old_spte,
+-			       u64 new_spte, int level)
++			       u64 new_spte, int level, bool shared)
  {
-@@ -3672,6 +3711,7 @@ void __init tdx_hardware_setup(void)
- 	vt_x86_ops.set_external_spte = tdx_sept_set_private_spte;
- 	vt_x86_ops.free_external_spt = tdx_sept_free_private_spt;
- 	vt_x86_ops.remove_external_spte = tdx_sept_remove_private_spte;
-+	vt_x86_ops.split_external_spte = tdx_sept_split_private_spte;
- 	vt_x86_ops.protected_apic_has_interrupt = tdx_protected_apic_has_interrupt;
- 	vt_x86_ops.alloc_external_fault_cache = tdx_alloc_external_fault_cache;
- 	vt_x86_ops.topup_external_fault_cache = tdx_topup_external_fault_cache;
+ 	void *new_external_spt = get_external_spt(gfn, new_spte, level);
+ 	int ret;
+@@ -517,7 +517,7 @@ static int split_external_spte(struct kvm *kvm, gfn_t gfn, u64 old_spte,
+ 	KVM_BUG_ON(!new_external_spt, kvm);
+ 
+ 	ret = kvm_x86_call(split_external_spte)(kvm, gfn, level, old_spte,
+-						new_external_spt);
++						new_external_spt, shared);
+ 	return ret;
+ }
+ 
+@@ -527,10 +527,20 @@ static int __must_check set_external_spte_present(struct kvm *kvm, tdp_ptep_t sp
+ {
+ 	bool was_present = is_shadow_present_pte(old_spte);
+ 	bool is_present = is_shadow_present_pte(new_spte);
++	bool was_leaf = was_present && is_last_spte(old_spte, level);
+ 	bool is_leaf = is_present && is_last_spte(new_spte, level);
+ 	int ret = 0;
+ 
+-	KVM_BUG_ON(was_present, kvm);
++	/*
++	 * The caller __tdp_mmu_set_spte_atomic() has ensured new_spte must be
++	 * present.
++	 *
++	 * Current valid transitions:
++	 * - leaf to non-leaf (demote)
++	 * - !present to present leaf
++	 * - !present to present non-leaf
++	 */
++	KVM_BUG_ON(!(!was_present || (was_leaf && !is_leaf)), kvm);
+ 
+ 	lockdep_assert_held(&kvm->mmu_lock);
+ 	/*
+@@ -541,18 +551,24 @@ static int __must_check set_external_spte_present(struct kvm *kvm, tdp_ptep_t sp
+ 	if (!try_cmpxchg64(rcu_dereference(sptep), &old_spte, FROZEN_SPTE))
+ 		return -EBUSY;
+ 
+-	/*
+-	 * Use different call to either set up middle level
+-	 * external page table, or leaf.
+-	 */
+-	if (is_leaf) {
+-		ret = kvm_x86_call(set_external_spte)(kvm, gfn, level, new_spte);
+-	} else {
+-		void *external_spt = get_external_spt(gfn, new_spte, level);
++	if (!was_present) {
++		/*
++		 * Use different call to either set up middle level external
++		 * page table, or leaf.
++		 */
++		if (is_leaf) {
++			ret = kvm_x86_call(set_external_spte)(kvm, gfn, level, new_spte);
++		} else {
++			void *external_spt = get_external_spt(gfn, new_spte, level);
+ 
+-		KVM_BUG_ON(!external_spt, kvm);
+-		ret = kvm_x86_call(link_external_spt)(kvm, gfn, level, external_spt);
++			KVM_BUG_ON(!external_spt, kvm);
++			ret = kvm_x86_call(link_external_spt)(kvm, gfn, level, external_spt);
++		}
++	} else if (was_leaf && !is_leaf) {
++		/* splitting */
++		ret = split_external_spte(kvm, gfn, old_spte, new_spte, level, true);
+ 	}
++
+ 	if (ret)
+ 		__kvm_tdp_mmu_write_spte(sptep, old_spte);
+ 	else
+@@ -782,7 +798,7 @@ static u64 tdp_mmu_set_spte(struct kvm *kvm, int as_id, tdp_ptep_t sptep,
+ 		if (!is_shadow_present_pte(new_spte))
+ 			remove_external_spte(kvm, gfn, old_spte, level);
+ 		else if (is_last_spte(old_spte, level) && !is_last_spte(new_spte, level))
+-			split_external_spte(kvm, gfn, old_spte, new_spte, level);
++			split_external_spte(kvm, gfn, old_spte, new_spte, level, false);
+ 		else
+ 			KVM_BUG_ON(1, kvm);
+ 	}
+@@ -1331,13 +1347,10 @@ int kvm_tdp_mmu_map(struct kvm_vcpu *vcpu, struct kvm_page_fault *fault)
+ 
+ 		sp->nx_huge_page_disallowed = fault->huge_page_disallowed;
+ 
+-		if (is_shadow_present_pte(iter.old_spte)) {
+-			/* Don't support large page for mirrored roots (TDX) */
+-			KVM_BUG_ON(is_mirror_sptep(iter.sptep), vcpu->kvm);
++		if (is_shadow_present_pte(iter.old_spte))
+ 			r = tdp_mmu_split_huge_page(kvm, &iter, sp, true);
+-		} else {
++		else
+ 			r = tdp_mmu_link_sp(kvm, &iter, sp, true);
+-		}
+ 
+ 		/*
+ 		 * Force the guest to retry if installing an upper level SPTE
+diff --git a/arch/x86/kvm/vmx/tdx.c b/arch/x86/kvm/vmx/tdx.c
+index b41793402769..1e29722abb36 100644
+--- a/arch/x86/kvm/vmx/tdx.c
++++ b/arch/x86/kvm/vmx/tdx.c
+@@ -1926,7 +1926,8 @@ static void tdx_sept_remove_private_spte(struct kvm *kvm, gfn_t gfn,
+  * BUSY.
+  */
+ static int tdx_sept_split_private_spte(struct kvm *kvm, gfn_t gfn, enum pg_level level,
+-				       u64 old_mirror_spte, void *new_private_spt)
++				       u64 old_mirror_spte, void *new_private_spt,
++				       bool mmu_lock_shared)
+ {
+ 	struct page *new_sept_page = virt_to_page(new_private_spt);
+ 	int tdx_level = pg_level_to_tdx_sept_level(level);
+@@ -1938,6 +1939,12 @@ static int tdx_sept_split_private_spte(struct kvm *kvm, gfn_t gfn, enum pg_level
+ 		       level != PG_LEVEL_2M, kvm))
+ 		return -EIO;
+ 
++	if (WARN_ON_ONCE(mmu_lock_shared)) {
++		pr_warn_once("Splitting of GFN %llx level %d under shared lock occurs when KVM does not support it yet\n",
++			     gfn, level);
++		return -EOPNOTSUPP;
++	}
++
+ 	err = tdh_do_no_vcpus(tdh_mem_range_block, kvm, &kvm_tdx->td, gpa,
+ 			      tdx_level, &entry, &level_state);
+ 	if (TDX_BUG_ON_2(err, TDH_MEM_RANGE_BLOCK, entry, level_state, kvm))
 -- 
 2.43.2
 
