@@ -1,134 +1,124 @@
-Received: from mail-oo1-f41.google.com (mail-oo1-f41.google.com [209.85.161.41])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2FBEB139579
-	for <kvm@vger.kernel.org>; Tue,  6 Jan 2026 16:35:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.161.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD3E823EAAB;
+	Tue,  6 Jan 2026 16:37:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767717311; cv=none; b=bJ0Zr/ooB/NpZHbUEWXVsPY+8Zq7MPVCivY+9zGCOi/pD2OUo3g9A+FF/eLqzEYomHtzkClRzG4Y8J2p4LuJQ2p3iQASbOEtKrAKmJJSnjxUQoPxsqpsuTSggizX7UqFZkGr3ALroMl2727npOvPhT2JMCuoqwr0hpp6W1dqB9I=
+	t=1767717466; cv=none; b=HQE+NW9hfoMO/LY19igdwjCCrAUpEowXuRshEYEZB29uRoTYM+d5KvcvlmIXg0Z2dZJO7bgn+W1wmY2y7LwH0gHuVRpJIfkcZemowYLEd1x6Qmwwj256cpbbMGd/C8GAEuXw9Xo+6C3O3mpUvtWHKlrhaLi2YwkV0Z45A7UavNA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767717311; c=relaxed/simple;
-	bh=nHZN3WhshIL9tfcBxNee2eEsjokCfxiC2OJfBl0pXjk=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Sn/86oXiQuE8Z4X2gwnDsdTrVFOH1whU7h09fExDAOuMbZn+2vM0AdyhxIJRE8PRHmvchJLCcN0f/PyzeEloWhW7B38/LihATa5KwYjkKPZeNIt/txgO9uH8DuzU20J/kQ/fj0WHdhleyHYHuJCPldLsO4Dxf9N7fLB4VhotwSU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=brainfault.org; spf=none smtp.mailfrom=brainfault.org; dkim=pass (2048-bit key) header.d=brainfault-org.20230601.gappssmtp.com header.i=@brainfault-org.20230601.gappssmtp.com header.b=EGe3wF3I; arc=none smtp.client-ip=209.85.161.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=brainfault.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=brainfault.org
+	s=arc-20240116; t=1767717466; c=relaxed/simple;
+	bh=rqhwogK0fiC4FgmsQlsmZVmt31ESsRL2ON78sL+R1UI=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=QmB8ThasJyWWfHoRNkwYIqTeUtUPW+2+0CwXeeUNkv9dYgI3dBDbnn24wdFZtW26bNYCMdAk45J7t2pkvtwcGL4VX361Ur1GksgSaxlAN33v8D5+2F7HW9HO/H/gUkQmVPyyjLedhrxbsv57JZMBT0brcIwqr+5n9zB88s5b3C4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=kr+h4wuu; arc=none smtp.client-ip=192.198.163.18
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=brainfault-org.20230601.gappssmtp.com header.i=@brainfault-org.20230601.gappssmtp.com header.b="EGe3wF3I"
-Received: by mail-oo1-f41.google.com with SMTP id 006d021491bc7-65cfddebfd0so640061eaf.0
-        for <kvm@vger.kernel.org>; Tue, 06 Jan 2026 08:35:09 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=brainfault-org.20230601.gappssmtp.com; s=20230601; t=1767717309; x=1768322109; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=bNrz9UQpAZyojBAeX05y5M58klvOpfZIZjcce2E7lpQ=;
-        b=EGe3wF3ILWaL5d6NKaW8vAqYW1irxTJdf9fUOWnsb+CZB34suIPK8XwTpQNOhtZH8x
-         ke3NFMx9o6HbdJlhob+SrmTUXyKBsm3CFh4ZBDPfgI22NvSrMebLv0yz/kEvAgZJI0sW
-         pEQztpi0fJoFV2TnJrhlbFjfDgVZpR0hQiLX7tzMhdwqc23upLVGfsYVM+g4CQYN47db
-         DHgZtitqKGLtFgGfUrVks2Xs26GeZifXHXqOnB9BJI/oplfAqxZ1nIKMh9urQ9c4pkP5
-         rJl9OGzd5mzsOBgdwMT6Uq8LB82UQch7tAT/T1+hwaKRgSzFPkQTchro9f+qdJDjTNsV
-         H+IQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1767717309; x=1768322109;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=bNrz9UQpAZyojBAeX05y5M58klvOpfZIZjcce2E7lpQ=;
-        b=UEkmXVIfIVDGB7Qi6WxkoeUALn1ia71uATPgAKQgX4WKvf7TMNAwi6UxA+lSDag8rF
-         1NtjLZO4471xPXi60GPpTJGkBLr2LUVApCzA3LJiXI9lwnM7iqAdCoGdqzPAASZnUn+g
-         tG9Fj4zwTK5qEQbRAEcXLRoEzlZ2KXszHJgj32Yg73XGAF7APhTHaBGjN9W4Ik0Nf2EH
-         GzBcgr+oDuvTfZHQ2bWTuA0uC2pX1Qm5x5Rf5z8SG5n3YrXMs7k1FYSopouWRfc+TwLz
-         RkSsnrqsffEtVmRFtXsNMpSYWx3vg/F5KGNeUL9lXZg+zSpK3up2p+lMFYgu2O9j1x95
-         K1Bw==
-X-Forwarded-Encrypted: i=1; AJvYcCX/0AF5Mi6rf2ubadqUdf1anDWww6iQPfkT+f6je1uOXyGmlD4l2oiHiQQoV5A6lhTSyxc=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yzs8IYeCbSdODF+ek8do+yTiNHcwWab1m4gentd1mZfA9KB54kN
-	Blh1B05HNJTmByhob4aCV6woeaL6Icgz8wDHIK8IOOf4qCdIG5seHz9bw+XBPjjrzMvf/pEQjYL
-	JIqn8l7BZ0PujctHsoyxG6c6SHusOkoQhJJbd/LeRwQ==
-X-Gm-Gg: AY/fxX4h8t3afGBMFKtBP67/sDa7TLMkC9uVi29ONEdF8YAuI6MonAFbjsWLLWcN1D7
-	mT9mwBqQEJLoBdO39AsjMOXn9bPLSWOCpVbEAZUFQuNNigp2pEJqr0u9Cdj+hqQCrZQeootA5Bu
-	UouqVSKp/fgxBEuU5xZSdILI3yq/YnaEEBYXQCZ3nKZKUVGE+XdTr/Z4CPoRMLM68T9G0oUudq7
-	VCZc2ESgHGUzm3QL2Qj6FfWFuD8/fXjoD+9kmuMy/a6a5txjO6J76NJGFnRLqI28dUmmodo9KLK
-	N4XLhdiZKvWtFjMSadOOPovJAACy3YTu7lSjyqyBze+3w0Hsn66qjpoLeA==
-X-Google-Smtp-Source: AGHT+IEqXxTBeH3LP0fUVizISuCkdADz10TXUBGRVWD+OKCNI8kCKzHUOCYj5zq7rrrDTSe7deN3OOyJ+Sim2FJxOUk=
-X-Received: by 2002:a05:6820:4908:b0:65d:2f7:6eb5 with SMTP id
- 006d021491bc7-65f47a9ac10mr1471540eaf.66.1767717309018; Tue, 06 Jan 2026
- 08:35:09 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="kr+h4wuu"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1767717465; x=1799253465;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=rqhwogK0fiC4FgmsQlsmZVmt31ESsRL2ON78sL+R1UI=;
+  b=kr+h4wuuEaB6JjO0UZiWKFvZNU6hH20EdetiqXG1K+IdaQ6U99GM5H+j
+   T3j1xhJarn3K6CXDSUYq2bz0cFjJBaBpT/8b0tYhrRuUcBOc2QwtAXryU
+   HF9EMoh5pW4L3zeBgaKIOIXtRqErxI4uSNJyMeNdfP3IqqwujZ5ogqcOD
+   YP99Ab9FhqFJpebBx0wuPT5rpDxtRlQnkrMaHe2dzcyfCir0zl6Ak6v46
+   LvtX2Bb7ybCrP1ZZ9Lm8hLkKjMFfCn8S0eqwWbN2V61B8p6hCqmMdX6yP
+   Wj9AHiGU5/ZcPsXuwHxD7cHTi6udumwcEp3s32Muy8oe1hjZ41gFT3H/+
+   g==;
+X-CSE-ConnectionGUID: SVPk8fLMTeWT2ZS6Xnahpg==
+X-CSE-MsgGUID: uchZY1i5QAe92UYMb6sYtg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11663"; a="68279871"
+X-IronPort-AV: E=Sophos;i="6.21,206,1763452800"; 
+   d="scan'208";a="68279871"
+Received: from orviesa001.jf.intel.com ([10.64.159.141])
+  by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Jan 2026 08:37:44 -0800
+X-CSE-ConnectionGUID: llVB9Hd4SbOwToq3NWfefA==
+X-CSE-MsgGUID: vQjhnIjNR06fR6nbujHZOw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.21,206,1763452800"; 
+   d="scan'208";a="240183498"
+Received: from cjhill-mobl.amr.corp.intel.com (HELO [10.125.109.89]) ([10.125.109.89])
+  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Jan 2026 08:37:44 -0800
+Message-ID: <ea966be2-b44d-421c-85f4-03d3db6c790a@intel.com>
+Date: Tue, 6 Jan 2026 08:37:43 -0800
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260106162848.22866-1-ben.dooks@codethink.co.uk>
-In-Reply-To: <20260106162848.22866-1-ben.dooks@codethink.co.uk>
-From: Anup Patel <anup@brainfault.org>
-Date: Tue, 6 Jan 2026 22:04:55 +0530
-X-Gm-Features: AQt7F2om0UlRUlewDfBuWexms2k5z-xmHfO0JSMf-AgqjjVg_PjC4qOz0utW3LY
-Message-ID: <CAAhSdy1w485+mTNCmX+KgQVnLr5iyDyPLm5+w2QwA+SxQ-2mVw@mail.gmail.com>
-Subject: Re: [PATCH] RISC-V: KVM: fix __le64 type assignments
-To: Ben Dooks <ben.dooks@codethink.co.uk>
-Cc: linux-kernel@vger.kernel.org, linux-riscv@lists.infradead.org, 
-	kvm-riscv@lists.infradead.org, kvm@vger.kernel.org, palmer@dabbelt.com, 
-	pjw@kernel.org, atish.patra@linux.dev
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 0/3] Expose TDX Module version
+To: Chao Gao <chao.gao@intel.com>
+Cc: Kiryl Shutsemau <kas@kernel.org>, kvm@vger.kernel.org,
+ linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org, x86@kernel.org,
+ vishal.l.verma@intel.com, kai.huang@intel.com, dan.j.williams@intel.com,
+ yilun.xu@linux.intel.com, vannapurve@google.com,
+ Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>,
+ "H. Peter Anvin" <hpa@zytor.com>, Ingo Molnar <mingo@redhat.com>,
+ Rick Edgecombe <rick.p.edgecombe@intel.com>,
+ Thomas Gleixner <tglx@linutronix.de>
+References: <20260105074350.98564-1-chao.gao@intel.com>
+ <dfb66mcbxqw2a6qjyg74jqp7aucmnkztl224rj3u6znrcr7ukw@yy65kqagdsoh>
+ <d45cc504-509c-48a7-88e2-374e00068e79@intel.com> <aVzinyLe5rxkJXUu@intel.com>
+Content-Language: en-US
+From: Dave Hansen <dave.hansen@intel.com>
+Autocrypt: addr=dave.hansen@intel.com; keydata=
+ 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
+In-Reply-To: <aVzinyLe5rxkJXUu@intel.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Tue, Jan 6, 2026 at 9:59=E2=80=AFPM Ben Dooks <ben.dooks@codethink.co.uk=
-> wrote:
->
-> The two swaps from le32/le64 in arch/riscv/include/asm/kvm_nacl.h
-> are generating a number of type assingment warnings in sparse, so
+On 1/6/26 02:23, Chao Gao wrote:
+> First I don't think we should expose TDX module version or hypervisor
+> version to guests. See my reply to Kirill.
 
-s/assingment/assignment/
+I just read it. It didn't provide any insight. For now, it's a plain old
+NAK on the new ABI. The water is too muddied.
 
-> fix by using __force and assuming the code is correct.
->
-> Fixes a number of:
-
-s/... number of:/... number of sparse warnings:/
-
->
-> arch/riscv/kvm/vcpu.c:371:21: warning: cast to restricted __le64
-> arch/riscv/kvm/vcpu.c:374:16: warning: cast to restricted __le64
-> arch/riscv/kvm/vcpu.c:586:17: warning: incorrect type in assignment (diff=
-erent base types)
-> arch/riscv/kvm/vcpu.c:586:17:    expected unsigned long
-> arch/riscv/kvm/vcpu.c:586:17:    got restricted __le64 [usertype]
->
-
-Please add a Fixes tag.
-
-> Signed-off-by: Ben Dooks <ben.dooks@codethink.co.uk>
-> ---
->  arch/riscv/include/asm/kvm_nacl.h | 8 ++++----
->  1 file changed, 4 insertions(+), 4 deletions(-)
->
-> diff --git a/arch/riscv/include/asm/kvm_nacl.h b/arch/riscv/include/asm/k=
-vm_nacl.h
-> index 4124d5e06a0f..2483738029cb 100644
-> --- a/arch/riscv/include/asm/kvm_nacl.h
-> +++ b/arch/riscv/include/asm/kvm_nacl.h
-> @@ -58,11 +58,11 @@ void kvm_riscv_nacl_exit(void);
->  int kvm_riscv_nacl_init(void);
->
->  #ifdef CONFIG_32BIT
-> -#define lelong_to_cpu(__x)     le32_to_cpu(__x)
-> -#define cpu_to_lelong(__x)     cpu_to_le32(__x)
-> +#define lelong_to_cpu(__x)     le32_to_cpu((__force __le32)__x)
-> +#define cpu_to_lelong(__x)     (__force unsigned long)cpu_to_le32(__x)
->  #else
-> -#define lelong_to_cpu(__x)     le64_to_cpu(__x)
-> -#define cpu_to_lelong(__x)     cpu_to_le64(__x)
-> +#define lelong_to_cpu(__x)     le64_to_cpu((__force __le64)__x)
-> +#define cpu_to_lelong(__x)     (__force unsigned long)cpu_to_le64(__x)
->  #endif
->
->  #define nacl_shmem()                                                   \
-> --
-> 2.37.2.352.g3c44437643
->
-
-Regards,
-Anup
+I'm still open to dumping something to dmesg though.
