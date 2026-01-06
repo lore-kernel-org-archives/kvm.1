@@ -1,337 +1,326 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 428DD309F19;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B8B86325704;
 	Tue,  6 Jan 2026 10:23:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.15
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767695023; cv=none; b=r/qcXtzL1/lCCuRKgNgFRr9vK1/CuJpI+q2b4KdCLz6/usXMY1pfBZ/+9OteSPSageenDYTmwzDAsxIQwMwOPvdkigbwNv1EGNQt0PpKqHTbBDNVKgnnUEN+f9PxKm9wgLwV6NjT5JCBJrWCU6eZVkjPaf4enYxN/kOTFy5qfj8=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=198.175.65.20
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1767695023; cv=fail; b=AOfcNHebo8mCZSUEHDWFXA5mR9xZxwr74Y3HPcZM2Q9Vy3WVSmS84YfkO3cQe+JCPmQi6LFxiLz2cdV1yXYeIDPp7LdUbsJK0HhpY1gYbktqSwDmZgz3WpidrWuRMmfRaHr1wWuWyjkgbuWm7W09SRu/YU3druMxDdWE/FOwXmA=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1767695023; c=relaxed/simple;
-	bh=qPi5NNUsFtXM1wM0hk0GwsQeRaWC08JCvXyAMTr4kZk=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=H5nheW2lefQOWisD3SCnHAOLRIh5A2S7DX2D1FkidRVurc7ppiSntFy1DGpErVCPhfonhkC9h41D/i6JDzPuQDeYphwZg3DzY5EYOgVhlTY0y8UNgf4iQRqB4jTpBZIYTj9f7ph8+IhUkIin1vVGEYB1QZXr1ef4NrUlXtMsxb4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=MdkG+6ot; arc=none smtp.client-ip=198.175.65.15
+	bh=E8VaEl0g3tttcjle370ewJ6f0QfxdhFjAB5hsiVybek=;
+	h=Date:From:To:CC:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=XNFL+0KOF+dZNEmJZgtB+J2cLWITlnYjXtf1gua9wi6Poy1ecVOM6qpIXuuuvuxg6wMyNgCdU+gEaD+IQFzY3k2cw6FyMaweSdiyOGBT0R11Y5T48FQHJkG9ELEESaAQC4UTEXYpolNCMcQVI8reY9keSeR7OaHvBCHIkArE0ww=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=n2de7d8X; arc=fail smtp.client-ip=198.175.65.20
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="MdkG+6ot"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="n2de7d8X"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1767695021; x=1799231021;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=qPi5NNUsFtXM1wM0hk0GwsQeRaWC08JCvXyAMTr4kZk=;
-  b=MdkG+6otB+zYo4l2wYlvTBUU4Hfh5OnECv7MPTgNvVoHc0/whKqgZIhQ
-   uN1T0FwEiTVUVD20SzSnHdFQrTaeUUoN9XhLGtinmE7nEc7102hg+ZKDU
-   /ak4Y5r2cvNKDiN4bWPRSH/Ry+8RzhhdNxk40uFzmQzdbCkivLdLVaT+f
-   pJgofbuW1QeS/YuoVLYzMGgEvmcsDc/xEY+aEN0URj84lEMgAAL0pgiVX
-   lahtNaB7+SKnESM6XGAbtXPj1YGIM7v4ej4aZCiFt6NGMm3Qdn9zuysUY
-   W/OH2zpiBg0NLV6P0ud3/5K8QAnSFHz9FFYOjzFrfCAtNRxKMJQTdXPQ5
-   Q==;
-X-CSE-ConnectionGUID: +4wv+gAKSrWA8gwefXJ1Vw==
-X-CSE-MsgGUID: Qz1ngfAaRGufrjnFORzRFA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11662"; a="72689605"
+  t=1767695022; x=1799231022;
+  h=date:from:to:cc:subject:message-id:references:
+   content-transfer-encoding:in-reply-to:mime-version;
+  bh=E8VaEl0g3tttcjle370ewJ6f0QfxdhFjAB5hsiVybek=;
+  b=n2de7d8X+OYIXSEwO0F9q+GrgNb9L1Dg4ZK+onpl3qeriGcCnD59/Ncb
+   MIFt3gQ/wq6GJEWcInRDqHbNzegZWUQcnQyMdn0tj8WWpRzKZggGU+TGp
+   amkgF30v8pps0DEsGPDK3ZmbICPQbS8fpSBrGZ7dd6dXHPRRehnVHEaBi
+   xgOTYkSiKNgxPV+xUUAKPbJc2f+/7gJ/DPieYdQubpwOu8WD06oj0LfFc
+   nPo4L6+KVnOiXxYxJ88p+5l1nREclCITEbAyz7WIiYiSRaMqP7rYKFGLT
+   qWcFWNA1UrmFBpg1bNl9Z7SO6vg1mctXn9TMrvMGAWUuwR3ZblUaCFp4I
+   g==;
+X-CSE-ConnectionGUID: 648G++9zQ96L603RsMk6zQ==
+X-CSE-MsgGUID: 6kc0Ld0dREK0O3qgRIL10A==
+X-IronPort-AV: E=McAfee;i="6800,10657,11662"; a="68801940"
 X-IronPort-AV: E=Sophos;i="6.21,204,1763452800"; 
-   d="scan'208";a="72689605"
-Received: from orviesa010.jf.intel.com ([10.64.159.150])
-  by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Jan 2026 02:23:40 -0800
-X-CSE-ConnectionGUID: rdQB6kYKQfqOGdw88F91sg==
-X-CSE-MsgGUID: CayaJQcORwO8iAxi3+LWQA==
+   d="scan'208";a="68801940"
+Received: from orviesa009.jf.intel.com ([10.64.159.149])
+  by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Jan 2026 02:23:41 -0800
+X-CSE-ConnectionGUID: C9WdeMqBTf6D1mY0I0CiWQ==
+X-CSE-MsgGUID: 9g7O7DuDQvy5zJ2IA2x4Bw==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.21,204,1763452800"; 
-   d="scan'208";a="201847530"
-Received: from yzhao56-desk.sh.intel.com ([10.239.47.19])
-  by orviesa010-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Jan 2026 02:23:34 -0800
-From: Yan Zhao <yan.y.zhao@intel.com>
-To: pbonzini@redhat.com,
-	seanjc@google.com
-Cc: linux-kernel@vger.kernel.org,
-	kvm@vger.kernel.org,
-	x86@kernel.org,
-	rick.p.edgecombe@intel.com,
-	dave.hansen@intel.com,
-	kas@kernel.org,
-	tabba@google.com,
-	ackerleytng@google.com,
-	michael.roth@amd.com,
-	david@kernel.org,
-	vannapurve@google.com,
-	sagis@google.com,
-	vbabka@suse.cz,
-	thomas.lendacky@amd.com,
-	nik.borisov@suse.com,
-	pgonda@google.com,
-	fan.du@intel.com,
-	jun.miao@intel.com,
-	francescolavra.fl@gmail.com,
-	jgross@suse.com,
-	ira.weiny@intel.com,
-	isaku.yamahata@intel.com,
-	xiaoyao.li@intel.com,
-	kai.huang@intel.com,
-	binbin.wu@linux.intel.com,
-	chao.p.peng@intel.com,
-	chao.gao@intel.com,
-	yan.y.zhao@intel.com
-Subject: [PATCH v3 11/24] KVM: x86/mmu: Introduce kvm_split_cross_boundary_leafs()
-Date: Tue,  6 Jan 2026 18:21:36 +0800
-Message-ID: <20260106102136.25108-1-yan.y.zhao@intel.com>
-X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20260106101646.24809-1-yan.y.zhao@intel.com>
-References: <20260106101646.24809-1-yan.y.zhao@intel.com>
+   d="scan'208";a="202397437"
+Received: from fmsmsx901.amr.corp.intel.com ([10.18.126.90])
+  by orviesa009.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Jan 2026 02:23:42 -0800
+Received: from FMSMSX903.amr.corp.intel.com (10.18.126.92) by
+ fmsmsx901.amr.corp.intel.com (10.18.126.90) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.29; Tue, 6 Jan 2026 02:23:40 -0800
+Received: from fmsedg901.ED.cps.intel.com (10.1.192.143) by
+ FMSMSX903.amr.corp.intel.com (10.18.126.92) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.29 via Frontend Transport; Tue, 6 Jan 2026 02:23:40 -0800
+Received: from CH5PR02CU005.outbound.protection.outlook.com (40.107.200.29) by
+ edgegateway.intel.com (192.55.55.81) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.29; Tue, 6 Jan 2026 02:23:40 -0800
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=GJQiJOK5J/Yvp8khp46KirdiW8r3qDyi14O2zeX2DysiOBdDOoplOuOTmhzHvnIpkPBOhu8gI30xSKVdde3XxKIkaRX+iKlUBF3nd/4dbuIxRf/cc2fTRPJRjeOqOD/FWc7iZ4iHCWQbRxl2oo9V4fnKSWTcYEVI7p+0XnpXioUlJFDPUC4qAbi6d/PzN7XWBkp+nsx99CWe1wQIPf0qz/q6yz+rhocdUAJvhr0Pziwgil9ssoO8srMHIHJFUcxxrm0pyRDfVTbskqoDPxQQtAI9BTGzaATrR4LjgMx8igd7e49PUBLQUjVm4dQkT6Af2Z6RvNSol0Hy8gz8JsX57Q==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=AyNq6Nmczc3F7dYur9zX9m8SaicCpobcKcx6MmPLUr4=;
+ b=kF/UQm6r+sD5ySl3//y/I7pfEfPWX6Od72i5tI9r3+QY2Gzf4L5bJaM+ycVD/IkRySMbW5trBPu/hyRvbh3ONAPoCYhM1MatOP4Iw6xS0pStA+TzuWay+ZuUO6SJjz9pcnd29Dag0RAbZvRQuQRdFQw6SItGI32kNzquS1hSnZBekK165rWIdLPNfAhF6/6hrK97IFO3hkjxuCSYDKRa09tqhJzy3OeUz/ArzNr0LmfMB450RKjT6lcJfOL3DjxpMu+B61i7kVkiJCgf0qydE9QJA5XG2VhmCRnnreVA+JZ/YgieyZZ/abhtL2z8uKZwhqQvZj3Uc0Ok2OGWm1ZOIQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+Received: from CH3PR11MB8660.namprd11.prod.outlook.com (2603:10b6:610:1ce::13)
+ by DS0PR11MB7880.namprd11.prod.outlook.com (2603:10b6:8:f3::14) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9499.2; Tue, 6 Jan
+ 2026 10:23:38 +0000
+Received: from CH3PR11MB8660.namprd11.prod.outlook.com
+ ([fe80::fdc2:40ba:101d:40bf]) by CH3PR11MB8660.namprd11.prod.outlook.com
+ ([fe80::fdc2:40ba:101d:40bf%6]) with mapi id 15.20.9478.004; Tue, 6 Jan 2026
+ 10:23:38 +0000
+Date: Tue, 6 Jan 2026 18:23:27 +0800
+From: Chao Gao <chao.gao@intel.com>
+To: Dave Hansen <dave.hansen@intel.com>
+CC: Kiryl Shutsemau <kas@kernel.org>, <kvm@vger.kernel.org>,
+	<linux-coco@lists.linux.dev>, <linux-kernel@vger.kernel.org>,
+	<x86@kernel.org>, <vishal.l.verma@intel.com>, <kai.huang@intel.com>,
+	<dan.j.williams@intel.com>, <yilun.xu@linux.intel.com>,
+	<vannapurve@google.com>, Borislav Petkov <bp@alien8.de>, Dave Hansen
+	<dave.hansen@linux.intel.com>, "H. Peter Anvin" <hpa@zytor.com>, Ingo Molnar
+	<mingo@redhat.com>, Rick Edgecombe <rick.p.edgecombe@intel.com>, "Thomas
+ Gleixner" <tglx@linutronix.de>
+Subject: Re: [PATCH v2 0/3] Expose TDX Module version
+Message-ID: <aVzinyLe5rxkJXUu@intel.com>
+References: <20260105074350.98564-1-chao.gao@intel.com>
+ <dfb66mcbxqw2a6qjyg74jqp7aucmnkztl224rj3u6znrcr7ukw@yy65kqagdsoh>
+ <d45cc504-509c-48a7-88e2-374e00068e79@intel.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <d45cc504-509c-48a7-88e2-374e00068e79@intel.com>
+X-ClientProxiedBy: TPYP295CA0001.TWNP295.PROD.OUTLOOK.COM
+ (2603:1096:7d0:9::18) To CH3PR11MB8660.namprd11.prod.outlook.com
+ (2603:10b6:610:1ce::13)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CH3PR11MB8660:EE_|DS0PR11MB7880:EE_
+X-MS-Office365-Filtering-Correlation-Id: ce44c8b1-5f40-4752-a1d3-08de4d0da7cb
+X-LD-Processed: 46c98d88-e344-4ed4-8496-4ed7712e255d,ExtAddr
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|376014|7416014|1800799024;
+X-Microsoft-Antispam-Message-Info: =?utf-8?B?cnpXNUg1d0xDN1NJdVFFMXYyRUo3ak1RR3NrK0J6eUtORFAxbVZlbkdBRkYx?=
+ =?utf-8?B?cXQwR1lqbTRvQ0VPYjU0Rys0dmg2Y3UzUmhNeXI0SjBiN21lRHVTb2hjeFo0?=
+ =?utf-8?B?M0VTZUsrbVNHMllIMlFSY0lTSkcvL1hWb1BGQ2drR2ZxdVhwUHR5dXZsZ1J1?=
+ =?utf-8?B?dUZNWXVieDIzS0cwU241Tkh1MnB0b1djSmV3emg1NnEvOXlabkxsRmEwNUsr?=
+ =?utf-8?B?Vkt0QTdrenRkZ0ZjUkRWQ1FiNkdDakdEMlJUWDJpYXdRV2lydkFZNlMwbnY3?=
+ =?utf-8?B?K0F3UXFsK21pbmg2SE84Q21aMmJTZWFiVXowNmxxUEZweDRjUUtFWjJMeGxN?=
+ =?utf-8?B?NURiOHo2cDNtR0k4b3ZLSk9mK0grNVNjc2VaRmE5eHlpUE1Qd01oUjhudTg0?=
+ =?utf-8?B?SVNlai9MVGtwSm5ZUGR4ZWFVTHVaUlZNZUZGeHNwcWJWWXMvUThuMFozWXpO?=
+ =?utf-8?B?NEZ0bVJTWG5GL2F0Q3dKQTArQWdpZ2w4WGlnWFdKWDRnN1pzT1ZCRXlhR1NL?=
+ =?utf-8?B?bWs4T3N3eFhFa0hKaVc4MzZzZWlDclBIRCtYSit0WkNJTlZHTlNzSngzcS9Y?=
+ =?utf-8?B?b3hHWGdjUVdLYVJ0N0RFcGFvK1FZbXRPQTJOTWJ4L0RLMDh1SThZeDRhTHVJ?=
+ =?utf-8?B?U0QxM2pDR0N2ZzRtdkRqTkZUUEhheEtsUnlYQXUvUElpbHQ1YW41Qm1CL0o4?=
+ =?utf-8?B?RXpmaXRvKzNuNlRES0x5VXBQckFmdW9ROUNHSWFWeVlCenh1LzY4VHlIM2FJ?=
+ =?utf-8?B?Vmw1aStTTE05WjgyTXNINnhmU3JZZHNVb0k5d09BUWdrRkRoa2htT3luakNO?=
+ =?utf-8?B?YXRPSkdybWUyMldjVXBXNmZNN2lGdjllOGhNRzM3cWk1WkYvQndLMXppN0NN?=
+ =?utf-8?B?dWZkV1RyMC8vYmp0Z01Oa1JzUTQzSjg3VzRWNUEwMVFBdmlhTG4wcXBuZFlz?=
+ =?utf-8?B?ZXhNRjk2M2RxVGFZUWFsd1NweG9TcVdjL0U1YWpTa3dlaXVEeHVBLy83YlJr?=
+ =?utf-8?B?ZVNiT002bDNxNDBxb3pCaXdRdytMb0xpOS8yQVlaOFlYL00wRlNiSXNSVUsw?=
+ =?utf-8?B?TGIzZXNkVzFLOWh6UUNCbzNWc1RqR2JGbnRYV1lHQzRUcWRSMjVJdEY4NGw4?=
+ =?utf-8?B?TzJLb2pNSVR3eG9GV2VQaWJHTkdHUjl5RkJqVWxZY3Nxa1VnV3JBa3dxS2hm?=
+ =?utf-8?B?NXByR1VHam1TbmxsbU5DMWhaRGhrQ29BYlg4SXQzL2dLRm03dWVBdWdhb01Z?=
+ =?utf-8?B?ZWlTeVpuUm80cFdaZmQ0OHQ3bU5jcmYrVE9YYWhnNWFocUNZWlNMZFcyRytT?=
+ =?utf-8?B?ZU0vc1ZpalZRSWhudDUvdTdHeVF3UHRzK3JHUHFrUmdxNG5FTU5TM3RmTUF4?=
+ =?utf-8?B?TkIrVDA1amprcGIyMGdIZlBydURoOU0vVmE4MlhXZkxIbEw2amdzb0VEdTdH?=
+ =?utf-8?B?ZXgzYmVsaUhiU3NROWoya0lTZUV2Q3Z5eC83emVIeTNZeS9KREh4cXZFTFpQ?=
+ =?utf-8?B?V05CSWFoeHZyOFRibHFZT3lITUdock9FSGZxeHVTRk9iT0dTV2lycXY0NWpD?=
+ =?utf-8?B?VHFoemdzUkpJNWs5dHNKazJoU3AxUzR1MDFUSm51OGlGdDFEb09SbXAxeFBQ?=
+ =?utf-8?B?WVBpcDFWNGx6S3BueERhRGxudFgzV1ovYTBzSEdpWk03S1dGbzk2VDMrbWNE?=
+ =?utf-8?B?a3I5TDhjVk15WDJKTllaOUxoZnh5bmtkNndHMUUxY2JtUHhwMVpaYjNQaDlG?=
+ =?utf-8?B?bG1GazR1NEJyU202MjJtVTVhSzd0c2lRRS93cVlEM0lVZFRybUNYUERJSTFJ?=
+ =?utf-8?B?MHBOalNiaVh3dXcwRVA3Y2h0d3BLVmo5c3dOTmNQOXV6aDYvcjFNb29MS3NT?=
+ =?utf-8?B?Z0ZHYjBUclQ2b3ZKVEhTZ3B4MGJYekx6SzdoODZvRzhsTUIwdzJvdkV2bVBN?=
+ =?utf-8?B?cjc4N3NvVFRIVGpRU1lKaDBmWkg0YjhSM01TOGhpKzhGditmUG9lV1RyNUsw?=
+ =?utf-8?B?UExLTDBzQ2tRPT0=?=
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH3PR11MB8660.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(376014)(7416014)(1800799024);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?NFY5Z3cwc1dYRWpUd3FoNlFlZVBJa2xVZlRKVnltaTRVeDQ0WTAyS29GN2gv?=
+ =?utf-8?B?SWUwL3NTNzQ1WFQ4cHdMTVRyVHdLV3BReVhKeXVUZWhJS0YwM21LK2c3NE15?=
+ =?utf-8?B?RUVRRm5sOTFGY0FKR3o4WHlCbjNOWGM1YWFMRFVxY0R5d3lid3VYdjkvY1Yy?=
+ =?utf-8?B?SkcyZ2ZNUVh6OG1Venl4QituVmd1OWdSdXFBQ0ZMQUVwc3V6YTR1UUdrcldu?=
+ =?utf-8?B?L3A2T0kvSnAyUHlrR3I3OEliL1NsZG8wd3R2RlcxUmt5elhNNHkyalEzNmJm?=
+ =?utf-8?B?MGs0YVFMcEFNY0NzMkFvVGV3YThrY1I0SU9oLzVqVHI0UFBVSks3L2dTd1pM?=
+ =?utf-8?B?NUZNZXZwRmNWOXFhRCtuMVQzVDhYRjNvMkdhWHV6c1l1dWcwWG9RYXR3Umdz?=
+ =?utf-8?B?RXJDMDBoQmpZMGtCcU1saXJjTTVhaG5lUFRtNTNMV2t2SklVM0N4V2RjRi9T?=
+ =?utf-8?B?WUxKQWlaMzc0ejRZMnVpWGtmekNJT05PWmFKNnppeXgvQm5za01CT3dmamM3?=
+ =?utf-8?B?QnlzVXhFdk1BcGV4RVV0ek00YUpHT0dXZE93NWVaclhXNGN3MktKNXdlWW1l?=
+ =?utf-8?B?YkwzRWUyNzlEUnlBclJBK0FqT200SUpKaHVRN1VNazh4UTdUU3JieHk5T3hp?=
+ =?utf-8?B?UzNxSlNQV3E1ZVo3KzNxY0FIMWFEMzFmTEQ0SzZPQjBRRlNqVytXMTcxV1pz?=
+ =?utf-8?B?aDRybStmZ2tyK3hhVndBMGJlN2tuejNUUlUzWmhsdUxvaUVoalhPcjVaZk1S?=
+ =?utf-8?B?TWVIeXJFZFVURVQySHNtZzFkbW0wVHQ3R2dHWjV6NkpPcWFTd2JOZEl4a2lm?=
+ =?utf-8?B?andJS1R6dzIyTkZlSkZJV0F4ckdEbkZFdkdpTXNnQjlzRnZSUnp1U0kvOHd5?=
+ =?utf-8?B?QUo2YTUxcHBKNUZLcFVtbG40emNNVkh3a2phZGRDZ0t6bGdFclUvakJYWWxn?=
+ =?utf-8?B?QlVJRzVtaHB4dmZYUGxXTFAzU1VUWDYwRzVWRHRUU1BOaXJZQXUwa3h6R2dI?=
+ =?utf-8?B?OG5qZFo0S0hxYUJXeEs0TGpHQ3YwVnY1UmErMUE0SWpJSmJSSm1TSGFUQi9Z?=
+ =?utf-8?B?bUhxMWIzNkEvclJMUk9SRXp0REYyc09CbERyZnhHNEsyOWZoZUZmUVNRRWhl?=
+ =?utf-8?B?VFpNQUx6Qlhaa2kzTmhnUmtFc3NURjZCdVgxV3lOY011RjRad24zOWI1WmFZ?=
+ =?utf-8?B?QmRjRXI5dnFzakIzbEJrUXVLbWh1Y0VKMGN3MTZYd3hKQ3VoekF0LzNYTXNS?=
+ =?utf-8?B?czBodkxXek9qb0dpTHhSWXd5Z0k4Tk9qUkVWWGFYY0pNMVY1UlMwQnIydUNl?=
+ =?utf-8?B?TFJkNGlCbE8zWE9wMHQ2eGNkaDdLVWlsbWpwMWdsaGZ1bmppSzhtVXZEcFVu?=
+ =?utf-8?B?cFgyUGd0MFNocnRRQUpkdmlablVFSWNSUU1OMkh2ZDBFVnN5Tk1MblJoVWcr?=
+ =?utf-8?B?aWZZUlhsZ0gzODNKcE5SaThnSDBWa3U3M2hmd2htT0FMMTZLWXdqa0ZEZW9p?=
+ =?utf-8?B?dUttclhBRG5jMnlubklMRVZEZjBlTHRyUkxFUkhITzVmNnVpalNnZ3dMRFRK?=
+ =?utf-8?B?SlFKdlYyUi9qRFpkWi9UaDBsYUcvaWlKeGpPalcvRnhmSWQ1N25pTmRGNjBm?=
+ =?utf-8?B?cXk4MTFVd1ZBNktzZkFIbW1WbmREdHdqSVlIQUFMNjNyeWFJZGFRTCszbXRT?=
+ =?utf-8?B?U255NmlCSzgweHVzbWdpZDJvMWc3RitCT0pJdGVrSU83RzBwRzE5MVMveXVN?=
+ =?utf-8?B?T2x4L29zTGJnQkU3elBBaUZXeDVBR0tJVGRhNDJJK2Z1Nm8rbzlUWXIxOUpO?=
+ =?utf-8?B?L1YwTzJmZ0wrZ3FwdDJlVU4rY3hDZld4b2dwL0pka3dSK01IUlh3d3dURnov?=
+ =?utf-8?B?dUtRaEdySUNhUXJlZG10Zy8xMVlOTS9CRll0d0U5NGVaaDdmTkMzempoVTIz?=
+ =?utf-8?B?ekhSTkt1dEE2RE1TSmxuREduK01MalZaRFdlVHplenpoQklJQ29vd1lhZ3hk?=
+ =?utf-8?B?WkRpOGl5YTh1UEJ5Nzc2cEVOemhaM3diRjh3QkdPdGRTWFRFWXdSYW40bWFL?=
+ =?utf-8?B?RHRTY0xHYkFSNGl5MnpCVHpyK3VFSnd6RUxtaG9laHoyQjd6STJVWWlQNWVT?=
+ =?utf-8?B?Sm1nZzFoVFZBNGFQVFhjMFl6enovcTNoSTk1UzUyOXoveHhaOWxHYVVpelJq?=
+ =?utf-8?B?c3pOTnFJampOWWg0ajlIWjJQOUJwWjhBZ0FzYzNNZkpCdERETWdmSWNXWjB4?=
+ =?utf-8?B?ZWxLbkhuaFJzMTZVc2ZGb3ZoQUtaeCtYQ1VSaEJndkRiNmpMaTEzdTJOU0ZQ?=
+ =?utf-8?B?M0hsaTFFUTdNaVUxQURrSS9IazViNDJzL29MLy8wV3d3TTMvdXBBdz09?=
+X-MS-Exchange-CrossTenant-Network-Message-Id: ce44c8b1-5f40-4752-a1d3-08de4d0da7cb
+X-MS-Exchange-CrossTenant-AuthSource: CH3PR11MB8660.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 06 Jan 2026 10:23:37.9486
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 7Uu2Ba+pYUV9i3KwFfjQvEHtz9wUhOKZ2zM8khk+2rc1Ulv6Pxd8dai2bAmqbMgrPTOlzeYJYx7drQMZip2S+w==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS0PR11MB7880
+X-OriginatorOrg: intel.com
 
-Introduce kvm_split_cross_boundary_leafs() to split huge leaf entries that
-cross the boundary of a specified range.
+>Generally, I find myself really wanting to know how this fits into the
+>larger picture. Using this "faux" device really seems novel and
+>TDX-specific. Should it be?
+>
+>What are other CPU vendors doing for this? SEV? CCA? S390? How are their
+>firmware versions exposed? What about other things in the Intel world
+>like CPU microcode or the billion other chunks of firmware? How about
+>hypervisors? Do they expose their versions to guests with an explicit
+>ABI? Are those exposed to userspace?
 
-Splitting huge leaf entries that cross the boundary is essential before
-zapping a specified range in the mirror root. This ensures that the
-subsequent zap operation does not affect any GFNs outside the specified
-range, which is crucial for the mirror root, as the private page table
-requires the guest's ACCEPT operation after faulting back.
+First I don't think we should expose TDX module version or hypervisor
+version to guests. See my reply to Kirill.
 
-While the core of kvm_split_cross_boundary_leafs() leverages the main logic
-of tdp_mmu_split_huge_pages_root(), the former only splits huge leaf
-entries when their mapping ranges cross the specified range boundary. When
-splitting is necessary, kvm->mmu_lock may be temporarily released for
-memory allocation, meaning returning -ENOMEM is possible.
+Let me connect all the dots to explain why we use a "faux" device and expose
+version information as device attributes.
 
-Since tdp_mmu_split_huge_pages_root() is originally invoked by dirty page
-tracking related functions that flush TLB unconditionally at the end,
-tdp_mmu_split_huge_pages_root() doesn't flush TLB before it temporarily
-releases mmu_lock.
+Why add a device
+================
 
-Do not enhance tdp_mmu_split_huge_pages_root() to return split or flush
-status for kvm_split_cross_boundary_leafs(). This is because the status
-could be inaccurate when multiple threads are trying to split the same
-memory range concurrently, e.g., if kvm_split_cross_boundary_leafs()
-returns split/flush as false, it doesn't mean there're no splits in the
-specified range, since splits could have occurred in other threads due to
-temporary release of mmu_lock.
+SEV [1] employs a PCI device while CCA [2] adds a platform device. So, we add a
+"virtual" device to represent TDX firmware. As illustrated in [3], the device
+actually serves multiple purposes:
 
-Therefore, callers of kvm_split_cross_boundary_leafs() need to determine
-how/when to flush TLB according to the use cases:
+"""
+Create a virtual device not only to align with other implementations but
+also to make it easier to
 
-- If the split is triggered in a fault path for TDX, the hardware shouldn't
-  have cached the old huge translation. Therefore, no need to flush TLB.
+ - expose metadata (e.g., TDX module version, seamldr version etc) to
+   the userspace as device attributes
 
-- If the split is triggered by zaps in guest_memfd punch hole or page
-  conversion, it can delay the TLB flush until after zaps.
+ - implement firmware uploader APIs which are tied to a device. This is
+   needed to support TDX module runtime updates
 
-- If the use case relies on pure split status (e.g., splitting for PML),
-  flush TLB unconditionally. (Just hypothetical. No such use case currently
-  exists for kvm_split_cross_boundary_leafs()).
+ - enable TDX Connect which will share a common infrastructure with other
+   platform implementations. In the TDX Connect context, every
+   architecture has a TSM, represented by a PCIe or virtual device. The
+   new "tdx_host" device will serve the TSM role.
+"""
 
-Signed-off-by: Xiaoyao Li <xiaoyao.li@intel.com>
-Signed-off-by: Isaku Yamahata <isaku.yamahata@intel.com>
-Signed-off-by: Yan Zhao <yan.y.zhao@intel.com>
----
-v3:
-- s/only_cross_bounday/only_cross_boundary. (Kai)
-- Do not return flush status and have the callers to determine how/when to
-  flush TLB.
-- Always pass "flush" as false to tdp_mmu_iter_cond_resched(). (Kai)
-- Added a default implementation for kvm_split_boundary_leafs() for non-x86
-  platforms.
-- Removed middle level function tdp_mmu_split_cross_boundary_leafs().
-- Use EXPORT_SYMBOL_FOR_KVM_INTERNAL().
+[1]: drivers/crypto/ccp/sev-dev.c
+[2]: https://lore.kernel.org/all/20251208221319.1524888-5-vvidwans@nvidia.com/
+[3]: https://lore.kernel.org/all/20251117022311.2443900-2-yilun.xu@linux.intel.com/
 
-RFC v2:
-- Rename the API to kvm_split_cross_boundary_leafs().
-- Make the API to be usable for direct roots or under shared mmu_lock.
-- Leverage the main logic from tdp_mmu_split_huge_pages_root(). (Rick)
+faux vs "virtual" device
+========================
 
-RFC v1:
-- Split patch.
-- introduced API kvm_split_boundary_leafs(), refined the logic and
-  simplified the code.
----
- arch/x86/kvm/mmu/mmu.c     | 34 ++++++++++++++++++++++++++++++
- arch/x86/kvm/mmu/tdp_mmu.c | 42 ++++++++++++++++++++++++++++++++++++--
- arch/x86/kvm/mmu/tdp_mmu.h |  3 +++
- include/linux/kvm_host.h   |  2 ++
- virt/kvm/kvm_main.c        |  7 +++++++
- 5 files changed, 86 insertions(+), 2 deletions(-)
+We previously implemented a virtual TDX device under /sys/devices/virtual/ but
+it required creating a stub bus. As suggested by Dan, we switched to a faux
+device to avoid this requirement.
 
-diff --git a/arch/x86/kvm/mmu/mmu.c b/arch/x86/kvm/mmu/mmu.c
-index b4f2e3ced716..f40af7ac75b3 100644
---- a/arch/x86/kvm/mmu/mmu.c
-+++ b/arch/x86/kvm/mmu/mmu.c
-@@ -1644,6 +1644,40 @@ static bool __kvm_rmap_zap_gfn_range(struct kvm *kvm,
- 				 start, end - 1, can_yield, true, flush);
- }
- 
-+/*
-+ * Split large leafs crossing the boundary of the specified range.
-+ * Only support TDP MMU. Do nothing if !tdp_mmu_enabled.
-+ *
-+ * This API does not flush TLB. Callers need to determine how/when to flush TLB
-+ * according to their use cases, e.g.,
-+ * - No need to flush TLB. e.g., if it's in a fault path or TLB flush has been
-+ *   ensured.
-+ * - Delay the TLB flush until after zaps if the split is invoked for precise
-+ *   zapping.
-+ * - Unconditionally flush TLB if a use case relies on pure split status (e.g.,
-+ *   splitting for PML).
-+ *
-+ * Return value: 0 : success;  <0: failure
-+ */
-+int kvm_split_cross_boundary_leafs(struct kvm *kvm, struct kvm_gfn_range *range,
-+				   bool shared)
-+{
-+	bool ret = 0;
-+
-+	lockdep_assert_once(kvm->mmu_invalidate_in_progress ||
-+			    lockdep_is_held(&kvm->slots_lock) ||
-+			    srcu_read_lock_held(&kvm->srcu));
-+
-+	if (!range->may_block)
-+		return -EOPNOTSUPP;
-+
-+	if (tdp_mmu_enabled)
-+		ret = kvm_tdp_mmu_gfn_range_split_cross_boundary_leafs(kvm, range,
-+								       shared);
-+	return ret;
-+}
-+EXPORT_SYMBOL_FOR_KVM_INTERNAL(kvm_split_cross_boundary_leafs);
-+
- bool kvm_unmap_gfn_range(struct kvm *kvm, struct kvm_gfn_range *range)
- {
- 	bool flush = false;
-diff --git a/arch/x86/kvm/mmu/tdp_mmu.c b/arch/x86/kvm/mmu/tdp_mmu.c
-index 074209d91ec3..b984027343b7 100644
---- a/arch/x86/kvm/mmu/tdp_mmu.c
-+++ b/arch/x86/kvm/mmu/tdp_mmu.c
-@@ -1600,10 +1600,17 @@ static int tdp_mmu_split_huge_page(struct kvm *kvm, struct tdp_iter *iter,
- 	return ret;
- }
- 
-+static bool iter_cross_boundary(struct tdp_iter *iter, gfn_t start, gfn_t end)
-+{
-+	return !(iter->gfn >= start &&
-+		 (iter->gfn + KVM_PAGES_PER_HPAGE(iter->level)) <= end);
-+}
-+
- static int tdp_mmu_split_huge_pages_root(struct kvm *kvm,
- 					 struct kvm_mmu_page *root,
- 					 gfn_t start, gfn_t end,
--					 int target_level, bool shared)
-+					 int target_level, bool shared,
-+					 bool only_cross_boundary)
- {
- 	struct kvm_mmu_page *sp = NULL;
- 	struct tdp_iter iter;
-@@ -1615,6 +1622,10 @@ static int tdp_mmu_split_huge_pages_root(struct kvm *kvm,
- 	 * level into one lower level. For example, if we encounter a 1GB page
- 	 * we split it into 512 2MB pages.
- 	 *
-+	 * When only_cross_boundary is true, just split huge pages above the
-+	 * target level into one lower level if the huge pages cross the start
-+	 * or end boundary.
-+	 *
- 	 * Since the TDP iterator uses a pre-order traversal, we are guaranteed
- 	 * to visit an SPTE before ever visiting its children, which means we
- 	 * will correctly recursively split huge pages that are more than one
-@@ -1629,6 +1640,10 @@ static int tdp_mmu_split_huge_pages_root(struct kvm *kvm,
- 		if (!is_shadow_present_pte(iter.old_spte) || !is_large_pte(iter.old_spte))
- 			continue;
- 
-+		if (only_cross_boundary &&
-+		    !iter_cross_boundary(&iter, start, end))
-+			continue;
-+
- 		if (!sp) {
- 			rcu_read_unlock();
- 
-@@ -1692,12 +1707,35 @@ void kvm_tdp_mmu_try_split_huge_pages(struct kvm *kvm,
- 
- 	kvm_lockdep_assert_mmu_lock_held(kvm, shared);
- 	for_each_valid_tdp_mmu_root_yield_safe(kvm, root, slot->as_id) {
--		r = tdp_mmu_split_huge_pages_root(kvm, root, start, end, target_level, shared);
-+		r = tdp_mmu_split_huge_pages_root(kvm, root, start, end, target_level,
-+						  shared, false);
-+		if (r) {
-+			kvm_tdp_mmu_put_root(kvm, root);
-+			break;
-+		}
-+	}
-+}
-+
-+int kvm_tdp_mmu_gfn_range_split_cross_boundary_leafs(struct kvm *kvm,
-+						     struct kvm_gfn_range *range,
-+						     bool shared)
-+{
-+	enum kvm_tdp_mmu_root_types types;
-+	struct kvm_mmu_page *root;
-+	int r = 0;
-+
-+	kvm_lockdep_assert_mmu_lock_held(kvm, shared);
-+	types = kvm_gfn_range_filter_to_root_types(kvm, range->attr_filter);
-+
-+	__for_each_tdp_mmu_root_yield_safe(kvm, root, range->slot->as_id, types) {
-+		r = tdp_mmu_split_huge_pages_root(kvm, root, range->start, range->end,
-+						  PG_LEVEL_4K, shared, true);
- 		if (r) {
- 			kvm_tdp_mmu_put_root(kvm, root);
- 			break;
- 		}
- 	}
-+	return r;
- }
- 
- static bool tdp_mmu_need_write_protect(struct kvm *kvm, struct kvm_mmu_page *sp)
-diff --git a/arch/x86/kvm/mmu/tdp_mmu.h b/arch/x86/kvm/mmu/tdp_mmu.h
-index bd62977c9199..c20b1416e4b2 100644
---- a/arch/x86/kvm/mmu/tdp_mmu.h
-+++ b/arch/x86/kvm/mmu/tdp_mmu.h
-@@ -70,6 +70,9 @@ void kvm_tdp_mmu_zap_all(struct kvm *kvm);
- void kvm_tdp_mmu_invalidate_roots(struct kvm *kvm,
- 				  enum kvm_tdp_mmu_root_types root_types);
- void kvm_tdp_mmu_zap_invalidated_roots(struct kvm *kvm, bool shared);
-+int kvm_tdp_mmu_gfn_range_split_cross_boundary_leafs(struct kvm *kvm,
-+						     struct kvm_gfn_range *range,
-+						     bool shared);
- 
- int kvm_tdp_mmu_map(struct kvm_vcpu *vcpu, struct kvm_page_fault *fault);
- 
-diff --git a/include/linux/kvm_host.h b/include/linux/kvm_host.h
-index 8144d27e6c12..e563bb22c481 100644
---- a/include/linux/kvm_host.h
-+++ b/include/linux/kvm_host.h
-@@ -275,6 +275,8 @@ struct kvm_gfn_range {
- bool kvm_unmap_gfn_range(struct kvm *kvm, struct kvm_gfn_range *range);
- bool kvm_age_gfn(struct kvm *kvm, struct kvm_gfn_range *range);
- bool kvm_test_age_gfn(struct kvm *kvm, struct kvm_gfn_range *range);
-+int kvm_split_cross_boundary_leafs(struct kvm *kvm, struct kvm_gfn_range *range,
-+				   bool shared);
- #endif
- 
- enum {
-diff --git a/virt/kvm/kvm_main.c b/virt/kvm/kvm_main.c
-index 1d7ab2324d10..feeef7747099 100644
---- a/virt/kvm/kvm_main.c
-+++ b/virt/kvm/kvm_main.c
-@@ -910,6 +910,13 @@ static int kvm_init_mmu_notifier(struct kvm *kvm)
- 	return mmu_notifier_register(&kvm->mmu_notifier, current->mm);
- }
- 
-+int __weak kvm_split_cross_boundary_leafs(struct kvm *kvm,
-+					  struct kvm_gfn_range *range,
-+					  bool shared)
-+{
-+	return 0;
-+}
-+
- #else  /* !CONFIG_KVM_GENERIC_MMU_NOTIFIER */
- 
- static int kvm_init_mmu_notifier(struct kvm *kvm)
--- 
-2.43.2
+The previous virtual device implementation was at:
+https://lore.kernel.org/kvm/20250523095322.88774-5-chao.gao@intel.com/
 
+As you can see from #LoC, the current tdx-host faux implementation is much
+simpler:
+
+before:
+
+ arch/x86/virt/vmx/tdx/tdx.c | 75 +++++++++++++++++++++++++++++++++++++
+ 1 file changed, 75 insertions(+)
+
+vs.
+
+now: 
+
+ drivers/virt/coco/Kconfig             |  2 ++
+ drivers/virt/coco/tdx-host/Kconfig    | 10 +++++++
+ drivers/virt/coco/Makefile            |  1 +
+ drivers/virt/coco/tdx-host/Makefile   |  1 +
+ drivers/virt/coco/tdx-host/tdx-host.c | 41 +++++++++++++++++++++++++++
+ 5 files changed, 55 insertions(+)
+
+
+Why expose version to userspace
+===============================
+
+SEV doesn't expose its API version (which I assume is the counterpart of TDX
+module version, since it doesn't have a firmware version concept) to userspace
+but only prints it in dmesg.
+
+TDX Module version is exposed to userspace because:
+
+1. For debugging purposes, the version will be available to userspace even if
+   dmesg logs are cleared. Like microcode version, it's printed in dmesg and
+   also readable from CPU virtual device attributes.
+
+2. A userspace tool needs to read the current module version to select
+   compatible module versions for updates. This is a unique requirement of TDX.
+
+Why expose version as device attribute
+======================================
+
+Once we have a virtual device to represent TDX firmware, using device
+attributes is the natural choice. microcode version is exposed in a similar
+way.
+
+>
+>For instance, I hear a lot of talk about updating the TDX module. But is
+>this interface consistent with doing updates? Long term, I was hoping
+>that TDX firmware could get treated like any other blob of modern
+>firmware and have fwupd manage it, so I asked:
+
+TDX module updates implement the firmware_upload API [*], just like NVMe firmware
+updates and FPGA firmware updates. This results in them exposing similar uABIs
+to userspace. If NVMe firmware or FPGA firmware can be supported by fwupd, it
+shouldn't be difficult to have fwupd manage TDX modules as well.
+
+[*]: https://docs.kernel.org/driver-api/firmware/fw_upload.html
+
+>
+>	https://chatgpt.com/share/695be06c-3d40-8012-97c9-2089fc33cbb3
+>
+>My read on your approach here is that our new LLM overlords might
+>consider it the "last resort".
+
+The "last resort" in the above link refers to ACPI tables or WMI methods. But
+IIUC, my approach here is the most common approach for non-UEFI firmware -
+"sysfs devices", i.e.,
+
+ : Kernel dev takeaway
+ :  - Make it a proper kernel device
+ :  - Expose a stable firmware version attribute
+ :  - Expose a way to trigger update (even if it’s just “write blob, reboot”)
+
+Is there anything I misunderstood?
