@@ -1,63 +1,66 @@
 Received: from mail-wm1-f74.google.com (mail-wm1-f74.google.com [209.85.128.74])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5071331618B
-	for <kvm@vger.kernel.org>; Tue,  6 Jan 2026 09:24:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 31B213161A8
+	for <kvm@vger.kernel.org>; Tue,  6 Jan 2026 09:24:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.74
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767691471; cv=none; b=kBeMyT+hK8Hlsei0P0ADh8BtS6Hf6BhJQN+bUpdnUU9beiCwjn5smJRPavzddb8I8q9NsJ1fnLWq5glyf/ppSoQXWokUceQEdcs5S4bWIQAjamA+cGBa1ZFLi7xvdV5Sj9oyKrkVkN1D+YB2bpiKLl+D18DCDR3/vtQ9rh13KDU=
+	t=1767691474; cv=none; b=FK4xDyLjOX+ubMwJmdPS89w3xv+r7XRGL2MlF/3Eeli4kEYkiM3dLp6Ap8nUM3qPBiwOj4nA9p3+BR/ONxzYjFVQM1LSkY/o0nFfK63v6j95EeYDeXxAvNauciDDN+YdTNUa3zRJm44g34vRH6IcW1N/2mlyzCHyb2Kh8IhZj2M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767691471; c=relaxed/simple;
-	bh=hMrKzPKwz67JgoKxLU1YaBlRJJnDreZeCQvtwVIB3NA=;
-	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=gVw715f3DMURa6pP0CwIy6s2JMm1vHbEPTv7JF4WNAjiEsxxnECVtksxq4ZG71b5HmBHcUCf9YtwT727S7BwGGmWFat727+NI4F2zhWf7rAjeFM/KSkXAOKCCu1KV4fexckxwkCtw4gtQJetL8Rc6D3Ia57qpUK00rjrir6trGc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--tabba.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=NqvI1/2X; arc=none smtp.client-ip=209.85.128.74
+	s=arc-20240116; t=1767691474; c=relaxed/simple;
+	bh=KEPsyHYvNUPbRxGvG9QC9U7StdlbPwsF3guoMEOlj/0=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=nZN8mcFtvUwGUIkBJ7q5P/FDvQVxyFOMuE9TDV4tHtkvBhNgrKxUVXMD7brcQp0AzpFAg9Psayof91bLUCudME49GrbRJiIAUIptZ1is44bStp+N0ks3+ScX/RYDl5LyimaoWvChlsc8KGT2Px+rEH6r5xvXkLG83oDLX+FLEM8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--tabba.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=up6qDi1I; arc=none smtp.client-ip=209.85.128.74
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--tabba.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="NqvI1/2X"
-Received: by mail-wm1-f74.google.com with SMTP id 5b1f17b1804b1-47d62cc05daso4834595e9.3
-        for <kvm@vger.kernel.org>; Tue, 06 Jan 2026 01:24:27 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="up6qDi1I"
+Received: by mail-wm1-f74.google.com with SMTP id 5b1f17b1804b1-4792bd2c290so7747315e9.1
+        for <kvm@vger.kernel.org>; Tue, 06 Jan 2026 01:24:30 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1767691466; x=1768296266; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=+LqF8/lht1o9n/0GpUByxOJv4W80ArGZN3sXAN7aJgw=;
-        b=NqvI1/2XwNe4EtPdJDz1vJ4zdW8VMhU98+fKXsiJapaqW75N7dBPwGu5lsARwOL7xB
-         gKtxkihM6Gn7vKMa7AqaBrOOrU6SA3UwHYaOBXcb3zbg01XnVzuGN9EujmcgmRMyIwQO
-         93Zyw0GUkRe2utZJGB/NGleHxpIPm5GU2ECwPtkfntQAAIZu76KxPPyBvuCkxlZbV6Er
-         PyQZthwzFaorleNbqWfBDpfmDS1SRzKOSMd/AvaNZuhR6fnYdzknfdhSFd/Vnx8dNXh7
-         VDkYEC3X9I8iPhRksnbmtIz7cKcSrSnH5HCtqMd9S9Xz6QRwAdjOGPar77+4XS90xuXr
-         /nog==
+        d=google.com; s=20230601; t=1767691468; x=1768296268; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=/BHQuplAEgEU3wnDUhoItFqsIohZcJhUp7mBGwtJYNU=;
+        b=up6qDi1IPCFqGDjbziBEWDPe5TvwONTy4lFRckbRgG5u3IaAx5bJZDNT2wftIKVWPv
+         oCqbt3hXLZBAe7cUt4YXNwuPyjGq+i3RfadyL3X3ZPnEQ2uWR30aW2hWdjyg7CPEjgYB
+         Vgi68tNrE+Eo85cFmQCq313+sXIOLMlS/EOkmA6VaPc1uZ6Hszrxk7QHHoCYHS+m5fHG
+         RYIEupJzmA8eqYGmOfzouftsR/iX+WGIxKIIZ9oAERJiuhmGGNHacgb6YmYSOjmEKKy1
+         CS4/v0d2zm3Hl6y5lMc5liCI4J4x3IQH2Z4zKyQbcg+c1XyPz9q0ljzg8BqjetHMy9hF
+         Uuuw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1767691466; x=1768296266;
-        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=+LqF8/lht1o9n/0GpUByxOJv4W80ArGZN3sXAN7aJgw=;
-        b=V6RncxnZE0XUShojdc+1YDKL0QKqNc3MRKOUB666pWaqBq4Z0jnw9AJue1vAJxxj13
-         tPS1FbjoPefgDWniqyzSiSzK3UFoGD0HYPx0fNS5FL4xJW8o7XXY3IW+0AF7azG65q9c
-         58PQky2inf6WELQi5Jy5nXd/a30EyUf/uGUOxmniZH24j2G8A5zV/CoyuZ8HdDyFQSGb
-         6zhtLOb01eDD1qIoNppiPsBbVF0XYCtSc3XSpHXFsGuSfirlrPp2RKST94FBSNbMvGkm
-         Z6AvjmD0I27Nc0cNblmlyYo/TpVBKmxqDbOhxNn3n9r5aO61S38IUCNjixOjQyo0UnhJ
-         5bMA==
-X-Gm-Message-State: AOJu0YyV2exfhR58EGIPc4y/laQPyTVbzED2//SQ4Q248P4V1fhujVcd
-	4y76AYo3nv296iQU8ue+KayPrCCzxcpXl6QY7b77j4yTt2CxkvyXlMMUyqXXGQsnCqN1MHGQ9Aq
-	j0XxnigkowN1SDC3ryRimf/Re4pBp2Usg+BkwcDWOvTzl9V9A/AJH++L9YPjAv7op3nyhIAdD5s
-	35G25i7quDZwQEgKhM3JD7qFNDXP0=
-X-Google-Smtp-Source: AGHT+IGJDvWpfC1ugVJSYdWQcUeMnYmXOhwJri2fdiSaOwSbZ5cVH4Myj4tyQgT04GoXs3XHWR0vuJXjyQ==
-X-Received: from wmbdu14.prod.google.com ([2002:a05:600c:634e:b0:477:9b3e:67e3])
- (user=tabba job=prod-delivery.src-stubby-dispatcher) by 2002:a05:600c:3555:b0:479:33be:b23e
- with SMTP id 5b1f17b1804b1-47d7f090045mr30939095e9.17.1767691466044; Tue, 06
- Jan 2026 01:24:26 -0800 (PST)
-Date: Tue,  6 Jan 2026 09:24:20 +0000
+        d=1e100.net; s=20230601; t=1767691468; x=1768296268;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=/BHQuplAEgEU3wnDUhoItFqsIohZcJhUp7mBGwtJYNU=;
+        b=Hz3LpOSIv13V0vQFJoS2Bmd6P85TTIn6HspI+VhhRDORThIqgpf2kG1N5S0AK2S6oZ
+         3yZjB9oU/eUA5A8UBNjs4ujpsJiKZuxfpTCPjOZxI6XczL1W9YDUvOusntyQ+EkXFKpJ
+         /eS8RayqnTa56SS7yq5RXRcVFhAI/LmTPQc1ljytv5VIIkAlgjA2VvsGm8ofm4HqZacP
+         6yXMOxFi9qE4aQoQCO0/luqaECm56OtQVeVZ/+wTr5zbAT8Gn2aWypFQZDwRntSbx03M
+         MDzdEfNTTHdKWgjP6HuIQLnOPm9spEdbMJPI2AY3Y1kIcOANeIO3FTq3CmnWmHS0WF50
+         /cQw==
+X-Gm-Message-State: AOJu0YwN5ANiAoLwycy6iEtX+bs7kaDEcbFfB3VpH7ZgoQnb4QngX8vn
+	+/EgXTjHREnE7xca+mNfdIaK2Gqul9bVFRXceHqP+BXD+sYyM4Sf7xUVscW1ltF2xAVqsl8ZkTa
+	DoB8EWeRcUT2dMy4sCYWJsm190SOaEIJZRyvw6GevOHJU47RmhsbwCLDgj7LdlMJRau2flk+dWl
+	DRS5VP7E2nF+MG1dAodWJWx1/rF/w=
+X-Google-Smtp-Source: AGHT+IEg8lPbC98Q9JebA2jYPeK+hKxfS04QHQm5CsFqWbT7d+JjvRp5WM7FCPdf80Bu6YTWW9INVq/0XA==
+X-Received: from wmbju16.prod.google.com ([2002:a05:600c:56d0:b0:477:9945:466d])
+ (user=tabba job=prod-delivery.src-stubby-dispatcher) by 2002:a05:600c:3b27:b0:475:da1a:5418
+ with SMTP id 5b1f17b1804b1-47d7f062feamr25842635e9.1.1767691468308; Tue, 06
+ Jan 2026 01:24:28 -0800 (PST)
+Date: Tue,  6 Jan 2026 09:24:22 +0000
+In-Reply-To: <20260106092425.1529428-1-tabba@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
+References: <20260106092425.1529428-1-tabba@google.com>
 X-Mailer: git-send-email 2.52.0.351.gbe84eed79e-goog
-Message-ID: <20260106092425.1529428-1-tabba@google.com>
-Subject: [PATCH v3 0/5] KVM: selftests: Alignment fixes and arm64 MMU cleanup
+Message-ID: <20260106092425.1529428-3-tabba@google.com>
+Subject: [PATCH v3 2/5] KVM: arm64: selftests: Fix incorrect rounding in page_align()
 From: Fuad Tabba <tabba@google.com>
 To: kvm@vger.kernel.org, kvm-riscv@lists.infradead.org, kvmarm@lists.linux.dev, 
 	linux-arm-kernel@lists.infradead.org
@@ -67,55 +70,35 @@ Cc: maz@kernel.org, oliver.upton@linux.dev, joey.gouly@arm.com,
 	itaru.kitayama@fujitsu.com, andrew.jones@linux.dev, tabba@google.com
 Content-Type: text/plain; charset="UTF-8"
 
-Changes from v2 [1]:
-- Collected Reviewed-by tags from the previous version (thanks!)
-- Rebased on 6.19-rc4
-- No code changes
+The implementation of `page_align()` in `processor.c` calculates
+alignment incorrectly for values that are already aligned. Specifically,
+`(v + vm->page_size) & ~(vm->page_size - 1)` aligns to the *next* page
+boundary even if `v` is already page-aligned, potentially wasting a page
+of memory.
 
-This series tidies up a few things in the KVM selftests. It addresses an
-error in memory alignment, hardens the arm64 MMU configuration for
-selftests, and fixes minor documentation issues.
+Fix the calculation to use standard alignment logic: `(v + vm->page_size
+- 1) & ~(vm->page_size - 1)`.
 
-First, for arm64, the series explicitly disables translation table walks
-for the unused upper virtual address range (TTBR1). Since selftests run
-entirely in the lower range (TTBR0), leaving TTBR1 uninitialized but
-active could lead to unpredictable behavior if guest code accesses high
-addresses. We set EPD1 (and TBI1) to ensure such accesses
-deterministically generate translation faults.
+Fixes: 7a6629ef746d ("kvm: selftests: add virt mem support for aarch64")
+Reviewed-by: Andrew Jones <andrew.jones@linux.dev>
+Signed-off-by: Fuad Tabba <tabba@google.com>
+---
+ tools/testing/selftests/kvm/lib/arm64/processor.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Second, the series fixes the `page_align()` implementation in both arm64
-and riscv. The previous version incorrectly rounded up already-aligned
-addresses to the *next* page, potentially wasting memory or causing
-unexpected gaps. After fixing the logic in the arch-specific files, the
-function is moved to the common `kvm_util.h` header to eliminate code
-duplication.
-
-Finally, a few comments and argument descriptions in `kvm_util` are
-updated to match the actual code implementation.
-
-Based on Linux 6.19-rc4.
-
-Cheers,
-/fuad
-
-[1] https://lore.kernel.org/all/20251215165155.3451819-1-tabba@google.com/
-
-Fuad Tabba (5):
-  KVM: arm64: selftests: Disable unused TTBR1_EL1 translations
-  KVM: arm64: selftests: Fix incorrect rounding in page_align()
-  KVM: riscv: selftests: Fix incorrect rounding in page_align()
-  KVM: selftests: Move page_align() to shared header
-  KVM: selftests: Fix typos and stale comments in kvm_util
-
- tools/testing/selftests/kvm/include/arm64/processor.h | 4 ++++
- tools/testing/selftests/kvm/include/kvm_util.h        | 9 +++++++--
- tools/testing/selftests/kvm/lib/arm64/processor.c     | 7 ++-----
- tools/testing/selftests/kvm/lib/kvm_util.c            | 2 +-
- tools/testing/selftests/kvm/lib/riscv/processor.c     | 5 -----
- 5 files changed, 14 insertions(+), 13 deletions(-)
-
-
-base-commit: 9ace4753a5202b02191d54e9fdf7f9e3d02b85eb
+diff --git a/tools/testing/selftests/kvm/lib/arm64/processor.c b/tools/testing/selftests/kvm/lib/arm64/processor.c
+index 5b379da8cb90..607a4e462984 100644
+--- a/tools/testing/selftests/kvm/lib/arm64/processor.c
++++ b/tools/testing/selftests/kvm/lib/arm64/processor.c
+@@ -23,7 +23,7 @@ static vm_vaddr_t exception_handlers;
+ 
+ static uint64_t page_align(struct kvm_vm *vm, uint64_t v)
+ {
+-	return (v + vm->page_size) & ~(vm->page_size - 1);
++	return (v + vm->page_size - 1) & ~(vm->page_size - 1);
+ }
+ 
+ static uint64_t pgd_index(struct kvm_vm *vm, vm_vaddr_t gva)
 -- 
 2.52.0.351.gbe84eed79e-goog
 
