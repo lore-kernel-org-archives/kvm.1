@@ -1,119 +1,104 @@
-Received: from mail-pj1-f74.google.com (mail-pj1-f74.google.com [209.85.216.74])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2255E27CB04
-	for <kvm@vger.kernel.org>; Tue,  6 Jan 2026 04:12:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.74
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C4AE1F19A;
+	Tue,  6 Jan 2026 04:18:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.12
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767672781; cv=none; b=XQTDeIQNToKAzi2iFhzlFoW0dbxOkqZyZAyjh/jCHM7JPDGS6H5Q4Z25jQJx5MPrKFu/eAYCp7LN+w0B275gQCzFu+Czc/20bzHODEmh/oKMWzQlBaIqhKrJEHcsl9gJNdVhayS5CAIeP9behDoNiI9YY8TGwKFR132xpsQz0aM=
+	t=1767673124; cv=none; b=nF1DY+RYC4MWONcTIcczMXcRq3wA6K2KgQI55bsogZ8IS4VQWRyfZkWa244eph16d/iVDIrpyJBjnMytI/nRcq4fsIzt5fs1oSh65OYsjzKRZoG88fqhkFBa8rN0iWEPRBukQp71nnA0JCD/f1C/3sZRCAS0wNYAPSGqGt3cy6I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767672781; c=relaxed/simple;
-	bh=JAlAEtdbo80N7OYe4Cu0PS/PpFRLFX2PISvANkzvpeA=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=iNBOJ3gtjWWCZFAZF99oI8ByscfTARSbnWLvbC4+fUxSwogajHvmJSZq0piJUnxThHSEa8rJ1XL86S1L2cES6AOtXGOFNELYJ8+u6PZh4Ij54zZHVJnAIm3zrn3ZZHFqtUGpap5oChusPPP7sRQ2lXgg4o4NEpebv5jhTbbt1OA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--chengkev.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=yhpbmgfU; arc=none smtp.client-ip=209.85.216.74
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--chengkev.bounces.google.com
+	s=arc-20240116; t=1767673124; c=relaxed/simple;
+	bh=FJht4+x+AmNn8jLnsmkZ6PpTRb3wUqY3p+sCsXEcRpE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=QfsQ7D43qjpKEgrZ+AZG+ueZZkuau9JR5GI1EfZ/+oegkfBUgmVwvcPng0O2BXiILStaAqK3vfFsGzjc6MMXLGbpO2LHcwlvB8E7Q3h5F/6ugquCJhiYI8NhbbymXD52RQ1Rj0rixl1wSzHJuUVOlnNLFXpwRG9UbA43CkRgk0g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Uk9ihiEO; arc=none smtp.client-ip=192.198.163.12
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="yhpbmgfU"
-Received: by mail-pj1-f74.google.com with SMTP id 98e67ed59e1d1-34aa6655510so808817a91.1
-        for <kvm@vger.kernel.org>; Mon, 05 Jan 2026 20:12:59 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1767672779; x=1768277579; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=6LH3hLDiZ3ov0lC1gcsWvC0RzXwXYlG/q9OQvvLs1Xs=;
-        b=yhpbmgfUsqKvXbPlnBshw1dOVVj/BvWP2Cg69fM3fyqhdfln+9UoEHkl1l+A1/p0CO
-         ys12fLjbCAYoZy0QQTDC9ssrnQTKZwgDTlPFe4xwhgMTkdBgHsfhAJ8th6cJnElRJloh
-         G98IYlf3ak99wQ4YNrwYGGlhbcmz0O4fQE/H8yokgobVIFb1zD5soWWPXl7yVgPvQMo9
-         0qfuuSBpv2uF2vp7IPHNiBjxxmAlSN3miwYTjMChxGiCFKyj0OKZ5qqWypgBM/IbgsbH
-         nF/p9NY/qnDKlyn0vH87b1WfQ4xAtKyaRd+F+3m4mQszzGB/spX1/2qgZDdveak8ihUj
-         URhg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1767672779; x=1768277579;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=6LH3hLDiZ3ov0lC1gcsWvC0RzXwXYlG/q9OQvvLs1Xs=;
-        b=mvyqnmvGwb6llSUWOVeU4ypZw7And9T4HbAKcGqaKplt0z6qHG3hBDaPMveRQFa5Vo
-         F2ZYAFMDDhbRSFA5rRoJwOfQHgsoZq49W6of4ZAjAVcZvRBpDxmYMDL26O9Di0b7lJv3
-         ZX3A+PjKyOsY3arL61iZWWZ5CHgOGSmZG8/WK/X86q/hSI6LQQB1L9KKZXdXAGBzXNwX
-         EpdO0DdLzFQcJ2pKXWLW042UwCI+buefFprN/PUd51lA/Aeg4eqA3I79OSnk+BzSlRgx
-         du/9XcVZP/n4WGw9B4A/46RMW4BkImmjLRdN0+thl8DDzMht6sl5D5lRMaJyfiAH2Sc7
-         kqWQ==
-X-Gm-Message-State: AOJu0YwuiW0RhEFtlJzyOm6Xt0WN+Neul0/BBqDcPRn35vPtrrgE2+Pd
-	HFPwfaWwcxFkALk1PSWHHhdtKmiy6/njQGj+MmpCAeAgntUIVrul1xw+54P8NtHT4banHJoPTYJ
-	GmbQt/DkUUopwTA==
-X-Google-Smtp-Source: AGHT+IHcPJlLz/huni8seshB7udOPPqBmPg7WhGHOUJcqy2MpxEI82MXE0JD6sf8Tn4XFXiVjrrbfZ56BlB5Dg==
-X-Received: from pjbrs7.prod.google.com ([2002:a17:90b:2b87:b0:34a:bebf:c162])
- (user=chengkev job=prod-delivery.src-stubby-dispatcher) by
- 2002:a17:90b:1f82:b0:33f:f22c:8602 with SMTP id 98e67ed59e1d1-34f5f32c3ffmr1274852a91.26.1767672779370;
- Mon, 05 Jan 2026 20:12:59 -0800 (PST)
-Date: Tue,  6 Jan 2026 04:12:50 +0000
-In-Reply-To: <20260106041250.2125920-1-chengkev@google.com>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Uk9ihiEO"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1767673123; x=1799209123;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:content-transfer-encoding:in-reply-to;
+  bh=FJht4+x+AmNn8jLnsmkZ6PpTRb3wUqY3p+sCsXEcRpE=;
+  b=Uk9ihiEOFTCNnjp2cZFU5XAqU9+9dMM9IlgypyfYl/5L4Oi9D9YpdiZS
+   LtamanAf4u/iSOPmsM13OFJY6WmaXZtpPEr5SYnl+05vBe14XvaHmXuKL
+   g8s/855fK912gHVFgRKhvzFiJGFgsq/yv9654Nye17EHytEN3t2o77B/4
+   lmE5VlWZCAOberKWfg4FkGuY7DEfKvWO4d6Rsn5vfuwyKJ3GFQ8L9Vzu5
+   +eZAZoaz6pLevUUzRWrGF+U1s9XMNRIXUvicXs8e1XpNULCBV5R9MKqyz
+   rkRd+al0CP8wk/L5HriJ7hSId2GNBg7/FS8wS/TE08NqB1YiVkJW1OWBQ
+   w==;
+X-CSE-ConnectionGUID: feGXlLPDTtelNvHftHHoVw==
+X-CSE-MsgGUID: IquSEQ2mSjqhb/LA0f7NnQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11662"; a="72898788"
+X-IronPort-AV: E=Sophos;i="6.21,204,1763452800"; 
+   d="scan'208";a="72898788"
+Received: from fmviesa007.fm.intel.com ([10.60.135.147])
+  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Jan 2026 20:18:42 -0800
+X-CSE-ConnectionGUID: XJbA1t1XSZC1O1Is0oSFKA==
+X-CSE-MsgGUID: DaICeh5XROmKtQGBrTqgBw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.21,204,1763452800"; 
+   d="scan'208";a="202176993"
+Received: from yilunxu-optiplex-7050.sh.intel.com (HELO localhost) ([10.239.159.165])
+  by fmviesa007.fm.intel.com with ESMTP; 05 Jan 2026 20:18:38 -0800
+Date: Tue, 6 Jan 2026 12:01:31 +0800
+From: Xu Yilun <yilun.xu@linux.intel.com>
+To: "Edgecombe, Rick P" <rick.p.edgecombe@intel.com>
+Cc: "kvm@vger.kernel.org" <kvm@vger.kernel.org>,
+	"linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>,
+	"Huang, Kai" <kai.huang@intel.com>,
+	"Li, Xiaoyao" <xiaoyao.li@intel.com>,
+	"Hansen, Dave" <dave.hansen@intel.com>,
+	"Zhao, Yan Y" <yan.y.zhao@intel.com>,
+	"Wu, Binbin" <binbin.wu@intel.com>,
+	"kas@kernel.org" <kas@kernel.org>,
+	"seanjc@google.com" <seanjc@google.com>,
+	"mingo@redhat.com" <mingo@redhat.com>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"pbonzini@redhat.com" <pbonzini@redhat.com>,
+	"Yamahata, Isaku" <isaku.yamahata@intel.com>,
+	"kirill.shutemov@linux.intel.com" <kirill.shutemov@linux.intel.com>,
+	"tglx@linutronix.de" <tglx@linutronix.de>,
+	"Annapurve, Vishal" <vannapurve@google.com>,
+	"Gao, Chao" <chao.gao@intel.com>, "bp@alien8.de" <bp@alien8.de>,
+	"x86@kernel.org" <x86@kernel.org>
+Subject: Re: [PATCH v4 04/16] x86/virt/tdx: Allocate page bitmap for Dynamic
+ PAMT
+Message-ID: <aVyJG+vh9r/ZMmOG@yilunxu-OptiPlex-7050>
+References: <20251121005125.417831-1-rick.p.edgecombe@intel.com>
+ <20251121005125.417831-5-rick.p.edgecombe@intel.com>
+ <aUut+PYnX3jrSO0i@yilunxu-OptiPlex-7050>
+ <0734a6cc7da3d210f403fdf3e0461ffba6b0aea0.camel@intel.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20260106041250.2125920-1-chengkev@google.com>
-X-Mailer: git-send-email 2.52.0.351.gbe84eed79e-goog
-Message-ID: <20260106041250.2125920-3-chengkev@google.com>
-Subject: [PATCH 2/2] KVM: SVM: Raise #UD if VMMCALL instruction is not intercepted
-From: Kevin Cheng <chengkev@google.com>
-To: seanjc@google.com, pbonzini@redhat.com
-Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org, yosry.ahmed@linux.dev, 
-	Kevin Cheng <chengkev@google.com>
-Content-Type: text/plain; charset="UTF-8"
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <0734a6cc7da3d210f403fdf3e0461ffba6b0aea0.camel@intel.com>
 
-The AMD APM states that if VMMCALL instruction is not intercepted, the
-instruction raises a #UD exception.
+On Mon, Jan 05, 2026 at 10:06:31PM +0000, Edgecombe, Rick P wrote:
+> On Wed, 2025-12-24 at 17:10 +0800, Xu Yilun wrote:
+> > Is it better we seal the awkward pattern inside the if (dpamt supported)  block:
+> > 
+> > 	if (tdx_support_dynamic_pamt(&tdx_sysinfo))
+> > 		if (!ret && !(ret = read_sys_metadata_field(0x9100000100000013, &val)))
+> > 			sysinfo_tdmr->pamt_page_bitmap_entry_bits = val;
+> 
+> The extra indentation might be objectionable.
 
-Create a vmmcall exit handler that generates a #UD if a VMMCALL exit
-from L2 is being handled by L0, which means that L1 did not intercept
-the VMMCALL instruction.
+Yes the extra indentation is unconventional, but everything here is, and
+we know we will eventually change them all. So I more prefer simple
+changes based on:
 
-Co-developed-by: Sean Christopherson <seanjc@google.com>
-Co-developed-by: Yosry Ahmed <yosry.ahmed@linux.dev>
-Signed-off-by: Kevin Cheng <chengkev@google.com>
----
- arch/x86/kvm/svm/svm.c | 16 +++++++++++++++-
- 1 file changed, 15 insertions(+), 1 deletion(-)
+  if (!ret && !(ret = read_sys_metadata_field(0xABCDEF, &val)))
 
-diff --git a/arch/x86/kvm/svm/svm.c b/arch/x86/kvm/svm/svm.c
-index fc1b8707bb00c..482495ad72d22 100644
---- a/arch/x86/kvm/svm/svm.c
-+++ b/arch/x86/kvm/svm/svm.c
-@@ -3179,6 +3179,20 @@ static int bus_lock_exit(struct kvm_vcpu *vcpu)
- 	return 0;
- }
- 
-+static int vmmcall_interception(struct kvm_vcpu *vcpu)
-+{
-+	/*
-+	 * If VMMCALL from L2 is not intercepted by L1, the instruction raises a
-+	 * #UD exception
-+	 */
-+	if (is_guest_mode(vcpu)) {
-+		kvm_queue_exception(vcpu, UD_VECTOR);
-+		return 1;
-+	}
-+
-+	return kvm_emulate_hypercall(vcpu);
-+}
-+
- static int (*const svm_exit_handlers[])(struct kvm_vcpu *vcpu) = {
- 	[SVM_EXIT_READ_CR0]			= cr_interception,
- 	[SVM_EXIT_READ_CR3]			= cr_interception,
-@@ -3229,7 +3243,7 @@ static int (*const svm_exit_handlers[])(struct kvm_vcpu *vcpu) = {
- 	[SVM_EXIT_TASK_SWITCH]			= task_switch_interception,
- 	[SVM_EXIT_SHUTDOWN]			= shutdown_interception,
- 	[SVM_EXIT_VMRUN]			= vmrun_interception,
--	[SVM_EXIT_VMMCALL]			= kvm_emulate_hypercall,
-+	[SVM_EXIT_VMMCALL]			= vmmcall_interception,
- 	[SVM_EXIT_VMLOAD]			= vmload_interception,
- 	[SVM_EXIT_VMSAVE]			= vmsave_interception,
- 	[SVM_EXIT_STGI]				= stgi_interception,
--- 
-2.52.0.351.gbe84eed79e-goog
+rather than neat but more LOC (when both are easy to read).
 
+Anyway, this is trivial concern. I have more optional fields to add and
+will follow the final decision.
