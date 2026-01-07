@@ -1,149 +1,92 @@
-Received: from sinmsgout02.his.huawei.com (sinmsgout02.his.huawei.com [119.8.177.37])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from m204-227.eu.mailgun.net (m204-227.eu.mailgun.net [161.38.204.227])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 68877392B69
-	for <kvm@vger.kernel.org>; Wed,  7 Jan 2026 15:29:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=119.8.177.37
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B1C13904CE
+	for <kvm@vger.kernel.org>; Wed,  7 Jan 2026 15:37:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=161.38.204.227
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767799759; cv=none; b=WDCjYRl4wlLFYgrPJXcZ4fVBnpbPF9Qmp2oWVUw0h/ishd6xA4d67GAy80a9X3Ck1zvSAQ6MnZpwJSHwEZMybBmz34yH01NJTxwB+HZgz4PeyJcCT5fgc3cqqqIbhzjN6U6xl2srW76UWxrMqkABXmNbJ3/du30GGlw86yHxBFg=
+	t=1767800259; cv=none; b=oAWTI2osC6ZMNIqsCeeTc2cVbuMCDWf1R0mKrLC1GD9JivDrz6KLCNeOcohukLTCUjxoMRvFZqh5jUOnhuZF4JuMH7WRAxAi/jw7c0lce2E2HIi4K4KmKwLRfCFop9zxSQ5K0LEjNAfQMvVDTfCmMVPa6af3qYvvoujAGkPQ/KE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767799759; c=relaxed/simple;
-	bh=XLIGZ5SHU3D+sSaIf1FinSVBpaSiNdId+gE+gvhJwaE=;
-	h=Date:From:To:CC:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=S/sxf0NqCSLg3QX6OlIr2N6tCrRIlmfU2BV7QIFjrLCsrtP44qj68WKamV3Whn7HOnd/mb6pDmA8NsE2ATldH3iLb/s1Agcq9XiB3LyvdAEkjUs3I9jZK+em8VteylgjiemYT57so/ommk8T4ryvSHpWZ44j86gwMG/4pZMQB20=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b=jMGy3VcV; arc=none smtp.client-ip=119.8.177.37
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+	s=arc-20240116; t=1767800259; c=relaxed/simple;
+	bh=TQmYl+r4MgsPEZqU/dgO4nyjCTnnZepMfwpbuV/01kI=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=rnGkMdgj0gyicik5XWQCCNhSsxL89m/HXS8bGLuRsfD8h/2/DfcpqpElpBge+HMMdEXSXf3bqcf9u75tfPRpl569ySgIrsM1+wi7Rz+jT8puM/3Y0D8765KgMr6IIifNt7nQYfN5S76ZNqerORmG1XmdG7NxWu5OSZCTd2/Lug8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=0x65c.net; spf=pass smtp.mailfrom=0x65c.net; dkim=pass (2048-bit key) header.d=0x65c.net header.i=@0x65c.net header.b=pEWRrarZ; arc=none smtp.client-ip=161.38.204.227
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=0x65c.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=0x65c.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b="jMGy3VcV"
-dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
-	c=relaxed/relaxed; q=dns/txt;
-	h=From;
-	bh=zDlUnTvuZxuMrJIH4ow24pBUWtnNP7Q50L+kLUFzNWA=;
-	b=jMGy3VcVOW7DZMezg6yQfxHIB5ezBtAWDxtwlBZ7b1sS2lDeS5emUJc7P7qX8r38BxoKITmIO
-	IVuH+QudZI9wCGEngfd/zF6aW5ukpft+Hlx+0xmC0yGn+AMxjxTskUIEqxi5wfbYKX0gkygBB5T
-	zw9Ut2QyiCwWyMHm8bdanHs=
-Received: from frasgout.his.huawei.com (unknown [172.18.146.32])
-	by sinmsgout02.his.huawei.com (SkyGuard) with ESMTPS id 4dmX2X22M9z1vnNY;
-	Wed,  7 Jan 2026 23:27:00 +0800 (CST)
-Received: from mail.maildlp.com (unknown [172.18.224.107])
-	by frasgout.his.huawei.com (SkyGuard) with ESMTPS id 4dmX4r6R4FzHnGfP;
-	Wed,  7 Jan 2026 23:29:00 +0800 (CST)
-Received: from dubpeml100005.china.huawei.com (unknown [7.214.146.113])
-	by mail.maildlp.com (Postfix) with ESMTPS id 4510A40570;
-	Wed,  7 Jan 2026 23:29:07 +0800 (CST)
-Received: from localhost (10.203.177.15) by dubpeml100005.china.huawei.com
- (7.214.146.113) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.36; Wed, 7 Jan
- 2026 15:29:06 +0000
-Date: Wed, 7 Jan 2026 15:29:05 +0000
-From: Jonathan Cameron <jonathan.cameron@huawei.com>
-To: Sascha Bischoff <Sascha.Bischoff@arm.com>
-CC: "linux-arm-kernel@lists.infradead.org"
-	<linux-arm-kernel@lists.infradead.org>, "kvmarm@lists.linux.dev"
-	<kvmarm@lists.linux.dev>, "kvm@vger.kernel.org" <kvm@vger.kernel.org>, nd
-	<nd@arm.com>, "maz@kernel.org" <maz@kernel.org>, "oliver.upton@linux.dev"
-	<oliver.upton@linux.dev>, Joey Gouly <Joey.Gouly@arm.com>, Suzuki Poulose
-	<Suzuki.Poulose@arm.com>, "yuzenghui@huawei.com" <yuzenghui@huawei.com>,
-	"peter.maydell@linaro.org" <peter.maydell@linaro.org>,
-	"lpieralisi@kernel.org" <lpieralisi@kernel.org>, Timothy Hayes
-	<Timothy.Hayes@arm.com>
-Subject: Re: [PATCH v2 23/36] KVM: arm64: gic-v5: Support GICv5 interrupts
- with KVM_IRQ_LINE
-Message-ID: <20260107152905.00001d81@huawei.com>
-In-Reply-To: <20251219155222.1383109-24-sascha.bischoff@arm.com>
-References: <20251219155222.1383109-1-sascha.bischoff@arm.com>
-	<20251219155222.1383109-24-sascha.bischoff@arm.com>
-X-Mailer: Claws Mail 4.3.0 (GTK 3.24.42; x86_64-w64-mingw32)
+	dkim=pass (2048-bit key) header.d=0x65c.net header.i=@0x65c.net header.b="pEWRrarZ"
+DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=0x65c.net; q=dns/txt; s=email; t=1767800255; x=1767807455;
+ h=Content-Type: Cc: To: To: Subject: Subject: Message-ID: Date: From: From: In-Reply-To: References: MIME-Version: Sender: Sender;
+ bh=klGybuY/xGn6v3C0r58vztwgdWJovVA4JzJPJnJ3+CA=;
+ b=pEWRrarZRIB19CxSHOoZMHAYeuszXV11EqI23vhg6QTzwvvMzBN5Km+SndsKReuNkjv1uhmjA+MUE5kUo/HyB7QtwhrU23k+1UR0CbFimsuCdgqlMY0isFqEep1tcyOl+BhqtQ7pC1hKFu4DEYbuqD2IFmZVAbQUemRgqOp/LS6UtjzTIYaZRArDcicYyz50kD8Lz32DdqDLLYQOEUNw5bdX+aZoLx6SfBYS4GXhF6agnfaQQ0hZ0DE/sOCQIOugZExRwlDYCplZDYYcbYkcD0lfoQpYEtYLum/LUo8jAKUYTU5Qy18AYyLYOwzXXKYJjlqT6PxiKznoXUkGOD4IQA==
+X-Mailgun-Sid: WyI1MzdiMyIsImt2bUB2Z2VyLmtlcm5lbC5vcmciLCI1NGVmNCJd
+Received: from mail-yw1-f179.google.com (mail-yw1-f179.google.com [209.85.128.179]) by
+ 17d8445a2b493864ac13348340e4061bc7666dd3f454a97e208dcc528130dda2 with SMTP id
+ 695e77d52a2628e0767f5b18 (version=TLS1.3, cipher=TLS_AES_128_GCM_SHA256);
+ Wed, 07 Jan 2026 15:12:21 GMT
+X-Mailgun-Sending-Ip: 161.38.204.227
+Sender: alessandro@0x65c.net
+Received: by mail-yw1-f179.google.com with SMTP id 00721157ae682-790b7b3e581so11679327b3.0
+        for <kvm@vger.kernel.org>; Wed, 07 Jan 2026 07:12:20 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCVSg5E5bCVmfKWgHaykRN5y9zIW+EWh4KAAa3EW7XKA2EJvHEnNI1vU5/7t64d3Etg9JkY=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx9tjtFDSN0OkNZZ8hQv1uJD+uZT1DJtZ2agwbQSAcXrTirKBWv
+	7rsbJtKkb5NZavjcFTV33cW4JRNhfzFC/3OfMHX/0u3WDC9SStJdt5NipuJGMIeH1372oNvj/AK
+	XtCfGwUY1wH/ZoNgr135ybdXxxrG0dwc=
+X-Google-Smtp-Source: AGHT+IHsegLs402ADRbnDAjvBRf2NzOtto6Q/Bsqcx/Emex8y4/4momb5Dn8jHhYlC//otlZv+b1lq6PJFRMCXx07CY=
+X-Received: by 2002:a05:690c:6893:b0:790:8708:bdfa with SMTP id
+ 00721157ae682-790a9613bb6mr62156627b3.6.1767798740119; Wed, 07 Jan 2026
+ 07:12:20 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: lhrpeml500010.china.huawei.com (7.191.174.240) To
- dubpeml100005.china.huawei.com (7.214.146.113)
+References: <20260104093221.494510-1-alessandro@0x65c.net> <aV1EF5DU5e66NTK0@google.com>
+ <aV1HtKXlePEJ7CJd@google.com>
+In-Reply-To: <aV1HtKXlePEJ7CJd@google.com>
+From: Alessandro Ratti <alessandro@0x65c.net>
+Date: Wed, 7 Jan 2026 16:12:08 +0100
+X-Gmail-Original-Message-ID: <CAKiXHKeZNdXXMakcYcMxQqKUrQX4Dj+M1XPt=sc-Wjeba5W8-Q@mail.gmail.com>
+X-Gm-Features: AQt7F2rPDtbqq4HRgk985GPEx12AxgEza5N4t-FLFwOEfQ2f7sPksATvm5WA8Go
+Message-ID: <CAKiXHKeZNdXXMakcYcMxQqKUrQX4Dj+M1XPt=sc-Wjeba5W8-Q@mail.gmail.com>
+Subject: Re: [PATCH] KVM: x86: Retry guest entry on -EBUSY from kvm_check_nested_events()
+To: Sean Christopherson <seanjc@google.com>
+Cc: Alessandro Ratti <alessandro@0x65c.net>, pbonzini@redhat.com, kvm@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, 
+	syzbot+1522459a74d26b0ac33a@syzkaller.appspotmail.com
+Content-Type: text/plain; charset="UTF-8"
 
-On Fri, 19 Dec 2025 15:52:43 +0000
-Sascha Bischoff <Sascha.Bischoff@arm.com> wrote:
+On Tue, 6 Jan 2026 at 18:34, Sean Christopherson <seanjc@google.com> wrote:
 
-> Interrupts under GICv5 look quite different to those from older Arm
-> GICs. Specifically, the type is encoded in the top bits of the
-> interrupt ID.
-> 
-> Extend KVM_IRQ_LINE to cope with GICv5 PPIs and SPIs. The requires
-> subtly changing the KVM_IRQ_LINE API for GICv5 guests. For older Arm
-> GICs, PPIs had to be in the range of 16-31, and SPIs had to be
-> 32-1019, but this no longer holds true for GICv5. Instead, for a GICv5
-> guest support PPIs in the range of 0-127, and SPIs in the range
-> 0-65535. The documentation is updated accordingly.
-> 
-> The SPI range doesn't cover the full SPI range that a GICv5 system can
-> potentially cope with (GICv5 provides up to 24-bits of SPI ID space,
-> and we only have 16 bits to work with in KVM_IRQ_LINE). However, 65k
-> SPIs is more than would be reasonably expected on systems for years to
-> come.
-> 
-> Note: As the GICv5 KVM implementation currently doesn't support
-> injecting SPIs attempts to do so will fail. This restruction will
+Hi Sean,
 
-restriction
+>
+> On Tue, Jan 06, 2026, Sean Christopherson wrote:
+> > On Sun, Jan 04, 2026, Alessandro Ratti wrote:
+> > I'll post the below as part of a series, as there is at least one cleanup that
+> > can be done on top to consolidate handling of EBUSY,
+>
+> Gah, I was wrong.  I was thinking that morphing EBUSY to '0' could be moved into
+> a common helper, but kvm_apic_accept_events() needs to bail immediately on EBUSY,
+> i.e. needs to see EBUSY, not '0'.
+>
+> I'll post this as a standalone patch and then try to add WARNs in a separate
+> series.
+>
+> > and I'm hopeful that the spirit of the WARN can be preserved, e.g. by
+> > adding/extending WARNs in paths where KVM (re)injects events.
+>
 
-In general,  worth spell checking the lot. (something I always
-forget to do for my own series!)
+Thanks for the detailed review and for working out the correct fix.
+I completely missed the mp_state interaction and learned a lot from
+your explanation.
 
-> lifted as the GICv5 KVM support evolves.
-> 
-> Co-authored-by: Timothy Hayes <timothy.hayes@arm.com>
-> Signed-off-by: Timothy Hayes <timothy.hayes@arm.com>
-> Signed-off-by: Sascha Bischoff <sascha.bischoff@arm.com>
-One passing comment inline. Perhaps there isn't a suitable place to put
-vgic_is_v5() though. I haven't checked.
+I'm interested in contributing more to KVM. If you have any pointers
+on good places to start learning the codebase (e.g. particular areas,
+bug reports, or documentation), I'd really appreciate it.
 
-Reviewed-by: Jonathan Cameron <jonathan.cameron@huawei.com>
+Thanks again for your time.
 
-> ---
->  Documentation/virt/kvm/api.rst |  6 ++++--
->  arch/arm64/kvm/arm.c           | 21 ++++++++++++++++++---
->  arch/arm64/kvm/vgic/vgic.c     |  4 ++++
->  3 files changed, 26 insertions(+), 5 deletions(-)
-> 
-
-> diff --git a/arch/arm64/kvm/arm.c b/arch/arm64/kvm/arm.c
-> index 94f8d13ab3b58..4448e8a5fc076 100644
-> --- a/arch/arm64/kvm/arm.c
-> +++ b/arch/arm64/kvm/arm.c
-> @@ -45,6 +45,8 @@
->  #include <kvm/arm_pmu.h>
->  #include <kvm/arm_psci.h>
->  
-> +#include <linux/irqchip/arm-gic-v5.h>
-> +
->  #include "sys_regs.h"
->  
->  static enum kvm_mode kvm_mode = KVM_MODE_DEFAULT;
-> @@ -1430,16 +1432,29 @@ int kvm_vm_ioctl_irq_line(struct kvm *kvm, struct kvm_irq_level *irq_level,
->  		if (!vcpu)
->  			return -EINVAL;
->  
-> -		if (irq_num < VGIC_NR_SGIS || irq_num >= VGIC_NR_PRIVATE_IRQS)
-> +		if (kvm->arch.vgic.vgic_model == KVM_DEV_TYPE_ARM_VGIC_V5) {
-
-Maybe it's worth moving the vgic_is_v5() helper to somewhere that makes it useable
-here?
-
-
-> +			if (irq_num >= VGIC_V5_NR_PRIVATE_IRQS)
-> +				return -EINVAL;
-> +
-> +			/* Build a GICv5-style IntID here */
-> +			irq_num |= FIELD_PREP(GICV5_HWIRQ_TYPE, GICV5_HWIRQ_TYPE_PPI);
-> +		} else if (irq_num < VGIC_NR_SGIS ||
-> +			   irq_num >= VGIC_NR_PRIVATE_IRQS) {
->  			return -EINVAL;
-> +		}
->  
->  		return kvm_vgic_inject_irq(kvm, vcpu, irq_num, level, NULL);
-
+Alessandro
