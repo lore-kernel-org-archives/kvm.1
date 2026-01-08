@@ -1,23 +1,23 @@
 Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8B3C22ED869;
-	Thu,  8 Jan 2026 17:59:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 42F8A2FB983;
+	Thu,  8 Jan 2026 17:59:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767895167; cv=none; b=N5z4x7sMOBGTF69BvqMAAxuJ3sh/0NtHJaUNdbJ4Ah6RcgMxVgZF8WLO3wxs8vpb9KlPALk5pPabC4xX4Hp4tj0mzgEdfTJu06HeVno81zno2M8lnGK6CEABIMhWVSGS/U1Pmru3Z+6i6CMmLHCvxNGfR3JoCL6U+oVxFUKq7Rw=
+	t=1767895170; cv=none; b=pxSyR6KxCdQYB5BYnVlVkk4BVsyDRroTKmvN21wv/PD2feFHhXKiO6UQGTijAascZMkB8vnxjHHNJzedN7dTtioId43RBH5v1shUkLu8c8sV/GuHZHmlVp8TNjT4ZauCpKojdyPagJfvxyjP9dP32T4ujdMmhF021d+jQmPzSm0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767895167; c=relaxed/simple;
-	bh=btyywYT33i0Lf9IQcTmns7XcT2/j2rYyQM4kWBIrhUg=;
+	s=arc-20240116; t=1767895170; c=relaxed/simple;
+	bh=0wb/UP6K5ikFmLshj6PNreIcmQ3EuRsKvxwe6jyPGMQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AYQFgM5fwbhBIPsc2fiRukFffw88mYz5F7avcpSQxb8itAXP6hHAhXm2YShHTCzzm3jpRvdfXxPaMpFmjfUXeIYJtFcAe09c+eeL4ZlOfToIfqayhodoIL9ZXAN228OCgaMpgEUDf862T9X5qwqXheQSALcjvqJAHTRyOQseAOI=
+	 MIME-Version; b=rBWhkTG5kimJGM8lupb64nE1DaL7bDkEKQD0q/DVmWVXER5fiAfWT/fu2be2Jd4F3SMgfr1Sl8IkPPfClpvBfvLa3W3Z+8YP3eaijTQcEUW8rU7i1UZfPMvT1NTpGtz+lpCAncdHulfiRfo/rs0U8WJKiWEXLPH+ju0bI7+4P5k=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
 Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id E5AA01682;
-	Thu,  8 Jan 2026 09:59:04 -0800 (PST)
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 90F251515;
+	Thu,  8 Jan 2026 09:59:14 -0800 (PST)
 Received: from ewhatever.cambridge.arm.com (ewhatever.cambridge.arm.com [10.1.197.1])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id E52343F5A1;
-	Thu,  8 Jan 2026 09:59:08 -0800 (PST)
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id 89B373F5A1;
+	Thu,  8 Jan 2026 09:59:18 -0800 (PST)
 From: Suzuki K Poulose <suzuki.poulose@arm.com>
 To: kvmarm@lists.linux.dev
 Cc: kvm@vger.kernel.org,
@@ -31,9 +31,9 @@ Cc: kvm@vger.kernel.org,
 	tabba@google.com,
 	Oliver Upton <oliver.upton@linux.dev>,
 	Suzuki K Poulose <suzuki.poulose@arm.com>
-Subject: [kvmtool PATCH v5 08/15] arm64: Add support for finding vCPU for given MPIDR
-Date: Thu,  8 Jan 2026 17:57:46 +0000
-Message-ID: <20260108175753.1292097-9-suzuki.poulose@arm.com>
+Subject: [kvmtool PATCH v5 11/15] arm64: psci: Implement CPU_ON
+Date: Thu,  8 Jan 2026 17:57:49 +0000
+Message-ID: <20260108175753.1292097-12-suzuki.poulose@arm.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20260108175753.1292097-1-suzuki.poulose@arm.com>
 References: <20260108175753.1292097-1-suzuki.poulose@arm.com>
@@ -47,64 +47,111 @@ Content-Transfer-Encoding: 8bit
 
 From: Oliver Upton <oliver.upton@linux.dev>
 
-Some PSCI calls take an MPIDR affinity as an argument. Add a helper to
-get the vCPU that matches an MPIDR so we can find the intended
-recipient.
+Add support for the PSCI CPU_ON call, wherein a caller can power on a
+targeted CPU and reset it with the provided context (i.e. entrypoint and
+context id). Rely on the KVM_ARM_VCPU_INIT ioctl, which has the effect
+of an architectural warm reset, to do the heavy lifting.
 
 Reviewed-by: Marc Zyngier <maz@kernel.org>
 Signed-off-by: Oliver Upton <oliver.upton@linux.dev>
 Signed-off-by: Suzuki K Poulose <suzuki.poulose@arm.com>
 ---
- arm64/include/kvm/kvm-arch.h |  2 ++
- arm64/kvm.c                  | 17 +++++++++++++++++
- 2 files changed, 19 insertions(+)
+ arm64/psci.c | 68 ++++++++++++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 68 insertions(+)
 
-diff --git a/arm64/include/kvm/kvm-arch.h b/arm64/include/kvm/kvm-arch.h
-index 8f508ef8..a50e6a4f 100644
---- a/arm64/include/kvm/kvm-arch.h
-+++ b/arm64/include/kvm/kvm-arch.h
-@@ -114,4 +114,6 @@ struct kvm_arch {
- 	cpu_set_t *vcpu_affinity_cpuset;
- };
- 
-+struct kvm_cpu *kvm__arch_mpidr_to_vcpu(struct kvm *kvm, u64 target_mpidr);
-+
- #endif /* ARM_COMMON__KVM_ARCH_H */
-diff --git a/arm64/kvm.c b/arm64/kvm.c
-index 23b4dab1..41c47b13 100644
---- a/arm64/kvm.c
-+++ b/arm64/kvm.c
-@@ -5,6 +5,7 @@
- #include "kvm/virtio-console.h"
- #include "kvm/fdt.h"
- #include "kvm/gic.h"
-+#include "kvm/kvm-cpu.h"
- 
- #include <linux/byteorder.h>
- #include <linux/cpumask.h>
-@@ -128,6 +129,22 @@ void kvm__arch_init(struct kvm *kvm)
- 	kvm__arch_enable_mte(kvm);
+diff --git a/arm64/psci.c b/arm64/psci.c
+index 72429b36..14c98639 100644
+--- a/arm64/psci.c
++++ b/arm64/psci.c
+@@ -18,6 +18,8 @@ static void psci_features(struct kvm_cpu *vcpu, struct arm_smccc_res *res)
+ 	case PSCI_0_2_FN_CPU_SUSPEND:
+ 	case PSCI_0_2_FN64_CPU_SUSPEND:
+ 	case PSCI_0_2_FN_CPU_OFF:
++	case PSCI_0_2_FN_CPU_ON:
++	case PSCI_0_2_FN64_CPU_ON:
+ 	case ARM_SMCCC_VERSION_FUNC_ID:
+ 		res->a0 = PSCI_RET_SUCCESS;
+ 		break;
+@@ -47,6 +49,68 @@ static void cpu_off(struct kvm_cpu *vcpu, struct arm_smccc_res *res)
+ 		die_perror("KVM_SET_MP_STATE failed");
  }
  
-+
-+struct kvm_cpu *kvm__arch_mpidr_to_vcpu(struct kvm *kvm, u64 target_mpidr)
++static void reset_cpu_with_context(struct kvm_cpu *vcpu, u64 entry_addr, u64 ctx_id)
 +{
-+	int i;
++	struct kvm_one_reg reg;
 +
-+	for (i = 0; i < kvm->nrcpus; i++) {
-+		struct kvm_cpu *tmp = kvm->cpus[i];
-+		u64 mpidr = kvm_cpu__get_vcpu_mpidr(tmp) & ARM_MPIDR_HWID_BITMASK;
++	if (ioctl(vcpu->vcpu_fd, KVM_ARM_VCPU_INIT, &vcpu->init))
++		die_perror("KVM_ARM_VCPU_INIT failed");
 +
-+		if (mpidr == target_mpidr)
-+			return tmp;
-+	}
++	reg = (struct kvm_one_reg) {
++		.id	= ARM64_CORE_REG(regs.pc),
++		.addr	= (u64)&entry_addr,
++	};
++	if (ioctl(vcpu->vcpu_fd, KVM_SET_ONE_REG, &reg))
++		die_perror("KVM_SET_ONE_REG failed");
 +
-+	return NULL;
++	reg = (struct kvm_one_reg) {
++		.id	= ARM64_CORE_REG(regs.regs[0]),
++		.addr	= (u64)&ctx_id,
++	};
++	if (ioctl(vcpu->vcpu_fd, KVM_SET_ONE_REG, &reg))
++		die_perror("KVM_SET_ONE_REG failed");
 +}
 +
- static u64 kvm__arch_get_payload_region_size(struct kvm *kvm)
++static bool psci_valid_affinity(u64 affinity)
++{
++	return !(affinity & ~ARM_MPIDR_HWID_BITMASK);
++}
++
++static void cpu_on(struct kvm_cpu *vcpu, struct arm_smccc_res *res)
++{
++	u64 target_mpidr = smccc_get_arg(vcpu, 1);
++	u64 entry_addr = smccc_get_arg(vcpu, 2);
++	u64 ctx_id = smccc_get_arg(vcpu, 3);
++	struct kvm_mp_state mp_state;
++	struct kvm_cpu *target;
++
++	if (!psci_valid_affinity(target_mpidr)) {
++		res->a0 = PSCI_RET_INVALID_PARAMS;
++		return;
++	}
++
++	kvm__pause(vcpu->kvm);
++
++	target = kvm__arch_mpidr_to_vcpu(vcpu->kvm, target_mpidr);
++	if (!target) {
++		res->a0 = PSCI_RET_INVALID_PARAMS;
++		goto out_continue;
++	}
++
++	if (ioctl(target->vcpu_fd, KVM_GET_MP_STATE, &mp_state))
++		die_perror("KVM_GET_MP_STATE failed");
++
++	if (mp_state.mp_state != KVM_MP_STATE_STOPPED) {
++		res->a0 = PSCI_RET_ALREADY_ON;
++		goto out_continue;
++	}
++
++	reset_cpu_with_context(target, entry_addr, ctx_id);
++	res->a0 = PSCI_RET_SUCCESS;
++out_continue:
++	kvm__continue(vcpu->kvm);
++}
++
+ void handle_psci(struct kvm_cpu *vcpu, struct arm_smccc_res *res)
  {
- 	if (kvm->cfg.arch.aarch32_guest)
+ 	switch (vcpu->kvm_run->hypercall.nr) {
+@@ -63,6 +127,10 @@ void handle_psci(struct kvm_cpu *vcpu, struct arm_smccc_res *res)
+ 	case PSCI_0_2_FN_CPU_OFF:
+ 		cpu_off(vcpu, res);
+ 		break;
++	case PSCI_0_2_FN_CPU_ON:
++	case PSCI_0_2_FN64_CPU_ON:
++		cpu_on(vcpu, res);
++		break;
+ 	default:
+ 		res->a0 = PSCI_RET_NOT_SUPPORTED;
+ 	}
 -- 
 2.43.0
 
