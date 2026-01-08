@@ -1,131 +1,191 @@
-Received: from mail-qt1-f173.google.com (mail-qt1-f173.google.com [209.85.160.173])
+Received: from mail-qt1-f179.google.com (mail-qt1-f179.google.com [209.85.160.179])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 687DF1DF97C
-	for <kvm@vger.kernel.org>; Thu,  8 Jan 2026 21:34:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.160.173
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 274F533D4F7
+	for <kvm@vger.kernel.org>; Thu,  8 Jan 2026 21:46:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.160.179
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767908065; cv=pass; b=SQBytsOQeA2/fEt8njfAQoT/VP+ekn49xMzqI279Sg55AKXcQbxZ1Ec30x6UTKz9PFmm5gBN08k3GSc2sT7gsQnlwO0gcxwmC0AYarVVFT0NHK3ycDbWNFkqx5B7LER+7vnLNw+rX4zPDpSNZ1m7gPDYleAREIAbo0wIuc3WD0Y=
+	t=1767908773; cv=pass; b=QJO9oEuAk0KZ7ZW5uPYbTq4YKlFQc6nT/qpEzAlRo/lK51lv/pk2O7+sX58NcrdXOKR2LjOOkxoYBFB49RmYdkDePKPhUZyLlgWJv6u9EF8MTuasePxjsnlPsOAKziZjs3t0MSKu6vAyfOASmyQSfuqyql2Bvzx+lJRObagjsX4=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767908065; c=relaxed/simple;
-	bh=BIFMGdisYPVJDEKUwNK9cGSBgYcc6A+epTuz8Zo/MyY=;
+	s=arc-20240116; t=1767908773; c=relaxed/simple;
+	bh=XMbP7ThfxIPtBFJFxREhOX5JfOHbKHNF/yi2dpLBj2o=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=TLheO0A65TY7wiyihkAIURv2Av+dJmTtbh2c9B4viqm40ELnu/9QsRnv3t4I7CxCO9QGpPW1cVKYwKJ1M4E87g8TuvNzQ3vuk+1N/kURCbuL8IOUDDYeFS60IvAOQWsQCnzAeERbybIP1lYI0Ns/fovmB3+28ZizW59u3Ig4jhc=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=xuywXjtF; arc=pass smtp.client-ip=209.85.160.173
+	 To:Cc:Content-Type; b=QHy7nJ0d3igBVczvHnsq+SoYpxomvj9jMIbRNm7+6vFVzmmVwIhrIIhQdEHzQ3gJ+6wLDp52UJYE0dCY1lHbdmnEUJ5K9vaPPIjod3RgZx6notHQyh71Nf7QmzpT1t9DuiNryppYOS5eRyseSU45+NU3YI2BvApaikZoHSGUWhc=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=C7Vfvk2b; arc=pass smtp.client-ip=209.85.160.179
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="xuywXjtF"
-Received: by mail-qt1-f173.google.com with SMTP id d75a77b69052e-4ee243b98caso38071cf.1
-        for <kvm@vger.kernel.org>; Thu, 08 Jan 2026 13:34:22 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1767908061; cv=none;
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="C7Vfvk2b"
+Received: by mail-qt1-f179.google.com with SMTP id d75a77b69052e-4ee147baf7bso51531cf.1
+        for <kvm@vger.kernel.org>; Thu, 08 Jan 2026 13:46:11 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1767908771; cv=none;
         d=google.com; s=arc-20240605;
-        b=RNN1dlLFd+9yDZ+nsGvnVuIUGPch1pjS1iM8fOGPhp064LLKl5nqbOWb0Fu+WsGcqL
-         NwDK66oWQV1JgSLT+gEhQVlR1ICbv0aP6srH/PTr625HAlP7Y594BiBwyDA4IQGKw8u5
-         bu6VXz0T9sGDi0/rqO3PcuzzycLWm7/DHzhIQrzU0KeevjYEG6+1Wvx4v3es03B89CUx
-         sJVaF5sZHIT8EJbXPa6LqdzNVuFU52tUbWCfW01fyKYAy2vDB6O6bcIZOn23elairz9q
-         GjHFmoMSUwia7ex+AkZFhA2GjJCuvISOr2fVCsqTW3adEOdarI1yPG6V43s76ZfrXzRa
-         EJ+w==
+        b=Lly8ltpXvczNlWbuTR7/TPe4voZMpy1Jr8zKwByMwXe2nlfBQIromAGSTeTHWNVV/V
+         50+Q71oqXaQAzh50pNnnoj5PnUhC1uPPmimGU8tSa76pkFnExerQyTwqTYyYBguy/bHD
+         nUC6R7NgFYKx0DI0Dc6ht9NbL7ZRaHRMSSY3w0vEHruWj9n3j6A2XiKlaZs7NwpT4fJu
+         hIAiB6Ov1ndrS0TAdWArAxDVg8VX6k8atYoWE/QdcQFFqt8Pgq03EsPHgkyeLXSUuQlJ
+         J1MbzLl9DFqXTPYjRraeWCUml6WfHjtQNd3PJOa6j5IeIj0mP/l4Qqm4yQ1ar9CdWVdo
+         +yKQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:dkim-signature;
-        bh=t8xfNAiLYTrj2PkrzfwvKzprYCcDxmoMPbij5imaAm4=;
-        fh=fZIoNmhYinhWsZXQPCVKgzwq01BLkza2xOPCXrn97xE=;
-        b=N0x9PVcZuIMiD83zIdtobFd+zTOwWGPSmXS7r3/VmliVNcyHLbwVpeELSylU6y3ZtT
-         TrQhm+259qXtgAW8WH0blVWDnlF6EUc9EtHG8DkwrE5NH7ebju/6RjSk2KqoKOIm6eih
-         lid+p5tDqZCEeEmEVH4M/uij81nvJRCBVZlpdTfgUAvSj38rc3vGN076MPs9dnI+bbB7
-         yXam7bSPCPEYZSHxmTuJXzSz9xvOuj51kZqDS5+S1TEgq6iuRdWsFog7FcPIjZuSzelD
-         S10nnHjjHl35yPAMEBhJC+VWP1gnCuMIwb55g4QLZhPApGtmGA8Ik1cyilYfrU645lnm
-         J1rA==;
+        bh=HHZ1rZPdnJnzeo4n3gCGmREH/i3FIP/5sZxCeZBEwJ0=;
+        fh=4Sj4URYQ+GPHIgmdV1Ji/sUjEsMQSGRruDB7mdglh0c=;
+        b=QScvo73NLBPeOmPnFlPqlpZ4Mo5C4WyBuXNY7SduI8/67MiuVIIsKbMmIUdQ6QRAji
+         FtsiETfjehhCKMver6ESHt9DKKRmD23c51bg2waPZKE6UJ1Dc7ZItiIAJTLeMPj2me9C
+         g+/2pc0mm8pao2YNEFYy5AtOWXnEgxlLxvJqlrAhLmSD24Ma+82RsGFoFqlEK0hzhW/j
+         l0qm1ZB0vI3Li3jznPoxmYDA4qPq2SNBnz6N69vYSjOjvOCCGHpUV0C9PSCNxaByWlIM
+         IIoFvNf2uvZwUKdhL9+3jHU4NF2sFjh8e9QwzOP6XhyKwqO0D1EaFrs3EdX6Ac/GGM+g
+         6QCA==;
         darn=vger.kernel.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1767908061; x=1768512861; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1767908771; x=1768513571; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=t8xfNAiLYTrj2PkrzfwvKzprYCcDxmoMPbij5imaAm4=;
-        b=xuywXjtF3Ui3ey8jyqsZaGrjl6L4TBxT1UKutDjQvB6V08UWVpbSllz7Ehq6D6/z6+
-         alD8pGGTEGkWeOXpn5BK2xUpPZpOFMg7cegAgYkomvN7E49hUjSkxSAH77yUMqqg54nV
-         qj2zpDn9+N1VZbULFozztkuQ5z+ilbNPVpC+YDsXCI0Eq9gjY/sa79nqBAOByrKMmajE
-         R1pNvb/C7uBd5/dYizGvACfp0Ft6iwxFj3Ukmo7hxKhH8EHNnPRCARS3oJsWBboVnn3o
-         Fa2o4c6D4zBVvHj93iQLqPB3d+CcYhunzp2/J2m03nMoxzGHG9T8s8iVOlUCgfebIQUz
-         BKDQ==
+        bh=HHZ1rZPdnJnzeo4n3gCGmREH/i3FIP/5sZxCeZBEwJ0=;
+        b=C7Vfvk2bZ/ZIVw5DGkcaxx2u0kdKBBuA4Eza9GW47uSKNhHW6VXrGxDfWivxeY7eDt
+         Lc1YYMbXdtDUTN4iTtfBddN5pTPed/PXkkN5Piof0x+fx9fCDYPXcp5iPN7kO9Tgmu6w
+         T4RYOl7vaK0iiEHXBsPIvtZ7NR0v4Nog7gVIS/37ajNZrgmjfn9YPy1V7nTTl3vk4kIh
+         3H1SDyHSVPZZ/6b4Ec9uZip+S0UPF+lHWUiAmaUH17lpWKskOoWPD5IpkFhGH97Urt2s
+         8Z5NEf64gdSqzJZaxtP3IaILz5h+1hA+CXc8OUmCGuFHa//+tHvZeCrWIlgzFGc130bl
+         htzw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1767908061; x=1768512861;
+        d=1e100.net; s=20230601; t=1767908771; x=1768513571;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=t8xfNAiLYTrj2PkrzfwvKzprYCcDxmoMPbij5imaAm4=;
-        b=AHCHlqFNbGkTXH5JnmFI4U7iy3yjFdasS3BCwFtnm+5EHdldHd9/3XucusIjy1Tdgm
-         lryKkM40v0yqj6Tgm+a9dLIbW5UwxgRbWM6zfl2WfgfB19FQDWGn6nzUmzps0zg941Gt
-         zlL7B8DkfmELqAUOU549c9aDoVsbp+Zc7G0bGQ1NoOrWa2ihI9kzvJ/Oaam2JDFRp/iM
-         /Txdbgduwzxy8E6SHZxZkFgbylo/JvThpt2TQ6uZG7OOoV2rJYLrMutDnUbpf+mTlqlA
-         uQP7DrF/DTXSULhyGOeRJqN2FOrgpDlblHXPMrrBz9N8J5mXfCZvRmcmK8/xR7BqdnD6
-         LzAA==
-X-Forwarded-Encrypted: i=1; AJvYcCXg7eTrg+K10IQRT42CLXxzM1s4XjEOz/AHvzihKAKoLxdm7cI3ks4nfA11KKqCipGPzkY=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyQcfuSEeLttC4gyMqBFB2uQgk2wjERo5gv4Pi3V/t+ltHJSbk8
-	0szN6KtEfOi5OIadmY+FqAXkjis4cl/dxrMR/ipOPZsAqsOfT+ubWQdPMErikBHKvPe1ICFP2df
-	/xWLZkQhw2CpaIFI6+I0dyIIVK+yGRD6bogMEJoKc
-X-Gm-Gg: AY/fxX56AxDApofy8wQ9aPq9qpXa92dxNJOn3272iYntb9+H1w5fnX8GEZbsQdLP6y7
-	B6g3ho5SO/CpPaw8a4aVnEYwyUhDCQ8wfYlUHBUGrd7iUaD5xHHkx3DEQ/R13d/RB9ge9iqkosE
-	jKBLb1CIQP7evHDdZScHcTu5kzavQw/tdwh3pLv3nNH8qOq3KnAi42zTHTvFiCK3nhc1orPT/vA
-	E6WlRCHl9PMNtlA8TUXRlAMoPS1wSFOL1LHXcXU2SqUYqoh/PopMP4mTZG3IXH6jeUoll2oh7iW
-	d0hfAmjxjYv+abZEyCJNHx5RnQ==
-X-Received: by 2002:a05:622a:3:b0:4ff:a98b:7fd3 with SMTP id
- d75a77b69052e-4ffca1df40dmr3413331cf.2.1767908060993; Thu, 08 Jan 2026
- 13:34:20 -0800 (PST)
+        bh=HHZ1rZPdnJnzeo4n3gCGmREH/i3FIP/5sZxCeZBEwJ0=;
+        b=Sbr+/77yAH+Y+hCcZAYiqs6542k1PGa8NLohEkJFwmY01N2rwdsOBZRvxTo0UqKYcp
+         d8t+JuvtEMO0vidj+mir/azqzu8lI0UmEO0Boc+LxM+iVIGdTcbrmEFD5QpjRUHEGVRK
+         zroEXw0pE7CsolnNjS8kufob8F3GIUPiTQ8Owe20Uyht9UJ6DOR+hWRgymBc7QG+c92/
+         Z2YbbqQ2qks35d/vHD6b67K1nhXasZ79mQgKI1dP3DoCqOKrMT+CHD9LRnKYJE8SIhv5
+         JV8nZQCLt3Fv6pZy5JgA4+qSCUHvxnu8jvFuYv7YqDd2VtP3nIltLO/zIeyaAU1Kd0tp
+         FJQQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUxLnGjEv8Zx+0XhCN0SYl3uITSiOQIYAenJlRHaco7ztlJ7xu4WsgeOug7jGsKwD5Td8w=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyIpiGQRNwtLtsy3G5yeypRvKZcRfp3sDxzgCrEubO7dJagtgVT
+	eMRVhiT9/ZGl0l+kMCZ4u0jV3IRhzeSPT+eCwLof7YBZXX+IhfNx8GCtPHGqu512EavkAE4Q/tO
+	XUechM8D2/Aag+DGbo/7+nkve/E4bEJ7lyk9sYjiNJX9h6YqMdafqzQ==
+X-Gm-Gg: AY/fxX7w42L3JQXPSEO1QxiT1pmjnqi9Bp1nXRWueLt3m75wv4QO9gvh1JSkqv2mg0a
+	+xpqGqUMvrCB9cBX0SCCGj0ZT2W0oaENPKEGBVTOnLfgv3dVUwki7YlreeK1g3UoqELb+WUNAsC
+	AHRWPh7WSxVhEbX5Uc4ZiTaHB6j2SGTLdxvLhF8wjzZCfC0pO9DlktVuaZvhCQe8PI/HnwkwUuI
+	sMXzVlpjP98ec2DxWCjT5yDplzs+rKIUdUhYWBrREkX/w9p+6UEaulSe3lfUWeTY2xasgHE32Zj
+	lLdytdwlJP+OiMV5NhSaK4IVOg==
+X-Received: by 2002:ac8:58cd:0:b0:4ff:c0e7:be9c with SMTP id
+ d75a77b69052e-4ffca4db069mr3063011cf.0.1767908770487; Thu, 08 Jan 2026
+ 13:46:10 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20251210181417.3677674-1-rananta@google.com> <20251210181417.3677674-4-rananta@google.com>
- <aV7i6P3FqPZu1Tq0@google.com>
-In-Reply-To: <aV7i6P3FqPZu1Tq0@google.com>
+References: <20251210181417.3677674-1-rananta@google.com> <20251210181417.3677674-6-rananta@google.com>
+ <aV7kq76DYIx8aNVv@google.com>
+In-Reply-To: <aV7kq76DYIx8aNVv@google.com>
 From: Raghavendra Rao Ananta <rananta@google.com>
-Date: Thu, 8 Jan 2026 13:34:09 -0800
-X-Gm-Features: AQt7F2ob7H_BJouLaULso-isBlR0aX6N4tnXuzh9Xt3--aWmgdc_NnsFeWXImMU
-Message-ID: <CAJHc60wUEpwRLzaV8a8WG0d7+5+M5c+2s1cLgKK2Kb_rqThufA@mail.gmail.com>
-Subject: Re: [PATCH v2 3/6] vfio: selftests: Extend container/iommufd setup
- for passing vf_token
+Date: Thu, 8 Jan 2026 13:45:58 -0800
+X-Gm-Features: AQt7F2o5q5yGWl2zlyt3oqOUguaBj546pG9SFwUL4f3_5xpSE1UjM8HRl2WzJJg
+Message-ID: <CAJHc60xMgz=JuqTesqC9h0axFMQnLX-eYbGBi=DG2_gDbdTnoQ@mail.gmail.com>
+Subject: Re: [PATCH v2 5/6] vfio: selftests: Add helper to set/override a vf_token
 To: David Matlack <dmatlack@google.com>
 Cc: Alex Williamson <alex@shazbot.org>, Alex Williamson <alex.williamson@redhat.com>, 
 	Josh Hilke <jrhilke@google.com>, kvm@vger.kernel.org, linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Wed, Jan 7, 2026 at 2:49=E2=80=AFPM David Matlack <dmatlack@google.com> =
+On Wed, Jan 7, 2026 at 2:56=E2=80=AFPM David Matlack <dmatlack@google.com> =
 wrote:
-> > diff --git a/tools/testing/selftests/vfio/lib/libvfio.mk b/tools/testin=
-g/selftests/vfio/lib/libvfio.mk
-> > index b7857319c3f1f..459b14c6885a8 100644
-> > --- a/tools/testing/selftests/vfio/lib/libvfio.mk
-> > +++ b/tools/testing/selftests/vfio/lib/libvfio.mk
-> > @@ -15,6 +15,8 @@ LIBVFIO_C +=3D drivers/ioat/ioat.c
-> >  LIBVFIO_C +=3D drivers/dsa/dsa.c
-> >  endif
+>
+> On 2025-12-10 06:14 PM, Raghavendra Rao Ananta wrote:
+> > Add a helper function, vfio_device_set_vf_token(), to set or override a
+> > vf_token. Not only at init, but a vf_token can also be set via the
+> > VFIO_DEVICE_FEATURE ioctl, by setting the
+> > VFIO_DEVICE_FEATURE_PCI_VF_TOKEN flag. Hence, add an API to utilize thi=
+s
+> > functionality from the test code. The subsequent commit will use this t=
+o
+> > test the functionality of this method to set the vf_token.
 > >
-> > +LDLIBS +=3D -luuid
+> > Signed-off-by: Raghavendra Rao Ananta <rananta@google.com>
+> > ---
+> >  .../lib/include/libvfio/vfio_pci_device.h     |  2 ++
+> >  .../selftests/vfio/lib/vfio_pci_device.c      | 34 +++++++++++++++++++
+> >  2 files changed, 36 insertions(+)
+> >
+> > diff --git a/tools/testing/selftests/vfio/lib/include/libvfio/vfio_pci_=
+device.h b/tools/testing/selftests/vfio/lib/include/libvfio/vfio_pci_device=
+.h
+> > index 6186ca463ca6e..b370aa6a74d0b 100644
+> > --- a/tools/testing/selftests/vfio/lib/include/libvfio/vfio_pci_device.=
+h
+> > +++ b/tools/testing/selftests/vfio/lib/include/libvfio/vfio_pci_device.=
+h
+> > @@ -129,4 +129,6 @@ void vfio_container_set_iommu(struct vfio_pci_devic=
+e *device);
+> >  void vfio_pci_iommufd_cdev_open(struct vfio_pci_device *device, const =
+char *bdf);
+> >  int __vfio_device_bind_iommufd(int device_fd, int iommufd, const char =
+*vf_token);
+> >
+> > +void vfio_device_set_vf_token(int fd, const char *vf_token);
 > > +
-> >  LIBVFIO_OUTPUT :=3D $(OUTPUT)/libvfio
+> >  #endif /* SELFTESTS_VFIO_LIB_INCLUDE_LIBVFIO_VFIO_PCI_DEVICE_H */
+> > diff --git a/tools/testing/selftests/vfio/lib/vfio_pci_device.c b/tools=
+/testing/selftests/vfio/lib/vfio_pci_device.c
+> > index 208da2704d9e2..7725ecc62b024 100644
+> > --- a/tools/testing/selftests/vfio/lib/vfio_pci_device.c
+> > +++ b/tools/testing/selftests/vfio/lib/vfio_pci_device.c
+> > @@ -109,6 +109,40 @@ static void vfio_pci_irq_get(struct vfio_pci_devic=
+e *device, u32 index,
+> >       ioctl_assert(device->fd, VFIO_DEVICE_GET_IRQ_INFO, irq_info);
+> >  }
 > >
-> >  LIBVFIO_O :=3D $(patsubst %.c, $(LIBVFIO_OUTPUT)/%.o, $(LIBVFIO_C))
-> > @@ -25,6 +27,6 @@ $(shell mkdir -p $(LIBVFIO_O_DIRS))
-> >  CFLAGS +=3D -I$(LIBVFIO_SRCDIR)/include
-> >
-> >  $(LIBVFIO_O): $(LIBVFIO_OUTPUT)/%.o : $(LIBVFIO_SRCDIR)/%.c
-> > -     $(CC) $(CFLAGS) $(CPPFLAGS) $(TARGET_ARCH) -c $< -o $@
-> > +     $(CC) $(CFLAGS) $(CPPFLAGS) $(TARGET_ARCH) -c $< $(LDLIBS) -o $@
+> > +static int vfio_device_feature_ioctl(int fd, u32 flags, void *data,
+> > +                                  size_t data_size)
+> > +{
+> > +     u8 buffer[sizeof(struct vfio_device_feature) + data_size] =3D {};
+> > +     struct vfio_device_feature *feature =3D (void *)buffer;
+> > +
+> > +     memcpy(feature->data, data, data_size);
+> > +
+> > +     feature->argsz =3D sizeof(buffer);
+> > +     feature->flags =3D flags;
+> > +
+> > +     return ioctl(fd, VFIO_DEVICE_FEATURE, feature);
+> > +}
+> > +
+> > +static void vfio_device_feature_set(int fd, u16 feature, void *data, s=
+ize_t data_size)
+> > +{
+> > +     u32 flags =3D VFIO_DEVICE_FEATURE_SET | feature;
+> > +     int ret;
+> > +
+> > +     ret =3D vfio_device_feature_ioctl(fd, flags, data, data_size);
+> > +     VFIO_ASSERT_EQ(ret, 0, "Failed to set feature %u\n", feature);
+> > +}
+> > +
+> > +void vfio_device_set_vf_token(int fd, const char *vf_token)
+> > +{
+> > +     uuid_t token_uuid =3D {0};
+> > +
+> > +     VFIO_ASSERT_NOT_NULL(vf_token, "vf_token is NULL");
+> > +     VFIO_ASSERT_EQ(uuid_parse(vf_token, token_uuid), 0);
+> > +
+> > +     vfio_device_feature_set(fd, VFIO_DEVICE_FEATURE_PCI_VF_TOKEN,
+> > +                             token_uuid, sizeof(uuid_t));
+> > +}
 >
-> Do we need $(LDLIBS) when compiling the intermediate .o files? I thought
-> we would only need it when linking the selftests binaries.
+> Would it be useful to have a variant that returns an int for negative
+> testing?
 >
-You are right. We need it only during the final linking. I'll get rid of it=
-.
+I couldn't see any interesting cases where the ioctl could fail that
+would warrant a negative test.
+The 'incorrect vf token set' is validated later during device init.
+I've implemented a negative test for this.
 
-I'll update this and other nits in the next version.
+However, please let me know if you can think of anything.
 
-Thank you
+Thank you.
 Raghavendra
