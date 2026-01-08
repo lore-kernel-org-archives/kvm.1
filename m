@@ -1,161 +1,253 @@
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C73D22B8B6
-	for <kvm@vger.kernel.org>; Thu,  8 Jan 2026 03:07:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C3BE928030E;
+	Thu,  8 Jan 2026 03:07:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.9
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767841632; cv=none; b=HyFX4vg9ECX1mPE1SKyHLaTgbd5bsjlJgqaqIb8HSfidX27ZC13Nqt1z3/y6+HO3xCsPmzvr4m4kMRFmQb0tO7PT52SjTDJ12fy1L/+LtjrMFx3mbh4QxnF9r8ik/z5aioE6ISWvWX4GmtpSOuBqAim0CGGCzs8neEP0ho4+Nj0=
+	t=1767841634; cv=none; b=IEsJPiUEvwcWCDAlJ0QruzL82UMo/SUwc/8Vi7tXGeByBaZIe3/YSrFjtQfPWSy8RbCj8G9A00kznGFD672+yMz0+4wbpUCZ14TfIukBFqqoBjaCEQYvsHPwa18GzMbV9k6aVxmq5SMKuzcAcUq/92ypmgXywU4hzo5d8N83omk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767841632; c=relaxed/simple;
-	bh=+W2nuu0RATsALTShNsBWCjQLHRQFKTYW61n5Szq2eRA=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=bboPIYCDooIfub34d0g6OOvHPieZbMt6HQb55P2BnmJKME3EHl08FHMT8MKtcaY8QgKFwETCZqYKcqW+x54FFqG8uGjZGGCVjUV+01Ozkw11xpQH6zeKu1mhhD25HdHwCbLNJPOzqQ2aXvKI/O8H4h3LPGDqwzi9KCNONBn3ihI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=meICaxuK; arc=none smtp.client-ip=198.175.65.9
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1767841634; c=relaxed/simple;
+	bh=A1EDVql3T0qVgDPncFKxMzWgwRWKWjDnLmwzTqzTTKc=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=d126Nk6fo70ZBQs+MLSHHjqM54H/pF7+Aj73/7ztefvK2gm+riFe/dQe13NU3x2n4cX7dMOrcFeK5JJ84FiOYVjv4AOFqmv+gouS4++zUVHOkFFfGUMZReUfumiZ9jcGCh37VHEBMav0T0Jnky/140x4PFEXovuG5ewzYJ2acRo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=B/xJ5KUY; arc=none smtp.client-ip=198.175.65.9
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="meICaxuK"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="B/xJ5KUY"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1767841632; x=1799377632;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=+W2nuu0RATsALTShNsBWCjQLHRQFKTYW61n5Szq2eRA=;
-  b=meICaxuKWS51nkbHsOL5dIO5EeCU2cUN4OIiBhjZaZlFcvoA07/sxZ6G
-   jDcPdr8n0BPrKeMgmoPl5nfK3KG6S2cAA/xolTiub2e7GbmH1POfb8cdo
-   yUNEZYrxdlvVCNHIlZ9Oz68eJ8w4teRJBFsjHL3xsijPkQERyf/e4EAo8
-   50Kx83ofXXqszMhNbTh4ng9VkQ9xFYPxN0zj4u4HgxqXBJfM+LJu5JEv+
-   l2apTSxGVk0VOTHpEn9AIE7LTJ6LKX1l0wYhVOFn9T3kiGOqzckffzWYS
-   Hl51nbzyrevFrtVsiUDPsiOvPsjFSU4MU5MLSCM2sbJ07Ek1+PuAKHNjy
-   Q==;
-X-CSE-ConnectionGUID: 99jyk5e/S6KOtSe0c21gsw==
-X-CSE-MsgGUID: A2/VFY2LSaeLMEM/CSWCYw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11664"; a="91877183"
+  t=1767841633; x=1799377633;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=A1EDVql3T0qVgDPncFKxMzWgwRWKWjDnLmwzTqzTTKc=;
+  b=B/xJ5KUYzvXkjEhjX4L7xNU0+qdAoqXADb8l+S0t716gGjj6h+r8oBeI
+   XfpobAftbKMGFkFkbM7MMa6LZvCgjv1sEPAHb1H9Rv3djOeSX6QFJBPft
+   X3AfpXfL9aGIQM9pss1YGXO8EpO8Qbllvz2r9/b2PYRHmXNHFb/m0GWLJ
+   Ojtfs/Q1UY7v6TeWKL4RVp88fp1YAv3tAyNkD/O14YO7QvJFj2n5BC8Vg
+   suOUwbx7pi3RoYNRAQtXUtzeR2zvEllU0YfNuB1W3/7ASx8xFY/+rTLhm
+   J3bVUvNVFt+sthWhmkReF8ZZhRfk2zFVzm3W8fCkJ5Fc9P0WZ6SV7DJ8N
+   w==;
+X-CSE-ConnectionGUID: OfMRZumUSmyTZjzHFIkBpA==
+X-CSE-MsgGUID: 564hM75VQkGcTEaBDcutNg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11664"; a="91877202"
 X-IronPort-AV: E=Sophos;i="6.21,209,1763452800"; 
-   d="scan'208";a="91877183"
-Received: from orviesa006.jf.intel.com ([10.64.159.146])
-  by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Jan 2026 19:07:11 -0800
-X-CSE-ConnectionGUID: 1axfT+9ORDaOUvqICDifyQ==
-X-CSE-MsgGUID: xBlaUGDlSmWMvr0XoQBtsA==
+   d="scan'208";a="91877202"
+Received: from orviesa007.jf.intel.com ([10.64.159.147])
+  by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Jan 2026 19:07:12 -0800
+X-CSE-ConnectionGUID: SpVqtqJKT/WJ/2JUetxXlg==
+X-CSE-MsgGUID: JdiG3z9TQZuPUZfpUCpQEA==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.21,209,1763452800"; 
-   d="scan'208";a="202210810"
-Received: from liuzhao-optiplex-7080.sh.intel.com ([10.239.160.39])
-  by orviesa006.jf.intel.com with ESMTP; 07 Jan 2026 19:07:01 -0800
-From: Zhao Liu <zhao1.liu@intel.com>
-To: Paolo Bonzini <pbonzini@redhat.com>,
-	"Michael S . Tsirkin" <mst@redhat.com>,
-	Igor Mammedov <imammedo@redhat.com>,
-	=?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
-	Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
-	Thomas Huth <thuth@redhat.com>
-Cc: qemu-devel@nongnu.org,
-	devel@lists.libvirt.org,
-	kvm@vger.kernel.org,
-	qemu-riscv@nongnu.org,
-	qemu-arm@nongnu.org,
-	Richard Henderson <richard.henderson@linaro.org>,
-	Sergio Lopez <slp@redhat.com>,
-	Gerd Hoffmann <kraxel@redhat.com>,
-	Peter Maydell <peter.maydell@linaro.org>,
-	Laurent Vivier <lvivier@redhat.com>,
-	Jiaxun Yang <jiaxun.yang@flygoat.com>,
-	Yi Liu <yi.l.liu@intel.com>,
-	Eduardo Habkost <eduardo@habkost.net>,
-	Alistair Francis <alistair.francis@wdc.com>,
-	Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
-	Marcelo Tosatti <mtosatti@redhat.com>,
-	Weiwei Li <liwei1518@gmail.com>,
-	Amit Shah <amit@kernel.org>,
-	Xiaoyao Li <xiaoyao.li@intel.com>,
-	Yanan Wang <wangyanan55@huawei.com>,
-	Helge Deller <deller@gmx.de>,
-	Palmer Dabbelt <palmer@dabbelt.com>,
-	=?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
-	Ani Sinha <anisinha@redhat.com>,
-	Fabiano Rosas <farosas@suse.de>,
-	Liu Zhiwei <zhiwei_liu@linux.alibaba.com>,
-	=?UTF-8?q?Cl=C3=A9ment=20Mathieu--Drif?= <clement.mathieu--drif@eviden.com>,
-	=?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
-	Huacai Chen <chenhuacai@kernel.org>,
-	Jason Wang <jasowang@redhat.com>,
-	Mark Cave-Ayland <mark.caveayland@nutanix.com>,
-	BALATON Zoltan <balaton@eik.bme.hu>,
-	Peter Krempa <pkrempa@redhat.com>,
-	Jiri Denemark <jdenemar@redhat.com>,
-	Zhao Liu <zhao1.liu@intel.com>
-Subject: [PATCH v6 10/27] hw/nvram/fw_cfg: Factor fw_cfg_init_mem_internal() out
-Date: Thu,  8 Jan 2026 11:30:34 +0800
-Message-Id: <20260108033051.777361-11-zhao1.liu@intel.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20260108033051.777361-1-zhao1.liu@intel.com>
-References: <20260108033051.777361-1-zhao1.liu@intel.com>
+   d="scan'208";a="203105769"
+Received: from binbinwu-mobl.ccr.corp.intel.com (HELO [10.124.240.233]) ([10.124.240.233])
+  by orviesa007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Jan 2026 19:07:10 -0800
+Message-ID: <959b98b1-fbc4-4515-bc7c-8c146c6c8529@linux.intel.com>
+Date: Thu, 8 Jan 2026 11:06:56 +0800
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/4] x86/fpu: Clear XSTATE_BV[i] in save state whenever
+ XFD[i]=1
+To: Paolo Bonzini <pbonzini@redhat.com>
+Cc: linux-kernel@vger.kernel.org, kvm@vger.kernel.org, seanjc@google.com,
+ x86@kernel.org, stable@vger.kernel.org
+References: <20260101090516.316883-1-pbonzini@redhat.com>
+ <20260101090516.316883-2-pbonzini@redhat.com>
+Content-Language: en-US
+From: Binbin Wu <binbin.wu@linux.intel.com>
+In-Reply-To: <20260101090516.316883-2-pbonzini@redhat.com>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
 
-From: Philippe Mathieu-Daudé <philmd@linaro.org>
 
-Factor fw_cfg_init_mem_internal() out of fw_cfg_init_mem_wide().
-In fw_cfg_init_mem_wide(), assert DMA arguments are provided.
-Callers without DMA have to use the fw_cfg_init_mem() helper.
 
-Reviewed-by: Igor Mammedov <imammedo@redhat.com>
-Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
-Reviewed-by: Xiaoyao Li <xiaoyao.li@intel.com>
-Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
----
-Changes since v4:
- * Fix a "typo" argument in fw_cfg_init_mem_wide().
----
- hw/nvram/fw_cfg.c | 17 +++++++++++++----
- 1 file changed, 13 insertions(+), 4 deletions(-)
+On 1/1/2026 5:05 PM, Paolo Bonzini wrote:
+> From: Sean Christopherson <seanjc@google.com>
+> 
+> When loading guest XSAVE state via KVM_SET_XSAVE, and when updating XFD in
+> response to a guest WRMSR, clear XFD-disabled features in the saved (or to
+> be restored) XSTATE_BV to ensure KVM doesn't attempt to load state for
+> features that are disabled via the guest's XFD.  Because the kernel
+> executes XRSTOR with the guest's XFD, saving XSTATE_BV[i]=1 with XFD[i]=1
+> will cause XRSTOR to #NM and panic the kernel.
+> 
+> E.g. if fpu_update_guest_xfd() sets XFD without clearing XSTATE_BV:
+> 
+>   ------------[ cut here ]------------
+>   WARNING: arch/x86/kernel/traps.c:1524 at exc_device_not_available+0x101/0x110, CPU#29: amx_test/848
+>   Modules linked in: kvm_intel kvm irqbypass
+>   CPU: 29 UID: 1000 PID: 848 Comm: amx_test Not tainted 6.19.0-rc2-ffa07f7fd437-x86_amx_nm_xfd_non_init-vm #171 NONE
+>   Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 0.0.0 02/06/2015
+>   RIP: 0010:exc_device_not_available+0x101/0x110
+>   Call Trace:
+>    <TASK>
+>    asm_exc_device_not_available+0x1a/0x20
+>   RIP: 0010:restore_fpregs_from_fpstate+0x36/0x90
+>    switch_fpu_return+0x4a/0xb0
+>    kvm_arch_vcpu_ioctl_run+0x1245/0x1e40 [kvm]
+>    kvm_vcpu_ioctl+0x2c3/0x8f0 [kvm]
+>    __x64_sys_ioctl+0x8f/0xd0
+>    do_syscall_64+0x62/0x940
+>    entry_SYSCALL_64_after_hwframe+0x4b/0x53
+>    </TASK>
+>   ---[ end trace 0000000000000000 ]---
+> 
+> This can happen if the guest executes WRMSR(MSR_IA32_XFD) to set XFD[18] = 1,
+> and a host IRQ triggers kernel_fpu_begin() prior to the vmexit handler's
+> call to fpu_update_guest_xfd().
+> 
+> and if userspace stuffs XSTATE_BV[i]=1 via KVM_SET_XSAVE:
+> 
+>   ------------[ cut here ]------------
+>   WARNING: arch/x86/kernel/traps.c:1524 at exc_device_not_available+0x101/0x110, CPU#14: amx_test/867
+>   Modules linked in: kvm_intel kvm irqbypass
+>   CPU: 14 UID: 1000 PID: 867 Comm: amx_test Not tainted 6.19.0-rc2-2dace9faccd6-x86_amx_nm_xfd_non_init-vm #168 NONE
+>   Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 0.0.0 02/06/2015
+>   RIP: 0010:exc_device_not_available+0x101/0x110
+>   Call Trace:
+>    <TASK>
+>    asm_exc_device_not_available+0x1a/0x20
+>   RIP: 0010:restore_fpregs_from_fpstate+0x36/0x90
+>    fpu_swap_kvm_fpstate+0x6b/0x120
+>    kvm_load_guest_fpu+0x30/0x80 [kvm]
+>    kvm_arch_vcpu_ioctl_run+0x85/0x1e40 [kvm]
+>    kvm_vcpu_ioctl+0x2c3/0x8f0 [kvm]
+>    __x64_sys_ioctl+0x8f/0xd0
+>    do_syscall_64+0x62/0x940
+>    entry_SYSCALL_64_after_hwframe+0x4b/0x53
+>    </TASK>
+>   ---[ end trace 0000000000000000 ]---
+> 
+> The new behavior is consistent with the AMX architecture.  Per Intel's SDM,
+> XSAVE saves XSTATE_BV as '0' for components that are disabled via XFD
+> (and non-compacted XSAVE saves the initial configuration of the state
+> component):
+> 
+>   If XSAVE, XSAVEC, XSAVEOPT, or XSAVES is saving the state component i,
+>   the instruction does not generate #NM when XCR0[i] = IA32_XFD[i] = 1;
+>   instead, it operates as if XINUSE[i] = 0 (and the state component was
+>   in its initial state): it saves bit i of XSTATE_BV field of the XSAVE
+>   header as 0; in addition, XSAVE saves the initial configuration of the
+>   state component (the other instructions do not save state component i).
+> 
+> Alternatively, KVM could always do XRSTOR with XFD=0, e.g. by using
+> a constant XFD based on the set of enabled features when XSAVEing for
+> a struct fpu_guest.  However, having XSTATE_BV[i]=1 for XFD-disabled
+> features can only happen in the above interrupt case, or in similar
+> scenarios involving preemption on preemptible kernels, because
+> fpu_swap_kvm_fpstate()'s call to save_fpregs_to_fpstate() saves the
+> outgoing FPU state with the current XFD; and that is (on all but the
+> first WRMSR to XFD) the guest XFD.
+> 
+> Therefore, XFD can only go out of sync with XSTATE_BV in the above
+> interrupt case, or in similar scenarios involving preemption on
+> preemptible kernels, and it we can consider it (de facto) part of KVM
+> ABI that KVM_GET_XSAVE returns XSTATE_BV[i]=0 for XFD-disabled features.
 
-diff --git a/hw/nvram/fw_cfg.c b/hw/nvram/fw_cfg.c
-index a0315ea9ae6b..3c1d0b9c1d09 100644
---- a/hw/nvram/fw_cfg.c
-+++ b/hw/nvram/fw_cfg.c
-@@ -1054,9 +1054,9 @@ FWCfgState *fw_cfg_init_io_dma(uint32_t iobase, uint32_t dma_iobase,
-     return s;
- }
- 
--FWCfgState *fw_cfg_init_mem_wide(hwaddr ctl_addr,
--                                 hwaddr data_addr, uint32_t data_width,
--                                 hwaddr dma_addr, AddressSpace *dma_as)
-+static FWCfgState *fw_cfg_init_mem_internal(hwaddr ctl_addr,
-+                                            hwaddr data_addr, uint32_t data_width,
-+                                            hwaddr dma_addr, AddressSpace *dma_as)
- {
-     DeviceState *dev;
-     SysBusDevice *sbd;
-@@ -1088,10 +1088,19 @@ FWCfgState *fw_cfg_init_mem_wide(hwaddr ctl_addr,
-     return s;
- }
- 
-+FWCfgState *fw_cfg_init_mem_wide(hwaddr ctl_addr,
-+                                 hwaddr data_addr, uint32_t data_width,
-+                                 hwaddr dma_addr, AddressSpace *dma_as)
-+{
-+    assert(dma_addr && dma_as);
-+    return fw_cfg_init_mem_internal(ctl_addr, data_addr, data_width,
-+                                    dma_addr, dma_as);
-+}
-+
- FWCfgState *fw_cfg_init_mem_nodma(hwaddr ctl_addr, hwaddr data_addr,
-                                   unsigned data_width)
- {
--    return fw_cfg_init_mem_wide(ctl_addr, data_addr, data_width, 0, NULL);
-+    return fw_cfg_init_mem_internal(ctl_addr, data_addr, data_width, 0, NULL);
- }
- 
- 
--- 
-2.34.1
+Reviewed-by: Binbin Wu <binbin.wu@linux.intel.com>
+
+One nit blew.
+
+> 
+> Reported-by: Paolo Bonzini <pbonzini@redhat.com>
+> Cc: stable@vger.kernel.org
+> Fixes: 820a6ee944e7 ("kvm: x86: Add emulation for IA32_XFD", 2022-01-14)
+> Signed-off-by: Sean Christopherson <seanjc@google.com>
+> [Move clearing of XSTATE_BV from fpu_copy_uabi_to_guest_fpstate
+>  to kvm_vcpu_ioctl_x86_set_xsave. - Paolo]
+> Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+> ---
+>  arch/x86/kernel/fpu/core.c | 32 +++++++++++++++++++++++++++++---
+>  arch/x86/kvm/x86.c         |  9 +++++++++
+>  2 files changed, 38 insertions(+), 3 deletions(-)
+> 
+> diff --git a/arch/x86/kernel/fpu/core.c b/arch/x86/kernel/fpu/core.c
+> index da233f20ae6f..166c380b0161 100644
+> --- a/arch/x86/kernel/fpu/core.c
+> +++ b/arch/x86/kernel/fpu/core.c
+> @@ -319,10 +319,29 @@ EXPORT_SYMBOL_FOR_KVM(fpu_enable_guest_xfd_features);
+>  #ifdef CONFIG_X86_64
+>  void fpu_update_guest_xfd(struct fpu_guest *guest_fpu, u64 xfd)
+>  {
+> +	struct fpstate *fpstate = guest_fpu->fpstate;
+> +
+>  	fpregs_lock();
+> -	guest_fpu->fpstate->xfd = xfd;
+> -	if (guest_fpu->fpstate->in_use)
+> -		xfd_update_state(guest_fpu->fpstate);
+> +
+> +	/*
+> +	 * KVM's guest ABI is that setting XFD[i]=1 *can* immediately revert
+> +	 * the save state to initialized.  Likewise, KVM_GET_XSAVE does the
+
+Nit:
+To me "initialized" has the implication that it's active.
+I prefer the description "initial state" or "initial configuration" used in
+SDM here.
+I am not a native English speaker though, please ignore it if it's just my
+feeling.
+
+
+> +	 * same as XSAVE and returns XSTATE_BV[i]=0 whenever XFD[i]=1.
+> +	 *
+> +	 * If the guest's FPU state is in hardware, just update XFD: the XSAVE
+> +	 * in fpu_swap_kvm_fpstate will clear XSTATE_BV[i] whenever XFD[i]=1.
+> +	 *
+> +	 * If however the guest's FPU state is NOT resident in hardware, clear
+> +	 * disabled components in XSTATE_BV now, or a subsequent XRSTOR will
+> +	 * attempt to load disabled components and generate #NM _in the host_.
+> +	 */
+> +	if (xfd && test_thread_flag(TIF_NEED_FPU_LOAD))
+> +		fpstate->regs.xsave.header.xfeatures &= ~xfd;
+> +
+> +	fpstate->xfd = xfd;
+> +	if (fpstate->in_use)
+> +		xfd_update_state(fpstate);
+> +
+>  	fpregs_unlock();
+>  }
+>  EXPORT_SYMBOL_FOR_KVM(fpu_update_guest_xfd);
+> @@ -430,6 +449,13 @@ int fpu_copy_uabi_to_guest_fpstate(struct fpu_guest *gfpu, const void *buf,
+>  	if (ustate->xsave.header.xfeatures & ~xcr0)
+>  		return -EINVAL;
+>  
+> +	/*
+> +	 * Disabled features must be in their initial state, otherwise XRSTOR
+> +	 * causes an exception.
+> +	 */
+> +	if (WARN_ON_ONCE(ustate->xsave.header.xfeatures & kstate->xfd))
+> +		return -EINVAL;
+> +
+>  	/*
+>  	 * Nullify @vpkru to preserve its current value if PKRU's bit isn't set
+>  	 * in the header.  KVM's odd ABI is to leave PKRU untouched in this
+> diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
+> index ff8812f3a129..c0416f53b5f5 100644
+> --- a/arch/x86/kvm/x86.c
+> +++ b/arch/x86/kvm/x86.c
+> @@ -5807,9 +5807,18 @@ static int kvm_vcpu_ioctl_x86_get_xsave(struct kvm_vcpu *vcpu,
+>  static int kvm_vcpu_ioctl_x86_set_xsave(struct kvm_vcpu *vcpu,
+>  					struct kvm_xsave *guest_xsave)
+>  {
+> +	union fpregs_state *xstate = (union fpregs_state *)guest_xsave->region;
+> +
+>  	if (fpstate_is_confidential(&vcpu->arch.guest_fpu))
+>  		return vcpu->kvm->arch.has_protected_state ? -EINVAL : 0;
+>  
+> +	/*
+> +	 * Do not reject non-initialized disabled features for backwards
+> +	 * compatibility, but clear XSTATE_BV[i] whenever XFD[i]=1.
+> +	 * Otherwise, XRSTOR would cause a #NM.
+> +	 */
+> +	xstate->xsave.header.xfeatures &= ~vcpu->arch.guest_fpu.fpstate->xfd;
+> +
+>  	return fpu_copy_uabi_to_guest_fpstate(&vcpu->arch.guest_fpu,
+>  					      guest_xsave->region,
+>  					      kvm_caps.supported_xcr0,
 
