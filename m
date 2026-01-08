@@ -1,177 +1,158 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yw1-f180.google.com (mail-yw1-f180.google.com [209.85.128.180])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB2B31A23B1;
-	Thu,  8 Jan 2026 00:31:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.10
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 849F01CEAA3
+	for <kvm@vger.kernel.org>; Thu,  8 Jan 2026 00:41:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.180
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767832310; cv=none; b=Iuf1mBR1WwkE1bbDoZutTJaNQzQB1bJpIBIQYI9vvzAn3JJnGgzDXaCLvhMbaV3vFtgHogoWkl45xduJ0HHE3TVZzu9CfkPQ7K8fOcPTZIAdOY46ZveXiMKYVeehS5FTY+G0kk2WvWVYfFWn6izjxBoURSthfLkoJxSkDlIJQa4=
+	t=1767832897; cv=none; b=nDPdAYHErSRfxRF16HLwDjWARvPRCbUisuy2Y9TTzC1AvpxXUoYCr73yzRvTsF5vPSm50oeUoJAz/P8BTi4LDDM6Uyj8SvXGHUN3dQLZ2ggQQd3PWo1v3G/FPFdwI7vOhOK0GGW8KuTFayhUJCdPogPHG8a++bNJys60ArrIDtw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767832310; c=relaxed/simple;
-	bh=VeocBz7ZUL8kmL7Qm8PxmjzRiBIsK9PBvcRzKqbnhdM=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=WkJ2UNWE6HDb4rNbRh5Wn3Y6Wdl7RjDuaBPD6RpBGHc2XV2UyQR73lbs2IWGeNzHdZxxS/aqG7ORp+MAk78LgVXnK4tGMS39bDqQE+eyWy0Sl64eUDMaZdtT8BBsnxKd2nxR9vFn012zxzI44QEBa5n1vIr3SaB1RNJI24kO/SE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=If9oxnzQ; arc=none smtp.client-ip=198.175.65.10
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1767832897; c=relaxed/simple;
+	bh=9g0zStzKQeS3+N9tmIKzZx3owOLSnCnzmMh7XbFrzQk=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=LltaebGkNIrdQWW4+xfZp8YZ6siST89ze2MqnVHm+FzBj8K+5ILtMr/zXB4o6hj1R7dAEOAy81Y6Tpmyw0eu1HmQ5/Ed07z9Za30by9Prp5vy+z34YQ32GX8WODdtE1htz7CgwKRma4B4rY32ePJBNhLl0QMtq4vK8uNX8SKYw8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=lh9AaWzp; arc=none smtp.client-ip=209.85.128.180
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="If9oxnzQ"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1767832308; x=1799368308;
-  h=from:date:subject:mime-version:content-transfer-encoding:
-   message-id:references:in-reply-to:to:cc;
-  bh=VeocBz7ZUL8kmL7Qm8PxmjzRiBIsK9PBvcRzKqbnhdM=;
-  b=If9oxnzQu1I9GRH004UK9VyiVg3OOhicUln/1SRp766J48nWBMBsmjFt
-   Ci+i+y9gv9sKC1NkGea0chTL1ePpc91cgR8zSSMHAmLzpMPkIpDzdvfRb
-   whVYIkRw92RrkGlIye7/4LdF1lDFOHA1qE4mOdo7vUpBEAywSmpnlVXNo
-   1Q+NsehFkRv6pp0pdyZO5t66ApPw2NA3mZF/10+VoEIXx6wo4b/QdpYEu
-   8FcE6VDbBrUbRAdtGGlW7hfJ8oplC2Qmb8mHS4pP3Ci5loUn0GkiSo6Z8
-   A7WhrYjb3G+syR7QlZ2W6mVwzeNDCvFtsPQN+R2Lb3zkA/E4dRd0i6mQH
-   w==;
-X-CSE-ConnectionGUID: BB6iYG2sSX2QEB/Wvqbieg==
-X-CSE-MsgGUID: e8Hu/uBhRXmTKykS3jTTxw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11664"; a="86625973"
-X-IronPort-AV: E=Sophos;i="6.21,209,1763452800"; 
-   d="scan'208";a="86625973"
-Received: from fmviesa004.fm.intel.com ([10.60.135.144])
-  by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Jan 2026 16:31:47 -0800
-X-CSE-ConnectionGUID: yyRUOx33SYuoIYXNOPyrMg==
-X-CSE-MsgGUID: KgWjrT2vTnqeI/7WxBkn4A==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,209,1763452800"; 
-   d="scan'208";a="207908360"
-Received: from vverma7-desk1.amr.corp.intel.com (HELO [192.168.1.200]) ([10.124.222.195])
-  by fmviesa004-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Jan 2026 16:31:46 -0800
-From: Vishal Verma <vishal.l.verma@intel.com>
-Date: Wed, 07 Jan 2026 17:31:28 -0700
-Subject: [PATCH 1/2] x86/virt/tdx: Retrieve TDX module version
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="lh9AaWzp"
+Received: by mail-yw1-f180.google.com with SMTP id 00721157ae682-78fc84772abso30711377b3.1
+        for <kvm@vger.kernel.org>; Wed, 07 Jan 2026 16:41:35 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1767832894; x=1768437694; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=jrenqTp8E4tDkOgXs7eMnB0GiU20rX+sxdLI3fByfBk=;
+        b=lh9AaWzpXnlVl9nZXhJnRo0Y8K1o7eo2v3zX9HTdB/EjYm4atY/VsyMe8GBBfbdxL1
+         MH0hMkuVOfYpgXKVnTBj6/tNewFC5wUaq7Y+9Z7k53yeBjrUkRjtqnV/qY11zl5ug2O7
+         wksu4fd3gdNwP2DyBS+s0qtIz23y537d3e48wcy0dIkAHfs1mWrl71c2BdRIOTnhlBM0
+         3LUvbvAQeGxsSW5jzPmATnyHTDyZ7308bcJtphsqX/8whzHOmvCwqK5YrxPR0t56ZApx
+         TNA2JYT8nFglk8yG3BOIo9fYFE+zk7fZdx1PBltKZpeEN8iCcJbzVO5VNZPmLfds9L97
+         uxnw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1767832894; x=1768437694;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=jrenqTp8E4tDkOgXs7eMnB0GiU20rX+sxdLI3fByfBk=;
+        b=PIhsOmOuiGEVmujcBfheHvSjWiqohD+LYme89l8nQQBNHeQEQhJ1GmSj/hACT/G3wy
+         ag8+ZyVJa5+WRYpxKCfIQOh7bnjeEz8ckcAgu6fYl6l5d+t5+OvGMEJk3DdYykyvqhrr
+         PdW65zNFV59TY3J0MaG3pHkiEMvx2UrRPriNkM2LO7x0p3tooe/cw1DCAORFZvydi9Fq
+         l4qDM411iVavzH8lqGSuV7WglPtEzKtuWFLrncHSvOuYEQwS3LpM9YhOJD5lwgh0/kHZ
+         jxUQciW+xnFCB0sThYGtnU03AJU3fqCcUnwjFKgzbUhQqbmRx2RSWh63x5gVovcymhdB
+         V8YQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUpMkhvRkQERlgQ0dHZoTKksuV4HJNrwuQnNprT9D8UprKDkQNy4l13S69FVbiVZbPFm+I=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwJgZ2YiisIG9BiOBQ+CBH6iHmgZsaw0vwYk+FgBkhdzas0ctM8
+	NHfhZllBTYC8JXzxsAozV4/iRMjYtVKxcSFTCKEEoGVyCxQvyRWvO9BL
+X-Gm-Gg: AY/fxX72ce08nAmwpho+f0PNrlz/TnjXEVNC1Ec4qAH4/VMSQk4x4tDbr3ZKFEGX7xg
+	OvCcksnF51AB9i3f3+Rc3ggXti/1QeCgRgFejWSdvvhJ0FKGbB+U1rDqKdF/iIncZSFY4NVWeYf
+	ywSBezf7XAG6+2wUlVdxDx1ye/nPBFfuXJjc3Tx2udxadoBoc+a4uHqJBkJ8wlSY9SJ5i65CsKK
+	XufLcPUVlJZvfWc+cPBrNzZMmkfClxNQ8fhp20M2CznqQYeFEitKr34D1mfmhj+Mb6TAF/HaMcu
+	1NWYrf7kzlvwUXSgpAMWT4s8jCPIKK6TA9orc5AVY7lb55CeWsEHTQOo+Ap96rVuf+2Y+RajjWR
+	FmAdZD8w0lgPXweZGBSG73hu4WjNuovCrO1iKTidJx2ns8HLmmxhf7QiwuR7aPcQvZFqyGusUN6
+	H2HjN1BEk3Mpjz0a+YsRpQDT+vrvE44G+0FzwF1dvGamHb4A==
+X-Google-Smtp-Source: AGHT+IEnrEIlaG9p2xZXsCNaxYstFtQuumuk05m95Q+1JCx1iT0A6+p+K9E6BdjxZvhkaj4OdW4EFA==
+X-Received: by 2002:a05:690e:1686:b0:644:60d9:8675 with SMTP id 956f58d0204a3-64716cbfa9fmr3525112d50.90.1767832894483;
+        Wed, 07 Jan 2026 16:41:34 -0800 (PST)
+Received: from devvm11784.nha0.facebook.com ([2a03:2880:25ff:42::])
+        by smtp.gmail.com with ESMTPSA id 956f58d0204a3-6470d89d607sm2690822d50.12.2026.01.07.16.41.33
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 07 Jan 2026 16:41:33 -0800 (PST)
+Date: Wed, 7 Jan 2026 16:41:32 -0800
+From: Bobby Eshleman <bobbyeshleman@gmail.com>
+To: Paolo Abeni <pabeni@redhat.com>
+Cc: Stefano Garzarella <sgarzare@redhat.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Simon Horman <horms@kernel.org>,
+	Stefan Hajnoczi <stefanha@redhat.com>,
+	"Michael S. Tsirkin" <mst@redhat.com>,
+	Jason Wang <jasowang@redhat.com>,
+	Eugenio =?iso-8859-1?Q?P=E9rez?= <eperezma@redhat.com>,
+	Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
+	"K. Y. Srinivasan" <kys@microsoft.com>,
+	Haiyang Zhang <haiyangz@microsoft.com>,
+	Wei Liu <wei.liu@kernel.org>, Dexuan Cui <decui@microsoft.com>,
+	Bryan Tan <bryan-bt.tan@broadcom.com>,
+	Vishnu Dasa <vishnu.dasa@broadcom.com>,
+	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>,
+	Shuah Khan <shuah@kernel.org>, linux-kernel@vger.kernel.org,
+	virtualization@lists.linux.dev, netdev@vger.kernel.org,
+	kvm@vger.kernel.org, linux-hyperv@vger.kernel.org,
+	linux-kselftest@vger.kernel.org, berrange@redhat.com,
+	Sargun Dhillon <sargun@sargun.me>,
+	Bobby Eshleman <bobbyeshleman@meta.com>
+Subject: Re: [PATCH net-next v12 04/12] vsock: add netns support to virtio
+ transports
+Message-ID: <aV79PDVBDEqxHlhK@devvm11784.nha0.facebook.com>
+References: <20251126-vsock-vmtest-v12-0-257ee21cd5de@meta.com>
+ <20251126-vsock-vmtest-v12-4-257ee21cd5de@meta.com>
+ <6cef5a68-375a-4bb6-84f8-fccc00cf7162@redhat.com>
+ <aS8oMqafpJxkRKW5@devvm11784.nha0.facebook.com>
+ <06b7cfea-d366-44f7-943e-087ead2f25c2@redhat.com>
+ <aS9hoOKb7yA5Qgod@devvm11784.nha0.facebook.com>
+ <99b6f3f7-4130-436a-bfef-3ef35832e02c@redhat.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260107-tdx_print_module_version-v1-1-822baa56762d@intel.com>
-References: <20260107-tdx_print_module_version-v1-0-822baa56762d@intel.com>
-In-Reply-To: <20260107-tdx_print_module_version-v1-0-822baa56762d@intel.com>
-To: linux-kernel@vger.kernel.org, linux-coco@lists.linux.dev, 
- kvm@vger.kernel.org
-Cc: x86@kernel.org, Chao Gao <chao.gao@intel.com>, 
- Dan Williams <dan.j.williams@intel.com>, Kai Huang <kai.huang@intel.com>, 
- Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>, 
- Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, 
- "H. Peter Anvin" <hpa@zytor.com>, Kiryl Shutsemau <kas@kernel.org>, 
- Rick Edgecombe <rick.p.edgecombe@intel.com>, 
- Vishal Verma <vishal.l.verma@intel.com>
-X-Mailer: b4 0.15-dev-e44bb
-X-Developer-Signature: v=1; a=openpgp-sha256; l=3737;
- i=vishal.l.verma@intel.com; h=from:subject:message-id;
- bh=Z8auUD+eVQzZXFrwlXC8cyshYChK6jPdiigFSm5VbK0=;
- b=kA0DAAoWD86uVEnbi3YByyZiAGle+vHIjbi3dduDTdOXz79cv6ILaUCazpS703tVFQ8PNNtnl
- Ih1BAAWCgAdFiEE/bzxAcYet28MUWBBD86uVEnbi3YFAmle+vEACgkQD86uVEnbi3a5twEA1lo0
- Bpow1Z205C7qvzfWE4dN6gWPoiRe2oQ829kadW4A/RW0iKRx/2y2gM+O4DHiJ9jAZ3FQZKWr7RN
- eGGHRVeQO
-X-Developer-Key: i=vishal.l.verma@intel.com; a=openpgp;
- fpr=F8682BE134C67A12332A2ED07AFA61BEA3B84DFF
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <99b6f3f7-4130-436a-bfef-3ef35832e02c@redhat.com>
 
-From: Chao Gao <chao.gao@intel.com>
+On Wed, Jan 07, 2026 at 10:47:56AM +0100, Paolo Abeni wrote:
+> Hi,
+> 
+> On 12/2/25 11:01 PM, Bobby Eshleman wrote:
+> > On Tue, Dec 02, 2025 at 09:47:19PM +0100, Paolo Abeni wrote:
+> >> I still have some concern WRT the dynamic mode change after netns
+> >> creation. I fear some 'unsolvable' (or very hard to solve) race I can't
+> >> see now. A tcp_child_ehash_entries-like model will avoid completely the
+> >> issue, but I understand it would be a significant change over the
+> >> current status.
+> >>
+> >> "Luckily" the merge window is on us and we have some time to discuss. Do
+> >> you have a specific use-case for the ability to change the netns mode
+> >> after creation?
+> >>
+> >> /P
+> > 
+> > I don't think there is a hard requirement that the mode be change-able
+> > after creation. Though I'd love to avoid such a big change... or at
+> > least leave unchanged as much of what we've already reviewed as
+> > possible.
+> > 
+> > In the scheme of defining the mode at creation and following the
+> > tcp_child_ehash_entries-ish model, what I'm imagining is:
+> > - /proc/sys/net/vsock/child_ns_mode can be set to "local" or "global"
+> > - /proc/sys/net/vsock/child_ns_mode is not immutable, can change any
+> >   number of times
+> > 
+> > - when a netns is created, the new netns mode is inherited from
+> >   child_ns_mode, being assigned using something like:
+> > 
+> > 	  net->vsock.ns_mode =
+> > 		get_net_ns_by_pid(current->pid)->child_ns_mode
+> > 
+> > - /proc/sys/net/vsock/ns_mode queries the current mode, returning
+> >   "local" or "global", returning value of net->vsock.ns_mode
+> > - /proc/sys/net/vsock/ns_mode and net->vsock.ns_mode are immutable and
+> >   reject writes
+> > 
+> > Does that align with what you have in mind?
+> Sorry for the latency. This fell of my radar while I still processed PW
+> before EoY and afterwards I had some break.
+> 
+> Yes, the above aligns with what I suggested, and I think it should solve
+> possible race-related concerns (but I haven't looked at the RFC).
+> 
+> /P
+> 
+> 
 
-Each TDX module has several bits of metadata about which specific TDX
-module it is. The primary bit of info is the version, which has an x.y.z
-format, where x represents the major version, y the minor version, and z
-the update version. Knowing the running TDX Module version is valuable
-for bug reporting and debugging. Note that the module does expose other
-pieces of version-related metadata, such as build number and date. Those
-aren't retrieved for now, that can be added if needed in the future.
+No worries, understandable! Thanks for the confirmation.
 
-Retrieve the TDX Module version using the existing metadata reading
-interface. Later changes will expose this information. The metadata
-reading interfaces have existed for quite some time, so this will work
-with older versions of the TDX module as well - i.e. this isn't a new
-interface.
-
-As a side note, the global metadata reading code was originally set up
-to be auto-generated from a JSON definition [1]. However, later [2] this
-was found to be unsustainable, and the autogeneration approach was
-dropped in favor of just manually adding fields as needed (e.g. as in
-this patch).
-
-Signed-off-by: Chao Gao <chao.gao@intel.com>
-Signed-off-by: Vishal Verma <vishal.l.verma@intel.com>
-Cc: Rick Edgecombe <rick.p.edgecombe@intel.com>
-Cc: Kai Huang <kai.huang@intel.com>
-Cc: Dave Hansen <dave.hansen@linux.intel.com>
-Cc: Dan Williams <dan.j.williams@intel.com>
-Link: https://lore.kernel.org/kvm/CABgObfYXUxqQV_FoxKjC8U3t5DnyM45nz5DpTxYZv2x_uFK_Kw@mail.gmail.com/ # [1]
-Link: https://lore.kernel.org/all/1e7bcbad-eb26-44b7-97ca-88ab53467212@intel.com/ # [2]
----
- arch/x86/include/asm/tdx_global_metadata.h  |  7 +++++++
- arch/x86/virt/vmx/tdx/tdx_global_metadata.c | 16 ++++++++++++++++
- 2 files changed, 23 insertions(+)
-
-diff --git a/arch/x86/include/asm/tdx_global_metadata.h b/arch/x86/include/asm/tdx_global_metadata.h
-index 060a2ad744bff..40689c8dc67eb 100644
---- a/arch/x86/include/asm/tdx_global_metadata.h
-+++ b/arch/x86/include/asm/tdx_global_metadata.h
-@@ -5,6 +5,12 @@
- 
- #include <linux/types.h>
- 
-+struct tdx_sys_info_version {
-+	u16 minor_version;
-+	u16 major_version;
-+	u16 update_version;
-+};
-+
- struct tdx_sys_info_features {
- 	u64 tdx_features0;
- };
-@@ -35,6 +41,7 @@ struct tdx_sys_info_td_conf {
- };
- 
- struct tdx_sys_info {
-+	struct tdx_sys_info_version version;
- 	struct tdx_sys_info_features features;
- 	struct tdx_sys_info_tdmr tdmr;
- 	struct tdx_sys_info_td_ctrl td_ctrl;
-diff --git a/arch/x86/virt/vmx/tdx/tdx_global_metadata.c b/arch/x86/virt/vmx/tdx/tdx_global_metadata.c
-index 13ad2663488b1..0454124803f36 100644
---- a/arch/x86/virt/vmx/tdx/tdx_global_metadata.c
-+++ b/arch/x86/virt/vmx/tdx/tdx_global_metadata.c
-@@ -7,6 +7,21 @@
-  * Include this file to other C file instead.
-  */
- 
-+static int get_tdx_sys_info_version(struct tdx_sys_info_version *sysinfo_version)
-+{
-+	int ret = 0;
-+	u64 val;
-+
-+	if (!ret && !(ret = read_sys_metadata_field(0x0800000100000003, &val)))
-+		sysinfo_version->minor_version = val;
-+	if (!ret && !(ret = read_sys_metadata_field(0x0800000100000004, &val)))
-+		sysinfo_version->major_version = val;
-+	if (!ret && !(ret = read_sys_metadata_field(0x0800000100000005, &val)))
-+		sysinfo_version->update_version = val;
-+
-+	return ret;
-+}
-+
- static int get_tdx_sys_info_features(struct tdx_sys_info_features *sysinfo_features)
- {
- 	int ret = 0;
-@@ -89,6 +104,7 @@ static int get_tdx_sys_info(struct tdx_sys_info *sysinfo)
- {
- 	int ret = 0;
- 
-+	ret = ret ?: get_tdx_sys_info_version(&sysinfo->version);
- 	ret = ret ?: get_tdx_sys_info_features(&sysinfo->features);
- 	ret = ret ?: get_tdx_sys_info_tdmr(&sysinfo->tdmr);
- 	ret = ret ?: get_tdx_sys_info_td_ctrl(&sysinfo->td_ctrl);
-
--- 
-2.52.0
-
+Best,
+Bobby
