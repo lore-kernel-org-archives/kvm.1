@@ -1,36 +1,37 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1DCF5288C3F;
-	Thu,  8 Jan 2026 17:32:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4DE3229BD95;
+	Thu,  8 Jan 2026 17:32:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767893559; cv=none; b=o+gSvkxSqM5v+mYWj3wUuWm6RfS55EgxVxZrUSZjXhRitfwkBCx/oHRBhqwZPEZswAN0U9/uBxiCXl829sFQmLMLgbTM+AVHAx9mRDrR5ktTuazz6r2OBuEWZ4C8UTX8sKROM6DXqiKMuJHpm0Fi4eI/YCeW/TNyqH69Gjtvo3I=
+	t=1767893559; cv=none; b=CeHVQOPzTFeI4dkE71JQQC7yHpZrNFgfdrzLOJWsWwPg1S6jGiaJE5tHfJYOOWvcPUctsY/hGbWaCQ5sPeblB/CfSI5GjXPkFBqLBQ30pcmp+iLQTp2jDyz6wH5Vz82LZDTdudOlYxcLY48IByMdeJDgW6F/obHWBrsD39O/dCQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1767893559; c=relaxed/simple;
-	bh=UuRofox7XCb3cdDnaXYj1PeEoLZTYke+qDQbE9WjKss=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=RRkKcLXSFRCCVuce/ME2st57VWAnH/6jwhUvZrjLXnBJpNK8cK6rd3eYNKJNR9Bh/TeydOBXLAgvLJAIzqGPFJRjVDlbDK7dbwY2F9VIFULDCC8EKzGvUsrgfKOYGOcnVvP3AjTMAguqh2tjGHjHf7Yk8dQjm7CuiXyx+nFCRlA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JiJt+5uT; arc=none smtp.client-ip=10.30.226.201
+	bh=il8COfiF1FhMwmH8tRnlXmaXeF2Tmchwrjdh9u49mVY=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=Ka4pQDbpAB3WOBiatEY6p2QyYopT3QCIenaAmUWuXTeH7zxIBtH5Vja9uJBkDQdzgWliCSyS8TGaJoYvdpu53OMqxk550APtv9qvplWQlid7OMBYYXzVNbFW2jf3uzKuGRaTIlcLrbpZ185wO5yD2/Yf7KBDb8yyeaGf25sJIGs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FeM/bJyz; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JiJt+5uT"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B720DC116D0;
-	Thu,  8 Jan 2026 17:32:38 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FeM/bJyz"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2C1BBC19424;
+	Thu,  8 Jan 2026 17:32:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1767893558;
-	bh=UuRofox7XCb3cdDnaXYj1PeEoLZTYke+qDQbE9WjKss=;
-	h=From:To:Cc:Subject:Date:From;
-	b=JiJt+5uTJRHY+HzgL59bmQ7c5gOnf1B0TMmN02RUEQ7L7TYrfHPVYCp1oZcE4PBYW
-	 EojDLf1Fr+MvQ1T8LttAIXhi2Nyx80mSMpMMiSmpaCCOvpt7OP6ms7b8EdmGAs0vxD
-	 obJBe+oW959zSElfZbJINoO8iaR17Q/bxhemsKTQuVJuzw0/jL1m1xkOQvTanrYpGq
-	 UEOv+KiYIAfD79S739XVbpCkh5VWmOYSnemuIwOvYBz6kdUO0FBPAyhfBvN4pV+/EM
-	 +K2ySN+jhBDJzRvGfidkNUs4SctFmg0MAYha4LUChXNmE/Ekj6eISVYhuAfC8WxxH+
-	 q/tmq6MoHNhCA==
+	s=k20201202; t=1767893559;
+	bh=il8COfiF1FhMwmH8tRnlXmaXeF2Tmchwrjdh9u49mVY=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=FeM/bJyzo8gacN12ll2CLwrsW5eevGOScKJX8pwU3V5uhMNcvFg9CRnc2+Ko8iqlG
+	 zcM+mzqXNh30oan+n9RwX9CORddctNXJU1YwGobFJsoE56cAfSrraEaW1hJvahxxGZ
+	 gojPSMn3jxaVTAUoefgAiOU4deOMcMOb8G/8ag3FpPVmqZE9aSg64+34s0WhiCGFYr
+	 ilaHNL+d+MEP9Fw3IcAC1haoh37cpbcn6g7A7FvLLsmgIQ/Wl7VFysK44Fd8KMxHa1
+	 rSvz4mi/MjpoqURVNByZxU7sAXl06CMvS31KdmZtn+GmqOkdN3mJNFDnv0B3LcPn3y
+	 /zFsgBlEe328A==
 Received: from sofa.misterjones.org ([185.219.108.64] helo=valley-girl.lan)
 	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.98.2)
 	(envelope-from <maz@kernel.org>)
-	id 1vdtsC-00000000W9F-1ORF;
-	Thu, 08 Jan 2026 17:32:36 +0000
+	id 1vdtsD-00000000W9F-09Vi;
+	Thu, 08 Jan 2026 17:32:37 +0000
 From: Marc Zyngier <maz@kernel.org>
 To: kvmarm@lists.linux.dev,
 	kvm@vger.kernel.org,
@@ -41,10 +42,12 @@ Cc: Joey Gouly <joey.gouly@arm.com>,
 	Zenghui Yu <yuzenghui@huawei.com>,
 	Ben Horgan <ben.horgan@arm.com>,
 	Yao Yuan <yaoyuan@linux.alibaba.com>
-Subject: [PATCH v4 0/9] KVM: arm64: Add support for FEAT_IDST
-Date: Thu,  8 Jan 2026 17:32:24 +0000
-Message-ID: <20260108173233.2911955-1-maz@kernel.org>
+Subject: [PATCH v4 3/9] KVM: arm64: Add a generic synchronous exception injection primitive
+Date: Thu,  8 Jan 2026 17:32:27 +0000
+Message-ID: <20260108173233.2911955-4-maz@kernel.org>
 X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20260108173233.2911955-1-maz@kernel.org>
+References: <20260108173233.2911955-1-maz@kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -57,75 +60,64 @@ X-SA-Exim-Rcpt-To: kvmarm@lists.linux.dev, kvm@vger.kernel.org, linux-arm-kernel
 X-SA-Exim-Mail-From: maz@kernel.org
 X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
 
-FEAT_IDST appeared in ARMv8.4, and allows ID registers to be trapped
-if they are not implemented. This only concerns 3 registers (GMID_EL1,
-CCSIDR2_EL1 and SMIDR_EL1), which are part of features that may not be
-exposed to the guest even if present on the host.
+Maybe in a surprising way, we don't currently have a generic way
+to inject a synchronous exception at the EL the vcpu is currently
+running at.
 
-For these registers, the HW should report them with EC=0x18, even if
-the feature isn't implemented.
+Extract such primitive from the UNDEF injection code.
 
-Add support for this feature by handling these registers in a specific
-way and implementing GMID_EL1 support in the process. A very basic
-selftest checks that these registers behave as expected.
+Reviewed-by: Ben Horgan <ben.horgan@arm.com>
+Reviewed-by: Yuan Yao <yaoyuan@linux.alibaba.com>
+Signed-off-by: Marc Zyngier <maz@kernel.org>
+---
+ arch/arm64/include/asm/kvm_emulate.h |  1 +
+ arch/arm64/kvm/inject_fault.c        | 10 +++++++---
+ 2 files changed, 8 insertions(+), 3 deletions(-)
 
-* From v3: [3]
-
-  - Added ID_AA64MMFR2_EL1.IDS == EL3 (Ben)
-
-  - Introduced in_feat_id_space() helper (Yao)
-
-  - Collected RBs, with thanks
-
-* From v2: [2]
-
-  - Repainted ID_AA64MMFR2_EL1.IDS description (Oliver)
-
-  - Made the IDST handling more generic in the core KVM code, which
-    resulted in the series being restructured a bit
-
-  - Added handling to pKVM (in a slightly different way, as pKVM
-    insist on seeing a full enumeration of the trapped registers)
-
-  - Some cleanups
-
-  - Collected RBs, with thanks
-
-* From v1: [1]
-
-  - Fixed commit message in patch #4 (Ben)
-
-  - Collected RB, with thanks (Joey)
-
-[1] https://lore.kernel.org/r/20251120133202.2037803-1-maz@kernel.org
-[2] https://lore.kernel.org/r/20251126155951.1146317-1-maz@kernel.org
-[3] https://lore.kernel.org/r/20251204094806.3846619-1-maz@kernel.org
-
-Marc Zyngier (9):
-  arm64: Repaint ID_AA64MMFR2_EL1.IDS description
-  KVM: arm64: Add trap routing for GMID_EL1
-  KVM: arm64: Add a generic synchronous exception injection primitive
-  KVM: arm64: Handle FEAT_IDST for sysregs without specific handlers
-  KVM: arm64: Handle CSSIDR2_EL1 and SMIDR_EL1 in a generic way
-  KVM: arm64: Force trap of GMID_EL1 when the guest doesn't have MTE
-  KVM: arm64: pkvm: Add a generic synchronous exception injection
-    primitive
-  KVM: arm64: pkvm: Report optional ID register traps with a 0x18
-    syndrome
-  KVM: arm64: selftests: Add a test for FEAT_IDST
-
- arch/arm64/include/asm/kvm_emulate.h          |   1 +
- arch/arm64/kvm/emulate-nested.c               |  21 ++++
- arch/arm64/kvm/hyp/nvhe/sys_regs.c            |  39 ++++--
- arch/arm64/kvm/inject_fault.c                 |  10 +-
- arch/arm64/kvm/sys_regs.c                     |   4 +-
- arch/arm64/kvm/sys_regs.h                     |  10 ++
- arch/arm64/tools/sysreg                       |   7 +-
- tools/testing/selftests/kvm/Makefile.kvm      |   1 +
- .../testing/selftests/kvm/arm64/idreg-idst.c  | 117 ++++++++++++++++++
- 9 files changed, 194 insertions(+), 16 deletions(-)
- create mode 100644 tools/testing/selftests/kvm/arm64/idreg-idst.c
-
+diff --git a/arch/arm64/include/asm/kvm_emulate.h b/arch/arm64/include/asm/kvm_emulate.h
+index c9eab316398e2..df20d47f0d256 100644
+--- a/arch/arm64/include/asm/kvm_emulate.h
++++ b/arch/arm64/include/asm/kvm_emulate.h
+@@ -45,6 +45,7 @@ bool kvm_condition_valid32(const struct kvm_vcpu *vcpu);
+ void kvm_skip_instr32(struct kvm_vcpu *vcpu);
+ 
+ void kvm_inject_undefined(struct kvm_vcpu *vcpu);
++void kvm_inject_sync(struct kvm_vcpu *vcpu, u64 esr);
+ int kvm_inject_serror_esr(struct kvm_vcpu *vcpu, u64 esr);
+ int kvm_inject_sea(struct kvm_vcpu *vcpu, bool iabt, u64 addr);
+ void kvm_inject_size_fault(struct kvm_vcpu *vcpu);
+diff --git a/arch/arm64/kvm/inject_fault.c b/arch/arm64/kvm/inject_fault.c
+index dfcd66c655179..7102424a3fa5e 100644
+--- a/arch/arm64/kvm/inject_fault.c
++++ b/arch/arm64/kvm/inject_fault.c
+@@ -162,12 +162,16 @@ static void inject_abt64(struct kvm_vcpu *vcpu, bool is_iabt, unsigned long addr
+ 	vcpu_write_sys_reg(vcpu, esr, exception_esr_elx(vcpu));
+ }
+ 
++void kvm_inject_sync(struct kvm_vcpu *vcpu, u64 esr)
++{
++	pend_sync_exception(vcpu);
++	vcpu_write_sys_reg(vcpu, esr, exception_esr_elx(vcpu));
++}
++
+ static void inject_undef64(struct kvm_vcpu *vcpu)
+ {
+ 	u64 esr = (ESR_ELx_EC_UNKNOWN << ESR_ELx_EC_SHIFT);
+ 
+-	pend_sync_exception(vcpu);
+-
+ 	/*
+ 	 * Build an unknown exception, depending on the instruction
+ 	 * set.
+@@ -175,7 +179,7 @@ static void inject_undef64(struct kvm_vcpu *vcpu)
+ 	if (kvm_vcpu_trap_il_is32bit(vcpu))
+ 		esr |= ESR_ELx_IL;
+ 
+-	vcpu_write_sys_reg(vcpu, esr, exception_esr_elx(vcpu));
++	kvm_inject_sync(vcpu, esr);
+ }
+ 
+ #define DFSR_FSC_EXTABT_LPAE	0x10
 -- 
 2.47.3
 
