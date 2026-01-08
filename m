@@ -1,114 +1,80 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qt1-f169.google.com (mail-qt1-f169.google.com [209.85.160.169])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 58AC73EC82E
-	for <kvm@vger.kernel.org>; Thu,  8 Jan 2026 14:32:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF1B43E8C4B
+	for <kvm@vger.kernel.org>; Thu,  8 Jan 2026 14:38:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.169
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767882755; cv=none; b=owti16RKdYEsOIH2Lvw+a3Grg+fpCxaqZO1gprFTFu0EpjSQbAKREJLH3Fs1WMZTHYk+0pkwjK3+PyjsBi90uQWK+oTz/t8aYlrArAHAoOvIqxdr37NGLeDoF+sDbxtOMUfQoRg3xYqJkh7Qff2AV+FAHMg9R1lu0DZ5B/ulq9E=
+	t=1767883088; cv=none; b=VVvGjNSQMYrHIhRYgoZlTN7+YIChtUh0nQuaeofmzo1VpC+YbF/8uIpCuSKcdnklavrVQ/+MgY4SX5JsQcLkfi8sgVyddWKaNg9PPJmzCt4aqkYBq7uHbHwZMZDRKcTcq2PUry6lauVwVI+5b8M9J/ipceBDuKRqH6DKEXLWfWQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767882755; c=relaxed/simple;
-	bh=/ul1MI70WNuWUatNq9QXmWY0n1CnY3rQPVMj9RML37Y=;
+	s=arc-20240116; t=1767883088; c=relaxed/simple;
+	bh=GmpQwcX3AomhyK8IzIdam8W2T3co9C63wzdOxRK0XH0=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=oGAzgflOyhu1VhnWRZYFKpzPmWvse7L8Bj5Fwtt5eeSPIGXeI6B0FpMYlyuzW0+eeWjlLilo/40OASM977rngKquH8VmhXkvilZvpXML7Ss65NA2rzavNZAPekyEDp/3aIXD1shYV886xANxJiAWHCrx8L3qXu7gLAGvKflVnMw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=WJyKWbEg; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=cNSjTGmp; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	 Content-Type:Content-Disposition:In-Reply-To; b=Y0hH8R9QW8IMZyUI5nP05TO6kUxafVg2m+dPYACkTot/sWEQ3wZWpXaAmWJu9ZBV0u3v1AHotnrlYnHGi+yWD01x0ZKsKt+m4t/ley9TQ1NUtVIMghmbo/Mbo9D/x/TDpp5oeBYRWsBveW/aX7g0sT6MtKHdD2LngL6zSBrRKSI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca; spf=pass smtp.mailfrom=ziepe.ca; dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b=LBpMoTH+; arc=none smtp.client-ip=209.85.160.169
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ziepe.ca
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="WJyKWbEg";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="cNSjTGmp"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1767882752;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=ZQ5KldlPLZnW3hZQd/TnLSW7zs03bZTdFv6fpQxf5uk=;
-	b=WJyKWbEg44CWEIG+OHygWEYC/2XqFLpMdZO4cLDF/NFqtKPDhXE/yJ6a21rnv5qR6C5eN4
-	hviUUFWJliX5bLDBjLeN3RPW+DdHqjeRomDee2OSn2kcpAsPCGRsQsVR/6rFEJsz8v6Dj6
-	g/bxRg7BofK8b/89bSIVM4axp8OvLQQ=
-Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
- [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-211-VGr5BjBqMOinOGZ37Y4l4A-1; Thu, 08 Jan 2026 09:32:30 -0500
-X-MC-Unique: VGr5BjBqMOinOGZ37Y4l4A-1
-X-Mimecast-MFC-AGG-ID: VGr5BjBqMOinOGZ37Y4l4A_1767882749
-Received: by mail-wm1-f70.google.com with SMTP id 5b1f17b1804b1-4779d8fd4ecso12848365e9.1
-        for <kvm@vger.kernel.org>; Thu, 08 Jan 2026 06:32:29 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b="LBpMoTH+"
+Received: by mail-qt1-f169.google.com with SMTP id d75a77b69052e-4ee1879e6d9so35615041cf.1
+        for <kvm@vger.kernel.org>; Thu, 08 Jan 2026 06:38:06 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1767882749; x=1768487549; darn=vger.kernel.org;
+        d=ziepe.ca; s=google; t=1767883085; x=1768487885; darn=vger.kernel.org;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=ZQ5KldlPLZnW3hZQd/TnLSW7zs03bZTdFv6fpQxf5uk=;
-        b=cNSjTGmpx2OD2hbzzk3iGl0ks+3AWSN4ekaGROqtixhA1W5CXwAK9Q8hAEQ2IhDoOQ
-         GJPpxXjTL0yAhiyZx/3uubM8MJDpcXcY5dAroyeNsPAyFttbm7+2cFWnMB2izCT9nHLf
-         DBhwMOhjmco0/QadOCZFMYAt2THMFQRLd7+HRDptXW7IS1lu9vYP/o/b5NK1xkgz0asm
-         kqHa0RlaVQUuE4VRbcCulMsS2Y4vzDdhvjmeDZ6WlOeMPB6BCW7ti45d3vksKd+4n2/Y
-         Cc6yYYrMc0meN3CEnfOrHmAkhqaP7FUHwxMY8bv64L6b0ttsJ4mUqm+1f5iwYmKWCL7x
-         PzMw==
+        bh=9UkPzHJqtD9VgrmurNOGQIfU0hw+eIOkm7oGShw0jyU=;
+        b=LBpMoTH+XOSJw1NjVMYwpajJWEpQvvAdGRG7o7YXDk9HDcdrYV8aIUzLB7XU3V2fxj
+         tRTMKOXbs3pn5Yt4POCi7lY2H19XxxV5nCZRNzi1PUzACFILaLNPaFOPgo+quhz/jO3G
+         QLaLcMwXcuUDj6W1aweV3rVWs+hoICwfEeSI8qOGy1MFIZG0dCfvvFWTmDonJo7IBMni
+         Hi0yer+FzRZi4Je5mEAvVUkanQul1IPHPkvmvNRGGw9DY82MZubkDrhJBK3mikZgNr44
+         5WIRtboYJUBYCF9jtQrErISdvUxtk2R3KSVjsueAwfq9I5MdR2AowXm1l0PLqaZUWxRt
+         Umxg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1767882749; x=1768487549;
+        d=1e100.net; s=20230601; t=1767883085; x=1768487885;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=ZQ5KldlPLZnW3hZQd/TnLSW7zs03bZTdFv6fpQxf5uk=;
-        b=i3qnbVa22+doZnpyqgktJWJ1FnmiXHmcecGKzWj8j5um9BiwSIEgu9RrdaO1762f+3
-         fOjpLuwqJn5Ph6Y845W7aY9cNbje0c0gQKQ6ifra2YTE1Rzar2F2iXjzIPXz8HUkIijh
-         RaoxqoRVgWSsvu/b4lQAGsUP/HDDhEZsocezZD5odJriwLEyuc6tSpLUtYNZ5J+XQgsy
-         beSuIXxHTfXv8xm7d745AUtFA6EEWAU2WX3jpvULQFqKmxkjNhQG8IPezAqWg0wZewQD
-         gr22WUZROIttoeLt9rWwe1MTzANsLuXtzWCY+gShAyd6wlVuAMhWzu3+341PktNPn4HT
-         2W+w==
-X-Forwarded-Encrypted: i=1; AJvYcCWsd6IyMn/mrWERbcsl89QsFkxoZxqYjyKIjiAPg1eeB9GX0VAylCfQUnmK6lRUJVK/O3M=@vger.kernel.org
-X-Gm-Message-State: AOJu0YysTKnDegIS8dCdfcBgld1LzHwJUIChow6Zww9hlKf9Tw5TzjNh
-	8ZuyYGoMt4CjFwagH/16zN15/hKPjVdKGlTCE/k05mWKNPV3dfxlszM9vbPfGJaOb4dt8uPBXRq
-	lS0NisqPT69BHEODhC4HnulnzG8MEN0PgmE/DdojXAdYeul9Q5hXkRg==
-X-Gm-Gg: AY/fxX4kf3yRqA2Gm89xTZIVAHvQveq4J9NKtAB/TqM8K+05LYL+mhTJmz57cNPvqap
-	c3vbKmw95U6w785voNYgZIcF33DbVN3HowqFgqXwrDvYZ/AW9p0pZXSejtiqcRMmlln6zHu1vNB
-	FIyDCwuecRd2ylC3QVhkpcPZZcAkddnbldmTPTOjDwH/w0+BTAyZzZibo+bSGMSK484uTDt2VVm
-	ur8UvepKUKK0nm0uOPi2wj4y8yA90kHrHLfccf7EoZs/gNSGOtY9+A0d9dtyLICSOWYMjLwNMXw
-	OVvhxbEcaLLzpla6A1C9VBxYeXq9WEyf5DL4dosWlsbVnmw4SsEdf+rtiMAYXZ6K5qshV6/kQDu
-	zPwZk805MOTzvDiwZoWyU8YxG+/JAJCJisQ==
-X-Received: by 2002:a05:600c:6c95:b0:47a:8383:f2b2 with SMTP id 5b1f17b1804b1-47d7f63722dmr100357965e9.17.1767882748602;
-        Thu, 08 Jan 2026 06:32:28 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IG7Gl8OtqeQkvPJx1M3QhvEhlvzebP4MIt/f4g31duD4E6Ii6eayAMa8grqHGKZjLNtnJFSpw==
-X-Received: by 2002:a05:600c:6c95:b0:47a:8383:f2b2 with SMTP id 5b1f17b1804b1-47d7f63722dmr100357545e9.17.1767882748121;
-        Thu, 08 Jan 2026 06:32:28 -0800 (PST)
-Received: from redhat.com (IGLD-80-230-31-118.inter.net.il. [80.230.31.118])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-47d8717d78fsm38131185e9.9.2026.01.08.06.32.25
+        bh=9UkPzHJqtD9VgrmurNOGQIfU0hw+eIOkm7oGShw0jyU=;
+        b=CPfUrBpLuD3dwR/nknYSpm0NuhTZXXEE8ZgnAvJQaHyKQpTWA52J3KSD3dh1P26Smq
+         fHL1K7uGwQa5r8QG+HX85ns4c7fsHC70hBEYUdUqQC+1vP+Ip6TUQG6ebaARsvUFdzb9
+         TMzbWQpNBYAk5dnweTjzq1SUdTJ0ecQHTl57mRict+j0xkk9KnnWc1L2T1jueNA+If8A
+         4GE5ZL4jNhYFLGdPtdG/NzO3H/7eDcK1HFpfKSkzjVzrDAWyAzlBH324a/mH4pe19AyX
+         eMyYWsQm8LwcO3DrPiIyNOGS+jBjMSeKAI/15/0BvGIPr5EF2KofyugpIdI/lH1cnzCD
+         DEog==
+X-Forwarded-Encrypted: i=1; AJvYcCWXrJ1LijWFTTCZmf8zTJCMKF1rnFrLWJmutAPhYxfvJpQjppfzq9a4P45pzYoDlOKHu3s=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy+eyy5SYW3iUG5kTlVQH4JWK3Z1Tyte2ouyYVrFeUDHRNbyIVI
+	otcitedkV0cWgVQpBmrnCaP2xTH7mGNhaJl2JbD4xFRBL26ZK91aumsL54VgIPgbC6keo4uRc0Q
+	1y/Vz
+X-Gm-Gg: AY/fxX47kLW9ZmeYo2997ShE9vG5tR5aN7ysY72KtRAbGv10bkVvZbdSXlIfzS53aky
+	DeTKuRD515G9PXGd1s2zi+y6i5xJ/aWq1IZWdc9jPyqgO1LTR+gZOxQwCRThCGo9bdJ2437MM3Q
+	5eUdm6QDZfvXJ4FlL5bsjm8Oviza3L7Cg30zL1WkI5FLbai5vpBLJJWdRx41Lw8c/FmsM3vjBTi
+	bsVIGbBAn5qrbsAhowTN90N+0RewvbnHOv+v81hjhmhSKZ0Q2vZgbUu1KhAGZCC34r7FOWoe0ht
+	UEJ2Jc33GPSRJnfOdq7bcOOjxk3Jq0wYo2kl4s7pV15TTkMi7UaxX+c1c7tTXGKZPVsrywYAlMe
+	vWPyhzz5K2oIJVwH+JbO3K03vhASeRHhZiQRRtYWv/ru/jdceXtn69ShbkzsiAEFFtIb432NXs5
+	MbL1vI64svMuuuZHZbY89N4r1uQoRKhgt2qk7oarYLqIYS8ftYVzq8ppkiGzPCyWFft0Y=
+X-Google-Smtp-Source: AGHT+IH8++VROd0tcHeXvIN5iIXsNvVoQ9NVpIio+cuElHEEIvpqUWXZewjuHPXTe96KfUV3OyLsqQ==
+X-Received: by 2002:a05:622a:1a98:b0:4f1:b9fc:eeda with SMTP id d75a77b69052e-4ffb4920c69mr75280691cf.37.1767883085548;
+        Thu, 08 Jan 2026 06:38:05 -0800 (PST)
+Received: from ziepe.ca (hlfxns017vw-142-162-112-119.dhcp-dynamic.fibreop.ns.bellaliant.net. [142.162.112.119])
+        by smtp.gmail.com with ESMTPSA id d75a77b69052e-4ffa8c00acesm50442131cf.0.2026.01.08.06.38.04
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 08 Jan 2026 06:32:27 -0800 (PST)
-Date: Thu, 8 Jan 2026 09:32:23 -0500
-From: "Michael S. Tsirkin" <mst@redhat.com>
-To: Stefano Garzarella <sgarzare@redhat.com>
-Cc: linux-kernel@vger.kernel.org, Cong Wang <xiyou.wangcong@gmail.com>,
-	Jonathan Corbet <corbet@lwn.net>,
-	Olivia Mackall <olivia@selenic.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
-	Jason Wang <jasowang@redhat.com>,
-	Paolo Bonzini <pbonzini@redhat.com>,
-	Stefan Hajnoczi <stefanha@redhat.com>,
-	Eugenio =?iso-8859-1?Q?P=E9rez?= <eperezma@redhat.com>,
-	"James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
-	Gerd Hoffmann <kraxel@redhat.com>,
-	Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
-	Marek Szyprowski <m.szyprowski@samsung.com>,
-	Robin Murphy <robin.murphy@arm.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>, Petr Tesarik <ptesarik@suse.com>,
-	Leon Romanovsky <leon@kernel.org>, Jason Gunthorpe <jgg@ziepe.ca>,
-	Bartosz Golaszewski <brgl@kernel.org>, linux-doc@vger.kernel.org,
-	linux-crypto@vger.kernel.org, virtualization@lists.linux.dev,
-	linux-scsi@vger.kernel.org, iommu@lists.linux.dev,
-	kvm@vger.kernel.org, netdev@vger.kernel.org
-Subject: Re: [PATCH v2 13/15] vsock/virtio: reorder fields to reduce padding
-Message-ID: <20260108092931-mutt-send-email-mst@kernel.org>
-References: <cover.1767601130.git.mst@redhat.com>
- <fdc1da263186274b37cdf7660c0d1e8793f8fe40.1767601130.git.mst@redhat.com>
- <aV-6gniRnZlNvkwc@sgarzare-redhat>
- <20260108091514-mutt-send-email-mst@kernel.org>
- <aV-9F42fMfKGP4Rg@sgarzare-redhat>
+        Thu, 08 Jan 2026 06:38:04 -0800 (PST)
+Received: from jgg by wakko with local (Exim 4.97)
+	(envelope-from <jgg@ziepe.ca>)
+	id 1vdr9I-00000002M9N-1rBb;
+	Thu, 08 Jan 2026 10:38:04 -0400
+Date: Thu, 8 Jan 2026 10:38:04 -0400
+From: Jason Gunthorpe <jgg@ziepe.ca>
+To: Alex Mastro <amastro@fb.com>
+Cc: David Matlack <dmatlack@google.com>, Alex Williamson <alex@shazbot.org>,
+	Shuah Khan <shuah@kernel.org>, Peter Xu <peterx@redhat.com>,
+	linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
+	linux-kselftest@vger.kernel.org
+Subject: Re: [PATCH] vfio: selftests: Add vfio_dma_mapping_mmio_test
+Message-ID: <20260108143804.GD545276@ziepe.ca>
+References: <20260107-scratch-amastro-vfio-dma-mapping-mmio-test-v1-1-0cec5e9ec89b@fb.com>
+ <aV7yIchrL3mzNyFO@google.com>
+ <aV8mTHk/CUsyEEs1@devgpu015.cco6.facebook.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -117,101 +83,41 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <aV-9F42fMfKGP4Rg@sgarzare-redhat>
+In-Reply-To: <aV8mTHk/CUsyEEs1@devgpu015.cco6.facebook.com>
 
-On Thu, Jan 08, 2026 at 03:27:04PM +0100, Stefano Garzarella wrote:
-> On Thu, Jan 08, 2026 at 09:17:49AM -0500, Michael S. Tsirkin wrote:
-> > On Thu, Jan 08, 2026 at 03:11:36PM +0100, Stefano Garzarella wrote:
-> > > On Mon, Jan 05, 2026 at 03:23:41AM -0500, Michael S. Tsirkin wrote:
-> > > > Reorder struct virtio_vsock fields to place the DMA buffer (event_list)
-> > > > last. This eliminates the padding from aligning the struct size on
-> > > > ARCH_DMA_MINALIGN.
-> > > >
-> > > > Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
-> > > > ---
-> > > > net/vmw_vsock/virtio_transport.c | 8 +++++---
-> > > > 1 file changed, 5 insertions(+), 3 deletions(-)
-> > > >
-> > > > diff --git a/net/vmw_vsock/virtio_transport.c b/net/vmw_vsock/virtio_transport.c
-> > > > index ef983c36cb66..964d25e11858 100644
-> > > > --- a/net/vmw_vsock/virtio_transport.c
-> > > > +++ b/net/vmw_vsock/virtio_transport.c
-> > > > @@ -60,9 +60,7 @@ struct virtio_vsock {
-> > > > 	 */
-> > > > 	struct mutex event_lock;
-> > > > 	bool event_run;
-> > > > -	__dma_from_device_group_begin();
-> > > > -	struct virtio_vsock_event event_list[8];
-> > > > -	__dma_from_device_group_end();
-> > > > +
-> > > > 	u32 guest_cid;
-> > > > 	bool seqpacket_allow;
-> > > >
-> > > > @@ -76,6 +74,10 @@ struct virtio_vsock {
-> > > > 	 */
-> > > > 	struct scatterlist *out_sgs[MAX_SKB_FRAGS + 1];
-> > > > 	struct scatterlist out_bufs[MAX_SKB_FRAGS + 1];
-> > > > +
-> > > 
-> > > IIUC we would like to have these fields always on the bottom of this struct,
-> > > so would be better to add a comment here to make sure we will not add other
-> > > fields in the future after this?
-> > 
-> > not necessarily - you can add fields after, too - it's just that
-> > __dma_from_device_group_begin already adds a bunch of padding, so adding
-> > fields in this padding is cheaper.
-> > 
+On Wed, Jan 07, 2026 at 07:36:44PM -0800, Alex Mastro wrote:
+> This was inspired by QEMU's hw/vfio/region.c which also does this rounding up
+> of size to the next power of two [1].
 > 
-> Okay, I see.
-> 
-> > 
-> > do we really need to add comments to teach people about the art of
-> > struct packing?
-> 
-> I can do it later if you prefer, I don't want to block this work, but yes,
-> I'd prefer to have a comment because otherwise I'll have to ask every time
-> to avoid, especially for new contributors xD
+> I'm now realizing that's only necessary for regions with
+> VFIO_REGION_INFO_CAP_SPARSE_MMAP where there are multiple mmaps per region, and
+> each mmap's size is less than the size of the BAR. Here, since we're mapping the
+> entire BAR which must be pow2, it shouldn't be necessary.
 
-On the one hand you are right on the other I don't want it
-duplicated each time __dma_from_device_group_begin is invoked.
-Pls come up with something you like, and we'll discuss.
+You only need to do this dance if you care about having large PTEs
+under the VMAs, which is probably something worth testing both
+scenarios.
 
-> > 
-> > > Maybe we should also add a comment about the `ev`nt_lock`
-> > > requirement we
-> > > have in the section above.
-> > > 
-> > > Thanks,
-> > > Stefano
-> > 
-> > hmm which requirement do you mean?
+> The intent of QEMU's mmap alignment code is imperfect in the SPARE_MMAP case?
+> After a hole, the next mmap'able range could be some arbitrary page-aligned
+> offset into the region. It's not helpful mmap some region offset which is
+> maximally 4K-aligned at a 1G-aligned vaddr.
 > 
-> That `event_list` must be accessed with `event_lock`.
+> I think to be optimal, QEMU should be attempting to align the vaddr for bar
+> mmaps such that
 > 
-> So maybe we can move also `event_lock` and `event_run`, so we can just move
-> that comment. I mean something like this:
+> vaddr % {2M,1G} == region_offset % {2M,1G}
 > 
-> 
-> @@ -74,6 +67,15 @@ struct virtio_vsock {
->          */
->         struct scatterlist *out_sgs[MAX_SKB_FRAGS + 1];
->         struct scatterlist out_bufs[MAX_SKB_FRAGS + 1];
-> +
-> +       /* The following fields are protected by event_lock.
-> +        * vqs[VSOCK_VQ_EVENT] must be accessed with event_lock held.
-> +        */
-> +       struct mutex event_lock;
-> +       bool event_run;
-> +       __dma_from_device_group_begin();
-> +       struct virtio_vsock_event event_list[8];
-> +       __dma_from_device_group_end();
->  };
-> 
->  static u32 virtio_transport_get_local_cid(void)
+> Would love someone to sanity check me on this. Kind of a diversion.
 
-Yea this makes sense.
+What you write is correct. Ankit recently discovered this bug in
+qemu. It happens not just with SPARSE_MMAP but also when mmmaping
+around the MSI-X hole..
 
-> 
-> Thanks,
-> Stefano
+I also advocated for what you write here that qemu should ensure:
 
+  vaddr % region_size == region_offset % region_size
+
+Until VFIO learns to align its VMAs on its own via Peter's work.
+
+Jason
