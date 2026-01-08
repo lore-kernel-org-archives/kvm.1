@@ -1,148 +1,154 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qt1-f177.google.com (mail-qt1-f177.google.com [209.85.160.177])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C2D93033E2
-	for <kvm@vger.kernel.org>; Thu,  8 Jan 2026 14:08:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767881322; cv=none; b=YXDe0+qga7EOWPguG8GZVp4mMBwtOlgWGOVRVKiS2pTTHozo5ezvyxeMezzFnR6GbhehLZglayCPxh0ZVmgMjetCRUCA5sHhHY3RddijK/pvuqYSwwCYRtVCfQ5WDFGKGb5emhv+tfofvl9i+ROcQjcGSj82xe3DuNYz/YLu/as=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767881322; c=relaxed/simple;
-	bh=Tv7zh9Hk92kdNn+K2fPlpE9fTBNWYFWSvOonEurgOJc=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=QaQS5FmMbRVwKnXpRpP0JzP/HvUuOUIFaR0nonQvXB4RFJ2aQ0eab00NOa4VGHQ88GF3TjiEYVJhUhpHIVwqqK64OPntE0/Iw8vGcOSCA2eYmF7Mu9C00CTQ5HORky/IoFNEKmCICnN2O2mCL2M3D7aJU2eUHAtCLvPlIWruSpI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=cPlHR8Tz; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=F9sH7pR8; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C08C748033B
+	for <kvm@vger.kernel.org>; Thu,  8 Jan 2026 14:10:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.160.177
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1767881414; cv=pass; b=m68jon+mfrt+C5RWGudWJZT3WpJouUKh5v3yJnp5fHQB/qeBBPl+vMiCJvTFSrufV/mPcNw086FzHlaF9HV6owleJfgztRJTc/ovlG8qP/1oi1Y6m+9cui2erV3sq/kIOn+Svb6lzZpTtKbaWU0DABfSn70zKj8txv96fPEiYuQ=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1767881414; c=relaxed/simple;
+	bh=YkKdPv86ApMrpTeTFnhz+IcSUQLsILOLPvJQz1PDFUE=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=j1tVOtfMy/apC0Qm+iuCeXOGyG7G9KeeJ7DZnxEXe5QBZCQ77HxaWxd1pn+EfCLoFdICiSzd/hPuh2s9I5r2SnTZ6d+Erxrs4LWmHfFI0C7sz39CN2+qVKic+R8L2uh/CY3Iq53+iYIEqKuUZGK1CECn6BEVMg8uBf45t9NIN8I=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=rsWPBEQz; arc=pass smtp.client-ip=209.85.160.177
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="cPlHR8Tz";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="F9sH7pR8"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1767881320;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=qb0opi0EkMyYcYBrprImauJ5+csaYa0bSdovEgtQBZs=;
-	b=cPlHR8Tz94aESrXUVdCcac5UQVHHsJW/otNPU7Z8XsBU9skpLQOURiYsqesOtQL7lYN3MU
-	va68COUfCeTUzAdz0lhNKqwp+79T/xszT4nfWaGSj/uPWHh54IZsY4Vyvpb1PXDJPKo0V8
-	QLHEbwbrOAAWuSngoc132hdCDGIhwfs=
-Received: from mail-ej1-f71.google.com (mail-ej1-f71.google.com
- [209.85.218.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-662-_nnE-3XHM1CJc2VEfiJ4Cw-1; Thu, 08 Jan 2026 09:08:38 -0500
-X-MC-Unique: _nnE-3XHM1CJc2VEfiJ4Cw-1
-X-Mimecast-MFC-AGG-ID: _nnE-3XHM1CJc2VEfiJ4Cw_1767881317
-Received: by mail-ej1-f71.google.com with SMTP id a640c23a62f3a-b80716085a0so501787166b.0
-        for <kvm@vger.kernel.org>; Thu, 08 Jan 2026 06:08:38 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="rsWPBEQz"
+Received: by mail-qt1-f177.google.com with SMTP id d75a77b69052e-4ee243b98caso845811cf.1
+        for <kvm@vger.kernel.org>; Thu, 08 Jan 2026 06:10:12 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1767881412; cv=none;
+        d=google.com; s=arc-20240605;
+        b=YhMxRkBiZGQAV6Gzf8Qeb6clG6OZOK86SuHw61TINWT6KNDVxva95HPR4MVYiBTDSj
+         akSfhbq65qh2sx/DhJjs6E3DzHP9qzxsPk5rbcD/dBxLv5VPk0Rfc9vRJKVSMe3kDC9M
+         vIAo6BSa9u6UVxWGka+xWcnu24pO4MymIUpknVhkBKH/oaKW3LVhBwx7WFnAL46cid0s
+         UUfvr/N+TWqILeFriOt63DOffj5mnf+EnnsAhZGyxwtV2/EZ/jeOAMxBBJuqY1UNQyQn
+         KlPETTxGeiBvrr0MJDzqkMCs/c+5F5kOh5f31NraldfDM6vCXxIzwDlpsrVxTnCFC3K6
+         AwYg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:dkim-signature;
+        bh=TGOhyPqsKhZPttb5gff3fg7ZFzXcVrSNwuwgJbbCpXM=;
+        fh=GA/TRTl726z7Vf1j0kqHDBV7Xy1oeVKFTOV8a/SOcL0=;
+        b=dnnYqBprr6ZGr3O79OXjhL6Fued1EWrEw0rZISZdpDXJ9EP8JZdQ6Im1/ooIR7lkwQ
+         lrH1vFm4seo8gpSFU2K24X4svobcak57SrpDjTS2wG8JWILPTrNGfeRaJOOqzdDDS9TB
+         AvGhGg+xQN1c4TnGRNMytScLXGXDB8VX64Bo9t+xgCk53roGRaab1Z2hYLPCLynFESOm
+         kDvZmAJrlbOB/YFN8tUzaqqATPsxlBRQb+6fnnnw0hCXojqr+/bRJX3Jk2+WtGaBr9sH
+         Kwf4WnK5CHMrVw5NMll/eVAuZhF70+hPX9rc/gKTCOfh9yl2/6K3OGftCjocgbX8J4I/
+         9z2w==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1767881317; x=1768486117; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=qb0opi0EkMyYcYBrprImauJ5+csaYa0bSdovEgtQBZs=;
-        b=F9sH7pR867jA/rHKxKKU/wpVji4GMqf5bUfz/vL/UajgRxivMXVN1rpc+bMD//MFem
-         1/W8C34QuRmQ49nrCPu280beltecWuHq1ZHRIhey8IRNXFSJwnwFmr3n1XCxadOSXRTW
-         aRQNsTndJZfe/+athyPIXMVHIHuJKSXtdJcQODBjYfw2l1dt7fi3IziyM7jZfem9OIs5
-         Ui5Cc5tJJak48o9XioaoIpsOvshER1DSGt9a+BAUtuf1sUYim4U62vGBvUppT8EKllKD
-         hjquDst3yF/i2CRxsABHhuJZQc8Q7GPqdOXx4evG9W63gV86858VQhDj57XNG8g09u5U
-         QDcw==
+        d=google.com; s=20230601; t=1767881412; x=1768486212; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=TGOhyPqsKhZPttb5gff3fg7ZFzXcVrSNwuwgJbbCpXM=;
+        b=rsWPBEQzuQJbgZEbw2nJsvobXYIHLtcO4RUGusmhN6ZDpRkLIPqahbk/bTpyP+Jho1
+         lpbfoA3x/ncOtqH27SXwPpc0kK4z4IHdNaFMsiqEYSS6hBgmPH8y/oTM4VOJYDUzDGkH
+         rEHzHscGp36krQPVFgVJTEUAjHx1WcYrXwXa22ySvBikC7e1jVBz54NZxeIxLPGqQBJw
+         j8m/1OSxudnIeDUbRmFoK+3q13mBujuB4Z0gxWF8knE9krMKgfj1RZd/ZEJJ9qEXwPtW
+         Hqz0jJxk/IZsklTICh5+9jCcUjHKPyb/wsqCsXSbxaWaUMephbw40SgwK2//b4ynCOgf
+         65wQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1767881317; x=1768486117;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=qb0opi0EkMyYcYBrprImauJ5+csaYa0bSdovEgtQBZs=;
-        b=h52TE4ixwKEzSbaExdVKyMHRLlivUa1N9QoJgb21VPtBsQY0wMhOfSlCIBVmzOwpuE
-         0ucK5/ugUuo+CLLXvA2pijgiNM2icFVvRllMKR1D6vvTy2sGsg0mmbjfQroUVjnxjio2
-         EW8AW31FXyr83zCyan42F3OAZ0UIkTfhtnOYZPkQsIRAspplS57zrqAbfJAITsRMZ2Ko
-         OFxJnWkMRQg66MM4zGABSaasaTyZhkYwuREfi2X8vyqTTJgQQV8QseiurgKXqQg6a834
-         /6WhtO1mJ3mN+LtCu2KYNLthA/bBzkE9jSHcroAaddHXN7m9lY0uY2RjAgE83BI0dIAV
-         jqiQ==
-X-Forwarded-Encrypted: i=1; AJvYcCV2ii0Uzk9jzpm0DCgiIwvGn9ESB9KFt9iidNNUHouNMgRsDqpjZRNUMOfqsHsVsYzB/4s=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwUIUCw6DJwO9ZG55C0qQNY/e7gdsAQflYbFhI7aOsJ6P29LKKz
-	kPbsMUyVlY9WADQkeIs8dT2koeQzvE285OO34qT8msh9yZz06KNXXI38RXQe9oD1nvnqBaYryXF
-	O31p/z0Xi4eG93zBqlsT56uuDHP4B+vsV/TF3643+10xg108j1FbEYA==
-X-Gm-Gg: AY/fxX7G2if5PA9jfZ7rM7ttVgfWZqqmQj3EE879MzuPo3N5iwkA0KX1RXKnQt07iUm
-	C3zkXNnJQUEkTGbDEZuLY+y/E+fSo9cRoG7Ewj/KgPUHpWoiEhE5QeGE9HVoQ1zL0jligP+wfSd
-	3VhuIYfH8mhiN8wvdXUuIcUPWsQ5VQZEcq5OpLVxQNnq8y2f2/UHcphlDWiTchaZUds1KWRMIOv
-	dCD3a6xuZBV/suejU1FfQyZtau8Bl1hZUjhXFYm+tIBD+5R38rc/vzB2oX1KysjKQuauZoQyUeL
-	nw5gJJxBIRdi0YemsD3tBXL231WKC3aMmMhEzZjlZSiiBlCRMbUgNbRsV0IwCvKtnEjFgdypiOp
-	2bgIv2DZFVHg1ENKS
-X-Received: by 2002:a17:907:7b89:b0:b6d:6c1a:31ae with SMTP id a640c23a62f3a-b8444fd453amr620664566b.49.1767881317029;
-        Thu, 08 Jan 2026 06:08:37 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IF7HOHiWGYK4xorotJbNX0jMidX1ixXQJJ1VdDBrRK+mMgTkrWVhdGn0FKO7KNa9bc9HZtucg==
-X-Received: by 2002:a17:907:7b89:b0:b6d:6c1a:31ae with SMTP id a640c23a62f3a-b8444fd453amr620660466b.49.1767881316491;
-        Thu, 08 Jan 2026 06:08:36 -0800 (PST)
-Received: from sgarzare-redhat ([193.207.223.215])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b842a2cb447sm843387866b.29.2026.01.08.06.08.33
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 08 Jan 2026 06:08:35 -0800 (PST)
-Date: Thu, 8 Jan 2026 15:08:31 +0100
-From: Stefano Garzarella <sgarzare@redhat.com>
-To: "Michael S. Tsirkin" <mst@redhat.com>
-Cc: linux-kernel@vger.kernel.org, Cong Wang <xiyou.wangcong@gmail.com>, 
-	Jonathan Corbet <corbet@lwn.net>, Olivia Mackall <olivia@selenic.com>, 
-	Herbert Xu <herbert@gondor.apana.org.au>, Jason Wang <jasowang@redhat.com>, 
-	Paolo Bonzini <pbonzini@redhat.com>, Stefan Hajnoczi <stefanha@redhat.com>, 
-	Eugenio =?utf-8?B?UMOpcmV6?= <eperezma@redhat.com>, "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>, 
-	"Martin K. Petersen" <martin.petersen@oracle.com>, Gerd Hoffmann <kraxel@redhat.com>, 
-	Xuan Zhuo <xuanzhuo@linux.alibaba.com>, Marek Szyprowski <m.szyprowski@samsung.com>, 
-	Robin Murphy <robin.murphy@arm.com>, "David S. Miller" <davem@davemloft.net>, 
-	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, 
-	Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
-	Petr Tesarik <ptesarik@suse.com>, Leon Romanovsky <leon@kernel.org>, 
-	Jason Gunthorpe <jgg@ziepe.ca>, Bartosz Golaszewski <brgl@kernel.org>, linux-doc@vger.kernel.org, 
-	linux-crypto@vger.kernel.org, virtualization@lists.linux.dev, linux-scsi@vger.kernel.org, 
-	iommu@lists.linux.dev, kvm@vger.kernel.org, netdev@vger.kernel.org
-Subject: Re: [PATCH v2 08/15] vsock/virtio: use
- virtqueue_add_inbuf_cache_clean for events
-Message-ID: <aV-6UTKChBhiTynA@sgarzare-redhat>
-References: <cover.1767601130.git.mst@redhat.com>
- <4b5bf63a7ebb782d87f643466b3669df567c9fe1.1767601130.git.mst@redhat.com>
+        d=1e100.net; s=20230601; t=1767881412; x=1768486212;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=TGOhyPqsKhZPttb5gff3fg7ZFzXcVrSNwuwgJbbCpXM=;
+        b=VK1kd/YfyOaeFfaqr4MSmXHn8nm8pNkXE/sp28wYWdTfsII7KCty+aSXGDse1vP0nj
+         vyoNQJ1LNtLQKs/7vWCcJFC5SB0Bfm3w+NZBvGOUdHV7sGGR052Ml1Mm1VJDJ1JOntAM
+         x6HpCLsNg6q3GRlp+pM8sfSkrbTyUQGrL7V41cyZ3Ga90P+uglOBHnRiZ6OWHiw3q2DL
+         hQdcLjMtBLuwf22Uk/s+vBA468CTfi2krNVXgFKcYMQhQBki2lGWfZAElQQ8XhjUha/e
+         UNPLlBHvqf69RmejIjZ8ZoKXBLGREKmZDceF6rstDm812VB8IC9ud0r4eyca952qllu3
+         T2aA==
+X-Forwarded-Encrypted: i=1; AJvYcCV/LTWOI0uh09R2ObtRw1v5hG1FTcyl4oqOJArKpsmW2DMmy7qn0H75dQnri9rkerqLASQ=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzbkNkSJwWVTxo7uew2l4Au2TR8PYPpAFquedGBLooHnKReqEPy
+	iHLzJn8f9K9w4c9akS+JGS8jA/HLrHhsx+ddZAt+iZt1hlSVbdA88i5Nc1udMh6LGKm7mu/oj0E
+	SMK9k9wLXclhKzDcjEiOqCq3C2eQC2xrrZUA7gQSv
+X-Gm-Gg: AY/fxX6T3ec6uwh++P+CORfM1Us30Je0KIp4gSFEMxfZl0hW51U2VuwHThrEfai9/Sm
+	JNFL3LxBzlXcbR+xzUl9D+4VHWEhs6b1UWrOkFySV+HJXfTzqnHgE+/ODfiFu0Nf4Bm/I7PsAWP
+	/w2+1CzL1JaYRAacrWY/ZUOXNhtjPPC/G+RBOOTvii0MMXKlbivMNOg/Vxa9svxeFKMM6mBKkVL
+	Kz4HuOzMtTSeAZ2/5oi4KyTdj6/TigkgMnOGo23KDMJS+k8NkdJBL26e0OKRluoue5hlgUL
+X-Received: by 2002:ac8:7d45:0:b0:4f3:7b37:81b with SMTP id
+ d75a77b69052e-4ffc0a80347mr7952831cf.18.1767881411175; Thu, 08 Jan 2026
+ 06:10:11 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii; format=flowed
-Content-Disposition: inline
-In-Reply-To: <4b5bf63a7ebb782d87f643466b3669df567c9fe1.1767601130.git.mst@redhat.com>
+References: <20251223-kvm-arm64-sme-v9-0-8be3867cb883@kernel.org>
+ <20251223-kvm-arm64-sme-v9-2-8be3867cb883@kernel.org> <CA+EHjTxdSnpFHkm6o85EtjQjAWemBfcv9Oq6omWyrrMdkOuuVA@mail.gmail.com>
+ <3c8b4a5e-89f4-47e0-9a5d-24399407db0c@sirena.org.uk>
+In-Reply-To: <3c8b4a5e-89f4-47e0-9a5d-24399407db0c@sirena.org.uk>
+From: Fuad Tabba <tabba@google.com>
+Date: Thu, 8 Jan 2026 14:09:34 +0000
+X-Gm-Features: AQt7F2rujxIGY5_NcyYbFMLNUJyJwV68zqszeu4LHx3dTWaBmmJ-A6j-sa3_670
+Message-ID: <CA+EHjTxLkLjPj=1vwDqROXOUXi2LhOQb90WP6dFaTiYG1nWovA@mail.gmail.com>
+Subject: Re: [PATCH v9 02/30] arm64/fpsimd: Update FA64 and ZT0 enables when
+ loading SME state
+To: Mark Brown <broonie@kernel.org>
+Cc: Marc Zyngier <maz@kernel.org>, Joey Gouly <joey.gouly@arm.com>, 
+	Catalin Marinas <catalin.marinas@arm.com>, Suzuki K Poulose <suzuki.poulose@arm.com>, 
+	Will Deacon <will@kernel.org>, Paolo Bonzini <pbonzini@redhat.com>, Jonathan Corbet <corbet@lwn.net>, 
+	Shuah Khan <shuah@kernel.org>, Oliver Upton <oupton@kernel.org>, Dave Martin <Dave.Martin@arm.com>, 
+	Mark Rutland <mark.rutland@arm.com>, Ben Horgan <ben.horgan@arm.com>, 
+	linux-arm-kernel@lists.infradead.org, kvmarm@lists.linux.dev, 
+	linux-kernel@vger.kernel.org, kvm@vger.kernel.org, linux-doc@vger.kernel.org, 
+	linux-kselftest@vger.kernel.org, Peter Maydell <peter.maydell@linaro.org>, 
+	Eric Auger <eric.auger@redhat.com>
+Content-Type: text/plain; charset="UTF-8"
 
-On Mon, Jan 05, 2026 at 03:23:21AM -0500, Michael S. Tsirkin wrote:
->The event_list array contains 8 small (4-byte) events that share
->cachelines with each other. When CONFIG_DMA_API_DEBUG is enabled,
->this can trigger warnings about overlapping DMA mappings within
->the same cacheline.
+On Thu, 8 Jan 2026 at 11:54, Mark Brown <broonie@kernel.org> wrote:
 >
->The previous patch isolated event_list in its own cache lines
->so the warnings are spurious.
+> On Wed, Jan 07, 2026 at 07:25:04PM +0000, Fuad Tabba wrote:
+> > On Tue, 23 Dec 2025 at 01:21, Mark Brown <broonie@kernel.org> wrote:
 >
->Use virtqueue_add_inbuf_cache_clean() to indicate that the CPU does not
->write into these fields, suppressing the warnings.
+> > > +#define sme_cond_update_smcr(vl, fa64, zt0, reg)               \
+> > > +       do {                                                    \
+> > > +               u64 __old = read_sysreg_s((reg));               \
+> > > +               u64 __new = vl;                                 \
+> > > +               if (fa64)                       \
+> > > +                       __new |= SMCR_ELx_FA64;                 \
+> > > +               if (zt0)                                        \
+> > > +                       __new |= SMCR_ELx_EZT0;                 \
+> > > +               if (__old != __new)                             \
+> > > +                       write_sysreg_s(__new, (reg));           \
+> > > +       } while (0)
+> > > +
 >
->Reported-by: Cong Wang <xiyou.wangcong@gmail.com>
->Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
->---
-> net/vmw_vsock/virtio_transport.c | 2 +-
-> 1 file changed, 1 insertion(+), 1 deletion(-)
+> > Should we cap the VL based on SMCR_ELx_LEN_MASK (as we do in
+> > sve_cond_update_zcr_vq())?
+>
+> Yes, although I fear if we've got to the point where we've ever got a
+> bigger value going in we're going to have bigger problems.
 
-Acked-by: Stefano Garzarella <sgarzare@redhat.com>
+Yeah, but I think that we should be consistent with the SVE case, at
+the very least, not to confuse the next person (e.g., future me) who
+might look at the two and wonder why they are different.
 
+> > Should we also preserve the remaining old bits from SMCR_EL1, i.e.,
+> > copy over the bits that aren't
+> > SMCR_ELx_LEN_MASK|SMCR_ELx_FA64|SMCR_ELx_EZT0? For now they are RES0,
+> > but that could change.
 >
->diff --git a/net/vmw_vsock/virtio_transport.c b/net/vmw_vsock/virtio_transport.c
->index bb94baadfd8b..ef983c36cb66 100644
->--- a/net/vmw_vsock/virtio_transport.c
->+++ b/net/vmw_vsock/virtio_transport.c
->@@ -392,7 +392,7 @@ static int virtio_vsock_event_fill_one(struct virtio_vsock *vsock,
->
-> 	sg_init_one(&sg, event, sizeof(*event));
->
->-	return virtqueue_add_inbuf(vq, &sg, 1, event, GFP_KERNEL);
->+	return virtqueue_add_inbuf_cache_clean(vq, &sg, 1, event, GFP_KERNEL);
-> }
->
-> /* event_lock must be held */
->-- 
->MST
->
+> My thinking here is that any new bits are almost certainly going to need
+> explicit support (like with the addition of ZT0) and that copying them
+> forward without understanding is more likely to lead to a bug like
+> exposing state we didn't mean to than clearing them will.
 
+I understand the 'secure by default' intent for enable bits, but I'm
+concerned that this implementation changes the current behavior of the
+host kernel, which isn't mentioned in the commit message. Previously,
+both the feature enablement code (cpu_enable_fa64) and the vector
+length setting code (sme_set_vq/write_vl) performed a RMW, preserving
+existing bits in SMCR_EL1. This new macro zeroes out any bits not
+explicitly tracked here.
+
+In terms of copying them over, if they were set from the beginning,
+doesn't that mean that that explicit support was already added?
+
+Cheers,
+/fuad
