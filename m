@@ -1,79 +1,40 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D25303D3018;
-	Thu,  8 Jan 2026 10:42:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2FD24946D9;
+	Thu,  8 Jan 2026 10:42:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767868922; cv=none; b=iF8Y5u2ZhuiIZlAr7IXVabBIvMX40UGgUJVbGSCeo84hyblioQAqGvkj2tLgeqzhPVkQRiLvVeukWZHaB6O6/T1lDIei3S3Q2upbmYGjMRfO//dShbE/B9DiuaEMFzIH89zGBHuumqK+AGR6r1kfXgzBQEqboH2UOhSU+xMSZ/8=
+	t=1767868956; cv=none; b=KWb07oWDEC80HnO0x52f/J/m0X38Y66AAxEvlSu4F1G/gJnPJb0Tafnz4AjUCg9m+T1AQLqY2WgLxfZNnQYydAhLQWvyg8N6zy5AZhkGCjjlTbSI9Kl/ZS5OIxSiMoSkgEHC+RRgde2bElaGzDem9vONP4hkjZbOF0QQzUL3RZU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767868922; c=relaxed/simple;
-	bh=b9Q24ss448Qe8rQYK9MJAYn92j93AH5V8VmZSRxpDUo=;
+	s=arc-20240116; t=1767868956; c=relaxed/simple;
+	bh=gFiq18moecTevjD0fOTzAn5k+PM0Rp/Uz5/ZwAO18/4=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=uA640tf927y8HKyZWoFiR1YFplKQBjdq/N4QDTZLHvy9RbV62+4DmOcIAy/FSCgsyndTfdBT+tmjhy3yTqcC6xfpSQFfuRZcENsk8vkua7YxUu1+0mOAWi3HUFM+Czj34BhKzFY8HAOdNEZZGkhw4Zly/iiC70P/WJYD+8BclPI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SnjsIvyK; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=GW9aiIOLsuipqsTAn6Lh1oIa44G6RXz+0jicdUNqbHiQISypHoP4fOq2+weWaP+bYBf9KWFBElwqCg2tYfiOmvV2vuV8TM6AxDv/bhUzd0Ek6GLRoDsgd1w9e5PNkGKIxBE/luuQ/RPO8afdfKAyX7zforMWa7LZ/Hbby1JmDds=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lVJ4e930; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SnjsIvyK"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B31CDC16AAE;
-	Thu,  8 Jan 2026 10:42:00 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lVJ4e930"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0D061C116C6;
+	Thu,  8 Jan 2026 10:42:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1767868921;
-	bh=b9Q24ss448Qe8rQYK9MJAYn92j93AH5V8VmZSRxpDUo=;
+	s=k20201202; t=1767868956;
+	bh=gFiq18moecTevjD0fOTzAn5k+PM0Rp/Uz5/ZwAO18/4=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=SnjsIvyKELvX6Joqgrcod9oMCPCAJR2Vif+BJXdHg2X0tzy3OpiNibl1Wc6St7LBf
-	 hqIV+gQqI1Meq9g6EgprBrqA617/yBv/B8c2jN8Zso+PyIYqA4e43HtiYboZ0zs+I5
-	 NL2dC5LUPhtQW4EeN1mObp3k24qELawRqxXUrSkyrCQfv/S6WaKuZ5W1pZMJDlpgZR
-	 2HOF72Hu6ZC0l8X/Xi18hBO6yrtiK4OG6PIKzOniGKE1RIFw18zOuDczQi4GMxub8j
-	 z2t+6AkFhnUJgwrVx6lUssZsJV1wUgC+Y1qkQs9WUHj5fl62AliOf+fhMnNttp4w9M
-	 jPMg9dRu2d7Cg==
-Received: from phl-compute-05.internal (phl-compute-05.internal [10.202.2.45])
-	by mailfauth.phl.internal (Postfix) with ESMTP id 0662DF40068;
-	Thu,  8 Jan 2026 05:42:00 -0500 (EST)
-Received: from phl-frontend-03 ([10.202.2.162])
-  by phl-compute-05.internal (MEProxy); Thu, 08 Jan 2026 05:42:00 -0500
-X-ME-Sender: <xms:94lfaQviWAZvDIFgTAKRY5BiJb-utnU0HH5HNawAZf8ZcNnrqi5n3A>
-    <xme:94lfadkAGunxdeZA4EfL_d1i9l2Z_xoHjPctjQ-IUbDSvRf1w9eMeuCo8aXW_wsPf
-    ojW4W3Q2b7HAvA7sVEEqTpb-0CAzmzK1gH7qREpjluWRAR2M0epMlw>
-X-ME-Received: <xmr:94lfaZmwt41oeEeiidRbpjd9XRk6W8qOKE1MzMI-vgX9tx95aUd_gVLO0m1-9A>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgddutdehjeegucetufdoteggodetrf
-    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
-    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
-    gurhepfffhvfevuffkfhggtggujgesthdtsfdttddtvdenucfhrhhomhepmfhirhihlhcu
-    ufhhuhhtshgvmhgruhcuoehkrghssehkvghrnhgvlhdrohhrgheqnecuggftrfgrthhtvg
-    hrnhephfeikeetleeludeghfffkeffgfejtdevvefggfejfeefgedvkeettedugeeggfek
-    necuffhomhgrihhnpehkvghrnhgvlhdrohhrghenucevlhhushhtvghrufhiiigvpedtne
-    curfgrrhgrmhepmhgrihhlfhhrohhmpehkihhrihhllhdomhgvshhmthhprghuthhhphgv
-    rhhsohhnrghlihhthidqudeiudduiedvieehhedqvdekgeeggeejvdekqdhkrghspeepkh
-    gvrhhnvghlrdhorhhgsehshhhuthgvmhhovhdrnhgrmhgvpdhnsggprhgtphhtthhopedv
-    kedpmhhouggvpehsmhhtphhouhhtpdhrtghpthhtohepvhhishhhrghlrdhlrdhvvghrmh
-    grsehinhhtvghlrdgtohhmpdhrtghpthhtoheplhhinhhugidqkhgvrhhnvghlsehvghgv
-    rhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtoheplhhinhhugidqtghotghosehlihhsth
-    hsrdhlihhnuhigrdguvghvpdhrtghpthhtohepkhhvmhesvhhgvghrrdhkvghrnhgvlhdr
-    ohhrghdprhgtphhtthhopeigkeeisehkvghrnhgvlhdrohhrghdprhgtphhtthhopegthh
-    grohdrghgrohesihhnthgvlhdrtghomhdprhgtphhtthhopegurghnrdhjrdifihhllhhi
-    rghmshesihhnthgvlhdrtghomhdprhgtphhtthhopehkrghirdhhuhgrnhhgsehinhhtvg
-    hlrdgtohhmpdhrtghpthhtohepthhglhigsehlihhnuhhtrhhonhhigidruggv
-X-ME-Proxy: <xmx:94lfaXfm4G7dwInBCg9DFNNu4iOrj_ghqzSnQlVFGpHmEzlSl5MtcQ>
-    <xmx:94lfafK4nkYh1vX-LJ5xCh40b7Xfi19v02g0GUqfQNhcO8PBsHYkXw>
-    <xmx:94lfaa4eXLZwHYPEmwqiuzmcl0t04aZpsunCXrZ_UhyhQomVQLsbZA>
-    <xmx:94lfaWSKo3g-5tw5DL0jFUKydQCmGg0UWUmQI7y_kP_svUg_Warr3A>
-    <xmx:-IlfaSvGupEHXA3UoHQgRK5fD3fM70UhmRQ1dz6wkA6KEAbxkqohtUdW>
-Feedback-ID: i10464835:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
- 8 Jan 2026 05:41:59 -0500 (EST)
-Date: Thu, 8 Jan 2026 10:41:58 +0000
-From: Kiryl Shutsemau <kas@kernel.org>
-To: Vishal Verma <vishal.l.verma@intel.com>
-Cc: linux-kernel@vger.kernel.org, linux-coco@lists.linux.dev, 
-	kvm@vger.kernel.org, x86@kernel.org, Chao Gao <chao.gao@intel.com>, 
-	Dan Williams <dan.j.williams@intel.com>, Kai Huang <kai.huang@intel.com>, 
-	Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, "H. Peter Anvin" <hpa@zytor.com>, 
-	Rick Edgecombe <rick.p.edgecombe@intel.com>
-Subject: Re: [PATCH 1/2] x86/virt/tdx: Retrieve TDX module version
-Message-ID: <mv2jvrotj3ozkh32ug6fwzk5wufpbpphgtaazb3b753d2ypu2s@mbq5djpeqn4v>
-References: <20260107-tdx_print_module_version-v1-0-822baa56762d@intel.com>
- <20260107-tdx_print_module_version-v1-1-822baa56762d@intel.com>
+	b=lVJ4e930FA+E7kPGcjHvr7M0tn8WbmlvUOLuifGfvYHU/1M4XYyXudrq4AiQUFQDZ
+	 gMBexYoPpbXxHEiM9Qgyy2T4lz5W9G9gaTteOPoe7kDeTgICfYrmmvZ+LmNdoE8ucz
+	 eGkp4DQByUoUlTLg1tg2wVyizxhu2MK4zHBrkt6xudC9+mNl7q8vhQx7R5p17NNJCQ
+	 0Ik81gRKkbjNbf9Xs9zR+AHfvp7zO/QFAuDFKzPN1mx0NSPpFJqDTHYPYCvL68FxHH
+	 jPKLtHa8KnmhtpW5PXQ25TIvWjjmebpO8h2XmSxUIQyTl7Y9EVrpAwWQbcWp9M9xZG
+	 wVHpcDdH3FIGQ==
+Date: Thu, 8 Jan 2026 16:06:05 +0530
+From: Naveen N Rao <naveen@kernel.org>
+To: Sean Christopherson <seanjc@google.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>, kvm@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] KVM: SVM: Fix an off-by-one typo in the comment for
+ enabling AVIC by default
+Message-ID: <aV-GPYoKB5HIzcs3@blrnaveerao1>
+References: <20260107204546.570403-1-seanjc@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -82,73 +43,60 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260107-tdx_print_module_version-v1-1-822baa56762d@intel.com>
+In-Reply-To: <20260107204546.570403-1-seanjc@google.com>
 
-On Wed, Jan 07, 2026 at 05:31:28PM -0700, Vishal Verma wrote:
-> From: Chao Gao <chao.gao@intel.com>
+On Wed, Jan 07, 2026 at 12:45:46PM -0800, Sean Christopherson wrote:
+> Fix a goof in the comment that documents KVM's logic for enabling AVIC by
+> default to reference Zen5+ as family 0x1A (Zen5), not family 0x19 (Zen4).
+> The code is correct (checks for _greater_ than 0x19), only the comment is
+> flawed.
+
+I had thought that the comment was correct and that you wanted to 
+reference Zen4 there. That is:
+	family 0x19 (Zen4) and later (Zen5+),
+
+Though family 0x19 also includes Zen3 :/
+
+I think it would be better to update the code as well, just so it is 
+easier to correlate the comment and the code?
+
+        if (avic == AVIC_AUTO_MODE)
+                avic = boot_cpu_has(X86_FEATURE_X2AVIC) &&
+-                      (boot_cpu_data.x86 > 0x19 || cpu_feature_enabled(X86_FEATURE_ZEN4));
++                      (cpu_feature_enabled(X86_FEATURE_ZEN4) || boot_cpu_data.x86 >= 0x1A);
+ 
+        if (!avic || !npt_enabled)
+		return false;
+
 > 
-> Each TDX module has several bits of metadata about which specific TDX
-> module it is. The primary bit of info is the version, which has an x.y.z
-> format, where x represents the major version, y the minor version, and z
-> the update version. Knowing the running TDX Module version is valuable
-> for bug reporting and debugging. Note that the module does expose other
-> pieces of version-related metadata, such as build number and date. Those
-> aren't retrieved for now, that can be added if needed in the future.
-> 
-> Retrieve the TDX Module version using the existing metadata reading
-> interface. Later changes will expose this information. The metadata
-> reading interfaces have existed for quite some time, so this will work
-> with older versions of the TDX module as well - i.e. this isn't a new
-> interface.
-> 
-> As a side note, the global metadata reading code was originally set up
-> to be auto-generated from a JSON definition [1]. However, later [2] this
-> was found to be unsustainable, and the autogeneration approach was
-> dropped in favor of just manually adding fields as needed (e.g. as in
-> this patch).
-> 
-> Signed-off-by: Chao Gao <chao.gao@intel.com>
-> Signed-off-by: Vishal Verma <vishal.l.verma@intel.com>
-> Cc: Rick Edgecombe <rick.p.edgecombe@intel.com>
-> Cc: Kai Huang <kai.huang@intel.com>
-> Cc: Dave Hansen <dave.hansen@linux.intel.com>
-> Cc: Dan Williams <dan.j.williams@intel.com>
-> Link: https://lore.kernel.org/kvm/CABgObfYXUxqQV_FoxKjC8U3t5DnyM45nz5DpTxYZv2x_uFK_Kw@mail.gmail.com/ # [1]
-> Link: https://lore.kernel.org/all/1e7bcbad-eb26-44b7-97ca-88ab53467212@intel.com/ # [2]
+> Fixes: ca2967de5a5b ("KVM: SVM: Enable AVIC by default for Zen4+ if x2AVIC is support")
+> Cc: Naveen N Rao (AMD) <naveen@kernel.org>
+> Signed-off-by: Sean Christopherson <seanjc@google.com>
 > ---
->  arch/x86/include/asm/tdx_global_metadata.h  |  7 +++++++
->  arch/x86/virt/vmx/tdx/tdx_global_metadata.c | 16 ++++++++++++++++
->  2 files changed, 23 insertions(+)
+>  arch/x86/kvm/svm/avic.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+
+Regardless of that, this change is accurate:
+Acked-by: Naveen N Rao (AMD) <naveen@kernel.org>
+
 > 
-> diff --git a/arch/x86/include/asm/tdx_global_metadata.h b/arch/x86/include/asm/tdx_global_metadata.h
-> index 060a2ad744bff..40689c8dc67eb 100644
-> --- a/arch/x86/include/asm/tdx_global_metadata.h
-> +++ b/arch/x86/include/asm/tdx_global_metadata.h
-> @@ -5,6 +5,12 @@
->  
->  #include <linux/types.h>
->  
-> +struct tdx_sys_info_version {
-> +	u16 minor_version;
-> +	u16 major_version;
-> +	u16 update_version;
-> +};
-> +
->  struct tdx_sys_info_features {
->  	u64 tdx_features0;
->  };
-> @@ -35,6 +41,7 @@ struct tdx_sys_info_td_conf {
->  };
->  
->  struct tdx_sys_info {
-> +	struct tdx_sys_info_version version;
+> diff --git a/arch/x86/kvm/svm/avic.c b/arch/x86/kvm/svm/avic.c
+> index 6b77b2033208..7e62d05c2136 100644
+> --- a/arch/x86/kvm/svm/avic.c
+> +++ b/arch/x86/kvm/svm/avic.c
+> @@ -1224,7 +1224,7 @@ static bool __init avic_want_avic_enabled(void)
+>  	 * In "auto" mode, enable AVIC by default for Zen4+ if x2AVIC is
+>  	 * supported (to avoid enabling partial support by default, and because
+>  	 * x2AVIC should be supported by all Zen4+ CPUs).  Explicitly check for
+> -	 * family 0x19 and later (Zen5+), as the kernel's synthetic ZenX flags
+> +	 * family 0x1A and later (Zen5+), as the kernel's synthetic ZenX flags
+>  	 * aren't inclusive of previous generations, i.e. the kernel will set
+>  	 * at most one ZenX feature flag.
+>  	 */
+> 
+> base-commit: 9448598b22c50c8a5bb77a9103e2d49f134c9578
+> -- 
+> 2.52.0.351.gbe84eed79e-goog
+> 
 
-Creates a 2 byte hole. Just enough to squeeze INTERNAL_VERSION there.
-Just saying :P
-
-But patch looks good to me:
-
-Reviewed-by: Kiryl Shutsemau <kas@kernel.org>
-
--- 
-  Kiryl Shutsemau / Kirill A. Shutemov
+- Naveen
