@@ -1,91 +1,109 @@
-Received: from mail-pl1-f202.google.com (mail-pl1-f202.google.com [209.85.214.202])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 53B3E27603C
-	for <kvm@vger.kernel.org>; Thu,  8 Jan 2026 17:06:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.202
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1DC7522A4E8;
+	Thu,  8 Jan 2026 17:32:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767892016; cv=none; b=o+cnEV3r072WR2ao5P6hl1Scj54W2BcOX95rTVW1WkXC4ttg6JlnI2VwSQycQ8iAr/weeDeW45dGu0GAImyjjG7fbktJKYiEr4CWmAcoC+mxLilqmKRNTcvj6Ua/A7JqenQAc3J5dUpc6+ceoL92we1cBkm8Emd2E/AGTwukiZ8=
+	t=1767893559; cv=none; b=ucVMoPauASZxTXgX4vAfpgp6QaPGT2n01CEkL5hE1Z7UWqgo5R658vVdiBvmX7ph3arWgfrt+E4b+JmRi0/2eEbs+E44ebowRa+5jahbmWoZR/mc68lwXiWOruX9RoB3F9wHV8cSGdAp4IKETUlXXB/zNc2kVlmZGmnvFrk1gJQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767892016; c=relaxed/simple;
-	bh=muPI2Cu8xaoBPojdhtEq4FRkVwa4sSdm2P6NIFiW0v8=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=XiRP1H3joC327+JSJrVo4nhcRLA/cV9KVNZNw9ud41YBRMUTBSs8y+TMtuBcDfGCqXABhdVReqI918ftmeZqHFEc1YbjcJgKdk3A9gZrtUcWtsNbNDjH/nJt6NL8G08RooyisITBohk2+YToEQ5d4/FhnkKE+7wIeNRtojVck0Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=qQsQvaeW; arc=none smtp.client-ip=209.85.214.202
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+	s=arc-20240116; t=1767893559; c=relaxed/simple;
+	bh=/JUEeryixnEw0K58Sa0URLCommZX+4qzbGxWFFq18eg=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=PKXAR13Ngez9ZWtLb3X0Iuv4T+In8KbRjT5bwkGYn4GkAZKVuBdum086yV9VnBl2N5YimBds67KYUeNEFjecetg5kUZKFYIiDIfACjqu8tfiSrL8S8WdZ5SM0IVbtX8iyY2rT0rQcz+2A2jn5AlAfRP2SefkumNAGWD0avyeu54=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=rOW2YZAn; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="qQsQvaeW"
-Received: by mail-pl1-f202.google.com with SMTP id d9443c01a7336-2a0c495fc7aso38622365ad.3
-        for <kvm@vger.kernel.org>; Thu, 08 Jan 2026 09:06:55 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1767892014; x=1768496814; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=QVefpuP8UR/7XkjLDjyyzWv1Aal+G6i/DuibP933gXc=;
-        b=qQsQvaeWIxRi51/8rPUejYCrwYJsv67H9KdtSk8kBnmRahLnMSYloKHB1MT4s4ICzP
-         UkuRwinoZs62Z4R9sHR/tpX/lWW89XXafme+uqBvN4Vy5JeZqa/Y16r0cvXLBf7izPzZ
-         3N3lpUmeGR6tz8XSwrKJ9frN+x1n0m0/K/GollOsKizUqb3KH8QzpwX6Jsdlxw5QVf57
-         vaIpelGFlfOdtjdOw25ZvxhXxpbdAXKrcr3hEKFwpiTzAT7MV3K6PCaI+OtY/lGTFdal
-         aUt181hnBwx0yFyuhFPb9esBnb3AMUAbkY8WDkNcgldV5e9hmNJnVdJ7UnAQenAl7hGS
-         0dOw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1767892014; x=1768496814;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=QVefpuP8UR/7XkjLDjyyzWv1Aal+G6i/DuibP933gXc=;
-        b=YcCe+jMpP5HjgG81wOFLr0l4ayviRPHfKzlLP47Piyxc2oE/DDnZt55oWuZwLHYGV/
-         1d0w5smYTJ5pFvBeMQ5RKa0hS1jhUl+R/RuCA/vp0wQIZkmY1V63TXNYVn8Y7/0B5f6p
-         x031KXn1tcS1w/empEvIepL6VpDQwvUULOtiKCf6rrGlzI4MfiOTFVM7rmf3IGhEaHjz
-         pSWbPQPOOmzVOjC0sgxnJDDEdqPHARGgI76zuJDMdRnFH1w3t/9qo+kC+t4AKbwk/k0+
-         QGDcRO8E+aoLOIdU9eryLZ/OJkgl0QhOkSLaj17ICKeTEuWRnABPcLQGpB0h/ugF2UWN
-         A0cQ==
-X-Forwarded-Encrypted: i=1; AJvYcCX/FlgwMv0JJPqbxHcTW1VGyqZwcmDITY69PMjCkB1ne5SlT2XqoHy2N9B9Nxk4sZpAhiE=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxbvhHdSlKbWLs9+XDgYN941vu8xrapA7iQZ+dX+FFxULaxofAN
-	jZ8zeb2eqKnijMhgCMdQsfJYVvcmjet+MUOZIwF0RdBSL6oZrgoJ18x5tsBmQrC4b5mu3qoEqvq
-	s8i6AVQ==
-X-Google-Smtp-Source: AGHT+IFQl0ff8pn8KbqQ/lIIr11/3kfrRynmb0Zf119br04GQv3Ng0sDtXyGq7Ap5LK8lMqpSMFAhy6uy/E=
-X-Received: from plhz2.prod.google.com ([2002:a17:902:d9c2:b0:258:dc43:b015])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a20:3d86:b0:334:8a8e:6576
- with SMTP id adf61e73a8af0-3898f91d311mr6362674637.29.1767892014507; Thu, 08
- Jan 2026 09:06:54 -0800 (PST)
-Date: Thu, 8 Jan 2026 09:06:52 -0800
-In-Reply-To: <aV-GPYoKB5HIzcs3@blrnaveerao1>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="rOW2YZAn"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B28B9C116C6;
+	Thu,  8 Jan 2026 17:32:38 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1767893558;
+	bh=/JUEeryixnEw0K58Sa0URLCommZX+4qzbGxWFFq18eg=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=rOW2YZAnkGUMbtnuNKI1vh2waYI6Abc/4RlyqLutWI1o3SoJQbxIjCED3B4apcORD
+	 w+NeVHLgUCifDz0LD6g2Laa8qv73U2U+d/iHCIZyWOVMumjyOm6tgbxcL+yDkIpFzE
+	 KmY2tw8b+1zoaVqCZw2sIVLY6ExBg1jmfHz73M6idPZl/cE3bCq39FVsC5cxNLzqnc
+	 K6Le7tNT5y//gEgks0mCFtvcTtMUa6mL31WIDYtnB/w5RRjz4bX0r1htduwPvqltl0
+	 kSXYvVCOWFYrJHoJVmciGkgp2Z3zSEJBrH0DLhMFXWLsAZ9ZkKRXsrJ++3hZsGiJ6U
+	 41XU1XTLR+y/A==
+Received: from sofa.misterjones.org ([185.219.108.64] helo=valley-girl.lan)
+	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.98.2)
+	(envelope-from <maz@kernel.org>)
+	id 1vdtsC-00000000W9F-2TZj;
+	Thu, 08 Jan 2026 17:32:36 +0000
+From: Marc Zyngier <maz@kernel.org>
+To: kvmarm@lists.linux.dev,
+	kvm@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org
+Cc: Joey Gouly <joey.gouly@arm.com>,
+	Suzuki K Poulose <suzuki.poulose@arm.com>,
+	Oliver Upton <oupton@kernel.org>,
+	Zenghui Yu <yuzenghui@huawei.com>,
+	Ben Horgan <ben.horgan@arm.com>,
+	Yao Yuan <yaoyuan@linux.alibaba.com>
+Subject: [PATCH v4 1/9] arm64: Repaint ID_AA64MMFR2_EL1.IDS description
+Date: Thu,  8 Jan 2026 17:32:25 +0000
+Message-ID: <20260108173233.2911955-2-maz@kernel.org>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20260108173233.2911955-1-maz@kernel.org>
+References: <20260108173233.2911955-1-maz@kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20260107204546.570403-1-seanjc@google.com> <aV-GPYoKB5HIzcs3@blrnaveerao1>
-Message-ID: <aV_kLHFQzu7taPS_@google.com>
-Subject: Re: [PATCH] KVM: SVM: Fix an off-by-one typo in the comment for
- enabling AVIC by default
-From: Sean Christopherson <seanjc@google.com>
-To: Naveen N Rao <naveen@kernel.org>
-Cc: Paolo Bonzini <pbonzini@redhat.com>, kvm@vger.kernel.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-SA-Exim-Connect-IP: 185.219.108.64
+X-SA-Exim-Rcpt-To: kvmarm@lists.linux.dev, kvm@vger.kernel.org, linux-arm-kernel@lists.infradead.org, joey.gouly@arm.com, suzuki.poulose@arm.com, oupton@kernel.org, yuzenghui@huawei.com, ben.horgan@arm.com, yaoyuan@linux.alibaba.com
+X-SA-Exim-Mail-From: maz@kernel.org
+X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
 
-On Thu, Jan 08, 2026, Naveen N Rao wrote:
-> On Wed, Jan 07, 2026 at 12:45:46PM -0800, Sean Christopherson wrote:
-> > Fix a goof in the comment that documents KVM's logic for enabling AVIC by
-> > default to reference Zen5+ as family 0x1A (Zen5), not family 0x19 (Zen4).
-> > The code is correct (checks for _greater_ than 0x19), only the comment is
-> > flawed.
-> 
-> I had thought that the comment was correct and that you wanted to 
-> reference Zen4 there. That is:
-> 	family 0x19 (Zen4) and later (Zen5+),
-> 
-> Though family 0x19 also includes Zen3 :/
-> 
-> I think it would be better to update the code as well, just so it is 
-> easier to correlate the comment and the code?
-> 
->         if (avic == AVIC_AUTO_MODE)
->                 avic = boot_cpu_has(X86_FEATURE_X2AVIC) &&
-> -                      (boot_cpu_data.x86 > 0x19 || cpu_feature_enabled(X86_FEATURE_ZEN4));
-> +                      (cpu_feature_enabled(X86_FEATURE_ZEN4) || boot_cpu_data.x86 >= 0x1A);
+ID_AA64MMFR2_EL1.IDS, as described in the sysreg file, is pretty horrible
+as it diesctly give the ESR value. Repaint it using the usual NI/IMP
+identifiers to describe the absence/presence of FEAT_IDST.
 
-This thought crossed my mind as well.  I'll send a v2 with this, I especially
-like the idea of swapping the ordering so that the checks are "ascending".
+Also add the new EL3 routing feature, even if we really don't care about it.
+
+Reviewed-by: Joey Gouly <joey.gouly@arm.com>
+Signed-off-by: Marc Zyngier <maz@kernel.org>
+---
+ arch/arm64/kvm/hyp/nvhe/sys_regs.c | 2 +-
+ arch/arm64/tools/sysreg            | 7 ++++---
+ 2 files changed, 5 insertions(+), 4 deletions(-)
+
+diff --git a/arch/arm64/kvm/hyp/nvhe/sys_regs.c b/arch/arm64/kvm/hyp/nvhe/sys_regs.c
+index 3108b5185c204..4db0562f5bfa4 100644
+--- a/arch/arm64/kvm/hyp/nvhe/sys_regs.c
++++ b/arch/arm64/kvm/hyp/nvhe/sys_regs.c
+@@ -134,7 +134,7 @@ static const struct pvm_ftr_bits pvmid_aa64mmfr2[] = {
+ 	MAX_FEAT(ID_AA64MMFR2_EL1, UAO, IMP),
+ 	MAX_FEAT(ID_AA64MMFR2_EL1, IESB, IMP),
+ 	MAX_FEAT(ID_AA64MMFR2_EL1, AT, IMP),
+-	MAX_FEAT_ENUM(ID_AA64MMFR2_EL1, IDS, 0x18),
++	MAX_FEAT(ID_AA64MMFR2_EL1, IDS, IMP),
+ 	MAX_FEAT(ID_AA64MMFR2_EL1, TTL, IMP),
+ 	MAX_FEAT(ID_AA64MMFR2_EL1, BBM, 2),
+ 	MAX_FEAT(ID_AA64MMFR2_EL1, E0PD, IMP),
+diff --git a/arch/arm64/tools/sysreg b/arch/arm64/tools/sysreg
+index 8921b51866d64..d0ddfd572b899 100644
+--- a/arch/arm64/tools/sysreg
++++ b/arch/arm64/tools/sysreg
+@@ -2256,9 +2256,10 @@ UnsignedEnum	43:40	FWB
+ 	0b0000	NI
+ 	0b0001	IMP
+ EndEnum
+-Enum	39:36	IDS
+-	0b0000	0x0
+-	0b0001	0x18
++UnsignedEnum	39:36	IDS
++	0b0000	NI
++	0b0001	IMP
++	0b0010	EL3
+ EndEnum
+ UnsignedEnum	35:32	AT
+ 	0b0000	NI
+-- 
+2.47.3
+
