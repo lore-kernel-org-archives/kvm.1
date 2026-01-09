@@ -1,56 +1,56 @@
-Received: from mail-pj1-f74.google.com (mail-pj1-f74.google.com [209.85.216.74])
+Received: from mail-pg1-f201.google.com (mail-pg1-f201.google.com [209.85.215.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1FAE7209F5A
-	for <kvm@vger.kernel.org>; Fri,  9 Jan 2026 04:15:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.74
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2EB92D12ED
+	for <kvm@vger.kernel.org>; Fri,  9 Jan 2026 04:15:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767932140; cv=none; b=jdgkOZ3ckbhFC/bHi82aPWwOKcgS46H20ilw8tVeojf3uLuzCQ2P6YrYZeEtw93vzw5o+F1MIaqsW8W/V4Qm9IXKKqIUQhV4CzKRvel6dgKLo2T3z0VcXHk7Ekh6VZSKZuVcb6KlxSy8x7FmCbgkwABQm7aRC+mm//jEPFo4KXU=
+	t=1767932149; cv=none; b=ez/+PJ0wT1JwU7c5iE8FP5i9MUapiC8OLo4T2+wK8JKT1911nypiCukaJGEbmmjqmzvqLKUGgXisQyAizf/7mHmk5IRGuXRGmDxkNvjsvfKcXyfBRCuRbC+LaWt9+6gPD0kBX+kQOU7irBLSkSaxICGfAWIwyvMZh0/IBirNuNI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767932140; c=relaxed/simple;
-	bh=DZZWXNB3UFwK8BGeGJyRTp3Xu6hRuIS0kH1Hk2lrhes=;
+	s=arc-20240116; t=1767932149; c=relaxed/simple;
+	bh=kutvPVpGW1qMm04do3HzbiiZ2IvYSjCH0GrT8VkCSqM=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=PP3/UkIORKAGUgoNRaMX3kwDQ/XlxWBNZq81fwKQWT+aa2QwzhJyo8ZQAXQcunePTFaNmz92vvCK13ypO8LyMHgdsX+mf/3yP+iDHXFItIJbJWfrqS7LMFPUSWZncYHGoQ9DUgVYHOXESFY/CdOCaSqSB3NnGLKFLSQ2KB6lDwo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=GSgoaCUi; arc=none smtp.client-ip=209.85.216.74
+	 To:Cc:Content-Type; b=J3ttPInhATa8qIkK9lRG0T7nFY00YiW4n1VheYkPzTwdsZuYiYj7mGikKA69R4mHJHGX/0+BF1t7/CjrGfVRn0oU70NuDoG4xtHR/rvTC1K3yvSN5O4VteVHQUEzUKHUXcBEtPOtODao6/sS2EmKKxSb9Fn4RH6kDQU5yDmhkRA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=VL9nLZoY; arc=none smtp.client-ip=209.85.215.201
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="GSgoaCUi"
-Received: by mail-pj1-f74.google.com with SMTP id 98e67ed59e1d1-34aa1d06456so5454700a91.0
-        for <kvm@vger.kernel.org>; Thu, 08 Jan 2026 20:15:32 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="VL9nLZoY"
+Received: by mail-pg1-f201.google.com with SMTP id 41be03b00d2f7-c552bbd1b03so710869a12.0
+        for <kvm@vger.kernel.org>; Thu, 08 Jan 2026 20:15:31 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1767932132; x=1768536932; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1767932129; x=1768536929; darn=vger.kernel.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:reply-to:from:to:cc:subject:date:message-id:reply-to;
-        bh=Ov/rDMP3kxGlRWYyyDh1VhkYmedXXlvI3JsrhuQsaKs=;
-        b=GSgoaCUiw87ZtIV16uyAseR+M0ZCxfkQqXM6Frm55RL460mtYG+9+Oh4nHYIOH1x5/
-         TJQb6rrNyyUsQkx29ArEUsKF7k/UvpCJYs/6Sed/mzfNvs7tK3ZMcTCiT0EdrZUzd5hI
-         1ayVYojURnr9qJ+7rJRwLO8Tl1YY94MkQ146cjqo3poStqa8kwkv7C9MKvKO9+LEIP9/
-         ux1MigM0y7c/OuxVrAqCD9zh2wszPP9bA3xcNhWavv5JIDMeOHAppD2yl4BUlzksWW1Q
-         2a3PVe1gj673pMoG6BXYQAUziu1S9WiPqNnrkuWiNLl2uCNBqCrZK/9RmejNIbbMULWg
-         XiIg==
+        bh=YPXOVSPbX1KMczdihtegDFRKVfMczfCw6F1GzpMT+wo=;
+        b=VL9nLZoYee9PN0/ZHs6d3UZmHBK4QOrInGtmiGYW6KqEkdjYd/DHDA8s7SsG+3BPXv
+         fbThJt3cVIn4TRBsuSFDCGjxteutNxLDHI7WOJd5aCHo5KYEGIDx/xjgWLOV0HghPjXW
+         0IJi19O/3aEru69jXCYfiA+tG8OHXdmkYDQ0gsCKCaTFBNxQFrHT6yUI7rv7BBoAqqR+
+         6OOYYfYJLAYJ1+f6liqAnw5bGJGQgj4Fo3OgoYfKb/cvsNqagS739lAclNYBPE0k5fUb
+         TPLsUqcPN0AEDnU9WXMJoamIXvim2FQAzxEw2nnf+bb/oAC8RhBt9t+9LNKF1+WCFCTG
+         +Pkw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1767932132; x=1768536932;
+        d=1e100.net; s=20230601; t=1767932129; x=1768536929;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:reply-to:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=Ov/rDMP3kxGlRWYyyDh1VhkYmedXXlvI3JsrhuQsaKs=;
-        b=Yuw1+9sF8/gkkSP2RZGpKHPKj+u/e5BayNry1h93tjYpBmbWCA2FQu8ywRJ2GcAXsT
-         JnI4ERvOQIqZRuIkWbrnLRF0meAwb4MtMOrJskabc5b7a7UXbXVzMN7foPD5uBpBZciC
-         wuIFAkf75zHSDAkEu/iiMQAaZ1/mZYHJFaB6YF3OlrXQx2VSUG+cyMETjBA9vdK0BhD1
-         /zLosy8/xyXYRoSkntfstSSY/MrO3goy1KkIttn688e/YMkXxJcZxMwLdFCiBpUHLgrr
-         03fmCUEf7rp/MVyVCVLZ3Jp4eCKpq9yayOREvqpRnRsA+vMxqp31OfjBG1MnhP4ovQr5
-         /W2w==
-X-Gm-Message-State: AOJu0YySrgXACS7zLfanm9VdjxeyUBZ8bnijTaZkBWb3q43UjzGOb3/o
-	XvcMwclWTQtiHWgzrd7iAiONAFeOzdhXr1Fey9LxOHmsV8ZaHkJPtvpki7mF4RwzPkpCB1bU8IN
-	Uufnjuw==
-X-Google-Smtp-Source: AGHT+IGwhjd/Tdp+duDHCNNRqDKJScvXuyyuKTZj+2tNhsQ5tHaL89ELrFF1rUILoaCEzOilT74jxEfvxLM=
-X-Received: from pjzj18.prod.google.com ([2002:a17:90a:eb12:b0:34c:c510:f186])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:1c05:b0:340:bb51:17eb
- with SMTP id 98e67ed59e1d1-34f68c286c8mr8384781a91.15.1767932132325; Thu, 08
- Jan 2026 20:15:32 -0800 (PST)
+        bh=YPXOVSPbX1KMczdihtegDFRKVfMczfCw6F1GzpMT+wo=;
+        b=PHP7TCLpe5DcwLFkMRqN91KOm7p5cngIQfZPNQLQ19V2fK54fwYks5PB7kCNau9TPI
+         g3IptCElyTHNR12KUi/IcxFNLBTVWXUMYR3mHFgFLVQbm+Ol3eKpwkHs8k1/2Qd7h84W
+         0DLUEw/ailWLuBuYIA7yuwawMTAII9gXZM9YFrOhgT/6SaaZOxUQsWcnTCExBIUi40yc
+         Hbz/30q+U3QAVazpIFR3lYZawGUX4gxQwNR75hjXYBSIoQYZWgqQQbAo1fuMChXa8j0S
+         ReJCpV6zAZ/2CL8yTuvrnNLBuON5jVyzKXP8EUS9Rx6g1/Yl2Mbs+CR0YSdX4FJoy3Zt
+         r5Vg==
+X-Gm-Message-State: AOJu0YzQlSa0FW1nsnlEYH9iGCBCE1698qo+F05oPm+TMR0zo/tZMJAT
+	4orgBwlOzsuymOHGo2uFIUbG8rFc72rh1FvyPoLpN6ygDNka1Quhb3PHranmPMzMQSs8SWFWZDN
+	a+jMfKA==
+X-Google-Smtp-Source: AGHT+IHnin/GN2aGtA/W6NbZpdY5OGBSyLo+1lHdwYvWWp/+UX/8sVL48S7ML4NamcEADhn3bWaWGCYtAnk=
+X-Received: from pjsf4.prod.google.com ([2002:a17:90a:6544:b0:34c:e69b:d74f])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a20:9184:b0:371:d67d:e56a
+ with SMTP id adf61e73a8af0-3898f9bde10mr8453753637.57.1767932129105; Thu, 08
+ Jan 2026 20:15:29 -0800 (PST)
 Reply-To: Sean Christopherson <seanjc@google.com>
-Date: Thu,  8 Jan 2026 20:15:23 -0800
+Date: Thu,  8 Jan 2026 20:15:21 -0800
 In-Reply-To: <20260109041523.1027323-1-seanjc@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
@@ -60,9 +60,9 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 References: <20260109041523.1027323-1-seanjc@google.com>
 X-Mailer: git-send-email 2.52.0.457.g6b5491de43-goog
-Message-ID: <20260109041523.1027323-5-seanjc@google.com>
-Subject: [PATCH v3 4/4] KVM: nVMX: Remove explicit filtering of
- GUEST_INTR_STATUS from shadow VMCS fields
+Message-ID: <20260109041523.1027323-3-seanjc@google.com>
+Subject: [PATCH v3 2/4] KVM: VMX: Add a wrapper around ROL16() to get a vmcs12
+ from a field encoding
 From: Sean Christopherson <seanjc@google.com>
 To: Sean Christopherson <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>
 Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
@@ -70,54 +70,91 @@ Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org,
 	Yosry Ahmed <yosry.ahmed@linux.dev>
 Content-Type: text/plain; charset="UTF-8"
 
-Drop KVM's filtering of GUEST_INTR_STATUS when generating the shadow VMCS
-bitmap now that KVM drops GUEST_INTR_STATUS from the set of supported
-vmcs12 fields if the field isn't supported by hardware, and initialization
-of the shadow VMCS fields omits unsupported vmcs12 fields.
+Add a wrapper macro, ENC_TO_VMCS12_IDX(), to get a vmcs12 index given a
+field encoding in anticipation of add a macro to get from a vmcs12 index
+back to the field encoding.  And because open coding ROL16(n, 6) everywhere
+is gross.
 
-Note, there is technically a small functional change here, as the vmcs12
-filtering only requires support for Virtual Interrupt Delivery, whereas
-the shadow VMCS code being removed required "full" APICv support, i.e.
-required Virtual Interrupt Delivery *and* APIC Register Virtualizaton *and*
-Posted Interrupt support.
+No functional change intended.
 
-Opportunistically tweak the comment to more precisely explain why the
-PML and VMX preemption timer fields need to be explicitly checked.
-
+Suggested-by: Xiaoyao Li <xiaoyao.li@intel.com>
 Signed-off-by: Sean Christopherson <seanjc@google.com>
 ---
- arch/x86/kvm/vmx/nested.c | 11 ++++-------
- 1 file changed, 4 insertions(+), 7 deletions(-)
+ arch/x86/kvm/vmx/hyperv_evmcs.c | 2 +-
+ arch/x86/kvm/vmx/hyperv_evmcs.h | 2 +-
+ arch/x86/kvm/vmx/vmcs.h         | 1 +
+ arch/x86/kvm/vmx/vmcs12.c       | 4 ++--
+ arch/x86/kvm/vmx/vmcs12.h       | 2 +-
+ 5 files changed, 6 insertions(+), 5 deletions(-)
 
-diff --git a/arch/x86/kvm/vmx/nested.c b/arch/x86/kvm/vmx/nested.c
-index ac7a17560c8f..3ef4d7ab5723 100644
---- a/arch/x86/kvm/vmx/nested.c
-+++ b/arch/x86/kvm/vmx/nested.c
-@@ -115,9 +115,10 @@ static void init_vmcs_shadow_fields(void)
- 			continue;
+diff --git a/arch/x86/kvm/vmx/hyperv_evmcs.c b/arch/x86/kvm/vmx/hyperv_evmcs.c
+index 904bfcd1519b..cc728c9a3de5 100644
+--- a/arch/x86/kvm/vmx/hyperv_evmcs.c
++++ b/arch/x86/kvm/vmx/hyperv_evmcs.c
+@@ -7,7 +7,7 @@
+ #include "hyperv_evmcs.h"
  
- 		/*
--		 * PML and the preemption timer can be emulated, but the
--		 * processor cannot vmwrite to fields that don't exist
--		 * on bare metal.
-+		 * KVM emulates PML and the VMX preemption timer irrespective
-+		 * of hardware support, but shadowing their related VMCS fields
-+		 * requires hardware support as the CPU will reject VMWRITEs to
-+		 * fields that don't exist.
- 		 */
- 		switch (field) {
- 		case GUEST_PML_INDEX:
-@@ -128,10 +129,6 @@ static void init_vmcs_shadow_fields(void)
- 			if (!cpu_has_vmx_preemption_timer())
- 				continue;
- 			break;
--		case GUEST_INTR_STATUS:
--			if (!cpu_has_vmx_apicv())
--				continue;
--			break;
- 		default:
- 			break;
- 		}
+ #define EVMCS1_OFFSET(x) offsetof(struct hv_enlightened_vmcs, x)
+-#define EVMCS1_FIELD(number, name, clean_field)[ROL16(number, 6)] = \
++#define EVMCS1_FIELD(number, name, clean_field)[ENC_TO_VMCS12_IDX(number)] = \
+ 		{EVMCS1_OFFSET(name), clean_field}
+ 
+ const struct evmcs_field vmcs_field_to_evmcs_1[] = {
+diff --git a/arch/x86/kvm/vmx/hyperv_evmcs.h b/arch/x86/kvm/vmx/hyperv_evmcs.h
+index 6536290f4274..fc7c4e7bd1bf 100644
+--- a/arch/x86/kvm/vmx/hyperv_evmcs.h
++++ b/arch/x86/kvm/vmx/hyperv_evmcs.h
+@@ -130,7 +130,7 @@ static __always_inline int evmcs_field_offset(unsigned long field,
+ 					      u16 *clean_field)
+ {
+ 	const struct evmcs_field *evmcs_field;
+-	unsigned int index = ROL16(field, 6);
++	unsigned int index = ENC_TO_VMCS12_IDX(field);
+ 
+ 	if (unlikely(index >= nr_evmcs_1_fields))
+ 		return -ENOENT;
+diff --git a/arch/x86/kvm/vmx/vmcs.h b/arch/x86/kvm/vmx/vmcs.h
+index b25625314658..9aa204c87661 100644
+--- a/arch/x86/kvm/vmx/vmcs.h
++++ b/arch/x86/kvm/vmx/vmcs.h
+@@ -12,6 +12,7 @@
+ #include "capabilities.h"
+ 
+ #define ROL16(val, n) ((u16)(((u16)(val) << (n)) | ((u16)(val) >> (16 - (n)))))
++#define ENC_TO_VMCS12_IDX(enc) ROL16(enc, 6)
+ 
+ struct vmcs_hdr {
+ 	u32 revision_id:31;
+diff --git a/arch/x86/kvm/vmx/vmcs12.c b/arch/x86/kvm/vmx/vmcs12.c
+index 4233b5ca9461..c2ac9e1a50b3 100644
+--- a/arch/x86/kvm/vmx/vmcs12.c
++++ b/arch/x86/kvm/vmx/vmcs12.c
+@@ -4,10 +4,10 @@
+ #include "vmcs12.h"
+ 
+ #define VMCS12_OFFSET(x) offsetof(struct vmcs12, x)
+-#define FIELD(number, name)	[ROL16(number, 6)] = VMCS12_OFFSET(name)
++#define FIELD(number, name)	[ENC_TO_VMCS12_IDX(number)] = VMCS12_OFFSET(name)
+ #define FIELD64(number, name)						\
+ 	FIELD(number, name),						\
+-	[ROL16(number##_HIGH, 6)] = VMCS12_OFFSET(name) + sizeof(u32)
++	[ENC_TO_VMCS12_IDX(number##_HIGH)] = VMCS12_OFFSET(name) + sizeof(u32)
+ 
+ const unsigned short vmcs12_field_offsets[] = {
+ 	FIELD(VIRTUAL_PROCESSOR_ID, virtual_processor_id),
+diff --git a/arch/x86/kvm/vmx/vmcs12.h b/arch/x86/kvm/vmx/vmcs12.h
+index 4ad6b16525b9..7a5fdd9b27ba 100644
+--- a/arch/x86/kvm/vmx/vmcs12.h
++++ b/arch/x86/kvm/vmx/vmcs12.h
+@@ -385,7 +385,7 @@ static inline short get_vmcs12_field_offset(unsigned long field)
+ 	if (field >> 15)
+ 		return -ENOENT;
+ 
+-	index = ROL16(field, 6);
++	index = ENC_TO_VMCS12_IDX(field);
+ 	if (index >= nr_vmcs12_fields)
+ 		return -ENOENT;
+ 
 -- 
 2.52.0.457.g6b5491de43-goog
 
