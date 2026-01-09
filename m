@@ -1,98 +1,61 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C232E346782
-	for <kvm@vger.kernel.org>; Fri,  9 Jan 2026 08:32:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5677F50094E
+	for <kvm@vger.kernel.org>; Fri,  9 Jan 2026 08:38:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.17
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767947529; cv=none; b=ffyDlJALXDgZa6vswWeknkX11mElJYcslzJwyp+h3ZRT1hyJB0MIKiMKrYv6s1euF3dWQ48f2RRFQ5s+UBHYcD6GvgY1W8zBVD764BewL+mFo9CxBzp6Q61iBaVcqLcq/bfcTJS12hnRIx3nsMTN1cs5Yqvb9BEL6vIzfiGZTns=
+	t=1767947887; cv=none; b=prewPNK4v/AJFSjc7aUrsDftFxhOrsnYSpc4qddGbzecS/lw9TIEA0AwsNP1lXM2sfk1798umURNqO+c2Gr7BTRvj7K6aGie5rCw1iN4I7/ofUDOAW1gvSrB9mjvGRh+vdMgTH3xw4kP1XaYK7YAmXN7Rm9vy3wzANyp3YO0//o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767947529; c=relaxed/simple;
-	bh=TA0YXI5tFPQHixouJ2j1bQdmu7BczvrlyG+W06NZVPQ=;
+	s=arc-20240116; t=1767947887; c=relaxed/simple;
+	bh=XB5BqyiJ0HStQI24NfA+b6hvilKeGtYlfr455n7jD5A=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=AmIbKc+Zwm/+YNKjbsvNIMQQv1QuMcj5MbyaAMZxAUrrcGMhBZo9UIRMDclhYdUtJSL/RiL4tyudB3CbL6lYbJteKja2TVm0HtAxNpqg77V9/SCcYrlgE67LIfGHpNNIIU+9xIgjc84Kk8ktQrBomOcMrSl+u5doi1r4bKN1wEY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=CZ/QHQtD; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=kBwOuAmw; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	 Content-Type:Content-Disposition:In-Reply-To; b=hYA7WjCh+Y5dDYDftYZCLjHsp2J2BHaT+Qgf6cPm3PIXY/meINSstXIInWfBJiaTxvlyLJYLCSxPqcijljrTDVhPmfwvTIShi8QhxwOOqYorbqZ8I1uVIwTuqVYAGSouTEs+/KeK5ZQhvllRArdl4xo6X4sCW0fXCsXEfKMvCxc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=PATfIEXL; arc=none smtp.client-ip=192.198.163.17
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="CZ/QHQtD";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="kBwOuAmw"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1767947526;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=V1ke4ac4E32fG4lShAnBll4if/X5IbvvKQ7SqmHrrYc=;
-	b=CZ/QHQtDlQmDFGnCwUkQ9ZQP0CSi7NywZ6SV9uZgu/9gYlLGnUZ0Hr5noSKNZ0oDaaPN1e
-	TLtlAdpOHCJU/J46M6i0McxuE1sy0XSN6VFtfaXpK9ScjwfV7oX2p7YUSuRXjA2cA+Xc0y
-	z0JuBeWZoZ38kol64MyzD13J5aNVP0Y=
-Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
- [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-294-endOJuGMMZKpXzVu02yM0w-1; Fri, 09 Jan 2026 03:32:04 -0500
-X-MC-Unique: endOJuGMMZKpXzVu02yM0w-1
-X-Mimecast-MFC-AGG-ID: endOJuGMMZKpXzVu02yM0w_1767947523
-Received: by mail-wm1-f69.google.com with SMTP id 5b1f17b1804b1-47d3ba3a49cso34909715e9.2
-        for <kvm@vger.kernel.org>; Fri, 09 Jan 2026 00:32:04 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1767947523; x=1768552323; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=V1ke4ac4E32fG4lShAnBll4if/X5IbvvKQ7SqmHrrYc=;
-        b=kBwOuAmwqnVyelsO2aq9N9g399P6GY9KD9+0VUtzygLegwd4gRl1EQssPy+YdQ744w
-         rA3vuBgunfaktozfUv6egM1bRkK8RmIOruesAN6oLaUV58TTDXDw+MkV5SldNbvtfzFz
-         KXdmejtGwOiGfScKDRQX5Tnf1zI7mX7VOGR9voxb9+4p0WlwDxmSYQXSRzjruFn1kJef
-         R5CE84qprdTcLInfIr023BxK/YCYkxicOuz1BbPI8x0n8S+lRc7jF7p/IKMmpiQ15GsR
-         nRTkxPNPsZ3aZMm8sCvtUGnWsCngqR3/uZmln83VQ5aIt0wUpBN+QY9APRN8jbvvsfZo
-         bSmA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1767947523; x=1768552323;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=V1ke4ac4E32fG4lShAnBll4if/X5IbvvKQ7SqmHrrYc=;
-        b=nC/JsLnQXSsolmyu5Hq59KTOmbHby0glwAxgR7cM4IiV7dhjeM+Qn63ahJS31oyzu6
-         ENpGmap/yLQuc3Xo4wB561jze2LdtpMe5TjaiYDJyifU6eyBOzGpsdGe4UZLscJl9G47
-         Bvdmm/iZUMRAa4+g6PXdp36wpN/f8J49MeOjSnNHbvJzIVDnvfNfgtt/DIbAw5nLMD9V
-         qYddQ5/0AYXZv0vWbstHJJZ3R9t894lMORP7TFMgQ+kVPODWZPmtT4V+35qksoaH78n6
-         s4XhVLuJk2d9IryuDqU5RWLZopHzGAuke0L0/jHON6REvZvlePCPa5fUFbo9LFFUSCqz
-         ZvUg==
-X-Forwarded-Encrypted: i=1; AJvYcCWwKQSh8AV5Q1W2csyssOU93A0SE94mzihaopSSMfMUqyjyrafJN+7d+1Z4c4p9EAyoUdU=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yxn6ahJ98n0xYiNlecjQULGWeqGLM+Glx0ri9cw2tHJkd9KN+GC
-	HYO0/5YlEXlhptNAQuW4rKCMy7OoeYgGO1HuTVgRt7EgXw+wGDYtOJ2/bgJwoi43pgm71yFMJUX
-	aX28nd8I7SCdPNu+WVvnmTD2rwct8OFKnYrAx512hLSfp0820akwhJg==
-X-Gm-Gg: AY/fxX4OzHm5Xq0HQZ+ByrZccuCVgjp1NrK5Hj/sRlMfCw+/0XfluuA5KT/j8001WaG
-	yzQQFHqBVvIawsdd2piX/BnArGNOHBm0VFV2FkaL3y2oZ59MWDPvi1G4Ji3imeovFXRVY23rYA9
-	6Jg8VPc6CO7l37DZbGGCAc9elW+feU6tD3pETH4PF5yzoMAganWu2aG1QAPZKThSQsp2otx1mAL
-	kfVt8/C1C+TIXWFQ3mTaDOqd2Ftp402rNGzPuQMl1dNO1vgarxiqLij5rY1hLYdLc0PKyHJqK2L
-	1O30kHaztP7HfWmmUSQvj+GLDz9gGfMXQcIE/gb54bZolvwSjh60wuZ3U3vXxcNTbpJFmbHDNBN
-	lq+WZ7JZCGeEecqMNFxaJTIpdEHvM3vZVjA==
-X-Received: by 2002:a05:600c:6306:b0:471:131f:85b7 with SMTP id 5b1f17b1804b1-47d84b1a03fmr89448105e9.15.1767947523221;
-        Fri, 09 Jan 2026 00:32:03 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IF6UfdcL14TZ2jcr19i9LHxmaSNAQniiujlbEAgU47kWYFzOBfa9T43hpeYeByL2mFARRYigA==
-X-Received: by 2002:a05:600c:6306:b0:471:131f:85b7 with SMTP id 5b1f17b1804b1-47d84b1a03fmr89447825e9.15.1767947522743;
-        Fri, 09 Jan 2026 00:32:02 -0800 (PST)
-Received: from redhat.com (IGLD-80-230-31-118.inter.net.il. [80.230.31.118])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-47d7f68f69dsm196961275e9.1.2026.01.09.00.32.00
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 09 Jan 2026 00:32:02 -0800 (PST)
-Date: Fri, 9 Jan 2026 03:31:59 -0500
-From: "Michael S. Tsirkin" <mst@redhat.com>
-To: Simon Schippers <simon.schippers@tu-dortmund.de>
-Cc: willemdebruijn.kernel@gmail.com, jasowang@redhat.com,
-	andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
-	kuba@kernel.org, pabeni@redhat.com, eperezma@redhat.com,
-	leiyang@redhat.com, stephen@networkplumber.org, jon@nutanix.com,
-	tim.gebauer@tu-dortmund.de, netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
-	virtualization@lists.linux.dev
-Subject: Re: [PATCH net-next v7 2/9] ptr_ring: add helper to detect newly
- freed space on consume
-Message-ID: <20260109033028-mutt-send-email-mst@kernel.org>
-References: <20260107210448.37851-1-simon.schippers@tu-dortmund.de>
- <20260107210448.37851-3-simon.schippers@tu-dortmund.de>
- <20260109021023-mutt-send-email-mst@kernel.org>
- <a0d5d875-9a9c-4bfe-8943-c7b28185c083@tu-dortmund.de>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="PATfIEXL"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1767947885; x=1799483885;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=XB5BqyiJ0HStQI24NfA+b6hvilKeGtYlfr455n7jD5A=;
+  b=PATfIEXLO+xq1uHX8mNk5zQWKEsaMBdKlAgDjwQkXbgfKeCj6yn30TIx
+   3AxK4WRChcyKrA8ubriLLkmAXbhqIUuIEPXmzyT0wCDHjiCgKrh2ultgZ
+   yrW1B/y+9n4y9SbAW3uDq6McfrXD8K8+pBfJrGpXDZ2QFIe23CHQFPIeS
+   B3qB03wSyDrKReq7AheqF8kVK6mDS6OdZZvr0DMH/G9T4uS1JjkZjBC1/
+   mtMPEpFWW7mjHIfRhxHEW8GkA+jAt+kBfkAOt0bJAik0xEWxGUEa036Nq
+   ofhiUxBsdSZE0JIm9ofRdR8BX/TznRm6c6vubTv8NOCTFGzdN6pBzTyWP
+   g==;
+X-CSE-ConnectionGUID: GtKVrddnSguS95hNbY0LcA==
+X-CSE-MsgGUID: CO9jafhEQceL9lj7J32jiQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11665"; a="69241023"
+X-IronPort-AV: E=Sophos;i="6.21,212,1763452800"; 
+   d="scan'208";a="69241023"
+Received: from orviesa001.jf.intel.com ([10.64.159.141])
+  by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Jan 2026 00:38:04 -0800
+X-CSE-ConnectionGUID: tIEt/mlYS7eP0p8PG3gv8Q==
+X-CSE-MsgGUID: ox6bWr8ORUiMe8FHDzG4Gw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.21,212,1763452800"; 
+   d="scan'208";a="240923576"
+Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost) ([10.239.160.39])
+  by orviesa001.jf.intel.com with ESMTP; 09 Jan 2026 00:38:02 -0800
+Date: Fri, 9 Jan 2026 17:03:28 +0800
+From: Zhao Liu <zhao1.liu@intel.com>
+To: Shivansh Dhiman <shivansh.dhiman@amd.com>
+Cc: pbonzini@redhat.com, mtosatti@redhat.com, kvm@vger.kernel.org,
+	qemu-devel@nongnu.org, seanjc@google.com, santosh.shukla@amd.com,
+	nikunj.dadhania@amd.com, ravi.bangoria@amd.com, babu.moger@amd.com,
+	zhao1.liu@intel.com
+Subject: Re: [PATCH 1/5] i386: Implement CPUID 0x80000026
+Message-ID: <aWDEYEfB4va41+Tv@intel.com>
+References: <20251121083452.429261-1-shivansh.dhiman@amd.com>
+ <20251121083452.429261-2-shivansh.dhiman@amd.com>
+ <aV4KVjjZXZSB5YGw@intel.com>
+ <eb712000-bc67-468a-b691-097688233659@amd.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -101,108 +64,133 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <a0d5d875-9a9c-4bfe-8943-c7b28185c083@tu-dortmund.de>
+In-Reply-To: <eb712000-bc67-468a-b691-097688233659@amd.com>
 
-On Fri, Jan 09, 2026 at 08:35:31AM +0100, Simon Schippers wrote:
-> On 1/9/26 08:22, Michael S. Tsirkin wrote:
-> > On Wed, Jan 07, 2026 at 10:04:41PM +0100, Simon Schippers wrote:
-> >> This proposed function checks whether __ptr_ring_zero_tail() was invoked
-> >> within the last n calls to __ptr_ring_consume(), which indicates that new
-> >> free space was created. Since __ptr_ring_zero_tail() moves the tail to
-> >> the head - and no other function modifies either the head or the tail,
-> >> aside from the wrap-around case described below - detecting such a
-> >> movement is sufficient to detect the invocation of
-> >> __ptr_ring_zero_tail().
-> >>
-> >> The implementation detects this movement by checking whether the tail is
-> >> at most n positions behind the head. If this condition holds, the shift
-> >> of the tail to its current position must have occurred within the last n
-> >> calls to __ptr_ring_consume(), indicating that __ptr_ring_zero_tail() was
-> >> invoked and that new free space was created.
-> >>
-> >> This logic also correctly handles the wrap-around case in which
-> >> __ptr_ring_zero_tail() is invoked and the head and the tail are reset
-> >> to 0. Since this reset likewise moves the tail to the head, the same
-> >> detection logic applies.
-> >>
-> >> Co-developed-by: Tim Gebauer <tim.gebauer@tu-dortmund.de>
-> >> Signed-off-by: Tim Gebauer <tim.gebauer@tu-dortmund.de>
-> >> Signed-off-by: Simon Schippers <simon.schippers@tu-dortmund.de>
-> >> ---
-> >>  include/linux/ptr_ring.h | 13 +++++++++++++
-> >>  1 file changed, 13 insertions(+)
-> >>
-> >> diff --git a/include/linux/ptr_ring.h b/include/linux/ptr_ring.h
-> >> index a5a3fa4916d3..7cdae6d1d400 100644
-> >> --- a/include/linux/ptr_ring.h
-> >> +++ b/include/linux/ptr_ring.h
-> >> @@ -438,6 +438,19 @@ static inline int ptr_ring_consume_batched_bh(struct ptr_ring *r,
-> >>  	return ret;
-> >>  }
-> >>  
-> >> +/* Returns true if the consume of the last n elements has created space
-> >> + * in the ring buffer (i.e., a new element can be produced).
-> >> + *
-> >> + * Note: Because of batching, a successful call to __ptr_ring_consume() /
-> >> + * __ptr_ring_consume_batched() does not guarantee that the next call to
-> >> + * __ptr_ring_produce() will succeed.
-> > 
-> > 
-> > I think the issue is it does not say what is the actual guarantee.
-> > 
-> > Another issue is that the "Note" really should be more prominent,
-> > it really is part of explaining what the functions does.
-> > 
-> > Hmm. Maybe we should tell it how many entries have been consumed and
-> > get back an indication of how much space this created?
-> > 
-> > fundamentally
-> > 	 n - (r->consumer_head - r->consumer_tail)?
+On Thu, Jan 08, 2026 at 04:03:12PM +0530, Shivansh Dhiman wrote:
+> Date: Thu, 8 Jan 2026 16:03:12 +0530
+> From: Shivansh Dhiman <shivansh.dhiman@amd.com>
+> Subject: Re: [PATCH 1/5] i386: Implement CPUID 0x80000026
 > 
-> No, that is wrong from my POV.
+> Hi Zhao,
 > 
-> It always creates the same amount of space which is the batch size or
-> multiple batch sizes (or something less in the wrap-around case). That is
-> of course only if __ptr_ring_zero_tail() was executed at least once,
-> else it creates zero space.
+> On 07-01-2026 12:55, Zhao Liu wrote:
+> > Hi Shivansh,
+> > 
+> > Sorry for late reply.
+> > 
+> > On Fri, Nov 21, 2025 at 08:34:48AM +0000, Shivansh Dhiman wrote:
+> >> Date: Fri, 21 Nov 2025 08:34:48 +0000
+> >> From: Shivansh Dhiman <shivansh.dhiman@amd.com>
+> >> Subject: [PATCH 1/5] i386: Implement CPUID 0x80000026
+> >> X-Mailer: git-send-email 2.43.0
+> >>
+> >> Implement CPUID leaf 0x80000026 (AMD Extended CPU Topology). It presents the
+> >> complete topology information to guests via a single CPUID with multiple
+> >> subleafs, each describing a specific hierarchy level, viz. core, complex,
+> >> die, socket.
+> >>
+> >> Note that complex/CCX level relates to "die" in QEMU, and die/CCD level is
+> >> not supported in QEMU yet. Hence, use CCX at CCD level until diegroups are
+> >> implemented.
+> > 
+> > I'm trying to understand AMD's topology hierarchy by comparing it to the
+> > kernel's arch/x86/kernel/cpu/topology_ext.c file:
+> > 
+> > static const unsigned int topo_domain_map_0b_1f[MAX_TYPE_1F] = {
+> > 	[SMT_TYPE]	= TOPO_SMT_DOMAIN,
+> > 	[CORE_TYPE]	= TOPO_CORE_DOMAIN,
+> > 	[MODULE_TYPE]	= TOPO_MODULE_DOMAIN,
+> > 	[TILE_TYPE]	= TOPO_TILE_DOMAIN,
+> > 	[DIE_TYPE]	= TOPO_DIE_DOMAIN,
+> > 	[DIEGRP_TYPE]	= TOPO_DIEGRP_DOMAIN,
+> > };
+> > 
+> > static const unsigned int topo_domain_map_80000026[MAX_TYPE_80000026] = {
+> > 	[SMT_TYPE]		= TOPO_SMT_DOMAIN,
+> > 	[CORE_TYPE]		= TOPO_CORE_DOMAIN,
+> > 	[AMD_CCD_TYPE]		= TOPO_TILE_DOMAIN,
+> > 	[AMD_SOCKET_TYPE]	= TOPO_DIE_DOMAIN,
+> > };
+> 
+> These mappings reuse some original names (SMT_TYPE and CORE_TYPE) along with the
+> new ones (AMD_CCD_TYPE and AMD_SOCKET_TYPE). I think to avoid defining more AMD
+> specific types the original names are used. So, essentially you can read them
+> like this:
+> 
+> static const unsigned int topo_domain_map_80000026[MAX_TYPE_80000026] = {
+> 	[AMD_CORE_TYPE]		= TOPO_SMT_DOMAIN,
+> 	[AMD_CCX_TYPE]		= TOPO_CORE_DOMAIN,
+> 	[AMD_CCD_TYPE]		= TOPO_TILE_DOMAIN,
+> 	[AMD_SOCKET_TYPE]	= TOPO_DIE_DOMAIN,
+> };
 
-exactly, and caller does not know, and now he wants to know so
-we add an API for him to find out?
+Thank you! It's clear and I see the difference.
+ 
+> > What particularly puzzles me is that "complex" isn't listed here, yet it
+> > should be positioned between "core" and CCD. Does this mean complex
+> > actually corresponds to kernel's module domain?
+> 
+> There is a nuance with CPUID 80000026h related to the shifting of x2APIC ID.
+> According to APM, EAX[4:0] tells us the number of bits to shift x2APIC ID right
+> to get unique topology ID of the next instance of the current level type.
+> 
+> So, all logical processors with the same next level ID share current level. This
+> results in mapping the Nth level type to (N-1)th domain. This is unlike Intel's
+> CPUID 0xb which maps Nth level type to Nth domain.
 
-I feel the fact it's a binary (batch or 0) is an implementation
-detail better hidden from user.
+Yes, it's the core difference. I think it's better to have a helper
+clearly define the mapping between QEMU general topo level v.s. AMD topo
+types, similar to cpuid1f_topo_type().
 
+> Back to your question, the complex is same as tile since both represent a L3
+> cache boundary.
 
+Yeah, this makes sense. CCD->die, and CCX->tile.
 
+> > Back to QEMU, now CCX is mapped as QEMU's die level, and AMD socket is mapped
+> > to socket level. Should we revisit QEMU's topology level mapping for AMD, to
+> > align with the above topology domain mapping?
 > > 
-> > 
-> > does the below sound good maybe?
-> > 
-> > /* Returns the amound of space (number of new elements that can be
-> >  * produced) that calls to ptr_ring_consume created.
-> >  *
-> >  * Getting n entries from calls to ptr_ring_consume() /
-> >  * ptr_ring_consume_batched() does *not* guarantee that the next n calls to
-> >  * ptr_ring_produce() will succeed.
-> >  *
-> >  * Use this function after consuming n entries to get a hint about
-> >  * how much space was actually created.
-> > 
-> > 
-> > 
-> > 
-> > 
-> >> + */
-> >> +static inline bool __ptr_ring_consume_created_space(struct ptr_ring *r,
-> >> +						    int n)
-> >> +{
-> >> +	return r->consumer_head - r->consumer_tail < n;
-> >> +}
-> >> +
-> >>  /* Cast to structure type and call a function without discarding from FIFO.
-> >>   * Function must return a value.
-> >>   * Callers must take consumer_lock.
-> >> -- 
-> >> 2.43.0
-> > 
+> > If we want to go further: supporting CCD configuration would be quite
+> > tricky. I feel that adding another new parameter between the smp.dies
+> > and smp.sockets would create significant confusion.
+> 
+> The current kernel doesn't have sensitivity to a level between L3 boundary and
+> socket. Also, most production systems in current AMD CPU landscape have CCD=CCX.
+> Only a handful of models feature CCD=2CCX, so this isn't an immediate pressing need.
+> 
+> In QEMU's terminology, socket represents an actual socket and die represents the
+> L3 cache boundary. There is no intermediate level between them. Looking ahead,
+> when more granular topology information (like CCD) becomes necessary for VMs,
+> introducing a "diegroup" level would be the logical approach. This level would
+> fit naturally between die and socket, as its role cannot be fulfilled by
+> existing topology levels.
+
+With your nice clarification, I think this problem has become a bit easier.
+
+In fact, we can consider that CCD=CCX=die is currently the default
+assumption in QEMU. When future implementations require distinguishing between
+these CCD/CCX concepts, we can simply introduce an additional "smp.tiles" and
+map CCX to it. This may need a documentation or a compatibility option, but I
+believe these extra efforts are worthwhile.
+
+And "smp.tiles" means "how many tiles in a die", so I feel it's perfect
+to describe CCX.
+
+> Also, I was looking at Intel's SDM Vol. 2A "Instruction Set Reference, A-Z"
+> Table 3-8. "Information Returned by CPUID Instruction". The presence of a
+> "diegrp" level between die and socket suggests Intel has already recognized the
+> need for this intermediate topology level. If this maps to a similar concept as
+> AMD's CCD, it would indeed strengthen the case for introducing a new level in QEMU.
+
+SDM has "diedrp" but currently no product is using it. So it's hard for me
+to say what this layer will look like in the future, especially with
+topology-aware features/MSRs. Therefore, I prefer to add the "tile" if
+needed, as it aligns better with the existing hierarchy definition. Anyway,
+this is the future topic (though it is related with the last statement in your
+commit message). At least for now, how to map the AMD hierarchy is fairly
+clear.
+
+Thanks,
+Zhao
 
