@@ -1,54 +1,54 @@
-Received: from mail-pj1-f74.google.com (mail-pj1-f74.google.com [209.85.216.74])
+Received: from mail-pl1-f201.google.com (mail-pl1-f201.google.com [209.85.214.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B66130F7F9
-	for <kvm@vger.kernel.org>; Mon, 12 Jan 2026 17:45:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.74
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D999737F0EB
+	for <kvm@vger.kernel.org>; Mon, 12 Jan 2026 17:45:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768239951; cv=none; b=bM3qeSOHIKVN6hxnO18SbI0I4PRMTEHBFfYTq7oPeHWlAFR2QcUYus9r6YZ1E18m/q/Gsnc1LQymlPMW3bYfnrJqJ/moOdJ/POIUZ/vZ+UxNrt74CVaBi3OFkl+fNADg0BMbKuC1JoCX8pSbmSW3csCCwzJjT6IMwEDrzqqcxY4=
+	t=1768239952; cv=none; b=DwLf8VEKhlbkjWDsAX1mHcFLHdouNpnQI+FVl4TVhtbMXWpyRwRjCrJfcAGyWFloPpPX8CVoIdfxFTDFEJgRg1oGdawL324y0bfc30s8DQAjTHqcotyOPTiPMJMnHV/4nYxVifUJcOWsfAv2SV+pKlwD7vOYEpAf0w77fdF80Jc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768239951; c=relaxed/simple;
-	bh=SRn/8LkmaiDx4mbVxdInxzII+UnuGlGMzo2ATeYcp5o=;
+	s=arc-20240116; t=1768239952; c=relaxed/simple;
+	bh=kp2jK6zr4mIn9+6tKF3+TyYc1ZCdNqo89o7bQOtSKw0=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=LuKJwrotsszkDVjAHfLza0JhWw3rz+B0+eUocyrgFgttRl5Mf06T2/vZkc6euqsXYyFRXlSsqhV60qQj31w9h01y8gYGMAVG/ogscd+xwnTsCiDkFsbZaYHLSTDyQWfL2g0OKNnDlX9PNicAUqhRFYX7o2TU35K/IhX690BfgrE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--chengkev.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=hlbxr/0l; arc=none smtp.client-ip=209.85.216.74
+	 To:Cc:Content-Type; b=oOr5pPz+slpbEUmASlkTeN9BT9BMO7akfWfU/bE0qk0DF1ZgLXJLflV0bAjGT7ZLX+XPIdtSsD0fmJjXAbMYeEKN3NKVKlerm8hNQY6kY+Mct0NY0Sb9bown4KFSCLZsatWtFeY/E8xgy47UgRgkXCN79QQxkGyKikHmOHm6qJ0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--chengkev.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=woJbRchq; arc=none smtp.client-ip=209.85.214.201
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--chengkev.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="hlbxr/0l"
-Received: by mail-pj1-f74.google.com with SMTP id 98e67ed59e1d1-34ab459c051so2755989a91.0
-        for <kvm@vger.kernel.org>; Mon, 12 Jan 2026 09:45:49 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="woJbRchq"
+Received: by mail-pl1-f201.google.com with SMTP id d9443c01a7336-2a0d59f0198so72501355ad.1
+        for <kvm@vger.kernel.org>; Mon, 12 Jan 2026 09:45:45 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1768239949; x=1768844749; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1768239945; x=1768844745; darn=vger.kernel.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=24RTjXW0RUIu3mbeBBuCS6+SaZyDve2lWE6uRECn1KA=;
-        b=hlbxr/0lTFVl0DgOiIfM25GdVIgj02xHAIkz5ckR+iawUH7LBwPrvpnhm4zpUFaIT6
-         bnEMlTceM2eEQAc7VMVCORljeOWoV3OJDgbmjFkcaO6z25k8z2iOQzE2cet5Tpj+KaGl
-         f4IwqErMiqfoQ+CVzDdCL5IIKRmbAeProoJ+ceqX5URbBnoM6Z2YOp0pzlCP3CbcuclI
-         hFlqmiTzFtnpEOzb85PWXs0GhOwgoeq2LJeuhx43Em/KJCF49Odd7gkh8DxMulKtP14h
-         yPFkIUT5pYD5jLm+ofUVviuK7URlNl41CukCmNEBmqCDUtGEK4wl7UZLR2EcYGx30Qkj
-         Fsjg==
+        bh=DtWYxGviUfVuSB56QpF39Fiy0UYOG6eTR6xOLrjXEgw=;
+        b=woJbRchqesWJKbJEspbeUuyRsKhgImpkyWwLiI54NMBSa8toyDiVY8Sf3AYrkLTtWj
+         pgBR2Ut0jUkiD9Q28/Ay+E8l/NQbHd08xZ4crz3CVCmCRmx0dmSQlJ9G9EBagmjw6UYt
+         HPfR3MHTlN6+dPNRDsAgqoUnkahiV+XjkMPPpOUy9wKcXOAqOScJejS/JNRfyk9E+Dax
+         pe+7qY10p00lhOKYqQnZ9kYW7b54qcfzfGP0i4LVT5+M/D5ZjUTQ1d0gnIzrHKSEq8Wg
+         xA0dY7inh1NjAQ9DscZwDEuW3NxK9KhNvHxLglDTu1PVaJiyOuqM5fExNYIAzfrnNO22
+         CQpw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1768239949; x=1768844749;
+        d=1e100.net; s=20230601; t=1768239945; x=1768844745;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=24RTjXW0RUIu3mbeBBuCS6+SaZyDve2lWE6uRECn1KA=;
-        b=caXg1kN4sP547ANBQgJEWTHGQoQNM/5zwTXvKce/k+2VajD+4ohk7MuZoh5MjdAbce
-         EvJtMKl0GDRe3R2wusX++mLnJU+aGHL4bBkBS6xABZA1I6eYx13MnQky4qhsWrrXW5XA
-         KuKMBFR4R+91cnN0QBmi+25+72j/kOd2F24wCFaXykYTLCw2qR68E9SN5eSkenID5A7H
-         6me6xmHKrRfLcelMPtyV/K5XPo89afrPzymYbeSbeKzoFfKzfz326/qSjTubnbGcAB3p
-         M489+7X/lgwc/rO+IdPwEA/G/vHbzNbbAxmeF0eMwLKmyc9oo1ffi1gsCtMEmTbksy76
-         nyGQ==
-X-Gm-Message-State: AOJu0YwbcCOhGHkjBNw14nTtJorqbsN7TxZ8ChxEbM7e/lWJiVjCQBO2
-	vDxEZyq1T0Svyvl+8J+iYhGRtJlU81UvwwVhVDDkGP1OAkbcTsL/sKA+wU+BcO1GIEdXWGliCws
-	mgKyd9Z3TO4H/EQ==
-X-Google-Smtp-Source: AGHT+IHJL4gsPR2YUXI6J7F9iMrruLFSR8LmSuYPPLBbIXHlG9kM+3w07TqUZ3x+3X2RlYrnCrIw8LKbY0DrKA==
-X-Received: from pjbrs15.prod.google.com ([2002:a17:90b:2b8f:b0:34a:b143:87d7])
+        bh=DtWYxGviUfVuSB56QpF39Fiy0UYOG6eTR6xOLrjXEgw=;
+        b=a8vRsdiEgSko5s1RjFzpklB2lVV0srOcc73vr6oeTIfLuZZnM+EsR8/NGcbq45VFBs
+         /KwlRUTtB/u3nMbzqZzeFjUAO1qDJokXqkzUPXFmaWhKB4PMJXxJ+CXZZGTTPjBWT2Rj
+         SEQaDTbGb7ts2qfPxnnF5JFd1TEZQKQgqdPGANYtMC27NY8uTD2tqaljWFitAHt2ZTWp
+         vvc3O+u7bnHOmB9XYIOP6/4CrWDakvHzPCbH8syElXFr/L/p7S2mcgoMqHbDI8GtcmOz
+         natrmcSYNMCdNRFuYqezrgbr1L8odyno3xiu6u9KIWvtkzZMgoZAH52IAdsg8+VHNWnh
+         Xx8w==
+X-Gm-Message-State: AOJu0Yzzqd8NlLRSkyRiD0sjQEKNCqfDRPn9OMjsqOAq/JGutuh2gU5W
+	0DWKJhpGHn3Kf1SYNoGh0OKBlOKtOjeIFNEmym072sLsYXU5WK8zpHxy2+Kp4UU37WUKtyORopF
+	eM8iyRTswBoV6fg==
+X-Google-Smtp-Source: AGHT+IFgF8FJPYnB7e+8ftCWYYaXPtH5JLdDI4hu+IyCGEqUJbhPdnq97S24ZckmQdHtVzXwLNoJ4pWTB+QNcQ==
+X-Received: from pjbpm6.prod.google.com ([2002:a17:90b:3c46:b0:34a:c039:1428])
  (user=chengkev job=prod-delivery.src-stubby-dispatcher) by
- 2002:a17:90b:4e:b0:330:82b1:ef76 with SMTP id 98e67ed59e1d1-34f68c62a25mr14612405a91.28.1768239948999;
- Mon, 12 Jan 2026 09:45:48 -0800 (PST)
-Date: Mon, 12 Jan 2026 17:45:35 +0000
+ 2002:a17:90b:1dcd:b0:343:87b1:285 with SMTP id 98e67ed59e1d1-34f68c02239mr16322380a91.18.1768239944735;
+ Mon, 12 Jan 2026 09:45:44 -0800 (PST)
+Date: Mon, 12 Jan 2026 17:45:33 +0000
 In-Reply-To: <20260112174535.3132800-1-chengkev@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
@@ -58,61 +58,36 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 References: <20260112174535.3132800-1-chengkev@google.com>
 X-Mailer: git-send-email 2.52.0.457.g6b5491de43-goog
-Message-ID: <20260112174535.3132800-6-chengkev@google.com>
-Subject: [PATCH V2 5/5] KVM: SVM: Raise #UD if VMMCALL instruction is not intercepted
+Message-ID: <20260112174535.3132800-4-chengkev@google.com>
+Subject: [PATCH V2 3/5] KVM: SVM: Inject #UD for INVLPGA if EFER.SVME=0
 From: Kevin Cheng <chengkev@google.com>
 To: seanjc@google.com, pbonzini@redhat.com
 Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org, yosry.ahmed@linux.dev, 
 	Kevin Cheng <chengkev@google.com>
 Content-Type: text/plain; charset="UTF-8"
 
-The AMD APM states that if VMMCALL instruction is not intercepted, the
-instruction raises a #UD exception.
+INVLPGA should cause a #UD when EFER.SVME is not set. Add a check to
+properly inject #UD when EFER.SVME=0.
 
-Create a vmmcall exit handler that generates a #UD if a VMMCALL exit
-from L2 is being handled by L0, which means that L1 did not intercept
-the VMMCALL instruction.
-
-Suggested-by: Sean Christopherson <seanjc@google.com>
 Signed-off-by: Kevin Cheng <chengkev@google.com>
 ---
- arch/x86/kvm/svm/svm.c | 16 +++++++++++++++-
- 1 file changed, 15 insertions(+), 1 deletion(-)
+ arch/x86/kvm/svm/svm.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
 diff --git a/arch/x86/kvm/svm/svm.c b/arch/x86/kvm/svm/svm.c
-index 92a66b62cfabd..805267a5106ac 100644
+index 557c84a060fc6..92a2faff1ccc8 100644
 --- a/arch/x86/kvm/svm/svm.c
 +++ b/arch/x86/kvm/svm/svm.c
-@@ -3180,6 +3180,20 @@ static int bus_lock_exit(struct kvm_vcpu *vcpu)
- 	return 0;
- }
+@@ -2306,6 +2306,9 @@ static int invlpga_interception(struct kvm_vcpu *vcpu)
+ 	gva_t gva = kvm_rax_read(vcpu);
+ 	u32 asid = kvm_rcx_read(vcpu);
  
-+static int vmmcall_interception(struct kvm_vcpu *vcpu)
-+{
-+	/*
-+	 * VMMCALL #UDs if it's not intercepted, and KVM reaches this point if
-+	 * and only if the VMMCALL intercept is not set in vmcb12.
-+	 */
-+	if (is_guest_mode(vcpu)) {
-+		kvm_queue_exception(vcpu, UD_VECTOR);
++	if (nested_svm_check_permissions(vcpu))
 +		return 1;
-+	}
 +
-+	return kvm_emulate_hypercall(vcpu);
-+}
-+
- static int (*const svm_exit_handlers[])(struct kvm_vcpu *vcpu) = {
- 	[SVM_EXIT_READ_CR0]			= cr_interception,
- 	[SVM_EXIT_READ_CR3]			= cr_interception,
-@@ -3230,7 +3244,7 @@ static int (*const svm_exit_handlers[])(struct kvm_vcpu *vcpu) = {
- 	[SVM_EXIT_TASK_SWITCH]			= task_switch_interception,
- 	[SVM_EXIT_SHUTDOWN]			= shutdown_interception,
- 	[SVM_EXIT_VMRUN]			= vmrun_interception,
--	[SVM_EXIT_VMMCALL]			= kvm_emulate_hypercall,
-+	[SVM_EXIT_VMMCALL]			= vmmcall_interception,
- 	[SVM_EXIT_VMLOAD]			= vmload_interception,
- 	[SVM_EXIT_VMSAVE]			= vmsave_interception,
- 	[SVM_EXIT_STGI]				= stgi_interception,
+ 	/* FIXME: Handle an address size prefix. */
+ 	if (!is_long_mode(vcpu))
+ 		gva = (u32)gva;
 -- 
 2.52.0.457.g6b5491de43-goog
 
