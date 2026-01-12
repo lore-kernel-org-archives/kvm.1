@@ -1,75 +1,75 @@
-Received: from mail-qk1-f169.google.com (mail-qk1-f169.google.com [209.85.222.169])
+Received: from mail-qt1-f175.google.com (mail-qt1-f175.google.com [209.85.160.175])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B2008285CA9
-	for <kvm@vger.kernel.org>; Mon, 12 Jan 2026 23:53:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.169
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB7192D3EF2
+	for <kvm@vger.kernel.org>; Mon, 12 Jan 2026 23:54:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.175
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768261990; cv=none; b=bPvIM0bgKX8cP5XvV/9u7hLqdaRX3vcyQDRw1sSpvR28xsh9w/7UzvbMVGBMWhnrKKCvytTV0NMuMGI3RFxWNEIrH7cLDidSiSSAMHyAaFHtQtr5IGIxegNmYlLLqg93TbrTETd7NzIxqfBar3L57o0z/C6xgPCpFcb2sFWaP7M=
+	t=1768262058; cv=none; b=t7Y+1H3o951fpA8e5YACRzskNsc8KSx2grnvkhTp/QEGGS3n5+bRWZyuF7kCbI/I2sMK8z7Ot5xyFYREmy87GAAsQ3qe01o3YZbIJ5P1hEJdFkEeI+l02Qcfuq7vgrunSeS5fVB94eSlDETBZO414/cw1kechUDG6oJA6Wl3xgQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768261990; c=relaxed/simple;
-	bh=OsumxHHod6cIwX4b7rdpDcd79fga9ieWIlr7hu71obk=;
+	s=arc-20240116; t=1768262058; c=relaxed/simple;
+	bh=vbQpTPqvkNza84fX2uyalXQvb9OzER6/e1aJC0fiWDY=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=VNYhIzvJcmpgCd0cvGn0+NglWHoj1olovMDSHADkIDDAh7JWX0377Enege1prq7MAiaMgMeP1RHbdPjYeIXn0vIwcrk0K7JM4cs4g9mSsshdOy+eZy2+LyY0euxWFp4yHcUO08EjDygA2K9buxo1xcCoWRCOESKY98ZLXIO2XgM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca; spf=pass smtp.mailfrom=ziepe.ca; dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b=KtPItGSB; arc=none smtp.client-ip=209.85.222.169
+	 Content-Type:Content-Disposition:In-Reply-To; b=JqbGLVugJbKqORILpa7G3pVbWtRTetBGx6gndnnPwPim2Vywkp7hB4YVHPc2NTsTedHDhyaLYPHo1Sas1udJYkHD9akSzWX02MEM+pmSUTtYEKBhajuRRK9fU0D6g+1j4xwQ2qvJtCGi1jfTJ0y2/fBCRMX+eA8qGCqToyKWb7s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca; spf=pass smtp.mailfrom=ziepe.ca; dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b=HAWkep//; arc=none smtp.client-ip=209.85.160.175
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ziepe.ca
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b="KtPItGSB"
-Received: by mail-qk1-f169.google.com with SMTP id af79cd13be357-8b2d56eaaceso796120685a.0
-        for <kvm@vger.kernel.org>; Mon, 12 Jan 2026 15:53:08 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b="HAWkep//"
+Received: by mail-qt1-f175.google.com with SMTP id d75a77b69052e-5013d163e2fso401641cf.0
+        for <kvm@vger.kernel.org>; Mon, 12 Jan 2026 15:54:16 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ziepe.ca; s=google; t=1768261987; x=1768866787; darn=vger.kernel.org;
+        d=ziepe.ca; s=google; t=1768262056; x=1768866856; darn=vger.kernel.org;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=MFAPVPPrTQcXGzmX4uMQny5ONRwVZsvoYJMZG32QBJM=;
-        b=KtPItGSBQvLvHb6BqDZRMhIZcvxl8SAHN+P7ok/p1aKuAQMtWJhhXrcREM04DDEH/v
-         xpOJYL4tPEFlpIJ6XvEwhuUsWgkVv1Pv0jJAq8pmcmuUSI2SmuZldT+/vPwufztTxt52
-         3P1FICBcMfFbtc64HIW+1ramux3MLbaDIVX/SnLL8rX4ZnTGWekTayWntFXxxLU9UTi8
-         aOCgpbDmI4+N+THurVfFu8XBmuqY+yDiQUlMQ8hhLgqCRWd/RgUbcVnoA0q8aTqyplJd
-         Ahtq7MGMGIAeCpiswjEJOgbIQnm3Xkub+Tak4us3eYoDIAA78DjRTgUHNibTKf2m6vwD
-         oWaQ==
+        bh=vbQpTPqvkNza84fX2uyalXQvb9OzER6/e1aJC0fiWDY=;
+        b=HAWkep//EFhJW9wywQFy2dMaCD6x0rWanih6xdYl+a8hTir2qjOknoBiE1lYRxRgVM
+         /whsUs9cl+Ycb2AwF8z46BlbbZhWzq2Pmk/lSOqE5IkoroReJFVjrZ+U+1szEvSK6pmk
+         QuYiSTtT7Z/pq6rwN+f6YxFrG2KQnyFXY5sMHbedmi3Q642Ov5MBM/fOix+b27wozxUV
+         VDzacX25oMKjSSCEjRbKUnkEQ0yhlLisnQCaTAysRvJTC6r6HiOKf1jTMCBX8OsO+m5/
+         RvXYkVstXSGVKRf9ehh9ysEdilZPK5RHl2PY19gQMPVMg125ANzOIdNrBAYetGIAzsNU
+         sMpQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1768261987; x=1768866787;
+        d=1e100.net; s=20230601; t=1768262056; x=1768866856;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=MFAPVPPrTQcXGzmX4uMQny5ONRwVZsvoYJMZG32QBJM=;
-        b=EHiX63Ys9498AdLk6MUwPHXDR2amsmfDX9P06rccr28vQGd7EH1J1hJ3t927lHHL4R
-         76zh83RPV6/kIS2SFH/3QDxOCLk/rIcFYPvnbX/GOPO1K/QsMz5qGVf5kB0dvcX9qYua
-         aj34c5EsJ8JwblwNttur7TMWjER00wijxeUgyL94r0VYNuA8Jf5URpdH0AXmtPm47Olk
-         /4HP3/v9UcChc5GasSRSV8LaixKIk2KvmU/V8bOLffd4sgQmmwUSG0NTvdUR2hYDCnDK
-         SRsQbICLk/N2b+bhAmE3jr1fZhFt0jUXyZgi2yqJCXrZTl30aqAqeQsmLdvbdfJfyo4n
-         Y6LA==
-X-Forwarded-Encrypted: i=1; AJvYcCWD2oVwQhnQhntSbCGw6d/iXMntWHmniu+T74BWJ03nz3XhfvA0d2EZwubaaa0M/J4ZvkI=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy9ZkIJcdoGP2kqGsLOmQ9wgNfUB0U3hsqqk530C1Q1Lyo7x8X8
-	FAvaccdeEtJRVjuifzq5mfIFmWaFAuzEeyeSzYZ+hwYGgKRAFyQJsWMvNMsSesAj9dk=
-X-Gm-Gg: AY/fxX7ztIUGK4f7KlaDgWr5SPkjEyhKDYQOnOcAl26GyTnunW9qU96mpffJ81CzmKa
-	TNyCdjO6qg+Jtv1va4r8YKyW54r9BlcitKR6x/ygLA4KeuvISHaIUMNc2CltvP6hnK6ew/fcADA
-	nENvMyVmyO1SCBaTJNQAmWJ4chfmQkxJD4Q1jDcgbCiOK2zHfNWkLxi3Zkz9iGB1BHsvEU1OpPl
-	A9MTp6CYmU4IlFzqMJf7Q5SUxMu8GeMpmXC1+sxvEZd92whw21hpDybSS7aNFdXm7frPbpjslC4
-	AOZloHUyEUja+SFtYCXTjzwbk/jOPfzSXXLZD/bE3SGYA47B9gK8iKlOVlmk/uQoppze2R5+uwD
-	Av+ld/HiIkiRpuyKZIOg4++8Z5mUbKqRP2EBKRjRuVaG7mKZjmQRmyQ8rASfRnuRIreFVtdjfUT
-	0kI4GIchpQ444/eYjqV5v3ya8OXhdAkl+3JwRGWGCxZO0Kj3E5P7lChhMi7vwy+q9wgpKKGsYTx
-	BWSxw==
-X-Google-Smtp-Source: AGHT+IECCLtz04Q1g6y58MlK+cu2G+IQ+shlJTLlvJFkV+wtTDGmcQVfka7R8tosUNuc3dGp+UEbDg==
-X-Received: by 2002:a05:620a:4804:b0:8b2:7536:bd2c with SMTP id af79cd13be357-8c3894188a8mr2759937485a.78.1768261987580;
-        Mon, 12 Jan 2026 15:53:07 -0800 (PST)
+        bh=vbQpTPqvkNza84fX2uyalXQvb9OzER6/e1aJC0fiWDY=;
+        b=sezW57qZukYoi3lwtYhpXi2w1Ca5daByD2cb1oWZ/kUPdgoxypvzKAf2gP4+DRUDC8
+         kRVV4UexXp2tkMhrp0vLjD7vxTlqFPwREGOJUNCxWeumfVKlCmMonF9PPzTHDPOx/Nl7
+         ZMdtJEpdD+RUb950uacg9x8oef9RhwLwLTC0Agvfx7UoYE3/Ur4QilPKvLPLH/8eVsbv
+         nOGmh08xeO0lmRvl96Owsy+DRtwtLy6NgvsYATnyeHvgYmPlVVtJ+ARn0FHybOnV0Clz
+         v7j0cQfkW54B6p91BoXSict5a7yZN1cL4yHeSQ5Y6Gxz2aMZ5ztl68p+zoMljxR+zAYO
+         zWjw==
+X-Forwarded-Encrypted: i=1; AJvYcCVjRqh06CGlri2LMRt6UgBrrwcwt+3SYe8Rtt69qr/wHDQiU4Eae8XniyNejXG4oIN71pI=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxemBGC1X8LnOQVY7z3xBmGBfvYjhYWIkBaw+HBDYkskueefn+0
+	zp0PCFLAahkkSa0skNtBV5Ix9D5PYJ39FSmGA2xvMAorHxYEJaULVp3SxA3oaKh9n7U=
+X-Gm-Gg: AY/fxX4U4/J6Vb0C7qL807v7wo1/6g3EaHXb2ZJ29/yEQqfIzc6ELlMVXmjMXXohcyH
+	2X12Ur3jA/uqDH3bZOXgXvKs5JysOx5LV0hyWS/RiQQ3dLox9UNxi77CQ832Ppjoy06SQZ1Jb1h
+	qzDCDPfxo7z4izPoHLuAYEi3rVBZE0NDkEw7BfYYFHaYxRs4c5VzSRbW0fw4CkbaRJ6gzeazvAo
+	4ZZXMqbiwKf4t884sdKXb+55Jj1j1m45cpEZo89ohL+cfaPQUC/kD3ikDCaqcKyFAE5nzO2YiVc
+	aAIz9CubUyDJw0r/+D3Y2iU1pQ24rPmI97OBblP9B1f9+Egx+DrJCMEFT6kjzq5Lo0HDAz2A1rO
+	HYUgOFvnzWIVQXOUaqWC5JimT43yHDem73I1DI22TFJAokdxrAAZe0lfw+lVexSqVMAWC6WbPIB
+	7y7uMtdVNDiHp0OKmSgZ/fsiOa4sKsORUVUTFrOtYPnNqwyu1rdznUHIqhcKJTUNMLpvI=
+X-Google-Smtp-Source: AGHT+IFqShnh4nFq4FI+txOqV94h9FNeJmPa4/JUWRJXzRBu2Yp6JXhvTMJ52+U7dVhw4CMApET5TA==
+X-Received: by 2002:a05:622a:8d1b:b0:501:3b8c:7d63 with SMTP id d75a77b69052e-5013b8c8686mr4698571cf.26.1768262055766;
+        Mon, 12 Jan 2026 15:54:15 -0800 (PST)
 Received: from ziepe.ca (hlfxns017vw-142-162-112-119.dhcp-dynamic.fibreop.ns.bellaliant.net. [142.162.112.119])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-8c37f530907sm1597443885a.39.2026.01.12.15.53.06
+        by smtp.gmail.com with ESMTPSA id d75a77b69052e-4ffa8e35dbfsm129011631cf.19.2026.01.12.15.54.14
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 12 Jan 2026 15:53:07 -0800 (PST)
+        Mon, 12 Jan 2026 15:54:15 -0800 (PST)
 Received: from jgg by wakko with local (Exim 4.97)
 	(envelope-from <jgg@ziepe.ca>)
-	id 1vfRic-00000003fUQ-2VnR;
-	Mon, 12 Jan 2026 19:53:06 -0400
-Date: Mon, 12 Jan 2026 19:53:06 -0400
+	id 1vfRji-00000003fUm-0uFg;
+	Mon, 12 Jan 2026 19:54:14 -0400
+Date: Mon, 12 Jan 2026 19:54:14 -0400
 From: Jason Gunthorpe <jgg@ziepe.ca>
-To: Zi Yan <ziy@nvidia.com>
-Cc: Matthew Wilcox <willy@infradead.org>, Balbir Singh <balbirs@nvidia.com>,
+To: Alistair Popple <apopple@nvidia.com>
+Cc: Matthew Brost <matthew.brost@intel.com>, Zi Yan <ziy@nvidia.com>,
+	Matthew Wilcox <willy@infradead.org>,
+	Balbir Singh <balbirs@nvidia.com>,
 	Francois Dugast <francois.dugast@intel.com>,
 	intel-xe@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
-	Matthew Brost <matthew.brost@intel.com>,
 	Madhavan Srinivasan <maddy@linux.ibm.com>,
 	Nicholas Piggin <npiggin@gmail.com>,
 	Michael Ellerman <mpe@ellerman.id.au>,
@@ -92,25 +92,24 @@ Cc: Matthew Wilcox <willy@infradead.org>, Balbir Singh <balbirs@nvidia.com>,
 	"Liam R . Howlett" <Liam.Howlett@oracle.com>,
 	Vlastimil Babka <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>,
 	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>,
-	Alistair Popple <apopple@nvidia.com>, linuxppc-dev@lists.ozlabs.org,
+	Michal Hocko <mhocko@suse.com>, linuxppc-dev@lists.ozlabs.org,
 	kvm@vger.kernel.org, linux-kernel@vger.kernel.org,
 	amd-gfx@lists.freedesktop.org, nouveau@lists.freedesktop.org,
 	linux-pci@vger.kernel.org, linux-mm@kvack.org,
 	linux-cxl@vger.kernel.org
 Subject: Re: [PATCH v4 1/7] mm/zone_device: Add order argument to folio_free
  callback
-Message-ID: <20260112235306.GN745888@ziepe.ca>
-References: <874d29da-2008-47e6-9c27-6c00abbf404a@nvidia.com>
+Message-ID: <20260112235414.GO745888@ziepe.ca>
+References: <20260111205820.830410-1-francois.dugast@intel.com>
+ <20260111205820.830410-2-francois.dugast@intel.com>
+ <aWQlsyIVVGpCvB3y@casper.infradead.org>
+ <874d29da-2008-47e6-9c27-6c00abbf404a@nvidia.com>
  <0D532F80-6C4D-4800-9473-485B828B55EC@nvidia.com>
  <20260112134510.GC745888@ziepe.ca>
- <218D42B0-3E08-4ABC-9FB4-1203BB31E547@nvidia.com>
- <20260112165001.GG745888@ziepe.ca>
- <86D91C8B-C3EA-4836-8DC2-829499477618@nvidia.com>
- <20260112182500.GI745888@ziepe.ca>
- <6AFCEB51-8EE1-4AC9-8F39-FCA561BE8CB5@nvidia.com>
- <20260112192816.GL745888@ziepe.ca>
- <8DB7DC41-FDBD-4739-AABC-D363A1572ADD@nvidia.com>
+ <aWVsUu1RBKgn0VFH@lstrano-desk.jf.intel.com>
+ <45A4E73B-F6C2-44B7-8C81-13E24ED12127@nvidia.com>
+ <aWWCK0C23CUl9zEq@lstrano-desk.jf.intel.com>
+ <fzpd6caij2l73jkdvvmlk4jxlrdbt5ozu4yladpsbdc4c4jvag@d72h42nfolgh>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -119,55 +118,14 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <8DB7DC41-FDBD-4739-AABC-D363A1572ADD@nvidia.com>
+In-Reply-To: <fzpd6caij2l73jkdvvmlk4jxlrdbt5ozu4yladpsbdc4c4jvag@d72h42nfolgh>
 
-On Mon, Jan 12, 2026 at 06:34:06PM -0500, Zi Yan wrote:
-> page[1].flags.f &= ~PAGE_FLAGS_SECOND. It clears folio->order.
-> 
-> free_tail_page_prepare() clears ->mapping, which is TAIL_MAPPING, and
-> compound_head at the end.
-> 
-> page->flags.f &= ~PAGE_FLAGS_CHECK_AT_PREP. It clears PG_head for compound
-> pages.
-> 
-> These three parts undo prep_compound_page().
+On Tue, Jan 13, 2026 at 10:44:27AM +1100, Alistair Popple wrote:
 
-Well, mm doesn't clear all things on alloc..
+> Also drivers may have different strategies than just resetting everything back
+> to small pages. For example the may choose to only ever allocate large folios
+> making the whole clearing/resetting of folio fields superfluous.
 
-> In current nouveau code, ->free_folios is used holding the freed folio.
-> In nouveau_dmem_page_alloc_locked(), the freed folio is passed to
-> zone_device_folio_init(). If the allocated folio order is different
-> from the freed folio order, I do not know how you are going to keep
-> track of the rest of the freed folio. Of course you can implement a
-> buddy allocator there.
-
-nouveau doesn't support high order folios.
-
-A simple linked list is not really a suitable data structure to ever
-support high order folios with.. If it were to use such a thing, and
-did want to take a high order folio off the list, and reduce its
-order, then it would have to put the remainder back on the list with a
-revised order value. That's all, nothing hard.
-
-Again if the driver needs to store information in the struct page to
-manage its free list mechanism (ie linked pointers, order, whatever)
-then it should be doing that directly.
-
-When it takes the memory range off the free list it should call
-zone_device_page_init() to make it ready to be used again. I think it
-is a poor argument to say that zone_device_page_init() should rely on
-values already in the struct page to work properly :\
-
-The usable space within the struct page, and what values must be fixed
-for correct system function, should exactly mirror what frozen pages
-require. After free it is effectively now a frozen page owned by the
-device driver.
-
-I haven't seen any documentation on that, but I suspect Matthew and
-David have some ideas..
-
-If there is a reason for order, flags and mapping to be something
-particular then it should flow from the definition of frozen pages,
-and be documented, IMHO.
++1
 
 Jason
