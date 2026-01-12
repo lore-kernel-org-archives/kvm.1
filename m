@@ -1,131 +1,154 @@
-Received: from mail-qt1-f175.google.com (mail-qt1-f175.google.com [209.85.160.175])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB7192D3EF2
-	for <kvm@vger.kernel.org>; Mon, 12 Jan 2026 23:54:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.175
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7190142AB7;
+	Tue, 13 Jan 2026 00:17:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.9
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768262058; cv=none; b=t7Y+1H3o951fpA8e5YACRzskNsc8KSx2grnvkhTp/QEGGS3n5+bRWZyuF7kCbI/I2sMK8z7Ot5xyFYREmy87GAAsQ3qe01o3YZbIJ5P1hEJdFkEeI+l02Qcfuq7vgrunSeS5fVB94eSlDETBZO414/cw1kechUDG6oJA6Wl3xgQ=
+	t=1768263476; cv=none; b=c54/y3uD7wYqMe6pJZHFsjLs66ZLZgiOEETIDTcvOUYsosoZCuYoWZaV3AENnR3oh+1dL2tsul94iaC8YTHkR6xqbysFiBS9JG7Ke/HPYogUWGkItma0baYKL3svTwubnpX+VKkiH2yH645BFq0xQDbyDjce0q2l5r6NugMVE6M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768262058; c=relaxed/simple;
-	bh=vbQpTPqvkNza84fX2uyalXQvb9OzER6/e1aJC0fiWDY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=JqbGLVugJbKqORILpa7G3pVbWtRTetBGx6gndnnPwPim2Vywkp7hB4YVHPc2NTsTedHDhyaLYPHo1Sas1udJYkHD9akSzWX02MEM+pmSUTtYEKBhajuRRK9fU0D6g+1j4xwQ2qvJtCGi1jfTJ0y2/fBCRMX+eA8qGCqToyKWb7s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca; spf=pass smtp.mailfrom=ziepe.ca; dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b=HAWkep//; arc=none smtp.client-ip=209.85.160.175
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ziepe.ca
+	s=arc-20240116; t=1768263476; c=relaxed/simple;
+	bh=tdqDZEv2m9eHgE+ToDfh2V3OTztIE5t0gQqlDbyq6I0=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=S1vuJX937z086qEkno11/SzpQLEo8RCVwUbjdqJmZlNw83087LYMSjeFgjT87XIlh4t/AHmzZJ49VymHMGwt4+T5f0vG2liuHO3hwTZjKoZJUM4Tm1Rhj9r7F/UwEUfXEBz1OvfqfFlkyGiUFWNAPOYcAOfJ/0lblnvINOB907U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=FiB8mQns; arc=none smtp.client-ip=192.198.163.9
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b="HAWkep//"
-Received: by mail-qt1-f175.google.com with SMTP id d75a77b69052e-5013d163e2fso401641cf.0
-        for <kvm@vger.kernel.org>; Mon, 12 Jan 2026 15:54:16 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ziepe.ca; s=google; t=1768262056; x=1768866856; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=vbQpTPqvkNza84fX2uyalXQvb9OzER6/e1aJC0fiWDY=;
-        b=HAWkep//EFhJW9wywQFy2dMaCD6x0rWanih6xdYl+a8hTir2qjOknoBiE1lYRxRgVM
-         /whsUs9cl+Ycb2AwF8z46BlbbZhWzq2Pmk/lSOqE5IkoroReJFVjrZ+U+1szEvSK6pmk
-         QuYiSTtT7Z/pq6rwN+f6YxFrG2KQnyFXY5sMHbedmi3Q642Ov5MBM/fOix+b27wozxUV
-         VDzacX25oMKjSSCEjRbKUnkEQ0yhlLisnQCaTAysRvJTC6r6HiOKf1jTMCBX8OsO+m5/
-         RvXYkVstXSGVKRf9ehh9ysEdilZPK5RHl2PY19gQMPVMg125ANzOIdNrBAYetGIAzsNU
-         sMpQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1768262056; x=1768866856;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=vbQpTPqvkNza84fX2uyalXQvb9OzER6/e1aJC0fiWDY=;
-        b=sezW57qZukYoi3lwtYhpXi2w1Ca5daByD2cb1oWZ/kUPdgoxypvzKAf2gP4+DRUDC8
-         kRVV4UexXp2tkMhrp0vLjD7vxTlqFPwREGOJUNCxWeumfVKlCmMonF9PPzTHDPOx/Nl7
-         ZMdtJEpdD+RUb950uacg9x8oef9RhwLwLTC0Agvfx7UoYE3/Ur4QilPKvLPLH/8eVsbv
-         nOGmh08xeO0lmRvl96Owsy+DRtwtLy6NgvsYATnyeHvgYmPlVVtJ+ARn0FHybOnV0Clz
-         v7j0cQfkW54B6p91BoXSict5a7yZN1cL4yHeSQ5Y6Gxz2aMZ5ztl68p+zoMljxR+zAYO
-         zWjw==
-X-Forwarded-Encrypted: i=1; AJvYcCVjRqh06CGlri2LMRt6UgBrrwcwt+3SYe8Rtt69qr/wHDQiU4Eae8XniyNejXG4oIN71pI=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxemBGC1X8LnOQVY7z3xBmGBfvYjhYWIkBaw+HBDYkskueefn+0
-	zp0PCFLAahkkSa0skNtBV5Ix9D5PYJ39FSmGA2xvMAorHxYEJaULVp3SxA3oaKh9n7U=
-X-Gm-Gg: AY/fxX4U4/J6Vb0C7qL807v7wo1/6g3EaHXb2ZJ29/yEQqfIzc6ELlMVXmjMXXohcyH
-	2X12Ur3jA/uqDH3bZOXgXvKs5JysOx5LV0hyWS/RiQQ3dLox9UNxi77CQ832Ppjoy06SQZ1Jb1h
-	qzDCDPfxo7z4izPoHLuAYEi3rVBZE0NDkEw7BfYYFHaYxRs4c5VzSRbW0fw4CkbaRJ6gzeazvAo
-	4ZZXMqbiwKf4t884sdKXb+55Jj1j1m45cpEZo89ohL+cfaPQUC/kD3ikDCaqcKyFAE5nzO2YiVc
-	aAIz9CubUyDJw0r/+D3Y2iU1pQ24rPmI97OBblP9B1f9+Egx+DrJCMEFT6kjzq5Lo0HDAz2A1rO
-	HYUgOFvnzWIVQXOUaqWC5JimT43yHDem73I1DI22TFJAokdxrAAZe0lfw+lVexSqVMAWC6WbPIB
-	7y7uMtdVNDiHp0OKmSgZ/fsiOa4sKsORUVUTFrOtYPnNqwyu1rdznUHIqhcKJTUNMLpvI=
-X-Google-Smtp-Source: AGHT+IFqShnh4nFq4FI+txOqV94h9FNeJmPa4/JUWRJXzRBu2Yp6JXhvTMJ52+U7dVhw4CMApET5TA==
-X-Received: by 2002:a05:622a:8d1b:b0:501:3b8c:7d63 with SMTP id d75a77b69052e-5013b8c8686mr4698571cf.26.1768262055766;
-        Mon, 12 Jan 2026 15:54:15 -0800 (PST)
-Received: from ziepe.ca (hlfxns017vw-142-162-112-119.dhcp-dynamic.fibreop.ns.bellaliant.net. [142.162.112.119])
-        by smtp.gmail.com with ESMTPSA id d75a77b69052e-4ffa8e35dbfsm129011631cf.19.2026.01.12.15.54.14
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 12 Jan 2026 15:54:15 -0800 (PST)
-Received: from jgg by wakko with local (Exim 4.97)
-	(envelope-from <jgg@ziepe.ca>)
-	id 1vfRji-00000003fUm-0uFg;
-	Mon, 12 Jan 2026 19:54:14 -0400
-Date: Mon, 12 Jan 2026 19:54:14 -0400
-From: Jason Gunthorpe <jgg@ziepe.ca>
-To: Alistair Popple <apopple@nvidia.com>
-Cc: Matthew Brost <matthew.brost@intel.com>, Zi Yan <ziy@nvidia.com>,
-	Matthew Wilcox <willy@infradead.org>,
-	Balbir Singh <balbirs@nvidia.com>,
-	Francois Dugast <francois.dugast@intel.com>,
-	intel-xe@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
-	Nicholas Piggin <npiggin@gmail.com>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	"Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
-	Felix Kuehling <Felix.Kuehling@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Christian =?utf-8?B?S8O2bmln?= <christian.koenig@amd.com>,
-	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-	Maxime Ripard <mripard@kernel.org>,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	Lyude Paul <lyude@redhat.com>, Danilo Krummrich <dakr@kernel.org>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Logan Gunthorpe <logang@deltatee.com>,
-	David Hildenbrand <david@kernel.org>,
-	Oscar Salvador <osalvador@suse.de>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Leon Romanovsky <leon@kernel.org>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	"Liam R . Howlett" <Liam.Howlett@oracle.com>,
-	Vlastimil Babka <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>, linuxppc-dev@lists.ozlabs.org,
-	kvm@vger.kernel.org, linux-kernel@vger.kernel.org,
-	amd-gfx@lists.freedesktop.org, nouveau@lists.freedesktop.org,
-	linux-pci@vger.kernel.org, linux-mm@kvack.org,
-	linux-cxl@vger.kernel.org
-Subject: Re: [PATCH v4 1/7] mm/zone_device: Add order argument to folio_free
- callback
-Message-ID: <20260112235414.GO745888@ziepe.ca>
-References: <20260111205820.830410-1-francois.dugast@intel.com>
- <20260111205820.830410-2-francois.dugast@intel.com>
- <aWQlsyIVVGpCvB3y@casper.infradead.org>
- <874d29da-2008-47e6-9c27-6c00abbf404a@nvidia.com>
- <0D532F80-6C4D-4800-9473-485B828B55EC@nvidia.com>
- <20260112134510.GC745888@ziepe.ca>
- <aWVsUu1RBKgn0VFH@lstrano-desk.jf.intel.com>
- <45A4E73B-F6C2-44B7-8C81-13E24ED12127@nvidia.com>
- <aWWCK0C23CUl9zEq@lstrano-desk.jf.intel.com>
- <fzpd6caij2l73jkdvvmlk4jxlrdbt5ozu4yladpsbdc4c4jvag@d72h42nfolgh>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="FiB8mQns"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1768263475; x=1799799475;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=tdqDZEv2m9eHgE+ToDfh2V3OTztIE5t0gQqlDbyq6I0=;
+  b=FiB8mQnsprvUgLvg4fivlybXdat1UxEBsSOpdY90ySG76jyu2eSI+PJZ
+   WRfQSDrO/seSYA4uq5oO9NQYHofZUzqnIgkbvxlZsu4y7gfLfN6qbA3tN
+   lbfdme5Y1eHUq5X8Yht4U+ms9AyXiYBZpn1V5MO00pA6my3zE2XKIFUt6
+   8Dsvy/A9gtEnXD25eomE5mitYiOTAxSSShhIOMwpbwfhvooi2Z8cqQOv4
+   wUfz1Hqi2WnaTW5sRxDxBi5aK7S8IDlzCpX7XTovQWHfljN6GSNiUT8dj
+   xbPRTJTTvGI2yhG+Nbq+E/M+jW/F+3FdTEQ04ytdd0s3m9fAUR8UzDcas
+   A==;
+X-CSE-ConnectionGUID: HI6u12aPS+Ocw3FyGG1shg==
+X-CSE-MsgGUID: JFVOA7o5QaqE+uAc4NrP5g==
+X-IronPort-AV: E=McAfee;i="6800,10657,11669"; a="80264167"
+X-IronPort-AV: E=Sophos;i="6.21,222,1763452800"; 
+   d="scan'208";a="80264167"
+Received: from orviesa009.jf.intel.com ([10.64.159.149])
+  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Jan 2026 16:17:55 -0800
+X-CSE-ConnectionGUID: /BxfuyfhT3Ki83gEsBDnZA==
+X-CSE-MsgGUID: VZmJ5bkhQhSTMzxoYuRv8w==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.21,222,1763452800"; 
+   d="scan'208";a="204042138"
+Received: from chang-linux-3.sc.intel.com (HELO chang-linux-3) ([172.25.66.172])
+  by orviesa009.jf.intel.com with ESMTP; 12 Jan 2026 16:17:55 -0800
+From: "Chang S. Bae" <chang.seok.bae@intel.com>
+To: pbonzini@redhat.com,
+	seanjc@google.com
+Cc: kvm@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	chao.gao@intel.com,
+	chang.seok.bae@intel.com
+Subject: [PATCH v2 00/16] KVM: x86: Enable APX for guests
+Date: Mon, 12 Jan 2026 23:53:52 +0000
+Message-ID: <20260112235408.168200-1-chang.seok.bae@intel.com>
+X-Mailer: git-send-email 2.51.0
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <fzpd6caij2l73jkdvvmlk4jxlrdbt5ozu4yladpsbdc4c4jvag@d72h42nfolgh>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-On Tue, Jan 13, 2026 at 10:44:27AM +1100, Alistair Popple wrote:
+Hi all,
 
-> Also drivers may have different strategies than just resetting everything back
-> to small pages. For example the may choose to only ever allocate large folios
-> making the whole clearing/resetting of folio fields superfluous.
+Here is a summary of changes since the last posting [1]:
 
-+1
+  * PATCH 2/3: Move EGPR accessor code to x86.c (Paolo)
+  * PATCH 11:  Rename NoRex to NoRex2 (Paolo)
+  * PATCH 05:  Remove an unused function parameter (Chao)
+  * PATCH 7/8: Reorder nVMX changes after VMX patches (Chao)
 
-Jason
+With this posting, I would like to see if I can collect some review tags.
+
+For anyone looking at this series for the first time, please refer to the
+initial RFC posting cover and the related discussions [3], while a brief
+overview is here:
+
+  APX [2] extends the general-purpose register set (EGPRs). Unlike legacy
+  GPRs, the state is not cached by KVM, so will be accessed directly to
+  live hardware registers (Part1). Based on that, VMX exit handling
+  (Part2) and instruction emulation (Part3) are updated before the
+  feature is exposed to guests (Part4).
+
+  * Part1, PATCH 01-03: GPR accessor refactoring and EGPR support
+  * Part2, PATCH 04-08: VMX handler changes for EGPR indices
+  * Part3, PATCH 09-12: Emulator changes for REX2 support
+  * Part4, PATCH 13-16: Feature expossure and self-tests
+
+The series is also available here:
+  git://github.com/intel/apx.git apx-kvm_v2
+
+This version is rebased on v6.19-rc5. I do not see any direct dependency
+on other pending changes right now; any conflict should be manageable
+later.
+
+Thanks,
+Chang
+
+[1] V1: https://lore.kernel.org/kvm/20251221040742.29749-1-chang.seok.bae@intel.com/
+[2] APX Architecture Specification:
+    https://cdrdv2.intel.com/v1/dl/getContent/784266
+[3] RFC: https://lore.kernel.org/kvm/20251110180131.28264-1-chang.seok.bae@intel.com/
+
+Chang S. Bae (15):
+  KVM: x86: Rename register accessors to be GPR-specific
+  KVM: x86: Refactor GPR accessors to differentiate register access
+    types
+  KVM: x86: Implement accessors for extended GPRs
+  KVM: VMX: Introduce unified instruction info structure
+  KVM: VMX: Refactor instruction information retrieval
+  KVM: VMX: Refactor GPR index retrieval from exit qualification
+  KVM: VMX: Support extended register index in exit handling
+  KVM: nVMX: Propagate the extended instruction info field
+  KVM: emulate: Support EGPR accessing and tracking
+  KVM: emulate: Handle EGPR index and REX2-incompatible opcodes
+  KVM: emulate: Support REX2-prefixed opcode decode
+  KVM: emulate: Reject EVEX-prefixed instructions
+  KVM: x86: Guard valid XCR0.APX settings
+  KVM: x86: Expose APX sub-features to guests
+  KVM: x86: selftests: Add APX state handling and XCR0 sanity checks
+
+Peter Fang (1):
+  KVM: x86: Expose APX foundational feature bit to guests
+
+ arch/x86/include/asm/kvm_host.h               |  19 +++
+ arch/x86/include/asm/kvm_vcpu_regs.h          |  16 +++
+ arch/x86/include/asm/vmx.h                    |   2 +
+ arch/x86/kvm/Kconfig                          |   4 +
+ arch/x86/kvm/cpuid.c                          |  14 +-
+ arch/x86/kvm/emulate.c                        | 121 +++++++++++-----
+ arch/x86/kvm/kvm_emulate.h                    |  11 +-
+ arch/x86/kvm/reverse_cpuid.h                  |   6 +
+ arch/x86/kvm/svm/svm.c                        |  23 +++-
+ arch/x86/kvm/vmx/nested.c                     |  87 ++++++------
+ arch/x86/kvm/vmx/nested.h                     |   2 +-
+ arch/x86/kvm/vmx/vmcs12.c                     |   1 +
+ arch/x86/kvm/vmx/vmcs12.h                     |   3 +-
+ arch/x86/kvm/vmx/vmx.c                        |  26 ++--
+ arch/x86/kvm/vmx/vmx.h                        | 106 ++++++++++++--
+ arch/x86/kvm/x86.c                            | 130 ++++++++++++++++--
+ arch/x86/kvm/x86.h                            |  24 +++-
+ arch/x86/kvm/xen.c                            |   2 +-
+ .../selftests/kvm/include/x86/processor.h     |   1 +
+ tools/testing/selftests/kvm/x86/state_test.c  |   6 +
+ .../selftests/kvm/x86/xcr0_cpuid_test.c       |  19 +++
+ 21 files changed, 498 insertions(+), 125 deletions(-)
+
+
+base-commit: 0f61b1860cc3f52aef9036d7235ed1f017632193
+-- 
+2.51.0
+
