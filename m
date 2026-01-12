@@ -1,32 +1,32 @@
-Received: from out-189.mta0.migadu.com (out-189.mta0.migadu.com [91.218.175.189])
+Received: from out-185.mta0.migadu.com (out-185.mta0.migadu.com [91.218.175.185])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4AAE437E313
-	for <kvm@vger.kernel.org>; Mon, 12 Jan 2026 18:21:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.189
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B37FD38759C
+	for <kvm@vger.kernel.org>; Mon, 12 Jan 2026 18:21:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.185
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768242065; cv=none; b=cH96B1XLXLGwyUZKa6G0fXsGDSdp/VbYi6SaMvShy8nTz3sO/jbNCnzNZ2j3T/R/S4PCwfuirN7xDCM0P33Rd8jkGxKV9EjqLWx1sMFsZgEZClxQwmeWauCMAu7uVJ9XpiYCC96SH+KjUOd02aXFqMdmxvC4CsA7BBel5HGw/XU=
+	t=1768242068; cv=none; b=NiF+biKSkpgTuxdJWti5WjbXX+/iIgYf2fWcCosCF2Ov1O96RKuGhKwsdgqEUr+/PmuYjxvQA62XbScfDrJZCl1zVwqgNYq/A75nubQx3Bae2WqgPun/LjzAQqZ2g51kZC0h2CuNurXsa9udcmkFc6rYNOh427oAmJTpzs/mvko=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768242065; c=relaxed/simple;
-	bh=ZP1mn4bHwR4r+xJXujbptyJ8W9fs/jT+5blROmqFZ9Q=;
+	s=arc-20240116; t=1768242068; c=relaxed/simple;
+	bh=pF8M4RT/DIu46geDcka5K3ZjbFoyrgDYMIKPrjTCBFg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iYxEYo/Lf7hsLb/0HdEDxK9VbRpXyK8Jk08G9S34A3LEG7psCduWYxEQaIt2mmSGoHjOOXsLQKHk/bS6sKO/wVC8RIPdIFTuXb/8CBObKcOlVXH04xkuVgHUU5vmUtmqo7W0o1fcIn7SKZQva1CqS6fNXrRyFoTO3UI34i1171I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=ej8RGT+X; arc=none smtp.client-ip=91.218.175.189
+	 MIME-Version; b=btcmzwYr4mXuzX0qTP9fQtyuLPyh5k5oYak9tpW0m+lgf7s6wDQbfU9ZeabSNK2/r9Cd58BM0KjIr07ObaqHm4bss7KSh46yGeG5hWcP4lqLAPlMkOvHaY4i4dSd7bu2Htikl9p+KG0NKlVo+zFrF+1FpLEoLzQnSFGIeEK/Qco=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=cCYuBOlc; arc=none smtp.client-ip=91.218.175.185
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="ej8RGT+X"
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="cCYuBOlc"
 X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1768242061;
+	t=1768242064;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=Du2Y150Cd0hwJwMYNN9fKh2HDvkLWVWAy3LstWCtYd0=;
-	b=ej8RGT+XKWGizg8YJY+b6wewqOWgbXcGFLKRby9HgmJs9zQnooxSB4gUpdrmf3txcdQhJm
-	NtbNW8WOdJk3xezY6CT49mA9zSIIBJ3CeYlMu/+kpm3JCsD1S4mQ34VUzutOdeHAxgOkkT
-	9GhwHjSFztH1WeCkFpMlCotV+nDnV9w=
+	bh=uf866YKszpbrYKhbWeW6pYpVeLDu+l46yUOT9cuMBtM=;
+	b=cCYuBOlc2OFpub1UUuj4T1DeUwCbu8sdKMmFvBsBoOur68uHNOBZoqf6Td0SD9XL4Kt1Tj
+	F/CJ2Wut+IiqgvCcfxcNuFhoJhCdxE6Z+3nU06meBAbUujjfL9dujHeuKvWQikzVCL8BgJ
+	45NVmE7xH8VzhBS3gHIvoAaRBLr4HCo=
 From: Yosry Ahmed <yosry.ahmed@linux.dev>
 To: Sean Christopherson <seanjc@google.com>
 Cc: Paolo Bonzini <pbonzini@redhat.com>,
@@ -34,9 +34,9 @@ Cc: Paolo Bonzini <pbonzini@redhat.com>,
 	kvm@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	Yosry Ahmed <yosry.ahmed@linux.dev>
-Subject: [PATCH 1/3] KVM: nSVM: Use intuitive local variables in recalc_intercepts()
-Date: Mon, 12 Jan 2026 18:20:20 +0000
-Message-ID: <20260112182022.771276-2-yosry.ahmed@linux.dev>
+Subject: [PATCH 3/3] KVM: nSVM: Use vmcb12_is_intercept() in nested_sync_control_from_vmcb02()
+Date: Mon, 12 Jan 2026 18:20:22 +0000
+Message-ID: <20260112182022.771276-4-yosry.ahmed@linux.dev>
 In-Reply-To: <20260112182022.771276-1-yosry.ahmed@linux.dev>
 References: <20260112182022.771276-1-yosry.ahmed@linux.dev>
 Precedence: bulk
@@ -48,102 +48,28 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Migadu-Flow: FLOW_OUT
 
-recalc_intercepts() currently uses c, h, g as local variables for the
-control area of the current VMCB, vmcb01, and (cached) vmcb12.
-
-The current VMCB should always be vmcb02 when recalc_intercepts() is
-executed in guest mode. Use vmcb01/vmcb02 local variables instead to
-make it clear the function is updating intercepts in vmcb02 based on the
-intercepts in vmcb01 and (cached) vmcb12.
-
-Add a WARNING() if the current VMCB is not in fact vmcb02.
+Use vmcb12_is_intercept() instead of open-coding the intercept check.
 
 No functional change intended.
 
 Signed-off-by: Yosry Ahmed <yosry.ahmed@linux.dev>
 ---
- arch/x86/kvm/svm/nested.c | 31 +++++++++++++++----------------
- 1 file changed, 15 insertions(+), 16 deletions(-)
+ arch/x86/kvm/svm/nested.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/arch/x86/kvm/svm/nested.c b/arch/x86/kvm/svm/nested.c
-index f295a41ec659..2dda52221fd8 100644
+index bacb2ac4c59e..1c18928369f2 100644
 --- a/arch/x86/kvm/svm/nested.c
 +++ b/arch/x86/kvm/svm/nested.c
-@@ -125,8 +125,7 @@ static bool nested_vmcb_needs_vls_intercept(struct vcpu_svm *svm)
- 
- void recalc_intercepts(struct vcpu_svm *svm)
- {
--	struct vmcb_control_area *c, *h;
--	struct vmcb_ctrl_area_cached *g;
-+	struct vmcb *vmcb01, *vmcb02;
- 	unsigned int i;
- 
- 	vmcb_mark_dirty(svm->vmcb, VMCB_INTERCEPTS);
-@@ -134,14 +133,14 @@ void recalc_intercepts(struct vcpu_svm *svm)
- 	if (!is_guest_mode(&svm->vcpu))
- 		return;
- 
--	c = &svm->vmcb->control;
--	h = &svm->vmcb01.ptr->control;
--	g = &svm->nested.ctl;
-+	vmcb01 = svm->vmcb01.ptr;
-+	vmcb02 = svm->nested.vmcb02.ptr;
-+	WARN_ON_ONCE(svm->vmcb != vmcb02);
- 
- 	for (i = 0; i < MAX_INTERCEPT; i++)
--		c->intercepts[i] = h->intercepts[i];
-+		vmcb02->control.intercepts[i] = vmcb01->control.intercepts[i];
- 
--	if (g->int_ctl & V_INTR_MASKING_MASK) {
-+	if (svm->nested.ctl.int_ctl & V_INTR_MASKING_MASK) {
- 		/*
- 		 * If L2 is active and V_INTR_MASKING is enabled in vmcb12,
- 		 * disable intercept of CR8 writes as L2's CR8 does not affect
-@@ -152,9 +151,9 @@ void recalc_intercepts(struct vcpu_svm *svm)
- 		 * the effective RFLAGS.IF for L1 interrupts will never be set
- 		 * while L2 is running (L2's RFLAGS.IF doesn't affect L1 IRQs).
- 		 */
--		vmcb_clr_intercept(c, INTERCEPT_CR8_WRITE);
--		if (!(svm->vmcb01.ptr->save.rflags & X86_EFLAGS_IF))
--			vmcb_clr_intercept(c, INTERCEPT_VINTR);
-+		vmcb_clr_intercept(&vmcb02->control, INTERCEPT_CR8_WRITE);
-+		if (!(vmcb01->save.rflags & X86_EFLAGS_IF))
-+			vmcb_clr_intercept(&vmcb02->control, INTERCEPT_VINTR);
- 	}
- 
- 	/*
-@@ -162,14 +161,14 @@ void recalc_intercepts(struct vcpu_svm *svm)
- 	 * flush feature is enabled.
+@@ -534,7 +534,7 @@ void nested_sync_control_from_vmcb02(struct vcpu_svm *svm)
+ 	 * int_ctl (because it was never recognized while L2 was running).
  	 */
- 	if (!nested_svm_l2_tlb_flush_enabled(&svm->vcpu))
--		vmcb_clr_intercept(c, INTERCEPT_VMMCALL);
-+		vmcb_clr_intercept(&vmcb02->control, INTERCEPT_VMMCALL);
+ 	if (svm_is_intercept(svm, INTERCEPT_VINTR) &&
+-	    !test_bit(INTERCEPT_VINTR, (unsigned long *)svm->nested.ctl.intercepts))
++	    !vmcb12_is_intercept(&svm->nested.ctl, INTERCEPT_VINTR))
+ 		mask &= ~V_IRQ_MASK;
  
- 	for (i = 0; i < MAX_INTERCEPT; i++)
--		c->intercepts[i] |= g->intercepts[i];
-+		vmcb02->control.intercepts[i] |= svm->nested.ctl.intercepts[i];
- 
- 	/* If SMI is not intercepted, ignore guest SMI intercept as well  */
- 	if (!intercept_smi)
--		vmcb_clr_intercept(c, INTERCEPT_SMI);
-+		vmcb_clr_intercept(&vmcb02->control, INTERCEPT_SMI);
- 
- 	if (nested_vmcb_needs_vls_intercept(svm)) {
- 		/*
-@@ -177,10 +176,10 @@ void recalc_intercepts(struct vcpu_svm *svm)
- 		 * we must intercept these instructions to correctly
- 		 * emulate them in case L1 doesn't intercept them.
- 		 */
--		vmcb_set_intercept(c, INTERCEPT_VMLOAD);
--		vmcb_set_intercept(c, INTERCEPT_VMSAVE);
-+		vmcb_set_intercept(&vmcb02->control, INTERCEPT_VMLOAD);
-+		vmcb_set_intercept(&vmcb02->control, INTERCEPT_VMSAVE);
- 	} else {
--		WARN_ON(!(c->virt_ext & VIRTUAL_VMLOAD_VMSAVE_ENABLE_MASK));
-+		WARN_ON(!(vmcb02->control.virt_ext & VIRTUAL_VMLOAD_VMSAVE_ENABLE_MASK));
- 	}
- }
- 
+ 	if (nested_vgif_enabled(svm))
 -- 
 2.52.0.457.g6b5491de43-goog
 
