@@ -1,248 +1,123 @@
-Received: from SN4PR0501CU005.outbound.protection.outlook.com (mail-southcentralusazon11011017.outbound.protection.outlook.com [40.93.194.17])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 87FD06F2F2;
-	Mon, 12 Jan 2026 14:56:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.93.194.17
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768229803; cv=fail; b=tUqDjTEYEjJRu9OTYmDZydbdotUsMQeFslbQriuRGey+LNfaltuCe3ZeGO9IE8yWyRvTywIJVncrPrUZVYCTcODTSS3ua8y26iOBP37sCjVmVEB55rRkgT0d+xrkzvDwbAKFIhBcuIYHKxpeY7JTLuXAxPlWixYLcE/UEWq5MOg=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768229803; c=relaxed/simple;
-	bh=JTYmvnQzaB+wfZIoZaq91MX4so1JERPZBEC4iJh0Uc4=;
-	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=OM3mCgvjOr2G0Q1M/bU0y4XpTDiMVP7hjIR5n6HiFSW6ee59sB2HTk0xyw7j6GKjvBybrKCkRxeqLJFf7BPQIHVCxsh2TSbZqP4yAjdk9fTN6hqI3XVVJONox0pCebtPP+djcwVaeCI5VvTsKQ3DZ0oy6nSkrBl1Stv6XfuFhek=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=KJO7jv7r; arc=fail smtp.client-ip=40.93.194.17
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B314C2BEC5A;
+	Mon, 12 Jan 2026 14:57:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.13
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1768229822; cv=none; b=SG8Dl0WOuiki8v3d3FYtbm3FNqrLIBzJiAsIJLE4TtneecPynp2eNSgeTcWBBKSav5GhBGelI2LQGM/736/ovUDGf/LBRMuq90snhknGzNZ+8jUJjrrnZL/ybS2+SffJC51ovh/qG7V4AzuL3OHapEfg/YWWcl1neUuFxViwQl4=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1768229822; c=relaxed/simple;
+	bh=WD54qJ16hTHbBSmfZ5Ss1r9X1pGqM23RBaEwZKutcQI=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=Z1LCyYHmdz5sRGVqY6J3ZfMpIgB+W8IHJ49D5ftHj7qeNwIwNYtnffLfEm/f4rPIR7dnmzUKPSpst6/La3QZHTgndf7RNlEkFV5hXenFinNxkZ9hWzTNplao+6sQzEeKGiRRqAeNC/NV/RUxQMGXz4lcSu5kXp2ZVkuGo8dkEv8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=dpQxthbB; arc=none smtp.client-ip=192.198.163.13
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="KJO7jv7r"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=PXREwUMqKlgH/M/afb8lOyUlCAZrnc3hMBp6qR2gpmRQrIdKyWA6JGoCyAGesaFica+UHeyQyGE6twXcuVPBt7w79+YzBBu2SbhhbS+jaxchvgf1CwuwcVtQqprJKQg/cwaTnYp/gHpYYkEW0sCvrLScZXP7fCuPIskm5X/jiwln0N/d4f6phOX8+M9eua1Y+SQBYpzPRsIOtUtek9CoXaw6QEf1yMzzQVSONjY/2kim8gTalPpDry+KDIUjAsQMmwSCRW1gpsGUlqgw+lehtWHY0R0JzaqXDqzamM3zNaWqusdHnJK5mM0H659H0YTVALH+OpkO+sIys1eHz2oQtA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=RSPK60YoGahwIv93vY5tyv7YvlL0ESoZun9xjYX6M/Q=;
- b=rczYyn5orGmw4m8e2kv7167a1baXi59kl1cK4w3qTGa3fcHffHajfm84a7muFrdhb9v7cJ9l53+0jMRoI8WSp9l8F0Zfrov3c4bMGmTH8tsGDlmjZWSkCJX/uLEs77LaTK2wETT6ULr+IvoPoGLSGcZ1+pFU0DGwekg0vSOzthH4EyiLjzcldE8+6hUD45AZUA2ZOTFLPWPAcCObTd/0NlYSuC+J3/+lJo0ssiN3lTjMIiyj6IjtZMoVfS9+Jcdm8U3x6fwG8pwm1gGD7BXs2vOZCfoGAFfsF17mU3GUXjGCnV23V1DnruvQr3MGTZ89+2M4v5VDqHIpWvTLBtTW1Q==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
- header.d=amd.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=RSPK60YoGahwIv93vY5tyv7YvlL0ESoZun9xjYX6M/Q=;
- b=KJO7jv7ro51CSQ0iQNubUFrXM5Bpv+Rot3eRVFvJpUYpQ30S7B2qpsJu4J5iwBhAQfF4K/pHNh0VqTPqdzezYI2IfeYG3WV/99J+2O6OO+Tj/PoYnMGEabc6RmzPS1Q1ZCPufz6GgUTpVG+pdIZ+KDfcFl7mBln3DIiHRoEelxw=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=amd.com;
-Received: from PH7PR12MB5685.namprd12.prod.outlook.com (2603:10b6:510:13c::22)
- by DS0PR12MB8526.namprd12.prod.outlook.com (2603:10b6:8:163::9) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9499.7; Mon, 12 Jan
- 2026 14:56:38 +0000
-Received: from PH7PR12MB5685.namprd12.prod.outlook.com
- ([fe80::46fb:96f2:7667:7ca5]) by PH7PR12MB5685.namprd12.prod.outlook.com
- ([fe80::46fb:96f2:7667:7ca5%4]) with mapi id 15.20.9499.005; Mon, 12 Jan 2026
- 14:56:38 +0000
-Message-ID: <f7f1856a-44fa-44af-b496-eb1267a05d11@amd.com>
-Date: Mon, 12 Jan 2026 15:56:32 +0100
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 0/4] dma-buf: add revoke mechanism to invalidate shared
- buffers
-To: Jason Gunthorpe <jgg@ziepe.ca>, Simona Vetter <simona.vetter@ffwll.ch>
-Cc: Leon Romanovsky <leon@kernel.org>, Sumit Semwal
- <sumit.semwal@linaro.org>, Alex Williamson <alex@shazbot.org>,
- Kevin Tian <kevin.tian@intel.com>, Joerg Roedel <joro@8bytes.org>,
- Will Deacon <will@kernel.org>, Robin Murphy <robin.murphy@arm.com>,
- linux-rdma@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-media@vger.kernel.org, dri-devel@lists.freedesktop.org,
- linaro-mm-sig@lists.linaro.org, kvm@vger.kernel.org, iommu@lists.linux.dev
-References: <20260111-dmabuf-revoke-v1-0-fb4bcc8c259b@nvidia.com>
- <eed9fd4c-ca36-4f6a-af10-56d6e0997d8c@amd.com>
- <20260112121956.GE14378@unreal>
- <2db90323-9ddc-4408-9074-b44d9178bc68@amd.com>
- <20260112141440.GE745888@ziepe.ca>
-Content-Language: en-US
-From: =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>
-In-Reply-To: <20260112141440.GE745888@ziepe.ca>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: FR4P281CA0398.DEUP281.PROD.OUTLOOK.COM
- (2603:10a6:d10:cf::16) To PH7PR12MB5685.namprd12.prod.outlook.com
- (2603:10b6:510:13c::22)
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="dpQxthbB"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1768229820; x=1799765820;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=WD54qJ16hTHbBSmfZ5Ss1r9X1pGqM23RBaEwZKutcQI=;
+  b=dpQxthbBXpdDnwyuhM8ohHgK+uMB2vuos4fef7usFR5R4F2/4vIo4frE
+   qu5jlZ8mbSMP68zVoW7KfJ3EbISvLLDt/+Rq9SR88VJ3L4McF4ctFfS0B
+   xgJohbeffiNwvZQEnNHl+Qq/qk3k4FeatvYgDte4S4NNsoTHURjU1qQFh
+   le54gXpIenrn3jiXw7FuTqGP2ACe0Y8xJAyeS/eIixQhj/et2hNeNwkev
+   n0n1edpeOMPXD9fYd7ouq5sL4r0VAd64RxVsuWRiB0zWyU42S4fCLJCzl
+   OjHWFHz80LgA7BBVhX9xNF1LRgedFv1YA2fzacm1sVMw2mnFqDC8meXg0
+   Q==;
+X-CSE-ConnectionGUID: rFBetPEaSm2hyR/eOqX0qg==
+X-CSE-MsgGUID: CrnsP1TJSyyotk4GF85uew==
+X-IronPort-AV: E=McAfee;i="6800,10657,11669"; a="72081449"
+X-IronPort-AV: E=Sophos;i="6.21,221,1763452800"; 
+   d="scan'208";a="72081449"
+Received: from fmviesa001.fm.intel.com ([10.60.135.141])
+  by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Jan 2026 06:57:00 -0800
+X-CSE-ConnectionGUID: 0fyUfJw0S/igRNcawuLDxw==
+X-CSE-MsgGUID: /KL+0o1zSj+4NIEnURgDwA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.21,221,1763452800"; 
+   d="scan'208";a="235344703"
+Received: from vverma7-desk1.amr.corp.intel.com (HELO [10.125.110.123]) ([10.125.110.123])
+  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Jan 2026 06:56:59 -0800
+Message-ID: <f0cc6afe-0f58-4314-9a77-34c5b005b677@intel.com>
+Date: Mon, 12 Jan 2026 06:56:58 -0800
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PH7PR12MB5685:EE_|DS0PR12MB8526:EE_
-X-MS-Office365-Filtering-Correlation-Id: eda155c2-f9da-44f0-68cc-08de51eac9cf
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|7416014|1800799024|366016;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?UDNnVFcrUnRjOVREQk1FTndta1R0azBJNkFqd2JOWGxhZ0JzcEMrQTVLTCt0?=
- =?utf-8?B?eGxQaWtvM0VIZXlXVkZTVlZvbllxcHR3OC9KdlByTmRiKzBGUXMvWGxoYTEr?=
- =?utf-8?B?Y1QwbzZrNkJFVWgwbFlKTlRMYjNtTlpHNlN4VFV4Vndhd05ENTBMeU1EbUhI?=
- =?utf-8?B?S29GbVVRNmZzTTgzc2RGTmZwMlFJYnFVNXJQazl3cmNlMSs4Z0RJWnpKQmNo?=
- =?utf-8?B?ZnZBUVlFUkVBMnRxdEgxVXpTcXl5aVJxZlViMGVEbDJQNkNLaDR2WkpVSnFm?=
- =?utf-8?B?RU9aOUw4YW5oUlZwaTdzNmNlQmJtcmk4YlN6cG9PMUI2b2JrREJLQk1rSkFW?=
- =?utf-8?B?ak5iY0U2UGVBNE1yRHgyMi9aVjNRZkExY2I1VnRrcmNQVzdZRUVlSm9DS3NN?=
- =?utf-8?B?TzloN3U4NTYzT28wQkh6M2IxcXkzVnYzQlJIQklrSGR6eEtYRWJ4STRRckhs?=
- =?utf-8?B?K0N1L0pFQ0E2L0crd256K3oyaVJHeFZLRkQ0UEFDM1owYlkwYVd0SHE1dkdZ?=
- =?utf-8?B?Ky8yYVFzRFhKaHl2Mys3SENTN2JlOHBiVnNYREEyQStwK1J1aXYzRHVhdG5V?=
- =?utf-8?B?MkpJOWJpRWlwbUxsWmQrbnNqbUxTaWFYaDV0L1VKWUxuWVJiQnk0bEVnRGc4?=
- =?utf-8?B?MG9mTmlVTGhHckZXajFWZTk5UGtEQnBFRnFscUllSUZEUlRNam1GSUQzUEt1?=
- =?utf-8?B?Z0NTTWNyc0E0QkJwbm01dzluSzg1bTBhQXlyRmsyRWlYN29OVEt6SloxYkhl?=
- =?utf-8?B?RHhEM01qNmx4NmJoVVBHN2RocHpBYnhIZkNYcXNtTG9wWCt1ZWpOZGZYVVU0?=
- =?utf-8?B?MWViY0pDZk9TR29Sa3pCRXB2YlhSUFFtV1lxb0Z3SXFlL1pUQ0VuRUJOVHY5?=
- =?utf-8?B?OE1ZaGY0MG5CTXNkNWdFeEcyR3BsUVVZRXZYQmlXeXYrUTZPMEZkeTBYUklY?=
- =?utf-8?B?ajRuakVFV2VZSUVjeHNLazJzMzNkd2xLV1QyUnlsMi9YdDgyNnlraWZJT3o5?=
- =?utf-8?B?a01McjZ0WHVOWUEzcVFEZzJWc3FFUmFycUFvNW9BYzlqdTUzN2JsRG1QOW5i?=
- =?utf-8?B?TGxTM2t6Z05IZFRYeXB0TmFZYTZURmE4bU42VDIvZm5KQ3NyTW1sdjdhcWZV?=
- =?utf-8?B?ZFhBMExKc21TR1pseUwxOTU5RFJISHJ4elV3dVZvdktJdjVkakt2dnJvSG16?=
- =?utf-8?B?OUc0aVIwUSs2UHdobWh0a3hGSFZ2eDFMU0lPVW0xM1BRdTBZVzhoNDZPUWNE?=
- =?utf-8?B?WDR6STVqS2RzOWNwUlB4clREQnZuK1ExNjRrTGlwL3lEZ09vYVNxd3BRUXN6?=
- =?utf-8?B?VWhLZTNLMzlVNHdRUzJTdy8zSENtUmYyalNTY3hHcXM2SGRrSWRzalhEbTcx?=
- =?utf-8?B?aWVIakxlVzhTdmpjUHB2K3lsbWdsN0xqcmFna0N2MXlaRnhRalEvc0l0Qjd0?=
- =?utf-8?B?TXBiMm5lcS82SEtUekxZM3Q3cjU3bnpHOG4rb09ZUEdGdTBTSzZEREprKzBs?=
- =?utf-8?B?bEovUldBRDVJY3VISlA2MzFoWmhkdE05Rnd5NHFUQ25FZDJvSThGK3I3djlX?=
- =?utf-8?B?Z2t0b0dCRjQxRGp3WGU4R0pzNm4zWEJwRGMvY1JIWTBrMzc2c0tDY0s3Ukln?=
- =?utf-8?B?RUIyQ3QycTJvQjA0RHFlUExHZksveXdvd1J6ajYwYThINTRnQVhRZHhtZXZs?=
- =?utf-8?B?NzV3cUU3Smlpc3czU21FNEc0eDc3dFRTRjNFTHNEU29QMEhlaWZEVkpucENT?=
- =?utf-8?B?NkNna0x0SXFObzlOZ0d6b2hvd093MFNPRXZDNnhpY2lRUjM2ck5DSlp5MFQ5?=
- =?utf-8?B?SjNwQjdDMm1aalV0ZVdrcHUyc3FMN2JsSmtzYzdNNlJJcGdjYVUydUJNVThs?=
- =?utf-8?B?ZDh0TEJnbjF2alROZWZ3dTU1N0Q1U2VsK0h2RWNvQnlnY1Q0Q1BURzdWWEVw?=
- =?utf-8?B?eithWnNHa3l0R2ZscE5Tc2s5NUdDamNSTFNXbXhONldyeHF0SVRLVjcwalpy?=
- =?utf-8?B?MzFtbDhNTExRPT0=?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH7PR12MB5685.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(1800799024)(366016);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?akhTOWJXbEdxNGdXV3UxVEpxYjVwamtLWU1ZbmFjV2cwNWF3M1hWR1pFelhj?=
- =?utf-8?B?SzM2REladGN6UWZkdmNRdnUwZ1RpbmdlWllnUnJpd2FIcFJqMk8rdGhvTGFD?=
- =?utf-8?B?TzdZT25ES0lSVGdpbUZSaXBpRjBqOVBVU3lUdG91SFRxZEE2d1pDeXZUcFZj?=
- =?utf-8?B?OUxOeVRWWVlGa0VYbXYzYmVmVG5ZcXRwMlpxSXMxT0xsUktHR1RVVS9iUXZP?=
- =?utf-8?B?S2VxM3llUDB2N2JNSG9BdHJIWmpjSXE4YWUvYXB1ckc0NzJ0aG1jQzFzNVN0?=
- =?utf-8?B?aGh6aldOT255VzNVbkJxV09qbHZMYkI5WGJpZW1SZ2x6cnpxQnBHaEEzRjJT?=
- =?utf-8?B?RTU1ek5QMU5OZGsxOUNTM1dybDdlY2o5Nng4QjBiZFhBdFdmNTg5b3RETVVt?=
- =?utf-8?B?dDV3bzg2dXNkckpsUjRYNEhaUkFDSHcvZlRTRnVVOUpSbXliajBLVjgvYmd5?=
- =?utf-8?B?T2hsRllVbU51clJEUWRtdXZYWk9zc0I0dzQvWmc2YytPTFcwY1BqVnRiRVVk?=
- =?utf-8?B?WDNvU01tdVUyNFpZOHliTUE0TG5TREhpTTkxanBycmFZajBaL0dZRnhwWlpF?=
- =?utf-8?B?aFlTUDdaRXdneGRBcnoxdmFIWno5a0hmUEhmNm9ucGZlSU4ydk4vdGFyL1pv?=
- =?utf-8?B?Q0l1OFRYcitFV3JlVjNsL0N6blF0a1JCRXlOTjVuQkVNVWt2em1XY3V3N05G?=
- =?utf-8?B?UEZ1a29WSGt6akM4WnUycmpKYm8vSWViRjMrSTJ6LzErR3IyazRGY09CNXE4?=
- =?utf-8?B?WjFPeDRzMncvVmxKM0FXVDFOZVF0MUpYVmVrTXAyKzFjNnJ6SldEb3NjNE5v?=
- =?utf-8?B?QWE0K1F0TitTTkpIdXo5RzBWOXgyR0ROaU9xZ3AvdW5aa2U1QVFVQ29WZ3ZW?=
- =?utf-8?B?cjUyQXJTc3FzbXdZalhFbnQ0cTRVYVFySG5vNjhZQWkvZldPRTFiSVRDL2Z6?=
- =?utf-8?B?UlU1VmZSWkphLytxQk9LQktXM0NvVE1KSUVVc2J4eEFBbm9KRkNhc3BkUlhS?=
- =?utf-8?B?eHc4NmYyc3U2NEpEV1V1Sk9UYUZ0cEdjRlQ5RW0xOUc0cStBaG9LazM1ancy?=
- =?utf-8?B?d2NleWUvSml4NGhibUFLMWE5OXI1TUNpT1UzK2tDYXFPb21ueThWci9ZMCtY?=
- =?utf-8?B?UHRzMmZFWUc0TnJoS29VSnRnMndpYTRtZkZEaFhLaFVxSGFKV0F0RVBjekdh?=
- =?utf-8?B?dzEydlRGMlU1SHNzMzFMeHRWMEQxSVYybXBkK1MwK1JtRCtRVHRqSGxxS2tH?=
- =?utf-8?B?cEdNZHhUaDNYRWUwdWZZclp1UmgxUEhyQnc5cWszOGZWeTdFRlpzbVg0V1U0?=
- =?utf-8?B?TXNpMFRBdk5tKzNqOVNRRFNKTWRrbWZBRHM3eTFUVSttNUh4SUs0NEhvZXZu?=
- =?utf-8?B?eUdMeEpRd0dJUXJES0ZON3o0VGNGbGs1Mm5Mck0rakQ5Q1FiOVRBMC9ScWJp?=
- =?utf-8?B?SDBGbEpERkNJbGgzdjU2NGNpWnY3MTAyV0tscnJ5bjJwaW83MnVDVVNqMWNu?=
- =?utf-8?B?SWJ0dzdTODU0T2pUbk51bUZwNG9WcU5sMzFqbDdHcmowUy9Td1g4NkJxNEdY?=
- =?utf-8?B?aGVoN2xDcEZJWmJSNkxHdis5SEtMVHpDRWFVRzYzVGFrS0RUNU9abUZqUEds?=
- =?utf-8?B?NWNMazYvbjdRcHhTZnZOd0JtK0s2QmhSN2FmdGNRdVdXd0h3ME5EY2xYSWdF?=
- =?utf-8?B?M0srS1FHUFpnOHJVUWErWVFoSVRUa2Nha2w1STJhaTN2YVRNSFZyc21JdlY3?=
- =?utf-8?B?RHlVb1dib2wrejVndWNLRGdNTWNLanowK0FRcitNa3M5b3VYS3hTb1JyUkZ6?=
- =?utf-8?B?SHI2eFh1SVRrSEYrRDd6dVVGSzhVUmdMa3d1SEpxVVNYbVZXdS8xOXJMcjFL?=
- =?utf-8?B?alFzbUFVYXRIZzVWR0prODdpNU04Y3EveHdWWEo4S0ErUjlZTVFIM0IvU2Ja?=
- =?utf-8?B?bXg3UldNSGZpSjM2VjZWZ3dxckRnQ2tTdVRWb1NBU0hqWUdDU0NYdm51V0hB?=
- =?utf-8?B?c0x3ZVFRNzMzYk05TXVHdEQxeTZ1d05yNnFNMElnNmdCRlcxY2tsYWVobTVM?=
- =?utf-8?B?NW9VbnlHU0I5QzJDTWZLb0MyZzlmeUJGdHpTNnRraHhQejVjamNDVC84OERn?=
- =?utf-8?B?eTdvS1IycXlhRWp4UWVtWVhiR0w4M0pPWkpldjBLTnJKWDUweHMrR2VRM2hD?=
- =?utf-8?B?TlZXVmhlVi8xQVBCSzhBdzF5anV1SUdmTytuZVZ4YTZLY0d1Nk9XallSbmY1?=
- =?utf-8?B?cDdpYml5WGJtWEFOb3QxQXhIN0QvcjJqWjJWR1VnaXhIM1pzNWthSVNaUDhU?=
- =?utf-8?Q?fovrMIZezKDeZDKhbw?=
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: eda155c2-f9da-44f0-68cc-08de51eac9cf
-X-MS-Exchange-CrossTenant-AuthSource: PH7PR12MB5685.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 12 Jan 2026 14:56:38.4621
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 4Whwq1c/yCYbCmiiHcuiuxpEppDWTRfNr8YPodUQhueuipAqZpHM90d6LpjowJXV
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS0PR12MB8526
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 1/2] x86/virt/tdx: Retrieve TDX module version
+To: Xiaoyao Li <xiaoyao.li@intel.com>, Vishal Verma
+ <vishal.l.verma@intel.com>, linux-kernel@vger.kernel.org,
+ linux-coco@lists.linux.dev, kvm@vger.kernel.org
+Cc: x86@kernel.org, Chao Gao <chao.gao@intel.com>,
+ Dan Williams <dan.j.williams@intel.com>, Kai Huang <kai.huang@intel.com>,
+ Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
+ Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>,
+ "H. Peter Anvin" <hpa@zytor.com>, Kiryl Shutsemau <kas@kernel.org>,
+ Rick Edgecombe <rick.p.edgecombe@intel.com>
+References: <20260109-tdx_print_module_version-v2-0-e10e4ca5b450@intel.com>
+ <20260109-tdx_print_module_version-v2-1-e10e4ca5b450@intel.com>
+ <93ab41bc-91bf-405a-84c4-6355a556596d@intel.com>
+Content-Language: en-US
+From: Dave Hansen <dave.hansen@intel.com>
+Autocrypt: addr=dave.hansen@intel.com; keydata=
+ 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
+In-Reply-To: <93ab41bc-91bf-405a-84c4-6355a556596d@intel.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On 1/12/26 15:14, Jason Gunthorpe wrote:
-> On Mon, Jan 12, 2026 at 01:57:25PM +0100, Christian König wrote:
->> Clear NAK to that plan. This is not something DMA-buf should need to
->> deal with and as far as I can see is incompatible with the UAPI.
-> 
-> We had this discussion with Simona and you a while back and there was
-> a pretty clear direction we needed to add a revoke to sit inbetween
-> pin and move. I think Leon has no quite got the "dmabuf lingo" down
-> right to explain this.
+On 1/11/26 18:25, Xiaoyao Li wrote:
+> ... I know it's because minor_version has the least field ID among the
+> three. But the order of the field IDs doesn't stand for the order of the
+> reading. Reading the middle part y of x.y.z as first step looks a bit odd.
 
-I was already wondering why this was clearly not what we have discussed before.
-
->  https://lore.kernel.org/dri-devel/Z4Z4NKqVG2Vbv98Q@phenom.ffwll.local/
-> 
->    Since you mention pin here, I think that's another aspect of the revocable
->    vs dynamic question. Dynamic buffers are expected to sometimes just move
->    around for no reason, and importers must be able to cope.
-> 
->    For recovable exporters/importers I'd expect that movement is not
->    happening, meaning it's pinned until the single terminal revocation. And
->    maybe I read the kvm stuff wrong, but it reads more like the latter to me
->    when crawling through the pfn code.
-> 
-> The issue is that DMABUF only offers two attachment options today, pin
-> and move. iommufd/kvm can implement pin, but not move because they
-> don't support faulting.
-> 
-> vfio and others don't need move with faulting but they do need pin
-> with a terminal, emergency, revocation.
-
-Yeah, I know that this is confusing. But that use case is already supported and we just need to properly document things.
-
-The move_notify callback can be called even after pin() in the case of PCIe hotplug for example.
-
-We could potentially rename the callback to something like invalidate_mappings.
-
-And yes, I know that we had a few issues with that because we didn't properly documented things...
-> The purpose of revoke is to add a new negotiated attachment mode
-> between exporter and importer that behaves the same as pin up until
-> the user does something catastrophic (like ubind a driver) then a
-> revoke invalidation is used to clean everything up safely.
-
-With or with pin() you need to guarantee to the importer that the DMA address you gave out stay valid until the importer had a chance to free up it's mappings.
-
-It is intentionally done this way to properly support PCIe hot plug because even when a device is gone the address space can't be re-used until all importers stated that they stopped their DMA.
-
-> You are right that the existing move_notify already meets this
-> semantic, and today VFIO exporter, RDMA ODP importer even implement
-> this. Upon VFIO revoke move_notify() will invalidate and map() will
-> fail. RDMA ODP then HW fails all faults.
-> 
-> The problem revoke is designed to solve is that many importers have
-> hardware that can either be DMA'ing or failing. There is no fault
-> mechanims that can be used to implement the full "move around for no
-> reason" semantics that are implied by move_notify.
-
-In this case just call dma_buf_pin(). We already support that approach for RDMA devices which can't do ODP.
-
-Regards,
-Christian.
-
-> Thus they can't implement move_notify!
-> 
-> Revoke allows this less capable HW to still be usable with exporters,
-> so long as exporters promise only to issue an invalidation for a
-> "single terminal revocation". Which does nicely match the needs of
-> exporters which are primarily pin based.
-> 
-> IOW this is an enhancement to pin modes to add a terminal error case
-> invalidation to pinned attachments.
-> 
-> It is not intended to be UAPI changing, and Leon is not trying to say
-> that importers have to drop their attachment. The attachment just
-> becomes permanently non-present.
-> 
-> Jason
-
+I wouldn't sweat it either way. Reading 4, 3, 5 would also look odd. I'm
+fine with it as-is in the patch.
