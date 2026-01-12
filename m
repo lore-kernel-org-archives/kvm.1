@@ -1,197 +1,149 @@
-Received: from mail-qt1-f169.google.com (mail-qt1-f169.google.com [209.85.160.169])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from out-189.mta0.migadu.com (out-189.mta0.migadu.com [91.218.175.189])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB20829AAFA
-	for <kvm@vger.kernel.org>; Mon, 12 Jan 2026 17:59:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.160.169
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768240798; cv=pass; b=B0HrOOtRk62RUSkYlcn3HLkwD2n6MeqS6EvakIBwMrVfr26bGc/eRg7E3ZHhpfJ1eNakl/QKzBZILJNpyh3T7SN3Cb/fblVUp6E6cwsv2OXo4BgF3FkJQ9EfpF2KRzAjvleDjM/gz+4/j5Ysr6Nh1kUGtvnawV2FCUkvqXS2UxU=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768240798; c=relaxed/simple;
-	bh=W2KRaBZYvG8HVg3eIWgL8kg0vNUppturNmvWPxflHbg=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=ryeO5GKmp8V2L5E+sDcoL1H01s16yueIYm07iHOiDHVUxR7g7KQ7Y7Y9E4v5WS5/A+vlhTv1SUfP0rsltIfbNbedKT/GgwHmPPrnlQHYe5V4xIZRrDGwZKc43TaR38GAVDW6/BuMThxAxn+OXW/0BoH7ie+Fgp0KYpTIO6H8tWU=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=z9wZuziO; arc=pass smtp.client-ip=209.85.160.169
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4AAE437E313
+	for <kvm@vger.kernel.org>; Mon, 12 Jan 2026 18:21:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.189
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1768242065; cv=none; b=cH96B1XLXLGwyUZKa6G0fXsGDSdp/VbYi6SaMvShy8nTz3sO/jbNCnzNZ2j3T/R/S4PCwfuirN7xDCM0P33Rd8jkGxKV9EjqLWx1sMFsZgEZClxQwmeWauCMAu7uVJ9XpiYCC96SH+KjUOd02aXFqMdmxvC4CsA7BBel5HGw/XU=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1768242065; c=relaxed/simple;
+	bh=ZP1mn4bHwR4r+xJXujbptyJ8W9fs/jT+5blROmqFZ9Q=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=iYxEYo/Lf7hsLb/0HdEDxK9VbRpXyK8Jk08G9S34A3LEG7psCduWYxEQaIt2mmSGoHjOOXsLQKHk/bS6sKO/wVC8RIPdIFTuXb/8CBObKcOlVXH04xkuVgHUU5vmUtmqo7W0o1fcIn7SKZQva1CqS6fNXrRyFoTO3UI34i1171I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=ej8RGT+X; arc=none smtp.client-ip=91.218.175.189
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="z9wZuziO"
-Received: by mail-qt1-f169.google.com with SMTP id d75a77b69052e-4ee147baf7bso81cf.1
-        for <kvm@vger.kernel.org>; Mon, 12 Jan 2026 09:59:56 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1768240796; cv=none;
-        d=google.com; s=arc-20240605;
-        b=IjcAigquLlAHB6ibq/0cKv0fKPrvbaNAsJ2G6rO3ox0B8p5tLg9jZhabQUAbuMNNtj
-         uE1tTnBn/35LaQntHEBAl+QV9BEGmF0J6eisvNpr/GgPLXEGs09IVJLlAZ0Ax2fuP2fI
-         hrTmFjzD0jdCzeMALO2v//POGE+bbtgRlEGCxGkSDtz4Y9mcEAwoocuusR6nqIodDWNL
-         WrTRPoWiSXfPbJEmDL8KwpP7VJYUHRo/vVhcRTObHCXFthqrlvUP600R5cqSL0APyerZ
-         ajGyBS7n2/vXFFq2O7MZlKYHg9SKOaXMWFy3IhFJwku4gy1aF1xv3ygeq/YIavji7OiN
-         2S/g==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:dkim-signature;
-        bh=bJjpEAphM/NB+/t61DhxYCEIiQ3uh5viKOO+at6PH6g=;
-        fh=GtkDn9RefXOFR8nNio1cYhYmwjB5tafO2C+sB21NeBQ=;
-        b=GE+AxZ5f5rDHQI+L9+LzTdqqjrRH/22+nOTb5DOzE6zZm4xoFLlZWg1npBaJqwKXNW
-         QMs7n6RNPVaRD2t014YXDZZWz6WsXD/FkQANNge1hxjPQ517NYLwPn67VQ0G6Evl0vtz
-         LOYeW77TgYXtsB9YVY1xFh1HXsX61K4peyHDEtrH9WSvCQNOM4b13SLjzT6pvZ9oejsD
-         Nair0whIoUDxA4IhWi9BdkcbIEi73BwAKV4Pvw41YkCUFIoa2KiNazaCbLWdIukI8lVe
-         jGmLMaS2u80DULlq/F4P290lsHq5UjXWIs4nU399rLRe5adqQmKZ7QJpZ6dMjJFFWjRE
-         +uyg==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1768240796; x=1768845596; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=bJjpEAphM/NB+/t61DhxYCEIiQ3uh5viKOO+at6PH6g=;
-        b=z9wZuziO/HLkdQvgQlLAQeD650exNhp3chBXsmGignnysuk3g8vtBx1tED3fq1fp4Q
-         XhTgrjRzniyPykzbI6ggldfLy+EjSZasJ35/9ajLagge7t0vh2BXqLgpImUxaaPoOQcW
-         bSC4xSd+TvNOPXWGo7j0YTfRHjN+2HSfNlvTByBKZByVx2gp1OG7oRNk0O3wvb1aFTHF
-         VHkUx9DJ1pGTd3RcznuGvaeN07uJWRAs6zOioLQxmotS/fb/C+HsOT9LgSDJGLAOP0Z3
-         DC4YQLiWJYS2c7vAxx0kna8t8o1uAwOt8Rc7U98llPuwua9DowDDG6gPNWZUS4OpWnus
-         YbKA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1768240796; x=1768845596;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=bJjpEAphM/NB+/t61DhxYCEIiQ3uh5viKOO+at6PH6g=;
-        b=uVQ0ftUSo8BBZ+VUptkrR/Wno9WkVmvoPtKIuNaacUHpxu3C7PB1K8SFC6ppXKhaqp
-         iR1tA6kZCb7SpuO4c8TPfF9gLLsQF6Mk1cQbOB59HTdj3wtWmQAbi3weF5CkB8r9MaFE
-         M+jyRX7ONsBekVLHmRMVWDsjJhtRTcw9KzfDgkBUae6TTjexJ0XqvZwbPZHYH2dOY586
-         jNT1jn77ZMJZ6fsXLDty8I3plWEX1pX3V6jljemulSoxH8yoRPsMtowDYe1YOmXNgec1
-         Oynb2kS6e1VXPuE8VeOmetNhOCX9FCSU6R/fv0gGJw5oK9raA6vQ/B62VNGHEviGCzmq
-         Mkyw==
-X-Forwarded-Encrypted: i=1; AJvYcCU+bf+68KpV+OcZven+KVtwMR4pyZpZD2ffPzTmcS60Ely0Kc0vRL8gXiP0F92Ar+mhI5Y=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxdOLVh+6AZRqeXh9623EsAysiBYtrxY+cxjSr0hHw2nw1DlvnT
-	3Q830WOBGekLjB3S+r4YPkfCC81QYJEPLyFw+CWSs1w6kWrzKrH02OlXfplMcjVS2QlzceG7ZR7
-	mH7MBnExJNDzWjzYxbU9PQu8AUAzolkOWSR61/1Mx
-X-Gm-Gg: AY/fxX5p3bDKimt8elLScOg/8mpgHSD8zhgRQqBwGnL6TlA8gtjKpW9G77FIZ+2/jCx
-	Uu5ivkbZhwfyoVvBrTP9lUHnoz6fZFdAeutjwr5wEyyH5IHbm4xeI3D/N8VSCpk4G4kGga4nmQg
-	NrTZcX1CERRt9MnvcuTyMx02iXWJLxj9mTlrJ2/vzPwf2+03WaGiTsVl5HCHrMHC5H28uT3DF2F
-	IIvxjsoXbq2VDwfx7vMuvzjjU0hhnEicEmSPjl3qxuFPonJXCOEmRSPPoG7kZJD7moqx6w8
-X-Received: by 2002:ac8:7dc5:0:b0:4f1:9c3f:2845 with SMTP id
- d75a77b69052e-50119766a66mr21632291cf.9.1768240795172; Mon, 12 Jan 2026
- 09:59:55 -0800 (PST)
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="ej8RGT+X"
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1768242061;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=Du2Y150Cd0hwJwMYNN9fKh2HDvkLWVWAy3LstWCtYd0=;
+	b=ej8RGT+XKWGizg8YJY+b6wewqOWgbXcGFLKRby9HgmJs9zQnooxSB4gUpdrmf3txcdQhJm
+	NtbNW8WOdJk3xezY6CT49mA9zSIIBJ3CeYlMu/+kpm3JCsD1S4mQ34VUzutOdeHAxgOkkT
+	9GhwHjSFztH1WeCkFpMlCotV+nDnV9w=
+From: Yosry Ahmed <yosry.ahmed@linux.dev>
+To: Sean Christopherson <seanjc@google.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>,
+	Kevin Cheng <chengkev@google.com>,
+	kvm@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Yosry Ahmed <yosry.ahmed@linux.dev>
+Subject: [PATCH 1/3] KVM: nSVM: Use intuitive local variables in recalc_intercepts()
+Date: Mon, 12 Jan 2026 18:20:20 +0000
+Message-ID: <20260112182022.771276-2-yosry.ahmed@linux.dev>
+In-Reply-To: <20260112182022.771276-1-yosry.ahmed@linux.dev>
+References: <20260112182022.771276-1-yosry.ahmed@linux.dev>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20251223-kvm-arm64-sme-v9-0-8be3867cb883@kernel.org> <20251223-kvm-arm64-sme-v9-19-8be3867cb883@kernel.org>
-In-Reply-To: <20251223-kvm-arm64-sme-v9-19-8be3867cb883@kernel.org>
-From: Fuad Tabba <tabba@google.com>
-Date: Mon, 12 Jan 2026 17:59:17 +0000
-X-Gm-Features: AZwV_QiQU0Otl0OZ50pDvqjq5GLQexN4JJXUaeH6JoNDjhaymp7I-l_cuFsktUI
-Message-ID: <CA+EHjTwQ4fLBE1YXoB6M0eamSgGDW=nfLaC+-_surBfVbh3byQ@mail.gmail.com>
-Subject: Re: [PATCH v9 19/30] KVM: arm64: Provide assembly for SME register access
-To: Mark Brown <broonie@kernel.org>
-Cc: Marc Zyngier <maz@kernel.org>, Joey Gouly <joey.gouly@arm.com>, 
-	Catalin Marinas <catalin.marinas@arm.com>, Suzuki K Poulose <suzuki.poulose@arm.com>, 
-	Will Deacon <will@kernel.org>, Paolo Bonzini <pbonzini@redhat.com>, Jonathan Corbet <corbet@lwn.net>, 
-	Shuah Khan <shuah@kernel.org>, Oliver Upton <oupton@kernel.org>, Dave Martin <Dave.Martin@arm.com>, 
-	Mark Rutland <mark.rutland@arm.com>, Ben Horgan <ben.horgan@arm.com>, 
-	linux-arm-kernel@lists.infradead.org, kvmarm@lists.linux.dev, 
-	linux-kernel@vger.kernel.org, kvm@vger.kernel.org, linux-doc@vger.kernel.org, 
-	linux-kselftest@vger.kernel.org, Peter Maydell <peter.maydell@linaro.org>, 
-	Eric Auger <eric.auger@redhat.com>
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
+X-Migadu-Flow: FLOW_OUT
 
-Hi Mark,
+recalc_intercepts() currently uses c, h, g as local variables for the
+control area of the current VMCB, vmcb01, and (cached) vmcb12.
 
-On Tue, 23 Dec 2025 at 01:22, Mark Brown <broonie@kernel.org> wrote:
->
-> Provide versions of the SME state save and restore functions for the
-> hypervisor to allow it to restore ZA and ZT for guests.
->
-> Signed-off-by: Mark Brown <broonie@kernel.org>
-> ---
->  arch/arm64/include/asm/kvm_hyp.h |  3 +++
->  arch/arm64/kvm/hyp/fpsimd.S      | 26 ++++++++++++++++++++++++++
->  2 files changed, 29 insertions(+)
->
-> diff --git a/arch/arm64/include/asm/kvm_hyp.h b/arch/arm64/include/asm/kvm_hyp.h
-> index 0317790dd3b7..1cef9991d238 100644
-> --- a/arch/arm64/include/asm/kvm_hyp.h
-> +++ b/arch/arm64/include/asm/kvm_hyp.h
-> @@ -116,6 +116,9 @@ void __fpsimd_save_state(struct user_fpsimd_state *fp_regs);
->  void __fpsimd_restore_state(struct user_fpsimd_state *fp_regs);
->  void __sve_save_state(void *sve_pffr, u32 *fpsr, int save_ffr);
->  void __sve_restore_state(void *sve_pffr, u32 *fpsr, int restore_ffr);
-> +int __sve_get_vl(void);
-> +void __sme_save_state(void const *state, bool restore_zt);
-> +void __sme_restore_state(void const *state, bool restore_zt);
+The current VMCB should always be vmcb02 when recalc_intercepts() is
+executed in guest mode. Use vmcb01/vmcb02 local variables instead to
+make it clear the function is updating intercepts in vmcb02 based on the
+intercepts in vmcb01 and (cached) vmcb12.
 
-Would it be a good idea to pass the VL to these functions. Currently,
-they assume that the hardware's current VL matches the buffer's
-intended layout. But if there is a mismatch between the guest's VL and
-the current one, this could be difficult to debug. Passing the VL and
-checking it against _sme_rdsvl would be an inexpensive way to avoid
-these.
+Add a WARNING() if the current VMCB is not in fact vmcb02.
 
->
->  u64 __guest_enter(struct kvm_vcpu *vcpu);
->
-> diff --git a/arch/arm64/kvm/hyp/fpsimd.S b/arch/arm64/kvm/hyp/fpsimd.S
-> index 6e16cbfc5df2..44a1b0a483da 100644
-> --- a/arch/arm64/kvm/hyp/fpsimd.S
-> +++ b/arch/arm64/kvm/hyp/fpsimd.S
-> @@ -29,3 +29,29 @@ SYM_FUNC_START(__sve_save_state)
->         sve_save 0, x1, x2, 3
->         ret
->  SYM_FUNC_END(__sve_save_state)
-> +
-> +SYM_FUNC_START(__sve_get_vl)
-> +       _sve_rdvl       0, 1
-> +       ret
-> +SYM_FUNC_END(__sve_get_vl)
+No functional change intended.
 
-Since this is just one instruction, would it be better to implement it
-as an inline assembly in the header file rather than a full
-SYM_FUNC_START, to reduce the overhead?
+Signed-off-by: Yosry Ahmed <yosry.ahmed@linux.dev>
+---
+ arch/x86/kvm/svm/nested.c | 31 +++++++++++++++----------------
+ 1 file changed, 15 insertions(+), 16 deletions(-)
 
-> +
-> +SYM_FUNC_START(__sme_save_state)
+diff --git a/arch/x86/kvm/svm/nested.c b/arch/x86/kvm/svm/nested.c
+index f295a41ec659..2dda52221fd8 100644
+--- a/arch/x86/kvm/svm/nested.c
++++ b/arch/x86/kvm/svm/nested.c
+@@ -125,8 +125,7 @@ static bool nested_vmcb_needs_vls_intercept(struct vcpu_svm *svm)
+ 
+ void recalc_intercepts(struct vcpu_svm *svm)
+ {
+-	struct vmcb_control_area *c, *h;
+-	struct vmcb_ctrl_area_cached *g;
++	struct vmcb *vmcb01, *vmcb02;
+ 	unsigned int i;
+ 
+ 	vmcb_mark_dirty(svm->vmcb, VMCB_INTERCEPTS);
+@@ -134,14 +133,14 @@ void recalc_intercepts(struct vcpu_svm *svm)
+ 	if (!is_guest_mode(&svm->vcpu))
+ 		return;
+ 
+-	c = &svm->vmcb->control;
+-	h = &svm->vmcb01.ptr->control;
+-	g = &svm->nested.ctl;
++	vmcb01 = svm->vmcb01.ptr;
++	vmcb02 = svm->nested.vmcb02.ptr;
++	WARN_ON_ONCE(svm->vmcb != vmcb02);
+ 
+ 	for (i = 0; i < MAX_INTERCEPT; i++)
+-		c->intercepts[i] = h->intercepts[i];
++		vmcb02->control.intercepts[i] = vmcb01->control.intercepts[i];
+ 
+-	if (g->int_ctl & V_INTR_MASKING_MASK) {
++	if (svm->nested.ctl.int_ctl & V_INTR_MASKING_MASK) {
+ 		/*
+ 		 * If L2 is active and V_INTR_MASKING is enabled in vmcb12,
+ 		 * disable intercept of CR8 writes as L2's CR8 does not affect
+@@ -152,9 +151,9 @@ void recalc_intercepts(struct vcpu_svm *svm)
+ 		 * the effective RFLAGS.IF for L1 interrupts will never be set
+ 		 * while L2 is running (L2's RFLAGS.IF doesn't affect L1 IRQs).
+ 		 */
+-		vmcb_clr_intercept(c, INTERCEPT_CR8_WRITE);
+-		if (!(svm->vmcb01.ptr->save.rflags & X86_EFLAGS_IF))
+-			vmcb_clr_intercept(c, INTERCEPT_VINTR);
++		vmcb_clr_intercept(&vmcb02->control, INTERCEPT_CR8_WRITE);
++		if (!(vmcb01->save.rflags & X86_EFLAGS_IF))
++			vmcb_clr_intercept(&vmcb02->control, INTERCEPT_VINTR);
+ 	}
+ 
+ 	/*
+@@ -162,14 +161,14 @@ void recalc_intercepts(struct vcpu_svm *svm)
+ 	 * flush feature is enabled.
+ 	 */
+ 	if (!nested_svm_l2_tlb_flush_enabled(&svm->vcpu))
+-		vmcb_clr_intercept(c, INTERCEPT_VMMCALL);
++		vmcb_clr_intercept(&vmcb02->control, INTERCEPT_VMMCALL);
+ 
+ 	for (i = 0; i < MAX_INTERCEPT; i++)
+-		c->intercepts[i] |= g->intercepts[i];
++		vmcb02->control.intercepts[i] |= svm->nested.ctl.intercepts[i];
+ 
+ 	/* If SMI is not intercepted, ignore guest SMI intercept as well  */
+ 	if (!intercept_smi)
+-		vmcb_clr_intercept(c, INTERCEPT_SMI);
++		vmcb_clr_intercept(&vmcb02->control, INTERCEPT_SMI);
+ 
+ 	if (nested_vmcb_needs_vls_intercept(svm)) {
+ 		/*
+@@ -177,10 +176,10 @@ void recalc_intercepts(struct vcpu_svm *svm)
+ 		 * we must intercept these instructions to correctly
+ 		 * emulate them in case L1 doesn't intercept them.
+ 		 */
+-		vmcb_set_intercept(c, INTERCEPT_VMLOAD);
+-		vmcb_set_intercept(c, INTERCEPT_VMSAVE);
++		vmcb_set_intercept(&vmcb02->control, INTERCEPT_VMLOAD);
++		vmcb_set_intercept(&vmcb02->control, INTERCEPT_VMSAVE);
+ 	} else {
+-		WARN_ON(!(c->virt_ext & VIRTUAL_VMLOAD_VMSAVE_ENABLE_MASK));
++		WARN_ON(!(vmcb02->control.virt_ext & VIRTUAL_VMLOAD_VMSAVE_ENABLE_MASK));
+ 	}
+ }
+ 
+-- 
+2.52.0.457.g6b5491de43-goog
 
-I think that this needs an isb(). We need to ensure that SMCR updates
-are visible here. Looking ahead to where you introduce
-__hyp_sme_save_guest(), that doesn't have a barrier after updating
-SMCR. The alternative is to call the barrier where it's needed, but
-make sure that this is well documented.
-
-> +       _sme_rdsvl      2, 1            // x2 = VL/8
-> +       sme_save_za 0, x2, 12           // Leaves x0 pointing to the end of ZA
-> +
-> +       cbz     x1, 1f
-> +       _str_zt 0
-> +1:
-> +       ret
-> +SYM_FUNC_END(__sme_save_state)
-> +
-> +SYM_FUNC_START(__sme_restore_state)
-
-Same as above.
-
-Cheers,
-/fuad
-
-
-
-
-
-
-
-> +       _sme_rdsvl      2, 1            // x2 = VL/8
-> +       sme_load_za     0, x2, 12       // Leaves x0 pointing to end of ZA
-> +
-> +       cbz     x1, 1f
-> +       _ldr_zt 0
-> +
-> +1:
-> +       ret
-> +SYM_FUNC_END(__sme_restore_state)
->
-> --
-> 2.47.3
->
