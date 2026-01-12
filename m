@@ -1,48 +1,48 @@
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED57D222575;
-	Tue, 13 Jan 2026 00:18:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CFA9C42AB7;
+	Tue, 13 Jan 2026 00:18:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.9
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768263505; cv=none; b=am1nJEY9C1k5NvlUm/ce9nQjnpSOK1I/1U26ZiEV9HgQYvaxFetSN8GCt647/iaS+Dohm6fgqg+18QjrjPxCu/I0SldyUtHkbIrTmNApNVvYA+yHrMVAsiM43aCNil3AttxuCWF3+6e14gOMiZqCQiAkfxwlkI2icv6kuLmCBsc=
+	t=1768263511; cv=none; b=TxAxcKVWjfIpM3jOkjnLpE5eCuD9Q1eo8At4u8KrbhR3ra9URMsy+6X1XezFgrh7bOycoNIsHkIPWlsJ0lq8YAIhdwHPg5VzWRS+hyopNQbW3q7ewkCeIR5uwogAPRZTggth0S0uYG6zhPPsOBF+97PwEmCtUsFyP3Rk8z2bw9s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768263505; c=relaxed/simple;
-	bh=AxtiZdC1mdnLSNJozf0M74rSveKnMdB55Lw6msYv7os=;
+	s=arc-20240116; t=1768263511; c=relaxed/simple;
+	bh=9P+wM6gafHW0wSB7dhCz2sdL6IyN88yEg6n5053amAo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oQiSnYjS+f8mkMnMP+2FqoRCn6w8Te066qQ+tilwVlx6UJ8gcK18ZOwDHvHbjZJXGfT71mScCBuy1FbM/ZwzDg8RHgbGc9Y4fuB4C8qmaIvmwCDahaHfYUQq1tv9zhuq58U+NTMCSqgflzBQxX9ylWvi+4AZTV4hUdvPhKmmJmk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=mbcZrG9g; arc=none smtp.client-ip=192.198.163.9
+	 MIME-Version; b=naNSBtHUeFwxAHZ/IAI9nUICrhBQyBRr4qDbzaeRJi/eiD1NCyTL84FGruAlAL3hzEtWVfxru3p0IMFgOs1KTcjmr1fypxxX6gz1ZCZczAq7Bz0S62u4ll2y1l/U9dDnyE0qLkF5ZeoN+yQojNq18s7h/t3cVdvYD2nZYWeqqBo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=M3R/dKik; arc=none smtp.client-ip=192.198.163.9
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="mbcZrG9g"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="M3R/dKik"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1768263500; x=1799799500;
+  t=1768263508; x=1799799508;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=AxtiZdC1mdnLSNJozf0M74rSveKnMdB55Lw6msYv7os=;
-  b=mbcZrG9gJdovwCVRAmevNmHFsGGT9ZkGSgxQoLcgfSWeI6POHwooHaC3
-   zgVbLhiaNKssZGTM51BBcBzzu2YQrU+OWEMCo1nr5RXjg8B8X31x5lb6r
-   pu0nIjBJPiinDE4OWnBfM4McnvrHdGpTeHA43gPOevVJW4AKWpb+TL6MQ
-   4wYlPXnqNsMGV/lTNrcHSCv0jnqbpj/QKCEQvmAMGSPsmT+3lekayF8C7
-   J6qaq2ECDu3ifzPajnDEcQdtCaI4V3/JgCQbee5wxKv8wtRmzIzgY5tN0
-   nenNdEdE2oHRjgiP/Yqlj36N70eJkCS2GKFCEcpuCfkgw/GJu1wg/i/VO
+  bh=9P+wM6gafHW0wSB7dhCz2sdL6IyN88yEg6n5053amAo=;
+  b=M3R/dKikKbG9mAMUR3jtD8nMpSLmpjMwKGdcC1oizBXSqdK331aT8cwD
+   VZAheyvuvEjaoPrsYE4GljGQJvhSwrWf1Z0AwDpmXRx0mxp1M7ijb47j0
+   oarDJVlHCesGUfNepmIcFCi83SqG0viPM4yKI75sm6awWyjFH6Y/DnH0n
+   25tabt8S+/TZLBYo+0+5+NJ41+5oVFlGu+Cfn41nyj5ASPZ0aox3oFsrs
+   H79giryeVZCG3behlpp9T4Kcbal2Ps/nnCzMRLtA4+5+lUgvB2DdTSzPu
+   erzDuUVt+Gi3IhFAwZEoUDUFwqxVUgqYELYGR3hBcxy2Uaidld8rx6wgP
    w==;
-X-CSE-ConnectionGUID: DlgKPieCTne9id+iJ0v4HA==
-X-CSE-MsgGUID: YTuA9pg3SfCmPu63iz1WQg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11669"; a="80264217"
+X-CSE-ConnectionGUID: haO1s5v+Q8GNOGbwUjvb0A==
+X-CSE-MsgGUID: 5WhiK3qsQtijeCuZOLFqzQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11669"; a="80264235"
 X-IronPort-AV: E=Sophos;i="6.21,222,1763452800"; 
-   d="scan'208";a="80264217"
+   d="scan'208";a="80264235"
 Received: from orviesa009.jf.intel.com ([10.64.159.149])
-  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Jan 2026 16:18:19 -0800
-X-CSE-ConnectionGUID: LJ/yjpUmTf6ILniLOyVVkA==
-X-CSE-MsgGUID: PW50k+rJRWGQwycl0g2E7g==
+  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Jan 2026 16:18:26 -0800
+X-CSE-ConnectionGUID: mnbF3JiBT1eUlwQ/TjGHlg==
+X-CSE-MsgGUID: AeVjomSZTpGFy/CodFlz4A==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.21,222,1763452800"; 
-   d="scan'208";a="204042251"
+   d="scan'208";a="204042260"
 Received: from chang-linux-3.sc.intel.com (HELO chang-linux-3) ([172.25.66.172])
-  by orviesa009.jf.intel.com with ESMTP; 12 Jan 2026 16:18:20 -0800
+  by orviesa009.jf.intel.com with ESMTP; 12 Jan 2026 16:18:27 -0800
 From: "Chang S. Bae" <chang.seok.bae@intel.com>
 To: pbonzini@redhat.com,
 	seanjc@google.com
@@ -50,9 +50,9 @@ Cc: kvm@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	chao.gao@intel.com,
 	chang.seok.bae@intel.com
-Subject: [PATCH v2 05/16] KVM: VMX: Refactor instruction information retrieval
-Date: Mon, 12 Jan 2026 23:53:57 +0000
-Message-ID: <20260112235408.168200-6-chang.seok.bae@intel.com>
+Subject: [PATCH v2 07/16] KVM: VMX: Support extended register index in exit handling
+Date: Mon, 12 Jan 2026 23:53:59 +0000
+Message-ID: <20260112235408.168200-8-chang.seok.bae@intel.com>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20260112235408.168200-1-chang.seok.bae@intel.com>
 References: <20260112235408.168200-1-chang.seok.bae@intel.com>
@@ -64,361 +64,87 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Introduce helpers to convert and extract exited instruction attributes,
-preparing for EGPR support and deprecating some existing helpers.
+Define the VMCS field offset for the extended instruction information.
+Then, support 5-bit register indices retrieval from VMCS fields when APX
+feature is enumerated.
 
-Previously, VMX exit handlers directly decoded the raw VMCS field,
-resulting in duplicated logic and assumption tied to the legacy layout.
+The presence of the extended instruction information field is indicated
+by APX enumeration, regardless of the XCR0.APX bit setting.
 
-With the unified structure, handlers can convert raw data into a
-structure form and access each instruction attribute by field name.
+With APX enumerated, the previously reserved bit in the exit qualification
+can be referenced safely now. However, there is no guarantee that older
+implementations always zeroed this bit.
 
-The helper will later determine the format based on the VCPU
-configuration. For now, there is no functional change since only the
-legacy layout is used.
-
+Link: https://lore.kernel.org/7bb14722-c036-4835-8ed9-046b4e67909e@redhat.com
+Suggested-by: Paolo Bonzini <pbonzini@redhat.com>
 Signed-off-by: Chang S. Bae <chang.seok.bae@intel.com>
 ---
-V1 -> V2: Remove the unused function argument (Chao)
+V1 -> V2:
+* Switch the change order; putting this ahead of nVMX changes (Chao)
+* Subsequently, define the field offset here.
 ---
- arch/x86/kvm/vmx/nested.c | 73 +++++++++++++++++++--------------------
- arch/x86/kvm/vmx/nested.h |  2 +-
- arch/x86/kvm/vmx/vmx.c    | 14 ++++----
- arch/x86/kvm/vmx/vmx.h    | 23 ++++++------
- 4 files changed, 57 insertions(+), 55 deletions(-)
+ arch/x86/include/asm/vmx.h |  2 ++
+ arch/x86/kvm/vmx/vmx.h     | 23 ++++++++++++++++++++---
+ 2 files changed, 22 insertions(+), 3 deletions(-)
 
-diff --git a/arch/x86/kvm/vmx/nested.c b/arch/x86/kvm/vmx/nested.c
-index b7d5feb4f5bd..144012dd9599 100644
---- a/arch/x86/kvm/vmx/nested.c
-+++ b/arch/x86/kvm/vmx/nested.c
-@@ -5239,7 +5239,7 @@ static void nested_vmx_triple_fault(struct kvm_vcpu *vcpu)
-  * #UD, #GP, or #SS.
-  */
- int get_vmx_mem_address(struct kvm_vcpu *vcpu, unsigned long exit_qualification,
--			u32 vmx_instruction_info, bool wr, int len, gva_t *ret)
-+			struct vmx_insn_info info, bool wr, int len, gva_t *ret)
- {
- 	gva_t off;
- 	bool exn;
-@@ -5253,14 +5253,14 @@ int get_vmx_mem_address(struct kvm_vcpu *vcpu, unsigned long exit_qualification,
- 	 * For how an actual address is calculated from all these components,
- 	 * refer to Vol. 1, "Operand Addressing".
- 	 */
--	int  scaling = vmx_instruction_info & 3;
--	int  addr_size = (vmx_instruction_info >> 7) & 7;
--	bool is_reg = vmx_instruction_info & (1u << 10);
--	int  seg_reg = (vmx_instruction_info >> 15) & 7;
--	int  index_reg = (vmx_instruction_info >> 18) & 0xf;
--	bool index_is_valid = !(vmx_instruction_info & (1u << 22));
--	int  base_reg       = (vmx_instruction_info >> 23) & 0xf;
--	bool base_is_valid  = !(vmx_instruction_info & (1u << 27));
-+	int  scaling        = insn_attr(info, scale);
-+	int  addr_size      = insn_attr(info, asize);
-+	bool is_reg         = insn_attr(info, is_reg);
-+	int  seg_reg        = insn_attr(info, seg);
-+	int  index_reg      = insn_attr(info, index);
-+	bool index_is_valid = !insn_attr(info, index_invalid);
-+	int  base_reg       = insn_attr(info, base);
-+	bool base_is_valid  = !insn_attr(info, base_invalid);
- 
- 	if (is_reg) {
- 		kvm_queue_exception(vcpu, UD_VECTOR);
-@@ -5371,7 +5371,7 @@ static int nested_vmx_get_vmptr(struct kvm_vcpu *vcpu, gpa_t *vmpointer,
- 	int r;
- 
- 	if (get_vmx_mem_address(vcpu, vmx_get_exit_qual(vcpu),
--				vmcs_read32(VMX_INSTRUCTION_INFO), false,
-+				vmx_get_insn_info(), false,
- 				sizeof(*vmpointer), &gva)) {
- 		*ret = 1;
- 		return -EINVAL;
-@@ -5656,7 +5656,7 @@ static int handle_vmread(struct kvm_vcpu *vcpu)
- 	struct vmcs12 *vmcs12 = is_guest_mode(vcpu) ? get_shadow_vmcs12(vcpu)
- 						    : get_vmcs12(vcpu);
- 	unsigned long exit_qualification = vmx_get_exit_qual(vcpu);
--	u32 instr_info = vmcs_read32(VMX_INSTRUCTION_INFO);
-+	struct vmx_insn_info info = vmx_get_insn_info();
- 	struct vcpu_vmx *vmx = to_vmx(vcpu);
- 	struct x86_exception e;
- 	unsigned long field;
-@@ -5669,7 +5669,7 @@ static int handle_vmread(struct kvm_vcpu *vcpu)
- 		return 1;
- 
- 	/* Decode instruction info and find the field to read */
--	field = kvm_gpr_read(vcpu, (((instr_info) >> 28) & 0xf));
-+	field = kvm_gpr_read(vcpu, insn_attr(info, reg2));
- 
- 	if (!nested_vmx_is_evmptr12_valid(vmx)) {
- 		/*
-@@ -5717,12 +5717,12 @@ static int handle_vmread(struct kvm_vcpu *vcpu)
- 	 * Note that the number of bits actually copied is 32 or 64 depending
- 	 * on the guest's mode (32 or 64 bit), not on the given field's length.
- 	 */
--	if (instr_info & BIT(10)) {
--		kvm_gpr_write(vcpu, (((instr_info) >> 3) & 0xf), value);
-+	if (insn_attr(info, is_reg)) {
-+		kvm_gpr_write(vcpu, insn_attr(info, reg1), value);
- 	} else {
- 		len = is_64_bit_mode(vcpu) ? 8 : 4;
- 		if (get_vmx_mem_address(vcpu, exit_qualification,
--					instr_info, true, len, &gva))
-+					info, true, len, &gva))
- 			return 1;
- 		/* _system ok, nested_vmx_check_permission has verified cpl=0 */
- 		r = kvm_write_guest_virt_system(vcpu, gva, &value, len, &e);
-@@ -5762,7 +5762,7 @@ static int handle_vmwrite(struct kvm_vcpu *vcpu)
- 	struct vmcs12 *vmcs12 = is_guest_mode(vcpu) ? get_shadow_vmcs12(vcpu)
- 						    : get_vmcs12(vcpu);
- 	unsigned long exit_qualification = vmx_get_exit_qual(vcpu);
--	u32 instr_info = vmcs_read32(VMX_INSTRUCTION_INFO);
-+	struct vmx_insn_info info = vmx_get_insn_info();
- 	struct vcpu_vmx *vmx = to_vmx(vcpu);
- 	struct x86_exception e;
- 	unsigned long field;
-@@ -5791,19 +5791,19 @@ static int handle_vmwrite(struct kvm_vcpu *vcpu)
- 	     get_vmcs12(vcpu)->vmcs_link_pointer == INVALID_GPA))
- 		return nested_vmx_failInvalid(vcpu);
- 
--	if (instr_info & BIT(10))
--		value = kvm_gpr_read(vcpu, (((instr_info) >> 3) & 0xf));
-+	if (insn_attr(info, is_reg))
-+		value = kvm_gpr_read(vcpu, insn_attr(info, reg1));
- 	else {
- 		len = is_64_bit_mode(vcpu) ? 8 : 4;
- 		if (get_vmx_mem_address(vcpu, exit_qualification,
--					instr_info, false, len, &gva))
-+					info, false, len, &gva))
- 			return 1;
- 		r = kvm_read_guest_virt(vcpu, gva, &value, len, &e);
- 		if (r != X86EMUL_CONTINUE)
- 			return kvm_handle_memory_failure(vcpu, r, &e);
- 	}
- 
--	field = kvm_gpr_read(vcpu, (((instr_info) >> 28) & 0xf));
-+	field = kvm_gpr_read(vcpu, insn_attr(info, reg2));
- 
- 	offset = get_vmcs12_field_offset(field);
- 	if (offset < 0)
-@@ -5951,7 +5951,7 @@ static int handle_vmptrld(struct kvm_vcpu *vcpu)
- static int handle_vmptrst(struct kvm_vcpu *vcpu)
- {
- 	unsigned long exit_qual = vmx_get_exit_qual(vcpu);
--	u32 instr_info = vmcs_read32(VMX_INSTRUCTION_INFO);
-+	struct vmx_insn_info info = vmx_get_insn_info();
- 	gpa_t current_vmptr = to_vmx(vcpu)->nested.current_vmptr;
- 	struct x86_exception e;
- 	gva_t gva;
-@@ -5963,7 +5963,7 @@ static int handle_vmptrst(struct kvm_vcpu *vcpu)
- 	if (unlikely(nested_vmx_is_evmptr12_valid(to_vmx(vcpu))))
- 		return 1;
- 
--	if (get_vmx_mem_address(vcpu, exit_qual, instr_info,
-+	if (get_vmx_mem_address(vcpu, exit_qual, info,
- 				true, sizeof(gpa_t), &gva))
- 		return 1;
- 	/* *_system ok, nested_vmx_check_permission has verified cpl=0 */
-@@ -5979,15 +5979,16 @@ static int handle_vmptrst(struct kvm_vcpu *vcpu)
- static int handle_invept(struct kvm_vcpu *vcpu)
- {
- 	struct vcpu_vmx *vmx = to_vmx(vcpu);
--	u32 vmx_instruction_info, types;
- 	unsigned long type, roots_to_free;
-+	struct vmx_insn_info info;
- 	struct kvm_mmu *mmu;
- 	gva_t gva;
- 	struct x86_exception e;
- 	struct {
- 		u64 eptp, gpa;
- 	} operand;
--	int i, r, gpr_index;
-+	u32 types;
-+	int i, r;
- 
- 	if (!(vmx->nested.msrs.secondary_ctls_high &
- 	      SECONDARY_EXEC_ENABLE_EPT) ||
-@@ -5999,9 +6000,8 @@ static int handle_invept(struct kvm_vcpu *vcpu)
- 	if (!nested_vmx_check_permission(vcpu))
- 		return 1;
- 
--	vmx_instruction_info = vmcs_read32(VMX_INSTRUCTION_INFO);
--	gpr_index = vmx_get_instr_info_reg2(vmx_instruction_info);
--	type = kvm_gpr_read(vcpu, gpr_index);
-+	info = vmx_get_insn_info();
-+	type = kvm_gpr_read(vcpu, insn_attr(info, reg2));
- 
- 	types = (vmx->nested.msrs.ept_caps >> VMX_EPT_EXTENT_SHIFT) & 6;
- 
-@@ -6012,7 +6012,7 @@ static int handle_invept(struct kvm_vcpu *vcpu)
- 	 * operand is read even if it isn't needed (e.g., for type==global)
- 	 */
- 	if (get_vmx_mem_address(vcpu, vmx_get_exit_qual(vcpu),
--			vmx_instruction_info, false, sizeof(operand), &gva))
-+			info, false, sizeof(operand), &gva))
- 		return 1;
- 	r = kvm_read_guest_virt(vcpu, gva, &operand, sizeof(operand), &e);
- 	if (r != X86EMUL_CONTINUE)
-@@ -6059,7 +6059,7 @@ static int handle_invept(struct kvm_vcpu *vcpu)
- static int handle_invvpid(struct kvm_vcpu *vcpu)
- {
- 	struct vcpu_vmx *vmx = to_vmx(vcpu);
--	u32 vmx_instruction_info;
-+	struct vmx_insn_info info;
- 	unsigned long type, types;
- 	gva_t gva;
- 	struct x86_exception e;
-@@ -6068,7 +6068,7 @@ static int handle_invvpid(struct kvm_vcpu *vcpu)
- 		u64 gla;
- 	} operand;
- 	u16 vpid02;
--	int r, gpr_index;
-+	int r;
- 
- 	if (!(vmx->nested.msrs.secondary_ctls_high &
- 	      SECONDARY_EXEC_ENABLE_VPID) ||
-@@ -6080,9 +6080,8 @@ static int handle_invvpid(struct kvm_vcpu *vcpu)
- 	if (!nested_vmx_check_permission(vcpu))
- 		return 1;
- 
--	vmx_instruction_info = vmcs_read32(VMX_INSTRUCTION_INFO);
--	gpr_index = vmx_get_instr_info_reg2(vmx_instruction_info);
--	type = kvm_gpr_read(vcpu, gpr_index);
-+	info = vmx_get_insn_info();
-+	type = kvm_gpr_read(vcpu, insn_attr(info, reg2));
- 
- 	types = (vmx->nested.msrs.vpid_caps &
- 			VMX_VPID_EXTENT_SUPPORTED_MASK) >> 8;
-@@ -6095,7 +6094,7 @@ static int handle_invvpid(struct kvm_vcpu *vcpu)
- 	 * operand is read even if it isn't needed (e.g., for type==global)
- 	 */
- 	if (get_vmx_mem_address(vcpu, vmx_get_exit_qual(vcpu),
--			vmx_instruction_info, false, sizeof(operand), &gva))
-+			info, false, sizeof(operand), &gva))
- 		return 1;
- 	r = kvm_read_guest_virt(vcpu, gva, &operand, sizeof(operand), &e);
- 	if (r != X86EMUL_CONTINUE)
-@@ -6433,7 +6432,7 @@ static bool nested_vmx_exit_handled_encls(struct kvm_vcpu *vcpu,
- static bool nested_vmx_exit_handled_vmcs_access(struct kvm_vcpu *vcpu,
- 	struct vmcs12 *vmcs12, gpa_t bitmap)
- {
--	u32 vmx_instruction_info;
-+	struct vmx_insn_info info;
- 	unsigned long field;
- 	u8 b;
- 
-@@ -6441,8 +6440,8 @@ static bool nested_vmx_exit_handled_vmcs_access(struct kvm_vcpu *vcpu,
- 		return true;
- 
- 	/* Decode instruction info and find the field to access */
--	vmx_instruction_info = vmcs_read32(VMX_INSTRUCTION_INFO);
--	field = kvm_gpr_read(vcpu, (((vmx_instruction_info) >> 28) & 0xf));
-+	info = vmx_get_insn_info();
-+	field = kvm_gpr_read(vcpu, insn_attr(info, reg2));
- 
- 	/* Out-of-range fields always cause a VM exit from L2 to L1 */
- 	if (field >> 15)
-diff --git a/arch/x86/kvm/vmx/nested.h b/arch/x86/kvm/vmx/nested.h
-index 983484d42ebf..e54f4e7b3664 100644
---- a/arch/x86/kvm/vmx/nested.h
-+++ b/arch/x86/kvm/vmx/nested.h
-@@ -50,7 +50,7 @@ void nested_sync_vmcs12_to_shadow(struct kvm_vcpu *vcpu);
- int vmx_set_vmx_msr(struct kvm_vcpu *vcpu, u32 msr_index, u64 data);
- int vmx_get_vmx_msr(struct nested_vmx_msrs *msrs, u32 msr_index, u64 *pdata);
- int get_vmx_mem_address(struct kvm_vcpu *vcpu, unsigned long exit_qualification,
--			u32 vmx_instruction_info, bool wr, int len, gva_t *ret);
-+			struct vmx_insn_info info, bool wr, int len, gva_t *ret);
- void nested_mark_vmcs12_pages_dirty(struct kvm_vcpu *vcpu);
- bool nested_vmx_check_io_bitmaps(struct kvm_vcpu *vcpu, unsigned int port,
- 				 int size);
-diff --git a/arch/x86/kvm/vmx/vmx.c b/arch/x86/kvm/vmx/vmx.c
-index 4320f61aabc2..10479114fd1c 100644
---- a/arch/x86/kvm/vmx/vmx.c
-+++ b/arch/x86/kvm/vmx/vmx.c
-@@ -6054,29 +6054,27 @@ static int handle_monitor_trap(struct kvm_vcpu *vcpu)
- 
- static int handle_invpcid(struct kvm_vcpu *vcpu)
- {
--	u32 vmx_instruction_info;
-+	struct vmx_insn_info info;
- 	unsigned long type;
- 	gva_t gva;
- 	struct {
- 		u64 pcid;
- 		u64 gla;
- 	} operand;
--	int gpr_index;
- 
- 	if (!guest_cpu_cap_has(vcpu, X86_FEATURE_INVPCID)) {
- 		kvm_queue_exception(vcpu, UD_VECTOR);
- 		return 1;
- 	}
- 
--	vmx_instruction_info = vmcs_read32(VMX_INSTRUCTION_INFO);
--	gpr_index = vmx_get_instr_info_reg2(vmx_instruction_info);
--	type = kvm_gpr_read(vcpu, gpr_index);
-+	info = vmx_get_insn_info();
-+	type = kvm_gpr_read(vcpu, insn_attr(info, reg2));
- 
- 	/* According to the Intel instruction reference, the memory operand
- 	 * is read even if it isn't needed (e.g., for type==all)
- 	 */
- 	if (get_vmx_mem_address(vcpu, vmx_get_exit_qual(vcpu),
--				vmx_instruction_info, false,
-+				info, false,
- 				sizeof(operand), &gva))
- 		return 1;
- 
-@@ -6219,7 +6217,9 @@ static int handle_notify(struct kvm_vcpu *vcpu)
- 
- static int vmx_get_msr_imm_reg(struct kvm_vcpu *vcpu)
- {
--	return vmx_get_instr_info_reg(vmcs_read32(VMX_INSTRUCTION_INFO));
-+	struct vmx_insn_info info = vmx_get_insn_info();
-+
-+	return insn_attr(info, reg1);
- }
- 
- static int handle_rdmsr_imm(struct kvm_vcpu *vcpu)
+diff --git a/arch/x86/include/asm/vmx.h b/arch/x86/include/asm/vmx.h
+index c85c50019523..6170251306db 100644
+--- a/arch/x86/include/asm/vmx.h
++++ b/arch/x86/include/asm/vmx.h
+@@ -264,6 +264,8 @@ enum vmcs_field {
+ 	PID_POINTER_TABLE_HIGH		= 0x00002043,
+ 	GUEST_PHYSICAL_ADDRESS          = 0x00002400,
+ 	GUEST_PHYSICAL_ADDRESS_HIGH     = 0x00002401,
++	EXTENDED_INSTRUCTION_INFO       = 0x00002406,
++	EXTENDED_INSTRUCTION_INFO_HIGH  = 0x00002407,
+ 	VMCS_LINK_POINTER               = 0x00002800,
+ 	VMCS_LINK_POINTER_HIGH          = 0x00002801,
+ 	GUEST_IA32_DEBUGCTL             = 0x00002802,
 diff --git a/arch/x86/kvm/vmx/vmx.h b/arch/x86/kvm/vmx/vmx.h
-index 567320115a5a..2bb3ac8c5b8b 100644
+index 8d3e0aff2e13..a24d87aa4f79 100644
 --- a/arch/x86/kvm/vmx/vmx.h
 +++ b/arch/x86/kvm/vmx/vmx.h
-@@ -372,6 +372,19 @@ struct vmx_insn_info {
+@@ -372,12 +372,26 @@ struct vmx_insn_info {
  	union insn_info info;
  };
  
-+static inline struct vmx_insn_info vmx_get_insn_info(void)
++/*
++ * The APX enumeration guarantees the presence of the extended fields.
++ * The host CPUID bit alone is sufficient to rely on it.
++ */
++static inline bool vmx_insn_info_extended(void)
 +{
-+	struct vmx_insn_info insn;
-+
-+	insn.extended  = false;
-+	insn.info.word = vmcs_read32(VMX_INSTRUCTION_INFO);
-+
-+	return insn;
++	return static_cpu_has(X86_FEATURE_APX);
 +}
 +
-+#define insn_attr(insn, attr) \
-+	((insn).extended ? (insn).info.ext.attr : (insn).info.base.attr)
-+
- static __always_inline struct vcpu_vt *to_vt(struct kvm_vcpu *vcpu)
+ static inline struct vmx_insn_info vmx_get_insn_info(void)
  {
- 	return &(container_of(vcpu, struct vcpu_vmx, vcpu)->vt);
-@@ -778,16 +791,6 @@ static inline bool vmx_guest_state_valid(struct kvm_vcpu *vcpu)
+ 	struct vmx_insn_info insn;
  
- void dump_vmcs(struct kvm_vcpu *vcpu);
+-	insn.extended  = false;
+-	insn.info.word = vmcs_read32(VMX_INSTRUCTION_INFO);
++	if (vmx_insn_info_extended()) {
++		insn.extended   = true;
++		insn.info.dword = vmcs_read64(EXTENDED_INSTRUCTION_INFO);
++	} else {
++		insn.extended  = false;
++		insn.info.word = vmcs_read32(VMX_INSTRUCTION_INFO);
++	}
  
--static inline int vmx_get_instr_info_reg(u32 vmx_instr_info)
--{
--	return (vmx_instr_info >> 3) & 0xf;
--}
--
--static inline int vmx_get_instr_info_reg2(u32 vmx_instr_info)
--{
--	return (vmx_instr_info >> 28) & 0xf;
--}
--
- static inline bool vmx_can_use_ipiv(struct kvm_vcpu *vcpu)
+ 	return insn;
+ }
+@@ -413,7 +427,10 @@ static __always_inline unsigned long vmx_get_exit_qual(struct kvm_vcpu *vcpu)
+ 
+ static inline int vmx_get_exit_qual_gpr(struct kvm_vcpu *vcpu)
  {
- 	return  lapic_in_kernel(vcpu) && enable_ipiv;
+-	return (vmx_get_exit_qual(vcpu) >> 8) & 0xf;
++	if (vmx_insn_info_extended())
++		return (vmx_get_exit_qual(vcpu) >> 8) & 0x1f;
++	else
++		return (vmx_get_exit_qual(vcpu) >> 8) & 0xf;
+ }
+ 
+ static __always_inline u32 vmx_get_intr_info(struct kvm_vcpu *vcpu)
 -- 
 2.51.0
 
