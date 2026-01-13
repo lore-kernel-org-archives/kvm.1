@@ -1,55 +1,55 @@
-Received: from mail-pj1-f73.google.com (mail-pj1-f73.google.com [209.85.216.73])
+Received: from mail-pl1-f201.google.com (mail-pl1-f201.google.com [209.85.214.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B711722B8CB
-	for <kvm@vger.kernel.org>; Tue, 13 Jan 2026 00:30:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.73
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 52EE627E7EB
+	for <kvm@vger.kernel.org>; Tue, 13 Jan 2026 00:30:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768264245; cv=none; b=KyHjsKZ0qtblCcsi50DrwqkXTlp1Y0I2qevAr6e6KEINGerYkUgzTM50NGxbwiRgva7IarHWFRGHxuKQOkXey/BDnP5QC4GrgHQGkSwAj/WqhCvbiRahmuO7K2C+1uhEqLGZ/gKRKtqpMw/XPGOSDCjb6VA5ergG6aNz1MCyAOw=
+	t=1768264246; cv=none; b=ITMCv9lV+YSJHyhEwijEhQPI7JcronDGFBUK9akG97ZNec70X0yWoSPx6v09nSCjfendO67CyiKFuevfnmKMykz81kJI1lfqqztSxKa21XtEOAlVTISDRcW5DZowQMK17KSEggpFTfC7aZTB6PiG5Haz1+3x3ZbOKeoXwVdpB1Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768264245; c=relaxed/simple;
-	bh=VkCjLytO1ux9i8uRqJqOp4y4po1Gg2Hc+qogiSAqt9g=;
+	s=arc-20240116; t=1768264246; c=relaxed/simple;
+	bh=8ohubJfSSIGOHbF9QvJ9OM9WGWtPjCtGiMvy3iiTUfs=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=IUwL8ZFepb+eHEqB9KYS73HH3mRyneQgLL505I+TkNL1mdRmzEmvjLldGz+A+lL6AOBO05UyF1zKS9lLwGs9uvN1q9F7GMfv2Qe4tChr67mXGKXjUwJIRn+t411mZ/5Pvobgv1p4EhCDkRrOB74UK7ANMkTGxDqVh6KPvul1l7Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--jmattson.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=0B9k/6pi; arc=none smtp.client-ip=209.85.216.73
+	 To:Cc:Content-Type; b=FThJoDbowyMuGhb/C1EvxRDP3GxjhaX8skJACdqpVSkdX/uuoKwCODPnEIUVU79VfPsFOxDpjf3ZgAsHCGnd/RBf3SELD/fVrBHGQYudcx5AzSfQ2eGyZZnTR+xvV9crZuX4xM0NxXbGU348EaVA8qN3NzaOETdj/cK771ZYcC0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--jmattson.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=bKOIwGp5; arc=none smtp.client-ip=209.85.214.201
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--jmattson.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="0B9k/6pi"
-Received: by mail-pj1-f73.google.com with SMTP id 98e67ed59e1d1-34c7d0c5ed2so6265058a91.0
-        for <kvm@vger.kernel.org>; Mon, 12 Jan 2026 16:30:42 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="bKOIwGp5"
+Received: by mail-pl1-f201.google.com with SMTP id d9443c01a7336-2a13cd9a784so61731705ad.2
+        for <kvm@vger.kernel.org>; Mon, 12 Jan 2026 16:30:45 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1768264242; x=1768869042; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1768264245; x=1768869045; darn=vger.kernel.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=ugtMeXQoG/v0gmSJ0kvlm0/hksPZ0j77UnWX+eyrz3Y=;
-        b=0B9k/6piZusNp3ndTRRDmKtE+u2KbU5pt6QypwX4OMnbw9tPVUx+DC+K8mHhzEB8eV
-         a07re7QBe2l41DgIVGueTX1/WXBUxm+WQpNqxLv1lzU9A9ofUNCNB7APJnHG7IUc+kLu
-         HfWzLPtQC1fLYs4dzKKVNNjxws9WzE3le31Ujj8aPzRcCEiLxpRhDx+EmN0V0PIUbfCz
-         nDPLAAJ0YBHlpL2b++IALna8c1LeBTXqdOML+rOUu0CqdHbV591ZNR7koNOCvHGHz4sf
-         L4sVh4rb98bCahIhoVGaBADZROLrGHci2481TqFfm6/SRsha1jxog8XSSitcdsf1TD89
-         6Jgw==
+        bh=V759ctxKOPBWxlGUqocasSXfPjVLuxnctmfzspXRRJ4=;
+        b=bKOIwGp58DVDRdFew+B9JNZ+jwgY7ie8iBpSQUgybMS0ISyy18eVoLfU7yy0fb+ij5
+         txlI6O7+uXKUk3XrEdf+SrNdzW7n2AtEDRRTtFrlDtwD5A8gnjG/5lOAy/TR8QHT5Npb
+         oXCOac7H2VR3tuVDLqW+AAyr2KE2HGnwdN6+1W+f4fZOtVZa6FLyiP++V8J3gXn6m7fW
+         QKel6/z5neeF2u3PA6fc/r5/qQR3q5h1175L+Cn8zFrbD1UH/1q2mvnO903pYrfO/M1c
+         SiwlDW8KyZBhgBV+4LRGY1dcC61Xf4gWegt2/DHwJd2041ADHT00oMyo4NjadhzOm1bT
+         xdlg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1768264242; x=1768869042;
+        d=1e100.net; s=20230601; t=1768264245; x=1768869045;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=ugtMeXQoG/v0gmSJ0kvlm0/hksPZ0j77UnWX+eyrz3Y=;
-        b=ml8uKsrCyMfLilDGezOG1gx20mqWOdMQXTLEkHp1HevakQl1QiMawviO3S4F/OTLNR
-         aGBPQTxcZHx+xm6luuiaDcaYjpEniqfU0+HjsZMLHEu+mvexwYUW9KNhmI94czBI8Lhf
-         J7uhsGy2+cFO7jZ6noD+MtfYFLt4j9HuH668LMIrPHj+Jj0gpoLsTdChyPezy9uTQ+4f
-         4IMjvltR3SVWMMES45frQy4xuyYx0vm5MDZlKImfpkjc1Q+lqTjtClkYWGD2zkJmZuPo
-         LpnBMkTnKz7PwrRaxOjJKmZa7bcNe5Z/No1BlWBNOzvhLcOtVBVDcUtSYteeLoQVelqL
-         Nncg==
-X-Forwarded-Encrypted: i=1; AJvYcCXK2yTBf1CeEHeyVRs5Jpfqzp6hRaZayhHP+nO2yhjsYWgFF8W+062fI5vvZaugvqTPJRs=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyLMDHUzuYKh7CaMqbM6NXJbABZUcq7wHom9WPSvJ4hIqMiKzjJ
-	XFtR8wpx2rli1kfHWX/t5mdaiZ1FhtMQzSUxddXPGwUmuSpQI/p7Ik2iWD3f1PM4a52B6wcLsrA
-	lSODtB3D7vtlGBA==
-X-Google-Smtp-Source: AGHT+IEccbNQ4GcGL8d7NNWxCrtOXIcCLpkLBB9GNgvN+JQUSY8qIxF0CgKlAWtcyBdkdr3anPQUtQ+G072f4Q==
-X-Received: from pjbfa5.prod.google.com ([2002:a17:90a:f0c5:b0:34c:bdf1:2a21])
+        bh=V759ctxKOPBWxlGUqocasSXfPjVLuxnctmfzspXRRJ4=;
+        b=YgdcmJOyAjTWnRJG5MFGKuFqR4vkaGClwa4Rh/CAErKWUHo6C4WbLKYCFrReb5jzq/
+         Uq7s2lvEaJ9Q21PASSSWkbLzQWeNFOI6nup9jzV00vNp24xfqesg3LxwdBAcV8zesbS8
+         ElBnbYT14fXgykbAZMxFqB/yLc2xBh3okwgKP6mOdzVPIz1ob0pr8IhhBD+zuyVgYr9/
+         DhgGSyMvptIP/hOdisXG0ehcXRfdw2CJGNLmnsDhzJNt8OTbo/0eTZW135CrWMCUtSHk
+         uVkzwI8K5xBeEj16vy3KWeRplrV5TPZjcMVJRG0sJgD14RLvuHVhqsHi/Oup/z9swqno
+         uyAg==
+X-Forwarded-Encrypted: i=1; AJvYcCUpcdNyTAOIJEppLJRWWBGHD/AGeUdjspkY2FlxmpnJfFLz64gJ9KDiR1ANa+0gNfHgURo=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzfHFFkgBYnDUUVfHPndmOzT9gBOuCLKAdM2I/TUiJDe46NUpiB
+	kw/Hlufy7BEYU1wZiQ0eoa7Met3tzlbcWFhrjfJS08D4iIq0amCRhQI6AcazSRQkMkb4NTfLJ5o
+	xxsjEy/zDC5QXIA==
+X-Google-Smtp-Source: AGHT+IG18O1vEYIIlSpSnJ0FYZsqsE17F4nPDlHh9RJI1lHPIQGjp9YKBIaGBb4woEZ+NfAfrwtFxg7I+F1J5w==
+X-Received: from plly13.prod.google.com ([2002:a17:902:7c8d:b0:295:16a7:a285])
  (user=jmattson job=prod-delivery.src-stubby-dispatcher) by
- 2002:a17:90b:2251:b0:33e:30e8:81cb with SMTP id 98e67ed59e1d1-34f68b65ff0mr15680469a91.13.1768264242031;
- Mon, 12 Jan 2026 16:30:42 -0800 (PST)
-Date: Mon, 12 Jan 2026 16:29:59 -0800
+ 2002:a17:903:46cc:b0:2a2:d2e8:9f2d with SMTP id d9443c01a7336-2a3ee4ab671mr201515325ad.48.1768264244752;
+ Mon, 12 Jan 2026 16:30:44 -0800 (PST)
+Date: Mon, 12 Jan 2026 16:30:01 -0800
 In-Reply-To: <20260113003016.3511895-1-jmattson@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
@@ -59,9 +59,8 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 References: <20260113003016.3511895-1-jmattson@google.com>
 X-Mailer: git-send-email 2.52.0.457.g6b5491de43-goog
-Message-ID: <20260113003016.3511895-5-jmattson@google.com>
-Subject: [PATCH 04/10] KVM: x86: nSVM: Restore L1's PAT on emulated #VMEXIT
- from L2 to L1
+Message-ID: <20260113003016.3511895-7-jmattson@google.com>
+Subject: [PATCH 06/10] KVM: x86: nSVM: Add validity check for VMCB12 g_pat
 From: Jim Mattson <jmattson@google.com>
 To: Sean Christopherson <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>, 
 	Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
@@ -74,37 +73,60 @@ To: Sean Christopherson <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>
 Cc: Jim Mattson <jmattson@google.com>
 Content-Type: text/plain; charset="UTF-8"
 
-KVM doesn't implement a separate G_PAT register to hold the guest's
-PAT in guest mode with nested NPT enabled. Consequently, L1's IA32_PAT
-MSR must be restored on emulated #VMEXIT from L2 to L1.
+When nested paging is enabled for VMCB12, an invalid g_pat causes an
+immediate #VMEXIT with exit code VMEXIT_INVALID, as specified in the
+APM, volume 2: "Nested Paging and VMRUN/#VMEXIT."
 
-Note: if L2 uses shadow paging, L1 and L2 share the same IA32_PAT MSR.
-
+Fixes: 3d6368ef580a ("KVM: SVM: Add VMRUN handler")
 Signed-off-by: Jim Mattson <jmattson@google.com>
 ---
- arch/x86/kvm/svm/nested.c | 10 ++++++++++
- 1 file changed, 10 insertions(+)
+ arch/x86/kvm/svm/nested.c | 12 +++++++++---
+ 1 file changed, 9 insertions(+), 3 deletions(-)
 
 diff --git a/arch/x86/kvm/svm/nested.c b/arch/x86/kvm/svm/nested.c
-index c751be470364..9aec836ac04c 100644
+index ad9272aae908..501102625f69 100644
 --- a/arch/x86/kvm/svm/nested.c
 +++ b/arch/x86/kvm/svm/nested.c
-@@ -1292,6 +1292,16 @@ int nested_svm_vmexit(struct vcpu_svm *svm)
- 	kvm_rsp_write(vcpu, vmcb01->save.rsp);
- 	kvm_rip_write(vcpu, vmcb01->save.rip);
+@@ -369,7 +369,8 @@ static bool __nested_vmcb_check_controls(struct kvm_vcpu *vcpu,
  
-+	/*
-+	 * KVM doesn't implement a separate guest PAT
-+	 * register. Instead, the guest PAT lives in vcpu->arch.pat
-+	 * while in guest mode with nested NPT enabled. Hence, the
-+	 * IA32_PAT MSR has to be restored from the vmcb01 g_pat at
-+	 * #VMEXIT.
-+	 */
-+	if (nested_npt_enabled(svm))
-+		vcpu->arch.pat = vmcb01->save.g_pat;
+ /* Common checks that apply to both L1 and L2 state.  */
+ static bool __nested_vmcb_check_save(struct kvm_vcpu *vcpu,
+-				     struct vmcb_save_area_cached *save)
++				     struct vmcb_save_area_cached *save,
++				     struct vmcb_ctrl_area_cached *control)
+ {
+ 	if (CC(!(save->efer & EFER_SVME)))
+ 		return false;
+@@ -400,6 +401,10 @@ static bool __nested_vmcb_check_save(struct kvm_vcpu *vcpu,
+ 	if (CC(!kvm_valid_efer(vcpu, save->efer)))
+ 		return false;
+ 
++	if (CC((control->nested_ctl & SVM_NESTED_CTL_NP_ENABLE) &&
++	       npt_enabled && !kvm_pat_valid(save->g_pat)))
++		return false;
 +
- 	svm->vcpu.arch.dr7 = DR7_FIXED_1;
- 	kvm_update_dr7(&svm->vcpu);
+ 	return true;
+ }
+ 
+@@ -407,8 +412,9 @@ static bool nested_vmcb_check_save(struct kvm_vcpu *vcpu)
+ {
+ 	struct vcpu_svm *svm = to_svm(vcpu);
+ 	struct vmcb_save_area_cached *save = &svm->nested.save;
++	struct vmcb_ctrl_area_cached *ctl = &svm->nested.ctl;
+ 
+-	return __nested_vmcb_check_save(vcpu, save);
++	return __nested_vmcb_check_save(vcpu, save, ctl);
+ }
+ 
+ static bool nested_vmcb_check_controls(struct kvm_vcpu *vcpu)
+@@ -1911,7 +1917,7 @@ static int svm_set_nested_state(struct kvm_vcpu *vcpu,
+ 	if (!(save->cr0 & X86_CR0_PG) ||
+ 	    !(save->cr0 & X86_CR0_PE) ||
+ 	    (save->rflags & X86_EFLAGS_VM) ||
+-	    !__nested_vmcb_check_save(vcpu, &save_cached))
++	    !__nested_vmcb_check_save(vcpu, &save_cached, &ctl_cached))
+ 		goto out_free;
+ 
  
 -- 
 2.52.0.457.g6b5491de43-goog
