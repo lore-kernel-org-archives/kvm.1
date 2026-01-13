@@ -1,152 +1,153 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f74.google.com (mail-pj1-f74.google.com [209.85.216.74])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 298212820A4;
-	Tue, 13 Jan 2026 00:18:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.9
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C060F187346
+	for <kvm@vger.kernel.org>; Tue, 13 Jan 2026 00:30:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.74
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768263532; cv=none; b=ukC2PkrkmAKDah6sW0B49bQZipdnpp/meIdkVI5FPQQ/hLm9olEAm+7q++xAuTLhh7OxwAVfK1x5o6lM5vX4UhIIeEPxJZR+iVGEEFSy0ZYCvXc+d39ceT3IFsQzqdToOQQc8cmyKmuvfCcxkhPiYLGM12DuMr9iRX9M3eS2PSw=
+	t=1768264239; cv=none; b=gEEcLRauQv21ea7re4+D9Wp2rf86JWApzaU3drUc6RYg1dnukIDy4udwxFDzDyQmG0Vk8ZpMy97VbdYq4KCZGVRZRfuS3zN4avUSVs7eqzmCF2R6Gcltdp6USHn2dnarB0S8OqdjKc/TXvEMD7smZ4s4BDwzIl/czHMVOAQA0MQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768263532; c=relaxed/simple;
-	bh=glWO4Z8UhpJ/AH4HU6aO6QGGcEpfBBcGO8VC92sBFuY=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=o+K2EggxpUhYYVooaJGd7SGyPaI1xElUZ9l7yqI1dGHZNx/d/z+U3f1rSZkepzOcfq/WLCal9c0C46Kb36JCx4+JB/lDNPZbiMKH3FjPomO2amOvQfEXBGDsbVCbCmLxzcMoWVmuEeRHbXS5Spabadoha/y4zP0aOzhoZdDu5q0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=T8aMSpjK; arc=none smtp.client-ip=192.198.163.9
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1768264239; c=relaxed/simple;
+	bh=Z55azhBqb+eYmuyst7BrcTN2e+iwhv1VBIGSzB2TzsU=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=SRxJUM1vZIjLBDR8bFSrefaBMigxLiN/kyeWvgZNetCoCLwtcFW0zg0+NFqtFlr1U1jelQzAXvOCTP5wd0RHLNuE4xV4k2DDpGEOTQXod/FK9cwrZbIXSvzsuFiuBVyUdGvf+Ujd5L0SGq/6euhwiiL6nyG/8v97d5kgmhwGmJc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--jmattson.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Yzge7/5h; arc=none smtp.client-ip=209.85.216.74
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--jmattson.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="T8aMSpjK"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1768263531; x=1799799531;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=glWO4Z8UhpJ/AH4HU6aO6QGGcEpfBBcGO8VC92sBFuY=;
-  b=T8aMSpjKh0fCzy0HnV1b7ahKJojZF1pXE55LC9NqQtfR1fhtFZuypQGb
-   uiGGsdG088FO19+BVgu+PPICcLcBycukPbslrcAT0kdSIcRpJS65rfT8l
-   Xx3/ecc1cY9QWF4m4qCcsFLmiRJYDIGq0sfiEtaEqERXWvKmlT2Z0YWlK
-   9cUF0Zn96hqODIFrLOjA+z1dj9TnEaVOviwW7V0pNsIy12oPZ0u2gnek9
-   /mv3tzcizJ66KXjrnDbgwfCUQyKCRQCnFHP58tCB6TsreHHuDmGbufMQH
-   KgwQ3jVtsW/ctdHK6F9frVir/QA5XwRuOCr2tAEgi+q59G0NJAFgUGDRM
-   Q==;
-X-CSE-ConnectionGUID: D6c8BrGySpu0Vy35/BtlUg==
-X-CSE-MsgGUID: DYCXNNscTnGcbnsosFSa/A==
-X-IronPort-AV: E=McAfee;i="6800,10657,11669"; a="80264297"
-X-IronPort-AV: E=Sophos;i="6.21,222,1763452800"; 
-   d="scan'208";a="80264297"
-Received: from orviesa009.jf.intel.com ([10.64.159.149])
-  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Jan 2026 16:18:51 -0800
-X-CSE-ConnectionGUID: OA0hqec9RZChdO+rZkuABA==
-X-CSE-MsgGUID: f6MsPvVEQXiICZUzNUNHhw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,222,1763452800"; 
-   d="scan'208";a="204042322"
-Received: from chang-linux-3.sc.intel.com (HELO chang-linux-3) ([172.25.66.172])
-  by orviesa009.jf.intel.com with ESMTP; 12 Jan 2026 16:18:51 -0800
-From: "Chang S. Bae" <chang.seok.bae@intel.com>
-To: pbonzini@redhat.com,
-	seanjc@google.com
-Cc: kvm@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	chao.gao@intel.com,
-	chang.seok.bae@intel.com
-Subject: [PATCH v2 16/16] KVM: x86: selftests: Add APX state handling and XCR0 sanity checks
-Date: Mon, 12 Jan 2026 23:54:08 +0000
-Message-ID: <20260112235408.168200-17-chang.seok.bae@intel.com>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20260112235408.168200-1-chang.seok.bae@intel.com>
-References: <20260112235408.168200-1-chang.seok.bae@intel.com>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Yzge7/5h"
+Received: by mail-pj1-f74.google.com with SMTP id 98e67ed59e1d1-34e5a9f0d6aso5240942a91.0
+        for <kvm@vger.kernel.org>; Mon, 12 Jan 2026 16:30:36 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1768264236; x=1768869036; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=tTGelH1EjMWzWWpPI7L+r4iRVRFfJX23VrUbdCcWEwY=;
+        b=Yzge7/5heNHiX/Qjf1ZR9NJ4k0QZ/s4+Ovkc60bLZU1EYne+VvIbkpjSkEnjb8lVTQ
+         XVv+U3zW11B0St0r7c8wu+zzELinyP4mxXgEDF6+uU1K1qqoNnb09PzoKhy7FBs9xbTP
+         mF75E5JNJD2Dond3mWZ3bVVO/yf4S7Ynl54ty+JCfEdgjBjkOgOfldjLimz+rz1F41yE
+         RO4iYjeWTX79qtWDWS6PGvxc7oeoDTB/KVIZOPPucw5vM9j5Fz6K1QUwIhddpchrUA+U
+         MD33yO7l59qZLB8cqcl7+Mg3aS5tnUkevm5sVlGhIVYfzFdWDN+OIjNMAv9MyLJ9ITpk
+         FRHw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1768264236; x=1768869036;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=tTGelH1EjMWzWWpPI7L+r4iRVRFfJX23VrUbdCcWEwY=;
+        b=MkV0LOoy7hMopwSPSqGWXS22nyk3lMmCifsea8in3HuqfyFsGQMfnTMAhyrrTGIuIG
+         xipcqs8wzj8qUKLuY4XwNDbc9ZEBiE/x2TMIUiJXSgTuhjNAKAmojWs6ys7d8g0g8kjU
+         PRw5rjLkLv/iRUWuTdVqj7WwQb18bOSVHZ5UcBOCD3EYT8yJAHSIli3I+3gdZ9Q9H7a+
+         zYveCt3QrgAIbRbm84DsxXwlVS1LJdQ+24GKCLCTxPgHq4T8Acc+2XUuRpMpt9duAgXG
+         zte5A+kGzGLlg4qsq5jZs/ovudohDIfdU5PWJMpztkbQoKfzGNcxD2iP464RPWAyf57F
+         6jvw==
+X-Forwarded-Encrypted: i=1; AJvYcCVuaBxs0H859TS3fKekKsB+l1gVveFDP4dkWC8X7iQ3y769HcQrmhRPS/V2kzKdOHOrGWg=@vger.kernel.org
+X-Gm-Message-State: AOJu0Ywqd/JfdFuccYjukobFsecBCBroBxji/Li574Zx+fHajCBwzXc9
+	aHNfAC9Bi7FHz3aGw+UUjY7ZLwHU6WnS8u7ImzFpfVAT6jaLHGx7QTSU+/Qq015hmVct7mvzydX
+	QOcQK/95mPLHHIg==
+X-Google-Smtp-Source: AGHT+IENkMl8pjN3xq/gUoO6a727rAcJVu3CiOBxXc3YxC6E+VpQFzDU6ky3j8dX95NrKpzdsK4WBAWf3VBi4Q==
+X-Received: from pjbch23.prod.google.com ([2002:a17:90a:f417:b0:34c:d9a0:3bf6])
+ (user=jmattson job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a17:90b:17ce:b0:32e:72bd:6d5a with SMTP id 98e67ed59e1d1-350fd12c181mr990901a91.1.1768264236116;
+ Mon, 12 Jan 2026 16:30:36 -0800 (PST)
+Date: Mon, 12 Jan 2026 16:29:55 -0800
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.52.0.457.g6b5491de43-goog
+Message-ID: <20260113003016.3511895-1-jmattson@google.com>
+Subject: [PATCH 00/10] KVM: x86: nSVM: Improve PAT virtualization
+From: Jim Mattson <jmattson@google.com>
+To: Sean Christopherson <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>, 
+	Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
+	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
+	"H. Peter Anvin" <hpa@zytor.com>, Shuah Khan <shuah@kernel.org>, Joerg Roedel <joro@8bytes.org>, 
+	Avi Kivity <avi@redhat.com>, Alexander Graf <agraf@suse.de>, 
+	"=?UTF-8?q?Radim=20Kr=C4=8Dm=C3=A1=C5=99?=" <rkrcmar@redhat.com>, David Hildenbrand <david@kernel.org>, Cathy Avery <cavery@redhat.com>, 
+	kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-kselftest@vger.kernel.org
+Cc: Jim Mattson <jmattson@google.com>
+Content-Type: text/plain; charset="UTF-8"
 
-Now that KVM exposes the APX feature to guests on APX-capable systems,
-extend the selftests to validate XCR0 configuration and state management.
+KVM's implementation of nested SVM treats PAT the same way whether or
+not nested NPT is enabled: L1 and L2 share a PAT.
 
-Since APX repurposes the XSAVE area previously used by MPX in the
-non-compacted format, add a check to ensure that MPX states are not set
-when APX is enabled.
+This is correct when nested NPT is disabled, but incorrect when nested
+NPT is enabled. When nested NPT is enabled, L1 and L2 have independent
+PATs.
 
-Also, load non-init APX state data in the guest so that XSTATE_BV[APX] is
-set, allowing validation of APX state testing.
+The architectural specification for this separation is unusual. There
+is a "guest PAT register" that is accessed by references to the PAT
+MSR in guest mode, but it is different from the (host) PAT MSR. Other
+resources that have distinct host and guest values have a shared
+storage location, and the values are swapped on VM-entry/VM-exit.
 
-Signed-off-by: Chang S. Bae <chang.seok.bae@intel.com>
----
- .../selftests/kvm/include/x86/processor.h     |  1 +
- tools/testing/selftests/kvm/x86/state_test.c  |  6 ++++++
- .../selftests/kvm/x86/xcr0_cpuid_test.c       | 19 +++++++++++++++++++
- 3 files changed, 26 insertions(+)
+In
+https://lore.kernel.org/kvm/20251107201151.3303170-1-jmattson@google.com/,
+I proposed an implementation that adhered to the architectural
+specification. It had a few warts. The worst was the necessity of
+"fixing up" KVM_SET_MSRS when executing KVM_SET_NESTED_STATE if L2 was
+active and nested NPT was enabled when a snapshot was taken. Aside
+from Yosry's clarification, no one has responded. I will take silence
+to imply rejection. That's okay; I wasn't fond of that implementation
+myself.
 
-diff --git a/tools/testing/selftests/kvm/include/x86/processor.h b/tools/testing/selftests/kvm/include/x86/processor.h
-index 57d62a425109..6a1da26780ea 100644
---- a/tools/testing/selftests/kvm/include/x86/processor.h
-+++ b/tools/testing/selftests/kvm/include/x86/processor.h
-@@ -88,6 +88,7 @@ struct xstate {
- #define XFEATURE_MASK_LBR		BIT_ULL(15)
- #define XFEATURE_MASK_XTILE_CFG		BIT_ULL(17)
- #define XFEATURE_MASK_XTILE_DATA	BIT_ULL(18)
-+#define XFEATURE_MASK_APX		BIT_ULL(19)
- 
- #define XFEATURE_MASK_AVX512		(XFEATURE_MASK_OPMASK | \
- 					 XFEATURE_MASK_ZMM_Hi256 | \
-diff --git a/tools/testing/selftests/kvm/x86/state_test.c b/tools/testing/selftests/kvm/x86/state_test.c
-index f2c7a1c297e3..2b7aa4cca011 100644
---- a/tools/testing/selftests/kvm/x86/state_test.c
-+++ b/tools/testing/selftests/kvm/x86/state_test.c
-@@ -167,6 +167,12 @@ static void __attribute__((__flatten__)) guest_code(void *arg)
- 			asm volatile ("vmovupd %0, %%zmm16" :: "m" (buffer));
- 		}
- 
-+		if (supported_xcr0 & XFEATURE_MASK_APX) {
-+			/* mov $0xcccccccc, %r16 */
-+			asm volatile (".byte 0xd5, 0x18, 0xb8, 0xcc, 0xcc,"
-+				      "0xcc, 0xcc, 0x00, 0x00, 0x00, 0x00");
-+		}
-+
- 		if (this_cpu_has(X86_FEATURE_MPX)) {
- 			uint64_t bounds[2] = { 10, 0xffffffffull };
- 			uint64_t output[2] = { };
-diff --git a/tools/testing/selftests/kvm/x86/xcr0_cpuid_test.c b/tools/testing/selftests/kvm/x86/xcr0_cpuid_test.c
-index d038c1571729..e3d3af5ab6f2 100644
---- a/tools/testing/selftests/kvm/x86/xcr0_cpuid_test.c
-+++ b/tools/testing/selftests/kvm/x86/xcr0_cpuid_test.c
-@@ -46,6 +46,20 @@ do {									\
- 		       __supported, (xfeatures));			\
- } while (0)
- 
-+/*
-+ * Verify that mutually exclusive architectural features do not overlap.
-+ * For example, APX and MPX must never be reported as supported together.
-+ */
-+#define ASSERT_XFEATURE_CONFLICT(supported_xcr0, xfeatures, conflicts)			\
-+do {											\
-+	uint64_t __supported = (supported_xcr0) & ((xfeatures) | (conflicts));		\
-+											\
-+	__GUEST_ASSERT((__supported & (xfeatures)) != (xfeatures) ||			\
-+		       !(__supported & (conflicts)),					\
-+		       "supported = 0x%lx, xfeatures = 0x%llx, conflicts = 0x%llx",	\
-+		       __supported, (xfeatures), (conflicts));				\
-+} while (0)
-+
- static void guest_code(void)
- {
- 	uint64_t initial_xcr0;
-@@ -79,6 +93,11 @@ static void guest_code(void)
- 	ASSERT_ALL_OR_NONE_XFEATURE(supported_xcr0,
- 				    XFEATURE_MASK_XTILE);
- 
-+	/* Check APX by ensuring MPX is not exposed concurrently */
-+	ASSERT_XFEATURE_CONFLICT(supported_xcr0,
-+				 XFEATURE_MASK_APX,
-+				 XFEATURE_MASK_BNDREGS | XFEATURE_MASK_BNDCSR);
-+
- 	vector = xsetbv_safe(0, XFEATURE_MASK_FP);
- 	__GUEST_ASSERT(!vector,
- 		       "Expected success on XSETBV(FP), got %s",
+The current series treats PAT just like any other resource with
+distinct host and guest values. There is a single shared storage
+location (vcpu->arch.pat), and the values are swapped on
+VM-entry/VM-exit. Though this implementation doesn't precisely follow
+the architectural specification, the guest visible behavior is the
+same as architected.
+
+The first three patches ensure that the vmcb01.g_pat value at VMRUN is
+preserved through virtual SMM and serialization. When NPT is enabled,
+this field holds the host (L1) hPAT value from emulated VMRUN to
+emulated #VMEXIT.
+
+The fourth patch restores (L1) hPAT value from vmcb01.g_pat at
+emulated #VMEXIT. Note that this is not architected, but it is
+required for this implementation, because hPAT and gPAT occupy the
+same storage location.
+
+The next three patches handle loading vmcb12.g_pat into the (L2) guest
+PAT register at VMRUN. Most of this behavior is architected, but the
+architectural specification states that the value is loaded into the
+guest PAT register, leaving the hPAT register unchanged.
+
+The eighth patch stores the (L2) guest PAT register into vmcb12_g_pat
+on emulated #VMEXIT, as architected.
+
+The ninth patch fixes the emulation of WRMSR(IA32_PAT) when nested NPT
+is enabled.
+
+The tenth patch introduces a new KVM selftest to validate virtualized
+PAT behavior.
+
+Jim Mattson (10):
+  KVM: x86: nSVM: Add g_pat to fields copied by svm_copy_vmrun_state()
+  KVM: x86: nSVM: Add VALID_GPAT flag to kvm_svm_nested_state_hdr
+  KVM: x86: nSVM: Handle legacy SVM nested state in SET_NESTED_STATE
+  KVM: x86: nSVM: Restore L1's PAT on emulated #VMEXIT from L2 to L1
+  KVM: x86: nSVM: Cache g_pat in vmcb_save_area_cached
+  KVM: x86: nSVM: Add validity check for VMCB12 g_pat
+  KVM: x86: nSVM: Set vmcb02.g_pat correctly for nested NPT
+  KVM: x86: nSVM: Save gPAT to vmcb12.g_pat on emulated #VMEXIT from L2
+    to L1
+  KVM: x86: nSVM: Fix assignment to IA32_PAT from L2
+  KVM: selftests: nSVM: Add svm_nested_pat test
+
+ arch/x86/include/uapi/asm/kvm.h               |   3 +
+ arch/x86/kvm/svm/nested.c                     |  74 +++-
+ arch/x86/kvm/svm/svm.c                        |  14 +-
+ arch/x86/kvm/svm/svm.h                        |   2 +-
+ tools/testing/selftests/kvm/Makefile.kvm      |   1 +
+ .../selftests/kvm/x86/svm_nested_pat_test.c   | 357 ++++++++++++++++++
+ 6 files changed, 432 insertions(+), 19 deletions(-)
+ create mode 100644 tools/testing/selftests/kvm/x86/svm_nested_pat_test.c
+
+
+base-commit: f62b64b970570c92fe22503b0cdc65be7ce7fc7c
 -- 
-2.51.0
+2.52.0.457.g6b5491de43-goog
 
