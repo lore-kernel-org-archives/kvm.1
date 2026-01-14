@@ -1,127 +1,150 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 720283803CF;
-	Wed, 14 Jan 2026 09:32:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.21
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 617433557E3;
+	Wed, 14 Jan 2026 09:33:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768383133; cv=none; b=d8O1LL+B6Or+nBzpFd55bT2eTO12li7f17uK8SdnQBbThxr6P7iS42wLGai4LMtNm9qYIvgdP8ejus5vcZ6kVr85r0m74HNXeFTnU52Ir5ADfpHeJFZy6Yay+lwJF3Us0s8B1GFzWKSdXalPC9FMJzY1QON7ZjfeITirHZBXbqE=
+	t=1768383218; cv=none; b=Ub81EL8GGAgQBSJegXyRBYUUmXRlh0ZiX/hpdmaVVNk7BeeaWErof4Wb+uZBOfxBmGPlvAl90djMBJZV7tW0qSS9zyWiy1UMPQm6Eec5J+y1697n5B7GH5WvOFOg1aZuUiiLgX/nBin7XJPV3JRjkh/YLakLzVnNItDPg4642ps=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768383133; c=relaxed/simple;
-	bh=KHc7CZfKFe7jROH1FXxAbzwyF0WYtKG7/MBs2Jo20CY=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=ffmm/dKLVZllup1APqa4nbTJl/OUojDlz/JwOLdX2Wh3mVdjyZs5U7zl7MWW7GlfHxHrLLrrDl2WbC5rVPxhYHurjr5IdWQwcHGxtWI8KI4rkCCiYl8T2Xw80v+eAS+XMkmtTUCKTRoMQFUITGkoV57b2RG2SeSvMzWh3DJlY8A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=egMgXUT0; arc=none smtp.client-ip=198.175.65.21
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+	s=arc-20240116; t=1768383218; c=relaxed/simple;
+	bh=Jyovhn7yxmYFuVvriTfpome5NbhRP9E921PTw+JVtBg=;
+	h=Mime-Version:Content-Type:Date:Message-Id:From:Cc:To:Subject:
+	 References:In-Reply-To; b=RiIxMYt8K/LIfDg9y0KmwfMVzDkMcASfBmriZ9VvQ7P5VVCszA8HtdBQVVNbovmJRyJkF8vg7luydSuRkpzsfuW0dttVHPxeCdnuioiKoX1LO/2tpDT1by34newNWBDKrSK5MwbyJ3LPSxtj4es1RkjzPdAgf47O374YlBTHPuE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=OH3Y+rho; arc=none smtp.client-ip=148.163.156.1
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="egMgXUT0"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1768383132; x=1799919132;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=KHc7CZfKFe7jROH1FXxAbzwyF0WYtKG7/MBs2Jo20CY=;
-  b=egMgXUT0XW4PX1ZF7jUzm8AwpBcrJuHWBRFnLPP35XrhlDN+TOn4AnCe
-   yJI5UNA1VaVMwr8ZqL8g4672+LlAxIE8TN3N61M1ucyZomDwT7upFjzUl
-   4DF4LmWFL7OL/UTSjsXfqw4wAaz2x3Oaqffq9Xuh3DGL80zVwzAXs+cuq
-   LqMSwgtJm0UoUMs6PJvuG6/WIR69nPSsvLW+5jBA0svcypnAUGMKGom9g
-   E0nKm17t+10a+brz51CTbtOJvjMyWzkFTWThGVHUQZcaPODbe6w3xhKFQ
-   0o0H7I8iypzcHEwsn5vQ1sQo9DA9BEV0/2AFO/cz62bQuoqSpIAMguoKE
-   Q==;
-X-CSE-ConnectionGUID: vckgPsHVSYibWnILqJ5cRw==
-X-CSE-MsgGUID: Jm9RDBPvTbavNzfnbzdvTw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11670"; a="69598120"
-X-IronPort-AV: E=Sophos;i="6.21,225,1763452800"; 
-   d="scan'208";a="69598120"
-Received: from orviesa002.jf.intel.com ([10.64.159.142])
-  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Jan 2026 01:32:12 -0800
-X-CSE-ConnectionGUID: V3MTrGxtTVyUdSbccfAaNA==
-X-CSE-MsgGUID: wPZS+suPQoim7fiyduv70w==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,225,1763452800"; 
-   d="scan'208";a="235345915"
-Received: from unknown (HELO [10.238.1.231]) ([10.238.1.231])
-  by orviesa002-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Jan 2026 01:32:09 -0800
-Message-ID: <09739da1-66a0-454c-910c-e01156b434bf@linux.intel.com>
-Date: Wed, 14 Jan 2026 17:32:06 +0800
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="OH3Y+rho"
+Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 60E8YR7w009533;
+	Wed, 14 Jan 2026 09:33:32 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=qM2vlz
+	smLjnVZTawf17xyY7zcmp3H6gVf4xMVxjEa4w=; b=OH3Y+rhouBP0N+6boTRnew
+	voRnFIwnfpcMFu3IvN+hrFi9ycHeKyb+IIcxE5v5V5Kwm87oVg0LE2DmBArzTTMr
+	d9AxQHKb8sC4PIKkQNaFRSdBHEHfrrn+S0aeWttioiJgMbkZk2zspfxGc6mxbpJC
+	3El/wEW4m8bghZCByR9WiAfgCeDj6Pfgj3WCPIfquU3BjmzWc4Wis8Mm2r0jYw5o
+	QzuUXppPiTNoUZCk7Ok3E+2TG1ika8XYOsJS6zsKDqo5QKf3752BEbjI3H2rdE4c
+	+VkWt+2/u8tENlWqCoK7LndPnY7UoKllGxauh5d/0ib/AwdeJkPXfESNdXKRU5cA
+	==
+Received: from ppma13.dal12v.mail.ibm.com (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4bkeg4gm60-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 14 Jan 2026 09:33:32 +0000 (GMT)
+Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma13.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 60E7jcY5030146;
+	Wed, 14 Jan 2026 09:33:31 GMT
+Received: from smtprelay03.fra02v.mail.ibm.com ([9.218.2.224])
+	by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 4bm3ajs3jd-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 14 Jan 2026 09:33:31 +0000
+Received: from smtpav01.fra02v.mail.ibm.com (smtpav01.fra02v.mail.ibm.com [10.20.54.100])
+	by smtprelay03.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 60E9XSXk53674458
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Wed, 14 Jan 2026 09:33:28 GMT
+Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id E550120043;
+	Wed, 14 Jan 2026 09:33:27 +0000 (GMT)
+Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id CDF4920040;
+	Wed, 14 Jan 2026 09:33:27 +0000 (GMT)
+Received: from darkmoore (unknown [9.52.198.246])
+	by smtpav01.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Wed, 14 Jan 2026 09:33:27 +0000 (GMT)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] KVM: TDX: Allow userspace to return errors to guest for
- MAPGPA
-To: Sagi Shahar <sagis@google.com>
-Cc: Xiaoyao Li <xiaoyao.li@intel.com>, Sean Christopherson
- <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>,
- Dave Hansen <dave.hansen@linux.intel.com>, Kiryl Shutsemau <kas@kernel.org>,
- Rick Edgecombe <rick.p.edgecombe@intel.com>,
- Thomas Gleixner <tglx@kernel.org>, Borislav Petkov <bp@alien8.de>,
- "H. Peter Anvin" <hpa@zytor.com>, x86@kernel.org, kvm@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-coco@lists.linux.dev,
- Vishal Annapurve <vannapurve@google.com>
-References: <20260114003015.1386066-1-sagis@google.com>
- <43a0558a-4cca-4d9c-97dc-ffd085186fd9@intel.com>
-Content-Language: en-US
-From: Binbin Wu <binbin.wu@linux.intel.com>
-In-Reply-To: <43a0558a-4cca-4d9c-97dc-ffd085186fd9@intel.com>
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Date: Wed, 14 Jan 2026 10:33:22 +0100
+Message-Id: <DFO7J08IZ4HZ.3O6LSE6J09CD3@linux.ibm.com>
+From: "Christoph Schlameuss" <schlameuss@linux.ibm.com>
+Cc: <linux-kernel@vger.kernel.org>, <linux-s390@vger.kernel.org>,
+        <borntraeger@de.ibm.com>, <frankja@linux.ibm.com>, <nsg@linux.ibm.com>,
+        <nrb@linux.ibm.com>, <seiden@linux.ibm.com>, <gra@linux.ibm.com>,
+        <schlameuss@linux.ibm.com>, <hca@linux.ibm.com>, <svens@linux.ibm.com>,
+        <agordeev@linux.ibm.com>, <gor@linux.ibm.com>, <david@redhat.com>,
+        <gerald.schaefer@linux.ibm.com>
+To: "Claudio Imbrenda" <imbrenda@linux.ibm.com>, <kvm@vger.kernel.org>
+Subject: Re: [PATCH v6 28/28] KVM: s390: Storage key manipulation IOCTL
+X-Mailer: aerc 0.21.0
+References: <20251222165033.162329-1-imbrenda@linux.ibm.com>
+ <20251222165033.162329-29-imbrenda@linux.ibm.com>
+In-Reply-To: <20251222165033.162329-29-imbrenda@linux.ibm.com>
+X-TM-AS-GCONF: 00
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMTE0MDA3MCBTYWx0ZWRfX+SP4IZ1X6BdT
+ iP+muSFSxeU5vL+v86JhPbk98MCGFCA1dC6gPWEOHY6OkOmYEox3TVxDP4fkuaYEULhzvKipqeh
+ XKookPVNIpaM3LN4gX+1SeGZ+0BXW56n7mxnznSIAIXQ1jaAi9iWctgim8aoUjopjjTaGStONBM
+ g03Bn21PrFzR42gTHC2TI5ZrAVQ/YLLn1D/MzBdujt3VYT6OZ8Mu7MJStHCzc7E3OLuWq7Yb5Cc
+ 2rPWdMPb6x7KlaSpfJJRbJzobA/mhiruJ2uUejgElCgj+P96i4SDObFp32Jevqwx/eW+QLFnpya
+ cP82k+cauUxRS47ECtuuhRhCl6SfGgodmALb3cQ9S1eG6jdNyo4d8mkP0b1KKvQo8BopOSGoeJP
+ I3zRnaSE4Gu3FqIPTZnsAek0hrGQXBS9kg7PPVtQ4eEfRU7yPTM4ZlmbjB6Irn/NzH89OdmwUTV
+ Ifq+CShpljYlBR1gr5w==
+X-Proofpoint-ORIG-GUID: IL4fVZOSfDiMgkpCafyo9AbXxoKu2K-k
+X-Authority-Analysis: v=2.4 cv=B/60EetM c=1 sm=1 tr=0 ts=696762ec cx=c_pps
+ a=AfN7/Ok6k8XGzOShvHwTGQ==:117 a=AfN7/Ok6k8XGzOShvHwTGQ==:17
+ a=IkcTkHD0fZMA:10 a=vUbySO9Y5rIA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=VnNF1IyMAAAA:8 a=nq-VQYysc4rh_9LpSKcA:9 a=QEXdDO2ut3YA:10
+X-Proofpoint-GUID: IL4fVZOSfDiMgkpCafyo9AbXxoKu2K-k
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
+ definitions=2026-01-14_02,2026-01-09_02,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ priorityscore=1501 suspectscore=0 bulkscore=0 spamscore=0 impostorscore=0
+ malwarescore=0 phishscore=0 adultscore=0 clxscore=1015 lowpriorityscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.19.0-2512120000 definitions=main-2601140070
 
+On Mon Dec 22, 2025 at 5:50 PM CET, Claudio Imbrenda wrote:
+> Add a new IOCTL to allow userspace to manipulate storage keys directly.
+>
+> This will make it easier to write selftests related to storage keys.
+>
+> Signed-off-by: Claudio Imbrenda <imbrenda@linux.ibm.com>
 
+Please add some user documentation for the new IOCTL.
 
-On 1/14/2026 10:59 AM, Xiaoyao Li wrote:
-> On 1/14/2026 8:30 AM, Sagi Shahar wrote:
->> From: Vishal Annapurve <vannapurve@google.com>
->>
->> MAPGPA request from TDX VMs gets split into chunks by KVM using a loop
->> of userspace exits until the complete range is handled.
->>
->> In some cases userspace VMM might decide to break the MAPGPA operation
->> and continue it later. For example: in the case of intrahost migration
->> userspace might decide to continue the MAPGPA operation after the
->> migrration is completed.
->>
->> Allow userspace to signal to TDX guests that the MAPGPA operation should
->> be retried the next time the guest is scheduled.
+[...]
 
-How does the guest differentiate it from a retry due to pending events?
-Will the guest retry immediately after returning back to the guest in this case?
+> diff --git a/include/uapi/linux/kvm.h b/include/uapi/linux/kvm.h
+> index dddb781b0507..845417e56778 100644
+> --- a/include/uapi/linux/kvm.h
+> +++ b/include/uapi/linux/kvm.h
+> @@ -1219,6 +1219,15 @@ struct kvm_vfio_spapr_tce {
+>  	__s32	tablefd;
+>  };
+> =20
+> +#define KVM_S390_KEYOP_SSKE 0x01
+> +#define KVM_S390_KEYOP_ISKE 0x02
+> +#define KVM_S390_KEYOP_RRBE 0x03
 
+Just a nitpik, but why this order? In the arch the order is ISKE, SSKE, RRB=
+E.
+Would it not be more logical to keep that order?
 
->>
->> Signed-off-by: Vishal Annapurve <vannapurve@google.com>
->> Co-developed-by: Sagi Shahar <sagis@google.com>
->> Signed-off-by: Sagi Shahar <sagis@google.com>
->> ---
->>   arch/x86/kvm/vmx/tdx.c | 8 +++++++-
->>   1 file changed, 7 insertions(+), 1 deletion(-)
->>
->> diff --git a/arch/x86/kvm/vmx/tdx.c b/arch/x86/kvm/vmx/tdx.c
->> index 2d7a4d52ccfb..3244064b1a04 100644
->> --- a/arch/x86/kvm/vmx/tdx.c
->> +++ b/arch/x86/kvm/vmx/tdx.c
->> @@ -1189,7 +1189,13 @@ static int tdx_complete_vmcall_map_gpa(struct kvm_vcpu *vcpu)
->>       struct vcpu_tdx *tdx = to_tdx(vcpu);
->>         if (vcpu->run->hypercall.ret) {
->> -        tdvmcall_set_return_code(vcpu, TDVMCALL_STATUS_INVALID_OPERAND);
->> +        if (vcpu->run->hypercall.ret == -EBUSY)
->> +            tdvmcall_set_return_code(vcpu, TDVMCALL_STATUS_RETRY);
->> +        else if (vcpu->run->hypercall.ret == -EINVAL)
->> +            tdvmcall_set_return_code(vcpu, TDVMCALL_STATUS_INVALID_OPERAND);
->> +        else
->> +            return -EINVAL;
-> 
-> It's incorrect to return -EINVAL here. The -EINVAL will eventually be returned to userspace for the VCPU_RUN ioctl. It certainly breaks userspace. So it needs to be
-> 
->     if (vcpu->run->hypercall.ret == -EBUSY)
->         tdvmcall_set_return_code(vcpu, TDVMCALL_STATUS_RETRY);
->     else
->         tdvmcall_set_return_code(vcpu, TDVMCALL_STATUS_INVALID_OPERAND);
-> 
-> But I'm not sure if such change breaks the userspace ABI that if needs to be opted-in.
-> 
+> +struct kvm_s390_keyop {
+> +	__u64 user_addr;
+> +	__u8  key;
+> +	__u8  operation;
+> +};
+> +
+>  /*
+>   * KVM_CREATE_VCPU receives as a parameter the vcpu slot, and returns
+>   * a vcpu fd.
+> @@ -1238,6 +1247,7 @@ struct kvm_vfio_spapr_tce {
+>  #define KVM_S390_UCAS_MAP        _IOW(KVMIO, 0x50, struct kvm_s390_ucas_=
+mapping)
+>  #define KVM_S390_UCAS_UNMAP      _IOW(KVMIO, 0x51, struct kvm_s390_ucas_=
+mapping)
+>  #define KVM_S390_VCPU_FAULT	 _IOW(KVMIO, 0x52, unsigned long)
+> +#define KVM_S390_KEYOP           _IOWR(KVMIO, 0x53, struct kvm_s390_keyo=
+p)
+> =20
+>  /* Device model IOC */
+>  #define KVM_CREATE_IRQCHIP        _IO(KVMIO,   0x60)
 
