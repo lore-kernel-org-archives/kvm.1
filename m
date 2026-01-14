@@ -1,130 +1,123 @@
 Received: from mail-pj1-f73.google.com (mail-pj1-f73.google.com [209.85.216.73])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 714E238E5CC
-	for <kvm@vger.kernel.org>; Wed, 14 Jan 2026 21:48:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C25293A89A8
+	for <kvm@vger.kernel.org>; Wed, 14 Jan 2026 21:59:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.73
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768427362; cv=none; b=qj1k4Z76Xd4J/vtrYrvA4ay/y0CvEjs7a1s5zAWMuzbSaNABnZNOEW6T/7GwUUw0IQ74jmR8O4upR3VhJNpngOmXK8sIq14X/mGmDYy1c+c9cSKTrF6wHAAcldFlr6ADkR14auhiXzgaDcapJRdwNYyawOuQG0CRpcb3yRRzecs=
+	t=1768427984; cv=none; b=K+90dTVZxB/xALiJLdVOJFBEOFHQ5jXs0EhEuTLfK9UXmJit97twd02uAqZiKl/jNXqCmK4TJU2t5gbhtub95q9xdnrd5uIVW2aD39fi90Xt8NDZSgsP63t0nlrdYQXclO12NriR3anyml32o9qSc9euFpshf2fpK4hjB5Ixnac=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768427362; c=relaxed/simple;
-	bh=sYapoanqDNVjmowm3U98DjxSpn0xFT5o0faGgzukwF4=;
+	s=arc-20240116; t=1768427984; c=relaxed/simple;
+	bh=tO0znVmDXAymHNCdzPnVwtYP7QD1kxrOykARoYLTeBE=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=iH3yudjxAJVV1jUs5Nlrf4m2OhIheZA40YVNexyVxGCHFfvlOFl1x9E7hpcfcTT7S2pMYm30ZlGNrwUbJxrMfaGIFMool2eWgg/7dRSjzYPNUclv3z8Bx7KEFp/2Zy51K8KHacaClKimP5/W81ZQFIXqlSUxBQ4kQOn3Pf6/1w4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=L+8GBCpl; arc=none smtp.client-ip=209.85.216.73
+	 To:Cc:Content-Type; b=IyWT8PCu+elsqCMTQ8M78qOZ8SLYp8zDkXnVfRvnHQKy0wjMxydE5glSSiiher4hm3iT0IBrFF0cXPfWrrhDVHbNW1bPboB18F2ujNxbDeYZxfYCrKKXkq3stM/a/vmAJ0fG+IWm5ZKaWlvmT7Z+hQNwD1LNrYEeuyMv5PqqTgc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=hSW5Vy+S; arc=none smtp.client-ip=209.85.216.73
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="L+8GBCpl"
-Received: by mail-pj1-f73.google.com with SMTP id 98e67ed59e1d1-34c66cb671fso158294a91.3
-        for <kvm@vger.kernel.org>; Wed, 14 Jan 2026 13:48:08 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="hSW5Vy+S"
+Received: by mail-pj1-f73.google.com with SMTP id 98e67ed59e1d1-34c6e05af3bso150828a91.3
+        for <kvm@vger.kernel.org>; Wed, 14 Jan 2026 13:59:27 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1768427287; x=1769032087; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1768427965; x=1769032765; darn=vger.kernel.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=Folo1QSQIeNygTDacssAH4wR+caKLjy6AQ6SgfkeFFU=;
-        b=L+8GBCpl7G2vn5PBjhhzMcx565hxRrte5GPW1pAkaZ6hbKDTr7sTqxDncMwRxXQdgn
-         mHRYxcoIKD7K5NR7VTwI+pVd7rn/eFPSBlwo2eAXr+/CQTYJlbI+QmdyyoysIC1LikTZ
-         RxIP86AZqx83lRGc+iSKz6emnB9hqdBVXdDNzySyWG+c9CN8T85G1xAvtr8FP04l8wis
-         kQEuSQVAvW4HuaRQmx4t0Jh8DwL4DUbKVse+83CUEwNLeDh9QUmgFwrkhYWGsICK7KE9
-         mR4FXP9ZeIYrcHPeC3OGiDRffijr3WUNJ2Nt62+IEfOv0bDD4ynnuXh2GGz7FOh7kWxX
-         FtjA==
+        bh=wc5IYW1fIu5cyAHFpaj29f0bgcaP13LBp3YapifQT5w=;
+        b=hSW5Vy+SGhQcYxbEd5IwbQss4zcbV4g2hELRx9Isus+w4SC0+K55AFsf5LThNPaD0z
+         iX0qvcGmeRXiOJHpd0TW7z1fwfq5SfuIRL6IAQGWkzrkXFg++BDcf65CDgRNUQ13HqO/
+         Ucr/ZIMFRzYZwT+qn1DZpZAekxqBeeV/NLKibGnhHihyKDKUNxvs2+2pSTVoI6e3Oxuu
+         HJVB2ASDVT69USBw4+bEkh1ThVcyILL8IXhEyzD1tgkNsx2EZQC4qtjS1fk+LMe/3e7R
+         /OIouO1efH52uxgwQxriWCIRsWnwj+8vUwGNZdL5tNVyvn4y5ATbVkpFPmKnxpDZToX2
+         xQNg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1768427287; x=1769032087;
+        d=1e100.net; s=20230601; t=1768427965; x=1769032765;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=Folo1QSQIeNygTDacssAH4wR+caKLjy6AQ6SgfkeFFU=;
-        b=P9/qWDtQ7oqgGOgNWuctlGWOB4zRecYkzFOb7IXNhDLpWYwMSfOgYHxfwaB8+9iipj
-         kDUEune//8FN9ma09Vq1dZZFDEC4etyLhRtILbgAm/w3NXXgso+Bph5sPhk73SNHQ6hq
-         RcYWdgnVQUlmY/UhmLNrSR0hnd9d5w3G9vYwli/dQbUq4ZEUvBUwaYN68TMsCAOrwwv0
-         nhdH3Ry3+JoZ/+X6B+AFk/doRb88zuwUTUuIf4YmUsn4e4HxXrOaniy/KxrBPOxE83cw
-         aAH5n3IrHjBBSx+bBq36h7xSSkpwDdSQSJSSr3OfKicOAUf/DQcvAPS+jSdC/tHP3xHU
-         aY3A==
-X-Forwarded-Encrypted: i=1; AJvYcCW+iVqq7/BbbiibuKFsRh4rK/v6F1B26bsT2+sfhMsCLcDH6WKpJ9a8Zb2dnPnEoEL/Iw0=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxYEKdbP2ZeOilNp6n/hRGpJPl7cqwsvkOmpuSDH7HpkpvVIRwk
-	fvAG8kOGQq+TB+VNzeMxS0xz9gapAAO4X+kNG3l160E2T3244ftOmyGJEpgGC7MdBS8Q8jRkAKE
-	uJdMMxg==
-X-Received: from pjso10.prod.google.com ([2002:a17:90a:c08a:b0:349:3867:ccc1])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:57ed:b0:340:c060:4d44
- with SMTP id 98e67ed59e1d1-351090b100fmr3848862a91.14.1768427286993; Wed, 14
- Jan 2026 13:48:06 -0800 (PST)
-Date: Wed, 14 Jan 2026 13:48:05 -0800
-In-Reply-To: <aWe8zESCJ0ZeAOT3@google.com>
+        bh=wc5IYW1fIu5cyAHFpaj29f0bgcaP13LBp3YapifQT5w=;
+        b=Mxij+Z3Dkh973R5E5m7/7bceQLJ5+7KwMvt5/qQ4Pv0FWoyyhM7nK9sJ5Xct9qB2De
+         gx24YGxGzI3tQKoQh9gqh6AhAPp4FydrQpzjxAx3HkxZKGZ3vOGeBvRLHzf4Nv2Jmmi9
+         +sgPamhWUr5mnlO0r+t76/yA4WbWZ4TACYOIYjTUoMQ3R9K2qazJ2n/qu2LMM9N154Eg
+         miCEULrPcaqvWh5Ja9e2LtX9HrrG+E6ze37t0g/W6x3ubxMxYa3vZcpntR/VR/44Bul/
+         XGR1LWfxpNQwUkK6HfKHULiU8p3GGsN1lB2v7ZeRpg4mRFOWClAuYuHhrwyrwU+LA+WN
+         0F7g==
+X-Forwarded-Encrypted: i=1; AJvYcCU5vpGKNRVAVlwbFCJ9QbWzYDKn60wiseyN29UdANCpNJCif0d627rB99yrPUihFXI9xvg=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxWW+BgIYQZN12vvAXuM35zE6nZ1FFtRFmkWrLgvT2ZboJoHoHI
+	8VNYsekDD2/C+QUlRkapq+Rb8ngFcRfOPMuyF+Jqk9p86XXrfUostWmWExIeEXC9QSV8z95PrDn
+	YAiJnGQ==
+X-Received: from pjbga22.prod.google.com ([2002:a17:90b:396:b0:34c:9f0b:fd7])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:6d0:b0:341:6164:c27d
+ with SMTP id 98e67ed59e1d1-35109091a6cmr3714526a91.3.1768427965337; Wed, 14
+ Jan 2026 13:59:25 -0800 (PST)
+Date: Wed, 14 Jan 2026 13:59:24 -0800
+In-Reply-To: <jf2zfqo6jrrcdkdatztiijmf7tgkho7bks4q4oaegiqpeflrkj@7blq6f5ck2hf>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-References: <20260114003015.1386066-1-sagis@google.com> <43a0558a-4cca-4d9c-97dc-ffd085186fd9@intel.com>
- <aWe8zESCJ0ZeAOT3@google.com>
-Message-ID: <aWgPFQOQRr3xcMjh@google.com>
-Subject: Re: [PATCH] KVM: TDX: Allow userspace to return errors to guest for MAPGPA
+References: <20250901051656.209083-1-manali.shukla@amd.com>
+ <20250901052146.209158-1-manali.shukla@amd.com> <jf2zfqo6jrrcdkdatztiijmf7tgkho7bks4q4oaegiqpeflrkj@7blq6f5ck2hf>
+Message-ID: <aWgRvCdPsAFHRwcU@google.com>
+Subject: Re: [PATCH v2 03/12] KVM: Add KVM_GET_EXT_LAPIC and KVM_SET_EXT_LAPIC
+ for extapic
 From: Sean Christopherson <seanjc@google.com>
-To: Xiaoyao Li <xiaoyao.li@intel.com>
-Cc: Sagi Shahar <sagis@google.com>, Paolo Bonzini <pbonzini@redhat.com>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, Kiryl Shutsemau <kas@kernel.org>, 
-	Rick Edgecombe <rick.p.edgecombe@intel.com>, Thomas Gleixner <tglx@kernel.org>, 
-	Borislav Petkov <bp@alien8.de>, "H. Peter Anvin" <hpa@zytor.com>, x86@kernel.org, kvm@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-coco@lists.linux.dev, 
-	Vishal Annapurve <vannapurve@google.com>, Michael Roth <michael.roth@amd.com>
+To: Naveen N Rao <naveen@kernel.org>
+Cc: Manali Shukla <manali.shukla@amd.com>, kvm@vger.kernel.org, 
+	linux-perf-users@vger.kernel.org, linux-doc@vger.kernel.org, 
+	pbonzini@redhat.com, nikunj@amd.com, bp@alien8.de, peterz@infradead.org, 
+	mingo@redhat.com, mizhang@google.com, thomas.lendacky@amd.com, 
+	ravi.bangoria@amd.com, Sandipan.Das@amd.com
 Content-Type: text/plain; charset="us-ascii"
 
-+Mike
+On Tue, Dec 16, 2025, Naveen N Rao wrote:
+> On Mon, Sep 01, 2025 at 10:51:46AM +0530, Manali Shukla wrote:
+> > diff --git a/Documentation/virt/kvm/api.rst b/Documentation/virt/kvm/api.rst
+> > index 6aa40ee05a4a..0653718a4f04 100644
+> > --- a/Documentation/virt/kvm/api.rst
+> > +++ b/Documentation/virt/kvm/api.rst
+> > @@ -2048,6 +2048,18 @@ error.
+> >  Reads the Local APIC registers and copies them into the input argument.  The
+> >  data format and layout are the same as documented in the architecture manual.
+> >  
+> > +::
+> > +
+> > +  #define KVM_APIC_EXT_REG_SIZE 0x540
 
-On Wed, Jan 14, 2026, Sean Christopherson wrote:
-> On Wed, Jan 14, 2026, Xiaoyao Li wrote:
-> > On 1/14/2026 8:30 AM, Sagi Shahar wrote:
-> > So it needs to be
-> > 
-> > 	if (vcpu->run->hypercall.ret == -EBUSY)
-> > 		tdvmcall_set_return_code(vcpu, TDVMCALL_STATUS_RETRY);
-> > 	else
-> > 		tdvmcall_set_return_code(vcpu, TDVMCALL_STATUS_INVALID_OPERAND);
-> 
-> No, because assuming everything except -EBUSY translates to
-> TDVMCALL_STATUS_INVALID_OPERAND paints KVM back into the same corner its already
-> in.  What I care most about is eliminating KVM's assumption that a non-zero
-> hypercall.ret means TDVMCALL_STATUS_INVALID_OPERAND.
-> 
-> For the new ABI, I see two options:
-> 
->  1. Translate -errno as done in this patch.
->  2. Propagate hypercall.ret directly to the TDVMCALL return code, i.e. let
->     userspace set any return code it wants.
-> 
-> #1 has the downside of needing KVM changes and new uAPI every time a new return
-> code is supported.
-> 
-> #2 has the downside of preventing KVM from establishing its own ABI around the
-> return code, and making the return code vendor specific.  E.g. if KVM ever wanted
-> to do something in response to -EBUSY beyond propagating the error to the guest,
-> then we can't reasonably do that with #2.
-> 
-> Whatever we do, I want to change snp_complete_psc_msr() and snp_complete_one_psc()
-> in the same patch, so that whatever ABI we establish is common to TDX and SNP.
-> 
-> See also https://lore.kernel.org/all/Zn8YM-s0TRUk-6T-@google.com.
+As discussed in PUCK, just go the full 0x1000 bytes, and do:
 
-Aha!  Finally.  I *knew* we had discussed this more recently.  The SNP series to
-add KVM_EXIT_SNP_REQ_CERTS uses a similar pattern.  Note its intentional use of
-positive values, because that's what userspace sees in errno.  This code should
-do the same.  Oh, and we need to choose between EAGAIN and EBUSY...
+#define KVM_GET_LAPIC2            _IOR(KVMIO,  0x8e, struct kvm_lapic_state2)
+#define KVM_SET_LAPIC2            _IOW(KVMIO,  0x8f, struct kvm_lapic_state2)
 
-	switch (READ_ONCE(vcpu->run->snp_req_certs.ret)) {
-	case 0:
-		return snp_handle_guest_req(svm, control->exit_info_1,
-					    control->exit_info_2);
-	case ENOSPC:
-		vcpu->arch.regs[VCPU_REGS_RBX] = vcpu->run->snp_req_certs.npages;
-		return snp_req_certs_err(svm, SNP_GUEST_VMM_ERR_INVALID_LEN);
-	case EAGAIN:
-		return snp_req_certs_err(svm, SNP_GUEST_VMM_ERR_BUSY);
-	case EIO:
-		return snp_req_certs_err(svm, SNP_GUEST_VMM_ERR_GENERIC);
-	default:
-		break;
-	}
+> > +  struct kvm_ext_lapic_state {
+> > +	__DECLARE_FLEX_ARRAY(__u8, regs);
+> > +  };
+> > +
+> > +Applications should use KVM_GET_EXT_LAPIC ioctl if extended APIC is
+> > +enabled. KVM_GET_EXT_LAPIC reads Local APIC registers with extended
+> > +APIC register space located at offsets 400h-530h and copies them into input
+> > +argument.
+> 
+> I suppose the reason for using a flex array was for addressing review 
+> comments on the previous version -- to make the new APIs extensible so 
+> that they can accommodate any future changes to the extended APIC 
+> register space.
+> 
+> I wonder if it would be better to introduce a KVM extension, say 
+> KVM_CAP_EXT_LAPIC (along the lines of KVM_CAP_PMU_CAPABILITY).
 
+Please figure out a different name than "ext_lapic".  Verbatim from the SDM
+(minus a closing parenthesis)
 
-https://lore.kernel.org/all/20260109231732.1160759-2-michael.roth@amd.com
+  the xAPIC architecture) is an extension of the APIC architecture
+
+and
+
+  EXTENDED XAPIC (X2APIC)
+  The x2APIC architecture extends the xAPIC architecture
+
+There's zero chance I'm going to remember which "extended" we're talking about. 
+
+KVM_CAP_X2APIC_API further muddies the waters, so maybe something absurd and
+arbitrary like KVM_CAP_LAPIC2?  The capability doesn't have to strictly follow
+the naming of the underlying feature(s) it supports.
