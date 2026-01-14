@@ -1,76 +1,75 @@
-Received: from mail-pg1-f201.google.com (mail-pg1-f201.google.com [209.85.215.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 98A0C361DA0
-	for <kvm@vger.kernel.org>; Wed, 14 Jan 2026 21:29:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 31CBB3A1A2D;
+	Wed, 14 Jan 2026 21:48:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768426142; cv=none; b=ri6+qb0gIj7OolcgV/5xbG3M7Z9KQEkyYiaerXgz3sQwUSF9lCyIN3DH6pkKASfvUqxW/fm8hRjfsWq9/S8uoVqocCywrlyZA+I7SNLwepkZ6ZyW2vDI2PmN+L3OvCh3FyTCN+tZBng/efAaUDneHple53NKvO/vb6vJFkkiWQM=
+	t=1768427308; cv=none; b=u3Ht+k1ndcXZqlqdXMF5cv0YdmE0ANtTJmdAt9NmjosOz6mWnhzUElSY3SpJguQELWXQPH+ndVUowAEMU7fpGtJAOLLalOSf5vrlbJOlPCBOi1RlpmE+YNPExTdIk2gs5PsS3KJy2YEDTLHgbPMTj4ydqTxG6eXqiPnomoaul3o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768426142; c=relaxed/simple;
-	bh=zwgGQpdvgwfAdheqFz34XmzwOY7DKSqCRyjjxdrBr90=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=t7VkcGqkapbzB0mBDzYMYCCGgljk9QCeW6MPjQ8/u0+nwdJGm/ZEvxJQfekMkYFMSbedyQfEWle8UBnFtqIukUQjSy7s/EICq5kyW/VU1o3DoZENsuSK4VEckIXvNDfQBLKeQqJiITdMjba3Z7c4Z0v/bas/zgOVqVL/H6oBKz4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=l+52QTUS; arc=none smtp.client-ip=209.85.215.201
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+	s=arc-20240116; t=1768427308; c=relaxed/simple;
+	bh=sVjE+SfQsdIUMHLLdK2WZZMe9meeOIqp+vLdzF39rao=;
+	h=Date:From:To:Cc:Subject:Message-Id:In-Reply-To:References:
+	 Mime-Version:Content-Type; b=LzxoLsEZ3DVYR6AqSMUSlI3YLt5og3DqD4e1eVbXkAVDhgh+R7k4YcQkFT5sNYKu83kjEEXRdDaukea/TijU4UIWBVxJCc/WCHTsN0SG7uIxvfNOpbUsBM94cxGdvT5ehKxfo8koGaUQA2LHfePCK/PhqW0/Vgq+ePAQqmOv4v4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=P6vtWoYC; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="l+52QTUS"
-Received: by mail-pg1-f201.google.com with SMTP id 41be03b00d2f7-c1290abb178so206129a12.2
-        for <kvm@vger.kernel.org>; Wed, 14 Jan 2026 13:29:01 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1768426141; x=1769030941; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=xLOado+yWPClBRtMjOL7qAU9jcmNT34zEqVC1ZdjKqo=;
-        b=l+52QTUS6DSGzib2rsnO3a5mblBlkf91p7+LBnP/f5Sw2iL67oWTXpoIkw24a/U77M
-         krGhpxH9li+fqe+bqm2h2uam/ZgRz6h333VydDxoRq8Ll7MYCU82c0CuJb71n3hbn9Y3
-         tTUzeEacMKocGfnauaEM3z3+hGLufmEBXZIJHV/+Qvz+SHMpxMrKrp8FqDbRxwPhwaqc
-         UbRLUDc17z9ZdeIBdehB/aQl0ctOgZpWL8iGlph//HPPjkP48OS0vKVY8vjQAOZa+8UN
-         0tIk571grvx2uesZTVyfs9o9ucUUUGc7QX+974a3Hngh2W1mB8fA11b7gn+877laJlWe
-         IXNQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1768426141; x=1769030941;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=xLOado+yWPClBRtMjOL7qAU9jcmNT34zEqVC1ZdjKqo=;
-        b=te3uBMjuKCqU5ZIubIYAH/V3lOguVbTjYGhmMmL5/lI/n1RBkPK7BFL0z4Hhlvzyxt
-         xW4KMlfaiykSGdn2aNhj0weUPa0xl5WjPJxSaqlLiqLYAJ/ApGGBKm0Fr24NH5j2VF8z
-         NXmdGZ8riffq2ZNEmIGsZQu2WSE+RNkHXR2ULpGmbUsjIf74oXTbGGqp/FJ4YqZV5Fk+
-         MATnfo9Oip24+lFyN1295D/xqc0wcwskF0IsjzS7X3xMJRYvrpbzvO82h7RRD9mQ+fFX
-         Mz4ctOe4SuZZ47V/o3Cqip074ZLSg+yDd5qhp69nNjkNt2tTKkRa0geoWWnT4/8ZEcU0
-         o4iQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXwx3AZEXI2vhPVFk+Y2VsLzVlF3NeZGAsQt7Y3yD/d0V9tyiPe3cqyla6Zl/y/wNN5rzk=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz833xA8LkCWD5yOQ1HswuB4LyZDFI1pRH3qYhdi57ozkeCy/KC
-	LCcFzDyF3qxI8QjSUKB8m9kRz6tvZDVeWWqc9Xu3EyzpbhGuB96QeSVb4cvHmst3i79b5KjPKj9
-	Wgw1UUA==
-X-Received: from pgnc5.prod.google.com ([2002:a63:7245:0:b0:c1d:2ca0:3b22])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a20:3d1c:b0:34f:b660:770d
- with SMTP id adf61e73a8af0-38befc04253mr3346651637.55.1768426140635; Wed, 14
- Jan 2026 13:29:00 -0800 (PST)
-Date: Wed, 14 Jan 2026 13:28:59 -0800
-In-Reply-To: <20260113003016.3511895-1-jmattson@google.com>
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="P6vtWoYC"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 94455C4CEF7;
+	Wed, 14 Jan 2026 21:48:25 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1768427306;
+	bh=sVjE+SfQsdIUMHLLdK2WZZMe9meeOIqp+vLdzF39rao=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=P6vtWoYCIlr2XYuGHN8Ct1JWv57QVflPPPZ09aqbdSf6sWvv6Psm4BbFl9dEKxvME
+	 9IiuEcpRE83qTyXp72NniYCaihdkRtUtnm5MV6es8ZMUNP2zri1F+QO+WeYttAzUaW
+	 ul+FCK9Uuub6AWdHHLL0xvAdQEb3R2ZlrFvcN/18=
+Date: Wed, 14 Jan 2026 13:48:25 -0800
+From: Andrew Morton <akpm@linux-foundation.org>
+To: Francois Dugast <francois.dugast@intel.com>
+Cc: intel-xe@lists.freedesktop.org, dri-devel@lists.freedesktop.org, Matthew
+ Brost <matthew.brost@intel.com>, Zi Yan <ziy@nvidia.com>, Alistair Popple
+ <apopple@nvidia.com>, adhavan Srinivasan <maddy@linux.ibm.com>, Nicholas
+ Piggin <npiggin@gmail.com>, Michael Ellerman <mpe@ellerman.id.au>,
+ "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>, Felix Kuehling
+ <Felix.Kuehling@amd.com>, Alex Deucher <alexander.deucher@amd.com>,
+ Christian =?UTF-8?B?S8O2bmln?= <christian.koenig@amd.com>, David Airlie
+ <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, Maarten Lankhorst
+ <maarten.lankhorst@linux.intel.com>, Maxime Ripard <mripard@kernel.org>,
+ Thomas Zimmermann <tzimmermann@suse.de>, Lyude Paul <lyude@redhat.com>,
+ Danilo Krummrich <dakr@kernel.org>, David Hildenbrand <david@kernel.org>,
+ Oscar Salvador <osalvador@suse.de>, Jason Gunthorpe <jgg@ziepe.ca>, Leon
+ Romanovsky <leon@kernel.org>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+ "Liam R . Howlett" <Liam.Howlett@oracle.com>, Vlastimil Babka
+ <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan
+ <surenb@google.com>, Michal Hocko <mhocko@suse.com>, Balbir Singh
+ <balbirs@nvidia.com>, linuxppc-dev@lists.ozlabs.org, kvm@vger.kernel.org,
+ linux-kernel@vger.kernel.org, amd-gfx@lists.freedesktop.org,
+ nouveau@lists.freedesktop.org, linux-mm@kvack.org,
+ linux-cxl@vger.kernel.org
+Subject: Re: [PATCH v5 1/5] mm/zone_device: Reinitialize large zone device
+ private folios
+Message-Id: <20260114134825.8bf1cb3e897c8e41c73dc8ae@linux-foundation.org>
+In-Reply-To: <20260114192111.1267147-2-francois.dugast@intel.com>
+References: <20260114192111.1267147-1-francois.dugast@intel.com>
+	<20260114192111.1267147-2-francois.dugast@intel.com>
+X-Mailer: Sylpheed 3.7.0 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-References: <20260113003016.3511895-1-jmattson@google.com>
-Message-ID: <aWgKm6TokGGVRfkC@google.com>
-Subject: Re: [PATCH 00/10] KVM: x86: nSVM: Improve PAT virtualization
-From: Sean Christopherson <seanjc@google.com>
-To: Jim Mattson <jmattson@google.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>, Thomas Gleixner <tglx@linutronix.de>, 
-	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
-	"H. Peter Anvin" <hpa@zytor.com>, Shuah Khan <shuah@kernel.org>, Joerg Roedel <joro@8bytes.org>, 
-	David Hildenbrand <david@kernel.org>, Cathy Avery <cavery@redhat.com>, kvm@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org
-Content-Type: text/plain; charset="us-ascii"
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-Trimmed the Cc.
+On Wed, 14 Jan 2026 20:19:52 +0100 Francois Dugast <francois.dugast@intel.com> wrote:
 
-Please adjust whatever script (or script invocation) you're using to generate
-the Cc list.  AFAIK, Alex hasn't for SUSE for years, Radim hasn't worked for
-Red Hat for years, and Avi hasn't worked on KVM at all for even longer :-)
+> Reinitialize metadata for large zone device private folios in
+> zone_device_page_init prior to creating a higher-order zone device
+> private folio. This step is necessary when the folio’s order changes
+> dynamically between zone_device_page_init calls to avoid building a
+> corrupt folio. As part of the metadata reinitialization, the dev_pagemap
+> must be passed in from the caller because the pgmap stored in the folio
+> page may have been overwritten with a compound head.
+
+Thanks.  What are the worst-case userspace-visible effects of the bug?
