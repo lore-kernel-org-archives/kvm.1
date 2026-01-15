@@ -1,32 +1,32 @@
-Received: from out-178.mta0.migadu.com (out-178.mta0.migadu.com [91.218.175.178])
+Received: from out-172.mta0.migadu.com (out-172.mta0.migadu.com [91.218.175.172])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 43E9423B63C
-	for <kvm@vger.kernel.org>; Thu, 15 Jan 2026 01:13:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.178
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 712792701C4
+	for <kvm@vger.kernel.org>; Thu, 15 Jan 2026 01:13:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768439639; cv=none; b=C1j/D/YwtuPGdF84Tgh965ilZUy357LdWdEJuL+DWKGmF5L2tnNQgFA2d3c4Cr7u/r4iRIvH8bIyPm2L+JJEk9+4Aec17l51EKrsfLP1KIH75VdB6tu1qZNTxv0Om1vFRKqjEkWO/peiB5PR4frd6LZtnhShIt8Z943Eon1SThg=
+	t=1768439639; cv=none; b=OEDCN3PjnCXOuhXtlhngaUNHQ4wXCC/1EWa2GNzKpBqTk1434VVRgGrehvpyKIvPkZs/O5NW6X7yCPzVb8uiAnrBWP+QEeN/2OFL53GACj7kXOmcOA4b9ydyXYchX/GXJijLMEC6aSD61jL2GBjSVyXsu2EczVf7Xp9mrUvaBds=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1768439639; c=relaxed/simple;
-	bh=QJkGO6buZj2FN76R5TlJ5b0ubRqJ+gXCFYiyaYYmb0I=;
+	bh=DmnQ5TdTjVWminP3Xf33CFReUn/d5NcYrsSTL0v+Us0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cvmqirGx1zJY5S646o9eAZf6r/7gMnOD4fdS2pKdzcSnLGZ9A8qrtwx6K42JQEVQ5G8qegPHJANkU8zf9oQW+NJ+ldCSDz3pNQT/wqirFwsbzaY6GMK3GnrNwqpxYpyKjeRNL6e9li91IGqzlBwi/CTW/TAXzZrcKtxJHvdsWeE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=R7tjGHDz; arc=none smtp.client-ip=91.218.175.178
+	 MIME-Version; b=aQLKmP2W9iPBhUoq5/0vW8hRKMF061Yyv0Ntu4boGFy3VHVPzKRwuvYp9dBakmtZiYMFpI1XA3WTUl9KN++ix1rN9EElJnZ06bBYR1E8f+H+glPxz+PR81ggRU2WlcSAHinSX1joHUn5/pRJwMJQ7wpypBmMA8joMpGBhtYUQSc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=vd6e04ms; arc=none smtp.client-ip=91.218.175.172
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="R7tjGHDz"
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="vd6e04ms"
 X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1768439622;
+	t=1768439632;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=HgQ/8xsqXO4D4VmyqO8Kbk6TDo6HNO5HxtqHdsr2+Ow=;
-	b=R7tjGHDzeEb1FJMQpguFh0YBIhTVbIlJruRu2QVg8rN6EhUMbQr+GuauFfhx9aiMIvOHkh
-	8q+hvp/ggx0uQFF61n6r5aPuq7sSjvh1dx98KpskmMZV42GCcdb8w2k4XER+kgaY90CPX3
-	kLcvYmhv97UMJa+u2QeO7eHP4GvsXWo=
+	bh=V3xfRFV9ep/SW8LI7/0sQuoQMcHZNc6trK3lXoKTrTE=;
+	b=vd6e04msPa01i8xXYRxS0CpG4E35HfrFglavMXAb6mrtvVeywDODs84TxD+uKiB0qIA08P
+	cHarIZdRWBsqLRReo7SBUqS6NxWJn9GmfIGK7N+2CbA+CsAC9P2p3LsEwM/PcqdLW6/RAy
+	UAsoFI8LcDZmnciZK2j0uMSM4A6/klI=
 From: Yosry Ahmed <yosry.ahmed@linux.dev>
 To: Sean Christopherson <seanjc@google.com>
 Cc: Paolo Bonzini <pbonzini@redhat.com>,
@@ -34,9 +34,9 @@ Cc: Paolo Bonzini <pbonzini@redhat.com>,
 	linux-kernel@vger.kernel.org,
 	Yosry Ahmed <yosry.ahmed@linux.dev>,
 	stable@vger.kernel.org
-Subject: [PATCH v4 09/26] KVM: nSVM: Make nested_svm_merge_msrpm() return an errno
-Date: Thu, 15 Jan 2026 01:12:55 +0000
-Message-ID: <20260115011312.3675857-10-yosry.ahmed@linux.dev>
+Subject: [PATCH v4 14/26] KVM: nSVM: Clear EVENTINJ field in VMCB12 on nested #VMEXIT
+Date: Thu, 15 Jan 2026 01:13:00 +0000
+Message-ID: <20260115011312.3675857-15-yosry.ahmed@linux.dev>
 In-Reply-To: <20260115011312.3675857-1-yosry.ahmed@linux.dev>
 References: <20260115011312.3675857-1-yosry.ahmed@linux.dev>
 Precedence: bulk
@@ -48,12 +48,26 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Migadu-Flow: FLOW_OUT
 
-In preparation for moving nested_svm_merge_msrpm() within
-enter_svm_guest_mode(), which returns an errno, return an errno from
-nested_svm_merge_msrpm().
+According to the APM, from the reference of the VMRUN instruction:
 
-No functional change intended.
+	Upon #VMEXIT, the processor performs the following actions in
+	order to return to the host execution context:
+	...
+	clear EVENTINJ field in VMCB
 
+KVM correctly cleared EVENTINJ (i.e. event_inj and event_inj_err) on
+nested #VMEXIT before commit 2d8a42be0e2b ("KVM: nSVM: synchronize VMCB
+controls updated by the processor on every vmexit"). That commit made
+sure the fields are synchronized between VMCB02 and KVM's cached VMCB12
+on every L2->L0 #VMEXIT, such that they are serialized correctly on
+save/restore.
+
+However, the commit also incorrectly copied the fields from KVM's cached
+VMCB12 to L1's VMCB12 on nested #VMEXIT. Go back to clearing the fields,
+and so in __nested_svm_vmexit() instead of nested_svm_vmexit(), such
+that it also applies to #VMEXITs caused by a failed VMRUN.
+
+Fixes: 2d8a42be0e2b ("KVM: nSVM: synchronize VMCB controls updated by the processor on every vmexit")
 Cc: stable@vger.kernel.org
 Signed-off-by: Yosry Ahmed <yosry.ahmed@linux.dev>
 ---
@@ -61,68 +75,67 @@ Signed-off-by: Yosry Ahmed <yosry.ahmed@linux.dev>
  1 file changed, 9 insertions(+), 7 deletions(-)
 
 diff --git a/arch/x86/kvm/svm/nested.c b/arch/x86/kvm/svm/nested.c
-index 536ca8e1d29f..0915785f7770 100644
+index 1dfe5800c98c..704e572324f2 100644
 --- a/arch/x86/kvm/svm/nested.c
 +++ b/arch/x86/kvm/svm/nested.c
-@@ -277,7 +277,7 @@ int __init nested_svm_init_msrpm_merge_offsets(void)
-  * is optimized in that it only merges the parts where KVM MSR permission bitmap
-  * may contain zero bits.
-  */
--static bool nested_svm_merge_msrpm(struct kvm_vcpu *vcpu)
-+static int nested_svm_merge_msrpm(struct kvm_vcpu *vcpu)
- {
- 	struct vcpu_svm *svm = to_svm(vcpu);
- 	nsvm_msrpm_merge_t *msrpm02 = svm->nested.msrpm;
-@@ -304,17 +304,19 @@ static bool nested_svm_merge_msrpm(struct kvm_vcpu *vcpu)
- #endif
- 
- 	if (!(vmcb12_is_intercept(&svm->nested.ctl, INTERCEPT_MSR_PROT)))
--		return true;
-+		return 0;
- 
- 	for (i = 0; i < nested_svm_nr_msrpm_merge_offsets; i++) {
- 		const int p = nested_svm_msrpm_merge_offsets[i];
- 		nsvm_msrpm_merge_t l1_val;
- 		gpa_t gpa;
-+		int r;
- 
- 		gpa = svm->nested.ctl.msrpm_base_pa + (p * sizeof(l1_val));
- 
--		if (kvm_vcpu_read_guest(vcpu, gpa, &l1_val, sizeof(l1_val)))
--			return false;
-+		r = kvm_vcpu_read_guest(vcpu, gpa, &l1_val, sizeof(l1_val));
-+		if (r)
-+			return r;
- 
- 		msrpm02[p] = msrpm01[p] | l1_val;
- 	}
-@@ -326,7 +328,7 @@ static bool nested_svm_merge_msrpm(struct kvm_vcpu *vcpu)
- #endif
- 	svm->vmcb->control.msrpm_base_pa = __sme_set(__pa(svm->nested.msrpm));
- 
--	return true;
-+	return 0;
+@@ -986,7 +986,7 @@ int enter_svm_guest_mode(struct kvm_vcpu *vcpu, u64 vmcb12_gpa,
+ 	return 0;
  }
  
- /*
-@@ -1040,7 +1042,7 @@ int nested_svm_vmrun(struct kvm_vcpu *vcpu)
- 	if (enter_svm_guest_mode(vcpu, vmcb12_gpa, vmcb12, true))
- 		goto out_exit_err;
+-static void __nested_svm_vmexit(struct vcpu_svm *svm)
++static void __nested_svm_vmexit(struct vcpu_svm *svm, struct vmcb *vmcb12)
+ {
+ 	struct vmcb *vmcb01 = svm->vmcb01.ptr;
+ 	struct kvm_vcpu *vcpu = &svm->vcpu;
+@@ -1000,6 +1000,10 @@ static void __nested_svm_vmexit(struct vcpu_svm *svm)
+ 	svm_set_gif(svm, false);
+ 	vmcb01->control.exit_int_info = 0;
  
--	if (nested_svm_merge_msrpm(vcpu))
-+	if (!nested_svm_merge_msrpm(vcpu))
- 		goto out;
++	/* event_inj is cleared on #VMEXIT */
++	vmcb12->control.event_inj = 0;
++	vmcb12->control.event_inj_err = 0;
++
+ 	nested_svm_uninit_mmu_context(vcpu);
+ 	if (nested_svm_load_cr3(vcpu, vmcb01->save.cr3, false, true)) {
+ 		kvm_make_request(KVM_REQ_TRIPLE_FAULT, vcpu);
+@@ -1026,7 +1030,7 @@ static void nested_svm_failed_vmrun(struct vcpu_svm *svm, struct vmcb *vmcb12)
+ 	vmcb12->control.exit_code_hi = -1u;
+ 	vmcb12->control.exit_info_1 = 0;
+ 	vmcb12->control.exit_info_2 = 0;
+-	__nested_svm_vmexit(svm);
++	__nested_svm_vmexit(svm, vmcb12);
+ }
  
- out_exit_err:
-@@ -1941,7 +1943,7 @@ static bool svm_get_nested_state_pages(struct kvm_vcpu *vcpu)
- 		if (CC(!load_pdptrs(vcpu, vcpu->arch.cr3)))
- 			return false;
+ int nested_svm_vmrun(struct kvm_vcpu *vcpu)
+@@ -1209,8 +1213,6 @@ void nested_svm_vmexit(struct vcpu_svm *svm)
+ 		vmcb12->control.next_rip  = vmcb02->control.next_rip;
  
--	if (!nested_svm_merge_msrpm(vcpu)) {
-+	if (nested_svm_merge_msrpm(vcpu)) {
- 		vcpu->run->exit_reason = KVM_EXIT_INTERNAL_ERROR;
- 		vcpu->run->internal.suberror =
- 			KVM_INTERNAL_ERROR_EMULATION;
+ 	vmcb12->control.int_ctl           = svm->nested.ctl.int_ctl;
+-	vmcb12->control.event_inj         = svm->nested.ctl.event_inj;
+-	vmcb12->control.event_inj_err     = svm->nested.ctl.event_inj_err;
+ 
+ 	if (!kvm_pause_in_guest(vcpu->kvm)) {
+ 		vmcb01->control.pause_filter_count = vmcb02->control.pause_filter_count;
+@@ -1315,8 +1317,6 @@ void nested_svm_vmexit(struct vcpu_svm *svm)
+ 				       vmcb12->control.exit_int_info_err,
+ 				       KVM_ISA_SVM);
+ 
+-	kvm_vcpu_unmap(vcpu, &map);
+-
+ 	nested_svm_transition_tlb_flush(vcpu);
+ 
+ 	/*
+@@ -1338,7 +1338,9 @@ void nested_svm_vmexit(struct vcpu_svm *svm)
+ 	 * Potentially queues an exception, so it needs to be after
+ 	 * kvm_clear_exception_queue() is called above.
+ 	 */
+-	__nested_svm_vmexit(svm);
++	__nested_svm_vmexit(svm, vmcb12);
++
++	kvm_vcpu_unmap(vcpu, &map);
+ }
+ 
+ static void nested_svm_triple_fault(struct kvm_vcpu *vcpu)
 -- 
 2.52.0.457.g6b5491de43-goog
 
