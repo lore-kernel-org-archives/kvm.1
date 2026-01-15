@@ -1,193 +1,177 @@
-Received: from mail-qt1-f176.google.com (mail-qt1-f176.google.com [209.85.160.176])
+Received: from mail-pl1-f202.google.com (mail-pl1-f202.google.com [209.85.214.202])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA6D9223702
-	for <kvm@vger.kernel.org>; Thu, 15 Jan 2026 01:22:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.160.176
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768440153; cv=pass; b=drxFcWRSsPnayKSxg/jOmtfbn1UeoeA1HaWIfOYVVER+KLJRPst+lL1EZUwQgFxPaDO4ZVnTTJ244jr1yBpaSYixWP9QoWd5BfeeBbes+K89N1KUjEfYbZ/IJY78klDOKaREvbflyv/26MZvcNddNb/EbPp0RszCSuRgsRBkAN0=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768440153; c=relaxed/simple;
-	bh=Bnim1PgEw5wqREk32FnL86aokygw8Ib577rInchTGa0=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=fHIGqNcHGGOYMVTjSErrRe9ysOkLkFpJTMpTjh0wO9DxVP4S0/mNuNOjqfhLjJL4yq59ZyzRWo2tKh7ftespwvk2RESmDkQq1Gf/oTD5mLciSzaXSUe0ywtXNOLT9DHJTRhHKi4EXq8KhERe8uc+FJLaBYMP5rFOekmA5zAF1no=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=cUTkv3or; arc=pass smtp.client-ip=209.85.160.176
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA48C7260A
+	for <kvm@vger.kernel.org>; Thu, 15 Jan 2026 01:39:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.202
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1768441157; cv=none; b=sTYaxwhPaV9NQO2d0CwikJRl98xelzuu8cpNk+TGX+E6Lth8O6l33mqz8MUrsy3kBDNzVOGFP7Fpuw0P+fN/fyKqxl6vTqjnlMizyXkN0m3pvlIOAaDwbYdYwUMQaspwmEUlkw/J2U72PUYExYTo+SsMavJyfLo9IEBopS/hEQw=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1768441157; c=relaxed/simple;
+	bh=eBLrHGFOYj94x3BnSsJy+OUuRBpwUKYytD7vMbj1svo=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=MWgZSeSdVbByrscNp1Z9jRKPYAUx8rupbTAcwQAW6PGItixXWUKJjcHa4TrOC08nktauokLf0gND0FIH3QyIvYDX4tpB0POGcQKEmZlcqiRhzBHFQkY8UtgpkO+JGZNvogi75yYolq2k48QlxbXXzZWUjcw973njysdg+TrreYk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=NHTuHtsG; arc=none smtp.client-ip=209.85.214.202
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="cUTkv3or"
-Received: by mail-qt1-f176.google.com with SMTP id d75a77b69052e-50299648ae9so34951cf.1
-        for <kvm@vger.kernel.org>; Wed, 14 Jan 2026 17:22:31 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1768440151; cv=none;
-        d=google.com; s=arc-20240605;
-        b=eKEz8j2uLke2Kr8GfJBw2KAN9XqvqXT31zjz899sm914nifNYVnkBMhPvcuki9ZaL8
-         10Nt+u1rNHZStKfY2rpuMfEV4W8NbdggNyyRBk2KDdFk1pWDVEX/ZDKl66NcVE/qXvj6
-         owQSLGKFxYcRFtWrZGhbyVc+ItfirlPS41EaUhygkUOWxylAzQaumteEyy/qM9OVeA0L
-         tkMq1sPC757VW8q+sP3/sek0eDNmYF3E7ixGA3Q5/rFGVS8LfLaXGr7x70wEtXESMH2r
-         Pm4oOxJb/60iS1AdzFqg6SzLJ7Z5x6Qg2NHlRgmT3wGYUNYIKbYHfyjg/eaYTQhMIhV4
-         wuFQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=sFi2PWseoVJquVrwoMhwmvEVm3PHBthNk0di0Pcowfg=;
-        fh=+cG7iOsrlPOB+lYbPERIhTj49DzgzguSqKSL4Dx+St8=;
-        b=WDLcUcsUMR1113QLgbM1gfjt3H2nfuGk6W1Ez9e4nVfAc0B8LZKhC1rHEJNFBnNeLk
-         84sJ7gWU/JPg9BcYdS3bKvZGxcS5tuHU10a2VH6S8y8A0BYZck6HWNhISrOlIIPzSTh3
-         93uCKkMzM5ChaphaQTkHw2EAeJg/ZGUFMoo+jnb4xvFM1Uhfv9XCdAcCzLZjfqZjz+Wq
-         9X1M/WwZzbUryh1tp8eyEi+BTrdaKcumy234ewuRPCNrtazqWRwayQK4wNi+zD5fnos2
-         1CRVoG1KD43rA2S1AWOsh+1RTnZvqM2QLh41P4LkBbxSv5KmZaZk0IAi/0vUXbclGHpZ
-         AJTQ==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="NHTuHtsG"
+Received: by mail-pl1-f202.google.com with SMTP id d9443c01a7336-2a08cbeb87eso4021255ad.3
+        for <kvm@vger.kernel.org>; Wed, 14 Jan 2026 17:39:15 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1768440151; x=1769044951; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=sFi2PWseoVJquVrwoMhwmvEVm3PHBthNk0di0Pcowfg=;
-        b=cUTkv3or6c5A2HA6111vTg7+O1gq6dO9KUd44awwDVnFPMP9gGKZAk73dmFbssE/ik
-         Gi73UolmTpE3bipiXxxt9oKpQ0m3j+Mv4Ycgm6quj/emyaKIaxhNiJDdGx/ikckSPUh4
-         6QdjGlk+GB9vXVwHP6Cm0J7q/X2TbXBArtWlbQK1gVOquJvU3KysFAUyPPjtEhskcYs3
-         31MYbu0dJjBBKT/j2ucPgwEiPfIx6fvpE+PvjpwcVwWY+/SH893BI21o5BZno2FXfWvF
-         8lJPXCnviTJ5etDSN7KK5md3N4zmOuaviYFvCwKiIMdWqchx4Tx8wJMbt187A07kWVh8
-         rIKA==
+        d=google.com; s=20230601; t=1768441155; x=1769045955; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=84nMa7tneVDTL4Try1pD5llzHh0psiq+AUE0j44ev30=;
+        b=NHTuHtsGOx/AC/lC6dp57CMpape7Sx9H51J4+HudlR06ki8JTCvxyUHEk16nRvfKdP
+         e0rZicSc9ry6cXR2BsMWNhfJeZjWiwDp3ahrzAWZPgRDtfHF1rYP5KeFFGoUD5c7+hxE
+         N8vCpFbPckpibsqIkLr7aZXeLVDT36KN4+M3MoEEgY61LaMFPn2aq3zZYfogxLIjCDLG
+         RlpTCoAprOzHWOMuC6+TICpbvEhlW1F5Om6uaud4JKUokY2ImW6Xs2bquWn3yQlUbOUK
+         Dvy+C0usCuPXse4/xrHjvfVjw0qg+rNXCxrDNhZGHryrVQW4I0Q6iicdOJYFXUCIx1Lq
+         rVNw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1768440151; x=1769044951;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=sFi2PWseoVJquVrwoMhwmvEVm3PHBthNk0di0Pcowfg=;
-        b=NXOoJ/iDrTcpH53oHiCavPGuctgGLkr55tLS64wAkkkyFEjD09o2oNNM3N/IC/sO/V
-         NWjP072V0t6aPjRztwas8Zn5OQ3tf8DHQBBOE0OpaKc0DfQr3I4x+xljZqKZN2MhwFo1
-         SPb6GEvoCuykClo79kpVfaU4viuQtPenySHetExgOy0xAYa7Co6cwmDstAk3zIleWVUX
-         g0802A+/qegbbWT6JSxqJacIijaxuvm84UAoPgm8ETW3r/eRkjVCySfhhgNtXj6BRoxn
-         yqBo/uP+RH3uW83R5IkxB9/ACtg1vMxhABE6QOG9v6Fkajtkp75yu1oCSgWsT2Z90boh
-         YTqQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWx0q44qSdAYHWOBnoaH5lr5L/idocFxDzSsLNFT9exVmX2xB821N7HKJ3tFoQ58O9uqB0=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy9FrcsSlXhRD3tKJuZRm7YQ7f17+3RokwAnkh1AsVIqH3v/SpH
-	Se7S+vSGSYElJdxHpxiUygAVBBh6WMAjUCuE+JD3vHYYKq7KHI9ZJAi1avGxEAnBhr+bAOBTdYa
-	nvHjKowQKOGGZgD6Ctktue+opZdQSt/RJxVHoozF6
-X-Gm-Gg: AY/fxX7a4YRzQIqWUODdvirqoYSwS6PRCniDu6IaiJx2E3rh8tylgg+sShphktmkxYP
-	4ztEUZGreW9FsLVHUAeITmYX6Tf49bVpTb216FAidXqN00VPFtoG7mLLzoiTLpq04xFziAZA+IQ
-	cRbyRpZh7zXZZjbMDux/rRqxt3xYpV4u7LhqGelxnJEvynk/l9gi+6IXNFFWl6LTjIj/w70N2vX
-	19plTOd0KX/yF0JbLcQ6LeOwJU0Vqen25ad7iZnBIYR944UPyph0YqY0S1wDp19nrSiY13v7H6k
-	PUWXosSZASlmU8wJuF7a4LPh8Vk=
-X-Received: by 2002:a05:622a:10b:b0:4ff:c109:6a4 with SMTP id
- d75a77b69052e-501debdf6bemr5297681cf.4.1768440150607; Wed, 14 Jan 2026
- 17:22:30 -0800 (PST)
+        d=1e100.net; s=20230601; t=1768441155; x=1769045955;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=84nMa7tneVDTL4Try1pD5llzHh0psiq+AUE0j44ev30=;
+        b=jYfoHL9wtyllls922+D2Jwv3Mf5wsY6eTbXT+Ud1uom9F3mGSJLkaWmyIp/+eBiVPZ
+         31+78vZmMFkjSKtZB8MUiw3WsdH1aJRevqg9SRNU+tp4MZBHJ2pQo8a9wxgiJecX1A8S
+         pQtByoU3b7a/nfflBpo3SNN4X0B+fRKrAK6gbdNdmaV+zmXyOG+RFfb4DGwG62y71Oww
+         3n4xGKJLnylgfgl7OuLiRmCtX6JRXsQPrkIxm2XKiHi7D2LzzilTlvIvHBQrix1oetnO
+         EWa5MS7CH1FaWiJnE0DTrpi70378GUXvhKAbyeAdSul5PTG8rNfUbnp1+xuYP9o5FHyY
+         P17w==
+X-Forwarded-Encrypted: i=1; AJvYcCX7kAOUZIIzSK96dHxJaE5YJax0yxRCBtf3hySx/gXtp9JuY78fzH0wLGm1coLq8XtdenM=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzXhzwQ8AQk4bygHnMpt8NCQ3tbQO/FzaoMqidVVJFYU+tbZYwv
+	FAWYkcwGerFvMFFXJMQfNoDedUqyOEDqWuAVD5ed4tgU2dmvqJlkOovl2U0NCDFicls7HDZfvrU
+	l148FJA==
+X-Received: from plblo16.prod.google.com ([2002:a17:903:4350:b0:29e:ebb4:3936])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:902:d4d0:b0:295:8a21:155a
+ with SMTP id d9443c01a7336-2a599e34da4mr43546945ad.35.1768441155088; Wed, 14
+ Jan 2026 17:39:15 -0800 (PST)
+Date: Wed, 14 Jan 2026 17:39:13 -0800
+In-Reply-To: <jmacawbcdorwi2y5ulh2l2mdpeulx5sj7qvjehvnhaa5cgdcs3@2tljlprwtl27>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <20260114003015.1386066-1-sagis@google.com> <43a0558a-4cca-4d9c-97dc-ffd085186fd9@intel.com>
- <aWe8zESCJ0ZeAOT3@google.com> <aWgPFQOQRr3xcMjh@google.com>
-In-Reply-To: <aWgPFQOQRr3xcMjh@google.com>
-From: Sagi Shahar <sagis@google.com>
-Date: Wed, 14 Jan 2026 19:22:19 -0600
-X-Gm-Features: AZwV_QiJtsMlwE9fwof0hDggEeZkKPE35Uk4FvzQENJq3Az30USGqu48l1mKWN8
-Message-ID: <CAAhR5DHN+MTXX8v6LMWsQzKfpRefFwNO62hH+4iKiMpaSKiYvQ@mail.gmail.com>
-Subject: Re: [PATCH] KVM: TDX: Allow userspace to return errors to guest for MAPGPA
-To: Sean Christopherson <seanjc@google.com>
-Cc: Xiaoyao Li <xiaoyao.li@intel.com>, Paolo Bonzini <pbonzini@redhat.com>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, Kiryl Shutsemau <kas@kernel.org>, 
-	Rick Edgecombe <rick.p.edgecombe@intel.com>, Thomas Gleixner <tglx@kernel.org>, 
-	Borislav Petkov <bp@alien8.de>, "H. Peter Anvin" <hpa@zytor.com>, x86@kernel.org, kvm@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-coco@lists.linux.dev, 
-	Vishal Annapurve <vannapurve@google.com>, Michael Roth <michael.roth@amd.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Mime-Version: 1.0
+References: <20260112174535.3132800-1-chengkev@google.com> <20260112174535.3132800-2-chengkev@google.com>
+ <jmacawbcdorwi2y5ulh2l2mdpeulx5sj7qvjehvnhaa5cgdcs3@2tljlprwtl27>
+Message-ID: <aWhFQcNa8SKd679a@google.com>
+Subject: Re: [PATCH V2 1/5] KVM: SVM: Move STGI and CLGI intercept handling
+From: Sean Christopherson <seanjc@google.com>
+To: Yosry Ahmed <yosry.ahmed@linux.dev>
+Cc: Kevin Cheng <chengkev@google.com>, pbonzini@redhat.com, kvm@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="us-ascii"
 
-On Wed, Jan 14, 2026 at 3:48=E2=80=AFPM Sean Christopherson <seanjc@google.=
-com> wrote:
->
-> +Mike
->
-> On Wed, Jan 14, 2026, Sean Christopherson wrote:
-> > On Wed, Jan 14, 2026, Xiaoyao Li wrote:
-> > > On 1/14/2026 8:30 AM, Sagi Shahar wrote:
-> > > So it needs to be
-> > >
-> > >     if (vcpu->run->hypercall.ret =3D=3D -EBUSY)
-> > >             tdvmcall_set_return_code(vcpu, TDVMCALL_STATUS_RETRY);
-> > >     else
-> > >             tdvmcall_set_return_code(vcpu, TDVMCALL_STATUS_INVALID_OP=
-ERAND);
-> >
-> > No, because assuming everything except -EBUSY translates to
-> > TDVMCALL_STATUS_INVALID_OPERAND paints KVM back into the same corner it=
-s already
-> > in.  What I care most about is eliminating KVM's assumption that a non-=
-zero
-> > hypercall.ret means TDVMCALL_STATUS_INVALID_OPERAND.
-> >
-> > For the new ABI, I see two options:
-> >
-> >  1. Translate -errno as done in this patch.
-> >  2. Propagate hypercall.ret directly to the TDVMCALL return code, i.e. =
-let
-> >     userspace set any return code it wants.
-> >
-> > #1 has the downside of needing KVM changes and new uAPI every time a ne=
-w return
-> > code is supported.
-> >
-> > #2 has the downside of preventing KVM from establishing its own ABI aro=
-und the
-> > return code, and making the return code vendor specific.  E.g. if KVM e=
-ver wanted
-> > to do something in response to -EBUSY beyond propagating the error to t=
-he guest,
-> > then we can't reasonably do that with #2.
-> >
-> > Whatever we do, I want to change snp_complete_psc_msr() and snp_complet=
-e_one_psc()
-> > in the same patch, so that whatever ABI we establish is common to TDX a=
-nd SNP.
-> >
-> > See also https://lore.kernel.org/all/Zn8YM-s0TRUk-6T-@google.com.
->
-> Aha!  Finally.  I *knew* we had discussed this more recently.  The SNP se=
-ries to
-> add KVM_EXIT_SNP_REQ_CERTS uses a similar pattern.  Note its intentional =
-use of
-> positive values, because that's what userspace sees in errno.  This code =
-should
-> do the same.  Oh, and we need to choose between EAGAIN and EBUSY...
->
->         switch (READ_ONCE(vcpu->run->snp_req_certs.ret)) {
->         case 0:
->                 return snp_handle_guest_req(svm, control->exit_info_1,
->                                             control->exit_info_2);
->         case ENOSPC:
->                 vcpu->arch.regs[VCPU_REGS_RBX] =3D vcpu->run->snp_req_cer=
-ts.npages;
->                 return snp_req_certs_err(svm, SNP_GUEST_VMM_ERR_INVALID_L=
-EN);
->         case EAGAIN:
->                 return snp_req_certs_err(svm, SNP_GUEST_VMM_ERR_BUSY);
->         case EIO:
->                 return snp_req_certs_err(svm, SNP_GUEST_VMM_ERR_GENERIC);
->         default:
->                 break;
->         }
->
+On Mon, Jan 12, 2026, Yosry Ahmed wrote:
+> On Mon, Jan 12, 2026 at 05:45:31PM +0000, Kevin Cheng wrote:
+> > Similar to VMLOAD/VMSAVE intercept handling, move the STGI/CLGI
+> > intercept handling to svm_recalc_instruction_intercepts().
+> > ---
+> >  arch/x86/kvm/svm/svm.c | 10 ++++++----
+> >  1 file changed, 6 insertions(+), 4 deletions(-)
+> > 
+> > diff --git a/arch/x86/kvm/svm/svm.c b/arch/x86/kvm/svm/svm.c
+> > index 24d59ccfa40d9..6373a25d85479 100644
+> > --- a/arch/x86/kvm/svm/svm.c
+> > +++ b/arch/x86/kvm/svm/svm.c
+> > @@ -1010,6 +1010,11 @@ static void svm_recalc_instruction_intercepts(struct kvm_vcpu *vcpu)
+> >  			svm_clr_intercept(svm, INTERCEPT_VMSAVE);
+> >  			svm->vmcb->control.virt_ext |= VIRTUAL_VMLOAD_VMSAVE_ENABLE_MASK;
+> >  		}
+> > +
+> > +		if (vgif) {
+> > +			svm_clr_intercept(svm, INTERCEPT_STGI);
+> 
+> Could this cause a problem with NMI window tracking?
 
-I think EAGAIN makes more sense semantically in this case. So
-something like this?
+Yes.
 
--               tdvmcall_set_return_code(vcpu, TDVMCALL_STATUS_INVALID_OPER=
-AND);
-+               if (vcpu->run->hypercall.ret =3D=3D EAGAIN)
-+                       tdvmcall_set_return_code(vcpu, TDVMCALL_STATUS_RETR=
-Y);
-+               else if (vcpu->run->hypercall.ret =3D=3D EINVAL)
-+                       tdvmcall_set_return_code(vcpu,
-TDVMCALL_STATUS_INVALID_OPERAND);
-+               else
-+                       return -EINVAL;
-+
+> svm_enable_nmi_window() sets INTERCEPT_STGI to detect when NMIs are
+> enabled, and it's later cleared by svm_set_gif(). If we recalc
+> intercepts in between we will clear the intercept here and miss NMI
+> enablement.
+> 
+> We could move the logic to set/clear INTERCEPT_STGI for NMI window
+> tracking here as well, but then we'll need to recalc intercepts in
+> svm_enable_nmi_window() and svm_set_gif(), which could be expensive.
+> 
+> The alternative is perhaps setting a flag when INTERCEPT_STGI is set in
+> svm_enable_nmi_window() and avoid clearing the intercept here if the
+> flag is set.
+> 
+> Not sure what's the best way forward here.
 
->
-> https://lore.kernel.org/all/20260109231732.1160759-2-michael.roth@amd.com
+First things first, the changelog needs to state _why_ the code is being moved.
+"To be like VMLOAD/VMSAVE" doesn't suffice, because my initial answer was going
+to be "well just don't move the code" (I already forgot the context of v1).
+
+But moving the code is needed to fix the missing #UD in "Recalc instructions
+intercepts when EFER.SVME is toggled".
+
+As for how to fix this, a few ideas:
+
+ 1. Set KVM_REQ_EVENT to force KVM to re-evulate all events.  kvm_check_and_inject_events()
+    will see the pending NMI and/or SMI, that the NMI/SMI is not allowed, and
+    re-call enable_{nmi,smi}_window().
+
+ 2. Manually check for pending+blocked NMI/SMIs.
+
+ 3. Combine parts of #1 and #2.  Set KVM_REQ_EVENT, but only if there's a pending
+    NMI or SMI.
+
+ 4. Add flags to vcpu_svm to explicitly track if a vCPU has an NMI/SMI window,
+    similar to what we're planning on doing for IRQs[*], and use that to more
+    confidently do the right thing when recomputing intercepts.
+
+I don't love any of those ideas.  Ah, at least not until I poke around KVM.  In
+svm_set_gif() there's already this:
+
+		if (svm->vcpu.arch.smi_pending ||
+		    svm->vcpu.arch.nmi_pending ||
+		    kvm_cpu_has_injectable_intr(&svm->vcpu) ||
+		    kvm_apic_has_pending_init_or_sipi(&svm->vcpu))
+			kvm_make_request(KVM_REQ_EVENT, &svm->vcpu);
+
+So I think it makes sense to bundle that into a helper, e.g. (no idea what to
+call it)
+
+static bool svm_think_of_a_good_name(struct kvm_vcpu *vcpu)
+{
+	if (svm->vcpu.arch.smi_pending ||
+	    svm->vcpu.arch.nmi_pending ||
+	    kvm_cpu_has_injectable_intr(&svm->vcpu) ||
+	    kvm_apic_has_pending_init_or_sipi(&svm->vcpu))
+		kvm_make_request(KVM_REQ_EVENT, &svm->vcpu);
+}
+
+And then call that from svm_recalc_instruction_intercepts().  That implements #3
+in a fairly maintainable way (we'll hopefully notice sooner than later if we break
+svm_set_gif()).
+
+https://lore.kernel.org/all/26732815475bf1c5ba672bc3b1785265f1a994e6.1752819570.git.naveen@kernel.org
+
+> > +			svm_clr_intercept(svm, INTERCEPT_CLGI);
+> > +		}
+> >  	}
+> >  }
+> >  
+> > @@ -1147,11 +1152,8 @@ static void init_vmcb(struct kvm_vcpu *vcpu, bool init_event)
+> >  	if (vnmi)
+> >  		svm->vmcb->control.int_ctl |= V_NMI_ENABLE_MASK;
+> >  
+> > -	if (vgif) {
+> > -		svm_clr_intercept(svm, INTERCEPT_STGI);
+> > -		svm_clr_intercept(svm, INTERCEPT_CLGI);
+> > +	if (vgif)
+> >  		svm->vmcb->control.int_ctl |= V_GIF_ENABLE_MASK;
+> > -	}
+> >  
+> >  	if (vcpu->kvm->arch.bus_lock_detection_enabled)
+> >  		svm_set_intercept(svm, INTERCEPT_BUSLOCK);
+> > -- 
+> > 2.52.0.457.g6b5491de43-goog
+> > 
