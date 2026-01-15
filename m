@@ -1,32 +1,32 @@
-Received: from out-173.mta0.migadu.com (out-173.mta0.migadu.com [91.218.175.173])
+Received: from out-183.mta0.migadu.com (out-183.mta0.migadu.com [91.218.175.183])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C034254B18
-	for <kvm@vger.kernel.org>; Thu, 15 Jan 2026 01:13:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.173
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D0E826F293;
+	Thu, 15 Jan 2026 01:13:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.183
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768439635; cv=none; b=O47lMotzzTgVU9WQH+PlHKc+LfoIQhShGKr/uLNUQTbR7C0iN37aq/nsTF8AmuQL6a6UGVC55GCb9fwn7WRyr1HK2FPANzmrZYf4mg1ga5kmjBr4KvIuIWJI+qdjXtjlSNa+cGO4e4npgKAt1k8kqn8ds7xbt59S7tkXxdxXTNo=
+	t=1768439638; cv=none; b=s/HumfCPz8+vNhP/DTJQMnEgfHO2GBlptpDE/SFhWkOBPiJM3XaMdJ5E1zxuqGxWuqFJq8IRco20m28yO3xKa7+k9HcclmdHhfYBAXjh/eSmDgEIcclED/nveMZQAgYKWLbkfuGu7V95tlZYQ5qUXQYMZ0wCgHD3FrBDMlr39HU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768439635; c=relaxed/simple;
-	bh=Ea6rWEDN+cRIxk3jN8cryjzwbqVJQqjFfLbIhwK2/f0=;
+	s=arc-20240116; t=1768439638; c=relaxed/simple;
+	bh=NNy3KKalBGgQX+5SCjuQwk2g/AHfxzAtaZKdKc7dtsU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tDWE3IRVS3J+2y1OJLHoJhCcTAcKhsDTo0r5enOZ9j3AbUreviTKd9mkhVcUX4JG5rO1RY1LdmCMcqR1dfSm3RIdeTbWsVPkeDu2PJHg6d0+x3/ov8o3DRhQjqaC4TNzYJAP30EBqP0Yaliz+bccf75ocJqUMOiQtztHYA1f/SQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=rkxlqoZ4; arc=none smtp.client-ip=91.218.175.173
+	 MIME-Version; b=U82ic74Q6l8ScxpmhJ4Uyv3D5XtiSDkdRtwKnLNV9pa0Km8YLHMZc5itNtfDvfgmwAvo2is0IXGrLCaURpSGJS3Zs4ai8ZdeQPsFmn7Pp4U0ga3OAx1o2aBSQkE9rcnpNYJ9FtXjRgFtRU3MDJohBtb/VQHeBBmOUu0hxhdoboU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=uGGOAORL; arc=none smtp.client-ip=91.218.175.183
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="rkxlqoZ4"
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="uGGOAORL"
 X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1768439625;
+	t=1768439634;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=WNERaqN0p70Upb1bv3QyZM9OSIxy0licFd67fEooyUg=;
-	b=rkxlqoZ4QoptuWx0HpQn5E2NLyTJuzS4pFexq0op5yiieJJZHkTvmAIBNg9BW4M3w0vZOw
-	3k2axA3boIJy9NfEpRHXfdr5b+u7Rvl8HwQWLbgkMlSzJuw2k0QDAkI9o+iRnVnkQowEI4
-	HuEEcVtCSQ777M94kvo4uOGG3p1OT0M=
+	bh=92IseN4WbR7/gNBYYHdL6FsvVihQVPKtL41fgiBGnsA=;
+	b=uGGOAORLW8S1s/Ve8LVfYwlpA9NUGPLT4L9gDvn9GS+/lbbk2t3snvaoJHzbIiv+YJ26aH
+	SpBONyNutkZrweCGOWa0+3gwc1hKmQmCZ8t0k5GC1qCygaAmVkiBQCOV1Dmdgo3mx+IBMN
+	z42Hb76cRI7FlIRBLLlHstUI8aH9tkg=
 From: Yosry Ahmed <yosry.ahmed@linux.dev>
 To: Sean Christopherson <seanjc@google.com>
 Cc: Paolo Bonzini <pbonzini@redhat.com>,
@@ -34,9 +34,9 @@ Cc: Paolo Bonzini <pbonzini@redhat.com>,
 	linux-kernel@vger.kernel.org,
 	Yosry Ahmed <yosry.ahmed@linux.dev>,
 	stable@vger.kernel.org
-Subject: [PATCH v4 11/26] KVM: nSVM: Call nested_svm_init_mmu_context() before switching to VMCB02
-Date: Thu, 15 Jan 2026 01:12:57 +0000
-Message-ID: <20260115011312.3675857-12-yosry.ahmed@linux.dev>
+Subject: [PATCH v4 15/26] KVM: nSVM: Drop the non-architectural consistency check for NP_ENABLE
+Date: Thu, 15 Jan 2026 01:13:01 +0000
+Message-ID: <20260115011312.3675857-16-yosry.ahmed@linux.dev>
 In-Reply-To: <20260115011312.3675857-1-yosry.ahmed@linux.dev>
 References: <20260115011312.3675857-1-yosry.ahmed@linux.dev>
 Precedence: bulk
@@ -48,56 +48,63 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Migadu-Flow: FLOW_OUT
 
-In preparation for moving more code that depends on
-nested_svm_init_mmu_context() before switching to VMCB02, move the call
-outside of nested_vmcb02_prepare_control() into callers, a bit earlier.
-nested_svm_init_mmu_context() needs to be called after
-enter_guest_mode(), but not after switching to VMCB02.
+KVM currenty fails a nested VMRUN and injects VMEXIT_INVALID (aka
+SVM_EXIT_ERR) if L1 sets NP_ENABLE and the host does not support NPTs.
+On first glance, it seems like the check should actually be for
+guest_cpu_cap_has(X86_FEATURE_NPT) instead, as it is possible for the
+host to support NPTs but the guest CPUID to not advertise it.
 
-No functional change intended.
+However, the consistency check is not architectural to begin with. The
+APM does not mention VMEXIT_INVALID if NP_ENABLE is set on a processor
+that does not have X86_FEATURE_NPT. Hence, NP_ENABLE should be ignored
+if X86_FEATURE_NPT is not available for L1, so sanitize it when copying
+from the VMCB12 to KVM's cache.
 
+Apart from the consistency check, NP_ENABLE in VMCB12 is currently
+ignored because the bit is actually copied from VMCB01 to VMCB02, not
+from VMCB12.
+
+Fixes: 4b16184c1cca ("KVM: SVM: Initialize Nested Nested MMU context on VMRUN")
 Cc: stable@vger.kernel.org
 Signed-off-by: Yosry Ahmed <yosry.ahmed@linux.dev>
 ---
- arch/x86/kvm/svm/nested.c | 11 +++++++----
- 1 file changed, 7 insertions(+), 4 deletions(-)
+ arch/x86/kvm/svm/nested.c | 9 +++++----
+ 1 file changed, 5 insertions(+), 4 deletions(-)
 
 diff --git a/arch/x86/kvm/svm/nested.c b/arch/x86/kvm/svm/nested.c
-index debbce5c6511..f108f6fae5bc 100644
+index 704e572324f2..0f2b42803cf6 100644
 --- a/arch/x86/kvm/svm/nested.c
 +++ b/arch/x86/kvm/svm/nested.c
-@@ -807,10 +807,6 @@ static void nested_vmcb02_prepare_control(struct vcpu_svm *svm,
- 	/* Also overwritten later if necessary.  */
- 	vmcb02->control.tlb_ctl = TLB_CONTROL_DO_NOTHING;
+@@ -351,9 +351,6 @@ static bool nested_vmcb_check_controls(struct kvm_vcpu *vcpu,
+ 	if (CC(control->asid == 0))
+ 		return false;
  
--	/* nested_cr3.  */
--	if (nested_npt_enabled(svm))
--		nested_svm_init_mmu_context(vcpu);
+-	if (CC((control->nested_ctl & SVM_NESTED_CTL_NP_ENABLE) && !npt_enabled))
+-		return false;
 -
- 	vcpu->arch.tsc_offset = kvm_calc_nested_tsc_offset(
- 			vcpu->arch.l1_tsc_offset,
- 			svm->nested.ctl.tsc_offset,
-@@ -949,6 +945,9 @@ int enter_svm_guest_mode(struct kvm_vcpu *vcpu, u64 vmcb12_gpa,
+ 	if (CC(!nested_svm_check_bitmap_pa(vcpu, control->msrpm_base_pa,
+ 					   MSRPM_SIZE)))
+ 		return false;
+@@ -434,6 +431,11 @@ void __nested_copy_vmcb_control_to_cache(struct kvm_vcpu *vcpu,
+ 	nested_svm_sanitize_intercept(vcpu, to, SKINIT);
+ 	nested_svm_sanitize_intercept(vcpu, to, RDPRU);
  
- 	enter_guest_mode(vcpu);
- 
-+	if (nested_npt_enabled(svm))
-+		nested_svm_init_mmu_context(vcpu);
++	/* Always clear NP_ENABLE if the guest cannot use NPTs */
++	to->nested_ctl          = from->nested_ctl;
++	if (!guest_cpu_cap_has(vcpu, X86_FEATURE_NPT))
++		to->nested_ctl &= ~SVM_NESTED_CTL_NP_ENABLE;
 +
- 	nested_svm_copy_common_state(svm->vmcb01.ptr, svm->nested.vmcb02.ptr);
- 
- 	svm_switch_vmcb(svm, &svm->nested.vmcb02);
-@@ -1904,6 +1903,10 @@ static int svm_set_nested_state(struct kvm_vcpu *vcpu,
- 	nested_copy_vmcb_control_to_cache(svm, ctl);
- 
- 	enter_guest_mode(vcpu);
-+
-+	if (nested_npt_enabled(svm))
-+		nested_svm_init_mmu_context(vcpu);
-+
- 	svm_switch_vmcb(svm, &svm->nested.vmcb02);
- 	nested_vmcb02_prepare_control(svm, svm->vmcb->save.rip, svm->vmcb->save.cs.base);
- 
+ 	to->iopm_base_pa        = from->iopm_base_pa;
+ 	to->msrpm_base_pa       = from->msrpm_base_pa;
+ 	to->tsc_offset          = from->tsc_offset;
+@@ -448,7 +450,6 @@ void __nested_copy_vmcb_control_to_cache(struct kvm_vcpu *vcpu,
+ 	to->exit_info_2         = from->exit_info_2;
+ 	to->exit_int_info       = from->exit_int_info;
+ 	to->exit_int_info_err   = from->exit_int_info_err;
+-	to->nested_ctl          = from->nested_ctl;
+ 	to->event_inj           = from->event_inj;
+ 	to->event_inj_err       = from->event_inj_err;
+ 	to->next_rip            = from->next_rip;
 -- 
 2.52.0.457.g6b5491de43-goog
 
