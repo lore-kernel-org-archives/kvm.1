@@ -1,32 +1,32 @@
 Received: from out-172.mta0.migadu.com (out-172.mta0.migadu.com [91.218.175.172])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 712792701C4
-	for <kvm@vger.kernel.org>; Thu, 15 Jan 2026 01:13:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DEFF923D297
+	for <kvm@vger.kernel.org>; Thu, 15 Jan 2026 01:13:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768439639; cv=none; b=OEDCN3PjnCXOuhXtlhngaUNHQ4wXCC/1EWa2GNzKpBqTk1434VVRgGrehvpyKIvPkZs/O5NW6X7yCPzVb8uiAnrBWP+QEeN/2OFL53GACj7kXOmcOA4b9ydyXYchX/GXJijLMEC6aSD61jL2GBjSVyXsu2EczVf7Xp9mrUvaBds=
+	t=1768439640; cv=none; b=uCuuHaQf5R4kRSrnxgTlaWle0XSHr9HaAQyAok/JJNs6eoketqnzWK+Ygy2ERULyVysjPi46468Q3176Yd2Z+iw9MeaHld+msYeLP5QoZF+m6d/0LT5aPtldkD4DrwWtoThpWPtOjh5FX4J8bVaQ7tjBKjfOJYrYf3kxdawvqXc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768439639; c=relaxed/simple;
-	bh=DmnQ5TdTjVWminP3Xf33CFReUn/d5NcYrsSTL0v+Us0=;
+	s=arc-20240116; t=1768439640; c=relaxed/simple;
+	bh=UkTB7/LqH/pyyGJdD2ZNakL2HnEOMm7V0uLGwDf8qjU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aQLKmP2W9iPBhUoq5/0vW8hRKMF061Yyv0Ntu4boGFy3VHVPzKRwuvYp9dBakmtZiYMFpI1XA3WTUl9KN++ix1rN9EElJnZ06bBYR1E8f+H+glPxz+PR81ggRU2WlcSAHinSX1joHUn5/pRJwMJQ7wpypBmMA8joMpGBhtYUQSc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=vd6e04ms; arc=none smtp.client-ip=91.218.175.172
+	 MIME-Version; b=ZdeaBK/TZzeEjmfMOKuIwjaaH6IFm9AlH3ckEeHF7o846052eYSVJn971k//DeRfX74AZoe7z6lSR9UN0znUc28mN7OuSp4GDVhIR7JTHXotrV+ZC+qdoXylaLPlgOHRKLkWSCugDa2ste8XCfP6JRqnjuVOLoB0A0H96h5g3kY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=kH2a+5Wk; arc=none smtp.client-ip=91.218.175.172
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="vd6e04ms"
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="kH2a+5Wk"
 X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1768439632;
+	t=1768439628;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=V3xfRFV9ep/SW8LI7/0sQuoQMcHZNc6trK3lXoKTrTE=;
-	b=vd6e04msPa01i8xXYRxS0CpG4E35HfrFglavMXAb6mrtvVeywDODs84TxD+uKiB0qIA08P
-	cHarIZdRWBsqLRReo7SBUqS6NxWJn9GmfIGK7N+2CbA+CsAC9P2p3LsEwM/PcqdLW6/RAy
-	UAsoFI8LcDZmnciZK2j0uMSM4A6/klI=
+	bh=jBZGK/DUsBaWT2N5OHFROUf2AuDR00qURUYy9nlXgrA=;
+	b=kH2a+5Wk8lavW9jlY1bV8X39gV1Bw6Zy26gDvN0pga1sT1YNQZHX0liQVaA4yPlkP0aQPp
+	7VEAvYhiCIeVVRsgxSQifUlbyghRrSmntoXqs5OJ53ry/GRjsP9LnEKlN9oeM4zIVmcI01
+	/9P7EHAJSVmdKWx6lzH+1EhAaB+rp+E=
 From: Yosry Ahmed <yosry.ahmed@linux.dev>
 To: Sean Christopherson <seanjc@google.com>
 Cc: Paolo Bonzini <pbonzini@redhat.com>,
@@ -34,9 +34,9 @@ Cc: Paolo Bonzini <pbonzini@redhat.com>,
 	linux-kernel@vger.kernel.org,
 	Yosry Ahmed <yosry.ahmed@linux.dev>,
 	stable@vger.kernel.org
-Subject: [PATCH v4 14/26] KVM: nSVM: Clear EVENTINJ field in VMCB12 on nested #VMEXIT
-Date: Thu, 15 Jan 2026 01:13:00 +0000
-Message-ID: <20260115011312.3675857-15-yosry.ahmed@linux.dev>
+Subject: [PATCH v4 12/26] KVM: nSVM: Refactor minimal #VMEXIT handling out of nested_svm_vmexit()
+Date: Thu, 15 Jan 2026 01:12:58 +0000
+Message-ID: <20260115011312.3675857-13-yosry.ahmed@linux.dev>
 In-Reply-To: <20260115011312.3675857-1-yosry.ahmed@linux.dev>
 References: <20260115011312.3675857-1-yosry.ahmed@linux.dev>
 Precedence: bulk
@@ -48,91 +48,136 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Migadu-Flow: FLOW_OUT
 
-According to the APM, from the reference of the VMRUN instruction:
+In preparation for having a separate minimal #VMEXIT path for handling
+failed VMRUNs, move the minimal logic out of nested_svm_vmexit() into a
+helper.
 
-	Upon #VMEXIT, the processor performs the following actions in
-	order to return to the host execution context:
-	...
-	clear EVENTINJ field in VMCB
+This includes clearing the GIF, handling single-stepping on VMRUN, and a
+few data structure cleanups.  Basically, everything that is required by
+the architecture (or KVM) on a #VMEXIT where L2 never actually ran.
 
-KVM correctly cleared EVENTINJ (i.e. event_inj and event_inj_err) on
-nested #VMEXIT before commit 2d8a42be0e2b ("KVM: nSVM: synchronize VMCB
-controls updated by the processor on every vmexit"). That commit made
-sure the fields are synchronized between VMCB02 and KVM's cached VMCB12
-on every L2->L0 #VMEXIT, such that they are serialized correctly on
-save/restore.
+Additionally move uninitializing the nested MMU and reloading host CR3
+to the new helper. It is not required at this point, but following
+changes will require it.
 
-However, the commit also incorrectly copied the fields from KVM's cached
-VMCB12 to L1's VMCB12 on nested #VMEXIT. Go back to clearing the fields,
-and so in __nested_svm_vmexit() instead of nested_svm_vmexit(), such
-that it also applies to #VMEXITs caused by a failed VMRUN.
+No functional change intended.
 
-Fixes: 2d8a42be0e2b ("KVM: nSVM: synchronize VMCB controls updated by the processor on every vmexit")
 Cc: stable@vger.kernel.org
 Signed-off-by: Yosry Ahmed <yosry.ahmed@linux.dev>
 ---
- arch/x86/kvm/svm/nested.c | 16 +++++++++-------
- 1 file changed, 9 insertions(+), 7 deletions(-)
+ arch/x86/kvm/svm/nested.c | 61 ++++++++++++++++++++++-----------------
+ 1 file changed, 34 insertions(+), 27 deletions(-)
 
 diff --git a/arch/x86/kvm/svm/nested.c b/arch/x86/kvm/svm/nested.c
-index 1dfe5800c98c..704e572324f2 100644
+index f108f6fae5bc..53ae761b50e2 100644
 --- a/arch/x86/kvm/svm/nested.c
 +++ b/arch/x86/kvm/svm/nested.c
-@@ -986,7 +986,7 @@ int enter_svm_guest_mode(struct kvm_vcpu *vcpu, u64 vmcb12_gpa,
+@@ -978,6 +978,34 @@ int enter_svm_guest_mode(struct kvm_vcpu *vcpu, u64 vmcb12_gpa,
  	return 0;
  }
  
--static void __nested_svm_vmexit(struct vcpu_svm *svm)
-+static void __nested_svm_vmexit(struct vcpu_svm *svm, struct vmcb *vmcb12)
- {
- 	struct vmcb *vmcb01 = svm->vmcb01.ptr;
- 	struct kvm_vcpu *vcpu = &svm->vcpu;
-@@ -1000,6 +1000,10 @@ static void __nested_svm_vmexit(struct vcpu_svm *svm)
- 	svm_set_gif(svm, false);
- 	vmcb01->control.exit_int_info = 0;
- 
-+	/* event_inj is cleared on #VMEXIT */
-+	vmcb12->control.event_inj = 0;
-+	vmcb12->control.event_inj_err = 0;
++static void __nested_svm_vmexit(struct vcpu_svm *svm)
++{
++	struct vmcb *vmcb01 = svm->vmcb01.ptr;
++	struct kvm_vcpu *vcpu = &svm->vcpu;
 +
- 	nested_svm_uninit_mmu_context(vcpu);
- 	if (nested_svm_load_cr3(vcpu, vmcb01->save.cr3, false, true)) {
- 		kvm_make_request(KVM_REQ_TRIPLE_FAULT, vcpu);
-@@ -1026,7 +1030,7 @@ static void nested_svm_failed_vmrun(struct vcpu_svm *svm, struct vmcb *vmcb12)
- 	vmcb12->control.exit_code_hi = -1u;
- 	vmcb12->control.exit_info_1 = 0;
- 	vmcb12->control.exit_info_2 = 0;
--	__nested_svm_vmexit(svm);
-+	__nested_svm_vmexit(svm, vmcb12);
- }
- 
++	svm->nested.vmcb12_gpa = 0;
++	svm->nested.ctl.nested_cr3 = 0;
++
++	/* GIF is cleared on #VMEXIT, no event can be injected in L1 */
++	svm_set_gif(svm, false);
++	vmcb01->control.exit_int_info = 0;
++
++	nested_svm_uninit_mmu_context(vcpu);
++	if (nested_svm_load_cr3(vcpu, vmcb01->save.cr3, false, true)) {
++		kvm_make_request(KVM_REQ_TRIPLE_FAULT, vcpu);
++		return;
++	}
++
++	/*
++	 * If we are here following the completion of a VMRUN that
++	 * is being single-stepped, queue the pending #DB intercept
++	 * right now so that it an be accounted for before we execute
++	 * L1's next instruction.
++	 */
++	if (unlikely(vmcb01->save.rflags & X86_EFLAGS_TF))
++		kvm_queue_exception(vcpu, DB_VECTOR);
++}
++
  int nested_svm_vmrun(struct kvm_vcpu *vcpu)
-@@ -1209,8 +1213,6 @@ void nested_svm_vmexit(struct vcpu_svm *svm)
- 		vmcb12->control.next_rip  = vmcb02->control.next_rip;
+ {
+ 	struct vcpu_svm *svm = to_svm(vcpu);
+@@ -1127,8 +1155,6 @@ void nested_svm_vmexit(struct vcpu_svm *svm)
+ 	/* in case we halted in L2 */
+ 	kvm_set_mp_state(vcpu, KVM_MP_STATE_RUNNABLE);
  
- 	vmcb12->control.int_ctl           = svm->nested.ctl.int_ctl;
--	vmcb12->control.event_inj         = svm->nested.ctl.event_inj;
--	vmcb12->control.event_inj_err     = svm->nested.ctl.event_inj_err;
- 
- 	if (!kvm_pause_in_guest(vcpu->kvm)) {
- 		vmcb01->control.pause_filter_count = vmcb02->control.pause_filter_count;
-@@ -1315,8 +1317,6 @@ void nested_svm_vmexit(struct vcpu_svm *svm)
- 				       vmcb12->control.exit_int_info_err,
- 				       KVM_ISA_SVM);
- 
--	kvm_vcpu_unmap(vcpu, &map);
+-	svm->nested.vmcb12_gpa = 0;
 -
+ 	if (kvm_vcpu_map(vcpu, gpa_to_gfn(vmcb12_gpa), &map)) {
+ 		kvm_make_request(KVM_REQ_TRIPLE_FAULT, vcpu);
+ 		return;
+@@ -1246,13 +1272,6 @@ void nested_svm_vmexit(struct vcpu_svm *svm)
+ 		}
+ 	}
+ 
+-	/*
+-	 * On vmexit the  GIF is set to false and
+-	 * no event can be injected in L1.
+-	 */
+-	svm_set_gif(svm, false);
+-	vmcb01->control.exit_int_info = 0;
+-
+ 	svm->vcpu.arch.tsc_offset = svm->vcpu.arch.l1_tsc_offset;
+ 	if (vmcb01->control.tsc_offset != svm->vcpu.arch.tsc_offset) {
+ 		vmcb01->control.tsc_offset = svm->vcpu.arch.tsc_offset;
+@@ -1265,8 +1284,6 @@ void nested_svm_vmexit(struct vcpu_svm *svm)
+ 		svm_write_tsc_multiplier(vcpu);
+ 	}
+ 
+-	svm->nested.ctl.nested_cr3 = 0;
+-
+ 	/*
+ 	 * Restore processor state that had been saved in vmcb01
+ 	 */
+@@ -1292,13 +1309,6 @@ void nested_svm_vmexit(struct vcpu_svm *svm)
+ 
  	nested_svm_transition_tlb_flush(vcpu);
  
+-	nested_svm_uninit_mmu_context(vcpu);
+-
+-	if (nested_svm_load_cr3(vcpu, vmcb01->save.cr3, false, true)) {
+-		kvm_make_request(KVM_REQ_TRIPLE_FAULT, vcpu);
+-		return;
+-	}
+-
  	/*
-@@ -1338,7 +1338,9 @@ void nested_svm_vmexit(struct vcpu_svm *svm)
- 	 * Potentially queues an exception, so it needs to be after
- 	 * kvm_clear_exception_queue() is called above.
+ 	 * Drop what we picked up for L2 via svm_complete_interrupts() so it
+ 	 * doesn't end up in L1.
+@@ -1307,21 +1317,18 @@ void nested_svm_vmexit(struct vcpu_svm *svm)
+ 	kvm_clear_exception_queue(vcpu);
+ 	kvm_clear_interrupt_queue(vcpu);
+ 
+-	/*
+-	 * If we are here following the completion of a VMRUN that
+-	 * is being single-stepped, queue the pending #DB intercept
+-	 * right now so that it an be accounted for before we execute
+-	 * L1's next instruction.
+-	 */
+-	if (unlikely(vmcb01->save.rflags & X86_EFLAGS_TF))
+-		kvm_queue_exception(&(svm->vcpu), DB_VECTOR);
+-
+ 	/*
+ 	 * Un-inhibit the AVIC right away, so that other vCPUs can start
+ 	 * to benefit from it right away.
  	 */
--	__nested_svm_vmexit(svm);
-+	__nested_svm_vmexit(svm, vmcb12);
+ 	if (kvm_apicv_activated(vcpu->kvm))
+ 		__kvm_vcpu_update_apicv(vcpu);
 +
-+	kvm_vcpu_unmap(vcpu, &map);
++	/*
++	 * Potentially queues an exception, so it needs to be after
++	 * kvm_clear_exception_queue() is called above.
++	 */
++	__nested_svm_vmexit(svm);
  }
  
  static void nested_svm_triple_fault(struct kvm_vcpu *vcpu)
