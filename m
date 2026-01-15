@@ -1,41 +1,41 @@
-Received: from out-179.mta0.migadu.com (out-179.mta0.migadu.com [91.218.175.179])
+Received: from out-186.mta0.migadu.com (out-186.mta0.migadu.com [91.218.175.186])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 55A8A26D4C3
-	for <kvm@vger.kernel.org>; Thu, 15 Jan 2026 01:14:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.179
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EBFE82D2491
+	for <kvm@vger.kernel.org>; Thu, 15 Jan 2026 01:14:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.186
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768439648; cv=none; b=LSWVn0M3+Q8IHS3zYq06nw0TdFyU44CiSQ13c8S5t/W/7HNJQF9awCgiy5O3gCfLitorU/olHrEq1Rn/SFKT14tZP6kpTafH9e7RFcez9hiVorspjSKRYUOBfRSlVk1oSjymge88uaL4MnlLFhoTDbZ8fgAwiuzKcfZEWPvBHn0=
+	t=1768439650; cv=none; b=LhvXPOewaE7bm4GHT6bmY14IG1FnsYtzsQ1xcOximtcSPGrzM+EHVvw6W+nYwloe7k9bMPOjXuzlEcgtba8yLs71wnNPfHHaqKSovRyGaelk5X7ql+Jwm0yhwbjApqZmlOhAGeE2IDD82bGswOPBfMnUUeI8Yo76AM4PuXe5qq0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768439648; c=relaxed/simple;
-	bh=QZukHD1jb3jA7ZmfYuCVooVzql93sc61Up+B8EMXDTY=;
+	s=arc-20240116; t=1768439650; c=relaxed/simple;
+	bh=3QP0bb3GDMptRIKrVXdEcSGoJ5I47VZUMyyzgkRfKMU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Zl76V2pbFglO+fwEFrcJ0ZrA9NCZ9GkHHNGNurGs708+TTQixu+jdygC6gpM3IR3Og5SLHTgSgWefyEXFL2XyO7+8t7gSbW54Y4oyttXEnvc8uspJ1bo13S6I0E8M0JEb96iPshYctg10wky6W3joI0R8EdaYdLzuAcqXMNvRA4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=naFQ+INR; arc=none smtp.client-ip=91.218.175.179
+	 MIME-Version; b=Rr82wTcU1NFWyoZNijR/asUJAuqDS6duX/zbO4mxk76h8RtZ+rvKJYZnYJ/75DjAKTDQ8HNx3rT0ALuT3S03MoIHVhWdedhGtSSOBxXFwsTd9fV1OiUwrsCwkzR4ReLLpy8yLbDVdzAgSZrjfQgW4Q7lMVEOkYMd6CvvNQ5sz30=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=j59JEpYx; arc=none smtp.client-ip=91.218.175.186
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="naFQ+INR"
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="j59JEpYx"
 X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1768439643;
+	t=1768439646;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=WNDyOlyEyIQPEF1lGqpybPE2otDvXgipCFufI2UQZoQ=;
-	b=naFQ+INR1gCDZQvpXiHOyS/Ks/pBTEerXQbunUuTGb0slzvkcPEVE9SMrbkbuvdDamz9td
-	Eracrp1kKfcoc4WGRMBDGGLdAwJolXyY8ONipvtu2Pi68T5GEUtpXlOhzFz5okkouohDMj
-	X5+rcMrGHUvHxhuXHhUkIpEIaC8+UVs=
+	bh=7IrGfhTdzxgOo0JvNAgS7vFeXnezCbGeHIZllu7YIbE=;
+	b=j59JEpYxO4DDHcSvtWiZqH/yJL2pbQUVBqd/kn213XZwrC+o/54mX8aXfjp5Osv3Tv+lRa
+	0mh50DmEPnl1raiGtPCB1qAZx0LtXy7JkVFsgNusLkHoQdoF8A8di9bnHgRsdBxLWQYSsY
+	qrOtlgIgm38UETbbf/j8ohQdqniN+o4=
 From: Yosry Ahmed <yosry.ahmed@linux.dev>
 To: Sean Christopherson <seanjc@google.com>
 Cc: Paolo Bonzini <pbonzini@redhat.com>,
 	kvm@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	Yosry Ahmed <yosry.ahmed@linux.dev>
-Subject: [PATCH v4 20/26] KVM: SVM: Rename vmcb->nested_ctl to vmcb->misc_ctl
-Date: Thu, 15 Jan 2026 01:13:06 +0000
-Message-ID: <20260115011312.3675857-21-yosry.ahmed@linux.dev>
+Subject: [PATCH v4 22/26] KVM: SVM: Use BIT() and GENMASK() for definitions in svm.h
+Date: Thu, 15 Jan 2026 01:13:08 +0000
+Message-ID: <20260115011312.3675857-23-yosry.ahmed@linux.dev>
 In-Reply-To: <20260115011312.3675857-1-yosry.ahmed@linux.dev>
 References: <20260115011312.3675857-1-yosry.ahmed@linux.dev>
 Precedence: bulk
@@ -47,198 +47,180 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Migadu-Flow: FLOW_OUT
 
-The 'nested_ctl' field is misnamed. Although the first bit is for nested
-paging, the other defined bits are for SEV/SEV-ES. Other bits in the
-same field according to the APM (but not defined by KVM) include "Guest
-Mode Execution Trap", "Enable INVLPGB/TLBSYNC", and other control bits
-unrelated to 'nested'.
+Use BIT() and GENMASK() (and *_ULL() variants) to define the bitmasks in
+svm.h.
 
-There is nothing common among these bits, so just name the field
-misc_ctl. Also rename the flags accordingly.
+Opportunistically switch the definitions of AVIC_ENABLE_{SHIFT/MASK}
+and X2APIC_MODE_{SHIFT/MASK}, as well as SVM_EVTINJ_VALID and
+SVM_EVTINJ_VALID_ERR, such that the bitmasks are defined in the correct
+order.
+
+No functional change intended.
 
 Signed-off-by: Yosry Ahmed <yosry.ahmed@linux.dev>
 ---
- arch/x86/include/asm/svm.h                    |  8 ++++----
- arch/x86/kvm/svm/nested.c                     | 10 +++++-----
- arch/x86/kvm/svm/sev.c                        |  4 ++--
- arch/x86/kvm/svm/svm.c                        |  4 ++--
- arch/x86/kvm/svm/svm.h                        |  4 ++--
- tools/testing/selftests/kvm/include/x86/svm.h |  6 +++---
- tools/testing/selftests/kvm/lib/x86/svm.c     |  2 +-
- 7 files changed, 19 insertions(+), 19 deletions(-)
+ arch/x86/include/asm/svm.h | 78 +++++++++++++++++++-------------------
+ 1 file changed, 39 insertions(+), 39 deletions(-)
 
 diff --git a/arch/x86/include/asm/svm.h b/arch/x86/include/asm/svm.h
-index 50ece197c98a..2e39ac15ee5a 100644
+index 770c7aed5fa5..0bc26b2b3fd7 100644
 --- a/arch/x86/include/asm/svm.h
 +++ b/arch/x86/include/asm/svm.h
-@@ -143,7 +143,7 @@ struct __attribute__ ((__packed__)) vmcb_control_area {
- 	u64 exit_info_2;
- 	u32 exit_int_info;
- 	u32 exit_int_info_err;
--	u64 nested_ctl;
-+	u64 misc_ctl;
- 	u64 avic_vapic_bar;
- 	u64 ghcb_gpa;
- 	u32 event_inj;
-@@ -240,9 +240,9 @@ struct __attribute__ ((__packed__)) vmcb_control_area {
- #define SVM_IOIO_SIZE_MASK (7 << SVM_IOIO_SIZE_SHIFT)
- #define SVM_IOIO_ASIZE_MASK (7 << SVM_IOIO_ASIZE_SHIFT)
+@@ -189,39 +189,39 @@ struct __attribute__ ((__packed__)) vmcb_control_area {
+ #define V_TPR_MASK 0x0f
  
--#define SVM_NESTED_CTL_NP_ENABLE	BIT(0)
--#define SVM_NESTED_CTL_SEV_ENABLE	BIT(1)
--#define SVM_NESTED_CTL_SEV_ES_ENABLE	BIT(2)
-+#define SVM_MISC_CTL_NP_ENABLE		BIT(0)
-+#define SVM_MISC_CTL_SEV_ENABLE		BIT(1)
-+#define SVM_MISC_CTL_SEV_ES_ENABLE	BIT(2)
+ #define V_IRQ_SHIFT 8
+-#define V_IRQ_MASK (1 << V_IRQ_SHIFT)
++#define V_IRQ_MASK BIT(V_IRQ_SHIFT)
+ 
+ #define V_GIF_SHIFT 9
+-#define V_GIF_MASK (1 << V_GIF_SHIFT)
++#define V_GIF_MASK BIT(V_GIF_SHIFT)
+ 
+ #define V_NMI_PENDING_SHIFT 11
+-#define V_NMI_PENDING_MASK (1 << V_NMI_PENDING_SHIFT)
++#define V_NMI_PENDING_MASK BIT(V_NMI_PENDING_SHIFT)
+ 
+ #define V_NMI_BLOCKING_SHIFT 12
+-#define V_NMI_BLOCKING_MASK (1 << V_NMI_BLOCKING_SHIFT)
++#define V_NMI_BLOCKING_MASK BIT(V_NMI_BLOCKING_SHIFT)
+ 
+ #define V_INTR_PRIO_SHIFT 16
+-#define V_INTR_PRIO_MASK (0x0f << V_INTR_PRIO_SHIFT)
++#define V_INTR_PRIO_MASK GENMASK(V_INTR_PRIO_SHIFT + 3, V_INTR_PRIO_SHIFT)
+ 
+ #define V_IGN_TPR_SHIFT 20
+-#define V_IGN_TPR_MASK (1 << V_IGN_TPR_SHIFT)
++#define V_IGN_TPR_MASK BIT(V_IGN_TPR_SHIFT)
+ 
+ #define V_IRQ_INJECTION_BITS_MASK (V_IRQ_MASK | V_INTR_PRIO_MASK | V_IGN_TPR_MASK)
+ 
+ #define V_INTR_MASKING_SHIFT 24
+-#define V_INTR_MASKING_MASK (1 << V_INTR_MASKING_SHIFT)
++#define V_INTR_MASKING_MASK BIT(V_INTR_MASKING_SHIFT)
+ 
+ #define V_GIF_ENABLE_SHIFT 25
+-#define V_GIF_ENABLE_MASK (1 << V_GIF_ENABLE_SHIFT)
++#define V_GIF_ENABLE_MASK BIT(V_GIF_ENABLE_SHIFT)
+ 
+ #define V_NMI_ENABLE_SHIFT 26
+-#define V_NMI_ENABLE_MASK (1 << V_NMI_ENABLE_SHIFT)
+-
+-#define AVIC_ENABLE_SHIFT 31
+-#define AVIC_ENABLE_MASK (1 << AVIC_ENABLE_SHIFT)
++#define V_NMI_ENABLE_MASK BIT(V_NMI_ENABLE_SHIFT)
+ 
+ #define X2APIC_MODE_SHIFT 30
+-#define X2APIC_MODE_MASK (1 << X2APIC_MODE_SHIFT)
++#define X2APIC_MODE_MASK BIT(X2APIC_MODE_SHIFT)
++
++#define AVIC_ENABLE_SHIFT 31
++#define AVIC_ENABLE_MASK BIT(AVIC_ENABLE_SHIFT)
+ 
+ #define SVM_INTERRUPT_SHADOW_MASK	BIT_ULL(0)
+ #define SVM_GUEST_INTERRUPT_MASK	BIT_ULL(1)
+@@ -232,10 +232,10 @@ struct __attribute__ ((__packed__)) vmcb_control_area {
+ #define SVM_IOIO_ASIZE_SHIFT 7
+ 
+ #define SVM_IOIO_TYPE_MASK 1
+-#define SVM_IOIO_STR_MASK (1 << SVM_IOIO_STR_SHIFT)
+-#define SVM_IOIO_REP_MASK (1 << SVM_IOIO_REP_SHIFT)
+-#define SVM_IOIO_SIZE_MASK (7 << SVM_IOIO_SIZE_SHIFT)
+-#define SVM_IOIO_ASIZE_MASK (7 << SVM_IOIO_ASIZE_SHIFT)
++#define SVM_IOIO_STR_MASK BIT(SVM_IOIO_STR_SHIFT)
++#define SVM_IOIO_REP_MASK BIT(SVM_IOIO_REP_SHIFT)
++#define SVM_IOIO_SIZE_MASK GENMASK(SVM_IOIO_SIZE_SHIFT + 2, SVM_IOIO_SIZE_SHIFT)
++#define SVM_IOIO_ASIZE_MASK GENMASK(SVM_IOIO_ASIZE_SHIFT + 2, SVM_IOIO_ASIZE_SHIFT)
+ 
+ #define SVM_MISC_CTL_NP_ENABLE		BIT(0)
+ #define SVM_MISC_CTL_SEV_ENABLE		BIT(1)
+@@ -251,9 +251,9 @@ struct __attribute__ ((__packed__)) vmcb_control_area {
  
  
- #define SVM_TSC_RATIO_RSVD	0xffffff0000000000ULL
-diff --git a/arch/x86/kvm/svm/nested.c b/arch/x86/kvm/svm/nested.c
-index 79db1e1c8b2a..605e202ba208 100644
---- a/arch/x86/kvm/svm/nested.c
-+++ b/arch/x86/kvm/svm/nested.c
-@@ -496,9 +496,9 @@ void __nested_copy_vmcb_control_to_cache(struct kvm_vcpu *vcpu,
- 	nested_svm_sanitize_intercept(vcpu, to, RDPRU);
+ /* AVIC */
+-#define AVIC_LOGICAL_ID_ENTRY_GUEST_PHYSICAL_ID_MASK	(0xFFULL)
++#define AVIC_LOGICAL_ID_ENTRY_GUEST_PHYSICAL_ID_MASK	GENMASK_ULL(7, 0)
+ #define AVIC_LOGICAL_ID_ENTRY_VALID_BIT			31
+-#define AVIC_LOGICAL_ID_ENTRY_VALID_MASK		(1 << 31)
++#define AVIC_LOGICAL_ID_ENTRY_VALID_MASK		BIT(AVIC_LOGICAL_ID_ENTRY_VALID_BIT)
  
- 	/* Always clear NP_ENABLE if the guest cannot use NPTs */
--	to->nested_ctl          = from->nested_ctl;
-+	to->misc_ctl = from->misc_ctl;
- 	if (!guest_cpu_cap_has(vcpu, X86_FEATURE_NPT))
--		to->nested_ctl &= ~SVM_NESTED_CTL_NP_ENABLE;
-+		to->misc_ctl &= ~SVM_MISC_CTL_NP_ENABLE;
+ /*
+  * GA_LOG_INTR is a synthetic flag that's never propagated to hardware-visible
+@@ -264,15 +264,15 @@ struct __attribute__ ((__packed__)) vmcb_control_area {
  
- 	to->iopm_base_pa        = from->iopm_base_pa;
- 	to->msrpm_base_pa       = from->msrpm_base_pa;
-@@ -837,7 +837,7 @@ static void nested_vmcb02_prepare_control(struct vcpu_svm *svm,
- 	}
+ #define AVIC_PHYSICAL_ID_ENTRY_HOST_PHYSICAL_ID_MASK	GENMASK_ULL(11, 0)
+ #define AVIC_PHYSICAL_ID_ENTRY_BACKING_PAGE_MASK	GENMASK_ULL(51, 12)
+-#define AVIC_PHYSICAL_ID_ENTRY_IS_RUNNING_MASK		(1ULL << 62)
+-#define AVIC_PHYSICAL_ID_ENTRY_VALID_MASK		(1ULL << 63)
+-#define AVIC_PHYSICAL_ID_TABLE_SIZE_MASK		(0xFFULL)
++#define AVIC_PHYSICAL_ID_ENTRY_IS_RUNNING_MASK		BIT_ULL(62)
++#define AVIC_PHYSICAL_ID_ENTRY_VALID_MASK		BIT_ULL(63)
++#define AVIC_PHYSICAL_ID_TABLE_SIZE_MASK		GENMASK_ULL(7, 0)
  
- 	/* Copied from vmcb01.  msrpm_base can be overwritten later.  */
--	vmcb02->control.nested_ctl = vmcb01->control.nested_ctl;
-+	vmcb02->control.misc_ctl = vmcb01->control.misc_ctl;
- 	vmcb02->control.iopm_base_pa = vmcb01->control.iopm_base_pa;
- 	vmcb02->control.msrpm_base_pa = vmcb01->control.msrpm_base_pa;
- 	vmcb_mark_dirty(vmcb02, VMCB_PERM_MAP);
-@@ -993,7 +993,7 @@ int enter_svm_guest_mode(struct kvm_vcpu *vcpu, u64 vmcb12_gpa,
- 				 vmcb12->save.rip,
- 				 vmcb12->control.int_ctl,
- 				 vmcb12->control.event_inj,
--				 vmcb12->control.nested_ctl,
-+				 vmcb12->control.misc_ctl,
- 				 vmcb12->control.nested_cr3,
- 				 vmcb12->save.cr3,
- 				 KVM_ISA_SVM);
-@@ -1804,7 +1804,7 @@ static void nested_copy_vmcb_cache_to_control(struct vmcb_control_area *dst,
- 	dst->exit_info_2          = from->exit_info_2;
- 	dst->exit_int_info        = from->exit_int_info;
- 	dst->exit_int_info_err    = from->exit_int_info_err;
--	dst->nested_ctl           = from->nested_ctl;
-+	dst->misc_ctl		  = from->misc_ctl;
- 	dst->event_inj            = from->event_inj;
- 	dst->event_inj_err        = from->event_inj_err;
- 	dst->next_rip             = from->next_rip;
-diff --git a/arch/x86/kvm/svm/sev.c b/arch/x86/kvm/svm/sev.c
-index f59c65abe3cf..dbeb776b0492 100644
---- a/arch/x86/kvm/svm/sev.c
-+++ b/arch/x86/kvm/svm/sev.c
-@@ -4564,7 +4564,7 @@ static void sev_es_init_vmcb(struct vcpu_svm *svm, bool init_event)
- 	struct kvm_sev_info *sev = to_kvm_sev_info(svm->vcpu.kvm);
- 	struct vmcb *vmcb = svm->vmcb01.ptr;
+ #define AVIC_DOORBELL_PHYSICAL_ID_MASK			GENMASK_ULL(11, 0)
  
--	svm->vmcb->control.nested_ctl |= SVM_NESTED_CTL_SEV_ES_ENABLE;
-+	svm->vmcb->control.misc_ctl |= SVM_MISC_CTL_SEV_ES_ENABLE;
+ #define AVIC_UNACCEL_ACCESS_WRITE_MASK		1
+-#define AVIC_UNACCEL_ACCESS_OFFSET_MASK		0xFF0
+-#define AVIC_UNACCEL_ACCESS_VECTOR_MASK		0xFFFFFFFF
++#define AVIC_UNACCEL_ACCESS_OFFSET_MASK		GENMASK(11, 4)
++#define AVIC_UNACCEL_ACCESS_VECTOR_MASK		GENMASK(31, 0)
  
- 	/*
- 	 * An SEV-ES guest requires a VMSA area that is a separate from the
-@@ -4635,7 +4635,7 @@ void sev_init_vmcb(struct vcpu_svm *svm, bool init_event)
- {
- 	struct kvm_vcpu *vcpu = &svm->vcpu;
+ enum avic_ipi_failure_cause {
+ 	AVIC_IPI_FAILURE_INVALID_INT_TYPE,
+@@ -611,30 +611,30 @@ static inline void __unused_size_checks(void)
+ #define SVM_SELECTOR_G_SHIFT 11
  
--	svm->vmcb->control.nested_ctl |= SVM_NESTED_CTL_SEV_ENABLE;
-+	svm->vmcb->control.misc_ctl |= SVM_MISC_CTL_SEV_ENABLE;
- 	clr_exception_intercept(svm, UD_VECTOR);
+ #define SVM_SELECTOR_TYPE_MASK (0xf)
+-#define SVM_SELECTOR_S_MASK (1 << SVM_SELECTOR_S_SHIFT)
+-#define SVM_SELECTOR_DPL_MASK (3 << SVM_SELECTOR_DPL_SHIFT)
+-#define SVM_SELECTOR_P_MASK (1 << SVM_SELECTOR_P_SHIFT)
+-#define SVM_SELECTOR_AVL_MASK (1 << SVM_SELECTOR_AVL_SHIFT)
+-#define SVM_SELECTOR_L_MASK (1 << SVM_SELECTOR_L_SHIFT)
+-#define SVM_SELECTOR_DB_MASK (1 << SVM_SELECTOR_DB_SHIFT)
+-#define SVM_SELECTOR_G_MASK (1 << SVM_SELECTOR_G_SHIFT)
+-
+-#define SVM_SELECTOR_WRITE_MASK (1 << 1)
++#define SVM_SELECTOR_S_MASK BIT(SVM_SELECTOR_S_SHIFT)
++#define SVM_SELECTOR_DPL_MASK GENMASK(SVM_SELECTOR_DPL_SHIFT + 1, SVM_SELECTOR_DPL_SHIFT)
++#define SVM_SELECTOR_P_MASK BIT(SVM_SELECTOR_P_SHIFT)
++#define SVM_SELECTOR_AVL_MASK BIT(SVM_SELECTOR_AVL_SHIFT)
++#define SVM_SELECTOR_L_MASK BIT(SVM_SELECTOR_L_SHIFT)
++#define SVM_SELECTOR_DB_MASK BIT(SVM_SELECTOR_DB_SHIFT)
++#define SVM_SELECTOR_G_MASK BIT(SVM_SELECTOR_G_SHIFT)
++
++#define SVM_SELECTOR_WRITE_MASK BIT(1)
+ #define SVM_SELECTOR_READ_MASK SVM_SELECTOR_WRITE_MASK
+-#define SVM_SELECTOR_CODE_MASK (1 << 3)
++#define SVM_SELECTOR_CODE_MASK BIT(3)
  
- 	/*
-diff --git a/arch/x86/kvm/svm/svm.c b/arch/x86/kvm/svm/svm.c
-index f3901f9ee487..e64bbae8f852 100644
---- a/arch/x86/kvm/svm/svm.c
-+++ b/arch/x86/kvm/svm/svm.c
-@@ -1149,7 +1149,7 @@ static void init_vmcb(struct kvm_vcpu *vcpu, bool init_event)
+-#define SVM_EVTINJ_VEC_MASK 0xff
++#define SVM_EVTINJ_VEC_MASK GENMASK(7, 0)
  
- 	if (npt_enabled) {
- 		/* Setup VMCB for Nested Paging */
--		control->nested_ctl |= SVM_NESTED_CTL_NP_ENABLE;
-+		control->misc_ctl |= SVM_MISC_CTL_NP_ENABLE;
- 		svm_clr_intercept(svm, INTERCEPT_INVLPG);
- 		clr_exception_intercept(svm, PF_VECTOR);
- 		svm_clr_intercept(svm, INTERCEPT_CR3_READ);
-@@ -3352,7 +3352,7 @@ static void dump_vmcb(struct kvm_vcpu *vcpu)
- 	pr_err("%-20s%016llx\n", "exit_info2:", control->exit_info_2);
- 	pr_err("%-20s%08x\n", "exit_int_info:", control->exit_int_info);
- 	pr_err("%-20s%08x\n", "exit_int_info_err:", control->exit_int_info_err);
--	pr_err("%-20s%lld\n", "nested_ctl:", control->nested_ctl);
-+	pr_err("%-20s%lld\n", "misc_ctl:", control->misc_ctl);
- 	pr_err("%-20s%016llx\n", "nested_cr3:", control->nested_cr3);
- 	pr_err("%-20s%016llx\n", "avic_vapic_bar:", control->avic_vapic_bar);
- 	pr_err("%-20s%016llx\n", "ghcb:", control->ghcb_gpa);
-diff --git a/arch/x86/kvm/svm/svm.h b/arch/x86/kvm/svm/svm.h
-index dc0ce2141d5f..166d2b93797d 100644
---- a/arch/x86/kvm/svm/svm.h
-+++ b/arch/x86/kvm/svm/svm.h
-@@ -167,7 +167,7 @@ struct vmcb_ctrl_area_cached {
- 	u64 exit_info_2;
- 	u32 exit_int_info;
- 	u32 exit_int_info_err;
--	u64 nested_ctl;
-+	u64 misc_ctl;
- 	u32 event_inj;
- 	u32 event_inj_err;
- 	u64 next_rip;
-@@ -571,7 +571,7 @@ static inline bool gif_set(struct vcpu_svm *svm)
+ #define SVM_EVTINJ_TYPE_SHIFT 8
+-#define SVM_EVTINJ_TYPE_MASK (7 << SVM_EVTINJ_TYPE_SHIFT)
++#define SVM_EVTINJ_TYPE_MASK GENMASK(SVM_EVTINJ_TYPE_SHIFT + 2, SVM_EVTINJ_TYPE_SHIFT)
  
- static inline bool nested_npt_enabled(struct vcpu_svm *svm)
- {
--	return svm->nested.ctl.nested_ctl & SVM_NESTED_CTL_NP_ENABLE;
-+	return svm->nested.ctl.misc_ctl & SVM_MISC_CTL_NP_ENABLE;
- }
+ #define SVM_EVTINJ_TYPE_INTR (0 << SVM_EVTINJ_TYPE_SHIFT)
+ #define SVM_EVTINJ_TYPE_NMI (2 << SVM_EVTINJ_TYPE_SHIFT)
+ #define SVM_EVTINJ_TYPE_EXEPT (3 << SVM_EVTINJ_TYPE_SHIFT)
+ #define SVM_EVTINJ_TYPE_SOFT (4 << SVM_EVTINJ_TYPE_SHIFT)
  
- static inline bool nested_vnmi_enabled(struct vcpu_svm *svm)
-diff --git a/tools/testing/selftests/kvm/include/x86/svm.h b/tools/testing/selftests/kvm/include/x86/svm.h
-index 29cffd0a9181..5d2bcce34c01 100644
---- a/tools/testing/selftests/kvm/include/x86/svm.h
-+++ b/tools/testing/selftests/kvm/include/x86/svm.h
-@@ -98,7 +98,7 @@ struct __attribute__ ((__packed__)) vmcb_control_area {
- 	u64 exit_info_2;
- 	u32 exit_int_info;
- 	u32 exit_int_info_err;
--	u64 nested_ctl;
-+	u64 misc_ctl;
- 	u64 avic_vapic_bar;
- 	u8 reserved_4[8];
- 	u32 event_inj;
-@@ -176,8 +176,8 @@ struct __attribute__ ((__packed__)) vmcb_control_area {
- #define SVM_VM_CR_SVM_LOCK_MASK 0x0008ULL
- #define SVM_VM_CR_SVM_DIS_MASK  0x0010ULL
+-#define SVM_EVTINJ_VALID (1 << 31)
+-#define SVM_EVTINJ_VALID_ERR (1 << 11)
++#define SVM_EVTINJ_VALID_ERR BIT(11)
++#define SVM_EVTINJ_VALID BIT(31)
  
--#define SVM_NESTED_CTL_NP_ENABLE	BIT(0)
--#define SVM_NESTED_CTL_SEV_ENABLE	BIT(1)
-+#define SVM_MISC_CTL_CTL_NP_ENABLE	BIT(0)
-+#define SVM_MISC_CTL_SEV_ENABLE		BIT(1)
+ #define SVM_EXITINTINFO_VEC_MASK SVM_EVTINJ_VEC_MASK
+ #define SVM_EXITINTINFO_TYPE_MASK SVM_EVTINJ_TYPE_MASK
+@@ -651,7 +651,7 @@ static inline void __unused_size_checks(void)
+ #define SVM_EXITINFOSHIFT_TS_REASON_JMP 38
+ #define SVM_EXITINFOSHIFT_TS_HAS_ERROR_CODE 44
  
- struct __attribute__ ((__packed__)) vmcb_seg {
- 	u16 selector;
-diff --git a/tools/testing/selftests/kvm/lib/x86/svm.c b/tools/testing/selftests/kvm/lib/x86/svm.c
-index 2e5c480c9afd..fd70984a2aa5 100644
---- a/tools/testing/selftests/kvm/lib/x86/svm.c
-+++ b/tools/testing/selftests/kvm/lib/x86/svm.c
-@@ -126,7 +126,7 @@ void generic_svm_setup(struct svm_test_data *svm, void *guest_rip, void *guest_r
- 	guest_regs.rdi = (u64)svm;
+-#define SVM_EXITINFO_REG_MASK 0x0F
++#define SVM_EXITINFO_REG_MASK GENMASK(3, 0)
  
- 	if (svm->ncr3_gpa) {
--		ctrl->nested_ctl |= SVM_NESTED_CTL_NP_ENABLE;
-+		ctrl->misc_ctl |= SVM_MISC_CTL_CTL_NP_ENABLE;
- 		ctrl->nested_cr3 = svm->ncr3_gpa;
- 	}
- }
+ #define SVM_CR0_SELECTIVE_MASK (X86_CR0_TS | X86_CR0_MP)
+ 
 -- 
 2.52.0.457.g6b5491de43-goog
 
