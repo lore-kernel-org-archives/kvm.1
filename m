@@ -1,88 +1,248 @@
-Received: from mail-pl1-f202.google.com (mail-pl1-f202.google.com [209.85.214.202])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from fra-out-001.esa.eu-central-1.outbound.mail-perimeter.amazon.com (fra-out-001.esa.eu-central-1.outbound.mail-perimeter.amazon.com [18.156.205.64])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E77651E0E08
-	for <kvm@vger.kernel.org>; Fri, 16 Jan 2026 14:46:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.202
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 530D623D2B2;
+	Fri, 16 Jan 2026 14:56:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=18.156.205.64
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768574774; cv=none; b=rHuqucAxIZoWWZJpoEoNO9lIlqBraQpG6UcAPKGPQxpCbuDreCZWxYo5FTF41JOjJvVSLaYqCi8UIN8ElFmBwoaTjeTZ3sMCUzHg0bwX9TJiYweeArG4NLAJR+7G4MqVZVirT/x5evuM+AG70s38Zk0TPmgFO/aacB86y1oVpRw=
+	t=1768575383; cv=none; b=DAAEL/ythQC9dcNK4inEoLJdHBLeXIDYhp8B/zWP9QzKE9IvYa7r4za6VGrKDLtjbSnbrrKaAg6fmYVJwqsigEU4TOSFsU/qs2NVk/atVu1NdRRuSNdT5qFz/e+8h6TEWup4KibdcunnSVwzyCIw+2qymXLJMQWytk68tx1iDpo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768574774; c=relaxed/simple;
-	bh=TpgD5o/rLSTnGKWbI1TKlJ9lRE0JbsCZdsQLvgDlqdo=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=B4u3FWwZ2SiYcM3VmQuYwhZKELqmTkTtolA+MRvn7OCu/kj0Ei+HkqRnOG1cOjDJ/C1kQaift+GLAucsEzwRmWkXZQrkS82Bh5ad0mHlQQXBx6HleyLKyIMJhY54lRe9P/pxAMNzJu5eBIq5WGG5uYdRaL3FNqRxvei71aYgsQ8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=pgrIhbVa; arc=none smtp.client-ip=209.85.214.202
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+	s=arc-20240116; t=1768575383; c=relaxed/simple;
+	bh=BxZnyiI6YgvskaCwpGEH+hfPdJiGYdOF3yczju02EHM=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=b/JAdQvUEdGVM+Wf43S6WyAWz2pkI/+ltYRfr9jVv8atARLfFnvYYu6uZZ+ioq/OzyIRaVX5G8+98jiprqI+JZmvarV7Gm1ZE0n6SzfarpNFy+wXaglFbdaXlH2t+OeQec0rz2gGBxMV4uWt/GS0FVjUyJ4kUVyXCZMzwfsVGXo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com; spf=pass smtp.mailfrom=amazon.co.uk; dkim=pass (2048-bit key) header.d=amazon.com header.i=@amazon.com header.b=F0NxxFs7; arc=none smtp.client-ip=18.156.205.64
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amazon.co.uk
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="pgrIhbVa"
-Received: by mail-pl1-f202.google.com with SMTP id d9443c01a7336-2a0e9e0fd49so31035755ad.0
-        for <kvm@vger.kernel.org>; Fri, 16 Jan 2026 06:46:12 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=amazon.com header.i=@amazon.com header.b="F0NxxFs7"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1768574772; x=1769179572; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=qJUGAI6D133JtMaCHh9/YqYn6+JI2o0s1rll4X2ixAw=;
-        b=pgrIhbVahUc93I11CflCoJsIJVA3lwI+ic+P+mHwatGu4MHqhUN7+zgU9kodhfhJ/l
-         f5IK8Ru2kPLlE0iJn+e7aIksk6PXvI6MiIm0WVjW8C6yYdqg/+ys5T70Xcg72r+CoFBF
-         oHLDeLTARfFI5l2Lf4U2J9ZPap8gZV8Xfi/Va17i5JNnDTZ0DxM5gLrdGh+cGK1nJyLm
-         Y/idaqKusCGVQIhc8JuNI9W5Agjv3FHjOrdQmwhsBJpPZv1MpjEKTH3UBf4uCQGWizl7
-         MpvAqzA6Cu8VeFufaoR/S5rQ8WfuqzE/FkqFrgOoZpdB13k7euWT7JcEeL0Fv4PkXZyQ
-         l/bg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1768574772; x=1769179572;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=qJUGAI6D133JtMaCHh9/YqYn6+JI2o0s1rll4X2ixAw=;
-        b=doGrOGcHAKehcxE7q0JwSHxbCLFB8I3eIS2sCDl9mnh/1TpyCpTHVLd2Jo1usBRBdj
-         e7uyj9E0zzVIyPS2TFOr+UW/sNEiAmG0hp7veoKK19F1GbdXNS3cZjzXLHSOQHoGOv1F
-         7z+UUz3XZtMRiUzgE+r/XtNRmhpZGeudoIxTkh2Lm3qdMbkmCHUlj27Kr/31jWenpg36
-         Bh7VPBmNVlo62Re/v/td430yzzvbzmpaF0NTnaNMVUzEfz9rykcEwywEs1fbtp5ZO3FB
-         tz7zlpfHB/wxBKRbhow15/nGNKWomYX5wQcPLpm1Tp22SSADMmJnud55XuQfEdZzaeDs
-         tObw==
-X-Forwarded-Encrypted: i=1; AJvYcCUZWBvypzOx2i85sD4e9YAKOyYLf6i3ZyJOEH7fsH4ivJZrQtWhyXcPyc97lAVlZTc41Ek=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzNuY5oOdA/4qpG357cqLZAFf6fcVH2IyTmraWY9SzQhwEMay5Y
-	dy2FjyPIXyckCUtMrWyoW5eFWhJ08jW7bI+bwqMLAG6NJoJsLbB/2ce2CqQnapEhzNs1h65k8Im
-	JYoRmew==
-X-Received: from plbkm5.prod.google.com ([2002:a17:903:27c5:b0:2a1:36d4:7f2f])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:902:db07:b0:295:134:9ae5
- with SMTP id d9443c01a7336-2a71780af6emr30716925ad.24.1768574772027; Fri, 16
- Jan 2026 06:46:12 -0800 (PST)
-Date: Fri, 16 Jan 2026 06:46:09 -0800
-In-Reply-To: <aWogMveOU4YEpQ4q@yzhao56-desk.sh.intel.com>
+  d=amazon.com; i=@amazon.com; q=dns/txt; s=amazoncorp2;
+  t=1768575381; x=1800111381;
+  h=message-id:date:mime-version:reply-to:subject:to:cc:
+   references:from:in-reply-to:content-transfer-encoding;
+  bh=IEO4wkDrWsP8gb8dVRwVt7tfKvgBUuiF6zz/e0uDn6E=;
+  b=F0NxxFs7rBOpuPtGdmPKFR/XqYq1t+f3Brm9bFysGyZrP3gPftBLJw/i
+   Wh5P7IUKOKdVho9MP82TqY40LlX9qP84QSwMeu8tPY5QUX8wuwUybHvAH
+   ovqE+OvhOcMUrNusqjSXCf90nYcXKoL1nmKlKiRksCwwYPAcn568K2rpj
+   Zq6R4GcTOUEWuLLs1x6zuDKdmkaZFhFTLRDGI0/wt7b+qSK4UMyO/lLoP
+   u5Xx3nzWkD2eqZJq7uXPn/avRekRG18I3qBE/1WcohS0AA/SxrY5pkt18
+   Dbf/Jtx36fSUWubpBI96UeCyLTkQmvYDq2aPsxNi5NBwhpvT1cyB9L7tV
+   A==;
+X-CSE-ConnectionGUID: t80jrskTRzKiYCPAndralA==
+X-CSE-MsgGUID: hn4FZT+mTRGLqNyYAxxD5Q==
+X-IronPort-AV: E=Sophos;i="6.21,231,1763424000"; 
+   d="scan'208";a="7704673"
+Received: from ip-10-6-6-97.eu-central-1.compute.internal (HELO smtpout.naws.eu-central-1.prod.farcaster.email.amazon.dev) ([10.6.6.97])
+  by internal-fra-out-001.esa.eu-central-1.outbound.mail-perimeter.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Jan 2026 14:56:02 +0000
+Received: from EX19MTAEUA002.ant.amazon.com [54.240.197.232:3849]
+ by smtpin.naws.eu-central-1.prod.farcaster.email.amazon.dev [10.0.41.192:2525] with esmtp (Farcaster)
+ id 260b6298-10cb-4eed-9151-e85b598fcfcc; Fri, 16 Jan 2026 14:56:02 +0000 (UTC)
+X-Farcaster-Flow-ID: 260b6298-10cb-4eed-9151-e85b598fcfcc
+Received: from EX19D005EUB003.ant.amazon.com (10.252.51.31) by
+ EX19MTAEUA002.ant.amazon.com (10.252.50.124) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.35;
+ Fri, 16 Jan 2026 14:56:01 +0000
+Received: from [192.168.12.13] (10.106.82.9) by EX19D005EUB003.ant.amazon.com
+ (10.252.51.31) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.35; Fri, 16 Jan 2026
+ 14:55:57 +0000
+Message-ID: <6b50a83e-acd7-4db3-ae9b-015ffad4f615@amazon.com>
+Date: Fri, 16 Jan 2026 14:55:56 +0000
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20260106101646.24809-1-yan.y.zhao@intel.com> <aWmGHLVJlKCUwV1t@google.com>
- <aWogMveOU4YEpQ4q@yzhao56-desk.sh.intel.com>
-Message-ID: <aWpPMUT4_79QjaF8@google.com>
-Subject: Re: [PATCH v3 00/24] KVM: TDX huge page support for private memory
-From: Sean Christopherson <seanjc@google.com>
-To: Yan Zhao <yan.y.zhao@intel.com>
-Cc: pbonzini@redhat.com, linux-kernel@vger.kernel.org, kvm@vger.kernel.org, 
-	x86@kernel.org, rick.p.edgecombe@intel.com, dave.hansen@intel.com, 
-	kas@kernel.org, tabba@google.com, ackerleytng@google.com, 
-	michael.roth@amd.com, david@kernel.org, vannapurve@google.com, 
-	sagis@google.com, vbabka@suse.cz, thomas.lendacky@amd.com, 
-	nik.borisov@suse.com, pgonda@google.com, fan.du@intel.com, jun.miao@intel.com, 
-	francescolavra.fl@gmail.com, jgross@suse.com, ira.weiny@intel.com, 
-	isaku.yamahata@intel.com, xiaoyao.li@intel.com, kai.huang@intel.com, 
-	binbin.wu@linux.intel.com, chao.p.peng@intel.com, chao.gao@intel.com
-Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Reply-To: <kalyazin@amazon.com>
+Subject: Re: [PATCH v9 02/13] mm/gup: drop secretmem optimization from
+ gup_fast_folio_allowed
+To: Ackerley Tng <ackerleytng@google.com>, "Kalyazin, Nikita"
+	<kalyazin@amazon.co.uk>, "kvm@vger.kernel.org" <kvm@vger.kernel.org>,
+	"linux-doc@vger.kernel.org" <linux-doc@vger.kernel.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"linux-arm-kernel@lists.infradead.org"
+	<linux-arm-kernel@lists.infradead.org>, "kvmarm@lists.linux.dev"
+	<kvmarm@lists.linux.dev>, "linux-fsdevel@vger.kernel.org"
+	<linux-fsdevel@vger.kernel.org>, "linux-mm@kvack.org" <linux-mm@kvack.org>,
+	"bpf@vger.kernel.org" <bpf@vger.kernel.org>,
+	"linux-kselftest@vger.kernel.org" <linux-kselftest@vger.kernel.org>,
+	"kernel@xen0n.name" <kernel@xen0n.name>, "linux-riscv@lists.infradead.org"
+	<linux-riscv@lists.infradead.org>, "linux-s390@vger.kernel.org"
+	<linux-s390@vger.kernel.org>, "loongarch@lists.linux.dev"
+	<loongarch@lists.linux.dev>
+CC: "pbonzini@redhat.com" <pbonzini@redhat.com>, "corbet@lwn.net"
+	<corbet@lwn.net>, "maz@kernel.org" <maz@kernel.org>, "oupton@kernel.org"
+	<oupton@kernel.org>, "joey.gouly@arm.com" <joey.gouly@arm.com>,
+	"suzuki.poulose@arm.com" <suzuki.poulose@arm.com>, "yuzenghui@huawei.com"
+	<yuzenghui@huawei.com>, "catalin.marinas@arm.com" <catalin.marinas@arm.com>,
+	"will@kernel.org" <will@kernel.org>, "seanjc@google.com" <seanjc@google.com>,
+	"tglx@linutronix.de" <tglx@linutronix.de>, "mingo@redhat.com"
+	<mingo@redhat.com>, "bp@alien8.de" <bp@alien8.de>,
+	"dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>, "x86@kernel.org"
+	<x86@kernel.org>, "hpa@zytor.com" <hpa@zytor.com>, "luto@kernel.org"
+	<luto@kernel.org>, "peterz@infradead.org" <peterz@infradead.org>,
+	"willy@infradead.org" <willy@infradead.org>, "akpm@linux-foundation.org"
+	<akpm@linux-foundation.org>, "david@kernel.org" <david@kernel.org>,
+	"lorenzo.stoakes@oracle.com" <lorenzo.stoakes@oracle.com>,
+	"Liam.Howlett@oracle.com" <Liam.Howlett@oracle.com>, "vbabka@suse.cz"
+	<vbabka@suse.cz>, "rppt@kernel.org" <rppt@kernel.org>, "surenb@google.com"
+	<surenb@google.com>, "mhocko@suse.com" <mhocko@suse.com>, "ast@kernel.org"
+	<ast@kernel.org>, "daniel@iogearbox.net" <daniel@iogearbox.net>,
+	"andrii@kernel.org" <andrii@kernel.org>, "martin.lau@linux.dev"
+	<martin.lau@linux.dev>, "eddyz87@gmail.com" <eddyz87@gmail.com>,
+	"song@kernel.org" <song@kernel.org>, "yonghong.song@linux.dev"
+	<yonghong.song@linux.dev>, "john.fastabend@gmail.com"
+	<john.fastabend@gmail.com>, "kpsingh@kernel.org" <kpsingh@kernel.org>,
+	"sdf@fomichev.me" <sdf@fomichev.me>, "haoluo@google.com" <haoluo@google.com>,
+	"jolsa@kernel.org" <jolsa@kernel.org>, "jgg@ziepe.ca" <jgg@ziepe.ca>,
+	"jhubbard@nvidia.com" <jhubbard@nvidia.com>, "peterx@redhat.com"
+	<peterx@redhat.com>, "jannh@google.com" <jannh@google.com>,
+	"pfalcato@suse.de" <pfalcato@suse.de>, "shuah@kernel.org" <shuah@kernel.org>,
+	"riel@surriel.com" <riel@surriel.com>, "ryan.roberts@arm.com"
+	<ryan.roberts@arm.com>, "jgross@suse.com" <jgross@suse.com>,
+	"yu-cheng.yu@intel.com" <yu-cheng.yu@intel.com>, "kas@kernel.org"
+	<kas@kernel.org>, "coxu@redhat.com" <coxu@redhat.com>,
+	"kevin.brodsky@arm.com" <kevin.brodsky@arm.com>, "maobibo@loongson.cn"
+	<maobibo@loongson.cn>, "prsampat@amd.com" <prsampat@amd.com>,
+	"mlevitsk@redhat.com" <mlevitsk@redhat.com>, "jmattson@google.com"
+	<jmattson@google.com>, "jthoughton@google.com" <jthoughton@google.com>,
+	"agordeev@linux.ibm.com" <agordeev@linux.ibm.com>, "alex@ghiti.fr"
+	<alex@ghiti.fr>, "aou@eecs.berkeley.edu" <aou@eecs.berkeley.edu>,
+	"borntraeger@linux.ibm.com" <borntraeger@linux.ibm.com>,
+	"chenhuacai@kernel.org" <chenhuacai@kernel.org>, "dev.jain@arm.com"
+	<dev.jain@arm.com>, "gor@linux.ibm.com" <gor@linux.ibm.com>,
+	"hca@linux.ibm.com" <hca@linux.ibm.com>, "Jonathan.Cameron@huawei.com"
+	<Jonathan.Cameron@huawei.com>, "palmer@dabbelt.com" <palmer@dabbelt.com>,
+	"pjw@kernel.org" <pjw@kernel.org>, "shijie@os.amperecomputing.com"
+	<shijie@os.amperecomputing.com>, "svens@linux.ibm.com" <svens@linux.ibm.com>,
+	"thuth@redhat.com" <thuth@redhat.com>, "wyihan@google.com"
+	<wyihan@google.com>, "yang@os.amperecomputing.com"
+	<yang@os.amperecomputing.com>, "vannapurve@google.com"
+	<vannapurve@google.com>, "jackmanb@google.com" <jackmanb@google.com>,
+	"aneesh.kumar@kernel.org" <aneesh.kumar@kernel.org>, "patrick.roy@linux.dev"
+	<patrick.roy@linux.dev>, "Thomson, Jack" <jackabt@amazon.co.uk>, "Itazuri,
+ Takahiro" <itazur@amazon.co.uk>, "Manwaring, Derek" <derekmn@amazon.com>,
+	"Cali, Marco" <xmarcalx@amazon.co.uk>
+References: <20260114134510.1835-1-kalyazin@amazon.com>
+ <20260114134510.1835-3-kalyazin@amazon.com>
+ <CAEvNRgGrpv5h04s+btubhUFHo=d6mBFbr2BVrMt=bWuWOztdJQ@mail.gmail.com>
+Content-Language: en-US
+From: Nikita Kalyazin <kalyazin@amazon.com>
+Autocrypt: addr=kalyazin@amazon.com; keydata=
+ xjMEY+ZIvRYJKwYBBAHaRw8BAQdA9FwYskD/5BFmiiTgktstviS9svHeszG2JfIkUqjxf+/N
+ JU5pa2l0YSBLYWx5YXppbiA8a2FseWF6aW5AYW1hem9uLmNvbT7CjwQTFggANxYhBGhhGDEy
+ BjLQwD9FsK+SyiCpmmTzBQJnrNfABQkFps9DAhsDBAsJCAcFFQgJCgsFFgIDAQAACgkQr5LK
+ IKmaZPOpfgD/exazh4C2Z8fNEz54YLJ6tuFEgQrVQPX6nQ/PfQi2+dwBAMGTpZcj9Z9NvSe1
+ CmmKYnYjhzGxzjBs8itSUvWIcMsFzjgEY+ZIvRIKKwYBBAGXVQEFAQEHQCqd7/nb2tb36vZt
+ ubg1iBLCSDctMlKHsQTp7wCnEc4RAwEIB8J+BBgWCAAmFiEEaGEYMTIGMtDAP0Wwr5LKIKma
+ ZPMFAmes18AFCQWmz0MCGwwACgkQr5LKIKmaZPNTlQEA+q+rGFn7273rOAg+rxPty0M8lJbT
+ i2kGo8RmPPLu650A/1kWgz1AnenQUYzTAFnZrKSsXAw5WoHaDLBz9kiO5pAK
+In-Reply-To: <CAEvNRgGrpv5h04s+btubhUFHo=d6mBFbr2BVrMt=bWuWOztdJQ@mail.gmail.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: EX19D012EUA003.ant.amazon.com (10.252.50.98) To
+ EX19D005EUB003.ant.amazon.com (10.252.51.31)
 
-On Fri, Jan 16, 2026, Yan Zhao wrote:
-> On Thu, Jan 15, 2026 at 04:28:12PM -0800, Sean Christopherson wrote:
-> > On Tue, Jan 06, 2026, Yan Zhao wrote:
-> > > This is v3 of the TDX huge page series. The full stack is available at [4].
-> > 
-> > Nope, that's different code.
-> I double-checked. It's the correct code.
-> See https://github.com/intel-staging/tdx/commits/huge_page_v3.
 
-Argh, and I even double-checked before complaining, but apparently I screwed up
-twice.  On triple-checking, I do see the same code as the patches.  *sigh*
 
-Sorry.
+On 15/01/2026 21:40, Ackerley Tng wrote:
+> "Kalyazin, Nikita" <kalyazin@amazon.co.uk> writes:
+> 
+>> From: Patrick Roy <patrick.roy@linux.dev>
+>>
+>> This drops an optimization in gup_fast_folio_allowed() where
+>> secretmem_mapping() was only called if CONFIG_SECRETMEM=y. secretmem is
+>> enabled by default since commit b758fe6df50d ("mm/secretmem: make it on
+>> by default"), so the secretmem check did not actually end up elided in
+>> most cases anymore anyway.
+>>
+>> This is in preparation of the generalization of handling mappings where
+>> direct map entries of folios are set to not present.  Currently,
+>> mappings that match this description are secretmem mappings
+>> (memfd_secret()).  Later, some guest_memfd configurations will also fall
+>> into this category.
+>>
+>> Signed-off-by: Patrick Roy <patrick.roy@linux.dev>
+>> Acked-by: Vlastimil Babka <vbabka@suse.cz>
+>> Signed-off-by: Nikita Kalyazin <kalyazin@amazon.com>
+>> ---
+>>   mm/gup.c | 11 +----------
+>>   1 file changed, 1 insertion(+), 10 deletions(-)
+>>
+>> diff --git a/mm/gup.c b/mm/gup.c
+>> index 95d948c8e86c..9cad53acbc99 100644
+>> --- a/mm/gup.c
+>> +++ b/mm/gup.c
+>> @@ -2739,7 +2739,6 @@ static bool gup_fast_folio_allowed(struct folio *folio, unsigned int flags)
+>>   {
+>>        bool reject_file_backed = false;
+>>        struct address_space *mapping;
+>> -     bool check_secretmem = false;
+>>        unsigned long mapping_flags;
+>>
+>>        /*
+>> @@ -2751,14 +2750,6 @@ static bool gup_fast_folio_allowed(struct folio *folio, unsigned int flags)
+> 
+> Copying some lines the diff didn't contain:
+> 
+>          /*
+>           * If we aren't pinning then no problematic write can occur. A long term
+>           * pin is the most egregious case so this is the one we disallow.
+>           */
+>          if ((flags & (FOLL_PIN | FOLL_LONGTERM | FOLL_WRITE)) ==
+>              (FOLL_PIN | FOLL_LONGTERM | FOLL_WRITE))
+> 
+> If we're pinning, can we already return true here? IIUC this function
+> is passed a folio that is file-backed, and the check if (!mapping) is
+> just there to catch the case where the mapping got truncated.
+
+I have to admit that I am not comfortable with removing this check, 
+unless someone says it's certainly alright.
+
+> 
+> Or should we wait for the check where the mapping got truncated? If so,
+> then maybe we can move this "are we pinning" check to after this check
+> and remove the reject_file_backed variable?
+
+I can indeed move the pinning check to the end to remove the variable. 
+I'd do it in a separate patch.
+
+> 
+>          /*
+>           * The mapping may have been truncated, in any case we cannot determine
+>           * if this mapping is safe - fall back to slow path to determine how to
+>           * proceed.
+>           */
+>          if (!mapping)
+>                  return false;
+> 
+> 
+>>                reject_file_backed = true;
+>>
+>>        /* We hold a folio reference, so we can safely access folio fields. */
+>> -
+>> -     /* secretmem folios are always order-0 folios. */
+>> -     if (IS_ENABLED(CONFIG_SECRETMEM) && !folio_test_large(folio))
+>> -             check_secretmem = true;
+>> -
+>> -     if (!reject_file_backed && !check_secretmem)
+>> -             return true;
+>> -
+>>        if (WARN_ON_ONCE(folio_test_slab(folio)))
+>>                return false;
+>>
+>> @@ -2800,7 +2791,7 @@ static bool gup_fast_folio_allowed(struct folio *folio, unsigned int flags)
+>>         * At this point, we know the mapping is non-null and points to an
+>>         * address_space object.
+>>         */
+>> -     if (check_secretmem && secretmem_mapping(mapping))
+>> +     if (secretmem_mapping(mapping))
+>>                return false;
+>>        /* The only remaining allowed file system is shmem. */
+>>        return !reject_file_backed || shmem_mapping(mapping);
+>> --
+>> 2.50.1
+
