@@ -1,120 +1,100 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 53CE2238D54
-	for <kvm@vger.kernel.org>; Mon, 19 Jan 2026 05:55:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 62B351B424F;
+	Mon, 19 Jan 2026 05:56:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.9
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768802119; cv=none; b=Xy2exQHNfPEEQw5mNwnSYDji37eqnw8tJMC4GfoPntJAPS7vFe+0sFoYy61S1ux4L9Qw2XpmXHEFhuYF/Jv9/4VxPr8iyuFZmS6pKWmuxePthOVVn2EoJZ6KeNrzofOO1xOing8vuyKZDNGqvQBJZEoax59mQbEmrLcErhh4v3Y=
+	t=1768802163; cv=none; b=PjHLMBOulJX1eZUgFMWuRMdFrdlVnooxqrAybjawaAYQoATjDR230tGN0s20+uk+F6GLY0PQL5w042XNHI1XgCbbOa+NIPgymuYKBWup0XbqdHUQi+Aq9j4WPQdKmDUQCdH6bXxJ7Km/k1FRb6XPQNRmAbbfn45kS509dNs0brg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768802119; c=relaxed/simple;
-	bh=Uy6C4b+WcCdVg81/oqrdtyg+fGwUM7l7vLt0awGGvnM=;
-	h=From:To:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HxA1gf3S0NFX4Wvc/vSWc8IdbSaTnBj8z1gIBIqBea5kvY0Uw7yukqz2Opkw7mgI45o8Oi3yugFI6BsyZExKkB7L7RwzX0IAmVvpIBCYfobXQc4fnp+pPbbP14Qo7U/SXmQFLj+Uq3oO6XJoQQSaM4MmFI8Ux43S4+q+8QuMvbY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=AZOenaWF; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1768802163; c=relaxed/simple;
+	bh=q89dLAPqhbmZ5LGxQZAnAGCJEDTl3eLYuXVT/VALPTk=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=dvb1Tg2fATeXgucrt1OpMyzKjlDEXZIaPLTqCNIqOokgVrVIbT56IXxn1wg3UDcxixcUdGDiWYImgEUROZvbtGQan4WORjj1+SRZhcN4Qn/fciBAJ/54JxGl0GPf2UPzOMozUFxdzXqyfhwUtI+D8uO6kiEgR5ggbDsXbLF92YQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=QTG0ZvNO; arc=none smtp.client-ip=198.175.65.9
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="AZOenaWF"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1768802114;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=9RUc9xBJNSYAfdXCE6GVASEQbjxNXlsHBbIujMtK0qY=;
-	b=AZOenaWFhtSENQ95Krm3OVWKouj68HQNoTEEA3M3Pz3DjzFlgXxJzm59/3asNMRew+mCTQ
-	odS/mZMCHPh4HPpaAXeFYY8HKg5BkOt7a+5Yc/8imm5Otbbp1qnpApEer3J8+Y5hPZbkC3
-	q9mM45udPFqxMLr042pIU+qbr8bxSZ4=
-Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-230-VTJcjRCqPUCOnyqhAxHO1g-1; Mon,
- 19 Jan 2026 00:55:09 -0500
-X-MC-Unique: VTJcjRCqPUCOnyqhAxHO1g-1
-X-Mimecast-MFC-AGG-ID: VTJcjRCqPUCOnyqhAxHO1g_1768802108
-Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 01DBF1956095;
-	Mon, 19 Jan 2026 05:55:08 +0000 (UTC)
-Received: from S2.redhat.com (unknown [10.72.112.143])
-	by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 3C0CF19560B2;
-	Mon, 19 Jan 2026 05:55:03 +0000 (UTC)
-From: Cindy Lu <lulu@redhat.com>
-To: lulu@redhat.com,
-	dtatulea@nvidia.com,
-	mst@redhat.com,
-	jasowang@redhat.com,
-	netdev@vger.kernel.org,
-	virtualization@lists.linux-foundation.org,
-	linux-kernel@vger.kernel.org,
-	kvm@vger.kernel.org
-Subject: [PATCH v3 3/3] vdpa/mlx5: update MAC address handling in mlx5_vdpa_set_attr()
-Date: Mon, 19 Jan 2026 13:53:53 +0800
-Message-ID: <20260119055447.229772-4-lulu@redhat.com>
-In-Reply-To: <20260119055447.229772-1-lulu@redhat.com>
-References: <20260119055447.229772-1-lulu@redhat.com>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="QTG0ZvNO"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1768802161; x=1800338161;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=q89dLAPqhbmZ5LGxQZAnAGCJEDTl3eLYuXVT/VALPTk=;
+  b=QTG0ZvNONbq9kzQo707W1s30C4JBMalsehZevnBpCs7db0sNe4MPcayM
+   qkhXZUaLzmyzuFfwcUK4tks0fr/Gq/XPkWXl8fHetKjcos6tDNDFWA3fE
+   2LK12hDZy+pDMK9Vse1fA5A8fSNRExk3Q9yQlZZxReY1QWq2rhLotW9W0
+   u1F/qRN5LZ8BsK4t+cg+bQhfU33ltr2uSapejph2xaLOQOehP7R3SGsZN
+   wv9I9YhR/TbLNPryht+jlNEtI20CRhS63htKxotXaRskcBpCbl5BCOtYQ
+   kkhST9MEROEtS9NQM5dMNk6H8zJtHT0QtQS90nwUeBBDKVfD+Q+qDlKoh
+   w==;
+X-CSE-ConnectionGUID: RdnthPLnQO6KrjLn/r8Waw==
+X-CSE-MsgGUID: Hg+ZKgy9RFCOpngy6JtDlw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11675"; a="92679688"
+X-IronPort-AV: E=Sophos;i="6.21,237,1763452800"; 
+   d="scan'208";a="92679688"
+Received: from fmviesa006.fm.intel.com ([10.60.135.146])
+  by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Jan 2026 21:56:01 -0800
+X-CSE-ConnectionGUID: Ou77wQqqTWyo4pIuYtWDmw==
+X-CSE-MsgGUID: 7uRQ/pE2SHmoJX+iPlR8Dg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.21,237,1763452800"; 
+   d="scan'208";a="205680161"
+Received: from xiaoyaol-hp-g830.ccr.corp.intel.com (HELO [10.124.240.173]) ([10.124.240.173])
+  by fmviesa006-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Jan 2026 21:55:58 -0800
+Message-ID: <2dd73d71-ae88-4b17-8229-2cebecca7782@intel.com>
+Date: Mon, 19 Jan 2026 13:55:56 +0800
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 14/16] KVM: x86: Expose APX foundational feature bit to
+ guests
+To: "Chang S. Bae" <chang.seok.bae@intel.com>, pbonzini@redhat.com,
+ seanjc@google.com, "Edgecombe, Rick P" <rick.p.edgecombe@intel.com>
+Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org, chao.gao@intel.com,
+ Peter Fang <peter.fang@intel.com>, Binbin Wu <binbin.wu@linux.intel.com>
+References: <20260112235408.168200-1-chang.seok.bae@intel.com>
+ <20260112235408.168200-15-chang.seok.bae@intel.com>
+Content-Language: en-US
+From: Xiaoyao Li <xiaoyao.li@intel.com>
+In-Reply-To: <20260112235408.168200-15-chang.seok.bae@intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-Improve MAC address handling in mlx5_vdpa_set_attr() to ensure that
-old MAC entries are properly removed from the MPFS table before
-adding a new one. The new MAC address is then added to both the MPFS
-and VLAN tables.
++ Rick and Binbin
 
-This change fixes an issue where the updated MAC address would not
-take effect until QEMU was rebooted.
+On 1/13/2026 7:54 AM, Chang S. Bae wrote:
+> diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
+> index 189a03483d03..67b3312ab737 100644
+> --- a/arch/x86/kvm/x86.c
+> +++ b/arch/x86/kvm/x86.c
+> @@ -214,7 +214,8 @@ static DEFINE_PER_CPU(struct kvm_user_return_msrs, user_return_msrs);
+>   #define KVM_SUPPORTED_XCR0     (XFEATURE_MASK_FP | XFEATURE_MASK_SSE \
+>   				| XFEATURE_MASK_YMM | XFEATURE_MASK_BNDREGS \
+>   				| XFEATURE_MASK_BNDCSR | XFEATURE_MASK_AVX512 \
+> -				| XFEATURE_MASK_PKRU | XFEATURE_MASK_XTILE)
+> +				| XFEATURE_MASK_PKRU | XFEATURE_MASK_XTILE \
+> +				| XFEATURE_MASK_APX)
+>   
 
-Signed-off-by: Cindy Lu <lulu@redhat.com>
+Not any intention of this patch, but this change eventually allows the 
+userspace to expose APX to TDX guests.
 
-Reviewed-by: Dragos Tatulea <dtatulea@nvidia.com>
----
- drivers/vdpa/mlx5/net/mlx5_vnet.c | 9 +++------
- 1 file changed, 3 insertions(+), 6 deletions(-)
+Without any mentioning of TDX APX tests and validation like the one for 
+CET[1], I think it's unsafe to allow it for TDX guests. E.g., the worst 
+case would be KVM might need extra handling to keep host's 
+states/functionalities correct once TD guest is able to manage APX.
 
-diff --git a/drivers/vdpa/mlx5/net/mlx5_vnet.c b/drivers/vdpa/mlx5/net/mlx5_vnet.c
-index 7a39843de243..ed9aa0c2191a 100644
---- a/drivers/vdpa/mlx5/net/mlx5_vnet.c
-+++ b/drivers/vdpa/mlx5/net/mlx5_vnet.c
-@@ -4055,17 +4055,15 @@ static void mlx5_vdpa_dev_del(struct vdpa_mgmt_dev *v_mdev, struct vdpa_device *
- static int mlx5_vdpa_set_attr(struct vdpa_mgmt_dev *v_mdev, struct vdpa_device *dev,
- 			      const struct vdpa_dev_set_config *add_config)
- {
--	struct virtio_net_config *config;
- 	struct mlx5_core_dev *pfmdev;
- 	struct mlx5_vdpa_dev *mvdev;
- 	struct mlx5_vdpa_net *ndev;
- 	struct mlx5_core_dev *mdev;
--	int err = 0;
-+	int err = -EOPNOTSUPP;
- 
- 	mvdev = to_mvdev(dev);
- 	ndev = to_mlx5_vdpa_ndev(mvdev);
- 	mdev = mvdev->mdev;
--	config = &ndev->config;
- 
- 	down_write(&ndev->reslock);
- 
-@@ -4078,9 +4076,8 @@ static int mlx5_vdpa_set_attr(struct vdpa_mgmt_dev *v_mdev, struct vdpa_device *
- 			goto out;
- 		}
- 		pfmdev = pci_get_drvdata(pci_physfn(mdev->pdev));
--		err = mlx5_mpfs_add_mac(pfmdev, config->mac);
--		if (!err)
--			ether_addr_copy(config->mac, add_config->net.mac);
-+		err = mlx5_vdpa_change_mac(ndev, pfmdev,
-+					   (u8 *)add_config->net.mac);
- 	}
- 
- out:
--- 
-2.51.0
+I'm thinking maybe we need introduce a supported mask, 
+KVM_SUPPORTED_TD_XFAM, like KVM_SUPPORTED_TD_ATTRS. So that any new XFAM 
+related feature for TD needs the explicit enabling in KVM, and people 
+work on the new XSAVE related feature enabling for normal VMs don't need 
+to worry about the potential TDX impact.
 
+[1] 
+https://lore.kernel.org/all/ecaaef65cf1cd90eb8f83e6a53d9689c8b0b9a22.camel@intel.com/
