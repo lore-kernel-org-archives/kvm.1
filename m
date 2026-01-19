@@ -1,266 +1,228 @@
-Received: from MW6PR02CU001.outbound.protection.outlook.com (mail-westus2azon11012031.outbound.protection.outlook.com [52.101.48.31])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 574A7359F8D;
-	Mon, 19 Jan 2026 12:13:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.48.31
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768824795; cv=fail; b=Xj6bvjzvJbdjTSyZesoYAYcYfQHiioBorJUD9+xDNy6Nhpn23fl1/TfI+RE08aULfdl9xZZi0aqxBhXQAlcrz0K+wepFA77JEVNLlgwrjc44oLf1Bhx9oytBf3zSiNajburcIEplY5896JS8aNMJBlpKFXhYz4/WlM70K8l2of0=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768824795; c=relaxed/simple;
-	bh=SFteUsRfkqj3Qm8+OmajuD8jscDZOIil00yZdkz5vLE=;
-	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=lMhJJELJhyaafcIIqFu/CB6nCwHw9hYz6g58wnGyflucPmZ5kzWzDEFnUIe4PunrUeftEvj8q5x3YWhGrgN+khQA43DZ+yEAcFDQkq+JqRF4itWCtFHluQ6m517t+keGvWXauylfpEEe/1qs5oMavz0RpFpNb0qdbylRslQejF4=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=s+uVo0uk; arc=fail smtp.client-ip=52.101.48.31
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0ABAB314D26
+	for <kvm@vger.kernel.org>; Mon, 19 Jan 2026 12:34:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1768826053; cv=none; b=tMVNyDvYRRAhyr8nzO3GaQZlbvNqqPOfl1U3wh2LUBwycH5BPNsoyxTLBPWnca3PO3aDoa1aqWIr1eEHniO4Biy+rM+vMbR9LuQQvTMXSDQFJ9aXoQM5ecitTitBzwkNeBGbmhTh17y62Xf+8+9u7fVynVPcG4Xj/7FFEPjdckI=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1768826053; c=relaxed/simple;
+	bh=pYAfipF2N3lSeZnWjsUTOBncQpMrZB1CykRBZPYQ5xI=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=ZkwN9E+N1YUY8jkAAGUW8d3Z2hMDblLDGRzrOSRrk3EKR1jzwWFQ/1XD60N+y/xAYNOjEj8Itc+RCq4Y/kVhTWdNOfuN9jkRKJP5O44s03l7TaTuDTNo7FpCzeQqlR/VeFb5ypMswanJcFnqHHWiIBP79IVHz3vaSpjX9m9e/nQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=aGRfcg9L; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="s+uVo0uk"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=K448iUGpZvKk51QY/s+FKgY7kVIXNlM8Cc+hL6HN+pzjrNSeHYH2sveLhiYjJlx29eUOkRGYCZZgVfQptpTTVeAF1JyTcjTAxm/NYsKnnXKl6wrvxRVqp/Gb738Dj+0wrflDVbE4q6kNHA2PaKjyDOD9hdfi0s87I3CFEcJfGUsHtLqzA/rr6n0iVDqdTuouLOhuwCDRbNNUsDtnU0cEFo2wYhTHleigniH9PSCjqocSr3y3j9wAat0kEyrK3m0DHxkHBFm8hNcFOfiPivxFX+cykOP4pVEd+8FiZyaPT3mwJ6LW4howjvywBD2gPKdvf4Hv5zF8KM94+gkie0gubQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=2gveICgaLhhrgKIccpuD5uQr7+CNwWh4xOTG0NbNZA4=;
- b=V3Oykn+459+vVna5oc+gF3eBuBu2rLrhAngCuxZFtlDSPzs2PSsHMKwwVo5A8ijDqdIDH/d+HYqXcf96WpgWgpanMXYNN60ZNUjD8Wy5zyx3f/E4wo1AtI/soHTJMorpYr3zW+n7A10zWxT5bEY2YY2gCQS2Pi7CCL7Dwcr1ycu09K1Sr4mYvG8/n5r/xAoFA6P93sM47WWEAyK3gJOakwzl1cAPRvf+QvBtbA1Oa28b9FfE/vA1zA54ydJqp8BRd6Pth7haJDtBeWGV+2HeLlK7U9r3eYt1p3r9sESJVOw66GxjFDn3F7T4KscW/vpkg9lBS59HEtPO8PIz+5LiwQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
- header.d=amd.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=2gveICgaLhhrgKIccpuD5uQr7+CNwWh4xOTG0NbNZA4=;
- b=s+uVo0ukJEIYB5uWBMrGRrrjRykSMR2P4vvoovhODyyw+D2uKZTWwWpzGoIiptpK/YTnMc+EmFnaqHGubKFtihRzmvibC+0/F9T3NtnB4vJVKbYnY+Zzq2WNJfyKEB4qsISXzNkxEzsEnLG1C8f3eWw96ATNUkZl35zCOaEAim8=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=amd.com;
-Received: from PH7PR12MB5685.namprd12.prod.outlook.com (2603:10b6:510:13c::22)
- by SA3PR12MB7903.namprd12.prod.outlook.com (2603:10b6:806:307::12) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9520.9; Mon, 19 Jan
- 2026 12:13:00 +0000
-Received: from PH7PR12MB5685.namprd12.prod.outlook.com
- ([fe80::46fb:96f2:7667:7ca5]) by PH7PR12MB5685.namprd12.prod.outlook.com
- ([fe80::46fb:96f2:7667:7ca5%4]) with mapi id 15.20.9520.011; Mon, 19 Jan 2026
- 12:12:59 +0000
-Message-ID: <bd37adf0-afd0-49c4-b608-7f9aa5994f7b@amd.com>
-Date: Mon, 19 Jan 2026 13:12:45 +0100
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 4/4] vfio: Add pinned interface to perform revoke
- semantics
-To: Leon Romanovsky <leon@kernel.org>, Sumit Semwal
- <sumit.semwal@linaro.org>, Alex Deucher <alexander.deucher@amd.com>,
- David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
- Gerd Hoffmann <kraxel@redhat.com>,
- Dmitry Osipenko <dmitry.osipenko@collabora.com>,
- Gurchetan Singh <gurchetansingh@chromium.org>, Chia-I Wu
- <olvaffe@gmail.com>, Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
- Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>,
- Lucas De Marchi <lucas.demarchi@intel.com>,
- =?UTF-8?Q?Thomas_Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
- Rodrigo Vivi <rodrigo.vivi@intel.com>, Jason Gunthorpe <jgg@ziepe.ca>,
- Kevin Tian <kevin.tian@intel.com>, Joerg Roedel <joro@8bytes.org>,
- Will Deacon <will@kernel.org>, Robin Murphy <robin.murphy@arm.com>,
- Alex Williamson <alex@shazbot.org>
-Cc: linux-media@vger.kernel.org, dri-devel@lists.freedesktop.org,
- linaro-mm-sig@lists.linaro.org, linux-kernel@vger.kernel.org,
- amd-gfx@lists.freedesktop.org, virtualization@lists.linux.dev,
- intel-xe@lists.freedesktop.org, linux-rdma@vger.kernel.org,
- iommu@lists.linux.dev, kvm@vger.kernel.org
-References: <20260118-dmabuf-revoke-v2-0-a03bb27c0875@nvidia.com>
- <20260118-dmabuf-revoke-v2-4-a03bb27c0875@nvidia.com>
-Content-Language: en-US
-From: =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>
-In-Reply-To: <20260118-dmabuf-revoke-v2-4-a03bb27c0875@nvidia.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: FR4P281CA0154.DEUP281.PROD.OUTLOOK.COM
- (2603:10a6:d10:ba::7) To PH7PR12MB5685.namprd12.prod.outlook.com
- (2603:10b6:510:13c::22)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="aGRfcg9L"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A8DB3C19423;
+	Mon, 19 Jan 2026 12:34:09 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1768826052;
+	bh=pYAfipF2N3lSeZnWjsUTOBncQpMrZB1CykRBZPYQ5xI=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=aGRfcg9LIKTmNK6O6Tj/beTft+2gzpqEOFc7uboDAoG6SbYvr2jnscNOBmTO6OIgk
+	 pZxoJy/nWZRtAqeYy3t/uvllodqBCkjlUWbh3mZEkkII6/NPkVDNLt3X1V/wp0ttb1
+	 jiWaGpWdNssXQ9x5oLc5fF8dnCe3Ty+4cq8NXO1JKAd1/Jkcx97oBnUh3amUQ872i+
+	 4TfpDA8HlOSQVVq4WTsAGqqRPObjI1x7V0X6Gqg/noy6MhwwYv1gfY9VDFsaRmk/ac
+	 u6JHRhEOSdOUhNx4C+ZPtmFZ39dhaQlUB/Voilc2Le5ULRQatQp2XeTm22UBA2XNrG
+	 xkuCfvPuQXP/Q==
+Message-ID: <67b7e428-5ed3-4794-b8c4-dcebf724972d@kernel.org>
+Date: Mon, 19 Jan 2026 13:34:07 +0100
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PH7PR12MB5685:EE_|SA3PR12MB7903:EE_
-X-MS-Office365-Filtering-Correlation-Id: 96055d42-6e3a-4487-7d5f-08de57541640
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|376014|7416014|1800799024|921020;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?Y2ZSbC9NSm9aLzJpWklGUXlheC9laGlGcGJSMWFVWU5aZnpRcGF4UmJ6OXBG?=
- =?utf-8?B?MzMvTktNTjU4QzgxQVBPYmZmc3ZHT0dReVcreEZVVVhiSlNQR0psYWt2NlQy?=
- =?utf-8?B?NGtPSjFSS0hUYk85SGpCa0VacGpPTlZuTjNZZm1VdjU1UHVhSXRsQ3pLQzRN?=
- =?utf-8?B?b2p5YlB5TThPMGg3WkdiRXZ4TnM3eGZXcEdVbTd6TkxyM3Z4cmllR2lESGVU?=
- =?utf-8?B?cXo5ZEZKdUw4MHBnL3l6QkE4S1RkY1pJSVUraGY1ZEJVYXVESTdIU09wME5x?=
- =?utf-8?B?UmlzN00zUHIwTGRXa0lrdm9QRWJaTXdkMCtUMEx2V3FKSVU2emZxY1czcUtW?=
- =?utf-8?B?VEI5L3RwWm03aTRxRW9RS2tlTE9PekRGOEkrK3NTZ1NyYXowdWlRcFNSbjJv?=
- =?utf-8?B?eWZmVjdTVzB5MEU1ek1lS0hVaUlFcnBKOGNSUWhzL3B5QWVKck1icThpQUth?=
- =?utf-8?B?VGhhYllIZldWRGp5WlEzb24rTU9HQXdsY0QzY25ycVZrdkdmVjFMWFFtL2lz?=
- =?utf-8?B?cXROT1RyLzRWMzEvakpuRjNyRm9KdWNnQkN3d0RGMHlTVVJhM283MXVCbWxK?=
- =?utf-8?B?Nnp2T0tmdFB6UjVMd1VMclZ6TG56QUhKcW9jenZNSUsyNEJDdVd2Z0VTUmRM?=
- =?utf-8?B?ZVRUMUhNU0VXRlBiQ3AwbGlOOXlMM0dRNmtaUjVhQkI3b0FYN3MzeDA1Sk91?=
- =?utf-8?B?SzVuUDBab0YxMTU5UFhhamZISlRnOG4wSC9rcllyZ1JZWVNGUGNZMzREbzMr?=
- =?utf-8?B?R1BDR0x1NExGZ21ReHhqb3poM2M3MnBUd0RhdWhQOEV6Ync0aGpXY2ZnQ2lB?=
- =?utf-8?B?U3gyVStDeU1RcWJKOGI0MFlTeVBVbFBDbDlNVVR3Qy9CZCtKdzM2UEJHK3ZY?=
- =?utf-8?B?OFlhYkttRDhJOXF1RnlEWEZ0aC9MV2xyMktOWUE3VGxHazRxbDBLZ3pXMWJr?=
- =?utf-8?B?OE5jeXZOY2lGTXBCblZjSUpDTDI3anRXYzVxNmtkOUpvazNzTVFrbTlNY0tR?=
- =?utf-8?B?ZkJBNGZmN21QMW5LMlpuenlENzNudEMrdFJxZzNsTGhSakRlMGlJZmMxdDB5?=
- =?utf-8?B?dnFNUDV2UkRVVUlYQnF2amdtUkg2Z2tRdTQrd3pSaVNoZUhEZDEyaFVoZEN4?=
- =?utf-8?B?ZFlwZ05XMEQrdzZIZ1p5aWN2aU5KTElJK2p6cUFjUmhWOFBWd1JXRndISDVS?=
- =?utf-8?B?bDRUODRGM1gxV29pU1FQVjl4YmZyM0VqWmJaS2dUeVQ2ekRMS2R2VENiWkNt?=
- =?utf-8?B?dkw5MlNpMGtvQkovWHZJMkcxbXhNMDM1T3p5RGsvTmVzSkhhaUpsSFJpUUVO?=
- =?utf-8?B?MndMNzZRMy9IMG5tekx4akFBZ0dLUDNyNWZPODlzNkp6Mk5VVUVqeDFwRU4w?=
- =?utf-8?B?YkVHTE05cWhBQTA2NHZTaTZyTGZ6YTVxbTNINjcycTZKaGdMRHFWbmRPZWRw?=
- =?utf-8?B?blIzUWdLanZzU3F6Vm1XOUFpakp1VFVQN0xFM1R6dU5MNmJXeHVQYXhYbmY0?=
- =?utf-8?B?WmFVTnhGbDBGNTVpd3VXeGMxUzRtTk13Wlc3ZG1CRWdaeHRkWkpwbXFoc04v?=
- =?utf-8?B?Rk9pbEp0bi9tSzNnNFl1NXpNK2hReDAwQmUwcFhZLy9CTm5HbVpHazFiWlJa?=
- =?utf-8?B?cEhNRUh3Y21CRkhLVTRYS0JDamZFNU1yS1hPTG9iR3MxcGRhNytnUE5hZGVP?=
- =?utf-8?B?RmJWcldMSlowSTdPb1NPcVZGbTRGNGwwczJYays3aWo1RW9yMWxvTUt5Wno1?=
- =?utf-8?B?VnhIMHNkY1FvaWRBMlpSSUFOR2V4MTA3czFUa3hYdWZvQUgrcE9vZnNuWUlL?=
- =?utf-8?B?VVF6UkdadHZnTU9qOWdLanVRUXI3dHhWc1FuaGk4N2ZrT21MRk1seGVVSG13?=
- =?utf-8?B?ZVhvL3VRQk1Yck5oRy9RdVN0VGhxcWwvdWtvWm0rM1YwdHQ1RzRrTTRudU9h?=
- =?utf-8?B?d0R0TDVlM29MbFdMSDhiNWppN1J5bGVmUEZ3THdyUUdxa0l0UVo1eFdBa21p?=
- =?utf-8?B?MWpVTzIycnM4TUxHdUpxb2xBbXlNTkFQcXJuNGJTdnBxN1BsNlVOZ0xWRy9n?=
- =?utf-8?B?Y0ZQc2poQk9mdEd4bVMrcEJvTWRDVnk2VHBKdlFzSUg4SjJ2YThhdm9sZFZ0?=
- =?utf-8?B?UENiRzdQVzRra3hZY3NadzhpVGU1V3Rtc3E2Nm5FTGhuZXgrZnVlM3k2YUE0?=
- =?utf-8?B?eUE9PQ==?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH7PR12MB5685.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(376014)(7416014)(1800799024)(921020);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?ZHhvbDFZd3NnTW0vZGN3V2diTDV6Z1ZrUVNZYlpUVk5YZWZoTWlQMCtNRDNW?=
- =?utf-8?B?TmgzZ2ZtN0RvZ3JnVjdGM1U5bUVTZUJxRVIzMmxJVVovWUhXOGlrNzZaMXY3?=
- =?utf-8?B?TDVKYUZmVkN1KzVuMkZkUElSaDR1WERxcFRvUitiUVp3MnM1dFdGdnJTa05Q?=
- =?utf-8?B?THlsQU9EbjlGbEZERGtXekdha1Z6eWk0cUc4eUdyWUNrZ3ZrUkQ3WHgyNnhq?=
- =?utf-8?B?b2hSV1BhTVUrUmtBbVltU0JPZit2V2F1dDljYlNhR0RhNlZrR0tpb0l2K1FJ?=
- =?utf-8?B?V3JKSFlDZVFlUTl2emVLTjFHVG9JQysxY3hzcmsvK3RMcFk0c0ZqMGpJbTlF?=
- =?utf-8?B?M2VDQ1JPUHNxTW51NWdJRGJ3bktZZ3BEME16dXRMQ0U4QjI2czBJSzlPaG4r?=
- =?utf-8?B?czlENHMzdlFtaHN3Zm8rV1hhRFZsQng5WTd0eDRObll1Tm9OekZWaGcyUHVC?=
- =?utf-8?B?eWxTLzJucTVobG5KQ1hwU0J2cUZOSmxoc0ttRHpmNFJoTFlOSFloNG9NUWh3?=
- =?utf-8?B?QjREczYwSVlMaEdpRUpVZ0RuQmtiN1ljSXZWelpGM3Z5Q042M0lSM2Z2bTVt?=
- =?utf-8?B?QWNDZ1lNelZkZVF5ZEZVd1hYMUhqYlpMWmVueHNCdTVKNFpqaVFSTHJGcVBB?=
- =?utf-8?B?MHJGK2p6UzdLNVB2TldGa01XNUFKM0xXL3kweTAweVU0Z0RsU25hQmNPaDA2?=
- =?utf-8?B?VlI3UEpFQnJ1azdjdEVnSHQrdloyRUlzY3NxRHR2YUc2bUJ5Qzk4T3M3a3Jw?=
- =?utf-8?B?UkVhRjJxcHd4WnFla1Z4d2JuYzFkZWpXaUU2VE00bTJZSFUzMDJPZzVEZUpT?=
- =?utf-8?B?U2NaT3ZzUG9VNk42a0p3cjZCRVlzMVBXTmtiNjBrYVJqVU4zczNxd3pzYlMr?=
- =?utf-8?B?dG5yU2dPc1dRMThWZzBSLzdReUg3N1VRaUZGWlBvbFp1KzFqcGMrYURtZ3VK?=
- =?utf-8?B?cER6c2x6N2g4MkZkd0NmWDU0V3kvRXZhdmNoMVlXQVNuU1NRdTJRVU9pSUZE?=
- =?utf-8?B?VEhvQ2JocjU1WTlrNE12a01EenB0V1padnlmY0M5eDZPU1UvcEtDMWNaOUpk?=
- =?utf-8?B?TkliWE83MExnL2ZLYnNrVUtHMnluQWhUd1FPK2N6aWJIUlJyVkM2a205aDJI?=
- =?utf-8?B?L2tkdUxaQVhjbVlnc2Evbzg5ZVhTenlvOXNpY1BtNVFIcUhuY2ROaE5yWnpB?=
- =?utf-8?B?REUzanZDNXJYUThIY2cveG03UUJLNmJ3aHMwM0JmT25Sb1Bhb1lGRVhQeGRX?=
- =?utf-8?B?dkxTOXZ0ZEtXVGVCQ3EzaDJVaU1TZVFYK2xJTXAyVDZ0MkZmeEsyam16eFNF?=
- =?utf-8?B?VzIrSHFuLysrVzRoS203MWp2ZDZsSEpPUGVFU0RBdmYra3ZLd1h5eXp0RzBZ?=
- =?utf-8?B?M3VBUC91dmR1VENpTWl4cENUMVRUc2xOcTVPK3lBWFZGbHc4clBCYURxSU8x?=
- =?utf-8?B?OHg2WkI5UEdFUmxZWmt0clZIQnpweFFNUWdQMS9zMG9KdEN0amYzdlNJdngz?=
- =?utf-8?B?emovdmJiV1I3QVBIKy9hcmFSMzU0a2hpaDlteFBLYVJmblphNzNEWXdWeURu?=
- =?utf-8?B?VWgzQWNoMFpUUC90Y1ZIKzdMb3Bsd2xkelZQWlZrMFBUMTVSWXZHU2hHMnl3?=
- =?utf-8?B?K3F3RXAyemo2bEhtaG0ybGUza1NkSUNPenMrN2RvOVVnUmE1V0JuMWJtdC8w?=
- =?utf-8?B?TEdublk5V3ErNkg3YTVHVzNWeHMxNlJVQXVKSHprOGcwdjZwNTlRekM4K1ZR?=
- =?utf-8?B?L0puVXdLQnpSeWJxQUZ2SGI4SzV4L3dPcEVZMjhsWTFCaFc4cHlPU1lQbTgr?=
- =?utf-8?B?b0hMTXB4S1hUcnl4VE51aExSWDBzeUptVVgrQmQ3S2hZS01UWE9LOEtnUFlR?=
- =?utf-8?B?L2R6MWV5QjZ3bGEwQ2FHNFNiVFpTdEdyWDNpMm5JbFN1eTlobFVQM0VMOHlQ?=
- =?utf-8?B?ZVV3d0VDcmowVnJVWjZ4czVLZjJFMUxwdkhxeDY4R01OVDVjVjJOSmRJcUlk?=
- =?utf-8?B?VUgwY1RqQjV6cCtJb3grcnZGSnY1ZTgyQ3FhbHpUcCtxb3VHUWJ2WUtaK25v?=
- =?utf-8?B?TjFkWGRQbUdKZ3F2K3VlWk5EcDV5aUg3STBwaTFpYmRZWEV5dExBL0I4Nng3?=
- =?utf-8?B?SzdCY1VwZGFhQWthYmtwVWhJd0EwT2ZsWWdnaWNMQUVJK2JoeC9TNWl6WUZ2?=
- =?utf-8?B?KzhndjRSQllvZmhLUlIwbzBpVzFoWGF2UTlweVZDWFZBNnhMSXhERENzSklB?=
- =?utf-8?B?bTA4cTU0UDYyYU9raFpoeGVFaXI4QWxuVTk3NUhsbDNwd0NvMTZCV0NyYTF1?=
- =?utf-8?Q?lOmbP6c7lsf3LUEr15?=
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 96055d42-6e3a-4487-7d5f-08de57541640
-X-MS-Exchange-CrossTenant-AuthSource: PH7PR12MB5685.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 19 Jan 2026 12:12:59.8208
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 5ITxMD1iCXc2/x342+lqPVseLP2ExWGq0ZRLyKgSN0fmkOKc2+Un4spRTjguo/hD
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA3PR12MB7903
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC PATCH 1/2] KVM: pfncache: Use kvm_gmem_get_pfn() for
+ guest_memfd-backed memslots
+To: Takahiro Itazuri <itazur@amazon.com>, kvm@vger.kernel.org,
+ Paolo Bonzini <pbonzini@redhat.com>
+Cc: Sean Christopherson <seanjc@google.com>,
+ Vitaly Kuznetsov <vkuznets@redhat.com>, Fuad Tabba <tabba@google.com>,
+ Brendan Jackman <jackmanb@google.com>, David Woodhouse
+ <dwmw2@infradead.org>, Paul Durrant <pdurrant@amazon.com>,
+ Nikita Kalyazin <kalyazin@amazon.com>,
+ Patrick Roy <patrick.roy@campus.lmu.de>,
+ Takahiro Itazuri <zulinx86@gmail.com>
+References: <20251203144159.6131-1-itazur@amazon.com>
+ <20251203144159.6131-2-itazur@amazon.com>
+From: "David Hildenbrand (Red Hat)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+In-Reply-To: <20251203144159.6131-2-itazur@amazon.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-On 1/18/26 13:08, Leon Romanovsky wrote:
-> From: Leon Romanovsky <leonro@nvidia.com>
+On 12/3/25 15:41, Takahiro Itazuri wrote:
+> gfn_to_pfn_cache currently relies on hva_to_pfn(), which resolves PFNs
+> through GUP.  GUP assumes that the page has a valid direct-map PTE,
+> which is not true for guest_memfd created with
+> GUEST_MEMFD_FLAG_NO_DIRECT_MAP, because their direct-map PTEs are
+> explicitly invalidated via set_direct_map_valid_noflush().
 > 
-> DMABUF ->pin() interface is called when the DMABUF importer perform
-> its DMA mapping, so let's use this opportunity to check if DMABUF
-> exporter revoked its buffer or not.
+> Introduce a helper function, gpc_to_pfn(), that routes PFN lookup to
+> kvm_gmem_get_pfn() for guest_memfd-backed memslots (regardless of
+> whether GUEST_MEMFD_FLAG_NO_DIRECT_MAP is set), and otherwise falls
+> back to the existing hva_to_pfn() path. Rename hva_to_pfn_retry() to
+> gpc_to_pfn_retry() accordingly.
+
+Let's look into some details:
+
+The pfncache looks up a page from the page tables through GUP.
+
+To make sure that the looked up PFN can be safely used, it must we very 
+careful: after it looked up the page through hva_to_pfn(), it marks the 
+entry as "valid" and drops the folio reference obtained through 
+hva_to_pfn().
+
+At this point, nothing stops the page from getting unmapped from the 
+page tables to be freed etc.
+
+Of course, that sounds very dangerous.
+
+That's why the pfncache uses the (KVM) mmu_notifier framework to get 
+notified when the page was just unmapped from the KVM mmu while it 
+prepared the cache entry (see mmu_notifier_retry_cache()).
+
+But it also has to deal with the page getting removed (+possibly freed) 
+from the KVM MMU later, after we already have a valid entry in the cache.
+
+For this reason, gfn_to_pfn_cache_invalidate_start() is used to 
+invalidate any entries as they get unmapped from page tables.
+
+Now the big question: how is this supposed to work with gmem? I would 
+have expected that we would need similar invalidations etc. from gmem code?
+
+Imagine ftruncate() targets the gmem folio we just looked up, would be 
+we get an appropriate invalidate notification?
+
 > 
-> Signed-off-by: Leon Romanovsky <leonro@nvidia.com>
+> Signed-off-by: Takahiro Itazuri <itazur@amazon.com>
 > ---
->  drivers/vfio/pci/vfio_pci_dmabuf.c | 16 ++++++++++++++++
->  1 file changed, 16 insertions(+)
+>   virt/kvm/pfncache.c | 34 +++++++++++++++++++++++-----------
+>   1 file changed, 23 insertions(+), 11 deletions(-)
 > 
-> diff --git a/drivers/vfio/pci/vfio_pci_dmabuf.c b/drivers/vfio/pci/vfio_pci_dmabuf.c
-> index d4d0f7d08c53..af9c315ddf71 100644
-> --- a/drivers/vfio/pci/vfio_pci_dmabuf.c
-> +++ b/drivers/vfio/pci/vfio_pci_dmabuf.c
-> @@ -20,6 +20,20 @@ struct vfio_pci_dma_buf {
->  	u8 revoked : 1;
->  };
->  
-> +static int vfio_pci_dma_buf_pin(struct dma_buf_attachment *attachment)
-> +{
-> +	struct vfio_pci_dma_buf *priv = attachment->dmabuf->priv;
+> diff --git a/virt/kvm/pfncache.c b/virt/kvm/pfncache.c
+> index 728d2c1b488a..bf8d6090e283 100644
+> --- a/virt/kvm/pfncache.c
+> +++ b/virt/kvm/pfncache.c
+> @@ -152,22 +152,34 @@ static inline bool mmu_notifier_retry_cache(struct kvm *kvm, unsigned long mmu_s
+>   	return kvm->mmu_invalidate_seq != mmu_seq;
+>   }
+>   
+> -static kvm_pfn_t hva_to_pfn_retry(struct gfn_to_pfn_cache *gpc)
+> +static kvm_pfn_t gpc_to_pfn(struct gfn_to_pfn_cache *gpc, struct page **page)
+>   {
+> -	/* Note, the new page offset may be different than the old! */
+> -	void *old_khva = (void *)PAGE_ALIGN_DOWN((uintptr_t)gpc->khva);
+> -	kvm_pfn_t new_pfn = KVM_PFN_ERR_FAULT;
+> -	void *new_khva = NULL;
+> -	unsigned long mmu_seq;
+> -	struct page *page;
+> +	if (kvm_slot_has_gmem(gpc->memslot)) {
+> +		kvm_pfn_t pfn;
 > +
-> +	dma_resv_assert_held(priv->dmabuf->resv);
-> +
-> +	return dma_buf_attachment_is_revoke(attachment) ? 0 : -EOPNOTSUPP;
-
-It's probably better to do that check in vfio_pci_dma_buf_attach.
-
-And BTW the function vfio_pci_dma_buf_move() seems to be broken:
-
-void vfio_pci_dma_buf_move(struct vfio_pci_core_device *vdev, bool revoked)
-{
-        struct vfio_pci_dma_buf *priv;
-        struct vfio_pci_dma_buf *tmp;
-
-        lockdep_assert_held_write(&vdev->memory_lock);
-
-        list_for_each_entry_safe(priv, tmp, &vdev->dmabufs, dmabufs_elm) {
-                if (!get_file_active(&priv->dmabuf->file))
-                        continue;
-
-                if (priv->revoked != revoked) {
-                        dma_resv_lock(priv->dmabuf->resv, NULL);
-                        priv->revoked = revoked;
-                        dma_buf_move_notify(priv->dmabuf);
-
-A dma_buf_move_notify() just triggers asynchronous invalidation of the mapping!
-
-You need to use dma_resv_wait() to wait for that to finish.
-
-                        dma_resv_unlock(priv->dmabuf->resv);
-                }
-                fput(priv->dmabuf->file);
-        }
-}
-
-Regards,
-Christian.
-
-
+> +		kvm_gmem_get_pfn(gpc->kvm, gpc->memslot, gpa_to_gfn(gpc->gpa),
+> +				 &pfn, page, NULL);
+> +		return pfn;
+> +	}
+>   
+>   	struct kvm_follow_pfn kfp = {
+>   		.slot = gpc->memslot,
+>   		.gfn = gpa_to_gfn(gpc->gpa),
+>   		.flags = FOLL_WRITE,
+>   		.hva = gpc->uhva,
+> -		.refcounted_page = &page,
+> +		.refcounted_page = page,
+>   	};
+> +	return hva_to_pfn(&kfp);
 > +}
 > +
-> +static void vfio_pci_dma_buf_unpin(struct dma_buf_attachment *attachment)
+> +static kvm_pfn_t gpc_to_pfn_retry(struct gfn_to_pfn_cache *gpc)
 > +{
-> +	/* Do nothing */
-> +}
-> +
->  static int vfio_pci_dma_buf_attach(struct dma_buf *dmabuf,
->  				   struct dma_buf_attachment *attachment)
->  {
-> @@ -76,6 +90,8 @@ static void vfio_pci_dma_buf_release(struct dma_buf *dmabuf)
->  }
->  
->  static const struct dma_buf_ops vfio_pci_dmabuf_ops = {
-> +	.pin = vfio_pci_dma_buf_pin,
-> +	.unpin = vfio_pci_dma_buf_unpin,
->  	.attach = vfio_pci_dma_buf_attach,
->  	.map_dma_buf = vfio_pci_dma_buf_map,
->  	.unmap_dma_buf = vfio_pci_dma_buf_unmap,
-> 
+> +	/* Note, the new page offset may be different than the old! */
+> +	void *old_khva = (void *)PAGE_ALIGN_DOWN((uintptr_t)gpc->khva);
+> +	kvm_pfn_t new_pfn = KVM_PFN_ERR_FAULT;
+> +	void *new_khva = NULL;
+> +	unsigned long mmu_seq;
+> +	struct page *page;
+>   
+>   	lockdep_assert_held(&gpc->refresh_lock);
+>   
+> @@ -206,7 +218,7 @@ static kvm_pfn_t hva_to_pfn_retry(struct gfn_to_pfn_cache *gpc)
+>   			cond_resched();
+>   		}
+>   
+> -		new_pfn = hva_to_pfn(&kfp);
+> +		new_pfn = gpc_to_pfn(gpc, &page);
+>   		if (is_error_noslot_pfn(new_pfn))
+>   			goto out_error;
+>   
+> @@ -319,7 +331,7 @@ static int __kvm_gpc_refresh(struct gfn_to_pfn_cache *gpc, gpa_t gpa, unsigned l
+>   		}
+>   	}
+>   
+> -	/* Note: the offset must be correct before calling hva_to_pfn_retry() */
+> +	/* Note: the offset must be correct before calling gpc_to_pfn_retry() */
+>   	gpc->uhva += page_offset;
+>   
+>   	/*
+> @@ -327,7 +339,7 @@ static int __kvm_gpc_refresh(struct gfn_to_pfn_cache *gpc, gpa_t gpa, unsigned l
+>   	 * drop the lock and do the HVA to PFN lookup again.
+>   	 */
+>   	if (!gpc->valid || hva_change) {
+> -		ret = hva_to_pfn_retry(gpc);
+> +		ret = gpc_to_pfn_retry(gpc);
+>   	} else {
+>   		/*
+>   		 * If the HVA→PFN mapping was already valid, don't unmap it.
 
+
+-- 
+Cheers
+
+David
