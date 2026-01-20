@@ -1,96 +1,100 @@
-Received: from mail.zytor.com (terminus.zytor.com [198.137.202.136])
+Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.4])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3CC623BB9FB;
-	Tue, 20 Jan 2026 09:10:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.137.202.136
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E8A92500965;
+	Tue, 20 Jan 2026 09:16:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.31.4
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768900220; cv=none; b=XTnqRk0R2fGCg84d7q6fNVAb3CoMXiujeruJwZZ7ggIBcvhEkL/QvO74TvIEErVOEU6abXVTTd8y4C3q0JiyLGatVRiRIF568NUZItZteMzYaK7OhWCKUDepotS4A5VCwq4JK3a0LAZeLAf2KLJtVXshL8GFerT880t+xjY40I0=
+	t=1768900568; cv=none; b=UAIwsE71pkYhrgmes753dO8a3Lgchlw2O2VCxcYtECxld72ydwsnhAEOSxzfR5xJtt3gkGazg5Qkdz9B8AFvC+09zP0sBUAPUnt5Sr7gCvFUAUK4RE83+ijowNAz6f6GkLwWjlm2S1O8DfBpW80Ol4jj8teD2cFxYzN4bMrWPIs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768900220; c=relaxed/simple;
-	bh=INWriyqgU8K5z5tavmStfbwrpGA/bQ2dhB63CYeeg+U=;
-	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
-	 Message-Id:References:To; b=Ya9W/VKq6IM0H6FavuKAx/OTw3n2Mvtsea2Fl60YV3v4Tx1oSnLnD55hJo/xO6i19goLVqeKaEZYEtbYRSRkFrmT/1kEG/BLfqq1YG2QYUq0qXtXj6Zw9Ce9rkitexo5nZPFgBmTLDuED83f7peBGtFKZw1r5xa0qZ8sm5ixSQM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zytor.com; spf=pass smtp.mailfrom=zytor.com; dkim=pass (2048-bit key) header.d=zytor.com header.i=@zytor.com header.b=DPThlz90; arc=none smtp.client-ip=198.137.202.136
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zytor.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=zytor.com
+	s=arc-20240116; t=1768900568; c=relaxed/simple;
+	bh=887RL4BDFs3BO7HY/4FBnCKpsH5a9PRYlIJWBKHjmMA=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=YlgPytGM45D+GiyM+eZfXjzoNaMWUBtgGgdFE1VEra9fg7o411Obrw5+8E9MU0P1vdOmmmdSfPtuEa8xhed0ydHTwrsHJ4UvnXG91x3x3wzNoWZTzbgbvXe0+5hKwRx0UyMEcWnooTEDAf6uptc8uSMTnsZcqRGYQ+obaZT1NAg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=Uc9OglCo; arc=none smtp.client-ip=220.197.31.4
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=zytor.com header.i=@zytor.com header.b="DPThlz90"
-Received: from smtpclient.apple (c-24-130-165-117.hsd1.ca.comcast.net [24.130.165.117])
-	(authenticated bits=0)
-	by mail.zytor.com (8.18.1/8.17.1) with ESMTPSA id 60K99blX3564407
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NO);
-	Tue, 20 Jan 2026 01:09:38 -0800
-DKIM-Filter: OpenDKIM Filter v2.11.0 mail.zytor.com 60K99blX3564407
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=zytor.com;
-	s=2025122301; t=1768900179;
-	bh=INWriyqgU8K5z5tavmStfbwrpGA/bQ2dhB63CYeeg+U=;
-	h=Subject:From:In-Reply-To:Date:Cc:References:To:From;
-	b=DPThlz90mXRExrFVls06gcRHiiYwXZRSTUEQYNuOga+6skrbb8DihoaoS4YFodhqz
-	 jFhXmhw36tt8Hi8m5ZhdObFoX3QGfyD1y25Z7YRiuwLm3RiiyRgIXonFWT9O/+yC7d
-	 pWchnPchIjcexYram0t4JrdGDifmy4CKb/prVFKykH+7v3qFn3IQCGHwkwivqIkHop
-	 9OzfVKzUE9b3mGgCNEQ7dFxDOaw+s5RXcyZm5PnmkTUyoZdTGf6gFKvBM1VFNl4JZk
-	 ywmoyC0SsYYax7ZGtiEkQNwagZHo19H6EPk1twXOO+ei0IGkrhaQMzkythMmhvQmTz
-	 NWXlhpE3r8bBg==
-Content-Type: text/plain;
-	charset=utf-8
+	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="Uc9OglCo"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
+	s=s110527; h=From:To:Subject:Date:Message-ID:MIME-Version; bh=sc
+	dheWsKkBb8qVp39GFAKOTPxt9U9/o1zR2spPZolHI=; b=Uc9OglCovbhNGTmh7c
+	Q6bYpUfP20gdG9/Kqrd7l/aOlzkkjSxvEFuKN43+43a0PEYWFW5MZCUdrntBac0n
+	yfcFAiZBuQAMPmBlGAlKvhQThY8/zo0nfO4iK63ciGMzznBqPls0TTzwQNeLPQ1S
+	V6I2xhdtQxRKFUOXsYDRQ+WdQ=
+Received: from 163.com (unknown [])
+	by gzga-smtp-mtada-g0-0 (Coremail) with SMTP id _____wCn5zu4R29pIOfPGw--.26432S6;
+	Tue, 20 Jan 2026 17:15:43 +0800 (CST)
+From: Zhiquan Li <zhiquan_li@163.com>
+To: seanjc@google.com,
+	pbonzini@redhat.com,
+	shuah@kernel.org
+Cc: kvm@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	zhiquan_li@163.com
+Subject: [PATCH 4/5] KVM: x86: selftests: Allow the PMU event filter test for Hygon
+Date: Tue, 20 Jan 2026 17:14:47 +0800
+Message-ID: <20260120091449.526798-5-zhiquan_li@163.com>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20260120091449.526798-1-zhiquan_li@163.com>
+References: <20260120091449.526798-1-zhiquan_li@163.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3864.300.41.1.7\))
-Subject: Re: [PATCH v9 17/22] KVM: x86: Advertise support for FRED
-From: Xin Li <xin@zytor.com>
-In-Reply-To: <aW83vbC2KB6CZDvl@intel.com>
-Date: Tue, 20 Jan 2026 01:09:27 -0800
-Cc: linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
-        linux-doc@vger.kernel.org, pbonzini@redhat.com, seanjc@google.com,
-        corbet@lwn.net, tglx@linutronix.de, mingo@redhat.com, bp@alien8.de,
-        dave.hansen@linux.intel.com, x86@kernel.org, hpa@zytor.com,
-        luto@kernel.org, peterz@infradead.org, andrew.cooper3@citrix.com,
-        hch@infradead.org, sohil.mehta@intel.com
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <C3F658E2-BB0D-4461-8412-F4BC5BCB2298@zytor.com>
-References: <20251026201911.505204-1-xin@zytor.com>
- <20251026201911.505204-18-xin@zytor.com> <aRQ3ngRvif/0QRTC@intel.com>
- <71F2B269-4D29-4B23-9111-E43CDD09CF13@zytor.com> <aW83vbC2KB6CZDvl@intel.com>
-To: Chao Gao <chao.gao@intel.com>
-X-Mailer: Apple Mail (2.3864.300.41.1.7)
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:_____wCn5zu4R29pIOfPGw--.26432S6
+X-Coremail-Antispam: 1Uf129KBjvJXoWxJr4xtF4kWFyDJF4DCw1xZrb_yoW8CF13pF
+	yruw1avF48KFnIk3WxG34kWr4fAw1kWF4kJ3s0gry8Zr1UJw1Iqr4jka43ta1YkFWFqw1Y
+	yay7tFy5C34UKaDanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x0pMsjj9UUUUU=
+X-CM-SenderInfo: 52kl13xdqbzxi6rwjhhfrp/xtbC6R83IGlvR7-EQgAA3Z
 
+At present, the PMU event filter test is only available for Intel and
+AMD architecture conditionally, but it is applicable for Hygon
+architecture as well.
 
+Since all known Hygon processors can re-use the test cases, so it isn't
+necessary to create a wrapper like other architectures, using the
+"host_cpu_is_hygon" variable directly.
 
-> On Jan 20, 2026, at 12:07=E2=80=AFAM, Chao Gao <chao.gao@intel.com> =
-wrote:
->=20
-> On Mon, Jan 19, 2026 at 10:56:29PM -0800, Xin Li wrote:
->>=20
->>=20
->>> On Nov 11, 2025, at 11:30=E2=80=AFPM, Chao Gao <chao.gao@intel.com> =
-wrote:
->>>=20
->>> I'm not sure if AMD CPUs support FRED, but just in case, we can =
-clear FRED
->>> i.e., kvm_cpu_cap_clear(X86_FEATURE_FRED) in svm_set_cpu_caps().
->>=20
->> AMD will support FRED, with ISA level compatibility:
->>=20
->> =
-https://www.amd.com/en/blogs/2025/amd-and-intel-celebrate-first-anniversar=
-y-of-x86-ecosys.html
->>=20
->> Thus we don=E2=80=99t need to clear the bit.
->=20
-> In this case, we need to clear FRED for AMD.
->=20
-> The concern is that before AMD's FRED KVM support is implemented, FRED =
-will be
-> exposed to userspace on AMD FRED-capable hardware. This may cause =
-issues.
+Signed-off-by: Zhiquan Li <zhiquan_li@163.com>
+---
+ tools/testing/selftests/kvm/x86/pmu_event_filter_test.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-Hmm, I think it=E2=80=99s Qemu does that.
+diff --git a/tools/testing/selftests/kvm/x86/pmu_event_filter_test.c b/tools/testing/selftests/kvm/x86/pmu_event_filter_test.c
+index 1c5b7611db24..e6badd9a2a2a 100644
+--- a/tools/testing/selftests/kvm/x86/pmu_event_filter_test.c
++++ b/tools/testing/selftests/kvm/x86/pmu_event_filter_test.c
+@@ -842,14 +842,14 @@ int main(int argc, char *argv[])
+ 	TEST_REQUIRE(kvm_has_cap(KVM_CAP_PMU_EVENT_FILTER));
+ 	TEST_REQUIRE(kvm_has_cap(KVM_CAP_PMU_EVENT_MASKED_EVENTS));
+ 
+-	TEST_REQUIRE(use_intel_pmu() || use_amd_pmu());
++	TEST_REQUIRE(use_intel_pmu() || use_amd_pmu() || host_cpu_is_hygon);
+ 	guest_code = use_intel_pmu() ? intel_guest_code : amd_guest_code;
+ 
+ 	vm = vm_create_with_one_vcpu(&vcpu, guest_code);
+ 
+ 	TEST_REQUIRE(sanity_check_pmu(vcpu));
+ 
+-	if (use_amd_pmu())
++	if (use_amd_pmu() || host_cpu_is_hygon)
+ 		test_amd_deny_list(vcpu);
+ 
+ 	test_without_filter(vcpu);
+@@ -862,7 +862,7 @@ int main(int argc, char *argv[])
+ 	    supports_event_mem_inst_retired() &&
+ 	    kvm_cpu_property(X86_PROPERTY_PMU_NR_GP_COUNTERS) >= 3)
+ 		vcpu2 = vm_vcpu_add(vm, 2, intel_masked_events_guest_code);
+-	else if (use_amd_pmu())
++	else if (use_amd_pmu() || host_cpu_is_hygon)
+ 		vcpu2 = vm_vcpu_add(vm, 2, amd_masked_events_guest_code);
+ 
+ 	if (vcpu2)
+-- 
+2.43.0
 
-We have 2 filters, one in Qemu and one in KVM, only both are set a =
-feature is enabled.
-
-What I have missed?=
