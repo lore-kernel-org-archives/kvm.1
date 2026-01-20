@@ -1,802 +1,219 @@
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BBB2C40757B;
-	Tue, 20 Jan 2026 08:01:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768896109; cv=none; b=uXFxi5B8yRFxxgDCWoESi72BgmbJ3JOfFWIcQNUtTnd0BUBSPnQtS2ccopO9X4zlNfN5v07dyqVnhsPHagdDw0MnbtKQHxP0NzpV0QBXVIaCJ6dHKlQ6tvcp27eRacb1IbDX4mmg8ABG4e6ewrs4J2t029ky7Q3rRQvTPJYik2U=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768896109; c=relaxed/simple;
-	bh=wX4+r9jxxF2JRJLxGaBk5KaPvCH4hawwigCqtLbn9h8=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ROw10IL85ttUC5semDqmZjlQpXXSJRdjZsQlwtWubDh9HT1olgTfC+X+RJt9dGRRWPAEnLFBi3FVWx6tYP/ISocbHzepVAKjtJSkR60fEL0c24s+AId06dYtQ1yDZhuhPiqC/h+dDLpd2FnoHCL6bLmyiBAVcFKgh7XtNOWrgGA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=Yu7v27Oh; arc=none smtp.client-ip=205.220.180.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=qualcomm.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE4312E54B3;
+	Tue, 20 Jan 2026 08:07:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=198.175.65.9
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1768896461; cv=fail; b=WAzFwkmb/rUxEWe8anaCfjlBDyRkZxoh4XIuGV09MaXu1qiyc2rL2h7KfpQHhPhIbPoXURl0qwz+TL2pP9J9hjM+H5G82OB0wyQQQ4LVyCChBjTRVdrGE9xz9etL4vl7dhLz5jPMpg21S4RlzkL1JIP/5JNL1DPqAQ5W5+UrzxA=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1768896461; c=relaxed/simple;
+	bh=CRi0f3DuzHrMGz0A+I2rDZgLTodJBi1DXGJkqQxCiRo=;
+	h=Date:From:To:CC:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=AslN8ii92xEOYOLi5yUoa7qM/QOitqCQL/3dDBsMIciySsM1uvnb5SZ1w9QWqfWZWpUNhlpax2Pe1/XhTjqoUqROrrTVHXvvBsuPuIyCQ4LWB2+QMv8NXTR4z0VC7mu/vXuq9IJDv/ahUVjDmV5+YjxpJelUxNbj8JghFyidSHQ=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=VVFN+816; arc=fail smtp.client-ip=198.175.65.9
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="Yu7v27Oh"
-Received: from pps.filterd (m0279871.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 60K7wab71880737;
-	Tue, 20 Jan 2026 08:00:20 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-transfer-encoding:date:from:in-reply-to:message-id
-	:mime-version:references:subject:to; s=qcppdkim1; bh=lnXUeh5HB3t
-	5EGQEEa9IHj7uua0btt3BQXfARvYjb5A=; b=Yu7v27OhfrPR6oxBtu8MBLrrwQK
-	9MV2f0EEijQ285fLYz0Qm3S7vn11LbAn9RcXi8bGh8emK3d0VZRAT/zYBpXzlS2S
-	+ba7hQoKdT1x4nGpoRystSUe/zcTvh+FjXYAwvinBs0a+I6ENLi3ODUleEMXMBl7
-	4tTojh1raw6GeaTGsGvKTl8K8+89Oelex9j1L3GvgGxR0zAg3w0NAPgbpofyW12Q
-	y6LaEnYhb1MDcdppg1ig2IJTBBz34R0M/4CXcVTFe1X9aJaXGMoHDon1JTW69fQf
-	gjPbzkbRDoAPgl917yz4DFIV1IFjrLeBKwg85/99rnB2uIki9rcj0BfavCQ==
-Received: from apblrppmta02.qualcomm.com (blr-bdr-fw-01_GlobalNAT_AllZones-Outside.qualcomm.com [103.229.18.19])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4bsgfrbk2u-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 20 Jan 2026 08:00:20 +0000 (GMT)
-Received: from pps.filterd (APBLRPPMTA02.qualcomm.com [127.0.0.1])
-	by APBLRPPMTA02.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTP id 60K7wCU2005905;
-	Tue, 20 Jan 2026 08:00:17 GMT
-Received: from pps.reinject (localhost [127.0.0.1])
-	by APBLRPPMTA02.qualcomm.com (PPS) with ESMTPS id 4br3gm8q5m-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 20 Jan 2026 08:00:16 +0000
-Received: from APBLRPPMTA02.qualcomm.com (APBLRPPMTA02.qualcomm.com [127.0.0.1])
-	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 60K80Gx4007908;
-	Tue, 20 Jan 2026 08:00:16 GMT
-Received: from hu-devc-blr-u24-a.qualcomm.com (hu-anuppate-blr.qualcomm.com [10.131.36.165])
-	by APBLRPPMTA02.qualcomm.com (PPS) with ESMTPS id 60K80Gf8007887
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 20 Jan 2026 08:00:16 +0000
-Received: by hu-devc-blr-u24-a.qualcomm.com (Postfix, from userid 486687)
-	id A383D23545; Tue, 20 Jan 2026 13:30:14 +0530 (+0530)
-From: Anup Patel <anup.patel@oss.qualcomm.com>
-To: Paolo Bonzini <pbonzini@redhat.com>, Atish Patra <atish.patra@linux.dev>
-Cc: Palmer Dabbelt <palmer@dabbelt.com>, Paul Walmsley <pjw@kernel.org>,
-        Alexandre Ghiti <alex@ghiti.fr>, Shuah Khan <shuah@kernel.org>,
-        Anup Patel <anup@brainfault.org>,
-        Andrew Jones <andrew.jones@oss.qualcomm.com>,
-        kvm-riscv@lists.infradead.org, kvm@vger.kernel.org,
-        linux-riscv@lists.infradead.org, linux-kernel@vger.kernel.org,
-        linux-kselftest@vger.kernel.org,
-        Anup Patel <anup.patel@oss.qualcomm.com>
-Subject: [PATCH 05/27] RISC-V: KVM: Factor-out ISA checks into separate sources
-Date: Tue, 20 Jan 2026 13:29:51 +0530
-Message-ID: <20260120080013.2153519-6-anup.patel@oss.qualcomm.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20260120080013.2153519-1-anup.patel@oss.qualcomm.com>
-References: <20260120080013.2153519-1-anup.patel@oss.qualcomm.com>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="VVFN+816"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1768896460; x=1800432460;
+  h=date:from:to:cc:subject:message-id:references:
+   content-transfer-encoding:in-reply-to:mime-version;
+  bh=CRi0f3DuzHrMGz0A+I2rDZgLTodJBi1DXGJkqQxCiRo=;
+  b=VVFN+816HiTrIPz5wSMlu2pUATc3Il1FeGDbjuKFwSRJzdFXHYTvw8Su
+   bGrtnl19As4PgjacbIUQ5Jp1DegLkB/0skEJNOl5MYMq8WZiib8t/PfDk
+   niuaKJ+hezunoIUQwyeX8hrLOk6QzJvImJWjbPxWpBs+q9oD2UIKR2hXp
+   Cao+EpZH7BnMO6fImEX/ZroEMRyOA/uVuDt4peg8X3Nj011lr2JemRQww
+   K/xPduMX+SNRrJ3aJEib568jTUg/zbHfExRtJ0pDFsJmkHr+YQGyBFn2z
+   goWx2TZ4dIzjt1SrlvfYrrBWVvMYcY0lxI9de2lv7HbB6sIp5Iac1E+GT
+   w==;
+X-CSE-ConnectionGUID: a12YSPRRQRSVKwkjclci6g==
+X-CSE-MsgGUID: QrpXXf4HSvGHL6w27CRhJw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11676"; a="92762243"
+X-IronPort-AV: E=Sophos;i="6.21,240,1763452800"; 
+   d="scan'208";a="92762243"
+Received: from fmviesa004.fm.intel.com ([10.60.135.144])
+  by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Jan 2026 00:07:39 -0800
+X-CSE-ConnectionGUID: o1JzIvV2SfSMHSMeEuHfIA==
+X-CSE-MsgGUID: +ySEhNZKQBScF7d05MXDKQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.21,240,1763452800"; 
+   d="scan'208";a="210901138"
+Received: from orsmsx901.amr.corp.intel.com ([10.22.229.23])
+  by fmviesa004.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Jan 2026 00:07:38 -0800
+Received: from ORSMSX903.amr.corp.intel.com (10.22.229.25) by
+ ORSMSX901.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.35; Tue, 20 Jan 2026 00:07:37 -0800
+Received: from ORSEDG901.ED.cps.intel.com (10.7.248.11) by
+ ORSMSX903.amr.corp.intel.com (10.22.229.25) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.35 via Frontend Transport; Tue, 20 Jan 2026 00:07:37 -0800
+Received: from CH4PR04CU002.outbound.protection.outlook.com (40.107.201.68) by
+ edgegateway.intel.com (134.134.137.111) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.35; Tue, 20 Jan 2026 00:07:37 -0800
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=sRo4M9eE2J8d6tLEgfIWk9vhOgWGSLqE8IjAc1qpFEMRctXh1SxVTFZ2KrwZXoF7ROA71UJPtAcG9rfwvDBkmFAbLuMg6wZJJNIKLT+eO1Th5UNSwAPQoI2VVqiqz0+tv37dGOjJ47gzYT8FOmBTrZrz9yf6Mb7lAHa+XHL9SSVSnVdJE276JbPXpYTxSVAm4KaOC7zYseosNhwfITqnV0hUnjPJAwRBopt0KTjK3eqzMLkTBemtL6ykWLkPACDZ09QkQqBmakQDBW8jWK4iIHUelSXee8Hfo1vGj5E297HJeLDJebRSV4Wmc4KlMl+pdcXfrSdFJeQcJv/VNl9VBA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=htePmQZxDiRb3bTwuTWbZZE9RQauJ5w9vDD7nvai2+4=;
+ b=QWk64GF0YjdEgB0v5Zv/IUQFTXmSX26xuTaY+B2A3i0Bd+/ewElSKZrWC5ZNq35oqKzk5f0zLKKSGA7JD6o9q7Jr0Eieoxtf7FovhacvX7m9I9o9SJnfYyM2o+TcJGlxyLE/voYpMWbgx3IpafAwmaT8BR308KXhdv2amN7uGK2Sna2DE3QxigrRn347FQFmAWVjLgAIG5eoCg//CwUeMxeeEVXhm/zPMq6vnGFtXoqt9UZK6dg4UjZIXR3IwEOzqrZk1MWeyqSh+/IRZHEauNnOnDwUAYSKdG7d9Ph+4ppgp5SdjHkPr9KsnRbbZWBDder2JENof3SNCQHElgzBkA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+Received: from CH3PR11MB8660.namprd11.prod.outlook.com (2603:10b6:610:1ce::13)
+ by CH3PR11MB8563.namprd11.prod.outlook.com (2603:10b6:610:1af::12) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9542.9; Tue, 20 Jan
+ 2026 08:07:35 +0000
+Received: from CH3PR11MB8660.namprd11.prod.outlook.com
+ ([fe80::fdc2:40ba:101d:40bf]) by CH3PR11MB8660.namprd11.prod.outlook.com
+ ([fe80::fdc2:40ba:101d:40bf%6]) with mapi id 15.20.9520.011; Tue, 20 Jan 2026
+ 08:07:35 +0000
+Date: Tue, 20 Jan 2026 16:07:25 +0800
+From: Chao Gao <chao.gao@intel.com>
+To: Xin Li <xin@zytor.com>
+CC: <linux-kernel@vger.kernel.org>, <kvm@vger.kernel.org>,
+	<linux-doc@vger.kernel.org>, <pbonzini@redhat.com>, <seanjc@google.com>,
+	<corbet@lwn.net>, <tglx@linutronix.de>, <mingo@redhat.com>, <bp@alien8.de>,
+	<dave.hansen@linux.intel.com>, <x86@kernel.org>, <hpa@zytor.com>,
+	<luto@kernel.org>, <peterz@infradead.org>, <andrew.cooper3@citrix.com>,
+	<hch@infradead.org>, <sohil.mehta@intel.com>
+Subject: Re: [PATCH v9 17/22] KVM: x86: Advertise support for FRED
+Message-ID: <aW83vbC2KB6CZDvl@intel.com>
+References: <20251026201911.505204-1-xin@zytor.com>
+ <20251026201911.505204-18-xin@zytor.com>
+ <aRQ3ngRvif/0QRTC@intel.com>
+ <71F2B269-4D29-4B23-9111-E43CDD09CF13@zytor.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <71F2B269-4D29-4B23-9111-E43CDD09CF13@zytor.com>
+X-ClientProxiedBy: TPYP295CA0029.TWNP295.PROD.OUTLOOK.COM (2603:1096:7d0:a::6)
+ To CH3PR11MB8660.namprd11.prod.outlook.com (2603:10b6:610:1ce::13)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-QCInternal: smtphost
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-ORIG-GUID: 0ZnyS2FO5-5ENTark0teSfZdY73eOxuk
-X-Proofpoint-GUID: 0ZnyS2FO5-5ENTark0teSfZdY73eOxuk
-X-Authority-Analysis: v=2.4 cv=c4OmgB9l c=1 sm=1 tr=0 ts=696f3614 cx=c_pps
- a=Ou0eQOY4+eZoSc0qltEV5Q==:117 a=Ou0eQOY4+eZoSc0qltEV5Q==:17
- a=vUbySO9Y5rIA:10 a=VkNPw1HP01LnGYTKEx00:22 a=EUspDBNiAAAA:8
- a=FDWiWJIJNkNkmATpyzQA:9
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMTIwMDA2NiBTYWx0ZWRfXxx6aBy/WNB9P
- HjqRuuFV9lkezZwkPxcnMQ64sQy0R+AIZBgxoQavHuN1I7Py3BDG83/Zk4PVIgBQMd0J8BvU9PD
- 9JkCmoluVKH3v/k/XXgYMHOVTQ/Zxedh3Sloqgmx9uAGkuk70INcarpw90MXvRNnUJF0RM8Ycem
- x/a3UmSadEqGAPYPIzbEHBcwSJJUhSeJtbwa4myUKRxkssPSnNUL8VajTK+t9aGvOsg3zyirD93
- EQmYnOLjHqaQVUTFSUEJja1I46YTeek2M7x2M4JLCPnU1fVLkrXErCvm7nlxWPTgJKrTEKclIH7
- jzd6NZrV9QvBUpThkkBIAgeraB9WTEpgcHZf+VqQIETVahs0Fe8LeVFOZ4KWtDsWk8KW6lav2FA
- /qNRDwmd8Ad4WiVkE+iwEiIK2of/SqKbYB1bUPi9cTqE5T5cxJdpkJ15AP3oJh4l6qh0gmjlHBW
- zvRywf/ASb3ABG4twqw==
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
- definitions=2026-01-20_02,2026-01-19_03,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- malwarescore=0 adultscore=0 impostorscore=0 clxscore=1015 priorityscore=1501
- suspectscore=0 spamscore=0 bulkscore=0 phishscore=0 lowpriorityscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2601150000 definitions=main-2601200066
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CH3PR11MB8660:EE_|CH3PR11MB8563:EE_
+X-MS-Office365-Filtering-Correlation-Id: ac24b5c4-a47b-44f2-66ce-08de57faf860
+X-LD-Processed: 46c98d88-e344-4ed4-8496-4ed7712e255d,ExtAddr
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|7416014|376014|366016;
+X-Microsoft-Antispam-Message-Info: =?utf-8?B?dVlzZTNvUFAvQ1JDM2p0NjYvNFBON0RrOU1jUXIzTkhxNjVDRVZya1BaVGEx?=
+ =?utf-8?B?WDJuWTRrN21YTzZvOC8ySTZldDBod1lXQitBWlo2WVZSYWJhcWtTWEQ5R1hR?=
+ =?utf-8?B?R2J6ZVNOelJwODZzZ1hVSnMvbENDOStkaTJ5WEVSbFIvWW5EZHIzMWZocVFJ?=
+ =?utf-8?B?ZlhQSnEreU1hUWxKZGl0Y056cmZMdzlBOG16Q3NldUxPcFFPTHVUZWl2SmNR?=
+ =?utf-8?B?WjRheXlOY1BBQVNJVXlQV1FqTzFncHIrZDZzTzR4Nm82YXlBbWFWVTBjdTU4?=
+ =?utf-8?B?eWxtaERqa2hrMkNaZkRjeXF0WjJyeHdBTnhabmJlblV0d0NvUFlucnZmVFhW?=
+ =?utf-8?B?UjBVK2M1SUFOeTl0cWd4VW9Da2NRRU9PbStpeVovTmFZU2tBY2ZXY3k0NDNL?=
+ =?utf-8?B?bzZvVmxHU05OSVhnemV6bzA3RHp6b3ZRZ2JGVGErR1JsZ2xhbjdvWFNWeFVx?=
+ =?utf-8?B?Y2JQd3E5V2lFTEVSalV5a1VWc0tFcXNwUVFZNkE3ZTNPdEZIdG5mWk5lWURM?=
+ =?utf-8?B?Z0lOd0lFZEYyZkpxbEVEQm5wN0VTaWYzT1dUbWVpaURLYTZ0dE9hZEdBa2dq?=
+ =?utf-8?B?eEFtMWlvNU9kaDhacXhzY3lJdVBrRFAwU042V211SysyOFE4cTk1VFNzZzFU?=
+ =?utf-8?B?YTZROFZMbWxDbFVQYUhrKzAyVWU4Mnp0WU14a29YVk5US01IWFM1MnRlSnpu?=
+ =?utf-8?B?MEp4R1d4ZzdpSDJsanRaemN0RlYxb1RIeVZDRWsvd0NwcExEVHVhWnVxUWk1?=
+ =?utf-8?B?RVNuVzM3bVdSL0xmNHR5Z3BoK3IzOTJYblM3RWVaTzdaVDFXeXlhMmFibFAz?=
+ =?utf-8?B?cFZXWVJvMFFFdy9SVGlzZzJyRVUrYjJLd292cWtJQU5pbXRSSWRGVE4wOXpD?=
+ =?utf-8?B?RlFOMElmdGtrbFVyNGV6RmhjcVladDM1a0lMdld0QlYyREVZUCtCZ05hL1hY?=
+ =?utf-8?B?eDhGalc1TTgvWXB0WVlhSDF2RDJFamZhVW54bWM1L1prR2U2ZmppN2h1d0hB?=
+ =?utf-8?B?eHNEdW1uak9vUUFXVjd1U1pDYVRjR1d1Zk9PSnBybitOUTQ5dStORTFkdnJS?=
+ =?utf-8?B?SHhUL0xRNWUvZUdKTmt3a3ZQeGUzY2tUT1F5TXNhdkdDUCtyV1ZDQ1lVaHE4?=
+ =?utf-8?B?TlEzbTZiQ1hDK0kxb0wvUUxZcTlab0s0S3NLMmUvZGJUZEdVa2R6OGFnZHRS?=
+ =?utf-8?B?dDhyQlRsYXpZQ3V5WmsrWWhpcGRTeC9NR3lMNUk2dFM4aThyUHB3YnhpZkhN?=
+ =?utf-8?B?QXJUTk1SQVd6MjEwNGVaWlZyTzFxTDlXWjJEWkpFNTJHdGU3MHAwRjdJY3dG?=
+ =?utf-8?B?OWZLVEdqRFBpSnFrY3g4Z0Z5U0RNaVc0Qk90SlFqdUtEQkRXRlpYajRJM2Q1?=
+ =?utf-8?B?QTZiTUl5Rm8rVlA2SE82N0xnN1M1RFhOQlh4a0RpVDhLa2cvN3l6SVdHc0Fx?=
+ =?utf-8?B?Tm5vOXFLQW5DdGxwVWxPYlpWMWZrOGJyRDVSTHFsNnR6WTNSdlVGTkppTlI2?=
+ =?utf-8?B?Q0FwdTR4cnAyRWNNWnN0SHJoQUFFMjFWcnJhc3ZvekhvU1hKMm0zTGwvYjA5?=
+ =?utf-8?B?S25PZWxOeDh4dE5yZ21wOWUzMVlWakM3ODgybnZFN0RNdkIvcFFHWk9JYVp4?=
+ =?utf-8?B?amwyY08xZEpUR21vTWVmVEpUdVVUUy9mMmVnRnNta1pVcEtXNFZCRHVOa2RG?=
+ =?utf-8?B?ZkVJQklwZlNqWDZyTG9EdnZYUzJXUmVIYW40WUhYeW4ya2x2TmpIZGhzMEdR?=
+ =?utf-8?B?OUkyQ3lMYXd1bWhEbzdrTkxDa2Y3SVFtcEtlRDNOc0RpYzdVOXVXclVGa1Bw?=
+ =?utf-8?B?MmJHSWhZUGZKRlM5cVVGR0p0UlYvb0JCTVd5ZHBKcjdPRHM5Ly9MSGN1NHo3?=
+ =?utf-8?B?U2FOM0YrdmVISkJ6bDloZE00dy90NS9pdEt3OFdJVkh4T2VIbk9iNUorMUNv?=
+ =?utf-8?B?MTI3OWk0T1Vjb25aRldmWWRBOHlLdkx6NHpLaFdOOVZzUWYyOVQ0M1hobFM4?=
+ =?utf-8?B?UWNPM1RsSHFQL0RxRk9mdWMxVmlvRFY5bmdDcHNPdmp1SDNROTlLWmZ6dGtz?=
+ =?utf-8?B?b2p1VDEvSlY2QXZsclF4c2oyWVplV0NWaUcvaTVGTU5KYUc1N29xdm83SERa?=
+ =?utf-8?Q?zSok=3D?=
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH3PR11MB8660.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(7416014)(376014)(366016);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?SDRzNWQ2MVd3bVFOVTBtWHB1emtCNExPY09KWjhZTEJpQ00ybGNZUVdKWVNu?=
+ =?utf-8?B?MTNvSlliWTZkRlJ5aGFVQWVKeGJpRzZHZTlLeTgzdGRSSVhEQ2V3Z0c5ZFhS?=
+ =?utf-8?B?Z295dFZRbkNDb09SVlRaOVVzdmZQaWVYdXVDVXlBbkJUeDBidmovRjI4U0ZR?=
+ =?utf-8?B?cmdrTUozN1VIVURWallDT1RZU3pMZEVPa2YyYk5LVERPaUFsNWY0SzVFNzJV?=
+ =?utf-8?B?a3pqTzJsYkwzMC9SNVF3UFhBYUNKYUx0Y0Z0K3Y3dnd5VklJbmdWS1hKQVJ5?=
+ =?utf-8?B?elgvSGFzTzdWNnpFWk5kV0NDdkU3ajNQeUpFbVZ0YUIya25pMlFjdWhnRzRD?=
+ =?utf-8?B?U25VL1B5djYwc3FuN25FUnVCamlEUW4renZDMWh5SVdWM01ZUWlLZnBKNnk3?=
+ =?utf-8?B?c0xZMklMd0xsZitycHFmSFF2bXVsdUZ4Ym5qZFdBSGlkYWQ5OVFiTElTYmdS?=
+ =?utf-8?B?ekl5Si8wOEFyWjZMbFBoOStkTDM4SFovQ0xxMk1qL0dKRzcxYTZkRm1VZ2F5?=
+ =?utf-8?B?ZkxSM0laN1Y4R0k4cDZVaExuQU1WSjM4c09JcUpSQmdseUh4YjRFVTFWeUx2?=
+ =?utf-8?B?YXNsNUZGTWIwZEV1a0VPSkQxZmd0enE4ekVpTjFBcXVQK3FJcFlqQ09TWDRk?=
+ =?utf-8?B?RGpPTUZhMU1PU3FQNDJadHZDOUZFaVQvYzd5R202YkwrbFN2YndoekNjd3Zl?=
+ =?utf-8?B?RkNFaC9lUURTNUV3RFlnNlR0NGNrTEpodXoreVhWaGk3dlM3L2VZRDFiMXlH?=
+ =?utf-8?B?WnJZdkVtQVBiMFdPdkJic0NoNzdGdFAzbmdvZ1V5ZzYrNUdlMHkvZnE3OHU2?=
+ =?utf-8?B?cHZRTk5DYlBZc1U1YUcydHZ6azZ6WDVtT1JBbG1DM2I3N3EyTEl2TWRvTU0z?=
+ =?utf-8?B?M2ZxZURRWi9aVWdjZkxibFp6MFV3OXdyUkw4UG4wc2hQa2R5TWQ3aHlxZkQ5?=
+ =?utf-8?B?aGhVR3Npejd1S1c2dVoxZk9HeXlLckVrV29xMU9iZE9CSTlhN00vMll3NmJo?=
+ =?utf-8?B?b3A5aFpZZXBHMnVNY2ttQ2pVd3Z2cm9OTGF0OHdsdnFtd0dLNlVhbEd2eDBR?=
+ =?utf-8?B?cUIwL2xHU0NuKzJrV0ZndWlBWjh1Y0VSeVltYTB5Z20zNzBlMjZodmFlL2hy?=
+ =?utf-8?B?c2QwVzBHdjJVUjFCUWdqVjBYaUN4S09yS2ZBcVNQMnhuamF6c2xZMnluanov?=
+ =?utf-8?B?U2pVSTR5OGpuSEtwa1VtMGtpYjU4UE92SjlGVWpSMU9qS1pEbWtTUk85TytP?=
+ =?utf-8?B?ZGJ2dm10VEdiSmxYUDRIM1J6VTBjYVcyNFdhMGJ3M2lQemRCNDlpMFlZN0ww?=
+ =?utf-8?B?N2cxOGFvc3ZjNFhjelZRcjgxdG5Sb04xRzd3Zkl0ZEVSZUdyRmNYVWRGM1kz?=
+ =?utf-8?B?Rjl4SWUwWHpuVXNkNDZ5L2JxdTNXM0Y5V2RQRmRxZTNUbXdBVWJNL2RMTG1S?=
+ =?utf-8?B?Z2ZnVEIzMjRQNzB4cmVGcGlGWWhLMWZZYkhwcGhBQzR1bnNVK0tzOEZCQVVs?=
+ =?utf-8?B?M0FxdWl4RC84TS8ySjFGRzJhWXk2aDBhdTEyc3B6WTE0MDZlUkpHcjdTRzc2?=
+ =?utf-8?B?Z1pSdVJsOG9HUlczeCtuVTBhYUFHRjBodUc0UWloemx6RTVqN1MyNEUyQjhW?=
+ =?utf-8?B?dVFTZkZkOWZobVdLZjhwOTJVdmQ4VnBhTS9qMDQ2U05SQUt1YXNlTnRVbHRP?=
+ =?utf-8?B?L1ViR1dRdnJqdnNKS1Z5NGM1SXdXQ0IyYmxJOU9MZ0lqSE9rTm5lSFh0cDZN?=
+ =?utf-8?B?Zm5OQWJKMUFHTjZvbFY1cGNNeGZMUWVsN2VGSlBjUjcrVndBd3VGaVI1Q3k3?=
+ =?utf-8?B?ZWpaWXpGbmZVb3JqQWwxSHhqc0tGbS90SHRjV1Q2WEhrYnY3c1ppS05jNEti?=
+ =?utf-8?B?UTkzeDhmak1oa2tMK28reEtXWTFOZTBwUHE3RmtoVUpKcEYvdUFFMXlIa09w?=
+ =?utf-8?B?cjM0L1ErQjNsUTdZaUpVQWVxZzZML3FWbm93YjJ0SDV6UXUvTGpiTWptTm1m?=
+ =?utf-8?B?NVgvUWI2N1R2SVUyVlpoNnhlOVF1bUZVa3J5NnU1QURwOWw3NlQrVHpuSDMr?=
+ =?utf-8?B?RVlIdXExdTVIY3hCZjVRNzBvSVB6Slp3cWIzbmdwb0dZUHNPVWQ4eThpa1FB?=
+ =?utf-8?B?bWFUcndEcXd5OXRGUVk0ekJkU3hjeTVpTW5KcVhKWHhUNU9leStzYlQ4SjND?=
+ =?utf-8?B?QlZSQytXR3dlM1IwRndKZ2NxU3FNK2NobEtZQWpORGJWOFE4Z05wdHNRSUxt?=
+ =?utf-8?B?eVlHeStzQUdqT3pxV2FmZ2NMSXl5bGJOLzkvd3JYc3gxaUVQdmxXL1RDSDlI?=
+ =?utf-8?B?VTMxM1c1ZFN2ZWE5Tkl1MDJ6elQ4R3o3SmZWWmdWVjc3T3RUT20zQT09?=
+X-MS-Exchange-CrossTenant-Network-Message-Id: ac24b5c4-a47b-44f2-66ce-08de57faf860
+X-MS-Exchange-CrossTenant-AuthSource: CH3PR11MB8660.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 20 Jan 2026 08:07:35.5370
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: EYUUWdR8ShA1ArSCCKV7Qtq5BAd0+kGDQp+2wkbQjNLARironx8t3krMwT+YmQ3ihH34CRfHfC/xFxeMSjAP3g==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH3PR11MB8563
+X-OriginatorOrg: intel.com
 
-The KVM ISA extension related checks are not VCPU specific and
-should be factored out of vcpu_onereg.c into separate sources.
+On Mon, Jan 19, 2026 at 10:56:29PM -0800, Xin Li wrote:
+>
+>
+>> On Nov 11, 2025, at 11:30 PM, Chao Gao <chao.gao@intel.com> wrote:
+>> 
+>> I'm not sure if AMD CPUs support FRED, but just in case, we can clear FRED
+>> i.e., kvm_cpu_cap_clear(X86_FEATURE_FRED) in svm_set_cpu_caps().
+>
+>AMD will support FRED, with ISA level compatibility:
+>
+>https://www.amd.com/en/blogs/2025/amd-and-intel-celebrate-first-anniversary-of-x86-ecosys.html
+>
+>Thus we don’t need to clear the bit.
 
-Signed-off-by: Anup Patel <anup.patel@oss.qualcomm.com>
----
- arch/riscv/include/asm/kvm_host.h |   4 -
- arch/riscv/include/asm/kvm_isa.h  |  20 +++
- arch/riscv/kvm/Makefile           |   1 +
- arch/riscv/kvm/aia_device.c       |   1 +
- arch/riscv/kvm/isa.c              | 251 +++++++++++++++++++++++++++++
- arch/riscv/kvm/vcpu_fp.c          |   1 +
- arch/riscv/kvm/vcpu_onereg.c      | 257 +-----------------------------
- arch/riscv/kvm/vcpu_pmu.c         |   3 +-
- arch/riscv/kvm/vcpu_timer.c       |   1 +
- arch/riscv/kvm/vcpu_vector.c      |   1 +
- 10 files changed, 286 insertions(+), 254 deletions(-)
- create mode 100644 arch/riscv/include/asm/kvm_isa.h
- create mode 100644 arch/riscv/kvm/isa.c
+In this case, we need to clear FRED for AMD.
 
-diff --git a/arch/riscv/include/asm/kvm_host.h b/arch/riscv/include/asm/kvm_host.h
-index 47a350c25555..24585304c02b 100644
---- a/arch/riscv/include/asm/kvm_host.h
-+++ b/arch/riscv/include/asm/kvm_host.h
-@@ -308,10 +308,6 @@ int kvm_riscv_vcpu_exit(struct kvm_vcpu *vcpu, struct kvm_run *run,
- 
- void __kvm_riscv_switch_to(struct kvm_vcpu_arch *vcpu_arch);
- 
--int __kvm_riscv_isa_check_host(unsigned long kvm_ext, unsigned long *guest_ext);
--#define kvm_riscv_isa_check_host(ext)	\
--	__kvm_riscv_isa_check_host(KVM_RISCV_ISA_EXT_##ext, NULL)
--
- void kvm_riscv_vcpu_setup_isa(struct kvm_vcpu *vcpu);
- unsigned long kvm_riscv_vcpu_num_regs(struct kvm_vcpu *vcpu);
- int kvm_riscv_vcpu_copy_reg_indices(struct kvm_vcpu *vcpu,
-diff --git a/arch/riscv/include/asm/kvm_isa.h b/arch/riscv/include/asm/kvm_isa.h
-new file mode 100644
-index 000000000000..bc4b956d5f17
---- /dev/null
-+++ b/arch/riscv/include/asm/kvm_isa.h
-@@ -0,0 +1,20 @@
-+/* SPDX-License-Identifier: GPL-2.0-only */
-+/*
-+ * Copyright (c) 2026 Qualcomm Technologies, Inc.
-+ */
-+
-+#ifndef __KVM_RISCV_ISA_H
-+#define __KVM_RISCV_ISA_H
-+
-+#include <linux/types.h>
-+
-+unsigned long kvm_riscv_base2isa_ext(unsigned long base_ext);
-+
-+int __kvm_riscv_isa_check_host(unsigned long ext, unsigned long *base_ext);
-+#define kvm_riscv_isa_check_host(ext)	\
-+	__kvm_riscv_isa_check_host(KVM_RISCV_ISA_EXT_##ext, NULL)
-+
-+bool kvm_riscv_isa_enable_allowed(unsigned long ext);
-+bool kvm_riscv_isa_disable_allowed(unsigned long ext);
-+
-+#endif
-diff --git a/arch/riscv/kvm/Makefile b/arch/riscv/kvm/Makefile
-index 3b8afb038b35..07eab96189e7 100644
---- a/arch/riscv/kvm/Makefile
-+++ b/arch/riscv/kvm/Makefile
-@@ -15,6 +15,7 @@ kvm-y += aia_aplic.o
- kvm-y += aia_device.o
- kvm-y += aia_imsic.o
- kvm-y += gstage.o
-+kvm-y += isa.o
- kvm-y += main.o
- kvm-y += mmu.o
- kvm-y += nacl.o
-diff --git a/arch/riscv/kvm/aia_device.c b/arch/riscv/kvm/aia_device.c
-index 4cecab9bf102..77629b7eac09 100644
---- a/arch/riscv/kvm/aia_device.c
-+++ b/arch/riscv/kvm/aia_device.c
-@@ -12,6 +12,7 @@
- #include <linux/kvm_host.h>
- #include <linux/uaccess.h>
- #include <linux/cpufeature.h>
-+#include <asm/kvm_isa.h>
- 
- static int aia_create(struct kvm_device *dev, u32 type)
- {
-diff --git a/arch/riscv/kvm/isa.c b/arch/riscv/kvm/isa.c
-new file mode 100644
-index 000000000000..e860f6d79bb0
---- /dev/null
-+++ b/arch/riscv/kvm/isa.c
-@@ -0,0 +1,251 @@
-+// SPDX-License-Identifier: GPL-2.0
-+/*
-+ * Copyright (c) 2026 Qualcomm Technologies, Inc.
-+ */
-+
-+#include <linux/errno.h>
-+#include <linux/kvm_host.h>
-+#include <linux/cpufeature.h>
-+#include <linux/pgtable.h>
-+#include <asm/kvm_isa.h>
-+#include <asm/vector.h>
-+
-+#define KVM_ISA_EXT_ARR(ext)		\
-+[KVM_RISCV_ISA_EXT_##ext] = RISCV_ISA_EXT_##ext
-+
-+/* Mapping between KVM ISA Extension ID & guest ISA extension ID */
-+static const unsigned long kvm_isa_ext_arr[] = {
-+	/* Single letter extensions (alphabetically sorted) */
-+	[KVM_RISCV_ISA_EXT_A] = RISCV_ISA_EXT_a,
-+	[KVM_RISCV_ISA_EXT_C] = RISCV_ISA_EXT_c,
-+	[KVM_RISCV_ISA_EXT_D] = RISCV_ISA_EXT_d,
-+	[KVM_RISCV_ISA_EXT_F] = RISCV_ISA_EXT_f,
-+	[KVM_RISCV_ISA_EXT_H] = RISCV_ISA_EXT_h,
-+	[KVM_RISCV_ISA_EXT_I] = RISCV_ISA_EXT_i,
-+	[KVM_RISCV_ISA_EXT_M] = RISCV_ISA_EXT_m,
-+	[KVM_RISCV_ISA_EXT_V] = RISCV_ISA_EXT_v,
-+	/* Multi letter extensions (alphabetically sorted) */
-+	KVM_ISA_EXT_ARR(SMNPM),
-+	KVM_ISA_EXT_ARR(SMSTATEEN),
-+	KVM_ISA_EXT_ARR(SSAIA),
-+	KVM_ISA_EXT_ARR(SSCOFPMF),
-+	KVM_ISA_EXT_ARR(SSNPM),
-+	KVM_ISA_EXT_ARR(SSTC),
-+	KVM_ISA_EXT_ARR(SVADE),
-+	KVM_ISA_EXT_ARR(SVADU),
-+	KVM_ISA_EXT_ARR(SVINVAL),
-+	KVM_ISA_EXT_ARR(SVNAPOT),
-+	KVM_ISA_EXT_ARR(SVPBMT),
-+	KVM_ISA_EXT_ARR(SVVPTC),
-+	KVM_ISA_EXT_ARR(ZAAMO),
-+	KVM_ISA_EXT_ARR(ZABHA),
-+	KVM_ISA_EXT_ARR(ZACAS),
-+	KVM_ISA_EXT_ARR(ZALASR),
-+	KVM_ISA_EXT_ARR(ZALRSC),
-+	KVM_ISA_EXT_ARR(ZAWRS),
-+	KVM_ISA_EXT_ARR(ZBA),
-+	KVM_ISA_EXT_ARR(ZBB),
-+	KVM_ISA_EXT_ARR(ZBC),
-+	KVM_ISA_EXT_ARR(ZBKB),
-+	KVM_ISA_EXT_ARR(ZBKC),
-+	KVM_ISA_EXT_ARR(ZBKX),
-+	KVM_ISA_EXT_ARR(ZBS),
-+	KVM_ISA_EXT_ARR(ZCA),
-+	KVM_ISA_EXT_ARR(ZCB),
-+	KVM_ISA_EXT_ARR(ZCD),
-+	KVM_ISA_EXT_ARR(ZCF),
-+	KVM_ISA_EXT_ARR(ZCLSD),
-+	KVM_ISA_EXT_ARR(ZCMOP),
-+	KVM_ISA_EXT_ARR(ZFA),
-+	KVM_ISA_EXT_ARR(ZFBFMIN),
-+	KVM_ISA_EXT_ARR(ZFH),
-+	KVM_ISA_EXT_ARR(ZFHMIN),
-+	KVM_ISA_EXT_ARR(ZICBOM),
-+	KVM_ISA_EXT_ARR(ZICBOP),
-+	KVM_ISA_EXT_ARR(ZICBOZ),
-+	KVM_ISA_EXT_ARR(ZICCRSE),
-+	KVM_ISA_EXT_ARR(ZICNTR),
-+	KVM_ISA_EXT_ARR(ZICOND),
-+	KVM_ISA_EXT_ARR(ZICSR),
-+	KVM_ISA_EXT_ARR(ZIFENCEI),
-+	KVM_ISA_EXT_ARR(ZIHINTNTL),
-+	KVM_ISA_EXT_ARR(ZIHINTPAUSE),
-+	KVM_ISA_EXT_ARR(ZIHPM),
-+	KVM_ISA_EXT_ARR(ZILSD),
-+	KVM_ISA_EXT_ARR(ZIMOP),
-+	KVM_ISA_EXT_ARR(ZKND),
-+	KVM_ISA_EXT_ARR(ZKNE),
-+	KVM_ISA_EXT_ARR(ZKNH),
-+	KVM_ISA_EXT_ARR(ZKR),
-+	KVM_ISA_EXT_ARR(ZKSED),
-+	KVM_ISA_EXT_ARR(ZKSH),
-+	KVM_ISA_EXT_ARR(ZKT),
-+	KVM_ISA_EXT_ARR(ZTSO),
-+	KVM_ISA_EXT_ARR(ZVBB),
-+	KVM_ISA_EXT_ARR(ZVBC),
-+	KVM_ISA_EXT_ARR(ZVFBFMIN),
-+	KVM_ISA_EXT_ARR(ZVFBFWMA),
-+	KVM_ISA_EXT_ARR(ZVFH),
-+	KVM_ISA_EXT_ARR(ZVFHMIN),
-+	KVM_ISA_EXT_ARR(ZVKB),
-+	KVM_ISA_EXT_ARR(ZVKG),
-+	KVM_ISA_EXT_ARR(ZVKNED),
-+	KVM_ISA_EXT_ARR(ZVKNHA),
-+	KVM_ISA_EXT_ARR(ZVKNHB),
-+	KVM_ISA_EXT_ARR(ZVKSED),
-+	KVM_ISA_EXT_ARR(ZVKSH),
-+	KVM_ISA_EXT_ARR(ZVKT),
-+};
-+
-+unsigned long kvm_riscv_base2isa_ext(unsigned long base_ext)
-+{
-+	unsigned long i;
-+
-+	for (i = 0; i < KVM_RISCV_ISA_EXT_MAX; i++) {
-+		if (kvm_isa_ext_arr[i] == base_ext)
-+			return i;
-+	}
-+
-+	return KVM_RISCV_ISA_EXT_MAX;
-+}
-+
-+int __kvm_riscv_isa_check_host(unsigned long ext, unsigned long *base_ext)
-+{
-+	unsigned long host_ext;
-+
-+	if (ext >= KVM_RISCV_ISA_EXT_MAX ||
-+	    ext >= ARRAY_SIZE(kvm_isa_ext_arr))
-+		return -ENOENT;
-+
-+	switch (kvm_isa_ext_arr[ext]) {
-+	case RISCV_ISA_EXT_SMNPM:
-+		/*
-+		 * Pointer masking effective in (H)S-mode is provided by the
-+		 * Smnpm extension, so that extension is reported to the guest,
-+		 * even though the CSR bits for configuring VS-mode pointer
-+		 * masking on the host side are part of the Ssnpm extension.
-+		 */
-+		host_ext = RISCV_ISA_EXT_SSNPM;
-+		break;
-+	default:
-+		host_ext = kvm_isa_ext_arr[ext];
-+		break;
-+	}
-+
-+	if (!__riscv_isa_extension_available(NULL, host_ext))
-+		return -ENOENT;
-+
-+	if (base_ext)
-+		*base_ext = kvm_isa_ext_arr[ext];
-+
-+	return 0;
-+}
-+
-+bool kvm_riscv_isa_enable_allowed(unsigned long ext)
-+{
-+	switch (ext) {
-+	case KVM_RISCV_ISA_EXT_H:
-+		return false;
-+	case KVM_RISCV_ISA_EXT_SSCOFPMF:
-+		/* Sscofpmf depends on interrupt filtering defined in ssaia */
-+		return !kvm_riscv_isa_check_host(SSAIA);
-+	case KVM_RISCV_ISA_EXT_SVADU:
-+		/*
-+		 * The henvcfg.ADUE is read-only zero if menvcfg.ADUE is zero.
-+		 * Guest OS can use Svadu only when host OS enable Svadu.
-+		 */
-+		return arch_has_hw_pte_young();
-+	case KVM_RISCV_ISA_EXT_V:
-+		return riscv_v_vstate_ctrl_user_allowed();
-+	default:
-+		break;
-+	}
-+
-+	return true;
-+}
-+
-+bool kvm_riscv_isa_disable_allowed(unsigned long ext)
-+{
-+	switch (ext) {
-+	/* Extensions which don't have any mechanism to disable */
-+	case KVM_RISCV_ISA_EXT_A:
-+	case KVM_RISCV_ISA_EXT_C:
-+	case KVM_RISCV_ISA_EXT_I:
-+	case KVM_RISCV_ISA_EXT_M:
-+	/* There is not architectural config bit to disable sscofpmf completely */
-+	case KVM_RISCV_ISA_EXT_SSCOFPMF:
-+	case KVM_RISCV_ISA_EXT_SSNPM:
-+	case KVM_RISCV_ISA_EXT_SSTC:
-+	case KVM_RISCV_ISA_EXT_SVINVAL:
-+	case KVM_RISCV_ISA_EXT_SVNAPOT:
-+	case KVM_RISCV_ISA_EXT_SVVPTC:
-+	case KVM_RISCV_ISA_EXT_ZAAMO:
-+	case KVM_RISCV_ISA_EXT_ZABHA:
-+	case KVM_RISCV_ISA_EXT_ZACAS:
-+	case KVM_RISCV_ISA_EXT_ZALASR:
-+	case KVM_RISCV_ISA_EXT_ZALRSC:
-+	case KVM_RISCV_ISA_EXT_ZAWRS:
-+	case KVM_RISCV_ISA_EXT_ZBA:
-+	case KVM_RISCV_ISA_EXT_ZBB:
-+	case KVM_RISCV_ISA_EXT_ZBC:
-+	case KVM_RISCV_ISA_EXT_ZBKB:
-+	case KVM_RISCV_ISA_EXT_ZBKC:
-+	case KVM_RISCV_ISA_EXT_ZBKX:
-+	case KVM_RISCV_ISA_EXT_ZBS:
-+	case KVM_RISCV_ISA_EXT_ZCA:
-+	case KVM_RISCV_ISA_EXT_ZCB:
-+	case KVM_RISCV_ISA_EXT_ZCD:
-+	case KVM_RISCV_ISA_EXT_ZCF:
-+	case KVM_RISCV_ISA_EXT_ZCMOP:
-+	case KVM_RISCV_ISA_EXT_ZFA:
-+	case KVM_RISCV_ISA_EXT_ZFBFMIN:
-+	case KVM_RISCV_ISA_EXT_ZFH:
-+	case KVM_RISCV_ISA_EXT_ZFHMIN:
-+	case KVM_RISCV_ISA_EXT_ZICBOP:
-+	case KVM_RISCV_ISA_EXT_ZICCRSE:
-+	case KVM_RISCV_ISA_EXT_ZICNTR:
-+	case KVM_RISCV_ISA_EXT_ZICOND:
-+	case KVM_RISCV_ISA_EXT_ZICSR:
-+	case KVM_RISCV_ISA_EXT_ZIFENCEI:
-+	case KVM_RISCV_ISA_EXT_ZIHINTNTL:
-+	case KVM_RISCV_ISA_EXT_ZIHINTPAUSE:
-+	case KVM_RISCV_ISA_EXT_ZIHPM:
-+	case KVM_RISCV_ISA_EXT_ZIMOP:
-+	case KVM_RISCV_ISA_EXT_ZKND:
-+	case KVM_RISCV_ISA_EXT_ZKNE:
-+	case KVM_RISCV_ISA_EXT_ZKNH:
-+	case KVM_RISCV_ISA_EXT_ZKR:
-+	case KVM_RISCV_ISA_EXT_ZKSED:
-+	case KVM_RISCV_ISA_EXT_ZKSH:
-+	case KVM_RISCV_ISA_EXT_ZKT:
-+	case KVM_RISCV_ISA_EXT_ZTSO:
-+	case KVM_RISCV_ISA_EXT_ZVBB:
-+	case KVM_RISCV_ISA_EXT_ZVBC:
-+	case KVM_RISCV_ISA_EXT_ZVFBFMIN:
-+	case KVM_RISCV_ISA_EXT_ZVFBFWMA:
-+	case KVM_RISCV_ISA_EXT_ZVFH:
-+	case KVM_RISCV_ISA_EXT_ZVFHMIN:
-+	case KVM_RISCV_ISA_EXT_ZVKB:
-+	case KVM_RISCV_ISA_EXT_ZVKG:
-+	case KVM_RISCV_ISA_EXT_ZVKNED:
-+	case KVM_RISCV_ISA_EXT_ZVKNHA:
-+	case KVM_RISCV_ISA_EXT_ZVKNHB:
-+	case KVM_RISCV_ISA_EXT_ZVKSED:
-+	case KVM_RISCV_ISA_EXT_ZVKSH:
-+	case KVM_RISCV_ISA_EXT_ZVKT:
-+		return false;
-+	/* Extensions which can be disabled using Smstateen */
-+	case KVM_RISCV_ISA_EXT_SSAIA:
-+		return riscv_has_extension_unlikely(RISCV_ISA_EXT_SMSTATEEN);
-+	case KVM_RISCV_ISA_EXT_SVADE:
-+		/*
-+		 * The henvcfg.ADUE is read-only zero if menvcfg.ADUE is zero.
-+		 * Svade can't be disabled unless we support Svadu.
-+		 */
-+		return arch_has_hw_pte_young();
-+	default:
-+		break;
-+	}
-+
-+	return true;
-+}
-diff --git a/arch/riscv/kvm/vcpu_fp.c b/arch/riscv/kvm/vcpu_fp.c
-index 32ab5938a2ec..49ad7446d2bb 100644
---- a/arch/riscv/kvm/vcpu_fp.c
-+++ b/arch/riscv/kvm/vcpu_fp.c
-@@ -12,6 +12,7 @@
- #include <linux/kvm_host.h>
- #include <linux/uaccess.h>
- #include <asm/cpufeature.h>
-+#include <asm/kvm_isa.h>
- 
- #ifdef CONFIG_FPU
- void kvm_riscv_vcpu_fp_reset(struct kvm_vcpu *vcpu)
-diff --git a/arch/riscv/kvm/vcpu_onereg.c b/arch/riscv/kvm/vcpu_onereg.c
-index f0f8c293d950..6b16eee2c833 100644
---- a/arch/riscv/kvm/vcpu_onereg.c
-+++ b/arch/riscv/kvm/vcpu_onereg.c
-@@ -14,260 +14,19 @@
- #include <linux/kvm_host.h>
- #include <asm/cacheflush.h>
- #include <asm/cpufeature.h>
-+#include <asm/kvm_isa.h>
- #include <asm/kvm_vcpu_vector.h>
--#include <asm/pgtable.h>
--#include <asm/vector.h>
- 
- #define KVM_RISCV_BASE_ISA_MASK		GENMASK(25, 0)
- 
--#define KVM_ISA_EXT_ARR(ext)		\
--[KVM_RISCV_ISA_EXT_##ext] = RISCV_ISA_EXT_##ext
--
--/* Mapping between KVM ISA Extension ID & guest ISA extension ID */
--static const unsigned long kvm_isa_ext_arr[] = {
--	/* Single letter extensions (alphabetically sorted) */
--	[KVM_RISCV_ISA_EXT_A] = RISCV_ISA_EXT_a,
--	[KVM_RISCV_ISA_EXT_C] = RISCV_ISA_EXT_c,
--	[KVM_RISCV_ISA_EXT_D] = RISCV_ISA_EXT_d,
--	[KVM_RISCV_ISA_EXT_F] = RISCV_ISA_EXT_f,
--	[KVM_RISCV_ISA_EXT_H] = RISCV_ISA_EXT_h,
--	[KVM_RISCV_ISA_EXT_I] = RISCV_ISA_EXT_i,
--	[KVM_RISCV_ISA_EXT_M] = RISCV_ISA_EXT_m,
--	[KVM_RISCV_ISA_EXT_V] = RISCV_ISA_EXT_v,
--	/* Multi letter extensions (alphabetically sorted) */
--	KVM_ISA_EXT_ARR(SMNPM),
--	KVM_ISA_EXT_ARR(SMSTATEEN),
--	KVM_ISA_EXT_ARR(SSAIA),
--	KVM_ISA_EXT_ARR(SSCOFPMF),
--	KVM_ISA_EXT_ARR(SSNPM),
--	KVM_ISA_EXT_ARR(SSTC),
--	KVM_ISA_EXT_ARR(SVADE),
--	KVM_ISA_EXT_ARR(SVADU),
--	KVM_ISA_EXT_ARR(SVINVAL),
--	KVM_ISA_EXT_ARR(SVNAPOT),
--	KVM_ISA_EXT_ARR(SVPBMT),
--	KVM_ISA_EXT_ARR(SVVPTC),
--	KVM_ISA_EXT_ARR(ZAAMO),
--	KVM_ISA_EXT_ARR(ZABHA),
--	KVM_ISA_EXT_ARR(ZACAS),
--	KVM_ISA_EXT_ARR(ZALASR),
--	KVM_ISA_EXT_ARR(ZALRSC),
--	KVM_ISA_EXT_ARR(ZAWRS),
--	KVM_ISA_EXT_ARR(ZBA),
--	KVM_ISA_EXT_ARR(ZBB),
--	KVM_ISA_EXT_ARR(ZBC),
--	KVM_ISA_EXT_ARR(ZBKB),
--	KVM_ISA_EXT_ARR(ZBKC),
--	KVM_ISA_EXT_ARR(ZBKX),
--	KVM_ISA_EXT_ARR(ZBS),
--	KVM_ISA_EXT_ARR(ZCA),
--	KVM_ISA_EXT_ARR(ZCB),
--	KVM_ISA_EXT_ARR(ZCD),
--	KVM_ISA_EXT_ARR(ZCF),
--	KVM_ISA_EXT_ARR(ZCLSD),
--	KVM_ISA_EXT_ARR(ZCMOP),
--	KVM_ISA_EXT_ARR(ZFA),
--	KVM_ISA_EXT_ARR(ZFBFMIN),
--	KVM_ISA_EXT_ARR(ZFH),
--	KVM_ISA_EXT_ARR(ZFHMIN),
--	KVM_ISA_EXT_ARR(ZICBOM),
--	KVM_ISA_EXT_ARR(ZICBOP),
--	KVM_ISA_EXT_ARR(ZICBOZ),
--	KVM_ISA_EXT_ARR(ZICCRSE),
--	KVM_ISA_EXT_ARR(ZICNTR),
--	KVM_ISA_EXT_ARR(ZICOND),
--	KVM_ISA_EXT_ARR(ZICSR),
--	KVM_ISA_EXT_ARR(ZIFENCEI),
--	KVM_ISA_EXT_ARR(ZIHINTNTL),
--	KVM_ISA_EXT_ARR(ZIHINTPAUSE),
--	KVM_ISA_EXT_ARR(ZIHPM),
--	KVM_ISA_EXT_ARR(ZILSD),
--	KVM_ISA_EXT_ARR(ZIMOP),
--	KVM_ISA_EXT_ARR(ZKND),
--	KVM_ISA_EXT_ARR(ZKNE),
--	KVM_ISA_EXT_ARR(ZKNH),
--	KVM_ISA_EXT_ARR(ZKR),
--	KVM_ISA_EXT_ARR(ZKSED),
--	KVM_ISA_EXT_ARR(ZKSH),
--	KVM_ISA_EXT_ARR(ZKT),
--	KVM_ISA_EXT_ARR(ZTSO),
--	KVM_ISA_EXT_ARR(ZVBB),
--	KVM_ISA_EXT_ARR(ZVBC),
--	KVM_ISA_EXT_ARR(ZVFBFMIN),
--	KVM_ISA_EXT_ARR(ZVFBFWMA),
--	KVM_ISA_EXT_ARR(ZVFH),
--	KVM_ISA_EXT_ARR(ZVFHMIN),
--	KVM_ISA_EXT_ARR(ZVKB),
--	KVM_ISA_EXT_ARR(ZVKG),
--	KVM_ISA_EXT_ARR(ZVKNED),
--	KVM_ISA_EXT_ARR(ZVKNHA),
--	KVM_ISA_EXT_ARR(ZVKNHB),
--	KVM_ISA_EXT_ARR(ZVKSED),
--	KVM_ISA_EXT_ARR(ZVKSH),
--	KVM_ISA_EXT_ARR(ZVKT),
--};
--
--static unsigned long kvm_riscv_vcpu_base2isa_ext(unsigned long base_ext)
--{
--	unsigned long i;
--
--	for (i = 0; i < KVM_RISCV_ISA_EXT_MAX; i++) {
--		if (kvm_isa_ext_arr[i] == base_ext)
--			return i;
--	}
--
--	return KVM_RISCV_ISA_EXT_MAX;
--}
--
--int __kvm_riscv_isa_check_host(unsigned long kvm_ext, unsigned long *base_ext)
--{
--	unsigned long host_ext;
--
--	if (kvm_ext >= KVM_RISCV_ISA_EXT_MAX ||
--	    kvm_ext >= ARRAY_SIZE(kvm_isa_ext_arr))
--		return -ENOENT;
--
--	switch (kvm_isa_ext_arr[kvm_ext]) {
--	case RISCV_ISA_EXT_SMNPM:
--		/*
--		 * Pointer masking effective in (H)S-mode is provided by the
--		 * Smnpm extension, so that extension is reported to the guest,
--		 * even though the CSR bits for configuring VS-mode pointer
--		 * masking on the host side are part of the Ssnpm extension.
--		 */
--		host_ext = RISCV_ISA_EXT_SSNPM;
--		break;
--	default:
--		host_ext = kvm_isa_ext_arr[kvm_ext];
--		break;
--	}
--
--	if (!__riscv_isa_extension_available(NULL, host_ext))
--		return -ENOENT;
--
--	if (base_ext)
--		*base_ext = kvm_isa_ext_arr[kvm_ext];
--
--	return 0;
--}
--
--static bool kvm_riscv_vcpu_isa_enable_allowed(unsigned long ext)
--{
--	switch (ext) {
--	case KVM_RISCV_ISA_EXT_H:
--		return false;
--	case KVM_RISCV_ISA_EXT_SSCOFPMF:
--		/* Sscofpmf depends on interrupt filtering defined in ssaia */
--		return !kvm_riscv_isa_check_host(SSAIA);
--	case KVM_RISCV_ISA_EXT_SVADU:
--		/*
--		 * The henvcfg.ADUE is read-only zero if menvcfg.ADUE is zero.
--		 * Guest OS can use Svadu only when host OS enable Svadu.
--		 */
--		return arch_has_hw_pte_young();
--	case KVM_RISCV_ISA_EXT_V:
--		return riscv_v_vstate_ctrl_user_allowed();
--	default:
--		break;
--	}
--
--	return true;
--}
--
--static bool kvm_riscv_vcpu_isa_disable_allowed(unsigned long ext)
--{
--	switch (ext) {
--	/* Extensions which don't have any mechanism to disable */
--	case KVM_RISCV_ISA_EXT_A:
--	case KVM_RISCV_ISA_EXT_C:
--	case KVM_RISCV_ISA_EXT_I:
--	case KVM_RISCV_ISA_EXT_M:
--	/* There is not architectural config bit to disable sscofpmf completely */
--	case KVM_RISCV_ISA_EXT_SSCOFPMF:
--	case KVM_RISCV_ISA_EXT_SSNPM:
--	case KVM_RISCV_ISA_EXT_SSTC:
--	case KVM_RISCV_ISA_EXT_SVINVAL:
--	case KVM_RISCV_ISA_EXT_SVNAPOT:
--	case KVM_RISCV_ISA_EXT_SVVPTC:
--	case KVM_RISCV_ISA_EXT_ZAAMO:
--	case KVM_RISCV_ISA_EXT_ZABHA:
--	case KVM_RISCV_ISA_EXT_ZACAS:
--	case KVM_RISCV_ISA_EXT_ZALASR:
--	case KVM_RISCV_ISA_EXT_ZALRSC:
--	case KVM_RISCV_ISA_EXT_ZAWRS:
--	case KVM_RISCV_ISA_EXT_ZBA:
--	case KVM_RISCV_ISA_EXT_ZBB:
--	case KVM_RISCV_ISA_EXT_ZBC:
--	case KVM_RISCV_ISA_EXT_ZBKB:
--	case KVM_RISCV_ISA_EXT_ZBKC:
--	case KVM_RISCV_ISA_EXT_ZBKX:
--	case KVM_RISCV_ISA_EXT_ZBS:
--	case KVM_RISCV_ISA_EXT_ZCA:
--	case KVM_RISCV_ISA_EXT_ZCB:
--	case KVM_RISCV_ISA_EXT_ZCD:
--	case KVM_RISCV_ISA_EXT_ZCF:
--	case KVM_RISCV_ISA_EXT_ZCMOP:
--	case KVM_RISCV_ISA_EXT_ZFA:
--	case KVM_RISCV_ISA_EXT_ZFBFMIN:
--	case KVM_RISCV_ISA_EXT_ZFH:
--	case KVM_RISCV_ISA_EXT_ZFHMIN:
--	case KVM_RISCV_ISA_EXT_ZICBOP:
--	case KVM_RISCV_ISA_EXT_ZICCRSE:
--	case KVM_RISCV_ISA_EXT_ZICNTR:
--	case KVM_RISCV_ISA_EXT_ZICOND:
--	case KVM_RISCV_ISA_EXT_ZICSR:
--	case KVM_RISCV_ISA_EXT_ZIFENCEI:
--	case KVM_RISCV_ISA_EXT_ZIHINTNTL:
--	case KVM_RISCV_ISA_EXT_ZIHINTPAUSE:
--	case KVM_RISCV_ISA_EXT_ZIHPM:
--	case KVM_RISCV_ISA_EXT_ZIMOP:
--	case KVM_RISCV_ISA_EXT_ZKND:
--	case KVM_RISCV_ISA_EXT_ZKNE:
--	case KVM_RISCV_ISA_EXT_ZKNH:
--	case KVM_RISCV_ISA_EXT_ZKR:
--	case KVM_RISCV_ISA_EXT_ZKSED:
--	case KVM_RISCV_ISA_EXT_ZKSH:
--	case KVM_RISCV_ISA_EXT_ZKT:
--	case KVM_RISCV_ISA_EXT_ZTSO:
--	case KVM_RISCV_ISA_EXT_ZVBB:
--	case KVM_RISCV_ISA_EXT_ZVBC:
--	case KVM_RISCV_ISA_EXT_ZVFBFMIN:
--	case KVM_RISCV_ISA_EXT_ZVFBFWMA:
--	case KVM_RISCV_ISA_EXT_ZVFH:
--	case KVM_RISCV_ISA_EXT_ZVFHMIN:
--	case KVM_RISCV_ISA_EXT_ZVKB:
--	case KVM_RISCV_ISA_EXT_ZVKG:
--	case KVM_RISCV_ISA_EXT_ZVKNED:
--	case KVM_RISCV_ISA_EXT_ZVKNHA:
--	case KVM_RISCV_ISA_EXT_ZVKNHB:
--	case KVM_RISCV_ISA_EXT_ZVKSED:
--	case KVM_RISCV_ISA_EXT_ZVKSH:
--	case KVM_RISCV_ISA_EXT_ZVKT:
--		return false;
--	/* Extensions which can be disabled using Smstateen */
--	case KVM_RISCV_ISA_EXT_SSAIA:
--		return riscv_has_extension_unlikely(RISCV_ISA_EXT_SMSTATEEN);
--	case KVM_RISCV_ISA_EXT_SVADE:
--		/*
--		 * The henvcfg.ADUE is read-only zero if menvcfg.ADUE is zero.
--		 * Svade can't be disabled unless we support Svadu.
--		 */
--		return arch_has_hw_pte_young();
--	default:
--		break;
--	}
--
--	return true;
--}
--
- void kvm_riscv_vcpu_setup_isa(struct kvm_vcpu *vcpu)
- {
- 	unsigned long guest_ext, i;
- 
--	for (i = 0; i < ARRAY_SIZE(kvm_isa_ext_arr); i++) {
-+	for (i = 0; i < KVM_RISCV_ISA_EXT_MAX; i++) {
- 		if (__kvm_riscv_isa_check_host(i, &guest_ext))
- 			continue;
--		if (kvm_riscv_vcpu_isa_enable_allowed(i))
-+		if (kvm_riscv_isa_enable_allowed(i))
- 			set_bit(guest_ext, vcpu->arch.isa);
- 	}
- }
-@@ -361,15 +120,15 @@ static int kvm_riscv_vcpu_set_reg_config(struct kvm_vcpu *vcpu,
- 		if (!vcpu->arch.ran_atleast_once) {
- 			/* Ignore the enable/disable request for certain extensions */
- 			for (i = 0; i < RISCV_ISA_EXT_BASE; i++) {
--				isa_ext = kvm_riscv_vcpu_base2isa_ext(i);
-+				isa_ext = kvm_riscv_base2isa_ext(i);
- 				if (isa_ext >= KVM_RISCV_ISA_EXT_MAX) {
- 					reg_val &= ~BIT(i);
- 					continue;
- 				}
--				if (!kvm_riscv_vcpu_isa_enable_allowed(isa_ext))
-+				if (!kvm_riscv_isa_enable_allowed(isa_ext))
- 					if (reg_val & BIT(i))
- 						reg_val &= ~BIT(i);
--				if (!kvm_riscv_vcpu_isa_disable_allowed(isa_ext))
-+				if (!kvm_riscv_isa_disable_allowed(isa_ext))
- 					if (!(reg_val & BIT(i)))
- 						reg_val |= BIT(i);
- 			}
-@@ -693,10 +452,10 @@ static int riscv_vcpu_set_isa_ext_single(struct kvm_vcpu *vcpu,
- 		 * extension can be disabled
- 		 */
- 		if (reg_val == 1 &&
--		    kvm_riscv_vcpu_isa_enable_allowed(reg_num))
-+		    kvm_riscv_isa_enable_allowed(reg_num))
- 			set_bit(guest_ext, vcpu->arch.isa);
- 		else if (!reg_val &&
--			 kvm_riscv_vcpu_isa_disable_allowed(reg_num))
-+			 kvm_riscv_isa_disable_allowed(reg_num))
- 			clear_bit(guest_ext, vcpu->arch.isa);
- 		else
- 			return -EINVAL;
-diff --git a/arch/riscv/kvm/vcpu_pmu.c b/arch/riscv/kvm/vcpu_pmu.c
-index 9759143c1785..5d37830c59b6 100644
---- a/arch/riscv/kvm/vcpu_pmu.c
-+++ b/arch/riscv/kvm/vcpu_pmu.c
-@@ -7,15 +7,16 @@
-  */
- 
- #define pr_fmt(fmt)	"riscv-kvm-pmu: " fmt
-+#include <linux/bitops.h>
- #include <linux/errno.h>
- #include <linux/err.h>
- #include <linux/kvm_host.h>
- #include <linux/perf/riscv_pmu.h>
- #include <asm/csr.h>
-+#include <asm/kvm_isa.h>
- #include <asm/kvm_vcpu_sbi.h>
- #include <asm/kvm_vcpu_pmu.h>
- #include <asm/sbi.h>
--#include <linux/bitops.h>
- 
- #define kvm_pmu_num_counters(pmu) ((pmu)->num_hw_ctrs + (pmu)->num_fw_ctrs)
- #define get_event_type(x) (((x) & SBI_PMU_EVENT_IDX_TYPE_MASK) >> 16)
-diff --git a/arch/riscv/kvm/vcpu_timer.c b/arch/riscv/kvm/vcpu_timer.c
-index cac4f3a5f213..9817ff802821 100644
---- a/arch/riscv/kvm/vcpu_timer.c
-+++ b/arch/riscv/kvm/vcpu_timer.c
-@@ -12,6 +12,7 @@
- #include <linux/uaccess.h>
- #include <clocksource/timer-riscv.h>
- #include <asm/delay.h>
-+#include <asm/kvm_isa.h>
- #include <asm/kvm_nacl.h>
- #include <asm/kvm_vcpu_timer.h>
- 
-diff --git a/arch/riscv/kvm/vcpu_vector.c b/arch/riscv/kvm/vcpu_vector.c
-index 8c7315a96b9e..a36e9e2c28df 100644
---- a/arch/riscv/kvm/vcpu_vector.c
-+++ b/arch/riscv/kvm/vcpu_vector.c
-@@ -12,6 +12,7 @@
- #include <linux/kvm_host.h>
- #include <linux/uaccess.h>
- #include <asm/cpufeature.h>
-+#include <asm/kvm_isa.h>
- #include <asm/kvm_vcpu_vector.h>
- #include <asm/vector.h>
- 
--- 
-2.43.0
-
+The concern is that before AMD's FRED KVM support is implemented, FRED will be
+exposed to userspace on AMD FRED-capable hardware. This may cause issues.
