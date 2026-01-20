@@ -1,108 +1,106 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from out30-113.freemail.mail.aliyun.com (out30-113.freemail.mail.aliyun.com [115.124.30.113])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B106344BC8F;
-	Tue, 20 Jan 2026 14:07:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 32065500940;
+	Tue, 20 Jan 2026 14:22:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.30.113
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768918064; cv=none; b=Gv5P1wgIT73jG2ny/lW5O+4cuGnZVmejezEYP/ph9oQbG4eV4Pbs21ULU4t1zNSwccQhuaAGX2IwRA+fNq8oBYJTySY85mV46hPLLtJAW8j7yYDbGpgDTSWApdbM//65rS/nzuJlze1O0sMtMGpNGS5kWCpNMu2PeUqAI6hFhQI=
+	t=1768918947; cv=none; b=SVFS0Ka+PjO53QnV60HUDcQC6DBZY8CGrZ4Scy5topH5TwWVShKW5JTiIlXY5Er2X6nA9Z897TzluvWljOimuQKTBGcAcDPxGRv5uJY6kQi4TUqdK7JhCshaub2QSPNgu1fz1+M0xqCFRgatgMM6ygBzLe/W5mQZwOKR1PKyp4I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768918064; c=relaxed/simple;
-	bh=+j0ekknPQd/d3gRAxiqnNNnfw0hqFAwwAjsZYhI192Y=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=n9IuiPqazEo4QYwDyoPvwMdwEs0KDvUm54u6F38pHnZ4aiIO/PU/VvDeM9NzIz3HUDAx4qw+MBWDG+FsYmeP9ryuFH/Uay7Uf3FWD2JTRVX8VdF6IZMRYISxjCnaaxYrXFTZK8++K81//XqUreY/NEplZulDCXdyE80ATrUVsa8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ijj/wO77; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1768918947; c=relaxed/simple;
+	bh=swLXCQOH+1mmpzdujIfEJlXid1sDiggMBxCN37vNuHg=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=CrAhPCxhQS0ECX+RAnnvH4wYF4ea/KnL+mVLCn7Of+ypLBs2SMX/biCcShAIer1bjIOYekPm/Ytrv5O5E31xVfYh9pp/rh7bs64F/CyCi37QKEabyhptRik8mHWgDK/ircDcaMnVnP1mfUSPD/Rs/sh4jNya44wehieqpyjvRW8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; spf=pass smtp.mailfrom=linux.alibaba.com; dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b=Qj7xAxzI; arc=none smtp.client-ip=115.124.30.113
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.alibaba.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ijj/wO77"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A92D6C16AAE;
-	Tue, 20 Jan 2026 14:07:43 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1768918064;
-	bh=+j0ekknPQd/d3gRAxiqnNNnfw0hqFAwwAjsZYhI192Y=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ijj/wO771lycS6FKxtpygkeK/BYUHKt2nUSEqMQc/fe3SpJqqJcZ/BWCkpIQHgiev
-	 S+Mf1rPln8yu+F+l0oxZG17ZYhJVhUmOOaXGRiQiIBKGtLNc0IgMJWG2CRJYDmkieP
-	 5a/VPKZauZJfX0w5M94s+0B+uQ1I4TbxB1ftUo/dLav7fV9nfxwwD7OdKnSh9ZF6iI
-	 /6dB5AHN3tBpnq0H+i2vDN0zwB0+7FapFUTpuAq/16it37Dv+DIWjBTSnV+vXDMZEJ
-	 wa4KiwHpfHeh/NIPj1cnYuRyh73tj+UYbl1afb2guZsXGQRwLqiccEkTVLl9YVBg3w
-	 6Da43ktVUa1LQ==
-From: Leon Romanovsky <leon@kernel.org>
-To: Sumit Semwal <sumit.semwal@linaro.org>,
-	=?utf-8?q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	David Airlie <airlied@gmail.com>,
-	Simona Vetter <simona@ffwll.ch>,
-	Gerd Hoffmann <kraxel@redhat.com>,
-	Dmitry Osipenko <dmitry.osipenko@collabora.com>,
-	Gurchetan Singh <gurchetansingh@chromium.org>,
-	Chia-I Wu <olvaffe@gmail.com>,
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-	Maxime Ripard <mripard@kernel.org>,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	Lucas De Marchi <lucas.demarchi@intel.com>,
-	=?utf-8?q?Thomas_Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
-	Rodrigo Vivi <rodrigo.vivi@intel.com>,
-	Jason Gunthorpe <jgg@ziepe.ca>,
-	Leon Romanovsky <leon@kernel.org>,
-	Kevin Tian <kevin.tian@intel.com>,
-	Joerg Roedel <joro@8bytes.org>,
-	Will Deacon <will@kernel.org>,
-	Robin Murphy <robin.murphy@arm.com>,
-	Felix Kuehling <Felix.Kuehling@amd.com>,
-	Alex Williamson <alex@shazbot.org>,
-	Ankit Agrawal <ankita@nvidia.com>,
-	Vivek Kasireddy <vivek.kasireddy@intel.com>
-Cc: linux-media@vger.kernel.org,
-	dri-devel@lists.freedesktop.org,
-	linaro-mm-sig@lists.linaro.org,
+	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b="Qj7xAxzI"
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux.alibaba.com; s=default;
+	t=1768918938; h=From:To:Subject:Date:Message-Id:MIME-Version;
+	bh=wD/viQYhsRUrgX+bgboJYmyufn5Ii5TsHLlk29tx4N4=;
+	b=Qj7xAxzIALcB5+uUzvDddG0O7KBgD2HaUVplzIRtHIo/4LUkXf0V6qUZED130gy2rpJyrne0a041Fca82DKvNGQ4YDB2w828ScoWZz+6gED0OwSEPPC3pia8K4TeQjYtXMiaAfV7lU0XOtbrAcSb9G3mc8KtVUmWvOXt7/04+qc=
+Received: from localhost.localdomain(mailfrom:fangyu.yu@linux.alibaba.com fp:SMTPD_---0WxUjVe1_1768918934 cluster:ay36)
+          by smtp.aliyun-inc.com;
+          Tue, 20 Jan 2026 22:22:16 +0800
+From: fangyu.yu@linux.alibaba.com
+To: andrew.jones@oss.qualcomm.com
+Cc: ajones@ventanamicro.com,
+	alex@ghiti.fr,
+	anup@brainfault.org,
+	aou@eecs.berkeley.edu,
+	atish.patra@linux.dev,
+	corbet@lwn.net,
+	fangyu.yu@linux.alibaba.com,
+	guoren@kernel.org,
+	kvm-riscv@lists.infradead.org,
+	kvm@vger.kernel.org,
+	linux-doc@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
-	amd-gfx@lists.freedesktop.org,
-	virtualization@lists.linux.dev,
-	intel-xe@lists.freedesktop.org,
-	linux-rdma@vger.kernel.org,
-	iommu@lists.linux.dev,
-	kvm@vger.kernel.org
-Subject: [PATCH v3 7/7] vfio: Validate dma-buf revocation semantics
-Date: Tue, 20 Jan 2026 16:07:07 +0200
-Message-ID: <20260120-dmabuf-revoke-v3-7-b7e0b07b8214@nvidia.com>
-X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260120-dmabuf-revoke-v3-0-b7e0b07b8214@nvidia.com>
-References: <20260120-dmabuf-revoke-v3-0-b7e0b07b8214@nvidia.com>
+	linux-riscv@lists.infradead.org,
+	palmer@dabbelt.com,
+	pbonzini@redhat.com,
+	pjw@kernel.org,
+	rkrcmar@ventanamicro.com
+Subject: Re: Re: [PATCH v2] RISC-V: KVM: add KVM_CAP_RISCV_SET_HGATP_MODE
+Date: Tue, 20 Jan 2026 22:22:10 +0800
+Message-Id: <20260120142210.9891-1-fangyu.yu@linux.alibaba.com>
+X-Mailer: git-send-email 2.39.3 (Apple Git-146)
+In-Reply-To: <6txqxrkyqh4afmked4hdi6qekkqrb54ar3q5upz3ennnuaktsi@dtoarqt7e26t>
+References: <6txqxrkyqh4afmked4hdi6qekkqrb54ar3q5upz3ennnuaktsi@dtoarqt7e26t>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-X-Mailer: b4 0.15-dev-a6db3
 Content-Transfer-Encoding: 8bit
 
-From: Leon Romanovsky <leonro@nvidia.com>
+>...
+>> +	case KVM_CAP_RISCV_SET_HGATP_MODE:
+>> +#ifdef CONFIG_64BIT
+>> +		if (cap->args[0] < HGATP_MODE_SV39X4 ||
+>> +			cap->args[0] > kvm_riscv_gstage_max_mode)
+>> +			return -EINVAL;
+>> +		if (kvm->arch.gstage_mode_initialized)
+>> +			return 0;
+>> +		kvm->arch.gstage_mode_initialized = true;
+>> +		kvm->arch.kvm_riscv_gstage_mode = cap->args[0];
+>> +		kvm->arch.kvm_riscv_gstage_pgd_levels = 3 +
+>> +		    kvm->arch.kvm_riscv_gstage_mode - HGATP_MODE_SV39X4;
+>> +		kvm_info("using SV%lluX4 G-stage page table format\n",
+>> +			39 + (cap->args[0] - HGATP_MODE_SV39X4) * 9);
+>
+>I don't think we want this kvm_info line, particularly if it doesn't also
+>include a VM ID in some form to allow readers to know which VM is using
+>the selected format. Let's either drop it or change it to kvm_debug and
+>include a VM ID.
 
-Use the new dma_buf_attach_revocable() helper to restrict attachments to
-importers that support mapping invalidation.
+Agreed, I will switch it to kvm_debug() and include a VM ID.
 
-Signed-off-by: Leon Romanovsky <leonro@nvidia.com>
----
- drivers/vfio/pci/vfio_pci_dmabuf.c | 3 +++
- 1 file changed, 3 insertions(+)
-
-diff --git a/drivers/vfio/pci/vfio_pci_dmabuf.c b/drivers/vfio/pci/vfio_pci_dmabuf.c
-index 33bc6a1909dd..0c7782a51912 100644
---- a/drivers/vfio/pci/vfio_pci_dmabuf.c
-+++ b/drivers/vfio/pci/vfio_pci_dmabuf.c
-@@ -31,6 +31,9 @@ static int vfio_pci_dma_buf_attach(struct dma_buf *dmabuf,
- 	if (priv->revoked)
- 		return -ENODEV;
- 
-+	if (!dma_buf_attach_revocable(attachment))
-+		return -EOPNOTSUPP;
-+
- 	return 0;
- }
- 
-
--- 
-2.52.0
-
+>
+>Thanks,
+>drew
+>
+>> +#endif
+>> +		return 0;
+>>  	default:
+>>  		return -EINVAL;
+>>  	}
+>> diff --git a/include/uapi/linux/kvm.h b/include/uapi/linux/kvm.h
+>> index dddb781b0507..00c02a880518 100644
+>> --- a/include/uapi/linux/kvm.h
+>> +++ b/include/uapi/linux/kvm.h
+>> @@ -974,6 +974,7 @@ struct kvm_enable_cap {
+>>  #define KVM_CAP_GUEST_MEMFD_FLAGS 244
+>>  #define KVM_CAP_ARM_SEA_TO_USER 245
+>>  #define KVM_CAP_S390_USER_OPEREXEC 246
+>> +#define KVM_CAP_RISCV_SET_HGATP_MODE 247
+>>  
+>>  struct kvm_irq_routing_irqchip {
+>>  	__u32 irqchip;
+>> -- 
+>> 2.50.1
+>
+>
