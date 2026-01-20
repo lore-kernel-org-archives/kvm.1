@@ -1,96 +1,171 @@
-Received: from out198-4.us.a.mail.aliyun.com (out198-4.us.a.mail.aliyun.com [47.90.198.4])
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A606A3B8BAA;
-	Tue, 20 Jan 2026 07:55:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=47.90.198.4
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D8D33BB9EB;
+	Tue, 20 Jan 2026 08:00:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768895727; cv=none; b=OCQi/0z/CqBAABWy4NU4b8nVnVQLZucwZyOz6yfy8fM0qa7gN1v572NeObcEFhX9q2Wvd1eV0Aw5ww+qDvD6xf2SYfMiCi5isFRYH71RAZcJvSyMT2MYJAL72Mfvnxhj5ujrs3UbkneRvnOgKq6UWhIi5Djmj8Jvp0CdkKAbAgE=
+	t=1768896036; cv=none; b=XjK63JprBxvHwlUBEJcglEDXtwv8P1LbrKJrry+rf/QwBqrQa+qrhaidwDo9NEBKa00L0yxNj0O9bhlZROGPzC8R5aGeeTEKH5MlCCBhLIlwVDFa05uWtyM9c7MKVsh+9PI03N9nAqBr/SA2T2i6euJ81aHmVF4rT18N17Ggt38=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768895727; c=relaxed/simple;
-	bh=QZk29FQQO3YS6jEtFv67ohyBqxW15m2DvSYWc1T4lJc=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=GsWO/XPM24rhWdCWFJvFHcwr8LhpzXhCaxwhEha34DVesAyIjg4C5eyLcMhuyypgVc7VXyyc0PSPCm7M9I0Vv8+AwkgA9u+bwh8otRkWhM0eVSXjlNGSq/ylcqzMtQXLRwRuSiGfBkRm2z5kCftLh8rFVUbUvGKzyKsIhjY+DH4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=antgroup.com; spf=pass smtp.mailfrom=antgroup.com; dkim=pass (1024-bit key) header.d=antgroup.com header.i=@antgroup.com header.b=IGABEqSc; arc=none smtp.client-ip=47.90.198.4
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=antgroup.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=antgroup.com
+	s=arc-20240116; t=1768896036; c=relaxed/simple;
+	bh=W4PdNV6sccm31jO4xlxqF03/noqqwUURz4okGuidrnQ=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=damRDa+yH1MV/mW2XUbc/gIo0es13kINhqjbJkurm9hSyYMKJPgS/ZOgmNRbKTwcvIxZ3QOaHtx828y8xrnNC7mq877q+JDlyi/3zGfj/lkdwIt6Phu2LpakP6TfHOeEM48mI3ANmBQHDaGxsFcFUJmjQdRbYskg/uOtFwijcCo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=RzTZ7M+Y; arc=none smtp.client-ip=205.220.168.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=qualcomm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=antgroup.com header.i=@antgroup.com header.b="IGABEqSc"
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=antgroup.com; s=default;
-	t=1768895707; h=Date:From:To:Subject:Message-ID:MIME-Version:Content-Type;
-	bh=QoGvGTXjK6AKDlLAnRuGsw6WtbNkZWYFCP32dBqHB7U=;
-	b=IGABEqScJT6NDOwGKiqZUe8W/oz0y0V4ShAWDlkw5D+WyK4yTMri0gGEKtfJAiUqlNqIfcaVh1jEUE6GTfp3RMFlUvU33i7OyxjplLGbHC5A0DUMcSGaRe5P8zcNRfbwrVSM3836w7kQqJr11z9tYQGTZ0AY+LKpBYop11QxtGg=
-Received: from localhost(mailfrom:houwenlong.hwl@antgroup.com fp:SMTPD_---.gAwfoa6_1768894767 cluster:ay29)
-          by smtp.aliyun-inc.com;
-          Tue, 20 Jan 2026 15:39:28 +0800
-Date: Tue, 20 Jan 2026 15:39:27 +0800
-From: Hou Wenlong <houwenlong.hwl@antgroup.com>
-To: linux-kernel@vger.kernel.org
-Cc: Juergen Gross <jgross@suse.com>,
-	Boris Ostrovsky <boris.ostrovsky@oracle.com>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
-	"H. Peter Anvin" <hpa@zytor.com>, kvm@vger.kernel.org,
-	Sean Christopherson <seanjc@google.com>
-Subject: Re: [PATCH RESEND v2] x86/xen/pvh: Enable PAE mode for 32-bit guest
- only when CONFIG_X86_PAE is set
-Message-ID: <20260120073927.GA119722@k08j02272.eu95sqa>
-References: <d09ce9a134eb9cbc16928a5b316969f8ba606b81.1768017442.git.houwenlong.hwl@antgroup.com>
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="RzTZ7M+Y"
+Received: from pps.filterd (m0279863.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 60K29O9Y3176513;
+	Tue, 20 Jan 2026 08:00:19 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-transfer-encoding:date:from:in-reply-to:message-id
+	:mime-version:references:subject:to; s=qcppdkim1; bh=70FVPqWOUc6
+	q+nHQB3unn1JGiYC4Y+KpHz1yQ6rzxfU=; b=RzTZ7M+Y/Q2hZ7Juaa/HTZo5xC4
+	0WVbbxHv0+iX8TbGvd0UqmzJNXTIyxVXcG5gu9RGv+KD05QHt55iU9ctqqzNA2xK
+	uaCGx/yb/oRG4pHp9eFc/VpR0QfdYP2gvn2T/g5zWqHtKFuZxQGfYo1ZLeUDqR4b
+	wN0hZq/vt6i6Q4b4XSfpMPYJxxPLQbqIlZ5tcDYkaH+9P6rJtYWBAAbQqBMNLe4I
+	ibYRlFpiC95FRhdkJ3aK7J5JZVRnUa1NHwlLkU8+XmXzA49uPdI25AjfYNDONSI3
+	IbSri4A7HHQC+VaecXXyx69vRGg/r6OQStDygsyRJiMysO1ZYbhiXT8bWpQ==
+Received: from apblrppmta02.qualcomm.com (blr-bdr-fw-01_GlobalNAT_AllZones-Outside.qualcomm.com [103.229.18.19])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4bt0p2gx27-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 20 Jan 2026 08:00:18 +0000 (GMT)
+Received: from pps.filterd (APBLRPPMTA02.qualcomm.com [127.0.0.1])
+	by APBLRPPMTA02.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTP id 60K80FpJ007859;
+	Tue, 20 Jan 2026 08:00:15 GMT
+Received: from pps.reinject (localhost [127.0.0.1])
+	by APBLRPPMTA02.qualcomm.com (PPS) with ESMTPS id 4br3gm8q4s-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 20 Jan 2026 08:00:15 +0000
+Received: from APBLRPPMTA02.qualcomm.com (APBLRPPMTA02.qualcomm.com [127.0.0.1])
+	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 60K80FQ6007834;
+	Tue, 20 Jan 2026 08:00:15 GMT
+Received: from hu-devc-blr-u24-a.qualcomm.com (hu-anuppate-blr.qualcomm.com [10.131.36.165])
+	by APBLRPPMTA02.qualcomm.com (PPS) with ESMTPS id 60K80FsL007822
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 20 Jan 2026 08:00:15 +0000
+Received: by hu-devc-blr-u24-a.qualcomm.com (Postfix, from userid 486687)
+	id 960FC21A15; Tue, 20 Jan 2026 13:30:14 +0530 (+0530)
+From: Anup Patel <anup.patel@oss.qualcomm.com>
+To: Paolo Bonzini <pbonzini@redhat.com>, Atish Patra <atish.patra@linux.dev>
+Cc: Palmer Dabbelt <palmer@dabbelt.com>, Paul Walmsley <pjw@kernel.org>,
+        Alexandre Ghiti <alex@ghiti.fr>, Shuah Khan <shuah@kernel.org>,
+        Anup Patel <anup@brainfault.org>,
+        Andrew Jones <andrew.jones@oss.qualcomm.com>,
+        kvm-riscv@lists.infradead.org, kvm@vger.kernel.org,
+        linux-riscv@lists.infradead.org, linux-kernel@vger.kernel.org,
+        linux-kselftest@vger.kernel.org,
+        Anup Patel <anup.patel@oss.qualcomm.com>
+Subject: [PATCH 01/27] RISC-V: KVM: Fix error code returned for Smstateen ONE_REG
+Date: Tue, 20 Jan 2026 13:29:47 +0530
+Message-ID: <20260120080013.2153519-2-anup.patel@oss.qualcomm.com>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20260120080013.2153519-1-anup.patel@oss.qualcomm.com>
+References: <20260120080013.2153519-1-anup.patel@oss.qualcomm.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <d09ce9a134eb9cbc16928a5b316969f8ba606b81.1768017442.git.houwenlong.hwl@antgroup.com>
-User-Agent: Mutt/1.5.21 (2010-09-15)
+Content-Transfer-Encoding: 8bit
+X-QCInternal: smtphost
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-ORIG-GUID: RHm1NnSvan5Fuj4Vn-KmYzClBeBGL1HQ
+X-Authority-Analysis: v=2.4 cv=drTWylg4 c=1 sm=1 tr=0 ts=696f3613 cx=c_pps
+ a=Ou0eQOY4+eZoSc0qltEV5Q==:117 a=Ou0eQOY4+eZoSc0qltEV5Q==:17
+ a=vUbySO9Y5rIA:10 a=VkNPw1HP01LnGYTKEx00:22 a=EUspDBNiAAAA:8
+ a=TSmjHFh1LFP8C4-irMcA:9
+X-Proofpoint-GUID: RHm1NnSvan5Fuj4Vn-KmYzClBeBGL1HQ
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMTIwMDA2NiBTYWx0ZWRfX10W8eDU9xlJ2
+ fpqkkTDK0+y/dyFI0hEDZbjy2BmJjzmvAvOUprJhBmlmNxdrNOt9h7PYN5ULt9tR/pplcxe0lCx
+ ufS3yPj0ZL1gfH9xWbU6vTzEctbMIHxqZBw1p0EsvcMGW9NeOFpvqTnP5wvq0GA5sPB0opsZJFV
+ Sh9SWcq27CMXgVHObHV+edv9HWx5gMoVlu76dptHfLWaxBBU3zuJ8EEghvv1LcByuoankAvFuun
+ 9f7kjeNz8uUb96uqm0F0ehGUvPf9e7jncAxX7qjCTgYmJG2Qc5TA8AY+d/dDlHThqvxc4xvA49u
+ 62pbhekF5/etmCJbYdZeVKth8QMIueCSp7oyZfzKoh+9KLyIgVzsMOVhzIBiLmq46Y+eIIb90pX
+ 65CcPtk+CpMVG9FV2cdgdfUVx9cStpU2u3I/rJAXLrzN+qgsNVmB7Gt8cmg1bIDrUUOZep6H+vF
+ VOwqKwVr6Pigc7edHbg==
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
+ definitions=2026-01-20_02,2026-01-19_03,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ suspectscore=0 spamscore=0 bulkscore=0 adultscore=0 impostorscore=0
+ malwarescore=0 priorityscore=1501 clxscore=1015 lowpriorityscore=0
+ phishscore=0 classifier=typeunknown authscore=0 authtc= authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2601150000
+ definitions=main-2601200066
 
-+kvm, I'm not sure whether it is needed.
+Return -ENOENT for Smstateen ONE_REG when:
+1) Smstateen is not enabled for a VCPU
+2) When ONE_REG id is out of range
 
-On Sat, Jan 10, 2026 at 12:00:08PM +0800, Hou Wenlong wrote:
-> The PVH entry is available for 32-bit KVM guests, and 32-bit KVM guests
-> do not depend on CONFIG_X86_PAE. However, mk_early_pgtbl_32() builds
-> different pagetables depending on whether CONFIG_X86_PAE is set.
-> Therefore, enabling PAE mode for 32-bit KVM guests without
-> CONFIG_X86_PAE being set would result in a boot failure during CR3
-> loading.
-> 
-> Signed-off-by: Hou Wenlong <houwenlong.hwl@antgroup.com>
-> Reviewed-by: Juergen Gross <jgross@suse.com>
-> ---
-> I resend this because I encountered the 32-bit KVM guest PVH booting failure again. I
-> hope this can be fixed.
-> original v2:
-> https://lore.kernel.org/all/0469c27833be58aa66471920aa77922489d86c63.1713873613.git.houwenlong.hwl@antgroup.com
-> ---
->  arch/x86/platform/pvh/head.S | 2 ++
->  1 file changed, 2 insertions(+)
-> 
-> diff --git a/arch/x86/platform/pvh/head.S b/arch/x86/platform/pvh/head.S
-> index 344030c1a81d..53ee2d53fcf8 100644
-> --- a/arch/x86/platform/pvh/head.S
-> +++ b/arch/x86/platform/pvh/head.S
-> @@ -91,10 +91,12 @@ SYM_CODE_START(pvh_start_xen)
->  
->  	leal rva(early_stack_end)(%ebp), %esp
->  
-> +#if defined(CONFIG_X86_64) || defined(CONFIG_X86_PAE)
->  	/* Enable PAE mode. */
->  	mov %cr4, %eax
->  	orl $X86_CR4_PAE, %eax
->  	mov %eax, %cr4
-> +#endif
->  
->  #ifdef CONFIG_X86_64
->  	/* Enable Long mode. */
-> 
-> base-commit: b7dccac786071bba98b0d834c517fd44a22c50f9
-> prerequisite-patch-id: 590fa7e96c6bb8e0b9d15017cfa5ce1eb314957a
-> -- 
-> 2.31.1
-> 
-> 
+This will make Smstateen ONE_REG error codes consistent
+with other ONE_REG interfaces of KVM RISC-V.
+
+Fixes: c04913f2b54e ("RISCV: KVM: Add sstateen0 to ONE_REG")
+Signed-off-by: Anup Patel <anup.patel@oss.qualcomm.com>
+---
+ arch/riscv/kvm/vcpu_onereg.c | 18 ++++++++----------
+ 1 file changed, 8 insertions(+), 10 deletions(-)
+
+diff --git a/arch/riscv/kvm/vcpu_onereg.c b/arch/riscv/kvm/vcpu_onereg.c
+index e7ab6cb00646..6dab4deed86d 100644
+--- a/arch/riscv/kvm/vcpu_onereg.c
++++ b/arch/riscv/kvm/vcpu_onereg.c
+@@ -549,9 +549,11 @@ static inline int kvm_riscv_vcpu_smstateen_set_csr(struct kvm_vcpu *vcpu,
+ {
+ 	struct kvm_vcpu_smstateen_csr *csr = &vcpu->arch.smstateen_csr;
+ 
++	if (!riscv_isa_extension_available(vcpu->arch.isa, SMSTATEEN))
++		return -ENOENT;
+ 	if (reg_num >= sizeof(struct kvm_riscv_smstateen_csr) /
+ 		sizeof(unsigned long))
+-		return -EINVAL;
++		return -ENOENT;
+ 
+ 	((unsigned long *)csr)[reg_num] = reg_val;
+ 	return 0;
+@@ -563,9 +565,11 @@ static int kvm_riscv_vcpu_smstateen_get_csr(struct kvm_vcpu *vcpu,
+ {
+ 	struct kvm_vcpu_smstateen_csr *csr = &vcpu->arch.smstateen_csr;
+ 
++	if (!riscv_isa_extension_available(vcpu->arch.isa, SMSTATEEN))
++		return -ENOENT;
+ 	if (reg_num >= sizeof(struct kvm_riscv_smstateen_csr) /
+ 		sizeof(unsigned long))
+-		return -EINVAL;
++		return -ENOENT;
+ 
+ 	*out_val = ((unsigned long *)csr)[reg_num];
+ 	return 0;
+@@ -595,10 +599,7 @@ static int kvm_riscv_vcpu_get_reg_csr(struct kvm_vcpu *vcpu,
+ 		rc = kvm_riscv_vcpu_aia_get_csr(vcpu, reg_num, &reg_val);
+ 		break;
+ 	case KVM_REG_RISCV_CSR_SMSTATEEN:
+-		rc = -EINVAL;
+-		if (riscv_has_extension_unlikely(RISCV_ISA_EXT_SMSTATEEN))
+-			rc = kvm_riscv_vcpu_smstateen_get_csr(vcpu, reg_num,
+-							      &reg_val);
++		rc = kvm_riscv_vcpu_smstateen_get_csr(vcpu, reg_num, &reg_val);
+ 		break;
+ 	default:
+ 		rc = -ENOENT;
+@@ -640,10 +641,7 @@ static int kvm_riscv_vcpu_set_reg_csr(struct kvm_vcpu *vcpu,
+ 		rc = kvm_riscv_vcpu_aia_set_csr(vcpu, reg_num, reg_val);
+ 		break;
+ 	case KVM_REG_RISCV_CSR_SMSTATEEN:
+-		rc = -EINVAL;
+-		if (riscv_has_extension_unlikely(RISCV_ISA_EXT_SMSTATEEN))
+-			rc = kvm_riscv_vcpu_smstateen_set_csr(vcpu, reg_num,
+-							      reg_val);
++		rc = kvm_riscv_vcpu_smstateen_set_csr(vcpu, reg_num, reg_val);
+ 		break;
+ 	default:
+ 		rc = -ENOENT;
+-- 
+2.43.0
+
