@@ -1,186 +1,91 @@
-Received: from mail-dl1-f43.google.com (mail-dl1-f43.google.com [74.125.82.43])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail.zytor.com (terminus.zytor.com [198.137.202.136])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F8C943CED7
-	for <kvm@vger.kernel.org>; Tue, 20 Jan 2026 17:57:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.82.43
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768931867; cv=pass; b=MMxPDq2Tiy1VXMc5wA6MmwG8KtBOasTFPEj4p7CMzQUtDj1RP7Bp/O4Wxt0gNFuI/mTL3KeawhrRkpIO5PvjxYIekwMWK0TToM/FbN1gC5PlA6ZAZ7K0+yGer2n0cj6sQdRc3fpmUgsz+JVSsX1hGVmdR1fVWqrcjdCvJWm+VrM=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768931867; c=relaxed/simple;
-	bh=NXMDwBrH68EEQhabhud/Kc3K0VxmDfwum7Xuf2wmBoI=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=aMn+JvrtNBIexEzMraeAjkKZcPIPRhcXboEYuDzGCc5tb1sFf+uMJNBsgOKyXEjPO++M+UiRstzHzDjCjEEXlQMmUA2SnOEzmCCq9JvK0KeqxZFm75icAQ2D/80m+0ToD3PHoEejNRP/Uoee087BpJkhAVwu33HxMgJbkSwPaXI=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=XJ8QG3Hf; arc=pass smtp.client-ip=74.125.82.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2D8032C33D;
+	Tue, 20 Jan 2026 17:59:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.137.202.136
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1768931969; cv=none; b=r+1Vbcd+cSl4tZW6E055w9vgApIGo+DH8JuW4RqxTP2EsHeU/G0Oe0p3s1hTmj1t8zJTSkW4bdv7h3okv6TseQVgT6PnLFR1v1GKPTKPmF9KJQ3DFKqLby1r+VeGojgfYHmNpoqk/9V4syl143UIqhd+mueDHX2ToUSUviNlT9w=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1768931969; c=relaxed/simple;
+	bh=Z3vMuRF1OK9ofc9Kb9lrW4c+DbGca3aIeiMZIbiiwB8=;
+	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
+	 Message-Id:References:To; b=deZw919Ll3anQWl7Oi8sDQ58ikBg6iUPBV+keC6P22rvB1+y8HyyhrLrDmtS9MSSm5hwANB2cWr+s49BK9ewYTnvpe3uAhdp/DQ9SPrmDG0aUkI4TnmCMGntHNrTsc3qvL0g2B/BP5/qCcLuzEHTfwGsUGwaiChzMHr0ftaKHo8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zytor.com; spf=pass smtp.mailfrom=zytor.com; dkim=pass (2048-bit key) header.d=zytor.com header.i=@zytor.com header.b=S1CjESig; arc=none smtp.client-ip=198.137.202.136
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zytor.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=zytor.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="XJ8QG3Hf"
-Received: by mail-dl1-f43.google.com with SMTP id a92af1059eb24-124643b5b18so626c88.0
-        for <kvm@vger.kernel.org>; Tue, 20 Jan 2026 09:57:46 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1768931865; cv=none;
-        d=google.com; s=arc-20240605;
-        b=iByvAFxWpa+GG5lgy7484VKyLo6mU+H9k/oDtZHrthP7KD71sYzHl7NVykBJ1/dGD6
-         fOPgzA/zYgerBhnIda+HVgB+GHoNRzhODJUYwwkLx3q54lEP8szMMxd2AmcfK2pz7UzK
-         uKXZzXYWFsJLZK+KA9Hqx937pRQ3hoLCEbAtXl7FnspDEZUoAP5vWAaH6XmXVdEwLpme
-         RDlJWfvV8ZbXbeyBiJ7NuQlsBbwAECNMOKh7o6nK23pwzaIWOiNiC3uL2eTwhefWizYe
-         13dVpTsg6OLNjGOIgRDwczMEwXXF3dey3u3+XqzGC3AKXwqLfvtqesnMh98/TtyVwH5G
-         +Fkw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=1iXhGiKDPUB5tolgim9pOTSSBQ25N8rGsEdEESlfaGk=;
-        fh=gybeT4F0VF46BhChRNNhuacHU83Rns4aTzQ5cWo9KFE=;
-        b=JFWI/hRgAhKlY8tBnOWCMC5sBaaczPMAgmZYUDXoVl6sYIWuyFBElVtPzPD6V73LAd
-         04Fl04bDnA/lKCAK+xjEx5Q7MFPhy0rAnc5MGFiVYPnnecwHARcXW3L6rgUTnRGqcIni
-         NO7YC3qph5LawUekD8MaXTlluM/rIPzQBJvQ20D+KzSKHatGiC7FdYVcDW5+04iaqFGw
-         aQS+qrmPFhwWRAvhqZlQ3JL/4/RybmPjNlMOBW+nKE4PuhnpGAD2ryGv85xdCG8kfp3g
-         zKgN1r8X+vPxzo7Z9E4uC8ZPxFVghCpAoX38XW5jnjBDRuWSBoC6EMee/b7XbqU+RLAn
-         TB8A==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1768931865; x=1769536665; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=1iXhGiKDPUB5tolgim9pOTSSBQ25N8rGsEdEESlfaGk=;
-        b=XJ8QG3HfN3O7yIuUa8EYE3cc9zeEVoF9jwF/roLNlsBNfyRwvlAo7eCQQLMco6ye+5
-         Ff1C+j/qVyMnv+Cvur+a7iDOQuQsHhv+bMitbG7uHSI+bnnY3fgOIo40dh3Y6R2F9n8J
-         s8o53A0xsbcGKm4GWS9e+RfzBovRu4QB0V0Etj/QKIxZud1zcNQsUPeipYI/aSR+8B4z
-         bpamZZPh45El3Zl1hrBxTvTqlazt/Mxfd12Zni+d4Vo1BVcvW41xe5bIfAG/9FZ5vRcs
-         m+xfHVQMApwp9jng5l2cgsJUaQfNoONt2fYoJFy2sMCX7HPxvgUoCSjdyuyGHL954DYv
-         YzPA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1768931865; x=1769536665;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=1iXhGiKDPUB5tolgim9pOTSSBQ25N8rGsEdEESlfaGk=;
-        b=WT+PRwiW3c5KKsb60k9sVXkLJM9j3UNWXZl5jmOrh28Q/P7FlQiH298FM8p9ny7loi
-         vwdfozBFZZVDbQyt+j1DNr9cIbdjZ3MwpmVdLwbzxmz27bp7iBN6lMDZWOCnq6NpJl/j
-         5E4gtKTLSSlYIeD1JY22+PLKUZ1h6BBACP6wm6nUHq6s7ZAQg6Kt2RrM4KtwYe9ZjwNd
-         bO5qjFOuIASNE4rN/vW/fAo5sNaEpS5XenKeiElvyeigjYiDXRqUXaiS13tYEUVYdKdY
-         LAKEXn/elWywtOf4vtRvvBD/kHoughSvpUPIIusBzsC/qKZWD2nszikbzbfkOE2dbSxW
-         QR4g==
-X-Forwarded-Encrypted: i=1; AJvYcCUhaxLzhYs0304rzX4/u8qmuchlmO3QXn9PhcwlrQ0tpTyyHZPp5cqQRxzucAIUKhqYtD4=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxSBvcs+szHaDOwBizS9wCrqQJgpY/WQQM2pS2Pr1udxQV07SQl
-	HscgccOG+WsDAdOknd3W1mHKj7EVfC4iWX8K07ZKqXee2FZbGK2a80ga8vknZukAqOznubvqB3h
-	f0XMVn9zn4wgiQxtLHFjVwiwwFf8iKV78mSjrgGJm
-X-Gm-Gg: AY/fxX7lWSjktcvzH5gbznt5zGHvi2xoyPmmfUOfgU9iYZkrNQBzg4d6jIHDYpYN8L5
-	+xqpkJDT9bOyEKWGuvL2miEu4mRA86yVARv+3gZ0iov4ivTitXnwCohcSq6iqXCYLMtJpUrQ3r2
-	3k3F2/gm2vJ05SNwPGek21FkXHpKkdvthV9ObtenUPqZFsZ72wSSAiuCLw/GY58AzZF4r/Y3X5B
-	QZQBRHEoIRVtVba4qPzSeYl3LtADxIm/tzR8SBFqGRTEb8dhzqAgKmBYmAF3FBa921buezR6tx8
-	hdn6uSaHrO7sHjIVJVMEvK5hhAZz
-X-Received: by 2002:a05:7022:1581:b0:120:5719:624b with SMTP id
- a92af1059eb24-12453d71f45mr375564c88.18.1768931864907; Tue, 20 Jan 2026
- 09:57:44 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=zytor.com header.i=@zytor.com header.b="S1CjESig"
+Received: from smtpclient.apple (c-24-130-165-117.hsd1.ca.comcast.net [24.130.165.117])
+	(authenticated bits=0)
+	by mail.zytor.com (8.18.1/8.17.1) with ESMTPSA id 60KHwoOO3814042
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NO);
+	Tue, 20 Jan 2026 09:58:50 -0800
+DKIM-Filter: OpenDKIM Filter v2.11.0 mail.zytor.com 60KHwoOO3814042
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=zytor.com;
+	s=2025122301; t=1768931932;
+	bh=Z3vMuRF1OK9ofc9Kb9lrW4c+DbGca3aIeiMZIbiiwB8=;
+	h=Subject:From:In-Reply-To:Date:Cc:References:To:From;
+	b=S1CjESige/1NJ92fjRB1BdUzyGmaPSBcDiQ61RBukHJMHpOSPytI5qiVOrl2ARZxZ
+	 /W4/Fi00bS58Txm7txN/6dAgAvinCYdXrr7+Zgq6NcnKBQWmVljSZ230ku5PExdJjt
+	 7CqFj+xX1L8UQ8JUscC39Fcf7Oz1ZfDU/3tFsIjTgEz69qNuoGMwpmUEa7jLNi9YvF
+	 rqE2rOBpTq+CO4GMmk+z3YUXFcFlEjPvAPYyeGt8lquFwAWQY4743ucA/F+EUaP3JM
+	 nh0NF9vicVZVfyFBTdNM2sAgNRS7MnPsvYHFGKQAQGliYKwmEEaH16lji8CeDmolqh
+	 3ykHgAekmf+Iw==
+Content-Type: text/plain;
+	charset=utf-8
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <20260106101646.24809-1-yan.y.zhao@intel.com> <20260106102136.25108-1-yan.y.zhao@intel.com>
- <2906b4d3b789985917a063d095c4063ee6ab7b72.camel@intel.com> <aWrMIeCw2eaTbK5Z@google.com>
-In-Reply-To: <aWrMIeCw2eaTbK5Z@google.com>
-From: Vishal Annapurve <vannapurve@google.com>
-Date: Tue, 20 Jan 2026 09:57:32 -0800
-X-Gm-Features: AZwV_QhSaRVEQEBxN7hEUUX-nhtYVkYAE_TtQWJWs_dX2f1VSEWmANBDjmRr-XY
-Message-ID: <CAGtprH9OWFJc=_T=rChSjhJ3utPNcV_L_+-zq5uqtmXm-ffgNQ@mail.gmail.com>
-Subject: Re: [PATCH v3 11/24] KVM: x86/mmu: Introduce kvm_split_cross_boundary_leafs()
-To: Sean Christopherson <seanjc@google.com>
-Cc: Kai Huang <kai.huang@intel.com>, "pbonzini@redhat.com" <pbonzini@redhat.com>, 
-	Yan Y Zhao <yan.y.zhao@intel.com>, "kvm@vger.kernel.org" <kvm@vger.kernel.org>, Fan Du <fan.du@intel.com>, 
-	Xiaoyao Li <xiaoyao.li@intel.com>, Chao Gao <chao.gao@intel.com>, 
-	Dave Hansen <dave.hansen@intel.com>, "thomas.lendacky@amd.com" <thomas.lendacky@amd.com>, 
-	"vbabka@suse.cz" <vbabka@suse.cz>, "tabba@google.com" <tabba@google.com>, "david@kernel.org" <david@kernel.org>, 
-	"kas@kernel.org" <kas@kernel.org>, "michael.roth@amd.com" <michael.roth@amd.com>, Ira Weiny <ira.weiny@intel.com>, 
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, 
-	"binbin.wu@linux.intel.com" <binbin.wu@linux.intel.com>, 
-	"ackerleytng@google.com" <ackerleytng@google.com>, "nik.borisov@suse.com" <nik.borisov@suse.com>, 
-	Isaku Yamahata <isaku.yamahata@intel.com>, Chao P Peng <chao.p.peng@intel.com>, 
-	"francescolavra.fl@gmail.com" <francescolavra.fl@gmail.com>, "sagis@google.com" <sagis@google.com>, 
-	Rick P Edgecombe <rick.p.edgecombe@intel.com>, Jun Miao <jun.miao@intel.com>, 
-	"jgross@suse.com" <jgross@suse.com>, "pgonda@google.com" <pgonda@google.com>, "x86@kernel.org" <x86@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3864.300.41.1.7\))
+Subject: Re: [PATCH v9 17/22] KVM: x86: Advertise support for FRED
+From: Xin Li <xin@zytor.com>
+In-Reply-To: <04d96812-f74a-4f43-9ea4-c4f2723251c5@linux.intel.com>
+Date: Tue, 20 Jan 2026 09:58:40 -0800
+Cc: Chao Gao <chao.gao@intel.com>, linux-kernel@vger.kernel.org,
+        kvm@vger.kernel.org, linux-doc@vger.kernel.org, pbonzini@redhat.com,
+        seanjc@google.com, corbet@lwn.net, tglx@linutronix.de,
+        mingo@redhat.com, bp@alien8.de, dave.hansen@linux.intel.com,
+        x86@kernel.org, hpa@zytor.com, luto@kernel.org, peterz@infradead.org,
+        andrew.cooper3@citrix.com, hch@infradead.org, sohil.mehta@intel.com
 Content-Transfer-Encoding: quoted-printable
+Message-Id: <C6C0D514-BCE0-4ADD-9110-3FC7A2E813F8@zytor.com>
+References: <20251026201911.505204-1-xin@zytor.com>
+ <20251026201911.505204-18-xin@zytor.com> <aRQ3ngRvif/0QRTC@intel.com>
+ <71F2B269-4D29-4B23-9111-E43CDD09CF13@zytor.com> <aW83vbC2KB6CZDvl@intel.com>
+ <C3F658E2-BB0D-4461-8412-F4BC5BCB2298@zytor.com>
+ <04d96812-f74a-4f43-9ea4-c4f2723251c5@linux.intel.com>
+To: Binbin Wu <binbin.wu@linux.intel.com>
+X-Mailer: Apple Mail (2.3864.300.41.1.7)
 
-On Fri, Jan 16, 2026 at 3:39=E2=80=AFPM Sean Christopherson <seanjc@google.=
-com> wrote:
->
-> On Thu, Jan 15, 2026, Kai Huang wrote:
-> > static int __kvm_tdp_mmu_split_huge_pages(struct kvm *kvm,
-> >                                         struct kvm_gfn_range *range,
-> >                                         int target_level,
-> >                                         bool shared,
-> >                                         bool cross_boundary_only)
-> > {
-> >       ...
-> > }
-> >
-> > And by using this helper, I found the name of the two wrapper functions
-> > are not ideal:
-> >
-> > kvm_tdp_mmu_try_split_huge_pages() is only for log dirty, and it should
-> > not be reachable for TD (VM with mirrored PT).  But currently it uses
-> > KVM_VALID_ROOTS for root filter thus mirrored PT is also included.  I
-> > think it's better to rename it, e.g., at least with "log_dirty" in the
-> > name so it's more clear this function is only for dealing log dirty (at
-> > least currently).  We can also add a WARN() if it's called for VM with
-> > mirrored PT but it's a different topic.
-> >
-> > kvm_tdp_mmu_gfn_range_split_cross_boundary_leafs() doesn't have
-> > "huge_pages", which isn't consistent with the other.  And it is a bit
-> > long.  If we don't have "gfn_range" in __kvm_tdp_mmu_split_huge_pages()=
-,
-> > then I think we can remove "gfn_range" from
-> > kvm_tdp_mmu_gfn_range_split_cross_boundary_leafs() too to make it short=
-er.
-> >
-> > So how about:
-> >
-> > Rename kvm_tdp_mmu_try_split_huge_pages() to
-> > kvm_tdp_mmu_split_huge_pages_log_dirty(), and rename
-> > kvm_tdp_mmu_gfn_range_split_cross_boundary_leafs() to
-> > kvm_tdp_mmu_split_huge_pages_cross_boundary()
-> >
-> > ?
->
-> I find the "cross_boundary" termininology extremely confusing.  I also di=
-slike
-> the concept itself, in the sense that it shoves a weird, specific concept=
- into
-> the guts of the TDP MMU.
->
-> The other wart is that it's inefficient when punching a large hole.  E.g.=
- say
-> there's a 16TiB guest_memfd instance (no idea if that's even possible), a=
-nd then
-> userpace punches a 12TiB hole.  Walking all ~12TiB just to _maybe_ split =
-the head
-> and tail pages is asinine.
->
-> And once kvm_arch_pre_set_memory_attributes() is dropped, I'm pretty sure=
- the
-> _only_ usage is for guest_memfd PUNCH_HOLE, because unless I'm misreading=
- the
-> code, the usage in tdx_honor_guest_accept_level() is superfluous and conf=
-using.
->
-> For the EPT violation case, the guest is accepting a page.  Just split to=
- the
-> guest's accepted level, I don't see any reason to make things more compli=
-cated
-> than that.
->
-> And then for the PUNCH_HOLE case, do the math to determine which, if any,=
- head
-> and tail pages need to be split, and use the existing APIs to make that h=
-appen.
+>>>=20
+>>> In this case, we need to clear FRED for AMD.
+>>>=20
+>>> The concern is that before AMD's FRED KVM support is implemented, =
+FRED will be
+>>> exposed to userspace on AMD FRED-capable hardware. This may cause =
+issues.
+>>=20
+>> Hmm, I think it=E2=80=99s Qemu does that.
+>>=20
+>> We have 2 filters, one in Qemu and one in KVM, only both are set a =
+feature is enabled.
+>>=20
+>> What I have missed?
+>=20
+> If a newer QEMU (with AMD's FRED support patch) + an older KVM =
+(without AMD's
+> FRED support, but KVM advertises it), it may cause issues.
+>=20
+> I guess it's no safety issue for host though, AMD should also require =
+some
+> control bit(s) to be set to allow guests to use the feature.
+>=20
+> I agree with Chao that it should be cleared for AMD before AMD's FRED =
+KVM
+> support is implemented.
 
-Just a note: Through guest_memfd upstream syncs, we agreed that
-guest_memfd will only allow the punch_hole operation for huge page
-size-aligned ranges for hugetlb and thp backing. i.e. the PUNCH_HOLE
-operation doesn't need to split any EPT mappings for foreseeable
-future.
+
+Damn, I somehow thought the host won=E2=80=99t report FRED on AMD...=
