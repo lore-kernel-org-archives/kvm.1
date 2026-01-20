@@ -1,53 +1,53 @@
 Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D85FF3DA7CD;
-	Tue, 20 Jan 2026 08:00:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB2D13DA7E6;
+	Tue, 20 Jan 2026 08:00:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768896048; cv=none; b=TgF9ytEMH2W9ITlc14cl2oJv0hNim4m9n0At09N5zKwF6SFX9T0S/VQwybknHLATpzeq1IOnLEGwE16mWCQKlqWv/7HKIRYGTZxYdFJZCMg2z4Edmt0qP6IFEe2Pdn4hbaeI91OE3yBTVheqUZXZPzVKZ0pXKa9FPwEN8EbBaog=
+	t=1768896052; cv=none; b=CzutOuN5y3NjIGUJyphbRn5tTFpPLCeo7wD3R0xQkhEjgCpL6y/aVWb7nxDxBK8cG05/86iOk6no2q7VTOjH+ir8i2n3IqDwYULHiF5Bp3aqUNhz+gGOz9QRGFVD1P0HHGbQzBuDSXkfLeA1z0PnP1CN8FLsEBlXV47Tbw68Gb0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768896048; c=relaxed/simple;
-	bh=3fKtYCMra5MdC4giM/DlD0yvCQZY1/ynYgUxVQ1m2ko=;
+	s=arc-20240116; t=1768896052; c=relaxed/simple;
+	bh=WEFkU71b46e12Bd3hZTi7CXh7Xhz03EAyNq5taOVm7k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=F5X6TJCCJtjL14HjZHSBV5RLpyRgID3F3ocLmxZ8UtTJ/uGIrpGxooE3CJzahii5B00XMzw5/vD2diSXXK3rltxX/TZRn+Iqlb1dLhYRNCvU/8Tq1OGulvzqKxylfOnA/XMXhLkCu70+zuSw38XSq7DS1RfWOD8DP5AyjpC+Dmk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=GLEDVYdo; arc=none smtp.client-ip=205.220.168.131
+	 MIME-Version; b=mC3jus7adgF5BwvsX5hkXffC0gDUZG+/y4ytnmCGtdBpbxPi10pYFFmlhnG1KksNOOBd9Sv/AKIibZ1HZfYfUGP88CiXxEBLM3GVExQgfgSjX6d0veiMd8JoIP5cgycFdApI+nPml59AW8P/nNmOFl4WX9gMlCYAXtarN4PKexI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=KPaTeKku; arc=none smtp.client-ip=205.220.168.131
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=qualcomm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="GLEDVYdo"
-Received: from pps.filterd (m0279865.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 60K18Uo53366428;
-	Tue, 20 Jan 2026 08:00:22 GMT
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="KPaTeKku"
+Received: from pps.filterd (m0279862.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 60K33JkR3805148;
+	Tue, 20 Jan 2026 08:00:21 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
 	cc:content-transfer-encoding:date:from:in-reply-to:message-id
-	:mime-version:references:subject:to; s=qcppdkim1; bh=qI6wNHPUAM5
-	kV1n4KodkogzZYXjOHHmvxwFuF+H/mNU=; b=GLEDVYdopU+rHz9Qn55XEC0I0t7
-	EKianR2ONjjFuyLO2p/BGwvhpmS1UEaD7FOFGY2q8AEHABfoHoGcF8lOye7RC5ik
-	uop8SeYxSXUUdpF+n1ZSFivPsr/12wdcUeB0aVQR7fZTYbA2mRVc2ymwXG0cTs6U
-	tzbIS3rpez2LqUc9o+hRgNqetyo7XO5WfrrDON/vt7a8MIe2Fz+Xz6KnNUojibAx
-	qLGVut1HzOJoOreRbLjnWXSvI9aN9vauDTmOMiNGU1RpT2aFRMMVUt4jkaOxh94U
-	ih2nrW/nlIQgljbsaL5/fWuhHpefmwMheBCgVt5Ygo0xDTAQd0pEEFRzZYw==
+	:mime-version:references:subject:to; s=qcppdkim1; bh=L6D8Q/qpBkH
+	ZrHRSr2hQZStPOkorX05cYWshdwfWV/0=; b=KPaTeKkuojHsO53sjm6LoIWtaG2
+	CLa+xPt91fL8X7w7OxHzoVKLEin+lLE1tsQeNRxeJoKQuqEWGo0F3X0sNBJXAxUa
+	xD5AW7/QA2qcDZPQ1peQE3hi45XNnjraDFG7U36wRgy5oFl34r5hJfB/WqRjnFUB
+	FkdMz2BVXRs3qHknQumIRGx3oybnQMI+ng40IWmgDHBQIOcA58CAdOIuVfevmSdM
+	c3ZHypiby1gH+4TAk/vBUWd1a5DqaDce7sRVXZOHyeHF0+DXwyz5bZuWo9xq7Slj
+	0CMdEXTAqWKhnc3BMhMnATONDfUzUnwk8UY6D2VkbprP1rJKqCilGLWqKLw==
 Received: from apblrppmta02.qualcomm.com (blr-bdr-fw-01_GlobalNAT_AllZones-Outside.qualcomm.com [103.229.18.19])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4bsysb11kr-1
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4bt1f88s3m-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 20 Jan 2026 08:00:21 +0000 (GMT)
+	Tue, 20 Jan 2026 08:00:20 +0000 (GMT)
 Received: from pps.filterd (APBLRPPMTA02.qualcomm.com [127.0.0.1])
-	by APBLRPPMTA02.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTP id 60K80Fms007858;
-	Tue, 20 Jan 2026 08:00:17 GMT
+	by APBLRPPMTA02.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTP id 60K80Grh007970;
+	Tue, 20 Jan 2026 08:00:16 GMT
 Received: from pps.reinject (localhost [127.0.0.1])
-	by APBLRPPMTA02.qualcomm.com (PPS) with ESMTPS id 4br3gm8q72-1
+	by APBLRPPMTA02.qualcomm.com (PPS) with ESMTPS id 4br3gm8q66-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 20 Jan 2026 08:00:17 +0000
+	Tue, 20 Jan 2026 08:00:16 +0000
 Received: from APBLRPPMTA02.qualcomm.com (APBLRPPMTA02.qualcomm.com [127.0.0.1])
-	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 60K80FZc007832;
-	Tue, 20 Jan 2026 08:00:17 GMT
+	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 60K80GHN007913;
+	Tue, 20 Jan 2026 08:00:16 GMT
 Received: from hu-devc-blr-u24-a.qualcomm.com (hu-anuppate-blr.qualcomm.com [10.131.36.165])
-	by APBLRPPMTA02.qualcomm.com (PPS) with ESMTPS id 60K80HHU008007
+	by APBLRPPMTA02.qualcomm.com (PPS) with ESMTPS id 60K80Gss007892
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 20 Jan 2026 08:00:17 +0000
+	Tue, 20 Jan 2026 08:00:16 +0000
 Received: by hu-devc-blr-u24-a.qualcomm.com (Postfix, from userid 486687)
-	id D3101255B8; Tue, 20 Jan 2026 13:30:14 +0530 (+0530)
+	id C207325577; Tue, 20 Jan 2026 13:30:14 +0530 (+0530)
 From: Anup Patel <anup.patel@oss.qualcomm.com>
 To: Paolo Bonzini <pbonzini@redhat.com>, Atish Patra <atish.patra@linux.dev>
 Cc: Palmer Dabbelt <palmer@dabbelt.com>, Paul Walmsley <pjw@kernel.org>,
@@ -58,9 +58,9 @@ Cc: Palmer Dabbelt <palmer@dabbelt.com>, Paul Walmsley <pjw@kernel.org>,
         linux-riscv@lists.infradead.org, linux-kernel@vger.kernel.org,
         linux-kselftest@vger.kernel.org,
         Anup Patel <anup.patel@oss.qualcomm.com>
-Subject: [PATCH 19/27] RISC-V: KVM: Redirect nested supervisor ecall and breakpoint traps
-Date: Tue, 20 Jan 2026 13:30:05 +0530
-Message-ID: <20260120080013.2153519-20-anup.patel@oss.qualcomm.com>
+Subject: [PATCH 14/27] RISC-V: KVM: Extend kvm_riscv_vcpu_update_timedelta() for nested virt
+Date: Tue, 20 Jan 2026 13:30:00 +0530
+Message-ID: <20260120080013.2153519-15-anup.patel@oss.qualcomm.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20260120080013.2153519-1-anup.patel@oss.qualcomm.com>
 References: <20260120080013.2153519-1-anup.patel@oss.qualcomm.com>
@@ -75,64 +75,96 @@ X-QCInternal: smtphost
 X-QCInternal: smtphost
 X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
 X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-GUID: qAwbtOiHlOC7r_BIXwCYL-lBI9TlGOD0
-X-Authority-Analysis: v=2.4 cv=XJ89iAhE c=1 sm=1 tr=0 ts=696f3615 cx=c_pps
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMTIwMDA2NSBTYWx0ZWRfX7mzwrHLk2RzX
+ jG+UTSeABLqs3nocBTdnhTpWRfIcrEDS0GJAG7oTXiZ0XIOq1AyG9AhZEGjD3fIyEm8eEVVFWpG
+ jlAPfSIkhbLr747vAslPfcjP3MXxVaemyRzYSb5KCRy2uXEnfFN9z6vhI0Uy3F+lJtjSMd4IeZX
+ NI6suI+/SLS8VcsUh+bdHL+iD90tc90nA6Qu0CcpoJw+AEMS9mK8HzbLN+AQymIKXAqtzq4LXNU
+ /1FgxxHHa9c9rUZZje7HGXVXqVfv5s0oNZrALtTMxLKkWrp1tbdbDTr+slbLlu1FliOHviKALcY
+ kMZiagOLNMn6NNaSF0xIlNLXixx31VERCsN/zATu0fhza+yNc8iojV3wbGuBX9NCsnK0PB1xw6J
+ yrUwyoa7aoyYX9xgQUvVLGxY3P6jjc/bG/WsidLN0ArThxtg9EjBTpOvpRYpucGdHUjlsgVM92n
+ +bwWOAnqi+9WXUo5OZg==
+X-Proofpoint-GUID: fTIY7cgydlf5VyitxbuTJkk2Y1FSMuol
+X-Proofpoint-ORIG-GUID: fTIY7cgydlf5VyitxbuTJkk2Y1FSMuol
+X-Authority-Analysis: v=2.4 cv=LdQxKzfi c=1 sm=1 tr=0 ts=696f3614 cx=c_pps
  a=Ou0eQOY4+eZoSc0qltEV5Q==:117 a=Ou0eQOY4+eZoSc0qltEV5Q==:17
  a=vUbySO9Y5rIA:10 a=VkNPw1HP01LnGYTKEx00:22 a=EUspDBNiAAAA:8
- a=e_FZhwwmXlOSAvXo2IMA:9
-X-Proofpoint-ORIG-GUID: qAwbtOiHlOC7r_BIXwCYL-lBI9TlGOD0
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMTIwMDA2NSBTYWx0ZWRfX32zTKRgHLzXw
- 1Z05zNKr7gROMUr244TOpz6f74vJBbim2dgKY8+Nf+dd07q8H2jxx7CgnBEET0K3YzB1UHQfKz3
- uVQv5Xe2ScLIGDb1irgCjJLsEZ8gMSYtKpH+vZNJkyPFg4WtXQu3N0NqFKXA7SqLiEOqDJu6fPw
- 7t/TNdjYVx/U4URTSJtnfrUtdW682jCWnV7nKKYkVlRJwbi5E5apGcQ8nYT0hsrMJAG5QiRAvu6
- gQC2fumEBa4zQrUMDhU0QiR3+25OY6ZEBLrGi+LU9qIxEBLdcw3GTlgPF76P53KO80hps7v/w2A
- xEJAourWMhwJkMQKOw/WnKdCXRz8ewN+nT2qTFIDOo9xYtr6FO31vitieYdZECkpwJ8e/6IjksY
- P7oOMseahCKH/xgf0/naXKY0HN43Q8qtPikE2E7nLiO+4RbOIWGny4zHGDMLoPXNPdr8hkY7Z7i
- 4xLDVXORROufuhDngMA==
+ a=hMel4s6c26khOlIOFZAA:9
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
  definitions=2026-01-20_02,2026-01-19_03,2025-10-01_01
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501 malwarescore=0 suspectscore=0 impostorscore=0 adultscore=0
- bulkscore=0 spamscore=0 clxscore=1015 lowpriorityscore=0 phishscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2601150000 definitions=main-2601200065
+ phishscore=0 bulkscore=0 clxscore=1015 impostorscore=0 spamscore=0
+ priorityscore=1501 lowpriorityscore=0 adultscore=0 suspectscore=0
+ malwarescore=0 classifier=typeunknown authscore=0 authtc= authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2601150000
+ definitions=main-2601200065
 
-The supervisor ecall and breakpoint traps from Guest VS/VU-mode
-(aka L2/nested guest) should be redirected to Guest HS-mode (aka
-L1/guest hypervisor).
+The kvm_riscv_vcpu_update_timedelta() will be also used for when
+switching between guest HS-mode and guest VS/VU-mode so extend
+it accordingly.
 
 Signed-off-by: Anup Patel <anup.patel@oss.qualcomm.com>
 ---
- arch/riscv/kvm/vcpu_exit.c | 12 +++++++++---
- 1 file changed, 9 insertions(+), 3 deletions(-)
+ arch/riscv/include/asm/kvm_vcpu_timer.h |  1 +
+ arch/riscv/kvm/vcpu_timer.c             | 21 ++++++++++++++++-----
+ 2 files changed, 17 insertions(+), 5 deletions(-)
 
-diff --git a/arch/riscv/kvm/vcpu_exit.c b/arch/riscv/kvm/vcpu_exit.c
-index aeec4c4eee06..6627c2c25a71 100644
---- a/arch/riscv/kvm/vcpu_exit.c
-+++ b/arch/riscv/kvm/vcpu_exit.c
-@@ -274,12 +274,18 @@ int kvm_riscv_vcpu_exit(struct kvm_vcpu *vcpu, struct kvm_run *run,
- 			ret = gstage_page_fault(vcpu, run, trap);
- 		break;
- 	case EXC_SUPERVISOR_SYSCALL:
--		if (vcpu->arch.guest_context.hstatus & HSTATUS_SPV)
-+		if (kvm_riscv_vcpu_nested_virt(vcpu))
-+			ret = vcpu_redirect(vcpu, trap);
-+		else if (vcpu->arch.guest_context.hstatus & HSTATUS_SPV)
- 			ret = kvm_riscv_vcpu_sbi_ecall(vcpu, run);
- 		break;
- 	case EXC_BREAKPOINT:
--		run->exit_reason = KVM_EXIT_DEBUG;
--		ret = 0;
-+		if (kvm_riscv_vcpu_nested_virt(vcpu)) {
-+			ret = vcpu_redirect(vcpu, trap);
-+		} else {
-+			run->exit_reason = KVM_EXIT_DEBUG;
-+			ret = 0;
-+		}
- 		break;
- 	default:
- 		break;
+diff --git a/arch/riscv/include/asm/kvm_vcpu_timer.h b/arch/riscv/include/asm/kvm_vcpu_timer.h
+index 82f7260301da..f97cf1d7d760 100644
+--- a/arch/riscv/include/asm/kvm_vcpu_timer.h
++++ b/arch/riscv/include/asm/kvm_vcpu_timer.h
+@@ -43,6 +43,7 @@ int kvm_riscv_vcpu_set_reg_timer(struct kvm_vcpu *vcpu,
+ int kvm_riscv_vcpu_timer_init(struct kvm_vcpu *vcpu);
+ int kvm_riscv_vcpu_timer_deinit(struct kvm_vcpu *vcpu);
+ int kvm_riscv_vcpu_timer_reset(struct kvm_vcpu *vcpu);
++void kvm_riscv_vcpu_update_timedelta(struct kvm_vcpu *vcpu, bool nested_virt);
+ void kvm_riscv_vcpu_timer_restore(struct kvm_vcpu *vcpu);
+ void kvm_riscv_guest_timer_init(struct kvm *kvm);
+ void kvm_riscv_vcpu_timer_sync(struct kvm_vcpu *vcpu);
+diff --git a/arch/riscv/kvm/vcpu_timer.c b/arch/riscv/kvm/vcpu_timer.c
+index 9817ff802821..eda530228b05 100644
+--- a/arch/riscv/kvm/vcpu_timer.c
++++ b/arch/riscv/kvm/vcpu_timer.c
+@@ -287,15 +287,26 @@ int kvm_riscv_vcpu_timer_reset(struct kvm_vcpu *vcpu)
+ 	return kvm_riscv_vcpu_timer_cancel(&vcpu->arch.timer);
+ }
+ 
+-static void kvm_riscv_vcpu_update_timedelta(struct kvm_vcpu *vcpu)
++void kvm_riscv_vcpu_update_timedelta(struct kvm_vcpu *vcpu, bool nested_virt)
+ {
++	struct kvm_vcpu_nested_csr *nsc = &vcpu->arch.nested.csr;
+ 	struct kvm_guest_timer *gt = &vcpu->kvm->arch.timer;
++	u64 ndelta = 0;
+ 
++	if (nested_virt) {
++		ndelta = nsc->htimedelta;
+ #if defined(CONFIG_32BIT)
+-	ncsr_write(CSR_HTIMEDELTA, (u32)(gt->time_delta));
+-	ncsr_write(CSR_HTIMEDELTAH, (u32)(gt->time_delta >> 32));
++		ndelta |= ((u64)nsc->htimedeltah) << 32;
++#endif
++	}
++
++	ndelta += gt->time_delta;
++
++#if defined(CONFIG_32BIT)
++	ncsr_write(CSR_HTIMEDELTA, (u32)ndelta);
++	ncsr_write(CSR_HTIMEDELTAH, (u32)(ndelta >> 32));
+ #else
+-	ncsr_write(CSR_HTIMEDELTA, gt->time_delta);
++	ncsr_write(CSR_HTIMEDELTA, ndelta);
+ #endif
+ }
+ 
+@@ -303,7 +314,7 @@ void kvm_riscv_vcpu_timer_restore(struct kvm_vcpu *vcpu)
+ {
+ 	struct kvm_vcpu_timer *t = &vcpu->arch.timer;
+ 
+-	kvm_riscv_vcpu_update_timedelta(vcpu);
++	kvm_riscv_vcpu_update_timedelta(vcpu, kvm_riscv_vcpu_nested_virt(vcpu));
+ 
+ 	if (!t->sstc_enabled)
+ 		return;
 -- 
 2.43.0
 
