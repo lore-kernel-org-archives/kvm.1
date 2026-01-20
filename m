@@ -1,54 +1,71 @@
-Received: from out30-112.freemail.mail.aliyun.com (out30-112.freemail.mail.aliyun.com [115.124.30.112])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f49.google.com (mail-wm1-f49.google.com [209.85.128.49])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 030BB1F1304;
-	Tue, 20 Jan 2026 14:23:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.30.112
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 99604438FE0
+	for <kvm@vger.kernel.org>; Tue, 20 Jan 2026 14:45:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768918991; cv=none; b=uo6GxvSZfppDMl3HfHVgxAWeAe5HwamjgevApYW3JxKMNj73IFxzzAvzJyeRL/oUVt6tu+12X5l5hjvi2ZmBrM4IK+reN2PujNOyOZw4kgj3CSCPavDxjCwIZFugfrjnWTMoHT9JkqMoqKIvBgshw025hCJo9mM6QAa96w7GWyw=
+	t=1768920357; cv=none; b=AbWCwIvzx8uEKSoglKJEqFM7qkCCbNI9T9VDhzNwnBMcDBqj5yY5/whMTeFgrZ01g7JL6kNxXfvH9X46CSS+Z8SFjM/qKYm43YuNA4/p539sCLgRCXXiIRF+sgqo24iQv4KsdZsTcU90Fv0k9N7UyvJtrUX61FkY7smaKp9+oac=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768918991; c=relaxed/simple;
-	bh=rW+LTZp/ZJIVdrB3i/54PJ5maH4AYyK2KAerEMHjQlI=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=gxjKR3NySvsSii2hGy3dpYs6RHP/8yKV6oPYU44hYCgWk5XyuzKQDbljIZZnMhHIw5bnaJ3ZKnBTSM0rjcZC58yz7vuM5wo7Fulu5EHz7ClpkZBDzdoeIGahpkN7YScEAZhS+ZwHjT+mCq6YiM2/3CmSenaXjZpw0eTsOyOdHno=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; spf=pass smtp.mailfrom=linux.alibaba.com; dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b=i+ZhZaGJ; arc=none smtp.client-ip=115.124.30.112
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.alibaba.com
+	s=arc-20240116; t=1768920357; c=relaxed/simple;
+	bh=qohqTrHOpcszpY6T71fBAof7W0BAd5JCuzPM0Kr/W+Q=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=PDNJHi0wH7yey8gyfpXry7+zR4+E3ViiCPS9TEQfwUuoY1H5K8GF7nIAi63/og8h4hYaId8mA/nTMfF8znvD4wPYwcDgnf1P56lMxr6aOHqdr3KvD+ZvMo/k59SnC08Zb1cDDcP9LivupDt9gGMcTvvrllRvsyUzdOCa6cu8TgI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=eav/Ltcu; arc=none smtp.client-ip=209.85.128.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b="i+ZhZaGJ"
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux.alibaba.com; s=default;
-	t=1768918980; h=From:To:Subject:Date:Message-Id:MIME-Version;
-	bh=XjFJwiZwKYWRxhHb7L7H6Uqg4/HCRCOm2ZcJ0CPggm0=;
-	b=i+ZhZaGJhTHdIIQ9CEqq17/RUo2bY/2Tw9Q1qsN9LEJyGlxFMalJVkM4x2A0Dr/p+5+p7y4ED1rIsT5hhX6FPm00u5e88BH5AK3zeEemJOysFflE6gd5KbxZvHC5FkQijw0IpVxxC/cXahpUL1LUPoq4jHs5MGoEWD/QQD2pHdg=
-Received: from localhost.localdomain(mailfrom:fangyu.yu@linux.alibaba.com fp:SMTPD_---0WxUghn7_1768918976 cluster:ay36)
-          by smtp.aliyun-inc.com;
-          Tue, 20 Jan 2026 22:22:58 +0800
-From: fangyu.yu@linux.alibaba.com
-To: radim.krcmar@oss.qualcomm.com
-Cc: ajones@ventanamicro.com,
-	alex@ghiti.fr,
-	anup@brainfault.org,
-	aou@eecs.berkeley.edu,
-	atish.patra@linux.dev,
-	corbet@lwn.net,
-	fangyu.yu@linux.alibaba.com,
-	guoren@kernel.org,
-	kvm-riscv@lists.infradead.org,
-	kvm@vger.kernel.org,
-	linux-doc@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-riscv@lists.infradead.org,
-	palmer@dabbelt.com,
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="eav/Ltcu"
+Received: by mail-wm1-f49.google.com with SMTP id 5b1f17b1804b1-47edffe5540so47371145e9.0
+        for <kvm@vger.kernel.org>; Tue, 20 Jan 2026 06:45:55 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1768920354; x=1769525154; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=YIqO4SrmEsn8JNS9MkoMfSMXaWLK+Ne7pozd40Hy4X8=;
+        b=eav/LtcuyO8vYNeXaiu9c3JvTpfe2+HNJ1eT/+dnpiwIJ+G06eTyR7HDkOxz9H3JR3
+         1B1G/uRLQxWBK8JxOgvvmsK43E43kteFJ4t48WfYuGlcHaphWzLmSCCF9hxCSDsVB6CS
+         DKqgPoQe25ee2Vt/C6tSVpK9Qv65NiesIsjvzQL7yLzDh8e2R8DIEyH14Pb8mLjY5BUE
+         gALAoVxEMFddhODuCduh6b/gJHrypD7wIRoL1V7LDNux5RyghAcXSsWwfpWJ8SLWy73S
+         FrLEcpyXhKZ0X9GZEDfmaeRXjA8waurXn3fMnbVvD1IwelzZS55xBhX/GtBcuGuCzj3W
+         t0jw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1768920354; x=1769525154;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=YIqO4SrmEsn8JNS9MkoMfSMXaWLK+Ne7pozd40Hy4X8=;
+        b=L8wQEcYFjbQ4bHZQGnKXnGLnsfRhxMnFYi+fLAfY5xolx04QIte8rhMZ6I7d/bChKz
+         quaedlHgfiOeRrfIuCa809C7ziTfNoZfNqNH2YwrGFVk9FmxpiuvMSaQHeuRsVSNvtFK
+         MLfoFi/Wi/i9CIHvAMrtqnbgTZN0JTUNqkkWIGL/l1wl7EPugV6bUgPKBfwIrXOYrWOo
+         zzhtFEibdWIeI9odmBRjItjWGBrIKbnIWcEeJAZ0R7mJjYpsDkOCi2rDPmnO8v4jw7o1
+         qk1PAxqaZ3myU1QQf4mo506cvHpcCDqIDGt1L2w4fpL8LXVbydc9xzKtvWM7CMK7UKqK
+         DcYg==
+X-Gm-Message-State: AOJu0Yw4LH1K3lu53TD0aKsXwFOAWciQ7HlL7z4g+0SV2SdL7FwBoQuE
+	e7DEjNe3a4dUmDrNRvSx7CSLcMUrqqM0azPJwRiHubyr1Jo2AugtSesZXDGrcwcB0bE=
+X-Gm-Gg: AY/fxX6BGagaDcu0U23wFBMwZI/Di7DBuFQw8nRtez64aP6ycFmmCrASfdtKG/e4fWz
+	fY9Bt4xgzwah8/6Qeg10aN33z+/kCLv4Ahcfr9nhDN0cEcEZY+imR8gDyhEchOotxUKQGTrXhLW
+	iDZZ4e1gR2/otELL5xxKowunOHH8wxxPeRMGL0u9DNx0V0G4R5PxONysUrKRQZ4utIiSVLgabO2
+	H/HcLZcL+lBIMko1Ivyrf4eMFA+4M1lq9u8Ht9LmGtT37yFM1cPRv8WOj87C6JtRfhIv2eUKyN4
+	/tInTkrLZZUlyDusNxIfPVy2t4pp2DueahuE+HfQ8ohb+AjHtm5RtOs2LL4llBcBV2/Aan1U+to
+	+/C1OC3unUz9jvoy9bgJSDWmyGGbnemdDiT4WziUMScICM9jdOX0IZ1bVeJJVBgok3QPQBL3NFp
+	e9lTaYWPVY6i0N47LeoJTwK2TciWKAG0LOyNZ6NwsbHliS9tmuj5MmNx3lhsfk3ubB1tpVjO+wx
+	Ge76puRieCwcybpB8OGLu6Tx57RSsY1lr7ntl6q/pyJNiXkPJQq7dcuZVEhfjSD
+X-Received: by 2002:a05:600c:8b75:b0:477:9574:d641 with SMTP id 5b1f17b1804b1-4803e7e8531mr31387285e9.22.1768920353193;
+        Tue, 20 Jan 2026 06:45:53 -0800 (PST)
+Received: from ip-10-0-150-200.eu-west-1.compute.internal (ec2-52-49-196-232.eu-west-1.compute.amazonaws.com. [52.49.196.232])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4801e879537sm252972145e9.5.2026.01.20.06.45.52
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 20 Jan 2026 06:45:52 -0800 (PST)
+From: Fred Griffoul <griffoul@gmail.com>
+To: kvm@vger.kernel.org
+Cc: seanjc@google.com,
 	pbonzini@redhat.com,
-	pjw@kernel.org,
-	rkrcmar@ventanamicro.com
-Subject: Re: Re: [PATCH v2] RISC-V: KVM: add KVM_CAP_RISCV_SET_HGATP_MODE
-Date: Tue, 20 Jan 2026 22:22:56 +0800
-Message-Id: <20260120142256.9968-1-fangyu.yu@linux.alibaba.com>
-X-Mailer: git-send-email 2.39.3 (Apple Git-146)
-In-Reply-To: <DFSM9IHXY24S.3W4T39VHEH420@oss.qualcomm.com>
-References: <DFSM9IHXY24S.3W4T39VHEH420@oss.qualcomm.com>
+	linux-kernel@vger.kernel.org,
+	Fred Griffoul <fgriffo@amazon.co.uk>
+Subject: [PATCH] KVM: nVMX: Track vmx emulation errors
+Date: Tue, 20 Jan 2026 14:45:50 +0000
+Message-ID: <20260120144550.1083396-1-griffoul@gmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -57,62 +74,68 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
->> From: Fangyu Yu <fangyu.yu@linux.alibaba.com>
->>
->> This capability allows userspace to explicitly select the HGATP mode
->> for the VM. The selected mode must be less than or equal to the max
->> HGATP mode supported by the hardware. This capability must be enabled
->> before creating any vCPUs, and can only be set once per VM.
->>
->> Signed-off-by: Fangyu Yu <fangyu.yu@linux.alibaba.com>
->> ---
->> diff --git a/arch/riscv/kvm/vm.c b/arch/riscv/kvm/vm.c
->> @@ -212,12 +219,27 @@ int kvm_vm_ioctl_check_extension(struct kvm *kvm, long ext)
->>  
->>  int kvm_vm_ioctl_enable_cap(struct kvm *kvm, struct kvm_enable_cap *cap)
->>  {
->> +	if (cap->flags)
->> +		return -EINVAL;
->>  	switch (cap->cap) {
->> +	case KVM_CAP_RISCV_SET_HGATP_MODE:
->> +#ifdef CONFIG_64BIT
->> +		if (cap->args[0] < HGATP_MODE_SV39X4 ||
->> +			cap->args[0] > kvm_riscv_gstage_max_mode)
->> +			return -EINVAL;
->> +		if (kvm->arch.gstage_mode_initialized)
->> +			return 0;
->
->"must be enabled before creating any vCPUs" check is missing.
+From: Fred Griffoul <fgriffo@amazon.co.uk>
 
-Agreed, I'll add the missing "must be enabled before creating any vCPUs" check by
-rejecting the capability once kvm->created_vcpus is non-zero.
+Add a new kvm_stat vcpu counter called "nested_errors" to track the
+number of errors returned to an L1 hypervisor when emulated VMX
+instructions fail.
 
->
->> +		kvm->arch.gstage_mode_initialized = true;
->> +		kvm->arch.kvm_riscv_gstage_mode = cap->args[0];
->> +		kvm->arch.kvm_riscv_gstage_pgd_levels = 3 +
->> +		    kvm->arch.kvm_riscv_gstage_mode - HGATP_MODE_SV39X4;
->
->Even before creating VCPUs, I don't see enough protections to make this
->work.
->
->Userspace can only provide a hint about the physical address space size
->before any other KVM code could have acted on the information.
->It would be a serious issue if some code would operate on hgatp as if it
->were X and others as Y.
->
->The simplest solution would be to ensure that the CAP_SET VM ioctl can
->only be executed before any other IOCTL, but a change in generic code to
->achieve it would be frowned upon...
->I would recommend looking at kvm_are_all_memslots_empty() first, as it's
->quite likely that it could be sufficient for the purposes of changing
->hgatp.
+This counter should help monitor nVMX health and troubleshoot issues
+with L1 hypervisors.
 
-Using kvm_are_all_memslots_empty might be a good idea, and I will add a
-check for this function in the v2.
+Signed-off-by: Fred Griffoul <fgriffo@amazon.co.uk>
+---
+ arch/x86/include/asm/kvm_host.h | 1 +
+ arch/x86/kvm/vmx/nested.c       | 2 ++
+ arch/x86/kvm/x86.c              | 1 +
+ 3 files changed, 4 insertions(+)
 
->
->Thanks.
+diff --git a/arch/x86/include/asm/kvm_host.h b/arch/x86/include/asm/kvm_host.h
+index 5a3bfa293e8b..a3aaccd6e6aa 100644
+--- a/arch/x86/include/asm/kvm_host.h
++++ b/arch/x86/include/asm/kvm_host.h
+@@ -1674,6 +1674,7 @@ struct kvm_vcpu_stat {
+ 	u64 preemption_other;
+ 	u64 guest_mode;
+ 	u64 notify_window_exits;
++	u64 nested_errors;
+ };
+ 
+ struct x86_instruction_info;
+diff --git a/arch/x86/kvm/vmx/nested.c b/arch/x86/kvm/vmx/nested.c
+index 6137e5307d0f..2e1394151945 100644
+--- a/arch/x86/kvm/vmx/nested.c
++++ b/arch/x86/kvm/vmx/nested.c
+@@ -162,6 +162,7 @@ static int nested_vmx_succeed(struct kvm_vcpu *vcpu)
+ 
+ static int nested_vmx_failInvalid(struct kvm_vcpu *vcpu)
+ {
++	++vcpu->stat.nested_errors;
+ 	vmx_set_rflags(vcpu, (vmx_get_rflags(vcpu)
+ 			& ~(X86_EFLAGS_PF | X86_EFLAGS_AF | X86_EFLAGS_ZF |
+ 			    X86_EFLAGS_SF | X86_EFLAGS_OF))
+@@ -172,6 +173,7 @@ static int nested_vmx_failInvalid(struct kvm_vcpu *vcpu)
+ static int nested_vmx_failValid(struct kvm_vcpu *vcpu,
+ 				u32 vm_instruction_error)
+ {
++	++vcpu->stat.nested_errors;
+ 	vmx_set_rflags(vcpu, (vmx_get_rflags(vcpu)
+ 			& ~(X86_EFLAGS_CF | X86_EFLAGS_PF | X86_EFLAGS_AF |
+ 			    X86_EFLAGS_SF | X86_EFLAGS_OF))
+diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
+index ff8812f3a129..475c8a2d704e 100644
+--- a/arch/x86/kvm/x86.c
++++ b/arch/x86/kvm/x86.c
+@@ -299,6 +299,7 @@ const struct _kvm_stats_desc kvm_vcpu_stats_desc[] = {
+ 	STATS_DESC_COUNTER(VCPU, preemption_other),
+ 	STATS_DESC_IBOOLEAN(VCPU, guest_mode),
+ 	STATS_DESC_COUNTER(VCPU, notify_window_exits),
++	STATS_DESC_COUNTER(VCPU, nested_errors),
+ };
+ 
+ const struct kvm_stats_header kvm_vcpu_stats_header = {
 
-Thanks,
-Fangyu
+base-commit: 0499add8efd72456514c6218c062911ccc922a99
+-- 
+2.43.0
+
