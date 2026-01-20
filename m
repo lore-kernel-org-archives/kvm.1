@@ -1,33 +1,33 @@
-Received: from out28-101.mail.aliyun.com (out28-101.mail.aliyun.com [115.124.28.101])
+Received: from out198-4.us.a.mail.aliyun.com (out198-4.us.a.mail.aliyun.com [47.90.198.4])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 15E863B530B;
-	Tue, 20 Jan 2026 07:55:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.28.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A606A3B8BAA;
+	Tue, 20 Jan 2026 07:55:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=47.90.198.4
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768895715; cv=none; b=aZzgTrxSqEhgpp7MxrYwdkVEJqLH7cuamxJfDmRIb6HWCTSefY77C6YLg0m1wJ5JcfaWFspKlzYla30cUbfQOaucem9N+/9Vp/Y/xfI3mSAOm1bNVpLq8RnU4EtFPCR0VOYF40gN06K6InQxEsibUv05I97rzM0jjFbM+NIvN1k=
+	t=1768895727; cv=none; b=OCQi/0z/CqBAABWy4NU4b8nVnVQLZucwZyOz6yfy8fM0qa7gN1v572NeObcEFhX9q2Wvd1eV0Aw5ww+qDvD6xf2SYfMiCi5isFRYH71RAZcJvSyMT2MYJAL72Mfvnxhj5ujrs3UbkneRvnOgKq6UWhIi5Djmj8Jvp0CdkKAbAgE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768895715; c=relaxed/simple;
-	bh=2ekVgjWfH/AsWv7REPqcE3vg44dQfi/IXR4Yf1HWf3s=;
+	s=arc-20240116; t=1768895727; c=relaxed/simple;
+	bh=QZk29FQQO3YS6jEtFv67ohyBqxW15m2DvSYWc1T4lJc=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Euem3ZIK5udlKt3wy6RfHMbmDRzAx4GvNUyTMPV4le3h7xrraGgUSTER65hRtyZJYzrD5eDpftoQUnpjcIwyxDYbA4Ixc8h2RVoXhQYHpGWUbJnSGEjnPQ7WzH5qKUUq6esy1eBxHaatN732YYXXfg0uXFbTsNtk4m8v2VfXtNw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=antgroup.com; spf=pass smtp.mailfrom=antgroup.com; dkim=pass (1024-bit key) header.d=antgroup.com header.i=@antgroup.com header.b=Oq3G10X1; arc=none smtp.client-ip=115.124.28.101
+	 Content-Type:Content-Disposition:In-Reply-To; b=GsWO/XPM24rhWdCWFJvFHcwr8LhpzXhCaxwhEha34DVesAyIjg4C5eyLcMhuyypgVc7VXyyc0PSPCm7M9I0Vv8+AwkgA9u+bwh8otRkWhM0eVSXjlNGSq/ylcqzMtQXLRwRuSiGfBkRm2z5kCftLh8rFVUbUvGKzyKsIhjY+DH4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=antgroup.com; spf=pass smtp.mailfrom=antgroup.com; dkim=pass (1024-bit key) header.d=antgroup.com header.i=@antgroup.com header.b=IGABEqSc; arc=none smtp.client-ip=47.90.198.4
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=antgroup.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=antgroup.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=antgroup.com header.i=@antgroup.com header.b="Oq3G10X1"
+	dkim=pass (1024-bit key) header.d=antgroup.com header.i=@antgroup.com header.b="IGABEqSc"
 DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
 	d=antgroup.com; s=default;
-	t=1768895708; h=Date:From:To:Subject:Message-ID:MIME-Version:Content-Type;
-	bh=DR7Rbxu7fFj/VSsyrXMKreBjbgZsM4uK/wXVjs/Jb5s=;
-	b=Oq3G10X1y0JKSiXevnPPZWRyL94WPFNdrFfVnkXyR9iGwIfxQiqHDijcewQ8xHv+BpMFilznx/lT5xkNrHeMIG2ZOINnTkk0lI+lDLS92HMZ41C6d1M41QTwKnEFaicCD0/BRRs9itWuKLw+bhM38417EgRwt9ZhkWTHSiuvYBU=
-Received: from localhost(mailfrom:houwenlong.hwl@antgroup.com fp:SMTPD_---.gAyIShv_1768895707 cluster:ay29)
+	t=1768895707; h=Date:From:To:Subject:Message-ID:MIME-Version:Content-Type;
+	bh=QoGvGTXjK6AKDlLAnRuGsw6WtbNkZWYFCP32dBqHB7U=;
+	b=IGABEqScJT6NDOwGKiqZUe8W/oz0y0V4ShAWDlkw5D+WyK4yTMri0gGEKtfJAiUqlNqIfcaVh1jEUE6GTfp3RMFlUvU33i7OyxjplLGbHC5A0DUMcSGaRe5P8zcNRfbwrVSM3836w7kQqJr11z9tYQGTZ0AY+LKpBYop11QxtGg=
+Received: from localhost(mailfrom:houwenlong.hwl@antgroup.com fp:SMTPD_---.gAwfoa6_1768894767 cluster:ay29)
           by smtp.aliyun-inc.com;
-          Tue, 20 Jan 2026 15:55:07 +0800
-Date: Tue, 20 Jan 2026 15:55:07 +0800
+          Tue, 20 Jan 2026 15:39:28 +0800
+Date: Tue, 20 Jan 2026 15:39:27 +0800
 From: Hou Wenlong <houwenlong.hwl@antgroup.com>
-To: =?iso-8859-1?Q?J=FCrgen_Gro=DF?= <jgross@suse.com>
-Cc: linux-kernel@vger.kernel.org,
+To: linux-kernel@vger.kernel.org
+Cc: Juergen Gross <jgross@suse.com>,
 	Boris Ostrovsky <boris.ostrovsky@oracle.com>,
 	Thomas Gleixner <tglx@linutronix.de>,
 	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
@@ -36,82 +36,61 @@ Cc: linux-kernel@vger.kernel.org,
 	Sean Christopherson <seanjc@google.com>
 Subject: Re: [PATCH RESEND v2] x86/xen/pvh: Enable PAE mode for 32-bit guest
  only when CONFIG_X86_PAE is set
-Message-ID: <20260120075507.GA2071@k08j02272.eu95sqa>
+Message-ID: <20260120073927.GA119722@k08j02272.eu95sqa>
 References: <d09ce9a134eb9cbc16928a5b316969f8ba606b81.1768017442.git.houwenlong.hwl@antgroup.com>
- <20260120073927.GA119722@k08j02272.eu95sqa>
- <409f5119-7dc1-4f45-a099-281db82254f3@suse.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <409f5119-7dc1-4f45-a099-281db82254f3@suse.com>
+In-Reply-To: <d09ce9a134eb9cbc16928a5b316969f8ba606b81.1768017442.git.houwenlong.hwl@antgroup.com>
 User-Agent: Mutt/1.5.21 (2010-09-15)
 
-On Tue, Jan 20, 2026 at 08:48:43AM +0100, Jürgen Groß wrote:
-> On 20.01.26 08:39, Hou Wenlong wrote:
-> >+kvm, I'm not sure whether it is needed.
++kvm, I'm not sure whether it is needed.
+
+On Sat, Jan 10, 2026 at 12:00:08PM +0800, Hou Wenlong wrote:
+> The PVH entry is available for 32-bit KVM guests, and 32-bit KVM guests
+> do not depend on CONFIG_X86_PAE. However, mk_early_pgtbl_32() builds
+> different pagetables depending on whether CONFIG_X86_PAE is set.
+> Therefore, enabling PAE mode for 32-bit KVM guests without
+> CONFIG_X86_PAE being set would result in a boot failure during CR3
+> loading.
 > 
-> I have queued it in the Xen tree for the next merge window.
->
-Thanks for the notification.
- 
+> Signed-off-by: Hou Wenlong <houwenlong.hwl@antgroup.com>
+> Reviewed-by: Juergen Gross <jgross@suse.com>
+> ---
+> I resend this because I encountered the 32-bit KVM guest PVH booting failure again. I
+> hope this can be fixed.
+> original v2:
+> https://lore.kernel.org/all/0469c27833be58aa66471920aa77922489d86c63.1713873613.git.houwenlong.hwl@antgroup.com
+> ---
+>  arch/x86/platform/pvh/head.S | 2 ++
+>  1 file changed, 2 insertions(+)
 > 
-> Juergen
+> diff --git a/arch/x86/platform/pvh/head.S b/arch/x86/platform/pvh/head.S
+> index 344030c1a81d..53ee2d53fcf8 100644
+> --- a/arch/x86/platform/pvh/head.S
+> +++ b/arch/x86/platform/pvh/head.S
+> @@ -91,10 +91,12 @@ SYM_CODE_START(pvh_start_xen)
+>  
+>  	leal rva(early_stack_end)(%ebp), %esp
+>  
+> +#if defined(CONFIG_X86_64) || defined(CONFIG_X86_PAE)
+>  	/* Enable PAE mode. */
+>  	mov %cr4, %eax
+>  	orl $X86_CR4_PAE, %eax
+>  	mov %eax, %cr4
+> +#endif
+>  
+>  #ifdef CONFIG_X86_64
+>  	/* Enable Long mode. */
 > 
-> >
-> >On Sat, Jan 10, 2026 at 12:00:08PM +0800, Hou Wenlong wrote:
-> >>The PVH entry is available for 32-bit KVM guests, and 32-bit KVM guests
-> >>do not depend on CONFIG_X86_PAE. However, mk_early_pgtbl_32() builds
-> >>different pagetables depending on whether CONFIG_X86_PAE is set.
-> >>Therefore, enabling PAE mode for 32-bit KVM guests without
-> >>CONFIG_X86_PAE being set would result in a boot failure during CR3
-> >>loading.
-> >>
-> >>Signed-off-by: Hou Wenlong <houwenlong.hwl@antgroup.com>
-> >>Reviewed-by: Juergen Gross <jgross@suse.com>
-> >>---
-> >>I resend this because I encountered the 32-bit KVM guest PVH booting failure again. I
-> >>hope this can be fixed.
-> >>original v2:
-> >>https://lore.kernel.org/all/0469c27833be58aa66471920aa77922489d86c63.1713873613.git.houwenlong.hwl@antgroup.com
-> >>---
-> >>  arch/x86/platform/pvh/head.S | 2 ++
-> >>  1 file changed, 2 insertions(+)
-> >>
-> >>diff --git a/arch/x86/platform/pvh/head.S b/arch/x86/platform/pvh/head.S
-> >>index 344030c1a81d..53ee2d53fcf8 100644
-> >>--- a/arch/x86/platform/pvh/head.S
-> >>+++ b/arch/x86/platform/pvh/head.S
-> >>@@ -91,10 +91,12 @@ SYM_CODE_START(pvh_start_xen)
-> >>  	leal rva(early_stack_end)(%ebp), %esp
-> >>+#if defined(CONFIG_X86_64) || defined(CONFIG_X86_PAE)
-> >>  	/* Enable PAE mode. */
-> >>  	mov %cr4, %eax
-> >>  	orl $X86_CR4_PAE, %eax
-> >>  	mov %eax, %cr4
-> >>+#endif
-> >>  #ifdef CONFIG_X86_64
-> >>  	/* Enable Long mode. */
-> >>
-> >>base-commit: b7dccac786071bba98b0d834c517fd44a22c50f9
-> >>prerequisite-patch-id: 590fa7e96c6bb8e0b9d15017cfa5ce1eb314957a
-> >>-- 
-> >>2.31.1
-> >>
-> >>
+> base-commit: b7dccac786071bba98b0d834c517fd44a22c50f9
+> prerequisite-patch-id: 590fa7e96c6bb8e0b9d15017cfa5ce1eb314957a
+> -- 
+> 2.31.1
 > 
-
-> pub  2048R/28BF132F 2014-06-02 Juergen Gross <jg@pfupf.net>
-> uid                            Juergen Gross <jgross@suse.com>
-> uid                            Juergen Gross <jgross@novell.com>
-> uid                            Juergen Gross <jgross@suse.de>
-> sub  2048R/16375B53 2014-06-02
-
-
-
-
+> 
