@@ -1,161 +1,259 @@
-Received: from mail-wm1-f42.google.com (mail-wm1-f42.google.com [209.85.128.42])
+Received: from mail-pl1-f202.google.com (mail-pl1-f202.google.com [209.85.214.202])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8AF22333421
-	for <kvm@vger.kernel.org>; Tue, 20 Jan 2026 16:28:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.128.42
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768926534; cv=pass; b=lcXOdQTPJ5urARlK79VpeTIcw+mQQC0xZQ18UlyFpjkDrLQ6mjaKAZ6ziDYzuFIWk4h+9Ud/kSGGeTLdu6lT5PGXxsp2/rC5c/hypfUAIOS0yfP+yMWXYTb4J4QrCYhSAIx4SwEUjdnPikBzWIdRLLzaZBuNoNs1pgkrpjd9/XM=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768926534; c=relaxed/simple;
-	bh=2NdbYcVwZi1ih+onTl3vtMwhcrSn8T+MqEL2Cz0G25Q=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=ZZtnvCKHHuTQruzclcnLkzqNh9bTAvpxU+K4Vfn6BmHmjtnuJ720e5zSbUGlZJTy2sdd1bZyzfqrUF2nO6U33kchEe7xz62ad8dymD4rZOgDgT4WDLwxlXE60Ct1+vaTh/VqgE7ZpQgj3HyyQbhegLGahTIyPVDogfklH/RUhds=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=4lHA8HEE; arc=pass smtp.client-ip=209.85.128.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B54C743E9EC
+	for <kvm@vger.kernel.org>; Tue, 20 Jan 2026 17:51:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.202
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1768931471; cv=none; b=G+xGLSdMjqDUkTGOwPcTfocDuRqwLIWqz2V1QvtjSAjm7JmQMNEo96idK7r37FTzSgQBHkOQQPQZI0Dy0buBripVg/ItpE/LIYbWQyIA4N7AGSoEFQeh91iv4JjXzS5eGgfKQ6kMUeZuD6vdP+Myhf9i2ojHPvn7obepeHRxyOI=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1768931471; c=relaxed/simple;
+	bh=0fyWUfYqqDXkk6a8d2BPVvMOPi7EMx5O6okEC5JABzc=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=dz5bn0ja1ZZ12iZtgAO6QelDf9Di3mphN0t0fn4VvwwCj6+/PjJCI67hdv6ULELjki7J35rtW5o8HTAoAYDyXZH1zzPQY+Lgm+HSe2mgPF3/LaSE/TCq699hoMbi34SbSfinia8rvVIDis5hQMSTMM6hXCW020+UATlwo3oHoJQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=k6Xx19Fk; arc=none smtp.client-ip=209.85.214.202
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="4lHA8HEE"
-Received: by mail-wm1-f42.google.com with SMTP id 5b1f17b1804b1-47ee0a62115so187325e9.0
-        for <kvm@vger.kernel.org>; Tue, 20 Jan 2026 08:28:52 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1768926531; cv=none;
-        d=google.com; s=arc-20240605;
-        b=EtfXk15fEvI0Sko3k0cVMnKL/K5GJPpkEuuZyyld4mhDHPXxXsSfTzv7LTiHS1A9Vb
-         3Y8MFHK5pIsiGwcm0LKIo/fcNWg1CP1MC9RkCuKTMZL0vBg6ctBXmZ2c6Af7YiNQRGDU
-         Wgaw8QmXwfdw71W2DfCV0sectqJkCvB9NiRi+d7IxqiJ2bytSkKOFpYL1tk/yvQbGFM6
-         81pL+wM/OmtU/KH0vPWyNsfhNXkWqJzXO5V5eG/4Q+eR8ddCuOu76r5b6eSQMcIECmpQ
-         +1hFHcHondiqmYxclaiRYOYUsKqWSp1s7Sa1ASkLdx9rQKssvDf6hO+nzUueZYo4LmhN
-         JIbQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=2NdbYcVwZi1ih+onTl3vtMwhcrSn8T+MqEL2Cz0G25Q=;
-        fh=EV+t/bqwbjp7tPqd4FTKTpRBjvVXMcIEofyrK5fzsNc=;
-        b=UWaU7tsy2ZKhRHkMrE3EcR2xL+jT2vQ/w7pY/4qigN5X1jZUE3kpe2+hVtKUbHB95g
-         Jv8Nw97EX/WtV1EaPOrkzGJ4Yt2c+XAyThjlV9INbGA5MnQaP3AVvmwoIIC1KwimdMDi
-         5pc4jJlWd93qvPSn0j/2ayb4JHoVDEO6F6pl4TG4yDUfZaavNOcskIF8ytgzB8OZVOkR
-         OZwoDkJz17cLWC1dpv14xHbQIh5fXOs56TzhS2VDhW35Cp138ODC+pOTq2weiyt24BmK
-         j7W16MMrzD8vvvupqJZMsT3eNjkgdmJ+lZje4EHjUvrLmXKLQDkRdSGviGWX7kMSBSUM
-         ndMw==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="k6Xx19Fk"
+Received: by mail-pl1-f202.google.com with SMTP id d9443c01a7336-2a78c094ad6so2468285ad.1
+        for <kvm@vger.kernel.org>; Tue, 20 Jan 2026 09:51:08 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1768926531; x=1769531331; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=2NdbYcVwZi1ih+onTl3vtMwhcrSn8T+MqEL2Cz0G25Q=;
-        b=4lHA8HEEeZgP/YUBLDBV82SFnUFOrX7ylbWOuMGnNSNoaKA04+jhRgmZ+qhYOYg99+
-         4/q0soxE3Pa2XFcrYLmgKbAlJzzUeXdCerbKtzNXuFNh8r+/cTLMnFBao6OJleTZCeIz
-         7ZaN1ml6p0rnTuTI8HhEKdPtwtLvCZI/E10j4e3HUipvZOeye4xd57FoHWSkO5k0Jg9w
-         HaS35CLHn17cCXxobQzdoK4p7kDuKI73MP/UC6nfSP6Ged813+pG2rFFedOjIIWn2T9I
-         JhJM5JOb/kOG+hZf3ZnrAuZ2+p5MpEP7yBAo4Y5RiLM9Ie9JT+0EVbUUcW/ZVoJ9Ub/R
-         hIIA==
+        d=google.com; s=20230601; t=1768931468; x=1769536268; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=PBYdCmT+L/+K4c9bKrSuTaHXyN4/euVT+SSxHGhM8vM=;
+        b=k6Xx19FkclQ//uHxUw0AhpIgGORMQz7f6SteWK5J00Hk264H31FQBcf55fH1tFk83H
+         OLwWvldYgEqZY2rGN1noNguWgmnzR7v9xyhQftkMVRghCBWdqjSozoqc5g+bh6PW4aEs
+         LNjskWpL8m6kDtM0WCkQuxO9U2YD8ZUX309BZxbBIJfj30JE5wz5h1+APcrx1h8VHLGs
+         PupBo9KvpFt2mI1C7z4E/eRhUyKpW+vTn4q2z/03mxwk5ztQKeW2W8XzVlNzlT7//ReR
+         9MyVbc1ZFZylX0F618mctLGk3oqWo9DyQEpahqtn/pSRWojVc8GkTudH/HNW27MSth1o
+         8FkQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1768926531; x=1769531331;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=2NdbYcVwZi1ih+onTl3vtMwhcrSn8T+MqEL2Cz0G25Q=;
-        b=vr5S70Xpukrdnv65YWN9fb7gwCtd5psiAqQ4ScKsJ+liLtXBV+kVl5vES/KifRk+r6
-         jd+9+ucxw73aUDjKn4L7EltO3UP6jQZBJqRULOLC6RJWsvyd6V/RyAcXYTe42Pa+MH/k
-         5IRBuVq8cSETHZTrHGPG9PyAT2SZXMkHa2apg95dz/rULZfaFtxW3KgcevpegYMm58UC
-         XPrqIZPGSCaERD68AjgmH3JtzrmXZVWxLo5TaAqvMnOD7Fre/+fohFHC73KBVcnlCEiB
-         o4l2ErX6p0a+1W0j9Ri529f8lGIatWnNCt1RSbTdpQTdup3ZzBi2WI0Y93VZhEgILPB2
-         R6Tw==
-X-Forwarded-Encrypted: i=1; AJvYcCXwd+NaQPXiCGgYchA7X9Fxqa4pEkey/9ZL7YoL7r8CBZgjhmI7eTKaoCbdChWV6vfTM+E=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyE+sVgjPhFBnXLXlsrdMzdRi9ecOpdI67OTLwS19GU+IPpfYsU
-	AzAFWDnDdEnZp8oBvH2vnf48X4mvRbX1NWcm/PH7eknfl2E7+255Rstn6iHtk9p+gxa7l53rtmk
-	zhaeqDZ2mr8NlQzFwIFn5m40W3RVNLM0LtZMcC+Vt
-X-Gm-Gg: AY/fxX7/sh4SGd+1NI85sqVN81KPBvVO0cxeQ+hrxnofBG8Q88W0buAxcGNOskcvxa8
-	otFX9EL0nzZtkTsHg2o4rwJ2k6AYuhNhr6pwg//Ona2HeHY1Iv34BauV+owpmh3GevLWT6FrOPU
-	Yz+UpzNNhTCkZaWqLa+jcK4Rjz23ermNh8EtXFGwmkhifwpFXgCkAhy/KIWQFewnfGmZTow6bpk
-	lsXSRjfKYhSCVAfCH7xqS0KEHcYyaWUZCxoRp3GUwnLfKK15wN32EGUgGmbw0ZD3hkoE/Kxb2bN
-	06aGdaP63hn5CO98QTQ2buu44T2l
-X-Received: by 2002:a05:600c:198b:b0:47e:dc0a:8591 with SMTP id
- 5b1f17b1804b1-4802788e239mr2686005e9.2.1768926530251; Tue, 20 Jan 2026
- 08:28:50 -0800 (PST)
+        d=1e100.net; s=20230601; t=1768931468; x=1769536268;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=PBYdCmT+L/+K4c9bKrSuTaHXyN4/euVT+SSxHGhM8vM=;
+        b=SEbT3pJtmstDlMEKMp9lY78o4lGParTKJtGIEoGqC9Xz98MF8nrCfOidKeIc+bLPpI
+         qKtUus5K+0QPehHfXTI9jq0TNHm4ZmH1nw/Pb8p5WXGIQ83q4XCBhuR5+qFdl5agxR89
+         JOpy+88CLGTerhuRwQ7z6avO0RqljPMQgS8t2bE3GfpdRLnoBaZk+V22ED/AcYwUXCOD
+         Hd8/Flgf1f51s+JAUpzhcR93E+M3sjTWWEFsgCT21cSJUkjKEYFjm8Ok5RdtEaNkDTFI
+         FF7WC5uSWgrJoqT1iBGOzvGqE8oi/Rx4Y9t49H4sizHWGfA/P3BsztLVx9xL60MihgX2
+         QoBA==
+X-Forwarded-Encrypted: i=1; AJvYcCUvWSELxXQ1pvksNy+c2+rlZHc+r2AIpU28+l0MsDesN4DCHoEqQJ1LEE8rP7eI+V2Ytfo=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzKaK1HXp/KaV+xqtPMcGXVFjVrz6Rjv1wIj13rsb9Qt7taJQV/
+	a1HZ4ufo+dU/7gviiu1zUdW9WkavAkgt6UX0GflXUwTwOc8zocEEdbJitP9rYOpV42uWMVJGHFj
+	RYY0ruQ==
+X-Received: from plim9.prod.google.com ([2002:a17:903:3b49:b0:2a1:5cb9:cd71])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:903:22c5:b0:295:c2e7:7199
+ with SMTP id d9443c01a7336-2a76ad6be42mr22284945ad.29.1768931467769; Tue, 20
+ Jan 2026 09:51:07 -0800 (PST)
+Date: Tue, 20 Jan 2026 09:51:06 -0800
+In-Reply-To: <aW2Iwpuwoyod8eQc@yzhao56-desk.sh.intel.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <20251102184434.2406-1-ankita@nvidia.com> <CACw3F51k=sFtXB1JE3HCcXP6EA0Tt4Yf44VUi3JLz0bgW-aArQ@mail.gmail.com>
- <SA1PR12MB71997E2E101E55CDE65EA6B3B08AA@SA1PR12MB7199.namprd12.prod.outlook.com>
-In-Reply-To: <SA1PR12MB71997E2E101E55CDE65EA6B3B08AA@SA1PR12MB7199.namprd12.prod.outlook.com>
-From: Jiaqi Yan <jiaqiyan@google.com>
-Date: Tue, 20 Jan 2026 08:28:38 -0800
-X-Gm-Features: AZwV_Qi-sOyZ-R41AFqxYbo27tCfgIMGnJS7jLDAEJnKTv2-_C3tqbgzg63dbdA
-Message-ID: <CACw3F51qrBXnN370Btk7=bcKU7s44nmQYfN=EAfq25MondRUNA@mail.gmail.com>
-Subject: Re: [PATCH v5 0/3] mm: Implement ECC handling for pfn with no struct page
-To: Ankit Agrawal <ankita@nvidia.com>
-Cc: Aniket Agashe <aniketa@nvidia.com>, Vikram Sethi <vsethi@nvidia.com>, 
-	Jason Gunthorpe <jgg@nvidia.com>, Matt Ochs <mochs@nvidia.com>, 
-	Shameer Kolothum <skolothumtho@nvidia.com>, "linmiaohe@huawei.com" <linmiaohe@huawei.com>, 
-	"nao.horiguchi@gmail.com" <nao.horiguchi@gmail.com>, 
-	"akpm@linux-foundation.org" <akpm@linux-foundation.org>, "david@redhat.com" <david@redhat.com>, 
-	"lorenzo.stoakes@oracle.com" <lorenzo.stoakes@oracle.com>, 
-	"Liam.Howlett@oracle.com" <Liam.Howlett@oracle.com>, "vbabka@suse.cz" <vbabka@suse.cz>, 
-	"rppt@kernel.org" <rppt@kernel.org>, "surenb@google.com" <surenb@google.com>, "mhocko@suse.com" <mhocko@suse.com>, 
-	"tony.luck@intel.com" <tony.luck@intel.com>, "bp@alien8.de" <bp@alien8.de>, 
-	"rafael@kernel.org" <rafael@kernel.org>, "guohanjun@huawei.com" <guohanjun@huawei.com>, 
-	"mchehab@kernel.org" <mchehab@kernel.org>, "lenb@kernel.org" <lenb@kernel.org>, 
-	"kevin.tian@intel.com" <kevin.tian@intel.com>, "alex@shazbot.org" <alex@shazbot.org>, Neo Jia <cjia@nvidia.com>, 
-	Kirti Wankhede <kwankhede@nvidia.com>, "Tarun Gupta (SW-GPU)" <targupta@nvidia.com>, Zhi Wang <zhiw@nvidia.com>, 
-	Dheeraj Nigam <dnigam@nvidia.com>, Krishnakant Jaju <kjaju@nvidia.com>, 
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, "linux-mm@kvack.org" <linux-mm@kvack.org>, 
-	"linux-edac@vger.kernel.org" <linux-edac@vger.kernel.org>, 
-	"Jonathan.Cameron@huawei.com" <Jonathan.Cameron@huawei.com>, "ira.weiny@intel.com" <ira.weiny@intel.com>, 
-	"Smita.KoralahalliChannabasappa@amd.com" <Smita.KoralahalliChannabasappa@amd.com>, 
-	"u.kleine-koenig@baylibre.com" <u.kleine-koenig@baylibre.com>, 
-	"peterz@infradead.org" <peterz@infradead.org>, 
-	"linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>, "kvm@vger.kernel.org" <kvm@vger.kernel.org>, 
-	Axel Rasmussen <axelrasmussen@google.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Mime-Version: 1.0
+References: <20260106101646.24809-1-yan.y.zhao@intel.com> <20260106102136.25108-1-yan.y.zhao@intel.com>
+ <2906b4d3b789985917a063d095c4063ee6ab7b72.camel@intel.com>
+ <aWrMIeCw2eaTbK5Z@google.com> <aW2Iwpuwoyod8eQc@yzhao56-desk.sh.intel.com>
+Message-ID: <aW_Aith2qkYQ3fGY@google.com>
+Subject: Re: [PATCH v3 11/24] KVM: x86/mmu: Introduce kvm_split_cross_boundary_leafs()
+From: Sean Christopherson <seanjc@google.com>
+To: Yan Zhao <yan.y.zhao@intel.com>
+Cc: Kai Huang <kai.huang@intel.com>, "pbonzini@redhat.com" <pbonzini@redhat.com>, 
+	"kvm@vger.kernel.org" <kvm@vger.kernel.org>, Fan Du <fan.du@intel.com>, 
+	Xiaoyao Li <xiaoyao.li@intel.com>, Chao Gao <chao.gao@intel.com>, 
+	Dave Hansen <dave.hansen@intel.com>, "thomas.lendacky@amd.com" <thomas.lendacky@amd.com>, 
+	"vbabka@suse.cz" <vbabka@suse.cz>, "tabba@google.com" <tabba@google.com>, "david@kernel.org" <david@kernel.org>, 
+	"kas@kernel.org" <kas@kernel.org>, "michael.roth@amd.com" <michael.roth@amd.com>, Ira Weiny <ira.weiny@intel.com>, 
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, 
+	"binbin.wu@linux.intel.com" <binbin.wu@linux.intel.com>, 
+	"ackerleytng@google.com" <ackerleytng@google.com>, "nik.borisov@suse.com" <nik.borisov@suse.com>, 
+	Isaku Yamahata <isaku.yamahata@intel.com>, Chao P Peng <chao.p.peng@intel.com>, 
+	"francescolavra.fl@gmail.com" <francescolavra.fl@gmail.com>, "sagis@google.com" <sagis@google.com>, 
+	Vishal Annapurve <vannapurve@google.com>, Rick P Edgecombe <rick.p.edgecombe@intel.com>, 
+	Jun Miao <jun.miao@intel.com>, "jgross@suse.com" <jgross@suse.com>, 
+	"pgonda@google.com" <pgonda@google.com>, "x86@kernel.org" <x86@kernel.org>
+Content-Type: text/plain; charset="us-ascii"
 
-On Fri, Jan 16, 2026 at 9:36=E2=80=AFPM Ankit Agrawal <ankita@nvidia.com> w=
-rote:
->
-> >>
-> >> v2 -> v3
-> >> - Rebased to v6.17-rc7.
-> >> - Skipped the unmapping of PFNMAP during reception of poison. Suggeste=
-d by
-> >> Jason Gunthorpe, Jiaqi Yan, Vikram Sethi (Thanks!)
-> >> - Updated the check to prevent multiple registration to the same PFN
-> >> range using interval_tree_iter_first. Thanks Shameer Kolothum for the
-> >> suggestion.
-> >> - Removed the callback function in the nvgrace-gpu requiring tracking =
-of
-> >> poisoned PFN as it isn't required anymore.
-> >
-> > Hi Ankit,
-> >
-> >
-> > I get that for nvgrace-gpu driver, you removed pfn_address_space_ops
-> > because there is no need to unmap poisoned HBM page.
-> >
-> > What about the nvgrace-egm driver? Now that you removed the
-> > pfn_address_space_ops callback from pfn_address_space in [1], how can
-> > nvgrace-egm driver know the poisoned EGM pages at runtime?
-> >
-> > I expect the functionality to return retired pages should also include
-> > runtime poisoned pages, which are not in the list queried from
-> > egm-retired-pages-data-base during initialization. Or maybe my
-> > expection is wrong/obsolete?
->
-> Hi Jiaqi, yes the EGM code will include consideration for runtime
-> poisoned pages as well. It will now instead make use of the
-> pfn_to_vma_pgoff callback merged through https://github.com/torvalds/linu=
-x/commit/e6dbcb7c0e7b508d443a9aa6f77f63a2f83b1ae4
+On Mon, Jan 19, 2026, Yan Zhao wrote:
+> On Fri, Jan 16, 2026 at 03:39:13PM -0800, Sean Christopherson wrote:
+> > On Thu, Jan 15, 2026, Kai Huang wrote:
+> > > So how about:
+> > > 
+> > > Rename kvm_tdp_mmu_try_split_huge_pages() to
+> > > kvm_tdp_mmu_split_huge_pages_log_dirty(), and rename
+> > > kvm_tdp_mmu_gfn_range_split_cross_boundary_leafs() to
+> > > kvm_tdp_mmu_split_huge_pages_cross_boundary()
+> > > 
+> > > ?
+> > 
+> > I find the "cross_boundary" termininology extremely confusing.  I also dislike
+> > the concept itself, in the sense that it shoves a weird, specific concept into
+> > the guts of the TDP MMU.
+> > The other wart is that it's inefficient when punching a large hole.  E.g. say
+> > there's a 16TiB guest_memfd instance (no idea if that's even possible), and then
+> > userpace punches a 12TiB hole.  Walking all ~12TiB just to _maybe_ split the head
+> > and tail pages is asinine.
+> That's a reasonable concern. I actually thought about it.
+> My consideration was as follows:
+> Currently, we don't have such large areas. Usually, the conversion ranges are
+> less than 1GB. 
 
-Thank you! Sorry I wasn't following that thread closely and missed it.
+Nothing guarantees that behavior.
 
->
-> > [1] https://lore.kernel.org/linux-mm/20230920140210.12663-2-ankita@nvid=
-ia.com
-> > [2] https://lore.kernel.org/kvm/20250904040828.319452-12-ankita@nvidia.=
-com
->
+> Though the initial conversion which converts all memory from private to
+> shared may be wide, there are usually no mappings at that stage. So, the
+> traversal should be very fast (since the traversal doesn't even need to go
+> down to the 2MB/1GB level).
+> 
+> If the caller of kvm_split_cross_boundary_leafs() finds it needs to convert a
+> very large range at runtime, it can optimize by invoking the API twice:
+> once for range [start, ALIGN(start, 1GB)), and
+> once for range [ALIGN_DOWN(end, 1GB), end).
+> 
+> I can also implement this optimization within kvm_split_cross_boundary_leafs()
+> by checking the range size if you think that would be better.
+> 
+> > And once kvm_arch_pre_set_memory_attributes() is dropped, I'm pretty sure the
+> > _only_ usage is for guest_memfd PUNCH_HOLE, because unless I'm misreading the
+> > code, the usage in tdx_honor_guest_accept_level() is superfluous and confusing.
+> Sorry for the confusion about the usage of tdx_honor_guest_accept_level(). I
+> should add a better comment.
+> 
+> There are 4 use cases for the API kvm_split_cross_boundary_leafs():
+> 1. PUNCH_HOLE
+> 2. KVM_SET_MEMORY_ATTRIBUTES2, which invokes kvm_gmem_set_attributes() for
+>    private-to-shared conversions
+> 3. tdx_honor_guest_accept_level()
+> 4. kvm_gmem_error_folio()
+> 
+> Use cases 1-3 are already in the current code. Use case 4 is per our discussion,
+> and will be implemented in the next version (because guest_memfd may split
+> folios without first splitting S-EPT).
+> 
+> The 4 use cases can be divided into two categories:
+> 
+> 1. Category 1: use cases 1, 2, 4
+>    We must ensure GFN start - 1 and GFN start are not mapped in a single
+>    mapping. However, for GFN start or GFN start - 1 specifically, we don't care
+>    about their actual mapping levels, which means they are free to be mapped at
+>    2MB or 1GB. The same applies to GFN end - 1 and GFN end.
+> 
+>    --|------------------|-----------
+>      ^                  ^
+>     start              end - 1 
+> 
+> 2. Category 2: use case 3
+>    It cares about the mapping level of the GFN, i.e., it must not be mapped
+>    above a certain level.
+> 
+>    -----|-------
+>         ^
+>        GFN
+> 
+>    So, to unify the two categories, I have tdx_honor_guest_accept_level() check
+>    the range of [level-aligned GFN, level-aligned GFN + level size). e.g.,
+>    If the accept level is 2MB, only 1GB mapping is possible to be outside the
+>    range and needs splitting.
+
+But that overlooks the fact that Category 2 already fits the existing "category"
+that is supported by the TDP MMU.  I.e. Category 1 is (somewhat) new and novel,
+Category 2 is not.
+
+>    -----|-------------|---
+>         ^             ^
+>         |             |
+>    level-aligned     level-aligned
+>       GFN            GFN + level size - 1
+> 
+> 
+> > For the EPT violation case, the guest is accepting a page.  Just split to the
+> > guest's accepted level, I don't see any reason to make things more complicated
+> > than that.
+> This use case could reuse the kvm_mmu_try_split_huge_pages() API, except that we
+> need a return value.
+
+Just expose tdp_mmu_split_huge_pages_root(), the fault path only _needs_ to split
+the current root, and in fact shouldn't even try to split other roots (ignoring
+that no other relevant roots exist).
+
+diff --git a/arch/x86/kvm/mmu/tdp_mmu.c b/arch/x86/kvm/mmu/tdp_mmu.c
+index 9c26038f6b77..7d924da75106 100644
+--- a/arch/x86/kvm/mmu/tdp_mmu.c
++++ b/arch/x86/kvm/mmu/tdp_mmu.c
+@@ -1555,10 +1555,9 @@ static int tdp_mmu_split_huge_page(struct kvm *kvm, struct tdp_iter *iter,
+        return ret;
+ }
+ 
+-static int tdp_mmu_split_huge_pages_root(struct kvm *kvm,
+-                                        struct kvm_mmu_page *root,
+-                                        gfn_t start, gfn_t end,
+-                                        int target_level, bool shared)
++int tdp_mmu_split_huge_pages_root(struct kvm *kvm, struct kvm_mmu_page *root,
++                                 gfn_t start, gfn_t end, int target_level,
++                                 bool shared)
+ {
+        struct kvm_mmu_page *sp = NULL;
+        struct tdp_iter iter;
+diff --git a/arch/x86/kvm/mmu/tdp_mmu.h b/arch/x86/kvm/mmu/tdp_mmu.h
+index bd62977c9199..ea9a509608fb 100644
+--- a/arch/x86/kvm/mmu/tdp_mmu.h
++++ b/arch/x86/kvm/mmu/tdp_mmu.h
+@@ -93,6 +93,9 @@ bool kvm_tdp_mmu_write_protect_gfn(struct kvm *kvm,
+                                   struct kvm_memory_slot *slot, gfn_t gfn,
+                                   int min_level);
+ 
++int tdp_mmu_split_huge_pages_root(struct kvm *kvm, struct kvm_mmu_page *root,
++                                 gfn_t start, gfn_t end, int target_level,
++                                 bool shared);
+ void kvm_tdp_mmu_try_split_huge_pages(struct kvm *kvm,
+                                      const struct kvm_memory_slot *slot,
+                                      gfn_t start, gfn_t end,
+
+> > And then for the PUNCH_HOLE case, do the math to determine which, if any, head
+> > and tail pages need to be split, and use the existing APIs to make that happen.
+> This use case cannot reuse kvm_mmu_try_split_huge_pages() without modification.
+
+Modifying existing code is a non-issue, and you're already modifying TDP MMU
+functions, so I don't see that as a reason for choosing X instead of Y.
+
+> Or which existing APIs are you referring to?
+
+See above.
+
+> The cross_boundary information is still useful?
+> 
+> BTW: Currently, kvm_split_cross_boundary_leafs() internally reuses
+> tdp_mmu_split_huge_pages_root() (as shown below).
+> 
+> kvm_split_cross_boundary_leafs
+>   kvm_tdp_mmu_gfn_range_split_cross_boundary_leafs
+>     tdp_mmu_split_huge_pages_root
+> 
+> However, tdp_mmu_split_huge_pages_root() is originally used to split huge
+> mappings in a wide range, so it temporarily releases mmu_lock for memory
+> allocation for sp, since it can't predict how many pages to pre-allocate in the
+> KVM mmu cache.
+> 
+> For kvm_split_cross_boundary_leafs(), we can actually predict the max number of
+> pages to pre-allocate. If we don't reuse tdp_mmu_split_huge_pages_root(), we can
+> allocate sp, sp->spt, sp->external_spt and DPAMT pages from the KVM mmu cache
+> without releasing mmu_lock and invoking tdp_mmu_alloc_sp_for_split().
+
+That's completely orthogonal to the "only need to maybe split head and tail pages".
+E.g. kvm_tdp_mmu_try_split_huge_pages() can also predict the _max_ number of pages
+to pre-allocate, it's just not worth adding a kvm_mmu_memory_cache for that use
+case because that path can drop mmu_lock at will, unlike the full page fault path.
+I.e. the complexity doesn't justify the benefits, especially since the max number
+of pages is so large.
+
+AFAICT, the only pre-allocation that is _necessary_ is for the dynamic PAMT,
+because the allocation is done outside of KVM's control.  But that's a solvable
+problem, the tricky part is protecting the PAMT cache for PUNCH_HOLE, but that
+too is solvable, e.g. by adding a per-VM mutex that's taken by kvm_gmem_punch_hole()
+to handle the PUNCH_HOLE case, and then using the per-vCPU cache when splitting
+for a mismatched accept.
