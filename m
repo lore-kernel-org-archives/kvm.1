@@ -1,53 +1,53 @@
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 48B1E3EFD36;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 48A8E3BC4EF;
 	Tue, 20 Jan 2026 08:01:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768896099; cv=none; b=Bi+vTiVZygugQzSbbfZ+VeH0P59kaNCkTI5GLbOh6HaIzGFJW+neV71+BEfsb9fW6UY/DTnOJRSmwl/8P7TcBy6nuvJ37FEykO/9y6urVkxmpo3RYV2Obev5qcDxPJlzRe9JShSZ6niibCIpwNhtL5oPQq1Pe6lILrQQGle52k0=
+	t=1768896100; cv=none; b=UaG0vRCj1X8bWojpyEBobfU5ZLzdfuu9suamD/C0HVuYuVXhM+n7pleZi9E+QD+X3jrmaz2KVAd3DCUir5xagLNAHEHarQu8F4ZnvwvzG4qTZmwnE4OpcCQTYbXcgB/zIAuvOxGoEHUQ8ZPPYV3jCz9oSB01VYJwmHDYDgVMqYQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768896099; c=relaxed/simple;
-	bh=YSvtfkLWCQaLegLAqsZzbM9D9UMUrjfCxPfvchg1Ncs=;
+	s=arc-20240116; t=1768896100; c=relaxed/simple;
+	bh=g46CI2WfXTFqmoP2zy62Sc8WQLTbmKWBP4l66sGkuP0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bqYUZd4aXdVGmjfIbX+H7LencQ2DxiGDG87Ao9PLXombAvNM1M4ah3h5ZqScEIwUftf+xg4riIoSqXQ7LBTj2Nh9pB6ifdqgX+sxXoIT12gCl6lq0GAnLNyMpvVdmAc6CANTf9f9yxc8+lpwM0fvxuubww66nCS9SMQDNrh9anQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=E0aUWJXL; arc=none smtp.client-ip=205.220.168.131
+	 MIME-Version; b=UMQLhyINnGgS4TNGpEIiITJAPruqzeT31G/FHeN1m1AEZG0wl1LSIBSfnfNWqNsEXslenHgzlAIzcCH4v6JdTcLJrJSL+Re7WraqAvoVUEhvRtSgcRKopJg1T1AoVbk6AqA/HlXL279cH34SeomnC5G4I07R970e+MSuAwYahVA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=iENyfGdU; arc=none smtp.client-ip=205.220.180.131
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=qualcomm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="E0aUWJXL"
-Received: from pps.filterd (m0279862.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 60K341Fd3808948;
-	Tue, 20 Jan 2026 08:00:19 GMT
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="iENyfGdU"
+Received: from pps.filterd (m0279872.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 60K2Q9sD1347376;
+	Tue, 20 Jan 2026 08:00:22 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
 	cc:content-transfer-encoding:date:from:in-reply-to:message-id
-	:mime-version:references:subject:to; s=qcppdkim1; bh=wRexMEpQkzq
-	WKlM9nEAeBfg4ZM2Tv2hbPeIIaNjzgsc=; b=E0aUWJXLgwmDX1/SzIYS02Lw4a8
-	TLWyuc4nABRb7pIBjb1Yk4Hi8gluWKCztpcIXVb4wZc44FkiyneqZC1G5gnfhzSV
-	MfcFBhZPWd+AbDtTRaqhXFU/jInLxwVvjXazyD+f75FTHW5XY5vUV5Lcr6LVu1aZ
-	E/r+ifYdOnS0U94ZdK1LFts6b9a5CD7R2tbjznF9HZayY+1uNaFMwWrMq9OoDu27
-	tgBczJhDQkGCu8MgWR4+x5uxiNElZ7YOyEGjJ3cyzEDFuV5Ju53mJiBNC4DjzGUn
-	ZaI4tUqnp3diBIC21h1TUfyLZPqhjtO0lILyQTFnW548fQuena2nJQGuISw==
+	:mime-version:references:subject:to; s=qcppdkim1; bh=kMvVQvpRPSs
+	IMOl6BNi/dRloose089q9kZNUJhwzxjc=; b=iENyfGdUPqRssdzkS17WwHcKii2
+	e0Jfarpyexa7w+wMlhhnH/WVCuShZC1HC0ViclXF5S4jI7w36Lvv/hTTrMMVPXMv
+	1FIoRirnnLlZwTHG44dKUmAIQhR+jWuTPdkHMb2UsEOLxtiREoBIdC3s5dymrFZd
+	f0AGJ2xl5WiueWwu6WTxI9BWvPOeoIk19Jqbb0WiCf52vxuSbfWANyN+1EwrKWZl
+	edtRMb89lTnEd5d0wGCBXQuC116YCsCiFgBwOSzC7eGVcNTMr3TnDfft9GedZ8Va
+	v8aJ9DuGZeBm/s4tTGuELu70WYWpvxhCoJU4dD0N+JaoAOm5uYUq10WsiNg==
 Received: from apblrppmta02.qualcomm.com (blr-bdr-fw-01_GlobalNAT_AllZones-Outside.qualcomm.com [103.229.18.19])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4bt1f88s3f-1
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4bsnpdjedj-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 20 Jan 2026 08:00:18 +0000 (GMT)
+	Tue, 20 Jan 2026 08:00:21 +0000 (GMT)
 Received: from pps.filterd (APBLRPPMTA02.qualcomm.com [127.0.0.1])
-	by APBLRPPMTA02.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTP id 60K80FK3007860;
-	Tue, 20 Jan 2026 08:00:15 GMT
+	by APBLRPPMTA02.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTP id 60K80FXG007882;
+	Tue, 20 Jan 2026 08:00:18 GMT
 Received: from pps.reinject (localhost [127.0.0.1])
-	by APBLRPPMTA02.qualcomm.com (PPS) with ESMTPS id 4br3gm8q4r-1
+	by APBLRPPMTA02.qualcomm.com (PPS) with ESMTPS id 4br3gm8q7g-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 20 Jan 2026 08:00:15 +0000
+	Tue, 20 Jan 2026 08:00:18 +0000
 Received: from APBLRPPMTA02.qualcomm.com (APBLRPPMTA02.qualcomm.com [127.0.0.1])
-	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 60K80FQO007831;
-	Tue, 20 Jan 2026 08:00:15 GMT
+	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 60K80HCt008032;
+	Tue, 20 Jan 2026 08:00:17 GMT
 Received: from hu-devc-blr-u24-a.qualcomm.com (hu-anuppate-blr.qualcomm.com [10.131.36.165])
-	by APBLRPPMTA02.qualcomm.com (PPS) with ESMTPS id 60K80FkG007824
+	by APBLRPPMTA02.qualcomm.com (PPS) with ESMTPS id 60K80H1x008015
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 20 Jan 2026 08:00:15 +0000
+	Tue, 20 Jan 2026 08:00:17 +0000
 Received: by hu-devc-blr-u24-a.qualcomm.com (Postfix, from userid 486687)
-	id 98EB922C26; Tue, 20 Jan 2026 13:30:14 +0530 (+0530)
+	id E50DA255C5; Tue, 20 Jan 2026 13:30:14 +0530 (+0530)
 From: Anup Patel <anup.patel@oss.qualcomm.com>
 To: Paolo Bonzini <pbonzini@redhat.com>, Atish Patra <atish.patra@linux.dev>
 Cc: Palmer Dabbelt <palmer@dabbelt.com>, Paul Walmsley <pjw@kernel.org>,
@@ -58,9 +58,9 @@ Cc: Palmer Dabbelt <palmer@dabbelt.com>, Paul Walmsley <pjw@kernel.org>,
         linux-riscv@lists.infradead.org, linux-kernel@vger.kernel.org,
         linux-kselftest@vger.kernel.org,
         Anup Patel <anup.patel@oss.qualcomm.com>
-Subject: [PATCH 02/27] RISC-V: KVM: Fix error code returned for Ssaia ONE_REG
-Date: Tue, 20 Jan 2026 13:29:48 +0530
-Message-ID: <20260120080013.2153519-3-anup.patel@oss.qualcomm.com>
+Subject: [PATCH 24/27] RISC-V: KVM: Add ONE_REG interface for nested virtualization state
+Date: Tue, 20 Jan 2026 13:30:10 +0530
+Message-ID: <20260120080013.2153519-25-anup.patel@oss.qualcomm.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20260120080013.2153519-1-anup.patel@oss.qualcomm.com>
 References: <20260120080013.2153519-1-anup.patel@oss.qualcomm.com>
@@ -75,62 +75,72 @@ X-QCInternal: smtphost
 X-QCInternal: smtphost
 X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
 X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMTIwMDA2NSBTYWx0ZWRfXxEKujc5OFdDq
- FVH6jhav7K0hEWytF9jITbTJza+fKkqdBVf/awY0OAphcVsoR7oEcZYSnj3s2cwJeqJwhv5Y0b0
- 2bjunb4VPeEol7kYerJ9lbO2h5tr514Zt/B06u87EbZiojb6geY2Objn7Ks9ZfxbuPqMM2oy38W
- GVucTc8GN8l/4sdthL1nzpmM73cxHgOe6J6pfgOMiLvKcJ7+s6IYhaNk3WEsh9eVVx+DPp+RGlH
- BIO7ye2y6fXaMnZcscR5OCDFCUtI3XBH8WhZzVr0BqhFZUhefuPPBRqZNWnJkuOoFj8dDREVT92
- IEyGfVAcDaI5Upih6v4+I2A8eziBkZAigh+MDIFKuCEQamWa+zDDiqmpF6U8q8ny9oSUv+XFZB+
- En/qfSr81NOq29CNzt1VxlCNY5flqCTrms+kWo64C1wXjO1nJ+ZvEFvczq5UN8/Urfim2QdmbJK
- AByYS9ZYZCZERgCDeYA==
-X-Proofpoint-GUID: XO-LWzVym6x4vct65yqZWddQUdLfyh-6
-X-Proofpoint-ORIG-GUID: XO-LWzVym6x4vct65yqZWddQUdLfyh-6
-X-Authority-Analysis: v=2.4 cv=LdQxKzfi c=1 sm=1 tr=0 ts=696f3612 cx=c_pps
+X-Authority-Analysis: v=2.4 cv=NtncssdJ c=1 sm=1 tr=0 ts=696f3615 cx=c_pps
  a=Ou0eQOY4+eZoSc0qltEV5Q==:117 a=Ou0eQOY4+eZoSc0qltEV5Q==:17
  a=vUbySO9Y5rIA:10 a=VkNPw1HP01LnGYTKEx00:22 a=EUspDBNiAAAA:8
- a=_CP9wF37UZ2j3KDzhjgA:9
+ a=JxPYNFsx4Yjzc9TJBFQA:9
+X-Proofpoint-GUID: 2_KmVGgggJ2UfCAc-tHIh_DNPc4h2pEu
+X-Proofpoint-ORIG-GUID: 2_KmVGgggJ2UfCAc-tHIh_DNPc4h2pEu
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMTIwMDA2NSBTYWx0ZWRfXyw91g80ff35X
+ DCsg2Fe669mN8XnLU1roJSHlFnrGx2KKkZOG+Vb3SyomrevPwM6fmQGrXIL/obv/YLWWj04zYyl
+ 8q1g+vvcM+QYzLsI0YPRW8n4GH+vk7Tf1INJYXDDHbd7147YzaLvygq9cb4JpwX15i+GStjTYW5
+ 7nkVLKJguVAdT5Sq8z24wfz95bemOchxhgBWGQL52CHRzzDz8wYB5QFkc7AQE1FVITJZtgGamYg
+ BXKdiVEGhppvF9M7VqE8j2EAw9pVjOLxLORZUo4cp0EyQSculfJnCSX8NMNOkWoMW4d1vlwtvGu
+ 2l4j7Bn2tISnwPuvWdnUNsC+9MCth3/870LR8Zje0BHHdeCKAowX3VI+4lA7iQzh17gzWrse1ZI
+ ioDSREaWgCZ3kSTIB9lJv1/L9mj27CgHzl3MavrJUBGNeBRBAOWvGc1Hh7Gk5A+dOMX+0gHdV3x
+ k+sAc1jIgcLPSgvB6Ew==
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
  definitions=2026-01-20_02,2026-01-19_03,2025-10-01_01
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- phishscore=0 bulkscore=0 clxscore=1015 impostorscore=0 spamscore=0
- priorityscore=1501 lowpriorityscore=0 adultscore=0 suspectscore=0
- malwarescore=0 classifier=typeunknown authscore=0 authtc= authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2601150000
- definitions=main-2601200065
+ bulkscore=0 clxscore=1015 lowpriorityscore=0 phishscore=0 suspectscore=0
+ priorityscore=1501 malwarescore=0 impostorscore=0 spamscore=0 adultscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2601150000 definitions=main-2601200065
 
-Return -ENOENT for Ssaia ONE_REG when Ssaia is not enabled
-for a VCPU.
+Add nested virtualization state to CORE registers of the KVM RISC-V
+ONE_REG interface so that it can be updated from KVM user-space in
+the same way as privileged mode.
 
-This will make Ssaia ONE_REG error codes consistent with
-other ONE_REG interfaces of KVM RISC-V.
-
-Fixes: 2a88f38cd58d ("RISC-V: KVM: return ENOENT in *_one_reg() when reg is unknown")
 Signed-off-by: Anup Patel <anup.patel@oss.qualcomm.com>
 ---
- arch/riscv/kvm/aia.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ arch/riscv/include/uapi/asm/kvm.h | 1 +
+ arch/riscv/kvm/vcpu_onereg.c      | 5 +++++
+ 2 files changed, 6 insertions(+)
 
-diff --git a/arch/riscv/kvm/aia.c b/arch/riscv/kvm/aia.c
-index dad318185660..31baea9f0589 100644
---- a/arch/riscv/kvm/aia.c
-+++ b/arch/riscv/kvm/aia.c
-@@ -183,6 +183,8 @@ int kvm_riscv_vcpu_aia_get_csr(struct kvm_vcpu *vcpu,
- {
- 	struct kvm_vcpu_aia_csr *csr = &vcpu->arch.aia_context.guest_csr;
+diff --git a/arch/riscv/include/uapi/asm/kvm.h b/arch/riscv/include/uapi/asm/kvm.h
+index 504e73305343..f62eaa47745b 100644
+--- a/arch/riscv/include/uapi/asm/kvm.h
++++ b/arch/riscv/include/uapi/asm/kvm.h
+@@ -65,6 +65,7 @@ struct kvm_riscv_config {
+ struct kvm_riscv_core {
+ 	struct user_regs_struct regs;
+ 	unsigned long mode;
++	unsigned long virt;
+ };
  
-+	if (!riscv_isa_extension_available(vcpu->arch.isa, SSAIA))
-+		return -ENOENT;
- 	if (reg_num >= sizeof(struct kvm_riscv_aia_csr) / sizeof(unsigned long))
+ /* Possible privilege modes for kvm_riscv_core */
+diff --git a/arch/riscv/kvm/vcpu_onereg.c b/arch/riscv/kvm/vcpu_onereg.c
+index 6b16eee2c833..5f0d10beeb98 100644
+--- a/arch/riscv/kvm/vcpu_onereg.c
++++ b/arch/riscv/kvm/vcpu_onereg.c
+@@ -219,6 +219,8 @@ static int kvm_riscv_vcpu_get_reg_core(struct kvm_vcpu *vcpu,
+ 	else if (reg_num == KVM_REG_RISCV_CORE_REG(mode))
+ 		reg_val = (cntx->sstatus & SR_SPP) ?
+ 				KVM_RISCV_MODE_S : KVM_RISCV_MODE_U;
++	else if (reg_num == KVM_REG_RISCV_CORE_REG(virt))
++		reg_val = kvm_riscv_vcpu_nested_virt(vcpu);
+ 	else
  		return -ENOENT;
  
-@@ -199,6 +201,8 @@ int kvm_riscv_vcpu_aia_set_csr(struct kvm_vcpu *vcpu,
- {
- 	struct kvm_vcpu_aia_csr *csr = &vcpu->arch.aia_context.guest_csr;
- 
-+	if (!riscv_isa_extension_available(vcpu->arch.isa, SSAIA))
-+		return -ENOENT;
- 	if (reg_num >= sizeof(struct kvm_riscv_aia_csr) / sizeof(unsigned long))
+@@ -257,6 +259,9 @@ static int kvm_riscv_vcpu_set_reg_core(struct kvm_vcpu *vcpu,
+ 			cntx->sstatus |= SR_SPP;
+ 		else
+ 			cntx->sstatus &= ~SR_SPP;
++	} else if (reg_num == KVM_REG_RISCV_CORE_REG(virt)) {
++		if (riscv_isa_extension_available(vcpu->arch.isa, h))
++			kvm_riscv_vcpu_nested_virt(vcpu) = !!reg_val;
+ 	} else
  		return -ENOENT;
  
 -- 
