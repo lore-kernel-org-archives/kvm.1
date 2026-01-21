@@ -1,109 +1,99 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A3B71E22E9;
-	Wed, 21 Jan 2026 15:45:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F34D73EDABE;
+	Wed, 21 Jan 2026 15:46:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769010312; cv=none; b=eV1poGmf/ZPCMUSi5USchb9vxZKd4LOx23VeDOfuxezN9y7LhMfKTEqsV7o+lPSvFbSfoIyX/KBLV6WDAyWSXMmcYzrnQTReRESRmWw77+iY7LwRGudFeuFX2vzr4IIqSRoGOkFfD70JbCjvDta5BNns2X8QK2OMX49MBVxzvGs=
+	t=1769010386; cv=none; b=NWgsexj5dyZXrtSo7eYIfQN9IG6GMMbRPj8ymAuiExXSPWImbrSUEGUAhfPZJmsi/XuHiCR5CNpjXneevE6/z1677cuKi02g5koLtcDYamDdZSd7SOVjAm4T2xIqU/EFxZx4LPwThIPIdManrFKvWCYfNSwgKAFn0S6HKhyPd2w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769010312; c=relaxed/simple;
-	bh=EeKQ6zSaJnyAFeB3cJ8aa28FFQoX0zryimYfy1amUHs=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=UVrLKb1m8hn1Sz1vgMFYny/Xos1gQ78h+nBKc+4kgZqYuAVm6Rt/1lVOyEXYRFPVLwP3+RjtHYxTbiZgPKn7togmcLjidtDvu8shtbgZYDFTrhF+1Qt0FBnqvFtOlLDBFVZq5A/9UTYWd3GKdWgZip3kXgfc1j0QNCCCIrLLubE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=joNgUbiQ; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1769010386; c=relaxed/simple;
+	bh=wsp0Ee/Wyi7vSUVwVM1dt7Rh8gLnheehWV+BoZfOvsU=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=SyWr7/l1IZXmovXzKQYUroo1D0jFTB9VcAQzwtEQFmgM+qKXbhZB7w9jX8PRNrl6ITubqUBgp987SR+IodRgr8pQS/DkqNJKm99isiCh6bHvMu+1y633XEI0NlaMmVM2l6XXA6yJMttwYsDcu/0ebNrXUQT8gdvWVyZaUQPlVfM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=t97wEG8R; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="joNgUbiQ"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3BAF9C4CEF1;
-	Wed, 21 Jan 2026 15:45:11 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="t97wEG8R"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C79C7C4CEF1;
+	Wed, 21 Jan 2026 15:46:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1769010311;
-	bh=EeKQ6zSaJnyAFeB3cJ8aa28FFQoX0zryimYfy1amUHs=;
-	h=From:To:Cc:Subject:Date:From;
-	b=joNgUbiQAV60eXiV/8c0Y2pPkAjsqXvOFw6DVKQxizK6etRiX/nrCZqNmrHnLmd5I
-	 Zdj6wfABA3m5KV7vLkMTTjv12OUkhhxZRUub33/Brz/K8QFlhERqIjKFsRdqSJWdJR
-	 10jdm+UkdCJ2q2CCxfVvvuY+YbWOR2VKIPJFgaHD21qzTXGFfbuP6dvNNpzAi0DiW7
-	 /lpMmp8pQ3JUoFLdO4dYbXjdyHayar7GnBx9ZbQYJdkhyVByvyecSAVxbacvaZFPyt
-	 2TaTzbpAii2JDCqIzPmb+Ybr6UmRn+mTRjRiJyrDoZtloe+nwH8juLAcatyj+gFLyE
-	 qnyDVOpuutVIQ==
+	s=k20201202; t=1769010385;
+	bh=wsp0Ee/Wyi7vSUVwVM1dt7Rh8gLnheehWV+BoZfOvsU=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=t97wEG8R3Vclg+HjbADh6Re31LoTY+IEQ//+/mnlWg1SY0DWWznX+wkzufS/8RTPw
+	 cFRK4kAf7NSHmPyBgCi82jqY7mcIsr1SPIUA+DfGH+0sVbcGIIjaD3E9NvDWdaGQVx
+	 LdTOIbm0sfpJbWGFzlKIoFrPX2a1YPoLdupT/uZEE8P5zTY/Y9osGFW/VyLT82WWgJ
+	 TZMQRbM9NUBS2Upq18HxU+6bzyq7clPDWPDeMzkHTDGuxQmBCpWoxQ0JRBZ6ihl7MC
+	 pISuKsiX5PxQGXQHWql6x3YzR56jEtvSfhu2oH2477i9lN+U+568UYrW9OFuumSVq0
+	 ES+FsrOJCjoVw==
+Date: Wed, 21 Jan 2026 17:46:21 +0200
 From: Leon Romanovsky <leon@kernel.org>
-To: Alex Williamson <alex@shazbot.org>,
+To: Jason Gunthorpe <jgg@ziepe.ca>, Alex Williamson <alex@shazbot.org>
+Cc: Sumit Semwal <sumit.semwal@linaro.org>,
+	Christian =?iso-8859-1?Q?K=F6nig?= <christian.koenig@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
+	Gerd Hoffmann <kraxel@redhat.com>,
+	Dmitry Osipenko <dmitry.osipenko@collabora.com>,
+	Gurchetan Singh <gurchetansingh@chromium.org>,
+	Chia-I Wu <olvaffe@gmail.com>,
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+	Maxime Ripard <mripard@kernel.org>,
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	Lucas De Marchi <lucas.demarchi@intel.com>,
+	Thomas =?iso-8859-1?Q?Hellstr=F6m?= <thomas.hellstrom@linux.intel.com>,
+	Rodrigo Vivi <rodrigo.vivi@intel.com>,
+	Kevin Tian <kevin.tian@intel.com>, Joerg Roedel <joro@8bytes.org>,
+	Will Deacon <will@kernel.org>, Robin Murphy <robin.murphy@arm.com>,
+	Felix Kuehling <Felix.Kuehling@amd.com>,
 	Ankit Agrawal <ankita@nvidia.com>,
-	Jason Gunthorpe <jgg@ziepe.ca>,
-	Kevin Tian <kevin.tian@intel.com>,
-	Vivek Kasireddy <vivek.kasireddy@intel.com>
-Cc: kvm@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH vfio-rc] vfio: Prevent from pinned DMABUF importers to attach to VFIO DMABUF
-Date: Wed, 21 Jan 2026 17:45:02 +0200
-Message-ID: <20260121-vfio-add-pin-v1-1-4e04916b17f1@nvidia.com>
-X-Mailer: git-send-email 2.52.0
+	Vivek Kasireddy <vivek.kasireddy@intel.com>,
+	linux-media@vger.kernel.org, dri-devel@lists.freedesktop.org,
+	linaro-mm-sig@lists.linaro.org, linux-kernel@vger.kernel.org,
+	amd-gfx@lists.freedesktop.org, virtualization@lists.linux.dev,
+	intel-xe@lists.freedesktop.org, linux-rdma@vger.kernel.org,
+	iommu@lists.linux.dev, kvm@vger.kernel.org
+Subject: Re: [PATCH v4 8/8] vfio: Validate dma-buf revocation semantics
+Message-ID: <20260121154621.GH13201@unreal>
+References: <20260121-dmabuf-revoke-v4-0-d311cbc8633d@nvidia.com>
+ <20260121-dmabuf-revoke-v4-8-d311cbc8633d@nvidia.com>
+ <20260121134712.GZ961572@ziepe.ca>
+ <20260121144701.GF13201@unreal>
+ <20260121154137.GD961572@ziepe.ca>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-X-Change-ID: 20260121-vfio-add-pin-2229148da56e
-X-Mailer: b4 0.15-dev-47773
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260121154137.GD961572@ziepe.ca>
 
-From: Leon Romanovsky <leonro@nvidia.com>=0D
-=0D
-Some pinned importers, such as non-ODP RDMA ones, cannot invalidate their=0D
-mappings and therefore must be prevented from attaching to this exporter.=0D
-=0D
-Fixes: 5d74781ebc86 ("vfio/pci: Add dma-buf export support for MMIO regions=
-")=0D
-Signed-off-by: Leon Romanovsky <leonro@nvidia.com>=0D
----=0D
-This is an outcome of this discussion about revoke functionality.=0D
-https://lore.kernel.org/all/20260121134712.GZ961572@ziepe.ca=0D
-=0D
-Thanks=0D
----=0D
- drivers/vfio/pci/vfio_pci_dmabuf.c | 12 ++++++++++++=0D
- 1 file changed, 12 insertions(+)=0D
-=0D
-diff --git a/drivers/vfio/pci/vfio_pci_dmabuf.c b/drivers/vfio/pci/vfio_pci=
-_dmabuf.c=0D
-index d4d0f7d08c53..4be4a85005cb 100644=0D
---- a/drivers/vfio/pci/vfio_pci_dmabuf.c=0D
-+++ b/drivers/vfio/pci/vfio_pci_dmabuf.c=0D
-@@ -20,6 +20,16 @@ struct vfio_pci_dma_buf {=0D
- 	u8 revoked : 1;=0D
- };=0D
- =0D
-+static int vfio_pci_dma_buf_pin(struct dma_buf_attachment *attachment)=0D
-+{=0D
-+	return -EOPNOTSUPP;=0D
-+}=0D
-+=0D
-+static void vfio_pci_dma_buf_unpin(struct dma_buf_attachment *attachment)=
-=0D
-+{=0D
-+	/* Do nothing */=0D
-+}=0D
-+=0D
- static int vfio_pci_dma_buf_attach(struct dma_buf *dmabuf,=0D
- 				   struct dma_buf_attachment *attachment)=0D
- {=0D
-@@ -76,6 +86,8 @@ static void vfio_pci_dma_buf_release(struct dma_buf *dmab=
-uf)=0D
- }=0D
- =0D
- static const struct dma_buf_ops vfio_pci_dmabuf_ops =3D {=0D
-+	.pin =3D vfio_pci_dma_buf_pin,=0D
-+	.unpin =3D vfio_pci_dma_buf_unpin,=0D
- 	.attach =3D vfio_pci_dma_buf_attach,=0D
- 	.map_dma_buf =3D vfio_pci_dma_buf_map,=0D
- 	.unmap_dma_buf =3D vfio_pci_dma_buf_unmap,=0D
-=0D
----=0D
-base-commit: acf44a2361b8d6356b71a970ab016065b5123b0e=0D
-change-id: 20260121-vfio-add-pin-2229148da56e=0D
-=0D
-Best regards,=0D
---  =0D
-Leon Romanovsky <leonro@nvidia.com>=0D
-=0D
+On Wed, Jan 21, 2026 at 11:41:37AM -0400, Jason Gunthorpe wrote:
+> On Wed, Jan 21, 2026 at 04:47:01PM +0200, Leon Romanovsky wrote:
+> > > We need to push an urgent -rc fix to implement a pin function here
+> > > that always fails. That was missed and it means things like rdma can
+> > > import vfio when the intention was to block that. It would be bad for
+> > > that uAPI mistake to reach a released kernel.
+> > 
+> > I don't see any urgency here. In the current kernel, the RDMA importer
+> > prints a warning to indicate it was attached to the wrong exporter.
+> > VFIO also invokes dma_buf_move_notify().
+> 
+> The design of vfio was always that it must not work with RDMA because
+> we cannot tolerate the errors that happen due to ignoring the
+> move_notify.
+> 
+> The entire purpose of this series could be stated as continuing to
+> block RDMA while opening up other pining users.
+> 
+> So it must be addressed urgently before someone builds an application
+> relying on this connection.
+
+Done, https://lore.kernel.org/all/20260121-vfio-add-pin-v1-1-4e04916b17f1@nvidia.com/T/#u
+
+Thanks
+
+> 
+> Jason
