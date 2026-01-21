@@ -1,151 +1,154 @@
-Received: from mail-qt1-f175.google.com (mail-qt1-f175.google.com [209.85.160.175])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 671B72DCBF4
-	for <kvm@vger.kernel.org>; Wed, 21 Jan 2026 07:10:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.175
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C15793AEF2D;
+	Wed, 21 Jan 2026 07:24:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.13
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768979418; cv=none; b=d/BbmtrBwA2xy234W0YLrVfKzwNVw4uq98WEkb+iElSPnK6seAwZkZD0QZSy50mzD9c/DuidwMcG7nqN7KQ7R4Ov2j+2fguudX0sSL7AMufMUyETXWbb2WuZ5Tm4tssuj2i2Z7EEcxV/H1jKqywor3x+ZPSBbKKt669L8+BhYhk=
+	t=1768980245; cv=none; b=qLw4E6WG/zaHVL11v2xg4a17p4UNx1Y0egUTqJOg4q1qElThO0G6JQHfMOKjX4hdHDVaCdn1Co9nuYtemamFnvr3JoYGxOTtlrkMnTE94aU/0FzcWtH1LXzIVmogDyVkAg4tY6S6x41mDw7c5xPZXEoeMuZIfrjRP56I5+hSD40=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768979418; c=relaxed/simple;
-	bh=BjEonW32c5YOMq0hqq7Xvkwknsp7bLBK5sRV2QqHoDQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=eJ1oarnWGiM6Lmiuo904bB8biC243tSFm6lQM/ggn3BjX7me3ijh+keLNPYGDopUkPZ5B+Vy+aUyv1PqUOK5lOlWsL/UNGniaLasmvBfBm9COI1De/t4Rrq2qNMokRZp4uI+k5FZoXlkq9ncy3yYJLhRbsj0cFm5w3AleypZe+U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=NlRsW1kb; arc=none smtp.client-ip=209.85.160.175
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1768980245; c=relaxed/simple;
+	bh=OgMupP7U2Hhvx4lMbkzEIs76qr0+Su37AyQKBA6RlA8=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=RSvmAkkUnc+3+gQTjG1xbUyrKHG8B+6uo6L0MpC55hE1J9BneYpQ5qVX1L6Pj0tuuidhN0YIxuySCcYIvD0Rf7biX/3hHNKXt3/zEyzTtvU4qZMGYYkUDmQ4KXdDssDPrZ6KrLa9cwhzL91m9jUUrcV4pn5C3XELSkaJF5EqpR0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=jd7DjhKB; arc=none smtp.client-ip=198.175.65.13
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="NlRsW1kb"
-Received: by mail-qt1-f175.google.com with SMTP id d75a77b69052e-50150bc7731so93824431cf.1
-        for <kvm@vger.kernel.org>; Tue, 20 Jan 2026 23:10:16 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1768979415; x=1769584215; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=dr4ikofTW2/lOylz+wqvxKyTxo3lmrOIQRlztmAAggk=;
-        b=NlRsW1kbHyH/Jv0g8eJ81NgtPMnJY+hj8B38WcVail7bOM8BPbvG1z7rCfFtx1LoyT
-         0mtKifV31PvURdD57hK4toj7jsmT5dcHTUuBlKJpADaMaFdoDDkR5XHXcPQ+yT2BsUUy
-         Ung3l7MpkH85wQc4O/9tI8DOeUFj4lOSUq7WaaNZ6dc+Sromd25ZFEH18Iy3S5e0FtRY
-         sc0NXEs1Lr7sPQ7Tbw2bnOGunPJU3OOtrCzGbyTx6OiHMpFL+NV/Sh9NQ+WVdrohgGT/
-         TIuhZC3e6t4chbPEn038bo01tYCtIaqkmLbQNKRC35yM4H3m220lgDRN7/mGcOWUgm3Q
-         jJAg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1768979415; x=1769584215;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=dr4ikofTW2/lOylz+wqvxKyTxo3lmrOIQRlztmAAggk=;
-        b=E0sVChlOEjBcpYhxt+ylcxms/ekaVAqO5S9l4sU1W3vqfD14qnU0uVchgwusOK9jTF
-         evHBgw2gLz8B3MYrM9vTS5zwlOsItM0zrhkBwQQnHKYtAWK9l+An77D2wprMRt+alGVK
-         pPC+k4Msad6CIAJWjvIGpXsV6sqAvFurnCC6A3MDsUTCTzwe/9agKISzabV7F3rtiCN5
-         tj69Q+jWGL5u/ZPL7wiaE7YIaY2egm9UTmcGPViXVTJkJil54bd6AcwTO+UoRFBh0Otu
-         vHTPzHikn4+14+mCLHQgaVgGTcl+r9hMlIMFnV1D/8w+XihxsbYu69vXRKO73KtjssrT
-         sxSw==
-X-Forwarded-Encrypted: i=1; AJvYcCVegVNU6Gf0XmqEJ+0C1oLf1DFOMaZ+rWxe2FYdaeZdBXcUXX59gDIZRzJi03ZNyxPgDwU=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwOMhwneUibmTegSd5CHpwYt4vJVg9sFLtX7j7IlPPIb/Ke2Ri0
-	vbCCRXede9HplwnM85kYxTIfp4QPUc0rc/pFiZmXrEU/lYsXRo7yAdQ7qUQq4A==
-X-Gm-Gg: AZuq6aKKSPQE914YVyX2s8F3SWLPh0mYgKufEMpWyHQikLzzkPZjPYYAYH//j5wz5Gq
-	zCxM4Hz10rlGW3ZPbo9qpl9/uaj+osE/iXj0zJaeE/hpd9FRJ1H0ASlXQP46TdMWk725za43zMM
-	DZMQBfI+pDKifrBJ88qFRJfwQaigvIpIh3LHkjPxbip5mxbdtqRRNVSQzFXhYULKMVxB6DnGcxn
-	0asripZK5Z4nIm4tIh2dyBUzTm9i8AkBembU5D2vvN2sNr5R/eLqOPbr8asXKPl1fnSXxSN8VgB
-	0kK+GjcbzEc3HbXHKJB02uSnmXYabFt9xmeQNYmuutIz0oKJHP8OdZB3TPzl2cIk3JNHyOvc4DR
-	b9TC3Q086RfEWIHUhQamYl/GoWuklb3CbjzdzOmsWJ3KR6uT2fNNImkg0yT4gjPIQ+LbyA1WeQ2
-	CLDY6UKLTN3JjtEwLv3efbDTFd/fAUef9KT4BljoBdQa8e0Q==
-X-Received: by 2002:a05:690c:ec4:b0:788:1086:8843 with SMTP id 00721157ae682-793c66b7cd1mr130884437b3.2.1768972588159;
-        Tue, 20 Jan 2026 21:16:28 -0800 (PST)
-Received: from devvm11784.nha0.facebook.com ([2a03:2880:25ff:74::])
-        by smtp.gmail.com with ESMTPSA id 00721157ae682-793c6888b83sm60922327b3.48.2026.01.20.21.16.27
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 20 Jan 2026 21:16:27 -0800 (PST)
-Date: Tue, 20 Jan 2026 21:16:26 -0800
-From: Bobby Eshleman <bobbyeshleman@gmail.com>
-To: Jakub Kicinski <kuba@kernel.org>
-Cc: sgarzare@redhat.com, kvm@vger.kernel.org, linux-kernel@vger.kernel.org,
-	mst@redhat.com, horms@kernel.org, bobbyeshleman@meta.com,
-	corbet@lwn.net, xuanzhuo@linux.alibaba.com, haiyangz@microsoft.com,
-	jasowang@redhat.com, linux-hyperv@vger.kernel.org,
-	pabeni@redhat.com, kys@microsoft.com, vishnu.dasa@broadcom.com,
-	longli@microsoft.com, linux-doc@vger.kernel.org,
-	linux-kselftest@vger.kernel.org, netdev@vger.kernel.org,
-	stefanha@redhat.com, berrange@redhat.com, decui@microsoft.com,
-	bryan-bt.tan@broadcom.com, eperezma@redhat.com, wei.liu@kernel.org,
-	davem@davemloft.net, shuah@kernel.org,
-	bcm-kernel-feedback-list@broadcom.com, edumazet@google.com,
-	virtualization@lists.linux.dev, sargun@sargun.me
-Subject: Re: [net-next,v15,06/12] selftests/vsock: prepare vm management
- helpers for namespaces
-Message-ID: <aXBhKlAxxAkvr4/u@devvm11784.nha0.facebook.com>
-References: <20260116-vsock-vmtest-v15-6-bbfd1a668548@meta.com>
- <20260121025420.1999992-2-kuba@kernel.org>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="jd7DjhKB"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1768980243; x=1800516243;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=OgMupP7U2Hhvx4lMbkzEIs76qr0+Su37AyQKBA6RlA8=;
+  b=jd7DjhKBgH4uNixJfV+id2rY1T6uS1gYtluUqWpwtB5Y+jGT8QrsVBYv
+   rfRDTDhEJI7fcGAC2Md6+/S0XRW03FRyoQfbcd8drYVarIXLVgqQDbLkI
+   TB1dRKYUpM05/f2xZnoId2JaEQsQkkvRTUB7beHromi09kzaOo6vuyRNJ
+   5/Olj7YzVLwtmRqeUWSLSFKP/927D7anetaqymWPwGfwTRglypHPD2Z+8
+   wDXo4MTHoia4U2iOTr/K+nvu4amgbL/nl2w442xanPEr3wBZmiy2M2asu
+   mDCesUHmABLpw0e512d6fbVzw17RrzhfIzZOgszIPXbXTyhe8ihV9uKVg
+   A==;
+X-CSE-ConnectionGUID: lBs18XChQq6JCxtUvFJiiw==
+X-CSE-MsgGUID: KFkYHrHYRhOzUStqLeDhWw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11677"; a="81311241"
+X-IronPort-AV: E=Sophos;i="6.21,242,1763452800"; 
+   d="scan'208";a="81311241"
+Received: from fmviesa003.fm.intel.com ([10.60.135.143])
+  by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Jan 2026 23:24:03 -0800
+X-CSE-ConnectionGUID: UiYlb34rThK5ejrQgR7crg==
+X-CSE-MsgGUID: /N5Rt8HkT5ugVNwzke/HJQ==
+X-ExtLoop1: 1
+Received: from unknown (HELO [10.238.1.231]) ([10.238.1.231])
+  by fmviesa003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Jan 2026 23:23:58 -0800
+Message-ID: <79adfc1f-6a0c-404d-aa3d-10efd788615a@linux.intel.com>
+Date: Wed, 21 Jan 2026 15:23:56 +0800
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260121025420.1999992-2-kuba@kernel.org>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v9 09/22] KVM: VMX: Save/restore guest FRED RSP0
+To: "Xin Li (Intel)" <xin@zytor.com>
+Cc: linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
+ linux-doc@vger.kernel.org, pbonzini@redhat.com, seanjc@google.com,
+ corbet@lwn.net, tglx@linutronix.de, mingo@redhat.com, bp@alien8.de,
+ dave.hansen@linux.intel.com, x86@kernel.org, hpa@zytor.com, luto@kernel.org,
+ peterz@infradead.org, andrew.cooper3@citrix.com, chao.gao@intel.com,
+ hch@infradead.org, sohil.mehta@intel.com
+References: <20251026201911.505204-1-xin@zytor.com>
+ <20251026201911.505204-10-xin@zytor.com>
+Content-Language: en-US
+From: Binbin Wu <binbin.wu@linux.intel.com>
+In-Reply-To: <20251026201911.505204-10-xin@zytor.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Tue, Jan 20, 2026 at 06:54:21PM -0800, Jakub Kicinski wrote:
-> In case you need to respin..
+
+
+On 10/27/2025 4:18 AM, Xin Li (Intel) wrote:
+> From: Xin Li <xin3.li@intel.com>
 > 
-> This is an AI-generated review of your patch.
-> For local reproduction steps see https://netdev-ai.bots.linux.dev/ai-local.html
+> Save guest FRED RSP0 in vmx_prepare_switch_to_host() and restore it
+> in vmx_prepare_switch_to_guest() because MSR_IA32_FRED_RSP0 is passed
+> through to the guest, thus is volatile/unknown.
+> 
+> Note, host FRED RSP0 is restored in arch_exit_to_user_mode_prepare(),
+> regardless of whether it is modified in KVM.
+> 
+> Signed-off-by: Xin Li <xin3.li@intel.com>
+> Signed-off-by: Xin Li (Intel) <xin@zytor.com>
+> Tested-by: Shan Kang <shan.kang@intel.com>
+> Tested-by: Xuelian Guo <xuelian.guo@intel.com>
+
+Reviewed-by: Binbin Wu <binbin.wu@linux.intel.com>
+
 > ---
-> selftests/vsock: prepare vm management helpers for namespaces
 > 
-> This commit adds namespace support to VM management helpers and wrapper
-> functions, requiring callers to explicitly pass "init_ns" for the init
-> namespace. The commit message states "No functional changes for existing
-> tests. All have been updated to pass 'init_ns' explicitly."
+> Changes in v5:
+> * Remove the cpu_feature_enabled() check when set/get guest
+>   MSR_IA32_FRED_RSP0, as guest_cpu_cap_has() should suffice (Sean).
+> * Add a comment when synchronizing current MSR_IA32_FRED_RSP0 MSR to
+>   the kernel's local cache, because its handling is different from
+>   the MSR_KERNEL_GS_BASE handling (Sean).
+> * Add TB from Xuelian Guo.
 > 
-> > diff --git a/tools/testing/selftests/vsock/vmtest.sh b/tools/testing/selftests/vsock/vmtest.sh
-> > index c2bdc293b94c..1d03acb62347 100755
-> > --- a/tools/testing/selftests/vsock/vmtest.sh
-> > +++ b/tools/testing/selftests/vsock/vmtest.sh
-> > @@ -135,7 +135,18 @@ del_namespaces() {
-> >  }
-> >
-> >  vm_ssh() {
-> > -	ssh -q -o UserKnownHostsFile=/dev/null -p ${SSH_HOST_PORT} localhost "$@"
-> > +	local ns_exec
-> > +
-> > +	if [[ "${1}" == init_ns ]]; then
-> > +		ns_exec=""
-> > +	else
-> > +		ns_exec="ip netns exec ${1}"
-> > +	fi
-> > +
-> > +	shift
-> > +
-> > +	${ns_exec} ssh -q -o UserKnownHostsFile=/dev/null -p "${SSH_HOST_PORT}" localhost "$@"
-> > +
-> >  	return $?
-> >  }
+> Changes in v3:
+> * KVM only needs to save/restore guest FRED RSP0 now as host FRED RSP0
+>   is restored in arch_exit_to_user_mode_prepare() (Sean Christopherson).
 > 
-> The vm_ssh() function now expects a namespace as its first argument, but
-> run_shared_vm_test() still calls vm_ssh without this parameter:
+> Changes in v2:
+> * Don't use guest_cpuid_has() in vmx_prepare_switch_to_{host,guest}(),
+>   which are called from IRQ-disabled context (Chao Gao).
+> * Reset msr_guest_fred_rsp0 in __vmx_vcpu_reset() (Chao Gao).
+> ---
+>  arch/x86/kvm/vmx/vmx.c | 13 +++++++++++++
+>  arch/x86/kvm/vmx/vmx.h |  1 +
+>  2 files changed, 14 insertions(+)
 > 
->     vm_oops_cnt_before=$(vm_ssh -- dmesg | grep -c -i 'Oops')
->     vm_warn_cnt_before=$(vm_ssh -- dmesg --level=warn | grep -c -i 'vsock')
->     vm_oops_cnt_after=$(vm_ssh -- dmesg | grep -i 'Oops' | wc -l)
->     vm_warn_cnt_after=$(vm_ssh -- dmesg --level=warn | grep -c -i 'vsock')
-> 
-> When called as "vm_ssh -- dmesg", the "--" is interpreted as the namespace
-> argument. Since "--" does not equal "init_ns", the function sets
-> ns_exec="ip netns exec --" which is invalid. The shift then consumes "--"
-> and the command becomes "ip netns exec -- ssh ... dmesg" which will fail.
-> 
-> Interestingly, the v9 version of this patch on lore correctly updated these
-> calls to pass "init_ns", but this change appears to have been lost between
-> v9 and v15. The fix for this regression is present later in the series in
-> commit 3ae984505e00 ("selftests/vsock: add vm_dmesg_{warn,oops}_count()
-> helpers").
-> 
-> [ ... ]
+> diff --git a/arch/x86/kvm/vmx/vmx.c b/arch/x86/kvm/vmx/vmx.c
+> index ef9765779884..c1fb3745247c 100644
+> --- a/arch/x86/kvm/vmx/vmx.c
+> +++ b/arch/x86/kvm/vmx/vmx.c
+> @@ -1292,6 +1292,9 @@ void vmx_prepare_switch_to_guest(struct kvm_vcpu *vcpu)
+>  	}
+>  
+>  	wrmsrq(MSR_KERNEL_GS_BASE, vmx->msr_guest_kernel_gs_base);
+> +
+> +	if (guest_cpu_cap_has(vcpu, X86_FEATURE_FRED))
+> +		wrmsrns(MSR_IA32_FRED_RSP0, vmx->msr_guest_fred_rsp0);
+>  #else
+>  	savesegment(fs, fs_sel);
+>  	savesegment(gs, gs_sel);
+> @@ -1336,6 +1339,16 @@ static void vmx_prepare_switch_to_host(struct vcpu_vmx *vmx)
+>  	invalidate_tss_limit();
+>  #ifdef CONFIG_X86_64
+>  	wrmsrq(MSR_KERNEL_GS_BASE, vmx->vt.msr_host_kernel_gs_base);
+> +
+> +	if (guest_cpu_cap_has(&vmx->vcpu, X86_FEATURE_FRED)) {
+> +		vmx->msr_guest_fred_rsp0 = read_msr(MSR_IA32_FRED_RSP0);
+> +		/*
+> +		 * Synchronize the current value in hardware to the kernel's
+> +		 * local cache.  The desired host RSP0 will be set when the
+> +		 * CPU exits to userspace (RSP0 is a per-task value).
+> +		 */
+> +		fred_sync_rsp0(vmx->msr_guest_fred_rsp0);
+> +	}
+>  #endif
+>  	load_fixmap_gdt(raw_smp_processor_id());
+>  	vmx->vt.guest_state_loaded = false;
+> diff --git a/arch/x86/kvm/vmx/vmx.h b/arch/x86/kvm/vmx/vmx.h
+> index 645b0343e88c..48a5ab12cccf 100644
+> --- a/arch/x86/kvm/vmx/vmx.h
+> +++ b/arch/x86/kvm/vmx/vmx.h
+> @@ -227,6 +227,7 @@ struct vcpu_vmx {
+>  	bool                  guest_uret_msrs_loaded;
+>  #ifdef CONFIG_X86_64
+>  	u64		      msr_guest_kernel_gs_base;
+> +	u64		      msr_guest_fred_rsp0;
+>  #endif
+>  
+>  	u64		      spec_ctrl;
 
-Got it, thank you.
-
-Best,
-Bobby
