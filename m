@@ -1,93 +1,65 @@
-Received: from mail-yx1-f43.google.com (mail-yx1-f43.google.com [74.125.224.43])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 906C0397ADA
-	for <kvm@vger.kernel.org>; Wed, 21 Jan 2026 17:36:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.224.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6845731A7E1;
+	Wed, 21 Jan 2026 17:50:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.15
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769017015; cv=none; b=NBq2JGGsa1EQPax4EqwdWWRJNvnfntvDN7iK4WNAgvHUsecy60g7N9SouoPyLlIEVQZNzAi+2eAV1NksmCC1wpt/Wn1LjMeo0AHshCCi759Xz8lMtV+pEWKsyYfAMuyefx4ppd9CmRRmKehg1UDQCeTlSeGta4chR88dc6JpR3Q=
+	t=1769017834; cv=none; b=FVJ8e+n8GLRYySJKMhDR+4vWqLuZZLJW3fGtGy41zPU+aIUkUXRAX+HsvOvizgod7hVFuNzovqirpcbOnr3HiHMicG8aJtNzlZ1KOatiRtkU6AUutiu/eP9uhL2op024SOekkNjiyVspIUwIu7cG8156kNdHHsP2ar0u0849ffk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769017015; c=relaxed/simple;
-	bh=tpGlhPJQhs6K29z4KKdexPB885DZk84UD04BRE7PW+k=;
+	s=arc-20240116; t=1769017834; c=relaxed/simple;
+	bh=9aYwxws7ZCc9YL7osroT+LHl6v3IlVsB+RYFfQ3l3Nw=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=d309CyZ/KwBfl7TxEkhkViYF2W3yE8oVvQHWCNz25a+DR2KsxOMkM77nkxSfzSrpe+iKSFcw1GCT7h8HgI44ux8lPcareSIV1dYKZ40SWa36JdKQEJOwoZJQ8S3E/QD7fIUSR1Spmn2CjZBm8sMr/Yo/kFzS1TVirh2LR18T1B0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=cCCGwsSn; arc=none smtp.client-ip=74.125.224.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	 Content-Type:Content-Disposition:In-Reply-To; b=Y1I31MdL1C+DOlK6j5ZGXrGxUIDWgfgUoqhpB6qFtDI8to76z+zQnEbeIDuvCXvlVhomiXkfbNe+LCeCCgPdO9sPffYfVeF8TS6ZnIFqroeG0cMGIfwU2ewmzlMx0p9xedKov4qD2hv+fv6YWs8N5ieFxu538amhNw8UWkbMxD0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Aotg10NH; arc=none smtp.client-ip=192.198.163.15
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="cCCGwsSn"
-Received: by mail-yx1-f43.google.com with SMTP id 956f58d0204a3-6446d7a8eadso162000d50.0
-        for <kvm@vger.kernel.org>; Wed, 21 Jan 2026 09:36:51 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1769017010; x=1769621810; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=TzQpPNktFvNOdBi7+gsCZqhpBpuEURHyo6CUuqA6z7E=;
-        b=cCCGwsSnRtmoCkAf/NTQtmaBasIN2I58Q15Ljxb++/KX+GhSiZ/IiKr6dn6nIzF/Qz
-         N1/VL2O9l4io6YRGd/QZx2JxTaoe3km0Ux9s5s0uFOVmfZ4DrdIx5tHlEfnGjWlwVbgD
-         Mm0CVcdR9PjNS5Pqba2TWoKXbXQ3hTnsxAta+gcYwXnQvRWGmReuuAxfXK+WVJ42w7xP
-         HHZznvsa4G9/Z1WE3+wi4VZWZxLvSN6FCnjetTk2698CYz0oek0L0+RMSYU9Bj7R0gsa
-         sGeyyBgemZDSTFqHIlYSpvicCd74Ff+j7gr8yCi2LKY2g7AL4vOu1gPNXxgOiG2iYlT6
-         ijSQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1769017010; x=1769621810;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=TzQpPNktFvNOdBi7+gsCZqhpBpuEURHyo6CUuqA6z7E=;
-        b=jHjGMUx+bK+v2bMrfs5L2V1wXB1emj3lRaOGaWNnG9XevpBwcsQDHx7S2qVO4a8VDB
-         jpruFJS95fG9U84Iel36zpHc7urCHZTDHqb5e/l9jDLkgOpEoX9lfjkNrM8aTdIDF1l0
-         O2PlCfO0uMIxL9jPeLCbOBrLyyVQHQs2OAejqwJ3WIkLOIsiHKEgT7QpdhoYLMActNrW
-         o6kEyfCIl20CGa4JfC5ZAIK+UvW1SHJ9es6mmQK3Wr8vHJ2rLSBygVNvqkt4cGBv9DLf
-         NPHW+YU7sPNj9/+yONtNzvNjVM3l+G/BXE345jRC/be2uKz8NcXRndxQAJRbfGIdNQ9B
-         GdRg==
-X-Forwarded-Encrypted: i=1; AJvYcCVcuFs3xYVTAFvPOjYvQ3DIyJg5UPJqPUbDw4MvMpv6JMBx6aZXP5mn6nGE6Cd4EOBBJA8=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwWns5MgEtduILTw9BSNHy+9oGLVIpkf7wjkWfUm69Ut8LTMFMt
-	H2XuHYTmZN7i0/QRvBXOkc0K9WTdQd1JGGaIqm5tR60fx0l7H9mGxpcF
-X-Gm-Gg: AZuq6aLOL88H1fS/CBFGpGJ8IXkeJGwj1zSwH6cc6Aevz9k9uFRnPbfioX1LwMHqcwz
-	y8LCj0YttsK92GSSXsa9AYb6oLI3t4Xl9JWiVAq/mcXZveEuZP3mcxj6dPdiCXuOBUj1LNvPEUR
-	kQPGslTqf0am8iQnhXKsqPLJNO5Yax1IeltIyYLL95Fxg9bJDp0aWItpwzYF3W583StKacF6xdT
-	Zhfe4/or+KqMwAZPatv4otW45sQvLOj5k69pJqN5kNIqkzhFyumZxJHRWzSCb+KiO/3rOIdnieN
-	/PSxfbhf2tntorPnF+v6ViIxkpxgk8xc+RyHPhZwsFvGbrKIkI65johu1cY3G5yjb5X5n4jr3A3
-	N6LVScjQRyLNOykIjxd04ZcdmkVJ6ScYTGHlqMSSl62Lg04J4/wpWxrbsWImXDeSL+VXY6zBV+9
-	1ONAcQmJFQK1aKXL0GaaJbOVFoQbuXICy/sAEALXLNxqG4
-X-Received: by 2002:a05:690e:1c1c:b0:644:60d9:864d with SMTP id 956f58d0204a3-6493c872baemr4135180d50.92.1769017010185;
-        Wed, 21 Jan 2026 09:36:50 -0800 (PST)
-Received: from devvm11784.nha0.facebook.com ([2a03:2880:25ff:d::])
-        by smtp.gmail.com with ESMTPSA id 956f58d0204a3-649170adf11sm8096311d50.16.2026.01.21.09.36.49
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 21 Jan 2026 09:36:49 -0800 (PST)
-Date: Wed, 21 Jan 2026 09:36:48 -0800
-From: Bobby Eshleman <bobbyeshleman@gmail.com>
-To: Paolo Abeni <pabeni@redhat.com>
-Cc: Stefano Garzarella <sgarzare@redhat.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Simon Horman <horms@kernel.org>,
-	Stefan Hajnoczi <stefanha@redhat.com>,
-	"Michael S. Tsirkin" <mst@redhat.com>,
-	Jason Wang <jasowang@redhat.com>,
-	Eugenio =?iso-8859-1?Q?P=E9rez?= <eperezma@redhat.com>,
-	Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
-	"K. Y. Srinivasan" <kys@microsoft.com>,
-	Haiyang Zhang <haiyangz@microsoft.com>,
-	Wei Liu <wei.liu@kernel.org>, Dexuan Cui <decui@microsoft.com>,
-	Bryan Tan <bryan-bt.tan@broadcom.com>,
-	Vishnu Dasa <vishnu.dasa@broadcom.com>,
-	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>,
-	Shuah Khan <shuah@kernel.org>, Long Li <longli@microsoft.com>,
-	Jonathan Corbet <corbet@lwn.net>, linux-kernel@vger.kernel.org,
-	virtualization@lists.linux.dev, netdev@vger.kernel.org,
-	kvm@vger.kernel.org, linux-hyperv@vger.kernel.org,
-	linux-kselftest@vger.kernel.org, berrange@redhat.com,
-	Sargun Dhillon <sargun@sargun.me>, linux-doc@vger.kernel.org,
-	Bobby Eshleman <bobbyeshleman@meta.com>
-Subject: Re: [PATCH net-next v15 01/12] vsock: add netns to vsock core
-Message-ID: <aXEOoCqMvsbN2gtJ@devvm11784.nha0.facebook.com>
-References: <20260116-vsock-vmtest-v15-0-bbfd1a668548@meta.com>
- <20260116-vsock-vmtest-v15-1-bbfd1a668548@meta.com>
- <aXDYfYy3f1NQm5A0@sgarzare-redhat>
- <4997118e-471c-45fe-bc1f-8f6140199db5@redhat.com>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Aotg10NH"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1769017833; x=1800553833;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=9aYwxws7ZCc9YL7osroT+LHl6v3IlVsB+RYFfQ3l3Nw=;
+  b=Aotg10NHuUL4GkXfX8OzoM7yIBzu50ZxRjpOIyUaAIez7Qj5i3ejH19T
+   SR1v6BY/icnEIjVI9sbKECsaFOXA2Cc+Tqfsf7rw6i5sZww8trALCSj8q
+   xjDIHY4nQ71EI1XUwtSziM4+QGMAsV9c1IEvVXYWtDggOGZl+mOI7tORt
+   6C5fCuDLK2RVRCehlyg/8KPGHtZ6D0E1EWFMUw5UlAm2GQ9BfkizINVZQ
+   jKOboWGx73K169GVNCYtwLk0Eg9gebc/Qt0ejiv+eKxuLrPFyMiN1ITec
+   BIw005TEb2Hf2lfBA1GRwpMPyZ8RgmhrHJeNtp63F64wML8fRSBHPTZzx
+   A==;
+X-CSE-ConnectionGUID: Uc9SBzUvS0+7qX/7l0ha/Q==
+X-CSE-MsgGUID: Wrjg2VstRc+1J9KlxsnEjw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11678"; a="70345588"
+X-IronPort-AV: E=Sophos;i="6.21,242,1763452800"; 
+   d="scan'208";a="70345588"
+Received: from fmviesa006.fm.intel.com ([10.60.135.146])
+  by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Jan 2026 09:50:31 -0800
+X-CSE-ConnectionGUID: Pxbka8IERJ+8sfHy8hfWPA==
+X-CSE-MsgGUID: /E8qZgKSTn+mKVBO9/q1Iw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.21,242,1763452800"; 
+   d="scan'208";a="206410301"
+Received: from igk-lkp-server01.igk.intel.com (HELO afc5bfd7f602) ([10.211.93.152])
+  by fmviesa006.fm.intel.com with ESMTP; 21 Jan 2026 09:50:28 -0800
+Received: from kbuild by afc5bfd7f602 with local (Exim 4.98.2)
+	(envelope-from <lkp@intel.com>)
+	id 1vicLa-000000000LN-0JxW;
+	Wed, 21 Jan 2026 17:50:26 +0000
+Date: Wed, 21 Jan 2026 18:50:15 +0100
+From: kernel test robot <lkp@intel.com>
+To: Thomas Courrege <thomas.courrege@thorondor.fr>, ashish.kalra@amd.com,
+	corbet@lwn.net, herbert@gondor.apana.org.au, john.allen@amd.com,
+	nikunj@amd.com, pbonzini@redhat.com, seanjc@google.com,
+	thomas.lendacky@amd.com
+Cc: oe-kbuild-all@lists.linux.dev, kvm@vger.kernel.org,
+	linux-crypto@vger.kernel.org, linux-kernel@vger.kernel.org,
+	x86@kernel.org, Thomas Courrege <thomas.courrege@thorondor.fr>
+Subject: Re: [PATCH v3 RESEND v3 1/1] KVM: SEV: Add KVM_SEV_SNP_HV_REPORT_REQ
+ command
+Message-ID: <202601211817.KSIaB5Gc-lkp@intel.com>
+References: <20260119164228.2108498-2-thomas.courrege@thorondor.fr>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -96,67 +68,53 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <4997118e-471c-45fe-bc1f-8f6140199db5@redhat.com>
+In-Reply-To: <20260119164228.2108498-2-thomas.courrege@thorondor.fr>
 
-On Wed, Jan 21, 2026 at 05:32:34PM +0100, Paolo Abeni wrote:
-> On 1/21/26 3:48 PM, Stefano Garzarella wrote:
-> >> diff --git a/Documentation/admin-guide/kernel-parameters.txt b/Documentation/admin-guide/kernel-parameters.txt
-> >> index a8d0afde7f85..b6e3bfe365a1 100644
-> >> --- a/Documentation/admin-guide/kernel-parameters.txt
-> >> +++ b/Documentation/admin-guide/kernel-parameters.txt
-> >> @@ -8253,6 +8253,20 @@ Kernel parameters
-> >> 			            them quite hard to use for exploits but
-> >> 			            might break your system.
-> >>
-> >> +	vsock_init_ns_mode=
-> >> +			[KNL,NET] Set the vsock namespace mode for the init
-> >> +			(root) network namespace.
-> >> +
-> >> +			global      [default] The init namespace operates in
-> >> +			            global mode where CIDs are system-wide and
-> >> +			            sockets can communicate across global
-> >> +			            namespaces.
-> >> +
-> >> +			local       The init namespace operates in local mode
-> >> +			            where CIDs are private to the namespace and
-> >> +			            sockets can only communicate within the same
-> >> +			            namespace.
-> >> +
-> > 
-> > My comment on v14 was more to start a discussion :-) sorry to not be 
-> > clear.
-> > 
-> > I briefly discussed it with Paolo in chat to better understand our 
-> > policy between cmdline parameters and module parameters, and it seems 
-> > that both are discouraged.
-> 
-> Double checking the git log it looks like __setup() usage is less
-> constrained/restricted than what I thought.
-> 
-> > So he asked me if we have a use case for this, and thinking about it, I 
-> > don't have one at the moment. Also, if a user decides to set all netns 
-> > to local, whether init_net is local or global doesn't really matter, 
-> > right?
-> > 
-> > So perhaps before adding this, we should have a real use case.
-> > Perhaps more than this feature, I would add a way to change the default 
-> > of all netns (including init_net) from global to local. But we can do 
-> > that later, since all netns have a way to understand what mode they are 
-> > in, so we don't break anything and the user has to explicitly change it, 
-> > knowing that they are breaking compatibility with pre-netns support.\
-> 
-> Lacking a clear use-case for vsock_init_ns_mode I tend to think it would
-> be better to postpone its introduction. It should be easier to add it
-> later than vice-versa.
-> 
-> If there is a clear/well defined/known use-case, I guess the series can
-> go as-is.
-> 
-> /P
-> 
+Hi Thomas,
 
-Our use case also does not need the ability to set the init ns mode, so
-I'll revert this bit.
+kernel test robot noticed the following build warnings:
 
-Thanks,
-Bobby
+[auto build test WARNING on kvm/queue]
+[also build test WARNING on kvm/next herbert-cryptodev-2.6/master herbert-crypto-2.6/master linus/master v6.19-rc6 next-20260120]
+[cannot apply to kvm/linux-next]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch#_base_tree_information]
+
+url:    https://github.com/intel-lab-lkp/linux/commits/Thomas-Courrege/KVM-SEV-Add-KVM_SEV_SNP_HV_REPORT_REQ-command/20260120-005438
+base:   https://git.kernel.org/pub/scm/virt/kvm/kvm.git queue
+patch link:    https://lore.kernel.org/r/20260119164228.2108498-2-thomas.courrege%40thorondor.fr
+patch subject: [PATCH v3 RESEND v3 1/1] KVM: SEV: Add KVM_SEV_SNP_HV_REPORT_REQ command
+reproduce: (https://download.01.org/0day-ci/archive/20260121/202601211817.KSIaB5Gc-lkp@intel.com/reproduce)
+
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202601211817.KSIaB5Gc-lkp@intel.com/
+
+All warnings (new ones prefixed by >>):
+
+   ERROR: Cannot find file ./include/linux/mutex.h
+   WARNING: No kernel-doc for file ./include/linux/mutex.h
+   ERROR: Cannot find file ./include/linux/fwctl.h
+   WARNING: No kernel-doc for file ./include/linux/fwctl.h
+   Documentation/virt/kvm/x86/amd-memory-encryption.rst:584: ERROR: Unexpected indentation. [docutils]
+>> Documentation/virt/kvm/x86/amd-memory-encryption.rst:600: WARNING: Definition list ends without a blank line; unexpected unindent. [docutils]
+
+
+vim +600 Documentation/virt/kvm/x86/amd-memory-encryption.rst
+
+   592	
+   593	::
+   594	        struct kvm_sev_snp_hv_report_req {
+   595	                __u64 report_uaddr;
+   596	                __u64 report_len;
+   597	                __u8 key_sel;
+   598	                __u8 pad0[7];
+   599	                __u64 pad1[4];
+ > 600	        };
+   601	
+
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
