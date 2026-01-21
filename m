@@ -1,241 +1,194 @@
-Received: from mail-yx1-f51.google.com (mail-yx1-f51.google.com [74.125.224.51])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from MW6PR02CU001.outbound.protection.outlook.com (mail-westus2azon11012045.outbound.protection.outlook.com [52.101.48.45])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C01143E9E2
-	for <kvm@vger.kernel.org>; Wed, 21 Jan 2026 22:12:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.224.51
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769033547; cv=none; b=slRZeqAZr5dysz7heDpnuTKFomHuVMJ++rhiLahTt0mrWT2FWUSxKFOMaVM9gUKwdFpn3ZiOY1fUpjIhEjvakpUj4H0mvH4eiZBMtghrfeVKg1nhbhvBsM6+05KNIXiFIF0huYKUfb+J2bSX62g2DmPei2FtzV1bAbMKmf+WfKA=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769033547; c=relaxed/simple;
-	bh=JAQQN7P77tr97fU7vyuVMrvCiNP4sSFAq43cZhTlmi0=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=NZwGhSpA0hQPP1Awaw1iIQzasoefZpAe8hDhVbHzAsNXmYOgtYj03PYTDUe08FEtMMPvqGjUks0r0ldds4tUrOIrgE46n70FD0NYepGB104gVgTnR/yx84zbvCg9EEsNHKqPNttH/eBbnPBHmECYoYs2NJ/Tdlz4+I2Kytq6jEs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=EHjsEK28; arc=none smtp.client-ip=74.125.224.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C5AA033BBC0;
+	Wed, 21 Jan 2026 22:14:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.48.45
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1769033672; cv=fail; b=eTZgAlOKgGEPI1flJwIshFAvveVZIlInnWVX6CX+d/Py1ZnqJMFwo4l1RrKYXs/ku2Rm+dQQdUy32Cw0z+us177GdWVSkHAI1C4u9vsjOAvHCB956/gnT+L1VJ59Zlmxs2Iq5pUaWmHxM+DSP97/UEeXGISM0sz3hW0vtOw/Ia8=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1769033672; c=relaxed/simple;
+	bh=Frif6f5nPpXYErZo2xLHdOQllGt6qYRyu2MVMyt5X/Q=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=fOqO6VAO501yKLl+kF9TTouGfAup6KMXfcqcln0FIxNoF5P7Hu5nqv0smKwkCMmqGJWRaqojGTpZdBjI0ciR3hakJZre03mUbMmvO9tC/a2UftBHvcOQC8CRuPhBG1R99LIshC6FypIh1b9L2KVvnKR2h9zmHs+YzNB++h4abCA=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=lVzelwO5; arc=fail smtp.client-ip=52.101.48.45
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="EHjsEK28"
-Received: by mail-yx1-f51.google.com with SMTP id 956f58d0204a3-6446d7a8eadso401904d50.0
-        for <kvm@vger.kernel.org>; Wed, 21 Jan 2026 14:12:13 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1769033530; x=1769638330; darn=vger.kernel.org;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=2mpdsMRuLW1cRrssyJH9GNY+tfbuaJ3H6voxC/Fdtqg=;
-        b=EHjsEK28MO6BZ3JsqhVJmLDyEWLSWbkF9pNAa34jS5BeY9tLpZcpMEeX279xsvLjhw
-         e7e527ca9P3bStmp5w40AHBT5GTOyRY8eyHMQWDXr/GrKiqcnzI0/CtT7tf9PCIQW586
-         3XNnihqOCXsd+Z3PMFWnvh76nMQfVEm1tDdZdOIwCmJB9MCDfGXEpqYkAkp3edZbjArs
-         jBRej2Ac5y6gIheucYSdMpBIFToHvgAQkCfTZUeh4QaWCKG9nPKyyMFxbAgpnCEbfmXD
-         z7E1c8FIQEf2Hn1FyRU0ALXCaesSwSQ9Bakjm75EWXV9gA5hpjd1BB84YozeV5uc1oel
-         RBCg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1769033530; x=1769638330;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:x-gm-gg:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=2mpdsMRuLW1cRrssyJH9GNY+tfbuaJ3H6voxC/Fdtqg=;
-        b=Bt4Mmb1oIvrmoWc//8Z9YMe9d4nS5zF8Alv3aUC/pHTOXcDGIIu9otis2mVyL4RC/E
-         XNXtrWuuTdlJ8kptHVqmKNrC1epONz4KbFWSn7zFfeE2nPrnf4U5m0sK6N6PyTml9SUY
-         BonXspmciFBPlTMnoXJnLqzwvZBZjCW+Fu+H6+VRZW3Io84dEp0RjnuKP01rvfaolixn
-         VjzlxJ+39dmupOF1VltUzMBo5o2iaUD+PUPpLd/56qA0G4oUjFjXIe0gNeaGRVPvgstY
-         NIdP1JoEQrfccAcI3m0E7TwpRRzMRBPoMDGIYOzxNDm6JvNV6GaoMl645mqWm2JG3TAk
-         2xcQ==
-X-Forwarded-Encrypted: i=1; AJvYcCX1kuFsAw4Sky0ViOPj0Y2U7g+uw9efpb6I9yBw7559TSrT5k/yBanD1B+x8q8kdQNAu0o=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwYolZQNhjDyBgzG9KIXeeW580zSC52o7bNPrYV4Yf+eVxOooCU
-	p2lV/kMw/A3MZSHmkT0GZLMRMO7rVOVvcoOS2d0ksu+kU8oNGREQpveK
-X-Gm-Gg: AZuq6aLM2yh4xOOXefGwKlaCdC7JdIHhj9tkptshCWX6D9NmDfcyEOhlaYiwAiEB+bk
-	jTAl1uUTNxe1rFqHViyVyFijAFQvoYCadPR6hzwQUzn7B5Ffax0jC2nKihzerOoZFBxvymt1z5L
-	0ugf4xuFaxB/77Gh6yOqEyVL2yTVVEvQOMx/aCRDcmej5erW07sdS6lPvBMkw/zf/XYNLAjHpqo
-	T7zmDX5lgwQqqmsatwYJ4ic6ozFQNR+CpZCxsPK7sn/2rleHaM7gfo9xOaqhIOqw5bqsNXFtXbq
-	3kOtpv5OzquWbrd6a1GPIAdxovihpnqvDfyo7yoWILXyteGsrtsWCPCe6pTLyjdnoHE574q6Qpw
-	ahTlzOVe7N1ecR7SEQPInTgtnjMdDiOYRPA8wfH1pTiJhE9CJSfPFiog88C7h3tZdRlNf6nqqPY
-	RKUuoMC2dK
-X-Received: by 2002:a53:d013:0:b0:644:472d:db04 with SMTP id 956f58d0204a3-6493c84922emr5253487d50.55.1769033529707;
-        Wed, 21 Jan 2026 14:12:09 -0800 (PST)
-Received: from localhost ([2a03:2880:25ff:2::])
-        by smtp.gmail.com with ESMTPSA id 956f58d0204a3-6494080138fsm2463523d50.20.2026.01.21.14.12.09
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 21 Jan 2026 14:12:09 -0800 (PST)
-From: Bobby Eshleman <bobbyeshleman@gmail.com>
-Date: Wed, 21 Jan 2026 14:11:52 -0800
-Subject: [PATCH net-next v16 12/12] selftests/vsock: add tests for
- namespace deletion
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="lVzelwO5"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=EaI5KhloZHLCNps0e6rsZZUG/fJJzGHC8Z/b2QJEVm92Ww1NXQnFGR/KxavG+huzaIUFiwQANuTcPmpz2Cs50hFnOGOuboKuakQnYkn8tY29EhDyGEzsyXLJMUEVv/bSBPqZ9s5hyvNcDNFPvd/LHnUeFB73JQt7zQWCK2GG44aAvwAClwgvmYGlWWyb9652ySdKc9WOEn3H8ijoy3F4ssyqCJe2MK+KvooNIUB4MJJBYndQ9tOy9hdf3iZcdxpAP695FMgmjc0bX3S36IgrfLOdLB6C/+vGMC2Gg+/DG2EVoSL9duVSHJ0xIM/oqR++rqHg7GHWB1GO++W8favF+w==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=Frif6f5nPpXYErZo2xLHdOQllGt6qYRyu2MVMyt5X/Q=;
+ b=Z/c9rolqA+N4kcyHBnxgWHU2A+QBkvDRvcrDbWXqKoAEiorrfFXWQfDhRHOmaPeGWcNxtfvQP60p/EUNAa3j6GZuclC/G+/BlAF1zqz+3Rg1WLVz/IiJPlpH4s8/YlqyDB+pL2cv4AdEGHJ56e8/OiAzWmACiWq3KUkWSM7vcYBRCMK5DJZyBDxNmBBsoxj6nuhNLOKVyROrhHivdBgu/XYlrHm3fq7ekwMp1eDRDfttqIzzZdkSzm5TcmJn23dYIcu0XJVUhPxLh+b5mzkAPuCcdy6LfWptXmqTVfHXzVqwgTX5ShSq5ygxYqa0gJlgdcHJTn/JLck5U0ilZ0nLOg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=Frif6f5nPpXYErZo2xLHdOQllGt6qYRyu2MVMyt5X/Q=;
+ b=lVzelwO5wkAy+r08AAtBbGyd0+ldp3Dpzny3c4AUjAxq9a2QSxclUu3N7ukDm9poRI8NhoAnJ4Outczfcnirca7+KW6J8ad1SQHn1c+YyV2Bz79Vx1/J3BASBxV4iknxQZzgSRkHuS1jQraQp1zG1Wndf7RFsABZR7G9MPaWyA7DG1XAGnWuh5UTbOtwcuK5NklHKfcTYvMTjNoJQj+/hEUIoet0e5F4oYKYc2iWjEqMV682fy2F3TQJdUJgDCcP+3Ka7MEbej53c8ysjRTukP9ZutiBCcETPM7WFR72EYKDIsmj2AYZBqUx67xBSv0SjEuL4EUNHKiKv0sSf/IMlA==
+Received: from SA1PR12MB7199.namprd12.prod.outlook.com (2603:10b6:806:2bc::21)
+ by SN7PR12MB8601.namprd12.prod.outlook.com (2603:10b6:806:26e::21) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9542.10; Wed, 21 Jan
+ 2026 22:14:26 +0000
+Received: from SA1PR12MB7199.namprd12.prod.outlook.com
+ ([fe80::928c:89d8:e8d6:72dd]) by SA1PR12MB7199.namprd12.prod.outlook.com
+ ([fe80::928c:89d8:e8d6:72dd%6]) with mapi id 15.20.9542.009; Wed, 21 Jan 2026
+ 22:14:26 +0000
+From: Ankit Agrawal <ankita@nvidia.com>
+To: Jiaqi Yan <jiaqiyan@google.com>
+CC: Aniket Agashe <aniketa@nvidia.com>, Vikram Sethi <vsethi@nvidia.com>,
+	Jason Gunthorpe <jgg@nvidia.com>, Matt Ochs <mochs@nvidia.com>, Shameer
+ Kolothum <skolothumtho@nvidia.com>, "linmiaohe@huawei.com"
+	<linmiaohe@huawei.com>, "nao.horiguchi@gmail.com" <nao.horiguchi@gmail.com>,
+	"akpm@linux-foundation.org" <akpm@linux-foundation.org>, "david@redhat.com"
+	<david@redhat.com>, "lorenzo.stoakes@oracle.com"
+	<lorenzo.stoakes@oracle.com>, "Liam.Howlett@oracle.com"
+	<Liam.Howlett@oracle.com>, "vbabka@suse.cz" <vbabka@suse.cz>,
+	"rppt@kernel.org" <rppt@kernel.org>, "surenb@google.com" <surenb@google.com>,
+	"mhocko@suse.com" <mhocko@suse.com>, "tony.luck@intel.com"
+	<tony.luck@intel.com>, "bp@alien8.de" <bp@alien8.de>, "rafael@kernel.org"
+	<rafael@kernel.org>, "guohanjun@huawei.com" <guohanjun@huawei.com>,
+	"mchehab@kernel.org" <mchehab@kernel.org>, "lenb@kernel.org"
+	<lenb@kernel.org>, "kevin.tian@intel.com" <kevin.tian@intel.com>,
+	"alex@shazbot.org" <alex@shazbot.org>, Neo Jia <cjia@nvidia.com>, Kirti
+ Wankhede <kwankhede@nvidia.com>, "Tarun Gupta (SW-GPU)"
+	<targupta@nvidia.com>, Zhi Wang <zhiw@nvidia.com>, Dheeraj Nigam
+	<dnigam@nvidia.com>, Krishnakant Jaju <kjaju@nvidia.com>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"linux-mm@kvack.org" <linux-mm@kvack.org>, "linux-edac@vger.kernel.org"
+	<linux-edac@vger.kernel.org>, "Jonathan.Cameron@huawei.com"
+	<Jonathan.Cameron@huawei.com>, "ira.weiny@intel.com" <ira.weiny@intel.com>,
+	"Smita.KoralahalliChannabasappa@amd.com"
+	<Smita.KoralahalliChannabasappa@amd.com>, "u.kleine-koenig@baylibre.com"
+	<u.kleine-koenig@baylibre.com>, "peterz@infradead.org"
+	<peterz@infradead.org>, "linux-acpi@vger.kernel.org"
+	<linux-acpi@vger.kernel.org>, "kvm@vger.kernel.org" <kvm@vger.kernel.org>,
+	Axel Rasmussen <axelrasmussen@google.com>
+Subject: Re: [PATCH v5 0/3] mm: Implement ECC handling for pfn with no struct
+ page
+Thread-Topic: [PATCH v5 0/3] mm: Implement ECC handling for pfn with no struct
+ page
+Thread-Index: AQHcTCjI0pjrCheBKUOiFkE7k4wQB7VWDd6AgAASNA+ABZtFAIAA4DaAgAERvDw=
+Date: Wed, 21 Jan 2026 22:14:25 +0000
+Message-ID:
+ <SA1PR12MB7199E04FC278F6F8D2CD81A9B096A@SA1PR12MB7199.namprd12.prod.outlook.com>
+References: <20251102184434.2406-1-ankita@nvidia.com>
+ <CACw3F51k=sFtXB1JE3HCcXP6EA0Tt4Yf44VUi3JLz0bgW-aArQ@mail.gmail.com>
+ <SA1PR12MB71997E2E101E55CDE65EA6B3B08AA@SA1PR12MB7199.namprd12.prod.outlook.com>
+ <CACw3F51qrBXnN370Btk7=bcKU7s44nmQYfN=EAfq25MondRUNA@mail.gmail.com>
+ <CACw3F53n1ieCfP7Dye96S1WPpein+x6wTVUhE4aVkRG=VppC-g@mail.gmail.com>
+In-Reply-To:
+ <CACw3F53n1ieCfP7Dye96S1WPpein+x6wTVUhE4aVkRG=VppC-g@mail.gmail.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+msip_labels:
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: SA1PR12MB7199:EE_|SN7PR12MB8601:EE_
+x-ms-office365-filtering-correlation-id: 6e5f48b2-d763-47d5-c6f4-08de593a703f
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam:
+ BCL:0;ARA:13230040|1800799024|376014|7416014|366016|38070700021;
+x-microsoft-antispam-message-info:
+ =?iso-8859-1?Q?MLPmup9LIlG9nTY2rmLTbFjwQFO/QjMqNfScA7zGubLUPXsbTwPEB3Pql6?=
+ =?iso-8859-1?Q?DkPdSBTEClo91p+0v0caNy3JKF/HE4pxrHVYNtXlMtAYYnSzE4WOw7BF49?=
+ =?iso-8859-1?Q?yzdVr8bV4GptgYUe2Hfkr+WO7WLz00nxdHz5VPmmRXxaWZsUzXpvJc0sV4?=
+ =?iso-8859-1?Q?6Aqkd2S37xhIitoBHqdCJ08bx1LS7nAZDW61x2L1/h4zDsJ2W8IaWNpxSz?=
+ =?iso-8859-1?Q?tL8JttJfMlTAEDSOSS+hpTU+rpxoZpUQ/BpEEEH35ihBwIxiTU6EFJ9nDI?=
+ =?iso-8859-1?Q?W4oCCDXOc47kpK4EzjbemJueUmQCKtYH3kUZJQyhAz6Gs0Z9QhKlIC8qB0?=
+ =?iso-8859-1?Q?hmYLJtP/xYquHciUDo7plkdQh28SsaHl5EmVPQvcmArsGmW0b6uh40SNcK?=
+ =?iso-8859-1?Q?S8bX0N1uV3sCrS7wSHIb3F9uWzLQUXpixKZfZcLhJdqvofakOdGwtQiNdQ?=
+ =?iso-8859-1?Q?7AML1v1sAM3d5lzku9CVH+oRz7otixzt0BzQs8JrHvJgr83OZSknXdLbSa?=
+ =?iso-8859-1?Q?fPaCPDHbJqNEDE4P4A10VRWtWRsI/W3L8FiM48fDJvdFC4EBZ++pqGcqaG?=
+ =?iso-8859-1?Q?woC6FMdVg7WKD/P+eH2B/s3jrHQ3VgscUY0HeydZr1dOe01aarCtE7y+Ka?=
+ =?iso-8859-1?Q?kh1iENdHS8yT1fmdHOzA/92RrVzu9ZavGRusxV8cWjoCrIZKO4WKq1VKc9?=
+ =?iso-8859-1?Q?2r7Ba8BRr6h3JodN4TdUJFSj8TH20XZkKLBR7HUax8ObSPHJQuJDysA/3v?=
+ =?iso-8859-1?Q?QOmlhDnfQOGb1YGaMPNFbSE5Yyxto4Me9Wy26sUsNxZPRWDv642csS1aeP?=
+ =?iso-8859-1?Q?uhzLA4Dq634eNUgUcLwmVzJNaXXkBIcItlhoLh6FcxV2HIDR8Xm3uJN279?=
+ =?iso-8859-1?Q?SZmJASrCyiPpeU39JW68tpPP82OrYga3NQOGIbuQe5v3oXTFcP1oZj/GK+?=
+ =?iso-8859-1?Q?paVPrOuWG1eyp7Bqi6h3afn3otiZqkxOhZx5CCnXggdSqYEoe4vVpxt5SM?=
+ =?iso-8859-1?Q?OiTiiSMoNde7KK046g2EsXIPB8zq0btXlas8ER0rV8eCmeY5l0kFTWBgFl?=
+ =?iso-8859-1?Q?CXU2x58YJixphAR9nFsSPkkJmmk8ua/qsGxWKXJW5PrqVy/x/rXf+NyjYZ?=
+ =?iso-8859-1?Q?Tf7CRphFvjFJjDxY7/wzJDZrtVQ7o2c6kbxJu1xI9RIpYa4tKXV+W00zMP?=
+ =?iso-8859-1?Q?divlRa1RTiJi+vBPdJoShgnjhQH7RkySMBwqrG4zVAB3Zn2UQkaNCu0sJA?=
+ =?iso-8859-1?Q?EN4QT3vAviOa2vz6d8gi2s6gb8L7CffTYsanG/Q5fQyOvo/v4kjt4ySdW6?=
+ =?iso-8859-1?Q?SWWapIfQTlPqwqA6+e91T2EQZNtiRYbpstaiioOfADSNLWj+oB9iKZnV8/?=
+ =?iso-8859-1?Q?5X60QB8b3oVoHq/q9kSWxsXKxTdYKwmDdm30uEud+ZTX+kecRPdN0UQ4Ef?=
+ =?iso-8859-1?Q?Sh6DX1Cq0FTfZZzCpvYkKFySY2UE81AyN9U/CnX0gDwjKpZBQC5WluJ4TM?=
+ =?iso-8859-1?Q?e88ov+YduiiM6tQ56PxuPTonVzjkFKEoHVPZyQQF+af9YvwcK8XsA5eYHS?=
+ =?iso-8859-1?Q?I4XVa4G55A1XB9EAaFfu4zVaW0hVdfPUSjPhPCkr8FLRpwWLj+bcUhkU8I?=
+ =?iso-8859-1?Q?EsAbLt8I4xx55btZf2EO0XVHI5CRtr0HeLG+P2Tm4F1/2oWWFbDxWNvl9o?=
+ =?iso-8859-1?Q?waM0tRUbC0+VdgDpjFE=3D?=
+x-forefront-antispam-report:
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SA1PR12MB7199.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(376014)(7416014)(366016)(38070700021);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0:
+ =?iso-8859-1?Q?7jIPlu92DGXxNI/QFIM9jagWq1TMeQg4xCXoqXs1G8KUxIGghhjUxfwcOT?=
+ =?iso-8859-1?Q?qNCQ+Zo8wUniBzWSew6nOfrQsIQOr6+tdZ6qFuIvMfXGFtdb3POvW9qJmD?=
+ =?iso-8859-1?Q?uTgwGQgJhk9vU7ZrhxA1Wu+9zGBM5sy8QZEYnvqV3GHp7SyKk8nHg6wYHl?=
+ =?iso-8859-1?Q?O6eaF7qq3e9OesDaJeH4FHIHbHg39WZS0F7HDYSMiUh4n8b0b+fvOMUpzM?=
+ =?iso-8859-1?Q?jGBuvrT16sZxbD2RRymmpkCJqMBq/2Wge9jDxmcJqUvv49y+2/CmFaKQyM?=
+ =?iso-8859-1?Q?raT9GsIeEnGXIV+lHt474o+nfYvymgM+7ycv5zp+L0+FVOOhfo52ptbRn0?=
+ =?iso-8859-1?Q?33otVIb6IlyxQrXZ0q04YpRTRBu778t3zdiS1scrK1bU2c+EeLr6PomTv9?=
+ =?iso-8859-1?Q?voTDnXKDKUE9xRgY4sIawwk/ZiVRVRKtB2OzwiOlQuxwQsivfnQVOOO9fX?=
+ =?iso-8859-1?Q?zCSTr9m48AauXyrBRQHvvdILkHYq5q9iwQfe/yesfARXB9w/R86xP7PQ9s?=
+ =?iso-8859-1?Q?njtD+kOmgtJzLzELzGiznSvNVGCnPjC1hdFx0SD7gvKZuzrY53aKLe2DPX?=
+ =?iso-8859-1?Q?7QzIJEdiidMTWiklVEdVGVxr9Msb7abx0IBv4h3oN9TDPJ8wCI1arLeWT+?=
+ =?iso-8859-1?Q?BwPsg45ULLfDQebPtoDmCJ4WsSYOb0DcsY+Ss7RlPDx4BCeXNa4pIXDjOc?=
+ =?iso-8859-1?Q?v5DGCvjfxj9kxgC+PNwsmIos4EhEglAe4XyvUcoaVGaoVoZaLCg7tAUw96?=
+ =?iso-8859-1?Q?ZhOQOiY3MC+hJBPcuvuWZPhQU3ajRwGQ8AB/MIQItug19kI9OEkbnmBVHR?=
+ =?iso-8859-1?Q?Ka0jGBfG1HUR51PmobcSoqdeujp5GFPyvVm0Fq1el57AQ2aLGldTgm42MG?=
+ =?iso-8859-1?Q?skk5yIvBqD6nsS61H6lGzxuoopTMvLYtvGwx6wdKJ24TuZjIPMnX3Pv3p3?=
+ =?iso-8859-1?Q?EG4rJBe8uRS/O609qK5nZu6TcLxZmzOkWPxsZZUvgK0MO6Qb2YomsxTtzO?=
+ =?iso-8859-1?Q?xsk2sez4sz+yCSv8MiXvT+so3DaM5gKA0CxPr+bRqCisDO8674FmNTSeXF?=
+ =?iso-8859-1?Q?ApqhM1G1XYtI7Jq3QgfAvGQ079qK3spL3/+rcZPiQQOS7RodbHGcgwbDXb?=
+ =?iso-8859-1?Q?hSDx3RgB5Rxein/PUvZIfmb3gBspU+nSGzNnb99ei5DBTQlM+9agCMXjGx?=
+ =?iso-8859-1?Q?MqJ1TFmQGrD75KwPE/6LbIKp7Scg0v2swpA4OX98hJDm55XHsPBxpME81q?=
+ =?iso-8859-1?Q?p245/s0CscRKKKAJNTqkobYg/O84a7rq76FrHegReqiygcj3SlBZg+PRwt?=
+ =?iso-8859-1?Q?UiH5WrkpAw0U2AcXavPkGcOHXpFkCqfJ7PEP9mgwjty4t7jj5UGlY+xjdw?=
+ =?iso-8859-1?Q?w/v0/5n3XShmpaNGcj1P5j3nOSGwxITvdSZ9xmukT02hyuUtJs5xSJa81C?=
+ =?iso-8859-1?Q?sw16yfpjMi2HKcJcxnKZZTXv0ctwy3Wt+2NXwpXF9iwLxhDxOLYnb27Xpo?=
+ =?iso-8859-1?Q?jicHZYFeRHo4dgU/WsSEvWqVYJ4Rh61Mgq/hNidMIBciRtg5yS6IfI3LyT?=
+ =?iso-8859-1?Q?xOGbBOFGnM2IwuFihTZ6yChxTzPeTIBdnWKAwbqIiGx5CTnve6i2VQ2CXh?=
+ =?iso-8859-1?Q?ta8A3wj3lF9CKV3yhvA7jrtrKESvXaa+AYWUIGuJr9VP525thOQMd0xcNE?=
+ =?iso-8859-1?Q?dtJcyfcSKkvS4aGMhtmOAl3WKvaVE4vmLJ1Xp1kCbaQU3T9J0TdOlMQB9U?=
+ =?iso-8859-1?Q?miGpnYtJb0wN/Qkku6krTIO1VjeyLtcwzIPeoxZq3M+tsF?=
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260121-vsock-vmtest-v16-12-2859a7512097@meta.com>
-References: <20260121-vsock-vmtest-v16-0-2859a7512097@meta.com>
-In-Reply-To: <20260121-vsock-vmtest-v16-0-2859a7512097@meta.com>
-To: Stefano Garzarella <sgarzare@redhat.com>, 
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
- Simon Horman <horms@kernel.org>, Stefan Hajnoczi <stefanha@redhat.com>, 
- "Michael S. Tsirkin" <mst@redhat.com>, Jason Wang <jasowang@redhat.com>, 
- =?utf-8?q?Eugenio_P=C3=A9rez?= <eperezma@redhat.com>, 
- Xuan Zhuo <xuanzhuo@linux.alibaba.com>, 
- "K. Y. Srinivasan" <kys@microsoft.com>, 
- Haiyang Zhang <haiyangz@microsoft.com>, Wei Liu <wei.liu@kernel.org>, 
- Dexuan Cui <decui@microsoft.com>, Bryan Tan <bryan-bt.tan@broadcom.com>, 
- Vishnu Dasa <vishnu.dasa@broadcom.com>, 
- Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>, 
- Shuah Khan <shuah@kernel.org>, Long Li <longli@microsoft.com>, 
- Jonathan Corbet <corbet@lwn.net>
-Cc: linux-kernel@vger.kernel.org, virtualization@lists.linux.dev, 
- netdev@vger.kernel.org, kvm@vger.kernel.org, linux-hyperv@vger.kernel.org, 
- linux-kselftest@vger.kernel.org, berrange@redhat.com, 
- Sargun Dhillon <sargun@sargun.me>, linux-doc@vger.kernel.org, 
- Bobby Eshleman <bobbyeshleman@gmail.com>, 
- Bobby Eshleman <bobbyeshleman@meta.com>
-X-Mailer: b4 0.14.3
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: SA1PR12MB7199.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 6e5f48b2-d763-47d5-c6f4-08de593a703f
+X-MS-Exchange-CrossTenant-originalarrivaltime: 21 Jan 2026 22:14:25.8715
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: 1ynuh29DfTPe3M/qPHhhfv1tqzZlHS6jmOoPaVIl+bKQSx5AlgBNH9x2WAYin/q7aiynLAwCDr/OHpXloxmGZw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SN7PR12MB8601
 
-From: Bobby Eshleman <bobbyeshleman@meta.com>
-
-Add tests that validate vsock sockets are resilient to deleting
-namespaces. The vsock sockets should still function normally.
-
-The function check_ns_delete_doesnt_break_connection() is added to
-re-use the step-by-step logic of 1) setup connections, 2) delete ns,
-3) check that the connections are still ok.
-
-Reviewed-by: Stefano Garzarella <sgarzare@redhat.com>
-Signed-off-by: Bobby Eshleman <bobbyeshleman@meta.com>
----
-Changes in v13:
-- remove tests that change the mode after socket creation (this is not
-  supported behavior now and the immutability property is tested in other
-  tests)
-- remove "change_mode" behavior of
-  check_ns_changes_dont_break_connection() and rename to
-  check_ns_delete_doesnt_break_connection() because we only need to test
-  namespace deletion (other tests confirm that the mode cannot change)
-
-Changes in v11:
-- remove pipefile (Stefano)
-
-Changes in v9:
-- more consistent shell style
-- clarify -u usage comment for pipefile
----
- tools/testing/selftests/vsock/vmtest.sh | 84 +++++++++++++++++++++++++++++++++
- 1 file changed, 84 insertions(+)
-
-diff --git a/tools/testing/selftests/vsock/vmtest.sh b/tools/testing/selftests/vsock/vmtest.sh
-index a9eaf37bc31b..dc8dbe74a6d0 100755
---- a/tools/testing/selftests/vsock/vmtest.sh
-+++ b/tools/testing/selftests/vsock/vmtest.sh
-@@ -68,6 +68,9 @@ readonly TEST_NAMES=(
- 	ns_same_local_loopback_ok
- 	ns_same_local_host_connect_to_local_vm_ok
- 	ns_same_local_vm_connect_to_local_host_ok
-+	ns_delete_vm_ok
-+	ns_delete_host_ok
-+	ns_delete_both_ok
- )
- readonly TEST_DESCS=(
- 	# vm_server_host_client
-@@ -135,6 +138,15 @@ readonly TEST_DESCS=(
- 
- 	# ns_same_local_vm_connect_to_local_host_ok
- 	"Run vsock_test client in VM in a local ns with server in same ns."
-+
-+	# ns_delete_vm_ok
-+	"Check that deleting the VM's namespace does not break the socket connection"
-+
-+	# ns_delete_host_ok
-+	"Check that deleting the host's namespace does not break the socket connection"
-+
-+	# ns_delete_both_ok
-+	"Check that deleting the VM and host's namespaces does not break the socket connection"
- )
- 
- readonly USE_SHARED_VM=(
-@@ -1287,6 +1299,78 @@ test_vm_loopback() {
- 	return "${KSFT_PASS}"
- }
- 
-+check_ns_delete_doesnt_break_connection() {
-+	local pipefile pidfile outfile
-+	local ns0="global0"
-+	local ns1="global1"
-+	local port=12345
-+	local pids=()
-+	local rc=0
-+
-+	init_namespaces
-+
-+	pidfile="$(create_pidfile)"
-+	if ! vm_start "${pidfile}" "${ns0}"; then
-+		return "${KSFT_FAIL}"
-+	fi
-+	vm_wait_for_ssh "${ns0}"
-+
-+	outfile=$(mktemp)
-+	vm_ssh "${ns0}" -- \
-+		socat VSOCK-LISTEN:"${port}",fork STDOUT > "${outfile}" 2>/dev/null &
-+	pids+=($!)
-+	vm_wait_for_listener "${ns0}" "${port}" "vsock"
-+
-+	# We use a pipe here so that we can echo into the pipe instead of using
-+	# socat and a unix socket file. We just need a name for the pipe (not a
-+	# regular file) so use -u.
-+	pipefile=$(mktemp -u /tmp/vmtest_pipe_XXXX)
-+	ip netns exec "${ns1}" \
-+		socat PIPE:"${pipefile}" VSOCK-CONNECT:"${VSOCK_CID}":"${port}" &
-+	pids+=($!)
-+
-+	timeout "${WAIT_PERIOD}" \
-+		bash -c 'while [[ ! -e '"${pipefile}"' ]]; do sleep 1; done; exit 0'
-+
-+	if [[ "$1" == "vm" ]]; then
-+		ip netns del "${ns0}"
-+	elif [[ "$1" == "host" ]]; then
-+		ip netns del "${ns1}"
-+	elif [[ "$1" == "both" ]]; then
-+		ip netns del "${ns0}"
-+		ip netns del "${ns1}"
-+	fi
-+
-+	echo "TEST" > "${pipefile}"
-+
-+	timeout "${WAIT_PERIOD}" \
-+		bash -c 'while [[ ! -s '"${outfile}"' ]]; do sleep 1; done; exit 0'
-+
-+	if grep -q "TEST" "${outfile}"; then
-+		rc="${KSFT_PASS}"
-+	else
-+		rc="${KSFT_FAIL}"
-+	fi
-+
-+	terminate_pidfiles "${pidfile}"
-+	terminate_pids "${pids[@]}"
-+	rm -f "${outfile}" "${pipefile}"
-+
-+	return "${rc}"
-+}
-+
-+test_ns_delete_vm_ok() {
-+	check_ns_delete_doesnt_break_connection "vm"
-+}
-+
-+test_ns_delete_host_ok() {
-+	check_ns_delete_doesnt_break_connection "host"
-+}
-+
-+test_ns_delete_both_ok() {
-+	check_ns_delete_doesnt_break_connection "both"
-+}
-+
- shared_vm_test() {
- 	local tname
- 
-
--- 
-2.47.3
-
+> Sorry, one more quesiton. I saw [3] implemented pfn_to_vma_pgoff=0A=
+> callback in nvgrace gpu driver. Is EGM driver's callback posted=0A=
+> somewhere?=0A=
+>=0A=
+> [3] https://lore.kernel.org/all/20251211070603.338701-2-ankita@nvidia.com=
+/T/#mcc9ccec90b1ca755ad9af0a821f5ce524fed0ffc=0A=
+=0A=
+Hi Jiaqi, the EGM change refresh is currently in the works that will=0A=
+make use of the new callback. It has not been posted yet.=
