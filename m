@@ -1,54 +1,54 @@
-Received: from mail-pj1-f73.google.com (mail-pj1-f73.google.com [209.85.216.73])
+Received: from mail-pj1-f74.google.com (mail-pj1-f74.google.com [209.85.216.74])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 63E27258EFF
-	for <kvm@vger.kernel.org>; Wed, 21 Jan 2026 22:55:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.73
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 159CD3ED134
+	for <kvm@vger.kernel.org>; Wed, 21 Jan 2026 22:55:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.74
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769036112; cv=none; b=pOECObF0eIoh1zmlRnE0ItMeF5EenM3XHPYUF2sH5cI+D42V2jsALsoYez+Q5MDdoLPIixWlbCyrhMFn+E2g2P/Y9dLf8MpYDdG/icXJGDIqIU7lyFbf17lLXtm4+GHZXXnWvhA+oPBVYbntsK6ukyRu2hxuV787doI8zGoWHbw=
+	t=1769036115; cv=none; b=YlsyxeDZskqOJ5+P1YhLVGpwkacRPa8bkcbZEmT9pUr4fMR0qfGjeUk6xFs4pWj/tuEdgUF0lJo5Q/+3u6MGocGCvmZKDLDfOKWF05K7Jm9Qh2fIpkOAXkAjB5AgnutYZOrlwWHfr7zOibsUkGau7z8sG0IRJ0qldGPAKX822NE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769036112; c=relaxed/simple;
-	bh=Pk/3QwlgAbVKnYQPlfuyPgZDvQuA1ZpRf9r+jYY8pfQ=;
+	s=arc-20240116; t=1769036115; c=relaxed/simple;
+	bh=gLJ9pP4KbjVkIZBDUiydWO3ATbRPdgqnRoeV2aYIC0Y=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=t2jzYQP0ftC7GdngHIPd2HXsjbCwtXMikXwE5i8HxI3ubRyVFcFwuybw2wQJ7L1qsaAPSFou7wmaAMSB4+pN5kpN7QXONa3HsH7dl6HPul9vCAkMgEuJF/NaDK52/EzOSlpIebnFwHctOJp5AWPu4dbJ6+gpSzTnbYqYVULjnnY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--jmattson.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=blT4m+/B; arc=none smtp.client-ip=209.85.216.73
+	 To:Cc:Content-Type; b=GL2p5Ph8HGGJDfvCtHwxQtEq5yxVDGybkNNZ/m8xiQaeAkU0VG2AHKQRHtKET8Z0uc2eTH+GVR8kyTtOu+6zadDbePS0QGcZJm3H6/agUP2qdvyDwZRtfhPzwRNRaTXXWdEyPmEM/q7tOExxu1AFvfyZnCAsxPTnv7R02N6mb/U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--jmattson.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=W1nuneVu; arc=none smtp.client-ip=209.85.216.74
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--jmattson.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="blT4m+/B"
-Received: by mail-pj1-f73.google.com with SMTP id 98e67ed59e1d1-352c79abf36so289598a91.2
-        for <kvm@vger.kernel.org>; Wed, 21 Jan 2026 14:55:08 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="W1nuneVu"
+Received: by mail-pj1-f74.google.com with SMTP id 98e67ed59e1d1-34c704d5d15so633272a91.1
+        for <kvm@vger.kernel.org>; Wed, 21 Jan 2026 14:55:11 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1769036106; x=1769640906; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1769036110; x=1769640910; darn=vger.kernel.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=HMs2hdc0hNqNKtUHLf8UfyYdyy8QH+t4ULVxDyYCi60=;
-        b=blT4m+/BSEqVX3S/YUpCMTs4CbXTOZtziwFx6dwktDIMfbU/4HF/6yxvArLL+E7QYS
-         w/UXg6qsGfeg/MST3MpH2PGCcFMch2FzDyFTNfPZsK0ob/H2BPHn6OXa6vt9eCYEBZ75
-         1ba1mwlYf+6nnQmAzzaOWjjQVqTO3YrKatyUCD+eDNk1idPNV57HqOAZVlhFwR7HZfDm
-         sUfAxOXWaAEOtthBlNMwhVcpL6/LfiYgt50dpssSXHRMKKwY8ERR/lN8gK6BpFRLpire
-         HxqrRwrdxA46oChrKwpTSDDGY0GJx+islo3OkWoQ6CfPGkuM5zR0yjyajuVX7ftvsghE
-         zcRg==
+        bh=fYZnEa6Bb/f2/6ej1BUpAz8CiN6p1EtpnBTMXq8YhlA=;
+        b=W1nuneVucFkDeLy07WKwR7WvXqdoUrSlkgTfF8EINic3KY514C2zkG8D0jEFK/6Jrm
+         qiFDDxyvJOCwC6ohFYKEWtDH8Y96OjD0+anCMjR2eKo/AqWNJv1nPZhHOvJiqn2uznCB
+         rRZqi8f+qum+EZjcOqknJvxwQdqs1r6GygCv2bDUw5ZkBCidhXnp+Suzsw1CkdI23YTf
+         wAGDF56XT3Tf3GxSVYitWQsvAN9ExIBogDDNlgPUzHbn+ZVs+JFfxMU3WpxLZxmkZrXa
+         Yp1nqJ1qfWrqoLQciXroSVCgPbhyXw0abzopwsQySkSFEdtsX84bQmKxBRBhC52xlwqe
+         SNvw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1769036106; x=1769640906;
+        d=1e100.net; s=20230601; t=1769036110; x=1769640910;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=HMs2hdc0hNqNKtUHLf8UfyYdyy8QH+t4ULVxDyYCi60=;
-        b=c6WMkpZztoDOUrMk8JFG5Xf9HHGBz5o7GuZKRBJYFtTJufYg3kmubruMV5Z3QF2KU/
-         kvbYChuu88bc9bXhBD194HHs5KKgW5GHMKsTFfSxUo7hu6HUspaHC32gpFUuG/RGDfTE
-         gQVVdNSnraqWrAFlTM/+Z9n3CNzypxsqY/cjmpbHo0RPWv78HKfJ/ptxIbyWsylxTpJ6
-         DNXDzrUBnofWoa4o2olRfFK9PJlVcXmWCW1Eg66PmS7iM8CP+YLrvLbfw7ewI1Jwdp6f
-         K9itMQnL/GPFB8nBgSSZStHNLMpJ0l5crTWFTuqCktt8bw45tzDK+MfAQuJjVSRIVTLe
-         Vucg==
-X-Forwarded-Encrypted: i=1; AJvYcCVKqmnncS2vnoQtWziz4YO3gyTfRttyACGoVHbCavt90cIIdbnA6yKv0w9g9E47hDncZQo=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzYow/Y1HBGTXltrgeVejH4zm/WS1D67YXbivbppyKttrxr//mJ
-	Jvep/Vtwg8AQ6KADiZvCNMy00pfxKAzxqcdPsgdRHEMUksyQnED70kg2hlF6VCTet835la4hfTk
-	TDizPsBOs7KRnCg==
-X-Received: from pjbge20.prod.google.com ([2002:a17:90b:e14:b0:352:c381:4153])
+        bh=fYZnEa6Bb/f2/6ej1BUpAz8CiN6p1EtpnBTMXq8YhlA=;
+        b=vuWVJbkWUXxqDfFu967tk5D835qABQ/+ti6lnyiEEBweZH5oY8k6PVCS84hfodWL4W
+         h5Ib3py13STrhfD4xwIFyTuZa/aicc/oDdvN8HstxVPHDNNTe8I7turicy990M9EHnRG
+         3Xx+o4LeHB5340az6toTh7iS175Cc1nZ3tZUXCc709UAWhVma4PWZzk8Z+6nKa87HJ2+
+         8sgRWartDyulY5ighlta7sMCw3Pb+H4r3hI1Fco2r9XvQApVHWyIERjUooevNq9Jr/Qj
+         2d2ktecXGPBbYliqhsGlxFH+MCFvXK8Aj2SbbJWe8XXjBmtqpcirWCL3vwd/1XXjEhRj
+         cKhA==
+X-Forwarded-Encrypted: i=1; AJvYcCUi6I7RQnErDvoHV8xQjN08uDvPYoON3W+DRI88eqc93PYoqITDzxERsd/mlhvs7CitJ0M=@vger.kernel.org
+X-Gm-Message-State: AOJu0Ywey5c7J4BSO1F+29UDz3DqZGHkLnbld7nbcMI6NL0e4jn7hf1x
+	cKy7P2LqX6oZW51vOeNsnn0yYtFhGeWsy5jKgx+fZw1DAvqpBm4Wn8gRq7Wpr6LPwIGkg1UhmER
+	nqUbRW9Bap60C8A==
+X-Received: from pjbnp3.prod.google.com ([2002:a17:90b:4c43:b0:352:c99c:60b2])
  (user=jmattson job=prod-delivery.src-stubby-dispatcher) by
- 2002:a17:90b:570f:b0:330:bca5:13d9 with SMTP id 98e67ed59e1d1-352732775a8mr13429526a91.32.1769036106410;
- Wed, 21 Jan 2026 14:55:06 -0800 (PST)
-Date: Wed, 21 Jan 2026 14:54:00 -0800
+ 2002:a17:90b:4d84:b0:352:e796:bb65 with SMTP id 98e67ed59e1d1-352e796bbbamr4837712a91.31.1769036109597;
+ Wed, 21 Jan 2026 14:55:09 -0800 (PST)
+Date: Wed, 21 Jan 2026 14:54:02 -0800
 In-Reply-To: <20260121225438.3908422-1-jmattson@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
@@ -58,9 +58,9 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 References: <20260121225438.3908422-1-jmattson@google.com>
 X-Mailer: git-send-email 2.52.0.457.g6b5491de43-goog
-Message-ID: <20260121225438.3908422-3-jmattson@google.com>
-Subject: [PATCH 2/6] KVM: x86/pmu: Disable HG_ONLY events as appropriate for
- current vCPU state
+Message-ID: <20260121225438.3908422-5-jmattson@google.com>
+Subject: [PATCH 4/6] KVM: x86/pmu: [De]activate HG_ONLY PMCs at SVME changes
+ and nested transitions
 From: Jim Mattson <jmattson@google.com>
 To: Sean Christopherson <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>, 
 	Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
@@ -76,70 +76,168 @@ To: Sean Christopherson <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>
 Cc: Jim Mattson <jmattson@google.com>
 Content-Type: text/plain; charset="UTF-8"
 
-Introduce amd_pmu_dormant_hg_event(), which determines whether an AMD PMC
-should be dormant (i.e. not count) based on the guest's Host-Only and
-Guest-Only event selector bits and the current vCPU state.
+Add a new function, kvm_pmu_set_pmc_eventsel_hw_enable(), to set or clear
+the enable bit in eventsel_hw for PMCs identified by a bitmap.
 
-Update amd_pmu_set_eventsel_hw() to clear the event selector's enable bit
-when the event is dormant.
+Use this function to update Host-Only and Guest-Only counters at the
+following transitions:
+
+  - svm_set_efer(): When SVME changes, enable Guest-Only counters if SVME
+    is being cleared (HG_ONLY bits become ignored), or disable them if SVME
+    is being set (L1 is active).
+
+  - nested_svm_vmrun(): Disable Host-Only counters and enable Guest-Only
+    counters.
+
+  - nested_svm_vmexit(): Disable Guest-Only counters and enable Host-Only
+    counters.
 
 Signed-off-by: Jim Mattson <jmattson@google.com>
 ---
- arch/x86/include/asm/perf_event.h |  2 ++
- arch/x86/kvm/svm/pmu.c            | 23 +++++++++++++++++++++++
- 2 files changed, 25 insertions(+)
+ arch/x86/include/asm/kvm-x86-pmu-ops.h |  1 +
+ arch/x86/kvm/pmu.c                     |  7 +++++++
+ arch/x86/kvm/pmu.h                     |  4 ++++
+ arch/x86/kvm/svm/nested.c              | 10 ++++++++++
+ arch/x86/kvm/svm/pmu.c                 | 17 +++++++++++++++++
+ arch/x86/kvm/svm/svm.c                 |  3 +++
+ 6 files changed, 42 insertions(+)
 
-diff --git a/arch/x86/include/asm/perf_event.h b/arch/x86/include/asm/perf_event.h
-index 0d9af4135e0a..7649d79d91a6 100644
---- a/arch/x86/include/asm/perf_event.h
-+++ b/arch/x86/include/asm/perf_event.h
-@@ -58,6 +58,8 @@
- #define AMD64_EVENTSEL_INT_CORE_ENABLE			(1ULL << 36)
- #define AMD64_EVENTSEL_GUESTONLY			(1ULL << 40)
- #define AMD64_EVENTSEL_HOSTONLY				(1ULL << 41)
-+#define AMD64_EVENTSEL_HG_ONLY				\
-+	(AMD64_EVENTSEL_HOSTONLY | AMD64_EVENTSEL_GUESTONLY)
+diff --git a/arch/x86/include/asm/kvm-x86-pmu-ops.h b/arch/x86/include/asm/kvm-x86-pmu-ops.h
+index f0aa6996811f..7b32796213a0 100644
+--- a/arch/x86/include/asm/kvm-x86-pmu-ops.h
++++ b/arch/x86/include/asm/kvm-x86-pmu-ops.h
+@@ -26,6 +26,7 @@ KVM_X86_PMU_OP_OPTIONAL(cleanup)
+ KVM_X86_PMU_OP_OPTIONAL(write_global_ctrl)
+ KVM_X86_PMU_OP(mediated_load)
+ KVM_X86_PMU_OP(mediated_put)
++KVM_X86_PMU_OP_OPTIONAL(set_pmc_eventsel_hw_enable)
  
- #define AMD64_EVENTSEL_INT_CORE_SEL_SHIFT		37
- #define AMD64_EVENTSEL_INT_CORE_SEL_MASK		\
+ #undef KVM_X86_PMU_OP
+ #undef KVM_X86_PMU_OP_OPTIONAL
+diff --git a/arch/x86/kvm/pmu.c b/arch/x86/kvm/pmu.c
+index 833ee2ecd43f..1541c201285b 100644
+--- a/arch/x86/kvm/pmu.c
++++ b/arch/x86/kvm/pmu.c
+@@ -1142,6 +1142,13 @@ void kvm_pmu_branch_retired(struct kvm_vcpu *vcpu)
+ }
+ EXPORT_SYMBOL_FOR_KVM_INTERNAL(kvm_pmu_branch_retired);
+ 
++void kvm_pmu_set_pmc_eventsel_hw_enable(struct kvm_vcpu *vcpu,
++				       unsigned long *bitmap, bool enable)
++{
++	kvm_pmu_call(set_pmc_eventsel_hw_enable)(vcpu, bitmap, enable);
++}
++EXPORT_SYMBOL_FOR_KVM_INTERNAL(kvm_pmu_set_pmc_eventsel_hw_enable);
++
+ static bool is_masked_filter_valid(const struct kvm_x86_pmu_event_filter *filter)
+ {
+ 	u64 mask = kvm_pmu_ops.EVENTSEL_EVENT |
+diff --git a/arch/x86/kvm/pmu.h b/arch/x86/kvm/pmu.h
+index 0925246731cb..b8be8b6e40d8 100644
+--- a/arch/x86/kvm/pmu.h
++++ b/arch/x86/kvm/pmu.h
+@@ -41,6 +41,8 @@ struct kvm_pmu_ops {
+ 	void (*mediated_load)(struct kvm_vcpu *vcpu);
+ 	void (*mediated_put)(struct kvm_vcpu *vcpu);
+ 	void (*write_global_ctrl)(u64 global_ctrl);
++	void (*set_pmc_eventsel_hw_enable)(struct kvm_vcpu *vcpu,
++					   unsigned long *bitmap, bool enable);
+ 
+ 	const u64 EVENTSEL_EVENT;
+ 	const int MAX_NR_GP_COUNTERS;
+@@ -258,6 +260,8 @@ void kvm_pmu_destroy(struct kvm_vcpu *vcpu);
+ int kvm_vm_ioctl_set_pmu_event_filter(struct kvm *kvm, void __user *argp);
+ void kvm_pmu_instruction_retired(struct kvm_vcpu *vcpu);
+ void kvm_pmu_branch_retired(struct kvm_vcpu *vcpu);
++void kvm_pmu_set_pmc_eventsel_hw_enable(struct kvm_vcpu *vcpu,
++				       unsigned long *bitmap, bool enable);
+ void kvm_mediated_pmu_load(struct kvm_vcpu *vcpu);
+ void kvm_mediated_pmu_put(struct kvm_vcpu *vcpu);
+ 
+diff --git a/arch/x86/kvm/svm/nested.c b/arch/x86/kvm/svm/nested.c
+index de90b104a0dd..edaa76e38417 100644
+--- a/arch/x86/kvm/svm/nested.c
++++ b/arch/x86/kvm/svm/nested.c
+@@ -28,6 +28,7 @@
+ #include "smm.h"
+ #include "cpuid.h"
+ #include "lapic.h"
++#include "pmu.h"
+ #include "svm.h"
+ #include "hyperv.h"
+ 
+@@ -1054,6 +1055,11 @@ int nested_svm_vmrun(struct kvm_vcpu *vcpu)
+ 	if (enter_svm_guest_mode(vcpu, vmcb12_gpa, vmcb12, true))
+ 		goto out_exit_err;
+ 
++	kvm_pmu_set_pmc_eventsel_hw_enable(vcpu,
++		vcpu_to_pmu(vcpu)->pmc_hostonly, false);
++	kvm_pmu_set_pmc_eventsel_hw_enable(vcpu,
++		vcpu_to_pmu(vcpu)->pmc_guestonly, true);
++
+ 	if (nested_svm_merge_msrpm(vcpu))
+ 		goto out;
+ 
+@@ -1137,6 +1143,10 @@ int nested_svm_vmexit(struct vcpu_svm *svm)
+ 
+ 	/* Exit Guest-Mode */
+ 	leave_guest_mode(vcpu);
++	kvm_pmu_set_pmc_eventsel_hw_enable(vcpu,
++		vcpu_to_pmu(vcpu)->pmc_hostonly, true);
++	kvm_pmu_set_pmc_eventsel_hw_enable(vcpu,
++		vcpu_to_pmu(vcpu)->pmc_guestonly, false);
+ 	svm->nested.vmcb12_gpa = 0;
+ 	WARN_ON_ONCE(svm->nested.nested_run_pending);
+ 
 diff --git a/arch/x86/kvm/svm/pmu.c b/arch/x86/kvm/svm/pmu.c
-index 33c139b23a9e..f619417557f9 100644
+index c06013e2b4b1..85155d65fa38 100644
 --- a/arch/x86/kvm/svm/pmu.c
 +++ b/arch/x86/kvm/svm/pmu.c
-@@ -147,10 +147,33 @@ static int amd_pmu_get_msr(struct kvm_vcpu *vcpu, struct msr_data *msr_info)
- 	return 1;
+@@ -316,6 +316,22 @@ static void amd_mediated_pmu_put(struct kvm_vcpu *vcpu)
+ 		wrmsrq(MSR_AMD64_PERF_CNTR_GLOBAL_STATUS_CLR, pmu->global_status);
  }
  
-+static bool amd_pmu_dormant_hg_event(struct kvm_pmc *pmc)
++static void amd_pmu_set_pmc_eventsel_hw_enable(struct kvm_vcpu *vcpu,
++					       unsigned long *bitmap,
++					       bool enable)
 +{
-+	u64 hg_only = pmc->eventsel & AMD64_EVENTSEL_HG_ONLY;
-+	struct kvm_vcpu *vcpu = pmc->vcpu;
++	struct kvm_pmu *pmu = vcpu_to_pmu(vcpu);
++	struct kvm_pmc *pmc;
++	int i;
 +
-+	if (hg_only == 0)
-+		/* Not an HG_ONLY event */
-+		return false;
-+
-+	if (!(vcpu->arch.efer & EFER_SVME))
-+		/* HG_ONLY bits are ignored when SVME is clear */
-+		return false;
-+
-+	/* Always active if both HG_ONLY bits are set */
-+	if (hg_only == AMD64_EVENTSEL_HG_ONLY)
-+		return false;
-+
-+	return !!(hg_only & AMD64_EVENTSEL_HOSTONLY) == is_guest_mode(vcpu);
++	kvm_for_each_pmc(pmu, pmc, i, bitmap) {
++		if (enable)
++			pmc->eventsel_hw |= ARCH_PERFMON_EVENTSEL_ENABLE;
++		else
++			pmc->eventsel_hw &= ~ARCH_PERFMON_EVENTSEL_ENABLE;
++	}
 +}
 +
- static void amd_pmu_set_eventsel_hw(struct kvm_pmc *pmc)
- {
- 	pmc->eventsel_hw = (pmc->eventsel & ~AMD64_EVENTSEL_HOSTONLY) |
- 		AMD64_EVENTSEL_GUESTONLY;
-+
-+	if (amd_pmu_dormant_hg_event(pmc))
-+		pmc->eventsel_hw &= ~ARCH_PERFMON_EVENTSEL_ENABLE;
- }
+ struct kvm_pmu_ops amd_pmu_ops __initdata = {
+ 	.rdpmc_ecx_to_pmc = amd_rdpmc_ecx_to_pmc,
+ 	.msr_idx_to_pmc = amd_msr_idx_to_pmc,
+@@ -329,6 +345,7 @@ struct kvm_pmu_ops amd_pmu_ops __initdata = {
+ 	.is_mediated_pmu_supported = amd_pmu_is_mediated_pmu_supported,
+ 	.mediated_load = amd_mediated_pmu_load,
+ 	.mediated_put = amd_mediated_pmu_put,
++	.set_pmc_eventsel_hw_enable = amd_pmu_set_pmc_eventsel_hw_enable,
  
- static int amd_pmu_set_msr(struct kvm_vcpu *vcpu, struct msr_data *msr_info)
+ 	.EVENTSEL_EVENT = AMD64_EVENTSEL_EVENT,
+ 	.MAX_NR_GP_COUNTERS = KVM_MAX_NR_AMD_GP_COUNTERS,
+diff --git a/arch/x86/kvm/svm/svm.c b/arch/x86/kvm/svm/svm.c
+index 7803d2781144..953089b38921 100644
+--- a/arch/x86/kvm/svm/svm.c
++++ b/arch/x86/kvm/svm/svm.c
+@@ -244,6 +244,9 @@ int svm_set_efer(struct kvm_vcpu *vcpu, u64 efer)
+ 			if (svm_gp_erratum_intercept && !sev_guest(vcpu->kvm))
+ 				set_exception_intercept(svm, GP_VECTOR);
+ 		}
++
++		kvm_pmu_set_pmc_eventsel_hw_enable(vcpu,
++			vcpu_to_pmu(vcpu)->pmc_guestonly, !(efer & EFER_SVME));
+ 	}
+ 
+ 	svm->vmcb->save.efer = efer | EFER_SVME;
 -- 
 2.52.0.457.g6b5491de43-goog
 
