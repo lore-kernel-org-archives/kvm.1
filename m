@@ -1,53 +1,53 @@
-Received: from mail-pf1-f202.google.com (mail-pf1-f202.google.com [209.85.210.202])
+Received: from mail-pj1-f73.google.com (mail-pj1-f73.google.com [209.85.216.73])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ADA3646AF3F
-	for <kvm@vger.kernel.org>; Thu, 22 Jan 2026 04:58:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.202
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 945AB472763
+	for <kvm@vger.kernel.org>; Thu, 22 Jan 2026 04:58:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.73
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769057883; cv=none; b=pW2o/Sl0Nhhd2wINBFGAabZCVWYXNg8RNL2Gie2llR90dJ9jqaDLRxPsQoQ1HMrC9Wz2jTz9veACyLGPUZRTWd2XUuwBQHtdxtY2BMRSNvyyk/5SPo57yNwVMd0xUsb5A/P336gu+lMgVxgosMNUUnAsnyV3AqN8CzWgCnm4YXU=
+	t=1769057886; cv=none; b=kO8FAeGRumPyMzwNeg25erJS0yO21uTA0RcWhhPx66OFWF5B93HynDc3zCaxliO1tJ/pjdhp0F+ThBEUIus6BxLclA9yrnPcLG0tAyWFMhhrD+FM8J2klgeE612co+B18jfGjH5eoznkTXdheEp4ylma7iddnDRL/xMR8JtbkBg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769057883; c=relaxed/simple;
-	bh=9zQZI3WlU6jPhXYD2z6AcxtaZlWBL61afEB7pez8jtY=;
+	s=arc-20240116; t=1769057886; c=relaxed/simple;
+	bh=XcN9XQSp7vAr+/NP33TR/5kwIGgIMbdTWz9Y1Boqn/o=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=mNxgavirmXxOzr72tl8UTEVHZG2YHDu+5Pxozfz70seQrVj4nrW37YUX4I+6+rD3cdG290WDcTy89FvOxG3hakwG+W/0O8eZuz5+aQEWJg45DeT3qFf3vLIZK8Yv9PSC0bq70efAgXUfGffSpGW2pYLzFhv/QpD2GsDc7QEdYq0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--chengkev.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=MfX7BzmK; arc=none smtp.client-ip=209.85.210.202
+	 To:Cc:Content-Type; b=vGqz4N56xXoMXdDBHdj6xPtQHu19VPPJn0s5S8/fQez7okvedH7YOoWqYRSqGEmPlRqZdxZdqWRDJmn6FbIUGl8IK7V+gOexHclseLrjpPTeDeub9lHbW7/DMWTwWgwQ1I1qiYpHWlrKs8c98b6VjngHxeZMMyMhVpLKFmujAoc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--chengkev.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Ugh9Rptu; arc=none smtp.client-ip=209.85.216.73
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--chengkev.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="MfX7BzmK"
-Received: by mail-pf1-f202.google.com with SMTP id d2e1a72fcca58-81f53295ac2so1404744b3a.0
-        for <kvm@vger.kernel.org>; Wed, 21 Jan 2026 20:58:01 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Ugh9Rptu"
+Received: by mail-pj1-f73.google.com with SMTP id 98e67ed59e1d1-352e6fcd72dso900446a91.3
+        for <kvm@vger.kernel.org>; Wed, 21 Jan 2026 20:58:04 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1769057881; x=1769662681; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1769057884; x=1769662684; darn=vger.kernel.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=13hBXw1e/wQdlND4nbuAHkzt9/+Bh7eimLwFf/NzxYc=;
-        b=MfX7BzmK+PksPp+/3yufZXuRDa6AIqDtlT+NSaq+pKVikI0qulCnfgSg6SmAJtluqz
-         43lRs+k1P+sLCUK7/Ym9CY92IMCAw3g0M6FjkVgnH1cVo9Hfba4LDqqXWekaiIBnctN8
-         FZdfIjgrxVd7VXl3Qv82ZkG37zqrq0/RxbJ9eIb8+8trwQOD9brZAueRv3VL9Lip+fhi
-         nm8s5OCYSKdpRJmHY/PpxoOvaPtgoBnAn4j9veZZbpDrApSNIyTgsW4Zw5CV5QBFalsY
-         lw0T2eoaHPkm5n/ycM78u/5lShs5373Odtl23adHLLpUwUHlowvuR/xgErq8AwQwyqrt
-         v3LQ==
+        bh=3U0BOUGnwPJAwwi3q0VBYzZ4CYyVrcP38EvplDhJ6lk=;
+        b=Ugh9RptuVYW0EmhHmVHXyhAOTkHhF87Zq+raDDNTzqZx8f+AfuUyjc2LxCxjIFn4XE
+         moqzTsB8G3kD+b8uD9u8J4AZZwYWdS10Lin3ZDYE5nFKlg/jO2MYFo8K5RW2KxnBsjv3
+         0mTkdnxeb+XwwPFNlbqj3EZ9bK/Ex7ehRpMG6mzANfQw5+6x6YrMmXZKqn7UIA8pJalk
+         SinAh4/ejXI78ew+fut1BQ/SdqbNMOdVggG4QJBvUG8MI7SfSuGby5sFf38U/pj/fzpJ
+         NSg8x+uOcJj+ijFeIOR75cRlUidCh1RPm9O011TXxPa/deLzRCS1UQhgcK7lvsYgwBYg
+         1TYA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1769057881; x=1769662681;
+        d=1e100.net; s=20230601; t=1769057884; x=1769662684;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=13hBXw1e/wQdlND4nbuAHkzt9/+Bh7eimLwFf/NzxYc=;
-        b=tD1gfU4EdfYIjBrTpiaP90SLs/vj5+6YEgFE42TGPvyd0s6Zr/+dKe7qDtFhrq8tdX
-         Pm/Nx6Jz9zRzBKy8jqwtX5HzPi6qwJpXb9boA8+jDKk/ktA4MIU6D0JGr0tGGs/+MBLA
-         DBFlOjkRdzboVMiyBQ96P204W4AgOUBgkHhHsmYM58rxJ3E7ABM/x/FxB9DL1LtRn8zS
-         Cts2H3EQq8v4RZr1mUJeigA855DJXSOAVmsGO96NRlCand6deJPUNtcK/doMpatcEDct
-         cwr54t9XXbhRBPzYbucRNYdujIx1cF54yxj2drLPTT/EHCdS2vUINEoXyqOWaxpu9lo6
-         MW4g==
-X-Gm-Message-State: AOJu0YzkloQEEQ3FqIyt0PpjHuWzK4DLfuIoQv/yn3L6XZOHiVoTT05d
-	aJXpk10GI2oHqOrQko+CuJL9rqC6RLlMk2d1wIn2h6rRkPpnTfEV7vpyZD/SwOtk3gnqoS8B+qI
-	n3Y8spoWsf8G0Mg==
-X-Received: from pfaw7.prod.google.com ([2002:a05:6a00:ab87:b0:7e5:5121:f943])
+        bh=3U0BOUGnwPJAwwi3q0VBYzZ4CYyVrcP38EvplDhJ6lk=;
+        b=NbP7BtlVgkltuS0Nizbvut9APJZ1O09ZgFES8OZk5fQp8IC6bQHzifB//pAdtl2Few
+         Noxr7iyH2HQn32bKm1Ae5eYG2RkYC7ZXj711uRm8MDLGf5q2YkNUTVoOZ0Plmk0rM26V
+         LhkFTW8i96LYUS3qxC5qDXn8TE/7AHugt1ud9DuvIA42yb+YV0Igetr5d9lH6mHTIrjk
+         iQ72cua1pit6KCqfx5yHosMFLU9sfkd4U/F1CLDZjZF4VEcBT/OQmIdEc6NsV97giZEc
+         ggKKiy9eMf4GcyEtqAdLp5Jfwk5pii1WbZKycmhK8pnNdX8uNtHD2xLSc5BSy3kscafT
+         xmfg==
+X-Gm-Message-State: AOJu0Yw+ySjZX0tng76DC/RK5yre8/Y26Csb/zFyxpmq2VTGrj2yihKO
+	2cbjwnfBDRJs+y0o5V+4F2hVTVn1ixliTx9FYfEblXGebLrq2/0iOEt7kYkVZzZcMhqrPcZclxt
+	wlhQ3bt3+wHWXQQ==
+X-Received: from pjbqj7.prod.google.com ([2002:a17:90b:28c7:b0:34c:811d:e3ca])
  (user=chengkev job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:6a00:2d8b:b0:81f:3461:9f78 with SMTP id d2e1a72fcca58-81fa185061fmr17024231b3a.48.1769057880741;
- Wed, 21 Jan 2026 20:58:00 -0800 (PST)
-Date: Thu, 22 Jan 2026 04:57:51 +0000
+ 2002:a17:90b:240e:b0:352:c146:dc39 with SMTP id 98e67ed59e1d1-352c146dc7amr4825518a91.30.1769057883808;
+ Wed, 21 Jan 2026 20:58:03 -0800 (PST)
+Date: Thu, 22 Jan 2026 04:57:53 +0000
 In-Reply-To: <20260122045755.205203-1-chengkev@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
@@ -57,92 +57,70 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 References: <20260122045755.205203-1-chengkev@google.com>
 X-Mailer: git-send-email 2.52.0.457.g6b5491de43-goog
-Message-ID: <20260122045755.205203-3-chengkev@google.com>
-Subject: [PATCH V3 2/5] KVM: SVM: Inject #UD for STGI if EFER.SVME=0 and SVM
- Lock and DEV are not available
+Message-ID: <20260122045755.205203-5-chengkev@google.com>
+Subject: [PATCH V3 4/5] KVM: SVM: Recalc instructions intercepts when
+ EFER.SVME is toggled
 From: Kevin Cheng <chengkev@google.com>
 To: seanjc@google.com, pbonzini@redhat.com
 Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org, yosry.ahmed@linux.dev, 
 	Kevin Cheng <chengkev@google.com>
 Content-Type: text/plain; charset="UTF-8"
 
-The AMD APM states that STGI causes a #UD if SVM is not enabled and
-neither SVM Lock nor the device exclusion vector (DEV) are supported.
-Support for DEV is part of the SKINIT architecture. Fix the STGI exit
-handler by injecting #UD when these conditions are met.
+The AMD APM states that VMRUN, VMLOAD, VMSAVE, CLGI, VMMCALL, and
+INVLPGA instructions should generate a #UD when EFER.SVME is cleared.
+Currently, when VMLOAD, VMSAVE, or CLGI are executed in L1 with
+EFER.SVME cleared, no #UD is generated in certain cases. This is because
+the intercepts for these instructions are cleared based on whether or
+not vls or vgif is enabled. The #UD fails to be generated when the
+intercepts are absent.
+
+Fix the missing #UD generation by ensuring that all relevant
+instructions have intercepts set when SVME.EFER is disabled.
+
+VMMCALL is special because KVM's ABI is that VMCALL/VMMCALL are always
+supported for L1 and never fault.
 
 Signed-off-by: Kevin Cheng <chengkev@google.com>
 ---
- arch/x86/kvm/svm/nested.c |  9 +++++++--
- arch/x86/kvm/svm/svm.c    | 12 +++++++++++-
- arch/x86/kvm/svm/svm.h    |  1 +
- 3 files changed, 19 insertions(+), 3 deletions(-)
+ arch/x86/kvm/svm/svm.c | 11 ++++++++++-
+ 1 file changed, 10 insertions(+), 1 deletion(-)
 
-diff --git a/arch/x86/kvm/svm/nested.c b/arch/x86/kvm/svm/nested.c
-index ba0f11c68372b..60bb320c34bda 100644
---- a/arch/x86/kvm/svm/nested.c
-+++ b/arch/x86/kvm/svm/nested.c
-@@ -1466,9 +1466,9 @@ int nested_svm_exit_handled(struct vcpu_svm *svm)
- 	return vmexit;
- }
- 
--int nested_svm_check_permissions(struct kvm_vcpu *vcpu)
-+int __nested_svm_check_permissions(struct kvm_vcpu *vcpu, bool insn_allowed)
- {
--	if (!(vcpu->arch.efer & EFER_SVME) || !is_paging(vcpu)) {
-+	if (!insn_allowed || !is_paging(vcpu)) {
- 		kvm_queue_exception(vcpu, UD_VECTOR);
- 		return 1;
- 	}
-@@ -1481,6 +1481,11 @@ int nested_svm_check_permissions(struct kvm_vcpu *vcpu)
- 	return 0;
- }
- 
-+int nested_svm_check_permissions(struct kvm_vcpu *vcpu)
-+{
-+	return __nested_svm_check_permissions(vcpu, vcpu->arch.efer & EFER_SVME);
-+}
-+
- static bool nested_svm_is_exception_vmexit(struct kvm_vcpu *vcpu, u8 vector,
- 					   u32 error_code)
- {
 diff --git a/arch/x86/kvm/svm/svm.c b/arch/x86/kvm/svm/svm.c
-index 7a854e81b6560..e6b1f8fa98a20 100644
+index d3d7daf886b29..1888211e20988 100644
 --- a/arch/x86/kvm/svm/svm.c
 +++ b/arch/x86/kvm/svm/svm.c
-@@ -2283,9 +2283,19 @@ void svm_set_gif(struct vcpu_svm *svm, bool value)
- 
- static int stgi_interception(struct kvm_vcpu *vcpu)
- {
-+	bool insn_allowed;
- 	int ret;
- 
--	if (nested_svm_check_permissions(vcpu))
-+	/*
-+	 * According to the APM, STGI is allowed even with SVM disabled if SVM
-+	 * Lock or device exclusion vector (DEV) are supported. DEV is part of
-+	 * the SKINIT architecture.
-+	 */
-+	insn_allowed = (vcpu->arch.efer & EFER_SVME) ||
-+		       guest_cpu_cap_has(vcpu, X86_FEATURE_SVML) ||
-+		       guest_cpu_cap_has(vcpu, X86_FEATURE_SKINIT);
+@@ -243,6 +243,8 @@ int svm_set_efer(struct kvm_vcpu *vcpu, u64 efer)
+ 			if (svm_gp_erratum_intercept && !sev_guest(vcpu->kvm))
+ 				set_exception_intercept(svm, GP_VECTOR);
+ 		}
 +
-+	if (__nested_svm_check_permissions(vcpu, insn_allowed))
- 		return 1;
++		kvm_make_request(KVM_REQ_RECALC_INTERCEPTS, vcpu);
+ 	}
  
- 	ret = kvm_skip_emulated_instruction(vcpu);
-diff --git a/arch/x86/kvm/svm/svm.h b/arch/x86/kvm/svm/svm.h
-index 01be93a53d077..0ec09559767a3 100644
---- a/arch/x86/kvm/svm/svm.h
-+++ b/arch/x86/kvm/svm/svm.h
-@@ -769,6 +769,7 @@ static inline int nested_svm_simple_vmexit(struct vcpu_svm *svm, u32 exit_code)
- }
+ 	svm->vmcb->save.efer = efer | EFER_SVME;
+@@ -984,6 +986,7 @@ static bool svm_has_pending_gif_event(struct vcpu_svm *svm)
+ static void svm_recalc_instruction_intercepts(struct kvm_vcpu *vcpu)
+ {
+ 	struct vcpu_svm *svm = to_svm(vcpu);
++	u64 efer = vcpu->arch.efer;
  
- int nested_svm_exit_handled(struct vcpu_svm *svm);
-+int __nested_svm_check_permissions(struct kvm_vcpu *vcpu, bool insn_allowed);
- int nested_svm_check_permissions(struct kvm_vcpu *vcpu);
- int nested_svm_check_exception(struct vcpu_svm *svm, unsigned nr,
- 			       bool has_error_code, u32 error_code);
+ 	/*
+ 	 * Intercept INVPCID if shadow paging is enabled to sync/free shadow
+@@ -1004,7 +1007,13 @@ static void svm_recalc_instruction_intercepts(struct kvm_vcpu *vcpu)
+ 			svm_set_intercept(svm, INTERCEPT_RDTSCP);
+ 	}
+ 
+-	if (guest_cpuid_is_intel_compatible(vcpu)) {
++	/*
++	 * Intercept instructions that #UD if EFER.SVME=0, as SVME must be set even
++	 * when running the guest, i.e. hardware will only ever see EFER.SVME=1.
++	 */
++	if (guest_cpuid_is_intel_compatible(vcpu) || !(efer & EFER_SVME)) {
++		svm_set_intercept(svm, INTERCEPT_CLGI);
++		svm_set_intercept(svm, INTERCEPT_STGI);
+ 		svm_set_intercept(svm, INTERCEPT_VMLOAD);
+ 		svm_set_intercept(svm, INTERCEPT_VMSAVE);
+ 		svm->vmcb->control.virt_ext &= ~VIRTUAL_VMLOAD_VMSAVE_ENABLE_MASK;
 -- 
 2.52.0.457.g6b5491de43-goog
 
