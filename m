@@ -1,89 +1,101 @@
-Received: from m16.mail.163.com (m16.mail.163.com [117.135.210.3])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f170.google.com (mail-pl1-f170.google.com [209.85.214.170])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 04BE9478E36;
-	Thu, 22 Jan 2026 05:36:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=117.135.210.3
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F3A0E32E690
+	for <kvm@vger.kernel.org>; Thu, 22 Jan 2026 06:14:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.170
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769060209; cv=none; b=BLAhj5EeHPy3PfwRpyOfR/9WALnZet/iQCdFNkTgC1j7+IjZZUVn1WK3mx0q5+bRwuqARLgGu+f5G36L531wuvYU6uYzuVlH03wlOAeBCcF+ZwuLasLkq3A1T+vy8hC53TaYZh+SC/dnI9HbEzb62Xuj0Hb3xU/NK8Slan5C/Wo=
+	t=1769062478; cv=none; b=aF66/h8rQb7flWQ7GbNw4hzt4w/L8a8mIA96Zthh3FPkgmvL5NHt+k7a4y4NIbRkkDF7JE43R4S+2FPwZiGrj13CLf12sVQfIkHiBggMfcO8Yinaab14kw9+SBZNCR6F6mXBL92jQZ7wCX4j2Ka38InGL7kvQiB9cx0VjNa/cd8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769060209; c=relaxed/simple;
-	bh=eEwJV8YazZUdwv7DfWvKvd+LSY4BrGefFegKGNRWiQQ=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=qGhxRvFEs/lEbShBwiY2aNhBbp3v8alxvM2mOizV5+hDVBXt9dZaRsifgqRaYUyguUCYNSIYC/DYEe63xHspCZli/PTjR7u58MpHof688ifJs3MXborRzEo/TF/CJAuENTYjTDAxke6/B686wiHFtXRpvUmuYDAzYtgOo8DOPCA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=ESFU0IOl; arc=none smtp.client-ip=117.135.210.3
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
+	s=arc-20240116; t=1769062478; c=relaxed/simple;
+	bh=nQVBvMHuljtX2xB4yfQiA5xv6fNGoHeJDz1JEMTQMnE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=ng2nT8+cKLrTo7ac0Juh+MadRrYNAz1BSKbqlZbdN9rfmGr6/C5K9aBRT6DlJTi9Ib3NOjxIDaRF1cB5RRauFIV8w2JCGUPZ9Ica//K12Rgv1Q1NnvMuTjI34zkIYYSz0jbKjG5K9BRhjfaVYEcEyMwKGxrLaOAMushOmGXKZ3A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=iy75tLp1; arc=none smtp.client-ip=209.85.214.170
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="ESFU0IOl"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-	s=s110527; h=From:To:Subject:Date:Message-ID:MIME-Version; bh=Of
-	BViCI6bSCq5ylXHSi+/Op6adamb5VZmTYcL24GsVI=; b=ESFU0IOlKAKice9kAg
-	e1gFPKdiQwP0KPEfEZ0Gl+1VfrNfyoBnQ0Zac+gA+WFDz0zGiSGhVQbxIJ5RKYFC
-	Upj3hPltx1xOyq/F0WZJf9cP+Xi/rVm9EJd9eafNtOG+RFohNbJf20LgvygcRDR+
-	dXU49qxhMalQysK0M/12zZFls=
-Received: from 163.com (unknown [])
-	by gzga-smtp-mtada-g1-0 (Coremail) with SMTP id _____wA3p6FGt3FpNNsdHg--.52102S2;
-	Thu, 22 Jan 2026 13:36:06 +0800 (CST)
-From: Zhiquan Li <zhiquan_li@163.com>
-To: seanjc@google.com,
-	pbonzini@redhat.com,
-	shuah@kernel.org
-Cc: kvm@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	zhiquan_li@163.com
-Subject: [PATCH] KVM: selftests: Add -U_FORTIFY_SOURCE to avoid some unpredictable test failures
-Date: Thu, 22 Jan 2026 13:35:50 +0800
-Message-ID: <20260122053551.548229-1-zhiquan_li@163.com>
-X-Mailer: git-send-email 2.43.0
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="iy75tLp1"
+Received: by mail-pl1-f170.google.com with SMTP id d9443c01a7336-2a76b39587aso29975ad.0
+        for <kvm@vger.kernel.org>; Wed, 21 Jan 2026 22:14:36 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1769062476; x=1769667276; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=3G4lHNqBolWBEs1VWBwMzRnnAhuwEdr1C7HQPPvGpZ8=;
+        b=iy75tLp1bP32slZSKeR3uNQDcO93TtWIYrhxuAWZRY8jURlcotKEMpTRzRcI0+GVxD
+         l/lrQPNE+VvLsXdqr9TyCrIBXodAKkgLCC0zVbbyObzIKGgpV/FtcDa3hSdLT3OJb1TV
+         +k76c0QtPg+ktJwkxqiXTVakP+AkIh+imUsN3yK+pppcJI1au5ejYK9kMCpRzP7guqVy
+         E0hZufqIj4TA7qD3Xb6lmT8wAvZTvdEr9tTYOkuwn+2Y3T3DY0kOGJafuxK3AEOlZCAx
+         BptYIzJbFcAhPzenRqjnnmrfDfBi8AjbiC2PhpSFK67sm1Hfzbl/+DlElpJwy2DJ1maE
+         4tqg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1769062476; x=1769667276;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=3G4lHNqBolWBEs1VWBwMzRnnAhuwEdr1C7HQPPvGpZ8=;
+        b=OZd6Ta2B6Lqa4LLxraVFoSf667nWkAMysBw8dP02gFBO9qrm9W4QbJJrzbY0fupD98
+         /oP8j1iyiUMWxlKwwqwAS91K7kkwR+TIy0WhXs7pCEVbRBclwE//cWqkh3KdwVbfelnt
+         MKZ19vUKAR9qGpKQTFza/zNMjv1dPurf5PLztV9/FkFVdVoVujp7IF0nVsVsWAho6FrK
+         bht8GftgVqzzIEtnGrRBymQI9gjLroMyW2T2bNbOlO+cisUhwHuEC8rr8qlMMMxgqXh/
+         crhyFGeTTS+yJs8upM/rG/LlHvqXayQmfuLIGGQuK8GedloLlFslX83rTPJqJGbnh+ac
+         c+Gg==
+X-Forwarded-Encrypted: i=1; AJvYcCVwNV0hsMn7DPe8peSRK0Omyuk9hR1qA+yuK/4ejQrOBR6t/2gCfhvQaLMAaJ1mMWTZeCM=@vger.kernel.org
+X-Gm-Message-State: AOJu0Ywo3eVczvhfVe9HhWRxHfXPf2vitxgYcXKyEJ0hnLMFpcdheVnj
+	E+SM/9jb5vXu4u7m+eNnd/mEFVcpvw5uBHNxeUHvpbzzjgqvKTsyw9DpdYTeSaprOA==
+X-Gm-Gg: AZuq6aLbqn5/3FFKqdHg4QSFfRu65XhlzP+q4G/XG9Hfo75uhpiwUqVuVjF9xh6nQ0Q
+	9McWV6fv4m5OkAGJzxoYpO4KZkzcILeseW/a26yPzP5B+yFehORAPaqhA82eKd8+vmY9hOiNhOX
+	NU6Mb5ciu/RL9NK15MfFB9mfPlGaH9A0SAaJU5Sv9vPv7EEXoQ+HzJ/+yBQNsoik1Sa7ARGlKCW
+	UHEE7Z26L5edbaOBoOntnXw48aooZp9AcH0PttWY0MOt5PR0xzvLtchzgZDJl/r8y2Tl+wNaZgX
+	VRsSEODPN/cKH/Z/2u/THDUVAIv+h3a6lo62MYlN3rFvBtX9Ln7xBPt3o2hYzOhCSPuV2cvo1R8
+	DTW9hZvPX2Ajda63eRoX9YO+EYx1ZZbGWFmeZRRbPNlYplDNpxT9emu3AeOePBbZwyEFjl6AE1e
+	D3g8IaypZOlJMMlLKDRb5kt00tcQHmIsD8I6NgBLe4KxkqisHj
+X-Received: by 2002:a17:903:190:b0:297:f2a0:e564 with SMTP id d9443c01a7336-2a7d673e47fmr1307235ad.11.1769062475657;
+        Wed, 21 Jan 2026 22:14:35 -0800 (PST)
+Received: from google.com (222.245.187.35.bc.googleusercontent.com. [35.187.245.222])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-81fa10e8059sm16855579b3a.30.2026.01.21.22.14.33
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 21 Jan 2026 22:14:34 -0800 (PST)
+Date: Thu, 22 Jan 2026 06:14:29 +0000
+From: Pranjal Shrivastava <praan@google.com>
+To: Leon Romanovsky <leon@kernel.org>
+Cc: Alex Williamson <alex@shazbot.org>, Ankit Agrawal <ankita@nvidia.com>,
+	Jason Gunthorpe <jgg@ziepe.ca>, Kevin Tian <kevin.tian@intel.com>,
+	Vivek Kasireddy <vivek.kasireddy@intel.com>, kvm@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH vfio-rc] vfio: Prevent from pinned DMABUF importers to
+ attach to VFIO DMABUF
+Message-ID: <aXHARbpAM9lRuwTN@google.com>
+References: <20260121-vfio-add-pin-v1-1-4e04916b17f1@nvidia.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:_____wA3p6FGt3FpNNsdHg--.52102S2
-X-Coremail-Antispam: 1Uf129KBjvJXoW7CryxGFyDArW3Gw4kKr45KFg_yoW8CFyfp3
-	95KFWDKr4vgFWIy348WrsYvr4qgr4vvw48Crn8Xry8ZF13ZrZ2qFWftF1UK3W3CrWUA3yS
-	9a4xGF13uF18J3DanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x0p_WlydUUUUU=
-X-CM-SenderInfo: 52kl13xdqbzxi6rwjhhfrp/xtbC6ga1nmlxt0bItQAA3T
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260121-vfio-add-pin-v1-1-4e04916b17f1@nvidia.com>
 
-Some distributions (such as Ubuntu) configure GCC so that
-_FORTIFY_SOURCE is automatically enabled at -O1 or above.  This results
-in some fortified version of definitions of standard library functions
-are included.  While linker resolves the symbols, the fortified versions
-might override the definitions in lib/string_override.c and reference to
-those PLT entries in GLIBC.  This is not a problem for the code in host,
-but it is a disaster for the guest code.  E.g., if build and run
-x86/nested_emulation_test on Ubuntu 24.04 will encounter a L1 #PF due to
-memset() reference to __memset_chk@plt.
+On Wed, Jan 21, 2026 at 05:45:02PM +0200, Leon Romanovsky wrote:
+> From: Leon Romanovsky <leonro@nvidia.com>
+> 
+> Some pinned importers, such as non-ODP RDMA ones, cannot invalidate their
+> mappings and therefore must be prevented from attaching to this exporter.
+> 
+> Fixes: 5d74781ebc86 ("vfio/pci: Add dma-buf export support for MMIO regions")
+> Signed-off-by: Leon Romanovsky <leonro@nvidia.com>
+> ---
+> This is an outcome of this discussion about revoke functionality.
+> https://lore.kernel.org/all/20260121134712.GZ961572@ziepe.ca
+> 
+> Thanks
+> ---
+>  drivers/vfio/pci/vfio_pci_dmabuf.c | 12 ++++++++++++
+>  1 file changed, 12 insertions(+)
+> 
 
-The option -fno-builtin-memset is not helpful here, because those
-fortified versions are not built-in but some definitions which are
-included by header, they are for different intentions.
+Reviewed-by: Pranjal Shrivastava <praan@google.com>
 
-In order to eliminate the unpredictable behaviors may vary depending on
-the linker and platform, add the "-U_FORTIFY_SOURCE" into CFLAGS to
-prevent from introducing the fortified definitions.
-
-Signed-off-by: Zhiquan Li <zhiquan_li@163.com>
----
- tools/testing/selftests/kvm/Makefile.kvm | 1 +
- 1 file changed, 1 insertion(+)
-
-diff --git a/tools/testing/selftests/kvm/Makefile.kvm b/tools/testing/selftests/kvm/Makefile.kvm
-index ba5c2b643efa..d45bf4ccb3bf 100644
---- a/tools/testing/selftests/kvm/Makefile.kvm
-+++ b/tools/testing/selftests/kvm/Makefile.kvm
-@@ -251,6 +251,7 @@ LINUX_TOOL_INCLUDE = $(top_srcdir)/tools/include
- LINUX_TOOL_ARCH_INCLUDE = $(top_srcdir)/tools/arch/$(ARCH)/include
- CFLAGS += -Wall -Wstrict-prototypes -Wuninitialized -O2 -g -std=gnu99 \
- 	-Wno-gnu-variable-sized-type-not-at-end -MD -MP -DCONFIG_64BIT \
-+	-U_FORTIFY_SOURCE \
- 	-fno-builtin-memcmp -fno-builtin-memcpy \
- 	-fno-builtin-memset -fno-builtin-strnlen \
- 	-fno-stack-protector -fno-PIE -fno-strict-aliasing \
--- 
-2.43.0
-
+Thanks
