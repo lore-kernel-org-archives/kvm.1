@@ -1,217 +1,194 @@
-Received: from BL2PR02CU003.outbound.protection.outlook.com (mail-eastusazon11011038.outbound.protection.outlook.com [52.101.52.38])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC2D2274B59;
-	Thu, 22 Jan 2026 14:53:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.52.38
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769093624; cv=fail; b=ejklTLpcMdqO0vhJOBZZIT2HeOlygHyZTGZSVPXyN7S1xv/fvo9BZENt50ETs8lxA5b/i0ZMht/V7LNIZENPwejbqkX7I0W407sCbHaCmAImvfzUp2Vj4hzTgnWMs86JepkbVaaL/IGpDxuelWs4TNlKSVcJyvf9B8E1Pj+yLlg=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769093624; c=relaxed/simple;
-	bh=ZF3B8kavsBc7FsGdjrxVOJIHVqLtAedrcK48Pb8Sy80=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=d4CtA9Smrq4YY7MNDwImu84ueDrwA8BVNEkz9fS1zVx4GPGP+3JwTda8Chr1nOdQQEYbO5WX/a/eLP0YUA89IirwBfNyFqSlk5oTdDMbNVg71653vxOpI7pravnzHqcZnU6CVkc2Zfje4vRPAulyEuCZhNh6cKTRJoGPhoUMKjk=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=4my55+rl; arc=fail smtp.client-ip=52.101.52.38
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C08B130BB83;
+	Thu, 22 Jan 2026 14:53:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1769093636; cv=none; b=VT3Rbvcra1Qya2FYnk6wMxA+t8arkCTt8cwPtZW2ZbCLlghMez0zOvwYkAVxb8WnBfPtiNzhQKwIFtif5kjI3Mms+Rme/qF6gUOeLm49/37Y94aGtEp8SOQwpcFY0jflpk7NuKhS//CWuqkORHqYkgs7dbi0Zzbo9LA835UOFW8=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1769093636; c=relaxed/simple;
+	bh=H6gTOF+DyDj27GbSd5bl3JAxET7cibneMu2y65c/FqY=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=ZIQPbjLBB5a4qONmRO825OFKGT5sqTnFI7v8Fb+6PjzywjVUmyAdfHhgp1wzfhPuWxOak3MKy6LXW255acvn6VDoGgqfi4IJIRtFqn9NBn2j4DfzVNvYblkI+pBOSiU2F7ge4xFXa9TVtHH74seXa3XEzfgDCMfxQS+tKR5QbIc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BGybcmTY; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="4my55+rl"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=Z9ZPGaQ9h1JM/uf7PghxfM9Ri3D6ap6pScS9+UTIalm0MNI3mGgCxNhgv/1p2mma+j4tWdfLZ/CmFqsrP4IDzmLEj2ZzyomLjeaMdih7WRFRngOnu+BLgL3pZJFsYMGDFIcjubcBnEAV6x8+DGddczXh9V8IScMsepVoT5YxGSjWBhVi5nmom1KT1X0G+xm9cMkXLKHcYadxsgNh/JGcT3E+wgLaF472CmAhEIpc//qCUZSjfWyHtsm56TYBtUSi2nGE3NBLBNa03is2gXwmMuubKPxPPFB2/GKoOd1JrnJ/Re8PS4WxfTG4/wtuOQ6DTv6VfxZ/Ytn0pBNon9859Q==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=mdw/HnlBh07SOgXHbjT2oRC6VXHwuVqINg0v3aVacVE=;
- b=eUaVhWX4QdEvES1OnuKlL8o/E+dQdWBQD7QrrRhY7w0SuqYVh8ZSQYd5pbG96GdAFsEnUJaQCfqVeFa95+/KBNWflaThcd2iaYeX0VWEnlqCVs6kJbnk6Wi9G2MZ/lClzzD670E96URVmT09dRln5W+d/8oKMDokECfUnhxx1mO+miWdYVhbFXxFyGfyXIp0gcyyVzWxQ9FTL/xe1d6iZp/y7wqOvnKV+AY7fUqfrwGghbKZIuUFW3Xa0NgTG08V0vdpMnyolvrrf6crAohTHQoVYyjR8VuIKqbr+HH37a9lXa9+b7N5MCmTQg4OpeCXnrgmtn/Gl8m0p4jufcZtsA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 165.204.84.17) smtp.rcpttodomain=google.com smtp.mailfrom=amd.com; dmarc=pass
- (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
- dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=mdw/HnlBh07SOgXHbjT2oRC6VXHwuVqINg0v3aVacVE=;
- b=4my55+rlyMbBzORBvkYBHn3XfNsMtE7An+2wXSmx6RZlDW9CCcpa2jmWX8dC6BCnVE7IbFohbo8k+M5pe1eCCZVH18R38WllOX9ssjZmHgTKJHFTnpbfPBRg32zRrGXq9xmQQnmbKqAXanr4qpJJmfWsXYwzXag/uP/8tz5Buyo=
-Received: from MN2PR20CA0006.namprd20.prod.outlook.com (2603:10b6:208:e8::19)
- by CH2PR12MB4040.namprd12.prod.outlook.com (2603:10b6:610:ac::20) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9542.11; Thu, 22 Jan
- 2026 14:53:37 +0000
-Received: from MN1PEPF0000F0E3.namprd04.prod.outlook.com
- (2603:10b6:208:e8:cafe::35) by MN2PR20CA0006.outlook.office365.com
- (2603:10b6:208:e8::19) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.20.9542.11 via Frontend Transport; Thu,
- 22 Jan 2026 14:53:36 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
- smtp.mailfrom=amd.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=amd.com;
-Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
- 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=satlexmb07.amd.com; pr=C
-Received: from satlexmb07.amd.com (165.204.84.17) by
- MN1PEPF0000F0E3.mail.protection.outlook.com (10.167.242.41) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.9564.3 via Frontend Transport; Thu, 22 Jan 2026 14:53:37 +0000
-Received: from Satlexmb09.amd.com (10.181.42.218) by satlexmb07.amd.com
- (10.181.42.216) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.17; Thu, 22 Jan
- 2026 08:53:37 -0600
-Received: from satlexmb07.amd.com (10.181.42.216) by satlexmb09.amd.com
- (10.181.42.218) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.17; Thu, 22 Jan
- 2026 06:53:36 -0800
-Received: from [10.252.219.255] (10.180.168.240) by satlexmb07.amd.com
- (10.181.42.216) with Microsoft SMTP Server id 15.2.2562.17 via Frontend
- Transport; Thu, 22 Jan 2026 06:53:32 -0800
-Message-ID: <56716e48-951b-4ca0-a411-79dd72da7024@amd.com>
-Date: Thu, 22 Jan 2026 20:23:31 +0530
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BGybcmTY"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 03277C116C6;
+	Thu, 22 Jan 2026 14:53:55 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1769093636;
+	bh=H6gTOF+DyDj27GbSd5bl3JAxET7cibneMu2y65c/FqY=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=BGybcmTY925gF+7wqr9qE8CUyFtb6tQpxGNFDS9dM8dwTOeAceLBUtBh+cWt/9x4H
+	 BkmCpC/Vg9UcwjwriAnyLxalX1R+EOqRBrwsUvzTv9/tNVJpQUh8olv3v72E0oe8cX
+	 BOGt4VtyM/UmwMhX9nI9FJ2jExU6btOOEbHh8L1UzLdNwKTSVog8Td9BXb8BlnZF8E
+	 gOaQajl4BiYd9a5vnA/XBOU47NN/9yrMQvE7e6/TjOG9IVjlVMb8Ckz9rptyYKfMaZ
+	 o/pRcjAM5s+I91LS6V1a4ZBy88Mg1aD3W0/VeGOs1EuhoJ5SPoxUtlzoX/DJ6b1Q9C
+	 1f7mmJ/BrGVZA==
+Date: Thu, 22 Jan 2026 20:19:30 +0530
+From: Naveen N Rao <naveen@kernel.org>
+To: Sean Christopherson <seanjc@google.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>, kvm@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, Maxim Levitsky <mlevitsk@redhat.com>, 
+	Vasant Hegde <vasant.hegde@amd.com>, Suravee Suthikulpanit <suravee.suthikulpanit@amd.com>
+Subject: Re: [RFC PATCH 2/3] KVM: SVM: Fix IRQ window inhibit handling across
+ multiple vCPUs
+Message-ID: <aXI1EAolDjVbp_9W@blrnaveerao1>
+References: <cover.1752819570.git.naveen@kernel.org>
+ <26732815475bf1c5ba672bc3b1785265f1a994e6.1752819570.git.naveen@kernel.org>
+ <aWf0zQ6vA0Hmon2r@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 03/12] KVM: Add KVM_GET_EXT_LAPIC and KVM_SET_EXT_LAPIC
- for extapic
-To: Sean Christopherson <seanjc@google.com>, Naveen N Rao <naveen@kernel.org>
-CC: <kvm@vger.kernel.org>, <linux-perf-users@vger.kernel.org>,
-	<linux-doc@vger.kernel.org>, <pbonzini@redhat.com>, <nikunj@amd.com>,
-	<bp@alien8.de>, <peterz@infradead.org>, <mingo@redhat.com>,
-	<mizhang@google.com>, <thomas.lendacky@amd.com>, <ravi.bangoria@amd.com>,
-	<Sandipan.Das@amd.com>
-References: <20250901051656.209083-1-manali.shukla@amd.com>
- <20250901052146.209158-1-manali.shukla@amd.com>
- <jf2zfqo6jrrcdkdatztiijmf7tgkho7bks4q4oaegiqpeflrkj@7blq6f5ck2hf>
- <aWgRvCdPsAFHRwcU@google.com>
-Content-Language: en-US
-From: Manali Shukla <manali.shukla@amd.com>
-In-Reply-To: <aWgRvCdPsAFHRwcU@google.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 7bit
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: MN1PEPF0000F0E3:EE_|CH2PR12MB4040:EE_
-X-MS-Office365-Filtering-Correlation-Id: 84611941-20e0-43e1-c43b-08de59c60609
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|36860700013|82310400026|30052699003|1800799024|376014|7416014;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?UFJXaXhzVGo2OGNWdmVuQlJxOUo4NmNLSjEySGJqYTJGTFEzSjFUN3VxQU5j?=
- =?utf-8?B?ZHlNMHliSXR3b25OV2lZeExmYXFsejlSY050ejJ0WXVEaDVjdmJNSWxyM2pt?=
- =?utf-8?B?alBRMEo4OG52YkpIa1JKc1NjS0JJdnhzWkd1UGVKbWJ4SFdwRVNKU0NUMmt6?=
- =?utf-8?B?cXpuL1c4Y3loUHRzSFk3Qkd4eFNDQ0loR1pMQ0RsTGdLcFJOV1UvVThhUDl5?=
- =?utf-8?B?OUNncmJRclJ0R3J2VEY3YVhUT0l2ZWgyM0xLbWtkY296SnludGRqcFNMRDV1?=
- =?utf-8?B?Nmo4NmZ2clMzKzBtbHJQVzYyYUNQWkFpMmtxOUxSdDRwRytRNkFmeFVHdDZD?=
- =?utf-8?B?eWttTE5CblNvK2l6ZjNlNTEwMUU4TTFlTUFpWXo5SWRoajNSL3lMUFRIek0v?=
- =?utf-8?B?UHV0Vnlhd3BPY1c0ZDZnWUEybmRicmZpQ25KRmhlUzI1dndIcEhIcnpNRExX?=
- =?utf-8?B?QlZ1cEpZK3hjSlQwSjhqTkZaTnVYeUpTWHVxcVg1NlluSm5hUi83cG9yV0lu?=
- =?utf-8?B?dUY5UGVPZE9tczg1K3l3aC9neHJHdlBGdFNZUVh5TG14UDBoTnBISEJQSm1X?=
- =?utf-8?B?QWVJMjdBOHQ2MmRuVWNIWXdYL2FBV3c4U3NBUFdrcFBXZytLVzlzZ0lROVRh?=
- =?utf-8?B?blk3V2ErcDZZc2VsZm9GaUVlY1lVL2dYVXdSNGUxZWNMbnNlU3k4VlJTczZa?=
- =?utf-8?B?bFFoZWVKTlBZMVZBaWtNYVRsZm9QZ2lJa1RKUkFlMGMxWDdoOUR6MVhScWo0?=
- =?utf-8?B?MlBGM25JTU1WV1hlcmRWMEd4ZUdIS3dqVlhCS3d5TFE0SnFlWkp3UVU5dmtJ?=
- =?utf-8?B?N0ZDK1dlUEdRZDBJZCsyKzZtS0xldlNuV1FObWxzZ2x6NmJTQlZhUWZVb0xw?=
- =?utf-8?B?UUt5MlZJeTd1aEU3RzczeDgxT3RMYTRXV3VOYnhoMEJLOVF0aUlTWHp3L2c4?=
- =?utf-8?B?TFJRYURzTFBKQU5zeGpIYVVUNXQxVWhOemlIL2cyS0lSVWlDZUZTU2FtT2Zy?=
- =?utf-8?B?L0JhdjlON2RNNksyZ1J6RnBPeVM4THRkMVhjdGR0SW5wbWFsRER6Z2NxcGVU?=
- =?utf-8?B?endlZzlBR3ZDdUtsUzNOd1FPTFBqK1ZqaEVudDV1VXRnWXo0UFVzOGJSR2pX?=
- =?utf-8?B?d3NuTXViSW0zYzdQcjRhMnR4aSswQXp5RWVKZEJBUWh3azduSlNOR0VVbUhj?=
- =?utf-8?B?QSt3em5ndVRiYm9GWTFnRXJwd1J5d0FhbGpDbVdXbk4vbTZMRFVVSFVVeDM3?=
- =?utf-8?B?cWFhVTh2S1RTc0lZeTBZY1hSMHo1OEpWT0cwYU5VdGhtdk13NGNNeHh0WGlo?=
- =?utf-8?B?WTd6aWRGS01ORElJSWVTY0k0Ty95UGRJV3AzTFhUR0IyVjNReDYxVWQ3VzJn?=
- =?utf-8?B?dGYwRU83enVzaFY3RTBTVUlnSGNBK0JLWmgrN0FLVFU4OGdINjVuRURMbHBX?=
- =?utf-8?B?ZENubHFhSzBhM2ZIZ0FPVnUyR003ekwvMFcwS3BZRGNRanU3UW1RNWM5TFBV?=
- =?utf-8?B?V0VpY042NGtMa1ZjQmVRMkpNY01RT251bjlsMjVDd0pna1VqeVRTNXpaazhD?=
- =?utf-8?B?ODR0WlZoS2d6VHEzVFgxbEpIUnlJMlV1Yy9xOEs0Vzc0UUpMdVRkVWFzRmd0?=
- =?utf-8?B?a0NIWXRqZUY5RlZaSEVlc0lmWGNXQ3lYNHByTkNEVVFzZnFwK1k5cmdKL1Nv?=
- =?utf-8?B?VEtQbDdBbS9zNytsY3pnS3pjQS9oeS8xTVB4ekRYQ2hiUGZtTnRhV3lIVFR1?=
- =?utf-8?B?eWtselBlckd6T1U5eFJRZ0RZcjc3T1laWGlMMnpHUzBiWmoxc01vQUFxejJw?=
- =?utf-8?B?bHRqR0dPUmRpdDZCZzZjWG5yVkl0c3haVGY2WW1ROVh3cmVVeDJnWGVqV3Jo?=
- =?utf-8?B?cWJnaEZjTDlJQkRoYjBTd1ovbEFwQTNwWDF3MWlza3NhWE1zdEFBenI2enBX?=
- =?utf-8?B?WWZhT0YyZXpOdnFDWnpTODVvRVB6T2hUNjNEdElubU1nMU55eXZhRDBYYUtq?=
- =?utf-8?B?eTFHWHp6OFIxUUphYlJsWEEwTWxQSUZwNnBCZG4yNGp5NHIzWllUbG82Nk5H?=
- =?utf-8?B?ZVN4RTkvY2dGaU1qWGlUSURaNkRobDFzc1ZHWm5oOW5UTUV0b0FCcWpYUEFT?=
- =?utf-8?B?aC92cVV3WkJwbXAvYjlFTWNEOGNJYVUzcTdYWHloNEhDTUFuKzA0UmJUNnl5?=
- =?utf-8?B?aEo0alowNXRmQkpuMTdJZ0pGYXgvRjlCdkVwSnMyNmp1WXM3cHJUaHFhQmda?=
- =?utf-8?B?VzRLRFpaNDM3L1VLUEdkM1FDc1BBPT0=?=
-X-Forefront-Antispam-Report:
-	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb07.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(36860700013)(82310400026)(30052699003)(1800799024)(376014)(7416014);DIR:OUT;SFP:1101;
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 22 Jan 2026 14:53:37.2450
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 84611941-20e0-43e1-c43b-08de59c60609
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[satlexmb07.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	MN1PEPF0000F0E3.namprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH2PR12MB4040
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <aWf0zQ6vA0Hmon2r@google.com>
 
-On 1/15/2026 3:29 AM, Sean Christopherson wrote:
-> On Tue, Dec 16, 2025, Naveen N Rao wrote:
->> On Mon, Sep 01, 2025 at 10:51:46AM +0530, Manali Shukla wrote:
->>> diff --git a/Documentation/virt/kvm/api.rst b/Documentation/virt/kvm/api.rst
->>> index 6aa40ee05a4a..0653718a4f04 100644
->>> --- a/Documentation/virt/kvm/api.rst
->>> +++ b/Documentation/virt/kvm/api.rst
->>> @@ -2048,6 +2048,18 @@ error.
->>>  Reads the Local APIC registers and copies them into the input argument.  The
->>>  data format and layout are the same as documented in the architecture manual.
->>>  
->>> +::
->>> +
->>> +  #define KVM_APIC_EXT_REG_SIZE 0x540
-> 
-> As discussed in PUCK, just go the full 0x1000 bytes, and do:
-> 
-> #define KVM_GET_LAPIC2            _IOR(KVMIO,  0x8e, struct kvm_lapic_state2)
-> #define KVM_SET_LAPIC2            _IOW(KVMIO,  0x8f, struct kvm_lapic_state2)
-> 
+On Wed, Jan 14, 2026 at 11:55:57AM -0800, Sean Christopherson wrote:
+> Finally mustered up the brainpower to land this series :-)
 
-Ack.
+Yay! :)
 
->>> +  struct kvm_ext_lapic_state {
->>> +	__DECLARE_FLEX_ARRAY(__u8, regs);
->>> +  };
->>> +
->>> +Applications should use KVM_GET_EXT_LAPIC ioctl if extended APIC is
->>> +enabled. KVM_GET_EXT_LAPIC reads Local APIC registers with extended
->>> +APIC register space located at offsets 400h-530h and copies them into input
->>> +argument.
->>
->> I suppose the reason for using a flex array was for addressing review 
->> comments on the previous version -- to make the new APIs extensible so 
->> that they can accommodate any future changes to the extended APIC 
->> register space.
->>
->> I wonder if it would be better to introduce a KVM extension, say 
->> KVM_CAP_EXT_LAPIC (along the lines of KVM_CAP_PMU_CAPABILITY).
 > 
-> Please figure out a different name than "ext_lapic".  Verbatim from the SDM
-> (minus a closing parenthesis)
+> On Fri, Jul 18, 2025, Naveen N Rao (AMD) wrote:
+> > diff --git a/arch/x86/include/asm/kvm_host.h b/arch/x86/include/asm/kvm_host.h
+> > index f19a76d3ca0e..b781b4f1d304 100644
+> > --- a/arch/x86/include/asm/kvm_host.h
+> > +++ b/arch/x86/include/asm/kvm_host.h
+> > @@ -1395,6 +1395,10 @@ struct kvm_arch {
+> >  	struct kvm_pit *vpit;
+> >  #endif
+> >  	atomic_t vapics_in_nmi_mode;
+> > +
+> > +	/* Keep this in a cacheline separate from apicv_update_lock */
 > 
->   the xAPIC architecture) is an extension of the APIC architecture
+> A comment won't suffice.  To isolate what we want to isolate, tag things with
+> __aligned().  Ideally we would use __cacheline_aligned_in_smp, but AFAIK that
+> can't be used within a struct as it uses .section tags, :-(
 > 
-> and
+> And revisiting your analysis from
+> https://lore.kernel.org/all/evszbck4u7afiu7lkafwcu3rs6a7io2zkv53rygrgz544op4ur@m2bugote2wdl:
 > 
->   EXTENDED XAPIC (X2APIC)
->   The x2APIC architecture extends the xAPIC architecture
+>  : Also, note that introducing apicv_irq_window after apicv_inhibit_reasons 
+>  : is degrading performance in the AVIC disabled case too. So, it is likely 
+>  : that some other cacheline below apicv_inhibit_reasons in kvm_arch may 
+>  : also be contributing to this.
 > 
-> There's zero chance I'm going to remember which "extended" we're talking about. 
+> I strongly suspect past-you were correct: the problem isn't that apicv_nr_irq_window_req
+> is in the same cacheline with apicv_update_lock, it's that apicv_nr_irq_window_req
+> landed in the same cachline as _other_ stuff.
 > 
-> KVM_CAP_X2APIC_API further muddies the waters, so maybe something absurd and
-> arbitrary like KVM_CAP_LAPIC2?  The capability doesn't have to strictly follow
-> the naming of the underlying feature(s) it supports.
+> Looking at the struct layout from kvm-x86-next-2025.01.14, putting apicv_irq_window
+> after apicv_inhibit_reasons _did_ put it on a separate cacheline from
+> apicv_update_lock:
 
-Thank you for the feedback.
+I suppose you meant kvm-x86-next-2026.01.14 (2026 and not 2025). I'm 
+fairly certain that when I tested this, all three of apicv_update_lock, 
+apicv_inhibit_reasons and the irq_window count were ending up in the 
+same cacheline. I specifically tested moving each of those out to a 
+separate cacheline (including apicv_inhibit_reasons), but as far as I 
+remember, the only time I noticed a difference was when moving the 
+irq_window count elsewhere.
+> 
+> 	/* --- cacheline 517 boundary (33088 bytes) was 24 bytes ago --- */
+> 	struct kvm_apic_map *      apic_map;             /* 33112     8 */
+> 	atomic_t                   apic_map_dirty;       /* 33120     4 */
+> 	bool                       apic_access_memslot_enabled; /* 33124     1 */
+> 	bool                       apic_access_memslot_inhibited; /* 33125     1 */
+> 
+> 	/* XXX 2 bytes hole, try to pack */
+> 
+> 	struct rw_semaphore        apicv_update_lock;    /* 33128   152 */
+> 
+> 	/* XXX last struct has 1 hole */
+> 
+> 	/* --- cacheline 520 boundary (33280 bytes) --- */
+> 	unsigned long              apicv_inhibit_reasons; /* 33280     8 */
+> 	atomic_t                   apicv_irq_window;     /* 33288     4 */
+> 
+> 	/* XXX 4 bytes hole, try to pack */
+> 
+> 	gpa_t                      wall_clock;           /* 33296     8 */
+> 	bool                       mwait_in_guest;       /* 33304     1 */
+> 	bool                       hlt_in_guest;         /* 33305     1 */
+> 	bool                       pause_in_guest;       /* 33306     1 
+> 	*/
+> 	bool                       cstate_in_guest;      /* 33307     1 */
+> 
+> 	/* XXX 4 bytes hole, try to pack */
+> 
+> 	unsigned long              irq_sources_bitmap;   /* 33312     8 */
+> 	s64                        kvmclock_offset;      /* 33320     8 */
+> 	raw_spinlock_t             tsc_write_lock;       /* 33328    64 */
+> 	/* --- cacheline 521 boundary (33344 bytes) was 48 bytes ago --- */
+> 
+> 
+> Which fits with my reaction that the irq_window counter being in the same cachline
+> as apicv_update_lock shouldn't be problematic, because the counter is only ever
+> written while holding the lock.  I.e. the counter is written only when the lock
+> cacheline is likely already pulled in in an exclusive state.
 
-I'll rename the capability to KVM_CAP_LAPIC2 and the new ioctls will be
-KVM_GET_LAPIC2/KVM_SET_LAPIC2 as you suggested.
+Indeed.
 
-I'm planning to send the extended APIC register emulation as a separate
-series rather than bundling it with vIBS.
+> 
+> What appears to be problematic is that the counter is in the same cacheline as
+> several relatively hot read-mostly fields:
+> 
+>   apicv_inhibit_reasons - read by every vCPU on every VM-Enter
+>   xxx_in_guest (now disabled_exits) - read on page faults, if a vCPU 
+>   takes a PAUSE exit, if a vCPU is scheduled out, etc.
+>   kvmclock_offset - read every time a vCPU needs to refresh kvmclock
+> 
+> So I actually think we want apicv_update_lock and apicv_nr_irq_window_req to
+> _share_ a cacheline, and then isolate that cacheline from everything else.  Because
+> those two fields are effectively write-mostly, whereas most things in kvm-arch are
+> read-mostly.  I.e. end up with this:
+> 
+> 	/*
+> 	 * Protects apicv_inhibit_reasons and apicv_nr_irq_window_req (with an
+> 	 * asterisk, see kvm_inc_or_dec_irq_window_inhibit() for details).
+> 	 *
+> 	 * Force apicv_update_lock and apicv_nr_irq_window_req to reside in a
+> 	 * dedicated cacheline.  They are write-mostly, whereas most everything
+> 	 * else in kvm_arch is read-mostly.
+> 	 */
+> 	struct rw_semaphore apicv_update_lock __aligned(L1_CACHE_BYTES);
+> 	atomic_t apicv_nr_irq_window_req;
+> 
+> 	/*
+> 	 * As above, isolate apicv_update_lock and apicv_nr_irq_window_req on
+> 	 * their own cacheline.  Note that apicv_inhibit_reasons is read-mostly
+> 	 * even though it's protected by apicv_update_lock (toggling VM-wide
+> 	 * inhibits is rare; _checking_ for inhibits is common).
+> 	 */
+> 	unsigned long apicv_inhibit_reasons __aligned(L1_CACHE_BYTES);
 
-- Manali
+Nice, isolating those in a separate cacheline looks to be helping.
+
+> 
+> I also want to land the optimization separately, so that it can be properly
+> documented, justified, and analyzed by others.
+> 
+> I pushed a rebased version (compile-tested only at this time) with the above change to:
+> 
+>   https://github.com/sean-jc/linux.git svm/avic_irq_window
+> 
+> Can you run you perf tests to see if that aproach also eliminates the degredation
+> relative to avic=0 that you observed?
+
+Yes, this definitely seems to be helping get rid of that odd performance 
+drop I was seeing earlier. I'll run a couple more tests and report back 
+by next week if I see anything off. Otherwise, this is looking good to 
+me and if you want to apply this to -next, I'm fine with that:
+Tested-by: Naveen N Rao (AMD) <naveen@kernel.org>
+
+
+Thanks for all your help with this (and Paolo)!
+
+
+- Naveen
 
