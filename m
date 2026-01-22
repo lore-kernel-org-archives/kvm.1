@@ -1,146 +1,203 @@
-Received: from mail-ed1-f46.google.com (mail-ed1-f46.google.com [209.85.208.46])
+Received: from mail-vs1-f47.google.com (mail-vs1-f47.google.com [209.85.217.47])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EAF753C23CC
-	for <kvm@vger.kernel.org>; Thu, 22 Jan 2026 21:57:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.208.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F1FF3C089D
+	for <kvm@vger.kernel.org>; Thu, 22 Jan 2026 22:47:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.217.47
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769119081; cv=pass; b=c+9T4x8XSO8oC3EtdkQkbLYstCr2n5Kpt/LNchusiy2u92g1wv50fEmi1ErmgAGb/rNKRGSP3NBsaB4icAfe8r1RpX+Tksb1n97rKXIqqJOSSDt3VAReJ4V3oM9FJ1xt+ZvZi3EiO6+AJt5A6p1EUtM+qrak5G5N0R7+eLpTGPI=
+	t=1769122059; cv=pass; b=WEQYgSvr0PUoTQijBKVkqMwhVa+Fq+3zOvS3RmEeYgHKBWy2TBLgut1psaxxLc/URaAYxhHPU/qUn+svCPfkxeokd/zwRjL+o8AxXr1004LegXteIX7HBio/w43+mYxtLlJznHMozn384bnypXCfQekqyRauRSuQP0Hcw2NNXmE=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769119081; c=relaxed/simple;
-	bh=Jfl4dZTufIKAHIVFT8NRO4fD8XoSRUWOc0fet6SBpt8=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=IIAUd4b+RdWdGPqI9Y/Fl4cKNNcV2D3Fo8yRKHQSAuWTjNeZ4DRwRLNs/XHYPNmfu6h6yTtvZ6Tlh48xqbtD/HtpGu6vh5SC8anB2B9uSrMiNvxSPM6RMpZoH3vYJlQb5lzokZcdL/BrPDWgKg9NLRflWgFx6UR5qA9yRpoDQg8=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=39uLLe/+; arc=pass smtp.client-ip=209.85.208.46
+	s=arc-20240116; t=1769122059; c=relaxed/simple;
+	bh=xs+dLd9PKnX16GE3/TgauaKHwwAlEIk3gXFN84JGCiE=;
+	h=From:In-Reply-To:References:MIME-Version:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=d+3S55TDMzNM5qa1IvXJUKcHBhq1nIQp3v4meUZAjIcv24s4gA8NHiwPwy99bvk8KJvZMPntlFn8ULBZO3MsQdmZD4wMCE7t0v8bdq7bhBUdjR+tBtKJ0a8xz9edGS2nw6Q6gZxfYEBfBmcOmSpDvmGGwU39vqDN8eeUdNrWHDk=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=efb65WUp; arc=pass smtp.client-ip=209.85.217.47
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="39uLLe/+"
-Received: by mail-ed1-f46.google.com with SMTP id 4fb4d7f45d1cf-652fe3bf65aso1688a12.1
-        for <kvm@vger.kernel.org>; Thu, 22 Jan 2026 13:57:54 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1769119073; cv=none;
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="efb65WUp"
+Received: by mail-vs1-f47.google.com with SMTP id ada2fe7eead31-5f1b9fe06b8so1525174137.0
+        for <kvm@vger.kernel.org>; Thu, 22 Jan 2026 14:47:33 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1769122051; cv=none;
         d=google.com; s=arc-20240605;
-        b=NyF/lFJgwTHO9k+SWuhk8GdYZvQS1UfAWo2YoY+kBdzgcIJfzcHPQhWX/uG5kz5a2e
-         XStZazJX+EsAI9eUM1O8LOUtWQM7OgHQhDcZ66LNQJH6ZgqFQX00Ba3o2jeJfHFjXjjI
-         yu1TYpiTO8+63cTDwhQtD7EQyQJC5Vmdk4xleVpAwPX13IQw0T3eF8EjnWx6hZiw66kT
-         EH+1+iD032ONfB2KS8OLMRLnCA1GP1fzi0ATeIYLR+81Kyq9BmO6gOhewrKSqUwAOvk0
-         cj9sktHmuonHgLE8eG3wcQ3sFAbqwzr+z8dXk0Vdo+QOAIuSo9HdTSj+oa7tuy17RdiE
-         dZNA==
+        b=YgVZl1M9+WbCH4XcoBIQI0dy4LTkPXFsvvexlVRfobHLJ4Qq+M6sXlc5Dtt4nK6lMp
+         gxY6BEWPOP08f8kEgHE58VR4jhtV4zFUvdjIcK2fApG3Z1Q4YweRoRAlND+Pbf+CdP1N
+         9RgilyfT6h/Pcv6JVaM432fRYTk/591b8lOJCWEytxjHEzjf9tm15aPPcOaqErYcqdYt
+         zk8oWgY2rB5up3pYBnohHNJj6ng7B0qjyT/k+nBexfU6K55LEpR1bPe9PWg+i4pKmzpM
+         IiBCiMzXgV6xReFCN8nwfMhjtzGUCC6TFwHuuWBaa8VB7UhT9ZhdwAr5cZWprepLxHGL
+         Sk4Q==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=uGwfZfWxv4dR3vjl/Vm+r9X4BJKxCk7dJgsJmeqfMnQ=;
-        fh=wl7iitUt54mTl2ikA6IlxhmXFqIXm4qlCXx/ilTSwL8=;
-        b=W6JdlQvYB97XpXEcbxAYDZfmR2PYIc0k/punlXW1vUnnzHNOneR3+ZxYz9Meb4aLTz
-         2/vGhz1eKlQwmCdWK1ZC/0oK2YDnzuGnnhJr7a1TYt0BaDOtyRP1+WOv8WHDILD3I5zC
-         sFmlSlf9htS0iFZIjRlztxcQhAi7ciHSCog+cTjz57HVyWXT4m09BkjbSO/IywVcTH9x
-         L23todvdXzCs8/HlpOezW6rzJe5Ry3k1ILTetb470QslNynuXd3J9sr7cgYGCCBuderZ
-         5sDe0RCROovhtUWr9dVFDHjHZMyRXL4AVe6EnRZdadQpPqrRBBTmd8BqxMdxZ9Op70W9
-         aDwA==;
+        h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
+         :from:dkim-signature;
+        bh=xs+dLd9PKnX16GE3/TgauaKHwwAlEIk3gXFN84JGCiE=;
+        fh=sJyQ5lo0YpblnIXYjip4iiy4igZSV0IAnBYAqcHfvQs=;
+        b=WiXMsKC/cfmXxm3CgLeXIznn+HFVpoTVXSdFJtflhJGpQnDA7CS0/YfqVoWSJymENu
+         +yevRN7xlQldLMNy09wJZIsqDKWgPBLdhS1y6U0SBSlabjXRw8/q3aHZDdUCU/oUhpTH
+         cz9fU45vP0K9jAv10bZ9WtlEYoOZaWB973mjTfaMVhNEL0FWobkmfCgpa6zeYvZiCVCB
+         nuNz5vkhmJkEkJjIL7EYO9rbUEd74KxBOdDPXgms+QZdxqJOa6BHDJl+YLDyNXgGHAy7
+         Qqp825gkrF9FC3HBm5nZuaYsArRwzoej4p9ewIsIJO2z+l7rVC1226EcYRCrHQ9BhpbD
+         ESGA==;
         darn=vger.kernel.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1769119073; x=1769723873; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=uGwfZfWxv4dR3vjl/Vm+r9X4BJKxCk7dJgsJmeqfMnQ=;
-        b=39uLLe/+p2pOzi73YG645N+IWdxlxqq16hn7teaCcByjiyapwG5CLMk86v9UOsG37w
-         tQJ7CR/icVELRs3rrW3eMLbsjKeL5uR0F681oe2+YaX7foHkmmwCOCZ+AUt6tKPYmw+x
-         8fjsmlhcBOBI5XtN5RlBP0xCtGiZs8dvuuZhkoKn8X0Jjdm0yi1sC/1we9S5X8stEq+l
-         xglNJVygfboE2zIoF3NeQhg9oQANS6+7r1TMpWapzhjduTElU8RAzNNW3GPS/v9Hv3sB
-         LGUGgFkyd925k7csU0t2FlC/DC9S2LW5fAk2TPYS39fprHQ1Fn8uh2msMtXgVmSV9nK1
-         Uogw==
+        d=google.com; s=20230601; t=1769122051; x=1769726851; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
+         :from:from:to:cc:subject:date:message-id:reply-to;
+        bh=xs+dLd9PKnX16GE3/TgauaKHwwAlEIk3gXFN84JGCiE=;
+        b=efb65WUpsdnX9MYn5Ketl7Aqg/S+LI5Twe86EAN0CJTXTQi0SV6Bc272kwWB7FV0YN
+         VTMlkEUN8MS6bLkGYmILKii6n/XJ35CPl/ILj3DG7K3xM4+6SS49g6yrAvmzWytKVEOD
+         T5SY7G9OaavZfDvBTD8//I95ljshXWVriDkG6Ob3ZNbZhhRFOml4NIXTj6qn7LZyAWAQ
+         xVorS0Du0q+93wf+l2qMsTaHfD6Teinzsu04Csei+HRHvjEQI3gZYVMuVqWJCuRqmfuK
+         4swpPyoAFWCfix/BNwv0dlaxb0vbG3lHkKG0G4CbblEPQTn6grdmtf9GRYYV07o3eWEX
+         6TsA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1769119073; x=1769723873;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=uGwfZfWxv4dR3vjl/Vm+r9X4BJKxCk7dJgsJmeqfMnQ=;
-        b=pnW3wND0/AECYZbuWxQAFzYIWJ/RiL2M7VUeYY2AW9bpNiR6+eaSBDsPmMKFcbt3yq
-         S7GwRbH+7OxE9AAGN9b4BGr7DirY/33y588Xh8PPKwYc2oS7WJK0DKyU6YX+lr8uqTI9
-         9maaCFgeIq682XOexJMp6Vm38/0x6hd+xthFmr4jNUieyrcowg9tbJJqGk6SEwyeLouk
-         Hzz4K10r/tNJ7Y1mGsrO/V8LN8B2RlzR19NiD7TuyosSvXFZBeLu1duEEEvVI3pQeZCI
-         lxQKIvqxZIgNCj6u5XVce17c6f6mtX3/tBgFJ2qXLFj3+7parXq7fNFrxf7g1Ktbu1kF
-         eXpQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXN+dG41taRE0/Yu3IdNrbE9Njut+GZZ7ln8VDCH1Yb+b3xy29MhDoGxA3YpUoSA9FJaSQ=@vger.kernel.org
-X-Gm-Message-State: AOJu0YysACjevRqzictaIV86VKCh88BrGDzc4Q8vQ8EMtUCxThq9AQ62
-	ZHZrWaDIzkkrpM6eCnwVHiCXjpKgTu8hKMVm11pT92LhPdu/fAKl9/IeOF+D3H9T+aPRlx6zLvR
-	MvrHHLkE3WYf1toFuHspr4iuqwSi8wQRyJWFrduPw
-X-Gm-Gg: AZuq6aJGvtj2VKAcd7O2W0opLh30xnEPaMr6hSgQTOIskD2gcpd7H8xqpxxp1+5rmpD
-	7ASJJZbVib6GhzERLsMpiVLxotF7Qok418SLwa1MslcPSOOYjCJIfE0Sil2vgVVWrcMxbfKvmqs
-	OCtNP+Kkvwq23yDhP5QpXuqXb6RUB1yIHQUBNrRfsq/mtDsuLbaIYbs3Df72WB+1/heNwPWH7JN
-	vMf8jo38/994SWzEm2Fu2DTwfzr+HZFEX/Ksdi4a0QsFP7dXw2DvJe+rzXfiQDa2AhAOjZMDaSd
-	WwRvMXdqwujSM82veO0Vgg62dt5xUJs2/w==
-X-Received: by 2002:a05:6402:5144:b0:649:8aa1:e524 with SMTP id
- 4fb4d7f45d1cf-6584eabef16mr2044a12.11.1769119072536; Thu, 22 Jan 2026
- 13:57:52 -0800 (PST)
+        d=1e100.net; s=20230601; t=1769122051; x=1769726851;
+        h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
+         :from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=xs+dLd9PKnX16GE3/TgauaKHwwAlEIk3gXFN84JGCiE=;
+        b=vc5q7VBNlwhWHSV4q43qrHjqS8ahpHqsJK8r7TB2a9fu4RTkEYphJLpR1gol2QtCQz
+         BKc4P0X1uyecpkXeVsIbcapEdSdqybxR4yoZ8jg3uRX1PNMBlLaG3ZnysbyB7ds7NUkZ
+         fM7oPzijrY9IzgiH7nEsM7UZWBHRKV9kvE62EyQzXHf+ktNYZwjb5u96lEUqG8HdWUSz
+         2T2CMvStOCUvT2arNxa3J81n0V527YZF2mvgbRG2Sf2dVJlySo8fLQm2Bywxr/m3BebQ
+         9nPgX2OAFrcwPVBYIO1mwNW2kFxkxpt9gPrGblFDsEd6QH9rMG0K0ARffQYjQas8Kfgu
+         INrA==
+X-Forwarded-Encrypted: i=1; AJvYcCU0uAmaSMX9yKMxPysM/JiMj4REdq52AKb67Za0Xy6VocA1pwXdfoeZnA85P3AafYDz7C0=@vger.kernel.org
+X-Gm-Message-State: AOJu0YytYJQx7H6q49glNMZ25RT5Ux2ra+e4ucJ/tAIv8YhdMYVobU3o
+	Ov04d7d8DOyvUs6PNtF+UAh0AIPmkOXBxh42m9KbETqxh+UTyyue7pmMxjv3fnN+NQakyeVPd+K
+	FTieMyvKI71KoO0rtRZo6UzaKjWbYDQ/lyqOesVH/
+X-Gm-Gg: AZuq6aI1IkrIw0sXJCIJ7ogw3tfB/IGGh8OIJwtVxk0gTqM1vxeKG08X4qpbn4sLJTQ
+	oshOvHkf8gEWeIotZZVYE0RrkA5aWYRzERCFxBG4f9/yT7NzyC2YTZwyHz4LjfffWMgYI090zme
+	+iZ+bMGPzt4a4r4JFGblOGlXhEhiY3i40Etkp3mgjKnnokl1k+WC6GdFwYmiPwdA6Z/xZ9dB8rH
+	ZvI5PeCyc885m4/POD9sNh8ulzkUGHs66W8ttcVRps51rMZB+3o5mTvpxarNiQAZK/Ik1dtnCbu
+	M6bQ3eRzgi0vMNUi7fw2ouW7i+Fa6ece0EI=
+X-Received: by 2002:a05:6102:3a12:b0:5ef:7220:bcb2 with SMTP id
+ ada2fe7eead31-5f54bc8224dmr480092137.28.1769122050230; Thu, 22 Jan 2026
+ 14:47:30 -0800 (PST)
+Received: from 176938342045 named unknown by gmailapi.google.com with
+ HTTPREST; Thu, 22 Jan 2026 14:47:29 -0800
+Received: from 176938342045 named unknown by gmailapi.google.com with
+ HTTPREST; Thu, 22 Jan 2026 14:47:28 -0800
+From: Ackerley Tng <ackerleytng@google.com>
+In-Reply-To: <ee9c649eed3893d852c3d20fb96bdc4904b7c295.camel@intel.com>
+References: <20260114134510.1835-1-kalyazin@amazon.com> <20260114134510.1835-8-kalyazin@amazon.com>
+ <ed01838830679880d3eadaf6f11c539b9c72c22d.camel@intel.com>
+ <CAGtprH_qGGRvk3uT74-wWXDiQyY1N1ua+_P2i-0UMmGWovaZuw@mail.gmail.com>
+ <8c1fb4092547e2453ddcdcfab97f06e273ad17d8.camel@intel.com>
+ <CAEvNRgEbG-RhCTsX1D8a3MgEKN2dfMuKj0tY0MZZioEzjw=4Xw@mail.gmail.com> <ee9c649eed3893d852c3d20fb96bdc4904b7c295.camel@intel.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260121225438.3908422-1-jmattson@google.com> <20260121225438.3908422-2-jmattson@google.com>
- <aXJKdlJI3fg42gim@google.com>
-In-Reply-To: <aXJKdlJI3fg42gim@google.com>
-From: Jim Mattson <jmattson@google.com>
-Date: Thu, 22 Jan 2026 13:57:40 -0800
-X-Gm-Features: AZwV_QgJymUgNy_50vQyL9SN8_pY8sRH-FZ0KRcWUNAUxqWJsSqINclPGSmR8dM
-Message-ID: <CALMp9eSNqqgLN9dMzer9Cj3hQ64fB2T==hB_yjvNBK4W8Pn66A@mail.gmail.com>
-Subject: Re: [PATCH 1/6] KVM: x86/pmu: Introduce amd_pmu_set_eventsel_hw()
-To: Sean Christopherson <seanjc@google.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>, Thomas Gleixner <tglx@linutronix.de>, 
-	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
-	"H. Peter Anvin" <hpa@zytor.com>, Peter Zijlstra <peterz@infradead.org>, 
-	Arnaldo Carvalho de Melo <acme@kernel.org>, Namhyung Kim <namhyung@kernel.org>, 
-	Mark Rutland <mark.rutland@arm.com>, 
-	Alexander Shishkin <alexander.shishkin@linux.intel.com>, Jiri Olsa <jolsa@kernel.org>, 
-	Ian Rogers <irogers@google.com>, Adrian Hunter <adrian.hunter@intel.com>, 
-	James Clark <james.clark@linaro.org>, Shuah Khan <shuah@kernel.org>, kvm@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-perf-users@vger.kernel.org, 
-	linux-kselftest@vger.kernel.org
+Date: Thu, 22 Jan 2026 14:47:28 -0800
+X-Gm-Features: AZwV_QhacTtf2zgQk3uMxNHfKwdT09Bqx79KDOGE5Z3VW9UujMTrgN_9VI-QiKU
+Message-ID: <CAEvNRgEz0+ic9uvcsWYqWgR5EV=TfY0SAGC39zAL+n19SoBXmw@mail.gmail.com>
+Subject: Re: [PATCH v9 07/13] KVM: guest_memfd: Add flag to remove from direct map
+To: "Edgecombe, Rick P" <rick.p.edgecombe@intel.com>, "Annapurve, Vishal" <vannapurve@google.com>
+Cc: "david@kernel.org" <david@kernel.org>, "kvm@vger.kernel.org" <kvm@vger.kernel.org>, 
+	"catalin.marinas@arm.com" <catalin.marinas@arm.com>, "svens@linux.ibm.com" <svens@linux.ibm.com>, 
+	"jgross@suse.com" <jgross@suse.com>, "bpf@vger.kernel.org" <bpf@vger.kernel.org>, 
+	"surenb@google.com" <surenb@google.com>, "vbabka@suse.cz" <vbabka@suse.cz>, 
+	"riel@surriel.com" <riel@surriel.com>, "pfalcato@suse.de" <pfalcato@suse.de>, "x86@kernel.org" <x86@kernel.org>, 
+	"rppt@kernel.org" <rppt@kernel.org>, "thuth@redhat.com" <thuth@redhat.com>, 
+	"borntraeger@linux.ibm.com" <borntraeger@linux.ibm.com>, "maz@kernel.org" <maz@kernel.org>, 
+	"palmer@dabbelt.com" <palmer@dabbelt.com>, "ast@kernel.org" <ast@kernel.org>, "pjw@kernel.org" <pjw@kernel.org>, 
+	"alex@ghiti.fr" <alex@ghiti.fr>, "dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>, 
+	"tglx@linutronix.de" <tglx@linutronix.de>, "hca@linux.ibm.com" <hca@linux.ibm.com>, 
+	"willy@infradead.org" <willy@infradead.org>, "wyihan@google.com" <wyihan@google.com>, 
+	"ryan.roberts@arm.com" <ryan.roberts@arm.com>, 
+	"yang@os.amperecomputing.com" <yang@os.amperecomputing.com>, "jolsa@kernel.org" <jolsa@kernel.org>, 
+	"jmattson@google.com" <jmattson@google.com>, "luto@kernel.org" <luto@kernel.org>, 
+	"aneesh.kumar@kernel.org" <aneesh.kumar@kernel.org>, "haoluo@google.com" <haoluo@google.com>, 
+	"patrick.roy@linux.dev" <patrick.roy@linux.dev>, "peterx@redhat.com" <peterx@redhat.com>, 
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, 
+	"akpm@linux-foundation.org" <akpm@linux-foundation.org>, "coxu@redhat.com" <coxu@redhat.com>, 
+	"mhocko@suse.com" <mhocko@suse.com>, 
+	"linux-kselftest@vger.kernel.org" <linux-kselftest@vger.kernel.org>, 
+	"mlevitsk@redhat.com" <mlevitsk@redhat.com>, "jgg@ziepe.ca" <jgg@ziepe.ca>, 
+	"loongarch@lists.linux.dev" <loongarch@lists.linux.dev>, "song@kernel.org" <song@kernel.org>, 
+	"Liam.Howlett@oracle.com" <Liam.Howlett@oracle.com>, "oupton@kernel.org" <oupton@kernel.org>, 
+	"kernel@xen0n.name" <kernel@xen0n.name>, 
+	"lorenzo.stoakes@oracle.com" <lorenzo.stoakes@oracle.com>, "peterz@infradead.org" <peterz@infradead.org>, 
+	"Jonathan.Cameron@huawei.com" <Jonathan.Cameron@huawei.com>, "martin.lau@linux.dev" <martin.lau@linux.dev>, 
+	"jthoughton@google.com" <jthoughton@google.com>, "jhubbard@nvidia.com" <jhubbard@nvidia.com>, 
+	"Yu, Yu-cheng" <yu-cheng.yu@intel.com>, "kvmarm@lists.linux.dev" <kvmarm@lists.linux.dev>, 
+	"eddyz87@gmail.com" <eddyz87@gmail.com>, "hpa@zytor.com" <hpa@zytor.com>, 
+	"yonghong.song@linux.dev" <yonghong.song@linux.dev>, 
+	"linux-doc@vger.kernel.org" <linux-doc@vger.kernel.org>, "shuah@kernel.org" <shuah@kernel.org>, 
+	"chenhuacai@kernel.org" <chenhuacai@kernel.org>, "prsampat@amd.com" <prsampat@amd.com>, 
+	"kevin.brodsky@arm.com" <kevin.brodsky@arm.com>, "maobibo@loongson.cn" <maobibo@loongson.cn>, 
+	"shijie@os.amperecomputing.com" <shijie@os.amperecomputing.com>, 
+	"suzuki.poulose@arm.com" <suzuki.poulose@arm.com>, "itazur@amazon.co.uk" <itazur@amazon.co.uk>, 
+	"pbonzini@redhat.com" <pbonzini@redhat.com>, "yuzenghui@huawei.com" <yuzenghui@huawei.com>, 
+	"gor@linux.ibm.com" <gor@linux.ibm.com>, "dev.jain@arm.com" <dev.jain@arm.com>, 
+	"daniel@iogearbox.net" <daniel@iogearbox.net>, "jackabt@amazon.co.uk" <jackabt@amazon.co.uk>, 
+	"agordeev@linux.ibm.com" <agordeev@linux.ibm.com>, "andrii@kernel.org" <andrii@kernel.org>, 
+	"mingo@redhat.com" <mingo@redhat.com>, 
+	"linux-riscv@lists.infradead.org" <linux-riscv@lists.infradead.org>, 
+	"aou@eecs.berkeley.edu" <aou@eecs.berkeley.edu>, "joey.gouly@arm.com" <joey.gouly@arm.com>, 
+	"derekmn@amazon.com" <derekmn@amazon.com>, "xmarcalx@amazon.co.uk" <xmarcalx@amazon.co.uk>, 
+	"linux-s390@vger.kernel.org" <linux-s390@vger.kernel.org>, "kpsingh@kernel.org" <kpsingh@kernel.org>, 
+	"kalyazin@amazon.co.uk" <kalyazin@amazon.co.uk>, 
+	"linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>, "sdf@fomichev.me" <sdf@fomichev.me>, 
+	"jackmanb@google.com" <jackmanb@google.com>, "bp@alien8.de" <bp@alien8.de>, "corbet@lwn.net" <corbet@lwn.net>, 
+	"linux-fsdevel@vger.kernel.org" <linux-fsdevel@vger.kernel.org>, "jannh@google.com" <jannh@google.com>, 
+	"john.fastabend@gmail.com" <john.fastabend@gmail.com>, "kas@kernel.org" <kas@kernel.org>, 
+	"linux-mm@kvack.org" <linux-mm@kvack.org>, "will@kernel.org" <will@kernel.org>, 
+	"seanjc@google.com" <seanjc@google.com>
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 
-On Thu, Jan 22, 2026 at 8:04=E2=80=AFAM Sean Christopherson <seanjc@google.=
-com> wrote:
+"Edgecombe, Rick P" <rick.p.edgecombe@intel.com> writes:
+
+> On Thu, 2026-01-22 at 08:44 -0800, Ackerley Tng wrote:
+>>
+>> Can we disable direct map removal for errata systems using TDX only,
+>> instead of all TDX?
+>>
+>> If it's complicated to figure that out, we can disable direct map
+>> removal for TDX for now and figure that out later.
 >
-> On Wed, Jan 21, 2026, Jim Mattson wrote:
-> > Extract the computation of eventsel_hw from amd_pmu_set_msr() into a
-> > separate helper function, amd_pmu_set_eventsel_hw().
-> >
-> > No functional change intended.
-> >
-> > Signed-off-by: Jim Mattson <jmattson@google.com>
-> > ---
-> >  arch/x86/kvm/svm/pmu.c | 9 +++++++--
-> >  1 file changed, 7 insertions(+), 2 deletions(-)
-> >
-> > diff --git a/arch/x86/kvm/svm/pmu.c b/arch/x86/kvm/svm/pmu.c
-> > index 7aa298eeb072..33c139b23a9e 100644
-> > --- a/arch/x86/kvm/svm/pmu.c
-> > +++ b/arch/x86/kvm/svm/pmu.c
-> > @@ -147,6 +147,12 @@ static int amd_pmu_get_msr(struct kvm_vcpu *vcpu, =
-struct msr_data *msr_info)
-> >       return 1;
-> >  }
-> >
-> > +static void amd_pmu_set_eventsel_hw(struct kvm_pmc *pmc)
-> > +{
-> > +     pmc->eventsel_hw =3D (pmc->eventsel & ~AMD64_EVENTSEL_HOSTONLY) |
-> > +             AMD64_EVENTSEL_GUESTONLY;
+> In theory, but it still would require changes to TDX code since it does
+> the clflush unconditionally today. To know whether clflush is needed
+> (it's a different thing to the errata), you need to check a TDX module
+> flag. (CLFLUSH_BEFORE_ALLOC)
 >
-> Align indentation.
+> Gosh, you know what, I should double check that we don't need the
+> clflush from the vm shutdown optimization. It should be a different
+> thing, but for we gave scrutiny to the whole Linux flow when we did
+> that. So I'd have to double check nothing relied on it. We can follow
+> up here.
+>
+>>
+>> > Then there is the clfush. It is not actually required for the most
+>> > part. There is a TDX flag to check to see if you need to do it, so
+>> > we could probably remove the direct map accesses for some systems
+>> > and avoid temporary mappings.
+>> >
+>> > So long term, I don't see a problem. For the old systems it would
+>> > have extra cost of temporary mappings at shutdown, but I would have
+>> > imagined direct map removal would have been costly too.
+>>
+>> Is there a way to check if the code is running on the errata system
+>> and set up the temporary mappings only for those?
+>
+> The TDX code today doesn't do any remapping because the direct map is
+> reliably present. There isn't a flag or anything to just do the
+> remapping automatically. We would have to do some vmalloc mapping or
+> temporary_mm or something.
+>
+> Can you explain what the use case is for unmapping encrypted TDX
+> private memory from the host direct map?
 
-Sure.
+There's no use case I can think of for unmapping TDX private memory from
+the host direct map, but Sean's suggestion
+https://lore.kernel.org/all/aWpcDrGVLrZOqdcg@google.com/ won't even let
+shared guest_memfd memory be unmapped from the direct map for TDX VMs.
 
-After wondering about how to configure emacs to do this for many
-years, you have spurred me to action. In case anyone is wondering:
+Actually, does TDX's clflush that assumes presence in the direct map
+apply only for private pages, or all pages?
 
-(add-hook 'c-mode-common-hook
-          (lambda ()
-            (c-set-offset 'statement-cont 'c-lineup-assignments)))
-
-At least, this seems to work so far.
+If TDX's clflush only happens for private pages, then we could restore
+private pages to the direct map, and then we'd be safe even for TDX?
