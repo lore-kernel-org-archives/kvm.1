@@ -1,53 +1,53 @@
-Received: from mail-pj1-f73.google.com (mail-pj1-f73.google.com [209.85.216.73])
+Received: from mail-pg1-f201.google.com (mail-pg1-f201.google.com [209.85.215.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 945AB472763
-	for <kvm@vger.kernel.org>; Thu, 22 Jan 2026 04:58:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.73
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B193477982
+	for <kvm@vger.kernel.org>; Thu, 22 Jan 2026 04:58:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769057886; cv=none; b=kO8FAeGRumPyMzwNeg25erJS0yO21uTA0RcWhhPx66OFWF5B93HynDc3zCaxliO1tJ/pjdhp0F+ThBEUIus6BxLclA9yrnPcLG0tAyWFMhhrD+FM8J2klgeE612co+B18jfGjH5eoznkTXdheEp4ylma7iddnDRL/xMR8JtbkBg=
+	t=1769057886; cv=none; b=Qjlo7Bh9SbjaGNZ1fpPKb7GJuZbr7kTxkLNhsrsh0GiVqiOtnyBO75QUDIqU5faGaJaAgKscyoYgFDZH4f5Xp3mqtohTFs7v9xMe09sCTM5t2rKkoU7m2sEBWSu97A1Zo0azljQqk+Y/NdcKHaYbsTpPQPaO4AMSw0SpXuCixsk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1769057886; c=relaxed/simple;
-	bh=XcN9XQSp7vAr+/NP33TR/5kwIGgIMbdTWz9Y1Boqn/o=;
+	bh=fQr99uM8I060YIwTDdLf//h+zn/VH/xy75rpl5pjh0Q=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=vGqz4N56xXoMXdDBHdj6xPtQHu19VPPJn0s5S8/fQez7okvedH7YOoWqYRSqGEmPlRqZdxZdqWRDJmn6FbIUGl8IK7V+gOexHclseLrjpPTeDeub9lHbW7/DMWTwWgwQ1I1qiYpHWlrKs8c98b6VjngHxeZMMyMhVpLKFmujAoc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--chengkev.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Ugh9Rptu; arc=none smtp.client-ip=209.85.216.73
+	 To:Cc:Content-Type; b=bIu3FFdrIM2rvtRrPIvISBQqnFpwPyatLqqgeBXb/7+oxZwRkpgVbFPDv9zO1W+xPIg0mQgw72Z+v5P32e2yQncQ4vWaT+ACEwwfDT7c6KOdjYhdkJzRKd/EDoC3+F6vm9BnsJWBHKaAlQjRYrs8J91+5vIKT+3ynrxVB3ZYHyU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--chengkev.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=cxkn2XIn; arc=none smtp.client-ip=209.85.215.201
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--chengkev.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Ugh9Rptu"
-Received: by mail-pj1-f73.google.com with SMTP id 98e67ed59e1d1-352e6fcd72dso900446a91.3
-        for <kvm@vger.kernel.org>; Wed, 21 Jan 2026 20:58:04 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="cxkn2XIn"
+Received: by mail-pg1-f201.google.com with SMTP id 41be03b00d2f7-c5269fcecdeso293844a12.0
+        for <kvm@vger.kernel.org>; Wed, 21 Jan 2026 20:58:03 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1769057884; x=1769662684; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1769057882; x=1769662682; darn=vger.kernel.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=3U0BOUGnwPJAwwi3q0VBYzZ4CYyVrcP38EvplDhJ6lk=;
-        b=Ugh9RptuVYW0EmhHmVHXyhAOTkHhF87Zq+raDDNTzqZx8f+AfuUyjc2LxCxjIFn4XE
-         moqzTsB8G3kD+b8uD9u8J4AZZwYWdS10Lin3ZDYE5nFKlg/jO2MYFo8K5RW2KxnBsjv3
-         0mTkdnxeb+XwwPFNlbqj3EZ9bK/Ex7ehRpMG6mzANfQw5+6x6YrMmXZKqn7UIA8pJalk
-         SinAh4/ejXI78ew+fut1BQ/SdqbNMOdVggG4QJBvUG8MI7SfSuGby5sFf38U/pj/fzpJ
-         NSg8x+uOcJj+ijFeIOR75cRlUidCh1RPm9O011TXxPa/deLzRCS1UQhgcK7lvsYgwBYg
-         1TYA==
+        bh=ukX4ACJbiwYdjP9Kah8t9CaWJb7aftnI6HG33S8HCmc=;
+        b=cxkn2XInHF/kBfBlsP0Y0Fq1quar1/xES0xuTaXbaNK71nYPKB1eVa0eD57fw6bsW+
+         /T0Zz6UGQdr/zcziS+QCo4mKcBNjeYKknI9T28B+Sn68yQ2U0Pb6yc25iEtR9BAAVFwt
+         h2wmhsoNwAsfH1wKMaPMoKOHQcsNx7XqozwefOIjRymQpQqPtkF32gMs0BbVCLL8pUjW
+         mQ2K4EiFfs5e9ipaLWhAKH9JsICtNBduqCR7lfUyNeMfgrCy7hSU5DlVnZuXQ4xG3U55
+         G9Vq6rxv08/excgWhollH9zNmHRQC2XbYF+JhMc3qaWqszYiyeXteQsfZQx+DwV7cIky
+         XJGQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1769057884; x=1769662684;
+        d=1e100.net; s=20230601; t=1769057882; x=1769662682;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=3U0BOUGnwPJAwwi3q0VBYzZ4CYyVrcP38EvplDhJ6lk=;
-        b=NbP7BtlVgkltuS0Nizbvut9APJZ1O09ZgFES8OZk5fQp8IC6bQHzifB//pAdtl2Few
-         Noxr7iyH2HQn32bKm1Ae5eYG2RkYC7ZXj711uRm8MDLGf5q2YkNUTVoOZ0Plmk0rM26V
-         LhkFTW8i96LYUS3qxC5qDXn8TE/7AHugt1ud9DuvIA42yb+YV0Igetr5d9lH6mHTIrjk
-         iQ72cua1pit6KCqfx5yHosMFLU9sfkd4U/F1CLDZjZF4VEcBT/OQmIdEc6NsV97giZEc
-         ggKKiy9eMf4GcyEtqAdLp5Jfwk5pii1WbZKycmhK8pnNdX8uNtHD2xLSc5BSy3kscafT
-         xmfg==
-X-Gm-Message-State: AOJu0Yw+ySjZX0tng76DC/RK5yre8/Y26Csb/zFyxpmq2VTGrj2yihKO
-	2cbjwnfBDRJs+y0o5V+4F2hVTVn1ixliTx9FYfEblXGebLrq2/0iOEt7kYkVZzZcMhqrPcZclxt
-	wlhQ3bt3+wHWXQQ==
-X-Received: from pjbqj7.prod.google.com ([2002:a17:90b:28c7:b0:34c:811d:e3ca])
+        bh=ukX4ACJbiwYdjP9Kah8t9CaWJb7aftnI6HG33S8HCmc=;
+        b=Je1474T7wlwA/r7qZ8stOh0DDcmUwIwr2avohaqT91WevOgpPtGU+YREBwEKXyTs0B
+         8o1Y6nHf5ynn/WQiNCzS0yVaW9DmBw3wCTMf9FCm/N/nojVCdeWJmZqQSCcDSditpIuc
+         ndtbay4PRhScAb5G4jfYb2JLRwlciHCa2/tztX+D8ReU7rCfVPCRKXeOfW3FHjeTUCQz
+         dwzlneNRnY8MoNtpJK/geiLlVzYxk/AcFC6oQCKpUoxmA/gb2XEtLdJ6FcvMT1Xvy8F9
+         17uvlaiKsk3rYjLZvTog6BI3+YoUavK2l4Z99qgWi4pVGqZl0Ur+nIkvVYLWIxiZ4AgP
+         Oi3A==
+X-Gm-Message-State: AOJu0YytIlg2CIdD4suLxwAGwnhwpcqyCStp2i0OJK2LLFMRzoEQaeTv
+	5rLdtqybOSHtyN5lt/ZhEbgMy3Pu4AbWUgbB9viFtX+6FS2YQNfdJhl9/XyxYODpwVomIV3g1I8
+	H02xd2ERuVRU39w==
+X-Received: from pgbdm5.prod.google.com ([2002:a05:6a02:d85:b0:c1d:ec5f:ada2])
  (user=chengkev job=prod-delivery.src-stubby-dispatcher) by
- 2002:a17:90b:240e:b0:352:c146:dc39 with SMTP id 98e67ed59e1d1-352c146dc7amr4825518a91.30.1769057883808;
- Wed, 21 Jan 2026 20:58:03 -0800 (PST)
-Date: Thu, 22 Jan 2026 04:57:53 +0000
+ 2002:a05:6a21:3984:b0:38d:eeca:b330 with SMTP id adf61e73a8af0-38e00d1557amr19997302637.40.1769057882138;
+ Wed, 21 Jan 2026 20:58:02 -0800 (PST)
+Date: Thu, 22 Jan 2026 04:57:52 +0000
 In-Reply-To: <20260122045755.205203-1-chengkev@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
@@ -57,70 +57,37 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 References: <20260122045755.205203-1-chengkev@google.com>
 X-Mailer: git-send-email 2.52.0.457.g6b5491de43-goog
-Message-ID: <20260122045755.205203-5-chengkev@google.com>
-Subject: [PATCH V3 4/5] KVM: SVM: Recalc instructions intercepts when
- EFER.SVME is toggled
+Message-ID: <20260122045755.205203-4-chengkev@google.com>
+Subject: [PATCH V3 3/5] KVM: SVM: Inject #UD for INVLPGA if EFER.SVME=0
 From: Kevin Cheng <chengkev@google.com>
 To: seanjc@google.com, pbonzini@redhat.com
 Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org, yosry.ahmed@linux.dev, 
 	Kevin Cheng <chengkev@google.com>
 Content-Type: text/plain; charset="UTF-8"
 
-The AMD APM states that VMRUN, VMLOAD, VMSAVE, CLGI, VMMCALL, and
-INVLPGA instructions should generate a #UD when EFER.SVME is cleared.
-Currently, when VMLOAD, VMSAVE, or CLGI are executed in L1 with
-EFER.SVME cleared, no #UD is generated in certain cases. This is because
-the intercepts for these instructions are cleared based on whether or
-not vls or vgif is enabled. The #UD fails to be generated when the
-intercepts are absent.
-
-Fix the missing #UD generation by ensuring that all relevant
-instructions have intercepts set when SVME.EFER is disabled.
-
-VMMCALL is special because KVM's ABI is that VMCALL/VMMCALL are always
-supported for L1 and never fault.
+INVLPGA should cause a #UD when EFER.SVME is not set. Add a check to
+properly inject #UD when EFER.SVME=0.
 
 Signed-off-by: Kevin Cheng <chengkev@google.com>
+Reviewed-by: Yosry Ahmed <yosry.ahmed@linux.dev>
 ---
- arch/x86/kvm/svm/svm.c | 11 ++++++++++-
- 1 file changed, 10 insertions(+), 1 deletion(-)
+ arch/x86/kvm/svm/svm.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
 diff --git a/arch/x86/kvm/svm/svm.c b/arch/x86/kvm/svm/svm.c
-index d3d7daf886b29..1888211e20988 100644
+index e6b1f8fa98a20..d3d7daf886b29 100644
 --- a/arch/x86/kvm/svm/svm.c
 +++ b/arch/x86/kvm/svm/svm.c
-@@ -243,6 +243,8 @@ int svm_set_efer(struct kvm_vcpu *vcpu, u64 efer)
- 			if (svm_gp_erratum_intercept && !sev_guest(vcpu->kvm))
- 				set_exception_intercept(svm, GP_VECTOR);
- 		}
+@@ -2320,6 +2320,9 @@ static int invlpga_interception(struct kvm_vcpu *vcpu)
+ 	gva_t gva = kvm_rax_read(vcpu);
+ 	u32 asid = kvm_rcx_read(vcpu);
+ 
++	if (nested_svm_check_permissions(vcpu))
++		return 1;
 +
-+		kvm_make_request(KVM_REQ_RECALC_INTERCEPTS, vcpu);
- 	}
- 
- 	svm->vmcb->save.efer = efer | EFER_SVME;
-@@ -984,6 +986,7 @@ static bool svm_has_pending_gif_event(struct vcpu_svm *svm)
- static void svm_recalc_instruction_intercepts(struct kvm_vcpu *vcpu)
- {
- 	struct vcpu_svm *svm = to_svm(vcpu);
-+	u64 efer = vcpu->arch.efer;
- 
- 	/*
- 	 * Intercept INVPCID if shadow paging is enabled to sync/free shadow
-@@ -1004,7 +1007,13 @@ static void svm_recalc_instruction_intercepts(struct kvm_vcpu *vcpu)
- 			svm_set_intercept(svm, INTERCEPT_RDTSCP);
- 	}
- 
--	if (guest_cpuid_is_intel_compatible(vcpu)) {
-+	/*
-+	 * Intercept instructions that #UD if EFER.SVME=0, as SVME must be set even
-+	 * when running the guest, i.e. hardware will only ever see EFER.SVME=1.
-+	 */
-+	if (guest_cpuid_is_intel_compatible(vcpu) || !(efer & EFER_SVME)) {
-+		svm_set_intercept(svm, INTERCEPT_CLGI);
-+		svm_set_intercept(svm, INTERCEPT_STGI);
- 		svm_set_intercept(svm, INTERCEPT_VMLOAD);
- 		svm_set_intercept(svm, INTERCEPT_VMSAVE);
- 		svm->vmcb->control.virt_ext &= ~VIRTUAL_VMLOAD_VMSAVE_ENABLE_MASK;
+ 	/* FIXME: Handle an address size prefix. */
+ 	if (!is_long_mode(vcpu))
+ 		gva = (u32)gva;
 -- 
 2.52.0.457.g6b5491de43-goog
 
