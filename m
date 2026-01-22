@@ -1,294 +1,224 @@
-Received: from mail-ed1-f48.google.com (mail-ed1-f48.google.com [209.85.208.48])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from SA9PR02CU001.outbound.protection.outlook.com (mail-southcentralusazon11013045.outbound.protection.outlook.com [40.93.196.45])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CCB273A7844
-	for <kvm@vger.kernel.org>; Thu, 22 Jan 2026 22:47:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.208.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 213ED377579;
+	Thu, 22 Jan 2026 22:53:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.93.196.45
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769122072; cv=pass; b=tmT2T/Drpg2wFp5qFMPfxYNDjO7SaeWvE7yR8JyQlP4Vo3SLo0E28pnPqKvtws/t7UjdFKUdo4zdjMjDMEbGbfwC62OFCX+G1+NrrqOHdHKrwkAAF3ZXabmrjVLK+27FC+jILQNZTvHmmR0KNQiKDoKknN9utI2G8MY6UfJfDhU=
+	t=1769122413; cv=fail; b=SnE9cUzKI8HSMuobWuciRpjU876EKlZN28U9UgQ63CohVsfDQky6F/pkTPy19TMvuuKpcJZOYXkMU9Pus0Z1X/kMfYAQFTXOQV87JYz1PclADj9NlF7sfmVM59meadOlHGtXV10ghKBDMl9foHRdqBKBTF7b50Hg8/Zs0wDaXRI=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769122072; c=relaxed/simple;
-	bh=TND/Si/DRcSfUhMVT1qeEyIBuM6pXmd6mhIdRalzdww=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=OThObFJXeLR4C/k/lOiPpq7abPGT1ZlO5Y7KYKSCaAi8EpYzbttYWIdO7bbCsRUcA9YfoutYAkAjna/if6/W1VQ6DIzzQiZJEA/I4V3gvOwRS6Y0cCkwNuNm6kjQ3/5QMbsrv/6c+fQzuNGlkvJfYJajJN2jDZujFEeOt2V9qP4=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=oTc4FjNs; arc=pass smtp.client-ip=209.85.208.48
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	s=arc-20240116; t=1769122413; c=relaxed/simple;
+	bh=b29m261ulC64hEhyzhDQt8oYuQdRO9uDPVTiyi9dQxU=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=bss3N59XKrExN6ciLbJxdbzHyRIW7dFFznb+dtyVmUe9m91Q0tohiZtVODVfKOegZsv0Mc6l4UZjYtajm8GdyMdRTmTjW2SeRV+wI9RuR5uNj1mM+iR7t1G6si0W1DVpbIMDcRzyY/FKzwdM9v48RKPxINb1BKHYRjn8m+sI2vg=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=samZ9UDc; arc=fail smtp.client-ip=40.93.196.45
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="oTc4FjNs"
-Received: by mail-ed1-f48.google.com with SMTP id 4fb4d7f45d1cf-6581551aa88so5137a12.0
-        for <kvm@vger.kernel.org>; Thu, 22 Jan 2026 14:47:40 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1769122057; cv=none;
-        d=google.com; s=arc-20240605;
-        b=lSoZcXk16nAdCXJBsRuKE43Z00kIutHxn2Z9ZiVFyt3WA91kYI50Vh0L9a4Z8CnaGy
-         QY0dslw5OeeugVZ62Lk7gv0WluIupB2QVnDHPIQtYxv2Cu8JBFDQJcUo3d/fduav6QHf
-         Rxun4ObxyqCsHeu+nOiW50nU5NA6+srpRVeew6U3Rh9LEXKFhokDBZHIQtdBCAp5tEzu
-         crjAbd0xwWbX8lWszEglJcbhqE2WPeV1ggMDa36Jfv77yHnYsTJI662/rXB0IYOB8Crc
-         TQHyW60VpBIWEnx/ZElAuJDbT0vgYinARIErYTSG9tKZP2XfZDZ5wilsR1Ips5fBREN0
-         RU8g==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=73p/P7bLELYiLT0M410lIGTK80iJQLNo9oAfsXMKpaQ=;
-        fh=bIwwBRxVhUFC8FyQ/uyNwDaA2Ejg1qhKtilC/z/s+1k=;
-        b=WLlDfTAnPXtRfB8meh6rvmI/5VGBqqkIco9Ri5gg4O30vcB+UpPa3OS+WmrAFqrQyi
-         iAsVSrIe0EeQm/zj7qLXDgEiBsXyO4bhLt2fbR/E8zSlL/EWINwONCNUf2NJuPFOl2a+
-         NGnw1ytRuDHkZfOd+uHRaDznBAadSDBjX7OQvZggS43O77kmEyjDSXQVe0d84jp2rQ6E
-         DM3pw8IVubCwo5kPrvj6X3M2OBnSthrNGq2lKAXyPNxCO2eYV06aaCRt9P+kS63mKGj1
-         wgeWeoLgOJgoU8FDkwvf4T0JfBomNzAsjeWh31q3/OFGIrtj2dOvp1suEobcVru17Wmi
-         D6bw==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1769122057; x=1769726857; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=73p/P7bLELYiLT0M410lIGTK80iJQLNo9oAfsXMKpaQ=;
-        b=oTc4FjNsVXElVl6/m5w70zuzsF/zfCyadF3V/eeM2FNDZHKfjCq8gScaWvQDvnCq3y
-         XfnA+qNAljNJrdyDS8EQDu5VO8ZrP9FwhhwYb94lxU+hEyhbnlvRqrPK1n8fydaqIaWx
-         fmDAigGuNYm26BgIMB4cT5k6Cj2V2SMjKwghDE8NA7hDkPXahHklom8zthGgtAoF3plZ
-         Ac7tcIWpayyQqJ8aZpecrdmD2vxBAt5n4/ep7CrXYMs2iSB2Dj8gGsBMgFPnbavc67+d
-         IvEVD2udYxbeDP8D3P9Z1Z2PymoC2zgyZxIIlxBMWAUfvN2kSH0opbH/GKNPAgVz677Q
-         lu8Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1769122057; x=1769726857;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=73p/P7bLELYiLT0M410lIGTK80iJQLNo9oAfsXMKpaQ=;
-        b=ErV/jCmRFEIDLvz5jVwcU2fS0ZJxPelLR5VbsLCbLF9Nk1rRXZucoejKKVZmrEyfVz
-         5l6ThzvJJJQd+W0mjKK6/fj0HFmgjxZEinoIIvC7CsV1ojcpGdPPT1oOFUAlq/XWWpuY
-         DYyXBubTtl+hsxUf4hQ/kGY/IO7YkDQmtghPFDS8/5SeJKcxXvHZiSknVNbhV+mBpaDN
-         N6XHl/LC7+QToCl2cMRUCdInj6js2zwd8Cxs+a+1qPw5WquY1tnYun2+CBRvoMQrLaRg
-         QUsUfFzlFFFWy7hBxvL3a5wzXbrdbvQ+JjBYA/B0QxSlSoov/bw80ISVlYBkl/LxK15Y
-         VOig==
-X-Forwarded-Encrypted: i=1; AJvYcCWj5tTHE/spcnVD4u012WQTeLg9HIbHMSk3yeKBb9/G0pk4jx2k1szEtPy2+d2aE+ywDPU=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yxng43/mXuY2qhYNjbI09n6DXXSCjDhI5AVgC8FwSpvngAVfZwu
-	pp+Vp9zhAGYYcnkofLsI9zKAzHLIJxqyT2adTdqfU3tK33c9GFCqwTQsIf4DYfxsSMGuHz5A6Rh
-	zaS2vWL7EAxX/cuufboizHSjwj53jo4nyOQaqBi/Q
-X-Gm-Gg: AZuq6aIWry6J6KKVaQkCDHaRd02kdCT5aO/kke9vexZYKZEUos6plb30ji4U6gAr+jo
-	l/pcgte41W2WLhg62akmIra0n3Rh0da3+34Tj8XQl/DiveAyS85MXLCRei27V/469BdYGXuGYld
-	yXCPObfqstsdfl3hBuquJGeTzfkgd5jO6RzCaF/Ml0yNQKPEmWzGtY7WOrL7lkfIfsS+pet/wWM
-	aLIIB2/AyW+qkaf0Gzp+G+XEX4r4bdC/vTuWUjX3pvN0hCre8hgKtuaSxqbCeM0jOroHWMEGLLS
-	KNVvwvFhV+Lm3r63bKt7BeY=
-X-Received: by 2002:aa7:c74f:0:b0:658:909:511 with SMTP id 4fb4d7f45d1cf-6584eaa7e3dmr3822a12.3.1769122057232;
- Thu, 22 Jan 2026 14:47:37 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="samZ9UDc"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=xVHhEMQLOhFUwVjWzrXUNbpI1JRjNJG8ev+1vr18cUAtUtmObjOn9ifLi52CTNG2bsH7uWhxwOJlhxuUIiTcXpTDEhkXpc27sGthsPq3FVkZ/+GGECKgyrtpO3vQGwfpgM8I45sTPdW75Q3iW+31BszBcGCyyvDKGjbPkIQjTJMPot4M47uNvEZ/G+tjOYjwx4UVXGVFDaVm4GU2f7L5PzNbuPSuJKyQe3EKjFbTNyoJqRdnEOeWufdxq4AYW4cgb0LhD8Wg33SGrK1muSzy91BhfnEDimn2wtDgYL61KGyCjb6L4OOXcRCGNACVGqvB8ohCNk0zlxeqBzt92klbqA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=UQ/B5chrXQRSVDl8N1B3xzK9dWTnqFStA60oy2WXxpg=;
+ b=TT1Vj7qPkPplQVZjJgZ8yuC3NsAPOmAftYG/V7ZTMBp/HrQCUSPnunj9zLjlmNMc5x3Zu699eyOGmyNp+sQ1jFufNAe+ZiK/LjO1IeQTjV9zz7DW+5KyfTaESN9vdYPg/s+ST0RKa40Y+kDzWHGFvedRPSTdEZnwd+MmxBI2GwPx7PVSKFguJx28BfbmVN/fNvjYv3nV1HbQ/E11NNfTUwoPV5J8y2DW6lged4xiPy2edz51Ou/MzRvyYYfzCWT7k3/ucMSDEne0+IIw4cj/HJua7zFfENdTu84Q4ChCXUayqMDUp7xnysu01/rnSmGy7U5GNqi4Qj9GIQ7tocjtOg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=UQ/B5chrXQRSVDl8N1B3xzK9dWTnqFStA60oy2WXxpg=;
+ b=samZ9UDcNqsSHv3/gce0iNP6dmiwEUu8cSGYS3wbGyNrT0cYF6paVkmWljEDn47ymGUQHYX4FMwqNMq0NJbYzaGr6gWcEkns4yn+KAMzk3B9yRR5NliKl2xMWx0lR4ItdjUl7FaZFe0c/DQ05h6yGyGk14aZQL/SSB0FinUWuFrnG3FKOS4WZYOrjCXaVkVoaUSRsz59KgCVHF2hRotqMD0bPdhn7AnkXQsEZY9/ndpVSmgavP67uzvwNTU2Un6g/ed46q8idwOPsqlAIk6Pr+AtPvg9jVadehdc+aeD7ElNlhthgtYhuvVs7hfWByG9h470SeIqz8yaFG66ABbBog==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from DS0PR12MB7726.namprd12.prod.outlook.com (2603:10b6:8:130::6) by
+ PH0PR12MB5647.namprd12.prod.outlook.com (2603:10b6:510:144::5) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.9542.10; Thu, 22 Jan 2026 22:53:14 +0000
+Received: from DS0PR12MB7726.namprd12.prod.outlook.com
+ ([fe80::953f:2f80:90c5:67fe]) by DS0PR12MB7726.namprd12.prod.outlook.com
+ ([fe80::953f:2f80:90c5:67fe%4]) with mapi id 15.20.9542.009; Thu, 22 Jan 2026
+ 22:53:14 +0000
+Date: Fri, 23 Jan 2026 09:53:09 +1100
+From: Alistair Popple <apopple@nvidia.com>
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: Balbir Singh <balbirs@nvidia.com>, Vlastimil Babka <vbabka@suse.cz>, 
+	Matthew Brost <matthew.brost@intel.com>, Zi Yan <ziy@nvidia.com>, Jason Gunthorpe <jgg@nvidia.com>, 
+	Matthew Wilcox <willy@infradead.org>, Francois Dugast <francois.dugast@intel.com>, 
+	intel-xe@lists.freedesktop.org, dri-devel@lists.freedesktop.org, 
+	adhavan Srinivasan <maddy@linux.ibm.com>, Nicholas Piggin <npiggin@gmail.com>, 
+	Michael Ellerman <mpe@ellerman.id.au>, "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>, 
+	Felix Kuehling <Felix.Kuehling@amd.com>, Alex Deucher <alexander.deucher@amd.com>, 
+	Christian =?utf-8?B?S8O2bmln?= <christian.koenig@amd.com>, David Airlie <airlied@gmail.com>, 
+	Simona Vetter <simona@ffwll.ch>, Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
+	Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, 
+	Lyude Paul <lyude@redhat.com>, Danilo Krummrich <dakr@kernel.org>, 
+	David Hildenbrand <david@kernel.org>, Oscar Salvador <osalvador@suse.de>, 
+	Leon Romanovsky <leon@kernel.org>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
+	"Liam R . Howlett" <Liam.Howlett@oracle.com>, Mike Rapoport <rppt@kernel.org>, 
+	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, linuxppc-dev@lists.ozlabs.org, 
+	kvm@vger.kernel.org, linux-kernel@vger.kernel.org, amd-gfx@lists.freedesktop.org, 
+	nouveau@lists.freedesktop.org, linux-mm@kvack.org, linux-cxl@vger.kernel.org
+Subject: Re: [PATCH v6 1/5] mm/zone_device: Reinitialize large zone device
+ private folios
+Message-ID: <w37swembg3m2ruxrlbm4xpx4eccvp3fsd7e4shfdxcpmpisk3x@dqsxzkyabjc6>
+References: <96926697-070C-45DE-AD26-559652625859@nvidia.com>
+ <20260119203551.GQ1134360@nvidia.com>
+ <ef6ef1e2-25f1-4f1b-a8d4-98c0d7b4ad0c@nvidia.com>
+ <EE2956E3-CCEA-4EF9-A1A4-A483245091FC@nvidia.com>
+ <20260120135340.GA1134360@nvidia.com>
+ <F7E3DF24-A37B-40A0-A507-CEF4AB76C44D@nvidia.com>
+ <aXHPkQfwhMHU/oP6@lstrano-desk.jf.intel.com>
+ <9077ab5b-f2c8-4c8d-8441-631e7c2cf384@suse.cz>
+ <626c34fc-34df-4629-baf3-fbebc9abafbb@nvidia.com>
+ <20260122134114.a04ddf4c34a4b926d057032f@linux-foundation.org>
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20260122134114.a04ddf4c34a4b926d057032f@linux-foundation.org>
+X-ClientProxiedBy: SY6PR01CA0159.ausprd01.prod.outlook.com
+ (2603:10c6:10:1ba::17) To DS0PR12MB7726.namprd12.prod.outlook.com
+ (2603:10b6:8:130::6)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260121225438.3908422-1-jmattson@google.com> <20260121225438.3908422-3-jmattson@google.com>
- <aXJRWtdzjcb8_APA@google.com>
-In-Reply-To: <aXJRWtdzjcb8_APA@google.com>
-From: Jim Mattson <jmattson@google.com>
-Date: Thu, 22 Jan 2026 14:47:25 -0800
-X-Gm-Features: AZwV_QgLJNlpwnESIOnJyOjuyzAXTUsC4-1Gsi8ldMfpGFY9pFyZtqFYo2yuOLw
-Message-ID: <CALMp9eRGj3rNeNN82H12f=XO5iXi5s2ri2K71CnjoVp9eKzz1w@mail.gmail.com>
-Subject: Re: [PATCH 2/6] KVM: x86/pmu: Disable HG_ONLY events as appropriate
- for current vCPU state
-To: Sean Christopherson <seanjc@google.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>, Thomas Gleixner <tglx@linutronix.de>, 
-	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
-	"H. Peter Anvin" <hpa@zytor.com>, Peter Zijlstra <peterz@infradead.org>, 
-	Arnaldo Carvalho de Melo <acme@kernel.org>, Namhyung Kim <namhyung@kernel.org>, 
-	Mark Rutland <mark.rutland@arm.com>, 
-	Alexander Shishkin <alexander.shishkin@linux.intel.com>, Jiri Olsa <jolsa@kernel.org>, 
-	Ian Rogers <irogers@google.com>, Adrian Hunter <adrian.hunter@intel.com>, 
-	James Clark <james.clark@linaro.org>, Shuah Khan <shuah@kernel.org>, kvm@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-perf-users@vger.kernel.org, 
-	linux-kselftest@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DS0PR12MB7726:EE_|PH0PR12MB5647:EE_
+X-MS-Office365-Filtering-Correlation-Id: 0539c5d3-3a10-41ad-039c-08de5a09066b
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|1800799024|366016|376014|7416014|7053199007;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?dk94VXZGWU5TSXQ3cG96dkhld2drTzRXWmV4RDNrYTBFemE2Rys5RWQ3dzVw?=
+ =?utf-8?B?SHhQS3R4QUUzbjBLZGg5aTFCSysvSDNPSjBWNHRjTE1CYWpPZys4UUs2UUtR?=
+ =?utf-8?B?b2l4amc5SklRTTJxV0ZJaHJZTmFsd0k0dHpXQzNsUXpLOGxlZ3dnRUJ0YkRK?=
+ =?utf-8?B?Q3VjYk1wSzlJU2VpSkVFV2E1Vy9SSnJQNVdQRHhrcDNtOU5EZnZYc0FFakdh?=
+ =?utf-8?B?QXNSbFBGZVIwMVhUQWVNREZYc2RsZDRzWnlsSy93Rmxzd29JR1VJQ0xSVFFj?=
+ =?utf-8?B?Ymp2QkREVU83Y2IyQzQvRHR5OU5sTmhaUDlWQW05dzU2RjBZVTBNTjhpK1Vu?=
+ =?utf-8?B?TmtKSktPUDM4eXQ0RWtEUjJEYjRwU2JhWElsTkQwQUdFNmZCQXl2Ly90SXhj?=
+ =?utf-8?B?NU1IWDhacStnbm9VUXhGaENjQWZXSXNZUngzcmtkb0pmOHJHZGluc1F1WE95?=
+ =?utf-8?B?c05ZMi81aEZzY3FNamkrSTRCdnBGMnErbWdXTUJjVWNLVWpGOGRGT2hkT0Vq?=
+ =?utf-8?B?NXk2TDMyM05uckZBOHNHTEtCM3REOTdxYXBsVDh5LzNZSm1VdENuN2ZIWGxh?=
+ =?utf-8?B?WmJhbXFZMlpzWTFXSUxaeHphdDM5NUxGWGhTa0tTUlVxdGtpaFdXME9IQ1c2?=
+ =?utf-8?B?N2hRbEswbHhGUWVEWWdmS0M1UUppa051eldCcnhYY2dqT1Rta3UxNVg0dWdT?=
+ =?utf-8?B?MFNpemR3RnJ4YVhWVHFFcU9PTlF2SHhBMkVpUk1Id1RDQjJNUk5VMWJ1dTBE?=
+ =?utf-8?B?L29CZVVyQTNVUnVQOUpKL2xhNEJ0UFYwaVYwZTJKSldNbUhPQlRMMGgxdWVz?=
+ =?utf-8?B?aCsvZk1RMlJEc3cwMVhQeUNuRW92VHAzcG9NVHRSYnFITGtoc0p4NDdmTWsx?=
+ =?utf-8?B?NTdsVUY2V1dISTJxbDViWVd5QUR1eXl6VFh3djBEL1IwUVpWbHk3eTcrTjRE?=
+ =?utf-8?B?VElyTUFrM0N2SnhidXpVY3J6N2tPaTY0ZnFaeW43c0ZLUUJ3ZG9ENmsxRGxT?=
+ =?utf-8?B?MGVHVnZzU1RuTmpweDJIVnZuWk1JMThqTlRHOStKcnFwdHpaQ2xQODdIZnUy?=
+ =?utf-8?B?R05Zd24yV2JyeHpsYkIyVFJqemVQRHBjNXYySHdlcStWaWlUdHhZNjVYS2JV?=
+ =?utf-8?B?aXljb2IvcFRZT2crRnlaLzJnQ0RzbTZwZ0Ura0hoWERXeERhZC91UE1MVDRS?=
+ =?utf-8?B?UzhEamNJbUp2Wkl2TDVYdEFSUkdncWNUV291NWxUdXkxeGpjMUUxY2RtelJ4?=
+ =?utf-8?B?SU1kSTMvTU5DN0didFNPdUJRQStPQ3RyTENRR3VMRTlzeDRCSHlQZnVDc1Jk?=
+ =?utf-8?B?Z0RUcXdNZFFRdmlLYmlKL2xmUkhGUkNTQ1pxZGhEeHlHSEptclpUTlArd2NV?=
+ =?utf-8?B?djhhTUdWRXNkRUJwb0hheXZJMWlBZmxMVEVDSDBJZ21wMEJNUjFTRmcxZDZN?=
+ =?utf-8?B?a2hWcTlFeXhJVm1CL1pIZ0o2akFqeDRzRkZqQlQrY041YVZVMC9VVHJiRDJh?=
+ =?utf-8?B?TFliRjF2NDE4Tk9hRTFGbzB3dFh6eWVFcGpwVGFVZW5qWGlGNUplZTFXVHdP?=
+ =?utf-8?B?dzZMa0dZRXlhaGI5QnkzVVhCZHYyUXB1MVdrWGdRcnE5YUs4azJObUFiV2lV?=
+ =?utf-8?B?RnRhNFpnb3BYa1VUd2lETDlvemgxeUdUb1hnM0pRVHJzazFmVXpJQVZoSFhi?=
+ =?utf-8?B?L1hRZ0gxVGI3U2EvSnN5TzRZZEQ3SGNockMrVkw0dWlzcGxOalFjQjg0bS9t?=
+ =?utf-8?B?c3dycUNqSnRqNmJOd25jUytFR0tXT3JzVndxS2lVa25iaGtWTTIvZGpWNHRt?=
+ =?utf-8?B?UksweCtCWG9jcVFBVWxYbVg5ekdsVGhsaWlrWlQ3QVd2N2xGT2U1QUxUYzI2?=
+ =?utf-8?B?NGhET2psVFNpQmxDRGkwU2F2ckxuL1BhN0FaYlg4eXZzTVlSSWJPMnFCN1cy?=
+ =?utf-8?B?UmdXczl3QXN0Q0RTTlFoVEg1UHlyNS9vd1dmU3hxZ3diV3NmL0pBSWRRd0tS?=
+ =?utf-8?B?Y3llaWoxOVBrRXE2c2dhZm9Xb1plblFNWFVjaFdzaFM0emwwVkdEOHBFdkto?=
+ =?utf-8?B?N3RIQyt5QTQrT1ROUUdoNHZHbnVlcXEzaGY4NUdITEtsbEhBSks2R29zMXJn?=
+ =?utf-8?Q?7IzE=3D?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS0PR12MB7726.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(376014)(7416014)(7053199007);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?RDlhN1hYZ2E4Y0xjMGZqc3pKUm9lK05uUy9QUWZYcDRxTG50WlpjUTdmbXlT?=
+ =?utf-8?B?dVl4OE1zM1o0c0piQkt4aVlZbXZWcEhsK1Q4bjg5RmlRNTlHUzlMOFNONzdq?=
+ =?utf-8?B?OUpZV3BianVUMko3S3F3VmJrMi9VZC9aYVZnSEZ4VHRTM2hOb1pTcHJFTDlP?=
+ =?utf-8?B?RytRQTBoLzVZcmxYK2YrWFZqc091KzRIVHpYb2UrVzhYOGY1WEs0cDFBeElR?=
+ =?utf-8?B?SHZmc045eWRWMnJIWnV4R3BSQ085NnlLMFg1Z3lyemNmZngvRVNCa3Bjd3My?=
+ =?utf-8?B?eElNZ0Rvb0VZcEtXcU5CQjliL0htNllHSUVORUR5M2xkZGN1ZFFuOXg5dzRW?=
+ =?utf-8?B?L3VpRC9BVG96ZGIzZkUvNFhrN0Vtd01kK3RBSG92Q0dOczBydTdhNHoyYjBD?=
+ =?utf-8?B?a09zYnI2WnJHcXp1ZGtIWnoxVXQ1N1BrQXdidWxJV0VSN2gvdlJWWjdENVVw?=
+ =?utf-8?B?VGorNElnelhrVnpNVHM1YWZJZk1ONFhEL0FVRThGanNaV0J5QnpNYUNkZzM4?=
+ =?utf-8?B?TC8yT0hlS3JnTStuRUY2QkxRLzc1WkxXQVJ2VUlRRTk1SHkvMDg0LzdXMzk4?=
+ =?utf-8?B?QWF1dUNkVFNJRmRuUlQrQ090UHJWTStYN090MmNaSStlSkpFZ3J4dFZuM0Vu?=
+ =?utf-8?B?clVDbTFSeG5EbUhBS3JiQm02NVRnSnl1eTNORHhPUStjOER6UHhmVmxZV0Jh?=
+ =?utf-8?B?ekpKTURuWG5RVFlTRTdsTTZuWHU0ZlRqdHpqVE5nRWxyK1ZKTzRDUE4vR3JX?=
+ =?utf-8?B?bXphS1JDNmxtMHFOb3E4N3Y5MFd0bFVyZlROd1cvRFpQeXErQ1VkM3hXUDJz?=
+ =?utf-8?B?S1B2MWtRSHJNeDhpdFpUclNoVzRuSkhsd3ZHYWJTNTlvYnhHaDZwY3B1K3E4?=
+ =?utf-8?B?V084c3V1dThQbEdrdUprL2F2RTZ4MHZ0Uk5wdTVPSnNlcDZUN0EvQ095emsz?=
+ =?utf-8?B?UWpJZnZEVkVjWW42MVpjODE2RzllTno1cDBLNG1NZWI1MDF1ODUvd3dQQ1N0?=
+ =?utf-8?B?bW5GcWJTempsY00vaENPRDNsRURrdGFpd3BNNVNZMm4xTlBuZ005QXc5T1FR?=
+ =?utf-8?B?U0RpcFFVaGxMZGdncUdYb3dwL0g1ZnFKMzF0Q2VDS1l5RmZuQXk1ZDhwQVJI?=
+ =?utf-8?B?NWhPdXBrVHMrcXdCalJRWDV5TXpJZTR3VGU1NXRlUDUrTDJmc2dHMkNLclJG?=
+ =?utf-8?B?UTZwQ3hIb3JMdWZKZ2FMNm5SeG1haGMxRkFCSUhBNElKWEEvOWlqaUM4Tm5w?=
+ =?utf-8?B?TVR2cVFRRkRiL3lXM2xtSmpwb1FKZ2pyYWtFWXNNTk5VdFBjbWJrTE9pN1pm?=
+ =?utf-8?B?eFFSNGEyZWVyeFF1aExya2xyUStVTnI1VkpHeVRaOFo2M1dOVWJjOGFTb2FP?=
+ =?utf-8?B?WkVRaWxoKzFiNE1Yd2MzQjJOaHIzdlZWckNaRUY5cTBxTk05NktURVFhZk8x?=
+ =?utf-8?B?TEFYb3FxbzlmYzhqMFhUTFc4ZVBwc2dSUjhPeDMvZFpqTnd2bStyODlibjlJ?=
+ =?utf-8?B?Zll6R2dvM0RUQitaQmozZ3hGMXZqOGg2V0VPZVhBcXJ6WGU2b0pLNVp6SFIz?=
+ =?utf-8?B?T1QyaVNWOCtFTWNuSElsY1poazNvZkp3Y250dFVqNCtuT1B5cUV0clBzczNX?=
+ =?utf-8?B?RFJwRWlZNXZtN1k1b2FrTUIrV0ZkeWowUGRDKy82dVg4SlY0OHVNRk8xNWZx?=
+ =?utf-8?B?KzJxV1VtL3NWUHY5VWZBUGRxWXZHTWtGQWhzNG9mdUR6MWNZdlFKTW81QXkz?=
+ =?utf-8?B?Tk9XNVM1NHVzd2JSSHd6UVQ3WnFBSnFaNHdIazc4RGh6dXhZYTUrY1IwNFoy?=
+ =?utf-8?B?eDNWenVTZFp0SGNMSFlabXlmQmdRZkxSOVdEY2dqbGpjWWZyZFpTaEczdUJh?=
+ =?utf-8?B?QkovQ2tWWnRYcGhoSm5oOFJGNTQvTUxHT3JVUVJvYUpNaVlGYnVycUZiQkFn?=
+ =?utf-8?B?c1BJZFZPdU1uYk9ibXY5cjJMVDFEMnhsRE0xZjZMUjNMK1RlVW9nOWNVcHlL?=
+ =?utf-8?B?Uk01SzI1V1RBOWhaaXcvMWh5eGxJRVBCOGtKY2MvMEUyeUlZaVVoZVN4N2RM?=
+ =?utf-8?B?dG1zNDJJVlFLT2hvRzY5czNUaDJQVUdhZFh2SDJLbWJlUWIwdDlDMVpucnpW?=
+ =?utf-8?B?aHczTGZRbmtoRzBxQzRtVDh5RHhmRVA1ZWRqSEZXSC9rL0JpWXkwejA4YkpM?=
+ =?utf-8?B?cWxydUFZSXk4SjFQMm5oT0xQaWM3UTlqdFFaQU00YUZUbUs5WGRIbHpubUly?=
+ =?utf-8?B?cFZxNWFpcHVhMUdSSjdmTjVJYXhqdjJSZ0R2VndOa2U5YUhuMy9HVDRLdTNz?=
+ =?utf-8?B?V21aV1dubGRxUkZGQ1JiV1lRM3kycFYxclNwYzhNTWFNUS82a3J3UT09?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 0539c5d3-3a10-41ad-039c-08de5a09066b
+X-MS-Exchange-CrossTenant-AuthSource: DS0PR12MB7726.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 22 Jan 2026 22:53:14.3973
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: ZHeEW4HH0f9kDMOX+mBI7IlQW8rQqvNRvgbQrS3N5MbQ3yLy1eE8iBzSg/WbfwOjO4cMC3Kjh5QUhT0mglaeoA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH0PR12MB5647
 
-On Thu, Jan 22, 2026 at 8:33=E2=80=AFAM Sean Christopherson <seanjc@google.=
-com> wrote:
->
-> On Wed, Jan 21, 2026, Jim Mattson wrote:
-> > Introduce amd_pmu_dormant_hg_event(), which determines whether an AMD P=
-MC
-> > should be dormant (i.e. not count) based on the guest's Host-Only and
-> > Guest-Only event selector bits and the current vCPU state.
-> >
-> > Update amd_pmu_set_eventsel_hw() to clear the event selector's enable b=
-it
-> > when the event is dormant.
-> >
-> > Signed-off-by: Jim Mattson <jmattson@google.com>
-> > ---
-> >  arch/x86/include/asm/perf_event.h |  2 ++
-> >  arch/x86/kvm/svm/pmu.c            | 23 +++++++++++++++++++++++
-> >  2 files changed, 25 insertions(+)
-> >
-> > diff --git a/arch/x86/include/asm/perf_event.h b/arch/x86/include/asm/p=
-erf_event.h
-> > index 0d9af4135e0a..7649d79d91a6 100644
-> > --- a/arch/x86/include/asm/perf_event.h
-> > +++ b/arch/x86/include/asm/perf_event.h
-> > @@ -58,6 +58,8 @@
-> >  #define AMD64_EVENTSEL_INT_CORE_ENABLE                       (1ULL << =
-36)
-> >  #define AMD64_EVENTSEL_GUESTONLY                     (1ULL << 40)
-> >  #define AMD64_EVENTSEL_HOSTONLY                              (1ULL << =
-41)
-> > +#define AMD64_EVENTSEL_HG_ONLY                               \
->
-> I would strongly prefer to avoid the HG acronym, as it's not immediately =
-obvious
-> that it's HOST_GUEST, and avoiding long lines even with the full HOST_GUE=
-ST is
-> pretty easy.
+On 2026-01-23 at 08:41 +1100, Andrew Morton <akpm@linux-foundation.org> wrote...
+> On Thu, 22 Jan 2026 20:10:44 +1100 Balbir Singh <balbirs@nvidia.com> wrote:
+> 
+> > >> - Intel has demonstrated that this works and is still getting blocked.
+> > >>
+> > >> - This entire thread is about a fixes patch for large device pages.
+> > >>   Changing prep_compound_page is completely out of scope for a fixes
+> > >>   patch, and honestly so is most of the rest of what’s being proposed.
+> > > 
+> > > FWIW I'm ok if this lands as a fix patch, and perceived the discussion to be
+> > > about how refactor things more properly afterwards, going forward.
+> > > 
+> > 
+> > I've said the same thing and I concur, we can use the patch as-is and
+> > change this to set the relevant identified fields after 6.19
+> 
+> So the plan is to add this patch to 6.19-rc and take another look at
+> patches [2-5] during next -rc cycle?
 
-In this instance, I'm happy to make the suggested change, but I think
-your overall distaste for HG_ONLY is unwarranted.
-These bits are documented in the APM as:
+I'm ok with this as a a quick fix, and happy to take a look at cleaning this up
+in the next cycle or two as it's been on my TODO list for a while anyway.
 
-> HG_ONLY (Host/Guest Only)=E2=80=94Bits 41:40, read/write
-
-> The name should also have "MASK" at the end to make it more obvious this =
-is a
-> multi-flag macro, i.e. not a single-flag value.  Otherwise the intent and=
- thus
-> correctness of code like this isn't obvious:
->
->         if (eventsel & AMD64_EVENTSEL_HG_ONLY)
->
-> How about AMD64_EVENTSEL_HOST_GUEST_MASK?
-
-Sure.
-
-> > +     (AMD64_EVENTSEL_HOSTONLY | AMD64_EVENTSEL_GUESTONLY)
-> >
-> >  #define AMD64_EVENTSEL_INT_CORE_SEL_SHIFT            37
-> >  #define AMD64_EVENTSEL_INT_CORE_SEL_MASK             \
-> > diff --git a/arch/x86/kvm/svm/pmu.c b/arch/x86/kvm/svm/pmu.c
-> > index 33c139b23a9e..f619417557f9 100644
-> > --- a/arch/x86/kvm/svm/pmu.c
-> > +++ b/arch/x86/kvm/svm/pmu.c
-> > @@ -147,10 +147,33 @@ static int amd_pmu_get_msr(struct kvm_vcpu *vcpu,=
- struct msr_data *msr_info)
-> >       return 1;
-> >  }
-> >
-> > +static bool amd_pmu_dormant_hg_event(struct kvm_pmc *pmc)
->
-> I think I would prefer to flip the polarity, even though the only caller =
-would
-> then need to invert the return value.  Partly because I think we can come=
- up with
-> a more intuitive name, partly because it'll make the last check in partic=
-ular
-> more intutive, i.e. IMO, checking "guest =3D=3D guest"
->
->         return !!(hg_only & AMD64_EVENTSEL_GUESTONLY) =3D=3D is_guest_mod=
-e(vcpu);
->
-> is more obvious than checking "host =3D=3D guest":
->
->         return !!(hg_only & AMD64_EVENTSEL_GUESTONLY) =3D=3D is_guest_mod=
-e(vcpu);
->
-> Maybe amd_pmc_is_active() or amd_pmc_counts_in_current_mode()?
-
-I think amd_pmc_is_active() is a much stronger statement, implying
-that both enable bits are also set.
-
-Similarly, amd_pmc_counts_in_current_mode() sounds like it looks at
-OS/USR bits as well.
-
-I'll see if I can think of a better name that isn't misleading. I
-actually went with this polarity because of the naming problem. But, I
-agree that the reverse polarity is marginally better.
-
-> > +{
-> > +     u64 hg_only =3D pmc->eventsel & AMD64_EVENTSEL_HG_ONLY;
-> > +     struct kvm_vcpu *vcpu =3D pmc->vcpu;
-> > +
-> > +     if (hg_only =3D=3D 0)
->
-> !hg_only
-
-Now, you're just being petty. But, okay.
-
-> In the spirit of avoiding the "hg" acronym, what if we do something like =
-this?
->
->         const u64 HOST_GUEST_MASK =3D AMD64_EVENTSEL_HOST_GUEST_MASK;
-
-Ugh. No. You can't both prefer the longer name and yet avoid it like
-the plague. If you need to introduce a shorter alias, the longer name
-is a bad choice.
-
->         struct kvm_vcpu *vcpu =3D pmc->vcpu;
->         u64 eventsel =3D pmc->eventsel;
->
->         /*
->          * PMCs count in both host and guest if neither {HOST,GUEST}_ONLY=
- flags
->          * are set, or if both flags are set.
->          */
->         if (!(eventsel & HOST_GUEST_MASK) ||
->             ((eventsel & HOST_GUEST_MASK) =3D=3D HOST_GUEST_MASK))
->                 return true;
->
->         /* {HOST,GUEST}_ONLY bits are ignored when SVME is clear. */
->         if (!(vcpu->arch.efer & EFER_SVME))
->                 return true;
->
->         return !!(eventsel & AMD64_EVENTSEL_GUESTONLY) =3D=3D is_guest_mo=
-de(vcpu);
->
-> > +             /* Not an HG_ONLY event */
->
-> Please don't put comments inside single-line if-statements.  99% of the t=
-ime
-> it's easy to put the comment outside of the if-statement, and doing so en=
-courages
-> a more verbose comment and avoids a "does this if-statement need curly-br=
-aces"
-> debate.
-
-There is no debate. A comment is not a statement. But, okay.
-
-> > +             return false;
-> > +
-> > +     if (!(vcpu->arch.efer & EFER_SVME))
-> > +             /* HG_ONLY bits are ignored when SVME is clear */
-> > +             return false;
-> > +
-> > +     /* Always active if both HG_ONLY bits are set */
-> > +     if (hg_only =3D=3D AMD64_EVENTSEL_HG_ONLY)
->
-> I vote to check this condition at the same time !hg_only is checked.  Fro=
-m a
-> *very* pedantic perspective, one could argue it's "wrong" to check the bi=
-ts when
-> SVME=3D0, but the purpose of the helper is to detect if the PMC is active=
- or not.
-> Precisely following the architectural behavior is unnecessary.
-
-Even I am not that pedantic.
-
-> > +             return false;
-> > +
-> > +     return !!(hg_only & AMD64_EVENTSEL_HOSTONLY) =3D=3D is_guest_mode=
-(vcpu);
-> > +}
-> > +
-> >  static void amd_pmu_set_eventsel_hw(struct kvm_pmc *pmc)
-> >  {
-> >       pmc->eventsel_hw =3D (pmc->eventsel & ~AMD64_EVENTSEL_HOSTONLY) |
-> >               AMD64_EVENTSEL_GUESTONLY;
-> > +
-> > +     if (amd_pmu_dormant_hg_event(pmc))
-> > +             pmc->eventsel_hw &=3D ~ARCH_PERFMON_EVENTSEL_ENABLE;
-> >  }
-> >
-> >  static int amd_pmu_set_msr(struct kvm_vcpu *vcpu, struct msr_data *msr=
-_info)
-> > --
-> > 2.52.0.457.g6b5491de43-goog
-> >
+> I think the plan is to take Matthew's work via the DRM tree?  But if people
+> want me to patchbunny this fix then please lmk.
+> 
+> I presently have
+> 
+> Signed-off-by: Matthew Brost <matthew.brost@intel.com>
+> Signed-off-by: Francois Dugast <francois.dugast@intel.com>
+> Acked-by: Felix Kuehling <felix.kuehling@amd.com>
+> Reviewed-by: Balbir Singh <balbirs@nvidia.com>
+> 
+> If people wish to add to this then please do so.
+> 
+> I'll restore this patch into mm.git's hotfix branch (and hence
+> linux-next) because testing.
