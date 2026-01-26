@@ -1,247 +1,228 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2143029D267
-	for <kvm@vger.kernel.org>; Mon, 26 Jan 2026 09:49:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 394272F5337;
+	Mon, 26 Jan 2026 09:50:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769420960; cv=none; b=m9Hh7fwozvjpzWXgP5agBmKrl81bDQt9dUsB5YMphAjSPk27ew0DPz47poTirRsaVpFeYVHLmU/81PIBri9nEmaoGgXFmI/ZA1/D04DF1Nv45FsxcmX1Us3lqDAph2U1ow1dcYwAIhImFew1MbhtSxI4MIWuZl+/vEhpotrHVzw=
+	t=1769421058; cv=none; b=iZUBT99I07nv0GXG7rsgxLq+ACRhvLmw2qEeXHeuunktejrP27lAcsriIc9DH72u7VSwh1jZgP3TeMmG4azWlkrZItHdqYb0Ede/cWSohDvxnk4gzfmhGdvn1LuyKH0BZ8lejnFZsjSlMgf3eQjDe+zbUwomrFWz4gMdhFhsVWw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769420960; c=relaxed/simple;
-	bh=SCfbIDBZ0i8ji2Il2O+CBn4hTNVv8fyBRR1E4OC8jIk=;
-	h=From:To:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Tbxp0EBClgey4d9O1tNKP2iTSSwwYwcJEZPtWCqnFMJK42vUQNtkpagwA/d6U54RencnrBzN4A+tunbugQxWOEU0fm8n66Tz6hUqlttDHNvaCW51TBhh4as3bzRM3OU44qFRNmvJ58A+0hxg4hPSDLTg/IMHdUDDTSixgmRB29M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=RwWA401s; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="RwWA401s"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1769420957;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=95rlxJBn2msZ3au3wfm2bXPdC8+xLSko1wIOaCjjM/M=;
-	b=RwWA401skzch1chjhMbJUZgQIoIE0l4QNnTxhwJfdpaWRQab+YtCwxDW4S4Nszw6OAvmLw
-	mEnyLCX0maKXYNb5VW6SQ08PvcozKsFquZtAQjhIN5uTsIKqrcNnhZMfsde1+DYxGmhzp7
-	bRNJMFQP7ppykbV+kZrA1jduuqCo1sE=
-Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-611-Wi9pjlujN9a4MFgG7eoDRA-1; Mon,
- 26 Jan 2026 04:49:08 -0500
-X-MC-Unique: Wi9pjlujN9a4MFgG7eoDRA-1
-X-Mimecast-MFC-AGG-ID: Wi9pjlujN9a4MFgG7eoDRA_1769420947
-Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 2E5BA1944EA8;
-	Mon, 26 Jan 2026 09:49:07 +0000 (UTC)
-Received: from S2.redhat.com (unknown [10.72.112.82])
-	by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 8F19618001D5;
-	Mon, 26 Jan 2026 09:49:01 +0000 (UTC)
-From: Cindy Lu <lulu@redhat.com>
-To: lulu@redhat.com,
-	dtatulea@nvidia.com,
-	mst@redhat.com,
-	jasowang@redhat.com,
-	netdev@vger.kernel.org,
-	virtualization@lists.linux-foundation.org,
-	linux-kernel@vger.kernel.org,
-	kvm@vger.kernel.org
-Subject: [PATCH v4 2/3] vdpa/mlx5: reuse common function for MAC address updates
-Date: Mon, 26 Jan 2026 17:45:37 +0800
-Message-ID: <20260126094848.9601-3-lulu@redhat.com>
-In-Reply-To: <20260126094848.9601-1-lulu@redhat.com>
-References: <20260126094848.9601-1-lulu@redhat.com>
+	s=arc-20240116; t=1769421058; c=relaxed/simple;
+	bh=b+QADDDNWFijtCScvWxdQYJqkyn6qiVV4dokss2M+ak=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=fypVeufcPJpkdOGdJahNoMYW8lqad8mXDa3EfozC73iMpHV2KopP+JlDryZwGoppsHltX17WGuTNitYvFUXbXxEJHcO9wAWFS2tJh1ANEBp1HHiJ9/VEcZNql5BmUPDMbAqADvflAGDLNjRTgBfTv2YbWGR8GGeCKsQ++doOweM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 04EF4339;
+	Mon, 26 Jan 2026 01:50:50 -0800 (PST)
+Received: from [10.57.8.194] (unknown [10.57.8.194])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id B8D583F632;
+	Mon, 26 Jan 2026 01:50:52 -0800 (PST)
+Message-ID: <e051c4bb-7b1c-4823-b81f-e4df5d8b1d9d@arm.com>
+Date: Mon, 26 Jan 2026 09:50:50 +0000
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v12 22/46] arm64: RMI: Create the realm descriptor
+To: Alper Gun <alpergun@google.com>
+Cc: kvm@vger.kernel.org, kvmarm@lists.linux.dev,
+ Catalin Marinas <catalin.marinas@arm.com>, Marc Zyngier <maz@kernel.org>,
+ Will Deacon <will@kernel.org>, James Morse <james.morse@arm.com>,
+ Oliver Upton <oliver.upton@linux.dev>,
+ Suzuki K Poulose <suzuki.poulose@arm.com>, Zenghui Yu
+ <yuzenghui@huawei.com>, linux-arm-kernel@lists.infradead.org,
+ linux-kernel@vger.kernel.org, Joey Gouly <joey.gouly@arm.com>,
+ Alexandru Elisei <alexandru.elisei@arm.com>,
+ Christoffer Dall <christoffer.dall@arm.com>, Fuad Tabba <tabba@google.com>,
+ linux-coco@lists.linux.dev,
+ Ganapatrao Kulkarni <gankulkarni@os.amperecomputing.com>,
+ Gavin Shan <gshan@redhat.com>, Shanker Donthineni <sdonthineni@nvidia.com>,
+ "Aneesh Kumar K . V" <aneesh.kumar@kernel.org>,
+ Emi Kisanuki <fj0570is@fujitsu.com>, Vishal Annapurve <vannapurve@google.com>
+References: <20251217101125.91098-1-steven.price@arm.com>
+ <20251217101125.91098-23-steven.price@arm.com>
+ <CABpDEumQ=62nZ_xEN6oMHw=J+6ps=Gy=1vx8i=6Hz+BacO1Ymg@mail.gmail.com>
+From: Steven Price <steven.price@arm.com>
+Content-Language: en-GB
+In-Reply-To: <CABpDEumQ=62nZ_xEN6oMHw=J+6ps=Gy=1vx8i=6Hz+BacO1Ymg@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
 
-Factor out MAC address update logic and reuse it from handle_ctrl_mac().
+On 23/01/2026 18:57, Alper Gun wrote:
+> On Wed, Dec 17, 2025 at 2:13 AM Steven Price <steven.price@arm.com> wrote:
+>>
+>> Creating a realm involves first creating a realm descriptor (RD). This
+>> involves passing the configuration information to the RMM. Do this as
+>> part of realm_ensure_created() so that the realm is created when it is
+>> first needed.
+>>
+>> Signed-off-by: Steven Price <steven.price@arm.com>
+>> ---
+>> New patch for v12
+>> ---
+>>  arch/arm64/kvm/rmi.c | 117 ++++++++++++++++++++++++++++++++++++++++++-
+>>  1 file changed, 115 insertions(+), 2 deletions(-)
+>>
+>> diff --git a/arch/arm64/kvm/rmi.c b/arch/arm64/kvm/rmi.c
+>> index b51e68e56d56..18edc7eeb5fa 100644
+>> --- a/arch/arm64/kvm/rmi.c
+>> +++ b/arch/arm64/kvm/rmi.c
+>> @@ -500,6 +500,106 @@ static void realm_unmap_shared_range(struct kvm *kvm,
+>>                              start, end);
+>>  }
+>>
+>> +/* Calculate the number of s2 root rtts needed */
+>> +static int realm_num_root_rtts(struct realm *realm)
+>> +{
+>> +       unsigned int ipa_bits = realm->ia_bits;
+>> +       unsigned int levels = 4 - get_start_level(realm);
+>> +       unsigned int sl_ipa_bits = levels * (RMM_PAGE_SHIFT - 3) +
+>> +                                  RMM_PAGE_SHIFT;
+>> +
+>> +       if (sl_ipa_bits >= ipa_bits)
+>> +               return 1;
+>> +
+>> +       return 1 << (ipa_bits - sl_ipa_bits);
+>> +}
+>> +
+>> +static int realm_create_rd(struct kvm *kvm)
+>> +{
+>> +       struct realm *realm = &kvm->arch.realm;
+>> +       struct realm_params *params = realm->params;
+>> +       void *rd = NULL;
+>> +       phys_addr_t rd_phys, params_phys;
+>> +       size_t pgd_size = kvm_pgtable_stage2_pgd_size(kvm->arch.mmu.vtcr);
+>> +       int i, r;
+>> +       int rtt_num_start;
+>> +
+>> +       realm->ia_bits = VTCR_EL2_IPA(kvm->arch.mmu.vtcr);
+>> +       rtt_num_start = realm_num_root_rtts(realm);
+>> +
+>> +       if (WARN_ON(realm->rd || !realm->params))
+>> +               return -EEXIST;
+>> +
+>> +       if (pgd_size / RMM_PAGE_SIZE < rtt_num_start)
+>> +               return -EINVAL;
+>> +
+>> +       rd = (void *)__get_free_page(GFP_KERNEL);
+>> +       if (!rd)
+>> +               return -ENOMEM;
+>> +
+>> +       rd_phys = virt_to_phys(rd);
+>> +       if (rmi_granule_delegate(rd_phys)) {
+>> +               r = -ENXIO;
+>> +               goto free_rd;
+>> +       }
+>> +
+>> +       for (i = 0; i < pgd_size; i += RMM_PAGE_SIZE) {
+>> +               phys_addr_t pgd_phys = kvm->arch.mmu.pgd_phys + i;
+>> +
+>> +               if (rmi_granule_delegate(pgd_phys)) {
+>> +                       r = -ENXIO;
+>> +                       goto out_undelegate_tables;
+>> +               }
+>> +       }
+>> +
+>> +       params->s2sz = VTCR_EL2_IPA(kvm->arch.mmu.vtcr);
+>> +       params->rtt_level_start = get_start_level(realm);
+>> +       params->rtt_num_start = rtt_num_start;
+>> +       params->rtt_base = kvm->arch.mmu.pgd_phys;
+>> +       params->vmid = realm->vmid;
+> 
+> I don't see a way to configure rpv and hash_algo anymore. I assume they
+> are gone for a minimal userspace interface. Will there be a way to set
+> them going forward?
 
-This ensures that old MAC entries are removed from the MPFS table
-before adding a new one and that the forwarding rules are updated
-accordingly. If updating the flow table fails, the original MAC and
-rules are restored as much as possible to keep the software and
-hardware state consistent.
+Yes the intention is that the uAPI will be extended in the future to
+allow these to be configured. This would be by exposing new capability
+flags and allowing the VMM to set the capability. This ensures that a
+basic VMM doesn't need to worry about them, but a more featured VMM can
+provide support for configuration.
 
-Signed-off-by: Cindy Lu <lulu@redhat.com>
+This series is already rather long so I've attempted to drop optional
+parts to keep the complexity down while still providing something
+"useful" (i.e. can launch a realm guest and there's some meaningful
+extra security/attestation over a normal VM). There's loads of extra
+features in the spec which will come later.
 
-Reviewed-by: Dragos Tatulea <dtatulea@nvidia.com>
----
- drivers/vdpa/mlx5/net/mlx5_vnet.c | 131 ++++++++++++++++--------------
- 1 file changed, 71 insertions(+), 60 deletions(-)
+Thanks,
+Steve
 
-diff --git a/drivers/vdpa/mlx5/net/mlx5_vnet.c b/drivers/vdpa/mlx5/net/mlx5_vnet.c
-index 6e42bae7c9a1..78a4b80d1ce2 100644
---- a/drivers/vdpa/mlx5/net/mlx5_vnet.c
-+++ b/drivers/vdpa/mlx5/net/mlx5_vnet.c
-@@ -2125,86 +2125,97 @@ static void teardown_steering(struct mlx5_vdpa_net *ndev)
- 	mlx5_destroy_flow_table(ndev->rxft);
- }
- 
--static virtio_net_ctrl_ack handle_ctrl_mac(struct mlx5_vdpa_dev *mvdev, u8 cmd)
-+static int mlx5_vdpa_change_mac(struct mlx5_vdpa_net *ndev,
-+				struct mlx5_core_dev *pfmdev,
-+				const u8 *new_mac)
- {
--	struct mlx5_vdpa_net *ndev = to_mlx5_vdpa_ndev(mvdev);
--	struct mlx5_control_vq *cvq = &mvdev->cvq;
--	virtio_net_ctrl_ack status = VIRTIO_NET_ERR;
--	struct mlx5_core_dev *pfmdev;
--	size_t read;
--	u8 mac[ETH_ALEN], mac_back[ETH_ALEN];
-+	struct mlx5_vdpa_dev *mvdev = &ndev->mvdev;
-+	u8 old_mac[ETH_ALEN];
- 
--	pfmdev = pci_get_drvdata(pci_physfn(mvdev->mdev->pdev));
--	switch (cmd) {
--	case VIRTIO_NET_CTRL_MAC_ADDR_SET:
--		read = vringh_iov_pull_iotlb(&cvq->vring, &cvq->riov, (void *)mac, ETH_ALEN);
--		if (read != ETH_ALEN)
--			break;
-+	if (is_zero_ether_addr(new_mac))
-+		return -EINVAL;
- 
--		if (!memcmp(ndev->config.mac, mac, 6)) {
--			status = VIRTIO_NET_OK;
--			break;
-+	if (!is_zero_ether_addr(ndev->config.mac)) {
-+		if (mlx5_mpfs_del_mac(pfmdev, ndev->config.mac)) {
-+			mlx5_vdpa_warn(mvdev, "failed to delete old MAC %pM from MPFS table\n",
-+				       ndev->config.mac);
-+			return -EIO;
- 		}
-+	}
- 
--		if (is_zero_ether_addr(mac))
--			break;
-+	if (mlx5_mpfs_add_mac(pfmdev, (u8 *)new_mac)) {
-+		mlx5_vdpa_warn(mvdev, "failed to insert new MAC %pM into MPFS table\n",
-+			       new_mac);
-+		return -EIO;
-+	}
- 
--		if (!is_zero_ether_addr(ndev->config.mac)) {
--			if (mlx5_mpfs_del_mac(pfmdev, ndev->config.mac)) {
--				mlx5_vdpa_warn(mvdev, "failed to delete old MAC %pM from MPFS table\n",
--					       ndev->config.mac);
--				break;
--			}
--		}
-+	/* backup the original mac address so that if failed to add the forward rules
-+	 * we could restore it
-+	 */
-+	ether_addr_copy(old_mac, ndev->config.mac);
- 
--		if (mlx5_mpfs_add_mac(pfmdev, mac)) {
--			mlx5_vdpa_warn(mvdev, "failed to insert new MAC %pM into MPFS table\n",
--				       mac);
--			break;
--		}
-+	ether_addr_copy(ndev->config.mac, new_mac);
- 
--		/* backup the original mac address so that if failed to add the forward rules
--		 * we could restore it
--		 */
--		memcpy(mac_back, ndev->config.mac, ETH_ALEN);
-+	/* Need recreate the flow table entry, so that the packet could forward back
-+	 */
-+	mac_vlan_del(ndev, old_mac, 0, false);
- 
--		memcpy(ndev->config.mac, mac, ETH_ALEN);
-+	if (mac_vlan_add(ndev, ndev->config.mac, 0, false)) {
-+		mlx5_vdpa_warn(mvdev, "failed to insert forward rules, try to restore\n");
- 
--		/* Need recreate the flow table entry, so that the packet could forward back
-+		/* Although it hardly run here, we still need double check */
-+		if (is_zero_ether_addr(old_mac)) {
-+			mlx5_vdpa_warn(mvdev, "restore mac failed: Original MAC is zero\n");
-+			return -EIO;
-+		}
-+
-+		/* Try to restore original mac address to MFPS table, and try to restore
-+		 * the forward rule entry.
- 		 */
--		mac_vlan_del(ndev, mac_back, 0, false);
-+		if (mlx5_mpfs_del_mac(pfmdev, ndev->config.mac)) {
-+			mlx5_vdpa_warn(mvdev, "restore mac failed: delete MAC %pM from MPFS table failed\n",
-+				       ndev->config.mac);
-+		}
- 
--		if (mac_vlan_add(ndev, ndev->config.mac, 0, false)) {
--			mlx5_vdpa_warn(mvdev, "failed to insert forward rules, try to restore\n");
-+		if (mlx5_mpfs_add_mac(pfmdev, old_mac)) {
-+			mlx5_vdpa_warn(mvdev, "restore mac failed: insert old MAC %pM into MPFS table failed\n",
-+				       old_mac);
-+		}
- 
--			/* Although it hardly run here, we still need double check */
--			if (is_zero_ether_addr(mac_back)) {
--				mlx5_vdpa_warn(mvdev, "restore mac failed: Original MAC is zero\n");
--				break;
--			}
-+		ether_addr_copy(ndev->config.mac, old_mac);
- 
--			/* Try to restore original mac address to MFPS table, and try to restore
--			 * the forward rule entry.
--			 */
--			if (mlx5_mpfs_del_mac(pfmdev, ndev->config.mac)) {
--				mlx5_vdpa_warn(mvdev, "restore mac failed: delete MAC %pM from MPFS table failed\n",
--					       ndev->config.mac);
--			}
-+		if (mac_vlan_add(ndev, ndev->config.mac, 0, false))
-+			mlx5_vdpa_warn(mvdev, "restore forward rules failed: insert forward rules failed\n");
- 
--			if (mlx5_mpfs_add_mac(pfmdev, mac_back)) {
--				mlx5_vdpa_warn(mvdev, "restore mac failed: insert old MAC %pM into MPFS table failed\n",
--					       mac_back);
--			}
-+		return -EIO;
-+	}
- 
--			memcpy(ndev->config.mac, mac_back, ETH_ALEN);
-+	return 0;
-+}
- 
--			if (mac_vlan_add(ndev, ndev->config.mac, 0, false))
--				mlx5_vdpa_warn(mvdev, "restore forward rules failed: insert forward rules failed\n");
-+static virtio_net_ctrl_ack handle_ctrl_mac(struct mlx5_vdpa_dev *mvdev, u8 cmd)
-+{
-+	struct mlx5_vdpa_net *ndev = to_mlx5_vdpa_ndev(mvdev);
-+	struct mlx5_control_vq *cvq = &mvdev->cvq;
-+	virtio_net_ctrl_ack status = VIRTIO_NET_ERR;
-+	struct mlx5_core_dev *pfmdev;
-+	size_t read;
-+	u8 mac[ETH_ALEN];
- 
-+	pfmdev = pci_get_drvdata(pci_physfn(mvdev->mdev->pdev));
-+	switch (cmd) {
-+	case VIRTIO_NET_CTRL_MAC_ADDR_SET:
-+		read = vringh_iov_pull_iotlb(&cvq->vring, &cvq->riov,
-+					     (void *)mac, ETH_ALEN);
-+		if (read != ETH_ALEN)
- 			break;
--		}
- 
--		status = VIRTIO_NET_OK;
-+		if (!memcmp(ndev->config.mac, mac, 6)) {
-+			status = VIRTIO_NET_OK;
-+			break;
-+		}
-+		status = mlx5_vdpa_change_mac(ndev, pfmdev, mac) ? VIRTIO_NET_ERR :
-+								       VIRTIO_NET_OK;
- 		break;
- 
- 	default:
--- 
-2.51.0
+>> +
+>> +       params_phys = virt_to_phys(params);
+>> +
+>> +       if (rmi_realm_create(rd_phys, params_phys)) {
+>> +               r = -ENXIO;
+>> +               goto out_undelegate_tables;
+>> +       }
+>> +
+>> +       if (WARN_ON(rmi_rec_aux_count(rd_phys, &realm->num_aux))) {
+>> +               WARN_ON(rmi_realm_destroy(rd_phys));
+>> +               r = -ENXIO;
+>> +               goto out_undelegate_tables;
+>> +       }
+>> +
+>> +       realm->rd = rd;
+>> +       WRITE_ONCE(realm->state, REALM_STATE_NEW);
+>> +       /* The realm is up, free the parameters.  */
+>> +       free_page((unsigned long)realm->params);
+>> +       realm->params = NULL;
+>> +
+>> +       return 0;
+>> +
+>> +out_undelegate_tables:
+>> +       while (i > 0) {
+>> +               i -= RMM_PAGE_SIZE;
+>> +
+>> +               phys_addr_t pgd_phys = kvm->arch.mmu.pgd_phys + i;
+>> +
+>> +               if (WARN_ON(rmi_granule_undelegate(pgd_phys))) {
+>> +                       /* Leak the pages if they cannot be returned */
+>> +                       kvm->arch.mmu.pgt = NULL;
+>> +                       break;
+>> +               }
+>> +       }
+>> +       if (WARN_ON(rmi_granule_undelegate(rd_phys))) {
+>> +               /* Leak the page if it isn't returned */
+>> +               return r;
+>> +       }
+>> +free_rd:
+>> +       free_page((unsigned long)rd);
+>> +       return r;
+>> +}
+>> +
+>>  static int realm_unmap_private_page(struct realm *realm,
+>>                                     unsigned long ipa,
+>>                                     unsigned long *next_addr)
+>> @@ -803,8 +903,21 @@ static int realm_init_ipa_state(struct kvm *kvm,
+>>
+>>  static int realm_ensure_created(struct kvm *kvm)
+>>  {
+>> -       /* Provided in later patch */
+>> -       return -ENXIO;
+>> +       int ret;
+>> +
+>> +       switch (kvm_realm_state(kvm)) {
+>> +       case REALM_STATE_NONE:
+>> +               break;
+>> +       case REALM_STATE_NEW:
+>> +               return 0;
+>> +       case REALM_STATE_DEAD:
+>> +               return -ENXIO;
+>> +       default:
+>> +               return -EBUSY;
+>> +       }
+>> +
+>> +       ret = realm_create_rd(kvm);
+>> +       return ret;
+>>  }
+>>
+>>  static int set_ripas_of_protected_regions(struct kvm *kvm)
+>> --
+>> 2.43.0
+>>
 
