@@ -1,49 +1,49 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD54C3002DC;
-	Mon, 26 Jan 2026 11:07:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.17
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5C6132E137;
+	Mon, 26 Jan 2026 11:14:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.19
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769425643; cv=none; b=T73jI6+6VUsy518zCbv0JxBpF3G7TDk+JI+ljRXKcYKLzdtlV4Q1m0QTFfJkmusfaNNd4RTf0/PUm48FYHkP7VDsAV5e8PjIueP5OKYazBtoeXBH2lLPJeOk+NH0biCp47KhwbWGolDhQ2GtB62KEeBUNz2oRCEel0sGLTH6GWA=
+	t=1769426058; cv=none; b=FgipbShdcx4s3iVdCdknKZSYwohnZE7OVKgVDPHIEZh/Z1wqiZR5P8uDw/Y1exBdZZ5cIu5x1OY8U+dnxPDrjmR00ZDAd7NEUHR8dw9kp49Mv6suMJJzoQWvgs6SVHcNBQaatwr+uREuH/m3Qa1GqwxhGnD10krjMbE6o6NgxCw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769425643; c=relaxed/simple;
-	bh=13264qrMCQhOYJJ+Yi610FF7PBiCw3G7fVvwcjzIa1Y=;
+	s=arc-20240116; t=1769426058; c=relaxed/simple;
+	bh=2KvsABCVidNUiCIvpimircyvbgQJu/c+OPtijk7JUhg=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=rVyjXmT4p93dINXN7eT5SB87xz2cvoc42pukZagVnrNALec3U5ZK6EIL489rDVObQccxk1BKqbNNO7EnUnmzInlnUeAFQMYNgYqMsrIVqNK+3HKo6uZIN9Z7a0wDNXlV6lloBAfHYbE/0EHbI8bP+6qiOiTd8L5o/p7lOjQsZz4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=ixdnJZmR; arc=none smtp.client-ip=192.198.163.17
+	 Content-Type:Content-Disposition:In-Reply-To; b=DzJ7PCLjLEuu6vvpCTUU5JQ6n+uozk/1/P4xgCJqZiqiSElMKbF2RWTgR8ga3OaIqERoDkI/S1j/kYkRzofke8qTY6wKUpP6cMjpS4scEG/yWrI4ILnzlu+Q5EGK0GcuOHp9uDshysWawKIVGAh8qy8XG0IQAnR1ITBMGaXwGG0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=N3PJatvc; arc=none smtp.client-ip=192.198.163.19
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="ixdnJZmR"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="N3PJatvc"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1769425642; x=1800961642;
+  t=1769426058; x=1800962058;
   h=date:from:to:cc:subject:message-id:references:
    mime-version:in-reply-to;
-  bh=13264qrMCQhOYJJ+Yi610FF7PBiCw3G7fVvwcjzIa1Y=;
-  b=ixdnJZmRh6gRgXQ5/hGU2ozv5xliwNdQZ+u61sezCs0o3/KBYEEy9PEt
-   0d6gCzyW1i0ERpQ9myafwQEwU+fd66QNk/kLc3JvFBEx3fwZCecO/mrOg
-   H95GtaVxcYrKd/05QwTtzb5MshFdMHE3NQ/6tsxqlYUB1su83sogRYPRK
-   grLg2rPafqnR5aNKmZzXEFOz4rgdNHOXZeakEco2AAy7Q2gxE4EchfzbY
-   pIYYYlQhX1DucG1Z7cN3XnwtKJlAEdmImfOtIfSaZstwvGFX8TXWj49wy
-   WQtvbrPdhMlb+tS3yJmFg5GWMmkpD9OsVp/EnJJ4Bz43uSVRoTg9k3EPP
-   g==;
-X-CSE-ConnectionGUID: xTbjUo4dRsK9QKwLBGD4yQ==
-X-CSE-MsgGUID: iTg5OQ3BTP60NFTlWCtlOQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11682"; a="70505057"
+  bh=2KvsABCVidNUiCIvpimircyvbgQJu/c+OPtijk7JUhg=;
+  b=N3PJatvchInb5JF7w7isktQ4FyHdUYubmaYt9MBGOc25ieV1dJq4OYGf
+   Akq+G7fBIwl+5651J6YhotMSpz9mdu66IhSGG4cUW8YcQpOmkG6qvIQtk
+   VobYB5/aH/LG86Yk1ON+kgdtVwKyOi/uxvZLJ5E0GeY2XMKQ8Y7L1x2x9
+   mYbCtQA3MKtBoC6Dt77qFMHZBofPWfcyT+D0dAkzB2z0JwlWsWpMNOHbf
+   5LczM+igeORsL7hb5X18ew1FTd+KVHpK3jKMxyfJhyI56UsSrFeEaM79a
+   afQQZjLwaqp73bNheHlFMii3PMzBipL1rwh6EKw8+kSkhNX6TuTRrL5sq
+   Q==;
+X-CSE-ConnectionGUID: R2K76vjYSSqZQUNfBDqGdA==
+X-CSE-MsgGUID: aCCazxLCRHaMsuh9L7ooKg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11682"; a="69624744"
 X-IronPort-AV: E=Sophos;i="6.21,255,1763452800"; 
-   d="scan'208";a="70505057"
-Received: from orviesa007.jf.intel.com ([10.64.159.147])
-  by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Jan 2026 03:07:21 -0800
-X-CSE-ConnectionGUID: D41W+9cySa2zhutrrohEgw==
-X-CSE-MsgGUID: hKAdt33ISCCHUCojOMLibw==
+   d="scan'208";a="69624744"
+Received: from fmviesa009.fm.intel.com ([10.60.135.149])
+  by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Jan 2026 03:14:17 -0800
+X-CSE-ConnectionGUID: eEwpCwmhR8Op3adN4iK8UQ==
+X-CSE-MsgGUID: uWQg3BXUQiqCgTPx7KKaGA==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.21,255,1763452800"; 
-   d="scan'208";a="207711821"
+   d="scan'208";a="208083134"
 Received: from krybak-mobl1.ger.corp.intel.com (HELO localhost) ([10.245.246.55])
-  by orviesa007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Jan 2026 03:07:13 -0800
-Date: Mon, 26 Jan 2026 13:07:10 +0200
+  by fmviesa009-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Jan 2026 03:14:10 -0800
+Date: Mon, 26 Jan 2026 13:14:07 +0200
 From: Tony Lindgren <tony.lindgren@linux.intel.com>
 To: Chao Gao <chao.gao@intel.com>
 Cc: linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org,
@@ -53,15 +53,13 @@ Cc: linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org,
 	paulmck@kernel.org, nik.borisov@suse.com, zhenzhong.duan@intel.com,
 	seanjc@google.com, rick.p.edgecombe@intel.com, kas@kernel.org,
 	dave.hansen@linux.intel.com, vishal.l.verma@intel.com,
-	Farrah Chen <farrah.chen@intel.com>,
 	Thomas Gleixner <tglx@linutronix.de>,
 	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
 	"H. Peter Anvin" <hpa@zytor.com>
-Subject: Re: [PATCH v3 22/26] x86/virt/tdx: Update tdx_sysinfo and check
- features post-update
-Message-ID: <aXdK3pZJp4cEZeSl@tlindgre-MOBL1>
+Subject: Re: [PATCH v3 23/26] x86/virt/tdx: Enable TDX Module runtime updates
+Message-ID: <aXdMfzIxF6KR7VCe@tlindgre-MOBL1>
 References: <20260123145645.90444-1-chao.gao@intel.com>
- <20260123145645.90444-23-chao.gao@intel.com>
+ <20260123145645.90444-24-chao.gao@intel.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -70,35 +68,29 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260123145645.90444-23-chao.gao@intel.com>
+In-Reply-To: <20260123145645.90444-24-chao.gao@intel.com>
 
-On Fri, Jan 23, 2026 at 06:55:30AM -0800, Chao Gao wrote:
-> +int tdx_module_post_update(struct tdx_sys_info *info)
-> +{
-...
-> +	/*
-> +	 * Blindly refreshing the entire tdx_sysinfo could disrupt running
-> +	 * software, as it may subtly rely on the previous state unless
-> +	 * proven otherwise.
-> +	 *
-> +	 * Only refresh version information (including handoff version)
-> +	 * that does not affect functionality, and ignore all other
-> +	 * changes.
-> +	 */
-> +	tdx_sysinfo.version	= info->version;
-> +	tdx_sysinfo.handoff	= info->handoff;
-> +
-> +	if (!memcmp(&tdx_sysinfo, info, sizeof(*info)))
-> +		return 0;
-> +
-> +	pr_info("TDX module features have changed after updates, but might not take effect.\n");
-> +	pr_info("Please consider updating your BIOS to install the TDX Module.\n");
-> +	return 0;
-> +}
+On Fri, Jan 23, 2026 at 06:55:31AM -0800, Chao Gao wrote:
+> --- a/arch/x86/include/asm/tdx.h
+> +++ b/arch/x86/include/asm/tdx.h
+> @@ -32,6 +32,9 @@
+>  #define TDX_SUCCESS		0ULL
+>  #define TDX_RND_NO_ENTROPY	0x8000020300000000ULL
+>  
+> +/* Bit definitions of TDX_FEATURES0 metadata field */
+> +#define TDX_FEATURES0_TD_PRESERVING	BIT(1)
+> +#define TDX_FEATURES0_NO_RBP_MOD	BIT(18)
+>  #ifndef __ASSEMBLER__
+>  
+>  #include <uapi/asm/mce.h>
 
-To me it seems that a Linux a TDX module loader recommending a BIOS module
-loader is not very user friendly :)
+How about let's put these defines into arch/x86/include/asm/shared/tdx.h
+instead? And use BIT_ULL?
 
-Anyways that more stuff for future so:
+This would allow cleaning up arch/x86/kvm/vmx/tdx.c in a follow-up patch
+for MD_FIELD_ID_FEATURES0_TOPOLOGY_ENUM to use TDX_FEATURES0_TOPOLOGY_ENUM
+BIT_ULL(20).
+
+Of course it can be done later on too, so:
 
 Reviewed-by: Tony Lindgren <tony.lindgren@linux.intel.com>
