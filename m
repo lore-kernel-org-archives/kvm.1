@@ -1,36 +1,36 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B16E3358DA;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E6F0337100;
 	Mon, 26 Jan 2026 12:17:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769429855; cv=none; b=bbuJ46rFYrxzhUfPbOBuxQimtQnQ8YkUJo3GoBgBvFodRjbBKxzQRGHmJkvEqBMQf4+K48jKwgGSnfcXmUXe8XZw+ntIUwNGNAUJJlN4oTfAXpB99kuWSqw9OYKLWR3a8C52NXC6RskSCkslWakKzoN/7WLigiRv+NC+GYrJl90=
+	t=1769429855; cv=none; b=CiOB3BgRFN2euGFyRuurkBTfwthJP8sluupaH6R/lQfadtOwDRjtKNt3kjvTyWdJJLbjqEoWFWFUw2IgcnSt4mDunVs/R6b1Cnzpm8+JJYGqsKweRCNnjpD5jb4/MUPZY8oJMbv+eLTGhbcfzUY9GLoZaeowmzh01livlEQ+dQs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1769429855; c=relaxed/simple;
-	bh=oBYAGLow77dO0fWYfBQJjR0bVNFLQFasCbUMJ19cc4k=;
+	bh=PTm8YLSVe/WgrlU0lr7yyZgygsqs+ZiX1K/HFlMRjgM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=umDvtbGuvBEgfkv+NSTJ0m+oXijXRAsUDrMoOSlCKyWUpok/7tGpL8oydwDBYta7F1JTssmU+5MPTRf6p5DPtM/Co8HFLBBNWclZmGnwq03pu+5OgTqR096iFW5FjNGJQ1FMiQ0L/tRn8HSoSwGRvmovABqADcfbFHyO+p8KD0o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=AmQ+qLuW; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version; b=SXApxb/hlCQeE2MecqmbzNnt9mZrXrAPSc0//XA3CUSQc2Bm9GBuG3fey8GinmqAa6zCNj0uS0MPSyOnsqL5UnCzzjr9Rcpwdfezv0qnBDOeQybFijON8cc92BiHPKcYovV9uAwTY6eCn3bYIqZ4jKpeXbU98mzpEV57IqIl9kE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bKeI1YGi; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="AmQ+qLuW"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DDA77C116C6;
-	Mon, 26 Jan 2026 12:17:34 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bKeI1YGi"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8112DC2BC86;
+	Mon, 26 Jan 2026 12:17:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1769429854;
-	bh=oBYAGLow77dO0fWYfBQJjR0bVNFLQFasCbUMJ19cc4k=;
+	s=k20201202; t=1769429855;
+	bh=PTm8YLSVe/WgrlU0lr7yyZgygsqs+ZiX1K/HFlMRjgM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AmQ+qLuWOcv+C8wQTt+Bu1KLM99h1dRUWh7B6iw66A4vS3B3Iiv6nmpfAUWxOQt8Y
-	 l1FErAK8gva6TvNHCe0BuJZbPXLPt2ZkeUhOwWhtpAHfWqtI6pUl20rZRYupcUikd0
-	 2X47w8bORNXCFRDXruSNF12WD15as3KBcYLxnloMv9TmIjd+L6WpAHsQj58KVTZDUj
-	 49EM6Wr4Iww0Mx8EClrpyu44sRLipjRXBAJPn9DLv61X4+GDEdtK7s45GYmsEabQ8i
-	 SZnvQAMURc2r7/EwgwQZdtbLWLmIHlv2o4JHI9HCHlvPhMlC/d/C7J2XSZDPSXwAou
-	 a//W1XGGkha1Q==
+	b=bKeI1YGiUCHg53hwDL6qa8q11IrKaaJ7wzrHvlohWybi5vEbJr9A6Z1cCwBgWDq7O
+	 mdFZ14MXOuF+q0nJibyQEMnAI2nxJ/R/Cu32SwT41fy6uw3hQRPEbqELiqZmpNNLrz
+	 YwyQabzcoRux1N7Iand2Eejq1J1pdeoEcly3YDxZ3Ow0wsALWTn/1a12Ho3WfAZnKm
+	 RHSidpZf06RP03dHJQTfimSXD4wWdrp2cWfWpY78W5ORLVikTkxtoJxz6+GwsSrkxi
+	 lo+TDCRhRWaFrIHKvPq7gY6HdVWdqDA7KRpxaliYIA+2SfePkjn3UmP1v4INhNOBHP
+	 nH8x3CREQZYqg==
 Received: from sofa.misterjones.org ([185.219.108.64] helo=valley-girl.lan)
 	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.98.2)
 	(envelope-from <maz@kernel.org>)
-	id 1vkLXB-00000005hx6-0DPL;
+	id 1vkLXB-00000005hx6-37fT;
 	Mon, 26 Jan 2026 12:17:33 +0000
 From: Marc Zyngier <maz@kernel.org>
 To: kvmarm@lists.linux.dev,
@@ -43,9 +43,9 @@ Cc: Joey Gouly <joey.gouly@arm.com>,
 	Fuad Tabba <tabba@google.com>,
 	Will Deacon <will@kernel.org>,
 	Catalin Marinas <catalin.marinas@arm.com>
-Subject: [PATCH 06/20] KVM: arm64: Inherit RESx bits from FGT register descriptors
-Date: Mon, 26 Jan 2026 12:16:40 +0000
-Message-ID: <20260126121655.1641736-7-maz@kernel.org>
+Subject: [PATCH 09/20] KVM: arm64: Convert HCR_EL2.RW to AS_RES1
+Date: Mon, 26 Jan 2026 12:16:43 +0000
+Message-ID: <20260126121655.1641736-10-maz@kernel.org>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20260126121655.1641736-1-maz@kernel.org>
 References: <20260126121655.1641736-1-maz@kernel.org>
@@ -61,81 +61,47 @@ X-SA-Exim-Rcpt-To: kvmarm@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
 X-SA-Exim-Mail-From: maz@kernel.org
 X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
 
-The FGT registers have their computed RESx bits stashed in specific
-descriptors, which we can easily use when computing the masks used
-for the guest.
-
-This removes a bit of boilerplate code.
+Now that we have the AS_RES1 constraint, it becomes trivial to express
+the HCR_EL2.RW behaviour.
 
 Signed-off-by: Marc Zyngier <maz@kernel.org>
 ---
- arch/arm64/kvm/config.c | 16 +++++-----------
- 1 file changed, 5 insertions(+), 11 deletions(-)
+ arch/arm64/kvm/config.c | 15 +--------------
+ 1 file changed, 1 insertion(+), 14 deletions(-)
 
 diff --git a/arch/arm64/kvm/config.c b/arch/arm64/kvm/config.c
-index a907195bd44b6..8d152605999ba 100644
+index 68ed5af2b4d53..39487182057a3 100644
 --- a/arch/arm64/kvm/config.c
 +++ b/arch/arm64/kvm/config.c
-@@ -1344,6 +1344,11 @@ struct resx compute_reg_resx_bits(struct kvm *kvm,
- 	resx = compute_resx_bits(kvm, r->bit_feat_map, r->bit_feat_map_sz,
- 				 require, exclude);
+@@ -389,19 +389,6 @@ static bool feat_vmid16(struct kvm *kvm)
+ 	return kvm_has_feat_enum(kvm, ID_AA64MMFR1_EL1, VMIDBits, 16);
+ }
  
-+	if (r->feat_map.flags & MASKS_POINTER) {
-+		resx.res0 |= r->feat_map.masks->res0;
-+		resx.res1 |= r->feat_map.masks->res1;
-+	}
-+
- 	tmp = compute_resx_bits(kvm, &r->feat_map, 1, require, exclude);
+-static bool compute_hcr_rw(struct kvm *kvm, u64 *bits)
+-{
+-	/* This is purely academic: AArch32 and NV are mutually exclusive */
+-	if (bits) {
+-		if (kvm_has_feat(kvm, FEAT_AA32EL1))
+-			*bits &= ~HCR_EL2_RW;
+-		else
+-			*bits |= HCR_EL2_RW;
+-	}
+-
+-	return true;
+-}
+-
+ static bool compute_hcr_e2h(struct kvm *kvm, u64 *bits)
+ {
+ 	if (bits) {
+@@ -967,7 +954,7 @@ static const DECLARE_FEAT_MAP(hcrx_desc, __HCRX_EL2,
  
- 	resx.res0 |= tmp.res0;
-@@ -1424,47 +1429,36 @@ struct resx get_reg_fixed_bits(struct kvm *kvm, enum vcpu_sysreg reg)
- 	switch (reg) {
- 	case HFGRTR_EL2:
- 		resx = compute_reg_resx_bits(kvm, &hfgrtr_desc, 0, 0);
--		resx.res1 |= HFGRTR_EL2_RES1;
- 		break;
- 	case HFGWTR_EL2:
- 		resx = compute_reg_resx_bits(kvm, &hfgwtr_desc, 0, 0);
--		resx.res1 |= HFGWTR_EL2_RES1;
- 		break;
- 	case HFGITR_EL2:
- 		resx = compute_reg_resx_bits(kvm, &hfgitr_desc, 0, 0);
--		resx.res1 |= HFGITR_EL2_RES1;
- 		break;
- 	case HDFGRTR_EL2:
- 		resx = compute_reg_resx_bits(kvm, &hdfgrtr_desc, 0, 0);
--		resx.res1 |= HDFGRTR_EL2_RES1;
- 		break;
- 	case HDFGWTR_EL2:
- 		resx = compute_reg_resx_bits(kvm, &hdfgwtr_desc, 0, 0);
--		resx.res1 |= HDFGWTR_EL2_RES1;
- 		break;
- 	case HAFGRTR_EL2:
- 		resx = compute_reg_resx_bits(kvm, &hafgrtr_desc, 0, 0);
--		resx.res1 |= HAFGRTR_EL2_RES1;
- 		break;
- 	case HFGRTR2_EL2:
- 		resx = compute_reg_resx_bits(kvm, &hfgrtr2_desc, 0, 0);
--		resx.res1 |= HFGRTR2_EL2_RES1;
- 		break;
- 	case HFGWTR2_EL2:
- 		resx = compute_reg_resx_bits(kvm, &hfgwtr2_desc, 0, 0);
--		resx.res1 |= HFGWTR2_EL2_RES1;
- 		break;
- 	case HFGITR2_EL2:
- 		resx = compute_reg_resx_bits(kvm, &hfgitr2_desc, 0, 0);
--		resx.res1 |= HFGITR2_EL2_RES1;
- 		break;
- 	case HDFGRTR2_EL2:
- 		resx = compute_reg_resx_bits(kvm, &hdfgrtr2_desc, 0, 0);
--		resx.res1 |= HDFGRTR2_EL2_RES1;
- 		break;
- 	case HDFGWTR2_EL2:
- 		resx = compute_reg_resx_bits(kvm, &hdfgwtr2_desc, 0, 0);
--		resx.res1 |= HDFGWTR2_EL2_RES1;
- 		break;
- 	case HCRX_EL2:
- 		resx = compute_reg_resx_bits(kvm, &hcrx_desc, 0, 0);
+ static const struct reg_bits_to_feat_map hcr_feat_map[] = {
+ 	NEEDS_FEAT(HCR_EL2_TID0, FEAT_AA32EL0),
+-	NEEDS_FEAT_FIXED(HCR_EL2_RW, compute_hcr_rw),
++	NEEDS_FEAT_FLAG(HCR_EL2_RW, AS_RES1, FEAT_AA32EL1),
+ 	NEEDS_FEAT(HCR_EL2_HCD, not_feat_aa64el3),
+ 	NEEDS_FEAT(HCR_EL2_AMO		|
+ 		   HCR_EL2_BSU		|
 -- 
 2.47.3
 
