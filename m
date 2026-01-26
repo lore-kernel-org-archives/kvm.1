@@ -1,218 +1,82 @@
-Received: from relay4.mymailcheap.com (relay4.mymailcheap.com [137.74.80.156])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 63B5F32D7F8;
-	Mon, 26 Jan 2026 09:55:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=137.74.80.156
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A7D7D32D44E;
+	Mon, 26 Jan 2026 09:57:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.17
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769421338; cv=none; b=O6D48Fpa19ox13A5pcjgSn4z3njJljxVRmmrrWIXz9a4jb96Sd03UjovcX9fuWvIFLaEi0Wm1OWXGCS3Y5YTP4yiHrcAbIt54EUFDGVkEH9FrXwmUqngvD1a/rlXxJlm1STWgnSGz55QzHDw/j989EM+hRiSJl5gcz62HyhN/5A=
+	t=1769421427; cv=none; b=WRVaa+S4ARpAyixfRIQLCxZ7VHrDZ4ciDADOG+kKxU+7ZjpqMUKYhUx4on36cNJdlxHBfHoadn1ze/lXgzRIN7LE3zatQX4zR61pwmBNNQAQAlEedsqIqdG7FjsJzlR95yc82SObwENc19J0azzSr2onbpZKpWSxtK+lIn2k9c8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769421338; c=relaxed/simple;
-	bh=oeog5iZO0tE/GpnDtWPS42chjSxxsQeVLLMswgVyFfc=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=dvSxps82qGz+3n4KqPVvWK2si1qMEqacttYYNwRcxc4RKSL7SrZSJapdOjCGmQ963c0VfdGOTYom9shd+D4NRZZxuM2oB7scD7YcaM2MHH4ZW3cv95x4VT0n7+oaXmCZ5cRV2m7QMMHpzUteOcmtFMTcApuAD6OWauG8NPD0VwQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=aosc.io; spf=pass smtp.mailfrom=aosc.io; dkim=pass (1024-bit key) header.d=aosc.io header.i=@aosc.io header.b=tqeuu1Kt; arc=none smtp.client-ip=137.74.80.156
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=aosc.io
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=aosc.io
+	s=arc-20240116; t=1769421427; c=relaxed/simple;
+	bh=6L2WsHp5StbLTHRapsIb/r2sE+yIgZ58XjuLHYlApdY=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=EsgAJ9ovz5RYE5R57dk0XOoTgGje441qEMY/74+ayFLJNaY5BV15hML32mZhLRSAzajW5siWsXRZGOLf9avAqCsZfjnlNClMvdi6aM5F5M4GC7enAPnUebCwNPIUmUGX2vuNTT6KfnVRb0mWH1Tfg4y0yaOFQma+oYBrYdSQLmA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=hjiGVA04; arc=none smtp.client-ip=198.175.65.17
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=aosc.io header.i=@aosc.io header.b="tqeuu1Kt"
-Received: from nf2.mymailcheap.com (nf2.mymailcheap.com [54.39.180.165])
-	by relay4.mymailcheap.com (Postfix) with ESMTPS id 4CB21202EF;
-	Mon, 26 Jan 2026 09:55:29 +0000 (UTC)
-Received: from mail20.mymailcheap.com (mail20.mymailcheap.com [51.83.111.147])
-	by nf2.mymailcheap.com (Postfix) with ESMTPSA id EF3A840403;
-	Mon, 26 Jan 2026 09:55:27 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=aosc.io; s=default;
-	t=1769421326; bh=oeog5iZO0tE/GpnDtWPS42chjSxxsQeVLLMswgVyFfc=;
-	h=From:To:Cc:Subject:Date:From;
-	b=tqeuu1Kt2uJFT7G1pUaS6ZdAPeXlfvWIIf0w8EbHy5V3QKL8nzhygKAPP/WJPEmVW
-	 +oKxGgk4KXG9OjYW+8+c64R9CQyUj3AbLUPg4cIdA4o/8AoAvTPLdMRoBG5Qerq9zW
-	 M+LIQdIUZ8WkEZjI7+F4jY1pLeKafq0BxN7/WFns=
-Received: from liushuyu-p15 (unknown [117.151.13.225])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mail20.mymailcheap.com (Postfix) with ESMTPSA id 89E6F41B82;
-	Mon, 26 Jan 2026 09:55:18 +0000 (UTC)
-From: Zixing Liu <liushuyu@aosc.io>
-To: WANG Xuerui <kernel@xen0n.name>,
-	Huacai Chen <chenhuacai@kernel.org>,
-	Bibo Mao <maobibo@loongson.cn>
-Cc: Kexy Biscuit <kexybiscuit@aosc.io>,
-	Mingcong Bai <jeffbai@aosc.io>,
-	Zixing Liu <liushuyu@aosc.io>,
-	Paolo Bonzini <pbonzini@redhat.com>,
-	Jonathan Corbet <corbet@lwn.net>,
-	Tianrui Zhao <zhaotianrui@loongson.cn>,
-	Paul Walmsley <pjw@kernel.org>,
-	Palmer Dabbelt <palmer@dabbelt.com>,
-	Albert Ou <aou@eecs.berkeley.edu>,
-	Alexandre Ghiti <alex@ghiti.fr>,
-	kvm@vger.kernel.org,
-	linux-doc@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	loongarch@lists.linux.dev,
-	linux-riscv@lists.infradead.org
-Subject: [PATCH v2] KVM: Add KVM_GET_REG_LIST ioctl for LoongArch
-Date: Mon, 26 Jan 2026 17:55:03 +0800
-Message-ID: <20260126095504.473371-1-liushuyu@aosc.io>
-X-Mailer: git-send-email 2.52.0
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="hjiGVA04"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1769421426; x=1800957426;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=6L2WsHp5StbLTHRapsIb/r2sE+yIgZ58XjuLHYlApdY=;
+  b=hjiGVA04bPiT21iA9qoAqKVqBv10HHev7gu78iafPE2md1Hvj+SEifZN
+   M6H7FWWbuBqq7B4fny5m9nGV3oVSlX0HB4d7YF6ap7FY3juWiwHyhe8xO
+   xdCHebx44kzY5oBY/A8ZExOOAZinqOzz0/cr0M8XBMeuvHNGGXUbnDQz5
+   A4ejARamvy+8CgC2d1iaXuk4zszGiwBQum5UBkSEG4CgpcXenqa2rt1ry
+   c7/u5tCnCzLVVgtKKUuA7J+tgJjLcOQKvOVEJHvuW2tVOjFKAG7YoxmIs
+   X954igc1uimWjSK/Vme1hgjRJzw9bXy/SjTNreMG2A6JJwYvWgQK4txdQ
+   w==;
+X-CSE-ConnectionGUID: 0lb6wnXuTRm0/fCrG0dRSQ==
+X-CSE-MsgGUID: BAxfsLTPS7K8r98N1YivlA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11682"; a="70564502"
+X-IronPort-AV: E=Sophos;i="6.21,254,1763452800"; 
+   d="scan'208";a="70564502"
+Received: from fmviesa010.fm.intel.com ([10.60.135.150])
+  by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Jan 2026 01:57:06 -0800
+X-CSE-ConnectionGUID: IdaeJ4u2SXOYgVjZbUbQHA==
+X-CSE-MsgGUID: tRjcD5NDSZ6dKkHhOQY2UQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.21,254,1763452800"; 
+   d="scan'208";a="207991970"
+Received: from krybak-mobl1.ger.corp.intel.com (HELO localhost) ([10.245.246.55])
+  by fmviesa010-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Jan 2026 01:57:00 -0800
+Date: Mon, 26 Jan 2026 11:56:56 +0200
+From: Tony Lindgren <tony.lindgren@linux.intel.com>
+To: Chao Gao <chao.gao@intel.com>
+Cc: linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org,
+	kvm@vger.kernel.org, x86@kernel.org, reinette.chatre@intel.com,
+	ira.weiny@intel.com, kai.huang@intel.com, dan.j.williams@intel.com,
+	yilun.xu@linux.intel.com, sagis@google.com, vannapurve@google.com,
+	paulmck@kernel.org, nik.borisov@suse.com, zhenzhong.duan@intel.com,
+	seanjc@google.com, rick.p.edgecombe@intel.com, kas@kernel.org,
+	dave.hansen@linux.intel.com, vishal.l.verma@intel.com,
+	Farrah Chen <farrah.chen@intel.com>
+Subject: Re: [PATCH v3 09/26] coco/tdx-host: Expose P-SEAMLDR information via
+ sysfs
+Message-ID: <aXc6aClCmDbe8TN9@tlindgre-MOBL1>
+References: <20260123145645.90444-1-chao.gao@intel.com>
+ <20260123145645.90444-10-chao.gao@intel.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: EF3A840403
-X-Spamd-Result: default: False [1.40 / 10.00];
-	MID_CONTAINS_FROM(1.00)[];
-	R_MISSING_CHARSET(0.50)[];
-	MIME_GOOD(-0.10)[text/plain];
-	ASN(0.00)[asn:16276, ipnet:51.83.0.0/16, country:FR];
-	ARC_NA(0.00)[];
-	RCVD_COUNT_ONE(0.00)[1];
-	RCPT_COUNT_TWELVE(0.00)[18];
-	MIME_TRACE(0.00)[0:+];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED(0.00)[mail20.mymailcheap.com:helo,mail20.mymailcheap.com:rdns,aosc.io:mid,aosc.io:from_mime,aosc.io:from_smtp,aosc.io:email];
-	SPFBL_URIBL_EMAIL_FAIL(0.00)[liushuyu.aosc.io:server fail];
-	FROM_HAS_DN(0.00)[];
-	TO_DN_SOME(0.00)[];
-	FROM_EQ_ENVFROM(0.00)[];
-	TO_MATCH_ENVRCPT_SOME(0.00)[];
-	LOCAL_OUTBOUND(0.00)[];
-	RCVD_TLS_ALL(0.00)[]
-X-Rspamd-Action: no action
-X-Rspamd-Server: nf2.mymailcheap.com
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260123145645.90444-10-chao.gao@intel.com>
 
-This ioctl can be used by the userspace applications to determine which
-(special) registers are get/set-able in a meaningful way.
+On Fri, Jan 23, 2026 at 06:55:17AM -0800, Chao Gao wrote:
+> TDX Module updates require userspace to select the appropriate module
+> to load. Expose necessary information to facilitate this decision. Two
+> values are needed:
+> 
+> - P-SEAMLDR version: for compatibility checks between TDX Module and
+> 		     P-SEAMLDR
 
-This can be very useful for cross-platform VMMs so that they do not have
-to hardcode register indices for each supported architectures.
+This is great to have:
 
-Signed-off-by: Zixing Liu <liushuyu@aosc.io>
----
- Documentation/virt/kvm/api.rst |  2 +-
- arch/loongarch/kvm/vcpu.c      | 85 ++++++++++++++++++++++++++++++++++
- 2 files changed, 86 insertions(+), 1 deletion(-)
-
-diff --git a/Documentation/virt/kvm/api.rst b/Documentation/virt/kvm/api.rst
-index 01a3abef8abb..f46dd8be282f 100644
---- a/Documentation/virt/kvm/api.rst
-+++ b/Documentation/virt/kvm/api.rst
-@@ -3603,7 +3603,7 @@ VCPU matching underlying host.
- ---------------------
- 
- :Capability: basic
--:Architectures: arm64, mips, riscv, x86 (if KVM_CAP_ONE_REG)
-+:Architectures: arm64, loongarch, mips, riscv, x86 (if KVM_CAP_ONE_REG)
- :Type: vcpu ioctl
- :Parameters: struct kvm_reg_list (in/out)
- :Returns: 0 on success; -1 on error
-diff --git a/arch/loongarch/kvm/vcpu.c b/arch/loongarch/kvm/vcpu.c
-index 656b954c1134..ed11438f4544 100644
---- a/arch/loongarch/kvm/vcpu.c
-+++ b/arch/loongarch/kvm/vcpu.c
-@@ -1186,6 +1186,73 @@ static int kvm_loongarch_vcpu_set_attr(struct kvm_vcpu *vcpu,
- 	return ret;
- }
- 
-+static int kvm_loongarch_walk_csrs(struct kvm_vcpu *vcpu, u64 __user *uindices)
-+{
-+	unsigned int i, count;
-+
-+	for (i = 0, count = 0; i < CSR_MAX_NUMS; i++) {
-+		if (!(get_gcsr_flag(i) & (SW_GCSR | HW_GCSR)))
-+			continue;
-+		const u64 reg = KVM_IOC_CSRID(i);
-+		if (uindices && put_user(reg, uindices++))
-+			return -EFAULT;
-+		count++;
-+	}
-+
-+	return count;
-+}
-+
-+static unsigned long kvm_loongarch_num_lbt_regs(void)
-+{
-+	/* +1 for the LBT_FTOP flag (inside arch.fpu) */
-+	return sizeof(struct loongarch_lbt) / sizeof(unsigned long) + 1;
-+}
-+
-+static unsigned long kvm_loongarch_num_regs(struct kvm_vcpu *vcpu)
-+{
-+	/* +1 for the KVM_REG_LOONGARCH_COUNTER register */
-+	unsigned long res =
-+		kvm_loongarch_walk_csrs(vcpu, NULL) + KVM_MAX_CPUCFG_REGS + 1;
-+
-+	if (kvm_guest_has_lbt(&vcpu->arch))
-+		res += kvm_loongarch_num_lbt_regs();
-+
-+	return res;
-+}
-+
-+static int kvm_loongarch_copy_reg_indices(struct kvm_vcpu *vcpu,
-+					  u64 __user *uindices)
-+{
-+	u64 reg;
-+	unsigned int i;
-+
-+	i = kvm_loongarch_walk_csrs(vcpu, uindices);
-+	if (i < 0)
-+		return i;
-+	uindices += i;
-+
-+	for (i = 0; i < KVM_MAX_CPUCFG_REGS; i++) {
-+		reg = KVM_IOC_CPUCFG(i);
-+		if (put_user(reg, uindices++))
-+			return -EFAULT;
-+	}
-+
-+	reg = KVM_REG_LOONGARCH_COUNTER;
-+	if (put_user(reg, uindices++))
-+		return -EFAULT;
-+
-+	if (!kvm_guest_has_lbt(&vcpu->arch))
-+		return 0;
-+
-+	for (i = 1; i <= kvm_loongarch_num_lbt_regs(); i++) {
-+		reg = (KVM_REG_LOONGARCH_LBT | KVM_REG_SIZE_U64 | i);
-+		if (put_user(reg, uindices++))
-+			return -EFAULT;
-+	}
-+
-+	return 0;
-+}
-+
- long kvm_arch_vcpu_ioctl(struct file *filp,
- 			 unsigned int ioctl, unsigned long arg)
- {
-@@ -1251,6 +1318,24 @@ long kvm_arch_vcpu_ioctl(struct file *filp,
- 		r = kvm_loongarch_vcpu_set_attr(vcpu, &attr);
- 		break;
- 	}
-+	case KVM_GET_REG_LIST: {
-+		struct kvm_reg_list __user *user_list = argp;
-+		struct kvm_reg_list reg_list;
-+		unsigned n;
-+
-+		r = -EFAULT;
-+		if (copy_from_user(&reg_list, user_list, sizeof(reg_list)))
-+			break;
-+		n = reg_list.n;
-+		reg_list.n = kvm_loongarch_num_regs(vcpu);
-+		if (copy_to_user(user_list, &reg_list, sizeof(reg_list)))
-+			break;
-+		r = -E2BIG;
-+		if (n < reg_list.n)
-+			break;
-+		r = kvm_loongarch_copy_reg_indices(vcpu, user_list->reg);
-+		break;
-+	}
- 	default:
- 		r = -ENOIOCTLCMD;
- 		break;
--- 
-2.52.0
-
+Reviewed-by: Tony Lindgren <tony.lindgren@linux.intel.com>
