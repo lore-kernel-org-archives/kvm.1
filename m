@@ -1,134 +1,108 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E3F52EAD09;
-	Tue, 27 Jan 2026 10:52:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C230130C366
+	for <kvm@vger.kernel.org>; Tue, 27 Jan 2026 11:17:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769511170; cv=none; b=VS3HUmY9K1OjxjNkNxbuSMH8MxD654BsylLHhv6MXSzylC1DDtyEgU+DOQNL0WnbWiPFw878uXQYxLcgCBszmsvfdAWDuTYBx/ht25zsSSu38v2resVu2+7rLvYNDXCLDIw789YvHxHklLJ3FWpdqmpAuYoCLiftia0UfVCDVeU=
+	t=1769512659; cv=none; b=DV+pVS15hOXIwJk4RXdutaIVdRUpLegbCozw8LkwBCR+mQ/nw4m9Wr7ikXYEaVsM37s5isJIa0gEjYomC8RBvNRcuGvALiwkwuq1LXpB4kFyG9IkmdcHUVSYyQTxqSazhB7an7x7unrp8L5JRpXM8LWonwFCTD12HdzMrsN99PA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769511170; c=relaxed/simple;
-	bh=3uI6G9ZvC3u/E2KG8h5NTQdenE0/m47znmeLe/doxxE=;
-	h=Date:Message-ID:From:To:Cc:Subject:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Yw+wP2/Y1ukTZz5ADVZet4fhXIaVU5D84As6r5xnIeegL/icbOvqaKxXGBP+keDFEmnqvN5l3FonhRuk8rAv4skj5o1+5fU2GaIJQ2dYrGIsVat0GwbsbduD0uYl1MfykU5KIkgWiK7a6FGmsbhibjckxNukXWw+k+/teEfPpfA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kV/A8pzt; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1769512659; c=relaxed/simple;
+	bh=F7qUAxjxHiziwsYsZS48VwCHNig9BbM/YJ7Dq6D7M/M=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=dPZ3a34Fj7R/SKW4tNfAAR89O7sueu49I1CqsX9V9yM1SJc4bNCofctfGYnK3Fwa7zxKgv/wy9DlPhUrgP8eACVdQ4+27JIwXCkQMKT1c8KTMJ35gPVkBDvQmBwZHDSZK7xQZse5KxLrvDzO/fdNcb2rQfQBU0TOoHat337akQE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=duhR2kaH; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kV/A8pzt"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EF69CC116C6;
-	Tue, 27 Jan 2026 10:52:49 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1769511170;
-	bh=3uI6G9ZvC3u/E2KG8h5NTQdenE0/m47znmeLe/doxxE=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=kV/A8pztnh9TRJM7t1K6pxMPJ6/E8bDxvMk9rlwTcPeOYI4akD/earpK4leBDTGJG
-	 K3F1dEW+Su7jTuuvBCfXIs/Z7EoreCmuHWsJRG1iKX6lM12AvqMmY8nVUQ+roDDlFT
-	 r5F8vmwbhzmyACuivpND3jCx604C4unyEHpFFQY2D/9LroF1/7nsWKR1S3wAXd933L
-	 6as3fCnQzgXRcAzRkWGnJP+HHlcBqxXS+uSXk2wKHqMH2cdtv99wbWC/KVBnwWHbFf
-	 yMXjlLB8EA+lb+Ga8aFEkMnCfb9Ip+qQLrJ70DH7RCDleUAWw6gzxUomgCunaGALLr
-	 jk2cnFES4CjCw==
-Received: from sofa.misterjones.org ([185.219.108.64] helo=goblin-girl.misterjones.org)
-	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.98.2)
-	(envelope-from <maz@kernel.org>)
-	id 1vkggh-000000060we-2UUN;
-	Tue, 27 Jan 2026 10:52:47 +0000
-Date: Tue, 27 Jan 2026 10:52:47 +0000
-Message-ID: <86ecnbba4g.wl-maz@kernel.org>
-From: Marc Zyngier <maz@kernel.org>
-To: Fuad Tabba <tabba@google.com>
-Cc: kvmarm@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org,
-	kvm@vger.kernel.org,
-	Joey Gouly <joey.gouly@arm.com>,
-	Suzuki K Poulose <suzuki.poulose@arm.com>,
-	Oliver Upton <oupton@kernel.org>,
-	Zenghui Yu <yuzenghui@huawei.com>,
-	Will Deacon <will@kernel.org>,
-	Catalin Marinas <catalin.marinas@arm.com>
-Subject: Re: [PATCH 05/20] KVM: arm64: Extend unified RESx handling to runtime sanitisation
-In-Reply-To: <CA+EHjTzmr+479uxdQgnM6Ai5jcx1=L2-ufQPD67fvqsCL1gZ8A@mail.gmail.com>
-References: <20260126121655.1641736-1-maz@kernel.org>
-	<20260126121655.1641736-6-maz@kernel.org>
-	<CA+EHjTzmr+479uxdQgnM6Ai5jcx1=L2-ufQPD67fvqsCL1gZ8A@mail.gmail.com>
-User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
- FLIM-LB/1.14.9 (=?UTF-8?B?R29qxY0=?=) APEL-LB/10.8 EasyPG/1.0.0 Emacs/30.1
- (aarch64-unknown-linux-gnu) MULE/6.0 (HANACHIRUSATO)
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="duhR2kaH"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1769512656;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=nOjAJfProoCB2ZNiIiBQqNee8INRqMIJyl6k7o/1Yck=;
+	b=duhR2kaHIbQsj9nhin1VdTvrwZjMSy/mbe5xj0dT4AzzjQerewdzYQzOp8EhhIzx31u83p
+	/vET8rFAmZNTXU2sWDLNE14QENpEcezNQ498aK+n0pJpIS4iyd7XZwUHHp8/KCUrFn/0qS
+	ml/ATPn2PiE6uxdGzER2CGid4+OEbeY=
+Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-124-OKvb0TYSNTCqXyALnCoBFA-1; Tue,
+ 27 Jan 2026 06:17:33 -0500
+X-MC-Unique: OKvb0TYSNTCqXyALnCoBFA-1
+X-Mimecast-MFC-AGG-ID: OKvb0TYSNTCqXyALnCoBFA_1769512652
+Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id BBE8A1955D84;
+	Tue, 27 Jan 2026 11:17:31 +0000 (UTC)
+Received: from redhat.com (unknown [10.45.225.149])
+	by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id C8FCE180009E;
+	Tue, 27 Jan 2026 11:17:25 +0000 (UTC)
+Date: Tue, 27 Jan 2026 12:17:23 +0100
+From: Kevin Wolf <kwolf@redhat.com>
+To: Daniel =?iso-8859-1?Q?P=2E_Berrang=E9?= <berrange@redhat.com>
+Cc: Fabiano Rosas <farosas@suse.de>, Markus Armbruster <armbru@redhat.com>,
+	=?iso-8859-1?Q?Marc-Andr=E9?= Lureau <marcandre.lureau@redhat.com>,
+	Stefan Hajnoczi <stefanha@gmail.com>,
+	qemu-devel <qemu-devel@nongnu.org>, kvm <kvm@vger.kernel.org>,
+	Helge Deller <deller@gmx.de>, Oliver Steffen <osteffen@redhat.com>,
+	Stefano Garzarella <sgarzare@redhat.com>,
+	Matias Ezequiel Vara Larsen <mvaralar@redhat.com>,
+	German Maglione <gmaglione@redhat.com>,
+	Hanna Reitz <hreitz@redhat.com>,
+	Paolo Bonzini <pbonzini@redhat.com>,
+	Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>,
+	Thomas Huth <thuth@redhat.com>,
+	Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
+	Alex Bennee <alex.bennee@linaro.org>,
+	Pierrick Bouvier <pierrick.bouvier@linaro.org>
+Subject: Re: Modern HMP
+Message-ID: <aXiewxB60hasi49R@redhat.com>
+References: <CAJSP0QVXXX7GV5W4nj7kP35x_4gbF2nG1G1jdh9Q=XgSx=nX3A@mail.gmail.com>
+ <CAMxuvaz8hm1dc6XdsbK99Ng5sOBNxwWg_-UJdBhyptwgUYjcrw@mail.gmail.com>
+ <871pjigf6z.fsf_-_@pond.sub.org>
+ <aXH1ECZ1Nchui9ED@redhat.com>
+ <87ikctg8a8.fsf@pond.sub.org>
+ <aXIWLi656H8VbrPE@redhat.com>
+ <87ikctk5ss.fsf@suse.de>
+ <aXJJkd8g0AGZ3EVv@redhat.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
-Content-Type: text/plain; charset=US-ASCII
-X-SA-Exim-Connect-IP: 185.219.108.64
-X-SA-Exim-Rcpt-To: tabba@google.com, kvmarm@lists.linux.dev, linux-arm-kernel@lists.infradead.org, kvm@vger.kernel.org, joey.gouly@arm.com, suzuki.poulose@arm.com, oupton@kernel.org, yuzenghui@huawei.com, will@kernel.org, catalin.marinas@arm.com
-X-SA-Exim-Mail-From: maz@kernel.org
-X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
+MIME-Version: 1.0
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <aXJJkd8g0AGZ3EVv@redhat.com>
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
 
-On Mon, 26 Jan 2026 19:15:00 +0000,
-Fuad Tabba <tabba@google.com> wrote:
+Am 22.01.2026 um 17:00 hat Daniel P. Berrangé geschrieben:
+> > Does the new program becomes basically an external project unrelated to
+> > QEMU, that simply talks to QMP like libvirt does?
 > 
-> Hi Marc,
-> 
-> On Mon, 26 Jan 2026 at 12:17, Marc Zyngier <maz@kernel.org> wrote:
-> >
-> > Add a new helper to retrieve the RESx values for a given system
-> > register, and use it for the runtime sanitisation.
-> >
-> > This results in slightly better code generation for a fairly hot
-> > path in the hypervisor.
-> >
-> > Signed-off-by: Marc Zyngier <maz@kernel.org>
-> > ---
-> >  arch/arm64/include/asm/kvm_host.h | 13 +++++++++++++
-> >  arch/arm64/kvm/emulate-nested.c   | 10 +---------
-> >  arch/arm64/kvm/nested.c           | 13 ++++---------
-> >  3 files changed, 18 insertions(+), 18 deletions(-)
-> >
-> > diff --git a/arch/arm64/include/asm/kvm_host.h b/arch/arm64/include/asm/kvm_host.h
-> > index a7e4cd8ebf56f..9dca94e4361f0 100644
-> > --- a/arch/arm64/include/asm/kvm_host.h
-> > +++ b/arch/arm64/include/asm/kvm_host.h
-> > @@ -635,6 +635,19 @@ struct kvm_sysreg_masks {
-> >         struct resx mask[NR_SYS_REGS - __SANITISED_REG_START__];
-> >  };
-> >
-> > +#define kvm_get_sysreg_resx(k, sr)                                     \
-> > +       ({                                                              \
-> > +               struct kvm_sysreg_masks *__masks;                       \
-> > +               struct resx __resx = {};                                \
-> > +                                                                       \
-> > +               __masks = (k)->arch.sysreg_masks;                       \
-> > +               if (likely(__masks &&                                   \
-> > +                          sr >= __SANITISED_REG_START__ &&             \
-> > +                          sr < NR_SYS_REGS))                           \
-> > +                       __resx = __masks->mask[sr - __SANITISED_REG_START__]; \
-> > +               __resx;                                                 \
-> > +       })
-> > +
-> 
-> This now covers all registers that need to be sanitized, not just
-> VNCR-backed ones now.
+> It could be a separate project under QEMU on github, or it could just be
+> binary in qemu.git. What matters is that it is out of the main QEMU process
+> eventually.
 
-Only kvm_get_sysreg_res0() was previously limited to VNCR-registers,
-and that was a bug found by Zenghui. What I'm trying to do here is to
-concentrate the decision about accessing the masks in a single place
-that is safe to use from any context.
+I think the basic requirement for any HMP replacement is that it just
+works, i.e. no manual setting up of sockets etc. like for qmp-shell.
 
-> 
-> nit: wouldn't it be better to capture sr in a local variable rather
-> than reuse it? It is an enum, but it would make checkpatch feel
-> slightly better :)
+If it's an external process, QEMU should just launch it automatically,
+and the user interface should still go through the usual chardevs so
+that the current backends still work and the default of '-monitor vc'
+can be retained.
 
-Indeed, this macro is pretty horrible, and needs some tidying up. I'll
-have a look at pimping it up ;-)
+(Of course, once this plumbing has been done, it could be reused for
+qmp-shell to provide a nicer and more integrated option there, too.)
 
->
-> Reviewed-by: Fuad Tabba <tabba@google.com>
+This pretty much means that it has to be in the same project, or at
+least a subproject that is automatically downloaded when building QEMU.
 
-Thanks!
+Kevin
 
-	M.
-
--- 
-Without deviation from the norm, progress is not possible.
