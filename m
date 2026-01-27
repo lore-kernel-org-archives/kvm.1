@@ -1,31 +1,31 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1DA3136E469;
-	Tue, 27 Jan 2026 19:30:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E15E36CDFD;
+	Tue, 27 Jan 2026 19:30:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769542219; cv=none; b=hsqo6/u1prmYWSchy5D2AwV06bMP07RYrzOOc3OSy+a5y5w/FkzVl0Fell413fFEVp8T8WsltUglQwxhhNk26ncUl994OlEjhecpjFgDLbGKCsPBtHvpJBVqesSSv3fTMUJNTX32jYHZVov9zE38vAz/BpVwQpfVbm/Gim1SSn4=
+	t=1769542225; cv=none; b=Uale230WFZUDc69dnX5aJsa4J95+G4XCZE4nmdzdH3TnLrZC9aO20oHFFvZ8s7JxV6phd0HBAg9s3OBui9iBQgF/7DjKJVEn8r5yZq0qvZ04IIXm5dpxw3ahAzNpwOomHRthTTA+Y4H6U/1ZzvP6nrxfbcE5TjDckxeqcFKY3jk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769542219; c=relaxed/simple;
-	bh=0i1d2fpNNGr7J2FXKMkhDUOQSLx8UrCEb1MMN67S4zY=;
+	s=arc-20240116; t=1769542225; c=relaxed/simple;
+	bh=nTxpSE/9FhIsTCsQqn23J/LwTg91bg9I5z/zHIxMJv4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=B/1gPyhNg6nf9y5qOTbLbjIAF72WhUqcnO26UFgjxgF5uQzBBexRYFcvjMUtBSoWtupajV2KmqlYp++iXfjcrCrQd9AfxFVguZrq7CgwZ8ry+YP+5QtjW8VaU6mDZC7343o3IwR8TgyIHT1Ml9lUFBOdCf02M1l6AKxkwD4nweo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LFjN+VuE; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version; b=VrJJIQMG0JZLSFaYJr1AqNvNHQW3lCupSbqBoIkz3KlUfKA39Sc9KB5tD+3WUzzoZPCIz3600J+mH3IIoHgLXJeEyQNiP3hrekspmeahRZj0n37hO5jZVt3ol9BEH4qRe8Cq2U/UoAWSR0eo9FJFmCrF1XCQf6tySjO1LfyzbAw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=rrHUkz6C; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LFjN+VuE"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EA1C0C116C6;
-	Tue, 27 Jan 2026 19:30:12 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="rrHUkz6C"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 34C5DC19422;
+	Tue, 27 Jan 2026 19:30:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1769542218;
-	bh=0i1d2fpNNGr7J2FXKMkhDUOQSLx8UrCEb1MMN67S4zY=;
+	s=k20201202; t=1769542225;
+	bh=nTxpSE/9FhIsTCsQqn23J/LwTg91bg9I5z/zHIxMJv4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LFjN+VuEwQhJBIsfMbC+PmRxi9KIPVJN4uRtNpCoxNN9r9XQMLQHf0SUC/QcdqCdv
-	 yTbesD04KbeYLsqu9jsK5VCgiKMXWXlhDdWUti9o3laDuHpqKq0cyQpRIpTuVRDK3G
-	 9s8YlgqtFbLBtQtxXOEyaDTUXUdJl17RWcVocISkGcSkSmsU5NvoiKCQikZgy87kFF
-	 O8R4uqwxHCNJdejR+L/GTxAWcoaC7L8L3E8vakXLO1fq4oq3POjF84JIKWuCS7CIvg
-	 pmavXqI0eF6TLmjO0g1n2PwhdMCDUBPPfgqRUjUwbI3BRxSmDJW4/QV6Mt7Z+eEND/
-	 4/xB2oNKKGPkg==
+	b=rrHUkz6C+MTinzzGGVgkyaol0zc47wA0yvVmurTkfu0cKRYazU169tJNe5tHoevx6
+	 7/wZJgSSUqc5jWeKq7JYrng3nrM7JEuZHMfX2JwK/M/NMa89Q9/dm9nQapAqcec1Lp
+	 hK0/ivMIVrASZXYbIjVZBnt2bP9Xcel73hekQ+KPat13JeYFhjjONJA5tSZtsuAJvp
+	 9zdgPk/Vu+Nycb2jm5R/WScVzGZ2F+4bgKBBNxuKbfzPub6nJJo/4XnV3DqNSmI/FG
+	 EoXI+WhiNrrslRwS/DZxR8cZYDQe9w6bmIcDDG2XVJXLkOkKjci29ietb8D4VCEdQt
+	 3K7FK4bRUM9KA==
 From: Mike Rapoport <rppt@kernel.org>
 To: linux-mm@kvack.org
 Cc: Andrea Arcangeli <aarcange@redhat.com>,
@@ -50,10 +50,11 @@ Cc: Andrea Arcangeli <aarcange@redhat.com>,
 	Vlastimil Babka <vbabka@suse.cz>,
 	linux-kernel@vger.kernel.org,
 	kvm@vger.kernel.org,
-	linux-kselftest@vger.kernel.org
-Subject: [PATCH RFC 05/17] userfaultfd: retry copying with locks dropped in mfill_atomic_pte_copy()
-Date: Tue, 27 Jan 2026 21:29:24 +0200
-Message-ID: <20260127192936.1250096-6-rppt@kernel.org>
+	linux-kselftest@vger.kernel.org,
+	"David Hildenbrand (Red Hat)" <david@kernel.org>
+Subject: [PATCH RFC 06/17] userfaultfd: move vma_can_userfault out of line
+Date: Tue, 27 Jan 2026 21:29:25 +0200
+Message-ID: <20260127192936.1250096-7-rppt@kernel.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20260127192936.1250096-1-rppt@kernel.org>
 References: <20260127192936.1250096-1-rppt@kernel.org>
@@ -67,139 +68,111 @@ Content-Transfer-Encoding: 8bit
 
 From: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
 
-Implementation of UFFDIO_COPY for anonymous memory might fail to copy
-data data from userspace buffer when the destination VMA is locked
-(either with mm_lock or with per-VMA lock).
+vma_can_userfault() has grown pretty big and it's not called on
+performance critical path.
 
-In that case, mfill_atomic() releases the locks, retries copying the
-data with locks dropped and then re-locks the destination VMA and
-re-establishes PMD.
+Move it out of line.
 
-Since this retry-reget dance is only relevant for UFFDIO_COPY and it
-never happens for other UFFDIO_ operations, make it a part of
-mfill_atomic_pte_copy() that actually implements UFFDIO_COPY for
-anonymous memory.
+No functional changes.
 
-shmem implementation will be updated later and the loop in
-mfill_atomic() will be adjusted afterwards.
-
+Reviewed-by: David Hildenbrand (Red Hat) <david@kernel.org>
+Reviewed-by: Liam R. Howlett <Liam.Howlett@oracle.com>
 Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
 ---
- mm/userfaultfd.c | 70 +++++++++++++++++++++++++++++++-----------------
- 1 file changed, 46 insertions(+), 24 deletions(-)
+ include/linux/userfaultfd_k.h | 35 ++---------------------------------
+ mm/userfaultfd.c              | 33 +++++++++++++++++++++++++++++++++
+ 2 files changed, 35 insertions(+), 33 deletions(-)
 
+diff --git a/include/linux/userfaultfd_k.h b/include/linux/userfaultfd_k.h
+index fd5f42765497..a49cf750e803 100644
+--- a/include/linux/userfaultfd_k.h
++++ b/include/linux/userfaultfd_k.h
+@@ -208,39 +208,8 @@ static inline bool userfaultfd_armed(struct vm_area_struct *vma)
+ 	return vma->vm_flags & __VM_UFFD_FLAGS;
+ }
+ 
+-static inline bool vma_can_userfault(struct vm_area_struct *vma,
+-				     vm_flags_t vm_flags,
+-				     bool wp_async)
+-{
+-	vm_flags &= __VM_UFFD_FLAGS;
+-
+-	if (vma->vm_flags & VM_DROPPABLE)
+-		return false;
+-
+-	if ((vm_flags & VM_UFFD_MINOR) &&
+-	    (!is_vm_hugetlb_page(vma) && !vma_is_shmem(vma)))
+-		return false;
+-
+-	/*
+-	 * If wp async enabled, and WP is the only mode enabled, allow any
+-	 * memory type.
+-	 */
+-	if (wp_async && (vm_flags == VM_UFFD_WP))
+-		return true;
+-
+-	/*
+-	 * If user requested uffd-wp but not enabled pte markers for
+-	 * uffd-wp, then shmem & hugetlbfs are not supported but only
+-	 * anonymous.
+-	 */
+-	if (!uffd_supports_wp_marker() && (vm_flags & VM_UFFD_WP) &&
+-	    !vma_is_anonymous(vma))
+-		return false;
+-
+-	/* By default, allow any of anon|shmem|hugetlb */
+-	return vma_is_anonymous(vma) || is_vm_hugetlb_page(vma) ||
+-	    vma_is_shmem(vma);
+-}
++bool vma_can_userfault(struct vm_area_struct *vma, vm_flags_t vm_flags,
++		       bool wp_async);
+ 
+ static inline bool vma_has_uffd_without_event_remap(struct vm_area_struct *vma)
+ {
 diff --git a/mm/userfaultfd.c b/mm/userfaultfd.c
-index 45d8f04aaf4f..01a2b898fa40 100644
+index 01a2b898fa40..786f0a245675 100644
 --- a/mm/userfaultfd.c
 +++ b/mm/userfaultfd.c
-@@ -404,35 +404,57 @@ static int mfill_copy_folio_locked(struct folio *folio, unsigned long src_addr)
- 	return ret;
+@@ -2016,6 +2016,39 @@ ssize_t move_pages(struct userfaultfd_ctx *ctx, unsigned long dst_start,
+ 	return moved ? moved : err;
  }
  
-+static int mfill_copy_folio_retry(struct mfill_state *state, struct folio *folio)
++bool vma_can_userfault(struct vm_area_struct *vma, vm_flags_t vm_flags,
++		       bool wp_async)
 +{
-+	unsigned long src_addr = state->src_addr;
-+	void *kaddr;
-+	int err;
++	vm_flags &= __VM_UFFD_FLAGS;
 +
-+	/* retry copying with mm_lock dropped */
-+	mfill_put_vma(state);
++	if (vma->vm_flags & VM_DROPPABLE)
++		return false;
 +
-+	kaddr = kmap_local_folio(folio, 0);
-+	err = copy_from_user(kaddr, (const void __user *) src_addr, PAGE_SIZE);
-+	kunmap_local(kaddr);
-+	if (unlikely(err))
-+		return -EFAULT;
++	if ((vm_flags & VM_UFFD_MINOR) &&
++	    (!is_vm_hugetlb_page(vma) && !vma_is_shmem(vma)))
++		return false;
 +
-+	flush_dcache_folio(folio);
++	/*
++	 * If wp async enabled, and WP is the only mode enabled, allow any
++	 * memory type.
++	 */
++	if (wp_async && (vm_flags == VM_UFFD_WP))
++		return true;
 +
-+	/* reget VMA and PMD, they could change underneath us */
-+	err = mfill_get_vma(state);
-+	if (err)
-+		return err;
++	/*
++	 * If user requested uffd-wp but not enabled pte markers for
++	 * uffd-wp, then shmem & hugetlbfs are not supported but only
++	 * anonymous.
++	 */
++	if (!uffd_supports_wp_marker() && (vm_flags & VM_UFFD_WP) &&
++	    !vma_is_anonymous(vma))
++		return false;
 +
-+	err = mfill_get_pmd(state);
-+	if (err)
-+		return err;
-+
-+	return 0;
++	/* By default, allow any of anon|shmem|hugetlb */
++	return vma_is_anonymous(vma) || is_vm_hugetlb_page(vma) ||
++	    vma_is_shmem(vma);
 +}
 +
- static int mfill_atomic_pte_copy(struct mfill_state *state)
+ static void userfaultfd_set_vm_flags(struct vm_area_struct *vma,
+ 				     vm_flags_t vm_flags)
  {
--	struct vm_area_struct *dst_vma = state->vma;
- 	unsigned long dst_addr = state->dst_addr;
- 	unsigned long src_addr = state->src_addr;
- 	uffd_flags_t flags = state->flags;
--	pmd_t *dst_pmd = state->pmd;
- 	struct folio *folio;
- 	int ret;
- 
--	if (!state->folio) {
--		ret = -ENOMEM;
--		folio = vma_alloc_folio(GFP_HIGHUSER_MOVABLE, 0, dst_vma,
--					dst_addr);
--		if (!folio)
--			goto out;
-+	folio = vma_alloc_folio(GFP_HIGHUSER_MOVABLE, 0, state->vma, dst_addr);
-+	if (!folio)
-+		return -ENOMEM;
- 
--		ret = mfill_copy_folio_locked(folio, src_addr);
-+	ret = -ENOMEM;
-+	if (mem_cgroup_charge(folio, state->vma->vm_mm, GFP_KERNEL))
-+		goto out_release;
- 
-+	ret = mfill_copy_folio_locked(folio, src_addr);
-+	if (unlikely(ret)) {
- 		/* fallback to copy_from_user outside mmap_lock */
--		if (unlikely(ret)) {
--			ret = -ENOENT;
--			state->folio = folio;
--			/* don't free the page */
--			goto out;
--		}
--	} else {
--		folio = state->folio;
--		state->folio = NULL;
-+		ret = mfill_copy_folio_retry(state, folio);
-+		if (ret)
-+			goto out_release;
- 	}
- 
- 	/*
-@@ -442,17 +464,16 @@ static int mfill_atomic_pte_copy(struct mfill_state *state)
- 	 */
- 	__folio_mark_uptodate(folio);
- 
--	ret = -ENOMEM;
--	if (mem_cgroup_charge(folio, dst_vma->vm_mm, GFP_KERNEL))
--		goto out_release;
--
--	ret = mfill_atomic_install_pte(dst_pmd, dst_vma, dst_addr,
-+	ret = mfill_atomic_install_pte(state->pmd, state->vma, dst_addr,
- 				       &folio->page, true, flags);
- 	if (ret)
- 		goto out_release;
- out:
- 	return ret;
- out_release:
-+	/* Don't return -ENOENT so that our caller won't retry */
-+	if (ret == -ENOENT)
-+		ret = -EFAULT;
- 	folio_put(folio);
- 	goto out;
- }
-@@ -907,7 +928,8 @@ static __always_inline ssize_t mfill_atomic(struct userfaultfd_ctx *ctx,
- 			break;
- 	}
- 
--	mfill_put_vma(&state);
-+	if (state.vma)
-+		mfill_put_vma(&state);
- out:
- 	if (state.folio)
- 		folio_put(state.folio);
 -- 
 2.51.0
 
