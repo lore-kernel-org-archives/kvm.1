@@ -1,214 +1,144 @@
-Received: from mail-qt1-f175.google.com (mail-qt1-f175.google.com [209.85.160.175])
+Received: from mail-vs1-f45.google.com (mail-vs1-f45.google.com [209.85.217.45])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF5513612F7
-	for <kvm@vger.kernel.org>; Wed, 28 Jan 2026 17:44:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.160.175
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED1AF36F407
+	for <kvm@vger.kernel.org>; Wed, 28 Jan 2026 17:50:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.217.45
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769622260; cv=pass; b=KNk2EGSl3iCahpqL4WsezUvIG8T9CRQ2Ns/Ym4uW1qpRukl+DX1WeH3IPADBkailWb/9HX5tZi8WKRTROaC2VPac4Mlk1dyi09HQrb83M0fs/pl+6S3Hx7KPiJFfN7ewz0p48I17q9FBjHmxPjHrRjEMHXkGCARR+cawz8Tk9zA=
+	t=1769622650; cv=pass; b=NeSS16imeYINIVzuof5otp4DMl54lraRxGDFaQQfa4BVqbjmOdomgc++jUUFOAItrcjK39g+bStuuEZ8ydSkf3PvpMEizsRApgMyzxbWsahl7pEJjJ5yEhegoFaKlK1uo2mDCFujKKXnVDxP3IpjMNJHzYIfgAhzbwmvoLkqe7U=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769622260; c=relaxed/simple;
-	bh=n9qMoCX3G+jYOXH3ah2jgfZmawPnIAGRu4txfYSI8bI=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=hOYAL27u5nZSsrPZEI9R0ggfQbgryWdiEQNLtuCT67Oqv+J3R/Z30ZZW8rYlvTBr6kTmprDMd40Q9x/j/61ZgP9D+gwTK9mWhS206Jc+mh+ryDCatYPsqUXa2MC6x+AFez9YHTjh/SmZbWc66IRon9ICB6zVswL7sKXyTAeh5CM=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=tv1VV59Y; arc=pass smtp.client-ip=209.85.160.175
+	s=arc-20240116; t=1769622650; c=relaxed/simple;
+	bh=CNqWkOyueD1v7WuaKUDdc+x4jRQ5s6ulmoL4RqUerEM=;
+	h=From:In-Reply-To:References:MIME-Version:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=uDn5tv+6NurGcqU1EOqvYb7QTSZTlN7/3JrLOQIWsDYqF2tQEi9X1PYKUCEZIBv8bnO717L2SkkNqdX8RGqIE/lnWCaJ8y/NuwbKNbDIatkhAZ8cbTKh9dTNliBUmTYrN+REw/z7+VbM90K0Wfsil+tz/1UaJVjHSdg9pp+jB4w=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=bHT6jDVr; arc=pass smtp.client-ip=209.85.217.45
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="tv1VV59Y"
-Received: by mail-qt1-f175.google.com with SMTP id d75a77b69052e-5014b5d8551so5901cf.0
-        for <kvm@vger.kernel.org>; Wed, 28 Jan 2026 09:44:18 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1769622258; cv=none;
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="bHT6jDVr"
+Received: by mail-vs1-f45.google.com with SMTP id ada2fe7eead31-5f1b9fe06b8so90500137.0
+        for <kvm@vger.kernel.org>; Wed, 28 Jan 2026 09:50:48 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1769622648; cv=none;
         d=google.com; s=arc-20240605;
-        b=dQGIoco+psMFgebaQN7IzCRd/csjJyHV2yikueyXWarQvQOUVMIhjE07cjd1lXRagF
-         nt0ENKYIBQi/UBHss5ZnfAOSIMlI0T1rbEcHwaZXJdUnqDEjC0vJszxSXTnlCtNx/MDA
-         mFnBNmMQr/iRMpxhhwbPYFDsETNxbLTAXJoj/ey9EqNMlkQ5XQiT2mjxRTlSKvc2Fl4/
-         k6lOvtMPvXWzmXstsdZ89sVcf7MytKRP51n4pK9rfo755cdVFHLNsBiDbppEcVMxXzUH
-         F8prIQoDmDEESScgznFcEGBXR+uLLVCn0aJq7EMYsjbb5f86rN/tRqWParoHmUZw367D
-         vHrA==
+        b=XAOa3M4IxPm6UnpfnhR/7D1zquWBw+9AnaGaYfg5Q5ym72ndl+wBIZmTcMPHnCujZD
+         touxfAEghe4bR/pOdXrydR2hzqc6YVkmE6jQooDjHPjozduKw9eZn2m9zXp4ogiqvUUL
+         TJPTFUwtSL81vFKQTppJ3Ysxlj3+DfDhdfuOZpysNmSDhguXpepxUR4UrzNriJVzohq1
+         kJFmXdaaEvGhS4rTva+4cSh/LRMd12bsdLNsMQwk8Z+9fcPHMbxC25WGAzeYm7XwIdC5
+         CXVZ1K9idkm54eI6GuZwmN3Z8SxKVaNzYU67bcJ06T9J/iWv4xylwgYHhsXqENNrnUGh
+         P2Ow==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:dkim-signature;
-        bh=bQ28KNx3pxtawA1nFwPKCc2RQpAN4D6gIqSKFp3a8PE=;
-        fh=nxZn9ZLLvfJE54wgrYCtO4abNcb7d+YWvaoGIafBYoQ=;
-        b=B7V1Wl/nAu82N7DAa5afgtpbq8o3T7B2I/9kIHe7SONa3Rkjs8FwyRZJs4xeiGrodx
-         sEgvGqcb7PEFyf1Nm8L4ECn5w2nDfn7eXDJ/Asw2LVcsEXBKms9N/nMjp1V0EcaMVh0g
-         0cuOtIi4U2H99JwLAUnlDhp0+0NWlRbO1tka0+rzIBOiVqU+WSdp37+A5EF6yKrzA2zS
-         v94+ApjxOypu0O37aR6+jYT99Qv5hxgZFN6Vcrge+MsNHonso1Ehn9AqrI3kOP9FfEny
-         GVYOJ6RFupBzEOyV4qGXieDtKNChp5hqABpadB0D/+DlA9AxxGcfZz6xY4JqoomuxswE
-         WCJg==;
+        h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
+         :from:dkim-signature;
+        bh=CNqWkOyueD1v7WuaKUDdc+x4jRQ5s6ulmoL4RqUerEM=;
+        fh=DKqjhzBaVNysPHT7tn/liqzdc4vl7I2hNN/aMDYnG7k=;
+        b=UHTdPKi6aZ9JkbRSDDxw84XBP3diktv2SEGvgj0DFylnC0lmIAdrKIy45+5TiTxcxO
+         sHdx6KIuH7a8lLumXcQxTsnkuI4WaY/VTpEAvkG3rVRAwoXr16hCqqkX4kausWUWOnOT
+         QagZ7ZSCBV/kayuMqBtZ6tFqkIQUsJZJ6HhHgwcjVOruUQl+8YXhKCKlwpliFFpbPa5/
+         deAdGzccDGwcWmOjPvHDAHqRUTD625U1VodtOFpBkUBAo4qbGAYlWEaXhI++jOYGQDML
+         mM51WowWhhif43lQdkqDNUnxWEXvH8Mfbtqzo1Dxq8BAL5KVzc9fK/5A1pokohLrIScZ
+         Fvow==;
         darn=vger.kernel.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1769622258; x=1770227058; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=bQ28KNx3pxtawA1nFwPKCc2RQpAN4D6gIqSKFp3a8PE=;
-        b=tv1VV59YxTvzh9ODNjmtMQ+78kmvBxebpl/GT3CNNbFXzz05LEQGLRanHO3jyIUTs/
-         MxtSxwW2/4SBn87aistUjwenM5dMMtjkzL1K/l8CaR0M6RE+ZwA0j8TgQYK0cfmlvi0n
-         fKfAI4huXZvJEdsqWgoyy1cHreEmSC1ucX5/lGTwiNfZEskD974LmkDaMMVQ1Y7z+FlJ
-         WMvO+IWeCgA7LD0Zq2ksn4r53+ymYHZ/6AB/JUr8yQzzP1TimP6YK31HgY9gdVRTtMUH
-         kLdNhjL/XkQ1lorR16MP03t6dvVnjPaUnxSRG2dwJy1voueIWZGEHUm/4GW3QMd1RLsy
-         EsDQ==
+        d=google.com; s=20230601; t=1769622648; x=1770227448; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
+         :from:from:to:cc:subject:date:message-id:reply-to;
+        bh=CNqWkOyueD1v7WuaKUDdc+x4jRQ5s6ulmoL4RqUerEM=;
+        b=bHT6jDVrWJ3mgE3zOdEbPbOXVylCYhJBKidSCHid9ahabufnkQjUDopdWEfUqt8bcF
+         lg0R+SYljdK33OM6QbmD4IhWOpcBNORKLrkG/r3rwpBjibP+7XSbTyhpPWf/Fn5tZoXG
+         8iXgSC9hofYXikgaLaloBdRIqBSk7PoXv8JMfHLccDyPyNZL1MmlvTj9jVtKoXD1qDdr
+         wGJ+WPgGFHT1cBh2DDqw7vc9Y6e98IyTzsVBo90UqQBLxExjeR3YeBxx4KvuntNjJPy/
+         oooOPZS5Ffb5yQ3ok1gMnfZO5miSxDmK11nKDNg0N79NN8NPBkqtA39yLQ4KYC7ZycF7
+         5tOg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1769622258; x=1770227058;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=bQ28KNx3pxtawA1nFwPKCc2RQpAN4D6gIqSKFp3a8PE=;
-        b=LOboGMfvh28f0e3BmplieleB7sUNP9xvqmuj8X4JoOw7T9XZ4y6b8wCGGoVsmEXi4n
-         UN+PPUv5nTiV7yM8FJuyNSYH5AlEQubUzW0H4KfRMCAedJWNMqhvjOqu6JWijqO1NKod
-         8Ki7YkxCf/03LTSZmDYjJV7Se5vX27frxWO1nZ1+kJRdXWs5ngxfZM+3EQKILnCYiUCj
-         Ys7VZYpTA+86apmfislj2U8aI0aXkwurUDBo8plp/HhsGi896lIGj9WW3dLsPB1ATD3B
-         QloB8V5pAyflBfbCPuF7QDq7FMOFCbpURCcXxBht67ZPYvLNaofqqfr9oTJ4ohSpIEmo
-         59iA==
-X-Forwarded-Encrypted: i=1; AJvYcCXgo2FGPJCRWFB9X+EqI/RpQfQ0dLgpfmyOQygha3U8bRSk++M8bJPlfZ56QJT3mbT4cRU=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwVvBf8U/3Z/4/YQSbnXgVqhi4vBhGDItfExtYdFZivmMjixw+s
-	3ldzMH7Wou1mQIuHzRsU4mgdaCufkulexSbWxbBA5obN1KwpLrM/sBfO2MovmNHmeAKoTamBC65
-	0O5/N6ODXd5+G9dO371vbij3Ht7mOdxt/pDKq2GvJm8Sa41TcTcT4zNlrVJQ=
-X-Gm-Gg: AZuq6aKNm5+dEAuEfSWtpsBIxUPnGyH/BxRuTcO+UIuPBiF0Gp5YZ8ySyNQ+TxxdHbE
-	KoMqLVCt/gdg20PnawPUuHaKZaVHa6lfDd9/OTAcj1B/E6/RuTwp0gz4FVGNs++nFFgvHIFTL6z
-	j0zTv+xTTLQZXbFPn612QupAkvWphjAM9qfdRHczyFq2D8e++2SeGimMuln/oGMILKMH5mfS1P0
-	00B/AFtFo0CSK04BV+HezCmLANx4cvM1NW759NZ2p1Ean/awmuuNqWF0vt5AOIAd3nCIGdoe/eb
-	H8BAc/g=
-X-Received: by 2002:a05:622a:a64d:b0:4ed:a65c:88d0 with SMTP id
- d75a77b69052e-503340e241emr18057281cf.6.1769622257513; Wed, 28 Jan 2026
- 09:44:17 -0800 (PST)
+        d=1e100.net; s=20230601; t=1769622648; x=1770227448;
+        h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
+         :from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=CNqWkOyueD1v7WuaKUDdc+x4jRQ5s6ulmoL4RqUerEM=;
+        b=tTRNB3iRWzjoWDHE/3BXjna1R6SexSLPPhi5UY70GyJFOvUn61ABADcER5Jf4/dXsQ
+         k272oDWd9Xt/E2CmDpx8+Z9U0vWVfdyYsMCQ38Cjbm0aK1y5lWbBlHn+0aRRGskTfM4F
+         eO2h9I825uNpHWhjqUbw/vo5fHKsK+HSz+lGzqY58f6f7ULkECMKvxdwa7AqQwdZdrjI
+         5B/ZRwY0jt68Vj3tUIXE3hOzT3UtAn9hxrDelRUXospmAQznfNvbO05Vy9C386+n3F5k
+         RX/MHsM6VI2nY9UqTZ6XMBPo8IFtI3tedwh3UDId0Qcv6Fg2TeELV0FwabGycwfS0hqO
+         8YqQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUqKp31z5pshWfZgCBidm/mIam3yc4gnIMuxz/zNnGxKep0NB4rntQmJKjn9OWCQEeW9gY=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwXcb5uXHMF4mhEX8bbQXuUw6MXb4JkTR+0WF3i+hXJ0MEQ+KWU
+	vFdIo1H7PHH/w65bVq04FwWKvQl2kfAXnGvXlHdUMlEOnOwN1PCfyoObYbMrd3AiL6Rr6/cVxRx
+	nO6egc179i8iRrsqwf4B4tXK49Vks9iFUxmm4Fzbk
+X-Gm-Gg: AZuq6aLTUxme0hvz+Zd4Fqvc+4yQo1xZjMSvXdKW2SDGpQF2FLfhhLCu7xqEHdaoqnP
+	EUFssbWMISo+7GiAdKMiHKGxoSISI9WY0a1b0Jj4/FTnJ6XawvuQvqRQsk3M5XeZ/xV3ztjLqsf
+	+gpdC+AuQxfQ8G4HhMhAEMqRX+RBnQ0EO0xm36xsip4FxQmSoKej/nd8srgfQUjlXofHg2hTcI9
+	AiehM0zdNKTiu4WSIPKp+ghqE88ynChpT2xjIFllggSs3ujE2sYeUxMP+/l4uVapZkK+X1rkCB2
+	v/4XlCNwSeAtCaRQBv7+BzyaeA==
+X-Received: by 2002:a05:6102:390c:b0:5db:e2c2:81a1 with SMTP id
+ ada2fe7eead31-5f723765badmr2717805137.14.1769622647325; Wed, 28 Jan 2026
+ 09:50:47 -0800 (PST)
+Received: from 176938342045 named unknown by gmailapi.google.com with
+ HTTPREST; Wed, 28 Jan 2026 09:50:46 -0800
+Received: from 176938342045 named unknown by gmailapi.google.com with
+ HTTPREST; Wed, 28 Jan 2026 09:50:46 -0800
+From: Ackerley Tng <ackerleytng@google.com>
+In-Reply-To: <aW3kOgKL7TjpW4AT@yzhao56-desk.sh.intel.com>
+References: <cover.1760731772.git.ackerleytng@google.com> <638600e19c6e23959bad60cf61582f387dff6445.1760731772.git.ackerleytng@google.com>
+ <aW3kOgKL7TjpW4AT@yzhao56-desk.sh.intel.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260126121655.1641736-1-maz@kernel.org> <20260126121655.1641736-13-maz@kernel.org>
-In-Reply-To: <20260126121655.1641736-13-maz@kernel.org>
-From: Fuad Tabba <tabba@google.com>
-Date: Wed, 28 Jan 2026 17:43:40 +0000
-X-Gm-Features: AZwV_Qjw_-4jQqLbJsa_gafDcYnoQTp1vBemlKSUmMjvAlynKsInG-LHMbmXpQc
-Message-ID: <CA+EHjTzL6bNZ=sZoub3GY=VZ2bJ+4bFr4jkuiMMBCEqXuAkQPA@mail.gmail.com>
-Subject: Re: [PATCH 12/20] KVM: arm64: Add RESx_WHEN_E2Hx constraints as
- configuration flags
-To: Marc Zyngier <maz@kernel.org>
-Cc: kvmarm@lists.linux.dev, linux-arm-kernel@lists.infradead.org, 
-	kvm@vger.kernel.org, Joey Gouly <joey.gouly@arm.com>, 
-	Suzuki K Poulose <suzuki.poulose@arm.com>, Oliver Upton <oupton@kernel.org>, 
-	Zenghui Yu <yuzenghui@huawei.com>, Will Deacon <will@kernel.org>, 
-	Catalin Marinas <catalin.marinas@arm.com>
+Date: Wed, 28 Jan 2026 09:50:46 -0800
+X-Gm-Features: AZwV_QifG6FXcq-qNYCcE_MoQgt6DAo9uPq6fzN3xKHneI_AD0mm_Yxu6BjCe84
+Message-ID: <CAEvNRgEjo5idG7OtMqHt+kCRCQnWjzWzQN7nwNGDExwmf4fyvA@mail.gmail.com>
+Subject: Re: [RFC PATCH v1 01/37] KVM: guest_memfd: Introduce per-gmem
+ attributes, use to guard user mappings
+To: Yan Zhao <yan.y.zhao@intel.com>
+Cc: cgroups@vger.kernel.org, kvm@vger.kernel.org, linux-doc@vger.kernel.org, 
+	linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-kselftest@vger.kernel.org, linux-mm@kvack.org, 
+	linux-trace-kernel@vger.kernel.org, x86@kernel.org, akpm@linux-foundation.org, 
+	binbin.wu@linux.intel.com, bp@alien8.de, brauner@kernel.org, 
+	chao.p.peng@intel.com, chenhuacai@kernel.org, corbet@lwn.net, 
+	dave.hansen@intel.com, dave.hansen@linux.intel.com, david@redhat.com, 
+	dmatlack@google.com, erdemaktas@google.com, fan.du@intel.com, fvdl@google.com, 
+	haibo1.xu@intel.com, hannes@cmpxchg.org, hch@infradead.org, hpa@zytor.com, 
+	hughd@google.com, ira.weiny@intel.com, isaku.yamahata@intel.com, jack@suse.cz, 
+	james.morse@arm.com, jarkko@kernel.org, jgg@ziepe.ca, jgowans@amazon.com, 
+	jhubbard@nvidia.com, jroedel@suse.de, jthoughton@google.com, 
+	jun.miao@intel.com, kai.huang@intel.com, keirf@google.com, 
+	kent.overstreet@linux.dev, liam.merwick@oracle.com, 
+	maciej.wieczor-retman@intel.com, mail@maciej.szmigiero.name, 
+	maobibo@loongson.cn, mathieu.desnoyers@efficios.com, maz@kernel.org, 
+	mhiramat@kernel.org, mhocko@kernel.org, mic@digikod.net, michael.roth@amd.com, 
+	mingo@redhat.com, mlevitsk@redhat.com, mpe@ellerman.id.au, 
+	muchun.song@linux.dev, nikunj@amd.com, nsaenz@amazon.es, 
+	oliver.upton@linux.dev, palmer@dabbelt.com, pankaj.gupta@amd.com, 
+	paul.walmsley@sifive.com, pbonzini@redhat.com, peterx@redhat.com, 
+	pgonda@google.com, prsampat@amd.com, pvorel@suse.cz, qperret@google.com, 
+	richard.weiyang@gmail.com, rick.p.edgecombe@intel.com, rientjes@google.com, 
+	rostedt@goodmis.org, roypat@amazon.co.uk, rppt@kernel.org, seanjc@google.com, 
+	shakeel.butt@linux.dev, shuah@kernel.org, steven.price@arm.com, 
+	steven.sistare@oracle.com, suzuki.poulose@arm.com, tabba@google.com, 
+	tglx@linutronix.de, thomas.lendacky@amd.com, vannapurve@google.com, 
+	vbabka@suse.cz, viro@zeniv.linux.org.uk, vkuznets@redhat.com, 
+	wei.w.wang@intel.com, will@kernel.org, willy@infradead.org, wyihan@google.com, 
+	xiaoyao.li@intel.com, yilun.xu@intel.com, yuzenghui@huawei.com, 
+	zhiquan1.li@intel.com
 Content-Type: text/plain; charset="UTF-8"
 
-Hi Marc,
+Yan Zhao <yan.y.zhao@intel.com> writes:
 
-On Mon, 26 Jan 2026 at 12:17, Marc Zyngier <maz@kernel.org> wrote:
 >
-> "Thanks" to VHE, SCTLR_EL2 radically changes shape depending on the
-> value of HCR_EL2.E2H, as a lot of the bits that didn't have much
-> meaning with E2H=0 start impacting EL0 with E2H=1.
+> [...snip...]
 >
-> This has a direct impact on the RESx behaviour of these bits, and
-> we need a way to express them.
 >
-> For this purpose, introduce a set of 4 new constaints that, when
-> the controlling feature is not present, force the RESx value to
-> be either 0 or 1 depending on the value of E2H.
+> So, it's possible for kvm_mem_is_private() to access invalid mtree data and hit
+> the WARN_ON_ONCE() in kvm_gmem_get_attributes().
 >
-> This allows diverging RESx values depending on the value of E2H,
-> something that is required by a bunch of SCTLR_EL2 bits.
+> I reported a similar error in [*].
 >
-> Signed-off-by: Marc Zyngier <maz@kernel.org>
-> ---
->  arch/arm64/kvm/config.c | 24 +++++++++++++++++++++---
->  1 file changed, 21 insertions(+), 3 deletions(-)
+> [*] https://lore.kernel.org/all/aIwD5kGbMibV7ksk@yzhao56-desk.sh.intel.com
 >
-> diff --git a/arch/arm64/kvm/config.c b/arch/arm64/kvm/config.c
-> index 1990cebc77c66..7063fffc22799 100644
-> --- a/arch/arm64/kvm/config.c
-> +++ b/arch/arm64/kvm/config.c
-> @@ -26,6 +26,10 @@ struct reg_bits_to_feat_map {
->  #define        MASKS_POINTER   BIT(3)  /* Pointer to fgt_masks struct instead of bits */
->  #define        AS_RES1         BIT(4)  /* RES1 when not supported */
->  #define        REQUIRES_E2H1   BIT(5)  /* Add HCR_EL2.E2H RES1 as a pre-condition */
-> +#define        RES0_WHEN_E2H0  BIT(6)  /* RES0 when E2H=0 and not supported */
-> +#define        RES0_WHEN_E2H1  BIT(7)  /* RES0 when E2H=1 and not supported */
-> +#define        RES1_WHEN_E2H0  BIT(8)  /* RES1 when E2H=0 and not supported */
-> +#define        RES1_WHEN_E2H1  BIT(9)  /* RES1 when E2H=1 and not supported */
->
->         unsigned long   flags;
->
-> @@ -1298,10 +1302,24 @@ struct resx compute_resx_bits(struct kvm *kvm,
->                         match &= !e2h0;
->
->                 if (!match) {
-> +                       u64 bits = reg_feat_map_bits(&map[i]);
-> +
-> +                       if (e2h0) {
-> +                               if      (map[i].flags & RES1_WHEN_E2H0)
-> +                                       resx.res1 |= bits;
-> +                               else if (map[i].flags & RES0_WHEN_E2H0)
-> +                                       resx.res0 |= bits;
-> +                       } else {
-> +                               if      (map[i].flags & RES1_WHEN_E2H1)
-> +                                       resx.res1 |= bits;
-> +                               else if (map[i].flags & RES0_WHEN_E2H1)
-> +                                       resx.res0 |= bits;
-> +                       }
-> +
->                         if (map[i].flags & AS_RES1)
-> -                               resx.res1 |= reg_feat_map_bits(&map[i]);
-> -                       else
-> -                               resx.res0 |= reg_feat_map_bits(&map[i]);
-> +                               resx.res1 |= bits;
-> +                       else if (!(resx.res1 & bits))
-> +                               resx.res0 |= bits;
 
-The logic here feels a bit more complex than necessary, specifically
-regarding the interaction between the E2H checks and the fallthrough
-to AS_RES1.
-
-Although AS_RES1 and RES0_WHEN_E2H0 are mutually exclusive in
-practice, the current structure technically permits a scenario where
-both res0 and res1 get set if the flags are mixed (the e2h0 block sets
-res0, and the AS_RES1 block falls through and sets res1). This cannot
-be ruled out by looking at this function alone.
-
-  It might be cleaner (and safer) to determine the res1 first, and
-then apply the masks. Something like:
-
-+                       bool is_res1 = false;
-+
-+                       if (map[i].flags & AS_RES1)
-+                               is_res1 = true;
-+                       else if (e2h0)
-+                               is_res1 = (map[i].flags & RES1_WHEN_E2H0);
-+                       else
-+                               is_res1 = (map[i].flags & RES1_WHEN_E2H1);
-...
-
-This also brings up a side point: given the visual similarity of these
-flags, it is quite easy to make a typo and accidentally combine
-incompatible flags (e.g., AS_RES1 | RESx_WHEN_E2Hx, or RES0_WHEN_E2H0
-| RES1_WHEN_E2H0), would it be worth adding a check to warn on
-obviously invalid combinations?
-
-Or maybe even redefining AS_RES1 to be
-(RES1_WHEN_E2H1|RES1_WHEN_E2H0), which is what it is conceptually.
-That could simplify this code even further:
-
-+                       if (e2h0)
-+                               is_res1 = (map[i].flags & RES1_WHEN_E2H0);
-+                       else
-+                               is_res1 = (map[i].flags & RES1_WHEN_E2H1);
-
-What do you think?
-
-Cheers,
-/fuad
-
-
-
-
->                 }
->         }
->
-> --
-> 2.47.3
->
+Will add locking in the next revision. Thanks!
