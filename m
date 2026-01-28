@@ -1,170 +1,210 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D017343D75
-	for <kvm@vger.kernel.org>; Wed, 28 Jan 2026 23:17:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.13
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C7CD72D8799;
+	Wed, 28 Jan 2026 23:36:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.19
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769642269; cv=none; b=ANs9uMy/EP5Z7SGMefvejK0USj8N1ImNjM2A9tyQfzdcualgMDddrQmiholDqKxl7icXnnCy51A3rF0ekgQzl9EHG+F6o0PSnvH22Z5J/Qn0UFCNvyv9Os6Rf8rP/V01RpaacBorxdekPqLwSIwWhl3Xfnt8L5tLXOdPP15DwQ8=
+	t=1769643412; cv=none; b=Bze3HqNyaNMytQiQ+YuYZZCbvD9nmfmUqIzhCMPT79OKJiTeg0hoXjcVsfzIHhU9DjCLc+9gM8owtoAvtnRRL2JNM1GYzNp5ahZoYMyiv7XZ9XYuSp0TqUAMO8AyecJjCMt3Cuf3QN7HzyoeegZ8KiZ6lBMWMbHDqkMoQ0We4vY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769642269; c=relaxed/simple;
-	bh=lBhmgOoCeHBQeHkVFHU09ZVdbzQMPRSBW0jjTwRm2OU=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VKvK1Wt1nDJGRxe1ZF7imsreBgubl+jH9EUjQPojY2lEpgKvdpDOBALCDmzoo7V25zWcOatQ3enDFg5D10sJ4ZTb/nJ6KDsxub54hU/UHd39CY2MjBFHo9YzCBwtSUps11EMcO9lcLxzvuGD6G0qX42h4llMkmJYoCZD+aTIHyM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=LZvv+tzW; arc=none smtp.client-ip=192.198.163.13
+	s=arc-20240116; t=1769643412; c=relaxed/simple;
+	bh=pY7pQJEOHa6B148FkxDEx/S3AddhuNgnzB//YrudAAU=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=gtv8qsaFRWF227IIbZRiBuHTQ/DsyixCd2HvLlsf0KowQoeJcpQQFw0sH68zTiVAGc42QL/dKarhOZofuNoS7zHFj/nfbeB81T7FBtOC1tNBRzCrkWkHIS69OVE+YUqrN+V9IisMQC/9elYGe4Wc8xZdhuJYYDc1HUP3lYuiB+4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=QV9+uh43; arc=none smtp.client-ip=192.198.163.19
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="LZvv+tzW"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="QV9+uh43"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1769642263; x=1801178263;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=lBhmgOoCeHBQeHkVFHU09ZVdbzQMPRSBW0jjTwRm2OU=;
-  b=LZvv+tzWc8WKHZw7CavefSA4FAyuOfKCN9xHID8heToCPygLLS9M+OAf
-   8hlctfc6ujt0WCqk4/1mZT3dOUyVJCpPPfzkkp7DCIfoJ0pSxq1RpM0k0
-   +15RNSptMYoiS1RTQbk2fJGs3vx0KwB+/81QwHcRAAXSRJsFsx96XvQcO
-   1AIkMHS+KWQij1ew1uD1dXNrjVCYZ82Vklz2ZLpXWYIRauMXiGVWjzn3R
-   nYdAli9LKPJdB0zQxRZTgKxak+mmU+uDNWr2ysSBM+W6lAxYKpUnvB3Pv
-   j5mx7NATBo7Pk/nexh+HKktMFjnRJvI90YmbC9X2czjIlPBX5G94B9tKH
+  t=1769643410; x=1801179410;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=pY7pQJEOHa6B148FkxDEx/S3AddhuNgnzB//YrudAAU=;
+  b=QV9+uh43wsiX4YZuxxcjWu3zUWJRUtfW+PMFZJD2vNT5cL9/6+deDxu/
+   NX7YBtbhyUG6UjgtlcLNlzcQaTgufh+TNTLWMgdjRbOnO7vcNQsrsNrYe
+   bQboezth11hHM5WQ5nEhL2L6c1twXDCaLIfpT6ovNOWO6h3t45BDSAOQO
+   maLGyT0tB+iLQIuW+YayxbgJYbW1zVKCzOM81V6Fn2aDnSf2FCC8xcvn2
+   zHZB7WfcHNKs3FCd+41ItoBgCSYIAeTzuoJHQ4i1PPeXyuWGe//I2Mo5o
+   Vvbx2Dzwk0894jYNdBKLZ+k48PjOz7so+9psU1wlCMN82247OTFHVy0Gk
    g==;
-X-CSE-ConnectionGUID: 1L3S4GRSRFOQWkxYzzvGeA==
-X-CSE-MsgGUID: 5Xg+Y9hkQMOPIvyRDVvKGw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11685"; a="73462349"
+X-CSE-ConnectionGUID: sUZrFg6GTo6FG/rYrSJHqQ==
+X-CSE-MsgGUID: qlttQNEZTkKPj3Q8e845/A==
+X-IronPort-AV: E=McAfee;i="6800,10657,11685"; a="69885831"
 X-IronPort-AV: E=Sophos;i="6.21,258,1763452800"; 
-   d="scan'208";a="73462349"
-Received: from fmviesa007.fm.intel.com ([10.60.135.147])
-  by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Jan 2026 15:17:43 -0800
-X-CSE-ConnectionGUID: zpxgtPShSSOfhBkhCTjQ/Q==
-X-CSE-MsgGUID: CCQLBDU8TNeu5lOAgoME6A==
+   d="scan'208";a="69885831"
+Received: from orviesa008.jf.intel.com ([10.64.159.148])
+  by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Jan 2026 15:36:50 -0800
+X-CSE-ConnectionGUID: bdIAQWIBQo6uLK9IaPzH0w==
+X-CSE-MsgGUID: 16c0GeNwRfOZszGx9ogCUg==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.21,258,1763452800"; 
-   d="scan'208";a="208001791"
-Received: from 9cc2c43eec6b.jf.intel.com ([10.54.77.43])
-  by fmviesa007-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Jan 2026 15:17:42 -0800
-From: Zide Chen <zide.chen@intel.com>
-To: qemu-devel@nongnu.org,
-	kvm@vger.kernel.org,
-	Paolo Bonzini <pbonzini@redhat.com>,
-	Zhao Liu <zhao1.liu@intel.com>,
-	Peter Xu <peterx@redhat.com>,
-	Fabiano Rosas <farosas@suse.de>
-Cc: Xiaoyao Li <xiaoyao.li@intel.com>,
-	Dongli Zhang <dongli.zhang@oracle.com>,
-	Dapeng Mi <dapeng1.mi@linux.intel.com>,
-	Zide Chen <zide.chen@intel.com>
-Subject: [PATCH V2 10/11] target/i386: Add pebs-fmt CPU option
-Date: Wed, 28 Jan 2026 15:09:47 -0800
-Message-ID: <20260128231003.268981-11-zide.chen@intel.com>
-X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260128231003.268981-1-zide.chen@intel.com>
-References: <20260128231003.268981-1-zide.chen@intel.com>
+   d="scan'208";a="208424267"
+Received: from kcaccard-desk.amr.corp.intel.com (HELO [10.125.109.190]) ([10.125.109.190])
+  by orviesa008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Jan 2026 15:36:49 -0800
+Message-ID: <301f8156-bafe-440a-8628-3bf8fae74464@intel.com>
+Date: Wed, 28 Jan 2026 15:36:49 -0800
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 07/26] x86/virt/seamldr: Introduce a wrapper for
+ P-SEAMLDR SEAMCALLs
+To: Chao Gao <chao.gao@intel.com>, linux-coco@lists.linux.dev,
+ linux-kernel@vger.kernel.org, kvm@vger.kernel.org, x86@kernel.org
+Cc: reinette.chatre@intel.com, ira.weiny@intel.com, kai.huang@intel.com,
+ dan.j.williams@intel.com, yilun.xu@linux.intel.com, sagis@google.com,
+ vannapurve@google.com, paulmck@kernel.org, nik.borisov@suse.com,
+ zhenzhong.duan@intel.com, seanjc@google.com, rick.p.edgecombe@intel.com,
+ kas@kernel.org, dave.hansen@linux.intel.com, vishal.l.verma@intel.com,
+ Farrah Chen <farrah.chen@intel.com>, Thomas Gleixner <tglx@linutronix.de>,
+ Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+ "H. Peter Anvin" <hpa@zytor.com>
+References: <20260123145645.90444-1-chao.gao@intel.com>
+ <20260123145645.90444-8-chao.gao@intel.com>
+From: Dave Hansen <dave.hansen@intel.com>
+Content-Language: en-US
+Autocrypt: addr=dave.hansen@intel.com; keydata=
+ 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
+In-Reply-To: <20260123145645.90444-8-chao.gao@intel.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-Similar to lbr-fmt, target/i386 does not support multi-bit CPU
-properties, so the PEBS record format cannot be exposed as a
-user-visible CPU feature.
+On 1/23/26 06:55, Chao Gao wrote:
+...
+> +static __maybe_unused int seamldr_call(u64 fn, struct tdx_module_args *args)
+> +{
+> +	unsigned long flags;
+> +	u64 vmcs;
+> +	int ret;
+> +
+> +	if (!is_seamldr_call(fn))
+> +		return -EINVAL;
 
-Add a pebs-fmt option to allow users to specify the PEBS format via the
-command line.  Since the PEBS state is part of the vmstate, this option
-is considered migratable.
+Why is this here? We shouldn't be silently papering over kernel bugs.
+This is a WARN_ON() at *best*, but it also begs the question of how a
+non-SEAMLDR call even got here.
 
-With this option, PEBS can be enabled when migratable=on.
+> +	/*
+> +	 * SEAMRET from P-SEAMLDR invalidates the current VMCS.  Save/restore
+> +	 * the VMCS across P-SEAMLDR SEAMCALLs to avoid clobbering KVM state.
+> +	 * Disable interrupts as KVM is allowed to do VMREAD/VMWRITE in IRQ
+> +	 * context (but not NMI context).
+> +	 */
 
-Signed-off-by: Zide Chen <zide.chen@intel.com>
----
-V2: New patch
+I think you mean:
 
- target/i386/cpu.c         | 11 ++++++++++-
- target/i386/cpu.h         |  5 +++++
- target/i386/kvm/kvm-cpu.c |  1 +
- 3 files changed, 16 insertions(+), 1 deletion(-)
+	WARN_ON(in_nmi());
 
-diff --git a/target/i386/cpu.c b/target/i386/cpu.c
-index 54f04adb0b48..ec6f49916de3 100644
---- a/target/i386/cpu.c
-+++ b/target/i386/cpu.c
-@@ -9796,7 +9796,9 @@ static bool x86_cpu_apply_lbr_pebs_fmt(X86CPU *cpu, uint64_t host_perf_cap,
-         shift = PERF_CAP_LBR_FMT_SHIFT;
-         name = "lbr";
-     } else {
--        return false;
-+        mask = PERF_CAP_PEBS_FMT_MASK;
-+        shift = PERF_CAP_PEBS_FMT_SHIFT;
-+        name = "pebs";
-     }
- 
-     if (user_req != -1) {
-@@ -9838,6 +9840,11 @@ static int x86_cpu_pmu_realize(X86CPU *cpu, Error **errp)
-         return -EINVAL;
-     }
- 
-+    if (!x86_cpu_apply_lbr_pebs_fmt(cpu, host_perf_cap,
-+                                    cpu->pebs_fmt, false, errp)) {
-+        return -EINVAL;
-+    }
-+
-     return 0;
- }
- 
-@@ -10307,6 +10314,7 @@ static void x86_cpu_initfn(Object *obj)
- 
-     object_property_add_alias(obj, "hv-apicv", obj, "hv-avic");
-     object_property_add_alias(obj, "lbr_fmt", obj, "lbr-fmt");
-+    object_property_add_alias(obj, "pebs_fmt", obj, "pebs-fmt");
- 
-     if (xcc->model) {
-         x86_cpu_load_model(cpu, xcc->model);
-@@ -10478,6 +10486,7 @@ static const Property x86_cpu_properties[] = {
-     DEFINE_PROP_INT32("node-id", X86CPU, node_id, CPU_UNSET_NUMA_NODE_ID),
-     DEFINE_PROP_BOOL("pmu", X86CPU, enable_pmu, false),
-     DEFINE_PROP_UINT64_CHECKMASK("lbr-fmt", X86CPU, lbr_fmt, PERF_CAP_LBR_FMT_MASK),
-+    DEFINE_PROP_UINT64_CHECKMASK("pebs-fmt", X86CPU, pebs_fmt, PERF_CAP_PEBS_FMT_MASK),
- 
-     DEFINE_PROP_UINT32("hv-spinlocks", X86CPU, hyperv_spinlock_attempts,
-                        HYPERV_SPINLOCK_NEVER_NOTIFY),
-diff --git a/target/i386/cpu.h b/target/i386/cpu.h
-index aa3c24e0ba13..5ab107dfa29f 100644
---- a/target/i386/cpu.h
-+++ b/target/i386/cpu.h
-@@ -422,6 +422,8 @@ typedef enum X86Seg {
- #define MSR_IA32_PERF_CAPABILITIES      0x345
- #define PERF_CAP_LBR_FMT_MASK           0x3f
- #define PERF_CAP_LBR_FMT_SHIFT          0x0
-+#define PERF_CAP_PEBS_FMT_MASK          0xf
-+#define PERF_CAP_PEBS_FMT_SHIFT         0x8
- #define PERF_CAP_FULL_WRITE             (1U << 13)
- #define PERF_CAP_PEBS_BASELINE          (1U << 14)
- 
-@@ -2399,6 +2401,9 @@ struct ArchCPU {
-      */
-     uint64_t lbr_fmt;
- 
-+    /* PEBS_FMT bits in IA32_PERF_CAPABILITIES MSR. */
-+    uint64_t pebs_fmt;
-+
-     /* LMCE support can be enabled/disabled via cpu option 'lmce=on/off'. It is
-      * disabled by default to avoid breaking migration between QEMU with
-      * different LMCE configurations.
-diff --git a/target/i386/kvm/kvm-cpu.c b/target/i386/kvm/kvm-cpu.c
-index b4500ab69f82..7029629a9d09 100644
---- a/target/i386/kvm/kvm-cpu.c
-+++ b/target/i386/kvm/kvm-cpu.c
-@@ -232,6 +232,7 @@ static void kvm_cpu_instance_init(CPUState *cs)
-     }
- 
-     cpu->lbr_fmt = -1;
-+    cpu->pebs_fmt = -1;
- 
-     kvm_cpu_xsave_init();
- }
--- 
-2.52.0
+> +	local_irq_save(flags);
+> +
+> +	asm goto("1: vmptrst %0\n\t"
+> +		 _ASM_EXTABLE(1b, %l[error])
+> +		 : "=m" (vmcs) : : "cc" : error);
+
+I'd much rather this be wrapped up in a helper function. We shouldn't
+have to look at the horrors of inline assembly like this.
+
+But this *REALLY* wants the KVM folks to look at it. One argument is
+that with the inline assembly this is nice and self-contained. The other
+argument is that this completely ignores all existing KVM infrastructure
+and is parallel VMCS management.
+
+I'd be shocked if this is the one and only place in the whole kernel
+that can unceremoniously zap VMX state.
+
+I'd *bet* that you don't really need to do the vmptrld and that KVM can
+figure it out because it can vmptrld on demand anyway. Something along
+the lines of:
+
+	local_irq_disable();
+	list_for_each(handwaving...)
+		vmcs_clear();
+	ret = seamldr_prerr(fn, args);
+	local_irq_enable();	
+
+Basically, zap this CPU's vmcs state and then make KVM reload it at some
+later time.
+
+I'm sure Sean and Paolo will tell me if I'm crazy.
+
+> diff --git a/drivers/virt/coco/tdx-host/Kconfig b/drivers/virt/coco/tdx-host/Kconfig
+> index e58bad148a35..6a9199e6c2c6 100644
+> --- a/drivers/virt/coco/tdx-host/Kconfig
+> +++ b/drivers/virt/coco/tdx-host/Kconfig
+> @@ -8,3 +8,13 @@ config TDX_HOST_SERVICES
+>  
+>  	  Say y or m if enabling support for confidential virtual machine
+>  	  support (CONFIG_INTEL_TDX_HOST). The module is called tdx_host.ko
+> +
+> +config INTEL_TDX_MODULE_UPDATE
+> +	bool "Intel TDX module runtime update"
+> +	depends on TDX_HOST_SERVICES
+> +	help
+> +	  This enables the kernel to support TDX module runtime update. This
+> +	  allows the admin to update the TDX module to another compatible
+> +	  version without the need to terminate running TDX guests.
+
+... as opposed to the method that the kernel has to update the module
+without terminating guests? ;)
+
+> +	  If unsure, say N.
+
+Let's call this:
+
+ config
+INTEL_TDX_ONLY_DISABLE_THIS_IF_YOU_HATE_SECURITY_AND_IF_YOU_DO_WHY_ARE_YOU_RUNNING_TDX?
+
+Can we have question marks in config symbol names? ;)
+
+But, seriously, what the heck? Who would disable security updates for
+their confidential computing infrastructure? Is this some kind of
+intelligence test for our users so that if someone disables it we can
+just laugh at them?
+
 
