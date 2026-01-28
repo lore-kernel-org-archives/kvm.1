@@ -1,50 +1,50 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 36CEE35B12D;
-	Wed, 28 Jan 2026 16:53:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.8
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C8387311597;
+	Wed, 28 Jan 2026 17:01:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.11
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769619193; cv=none; b=C37kPOT8jXjRwJ8IQ4Hhpi6/BnAjrv6W+A+aeXwxIcCAYfRJ2LPJrXhviytLb3reM/jEK7pjpSfalk4T1hyzNtdyrK0OGIbslAFdlUfd9CuFrdOiMRRk++vKVECMPjR4z0CiDTCCdUR0XeE2iG5JWslstvpawRtcdH0+PKjtbxY=
+	t=1769619698; cv=none; b=ZQCFvlf3aXmHVefl8yQrNBlfD6Oc99QA91KmaIjqzobc8w40IZk9meeYw02+IOdXWYa5dufrde4MGBQHYzunBOMEl65eA7oQbEdfgid3F3mLRzidABTrAv97jJf1pShmS12esCk0gQkfhiQ4bz5Gtxh4+2WKCYJtNC4GLcRfCcE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769619193; c=relaxed/simple;
-	bh=+05nBJlNipR/QOIkXZyXtichZo5nu/NL5OjhHHmiaEM=;
+	s=arc-20240116; t=1769619698; c=relaxed/simple;
+	bh=kDU5Wa9+UuGccdLlxzGAoizpVFs3ZlLwt5r5PrGtOqQ=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=FDThOuY1fNAE3LySrkBZiu5T0RfImwGeBK0Fbq/EQ+FL4psobMj46VJc4QRIu7N9YEpOxRvlkD12ZeJviItpzjU+Pz8MWZhaiX7N7TweAomYDI7OK2hdaS0LE985Yw3PRE1JvTn4SMs9fxxc7VxrbzqDQypY2UrQGr08kh0f33s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=dsMYfuY4; arc=none smtp.client-ip=192.198.163.8
+	 In-Reply-To:Content-Type; b=evuA9zkXldaFlN86HnxJvVgrfEONr629jCnh9j+o8LNaFkxEicR+9RERT9V2pqctGkpGPL0uUU5nrdjRoIp9vqczsMVg9NwWHS3iJtZMGzhJbxyhfmHPdcTD/TT2tY+czFrtjdeTcJghdmC0GTm7XSXaBXlHUX5q0CzcPzRj2SI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=fSMOztiS; arc=none smtp.client-ip=198.175.65.11
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="dsMYfuY4"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="fSMOztiS"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1769619191; x=1801155191;
+  t=1769619697; x=1801155697;
   h=message-id:date:mime-version:subject:to:cc:references:
    from:in-reply-to:content-transfer-encoding;
-  bh=+05nBJlNipR/QOIkXZyXtichZo5nu/NL5OjhHHmiaEM=;
-  b=dsMYfuY4cdeltqD/AD8EXBA/bKixxFF3wwH38awm+AVsx+y50QoUta4O
-   h3OR/IXJPaArXAf4WI43H287+mNP7XIArxIc6du2Pq5CpDYluoysUCcvq
-   94YGa7nwos8jC19Z19TUe5+KORQwIjhhI5aMG40p+Tubr4UJV1Z6HszL1
-   fzSkjb8IwBE4iOqlzrFeSQMDaiAL9tlZD6R+R178qzyj6Wdrs06F3F/1L
-   AzX3GZQnp4X0SVJ/WuPVmWkxtHrpvpuuUjD48Tsw/b1j5iu//6eNr9HLG
-   waMXRNPkvNN9qrsSwhtEw/BWO4eH0yoqG0sExSXTmGFg1ymCtUx5hl8W/
-   Q==;
-X-CSE-ConnectionGUID: W/NZN0U0QS2A3Be1HJqkFQ==
-X-CSE-MsgGUID: 4NcwaQ9bQf2DHB3AacIAOg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11685"; a="88413461"
+  bh=kDU5Wa9+UuGccdLlxzGAoizpVFs3ZlLwt5r5PrGtOqQ=;
+  b=fSMOztiSsysB+KsjJjsHfYSWgAk5lriAPSXEphKns9gc2ccFmw8rj3rk
+   AyRvaNBDYHSuqavK5Svks5FK7n4oQVxrRP5hyJJ/706Df8dSB3h94VcI7
+   2CQulQ09u5F/v+vjBajPJmE8I6mi0dyyeuBk6ojquTbkDHE1RjcvT1hCU
+   d8Okdc1Y5fna0XNzprJNMVikolm7H0/BNlDz5C7Zn+7dYnvorM1t6M3hf
+   EJ96vlwOXtvLwcAMfYFyG0VTSF/+brlJaYxvuvlqflW4I5Ls7FaqhYLOV
+   OkM+oCZfgk9tQjlFpPbJPPNFG0qvnAj2RTTWVtQm9UAMEqqYYU1brKjrR
+   g==;
+X-CSE-ConnectionGUID: 5J7CB8xqQKqvhQRW0PxE+w==
+X-CSE-MsgGUID: obGJgJUQRB2TonRyhAZooQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11685"; a="81154856"
 X-IronPort-AV: E=Sophos;i="6.21,258,1763452800"; 
-   d="scan'208";a="88413461"
-Received: from fmviesa006.fm.intel.com ([10.60.135.146])
-  by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Jan 2026 08:53:10 -0800
-X-CSE-ConnectionGUID: PXfhMysbScaQp99O8ZU/RQ==
-X-CSE-MsgGUID: Q+Cpq4MfQSWAPqlIasOT6w==
+   d="scan'208";a="81154856"
+Received: from orviesa007.jf.intel.com ([10.64.159.147])
+  by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Jan 2026 09:01:37 -0800
+X-CSE-ConnectionGUID: wyBXLrvVQj2xUamy6Hfb1w==
+X-CSE-MsgGUID: cHTY54a6R8GQ3a4aSqdHyg==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.21,258,1763452800"; 
-   d="scan'208";a="208223738"
+   d="scan'208";a="208393452"
 Received: from kcaccard-desk.amr.corp.intel.com (HELO [10.125.109.190]) ([10.125.109.190])
-  by fmviesa006-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Jan 2026 08:53:09 -0800
-Message-ID: <9b3e7728-5e84-4ca7-9bab-caa8e5190ccb@intel.com>
-Date: Wed, 28 Jan 2026 08:53:08 -0800
+  by orviesa007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Jan 2026 09:01:36 -0800
+Message-ID: <d82dd253-aeea-49c5-a21b-44864bd78f25@intel.com>
+Date: Wed, 28 Jan 2026 09:01:35 -0800
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -52,21 +52,16 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 04/26] coco/tdx-host: Introduce a "tdx_host" device
-To: Tony Lindgren <tony.lindgren@linux.intel.com>,
- Chao Gao <chao.gao@intel.com>
-Cc: linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org,
- kvm@vger.kernel.org, x86@kernel.org, reinette.chatre@intel.com,
- ira.weiny@intel.com, kai.huang@intel.com, dan.j.williams@intel.com,
- yilun.xu@linux.intel.com, sagis@google.com, vannapurve@google.com,
- paulmck@kernel.org, nik.borisov@suse.com, zhenzhong.duan@intel.com,
- seanjc@google.com, rick.p.edgecombe@intel.com, kas@kernel.org,
- dave.hansen@linux.intel.com, vishal.l.verma@intel.com,
- Jonathan Cameron <jonathan.cameron@huawei.com>,
- Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
- Borislav Petkov <bp@alien8.de>, "H. Peter Anvin" <hpa@zytor.com>
+Subject: Re: [PATCH v3 05/26] coco/tdx-host: Expose TDX Module version
+To: Chao Gao <chao.gao@intel.com>, linux-coco@lists.linux.dev,
+ linux-kernel@vger.kernel.org, kvm@vger.kernel.org, x86@kernel.org
+Cc: reinette.chatre@intel.com, ira.weiny@intel.com, kai.huang@intel.com,
+ dan.j.williams@intel.com, yilun.xu@linux.intel.com, sagis@google.com,
+ vannapurve@google.com, paulmck@kernel.org, nik.borisov@suse.com,
+ zhenzhong.duan@intel.com, seanjc@google.com, rick.p.edgecombe@intel.com,
+ kas@kernel.org, dave.hansen@linux.intel.com, vishal.l.verma@intel.com
 References: <20260123145645.90444-1-chao.gao@intel.com>
- <20260123145645.90444-5-chao.gao@intel.com> <aXc5Y_VAuGQWsWZX@tlindgre-MOBL1>
+ <20260123145645.90444-6-chao.gao@intel.com>
 From: Dave Hansen <dave.hansen@intel.com>
 Content-Language: en-US
 Autocrypt: addr=dave.hansen@intel.com; keydata=
@@ -112,26 +107,37 @@ Autocrypt: addr=dave.hansen@intel.com; keydata=
  MTsCeQDdjpgHsj+P2ZDeEKCbma4m6Ez/YWs4+zDm1X8uZDkZcfQlD9NldbKDJEXLIjYWo1PH
  hYepSffIWPyvBMBTW2W5FRjJ4vLRrJSUoEfJuPQ3vW9Y73foyo/qFoURHO48AinGPZ7PC7TF
  vUaNOTjKedrqHkaOcqB185ahG2had0xnFsDPlx5y
-In-Reply-To: <aXc5Y_VAuGQWsWZX@tlindgre-MOBL1>
+In-Reply-To: <20260123145645.90444-6-chao.gao@intel.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-On 1/26/26 01:52, Tony Lindgren wrote:
-> On Fri, Jan 23, 2026 at 06:55:12AM -0800, Chao Gao wrote:
->> --- /dev/null
->> +++ b/drivers/virt/coco/tdx-host/tdx-host.c
->> @@ -0,0 +1,43 @@
->> +// SPDX-License-Identifier: GPL-2.0
->> +/*
->> + * TDX host user interface driver
->> + *
->> + * Copyright (C) 2025 Intel Corporation
->> + */
-> Just a nit, the year has changed so could be updated.
+On 1/23/26 06:55, Chao Gao wrote:
+...
+> This approach follows the pattern used by microcode updates and
+> other CoCo implementations:
+> 
+> 1. AMD has a PCI device for the PSP for SEV which provides an
+> existing place to hang their equivalent metadata.
+> 
+> 2. ARM CCA will likely have a faux device (although it isn't obvious
+> if they have a need to export version information there) [1]
+> 
+> 3. Microcode revisions are exposed as CPU device attributes
 
-Folks, please stop this.
+I kinda disagree with the idea that this follows existing patterns. It
+uses a *NEW* pattern.
 
-You can ask an patch author *if* this should be updated. But if they're
-just last year's work, then the year needs to stay 2025. This isn't some
-mechanical thing that you flip over when the year changes. You change it
-when you meaningfully change the work.
+AMD doesn't use a faux device because they *HAVE* a PCI device in their
+architecture. TDX doesn't have a PCI device in its hardware architecture.
+
+ARM CCA doesn't exist in the tree.
+
+CPU microcode doesn't use a faux device. For good reason. The microcode
+version is *actually* per-cpu. It can differ between CPU cores. The TDX
+module version is not per-cpu. There's one and only one global module.
+This is the reason that we need a global, unique device for TDX.
+
+I'm not saying that being new is a bad thing. But let's not pretend this
+is following any kind of existing pattern. Let's explain *why* it needs
+to be different.
+
