@@ -1,235 +1,188 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from desiato.infradead.org (desiato.infradead.org [90.155.92.199])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2FC522C11D3
-	for <kvm@vger.kernel.org>; Wed, 28 Jan 2026 04:06:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9EEC4C8CE;
+	Wed, 28 Jan 2026 05:32:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.92.199
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769573172; cv=none; b=ZbudS3uyG+wkjJuDr93qfv1KCQCM3aSjKiVYI3mw4+LbAD2ukkaj1BgcVghWAyRqOrxGMV6ZfsC+box6rjRJ1uXe5wn4vUtDdZ5x3mI2UR+oBkylI1QwwMN6VwElrG7F/4mDER3VmS2ExXwGM+07I5gxuDt4PGS17y6CDAuxbzY=
+	t=1769578354; cv=none; b=jIU8oAEgddsnzLSfI3qd5rsGCQE1ct7FUmRk8BODUlOwoVkG9HwQTtPHz1B5vPQBGBUt+IBOcktRHu+8jpYMpwKIuwLpb/7T4oqu0OcKN9eGxD5hbO+vdJywKzjNoJ1L5v/I57STmwIIfRc429ccFaaP68Hk0z7aswN2SvX/jsg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769573172; c=relaxed/simple;
-	bh=Jee2D9iCBvosbR1f21JYZNDPCdYk9DoB0G+PsszVHRA=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=QgyccAKUha9zNuJv3D8lG/ww1XRRatpS+7kqi7z/qkA0rQj5gqOHvkBaKByaLXI0FgxmBkVdE9bSZItktpK2i5iYwc3IPZ6PTXPXLrfdYuOPT2CTXBcRT6YoIfymV2EGIb8uy5fhe0tzDTcv6U5JW7X6pos0pYMoKV8AkB1UmlA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WLqD+ONX; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1769578354; c=relaxed/simple;
+	bh=NGjQSisUqBbdSIUFCDIl38sBP4INp39OGIDfsnTPTaI=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=X120Df3sMr78mQY1pPFRYCTs4hUI1MxzKgjFn/fP1aQLCALgq/exykUxy1LIHol9xDWtr8N5y+kToKVCRXF92UPHyYzw046QFK3lfPo2Bd3ugp0so+kd4b1bqOKm9h35ZfO/U0uZrAGR1gDznrRNsgdWvrH/zPnbWSEU55ns9lE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=desiato.srs.infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=qeFLb+Ja; arc=none smtp.client-ip=90.155.92.199
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=desiato.srs.infradead.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WLqD+ONX"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AFBDBC4AF0B
-	for <kvm@vger.kernel.org>; Wed, 28 Jan 2026 04:06:11 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1769573171;
-	bh=Jee2D9iCBvosbR1f21JYZNDPCdYk9DoB0G+PsszVHRA=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=WLqD+ONXgvQ1P6zjfVTKUGyllGKuBEgT/rqqoXBUOmFyhZsv2jCtNhCV5I63HWvdU
-	 R2o4X1RJ86Y+n8p/6NtcpGaIXIn+mDIcFYR0eA6ivYb/oF64XUB8FTWyxbEEOmv5JJ
-	 NF1zf4qj3qFwJELDzKsxML/pNIwz/mMR4elX6cB/1QdxRBAPySeTdsmWWrcXSJXaC/
-	 MFeOg2z3y8ytxprDNv9saZktoDWg+1nfHDm1w3z7Vb0ACnMURrKDRbZNEksHYjLY5h
-	 EZ8X9LxcSEFqAXOyErU9aSzHY0wWpEL5qge9j1uRCPeHianT6h7tsXKO11cgPWh16C
-	 UhEAkrMGzIZKQ==
-Received: by mail-ej1-f49.google.com with SMTP id a640c23a62f3a-b883787268fso997349366b.3
-        for <kvm@vger.kernel.org>; Tue, 27 Jan 2026 20:06:11 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCV/wAOEpzCqTMAe+sYxgP4UG/Nsa1pvuuFZDkFNUhQEVxVGkuMmBAI7P3qh0lawOKmQyHY=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxIOwbzYkOSwqMDBa3qCW0+ZgW8F06OmeZnTN+q1/nZd8ppO/1J
-	zbfKNcxKdq6W/O5uyy9wviX8t/WnpUatE6benKfuf5iji+SbNfqqFLcZsLXRxdBoVyRxccAVIhE
-	oS/0DhLC62PAqJfLoH61FeEQtZZRiQWk=
-X-Received: by 2002:a17:907:3f8e:b0:b73:758c:c96f with SMTP id
- a640c23a62f3a-b8dab3a41e3mr288701866b.52.1769573170214; Tue, 27 Jan 2026
- 20:06:10 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="qeFLb+Ja"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=desiato.20200630; h=MIME-Version:Content-Type:References:
+	In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=NGjQSisUqBbdSIUFCDIl38sBP4INp39OGIDfsnTPTaI=; b=qeFLb+JaQYuhCB554Vo4azofqU
+	HA1RKLznxOaS+dHarKiPba5+PN8zrCxxNFCNFzP9BEvyV4Yhso4nfxh+BTpsBuRxYC2xYZ/9dfO4o
+	Tscn+cPTY63XTwwKIEF0UWKZxQY3JbRxGxwZMMF/rn8b1d4m31BdhYjGIdbSVdzzNBMhkAOhPwksh
+	YbkAfDSFcKC9POYRVFsiy0BYSSDHWIzWRl8Fp6Atc/mN9sWAWMvPjGXhinxUZ1/+V7w2RueRZTDZX
+	lgR9IDh9rbFJaoro1DStd35TXH5ulTJrVd9awmraMD1094OJsCiDzMDs6EGyw6UiQaxRYVSXx2txE
+	DdrSIJ1Q==;
+Received: from [2001:8b0:10b::4] (helo=u09cd745991455d.ant.amazon.com)
+	by desiato.infradead.org with esmtpsa (Exim 4.98.2 #2 (Red Hat Linux))
+	id 1vkyA9-0000000808J-2Bln;
+	Wed, 28 Jan 2026 05:32:22 +0000
+Message-ID: <70f67bfb787a8a01302c1e1b25b1d52e72320305.camel@infradead.org>
+Subject: Re: [PATCH v6] KVM: x86: Add x2APIC "features" to control EOI
+ broadcast suppression
+From: David Woodhouse <dwmw2@infradead.org>
+To: Khushit Shah <khushit.shah@nutanix.com>, "Huang, Kai"
+ <kai.huang@intel.com>,  "seanjc@google.com" <seanjc@google.com>
+Cc: Shaju Abraham <shaju.abraham@nutanix.com>, "x86@kernel.org"
+ <x86@kernel.org>,  "bp@alien8.de" <bp@alien8.de>, "stable@vger.kernel.org"
+ <stable@vger.kernel.org>,  "hpa@zytor.com" <hpa@zytor.com>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, 
+ "mingo@redhat.com" <mingo@redhat.com>, "dave.hansen@linux.intel.com"
+ <dave.hansen@linux.intel.com>,  "pbonzini@redhat.com"
+ <pbonzini@redhat.com>, "kvm@vger.kernel.org" <kvm@vger.kernel.org>, Jon
+ Kohler <jon@nutanix.com>, "tglx@linutronix.de" <tglx@linutronix.de>
+Date: Tue, 27 Jan 2026 21:32:14 -0800
+In-Reply-To: <DBAD995F-C9E1-46C8-A49A-9D774D6D4612@nutanix.com>
+References: <20260123125657.3384063-1-khushit.shah@nutanix.com>
+	 <feb11efd6bfbc5e7d5f6f430f40d4df5544f1d39.camel@infradead.org>
+	 <aXkyz3IbBOphjNEi@google.com>
+	 <ea294969d05fc9c37e72053d7343e11fa9ffdded.camel@infradead.org>
+	 <699708d7f3da2e2a41e3282c1a87e6f4d69a4e89.camel@intel.com>
+	 <c7eab673dd567936761a8cc6e091a432b38d08da.camel@infradead.org>
+	 <SA2PR02MB756478359EE9185285ACE6158891A@SA2PR02MB7564.namprd02.prod.outlook.com>
+	 <DBAD995F-C9E1-46C8-A49A-9D774D6D4612@nutanix.com>
+Content-Type: multipart/signed; micalg="sha-256"; protocol="application/pkcs7-signature";
+	boundary="=-Q8+/vayXVTdaNuMp566B"
+User-Agent: Evolution 3.52.3-0ubuntu1.1 
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260127125124.3234252-1-maobibo@loongson.cn> <20260127125124.3234252-4-maobibo@loongson.cn>
-In-Reply-To: <20260127125124.3234252-4-maobibo@loongson.cn>
-From: Huacai Chen <chenhuacai@kernel.org>
-Date: Wed, 28 Jan 2026 12:05:58 +0800
-X-Gmail-Original-Message-ID: <CAAhV-H69F2T-PbewFqch5Sp+xhBP9Lsy74C6yVhp90r4GSYEsQ@mail.gmail.com>
-X-Gm-Features: AZwV_QiLxJOZ4sRU83JklmMPkehSxgGEm32B2FV1RXJ0mGkr_jbeql4K36rKgqU
-Message-ID: <CAAhV-H69F2T-PbewFqch5Sp+xhBP9Lsy74C6yVhp90r4GSYEsQ@mail.gmail.com>
-Subject: Re: [PATCH v2 3/3] LoongArch: KVM: Add FPU delay load support
-To: Bibo Mao <maobibo@loongson.cn>
-Cc: WANG Xuerui <kernel@xen0n.name>, Tianrui Zhao <zhaotianrui@loongson.cn>, 
-	loongarch@lists.linux.dev, linux-kernel@vger.kernel.org, kvm@vger.kernel.org
+X-SRS-Rewrite: SMTP reverse-path rewritten from <dwmw2@infradead.org> by desiato.infradead.org. See http://www.infradead.org/rpr.html
+
+
+--=-Q8+/vayXVTdaNuMp566B
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-Hi, Bibo,
+On Wed, 2026-01-28 at 05:17 +0000, Khushit Shah wrote:
+>=20
+> How about we make an explicit _ENABLE_ bit for split IRQCHIP?
+> When/if in-kernel IRQCHIP starts supporting I/O APIC 0x20, we
+> can add a separate bit for that in the CAP.=20
+>=20
+> This way:
+> - The flag name (KVM_X2APIC_SPLIT_ENABLE_SEOIB) is self-documenting.
+> - We always advertise it in KVM_CHECK_EXTENSION.
+> - Enabling requires split IRQCHIP to be configured first.
+> - Mutex protects against races with KVM_CAP_SPLIT_IRQCHIP.
 
-On Tue, Jan 27, 2026 at 8:51=E2=80=AFPM Bibo Mao <maobibo@loongson.cn> wrot=
-e:
->
-> FPU is lazy enabled with KVM hypervisor. After FPU is enabled and
-> loaded, vCPU can be preempted and FPU will be lost again. Here FPU
-> is delay load until guest enter entry.
->
-> Signed-off-by: Bibo Mao <maobibo@loongson.cn>
-> ---
->  arch/loongarch/include/asm/kvm_host.h |  2 ++
->  arch/loongarch/kvm/exit.c             | 15 ++++++++----
->  arch/loongarch/kvm/vcpu.c             | 33 +++++++++++++++++----------
->  3 files changed, 33 insertions(+), 17 deletions(-)
->
-> diff --git a/arch/loongarch/include/asm/kvm_host.h b/arch/loongarch/inclu=
-de/asm/kvm_host.h
-> index e4fe5b8e8149..902ff7bc0e35 100644
-> --- a/arch/loongarch/include/asm/kvm_host.h
-> +++ b/arch/loongarch/include/asm/kvm_host.h
-> @@ -37,6 +37,7 @@
->  #define KVM_REQ_TLB_FLUSH_GPA          KVM_ARCH_REQ(0)
->  #define KVM_REQ_STEAL_UPDATE           KVM_ARCH_REQ(1)
->  #define KVM_REQ_PMU                    KVM_ARCH_REQ(2)
-> +#define KVM_REQ_FPU_LOAD               KVM_ARCH_REQ(3)
->
->  #define KVM_GUESTDBG_SW_BP_MASK                \
->         (KVM_GUESTDBG_ENABLE | KVM_GUESTDBG_USE_SW_BP)
-> @@ -234,6 +235,7 @@ struct kvm_vcpu_arch {
->         u64 vpid;
->         gpa_t flush_gpa;
->
-> +       int fpu_load_type;
-I think the logic of V1 is better, it doesn't increase the size of
-kvm_vcpu_arch, and the constant checking is a little faster than
-variable checking.
+Ick. The more we iterate on this, the more convinced I am that we
+should just enable it for I/O APIC at the same time. Userspace has to
+explicitly opt in to the combination of kernel I/O APIC and SEOIB
+anyway.
 
-Huacai
+So I'll just bow out of the conversation; do whatever you think best.
 
->         /* Frequency of stable timer in Hz */
->         u64 timer_mhz;
->         ktime_t expire;
-> diff --git a/arch/loongarch/kvm/exit.c b/arch/loongarch/kvm/exit.c
-> index 74b427287e96..b6f08df8fedb 100644
-> --- a/arch/loongarch/kvm/exit.c
-> +++ b/arch/loongarch/kvm/exit.c
-> @@ -754,7 +754,8 @@ static int kvm_handle_fpu_disabled(struct kvm_vcpu *v=
-cpu, int ecode)
->                 return RESUME_HOST;
->         }
->
-> -       kvm_own_fpu(vcpu);
-> +       vcpu->arch.fpu_load_type =3D KVM_LARCH_FPU;
-> +       kvm_make_request(KVM_REQ_FPU_LOAD, vcpu);
->
->         return RESUME_GUEST;
->  }
-> @@ -794,8 +795,10 @@ static int kvm_handle_lsx_disabled(struct kvm_vcpu *=
-vcpu, int ecode)
->  {
->         if (!kvm_guest_has_lsx(&vcpu->arch))
->                 kvm_queue_exception(vcpu, EXCCODE_INE, 0);
-> -       else
-> -               kvm_own_lsx(vcpu);
-> +       else {
-> +               vcpu->arch.fpu_load_type =3D KVM_LARCH_LSX;
-> +               kvm_make_request(KVM_REQ_FPU_LOAD, vcpu);
-> +       }
->
->         return RESUME_GUEST;
->  }
-> @@ -812,8 +815,10 @@ static int kvm_handle_lasx_disabled(struct kvm_vcpu =
-*vcpu, int ecode)
->  {
->         if (!kvm_guest_has_lasx(&vcpu->arch))
->                 kvm_queue_exception(vcpu, EXCCODE_INE, 0);
-> -       else
-> -               kvm_own_lasx(vcpu);
-> +       else {
-> +               vcpu->arch.fpu_load_type =3D KVM_LARCH_LASX;
-> +               kvm_make_request(KVM_REQ_FPU_LOAD, vcpu);
-> +       }
->
->         return RESUME_GUEST;
->  }
-> diff --git a/arch/loongarch/kvm/vcpu.c b/arch/loongarch/kvm/vcpu.c
-> index d91a1160a309..3e749e9738b2 100644
-> --- a/arch/loongarch/kvm/vcpu.c
-> +++ b/arch/loongarch/kvm/vcpu.c
-> @@ -232,6 +232,27 @@ static void kvm_late_check_requests(struct kvm_vcpu =
-*vcpu)
->                         kvm_flush_tlb_gpa(vcpu, vcpu->arch.flush_gpa);
->                         vcpu->arch.flush_gpa =3D INVALID_GPA;
->                 }
-> +
-> +       if (kvm_check_request(KVM_REQ_FPU_LOAD, vcpu)) {
-> +               switch (vcpu->arch.fpu_load_type) {
-> +               case KVM_LARCH_FPU:
-> +                       kvm_own_fpu(vcpu);
-> +                       break;
-> +
-> +               case KVM_LARCH_LSX:
-> +                       kvm_own_lsx(vcpu);
-> +                       break;
-> +
-> +               case KVM_LARCH_LASX:
-> +                       kvm_own_lasx(vcpu);
-> +                       break;
-> +
-> +               default:
-> +                       break;
-> +               }
-> +
-> +               vcpu->arch.fpu_load_type =3D 0;
-> +       }
->  }
->
->  /*
-> @@ -1338,8 +1359,6 @@ static inline void kvm_check_fcsr_alive(struct kvm_=
-vcpu *vcpu) { }
->  /* Enable FPU and restore context */
->  void kvm_own_fpu(struct kvm_vcpu *vcpu)
->  {
-> -       preempt_disable();
-> -
->         /*
->          * Enable FPU for guest
->          * Set FR and FRE according to guest context
-> @@ -1350,16 +1369,12 @@ void kvm_own_fpu(struct kvm_vcpu *vcpu)
->         kvm_restore_fpu(&vcpu->arch.fpu);
->         vcpu->arch.aux_inuse |=3D KVM_LARCH_FPU;
->         trace_kvm_aux(vcpu, KVM_TRACE_AUX_RESTORE, KVM_TRACE_AUX_FPU);
-> -
-> -       preempt_enable();
->  }
->
->  #ifdef CONFIG_CPU_HAS_LSX
->  /* Enable LSX and restore context */
->  int kvm_own_lsx(struct kvm_vcpu *vcpu)
->  {
-> -       preempt_disable();
-> -
->         /* Enable LSX for guest */
->         kvm_check_fcsr(vcpu, vcpu->arch.fpu.fcsr);
->         set_csr_euen(CSR_EUEN_LSXEN | CSR_EUEN_FPEN);
-> @@ -1381,8 +1396,6 @@ int kvm_own_lsx(struct kvm_vcpu *vcpu)
->
->         trace_kvm_aux(vcpu, KVM_TRACE_AUX_RESTORE, KVM_TRACE_AUX_LSX);
->         vcpu->arch.aux_inuse |=3D KVM_LARCH_LSX | KVM_LARCH_FPU;
-> -       preempt_enable();
-> -
->         return 0;
->  }
->  #endif
-> @@ -1391,8 +1404,6 @@ int kvm_own_lsx(struct kvm_vcpu *vcpu)
->  /* Enable LASX and restore context */
->  int kvm_own_lasx(struct kvm_vcpu *vcpu)
->  {
-> -       preempt_disable();
-> -
->         kvm_check_fcsr(vcpu, vcpu->arch.fpu.fcsr);
->         set_csr_euen(CSR_EUEN_FPEN | CSR_EUEN_LSXEN | CSR_EUEN_LASXEN);
->         switch (vcpu->arch.aux_inuse & (KVM_LARCH_FPU | KVM_LARCH_LSX)) {
-> @@ -1414,8 +1425,6 @@ int kvm_own_lasx(struct kvm_vcpu *vcpu)
->
->         trace_kvm_aux(vcpu, KVM_TRACE_AUX_RESTORE, KVM_TRACE_AUX_LASX);
->         vcpu->arch.aux_inuse |=3D KVM_LARCH_LASX | KVM_LARCH_LSX | KVM_LA=
-RCH_FPU;
-> -       preempt_enable();
-> -
->         return 0;
->  }
->  #endif
-> --
-> 2.39.3
->
->
+--=-Q8+/vayXVTdaNuMp566B
+Content-Type: application/pkcs7-signature; name="smime.p7s"
+Content-Disposition: attachment; filename="smime.p7s"
+Content-Transfer-Encoding: base64
+
+MIAGCSqGSIb3DQEHAqCAMIACAQExDzANBglghkgBZQMEAgEFADCABgkqhkiG9w0BBwEAAKCCD9Aw
+ggSOMIIDdqADAgECAhAOmiw0ECVD4cWj5DqVrT9PMA0GCSqGSIb3DQEBCwUAMGUxCzAJBgNVBAYT
+AlVTMRUwEwYDVQQKEwxEaWdpQ2VydCBJbmMxGTAXBgNVBAsTEHd3dy5kaWdpY2VydC5jb20xJDAi
+BgNVBAMTG0RpZ2lDZXJ0IEFzc3VyZWQgSUQgUm9vdCBDQTAeFw0yNDAxMzAwMDAwMDBaFw0zMTEx
+MDkyMzU5NTlaMEExCzAJBgNVBAYTAkFVMRAwDgYDVQQKEwdWZXJva2V5MSAwHgYDVQQDExdWZXJv
+a2V5IFNlY3VyZSBFbWFpbCBHMjCCASIwDQYJKoZIhvcNAQEBBQADggEPADCCAQoCggEBAMjvgLKj
+jfhCFqxYyRiW8g3cNFAvltDbK5AzcOaR7yVzVGadr4YcCVxjKrEJOgi7WEOH8rUgCNB5cTD8N/Et
+GfZI+LGqSv0YtNa54T9D1AWJy08ZKkWvfGGIXN9UFAPMJ6OLLH/UUEgFa+7KlrEvMUupDFGnnR06
+aDJAwtycb8yXtILj+TvfhLFhafxroXrflspavejQkEiHjNjtHnwbZ+o43g0/yxjwnarGI3kgcak7
+nnI9/8Lqpq79tLHYwLajotwLiGTB71AGN5xK+tzB+D4eN9lXayrjcszgbOv2ZCgzExQUAIt98mre
+8EggKs9mwtEuKAhYBIP/0K6WsoMnQCcCAwEAAaOCAVwwggFYMBIGA1UdEwEB/wQIMAYBAf8CAQAw
+HQYDVR0OBBYEFIlICOogTndrhuWByNfhjWSEf/xwMB8GA1UdIwQYMBaAFEXroq/0ksuCMS1Ri6en
+IZ3zbcgPMA4GA1UdDwEB/wQEAwIBhjAdBgNVHSUEFjAUBggrBgEFBQcDBAYIKwYBBQUHAwIweQYI
+KwYBBQUHAQEEbTBrMCQGCCsGAQUFBzABhhhodHRwOi8vb2NzcC5kaWdpY2VydC5jb20wQwYIKwYB
+BQUHMAKGN2h0dHA6Ly9jYWNlcnRzLmRpZ2ljZXJ0LmNvbS9EaWdpQ2VydEFzc3VyZWRJRFJvb3RD
+QS5jcnQwRQYDVR0fBD4wPDA6oDigNoY0aHR0cDovL2NybDMuZGlnaWNlcnQuY29tL0RpZ2lDZXJ0
+QXNzdXJlZElEUm9vdENBLmNybDARBgNVHSAECjAIMAYGBFUdIAAwDQYJKoZIhvcNAQELBQADggEB
+ACiagCqvNVxOfSd0uYfJMiZsOEBXAKIR/kpqRp2YCfrP4Tz7fJogYN4fxNAw7iy/bPZcvpVCfe/H
+/CCcp3alXL0I8M/rnEnRlv8ItY4MEF+2T/MkdXI3u1vHy3ua8SxBM8eT9LBQokHZxGUX51cE0kwa
+uEOZ+PonVIOnMjuLp29kcNOVnzf8DGKiek+cT51FvGRjV6LbaxXOm2P47/aiaXrDD5O0RF5SiPo6
+xD1/ClkCETyyEAE5LRJlXtx288R598koyFcwCSXijeVcRvBB1cNOLEbg7RMSw1AGq14fNe2cH1HG
+W7xyduY/ydQt6gv5r21mDOQ5SaZSWC/ZRfLDuEYwggWbMIIEg6ADAgECAhAH5JEPagNRXYDiRPdl
+c1vgMA0GCSqGSIb3DQEBCwUAMEExCzAJBgNVBAYTAkFVMRAwDgYDVQQKEwdWZXJva2V5MSAwHgYD
+VQQDExdWZXJva2V5IFNlY3VyZSBFbWFpbCBHMjAeFw0yNDEyMzAwMDAwMDBaFw0yODAxMDQyMzU5
+NTlaMB4xHDAaBgNVBAMME2R3bXcyQGluZnJhZGVhZC5vcmcwggIiMA0GCSqGSIb3DQEBAQUAA4IC
+DwAwggIKAoICAQDali7HveR1thexYXx/W7oMk/3Wpyppl62zJ8+RmTQH4yZeYAS/SRV6zmfXlXaZ
+sNOE6emg8WXLRS6BA70liot+u0O0oPnIvnx+CsMH0PD4tCKSCsdp+XphIJ2zkC9S7/yHDYnqegqt
+w4smkqUqf0WX/ggH1Dckh0vHlpoS1OoxqUg+ocU6WCsnuz5q5rzFsHxhD1qGpgFdZEk2/c//ZvUN
+i12vPWipk8TcJwHw9zoZ/ZrVNybpMCC0THsJ/UEVyuyszPtNYeYZAhOJ41vav1RhZJzYan4a1gU0
+kKBPQklcpQEhq48woEu15isvwWh9/+5jjh0L+YNaN0I//nHSp6U9COUG9Z0cvnO8FM6PTqsnSbcc
+0j+GchwOHRC7aP2t5v2stVx3KbptaYEzi4MQHxm/0+HQpMEVLLUiizJqS4PWPU6zfQTOMZ9uLQRR
+ci+c5xhtMEBszlQDOvEQcyEG+hc++fH47K+MmZz21bFNfoBxLP6bjR6xtPXtREF5lLXxp+CJ6KKS
+blPKeVRg/UtyJHeFKAZXO8Zeco7TZUMVHmK0ZZ1EpnZbnAhKE19Z+FJrQPQrlR0gO3lBzuyPPArV
+hvWxjlO7S4DmaEhLzarWi/ze7EGwWSuI2eEa/8zU0INUsGI4ywe7vepQz7IqaAovAX0d+f1YjbmC
+VsAwjhLmveFjNwIDAQABo4IBsDCCAawwHwYDVR0jBBgwFoAUiUgI6iBOd2uG5YHI1+GNZIR//HAw
+HQYDVR0OBBYEFFxiGptwbOfWOtMk5loHw7uqWUOnMDAGA1UdEQQpMCeBE2R3bXcyQGluZnJhZGVh
+ZC5vcmeBEGRhdmlkQHdvb2Rob3Uuc2UwFAYDVR0gBA0wCzAJBgdngQwBBQEBMA4GA1UdDwEB/wQE
+AwIF4DAdBgNVHSUEFjAUBggrBgEFBQcDAgYIKwYBBQUHAwQwewYDVR0fBHQwcjA3oDWgM4YxaHR0
+cDovL2NybDMuZGlnaWNlcnQuY29tL1Zlcm9rZXlTZWN1cmVFbWFpbEcyLmNybDA3oDWgM4YxaHR0
+cDovL2NybDQuZGlnaWNlcnQuY29tL1Zlcm9rZXlTZWN1cmVFbWFpbEcyLmNybDB2BggrBgEFBQcB
+AQRqMGgwJAYIKwYBBQUHMAGGGGh0dHA6Ly9vY3NwLmRpZ2ljZXJ0LmNvbTBABggrBgEFBQcwAoY0
+aHR0cDovL2NhY2VydHMuZGlnaWNlcnQuY29tL1Zlcm9rZXlTZWN1cmVFbWFpbEcyLmNydDANBgkq
+hkiG9w0BAQsFAAOCAQEAQXc4FPiPLRnTDvmOABEzkIumojfZAe5SlnuQoeFUfi+LsWCKiB8Uextv
+iBAvboKhLuN6eG/NC6WOzOCppn4mkQxRkOdLNThwMHW0d19jrZFEKtEG/epZ/hw/DdScTuZ2m7im
+8ppItAT6GXD3aPhXkXnJpC/zTs85uNSQR64cEcBFjjoQDuSsTeJ5DAWf8EMyhMuD8pcbqx5kRvyt
+JPsWBQzv1Dsdv2LDPLNd/JUKhHSgr7nbUr4+aAP2PHTXGcEBh8lTeYea9p4d5k969pe0OHYMV5aL
+xERqTagmSetuIwolkAuBCzA9vulg8Y49Nz2zrpUGfKGOD0FMqenYxdJHgDCCBZswggSDoAMCAQIC
+EAfkkQ9qA1FdgOJE92VzW+AwDQYJKoZIhvcNAQELBQAwQTELMAkGA1UEBhMCQVUxEDAOBgNVBAoT
+B1Zlcm9rZXkxIDAeBgNVBAMTF1Zlcm9rZXkgU2VjdXJlIEVtYWlsIEcyMB4XDTI0MTIzMDAwMDAw
+MFoXDTI4MDEwNDIzNTk1OVowHjEcMBoGA1UEAwwTZHdtdzJAaW5mcmFkZWFkLm9yZzCCAiIwDQYJ
+KoZIhvcNAQEBBQADggIPADCCAgoCggIBANqWLse95HW2F7FhfH9bugyT/danKmmXrbMnz5GZNAfj
+Jl5gBL9JFXrOZ9eVdpmw04Tp6aDxZctFLoEDvSWKi367Q7Sg+ci+fH4KwwfQ8Pi0IpIKx2n5emEg
+nbOQL1Lv/IcNiep6Cq3DiyaSpSp/RZf+CAfUNySHS8eWmhLU6jGpSD6hxTpYKye7PmrmvMWwfGEP
+WoamAV1kSTb9z/9m9Q2LXa89aKmTxNwnAfD3Ohn9mtU3JukwILRMewn9QRXK7KzM+01h5hkCE4nj
+W9q/VGFknNhqfhrWBTSQoE9CSVylASGrjzCgS7XmKy/BaH3/7mOOHQv5g1o3Qj/+cdKnpT0I5Qb1
+nRy+c7wUzo9OqydJtxzSP4ZyHA4dELto/a3m/ay1XHcpum1pgTOLgxAfGb/T4dCkwRUstSKLMmpL
+g9Y9TrN9BM4xn24tBFFyL5znGG0wQGzOVAM68RBzIQb6Fz758fjsr4yZnPbVsU1+gHEs/puNHrG0
+9e1EQXmUtfGn4InoopJuU8p5VGD9S3Ikd4UoBlc7xl5yjtNlQxUeYrRlnUSmdlucCEoTX1n4UmtA
+9CuVHSA7eUHO7I88CtWG9bGOU7tLgOZoSEvNqtaL/N7sQbBZK4jZ4Rr/zNTQg1SwYjjLB7u96lDP
+sipoCi8BfR35/ViNuYJWwDCOEua94WM3AgMBAAGjggGwMIIBrDAfBgNVHSMEGDAWgBSJSAjqIE53
+a4blgcjX4Y1khH/8cDAdBgNVHQ4EFgQUXGIam3Bs59Y60yTmWgfDu6pZQ6cwMAYDVR0RBCkwJ4ET
+ZHdtdzJAaW5mcmFkZWFkLm9yZ4EQZGF2aWRAd29vZGhvdS5zZTAUBgNVHSAEDTALMAkGB2eBDAEF
+AQEwDgYDVR0PAQH/BAQDAgXgMB0GA1UdJQQWMBQGCCsGAQUFBwMCBggrBgEFBQcDBDB7BgNVHR8E
+dDByMDegNaAzhjFodHRwOi8vY3JsMy5kaWdpY2VydC5jb20vVmVyb2tleVNlY3VyZUVtYWlsRzIu
+Y3JsMDegNaAzhjFodHRwOi8vY3JsNC5kaWdpY2VydC5jb20vVmVyb2tleVNlY3VyZUVtYWlsRzIu
+Y3JsMHYGCCsGAQUFBwEBBGowaDAkBggrBgEFBQcwAYYYaHR0cDovL29jc3AuZGlnaWNlcnQuY29t
+MEAGCCsGAQUFBzAChjRodHRwOi8vY2FjZXJ0cy5kaWdpY2VydC5jb20vVmVyb2tleVNlY3VyZUVt
+YWlsRzIuY3J0MA0GCSqGSIb3DQEBCwUAA4IBAQBBdzgU+I8tGdMO+Y4AETOQi6aiN9kB7lKWe5Ch
+4VR+L4uxYIqIHxR7G2+IEC9ugqEu43p4b80LpY7M4KmmfiaRDFGQ50s1OHAwdbR3X2OtkUQq0Qb9
+6ln+HD8N1JxO5nabuKbymki0BPoZcPdo+FeRecmkL/NOzzm41JBHrhwRwEWOOhAO5KxN4nkMBZ/w
+QzKEy4PylxurHmRG/K0k+xYFDO/UOx2/YsM8s138lQqEdKCvudtSvj5oA/Y8dNcZwQGHyVN5h5r2
+nh3mT3r2l7Q4dgxXlovERGpNqCZJ624jCiWQC4ELMD2+6WDxjj03PbOulQZ8oY4PQUyp6djF0keA
+MYIDuzCCA7cCAQEwVTBBMQswCQYDVQQGEwJBVTEQMA4GA1UEChMHVmVyb2tleTEgMB4GA1UEAxMX
+VmVyb2tleSBTZWN1cmUgRW1haWwgRzICEAfkkQ9qA1FdgOJE92VzW+AwDQYJYIZIAWUDBAIBBQCg
+ggE3MBgGCSqGSIb3DQEJAzELBgkqhkiG9w0BBwEwHAYJKoZIhvcNAQkFMQ8XDTI2MDEyODA1MzIx
+NFowLwYJKoZIhvcNAQkEMSIEIFh15DrFuVshCXa9qEWLdFl0zO7F1gmH2u7l7vS3npa2MGQGCSsG
+AQQBgjcQBDFXMFUwQTELMAkGA1UEBhMCQVUxEDAOBgNVBAoTB1Zlcm9rZXkxIDAeBgNVBAMTF1Zl
+cm9rZXkgU2VjdXJlIEVtYWlsIEcyAhAH5JEPagNRXYDiRPdlc1vgMGYGCyqGSIb3DQEJEAILMVeg
+VTBBMQswCQYDVQQGEwJBVTEQMA4GA1UEChMHVmVyb2tleTEgMB4GA1UEAxMXVmVyb2tleSBTZWN1
+cmUgRW1haWwgRzICEAfkkQ9qA1FdgOJE92VzW+AwDQYJKoZIhvcNAQEBBQAEggIAXySVWE3HmGFz
+xloWFTl2yxE3rQZCsKycrqupRmhdPLYeHhgLgfHsq9R7GsOyqcJNWtV0WDzryxyGgaqzVzN7e6k6
+4K6E+J9S27cWv4JfzZ7zoB1+ZI6BDGg7tBvl6Zqz+2NID1dO8MBwqQd9IjMsi8JQOzFxynOa1RZa
+/ja1iLJJZF+dXbmpyBY3/ZJ0qTrfJBfra8KtPAt1xY5HSrASigtz3pKcuuCjRNebQjXQOp7e7pps
+2DATc1Mt/KNpvU9EPvWeI9KI4xjzgrrnWk0cQim/hQiPSk5LYL/0eKBLwBXGvsaMrXE6nLXXbPqj
+pntU8sZtBu3A7hSZPF2rAkFXgaCzLbWvobLsi3h1YiipAwY3erXC1BcRVnc6zjxkfVBirMKEmnB/
+3p1tP/bLlxDRpjcITEmnYwaXcoRQuu2nGCvmebnCYQR1sTnDcSuZcRGoDSf3qqIHhEGKo/c+Qs45
+PKnTNLInC8B0TT7/Bkt/ISo4qQQ1yFIQA/0v7WHjgcc7BNubE8V2wpYv4CNlN0w6NYxffJCdHD2o
+c5QJs2WewQAr+lKaM0gGgS4DTMTfcvw8sNXkTWGHH0Y//H5pyr4IxGeIOxFBY2vlXnVBY7SCcJ6z
+46zZBW5aeO7vNQp8KZ2xQD13yI4Ig0A3BhkEWncfTTv2NQyAB6X4Ab5VFvTzRVUAAAAAAAA=
+
+
+--=-Q8+/vayXVTdaNuMp566B--
