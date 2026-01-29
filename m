@@ -1,145 +1,160 @@
-Received: from mail-pj1-f73.google.com (mail-pj1-f73.google.com [209.85.216.73])
+Received: from mail-qk1-f174.google.com (mail-qk1-f174.google.com [209.85.222.174])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F151C328B6A
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5916234EF1E
 	for <kvm@vger.kernel.org>; Thu, 29 Jan 2026 01:16:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.73
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769649383; cv=none; b=FuZ1YS5CIME8tvrlKlyA+KiiAQXz6SFjrfrOiqAtCnqILxSwNk40IkQJHiVsZ9tRU0/op0k/Gu6ET2gKULM4NFHg1tvbqj4sOFPbqVNG3mssrG3qwkZP0ar+Xeg+srh2kfCs2/sUpMRoeop723wMZm5SMoKY4X8KYHpL8ZHnPmI=
+	t=1769649383; cv=none; b=ayyp+nj1xOP+ZvrydB2b8Lu5q0sjkYouahbt899JZ5T7XpXglPxFAuUifuKffLb4EOqxuVAg8JrmCdQzS9Clv0hvo5HTY1vXXfr9HrgPHOaYzrxbqscTjAvpw/dU8Gk6zr7erz3D0uOhWy6HHOO51dAOdqo1cE5VVWGgx0iUsgc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1769649383; c=relaxed/simple;
-	bh=CYTYIlGGcrH6BQ0d71EBgYmrRkYDF9cUwwiwLMPdHys=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=uaXbA1nc6zrsFSqIjDcpKroxqGHl7gpZ+LeE1qmd8uyZKf0uW4FDMsxfVCXEumiH1w9bs3q2XlyYDqm1LQ6IyS9h+Df3d8mpIEEWyko5XwoGVSHnj5csAVLM3e32tWgOmGkAMh2XmXr8pdJCHTZ6kDIsFmo8of9vkOT3I5j1hU8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=eLELBRAQ; arc=none smtp.client-ip=209.85.216.73
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+	bh=nHJ7z1F0QJ+ff3YYPLezHicV71ohVDGuIQUyQzSTkzQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=NbnrojcSQMMWolc5G4jDX6UwcJ14ondqRD/gGaNiCFRKeSSIM/vtdg67s8GXYBHYN3lRhWeHEOpjUZ8sevOoM0ENHn9VagrhdI8ttHVYHlk4mWZiiJuOP5N0jPqHKokouUQNt3tyKcfXG2gjupAp1nqwO/r9Wc4OWl1PI03dxpo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca; spf=pass smtp.mailfrom=ziepe.ca; dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b=JimtEvw/; arc=none smtp.client-ip=209.85.222.174
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ziepe.ca
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="eLELBRAQ"
-Received: by mail-pj1-f73.google.com with SMTP id 98e67ed59e1d1-34ac814f308so632630a91.3
+	dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b="JimtEvw/"
+Received: by mail-qk1-f174.google.com with SMTP id af79cd13be357-8c6a7638f42so62569185a.2
         for <kvm@vger.kernel.org>; Wed, 28 Jan 2026 17:16:21 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1769649381; x=1770254181; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:reply-to:from:to:cc:subject:date:message-id:reply-to;
-        bh=msD2jv18E2L4HOYUfz15g4GHsjmr/D9b7fjjCRW4KGo=;
-        b=eLELBRAQUs7O/ZEHD6Bcq9OUbL5b5azWsYCDabQzX7VMxDPTDXcnN+gDxiHTFfMh5j
-         hPIBSk3zORQuGE5kT4mJ+6ajCD+AuYkjgfwfabyMUP6YB4MESSe4oK87+GdIDF0ZpoG5
-         P7AlT0jSGLEbXt/7ATwSQrm1wV6iCszrJBMutfqXN4Z/Fg9vLPnzbErNGuEXF9ftBfsP
-         2oRplLmRHW31QmesfrOitAPBFdIXufeKFPXs54yJdCIXpIBiDnPEh7BlAArgbCvrt0fZ
-         vMA7upCi8gatuj8En1wUwysnKtmXZ9rjj2S/DZH30iF3BMpQ3VqeoIKn5qalbymqrzNb
-         TRVw==
+        d=ziepe.ca; s=google; t=1769649380; x=1770254180; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=WReYS7VDfIh+dvxdrk0biwhaBbpxlirvLLAI4b8c7GA=;
+        b=JimtEvw/M9s1zQiNQoK5XBOJVKAPBC0ZPH+Ww+nhg7HM120zXzPPDFQ66dxw3qVIkh
+         41KFAv5+ldYueku3BLZMrAHudLNNK/pjzR325IvCVYgAjfezrdFp+Ypjnmcs8Z2WWpms
+         Hnkz7ru3rUgn6MmQTBlVKZp0y6quJVwOYGhjcKcvZIbHB6f3VZF4HrJ7ENAeKE+2Ukuy
+         zFMq8IZPJX1HkYQk1TQQorMGWwZZ6+bCDV3o+M0HD2kYBy6jefimyqAQy7F5U5BqRVtD
+         kUo6mdW+EKWp7Wa5NI1ztftQRXc17I8/6KEDYfze9hhVxHgoa/rcyB0qcWZAHLRDjYK9
+         vixQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1769649381; x=1770254181;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:reply-to:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=msD2jv18E2L4HOYUfz15g4GHsjmr/D9b7fjjCRW4KGo=;
-        b=v5le23h+0PerpL91H3A0It2MPd544w9DUqCEmYRELHyX9G2NV965zxMzBIl1v9+R6u
-         397Gf/zMUBbp2AjJF552lRDVNuxcfGf2a8CQA1u2vJZzqvLaeZ07BW529AIDABn28zSM
-         ZiSDB+0mtXfLsHnWifWSW+ec5GQ14vJ6M/l7Yg7Ipb8HdaTT+7tfhNOIkcnKsG0/fz1d
-         dNtK2yExMcH1SnLcv/OWfEEwyHA83DUXHfk4Um/GbMFl9FX/Z+FTuiNm/a2Yq4IUx4kO
-         0DWdOwVq+oHcOU5e8iMLjM78fPtQhbd8yam1a+8qg2tbVkUs2uHWsgJ+1R+7mzeSbEh2
-         ss3Q==
-X-Forwarded-Encrypted: i=1; AJvYcCVazdLkfxEZu+G3r73b5Rpg6WaFM8cDk26/WZLJaDGlrVGCxHmYiw7bsVHjA7hfu3XPuvc=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzUcNyO8ioNTm2xeZXZREeQVs8Hnwk1dN6co9D959w0IRO8ztb/
-	LrkolVxlJnR4u1qRk1FtmRj/nzlR9VJ2ooLYy49tJJP1ovZLvVyr++wjxSqVC3uo9uc7VYpGDPU
-	nDRW7hQ==
-X-Received: from pjof4.prod.google.com ([2002:a17:90a:8e84:b0:34c:cb46:dad7])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:2789:b0:34c:cb3c:f536
- with SMTP id 98e67ed59e1d1-353fedbb396mr7057728a91.36.1769649380899; Wed, 28
- Jan 2026 17:16:20 -0800 (PST)
-Reply-To: Sean Christopherson <seanjc@google.com>
-Date: Wed, 28 Jan 2026 17:15:00 -0800
-In-Reply-To: <20260129011517.3545883-1-seanjc@google.com>
+        d=1e100.net; s=20230601; t=1769649380; x=1770254180;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=WReYS7VDfIh+dvxdrk0biwhaBbpxlirvLLAI4b8c7GA=;
+        b=uYSjfjM3z3y6XQfQpytVRxzBGFjGV4UqMhi2oBYxw5bOucbAXjDJ6np56xx7En1YHB
+         JUzP3jZXw9545VJ03av98HWCCKhXHhN/2nhNtEHJRSZqzI9WvOIWqC010MOLKqy04YQ2
+         GXiXope/5iVodIvQAsHVqnJ9o+FtvvVvJnhEN2co/a+EG/CUedQnNIn+MA1hENYdm61n
+         7SZTmkqRyAjzkHWwGttqcc8Xy7cUSosoMzo0LxwhS/KJVNIfdZ+wlRnZey7MB7TWQJmD
+         YKqL4+I4q8kt56v05ji8BquFbRT6xn57NcSfTJpHgUeboyQac9UN3Mrlpdxds2yMejgY
+         XIlw==
+X-Forwarded-Encrypted: i=1; AJvYcCVHPTolqMHO2KDjutNwPqvFjWvBQFOKJmdWJO3loz6jQrBsYnQHKC176RS2+yHa9ltd+Ts=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzX8Qg0D/qhEzUSgPR78Lj8J6PZ9rQSZC+DGE1dVyiAxzbi/XjI
+	TkRiccSX0In/8n3aPMb3/JHIgJ8XM44L2v1esJ1u7fbzZG+6KjNm6WhXWo0j7feIRMg=
+X-Gm-Gg: AZuq6aJT+b0JJf+0WyinFXZrsRxXLt8VEt9ZtswF51+CegN2LC1fEhYN99ZzSkCefzr
+	3rD0kSHStz1Vsc5iE/qwQt//aKch1HM+mvfRdS5Po4sNYHRxTBc9r4Cbeui2LHLOMu6k1YnUfrl
+	9wNkDjE6rX0Xa/6pvYJSNLz3uFbTV2WFJR+Lm0vMQEiC2Wb13JaBo8KYpbT1ggWYUM0BywmFu/6
+	LMGgT6k84ROj2KZzBRm+OppEUlweEPa5BarW3ZD/HN+B/As1UIoi1rRSHg7wYwxhGlpTb4m37BF
+	JZI/4UpqHHEespiBItGCIBYpReK4oACH/r+A720qOyWijN/BGnlND3LNA7TYf2GlVHXfp2VfYyF
+	0VAJ+WCGPGD9MIZCrSNzCMNO6TqXgNtI4Y5HIvxASaLZgFlta7CS3ma6fuTH6absw9ruVmNrIlJ
+	7diTnMJEYOS5snqyDIWU2yAtPTXgzJPxKy82sEwSxTaYcHo+yXc8PaFk2ePw9ojt8yKto=
+X-Received: by 2002:a05:620a:d88:b0:8c5:2ce6:dca with SMTP id af79cd13be357-8c70b841159mr939733985a.6.1769649380018;
+        Wed, 28 Jan 2026 17:16:20 -0800 (PST)
+Received: from ziepe.ca (hlfxns017vw-142-162-112-119.dhcp-dynamic.fibreop.ns.bellaliant.net. [142.162.112.119])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-8c711d2ab04sm283038485a.25.2026.01.28.17.16.19
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 28 Jan 2026 17:16:19 -0800 (PST)
+Received: from jgg by wakko with local (Exim 4.97)
+	(envelope-from <jgg@ziepe.ca>)
+	id 1vlGdu-00000009gKo-3mMh;
+	Wed, 28 Jan 2026 21:16:18 -0400
+Date: Wed, 28 Jan 2026 21:16:18 -0400
+From: Jason Gunthorpe <jgg@ziepe.ca>
+To: Sean Christopherson <seanjc@google.com>
+Cc: Ackerley Tng <ackerleytng@google.com>,
+	Alexey Kardashevskiy <aik@amd.com>, cgroups@vger.kernel.org,
+	kvm@vger.kernel.org, linux-doc@vger.kernel.org,
+	linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-kselftest@vger.kernel.org, linux-mm@kvack.org,
+	linux-trace-kernel@vger.kernel.org, x86@kernel.org,
+	akpm@linux-foundation.org, binbin.wu@linux.intel.com, bp@alien8.de,
+	brauner@kernel.org, chao.p.peng@intel.com, chenhuacai@kernel.org,
+	corbet@lwn.net, dave.hansen@intel.com, dave.hansen@linux.intel.com,
+	david@redhat.com, dmatlack@google.com, erdemaktas@google.com,
+	fan.du@intel.com, fvdl@google.com, haibo1.xu@intel.com,
+	hannes@cmpxchg.org, hch@infradead.org, hpa@zytor.com,
+	hughd@google.com, ira.weiny@intel.com, isaku.yamahata@intel.com,
+	jack@suse.cz, james.morse@arm.com, jarkko@kernel.org,
+	jgowans@amazon.com, jhubbard@nvidia.com, jroedel@suse.de,
+	jthoughton@google.com, jun.miao@intel.com, kai.huang@intel.com,
+	keirf@google.com, kent.overstreet@linux.dev,
+	liam.merwick@oracle.com, maciej.wieczor-retman@intel.com,
+	mail@maciej.szmigiero.name, maobibo@loongson.cn,
+	mathieu.desnoyers@efficios.com, maz@kernel.org, mhiramat@kernel.org,
+	mhocko@kernel.org, mic@digikod.net, michael.roth@amd.com,
+	mingo@redhat.com, mlevitsk@redhat.com, mpe@ellerman.id.au,
+	muchun.song@linux.dev, nikunj@amd.com, nsaenz@amazon.es,
+	oliver.upton@linux.dev, palmer@dabbelt.com, pankaj.gupta@amd.com,
+	paul.walmsley@sifive.com, pbonzini@redhat.com, peterx@redhat.com,
+	pgonda@google.com, prsampat@amd.com, pvorel@suse.cz,
+	qperret@google.com, richard.weiyang@gmail.com,
+	rick.p.edgecombe@intel.com, rientjes@google.com,
+	rostedt@goodmis.org, roypat@amazon.co.uk, rppt@kernel.org,
+	shakeel.butt@linux.dev, shuah@kernel.org, steven.price@arm.com,
+	steven.sistare@oracle.com, suzuki.poulose@arm.com, tabba@google.com,
+	tglx@linutronix.de, thomas.lendacky@amd.com, vannapurve@google.com,
+	vbabka@suse.cz, viro@zeniv.linux.org.uk, vkuznets@redhat.com,
+	wei.w.wang@intel.com, will@kernel.org, willy@infradead.org,
+	wyihan@google.com, xiaoyao.li@intel.com, yan.y.zhao@intel.com,
+	yilun.xu@intel.com, yuzenghui@huawei.com, zhiquan1.li@intel.com
+Subject: Re: [RFC PATCH v1 05/37] KVM: guest_memfd: Wire up
+ kvm_get_memory_attributes() to per-gmem attributes
+Message-ID: <20260129011618.GA2307128@ziepe.ca>
+References: <cover.1760731772.git.ackerleytng@google.com>
+ <071a3c6603809186e914fe5fed939edee4e11988.1760731772.git.ackerleytng@google.com>
+ <07836b1d-d0d8-40f2-8f7b-7805beca31d0@amd.com>
+ <CAEvNRgEuez=JbArRf2SApLAL0usv5-Q6q=nBPOFMHrHGaKAtMw@mail.gmail.com>
+ <20260129003753.GZ1641016@ziepe.ca>
+ <aXqx3_eE0rNh6nP0@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20260129011517.3545883-1-seanjc@google.com>
-X-Mailer: git-send-email 2.53.0.rc1.217.geba53bf80e-goog
-Message-ID: <20260129011517.3545883-29-seanjc@google.com>
-Subject: [RFC PATCH v5 28/45] x86/virt/tdx: Extend "reset page" quirk to
- support huge pages
-From: Sean Christopherson <seanjc@google.com>
-To: Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
-	Kiryl Shutsemau <kas@kernel.org>, Sean Christopherson <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>
-Cc: linux-kernel@vger.kernel.org, linux-coco@lists.linux.dev, 
-	kvm@vger.kernel.org, Kai Huang <kai.huang@intel.com>, 
-	Rick Edgecombe <rick.p.edgecombe@intel.com>, Yan Zhao <yan.y.zhao@intel.com>, 
-	Vishal Annapurve <vannapurve@google.com>, Ackerley Tng <ackerleytng@google.com>, 
-	Sagi Shahar <sagis@google.com>, Binbin Wu <binbin.wu@linux.intel.com>, 
-	Xiaoyao Li <xiaoyao.li@intel.com>, Isaku Yamahata <isaku.yamahata@intel.com>
-Content-Type: text/plain; charset="UTF-8"
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <aXqx3_eE0rNh6nP0@google.com>
 
-Extend the APIs for "resetting" TDX pages to workaround the TDX_PW_MCE
-erratum to support huge pages, e.g. so that KVM can pass in the pfn+level
-without having to manually calculate the size in multiple locations.
+On Wed, Jan 28, 2026 at 05:03:27PM -0800, Sean Christopherson wrote:
 
-No functional change intended (because KVM doesn't currently support
-anything but level=PG_LEVEL_4K).
+> For a dmabuf fd, the story is the same as guest_memfd.  Unless private vs. shared
+> is all or nothing, and can never change, then the only entity that can track that
+> info is the owner of the dmabuf.  And even if the private vs. shared attributes
+> are constant, tracking it external to KVM makes sense, because then the provider
+> can simply hardcode %true/%false.
 
-Suggested-by: Vishal Annapurve <vannapurve@google.com>
-Signed-off-by: Sean Christopherson <seanjc@google.com>
----
- arch/x86/include/asm/tdx.h  | 7 ++++++-
- arch/x86/kvm/vmx/tdx.c      | 2 +-
- arch/x86/virt/vmx/tdx/tdx.c | 6 +++---
- 3 files changed, 10 insertions(+), 5 deletions(-)
+Oh my I had not given that bit any thought. My remarks were just about
+normal non-CC systems.
 
-diff --git a/arch/x86/include/asm/tdx.h b/arch/x86/include/asm/tdx.h
-index 8ceaebc6c1a9..e61b0b3cc403 100644
---- a/arch/x86/include/asm/tdx.h
-+++ b/arch/x86/include/asm/tdx.h
-@@ -157,7 +157,12 @@ int tdx_topup_pamt_cache(struct tdx_pamt_cache *cache, unsigned long npages);
- int tdx_pamt_get(u64 pfn, struct tdx_pamt_cache *cache);
- void tdx_pamt_put(u64 pfn);
- 
--void tdx_quirk_reset_page(u64 pfn);
-+void __tdx_quirk_reset_page(u64 pfn, enum pg_level level);
-+
-+static inline void tdx_quirk_reset_page(u64 pfn)
-+{
-+	__tdx_quirk_reset_page(pfn, PG_LEVEL_4K);
-+}
- 
- int tdx_guest_keyid_alloc(void);
- u32 tdx_get_nr_guest_keyids(void);
-diff --git a/arch/x86/kvm/vmx/tdx.c b/arch/x86/kvm/vmx/tdx.c
-index 90133e8f5c53..aca556923822 100644
---- a/arch/x86/kvm/vmx/tdx.c
-+++ b/arch/x86/kvm/vmx/tdx.c
-@@ -1871,7 +1871,7 @@ static void tdx_sept_remove_private_spte(struct kvm *kvm, gfn_t gfn,
- 	if (TDX_BUG_ON(err, TDH_PHYMEM_PAGE_WBINVD, kvm))
- 		return;
- 
--	tdx_quirk_reset_page(pfn);
-+	__tdx_quirk_reset_page(pfn, level);
- 	tdx_pamt_put(pfn);
- }
- 
-diff --git a/arch/x86/virt/vmx/tdx/tdx.c b/arch/x86/virt/vmx/tdx/tdx.c
-index 367df9366d57..411e5feef39f 100644
---- a/arch/x86/virt/vmx/tdx/tdx.c
-+++ b/arch/x86/virt/vmx/tdx/tdx.c
-@@ -799,11 +799,11 @@ static void tdx_quirk_reset_paddr(unsigned long base, unsigned long size)
- 	mb();
- }
- 
--void tdx_quirk_reset_page(u64 pfn)
-+void __tdx_quirk_reset_page(u64 pfn, enum pg_level level)
- {
--	tdx_quirk_reset_paddr(PFN_PHYS(pfn), PAGE_SIZE);
-+	tdx_quirk_reset_paddr(PFN_PHYS(pfn), page_level_size(level));
- }
--EXPORT_SYMBOL_FOR_KVM(tdx_quirk_reset_page);
-+EXPORT_SYMBOL_FOR_KVM(__tdx_quirk_reset_page);
- 
- static void tdmr_quirk_reset_pamt(struct tdmr_info *tdmr)
- {
--- 
-2.53.0.rc1.217.geba53bf80e-goog
+So MMIO starts out shared, and then converts to private when the guest
+triggers it. It is not all or nothing, there are permanent shared
+holes in the MMIO ranges too.
 
+Beyond that I don't know what people are thinking.
+
+Clearly VFIO has to revoke and disable the DMABUF once any of it
+becomes private. VFIO will somehow have to know when it changes modes
+from the TSM subsystem.
+
+I guess we could have a special channel for KVM to learn the
+shared/private page by page from VFIO as some kind of "aware of CC"
+importer.
+
+I suppose AMD needs to mangle the RMP when it changes, and KVM has to
+do that.
+
+I forget what ARM does, but I seem to recall there is a call to create
+a vPCI function and that is what stuffs the S2? So maybe KVM isn't
+even involved? (IIRC people were talking that something else would
+call the vPCI function but I haven't seen patches)
+
+No idea what x86 does beyond it has to unmap all the MMIO otherwise
+the machine crashes :P
+
+Oh man, what a horrible mess to even contemplate. I'm going to bed.
+
+Jason
