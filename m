@@ -1,160 +1,211 @@
-Received: from mail-qk1-f174.google.com (mail-qk1-f174.google.com [209.85.222.174])
+Received: from mail-pg1-f202.google.com (mail-pg1-f202.google.com [209.85.215.202])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5916234EF1E
-	for <kvm@vger.kernel.org>; Thu, 29 Jan 2026 01:16:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A76534FF78
+	for <kvm@vger.kernel.org>; Thu, 29 Jan 2026 01:16:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.202
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769649383; cv=none; b=ayyp+nj1xOP+ZvrydB2b8Lu5q0sjkYouahbt899JZ5T7XpXglPxFAuUifuKffLb4EOqxuVAg8JrmCdQzS9Clv0hvo5HTY1vXXfr9HrgPHOaYzrxbqscTjAvpw/dU8Gk6zr7erz3D0uOhWy6HHOO51dAOdqo1cE5VVWGgx0iUsgc=
+	t=1769649385; cv=none; b=cP4EiurWiqC9iTiBu8UIVpr2+AeCBG4PFwswOAQh1MfGRB6Fng4sKrAVi5c/KySTlNnrLHKbOYAg/CLH6Gu4OjmXGmzCU/Bv9HvzWWlGffeLQgUIU7DqeOcPpjgmFbCZmGqe4UDfpufZSSwhkb5R4ulkefMamx37GU/qQZxMkAc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769649383; c=relaxed/simple;
-	bh=nHJ7z1F0QJ+ff3YYPLezHicV71ohVDGuIQUyQzSTkzQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=NbnrojcSQMMWolc5G4jDX6UwcJ14ondqRD/gGaNiCFRKeSSIM/vtdg67s8GXYBHYN3lRhWeHEOpjUZ8sevOoM0ENHn9VagrhdI8ttHVYHlk4mWZiiJuOP5N0jPqHKokouUQNt3tyKcfXG2gjupAp1nqwO/r9Wc4OWl1PI03dxpo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca; spf=pass smtp.mailfrom=ziepe.ca; dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b=JimtEvw/; arc=none smtp.client-ip=209.85.222.174
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ziepe.ca
+	s=arc-20240116; t=1769649385; c=relaxed/simple;
+	bh=E/p9aO3ZAiwSbYiHC1+ljXC/97KIVcZ8eXjeNv4DXak=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=d3mHrL5E3zX8T5XR7jOfu8qEirx8Wo+MvuxGuJGmZz5aT04FUM+a0ndhEtRkxSzjvmcytxbVKI8esd72cuS2Sb8RCxTxos/dPAtdUYqxqMZTOlMwZhqTxiohWvPkEFneh+nhmXN/O+kf7lHqMQ45eFaGF3wBEVU4RNE+fnp8KtM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=rCtonWXg; arc=none smtp.client-ip=209.85.215.202
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b="JimtEvw/"
-Received: by mail-qk1-f174.google.com with SMTP id af79cd13be357-8c6a7638f42so62569185a.2
-        for <kvm@vger.kernel.org>; Wed, 28 Jan 2026 17:16:21 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="rCtonWXg"
+Received: by mail-pg1-f202.google.com with SMTP id 41be03b00d2f7-c617e59845dso287520a12.1
+        for <kvm@vger.kernel.org>; Wed, 28 Jan 2026 17:16:23 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ziepe.ca; s=google; t=1769649380; x=1770254180; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=WReYS7VDfIh+dvxdrk0biwhaBbpxlirvLLAI4b8c7GA=;
-        b=JimtEvw/M9s1zQiNQoK5XBOJVKAPBC0ZPH+Ww+nhg7HM120zXzPPDFQ66dxw3qVIkh
-         41KFAv5+ldYueku3BLZMrAHudLNNK/pjzR325IvCVYgAjfezrdFp+Ypjnmcs8Z2WWpms
-         Hnkz7ru3rUgn6MmQTBlVKZp0y6quJVwOYGhjcKcvZIbHB6f3VZF4HrJ7ENAeKE+2Ukuy
-         zFMq8IZPJX1HkYQk1TQQorMGWwZZ6+bCDV3o+M0HD2kYBy6jefimyqAQy7F5U5BqRVtD
-         kUo6mdW+EKWp7Wa5NI1ztftQRXc17I8/6KEDYfze9hhVxHgoa/rcyB0qcWZAHLRDjYK9
-         vixQ==
+        d=google.com; s=20230601; t=1769649382; x=1770254182; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:reply-to:from:to:cc:subject:date:message-id:reply-to;
+        bh=EhyaETaO3z5ZObA+zH7KzPZSfmMP5O9GD9W3Xs6375s=;
+        b=rCtonWXglPMNfbMBrtvIsNS2wcNHpKUx1ASA1lzUbb0/0eJnM7JW5A5SvVhMBe/XvF
+         qcSMQjEq9PBdxdZ4JMOujIQyAOrkqYOgL5wTVZo6cWPkOjxdJyd+1O6f3HJlIlwetye7
+         3Wu469+to6KJyG1mXzt+DYxJ5mLB2RYo2hzP/Z9/mcyLAyQB/k2h4zJ9pT/QRHD7iMwB
+         H/XCYVhHMsBxRkS3K6NfGeKCZ48In6xGru2ZRvXuP+uyC8EovBdk2IY08BdJe+btspUa
+         K/WctJuqr0OvbhDTRbwxrxLeFeykj9jwciUknkW+t6/OQ5Jrx60Bd/6DpOmn6Vyy/IXH
+         3XLw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1769649380; x=1770254180;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=WReYS7VDfIh+dvxdrk0biwhaBbpxlirvLLAI4b8c7GA=;
-        b=uYSjfjM3z3y6XQfQpytVRxzBGFjGV4UqMhi2oBYxw5bOucbAXjDJ6np56xx7En1YHB
-         JUzP3jZXw9545VJ03av98HWCCKhXHhN/2nhNtEHJRSZqzI9WvOIWqC010MOLKqy04YQ2
-         GXiXope/5iVodIvQAsHVqnJ9o+FtvvVvJnhEN2co/a+EG/CUedQnNIn+MA1hENYdm61n
-         7SZTmkqRyAjzkHWwGttqcc8Xy7cUSosoMzo0LxwhS/KJVNIfdZ+wlRnZey7MB7TWQJmD
-         YKqL4+I4q8kt56v05ji8BquFbRT6xn57NcSfTJpHgUeboyQac9UN3Mrlpdxds2yMejgY
-         XIlw==
-X-Forwarded-Encrypted: i=1; AJvYcCVHPTolqMHO2KDjutNwPqvFjWvBQFOKJmdWJO3loz6jQrBsYnQHKC176RS2+yHa9ltd+Ts=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzX8Qg0D/qhEzUSgPR78Lj8J6PZ9rQSZC+DGE1dVyiAxzbi/XjI
-	TkRiccSX0In/8n3aPMb3/JHIgJ8XM44L2v1esJ1u7fbzZG+6KjNm6WhXWo0j7feIRMg=
-X-Gm-Gg: AZuq6aJT+b0JJf+0WyinFXZrsRxXLt8VEt9ZtswF51+CegN2LC1fEhYN99ZzSkCefzr
-	3rD0kSHStz1Vsc5iE/qwQt//aKch1HM+mvfRdS5Po4sNYHRxTBc9r4Cbeui2LHLOMu6k1YnUfrl
-	9wNkDjE6rX0Xa/6pvYJSNLz3uFbTV2WFJR+Lm0vMQEiC2Wb13JaBo8KYpbT1ggWYUM0BywmFu/6
-	LMGgT6k84ROj2KZzBRm+OppEUlweEPa5BarW3ZD/HN+B/As1UIoi1rRSHg7wYwxhGlpTb4m37BF
-	JZI/4UpqHHEespiBItGCIBYpReK4oACH/r+A720qOyWijN/BGnlND3LNA7TYf2GlVHXfp2VfYyF
-	0VAJ+WCGPGD9MIZCrSNzCMNO6TqXgNtI4Y5HIvxASaLZgFlta7CS3ma6fuTH6absw9ruVmNrIlJ
-	7diTnMJEYOS5snqyDIWU2yAtPTXgzJPxKy82sEwSxTaYcHo+yXc8PaFk2ePw9ojt8yKto=
-X-Received: by 2002:a05:620a:d88:b0:8c5:2ce6:dca with SMTP id af79cd13be357-8c70b841159mr939733985a.6.1769649380018;
-        Wed, 28 Jan 2026 17:16:20 -0800 (PST)
-Received: from ziepe.ca (hlfxns017vw-142-162-112-119.dhcp-dynamic.fibreop.ns.bellaliant.net. [142.162.112.119])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-8c711d2ab04sm283038485a.25.2026.01.28.17.16.19
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 28 Jan 2026 17:16:19 -0800 (PST)
-Received: from jgg by wakko with local (Exim 4.97)
-	(envelope-from <jgg@ziepe.ca>)
-	id 1vlGdu-00000009gKo-3mMh;
-	Wed, 28 Jan 2026 21:16:18 -0400
-Date: Wed, 28 Jan 2026 21:16:18 -0400
-From: Jason Gunthorpe <jgg@ziepe.ca>
-To: Sean Christopherson <seanjc@google.com>
-Cc: Ackerley Tng <ackerleytng@google.com>,
-	Alexey Kardashevskiy <aik@amd.com>, cgroups@vger.kernel.org,
-	kvm@vger.kernel.org, linux-doc@vger.kernel.org,
-	linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-kselftest@vger.kernel.org, linux-mm@kvack.org,
-	linux-trace-kernel@vger.kernel.org, x86@kernel.org,
-	akpm@linux-foundation.org, binbin.wu@linux.intel.com, bp@alien8.de,
-	brauner@kernel.org, chao.p.peng@intel.com, chenhuacai@kernel.org,
-	corbet@lwn.net, dave.hansen@intel.com, dave.hansen@linux.intel.com,
-	david@redhat.com, dmatlack@google.com, erdemaktas@google.com,
-	fan.du@intel.com, fvdl@google.com, haibo1.xu@intel.com,
-	hannes@cmpxchg.org, hch@infradead.org, hpa@zytor.com,
-	hughd@google.com, ira.weiny@intel.com, isaku.yamahata@intel.com,
-	jack@suse.cz, james.morse@arm.com, jarkko@kernel.org,
-	jgowans@amazon.com, jhubbard@nvidia.com, jroedel@suse.de,
-	jthoughton@google.com, jun.miao@intel.com, kai.huang@intel.com,
-	keirf@google.com, kent.overstreet@linux.dev,
-	liam.merwick@oracle.com, maciej.wieczor-retman@intel.com,
-	mail@maciej.szmigiero.name, maobibo@loongson.cn,
-	mathieu.desnoyers@efficios.com, maz@kernel.org, mhiramat@kernel.org,
-	mhocko@kernel.org, mic@digikod.net, michael.roth@amd.com,
-	mingo@redhat.com, mlevitsk@redhat.com, mpe@ellerman.id.au,
-	muchun.song@linux.dev, nikunj@amd.com, nsaenz@amazon.es,
-	oliver.upton@linux.dev, palmer@dabbelt.com, pankaj.gupta@amd.com,
-	paul.walmsley@sifive.com, pbonzini@redhat.com, peterx@redhat.com,
-	pgonda@google.com, prsampat@amd.com, pvorel@suse.cz,
-	qperret@google.com, richard.weiyang@gmail.com,
-	rick.p.edgecombe@intel.com, rientjes@google.com,
-	rostedt@goodmis.org, roypat@amazon.co.uk, rppt@kernel.org,
-	shakeel.butt@linux.dev, shuah@kernel.org, steven.price@arm.com,
-	steven.sistare@oracle.com, suzuki.poulose@arm.com, tabba@google.com,
-	tglx@linutronix.de, thomas.lendacky@amd.com, vannapurve@google.com,
-	vbabka@suse.cz, viro@zeniv.linux.org.uk, vkuznets@redhat.com,
-	wei.w.wang@intel.com, will@kernel.org, willy@infradead.org,
-	wyihan@google.com, xiaoyao.li@intel.com, yan.y.zhao@intel.com,
-	yilun.xu@intel.com, yuzenghui@huawei.com, zhiquan1.li@intel.com
-Subject: Re: [RFC PATCH v1 05/37] KVM: guest_memfd: Wire up
- kvm_get_memory_attributes() to per-gmem attributes
-Message-ID: <20260129011618.GA2307128@ziepe.ca>
-References: <cover.1760731772.git.ackerleytng@google.com>
- <071a3c6603809186e914fe5fed939edee4e11988.1760731772.git.ackerleytng@google.com>
- <07836b1d-d0d8-40f2-8f7b-7805beca31d0@amd.com>
- <CAEvNRgEuez=JbArRf2SApLAL0usv5-Q6q=nBPOFMHrHGaKAtMw@mail.gmail.com>
- <20260129003753.GZ1641016@ziepe.ca>
- <aXqx3_eE0rNh6nP0@google.com>
+        d=1e100.net; s=20230601; t=1769649382; x=1770254182;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:reply-to:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=EhyaETaO3z5ZObA+zH7KzPZSfmMP5O9GD9W3Xs6375s=;
+        b=BeNghlFpX/1BbW7amkkE9i5dI6KSiEMYCgwnRe1EHaqokpZfme/XuJQ5hSo2QKLoZQ
+         s0L+sr/jl7waG9BeHG/yfIHMCkTnqVM2dro8zTaDLUQXaGe/IBF0BbujK4Wm2HHLW1OK
+         w0Lp9ImG9NcBr4nG2kLL0hSiTPzKlIaeqsghmCozsq2OzFtzLBzW5SJUvPt9UrsZVVCH
+         WyS9UxKArI/fiDOOx5aCTrnJaK5FI3qDTrKh3mmupuFhiVPOJ9hUh8bxQ7g4xZaD8ROp
+         U53DxLpBqOdwdpVeCRdVHh6RzSH2htBgTlQFSCWReOmmEd/mw8bMAZasiLKe3CoLCdZl
+         G2ZA==
+X-Forwarded-Encrypted: i=1; AJvYcCWkDyUreAvXw1t4OxJ4SHesmpXHqsL8sEVjgmfFb+xKSQQDl2CgmHpUsOKnsw966+PjFi4=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzE5a61BkJOhBRXpoNeCkk40jrPn6TUEg5KR78Y1Y99sBzJspEV
+	XZtEtbcyMFoTwAvo+1WY1dkw+xy+BdONLQL1G2A6L3+avmClggpfkU3vCio90/naIEdpbgSBiqy
+	Y/0URcQ==
+X-Received: from pggk18.prod.google.com ([2002:a63:d112:0:b0:c5e:9fe:7560])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6300:2206:b0:350:b8e:f99b
+ with SMTP id adf61e73a8af0-38ec64182ccmr7501037637.45.1769649382397; Wed, 28
+ Jan 2026 17:16:22 -0800 (PST)
+Reply-To: Sean Christopherson <seanjc@google.com>
+Date: Wed, 28 Jan 2026 17:15:01 -0800
+In-Reply-To: <20260129011517.3545883-1-seanjc@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <aXqx3_eE0rNh6nP0@google.com>
+Mime-Version: 1.0
+References: <20260129011517.3545883-1-seanjc@google.com>
+X-Mailer: git-send-email 2.53.0.rc1.217.geba53bf80e-goog
+Message-ID: <20260129011517.3545883-30-seanjc@google.com>
+Subject: [RFC PATCH v5 29/45] x86/virt/tdx: Get/Put DPAMT page pair if and
+ only if mapping size is 4KB
+From: Sean Christopherson <seanjc@google.com>
+To: Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
+	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
+	Kiryl Shutsemau <kas@kernel.org>, Sean Christopherson <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>
+Cc: linux-kernel@vger.kernel.org, linux-coco@lists.linux.dev, 
+	kvm@vger.kernel.org, Kai Huang <kai.huang@intel.com>, 
+	Rick Edgecombe <rick.p.edgecombe@intel.com>, Yan Zhao <yan.y.zhao@intel.com>, 
+	Vishal Annapurve <vannapurve@google.com>, Ackerley Tng <ackerleytng@google.com>, 
+	Sagi Shahar <sagis@google.com>, Binbin Wu <binbin.wu@linux.intel.com>, 
+	Xiaoyao Li <xiaoyao.li@intel.com>, Isaku Yamahata <isaku.yamahata@intel.com>
+Content-Type: text/plain; charset="UTF-8"
 
-On Wed, Jan 28, 2026 at 05:03:27PM -0800, Sean Christopherson wrote:
+From: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
 
-> For a dmabuf fd, the story is the same as guest_memfd.  Unless private vs. shared
-> is all or nothing, and can never change, then the only entity that can track that
-> info is the owner of the dmabuf.  And even if the private vs. shared attributes
-> are constant, tracking it external to KVM makes sense, because then the provider
-> can simply hardcode %true/%false.
+Elide the guts of getting/putting a Dynamic PAMT entry when the associated
+mapping is greater than 4KiB, in which case static PAMT pages are used and
+there's no need to (un)install extra PAMT pages.
 
-Oh my I had not given that bit any thought. My remarks were just about
-normal non-CC systems.
+Signed-off-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
+[Yan: Move level checking to callers of tdx_pamt_{get/put}()]
+Signed-off-by: Yan Zhao <yan.y.zhao@intel.com>
+[sean: move level checking back to tdx_pamt_{get/put}()]
+Signed-off-by: Sean Christopherson <seanjc@google.com>
+---
+ arch/x86/include/asm/tdx.h  | 16 ++++++++++++++--
+ arch/x86/kvm/vmx/tdx.c      |  6 +++---
+ arch/x86/virt/vmx/tdx/tdx.c | 12 ++++++------
+ 3 files changed, 23 insertions(+), 11 deletions(-)
 
-So MMIO starts out shared, and then converts to private when the guest
-triggers it. It is not all or nothing, there are permanent shared
-holes in the MMIO ranges too.
+diff --git a/arch/x86/include/asm/tdx.h b/arch/x86/include/asm/tdx.h
+index e61b0b3cc403..50feea01b066 100644
+--- a/arch/x86/include/asm/tdx.h
++++ b/arch/x86/include/asm/tdx.h
+@@ -154,8 +154,20 @@ static inline void tdx_init_pamt_cache(struct tdx_pamt_cache *cache)
+ 
+ void tdx_free_pamt_cache(struct tdx_pamt_cache *cache);
+ int tdx_topup_pamt_cache(struct tdx_pamt_cache *cache, unsigned long npages);
+-int tdx_pamt_get(u64 pfn, struct tdx_pamt_cache *cache);
+-void tdx_pamt_put(u64 pfn);
++int __tdx_pamt_get(u64 pfn, struct tdx_pamt_cache *cache);
++void __tdx_pamt_put(u64 pfn);
++
++static inline int tdx_pamt_get(u64 pfn, enum pg_level level,
++			       struct tdx_pamt_cache *cache)
++{
++	return level == PG_LEVEL_4K ? __tdx_pamt_get(pfn, cache) : 0;
++}
++
++static inline void tdx_pamt_put(u64 pfn, enum pg_level level)
++{
++	if (level == PG_LEVEL_4K)
++		__tdx_pamt_put(pfn);
++}
+ 
+ void __tdx_quirk_reset_page(u64 pfn, enum pg_level level);
+ 
+diff --git a/arch/x86/kvm/vmx/tdx.c b/arch/x86/kvm/vmx/tdx.c
+index aca556923822..bd5d902da303 100644
+--- a/arch/x86/kvm/vmx/tdx.c
++++ b/arch/x86/kvm/vmx/tdx.c
+@@ -1729,7 +1729,7 @@ static int tdx_sept_set_private_spte(struct kvm *kvm, gfn_t gfn,
+ 
+ 	WARN_ON_ONCE((mirror_spte & VMX_EPT_RWX_MASK) != VMX_EPT_RWX_MASK);
+ 
+-	ret = tdx_pamt_get(pfn, &tdx->pamt_cache);
++	ret = tdx_pamt_get(pfn, level, &tdx->pamt_cache);
+ 	if (ret)
+ 		return ret;
+ 
+@@ -1751,7 +1751,7 @@ static int tdx_sept_set_private_spte(struct kvm *kvm, gfn_t gfn,
+ 		ret = tdx_mem_page_add(kvm, gfn, level, pfn);
+ 
+ 	if (ret)
+-		tdx_pamt_put(pfn);
++		tdx_pamt_put(pfn, level);
+ 
+ 	return ret;
+ }
+@@ -1872,7 +1872,7 @@ static void tdx_sept_remove_private_spte(struct kvm *kvm, gfn_t gfn,
+ 		return;
+ 
+ 	__tdx_quirk_reset_page(pfn, level);
+-	tdx_pamt_put(pfn);
++	tdx_pamt_put(pfn, level);
+ }
+ 
+ void tdx_deliver_interrupt(struct kvm_lapic *apic, int delivery_mode,
+diff --git a/arch/x86/virt/vmx/tdx/tdx.c b/arch/x86/virt/vmx/tdx/tdx.c
+index 411e5feef39f..cff325fdec79 100644
+--- a/arch/x86/virt/vmx/tdx/tdx.c
++++ b/arch/x86/virt/vmx/tdx/tdx.c
+@@ -2195,7 +2195,7 @@ static u64 tdh_phymem_pamt_remove(u64 pfn, u64 *pamt_pa_array)
+ static DEFINE_SPINLOCK(pamt_lock);
+ 
+ /* Bump PAMT refcount for the given page and allocate PAMT memory if needed */
+-int tdx_pamt_get(u64 pfn, struct tdx_pamt_cache *cache)
++int __tdx_pamt_get(u64 pfn, struct tdx_pamt_cache *cache)
+ {
+ 	u64 pamt_pa_array[MAX_NR_DPAMT_ARGS];
+ 	atomic_t *pamt_refcount;
+@@ -2266,13 +2266,13 @@ int tdx_pamt_get(u64 pfn, struct tdx_pamt_cache *cache)
+ 	free_pamt_array(pamt_pa_array);
+ 	return ret;
+ }
+-EXPORT_SYMBOL_FOR_KVM(tdx_pamt_get);
++EXPORT_SYMBOL_FOR_KVM(__tdx_pamt_get);
+ 
+ /*
+  * Drop PAMT refcount for the given page and free PAMT memory if it is no
+  * longer needed.
+  */
+-void tdx_pamt_put(u64 pfn)
++void __tdx_pamt_put(u64 pfn)
+ {
+ 	u64 pamt_pa_array[MAX_NR_DPAMT_ARGS];
+ 	atomic_t *pamt_refcount;
+@@ -2326,7 +2326,7 @@ void tdx_pamt_put(u64 pfn)
+ 	 */
+ 	free_pamt_array(pamt_pa_array);
+ }
+-EXPORT_SYMBOL_FOR_KVM(tdx_pamt_put);
++EXPORT_SYMBOL_FOR_KVM(__tdx_pamt_put);
+ 
+ void tdx_free_pamt_cache(struct tdx_pamt_cache *cache)
+ {
+@@ -2372,7 +2372,7 @@ struct page *__tdx_alloc_control_page(gfp_t gfp)
+ 	if (!page)
+ 		return NULL;
+ 
+-	if (tdx_pamt_get(page_to_pfn(page), NULL)) {
++	if (__tdx_pamt_get(page_to_pfn(page), NULL)) {
+ 		__free_page(page);
+ 		return NULL;
+ 	}
+@@ -2390,7 +2390,7 @@ void __tdx_free_control_page(struct page *page)
+ 	if (!page)
+ 		return;
+ 
+-	tdx_pamt_put(page_to_pfn(page));
++	__tdx_pamt_put(page_to_pfn(page));
+ 	__free_page(page);
+ }
+ EXPORT_SYMBOL_FOR_KVM(__tdx_free_control_page);
+-- 
+2.53.0.rc1.217.geba53bf80e-goog
 
-Beyond that I don't know what people are thinking.
-
-Clearly VFIO has to revoke and disable the DMABUF once any of it
-becomes private. VFIO will somehow have to know when it changes modes
-from the TSM subsystem.
-
-I guess we could have a special channel for KVM to learn the
-shared/private page by page from VFIO as some kind of "aware of CC"
-importer.
-
-I suppose AMD needs to mangle the RMP when it changes, and KVM has to
-do that.
-
-I forget what ARM does, but I seem to recall there is a call to create
-a vPCI function and that is what stuffs the S2? So maybe KVM isn't
-even involved? (IIRC people were talking that something else would
-call the vPCI function but I haven't seen patches)
-
-No idea what x86 does beyond it has to unmap all the MMIO otherwise
-the machine crashes :P
-
-Oh man, what a horrible mess to even contemplate. I'm going to bed.
-
-Jason
