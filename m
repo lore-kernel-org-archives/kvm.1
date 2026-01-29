@@ -1,113 +1,244 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A343E37C0E5;
-	Thu, 29 Jan 2026 10:05:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.10
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 925E830AAA9;
+	Thu, 29 Jan 2026 10:14:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769681102; cv=none; b=DtFeswGMFe1itt0l9tu88K+DLWQwf65x2eghxlHPFpQU6JJhrxvlxZ2IyZAVvPScCbYv+zNti/vz4noTbr1vO0i25kZPzz1oy7uqFJsoJnVkcu0KCCorzMsnr8kn3l40FsuyQsc6SzDxS9xU3/fH5tUrO+rqLH3a3r3b0/9z354=
+	t=1769681679; cv=none; b=KPBkEEg2Cbqso0hLVLaS31tlfBX7NW3wkgoMlIJFtLHQVxbyTQLb/6st0GrF1WUWA1QXpeqvVDHJ+gkhZAPYtlNp0uJqDlNIZrSxmO+XHzirbdrFWhoEW04xQSzay2p/dwx4kJYaCWAHi72VMs4+CDUVAEz1wwF2GXOyVCNOrOg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769681102; c=relaxed/simple;
-	bh=pYCQVA/12d4uhxT7aRwlkFoYf2mKBsD++2vXc6f0iJA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=CIr5vJo8bSbUATksddKvAD9SBASj1dBiDK1e8ZceJGi2qZ5bR/8P1tMjwS6ior3Ks/Hz40vFY4AWx3kk/gfRdVkXXbYwndAfqZ0t6oopHCe7tW6udYh4pwXEvpDrX125NDzRDVNAADaUdJv9w+Azye4wj8HDmqWLwKOjHDb/Ig4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=mQfCqmwO; arc=none smtp.client-ip=192.198.163.10
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+	s=arc-20240116; t=1769681679; c=relaxed/simple;
+	bh=iQvMrDyasksTllCjdfeh6A5zWB6EVZnl+Zr/KX7IDw8=;
+	h=Date:Message-ID:From:To:Cc:Subject:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=J+jTMLgqHoZ/sJlduPBZMe85YODkBwipKJaiCH6GmFJzUdOOJosQ6mnU9OVHr9Jxr5o4WvQLBHVewE29NaS4XDAfZu91gmlmZPiXfF7FF2M70uUYH+aoBP7fRsrSHvbcH9P+sGhxhYtHYv/gChJmi/kvrhFhJEeohGhu2SH4CuY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=sjhhhedW; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="mQfCqmwO"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1769681102; x=1801217102;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=pYCQVA/12d4uhxT7aRwlkFoYf2mKBsD++2vXc6f0iJA=;
-  b=mQfCqmwO5dts/Rpi+hG1jfWIvZCghXNk6/qPf2M+loHfe5SWuIXlyiap
-   fHJgcNsG6Lguksmb1zkocAXiD0ev016PuPnApyYvRIAS5QL5VSeRWCERV
-   tvFnuqnYg5NS+dFIZnlygixiupabzo24twyc3Sbor0IQJOwl+I/ewmKWh
-   JVaWp7+jZMGKt2M6zlI5nSGX2Lhc/vkQU+w0MyPbqp+wJOi3zoxekJP7R
-   Fou5AM4y0q1dBLsj4Oqs6Yag0Jwk5K+v9h31zk1E+IQ5nnkdDVBop0h53
-   9EoXtSSm28z+V/TersBrsbgIiViYbd9GV3oKzaSMtJRTfymwd81cm3ds4
-   Q==;
-X-CSE-ConnectionGUID: NAlNbb/6Qk64DGl2Fan8uw==
-X-CSE-MsgGUID: En2ajNeqTY68v2enmtRJZg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11685"; a="82282576"
-X-IronPort-AV: E=Sophos;i="6.21,260,1763452800"; 
-   d="scan'208";a="82282576"
-Received: from orviesa007.jf.intel.com ([10.64.159.147])
-  by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Jan 2026 02:05:01 -0800
-X-CSE-ConnectionGUID: A24kz5kLRGaKNMcs7f3zdg==
-X-CSE-MsgGUID: 5x7Dk9HqT/+JgUAG2DpWwA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,260,1763452800"; 
-   d="scan'208";a="208637324"
-Received: from yilunxu-optiplex-7050.sh.intel.com (HELO localhost) ([10.239.159.165])
-  by orviesa007.jf.intel.com with ESMTP; 29 Jan 2026 02:04:54 -0800
-Date: Thu, 29 Jan 2026 17:46:40 +0800
-From: Xu Yilun <yilun.xu@linux.intel.com>
-To: Dave Hansen <dave.hansen@intel.com>
-Cc: Chao Gao <chao.gao@intel.com>, linux-coco@lists.linux.dev,
-	linux-kernel@vger.kernel.org, kvm@vger.kernel.org, x86@kernel.org,
-	reinette.chatre@intel.com, ira.weiny@intel.com, kai.huang@intel.com,
-	dan.j.williams@intel.com, sagis@google.com, vannapurve@google.com,
-	paulmck@kernel.org, nik.borisov@suse.com, zhenzhong.duan@intel.com,
-	seanjc@google.com, rick.p.edgecombe@intel.com, kas@kernel.org,
-	dave.hansen@linux.intel.com, vishal.l.verma@intel.com,
-	Farrah Chen <farrah.chen@intel.com>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
-	"H. Peter Anvin" <hpa@zytor.com>
-Subject: Re: [PATCH v3 06/26] x86/virt/tdx: Prepare to support P-SEAMLDR
- SEAMCALLs
-Message-ID: <aXssgOZJteoaJUOz@yilunxu-OptiPlex-7050>
-References: <20260123145645.90444-1-chao.gao@intel.com>
- <20260123145645.90444-7-chao.gao@intel.com>
- <e2245231-ee39-40aa-bfdc-e43419fa30f4@intel.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="sjhhhedW"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F1B84C4CEF7;
+	Thu, 29 Jan 2026 10:14:38 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1769681679;
+	bh=iQvMrDyasksTllCjdfeh6A5zWB6EVZnl+Zr/KX7IDw8=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=sjhhhedW3IMVefMoFUpZ9k0oX5+2HHGarbL4dqBcb8BsftFFHGFhPXGxV0ufOeSpG
+	 1zFCx/xvfwgk99K95SmOED30KufKAAzY+NjnglJJ1lggiKUX4B4XPMoTI0QBZIu+MC
+	 lrSny8tvEcY+I+kaMNyxYPu3fCaIQSju+2ZN5FbHx/3nr0npaJhXewW4z2VHY/O3m2
+	 tHc7aqqgSLeBoQHuhGmFefc/DJXV9Pb9FPD76At1V3dQn68DNdg/AOtOCNMMut5Zz5
+	 YV5vDf82x4YJwuLdKQZbCz9ao1FUtLa6hGdDtj4WrDLCejvF8mgkc/qENju8VR+Xke
+	 qFewpsNjfxpQg==
+Received: from sofa.misterjones.org ([185.219.108.64] helo=goblin-girl.misterjones.org)
+	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.98.2)
+	(envelope-from <maz@kernel.org>)
+	id 1vlP2q-00000006i5m-1uFn;
+	Thu, 29 Jan 2026 10:14:36 +0000
+Date: Thu, 29 Jan 2026 10:14:36 +0000
+Message-ID: <86bjicbu9f.wl-maz@kernel.org>
+From: Marc Zyngier <maz@kernel.org>
+To: Fuad Tabba <tabba@google.com>
+Cc: kvmarm@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org,
+	kvm@vger.kernel.org,
+	Joey Gouly <joey.gouly@arm.com>,
+	Suzuki K Poulose <suzuki.poulose@arm.com>,
+	Oliver Upton <oupton@kernel.org>,
+	Zenghui Yu <yuzenghui@huawei.com>,
+	Will Deacon <will@kernel.org>,
+	Catalin Marinas <catalin.marinas@arm.com>
+Subject: Re: [PATCH 12/20] KVM: arm64: Add RESx_WHEN_E2Hx constraints as configuration flags
+In-Reply-To: <CA+EHjTzL6bNZ=sZoub3GY=VZ2bJ+4bFr4jkuiMMBCEqXuAkQPA@mail.gmail.com>
+References: <20260126121655.1641736-1-maz@kernel.org>
+	<20260126121655.1641736-13-maz@kernel.org>
+	<CA+EHjTzL6bNZ=sZoub3GY=VZ2bJ+4bFr4jkuiMMBCEqXuAkQPA@mail.gmail.com>
+User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
+ FLIM-LB/1.14.9 (=?UTF-8?B?R29qxY0=?=) APEL-LB/10.8 EasyPG/1.0.0 Emacs/30.1
+ (aarch64-unknown-linux-gnu) MULE/6.0 (HANACHIRUSATO)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <e2245231-ee39-40aa-bfdc-e43419fa30f4@intel.com>
+MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
+Content-Type: text/plain; charset=US-ASCII
+X-SA-Exim-Connect-IP: 185.219.108.64
+X-SA-Exim-Rcpt-To: tabba@google.com, kvmarm@lists.linux.dev, linux-arm-kernel@lists.infradead.org, kvm@vger.kernel.org, joey.gouly@arm.com, suzuki.poulose@arm.com, oupton@kernel.org, yuzenghui@huawei.com, will@kernel.org, catalin.marinas@arm.com
+X-SA-Exim-Mail-From: maz@kernel.org
+X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
 
-> >  static __always_inline int sc_retry_prerr(sc_func_t func,
-> >  					  sc_err_func_t err_func,
-> >  					  u64 fn, struct tdx_module_args *args)
-> > @@ -96,4 +119,7 @@ static __always_inline int sc_retry_prerr(sc_func_t func,
-> >  #define seamcall_prerr_ret(__fn, __args)					\
-> >  	sc_retry_prerr(__seamcall_ret, seamcall_err_ret, (__fn), (__args))
-> >  
-> > +#define seamldr_prerr(__fn, __args)						\
-> > +	sc_retry_prerr(__seamcall, seamldr_err, (__fn), (__args))
+Hey Fuad,
+
+On Wed, 28 Jan 2026 17:43:40 +0000,
+Fuad Tabba <tabba@google.com> wrote:
+> 
+> Hi Marc,
+> 
+> On Mon, 26 Jan 2026 at 12:17, Marc Zyngier <maz@kernel.org> wrote:
+> >
+> > "Thanks" to VHE, SCTLR_EL2 radically changes shape depending on the
+> > value of HCR_EL2.E2H, as a lot of the bits that didn't have much
+> > meaning with E2H=0 start impacting EL0 with E2H=1.
+> >
+> > This has a direct impact on the RESx behaviour of these bits, and
+> > we need a way to express them.
+> >
+> > For this purpose, introduce a set of 4 new constaints that, when
+> > the controlling feature is not present, force the RESx value to
+> > be either 0 or 1 depending on the value of E2H.
+> >
+> > This allows diverging RESx values depending on the value of E2H,
+> > something that is required by a bunch of SCTLR_EL2 bits.
+> >
+> > Signed-off-by: Marc Zyngier <maz@kernel.org>
+> > ---
+> >  arch/arm64/kvm/config.c | 24 +++++++++++++++++++++---
+> >  1 file changed, 21 insertions(+), 3 deletions(-)
+> >
+> > diff --git a/arch/arm64/kvm/config.c b/arch/arm64/kvm/config.c
+> > index 1990cebc77c66..7063fffc22799 100644
+> > --- a/arch/arm64/kvm/config.c
+> > +++ b/arch/arm64/kvm/config.c
+> > @@ -26,6 +26,10 @@ struct reg_bits_to_feat_map {
+> >  #define        MASKS_POINTER   BIT(3)  /* Pointer to fgt_masks struct instead of bits */
+> >  #define        AS_RES1         BIT(4)  /* RES1 when not supported */
+> >  #define        REQUIRES_E2H1   BIT(5)  /* Add HCR_EL2.E2H RES1 as a pre-condition */
+> > +#define        RES0_WHEN_E2H0  BIT(6)  /* RES0 when E2H=0 and not supported */
+> > +#define        RES0_WHEN_E2H1  BIT(7)  /* RES0 when E2H=1 and not supported */
+> > +#define        RES1_WHEN_E2H0  BIT(8)  /* RES1 when E2H=0 and not supported */
+> > +#define        RES1_WHEN_E2H1  BIT(9)  /* RES1 when E2H=1 and not supported */
+> >
+> >         unsigned long   flags;
+> >
+> > @@ -1298,10 +1302,24 @@ struct resx compute_resx_bits(struct kvm *kvm,
+> >                         match &= !e2h0;
+> >
+> >                 if (!match) {
+> > +                       u64 bits = reg_feat_map_bits(&map[i]);
 > > +
-> >  #endif
+> > +                       if (e2h0) {
+> > +                               if      (map[i].flags & RES1_WHEN_E2H0)
+> > +                                       resx.res1 |= bits;
+> > +                               else if (map[i].flags & RES0_WHEN_E2H0)
+> > +                                       resx.res0 |= bits;
+> > +                       } else {
+> > +                               if      (map[i].flags & RES1_WHEN_E2H1)
+> > +                                       resx.res1 |= bits;
+> > +                               else if (map[i].flags & RES0_WHEN_E2H1)
+> > +                                       resx.res0 |= bits;
+> > +                       }
+> > +
+> >                         if (map[i].flags & AS_RES1)
+> > -                               resx.res1 |= reg_feat_map_bits(&map[i]);
+> > -                       else
+> > -                               resx.res0 |= reg_feat_map_bits(&map[i]);
+> > +                               resx.res1 |= bits;
+> > +                       else if (!(resx.res1 & bits))
+> > +                               resx.res0 |= bits;
 > 
-> So, honestly, for me, it's a NAK for this whole patch.
+> The logic here feels a bit more complex than necessary, specifically
+> regarding the interaction between the E2H checks and the fallthrough
+> to AS_RES1.
 > 
-> Go change the P-SEAMLDR to use the same error code as the TDX module,
-> and fix the documentation. No kernel changes, please.
+> Although AS_RES1 and RES0_WHEN_E2H0 are mutually exclusive in
+> practice, the current structure technically permits a scenario where
+> both res0 and res1 get set if the flags are mixed (the e2h0 block sets
+> res0, and the AS_RES1 block falls through and sets res1). This cannot
+> be ruled out by looking at this function alone.
+> 
+>   It might be cleaner (and safer) to determine the res1 first, and
+> then apply the masks. Something like:
+> 
+> +                       bool is_res1 = false;
+> +
+> +                       if (map[i].flags & AS_RES1)
+> +                               is_res1 = true;
+> +                       else if (e2h0)
+> +                               is_res1 = (map[i].flags & RES1_WHEN_E2H0);
+> +                       else
+> +                               is_res1 = (map[i].flags & RES1_WHEN_E2H1);
+> ...
 
-I'm thinking of ways to avoid a new pseamldr version.
+I think you have just put your finger on something that escaped me so
+far. You are totally right that the code as written today is ugly, and
+the trick to work out that we need to account the bits as RES0 is
+awful.
 
-Could we just ask for a unified error code space for both SEAMCALL &
-SEAMLDR CALL, eliminating overlaps. There is no overlap now, so this is
-just another documentation fix.
+But it additionally outlines something else: since RES0 is an implicit
+property (we don't specify a flag for it), RES0_WHEN_E2Hx could also
+be implicit properties. I couldn't find an example where anything
+would break. This would also avoid the combination with AS_RES1 by
+construction.
 
-Then with all the doc fixes, we only need minor code change:
+> 
+> This also brings up a side point: given the visual similarity of these
+> flags, it is quite easy to make a typo and accidentally combine
+> incompatible flags (e.g., AS_RES1 | RESx_WHEN_E2Hx, or RES0_WHEN_E2H0
+> | RES1_WHEN_E2H0), would it be worth adding a check to warn on
+> obviously invalid combinations?
+> 
+> Or maybe even redefining AS_RES1 to be
+> (RES1_WHEN_E2H1|RES1_WHEN_E2H0), which is what it is conceptually.
+> That could simplify this code even further:
+> 
+> +                       if (e2h0)
+> +                               is_res1 = (map[i].flags & RES1_WHEN_E2H0);
+> +                       else
+> +                               is_res1 = (map[i].flags & RES1_WHEN_E2H1);
 
+While that would work, I think this is a step too far. Eventually, we
+should be able to sanitise things outside of NV, and RES1 should not
+depend on E2H at all in this case.
 
-@@ -127,7 +127,8 @@ static __always_inline u64 sc_retry(sc_func_t func, u64 fn,
-                preempt_disable();
-                ret = __seamcall_dirty_cache(func, fn, args);
-                preempt_enable();
--       } while (ret == TDX_RND_NO_ENTROPY && --retry);
-+       } while ((ret == TDX_RND_NO_ENTROPY ||
-+                 ret == SEAMLDR_RND_NO_ENTROPY) && --retry);
+I ended up with the following hack, completely untested (needs
+renumbering, and the rest of SCTLR_EL2 repainted). Let me know what
+you think.
 
+Thanks,
 
-I think this is a balance. The existing error code philosophy for SEAM
-is as informative as possible, e.g. all kinds of xxx_INVALID,
-SEAMLDR_RND_NO_ENTROPY is not that evil among 200+ other error codes.
+	M.
+
+diff --git a/arch/arm64/kvm/config.c b/arch/arm64/kvm/config.c
+index 562513a4683e2..204e5aeda4d24 100644
+--- a/arch/arm64/kvm/config.c
++++ b/arch/arm64/kvm/config.c
+@@ -26,8 +26,6 @@ struct reg_bits_to_feat_map {
+ #define	MASKS_POINTER	BIT(3)	/* Pointer to fgt_masks struct instead of bits */
+ #define	AS_RES1		BIT(4)	/* RES1 when not supported */
+ #define	REQUIRES_E2H1	BIT(5)	/* Add HCR_EL2.E2H RES1 as a pre-condition */
+-#define	RES0_WHEN_E2H0	BIT(6)	/* RES0 when E2H=0 and not supported */
+-#define	RES0_WHEN_E2H1	BIT(7)	/* RES0 when E2H=1 and not supported */
+ #define	RES1_WHEN_E2H0	BIT(8)	/* RES1 when E2H=0 and not supported */
+ #define	RES1_WHEN_E2H1	BIT(9)	/* RES1 when E2H=1 and not supported */
+ 
+@@ -1375,22 +1373,15 @@ struct resx compute_resx_bits(struct kvm *kvm,
+ 		
+ 		if (!match) {
+ 			u64 bits = reg_feat_map_bits(&map[i]);
++			bool res1;
+ 
+-			if (e2h0) {
+-				if      (map[i].flags & RES1_WHEN_E2H0)
+-					resx.res1 |= bits;
+-				else if (map[i].flags & RES0_WHEN_E2H0)
+-					resx.res0 |= bits;
+-			} else {
+-				if      (map[i].flags & RES1_WHEN_E2H1)
+-					resx.res1 |= bits;
+-				else if (map[i].flags & RES0_WHEN_E2H1)
+-					resx.res0 |= bits;
+-			}
+-
+-			if (map[i].flags & AS_RES1)
++			res1  = (map[i].flags & AS_RES1);
++			res1 |= e2h0 && (map[i].flags & RES1_WHEN_E2H0);
++			res1 |= !e2h0 && (map[i].flags & RES1_WHEN_E2H1);
++
++			if (res1)
+ 				resx.res1 |= bits;
+-			else if (!(resx.res1 & bits))
++			else
+ 				resx.res0 |= bits;
+ 		}
+ 	}
+
+-- 
+Without deviation from the norm, progress is not possible.
