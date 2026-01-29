@@ -1,147 +1,183 @@
-Received: from mail-qt1-f173.google.com (mail-qt1-f173.google.com [209.85.160.173])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B0C93570AE
-	for <kvm@vger.kernel.org>; Thu, 29 Jan 2026 18:13:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.160.173
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769710439; cv=pass; b=GRk8dI/z1Scs3i+dr2QVCcyNdjmEP0Yp0DskB30yYAi+nBTd/oZ8/tbS9ZBU7S8oB5w3ethTx+USNgsp+JwiXtlkmtFbe/uYNVRn8+L4hnDOL7ItIN9Rdj9n4dswy7NmBs9z+fRcMzjcduVMY5tR03IhIIlZeizfM3GyIaKsQBM=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769710439; c=relaxed/simple;
-	bh=yHb3p2o4wgMcF55JscMbe7n4TM3E7DPuyumFVJ/+Qbs=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=gQABapTu2oD5IgK8cHQ2nK8JJLzgRstaMBI/auUu6ymRXDkzAvNfNltqXJDl//RET8JYBt21kS/tTSXc/wGX99brxp/eh0/W6QWezs4q4XY7+7NO7kWpq0YXfqjPYOlJ/owjwgxsdaNvgoaL/WfpqeXAfVpGH3Xtquptkt9vlAg=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=t3G8ET0O; arc=pass smtp.client-ip=209.85.160.173
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 860862C11ED;
+	Thu, 29 Jan 2026 18:48:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1769712535; cv=none; b=JvKdZAOUfWGgsXI/K/TYcyxZojJBcRR2rJxkMYV223lZwPE1zXiv7uwSSDX5NVuTA45LJmdtR4Dymr67cm266peLbtFKiYgAqE18zPnZgZy8JXONwosIQ4QrLmP9yrVyNHR2eMqrzE6+90KdUKaewNyBxuVxKMoB8I0PZaYOA9Y=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1769712535; c=relaxed/simple;
+	bh=LUYBJJ3lyDfHxOh1C1isUaHVHRqXOl1euZswCzoh/5Q=;
+	h=Date:Message-ID:From:To:Cc:Subject:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=TeGWH68ezt+EWfql0AFCefH4dp+pHfgShX4XvDBmBITN+QDggn49//JOj17xVj89smykYavNb3JqI4LBpuqblqblHpvIOTDUHHT3t88RR2xbXpY9RV+iydITlSistSSd4KN1PlSaZKUQbKnnJP7x9hhQB0ebFtMZuoGWstvKVho=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dMjgQdwz; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="t3G8ET0O"
-Received: by mail-qt1-f173.google.com with SMTP id d75a77b69052e-5033b64256dso2521cf.0
-        for <kvm@vger.kernel.org>; Thu, 29 Jan 2026 10:13:56 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1769710436; cv=none;
-        d=google.com; s=arc-20240605;
-        b=Q2MtjC/AlWEcojzXzW+go3aetdq1g+cIk5F8/Ym8ab1IJ1LRGXR2Sd8ZAPcGCObh9y
-         LpxxwiWANNbUT/5uMhA4WIIXgsZ1E6sp1aJsznc3v1IJtKEZiJ5kI/NqSGTwtOZxhteL
-         1UIrkLWO3LXmnxbBYMrbBG5sEX9yrMJh/MyoFDrwg9lP1LSDGjWyHaZ6Xu96Ad7F1qlN
-         /lOkPzevLWEB2Drx8vzKIECC3ZNyl72vtdS7VzHB6JBoPfeMXlGvZR9Yjji6KcC1XFlZ
-         VndIgvJX575zvwsJBr7MNkOBqeZG4A2ab2ZMGXxvEdu3JL2HnVQoigGEpCkF12xZGMqX
-         CmtA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:dkim-signature;
-        bh=55DBf6vGz6h/IMUX0dUx145BpEo7/T5ZyZBZO9eqOec=;
-        fh=/a3qkN/L6EcbORXEm5ysWTdMX2liWD4mxojS6y/2GJI=;
-        b=P39rL608UPZO7Fdj7O8qi3whrUz2H4I04sVU3+9PURYs+GqxWBtFrfyDkHM6MzbO0t
-         PM7fRGXZy2w90iQ46hJHRe0ttbmSNSL4AwnrdUkyX5K/7NiHdceN+GuG4wbemcd312Jb
-         qKSFmJEjRRT2toJqG8AwMgvtf0ZpyiqxT5iPt26Hp5imrg5LRNvnGy/fr1s7i6g+PLQ1
-         3v6o0RBK8rLCCz+76Av81AyRR4ko2F7aJUGjJVcPuJZ5DIax7wbb5D9OkmUl7ilhDcEz
-         j2XTEtoPYO0q+ENAbs/+89xd1uODzsKzzMrrNgM7/NLYKJDCVbBrvyBwv/LvRF3e92Gj
-         f6VA==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1769710436; x=1770315236; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=55DBf6vGz6h/IMUX0dUx145BpEo7/T5ZyZBZO9eqOec=;
-        b=t3G8ET0ON5Wo65j6LJmxevqD3mCZI0kPtMl2/4S8ocqAioWSzle+l1oaJahNw4cqla
-         u8GfrsSOCA/t+CGOrSPWKQub2FaPvgK4tHj53K0bF3NDHcUOGxamB13hRh8uQQoGpolB
-         PDqBKpKsM+jKfjwc5Yr/HLMYNNVQ+DphXWJOTYrd/qILZKHRYNuV4tvBrbZRRpBZot2P
-         EUBDr6DtasGh0i3I0MZ4LkNsdtZmdDyqRgVY4ZUoJoQ040u98iEzAgP4H5VbPzVMOqy2
-         4IhaZvK0eKrEoqc7va+86lbRV0KS/nvJHNQ56OZ8eWmI40JEH6pl4zsNIodJodi/maa5
-         aVWA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1769710436; x=1770315236;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=55DBf6vGz6h/IMUX0dUx145BpEo7/T5ZyZBZO9eqOec=;
-        b=t0cK6WpJSIjMCfMKgIZLdOd5MSzdF4FMsE5oeXwUIg/eGsq+mvZ7bw1tzpTmkbKlCU
-         03QI6FjbaACN5HGG3f9IX/y+rOyXk8uajTnireoeqTARObmsNEf3t8GFt4bgK21RZk7L
-         16XuDzOZsrIcYpqXv98/F+Dz10yTDJURXUxTLlailBsrlLrzPb2ylTbRn1/L/Ie3brm5
-         6KFLpFPIE5Wppq6GUkbcgPkpA/jHecfZZk0VOVxRcbO9UNCckeincvYze3+PvnhtN/Dg
-         lWlwvjneoOsetK/z/JdRXF8erzjtscSp3BNTmiu7nTb8AZEatFOvt8q4yCnTx1bvxE1m
-         MJSQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWhrlNJfG5uc8pQM/HE/hpgaLPQGtszhQ3wSSFyXuvYGqbDAq9HXk6NIvVDe5nuFDeeMCk=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwHQOTVHg0nDfWGHaAzPEJs2diDAR6wL1e3aZHyGtNtC1JMmHh0
-	c2GL+m8/g6SEhqP72TiLtYFiEUQ+w3scxRjTPo7I+Eixfx7WztJmCjKeSmlu/tUN0jJYIQ2yg0X
-	JXgzuj2jkwVWVcw6NpgRCnT29LC67RP7Q/l7coxwN
-X-Gm-Gg: AZuq6aLddikEY6PBTMqGwbnv16tBfBKJNDjY5bpe0CeZ+K21idW892hQ7i2rzfGpSUw
-	hsIOS19cyupv5J9IEbfpBtnbGMAgDbUnA6FIbyXE0G1YGRQh3Y0RCALBhrHyhTtbVtlKaV8TYNm
-	Bd5WwwdIi46HIF+yCMkdLsvMpd8e5mcFQ1qSrldZmD9olVkhVm2m4Ac/lRU/t0rgr1e8t7kT5Pm
-	h9K8MCeQA18hT7RDs9qqMosfB9itRR9CPQ9NrJKyioXiCOABBB+Fvi3HmclsGL4fSrYv+6r
-X-Received: by 2002:a05:622a:34c:b0:4f1:a61a:1e8 with SMTP id
- d75a77b69052e-505d29ee0b0mr171561cf.10.1769710435542; Thu, 29 Jan 2026
- 10:13:55 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dMjgQdwz"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1F5ECC4CEF7;
+	Thu, 29 Jan 2026 18:48:55 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1769712535;
+	bh=LUYBJJ3lyDfHxOh1C1isUaHVHRqXOl1euZswCzoh/5Q=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=dMjgQdwzQoA1Jbom8FiLnA8jIzHd1e5VrhfcrERSmABIaGsxDi6xSYWLFXTk8ldI8
+	 b+D36Oj9UTwRaO9bWRfLXZxpWWdB/8BkBLhfUhGbCITh8Lnsu4xGiTC27/zUVQadQ9
+	 kD38fkRSP48UEUGZhUZo60xBacKZJt0WbGvoNpuFK7z4pV2Edl98lrKUVdkhFMO+7e
+	 LYkf4j0q95KGTB3+cx8BeTZz8WW48pAT0VUfRFv5stMzSCWAFVbWLklCI1CyYnng7R
+	 XoH/pklZOaaYUB0MeL0Ptl94YRpXB8Aig/QGPgubp6NKsFb0n1jbICrUf829UU0GAQ
+	 yheTI/bAMUkUA==
+Received: from sofa.misterjones.org ([185.219.108.64] helo=goblin-girl.misterjones.org)
+	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.98.2)
+	(envelope-from <maz@kernel.org>)
+	id 1vlX4W-00000006r7k-0y5v;
+	Thu, 29 Jan 2026 18:48:52 +0000
+Date: Thu, 29 Jan 2026 18:48:51 +0000
+Message-ID: <867bt0b6gc.wl-maz@kernel.org>
+From: Marc Zyngier <maz@kernel.org>
+To: Leonardo Bras <leo.bras@arm.com>
+Cc: Tian Zheng <zhengtian10@huawei.com>,
+	oliver.upton@linux.dev,
+	catalin.marinas@arm.com,
+	corbet@lwn.net,
+	pbonzini@redhat.com,
+	will@kernel.org,
+	linux-kernel@vger.kernel.org,
+	yuzenghui@huawei.com,
+	wangzhou1@hisilicon.com,
+	yezhenyu2@huawei.com,
+	xiexiangyou@huawei.com,
+	zhengchuan@huawei.com,
+	linuxarm@huawei.com,
+	joey.gouly@arm.com,
+	kvmarm@lists.linux.dev,
+	kvm@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-doc@vger.kernel.org,
+	suzuki.poulose@arm.com
+Subject: Re: [PATCH v2 2/5] KVM: arm64: Support set the DBM attr during memory abort
+In-Reply-To: <aXuSsVKtXBcffzo2@devkitleo>
+References: <20251121092342.3393318-1-zhengtian10@huawei.com>
+	<20251121092342.3393318-3-zhengtian10@huawei.com>
+	<aXuSsVKtXBcffzo2@devkitleo>
+User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
+ FLIM-LB/1.14.9 (=?UTF-8?B?R29qxY0=?=) APEL-LB/10.8 EasyPG/1.0.0 Emacs/30.1
+ (aarch64-unknown-linux-gnu) MULE/6.0 (HANACHIRUSATO)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <20260126121655.1641736-1-maz@kernel.org> <20260126121655.1641736-14-maz@kernel.org>
- <CA+EHjTw_4WJgiS7vTUprvJOjdNrnW=sjhazCkU9eQW8BUYuZZw@mail.gmail.com>
- <86a4xwbakk.wl-maz@kernel.org> <868qdgb8ct.wl-maz@kernel.org>
-In-Reply-To: <868qdgb8ct.wl-maz@kernel.org>
-From: Fuad Tabba <tabba@google.com>
-Date: Thu, 29 Jan 2026 18:13:18 +0000
-X-Gm-Features: AZwV_QgctsLMiyW-LHXWNuYMwH3G1Jg_V-pn8ePMlloILfrF3aUeUb1VzhoKoQ0
-Message-ID: <CA+EHjTwxS_xvQqsOJw7PzZBD5Z-oM14z1VwSTC5dCS+79DEpfQ@mail.gmail.com>
-Subject: Re: [PATCH 13/20] KVM: arm64: Move RESx into individual register descriptors
-To: Marc Zyngier <maz@kernel.org>
-Cc: kvmarm@lists.linux.dev, linux-arm-kernel@lists.infradead.org, 
-	kvm@vger.kernel.org, Joey Gouly <joey.gouly@arm.com>, 
-	Suzuki K Poulose <suzuki.poulose@arm.com>, Oliver Upton <oupton@kernel.org>, 
-	Zenghui Yu <yuzenghui@huawei.com>, Will Deacon <will@kernel.org>, 
-	Catalin Marinas <catalin.marinas@arm.com>
-Content-Type: text/plain; charset="UTF-8"
+MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
+Content-Type: text/plain; charset=US-ASCII
+X-SA-Exim-Connect-IP: 185.219.108.64
+X-SA-Exim-Rcpt-To: leo.bras@arm.com, zhengtian10@huawei.com, oliver.upton@linux.dev, catalin.marinas@arm.com, corbet@lwn.net, pbonzini@redhat.com, will@kernel.org, linux-kernel@vger.kernel.org, yuzenghui@huawei.com, wangzhou1@hisilicon.com, yezhenyu2@huawei.com, xiexiangyou@huawei.com, zhengchuan@huawei.com, linuxarm@huawei.com, joey.gouly@arm.com, kvmarm@lists.linux.dev, kvm@vger.kernel.org, linux-arm-kernel@lists.infradead.org, linux-doc@vger.kernel.org, suzuki.poulose@arm.com
+X-SA-Exim-Mail-From: maz@kernel.org
+X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
 
->
-> Actually, this interacts badly with check_feat_map(), which tries to
-> find whether we have fully populated the registers, excluding the RESx
-> bits. But since we consider E2H to be a reserved but, we end-up with:
->
-> [    0.141317] kvm [1]: Undefined HCR_EL2 behaviour, bits 0000000400000000
->
-> With my approach, it was possible to distinguish the architecturally
-> RESx bits (defined as RES0 or RES1), as they were the only ones with
-> the FORCE_RESx attribute.
->
-> I can work around it with
->
-> diff --git a/arch/arm64/kvm/config.c b/arch/arm64/kvm/config.c
-> index 364bdd1e5be51..398458f4a6b7b 100644
-> --- a/arch/arm64/kvm/config.c
-> +++ b/arch/arm64/kvm/config.c
-> @@ -1283,7 +1283,7 @@ static void __init check_feat_map(const struct reg_bits_to_feat_map *map,
->         u64 mask = 0;
->
->         for (int i = 0; i < map_size; i++)
-> -               if (!(map[i].flags & FORCE_RESx))
-> +               if (!(map[i].flags & FORCE_RESx) || !(map[i].bits & resx))
->                         mask |= map[i].bits;
->
->         if (mask != ~resx)
->
-> but it becomes a bit awkward...
+On Thu, 29 Jan 2026 17:02:41 +0000,
+Leonardo Bras <leo.bras@arm.com> wrote:
+> 
+> On Fri, Nov 21, 2025 at 05:23:39PM +0800, Tian Zheng wrote:
+> > From: eillon <yezhenyu2@huawei.com>
+> > 
+> > Add DBM support to automatically promote write-clean pages to
+> > write-dirty, preventing users from being trapped in EL2 due to
+> > missing write permissions.
+> > 
+> > Since the DBM attribute was introduced in ARMv8.1 and remains
+> > optional in later architecture revisions, including ARMv9.5.
+> > 
+> > Support set the DBM attr during user_mem_abort().
+> > 
+> > Signed-off-by: eillon <yezhenyu2@huawei.com>
+> > Signed-off-by: Tian Zheng <zhengtian10@huawei.com>
+> > ---
+> >  arch/arm64/include/asm/kvm_pgtable.h | 4 ++++
+> >  arch/arm64/kvm/hyp/pgtable.c         | 6 ++++++
+> >  2 files changed, 10 insertions(+)
+> > 
+> > diff --git a/arch/arm64/include/asm/kvm_pgtable.h b/arch/arm64/include/asm/kvm_pgtable.h
+> > index 2888b5d03757..2fa24953d1a6 100644
+> > --- a/arch/arm64/include/asm/kvm_pgtable.h
+> > +++ b/arch/arm64/include/asm/kvm_pgtable.h
+> > @@ -91,6 +91,8 @@ typedef u64 kvm_pte_t;
+> > 
+> >  #define KVM_PTE_LEAF_ATTR_HI_S2_XN	BIT(54)
+> > 
+> > +#define KVM_PTE_LEAF_ATTR_HI_S2_DBM	BIT(51)
+> > +
+> >  #define KVM_PTE_LEAF_ATTR_HI_S1_GP	BIT(50)
+> > 
+> >  #define KVM_PTE_LEAF_ATTR_S2_PERMS	(KVM_PTE_LEAF_ATTR_LO_S2_S2AP_R | \
+> > @@ -245,6 +247,7 @@ enum kvm_pgtable_stage2_flags {
+> >   * @KVM_PGTABLE_PROT_R:		Read permission.
+> >   * @KVM_PGTABLE_PROT_DEVICE:	Device attributes.
+> >   * @KVM_PGTABLE_PROT_NORMAL_NC:	Normal noncacheable attributes.
+> > + * @KVM_PGTABLE_PROT_DBM:	Dirty bit management attribute.
+> >   * @KVM_PGTABLE_PROT_SW0:	Software bit 0.
+> >   * @KVM_PGTABLE_PROT_SW1:	Software bit 1.
+> >   * @KVM_PGTABLE_PROT_SW2:	Software bit 2.
+> > @@ -257,6 +260,7 @@ enum kvm_pgtable_prot {
+> > 
+> >  	KVM_PGTABLE_PROT_DEVICE			= BIT(3),
+> >  	KVM_PGTABLE_PROT_NORMAL_NC		= BIT(4),
+> > +	KVM_PGTABLE_PROT_DBM			= BIT(5),
+> > 
+> >  	KVM_PGTABLE_PROT_SW0			= BIT(55),
+> >  	KVM_PGTABLE_PROT_SW1			= BIT(56),
+> > diff --git a/arch/arm64/kvm/hyp/pgtable.c b/arch/arm64/kvm/hyp/pgtable.c
+> > index c351b4abd5db..ce41c6924ebe 100644
+> > --- a/arch/arm64/kvm/hyp/pgtable.c
+> > +++ b/arch/arm64/kvm/hyp/pgtable.c
+> > @@ -694,6 +694,9 @@ static int stage2_set_prot_attr(struct kvm_pgtable *pgt, enum kvm_pgtable_prot p
+> >  	if (prot & KVM_PGTABLE_PROT_W)
+> >  		attr |= KVM_PTE_LEAF_ATTR_LO_S2_S2AP_W;
+> > 
+> > +	if (prot & KVM_PGTABLE_PROT_DBM)
+> > +		attr |= KVM_PTE_LEAF_ATTR_HI_S2_DBM;
+> > +
+> >  	if (!kvm_lpa2_is_enabled())
+> >  		attr |= FIELD_PREP(KVM_PTE_LEAF_ATTR_LO_S2_SH, sh);
+> > 
+> > @@ -1303,6 +1306,9 @@ int kvm_pgtable_stage2_relax_perms(struct kvm_pgtable *pgt, u64 addr,
+> >  	if (prot & KVM_PGTABLE_PROT_W)
+> >  		set |= KVM_PTE_LEAF_ATTR_LO_S2_S2AP_W;
+> > 
+> > +	if (prot & KVM_PGTABLE_PROT_DBM)
+> > +		set |= KVM_PTE_LEAF_ATTR_HI_S2_DBM;
+> > +
+> >  	if (prot & KVM_PGTABLE_PROT_X)
+> >  		clr |= KVM_PTE_LEAF_ATTR_HI_S2_XN;
+> > 
+> 
+> 
+> Hi Tian,
+> 
+> I was re-reading this series while planning the other feature I am working 
+> on top of this one.
+> 
+> This patch, IMHO, is unrelated to the HDBSS feature.
+> I get that HDBSS feature needs this bit being set in the page descriptor
+> but it was not introduced in this feature.
+> 
+> It was actually introduced in HAFDBS.
+> 
+> So maybe it's worth to split this series in:
+> - Enable HAFDBS for KVM, and
 
-If it becomes more complicated than the original, then what's the
-point. Up to you whether you want to try to pursue this or not. From
-my part:
+TBH, just enabling the dirty bit at S2 is pretty pointless for KVM. It
+would require scanning the S2 PTs looking for a dirty bit, and
+transfer that to whatever userspace is using, be it dirty bitmap or
+ring.
 
-Reviewed-by: Fuad Tabba <tabba@google.com>
+It has been tried before, and it was absolutely disgusting. So let's
+not enable this standalone, this is a dead end. It only makes sense
+with HDBSS (that's why we have this extension the first place).
 
 Thanks,
-/fuad
 
+	M.
 
-
-
->
-> Thanks,
->
->         M.
->
-> --
-> Without deviation from the norm, progress is not possible.
->
+-- 
+Without deviation from the norm, progress is not possible.
