@@ -1,56 +1,56 @@
-Received: from mail-pl1-f201.google.com (mail-pl1-f201.google.com [209.85.214.201])
+Received: from mail-pj1-f74.google.com (mail-pj1-f74.google.com [209.85.216.74])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 35EE5325732
-	for <kvm@vger.kernel.org>; Thu, 29 Jan 2026 01:16:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 207D834679B
+	for <kvm@vger.kernel.org>; Thu, 29 Jan 2026 01:16:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.74
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769649370; cv=none; b=VysO0YlQT2JZ03VMZ9+QG4zQ26faokya6WhfuMZZgIHZe0/ZBoi+u9aF7vFRJN813Eqp83R5CX8kZENYuIB4qP0uXYmu4QLFRT/Nyzi5pjoDnM5Dq5mmHQiXekYRol55zX1TJUUWmt4+VtGKXhg3M1Pqwmrp36advmYLIu1uUEE=
+	t=1769649372; cv=none; b=blnNptBPKsr88ed8bDO8BoQ05BGMAeQvZP6TttCOmpPUyNRonrlyi7ct3BIc/IJFsYuFR7xbhvVlwr24cwtI64cZebjJPjQUsvcpqlwfijeOY7ctOQf3X75FiB4tY7DmeWvlBmEo8TjfbkwP0m8ijo+yUnfM6r5USICF/rr//zE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769649370; c=relaxed/simple;
-	bh=TBS3NOuTU/+p9r5oAffOOIjvCTELnp6C8dm3U+EJwg4=;
+	s=arc-20240116; t=1769649372; c=relaxed/simple;
+	bh=SQ5cW++nxEKu5GXoB9MoukK6xkStBoadO/lp4PIOccg=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=RHgp7+eHZtX5PkMgwKVxLfptI1G9MBLEXSDiwz/KwqgRd8gdsTja0jsCqHuYQhiLwdj25rX+1HXrAcg4jlW+P/v0yDQiYNQ/Il8FYNq8sgntcfMA2QOOPgEFq9zeV2cwNtUqRSy9FjLZxm9Q2zwrNgSDcUIOPItCbeSK0f9W02A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=03AoZWhu; arc=none smtp.client-ip=209.85.214.201
+	 To:Cc:Content-Type; b=Mu1/newXAjVgoDSJMjpnJ4Ydp+Hc6m8R6mueJr+/4ISmjDGeJ/0Zyu7dqLLCVO3qMbwAPYhS1aWQe67dNOGFmg9MrZQjPkIajBivAC4niYbJ1fDT+pBO57oDFyQOo78qGzpJFkaNn+b+Xk+n0VDELjSi3IFFMyTWzm8ayYsYT6s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=XRcJExwl; arc=none smtp.client-ip=209.85.216.74
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="03AoZWhu"
-Received: by mail-pl1-f201.google.com with SMTP id d9443c01a7336-2a784b2234dso11226145ad.1
-        for <kvm@vger.kernel.org>; Wed, 28 Jan 2026 17:16:07 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="XRcJExwl"
+Received: by mail-pj1-f74.google.com with SMTP id 98e67ed59e1d1-34c66cb671fso314929a91.3
+        for <kvm@vger.kernel.org>; Wed, 28 Jan 2026 17:16:10 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1769649367; x=1770254167; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1769649370; x=1770254170; darn=vger.kernel.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:reply-to:from:to:cc:subject:date:message-id:reply-to;
-        bh=8HnFAQrxQ92neYQA/fX8/fYTn2bGdwSiVHNlc5IdWqw=;
-        b=03AoZWhuYRB0gFY+FBCitsqfcVgW10jhnpRK8GHP9Y9WUn75EaoT6q2+3viPq6MQwd
-         q0FKavLqd8u4WAOY5jrPXOJK+U2K1qs2fpQGXXg+A1sOuCGFALsCmxHGpjPG1rKPtrGF
-         iZPbdhZ6wwlOp+BEMuZvgGvbj41t2IoNqa2v6mwQl/LqAOpAYROxkRJS7rG36XHp4nI5
-         ifjl13e6tuyF1Q3G6yhffzYFLmv6kw8YxTrG1C8y59ti06zmXFRHNBZryfeT2f652RYV
-         +5LpvEXlPA2I97EKE/dM75pJFrGm9DW2taPuYm34j13t9tNeQaBgGdzJvlPoWlf2j0wr
-         VLOQ==
+        bh=n4V0wAly6JW/34a2CvfLdneki3p7jKUuadg7DAh0+IE=;
+        b=XRcJExwlO6xDxQyKw0mwAAQIce+WXCXhMw5tl9g/1Fuec6bu0j3q0chLhMKAAw/mpE
+         Akx+dP7DTe/kPJgm044yu2gCdku9oTs18BUPXVute6y09uLtsemjrwi7MDnsfBPD5hGy
+         GIzw4Glp0sryeiHhZnAYbbcRIwRk59dSbnXFlI0yrhWwgB1kQdtyiLGW/oLiV28xqrXU
+         iS0n/A39cEW/HohyuVsZEg0ZVdJtv3Mzsc68wxFi1BOz0qjWnRKnKKk/pwbxFhaKCbq3
+         tGDCI4cLw+CDHPlF9i5ZOyE4uKYwl3uFJAYFu3F5fou7wC20mE7ND7fgl37loLC5HeXX
+         +6eg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1769649367; x=1770254167;
+        d=1e100.net; s=20230601; t=1769649370; x=1770254170;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:reply-to:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=8HnFAQrxQ92neYQA/fX8/fYTn2bGdwSiVHNlc5IdWqw=;
-        b=U/p6XeIMOBJoPMKn/eVRzkqvw0OTD/UPlSZ0Pz3SuGaMGsaOCiuwzUa/bXnUYDCUz/
-         VMHnt1lxA8MjpLX9K+XoNCPRQgj7upl3AjwhUtPAfMriQccDsZ6KmAwwXihb70fSB4Po
-         dNWyvbTh27VwDCGz2eJP1FMj5o7ftfojhnWUTYFvC3xqAKGYvrmyKdy6JP5tmo1xf5Qs
-         LaX4CzpAq+6OwVYYiuJpVFYEK0VQCxhTDN/FtUaoSyjlDYqUICpGGx6KnEfofVDtFS0B
-         wldIiaXKo5Y3IqZdrIF4jTFSvHWKPfDOFB3p0bOKsIozfvYBdmeVhQT126CNlLoZfVOg
-         UCvA==
-X-Forwarded-Encrypted: i=1; AJvYcCW238LgoyHYbUMGDd7tYDTx9zzd7/ey71j7eWcZ/RabLs09KNheWrsG8q7bhDJRT6ZF/is=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy6pfpqoIw45/gqb+irzkITfVcUX3pDd7T/MHgixJTLBeM2oonJ
-	CgjjKaOTKvHeEXCaYpyDhFGkPUeP6JyU96ts4JmL9B+s+U3tN0s+2CMX1aVrIhNais9l5/bXe3O
-	7a319iQ==
-X-Received: from pgo32.prod.google.com ([2002:a63:e60:0:b0:c65:be00:c5c9])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a21:6f09:b0:38e:9acd:97d0
- with SMTP id adf61e73a8af0-38ec632f1cbmr6748652637.34.1769649366694; Wed, 28
- Jan 2026 17:16:06 -0800 (PST)
+        bh=n4V0wAly6JW/34a2CvfLdneki3p7jKUuadg7DAh0+IE=;
+        b=tey96lgfc0U34Dp3Srn6KxjzDD3H7ncVjPa39XNifReUjrZGX9Q8mQ2kloRMALxcFT
+         EI2/44bPoQy72a9/NxHVeV/Qvp7VzbvgqXX+NOtQzJSnVR2/qZ/AbvOo+5yyDP69k00+
+         fwgY1piya5thPqXzewe2MX3Kc3AZO2zwb3HvCz+I3AAenRHpAEVqVx1ce1SMwCLKuetl
+         uKZLLf1t8KZgX59xGXm7NVMdIoaim07mfY/HbgZalZZCNdCJKLhpGwiS53ARE3mT2knL
+         vdoVAUwPBDheBMd+4DRibsjjMauw7CeaJlTjX/ETGgJ6ytyKHO0/s47Pl0uHXAfR3Mm+
+         rYrw==
+X-Forwarded-Encrypted: i=1; AJvYcCXlQsETUkoGmzPxYURGIWgh7O5nwtCK/ZMNoSxtj/BdspRFJzbYIR0FTngWfFHca2jlNCk=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyB5dMLbLERYe0BIUNeVZb1xEtdkxvarSau63SuWWYLlNM4ahfq
+	q+IodcyvT02kQ5EhRQEH4oFkwOr8GUdE9zb2sksmFXYe5XPQeYNRkOPTVhysaUMAiIudPBYV9Q+
+	4+9SfgQ==
+X-Received: from pjbdy16.prod.google.com ([2002:a17:90b:6d0:b0:34c:2156:9de7])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:5784:b0:340:4abf:391d
+ with SMTP id 98e67ed59e1d1-353fecf6b60mr6484797a91.16.1769649370472; Wed, 28
+ Jan 2026 17:16:10 -0800 (PST)
 Reply-To: Sean Christopherson <seanjc@google.com>
-Date: Wed, 28 Jan 2026 17:14:52 -0800
+Date: Wed, 28 Jan 2026 17:14:54 -0800
 In-Reply-To: <20260129011517.3545883-1-seanjc@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
@@ -60,8 +60,9 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 References: <20260129011517.3545883-1-seanjc@google.com>
 X-Mailer: git-send-email 2.53.0.rc1.217.geba53bf80e-goog
-Message-ID: <20260129011517.3545883-21-seanjc@google.com>
-Subject: [RFC PATCH v5 20/45] KVM: x86/mmu: Allocate/free S-EPT pages using tdx_{alloc,free}_control_page()
+Message-ID: <20260129011517.3545883-23-seanjc@google.com>
+Subject: [RFC PATCH v5 22/45] KVM: TDX: Get/put PAMT pages when (un)mapping
+ private memory
 From: Sean Christopherson <seanjc@google.com>
 To: Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
 	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
@@ -74,184 +75,208 @@ Cc: linux-kernel@vger.kernel.org, linux-coco@lists.linux.dev,
 	Xiaoyao Li <xiaoyao.li@intel.com>, Isaku Yamahata <isaku.yamahata@intel.com>
 Content-Type: text/plain; charset="UTF-8"
 
-Now that kvm_mmu_memory_cache supports custom page allocators, wire up the
-S-EPT cache to use tdx_{alloc,free}_control_page() (arguably S-EPT pages
-aren't "control" pages, but they're not guest pages either).  Using the
-TDX APIs will make S-EPT pages naturally play nice with Dynamic PAMT, by
-virtue of adding/removing PAMT entries when S-EPT pages are allocated and
-freed, as opposed to when they are added/removed from the S-EPT tree.
+From: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
 
-Inserting into the PAMT entries on allocation does mean KVM will create
-unnecessary PAMT entries, e.g. once a vCPU stops faulting in memory, the
-remaining pages in the MMU cache will go unused.  But in practice, odds
-are very good the containing 2MiB page will have other in-use S-EPT pages,
-i.e. will create PAMT entries anyways.  And _if_ creating PAMT entries on
-allocation is problematic for memory consumption, that can be resolved by
-tweaking KVM's cache size.
+Add Dynamic PAMT support to KVM's S-EPT MMU by "getting" a PAMT page when
+adding guest memory (PAGE.ADD or PAGE.AUG), and "putting" the page when
+removing guest memory (PAGE.REMOVE).
 
-Suggested-by: Kai Huang <kai.huang@intel.com>
+To access the per-vCPU PAMT caches without plumbing @vcpu throughout the
+TDP MMU, begrudginly use kvm_get_running_vcpu() to get the vCPU, and bug
+the VM If KVM attempts to set an S-EPT without an active vCPU.  KVM only
+supports creating _new_ mappings in page (pre)fault paths, all of which
+require an active vCPU.
+
+The PAMT memory holds metadata for TDX-protected memory. With Dynamic
+PAMT, PAMT_4K is allocated on demand. The kernel supplies the TDX module
+with a few pages that cover 2M of host physical memory.
+
+PAMT memory can be reclaimed when the last user is gone. It can happen
+in a few code paths:
+
+- On TDH.PHYMEM.PAGE.RECLAIM in tdx_reclaim_td_control_pages() and
+  tdx_reclaim_page().
+
+- On TDH.MEM.PAGE.REMOVE in tdx_sept_drop_private_spte().
+
+- In tdx_sept_zap_private_spte() for pages that were in the queue to be
+  added with TDH.MEM.PAGE.ADD, but it never happened due to an error.
+
+- In tdx_sept_free_private_spt() for SEPT pages;
+
+Signed-off-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
+[Minor log tweak]
+Signed-off-by: Rick Edgecombe <rick.p.edgecombe@intel.com>
+Co-developed-by: Sean Christopherson <seanjc@google.com>
 Signed-off-by: Sean Christopherson <seanjc@google.com>
 ---
- arch/x86/include/asm/kvm-x86-ops.h |  2 ++
- arch/x86/include/asm/kvm_host.h    | 18 +++++++++---------
- arch/x86/kvm/mmu/mmu.c             |  6 ++++--
- arch/x86/kvm/mmu/mmu_internal.h    | 11 -----------
- arch/x86/kvm/mmu/tdp_mmu.c         |  5 +++--
- arch/x86/kvm/vmx/tdx.c             | 13 ++++++++++++-
- 6 files changed, 30 insertions(+), 25 deletions(-)
+ arch/x86/include/asm/kvm-x86-ops.h |  1 +
+ arch/x86/include/asm/kvm_host.h    |  1 +
+ arch/x86/kvm/mmu/mmu.c             |  4 +++
+ arch/x86/kvm/vmx/tdx.c             | 44 ++++++++++++++++++++++++++----
+ arch/x86/kvm/vmx/tdx.h             |  2 ++
+ 5 files changed, 47 insertions(+), 5 deletions(-)
 
 diff --git a/arch/x86/include/asm/kvm-x86-ops.h b/arch/x86/include/asm/kvm-x86-ops.h
-index c17cedc485c9..17dddada69fc 100644
+index 17dddada69fc..394dc29483a7 100644
 --- a/arch/x86/include/asm/kvm-x86-ops.h
 +++ b/arch/x86/include/asm/kvm-x86-ops.h
-@@ -94,6 +94,8 @@ KVM_X86_OP_OPTIONAL_RET0(set_tss_addr)
- KVM_X86_OP_OPTIONAL_RET0(set_identity_map_addr)
- KVM_X86_OP_OPTIONAL_RET0(get_mt_mask)
- KVM_X86_OP(load_mmu_pgd)
-+KVM_X86_OP_OPTIONAL(alloc_external_sp)
-+KVM_X86_OP_OPTIONAL(free_external_sp)
+@@ -99,6 +99,7 @@ KVM_X86_OP_OPTIONAL(free_external_sp)
  KVM_X86_OP_OPTIONAL_RET0(set_external_spte)
  KVM_X86_OP_OPTIONAL(remove_external_spte)
  KVM_X86_OP_OPTIONAL(reclaim_external_sp)
++KVM_X86_OP_OPTIONAL_RET0(topup_external_cache)
+ KVM_X86_OP(has_wbinvd_exit)
+ KVM_X86_OP(get_l2_tsc_offset)
+ KVM_X86_OP(get_l2_tsc_multiplier)
 diff --git a/arch/x86/include/asm/kvm_host.h b/arch/x86/include/asm/kvm_host.h
-index b35a07ed11fb..6e84dbc89e79 100644
+index 6e84dbc89e79..a6e4ab76b1b2 100644
 --- a/arch/x86/include/asm/kvm_host.h
 +++ b/arch/x86/include/asm/kvm_host.h
-@@ -867,10 +867,7 @@ struct kvm_vcpu_arch {
- 	struct kvm_mmu_memory_cache mmu_shadow_page_cache;
- 	struct kvm_mmu_memory_cache mmu_shadowed_info_cache;
- 	struct kvm_mmu_memory_cache mmu_page_header_cache;
--	/*
--	 * This cache is to allocate external page table. E.g. private EPT used
--	 * by the TDX module.
--	 */
-+	/* Used to allocate S-EPT pages (gifted to the TDX-Module). */
- 	struct kvm_mmu_memory_cache mmu_external_spt_cache;
- 
- 	/*
-@@ -1853,18 +1850,21 @@ struct kvm_x86_ops {
- 	void (*load_mmu_pgd)(struct kvm_vcpu *vcpu, hpa_t root_hpa,
- 			     int root_level);
- 
--	/* Update the external page table from spte getting set. */
-+	/*
-+	 * Callbacks to allocate and free external page tables, a.k.a. S-EPT,
-+	 * and to propagate changes in mirror page tables to the external page
-+	 * tables.
-+	 */
-+	unsigned long (*alloc_external_sp)(gfp_t gfp);
-+	void (*free_external_sp)(unsigned long addr);
- 	int (*set_external_spte)(struct kvm *kvm, gfn_t gfn, enum pg_level level,
- 				 u64 mirror_spte);
--
--	/* Update external page tables for page table about to be freed. */
- 	void (*reclaim_external_sp)(struct kvm *kvm, gfn_t gfn,
+@@ -1863,6 +1863,7 @@ struct kvm_x86_ops {
  				    struct kvm_mmu_page *sp);
--
--	/* Update external page table from spte getting removed, and flush TLB. */
  	void (*remove_external_spte)(struct kvm *kvm, gfn_t gfn, enum pg_level level,
  				     u64 mirror_spte);
++	int (*topup_external_cache)(struct kvm_vcpu *vcpu, int min);
  
-+
+ 
  	bool (*has_wbinvd_exit)(void);
- 
- 	u64 (*get_l2_tsc_offset)(struct kvm_vcpu *vcpu);
 diff --git a/arch/x86/kvm/mmu/mmu.c b/arch/x86/kvm/mmu/mmu.c
-index 3911ac9bddfd..9b5a6861e2a4 100644
+index 9b5a6861e2a4..4ecbf216d96f 100644
 --- a/arch/x86/kvm/mmu/mmu.c
 +++ b/arch/x86/kvm/mmu/mmu.c
-@@ -6690,11 +6690,13 @@ int kvm_mmu_create(struct kvm_vcpu *vcpu)
- 	vcpu->arch.mmu_page_header_cache.kmem_cache = mmu_page_header_cache;
- 	vcpu->arch.mmu_page_header_cache.gfp_zero = __GFP_ZERO;
- 
--	vcpu->arch.mmu_shadow_page_cache.init_value =
--		SHADOW_NONPRESENT_VALUE;
-+	vcpu->arch.mmu_shadow_page_cache.init_value = SHADOW_NONPRESENT_VALUE;
- 	if (!vcpu->arch.mmu_shadow_page_cache.init_value)
- 		vcpu->arch.mmu_shadow_page_cache.gfp_zero = __GFP_ZERO;
- 
-+	vcpu->arch.mmu_external_spt_cache.page_get = kvm_x86_ops.alloc_external_sp;
-+	vcpu->arch.mmu_external_spt_cache.page_free = kvm_x86_ops.free_external_sp;
+@@ -605,6 +605,10 @@ static int mmu_topup_memory_caches(struct kvm_vcpu *vcpu, bool maybe_indirect)
+ 					       PT64_ROOT_MAX_LEVEL);
+ 		if (r)
+ 			return r;
 +
- 	vcpu->arch.mmu = &vcpu->arch.root_mmu;
- 	vcpu->arch.walk_mmu = &vcpu->arch.root_mmu;
- 
-diff --git a/arch/x86/kvm/mmu/mmu_internal.h b/arch/x86/kvm/mmu/mmu_internal.h
-index 73cdcbccc89e..6bb97f660793 100644
---- a/arch/x86/kvm/mmu/mmu_internal.h
-+++ b/arch/x86/kvm/mmu/mmu_internal.h
-@@ -157,17 +157,6 @@ static inline bool is_mirror_sp(const struct kvm_mmu_page *sp)
- 	return sp->role.is_mirror;
- }
- 
--static inline void kvm_mmu_alloc_external_spt(struct kvm_vcpu *vcpu, struct kvm_mmu_page *sp)
--{
--	/*
--	 * external_spt is allocated for TDX module to hold private EPT mappings,
--	 * TDX module will initialize the page by itself.
--	 * Therefore, KVM does not need to initialize or access external_spt.
--	 * KVM only interacts with sp->spt for private EPT operations.
--	 */
--	sp->external_spt = kvm_mmu_memory_cache_alloc(&vcpu->arch.mmu_external_spt_cache);
--}
--
- static inline gfn_t kvm_gfn_root_bits(const struct kvm *kvm, const struct kvm_mmu_page *root)
- {
- 	/*
-diff --git a/arch/x86/kvm/mmu/tdp_mmu.c b/arch/x86/kvm/mmu/tdp_mmu.c
-index 18764dbc97ea..01e3e4f4baa5 100644
---- a/arch/x86/kvm/mmu/tdp_mmu.c
-+++ b/arch/x86/kvm/mmu/tdp_mmu.c
-@@ -55,7 +55,8 @@ void kvm_mmu_uninit_tdp_mmu(struct kvm *kvm)
- 
- static void tdp_mmu_free_sp(struct kvm_mmu_page *sp)
- {
--	free_page((unsigned long)sp->external_spt);
-+	if (sp->external_spt)
-+		kvm_x86_call(free_external_sp)((unsigned long)sp->external_spt);
- 	free_page((unsigned long)sp->spt);
- 	kmem_cache_free(mmu_page_header_cache, sp);
- }
-@@ -1246,7 +1247,7 @@ int kvm_tdp_mmu_map(struct kvm_vcpu *vcpu, struct kvm_page_fault *fault)
- 		sp = tdp_mmu_alloc_sp(vcpu);
- 		tdp_mmu_init_child_sp(sp, &iter);
- 		if (is_mirror_sp(sp))
--			kvm_mmu_alloc_external_spt(vcpu, sp);
-+			sp->external_spt = kvm_mmu_memory_cache_alloc(&vcpu->arch.mmu_external_spt_cache);
- 
- 		sp->nx_huge_page_disallowed = fault->huge_page_disallowed;
- 
++		r = kvm_x86_call(topup_external_cache)(vcpu, PT64_ROOT_MAX_LEVEL);
++		if (r)
++			return r;
+ 	}
+ 	r = kvm_mmu_topup_memory_cache(&vcpu->arch.mmu_shadow_page_cache,
+ 				       PT64_ROOT_MAX_LEVEL);
 diff --git a/arch/x86/kvm/vmx/tdx.c b/arch/x86/kvm/vmx/tdx.c
-index 323aae4300a1..0946eba2de23 100644
+index 0946eba2de23..d74a2547e512 100644
 --- a/arch/x86/kvm/vmx/tdx.c
 +++ b/arch/x86/kvm/vmx/tdx.c
-@@ -1790,7 +1790,9 @@ static void tdx_sept_reclaim_private_sp(struct kvm *kvm, gfn_t gfn,
- 	 * TD's hkid is freed, when the TD is being torn down.
- 	 *
- 	 * If the S-EPT PTE can't be removed for any reason, intentionally leak
--	 * the page to prevent the kernel from accessing the encrypted page.
-+	 * the page to prevent the kernel from accessing the encrypted page,
-+	 * and if Dynamic PAMT is enabled, to avoid inducing a failure on
-+	 * removal of the still-used PAMT entry.
- 	 */
- 	if (KVM_BUG_ON(is_hkid_assigned(to_kvm_tdx(kvm)), kvm) ||
- 	    tdx_reclaim_page(virt_to_page(sp->external_spt)))
-@@ -3600,6 +3602,15 @@ void __init tdx_hardware_setup(void)
- 	 */
- 	vt_x86_ops.vm_size = max_t(unsigned int, vt_x86_ops.vm_size, sizeof(struct kvm_tdx));
+@@ -683,6 +683,8 @@ int tdx_vcpu_create(struct kvm_vcpu *vcpu)
+ 	if (!irqchip_split(vcpu->kvm))
+ 		return -EINVAL;
  
-+	/*
-+	 * TDX uses the external_spt cache to allocate S-EPT page table pages,
-+	 * which (a) don't need to be initialized by KVM as the TDX-Module will
-+	 * initialize the page (using the guest's encryption key), and (b) need
-+	 * to use a custom allocator to be compatible with Dynamic PAMT.
-+	 */
-+	vt_x86_ops.alloc_external_sp = tdx_alloc_control_page;
-+	vt_x86_ops.free_external_sp = tdx_free_control_page;
++	tdx_init_pamt_cache(&tdx->pamt_cache);
 +
+ 	fpstate_set_confidential(&vcpu->arch.guest_fpu);
+ 	vcpu->arch.apic->guest_apic_protected = true;
+ 	INIT_LIST_HEAD(&tdx->vt.pi_wakeup_list);
+@@ -868,6 +870,8 @@ void tdx_vcpu_free(struct kvm_vcpu *vcpu)
+ 	struct vcpu_tdx *tdx = to_tdx(vcpu);
+ 	int i;
+ 
++	tdx_free_pamt_cache(&tdx->pamt_cache);
++
+ 	if (vcpu->cpu != -1) {
+ 		KVM_BUG_ON(tdx->state == VCPU_TD_STATE_INITIALIZED, vcpu->kvm);
+ 		tdx_flush_vp_on_cpu(vcpu);
+@@ -1615,6 +1619,14 @@ void tdx_load_mmu_pgd(struct kvm_vcpu *vcpu, hpa_t root_hpa, int pgd_level)
+ 	td_vmcs_write64(to_tdx(vcpu), SHARED_EPT_POINTER, root_hpa);
+ }
+ 
++static int tdx_topup_external_pamt_cache(struct kvm_vcpu *vcpu, int min)
++{
++	if (!tdx_supports_dynamic_pamt(tdx_sysinfo))
++		return 0;
++
++	return tdx_topup_pamt_cache(&to_tdx(vcpu)->pamt_cache, min);
++}
++
+ static int tdx_mem_page_add(struct kvm *kvm, gfn_t gfn, enum pg_level level,
+ 			    kvm_pfn_t pfn)
+ {
+@@ -1696,8 +1708,15 @@ static int tdx_sept_link_private_spt(struct kvm *kvm, gfn_t gfn,
+ static int tdx_sept_set_private_spte(struct kvm *kvm, gfn_t gfn,
+ 				     enum pg_level level, u64 mirror_spte)
+ {
++	struct kvm_vcpu *vcpu = kvm_get_running_vcpu();
+ 	struct kvm_tdx *kvm_tdx = to_kvm_tdx(kvm);
+ 	kvm_pfn_t pfn = spte_to_pfn(mirror_spte);
++	struct vcpu_tdx *tdx = to_tdx(vcpu);
++	struct page *page = pfn_to_page(pfn);
++	int ret;
++
++	if (KVM_BUG_ON(!vcpu, kvm))
++		return -EINVAL;
+ 
+ 	if (KVM_BUG_ON(!is_shadow_present_pte(mirror_spte), kvm))
+ 		return -EIO;
+@@ -1711,6 +1730,10 @@ static int tdx_sept_set_private_spte(struct kvm *kvm, gfn_t gfn,
+ 
+ 	WARN_ON_ONCE((mirror_spte & VMX_EPT_RWX_MASK) != VMX_EPT_RWX_MASK);
+ 
++	ret = tdx_pamt_get(page, &tdx->pamt_cache);
++	if (ret)
++		return ret;
++
+ 	/*
+ 	 * Ensure pre_fault_allowed is read by kvm_arch_vcpu_pre_fault_memory()
+ 	 * before kvm_tdx->state.  Userspace must not be allowed to pre-fault
+@@ -1723,14 +1746,17 @@ static int tdx_sept_set_private_spte(struct kvm *kvm, gfn_t gfn,
+ 	 * If the TD isn't finalized/runnable, then userspace is initializing
+ 	 * the VM image via KVM_TDX_INIT_MEM_REGION; ADD the page to the TD.
+ 	 */
+-	if (unlikely(kvm_tdx->state != TD_STATE_RUNNABLE))
+-		return tdx_mem_page_add(kvm, gfn, level, pfn);
++	if (likely(kvm_tdx->state == TD_STATE_RUNNABLE))
++		ret = tdx_mem_page_aug(kvm, gfn, level, pfn);
++	else
++		ret = tdx_mem_page_add(kvm, gfn, level, pfn);
+ 
+-	return tdx_mem_page_aug(kvm, gfn, level, pfn);
++	if (ret)
++		tdx_pamt_put(page);
++
++	return ret;
+ }
+ 
+-
+-
+ /*
+  * Ensure shared and private EPTs to be flushed on all vCPUs.
+  * tdh_mem_track() is the only caller that increases TD epoch. An increase in
+@@ -1847,6 +1873,7 @@ static void tdx_sept_remove_private_spte(struct kvm *kvm, gfn_t gfn,
+ 		return;
+ 
+ 	tdx_quirk_reset_page(page);
++	tdx_pamt_put(page);
+ }
+ 
+ void tdx_deliver_interrupt(struct kvm_lapic *apic, int delivery_mode,
+@@ -3614,5 +3641,12 @@ void __init tdx_hardware_setup(void)
  	vt_x86_ops.set_external_spte = tdx_sept_set_private_spte;
  	vt_x86_ops.reclaim_external_sp = tdx_sept_reclaim_private_sp;
  	vt_x86_ops.remove_external_spte = tdx_sept_remove_private_spte;
++
++	/*
++	 * FIXME: Wire up the PAMT hook iff DPAMT is supported, once VMXON is
++	 *        moved out of KVM and tdx_bringup() is folded into here.
++	 */
++	vt_x86_ops.topup_external_cache = tdx_topup_external_pamt_cache;
++
+ 	vt_x86_ops.protected_apic_has_interrupt = tdx_protected_apic_has_interrupt;
+ }
+diff --git a/arch/x86/kvm/vmx/tdx.h b/arch/x86/kvm/vmx/tdx.h
+index ce2720a028ad..f444fc84d93b 100644
+--- a/arch/x86/kvm/vmx/tdx.h
++++ b/arch/x86/kvm/vmx/tdx.h
+@@ -73,6 +73,8 @@ struct vcpu_tdx {
+ 
+ 	u64 map_gpa_next;
+ 	u64 map_gpa_end;
++
++	struct tdx_pamt_cache pamt_cache;
+ };
+ 
+ void tdh_vp_rd_failed(struct vcpu_tdx *tdx, char *uclass, u32 field, u64 err);
 -- 
 2.53.0.rc1.217.geba53bf80e-goog
 
