@@ -1,92 +1,91 @@
-Received: from mail-qt1-f182.google.com (mail-qt1-f182.google.com [209.85.160.182])
+Received: from mail-qt1-f173.google.com (mail-qt1-f173.google.com [209.85.160.173])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E09F3353EF8
-	for <kvm@vger.kernel.org>; Thu, 29 Jan 2026 17:40:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.160.182
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 59BD32C15BA
+	for <kvm@vger.kernel.org>; Thu, 29 Jan 2026 17:44:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.160.173
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769708427; cv=pass; b=FtdVmsnUnmD4pP/o5Ug37lQZPF18Tjv/qduxfdB+j4sa4Mb3d/l4dFcL5lPvuaDRtVPpcbcigpknUIJeieaHY1jpNQ44G4QQpwNDK/leaMCm6UZ38/Axhz/ebzDOtzYyC5mj4DiURg+nhHc6eBCahsSiF2MCA0bayXD1uoZbVLk=
+	t=1769708642; cv=pass; b=X3pUPXqm9603yECUjcNzI2lAcAOxXqijpH8i1WAJUEXYsZHZhEQ8UH+5Qjz4KLIUCoBMWfcp/aa7D4Zoe7Df0FChUA8iQ1wtUlII/yhnNozLu1XXjIAo9hVUfjDHksngWaQBxwEFgNaovUU/1q7FxR5XK23YG2Tm9OpWwzfx8f0=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769708427; c=relaxed/simple;
-	bh=xdVu8OJgzy9v9aQHZ3Bnvas9n3HUplybL2o+SRSYzgY=;
+	s=arc-20240116; t=1769708642; c=relaxed/simple;
+	bh=Qm7IrBwcroMf4JNK902e+KjqQCbztMqp90GzMr7Ke1U=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=i8DyTp8mfRFoN5Uy+qec1TwZOYTwyH9ZxTaldgzd4IEl4DZA7thaQ314tnqK7ocm3gvm/0hR3cMi7bHOQ+lpei0gfWPVcCPhEf6G5vRYdZezonYRa61Sfw/mtkazHMyN5F7jfkGgd5FFP27M7ZFJHW3jJI2mCtvuti8ShYhh/EA=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=R3i9cZ6i; arc=pass smtp.client-ip=209.85.160.182
+	 To:Cc:Content-Type; b=uEoM51VDUerOEzdPYTx/+pvAmqqQxmXedDnzOPACpq6iK3Nqlro324iTH7kddUPiQUsx0mc3KLIGk3ZaoFOZ/Xx5Tp0Kuj1kuT2bdW7+C0ZnLcn3FQNKpYGlnWSiXJieez7hzwPRVAMawjohO1EEIs/OWgg/1CUvhvxasWvpQ24=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=tRHKENYT; arc=pass smtp.client-ip=209.85.160.173
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="R3i9cZ6i"
-Received: by mail-qt1-f182.google.com with SMTP id d75a77b69052e-5033b0b6eabso675091cf.1
-        for <kvm@vger.kernel.org>; Thu, 29 Jan 2026 09:40:24 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1769708423; cv=none;
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="tRHKENYT"
+Received: by mail-qt1-f173.google.com with SMTP id d75a77b69052e-5033b64256dso6391cf.0
+        for <kvm@vger.kernel.org>; Thu, 29 Jan 2026 09:44:01 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1769708640; cv=none;
         d=google.com; s=arc-20240605;
-        b=RoIXhTVEq0OADHFIv+NkhBp2l0L+PbEiBzNNHQlaM0hRFv7ShMU6Gzco8jf1djhL5r
-         tN7rlVtPv1Bcd4etbh2+LaV2uEmr5wAfx3dqW4tD7Y3qZ//ELG4VQyx6mGbRVGbECSfD
-         Xa0chlu4Jw0IakyFfZMjLlXDyxZKF7tX2yUc8+828v7Bm5yeWd6QQcpzyqYAdhFCaXmF
-         3H7PwQwEMXaUu7gQboPC+DDvbU07A8UMldT/EVI1FI/5No/GeAONNmO+Z3fjMwqnhxi7
-         Yu5hnSSql/ClcYOYLvxyIzd0x78kCprY3H+J0NmUrP1BzoeysVj+8nnLVjBhLR9djugd
-         HtCg==
+        b=I3O5f72mEB7WWW3yGVeR7fmMvywZDDi3AhroH+6Jpx+macye/cnDjypYdh1xInnIBM
+         NMUGK1fITBFUD0ojC1NrtRd/OEywINgtFouYHhoC9ehSy6pYAB+XkAwfoUUPwnOJ4Cx5
+         tjt8kTvv+vQnu19alN5xvePZE7WszSi5jIfXsIMk1UVQAO4YV1X81rispn2kE/3Am4Jo
+         3c/nZWCthtBUxK7PIiT2att119gjCbPkGDLniyGnttB0utZR+TJ65EX9E3T9+fkitVb+
+         0AYYB5t4ijtenSYen3ctj25sbMnuz9VSn1xDJjRhbrr9NbQecjzL5FYQO9JZxdk+ASZk
+         GjpA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:dkim-signature;
-        bh=C9PI9Qi8HDlLbV57o548904J5pG00v1lKuCCnBvJ6co=;
-        fh=nvWKNGjiyMKjX5uczgOHxQeq/Bm1Ucyau27Z9oMq/ic=;
-        b=PkSXnnFN0zgokpf+XweNABFUxHlA+S+siVTZt76g+egvJ3o2/0zTebK+eUnDzwSAfB
-         7cYE5jxVTzA3jPB9GKPpl1TIkIJC99BQKHx+voA8tawgW3b4AvfIk7cYn4W12n0d6+KI
-         w6Zge6JER+LvcKY64bNndKNHVxFusEk+ecrX5hYgQr+1ueMh1NFZ4s0tl+gPKbwWCrQ5
-         1due/R3EjywOTI7xaDdVrB3t7wvNgjrk5sRizbYuVY/imAAH6dPPUOJxXg7EgQray+sG
-         hJ5444Lls1vqKoI6wxDT4pqDozrFOzEM3rlKl78Xpgmm1Y9IEavYO2TYjnvXYKASMfvC
-         nmyg==;
+        bh=BPx3FQm16cHh/4wjy/zL7AjgWXFPiOJBez90RRz9q3A=;
+        fh=mRkmCxwEUPekh2SimShOtBjKmIjUH6DuGreq/iReAzs=;
+        b=Azei/tNk0jaAf3B8YROMogyMG0XEKJRWmM2FAD9lBaW+OujQb9VN4O/UEuwD6XGiYH
+         apPGroJbjpf7QlpbM/5z5usu0Nt76gTlQRsGgHfBFNBjGKI4zm8hJf3OdsaiCW0K4Pft
+         GCnmSnTR5+m++dYynmmhbmBwzxo3rgwsEWWWrxKJo2UAsx3ss24cxCk5Q08ESONRk7Kt
+         K4ZZV3nkmpo93Gx5Qzc2vU9VWHpQXBuoAW5xZTCGPmBlDZBUQxaDkjI1NkkU81Zzc1SN
+         pq01EYU1ihhzk6R32irJbo/vKMuqTMxjTIowbHlGZJ12xtkVQwfDjwqowvt+Resc4Glu
+         BRtw==;
         darn=vger.kernel.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1769708423; x=1770313223; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1769708640; x=1770313440; darn=vger.kernel.org;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=C9PI9Qi8HDlLbV57o548904J5pG00v1lKuCCnBvJ6co=;
-        b=R3i9cZ6iHPdo2hXxhpC9aN3CSHvttxTDFNdWWRAChYGPsl4K9QCegAnXqX3qE+P3tM
-         UzUprHbswIxQ0yaK8lQhDGx9DaG4uwk+D+g9+MS03FshW13mxfPFfxP3awchChdMij6k
-         7Him1Lm7XPSXz2e4UTMoWYKLGf6U1JZiTMT+N6x3VMLRpkRpznWbv+CSMbxPFcpv3kIB
-         zl/2WEd3/AniJpWK9bkw2By0h6gsZo9rwGMjqX/AgYLts45meLdkshbADYm6iTUF6sNr
-         mJvnuFKJxx4e20/3oEivx62fa4NqUhUXDkp5oSPV5rppL08n8V0clVYN0DIzmP3/1Hy3
-         +VWQ==
+        bh=BPx3FQm16cHh/4wjy/zL7AjgWXFPiOJBez90RRz9q3A=;
+        b=tRHKENYTvwEM9fh9ZehZhWvgW9BmTfpCi/kk7OJaVI2BwlGeviVOFXTgXp0k3FFJ+T
+         sNiCac5RuiVeZWD1BlmkUBGK1Vc7Thodo6Ye1xbrRP+KJ8Isk98cIzBCfzfv7/QbMUnB
+         eACMy8BuYaS4jzxkVqc3dRl97e/j+btB5V/tY8wi1Ip9Jwe7KmpRI0Bg5q7TEcK9kxrj
+         l9NFBrGBG70O3FqKJ5YxAGj5pKNzA18z27TnHFO02ufMyRFzC6Z8oiDex+q9rWKhrGWj
+         7iiXTZF4OlblZqpADSdOd5FER6Mswmy+lq9qpsKMVXS8EFsm2UFd+GWCCWiCN9tqmEIh
+         D3ZQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1769708423; x=1770313223;
+        d=1e100.net; s=20230601; t=1769708640; x=1770313440;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=C9PI9Qi8HDlLbV57o548904J5pG00v1lKuCCnBvJ6co=;
-        b=b1HJ8RbJfrXb5mUdVKDFSJfkhco8QwfBmChODyWj0zMaPHBqa+2dr2U2d6SVQl1AXO
-         AEiFyu7X9930pTcT0v5lM/Z1zyueniSiqyQ5YLxcMQFIuINy0O1UWsGu8HqE28j2pQIy
-         cy+YwNG8Qfna9dVS7edS6eY6oBzchcbaMuamXxGD6m68yKvL+qYbhnyys6JU09ih0lYe
-         yqT6v+p3pOl8zVDUoniIDAnVGp0eKZYY+v+FV/fTWSJbzs1fPNCNZUj5wKPLUSAbMRqH
-         Be68icfeiVixlwRpsPItvgYtIE6iTuyjGuS8pns/WO8O6ZXSjijm54o54XkVxbgB7L2d
-         6BQg==
-X-Forwarded-Encrypted: i=1; AJvYcCX4mgKwY7SEoA0FWsTe+wHyO1svzTNLNsMWZ3La56gxURLuJOWDVbtl9JjRYibT/aDBHqk=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxUe/iKBWe8bkafRA45S8loqoxMjDUDwEr1IVNj3z/N6CuqK/sz
-	cI4j/JGVylnxN5CO/6q3Tns+TwpU+779BxsfT9XDD9XKHrefJodydMn7KPCdI/14m65giUI9djW
-	g11cbDMXUknAhNxnG2zv5oV3jF0jX19PQSQtdbuI2
-X-Gm-Gg: AZuq6aL61Z20y8SIYx94t83GFui403S+7py74xo9ilfO2Uty3EQZEWp4z1lMlgarUcA
-	DIZ6fUYuuZfNFFAiahEKAZDuNklskOtmUl1uxOlHW4HD8JCltfGOXr1oCaRV1aTKVLAQ7c/cMfZ
-	McIAHtQIZW57put03lMufWW8PqM9ih+LJKUydt3GxIbEhEjdHBYqCFzBU5QGzHzv/1ZjohWO5EH
-	AGMVen2Nq3Vm4F75wKBy7Q19P2gLCvKMCk4R6GrYxbz48Z1TZHibZYbPTMgu/s+NEvLl93l
-X-Received: by 2002:ac8:5a43:0:b0:4f1:9c6e:cf1c with SMTP id
- d75a77b69052e-504310b4cecmr11694721cf.17.1769708422703; Thu, 29 Jan 2026
- 09:40:22 -0800 (PST)
+        bh=BPx3FQm16cHh/4wjy/zL7AjgWXFPiOJBez90RRz9q3A=;
+        b=kMn7AxRwQeOSGiW6nABmuxnpGfqyFrIeP03ldUBAB5oC97QbR4sQQVYNl/n34f4/5Z
+         gjneEiHu2yqU/HiN/AKc6EunFLOO0t76z6tQYM49ZO16myB0jaTh7nhzcspkzsM5NIbA
+         1HynlCX+ofEH4/+MkCc4n9X5/hqDZD0VRTh8CLv2jHRyyPDXitF602MZxbivepim+6jx
+         UWLO0FU/xyGZv8GQqVEHVTFgx3BXsqlDUfXLwOyDjQbtwDC9bqYsn6j/eEklIvs2Ji3A
+         /yLnY8ovNXN06bW9hSy8GK2zZJjgPM5uk+Qufct7Eo5AvSCfVmIWNL4MCSIiQb/3X7kH
+         uUNA==
+X-Forwarded-Encrypted: i=1; AJvYcCWl6K7A8jLjEl9YHZMelNFdKlqkdyjlC5K/YBUfpWkaosWg6h3y0kv/h71V7HXvEqvgIK8=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyMdeFkzxJEWIBvQtfOHcEP7fvrwBv39QFdqmIPpZQ3gtiZFxE+
+	+JNu+4wT1aga3a6Hi8admIF13dW2UnwLkWZdmm+91B9dwD3trLBt+SeDS6RALZQ5COj6EjQ77MJ
+	hTxjDzJggkKZ0GMNxiRh+YeDwHKzsDbGgFe13dCQt
+X-Gm-Gg: AZuq6aL8WxQe4C0CK0jB5QEOcRbA8KSzUS5n0tPwzqbh3COHLeg0tn969V7Qy0oDLSg
+	NfAoMwX8SfVFKKnuQMS+Cic+1eo1FDLM88txe8Lp+kYS7tSZTdA+DUavsJ3TnkCFBZixy7zg0aP
+	bukBJlmG1jRtrTw3436nfQTpVP9BZSifu8cmQ21sgikgNSI351e5pat5jR311lCzkAUrNLkEVEJ
+	32BJvQK3ZDJMb4Z0lbavik0+/ztqt2vttmsa3qvRQr/SHtabYbZ1I4Cex+vQuvzsQo6ze8s
+X-Received: by 2002:ac8:7c45:0:b0:4ff:bfdd:3f46 with SMTP id
+ d75a77b69052e-504310ac4a2mr11679881cf.15.1769708639982; Thu, 29 Jan 2026
+ 09:43:59 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260126121655.1641736-1-maz@kernel.org> <20260126121655.1641736-14-maz@kernel.org>
- <CA+EHjTw_4WJgiS7vTUprvJOjdNrnW=sjhazCkU9eQW8BUYuZZw@mail.gmail.com> <86a4xwbakk.wl-maz@kernel.org>
-In-Reply-To: <86a4xwbakk.wl-maz@kernel.org>
+References: <20260126121655.1641736-1-maz@kernel.org> <20260126121655.1641736-18-maz@kernel.org>
+In-Reply-To: <20260126121655.1641736-18-maz@kernel.org>
 From: Fuad Tabba <tabba@google.com>
-Date: Thu, 29 Jan 2026 17:39:45 +0000
-X-Gm-Features: AZwV_QgS_ySXSV2SHoit8uIkCqZLoVSe3rfHiqo21RvB3vOxbqAI8dmocE5xOnU
-Message-ID: <CA+EHjTyf5Zhb2JFbg6jv1opCX=GV9_PMNiMo=0fCc9cYxzEAiw@mail.gmail.com>
-Subject: Re: [PATCH 13/20] KVM: arm64: Move RESx into individual register descriptors
+Date: Thu, 29 Jan 2026 17:43:23 +0000
+X-Gm-Features: AZwV_QhgZBr5ml0xnQ-vrwj2DQaUpUwkeGPKKe1ptuTmjpFjMzKIrzIPGRs2pns
+Message-ID: <CA+EHjTzvwhu4zkLmn4AtA0GZuUy85LDnZ-YUesw1PeoJPqdt_A@mail.gmail.com>
+Subject: Re: [PATCH 17/20] KVM: arm64: Remove all traces of FEAT_TME
 To: Marc Zyngier <maz@kernel.org>
 Cc: kvmarm@lists.linux.dev, linux-arm-kernel@lists.infradead.org, 
 	kvm@vger.kernel.org, Joey Gouly <joey.gouly@arm.com>, 
@@ -95,102 +94,149 @@ Cc: kvmarm@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
 	Catalin Marinas <catalin.marinas@arm.com>
 Content-Type: text/plain; charset="UTF-8"
 
-...
-> > I see what you're doing here, but it took me a while to get it and
-> > convince myself that there aren't any bugs (my self couldn't find any
-> > bugs, but I wouldn't trust him that much). You already introduce a new
-> > flag, FORCE_RESx. Why not just check that directly in the
-> > compute_resx_bits() loop, before the check for CALL_FUNC?
-> >
-> > + if (map[i].flags & FORCE_RESx)
-> > +     match = false;
-> > + else if (map[i].flags & CALL_FUNC)
-> > ...
-> >
-> > The way it is now, to understand FORCE_RES0, you must trace a flag, a
-> > macro expansion, and a function pointer, just to set a boolean to
-> > false.
+On Mon, 26 Jan 2026 at 12:17, Marc Zyngier <maz@kernel.org> wrote:
 >
-> With that scheme, you'd write something like:
->
-> +#define FORCE_RES0(m)          NEEDS_FEAT_FLAG(m, FORCE_RESx)
->
-> This construct would need a new __NEEDS_FEAT_0() macro that doesn't
-> take any argument other than flags. Something like below (untested).
->
->         M.
+> FEAT_TME has been dropped from the architecture. Retrospectively.
+> I'm sure someone is crying somewhere, but most of us won't.
 
-LGTM. Not tested either. I plan to test the series once I'm done reviewing it.
+:'-(
 
-Thanks,
+Please don't do a web search for my name and "Transactional Memory".
+
+> Clean-up time.
+>
+> Signed-off-by: Marc Zyngier <maz@kernel.org>
+
+I checked and it is indeed withdrawn. So with a heavy heart:
+
+Reviewed-by: Fuad Tabba <tabba@google.com>
+
+RIP,
 /fuad
 
+
+
+
+
+
+
+> ---
+>  arch/arm64/kvm/config.c                         |  7 -------
+>  arch/arm64/kvm/nested.c                         |  5 -----
+>  arch/arm64/tools/sysreg                         | 12 +++---------
+>  tools/perf/Documentation/perf-arm-spe.txt       |  1 -
+>  tools/testing/selftests/kvm/arm64/set_id_regs.c |  1 -
+>  5 files changed, 3 insertions(+), 23 deletions(-)
 >
 > diff --git a/arch/arm64/kvm/config.c b/arch/arm64/kvm/config.c
-> index 9485e1f2dc0b7..364bdd1e5be51 100644
+> index 0c037742215ac..f892098b70c0b 100644
 > --- a/arch/arm64/kvm/config.c
 > +++ b/arch/arm64/kvm/config.c
-> @@ -79,6 +79,12 @@ struct reg_feat_map_desc {
->                 .match = (fun),                         \
->         }
->
-> +#define __NEEDS_FEAT_0(m, f, w, ...)                   \
-> +       {                                               \
-> +               .w      = (m),                          \
-> +               .flags = (f),                           \
-> +       }
-> +
->  #define __NEEDS_FEAT_FLAG(m, f, w, ...)                        \
->         CONCATENATE(__NEEDS_FEAT_, COUNT_ARGS(__VA_ARGS__))(m, f, w, __VA_ARGS__)
->
-> @@ -95,9 +101,8 @@ struct reg_feat_map_desc {
->  #define NEEDS_FEAT(m, ...)     NEEDS_FEAT_FLAG(m, 0, __VA_ARGS__)
->
->  /* Declare fixed RESx bits */
-> -#define FORCE_RES0(m)          NEEDS_FEAT_FLAG(m, FORCE_RESx, enforce_resx)
-> -#define FORCE_RES1(m)          NEEDS_FEAT_FLAG(m, FORCE_RESx | AS_RES1, \
-> -                                               enforce_resx)
-> +#define FORCE_RES0(m)          NEEDS_FEAT_FLAG(m, FORCE_RESx)
-> +#define FORCE_RES1(m)          NEEDS_FEAT_FLAG(m, FORCE_RESx | AS_RES1)
->
->  /*
->   * Declare the dependency between a non-FGT register, a set of
-> @@ -221,15 +226,6 @@ struct reg_feat_map_desc {
->  #define FEAT_HCX               ID_AA64MMFR1_EL1, HCX, IMP
->  #define FEAT_S2PIE             ID_AA64MMFR3_EL1, S2PIE, IMP
->
-> -static bool enforce_resx(struct kvm *kvm)
-> -{
-> -       /*
-> -        * Returning false here means that the RESx bits will be always
-> -        * addded to the fixed set bit. Yes, this is counter-intuitive.
-> -        */
-> -       return false;
-> -}
-> -
->  static bool not_feat_aa64el3(struct kvm *kvm)
->  {
->         return !kvm_has_feat(kvm, FEAT_AA64EL3);
-> @@ -996,7 +992,7 @@ static const struct reg_bits_to_feat_map hcr_feat_map[] = {
+> @@ -184,7 +184,6 @@ struct reg_feat_map_desc {
+>  #define FEAT_RME               ID_AA64PFR0_EL1, RME, IMP
+>  #define FEAT_MPAM              ID_AA64PFR0_EL1, MPAM, 1
+>  #define FEAT_S2FWB             ID_AA64MMFR2_EL1, FWB, IMP
+> -#define FEAT_TME               ID_AA64ISAR0_EL1, TME, IMP
+>  #define FEAT_TWED              ID_AA64MMFR1_EL1, TWED, IMP
+>  #define FEAT_E2H0              ID_AA64MMFR4_EL1, E2H0, IMP
+>  #define FEAT_SRMASK            ID_AA64MMFR4_EL1, SRMASK, IMP
+> @@ -997,7 +996,6 @@ static const struct reg_bits_to_feat_map hcr_feat_map[] = {
+>         NEEDS_FEAT(HCR_EL2_FIEN, feat_rasv1p1),
+>         NEEDS_FEAT(HCR_EL2_GPF, FEAT_RME),
+>         NEEDS_FEAT(HCR_EL2_FWB, FEAT_S2FWB),
+> -       NEEDS_FEAT(HCR_EL2_TME, FEAT_TME),
 >         NEEDS_FEAT(HCR_EL2_TWEDEL       |
 >                    HCR_EL2_TWEDEn,
 >                    FEAT_TWED),
-> -       NEEDS_FEAT_FLAG(HCR_EL2_E2H, RES1_WHEN_E2H1, enforce_resx),
-> +       NEEDS_FEAT_FLAG(HCR_EL2_E2H, RES1_WHEN_E2H1 | FORCE_RESx),
->         FORCE_RES0(HCR_EL2_RES0),
->         FORCE_RES1(HCR_EL2_RES1),
->  };
-> @@ -1362,7 +1358,9 @@ struct resx compute_resx_bits(struct kvm *kvm,
->                 if (map[i].flags & exclude)
->                         continue;
+> @@ -1109,11 +1107,6 @@ static const struct reg_bits_to_feat_map sctlr_el1_feat_map[] = {
+>         NEEDS_FEAT(SCTLR_EL1_EnRCTX, FEAT_SPECRES),
+>         NEEDS_FEAT(SCTLR_EL1_DSSBS, FEAT_SSBS),
+>         NEEDS_FEAT(SCTLR_EL1_TIDCP, FEAT_TIDCP1),
+> -       NEEDS_FEAT(SCTLR_EL1_TME0       |
+> -                  SCTLR_EL1_TME        |
+> -                  SCTLR_EL1_TMT0       |
+> -                  SCTLR_EL1_TMT,
+> -                  FEAT_TME),
+>         NEEDS_FEAT(SCTLR_EL1_TWEDEL     |
+>                    SCTLR_EL1_TWEDEn,
+>                    FEAT_TWED),
+> diff --git a/arch/arm64/kvm/nested.c b/arch/arm64/kvm/nested.c
+> index 75a23f1c56d13..96e899dbd9192 100644
+> --- a/arch/arm64/kvm/nested.c
+> +++ b/arch/arm64/kvm/nested.c
+> @@ -1505,11 +1505,6 @@ u64 limit_nv_id_reg(struct kvm *kvm, u32 reg, u64 val)
+>         u64 orig_val = val;
 >
-> -               if (map[i].flags & CALL_FUNC)
-> +               if (map[i].flags & FORCE_RESx)
-> +                       match = false;
-> +               else if (map[i].flags & CALL_FUNC)
->                         match = map[i].match(kvm);
->                 else
->                         match = idreg_feat_match(kvm, &map[i]);
->
+>         switch (reg) {
+> -       case SYS_ID_AA64ISAR0_EL1:
+> -               /* Support everything but TME */
+> -               val &= ~ID_AA64ISAR0_EL1_TME;
+> -               break;
+> -
+>         case SYS_ID_AA64ISAR1_EL1:
+>                 /* Support everything but LS64 and Spec Invalidation */
+>                 val &= ~(ID_AA64ISAR1_EL1_LS64  |
+> diff --git a/arch/arm64/tools/sysreg b/arch/arm64/tools/sysreg
+> index 969a75615d612..650d7d477087e 100644
+> --- a/arch/arm64/tools/sysreg
+> +++ b/arch/arm64/tools/sysreg
+> @@ -1856,10 +1856,7 @@ UnsignedEnum     31:28   RDM
+>         0b0000  NI
+>         0b0001  IMP
+>  EndEnum
+> -UnsignedEnum   27:24   TME
+> -       0b0000  NI
+> -       0b0001  IMP
+> -EndEnum
+> +Res0   27:24
+>  UnsignedEnum   23:20   ATOMIC
+>         0b0000  NI
+>         0b0010  IMP
+> @@ -2432,10 +2429,7 @@ Field    57      EPAN
+>  Field  56      EnALS
+>  Field  55      EnAS0
+>  Field  54      EnASR
+> -Field  53      TME
+> -Field  52      TME0
+> -Field  51      TMT
+> -Field  50      TMT0
+> +Res0   53:50
+>  Field  49:46   TWEDEL
+>  Field  45      TWEDEn
+>  Field  44      DSSBS
+> @@ -3840,7 +3834,7 @@ Field     43      NV1
+>  Field  42      NV
+>  Field  41      API
+>  Field  40      APK
+> -Field  39      TME
+> +Res0   39
+>  Field  38      MIOCNCE
+>  Field  37      TEA
+>  Field  36      TERR
+> diff --git a/tools/perf/Documentation/perf-arm-spe.txt b/tools/perf/Documentation/perf-arm-spe.txt
+> index 8b02e5b983fa9..201a82bec0de4 100644
+> --- a/tools/perf/Documentation/perf-arm-spe.txt
+> +++ b/tools/perf/Documentation/perf-arm-spe.txt
+> @@ -176,7 +176,6 @@ and inv_event_filter are:
+>    bit 10    - Remote access (FEAT_SPEv1p4)
+>    bit 11    - Misaligned access (FEAT_SPEv1p1)
+>    bit 12-15 - IMPLEMENTATION DEFINED events (when implemented)
+> -  bit 16    - Transaction (FEAT_TME)
+>    bit 17    - Partial or empty SME or SVE predicate (FEAT_SPEv1p1)
+>    bit 18    - Empty SME or SVE predicate (FEAT_SPEv1p1)
+>    bit 19    - L2D access (FEAT_SPEv1p4)
+> diff --git a/tools/testing/selftests/kvm/arm64/set_id_regs.c b/tools/testing/selftests/kvm/arm64/set_id_regs.c
+> index c4815d3658167..73de5be58bab0 100644
+> --- a/tools/testing/selftests/kvm/arm64/set_id_regs.c
+> +++ b/tools/testing/selftests/kvm/arm64/set_id_regs.c
+> @@ -91,7 +91,6 @@ static const struct reg_ftr_bits ftr_id_aa64isar0_el1[] = {
+>         REG_FTR_BITS(FTR_LOWER_SAFE, ID_AA64ISAR0_EL1, SM3, 0),
+>         REG_FTR_BITS(FTR_LOWER_SAFE, ID_AA64ISAR0_EL1, SHA3, 0),
+>         REG_FTR_BITS(FTR_LOWER_SAFE, ID_AA64ISAR0_EL1, RDM, 0),
+> -       REG_FTR_BITS(FTR_LOWER_SAFE, ID_AA64ISAR0_EL1, TME, 0),
+>         REG_FTR_BITS(FTR_LOWER_SAFE, ID_AA64ISAR0_EL1, ATOMIC, 0),
+>         REG_FTR_BITS(FTR_LOWER_SAFE, ID_AA64ISAR0_EL1, CRC32, 0),
+>         REG_FTR_BITS(FTR_LOWER_SAFE, ID_AA64ISAR0_EL1, SHA2, 0),
 > --
-> Without deviation from the norm, progress is not possible.
+> 2.47.3
+>
