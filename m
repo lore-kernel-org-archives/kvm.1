@@ -1,132 +1,131 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qk1-f172.google.com (mail-qk1-f172.google.com [209.85.222.172])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0CDB130EF9B;
-	Fri, 30 Jan 2026 14:25:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.12
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B3D631A561
+	for <kvm@vger.kernel.org>; Fri, 30 Jan 2026 14:44:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769783141; cv=none; b=a8GnEI8u1p6oJZaS0MYrfCa06x5fcSzltBpBHqfbO9Yx0eb7Jpr7vh9rJ5z+JtdR1aDyK70lCrhFDMro4m0OkwyxsxxdwXJmLSwixfvJNu2HBGWMxgc7897B6nBbbixrNTk4spFeECrJUYFakCHLonRBCSdzLhMLp4izPHXBvl0=
+	t=1769784258; cv=none; b=gkFBPu655ibYyDaPF2ICaU6x1VoGA8VbJR0P+1eB4B1ZKLeZNS3oRqGHcbuU0874NWw7KRLPbWRAFTSXD8oSL4CHntEjKrnv8uKjifmwbCuX21hwtVG7fI7YEFrDkmMDtR6MQpvMRtar3uJ/mwSiwsi2tkE/NDkmiRaltKKtF8k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769783141; c=relaxed/simple;
-	bh=wlIEF5Jo3bz9SPk/4gkEUeNy6rbBrlP5v2SRrMJhK1g=;
+	s=arc-20240116; t=1769784258; c=relaxed/simple;
+	bh=VsbMM5xoKqA8UQ3isRtzAP4PmVkOh9whfmV8sar8q8U=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Dsb2aFO2GxOfOwX7mFOvUELJ3pkQSg87aU1LOnqXh6vUYUU3o7ArEhmXqLYlraHkLLLIqTGFMVUiWrDBXiP8Lrw6oNgWbTiAKjCy/u0wvRk92vRObbT0RcDZWGG6IpcPIfQonpNz05FTjHlM8nJXPGcTXgFf26QsgUyM5WBFiLA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=bOZX1Rdw; arc=none smtp.client-ip=198.175.65.12
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+	 Content-Type:Content-Disposition:In-Reply-To; b=c/2jnyer26LvKT/sWgwT1nw08Qyz/VgJvdZ1nh9ir8qPs+j7HGeAoFmF1ywM5xyPMLcdfSbWMykkwubaOkvQfKSd3Ujo2Khnrwgwl6C9saX2BLmCgDdJpZ1tF5t11KQaN+QGMgLm2hG5BvrJsAW+npGfyShSN6gG1qu6uUB98jo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca; spf=pass smtp.mailfrom=ziepe.ca; dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b=G572Xvqv; arc=none smtp.client-ip=209.85.222.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ziepe.ca
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="bOZX1Rdw"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1769783138; x=1801319138;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=wlIEF5Jo3bz9SPk/4gkEUeNy6rbBrlP5v2SRrMJhK1g=;
-  b=bOZX1RdweEby068EBnvqN5SwoWm39hRLuxxLXWdDXcd+MaXW8y/69L1+
-   FeFYON5OJkyME5vr8wLNWPKkxWa8rZIG1z/pArUuKjLu3NzNsunSf9FsA
-   oTERo5i6HeVQ1DH0WpMo9+uFS17ZKt78svbJQGLT6mHNI4X+f/7el1mfH
-   MXx+31S6lxYEWwkG9aTPygJbofg0ol8VoI8z4cGg9FvkS+PZgIu0WyGxy
-   wegPs4yQbN0msgyg5xmIYTu6tycnUYDt4DdRsDxi3GFCxJYoeZ6BM5mEr
-   WoH3mfNDlUqo8YzXTWQo5lmYiaiyIUb94KbmhGPZDoNBOD1EhkkhtxhhM
-   Q==;
-X-CSE-ConnectionGUID: c2gkfwVEQDioeRjycswYxw==
-X-CSE-MsgGUID: HvIILaEhRUawWsTIE6Vr1g==
-X-IronPort-AV: E=McAfee;i="6800,10657,11686"; a="82458399"
-X-IronPort-AV: E=Sophos;i="6.21,263,1763452800"; 
-   d="scan'208";a="82458399"
-Received: from orviesa004.jf.intel.com ([10.64.159.144])
-  by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Jan 2026 06:25:37 -0800
-X-CSE-ConnectionGUID: JrY8CnCkSFqu0MIvcbv6hg==
-X-CSE-MsgGUID: P0tzny3USouHXQWhjxOdAQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,263,1763452800"; 
-   d="scan'208";a="213396410"
-Received: from yilunxu-optiplex-7050.sh.intel.com (HELO localhost) ([10.239.159.165])
-  by orviesa004.jf.intel.com with ESMTP; 30 Jan 2026 06:25:34 -0800
-Date: Fri, 30 Jan 2026 22:07:17 +0800
-From: Xu Yilun <yilun.xu@linux.intel.com>
-To: Chao Gao <chao.gao@intel.com>
-Cc: linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org,
-	kvm@vger.kernel.org, x86@kernel.org, reinette.chatre@intel.com,
-	ira.weiny@intel.com, kai.huang@intel.com, dan.j.williams@intel.com,
-	sagis@google.com, vannapurve@google.com, paulmck@kernel.org,
-	nik.borisov@suse.com, zhenzhong.duan@intel.com, seanjc@google.com,
-	rick.p.edgecombe@intel.com, kas@kernel.org,
-	dave.hansen@linux.intel.com, vishal.l.verma@intel.com,
-	Farrah Chen <farrah.chen@intel.com>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
-	"H. Peter Anvin" <hpa@zytor.com>
-Subject: Re: [PATCH v3 10/26] coco/tdx-host: Implement FW_UPLOAD sysfs ABI
- for TDX Module updates
-Message-ID: <aXy7FTKDBfZ4jXt1@yilunxu-OptiPlex-7050>
-References: <20260123145645.90444-1-chao.gao@intel.com>
- <20260123145645.90444-11-chao.gao@intel.com>
+	dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b="G572Xvqv"
+Received: by mail-qk1-f172.google.com with SMTP id af79cd13be357-8c6aaf3cd62so224252085a.3
+        for <kvm@vger.kernel.org>; Fri, 30 Jan 2026 06:44:17 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=ziepe.ca; s=google; t=1769784256; x=1770389056; darn=vger.kernel.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=UlIFC23S9unnjQhVGEC3vUha1a+Kfy5xxpLqRiUCtvQ=;
+        b=G572XvqvqEJ95BhX2bAuiQ/O5wI4h8d/DRsGbf3bogEs27PccC/FQ9DAz/U4GD5IIA
+         /QshJGOAPahQIA8znGcPtyDORLvxPEHNhRbhESmpvY6wWD5tgB/7tS460R14YJJkMo+0
+         6P/HA5MGamiEsVxo2G0Ux2BIqTt+1DZM9SDgakye920Jk6xQTS9XOjRWOxZz+rJkrpBr
+         8nv3x6TuipUUnMw5cQvHttzzVcP6rCgHC6OLjc2ujgi50QiKkG5I4LSbzV/EDJvaQMsg
+         7m7EiE5TkuVUtJ9zbigdaa2b2446bdwwa8jlXFFHbp4YBpiz68Lj+We8pesk7AiM2ton
+         5rqw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1769784256; x=1770389056;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=UlIFC23S9unnjQhVGEC3vUha1a+Kfy5xxpLqRiUCtvQ=;
+        b=h15WBnWjbVRi6BY6I46LQcK/znxW7y1K0ZT4iHZzjGD3n8PbIcha/30+3btx8Sye3v
+         yHYh6G70dB2RI+eK4kYolA6SDAWUmZbzaa+7AhmvGHgtRqhpY2JeD/Xk4PbHq1LkG9t+
+         xpWsboDpe6pHAUzrviTUWMBENiXuxMxbA/q0jpWiPW/nc0cMOyvH4/X7lZMXhnNa7l35
+         NMLVOsObOLQsTbtfdYw0l1RkfsJIWKNP5FByNAhZc9ZsuDhY6mr9ut+KJWO0T502iuHX
+         d7dyXEqKOkSp2mEIx1cfgIz2vCQYZfULVxYRh2RabKPakGwfjSmV4YoIDv0dgZrEDeFW
+         ZwAQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUYgbfW6M9ddwMUQlJmt9VvO9e21UVsXxAWm7M7JR9fFH7GweNoBxWlWfpNl56+8d87394=@vger.kernel.org
+X-Gm-Message-State: AOJu0YykfFH5CULF1rv5ta+5JWi0ZwFz8LKqvniKq1qmewu3wRp0NeRZ
+	utFTL43k9exdhwxFTbc/TwfDlfVbGSWeppuAz4P7Mf5IDRVZE6xo7LeX4adKZA69who=
+X-Gm-Gg: AZuq6aKqDChfkPnxFTMjRQFjZowclxs5ijROhcquEiomsRa9AQ3Q27YlSRJ0B7e40kj
+	sXSfdvQK3S/a9NlB579JYfoLnBuf6zVfeVTz9ILG3xbbYC3oYkJCfMcQdBVRldebvwRFU+8uIyu
+	yAvrxAhtfOTBkEAnBmo4n+yTocmX19ZQ4PwuOJ2vx01sgmvECdd/xBDHq1rXyZp4SaIlT07ZZhY
+	LiCIjF1+/S9LzsfyDHle2TYAK29aSQGMrnNcbNn2fQFleG99CF7sCVuurSmQnKwBa8pkgULOo84
+	jTSFfbwL25sZLmqrQTt6ftsdt6dQT7w0qP4ybee8xsrnvCKV7OzLuRplYQo/GCbi3dy3YzgjxgF
+	x7/5PJwgXaKxp9FhxKtGU2dtyw9//3GtDI0ATxwaIfqCixc5g2wE1J/RMNyoktW5IDKAm4Yz9rC
+	cgpdbfpLEcJUBVs7dCgGRVMMfgV1W5lPRWqc/O2vYYtudKNRiit1spqfm4I71+zVWifD0=
+X-Received: by 2002:ac8:7f0f:0:b0:501:51b6:cd3e with SMTP id d75a77b69052e-505d21a4775mr39321141cf.29.1769784256186;
+        Fri, 30 Jan 2026 06:44:16 -0800 (PST)
+Received: from ziepe.ca (hlfxns017vw-142-162-112-119.dhcp-dynamic.fibreop.ns.bellaliant.net. [142.162.112.119])
+        by smtp.gmail.com with ESMTPSA id d75a77b69052e-5033745c426sm56137391cf.7.2026.01.30.06.44.15
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 30 Jan 2026 06:44:15 -0800 (PST)
+Received: from jgg by wakko with local (Exim 4.97)
+	(envelope-from <jgg@ziepe.ca>)
+	id 1vlpjL-0000000B0t1-0Fhg;
+	Fri, 30 Jan 2026 10:44:15 -0400
+Date: Fri, 30 Jan 2026 10:44:15 -0400
+From: Jason Gunthorpe <jgg@ziepe.ca>
+To: Christian =?utf-8?B?S8O2bmln?= <christian.koenig@amd.com>
+Cc: Leon Romanovsky <leon@kernel.org>,
+	Sumit Semwal <sumit.semwal@linaro.org>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
+	Gerd Hoffmann <kraxel@redhat.com>,
+	Dmitry Osipenko <dmitry.osipenko@collabora.com>,
+	Gurchetan Singh <gurchetansingh@chromium.org>,
+	Chia-I Wu <olvaffe@gmail.com>,
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+	Maxime Ripard <mripard@kernel.org>,
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	Lucas De Marchi <lucas.demarchi@intel.com>,
+	Thomas =?utf-8?Q?Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
+	Rodrigo Vivi <rodrigo.vivi@intel.com>,
+	Kevin Tian <kevin.tian@intel.com>, Joerg Roedel <joro@8bytes.org>,
+	Will Deacon <will@kernel.org>, Robin Murphy <robin.murphy@arm.com>,
+	Felix Kuehling <Felix.Kuehling@amd.com>,
+	Alex Williamson <alex@shazbot.org>,
+	Ankit Agrawal <ankita@nvidia.com>,
+	Vivek Kasireddy <vivek.kasireddy@intel.com>,
+	linux-media@vger.kernel.org, dri-devel@lists.freedesktop.org,
+	linaro-mm-sig@lists.linaro.org, linux-kernel@vger.kernel.org,
+	amd-gfx@lists.freedesktop.org, virtualization@lists.linux.dev,
+	intel-xe@lists.freedesktop.org, linux-rdma@vger.kernel.org,
+	iommu@lists.linux.dev, kvm@vger.kernel.org
+Subject: Re: [PATCH v5 4/8] vfio: Wait for dma-buf invalidation to complete
+Message-ID: <20260130144415.GE2328995@ziepe.ca>
+References: <20260124-dmabuf-revoke-v5-0-f98fca917e96@nvidia.com>
+ <20260124-dmabuf-revoke-v5-4-f98fca917e96@nvidia.com>
+ <31872c87-5cba-4081-8196-72cc839c6122@amd.com>
+ <20260130130131.GO10992@unreal>
+ <d25bead8-8372-4791-a741-3371342f4698@amd.com>
+ <20260130135618.GC2328995@ziepe.ca>
+ <d1dce6c1-9a89-4ae4-90eb-7b6d8cdcdd91@amd.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20260123145645.90444-11-chao.gao@intel.com>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <d1dce6c1-9a89-4ae4-90eb-7b6d8cdcdd91@amd.com>
 
-> +static enum fw_upload_err tdx_fw_write(struct fw_upload *fwl, const u8 *data,
-> +				       u32 offset, u32 size, u32 *written)
-> +{
-> +	struct tdx_fw_upload_status *status = fwl->dd_handle;
-> +	int ret;
-> +
-> +	if (status->cancel_request) {
-> +		status->cancel_request = false;
-> +		return FW_UPLOAD_ERR_CANCELED;
+On Fri, Jan 30, 2026 at 03:11:48PM +0100, Christian König wrote:
+> On 1/30/26 14:56, Jason Gunthorpe wrote:
+> > On Fri, Jan 30, 2026 at 02:21:08PM +0100, Christian König wrote:
+> > 
+> >> That would work for me.
+> >>
+> >> Question is if you really want to do it this way? See usually
+> >> exporters try to avoid blocking such functions.
+> > 
+> > Yes, it has to be this way, revoke is a synchronous user space
+> > triggered operation around things like FLR or device close. We can't
+> > defer it into some background operation like pm.
+> 
+> Yeah, but you only need that in a couple of use cases and not all.
 
-We don't allow partial write, we stop_machine while writing, so we
-cannot possibly cancel the update in progress, so we only check the
-cancel_request once before first write. That means cancel is useless for
-our case. Is it better we delete all the cancel logic &
-struct tdx_fw_upload_status?
+Not all, that is why the dma_buf_attach_revocable() is there to
+distinguish this case from others.
 
-> +	}
-> +
-> +	/*
-> +	 * tdx_fw_write() always processes all data on the first call with
-> +	 * offset == 0. Since it never returns partial success (it either
-> +	 * succeeds completely or fails), there is no subsequent call with
-> +	 * non-zero offsets.
-> +	 */
-> +	WARN_ON_ONCE(offset);
-> +	ret = seamldr_install_module(data, size);
-
-...
-
-> +static void tdx_fw_cancel(struct fw_upload *fwl)
-> +{
-
-Unfortunately fw_upload core doesn't allow .cancel unimplemented, leave
-it as a dummy stub is OK, since this callback just request cancel,
-doesn't care whether the cancel succeeds or fails in the end.
-
-If you agree, add some comments in this function.
-
-> +}
-> +
-> +static const struct fw_upload_ops tdx_fw_ops = {
-> +	.prepare = tdx_fw_prepare,
-> +	.write = tdx_fw_write,
-> +	.poll_complete = tdx_fw_poll_complete,
-> +	.cancel = tdx_fw_cancel,
-> +};
-> +
-> +static void seamldr_init(struct device *dev)
-> +{
-> +	const struct tdx_sys_info *tdx_sysinfo = tdx_get_sysinfo();
-> +	int ret;
-> +
-> +	if (WARN_ON_ONCE(!tdx_sysinfo))
-> +		return;
-
-We already does tdx_get_sysinfo() on module_init, is it better we have
-a global tdx_sysinfo pointer in this driver, so that we don't have to
-retrieve it again and again.
+Jason
