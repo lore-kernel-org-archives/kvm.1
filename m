@@ -1,45 +1,47 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 446EA2EBBB9
-	for <kvm@vger.kernel.org>; Fri, 30 Jan 2026 05:47:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F6E32FF661
+	for <kvm@vger.kernel.org>; Fri, 30 Jan 2026 05:47:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769752051; cv=none; b=A7RMeT9sdkw9XMpJqxDMKJUBjiY/unqawixdzyND4mzdOzhisb/hoUQb1BtYOr1Pz/3/kqzKG+4UeeDLlbMhIgIkT2p6ZATvrqlCZV99eVwOytUy91V/lm58n3BmnR2jmgijuNpmniO/Wpl2cKQFm0eqrkvxmMGpTk2z4gn44z8=
+	t=1769752056; cv=none; b=SZhhqh8KhzGkKAlaGetjG7ketnTDTBzynp8fX/RgSWHKidht0eTpPOoDqXgCGi/A+ti7z3Ug0i23eD5IIey58ykaREKiMEWgC4+Z3F7j1Hr5MhlUMSRjTjT1hHwYz9taYRGMau3UtApYGXtKJ735g0RLrZuWekTV4d+UgnAnZuM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769752051; c=relaxed/simple;
-	bh=C25KFxs057vuRonVgcVm7CuOgHK0AKBRAZJAF9dsJLI=;
-	h=From:To:Cc:Subject:Date:Message-ID:Content-Type:MIME-Version; b=EpT1jb/mZxlnkIa/p9HR1Q6Sepco1rvlmr3qMOHZHvfkojA/aJXmlfhnRWM3LWlY7ys+zFo2s4YFdnRrDG8e5OERxvTUBGl9QwV0kjfm/JIzEeXjlnR4oiiYT+Um48zvAznyB2iHb0bGGyzMcKmQRAeWyqGYXrH+YGtQ2t1TLyM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=KVjNBkHv; arc=none smtp.client-ip=170.10.133.124
+	s=arc-20240116; t=1769752056; c=relaxed/simple;
+	bh=VU8Qza3S1AKHhzsNMdTyIAhFLSNWJJOZbBEXfAE9Ukw=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=jcr7oAK0Rdw1332qduXYOwgQUtCV4+QiV330HyhTyG0U5xNBuvUwVHxW06SF+TwbY5q/4x+SwvxnOvTqd9UtATfBXfRPXCclg97KLnYZBzLqz81p2hhI0E5j8w5NTA/Az21AIezUAT7d+9odvA/9f64tKErcwo/bFbg2lS/323w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=g6e0hMBH; arc=none smtp.client-ip=170.10.129.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="KVjNBkHv"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="g6e0hMBH"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1769752048;
+	s=mimecast20190719; t=1769752054;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=B4TVuQqCjTXuRjb89AktgM7cWmpF/NlrHYzi+O2BAe0=;
-	b=KVjNBkHvACQ117tnTa2A0UggZsfNicdgE7DLJ6XSssmyGSLQ8N/aZ90RzEaqzU5fxcpdAS
-	KHdRqPHGskJ7m+CYCmuyUIM6u0p098abZgBajuG5k4Ij02IgQK375+QHs9D3RlbmaR+rjp
-	UMlz5hat/JehgJbZvYKG1Ln6kAPo+Eo=
-Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=pKeoqLnw94ekV3SKkVoM9wLZ2GlZHZ0eY7j3K1tcDgA=;
+	b=g6e0hMBHS9l4Aipgc2Z4MLMyKLOX/AHplBD3kxj8WZ8TsAE3+fyP7glows3c9eJ4dqc3Zj
+	dxQ3nw7hnH+QnLW8aRts3Gl7ARCC+uO/ujEbN5pcf9als4rURfUs44tg9PpDbPUtNnBr35
+	RmS9gERVrmxYnLTOwWrTlNd6DGR0sLY=
+Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-664-qSIRxCZgM9Opo4djQfMp7Q-1; Fri,
- 30 Jan 2026 00:47:24 -0500
-X-MC-Unique: qSIRxCZgM9Opo4djQfMp7Q-1
-X-Mimecast-MFC-AGG-ID: qSIRxCZgM9Opo4djQfMp7Q_1769752043
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-47-Xg4ZZ5_KOomfVzHsx3HC0A-1; Fri,
+ 30 Jan 2026 00:47:30 -0500
+X-MC-Unique: Xg4ZZ5_KOomfVzHsx3HC0A-1
+X-Mimecast-MFC-AGG-ID: Xg4ZZ5_KOomfVzHsx3HC0A_1769752049
 Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id B433C19560AA;
-	Fri, 30 Jan 2026 05:47:22 +0000 (UTC)
+	by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id AA21F1956054;
+	Fri, 30 Jan 2026 05:47:28 +0000 (UTC)
 Received: from osteffen-thinkpadx1carbongen12.rmtde.csb (unknown [10.45.226.150])
-	by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 01A8F19560A2;
-	Fri, 30 Jan 2026 05:47:16 +0000 (UTC)
+	by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 3E72619560A2;
+	Fri, 30 Jan 2026 05:47:22 +0000 (UTC)
 From: Oliver Steffen <osteffen@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Marcelo Tosatti <mtosatti@redhat.com>,
@@ -57,10 +59,11 @@ Cc: Marcelo Tosatti <mtosatti@redhat.com>,
 	Luigi Leonardi <leonardi@redhat.com>,
 	Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
 	Oliver Steffen <osteffen@redhat.com>
-Subject: [PATCH v6 0/9] igvm: Supply MADT via IGVM parameter
-Date: Fri, 30 Jan 2026 06:47:05 +0100
-Message-ID: <20260130054714.715928-1-osteffen@redhat.com>
-Content-Type: text/plain; charset="utf-8"
+Subject: [PATCH v6 1/9] hw/acpi: Make acpi_checksum() public
+Date: Fri, 30 Jan 2026 06:47:06 +0100
+Message-ID: <20260130054714.715928-2-osteffen@redhat.com>
+In-Reply-To: <20260130054714.715928-1-osteffen@redhat.com>
+References: <20260130054714.715928-1-osteffen@redhat.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -70,103 +73,43 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
 
-When launching using an IGVM file, supply a copy of the MADT (part of the ACPI
-tables) via an IGVM parameter (IGVM_VHY_MADT) to the guest, in addition to the
-regular fw_cfg mechanism.
+Make the ACPI table checksum calculation function (in core.c) public so
+it can be reused in other parts of the ACPI code.
 
-The IGVM parameter can be consumed by Coconut SVSM [1], instead of relying on
-the fw_cfg interface, which has caused problems before due to unexpected access
-[2,3]. Using IGVM parameters is the default way for Coconut SVSM; switching
-over would allow removing specialized code paths for QEMU in Coconut.
-
-Coconut SVSM needs to know the SMP configuration, but does not look at
-any other ACPI data, nor does it interact with the PCI bus settings.
-Since the MADT is static and not linked with other ACPI tables, it can
-be supplied stand-alone like this.
-
-Generating the MADT twice (IGVM processing and ACPI table building) seems
-acceptable, since there is no infrastructure to obtain the MADT out of the ACPI
-table memory area during IGVM processing.
-
-In any case OVMF, which runs after SVSM has already been initialized, will
-continue reading all ACPI tables via fw_cfg and provide fixed up ACPI data to
-the OS as before.
-
-This series makes ACPI table building more generic by making the BIOS linker
-optional. This allows the MADT to be generated outside of the ACPI build
-context. A new function (acpi_build_madt_standalone()) is added for that. With
-that, the IGVM MADT parameter field can be filled with the MADT data during
-processing of the IGVM file.
-
-[1] https://github.com/coconut-svsm/svsm/pull/858
-[2] https://gitlab.com/qemu-project/qemu/-/issues/2882
-[3] https://github.com/coconut-svsm/svsm/issues/646
-
-v6:
-- Fix errors on non-i386 architectures
-  - Only build IGVM stubs file if feature is enabled.
-  - Move IGVM-related struct definitions to an internal header
-  - Move IGVM parameter handler for MADT to i386 code and stub it for other
-    architectures
-- Reuse existing ACPI checksum function instead of adding a new one
-
-v5:
-- Rebase on latest IGVM rework series from Gerd
-- Make qigvm_find_parameter_entry() more generic and use everywhere possible;
-  It now takes the index as input, instead of the full parameter struct
-- Consistently use early returns when looking up parameter entries
-- Emit a warning message if no parameter area can be found for a given index
-
-v4:
-- Add ACPI table checksum calculation without BIOS linker, used
-  for the standalone MADT.
-- Don't pass ConfidentialGuestState into the IGVM backend anymore.
-  Not needed, since we already have the full MachineState there now.
-- Move the NULL check patch out into a new series (to be posted).
-- Address remaining cleanup comments.
-
-v3:
-- Pass the machine state into IGVM file processing context instead of MADT data
-- Generate MADT from inside the IGVM backend
-- Refactor: Extract common code for finding IGVM parameter from IGVM parameter
-  handlers
-- Add NULL pointer check for igvm_get_buffer()
-
-v2:
-- Provide more context in the message of the main commit
-- Document the MADT parameter of IgvmCfgClass::process()
-- Document why no MADT data is provided the process call in sev.c
-
-Based-on: <20260126123755.357378-1-kraxel@redhat.com>
 Signed-off-by: Oliver Steffen <osteffen@redhat.com>
+---
+ hw/acpi/core.c         | 5 ++++-
+ include/hw/acpi/acpi.h | 3 +++
+ 2 files changed, 7 insertions(+), 1 deletion(-)
 
-Oliver Steffen (9):
-  hw/acpi: Make acpi_checksum() public
-  hw/acpi: Make BIOS linker optional
-  hw/acpi: Add standalone function to build MADT
-  igvm: Move structs to internal header
-  igvm: Add common function for finding parameter entries
-  igvm: Refactor qigvm_parameter_insert
-  igvm: Pass machine state to IGVM file processing
-  igvm: Only build stubs if igvm is enabled
-  igvm: Fill MADT IGVM parameter field on x86_64
-
- backends/igvm-cfg.c            |   2 +-
- backends/igvm.c                | 256 +++++++++++++++------------------
- hw/acpi/aml-build.c            |  12 +-
- hw/acpi/core.c                 |   5 +-
- hw/i386/acpi-build.c           |   9 ++
- hw/i386/acpi-build.h           |   2 +
- include/hw/acpi/acpi.h         |   3 +
- include/system/igvm-cfg.h      |   3 +-
- include/system/igvm-internal.h |  49 +++++++
- include/system/igvm.h          |   5 +-
- stubs/igvm.c                   |   6 +
- stubs/meson.build              |   4 +-
- target/i386/igvm.c             |  32 +++++
- target/i386/sev.c              |   3 +-
- 14 files changed, 243 insertions(+), 148 deletions(-)
-
+diff --git a/hw/acpi/core.c b/hw/acpi/core.c
+index d9979b0da9..6b65e587f2 100644
+--- a/hw/acpi/core.c
++++ b/hw/acpi/core.c
+@@ -83,7 +83,10 @@ bool acpi_builtin(void)
+     return true;
+ }
+ 
+-static int acpi_checksum(const uint8_t *data, int len)
++/* Calculate the ACPI checksum value so that if used in the corresponding
++ * header field, the ACPI checksum verification will be successful.
++ */
++int acpi_checksum(const uint8_t *data, int len)
+ {
+     int sum, i;
+     sum = 0;
+diff --git a/include/hw/acpi/acpi.h b/include/hw/acpi/acpi.h
+index 4b8ee094c4..b036116dfb 100644
+--- a/include/hw/acpi/acpi.h
++++ b/include/hw/acpi/acpi.h
+@@ -203,4 +203,7 @@ struct AcpiSlicOem {
+ };
+ int acpi_get_slic_oem(AcpiSlicOem *oem);
+ 
++/* core.c */
++int acpi_checksum(const uint8_t *data, int len);
++
+ #endif /* QEMU_HW_ACPI_H */
 -- 
 2.52.0
 
