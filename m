@@ -1,118 +1,137 @@
-Received: from mail-qt1-f202.google.com (mail-qt1-f202.google.com [209.85.160.202])
+Received: from mail-qk1-f171.google.com (mail-qk1-f171.google.com [209.85.222.171])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6042A335081
-	for <kvm@vger.kernel.org>; Thu, 29 Jan 2026 23:36:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.202
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9410E2222B2
+	for <kvm@vger.kernel.org>; Fri, 30 Jan 2026 00:17:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769729817; cv=none; b=pHG0VbKe0S7e9HJNdoyrHSRL92Zkjop8SfII4C13uu6RqdcxSVHAaBGsk4P+7CZyDYD2P791PKFEc2FuV60FC+CKXiZ2X7zyz4wa67CsA+2ouT2i4qUN1D3oZ1qpIDElLYINBOee8aNUb4arRJU2/WLlxmn20LJX55NBHc/ih4U=
+	t=1769732236; cv=none; b=DXzvVKzY/bEEnHUzq+Pr73x3tjTCo2ORyV6GaC3DvFtVuYqHBFQWXrToPNPNBmkL/YkQehtK6FD5hiJNi0Wcv9ZszDCkLSRUa1fZXYAj7wcnI78JmrhewwFbrA1ulqYcGc5GmQDfvS+yX4f3oe8qWnDFz9/ejodZi5Pc5pp52Fg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769729817; c=relaxed/simple;
-	bh=+Ao85fypcu2LNijyP/Yd5fo6qd6PkBX5yK78fvuZH0w=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=kqjs4D8aJklQ/IP9dIbESh0VsJxIOyvptfoqzx2nq92olGkkZv9JmFfxC7gFxdGBIZvX0dEmXvmV5sY61K4wlSrJjzF9l95lZHWHlaKEGY18daL3WkyovoADOsF3FHR/plr5KrpPEec4Vko25tvPMxoKmFhTfJloADBgYL8Uoco=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--jmattson.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=c67zF+M2; arc=none smtp.client-ip=209.85.160.202
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--jmattson.bounces.google.com
+	s=arc-20240116; t=1769732236; c=relaxed/simple;
+	bh=PgxWXxtJeqUdvgjP5KxrfenUWVrCXmnl/Ip3hY3gzr0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=kHufKybpIwYfcUotPTv1PI+x+pRazx2R8J9Gj+dT91eg4okioE5LCf6PlLH5dzdoRSn+cE5Gj0K2/E2zQKiMgJM1Z/rWmHBW7iH0+sRyo1MYrP5/N68hFxRm7GcONLIBFLsRBYDdix4m4cVW7WoQQY6wkIqXogvGot+JxAnjlkY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca; spf=pass smtp.mailfrom=ziepe.ca; dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b=KA7biT7z; arc=none smtp.client-ip=209.85.222.171
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ziepe.ca
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="c67zF+M2"
-Received: by mail-qt1-f202.google.com with SMTP id d75a77b69052e-501473ee94fso74664171cf.3
-        for <kvm@vger.kernel.org>; Thu, 29 Jan 2026 15:36:56 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b="KA7biT7z"
+Received: by mail-qk1-f171.google.com with SMTP id af79cd13be357-8c5349ba802so152791785a.1
+        for <kvm@vger.kernel.org>; Thu, 29 Jan 2026 16:17:13 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1769729815; x=1770334615; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=A1eDEoFXt8XkhH54WsqjXw1OZHZdHjK/gtE/fEZN/Ec=;
-        b=c67zF+M2ZFNP3U+X8lH1rMIitsDaj8DpqFqHXD6bdblk56fEr94w9/Xoy/0gKqVZe1
-         34JjnM99hNDpLJuvFuDG/a9e10tyd0z9noSUCPbanYOs29FHMMP++B0Zk+gd27cnzjkS
-         n8XGf3s2KWey+PoGaesqszlz106ozucDsIFNwxnnSnTS3awozRl2Jwbnu2Cho7Nzmijm
-         K+hmTBOOB1G/7GT5wAjyYbvQ/uWvvueAO0VwAwiw7XjmwAy3jloyEQoyKYpuCI3+Zg+k
-         XE0WBBEFsiLBXipUNv/AbVTy2PVrTLfiYqQKhnRb0QEWVkg8GO6z9RJZ1VERIDzPRTFV
-         lINQ==
+        d=ziepe.ca; s=google; t=1769732232; x=1770337032; darn=vger.kernel.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=JQnCcQDZjp9U0R1Q7JCyNDeekOxxS8phMo1p2crcsis=;
+        b=KA7biT7z2WPIJqn1yWtupwtFpuiVSND6sCJuDPiqtvlV/udtpzWhHBdHKHzdXfdrt9
+         s5ff0uj0MnRJ2qUUQNgrd0lk2LV/u1TJUfKQTbzPIGnBZoQoPXVw92tOcr4jJ+o6LTsh
+         pmrSmwNEYgAYmP11U4AzdudTpUbSJ/6lGl2fTB0tpVVeZ5pwjPdB10zBv03zrqTMm32F
+         XRxwdujmIDrabfqlhXdKEogyduDcZ/LafEpZu5i5+k5xCZIZggCdPOPnVishQAaKjj5E
+         KENQjSUQFCVdWDnSRyM99hu8FmY0ffQviK954nkYYxdhylaquDPwhk4OhuIA+A5fqMJJ
+         rp/Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1769729815; x=1770334615;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=A1eDEoFXt8XkhH54WsqjXw1OZHZdHjK/gtE/fEZN/Ec=;
-        b=gb2RF7sIq593XIwOIR1bixvErukPbl1eL94mt3w9eXknmhhkrIEuOYi337wb8GdlkP
-         03yzS4z+ov7ZcLZatft+XmRXUduf5HvOePHQSpYKZgCNI4vewZZnkv6/bUHBB65IX6H4
-         cNxM6j3fX70b+lA/x+5oouP2BsR5OhCwFe6oVqdL9vJpohjZ9M/ej+A3iVHJ7lhXFi9I
-         PcsoNrVJTSlSCM3OmQkcsYQXTXd+WKvZJDbPo31HJTKXNXaImv3KgCuZb6r5gUFbJjCc
-         irW/AhddiJT3lYhdfQ5mIkgpL0AiQmvU1AuDFAAm7jlQd35ojJhE9LjI5rq5NKNnag+l
-         +rmA==
-X-Forwarded-Encrypted: i=1; AJvYcCX5/9uyufCLnKBoHdIvEZmuDt+Jlv/LjsBmyApD04XXdVl4x2V+NJPir6NyDOoelMqwojU=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxQ4VaVd0YQowr0cjzQXssKaNxbbT1BoG0bMifPzi61ECd5DkRi
-	WRGakO9R2WUQ4Fc9h5UqKrgjs2B6bO49K8Q6Beehg2qDWpDTGF9RAw3x6GNynDv8HXNNiDdl5Uo
-	OxVWAados3D0wIg==
-X-Received: from plcp2.prod.google.com ([2002:a17:902:e342:b0:2a5:9a63:12d0])
- (user=jmattson job=prod-delivery.src-stubby-dispatcher) by
- 2002:a17:902:f552:b0:298:5abe:4b1 with SMTP id d9443c01a7336-2a8d99469cbmr8037505ad.52.1769729341586;
- Thu, 29 Jan 2026 15:29:01 -0800 (PST)
-Date: Thu, 29 Jan 2026 15:28:06 -0800
-In-Reply-To: <20260129232835.3710773-1-jmattson@google.com>
+        d=1e100.net; s=20230601; t=1769732232; x=1770337032;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=JQnCcQDZjp9U0R1Q7JCyNDeekOxxS8phMo1p2crcsis=;
+        b=W5vYDnjoS7OuVqNayK78S1VAaGFH4fTyCgduaf8GSK4AgqUt7weSqjnu7rHmunc8Xn
+         DNjcqrbTZnzdbN0PPwUCe71oqiVbiwqgbNWMc9K8fLlREIFzQUlKcVYt3Qp8v0kPc+B7
+         Sg8F3X6S8MrFPhtUewVU59aelaYWQGb5jpp5po5bzZNwaQ+bLvZKEvtK61I5udc4xv0T
+         OwKC+O4kZ1ON5cpH2Gn6/g4fb1B00GsYc2qOqXFRH3JIxqBQVVjwPZMbcqqhLOpBORXR
+         tzTTf5QhrzN+KJMTmvj0aN0ngk3mr8oMtI8Nf/j3mu7S9sP8GE6Yw+TwDTtkjrVFNM4m
+         jE2w==
+X-Forwarded-Encrypted: i=1; AJvYcCXcD2CJFrSdDVKmQi1VbBafi7+JdMPk2Dh5WL8e9Liv/6MPpMGYK4NqPv0nNRMf9P3PnLM=@vger.kernel.org
+X-Gm-Message-State: AOJu0YycvI3E4jetPWITEa+n1Yjtbw5n3vYjVOd+G+qq6cO7xffqtCIz
+	6zj3ijVdSXBul1ejt+rMrmkBR8wdt/lYT67MLQzDFMUodSfLFVAVRhU4bSgfsSxu5J0=
+X-Gm-Gg: AZuq6aJVxkjRfnlLiqfHqGYY3dkEyXw2RZpv3hJPo8eWdHS5X5AjRssNljp1d2P0irL
+	U8qsP0+OJHnXZJc8N5sI9VhNoEgUtlnL5IPLgUc/0/ajNeaGL4/QOoEE89CaCc3mxVodTKoPpuj
+	Z7OFpHaa8kqVdFlB2O7hC7xEz2jan2YxVG5s+pwUt0em+mUBjHuylEyetEvIlcD/DocgXZEWGby
+	GSMPtaceuAprpl1F3FxBIxyCBkcmyibzmuoS+YMGqZVcKmgIczKT+evFLmDuSsP9R9qWyi/8qYW
+	7u183ITIvyZDjmco/aKWlH0jNwPwE4DwR+CXoG/QLfyxLz4j3IhrDsCCN6x3gsCA7PK6lyR46vS
+	JcQgbLjB660unqO03PYP7Wmq+64IiPW1Aoydk9yeQmquDILe1BVV5yEecRI+KYmLGMIyRtDTNwO
+	MQqE+Oqkq4uklvG+sO+XOMNOIjYPY0lPtKBeyyRmSc31yAbJ6Urnfkphj/dXe+nX3dPL46XOEvJ
+	cuCUg==
+X-Received: by 2002:ac8:5781:0:b0:4f3:5f7b:cc1d with SMTP id d75a77b69052e-505d21846b4mr19549181cf.34.1769732232444;
+        Thu, 29 Jan 2026 16:17:12 -0800 (PST)
+Received: from ziepe.ca (hlfxns017vw-142-162-112-119.dhcp-dynamic.fibreop.ns.bellaliant.net. [142.162.112.119])
+        by smtp.gmail.com with ESMTPSA id d75a77b69052e-50337cc19d7sm45008611cf.35.2026.01.29.16.17.10
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 29 Jan 2026 16:17:11 -0800 (PST)
+Received: from jgg by wakko with local (Exim 4.97)
+	(envelope-from <jgg@ziepe.ca>)
+	id 1vlcCE-0000000AQZD-13C4;
+	Thu, 29 Jan 2026 20:17:10 -0400
+Date: Thu, 29 Jan 2026 20:17:10 -0400
+From: Jason Gunthorpe <jgg@ziepe.ca>
+To: Leon Romanovsky <leon@kernel.org>
+Cc: Sumit Semwal <sumit.semwal@linaro.org>,
+	Christian =?utf-8?B?S8O2bmln?= <christian.koenig@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
+	Gerd Hoffmann <kraxel@redhat.com>,
+	Dmitry Osipenko <dmitry.osipenko@collabora.com>,
+	Gurchetan Singh <gurchetansingh@chromium.org>,
+	Chia-I Wu <olvaffe@gmail.com>,
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+	Maxime Ripard <mripard@kernel.org>,
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	Lucas De Marchi <lucas.demarchi@intel.com>,
+	Thomas =?utf-8?Q?Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
+	Rodrigo Vivi <rodrigo.vivi@intel.com>,
+	Kevin Tian <kevin.tian@intel.com>, Joerg Roedel <joro@8bytes.org>,
+	Will Deacon <will@kernel.org>, Robin Murphy <robin.murphy@arm.com>,
+	Felix Kuehling <Felix.Kuehling@amd.com>,
+	Alex Williamson <alex@shazbot.org>,
+	Ankit Agrawal <ankita@nvidia.com>,
+	Vivek Kasireddy <vivek.kasireddy@intel.com>,
+	linux-media@vger.kernel.org, dri-devel@lists.freedesktop.org,
+	linaro-mm-sig@lists.linaro.org, linux-kernel@vger.kernel.org,
+	amd-gfx@lists.freedesktop.org, virtualization@lists.linux.dev,
+	intel-xe@lists.freedesktop.org, linux-rdma@vger.kernel.org,
+	iommu@lists.linux.dev, kvm@vger.kernel.org
+Subject: Re: [PATCH v5 8/8] iommufd: Add dma_buf_pin()
+Message-ID: <20260130001710.GB2328995@ziepe.ca>
+References: <20260124-dmabuf-revoke-v5-0-f98fca917e96@nvidia.com>
+ <20260124-dmabuf-revoke-v5-8-f98fca917e96@nvidia.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20260129232835.3710773-1-jmattson@google.com>
-X-Mailer: git-send-email 2.53.0.rc1.225.gd81095ad13-goog
-Message-ID: <20260129232835.3710773-2-jmattson@google.com>
-Subject: [PATCH v2 1/5] KVM: x86/pmu: Introduce amd_pmu_set_eventsel_hw()
-From: Jim Mattson <jmattson@google.com>
-To: Peter Zijlstra <peterz@infradead.org>, Ingo Molnar <mingo@redhat.com>, 
-	Arnaldo Carvalho de Melo <acme@kernel.org>, Namhyung Kim <namhyung@kernel.org>, 
-	Mark Rutland <mark.rutland@arm.com>, 
-	Alexander Shishkin <alexander.shishkin@linux.intel.com>, Jiri Olsa <jolsa@kernel.org>, 
-	Ian Rogers <irogers@google.com>, Adrian Hunter <adrian.hunter@intel.com>, 
-	James Clark <james.clark@linaro.org>, Thomas Gleixner <tglx@kernel.org>, Borislav Petkov <bp@alien8.de>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
-	"H. Peter Anvin" <hpa@zytor.com>, Sean Christopherson <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>, 
-	Shuah Khan <shuah@kernel.org>, linux-perf-users@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, kvm@vger.kernel.org, 
-	linux-kselftest@vger.kernel.org
-Cc: mizhang@google.com, yosryahmed@google.com, sandipan.das@amd.com, 
-	Jim Mattson <jmattson@google.com>
-Content-Type: text/plain; charset="UTF-8"
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20260124-dmabuf-revoke-v5-8-f98fca917e96@nvidia.com>
 
-Extract the computation of eventsel_hw from amd_pmu_set_msr() into a
-separate helper function, amd_pmu_set_eventsel_hw().
+On Sat, Jan 24, 2026 at 09:14:20PM +0200, Leon Romanovsky wrote:
+> From: Leon Romanovsky <leonro@nvidia.com>
+> 
+> IOMMUFD relies on a private protocol with VFIO, and this always operated
+> in pinned mode.
+> 
+> Now that VFIO can support pinned importers update IOMMUFD to invoke the
+> normal dma-buf flow to request pin.
+> 
+> This isn't enough to allow IOMMUFD to work with other exporters, it still
+> needs a way to get the physical address list which is another series.
+> 
+> IOMMUFD supports the defined revoke semantics. It immediately stops and
+> fences access to the memory inside it's invalidate_mappings() callback,
+> and it currently doesn't use scatterlists so doesn't call map/unmap at
+> all.
+> 
+> It is expected that a future revision can synchronously call unmap from
+> the move_notify callback as well.
+> 
+> Acked-by: Christian König <christian.koenig@amd.com>
+> Signed-off-by: Leon Romanovsky <leonro@nvidia.com>
+> ---
+>  drivers/iommu/iommufd/pages.c | 9 ++++++++-
+>  1 file changed, 8 insertions(+), 1 deletion(-)
 
-No functional change intended.
+Reviewed-by: Jason Gunthorpe <jgg@nvidia.com>
 
-Signed-off-by: Jim Mattson <jmattson@google.com>
----
- arch/x86/kvm/svm/pmu.c | 9 +++++++--
- 1 file changed, 7 insertions(+), 2 deletions(-)
-
-diff --git a/arch/x86/kvm/svm/pmu.c b/arch/x86/kvm/svm/pmu.c
-index 7aa298eeb072..d9ca633f9f49 100644
---- a/arch/x86/kvm/svm/pmu.c
-+++ b/arch/x86/kvm/svm/pmu.c
-@@ -147,6 +147,12 @@ static int amd_pmu_get_msr(struct kvm_vcpu *vcpu, struct msr_data *msr_info)
- 	return 1;
- }
- 
-+static void amd_pmu_set_eventsel_hw(struct kvm_pmc *pmc)
-+{
-+	pmc->eventsel_hw = (pmc->eventsel & ~AMD64_EVENTSEL_HOSTONLY) |
-+			   AMD64_EVENTSEL_GUESTONLY;
-+}
-+
- static int amd_pmu_set_msr(struct kvm_vcpu *vcpu, struct msr_data *msr_info)
- {
- 	struct kvm_pmu *pmu = vcpu_to_pmu(vcpu);
-@@ -166,8 +172,7 @@ static int amd_pmu_set_msr(struct kvm_vcpu *vcpu, struct msr_data *msr_info)
- 		data &= ~pmu->reserved_bits;
- 		if (data != pmc->eventsel) {
- 			pmc->eventsel = data;
--			pmc->eventsel_hw = (data & ~AMD64_EVENTSEL_HOSTONLY) |
--					   AMD64_EVENTSEL_GUESTONLY;
-+			amd_pmu_set_eventsel_hw(pmc);
- 			kvm_pmu_request_counter_reprogram(pmc);
- 		}
- 		return 0;
--- 
-2.53.0.rc1.225.gd81095ad13-goog
-
+Jason
