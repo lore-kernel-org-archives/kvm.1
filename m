@@ -1,159 +1,85 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D8592874F5;
-	Fri, 30 Jan 2026 13:38:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8BC322ECD34;
+	Fri, 30 Jan 2026 13:42:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.109.113.108
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769780284; cv=none; b=GhKGys7+Iung4qT7CfDXkNyNvxEcJ7y2QG/4oHkbpoiOyMTaM6VfwiQhC9VbzYu9u7XgLf0v/AnzYjY0nMu7DG5ff26N6o1JV0DuJZOCO133SeBd0Q+ukK7pq0R4Ck7wdFR4jDRXTp/dILATMzFRdAub0Hg4/M2H8kMohPti+S8=
+	t=1769780564; cv=none; b=UurHtHi/a8sfiefgavCH+pPq70aVbCDGBQzMHNOn+4iQW3pgJjzAdR+vVBgC/50+ImL/xaOYDXi/Nv7VTJsPH0YmZQIrOPimi1LO5D70JDPIMr4nokpZc2p0uXVtZYIRdx5eagOLdTaJfOMmhjGUd0iY1zvBdjJLZx5hpoCdDps=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769780284; c=relaxed/simple;
-	bh=jrUktIM7vM/80ddCZ+2MusPve+WTOO+VsuJlV1nB6jM=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=RBDmkPWTeaMhmjloCfL+d6r66BxIdRlQrbP1CiSt5iukIOg3SgtZ+XSiFxHF2pYPAeOUGcc6MZqRmE+s/gY2VuQIVGhueeiTEOO5qLWfYyORTHxQUBlA3Kh2J+Cfme8PR2Tex6Y3Hts0v5JdNbdbjolXuZYJVOXikNXxDXDHumY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=i0M+C/ei; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1769780564; c=relaxed/simple;
+	bh=ZdwfXVDKrptF6zEBnycSM2xt2oyuwZwAE3tj/VXJTDw=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=ixF3u0IjcYowjZuWl1ZN1s87O73GEDmaMiCTPGG02+UeOJM8UWYi/ZJUKLppM/DcKyXjMVhSRQZycukLyjXw4e0gojYjk6NZeKevIW6R3+Xu3TYm66jwqaoHwvAVvph29jRs8xIUYmXnkAS8XMZPdXQktRe0bXXUAA4M6zfbxzQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de; spf=pass smtp.mailfrom=alien8.de; dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b=Wc+3DTR9; arc=none smtp.client-ip=65.109.113.108
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="i0M+C/ei"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1D9D4C4CEF7;
-	Fri, 30 Jan 2026 13:38:03 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1769780283;
-	bh=jrUktIM7vM/80ddCZ+2MusPve+WTOO+VsuJlV1nB6jM=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=i0M+C/eioHuYogmy0Da5vMPAH7UkBp+pP7m8wKSGBPQ16nSY3W5XL2/A4x4QcClup
-	 I8/bZ7sSDRosWHNDLtpzHKth4IXsxBTGyt4Cjm+FfZEBqrDkq9vnNm815YHtoMLAcp
-	 BAqPrsN08lsCZlkvN21bPZMTERcVRK8i8NfgNVa39jSW/PW1/OfKv97dxYnn7lwosw
-	 9+N31toxl9iF66LerNQGze25PWKC9dxO+QYYOfmAT9NCG1GT+l1S4EZiAKudF294zX
-	 mx3KTgMWDJILsRaqjksQO21oCnSzN/tUDbzkWULK6oWEXpWkxFboXwoCLJOarkhP6o
-	 RgIAsQKJdURjg==
-From: Leon Romanovsky <leon@kernel.org>
-To: Sumit Semwal <sumit.semwal@linaro.org>,
-	=?utf-8?q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	David Airlie <airlied@gmail.com>,
-	Simona Vetter <simona@ffwll.ch>,
-	Gerd Hoffmann <kraxel@redhat.com>,
-	Dmitry Osipenko <dmitry.osipenko@collabora.com>,
-	Gurchetan Singh <gurchetansingh@chromium.org>,
-	Chia-I Wu <olvaffe@gmail.com>,
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-	Maxime Ripard <mripard@kernel.org>,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	Lucas De Marchi <lucas.demarchi@intel.com>,
-	=?utf-8?q?Thomas_Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
-	Rodrigo Vivi <rodrigo.vivi@intel.com>,
-	Jason Gunthorpe <jgg@ziepe.ca>,
-	Leon Romanovsky <leon@kernel.org>,
-	Kevin Tian <kevin.tian@intel.com>,
-	Joerg Roedel <joro@8bytes.org>,
-	Will Deacon <will@kernel.org>,
-	Robin Murphy <robin.murphy@arm.com>,
-	Felix Kuehling <Felix.Kuehling@amd.com>,
-	Alex Williamson <alex@shazbot.org>,
-	Ankit Agrawal <ankita@nvidia.com>,
-	Vivek Kasireddy <vivek.kasireddy@intel.com>
-Cc: linux-media@vger.kernel.org,
-	dri-devel@lists.freedesktop.org,
-	linaro-mm-sig@lists.linaro.org,
-	linux-kernel@vger.kernel.org,
-	amd-gfx@lists.freedesktop.org,
-	virtualization@lists.linux.dev,
-	intel-xe@lists.freedesktop.org,
-	linux-rdma@vger.kernel.org,
-	iommu@lists.linux.dev,
-	kvm@vger.kernel.org
-Subject: [PATCH v6 5/8] dma-buf: Make .invalidate_mapping() truly optional
-Date: Fri, 30 Jan 2026 15:37:21 +0200
-Message-ID: <20260130-dmabuf-revoke-v6-5-06278f9b7bf0@nvidia.com>
-X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260130-dmabuf-revoke-v6-0-06278f9b7bf0@nvidia.com>
-References: <20260130-dmabuf-revoke-v6-0-06278f9b7bf0@nvidia.com>
+	dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="Wc+3DTR9"
+Received: from localhost (localhost.localdomain [127.0.0.1])
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id 9307440E01AC;
+	Fri, 30 Jan 2026 13:42:39 +0000 (UTC)
+X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
+Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
+	header.d=alien8.de
+Received: from mail.alien8.de ([127.0.0.1])
+	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
+	with ESMTP id HGucyxo1SEAf; Fri, 30 Jan 2026 13:42:36 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
+	t=1769780556; bh=80KzFPZyd2K++cpKjokXAKYgQ1cNBdJ37gjAwS22QHE=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=Wc+3DTR9Z1ohoGrqoLyNftmnXVoKLQdwgFMi5ITZt/U6akuVpZ13goXx+qZy+Hd/Q
+	 /Ryxs7q6Tkl7QGXmvBxPJDKhZgxQFKe4lTiGroq9fWhUW9XfjX9VMfhWOzCwVH6D5B
+	 LVsfJuf5xEKgRwwFrli7+BUFIWVA5x4D5y7UkxZkxML3kJ5Uxffua7WjgZ/qd1nFev
+	 MAYUJ50T5hh8Z3hTKTm35gHBGcu/GonLsQAw5G5loeC3zqRO7ehL1ArpMR5T3p4SsH
+	 Jwoi9LjDIukf/q2Gq9VeYnKBmFFKjWjYBNrvGn/MgdiBoWrTUOrZydJPyIiRDpJkrS
+	 tZxdZNkzUa0vv4VupEi2qyJvlN4EeGhTOma0CA8AsDTv8rXlhamIzVjrGz0CbpHzaO
+	 n3h1vJzYTiW4f3Zvfc0k5xl5OpKWYtdDeb7RtCzj5y0ovXFwZIzTKusDQNPgSeZQAv
+	 5lLMAJAukJBFoY/OxACc+0a+SeTvSOE55XIE9oZaZ9nfJ1vHM1VH6d6AvA7mrxjO/p
+	 ON2rgClkNW7r6Y1i5OujGBLIWiGRNRoqplVrWF4ezpuFFs+cxAVILZ3Et1vc/wu8zj
+	 ppmielMxovDY070NlD2FWLzaITDT2ckBk7qnrWyuLAHdQOudHNUqx2KG6MPd9H8ZHp
+	 pcVA0aYEvSakm86Mp82dPIA8=
+Received: from zn.tnic (pd953023b.dip0.t-ipconnect.de [217.83.2.59])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
+	(No client certificate requested)
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with UTF8SMTPSA id D1C1F40E00DE;
+	Fri, 30 Jan 2026 13:42:17 +0000 (UTC)
+Date: Fri, 30 Jan 2026 14:42:11 +0100
+From: Borislav Petkov <bp@alien8.de>
+To: "Xin Li (Intel)" <xin@zytor.com>
+Cc: linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
+	linux-doc@vger.kernel.org, pbonzini@redhat.com, seanjc@google.com,
+	corbet@lwn.net, tglx@linutronix.de, mingo@redhat.com,
+	dave.hansen@linux.intel.com, x86@kernel.org, hpa@zytor.com,
+	luto@kernel.org, peterz@infradead.org, andrew.cooper3@citrix.com,
+	chao.gao@intel.com, hch@infradead.org, sohil.mehta@intel.com
+Subject: Re: [PATCH v9 05/22] x86/cea: Use array indexing to simplify
+ exception stack access
+Message-ID: <20260130134211.GTaXy1M4oB2R7rvTfF@fat_crate.local>
+References: <20251026201911.505204-1-xin@zytor.com>
+ <20251026201911.505204-6-xin@zytor.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-X-Mailer: b4 0.15-dev-47773
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20251026201911.505204-6-xin@zytor.com>
 
-From: Leon Romanovsky <leonro@nvidia.com>
+On Sun, Oct 26, 2025 at 01:18:53PM -0700, Xin Li (Intel) wrote:
+> +noinstr unsigned long __this_cpu_ist_top_va(enum exception_stack_ordering stack)
+> +{
 
-The .invalidate_mapping() callback is documented as optional, yet it
-effectively became mandatory whenever importer_ops were provided. This
-led to cases where RDMA non-ODP code had to supply an empty stub.
+You better check this @stack is within the array bounds of event_stacks[].
 
-Relax the checks in the dma-buf core so the callback can be omitted,
-allowing RDMA code to drop the unnecessary function.
-
-Removing the stub allows the next patch to tell that RDMA does not support
-.invalidate_mapping() by checking for a NULL op.
-
-Signed-off-by: Leon Romanovsky <leonro@nvidia.com>
----
- drivers/dma-buf/dma-buf.c             |  6 ++----
- drivers/infiniband/core/umem_dmabuf.c | 13 -------------
- 2 files changed, 2 insertions(+), 17 deletions(-)
-
-diff --git a/drivers/dma-buf/dma-buf.c b/drivers/dma-buf/dma-buf.c
-index cd68c1c0bfd7..1629312d364a 100644
---- a/drivers/dma-buf/dma-buf.c
-+++ b/drivers/dma-buf/dma-buf.c
-@@ -947,9 +947,6 @@ dma_buf_dynamic_attach(struct dma_buf *dmabuf, struct device *dev,
- 	if (WARN_ON(!dmabuf || !dev))
- 		return ERR_PTR(-EINVAL);
- 
--	if (WARN_ON(importer_ops && !importer_ops->invalidate_mappings))
--		return ERR_PTR(-EINVAL);
--
- 	attach = kzalloc(sizeof(*attach), GFP_KERNEL);
- 	if (!attach)
- 		return ERR_PTR(-ENOMEM);
-@@ -1260,7 +1257,8 @@ void dma_buf_invalidate_mappings(struct dma_buf *dmabuf)
- 	dma_resv_assert_held(dmabuf->resv);
- 
- 	list_for_each_entry(attach, &dmabuf->attachments, node)
--		if (attach->importer_ops)
-+		if (attach->importer_ops &&
-+		    attach->importer_ops->invalidate_mappings)
- 			attach->importer_ops->invalidate_mappings(attach);
- }
- EXPORT_SYMBOL_NS_GPL(dma_buf_invalidate_mappings, "DMA_BUF");
-diff --git a/drivers/infiniband/core/umem_dmabuf.c b/drivers/infiniband/core/umem_dmabuf.c
-index d77a739cfe7a..256e34c15e6b 100644
---- a/drivers/infiniband/core/umem_dmabuf.c
-+++ b/drivers/infiniband/core/umem_dmabuf.c
-@@ -129,9 +129,6 @@ ib_umem_dmabuf_get_with_dma_device(struct ib_device *device,
- 	if (check_add_overflow(offset, (unsigned long)size, &end))
- 		return ret;
- 
--	if (unlikely(!ops || !ops->invalidate_mappings))
--		return ret;
--
- 	dmabuf = dma_buf_get(fd);
- 	if (IS_ERR(dmabuf))
- 		return ERR_CAST(dmabuf);
-@@ -184,18 +181,8 @@ struct ib_umem_dmabuf *ib_umem_dmabuf_get(struct ib_device *device,
- }
- EXPORT_SYMBOL(ib_umem_dmabuf_get);
- 
--static void
--ib_umem_dmabuf_unsupported_move_notify(struct dma_buf_attachment *attach)
--{
--	struct ib_umem_dmabuf *umem_dmabuf = attach->importer_priv;
--
--	ibdev_warn_ratelimited(umem_dmabuf->umem.ibdev,
--			       "Invalidate callback should not be called when memory is pinned\n");
--}
--
- static struct dma_buf_attach_ops ib_umem_dmabuf_attach_pinned_ops = {
- 	.allow_peer2peer = true,
--	.invalidate_mappings = ib_umem_dmabuf_unsupported_move_notify,
- };
- 
- struct ib_umem_dmabuf *
+> +	return __this_cpu_ist_bottom_va(stack) + EXCEPTION_STKSZ;
+> +}
 
 -- 
-2.52.0
+Regards/Gruss,
+    Boris.
 
+https://people.kernel.org/tglx/notes-about-netiquette
