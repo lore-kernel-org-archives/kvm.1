@@ -1,148 +1,221 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from relay5.mymailcheap.com (relay5.mymailcheap.com [159.100.248.207])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8AFF733554F;
-	Sat, 31 Jan 2026 05:35:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C2E52D46B2;
+	Sat, 31 Jan 2026 06:07:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.100.248.207
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769837702; cv=none; b=cphx0dBjsQRVy/DPfSXtCGD7V+MBsFKkcylzzdxkL5m0Hjr5nE79TYlhdqikUQw4TKC/aK7w11avRnke1H9DIdWqRC4rCo4Ck/0qGRvqb3w6x80iaa6wF6R6tenJfUxc48v3dNQfKJlqylC2TyOL0qiwfY3d49lLDP/d20vbJCI=
+	t=1769839675; cv=none; b=gG7/LmiBQWVTH+EqrHSRlxoEcdbiP0qPwM8tE3on6ZzcUiJn0AN6v7+Ii3ZRpIdJASYGizKvv3Eq/TfqCUkCIabEEBaMQ8fmtD1T/0R6Bx+r4Cvsoa12Dy/aaO8xgVBjjpIv5mlrwUduo36bMt8/q4gawZT1yO135jDk1qH00Sg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769837702; c=relaxed/simple;
-	bh=xc+xbxZ3oNBD2JuFMoUcoiVyL/l5Ver5G6iPoq8UFrM=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=CJ0LZ8jUaqPcFw1lK6vjFjAz7HBGMH6niQqnVx46wp5y5Et/gdHif056H3uLZsbnDqkzngZTCNbnpqPzLvsXo/BsRER6EXHZnH4wmKKSmSw8b6VM+XVkeFJGdxq99jZe8TgK79QdjYmoKpvKrgmHF3L696p5dhw68EHGUF6ABKA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WdACCORf; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1769839675; c=relaxed/simple;
+	bh=oeog5iZO0tE/GpnDtWPS42chjSxxsQeVLLMswgVyFfc=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=ONuwWMm3oGQCKIWxW/tiRcuw+zz7QKoUHGQrf4r9yyGnyoEHDyKamJjk/t1mJfm0gQOme6pV2vqr+Uxg70rWSK4Ez+W/ngQ642Pd2jciIN4bUAVEIlYTpYax6xLV2o9AyXStPOyR+FsP1aW69M/JBQkcpcRa8PlszBYxD3t8S0Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=aosc.io; spf=pass smtp.mailfrom=aosc.io; dkim=pass (1024-bit key) header.d=aosc.io header.i=@aosc.io header.b=LLr1uZ2R; arc=none smtp.client-ip=159.100.248.207
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=aosc.io
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=aosc.io
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WdACCORf"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6C052C19422;
-	Sat, 31 Jan 2026 05:35:01 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1769837702;
-	bh=xc+xbxZ3oNBD2JuFMoUcoiVyL/l5Ver5G6iPoq8UFrM=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WdACCORfHa5sZ8DizbHHRa6fxGpeGe7kg01QmfISUAKyvEL5a2BmGj6BqfFduDGi8
-	 mBoFbousmRtM6iLxbxdaKS3dLj/duVQvhfnARWn/1+HADh5swJ8oOJPrJhM5e5eOsp
-	 gXwcaHztnoVguimRptoOEvYr3QeJcBW8idunPKQcxe8Wh4jkdLAhEyKM2QqNglGany
-	 +4S+D27BL8rT+kdVl/Zho4eEIXVniLtJmqSmnV1wrNsYbiSrRbvQoJrfAySMH2WLw5
-	 Ee2zveWlmXrOAaby2fHDu02v71EJPL4/fuzV92SvdMrObRQ+K+AfOH8UpweHRfK9Ty
-	 wqaOkxlLS/98A==
-From: Leon Romanovsky <leon@kernel.org>
-To: Sumit Semwal <sumit.semwal@linaro.org>,
-	=?utf-8?q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	David Airlie <airlied@gmail.com>,
-	Simona Vetter <simona@ffwll.ch>,
-	Gerd Hoffmann <kraxel@redhat.com>,
-	Dmitry Osipenko <dmitry.osipenko@collabora.com>,
-	Gurchetan Singh <gurchetansingh@chromium.org>,
-	Chia-I Wu <olvaffe@gmail.com>,
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-	Maxime Ripard <mripard@kernel.org>,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	Lucas De Marchi <lucas.demarchi@intel.com>,
-	=?utf-8?q?Thomas_Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
-	Rodrigo Vivi <rodrigo.vivi@intel.com>,
-	Jason Gunthorpe <jgg@ziepe.ca>,
-	Leon Romanovsky <leon@kernel.org>,
-	Kevin Tian <kevin.tian@intel.com>,
-	Joerg Roedel <joro@8bytes.org>,
-	Will Deacon <will@kernel.org>,
-	Robin Murphy <robin.murphy@arm.com>,
-	Felix Kuehling <Felix.Kuehling@amd.com>,
-	Alex Williamson <alex@shazbot.org>,
-	Ankit Agrawal <ankita@nvidia.com>,
-	Vivek Kasireddy <vivek.kasireddy@intel.com>
-Cc: linux-media@vger.kernel.org,
-	dri-devel@lists.freedesktop.org,
-	linaro-mm-sig@lists.linaro.org,
-	linux-kernel@vger.kernel.org,
-	amd-gfx@lists.freedesktop.org,
-	virtualization@lists.linux.dev,
-	intel-xe@lists.freedesktop.org,
-	linux-rdma@vger.kernel.org,
-	iommu@lists.linux.dev,
+	dkim=pass (1024-bit key) header.d=aosc.io header.i=@aosc.io header.b="LLr1uZ2R"
+Received: from relay4.mymailcheap.com (relay4.mymailcheap.com [137.74.80.154])
+	by relay5.mymailcheap.com (Postfix) with ESMTPS id EC00926345;
+	Sat, 31 Jan 2026 06:07:45 +0000 (UTC)
+Received: from nf2.mymailcheap.com (nf2.mymailcheap.com [54.39.180.165])
+	by relay4.mymailcheap.com (Postfix) with ESMTPS id F1F8C202EF;
+	Sat, 31 Jan 2026 06:07:37 +0000 (UTC)
+Received: from mail20.mymailcheap.com (mail20.mymailcheap.com [51.83.111.147])
+	by nf2.mymailcheap.com (Postfix) with ESMTPSA id 33F5B400EA;
+	Sat, 31 Jan 2026 06:07:36 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=aosc.io; s=default;
+	t=1769839655; bh=oeog5iZO0tE/GpnDtWPS42chjSxxsQeVLLMswgVyFfc=;
+	h=From:To:Cc:Subject:Date:From;
+	b=LLr1uZ2RvxnzrGxF2U7ClmQfPams39DoMhxkR9Zk4vd/JcK7kplJGnweT5Xn1qbx6
+	 Pqh5vDcvOFRG3Emrqa//GTRTieof1nbdI/DL+VNlj1ysDTCi0AF0wvgFG3//Qz1S7y
+	 nVrI0FbF24KWZOhXytUTNXbVb3dV+VcpFz/rAT2k=
+Received: from liushuyu-p15 (unknown [117.151.13.225])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mail20.mymailcheap.com (Postfix) with ESMTPSA id EC0F840F79;
+	Sat, 31 Jan 2026 06:07:29 +0000 (UTC)
+From: Zixing Liu <liushuyu@aosc.io>
+To: WANG Xuerui <kernel@xen0n.name>,
+	Huacai Chen <chenhuacai@kernel.org>,
+	Bibo Mao <maobibo@loongson.cn>
+Cc: Kexy Biscuit <kexybiscuit@aosc.io>,
+	Mingcong Bai <jeffbai@aosc.io>,
+	Zixing Liu <liushuyu@aosc.io>,
+	Paolo Bonzini <pbonzini@redhat.com>,
+	Jonathan Corbet <corbet@lwn.net>,
+	Tianrui Zhao <zhaotianrui@loongson.cn>,
+	Paul Walmsley <pjw@kernel.org>,
+	Palmer Dabbelt <palmer@dabbelt.com>,
+	Albert Ou <aou@eecs.berkeley.edu>,
+	Alexandre Ghiti <alex@ghiti.fr>,
 	kvm@vger.kernel.org,
-	Jason Gunthorpe <jgg@nvidia.com>
-Subject: [PATCH v7 8/8] iommufd: Add dma_buf_pin()
-Date: Sat, 31 Jan 2026 07:34:18 +0200
-Message-ID: <20260131-dmabuf-revoke-v7-8-463d956bd527@nvidia.com>
+	linux-doc@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	loongarch@lists.linux.dev,
+	linux-riscv@lists.infradead.org
+Subject: [PATCH v2 RESEND] KVM: Add KVM_GET_REG_LIST ioctl for LoongArch
+Date: Sat, 31 Jan 2026 14:05:59 +0800
+Message-ID: <20260131060600.169748-1-liushuyu@aosc.io>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260131-dmabuf-revoke-v7-0-463d956bd527@nvidia.com>
-References: <20260131-dmabuf-revoke-v7-0-463d956bd527@nvidia.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-X-Mailer: b4 0.15-dev-47773
 Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: 33F5B400EA
+X-Spamd-Result: default: False [1.40 / 10.00];
+	MID_CONTAINS_FROM(1.00)[];
+	R_MISSING_CHARSET(0.50)[];
+	MIME_GOOD(-0.10)[text/plain];
+	ARC_NA(0.00)[];
+	ASN(0.00)[asn:16276, ipnet:51.83.0.0/16, country:FR];
+	RCVD_COUNT_ONE(0.00)[1];
+	RCPT_COUNT_TWELVE(0.00)[18];
+	MIME_TRACE(0.00)[0:+];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	SPFBL_URIBL_EMAIL_FAIL(0.00)[liushuyu.aosc.io:server fail];
+	URIBL_BLOCKED(0.00)[mail20.mymailcheap.com:rdns,mail20.mymailcheap.com:helo,aosc.io:email,aosc.io:from_smtp,aosc.io:mid,aosc.io:from_mime];
+	FROM_HAS_DN(0.00)[];
+	TO_DN_SOME(0.00)[];
+	FROM_EQ_ENVFROM(0.00)[];
+	TO_MATCH_ENVRCPT_SOME(0.00)[];
+	LOCAL_OUTBOUND(0.00)[];
+	RCVD_TLS_ALL(0.00)[]
+X-Rspamd-Action: no action
+X-Rspamd-Server: nf2.mymailcheap.com
 
-From: Leon Romanovsky <leonro@nvidia.com>
+This ioctl can be used by the userspace applications to determine which
+(special) registers are get/set-able in a meaningful way.
 
-IOMMUFD relies on a private protocol with VFIO, and this always operated
-in pinned mode.
+This can be very useful for cross-platform VMMs so that they do not have
+to hardcode register indices for each supported architectures.
 
-Now that VFIO can support pinned importers update IOMMUFD to invoke the
-normal dma-buf flow to request pin.
-
-This isn't enough to allow IOMMUFD to work with other exporters, it still
-needs a way to get the physical address list which is another series.
-
-IOMMUFD supports the defined revoke semantics. It immediately stops and
-fences access to the memory inside it's invalidate_mappings() callback,
-and it currently doesn't use scatterlists so doesn't call map/unmap at
-all.
-
-It is expected that a future revision can synchronously call unmap from
-the move_notify callback as well.
-
-Reviewed-by: Kevin Tian <kevin.tian@intel.com>
-Reviewed-by: Jason Gunthorpe <jgg@nvidia.com>
-Acked-by: Christian König <christian.koenig@amd.com>
-Signed-off-by: Leon Romanovsky <leonro@nvidia.com>
+Signed-off-by: Zixing Liu <liushuyu@aosc.io>
 ---
- drivers/iommu/iommufd/pages.c | 9 ++++++++-
- 1 file changed, 8 insertions(+), 1 deletion(-)
+ Documentation/virt/kvm/api.rst |  2 +-
+ arch/loongarch/kvm/vcpu.c      | 85 ++++++++++++++++++++++++++++++++++
+ 2 files changed, 86 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/iommu/iommufd/pages.c b/drivers/iommu/iommufd/pages.c
-index 76f900fa1687..a5eb2bc4ef48 100644
---- a/drivers/iommu/iommufd/pages.c
-+++ b/drivers/iommu/iommufd/pages.c
-@@ -1501,16 +1501,22 @@ static int iopt_map_dmabuf(struct iommufd_ctx *ictx, struct iopt_pages *pages,
- 		mutex_unlock(&pages->mutex);
- 	}
+diff --git a/Documentation/virt/kvm/api.rst b/Documentation/virt/kvm/api.rst
+index 01a3abef8abb..f46dd8be282f 100644
+--- a/Documentation/virt/kvm/api.rst
++++ b/Documentation/virt/kvm/api.rst
+@@ -3603,7 +3603,7 @@ VCPU matching underlying host.
+ ---------------------
  
--	rc = sym_vfio_pci_dma_buf_iommufd_map(attach, &pages->dmabuf.phys);
-+	rc = dma_buf_pin(attach);
- 	if (rc)
- 		goto err_detach;
+ :Capability: basic
+-:Architectures: arm64, mips, riscv, x86 (if KVM_CAP_ONE_REG)
++:Architectures: arm64, loongarch, mips, riscv, x86 (if KVM_CAP_ONE_REG)
+ :Type: vcpu ioctl
+ :Parameters: struct kvm_reg_list (in/out)
+ :Returns: 0 on success; -1 on error
+diff --git a/arch/loongarch/kvm/vcpu.c b/arch/loongarch/kvm/vcpu.c
+index 656b954c1134..ed11438f4544 100644
+--- a/arch/loongarch/kvm/vcpu.c
++++ b/arch/loongarch/kvm/vcpu.c
+@@ -1186,6 +1186,73 @@ static int kvm_loongarch_vcpu_set_attr(struct kvm_vcpu *vcpu,
+ 	return ret;
+ }
  
-+	rc = sym_vfio_pci_dma_buf_iommufd_map(attach, &pages->dmabuf.phys);
-+	if (rc)
-+		goto err_unpin;
++static int kvm_loongarch_walk_csrs(struct kvm_vcpu *vcpu, u64 __user *uindices)
++{
++	unsigned int i, count;
 +
- 	dma_resv_unlock(dmabuf->resv);
- 
- 	/* On success iopt_release_pages() will detach and put the dmabuf. */
- 	pages->dmabuf.attach = attach;
- 	return 0;
- 
-+err_unpin:
-+	dma_buf_unpin(attach);
- err_detach:
- 	dma_resv_unlock(dmabuf->resv);
- 	dma_buf_detach(dmabuf, attach);
-@@ -1656,6 +1662,7 @@ void iopt_release_pages(struct kref *kref)
- 	if (iopt_is_dmabuf(pages) && pages->dmabuf.attach) {
- 		struct dma_buf *dmabuf = pages->dmabuf.attach->dmabuf;
- 
-+		dma_buf_unpin(pages->dmabuf.attach);
- 		dma_buf_detach(dmabuf, pages->dmabuf.attach);
- 		dma_buf_put(dmabuf);
- 		WARN_ON(!list_empty(&pages->dmabuf.tracker));
-
++	for (i = 0, count = 0; i < CSR_MAX_NUMS; i++) {
++		if (!(get_gcsr_flag(i) & (SW_GCSR | HW_GCSR)))
++			continue;
++		const u64 reg = KVM_IOC_CSRID(i);
++		if (uindices && put_user(reg, uindices++))
++			return -EFAULT;
++		count++;
++	}
++
++	return count;
++}
++
++static unsigned long kvm_loongarch_num_lbt_regs(void)
++{
++	/* +1 for the LBT_FTOP flag (inside arch.fpu) */
++	return sizeof(struct loongarch_lbt) / sizeof(unsigned long) + 1;
++}
++
++static unsigned long kvm_loongarch_num_regs(struct kvm_vcpu *vcpu)
++{
++	/* +1 for the KVM_REG_LOONGARCH_COUNTER register */
++	unsigned long res =
++		kvm_loongarch_walk_csrs(vcpu, NULL) + KVM_MAX_CPUCFG_REGS + 1;
++
++	if (kvm_guest_has_lbt(&vcpu->arch))
++		res += kvm_loongarch_num_lbt_regs();
++
++	return res;
++}
++
++static int kvm_loongarch_copy_reg_indices(struct kvm_vcpu *vcpu,
++					  u64 __user *uindices)
++{
++	u64 reg;
++	unsigned int i;
++
++	i = kvm_loongarch_walk_csrs(vcpu, uindices);
++	if (i < 0)
++		return i;
++	uindices += i;
++
++	for (i = 0; i < KVM_MAX_CPUCFG_REGS; i++) {
++		reg = KVM_IOC_CPUCFG(i);
++		if (put_user(reg, uindices++))
++			return -EFAULT;
++	}
++
++	reg = KVM_REG_LOONGARCH_COUNTER;
++	if (put_user(reg, uindices++))
++		return -EFAULT;
++
++	if (!kvm_guest_has_lbt(&vcpu->arch))
++		return 0;
++
++	for (i = 1; i <= kvm_loongarch_num_lbt_regs(); i++) {
++		reg = (KVM_REG_LOONGARCH_LBT | KVM_REG_SIZE_U64 | i);
++		if (put_user(reg, uindices++))
++			return -EFAULT;
++	}
++
++	return 0;
++}
++
+ long kvm_arch_vcpu_ioctl(struct file *filp,
+ 			 unsigned int ioctl, unsigned long arg)
+ {
+@@ -1251,6 +1318,24 @@ long kvm_arch_vcpu_ioctl(struct file *filp,
+ 		r = kvm_loongarch_vcpu_set_attr(vcpu, &attr);
+ 		break;
+ 	}
++	case KVM_GET_REG_LIST: {
++		struct kvm_reg_list __user *user_list = argp;
++		struct kvm_reg_list reg_list;
++		unsigned n;
++
++		r = -EFAULT;
++		if (copy_from_user(&reg_list, user_list, sizeof(reg_list)))
++			break;
++		n = reg_list.n;
++		reg_list.n = kvm_loongarch_num_regs(vcpu);
++		if (copy_to_user(user_list, &reg_list, sizeof(reg_list)))
++			break;
++		r = -E2BIG;
++		if (n < reg_list.n)
++			break;
++		r = kvm_loongarch_copy_reg_indices(vcpu, user_list->reg);
++		break;
++	}
+ 	default:
+ 		r = -ENOIOCTLCMD;
+ 		break;
 -- 
 2.52.0
 
