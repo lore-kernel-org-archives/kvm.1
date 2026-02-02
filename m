@@ -1,200 +1,139 @@
-Received: from mail-wm1-f73.google.com (mail-wm1-f73.google.com [209.85.128.73])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from jpms-ob02.noc.sony.co.jp (jpms-ob02.noc.sony.co.jp [211.125.140.165])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A89192BDC32
-	for <kvm@vger.kernel.org>; Mon,  2 Feb 2026 09:57:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.73
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6BF8913DDA4;
+	Mon,  2 Feb 2026 10:01:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.125.140.165
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770026238; cv=none; b=XStL6alF+Gqlyx2aI4b5B1gxeNGMeS19Oeb9q6L+0zKkESgIS9f81IH1Ooux5xbmki7N5OQfIB3vnb8PJ1i4MaNChv66QH35fDoPCrqsA7kQeDg9sRNSiy0/VsINSRh1xQi2canRr6FVPuu7rRrvkxj91iPnwRW0aes2O6dS+ZA=
+	t=1770026511; cv=none; b=fxAYiT+igBKWcTpLh+k37x3AHMx9NJS4l4HXFfhTys9gbDmDfMFFDf8/7MOGvg2E9Yrfh2OlBGd7ENOCOT/ABP4yxOtLiUiM8WQ4XzUSXnxWhgcVXtBUiulKA6qYA82oK30l9mp6hb2No5B+J/Q8RINhz6iy7q0rStMDkxiw2Vo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770026238; c=relaxed/simple;
-	bh=McpcEFSPeqGeTz+B+AL6xVCJrRgiZy4Kf/HoS29sO+U=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=PJ49SkkvSkCap6s6118u6DpgSBhjq3LjcZSD2y+gOzZvHhgIgpYpGfVsls4IUAq61IKzWZ/6Op48lXSVzdQRArRJVUNvDdElPFM9H8Ryb8QO/3XhyzGhNRAHBeZJ2G2PTM/vqyL92QUMYWzwa09oxCTGmw0Tjq8DfGhHMnJiVTc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--tabba.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=FTGYiiSz; arc=none smtp.client-ip=209.85.128.73
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--tabba.bounces.google.com
+	s=arc-20240116; t=1770026511; c=relaxed/simple;
+	bh=rciqWe9MknIhKucUK+4wbzClj9FvwHeXsn6kPpt+wM8=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=CjEol7uscSrBu/Fn883/DfSD2IVkr0LfT1A4bygIAFgwkeJHQAeMORCjqFEpWsZkxoWTAC6g39C4E5/ucpWB9GFZIf+LDn/mAlhhekC/6Pyhb3iiWTmvV4maMB5fSGqAD/0Pnb8VWyOfhUQ78aSEKTWQ0dpOQJ2zzFOdevrwvYc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sony.com; spf=pass smtp.mailfrom=sony.com; dkim=pass (2048-bit key) header.d=sony.com header.i=@sony.com header.b=WthYmqm1; arc=none smtp.client-ip=211.125.140.165
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sony.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sony.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="FTGYiiSz"
-Received: by mail-wm1-f73.google.com with SMTP id 5b1f17b1804b1-4806fce5ab1so25593205e9.2
-        for <kvm@vger.kernel.org>; Mon, 02 Feb 2026 01:57:16 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=sony.com header.i=@sony.com header.b="WthYmqm1"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1770026235; x=1770631035; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=ENzMwMoZWO8vLhCKa/do6yK+Nqm+qfwsFu4e8Q1TWrM=;
-        b=FTGYiiSzgUr/FZMOIFl4Ht6nUAFOsq2c6oIGODIw1bF0sXM58s82KIFFESRsovpbtQ
-         uiabt/IEbtILanygzDxYsYzUP0lokzRKsaismrIFFysUTx8gPHNCRVMH/KHkQdswcCbl
-         t+6X+IGkLp09TQokGCCwWulQRt9Nqw0XIE1ttXdJsDVkLyVJXEBjucCTLQlASgUHJpVA
-         c2CqHJUf0hvqjeWBcKBkNzrqO8dZPEy06inbBecU3htRb72RPIGJ26bwzRt1juHZtl8D
-         kRFfv01uHY7h+Kte1tGlGRFJDnID9ZxzsvlByG3FpsLAf1673Q8XoDRkV0m599HcxKqO
-         TuXg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1770026235; x=1770631035;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=ENzMwMoZWO8vLhCKa/do6yK+Nqm+qfwsFu4e8Q1TWrM=;
-        b=i/T30UR0HhVnsuEfZoiHU/wmQZjshdD/rPbcNyxz2MfCkrVVijZIhW8J+JMOeNv0ZI
-         RkO98ohozM39FpZrCv8ntVwRhrQ3rj9epVe/Qb7aS/R2y5SNA0LxQFfF9XfxvKCTIdvN
-         2z2yDrh8T/L24wuAGmbZ80HjT5DJAQiBggSaXsHmITGJdP2mpeypZi4m7LWNKH61hqrK
-         ePSWZn1KSZhb6gMSAVeXAHwduaZDZrzzqUQNmP7SeM8rRFYwhVcshYI7Hnxzys94yCHw
-         41u6MisOBTwfQT5YBNPXn4dm8qCY3u/oZRaoasEmqjcwTv78xixETXqnhhGtSwP2oW5J
-         m+Bg==
-X-Forwarded-Encrypted: i=1; AJvYcCWfRoMr7vKAIS7qiM9DSuMOFjSYGv5IEw33uKufWYnnlPwe8s3QXMUjpNw2Rj6AvkyGSQE=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzMyYS5ahbUnK5lVccG0mX/Ie2SPWEtIm/4Udp4ll8PE9RqxRUd
-	IDFdJKfCDrh48uI0zEMxTQIM5Ph0aIsWrxWIIVfciBqyEFDBJpf1I5aC6QOuRz3DcKFJcsnvSJm
-	l9A==
-X-Received: from wmbdn5.prod.google.com ([2002:a05:600c:6545:b0:480:69c2:3949])
- (user=tabba job=prod-delivery.src-stubby-dispatcher) by 2002:a05:600c:82cd:b0:482:ef72:5787
- with SMTP id 5b1f17b1804b1-482ef725dc0mr51293805e9.1.1770026235054; Mon, 02
- Feb 2026 01:57:15 -0800 (PST)
-Date: Mon,  2 Feb 2026 09:57:14 +0000
-In-Reply-To: <86wm0va4ni.wl-maz@kernel.org>
+  d=sony.com; s=s1jp; t=1770026509; x=1801562509;
+  h=from:subject:date:message-id:mime-version:
+   content-transfer-encoding:to:cc;
+  bh=9aqqCS44lWCHB49Zm7J55r5rkQXnOnuoUWB3fHL0bvM=;
+  b=WthYmqm18NcKRaulODHiMrXwGk3KNmOKbApGsp+aHd/mAzUUanpb2H8a
+   yMcqfdsJlcTu5MnszvUuh0csC3XBtbZEp5j4anZFRIKP4Lc/EMRScPGaO
+   3/0Y+DplUVZrK9huDVcZKw5TyrpyjIC4nGeE2vM2hGV6kK+oHqImMJVYa
+   zyNVPmTUbQ8DOKlzU+GuOAgBJ7tOc2xODkLD/NgZL5E7MH9DRQe0aKoTK
+   ec1JfmUVIV+qix/aM3Nud5bihiFYlwJ4JGLPh54wapM/hieiCKfCsIgQl
+   Cmp8WGKnIceiUNEljFyW1t0VabUqnn1ug0P1l40vuGqcFYjAESoh+Ypbd
+   A==;
+Received: from unknown (HELO jpmta-ob1.noc.sony.co.jp) ([IPv6:2001:cf8:0:6e7::6])
+  by jpms-ob02.noc.sony.co.jp with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Feb 2026 18:51:38 +0900
+X-IronPort-AV: E=Sophos;i="6.21,268,1763391600"; 
+   d="scan'208";a="607384933"
+Received: from unknown (HELO [127.0.1.1]) ([IPv6:2001:cf8:1:573:0:dddd:6b3e:119e])
+  by jpmta-ob1.noc.sony.co.jp with ESMTP; 02 Feb 2026 18:51:37 +0900
+From: Shashank Balaji <shashank.mahadasyam@sony.com>
+Subject: [PATCH 0/3] x86/x2apic: Fix hang-up of defconfig kernel on resume
+ from s2ram
+Date: Mon, 02 Feb 2026 18:51:01 +0900
+Message-Id: <20260202-x2apic-fix-v1-0-71c8f488a88b@sony.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <86wm0va4ni.wl-maz@kernel.org>
-X-Mailer: git-send-email 2.53.0.rc1.225.gd81095ad13-goog
-Message-ID: <20260202095714.4038391-1-tabba@google.com>
-Subject: Re: [PATCH 20/20] KVM: arm64: Add debugfs file dumping computed RESx values
-From: Fuad Tabba <tabba@google.com>
-To: maz@kernel.org
-Cc: kvmarm@lists.linux.dev, linux-arm-kernel@lists.infradead.org, 
-	kvm@vger.kernel.org, joey.gouly@arm.com, suzuki.poulose@arm.com, 
-	oupton@kernel.org, yuzenghui@huawei.com, will@kernel.org, 
-	catalin.marinas@arm.com, tabba@google.com
-Content-Type: text/plain; charset="UTF-8"
+MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAIZzgGkC/x2MQQqAIBAAvyJ7TlDBsL4SHXTbai8mCiGIf086z
+ sBMg0KZqcAqGmR6ufATB+hJAN4+XiT5GAxGmVkZpWU1PjHKk6t0Fh3qYDEsCkaQMg39z7a99w8
+ R+TM4XAAAAA==
+X-Change-ID: 20260201-x2apic-fix-85c8c1b5cb90
+To: Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, 
+ Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, 
+ x86@kernel.org, "H. Peter Anvin" <hpa@zytor.com>, 
+ Suresh Siddha <suresh.b.siddha@intel.com>, 
+ "K. Y. Srinivasan" <kys@microsoft.com>, 
+ Haiyang Zhang <haiyangz@microsoft.com>, Wei Liu <wei.liu@kernel.org>, 
+ Dexuan Cui <decui@microsoft.com>, Long Li <longli@microsoft.com>, 
+ Ajay Kaher <ajay.kaher@broadcom.com>, 
+ Alexey Makhalov <alexey.makhalov@broadcom.com>, 
+ Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>, 
+ Jan Kiszka <jan.kiszka@siemens.com>, Paolo Bonzini <pbonzini@redhat.com>, 
+ Vitaly Kuznetsov <vkuznets@redhat.com>, Juergen Gross <jgross@suse.com>, 
+ Boris Ostrovsky <boris.ostrovsky@oracle.com>
+Cc: Ingo Molnar <mingo@elte.hu>, linux-kernel@vger.kernel.org, 
+ linux-hyperv@vger.kernel.org, virtualization@lists.linux.dev, 
+ jailhouse-dev@googlegroups.com, kvm@vger.kernel.org, 
+ xen-devel@lists.xenproject.org, Rahul Bukte <rahul.bukte@sony.com>, 
+ Shashank Balaji <shashank.mahadasyam@sony.com>, 
+ Daniel Palmer <daniel.palmer@sony.com>, Tim Bird <tim.bird@sony.com>, 
+ stable@vger.kernel.org
+X-Mailer: b4 0.14.3
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2357;
+ i=shashank.mahadasyam@sony.com; h=from:subject:message-id;
+ bh=rciqWe9MknIhKucUK+4wbzClj9FvwHeXsn6kPpt+wM8=;
+ b=owGbwMvMwCU2bX1+URVTXyjjabUkhsyG4hXbtvp/s2L/pXvGSPVq9wtGQUU/0+sZWw9OOKhfs
+ jfkl8CHjlIWBjEuBlkxRZZSpepfe1cELek581oRZg4rE8gQBi5OAZhIlhTD/8DScGFBO6NF8ydO
+ ftFcVXsmfwpX6p0FupNYLebce84rq8zI0Cddbi5zcoJG8MkZzSbn5D/+eMqwb04Pw8ycnOdp7hW
+ XuQA=
+X-Developer-Key: i=shashank.mahadasyam@sony.com; a=openpgp;
+ fpr=75227BFABDA852A48CCCEB2196AF6F727A028E55
 
-...
+On resume from s2ram, a defconfig kernel gets into a state where the x2apic
+hardware state and the kernel's perceived state are different.
 
->
-> Yes please. We might as well do the right thing, and I can fold that
-> into my current series with you as a co-author.
->
-> Thanks,
+On boot, x2apic is enabled by the firmware, and then the kernel does the
+following (relevant lines from dmesg):
 
-Here you go.
+	[    0.000381] x2apic: enabled by BIOS, switching to x2apic ops
+	[    0.009939] APIC: Switched APIC routing to: cluster x2apic
+	[    0.095151] x2apic: IRQ remapping doesn't support X2APIC mode
+	[    0.095154] x2apic disabled
+	[    0.095551] APIC: Switched APIC routing to: physical flat
 
-Cheers,
-/fuad
+defconfig has CONFIG_IRQ_REMAP=n, which leads to x2apic being disabled,
+because on bare metal, x2apic has an architectural dependence on interrupt
+remapping.
 
+While resuming from s2ram, x2apic is enabled again by the firmware, but
+the kernel continues using the physical flat apic routing. This causes a
+hang-up and no console output.
+
+Patch 1 fixes this in lapic_resume by disabling x2apic when the kernel expects
+it to be disabled.
+Patch 2 enables CONFIG_IRQ_REMAP in defconfig so that defconfig kernels at
+least don't disable x2apic because of a lack of IRQ_REMAP support.
+Patch 3 is a non-functional change renaming x2apic_available to
+x2apic_without_ir_available in struct x86_hyper_init, to better convey
+the semantic.
+
+Signed-off-by: Rahul Bukte <rahul.bukte@sony.com>
+Signed-off-by: Shashank Balaji <shashank.mahadasyam@sony.com>
 ---
- arch/arm64/include/asm/kvm_host.h |  1 -
- arch/arm64/kvm/sys_regs.c         | 42 +++++--------------------------
- 2 files changed, 6 insertions(+), 37 deletions(-)
+Shashank Balaji (3):
+      x86/x2apic: disable x2apic on resume if the kernel expects so
+      x86/defconfig: add CONFIG_IRQ_REMAP
+      x86/virt: rename x2apic_available to x2apic_without_ir_available
 
-diff --git a/arch/arm64/include/asm/kvm_host.h b/arch/arm64/include/asm/kvm_host.h
-index 54072f6ec9d4..c82b071ade2a 100644
---- a/arch/arm64/include/asm/kvm_host.h
-+++ b/arch/arm64/include/asm/kvm_host.h
-@@ -375,7 +375,6 @@ struct kvm_arch {
- 
- 	/* Iterator for idreg debugfs */
- 	u8	idreg_debugfs_iter;
--	u16	sr_resx_iter;
- 
- 	/* Hypercall features firmware registers' descriptor */
- 	struct kvm_smccc_features smccc_feat;
-diff --git a/arch/arm64/kvm/sys_regs.c b/arch/arm64/kvm/sys_regs.c
-index f3f92b489b58..d33c39ea8fad 100644
---- a/arch/arm64/kvm/sys_regs.c
-+++ b/arch/arm64/kvm/sys_regs.c
-@@ -5090,7 +5090,7 @@ static const struct seq_operations idregs_debug_sops = {
- 
- DEFINE_SEQ_ATTRIBUTE(idregs_debug);
- 
--static const struct sys_reg_desc *sr_resx_find(struct kvm *kvm, u16 pos)
-+static const struct sys_reg_desc *sr_resx_find(struct kvm *kvm, loff_t pos)
- {
- 	unsigned long i, sr_idx = 0;
- 
-@@ -5100,10 +5100,8 @@ static const struct sys_reg_desc *sr_resx_find(struct kvm *kvm, u16 pos)
- 		if (r->reg < __SANITISED_REG_START__)
- 			continue;
- 
--		if (sr_idx == pos)
-+		if (sr_idx++ == pos)
- 			return r;
--
--		sr_idx++;
- 	}
- 
- 	return NULL;
-@@ -5112,22 +5110,11 @@ static const struct sys_reg_desc *sr_resx_find(struct kvm *kvm, u16 pos)
- static void *sr_resx_start(struct seq_file *s, loff_t *pos)
- {
- 	struct kvm *kvm = s->private;
--	u16 *iter;
--
--	guard(mutex)(&kvm->arch.config_lock);
- 
- 	if (!kvm->arch.sysreg_masks)
- 		return NULL;
- 
--	iter = &kvm->arch.sr_resx_iter;
--	if (*iter != (u16)~0)
--		return ERR_PTR(-EBUSY);
--
--	*iter = *pos;
--	if (!sr_resx_find(kvm, *iter))
--		iter = NULL;
--
--	return iter;
-+	return (void *)sr_resx_find(kvm, *pos);
- }
- 
- static void *sr_resx_next(struct seq_file *s, void *v, loff_t *pos)
-@@ -5136,36 +5123,20 @@ static void *sr_resx_next(struct seq_file *s, void *v, loff_t *pos)
- 
- 	(*pos)++;
- 
--	if (sr_resx_find(kvm, kvm->arch.sr_resx_iter + 1)) {
--		kvm->arch.sr_resx_iter++;
--
--		return &kvm->arch.sr_resx_iter;
--	}
--
--	return NULL;
-+	return (void *)sr_resx_find(kvm, *pos);
- }
- 
- static void sr_resx_stop(struct seq_file *s, void *v)
- {
--	struct kvm *kvm = s->private;
--
--	if (IS_ERR(v))
--		return;
--
--	guard(mutex)(&kvm->arch.config_lock);
--
--	kvm->arch.sr_resx_iter = ~0;
- }
- 
- static int sr_resx_show(struct seq_file *s, void *v)
- {
--	const struct sys_reg_desc *desc;
-+	const struct sys_reg_desc *desc = v;
- 	struct kvm *kvm = s->private;
- 	struct resx resx;
- 
--	desc = sr_resx_find(kvm, kvm->arch.sr_resx_iter);
--
--	if (!desc->name)
-+	if (!desc)
- 		return 0;
- 
- 	resx = kvm_get_sysreg_resx(kvm, desc->reg);
-@@ -5188,7 +5159,6 @@ DEFINE_SEQ_ATTRIBUTE(sr_resx);
- void kvm_sys_regs_create_debugfs(struct kvm *kvm)
- {
- 	kvm->arch.idreg_debugfs_iter = ~0;
--	kvm->arch.sr_resx_iter = ~0;
- 
- 	debugfs_create_file("idregs", 0444, kvm->debugfs_dentry, kvm,
- 			    &idregs_debug_fops);
+ arch/x86/configs/x86_64_defconfig |  1 +
+ arch/x86/include/asm/x86_init.h   |  4 ++--
+ arch/x86/kernel/apic/apic.c       | 10 ++++++++--
+ arch/x86/kernel/cpu/acrn.c        |  2 +-
+ arch/x86/kernel/cpu/bhyve.c       |  2 +-
+ arch/x86/kernel/cpu/mshyperv.c    |  2 +-
+ arch/x86/kernel/cpu/vmware.c      |  2 +-
+ arch/x86/kernel/jailhouse.c       |  2 +-
+ arch/x86/kernel/kvm.c             |  2 +-
+ arch/x86/kernel/x86_init.c        | 12 ++++++------
+ arch/x86/xen/enlighten_hvm.c      |  4 ++--
+ 11 files changed, 25 insertions(+), 18 deletions(-)
+---
+base-commit: 18f7fcd5e69a04df57b563360b88be72471d6b62
+change-id: 20260201-x2apic-fix-85c8c1b5cb90
+
+Best regards,
 -- 
-2.53.0.rc1.225.gd81095ad13-goog
+Shashank Balaji <shashank.mahadasyam@sony.com>
 
