@@ -1,154 +1,203 @@
-Received: from mail-lj1-f177.google.com (mail-lj1-f177.google.com [209.85.208.177])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B8902D6407
-	for <kvm@vger.kernel.org>; Mon,  2 Feb 2026 18:15:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.208.177
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770056128; cv=pass; b=Gn7vvBcgTolnr7UOJ3m01MbehLbFlPDXdmQw+EzgeNUO4RZYUEmFaqM4/BMsG7uxfzTTVm8dfdYe1c+ZPTNek93niIlZeCW+n2pfLR0kzjloitbn+K2aM2ArhEiilOprTiVVWuejDre4sxBNXVwqbEwOI0GxLTIZNDBQQDo5oKU=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770056128; c=relaxed/simple;
-	bh=hfLkISPUv1gvXr1CboqWBn1bs3Sd5IoZNOLzZg55skM=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=iF3+Vcj9hY3LFdVkbqT7NpezdvuXAj73tke4Ebb5qL/3YekiQctX4+cJoZ5yWpqzrbFupi+5+yM6Y0cB4Qa1MnYffbUi487OBQ5S2WCMOpDgRZUO8+Ne/irZGx2WCaWqo38gfpfQqPkpphWIM+XEm+iZ8HvOyYRXz8EcJ7UhPVM=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=PSJ2pVDb; arc=pass smtp.client-ip=209.85.208.177
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D1BC2F2910;
+	Mon,  2 Feb 2026 18:43:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1770057821; cv=none; b=PqIz9JEVQUilbPeOQGbjxyPPRB8ZTn9437SjaWtTlRvTriJEDelTqXoVf7MkHu3k1tgtk9cw6W35cbwxOkoQC2U0EocQKELTv6HD5iTt77otvvJrV1YqZJ8bi2bTELHo8kizEY1n0Tgha8rpIhMicz5Oz8zqItSM1gR7EgG5ICw=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1770057821; c=relaxed/simple;
+	bh=OSxH32TQzryKo3od0stS3xvAyRicv7+HSLT6GHC//Yc=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=UCSL6hQyv/gdl4uEgiXx0m3k2xF7au1Sd61CnLG3T+CDSSLNv6Q+5Jw4Jv0l5vpxE/isxqNNTvxj+o4NZCkhW4Mlc5m8gbSHH/LpO2d72BOr/oTUjTquo2frTqU7BQ6UnqRVG1OOc91YnRa99hUD0ohGNuRqP40ajf84MxasQyE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=rV1Gbqko; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="PSJ2pVDb"
-Received: by mail-lj1-f177.google.com with SMTP id 38308e7fff4ca-385bdc72422so40698151fa.1
-        for <kvm@vger.kernel.org>; Mon, 02 Feb 2026 10:15:26 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1770056125; cv=none;
-        d=google.com; s=arc-20240605;
-        b=BvrWDPvOxXS4jDJEH0JOq4z52ZQpLq3SdIhXheJKqHWVa9oU7/xm+3wruQ4rbHPGpf
-         8ChAGvIp4P/0a1B16kkTNQZvtmyD4N7mSFVY5zwWIXOH+AQpqYi0w5+9pkuFICZ9tvzU
-         UBcoYCgWX+WAILI8aTSUEeWzupaY9kTiM3svxYK36SIu+Wvx4xF/LaxmWEJ09t3l234f
-         iZ3GLwi1Q5LSc1M5apT78lTbUhEIsLeB9R+Ft1xaZhFSJRIkE/2MgE8syH7zE+Kjxc92
-         sJncFmNUQ+BmiRH0ssd8o9gQjlDs7kwCREs6jLUIXi8WAh2tq8xLMD0dmr9KF2fbWVCq
-         lNFw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=LIHmbN0vtM4SeA7+jGmffdOqzfQaVyhc47MhdLc1+1s=;
-        fh=7U87KjgqShi4UURLQFlzyVwaUW+uzy1lyOLm1LCammQ=;
-        b=AE1FprTCpZfWYWff24dV//qSmbeBK5TSeVSlWUYk7GuQRhQtGbKJkDkkNm58QnMhw8
-         cWaQTnTyEVsU/Njd/3fRDnEihsEpoNFqRP3Le0R0pz73Y/Zvvy9v9Uivtu54w0mDQ9ng
-         ERF2AjXjt1aeoX5SNjfm6istkxnMUvNTUGuDapDrjdCFeN2Lh0R4hwHfmjVmBi/whvPQ
-         aiuYApSFpf3SS2amiL9aVX4xZkDtWFwTbuzHUVM4gXoqjEb62EEhzfoQtIIuBjhwCuLZ
-         lGYae8zbij/UcDk7WYA2Uc0TaX/WeJzVOcg+Oi2jSQpSckrlK9zSj3PEBVHh15OpQIYG
-         81Ig==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1770056125; x=1770660925; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=LIHmbN0vtM4SeA7+jGmffdOqzfQaVyhc47MhdLc1+1s=;
-        b=PSJ2pVDbNQVnPXrXNjymko4FOE40C743kvBmJ86NLSh4GircZENoqWveK5OWNMFOO9
-         GpNsC5mwmhTxifUlf/daWGwYTrtNmBzSI9eXvPrODcez7DbDVIYiqvcyBy8amLYrrxVp
-         DLhTd6QbiVH1AZJlMuR6iTv3Niiaa2lm5P9p2E6o7tcArvBjQTQzHxA7WxzzMWq7visY
-         Ddj+8fe+ab5vxCLuvIu9gW3nb9y1abZAGX4BKFdWVZfyFeTp3yFB593U7yT/3WYrmVXT
-         hClbGiN6g1pDtf0H+z9QDhit5pfuUP7PHyl+0qS9jvPbM1Ti2diqJ0edF/uO0rC2wXpJ
-         ZfNg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1770056125; x=1770660925;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=LIHmbN0vtM4SeA7+jGmffdOqzfQaVyhc47MhdLc1+1s=;
-        b=bZkRL/vY62a3HJ94c/1bRmcTeLCasiesqqu4rbMKRITw30783vD/EEBpD8woHgFLAO
-         P/PrcXmiZjvkFV9qYbTxtsC/5fsk8Uoi2GS8PJzwgJYfyCfaAHlY5/bT6VbCj8t+hO21
-         x5KuElFxUKXElEJZj7eiEBG1I+H1wJoTJctaN6QpSEQO5Jyxyv5PxJnFegYzeLogzzHa
-         oIMK1M97bIWLvMZKVUI5XjTp2PCVic07eyVr4t8XTxl1Pzb1e38SldkcVQnNgz1FjxxD
-         9HOijLKYBkOr3PshHIDO+3uA3bGLVozsoRIv276G6i1s1lubnQfBwel5tL7gI8ku/G9M
-         /ddA==
-X-Forwarded-Encrypted: i=1; AJvYcCUtf4A5k1ZSFqVU342ZPfj5ZN+E+6Xl3ztWyalKoYxheqd5+gTS/cW7Ht2sevU1r26FsOY=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwCGtAfZ3/sAasxx2HnVn60cGtVKMqnpp+JB4NM9zl46jAZVhJL
-	jRNFt6R5M7ci4EfXx/qsnuuJhqNRyhCcqvzSWG4uGFjDMcyGUtlRdA3UhhxW21fSTPI4mcNpLu+
-	ewN0Xu53eXByYWvnL+t7dQEZRWM2FtkTb6lck7sir
-X-Gm-Gg: AZuq6aLGbyqnhgjdUTY+o4eNwFEgs3irkwUwHk+rhWOmUgtxH1li4dPXbcXPlkaViKr
-	OC4/CMMWv6nMTSiP3x48KbQP3YTgAsW3yJcciKyLCraBLeKx0ceVIVJmAdqIJrVHiZgBbPGP0Yz
-	vBX6tcbLi7vHJxb2cCLTQ49+wN5CJSKsrNl+/f/0Whb3RZMALscAHkRJkdVBakJEICzX2bmd3ns
-	lZjmHA6x8U4Aeby80dGASgyP33n57T8mQTCmyT32ysBcvvw0mmfKd87LamJJ5ONnhD6IA==
-X-Received: by 2002:a2e:a54b:0:b0:383:1c18:ade6 with SMTP id
- 38308e7fff4ca-3864662d728mr40696471fa.20.1770056124374; Mon, 02 Feb 2026
- 10:15:24 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="rV1Gbqko"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2B12FC19422;
+	Mon,  2 Feb 2026 18:43:41 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1770057821;
+	bh=OSxH32TQzryKo3od0stS3xvAyRicv7+HSLT6GHC//Yc=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=rV1Gbqkowyj0pAlqGBjth4/chueJfCVe686kdAxiKO9k6qpSqZk9LJFy/Cgc4T747
+	 Hu46aGquen8EjbmdtSPAkRXHDTEuDVyo0ivtQgNYwHuVEuv26PXscj317MkpJeLqfo
+	 TUT57AgKyaQdvZhdgvADO9pNwt0t6c4cLa53YGlgyZUc7I7cIwIj0IIA0HOuIyJAii
+	 OguDr/rgaV+FfYyi5fM7GpJLW6gjfZWUipbYf+zgFeeMjAkKa3gLfRQVps8M7JtqRS
+	 jr4PVrmZj+SLrPvHONuNOi75IIt/f6po0fsfYQ/MAx4/hyBaUzXP/6sCBS1tKH4Sft
+	 PdYNfcUs5h3hQ==
+Received: from sofa.misterjones.org ([185.219.108.64] helo=valley-girl.lan)
+	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.98.2)
+	(envelope-from <maz@kernel.org>)
+	id 1vmyte-00000007sAy-3tW5;
+	Mon, 02 Feb 2026 18:43:39 +0000
+From: Marc Zyngier <maz@kernel.org>
+To: kvmarm@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org,
+	kvm@vger.kernel.org
+Cc: Joey Gouly <joey.gouly@arm.com>,
+	Suzuki K Poulose <suzuki.poulose@arm.com>,
+	Oliver Upton <oupton@kernel.org>,
+	Zenghui Yu <yuzenghui@huawei.com>,
+	Fuad Tabba <tabba@google.com>,
+	Will Deacon <will@kernel.org>,
+	Catalin Marinas <catalin.marinas@arm.com>
+Subject: [PATCH v2 01/20] arm64: Convert SCTLR_EL2 to sysreg infrastructure
+Date: Mon,  2 Feb 2026 18:43:10 +0000
+Message-ID: <20260202184329.2724080-2-maz@kernel.org>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20260202184329.2724080-1-maz@kernel.org>
+References: <20260202184329.2724080-1-maz@kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260129212510.967611-1-dmatlack@google.com> <20260129212510.967611-3-dmatlack@google.com>
- <44484594-5b5d-4237-993c-ac1e173ad62e@linux.dev>
-In-Reply-To: <44484594-5b5d-4237-993c-ac1e173ad62e@linux.dev>
-From: David Matlack <dmatlack@google.com>
-Date: Mon, 2 Feb 2026 10:14:56 -0800
-X-Gm-Features: AZwV_QhgTJZ7rnxODmCU1qhjsI1pWSHh1k-rPTozueyr5OUveeJ2FC59ISanCNo
-Message-ID: <CALzav=d1ZrHrWd-HhZJ8aY6aqxkBcLoet_5+-LL1mOakVTj6Ww@mail.gmail.com>
-Subject: Re: [PATCH v2 02/22] PCI: Add API to track PCI devices preserved
- across Live Update
-To: Zhu Yanjun <yanjun.zhu@linux.dev>
-Cc: Alex Williamson <alex@shazbot.org>, Adithya Jayachandran <ajayachandra@nvidia.com>, 
-	Alexander Graf <graf@amazon.com>, Alex Mastro <amastro@fb.com>, Alistair Popple <apopple@nvidia.com>, 
-	Andrew Morton <akpm@linux-foundation.org>, Ankit Agrawal <ankita@nvidia.com>, 
-	Bjorn Helgaas <bhelgaas@google.com>, Chris Li <chrisl@kernel.org>, 
-	David Rientjes <rientjes@google.com>, Jacob Pan <jacob.pan@linux.microsoft.com>, 
-	Jason Gunthorpe <jgg@nvidia.com>, Jason Gunthorpe <jgg@ziepe.ca>, Jonathan Corbet <corbet@lwn.net>, 
-	Josh Hilke <jrhilke@google.com>, Kevin Tian <kevin.tian@intel.com>, kexec@lists.infradead.org, 
-	kvm@vger.kernel.org, Leon Romanovsky <leon@kernel.org>, Leon Romanovsky <leonro@nvidia.com>, 
-	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-kselftest@vger.kernel.org, linux-mm@kvack.org, 
-	linux-pci@vger.kernel.org, Lukas Wunner <lukas@wunner.de>, 
-	=?UTF-8?Q?Micha=C5=82_Winiarski?= <michal.winiarski@intel.com>, 
-	Mike Rapoport <rppt@kernel.org>, Parav Pandit <parav@nvidia.com>, 
-	Pasha Tatashin <pasha.tatashin@soleen.com>, Pranjal Shrivastava <praan@google.com>, 
-	Pratyush Yadav <pratyush@kernel.org>, Raghavendra Rao Ananta <rananta@google.com>, 
-	Rodrigo Vivi <rodrigo.vivi@intel.com>, Saeed Mahameed <saeedm@nvidia.com>, 
-	Samiullah Khawaja <skhawaja@google.com>, Shuah Khan <skhan@linuxfoundation.org>, 
-	=?UTF-8?Q?Thomas_Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>, 
-	Tomita Moeko <tomitamoeko@gmail.com>, Vipin Sharma <vipinsh@google.com>, 
-	Vivek Kasireddy <vivek.kasireddy@intel.com>, William Tu <witu@nvidia.com>, Yi Liu <yi.l.liu@intel.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+X-SA-Exim-Connect-IP: 185.219.108.64
+X-SA-Exim-Rcpt-To: kvmarm@lists.linux.dev, linux-arm-kernel@lists.infradead.org, kvm@vger.kernel.org, joey.gouly@arm.com, suzuki.poulose@arm.com, oupton@kernel.org, yuzenghui@huawei.com, tabba@google.com, will@kernel.org, catalin.marinas@arm.com
+X-SA-Exim-Mail-From: maz@kernel.org
+X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
 
-On Sat, Jan 31, 2026 at 10:38=E2=80=AFPM Zhu Yanjun <yanjun.zhu@linux.dev> =
-wrote:
->
-> =E5=9C=A8 2026/1/29 13:24, David Matlack =E5=86=99=E9=81=93:
-> > Add an API to enable the PCI subsystem to track all devices that are
-> > preserved across a Live Update, including both incoming devices (passed
-> > from the previous kernel) and outgoing devices (passed to the next
-> > kernel).
-> >
-> > Use PCI segment number and BDF to keep track of devices across Live
-> > Update. This means the kernel must keep both identifiers constant acros=
-s
-> > a Live Update for any preserved device. VFs are not supported for now,
-> > since that requires preserving SR-IOV state on the device to ensure the
-> > same number of VFs appear after kexec and with the same BDFs.
-> >
-> > Drivers that preserve devices across Live Update can now register their
-> > struct liveupdate_file_handler with the PCI subsystem so that the PCI
-> > subsystem can allocate and manage File-Lifecycle-Bound (FLB) global dat=
-a
-> > to track the list of incoming and outgoing preserved devices.
-> >
-> >    pci_liveupdate_register_fh(driver_fh)
-> >    pci_liveupdate_unregister_fh(driver_fh)
->
-> Can the above 2 functions support the virtual devices? For example,
-> bonding, veth, iSWAP and RXE.
->
-> These virtual devices do not have BDF. As such, I am not sure if your
-> patches take these virtual devices in to account.
+Convert SCTLR_EL2 to the sysreg infrastructure, as per the 2025-12_rel
+revision of the Registers.json file.
 
-No this patch series only supports PCI devices, since those are the
-only devices so far we've needed to support.
+Note that we slightly deviate from the above, as we stick to the ARM
+ARM M.a definition of SCTLR_EL2[9], which is RES0, in order to avoid
+dragging the POE2 definitions...
 
-I am not familiar with any of the devices that you mentioned. If they
-are virtual then does that mean it's all just software? In that case I
-would be curious to know what problem is solved by preserving them in
-the kernel, vs. tearing them down and rebuilding them across a Live
-Udpate.
+Reviewed-by: Fuad Tabba <tabba@google.com>
+Signed-off-by: Marc Zyngier <maz@kernel.org>
+---
+ arch/arm64/include/asm/sysreg.h       |  7 ---
+ arch/arm64/tools/sysreg               | 69 +++++++++++++++++++++++++++
+ tools/arch/arm64/include/asm/sysreg.h |  6 ---
+ 3 files changed, 69 insertions(+), 13 deletions(-)
+
+diff --git a/arch/arm64/include/asm/sysreg.h b/arch/arm64/include/asm/sysreg.h
+index 939f9c5bbae67..30f0409b1c802 100644
+--- a/arch/arm64/include/asm/sysreg.h
++++ b/arch/arm64/include/asm/sysreg.h
+@@ -504,7 +504,6 @@
+ #define SYS_VPIDR_EL2			sys_reg(3, 4, 0, 0, 0)
+ #define SYS_VMPIDR_EL2			sys_reg(3, 4, 0, 0, 5)
+ 
+-#define SYS_SCTLR_EL2			sys_reg(3, 4, 1, 0, 0)
+ #define SYS_ACTLR_EL2			sys_reg(3, 4, 1, 0, 1)
+ #define SYS_SCTLR2_EL2			sys_reg(3, 4, 1, 0, 3)
+ #define SYS_HCR_EL2			sys_reg(3, 4, 1, 1, 0)
+@@ -837,12 +836,6 @@
+ #define SCTLR_ELx_A	 (BIT(1))
+ #define SCTLR_ELx_M	 (BIT(0))
+ 
+-/* SCTLR_EL2 specific flags. */
+-#define SCTLR_EL2_RES1	((BIT(4))  | (BIT(5))  | (BIT(11)) | (BIT(16)) | \
+-			 (BIT(18)) | (BIT(22)) | (BIT(23)) | (BIT(28)) | \
+-			 (BIT(29)))
+-
+-#define SCTLR_EL2_BT	(BIT(36))
+ #ifdef CONFIG_CPU_BIG_ENDIAN
+ #define ENDIAN_SET_EL2		SCTLR_ELx_EE
+ #else
+diff --git a/arch/arm64/tools/sysreg b/arch/arm64/tools/sysreg
+index a0f6249bd4f98..969a75615d612 100644
+--- a/arch/arm64/tools/sysreg
++++ b/arch/arm64/tools/sysreg
+@@ -3749,6 +3749,75 @@ UnsignedEnum	2:0	F8S1
+ EndEnum
+ EndSysreg
+ 
++Sysreg	SCTLR_EL2	3	4	1	0	0
++Field	63	TIDCP
++Field	62	SPINTMASK
++Field	61	NMI
++Field	60	EnTP2
++Field	59	TCSO
++Field	58	TCSO0
++Field	57	EPAN
++Field	56	EnALS
++Field	55	EnAS0
++Field	54	EnASR
++Res0	53:50
++Field	49:46	TWEDEL
++Field	45	TWEDEn
++Field	44	DSSBS
++Field	43	ATA
++Field	42	ATA0
++Enum	41:40	TCF
++	0b00	NONE
++	0b01	SYNC
++	0b10	ASYNC
++	0b11	ASYMM
++EndEnum
++Enum	39:38	TCF0
++	0b00	NONE
++	0b01	SYNC
++	0b10	ASYNC
++	0b11	ASYMM
++EndEnum
++Field	37	ITFSB
++Field	36	BT
++Field	35	BT0
++Field	34	EnFPM
++Field	33	MSCEn
++Field	32	CMOW
++Field	31	EnIA
++Field	30	EnIB
++Field	29	LSMAOE
++Field	28	nTLSMD
++Field	27	EnDA
++Field	26	UCI
++Field	25	EE
++Field	24	E0E
++Field	23	SPAN
++Field	22	EIS
++Field	21	IESB
++Field	20	TSCXT
++Field	19	WXN
++Field	18	nTWE
++Res0	17
++Field	16	nTWI
++Field	15	UCT
++Field	14	DZE
++Field	13	EnDB
++Field	12	I
++Field	11	EOS
++Field	10	EnRCTX
++Res0	9
++Field	8	SED
++Field	7	ITD
++Field	6	nAA
++Field	5	CP15BEN
++Field	4	SA0
++Field	3	SA
++Field	2	C
++Field	1	A
++Field	0	M
++EndSysreg
++
+ Sysreg	HCR_EL2		3	4	1	1	0
+ Field	63:60	TWEDEL
+ Field	59	TWEDEn
+diff --git a/tools/arch/arm64/include/asm/sysreg.h b/tools/arch/arm64/include/asm/sysreg.h
+index 178b7322bf049..f75efe98e9df3 100644
+--- a/tools/arch/arm64/include/asm/sysreg.h
++++ b/tools/arch/arm64/include/asm/sysreg.h
+@@ -847,12 +847,6 @@
+ #define SCTLR_ELx_A	 (BIT(1))
+ #define SCTLR_ELx_M	 (BIT(0))
+ 
+-/* SCTLR_EL2 specific flags. */
+-#define SCTLR_EL2_RES1	((BIT(4))  | (BIT(5))  | (BIT(11)) | (BIT(16)) | \
+-			 (BIT(18)) | (BIT(22)) | (BIT(23)) | (BIT(28)) | \
+-			 (BIT(29)))
+-
+-#define SCTLR_EL2_BT	(BIT(36))
+ #ifdef CONFIG_CPU_BIG_ENDIAN
+ #define ENDIAN_SET_EL2		SCTLR_ELx_EE
+ #else
+-- 
+2.47.3
+
