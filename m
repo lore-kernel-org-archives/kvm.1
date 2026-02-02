@@ -1,36 +1,37 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D1412F12AE;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5C062F361E;
 	Mon,  2 Feb 2026 18:43:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770057821; cv=none; b=ZyX3d+yBviSmIvJc/IsT/gtY3DXH5P14mw5AJJBlIzJ27xcG5lnKHcZAh+GyFLHpYa44Om/c3rYqX3VmDFyzn13U/KdtbC7rhCu5mIXkrzySVnfDokPG74oyEeUwTGfrVxu+LNmj9RmLTfODSMdewXTQ5FmiiYeuLxgEL2JsFI8=
+	t=1770057821; cv=none; b=F73yHZDur8i1Rmow/h6/uNkbKf2046rWNx2omR4KoDHO6N/o+nImLCYjeFwLbfPO4ICcgHmvLlioJmHfUqq/xabTWXvL5XyXcIBW80r+wecSKuitkBpeqXHSvnSUie3B1vNBiShnXIaqkG4CFNGnosomYeiKZQ4J2qDtf2lPS0Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1770057821; c=relaxed/simple;
-	bh=bLqTU9IRK/P5BfC/WRSUY7H5idKZKHvYB30haHzcFsY=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=mDMLLn1IsIJMfkSOzjzBc2CmBc4Qemvjf41iepE/lNvQ8x+zBqAM6xc749z3AWT7/8xjEYSIFf5f6cbqE4Q5VW9eDIQCy+OAH76TX9+8TmsFWA0DX3XtryvUl/nnnOyvKBhZ7AaQGkvmxkcXTJq54giMXavVI5nsiO6ysUj6Xwo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QIDroI2u; arc=none smtp.client-ip=10.30.226.201
+	bh=cUnL9eI2TSfY3RnxpVHdkNXGQe+TOBMqJnePql0UexQ=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=AgImmt7bcoHrmWAODs6I+trh6/SY5cfdZKelFeTcGCVRifxx1rh9l6HJb1yp9+hDf2b1StlQi50CkaJRzuWAb28zFVuBeksAONR8vUj13Jcu7XXToFIIE4D9wnBeBSqA+HTWIGQkfcjFjmNGv3FSyQn3lWk7jOmuMnuxJ+/7OvY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VO78txqj; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QIDroI2u"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 290C7C116C6;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VO78txqj"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 75EBEC4AF09;
 	Mon,  2 Feb 2026 18:43:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1770057821;
-	bh=bLqTU9IRK/P5BfC/WRSUY7H5idKZKHvYB30haHzcFsY=;
-	h=From:To:Cc:Subject:Date:From;
-	b=QIDroI2uQ5KwG245M83Ix7pyJM85+KNclxYYYMlvZgjw3hU9fdYeLCAUchfYXa4Nd
-	 OJ4jSSog6RjK8vKlOURzvc3Q62NLi+euYjlYWl6sNRdUCrkadO4J8yDol6fJwTGuxG
-	 O0/W9dWzDhegPlbkwQ9GApjTp7XoPbkpD3qkWJ1WKPjJ1et9DqD0C9zolKhKzPHrCJ
-	 5r4VKXPjOQz06l0m21MWLg6cp5Z6ZmzIE3R7hFk5qs9/tAndKCs5P7mmHYI78K2pAb
-	 kYAUpYWChP1k0ffjQzIH2CXx5hmgf1XYYG7YRzaTIg/p4DqsksDRo4cQm472tq6jrS
-	 88OHKUMRebV9Q==
+	bh=cUnL9eI2TSfY3RnxpVHdkNXGQe+TOBMqJnePql0UexQ=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=VO78txqjV6lePEwq8COso/WXxK2jYKEMnsM87fTD+kYoIzL0fw/eiy3TbF4rKyrFK
+	 RU2nJnDL7GBIn7YNn3YEmOn2d9kHcgFyhM6Z9Uwy50w7a3QLq4zotaGLA3d8u1qMQE
+	 2TItg7sn3ki1Fk6Pf8F2et2J0EE503gV4VJdMIBGgsuBFtyDrCi+XekiyzT0opPhcQ
+	 GLXqnxjU88Zxv5UFD/Q4OvyQdwQhRuxNQ6LpqdNFtbh440Z1s4HeAn6bTQXC1xYPS4
+	 4vaHhf9Rt09MY4k5DvpECR8DzlzmEg35/bX9pNMKxai7VmEsR/XqTuZsRhh5n5CwH/
+	 xclZx5fb0Hxpw==
 Received: from sofa.misterjones.org ([185.219.108.64] helo=valley-girl.lan)
 	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.98.2)
 	(envelope-from <maz@kernel.org>)
-	id 1vmyte-00000007sAy-2ppV;
-	Mon, 02 Feb 2026 18:43:38 +0000
+	id 1vmytf-00000007sAy-1e3n;
+	Mon, 02 Feb 2026 18:43:39 +0000
 From: Marc Zyngier <maz@kernel.org>
 To: kvmarm@lists.linux.dev,
 	linux-arm-kernel@lists.infradead.org,
@@ -42,10 +43,12 @@ Cc: Joey Gouly <joey.gouly@arm.com>,
 	Fuad Tabba <tabba@google.com>,
 	Will Deacon <will@kernel.org>,
 	Catalin Marinas <catalin.marinas@arm.com>
-Subject: [PATCH v2 00/20] KVM: arm64: Generalise RESx handling
-Date: Mon,  2 Feb 2026 18:43:09 +0000
-Message-ID: <20260202184329.2724080-1-maz@kernel.org>
+Subject: [PATCH v2 03/20] KVM: arm64: Introduce standalone FGU computing primitive
+Date: Mon,  2 Feb 2026 18:43:12 +0000
+Message-ID: <20260202184329.2724080-4-maz@kernel.org>
 X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20260202184329.2724080-1-maz@kernel.org>
+References: <20260202184329.2724080-1-maz@kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -58,86 +61,115 @@ X-SA-Exim-Rcpt-To: kvmarm@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
 X-SA-Exim-Mail-From: maz@kernel.org
 X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
 
-Having spent some time dealing with some dark corners of the
-architecture, I have realised that our RESx handling is a bit patchy.
-Specially when it comes to RES1 bits, which are not clearly defined in
-config.c, and rely on band-aids such as FIXED_VALUE.
+Computing the FGU bits is made oddly complicated, as we use the RES0
+helper instead of using a specific abstraction.
 
-This series takes the excuse of adding SCTLR_EL2 sanitisation to bite
-the bullet and pursue several goals:
+Introduce such an abstraction, which is going to make things significantly
+simpler in the future.
 
-- clearly define bits that are RES1 when a feature is absent
+Reviewed-by: Fuad Tabba <tabba@google.com>
+Signed-off-by: Marc Zyngier <maz@kernel.org>
+---
+ arch/arm64/kvm/config.c | 57 ++++++++++++++++++-----------------------
+ 1 file changed, 25 insertions(+), 32 deletions(-)
 
-- have a unified data structure to manage both RES0 and RES1 bits
-
-- deal with the annoying complexity of some features being
-  conditioned on E2H==1
-
-- allow a single bit to take different RESx values depending on the
-  value of E2H
-
-This allows quite a bit of cleanup, including the total removal of the
-FIXED_VALUE horror, which was always a bizarre construct. We also get
-a new debugfs file to introspect the RESx settings for a given guest.
-
-Overall, this lowers the complexity of expressing the configuration
-constraints, for very little code (most of the extra lines are
-introduced by the debugfs stuff, and SCTLR_EL2 being added to the
-sysreg file).
-
-Patches on top of my kvm-arm64/vtcr branch (which is currently
-simmering in -next).
-
-* From v1 [1]
-
-  - Simplified RES0 handling by dropping the RES0_WHEN_E2Hx macros
-
-  - Cleaned up the kvm_{g,s}et_sysreg_resx() helpers
-
-  - Simplified dynamic RESx handling
-
-  - New improved debugfs handling, thanks to Fuad!
-
-  - Various clean-ups and spelling fixes
-
-  - Collected RBs (thanks Fuad and Joey!)
-
-[1] https://lore.kernel.org/all/20260126121655.1641736-1-maz@kernel.org
-Marc Zyngier (20):
-  arm64: Convert SCTLR_EL2 to sysreg infrastructure
-  KVM: arm64: Remove duplicate configuration for SCTLR_EL1.{EE,E0E}
-  KVM: arm64: Introduce standalone FGU computing primitive
-  KVM: arm64: Introduce data structure tracking both RES0 and RES1 bits
-  KVM: arm64: Extend unified RESx handling to runtime sanitisation
-  KVM: arm64: Inherit RESx bits from FGT register descriptors
-  KVM: arm64: Allow RES1 bits to be inferred from configuration
-  KVM: arm64: Correctly handle SCTLR_EL1 RES1 bits for unsupported
-    features
-  KVM: arm64: Convert HCR_EL2.RW to AS_RES1
-  KVM: arm64: Simplify FIXED_VALUE handling
-  KVM: arm64: Add REQUIRES_E2H1 constraint as configuration flags
-  KVM: arm64: Add RES1_WHEN_E2Hx constraints as configuration flags
-  KVM: arm64: Move RESx into individual register descriptors
-  KVM: arm64: Simplify handling of HCR_EL2.E2H RESx
-  KVM: arm64: Get rid of FIXED_VALUE altogether
-  KVM: arm64: Simplify handling of full register invalid constraint
-  KVM: arm64: Remove all traces of FEAT_TME
-  KVM: arm64: Remove all traces of HCR_EL2.MIOCNCE
-  KVM: arm64: Add sanitisation to SCTLR_EL2
-  KVM: arm64: Add debugfs file dumping computed RESx values
-
- arch/arm64/include/asm/kvm_host.h             |  38 +-
- arch/arm64/include/asm/sysreg.h               |   7 -
- arch/arm64/kvm/config.c                       | 427 ++++++++++--------
- arch/arm64/kvm/emulate-nested.c               |  10 +-
- arch/arm64/kvm/nested.c                       | 151 +++----
- arch/arm64/kvm/sys_regs.c                     |  68 +++
- arch/arm64/tools/sysreg                       |  82 +++-
- tools/arch/arm64/include/asm/sysreg.h         |   6 -
- tools/perf/Documentation/perf-arm-spe.txt     |   1 -
- .../testing/selftests/kvm/arm64/set_id_regs.c |   1 -
- 10 files changed, 478 insertions(+), 313 deletions(-)
-
+diff --git a/arch/arm64/kvm/config.c b/arch/arm64/kvm/config.c
+index 0bcdb39885734..2122599f7cbbd 100644
+--- a/arch/arm64/kvm/config.c
++++ b/arch/arm64/kvm/config.c
+@@ -1335,26 +1335,30 @@ static u64 compute_res0_bits(struct kvm *kvm,
+ static u64 compute_reg_res0_bits(struct kvm *kvm,
+ 				 const struct reg_feat_map_desc *r,
+ 				 unsigned long require, unsigned long exclude)
+-
+ {
+ 	u64 res0;
+ 
+ 	res0 = compute_res0_bits(kvm, r->bit_feat_map, r->bit_feat_map_sz,
+ 				 require, exclude);
+ 
+-	/*
+-	 * If computing FGUs, don't take RES0 or register existence
+-	 * into account -- we're not computing bits for the register
+-	 * itself.
+-	 */
+-	if (!(exclude & NEVER_FGU)) {
+-		res0 |= compute_res0_bits(kvm, &r->feat_map, 1, require, exclude);
+-		res0 |= ~reg_feat_map_bits(&r->feat_map);
+-	}
++	res0 |= compute_res0_bits(kvm, &r->feat_map, 1, require, exclude);
++	res0 |= ~reg_feat_map_bits(&r->feat_map);
+ 
+ 	return res0;
+ }
+ 
++static u64 compute_fgu_bits(struct kvm *kvm, const struct reg_feat_map_desc *r)
++{
++	/*
++	 * If computing FGUs, we collect the unsupported feature bits as
++	 * RES0 bits, but don't take the actual RES0 bits or register
++	 * existence into account -- we're not computing bits for the
++	 * register itself.
++	 */
++	return compute_res0_bits(kvm, r->bit_feat_map, r->bit_feat_map_sz,
++				 0, NEVER_FGU);
++}
++
+ static u64 compute_reg_fixed_bits(struct kvm *kvm,
+ 				  const struct reg_feat_map_desc *r,
+ 				  u64 *fixed_bits, unsigned long require,
+@@ -1370,40 +1374,29 @@ void compute_fgu(struct kvm *kvm, enum fgt_group_id fgt)
+ 
+ 	switch (fgt) {
+ 	case HFGRTR_GROUP:
+-		val |= compute_reg_res0_bits(kvm, &hfgrtr_desc,
+-					     0, NEVER_FGU);
+-		val |= compute_reg_res0_bits(kvm, &hfgwtr_desc,
+-					     0, NEVER_FGU);
++		val |= compute_fgu_bits(kvm, &hfgrtr_desc);
++		val |= compute_fgu_bits(kvm, &hfgwtr_desc);
+ 		break;
+ 	case HFGITR_GROUP:
+-		val |= compute_reg_res0_bits(kvm, &hfgitr_desc,
+-					     0, NEVER_FGU);
++		val |= compute_fgu_bits(kvm, &hfgitr_desc);
+ 		break;
+ 	case HDFGRTR_GROUP:
+-		val |= compute_reg_res0_bits(kvm, &hdfgrtr_desc,
+-					     0, NEVER_FGU);
+-		val |= compute_reg_res0_bits(kvm, &hdfgwtr_desc,
+-					     0, NEVER_FGU);
++		val |= compute_fgu_bits(kvm, &hdfgrtr_desc);
++		val |= compute_fgu_bits(kvm, &hdfgwtr_desc);
+ 		break;
+ 	case HAFGRTR_GROUP:
+-		val |= compute_reg_res0_bits(kvm, &hafgrtr_desc,
+-					     0, NEVER_FGU);
++		val |= compute_fgu_bits(kvm, &hafgrtr_desc);
+ 		break;
+ 	case HFGRTR2_GROUP:
+-		val |= compute_reg_res0_bits(kvm, &hfgrtr2_desc,
+-					     0, NEVER_FGU);
+-		val |= compute_reg_res0_bits(kvm, &hfgwtr2_desc,
+-					     0, NEVER_FGU);
++		val |= compute_fgu_bits(kvm, &hfgrtr2_desc);
++		val |= compute_fgu_bits(kvm, &hfgwtr2_desc);
+ 		break;
+ 	case HFGITR2_GROUP:
+-		val |= compute_reg_res0_bits(kvm, &hfgitr2_desc,
+-					     0, NEVER_FGU);
++		val |= compute_fgu_bits(kvm, &hfgitr2_desc);
+ 		break;
+ 	case HDFGRTR2_GROUP:
+-		val |= compute_reg_res0_bits(kvm, &hdfgrtr2_desc,
+-					     0, NEVER_FGU);
+-		val |= compute_reg_res0_bits(kvm, &hdfgwtr2_desc,
+-					     0, NEVER_FGU);
++		val |= compute_fgu_bits(kvm, &hdfgrtr2_desc);
++		val |= compute_fgu_bits(kvm, &hdfgwtr2_desc);
+ 		break;
+ 	default:
+ 		BUG();
 -- 
 2.47.3
 
