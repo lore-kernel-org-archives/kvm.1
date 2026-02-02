@@ -1,49 +1,49 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B5E9B26ADC;
-	Mon,  2 Feb 2026 06:49:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B71A51339A4;
+	Mon,  2 Feb 2026 07:30:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.19
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770014991; cv=none; b=NIeMSr3WlVOH3fJp1yK7ne8nXfBsyoV9x46pz7SV4mY6NKn70tGHKdf58MoM6XAI9xutXZ6EzkG3lGGVYhagtlZbamTPbmwDhdOaCMtNEFy0g+q14Ab7zRtXxTwoeMScLKdtOTndAgBYGgvTo15z472vuwazsasj5mFnCo2iwWk=
+	t=1770017425; cv=none; b=OMum1ylIxpQYBfU2/WXPct5kQI7Y+nbI/X6/XE17AOMfEwy14cSKdw3zl69Dv9JV+6T/OkNQdT5uTgygMm0ZdIME2Ij65F3Drwpyf1qztuyKLiXmDfHJBsbTPreJWKrc3H1eNWx2IrqTTPpIGFaFqzdDLyQS6giouFL+/1qTsqU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770014991; c=relaxed/simple;
-	bh=p6wHUv3nGRgjxVKeJCG4f/1CwrUZUt88QzBgtgugBAY=;
+	s=arc-20240116; t=1770017425; c=relaxed/simple;
+	bh=7BCjcgwThACpqKINVEDrGd72svHvdvaoqjhRgec9HSQ=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=eiyrbwYepr/XBdngVlwft6Y5sCX1mdVKnrh2MIe7lldpH3LtetDh7xuaBrylETUxaWW4KXYH30/zDKuaggR/esYne9rDdcBzuBWqBIb/uoKZMGe1zh1s79rdI48kc3iRFC4odd5RwJtWoVbzttRPuSm4w3y1qc0lHch+1Y0cQtU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=KSZQurlV; arc=none smtp.client-ip=198.175.65.16
+	 Content-Type:Content-Disposition:In-Reply-To; b=IrLtXVL8fDTKIX5G7Mr/mMdvJJwQzMBlnNMPobuygaBBwcIvypMoPyHo2k6i0mMR28X+eCkGrUTQ6bDxBdhOsJgX0uOPO8VOVsaLK5KtOo6xY9AXRlMTg6SxGIW7kQ1+PZ1VelFazjKk7Hv4V6BSXcIKRyQM5N++q4kgefR03P0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=P7wSDfi2; arc=none smtp.client-ip=192.198.163.19
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="KSZQurlV"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="P7wSDfi2"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1770014988; x=1801550988;
+  t=1770017424; x=1801553424;
   h=date:from:to:cc:subject:message-id:references:
    mime-version:in-reply-to;
-  bh=p6wHUv3nGRgjxVKeJCG4f/1CwrUZUt88QzBgtgugBAY=;
-  b=KSZQurlVBn/nmp01OKCEXEtvNAxaFfJ8cj6X4s6bcqUMci6vZUnu5O4a
-   +QbJUTsvFYCI0CvQq2ifKjNov8s4470+3XjH0XOFZz4Q0mPfyhyJ1JHnV
-   OQI0F6WA+gi7DBHSXIFGt60DQKWy3VGwWEgZ0+1jcyrhchOu4S9OaoaiI
-   rPzOuzamtcsLyGsJKAhERUhYwyioSGwapjZKUp7qoHVW9hc4GZrzni+Sk
-   R8O81fIpEJlmgWoS2Idaf9Ju1MfWBEAX/3lzJ0Ze5r6HQBmihLXqQ2BKo
-   e0latkKnX9HEM79plI7+klGla9JddsdlRQzpu/IyieBQ1KPSLRfL3FQdU
-   A==;
-X-CSE-ConnectionGUID: +tRDIU/zRmG+Rzr+ruYpxQ==
-X-CSE-MsgGUID: Qd/3iS1xRAyGfzjxlpHg1g==
-X-IronPort-AV: E=McAfee;i="6800,10657,11689"; a="71332098"
+  bh=7BCjcgwThACpqKINVEDrGd72svHvdvaoqjhRgec9HSQ=;
+  b=P7wSDfi2py80Sa64Rt6oYYXGJAYYoHOdmlbii5Byjkf31xt7NcACG3zW
+   A75KiY5vV0Il+yBRc5prO24R5BoQ0yfe3pjvR2V2EcyJ8GfHL23MJR/dc
+   LKYiu4UIk5FxXzni2yxF/wrr7Ww81YBdMFDI18OiqDXQ2yKrYqJIslDfT
+   VsR34xMtdZSf5s28C3VbaPrp0ve16kWpP9ZSglxEiV0R/ANXdWgZzxPlp
+   Cie8nzvI/ksBDWp5FtoShP+BWYS/mwB4jpVXpAKtmxLimaO+fU5Zq0PR+
+   Oi613fNuRK5OKF8Z3kLC44VBm+HcAbJcN9j9110djxJA7iRFYGTt+abK8
+   g==;
+X-CSE-ConnectionGUID: pPAPGeJRScu9n89Mzq/ZjA==
+X-CSE-MsgGUID: TWLfYm85Ts6mEBrr5XGQ6A==
+X-IronPort-AV: E=McAfee;i="6800,10657,11689"; a="70188882"
 X-IronPort-AV: E=Sophos;i="6.21,268,1763452800"; 
-   d="scan'208";a="71332098"
-Received: from orviesa003.jf.intel.com ([10.64.159.143])
-  by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Feb 2026 22:49:48 -0800
-X-CSE-ConnectionGUID: REd2b/jSRJKiBRQDU8Pg1w==
-X-CSE-MsgGUID: Xv7GgVZ0TTaoscg4z1UF8w==
+   d="scan'208";a="70188882"
+Received: from fmviesa008.fm.intel.com ([10.60.135.148])
+  by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Feb 2026 23:30:23 -0800
+X-CSE-ConnectionGUID: Uw5Z8H+rSOmQG1IMkRDQ4w==
+X-CSE-MsgGUID: dAuO3KFYSnadE7L3YUfpwA==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.21,268,1763452800"; 
-   d="scan'208";a="213537167"
+   d="scan'208";a="209624610"
 Received: from yilunxu-optiplex-7050.sh.intel.com (HELO localhost) ([10.239.159.165])
-  by orviesa003.jf.intel.com with ESMTP; 01 Feb 2026 22:49:42 -0800
-Date: Mon, 2 Feb 2026 14:31:18 +0800
+  by fmviesa008.fm.intel.com with ESMTP; 01 Feb 2026 23:30:17 -0800
+Date: Mon, 2 Feb 2026 15:11:53 +0800
 From: Xu Yilun <yilun.xu@linux.intel.com>
 To: Chao Gao <chao.gao@intel.com>
 Cc: linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org,
@@ -57,11 +57,10 @@ Cc: linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org,
 	Thomas Gleixner <tglx@linutronix.de>,
 	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
 	"H. Peter Anvin" <hpa@zytor.com>
-Subject: Re: [PATCH v3 16/26] x86/virt/seamldr: Shut down the current TDX
- module
-Message-ID: <aYBEtqEeUBThuaJr@yilunxu-OptiPlex-7050>
+Subject: Re: [PATCH v3 18/26] x86/virt/seamldr: Log TDX Module update failures
+Message-ID: <aYBOOS1VfirL07RZ@yilunxu-OptiPlex-7050>
 References: <20260123145645.90444-1-chao.gao@intel.com>
- <20260123145645.90444-17-chao.gao@intel.com>
+ <20260123145645.90444-19-chao.gao@intel.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -70,38 +69,38 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260123145645.90444-17-chao.gao@intel.com>
+In-Reply-To: <20260123145645.90444-19-chao.gao@intel.com>
 
-> +static int get_tdx_sys_info_handoff(struct tdx_sys_info_handoff *sysinfo_handoff)
+> +static void print_update_failure_message(void)
 > +{
-> +	int ret = 0;
-> +	u64 val;
+> +	static atomic_t printed = ATOMIC_INIT(0);
 > +
-> +	if (tdx_supports_runtime_update(&tdx_sysinfo) &&
-> +	    !(ret = read_sys_metadata_field(0x8900000100000000, &val)))
-> +		sysinfo_handoff->module_hv = val;
-> +
-> +	return ret;
+> +	if (atomic_inc_return(&printed) == 1)
+> +		pr_err("update failed, SEAMCALLs will report failure until TDs killed\n");
 > +}
+
+Not sure why it can't be just pr_err_once()?
+
 > +
->  static int get_tdx_sys_info(struct tdx_sys_info *sysinfo)
->  {
->  	int ret = 0;
-> @@ -115,6 +127,7 @@ static int get_tdx_sys_info(struct tdx_sys_info *sysinfo)
->  	ret = ret ?: get_tdx_sys_info_tdmr(&sysinfo->tdmr);
->  	ret = ret ?: get_tdx_sys_info_td_ctrl(&sysinfo->td_ctrl);
->  	ret = ret ?: get_tdx_sys_info_td_conf(&sysinfo->td_conf);
-> +	ret = ret ?: get_tdx_sys_info_handoff(&sysinfo->handoff);
-
-Do all fields in sysinfo_handoff optional or just module_hv, if the
-former, is it better:
-
-	if (tdx_supports_runtime_update(&tdx_sysinfo)
-		ret = ret ?: get_tdx_sys_info_handoff(&sysinfo->handoff);
-
+>  /*
+>   * See multi_cpu_stop() from where this multi-cpu state-machine was
+>   * adopted, and the rationale for touch_nmi_watchdog()
+> @@ -289,10 +297,13 @@ static int do_seamldr_install_module(void *params)
+>  				break;
+>  			}
 >  
->  	return ret;
->  }
+> -			if (ret)
+> +			if (ret) {
+>  				atomic_inc(&tdp_data.failed);
+> -			else
+> +				if (curstate > TDP_SHUTDOWN)
+> +					print_update_failure_message();
+> +			} else {
+>  				ack_state();
+> +			}
+>  		} else {
+>  			touch_nmi_watchdog();
+>  			rcu_momentary_eqs();
 > -- 
 > 2.47.3
 > 
