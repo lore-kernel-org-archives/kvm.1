@@ -1,213 +1,81 @@
-Received: from outbound.baidu.com (mx24.baidu.com [111.206.215.185])
+Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA8B225D208
-	for <kvm@vger.kernel.org>; Mon,  2 Feb 2026 09:51:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=111.206.215.185
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3DFF72DC333;
+	Mon,  2 Feb 2026 09:54:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.50.34
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770025901; cv=none; b=jOcSh62wtqNdaardUwpXiZs42EWpKLhS6gHvT/Ke0JpEYbmgNUJq4vai9y0DMD6Fq4DK5Ja+vl+IFajqVS4oBCq6GnBX+pA8ZNBgPILviTw6azyxki3HM2GBc/Km/pY1HD8eVwxW09Z7tvIdIpUMQOo/Hm6jgq4hybsJcd1ax0k=
+	t=1770026081; cv=none; b=kvE6CJrNPniZ6sinogaHpGspf7SPLQQudX0EHtQ8kxY4aYldik/cO3KgRPoFrxa/9n7s7U0sjX1cOvJ3VxlADVnP42nHA2RqKoQNpM9BmYzzi30UugQfcus/sUEpvKPvSsam2UnwFmIDiqKMrXveo+X0PpYEeTLwRjFrhClc9SQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770025901; c=relaxed/simple;
-	bh=b5o0cY6qCWOuNRxh+lvzaEyEWML+dzfY8rihfm/kSJk=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=iwfimJrpqVO0Et0ic/wDUpeFh3IHA4Yu1ZCNy8CiSuTMrFYYA/cEcnb1R2y1TdiYDIhdGDqSswojeZOPrizN5usPYcZCzs7xN58vVQGsxauLA6HLTVT9Th+oK0jNDMtJLoardDWot5KbQUBZa9Uh+xb8iKLd34w97tC9r4FcWWg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=baidu.com; spf=pass smtp.mailfrom=baidu.com; arc=none smtp.client-ip=111.206.215.185
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=baidu.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baidu.com
-From: lirongqing <lirongqing@baidu.com>
-To: Sean Christopherson <seanjc@google.com>, Paolo Bonzini
-	<pbonzini@redhat.com>, Thomas Gleixner <tglx@kernel.org>, Ingo Molnar
-	<mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, Dave Hansen
-	<dave.hansen@linux.intel.com>, <x86@kernel.org>, "H . Peter Anvin"
-	<hpa@zytor.com>, <kvm@vger.kernel.org>
-CC: Li RongQing <lirongqing@baidu.com>
-Subject: [PATCH v2] KVM: SVM: Mark module parameters as __ro_after_init for security and performance
-Date: Mon, 2 Feb 2026 04:50:04 -0500
-Message-ID: <20260202095004.1765-1-lirongqing@baidu.com>
-X-Mailer: git-send-email 2.17.1
+	s=arc-20240116; t=1770026081; c=relaxed/simple;
+	bh=HHlut04wQGtpXbbVMqYEOMquVZyPWGleVrBmqPbUjKo=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=LBEuBZA0vV8dA/Xq/6n23r9sxjqTHppJfUN5U8cduGEC6+ug2EpFs0tK5KPOx7TKytG8pWtJt42/tjrhIH1pCfX5EFHtaSykBjMd2q5IUBvO7PziLVvw3wwmAnqEbn0GXXheFKdGoEgvxqZUPHCn58C7qVimJHfVsCC0bieiTxE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=ByWUxsUO; arc=none smtp.client-ip=90.155.50.34
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=infradead.org
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="ByWUxsUO"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=+Pu0UsVCQG9vrf6r9L2k7y8BIrpfSaWQDN3W3VbUraQ=; b=ByWUxsUOcWxLMhnki3SEF9i7Qs
+	1Ryp6PQfjEpUpjKlHGRbJdhwYJQ1FlbPczZF407bYKoaimf7VMzfJFOUdToV1R3510WBOYyhEhply
+	sd4lBMP1V/EtAksGDPpBiBBxW2QMugzzCYO1KvCmt+tBzJ6kRJtJ33LkxFu6pZDJyVwhnYyXwDix0
+	NljZJH3Ooooo1ciud410bnqC7x/V46U+m3cLexl4MdeHw5fWM/P0gc9bQvNCh+8r/KnoURwWIowPf
+	W6DfQsbStxwg74gKRTmICCEYiB9rwcx9ZlBKnJNXqnMgb8PBPxBDpoKR47hqlm4FH9havUqjOXLJ+
+	h2KvJ5Pw==;
+Received: from 77-249-17-252.cable.dynamic.v4.ziggo.nl ([77.249.17.252] helo=noisy.programming.kicks-ass.net)
+	by casper.infradead.org with esmtpsa (Exim 4.98.2 #2 (Red Hat Linux))
+	id 1vmqdL-0000000GJ5I-0aps;
+	Mon, 02 Feb 2026 09:54:15 +0000
+Received: by noisy.programming.kicks-ass.net (Postfix, from userid 1000)
+	id 98BFF303031; Mon, 02 Feb 2026 10:54:14 +0100 (CET)
+Date: Mon, 2 Feb 2026 10:54:14 +0100
+From: Peter Zijlstra <peterz@infradead.org>
+To: Lance Yang <lance.yang@linux.dev>
+Cc: akpm@linux-foundation.org, david@kernel.org, dave.hansen@intel.com,
+	dave.hansen@linux.intel.com, ypodemsk@redhat.com, hughd@google.com,
+	will@kernel.org, aneesh.kumar@kernel.org, npiggin@gmail.com,
+	tglx@linutronix.de, mingo@redhat.com, bp@alien8.de, x86@kernel.org,
+	hpa@zytor.com, arnd@arndb.de, lorenzo.stoakes@oracle.com,
+	ziy@nvidia.com, baolin.wang@linux.alibaba.com,
+	Liam.Howlett@oracle.com, npache@redhat.com, ryan.roberts@arm.com,
+	dev.jain@arm.com, baohua@kernel.org, shy828301@gmail.com,
+	riel@surriel.com, jannh@google.com, jgross@suse.com,
+	seanjc@google.com, pbonzini@redhat.com, boris.ostrovsky@oracle.com,
+	virtualization@lists.linux.dev, kvm@vger.kernel.org,
+	linux-arch@vger.kernel.org, linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org, ioworker0@gmail.com
+Subject: Re: [PATCH v4 0/3] targeted TLB sync IPIs for lockless page table
+ walkers
+Message-ID: <20260202095414.GE2995752@noisy.programming.kicks-ass.net>
+References: <20260202074557.16544-1-lance.yang@linux.dev>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-ClientProxiedBy: bjkjy-exc13.internal.baidu.com (172.31.51.13) To
- bjkjy-exc3.internal.baidu.com (172.31.50.47)
-X-FEAS-Client-IP: 172.31.50.47
-X-FE-Policy-ID: 52:10:53:SYSTEM
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260202074557.16544-1-lance.yang@linux.dev>
 
-From: Li RongQing <lirongqing@baidu.com>
+On Mon, Feb 02, 2026 at 03:45:54PM +0800, Lance Yang wrote:
+> When freeing or unsharing page tables we send an IPI to synchronize with
+> concurrent lockless page table walkers (e.g. GUP-fast). Today we broadcast
+> that IPI to all CPUs, which is costly on large machines and hurts RT
+> workloads[1].
+> 
+> This series makes those IPIs targeted. We track which CPUs are currently
+> doing a lockless page table walk for a given mm (per-CPU
+> active_lockless_pt_walk_mm). When we need to sync, we only IPI those CPUs.
+> GUP-fast and perf_get_page_size() set/clear the tracker around their walk;
+> tlb_remove_table_sync_mm() uses it and replaces the previous broadcast in
+> the free/unshare paths.
 
-SVM module parameters such as avic, sev_enabled, npt_enabled, and
-pause_filter_thresh are configured exclusively during initialization
-(via kernel command line) and remain constant throughout runtime.
-Additionally, sev_supported_vmsa_features and svm_gp_erratum_intercept,
-while not exposed as module parameters, share the same initialization
-pattern and runtime constancy.
+I'm confused. This only happens when !PT_RECLAIM, because if PT_RECLAIM
+__tlb_remove_table_one() actually uses RCU.
 
-Mark these variables with '__ro_after_init' to:
-- Harden against accidental or malicious runtime modification
-- Enable compiler and CPU optimizations (improved caching, branch prediction)
-- Align with kernel security best practices for init-only configuration
-
-The exception is 'iopm_base', which retains '__read_mostly' as it requires
-updates during module unloading.
-
-Suggested-by: Sean Christopherson <seanjc@google.com>
-Signed-off-by: Li RongQing <lirongqing@baidu.com>
----
-Diff with v1: mark as __ro_after_init, not __read_mostly
-
- arch/x86/kvm/svm/avic.c |  4 ++--
- arch/x86/kvm/svm/sev.c  | 12 ++++++------
- arch/x86/kvm/svm/svm.c  | 32 ++++++++++++++++----------------
- 3 files changed, 24 insertions(+), 24 deletions(-)
-
-diff --git a/arch/x86/kvm/svm/avic.c b/arch/x86/kvm/svm/avic.c
-index 6b77b20..7cc22d1 100644
---- a/arch/x86/kvm/svm/avic.c
-+++ b/arch/x86/kvm/svm/avic.c
-@@ -86,13 +86,13 @@ static const struct kernel_param_ops avic_ops = {
-  * Enable / disable AVIC.  In "auto" mode (default behavior), AVIC is enabled
-  * for Zen4+ CPUs with x2AVIC (and all other criteria for enablement are met).
-  */
--static int avic = AVIC_AUTO_MODE;
-+static int __ro_after_init avic = AVIC_AUTO_MODE;
- module_param_cb(avic, &avic_ops, &avic, 0444);
- __MODULE_PARM_TYPE(avic, "bool");
- 
- module_param(enable_ipiv, bool, 0444);
- 
--static bool force_avic;
-+static bool __ro_after_init force_avic;
- module_param_unsafe(force_avic, bool, 0444);
- 
- /* Note:
-diff --git a/arch/x86/kvm/svm/sev.c b/arch/x86/kvm/svm/sev.c
-index f59c65a..afd2375 100644
---- a/arch/x86/kvm/svm/sev.c
-+++ b/arch/x86/kvm/svm/sev.c
-@@ -42,23 +42,23 @@
- #define GHCB_HV_FT_SUPPORTED	(GHCB_HV_FT_SNP | GHCB_HV_FT_SNP_AP_CREATION)
- 
- /* enable/disable SEV support */
--static bool sev_enabled = true;
-+static bool __ro_after_init sev_enabled = true;
- module_param_named(sev, sev_enabled, bool, 0444);
- 
- /* enable/disable SEV-ES support */
--static bool sev_es_enabled = true;
-+static bool __ro_after_init sev_es_enabled = true;
- module_param_named(sev_es, sev_es_enabled, bool, 0444);
- 
- /* enable/disable SEV-SNP support */
--static bool sev_snp_enabled = true;
-+static bool __ro_after_init sev_snp_enabled = true;
- module_param_named(sev_snp, sev_snp_enabled, bool, 0444);
- 
- /* enable/disable SEV-ES DebugSwap support */
--static bool sev_es_debug_swap_enabled = true;
-+static bool __ro_after_init sev_es_debug_swap_enabled = true;
- module_param_named(debug_swap, sev_es_debug_swap_enabled, bool, 0444);
--static u64 sev_supported_vmsa_features;
-+static u64 __ro_after_init sev_supported_vmsa_features;
- 
--static unsigned int nr_ciphertext_hiding_asids;
-+static unsigned int __ro_after_init nr_ciphertext_hiding_asids;
- module_param_named(ciphertext_hiding_asids, nr_ciphertext_hiding_asids, uint, 0444);
- 
- #define AP_RESET_HOLD_NONE		0
-diff --git a/arch/x86/kvm/svm/svm.c b/arch/x86/kvm/svm/svm.c
-index 24d59cc..cc1c9cb 100644
---- a/arch/x86/kvm/svm/svm.c
-+++ b/arch/x86/kvm/svm/svm.c
-@@ -110,52 +110,52 @@ static DEFINE_PER_CPU(u64, current_tsc_ratio);
-  *	count only mode.
-  */
- 
--static unsigned short pause_filter_thresh = KVM_DEFAULT_PLE_GAP;
-+static unsigned short __ro_after_init pause_filter_thresh = KVM_DEFAULT_PLE_GAP;
- module_param(pause_filter_thresh, ushort, 0444);
- 
--static unsigned short pause_filter_count = KVM_SVM_DEFAULT_PLE_WINDOW;
-+static unsigned short __ro_after_init pause_filter_count = KVM_SVM_DEFAULT_PLE_WINDOW;
- module_param(pause_filter_count, ushort, 0444);
- 
- /* Default doubles per-vcpu window every exit. */
--static unsigned short pause_filter_count_grow = KVM_DEFAULT_PLE_WINDOW_GROW;
-+static unsigned short __ro_after_init pause_filter_count_grow = KVM_DEFAULT_PLE_WINDOW_GROW;
- module_param(pause_filter_count_grow, ushort, 0444);
- 
- /* Default resets per-vcpu window every exit to pause_filter_count. */
--static unsigned short pause_filter_count_shrink = KVM_DEFAULT_PLE_WINDOW_SHRINK;
-+static unsigned short __ro_after_init pause_filter_count_shrink = KVM_DEFAULT_PLE_WINDOW_SHRINK;
- module_param(pause_filter_count_shrink, ushort, 0444);
- 
- /* Default is to compute the maximum so we can never overflow. */
--static unsigned short pause_filter_count_max = KVM_SVM_DEFAULT_PLE_WINDOW_MAX;
-+static unsigned short __ro_after_init pause_filter_count_max = KVM_SVM_DEFAULT_PLE_WINDOW_MAX;
- module_param(pause_filter_count_max, ushort, 0444);
- 
- /*
-  * Use nested page tables by default.  Note, NPT may get forced off by
-  * svm_hardware_setup() if it's unsupported by hardware or the host kernel.
-  */
--bool npt_enabled = true;
-+bool __ro_after_init npt_enabled = true;
- module_param_named(npt, npt_enabled, bool, 0444);
- 
- /* allow nested virtualization in KVM/SVM */
--static int nested = true;
-+static int __ro_after_init nested = true;
- module_param(nested, int, 0444);
- 
- /* enable/disable Next RIP Save */
--int nrips = true;
-+int __ro_after_init nrips = true;
- module_param(nrips, int, 0444);
- 
- /* enable/disable Virtual VMLOAD VMSAVE */
--static int vls = true;
-+static int __ro_after_init vls = true;
- module_param(vls, int, 0444);
- 
- /* enable/disable Virtual GIF */
--int vgif = true;
-+int __ro_after_init vgif = true;
- module_param(vgif, int, 0444);
- 
- /* enable/disable LBR virtualization */
--int lbrv = true;
-+int __ro_after_init lbrv = true;
- module_param(lbrv, int, 0444);
- 
--static int tsc_scaling = true;
-+static int __ro_after_init tsc_scaling = true;
- module_param(tsc_scaling, int, 0444);
- 
- module_param(enable_device_posted_irqs, bool, 0444);
-@@ -164,17 +164,17 @@ bool __read_mostly dump_invalid_vmcb;
- module_param(dump_invalid_vmcb, bool, 0644);
- 
- 
--bool intercept_smi = true;
-+bool __ro_after_init intercept_smi = true;
- module_param(intercept_smi, bool, 0444);
- 
--bool vnmi = true;
-+bool __ro_after_init vnmi = true;
- module_param(vnmi, bool, 0444);
- 
--static bool svm_gp_erratum_intercept = true;
-+static bool __ro_after_init svm_gp_erratum_intercept = true;
- 
- static u8 rsm_ins_bytes[] = "\x0f\xaa";
- 
--static unsigned long iopm_base;
-+static unsigned long __read_mostly iopm_base;
- 
- DEFINE_PER_CPU(struct svm_cpu_data, svm_data);
- 
--- 
-2.9.4
-
+So why are you making things more expensive for no reason?
