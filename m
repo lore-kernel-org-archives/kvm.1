@@ -1,58 +1,59 @@
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D64363D7D70;
-	Tue,  3 Feb 2026 18:17:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 07D4B3D9029;
+	Tue,  3 Feb 2026 18:17:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.10
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770142666; cv=none; b=lWz6h6RsRXcIScw7lawnzxd7m+qBD4CoEh8BFeDcG5xphpGYmYPRW/qNzBWbu3GQHhKyqmJ/hFAs3USTH395Fo85j74eRhIJjPMOEx6c6nGC4OR0gRQxppP9ZuWELy7CE8ZrYogJTelHleJSYaGw1UMjrVlEhRiqpa59z7XatMk=
+	t=1770142667; cv=none; b=EldO/zI4K0kbSWeRyYCDq2vgaZY8EAhz2WO1Tn0KpmkDbcoYtXERxD0YjgBBQujE9dylEShl5XEg/1PUv1F3/+ZWcD5AbQCr6C1jYMYDYI3/tpV7JZQ1i8JCd502tltkCD25RDyqKhuqpitZB0ONwpu/drrd9LJCPjmdtxLF37Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770142666; c=relaxed/simple;
-	bh=MtffooadCDO7564JErY6ne+USupfnVx4VISpnugLIYQ=;
+	s=arc-20240116; t=1770142667; c=relaxed/simple;
+	bh=px+gf9CycIrN2SRb7cWFwlLMe1ewXZI2g90WSPrwj7s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bprsDwVWNa3JRV1U5Sk9Ik73xq0lP8HZVRFsFLH+lvrD5TjGk7cnk2R7ub9HNuxv30QhUlOemgXDG/adQ+BHs95m75kwBEGrMix9RA0dr30Sry6k98BGI6DUyqM/4QsqcJYPl67vqHan5YyG7ZhgNhErzkD3Y0tqHEkYBDYhslw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Jzx0wYqa; arc=none smtp.client-ip=198.175.65.10
+	 MIME-Version; b=g9FJ+HlFv7kfIZouoYYPj9u+ZG14hIrAaEJNydaVn3nZmJtArf1saFa/EpUThMeR231SZ3BWl2MCulS9rQ5oZqXaxpQRP2v3DgE5PQH/EAQlIVbivDfWZv/8VFytHtCEMDlh/wUqcdtObdV+sQUaz/FVtNxz+6JLvBbrnvD5MNk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=VAqHUdBc; arc=none smtp.client-ip=198.175.65.10
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Jzx0wYqa"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="VAqHUdBc"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1770142665; x=1801678665;
+  t=1770142666; x=1801678666;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=MtffooadCDO7564JErY6ne+USupfnVx4VISpnugLIYQ=;
-  b=Jzx0wYqaOuzs940xbCBDLpJydaEzvEOuxPR0ZJchNjjbb0samts3DEC0
-   F8YBMUhS50bvuj93+u2PS1wedTNkrADwFuGRtf9vZ4H32IWXm181V1DSQ
-   NfczawqUZPsugcBIBQyvT+AkHjzICg9NAP/fIWDTttLlChZK/LJ8dBnTv
-   yl1zIdCVPuWeqOu9rxrV1yUPVu78v2PaifhM+gnqnVr2o1au7n3uX9uYA
-   26isgINp5EcfenfZF0fMRSMYgI9d5IgwC/Xzz4kmAaDsB306RlsP6ubtd
-   V10if45Emq7Z7kKoY/XuVJlfQuCmwWB3+WjPvqH3vyJa9Hzz/KBtVaisV
-   w==;
-X-CSE-ConnectionGUID: 4iI74/tETzy+PUNlXxQjDw==
-X-CSE-MsgGUID: Pi1DVcYETEWCtg4jHoEF9w==
-X-IronPort-AV: E=McAfee;i="6800,10657,11691"; a="88745814"
+  bh=px+gf9CycIrN2SRb7cWFwlLMe1ewXZI2g90WSPrwj7s=;
+  b=VAqHUdBcKcI/kvaS/5JqpHdPUmv8yHloPbrOsROMNRQVwcOs0gCZfP0F
+   utm4peSxcBhCExhhY8CdMhJZuvuuHvrN6/dKLVuZEuJKaGyZUwvyWmNeq
+   gQQcZahhmq7oYPXV9+vSHmKbGKXxAeP2cMFNbd3Vdmxhjc0TfdOPtpSk5
+   lwRVCeh7Ax9+dZb+A9VZEfPyfs20vSlefsoZ8vQK8VFEx7cp5Xn/ImDo1
+   WFYPx8TDMqnu7bj5znU4EJNt49An7GFwCWizZ+9BBr0KrZwjd0HRaS/G5
+   Z8begdY8o9XGzl7eRR+TvVwGik1cuVS5GyVT53qFRFfpTjUvSY87xGW5G
+   g==;
+X-CSE-ConnectionGUID: MHTgx4+oRTiWNVQvnIpTAg==
+X-CSE-MsgGUID: Sl5GRDBURpiui6vLfgpUvQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11691"; a="88745823"
 X-IronPort-AV: E=Sophos;i="6.21,271,1763452800"; 
-   d="scan'208";a="88745814"
+   d="scan'208";a="88745823"
 Received: from fmviesa006.fm.intel.com ([10.60.135.146])
-  by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Feb 2026 10:17:43 -0800
-X-CSE-ConnectionGUID: qyzcQAUgTv2Y3wgSirMolg==
-X-CSE-MsgGUID: Nl/bJ16GSwidw17TFMn5TA==
+  by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Feb 2026 10:17:44 -0800
+X-CSE-ConnectionGUID: W7yY16fLS7qbPpRzmzGmuw==
+X-CSE-MsgGUID: FtFY+x9hT1OXLV/050JKtQ==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.21,271,1763452800"; 
-   d="scan'208";a="209605492"
+   d="scan'208";a="209605498"
 Received: from khuang2-desk.gar.corp.intel.com (HELO localhost) ([10.124.221.188])
-  by fmviesa006-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Feb 2026 10:17:42 -0800
+  by fmviesa006-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Feb 2026 10:17:43 -0800
 From: isaku.yamahata@intel.com
 To: kvm@vger.kernel.org
 Cc: isaku.yamahata@intel.com,
 	isaku.yamahata@gmail.com,
 	Paolo Bonzini <pbonzini@redhat.com>,
 	Sean Christopherson <seanjc@google.com>,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH 15/32] KVM: nVMX: Enable guest deadline and its shadow VMCS field
-Date: Tue,  3 Feb 2026 10:16:58 -0800
-Message-ID: <dbb1e23b41e503692b3f825ebb80e0ccc6870684.1770116051.git.isaku.yamahata@intel.com>
+	linux-kernel@vger.kernel.org,
+	kernel test robot <oliver.sang@intel.com>
+Subject: [PATCH 17/32] KVM: nVMX: Add check vmread/vmwrite on tertiary control
+Date: Tue,  3 Feb 2026 10:17:00 -0800
+Message-ID: <610a83212de7a5e598e45a4d80d3409ac693ffb6.1770116051.git.isaku.yamahata@intel.com>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <cover.1770116050.git.isaku.yamahata@intel.com>
 References: <cover.1770116050.git.isaku.yamahata@intel.com>
@@ -66,167 +67,89 @@ Content-Transfer-Encoding: 8bit
 
 From: Isaku Yamahata <isaku.yamahata@intel.com>
 
-Support the guest deadline and the guest deadline shadow VMCS field.
+Make the access to the tertiary processor-based VM control an error if the
+guest VMX true processor-based controls don't report it.
 
+Without this patch, the KVM unit test_vmread_vmwrite() fails because
+vmread()/vmwrite() can succeeds with the index beyond
+MSR_IA32_VMX_VMCS_ENUM when the tertiary processor-based VM-executing
+controls aren't advertised to the guest.
+
+Reported-by: kernel test robot <oliver.sang@intel.com>
 Signed-off-by: Isaku Yamahata <isaku.yamahata@intel.com>
 ---
- arch/x86/kvm/vmx/nested.c | 48 +++++++++++++++++++++++++++++++++++++++
- arch/x86/kvm/vmx/vmcs12.c |  2 ++
- arch/x86/kvm/vmx/vmcs12.h |  6 +++++
- arch/x86/kvm/vmx/vmx.h    |  2 ++
- 4 files changed, 58 insertions(+)
+ arch/x86/kvm/vmx/nested.c | 20 ++++++++++++++++++++
+ arch/x86/kvm/vmx/nested.h |  5 +++++
+ 2 files changed, 25 insertions(+)
 
 diff --git a/arch/x86/kvm/vmx/nested.c b/arch/x86/kvm/vmx/nested.c
-index 5829562145a7..66adc1821671 100644
+index c8b42c880300..d6ae62e70560 100644
 --- a/arch/x86/kvm/vmx/nested.c
 +++ b/arch/x86/kvm/vmx/nested.c
-@@ -2763,6 +2763,22 @@ static void prepare_vmcs02_rare(struct vcpu_vmx *vmx, struct vmcs12 *vmcs12)
- 	set_cr4_guest_host_mask(vmx);
+@@ -5794,6 +5794,16 @@ static int handle_vmresume(struct kvm_vcpu *vcpu)
+ 	return nested_vmx_run(vcpu, false);
  }
  
-+static void nested_guest_apic_timer(struct kvm_vcpu *vcpu, struct vmcs12 *vmcs12)
++static bool is_vmcs_field_valid(struct kvm_vcpu *vcpu, unsigned long field)
 +{
-+	u64 guest_deadline_shadow = vmcs12->guest_deadline_shadow;
-+	u64 guest_deadline = vmcs12->guest_deadline;
-+	struct vcpu_vmx *vmx = to_vmx(vcpu);
++	if (!nested_cpu_supports_tertiary_ctls(vcpu) &&
++	    (field == TERTIARY_VM_EXEC_CONTROL ||
++	     field == TERTIARY_VM_EXEC_CONTROL_HIGH))
++		return false;
 +
-+	if (!vmx->nested.guest_deadline_dirty)
-+		return;
-+
-+	guest_deadline = vmx_calc_deadline_l1_to_host(vcpu, guest_deadline);
-+
-+	vmcs_write64(GUEST_DEADLINE_PHY, guest_deadline);
-+	vmcs_write64(GUEST_DEADLINE_VIR, guest_deadline_shadow);
-+	vmx->nested.guest_deadline_dirty = false;
++	return true;
 +}
 +
- /*
-  * prepare_vmcs02 is called when the L1 guest hypervisor runs its nested
-  * L2 guest. L1 has a vmcs for L2 (vmcs12), and this function "merges" it
-@@ -2840,6 +2856,9 @@ static int prepare_vmcs02(struct kvm_vcpu *vcpu, struct vmcs12 *vmcs12,
- 	if (kvm_caps.has_tsc_control)
- 		vmcs_write64(TSC_MULTIPLIER, vcpu->arch.tsc_scaling_ratio);
+ static int handle_vmread(struct kvm_vcpu *vcpu)
+ {
+ 	struct vmcs12 *vmcs12 = is_guest_mode(vcpu) ? get_shadow_vmcs12(vcpu)
+@@ -5824,6 +5834,9 @@ static int handle_vmread(struct kvm_vcpu *vcpu)
+ 		     get_vmcs12(vcpu)->vmcs_link_pointer == INVALID_GPA))
+ 			return nested_vmx_failInvalid(vcpu);
  
-+	if (nested_cpu_has_guest_apic_timer(vmcs12))
-+		nested_guest_apic_timer(vcpu, vmcs12);
++		if (!is_vmcs_field_valid(vcpu, field))
++			return nested_vmx_fail(vcpu, VMXERR_UNSUPPORTED_VMCS_COMPONENT);
 +
- 	nested_vmx_transition_tlb_flush(vcpu, vmcs12, true);
+ 		offset = get_vmcs12_field_offset(field);
+ 		if (offset < 0)
+ 			return nested_vmx_fail(vcpu, VMXERR_UNSUPPORTED_VMCS_COMPONENT);
+@@ -5948,6 +5961,9 @@ static int handle_vmwrite(struct kvm_vcpu *vcpu)
  
- 	if (nested_cpu_has_ept(vmcs12))
-@@ -4637,6 +4656,8 @@ static bool is_vmcs12_ext_field(unsigned long field)
- 	case GUEST_IDTR_BASE:
- 	case GUEST_PENDING_DBG_EXCEPTIONS:
- 	case GUEST_BNDCFGS:
-+	case GUEST_DEADLINE_PHY:
-+	case GUEST_DEADLINE_VIR:
- 		return true;
- 	default:
- 		break;
-@@ -4687,6 +4708,24 @@ static void sync_vmcs02_to_vmcs12_rare(struct kvm_vcpu *vcpu,
- 	vmcs12->guest_pending_dbg_exceptions =
- 		vmcs_readl(GUEST_PENDING_DBG_EXCEPTIONS);
+ 	field = kvm_register_read(vcpu, (((instr_info) >> 28) & 0xf));
  
-+	if (nested_cpu_has_guest_apic_timer(vmcs12)) {
-+		u64 guest_deadline_shadow = vmcs_read64(GUEST_DEADLINE_VIR);
-+		u64 guest_deadline = vmcs_read64(GUEST_DEADLINE_PHY);
++	if (!is_vmcs_field_valid(vcpu, field))
++		return nested_vmx_fail(vcpu, VMXERR_UNSUPPORTED_VMCS_COMPONENT);
 +
-+		if (guest_deadline) {
-+			guest_deadline = kvm_read_l1_tsc(vcpu, guest_deadline);
-+			if (!guest_deadline)
-+				guest_deadline = 1;
-+		}
-+
-+		vmcs12->guest_deadline = guest_deadline;
-+		vmcs12->guest_deadline_shadow = guest_deadline_shadow;
-+	} else if (vmx->nested.msrs.tertiary_ctls & TERTIARY_EXEC_GUEST_APIC_TIMER) {
-+		vmcs12->guest_deadline = 0;
-+		vmcs12->guest_deadline_shadow = 0;
-+	}
-+	vmx->nested.guest_deadline_dirty = false;
-+
- 	vmx->nested.need_sync_vmcs02_to_vmcs12_rare = false;
- }
- 
-@@ -5959,6 +5998,13 @@ static int handle_vmwrite(struct kvm_vcpu *vcpu)
- 		vmx->nested.dirty_vmcs12 = true;
+ 	offset = get_vmcs12_field_offset(field);
+ 	if (offset < 0)
+ 		return nested_vmx_fail(vcpu, VMXERR_UNSUPPORTED_VMCS_COMPONENT);
+@@ -7196,6 +7212,10 @@ static int vmx_set_nested_state(struct kvm_vcpu *vcpu,
+ 			kvm_state->hdr.vmx.preemption_timer_deadline;
  	}
  
-+	if (!is_guest_mode(vcpu) &&
-+	    (field == GUEST_DEADLINE_PHY ||
-+	     field == GUEST_DEADLINE_PHY_HIGH ||
-+	     field == GUEST_DEADLINE_VIR ||
-+	     field == GUEST_DEADLINE_VIR_HIGH))
-+		vmx->nested.guest_deadline_dirty = true;
++	if (!nested_cpu_supports_tertiary_ctls(vcpu) &&
++	    vmcs12->tertiary_vm_exec_control)
++		goto error_guest_mode;
 +
- 	return nested_vmx_succeed(vcpu);
+ 	if (nested_vmx_check_controls(vcpu, vmcs12) ||
+ 	    nested_vmx_check_host_state(vcpu, vmcs12) ||
+ 	    nested_vmx_check_guest_state(vcpu, vmcs12, &ignored))
+diff --git a/arch/x86/kvm/vmx/nested.h b/arch/x86/kvm/vmx/nested.h
+index 9ca1df72e228..07c0f112e37e 100644
+--- a/arch/x86/kvm/vmx/nested.h
++++ b/arch/x86/kvm/vmx/nested.h
+@@ -158,6 +158,11 @@ static inline bool __nested_cpu_supports_tertiary_ctls(struct nested_vmx_msrs *m
+ 	return msrs->procbased_ctls_high & CPU_BASED_ACTIVATE_TERTIARY_CONTROLS;
  }
  
-@@ -5973,6 +6019,7 @@ static void set_current_vmptr(struct vcpu_vmx *vmx, gpa_t vmptr)
- 	}
- 	vmx->nested.dirty_vmcs12 = true;
- 	vmx->nested.force_msr_bitmap_recalc = true;
-+	vmx->nested.guest_deadline_dirty = true;
- }
- 
- /* Emulate the VMPTRLD instruction */
-@@ -7150,6 +7197,7 @@ static int vmx_set_nested_state(struct kvm_vcpu *vcpu,
- 
- 	vmx->nested.dirty_vmcs12 = true;
- 	vmx->nested.force_msr_bitmap_recalc = true;
-+	vmx->nested.guest_deadline_dirty = true;
- 	ret = nested_vmx_enter_non_root_mode(vcpu, false);
- 	if (ret)
- 		goto error_guest_mode;
-diff --git a/arch/x86/kvm/vmx/vmcs12.c b/arch/x86/kvm/vmx/vmcs12.c
-index 3842ee1ddabf..6849790a0af1 100644
---- a/arch/x86/kvm/vmx/vmcs12.c
-+++ b/arch/x86/kvm/vmx/vmcs12.c
-@@ -70,6 +70,8 @@ const unsigned short vmcs12_field_offsets[] = {
- 	FIELD64(HOST_IA32_PAT, host_ia32_pat),
- 	FIELD64(HOST_IA32_EFER, host_ia32_efer),
- 	FIELD64(HOST_IA32_PERF_GLOBAL_CTRL, host_ia32_perf_global_ctrl),
-+	FIELD64(GUEST_DEADLINE_PHY, guest_deadline),
-+	FIELD64(GUEST_DEADLINE_VIR, guest_deadline_shadow),
- 	FIELD(PIN_BASED_VM_EXEC_CONTROL, pin_based_vm_exec_control),
- 	FIELD(CPU_BASED_VM_EXEC_CONTROL, cpu_based_vm_exec_control),
- 	FIELD(EXCEPTION_BITMAP, exception_bitmap),
-diff --git a/arch/x86/kvm/vmx/vmcs12.h b/arch/x86/kvm/vmx/vmcs12.h
-index d8e09de44f2a..c0d5981475b3 100644
---- a/arch/x86/kvm/vmx/vmcs12.h
-+++ b/arch/x86/kvm/vmx/vmcs12.h
-@@ -192,6 +192,10 @@ struct __packed vmcs12 {
- 	u16 host_tr_selector;
- 	u16 guest_pml_index;
- 	u16 virtual_timer_vector;
++static inline bool nested_cpu_supports_tertiary_ctls(struct kvm_vcpu *vcpu)
++{
++	return __nested_cpu_supports_tertiary_ctls(&to_vmx(vcpu)->nested.msrs);
++}
 +
-+	/* offset 0x3e8 */
-+	u64 guest_deadline;
-+	u64 guest_deadline_shadow;
- };
- 
- /*
-@@ -375,6 +379,8 @@ static inline void vmx_check_vmcs12_offsets(void)
- 	CHECK_OFFSET(host_tr_selector, 994);
- 	CHECK_OFFSET(guest_pml_index, 996);
- 	CHECK_OFFSET(virtual_timer_vector, 998);
-+	CHECK_OFFSET(guest_deadline, 1000);
-+	CHECK_OFFSET(guest_deadline_shadow, 1008);
- }
- 
- extern const unsigned short vmcs12_field_offsets[];
-diff --git a/arch/x86/kvm/vmx/vmx.h b/arch/x86/kvm/vmx/vmx.h
-index 28625a2d17bd..bdeef2e12640 100644
---- a/arch/x86/kvm/vmx/vmx.h
-+++ b/arch/x86/kvm/vmx/vmx.h
-@@ -169,6 +169,8 @@ struct nested_vmx {
- 	bool has_preemption_timer_deadline;
- 	bool preemption_timer_expired;
- 
-+	bool guest_deadline_dirty;
-+
- 	/*
- 	 * Used to snapshot MSRs that are conditionally loaded on VM-Enter in
- 	 * order to propagate the guest's pre-VM-Enter value into vmcs02.  For
+ static inline bool nested_cpu_has(struct vmcs12 *vmcs12, u32 bit)
+ {
+ 	return vmcs12->cpu_based_vm_exec_control & bit;
 -- 
 2.45.2
 
