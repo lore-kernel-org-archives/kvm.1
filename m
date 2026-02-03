@@ -1,58 +1,59 @@
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C77B36A00D;
-	Tue,  3 Feb 2026 18:17:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C4883E95A4;
+	Tue,  3 Feb 2026 18:17:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.10
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770142670; cv=none; b=bwhMrAZtQmpZXstzZAh4bRo8tawDwAbDXXqYWi2cEBnefEDFNzCIjFKtEZPpJdZ1Jol9t1c53R2oqkMPN0Kv5M02h1kkp79Y9yAHpf1T2fWHc9QhnxITQE5EuE/fDeZG18WGrORE+sBnTF8cF+X/xBo6nTCRV4oFN2DTKRAb6WA=
+	t=1770142670; cv=none; b=iUSeLq5wh4GLSJwIhX8TinnBWTZ+DJDB8SiboL4BahtgVfBdLsbll6eTR1vr5wDHZ1qMacnGEQ/8Mr+vCTZGcW+ammuIafyrz+cDBydqRiIhEuylcl4U8Qu6yejU9+tfsRksIu8eSXouNczURvBqkB/d8ZoNXTQmS5fAhMWwMHY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1770142670; c=relaxed/simple;
-	bh=CMv7tamvHKs001xtNyhXn3dY0Dc+tq4bZp/NdM6KFdQ=;
+	bh=GagopKe8p6DQVgcXl32pCqybRoXB7F0rArot8lPxFz4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VzugmGvsTBj2DsKvbOjd2EqV0u7aYAaXikGGKAzDJNTGkVSh3K2B/TjL+RW4Y6kGHYnuVooHOJ9gWPRx316ndZRDtDgKfTQJG9YbTpxR1fCJn4DMGmsL9QGqoOumf3rR7p5GiU15TNyphi38mnMU0mYDAdNR9eRlLU3ydMSc9ao=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=bIuy1MvK; arc=none smtp.client-ip=198.175.65.10
+	 MIME-Version; b=F8ALv0QPbKNs0zROMtWdZFQ5EI9ed/WrzL33h6J2oatf45NixZNTFGXHgyEUfZnPrblKkb0zwviJ2XX5z3HIsmaiNEnVZBb1Gr+Nt8Eu0qklwsKFOrUVhMo14DgMH0Qmm8bNLvmUC5ksBNG93QB9o4fSBmkinDUjvA6gvCClVAQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=FEiw8wzS; arc=none smtp.client-ip=198.175.65.10
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="bIuy1MvK"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="FEiw8wzS"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1770142669; x=1801678669;
+  t=1770142670; x=1801678670;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=CMv7tamvHKs001xtNyhXn3dY0Dc+tq4bZp/NdM6KFdQ=;
-  b=bIuy1MvKDgLhvMpX0XKDl4Ww2xKUaIcLAzxHvGRFohk/omFlgx96DH3m
-   /lOY6SLFegJm19tWAWvPP3EBc8RPXaifNXoB8Ys1KeqCaoBNscuVusx7o
-   c9c+Gn3SyQiF9S4wjKZYH6ntFrXe3Ic433PtOssvsnWzJ/nP4ziBdhNl+
-   6huP916VBokmYq1eleuJ4eBxdALxzeoMfIUdAcaruu1DE37qvvOOWpP7O
-   DKihLIUQKIezQ61RSWLS7+SYV/j4kjtCMJudw9Go94macp+h3M1EgMovK
-   S8VciDjYjhU1mmLtHHjncUNBGiwb+7ndkElPZgZqeqYMwgND8wGV65ONy
-   w==;
-X-CSE-ConnectionGUID: syeyx4WTQySx/hkQpY8Dgw==
-X-CSE-MsgGUID: Lx/SNogMQomu4npPaza80g==
-X-IronPort-AV: E=McAfee;i="6800,10657,11691"; a="88745842"
+  bh=GagopKe8p6DQVgcXl32pCqybRoXB7F0rArot8lPxFz4=;
+  b=FEiw8wzSkLv0V1pJon/Dt5rvDNj8iZm9OYcwaFF85AtbRBe6yQYKMjgh
+   HTUHskdAacTub3emFptHouV2lyOwyRaO2JI0umnA/+4ML+n6424m0TXcn
+   TCgJSRZKoKOcaCVSLsbQv/80QYKj2YhwO2XPIOMOHUcwHc+bRhiuToSdj
+   BIAkF9DL3oGu+MMVeMlCO6DWPfk/JsN4RTdwYtDbxsk6m3rMfwIGUGF81
+   lxzoNk75BLrkr3t3Aq8B/zO5QXUQF8YqVlDz4Jwwm+uxfaos9vZHC4rwD
+   WRR7HQwiTAlD7ADbAAnxk8KaAQ4jAIk4SWyJlbXRtGjZOaiMgXzMf8QAz
+   g==;
+X-CSE-ConnectionGUID: YJ8s4vh1TIyv+3D0dE6w1w==
+X-CSE-MsgGUID: X+fLN5jsTIK1mjdk6um7Ag==
+X-IronPort-AV: E=McAfee;i="6800,10657,11691"; a="88745847"
 X-IronPort-AV: E=Sophos;i="6.21,271,1763452800"; 
-   d="scan'208";a="88745842"
+   d="scan'208";a="88745847"
 Received: from fmviesa006.fm.intel.com ([10.60.135.146])
-  by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Feb 2026 10:17:45 -0800
-X-CSE-ConnectionGUID: 4gT/6bgkT56cf/dUK+m0gw==
-X-CSE-MsgGUID: Zb0qc95XQ3CdKHh5EiMPeA==
+  by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Feb 2026 10:17:46 -0800
+X-CSE-ConnectionGUID: edytMeF7SVmamA8GNScu6Q==
+X-CSE-MsgGUID: U2dz4GLdTjO6xLeTDDe8zA==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.21,271,1763452800"; 
-   d="scan'208";a="209605516"
+   d="scan'208";a="209605519"
 Received: from khuang2-desk.gar.corp.intel.com (HELO localhost) ([10.124.221.188])
-  by fmviesa006-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Feb 2026 10:17:44 -0800
+  by fmviesa006-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Feb 2026 10:17:45 -0800
 From: isaku.yamahata@intel.com
 To: kvm@vger.kernel.org
 Cc: isaku.yamahata@intel.com,
 	isaku.yamahata@gmail.com,
 	Paolo Bonzini <pbonzini@redhat.com>,
 	Sean Christopherson <seanjc@google.com>,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH 21/32] KVM: VMX: Enable APIC timer virtualization
-Date: Tue,  3 Feb 2026 10:17:04 -0800
-Message-ID: <0107fa9de9ad238a7b1c8d8207e93f8d2e61615d.1770116051.git.isaku.yamahata@intel.com>
+	linux-kernel@vger.kernel.org,
+	Yang Zhong <yang.zhong@linux.intel.com>
+Subject: [PATCH 22/32] KVM: VMX: Introduce module parameter for APIC virt timer support
+Date: Tue,  3 Feb 2026 10:17:05 -0800
+Message-ID: <aa16814721131adc3b133945a3437436fd544eb8.1770116051.git.isaku.yamahata@intel.com>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <cover.1770116050.git.isaku.yamahata@intel.com>
 References: <cover.1770116050.git.isaku.yamahata@intel.com>
@@ -64,33 +65,59 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: Isaku Yamahata <isaku.yamahata@intel.com>
+From: Yang Zhong <yang.zhong@linux.intel.com>
 
-Add TERTIARY_EXEC_GUEST_APIC_TIMER bit to
-KVM_OPTIONAL_VMX_TERTIARY_VM_EXEC_CONTROL as optional feature as the
-supporting logic is implemented.
+Introduce a new module parameter, apic_timer_virt, to control the
+virtualization of the APIC timer in KVM. The primary improvement offered by
+APIC timer virtualization over the preemption timer is the passthrough of
+MSR_IA32_TSC_DEADLINE to the VM. This passthrough capability reduces the
+number of VM exits triggered by MSR write operations, thereby enhancing the
+performance of the virtual machine.
 
+The apic_timer_virt parameter is set to true by default on processor
+platforms that support APIC timer virtualization.  On platforms that do not
+support this feature, the parameter will indicate that APIC timer
+virtualization is not available.
+
+Signed-off-by: Yang Zhong <yang.zhong@linux.intel.com>
 Signed-off-by: Isaku Yamahata <isaku.yamahata@intel.com>
 ---
- arch/x86/kvm/vmx/vmx.h | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ arch/x86/kvm/vmx/vmx.c | 8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
 
-diff --git a/arch/x86/kvm/vmx/vmx.h b/arch/x86/kvm/vmx/vmx.h
-index bdeef2e12640..b296950d855e 100644
---- a/arch/x86/kvm/vmx/vmx.h
-+++ b/arch/x86/kvm/vmx/vmx.h
-@@ -588,9 +588,9 @@ static inline u8 vmx_get_rvi(void)
- 	 SECONDARY_EXEC_EPT_VIOLATION_VE)
+diff --git a/arch/x86/kvm/vmx/vmx.c b/arch/x86/kvm/vmx/vmx.c
+index 5496f4230424..76725f8dd228 100644
+--- a/arch/x86/kvm/vmx/vmx.c
++++ b/arch/x86/kvm/vmx/vmx.c
+@@ -118,6 +118,9 @@ module_param(enable_ipiv, bool, 0444);
  
- #define KVM_REQUIRED_VMX_TERTIARY_VM_EXEC_CONTROL 0
--/* Once apic timer virtualization supported, add TERTIARY_EXEC_GUEST_APIC_TIMER */
- #define KVM_OPTIONAL_VMX_TERTIARY_VM_EXEC_CONTROL			\
--	(TERTIARY_EXEC_IPI_VIRT)
-+	(TERTIARY_EXEC_IPI_VIRT |					\
-+	 TERTIARY_EXEC_GUEST_APIC_TIMER)
+ module_param(enable_device_posted_irqs, bool, 0444);
  
- #define BUILD_CONTROLS_SHADOW(lname, uname, bits)						\
- static inline void lname##_controls_set(struct vcpu_vmx *vmx, u##bits val)			\
++static bool __read_mostly enable_apic_timer_virt = true;
++module_param_named(apic_timer_virt, enable_apic_timer_virt, bool, 0444);
++
+ /*
+  * If nested=1, nested virtualization is supported, i.e., guests may use
+  * VMX and be a hypervisor for its own guests. If nested=0, guests may not
+@@ -2799,7 +2802,7 @@ static int setup_vmcs_config(struct vmcs_config *vmcs_conf,
+ 			adjust_vmx_controls64(KVM_OPTIONAL_VMX_TERTIARY_VM_EXEC_CONTROL,
+ 					      MSR_IA32_VMX_PROCBASED_CTLS3);
+ 
+-	if (!IS_ENABLED(CONFIG_X86_64) ||
++	if (!IS_ENABLED(CONFIG_X86_64) || !enable_apic_timer_virt ||
+ 	    !(_cpu_based_2nd_exec_control & SECONDARY_EXEC_VIRTUAL_INTR_DELIVERY))
+ 		_cpu_based_3rd_exec_control &= ~TERTIARY_EXEC_GUEST_APIC_TIMER;
+ 
+@@ -8748,6 +8751,9 @@ __init int vmx_hardware_setup(void)
+ 	if (!cpu_has_vmx_preemption_timer())
+ 		enable_preemption_timer = false;
+ 
++	if (!cpu_has_vmx_apic_timer_virt())
++		enable_apic_timer_virt = false;
++
+ 	if (enable_preemption_timer) {
+ 		u64 use_timer_freq = 5000ULL * 1000 * 1000;
+ 
 -- 
 2.45.2
 
