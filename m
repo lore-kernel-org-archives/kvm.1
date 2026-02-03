@@ -1,48 +1,48 @@
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7EEC83D6687;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F2973D667F;
 	Tue,  3 Feb 2026 18:17:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.13
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770142665; cv=none; b=NVwMAjv81J/hrS/w+xBEaiPAsZcEvTebHRs6gXqqki6AiFT99+5Nmt9M7Mh2dBta1iyf9nQhcEGLZ7GAxU/N/CnOgBGuicIIIpfO/kiLdD/Eg428BK4xRRC1fVG3/qSlGZulQ1pr8gRlpJVOuTghT6BZgGm3pGEwDnVqd0A7lDM=
+	t=1770142665; cv=none; b=lvw89Ciny99LKxkV1eMvVl7T/wbttgDflFiVzBWeVXYrAZlGEyc7EFv0gFKr1+K58tg4flVQyAa8VNbi41/UUvrUF7Lemulj0OlIs7CuIzgeVQ86M+bcpWz3nPSbn40X5nBqjTNxbMCF6JTZe9j30k0KYFnOnibWKT+CZnSmVeE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1770142665; c=relaxed/simple;
-	bh=BeDOchtE/6gFBkGg5vQffPr5YjORRd2s8W+KTY2b1Zg=;
+	bh=kZmy1PJDzMPDX74OH/nE3q+FpGgrr1mWJ3pQWgdL5PI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=E3mHy1znEeUhUlD6DrwL2LN2IFtBGL13w7FcPDFORs1NyjF2CIt4/G6QGELRG8Epskt7Uw3wlT5ArtEIqf5Baytcb/1CbbOuhzBJGoKKGWWQRx+k5eSmekDa920bbw9/ZXF07EZdwfXFv1O6sI4o4ATxgealvbbYtjMVV18qamI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=a1kAqIa4; arc=none smtp.client-ip=198.175.65.13
+	 MIME-Version; b=SWPjs2DXrPMQwiwp5iucV8EwYk27T0GszGFwnNRZHAugHriiHpoPH+YxFXw39RutfP4Isv7XZuyjUe2yAAlFZd68BaOWKYsIhIsoAULwn1f5N7afenTc29Q00Q73doEia/yPGEjne699yxz9PNcOb9gsfDkf0lw4a5X+i3RTLhE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=fJmQoijE; arc=none smtp.client-ip=198.175.65.13
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="a1kAqIa4"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="fJmQoijE"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
   t=1770142663; x=1801678663;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=BeDOchtE/6gFBkGg5vQffPr5YjORRd2s8W+KTY2b1Zg=;
-  b=a1kAqIa4PgKvNsGZWl1zE4tFcwsGs5YHT/FjKuG/5aESLFwr3gcztha5
-   blv/eipuHU4yeCgpARiutxArFxMpQfmzw9djpbh7J0NcB1udOyaR42I53
-   h4uQHuOcT8QRAv61YRsfCgUA0aD/AkihW0SNtcMQvQTDPJPAEGa9yyvL9
-   BRqAVkZUDUx23WeZqxUnHpEsIw9UD+Rj38AtQthyhPzWmDkHmJrVVa4wo
-   O9m38fnsqRBFPax8JvM5y7Bq3YQLaY+3D8Suy4VrOvfN6Gcw4ncITSiKV
-   3g48wkRRi9IpbVeND2+K5kBMJq+JJknR2IDHVPhZYiInA81aMQqylTbOQ
-   g==;
-X-CSE-ConnectionGUID: u+x050k5S9KygOBuTFn3IA==
-X-CSE-MsgGUID: 1g6YhQUpTN2GZc1pmcmFNQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11691"; a="82433193"
+  bh=kZmy1PJDzMPDX74OH/nE3q+FpGgrr1mWJ3pQWgdL5PI=;
+  b=fJmQoijE2Z+2kbWghnue8mFNeDRoVCuf3iAaj4dpSvA5/+Rp54g67z9o
+   yM9OBzjh5iSfMbVMGFhExleAAFkgkeYhr48QB6sFrOKynSm5v+m3+U96Z
+   Efd523lpE/KgzWNYQW92ME1ar1t0C/3wVanWZZTdUUmXn4Vzkrh4vXrRN
+   IF3cBpAsGaedplQRln0R1QLngIWmp4GBjNDhTP/U99lFgC+EE6YxpeugC
+   j6gL/Y3/qWAr9nohaX+uOkf07qkCYaW66lrq8R5iDDN6/jtxnryen1qcW
+   oXPxBSAnOzNR3L/yxauHDkbq8QPB5o/te4w3x0RoDid9wu/2FRQAmhLep
+   Q==;
+X-CSE-ConnectionGUID: uqUCfCJsQM26M5mUnHf+BA==
+X-CSE-MsgGUID: lw3XP9d5RKKEFO/p1xS8JA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11691"; a="82433188"
 X-IronPort-AV: E=Sophos;i="6.21,271,1763452800"; 
-   d="scan'208";a="82433193"
+   d="scan'208";a="82433188"
 Received: from orviesa009.jf.intel.com ([10.64.159.149])
   by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Feb 2026 10:17:43 -0800
-X-CSE-ConnectionGUID: M229sq89QK65pF7tZSFxuA==
-X-CSE-MsgGUID: bWyK3jdrTmC3d8Lh5SO4kA==
+X-CSE-ConnectionGUID: sXOOppfjTUalWMA0ZiH1Uw==
+X-CSE-MsgGUID: Ungg3JJuSaiyhWJLDLA+Qw==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.21,271,1763452800"; 
-   d="scan'208";a="209727508"
+   d="scan'208";a="209727505"
 Received: from khuang2-desk.gar.corp.intel.com (HELO localhost) ([10.124.221.188])
-  by orviesa009-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Feb 2026 10:17:40 -0800
+  by orviesa009-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Feb 2026 10:17:37 -0800
 From: isaku.yamahata@intel.com
 To: kvm@vger.kernel.org
 Cc: isaku.yamahata@intel.com,
@@ -50,9 +50,9 @@ Cc: isaku.yamahata@intel.com,
 	Paolo Bonzini <pbonzini@redhat.com>,
 	Sean Christopherson <seanjc@google.com>,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH 09/32] KVM: nVMX: Pass struct msr_data to VMX MSRs emulation
-Date: Tue,  3 Feb 2026 10:16:52 -0800
-Message-ID: <3d79f3816536abb0e81a19aac60bb5a213b67803.1770116051.git.isaku.yamahata@intel.com>
+Subject: [PATCH 08/32] KVM: nVMX: Disallow/allow guest APIC timer virtualization switch to/from L2
+Date: Tue,  3 Feb 2026 10:16:51 -0800
+Message-ID: <642d76482132d7b0ebc4c2468bc24e0f65cc48da.1770116050.git.isaku.yamahata@intel.com>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <cover.1770116050.git.isaku.yamahata@intel.com>
 References: <cover.1770116050.git.isaku.yamahata@intel.com>
@@ -66,118 +66,137 @@ Content-Transfer-Encoding: 8bit
 
 From: Isaku Yamahata <isaku.yamahata@intel.com>
 
-Pass struct msr_data, which has host_initiated member in addition to
-msr_index and data to vmx_set/get_vmx_msr().
+Disable guest APIC timer virtualization on nested VMEnter, enable it on
+nested vmexit.
 
-Processor-based tertiary control access depends on which initiated the
-operation, the host or the guest. For host-initiated access (KVM_GET_MSRS,
-KVM_SET_MSRS), if the host supports processor-based tertiary controls,
-allow access.  If guest-initiated access (emulation for guest rdmsr/wrmsr),
-allow/disallow based on guest tertiary controls is advertised to the guest
-(guest processor-based control high &
-CPU_BASED_ACTIVATE_TERTIARY_CONTROLS).  Prepare to add the check.
-
-No functional change intended.
+With VMX APIC timer virtualization, the CPU directly injects a guest timer
+interrupt without VMExit.  When the L1 APIC timer fires while running the
+nested (L2) vCPU, KVM should emulate VMExit from L2 to L1.  Switch to the
+hv timer (preemption timer) or the sw timer when VMEntering from L1 to L2,
+switch to guest APIC timer virtualization when VM exiting from L2 to L1.
 
 Signed-off-by: Isaku Yamahata <isaku.yamahata@intel.com>
 ---
- arch/x86/kvm/vmx/nested.c |  9 +++++++--
- arch/x86/kvm/vmx/nested.h |  4 ++--
- arch/x86/kvm/vmx/vmx.c    | 18 ++++++++++++++----
- 3 files changed, 23 insertions(+), 8 deletions(-)
+ arch/x86/kvm/lapic.c      | 29 +++++++++++++++++++++++++++++
+ arch/x86/kvm/lapic.h      |  2 ++
+ arch/x86/kvm/vmx/nested.c | 13 +++++++++++++
+ arch/x86/kvm/vmx/vmx.c    |  5 +++++
+ 4 files changed, 49 insertions(+)
 
+diff --git a/arch/x86/kvm/lapic.c b/arch/x86/kvm/lapic.c
+index a2f714eb78b1..7c3ec0565a8f 100644
+--- a/arch/x86/kvm/lapic.c
++++ b/arch/x86/kvm/lapic.c
+@@ -1862,6 +1862,35 @@ static void apic_cancel_apic_virt_timer(struct kvm_lapic *apic)
+ 	start_apic_timer(apic);
+ }
+ 
++void kvm_sync_apic_virt_timer(struct kvm_vcpu *vcpu)
++{
++	struct kvm_lapic *apic = vcpu->arch.apic;
++
++	WARN_ON_ONCE(is_guest_mode(vcpu));
++
++	if (!apic->lapic_timer.apic_virt_timer_in_use)
++		return;
++
++	apic->lapic_timer.tscdeadline = kvm_x86_call(get_guest_tsc_deadline_virt)(vcpu);
++}
++EXPORT_SYMBOL_GPL(kvm_sync_apic_virt_timer);
++
++void kvm_cancel_apic_virt_timer(struct kvm_vcpu *vcpu)
++{
++	struct kvm_lapic *apic = vcpu->arch.apic;
++
++	WARN_ON_ONCE(!is_guest_mode(vcpu));
++
++	if (!apic->lapic_timer.apic_virt_timer_in_use)
++		return;
++
++	apic->lapic_timer.apic_virt_timer_in_use = false;
++	trace_kvm_apic_virt_timer_state(vcpu->vcpu_id, false);
++
++	start_apic_timer(apic);
++}
++EXPORT_SYMBOL_GPL(kvm_cancel_apic_virt_timer);
++
+ static void apic_set_apic_virt_timer(struct kvm_lapic *apic)
+ {
+ 	struct kvm_timer *ktimer = &apic->lapic_timer;
+diff --git a/arch/x86/kvm/lapic.h b/arch/x86/kvm/lapic.h
+index 3c597b670e7e..2ebe294fe0f9 100644
+--- a/arch/x86/kvm/lapic.h
++++ b/arch/x86/kvm/lapic.h
+@@ -251,6 +251,8 @@ void kvm_lapic_expired_hv_timer(struct kvm_vcpu *vcpu);
+ bool kvm_lapic_hv_timer_in_use(struct kvm_vcpu *vcpu);
+ void kvm_lapic_restart_hv_timer(struct kvm_vcpu *vcpu);
+ void kvm_update_apic_virt_timer(struct kvm_vcpu *vcpu);
++void kvm_sync_apic_virt_timer(struct kvm_vcpu *vcpu);
++void kvm_cancel_apic_virt_timer(struct kvm_vcpu *vcpu);
+ 
+ static inline bool kvm_lapic_apic_virt_timer_in_use(struct kvm_vcpu *vcpu)
+ {
 diff --git a/arch/x86/kvm/vmx/nested.c b/arch/x86/kvm/vmx/nested.c
-index 77521e37cfc6..b1b8f0c88ca5 100644
+index 6137e5307d0f..77521e37cfc6 100644
 --- a/arch/x86/kvm/vmx/nested.c
 +++ b/arch/x86/kvm/vmx/nested.c
-@@ -1479,9 +1479,11 @@ static int vmx_restore_fixed0_msr(struct vcpu_vmx *vmx, u32 msr_index, u64 data)
-  *
-  * Returns 0 on success, non-0 otherwise.
-  */
--int vmx_set_vmx_msr(struct kvm_vcpu *vcpu, u32 msr_index, u64 data)
-+int vmx_set_vmx_msr(struct kvm_vcpu *vcpu, struct msr_data *msr_info)
- {
- 	struct vcpu_vmx *vmx = to_vmx(vcpu);
-+	u32 msr_index = msr_info->index;
-+	u64 data = msr_info->data;
+@@ -3634,6 +3634,8 @@ enum nvmx_vmentry_status nested_vmx_enter_non_root_mode(struct kvm_vcpu *vcpu,
+ 	if (!enable_ept)
+ 		vmcs_writel(GUEST_CR3, vcpu->arch.cr3);
  
- 	/*
- 	 * Don't allow changes to the VMX capability MSRs while the vCPU
-@@ -1544,8 +1546,11 @@ int vmx_set_vmx_msr(struct kvm_vcpu *vcpu, u32 msr_index, u64 data)
- }
- 
- /* Returns 0 on success, non-0 otherwise. */
--int vmx_get_vmx_msr(struct nested_vmx_msrs *msrs, u32 msr_index, u64 *pdata)
-+int vmx_get_vmx_msr(struct nested_vmx_msrs *msrs, struct msr_data *msr_info)
- {
-+	u32 msr_index = msr_info->index;
-+	u64 *pdata = &msr_info->data;
++	kvm_sync_apic_virt_timer(vcpu);
 +
- 	switch (msr_index) {
- 	case MSR_IA32_VMX_BASIC:
- 		*pdata = msrs->basic;
-diff --git a/arch/x86/kvm/vmx/nested.h b/arch/x86/kvm/vmx/nested.h
-index 983484d42ebf..f51d7cac8a58 100644
---- a/arch/x86/kvm/vmx/nested.h
-+++ b/arch/x86/kvm/vmx/nested.h
-@@ -47,8 +47,8 @@ static inline void nested_vmx_vmexit(struct kvm_vcpu *vcpu, u32 vm_exit_reason,
- }
+ 	vmx_switch_vmcs(vcpu, &vmx->nested.vmcs02);
  
- void nested_sync_vmcs12_to_shadow(struct kvm_vcpu *vcpu);
--int vmx_set_vmx_msr(struct kvm_vcpu *vcpu, u32 msr_index, u64 data);
--int vmx_get_vmx_msr(struct nested_vmx_msrs *msrs, u32 msr_index, u64 *pdata);
-+int vmx_set_vmx_msr(struct kvm_vcpu *vcpu, struct msr_data *msr);
-+int vmx_get_vmx_msr(struct nested_vmx_msrs *msrs, struct msr_data *msr);
- int get_vmx_mem_address(struct kvm_vcpu *vcpu, unsigned long exit_qualification,
- 			u32 vmx_instruction_info, bool wr, int len, gva_t *ret);
- void nested_mark_vmcs12_pages_dirty(struct kvm_vcpu *vcpu);
+ 	prepare_vmcs02_early(vmx, &vmx->vmcs01, vmcs12);
+@@ -3709,6 +3711,14 @@ enum nvmx_vmentry_status nested_vmx_enter_non_root_mode(struct kvm_vcpu *vcpu,
+ 		vmx_start_preemption_timer(vcpu, timer_value);
+ 	}
+ 
++	/*
++	 * Disable apic virtual timer for L1 to use sw timer (hr timer) or
++	 * hypervisor timer (VMX preemption timer).
++	 * When L1 timer interrupt occurs during running L2, KVM emulates
++	 * VMExit from L2 to L1.  Not directly injecting the interrupt into L2.
++	 */
++	kvm_cancel_apic_virt_timer(vcpu);
++
+ 	/*
+ 	 * Note no nested_vmx_succeed or nested_vmx_fail here. At this point
+ 	 * we are no longer running L1, and VMLAUNCH/VMRESUME has not yet
+@@ -5181,6 +5191,9 @@ void __nested_vmx_vmexit(struct kvm_vcpu *vcpu, u32 vm_exit_reason,
+ 	/* in case we halted in L2 */
+ 	kvm_set_mp_state(vcpu, KVM_MP_STATE_RUNNABLE);
+ 
++	/* If apic virtual timer is supported, switch back to it. */
++	kvm_update_apic_virt_timer(vcpu);
++
+ 	if (likely(!vmx->fail)) {
+ 		if (vm_exit_reason != -1)
+ 			trace_kvm_nested_vmexit_inject(vmcs12->vm_exit_reason,
 diff --git a/arch/x86/kvm/vmx/vmx.c b/arch/x86/kvm/vmx/vmx.c
-index c625c46658dc..dc6b6659a093 100644
+index 82e1a0b2a8d2..c625c46658dc 100644
 --- a/arch/x86/kvm/vmx/vmx.c
 +++ b/arch/x86/kvm/vmx/vmx.c
-@@ -2065,11 +2065,22 @@ static inline bool is_vmx_feature_control_msr_valid(struct vcpu_vmx *vmx,
+@@ -8277,6 +8277,9 @@ bool vmx_can_use_apic_virt_timer(struct kvm_vcpu *vcpu)
+ 	if (vcpu->kvm->arch.vm_type != KVM_X86_DEFAULT_VM)
+ 		return false;
  
- int vmx_get_feature_msr(u32 msr, u64 *data)
++	if (is_guest_mode(vcpu))
++		return false;
++
+ 	return cpu_has_vmx_apic_timer_virt() &&
+ 		/* VMX guest virtual timer supports only TSC deadline mode. */
+ 		kvm_lapic_lvtt_timer_mode(vcpu) == APIC_LVT_TIMER_TSCDEADLINE &&
+@@ -8288,6 +8291,8 @@ bool vmx_can_use_apic_virt_timer(struct kvm_vcpu *vcpu)
+ 
+ void vmx_set_apic_virt_timer(struct kvm_vcpu *vcpu, u16 vector)
  {
-+	struct msr_data msr_info;
-+	int r;
++	WARN_ON_ONCE(is_guest_mode(vcpu));
 +
- 	switch (msr) {
- 	case KVM_FIRST_EMULATED_VMX_MSR ... KVM_LAST_EMULATED_VMX_MSR:
- 		if (!nested)
- 			return 1;
--		return vmx_get_vmx_msr(&vmcs_config.nested, msr, data);
-+
-+		msr_info = (struct msr_data) {
-+			.index = msr,
-+			.host_initiated = true,
-+		};
-+		r = vmx_get_vmx_msr(&vmcs_config.nested, &msr_info);
-+		if (!r)
-+			*data = msr_info.data;
-+		return r;
- 	default:
- 		return KVM_MSR_RET_UNSUPPORTED;
- 	}
-@@ -2154,8 +2165,7 @@ int vmx_get_msr(struct kvm_vcpu *vcpu, struct msr_data *msr_info)
- 	case KVM_FIRST_EMULATED_VMX_MSR ... KVM_LAST_EMULATED_VMX_MSR:
- 		if (!guest_cpu_cap_has(vcpu, X86_FEATURE_VMX))
- 			return 1;
--		if (vmx_get_vmx_msr(&vmx->nested.msrs, msr_info->index,
--				    &msr_info->data))
-+		if (vmx_get_vmx_msr(&vmx->nested.msrs, msr_info))
- 			return 1;
- #ifdef CONFIG_KVM_HYPERV
- 		/*
-@@ -2482,7 +2492,7 @@ int vmx_set_msr(struct kvm_vcpu *vcpu, struct msr_data *msr_info)
- 			return 1; /* they are read-only */
- 		if (!guest_cpu_cap_has(vcpu, X86_FEATURE_VMX))
- 			return 1;
--		return vmx_set_vmx_msr(vcpu, msr_index, data);
-+		return vmx_set_vmx_msr(vcpu, msr_info);
- 	case MSR_IA32_RTIT_CTL:
- 		if (!vmx_pt_mode_is_host_guest() ||
- 			vmx_rtit_ctl_check(vcpu, data) ||
+ 	vmcs_write16(GUEST_APIC_TIMER_VECTOR, vector);
+ 	vmx_disable_intercept_for_msr(vcpu, MSR_IA32_TSC_DEADLINE, MSR_TYPE_RW);
+ 	tertiary_exec_controls_setbit(to_vmx(vcpu), TERTIARY_EXEC_GUEST_APIC_TIMER);
 -- 
 2.45.2
 
