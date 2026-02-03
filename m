@@ -1,48 +1,48 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A761F366833;
-	Tue,  3 Feb 2026 18:17:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.13
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 760773D6474;
+	Tue,  3 Feb 2026 18:17:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.10
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770142659; cv=none; b=NCnI5kPzgRoopXYfMVXFXRXQuZPZcLXHCjqCSzft2a/2iRG9HjKEX1Vce337NpVKhcTWCQPWbUPMNxWxV32vNQ8cbucsceRWgK9/GkM6c125Bjovuz6Xaqn01PqpmIVTf9mCMFPXWUNhOuEij+1eBtEPOS/AcEgU7BwsfnqE4X8=
+	t=1770142663; cv=none; b=a/0ZbrDZYXyCAI5+v53EJLoeETYs9ZSQTa0Q2cNjlGkxESKHLdo6I7EVPB2Kefmd1+PDMJcvwuu+yUK7C0YPpcTAg/ljq4+DRM578RB79rv01JDimhgBNUWhSLGI5F3zhLdg/i7y8jDu6psM8nTqZ/psMmZ2IzcvLT1p9olwiYk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770142659; c=relaxed/simple;
-	bh=6h76HamtuX5WAWZxbtzCPlZnwCKgGwSsmIJkkIJPz8A=;
+	s=arc-20240116; t=1770142663; c=relaxed/simple;
+	bh=c9TKvGjIeGGIhjlMGzJs9IJ4jamyM/FgsY22RuZP+Tg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VIDHeGUQ0cTrf+GZPvoDgVZPMES2mLs0/IpfN1lI3afJkARUmI0iCfZbpAN+kCocm8MCVjv01GOVPtIoawTBgfz0rJX5ZoPu/0iepd860dtKhP/jXHVlR247WBUZ1HmKsR9uj0/Qlyby2B1ZUHZR2FxrfNuEGcf+rpXFhs7XNvg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=YQfLJV3U; arc=none smtp.client-ip=198.175.65.13
+	 MIME-Version; b=SWnYJgkH7HVspgSlJAwp+sfj+dGGSXVYD+bowDz0nV19SwH9XY0nipV9dl3NgEgCQ7OPZYRz+8I0A6YeNZhHA86cxTw5L4IIwDMlyVurZ2PrC91YbDdWYV1lSS8gg0Hci1K1/cmF1W4CSQIgkQf0vHxMAR6DpJ2uaHCSdd2YA2M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Gcf2mJic; arc=none smtp.client-ip=198.175.65.10
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="YQfLJV3U"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Gcf2mJic"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1770142656; x=1801678656;
+  t=1770142662; x=1801678662;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=6h76HamtuX5WAWZxbtzCPlZnwCKgGwSsmIJkkIJPz8A=;
-  b=YQfLJV3U4W00bz3RsQwN46plVpbuHaXH36NgjNvtAXt7a+YHWCZlid3m
-   j390G2IPC0mVc6DbzB+Xr2uRwJtwdiTf1reNMOwdNEcTprjGe9J9KBi0h
-   zMnGPxwuJIUDYj8ER9yM3V+jMSAiYN/fcBSHkqTmrTaaAcpce+o9fRRLw
-   AxHfJ6X2hHVol8zJZPz87bJSOv4Y74jB3Su+1KSLUScpoDBvNTU1fcpPQ
-   7MBGBK3QKgnAaI2e6fmwiieg7gcnYOug41+X+rN/ESS32nbpy43jYqtV+
-   zwqhWBFmETECCDsrtMWnnU2PxwKUehy6iquLNByJdeqOnYRI1UaGScb3b
-   A==;
-X-CSE-ConnectionGUID: RcSblYuhRq2wabtdF3UbfQ==
-X-CSE-MsgGUID: 4ViusSTBSeenuNxiIuGaRQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11691"; a="82433182"
+  bh=c9TKvGjIeGGIhjlMGzJs9IJ4jamyM/FgsY22RuZP+Tg=;
+  b=Gcf2mJicUHeKBWjHlJ5dMJNyZNBLOJNu7TUxvdszgwiKo3nY2M2CGcEO
+   3wCfyCP+5IIOcqQnYIaEf+VgHGtZSUAyEwfDkQXQYtsd0gzH3vqoQB+nO
+   er3hvcPgFtXRxuFOF1gnjZ/t+g1YO0eBrDzbiI0Y2ZZU+sk/EEnNZbuIM
+   al8AVDzajxWhtTJaZy+FrfciduImiRVinZC0TkXO/Vy+JnOro11j8Lprl
+   R3Xvj8uIREQri4ZdVYeepRm0R4bajJA8xcOvJ4DnX1cOK7HxC7cAqsSds
+   dvAO9jWCLYG19pCqAh7DlJd1r3IVdhLrrS1wihlN4HoANP0bnlBbL9UNv
+   Q==;
+X-CSE-ConnectionGUID: hqS9oOkxT5KoRYbwAQsvBQ==
+X-CSE-MsgGUID: vd/2Kw9hQ2mCFpy7qSxp3g==
+X-IronPort-AV: E=McAfee;i="6800,10657,11691"; a="88745794"
 X-IronPort-AV: E=Sophos;i="6.21,271,1763452800"; 
-   d="scan'208";a="82433182"
-Received: from orviesa009.jf.intel.com ([10.64.159.149])
-  by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Feb 2026 10:17:36 -0800
-X-CSE-ConnectionGUID: SHh7J4kKSOWnZnd07MoA5g==
-X-CSE-MsgGUID: jyHEamHNSZOOrGgfhhKNtA==
+   d="scan'208";a="88745794"
+Received: from fmviesa006.fm.intel.com ([10.60.135.146])
+  by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Feb 2026 10:17:41 -0800
+X-CSE-ConnectionGUID: 6lBy9vnTR72Vz8XFoA+OcQ==
+X-CSE-MsgGUID: 4ZMv1rGuRGa3vKdWagkSEA==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.21,271,1763452800"; 
-   d="scan'208";a="209727496"
+   d="scan'208";a="209605475"
 Received: from khuang2-desk.gar.corp.intel.com (HELO localhost) ([10.124.221.188])
-  by orviesa009-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Feb 2026 10:17:36 -0800
+  by fmviesa006-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Feb 2026 10:17:40 -0800
 From: isaku.yamahata@intel.com
 To: kvm@vger.kernel.org
 Cc: isaku.yamahata@intel.com,
@@ -50,9 +50,9 @@ Cc: isaku.yamahata@intel.com,
 	Paolo Bonzini <pbonzini@redhat.com>,
 	Sean Christopherson <seanjc@google.com>,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH 07/32] KVM: VMX: Update APIC timer virtualization on apicv changed
-Date: Tue,  3 Feb 2026 10:16:50 -0800
-Message-ID: <5f8655049106de981021d3d17bedc56574756678.1770116050.git.isaku.yamahata@intel.com>
+Subject: [PATCH 10/32] KVM: nVMX: Supports VMX tertiary controls and GUEST_APIC_TIMER bit
+Date: Tue,  3 Feb 2026 10:16:53 -0800
+Message-ID: <db2b5ea67d9275463f1b613e19fa7194858ca5a1.1770116051.git.isaku.yamahata@intel.com>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <cover.1770116050.git.isaku.yamahata@intel.com>
 References: <cover.1770116050.git.isaku.yamahata@intel.com>
@@ -66,61 +66,158 @@ Content-Transfer-Encoding: 8bit
 
 From: Isaku Yamahata <isaku.yamahata@intel.com>
 
-VMX APIC timer virtualization requires the virtual-interrupt delivery.
-It's part of KVM apicv, and when apicv state is changed, the
-refresh_apicv_exec_ctrl() callback is invoked.  Export a lapic function to
-update which timer to use for APIC timer emulation and make the VMX backend
-call it.
+Emulate MSR_IA32_VMX_PROCBASED_CTLS3 to advertise APIC timer virtualization
+feature to the L2 guest.
 
 Signed-off-by: Isaku Yamahata <isaku.yamahata@intel.com>
 ---
- arch/x86/kvm/lapic.c   | 6 ++++++
- arch/x86/kvm/lapic.h   | 1 +
- arch/x86/kvm/vmx/vmx.c | 2 ++
- 3 files changed, 9 insertions(+)
+ arch/x86/kvm/vmx/capabilities.h |  1 +
+ arch/x86/kvm/vmx/hyperv.c       |  7 ++++++
+ arch/x86/kvm/vmx/nested.c       | 42 +++++++++++++++++++++++++++++++++
+ arch/x86/kvm/vmx/nested.h       |  5 ++++
+ arch/x86/kvm/x86.h              |  2 +-
+ 5 files changed, 56 insertions(+), 1 deletion(-)
 
-diff --git a/arch/x86/kvm/lapic.c b/arch/x86/kvm/lapic.c
-index 837f446eea41..a2f714eb78b1 100644
---- a/arch/x86/kvm/lapic.c
-+++ b/arch/x86/kvm/lapic.c
-@@ -1898,6 +1898,12 @@ static void apic_update_apic_virt_timer(struct kvm_lapic *apic)
- 		apic_cancel_apic_virt_timer(apic);
+diff --git a/arch/x86/kvm/vmx/capabilities.h b/arch/x86/kvm/vmx/capabilities.h
+index ffc51fe9a455..f73a50c887ac 100644
+--- a/arch/x86/kvm/vmx/capabilities.h
++++ b/arch/x86/kvm/vmx/capabilities.h
+@@ -47,6 +47,7 @@ struct nested_vmx_msrs {
+ 	u64 cr4_fixed1;
+ 	u64 vmcs_enum;
+ 	u64 vmfunc_controls;
++	u64 tertiary_ctls;
+ };
+ 
+ struct vmcs_config {
+diff --git a/arch/x86/kvm/vmx/hyperv.c b/arch/x86/kvm/vmx/hyperv.c
+index fa41d036acd4..2731c2e4b0e5 100644
+--- a/arch/x86/kvm/vmx/hyperv.c
++++ b/arch/x86/kvm/vmx/hyperv.c
+@@ -141,6 +141,13 @@ void nested_evmcs_filter_control_msr(struct kvm_vcpu *vcpu, u32 msr_index, u64 *
+ 	case MSR_IA32_VMX_PROCBASED_CTLS2:
+ 		ctl_high &= evmcs_get_supported_ctls(EVMCS_2NDEXEC);
+ 		break;
++	case MSR_IA32_VMX_PROCBASED_CTLS3:
++		/*
++		 * tertiary procbased controls are 64-bit. 0 means unsupported,
++		 * 1 supported.
++		 */
++		*pdata &= evmcs_get_supported_ctls(EVMCS_3RDEXEC);
++		return;
+ 	case MSR_IA32_VMX_TRUE_PINBASED_CTLS:
+ 	case MSR_IA32_VMX_PINBASED_CTLS:
+ 		ctl_high &= evmcs_get_supported_ctls(EVMCS_PINCTRL);
+diff --git a/arch/x86/kvm/vmx/nested.c b/arch/x86/kvm/vmx/nested.c
+index b1b8f0c88ca5..8cd56e9f1cf0 100644
+--- a/arch/x86/kvm/vmx/nested.c
++++ b/arch/x86/kvm/vmx/nested.c
+@@ -215,6 +215,11 @@ static inline bool vmx_control_verify(u32 control, u32 low, u32 high)
+ 	return fixed_bits_valid(control, low, high);
  }
  
-+void kvm_update_apic_virt_timer(struct kvm_vcpu *vcpu)
++static inline bool vmx_control64_verify(u64 control, u64 msr)
 +{
-+	apic_update_apic_virt_timer(vcpu->arch.apic);
++	return !(control & ~msr);
 +}
-+EXPORT_SYMBOL_GPL(kvm_update_apic_virt_timer);
 +
- static void apic_update_lvtt(struct kvm_lapic *apic)
+ static inline u64 vmx_control_msr(u32 low, u32 high)
  {
- 	u32 timer_mode = kvm_lapic_get_reg(apic, APIC_LVTT) &
-diff --git a/arch/x86/kvm/lapic.h b/arch/x86/kvm/lapic.h
-index d3fad67a4e78..3c597b670e7e 100644
---- a/arch/x86/kvm/lapic.h
-+++ b/arch/x86/kvm/lapic.h
-@@ -250,6 +250,7 @@ void kvm_lapic_switch_to_apic_virt_timer(struct kvm_vcpu *vcpu);
- void kvm_lapic_expired_hv_timer(struct kvm_vcpu *vcpu);
- bool kvm_lapic_hv_timer_in_use(struct kvm_vcpu *vcpu);
- void kvm_lapic_restart_hv_timer(struct kvm_vcpu *vcpu);
-+void kvm_update_apic_virt_timer(struct kvm_vcpu *vcpu);
- 
- static inline bool kvm_lapic_apic_virt_timer_in_use(struct kvm_vcpu *vcpu)
- {
-diff --git a/arch/x86/kvm/vmx/vmx.c b/arch/x86/kvm/vmx/vmx.c
-index dcb04fc0b8a7..82e1a0b2a8d2 100644
---- a/arch/x86/kvm/vmx/vmx.c
-+++ b/arch/x86/kvm/vmx/vmx.c
-@@ -4563,6 +4563,8 @@ void vmx_refresh_apicv_exec_ctrl(struct kvm_vcpu *vcpu)
- 						 kvm_vcpu_apicv_active(vcpu));
- 
- 	vmx_update_msr_bitmap_x2apic(vcpu);
+ 	return low | ((u64)high << 32);
+@@ -1515,6 +1520,19 @@ int vmx_set_vmx_msr(struct kvm_vcpu *vcpu, struct msr_data *msr_info)
+ 	case MSR_IA32_VMX_TRUE_ENTRY_CTLS:
+ 	case MSR_IA32_VMX_PROCBASED_CTLS2:
+ 		return vmx_restore_control_msr(vmx, msr_index, data);
++	case MSR_IA32_VMX_PROCBASED_CTLS3:
++		if (!__nested_cpu_supports_tertiary_ctls(&vmcs_config.nested))
++			return -EINVAL;
 +
-+	kvm_update_apic_virt_timer(vcpu);
++		/* read-only for guest. */
++		if (!msr_info->host_initiated)
++			return -EINVAL;
++
++		if (!vmx_control64_verify(data,
++					  vmcs_config.nested.tertiary_ctls))
++			return -EINVAL;
++		vmx->nested.msrs.tertiary_ctls = data;
++		return 0;
+ 	case MSR_IA32_VMX_MISC:
+ 		return vmx_restore_vmx_misc(vmx, data);
+ 	case MSR_IA32_VMX_CR0_FIXED0:
+@@ -1612,6 +1630,16 @@ int vmx_get_vmx_msr(struct nested_vmx_msrs *msrs, struct msr_data *msr_info)
+ 			msrs->secondary_ctls_low,
+ 			msrs->secondary_ctls_high);
+ 		break;
++	case MSR_IA32_VMX_PROCBASED_CTLS3:
++		if (!__nested_cpu_supports_tertiary_ctls(&vmcs_config.nested))
++			return KVM_MSR_RET_UNSUPPORTED;
++
++		if (!msr_info->host_initiated &&
++		    !__nested_cpu_supports_tertiary_ctls(msrs))
++			return -EINVAL;
++
++		*pdata = msrs->tertiary_ctls;
++		break;
+ 	case MSR_IA32_VMX_EPT_VPID_CAP:
+ 		*pdata = msrs->ept_caps |
+ 			((u64)msrs->vpid_caps << 32);
+@@ -7314,6 +7342,18 @@ static void nested_vmx_setup_secondary_ctls(u32 ept_caps,
+ 		msrs->secondary_ctls_high |= SECONDARY_EXEC_ENCLS_EXITING;
  }
  
- static u32 vmx_exec_control(struct vcpu_vmx *vmx)
++static void nested_vmx_setup_tertiary_ctls(struct vmcs_config *vmcs_conf,
++					   struct nested_vmx_msrs *msrs)
++{
++	msrs->tertiary_ctls = vmcs_conf->cpu_based_3rd_exec_ctrl;
++
++	msrs->tertiary_ctls &= TERTIARY_EXEC_GUEST_APIC_TIMER;
++
++	if (msrs->tertiary_ctls)
++		msrs->procbased_ctls_high |=
++			CPU_BASED_ACTIVATE_TERTIARY_CONTROLS;
++}
++
+ static void nested_vmx_setup_misc_data(struct vmcs_config *vmcs_conf,
+ 				       struct nested_vmx_msrs *msrs)
+ {
+@@ -7402,6 +7442,8 @@ void nested_vmx_setup_ctls_msrs(struct vmcs_config *vmcs_conf, u32 ept_caps)
+ 
+ 	nested_vmx_setup_secondary_ctls(ept_caps, vmcs_conf, msrs);
+ 
++	nested_vmx_setup_tertiary_ctls(vmcs_conf, msrs);
++
+ 	nested_vmx_setup_misc_data(vmcs_conf, msrs);
+ 
+ 	nested_vmx_setup_basic(msrs);
+diff --git a/arch/x86/kvm/vmx/nested.h b/arch/x86/kvm/vmx/nested.h
+index f51d7cac8a58..d6d89ae1daec 100644
+--- a/arch/x86/kvm/vmx/nested.h
++++ b/arch/x86/kvm/vmx/nested.h
+@@ -153,6 +153,11 @@ static inline bool nested_cpu_has_vmx_shadow_vmcs(struct kvm_vcpu *vcpu)
+ 		SECONDARY_EXEC_SHADOW_VMCS;
+ }
+ 
++static inline bool __nested_cpu_supports_tertiary_ctls(struct nested_vmx_msrs *msrs)
++{
++	return msrs->procbased_ctls_high & CPU_BASED_ACTIVATE_TERTIARY_CONTROLS;
++}
++
+ static inline bool nested_cpu_has(struct vmcs12 *vmcs12, u32 bit)
+ {
+ 	return vmcs12->cpu_based_vm_exec_control & bit;
+diff --git a/arch/x86/kvm/x86.h b/arch/x86/kvm/x86.h
+index fdab0ad49098..7ba7abf02bbd 100644
+--- a/arch/x86/kvm/x86.h
++++ b/arch/x86/kvm/x86.h
+@@ -92,7 +92,7 @@ do {											\
+  * associated feature that KVM supports for nested virtualization.
+  */
+ #define KVM_FIRST_EMULATED_VMX_MSR	MSR_IA32_VMX_BASIC
+-#define KVM_LAST_EMULATED_VMX_MSR	MSR_IA32_VMX_VMFUNC
++#define KVM_LAST_EMULATED_VMX_MSR	MSR_IA32_VMX_PROCBASED_CTLS3
+ 
+ #define KVM_DEFAULT_PLE_GAP		128
+ #define KVM_VMX_DEFAULT_PLE_WINDOW	4096
 -- 
 2.45.2
 
