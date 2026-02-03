@@ -1,81 +1,95 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pg1-f201.google.com (mail-pg1-f201.google.com [209.85.215.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D9FD2628D
-	for <kvm@vger.kernel.org>; Tue,  3 Feb 2026 18:59:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B7C2C2DB78D
+	for <kvm@vger.kernel.org>; Tue,  3 Feb 2026 19:07:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770145145; cv=none; b=MucL1AanwUiCtZBzDL6G8/lSBvwexQCtwasmwq/F3MikA46PvK1jNiYsYu9gpBWpygg+XFccOxI+NCndqF+mL5N3SjevbJJ/BCMRtz4RjLTLoFEd7x1VrLFraXkjXw1sneUUTtWlDAi8BLguAEzlKXwEjTjcO2+ln6H8HzF8QAg=
+	t=1770145634; cv=none; b=eSRFZFZ5jIF/SS8hzBt7SBcsgjR58fzWefrKVDPGGPXXGT7K9obQuYu/Rf8yISca8Gh6XTR9zpAxyorjvsPKcMCqygAojLyl9ExIx3Q2UY//lyMaK2TMTJqIpIIhlBAYj5RHO+RaNcmkohujgemvq1R/W4TZjh9+n+zgvQmEElI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770145145; c=relaxed/simple;
-	bh=j0FKW+6je1pmTp/m273InQlbgMIkbZKpL2nlzvL2fvk=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=rNBqY2ATjsqxztbU2p8A0IV53BxcycMSPMlVYo36ZJCfNbNwVpdGdi0YM8Sa34xRIdbN5B+ZK/c7H4eEGTKbnPV+aS5a7o1k3jZvNjM7r1jhbHpOEUFFHykNi/d7ZunDNRt5IAXx+5qV0plooZGNInI0kU5wyG8H8KgQ4p3Qy1U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Ba/YH1ME; arc=none smtp.client-ip=198.175.65.18
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1770145634; c=relaxed/simple;
+	bh=rSmJCm/c/mKOveunYcaZmGnbytpuXAWyHrTksnP3oZI=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=tHRKJOfbINx0sQgn0fcjiCBN+4SMXag+ULvaDa6m40Lnnddt2vaFYFmiigM2hMs9V+RZXTdTVaXUkd1j4gQTHqtnINVQnAtKJNnrzVTMr3fZ7ylRdpSVYo8cD02u9N95VJ/OkctpzaoD6TNsgVNgra+zFSr328DOVsTkFEbg9lU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=jiy0Aqn7; arc=none smtp.client-ip=209.85.215.201
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Ba/YH1ME"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1770145144; x=1801681144;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=j0FKW+6je1pmTp/m273InQlbgMIkbZKpL2nlzvL2fvk=;
-  b=Ba/YH1ME8Y8MYnOlDnwevbJsvfkxvN+AchB1/e93FXw6A4oM9+KSUM70
-   kuc+eKrSYbgVja1eQ1cs6gGQJvpQX/Cjfm45cly4SGjCps/PfAlRIT35+
-   5vPyj6gbj/je0GDidb8KbYYP0w9718vlVmV8MexpkatkFdeVD1ew+CQwH
-   5HsHmrIiPRHR7ZWQHKdJYmvHKC/+HY9joOiUZ28mm5KBBDM0yWNmZTAIr
-   9Q+XWEt1jlGFwifxPFMOAiDuYXArjfQsTgrQySSsGJSj7ybx8XnH5zgdr
-   9TM7Us6NAgGEwClqvvsvMCDG+JrkoVFotmytB537dDbI9Hk1D783vk9rY
-   A==;
-X-CSE-ConnectionGUID: WEZebeZAS5+P8AHfEEmg7g==
-X-CSE-MsgGUID: sAvei9YUSomDoj+DdnKHCg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11691"; a="71362660"
-X-IronPort-AV: E=Sophos;i="6.21,271,1763452800"; 
-   d="scan'208";a="71362660"
-Received: from orviesa002.jf.intel.com ([10.64.159.142])
-  by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Feb 2026 10:59:03 -0800
-X-CSE-ConnectionGUID: 5BKBsOCJRs6huoK8Yx0/mw==
-X-CSE-MsgGUID: PouOOi0sSguiyR+Ig2NcOw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,271,1763452800"; 
-   d="scan'208";a="240618972"
-Received: from khuang2-desk.gar.corp.intel.com (HELO localhost) ([10.124.221.188])
-  by orviesa002-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Feb 2026 10:59:03 -0800
-Date: Tue, 3 Feb 2026 10:59:02 -0800
-From: Isaku Yamahata <isaku.yamahata@intel.com>
-To: Sean Christopherson <seanjc@google.com>
-Cc: isaku.yamahata@intel.com, kvm@vger.kernel.org, isaku.yamahata@gmail.com,
-	Paolo Bonzini <pbonzini@redhat.com>, isaku.yamahata@linux.intel.com
-Subject: Re: [kvm-unit-tests PATCH] x86: apic, vmexit: replace nop with
- serialize to wait for deadline timer
-Message-ID: <aYJFdgUxYWXkavfi@iyamahat-desk>
-References: <7acdd9974effabe5dc461aa755eacf9fb0697467.1770116601.git.isaku.yamahata@intel.com>
- <aYI-rqFnqJeAb_mB@google.com>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="jiy0Aqn7"
+Received: by mail-pg1-f201.google.com with SMTP id 41be03b00d2f7-c52d37d346dso3402484a12.3
+        for <kvm@vger.kernel.org>; Tue, 03 Feb 2026 11:07:13 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1770145633; x=1770750433; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:mime-version:date:reply-to:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=V0PgStJD0hlGtCGajd6vbNEL6gWOOLYA62RNilMSbNc=;
+        b=jiy0Aqn7vcoWgVB6RtzbVbw91z1r9HN3EFc5TSZB3P0iCX+6S9hR9WUfTOscGinDFn
+         X9DCemanQkHsB+7GFS7adPA9cVUCiyIOK0HIEct1fnA/sN1yPo8qWpfoEPQCwPHRmmvq
+         GTYHLn1nTKcAZXAMaCpzCeKm9OsefDRJvGk+4Y8jn3Xp8tWYFkcL3XdI1+LLJWMnRVYz
+         NasaKS1wHmInCR+ykpHGj4j8tNeKAlyt+fGCJ3a0Rqx8P1z9N3jXW8xNLaA5EGzW2Rs+
+         EeHQcX4PtlSwpk3BuhOl87idkqB8DiMt9hlFoQFuvQECcceMdk2jg8uiXpaZCIVm/4vl
+         HqdQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1770145633; x=1770750433;
+        h=cc:to:from:subject:message-id:mime-version:date:reply-to
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=V0PgStJD0hlGtCGajd6vbNEL6gWOOLYA62RNilMSbNc=;
+        b=SqR5d+L43pLYuKUL8nhwHeVLC+ngkphYOhOF8dd0Cl5QSrL3stynbadtFphyJwzMnI
+         BpKGRswxfCg8nOAUnGyp2qMzHDqtdC3HDrKwAs2+K/WeN8nunrB3w3W2Ju5aE7LzzMbI
+         4CNw0fn6ffUTP3dn00dPVay/aQBp4xaCWbjYWbgV7SvE0F7bjZ4bEJKhQlZoZGIiNPeW
+         Sn+S67kbOgKFG8aKsjb7LQT0OYnTdL0lHfhFLkK84PD9Qes0z93OETfOrX/cki6LNmdm
+         BIkrWS20LJY2R7ZyGfBPHXE9mJ3MN3isVjPT5kzHCawqBqQb6EglXZb8URnq7RVxhLid
+         +WFA==
+X-Gm-Message-State: AOJu0YzwHkfJSDrqVRTVYXPMAqEppc95+N+V+kZet/Cll2VB+8bTWVCN
+	JpgMKU6BiZFrsDrsBpHhZbFt952ocQyUYRE1T1PdSNPsIfyHxb3ocq55YmjU6ol93es2wUMhYC3
+	XPefDDA==
+X-Received: from pjnu10.prod.google.com ([2002:a17:90a:890a:b0:34c:4074:d7ec])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:5346:b0:340:c179:365a
+ with SMTP id 98e67ed59e1d1-35486f549ffmr303479a91.0.1770145633024; Tue, 03
+ Feb 2026 11:07:13 -0800 (PST)
+Reply-To: Sean Christopherson <seanjc@google.com>
+Date: Tue,  3 Feb 2026 11:07:08 -0800
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <aYI-rqFnqJeAb_mB@google.com>
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.53.0.rc2.204.g2597b5adb4-goog
+Message-ID: <20260203190711.458413-1-seanjc@google.com>
+Subject: [PATCH 0/2] KVM: SVM: Fix CR8 intercpetion woes with AVIC
+From: Sean Christopherson <seanjc@google.com>
+To: Sean Christopherson <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>
+Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	Jim Mattson <jmattson@google.com>, Naveen N Rao <naveen@kernel.org>, 
+	"Maciej S . Szmigiero" <maciej.szmigiero@oracle.com>
+Content-Type: text/plain; charset="UTF-8"
 
-On Tue, Feb 03, 2026 at 10:30:06AM -0800,
-Sean Christopherson <seanjc@google.com> wrote:
+Fix a bug (or rather, a class of bugs) where SVM leaves the CR8 write
+intercept enabled after AVIC is enabled.  On its own, the dangling CR8
+intercept is "just" a performance issue.  But combined with the TPR sync bug
+fixed by commit d02e48830e3f ("KVM: SVM: Sync TPR from LAPIC into VMCB::V_TPR
+even if AVIC is active"), the danging intercept is fatal to Windows guests as
+the TPR seen by hardware gets wildly out of sync with reality.
 
-> > +static inline void serialize(void)
-> > +{
-> > +	/* serialize instruction. It needs binutils >= 2.35. */
-> 
-> And a CPU that supports it...  I don't see any point in using SERIALIZE.  To check
-> for support, this code would need to do CPUID to query X86_FEATURE_SERIALIZE, and
-> CPUID itself is serializing (the big reason to favor SERIALIZE over CPUID is to
-> avoid a VM-Exit for performance reasons).
+Tagged for stable even though there shouldn't be functional issues so long as
+the TPR sync bug is fixed, because (a) write_cr8 exits can represent the
+overwhelming majority of exits (hence the quotes around "just" a performance
+issue), and (b) running with a bad/wrong configuration increases the chances
+of encountering other lurking TPR bugs (if there are any), i.e. of hitting
+bugs that would otherwise be rare edge (which is good for testing, but bad
+for production).
 
-Thank you for pointing it out. I'll replace it with raw_cpuid(0, 0).
-Or do you want to opencode cpuid() in each places?
+Sean Christopherson (2):
+  KVM: SVM: Initialize AVIC VMCB fields if AVIC is enabled with
+    in-kernel APIC
+  KVM: SVM: Set/clear CR8 write interception when AVIC is (de)activated
+
+ arch/x86/kvm/svm/avic.c |  8 +++++---
+ arch/x86/kvm/svm/svm.c  | 11 ++++++-----
+ 2 files changed, 11 insertions(+), 8 deletions(-)
+
+
+base-commit: e944fe2c09f405a2e2d147145c9b470084bc4c9a
 -- 
-Isaku Yamahata <isaku.yamahata@intel.com>
+2.53.0.rc2.204.g2597b5adb4-goog
+
