@@ -1,58 +1,62 @@
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DBE033EBF19;
-	Tue,  3 Feb 2026 18:17:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8574431B830;
+	Tue,  3 Feb 2026 18:17:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.13
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770142652; cv=none; b=G+z4WSO70KI2JkZa5viMbRBNVpWngPclzD+e7ATcMFkm+YwW6CF20fYvXJ4wSzQWB2/DLaA3WuKXMrVK55XbjhZYaAop/w/UyR6GRCDfDYVJoVdnWKB2QoZ54bOuZsWTM4k7jnbcIQ0Ztwv6kdMzxFZ7hXxAewKiFL4dsI/4hOQ=
+	t=1770142654; cv=none; b=UX4jnZFcXh4lgR580WwQ2xISPhjbMpdKB7OFXFiGinuefCYoxjFYTR5ENt0YuBJWdNLmoQgv/EBzelIBJAz9SkrSD+7MSKd9KpQk/u0pf4igNrBI8J2AHsdOcst+GfoLyNvF3nQb8rSAwfal33+Te1oQyUz8HMv1LsIv4Hz1V8A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770142652; c=relaxed/simple;
-	bh=239ceZ4XIIJRPPYpSzcEe0FQJUjdpKkZ6jCsHezqtNE=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=U10kc3DUCvGHAWOcxujM06PRWem1ggyHAzsSuZCTK14CrW9xjlwzbkykBG6YD4QSzBouLDsYrqvRRliu1UXzitlxKbFByvMN5kOvGp4q9fMFgTKky7zB0U9YSJ+rysnZSMkiM2C8XKPglgiU8WDwJeMXnWL1f6N1LOh4QrDfsU4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=ntwY+Lf5; arc=none smtp.client-ip=198.175.65.13
+	s=arc-20240116; t=1770142654; c=relaxed/simple;
+	bh=oWoJrfPihrgDy/XI8mj5RjgXHEmS9GRKCwFpQbmnfUU=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=dYNSjYZ/qYeuPBWqjnKTL4BHQyMIyIVWIVEz3T4qqKkqtikN02EzfNM6OmJxcRA4VPzM6ImFOt6ghxqUKPWgqa9esKkkGm8fxKyVSDLdzrGSnBOdCRNzJMy/+CPNVn+KDPGlLcA1wEdLaCqHB/Qj/0SnvfcuI1It03qJDMitqaU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=bugbZ6lI; arc=none smtp.client-ip=198.175.65.13
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="ntwY+Lf5"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="bugbZ6lI"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1770142651; x=1801678651;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=239ceZ4XIIJRPPYpSzcEe0FQJUjdpKkZ6jCsHezqtNE=;
-  b=ntwY+Lf5RuV0rhRjLmpAGbN8Wbnhm7Lf2pL7BySsU7OXFSm4Oc4Gto7o
-   6I8QOJt8k8oCdVBNSsfnmXrBLvUdFls6htl8C1NhqLmS17FfL3thEfXYp
-   XGnFUCKn/96SwezdoBDjlHmtkKacsUR3gQDXDesVVV3OGeUu5gorq6w8y
-   kEJUKt3d65/2aUBXavuYK+tMeWBh8zeOjcvOTb7SMrgf3GK63zKEsfWfA
-   EDIovNpqYyEovFJvAZShD3TXvB8RdzAHKrHKgM8XXdn88sJCQVbeb0y25
-   5TBEOTBG8S9HACVkzVFzVuljUNIUbnu+ZjL7lkGcapG94l/NsrVJp50vL
-   w==;
-X-CSE-ConnectionGUID: OFwfYWUCSzGqujxe22tdzw==
-X-CSE-MsgGUID: rPKzxuAPRTW2f3EcWvGZ9g==
-X-IronPort-AV: E=McAfee;i="6800,10657,11691"; a="82433150"
+  t=1770142652; x=1801678652;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=oWoJrfPihrgDy/XI8mj5RjgXHEmS9GRKCwFpQbmnfUU=;
+  b=bugbZ6lIJb87hLmcH3Z5WMAiK5OxSobT0U62dRZLT6KMR9F/DdxMEA/U
+   ix1NB2g+MEOdQIJhKtiOW02xy/DuAbAxBVCEZfYDA6diEDl7eEY9Ynrn/
+   va14OeNBX/kqAGGYnGLKrneltPvTHR5RshaBruTkSsY2fi4Xk00PD0pqG
+   FKE1HtkgmiouI18z+4YUW276YbXeLbSo+I1pAqg7WF3U/vNVXL96TgPGi
+   7BQCFdaY0oCy5t5rjqrFM8ivczKncV/RnPnOoEwPl+pU6uMfArPNlPcaP
+   vdSLtfvRf4hACmdY5I7RYl2wFB/A6KQya68KOedFi5C/TBNXANBcfnoB9
+   Q==;
+X-CSE-ConnectionGUID: BRlo66wPS2SvXVC2woIn2g==
+X-CSE-MsgGUID: uTMcNX8YTmGpCftOaA9W3A==
+X-IronPort-AV: E=McAfee;i="6800,10657,11691"; a="82433161"
 X-IronPort-AV: E=Sophos;i="6.21,271,1763452800"; 
-   d="scan'208";a="82433150"
+   d="scan'208";a="82433161"
 Received: from orviesa009.jf.intel.com ([10.64.159.149])
-  by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Feb 2026 10:17:30 -0800
-X-CSE-ConnectionGUID: VOSLX3rWQsCnsZ5knem9cA==
-X-CSE-MsgGUID: lCmIclTvSOOS0Eio6aECkw==
+  by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Feb 2026 10:17:32 -0800
+X-CSE-ConnectionGUID: yuTfLe18TWyPyEnhCDEM/g==
+X-CSE-MsgGUID: Hn4W1dEqRcGvTsOfRd5k0g==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.21,271,1763452800"; 
-   d="scan'208";a="209727444"
+   d="scan'208";a="209727454"
 Received: from khuang2-desk.gar.corp.intel.com (HELO localhost) ([10.124.221.188])
-  by orviesa009-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Feb 2026 10:17:30 -0800
+  by orviesa009-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Feb 2026 10:17:32 -0800
 From: isaku.yamahata@intel.com
 To: kvm@vger.kernel.org
 Cc: isaku.yamahata@intel.com,
 	isaku.yamahata@gmail.com,
 	Paolo Bonzini <pbonzini@redhat.com>,
 	Sean Christopherson <seanjc@google.com>,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH 00/32] KVM: VMX APIC timer virtualization support
-Date: Tue,  3 Feb 2026 10:16:43 -0800
-Message-ID: <cover.1770116050.git.isaku.yamahata@intel.com>
+	linux-kernel@vger.kernel.org,
+	Yang Zhong <yang.zhong@linux.intel.com>
+Subject: [PATCH 02/32] KVM: x86: Implement APIC virt timer helpers with callbacks
+Date: Tue,  3 Feb 2026 10:16:45 -0800
+Message-ID: <995074de8754f559b59c65d76aeb940fac122bd3.1770116050.git.isaku.yamahata@intel.com>
 X-Mailer: git-send-email 2.45.2
+In-Reply-To: <cover.1770116050.git.isaku.yamahata@intel.com>
+References: <cover.1770116050.git.isaku.yamahata@intel.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -61,233 +65,203 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: Isaku Yamahata <isaku.yamahata@intel.com>
+From: Yang Zhong <yang.zhong@linux.intel.com>
 
-This patch series implements support for APIC timer virtualization for
-VMX and nVMX.
+Add an additional APIC emulation mode for APIC timer virtualization.  When
+the guest programs the local APIC timer mode, switch to this new emulation
+mode using the newly added hooks when APIC timer virtualization is
+available.
 
-Background
-==========
-X86 provides the TSC deadline timer as the primary local timer
-interrupt source.  Currently, KVM intercepts the guest programming of
-the timer and emulates it using either the host OS timer or the VMX
-preemption timer.
+Add five x86 KVM callbacks for APIC timer virtualization.  These callbacks
+are analogous to those used for the preemption timer and will be invoked by
+kvm/lapic.  These helpers start/stop the timer once the APIC virt timer
+feature is enabled and the guest sets the MSR_IA32_TSC_DEADLINE.  Upon
+updating the TSC deadline mode in the APIC_LVTT register, KVM's LAPIC will
+initiate the APIC virt timer instead of the preemption timer.
 
+Co-developed-by: Yang Zhong <yang.zhong@linux.intel.com>
+Signed-off-by: Yang Zhong <yang.zhong@linux.intel.com>
+Co-developed-by: Isaku Yamahata <isaku.yamahata@intel.com>
+Signed-off-by: Isaku Yamahata <isaku.yamahata@intel.com>
+---
+ arch/x86/include/asm/kvm-x86-ops.h |  5 ++
+ arch/x86/include/asm/kvm_host.h    |  6 +++
+ arch/x86/kvm/lapic.c               | 81 +++++++++++++++++++++++++++++-
+ arch/x86/kvm/lapic.h               |  1 +
+ 4 files changed, 91 insertions(+), 2 deletions(-)
 
-Problem
-=======
-VMM emulation causes high latency.  Some workloads require lower
-latency, such as gaming applications, while there have been efforts to
-reduce latency in the past, a hardware extension can reduce it further
-by eliminating VM Exits.
-
-
-Solution
-========
-Hardware Extension
-------------------
-The APIC timer virtualization [1] allows the guest to directly access
-the TSC DEADLINE MSR and receive timer interrupts without VM Exits.
-
-It introduces
-- A feature bit in the tertiary processor-based VM-execution controls
-- Guest deadline: 64-bit physical deadline (host TSC value)
-- Guest deadline shadow: 64-bit virtual deadline (virtualized TSC
-  value with TSC offset and multiplier)
-- Virtual timer vector: interrupt vector to inject on timeout.
-
-Implementation
---------------
-Add hooks to the LAPIC timer emulation and implement them in the VMX
-backend.  Enable the feature when available, falling back to
-software/preemption timer in the following cases
-One-shot or periodic APIC timer:
-  The hardware supports only the TSC deadline timer
-Masked the timer interrupt in LVTT:
-  The hardware doesn't respect the emulated LVTT and always generates an
-  interrupt on timeout.
-vCPU blocking/unblocking:
-  The hardware generates an interrupt while the vCPU is running.  The KVM
-  must wake up from vCPU blocking by getting the latest TSC
-  deadline and setting a software timer before blocking the vCPU.
-VM Entry to L2 vCPU:
-  If the L1 timer interrupt fires while the L2 vCPU is running, the
-  expected behavior is a VM Exit from L2 to L1, followed by an interrupt
-  injection into the L1 vCPU.
-
-nVMX Support
-------------
-Support nVMX to address the benchmark result below.  Emulate related
-MSRs and VMCS individually.
-MSRs: capability reporting registers of primary/tertiary processor-based
-      VM-execution controls.
-VMCS fields: primary/tertiary VM-execution controls, guest deadline,
-             guest deadline shadow, and virtual timer vector.
-
-Patch Organization
-------------------
-The patch is organized into 5 parts as follows.
-
-Patches  1- 8: VMX support (feature probe, hooks to KVM LAPIC, VMX hooks)
-Patches  9-18: nVMX support (implement emulation of MSR and VMCS fields)
-Patches 19-23: Expose the feature to the user
-Patches 24-31: KVM selftests
-Patches 32   : Documentation update
-
-Patches for QEMU and KVM unit tests will be posted.
-(KVM unit tests turned out test case issue. It needs fixes.)
-
-
-Test
-====
-The following tests were conducted:  The newly added test case as a
-part of KVM selftests, KVM unit tests, and cyclic test included in
-rt-tests [2].  Selftests and KVM unit tests were run on platforms with
-and without APIC timer virtualization.
-
-
-Benchmark Results
-=================
-cyclictest
-----------
-10-minute run of
-cyclictest --quiet --nsecs --smp --mlockall --priority=95 --policy=fifo
-# of vCPU: host 256, L1 and L2: 16
-
-Legends:
-L1 or L2: cyclic test run as L1/L2 process
-Y: feature enabled
-N: feature disabled
-
-Run in
-|       APIC timer virtualization
-|       |       nested APIC timer virtualization
-|       |       |       min reduction %
-|       |       |       |       avg reduction %
-|       |       |       |       |
-L1	N	-
-L1	Y	-	21%	21% (compared to L1 N)
-
-L2	N	N
-L2	Y	N	4%	-2% (compared to L2 N N)
-L2	Y	Y	75%	51% (compared to L2 N N)
-
-Micro benchmark: Timer latency
-------------------------------
-10-minute run of custom micro benchmark, timer_latency.
-# of vCPU: host 256, L1 and L2: 16
-
-Legends:
-L1: the benchmark run in L0 Linux.
-L2: the benchmark run in L1 Linux.
-Y: feature enabled
-N: feature disabled
-
-Run as
-|       APIC timer virtualization
-|       |       nested APIC timer virtualization
-|       |       |       HLT or busy
-|       |       |       |       min reduction %
-|       |       |       |       |       avg reduction %
-|       |       |       |       |       |
-L1	N	-	HLT
-L1	Y	-	HLT	49%	24% (compared to L1 N HLT)
-
-L1	N	-	busy
-L1	Y	-	busy	63%	61% (compared to L1 N busy)
-
-L2	N	N	HLT
-L2	Y	N	HLT	-19%	-3% (compared to L2 N N HLT)
-L2	Y	Y	HLT	99%	27% (compared to L2 N N HLT)
-
-L2	N	N	busy
-L2	Y	N	busy	-5%	-4% (compared to L2 N N busy)
-L2	Y	Y	busy	99%	97% (compared to L2 N N busy)
-
-
-[1] Intel Architecture Instruction Set Extensions and Future Features
-September 2025 319433-059
-Chapter 8 APIC-TIMER VIRTUALIZATION
-https://cdrdv2.intel.com/v1/dl/getContent/671368
-
-[2] rt-tests
-https://git.kernel.org/pub/scm/utils/rt-tests/rt-tests.git/
-
-Isaku Yamahata (25):
-  KVM: x86/lapic: Wire DEADLINE MSR update to guest virtual TSC deadline
-  KVM: VMX: Update APIC timer virtualization on apicv changed
-  KVM: nVMX: Disallow/allow guest APIC timer virtualization switch
-    to/from L2
-  KVM: nVMX: Pass struct msr_data to VMX MSRs emulation
-  KVM: nVMX: Supports VMX tertiary controls and GUEST_APIC_TIMER bit
-  KVM: nVMX: Add tertiary VM-execution control VMCS support
-  KVM: nVMX: Update intercept on TSC deadline MSR
-  KVM: nVMX: Handle virtual timer vector VMCS field
-  KVM: VMX: Make vmx_calc_deadline_l1_to_host() non-static
-  KVM: nVMX: Enable guest deadline and its shadow VMCS field
-  KVM: nVMX: Add VM entry checks related to APIC timer virtualization
-  KVM: nVMX: Add check vmread/vmwrite on tertiary control
-  KVM: nVMX: Add check VMCS index for guest timer virtualization
-  KVM: VMX: Advertise tertiary controls to the user space
-  KVM: VMX: Enable APIC timer virtualization
-  KVM: nVMX: Introduce module parameter for nested APIC timer
-    virtualization
-  KVM: selftests: Add a test to measure local timer latency
-  KVM: selftests: Add nVMX support to timer_latency test case
-  KVM: selftests: Add test for nVMX MSR_IA32_VMX_PROCBASED_CTLS3
-  KVM: selftests: Add test vmx_set_nested_state_test with EVMCS disabled
-  KVM: selftests: Add tests nested state of APIC timer virtualization
-  KVM: selftests: Add VMCS access test to APIC timer virtualization
-  KVM: selftests: Test cases for L1 APIC timer virtualization
-  KVM: selftests: Add tests for nVMX to vmx_apic_timer_virt
-  Documentation: KVM: x86: Update documentation of struct vmcs12
-
-Yang Zhong (7):
-  KVM: VMX: Detect APIC timer virtualization bit
-  KVM: x86: Implement APIC virt timer helpers with callbacks
-  KVM: x86/lapic: Start/stop sw/hv timer on vCPU un/block
-  KVM: x86/lapic: Add a trace point for guest virtual timer
-  KVM: VMX: Implement the hooks for VMX guest virtual deadline timer
-  KVM: VMX: dump_vmcs() support the guest virt timer
-  KVM: VMX: Introduce module parameter for APIC virt timer support
-
- Documentation/virt/kvm/x86/nested-vmx.rst     |  13 +-
- arch/x86/include/asm/kvm-x86-ops.h            |   5 +
- arch/x86/include/asm/kvm_host.h               |   6 +
- arch/x86/include/asm/vmx.h                    |   6 +
- arch/x86/include/asm/vmxfeatures.h            |   1 +
- arch/x86/kvm/lapic.c                          | 147 +++-
- arch/x86/kvm/lapic.h                          |  15 +
- arch/x86/kvm/trace.h                          |  16 +
- arch/x86/kvm/vmx/capabilities.h               |   8 +
- arch/x86/kvm/vmx/hyperv.c                     |  17 +
- arch/x86/kvm/vmx/main.c                       |   5 +
- arch/x86/kvm/vmx/nested.c                     | 215 +++++-
- arch/x86/kvm/vmx/nested.h                     |  33 +-
- arch/x86/kvm/vmx/vmcs12.c                     |   6 +
- arch/x86/kvm/vmx/vmcs12.h                     |  11 +-
- arch/x86/kvm/vmx/vmcs_shadow_fields.h         |   1 +
- arch/x86/kvm/vmx/vmx.c                        | 142 +++-
- arch/x86/kvm/vmx/vmx.h                        |   7 +-
- arch/x86/kvm/vmx/x86_ops.h                    |   5 +
- arch/x86/kvm/x86.c                            |   8 +-
- arch/x86/kvm/x86.h                            |   2 +-
- tools/testing/selftests/kvm/Makefile.kvm      |   3 +
- .../testing/selftests/kvm/include/x86/apic.h  |   2 +
- .../selftests/kvm/include/x86/processor.h     |   6 +
- tools/testing/selftests/kvm/include/x86/vmx.h |  14 +
- .../testing/selftests/kvm/x86/timer_latency.c | 700 ++++++++++++++++++
- .../kvm/x86/vmx_apic_timer_virt_test.c        | 508 +++++++++++++
- .../kvm/x86/vmx_apic_timer_virt_vmcs_test.c   | 461 ++++++++++++
- .../testing/selftests/kvm/x86/vmx_msrs_test.c |  53 ++
- .../kvm/x86/vmx_set_nested_state_test.c       | 249 +++++++
- 30 files changed, 2644 insertions(+), 21 deletions(-)
- create mode 100644 tools/testing/selftests/kvm/x86/timer_latency.c
- create mode 100644 tools/testing/selftests/kvm/x86/vmx_apic_timer_virt_test.c
- create mode 100644 tools/testing/selftests/kvm/x86/vmx_apic_timer_virt_vmcs_test.c
-
-
-base-commit: 63804fed149a6750ffd28610c5c1c98cce6bd377
+diff --git a/arch/x86/include/asm/kvm-x86-ops.h b/arch/x86/include/asm/kvm-x86-ops.h
+index de709fb5bd76..09f664aa72c1 100644
+--- a/arch/x86/include/asm/kvm-x86-ops.h
++++ b/arch/x86/include/asm/kvm-x86-ops.h
+@@ -118,6 +118,11 @@ KVM_X86_OP_OPTIONAL_RET0(dy_apicv_has_pending_interrupt)
+ KVM_X86_OP_OPTIONAL(protected_apic_has_interrupt)
+ KVM_X86_OP_OPTIONAL(set_hv_timer)
+ KVM_X86_OP_OPTIONAL(cancel_hv_timer)
++KVM_X86_OP_OPTIONAL(can_use_apic_virt_timer)
++KVM_X86_OP_OPTIONAL(set_apic_virt_timer)
++KVM_X86_OP_OPTIONAL(cancel_apic_virt_timer)
++KVM_X86_OP_OPTIONAL(set_guest_tsc_deadline_virt)
++KVM_X86_OP_OPTIONAL(get_guest_tsc_deadline_virt)
+ KVM_X86_OP(setup_mce)
+ #ifdef CONFIG_KVM_SMM
+ KVM_X86_OP(smi_allowed)
+diff --git a/arch/x86/include/asm/kvm_host.h b/arch/x86/include/asm/kvm_host.h
+index 5a3bfa293e8b..9fabaf532e41 100644
+--- a/arch/x86/include/asm/kvm_host.h
++++ b/arch/x86/include/asm/kvm_host.h
+@@ -1896,6 +1896,12 @@ struct kvm_x86_ops {
+ 	int (*set_hv_timer)(struct kvm_vcpu *vcpu, u64 guest_deadline_tsc,
+ 			    bool *expired);
+ 	void (*cancel_hv_timer)(struct kvm_vcpu *vcpu);
++	bool (*can_use_apic_virt_timer)(struct kvm_vcpu *vcpu);
++	void (*set_apic_virt_timer)(struct kvm_vcpu *vcpu, u16 vector);
++	void (*cancel_apic_virt_timer)(struct kvm_vcpu *vcpu);
++	void (*set_guest_tsc_deadline_virt)(struct kvm_vcpu *vcpu,
++					    u64 tscdeadline);
++	u64 (*get_guest_tsc_deadline_virt)(struct kvm_vcpu *vcpu);
+ 
+ 	void (*setup_mce)(struct kvm_vcpu *vcpu);
+ 
+diff --git a/arch/x86/kvm/lapic.c b/arch/x86/kvm/lapic.c
+index 1597dd0b0cc6..b942210c6a25 100644
+--- a/arch/x86/kvm/lapic.c
++++ b/arch/x86/kvm/lapic.c
+@@ -131,7 +131,8 @@ static inline u32 kvm_x2apic_id(struct kvm_lapic *apic)
+ static bool kvm_can_post_timer_interrupt(struct kvm_vcpu *vcpu)
+ {
+ 	return pi_inject_timer && kvm_vcpu_apicv_active(vcpu) &&
+-		(kvm_mwait_in_guest(vcpu->kvm) || kvm_hlt_in_guest(vcpu->kvm));
++		(kvm_mwait_in_guest(vcpu->kvm) || kvm_hlt_in_guest(vcpu->kvm)) &&
++		!vcpu->arch.apic->lapic_timer.apic_virt_timer_in_use;
+ }
+ 
+ static bool kvm_can_use_hv_timer(struct kvm_vcpu *vcpu)
+@@ -1817,17 +1818,81 @@ static void limit_periodic_timer_frequency(struct kvm_lapic *apic)
+ }
+ 
+ static void cancel_hv_timer(struct kvm_lapic *apic);
++static void cancel_apic_virt_timer(struct kvm_lapic *apic);
+ 
+-static void cancel_apic_timer(struct kvm_lapic *apic)
++static void __cancel_apic_timer(struct kvm_lapic *apic)
+ {
+ 	hrtimer_cancel(&apic->lapic_timer.timer);
+ 	preempt_disable();
+ 	if (apic->lapic_timer.hv_timer_in_use)
+ 		cancel_hv_timer(apic);
++	else if (apic->lapic_timer.apic_virt_timer_in_use)
++		cancel_apic_virt_timer(apic);
+ 	preempt_enable();
++}
++
++static void cancel_apic_timer(struct kvm_lapic *apic)
++{
++	__cancel_apic_timer(apic);
+ 	atomic_set(&apic->lapic_timer.pending, 0);
+ }
+ 
++static void start_apic_timer(struct kvm_lapic *apic);
++
++static void cancel_apic_virt_timer(struct kvm_lapic *apic)
++{
++	struct kvm_vcpu *vcpu = apic->vcpu;
++
++	apic->lapic_timer.tscdeadline = kvm_x86_call(get_guest_tsc_deadline_virt)(vcpu);
++	kvm_x86_call(set_guest_tsc_deadline_virt)(vcpu, 0);
++
++	kvm_x86_call(cancel_apic_virt_timer)(vcpu);
++	apic->lapic_timer.apic_virt_timer_in_use = false;
++}
++
++static void apic_cancel_apic_virt_timer(struct kvm_lapic *apic)
++{
++	if (!apic->lapic_timer.apic_virt_timer_in_use)
++		return;
++
++	cancel_apic_virt_timer(apic);
++	start_apic_timer(apic);
++}
++
++static void apic_set_apic_virt_timer(struct kvm_lapic *apic)
++{
++	struct kvm_timer *ktimer = &apic->lapic_timer;
++	struct kvm_vcpu *vcpu = apic->vcpu;
++	u8 vector;
++	u32 reg;
++
++	if (apic->lapic_timer.apic_virt_timer_in_use)
++		return;
++
++	reg = kvm_lapic_get_reg(apic, APIC_LVTT);
++	vector = reg & APIC_VECTOR_MASK;
++
++	__cancel_apic_timer(apic);
++	kvm_x86_call(set_apic_virt_timer)(vcpu, vector);
++	kvm_x86_call(set_guest_tsc_deadline_virt)(vcpu, ktimer->tscdeadline);
++	ktimer->apic_virt_timer_in_use = true;
++}
++
++static bool kvm_can_use_apic_virt_timer(struct kvm_vcpu *vcpu)
++{
++	return kvm_x86_ops.can_use_apic_virt_timer &&
++		apic_lvt_enabled(vcpu->arch.apic, APIC_LVTT) &&
++		kvm_x86_call(can_use_apic_virt_timer)(vcpu);
++}
++
++static void apic_update_apic_virt_timer(struct kvm_lapic *apic)
++{
++	if (kvm_can_use_apic_virt_timer(apic->vcpu))
++		apic_set_apic_virt_timer(apic);
++	else
++		apic_cancel_apic_virt_timer(apic);
++}
++
+ static void apic_update_lvtt(struct kvm_lapic *apic)
+ {
+ 	u32 timer_mode = kvm_lapic_get_reg(apic, APIC_LVTT) &
+@@ -1840,10 +1905,19 @@ static void apic_update_lvtt(struct kvm_lapic *apic)
+ 			kvm_lapic_set_reg(apic, APIC_TMICT, 0);
+ 			apic->lapic_timer.period = 0;
+ 			apic->lapic_timer.tscdeadline = 0;
++
++			if (apic->lapic_timer.apic_virt_timer_in_use)
++				kvm_x86_call(set_guest_tsc_deadline_virt)(apic->vcpu, 0);
+ 		}
+ 		apic->lapic_timer.timer_mode = timer_mode;
+ 		limit_periodic_timer_frequency(apic);
+ 	}
++
++	/*
++	 * Update on not only timer mode change, but also mask change
++	 * for the case of timer_mode = TSCDEADLINE, mask = 1.
++	 */
++	apic_update_apic_virt_timer(apic);
+ }
+ 
+ /*
+@@ -2265,6 +2339,9 @@ static void restart_apic_timer(struct kvm_lapic *apic)
+ 	if (!apic_lvtt_period(apic) && atomic_read(&apic->lapic_timer.pending))
+ 		goto out;
+ 
++	if (apic->lapic_timer.apic_virt_timer_in_use)
++		goto out;
++
+ 	if (!start_hv_timer(apic))
+ 		start_sw_timer(apic);
+ out:
+diff --git a/arch/x86/kvm/lapic.h b/arch/x86/kvm/lapic.h
+index 282b9b7da98c..42fbb66f1e4e 100644
+--- a/arch/x86/kvm/lapic.h
++++ b/arch/x86/kvm/lapic.h
+@@ -57,6 +57,7 @@ struct kvm_timer {
+ 	u32 timer_advance_ns;
+ 	atomic_t pending;			/* accumulated triggered timers */
+ 	bool hv_timer_in_use;
++	bool apic_virt_timer_in_use;
+ };
+ 
+ struct kvm_lapic {
 -- 
 2.45.2
 
