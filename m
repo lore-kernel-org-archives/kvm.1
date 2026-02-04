@@ -1,225 +1,148 @@
-Received: from SN4PR2101CU001.outbound.protection.outlook.com (mail-southcentralusazon11012050.outbound.protection.outlook.com [40.93.195.50])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5BCB52264CA
-	for <kvm@vger.kernel.org>; Wed,  4 Feb 2026 09:02:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.93.195.50
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770195744; cv=fail; b=HV8Dn+7z36fRpUlZDEhRq9VFZ/iRKxiIaIrvYnsqxlJSaoKD5hVLy4NTEJKWmASTgt7NhToCJa0YuvL406/DAjHQcG/TatzCrmrtafCG8akm7SNHXKL2msBIzcx3DpjSzFNedvyQbzW5V+Mnr0DlwbHiAsloRAbk5cw3pALiw1Y=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770195744; c=relaxed/simple;
-	bh=Zd0JMO95Syuwp4rSzkR7PUIBG5GeE4Ukl2ELb5CQtUQ=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=JkeXiAZYR3ZnfH5/VfAJCnzVroElvL0yJuYAP8KOYvEfLR+0IJYIoObSb+zZoxF5bSYE24PCiQbo/NZD56THEMM6QXzNA0tVaxBC4xrMyjLDuJrIT8+hNywGddDOSFDdM/sh/VLcXRqIXhTPU6mPBXhT2FzqadEHGZJe1239rjY=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=0Dm9uAym; arc=fail smtp.client-ip=40.93.195.50
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5CB4E3A0EB0
+	for <kvm@vger.kernel.org>; Wed,  4 Feb 2026 09:07:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1770196055; cv=none; b=JKjh/PzY4opgqQdp+CyJtUFixtAMtyM/hPXjMAx3TAQXDwm44TDf19gt2toNiYIIXaSWhStlHcTmQndOJNFTaGZXJVZu56KwhBcVjs1tnfbdJnF99JZfb3Wf6dFvvRQN5T4ECNM5pmV6i6nr+lOF1ELQTEzOe9b9w6MMySJ+U8Y=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1770196055; c=relaxed/simple;
+	bh=RRMWsAKISPFxrJ+EzBQvFBK+2Vpe1SCzn5nrHScwZV4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=hfsVvDcfS3xEH0mzmUyPkkQzqDS6zQzv0YnK0WHDzF65DRA6NjuDU+8OAgXIh6EB50676xofkbc16mV7hDQH1hApQZVjnTPTgg11IwqKYAuVUhRrEq+nafDhDPExhPWrWv28RROwVETdHVgkHQdWMfyFCg6gSVmuklDoWH03KpI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=D1o5Q4sV; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="0Dm9uAym"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=rhH0I4iGcaMhDlS6g1hmBVjqmcMZu4I4kxlnda2/V2VNckG0olHESIavYKxLSFvh6hojimZ/OXbG4Km+CP50JbxH/q5kFR+kHR91g5q0FSgvGvc4t4n1tnbiIuVFg489BXvr5AHNoHHcb/dk3X4qseLXWfDM/Oieb3kDtOKkB+PSfW9MfqF76ciJNYaDKfp3yY8UatNXJdrM3Hx098Aq+l2GGS4yvAFmayCRgIG00fOU+NWXeHxkePFAX8PK4iTRHm6i991EvHby+8YmdimnSU9jABj2ZM3jg9n9mQup2rX3hYW607UHYWc9zWjvHnm9s1ki9q+9sY05LR7obX3NWQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=qaR93bzfy7QQq1feK8HNJYsYg6xGoXybBx6/g/CLpYI=;
- b=ok69f2zbLnaKJy9JGM6HSKe9u18KNfYRr1MJSgl/hw57NQNAbwWillxuYo8hDwI65vN07Oe6CMVKMc0m9WzE1S4xicPgab86tydcMrZT1UTfMaCqelJ9I4oDACS/lrOiH6gp4egcuriD97bAGnzHWHQ7zztrGMBm68TEWyifV4eR7bkliyGmyQ0Ql07wTK4RlvMH/KzIu2cPXtwFU6Qay3bpIh2jtfuScLNBqUP7p2NhG2qnWsO++AH3pSep4fRAINt4JxYJu2dhMyPuwCzrKNOPySSO6IkGlVUaPZ8Q2XhSUV/wO6u9T7HQjXAtrEvynX2AcVe+WupmFFh0XgV/cQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 165.204.84.17) smtp.rcpttodomain=redhat.com smtp.mailfrom=amd.com; dmarc=pass
- (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
- dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=qaR93bzfy7QQq1feK8HNJYsYg6xGoXybBx6/g/CLpYI=;
- b=0Dm9uAym3wk4L8wvSMDpIv0QwOWdwqdCm1jWm6bTKr2xpUevmIlzBYh6Cudwzbr7LUbTGIcfGwU1UyHvC9EIKKVj7SBYL+7rTnNSuDi0pIryoDcBNgQqLaamTa6a8W40vT3YqTO1L6gIOyEgLMbuTlyNOJE/DLNHpHXfbwr8qOA=
-Received: from CH2PR17CA0003.namprd17.prod.outlook.com (2603:10b6:610:53::13)
- by CY5PR12MB6528.namprd12.prod.outlook.com (2603:10b6:930:43::9) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9564.16; Wed, 4 Feb
- 2026 09:02:19 +0000
-Received: from CH1PEPF0000AD75.namprd04.prod.outlook.com
- (2603:10b6:610:53:cafe::1e) by CH2PR17CA0003.outlook.office365.com
- (2603:10b6:610:53::13) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9587.13 via Frontend
- Transport; Wed, 4 Feb 2026 09:02:13 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
- smtp.mailfrom=amd.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=amd.com;
-Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
- 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=satlexmb08.amd.com; pr=C
-Received: from satlexmb08.amd.com (165.204.84.17) by
- CH1PEPF0000AD75.mail.protection.outlook.com (10.167.244.54) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.9587.10 via Frontend Transport; Wed, 4 Feb 2026 09:02:18 +0000
-Received: from SATLEXMB04.amd.com (10.181.40.145) by satlexmb08.amd.com
- (10.181.42.217) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.2.2562.17; Wed, 4 Feb
- 2026 03:02:18 -0600
-Received: from satlexmb08.amd.com (10.181.42.217) by SATLEXMB04.amd.com
- (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.39; Wed, 4 Feb
- 2026 03:02:18 -0600
-Received: from [172.31.180.39] (10.180.168.240) by satlexmb08.amd.com
- (10.181.42.217) with Microsoft SMTP Server id 15.2.2562.17 via Frontend
- Transport; Wed, 4 Feb 2026 03:02:15 -0600
-Message-ID: <fe2934f7-0e96-4b76-9993-40b4492e698b@amd.com>
-Date: Wed, 4 Feb 2026 14:32:14 +0530
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="D1o5Q4sV"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1770196054;
+	h=from:from:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=VAtUhEcCKZZszsfB8dyIiFJl10MlToo1zx3SL/WPXHo=;
+	b=D1o5Q4sV0i2+qLbioMGkiHAUhHO/08UebGFMzGsNz9AwZEGBF4RdDSn0HpKG5KN62d3n2r
+	uKAlIjgxmNB7VcRSeaRxCeKNjxEHyAPWvDmoveL7lMFngnDXi2q3oK1gAMh5MfbH9PdTu7
+	pyf/A9yWJpfiTOaOB7HZdHu47oyV98Q=
+Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-503-pUijXyVPNTSryFLK57qKog-1; Wed,
+ 04 Feb 2026 04:07:31 -0500
+X-MC-Unique: pUijXyVPNTSryFLK57qKog-1
+X-Mimecast-MFC-AGG-ID: pUijXyVPNTSryFLK57qKog_1770196049
+Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 4682F1956064;
+	Wed,  4 Feb 2026 09:07:29 +0000 (UTC)
+Received: from redhat.com (unknown [10.44.33.80])
+	by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 084BB1955D85;
+	Wed,  4 Feb 2026 09:07:21 +0000 (UTC)
+Date: Wed, 4 Feb 2026 09:07:18 +0000
+From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
+To: Markus Armbruster <armbru@redhat.com>
+Cc: "Dr. David Alan Gilbert" <dave@treblig.org>,
+	Fabiano Rosas <farosas@suse.de>,
+	=?utf-8?Q?Marc-Andr=C3=A9?= Lureau <marcandre.lureau@redhat.com>,
+	Stefan Hajnoczi <stefanha@gmail.com>,
+	qemu-devel <qemu-devel@nongnu.org>, kvm <kvm@vger.kernel.org>,
+	Helge Deller <deller@gmx.de>, Oliver Steffen <osteffen@redhat.com>,
+	Stefano Garzarella <sgarzare@redhat.com>,
+	Matias Ezequiel Vara Larsen <mvaralar@redhat.com>,
+	Kevin Wolf <kwolf@redhat.com>,
+	German Maglione <gmaglione@redhat.com>,
+	Hanna Reitz <hreitz@redhat.com>,
+	Paolo Bonzini <pbonzini@redhat.com>,
+	Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+	Thomas Huth <thuth@redhat.com>,
+	Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
+	Alex Bennee <alex.bennee@linaro.org>,
+	Pierrick Bouvier <pierrick.bouvier@linaro.org>
+Subject: Re: Modern HMP
+Message-ID: <aYMMRuWGYe96rpZZ@redhat.com>
+Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
+References: <CAJSP0QVXXX7GV5W4nj7kP35x_4gbF2nG1G1jdh9Q=XgSx=nX3A@mail.gmail.com>
+ <CAMxuvaz8hm1dc6XdsbK99Ng5sOBNxwWg_-UJdBhyptwgUYjcrw@mail.gmail.com>
+ <871pjigf6z.fsf_-_@pond.sub.org>
+ <aXH1ECZ1Nchui9ED@redhat.com>
+ <87ikctg8a8.fsf@pond.sub.org>
+ <aXIWLi656H8VbrPE@redhat.com>
+ <87ikctk5ss.fsf@suse.de>
+ <aXJJkd8g0AGZ3EVv@redhat.com>
+ <aX-boauFX2Ju7x8Z@gallifrey>
+ <875x8d0w32.fsf@pond.sub.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 4/5] i386: Add Bus Lock Detect support
-To: <pbonzini@redhat.com>, <zhao1.liu@intel.com>, <mtosatti@redhat.com>,
-	<kvm@vger.kernel.org>
-CC: <qemu-devel@nongnu.org>, <seanjc@google.com>, <santosh.shukla@amd.com>,
-	<nikunj.dadhania@amd.com>, <ravi.bangoria@amd.com>, <babu.moger@amd.com>,
-	Shivansh Dhiman <shivansh.dhiman@amd.com>
-References: <20251121083452.429261-1-shivansh.dhiman@amd.com>
- <20251121083452.429261-5-shivansh.dhiman@amd.com>
-Content-Language: en-US
-From: Shivansh Dhiman <shivansh.dhiman@amd.com>
-In-Reply-To: <20251121083452.429261-5-shivansh.dhiman@amd.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 7bit
-Received-SPF: None (SATLEXMB04.amd.com: shivansh.dhiman@amd.com does not
- designate permitted sender hosts)
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CH1PEPF0000AD75:EE_|CY5PR12MB6528:EE_
-X-MS-Office365-Filtering-Correlation-Id: 66095669-e65b-41fe-b6e8-08de63cc19c7
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|82310400026|376014|1800799024|36860700013|13003099007;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?MkVIckY5V2tWOEdHaFBGTlNhL1g3ekwyTGVNNDR5OEJrUUNIUVVXTVRHbDBz?=
- =?utf-8?B?Q1lBb09nV2l2cXVDUnhGbDh2eUc2SGtINVZtYi9KYnA2bVI4ZVNFSzRDdzZx?=
- =?utf-8?B?anFHV3BzVXUxTnJscm9pbXJ1Q3FlcjVyZGwzMTRXQlFWWHBGVnZyYTJEVWdB?=
- =?utf-8?B?dDNtUDk0bGJNRTdBOVJWZVBZdFphZWREZmoyamZ0N3MreG5CS0llN0M5QzBK?=
- =?utf-8?B?RzNKdU9QekJVMks1elkxUkloSTYvSFBuZ1ZlTTdTNEU3dUdGWHNaYUswcVpU?=
- =?utf-8?B?UDhLVE0yTkxPSDlEa1lOTE1pMWhYcVlXS2l6elcvb0JseHVVa3hodW9MMXE0?=
- =?utf-8?B?MmhvblVROEwvVXlsbzgwWWhocS9QZ2RJNkUzNThOaVdVdzN1UU5aNkRTbjdK?=
- =?utf-8?B?eG9JbFRpUWtPcjVDZThsUUtOQjVwMVlSQklrQkN4aU5CbWxBOUNKWisxVWFR?=
- =?utf-8?B?RGNaTDZUZ1B5Z0ZFdEdZTWR2LzB6WWtZTGR5K2E1K2hRRXAyNmc1b3lWempz?=
- =?utf-8?B?VjlWRmZJYzBtUGJ4ZTJaZndoYVJIdndVQjNoNmJLWGJOdVh6cGxpUEhyYS9V?=
- =?utf-8?B?MXV3S3RlKzVDR3Q0QUt1M3FHU29KOXY1TmwwR1RsRU1IRlRIZk8xeklBYXZF?=
- =?utf-8?B?QVpWRWlRR1JicG9ISWdFcDI2SlpPMnloaHZTTUlSdW4wT1dDUWo4VXpUa1Rz?=
- =?utf-8?B?TGVTdjFOWkpLNjZvdVNzb2thMHYvdnVLeGR6TW4vVVZkaXVFNVd3SmtlaW1F?=
- =?utf-8?B?ckx0QmUrOUdVaEFVQ1ZrTERCWkFRZ0F2V2swTW45VFRSaC9MOFRQVHdzcmwz?=
- =?utf-8?B?dGJjTVNGZk15OFdqRlZXelcyUmptSVgyS2tMbEQweWl0VzZjRktTUWRCQmhX?=
- =?utf-8?B?R2RIRHgxekxMcmdRdnN3ZGpHYVVXaFNoT0JRU2ZpSGVUWHk3VEpzNDMxbU1z?=
- =?utf-8?B?eW9vSjI1WGI3R3hsODY0eGthZjFvUURQZmhVcmpvMlFtSWY2YmZmR2RCQ0FH?=
- =?utf-8?B?UUcyT0JsSkNCZ3BDSUxGVzhJUkFqVU1KVGZHaW5PYTdYNmhtUmVNNFd3Zmsw?=
- =?utf-8?B?dXRrOXZsalhTTHJZUlUrZEtZWllJQTZFd2hXeG95eGNQdVhJbzlsNzJQTUEx?=
- =?utf-8?B?aXNqMWVHNzJxVlBzU1A2ZzZxZUMzVXd0VzBNdjBHYTVIRnEwVU9RS2tLYlY5?=
- =?utf-8?B?WFJ2cGFCbGg0ZnhMd1BHQ3g1VDBna202RVo4aTBLUmk3a0JJaDZOT2Y5WXpz?=
- =?utf-8?B?SjFtVWV6SXBLRUVhWFpBeUhiODZEeStRb25VYXpmalFwL2VRU051TWRmbzVo?=
- =?utf-8?B?VURFMHhXM2RYbHhzUUl2NXd6Sm8zaUhuS05YMUphUU01OWowMmxtcmRlR1J4?=
- =?utf-8?B?ZnJTb25ic1Q3TU9HaHBPRVZveXR2RUVFTXZqVlRiaDZxeWVXSG12Ky9hRkcz?=
- =?utf-8?B?UUlueHNpRTRqekJ6RTVMTjM4Ulk4bkdBUy9NSkk0QTNUVDZQZnA3YXdZbHBM?=
- =?utf-8?B?WStCNzFYYXorMGM4M2t1aVZTNXp5aHZqcVI3ZzlNNWxWNkdHSVNLWWZMb0tH?=
- =?utf-8?B?VjVjREU3QTcxdVJrUnY3Wk5uQnlSenN6cmxoZWM1MWVVTzR1WUFObklRVFJq?=
- =?utf-8?B?MEhJeHZQdU9NdmhVcWNOOUJkeDREcXZjWmRpdW1XMGlRcXRtL1A3dStBVUZS?=
- =?utf-8?B?RTJ2eDFudkFxSWdoYWdBS2haUFBwUDJEVERhR05uQkJ4MXkrNE5MQ0dZcXdJ?=
- =?utf-8?B?QnNlMmRPNTc4WDNna042am5xYTVuYkZjMm56ejJTMVBkNUdVbEVkMkJuelUy?=
- =?utf-8?B?NXlOVkpzYnZtV3BEVUlXM1d2dkthTEhSRG1rL2Nmbm1NRXFHQy9zQVpqNm9M?=
- =?utf-8?B?em45UDVteXJrQUROcDlWUzQzSlRhNFNnR3BQd3lFT2xUdE9UNXNKKzZlZHBy?=
- =?utf-8?B?Wm5MSFhDVm1oRHg2cGdVR00zRGM3cHBZZ1BIb1F6dWE5NUVQRHFhNzNlellZ?=
- =?utf-8?B?eTdOYUVNY3BsZlZBTEQycDNYOTM5STIwR2haMEJUMHZiYVI1NzlYbXNBWWV1?=
- =?utf-8?B?NVdrZTI5amFjcVFYVzBHa09xVEFIWlFwdWVleERzWlhHR25URzNDcHh2aU9j?=
- =?utf-8?B?c2tTNnYvcjZIK1JLbHVjRWlTRkhRaUxRSFo4NFM5d2hwSjIrMEljVkVkdEVF?=
- =?utf-8?B?NzFWaFI5SjZaTTJFaVZmdjJydVovN0N2VzJXNkVyVjlMMENEU21yVGJTS0NE?=
- =?utf-8?B?WjNKK1ZVVC9XeXV4KzFVdTkvM1pnPT0=?=
-X-Forefront-Antispam-Report:
-	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb08.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(82310400026)(376014)(1800799024)(36860700013)(13003099007);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	xbOb+dYOCFAEHvB2eq7poqcet2A7jHfLrKvKe97VAcDzA4l4bTi2YcqesY9TZi1vPdqdIeuLJUp9HGf8KQAv3iULCUPYErasiR2RG+Mzv37YbaXQewiM1AZKB065YRHRP3LrPQpIEvs0pSDBCok9EicrFlmYzndM5FNXx82oRHelPwoSNv5YxynL9o33FhW2Fi4nllcGnye7B8Hg+Gj+Annc2uuCwTfxeRPMQgMshvtT9erS5nQcgcoVzfBrmIM7kPIaFmXaZmdZOWZ9HfJMEA4qUvyp8fhQU7/LLwnik0+5exKsSrMhGWIHqtGz+OKE4LA9R5z/0RCkI2/S4UxUZf5oUylRptiijIW/IlOSat0tPuY8Z+JPCvjR6pPmA4BUbwg82UqNXcXcolVWyukyEp5iNJLvX1Mh7D0m5VhdD5MHzD7t0AeU4ElyyAu8MDRt
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 04 Feb 2026 09:02:18.9904
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 66095669-e65b-41fe-b6e8-08de63cc19c7
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[satlexmb08.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	CH1PEPF0000AD75.namprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CY5PR12MB6528
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <875x8d0w32.fsf@pond.sub.org>
+User-Agent: Mutt/2.2.14 (2025-02-20)
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
 
-Hi,
+On Wed, Feb 04, 2026 at 09:08:49AM +0100, Markus Armbruster wrote:
+> "Dr. David Alan Gilbert" <dave@treblig.org> writes:
+> 
+> > * Daniel P. Berrangé (berrange@redhat.com) wrote:
+> >> On Thu, Jan 22, 2026 at 12:47:47PM -0300, Fabiano Rosas wrote:
+> >> > One question I have is what exactly gets (eventually) removed from QEMU
+> >> > and what benefits we expect from it. Is it the entire "manual"
+> >> > interaction that's undesirable? Or just that to maintain HMP there is a
+> >> > certain amount of duplication? Or even the less-than-perfect
+> >> > readline/completion aspects?
+> >> 
+> >> Over time we've been gradually separating our human targetted code from
+> >> our machine targetted code, whether that's command line argument parsing,
+> >> or monitor parsing. Maintaining two ways todo the same thing is always
+> >> going to be a maint burden, and in QEMU it has been especially burdensome
+> >> as they were parallel impls in many cases, rather than one being exclusively
+> >> built on top of the other.
+> >> 
+> >> Even today we still get contributors sending patches which only impl
+> >> HMP code and not QMP code. Separating HMP fully from QMP so that it
+> >> was mandatory to create QMP first gets contributors going down the
+> >> right path, and should reduce the burden on maint.
+> >
+> > Having a separate HMP isn't a bad idea - but it does need some idea of
+> > how to make it easy for contributors to add stuff that's just for debug
+> > or for the dev.   For HMP the bar is very low; if it's useful to the
+> > dev, why not (unless it's copying something that's already in the QMP interface
+> > in a different way);  but although the x- stuff in theory lets
+> > you add something via QMP, in practice it's quite hard to get it through
+> > review without a lot of QMP design bikeshedding.
+> 
+> I think this description has become less accurate than it used to be :)
+> 
+> A long time ago, we started with "QMP is a stable, structured interface
+> for machines, HMP is a plain text interface for humans, and layered on
+> top of QMP."  Layered on top means HMP commands wrap around QMP
+> commands.  Ensures that QMP is obviously complete.  Without such a
+> layering, we'd have to verify completeness by inspection.  Impractical
+> given the size and complexity of the interfaces involved.
+> 
+> Trouble is there are things in HMP that make no sense in QMP.  For
+> instance, HMP command 'cpu' sets the monitor's default CPU, which
+> certain HMP commands use.  To wrap 'cpu' around a QMP command, we'd have
+> to drag the concept "default CPU" into QMP where it's not wanted.
 
-Gentle ping for reviewing patches for Bus Lock Detect in this series. Would
-appreciate any feedback or guidance on next steps. The related KVM patch is at [1].
+Surely the isolated HMP monitor code can just keep track of its view
+of a "default" CPU, and then pass an explicit CPU to the QMP commands
+it runs ?
 
-[1] https://lore.kernel.org/kvm/20251121081228.426974-1-shivansh.dhiman@amd.com/
 
-Thanks,
-Shivansh
-
-On 21-11-2025 14:04, Shivansh Dhiman wrote:
-> From: Ravi Bangoria <ravi.bangoria@amd.com>
-> 
-> Bus Lock Detect is enumerated with cpuid Fn0000_0007_ECX_x0 
-> bit [24 / BUSLOCKTRAP]. It can be enabled through MSR_IA32_DEBUGCTLMSR.
-> When enabled, hardware clears DR6[11] and raises a #DB exception on
-> occurrence of Bus Lock if CPL > 0. More detail about the feature can be
-> found in AMD APM[1].
-> 
-> Qemu supports remote debugging through host gdb (the "gdbstub" facility)
-> where some of the remote debugging features like instruction and data
-> breakpoints relies on the same hardware infrastructure (#DB, DR6 etc.)
-> that Bus Lock Detect also uses. Instead of handling internally, KVM
-> forwards #DB to Qemu when remote debugging is ON and #DB is being
-> intercepted. It's Qemu's responsibility to re-inject the exception to
-> guest when some of the exception source bits (in DR6) are not being
-> handled by Qemu remote debug handler. Bus Lock Detect is one such case.
-> 
-> [1]: AMD64 Architecture Programmer's Manual Pub. 40332, Rev. 4.07 - June
->      2023, Vol 2, 13.1.3.6 Bus Lock Trap
->      https://bugzilla.kernel.org/attachment.cgi?id=304653
-> 
-> Signed-off-by: Ravi Bangoria <ravi.bangoria@amd.com>
-> Signed-off-by: Shivansh Dhiman <shivansh.dhiman@amd.com>
-> ---
->  target/i386/cpu.h     | 1 +
->  target/i386/kvm/kvm.c | 4 ++--
->  2 files changed, 3 insertions(+), 2 deletions(-)
-> 
-> diff --git a/target/i386/cpu.h b/target/i386/cpu.h
-> index 0fecca26dc4a..852b3a33b54d 100644
-> --- a/target/i386/cpu.h
-> +++ b/target/i386/cpu.h
-> @@ -276,6 +276,7 @@ typedef enum X86Seg {
->                  | CR4_SMEP_MASK | CR4_SMAP_MASK | CR4_PKE_MASK | CR4_PKS_MASK \
->                  | CR4_LAM_SUP_MASK | CR4_FRED_MASK))
->  
-> +#define DR6_BLD         (1 << 11)
->  #define DR6_BD          (1 << 13)
->  #define DR6_BS          (1 << 14)
->  #define DR6_BT          (1 << 15)
-> diff --git a/target/i386/kvm/kvm.c b/target/i386/kvm/kvm.c
-> index ed3d40bf073e..00c44c2de650 100644
-> --- a/target/i386/kvm/kvm.c
-> +++ b/target/i386/kvm/kvm.c
-> @@ -5864,14 +5864,14 @@ static int kvm_handle_debug(X86CPU *cpu,
->      } else if (kvm_find_sw_breakpoint(cs, arch_info->pc)) {
->          ret = EXCP_DEBUG;
->      }
-> -    if (ret == 0) {
-> +    if (ret == 0 || !(arch_info->dr6 & DR6_BLD)) {
->          cpu_synchronize_state(cs);
->          assert(env->exception_nr == -1);
->  
->          /* pass to guest */
->          kvm_queue_exception(env, arch_info->exception,
->                              arch_info->exception == EXCP01_DB,
-> -                            arch_info->dr6);
-> +                            ret == 0 ? arch_info->dr6 ^ DR6_BLD : DR6_BLD);
->          env->has_error_code = 0;
->      }
->  
+With regards,
+Daniel
+-- 
+|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
+|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
+|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
 
