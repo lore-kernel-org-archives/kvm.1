@@ -1,46 +1,46 @@
-Received: from CO1PR03CU002.outbound.protection.outlook.com (mail-westus2azon11010019.outbound.protection.outlook.com [52.101.46.19])
+Received: from MW6PR02CU001.outbound.protection.outlook.com (mail-westus2azon11012034.outbound.protection.outlook.com [52.101.48.34])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D685D2DECBA
-	for <kvm@vger.kernel.org>; Wed,  4 Feb 2026 07:45:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.46.19
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B81512192FA
+	for <kvm@vger.kernel.org>; Wed,  4 Feb 2026 07:45:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.48.34
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770191131; cv=fail; b=i5NhWHd6y4A6yov2XHYyz949dB/fWR0w4/8v0ougupZzYqpJ/As8GYnLaABKCDUUv7/GQa/ezEBuJGymSy4i8X5w3rD+lTezuNxwZgRYeVU1FPZ/3hhydBCw68pEgTNvHNGLewBevMKluG/tplkaiw25Jy31oXCtJHhy/BYm49U=
+	t=1770191136; cv=fail; b=G6caY3fZIBuEoyKxaUlzG5c+QveI9XvopciHVQ73Juawpu2PYVGk2AteyAJWYtqIsEFklK8sW5s1mv5BNKpNpmEZMrN/HFWTtuRNlnCZd/VVbXxjChWfkYOQxVCpoNQCMqoJyzPxfsfKkKEzYsQ9JsnviUW6I5p+LvgGnzSWryE=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770191131; c=relaxed/simple;
-	bh=666ErxLAazHt+vNUUyUtOCW2mgJb9uHVq1CIOBET0xo=;
+	s=arc-20240116; t=1770191136; c=relaxed/simple;
+	bh=vkih4asyWZjkXjD71RW6FV7rEhhRYDDd764FsRZat5w=;
 	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=S3lCMeWugYwuEyBx3GokqZKITpWJqRfk6hUhZ61awGvmjrs9dC4rG6wWbbohYVvSRb8JhsEiHagEg+9V8Bn4kE3mQvY7SPSK6LBs/8ALAQfJqeFV+lLJckFvT9A1nz14yxwtB0nwJXTB72z/7GUTynB7rhAZvY8YS18ZkXAJPLI=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=y9cl84RF; arc=fail smtp.client-ip=52.101.46.19
+	 MIME-Version:Content-Type; b=h2X7cEdhJbeguikSc/A3yAzPh/Vo8jPDNB2QbyJPGCw4E22jJ3cvjBOdtAIlr99B9xIQ1OKfGmeXBbHFNuBNv1lp27XqWaKkjfobZyRRAxNHKTkvE/lacEsSucgx5r3Uhi8sO+1oxcYkkiJxppkeHcHcSCFebe/F0zURkXs7A5U=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=F7gF1XV4; arc=fail smtp.client-ip=52.101.48.34
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
 Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="y9cl84RF"
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="F7gF1XV4"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=yON2fkKc7E99H4NhcQzWhHjXbTnGgwgxycOsE8ldxCJ8FS8+9OdVZ1xqBZsMYFc2ayJdd9a6GKKGYtnSwxJlNRj/oOhpvnK8LlYzm4MWuGouFjl2WIQjQJf4AagR3O7Rr9+agVTdjQqX9TTcVvZU8h6P8TfWe8eBvCABlFW37MVu03DTl8cO5XM+Env4MjD8LO4O5FlOwUy4QV0S40kyqRANGcIcr6VESlwwLT1x9KjqyXz+SNvv+6u0l2QkoSr1OSP2feKGdvQfeHVvT45b7qkq3va9rx91tjWLfGtH10v74jHkhA532PTeMi04wFtEj5J4jjFQjYAUNdHytgt9uw==
+ b=A2szOzwi0PwBSIwBkLKnCIPesv+LxGAimWi3tF8ZRfNoxJdtojj00rQ8vprtjSUcf8CS5mAXGB0kxLje4WVRd+W1D7E8IeDf2CGlX0X8IoPn+mBcCmbFKKGUBhUqCwy0Qr9/2l0oTN9wCQubFWe45xgJpiu6e8tiSFQe29bYIbEJAPIvnjv0wg8q1TPT8+8sWcokwV7F6++gMJWuX/Coz7LA7c9qDgKHJUC3gekMP7kjUA7d8A8aLM6Etw1mVo3DnCLrZZAVAZs6+0f9NCHkpGlh2+PWPrWw6DeGPgJyRRs9ziI3/L6UqsaWdp3AeJDb6p6XjB/nrB+s+Zd7i9wTqA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=DVIHVcrJkJK4VEBJZgyOKfCW9fE53sxjPdTuemanOGM=;
- b=R4aSNg2oPsMj6hwA70ZR9q4v+daqAIczQsVtSDFYb+ithLOvmeX/98pFTb0hIJZL4Dbp6PedjkGJcgwK9nTqR/81qG8Khba/CWQZvgjcnnCpFBCaqA1+AXDZEn0th6A1RMcPWu4DM53/1A5XM6WIfBAj+ThNzuYuy7qD6NsKV4UKVBVl6f5S7cqme7A1kcArUfwZw2A1u3x3zvqSKsYDRqsVfdiVakDuBbK7G15FuJYGgMnjSEKTX6uBScUkoY91xqNz0x8ml/4QDzEe2RKA9QSi9tq8lba9sE+FG1/c1QNG8KBYPG/zqtGfbUjBGu/XKDU5z0/UcUn1i+PSur1aRw==
+ bh=6Bbv1rISRmCuqYrHMQ5GM9lhJ3hD2X7PMEIFLmD+xnI=;
+ b=m1uyAMvouTkuHFE31UsTkdYqsDG37aeezJjKnCXCNGSmBO+xum2wO4th7e5EpgvcVkBsQVNe7qyEQGQZoyulTabTHwahl5eyXbOK9u84h9Pv7CiDsf04WJy56l5fcxNkfCQlDBU15OfyMMwmbpOu0YhZ/slaNf1q3gHZREbvHr/T88Br9m6C+UD2FbpIn//fYB7dAc2f+/aOehABs7DU8ne+jIu3uQO4Vbt1iXaitj7vT2wVGAFCg49d634kfFClQQdu2ULAd7udzUboPWcNMkmyiY4Z02yiuNr6cVdAbvX/O+wuQEo3oozZE/Jwu2YLZYEhuu5HY9sfOsLJNcse+A==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
  165.204.84.17) smtp.rcpttodomain=google.com smtp.mailfrom=amd.com; dmarc=pass
  (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
  dkim=none (message not signed); arc=none (0)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=DVIHVcrJkJK4VEBJZgyOKfCW9fE53sxjPdTuemanOGM=;
- b=y9cl84RFpa4zjW/bG+SI3nOFAr40iSr71wKBa+6gpN1KN/iHzis59HvIeLXniubK03AyB5fRgi7Dy2D9IxwJFpeEz0nRT73+1BaMDwbRy1vbRO3rvGl5HylvSKb2TSaULsQFJOORwbKTL7WyoVxK8PfwjXckDiGaKjG8hBhwylo=
-Received: from SA0PR11CA0117.namprd11.prod.outlook.com (2603:10b6:806:d1::32)
- by CH3PR12MB7617.namprd12.prod.outlook.com (2603:10b6:610:140::21) with
+ bh=6Bbv1rISRmCuqYrHMQ5GM9lhJ3hD2X7PMEIFLmD+xnI=;
+ b=F7gF1XV4m9ubTuYBwj2WE/X5flYHIZDLR9Lm0lGHpmzDZAqSs+dEL7jC1SYl5yhvTJmaclMvjhbtLzc02JUpFj9y3BZ46NZfMPklmQedeepBvKN+/wxFjfQqDU5Pd/Bv2zClth06loFN2uEQW3eUkfrUzCr8m4gZyWHyKiY1NgQ=
+Received: from SA1PR02CA0002.namprd02.prod.outlook.com (2603:10b6:806:2cf::6)
+ by SA3PR12MB9090.namprd12.prod.outlook.com (2603:10b6:806:397::11) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9564.16; Wed, 4 Feb
- 2026 07:45:27 +0000
-Received: from SN1PEPF0002636D.namprd02.prod.outlook.com
- (2603:10b6:806:d1:cafe::a5) by SA0PR11CA0117.outlook.office365.com
- (2603:10b6:806:d1::32) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.20.9587.12 via Frontend Transport; Wed,
- 4 Feb 2026 07:45:25 +0000
+ 2026 07:45:33 +0000
+Received: from SN1PEPF0002636B.namprd02.prod.outlook.com
+ (2603:10b6:806:2cf:cafe::fb) by SA1PR02CA0002.outlook.office365.com
+ (2603:10b6:806:2cf::6) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.9587.13 via Frontend Transport; Wed,
+ 4 Feb 2026 07:45:33 +0000
 X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
  smtp.mailfrom=amd.com; dkim=none (message not signed)
  header.d=none;dmarc=pass action=none header.from=amd.com;
@@ -48,22 +48,22 @@ Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
  165.204.84.17 as permitted sender) receiver=protection.outlook.com;
  client-ip=165.204.84.17; helo=satlexmb07.amd.com; pr=C
 Received: from satlexmb07.amd.com (165.204.84.17) by
- SN1PEPF0002636D.mail.protection.outlook.com (10.167.241.138) with Microsoft
+ SN1PEPF0002636B.mail.protection.outlook.com (10.167.241.136) with Microsoft
  SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.9587.10 via Frontend Transport; Wed, 4 Feb 2026 07:45:26 +0000
+ 15.20.9587.10 via Frontend Transport; Wed, 4 Feb 2026 07:45:33 +0000
 Received: from brahmaputra.amd.com (10.180.168.240) by satlexmb07.amd.com
  (10.181.42.216) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.17; Wed, 4 Feb
- 2026 01:45:23 -0600
+ 2026 01:45:30 -0600
 From: Manali Shukla <manali.shukla@amd.com>
 To: <seanjc@google.com>, <pbonzini@redhat.com>
 CC: <mingo@redhat.com>, <bp@alien8.de>, <dave.hansen@linux.intel.com>,
 	<kvm@vger.kernel.org>, <x86@kernel.org>, <santosh.shukla@amd.com>,
 	<nikunj.dadhania@amd.com>, <Naveen.Rao@amd.com>,
 	<dapeng1.mi@linux.intel.com>, <manali.shukla@amd.com>
-Subject: [PATCH v1 4/9] KVM: x86: Introduce KVM_CAP_LAPIC2 for 4KB APIC register space support
-Date: Wed, 4 Feb 2026 07:44:47 +0000
-Message-ID: <20260204074452.55453-5-manali.shukla@amd.com>
+Subject: [PATCH v1 6/9] KVM: Add KVM_GET_LAPIC2 and KVM_SET_LAPIC2 for extended APIC
+Date: Wed, 4 Feb 2026 07:44:49 +0000
+Message-ID: <20260204074452.55453-7-manali.shukla@amd.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20260204074452.55453-1-manali.shukla@amd.com>
 References: <20260204074452.55453-1-manali.shukla@amd.com>
@@ -79,217 +79,256 @@ X-ClientProxiedBy: satlexmb07.amd.com (10.181.42.216) To satlexmb07.amd.com
  (10.181.42.216)
 X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SN1PEPF0002636D:EE_|CH3PR12MB7617:EE_
-X-MS-Office365-Filtering-Correlation-Id: fd8a305f-960d-45c6-20be-08de63c15cc2
+X-MS-TrafficTypeDiagnostic: SN1PEPF0002636B:EE_|SA3PR12MB9090:EE_
+X-MS-Office365-Filtering-Correlation-Id: 119a6021-d061-4544-62b1-08de63c160da
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|82310400026|376014|36860700013|1800799024;
+	BCL:0;ARA:13230040|1800799024|36860700013|82310400026|376014|7053199007;
 X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?Vizf+IPp/Uo3PBvvVWtCvVrUAzm1iUCncxdbqUJa2zjifMz8q6BA4s3lSMJ1?=
- =?us-ascii?Q?bA+rH4khP5qbPMWr2zybX7DFubRHxTUSwu/vaFvpg9yME+m+I6SnfcxEz7cI?=
- =?us-ascii?Q?IZelBsN1GBGYYxEP/Z1XU07tWiIIgzObJGmHOGEMtCEyH1X6450c6HRsV3En?=
- =?us-ascii?Q?U9iUYyfrL8/paF2PUT2qTumX6AG8Ww2GRL02GaRshZyeU7u13+TrOSxlKfHV?=
- =?us-ascii?Q?ayyOphMCuOpfSBqBmM8Ah55cabXFP54sSviJky+6Qgosnb9FkdGHxiOIZ4O6?=
- =?us-ascii?Q?f8BZyW/cVxRKKBak+xZgMrayKxJGKdGqjH19A03Te7ghvUBxDAuragwWWKg+?=
- =?us-ascii?Q?B0x3SwA57ZlYNvUKI8FHu/vMtIiw5NhiMM8mvfrXA09mnbrmyEtQ7wsf/nOp?=
- =?us-ascii?Q?rRF9FQVfY0bPkzV/k+AhKB3Xtlw0YDSJuYpVhOjOgmkJkhMc6pa0JDXJc8Ex?=
- =?us-ascii?Q?m8jnTaZ/K+cL+lbNCefg2/dlNBfEGwrSCPeAyimg0t06tGRkwQS9Wk25Rak/?=
- =?us-ascii?Q?AnT+tqYw6bZgfBPLZoS7i2HFw/G3u7JZ68dT8f8VMC5cBOFAxjVu3nMn1Wuq?=
- =?us-ascii?Q?w3Krp5oWvBNgxGcWqD9wzxCSnauFzvX7K6DKPK84ladbk1mXgVFXNWZsd0RG?=
- =?us-ascii?Q?Glg3v5Q+iwexv/UUVK2r1GIqhsj3S85xHajEoxS2kE7pBP/aQ2glEeHWgYcp?=
- =?us-ascii?Q?Z44sy/MIA5yEhlT7N8wdjQsrSOXscSn4dBe4axZElV+ousfEmEBr4gXsoPBx?=
- =?us-ascii?Q?EveTw31jVaxcgbQ6mkFCBMwV1SK9NFBMQmz8jNMAiSc2tsDKquyD6TccJ0i6?=
- =?us-ascii?Q?P1mJs+H2akOPkGRZFQ1cEIWRWyJR4k84rOtHvjW7A7uHmYyCe3Cka8XXxjvo?=
- =?us-ascii?Q?CQtWVvSK+ZnI2suUoPAyv8HVtR8P3IXlkES7zL4z0dWQ0Kkk68lUJKjLtgCL?=
- =?us-ascii?Q?fbj3cxt0WDQT4lnwylUr/BpagHjqR9OMpglGTB0X5b/slv/SMEHPJArptNxZ?=
- =?us-ascii?Q?IwTGOqmEQOmXnaIFfbA26mGRuxLPMdk088TzHLrld6F2meXgiq7HnN4UmmeK?=
- =?us-ascii?Q?UD7X6fVQon60GihVGbk9HCp3wogdnNbLj/SnVBPI5hCv+o0lL+4ECZJ2bcMg?=
- =?us-ascii?Q?IZdFXK48Crxxe/C9pCIkc+6A1OIWqOln4wPYRTa+nxja1Sa1duHzMixp7tna?=
- =?us-ascii?Q?ZrJzjHkrhbVI4+0g5TfMOGwi1XZgXz/+kKHwabkY5PP0vsJa80sYpwLSSTei?=
- =?us-ascii?Q?RtqJxv5LC4pJtAy0aDr1lYjXzyroG8VL+i2GzsDfm7U+T61Fa+52WgTLXk17?=
- =?us-ascii?Q?GKo6GUFMJdhJzlZ6WSKSxNg6LdG0JfGZhMaNA9xJ4GVbFo/dsI/sfizX+Ndv?=
- =?us-ascii?Q?ZRBREYLU8pegqq28idpTnlE7mgB1MfsnZw6cqjzq7JJvhTtKjLFQDY8Vfx1g?=
- =?us-ascii?Q?5zdP1RH8FUZQt5LowfLYwDYnf0CFcSiPR7kXbV2B2dOd4L8xv+1b+WFKwbCJ?=
- =?us-ascii?Q?ZeownPsVsoxFDpyrP10DEAubLyV78KVX+MZC2BIZwYD3MSQTJbzpsArqyVli?=
- =?us-ascii?Q?qp5SqrfB7StX86/0dw/O7FAwKDGrvlEFb+N95Yi/zeIAYCcTpI3riAvDto+7?=
- =?us-ascii?Q?iPkHZyM1jp8k1cFN0HhKTJmyWb8enI6wSx4eZMH79sD/2JevgrpW6Mi4hDZ0?=
- =?us-ascii?Q?A1xyPw=3D=3D?=
+	=?us-ascii?Q?v506Xiv1Q8zfOaZfowTY8f8TI4ti2SgHJKQo/60dK1QSlgBO3ZnjtFudSpDx?=
+ =?us-ascii?Q?ZJlqAI2+0eIHaQ6nOBNI9rYus6qy4mx8Zg9UY3i6SqCfPCkvQYvC4615CjCd?=
+ =?us-ascii?Q?pR1vj3xztNK6tSkgintx3Mn29w/wEX22vNFhhQbz4NGgbcVBlr9c0+VQRlVd?=
+ =?us-ascii?Q?5jVuldrUBtzg6CipRiIpRYsBiBcxZXmjqc5uZL1QYtbPzBZ0przg63aD4F7Y?=
+ =?us-ascii?Q?GpXJvU3Q5esKgPZMQG5n4qOxQaf2jdBXMynDVMMlKfaX2/y2UVY7BRIYXvds?=
+ =?us-ascii?Q?PlDPF4gg+jiQoWSPFHUoI89ofqw0REzWzVru9YR+11IhIPTOLFR6iLbIY9sS?=
+ =?us-ascii?Q?iu5cs/1tyIw8QU+jywQ2SYiZWJ3fcJ97Eaxo80fTIP9iBWHeWoVZiqzr+9Io?=
+ =?us-ascii?Q?TrXL6v5FKOfrID1t31YNagA5+jUp3tv6r4BD6bvqF8v2E1gQBdEfA9mK3DIY?=
+ =?us-ascii?Q?A/Yr5X/K8/4XWqZwTDyP8WmXbphNW9dp0KzRBOVGL4DuTaPwp0U3N7b8BedI?=
+ =?us-ascii?Q?OMS78hr/AprHinHALIcGImf4lmhoCd4VpLaOWhcwBTMe4ianuCCFO5J6AwwA?=
+ =?us-ascii?Q?hjCd2yMrV3kAsdwrabaz9rBJ7R94mnQMZqIj1ucBRbhdYj+pj+KWdeiDBTLf?=
+ =?us-ascii?Q?KGLBEijj4L+oZjNSNu5RHMSBuDydSRIcwsabDsHuZtpbnIknZMY886R+CBQk?=
+ =?us-ascii?Q?Pj5YKU0yS67YcSMbAVZz3m9MzLQkt7r1157/82yfZwDMNHMUXH0ekofdDkAO?=
+ =?us-ascii?Q?27fz69YSBzqKcCwvg6tbRbi1GykLQ3eijaxNgORqntd6vFQIcA+vNGZjLVYE?=
+ =?us-ascii?Q?nJS8z5w0gx9Y9xSAY4xdwqq+HqgUGQDZI9KDoGk/cU+PURNfZ6K4aKfBSsz4?=
+ =?us-ascii?Q?36d3TQCXVSWhD17zU+fpgp4FyemYdXeT9qnK6f5VSuQiMrzo940rnG5hhV8a?=
+ =?us-ascii?Q?+gkJcgD/IscAY1HmgV6XIza3IXCa2xcp90lQ8Zw2S2kJHaiiER69+UurrahK?=
+ =?us-ascii?Q?1QN9lBiMeDPLwbKw18EaSnKKhyv6infOEQ26xYXwhpy5BAZ4l8nskR029Zsb?=
+ =?us-ascii?Q?mDzE05BI7YdwYO1+bYySztvU92EMt89qZOGt3NMQZpT9prXPXt5onw6Xav+h?=
+ =?us-ascii?Q?SOPNfLGo0i3nOKSKKZ221GNCT7/Jvpl4RR80NIihS8ddjirq5lxgd1WxVVXW?=
+ =?us-ascii?Q?Z8O7CxOuQ6ZKl5mMzqhw3HP52s5leqUC2QCMQJ4S/y8RiKVJosWk+nDrMygq?=
+ =?us-ascii?Q?z3Qxf8tLf2tmBQuJbI60VvHvSfENcFcyLS2kaek1muxNE/jD5LX4mHvpM3pC?=
+ =?us-ascii?Q?ShOUPtUcyjocJQqsXDOsatI3l5bYQ8pPee3l8p0j9WALfw38IGCBw6TmzWFV?=
+ =?us-ascii?Q?MFKNw5ynKpAbWpDzZTfDdpKW1j6BRFdaEKRI3Rven0G4uGko1CqsEmPXeG4H?=
+ =?us-ascii?Q?8H7QEkt337zDCQ97Q/W5BH0sNZJDyAbLqvbBbYkXJEUvZ5FdRuIo0y89eipO?=
+ =?us-ascii?Q?Rd+lnLG5wOxaVpjwFQ+K7HaNRalola8LRC7FmuoD9lCxWAM1KDLoAP9YfMpp?=
+ =?us-ascii?Q?ZNZbVws5jd64s1K2IYpIHoJl6H2WJP7zd+Quzd7u1M+PmvQKvCBBwGCdwdpl?=
+ =?us-ascii?Q?g0Z40lsAHD6ja2zJ9HLDWBVfBrRbhWnDFfvRB7fd/r4WlgiJ9Lm0ovEk9Rrp?=
+ =?us-ascii?Q?MjmnhA=3D=3D?=
 X-Forefront-Antispam-Report:
-	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb07.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(82310400026)(376014)(36860700013)(1800799024);DIR:OUT;SFP:1101;
+	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb07.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(1800799024)(36860700013)(82310400026)(376014)(7053199007);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	1VrjvWVtM5fmYca1YeA7wIxvukJUCVi/bHinfkUBhvkrs5wi1A+3WlRF9sLRyxwjas43sLokoH8/ZtlLK9i8TdX5uSW0GJypb1GvlLMHkrAvgaC/CPxp9coMsRFenmiKe2cq8F5NjsMtR38ILI8v6C0Eionc7Qt4CKHPMHzijBECwoFe9eiBJ6uTftmcxL7hfzd41fOZ848MMcIQ/i3tzT436vVieZek5crYyb1EHGT9qzkkY0MyvEfqUoCvdI0tG9bw9sAIOPkmQB9qYXIXE/xYOQovfxvAMIfxfekIENqugLNExfiyJIqENq3W51CrZ6XjBtMTqG13hfpTOQE+C9vJIkv5FQd99LTdRP/ZPdSExDeOedDIBGjFGHJYSe8R7OfV5eneUMc+EJt7whzeYi7z6Fza9Esux5XtbOmfbk7lcYBUEjUKIGZPWLLzaMvK
+	V15CTuQrvPgWupYlw9eFL0qsPf+7GlqJuJIQQxmWXwzGTebcRDgjXfT/aebY4kaFozRU/5CV6pa+7KZNv0d61K95/KooP2GHX7L+TutXM0K7PelPBwJyIXsiSQ3plHLBobJgzUk9FHlv4+vZoYp7B71QIkjboCFZ+5jAT4Cu7epYkodXSWahFu7XlVkpsyOw9Xh/xJGleVyYebHFVUqISuIipfCmV0imbggKpzNqBr62brm/CUTqxgrPRUsum3dJ/+uHNcK6ztz2sRX08XATZKM7COgDE1qLPRSnux+G81Z6vLAm8i5tZKRfxRXbGDbL/ouAYhqkU7uXYK33UORAvUl6QELK+rSkv2A1EK+f4V7VqJXBAIkQfeB0FPku/xYQHjYMXRpaBRxqH0clK5es0JOwp8zF4KiHqcJ9KjHem6b3/osz1IR9Y+l34EuKtAT4
 X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 04 Feb 2026 07:45:26.8653
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 04 Feb 2026 07:45:33.7284
  (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: fd8a305f-960d-45c6-20be-08de63c15cc2
+X-MS-Exchange-CrossTenant-Network-Message-Id: 119a6021-d061-4544-62b1-08de63c160da
 X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
 X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[satlexmb07.amd.com]
 X-MS-Exchange-CrossTenant-AuthSource:
-	SN1PEPF0002636D.namprd02.prod.outlook.com
+	SN1PEPF0002636B.namprd02.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Anonymous
 X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH3PR12MB7617
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA3PR12MB9090
 
-Add KVM_CAP_LAPIC2 to allow userspace to opt into extended APIC register
-space, i.e. to expose the full 4KB APIC page to the guest.  Extended LVT
-registers are part of the 4KB APIC page and are AMD-specific. Extended
-APIC registers provide additional interrupt vectors for hardware features
-like Instruction Based Sampling (IBS).
+Add KVM_GET_LAPIC2 and KVM_SET_LAPIC2 ioctls to save and restore APIC
+state using a 4KB buffer (kvm_lapic_state2).  The larger buffer allows
+saving additional APIC registers beyond the standard APIC registers
+supported by the existing 1KB KVM_GET/SET_LAPIC ioctls.
 
-Use a capability negotiation model to allow for future extensibility.
-KVM_CHECK_EXTENSION returns a bitmask of supported capabilities, and
-userspace enables the intersection of KVM and VMM support via
-KVM_ENABLE_CAP.  This allows KVM and userspace to independently add
-support for new APIC configurations without breaking compatibility.
+The 4KB buffer size matches the LAPIC2 capability, which enables the
+full APIC register page including extended APIC registers for AMD
+processors.
 
-Define two capability flags:
-  - KVM_LAPIC2_DEFAULT: full 4KB APIC page support
-  - KVM_LAPIC2_AMD_DEFAULT: extended LVT registers are supported
+KVM_GET/SET_LAPIC continue to work as before for backward compatibility.
+Document the new ioctls in Documentation/virt/kvm/api.rst.
 
-Require that the capability be enabled before vCPUs are created to avoid
-the need to handle runtime changes to the APIC page size.
-
-When KVM_LAPIC2_AMD_DEFAULT is enabled, set kvm->arch.nr_extlvt to
-KVM_X86_NR_EXTLVT_DEFAULT (4) to track the number of extended LVT
-registers available to the guest.  Future patches will use nr_extlvt to
-emulate guest accesses to extended LVT registers at APIC offset 0x500.
-
-Suggested-by: Naveen N Rao (AMD) <naveen@kernel.org>
+Suggested-by: Sean Christopherson <seanjc@google.com>
 Signed-off-by: Manali Shukla <manali.shukla@amd.com>
 ---
- Documentation/virt/kvm/api.rst  | 31 +++++++++++++++++++++++++++++++
- arch/x86/include/asm/kvm_host.h |  1 +
- arch/x86/kvm/x86.c              | 30 ++++++++++++++++++++++++++++++
- include/uapi/linux/kvm.h        |  5 +++++
- 4 files changed, 67 insertions(+)
+ Documentation/virt/kvm/api.rst  | 45 +++++++++++++++++++++++++
+ arch/x86/include/uapi/asm/kvm.h |  5 +++
+ arch/x86/kvm/x86.c              | 59 +++++++++++++++++++++++++++++++++
+ include/uapi/linux/kvm.h        |  2 ++
+ 4 files changed, 111 insertions(+)
 
 diff --git a/Documentation/virt/kvm/api.rst b/Documentation/virt/kvm/api.rst
-index 01a3abef8abb..71b4d24f009a 100644
+index 71b4d24f009a..c49cf3104b2c 100644
 --- a/Documentation/virt/kvm/api.rst
 +++ b/Documentation/virt/kvm/api.rst
-@@ -9291,6 +9291,37 @@ KVM exits with the register state of either the L1 or L2 guest
- depending on which executed at the time of an exit. Userspace must
- take care to differentiate between these cases.
+@@ -6517,6 +6517,51 @@ the capability to be present.
  
-+8.46 KVM_CAP_LAPIC2
-+---------------------------
+ `flags` must currently be zero.
+ 
++4.144 KVM_GET_LAPIC2
++----------------------
 +
++:Capability: KVM_CAP_LAPIC2
 +:Architectures: x86
-+:Target: VM
-+:Parameters: args[0] is a bitmask of LAPIC2 capabilities
-+:Returns: 0 on success, -EINVAL when arg[0] contains invalid bits
++:Type: vcpu ioctl
++:Parameters: struct kvm_lapic_state2 (out)
++:Returns: 0 on success, negative on failure
 +
-+This capability indicates that KVM supports extended APIC register space of the
-+whole 4KB page.
++Reads the extended Local APIC registers, including both the standard APIC
++register space (offsets 0h-3FFh) and the extended APIC register space (offsets
++400h-500h and beyond).
 +
-+Calling KVM_CHECK_EXTENSION for this capability returns a bitmask of LAPIC2
-+capabilities that can be enabled on a VM.
++This ioctl is similar to KVM_GET_LAPIC but operates on a 4KB APIC
++register space that includes extended LVT registers available on AMD processors
++with the ExtApicSpace feature.
 +
-+The argument to KVM_ENABLE_CAP is also a bitmask that selects which LAPIC2
-+capabilities to enable for the VM.  Userspace should enable the intersection
-+of capabilities supported by KVM (from KVM_CHECK_EXTENSION) and capabilities
-+supported by the VMM.  This must be called before creating any VCPUs.
++::
 +
-+At this time, KVM_LAPIC2_DEFAULT and KVM_LAPIC2_AMD_DEFAULT are the supported
-+capabilities:
++  #define KVM_APIC_EXT_REG_SIZE 0x1000
++  struct kvm_lapic_state2 {
++      char regs[KVM_APIC_EXT_REG_SIZE];
++  };
 +
-+  - KVM_LAPIC2_DEFAULT: Full 4KB APIC page support
-+  - KVM_LAPIC2_AMD_DEFAULT: Extended LVT registers are supported (they are part
-+    of 4KB APIC page)
++4.145 KVM_SET_LAPIC2
++----------------------
 +
-+KVM_LAPIC2_AMD_DEFAULT is available on AMD processors with ExtApicSpace feature
-+(CPUID 8000_0001h.ECX[3]). Extended APIC registers start at APIC offset 400h.
-+Currently 4 extended LVT registers are supported, used for features like
-+Instruction Based Sampling (IBS), but future processors may support more.
++:Capability: KVM_CAP_LAPIC2
++:Architectures: x86
++:Type: vcpu ioctl
++:Parameters: struct kvm_lapic_state2 (in)
++:Returns: 0 on success, negative on failure
 +
- 9. Known KVM API problems
- =========================
++Sets the extended Local APIC registers, including both the standard APIC
++register space and the extended APIC register space.
++
++This ioctl is similar to KVM_SET_LAPIC but operates on a 4KB APIC register space
++that includes extended LVT registers for AMD processors.
++
++::
++
++  #define KVM_APIC_EXT_REG_SIZE 0x1000
++  struct kvm_lapic_stat2 {
++      char regs[KVM_APIC_EXT_REG_SIZE];
++  };
  
-diff --git a/arch/x86/include/asm/kvm_host.h b/arch/x86/include/asm/kvm_host.h
-index df642723cea6..5a659982aebd 100644
---- a/arch/x86/include/asm/kvm_host.h
-+++ b/arch/x86/include/asm/kvm_host.h
-@@ -1460,6 +1460,7 @@ struct kvm_arch {
- 	u32 default_tsc_khz;
- 	bool user_set_tsc;
- 	u64 apic_bus_cycle_ns;
-+	u8 nr_extlvt;
+ .. _kvm_run:
  
- 	seqcount_raw_spinlock_t pvclock_sc;
- 	bool use_master_clock;
+diff --git a/arch/x86/include/uapi/asm/kvm.h b/arch/x86/include/uapi/asm/kvm.h
+index 7ceff6583652..516d4a0be25a 100644
+--- a/arch/x86/include/uapi/asm/kvm.h
++++ b/arch/x86/include/uapi/asm/kvm.h
+@@ -129,6 +129,11 @@ struct kvm_lapic_state {
+ 	char regs[KVM_APIC_REG_SIZE];
+ };
+ 
++#define KVM_APIC_EXT_REG_SIZE 0x1000
++struct kvm_lapic_state2 {
++	char regs[KVM_APIC_EXT_REG_SIZE];
++};
++
+ struct kvm_segment {
+ 	__u64 base;
+ 	__u32 limit;
 diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
-index 8acfdfc583a1..368ee9276366 100644
+index 669c894f1061..ccd16bdff56a 100644
 --- a/arch/x86/kvm/x86.c
 +++ b/arch/x86/kvm/x86.c
-@@ -4990,6 +4990,18 @@ int kvm_vm_ioctl_check_extension(struct kvm *kvm, long ext)
- 	case KVM_CAP_READONLY_MEM:
- 		r = kvm ? kvm_arch_has_readonly_mem(kvm) : 1;
+@@ -5331,6 +5331,17 @@ static int kvm_vcpu_ioctl_get_lapic(struct kvm_vcpu *vcpu,
+ 	return kvm_apic_get_state(vcpu, s->regs, sizeof(*s));
+ }
+ 
++static int kvm_vcpu_ioctl_get_lapic2(struct kvm_vcpu *vcpu,
++				    struct kvm_lapic_state2 *s)
++{
++	if (vcpu->arch.apic->guest_apic_protected)
++		return -EINVAL;
++
++	kvm_x86_call(sync_pir_to_irr)(vcpu);
++
++	return kvm_apic_get_state(vcpu, s->regs, sizeof(*s));
++}
++
+ static int kvm_vcpu_ioctl_set_lapic(struct kvm_vcpu *vcpu,
+ 				    struct kvm_lapic_state *s)
+ {
+@@ -5347,6 +5358,22 @@ static int kvm_vcpu_ioctl_set_lapic(struct kvm_vcpu *vcpu,
+ 	return 0;
+ }
+ 
++static int kvm_vcpu_ioctl_set_lapic2(struct kvm_vcpu *vcpu,
++				    struct kvm_lapic_state2 *s)
++{
++	int r;
++
++	if (vcpu->arch.apic->guest_apic_protected)
++		return -EINVAL;
++
++	r = kvm_apic_set_state(vcpu, s->regs, sizeof(*s));
++	if (r)
++		return r;
++	update_cr8_intercept(vcpu);
++
++	return 0;
++}
++
+ static int kvm_cpu_accept_dm_intr(struct kvm_vcpu *vcpu)
+ {
+ 	/*
+@@ -6203,6 +6230,7 @@ long kvm_arch_vcpu_ioctl(struct file *filp,
+ 	union {
+ 		struct kvm_sregs2 *sregs2;
+ 		struct kvm_lapic_state *lapic;
++		struct kvm_lapic_state2 *lapic2;
+ 		struct kvm_xsave *xsave;
+ 		struct kvm_xcrs *xcrs;
+ 		void *buffer;
+@@ -6243,6 +6271,37 @@ long kvm_arch_vcpu_ioctl(struct file *filp,
+ 		r = kvm_vcpu_ioctl_set_lapic(vcpu, u.lapic);
  		break;
-+	case KVM_CAP_LAPIC2: {
-+		u8 max_extlvt;
+ 	}
++	case KVM_GET_LAPIC2: {
++		r = -EINVAL;
++		if (!lapic_in_kernel(vcpu))
++			goto out;
++		u.lapic2 = kzalloc(sizeof(struct kvm_lapic_state2), GFP_KERNEL);
 +
-+		r = KVM_LAPIC2_DEFAULT;
-+		if (!kvm_caps.has_extapic)
-+			break;
-+
-+		max_extlvt = kvm_cpu_get_max_extlvt();
-+		if (max_extlvt == KVM_X86_NR_EXTLVT_DEFAULT)
-+			r |= KVM_LAPIC2_AMD_DEFAULT;
++		r = -ENOMEM;
++		if (!u.lapic2)
++			goto out;
++		r = kvm_vcpu_ioctl_get_lapic2(vcpu, u.lapic2);
++		if (r)
++			goto out;
++		r = -EFAULT;
++		if (copy_to_user(argp, u.lapic2, sizeof(struct kvm_lapic_state2)))
++			goto out;
++		r = 0;
 +		break;
 +	}
- 	default:
- 		break;
- 	}
-@@ -6966,6 +6978,24 @@ int kvm_vm_ioctl_enable_cap(struct kvm *kvm,
- 		mutex_unlock(&kvm->lock);
- 		break;
- 	}
-+	case KVM_CAP_LAPIC2: {
++	case KVM_SET_LAPIC2: {
 +		r = -EINVAL;
-+
-+		mutex_lock(&kvm->lock);
-+
-+		kvm->arch.nr_extlvt = 0;
-+
-+		if (!kvm->created_vcpus) {
-+			if (cap->args[0] & KVM_LAPIC2_DEFAULT) {
-+				r = 0;
-+				if (cap->args[0] & KVM_LAPIC2_AMD_DEFAULT)
-+					kvm->arch.nr_extlvt = KVM_X86_NR_EXTLVT_DEFAULT;
-+			}
++		if (!lapic_in_kernel(vcpu))
++			goto out;
++		u.lapic2 = memdup_user(argp, sizeof(*u.lapic2));
++		if (IS_ERR(u.lapic2)) {
++			r = PTR_ERR(u.lapic2);
++			goto out_nofree;
 +		}
 +
-+		mutex_unlock(&kvm->lock);
++		r = kvm_vcpu_ioctl_set_lapic2(vcpu, u.lapic2);
 +		break;
 +	}
- 	default:
- 		r = -EINVAL;
- 		break;
+ 	case KVM_INTERRUPT: {
+ 		struct kvm_interrupt irq;
+ 
 diff --git a/include/uapi/linux/kvm.h b/include/uapi/linux/kvm.h
-index 76bd54848b11..cb27eeb09bdb 100644
+index cb27eeb09bdb..f45d313e30ae 100644
 --- a/include/uapi/linux/kvm.h
 +++ b/include/uapi/linux/kvm.h
-@@ -659,6 +659,10 @@ struct kvm_ioeventfd {
- #define KVM_X86_DISABLE_EXITS_CSTATE         (1 << 3)
- #define KVM_X86_DISABLE_EXITS_APERFMPERF     (1 << 4)
- 
-+#define KVM_X86_NR_EXTLVT_DEFAULT		4
-+#define KVM_LAPIC2_DEFAULT			(1 << 0)
-+#define KVM_LAPIC2_AMD_DEFAULT			(1 << 1)
-+
- /* for KVM_ENABLE_CAP */
- struct kvm_enable_cap {
- 	/* in */
-@@ -978,6 +982,7 @@ struct kvm_enable_cap {
- #define KVM_CAP_GUEST_MEMFD_FLAGS 244
- #define KVM_CAP_ARM_SEA_TO_USER 245
- #define KVM_CAP_S390_USER_OPEREXEC 246
-+#define KVM_CAP_LAPIC2 247
- 
- struct kvm_irq_routing_irqchip {
- 	__u32 irqchip;
+@@ -1339,6 +1339,8 @@ struct kvm_vfio_spapr_tce {
+ #define KVM_SET_FPU               _IOW(KVMIO,  0x8d, struct kvm_fpu)
+ #define KVM_GET_LAPIC             _IOR(KVMIO,  0x8e, struct kvm_lapic_state)
+ #define KVM_SET_LAPIC             _IOW(KVMIO,  0x8f, struct kvm_lapic_state)
++#define KVM_GET_LAPIC2            _IOR(KVMIO,  0x8e, struct kvm_lapic_state2)
++#define KVM_SET_LAPIC2            _IOW(KVMIO,  0x8f, struct kvm_lapic_state2)
+ #define KVM_SET_CPUID2            _IOW(KVMIO,  0x90, struct kvm_cpuid2)
+ #define KVM_GET_CPUID2            _IOWR(KVMIO, 0x91, struct kvm_cpuid2)
+ /* Available with KVM_CAP_VAPIC */
 -- 
 2.43.0
 
