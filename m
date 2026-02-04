@@ -1,71 +1,134 @@
-Received: from outbound.baidu.com (mx22.baidu.com [220.181.50.185])
+Received: from jpms-ob02.noc.sony.co.jp (jpms-ob02.noc.sony.co.jp [211.125.140.165])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13E2B31B812
-	for <kvm@vger.kernel.org>; Wed,  4 Feb 2026 09:13:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.181.50.185
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 23B56221FAC;
+	Wed,  4 Feb 2026 09:17:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.125.140.165
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770196392; cv=none; b=ocZAlTZaxG4xy3NaO4J8Pmwz/zos2g+Z4M1i9nXJw6EcJA47hkoESO1sXMJaakjQ/yJ4wHDm+tZjZHMAq+JMWN4Ywkl5i+kdkwVx9upxMGmlJ1Q2d0RwrqFvIa5FJWM+29/w1WVpb47cKIfaemkEWtgik33S4mONF9z9Q2ujCsg=
+	t=1770196666; cv=none; b=tdeobr/s9pEsfKlJz/uZXtKH6vV0so/UxgUKvC5wj8+nNqH8bGIvpQGisVfnIkN1HpBpHDDTR9F9dDl4gl8NDPhEhk/z7FE/Xjii7PlNuXv+bQErdMRLYtktIYHTL2vBA558fv/ah9aTTtcix79AVrj9DzM+iOMybTDdI6v4xpM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770196392; c=relaxed/simple;
-	bh=LaRQ0vCws0uuqMSC9/0w2IvKxe/d71c4FZtQGXI+Nhc=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=QyJv6wCgAZmlNq6awN2/eqwKjrtxWTU106q0YE9LGQCVoVN6ji8JOQIxnDFnRKLeEXRHsx43Dz6GTmD7kjZOJWyMOCmaxJ7zx32mli5Ym2fncjpO9+GP9iOgj1Xm7oH9MikK1HSQfFW0bKozUvnaIQgDWm0Gk9ZYJSM4w+ypuoc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=baidu.com; spf=pass smtp.mailfrom=baidu.com; arc=none smtp.client-ip=220.181.50.185
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=baidu.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baidu.com
-From: lirongqing <lirongqing@baidu.com>
-To: Sean Christopherson <seanjc@google.com>, Paolo Bonzini
-	<pbonzini@redhat.com>, Thomas Gleixner <tglx@kernel.org>, Ingo Molnar
-	<mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, Dave Hansen
-	<dave.hansen@linux.intel.com>, <x86@kernel.org>, "H . Peter Anvin"
-	<hpa@zytor.com>, <kvm@vger.kernel.org>
-CC: Li RongQing <lirongqing@baidu.com>
-Subject: [PATCH] KVM: x86: Fix SRCU list traversal in kvm_fire_mask_notifiers()
-Date: Wed, 4 Feb 2026 04:12:06 -0500
-Message-ID: <20260204091206.2617-1-lirongqing@baidu.com>
-X-Mailer: git-send-email 2.17.1
+	s=arc-20240116; t=1770196666; c=relaxed/simple;
+	bh=rTjzOHeWG9eHm33rQDOPGTZZySKoFz1aHEHitCndjIc=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=h10BqJxe1xVjNI7J4mmAdJT8j767N5d15sbzUBvp1WYUhAZ9v3fSx7C2skkkf0OeZXZzLzMDmF7HKC6hwsxvnYY6kIMxMyqgjQSM/Y5TG7jAcBZfJrER+W0xRw7nsvRF7BKf0EBnttb5WhTq+yd5nz+7DJshhr3Pcelhg+9nnF8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sony.com; spf=pass smtp.mailfrom=sony.com; dkim=pass (2048-bit key) header.d=sony.com header.i=@sony.com header.b=wGdUrGti; arc=none smtp.client-ip=211.125.140.165
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sony.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sony.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=sony.com header.i=@sony.com header.b="wGdUrGti"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+  d=sony.com; s=s1jp; t=1770196666; x=1801732666;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=gSpoUwnGMiw8Hd9rxHOb3HRj7lon6L0Wu64wAWcD0ZA=;
+  b=wGdUrGtij/1vJJHOHvHifJnnQT/Mqo8Mv1OcrGQfdnucIZ2OUraYOxXB
+   i00Wkq7A7tcQ+v8CnaQ1hHWFZKiAYZ6jRO/J/2A9MQWnnxiIdg5okicub
+   m14Sxr9yKkH3D2BNMxCrVGGAOw3WXx2QT92x2mprGiTgtyXyy1eVyK+hV
+   Tc6J8NK4vAL3dy8MMj+qaOTlWK+t3WL4vVnFqsC5FpcIb0aeVQSmkZYXp
+   DOobgdaM+s/Q06ZSXn86C/2ngj7p1OOF8Ne6K5Ze+/zbYAwyCaIm2XzRx
+   6OZ9aoSCMze5TUm9HDUJuvidckZ4JzM0cb8iHzGH7+wZbP4S0eIIT1VMW
+   g==;
+Received: from unknown (HELO jpmta-ob1.noc.sony.co.jp) ([IPv6:2001:cf8:0:6e7::6])
+  by jpms-ob02.noc.sony.co.jp with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Feb 2026 18:17:39 +0900
+X-IronPort-AV: E=Sophos;i="6.21,272,1763391600"; 
+   d="scan'208";a="608110368"
+Received: from unknown (HELO JPC00244420) ([IPv6:2001:cf8:1:573:0:dddd:6b3e:119e])
+  by jpmta-ob1.noc.sony.co.jp with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Feb 2026 18:17:38 +0900
+Date: Wed, 4 Feb 2026 18:17:29 +0900
+From: Shashank Balaji <shashank.mahadasyam@sony.com>
+To: Sohil Mehta <sohil.mehta@intel.com>
+Cc: Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>,
+	Borislav Petkov <bp@alien8.de>,
+	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
+	"H. Peter Anvin" <hpa@zytor.com>,
+	Suresh Siddha <suresh.b.siddha@intel.com>,
+	"K. Y. Srinivasan" <kys@microsoft.com>,
+	Haiyang Zhang <haiyangz@microsoft.com>,
+	Wei Liu <wei.liu@kernel.org>, Dexuan Cui <decui@microsoft.com>,
+	Long Li <longli@microsoft.com>,
+	Ajay Kaher <ajay.kaher@broadcom.com>,
+	Alexey Makhalov <alexey.makhalov@broadcom.com>,
+	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>,
+	Jan Kiszka <jan.kiszka@siemens.com>,
+	Paolo Bonzini <pbonzini@redhat.com>,
+	Vitaly Kuznetsov <vkuznets@redhat.com>,
+	Juergen Gross <jgross@suse.com>,
+	Boris Ostrovsky <boris.ostrovsky@oracle.com>,
+	Ingo Molnar <mingo@elte.hu>, linux-kernel@vger.kernel.org,
+	linux-hyperv@vger.kernel.org, virtualization@lists.linux.dev,
+	jailhouse-dev@googlegroups.com, kvm@vger.kernel.org,
+	xen-devel@lists.xenproject.org, Rahul Bukte <rahul.bukte@sony.com>,
+	Daniel Palmer <daniel.palmer@sony.com>,
+	Tim Bird <tim.bird@sony.com>, stable@vger.kernel.org
+Subject: Re: [PATCH 1/3] x86/x2apic: disable x2apic on resume if the kernel
+ expects so
+Message-ID: <aYMOqXTYMJ_IlEFA@JPC00244420>
+References: <20260202-x2apic-fix-v1-0-71c8f488a88b@sony.com>
+ <20260202-x2apic-fix-v1-1-71c8f488a88b@sony.com>
+ <0149c37d-7065-4c72-ab56-4cea1a6c15d0@intel.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-ClientProxiedBy: bjhj-exc5.internal.baidu.com (172.31.3.15) To
- bjkjy-exc3.internal.baidu.com (172.31.50.47)
-X-FEAS-Client-IP: 172.31.50.47
-X-FE-Policy-ID: 52:10:53:SYSTEM
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <0149c37d-7065-4c72-ab56-4cea1a6c15d0@intel.com>
 
-From: Li RongQing <lirongqing@baidu.com>
+Hi Sohil,
 
-The mask_notifier_list is protected by kvm->irq_srcu, but the traversal
-in kvm_fire_mask_notifiers() incorrectly uses hlist_for_each_entry_rcu().
-This leads to lockdep warnings because the standard RCU iterator expects
-to be under rcu_read_lock(), not SRCU.
+On Tue, Feb 03, 2026 at 01:08:39PM -0800, Sohil Mehta wrote:
+> > diff --git a/arch/x86/kernel/apic/apic.c b/arch/x86/kernel/apic/apic.c
+> > index d93f87f29d03..cc64d61f82cf 100644
+> > --- a/arch/x86/kernel/apic/apic.c
+> > +++ b/arch/x86/kernel/apic/apic.c
+> > @@ -2456,6 +2456,12 @@ static void lapic_resume(void *data)
+> >  	if (x2apic_mode) {
+> >  		__x2apic_enable();
+> >  	} else {
+> > +		/*
+> > +		 * x2apic may have been re-enabled by the
+> > +		 * firmware on resuming from s2ram
+> > +		 */
+> > +		__x2apic_disable();
+> > +
+> 
+> We should likely only disable x2apic on platforms that support it and
+> need the disabling. How about?
+> 
+> ...
+> } else {
+> 	/*
+> 	 *
+> 	 */
+> 	if (x2apic_enabled())
+> 		__x2apic_disable();
 
-Replace the RCU variant with hlist_for_each_entry_srcu() and provide
-the proper srcu_read_lock_held() annotation to ensure correct
-synchronization and silence lockdep.
+__x2apic_disable disables x2apic only if boot_cpu_has(X86_FEATURE_APIC)
+and x2apic is already enabled. x2apic_enabled also does the same checks,
+the only difference being, it uses rdmsrq_safe instead of just rdmsrq,
+which is what __x2apic_disable uses. The safe version is because of
+Boris' suggestion [1]. If that's applicable here as well, then rdmsrq in
+__x2apic_disable should be changed to rdmsrq_safe.
 
-Signed-off-by: Li RongQing <lirongqing@baidu.com>
----
- arch/x86/kvm/ioapic.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+> I considered if an error message should be printed along with this. But,
+> I am not sure if it can really be called a firmware issue. It's probably
+> just that newer CPUs might have started defaulting to x2apic on.
+> 
+> Can you specify what platform you are encountering this?
 
-diff --git a/arch/x86/kvm/ioapic.c b/arch/x86/kvm/ioapic.c
-index 2c27832..793c9db 100644
---- a/arch/x86/kvm/ioapic.c
-+++ b/arch/x86/kvm/ioapic.c
-@@ -327,7 +327,8 @@ void kvm_fire_mask_notifiers(struct kvm *kvm, unsigned irqchip, unsigned pin,
- 	idx = srcu_read_lock(&kvm->irq_srcu);
- 	gsi = kvm_irq_map_chip_pin(kvm, irqchip, pin);
- 	if (gsi != -1)
--		hlist_for_each_entry_rcu(kimn, &ioapic->mask_notifier_list, link)
-+		hlist_for_each_entry_srcu(kimn, &ioapic->mask_notifier_list, link,
-+				srcu_read_lock_held(&kvm->irq_srcu))
- 			if (kimn->irq == gsi)
- 				kimn->func(kimn, mask);
- 	srcu_read_unlock(&kvm->irq_srcu, idx);
--- 
-2.9.4
 
+I'm not sure it's the CPU defaulting to x2apic on. As per Section
+12.12.5.1 of the Intel SDM:
+
+	On coming out of reset, the local APIC unit is enabled and is in
+	the xAPIC mode: IA32_APIC_BASE[EN]=1 and IA32_APIC_BASE[EXTD]=0.
+
+So, the CPU should be turning on in xapic mode. In fact, when x2apic is
+disabled in the firmware, this problem doesn't happen.
+
+Either way, a pr_warn maybe helpful. How about "x2apic re-enabled by the
+firmware during resume. Disabling\n"?
+
+[1] https://lore.kernel.org/all/20150116095927.GA18880@pd.tnic/
