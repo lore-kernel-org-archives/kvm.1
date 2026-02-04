@@ -1,161 +1,162 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from out-177.mta1.migadu.com (out-177.mta1.migadu.com [95.215.58.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 711C33A7834;
-	Wed,  4 Feb 2026 17:42:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD076348865
+	for <kvm@vger.kernel.org>; Wed,  4 Feb 2026 17:43:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.177
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770226923; cv=none; b=THcUyAUjHejffvhIg/pTJcFHeqUO39oJ1QfIs+Qx56aBkb69BhokjkhG/TvkddwSUwqPv8bEwMtEXhGM32x8lKlMFi5jN2Yz/xUswc6ODyqXTS077jtmSR5Dfew7zrJd3LiT/lCwsWlyfUMpNR/QSKt86F4IEdVVohevQtf1Zhw=
+	t=1770226997; cv=none; b=VsxCwGUA7nXV+WTMDQXoDI7iUGkPZKusi16g4mp7ZAiMYLePRUqQWdek0KhH4JuEeGlTEFXwaUZLotQMrT52fQngHumvAvWyogDzFcfRYNn66MnTEcf3xixeFQu+QOGczqBYgFE8AZZCwmr0wzAiCGJSRzP3NIOy/uZZqz8K/CI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770226923; c=relaxed/simple;
-	bh=p787FwvtGxpTW7O+BZ6Vp7w3LWjZ2nLdxL1PN/deDRo=;
+	s=arc-20240116; t=1770226997; c=relaxed/simple;
+	bh=9QeESlkiR0kKLeJJEurX3oQWM+VbaJYyJYHoywNLHaA=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=QgKoU7/kpi8gLctsDnT5NcBgGNPPjhyDz3Io+how6t4ohpNX0jx6bVQ8BefeUyCq0aAea6U5Nfo2BRiagn0PC8G0dl3pPyAinBDtFEirhYSWD1ALV66ISPQWz22A3E37VW/Q+B0lBdms6fEN8cFhxb3aJ1AVqvjAs0g7ASb3MFg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Y5sNk7Yo; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=e31ZYXDX7r1nU7fRZ0IuAYKtUDbJQhOGEtpfephg7zwQMW8xpTLEGhAU3CIf85NLWkve7xkN95Hp8fn0bjlbr7oPGDdMhZnpWZg58GvJyHHUciseolMeb7S/LQetQYivu+TzLTsgYP4TShQtVvWQee4jMRVgiHypUWJ9v9l4i3Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=aBdku6nk; arc=none smtp.client-ip=95.215.58.177
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Y5sNk7Yo"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4ABA4C116C6;
-	Wed,  4 Feb 2026 17:42:02 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1770226923;
-	bh=p787FwvtGxpTW7O+BZ6Vp7w3LWjZ2nLdxL1PN/deDRo=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=Y5sNk7YoVaiqLlGkRnVYCRSjbVUtYvArX7zLCO0dq9LARndPLPkwL0xKjxvhVq2pl
-	 pgr4rff3JEaU3JLLY7edp68Rr5VjQNRFRIZw6ETH1AWCgHbDlIgcwwCbRdGpZq90He
-	 UBGguXZpA1L9b22GpsmfUiUI6FVFJHrnHxBSkzjTXt8+gPdExzOi/eNdc/MOnPKf+Q
-	 Aqee+/IUEM/rzCbcV2pID1uVCuOkkwM8e3efDB9obdYx+OCQEmWJ2i50cYE/5zVVM8
-	 c8QctwcWyxr4Q1eq9txWCJRRhfIJWW7V5DaeHqHDoUVdtavrJVOMe40HRuZ2LaARJz
-	 CejQKWN5h2JEg==
-Date: Wed, 4 Feb 2026 19:41:57 +0200
-From: Leon Romanovsky <leon@kernel.org>
-To: Christian =?iso-8859-1?Q?K=F6nig?= <christian.koenig@amd.com>
-Cc: Sumit Semwal <sumit.semwal@linaro.org>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
-	Gerd Hoffmann <kraxel@redhat.com>,
-	Dmitry Osipenko <dmitry.osipenko@collabora.com>,
-	Gurchetan Singh <gurchetansingh@chromium.org>,
-	Chia-I Wu <olvaffe@gmail.com>,
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-	Maxime Ripard <mripard@kernel.org>,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	Lucas De Marchi <lucas.demarchi@intel.com>,
-	Thomas =?iso-8859-1?Q?Hellstr=F6m?= <thomas.hellstrom@linux.intel.com>,
-	Rodrigo Vivi <rodrigo.vivi@intel.com>,
-	Jason Gunthorpe <jgg@ziepe.ca>, Kevin Tian <kevin.tian@intel.com>,
-	Joerg Roedel <joro@8bytes.org>, Will Deacon <will@kernel.org>,
-	Robin Murphy <robin.murphy@arm.com>,
-	Felix Kuehling <Felix.Kuehling@amd.com>,
-	Alex Williamson <alex@shazbot.org>,
-	Ankit Agrawal <ankita@nvidia.com>,
-	Vivek Kasireddy <vivek.kasireddy@intel.com>,
-	linux-media@vger.kernel.org, dri-devel@lists.freedesktop.org,
-	linaro-mm-sig@lists.linaro.org, linux-kernel@vger.kernel.org,
-	amd-gfx@lists.freedesktop.org, virtualization@lists.linux.dev,
-	intel-xe@lists.freedesktop.org, linux-rdma@vger.kernel.org,
-	iommu@lists.linux.dev, kvm@vger.kernel.org
-Subject: Re: [PATCH v7 7/8] vfio: Permit VFIO to work with pinned importers
-Message-ID: <20260204174157.GA12201@unreal>
-References: <20260131-dmabuf-revoke-v7-0-463d956bd527@nvidia.com>
- <20260131-dmabuf-revoke-v7-7-463d956bd527@nvidia.com>
- <fb9bf53a-7962-451a-bac2-c61eb52c7a0f@amd.com>
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="aBdku6nk"
+Date: Wed, 4 Feb 2026 17:43:00 +0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1770226994;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=mDPOk9WuTW6rVquPxZZ1ahv03uHyiJLZcftv4VaieyY=;
+	b=aBdku6nkg1/FcZNabmCCO+9i9YysJPzZYKrXsytT3tbAUqHYOj/MmvJkUcwovxC4LLrmY4
+	Zh5zi477wzDm6M+4gSXzex4W2vjhafKsEXP/cT3mcUq08ykf86vtgqhyj8/voXGBwObac5
+	ZmULEzuY+zYFx+b4XeI3Vjgo/0FbQ24=
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Yosry Ahmed <yosry.ahmed@linux.dev>
+To: Sean Christopherson <seanjc@google.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>, Kevin Cheng <chengkev@google.com>, 
+	kvm@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 1/3] KVM: nSVM: Use intuitive local variables in
+ recalc_intercepts()
+Message-ID: <gmdou4cp47vpx72tw3mwklwixpd3ujcdcomoplosv2u2tzfub2@wtqgzkhguoap>
+References: <20260112182022.771276-1-yosry.ahmed@linux.dev>
+ <20260112182022.771276-2-yosry.ahmed@linux.dev>
+ <aYOCAH8zLLXllou7@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <fb9bf53a-7962-451a-bac2-c61eb52c7a0f@amd.com>
+In-Reply-To: <aYOCAH8zLLXllou7@google.com>
+X-Migadu-Flow: FLOW_OUT
 
-On Wed, Feb 04, 2026 at 05:21:45PM +0100, Christian König wrote:
-> On 1/31/26 06:34, Leon Romanovsky wrote:
-> > From: Leon Romanovsky <leonro@nvidia.com>
+On Wed, Feb 04, 2026 at 09:29:36AM -0800, Sean Christopherson wrote:
+> On Mon, Jan 12, 2026, Yosry Ahmed wrote:
+> > recalc_intercepts() currently uses c, h, g as local variables for the
+> > control area of the current VMCB, vmcb01, and (cached) vmcb12.
 > > 
-> > Till now VFIO has rejected pinned importers, largely to avoid being used
-> > with the RDMA pinned importer that cannot handle a move_notify() to revoke
-> > access.
+> > The current VMCB should always be vmcb02 when recalc_intercepts() is
+> > executed in guest mode. Use vmcb01/vmcb02 local variables instead to
+> > make it clear the function is updating intercepts in vmcb02 based on the
+> > intercepts in vmcb01 and (cached) vmcb12.
 > > 
-> > Using dma_buf_attach_revocable() it can tell the difference between pinned
-> > importers that support the flow described in dma_buf_invalidate_mappings()
-> > and those that don't.
+> > Add a WARNING() if the current VMCB is not in fact vmcb02.
+> 
+> This belongs in a separate patch.
+> 
+> > No functional change intended.
 > > 
-> > Thus permit compatible pinned importers.
-> > 
-> > This is one of two items IOMMUFD requires to remove its private interface
-> > to VFIO's dma-buf.
-> > 
-> > Reviewed-by: Kevin Tian <kevin.tian@intel.com>
-> > Reviewed-by: Alex Williamson <alex@shazbot.org>
-> > Reviewed-by: Christian König <christian.koenig@amd.com>
-> > Signed-off-by: Leon Romanovsky <leonro@nvidia.com>
+> > Signed-off-by: Yosry Ahmed <yosry.ahmed@linux.dev>
 > > ---
-> >  drivers/vfio/pci/vfio_pci_dmabuf.c | 15 +++------------
-> >  1 file changed, 3 insertions(+), 12 deletions(-)
+> >  arch/x86/kvm/svm/nested.c | 31 +++++++++++++++----------------
+> >  1 file changed, 15 insertions(+), 16 deletions(-)
 > > 
-> > diff --git a/drivers/vfio/pci/vfio_pci_dmabuf.c b/drivers/vfio/pci/vfio_pci_dmabuf.c
-> > index 78d47e260f34..a5fb80e068ee 100644
-> > --- a/drivers/vfio/pci/vfio_pci_dmabuf.c
-> > +++ b/drivers/vfio/pci/vfio_pci_dmabuf.c
-> > @@ -22,16 +22,6 @@ struct vfio_pci_dma_buf {
-> >  	u8 revoked : 1;
-> >  };
+> > diff --git a/arch/x86/kvm/svm/nested.c b/arch/x86/kvm/svm/nested.c
+> > index f295a41ec659..2dda52221fd8 100644
+> > --- a/arch/x86/kvm/svm/nested.c
+> > +++ b/arch/x86/kvm/svm/nested.c
+> > @@ -125,8 +125,7 @@ static bool nested_vmcb_needs_vls_intercept(struct vcpu_svm *svm)
 > >  
-> > -static int vfio_pci_dma_buf_pin(struct dma_buf_attachment *attachment)
-> > -{
-> > -	return -EOPNOTSUPP;
-> > -}
-> > -
-> > -static void vfio_pci_dma_buf_unpin(struct dma_buf_attachment *attachment)
-> > -{
-> > -	/* Do nothing */
-> > -}
-> > -
-> 
-> This chunk here doesn't want to apply to drm-misc-next, my educated guess is that the patch adding those lines is missing in that tree.
-> 
-> How should we handle that? Patches 1-3 have already been pushed to drm-misc-next and I would rather like to push patches 4-6 through that branch as well.
-
-There is no need for a backmerge; it should go in through the shared
-branch. Alex has created the tag vfio-v6.19-rc8, which is v6.19-rc6 plus
-the VFIO pin patch.
-
-You need to merge this tag into drm-misc-next. That will ensure that
-Linus, DRM, and VFIO all see the same SHA-1, and that patches 5–6 can be
-applied afterward.
-
-Thanks
-
-> 
-> I can request a backmerge from the drm-misc-next maintainers, but then we clearly don't get that upstream this week.
-> 
-> Regards,
-> Christian.
-> 
-> >  static int vfio_pci_dma_buf_attach(struct dma_buf *dmabuf,
-> >  				   struct dma_buf_attachment *attachment)
+> >  void recalc_intercepts(struct vcpu_svm *svm)
 > >  {
-> > @@ -43,6 +33,9 @@ static int vfio_pci_dma_buf_attach(struct dma_buf *dmabuf,
-> >  	if (priv->revoked)
-> >  		return -ENODEV;
+> > -	struct vmcb_control_area *c, *h;
+> > -	struct vmcb_ctrl_area_cached *g;
+> > +	struct vmcb *vmcb01, *vmcb02;
+> >  	unsigned int i;
 > >  
-> > +	if (!dma_buf_attach_revocable(attachment))
-> > +		return -EOPNOTSUPP;
-> > +
-> >  	return 0;
+> >  	vmcb_mark_dirty(svm->vmcb, VMCB_INTERCEPTS);
+> > @@ -134,14 +133,14 @@ void recalc_intercepts(struct vcpu_svm *svm)
+> >  	if (!is_guest_mode(&svm->vcpu))
+> >  		return;
+> >  
+> > -	c = &svm->vmcb->control;
+> > -	h = &svm->vmcb01.ptr->control;
+> > -	g = &svm->nested.ctl;
+> > +	vmcb01 = svm->vmcb01.ptr;
+> > +	vmcb02 = svm->nested.vmcb02.ptr;
+> > +	WARN_ON_ONCE(svm->vmcb != vmcb02);
+> 
+> If we're going to bother with a WARN, then this code should definitely bail,
+> because configuring vmcb01 using the nested logic is all but guaranteed to break
+> L1 in weird ways.
+
+I can put the WARN + bail in a separate patch.
+
+> 
+> >  	for (i = 0; i < MAX_INTERCEPT; i++)
+> > -		c->intercepts[i] = h->intercepts[i];
+> > +		vmcb02->control.intercepts[i] = vmcb01->control.intercepts[i];
+> >  
+> > -	if (g->int_ctl & V_INTR_MASKING_MASK) {
+> > +	if (svm->nested.ctl.int_ctl & V_INTR_MASKING_MASK) {
+> 
+> I vote to keep a pointer to the cached control as vmcb12_ctrl.  Coming from a
+> nVMX-focused background, I can never remember what svm->nested.ctl holds.  For
+> me, this is waaaay more intuivite:
+
+I agree it reads better, but honestly all of nSVM code uses
+svm->nested.ctl, and changing its name here just makes things
+inconsistent imo.
+
+> 
+> 	if (vmcb12_ctrl->int_ctl & V_INTR_MASKING_MASK) {
+> 
+> >  	for (i = 0; i < MAX_INTERCEPT; i++)
+> > -		c->intercepts[i] |= g->intercepts[i];
+> > +		vmcb02->control.intercepts[i] |= svm->nested.ctl.intercepts[i];
+> 
+> And even more so here:
+> 
+> 	for (i = 0; i < MAX_INTERCEPT; i++)
+> 		vmcb02->control.intercepts[i] |= vmcb12_ctrl->intercepts[i];
+> 
+> >  
+> >  	/* If SMI is not intercepted, ignore guest SMI intercept as well  */
+> >  	if (!intercept_smi)
+> > -		vmcb_clr_intercept(c, INTERCEPT_SMI);
+> > +		vmcb_clr_intercept(&vmcb02->control, INTERCEPT_SMI);
+> >  
+> >  	if (nested_vmcb_needs_vls_intercept(svm)) {
+> >  		/*
+> > @@ -177,10 +176,10 @@ void recalc_intercepts(struct vcpu_svm *svm)
+> >  		 * we must intercept these instructions to correctly
+> >  		 * emulate them in case L1 doesn't intercept them.
+> >  		 */
+> > -		vmcb_set_intercept(c, INTERCEPT_VMLOAD);
+> > -		vmcb_set_intercept(c, INTERCEPT_VMSAVE);
+> > +		vmcb_set_intercept(&vmcb02->control, INTERCEPT_VMLOAD);
+> > +		vmcb_set_intercept(&vmcb02->control, INTERCEPT_VMSAVE);
+> >  	} else {
+> > -		WARN_ON(!(c->virt_ext & VIRTUAL_VMLOAD_VMSAVE_ENABLE_MASK));
+> > +		WARN_ON(!(vmcb02->control.virt_ext & VIRTUAL_VMLOAD_VMSAVE_ENABLE_MASK));
+> 
+> Opportunistically switch this to WARN_ON_ONCE.  Any "unguarded" WARN in KVM
+> (outside of e.g. __init code) is just asking for a self-DoS.
+
+Will do.
+
+> 
+> >  	}
 > >  }
 > >  
-> > @@ -107,8 +100,6 @@ static void vfio_pci_dma_buf_release(struct dma_buf *dmabuf)
-> >  }
-> >  
-> >  static const struct dma_buf_ops vfio_pci_dmabuf_ops = {
-> > -	.pin = vfio_pci_dma_buf_pin,
-> > -	.unpin = vfio_pci_dma_buf_unpin,
-> >  	.attach = vfio_pci_dma_buf_attach,
-> >  	.map_dma_buf = vfio_pci_dma_buf_map,
-> >  	.unmap_dma_buf = vfio_pci_dma_buf_unmap,
+> > -- 
+> > 2.52.0.457.g6b5491de43-goog
 > > 
-> 
-> 
