@@ -1,153 +1,165 @@
-Received: from mail-pg1-f201.google.com (mail-pg1-f201.google.com [209.85.215.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A6E1255F28
-	for <kvm@vger.kernel.org>; Wed,  4 Feb 2026 02:16:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD22C34F257;
+	Wed,  4 Feb 2026 05:02:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.20
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770171376; cv=none; b=Lun8c9T01MIlwLKMvx54jC0FN2IiFKK5l6sz204PIAqFV9/+/o31M3SuPKZj5g/20jl6cN5hbERBKIDVhBHfLcKvplk7QrP2YGKZslvHOs76wYw93dpUQ8jEGTKIvccLQ/jSnEea/w+5Nx0jHtzOEDMOP8ZIJ0YgbvN1u6lQfro=
+	t=1770181334; cv=none; b=k3TQ0TNzvgQrVpSj4S38IBt/s5qC9I5rxmxCSHEQonZwUGRO1BWSU9cbmwC6u0ihNGUBnzSCDzYOgF2d5WBanvyyQxAzrkMVrf1Ry31ujrnR9GNEgBFrA6uGHF/otaXMVtJ2koJtDalS5y3+XZTLN2WNLWQcTPNNOHaqPICc2Ws=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770171376; c=relaxed/simple;
-	bh=Sf5jVo4PBZ8D8xrb/7N0ZgU5WeJfHYchhsPy0/JAdI4=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=ozg5+ZV3eTtaokS9LQC5BadrFYVb7cLf0fMus3HLNDcDxFMat2Iu/rAUTCabV15J6Sgn03r8gE4YYQP6Tfa4dKJT8ptDjQjUraJlk1JbUcTTT6tzvL+q7SigFWC0WtBFQ+YohqVRzu4Bel76gBvVzkfJqCQ1D3zqAe2urJpeRbU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=ChHHwlDE; arc=none smtp.client-ip=209.85.215.201
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+	s=arc-20240116; t=1770181334; c=relaxed/simple;
+	bh=BssClzJli42sqwnuhq7EEp2oGu8Z3L8cVPtpreDMGtc=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=EMEmgBok5BMinqtA/PK1ZNMeHYkK8Sr4VkRzbcwu5FbfjJfB3TqfGIQBSXrtm83sgH1GzCCzprpVcNX6ZdynrNTSUlV6QlKdpn03MZEAWOjbv2Dtr6GNYawHQx0JeN0ZEoQkPvZCik3JrfdJ6oBYKi3vuHWaggjHx5SSE0p9PfE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=mVgo4JZw; arc=none smtp.client-ip=198.175.65.20
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="ChHHwlDE"
-Received: by mail-pg1-f201.google.com with SMTP id 41be03b00d2f7-c61dee98720so3756087a12.0
-        for <kvm@vger.kernel.org>; Tue, 03 Feb 2026 18:16:15 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1770171375; x=1770776175; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=7Mow+gtTd3xBrxz7PLLvBC7PjYT0zAewqKSEgx5mE5o=;
-        b=ChHHwlDEldl+UDoXqdEHz5FyY9JUa6GafFosM39ISyfXmwT59fEqVi975duGyGPl9x
-         KLKzvz3O7WXMuaNK9dDRgYH2VyuqfjtiQ5PHEsxbIxpIFVTQCiH8Haj4PolLM4cRzVUt
-         37vhik7dfqhOSy80yZuxiKDI3XsxgAtkbjVMRebu6jM6kUao8hEFBHCghNoCxTEsbaqs
-         LQ1rawcACZzhaCdLgFl5E9xGeoweg1XVPzjlnyPF/MoVdtdb3tz+9D8dq2qq2b/dF3IM
-         Yq7zj3eoLFH/ulCDYkwFWtvsTPXqTPPxbHYBw/UyWy7gh1I+CBp4cK94MxqyadnuB6j0
-         DnaQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1770171375; x=1770776175;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=7Mow+gtTd3xBrxz7PLLvBC7PjYT0zAewqKSEgx5mE5o=;
-        b=cLhw7K/cRDHlaewJ99VBJNHvNopB9hx5D3XSwTQ7qXjCMqS/7o+egSmis1ZEmTF0Qw
-         rZoN+5Y+nDzH5g5FBmQN8YXoYkScStIBTfL5vua1VZhNXv0Z6hXwfUsl4xktwKqgAKQo
-         ROcswOVF6cfx61LqqmOImAbUmnehS6BSBcdv7CHqe+BRm1aLHxl7re9FKOVuBwl8B4Vz
-         nUDlWnt7aamhKfIlrNEWXjJ161R2B+jwoG7aM/EyXIcvLikwX3I2M5CzGpns7/ZvuAa3
-         lwlnbXrT1TsHrPOvPJU9ATjs4//SX55OtvGE2UFHq8+q6KXSrhXO7NOd1Q5mVKlyikQT
-         kDnw==
-X-Gm-Message-State: AOJu0YxOkUO6S06bV9yYxzkp5bEX8q7Kq8ViA5fJf5U9tk+7KlaH9Bwa
-	2dGm0cNV8orWSZpe2RB49srzWv7LzKoILpKy1z/QoJy6yP2BQRoa2FEHDzGBBzsG0qmKm9+P0Rr
-	x0emSAQ==
-X-Received: from pgan187.prod.google.com ([2002:a63:40c4:0:b0:c51:8b09:2a32])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6300:6682:b0:38d:e87c:48c2
- with SMTP id adf61e73a8af0-39372498707mr1358827637.58.1770171374750; Tue, 03
- Feb 2026 18:16:14 -0800 (PST)
-Date: Tue, 3 Feb 2026 18:16:13 -0800
-In-Reply-To: <a2bf6a8d9f9b61ae7264afc37d9925cf2e1f3ea9.camel@intel.com>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="mVgo4JZw"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1770181334; x=1801717334;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=BssClzJli42sqwnuhq7EEp2oGu8Z3L8cVPtpreDMGtc=;
+  b=mVgo4JZwFyU56rcObsmZRQVRlWYJGQiWb+dOGnrZg0ONCbgf/rPeTBj9
+   vb6UtP4JjGW6BVXQTbZjqbu2WjN3SLNHNVqVsfktj5ARuulkbNHADqtKV
+   VLzBbmXUiB+fMFjjEsEwNX9KTJ5RQMJIQ7FLOLChdXKUSxTHgCMqMVeaK
+   Bm6smQqgLZuxg7WaRyPSiq2Jjjjl/wp3rimW8Ke4ml/IVqGbfJtM4IEGJ
+   ok7coKSNpIgSELHUK3JsyzH6tgLu/UGWUG0nBGlxoAs29M5ltAsaDlpXb
+   cvKz6GdMfLqToH41rZD8OFkuWddRIIZt9RkBFo+SUxq6W4zM2yB1zUFBP
+   w==;
+X-CSE-ConnectionGUID: l/PZ6WedTyueOgh/uO1g1w==
+X-CSE-MsgGUID: 4rWHnChQRHGPOjkfHOmxdQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11691"; a="71086376"
+X-IronPort-AV: E=Sophos;i="6.21,272,1763452800"; 
+   d="scan'208";a="71086376"
+Received: from orviesa002.jf.intel.com ([10.64.159.142])
+  by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Feb 2026 21:02:13 -0800
+X-CSE-ConnectionGUID: r6WIlB3hRYOB1WMvBCSX1g==
+X-CSE-MsgGUID: 4L+xrWR+RMKF3IcyS644EA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.21,272,1763452800"; 
+   d="scan'208";a="240739427"
+Received: from yilunxu-optiplex-7050.sh.intel.com (HELO localhost) ([10.239.159.165])
+  by orviesa002.jf.intel.com with ESMTP; 03 Feb 2026 21:01:47 -0800
+Date: Wed, 4 Feb 2026 12:43:16 +0800
+From: Xu Yilun <yilun.xu@linux.intel.com>
+To: Jason Gunthorpe <jgg@ziepe.ca>
+Cc: Sean Christopherson <seanjc@google.com>,
+	Ackerley Tng <ackerleytng@google.com>,
+	Alexey Kardashevskiy <aik@amd.com>, cgroups@vger.kernel.org,
+	kvm@vger.kernel.org, linux-doc@vger.kernel.org,
+	linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-kselftest@vger.kernel.org, linux-mm@kvack.org,
+	linux-trace-kernel@vger.kernel.org, x86@kernel.org,
+	akpm@linux-foundation.org, binbin.wu@linux.intel.com, bp@alien8.de,
+	brauner@kernel.org, chao.p.peng@intel.com, chenhuacai@kernel.org,
+	corbet@lwn.net, dave.hansen@intel.com, dave.hansen@linux.intel.com,
+	david@redhat.com, dmatlack@google.com, erdemaktas@google.com,
+	fan.du@intel.com, fvdl@google.com, haibo1.xu@intel.com,
+	hannes@cmpxchg.org, hch@infradead.org, hpa@zytor.com,
+	hughd@google.com, ira.weiny@intel.com, isaku.yamahata@intel.com,
+	jack@suse.cz, james.morse@arm.com, jarkko@kernel.org,
+	jgowans@amazon.com, jhubbard@nvidia.com, jroedel@suse.de,
+	jthoughton@google.com, jun.miao@intel.com, kai.huang@intel.com,
+	keirf@google.com, kent.overstreet@linux.dev,
+	liam.merwick@oracle.com, maciej.wieczor-retman@intel.com,
+	mail@maciej.szmigiero.name, maobibo@loongson.cn,
+	mathieu.desnoyers@efficios.com, maz@kernel.org, mhiramat@kernel.org,
+	mhocko@kernel.org, mic@digikod.net, michael.roth@amd.com,
+	mingo@redhat.com, mlevitsk@redhat.com, mpe@ellerman.id.au,
+	muchun.song@linux.dev, nikunj@amd.com, nsaenz@amazon.es,
+	oliver.upton@linux.dev, palmer@dabbelt.com, pankaj.gupta@amd.com,
+	paul.walmsley@sifive.com, pbonzini@redhat.com, peterx@redhat.com,
+	pgonda@google.com, prsampat@amd.com, pvorel@suse.cz,
+	qperret@google.com, richard.weiyang@gmail.com,
+	rick.p.edgecombe@intel.com, rientjes@google.com,
+	rostedt@goodmis.org, roypat@amazon.co.uk, rppt@kernel.org,
+	shakeel.butt@linux.dev, shuah@kernel.org, steven.price@arm.com,
+	steven.sistare@oracle.com, suzuki.poulose@arm.com, tabba@google.com,
+	tglx@linutronix.de, thomas.lendacky@amd.com, vannapurve@google.com,
+	vbabka@suse.cz, viro@zeniv.linux.org.uk, vkuznets@redhat.com,
+	wei.w.wang@intel.com, will@kernel.org, willy@infradead.org,
+	wyihan@google.com, xiaoyao.li@intel.com, yan.y.zhao@intel.com,
+	yilun.xu@intel.com, yuzenghui@huawei.com, zhiquan1.li@intel.com
+Subject: Re: [RFC PATCH v1 05/37] KVM: guest_memfd: Wire up
+ kvm_get_memory_attributes() to per-gmem attributes
+Message-ID: <aYLOZIZU0nwk+0UN@yilunxu-OptiPlex-7050>
+References: <cover.1760731772.git.ackerleytng@google.com>
+ <071a3c6603809186e914fe5fed939edee4e11988.1760731772.git.ackerleytng@google.com>
+ <07836b1d-d0d8-40f2-8f7b-7805beca31d0@amd.com>
+ <CAEvNRgEuez=JbArRf2SApLAL0usv5-Q6q=nBPOFMHrHGaKAtMw@mail.gmail.com>
+ <20260129003753.GZ1641016@ziepe.ca>
+ <aXqx3_eE0rNh6nP0@google.com>
+ <aYHGVQTF6RUs7r3g@yilunxu-OptiPlex-7050>
+ <20260203181618.GY2328995@ziepe.ca>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20260129011517.3545883-1-seanjc@google.com> <20260129011517.3545883-20-seanjc@google.com>
- <de05853257e9cc66998101943f78a4b7e6e3d741.camel@intel.com>
- <aYJWvKagesT3FPfI@google.com> <a2bf6a8d9f9b61ae7264afc37d9925cf2e1f3ea9.camel@intel.com>
-Message-ID: <aYKr7XODY-p6YLYa@google.com>
-Subject: Re: [RFC PATCH v5 19/45] KVM: Allow owner of kvm_mmu_memory_cache to
- provide a custom page allocator
-From: Sean Christopherson <seanjc@google.com>
-To: Kai Huang <kai.huang@intel.com>
-Cc: "kvm@vger.kernel.org" <kvm@vger.kernel.org>, 
-	"linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>, Xiaoyao Li <xiaoyao.li@intel.com>, 
-	Yan Y Zhao <yan.y.zhao@intel.com>, 
-	"dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>, "kas@kernel.org" <kas@kernel.org>, 
-	"mingo@redhat.com" <mingo@redhat.com>, "binbin.wu@linux.intel.com" <binbin.wu@linux.intel.com>, 
-	"pbonzini@redhat.com" <pbonzini@redhat.com>, "ackerleytng@google.com" <ackerleytng@google.com>, 
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, Isaku Yamahata <isaku.yamahata@intel.com>, 
-	"sagis@google.com" <sagis@google.com>, "tglx@kernel.org" <tglx@kernel.org>, 
-	Rick P Edgecombe <rick.p.edgecombe@intel.com>, "bp@alien8.de" <bp@alien8.de>, 
-	Vishal Annapurve <vannapurve@google.com>, "x86@kernel.org" <x86@kernel.org>
-Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260203181618.GY2328995@ziepe.ca>
 
-On Tue, Feb 03, 2026, Kai Huang wrote:
-> On Tue, 2026-02-03 at 12:12 -0800, Sean Christopherson wrote:
-> > On Tue, Feb 03, 2026, Kai Huang wrote:
-> > > On Wed, 2026-01-28 at 17:14 -0800, Sean Christopherson wrote:
-> > > > Extend "struct kvm_mmu_memory_cache" to support a custom page allocator
-> > > > so that x86's TDX can update per-page metadata on allocation and free().
-> > > > 
-> > > > Name the allocator page_get() to align with __get_free_page(), e.g. to
-> > > > communicate that it returns an "unsigned long", not a "struct page", and
-> > > > to avoid collisions with macros, e.g. with alloc_page.
-> > > > 
-> > > > Suggested-by: Kai Huang <kai.huang@intel.com>
-> > > > Signed-off-by: Sean Christopherson <seanjc@google.com>
+On Tue, Feb 03, 2026 at 02:16:18PM -0400, Jason Gunthorpe wrote:
+> On Tue, Feb 03, 2026 at 05:56:37PM +0800, Xu Yilun wrote:
+> > > +1.  For guest_memfd, we initially defined per-VM memory attributes to track
+> > > private vs. shared.  But as Ackerley noted, we are in the process of deprecating
+> > > that support, e.g. by making it incompatible with various guest_memfd features,
+> > > in favor of having each guest_memfd instance track the state of a given page.
 > > > 
-> > > I thought it could be more generic for allocating an object, but not just a
-> > > page.
+> > > The original guest_memfd design was that it would _only_ hold private pages, and
+> > > so tracking private vs. shared in guest_memfd didn't make any sense.  As we've
+> > > pivoted to in-place conversion, tracking private vs. shared in the guest_memfd
+> > > has basically become mandatory.  We could maaaaaybe make it work with per-VM
+> > > attributes, but it would be insanely complex.
 > > > 
-> > > E.g., I thought we might be able to use it to allocate a structure which has
-> > > "pair of DPAMT pages" so it could be assigned to 'struct kvm_mmu_page'.  But
-> > > it seems you abandoned this idea.  May I ask why?  Just want to understand
-> > > the reasoning here.
+> > > For a dmabuf fd, the story is the same as guest_memfd.  Unless private vs. shared
+> > > is all or nothing, and can never change, then the only entity that can track that
+> > > info is the owner of the dmabuf.  And even if the private vs. shared attributes
+> > > are constant, tracking it external to KVM makes sense, because then the provider
+> > > can simply hardcode %true/%false.  
 > > 
-> > Because that requires more complexity and there's no known use case, and I don't
-> > see an obvious way for a use case to come along.  All of the motiviations for a
-> > custom allocation scheme that I can think of apply only to full pages, or fit
-> > nicely in a kmem_cache.
+> > For CoCo-VM and Tee-IO, I'm wondering if host or KVM has to maintain
+> > the private/shared attribute for "assigned MMIO". I'm not naming them
+> > "host MMIO" cause unlike RAM host never needs to access them, either in
+> > private manner or shared manner.
 > > 
-> > Specifically, the "cache" logic is already bifurcated between "kmem_cache' and
-> > "page" usage.  Further splitting the "page" case doesn't require modifications to
-> > the "kmem_cache" case, whereas providing a fully generic solution would require
-> > additional changes, e.g. to handle this code:
-> > 
-> > 	page = (void *)__get_free_page(gfp_flags);
-> > 	if (page && mc->init_value)
-> > 		memset64(page, mc->init_value, PAGE_SIZE / sizeof(u64));
-> > 
-> > It certainly wouldn't be much complexity, but this code is already a bit awkward,
-> > so I don't think it makes sense to add support for something that will probably
-> > never be used.
+> > Traditionally, host maps these MMIOs only because KVM needs HVA->HPA
+> > mapping to find pfn and setup KVM MMU.
 > 
-> For this particular piece of code, we can add a helper for allocating normal
-> page table pages, get rid of mc->init_value completely and hook mc-page_get()
-> to that helper.
+> This is not actually completely true, the host mapping still ends up
+> being used by KVM if it happens to trap and emulate a MMIO touching
+> instruction.
+> 
+> It really shouldn't do this, but there is a whole set of complex
+> machinery in KVM and qemu to handle this case.
+> 
+> For example if the MSI-X window is not properly aligned then you have
+> some MMIO that is trapped and must be reflected to real HW.
 
-Hmm, I like the idea, but I don't think it would be a net positive.  In practice,
-x86's "normal" page tables stop being normal, because KVM now initializes all
-SPTEs with BIT(63)=1 on x86-64.  And that would also incur an extra RETPOLINE on
-all those allocations.
+In this case, the affected pages are not assigned MMIOs and KVM won't
+import them. Mapping them is just OK.
 
-> A bonus is we can then call that helper in all places when KVM needs to
-> allocate a page for normal page table instead of just calling
-> get_zerod_pages() directly, e.g., like the one in
-> tdp_mmu_alloc_sp_for_split(),
+> 
+> So the sharable parts of the BAR should still end up being mmaped into
+> userspace, I think.
 
-Huh.  Actually, that's a bug, but not the one you probably expect.  At a glance,
-it looks like KVM incorrectly zeroing the page instead of initializing it with
-SHADOW_NONPRESENT_VALUE.  But it's actually a "performance" bug, because KVM
-doesn't actually need to pre-initialize the page: either the page will never be
-used, or every SPTE will be initialized as a child SPTE.
+This does mean we can't make VFIO totally unmappable. But VFIO can still
+try to create unmappable dmabufs for assigned MMIO regions, fail dmabuf
+creation or fail mmap() based on the addresses.
 
-So that one _should_ be different, e.g. should be:
+> 
+> Which means we need VFIO to know what they are, and hopefully it is
+> just static based on the TDISP reports..
 
-diff --git a/arch/x86/kvm/mmu/tdp_mmu.c b/arch/x86/kvm/mmu/tdp_mmu.c
-index a32192c35099..36afd67601fc 100644
---- a/arch/x86/kvm/mmu/tdp_mmu.c
-+++ b/arch/x86/kvm/mmu/tdp_mmu.c
-@@ -1456,7 +1456,7 @@ static struct kvm_mmu_page *tdp_mmu_alloc_sp_for_split(struct kvm *kvm,
-        if (!sp)
-                return NULL;
- 
--       sp->spt = (void *)get_zeroed_page(GFP_KERNEL_ACCOUNT);
-+       sp->spt = (void *)__get_free_page(GFP_KERNEL_ACCOUNT);
-        if (!sp->spt)
-                goto err_spt;
- 
-> so that we can have a consistent way for allocating normal page table pages.
+I don't think VMM need to check TDISP report. The only special thing is
+the MSI-X mixed pages which can be figured out by standard PCI
+discovery.
+
+Seems this doesn't impact the idea that KVM needs no implication of
+Private/Shared from VFIO, as long as VFIO keeps exported dmabufs
+unmapped.
