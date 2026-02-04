@@ -1,95 +1,69 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C34E22367B5
-	for <kvm@vger.kernel.org>; Wed,  4 Feb 2026 19:04:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 295B9427A16;
+	Wed,  4 Feb 2026 19:04:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.10
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770231845; cv=none; b=Cw5NAkO/Cp2iJRlN0PR3PwhZqeTzEKllGuQHaOlJySAGudydFO+KNGT3PAjz21sgfaWV4vBb3WkbfGn2vd9fyFuk2YtlZvqcD3vGfO80D5ntpSVc2ZZfudZIM5xwITLq3c9dC4DAYird8Ce+E7lQO7WBXWvXf6oVKhkHsZi5qdU=
+	t=1770231879; cv=none; b=Dg2n+/US4Qa6cEegU081oTb8HL4IJtUqAm87VKT+0Q5EHEVIjKxf/ed2ZgRWc7/vXtZQceS7f2YmHgzV7gXJiOnn0R9K/cYF/9C1KrRDQNxKIhCQMNgAzkfvrD2Gm2IPXuUoeN59307AcWjkzdpugUZOXzqAV+T5tcvVan2eyps=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770231845; c=relaxed/simple;
-	bh=vE8DQL76s4TcuUwBIMs9rh8N/GnzJfzppjcOoChPOB4=;
+	s=arc-20240116; t=1770231879; c=relaxed/simple;
+	bh=aEgivNh6lf5umyGVj1PNqoU0kduEbNPMta4Z0lh4ySg=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=DAGn6tw+mxaMYtt/waMyOHbNbNKQEOyUf2SpkKrH0z9ldgAe917XX/NZeKrdjOG/vYSHtU3lmTxjnWnTeNMUpeCWZvPW+n1IfYWflAh0CtfzNmVH+mcLZ16nSLsC8SxqQG+oeAQMU/Mv5MurC7NfA6sa2DqJDYdaA3PpfXpoWTQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=g/sjk6wX; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=RjTHlpsZ; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	 Content-Type:Content-Disposition:In-Reply-To; b=Sf8ZnkYLymAZLP10XHJmAvcASfUZEBPEjViR6pQpwxVRZM2h0DRr0NwRDkZdO11QZjE2TgMLhuUMKiqYZ9ym56XNgkgepk2gzWDCEanNgMtDqk8FbAPONG1jt4h59z2Lqr3mf8l5muaGB140KMTPtr2MF3zy+0jEAx5Ad6eZZTY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=TWH4g7e2; arc=none smtp.client-ip=192.198.163.10
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="g/sjk6wX";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="RjTHlpsZ"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1770231843;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=6HhJDWdiH+sSKLH6a+nIbjrvZv2j3XojMKDoG+stmr4=;
-	b=g/sjk6wXZ078RasBJN3CWEt3bTkESMIGgUB7lg0rRAjPn8tsLZDXXLoRtOPzqTVeKHU5Fk
-	Q1We7cp2bPAOEeGcNWrOOP6YsOAFcr2eGMxxATRT5NJuRqVpN3FZs6kXBJUjjogkgt/YP2
-	2JUh5wm63ghqWtR/ZrPRWx0QYOYIjy8=
-Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
- [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-401-lRmza_7vMtGu9lRQC7qIaw-1; Wed, 04 Feb 2026 14:04:02 -0500
-X-MC-Unique: lRmza_7vMtGu9lRQC7qIaw-1
-X-Mimecast-MFC-AGG-ID: lRmza_7vMtGu9lRQC7qIaw_1770231841
-Received: by mail-wm1-f72.google.com with SMTP id 5b1f17b1804b1-48057c39931so1466745e9.0
-        for <kvm@vger.kernel.org>; Wed, 04 Feb 2026 11:04:02 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1770231841; x=1770836641; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=6HhJDWdiH+sSKLH6a+nIbjrvZv2j3XojMKDoG+stmr4=;
-        b=RjTHlpsZPqg6RopxZSud/SJ4/xPE1/aLt4TRk4YWZnpse14cq60x/gZeqQz98EiARi
-         u04ylG4D268IhrkD0Gkof+5lXb78dxs18JhAHBinoU2Ntnd9MsBmFNSyQvKwWfl8TD2X
-         iyaTrJsVVgEOgXMc9YFfVpvCPRuQObtPMQlm6zVLftbTIbOYKKdQLhzQLw8O2XSPXErR
-         gECZdgUvM08weUOe5j1dYuwXZ1MCttYIWX5E0dK2+rOknwrIt0hB7UTH2e25xCaGjxvP
-         diGYxBrT6y18g5PIXTbUiVUEZTlXKUw1HDveoJEXFKYZaXCHjuIFlxX70M09+EtH+F7a
-         05Gg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1770231841; x=1770836641;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=6HhJDWdiH+sSKLH6a+nIbjrvZv2j3XojMKDoG+stmr4=;
-        b=B2rqsJrfrkGg3l0lgHKo0Nh9tC73t4BzO11uWFTW9ImDsIyYf9DJYi8ykOxbK8UVDa
-         A5cYiQUroQ8S+saub1Th58lOlV2ukcHq5W49/W/ETZZwLRKY0fQxIZiUySue+FVRXlM0
-         6WuJA8QpTajrapDOVHuhMYfX/BLZLS6+PwNKxi1mzzIknb+vv/ksslXEhh9w4RSX1f7y
-         0M5AKuKJIOLRmNEuO+/6Dk0zqZ8s7oYPoewZsrmcRW7KF/GLJUmOebXM9Cqn3jux/Amq
-         I/VXvfyh4VLvZ2/tQH14sAZn6pF86bJ0VOZM50SOQTs+q93/TqMjwAN7F0yaSqy9XEWq
-         +kQg==
-X-Forwarded-Encrypted: i=1; AJvYcCUW+gHDSXZ0P0eGUCeA1y3WKnFAIhL/jmhyc20181R7iiif/H51Tg6ixnJ6XekvWY6+M0E=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwBrpqVBecswaMYk/WgJgA69qcijsXEii+wDEtXpC2DkPcqMBf+
-	eBqYn0Xdml482X+ebHPJiAhR6rC88QWM0e9w4XtnEpzYxdJpD9t9+2MJ6RNuhEjxoARlTYUXihT
-	3A7E7hRx5XQ0qIphbb0TzsrgdxbUJZ3mWgY/uN75vJ22LSWG5m3roJC9+gL0W9w==
-X-Gm-Gg: AZuq6aKXxx/OxfPhiFt1dtNOkhBzpMHjnawRle/L/py9ACT8/Si7AzTM0AXUCNu61dn
-	hSrgfHjAT73oXKnMlDAvVUHQ0LzNC9xX9BzdjR6qg0r86sZXlzV+OpEItcy+imNp33RwzL4WnwC
-	RUVo6DMDiSk7W+EQS1RKF4k+6LqtH7BK30fe7Bevvk4G9hXnTyLzjXqbOWE77fbqkPECVjdgyyI
-	QUSmR7XceHSjVWZS/1L2fHlDA6FSvz+PNCyWIk5lLOj353wIJIUvAhM2hKn0q+mcWhq6IM4+j+j
-	c5S8wMFEjlm1s5bQlG1PzFVf6PGROJD4LW2TFj9MFedzVVio6PAs2WERF8DY9LV6jQKylTATA2s
-	kHTYmXlhgIVySL5zDzF/2VEwbSwKfz9BbOw==
-X-Received: by 2002:a05:600c:4e4f:b0:477:5cc6:7e44 with SMTP id 5b1f17b1804b1-4830e9335cfmr55705195e9.11.1770231841046;
-        Wed, 04 Feb 2026 11:04:01 -0800 (PST)
-X-Received: by 2002:a05:600c:4e4f:b0:477:5cc6:7e44 with SMTP id 5b1f17b1804b1-4830e9335cfmr55704845e9.11.1770231840650;
-        Wed, 04 Feb 2026 11:04:00 -0800 (PST)
-Received: from redhat.com (IGLD-80-230-34-155.inter.net.il. [80.230.34.155])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-48317d345c2sm5071665e9.6.2026.02.04.11.03.58
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 04 Feb 2026 11:03:59 -0800 (PST)
-Date: Wed, 4 Feb 2026 14:03:57 -0500
-From: "Michael S. Tsirkin" <mst@redhat.com>
-To: qemu-devel@nongnu.org
-Cc: Peter Maydell <peter.maydell@linaro.org>, Gavin Shan <gshan@redhat.com>,
-	Igor Mammedov <imammedo@redhat.com>,
-	Markus Armbruster <armbru@redhat.com>,
-	Jonathan Cameron <jonathan.cameron@huawei.com>,
-	Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
-	Ani Sinha <anisinha@redhat.com>,
-	Dongjiu Geng <gengdongjiu1@gmail.com>,
-	Paolo Bonzini <pbonzini@redhat.com>, qemu-arm@nongnu.org,
-	kvm@vger.kernel.org
-Subject: [PULL 30/51] acpi/ghes: Use error_fatal in acpi_ghes_memory_errors()
-Message-ID: <2f6dc473b905c5c82370f74debc56d5f673d2db7.1770231744.git.mst@redhat.com>
-References: <cover.1770231744.git.mst@redhat.com>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="TWH4g7e2"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1770231879; x=1801767879;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=aEgivNh6lf5umyGVj1PNqoU0kduEbNPMta4Z0lh4ySg=;
+  b=TWH4g7e2wARj848PC4LWL5mzbbjPYl0GYHOIH5N3gCI3ISx/lTzUgivf
+   KYEr/S6Gkn54ecJe9LTN4DB+rPpv52PGBfzaBnAeH2IANVPqIRvyjjLTN
+   huhhRMCWuBhzvWAdp5oxh9QWn9kpdSkRIOiunR0foec/4GIAlt/skKTK3
+   7fW6Q3ylmhUK1Yf9Ev0Zp5KwzM0JvO3Pgg7+ZCU4B2zkvX3zJcY8eOb+P
+   6lR9KDqUQtnZFI9GDv6z2pGoilT6B3Oy15Dy3jC1gSux4mS+PzWl5xdnf
+   UwBulrz6M/pS9sF0rrm6/qezt7kCZzUcIKnN+WNkOjkLeKvMUydyKWHX2
+   A==;
+X-CSE-ConnectionGUID: wFC8v9W8SEOaEdNb443NzA==
+X-CSE-MsgGUID: JYxSJhgGTtW++ttWBae2Qg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11691"; a="82797734"
+X-IronPort-AV: E=Sophos;i="6.21,273,1763452800"; 
+   d="scan'208";a="82797734"
+Received: from fmviesa002.fm.intel.com ([10.60.135.142])
+  by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Feb 2026 11:04:38 -0800
+X-CSE-ConnectionGUID: Fa3lG6CZSvagjstaQ6uPDA==
+X-CSE-MsgGUID: tcXmNBmaQnSzW20DrV4KTw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.21,273,1763452800"; 
+   d="scan'208";a="233178785"
+Received: from lkp-server01.sh.intel.com (HELO 765f4a05e27f) ([10.239.97.150])
+  by fmviesa002.fm.intel.com with ESMTP; 04 Feb 2026 11:04:33 -0800
+Received: from kbuild by 765f4a05e27f with local (Exim 4.98.2)
+	(envelope-from <lkp@intel.com>)
+	id 1vniAx-00000000j7U-08MJ;
+	Wed, 04 Feb 2026 19:04:31 +0000
+Date: Thu, 5 Feb 2026 03:03:32 +0800
+From: kernel test robot <lkp@intel.com>
+To: Zixing Liu <liushuyu@aosc.io>, WANG Xuerui <kernel@xen0n.name>,
+	Huacai Chen <chenhuacai@kernel.org>, Bibo Mao <maobibo@loongson.cn>
+Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
+	Kexy Biscuit <kexybiscuit@aosc.io>, Mingcong Bai <jeffbai@aosc.io>,
+	Zixing Liu <liushuyu@aosc.io>, Paolo Bonzini <pbonzini@redhat.com>,
+	Jonathan Corbet <corbet@lwn.net>,
+	Tianrui Zhao <zhaotianrui@loongson.cn>,
+	Paul Walmsley <pjw@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>,
+	Albert Ou <aou@eecs.berkeley.edu>, Alexandre Ghiti <alex@ghiti.fr>,
+	kvm@vger.kernel.org, linux-doc@vger.kernel.org,
+	linux-kernel@vger.kernel.org, loongarch@lists.linux.dev,
+	linux-riscv@lists.infradead.org
+Subject: Re: [PATCH v4] KVM: Add KVM_GET_REG_LIST ioctl for LoongArch
+Message-ID: <202602050229.BAdKUB3a-lkp@intel.com>
+References: <20260204113601.912413-1-liushuyu@aosc.io>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -98,164 +72,127 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <cover.1770231744.git.mst@redhat.com>
-X-Mailer: git-send-email 2.27.0.106.g8ac3dc51b1
-X-Mutt-Fcc: =sent
+In-Reply-To: <20260204113601.912413-1-liushuyu@aosc.io>
 
-From: Gavin Shan <gshan@redhat.com>
+Hi Zixing,
 
-Use error_fatal in acpi_ghes_memory_errors() so that the caller needn't
-explicitly call exit(). The return value of acpi_ghes_memory_errors()
-and ghes_record_cper_errors() is changed to 'bool' indicating an error
-has been raised, to be compatible with what's documented in error.h.
+kernel test robot noticed the following build errors:
 
-Suggested-by: Igor Mammedov <imammedo@redhat.com>
-Suggested-by: Markus Armbruster <armbru@redhat.com>
-Signed-off-by: Gavin Shan <gshan@redhat.com>
-Reviewed-by: Jonathan Cameron <jonathan.cameron@huawei.com>
-Reviewed-by: Markus Armbruster <armbru@redhat.com>
-Reviewed-by: Igor Mammedov <imammedo@redhat.com>
-Reviewed-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
-Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
-Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
-Message-Id: <20251201141803.2386129-6-gshan@redhat.com>
----
- hw/acpi/ghes-stub.c    |  4 ++--
- hw/acpi/ghes.c         | 26 ++++++++++----------------
- include/hw/acpi/ghes.h |  6 +++---
- target/arm/kvm.c       |  9 +++------
- 4 files changed, 18 insertions(+), 27 deletions(-)
+[auto build test ERROR on kvm/queue]
+[also build test ERROR on kvm/next linus/master v6.19-rc8]
+[cannot apply to kvm/linux-next next-20260204]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch#_base_tree_information]
 
-diff --git a/hw/acpi/ghes-stub.c b/hw/acpi/ghes-stub.c
-index b54f1b093c..5f9313cce9 100644
---- a/hw/acpi/ghes-stub.c
-+++ b/hw/acpi/ghes-stub.c
-@@ -11,8 +11,8 @@
- #include "qemu/osdep.h"
- #include "hw/acpi/ghes.h"
- 
--int acpi_ghes_memory_errors(AcpiGhesState *ags, uint16_t source_id,
--                            uint64_t physical_address)
-+bool acpi_ghes_memory_errors(AcpiGhesState *ags, uint16_t source_id,
-+                             uint64_t physical_address, Error **errp)
- {
-     g_assert_not_reached();
- }
-diff --git a/hw/acpi/ghes.c b/hw/acpi/ghes.c
-index d51d4bd466..c42f1721c4 100644
---- a/hw/acpi/ghes.c
-+++ b/hw/acpi/ghes.c
-@@ -516,14 +516,14 @@ static bool get_ghes_source_offsets(uint16_t source_id,
- NotifierList acpi_generic_error_notifiers =
-     NOTIFIER_LIST_INITIALIZER(acpi_generic_error_notifiers);
- 
--void ghes_record_cper_errors(AcpiGhesState *ags, const void *cper, size_t len,
-+bool ghes_record_cper_errors(AcpiGhesState *ags, const void *cper, size_t len,
-                              uint16_t source_id, Error **errp)
- {
-     uint64_t cper_addr = 0, read_ack_register_addr = 0, read_ack_register;
- 
-     if (len > ACPI_GHES_MAX_RAW_DATA_LENGTH) {
-         error_setg(errp, "GHES CPER record is too big: %zd", len);
--        return;
-+        return false;
-     }
- 
-     if (!ags->use_hest_addr) {
-@@ -532,7 +532,7 @@ void ghes_record_cper_errors(AcpiGhesState *ags, const void *cper, size_t len,
-     } else if (!get_ghes_source_offsets(source_id,
-                     le64_to_cpu(ags->hest_addr_le),
-                     &cper_addr, &read_ack_register_addr, errp)) {
--            return;
-+            return false;
-     }
- 
-     cpu_physical_memory_read(read_ack_register_addr,
-@@ -543,7 +543,7 @@ void ghes_record_cper_errors(AcpiGhesState *ags, const void *cper, size_t len,
-         error_setg(errp,
-                    "OSPM does not acknowledge previous error,"
-                    " so can not record CPER for current error anymore");
--        return;
-+        return false;
-     }
- 
-     read_ack_register = cpu_to_le64(0);
-@@ -558,16 +558,17 @@ void ghes_record_cper_errors(AcpiGhesState *ags, const void *cper, size_t len,
-     cpu_physical_memory_write(cper_addr, cper, len);
- 
-     notifier_list_notify(&acpi_generic_error_notifiers, &source_id);
-+
-+    return true;
- }
- 
--int acpi_ghes_memory_errors(AcpiGhesState *ags, uint16_t source_id,
--                            uint64_t physical_address)
-+bool acpi_ghes_memory_errors(AcpiGhesState *ags, uint16_t source_id,
-+                             uint64_t physical_address, Error **errp)
- {
-     /* Memory Error Section Type */
-     const uint8_t guid[] =
-           UUID_LE(0xA5BC1114, 0x6F64, 0x4EDE, 0xB8, 0x63, 0x3E, 0x83, \
-                   0xED, 0x7C, 0x83, 0xB1);
--    Error *err = NULL;
-     int data_length;
-     g_autoptr(GArray) block = g_array_new(false, true /* clear */, 1);
- 
-@@ -584,15 +585,8 @@ int acpi_ghes_memory_errors(AcpiGhesState *ags, uint16_t source_id,
-     /* Build the memory section CPER for above new generic error data entry */
-     acpi_ghes_build_append_mem_cper(block, physical_address);
- 
--    /* Report the error */
--    ghes_record_cper_errors(ags, block->data, block->len, source_id, &err);
--
--    if (err) {
--        error_report_err(err);
--        return -1;
--    }
--
--    return 0;
-+    return ghes_record_cper_errors(ags, block->data, block->len,
-+                                   source_id, errp);
- }
- 
- AcpiGhesState *acpi_ghes_get_state(void)
-diff --git a/include/hw/acpi/ghes.h b/include/hw/acpi/ghes.h
-index df2ecbf6e4..5b29aae4dd 100644
---- a/include/hw/acpi/ghes.h
-+++ b/include/hw/acpi/ghes.h
-@@ -98,9 +98,9 @@ void acpi_build_hest(AcpiGhesState *ags, GArray *table_data,
-                      const char *oem_id, const char *oem_table_id);
- void acpi_ghes_add_fw_cfg(AcpiGhesState *vms, FWCfgState *s,
-                           GArray *hardware_errors);
--int acpi_ghes_memory_errors(AcpiGhesState *ags, uint16_t source_id,
--                            uint64_t error_physical_addr);
--void ghes_record_cper_errors(AcpiGhesState *ags, const void *cper, size_t len,
-+bool acpi_ghes_memory_errors(AcpiGhesState *ags, uint16_t source_id,
-+                            uint64_t error_physical_addr, Error **errp);
-+bool ghes_record_cper_errors(AcpiGhesState *ags, const void *cper, size_t len,
-                              uint16_t source_id, Error **errp);
- 
- /**
-diff --git a/target/arm/kvm.c b/target/arm/kvm.c
-index b83f1d5e4f..3e35570f15 100644
---- a/target/arm/kvm.c
-+++ b/target/arm/kvm.c
-@@ -2473,12 +2473,9 @@ void kvm_arch_on_sigbus_vcpu(CPUState *c, int code, void *addr)
-              */
-             if (code == BUS_MCEERR_AR) {
-                 kvm_cpu_synchronize_state(c);
--                if (!acpi_ghes_memory_errors(ags, ACPI_HEST_SRC_ID_SYNC,
--                                             paddr)) {
--                    kvm_inject_arm_sea(c);
--                } else {
--                    exit(1);
--                }
-+                acpi_ghes_memory_errors(ags, ACPI_HEST_SRC_ID_SYNC,
-+                                        paddr, &error_fatal);
-+                kvm_inject_arm_sea(c);
-             }
-             return;
-         }
+url:    https://github.com/intel-lab-lkp/linux/commits/Zixing-Liu/KVM-Add-KVM_GET_REG_LIST-ioctl-for-LoongArch/20260204-193844
+base:   https://git.kernel.org/pub/scm/virt/kvm/kvm.git queue
+patch link:    https://lore.kernel.org/r/20260204113601.912413-1-liushuyu%40aosc.io
+patch subject: [PATCH v4] KVM: Add KVM_GET_REG_LIST ioctl for LoongArch
+config: loongarch-defconfig (https://download.01.org/0day-ci/archive/20260205/202602050229.BAdKUB3a-lkp@intel.com/config)
+compiler: clang version 19.1.7 (https://github.com/llvm/llvm-project cd708029e0b2869e80abe31ddb175f7c35361f90)
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260205/202602050229.BAdKUB3a-lkp@intel.com/reproduce)
+
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202602050229.BAdKUB3a-lkp@intel.com/
+
+All error/warnings (new ones prefixed by >>):
+
+   In file included from arch/loongarch/kvm/vcpu.c:6:
+   In file included from arch/loongarch/include/asm/kvm_host.h:21:
+   In file included from arch/loongarch/include/asm/kvm_mmu.h:9:
+>> include/linux/kvm_host.h:389:23: error: field has incomplete type 'struct kvm_vcpu_arch'
+     389 |         struct kvm_vcpu_arch arch;
+         |                              ^
+   include/linux/kvm_host.h:389:9: note: forward declaration of 'struct kvm_vcpu_arch'
+     389 |         struct kvm_vcpu_arch arch;
+         |                ^
+>> include/linux/kvm_host.h:390:23: error: field has incomplete type 'struct kvm_vcpu_stat'
+     390 |         struct kvm_vcpu_stat stat;
+         |                              ^
+   include/linux/kvm_host.h:390:9: note: forward declaration of 'struct kvm_vcpu_stat'
+     390 |         struct kvm_vcpu_stat stat;
+         |                ^
+>> include/linux/kvm_host.h:601:30: error: field has incomplete type 'struct kvm_arch_memory_slot'
+     601 |         struct kvm_arch_memory_slot arch;
+         |                                     ^
+   include/linux/kvm_host.h:601:9: note: forward declaration of 'struct kvm_arch_memory_slot'
+     601 |         struct kvm_arch_memory_slot arch;
+         |                ^
+>> include/linux/kvm_host.h:831:21: error: field has incomplete type 'struct kvm_vm_stat'
+     831 |         struct kvm_vm_stat stat;
+         |                            ^
+   include/linux/kvm_host.h:831:9: note: forward declaration of 'struct kvm_vm_stat'
+     831 |         struct kvm_vm_stat stat;
+         |                ^
+>> include/linux/kvm_host.h:832:18: error: field has incomplete type 'struct kvm_arch'
+     832 |         struct kvm_arch arch;
+         |                         ^
+   include/linux/kvm_host.h:832:9: note: forward declaration of 'struct kvm_arch'
+     832 |         struct kvm_arch arch;
+         |                ^
+>> include/linux/kvm_host.h:1023:11: error: use of undeclared identifier 'KVM_MAX_VCPUS'
+    1023 |         if (id < KVM_MAX_VCPUS)
+         |                  ^
+   In file included from arch/loongarch/kvm/vcpu.c:6:
+>> arch/loongarch/include/asm/kvm_host.h:46:9: warning: 'KVM_DIRTY_LOG_MANUAL_CAPS' macro redefined [-Wmacro-redefined]
+      46 | #define KVM_DIRTY_LOG_MANUAL_CAPS       \
+         |         ^
+   include/linux/kvm_host.h:643:9: note: previous definition is here
+     643 | #define KVM_DIRTY_LOG_MANUAL_CAPS KVM_DIRTY_LOG_MANUAL_PROTECT_ENABLE
+         |         ^
+>> arch/loongarch/kvm/vcpu.c:48:10: error: assigning to 'struct kvm_context *' from incompatible type 'void'
+      48 |         context = this_cpu_ptr(vcpu->kvm->arch.vmcs);
+         |                 ^ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   arch/loongarch/kvm/vcpu.c:63:10: error: assigning to 'struct kvm_context *' from incompatible type 'void'
+      63 |         context = this_cpu_ptr(vcpu->kvm->arch.vmcs);
+         |                 ^ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   arch/loongarch/kvm/vcpu.c:1669:11: error: assigning to 'struct kvm_context *' from incompatible type 'void'
+    1669 |                 context = per_cpu_ptr(vcpu->kvm->arch.vmcs, cpu);
+         |                         ^ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   arch/loongarch/kvm/vcpu.c:1691:10: error: assigning to 'struct kvm_context *' from incompatible type 'void'
+    1691 |         context = per_cpu_ptr(vcpu->kvm->arch.vmcs, cpu);
+         |                 ^ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   1 warning and 10 errors generated.
+
+
+vim +389 include/linux/kvm_host.h
+
+af585b921e5d1e include/linux/kvm_host.h Gleb Natapov        2010-10-14  372  
+4c088493c8d07e include/linux/kvm_host.h Raghavendra K T     2012-07-18  373  #ifdef CONFIG_HAVE_KVM_CPU_RELAX_INTERCEPT
+4c088493c8d07e include/linux/kvm_host.h Raghavendra K T     2012-07-18  374  	/*
+4c088493c8d07e include/linux/kvm_host.h Raghavendra K T     2012-07-18  375  	 * Cpu relax intercept or pause loop exit optimization
+4c088493c8d07e include/linux/kvm_host.h Raghavendra K T     2012-07-18  376  	 * in_spin_loop: set when a vcpu does a pause loop exit
+4c088493c8d07e include/linux/kvm_host.h Raghavendra K T     2012-07-18  377  	 *  or cpu relax intercepted.
+4c088493c8d07e include/linux/kvm_host.h Raghavendra K T     2012-07-18  378  	 * dy_eligible: indicates whether vcpu is eligible for directed yield.
+4c088493c8d07e include/linux/kvm_host.h Raghavendra K T     2012-07-18  379  	 */
+4c088493c8d07e include/linux/kvm_host.h Raghavendra K T     2012-07-18  380  	struct {
+4c088493c8d07e include/linux/kvm_host.h Raghavendra K T     2012-07-18  381  		bool in_spin_loop;
+4c088493c8d07e include/linux/kvm_host.h Raghavendra K T     2012-07-18  382  		bool dy_eligible;
+4c088493c8d07e include/linux/kvm_host.h Raghavendra K T     2012-07-18  383  	} spin_loop;
+4c088493c8d07e include/linux/kvm_host.h Raghavendra K T     2012-07-18  384  #endif
+a6816314af5749 include/linux/kvm_host.h David Matlack       2024-05-03  385  	bool wants_to_run;
+3a08a8f9f0936e include/linux/kvm_host.h Raghavendra K T     2013-03-04  386  	bool preempted;
+d73eb57b80b98a include/linux/kvm_host.h Wanpeng Li          2019-07-18  387  	bool ready;
+d1ae567fb8b559 include/linux/kvm_host.h Sean Christopherson 2024-05-21  388  	bool scheduled_out;
+d657a98e3c2053 drivers/kvm/kvm.h        Zhang Xiantao       2007-12-14 @389  	struct kvm_vcpu_arch arch;
+ce55c049459cff include/linux/kvm_host.h Jing Zhang          2021-06-18 @390  	struct kvm_vcpu_stat stat;
+ce55c049459cff include/linux/kvm_host.h Jing Zhang          2021-06-18  391  	char stats_id[KVM_STATS_NAME_SIZE];
+fb04a1eddb1a65 include/linux/kvm_host.h Peter Xu            2020-09-30  392  	struct kvm_dirty_ring dirty_ring;
+fe22ed827c5b60 include/linux/kvm_host.h David Matlack       2021-08-04  393  
+fe22ed827c5b60 include/linux/kvm_host.h David Matlack       2021-08-04  394  	/*
+a54d806688fe1e include/linux/kvm_host.h Maciej S. Szmigiero 2021-12-06  395  	 * The most recently used memslot by this vCPU and the slots generation
+a54d806688fe1e include/linux/kvm_host.h Maciej S. Szmigiero 2021-12-06  396  	 * for which it is valid.
+a54d806688fe1e include/linux/kvm_host.h Maciej S. Szmigiero 2021-12-06  397  	 * No wraparound protection is needed since generations won't overflow in
+a54d806688fe1e include/linux/kvm_host.h Maciej S. Szmigiero 2021-12-06  398  	 * thousands of years, even assuming 1M memslot operations per second.
+fe22ed827c5b60 include/linux/kvm_host.h David Matlack       2021-08-04  399  	 */
+a54d806688fe1e include/linux/kvm_host.h Maciej S. Szmigiero 2021-12-06  400  	struct kvm_memory_slot *last_used_slot;
+a54d806688fe1e include/linux/kvm_host.h Maciej S. Szmigiero 2021-12-06  401  	u64 last_used_slot_gen;
+d657a98e3c2053 drivers/kvm/kvm.h        Zhang Xiantao       2007-12-14  402  };
+d657a98e3c2053 drivers/kvm/kvm.h        Zhang Xiantao       2007-12-14  403  
+
 -- 
-MST
-
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
