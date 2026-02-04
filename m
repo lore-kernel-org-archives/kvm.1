@@ -1,198 +1,151 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ua1-f49.google.com (mail-ua1-f49.google.com [209.85.222.49])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 295B9427A16;
-	Wed,  4 Feb 2026 19:04:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.10
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770231879; cv=none; b=Dg2n+/US4Qa6cEegU081oTb8HL4IJtUqAm87VKT+0Q5EHEVIjKxf/ed2ZgRWc7/vXtZQceS7f2YmHgzV7gXJiOnn0R9K/cYF/9C1KrRDQNxKIhCQMNgAzkfvrD2Gm2IPXuUoeN59307AcWjkzdpugUZOXzqAV+T5tcvVan2eyps=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770231879; c=relaxed/simple;
-	bh=aEgivNh6lf5umyGVj1PNqoU0kduEbNPMta4Z0lh4ySg=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Sf8ZnkYLymAZLP10XHJmAvcASfUZEBPEjViR6pQpwxVRZM2h0DRr0NwRDkZdO11QZjE2TgMLhuUMKiqYZ9ym56XNgkgepk2gzWDCEanNgMtDqk8FbAPONG1jt4h59z2Lqr3mf8l5muaGB140KMTPtr2MF3zy+0jEAx5Ad6eZZTY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=TWH4g7e2; arc=none smtp.client-ip=192.198.163.10
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E96431A551
+	for <kvm@vger.kernel.org>; Wed,  4 Feb 2026 19:10:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.222.49
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1770232250; cv=pass; b=GMG/V/EqEEBV6R+CvXs6jJhLmt/zdW4TUZninKBMZnKp1S3OiMb4g8C9cESu/yM1M/1USOsN2/l73zYNhPoBR8wg8M10BfEBmPgmyEJ3Ov3S4f01aysCt97UU3tuwoaNxFi/B6tZqfcLs93Jq/kBsH6ibvvcn9gH2nfU4zNKKp4=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1770232250; c=relaxed/simple;
+	bh=lXWxYGyyhF9P6Wv7GmsgpSmu4ZHvbmD85h4KG4Mans8=;
+	h=From:In-Reply-To:References:MIME-Version:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=XQDV8NKyxjM7r9ehQwKS/QHiob5yTyvQUrz5excMbfXdSYprapApe0cP3oxvGX0CSE4Z07hyUnur5Mlwu8GBcJRuYWHeKhy6u1NlbK238Zw6NxmuhbSIqjLbWqh0dturJkNijMfOjaNNDNSGz+6UIRdYXYJ1e2GdOHTG/00VBn8=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=u8Y0xbg6; arc=pass smtp.client-ip=209.85.222.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="TWH4g7e2"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1770231879; x=1801767879;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=aEgivNh6lf5umyGVj1PNqoU0kduEbNPMta4Z0lh4ySg=;
-  b=TWH4g7e2wARj848PC4LWL5mzbbjPYl0GYHOIH5N3gCI3ISx/lTzUgivf
-   KYEr/S6Gkn54ecJe9LTN4DB+rPpv52PGBfzaBnAeH2IANVPqIRvyjjLTN
-   huhhRMCWuBhzvWAdp5oxh9QWn9kpdSkRIOiunR0foec/4GIAlt/skKTK3
-   7fW6Q3ylmhUK1Yf9Ev0Zp5KwzM0JvO3Pgg7+ZCU4B2zkvX3zJcY8eOb+P
-   6lR9KDqUQtnZFI9GDv6z2pGoilT6B3Oy15Dy3jC1gSux4mS+PzWl5xdnf
-   UwBulrz6M/pS9sF0rrm6/qezt7kCZzUcIKnN+WNkOjkLeKvMUydyKWHX2
-   A==;
-X-CSE-ConnectionGUID: wFC8v9W8SEOaEdNb443NzA==
-X-CSE-MsgGUID: JYxSJhgGTtW++ttWBae2Qg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11691"; a="82797734"
-X-IronPort-AV: E=Sophos;i="6.21,273,1763452800"; 
-   d="scan'208";a="82797734"
-Received: from fmviesa002.fm.intel.com ([10.60.135.142])
-  by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Feb 2026 11:04:38 -0800
-X-CSE-ConnectionGUID: Fa3lG6CZSvagjstaQ6uPDA==
-X-CSE-MsgGUID: tcXmNBmaQnSzW20DrV4KTw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,273,1763452800"; 
-   d="scan'208";a="233178785"
-Received: from lkp-server01.sh.intel.com (HELO 765f4a05e27f) ([10.239.97.150])
-  by fmviesa002.fm.intel.com with ESMTP; 04 Feb 2026 11:04:33 -0800
-Received: from kbuild by 765f4a05e27f with local (Exim 4.98.2)
-	(envelope-from <lkp@intel.com>)
-	id 1vniAx-00000000j7U-08MJ;
-	Wed, 04 Feb 2026 19:04:31 +0000
-Date: Thu, 5 Feb 2026 03:03:32 +0800
-From: kernel test robot <lkp@intel.com>
-To: Zixing Liu <liushuyu@aosc.io>, WANG Xuerui <kernel@xen0n.name>,
-	Huacai Chen <chenhuacai@kernel.org>, Bibo Mao <maobibo@loongson.cn>
-Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
-	Kexy Biscuit <kexybiscuit@aosc.io>, Mingcong Bai <jeffbai@aosc.io>,
-	Zixing Liu <liushuyu@aosc.io>, Paolo Bonzini <pbonzini@redhat.com>,
-	Jonathan Corbet <corbet@lwn.net>,
-	Tianrui Zhao <zhaotianrui@loongson.cn>,
-	Paul Walmsley <pjw@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>,
-	Albert Ou <aou@eecs.berkeley.edu>, Alexandre Ghiti <alex@ghiti.fr>,
-	kvm@vger.kernel.org, linux-doc@vger.kernel.org,
-	linux-kernel@vger.kernel.org, loongarch@lists.linux.dev,
-	linux-riscv@lists.infradead.org
-Subject: Re: [PATCH v4] KVM: Add KVM_GET_REG_LIST ioctl for LoongArch
-Message-ID: <202602050229.BAdKUB3a-lkp@intel.com>
-References: <20260204113601.912413-1-liushuyu@aosc.io>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="u8Y0xbg6"
+Received: by mail-ua1-f49.google.com with SMTP id a1e0cc1a2514c-948e7c39668so22619241.1
+        for <kvm@vger.kernel.org>; Wed, 04 Feb 2026 11:10:50 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1770232249; cv=none;
+        d=google.com; s=arc-20240605;
+        b=GW5IE0GC9UM9pKHTE9Wn+ZiyIviIiRNssl7QaRFng120uaglx90/ORTY3GJQEtvn2U
+         KbOmquA5QYBxMRu6pMRUsk1EdncNM73o6la/ZLoaeD3jrHca9t5rUtywdBJf/kk8nc7N
+         OenIZOqRhZb3Q+5VonA1TSRq6AfPz/2yASbqaZ07+V0LSZsiwNpo9CPGUAYiWP1mnmaC
+         CSiEwKvbugsLp0oe0VsQD95Mc/Q+nAPXR3XmVk5okGldzK0AJDwo3ORXgiBtKuUk66ub
+         /7KNVQmSLWnLQz3GrvgGKttedQysVAL5MNbhdx8L4Yn3K+dDhK1o/Y0335KprBi2KNrz
+         FIig==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
+         :from:dkim-signature;
+        bh=XU+nHiW99yv3DcS5bVzWR/3CEep103RfiIzgG2VGh4A=;
+        fh=fklkTIw7C4117hEW40Nn8beGOQoJr9w6jyLYKcRqgGc=;
+        b=WiQMGGFtFwVvRksPmFN5oc/6UUSLYGUOluQEHiBUtgKWrlANedY9f4No+P8SzKoVIp
+         2SZnIS9HMjanY/zetOG6srp/0xOQXw4P/rakBO8j9ACMFDhk4YU9NtI6k7SXQM3zduD5
+         P35a+cnI7OYR0ZryptZTjccNbE7ZaW1dYRkF66mxgAFGkQlhToufQnWDLICBI3TCFAde
+         nN17h/0IaHwQb85djeVUslJMJSXvwwg7/kF2F1HTskWTvsAq30ktmNFFfTLD8HNSWlea
+         lUxap9/SYMLRjZ4wGkA1gJDwVcdJ03gMKDMtsNyjemLBR6tk+4N9QhHCE75X8uYfrXuV
+         l5pA==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1770232249; x=1770837049; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
+         :from:from:to:cc:subject:date:message-id:reply-to;
+        bh=XU+nHiW99yv3DcS5bVzWR/3CEep103RfiIzgG2VGh4A=;
+        b=u8Y0xbg6ebox+EepvO+ApfJxaCrpUbj84so8DloOT4OEeK455ynHufT6k4HWV5qZpL
+         y1Zq7A8YHUluzjLMLWdlDZux/OxrziPjZGBXz5+LIfTBWMhef1Fn+S+M2BQKKka6Cro4
+         F+vi7R2hQm2SRj8WQUhJE7jFMePIXWyGQnyx2VsuoA/examE0Y26oepIFGR5U+289PyK
+         lUTygK9mJG5MkfGTsuQuIuegM0WiRbG4xvtQLDlc2IsBxzhymoQhpTg7cIxmaYMLnBvm
+         9FxAHIA8QPOySieGua0ZyNfxNZie0wQHXNb3UNTXddeXvy4QYR/ok5Yw4nskSM+B/Cb+
+         /Irg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1770232249; x=1770837049;
+        h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
+         :from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=XU+nHiW99yv3DcS5bVzWR/3CEep103RfiIzgG2VGh4A=;
+        b=FogS/IBs867ecrsNQcTxYlCxfoR5r2L8NONgHuvicLHsmazJ2EQa0UQxKllyz/Qnbf
+         Rkr7TPXZZpjGZbTLk8SoG7fFFGITorZOy5jmvBURVy/1sanX4/GAScWRH6zrMof4Fztt
+         jsjWtJaUe6Y9nyVXdsgWBnqjeczs4GTDBdaQ7KYThbkvX2+5qWGHK+A5rAINC7BPqDK7
+         O1dm/WuAidZVFZEzc9IfiFQzeZOtGeM1aKErqsYgXrHsFPcaBrGko/xmw7SqmlMBTlI6
+         nmsB8DdxlsSF34KDI7Da9NG8pSO4Kfv0uVVKHQK9jBHIbdDKjPFxmpn5J9dGc3b9aWU3
+         O78w==
+X-Gm-Message-State: AOJu0YzYMwQ5hW8bpuRUe63P5pMtMitcsML+xfnXNA7kt+1X1EaIVys/
+	v/61q1evuMf9yZrjIayAPBtpegvkIkB9bKiT2Z9pN9qwLNQW1QUiNjoeYLLRtwhvqEqL15xBUFN
+	ZE2j5iHM92yqyGQe0JBbzeJdTvZ3Km1Dd50W5xwaw
+X-Gm-Gg: AZuq6aKJGWlyLj1kTwDYzcM1ffFqIv7mv+XHSEFNpyf7fiUwGLC3qXLdTYWFmRdJJih
+	87eWG2pxzVw1dQB2Ly2L4nG1oheyrweBR4DiFViFXcsMwk7faciP0yBD10RAYxam1tHSjMpJhlM
+	15tkT9u0yKB/lOXIGb5FYQWLqS+T8r+WdMZQSpznzAfOlQ2YxNiKY5xSATS48HP652eC/x5Kmj1
+	w+DtUZV+HKhCOpOQuYHwa5/GeGXC45sAlh8T6ghW7GgBWQEpyiqxcp+kp1yeUtoOG5d5/PZPBJe
+	MSLRyxdliiwH7ObyoJ9o6GL3r5N8fXW/wFIE
+X-Received: by 2002:a05:6102:610d:20b0:5f5:3719:19d8 with SMTP id
+ ada2fe7eead31-5f9395e2783mr1099207137.31.1770232249053; Wed, 04 Feb 2026
+ 11:10:49 -0800 (PST)
+Received: from 176938342045 named unknown by gmailapi.google.com with
+ HTTPREST; Wed, 4 Feb 2026 11:10:48 -0800
+Received: from 176938342045 named unknown by gmailapi.google.com with
+ HTTPREST; Wed, 4 Feb 2026 11:10:48 -0800
+From: Ackerley Tng <ackerleytng@google.com>
+In-Reply-To: <20260204170144.2904483-1-ackerleytng@google.com>
+References: <697d115a.050a0220.1d61ec.0004.GAE@google.com> <20260204170144.2904483-1-ackerleytng@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260204113601.912413-1-liushuyu@aosc.io>
+Date: Wed, 4 Feb 2026 11:10:48 -0800
+X-Gm-Features: AZwV_QgcQx3vbfxBGP4uiM45fegTaR4Q23FMhVPxMByWK826Z6oIBpv2C8w_Ifs
+Message-ID: <CAEvNRgF75EsHL8idLzFzbk0K9uhE70AMj5Vitp4cKNg_5WqQKw@mail.gmail.com>
+Subject: Re: [PATCH] KVM: guest_memfd: Disable VMA merging with VM_DONTEXPAND
+To: syzbot+33a04338019ac7e43a44@syzkaller.appspotmail.com
+Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org, pbonzini@redhat.com, 
+	syzkaller-bugs@googlegroups.com, david@kernel.org, michael.roth@amd.com, 
+	vannapurve@google.com, kartikey406@gmail.com
+Content-Type: text/plain; charset="UTF-8"
 
-Hi Zixing,
+Ackerley Tng <ackerleytng@google.com> writes:
 
-kernel test robot noticed the following build errors:
+> #syz test: git://git.kernel.org/pub/scm/virt/kvm/kvm.git next
+>
+> guest_memfd VMAs don't need to be merged, especially now, since guest_memfd
+> only supports PAGE_SIZE folios.
+>
+> Set VM_DONTEXPAND on guest_memfd VMAs.
+>
 
-[auto build test ERROR on kvm/queue]
-[also build test ERROR on kvm/next linus/master v6.19-rc8]
-[cannot apply to kvm/linux-next next-20260204]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch#_base_tree_information]
+Local tests and syzbot agree that this fixes the issue identified. :)
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Zixing-Liu/KVM-Add-KVM_GET_REG_LIST-ioctl-for-LoongArch/20260204-193844
-base:   https://git.kernel.org/pub/scm/virt/kvm/kvm.git queue
-patch link:    https://lore.kernel.org/r/20260204113601.912413-1-liushuyu%40aosc.io
-patch subject: [PATCH v4] KVM: Add KVM_GET_REG_LIST ioctl for LoongArch
-config: loongarch-defconfig (https://download.01.org/0day-ci/archive/20260205/202602050229.BAdKUB3a-lkp@intel.com/config)
-compiler: clang version 19.1.7 (https://github.com/llvm/llvm-project cd708029e0b2869e80abe31ddb175f7c35361f90)
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260205/202602050229.BAdKUB3a-lkp@intel.com/reproduce)
+I would like to look into madvise(MADV_COLLAPSE) and uprobes triggering
+mapping/folio collapsing before submitting a full patch series.
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202602050229.BAdKUB3a-lkp@intel.com/
+David, Michael, Vishal, what do you think of the choice of setting
+VM_DONTEXPAND to disable khugepaged?
 
-All error/warnings (new ones prefixed by >>):
++ For 4K guest_memfd, there's really nothing to expand
++ For THP and HugeTLB guest_memfd (future), we actually don't want
+expansion of the VMAs.
 
-   In file included from arch/loongarch/kvm/vcpu.c:6:
-   In file included from arch/loongarch/include/asm/kvm_host.h:21:
-   In file included from arch/loongarch/include/asm/kvm_mmu.h:9:
->> include/linux/kvm_host.h:389:23: error: field has incomplete type 'struct kvm_vcpu_arch'
-     389 |         struct kvm_vcpu_arch arch;
-         |                              ^
-   include/linux/kvm_host.h:389:9: note: forward declaration of 'struct kvm_vcpu_arch'
-     389 |         struct kvm_vcpu_arch arch;
-         |                ^
->> include/linux/kvm_host.h:390:23: error: field has incomplete type 'struct kvm_vcpu_stat'
-     390 |         struct kvm_vcpu_stat stat;
-         |                              ^
-   include/linux/kvm_host.h:390:9: note: forward declaration of 'struct kvm_vcpu_stat'
-     390 |         struct kvm_vcpu_stat stat;
-         |                ^
->> include/linux/kvm_host.h:601:30: error: field has incomplete type 'struct kvm_arch_memory_slot'
-     601 |         struct kvm_arch_memory_slot arch;
-         |                                     ^
-   include/linux/kvm_host.h:601:9: note: forward declaration of 'struct kvm_arch_memory_slot'
-     601 |         struct kvm_arch_memory_slot arch;
-         |                ^
->> include/linux/kvm_host.h:831:21: error: field has incomplete type 'struct kvm_vm_stat'
-     831 |         struct kvm_vm_stat stat;
-         |                            ^
-   include/linux/kvm_host.h:831:9: note: forward declaration of 'struct kvm_vm_stat'
-     831 |         struct kvm_vm_stat stat;
-         |                ^
->> include/linux/kvm_host.h:832:18: error: field has incomplete type 'struct kvm_arch'
-     832 |         struct kvm_arch arch;
-         |                         ^
-   include/linux/kvm_host.h:832:9: note: forward declaration of 'struct kvm_arch'
-     832 |         struct kvm_arch arch;
-         |                ^
->> include/linux/kvm_host.h:1023:11: error: use of undeclared identifier 'KVM_MAX_VCPUS'
-    1023 |         if (id < KVM_MAX_VCPUS)
-         |                  ^
-   In file included from arch/loongarch/kvm/vcpu.c:6:
->> arch/loongarch/include/asm/kvm_host.h:46:9: warning: 'KVM_DIRTY_LOG_MANUAL_CAPS' macro redefined [-Wmacro-redefined]
-      46 | #define KVM_DIRTY_LOG_MANUAL_CAPS       \
-         |         ^
-   include/linux/kvm_host.h:643:9: note: previous definition is here
-     643 | #define KVM_DIRTY_LOG_MANUAL_CAPS KVM_DIRTY_LOG_MANUAL_PROTECT_ENABLE
-         |         ^
->> arch/loongarch/kvm/vcpu.c:48:10: error: assigning to 'struct kvm_context *' from incompatible type 'void'
-      48 |         context = this_cpu_ptr(vcpu->kvm->arch.vmcs);
-         |                 ^ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-   arch/loongarch/kvm/vcpu.c:63:10: error: assigning to 'struct kvm_context *' from incompatible type 'void'
-      63 |         context = this_cpu_ptr(vcpu->kvm->arch.vmcs);
-         |                 ^ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-   arch/loongarch/kvm/vcpu.c:1669:11: error: assigning to 'struct kvm_context *' from incompatible type 'void'
-    1669 |                 context = per_cpu_ptr(vcpu->kvm->arch.vmcs, cpu);
-         |                         ^ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-   arch/loongarch/kvm/vcpu.c:1691:10: error: assigning to 'struct kvm_context *' from incompatible type 'void'
-    1691 |         context = per_cpu_ptr(vcpu->kvm->arch.vmcs, cpu);
-         |                 ^ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-   1 warning and 10 errors generated.
+IIUC setting VM_DONTEXPAND doesn't affect mremap() as long as the
+remapping does not involve expansion.
 
-
-vim +389 include/linux/kvm_host.h
-
-af585b921e5d1e include/linux/kvm_host.h Gleb Natapov        2010-10-14  372  
-4c088493c8d07e include/linux/kvm_host.h Raghavendra K T     2012-07-18  373  #ifdef CONFIG_HAVE_KVM_CPU_RELAX_INTERCEPT
-4c088493c8d07e include/linux/kvm_host.h Raghavendra K T     2012-07-18  374  	/*
-4c088493c8d07e include/linux/kvm_host.h Raghavendra K T     2012-07-18  375  	 * Cpu relax intercept or pause loop exit optimization
-4c088493c8d07e include/linux/kvm_host.h Raghavendra K T     2012-07-18  376  	 * in_spin_loop: set when a vcpu does a pause loop exit
-4c088493c8d07e include/linux/kvm_host.h Raghavendra K T     2012-07-18  377  	 *  or cpu relax intercepted.
-4c088493c8d07e include/linux/kvm_host.h Raghavendra K T     2012-07-18  378  	 * dy_eligible: indicates whether vcpu is eligible for directed yield.
-4c088493c8d07e include/linux/kvm_host.h Raghavendra K T     2012-07-18  379  	 */
-4c088493c8d07e include/linux/kvm_host.h Raghavendra K T     2012-07-18  380  	struct {
-4c088493c8d07e include/linux/kvm_host.h Raghavendra K T     2012-07-18  381  		bool in_spin_loop;
-4c088493c8d07e include/linux/kvm_host.h Raghavendra K T     2012-07-18  382  		bool dy_eligible;
-4c088493c8d07e include/linux/kvm_host.h Raghavendra K T     2012-07-18  383  	} spin_loop;
-4c088493c8d07e include/linux/kvm_host.h Raghavendra K T     2012-07-18  384  #endif
-a6816314af5749 include/linux/kvm_host.h David Matlack       2024-05-03  385  	bool wants_to_run;
-3a08a8f9f0936e include/linux/kvm_host.h Raghavendra K T     2013-03-04  386  	bool preempted;
-d73eb57b80b98a include/linux/kvm_host.h Wanpeng Li          2019-07-18  387  	bool ready;
-d1ae567fb8b559 include/linux/kvm_host.h Sean Christopherson 2024-05-21  388  	bool scheduled_out;
-d657a98e3c2053 drivers/kvm/kvm.h        Zhang Xiantao       2007-12-14 @389  	struct kvm_vcpu_arch arch;
-ce55c049459cff include/linux/kvm_host.h Jing Zhang          2021-06-18 @390  	struct kvm_vcpu_stat stat;
-ce55c049459cff include/linux/kvm_host.h Jing Zhang          2021-06-18  391  	char stats_id[KVM_STATS_NAME_SIZE];
-fb04a1eddb1a65 include/linux/kvm_host.h Peter Xu            2020-09-30  392  	struct kvm_dirty_ring dirty_ring;
-fe22ed827c5b60 include/linux/kvm_host.h David Matlack       2021-08-04  393  
-fe22ed827c5b60 include/linux/kvm_host.h David Matlack       2021-08-04  394  	/*
-a54d806688fe1e include/linux/kvm_host.h Maciej S. Szmigiero 2021-12-06  395  	 * The most recently used memslot by this vCPU and the slots generation
-a54d806688fe1e include/linux/kvm_host.h Maciej S. Szmigiero 2021-12-06  396  	 * for which it is valid.
-a54d806688fe1e include/linux/kvm_host.h Maciej S. Szmigiero 2021-12-06  397  	 * No wraparound protection is needed since generations won't overflow in
-a54d806688fe1e include/linux/kvm_host.h Maciej S. Szmigiero 2021-12-06  398  	 * thousands of years, even assuming 1M memslot operations per second.
-fe22ed827c5b60 include/linux/kvm_host.h David Matlack       2021-08-04  399  	 */
-a54d806688fe1e include/linux/kvm_host.h Maciej S. Szmigiero 2021-12-06  400  	struct kvm_memory_slot *last_used_slot;
-a54d806688fe1e include/linux/kvm_host.h Maciej S. Szmigiero 2021-12-06  401  	u64 last_used_slot_gen;
-d657a98e3c2053 drivers/kvm/kvm.h        Zhang Xiantao       2007-12-14  402  };
-d657a98e3c2053 drivers/kvm/kvm.h        Zhang Xiantao       2007-12-14  403  
-
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+> In addition, this disables khugepaged from operating on guest_memfd folios,
+> which may result in unintended merging of guest_memfd folios.
+>
+> Change-Id: I5867edcb66b075b54b25260afd22a198aee76df1
+> Signed-off-by: Ackerley Tng <ackerleytng@google.com>
+> ---
+>  virt/kvm/guest_memfd.c | 6 ++++++
+>  1 file changed, 6 insertions(+)
+>
+> diff --git a/virt/kvm/guest_memfd.c b/virt/kvm/guest_memfd.c
+> index fdaea3422c30..3d4ac461c28b 100644
+> --- a/virt/kvm/guest_memfd.c
+> +++ b/virt/kvm/guest_memfd.c
+> @@ -480,6 +480,12 @@ static int kvm_gmem_mmap(struct file *file, struct vm_area_struct *vma)
+>  		return -EINVAL;
+>  	}
+>
+> +	/*
+> +	 * Disable VMA merging - guest_memfd VMAs should be
+> +	 * static. This also stops khugepaged from operating on
+> +	 * guest_memfd VMAs and folios.
+> +	 */
+> +	vm_flags_set(vma, VM_DONTEXPAND);
+>  	vma->vm_ops = &kvm_gmem_vm_ops;
+>
+>  	return 0;
+> --
+> 2.53.0.rc2.204.g2597b5adb4-goog
