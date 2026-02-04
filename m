@@ -1,125 +1,88 @@
-Received: from out-183.mta0.migadu.com (out-183.mta0.migadu.com [91.218.175.183])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pg1-f201.google.com (mail-pg1-f201.google.com [209.85.215.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE42225776
-	for <kvm@vger.kernel.org>; Wed,  4 Feb 2026 00:10:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.183
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F3841770FE
+	for <kvm@vger.kernel.org>; Wed,  4 Feb 2026 00:10:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770163828; cv=none; b=SeZJxMVIGVXc9hsOmZ0b6z0RmeUamIkB74hpuC2hUx+vshoD8JI4dPnovtugvgjchdfIp5jqRYt3X/G49UrQtEqIGRkcDDnG9i1eaGsPefSbZVlxvhKhQIu++6wOcW/6UTtBVHXhe5jmsQWXRRJZolGy4oL4kfOzEmGg5JGFR00=
+	t=1770163831; cv=none; b=PGwF4PI1UU5bpamcfnpy7XmAPHditshw0MI+77e8PRPgs6SJOAE2bPxwjoPNTGDBzkwWsAYdh/y+sdNY8yv2G1SZcob+23q4i1TRj9aRWO4OE9eJehg1p2ipGV0D2iudsSZYaS+N2CmhNMNRN8mCzuL/Bk0c4X5NfKCH4rPXkNo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770163828; c=relaxed/simple;
-	bh=ESxIp4/yXKBosB0FyqK/1O/fQD+MS4ChEKPfTEhgPBo=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=lbC3CJ1Ut/RVnWQoks8GuXoa3ghlN8edh9epYvIQ4xf1wxfZfzR/U5yF15gnqs2vU6wLNRk5Qe21+A2/yRkibrWtqaWQ61rV7W5NMcUfSCBQej3EwhRgHe1rH1orblWYZkW8yl31Sst3on5MPQscJUjryueVKFmcLdPDGzCJqTU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=ApRMKyWe; arc=none smtp.client-ip=91.218.175.183
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	s=arc-20240116; t=1770163831; c=relaxed/simple;
+	bh=+cL1KlAZeM+JmA6qui5M31iMAkVWU2JYES1SjXcaUSM=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=octwQf/DcHmjV/0S7iLmK3CYFcqqmSJzgW5Vqfca8WeCggQe1g54NyH1PmfDQmSnd3LGiNboCfjXpwPKckZ4WGj+bch4hcmG73UTAhGPON5mqW3khkeVaPXSUFWfxvjp2CL5ydgfWNchK2iHJJj/bzzatF+IzXrOhZgn7n0AFfU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=QhNc7UtV; arc=none smtp.client-ip=209.85.215.201
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="ApRMKyWe"
-Message-ID: <7e49472c-4bbc-49fe-92c6-621e4675d882@linux.dev>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1770163814;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=zPnG+2FnaGlQfzxXfIjWuGajlOFPpBxdoaiBCLVKvoU=;
-	b=ApRMKyWeexGTzglygbcOHhU7Wfd4rnLeiMI+Jogeatu2nhRqIkK0lA//+bUOV3vFAbHCoJ
-	mS0BsrYP93R9bxyxRU1fhniBcUvx2p4NhTCXzAkUT0zL/EyR+YUdOmdiWZC6zP6HhDzLGT
-	UyQfu6GTd6zJWiBQ6KJq5hvzWsaEowg=
-Date: Tue, 3 Feb 2026 16:10:04 -0800
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="QhNc7UtV"
+Received: by mail-pg1-f201.google.com with SMTP id 41be03b00d2f7-c5eed9a994dso3721292a12.2
+        for <kvm@vger.kernel.org>; Tue, 03 Feb 2026 16:10:29 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1770163829; x=1770768629; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=GiWhw84HjKLziV0r3dH07YAQ/LRLY7phMFHrcPaLI4s=;
+        b=QhNc7UtVy1/RIdpA6b0HlfcYJgJYOWOGFeLZiqn4ddfZ/b6mgwM8Ob8C4yxw85aOBH
+         DapfuMHKNIn0xgsa385l0gXidRJT0XbU7Jtn7vOiHfmR/dz2oMx72qQcc2ALhEMSoiv2
+         mNNjEUMsC5lDWGU9Y7ynFZ5RjVexrDgLO5UyWWYOttJbxrIn2Dx1rxmDeODkchMDS5Ep
+         if2WTLsxDbCx8kyQ278SWNMpbAJT3JOMFtbcoeHTlmrekNic5oqKCoPVPpI7gErDiN7n
+         RwJ+OQlBBVM6gWm5+q0QVYhVjlkI7AmOJCfHCdtzSt/N42bTrdj7mvQQrUufTdHWVIx4
+         wfBw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1770163829; x=1770768629;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=GiWhw84HjKLziV0r3dH07YAQ/LRLY7phMFHrcPaLI4s=;
+        b=hsPKjHsQmA2Sth0QcWcr5rScMAX7CutpBXsV2w63dByiPm35NF9DQ/0mCnAsT6wLGo
+         6WlyataY5+YJ3oGfCYIOFVMSp5wpbWHEKhVJzdMADeu+WCNhjMbTktAbMyJYx4GjAfr8
+         5Mc7fenefvwBzYWH84yO2a5GdwgjyjXH/X4+2mHB030/lA9W5zdx/JVRY7/iwXs7IpTK
+         767OkXjb2wIDIsCLLOLxiXWXrSnAXslIVhzcTaMCl9wWQivQIVU8EQCWf2x8EU2Q0kkt
+         BmBrm4RPJ8wDbw/EW3/51xkLySAb0Lx3H3eq1qizBeKDIXQ8Cyd85fa0BLyjg9WPVGQk
+         CqOQ==
+X-Gm-Message-State: AOJu0Yx+Gn8fu6PorspWF9RufxVJyRX2jl7qXKYR3eE9hRf2y4+5wEyu
+	i7YZ6nNkNBPH2UeQTFnBYzYJD/eogfkiW4o4LVakirebGmbn1HuEKXivWv0dV4ovw7pDqy+HSD2
+	RcZhpug==
+X-Received: from pjbsc11.prod.google.com ([2002:a17:90b:510b:b0:34a:b8e4:f1b9])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:2889:b0:335:2747:a9b3
+ with SMTP id 98e67ed59e1d1-3548720a3eamr825743a91.32.1770163829330; Tue, 03
+ Feb 2026 16:10:29 -0800 (PST)
+Date: Tue,  3 Feb 2026 16:10:15 -0800
+In-Reply-To: <20260122053551.548229-1-zhiquan_li@163.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Subject: Re: [PATCH v2 02/22] PCI: Add API to track PCI devices preserved
- across Live Update
-To: David Matlack <dmatlack@google.com>
-Cc: Alex Williamson <alex@shazbot.org>,
- Adithya Jayachandran <ajayachandra@nvidia.com>,
- Alexander Graf <graf@amazon.com>, Alex Mastro <amastro@fb.com>,
- Alistair Popple <apopple@nvidia.com>,
- Andrew Morton <akpm@linux-foundation.org>, Ankit Agrawal
- <ankita@nvidia.com>, Bjorn Helgaas <bhelgaas@google.com>,
- Chris Li <chrisl@kernel.org>, David Rientjes <rientjes@google.com>,
- Jacob Pan <jacob.pan@linux.microsoft.com>, Jason Gunthorpe <jgg@nvidia.com>,
- Jason Gunthorpe <jgg@ziepe.ca>, Jonathan Corbet <corbet@lwn.net>,
- Josh Hilke <jrhilke@google.com>, Kevin Tian <kevin.tian@intel.com>,
- kexec@lists.infradead.org, kvm@vger.kernel.org,
- Leon Romanovsky <leon@kernel.org>, Leon Romanovsky <leonro@nvidia.com>,
- linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-kselftest@vger.kernel.org, linux-mm@kvack.org,
- linux-pci@vger.kernel.org, Lukas Wunner <lukas@wunner.de>,
- =?UTF-8?Q?Micha=C5=82_Winiarski?= <michal.winiarski@intel.com>,
- Mike Rapoport <rppt@kernel.org>, Parav Pandit <parav@nvidia.com>,
- Pasha Tatashin <pasha.tatashin@soleen.com>,
- Pranjal Shrivastava <praan@google.com>, Pratyush Yadav
- <pratyush@kernel.org>, Raghavendra Rao Ananta <rananta@google.com>,
- Rodrigo Vivi <rodrigo.vivi@intel.com>, Saeed Mahameed <saeedm@nvidia.com>,
- Samiullah Khawaja <skhawaja@google.com>,
- Shuah Khan <skhan@linuxfoundation.org>,
- =?UTF-8?Q?Thomas_Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
- Tomita Moeko <tomitamoeko@gmail.com>, Vipin Sharma <vipinsh@google.com>,
- Vivek Kasireddy <vivek.kasireddy@intel.com>, William Tu <witu@nvidia.com>,
- Yi Liu <yi.l.liu@intel.com>
-References: <20260129212510.967611-1-dmatlack@google.com>
- <20260129212510.967611-3-dmatlack@google.com>
- <44484594-5b5d-4237-993c-ac1e173ad62e@linux.dev>
- <CALzav=d1ZrHrWd-HhZJ8aY6aqxkBcLoet_5+-LL1mOakVTj6Ww@mail.gmail.com>
-Content-Language: en-US
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: "Yanjun.Zhu" <yanjun.zhu@linux.dev>
-In-Reply-To: <CALzav=d1ZrHrWd-HhZJ8aY6aqxkBcLoet_5+-LL1mOakVTj6Ww@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
+Mime-Version: 1.0
+References: <20260122053551.548229-1-zhiquan_li@163.com>
+X-Mailer: git-send-email 2.53.0.rc2.204.g2597b5adb4-goog
+Message-ID: <177016372870.574944.18012293019277636771.b4-ty@google.com>
+Subject: Re: [PATCH] KVM: selftests: Add -U_FORTIFY_SOURCE to avoid some
+ unpredictable test failures
+From: Sean Christopherson <seanjc@google.com>
+To: Sean Christopherson <seanjc@google.com>, pbonzini@redhat.com, shuah@kernel.org, 
+	Zhiquan Li <zhiquan_li@163.com>
+Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="utf-8"
 
+On Thu, 22 Jan 2026 13:35:50 +0800, Zhiquan Li wrote:
+> Some distributions (such as Ubuntu) configure GCC so that
+> _FORTIFY_SOURCE is automatically enabled at -O1 or above.  This results
+> in some fortified version of definitions of standard library functions
+> are included.  While linker resolves the symbols, the fortified versions
+> might override the definitions in lib/string_override.c and reference to
+> those PLT entries in GLIBC.  This is not a problem for the code in host,
+> but it is a disaster for the guest code.  E.g., if build and run
+> x86/nested_emulation_test on Ubuntu 24.04 will encounter a L1 #PF due to
+> memset() reference to __memset_chk@plt.
+> 
+> [...]
 
-On 2/2/26 10:14 AM, David Matlack wrote:
-> On Sat, Jan 31, 2026 at 10:38 PM Zhu Yanjun <yanjun.zhu@linux.dev> wrote:
->> 在 2026/1/29 13:24, David Matlack 写道:
->>> Add an API to enable the PCI subsystem to track all devices that are
->>> preserved across a Live Update, including both incoming devices (passed
->>> from the previous kernel) and outgoing devices (passed to the next
->>> kernel).
->>>
->>> Use PCI segment number and BDF to keep track of devices across Live
->>> Update. This means the kernel must keep both identifiers constant across
->>> a Live Update for any preserved device. VFs are not supported for now,
->>> since that requires preserving SR-IOV state on the device to ensure the
->>> same number of VFs appear after kexec and with the same BDFs.
->>>
->>> Drivers that preserve devices across Live Update can now register their
->>> struct liveupdate_file_handler with the PCI subsystem so that the PCI
->>> subsystem can allocate and manage File-Lifecycle-Bound (FLB) global data
->>> to track the list of incoming and outgoing preserved devices.
->>>
->>>     pci_liveupdate_register_fh(driver_fh)
->>>     pci_liveupdate_unregister_fh(driver_fh)
->> Can the above 2 functions support the virtual devices? For example,
->> bonding, veth, iSWAP and RXE.
->>
->> These virtual devices do not have BDF. As such, I am not sure if your
->> patches take these virtual devices in to account.
-> No this patch series only supports PCI devices, since those are the
-> only devices so far we've needed to support.
->
-> I am not familiar with any of the devices that you mentioned. If they
-> are virtual then does that mean it's all just software? In that case I
-> would be curious to know what problem is solved by preserving them in
-> the kernel, vs. tearing them down and rebuilding them across a Live
-> Udpate.
+Applied to kvm-x86 fixes, thanks!
 
-Bonding, veth, rxe, and siw can be used in KVM environments.
+[1/1] KVM: selftests: Add -U_FORTIFY_SOURCE to avoid some unpredictable test failures
+      https://github.com/kvm-x86/linux/commit/e396a7422265
 
-Although these are software-only virtual devices with no associated 
-hardware,
-
-they may maintain state that is observable by userspace.
-
-As a result, Live Update should preserve their state across the update.
-
-Zhu Yanjun
-
+--
+https://github.com/kvm-x86/linux/tree/next
