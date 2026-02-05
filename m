@@ -1,62 +1,63 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 57B663D410E;
-	Thu,  5 Feb 2026 12:25:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.15
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2D383A0B0C;
+	Thu,  5 Feb 2026 12:36:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.9
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770294311; cv=none; b=Y2SiJvFgwrTF9V6Ozw68cVbf8OKZzuFXYvOekXN73aLPhMDXoyJnccffItzrntgBRBzwkcuiSlmvLOxVvFrenqvBIAPR+2BLLu+ugRgPuLu/ejmior7wCu9OikEbu252WohmffGEOmX3eZDyi4hrgL1dcraKmCQMzkIfTydVd9w=
+	t=1770294972; cv=none; b=hr3Qj5csE9i4eH4Oqm/TZprebzTrWtXNQeEk/OhlqY+heiAwoZbzyhJ0namV605ulmMOGufrDt5wrh8+j4FALKvO0z11crMqiHvHmLpHBFyMggWcMxqrIMDrbC4o8YWfLAtc0vYLsbNKcomVuhxDK9gITcn2lJZgTTSSWFbUCg4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770294311; c=relaxed/simple;
-	bh=0GxPD7vFuBMbKv45f3bDtAmwM8ZZQNVkxGgHfJXu32k=;
+	s=arc-20240116; t=1770294972; c=relaxed/simple;
+	bh=1o9nRoYrT4ZxuzQQkQs5GnNFnEpSrWQvVQNAVYT0lkI=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=i+Y/+Zge+t7VBP3Up20TkRm9OUvvNibFkddj1XIwR4yA58M405rgEuNn2pKDjciITXCbhZacsjlpO73m3j93fMrWROrxS1Psg6Ni2YXrxN8DQ8GMPVRx5U4wSJlT1g9DF/J6Y2oFOHPettHUcSHoFHMoMskW07VXkumySPy6gog=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=bHpDtDAo; arc=none smtp.client-ip=192.198.163.15
+	 Content-Type:Content-Disposition:In-Reply-To; b=GFffgjSvRq83VVnQAxRAaD2WIoqEC5bUFxTNrSQfK06S9+lL9v3G7BFIxuZdJBimkmFqlV5Z1sYjAbJola1GHqjCcmWcVcf7ZZxq+BjeEjm2DZ9GY/c6lv8kPXcZrAclYg16Z79gJHAGIj1dmSQV49UDw8r/EBXD+OXymVIxtvM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=T+zuAFEh; arc=none smtp.client-ip=198.175.65.9
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="bHpDtDAo"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="T+zuAFEh"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1770294311; x=1801830311;
+  t=1770294972; x=1801830972;
   h=date:from:to:cc:subject:message-id:references:
    mime-version:in-reply-to;
-  bh=0GxPD7vFuBMbKv45f3bDtAmwM8ZZQNVkxGgHfJXu32k=;
-  b=bHpDtDAoE7A7xRECTX/iVG5GpoZMWBghv+Xs/fIzZSe4+Ba+v7MwgXU2
-   CT8/VhicPgO1Va2xKbo30bxYDBKco+DSE3nY7eyMNTjl1Gxp668wBz/FQ
-   +1y/cveB/PbddmO090RTswygMDYpLN78PDdLUH/SZ4Plxu3sCbI6ydyH6
-   X/b22jEeHJ8OXOrLyrtdsvaIlArn0F/6ZmZB+Y1vJavu3AdDkS1ZjhwyA
-   XbCIAsE3y3F+QQR7aEky3viv0roCLuVPcr8dcRiasInr6qau5lbnomwkH
-   g/UsUvSZlgdG/ZhhCQK819D9VJkmB0IQ3muiR667qCoRcHMg3twOBW6pv
+  bh=1o9nRoYrT4ZxuzQQkQs5GnNFnEpSrWQvVQNAVYT0lkI=;
+  b=T+zuAFEhrM4SRDM/kHQODHH49yc+we2li4YhG53J7hHdRs2HDDseWp/3
+   r2KHu+nLgDW18WcG7DKzysSIVhXonMPNAdcjMvl07vZ0hsGbIBwySX+Ob
+   q8nZwFOGQZDFrcDJdeHpvdi8kcIRkvUapuB/YNP71mXOhgGK6W0ITYEjO
+   eyupKSRAfH10SSNY1uVshMvwyZuKB+YeEV+yW7dC6OYCNKfz1f8i726oY
+   YuCg7YV4JX4BWEkfo4O4+InOzyoXVvNzC32H+KmlqqcVljpX0zc5XgPoo
+   4ALTG3Q7wbo27ZxU3QXuL2CTuuqJYdF6W8xgsu+1Sk7aWBsPopdK6J16T
    w==;
-X-CSE-ConnectionGUID: x7iuJmSAR5K1aGDjH8NKPQ==
-X-CSE-MsgGUID: FfUcm4eGRpSgyUuXmceZkQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11691"; a="71586942"
+X-CSE-ConnectionGUID: 8riIcqrISQ6Y19qY+/iJUg==
+X-CSE-MsgGUID: tKqnenlsSt+2BRPdFXvLeQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11691"; a="94141600"
 X-IronPort-AV: E=Sophos;i="6.21,274,1763452800"; 
-   d="scan'208";a="71586942"
+   d="scan'208";a="94141600"
 Received: from orviesa010.jf.intel.com ([10.64.159.150])
-  by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Feb 2026 04:25:10 -0800
-X-CSE-ConnectionGUID: aTb3IzCnRiKkOV9NRvAx3g==
-X-CSE-MsgGUID: sO7gi7MXTGiWOZ//ffcmAg==
+  by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Feb 2026 04:36:12 -0800
+X-CSE-ConnectionGUID: A9sE/6y9RFW99Xw8YfOSuw==
+X-CSE-MsgGUID: Jplz5ri8SsqM+aIDTkHy8g==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.21,274,1763452800"; 
-   d="scan'208";a="209785684"
+   d="scan'208";a="209789179"
 Received: from lkp-server01.sh.intel.com (HELO 765f4a05e27f) ([10.239.97.150])
-  by orviesa010.jf.intel.com with ESMTP; 05 Feb 2026 04:25:07 -0800
+  by orviesa010.jf.intel.com with ESMTP; 05 Feb 2026 04:36:08 -0800
 Received: from kbuild by 765f4a05e27f with local (Exim 4.98.2)
 	(envelope-from <lkp@intel.com>)
-	id 1vnyPw-00000000jnr-2s1v;
-	Thu, 05 Feb 2026 12:25:04 +0000
-Date: Thu, 5 Feb 2026 20:24:54 +0800
+	id 1vnyab-00000000joW-0WB7;
+	Thu, 05 Feb 2026 12:36:05 +0000
+Date: Thu, 5 Feb 2026 20:35:25 +0800
 From: kernel test robot <lkp@intel.com>
 To: Nikunj A Dadhania <nikunj@amd.com>, linux-kernel@vger.kernel.org,
 	kvm@vger.kernel.org, bp@alien8.de, thomas.lendacky@amd.com
-Cc: oe-kbuild-all@lists.linux.dev, tglx@kernel.org, mingo@redhat.com,
-	dave.hansen@linux.intel.com, hpa@zytor.com, xin@zytor.com,
-	seanjc@google.com, pbonzini@redhat.com, x86@kernel.org,
-	jon.grimm@amd.com, nikunj@amd.com, stable@vger.kernel.org
+Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev, tglx@kernel.org,
+	mingo@redhat.com, dave.hansen@linux.intel.com, hpa@zytor.com,
+	xin@zytor.com, seanjc@google.com, pbonzini@redhat.com,
+	x86@kernel.org, jon.grimm@amd.com, nikunj@amd.com,
+	stable@vger.kernel.org
 Subject: Re: [PATCH] x86/fred: Fix early boot failures on SEV-ES/SNP guests
-Message-ID: <202602052058.qsluYkXo-lkp@intel.com>
+Message-ID: <202602052054.J3CEkmKB-lkp@intel.com>
 References: <20260205051030.1225975-1-nikunj@amd.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
@@ -78,37 +79,30 @@ url:    https://github.com/intel-lab-lkp/linux/commits/Nikunj-A-Dadhania/x86-fre
 base:   3c2ca964f75460093a8aad6b314a6cd558e80e66
 patch link:    https://lore.kernel.org/r/20260205051030.1225975-1-nikunj%40amd.com
 patch subject: [PATCH] x86/fred: Fix early boot failures on SEV-ES/SNP guests
-config: x86_64-randconfig-161-20260205 (https://download.01.org/0day-ci/archive/20260205/202602052058.qsluYkXo-lkp@intel.com/config)
-compiler: gcc-14 (Debian 14.2.0-19) 14.2.0
-smatch version: v0.5.0-8994-gd50c5a4c
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260205/202602052058.qsluYkXo-lkp@intel.com/reproduce)
+config: x86_64-kexec (https://download.01.org/0day-ci/archive/20260205/202602052054.J3CEkmKB-lkp@intel.com/config)
+compiler: clang version 20.1.8 (https://github.com/llvm/llvm-project 87f0227cb60147a26a1eeb4fb06e3b505e9c7261)
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260205/202602052054.J3CEkmKB-lkp@intel.com/reproduce)
 
 If you fix the issue in a separate patch/commit (i.e. not just a new version of
 the same patch/commit), kindly add following tags
 | Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202602052058.qsluYkXo-lkp@intel.com/
+| Closes: https://lore.kernel.org/oe-kbuild-all/202602052054.J3CEkmKB-lkp@intel.com/
 
 All errors (new ones prefixed by >>):
 
-   arch/x86/entry/entry_fred.c: In function 'fred_hwexc':
->> arch/x86/entry/entry_fred.c:213:32: error: implicit declaration of function 'user_exc_vmm_communication' [-Wimplicit-function-declaration]
+>> arch/x86/entry/entry_fred.c:213:11: error: call to undeclared function 'user_exc_vmm_communication'; ISO C99 and later do not support implicit function declarations [-Wimplicit-function-declaration]
      213 |                         return user_exc_vmm_communication(regs, error_code);
-         |                                ^~~~~~~~~~~~~~~~~~~~~~~~~~
->> arch/x86/entry/entry_fred.c:213:32: error: 'return' with a value, in function returning void [-Wreturn-mismatch]
+         |                                ^
+   arch/x86/entry/entry_fred.c:213:4: warning: void function 'fred_hwexc' should not return a value [-Wreturn-mismatch]
      213 |                         return user_exc_vmm_communication(regs, error_code);
-         |                                ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-   arch/x86/entry/entry_fred.c:181:21: note: declared here
-     181 | static noinstr void fred_hwexc(struct pt_regs *regs, unsigned long error_code)
-         |                     ^~~~~~~~~~
->> arch/x86/entry/entry_fred.c:215:32: error: implicit declaration of function 'kernel_exc_vmm_communication' [-Wimplicit-function-declaration]
+         |                         ^      ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+>> arch/x86/entry/entry_fred.c:215:11: error: call to undeclared function 'kernel_exc_vmm_communication'; ISO C99 and later do not support implicit function declarations [-Wimplicit-function-declaration]
      215 |                         return kernel_exc_vmm_communication(regs, error_code);
-         |                                ^~~~~~~~~~~~~~~~~~~~~~~~~~~~
-   arch/x86/entry/entry_fred.c:215:32: error: 'return' with a value, in function returning void [-Wreturn-mismatch]
+         |                                ^
+   arch/x86/entry/entry_fred.c:215:4: warning: void function 'fred_hwexc' should not return a value [-Wreturn-mismatch]
      215 |                         return kernel_exc_vmm_communication(regs, error_code);
-         |                                ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-   arch/x86/entry/entry_fred.c:181:21: note: declared here
-     181 | static noinstr void fred_hwexc(struct pt_regs *regs, unsigned long error_code)
-         |                     ^~~~~~~~~~
+         |                         ^      ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   2 warnings and 2 errors generated.
 
 
 vim +/user_exc_vmm_communication +213 arch/x86/entry/entry_fred.c
