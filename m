@@ -1,133 +1,89 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
+Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2DC0334C04;
-	Thu,  5 Feb 2026 07:23:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.14
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B9EA3EBF0E;
+	Thu,  5 Feb 2026 07:31:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.137.202.133
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770276227; cv=none; b=QESX9Gs4wQm0n+jSf9nBu0BfImtexKF7Rh7rc2fVlYJ9pgU6dNQ/Gp7miFIN3lvXH7HDeUudRnP8qY0UaRSPQ1gNjsmiw93HzIjtLr6mLfIX5YfK0mQZDaPDjzPudYr/IHwRkZ16wIwjYjjUVcPh/KkxP6INlTyB0pMVUxTbqSo=
+	t=1770276681; cv=none; b=CTGJuFgfLN8C2TMhtcHFZ3yZFCvd/ByYG0hbZ2I6WNn2g/CzVBSDflR3E1wLXbEBXjnF3dTJtp5IOaS/p5+1MmNMMjIeifKW7aDTZmPuFO31TzW9ycG743a0mC/ANXz6NYNSyL0GyYLfMupI8TF7q1TkqOyu8rPxByybmjnRf1g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770276227; c=relaxed/simple;
-	bh=FgmZNaT1AJdOs3lof3+rnMI62Gul05tMmOYxnVyfbkM=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=GP424HfNlp/tDTUgBHk19t/qxLuNZWZthNvecfytWPYxaFNTjtR6sbPbLR67K+MRMuzOqfqv64CALZmOz8Ro7yGDEVs9gsphsTrTib0I7yH+yPWBNYS6nt3nOCxl1JVF5a0HbsIFxMs7bfkkJN3tbvtAtKCP84DYxO35jFxCabU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=agCF42zA; arc=none smtp.client-ip=198.175.65.14
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+	s=arc-20240116; t=1770276681; c=relaxed/simple;
+	bh=gmnXir8a0Af905VCHGr3Turgp544D4Y/HL7wc/XJ26Q=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=mTtNhoB0SC/juLiYSo7XOnzN8i0VnP/nRHaXvbW9VopeBHcKBnDkUbCEqmGmzucpR3Z1yTB/J4iQxSvpUxOB+WjGj4hdCF/2vgwKo6DaQ4L+pXPdFlRV7uxgNk6hzBzSD4q5EGxHlF6lKvGuqxn2tVol4+WRs3A2En1Dfn+aC2U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=FxSNuemR; arc=none smtp.client-ip=198.137.202.133
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=infradead.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="agCF42zA"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1770276227; x=1801812227;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=FgmZNaT1AJdOs3lof3+rnMI62Gul05tMmOYxnVyfbkM=;
-  b=agCF42zAxuBVhVQS8q2VvWYrlrkCT2ODu1cM10v8ui1sFGAjRUkxbNR6
-   rnhFQaTT0mrhYPT59/WMkhR14DuNtxVGgHKLHtP5Eaqr1oZm/XZtyM/J1
-   6NsyzpV6WhKKCPxbEW1Fgx399k2t0kP1ebX+BOPEwpoFTKi3dSWr+xSQ7
-   dlx3QdbplY4XPr8nBhlISDcxVt/BohwMEwIQwYdeD9FuBGUZeqghZgdBs
-   zFnBjM7BjGxUtFHHglP/nr0xGUKM68xtGKao1KBE08j68SxhMnw6UrH3u
-   zS6Frw3kKkKjm73pEQVOTdp/Q4LhAJLLxhz+7ZGcJTRL7nOvUBYyNFm1W
-   g==;
-X-CSE-ConnectionGUID: n81A8imZTBikNvPrxWRJ7Q==
-X-CSE-MsgGUID: ToEhKqrwTDWDAOks9art2Q==
-X-IronPort-AV: E=McAfee;i="6800,10657,11691"; a="75322708"
-X-IronPort-AV: E=Sophos;i="6.21,274,1763452800"; 
-   d="scan'208";a="75322708"
-Received: from fmviesa005.fm.intel.com ([10.60.135.145])
-  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Feb 2026 23:23:44 -0800
-X-CSE-ConnectionGUID: w4M3nSSLQ/mBj1j0Il6KlQ==
-X-CSE-MsgGUID: NkzCqGaoSdu69QFLY8HZpA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,274,1763452800"; 
-   d="scan'208";a="214913923"
-Received: from yilunxu-optiplex-7050.sh.intel.com (HELO localhost) ([10.239.159.165])
-  by fmviesa005.fm.intel.com with ESMTP; 04 Feb 2026 23:23:21 -0800
-Date: Thu, 5 Feb 2026 15:04:48 +0800
-From: Xu Yilun <yilun.xu@linux.intel.com>
-To: Jason Gunthorpe <jgg@ziepe.ca>
-Cc: Sean Christopherson <seanjc@google.com>,
-	Ackerley Tng <ackerleytng@google.com>,
-	Alexey Kardashevskiy <aik@amd.com>, cgroups@vger.kernel.org,
-	kvm@vger.kernel.org, linux-doc@vger.kernel.org,
-	linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-kselftest@vger.kernel.org, linux-mm@kvack.org,
-	linux-trace-kernel@vger.kernel.org, x86@kernel.org,
-	akpm@linux-foundation.org, binbin.wu@linux.intel.com, bp@alien8.de,
-	brauner@kernel.org, chao.p.peng@intel.com, chenhuacai@kernel.org,
-	corbet@lwn.net, dave.hansen@intel.com, dave.hansen@linux.intel.com,
-	david@redhat.com, dmatlack@google.com, erdemaktas@google.com,
-	fan.du@intel.com, fvdl@google.com, haibo1.xu@intel.com,
-	hannes@cmpxchg.org, hch@infradead.org, hpa@zytor.com,
-	hughd@google.com, ira.weiny@intel.com, isaku.yamahata@intel.com,
-	jack@suse.cz, james.morse@arm.com, jarkko@kernel.org,
-	jgowans@amazon.com, jhubbard@nvidia.com, jroedel@suse.de,
-	jthoughton@google.com, jun.miao@intel.com, kai.huang@intel.com,
-	keirf@google.com, kent.overstreet@linux.dev,
-	liam.merwick@oracle.com, maciej.wieczor-retman@intel.com,
-	mail@maciej.szmigiero.name, maobibo@loongson.cn,
-	mathieu.desnoyers@efficios.com, maz@kernel.org, mhiramat@kernel.org,
-	mhocko@kernel.org, mic@digikod.net, michael.roth@amd.com,
-	mingo@redhat.com, mlevitsk@redhat.com, mpe@ellerman.id.au,
-	muchun.song@linux.dev, nikunj@amd.com, nsaenz@amazon.es,
-	oliver.upton@linux.dev, palmer@dabbelt.com, pankaj.gupta@amd.com,
-	paul.walmsley@sifive.com, pbonzini@redhat.com, peterx@redhat.com,
-	pgonda@google.com, prsampat@amd.com, pvorel@suse.cz,
-	qperret@google.com, richard.weiyang@gmail.com,
-	rick.p.edgecombe@intel.com, rientjes@google.com,
-	rostedt@goodmis.org, roypat@amazon.co.uk, rppt@kernel.org,
-	shakeel.butt@linux.dev, shuah@kernel.org, steven.price@arm.com,
-	steven.sistare@oracle.com, suzuki.poulose@arm.com, tabba@google.com,
-	tglx@linutronix.de, thomas.lendacky@amd.com, vannapurve@google.com,
-	vbabka@suse.cz, viro@zeniv.linux.org.uk, vkuznets@redhat.com,
-	wei.w.wang@intel.com, will@kernel.org, willy@infradead.org,
-	wyihan@google.com, xiaoyao.li@intel.com, yan.y.zhao@intel.com,
-	yilun.xu@intel.com, yuzenghui@huawei.com, zhiquan1.li@intel.com
-Subject: Re: [RFC PATCH v1 05/37] KVM: guest_memfd: Wire up
- kvm_get_memory_attributes() to per-gmem attributes
-Message-ID: <aYRBEJSan8eoT8xw@yilunxu-OptiPlex-7050>
-References: <cover.1760731772.git.ackerleytng@google.com>
- <071a3c6603809186e914fe5fed939edee4e11988.1760731772.git.ackerleytng@google.com>
- <07836b1d-d0d8-40f2-8f7b-7805beca31d0@amd.com>
- <CAEvNRgEuez=JbArRf2SApLAL0usv5-Q6q=nBPOFMHrHGaKAtMw@mail.gmail.com>
- <20260129003753.GZ1641016@ziepe.ca>
- <aXqx3_eE0rNh6nP0@google.com>
- <aYHGVQTF6RUs7r3g@yilunxu-OptiPlex-7050>
- <20260203181618.GY2328995@ziepe.ca>
- <aYLOZIZU0nwk+0UN@yilunxu-OptiPlex-7050>
- <20260204124715.GA2328995@ziepe.ca>
+	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="FxSNuemR"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
+	MIME-Version:Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:
+	Content-ID:Content-Description:In-Reply-To:References;
+	bh=HzpHbgQPEOE/OZ8ppEkUfABhIP7OOPHs+lKkLu7Tvz0=; b=FxSNuemRDOlySafxufHByfKh0q
+	yCo5qVwZqnZHwqH1HyXsrsp+V7lpjxLK2hJG1X2BbxW+INFdnFv1kkRzThUHu7VNjr7ehLX48Dtin
+	VPqWEzrb4xpdLpLuNzOhm6VbsrbQfXyrVHsbtVGepmLghrhr0/3ETVo5NL4QyS9BFA8zBzTSuRGfz
+	FPADV1Hj3qq9eAhRi2h3PuEyB+G/kXrLLXXcUhJWYKIpQw211aTJ0f99kUf4gbT9CWxMQ4bWjVmFl
+	yOlmaWJXNHBOvm5wy58v7k4CGyb1LZiNKlkfWQZKl+kFUcVfIf22T3LaWWpmB4o0mWjiIsSTVBhIc
+	b8X+UrOg==;
+Received: from [50.53.43.113] (helo=bombadil.infradead.org)
+	by bombadil.infradead.org with esmtpsa (Exim 4.98.2 #2 (Red Hat Linux))
+	id 1vntpg-00000009Ydn-2Hjq;
+	Thu, 05 Feb 2026 07:31:20 +0000
+From: Randy Dunlap <rdunlap@infradead.org>
+To: linux-kernel@vger.kernel.org
+Cc: Randy Dunlap <rdunlap@infradead.org>,
+	kvm@vger.kernel.org,
+	Vitaly Kuznetsov <vkuznets@redhat.com>,
+	Sean Christopherson <seanjc@google.com>,
+	Paolo Bonzini <pbonzini@redhat.com>,
+	Heiko Carstens <hca@linux.ibm.com>,
+	Vasily Gorbik <gor@linux.ibm.com>,
+	Alexander Gordeev <agordeev@linux.ibm.com>,
+	Christian Borntraeger <borntraeger@linux.ibm.com>,
+	Sven Schnelle <svens@linux.ibm.com>,
+	linux-s390@vger.kernel.org
+Subject: [PATCH v2] s390: remove kvm_types.h from Kbuild
+Date: Wed,  4 Feb 2026 23:31:19 -0800
+Message-ID: <20260205073119.1886986-1-rdunlap@infradead.org>
+X-Mailer: git-send-email 2.52.0
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260204124715.GA2328995@ziepe.ca>
+Content-Transfer-Encoding: 8bit
 
-On Wed, Feb 04, 2026 at 08:47:15AM -0400, Jason Gunthorpe wrote:
-> On Wed, Feb 04, 2026 at 12:43:16PM +0800, Xu Yilun wrote:
-> > > Which means we need VFIO to know what they are, and hopefully it is
-> > > just static based on the TDISP reports..
-> > 
-> > I don't think VMM need to check TDISP report. The only special thing is
-> > the MSI-X mixed pages which can be figured out by standard PCI
-> > discovery.
-> 
-> Either that or follow along with the guests's choices on
-> shared/private.
-> 
-> We can't let VFIO mmap a private MMIO page, so it has to know which
-> pages are private at any moment, and it can't guess.
+kvm_types.h is mandatory in include/asm-generic/Kbuild so having it
+in another Kbuild file causes a warning. Remove it from the arch/
+Kbuild file to fix the warning.
 
-No we could only let VFIO mmap MMIO pages that need emulation (like this
-MSI-X mixed page). MMIOs in such page cannot be assigned to guest so no
-way to convert to private.
+../scripts/Makefile.asm-headers:39: redundant generic-y found in ../arch/s390/include/asm/Kbuild: kvm_types.h
 
-We don't allow VFIO mmap all asigned MMIO pages, no matter they will be
-private or shared. They are assigned to guest, so host don't touch them.
-Does that make sense?
+Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
+---
+v2: add more Cc:s
 
-> 
-> Jason
+Cc: kvm@vger.kernel.org
+Cc: Vitaly Kuznetsov <vkuznets@redhat.com>
+Cc: Sean Christopherson <seanjc@google.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>
+Cc: Heiko Carstens <hca@linux.ibm.com>
+Cc: Vasily Gorbik <gor@linux.ibm.com>
+Cc: Alexander Gordeev <agordeev@linux.ibm.com>
+Cc: Christian Borntraeger <borntraeger@linux.ibm.com>
+Cc: Sven Schnelle <svens@linux.ibm.com>
+Cc: linux-s390@vger.kernel.org
+
+ arch/s390/include/asm/Kbuild |    1 -
+ 1 file changed, 1 deletion(-)
+
+--- linux-next-20260202.orig/arch/s390/include/asm/Kbuild
++++ linux-next-20260202/arch/s390/include/asm/Kbuild
+@@ -5,6 +5,5 @@ generated-y += syscall_table.h
+ generated-y += unistd_nr.h
+ 
+ generic-y += asm-offsets.h
+-generic-y += kvm_types.h
+ generic-y += mcs_spinlock.h
+ generic-y += mmzone.h
