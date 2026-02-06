@@ -1,139 +1,133 @@
-Received: from mail-pf1-f202.google.com (mail-pf1-f202.google.com [209.85.210.202])
+Received: from mail-pg1-f173.google.com (mail-pg1-f173.google.com [209.85.215.173])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B9472E54AA
-	for <kvm@vger.kernel.org>; Fri,  6 Feb 2026 23:07:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.202
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 27BE5313291
+	for <kvm@vger.kernel.org>; Fri,  6 Feb 2026 23:14:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770419223; cv=none; b=tXRx6FGB0bAdQFqpFh2hY0SCHnVMaiP1nubipIr/kBTY6c2q9ZNaqqbwDn6cZpvsGIyzXD1l3LzEfse6EnV+MazTKv9sU8rjJl1j76Ml81NjJsZwpz4FdTiERXl73jPB0pnYKADe02l/+ZjixwflS3xIcKYZ9714f9ygq2HhdJQ=
+	t=1770419693; cv=none; b=JB5jSbqiPhqn6qPuw0It6cxb0bw4ZVX1PT/6YgJ8KYozTloTLFsaOjR9kVbNnLZIo3VUg+lqUKpYVaeh2p3/9veqmSh8l6S2UqLb3LN6mCs/dT4VVCrFoDAKeDXnADpAFY1gSfk7CU75E/STYKDskfr/GpIm5UFmRQoJ8NEiKho=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770419223; c=relaxed/simple;
-	bh=FcYDzvYt6qRCfMBuYQg/fNZI/Ov7o7ltbY9lGgUO2kM=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=tV2+oy+dztuXdUfkUN2Y9a+eCLSc8j+rxOG9l69eAKPcbsi0DrfYTNqnaMue2oB4IGYb7GehQqxPEHiWtscWltJPbw/wA81L6EMOJGGlATpFhqSehjP34AP88hzV5g9FvVOcU3gV/v/ilttXFme2IseErCPprkC/WED9DXNc1u0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=IKsXX8G9; arc=none smtp.client-ip=209.85.210.202
+	s=arc-20240116; t=1770419693; c=relaxed/simple;
+	bh=//lXxvGzvwvRX8TAWjBtg2RwKbUnQc3RJsVA6A3Oyik=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=bdehFWRwf4HpIebLyKJ4HnxkLX0iI3KQ+1dwMlvs6QfGGVc2psPjVFxATIjQ1P3rH9OgpWoe5Wc7ZrGh8puIHXEBOSQVZkOZVyfDBTlGm/TvsZeGWzSYJCPeLTBfXmzwTnOZ3ZXa6wYo3fnKvaYA3JC6r4ixu17N3dF3rnmsUMU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=g3tRWC1l; arc=none smtp.client-ip=209.85.215.173
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="IKsXX8G9"
-Received: by mail-pf1-f202.google.com with SMTP id d2e1a72fcca58-82442b44d94so711348b3a.2
-        for <kvm@vger.kernel.org>; Fri, 06 Feb 2026 15:07:02 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="g3tRWC1l"
+Received: by mail-pg1-f173.google.com with SMTP id 41be03b00d2f7-c0ec27cad8cso933364a12.1
+        for <kvm@vger.kernel.org>; Fri, 06 Feb 2026 15:14:53 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1770419222; x=1771024022; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:from:subject:message-id:references
-         :mime-version:in-reply-to:date:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=KZYAv7PTE+yvvy/ZSJd8rfyOzgaRiZuGA2UK+o3e2Dc=;
-        b=IKsXX8G93tbTYFPP3ASBcU66NWVIpzE/0Cgtvu7rXa+gc80NfMLcyCV/RD8VcvYdxl
-         ouY4zvKjE5h1x2T55o/nU2dDw+KCgMS/RJKVjIlDUJ7dRZjOS23MIq5THawr5GhYtdny
-         DV7NqzLAvypH0eRFhuMoD/aLZ1e9xxq1j2+kDBoO5IyoyEQyzWwa2hZgM/2MPpi2RIx5
-         8N2cngOFJansRlSfWNEcfxuDLGSMiWWkS21jr6VORg0bb0gLR1ZQ8zrVEqgoM52fH+la
-         zkfP3Jqwbx1vn1LexD8pvLCTveQwNjA5jh3OYu//psTam2q1SrREtoN9Z/vR+DJJBxPT
-         oaBQ==
+        d=google.com; s=20230601; t=1770419692; x=1771024492; darn=vger.kernel.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=xORO1Htmm6YxNYM1C9oAOOlxqgAaEPMiLYXG8QXy21k=;
+        b=g3tRWC1lBp4G6v57OMNJH/IWhVnKhZkgx/YZiytE6h7F/GblmQyEeomg0JeF945imr
+         3DB0TWRGaESQe070W0BWOsUsHHgvWnyNF6EEwR5gbcMaxsCWtsRq1Fe05Wodqe+0qye2
+         LBmPBBEaSzUa/6BVN4mGd5ytwg0pv9jYELANMZypZY/N1Rk4NZK0jaWANUovaQTw19Op
+         /8LEugHReBQZGwa4owCg//1Vcv3ViHo6xmE5eGqCTRiTfYejf8j7ME+YpxzTkLA9rqSr
+         Q2sFeCKKNGRwrLl2prU/fOIUJF/CpaYN2BHv2qZMRrBdGsbsQA9CbV1GnPE3RBNl1TaN
+         FKLg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1770419222; x=1771024022;
-        h=content-transfer-encoding:cc:to:from:subject:message-id:references
-         :mime-version:in-reply-to:date:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=KZYAv7PTE+yvvy/ZSJd8rfyOzgaRiZuGA2UK+o3e2Dc=;
-        b=IHqSU8d4EAgmQEoLaR1IP8tkryslU/+sA2XsApb7QGvuJy5pa2vxptagIWI2JhhHhE
-         M6jJRQogxt0mEB29qVmWeINNdmIoViIF3QqxNriBUFixW9yNlkxiLEDxVcxoqAAhbVGt
-         lyrvwlsDnNWY+VU6tktOA7a0gfhFmGb+598MLgcKWr30roCFxf9K6RvhuVGrw0x84uKW
-         30B5RIoiESbcOvqBl3n2yRHRS32heiUFd+r07OZb0FuRWLELb0Qp7Nj+AOccy0twTI+D
-         yV3rcLuLkq+z2CUpgrL3jhxt2QEqnx8zmWYpvNNWtfm2SChSrTXjuyqMHu1kq9IWb4Dj
-         /L+w==
-X-Forwarded-Encrypted: i=1; AJvYcCWCq8FsA173EwTVKWPNf2wiKhJGgI2qsJcccVzt98gFu01H8l9IDqGRxatkOUWrLGqJxtY=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyL8FNt9oUJqOnkyD+eDFBpT6wLpWVUjZG8CShL9b+on/JezAg/
-	I1EYyaqVda0kPG2dqbvu7SdihORFRPeqJBAYlgXjEYj+hhKUZuGCelqv/xKeoHxlASOZTS4/wBe
-	6WTEqsQ==
-X-Received: from pfbkq17.prod.google.com ([2002:a05:6a00:4b11:b0:823:6d9:cee8])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:e0a:b0:81f:852b:a934
- with SMTP id d2e1a72fcca58-82441623946mr3395482b3a.24.1770419222227; Fri, 06
- Feb 2026 15:07:02 -0800 (PST)
-Date: Fri, 6 Feb 2026 15:07:00 -0800
-In-Reply-To: <CALMp9eSRj=aykY7FbnPm1OgSwFSkJ=uVVmwsnGjV-A_-AQjxMQ@mail.gmail.com>
+        d=1e100.net; s=20230601; t=1770419692; x=1771024492;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=xORO1Htmm6YxNYM1C9oAOOlxqgAaEPMiLYXG8QXy21k=;
+        b=upJQ0ZWtvsHPx0cxdaWdeF657IaNINPQBV1hxVhk8PnvIa7SQ+WgLehn8V3VUSYN/X
+         +SRrCrNZQUwQUoo+g0NGm4JJOAoPduVsVJT9af2OsxhX25qKiSirAnOq/0NJytvtwFiU
+         HjNKKAkg/++HzQXzioOkX3XQct+kcNkRM3/ErOFzyKNpf8lmoh7OESlaeAJOKzSeUX/9
+         oYgbmTcaykUB0ZNd6g9DPFWQa6guRkmMD958s9DUgNfcNDe0C93r8+Sl1uWoDxi8cVgZ
+         5tSR/2yHizCzearGoOKOGFWsuLHMptlGMYgdYZzTnugLkKXZPRlCHv0Khg+7MreJR8Oj
+         j2PQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXa6tTjlBj020uwF1WaqkAibSYQ/mDmtHcm8uFc0pVxzI+HwyvZJNQK9QO92VzbGA/Ee9k=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzV2Wx9PO7mhJ/iviKxyEAV8UR0YQ/T2RcY+wV93nXb4iq/4gNv
+	HwEL8Nlyzv7o1+MY/OKr8k6+LpIdORJ6VlASJ3kzmazSk1jGeUIhydI0UpD0skujlw==
+X-Gm-Gg: AZuq6aLwUFArHgJHLCkwCWMLpd430nZzSO1LnoELWMDXxlDUkJe4aIxCRx/B+j8ovoi
+	nGKCOonrD2g/eIpQcvPyHP21sVl4qHgRUECQS8QNRxFgdf/WSRvkt0JhPYMTCydAgDd5EE79uRB
+	uuz3m3VVCr9YRa0np8802IXrwL5xNRsGskXCfr0PKcM0dyFBXepPiwOwOqj0XUYIVM4Sb+PRKkb
+	YGFIwjw4tmEH8HJSdObqN8bpqI32do8QY9oE0bFT0sYhZ+71wlKKwSVn6XGacW3j/cpAL+vGd0e
+	AVLiA2soYAhUtsDDvnNvIYmBir1/JnWqiQE8vejO+jwCvfMA9kt7v2qKMN7yg+XP5y+cu2VG0Nt
+	gW7sZSLkIRuJ1cXzAwRxYnqB2e92/WxZ1E61eVPpKaB/HxbARygRaEN95zXF3IHcqajgCFxxL6b
+	4lAS5YaJXezGC8MhWkFv8p67JWIkLD9AOjUt46sUm7BlARgyhzlg==
+X-Received: by 2002:a17:903:3bcb:b0:2a0:c1ed:c8c2 with SMTP id d9443c01a7336-2a95191f76emr38694515ad.55.1770419692202;
+        Fri, 06 Feb 2026 15:14:52 -0800 (PST)
+Received: from google.com (79.217.168.34.bc.googleusercontent.com. [34.168.217.79])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2a9521eb87fsm33865195ad.71.2026.02.06.15.14.51
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 06 Feb 2026 15:14:51 -0800 (PST)
+Date: Fri, 6 Feb 2026 23:14:46 +0000
+From: David Matlack <dmatlack@google.com>
+To: "Yanjun.Zhu" <yanjun.zhu@linux.dev>
+Cc: Alex Williamson <alex@shazbot.org>,
+	Adithya Jayachandran <ajayachandra@nvidia.com>,
+	Alexander Graf <graf@amazon.com>, Alex Mastro <amastro@fb.com>,
+	Alistair Popple <apopple@nvidia.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Ankit Agrawal <ankita@nvidia.com>,
+	Bjorn Helgaas <bhelgaas@google.com>, Chris Li <chrisl@kernel.org>,
+	David Rientjes <rientjes@google.com>,
+	Jacob Pan <jacob.pan@linux.microsoft.com>,
+	Jason Gunthorpe <jgg@nvidia.com>, Jason Gunthorpe <jgg@ziepe.ca>,
+	Jonathan Corbet <corbet@lwn.net>, Josh Hilke <jrhilke@google.com>,
+	Kevin Tian <kevin.tian@intel.com>, kexec@lists.infradead.org,
+	kvm@vger.kernel.org, Leon Romanovsky <leon@kernel.org>,
+	Leon Romanovsky <leonro@nvidia.com>, linux-doc@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org,
+	linux-mm@kvack.org, linux-pci@vger.kernel.org,
+	Lukas Wunner <lukas@wunner.de>,
+	=?utf-8?Q?Micha=C5=82?= Winiarski <michal.winiarski@intel.com>,
+	Mike Rapoport <rppt@kernel.org>, Parav Pandit <parav@nvidia.com>,
+	Pasha Tatashin <pasha.tatashin@soleen.com>,
+	Pranjal Shrivastava <praan@google.com>,
+	Pratyush Yadav <pratyush@kernel.org>,
+	Raghavendra Rao Ananta <rananta@google.com>,
+	Rodrigo Vivi <rodrigo.vivi@intel.com>,
+	Saeed Mahameed <saeedm@nvidia.com>,
+	Samiullah Khawaja <skhawaja@google.com>,
+	Shuah Khan <skhan@linuxfoundation.org>,
+	Thomas =?iso-8859-1?Q?Hellstr=F6m?= <thomas.hellstrom@linux.intel.com>,
+	Tomita Moeko <tomitamoeko@gmail.com>,
+	Vipin Sharma <vipinsh@google.com>,
+	Vivek Kasireddy <vivek.kasireddy@intel.com>,
+	William Tu <witu@nvidia.com>, Yi Liu <yi.l.liu@intel.com>
+Subject: Re: [PATCH v2 04/22] vfio/pci: Register a file handler with Live
+ Update Orchestrator
+Message-ID: <aYZ15u120FEa8Qw2@google.com>
+References: <20260129212510.967611-1-dmatlack@google.com>
+ <20260129212510.967611-5-dmatlack@google.com>
+ <6dc423bd-36e6-4f97-b2b2-c7030575a3a1@linux.dev>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20260205214326.1029278-1-jmattson@google.com> <20260205214326.1029278-3-jmattson@google.com>
- <aYYwwWjMDJQh6uDd@google.com> <fb750b1bb21bd47f85eb133d69b2c059188f4c05@linux.dev>
- <CALMp9eTJAD4Dc88egovSjV-N2YHd8G80ZP-dL5wXFDAC+WR6fA@mail.gmail.com>
- <aYY9JOMDBPDY48lA@google.com> <CALMp9eSRj=aykY7FbnPm1OgSwFSkJ=uVVmwsnGjV-A_-AQjxMQ@mail.gmail.com>
-Message-ID: <aYZ0FMl6E6P1MRf0@google.com>
-Subject: Re: [PATCH v3 2/8] KVM: x86: nSVM: Cache and validate vmcb12 g_pat
-From: Sean Christopherson <seanjc@google.com>
-To: Jim Mattson <jmattson@google.com>
-Cc: Yosry Ahmed <yosry.ahmed@linux.dev>, Paolo Bonzini <pbonzini@redhat.com>, 
-	Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
-	"H. Peter Anvin" <hpa@zytor.com>, Shuah Khan <shuah@kernel.org>, kvm@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <6dc423bd-36e6-4f97-b2b2-c7030575a3a1@linux.dev>
 
-On Fri, Feb 06, 2026, Jim Mattson wrote:
-> On Fri, Feb 6, 2026 at 11:12=E2=80=AFAM Sean Christopherson <seanjc@googl=
-e.com> wrote:
-> >
-> > On Fri, Feb 06, 2026, Jim Mattson wrote:
-> > > On Fri, Feb 6, 2026 at 10:23=E2=80=AFAM Yosry Ahmed <yosry.ahmed@linu=
-x.dev> wrote:
-> > > >
-> > > > February 6, 2026 at 10:19 AM, "Sean Christopherson" <seanjc@google.=
-com> wrote:
-> > AFAICT, the only "problem" is that g_pat in the serialization payload w=
-ill be
-> > garbage when restoring state from an older KVM.  But that's totally fin=
-e, precisely
-> > because L1's PAT isn't restored from vmcb01 on nested #VMEXIT, it's alw=
-ays resident
-> > in vcpu->arch.pat.  So can't we just do this to avoid a spurious -EINVA=
-L?
-> >
-> >         /*
-> >          * Validate host state saved from before VMRUN (see
-> >          * nested_svm_check_permissions).
-> >          */
-> >         __nested_copy_vmcb_save_to_cache(&save_cached, save);
-> >
-> >         /*
-> >          * Stuff gPAT in L1's save state, as older KVM may not have sav=
-ed L1's
-> >          * gPAT.  L1's PAT, i.e. hPAT for the vCPU, is *always* tracked=
- in
-> >          * vcpu->arch.pat, i.e. gPAT is a reflection of vcpu->arch.pat,=
- not the
-> >          * other way around.
-> >          */
-> >         save_cached.g_pat =3D vcpu->arch.pat;
->=20
-> Your comment is a bit optimistic. Qemu, for instance, hasn't restored
-> MSRs yet, so vcpu->arch.pat will actually be the current vCPU's PAT
-> (in the case of snapshot restore, some future PAT).
+On 2026-02-06 02:37 PM, Yanjun.Zhu wrote:
+> On 1/29/26 1:24 PM, David Matlack wrote:
 
-Yeah, FWIW, I was _trying_ account for that by not explicitly saying that a=
-rch.pat
-is the "new" L1 state, but it's difficult to dance around :-/
+> > +int __init vfio_pci_liveupdate_init(void)
+> > +{
+> > +	if (!liveupdate_enabled())
+> > +		return 0;
+> 813 int liveupdate_register_file_handler(struct liveupdate_file_handler *fh)
+> 814 {
+> 815         struct liveupdate_file_handler *fh_iter;
+> 816         int err;
+> 817
+> 818         if (!liveupdate_enabled())
+> 
+> 819                 return -EOPNOTSUPP;
+> 
+> In the function liveupdate_register_file_handler, liveupdate_enabled is also checked.
+> as such, it is not necessary to check here?
 
-> But, in any case, it should be a valid PAT.
->
-> >         if (!(save->cr0 & X86_CR0_PG) ||
-> >             !(save->cr0 & X86_CR0_PE) ||
-> >             (save->rflags & X86_EFLAGS_VM) ||
-> >             !nested_vmcb_check_save(vcpu, &ctl_cached, &save_cached))
->=20
-> Wrong ctl_cached. Those are the vmcb02 controls, but we are checking
-> the vmcb01 save state.
-
-*sigh*
-
-> I think it would be better to add a boolean argument, "check_gpat,"
-> which will be false at this call site and nested_npt_enabled(vcpu) at
-> the other call site.
-
-Yeah, agreed.  Because even though arch.pat should be valid, IIUC there isn=
-'t a
-consistent check on hPAT because it's never reloaded.
+Yeah that is a bit odd. I see that memfd_luo_init() just checks for
+-EOPNOTSUPP. We can do the same thing here.
