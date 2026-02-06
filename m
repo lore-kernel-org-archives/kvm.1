@@ -1,51 +1,75 @@
-Received: from sender4-op-o15.zoho.com (sender4-op-o15.zoho.com [136.143.188.15])
+Received: from jpms-ob01.noc.sony.co.jp (jpms-ob01.noc.sony.co.jp [211.125.140.164])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1CB5A265CC2;
-	Fri,  6 Feb 2026 03:34:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.15
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770348897; cv=pass; b=dFlWP4IBRi+h25QSy21ihxYdYDlYJmsatbEw51QiJg9DqxX1r95sn7dJf0WIyjmAo7L64UYpNFFl6IPin88nsyVe12/8DgheUAtUMQlC6IYfqR+fAY1OhkRGCcMVSkbtE4WHAGDCOx0oLncRS29eXobvhp4j2SW3AJjGzkP0lcI=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770348897; c=relaxed/simple;
-	bh=bq/GLY4H/bSUfQB+OfZ0AfftnABf3kW2Lo52g8x5QuQ=;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 69FA1333730;
+	Fri,  6 Feb 2026 03:45:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.125.140.164
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1770349504; cv=none; b=HIbZd5rPUKwuaReS9h3xXin6Tq+0PiVm33KSXHv96EdX8YxHVlgl7CKQKV9eI6i5JFiYeRAEyvJeGOhKgZYRs7yNSXeBmxLSJkrYYdAPm6J4rYP9zSPvvoUKNarnwhjLXX8W8n9yitUbX+ED/fog+XfQ4BMMkp/P+65BxL8Jb+E=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1770349504; c=relaxed/simple;
+	bh=hnE5I4/wZ5Znpn5z3YA2kW21UHAlwuw/qzxayvYooEY=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=OUzYNNCRwTCPog/SDvcZzS4ebTQ5YViAH2LQ/J/LLE/6rR1oHjYSBaymrtK8Vm66tCS6srnYMgaGSDFswUDQhvoGgVrE4/gWLyVu4IF2++JX0GHwqbOPIFSFMLM8Mmu0AtQMIFceruxTtd/qQlPUg1/QT0PHS55YchBVbX3GQ9I=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ziyao.cc; spf=pass smtp.mailfrom=ziyao.cc; dkim=pass (1024-bit key) header.d=ziyao.cc header.i=me@ziyao.cc header.b=l0RmotT0; arc=pass smtp.client-ip=136.143.188.15
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ziyao.cc
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ziyao.cc
+	 Content-Type:Content-Disposition:In-Reply-To; b=aa5nF73T+8POQy1jc8L8SCighRKp2Rbf/BraY+A7WcZoPSYg0ruUhnUdCJKgRPzP0iMmHFVEn/6nXscXaUUaTDFUoRiWSn5YxGEqH1/Gn3vVX1buYZixxdbKmPoYhFqKHEL7qXMoqsmF6Sdb87Mo0ws9HZf813g+opQmFO5z6mg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sony.com; spf=pass smtp.mailfrom=sony.com; dkim=pass (2048-bit key) header.d=sony.com header.i=@sony.com header.b=BitVipMj; arc=none smtp.client-ip=211.125.140.164
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sony.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sony.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ziyao.cc header.i=me@ziyao.cc header.b="l0RmotT0"
-ARC-Seal: i=1; a=rsa-sha256; t=1770348882; cv=none; 
-	d=zohomail.com; s=zohoarc; 
-	b=i9b/c2lOBLo9rrmCdp6P10o0NhKtnO+SuKPAUv6YVZW0fwG48stA2+OKmRQfYXPU8JEuw2IkagSPvh437qyXhdsGX2rp/A5+Z9B5Ido5fgBG/LwT+/tgWkJD2CGw2Bu1yqekO30MSCf84Ai81HW/TM5Fphl+0w8iOoZK/MWUcA8=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-	t=1770348882; h=Content-Type:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=ytVDG181jwZsXmo/aNohS0Ou07+vfJqUMBsLgAw8gs4=; 
-	b=LRIhhbi+Pvz1B38XX/5eh0+w3ahrwOqjtw2KsvoPKOUMpcFEeXrwHy0xw8lmkpjWsZkoE4Gq27QYsnSCZJ4xRm41Jet8kcU+bqsdF601Cn2KZOQ3+aNHM+HVVb9pYh8FQB85vIMXT7LGu/J4cboKdFFU+S0cXFgsPUXlyft79T0=
-ARC-Authentication-Results: i=1; mx.zohomail.com;
-	dkim=pass  header.i=ziyao.cc;
-	spf=pass  smtp.mailfrom=me@ziyao.cc;
-	dmarc=pass header.from=<me@ziyao.cc>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1770348882;
-	s=zmail; d=ziyao.cc; i=me@ziyao.cc;
-	h=Date:Date:From:From:To:To:Cc:Cc:Subject:Subject:Message-ID:References:MIME-Version:Content-Type:In-Reply-To:Message-Id:Reply-To;
-	bh=ytVDG181jwZsXmo/aNohS0Ou07+vfJqUMBsLgAw8gs4=;
-	b=l0RmotT0BY2qgVlTsejdVTlIFv9qiCgSeJlOMwT8mnI1rA/cD/u9VLVzQCrIq6G8
-	q5D3GoQQmipOjkACX/1ATgOfASODIy6UyzV1CFIwpVWzqDCLmfw+U3b4oZXFs6SXVj8
-	BsduiuNuUKzC8WHthyZV/UQwIJe7bkLQWNG8JTYY=
-Received: by mx.zohomail.com with SMTPS id 1770348880707918.1372263152211;
-	Thu, 5 Feb 2026 19:34:40 -0800 (PST)
-Date: Fri, 6 Feb 2026 03:34:34 +0000
-From: Yao Zi <me@ziyao.cc>
-To: Song Gao <gaosong@loongson.cn>, maobibo@loongson.cn,
-	chenhuacai@kernel.org
-Cc: kvm@vger.kernel.org, loongarch@lists.linux.dev, kernel@xen0n.name,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v6 0/2] LongArch: KVM: Add DMSINTC support irqchip in
- kernel
-Message-ID: <aYVhSp_eGBkpXdp-@pie>
-References: <20260206012028.3318291-1-gaosong@loongson.cn>
+	dkim=pass (2048-bit key) header.d=sony.com header.i=@sony.com header.b="BitVipMj"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+  d=sony.com; s=s1jp; t=1770349504; x=1801885504;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=IuPnlqREwJB3pbqSqs+4wA7Rlfs308sbPiaPxE9gRow=;
+  b=BitVipMjANx8XmpHpr7NpGZhZrLBn7nvnAhMDgtFMiwmANVf0j9wOcDb
+   kvvWQ7barMOJpb5QdynBIitZOq7E5V39XRwcYJaUAMfBuzDyo6NksNjdQ
+   6ydQO72THnbp14AGDTmPXUKzwCP3B4V7bxUpWj/7MP7kNfXNq+9wEJBU2
+   22GztKGo8xeqqL5FUUYDNpUGdD6TB/g12VDhK8zPbB8rjN4N8Xq+C3Vqs
+   DMnlBjP2sizxuDjiJ0MFlZ9sLwIR429iQ/6QNEDdGjM25bu4ocEbm5/us
+   alc9gEYxL8V/sCX8CMSj+686hm7I+2NCIlGjCTME9hdZ2RQ+oe5s/+Awe
+   g==;
+Received: from unknown (HELO jpmta-ob02.noc.sony.co.jp) ([IPv6:2001:cf8:0:6e7::7])
+  by jpms-ob01.noc.sony.co.jp with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Feb 2026 12:45:02 +0900
+X-IronPort-AV: E=Sophos;i="6.21,275,1763391600"; 
+   d="scan'208";a="578775205"
+Received: from unknown (HELO JPC00244420) ([IPv6:2001:cf8:1:573:0:dddd:6b3e:119e])
+  by jpmta-ob02.noc.sony.co.jp with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Feb 2026 12:45:01 +0900
+Date: Fri, 6 Feb 2026 12:44:57 +0900
+From: Shashank Balaji <shashank.mahadasyam@sony.com>
+To: Sohil Mehta <sohil.mehta@intel.com>
+Cc: Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>,
+	Borislav Petkov <bp@alien8.de>,
+	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
+	"H. Peter Anvin" <hpa@zytor.com>,
+	Suresh Siddha <suresh.b.siddha@intel.com>,
+	"K. Y. Srinivasan" <kys@microsoft.com>,
+	Haiyang Zhang <haiyangz@microsoft.com>,
+	Wei Liu <wei.liu@kernel.org>, Dexuan Cui <decui@microsoft.com>,
+	Long Li <longli@microsoft.com>,
+	Ajay Kaher <ajay.kaher@broadcom.com>,
+	Alexey Makhalov <alexey.makhalov@broadcom.com>,
+	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>,
+	Jan Kiszka <jan.kiszka@siemens.com>,
+	Paolo Bonzini <pbonzini@redhat.com>,
+	Vitaly Kuznetsov <vkuznets@redhat.com>,
+	Juergen Gross <jgross@suse.com>,
+	Boris Ostrovsky <boris.ostrovsky@oracle.com>,
+	Ingo Molnar <mingo@elte.hu>, linux-kernel@vger.kernel.org,
+	linux-hyperv@vger.kernel.org, virtualization@lists.linux.dev,
+	jailhouse-dev@googlegroups.com, kvm@vger.kernel.org,
+	xen-devel@lists.xenproject.org, Rahul Bukte <rahul.bukte@sony.com>,
+	Daniel Palmer <daniel.palmer@sony.com>,
+	Tim Bird <tim.bird@sony.com>, stable@vger.kernel.org
+Subject: Re: [PATCH 1/3] x86/x2apic: disable x2apic on resume if the kernel
+ expects so
+Message-ID: <aYVjuSkdOlBh06_S@JPC00244420>
+References: <20260202-x2apic-fix-v1-0-71c8f488a88b@sony.com>
+ <20260202-x2apic-fix-v1-1-71c8f488a88b@sony.com>
+ <0149c37d-7065-4c72-ab56-4cea1a6c15d0@intel.com>
+ <aYMOqXTYMJ_IlEFA@JPC00244420>
+ <722b53a7-7560-4a1b-ab26-73eeed3dffa5@intel.com>
+ <aYQzhRN83rJx6DSb@JPC00244420>
+ <e5ac3272-795b-488c-b767-290fd50f2105@intel.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -54,59 +78,28 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260206012028.3318291-1-gaosong@loongson.cn>
-X-ZohoMailClient: External
+In-Reply-To: <e5ac3272-795b-488c-b767-290fd50f2105@intel.com>
 
-On Fri, Feb 06, 2026 at 09:20:26AM +0800, Song Gao wrote:
-> Hi,
+On Thu, Feb 05, 2026 at 03:18:58PM -0800, Sohil Mehta wrote:
+> Maybe a warning would be useful to encourage firmware to fix this going
+> forward. I don't have a strong preference on the wording, but how about?
 > 
-> This series  implements the DMSINTC in-kernel irqchip device,
-> enables irqfd to deliver MSI to DMSINTC, and supports injecting MSI interrupts
-> to the target vCPU.
-> applied this series.  use netperf test.
-> VM with one CPU and start netserver, host run netperf.
-> disable dmsintc
-> taskset 0x2f  netperf -H 192.168.122.204 -t UDP_RR  -l 36000
-> Local /Remote
-> Socket Size   Request  Resp.   Elapsed  Trans.
-> Send   Recv   Size     Size    Time     Rate
-> bytes  Bytes  bytes    bytes   secs.    per sec   
-> 
-> 212992 212992 1        1       36000.00   27107.36   
-> 
-> enable dmsintc
-> Local /Remote
-> Socket Size   Request  Resp.   Elapsed  Trans.
-> Send   Recv   Size     Size    Time     Rate         
-> bytes  Bytes  bytes    bytes   secs.    per sec   
-> 
-> 212992 212992 1        1       36000.00   28831.14  (+6.3%)
-> 
-> v6: 
->   Fix kvm_device leak in kvm_dmsintc_destroy(). 
-> 
-> v5:
->   Combine patch2 and patch3
->   Add check msgint feature when register DMSINT device. 
-> 
-> V4: Rebase and R-b; 
->    replace DINTC to DMSINTC.
-> 
-> 
-> V3: Fix kvm_arch_set_irq_inatomic() missing dmsintc set msi.(patch3)
-> 
-> V2:
-> https://patchew.org/linux/20251128091125.2720148-1-gaosong@loongson.cn/
-> 
-> Thanks.
-> Song Gao
-> 
-> Song Gao (2):
->   LongArch: KVM: Add DMSINTC device support
->   LongArch: KVM: Add dmsintc inject msi to the dest vcpu
+> pr_warn_once("x2apic unexpectedly re-enabled by the firmware during
+> resume.\n");
 
-There's a typo in the titles, it should be LoongArch instead of
-"LongArch".
+That works
 
-Best regards,
-Yao Zi
+> A few nits:
+> 
+> For the code comments, you can use more of the line width. Generally, 72
+> (perhaps even 80) chars is okay for comments dependent on the code in
+> the vicinity.
+> 
+> The tip tree has slightly unique preferences, such as capitalizing the
+> first word of the patch title.
+> 
+> Please refer:
+> https://www.kernel.org/doc/html/latest/process/maintainer-tip.html#patch-submission-notes
+
+Thanks! I noticed that I also didn't use '()' for function names in the
+commit message. I'll fix all these and add the pr_warn_once in v2.
