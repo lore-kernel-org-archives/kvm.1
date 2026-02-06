@@ -1,22 +1,23 @@
 Received: from mail.loongson.cn (mail.loongson.cn [114.242.206.163])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0FE681DDC1B;
-	Fri,  6 Feb 2026 01:45:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AEDC5244667;
+	Fri,  6 Feb 2026 01:45:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=114.242.206.163
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770342339; cv=none; b=CRhtbnDzQqvH19A0ZxrMMiU9vWFAKaR1ZUcvvrGNO4KDW6HwgiAJtH1bY78pO4zI7y+PvpD5krqwaio5D7oubiYol4i01f4kYNBrnw6AHj4IoWw0SsW8u6K86gptJRTFhFMyybQt6fvwOkEGCj/Y6g1YZ66u6wJ0yjMvY0mrG24=
+	t=1770342340; cv=none; b=JUS58B99ERZBvslBryCwwq8RG1P2SCFz0omX6/l2Atua4gNVd0N4ZExuyujTQLKP4jKlKJjSiAg74PDpxFJOOvCrwFBCGDMwGrMco5f4vD2fYv4yEXED/n24jctyG1IGsIlWaVMUwfJYFcQBDdu3HZU2qCw4JKC48N+llIPq4hs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770342339; c=relaxed/simple;
-	bh=ii6RKtFYyE+Ewcaswlc7T5jvksLlmxsqr496cRHnhqY=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=SMc5DC/sjOBls8Vrb3dGnI1+r9/owNIyYrfWx0yTIlN60E9UoIlaGy5buFGAmtAsF66trwWKc0m+a8S2AeqXgYTJvycSrk9CIFqUHpzB+NJn2hi0J5UxVMKSpl/89trCO3uk/BWvJ+/sBkrnzyyJZjd4jZQwc0QIq/lChQvRICI=
+	s=arc-20240116; t=1770342340; c=relaxed/simple;
+	bh=4+/9fh/NO9be66BaSCx0h0mZ/1PpvG2EQHIkt/KBefk=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=nPb2ZIfdfnxVgG6s1hLgerXpOaAGxMaSfpCr7BAgqB9lG7vlDO5ZDJylRHgyOicp87j5rntMldZBOkijokv05OWQBIvml2wL8RRfNrEV/K9YG6uqUDr+UeIHI8dJrSsuVGyBcMvhSUw2FPzV/KfPZiPumbSPSOABxQOXLw3F08o=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn; spf=pass smtp.mailfrom=loongson.cn; arc=none smtp.client-ip=114.242.206.163
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=loongson.cn
 Received: from loongson.cn (unknown [10.2.5.185])
-	by gateway (Coremail) with SMTP id _____8CxLMO5R4Vp1FYQAA--.52757S3;
-	Fri, 06 Feb 2026 09:45:29 +0800 (CST)
+	by gateway (Coremail) with SMTP id _____8AxRcG9R4Vp3FYQAA--.5615S3;
+	Fri, 06 Feb 2026 09:45:33 +0800 (CST)
 Received: from localhost.localdomain (unknown [10.2.5.185])
-	by front1 (Coremail) with SMTP id qMiowJCx98C3R4VpgLZAAA--.40823S2;
-	Fri, 06 Feb 2026 09:45:28 +0800 (CST)
+	by front1 (Coremail) with SMTP id qMiowJCx98C3R4VpgLZAAA--.40823S4;
+	Fri, 06 Feb 2026 09:45:32 +0800 (CST)
 From: Song Gao <gaosong@loongson.cn>
 To: maobibo@loongson.cn,
 	chenhuacai@kernel.org
@@ -24,10 +25,12 @@ Cc: kvm@vger.kernel.org,
 	loongarch@lists.linux.dev,
 	kernel@xen0n.name,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH v6 0/2] LongArch: KVM: Add DMSINTC support irqchip in kernel
-Date: Fri,  6 Feb 2026 09:20:26 +0800
-Message-Id: <20260206012028.3318291-1-gaosong@loongson.cn>
+Subject: [PATCH v6 2/2] LongArch: KVM: Add dmsintc inject msi to the dest vcpu
+Date: Fri,  6 Feb 2026 09:20:28 +0800
+Message-Id: <20260206012028.3318291-3-gaosong@loongson.cn>
 X-Mailer: git-send-email 2.39.1
+In-Reply-To: <20260206012028.3318291-1-gaosong@loongson.cn>
+References: <20260206012028.3318291-1-gaosong@loongson.cn>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -35,73 +38,238 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:qMiowJCx98C3R4VpgLZAAA--.40823S2
+X-CM-TRANSID:qMiowJCx98C3R4VpgLZAAA--.40823S4
 X-CM-SenderInfo: 5jdr20tqj6z05rqj20fqof0/
 X-Coremail-Antispam: 1Uk129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7KY7
 	ZEXasCq-sGcSsGvfJ3UbIjqfuFe4nvWSU5nxnvy29KBjDU0xBIdaVrnUUvcSsGvfC2Kfnx
 	nUUI43ZEXa7xR_UUUUUUUUU==
 
-Hi,
+Implement irqfd deliver msi to vcpu and vcpu dmsintc inject irq.
+Add irqfd choice dmsintc to set msi irq by the msg_addr and
+implement dmsintc set msi irq.
 
-This series  implements the DMSINTC in-kernel irqchip device,
-enables irqfd to deliver MSI to DMSINTC, and supports injecting MSI interrupts
-to the target vCPU.
-applied this series.  use netperf test.
-VM with one CPU and start netserver, host run netperf.
-disable dmsintc
-taskset 0x2f  netperf -H 192.168.122.204 -t UDP_RR  -l 36000
-Local /Remote
-Socket Size   Request  Resp.   Elapsed  Trans.
-Send   Recv   Size     Size    Time     Rate
-bytes  Bytes  bytes    bytes   secs.    per sec   
+Signed-off-by: Song Gao <gaosong@loongson.cn>
+---
+ arch/loongarch/include/asm/kvm_dmsintc.h |  1 +
+ arch/loongarch/include/asm/kvm_host.h    |  5 ++
+ arch/loongarch/kvm/intc/dmsintc.c        |  6 +++
+ arch/loongarch/kvm/interrupt.c           |  1 +
+ arch/loongarch/kvm/irqfd.c               | 42 +++++++++++++++--
+ arch/loongarch/kvm/vcpu.c                | 58 ++++++++++++++++++++++++
+ 6 files changed, 109 insertions(+), 4 deletions(-)
 
-212992 212992 1        1       36000.00   27107.36   
-
-enable dmsintc
-Local /Remote
-Socket Size   Request  Resp.   Elapsed  Trans.
-Send   Recv   Size     Size    Time     Rate         
-bytes  Bytes  bytes    bytes   secs.    per sec   
-
-212992 212992 1        1       36000.00   28831.14  (+6.3%)
-
-v6: 
-  Fix kvm_device leak in kvm_dmsintc_destroy(). 
-
-v5:
-  Combine patch2 and patch3
-  Add check msgint feature when register DMSINT device. 
-
-V4: Rebase and R-b; 
-   replace DINTC to DMSINTC.
-
-
-V3: Fix kvm_arch_set_irq_inatomic() missing dmsintc set msi.(patch3)
-
-V2:
-https://patchew.org/linux/20251128091125.2720148-1-gaosong@loongson.cn/
-
-Thanks.
-Song Gao
-
-Song Gao (2):
-  LongArch: KVM: Add DMSINTC device support
-  LongArch: KVM: Add dmsintc inject msi to the dest vcpu
-
- arch/loongarch/include/asm/kvm_dmsintc.h |  22 +++++
- arch/loongarch/include/asm/kvm_host.h    |   8 ++
- arch/loongarch/include/uapi/asm/kvm.h    |   4 +
- arch/loongarch/kvm/Makefile              |   1 +
- arch/loongarch/kvm/intc/dmsintc.c        | 117 +++++++++++++++++++++++
- arch/loongarch/kvm/interrupt.c           |   1 +
- arch/loongarch/kvm/irqfd.c               |  42 +++++++-
- arch/loongarch/kvm/main.c                |   6 ++
- arch/loongarch/kvm/vcpu.c                |  58 +++++++++++
- include/uapi/linux/kvm.h                 |   2 +
- 10 files changed, 257 insertions(+), 4 deletions(-)
- create mode 100644 arch/loongarch/include/asm/kvm_dmsintc.h
- create mode 100644 arch/loongarch/kvm/intc/dmsintc.c
-
+diff --git a/arch/loongarch/include/asm/kvm_dmsintc.h b/arch/loongarch/include/asm/kvm_dmsintc.h
+index 1d4f66996f3c..9b5436a2fcbe 100644
+--- a/arch/loongarch/include/asm/kvm_dmsintc.h
++++ b/arch/loongarch/include/asm/kvm_dmsintc.h
+@@ -11,6 +11,7 @@ struct loongarch_dmsintc  {
+ 	struct kvm *kvm;
+ 	uint64_t msg_addr_base;
+ 	uint64_t msg_addr_size;
++	uint32_t cpu_mask;
+ };
+ 
+ struct dmsintc_state {
+diff --git a/arch/loongarch/include/asm/kvm_host.h b/arch/loongarch/include/asm/kvm_host.h
+index 5e9e2af7312f..91e0190aeaec 100644
+--- a/arch/loongarch/include/asm/kvm_host.h
++++ b/arch/loongarch/include/asm/kvm_host.h
+@@ -258,6 +258,11 @@ struct kvm_vcpu_arch {
+ 	} st;
+ };
+ 
++void loongarch_dmsintc_inject_irq(struct kvm_vcpu *vcpu);
++int kvm_loongarch_deliver_msi_to_vcpu(struct kvm *kvm,
++				struct kvm_vcpu *vcpu,
++				u32 vector, int level);
++
+ static inline unsigned long readl_sw_gcsr(struct loongarch_csrs *csr, int reg)
+ {
+ 	return csr->csrs[reg];
+diff --git a/arch/loongarch/kvm/intc/dmsintc.c b/arch/loongarch/kvm/intc/dmsintc.c
+index 00e401de0464..1bb61e55d061 100644
+--- a/arch/loongarch/kvm/intc/dmsintc.c
++++ b/arch/loongarch/kvm/intc/dmsintc.c
+@@ -15,6 +15,7 @@ static int kvm_dmsintc_ctrl_access(struct kvm_device *dev,
+ 	void __user *data;
+ 	struct loongarch_dmsintc *s = dev->kvm->arch.dmsintc;
+ 	u64 tmp;
++	u32 cpu_bit;
+ 
+ 	data = (void __user *)attr->addr;
+ 	switch (addr) {
+@@ -30,6 +31,11 @@ static int kvm_dmsintc_ctrl_access(struct kvm_device *dev,
+ 				s->msg_addr_base = tmp;
+ 			else
+ 				return  -EFAULT;
++			s->msg_addr_base = tmp;
++			cpu_bit = find_first_bit((unsigned long *)&(s->msg_addr_base), 64)
++						- AVEC_CPU_SHIFT;
++			cpu_bit = min(cpu_bit, AVEC_CPU_BIT);
++			s->cpu_mask = GENMASK(cpu_bit - 1, 0) & AVEC_CPU_MASK;
+ 		}
+ 		break;
+ 	case KVM_DEV_LOONGARCH_DMSINTC_MSG_ADDR_SIZE:
+diff --git a/arch/loongarch/kvm/interrupt.c b/arch/loongarch/kvm/interrupt.c
+index a6d42d399a59..893a81ca1079 100644
+--- a/arch/loongarch/kvm/interrupt.c
++++ b/arch/loongarch/kvm/interrupt.c
+@@ -33,6 +33,7 @@ static int kvm_irq_deliver(struct kvm_vcpu *vcpu, unsigned int priority)
+ 		irq = priority_to_irq[priority];
+ 
+ 	if (cpu_has_msgint && (priority == INT_AVEC)) {
++		loongarch_dmsintc_inject_irq(vcpu);
+ 		set_gcsr_estat(irq);
+ 		return 1;
+ 	}
+diff --git a/arch/loongarch/kvm/irqfd.c b/arch/loongarch/kvm/irqfd.c
+index 9a39627aecf0..3bbb26f4e2b7 100644
+--- a/arch/loongarch/kvm/irqfd.c
++++ b/arch/loongarch/kvm/irqfd.c
+@@ -6,6 +6,7 @@
+ #include <linux/kvm_host.h>
+ #include <trace/events/kvm.h>
+ #include <asm/kvm_pch_pic.h>
++#include <asm/kvm_vcpu.h>
+ 
+ static int kvm_set_pic_irq(struct kvm_kernel_irq_routing_entry *e,
+ 		struct kvm *kvm, int irq_source_id, int level, bool line_status)
+@@ -16,6 +17,38 @@ static int kvm_set_pic_irq(struct kvm_kernel_irq_routing_entry *e,
+ 	return 0;
+ }
+ 
++static int kvm_dmsintc_set_msi_irq(struct kvm *kvm, u32 addr, int data, int level)
++{
++	unsigned int virq, dest;
++	struct kvm_vcpu *vcpu;
++
++	virq = (addr >> AVEC_IRQ_SHIFT) & AVEC_IRQ_MASK;
++	dest = (addr >> AVEC_CPU_SHIFT) & kvm->arch.dmsintc->cpu_mask;
++	if (dest > KVM_MAX_VCPUS)
++		return -EINVAL;
++	vcpu = kvm_get_vcpu_by_cpuid(kvm, dest);
++	if (!vcpu)
++		return -EINVAL;
++	return kvm_loongarch_deliver_msi_to_vcpu(kvm, vcpu, virq, level);
++}
++
++static int loongarch_set_msi(struct kvm_kernel_irq_routing_entry *e,
++			struct kvm *kvm, int level)
++{
++	u64 msg_addr;
++
++	msg_addr = (((u64)e->msi.address_hi) << 32) | e->msi.address_lo;
++	if (cpu_has_msgint && kvm->arch.dmsintc &&
++		msg_addr >= kvm->arch.dmsintc->msg_addr_base &&
++		msg_addr < (kvm->arch.dmsintc->msg_addr_base  + kvm->arch.dmsintc->msg_addr_size)) {
++		return kvm_dmsintc_set_msi_irq(kvm, msg_addr, e->msi.data, level);
++	} else {
++		pch_msi_set_irq(kvm, e->msi.data, level);
++	}
++
++	return 0;
++}
++
+ /*
+  * kvm_set_msi: inject the MSI corresponding to the
+  * MSI routing entry
+@@ -29,9 +62,7 @@ int kvm_set_msi(struct kvm_kernel_irq_routing_entry *e,
+ 	if (!level)
+ 		return -1;
+ 
+-	pch_msi_set_irq(kvm, e->msi.data, level);
+-
+-	return 0;
++	return loongarch_set_msi(e, kvm, level);
+ }
+ 
+ /*
+@@ -71,12 +102,15 @@ int kvm_set_routing_entry(struct kvm *kvm,
+ int kvm_arch_set_irq_inatomic(struct kvm_kernel_irq_routing_entry *e,
+ 		struct kvm *kvm, int irq_source_id, int level, bool line_status)
+ {
++	if (!level)
++		return -EWOULDBLOCK;
++
+ 	switch (e->type) {
+ 	case KVM_IRQ_ROUTING_IRQCHIP:
+ 		pch_pic_set_irq(kvm->arch.pch_pic, e->irqchip.pin, level);
+ 		return 0;
+ 	case KVM_IRQ_ROUTING_MSI:
+-		pch_msi_set_irq(kvm, e->msi.data, level);
++		loongarch_set_msi(e, kvm, level);
+ 		return 0;
+ 	default:
+ 		return -EWOULDBLOCK;
+diff --git a/arch/loongarch/kvm/vcpu.c b/arch/loongarch/kvm/vcpu.c
+index 656b954c1134..325bb084d704 100644
+--- a/arch/loongarch/kvm/vcpu.c
++++ b/arch/loongarch/kvm/vcpu.c
+@@ -14,6 +14,64 @@
+ #define CREATE_TRACE_POINTS
+ #include "trace.h"
+ 
++void loongarch_dmsintc_inject_irq(struct kvm_vcpu *vcpu)
++{
++	struct dmsintc_state *ds = &vcpu->arch.dmsintc_state;
++	unsigned int i;
++	unsigned long temp[4], old;
++
++	if (!ds)
++		return;
++
++	for (i = 0; i < 4; i++) {
++		old = atomic64_read(&(ds->vector_map[i]));
++		if (old)
++			temp[i] = atomic64_xchg(&(ds->vector_map[i]), 0);
++	}
++
++	if (temp[0]) {
++		old = kvm_read_hw_gcsr(LOONGARCH_CSR_ISR0);
++		kvm_write_hw_gcsr(LOONGARCH_CSR_ISR0, temp[0]|old);
++	}
++
++	if (temp[1]) {
++		old = kvm_read_hw_gcsr(LOONGARCH_CSR_ISR1);
++		kvm_write_hw_gcsr(LOONGARCH_CSR_ISR1, temp[1]|old);
++	}
++
++	if (temp[2]) {
++		old = kvm_read_hw_gcsr(LOONGARCH_CSR_ISR2);
++		kvm_write_hw_gcsr(LOONGARCH_CSR_ISR2, temp[2]|old);
++	}
++
++	if (temp[3]) {
++		old = kvm_read_hw_gcsr(LOONGARCH_CSR_ISR3);
++		kvm_write_hw_gcsr(LOONGARCH_CSR_ISR3, temp[3]|old);
++	}
++}
++
++int kvm_loongarch_deliver_msi_to_vcpu(struct kvm *kvm,
++				struct kvm_vcpu *vcpu,
++				u32 vector, int level)
++{
++	struct kvm_interrupt vcpu_irq;
++	struct dmsintc_state *ds;
++
++	if (!level)
++		return 0;
++	if (!vcpu || vector >= 256)
++		return -EINVAL;
++	ds = &vcpu->arch.dmsintc_state;
++	if (!ds)
++		return -ENODEV;
++	set_bit(vector, (unsigned long *)&ds->vector_map);
++	vcpu_irq.irq = INT_AVEC;
++	kvm_vcpu_ioctl_interrupt(vcpu, &vcpu_irq);
++	kvm_vcpu_kick(vcpu);
++	return 0;
++}
++
++
+ const struct _kvm_stats_desc kvm_vcpu_stats_desc[] = {
+ 	KVM_GENERIC_VCPU_STATS(),
+ 	STATS_DESC_COUNTER(VCPU, int_exits),
 -- 
 2.39.3
 
