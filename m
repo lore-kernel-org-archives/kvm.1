@@ -1,43 +1,42 @@
-Received: from out-179.mta0.migadu.com (out-179.mta0.migadu.com [91.218.175.179])
+Received: from out-183.mta0.migadu.com (out-183.mta0.migadu.com [91.218.175.183])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E8CD429811
-	for <kvm@vger.kernel.org>; Fri,  6 Feb 2026 19:09:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.179
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6FBE7429821
+	for <kvm@vger.kernel.org>; Fri,  6 Feb 2026 19:09:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.183
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770404955; cv=none; b=Yatzgm4nW3ZUK/XIlfApwXDZQPBJbkOFCKYldIRf6a5ibh3VEG1gJdQKB2GKd6NJrn3ANIIErjsM41TOkS3BE2ZL+ml/3i4ZrouIPsQlDaocjEYSlslwaSq0/KhA5gifERFYfuALxLBwJRBrgI2Fh0cMIcAJznnkzYKw67b/0yU=
+	t=1770404958; cv=none; b=ryZGIcUR9fwPIa9202+9d+gUvGfiDureY69j35smR3JavL1lQnwn/Q+T4GEIyG/68E3VH5S8q22Wvsw2Ivk0tTV+3mTwGIRfZ/QzX5y/gyJTthmyeDNtbVltvHkjqXqHyUvqXWl/dxLfDC2fCFp0xq8YkBvPZ99J0tmKyhclUOM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770404955; c=relaxed/simple;
-	bh=isGG8ianhv/yw+W1p+iiSxxVnSDJaWSOJuSdJgsuuCc=;
+	s=arc-20240116; t=1770404958; c=relaxed/simple;
+	bh=lDWNpXDb4MOO/xKVjHxm1R134Ur2HHc/wXn7xLhN3ws=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SdB7KOszpN3ULA2NyuJbab8R/rfdicFmMMnObREgTC5bY/9j1rBcX8LiGDax9x3LaEjwQEE0n7YARtq0y4Q3dZWG5mlulWIRJJ1mU9vwvaT0Blnupgxvh+2L7fA+2W+HRPrerwpcBBgRze379RQuGvx0DPnxRjqwVZiI6Kv81qA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=v3Rhvqa/; arc=none smtp.client-ip=91.218.175.179
+	 MIME-Version; b=VdFpmnB21Sk/pHSXklhJR8nIUuGXkKyX9DFU6Qg78jGecoMmDcVp2ii3DuDBg5f/QylMTLIw/Ez8tmBS5fuViOgHN2H+gSljR4vdcwphsXbi0SJHceEkrIs6psu3US1Xjqjw+8APoE8+4qY/z5UcuQ0xBbrYHaKhjv3Eiun4kOM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=YBcr/SUu; arc=none smtp.client-ip=91.218.175.183
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="v3Rhvqa/"
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="YBcr/SUu"
 X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1770404953;
+	t=1770404956;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=OFoKAHgIstDnIh2zPPIUgBzptuNqEXzOrzi2QTRbj4g=;
-	b=v3Rhvqa/PVNH75m1jAFzLyTvMKU89UEF90/zZ4+PvZeBtNokN6DLesI9RsvNdrIw2gIKoI
-	ROb1kNVmEeF8EYMPOY8hD1pztEm2zcf+a1UxxR1Rm8jUyN8sZJ0fKfuxDmWXJGr/cideW+
-	hhcKB+J6jekE5ckRBiknnQLQRs0hKOc=
+	bh=FVsc5iL18GRJ+T1NB2HjC0Vm7twsC38I9OcGa98pL9g=;
+	b=YBcr/SUucO/uFFFIfCUalpFWdljivMTRhTvAVDuaCnq1hkDMGmuPSe77LKWZl6HdWNrj/p
+	C7yQKYVpoZLb+SLh1tVfMeUzTIMZrqmto5oPCFkQRgIGtAkIDog3fAevZbg0DeOdLfLgXu
+	vxLTh/6dnhTNeSpq3vPhaWsHOoxVJAc=
 From: Yosry Ahmed <yosry.ahmed@linux.dev>
 To: Sean Christopherson <seanjc@google.com>
 Cc: Paolo Bonzini <pbonzini@redhat.com>,
 	kvm@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	Yosry Ahmed <yosry.ahmed@linux.dev>,
-	stable@vger.kernel.org,
-	Jim Mattson <jmattson@google.com>
-Subject: [PATCH v5 03/26] KVM: SVM: Add missing save/restore handling of LBR MSRs
-Date: Fri,  6 Feb 2026 19:08:28 +0000
-Message-ID: <20260206190851.860662-4-yosry.ahmed@linux.dev>
+	stable@vger.kernel.org
+Subject: [PATCH v5 05/26] KVM: nSVM: Always inject a #GP if mapping VMCB12 fails on nested VMRUN
+Date: Fri,  6 Feb 2026 19:08:30 +0000
+Message-ID: <20260206190851.860662-6-yosry.ahmed@linux.dev>
 In-Reply-To: <20260206190851.860662-1-yosry.ahmed@linux.dev>
 References: <20260206190851.860662-1-yosry.ahmed@linux.dev>
 Precedence: bulk
@@ -49,84 +48,38 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Migadu-Flow: FLOW_OUT
 
-MSR_IA32_DEBUGCTLMSR and LBR MSRs are currently not enumerated by
-KVM_GET_MSR_INDEX_LIST, and LBR MSRs cannot be set with KVM_SET_MSRS. So
-save/restore is completely broken.
+nested_svm_vmrun() currently only injects a #GP if kvm_vcpu_map() fails
+with -EINVAL. But it could also fail with -EFAULT if creating a host
+mapping failed. Inject a #GP in all cases, no reason to treat failure
+modes differently.
 
-Fix it by adding the MSRs to msrs_to_save_base, and allowing writes to
-LBR MSRs from userspace only (as they are read-only MSRs). Additionally,
-to correctly restore L1's LBRs while L2 is running, make sure the LBRs
-are copied from the captured VMCB01 save area in svm_copy_vmrun_state().
-
-Fixes: 24e09cbf480a ("KVM: SVM: enable LBR virtualization")
-Cc: stable@vger.kernel.org
-Reported-by: Jim Mattson <jmattson@google.com>
+Fixes: 8c5fbf1a7231 ("KVM/nSVM: Use the new mapping API for mapping guest memory")
+CC: stable@vger.kernel.org
+Co-developed-by: Sean Christopherson <seanjc@google.com>
+Signed-off-by: Sean Christopherson <seanjc@google.com>
 Signed-off-by: Yosry Ahmed <yosry.ahmed@linux.dev>
 ---
- arch/x86/kvm/svm/nested.c |  3 +++
- arch/x86/kvm/svm/svm.c    | 20 ++++++++++++++++++++
- arch/x86/kvm/x86.c        |  3 +++
- 3 files changed, 26 insertions(+)
+ arch/x86/kvm/svm/nested.c | 5 +----
+ 1 file changed, 1 insertion(+), 4 deletions(-)
 
 diff --git a/arch/x86/kvm/svm/nested.c b/arch/x86/kvm/svm/nested.c
-index f7d5db0af69a..52d853684592 100644
+index 52d853684592..fab0d3d5baa2 100644
 --- a/arch/x86/kvm/svm/nested.c
 +++ b/arch/x86/kvm/svm/nested.c
-@@ -1100,6 +1100,9 @@ void svm_copy_vmrun_state(struct vmcb_save_area *to_save,
- 		to_save->isst_addr = from_save->isst_addr;
- 		to_save->ssp = from_save->ssp;
+@@ -1011,12 +1011,9 @@ int nested_svm_vmrun(struct kvm_vcpu *vcpu)
  	}
-+
-+	if (lbrv)
-+		svm_copy_lbrs(to_save, from_save);
- }
  
- void svm_copy_vmloadsave_state(struct vmcb *to_vmcb, struct vmcb *from_vmcb)
-diff --git a/arch/x86/kvm/svm/svm.c b/arch/x86/kvm/svm/svm.c
-index 798f2c84d80b..d93414db6559 100644
---- a/arch/x86/kvm/svm/svm.c
-+++ b/arch/x86/kvm/svm/svm.c
-@@ -3071,6 +3071,26 @@ static int svm_set_msr(struct kvm_vcpu *vcpu, struct msr_data *msr)
- 		vmcb_mark_dirty(svm->vmcb, VMCB_LBR);
- 		svm_update_lbrv(vcpu);
- 		break;
-+	case MSR_IA32_LASTBRANCHFROMIP:
-+		if (!msr->host_initiated)
-+			return 1;
-+		svm->vmcb->save.br_from = data;
-+		break;
-+	case MSR_IA32_LASTBRANCHTOIP:
-+		if (!msr->host_initiated)
-+			return 1;
-+		svm->vmcb->save.br_to = data;
-+		break;
-+	case MSR_IA32_LASTINTFROMIP:
-+		if (!msr->host_initiated)
-+			return 1;
-+		svm->vmcb->save.last_excp_from = data;
-+		break;
-+	case MSR_IA32_LASTINTTOIP:
-+		if (!msr->host_initiated)
-+			return 1;
-+		svm->vmcb->save.last_excp_to = data;
-+		break;
- 	case MSR_VM_HSAVE_PA:
- 		/*
- 		 * Old kernels did not validate the value written to
-diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
-index db3f393192d9..416899b5dbe4 100644
---- a/arch/x86/kvm/x86.c
-+++ b/arch/x86/kvm/x86.c
-@@ -351,6 +351,9 @@ static const u32 msrs_to_save_base[] = {
- 	MSR_IA32_U_CET, MSR_IA32_S_CET,
- 	MSR_IA32_PL0_SSP, MSR_IA32_PL1_SSP, MSR_IA32_PL2_SSP,
- 	MSR_IA32_PL3_SSP, MSR_IA32_INT_SSP_TAB,
-+	MSR_IA32_DEBUGCTLMSR,
-+	MSR_IA32_LASTBRANCHFROMIP, MSR_IA32_LASTBRANCHTOIP,
-+	MSR_IA32_LASTINTFROMIP, MSR_IA32_LASTINTTOIP,
- };
+ 	vmcb12_gpa = svm->vmcb->save.rax;
+-	ret = kvm_vcpu_map(vcpu, gpa_to_gfn(vmcb12_gpa), &map);
+-	if (ret == -EINVAL) {
++	if (kvm_vcpu_map(vcpu, gpa_to_gfn(vmcb12_gpa), &map)) {
+ 		kvm_inject_gp(vcpu, 0);
+ 		return 1;
+-	} else if (ret) {
+-		return kvm_skip_emulated_instruction(vcpu);
+ 	}
  
- static const u32 msrs_to_save_pmu[] = {
+ 	ret = kvm_skip_emulated_instruction(vcpu);
 -- 
 2.53.0.rc2.204.g2597b5adb4-goog
 
