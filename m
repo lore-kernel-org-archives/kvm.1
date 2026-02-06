@@ -1,64 +1,63 @@
-Received: from mail-pf1-f170.google.com (mail-pf1-f170.google.com [209.85.210.170])
+Received: from mail-pf1-f182.google.com (mail-pf1-f182.google.com [209.85.210.182])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BBA6C346FB3
-	for <kvm@vger.kernel.org>; Fri,  6 Feb 2026 04:22:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 98E1E348866
+	for <kvm@vger.kernel.org>; Fri,  6 Feb 2026 04:22:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770351727; cv=none; b=Hn+iyRF1Ib0K4DChzkza/hUZ4mN8csfGftTKr4e9GmHcnW5aDGenDCxk8J/nONHufscr2RruaMduDzVkRrUj+cOuErm0WOFmrvdm8HGRedIXo5FON2HdUXjXki7RrAjlr70As96UuPDSqk6TyIAmPI4v6u2LsuMwtyF7gDpFDl8=
+	t=1770351728; cv=none; b=FFSnXY6e6Wc6anBQvHcYITG/KaE/1/oejeWy5SuIUcl/Rku6p6Zf1QnacCmU3ZBO2NKHET7y78zEfbRuFkr/zDABUGcbuk3Haf6OUy3iN6/wjOuQDCyRLlznK1ZDFnw0swKOwqdwan700EflG/D08dQl57fi1mla4Maj5vInrYo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770351727; c=relaxed/simple;
-	bh=nBptZoPntruFUIAC7aATnnyrRPgemigf0wpx7LFAXLY=;
+	s=arc-20240116; t=1770351728; c=relaxed/simple;
+	bh=v8goVfDuf14zR0/BBK5OuObXtxk3NausOzDpiIrrrQA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=kZSemBEBcwpqc+7slA/4cmqGTkKMfwVJEJkwN76zPY8YwtepE/YZx4fK1Ib+Y6EO6aKcJg8IqfISHIwCupuwtgYhWCC6oU7O85bJiZpTgHeaxEH6LoGW0rZFBDFY6ddcRzlx7AwtetR9ntu+UfP0R9Y1tzqI3zFXJW1Vn+wgSvY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=s0ZItjmh; arc=none smtp.client-ip=209.85.210.170
+	 MIME-Version:Content-Type; b=hRpagL4zYkfWEUUXkBsHZnm92LrTo/SKb/XDrD1gZ7EcxROeOSZ/9OTmZEXFACyMcoODkETJVTK0G9WumFkSCpXSBHq9tpaNe1t0jxNnsUsENoRcBV4itQLwM3SOEA27XUalFARXXKAw8cYgjXiC9OnMxPMoEWlWUb3AWzgbQnI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=RsN9QScz; arc=none smtp.client-ip=209.85.210.182
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="s0ZItjmh"
-Received: by mail-pf1-f170.google.com with SMTP id d2e1a72fcca58-82310b74496so854859b3a.3
-        for <kvm@vger.kernel.org>; Thu, 05 Feb 2026 20:22:07 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="RsN9QScz"
+Received: by mail-pf1-f182.google.com with SMTP id d2e1a72fcca58-8230c33f477so760272b3a.2
+        for <kvm@vger.kernel.org>; Thu, 05 Feb 2026 20:22:08 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1770351727; x=1770956527; darn=vger.kernel.org;
+        d=linaro.org; s=google; t=1770351728; x=1770956528; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=kwB8GQ+jVdd4zLoHgSYFEXrmt93cdA0BGjD0ZGggFvo=;
-        b=s0ZItjmhfo697HyjUZ2xm3IF65rxuQQIOJ1RYWyvF+TQxGPx5//03Dl5LHAfSFMF7x
-         JYBv3AYGjxv79zOLmXWwMIN+NedtD08G5S0jL6IDX23x1ngUK7hXHWgJya3SIUJyJHaU
-         fFqUunNLNol7xd3EO3mVmZD78Jie0TIOVz4ze5odPV1Mqk2qMjiZ4grsi8FsuseHPVuC
-         YppP4m2f37EjD2NPIYLPduaHLdMYcm91rtpojQYczfbhQRDVyF3G7ycBaQZAnVg1PrgA
-         c/kby8ndVVExajxSDtIBva+pw17sJQDnA9Z/hbiIgO2eZPoM0h2lsspJuBRhbyLjmU0X
-         Xsmg==
+        bh=Q2HC49N+r3FDo4kaSsrqfKOmxBBKt7bfTNmIl3FbGEg=;
+        b=RsN9QSczJC/xeAcEf3MgsFIyZ96PWzlXAzPOZMvolEutiYXoQWE+XASukKogG9Ndxg
+         6lktvtjrhAAXL9eCK5LfD2nnqSpdK+WeaguU/6UUugUSjdagMHQdUjGz0/jd6x81owL2
+         Fag0mtU4a7QqE9ZuWJ7lkv0rli1E8iFsImAMWfYpjpUx7c77aqjZD0rwhBo5KyIip0Hq
+         aIe6x1fS+yzhQgD/Vjr8UohNJjeL/ylQWPKc0j8fXbwlOLAzsAClbZG7PY83B7LNfTCd
+         jGhpvFj0NbA3sJ9NA8SNFyuF8nUznqtGGvEFb1lZjZFKsUtMAKrunjCDfW14YXcwRqx9
+         7LOg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1770351727; x=1770956527;
+        d=1e100.net; s=20230601; t=1770351728; x=1770956528;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=kwB8GQ+jVdd4zLoHgSYFEXrmt93cdA0BGjD0ZGggFvo=;
-        b=ZMnVudMrqXG6Wr0sNNwdjJ5JG2c4HwaSoNGivOeLwvSV/pU5HClzGXizAVhiQtntGd
-         gBjK7qRHsq8JPl8HILDmxBAV1obCWsgnQ4VAL48lMJ0dfafVl3gU/zvDBOiFA5H9rUYC
-         revMd4Bx6n+70Wk+RfudVZFsHsmz+EEIXBW8u5NF35tf/9xr4xHkMXn46VF/ypsM6tQw
-         mNJjwts9cTzWhRGJFgLH2qE6bSAmFLNU8c5VkHjBE82J5fhpvah+z+EQq7xPMgTj3aaK
-         F+kr6g3c0HlC361MvtknbzPq2U1eI3Qrm+quoWYppXX17j3iNFGk7JFEpSBO5mWEHshr
-         fx8Q==
-X-Forwarded-Encrypted: i=1; AJvYcCXJGTrk8RIVih677MXDtWC8RPQtmfyWXB9fwBMtnOlWGSQNnr2MZ4ueJV9mBtGbgTA0CvA=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxpDC8rIsghy7wfWaJNdFxz2DmOLP6ud9Hw4B1MJ9ZZzM/2Xbf0
-	D70Qgi0l6tbWFVy1wc3Qvf9qQZAW39bBTty7tKhwRmfukt6Z2aL/TIZsifkro3lRthpM3mn8WJL
-	GSf/a
-X-Gm-Gg: AZuq6aJN/MgDgLcrcEsaUq9gMUvLjVxmETRyGGerzJ2HLvgijrs44g9fCs7fF7qzCMi
-	NVHfj5bwwTd64fzWA7CbcyGC/VzwpKTBHflb8r8R01hX4LOKxNPKoI/vndLMtWFgx5IL9ktm9b1
-	l4e7pKPqXaqD6Of2oDh0WtEns/PYvTpFztMvoNfFCujLv6TDosDnz3FV48bSRqzy8YHzi8mUtVW
-	lpYtQXT7NY24SaMSGsvRexEfjjPclD/VrKcDhS7bA6UCYUiprMH/MG2qsMNVpxu/pF0VD8UrlhB
-	Oop87vs2XYhETbq6NhfkuoL3rxpt9RuXgWcMVMknYY7r/eOLXA7Ef1mYyPHt1Q8L6VIzCfcfB9O
-	MFwEdqMaf+gNqAqCtwrOLihQyq4Ewy1Y4DMzlPr3ne897lRvUQXUAV3kso7Hy09JelLBc3iZbgd
-	QRn71gRVoW9mnGECz/xvfchhhdbpyVNGkQlN+5Q96+BwbKQ/MopZOwFQiS5bMulU5/
-X-Received: by 2002:a05:6a00:94e3:b0:81f:4dc7:d31 with SMTP id d2e1a72fcca58-824416f5a0cmr1291419b3a.33.1770351727061;
+        bh=Q2HC49N+r3FDo4kaSsrqfKOmxBBKt7bfTNmIl3FbGEg=;
+        b=ZYn6peXlK+l2/r+yOEsBW2zkMGcFXYdztlXpEqH7w2o417dwB0HYWD9enD4vmPaHy3
+         hQcqGMTodURSOVv1bacGXp+/oB8cFWqH42zGSBGy+GInOCahTX9tOLrrRcXkIt59PaG4
+         cWGmeFrfMle1t4TIuIdxloWX+c9densdtkpJcvjImjszygUW+QM9se/QeeO9/HlTBqqS
+         Rm164X84lr7QttIZeVv8uBpqi4f6DtL0wt2Sb2yffO9MOniZjHdqNamPeqL8sDqhLWRE
+         r91L54DQysjMZaistkYRy3+kWl+KMqc/bMZsUgK5NwKL1XsB2VEbW6FmPCM+4QjOJme8
+         S8lA==
+X-Forwarded-Encrypted: i=1; AJvYcCVJY4WeFBvYHYdjKaz5LHeq93A6d1e0WFhkaAu6k+odxeChj+b2T5y1oOi7YSj+K6YIxOI=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyzxSHAt5AV7GoH3wLoYh7x07xi6hJkmsnNpO5TzptctM+hb8Zj
+	t/3qcFfOXFsRHu/sAc5jUomesZDrUitJZkNiE7rjItlAIRoGApZMnnpS7E7cebDL2Js=
+X-Gm-Gg: AZuq6aIQF7gdG1CyHVXrvJH7m8op3ntxlEPh28wg2ZmxtEJtN1b6Z2enok7kUMArXMY
+	jSTEmcoF8KkLLh5xN45IwzAT6Bjey2wzrJ6tbzfV23gmU7otzznXODMcJd8o4ScNDKBoDlmV2Z0
+	JTkRjrQlikD8HiqPX7Lc8wlTvs0gpOMesYqzqVtwXLi3K9C/wz2ZSo9fgs736/hRekovWQzy5v+
+	tWk4RbiS123fqgS3X87tESLppJulOFnkrgzi3sQqgLGC3kf4/hZxhoJxhxniNM+da4s7z5oK/e2
+	UpvKCabpS4R0k1pue6Ao+zWeHpc7sae+tSomda9Ep0jYm7LIv3JAINm7o9e8fFxrtNIB8QTkGtu
+	+oQB/7BkGPajgDy2rtusfc8JVpRiSskmYwBNCissf19kSWStoMBmvHPYO9bWLI/LAihI+xKH505
+	nlvX+x85ZcgStWkULTV+jWcfjoqNLlpBlND63gVFK5hI24X/5HOUlMrxKH+1pRe2ub
+X-Received: by 2002:a05:6a00:4acb:b0:823:167a:4790 with SMTP id d2e1a72fcca58-824416244a9mr1289097b3a.26.1770351727946;
         Thu, 05 Feb 2026 20:22:07 -0800 (PST)
 Received: from pc.taild8403c.ts.net (216-71-219-44.dyn.novuscom.net. [216.71.219.44])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-8244168fdf5sm926914b3a.17.2026.02.05.20.22.06
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-8244168fdf5sm926914b3a.17.2026.02.05.20.22.07
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 05 Feb 2026 20:22:06 -0800 (PST)
+        Thu, 05 Feb 2026 20:22:07 -0800 (PST)
 From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: anjo@rev.ng,
@@ -71,9 +70,9 @@ Cc: anjo@rev.ng,
 	kvm@vger.kernel.org,
 	qemu-arm@nongnu.org,
 	Pierrick Bouvier <pierrick.bouvier@linaro.org>
-Subject: [PATCH v2 08/12] target/arm/tcg/psci.c: make compilation unit common
-Date: Thu,  5 Feb 2026 20:21:46 -0800
-Message-ID: <20260206042150.912578-9-pierrick.bouvier@linaro.org>
+Subject: [PATCH v2 09/12] target/arm/tcg/cpu-v7m.c: make compilation unit common
+Date: Thu,  5 Feb 2026 20:21:47 -0800
+Message-ID: <20260206042150.912578-10-pierrick.bouvier@linaro.org>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20260206042150.912578-1-pierrick.bouvier@linaro.org>
 References: <20260206042150.912578-1-pierrick.bouvier@linaro.org>
@@ -86,53 +85,26 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-Now that helper.h does not contain TARGET_AARCH64 identifier, we can
-move forward with this file.
-
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Signed-off-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 ---
- target/arm/tcg/psci.c      | 2 +-
- target/arm/tcg/meson.build | 5 +----
- 2 files changed, 2 insertions(+), 5 deletions(-)
+ target/arm/tcg/meson.build | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/target/arm/tcg/psci.c b/target/arm/tcg/psci.c
-index bca6058e41a..56754bde951 100644
---- a/target/arm/tcg/psci.c
-+++ b/target/arm/tcg/psci.c
-@@ -68,7 +68,7 @@ void arm_handle_psci_call(ARMCPU *cpu)
-     CPUARMState *env = &cpu->env;
-     uint64_t param[4];
-     uint64_t context_id, mpidr;
--    target_ulong entry;
-+    uint64_t entry;
-     int32_t ret = 0;
-     int i;
- 
 diff --git a/target/arm/tcg/meson.build b/target/arm/tcg/meson.build
-index 41cf9bad4f1..12f126c02cd 100644
+index 12f126c02cd..092ea218c92 100644
 --- a/target/arm/tcg/meson.build
 +++ b/target/arm/tcg/meson.build
-@@ -49,10 +49,6 @@ arm_ss.add(when: 'TARGET_AARCH64', if_true: files(
+@@ -49,7 +49,7 @@ arm_ss.add(when: 'TARGET_AARCH64', if_true: files(
    'sve_helper.c',
  ))
  
--arm_system_ss.add(files(
--  'psci.c',
--))
--
- arm_system_ss.add(when: 'CONFIG_ARM_V7M', if_true: files('cpu-v7m.c'))
+-arm_system_ss.add(when: 'CONFIG_ARM_V7M', if_true: files('cpu-v7m.c'))
++arm_common_system_ss.add(when: 'CONFIG_ARM_V7M', if_true: files('cpu-v7m.c'))
  arm_user_ss.add(when: 'TARGET_AARCH64', if_false: files('cpu-v7m.c'))
  
-@@ -64,6 +60,7 @@ arm_common_system_ss.add(files(
-   'cpregs-at.c',
-   'hflags.c',
-   'neon_helper.c',
-+  'psci.c',
-   'tlb_helper.c',
-   'tlb-insns.c',
-   'vfp_helper.c',
+ arm_common_ss.add(zlib)
 -- 
 2.47.3
 
