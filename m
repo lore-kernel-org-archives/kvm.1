@@ -1,108 +1,94 @@
-Received: from mail-lj1-f182.google.com (mail-lj1-f182.google.com [209.85.208.182])
+Received: from mail-pl1-f202.google.com (mail-pl1-f202.google.com [209.85.214.202])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 22FEB296BD3
-	for <kvm@vger.kernel.org>; Fri,  6 Feb 2026 17:55:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.208.182
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770400523; cv=pass; b=WY29qSvgr5KhUoYvPPmRMvt693Sz5eXVzUDT+nuVItLd/tw2GsmGOT6daE87RbHfIaA/+IaytkxHqGnZ8EaecwwgVQu5TEVl0VJmOsR7P9eWwQaxNPB4dmOQpIjHrVcIUo/I4zYB4X63Jj0GNHJN/5v5ZWWGRiQWi0sse5Z1bMY=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770400523; c=relaxed/simple;
-	bh=CQs3qizMq3SbCY1dailXM4UPmWUUNs7Uy0jKl1/hvIo=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=o2eaZnux3GtkIgOwCT46oQehkq6rYvdZNmAYzWS33dhYhn4U4LL2LYQQfqvNstDFDjnQI6ZsNcTvycmdylZMnCwU0mcIry11NEUT69YOQqf1nqyu8DcSmCN1lwvLuOACTzBFkAwxxToxvOFPkY79RoX93YbIAkugfgC1vn//qvA=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=iVLADzda; arc=pass smtp.client-ip=209.85.208.182
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 473C0296BD3
+	for <kvm@vger.kernel.org>; Fri,  6 Feb 2026 17:58:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.202
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1770400739; cv=none; b=qgtBjrjOg5lSreiXwkWEoIUVnR1RRdmsCdTfTblsWX5upU+t4hcTzoYKxz4FToFXA1D6luSwPilTK7Jc2Tah+SrGVw9+gkLKzw2JA8cSLe8zmiwbetzMi9IjcoCjy7fqaCMLcWLgreoKImitXcUAAjt76SMpqa4117ivqD7rqnE=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1770400739; c=relaxed/simple;
+	bh=8d1BD4eF30+KyWgVRBOma68bMrR8sNdqhiQDUmpNgpM=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=IeeGEreKverWmJKbBTrFMx9pJJq2wLk8wg+VasIArjfqhTDD7me7slijT5GN2BNcW1WZaP0ZZT3o48Q4S5uB79SNKlZ5XpFONKQ9wbqN2NmlvxHwYe2/ukNDCw1BjAkWUK+EMl9G/51F6zHvCPrnWnBvkBqBF+ZHCMyGimDC2tA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=lLSI8Pi4; arc=none smtp.client-ip=209.85.214.202
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="iVLADzda"
-Received: by mail-lj1-f182.google.com with SMTP id 38308e7fff4ca-385d9fb297dso23078491fa.2
-        for <kvm@vger.kernel.org>; Fri, 06 Feb 2026 09:55:22 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1770400521; cv=none;
-        d=google.com; s=arc-20240605;
-        b=P25GcDzTsiX3yL0PCZSxwwdOpJjZweXLSecxPQ8N4dxPDoO90+AC1FWj4O5N+95oCg
-         vfaUVxbY7ygZ7bpRpDpOPET0i66QvwosKnitOV2oZ1N8XDxxbkVq/vceoSbDB5HxOoDT
-         eUGYz84vm9RR9BkF7LsR7VqfSWSGBiCBuaaRDFDNJ2CuBVPD7p+Vif3CbnbQF57Pl8TC
-         GzfSZEisaUijT5R8d8Cwg9CIYOb9kz0EqhUtbna9wYJa6HVqRlzs4Xj+nEYGZBIGMS44
-         kl/oIGFsaQcqD2RDVxcXDtoM3IFmcK1RYjCG1PoFthALvO9dJUiUBdHQA85ErjWCTuiA
-         zZ1Q==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=CQs3qizMq3SbCY1dailXM4UPmWUUNs7Uy0jKl1/hvIo=;
-        fh=7TNRyq8hY1jNh4Tdd4fMHJKmrm9+jWJP4M/zkcgE9x0=;
-        b=a1D3FtzP0h0K7AotinRbgQwxs2n2e21KZG4EA3/TvagFiEu6qfjnirmVhMQ672BgDI
-         tfW8Ymc58v4nf6054JpeT+1uFuzY/dsEiFlfSveesWmoa6YVn0S2NJFj4JxpkbbUyWL/
-         4nyyV4OUOQ+/2Hb3ej11d/NB/34UsOowVRDXbSeJNaB5GAdkFleXIDcXXuo/79JV1Ic2
-         AtPiSkGf4XehF44c/Kaugw+7EeVUt+9bqfF99RlbQ0aFBfn4bdWMtNpIBG8dBFJhPtp1
-         hCSZQqzWLrMQJS9Qdr7kzJbFwztQ/WlBYKggpJb9enIb4c8/NYtfzpgFe9WV/2GCNrzY
-         vuIQ==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="lLSI8Pi4"
+Received: by mail-pl1-f202.google.com with SMTP id d9443c01a7336-2a0a4b748a0so59308105ad.1
+        for <kvm@vger.kernel.org>; Fri, 06 Feb 2026 09:58:59 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1770400521; x=1771005321; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=CQs3qizMq3SbCY1dailXM4UPmWUUNs7Uy0jKl1/hvIo=;
-        b=iVLADzdaD0oZa1faECWjz9DDhEdD8N/CZtDRQmCRjyq+v/tmY/6t8TBnKMk4Hs+f7o
-         sBhu5gyJ45rStzKgG9x5fZaTkrUHsG14eVzumxPifC3vBhWYI+piGkbszSZM093uBf6h
-         m/irnSf2zWxu3anoBPyNa3Ia/DOLmcq8EqYCHnvvWqMIMbLFZ9g4cY8l4bVKqKgK6g+p
-         DUY6R6iL4oDMQtt6Du+PRzC6zEZrKU07GxY74q6iJSdv+Mpnq/etpygMIaldSuMZlu9f
-         3GOoFxqATHibKat3Yz0mL5dQ0GWnHVwvh908krQWtSLi8yfD/qmvM4u5S/Z9KWSY7VZw
-         HXBw==
+        d=google.com; s=20230601; t=1770400739; x=1771005539; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=Njl6WISo/cIP/yX5hq9KMqO4jpKhLSD8WrbMSm0p7fU=;
+        b=lLSI8Pi4MNI9wZxAain+SMlxBsUL2lidYR6rX0PGVDS7JAfKxH9zkWGcBLroIA/uDf
+         WhaMZs9D0+jaGKhEATGpQBZbhZFqlwDbCtt5dR0XT7I1NCK9JSW7k/XV6babBKizFcIF
+         /4BXviohFEWC/U48rOU/iuenE+HQvwlpkjzGg7bqQTMG9oM+Xx/TetB2D1XVIV02Cr2T
+         oUKi4TUNHJBog+wGoyO53LBOf2HWcU/xyHSrhV5zGCuBG4zLnGN3ILb89DyI9vRvVbnd
+         NH9qBbKMePPhFzRDYjw1UKdUa+UV5szLQlH4wmB0XGA9AbDyjtnAOhtjuRs26T5IXuAW
+         tgKg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1770400521; x=1771005321;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=CQs3qizMq3SbCY1dailXM4UPmWUUNs7Uy0jKl1/hvIo=;
-        b=JIYMpBFCiKHe6qzSh9ceSkF6flzfdkjwlSBxgAcLLsDF2JElr7Kz1aL/DunoqEwUNc
-         xJkSozAJvnuYVGUmsrlhQuY2aMHYG5ub5dOPaIwoOeaEE7gQ1OfKPB/qJICMw35gO9jL
-         NUijhgw0NP6APn7M8KnMi75x5lV20+NPQ0BAAuOy2oDe8KYqIVVhUoZUQnwAb8wPs4h7
-         Zw2gMDjryZ2x/zWdrJK0rc6yg2paYmVGQVg/7Oo7S/VSXULwC7Z2gTjiVBIxDF+OZTw4
-         hKyasqSUqw5YUtDslQBBmK3LEApFF1K1GH7ceU8F992T/bAwoH4NT3EgrLw5stC2iIXg
-         CnEg==
-X-Forwarded-Encrypted: i=1; AJvYcCWs+haOv+mOXcWupNjkkGpR9N7ES8F8jWaHjon1tVutH1+6hQx1EWx/aL6w8HQRZJxV7eg=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzARxR+iZxaEgGcRprRQnTYc8aTkDtA7mQeaW6rAcHk0W4xT37j
-	ORJ1Aq3MPu02J5R/xBlAyEYjo6tIkg3IYN/uX3ES/NnR/Y2AIk2eCP7TSUDakivQ+jirfIOtO5M
-	ikR5PQU7q1z70QS/D0+gNhg0dV/yd8iZHMV/yom2ep4B2nZLERtKuR6+V
-X-Gm-Gg: AZuq6aL299EhiTuAz3q6yGxmOFYT3qh1isBPzL728bVqMrCTLddkGjTeRE93MogERzX
-	UciLoxxHVMrc19xW/idoVH+xaHv4RpaNKPwnSwCogQmDVZV0MHaDytd4Bwi41npTSUX+BJv9I6e
-	YfqYA3xAeIlez/Es3hT43JY1GFPwz43voxWX8xYKjAcDHHaIdYhdIVcvq/yRj7vxSr2oJb1We63
-	t6IVAvygSJ1/NzjoTVHLGe7Wm3zPUtsEPoWDo2ISKzc88zZ5fA0PlzxO+hYJfSH2/qIgE8=
-X-Received: by 2002:a2e:bc84:0:b0:385:f2fb:14db with SMTP id
- 38308e7fff4ca-386b513b416mr17372541fa.36.1770400521052; Fri, 06 Feb 2026
- 09:55:21 -0800 (PST)
+        d=1e100.net; s=20230601; t=1770400739; x=1771005539;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=Njl6WISo/cIP/yX5hq9KMqO4jpKhLSD8WrbMSm0p7fU=;
+        b=oEJ6Nk030t+aL/b1E+/ezRbOL4fgXrJY/7lVPhwl8T+/aGKeFGMzQjyyZXDjDN63PI
+         O++GzJGT1T+FaZ+7Fl/lIhwt4uknf7IL2oMl2XPQTa2isp8X9mdwtgTL/TmcTRPHA2/Q
+         AXrSx46S2/IG2GJNBYyIQpLtCfpWb3DBkHGo9h+Bt/lHpSq8bHKRxe6y3OU3WPmhWnR2
+         /lGYE/MdbPHpgsQirTce3NU8BOfrJjv3ggftufYUFFC5awZo/6lgIBVfrx8bZ6tu/msj
+         KAYDzAsknQNNuUavZeN2gr5ZQsHD03oMq3F7eO7tH9FKbk3LlyPS+A4yUsxgApANMJNX
+         N9EA==
+X-Forwarded-Encrypted: i=1; AJvYcCXAHOvEd1TxVt6I9crHsDWMULIaKApXs7h2TVKVyjjRWxkhuJMd1uG1FvtgiiW0wSm1wEY=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzbpIqkGDdw7hGpu+yAHMgBWepKPAcrYtDRgnL8HMIZMmTNcwGn
+	/tz1ekfnl1jL8t8O8uWp+B4BrGTXOYDKzGBWxB4aolidHHMhPoTFuqQQYTxg3WprwB3k7jcX32V
+	/RthjfQ==
+X-Received: from plcb1.prod.google.com ([2002:a17:902:d301:b0:2a0:81d1:64f4])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:902:e947:b0:2a0:b066:3f55
+ with SMTP id d9443c01a7336-2a951605e26mr31266215ad.10.1770400738628; Fri, 06
+ Feb 2026 09:58:58 -0800 (PST)
+Date: Fri, 6 Feb 2026 09:58:57 -0800
+In-Reply-To: <k6wja36wxzcgyef255vl7rds56hfs25gvueqo7xoyhget2suz2@vvio2nz6zjo5>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <20260202-vfio-selftest-only-64bit-v2-1-9c3ebb37f0f4@fb.com>
-In-Reply-To: <20260202-vfio-selftest-only-64bit-v2-1-9c3ebb37f0f4@fb.com>
-From: David Matlack <dmatlack@google.com>
-Date: Fri, 6 Feb 2026 09:54:52 -0800
-X-Gm-Features: AZwV_QgTrk3DAg7DGpaF40s0Bjc0dzuDlKfmgb-NfhnAhfOJ4GnGSp8CJdyHMsI
-Message-ID: <CALzav=d3Yd_v8WJHkhB==22hsbrroNZguk=2ssT==AVBzxkN0w@mail.gmail.com>
-Subject: Re: [PATCH v2] vfio: selftests: only build tests on arm64 and x86_64
-To: Ted Logan <tedlogan@fb.com>
-Cc: Alex Williamson <alex@shazbot.org>, Shuah Khan <shuah@kernel.org>, kvm@vger.kernel.org, 
-	linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	kernel test robot <lkp@intel.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Mime-Version: 1.0
+References: <20260115011312.3675857-1-yosry.ahmed@linux.dev>
+ <20260115011312.3675857-22-yosry.ahmed@linux.dev> <aYVEVRV-ASogp5dF@google.com>
+ <k6wja36wxzcgyef255vl7rds56hfs25gvueqo7xoyhget2suz2@vvio2nz6zjo5>
+Message-ID: <aYYr4R2tgwaajwjQ@google.com>
+Subject: Re: [PATCH v4 21/26] KVM: SVM: Rename vmcb->virt_ext to vmcb->misc_ctl2
+From: Sean Christopherson <seanjc@google.com>
+To: Yosry Ahmed <yosry.ahmed@linux.dev>
+Cc: Paolo Bonzini <pbonzini@redhat.com>, kvm@vger.kernel.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="us-ascii"
 
-On Mon, Feb 2, 2026 at 5:24=E2=80=AFPM Ted Logan <tedlogan@fb.com> wrote:
->
-> Only build vfio self-tests on arm64 and x86_64; these are the only
-> architectures where the vfio self-tests are run. Addresses compiler
-> warnings for format and conversions on i386.
->
-> Reported-by: kernel test robot <lkp@intel.com>
-> Closes: https://lore.kernel.org/oe-kbuild-all/202601211830.aBEjmEFD-lkp@i=
-ntel.com/
-> Signed-off-by: Ted Logan <tedlogan@fb.com>
+On Fri, Feb 06, 2026, Yosry Ahmed wrote:
+> On Thu, Feb 05, 2026 at 05:31:01PM -0800, Sean Christopherson wrote:
+> > On Thu, Jan 15, 2026, Yosry Ahmed wrote:
+> > > @@ -244,6 +241,8 @@ struct __attribute__ ((__packed__)) vmcb_control_area {
+> > >  #define SVM_MISC_CTL_SEV_ENABLE		BIT(1)
+> > >  #define SVM_MISC_CTL_SEV_ES_ENABLE	BIT(2)
+> > >  
+> > > +#define SVM_MISC_CTL2_LBR_CTL_ENABLE		BIT_ULL(0)
+> > > +#define SVM_MISC_CTL2_V_VMLOAD_VMSAVE_ENABLE	BIT_ULL(1)
+> > 
+> > Since you're changing names anyways, What do you think about shortening things
+> > a bit, and using the more standard syle of <scope>_<action>_<flag>?  E.g.
+> > 
+> >   #define SVM_MISC2_ENABLE_LBR_VIRTUALIZATION	BIT_ULL(0)
+> >   #define SVM_MISC2_ENABLE_V_VMLOAD_VMSAVE	BIT_ULL(1)
+> 
+> SVM_MISC2_ENABLE_LBR_VIRTUALIZATION is actually longer,
 
-Reviewed-by: David Matlack <dmatlack@google.com>
+Heh, yeah, I knew that when I hit "send", I just wasn't sure if V_LBR was a good
+name.
+
+> how about SVM_MISC2_ENABLE_V_LBR? Shorter and more consistent with
+> SVM_MISC2_ENABLE_V_VMLOAD_VMSAVE.
+
+Works for me.  I was mildly concerned that V_LBR wouldn't be intuitive, but since
+you independently came up with the name too, apparently not :-)
