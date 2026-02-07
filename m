@@ -1,55 +1,55 @@
-Received: from mail-pj1-f73.google.com (mail-pj1-f73.google.com [209.85.216.73])
+Received: from mail-pg1-f202.google.com (mail-pg1-f202.google.com [209.85.215.202])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1CB042D63E5
-	for <kvm@vger.kernel.org>; Sat,  7 Feb 2026 04:10:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.73
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D324A3385A5
+	for <kvm@vger.kernel.org>; Sat,  7 Feb 2026 04:10:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.202
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770437418; cv=none; b=BVTZztZBeUQdsV0s0gKhG4ziJ25OwLW3cYAT++7m5WVx7ArDyr8gmOnmzWwO4sz4pFwHjaljbx5+nuoHtiDUxApip6QhWb2oyl74LblNXNjkkUHUFDLtk9JF0jKQc0SnET36P6y4s9ET1oCEy020JoFW9wHsoY6oujF75+YADTU=
+	t=1770437419; cv=none; b=ARW0IsZds8DPh0vOhYIHt5nMxGMGPqmO62QD4rrJ1nD+oOcns5WS/kzmeyMjlqQupU2jsaw8NIMqgPCVAPl/jKkrXnF4w3wCzqZRaRmmO/wjPPEVFyB+9QZe+fPc+WYvBWAmrn9ZXrhaNY8ubiIOjE1oZFYZVbPKGneRFihwchk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770437418; c=relaxed/simple;
-	bh=p5nxu3id8UolerNhjHoe422qJFegewgpXd0OybvIbFw=;
+	s=arc-20240116; t=1770437419; c=relaxed/simple;
+	bh=ICq9z5wZm/HHfA3UeX2OlHXVs+Q68enXaSQlZD5Ewes=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=biXJWFkEdkUdChpZSbvg7JNBT8MopLzvwqlaZ+O4HuZfBafu4zlaivQ1THo9w/RlHWRJMzYRcWmRUTtYiCbyCv7FeD56MC7pITFSoluqe8XpErDTgsdfpZXEa7MPxOryM1ghzHoN6zQ6CyKDNk9Wr+UGSGNXbW/jXx+w/6KcZOk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=XsKTKtuR; arc=none smtp.client-ip=209.85.216.73
+	 To:Cc:Content-Type; b=UAZiKBC1LRUe429NIag/Erbdj8Aj+Hw5MgGQcbPG7QMMTuL1ztcXrUZVNeaNCnowp17bH4NEpxRCMmv131OvBaL8XXbUJGxBPMnXTHEhmuSB90THQVeU2gm78g/L9SGEwuZTwFRUynW6rpdA65RL5H+iNtoUp7DHyqh6gl07IbA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=MBAn8w8Q; arc=none smtp.client-ip=209.85.215.202
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="XsKTKtuR"
-Received: by mail-pj1-f73.google.com with SMTP id 98e67ed59e1d1-354c65f69edso317008a91.0
-        for <kvm@vger.kernel.org>; Fri, 06 Feb 2026 20:10:17 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="MBAn8w8Q"
+Received: by mail-pg1-f202.google.com with SMTP id 41be03b00d2f7-c337cde7e40so1724449a12.1
+        for <kvm@vger.kernel.org>; Fri, 06 Feb 2026 20:10:19 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1770437417; x=1771042217; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1770437419; x=1771042219; darn=vger.kernel.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:reply-to:from:to:cc:subject:date:message-id:reply-to;
-        bh=y3zDHsIXP5YzU2BtDYeB6vfxdCF+cg0ZFzAe69Uf118=;
-        b=XsKTKtuR93pzjvC0//157oMfIixq2tGQwZgHVYvi1oVSFnok0U9GzDDpQv9RfvBxxz
-         O/P0YNz6xHPzY+2zYhy/i8m+sregtYWisQUbCyd9D9FK784OTWimcvgLxCrjdSOIfWpm
-         NNN7dJnAYtpEyWNco4k4ZcRMJUekGuTIlcKm9yISb5mNnwG893LlsFvz1eLK8cAJDEIy
-         Fyw9dKTUQq2dHCofET5wlMOfRl+/yc6KWc8wH27L/9ZKqN2FVAcHALlxwAB0iUcXjdta
-         oGNc/nYS6oWPxQOctS0n1ZA3cQWF69mgVblRxd8CuselrNIQep2mBUoG7uXL6f8jKXy8
-         wKxQ==
+        bh=cEIeP+OOJrdocngptUX72ejpUt7qJfQ0ZWyP5pIkCBs=;
+        b=MBAn8w8QYxNPjda6k3i8BxhdCmuG4S3CUjn8a5gr+5c3eZALyXsOA5uvmlt2hTZZ2r
+         L/JoMVtVCdQvBxbotqfVIsYwBhe6x+HqLqE52XtpYyz3mASoewp3GLzF1h7B0xGqAk5E
+         R8fWTYetuDblIhN3g/XuiWC6lhlhPvbP1b0fs3E/5W3VJsB1E6BhrWsVvfV6bBHIhX8O
+         aZfTrNQr05PxTTT76Mcsks2pQW7O3HQ+RYaQ3aXQtatzFWjvzGYD+N130VgGv66BOBQS
+         vhIyPqHfFyhf90yw0mHX/XmjY0llEWyi9BzhUqMG8Lt4G05ihAsivqAC+izgKbtJpU5J
+         1DLw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1770437417; x=1771042217;
+        d=1e100.net; s=20230601; t=1770437419; x=1771042219;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:reply-to:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=y3zDHsIXP5YzU2BtDYeB6vfxdCF+cg0ZFzAe69Uf118=;
-        b=WspIo949LBIUwIzyfJhk62Vw9OZMwBxYRabZCodl8u1qRh4DgQBSDixeB8rA11IVjV
-         D/Y7DQmw+AVRon0qdo+uTp6BxgzD2A9sBooFdh3LaZHMi+n6vn/F3hsFs86mm3GRQavf
-         xKqVKWCZiadFTj2Ba2KsJALdD93wVYyFvpeREVDSBUxCqrTJbqG6HBMEIgY5i0KASmOa
-         /0wU4HnstspoPdVFXTe6U2Yp5aSoiCmj9iRkye3VKdiw0+dIWR0nevUgXkieFek5SxXK
-         uBzRLs9LYRRsyNvQZjNzOMP3wWir97SL1w+5dCH7l6wUwwPFJ6PdEU9pd01XXTaVBR0L
-         vvMg==
-X-Gm-Message-State: AOJu0YwvoM5BqHpeTwJj85+CWRypl0y2hfFoaML/uPZOYl4UYvJOl5WF
-	deTSFwJEXV8M7N0F775nfZl1pLe85C4gvmpTk0UeoUkzJLnKQCyJQMULbNy/kH3Q9/wVdxlOQ5n
-	j0pfCAQ==
-X-Received: from pjbqi5.prod.google.com ([2002:a17:90b:2745:b0:353:d0b3:8611])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:46:b0:349:7f0a:381b
- with SMTP id 98e67ed59e1d1-354b3ba3608mr4083757a91.8.1770437417386; Fri, 06
- Feb 2026 20:10:17 -0800 (PST)
+        bh=cEIeP+OOJrdocngptUX72ejpUt7qJfQ0ZWyP5pIkCBs=;
+        b=VbsmV0T/4CVHB2n/ggGx3q74zfU8Je94YObbceD+tLVEjNd5qtaPAm1/ekGyq+QKsH
+         745tKIc7u10Rpwx7C0032omCR6D6Nvn7pTrFRIZa3mrIEhXEUd8nApSEdNUU5IQvibvx
+         o6XgLdu7Vp8KhRB81ApHJvVrcsYscKUXUoPwuCYdKwpn9r+SJzeYlEffQxzrn/iSbJvU
+         f0hPtgz5AJawF7Ot5qlKtyiUIAZCMIPPjiML9ecrTOsQRLJoOJvmvIUOrxMKP16c5/Nu
+         HszOZxOTAzmDA8+jxPDGjgAFA5jAps0UwVm2hPzAYrZv9VF9iPs1Rx9SmP6GQdZtsQr2
+         LDtQ==
+X-Gm-Message-State: AOJu0Yz2zxccb/sgJ/z7GQrsNZE4gHiuCk8vy7RhBqRCDlQN3tyD702Z
+	HVBP5KuhfLNqIRTbJF2cQJPn8DcpcLoe9s2TbvZ0cK1WbxJUaXTYPy0G5a1EdMqNHMTDbrg+R69
+	QUjtUWw==
+X-Received: from pjblw12.prod.google.com ([2002:a17:90b:180c:b0:354:bd6f:c03])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a20:734c:b0:35f:5896:85a4
+ with SMTP id adf61e73a8af0-393acf885b1mr5258839637.5.1770437419284; Fri, 06
+ Feb 2026 20:10:19 -0800 (PST)
 Reply-To: Sean Christopherson <seanjc@google.com>
-Date: Fri,  6 Feb 2026 20:10:04 -0800
+Date: Fri,  6 Feb 2026 20:10:05 -0800
 In-Reply-To: <20260207041011.913471-1-seanjc@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
@@ -59,16 +59,21 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 References: <20260207041011.913471-1-seanjc@google.com>
 X-Mailer: git-send-email 2.53.0.rc2.204.g2597b5adb4-goog
-Message-ID: <20260207041011.913471-3-seanjc@google.com>
-Subject: [GIT PULL] KVM: Generic changes for 6.20
+Message-ID: <20260207041011.913471-4-seanjc@google.com>
+Subject: [GIT PULL] KVM: guest_memfd changes for 6.20
 From: Sean Christopherson <seanjc@google.com>
 To: Paolo Bonzini <pbonzini@redhat.com>
 Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
 	Sean Christopherson <seanjc@google.com>
 Content-Type: text/plain; charset="UTF-8"
 
-Fix -Wflex-array-member-not-at-end warnings and document that vcpu->mutex is
-taken outside of kvm->slots_lock.
+In preparation (pun intended) for in-place conversion, drop gmem's preparation
+tracking, GUP source pages outside of filemap invalidate lock to avoid AB-BA
+locking, and require source pages to be 4KiB aligned.
+
+Regarding the retroactive alignment requirement, I know we discussed it in PUCK,
+but I forget if we ever formalized a decision there.  After going over various
+VMMs, we gained enough confidence to just bite the bullet and hope for the best.
 
 The following changes since commit 9ace4753a5202b02191d54e9fdf7f9e3d02b85eb:
 
@@ -76,41 +81,45 @@ The following changes since commit 9ace4753a5202b02191d54e9fdf7f9e3d02b85eb:
 
 are available in the Git repository at:
 
-  https://github.com/kvm-x86/linux.git tags/kvm-x86-generic-6.20
+  https://github.com/kvm-x86/linux.git tags/kvm-x86-gmem-6.20
 
-for you to fetch changes up to 98333091750d0288b1c64c47afe1950dbda1afe6:
+for you to fetch changes up to 2a62345b30529e488beb6a1220577b3495933724:
 
-  Documentation: KVM: Formalizing taking vcpu->mutex *outside* of kvm->slots_lock (2026-01-08 11:00:35 -0800)
-
-----------------------------------------------------------------
-KVM generic changes for 6.20
-
- - Remove a subtle pseudo-overlay of kvm_stats_desc, which, aside from being
-   unnecessary and confusing, triggered compiler warnings due to
-   -Wflex-array-member-not-at-end.
-
- - Document that vcpu->mutex is take outside of kvm->slots_lock, which is all
-   kinds of unintuitive, but is unfortunately the existing behavior for
-   multiple architectures, and in a weird way actually makes sense.
+  KVM: guest_memfd: GUP source pages prior to populating guest memory (2026-01-15 12:31:17 -0800)
 
 ----------------------------------------------------------------
-Sean Christopherson (2):
-      KVM: Remove subtle "struct kvm_stats_desc" pseudo-overlay
-      Documentation: KVM: Formalizing taking vcpu->mutex *outside* of kvm->slots_lock
+KVM guest_memfd changes for 6.20
 
- Documentation/virt/kvm/locking.rst |  2 +
- arch/arm64/kvm/guest.c             |  4 +-
- arch/loongarch/kvm/vcpu.c          |  2 +-
- arch/loongarch/kvm/vm.c            |  2 +-
- arch/mips/kvm/mips.c               |  4 +-
- arch/powerpc/kvm/book3s.c          |  4 +-
- arch/powerpc/kvm/booke.c           |  4 +-
- arch/riscv/kvm/vcpu.c              |  2 +-
- arch/riscv/kvm/vm.c                |  2 +-
- arch/s390/kvm/kvm-s390.c           |  4 +-
- arch/x86/kvm/x86.c                 |  4 +-
- include/linux/kvm_host.h           | 83 ++++++++++++++++----------------------
- include/uapi/linux/kvm.h           |  8 ++++
- virt/kvm/binary_stats.c            |  2 +-
- virt/kvm/kvm_main.c                | 20 ++++-----
- 15 files changed, 72 insertions(+), 75 deletions(-)
+ - Remove kvm_gmem_populate()'s preparation tracking and half-baked hugepage
+   handling, and instead rely on SNP (the only user of the tracking) to do its
+   own tracking via the RMP.
+
+ - Retroactively document and enforce (for SNP) that KVM_SEV_SNP_LAUNCH_UPDATE
+   and KVM_TDX_INIT_MEM_REGION require the source page to be 4KiB aligned, to
+   avoid non-trivial complexity for a non-existent usecase (and because
+   in-place conversion simply can't support unaligned sources).
+
+ - When populating guest_memfd memory, GUP the source page in common code and
+   pass the refcounted page to the vendor callback, instead of letting vendor
+   code do the heavy lifting.  Doing so avoids a looming deadlock bug with
+   in-place due an AB-BA conflict betwee mmap_lock and guest_memfd's filemap
+   invalidate lock.
+
+----------------------------------------------------------------
+Michael Roth (5):
+      KVM: guest_memfd: Remove partial hugepage handling from kvm_gmem_populate()
+      KVM: guest_memfd: Remove preparation tracking
+      KVM: SEV: Document/enforce page-alignment for KVM_SEV_SNP_LAUNCH_UPDATE
+      KVM: TDX: Document alignment requirements for KVM_TDX_INIT_MEM_REGION
+      KVM: guest_memfd: GUP source pages prior to populating guest memory
+
+Yan Zhao (1):
+      KVM: SVM: Fix a missing kunmap_local() in sev_gmem_post_populate()
+
+ .../virt/kvm/x86/amd-memory-encryption.rst         |   2 +-
+ Documentation/virt/kvm/x86/intel-tdx.rst           |   2 +-
+ arch/x86/kvm/svm/sev.c                             | 108 +++++++---------
+ arch/x86/kvm/vmx/tdx.c                             |  16 +--
+ include/linux/kvm_host.h                           |   4 +-
+ virt/kvm/guest_memfd.c                             | 139 +++++++++++----------
+ 6 files changed, 130 insertions(+), 141 deletions(-)
