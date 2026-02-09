@@ -1,29 +1,30 @@
-Received: from m16.mail.163.com (m16.mail.163.com [117.135.210.4])
+Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.2])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 70310265CDD;
-	Mon,  9 Feb 2026 04:30:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=117.135.210.4
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 135FA126F3B;
+	Mon,  9 Feb 2026 04:30:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.31.2
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770611407; cv=none; b=O1dz5rStyMDvBUsKFWDy5BBDS5jyzqxaCwqQsNebK2+oI/jc6C09oHpPqO65szzqfZRWD1GYDXHsJRM9JbM4xy8gZd5QEPcsDmS39uk6EOHQArtFannmNw0irxBRm8MbHrofTsJGJxBTQKi7jud8LiC3Dpyb2IqDIWlAPYfEMZk=
+	t=1770611413; cv=none; b=APoM0idQQ+mnRgT47Y8H4HPJUYKMD6woPEBdlizlEDsG2K+PvVw7nVvRJEu4nd89KkQo/ViXsGp6w5bkbDfoYtPbdBeAb6uRRHMNhrMBP9fVah9wIGd4/zOwH76EWLYgC52kSxWlJ3DpaBg/4V9oVHJVXIcDsQizpOGBr9GCdOI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770611407; c=relaxed/simple;
-	bh=C1Gob3adNCewxQzyZFbOuW9J7q14TTNkGgLRrCJ6FIU=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=svZ/zEVGVu5PS7OtxRDeG4Yk4/ANizhk/sSDgwyOUUKjCu5pftmbLQtFtjSuUCknFTajYaT8G1WcPK0nUkqtiSvSdEXgYlSXjWVQW6oqHWZTYcrpvIqdiYj/d70nXgV/i8ROkNBO+dp6mv5h3EXqyEeqeBMI2eVLE+0bEZ/DI0s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=n3iYfMtj; arc=none smtp.client-ip=117.135.210.4
+	s=arc-20240116; t=1770611413; c=relaxed/simple;
+	bh=VPNs08T7JRAAD+FtB2viQACpxJDWKcCN819zahfODp4=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=fbdGKWbSYpGQ+oAErPGAM1MYSWbYU36gGhN2Vzy9PMvs18HUxKeJGgDL6tIqDkMpkcvu6oQe17YR55qx6a+Yy1y0aPd47jtzJwsmNl+3M8neJmbPB/NXMNEGsL/pybDC2kYU9QObxqlMicj9pqnVB+D2pobworf8slA6GT+2MBQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=A+bQ1oOp; arc=none smtp.client-ip=220.197.31.2
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="n3iYfMtj"
+	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="A+bQ1oOp"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-	s=s110527; h=From:To:Subject:Date:Message-ID:MIME-Version; bh=7Z
-	DxWqlw9Md/Pb6bh19k+/fmDo/i1z2nV0vxcIKxI8U=; b=n3iYfMtjZ4ItxcaqCi
-	6kp40jhJ8WjXRwRdUa01YfoJXN7RcWPb6AHdcfWceG0bixkj2gfsufkdsiWaGKig
-	ApGQnUV6pi+xUmwDh1RRX1MoJ6pHRk+YAWarwhRkls0QybKrHXkKS7MB+++8k2pN
-	2q51luKCXAmq7Zh5PjqYUed2E=
+	s=s110527; h=From:To:Subject:Date:Message-ID:MIME-Version; bh=i1
+	+c8F8gRCphXAzoD8IgyPUlkrVbg7Bop7xNGBSKdQ8=; b=A+bQ1oOp3GMLB+JkWh
+	VSB3YXtEI9jeBuK5ntF9lMoMZPm7YXNMgvvUyokxuatOUGdzk9bBcscS1bNNlgyX
+	F3MayAnJo5JQ9VadmLie9K0gJBQKSOFPPw2j80y8vl5x5nRLiKHI1sibu7i6lRk1
+	pFUkuMh2MvrV4qebgDCGiLULo=
 Received: from 163.com (unknown [])
-	by gzsmtp2 (Coremail) with SMTP id PSgvCgD3F+yvYolpOQZEQw--.25673S2;
-	Mon, 09 Feb 2026 12:29:35 +0800 (CST)
+	by gzsmtp2 (Coremail) with SMTP id PSgvCgD3F+yvYolpOQZEQw--.25673S5;
+	Mon, 09 Feb 2026 12:29:37 +0800 (CST)
 From: Zhiquan Li <zhiquan_li@163.com>
 To: seanjc@google.com,
 	pbonzini@redhat.com,
@@ -31,10 +32,12 @@ To: seanjc@google.com,
 Cc: kvm@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	zhiquan_li@163.com
-Subject: [PATCH RESEND 0/5] KVM: x86: selftests: Add Hygon CPUs support and fix failures
-Date: Mon,  9 Feb 2026 12:13:00 +0800
-Message-ID: <20260209041305.64906-1-zhiquan_li@163.com>
+Subject: [PATCH RESEND 3/5] KVM: x86: selftests: Avoid failures due to reserved memory address regions on Hygon
+Date: Mon,  9 Feb 2026 12:13:03 +0800
+Message-ID: <20260209041305.64906-4-zhiquan_li@163.com>
 X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20260209041305.64906-1-zhiquan_li@163.com>
+References: <20260209041305.64906-1-zhiquan_li@163.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -42,25 +45,23 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:PSgvCgD3F+yvYolpOQZEQw--.25673S2
-X-Coremail-Antispam: 1Uf129KBjvJXoW7AFWUXr4fAF45AFyfWr4fuFg_yoW8Aw1rpa
-	1fJw4YkF97Ja4SkayfJF1kArn7AFn3CF4UGr1Yyw47ArW5G3Wxtw4Iga10q3WfCr4vvr15
-	Za9rGFnrWw4DJF7anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x0zK-e7bUUUUU=
-X-CM-SenderInfo: 52kl13xdqbzxi6rwjhhfrp/xtbCwg+AaWmJYq+JMQAA3x
+X-CM-TRANSID:PSgvCgD3F+yvYolpOQZEQw--.25673S5
+X-Coremail-Antispam: 1Uf129KBjvJXoW7CFykCr1Uuw4UJF1DKr4kJFb_yoW8ZF1Dpa
+	4fCw45WF48GF1ay3yxXws7ZFyvkFn7CF4xKryjy343u3W5WF13Zr4Sk3WYvrW3CrWrZw13
+	Aa4fJF4Duw4jqaUanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07UzxRDUUUUU=
+X-CM-SenderInfo: 52kl13xdqbzxi6rwjhhfrp/xtbC6hGBammJYrE9UgAA3M
 
-This series to add support for Hygon CPUs and fix 11 KVM selftest failures
-on Hygon architecture.
+There are similar reserved memory address regions for Hygon
+architecture, mapping memory into these regions and accessing to them
+results in a #PF.
 
-Patch 1 add CPU vendor detection for Hygon and add a global variable
-"host_cpu_is_hygon" to identify if the test is running on a Hygon CPU.
-It is the prerequisite for the following fixes.
+Hygon CSV also makes the "physical address space width reduction", the
+reduced physical address bits are reported by bits 11:6 of
+CPUID[0x8000001f].EBX as well, so the existed logic is totally
+applicable for Hygon processors.
 
-Patch 2 fix x86/fix_hypercall_test test failure by altering the hypercall
-instruction on Hygon CPUs.
-
-Patch 3 fix following test failures by avoiding using the reserved
-memory regions on Hygon CPUs.
+Following test failures are fixed by this change:
 - access_tracking_perf_test
 - demand_paging_test
 - dirty_log_perf_test
@@ -70,34 +71,35 @@ memory regions on Hygon CPUs.
 - pre_fault_memory_test
 - x86/dirty_log_page_splitting_test
 
-Patch 4 fix x86/pmu_event_filter_test test failure by allowing the tests
-for Hygon CPUs.
-
-Patch 5 fix x86/msrs_test test failure by fixing the expectation while
-writing the MSR_TSC_AUX reserved bits without RDPID support.
-
-Zhiquan Li (5):
-  KVM: x86: selftests: Add CPU vendor detection for Hygon
-  KVM: x86: selftests: Alter the instruction of hypercall on Hygon
-  KVM: x86: selftests: Avoid failures due to reserved memory address
-    regions on Hygon
-  KVM: x86: selftests: Allow the PMU event filter test for Hygon
-  KVM: x86: selftests: Fix write MSR_TSC_AUX reserved bits test failure
-    on Hygon
-
- .../selftests/kvm/include/x86/processor.h     |  6 +++++
- .../testing/selftests/kvm/lib/x86/processor.c | 12 ++++++---
- .../selftests/kvm/x86/fix_hypercall_test.c    |  2 +-
- tools/testing/selftests/kvm/x86/msrs_test.c   | 26 +++++++++++++++----
- .../selftests/kvm/x86/pmu_event_filter_test.c |  6 ++---
- 5 files changed, 39 insertions(+), 13 deletions(-)
-
-
-base-commit: 05f7e89ab9731565d8a62e3b5d1ec206485eeb0b
-
+Signed-off-by: Zhiquan Li <zhiquan_li@163.com>
 ---
-Re-send: rebase to v6.19
+ tools/testing/selftests/kvm/lib/x86/processor.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
+diff --git a/tools/testing/selftests/kvm/lib/x86/processor.c b/tools/testing/selftests/kvm/lib/x86/processor.c
+index 64f9ecd2387d..252b04c8e944 100644
+--- a/tools/testing/selftests/kvm/lib/x86/processor.c
++++ b/tools/testing/selftests/kvm/lib/x86/processor.c
+@@ -1270,8 +1270,8 @@ unsigned long vm_compute_max_gfn(struct kvm_vm *vm)
+ 
+ 	max_gfn = (1ULL << (guest_maxphyaddr - vm->page_shift)) - 1;
+ 
+-	/* Avoid reserved HyperTransport region on AMD processors.  */
+-	if (!host_cpu_is_amd)
++	/* Avoid reserved HyperTransport region on AMD or Hygon processors. */
++	if (!host_cpu_is_amd && !host_cpu_is_hygon)
+ 		return max_gfn;
+ 
+ 	/* On parts with <40 physical address bits, the area is fully hidden */
+@@ -1285,7 +1285,7 @@ unsigned long vm_compute_max_gfn(struct kvm_vm *vm)
+ 
+ 	/*
+ 	 * Otherwise it's at the top of the physical address space, possibly
+-	 * reduced due to SME by bits 11:6 of CPUID[0x8000001f].EBX.  Use
++	 * reduced due to SME or CSV by bits 11:6 of CPUID[0x8000001f].EBX.  Use
+ 	 * the old conservative value if MAXPHYADDR is not enumerated.
+ 	 */
+ 	if (!this_cpu_has_p(X86_PROPERTY_MAX_PHY_ADDR))
 -- 
 2.43.0
 
