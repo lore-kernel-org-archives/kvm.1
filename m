@@ -1,81 +1,80 @@
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3DACF36606D
-	for <kvm@vger.kernel.org>; Mon,  9 Feb 2026 11:40:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86E16371056
+	for <kvm@vger.kernel.org>; Mon,  9 Feb 2026 11:43:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770637206; cv=none; b=LnajLBqYfufw3h4HeBnPMhfe9D9WozwzTDApElS3WFoxndbJi8T5stB83pyyiUt+PIm+vCpIxea9nHP/S/FhJG7JaBMb9UpjsGbxvVETU+M6S/Dsau2gxfxwR4FhrLlNc+VnN5XcaE9RH/d6PmdT3wawnNZK8YwELKnIchtib/U=
+	t=1770637415; cv=none; b=gjps3Odc+r2eMPNZjNm1PI5gwDlzKEAUPFDvozETXspigrtxTN05lmU4aK8kB0XOsCTR/9K72ozJeDa9Yrl1+i/jm03q6A9Ml9TtTti2Seg1MIBYiLvFpZXerZ1N0Lzm1zTqjaPPetH3Sn2o0+tpiqK+SX89uvQ2jGAk2hPUANc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770637206; c=relaxed/simple;
-	bh=aYjEeCkMZHiuC5R4skkZ7Q04duQgzS9O7uRFGOAxUnE=;
+	s=arc-20240116; t=1770637415; c=relaxed/simple;
+	bh=ZlCsJRJJAfS5TjFdAY3MUHqS7ewIBNYYOaA7yaL2R+g=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=VilKSHqy48x1JUzK+SH70u6A6870JtuZoAGmJMbeIQMworSXTy4Rmxv6S1N+f2uA9kTJUssvIcTADCJo00ABWyOmdnoPMAFgYVtvqLY37RFBFPrD8xdsxHT+z4Ift9edmvezhMkqRCHZMGXyQaqkgQ7W6jpOzO2ZMEqH/8sjAKo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=oV99INbT; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=OVqaJ/bI; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=oV99INbT; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=OVqaJ/bI; arc=none smtp.client-ip=195.135.223.131
+	 In-Reply-To:Content-Type; b=S9NLNrcNcSLHSpPrl9HSobBfAZBXaP8yWWWDKLUBSRC+/CiMpzyUIu6SqrhoIq48AsbrD+8EBrFCuT23ef+OQo3s7XVxY2wCkh024a+VipdutB683+Q92wXyCz2tyq4xhEkakOQ6UQR9zgC2FzejBSz1On3pGPh/7ZheumNFs64=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=byq8Secf; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=jQFFoTgU; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=byq8Secf; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=jQFFoTgU; arc=none smtp.client-ip=195.135.223.130
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="oV99INbT";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="OVqaJ/bI";
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="oV99INbT";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="OVqaJ/bI"
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="byq8Secf";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="jQFFoTgU";
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="byq8Secf";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="jQFFoTgU"
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id 5A6A15BD2B;
-	Mon,  9 Feb 2026 11:40:04 +0000 (UTC)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id CBAEC3E6F5;
+	Mon,  9 Feb 2026 11:43:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1770637204; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	t=1770637413; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=EFvENNphJJ02ND6rKpiGDYtX6p1T1DdwkEQYwe3cuOA=;
-	b=oV99INbTOGLH52qRELpVbDI1t/HeVhWE7JKpyv8MlkdGbttpdwgBw5T5sbfos3mawHZXze
-	S+UvYIIkLjABHJYqW0842UZQCIkJe7kpPn99rVKKTgrme6nZ2E8Uo8VRXkbjKi7U+ObolY
-	vRjcQpZvIdQ8tqwa16VYvuIEbhdEUe4=
+	bh=3a3kIicM5sBZ4RGa33aXgI4s/G8RklC2RL/Gfa+ujCw=;
+	b=byq8Secfa3LGmBrWkiaVvUoijLkjzOqDwbi12IBZ0XgZ47kWWORqOE6/9wkRO5djDb0bXB
+	8dV65F00ezR5iooWYrJu3sMn3HK95bdJ0gYVRXlfAOmortAsLUJY/oCUoRoUUq6g6aSLJs
+	cAOzpj2gY1hoRtCIdAp0bExH0eS5E28=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1770637204;
+	s=susede2_ed25519; t=1770637413;
 	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=EFvENNphJJ02ND6rKpiGDYtX6p1T1DdwkEQYwe3cuOA=;
-	b=OVqaJ/bI+/WqS6BLF0rjwqVrci4G1NhU/woDtLBDQMXQ4JpDXCe+frnfu3a78VjT/pZbKJ
-	G256pzszEWMRVhCw==
-Authentication-Results: smtp-out2.suse.de;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=oV99INbT;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b="OVqaJ/bI"
+	bh=3a3kIicM5sBZ4RGa33aXgI4s/G8RklC2RL/Gfa+ujCw=;
+	b=jQFFoTgUGecrmE012TYG37NJbOL5yIy/M/sUhAa3ZNy6hR9CeOYpCxWz5hhzcRdmFlrnJi
+	UzhqgPGiMw4E7cCg==
+Authentication-Results: smtp-out1.suse.de;
+	none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1770637204; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	t=1770637413; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=EFvENNphJJ02ND6rKpiGDYtX6p1T1DdwkEQYwe3cuOA=;
-	b=oV99INbTOGLH52qRELpVbDI1t/HeVhWE7JKpyv8MlkdGbttpdwgBw5T5sbfos3mawHZXze
-	S+UvYIIkLjABHJYqW0842UZQCIkJe7kpPn99rVKKTgrme6nZ2E8Uo8VRXkbjKi7U+ObolY
-	vRjcQpZvIdQ8tqwa16VYvuIEbhdEUe4=
+	bh=3a3kIicM5sBZ4RGa33aXgI4s/G8RklC2RL/Gfa+ujCw=;
+	b=byq8Secfa3LGmBrWkiaVvUoijLkjzOqDwbi12IBZ0XgZ47kWWORqOE6/9wkRO5djDb0bXB
+	8dV65F00ezR5iooWYrJu3sMn3HK95bdJ0gYVRXlfAOmortAsLUJY/oCUoRoUUq6g6aSLJs
+	cAOzpj2gY1hoRtCIdAp0bExH0eS5E28=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1770637204;
+	s=susede2_ed25519; t=1770637413;
 	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=EFvENNphJJ02ND6rKpiGDYtX6p1T1DdwkEQYwe3cuOA=;
-	b=OVqaJ/bI+/WqS6BLF0rjwqVrci4G1NhU/woDtLBDQMXQ4JpDXCe+frnfu3a78VjT/pZbKJ
-	G256pzszEWMRVhCw==
+	bh=3a3kIicM5sBZ4RGa33aXgI4s/G8RklC2RL/Gfa+ujCw=;
+	b=jQFFoTgUGecrmE012TYG37NJbOL5yIy/M/sUhAa3ZNy6hR9CeOYpCxWz5hhzcRdmFlrnJi
+	UzhqgPGiMw4E7cCg==
 Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id AF7123EA63;
-	Mon,  9 Feb 2026 11:40:03 +0000 (UTC)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 2AAC33EA63;
+	Mon,  9 Feb 2026 11:43:33 +0000 (UTC)
 Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
 	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id glItKJPHiWnSEgAAD6G6ig
-	(envelope-from <clopez@suse.de>); Mon, 09 Feb 2026 11:40:03 +0000
-Message-ID: <e19b9666-b224-4fbd-92c9-82c712916a07@suse.de>
-Date: Mon, 9 Feb 2026 12:40:03 +0100
+	id sju4B2XIiWmHSQAAD6G6ig
+	(envelope-from <clopez@suse.de>); Mon, 09 Feb 2026 11:43:33 +0000
+Message-ID: <2c59c666-9f6a-460d-8582-55af31ee302d@suse.de>
+Date: Mon, 9 Feb 2026 12:43:32 +0100
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -84,112 +83,93 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 Subject: Re: [PATCH] KVM: x86: synthesize TSA CPUID bits via SCATTERED_F()
-To: Jim Mattson <jmattson@google.com>, Borislav Petkov <bp@alien8.de>
-Cc: seanjc@google.com, kvm@vger.kernel.org,
- Paolo Bonzini <pbonzini@redhat.com>, Thomas Gleixner <tglx@kernel.org>,
- Ingo Molnar <mingo@redhat.com>, Dave Hansen <dave.hansen@linux.intel.com>,
+To: Binbin Wu <binbin.wu@linux.intel.com>, seanjc@google.com
+Cc: bp@alien8.de, kvm@vger.kernel.org, Paolo Bonzini <pbonzini@redhat.com>,
+ Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>,
+ Dave Hansen <dave.hansen@linux.intel.com>,
  "maintainer:X86 ARCHITECTURE (32-BIT AND 64-BIT)" <x86@kernel.org>,
  "H. Peter Anvin" <hpa@zytor.com>,
  "open list:X86 ARCHITECTURE (32-BIT AND 64-BIT)"
- <linux-kernel@vger.kernel.org>, Babu Moger <bmoger@amd.com>
+ <linux-kernel@vger.kernel.org>
 References: <20260208164233.30405-1-clopez@suse.de>
- <20260208182849.GAaYjV4Vh8i0kznTEK@fat_crate.local>
- <CALMp9eQmwsND7whnvVof1i=OsCdo6wcwBWyDRwS3Ud69WkKf-g@mail.gmail.com>
- <20260208211342.GBaYj8hhtYM-lYfq-X@fat_crate.local>
- <CALMp9eSVB=iRec2A0tmRzkTBa9zz4BVS8Lu79vUuRPrTawYFcQ@mail.gmail.com>
-From: =?UTF-8?Q?Carlos_L=C3=B3pez?= <clopez@suse.de>
+ <3afa5004-412a-4ab8-b0b9-46bd3982438d@linux.intel.com>
 Content-Language: en-US
-In-Reply-To: <CALMp9eSVB=iRec2A0tmRzkTBa9zz4BVS8Lu79vUuRPrTawYFcQ@mail.gmail.com>
+From: =?UTF-8?Q?Carlos_L=C3=B3pez?= <clopez@suse.de>
+In-Reply-To: <3afa5004-412a-4ab8-b0b9-46bd3982438d@linux.intel.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-4.51 / 50.00];
-	BAYES_HAM(-3.00)[100.00%];
+X-Spamd-Result: default: False [-4.30 / 50.00];
+	BAYES_HAM(-3.00)[99.99%];
 	NEURAL_HAM_LONG(-1.00)[-1.000];
-	R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
 	NEURAL_HAM_SHORT(-0.20)[-1.000];
 	MIME_GOOD(-0.10)[text/plain];
-	MX_GOOD(-0.01)[];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
 	ARC_NA(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[12];
-	RECEIVED_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:106:10:150:64:167:received];
 	MIME_TRACE(0.00)[0:+];
-	RBL_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:104:10:150:64:97:from];
-	RCVD_TLS_ALL(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[11];
 	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_TLS_ALL(0.00)[];
 	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
-	SPAMHAUS_XBL(0.00)[2a07:de40:b281:104:10:150:64:97:from];
-	FROM_EQ_ENVFROM(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_TWO(0.00)[2];
+	FROM_EQ_ENVFROM(0.00)[];
 	TO_MATCH_ENVRCPT_ALL(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[imap1.dmz-prg2.suse.org:helo,imap1.dmz-prg2.suse.org:rdns,suse.de:dkim,suse.de:mid];
-	DNSWL_BLOCKED(0.00)[2a07:de40:b281:106:10:150:64:167:received,2a07:de40:b281:104:10:150:64:97:from];
-	DKIM_TRACE(0.00)[suse.de:+]
+	RCVD_COUNT_TWO(0.00)[2];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[imap1.dmz-prg2.suse.org:helo,suse.de:mid]
 X-Spam-Flag: NO
-X-Spam-Score: -4.51
-X-Rspamd-Queue-Id: 5A6A15BD2B
-X-Rspamd-Action: no action
-X-Rspamd-Server: rspamd2.dmz-prg2.suse.org
+X-Spam-Score: -4.30
 X-Spam-Level: 
 
 Hi,
 
-On 2/9/26 6:48 AM, Jim Mattson wrote:
-> On Sun, Feb 8, 2026 at 1:14 PM Borislav Petkov <bp@alien8.de> wrote:
->>
->> On Sun, Feb 08, 2026 at 12:50:18PM -0800, Jim Mattson wrote:
->>>> /*
->>>>  * Synthesized Feature - For features that are synthesized into boot_cpu_data,
->>>>  * i.e. may not be present in the raw CPUID, but can still be advertised to
->>>>  * userspace.  Primarily used for mitigation related feature flags.
->>>>                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
->>>>  */
->>>> #define SYNTHESIZED_F(name)
->>>>
->>>>> +             SCATTERED_F(TSA_SQ_NO),
->>>>> +             SCATTERED_F(TSA_L1_NO),
->>>>
->>>> And scattered are of the same type.
->>>>
->>>> Sean, what's the subtle difference here?
->>>
->>> SYNTHESIZED_F() sets the bit unconditionally. SCATTERED_F() propagates
->>> the bit (if set) from the host's cpufeature flags.
->>
->> Yah, and I was hinting at the scarce documentation.
->>
->> SYNTHESIZED_F() is "Primarily used for mitigation related feature flags."
->> SCATTERED_F() is "For features that are scattered by cpufeatures.h."
+On 2/9/26 11:02 AM, Binbin Wu wrote:
 > 
-> Ugh. I have to rescind my Reviewed-by. IIUC, SCATTERED_F() implies a
-> logical and with hardware CPUID, which means that the current proposal
-> will never set the ITS_NO bits.
+> 
+> On 2/9/2026 12:42 AM, Carlos López wrote:
+>> KVM incorrectly synthesizes TSA_SQ_NO and TSA_L1_NO when running
+>> on AMD Family 19h CPUs by using SYNTHESIZED_F(), which unconditionally
+>> enables features for KVM-only CPUID leaves (as is the case with
+>> CPUID_8000_0021_ECX), regardless of the kernel's synthesis logic in
+>> tsa_init(). This is due to the following logic in kvm_cpu_cap_init():
+>>
+>>     if (leaf < NCAPINTS)
+>>         kvm_cpu_caps[leaf] &= kernel_cpu_caps[leaf];
+> 
+> Since TSA_SQ_NO and TSA_L1_NO are defined in CPUID_8000_0021_ECX, and
+> CPUID_8000_0021_ECX > NCAPINTS, the code above doesn't take effect.
 
-Right, I see what you mean now. SCATTERED_F() will set kvm_cpu_caps
-correctly, but then this will clear the bits, because
-kvm_cpu_cap_synthesized is now 0:
+I should have explained it better, but that is precisely what I meant.
+Since the &= never takes place, kvm_cpu_cap_features always has the bits
+set. In other words: the branch always evaluates to false for KVM-only
+CPUID leaves, so the bits are always set.
 
-    kvm_cpu_caps[leaf] &= (raw_cpuid_get(cpuid) |
-        kvm_cpu_cap_synthesized);
+> The code makes the two bits set unconditionally is:
+>     SYNTHESIZED_F() sets kvm_cpu_cap_synthesized
+> and later
+>     kvm_cpu_caps[leaf] &= (raw_cpuid_get(cpuid) |
+>                            kvm_cpu_cap_synthesized);
+> 
+>>
+>> This can cause an unexpected failure on Family 19h CPUs during SEV-SNP
+>> guest setup, when userspace issues SNP_LAUNCH_UPDATE, as setting these
+>> bits in the CPUID page on vulnerable CPUs is explicitly rejected by SNP
+>> firmware.
+>>
+>> Switch to SCATTERED_F(), so that the bits are only set if the features
+>> have been force-set by the kernel in tsa_init(), or if they are reported
+>> in the raw CPUID.
+> 
+> When you switch to SCATTERED_F(), if the two bits are not in raw cpuid, the two
+> bits will not be set to kvm_cpu_caps[CPUID_8000_0021_ECX], regardless the
+> setting initialized in tsa_init().
 
-So to me it seems like SYNTHESIZED_F() is just wrong, since it always
-enables bits for KVM-only leafs. So how about the following (I think
-Binbin Wu suggests this in his other email):
+Yes, I think you're right.
 
-diff --git a/arch/x86/kvm/cpuid.c b/arch/x86/kvm/cpuid.c
-index 819c176e02ff..5e863e213f54 100644
---- a/arch/x86/kvm/cpuid.c
-+++ b/arch/x86/kvm/cpuid.c
-@@ -769,7 +769,8 @@ do {                                                                        \
-  */
- #define SYNTHESIZED_F(name)                                    \
- ({                                                             \
--       kvm_cpu_cap_synthesized |= feature_bit(name);           \
-+       if (boot_cpu_has(X86_FEATURE_##name))                   \
-+               kvm_cpu_cap_synthesized |= feature_bit(name);           \
-        F(name);                                                \
- })
+> TSA_SQ_NO and TSA_L1_NO are conditional kernel synthesis bits, should
+> SYNTHESIZED_F() check that the related bit is actually synthesized into
+> boot_cpu_data before setting to kvm_cpu_cap_synthesized?
 
+Right, I thought this is what SCATTERED_F() already did, but I missed
+that there is the logical AND with the raw CPUID later. See the diff in
+my reply to Jim Mattson, I think that is what you propose as well.
