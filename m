@@ -1,156 +1,140 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4723626ED48
-	for <kvm@vger.kernel.org>; Tue, 10 Feb 2026 15:23:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E4DC26D4EF;
+	Tue, 10 Feb 2026 15:34:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770737018; cv=none; b=boP0c0zuYBABhxOX7sTf+kJFw5BxY2jxCb7zfpPeyBHwe+rn+JFvj9m/+C6e6lsnMYclxIAXvxEJr56CvfL8w0iwPbic9SgGZTozokAwWaNjTAd1tWLbk6MOHKLCSD86D8YXW/vURdVOHjJaX5JGxQhQae5Gk4t0Wn8cwhwxsn8=
+	t=1770737668; cv=none; b=QLyyZ0ZSnGU6TodWrS2SsxAWvAW65TAKCcj9YOXs5NjdhrRVKYffkG9JIL7cnLdNXpFXtb8vmXd6RrzHQMYjmxzxPj/vpR72wL3eZcGZOWg9QGVg4ivcOKW0InIwfk45pdNsr6lu709d+9rtGbLSrnKUUUlx/9N5EIKAgGuAbbs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770737018; c=relaxed/simple;
-	bh=Ky8+Gi1YLPF+d0cjrPfnbJ5mA8pBCa9z5DRDnkOOg9w=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=h7aos8rWZ5/LlmB+rnF0VBOO2Juz2cDG5KS86K3c/rLhyQ4PK8xGlrSO1Ahb/kTHFVZrxXT9wg/wJTJ3BbhiDBSD1/MhZGJSt7RHeafGadyjnIZ67Bz1M1XgxooJgMatON5Ymi5rx53zpMqQ3GFSN2w4d82vwwziEERE4KEgmT4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=XcM8sENa; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=Hp9Xzyyr; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1770737668; c=relaxed/simple;
+	bh=TW63rkIvZo93fmurahalUAT6VwHPB7SVvljouEMu0ZY=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=JcHGbpMZSSYshHapoX0+UuAo4IqQ5/DPabMvPvdXaOi331EA9rIyCabiWDEkk2OBHI6rQD4UcITi8IxklLiH9Q1PypVTvl+bEFdaWuwLnvUijq1I1ctOr1/wki8ntiXHEri5zJgcF1C16Oa3M7qaDFGRhfKwbJjs10t/Q7ogGRI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=bWk/Fp11; arc=none smtp.client-ip=148.163.156.1
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="XcM8sENa";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="Hp9Xzyyr"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1770737016;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=4KpXs4HueBD4PLnzFUzxY05xrYaFOtjFsDd93FCVpl4=;
-	b=XcM8sENa/YHmtDAkIE3doe7OJIfsIzlwe/eQCZ6Nf3uX4tW/kw+bDMpXaed4meQbo7PfX7
-	qIM40It7NAqVaJDTLr8hudrFBkNXa0b9ONlTdaxsK7GCJGDckl9CLZ3VJ/0cNAtPSIzi56
-	Dxm7hUSPCLBQkWI+Wc6JQiiEQ9mCcJc=
-Received: from mail-qt1-f197.google.com (mail-qt1-f197.google.com
- [209.85.160.197]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-687-MUAa2OKCORmKncG6Gkedew-1; Tue, 10 Feb 2026 10:23:35 -0500
-X-MC-Unique: MUAa2OKCORmKncG6Gkedew-1
-X-Mimecast-MFC-AGG-ID: MUAa2OKCORmKncG6Gkedew_1770737014
-Received: by mail-qt1-f197.google.com with SMTP id d75a77b69052e-5033b4d599eso200346731cf.2
-        for <kvm@vger.kernel.org>; Tue, 10 Feb 2026 07:23:35 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1770737013; x=1771341813; darn=vger.kernel.org;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=4KpXs4HueBD4PLnzFUzxY05xrYaFOtjFsDd93FCVpl4=;
-        b=Hp9XzyyrDpd4htuD6V1GsJDgQNQ83DB87J+G7l6jkOhAVQ4/PkETqNSa/oE95G9Z2k
-         AFPvCGqgZB0g9wn09Dd23l8cSA35QzBlJd2cHY+03Xu86DGhtPkwFrT6mUOOR40J6uQS
-         wo4xbx57dyi9Z78aD0Jn5I/Wi3IljTzsl7hRUPSoIiF/j+s1sQWzDdhHK9thRHoBPCDv
-         JEo3FGAjOxpggEvrTNyR3nSl9+qwLvrCnfn3O/EpveVaChiHk0kobwJBIPk6XmSefsR6
-         5HN3bjXKftQUtNYwkfcwzOkzeZ32GcZ8v0elK2Gy34QeGaQ6QOD9jIIN6dssmPO10Iwy
-         T/0Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1770737013; x=1771341813;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=4KpXs4HueBD4PLnzFUzxY05xrYaFOtjFsDd93FCVpl4=;
-        b=E0jsTHYSl0dJOdXa27MkTClQoSWQcXtBenWYzBonSmZOmnyFKrvWYNp4MHbo6aVzUF
-         cFjiXCSmvudRjFkUHhQ+gsZUz9DQu6AGzG0cdFf2cqqdNYyu4WDHjaIewLD8GxfKYNm6
-         DBvM6Jqk0fJSeqBz5L3KDTsyWR93Ct9KEouVRMnd4zRFFhv5Tx6lBZs4htmIe0+R6AAw
-         eVZn7YEIUHAVaXpljLj22CNWaczjo/MSIPS+QkPDP5t8/jDDwe95E50W2ngiUMPpReKG
-         QISY7M0du2Vy3JGM/5T6+IUmGWnNKQTkl4gaM1uFd9lVTYXV8s5hxdPE/caAQqTXep0v
-         7cjA==
-X-Gm-Message-State: AOJu0YyVW0SzxouY+Dr+sgFbofzshrn8aU8tsYxW4lz3Sh3pxLDFQKkK
-	Qw7NEn86Z1tHbKo69Fylsb6C86pC6zJe05aIVF6vHskwZ58fPgdAg/dEZYVioW/AysO1DeOw0+1
-	EiVGFqdyJKye7XpVp5wGykOht+lO1/YPrqy2HHV45z6K9plkg3O1Q/MCw1Q+1GlL4HTghJ2NHN2
-	Xr35GwxEWILuSxpp6ieQUVbkX0RCg5gTdU22h+UA==
-X-Gm-Gg: AZuq6aJb7XJM/+SRXtZCvBs1babRuJBK5KoQNdNJCBEbIB0Nqy6FaWd2+zENVyDo1Zk
-	oZDr8qHpc1bYrTOTwWkofUi9iHx09imFCtculwJ5K83PndFA2I82kxC6jYgbUvIx83u38UeJcVp
-	MCP8LzVXI3mEBGpkTPWZsfyo3SpS8v/FOxf1Sy++yQXabesXaBSMoLbH12cLEc+tr6TMRxfm/F7
-	7vgYWHeENk6MMkO8otGEofpxiUbiIV52BecigQ9dsjAnU1E7aiN87GtESOl/N3VYxoB1PtVBN7d
-	veDDjNPiztlg7LgY/L+PACZxbIsa7eaHxCLdPF4UzQFe0dFducLbr8iXZG1XLdJSpLpYY7A/JiD
-	VOM7iGKma3wUs2aZgi3eipBky5fUm
-X-Received: by 2002:ac8:580c:0:b0:4ed:66bd:95ea with SMTP id d75a77b69052e-50673cdf42fmr31146571cf.29.1770737013247;
-        Tue, 10 Feb 2026 07:23:33 -0800 (PST)
-X-Received: by 2002:ac8:580c:0:b0:4ed:66bd:95ea with SMTP id d75a77b69052e-50673cdf42fmr31146151cf.29.1770737012833;
-        Tue, 10 Feb 2026 07:23:32 -0800 (PST)
-Received: from intellaptop.lan ([2607:fea8:fc01:88aa:f1de:f35:7935:804f])
-        by smtp.gmail.com with ESMTPSA id d75a77b69052e-5063928e05csm98081041cf.19.2026.02.10.07.23.31
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 10 Feb 2026 07:23:31 -0800 (PST)
-Message-ID: <d4ae36c621a77d21985396d5dc6247d76b08ba97.camel@redhat.com>
-Subject: Re: Question: 'pmu' kvm unit test fails when run nested with NMI
- watchdog on the host
-From: mlevitsk@redhat.com
-To: kvm@vger.kernel.org
-Cc: Sean Christopherson <seanjc@google.com>
-Date: Tue, 10 Feb 2026 10:23:30 -0500
-In-Reply-To: <b0bdc3f140238d23e2de8f706c06331db1d57e79.camel@redhat.com>
-References: <10d3f95717b7072e30576b7e3931ea277399fdf8.camel@redhat.com>
-	 <2eae45e037c938785b9e36d0f5265becca953d9f.camel@redhat.com>
-	 <b0bdc3f140238d23e2de8f706c06331db1d57e79.camel@redhat.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.52.4 (3.52.4-2.fc40) 
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="bWk/Fp11"
+Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 61AA4QlA400635;
+	Tue, 10 Feb 2026 15:34:23 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:date:from:in-reply-to:message-id
+	:mime-version:references:subject:to; s=pp1; bh=BDXQx9MqHm1hlC/hg
+	seLmp7A5zwPepixROIUV0Nu57Q=; b=bWk/Fp11k/EnPvLxX3JJXfEfEHL1Ni115
+	fmEoRNREaEVdWoByMl00Uzw3sXaQQBDIEdClTvSpRqjjc+FdULb2gITIAOYtTRcm
+	uQBUCbmHhS4754uimzQ9GufXk5iZgfbzScW81HhYSwBgMOC18QnRjQXOB/ZkiBfw
+	US5dffIX6Kw+6uuvB8opnZ0XWB/Rh/gjhM4rJ+vP0GkOr2tStyOkiCJz41tz6UCo
+	ZfUfnHgfFUblYkfTMpWXnBFuqExxBk2F9tRDmeenh/hHy7L0ohv70ZirYdBDDQXY
+	h4rpRtNy4vwjgMwm9lh/qsdGAsklLudQ2j9Tl/IsjL7SAniMcfKSQ==
+Received: from ppma12.dal12v.mail.ibm.com (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4c696w4x8r-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 10 Feb 2026 15:34:23 +0000 (GMT)
+Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma12.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 61ADagOk002570;
+	Tue, 10 Feb 2026 15:34:22 GMT
+Received: from smtprelay06.fra02v.mail.ibm.com ([9.218.2.230])
+	by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 4c6fqsj1uc-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 10 Feb 2026 15:34:22 +0000
+Received: from smtpav05.fra02v.mail.ibm.com (smtpav05.fra02v.mail.ibm.com [10.20.54.104])
+	by smtprelay06.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 61AFYID619333450
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Tue, 10 Feb 2026 15:34:18 GMT
+Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 861B920043;
+	Tue, 10 Feb 2026 15:34:18 +0000 (GMT)
+Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 13F6A2004B;
+	Tue, 10 Feb 2026 15:34:18 +0000 (GMT)
+Received: from p-imbrenda.ibmuc.com (unknown [9.111.20.252])
+	by smtpav05.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Tue, 10 Feb 2026 15:34:17 +0000 (GMT)
+From: Claudio Imbrenda <imbrenda@linux.ibm.com>
+To: pbonzini@redhat.com
+Cc: kvm@vger.kernel.org, linux-s390@vger.kernel.org, frankja@linux.ibm.com,
+        borntraeger@de.ibm.com, david@kernel.org
+Subject: [GIT PULL v1 01/36] KVM: s390: vsie: retry SIE when unable to get vsie_page
+Date: Tue, 10 Feb 2026 16:33:42 +0100
+Message-ID: <20260210153417.77403-2-imbrenda@linux.ibm.com>
+X-Mailer: git-send-email 2.53.0
+In-Reply-To: <20260210153417.77403-1-imbrenda@linux.ibm.com>
+References: <20260210153417.77403-1-imbrenda@linux.ibm.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Authority-Analysis: v=2.4 cv=YeCwJgRf c=1 sm=1 tr=0 ts=698b4fff cx=c_pps
+ a=bLidbwmWQ0KltjZqbj+ezA==:117 a=bLidbwmWQ0KltjZqbj+ezA==:17
+ a=HzLeVaNsDn8A:10 a=VkNPw1HP01LnGYTKEx00:22 a=Mpw57Om8IfrbqaoTuvik:22
+ a=GgsMoib0sEa3-_RKJdDe:22 a=VnNF1IyMAAAA:8 a=HSVDk6IH-gmX55RuthsA:9
+ a=NqO74GWdXPXpGKcKHaDJD/ajO6k=:19
+X-Proofpoint-GUID: Lede7aAGBtIConZGdQ7FKr4BmP2iL0Vk
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMjEwMDEyOCBTYWx0ZWRfXy/ne1XoGOXkt
+ VGhij8LzBaz+nM0w5jObbZiMiuO3BEWxx8LBt6y5uAIcUbv6ln3pId1gZ5x2XjiYFzymRLT2Odg
+ 4AKOdDad7VOJf0GTaHvqCgeiuxOCEkNBeRp7QQ3qcvxF8KRm2bEu1vhTQ3FGSVDs5nIWv6VDo8b
+ KBn8jC+tOw92UJOolXoNCweLFOD9ahnPeBkNZsNAs7CV9zZc+q2L/Y1C0EiSP1ZxCbJslh7lXMV
+ UGzhojKVT3IAU5WX0nAQ5k0DsNOh20KYjFwJDDeQvpQDyvS/O9knWLV4wThic8AGC4j3PVdIoxq
+ bnFOTvwlYA3gazjzIiQXXjcyGvSRnHD9wIW5CRAgFQlZRcyDgx4zTK3SGpGiVBx3NBNFUYtU1c4
+ 7EgWdXSu4cISSFJgSlWlzMPDrRjjD1R2Z3GH7jppWkmMHGZKFHjOY+TYnSx3am3HyTx+Ojorpk8
+ U1G7AuYIyRWg3Mb8JWQ==
+X-Proofpoint-ORIG-GUID: Lede7aAGBtIConZGdQ7FKr4BmP2iL0Vk
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.51,FMLib:17.12.100.49
+ definitions=2026-02-10_01,2026-02-10_02,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ suspectscore=0 adultscore=0 bulkscore=0 malwarescore=0 phishscore=0
+ priorityscore=1501 lowpriorityscore=0 clxscore=1015 impostorscore=0
+ spamscore=0 classifier=typeunknown authscore=0 authtc= authcc= route=outbound
+ adjust=0 reason=mlx scancount=1 engine=8.22.0-2601150000
+ definitions=main-2602100128
 
-On Wed, 2025-11-26 at 13:14 -0500, mlevitsk@redhat.com wrote:
-> On Mon, 2025-11-10 at 14:51 -0500, mlevitsk@redhat.com=C2=A0wrote:
-> > On Wed, 2025-11-05 at 15:29 -0500, mlevitsk@redhat.com=C2=A0wrote:
-> > > Hi,
-> > >=20
-> > > I have a small, a bit philosophical question about the pmu kvm unit t=
-est:
-> > >=20
-> > > One of the subtests of this test, tests all GP counters at once, and =
-it depends on the NMI watchdog being disabled,
-> > > because it occupies one GP counter.
-> > >=20
-> > > This works fine, except when this test is run nested. In this case, a=
-ssuming that the host has the NMI watchdog enabled,
-> > > the L1 still can=E2=80=99t use all counters and has no way of working=
- this around.
-> > >=20
-> > > Since AFAIK the current long term direction is vPMU, which is especia=
-lly designed to address those kinds of issues,
-> > > I am not sure it is worthy to attempt to fix this at L0 level (by red=
-ucing the number of counters that the guest can see for example,
-> > > which also won=E2=80=99t always fix the issue, since there could be m=
-ore perf users on the host, and NMI watchdog can also
-> > > get dynamically enabled and disabled).
-> > >=20
-> > > My question is: Since the test fails and since it interferes with CI,=
- does it make sense to add a workaround to the test,
-> > > by making it use 1 counter less if run nested?=20
-> > >=20
-> > > As a bonus the test can also check the NMI watchdog state and also re=
-duce the number of tested counters instead of being skipped,
-> > > improving coverage.
-> > >=20
-> > > Does all this make sense? If not, what about making the =E2=80=98all_=
-counters=E2=80=99 testcase optional (only print a warning) in case the test=
- is run nested?
-> > >=20
-> > > Best regards,
-> > > 	Maxim Levitsky
-> > >=20
-> >=20
-> > Kind ping on this question.
->=20
-> Another kind ping on this question.
+From: Eric Farman <farman@linux.ibm.com>
 
-A ping on this question.
+SIE may exit because of pending host work, such as handling an interrupt,
+in which case VSIE rewinds the guest PSW such that it is transparently
+resumed (see Fixes tag). Unlike those other places that return rc=0, this
+return leaves the guest PSW in place, requiring the guest to handle a
+spurious intercept. This showed up when testing heavy I/O workloads,
+when multiple vcpus attempted to dispatch the same SIE block and incurred
+failures inserting them into the radix tree.
 
->=20
-> Best regards,
-> =C2=A0=C2=A0=C2=A0 Maxim Levitsky
->=20
-> >=20
-> > Best regards,
-> > 	Maxim Levitsky
->=20
+Fixes: 33a729a1770b ("KVM: s390: vsie: retry SIE instruction on host intercepts")
+Signed-off-by: Eric Farman <farman@linux.ibm.com>
+Reviewed-by: Christoph Schlameuss <schlameuss@linux.ibm.com>
+Reviewed-by: Claudio Imbrenda <imbrenda@linux.ibm.com>
+[frankja@linux.ibm.com: Replaced commit message as agreed on the list]
+Signed-off-by: Janosch Frank <frankja@linux.ibm.com>
+---
+ arch/s390/kvm/vsie.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
+
+diff --git a/arch/s390/kvm/vsie.c b/arch/s390/kvm/vsie.c
+index b526621d2a1b..b8064c6a4b57 100644
+--- a/arch/s390/kvm/vsie.c
++++ b/arch/s390/kvm/vsie.c
+@@ -1498,11 +1498,13 @@ int kvm_s390_handle_vsie(struct kvm_vcpu *vcpu)
+ 	}
+ 
+ 	vsie_page = get_vsie_page(vcpu->kvm, scb_addr);
+-	if (IS_ERR(vsie_page))
++	if (IS_ERR(vsie_page)) {
+ 		return PTR_ERR(vsie_page);
+-	else if (!vsie_page)
++	} else if (!vsie_page) {
+ 		/* double use of sie control block - simply do nothing */
++		kvm_s390_rewind_psw(vcpu, 4);
+ 		return 0;
++	}
+ 
+ 	rc = pin_scb(vcpu, vsie_page, scb_addr);
+ 	if (rc)
+-- 
+2.53.0
 
