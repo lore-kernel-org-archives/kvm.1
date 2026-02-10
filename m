@@ -1,499 +1,609 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
+Received: from canpmsgout04.his.huawei.com (canpmsgout04.his.huawei.com [113.46.200.219])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D8DA35E52C;
-	Tue, 10 Feb 2026 10:57:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=198.175.65.13
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770721044; cv=fail; b=enkemNvKe5RfwIa0Kqu6ffqfzQ4pNUCU3oj2msklrOp9DOtqOB3LRkKqX6WeAVdj/BBWSfpX34fuvP+sndPXeqC3nxHKtjvCKTHiLrc/Ds1xTBuM9k+A6Htp6kjUl+IrdfWdJlq20uinfNqNMxCSr5Ag4MuJMKfyR06NVFWdMBY=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770721044; c=relaxed/simple;
-	bh=TxKwWL64e19FEfmmk39fpDs7/kyRDSZHURV7ngSbK7Y=;
-	h=Date:From:To:CC:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=Mf0z4g5QAeVLiV8rRpoK8dAdTeRGPZXU73u382bgPcYYFB+i/SeomVq1pk7LBZcO8EwlDbzZVKZ2oo0YWEqs1nMb0HUYBjg+UYlLV9iBJP/Z1ETAQn7beWnd8CpB4MUaqgBGyJmSMBCDrajpxOpP/K9M/FcqwpK4BYacCCzf4EI=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=AeLq0rDo; arc=fail smtp.client-ip=198.175.65.13
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2858B327210;
+	Tue, 10 Feb 2026 11:56:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=113.46.200.219
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1770724590; cv=none; b=kwsF/vLC8SrJC5y7kmByaFuvZLLJAs15pebv2vg+kFJGL3IObdsaIuQDqoEEMyMQMfuy+jG3+41yW5xDxVpogsAssfHolWhg+b/dkSyg3pymlDozcCo9a0ks0pdHHEb2kBmDxVBmMzJL7avWVPKHsFxg2oWE59FOf6WHaId3658=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1770724590; c=relaxed/simple;
+	bh=Yo8YP4vHjJ4hEg9AbOfOtM2Z+nDKRd5pcI6fnAVLnIY=;
+	h=From:To:CC:Subject:Date:Message-ID:Content-Type:MIME-Version; b=PhXFVjvRKmQh3U84/f7eyZdZnKFTBJaQCX6ivQ/GMp/y2JoW+09JWvb1Oa8ADUifu3tzh3OLI/5Y+FejoXZ7KRTUGq5oLM7Jf2n4NjU0WKR0ksJuYl0LuGMhAxp2EGJsNcYd8NGCfvrkW6pu5cL57RDaTnXnNo8YFhVnfngxCII=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b=OfLDBiJA; arc=none smtp.client-ip=113.46.200.219
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="AeLq0rDo"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1770721042; x=1802257042;
-  h=date:from:to:cc:subject:message-id:reply-to:references:
-   in-reply-to:mime-version;
-  bh=TxKwWL64e19FEfmmk39fpDs7/kyRDSZHURV7ngSbK7Y=;
-  b=AeLq0rDof8pM7ZfoOwZ2jBdEVdzyOciM8txRzKfUQiexHclFNWSRBcOO
-   ZGpPrBSN89jBiAAFqV36mh4okLqCI/8rdg1FvctBiskG7uKhld581IDaV
-   bYhM0XMRV5clGq6d6VUADP4OYh5sItekJdp8tFYwWedbInQLQbnYYQmVW
-   WfvqEJW4ION+N7eshSN5t7LzmDxO6ycJ96iUbFrwYxAsNICEnldnl41gg
-   j17ijzw8ZiCAbzyL6EAPfJR5zlKfs4E2K9HyvzQI2f6QL1X5viHNMJI+0
-   PuDWEMQLr9jlIPhukWr8TasL4W2Yk+H+O5y+vrfRGleKit2SDuBcuNXKG
-   Q==;
-X-CSE-ConnectionGUID: KuGp/b5JRXCwk6Y7XbQVmw==
-X-CSE-MsgGUID: VzjU5A2rQmSU2oCSac+/zw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11696"; a="82951694"
-X-IronPort-AV: E=Sophos;i="6.21,283,1763452800"; 
-   d="scan'208";a="82951694"
-Received: from orviesa004.jf.intel.com ([10.64.159.144])
-  by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Feb 2026 02:57:21 -0800
-X-CSE-ConnectionGUID: Aja7FKi7Rsmt26vwcvM0KQ==
-X-CSE-MsgGUID: CSroHWBsRH6wFyoD1t8GOQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,283,1763452800"; 
-   d="scan'208";a="216421419"
-Received: from orsmsx902.amr.corp.intel.com ([10.22.229.24])
-  by orviesa004.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Feb 2026 02:57:21 -0800
-Received: from ORSMSX901.amr.corp.intel.com (10.22.229.23) by
- ORSMSX902.amr.corp.intel.com (10.22.229.24) with Microsoft SMTP Server
+	dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b="OfLDBiJA"
+dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
+	c=relaxed/relaxed; q=dns/txt;
+	h=From;
+	bh=9vZbm7DohkcY4Y/SHLRgKmVJUVCDPSoK0RAQtH1sxQU=;
+	b=OfLDBiJAQXqJSv0wtOAn4GR79N6xC/sEifPkadLR51xGYan47B5lKFHZiMH/Zo1hEjoKhyg80
+	bWBeZozVKn07bY10jpW67sz43VkgsRfd4hstigDMw+PqTDG9EJqOG4vJcN8woE9IdQYF5K1YSdb
+	4QZdj+9pgHI6eYmtgc1VyUY=
+Received: from mail.maildlp.com (unknown [172.19.162.197])
+	by canpmsgout04.his.huawei.com (SkyGuard) with ESMTPS id 4f9KfM13Hjz1prmC;
+	Tue, 10 Feb 2026 19:51:39 +0800 (CST)
+Received: from kwepemj200018.china.huawei.com (unknown [7.202.194.30])
+	by mail.maildlp.com (Postfix) with ESMTPS id 6E92740569;
+	Tue, 10 Feb 2026 19:56:19 +0800 (CST)
+Received: from kwepemj100010.china.huawei.com (7.202.194.4) by
+ kwepemj200018.china.huawei.com (7.202.194.30) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.35; Tue, 10 Feb 2026 02:57:20 -0800
-Received: from ORSEDG902.ED.cps.intel.com (10.7.248.12) by
- ORSMSX901.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.35 via Frontend Transport; Tue, 10 Feb 2026 02:57:20 -0800
-Received: from CY7PR03CU001.outbound.protection.outlook.com (40.93.198.21) by
- edgegateway.intel.com (134.134.137.112) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.35; Tue, 10 Feb 2026 02:57:19 -0800
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=DuzhXP1joTVSFFLwfbVHqaGxjezL33k5m4vttVzx0dA/tpZco/F5S9hcSVqPrv4noTA5trxV3SrujSl4Gd2sd723tjVaL2tGjj0VGZ9EQje+qNhnvOPT9jBUSpNhp6lucnzgxbPc7B/wwTDHxWTLs/X97I6X5yhw17hqxxsR/GHQ+GG4cLWH+UTsnB5qPPdSlu7oiVh8kFkY2olqS1Gj6mk4QsyWmk7mXa7INsmiqJfeUP8GlryH+ZNWJSYQ0IXKh2Hl5HgrSMsHr2b5oqiBjmpfrRYmutWvrqrHmyikXWhSf4bvIx2SzDW99KrZ18ApXTp3lJIeQAPjog3uMTkw0Q==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=vAgXjuVJcfnzZ3N6veTSUr1pxyM3RVo6dMZN4tI9Kp8=;
- b=iwz/MygNqk5kDzxgsPdJijytDuiSpgNMZN6mRlOn2e98iPVr+wF4lF6ZWXYtc8YArAKseoZMWtA6DvCCwjgkh6kUrefByENm33bExkk/fBZ7/EaUqd+joybg8lfdfj4swQkttriobxRoBQbCHfWA/teNddMqvdBKLpJ1p8ujd98lUTjJWI0nYnAvBEdAFgAXwRkq0yj4Mp0G6qhpJDlR1UAt0IBDBJJfVHjTHubrKDlFzWW9LZLOaZXNJG+7zj7LrpvCxy2jk2bBeFe9xKY6QAvRlTRmPJJtYalkZC0EUeF6Wz7nVy5YnQAKhpH6gF0GwOxpCTz+UB8glt0epEh+4A==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-Received: from DS7PR11MB5966.namprd11.prod.outlook.com (2603:10b6:8:71::6) by
- PH7PR11MB5887.namprd11.prod.outlook.com (2603:10b6:510:136::20) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9587.19; Tue, 10 Feb
- 2026 10:57:11 +0000
-Received: from DS7PR11MB5966.namprd11.prod.outlook.com
- ([fe80::413f:aab:68fa:b1b2]) by DS7PR11MB5966.namprd11.prod.outlook.com
- ([fe80::413f:aab:68fa:b1b2%4]) with mapi id 15.20.9587.010; Tue, 10 Feb 2026
- 10:57:11 +0000
-Date: Tue, 10 Feb 2026 18:54:15 +0800
-From: Yan Zhao <yan.y.zhao@intel.com>
+ 15.2.1544.11; Tue, 10 Feb 2026 19:56:19 +0800
+Received: from kwepemj100010.china.huawei.com ([7.202.194.4]) by
+ kwepemj100010.china.huawei.com ([7.202.194.4]) with mapi id 15.02.1544.036;
+ Tue, 10 Feb 2026 19:56:19 +0800
+From: Zhangjiaji <zhangjiaji1@huawei.com>
 To: Sean Christopherson <seanjc@google.com>
-CC: Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>,
-	Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>,
-	<x86@kernel.org>, Kiryl Shutsemau <kas@kernel.org>, Paolo Bonzini
-	<pbonzini@redhat.com>, <linux-kernel@vger.kernel.org>,
-	<linux-coco@lists.linux.dev>, <kvm@vger.kernel.org>, Kai Huang
-	<kai.huang@intel.com>, Rick Edgecombe <rick.p.edgecombe@intel.com>, "Vishal
- Annapurve" <vannapurve@google.com>, Ackerley Tng <ackerleytng@google.com>,
-	Sagi Shahar <sagis@google.com>, Binbin Wu <binbin.wu@linux.intel.com>,
-	Xiaoyao Li <xiaoyao.li@intel.com>, Isaku Yamahata <isaku.yamahata@intel.com>
-Subject: Re: [RFC PATCH v5 08/45] KVM: x86/mmu: Propagate mirror SPTE removal
- to S-EPT in handle_changed_spte()
-Message-ID: <aYsOV7Q5FTWo+6/x@yzhao56-desk.sh.intel.com>
-Reply-To: Yan Zhao <yan.y.zhao@intel.com>
-References: <20260129011517.3545883-1-seanjc@google.com>
- <20260129011517.3545883-9-seanjc@google.com>
- <aYMMHVvwDjZ7Lz9l@yzhao56-desk.sh.intel.com>
- <aYP_Ko3FGRriGXWR@google.com>
- <aYQtIK/Lq5T3ad6V@yzhao56-desk.sh.intel.com>
- <aYUarHf3KEwHGuJe@google.com>
- <aYVPN5M7QQwu/r/n@yzhao56-desk.sh.intel.com>
- <aYYn0nf2cayYu8e7@google.com>
+CC: Paolo Bonzini <pbonzini@redhat.com>, "kvm@vger.kernel.org"
+	<kvm@vger.kernel.org>, "linux-kernel@vger.kernel.org"
+	<linux-kernel@vger.kernel.org>, "Wangqinxiao (Tom)" <wangqinxiao@huawei.com>,
+	zhangyashu <zhangyashu2@h-partners.com>, "wangyanan (Y)"
+	<wangyanan55@huawei.com>
+Subject: Re: Re: [BUG REPORT] USE_AFTER_FREE in complete_emulated_mmio found
+ by KASAN/Syzkaller fuzz test (v5.10.0)
+Thread-Topic: Re: [BUG REPORT] USE_AFTER_FREE in complete_emulated_mmio found
+ by KASAN/Syzkaller fuzz test (v5.10.0)
+Thread-Index: AdyahCoX5kIguQEfT9W/nj6C2WNJ5A==
+Date: Tue, 10 Feb 2026 11:56:18 +0000
+Message-ID: <67a2f20537354628bcb835586a7c6255@huawei.com>
+Accept-Language: en-US
+Content-Language: zh-CN
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
 Content-Type: text/plain; charset="us-ascii"
-Content-Disposition: inline
-In-Reply-To: <aYYn0nf2cayYu8e7@google.com>
-X-ClientProxiedBy: SI2PR02CA0041.apcprd02.prod.outlook.com
- (2603:1096:4:196::20) To DS7PR11MB5966.namprd11.prod.outlook.com
- (2603:10b6:8:71::6)
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DS7PR11MB5966:EE_|PH7PR11MB5887:EE_
-X-MS-Office365-Filtering-Correlation-Id: bc69f3ed-422a-4d33-0241-08de689323fa
-X-LD-Processed: 46c98d88-e344-4ed4-8496-4ed7712e255d,ExtAddr
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|7416014|376014|1800799024;
-X-Microsoft-Antispam-Message-Info: =?us-ascii?Q?PtyNn0kzJF+r6/3VW1C1xxj8BdHxfr81aM27J9RsVNGRap/3aAhznA8YM4uB?=
- =?us-ascii?Q?ZJJq7JAU7afQwU/Fj4JYY33dFal+jpWa9kWmfEa8KoIllzeT089oIgvL/3Qg?=
- =?us-ascii?Q?R9KLIUkq2w+ivCIW4i4mbOVJg837jrkLZj9iL4+vvCi//qI4SVRj/9/Slk7n?=
- =?us-ascii?Q?Dp7fDvji8vPYM0rV9phtFtmUbubK9vlS+He8ko1gTmZvMKLP5P+Rn0L3/MrR?=
- =?us-ascii?Q?KAz7UNotoIyYovOmrkbzb7rS2j6vn59vzn/9Y3+3bsoW6Zm3VXA9TLcVa5YQ?=
- =?us-ascii?Q?NOI0zgJDfPvDE9On42iatdYxZU1Lyx19wPmYJ9hPsXiTd8xBViTeVwbDMMdO?=
- =?us-ascii?Q?/UvrRoSP8AeVUjKrouBvhwy9HzuV2F2UbYlp5gNW1wRXCTBZMiCA7jW8CbBP?=
- =?us-ascii?Q?4tZ8kn3AX0mclxRYq3N3dE+16sJom8etrK6QWYSvJgSay5VLnyiQYTAI4PPb?=
- =?us-ascii?Q?XELjHw+lvi0BXN94hqYsp54ywhLgMpYjRpf65TpNOpuM/uGiFhrGZ6+mEpAw?=
- =?us-ascii?Q?IfGMg3K+Xwkqgxzmvnn6F8eOEFb/kNWs0jmgIXXoCvGGcUcg1sVp7Lv7Su1N?=
- =?us-ascii?Q?pxSFx/wdyXoLqv6Eu7p+Omf3hGhiR8IqJQrkbPXaE29bDemBEMQwkoefVPpb?=
- =?us-ascii?Q?CgjkI6j+8Sv0L4XtuO09B5umEcsFZ0RL40ij37avKdpvHvYlaj3HGqpn0u6/?=
- =?us-ascii?Q?rXeIYqJIB+dguSSxV1bFWmAHCf80hZU/MVjazlCyzGeeJOf8T0LbNIcNYXZs?=
- =?us-ascii?Q?9aLwNdJzMSIcMFn96FSOhTG/tDWZrFobIpOn0934ccM/5bsMjbB32B+C9JcY?=
- =?us-ascii?Q?R8XxkQdiwrVqf+ql6VHKxZQDlj9RCdrURluODclg3QBTBeJJW5TqFp0D5hJ8?=
- =?us-ascii?Q?bsYE2+NkA30wsPa5Egoc3LuqRx6O83wL5KlPE+orPeLrGjiSdFsPrjYYihAK?=
- =?us-ascii?Q?ualfqGQNTYNegMwl29J7EEsZNSdjltKll68VvOZoYv+kbnr0rKEVfB35S8/A?=
- =?us-ascii?Q?PsMBhWKRFLeFhVhvVLNoC4SCsrOIXjoGIIyfymM6P75iXvlDck3Ju+qDVkW/?=
- =?us-ascii?Q?LGwQrGUgqOLFnhzlrT6rWMHv0gERViBVk1eGQji7A+Dj3yxmzH7NURjoS685?=
- =?us-ascii?Q?FO1Fh2WsplonSBYlsin/MTK5DlLGl0kEX09NYYT7JgOtWcNdcwIm0tbcIVnr?=
- =?us-ascii?Q?vcfCoj++nLwromXX4cdcpfEefAiN/PgAWcUngXabJ1yymtAv+w59eG5s1Z2P?=
- =?us-ascii?Q?VBJrb+m1xmu1oEB9teR8qLQD6fky0/mPf7gaVqQ7LNzR2sTSfbb5xRnCErDj?=
- =?us-ascii?Q?ls6RzkpyW6MLhwYfq5+6Dxzb2/UGTSMlf0UL2gbEWFg4jS4PH+H/SiaFEVMr?=
- =?us-ascii?Q?0JI1qG2yTOALUMkkLrPYClNv437QhuChhrM2CTKKyIu1Um0y7pGlxUclcwnl?=
- =?us-ascii?Q?KN3zPeO+O7yEgvzQdj/+V5UoFmhJa5Db0iEWMCF5IcA0H6lMj0OpkIa+Yid1?=
- =?us-ascii?Q?q74IAvwvy/ApuGP7e4MVa1P1Krw0o8ghcGBKKozAsXq5+snRLavEhOGj0JPI?=
- =?us-ascii?Q?eivpbjWDTCuSYJp5fNc=3D?=
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS7PR11MB5966.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(7416014)(376014)(1800799024);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?LNkEG3RKB6gJK9d0qAxx8mYnJ1w5gqVszxPZaAQzhL09303Zk4kasdRY6HUU?=
- =?us-ascii?Q?ClHX1lZgjEKjoiro7e+9RSzAH3tMp5lSTOTUvyfXS3sA3AjLqNCWwksvYX/4?=
- =?us-ascii?Q?EMUB+MYmfa6lU7iM7sZXqjjSI+yMAw6R1YNi8bvyQnVnjdT8WqXsSMGQkRLM?=
- =?us-ascii?Q?Dp+B2q/oj7z9klo0umd1ezaDYEBbyi0iDMdsq1wS03oU30X8fA11Og9kBmce?=
- =?us-ascii?Q?nm7DQX8XjkAhPE1yFwNdODojcjHvOglstbv0B4mW1G5BTwD2pNA9tnm3IHi0?=
- =?us-ascii?Q?5eDduN0k+8g7cWYVH71RVKIX4N8bUz3yo30ZJ2W8kYsYsk1ctu6iu6/5gtq6?=
- =?us-ascii?Q?u16TgTT7iN9GdUWittll2oef6wJsyK95cHA9YVZrZ0r+ZQnIIJ754Qj+ruIl?=
- =?us-ascii?Q?6rJftdnvxC7IswGvSx9nzd4ZqrhmNMxY+PUGcf5f5r8C5x88fkDV/D6ngj1Y?=
- =?us-ascii?Q?Ug5nkDl9K/QEUO1/xsDOQWJkqKKZn9+yVCGZM8nblBuUe4RGf0nF+DO8kFkM?=
- =?us-ascii?Q?DLIhvPegaXwHx7mU5XfW895X3UxfsY0VEjNNvnLJBKStquyQPIyWhmdjIumW?=
- =?us-ascii?Q?o6nB8ondUlEGKo9ichSJg9cMCgSKTM4MvhTS/UTDm48r/tORwDXq+XYWlEs0?=
- =?us-ascii?Q?toeKLizTDKg2/aKlCBgTXwcLyrE7+YOU/6jNoBp3JRAmSoMNe9xjEv8HNXDu?=
- =?us-ascii?Q?0XCJfCwLm5utvf71wcsLPt/t605zQfciJQDKw9XEC+Gh4GF5CuVmny+at1t7?=
- =?us-ascii?Q?uyqPtaURyeVC/ZSkPFDtrHblk3DIQvEX8BYv2XSXOkcXjdDwdxlnKddxljjO?=
- =?us-ascii?Q?Qvye/mz+WASX3y6/GEE7HcdDGL6qQ2DtF/o9njLkERw60KnBPbYWbU3czvuW?=
- =?us-ascii?Q?VvKWka1pHguSNx8ce+fEK7YQJXa8nlJ+vMQnGIdsAGNlFbMpRnc7f58YDQh2?=
- =?us-ascii?Q?VcZIixyK7cJUBuQg53vb38yoF5umXCjOxMvJN9YWzSiU5jJvadUzFOK3VJOh?=
- =?us-ascii?Q?ve+D6oBQ2lgAENl6s4YPjNxl+6yRbvGgHRurmeZwIJr/boJ5fP5wPuVNFrqM?=
- =?us-ascii?Q?qqTRW5uvz8dr+lPDCPyp5S2USeyi1gsp8kf8flxr5NyUh0CExSdshuy0psac?=
- =?us-ascii?Q?RuzukJ7fQOCPMAYu7bKQfxqTQKTsOoKjBcEFcBavABHnpUhDtyRLkRL5Po+8?=
- =?us-ascii?Q?hKtPhxeXCNz+ididkVqZXfX2MTTIy96Lwf/hsilf7NVrIy+amk7YHoMO53aC?=
- =?us-ascii?Q?Lve2x8qaCrqi526mck+Dbz0L7N2+Fr9812yzgMwAHMFOotkV1GgZukuQs2e+?=
- =?us-ascii?Q?Xv84yYdh9GNKSNWRZ2QLi5449tNn9OctvevhF2rE5vyciHAR8+tiB1058d1R?=
- =?us-ascii?Q?m9wPHS5d3WZvPkZojdsfmeb1X/6/vb58HaalLG63xdJx5637JjOTl3BUYTIE?=
- =?us-ascii?Q?nYtTdaBp+Nwqf0I1Zf7G2cnew8suGoCMGPG9QoCR69C/WZ4g6GuCO1qKRjqk?=
- =?us-ascii?Q?b6wMSDiYNTmB9A+3qQ5iSUHSj4C6wZ4njIZ9Sfb9ZBpKOAYOYGtAXktrcKm1?=
- =?us-ascii?Q?oYKjivWmG8BD3CiHkeNbh+4Mwgv0Nl+lQkFjhdbnX2rYepA0pZh1iYRXomGD?=
- =?us-ascii?Q?RWGKBRBdhk9I1SjQ8un+JVsf2DV0RPA/NDahbZnGa/y3KenXJpFIzhaOCpd9?=
- =?us-ascii?Q?T8ZPy8rFqyibQeCGCjS2FfkwGelKzZRvLQsWAe2EskEnZWL+Eaj17rE+YgBV?=
- =?us-ascii?Q?6ERG2zDZSQ=3D=3D?=
-X-MS-Exchange-CrossTenant-Network-Message-Id: bc69f3ed-422a-4d33-0241-08de689323fa
-X-MS-Exchange-CrossTenant-AuthSource: DS7PR11MB5966.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 10 Feb 2026 10:57:10.9890
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: UXFjAWSkb3T30POYVDZ8ItdAUN2xUQaT+99sgddfuPJtXzDov9/V0QAIcm3OW243nkRZULHXJauBB0Ria24Pjg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH7PR11MB5887
-X-OriginatorOrg: intel.com
 
-On Fri, Feb 06, 2026 at 09:41:38AM -0800, Sean Christopherson wrote:
-> On Fri, Feb 06, 2026, Yan Zhao wrote:
-> > On Thu, Feb 05, 2026 at 02:33:16PM -0800, Sean Christopherson wrote:
-> > > On Thu, Feb 05, 2026, Yan Zhao wrote:
-> > > > > > >  	if (was_present && !was_leaf &&
-> > > > > > >  	    (is_leaf || !is_present || WARN_ON_ONCE(pfn_changed)))
-> > > > > > >  		handle_removed_pt(kvm, spte_to_child_pt(old_spte, level), shared);
-> > > > > > > +	else if (was_leaf && is_mirror_sptep(sptep) && !is_leaf)
-> > > > > > Should we check !is_present instead of !is_leaf?
-> > > > > > e.g. a transition from a present leaf entry to a present non-leaf entry could
-> > > > > > also trigger this if case.
-> > > > > 
-> > > > > No, the !is_leaf check is very intentional.  At this point in the series, S-EPT
-> > > > > doesn't support hugepages.  If KVM manages to install a leaf SPTE and replaces
-> > > > > that SPTE with a non-leaf SPTE, then we absolutely want the KVM_BUG_ON() in
-> > > > > tdx_sept_remove_private_spte() to fire:
-> > > > > 
-> > > > > 	/* TODO: handle large pages. */
-> > > > > 	if (KVM_BUG_ON(level != PG_LEVEL_4K, kvm))
-> > > > > 		return -EIO;
-> > > > But the op is named remove_external_spte().
-> > > > And the check of "level != PG_LEVEL_4K" is for removing large leaf entries.
-> > > 
-> > > I agree that the naming at this point in the series is unfortunate, but I don't
-> > > see it as outright wrong.  That the TDP MMU could theoretically replace the leaf
-> > > SPTE with a non-leaf SPTE doesn't change the fact that the old leaf SPTE *is*
-> > > being removed.
-> > Hmm, I can't agree with that. But I won't insist if you think it's ok :)
-> 
-> If the code is read through a TDX lens, then I agree, it's seems wrong.  Because
-> then you *know* that TDX doesn't support back-to-back remove()=>add() operations
-> to handle a page split.
-> 
-> But from a TDP MMU perspective, this is entirely logical (ignoring that
-> link_external_spt() is gone at this point in the series).
-> 
-> 	else if (was_leaf && is_mirror_sptep(sptep) && !is_leaf) {
-> 		kvm_x86_call(remove_external_spte)(kvm, gfn, level, old_spte);
-> 
-> 		/*
-> 		 * Link the new page table if a hugepage is being split, i.e.
-> 		 * if a leaf SPTE is being replaced with a non-leaf SPTE.
-> 		 */
-> 		if (is_present)
-> 			kvm_x86_call(link_external_spt)(kvm, gfn, level, ...);
-> 	}
->
-> And that is *exactly* why I want to get rid of the hyper-specific kvm_x86_ops
-> hooks.  They bleed all kinds of implementation details all over the TDP MMU, which
-> makes it difficult to read and understand the relevant TDP MMU code if you don't
-> already know the TDX rules.  And I absolutely do not want to effectively require
-> others to understand TDX's rules to be able to make changes to the TDP MMU.
-Ok. I can understand your reasoning of checking !is_leaf now.
-Thanks for the explanation!
+> I think there's a not-completely-awful solution buried in this gigantic c=
+esspool.
+> The only time KVM uses on-stack variables is for qword or smaller accesse=
+s, i.e.
+> 8 bytes in size or less.  For larger fragments, e.g. AVX to/from MMIO, th=
+e target
+> value will always be an operand in the emulator context.  And so rather t=
+han
+> disallow stack variables, for "small" fragments, we can rework the handli=
+ng to
+> copy the value to/from each fragment on-demand instead of stashing a poin=
+ter to
+> the value.
 
-Though I still think checking !is_present before calling op remove_external_spte()
-in this patch is better, I have no strong opinion :)
+Since we can store the frag->val in struct kvm_mmio_fragment,
+why not just point frag->data to it? This Way we can save a lot code about
+(frag->data =3D=3D NULL).
 
-... 
-> Nope, as above, 100% the opposite.  Over ~3 patches, e.g.
-> 
->  1. Drop the KVM_BUG_ON()s or move them to TDX
->  2. Morph the !is_frozen_spte() check into a KVM_MMU_WARN_ON()
->  3. Rework the code to rely on __handle_changed_spte() to propagate writes to S-EPT
-> 
-> That way, the _only_ path that updates external SPTEs is this:
-> 
-> 	if (was_present && !was_leaf &&
-> 	    (is_leaf || !is_present || WARN_ON_ONCE(pfn_changed)))
-> 		handle_removed_pt(kvm, spte_to_child_pt(old_spte, level), shared);
-> 	else if (is_mirror_sptep(sptep))
-> 		return kvm_x86_call(set_external_spte)(kvm, gfn, old_spte,
-> 						       new_spte, level);
-> 
-> which is fully aligned with handle_changed_spte()'s role for !mirror roots: it
-> exists to react to changes (the sole exception to that being aging SPTEs, which
-> is a special case).
-> 
-> Compile-tested only.
-LGTM overall.
+Though this patch will block any read-into-stack calls, we can add a specia=
+l path
+in function emulator_read_write handling feasible read-into-stack calls -- =
+the
+target is released just after emulator_read_write returns.
 
->  arch/x86/kvm/mmu/tdp_mmu.c | 118 ++++++++++++++++++-------------------
->  1 file changed, 59 insertions(+), 59 deletions(-)
-> 
-> diff --git a/arch/x86/kvm/mmu/tdp_mmu.c b/arch/x86/kvm/mmu/tdp_mmu.c
-> index 847f2fcb6740..33a321aedac0 100644
-> --- a/arch/x86/kvm/mmu/tdp_mmu.c
-> +++ b/arch/x86/kvm/mmu/tdp_mmu.c
-> @@ -464,7 +464,7 @@ static void handle_removed_pt(struct kvm *kvm, tdp_ptep_t pt, bool shared)
->  }
->  
->  /**
-> - * handle_changed_spte - handle bookkeeping associated with an SPTE change
-> + * __handle_changed_spte - handle bookkeeping associated with an SPTE change
->   * @kvm: kvm instance
->   * @as_id: the address space of the paging structure the SPTE was a part of
->   * @sptep: pointer to the SPTE
-> @@ -480,9 +480,9 @@ static void handle_removed_pt(struct kvm *kvm, tdp_ptep_t pt, bool shared)
->   * dirty logging updates are handled in common code, not here (see make_spte()
->   * and fast_pf_fix_direct_spte()).
->   */
-> -static void handle_changed_spte(struct kvm *kvm, int as_id, tdp_ptep_t sptep,
-> -				gfn_t gfn, u64 old_spte, u64 new_spte,
-> -				int level, bool shared)
-> +static int __handle_changed_spte(struct kvm *kvm, int as_id, tdp_ptep_t sptep,
-> +				 gfn_t gfn, u64 old_spte, u64 new_spte,
-> +				 int level, bool shared)
->  {
->  	bool was_present = is_shadow_present_pte(old_spte);
->  	bool is_present = is_shadow_present_pte(new_spte);
-> @@ -518,7 +518,7 @@ static void handle_changed_spte(struct kvm *kvm, int as_id, tdp_ptep_t sptep,
->  	}
->  
->  	if (old_spte == new_spte)
-> -		return;
-> +		return 0;
->  
->  	trace_kvm_tdp_mmu_spte_changed(as_id, gfn, level, old_spte, new_spte);
->  
-> @@ -547,7 +547,7 @@ static void handle_changed_spte(struct kvm *kvm, int as_id, tdp_ptep_t sptep,
->  			       "a temporary frozen SPTE.\n"
->  			       "as_id: %d gfn: %llx old_spte: %llx new_spte: %llx level: %d",
->  			       as_id, gfn, old_spte, new_spte, level);
-> -		return;
-> +		return 0;
->  	}
->  
->  	if (is_leaf != was_leaf)
-> @@ -559,30 +559,31 @@ static void handle_changed_spte(struct kvm *kvm, int as_id, tdp_ptep_t sptep,
->  	 * SPTE being converted to a hugepage (leaf) or being zapped.  Shadow
->  	 * pages are kernel allocations and should never be migrated.
->  	 *
-> -	 * When modifying leaf entries in mirrored page tables, propagate the
-> -	 * changes to the external SPTE.  Bug the VM on failure, as callers
-> -	 * aren't prepared to handle errors, e.g. due to lock contention in the
-> -	 * TDX-Module.  Note, changes to non-leaf mirror SPTEs are handled by
-> -	 * handle_removed_pt() (the TDX-Module requires that child entries are
-> -	 * removed before the parent SPTE), and changes to non-present mirror
-> -	 * SPTEs are handled by __tdp_mmu_set_spte_atomic() (KVM needs to set
-> -	 * the external SPTE while the mirror SPTE is frozen so that installing
-> -	 * a new SPTE is effectively an atomic operation).
-> +	 * When modifying leaf entries in mirrored page tables, propagate all
-> +	 * changes to the external SPTE.
->  	 */
->  	if (was_present && !was_leaf &&
->  	    (is_leaf || !is_present || WARN_ON_ONCE(pfn_changed)))
->  		handle_removed_pt(kvm, spte_to_child_pt(old_spte, level), shared);
-> -	else if (was_leaf && is_mirror_sptep(sptep))
-> -		KVM_BUG_ON(kvm_x86_call(set_external_spte)(kvm, gfn, old_spte,
-> -							   new_spte, level), kvm);
-> +	else if (is_mirror_sptep(sptep))
-> +		return kvm_x86_call(set_external_spte)(kvm, gfn, old_spte,
-> +						       new_spte, level);
-For TDX's future implementation of set_external_spte() for split splitting,
-could we add a new param "bool shared" to op set_external_spte() in the
-future? i.e.,
-- when tdx_sept_split_private_spte() is invoked under write mmu_lock, it calls
-  tdh_do_no_vcpus() to retry BUSY error, and TDX_BUG_ON_2() then.
-- when tdx_sept_split_private_spte() is invoked under read mmu_lock
-  (in the future when calling tdh_mem_range_block() in unnecessary), it could
-  directly return BUSY to TDP MMU on contention.
+---
+ arch/x86/kvm/x86.c       | 9 ++++++++-
+ include/linux/kvm_host.h | 3 ++-
+ 2 files changed, 10 insertions(+), 2 deletions(-)
 
+diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
+index 72d37c8930ad..12d53d441a39 100644
+--- a/arch/x86/kvm/x86.c
++++ b/arch/x86/kvm/x86.c
+@@ -8197,7 +8197,14 @@ static int emulator_read_write_onepage(unsigned long=
+ addr, void *val,
+ 	WARN_ON(vcpu->mmio_nr_fragments >=3D KVM_MAX_MMIO_FRAGMENTS);
+ 	frag =3D &vcpu->mmio_fragments[vcpu->mmio_nr_fragments++];
+ 	frag->gpa =3D gpa;
+-	frag->data =3D val;
++	if (bytes > 8u || ! write) {
++		if (WARN_ON_ONCE(object_is_on_stack(val)))
++			return X86EMUL_UNHANDLEABLE;
++		frag->data =3D val;
++	} else {
++		memcpy(&frag->val, val, bytes);
++		frag->data =3D &frag->val;
++	}
+ 	frag->len =3D bytes;
+ 	return X86EMUL_CONTINUE;
+ }
+diff --git a/include/linux/kvm_host.h b/include/linux/kvm_host.h
+index d93f75b05ae2..f8419d632394 100644
+--- a/include/linux/kvm_host.h
++++ b/include/linux/kvm_host.h
+@@ -320,7 +320,8 @@ static inline bool kvm_vcpu_can_poll(ktime_t cur, ktime=
+_t stop)
+ struct kvm_mmio_fragment {
+ 	gpa_t gpa;
+ 	void *data;
+-	unsigned len;
++	unsigned int len;
++	u64 val;
+ };
+=20
+ struct kvm_vcpu {
 
-> +	return 0;
-> +}
-> +
-> +static void handle_changed_spte(struct kvm *kvm, int as_id, tdp_ptep_t sptep,
-> +				gfn_t gfn, u64 old_spte, u64 new_spte,
-> +				int level, bool shared)
-> +{
-Do we need "WARN_ON_ONCE(is_mirror_sptep(sptep) && shared)" here ? 
-
-> +	KVM_BUG_ON(__handle_changed_spte(kvm, as_id, sptep, gfn, old_spte,
-> +					 new_spte, level, shared), kvm);
->  }
+base-commit: 72c395024dac5e215136cbff793455f065603b06
+--=20
+2.33.0
 
 
 
->  
->  static inline int __must_check __tdp_mmu_set_spte_atomic(struct kvm *kvm,
->  							 struct tdp_iter *iter,
->  							 u64 new_spte)
->  {
-> -	u64 *raw_sptep = rcu_dereference(iter->sptep);
-> -
->  	/*
->  	 * The caller is responsible for ensuring the old SPTE is not a FROZEN
->  	 * SPTE.  KVM should never attempt to zap or manipulate a FROZEN SPTE,
-> @@ -591,40 +592,6 @@ static inline int __must_check __tdp_mmu_set_spte_atomic(struct kvm *kvm,
->  	 */
->  	WARN_ON_ONCE(iter->yielded || is_frozen_spte(iter->old_spte));
->  
-> -	if (is_mirror_sptep(iter->sptep) && !is_frozen_spte(new_spte)) {
-> -		int ret;
-> -
-> -		/*
-> -		 * KVM doesn't currently support zapping or splitting mirror
-> -		 * SPTEs while holding mmu_lock for read.
-> -		 */
-> -		if (KVM_BUG_ON(is_shadow_present_pte(iter->old_spte), kvm) ||
-> -		    KVM_BUG_ON(!is_shadow_present_pte(new_spte), kvm))
-> -			return -EBUSY;
-> -
-> -		/*
-> -		 * Temporarily freeze the SPTE until the external PTE operation
-> -		 * has completed, e.g. so that concurrent faults don't attempt
-> -		 * to install a child PTE in the external page table before the
-> -		 * parent PTE has been written.
-> -		 */
-> -		if (!try_cmpxchg64(raw_sptep, &iter->old_spte, FROZEN_SPTE))
-> -			return -EBUSY;
-> -
-> -		/*
-> -		 * Update the external PTE.  On success, set the mirror SPTE to
-> -		 * the desired value.  On failure, restore the old SPTE so that
-> -		 * the SPTE isn't frozen in perpetuity.
-> -		 */
-> -		ret = kvm_x86_call(set_external_spte)(kvm, iter->gfn, iter->old_spte,
-> -						      new_spte, iter->level);
-> -		if (ret)
-> -			__kvm_tdp_mmu_write_spte(iter->sptep, iter->old_spte);
-> -		else
-> -			__kvm_tdp_mmu_write_spte(iter->sptep, new_spte);
-> -		return ret;
-> -	}
-> -
->  	/*
->  	 * Note, fast_pf_fix_direct_spte() can also modify TDP MMU SPTEs and
->  	 * does not hold the mmu_lock.  On failure, i.e. if a different logical
-> @@ -632,7 +599,7 @@ static inline int __must_check __tdp_mmu_set_spte_atomic(struct kvm *kvm,
->  	 * the current value, so the caller operates on fresh data, e.g. if it
->  	 * retries tdp_mmu_set_spte_atomic()
->  	 */
-> -	if (!try_cmpxchg64(raw_sptep, &iter->old_spte, new_spte))
-> +	if (!try_cmpxchg64(rcu_dereference(iter->sptep), &iter->old_spte, new_spte))
->  		return -EBUSY;
->  
->  	return 0;
-> @@ -663,14 +630,44 @@ static inline int __must_check tdp_mmu_set_spte_atomic(struct kvm *kvm,
->  
->  	lockdep_assert_held_read(&kvm->mmu_lock);
->  
-> -	ret = __tdp_mmu_set_spte_atomic(kvm, iter, new_spte);
->
-> +	/* KVM should never freeze SPTEs using higher level APIs. */
-> +	KVM_MMU_WARN_ON(is_frozen_spte(new_spte));
-What about
-	KVM_MMU_WARN_ON(is_frozen_spte(new_spte) ||
-			is_frozen_spte(iter->old_spte) || iter->yielded);
 
-> +	/*
-> +	  * Temporarily freeze the SPTE until the external PTE operation has
-> +	  * completed (unless the new SPTE itself will be frozen), e.g. so that
-> +	  * concurrent faults don't attempt to install a child PTE in the
-> +	  * external page table before the parent PTE has been written, or try
-> +	  * to re-install a page table before the old one was removed.
-> +	  */
-> +	if (is_mirror_sptep(iter->sptep))
-> +		ret = __tdp_mmu_set_spte_atomic(kvm, iter, FROZEN_SPTE);
-> +	else
-> +		ret = __tdp_mmu_set_spte_atomic(kvm, iter, new_spte);
-and invoking open code try_cmpxchg64() directly?
+-----Original Message-----
+From: Sean Christopherson <seanjc@google.com>=20
+Sent: Tuesday, February 10, 2026 4:22 AM
+To: Zhangjiaji <zhangjiaji1@huawei.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>; kvm@vger.kernel.org; linux-kernel@=
+vger.kernel.org; Wangqinxiao (Tom) <wangqinxiao@huawei.com>; zhangyashu <zh=
+angyashu2@h-partners.com>; wangyanan (Y) <wangyanan55@huawei.com>
+Subject: Re: [BUG REPORT] USE_AFTER_FREE in complete_emulated_mmio found by=
+ KASAN/Syzkaller fuzz test (v5.10.0)
 
->  	if (ret)
->  		return ret;
->  
-> -	handle_changed_spte(kvm, iter->as_id, iter->sptep, iter->gfn,
-> -			    iter->old_spte, new_spte, iter->level, true);
-> +	ret = __handle_changed_spte(kvm, iter->as_id, iter->sptep, iter->gfn,
-> +				    iter->old_spte, new_spte, iter->level, true);
->  
-> -	return 0;
-> +	/*
-> +	 * Unfreeze the mirror SPTE.  If updating the external SPTE failed,
-> +	 * restore the old SPTE so that the SPTE isn't frozen in perpetuity,
-> +	 * otherwise set the mirror SPTE to the new desired value.
-> +	 */
-> +	if (is_mirror_sptep(iter->sptep)) {
-> +		if (ret)
-> +			__kvm_tdp_mmu_write_spte(iter->sptep, iter->old_spte);
-> +		else
-> +			__kvm_tdp_mmu_write_spte(iter->sptep, new_spte);
-> +	} else {
-> +		/*
-> +		 * Bug the VM if handling the change failed, as failure is only
-> +		 * allowed if KVM couldn't update the external SPTE.
-> +		 */
-> +		KVM_BUG_ON(ret, kvm);
-> +	}
-> +	return ret;
->  }
-One concern for tdp_mmu_set_spte_atomic() to handle mirror SPTEs:
-- Previously
-  1. set *iter->sptep to FROZEN_SPTE.
-  2. kvm_x86_call(set_external_spte)(old_spte, new_spte)
-  3. set *iter->sptep to new_spte
+On Fri, Feb 06, 2026, Sean Christopherson wrote:
+> On Mon, Feb 02, 2026, Zhangjiaji wrote:
+> > Syzkaller hit 'KASAN: use-after-free Read in complete_emulated_mmio' bu=
+g.
+> >=20
+> > =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+> > BUG: KASAN: use-after-free in complete_emulated_mmio+0x305/0x420
+> > Read of size 1 at addr ffff888009c378d1 by task syz-executor417/984
+> >=20
+> > CPU: 1 PID: 984 Comm: syz-executor417 Not tainted 5.10.0-182.0.0.95.h26=
+27.eulerosv2r13.x86_64 #3 Hardware name: QEMU Standard PC (i440FX + PIIX, 1=
+996), BIOS rel-1.15.0-0-g2dd4b9b3f840-prebuilt.qemu.org 04/01/2014 Call Tra=
+ce:
+> > dump_stack+0xbe/0xfd
+> > print_address_description.constprop.0+0x19/0x170
+> > __kasan_report.cold+0x6c/0x84
+> > kasan_report+0x3a/0x50
+> > check_memory_region+0xfd/0x1f0
+> > memcpy+0x20/0x60
+> > complete_emulated_mmio+0x305/0x420
+> > kvm_arch_vcpu_ioctl_run+0x63f/0x6d0
+> > kvm_vcpu_ioctl+0x413/0xb20
+> > __se_sys_ioctl+0x111/0x160
+> > do_syscall_64+0x30/0x40
+> > entry_SYSCALL_64_after_hwframe+0x67/0xd1
+> > RIP: 0033:0x42477d
 
-- Now with this diff
-  1. set *iter->sptep to FROZEN_SPTE.
-  2. __handle_changed_spte()
-     --> kvm_x86_call(set_external_spte)(iter->sptep, old_spte, new_spte)
-  3. set *iter->sptep to new_spte 
+...
 
-  what if __handle_changed_spte() reads *iter->sptep in step 2?
-  Passing in "bool is_mirror_sp" to __handle_changed_spte() instead?
+> > I've analyzed the Syzkaller output and the complete_emulated_mmio()=20
+> > code path.  The buggy address is created in em_enter(), where it=20
+> > passes its local variable `ulong rbp` to emulate_push(), finally=20
+> > ends in
+> > emulator_read_write_onepage() putting the address into
+> > vcpu->mmio_fragments[].data .  The bug happens when kvm guest=20
+> > vcpu->executes an
+> > "enter" instruction, and top of the stack crosses the mem page.  In=20
+> > that case, the em_enter() function cannot complete the instruction=20
+> > within itself, but leave the rest data (which is in the other page)=20
+> > to complete_emulated_mmio().  When complete_emulated_mmio() starts,=20
+> > em_enter() has exited, so local variable `ulong rbp` is also=20
+> > released.  Now
+> > complete_emulated_mmio() trys to access vcpu->mmio_fragments[].data=20
+> > , and the bug happened.
+> >=20
+> > any idea?
+>=20
+> Egad, sorry!  I had reproduced this shortly after you sent the report=20
+> and prepped a fix, but got distracted and lost this in my inbox.
+>=20
+> Can you test this on your end?  I repro'd by modifying a KVM-Unit-Test=20
+> and hacking KVM to tweak the stack, so I haven't confirmed the syzkaller =
+version.
+>=20
+> It's a bit gross, as it abuses an unused field as scratch space, but=20
+> AFAICT that's "fine".  The alternative would be add a dedicated field, wh=
+ich seems like overkill?
+>=20
+> I'm also going to try and add a WARN to detect if the @val parameter=20
+> passed to
+> emulator_read_write() is ever on the kernel stack, e.g. to help detect=20
+> lurking bugs like this one without relying on kasahn.
+>=20
+> diff --git a/arch/x86/kvm/emulate.c b/arch/x86/kvm/emulate.c index=20
+> c8e292e9a24d..dacef51c2565 100644
+> --- a/arch/x86/kvm/emulate.c
+> +++ b/arch/x86/kvm/emulate.c
+> @@ -1897,13 +1897,12 @@ static int em_enter(struct x86_emulate_ctxt *ctxt=
+)
+>         int rc;
+>         unsigned frame_size =3D ctxt->src.val;
+>         unsigned nesting_level =3D ctxt->src2.val & 31;
+> -       ulong rbp;
+> =20
+>         if (nesting_level)
+>                 return X86EMUL_UNHANDLEABLE;
+> =20
+> -       rbp =3D reg_read(ctxt, VCPU_REGS_RBP);
+> -       rc =3D emulate_push(ctxt, &rbp, stack_size(ctxt));
+> +       ctxt->memop.orig_val =3D reg_read(ctxt, VCPU_REGS_RBP);
+> +       rc =3D emulate_push(ctxt, &ctxt->memop.orig_val,=20
+> + stack_size(ctxt));
+>         if (rc !=3D X86EMUL_CONTINUE)
+>                 return rc;
+>         assign_masked(reg_rmw(ctxt, VCPU_REGS_RBP), reg_read(ctxt,=20
+> VCPU_REGS_RSP),
 
+*sigh*
 
+This isn't going to work.  Or rather, it's far from a complete fix, as ther=
+e are several other instructions and flows that use stack variables to serv=
+ice reads and writes.  Hacking all of them to not use stack variables isn't=
+ feasible, as flows like emulate_iret_real() and em_popa() perform multiple=
+ acceses, i.e.
+hijacking an unused operand simply won't work.
+
+I'm tempted to go with a straightforward "fix" of rejecting userspace MMIO =
+if the destination is on the stack, e.g. like so:
+
+diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c index db3f393192d9..11=
+3287612acd 100644
+--- a/arch/x86/kvm/x86.c
++++ b/arch/x86/kvm/x86.c
+@@ -8272,6 +8272,9 @@ static int emulator_read_write(struct x86_emulate_ctx=
+t *ctxt,
+        if (!vcpu->mmio_nr_fragments)
+                return X86EMUL_CONTINUE;
+=20
++       if (object_is_on_stack(val))
++               return X86EMUL_UNHANDLEABLE;
++
+        gpa =3D vcpu->mmio_fragments[0].gpa;
+=20
+        vcpu->mmio_needed =3D 1;
+
+But I hate how arbitrary that is, and I'm somewhat concerned that it could =
+break existing setups.
+
+I think there's a not-completely-awful solution buried in this gigantic ces=
+spool.
+The only time KVM uses on-stack variables is for qword or smaller accesses,=
+ i.e.
+8 bytes in size or less.  For larger fragments, e.g. AVX to/from MMIO, the =
+target value will always be an operand in the emulator context.  And so rat=
+her than disallow stack variables, for "small" fragments, we can rework the=
+ handling to copy the value to/from each fragment on-demand instead of stas=
+hing a pointer to the value.
+
+This needs a _lot_ more documentation, the SEV-ES flows aren't converted, a=
+nd there is a ton of cleanup that can and should be done on top, but this a=
+ppears to work.
+
+Note the "clobber" in complete_emulated_mmio() to fill 4096 bytes of the st=
+ack with 0xaa, i.e. to simulate some of the stack being "freed".
+
+---
+ arch/x86/kvm/kvm_emulate.h |   8 +++
+ arch/x86/kvm/x86.c         | 125 +++++++++++++++++++++++++++----------
+ include/linux/kvm_host.h   |   6 +-
+ 3 files changed, 103 insertions(+), 36 deletions(-)
+
+diff --git a/arch/x86/kvm/kvm_emulate.h b/arch/x86/kvm/kvm_emulate.h index =
+fb3dab4b5a53..f735158af05e 100644
+--- a/arch/x86/kvm/kvm_emulate.h
++++ b/arch/x86/kvm/kvm_emulate.h
+@@ -284,6 +284,14 @@ struct fetch_cache {
+ 	u8 *end;
+ };
+=20
++/*
++ * To complete userspace MMIO and I/O reads, KVM re-emulates=20
++(NO_DECODE) the
++ * _entire_ instruction to propagate the read data to its final destinatio=
+n.
++ * To avoid re-reading values from memory and/or getting "stuck" on the=20
++access
++ * that triggered an exit to userspace, KVM caches all values that have=20
++been
++ * read for a given instruction, and reads from this cache instead of=20
++reading
++ * from guest memory or from userspace.
++ */
+ struct read_cache {
+ 	u8 data[1024];
+ 	unsigned long pos;
+diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c index db3f393192d9..1b=
+99de3e3236 100644
+--- a/arch/x86/kvm/x86.c
++++ b/arch/x86/kvm/x86.c
+@@ -8109,7 +8109,7 @@ int emulator_write_phys(struct kvm_vcpu *vcpu, gpa_t =
+gpa,  }
+=20
+ struct read_write_emulator_ops {
+-	int (*read_write_prepare)(struct kvm_vcpu *vcpu, void *val,
++	int (*read_mmio_fragment)(struct kvm_vcpu *vcpu, void *val,
+ 				  int bytes);
+ 	int (*read_write_emulate)(struct kvm_vcpu *vcpu, gpa_t gpa,
+ 				  void *val, int bytes);
+@@ -8120,16 +8120,37 @@ struct read_write_emulator_ops {
+ 	bool write;
+ };
+=20
+-static int read_prepare(struct kvm_vcpu *vcpu, void *val, int bytes)
++static int read_mmio_fragment(struct kvm_vcpu *vcpu, void *val, int=20
++bytes)
+ {
+-	if (vcpu->mmio_read_completed) {
+-		trace_kvm_mmio(KVM_TRACE_MMIO_READ, bytes,
+-			       vcpu->mmio_fragments[0].gpa, val);
+-		vcpu->mmio_read_completed =3D 0;
+-		return 1;
++	struct kvm_mmio_fragment *frag;
++	unsigned int len =3D bytes;
++
++	while (len && vcpu->mmio_head_fragment < vcpu->mmio_tail_fragment) {
++		int i =3D vcpu->mmio_head_fragment++;
++
++		if (WARN_ON_ONCE(i >=3D vcpu->mmio_nr_fragments))
++			break;
++
++		frag =3D &vcpu->mmio_fragments[i];
++		if (!frag->data) {
++			if (WARN_ON_ONCE(len < frag->len || frag->len > 8u)) {
++				pr_warn("len =3D %u, bytes =3D %u, frag->len =3D %u, gpa =3D %llx, rip=
+ =3D %lx\n",
++					len, bytes, frag->len, frag->gpa, kvm_rip_read(vcpu));
++				break;
++			}
++
++			memcpy(val, &frag->val, min(8u, frag->len));
++		}
++
++		val +=3D frag->len;
++		len -=3D min(len, frag->len);
+ 	}
+=20
+-	return 0;
++	if ((int)len =3D=3D bytes)
++		return 0;
++
++	trace_kvm_mmio(KVM_TRACE_MMIO_READ, bytes, frag->gpa, val);
++	return 1;
+ }
+=20
+ static int read_emulate(struct kvm_vcpu *vcpu, gpa_t gpa, @@ -8150,6 +8171=
+,11 @@ static int write_mmio(struct kvm_vcpu *vcpu, gpa_t gpa, int bytes, v=
+oid *val)
+ 	return vcpu_mmio_write(vcpu, gpa, bytes, val);  }
+=20
++static void *mmio_frag_data(struct kvm_mmio_fragment *frag) {
++	return frag->data ?: &frag->val;
++}
++
+ static int read_exit_mmio(struct kvm_vcpu *vcpu, gpa_t gpa,
+ 			  void *val, int bytes)
+ {
+@@ -8162,12 +8188,12 @@ static int write_exit_mmio(struct kvm_vcpu *vcpu, g=
+pa_t gpa,  {
+ 	struct kvm_mmio_fragment *frag =3D &vcpu->mmio_fragments[0];
+=20
+-	memcpy(vcpu->run->mmio.data, frag->data, min(8u, frag->len));
++	memcpy(vcpu->run->mmio.data, mmio_frag_data(frag), min(8u,=20
++frag->len));
+ 	return X86EMUL_CONTINUE;
+ }
+=20
+ static const struct read_write_emulator_ops read_emultor =3D {
+-	.read_write_prepare =3D read_prepare,
++	.read_mmio_fragment =3D read_mmio_fragment,
+ 	.read_write_emulate =3D read_emulate,
+ 	.read_write_mmio =3D vcpu_mmio_read,
+ 	.read_write_exit_mmio =3D read_exit_mmio, @@ -8226,7 +8252,13 @@ static i=
+nt emulator_read_write_onepage(unsigned long addr, void *val,
+ 	WARN_ON(vcpu->mmio_nr_fragments >=3D KVM_MAX_MMIO_FRAGMENTS);
+ 	frag =3D &vcpu->mmio_fragments[vcpu->mmio_nr_fragments++];
+ 	frag->gpa =3D gpa;
+-	frag->data =3D val;
++	if (bytes > 8u) {
++		frag->data =3D val;
++	} else {
++		frag->data =3D NULL;
++		if (write)
++			memcpy(&frag->val, val, bytes);
++	}
+ 	frag->len =3D bytes;
+ 	return X86EMUL_CONTINUE;
+ }
+@@ -8241,11 +8273,16 @@ static int emulator_read_write(struct x86_emulate_c=
+txt *ctxt,
+ 	gpa_t gpa;
+ 	int rc;
+=20
+-	if (ops->read_write_prepare &&
+-		  ops->read_write_prepare(vcpu, val, bytes))
++	if (WARN_ON_ONCE(bytes > 8u && object_is_on_stack(val)))
++		return X86EMUL_UNHANDLEABLE;
++
++	if (ops->read_mmio_fragment &&
++	    ops->read_mmio_fragment(vcpu, val, bytes))
+ 		return X86EMUL_CONTINUE;
+=20
+ 	vcpu->mmio_nr_fragments =3D 0;
++	vcpu->mmio_head_fragment =3D 0;
++	vcpu->mmio_tail_fragment =3D 0;
+=20
+ 	/* Crossing a page boundary? */
+ 	if (((addr + bytes - 1) ^ addr) & PAGE_MASK) { @@ -8275,7 +8312,6 @@ stat=
+ic int emulator_read_write(struct x86_emulate_ctxt *ctxt,
+ 	gpa =3D vcpu->mmio_fragments[0].gpa;
+=20
+ 	vcpu->mmio_needed =3D 1;
+-	vcpu->mmio_cur_fragment =3D 0;
+=20
+ 	vcpu->run->mmio.len =3D min(8u, vcpu->mmio_fragments[0].len);
+ 	vcpu->run->mmio.is_write =3D vcpu->mmio_is_write =3D ops->write; @@ -1183=
+2,42 +11868,61 @@ static int complete_emulated_mmio(struct kvm_vcpu *vcpu) =
+ {
+ 	struct kvm_run *run =3D vcpu->run;
+ 	struct kvm_mmio_fragment *frag;
+-	unsigned len;
++	unsigned int len;
++	u8 clobber[4096];
+=20
+-	BUG_ON(!vcpu->mmio_needed);
++	memset(clobber, 0xaa, sizeof(clobber));
++
++	if (WARN_ON_ONCE(!vcpu->mmio_needed))
++		return -EIO;
++
++	/* Complete MMIO for the current fragment. */
++	frag =3D &vcpu->mmio_fragments[vcpu->mmio_tail_fragment];
+=20
+-	/* Complete previous fragment */
+-	frag =3D &vcpu->mmio_fragments[vcpu->mmio_cur_fragment];
+ 	len =3D min(8u, frag->len);
+ 	if (!vcpu->mmio_is_write)
+-		memcpy(frag->data, run->mmio.data, len);
++		memcpy(mmio_frag_data(frag), run->mmio.data, len);
+=20
+ 	if (frag->len <=3D 8) {
+ 		/* Switch to the next fragment. */
+ 		frag++;
+-		vcpu->mmio_cur_fragment++;
++		vcpu->mmio_tail_fragment++;
+ 	} else {
++		if (WARN_ON_ONCE(!frag->data))
++			return -EIO;
++=09
+ 		/* Go forward to the next mmio piece. */
+ 		frag->data +=3D len;
+ 		frag->gpa +=3D len;
+ 		frag->len -=3D len;
+ 	}
+=20
+-	if (vcpu->mmio_cur_fragment >=3D vcpu->mmio_nr_fragments) {
++	if (vcpu->mmio_tail_fragment >=3D vcpu->mmio_nr_fragments) {
+ 		vcpu->mmio_needed =3D 0;
++		WARN_ON_ONCE(vcpu->mmio_head_fragment);
+=20
+-		/* FIXME: return into emulator if single-stepping.  */
+-		if (vcpu->mmio_is_write)
++		/*
++		 * Don't re-emulate the instruction for MMIO writes, as KVM has
++		 * already committed all side effects (and the emulator simply
++		 * isn't equi)
++		 *
++		 * FIXME: Return into emulator if single-stepping.
++		 */
++		if (vcpu->mmio_is_write) {
++			vcpu->mmio_tail_fragment =3D 0;
+ 			return 1;
+-		vcpu->mmio_read_completed =3D 1;
++		}
++
+ 		return complete_emulated_io(vcpu);
+ 	}
+=20
++	len =3D min(8u, frag->len);
++
+ 	run->exit_reason =3D KVM_EXIT_MMIO;
+ 	run->mmio.phys_addr =3D frag->gpa;
+ 	if (vcpu->mmio_is_write)
+-		memcpy(run->mmio.data, frag->data, min(8u, frag->len));
+-	run->mmio.len =3D min(8u, frag->len);
++		memcpy(run->mmio.data, mmio_frag_data(frag), len);
++	run->mmio.len =3D len;
+ 	run->mmio.is_write =3D vcpu->mmio_is_write;
+ 	vcpu->arch.complete_userspace_io =3D complete_emulated_mmio;
+ 	return 0;
+@@ -14247,15 +14302,15 @@ static int complete_sev_es_emulated_mmio(struct k=
+vm_vcpu *vcpu)
+ 	BUG_ON(!vcpu->mmio_needed);
+=20
+ 	/* Complete previous fragment */
+-	frag =3D &vcpu->mmio_fragments[vcpu->mmio_cur_fragment];
++	frag =3D &vcpu->mmio_fragments[vcpu->mmio_tail_fragment];
+ 	len =3D min(8u, frag->len);
+-	if (!vcpu->mmio_is_write)
++	if (!vcpu->mmio_is_write && frag->data)
+ 		memcpy(frag->data, run->mmio.data, len);
+=20
+ 	if (frag->len <=3D 8) {
+ 		/* Switch to the next fragment. */
+ 		frag++;
+-		vcpu->mmio_cur_fragment++;
++		vcpu->mmio_tail_fragment++;
+ 	} else {
+ 		/* Go forward to the next mmio piece. */
+ 		frag->data +=3D len;
+@@ -14263,7 +14318,7 @@ static int complete_sev_es_emulated_mmio(struct kvm=
+_vcpu *vcpu)
+ 		frag->len -=3D len;
+ 	}
+=20
+-	if (vcpu->mmio_cur_fragment >=3D vcpu->mmio_nr_fragments) {
++	if (vcpu->mmio_tail_fragment >=3D vcpu->mmio_nr_fragments) {
+ 		vcpu->mmio_needed =3D 0;
+=20
+ 		// VMG change, at this point, we're always done @@ -14303,13 +14358,14 @=
+@ int kvm_sev_es_mmio_write(struct kvm_vcpu *vcpu, gpa_t gpa, unsigned int =
+bytes,
+=20
+ 	/*TODO: Check if need to increment number of frags */
+ 	frag =3D vcpu->mmio_fragments;
+-	vcpu->mmio_nr_fragments =3D 1;
+ 	frag->len =3D bytes;
+ 	frag->gpa =3D gpa;
+ 	frag->data =3D data;
+=20
+ 	vcpu->mmio_needed =3D 1;
+-	vcpu->mmio_cur_fragment =3D 0;
++	vcpu->mmio_nr_fragments =3D 1;
++	vcpu->mmio_head_fragment =3D 0;
++	vcpu->mmio_tail_fragment =3D 0;
+=20
+ 	vcpu->run->mmio.phys_addr =3D gpa;
+ 	vcpu->run->mmio.len =3D min(8u, frag->len); @@ -14342,13 +14398,14 @@ int=
+ kvm_sev_es_mmio_read(struct kvm_vcpu *vcpu, gpa_t gpa, unsigned int bytes,
+=20
+ 	/*TODO: Check if need to increment number of frags */
+ 	frag =3D vcpu->mmio_fragments;
+-	vcpu->mmio_nr_fragments =3D 1;
+ 	frag->len =3D bytes;
+ 	frag->gpa =3D gpa;
+ 	frag->data =3D data;
+=20
+ 	vcpu->mmio_needed =3D 1;
+-	vcpu->mmio_cur_fragment =3D 0;
++	vcpu->mmio_nr_fragments =3D 1;
++	vcpu->mmio_head_fragment =3D 0;
++	vcpu->mmio_tail_fragment =3D 0;
+=20
+ 	vcpu->run->mmio.phys_addr =3D gpa;
+ 	vcpu->run->mmio.len =3D min(8u, frag->len); diff --git a/include/linux/kv=
+m_host.h b/include/linux/kvm_host.h index 782f4d670793..be4b9de5b8c9 100644
+--- a/include/linux/kvm_host.h
++++ b/include/linux/kvm_host.h
+@@ -320,7 +320,8 @@ static inline bool kvm_vcpu_can_poll(ktime_t cur, ktime=
+_t stop)  struct kvm_mmio_fragment {
+ 	gpa_t gpa;
+ 	void *data;
+-	unsigned len;
++	u64 val;
++	unsigned int len;
+ };
+=20
+ struct kvm_vcpu {
+@@ -356,7 +357,8 @@ struct kvm_vcpu {
+ 	int mmio_needed;
+ 	int mmio_read_completed;
+ 	int mmio_is_write;
+-	int mmio_cur_fragment;
++	int mmio_head_fragment;
++	int mmio_tail_fragment;
+ 	int mmio_nr_fragments;
+ 	struct kvm_mmio_fragment mmio_fragments[KVM_MAX_MMIO_FRAGMENTS];
+ #endif
+
+base-commit: e944fe2c09f405a2e2d147145c9b470084bc4c9a
+--
