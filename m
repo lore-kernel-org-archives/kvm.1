@@ -1,94 +1,141 @@
-Received: from mail-pl1-f201.google.com (mail-pl1-f201.google.com [209.85.214.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from out-173.mta1.migadu.com (out-173.mta1.migadu.com [95.215.58.173])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71B3816F0FE
-	for <kvm@vger.kernel.org>; Tue, 10 Feb 2026 00:33:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0061124169D
+	for <kvm@vger.kernel.org>; Tue, 10 Feb 2026 00:55:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770683628; cv=none; b=N7eg1PoY7bXZMkWiJKredLDnvpJIurRTEbwBPfmFkqIga9sXVT6luompmg2nfFzreAGDDn1UEsSGDrxEcI3tvAB3ONQSLbEbErWAc5D/kSxqToJZ80oRWbgUYmPSeXMDOvjavjXX2tqbkaS5wvPhHvilHEFPY1RYWIOPf91LdAk=
+	t=1770684919; cv=none; b=a6uMcp++y0f1iZdBg33cS7z2x6IH15GtpEGt2dLJ3EAN/XGAmoGwGQAePvmA5AMUxeqMo8sml0FyrsK8UkrCcsWJtZ8bbDGHECKbtpHYWnxaHFc9VkCV9Tj2zsB5R+xhM5aIqytVOFVrFOyhB58imD6+l/995qN/7VxA65x8P/I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770683628; c=relaxed/simple;
-	bh=7ydWrjlCepD6nB2ObFrNdCIBZVDXv0TnWs2DKYuT5zI=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=pFXQzN205Jp8mBqfYjRj2swEOxuf3O50vj2HEcmUlw/3r2DvZn3vvBPLCL/ymzepiRP1wNMcjxgHjEhWZhvqXG6FWCqP1SYuTfSw7Fl917TVTlWGkakazuskOt1ey7w0oYztTOvm47Phu5Wg+7xbMZLU7x9JpgoRdiympzIPpXA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=vMUCDjaY; arc=none smtp.client-ip=209.85.214.201
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+	s=arc-20240116; t=1770684919; c=relaxed/simple;
+	bh=0xYTA5O8n2Un7nIegn4K2tJVnxu5c3fQRxZ2nWTeMVI=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=oHRnCxQGzMlYn8oUTYpNdfP/+BC+ENEUEX7WPgp09++yVechAwnyRf9CrmT6UMxDDyeItKjUZGIo12Q2/SyPKdTFNW2E0uBclc6HcjAAHUfGyTdkCaFLLRIsahTEohsRzWFj2D4hOeyME25VCGyGw4aKu2bjoiVuuCNnf0tICqk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=cuQvDLCG; arc=none smtp.client-ip=95.215.58.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="vMUCDjaY"
-Received: by mail-pl1-f201.google.com with SMTP id d9443c01a7336-2aadeb3dee4so62844215ad.2
-        for <kvm@vger.kernel.org>; Mon, 09 Feb 2026 16:33:47 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1770683627; x=1771288427; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:from:subject:message-id:references
-         :mime-version:in-reply-to:date:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=7k/XzuZM96p1tSUw8bPt3a7YL5QqswpTlWe5QXEZ234=;
-        b=vMUCDjaYssh9Tk83i2OJ1P4gjDBZXIskB6CytTQT5TCXDI6oHhArD1u7dkuMFrs5F9
-         J6tzxVp494/dM1GC9qRuQV2IhG/n1VfuIMl0dBEoMHUM6JB5NNC8RlJKh7QauR9ja4ps
-         jtmSkMQ3edhUFcm6sqkGOoWcnZA4Rv3lKQPJ57x5kFC4EBRkjFS3EwG9Bt/1nJ1UyufC
-         f1Ch3QaCgp0aXsHG84hD+ZL3E2YhJ4dm0/hWdDmD5XGNXglq66XpqYRhIh4tBETu7aK7
-         YE34NyhTI35Be9yXUluBXUoMlztRATePqSYnZISUyvLj/6N1SlSPgAFfu5cjD0HEqBLB
-         Cb9A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1770683627; x=1771288427;
-        h=content-transfer-encoding:cc:to:from:subject:message-id:references
-         :mime-version:in-reply-to:date:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=7k/XzuZM96p1tSUw8bPt3a7YL5QqswpTlWe5QXEZ234=;
-        b=GQCKhF/YqH8GnIPXYHeagzOEGO1HTFu/1IkgeW2xJ8m9ix7/u7/PNlWP60R0m7Q0+B
-         5iDnKdyCnDh7SK6wtcoOQxAIj/ITisFLRBh22gi/Suu/4s3MJWlJKKLUrH2JWVSOLTFn
-         Az7PQYJEiDSkDyG1KaqP0VrWwPxklkFZ2OwWNU10f/LKUHFZ14VcoY4McbUhWsC+HDVW
-         Y+DVW1nXX8ByNLTuwoPbzY49WXqhFRGi+o29G2MUsrWaH6BmWXfs3UN+DrNdcsBUIgSS
-         46DjjSMUAbG4Piysm9W9lH3kHsePk0wLxaMOovck+2pY6+yfj05JcpgjKWoteiiukf9s
-         wiKQ==
-X-Gm-Message-State: AOJu0YyPKwSxt5TTeQykQlHTJb0axcNEzSIpSnX8HIbKz6Qe8TKZlErX
-	Cp30DFQlENluFGaqEWDYRKdX8sSiA+8uR7BtnbCrvUK1Mehrde5eS+f2eRsY91dwPYl83EClGRP
-	BkFPzLQ==
-X-Received: from plbcp16.prod.google.com ([2002:a17:902:e790:b0:29f:68b:3550])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:903:41c7:b0:2a9:410:23fe
- with SMTP id d9443c01a7336-2ab10a1a54bmr4579545ad.36.1770683626791; Mon, 09
- Feb 2026 16:33:46 -0800 (PST)
-Date: Mon, 9 Feb 2026 16:33:45 -0800
-In-Reply-To: <CABgObfbKh1Tbzv63GfopW3KQhYtfAGgXXBgGn6EiR2kSBgH_jA@mail.gmail.com>
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="cuQvDLCG"
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1770684916;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=ojZz514RvzyouqbQnt4yvqck/hytcluQX/sLI1bmLEw=;
+	b=cuQvDLCG8jNbQtONDjaeA868o012sFQs+ompDLcD/Lduo7vbDQU1NIb91Zy+riDbRM6Mcq
+	zWjcdpHUmcDNJy/6e7KBluJSCyf4l0ABntpgJabATXKxwhhvIG4ONGjWF2WGiZh+J70lNm
+	Xm8QIkFqSv3FHwkEKOjOao2s7/Hq+kU=
+From: Yosry Ahmed <yosry.ahmed@linux.dev>
+To: Sean Christopherson <seanjc@google.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>,
+	kvm@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Yosry Ahmed <yosry.ahmed@linux.dev>,
+	stable@vger.kernel.org
+Subject: [PATCH 1/4] KVM: nSVM: Sync next_rip to cached vmcb12 after VMRUN of L2
+Date: Tue, 10 Feb 2026 00:54:46 +0000
+Message-ID: <20260210005449.3125133-2-yosry.ahmed@linux.dev>
+In-Reply-To: <20260210005449.3125133-1-yosry.ahmed@linux.dev>
+References: <20260210005449.3125133-1-yosry.ahmed@linux.dev>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20260207041011.913471-1-seanjc@google.com> <20260207041011.913471-3-seanjc@google.com>
- <CABgObfZeV6D-2cEht1300xNgxYtz=mi6oX4-D8x7exittEe22Q@mail.gmail.com> <CABgObfbKh1Tbzv63GfopW3KQhYtfAGgXXBgGn6EiR2kSBgH_jA@mail.gmail.com>
-Message-ID: <aYp86UFynnoBLy3m@google.com>
-Subject: Re: [GIT PULL] KVM: Generic changes for 6.20
-From: Sean Christopherson <seanjc@google.com>
-To: Paolo Bonzini <pbonzini@redhat.com>
-Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-Migadu-Flow: FLOW_OUT
 
-On Mon, Feb 09, 2026, Paolo Bonzini wrote:
-> On Mon, Feb 9, 2026 at 6:38=E2=80=AFPM Paolo Bonzini <pbonzini@redhat.com=
-> wrote:
-> >
-> > On Sat, Feb 7, 2026 at 5:10=E2=80=AFAM Sean Christopherson <seanjc@goog=
-le.com> wrote:
-> > >  - Document that vcpu->mutex is take outside of kvm->slots_lock, whic=
-h is all
-> > >    kinds of unintuitive, but is unfortunately the existing behavior f=
-or
-> > >    multiple architectures, and in a weird way actually makes sense.
-> >
-> > I disagree that it is "arguably wrong" how you put it in the commit
-> > message. vcpu->mutex is really a "don't worry about multiple ioctls at
-> > the same time" mutex that tries to stay out of the way.  It only
-> > becomes unintuitive in special cases like
-> > tdx_acquire_vm_state_locks().
-> >
-> > By itself this would not be a reason to resend, but while at it you
-> > could mention that vcpu->mutex is taken outside kvm->slots_arch_lock?
->=20
-> ... as well as mention kvm_alloc_apic_access_page() in the commit message=
-.
+After VMRUN in guest mode, nested_sync_control_from_vmcb02() syncs
+fields written by the CPU from vmcb02 to the cached vmcb12. This is
+because the cached vmcb12 is used as the authoritative copy of some of
+the controls, and is the payload when saving/restoring nested state.
 
-Ya, will do.
+next_rip is also written by the CPU (in some cases) after VMRUN, but is
+not sync'd to cached vmcb12. As a result, it is corrupted after
+save/restore (replaced by the original value written by L1 on nested
+VMRUN). This could cause problems for both KVM (e.g. when injecting a
+soft IRQ) or L1 (e.g. when using next_rip to advance RIP after emulating
+an instruction).
+
+Fix this by sync'ing next_rip in nested_sync_control_from_vmcb02(). Move
+the call to nested_sync_control_from_vmcb02() (and the entire
+is_guest_mode() block) after svm_complete_interrupts(), as it may update
+next_rip in vmcb02.
+
+Fixes: cc440cdad5b7 ("KVM: nSVM: implement KVM_GET_NESTED_STATE and KVM_SET_NESTED_STATE")
+CC: stable@vger.kernel.org
+Signed-off-by: Yosry Ahmed <yosry.ahmed@linux.dev>
+---
+ arch/x86/kvm/svm/nested.c |  6 ++++--
+ arch/x86/kvm/svm/svm.c    | 26 +++++++++++++++-----------
+ 2 files changed, 19 insertions(+), 13 deletions(-)
+
+diff --git a/arch/x86/kvm/svm/nested.c b/arch/x86/kvm/svm/nested.c
+index de90b104a0dd..70086ba6497f 100644
+--- a/arch/x86/kvm/svm/nested.c
++++ b/arch/x86/kvm/svm/nested.c
+@@ -519,8 +519,10 @@ void nested_copy_vmcb_save_to_cache(struct vcpu_svm *svm,
+ void nested_sync_control_from_vmcb02(struct vcpu_svm *svm)
+ {
+ 	u32 mask;
+-	svm->nested.ctl.event_inj      = svm->vmcb->control.event_inj;
+-	svm->nested.ctl.event_inj_err  = svm->vmcb->control.event_inj_err;
++
++	svm->nested.ctl.event_inj	= svm->vmcb->control.event_inj;
++	svm->nested.ctl.event_inj_err	= svm->vmcb->control.event_inj_err;
++	svm->nested.ctl.next_rip	= svm->vmcb->control.next_rip;
+ 
+ 	/* Only a few fields of int_ctl are written by the processor.  */
+ 	mask = V_IRQ_MASK | V_TPR_MASK;
+diff --git a/arch/x86/kvm/svm/svm.c b/arch/x86/kvm/svm/svm.c
+index 5f0136dbdde6..6d8d4d19455e 100644
+--- a/arch/x86/kvm/svm/svm.c
++++ b/arch/x86/kvm/svm/svm.c
+@@ -4399,17 +4399,6 @@ static __no_kcsan fastpath_t svm_vcpu_run(struct kvm_vcpu *vcpu, u64 run_flags)
+ 	sync_cr8_to_lapic(vcpu);
+ 
+ 	svm->next_rip = 0;
+-	if (is_guest_mode(vcpu)) {
+-		nested_sync_control_from_vmcb02(svm);
+-
+-		/* Track VMRUNs that have made past consistency checking */
+-		if (svm->nested.nested_run_pending &&
+-		    !svm_is_vmrun_failure(svm->vmcb->control.exit_code))
+-                        ++vcpu->stat.nested_run;
+-
+-		svm->nested.nested_run_pending = 0;
+-	}
+-
+ 	svm->vmcb->control.tlb_ctl = TLB_CONTROL_DO_NOTHING;
+ 
+ 	/*
+@@ -4435,6 +4424,21 @@ static __no_kcsan fastpath_t svm_vcpu_run(struct kvm_vcpu *vcpu, u64 run_flags)
+ 
+ 	svm_complete_interrupts(vcpu);
+ 
++	/*
++	 * svm_complete_interrupts() may update svm->vmcb->control.next_rip,
++	 * which is sync'd by nested_sync_control_from_vmcb02() below.
++	 */
++	if (is_guest_mode(vcpu)) {
++		nested_sync_control_from_vmcb02(svm);
++
++		/* Track VMRUNs that have made past consistency checking */
++		if (svm->nested.nested_run_pending &&
++		    !svm_is_vmrun_failure(svm->vmcb->control.exit_code))
++			++vcpu->stat.nested_run;
++
++		svm->nested.nested_run_pending = 0;
++	}
++
+ 	return svm_exit_handlers_fastpath(vcpu);
+ }
+ 
+
+base-commit: e944fe2c09f405a2e2d147145c9b470084bc4c9a
+-- 
+2.53.0.rc2.204.g2597b5adb4-goog
+
