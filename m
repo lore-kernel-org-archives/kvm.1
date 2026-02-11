@@ -1,158 +1,112 @@
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 85AE8335567;
-	Wed, 11 Feb 2026 12:09:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 96C6B2E414
+	for <kvm@vger.kernel.org>; Wed, 11 Feb 2026 13:12:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770811788; cv=none; b=sHFOJKJuruPicEfl7SO+qAw54Crx8+4PUwEFOhg63EmpwKUzScQosRp8/gYvfmpShI6KNNpiBO/64WHzDGsW/Are5L6IOSS4N0u+UsoSAy1dIcJKeY8wYDgnHSOKmyvoSlEESPKQ7pfdvTP0L+vmUTkhVdO2moOCjehku19hdjw=
+	t=1770815577; cv=none; b=OuZoG71zSpFTfiAHzbJ9rQLhmXMfhmpHNIoX9L0WVfyNUuEYvseLf138Ms2jg2T3BeHbc6BlfsR+v9Al/TmfPfhJzS6tsj43ZaeKB6rNuy5WoYc8j46bY7PXTMV9BQxkRdAsT7njbJEbXHMl/uzC8IW4Boqdw/G+mxjtt/2tIOo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770811788; c=relaxed/simple;
-	bh=v0TD2zjoRX4tHjSu22iCmsQ9xP0Mh5nYjq9eHrCR8Bc=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=bl+esbQlpLrErCezhXcvCM78sNxrFh6cGPC+rofUA6QZxwHhCxfV73VV4q5PsLS6lBE615U3wcCDFEeXfTTx0de2A0PkoTINERu1NYkLciROSXqcDzo90im4ilY5Ks/WCUhZdCjg7NA4FRfvsWxXsj+in0rhH+ryqc6TAdp7Q2k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=NB+AdALD; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=FcV/cYEt; arc=none smtp.client-ip=193.142.43.55
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="NB+AdALD";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="FcV/cYEt"
-Date: Wed, 11 Feb 2026 13:09:44 +0100
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1770811785;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=gyZokm8/opRW9Nz2O+6PyNxHcfInLRhXVENWgckO/wA=;
-	b=NB+AdALD26uv9K3ce4jS4nIx19bddx6pV85gDoIQbeVGghQz6mf6DcJhKd3+32p+ZVtpaN
-	fMfsmWHw+aAbsR+AsxnO3qsfmzQXIBaKL9tROXeHh77dvhcAStWLOqyLZQVyVBJRtZzh9L
-	Dzx1OqqCwhK4+6htFUINLhQ+S+GXSYvfLZO9cItAW16JstvVtzPSLpnYekagzAjo3ZADtI
-	4ucWDX8BVUjU65kP2XZA/KelykEss7O7zLREfloNDzGtnnxXX0AfRVfdLMo6Y4zirj8BPW
-	kyLDyW0Kl761JX2XgInUDDYHgDtJYryuLiHI5JzMbqgdJxNUIHGWw2rXdc5+zw==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1770811785;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=gyZokm8/opRW9Nz2O+6PyNxHcfInLRhXVENWgckO/wA=;
-	b=FcV/cYEtDuxRdDBrc2m7mQO4l2aOaJmu3DPZDhopbbrGiL/A+lUJWPxrXde159z54mGPQQ
-	6yK8ZShWNEiwJEBA==
-From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-To: "shaikh.kamal" <shaikhkamal2012@gmail.com>
-Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-rt-devel@lists.linux.dev
-Subject: Re: [PATCH] KVM: mmu_notifier: make mn_invalidate_lock non-sleeping
- for non-blocking invalidations
-Message-ID: <20260211120944.-eZhmdo7@linutronix.de>
-References: <20260209161527.31978-1-shaikhkamal2012@gmail.com>
+	s=arc-20240116; t=1770815577; c=relaxed/simple;
+	bh=GwiFwREw0rCSXyWzYPDQPu4tkpjkebTbj9CPdLLG5AM=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=AZ6fdCBAwWPsPRcwhlK75yFlhKoF+cCSZsRVa3YNncH/XsznHDh3rTXZ0lmsUtkMbLMxxyP/wJEt6Qfpm4mD5N1NC2kaTOmJuKbH39g2K2E1TuCmRSl7vUmuI90brMMzpOwgloCx89oryNoVwAz6HoKnYKu1D1QaDFv2Bf+p+ek=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id C2718339;
+	Wed, 11 Feb 2026 05:12:49 -0800 (PST)
+Received: from orionap.fritz.box (usa-sjc-mx-foss1.foss.arm.com [172.31.20.19])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 6CF583F63F;
+	Wed, 11 Feb 2026 05:12:54 -0800 (PST)
+From: Andre Przywara <andre.przywara@arm.com>
+To: Will Deacon <will@kernel.org>,
+	Julien Thierry <julien.thierry.kdev@gmail.com>
+Cc: Marc Zyngier <maz@kernel.org>,
+	Sascha Bischoff <Sascha.Bischoff@arm.com>,
+	kvm@vger.kernel.org,
+	kvmarm@lists.linux.dev,
+	Alexandru Elisei <alexandru.elisei@arm.com>
+Subject: [PATCH kvmtool v6 0/6] arm64: Nested virtualization support
+Date: Wed, 11 Feb 2026 13:12:43 +0000
+Message-ID: <20260211131249.399019-1-andre.przywara@arm.com>
+X-Mailer: git-send-email 2.47.3
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-In-Reply-To: <20260209161527.31978-1-shaikhkamal2012@gmail.com>
+Content-Transfer-Encoding: 8bit
 
-On 2026-02-09 21:45:27 [+0530], shaikh.kamal wrote:
-> mmu_notifier_invalidate_range_start() may be invoked via
-> mmu_notifier_invalidate_range_start_nonblock(), e.g. from oom_reaper(),
-> where sleeping is explicitly forbidden.
->=20
-> KVM's mmu_notifier invalidate_range_start currently takes
-> mn_invalidate_lock using spin_lock(). On PREEMPT_RT, spin_lock() maps
-> to rt_mutex and may sleep, triggering:
->=20
->   BUG: sleeping function called from invalid context
->=20
-> This violates the MMU notifier contract regardless of PREEMPT_RT; RT
-> kernels merely make the issue deterministic.
->=20
-> Fix by converting mn_invalidate_lock to a raw spinlock so that
-> invalidate_range_start() remains non-sleeping while preserving the
-> existing serialization between invalidate_range_start() and
-> invalidate_range_end().
->=20
-> Signed-off-by: shaikh.kamal <shaikhkamal2012@gmail.com>
+This is v6 of the nested virt support series, fixing an endianess bug
+in the maintenance IRQ DT code, and rebasing.
+Changelog below.
+========================================================
 
-Reviewed-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+Thanks to the imperturbable efforts from Marc, arm64 support for nested
+virtualization has now reached the mainline kernel, which means the
+respective kvmtool support should now be ready as well.
 
-I don't see any down side doing this, but=E2=80=A6
+Patch 1 introduces the new "--nested" command line option, to let the
+VCPUs start in EL2. To allow KVM guests running in such a guest, we also
+need VGIC support, which patch 2 allows by setting the maintenance IRQ.
+Patch 3 to 6 are picked from Marc's repo, and allow to set the arch
+timer offset, enable non-VHE guests (at the cost of losing recursive
+nested virtualisation), and also advertise the virtual EL2 timer IRQ.
 
-> diff --git a/virt/kvm/kvm_main.c b/virt/kvm/kvm_main.c
-> index 5fcd401a5897..7a9c33f01a37 100644
-> --- a/virt/kvm/kvm_main.c
-> +++ b/virt/kvm/kvm_main.c
-> @@ -747,9 +747,9 @@ static int kvm_mmu_notifier_invalidate_range_start(st=
-ruct mmu_notifier *mn,
->  	 *
->  	 * Pairs with the decrement in range_end().
->  	 */
-> -	spin_lock(&kvm->mn_invalidate_lock);
-> +	raw_spin_lock(&kvm->mn_invalidate_lock);
->  	kvm->mn_active_invalidate_count++;
-> -	spin_unlock(&kvm->mn_invalidate_lock);
-> +	raw_spin_unlock(&kvm->mn_invalidate_lock);
+Tested on the FVP (with some good deal of patience) and QEMU.
 
-	atomic_inc(mn_active_invalidate_count)
-> =20
->  	/*
->  	 * Invalidate pfn caches _before_ invalidating the secondary MMUs, i.e.
-> @@ -817,11 +817,11 @@ static void kvm_mmu_notifier_invalidate_range_end(s=
-truct mmu_notifier *mn,
->  	kvm_handle_hva_range(kvm, &hva_range);
-> =20
->  	/* Pairs with the increment in range_start(). */
-> -	spin_lock(&kvm->mn_invalidate_lock);
-> +	raw_spin_lock(&kvm->mn_invalidate_lock);
->  	if (!WARN_ON_ONCE(!kvm->mn_active_invalidate_count))
->  		--kvm->mn_active_invalidate_count;
->  	wake =3D !kvm->mn_active_invalidate_count;
+Cheers,
+Andre
 
-	wake =3D atomic_dec_return_safe(mn_active_invalidate_count);
-	WARN_ON_ONCE(wake < 0);
-	wake =3D !wake;
+Changelog v5 ... v6:
+- rebase / drop header update patch (already merged)
+- fix endianness bug in DT maintenance IRQ description
 
-> -	spin_unlock(&kvm->mn_invalidate_lock);
-> +	raw_spin_unlock(&kvm->mn_invalidate_lock);
-> =20
->  	/*
->  	 * There can only be one waiter, since the wait happens under
-> @@ -1129,7 +1129,7 @@ static struct kvm *kvm_create_vm(unsigned long type=
-, const char *fdname)
-> @@ -1635,17 +1635,17 @@ static void kvm_swap_active_memslots(struct kvm *=
-kvm, int as_id)
->  	 * progress, otherwise the locking in invalidate_range_start and
->  	 * invalidate_range_end will be unbalanced.
->  	 */
-> -	spin_lock(&kvm->mn_invalidate_lock);
-> +	raw_spin_lock(&kvm->mn_invalidate_lock);
->  	prepare_to_rcuwait(&kvm->mn_memslots_update_rcuwait);
->  	while (kvm->mn_active_invalidate_count) {
->  		set_current_state(TASK_UNINTERRUPTIBLE);
-> -		spin_unlock(&kvm->mn_invalidate_lock);
-> +		raw_spin_unlock(&kvm->mn_invalidate_lock);
->  		schedule();
+Changelog v4 ... v5:
+- bump kernel headers to v6.19-rc6
+- print a warning if --e2h0 is given without --nested
+- fail if the maintenance IRQ setting attribute is not supported
+- add tags
 
-And this I don't understand. The lock protects the rcuwait assignment
-which would be needed if multiple waiters are possible. But this goes
-away after the unlock and schedule() here. So these things could be
-moved outside of the locked section which limits it only to the
-mn_active_invalidate_count value.
+Changelog v3 ... v4:
+- pass kvm pointer to gic__generate_fdt_nodes()
+- use macros for PPI offset and DT type identifier
+- properly calculate DT interrupt flags value
+- add patch 7 to fix virtio endianess issues
+- CAPITALISE verbs in commit message
 
-> -		spin_lock(&kvm->mn_invalidate_lock);
-> +		raw_spin_lock(&kvm->mn_invalidate_lock);
->  	}
->  	finish_rcuwait(&kvm->mn_memslots_update_rcuwait);
->  	rcu_assign_pointer(kvm->memslots[as_id], slots);
-> -	spin_unlock(&kvm->mn_invalidate_lock);
-> +	raw_spin_unlock(&kvm->mn_invalidate_lock);
-> =20
->  	/*
->  	 * Acquired in kvm_set_memslot. Must be released before synchronize
+Changelog v2 ... v3:
+- adjust^Wreplace commit messages for E2H0 and counter-offset patch
+- check for KVM_CAP_ARM_EL2_E2H0 when --e2h0 is requested
+- update kernel headers to v6.16 release
 
-Sebastian
+Changelog v1 ... 2:
+- add three patches from Marc:
+  - add --e2h0 command line option
+  - add --counter-offset command line option
+  - advertise all five arch timer interrupts in DT
+
+Andre Przywara (2):
+  arm64: Initial nested virt support
+  arm64: nested: Add support for setting maintenance IRQ
+
+Marc Zyngier (4):
+  arm64: Add counter offset control
+  arm64: Add FEAT_E2H0 support
+  arm64: Generate HYP timer interrupt specifiers
+  arm64: Handle virtio endianness reset when running nested
+
+ arm64/arm-cpu.c                     |  6 +--
+ arm64/fdt.c                         |  5 ++-
+ arm64/gic.c                         | 29 ++++++++++++-
+ arm64/include/kvm/gic.h             |  2 +-
+ arm64/include/kvm/kvm-config-arch.h | 11 ++++-
+ arm64/include/kvm/kvm-cpu-arch.h    |  5 ++-
+ arm64/include/kvm/timer.h           |  2 +-
+ arm64/kvm-cpu.c                     | 64 ++++++++++++++++++++++++-----
+ arm64/kvm.c                         | 20 +++++++++
+ arm64/timer.c                       | 29 ++++++-------
+ 10 files changed, 133 insertions(+), 40 deletions(-)
+
+-- 
+2.47.3
