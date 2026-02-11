@@ -1,62 +1,59 @@
 Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 62745280CD5;
-	Wed, 11 Feb 2026 15:00:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B5DC284671
+	for <kvm@vger.kernel.org>; Wed, 11 Feb 2026 15:00:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770822014; cv=none; b=jLU93bZRmKSaHrRMLLb2R92CEoDPsD63ktMayCBSPFxoG/hhHLMspnX4HQRRddpIUuqkMJZXCeTEtfF/SH/JxXm5u6cue+Dt0MeKEQY+5Z295q0uH+ZQ5UyLsdl/K4F5kLliyETvZh0cz/+iEI0m9zx709zd6qW/o3KdqkT83uQ=
+	t=1770822014; cv=none; b=YsWsDzM3pG/k83I/4/4RZPATw2A01CbcXJ7/fZJKpZ0+P7IbeptmI/VWj18FWhotoDrZFyn8qjwxcJxT2BvSDGby67nu1tNNHZztWbMzllgFoTiRWgmpXFLyJF0HCUUfsI5DZS9jHqTzxKwbIl04usF6ieE14ZqD17dFcySLIF4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1770822014; c=relaxed/simple;
-	bh=YcvNaSUlHBkGQne0v8ktVxukyOwK0b0ScwezgaS9BZs=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=stU/WZPZ5B5TMnSj73W8QBoroAk7zIc9lgjIvaCrZngR8Uqg9vsxJr5anruCBdns7B60QeUsPaxLlZhVPwARofonS9Xf4bIUYrujHSG4GboNrYvZzJ8bOf1E5P/L9NwZA7QZM1FyZSEfi93rfmNm449eYLVpGhw5E5ttcEbbjOs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=HXOc6u8Q; arc=none smtp.client-ip=148.163.156.1
+	bh=Ky/QR7Ee2qcdEpwlXBwQPNIrYBMs/dVfoUHE4HvpvoE=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=neRaXFqBmWlptSXextAWm0oPqWuoIde2BSQnSMQW33VGPuta1g9JtDjWhi85tp99haLlY3ovc9tq4Fip9lv8MHmdZIswN+qD60KiHvRlCifaJIF6j76kYRJBZoviBFZYQjhJnAEXrUgzQ2tq1wP1e4+wsExQ/4mQj7T9mT+nrqM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=eV1cGgqN; arc=none smtp.client-ip=148.163.156.1
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="HXOc6u8Q"
-Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 61AMF5Ga225970;
-	Wed, 11 Feb 2026 15:00:11 GMT
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="eV1cGgqN"
+Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 61ANIh6G476964;
+	Wed, 11 Feb 2026 15:00:02 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=AyrE2w
-	M7n70s5a2CVjgJeVZS2Y7v1AEYWcdgbBJVC14=; b=HXOc6u8Q62LAOu6hNlubM3
-	7isCRUC2rh8/Ct3BhnklyNFCRT6aJeRjEBXbn+nnHm8+C5ZHHlje+GchwqvYnUK5
-	SFI5vRYOgqB9nlwHGuP5Gg5z1T3JmJcpKhsbcYzajT58eTGHt3caU/eCDPBfKZDO
-	iFob9DhkgTRspFwhVWkjmW8rWCd/USefw/VN2Y7NRoSG1p8C8YBGxgANhJ7uIg7Z
-	gnA28nHk5rcB6pdFaZuA4fCNRgI/iYTWxnV/zhSYas+y7LqA7zYOS5SPQHKd/AZa
-	E1IQIz32ZUNbbSEf8CsAdmxm8VQ3NWofD6dJjLq/anP1z77BdLHIhEX7PjVGpKPg
-	==
-Received: from ppma12.dal12v.mail.ibm.com (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4c696uhnvd-1
+	:content-transfer-encoding:content-type:date:from:message-id
+	:mime-version:subject:to; s=pp1; bh=1E/8+1W7H70K7J9Mqe0CVRJpjLfG
+	o7JmfRAPwbRx4I0=; b=eV1cGgqN9zbmU2JQuNhsmWPZ2zvnBvM2CoAgNUANRT8i
+	ZsITfsIrOU8vhnjJU2MCwZWhilXsif3JA1QZ+rumFK7e1OgDCGz4I0ngDjYrTl8J
+	Zc+pCZiEiKnEybqL73p29wv9U4O+oW9+gcm4zT+qU9Xnhij0gcacjDTWtTkU2ihc
+	psh1ZMY20zX6Hvzj/2fymSvV+snPF0jjs4QVoOavyY1jTqb1f/H3pFZy8gowyg1t
+	gYbcu/712D859e93f60htHZECZcW3lGIsEiCbpM9k4YR+Vs1UbNjqcwCACyc8QCz
+	k14MWhg1Q+9ct1cTs0MZM6s9UgVvPGT8vv8Ok6OLag==
+Received: from ppma11.dal12v.mail.ibm.com (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4c696w9pxv-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 11 Feb 2026 15:00:11 +0000 (GMT)
-Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma12.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 61BDdhhl002557;
-	Wed, 11 Feb 2026 15:00:10 GMT
-Received: from smtprelay02.fra02v.mail.ibm.com ([9.218.2.226])
-	by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 4c6fqspdp7-1
+	Wed, 11 Feb 2026 15:00:02 +0000 (GMT)
+Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma11.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 61BAchph001825;
+	Wed, 11 Feb 2026 15:00:01 GMT
+Received: from smtprelay01.fra02v.mail.ibm.com ([9.218.2.227])
+	by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 4c6je25x9d-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 11 Feb 2026 15:00:10 +0000
-Received: from smtpav05.fra02v.mail.ibm.com (smtpav05.fra02v.mail.ibm.com [10.20.54.104])
-	by smtprelay02.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 61BF06tY50725272
+	Wed, 11 Feb 2026 15:00:01 +0000
+Received: from smtpav01.fra02v.mail.ibm.com (smtpav01.fra02v.mail.ibm.com [10.20.54.100])
+	by smtprelay01.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 61BExvxW54329794
 	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Wed, 11 Feb 2026 15:00:06 GMT
-Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 0FC832004B;
-	Wed, 11 Feb 2026 15:00:06 +0000 (GMT)
-Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id A913720040;
-	Wed, 11 Feb 2026 15:00:05 +0000 (GMT)
+	Wed, 11 Feb 2026 14:59:57 GMT
+Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 7211C20040;
+	Wed, 11 Feb 2026 14:59:57 +0000 (GMT)
+Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id C104620043;
+	Wed, 11 Feb 2026 14:59:56 +0000 (GMT)
 Received: from [192.168.88.251] (unknown [9.111.49.16])
-	by smtpav05.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Wed, 11 Feb 2026 15:00:05 +0000 (GMT)
+	by smtpav01.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Wed, 11 Feb 2026 14:59:56 +0000 (GMT)
 From: Christoph Schlameuss <schlameuss@linux.ibm.com>
-Date: Wed, 11 Feb 2026 15:57:07 +0100
-Subject: [kvm-unit-tests PATCH 3/3] s390x: Add test for STFLE interpretive
- execution (format-2)
+Date: Wed, 11 Feb 2026 15:56:53 +0100
+Subject: [PATCH] s390x/kvm: Add ASTFLE facility 2 for nested virtualization
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -65,237 +62,240 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260211-vsie-stfle-fac-v1-3-46c7aec5912b@linux.ibm.com>
-References: <20260211-vsie-stfle-fac-v1-0-46c7aec5912b@linux.ibm.com>
-In-Reply-To: <20260211-vsie-stfle-fac-v1-0-46c7aec5912b@linux.ibm.com>
-To: linux-s390@vger.kernel.org
-Cc: Janosch Frank <frankja@linux.ibm.com>,
-        Claudio Imbrenda <imbrenda@linux.ibm.com>,
-        =?utf-8?q?Nico_B=C3=B6hr?= <nrb@linux.ibm.com>,
-        David Hildenbrand <david@redhat.com>, Thomas Huth <thuth@redhat.com>,
-        Nina Schoetterl-Glausch <nsg@linux.ibm.com>, kvm@vger.kernel.org,
-        Christoph Schlameuss <schlameuss@linux.ibm.com>
+Message-Id: <20260211-astfleie2-v1-1-cfa11f422fd8@linux.ibm.com>
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
+ vPSU3UzU4B8JSMDIzMDIwNL3cTikrSc1MxUI10L09TUZMu0FEsjQ2MloPqCotS0zAqwWdGxtbU
+ As4OrYVsAAAA=
+X-Change-ID: 20260209-astfleie2-85eec9fd9213
+To: qemu-devel@nongnu.org
+Cc: Christoph Schlameuss <schlameuss@linux.ibm.com>,
+        Halil Pasic <pasic@linux.ibm.com>,
+        Christian Borntraeger <borntraeger@linux.ibm.com>,
+        Eric Farman <farman@linux.ibm.com>,
+        Matthew Rosato <mjrosato@linux.ibm.com>,
+        Richard Henderson <richard.henderson@linaro.org>,
+        Ilya Leoshkevich <iii@linux.ibm.com>,
+        David Hildenbrand <david@kernel.org>, Thomas Huth <thuth@redhat.com>,
+        "Michael S. Tsirkin" <mst@redhat.com>,
+        Cornelia Huck <cohuck@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
+        Hendrik Brueckner <brueckner@linux.ibm.com>,
+        Nina Schoetterl-Glausch <nsg@linux.ibm.com>, qemu-s390x@nongnu.org,
+        kvm@vger.kernel.org
 X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=6004;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=7621;
  i=schlameuss@linux.ibm.com; h=from:subject:message-id;
- bh=5yUzwT3iFxTedeamVdiFlTNO10wcG28UZ+ikrcuth5Q=;
- b=owGbwMvMwCUmoqVx+bqN+mXG02pJDJk9M0uO3r7ypUnsuqJ+VLEKL4/fef/fzTzxd6SFv8sHz
- 5bYXcHRUcrCIMbFICumyFItbp1X1de6dM5By2swc1iZQIYwcHEKwES4NBgZZnTy2Ir84upOnx18
- Y9mvcwmts0/rhV/us6+5d1sie81zI4Z/Ovm8V2YYLKo+2lI+9Wp2Y5PIWanYoz/1Ghj3u5xeeMC
- EFQA=
+ bh=Ky/QR7Ee2qcdEpwlXBwQPNIrYBMs/dVfoUHE4HvpvoE=;
+ b=owGbwMvMwCUmoqVx+bqN+mXG02pJDJk9M3O2zrJo3JHxnfWNmEBrTpfRf0nTR97f7HbN5DS0W
+ RNxx+9MRykLgxgXg6yYIku1uHVeVV/r0jkHLa/BzGFlAhnCwMUpABPpPMDIMFtZvjvjxOIP/3ds
+ ZC47YdBp+0vvpkd2qORVVla7tQu+vGT4H+rLUpDjl9Pcy3XWefkBR7/jRyx/mT3iqZ2lt6xusq4
+ QIwA=
 X-Developer-Key: i=schlameuss@linux.ibm.com; a=openpgp;
  fpr=0E34A68642574B2253AF4D31EEED6AB388551EC3
 X-TM-AS-GCONF: 00
-X-Authority-Analysis: v=2.4 cv=YZiwJgRf c=1 sm=1 tr=0 ts=698c997b cx=c_pps
- a=bLidbwmWQ0KltjZqbj+ezA==:117 a=bLidbwmWQ0KltjZqbj+ezA==:17
+X-Authority-Analysis: v=2.4 cv=YeCwJgRf c=1 sm=1 tr=0 ts=698c9972 cx=c_pps
+ a=aDMHemPKRhS1OARIsFnwRA==:117 a=aDMHemPKRhS1OARIsFnwRA==:17
  a=IkcTkHD0fZMA:10 a=HzLeVaNsDn8A:10 a=VkNPw1HP01LnGYTKEx00:22
  a=Mpw57Om8IfrbqaoTuvik:22 a=GgsMoib0sEa3-_RKJdDe:22 a=VnNF1IyMAAAA:8
- a=g3eoNvHwOKj1BpS12hIA:9 a=QEXdDO2ut3YA:10
-X-Proofpoint-ORIG-GUID: 99XMuVT115RbfZ0ssvdiLu0bEatS6nAj
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMjExMDExNCBTYWx0ZWRfX8r0N5QJLTImb
- b+rhet/lZe+blEY6t//3g1RK09zdsBK3bCxS9nTnKA1WPdaDOvR4815Ic8kmtt/vrelTPFRn+Y5
- cQ7Rp6TRbZowQESahL5XWvFrfROwLivLGYcioUkJ+QslZbVzT96w1nXc51Sp10QXgYv54iXjHrZ
- TiFUJvzrgFhUOW2Z0eRjC5Ghxd5eRR8dTfgHG81n2Ty2n5zKProynkvNkXg3sIWa/ZMD+Xv6bxm
- v5B2gInsS7xv1qZpM8pNb/We6QDx9+OCYuKFSDa+8Guls00tKeGQdIoR2+xlzoJGcTku1LpOVrA
- dRQ3Nog+9nvZqk6fVMdmuMM6JoMrJpEic92NoutAO0uimcJXSa2QXEpOXy1AJwswxiQpcmkqIcL
- GmaCllCO610sjn0mOkpu6PJpEBKTQ2kzQM0Tt/jAlJJXBozc2b+I51TmDY0It/zPO8LOm/CysIv
- lgFjTiXPPy0RVMkc3jg==
-X-Proofpoint-GUID: 99XMuVT115RbfZ0ssvdiLu0bEatS6nAj
+ a=69wJf7TsAAAA:8 a=KKAkSRfTAAAA:8 a=VwQbUJbxAAAA:8 a=20KFwNOVAAAA:8
+ a=xYfkBP9_HwNt4o6cGg8A:9 a=QEXdDO2ut3YA:10 a=Fg1AiH1G6rFz08G2ETeA:22
+ a=cvBusfyB2V15izCimMoJ:22
+X-Proofpoint-GUID: 33VE1glq5xrbvX-Io067Rl_oCfnS5C-7
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMjExMDExNCBTYWx0ZWRfX40LR3Ypd8XUn
+ h7hYNBVy3BeAFKLsaaaoNWAz/J8k8/AK5ve9pTYUAnimgsSj6dizUWPEImM8HzjBwtthg16d8fM
+ wUiyGEAXgp70tJ/m7ybYHFY3eTAOs4CU9abAONURqErtAdPBYd2gYrrdQ/FqAqTeSuAu4NHjbed
+ 4HyRLyT6D12j3IAlE10SHDxA9wkeGYQ0rpMy7oeQsJqQvynwTjIiR+1+ZllEompsVweNprBBvb9
+ e6f5vzyeOcuqUrvrRuChK6re7rIiX4PjDYTJAehoVSxWSjTDUkObewmedwS7/k6eR3smpNZEO7u
+ 3KW6j6pI06RpzjFaUs1QLRFZfwyJjX16txfnFvDQFxmJpBk2zsPRe60VLiTSKMVg+aVwtJ33//b
+ TKLmmaD0FPMFM1CHAXdLZ0j68TuZf5Xzq7qnthpTnMt6i1eKBQfeQL+RQeF+vuol6jamFDYkJWU
+ 3WUSjQBroovzOnKAe7w==
+X-Proofpoint-ORIG-GUID: 33VE1glq5xrbvX-Io067Rl_oCfnS5C-7
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.51,FMLib:17.12.100.49
  definitions=2026-02-11_01,2026-02-11_04,2025-10-01_01
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501 spamscore=0 impostorscore=0 suspectscore=0 malwarescore=0
- phishscore=0 bulkscore=0 adultscore=0 clxscore=1011 lowpriorityscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2601150000 definitions=main-2602110114
+ suspectscore=0 adultscore=0 bulkscore=0 malwarescore=0 phishscore=0
+ priorityscore=1501 lowpriorityscore=0 clxscore=1011 impostorscore=0
+ spamscore=0 classifier=typeunknown authscore=0 authtc= authcc= route=outbound
+ adjust=0 reason=mlx scancount=1 engine=8.22.0-2601150000
+ definitions=main-2602110114
 
-From: Nina Schoetterl-Glausch <nsg@linux.ibm.com>
+Allow propagation of the ASTFLEIE2 feature bit.
 
-The STFLE instruction indicates installed facilities.
-SIE has facilities for the interpretive execution of STFLE.
-There are multiple possible formats for the control block.
-Use a snippet guest executing STFLE to get the result of
-interpretive execution and check the result.
-With the addition of the format-2 control block invalid format
-specifiers are now possible.
-Test for the occurrence of optional validity intercepts.
+If the host does have the ASTFLE Interpretive Execution Facility 2 the
+guest can enable the ASTFLE format 2 for its guests.
 
-Signed-off-by: Nina Schoetterl-Glausch <nsg@linux.ibm.com>
-Co-developed-by: Christoph Schlameuss <schlameuss@linux.ibm.com>
 Signed-off-by: Christoph Schlameuss <schlameuss@linux.ibm.com>
 ---
- lib/s390x/sie.c   | 11 +++++++
- lib/s390x/sie.h   |  1 +
- s390x/stfle-sie.c | 91 ++++++++++++++++++++++++++++++++++++++++++++++++-------
- 3 files changed, 92 insertions(+), 11 deletions(-)
+Cc: qemu-devel@nongnu.org
+Cc: Halil Pasic <pasic@linux.ibm.com>
+Cc: Christian Borntraeger <borntraeger@linux.ibm.com>
+Cc: Eric Farman <farman@linux.ibm.com>
+Cc: Matthew Rosato <mjrosato@linux.ibm.com>
+Cc: Richard Henderson <richard.henderson@linaro.org>
+Cc: Ilya Leoshkevich <iii@linux.ibm.com>
+Cc: David Hildenbrand <david@kernel.org>
+Cc: Thomas Huth <thuth@redhat.com>
+Cc: Michael S. Tsirkin <mst@redhat.com>
+Cc: Cornelia Huck <cohuck@redhat.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>
+Cc: Hendrik Brueckner <brueckner@linux.ibm.com>
+Cc: Nina Schoetterl-Glausch <nsg@linux.ibm.com>
+To: qemu-s390x@nongnu.org
+Cc: kvm@vger.kernel.org
+---
 
-diff --git a/lib/s390x/sie.c b/lib/s390x/sie.c
-index 0fa915cf028a1b35a76aa316dfd97308094a4682..17f0ef7eff427002dd6d74d98f58ed493457a7ce 100644
---- a/lib/s390x/sie.c
-+++ b/lib/s390x/sie.c
-@@ -42,6 +42,17 @@ void sie_check_validity(struct vm *vm, uint16_t vir_exp)
- 	report(vir_exp == vir, "VALIDITY: %x", vir);
- }
+@Christian, @Hendrik: Please confirm that we want to add ASTFLEIE2 to
+the Z16 default facilities.
+---
+ hw/s390x/sclp.c                     | 2 ++
+ include/hw/s390x/sclp.h             | 4 +++-
+ linux-headers/asm-s390/kvm.h        | 1 +
+ target/s390x/cpu_features.c         | 3 +++
+ target/s390x/cpu_features.h         | 1 +
+ target/s390x/cpu_features_def.h.inc | 3 +++
+ target/s390x/cpu_models.c           | 2 ++
+ target/s390x/gen-features.c         | 2 ++
+ target/s390x/kvm/kvm.c              | 1 +
+ 9 files changed, 18 insertions(+), 1 deletion(-)
+
+diff --git a/hw/s390x/sclp.c b/hw/s390x/sclp.c
+index b9c3983df195c4130ad91e06d05c43afc6f5d9d2..2d2cde7803ff45f531047944a15308d4077eda3a 100644
+--- a/hw/s390x/sclp.c
++++ b/hw/s390x/sclp.c
+@@ -146,6 +146,8 @@ static void read_SCP_info(SCLPDevice *sclp, SCCB *sccb)
+     if (s390_has_feat(S390_FEAT_EXTENDED_LENGTH_SCCB)) {
+         s390_get_feat_block(S390_FEAT_TYPE_SCLP_FAC134,
+                             &read_info->fac134);
++        s390_get_feat_block(S390_FEAT_TYPE_SCLP_FAC139,
++                            &read_info->fac139);
+     }
  
-+void sie_check_optional_validity(struct vm *vm, uint16_t vir_exp)
-+{
-+	uint16_t vir = sie_get_validity(vm);
-+
-+	if (vir == 0xffff)
-+		report_pass("optional VALIDITY: no");
-+	else
-+		report(vir_exp == vir, "optional VALIDITY: %x", vir);
-+	vm->validity_expected = false;
-+}
-+
- void sie_handle_validity(struct vm *vm)
- {
- 	if (vm->sblk->icptcode != ICPT_VALIDITY)
-diff --git a/lib/s390x/sie.h b/lib/s390x/sie.h
-index 3ec49ed0da6459a70689ce5a1a8a027a4113f2a4..8bea0b10b0a6894096ee83933a8bda11711a1949 100644
---- a/lib/s390x/sie.h
-+++ b/lib/s390x/sie.h
-@@ -51,6 +51,7 @@ void sie(struct vm *vm);
- void sie_expect_validity(struct vm *vm);
- uint16_t sie_get_validity(struct vm *vm);
- void sie_check_validity(struct vm *vm, uint16_t vir_exp);
-+void sie_check_optional_validity(struct vm *vm, uint16_t vir_exp);
- void sie_handle_validity(struct vm *vm);
- 
- static inline bool sie_is_pv(struct vm *vm)
-diff --git a/s390x/stfle-sie.c b/s390x/stfle-sie.c
-index 21cf8ff8b6f6e9d61ee304c5748c36f718da65ab..5b642d9e8c3d775e078c1f09b87ad6822cd28a32 100644
---- a/s390x/stfle-sie.c
-+++ b/s390x/stfle-sie.c
-@@ -42,6 +42,7 @@ static struct guest_stfle_res run_guest(void)
- 	uint64_t guest_stfle_addr;
- 	uint64_t reg;
- 
-+	reset_guest(&vm);
- 	sie(&vm);
- 	assert(snippet_is_force_exit_value(&vm));
- 	guest_stfle_addr = snippet_get_force_exit_value(&vm);
-@@ -55,18 +56,73 @@ static struct guest_stfle_res run_guest(void)
- static void test_stfle_format_0(void)
- {
- 	struct guest_stfle_res res;
-+	int format_mask;
- 
- 	report_prefix_push("format-0");
--	for (int j = 0; j < stfle_size(); j++)
--		WRITE_ONCE((*fac)[j], prng64(&prng_s));
--	vm.sblk->fac = (uint32_t)(uint64_t)fac;
--	res = run_guest();
--	report(res.len == stfle_size(), "stfle len correct");
--	report(!memcmp(*fac, res.mem, res.len * sizeof(uint64_t)),
--	       "Guest facility list as specified");
-+	/*
-+	 * There are multiple valid two bit format control values depending on
-+	 * the available facilities.
-+	 * The facility introduced last defines the validity of control bits.
-+	 */
-+	format_mask = sclp_facilities.has_astfleie2 ? 3 : sclp_facilities.has_astfleie1;
-+	for (int i = 0; i < 4; i++) {
-+		if (i & format_mask)
-+			continue;
-+		report_prefix_pushf("format control %d", i);
-+		for (int j = 0; j < stfle_size(); j++)
-+			WRITE_ONCE((*fac)[j], prng64(&prng_s));
-+		vm.sblk->fac = (uint32_t)(uint64_t)fac | i;
-+		res = run_guest();
-+		report(res.len == stfle_size(), "stfle len correct");
-+		report(!memcmp(*fac, res.mem, res.len * sizeof(uint64_t)),
-+		       "Guest facility list as specified");
-+		report_prefix_pop();
-+	}
- 	report_prefix_pop();
- }
- 
-+static void test_stfle_format_2(void)
-+{
-+	const int max_stfle_len = 8;
-+	int guest_max_stfle_len = 0;
-+	struct guest_stfle_res res;
-+	bool saturated = false;
-+
-+	report_prefix_push("format-2");
-+	for (int i = 1; i <= max_stfle_len; i++) {
-+		report_prefix_pushf("max STFLE len %d", i);
-+
-+		WRITE_ONCE((*fac)[0], i - 1);
-+		for (int j = 0; j < i; j++)
-+			WRITE_ONCE((*fac)[j + 1], prng64(&prng_s));
-+		vm.sblk->fac = (uint32_t)(uint64_t)fac | 2;
-+		res = run_guest();
-+		/* len increases up to maximum (machine specific) */
-+		if (res.len < i)
-+			saturated = true;
-+		if (saturated) {
-+			report(res.len == guest_max_stfle_len, "stfle len correct");
-+		} else {
-+			report(res.len == i, "stfle len correct");
-+			guest_max_stfle_len = i;
-+		}
-+		report(!memcmp(&(*fac)[1], res.mem, guest_max_stfle_len * sizeof(uint64_t)),
-+		       "Guest facility list as specified");
-+
-+		report_prefix_pop();
-+	}
-+	report_prefix_pop();
-+}
-+
-+static void test_no_stfle_format(int format)
-+{
-+	reset_guest(&vm);
-+	vm.sblk->fac = (uint32_t)(uint64_t)fac | format;
-+	sie_expect_validity(&vm);
-+	sie(&vm);
-+	sie_check_optional_validity(&vm, 0x1330);
-+}
-+
- struct args {
- 	uint64_t seed;
+     read_info->facilities = cpu_to_be64(SCLP_HAS_CPU_INFO |
+diff --git a/include/hw/s390x/sclp.h b/include/hw/s390x/sclp.h
+index ddc61f1c21480824971888207c4ffbfb381b464b..e1f9b0f6bc10d4b2157da2e5fc8f85f8f755efb3 100644
+--- a/include/hw/s390x/sclp.h
++++ b/include/hw/s390x/sclp.h
+@@ -136,7 +136,9 @@ typedef struct ReadInfo {
+     uint32_t hmfai;
+     uint8_t  _reserved7[134 - 128];     /* 128-133 */
+     uint8_t  fac134;
+-    uint8_t  _reserved8[144 - 135];     /* 135-143 */
++    uint8_t  _reserved8[139 - 135];     /* 135-138 */
++    uint8_t  fac139;
++    uint8_t  _reserved9[144 - 140];     /* 140-143 */
+     struct CPUEntry entries[];
+     /*
+      * When the Extended-Length SCCB (ELS) feature is enabled the
+diff --git a/linux-headers/asm-s390/kvm.h b/linux-headers/asm-s390/kvm.h
+index ab5a6bce590c722452dac5aeb476bd1969d2235b..45a6d0a7406a3f1b71026c49e00ac25a6fc620ef 100644
+--- a/linux-headers/asm-s390/kvm.h
++++ b/linux-headers/asm-s390/kvm.h
+@@ -444,6 +444,7 @@ struct kvm_s390_vm_cpu_machine {
+ #define KVM_S390_VM_CPU_FEAT_PFMFI	11
+ #define KVM_S390_VM_CPU_FEAT_SIGPIF	12
+ #define KVM_S390_VM_CPU_FEAT_KSS	13
++#define KVM_S390_VM_CPU_FEAT_ASTFLEIE2	14
+ struct kvm_s390_vm_cpu_feat {
+ 	__u64 feat[16];
  };
-@@ -119,20 +175,33 @@ static struct args parse_args(int argc, char **argv)
- int main(int argc, char **argv)
- {
- 	struct args args = parse_args(argc, argv);
--	bool run_format_0 = test_facility(7);
+diff --git a/target/s390x/cpu_features.c b/target/s390x/cpu_features.c
+index 4b5be6798ef5460c71aa0f2567ebeb0aeb9551da..896914888aa98938f4e1984cec599c5f823b0d9a 100644
+--- a/target/s390x/cpu_features.c
++++ b/target/s390x/cpu_features.c
+@@ -148,6 +148,9 @@ void s390_fill_feat_block(const S390FeatBitmap features, S390FeatType type,
+     case S390_FEAT_TYPE_SCLP_FAC134:
+         clear_be_bit(s390_feat_def(S390_FEAT_DIAG_318)->bit, data);
+         break;
++    case S390_FEAT_TYPE_SCLP_FAC139:
++        clear_be_bit(s390_feat_def(S390_FEAT_SIE_ASTFLEIE2)->bit, data);
++        break;
+     default:
+         return;
+     }
+diff --git a/target/s390x/cpu_features.h b/target/s390x/cpu_features.h
+index 5635839d032900089515a440bedb0aca6139a41a..52a82da751ec5ac10fc738121ea28a095c08e8c4 100644
+--- a/target/s390x/cpu_features.h
++++ b/target/s390x/cpu_features.h
+@@ -24,6 +24,7 @@ typedef enum {
+     S390_FEAT_TYPE_SCLP_CONF_CHAR,
+     S390_FEAT_TYPE_SCLP_CONF_CHAR_EXT,
+     S390_FEAT_TYPE_SCLP_FAC134,
++    S390_FEAT_TYPE_SCLP_FAC139,
+     S390_FEAT_TYPE_SCLP_CPU,
+     S390_FEAT_TYPE_MISC,
+     S390_FEAT_TYPE_PLO,
+diff --git a/target/s390x/cpu_features_def.h.inc b/target/s390x/cpu_features_def.h.inc
+index c017bffcdc4d6fb14855ceaf1e47a2c58865befd..c1eb9c29c595e758329295b8514b0bb777a073af 100644
+--- a/target/s390x/cpu_features_def.h.inc
++++ b/target/s390x/cpu_features_def.h.inc
+@@ -139,6 +139,9 @@ DEF_FEAT(SIE_IBS, "ibs", SCLP_CONF_CHAR_EXT, 10, "SIE: Interlock-and-broadcast-s
+ /* Features exposed via SCLP SCCB Facilities byte 134 (bit numbers relative to byte-134) */
+ DEF_FEAT(DIAG_318, "diag318", SCLP_FAC134, 0, "Control program name and version codes")
  
- 	if (!sclp_facilities.has_sief2) {
- 		report_skip("SIEF2 facility unavailable");
- 		goto out;
- 	}
--	if (!run_format_0)
-+	if (!test_facility(7)) {
- 		report_skip("STFLE facility not available");
-+		goto out;
-+	}
++/* Features exposed via SCLP SCCB Facilities byte 139 (bit numbers relative to byte-139) */
++DEF_FEAT(SIE_ASTFLEIE2, "astfleie2", SCLP_FAC139, 1, "SIE: alternate STFLE interpretation facility 2")
++
+ /* Features exposed via SCLP CPU info. */
+ DEF_FEAT(SIE_F2, "sief2", SCLP_CPU, 4, "SIE: interception format 2 (Virtual SIE)")
+ DEF_FEAT(SIE_SKEY, "skey", SCLP_CPU, 5, "SIE: Storage-key facility")
+diff --git a/target/s390x/cpu_models.c b/target/s390x/cpu_models.c
+index 954a7a99a9e9b79dfb48639993055a10f8f281d8..128f6643ea235a4ab43834b7044929de885a7fab 100644
+--- a/target/s390x/cpu_models.c
++++ b/target/s390x/cpu_models.c
+@@ -263,6 +263,7 @@ bool s390_has_feat(S390Feat feat)
+         case S390_FEAT_SIE_PFMFI:
+         case S390_FEAT_SIE_IBS:
+         case S390_FEAT_CONFIGURATION_TOPOLOGY:
++        case S390_FEAT_SIE_ASTFLEIE2:
+             return false;
+             break;
+         default:
+@@ -553,6 +554,7 @@ static void check_consistency(const S390CPUModel *model)
+         { S390_FEAT_PLO_QSTG, S390_FEAT_PLO_EXT },
+         { S390_FEAT_PLO_QSTX, S390_FEAT_PLO_EXT },
+         { S390_FEAT_PLO_QSTO, S390_FEAT_PLO_EXT },
++        { S390_FEAT_SIE_ASTFLEIE2, S390_FEAT_STFLE },
+     };
+     int i;
  
- 	report_info("PRNG seed: 0x%lx", args.seed);
- 	prng_s = prng_init(args.seed);
- 	setup_guest();
--	if (run_format_0)
--		test_stfle_format_0();
-+	test_stfle_format_0();
-+
-+	if (!sclp_facilities.has_astfleie1)
-+		test_no_stfle_format(1);
-+
-+	if (!sclp_facilities.has_astfleie2) {
-+		test_no_stfle_format(2);
-+		report_skip("alternate STFLE interpretive-execution facility 2 not available");
-+	} else {
-+		test_stfle_format_2();
-+	}
-+
-+	test_no_stfle_format(3);
-+
- out:
- 	return report_summary();
- }
+diff --git a/target/s390x/gen-features.c b/target/s390x/gen-features.c
+index 8218e6470ec9c8c5eaa3eb7c56f04ee44e8b7ea0..a4013bd2341dd89c742010b4a6d09cfb4ff5e286 100644
+--- a/target/s390x/gen-features.c
++++ b/target/s390x/gen-features.c
+@@ -720,6 +720,7 @@ static uint16_t full_GEN16_GA1[] = {
+     S390_FEAT_PAIE,
+     S390_FEAT_UV_FEAT_AP,
+     S390_FEAT_UV_FEAT_AP_INTR,
++    S390_FEAT_SIE_ASTFLEIE2,
+ };
+ 
+ static uint16_t full_GEN17_GA1[] = {
+@@ -829,6 +830,7 @@ static uint16_t default_GEN16_GA1[] = {
+     S390_FEAT_RDP,
+     S390_FEAT_PAI,
+     S390_FEAT_PAIE,
++    S390_FEAT_SIE_ASTFLEIE2,
+ };
+ 
+ static uint16_t default_GEN17_GA1[] = {
+diff --git a/target/s390x/kvm/kvm.c b/target/s390x/kvm/kvm.c
+index 54d28e37d4dda8e341675e6bbaf5cc74ca80f45f..a4733365db3702ea17719a68cefd6fd85d2c8633 100644
+--- a/target/s390x/kvm/kvm.c
++++ b/target/s390x/kvm/kvm.c
+@@ -2305,6 +2305,7 @@ static int kvm_to_feat[][2] = {
+     { KVM_S390_VM_CPU_FEAT_PFMFI, S390_FEAT_SIE_PFMFI},
+     { KVM_S390_VM_CPU_FEAT_SIGPIF, S390_FEAT_SIE_SIGPIF},
+     { KVM_S390_VM_CPU_FEAT_KSS, S390_FEAT_SIE_KSS},
++    { KVM_S390_VM_CPU_FEAT_ASTFLEIE2, S390_FEAT_SIE_ASTFLEIE2 },
+ };
+ 
+ static int query_cpu_feat(S390FeatBitmap features)
 
+---
+base-commit: 0b91040d23dc8820724a60c811223b777f3bc6b7
+change-id: 20260209-astfleie2-85eec9fd9213
+
+Best regards,
 -- 
-2.53.0
+Christoph Schlameuss <schlameuss@linux.ibm.com>
 
