@@ -1,301 +1,148 @@
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B5DC284671
-	for <kvm@vger.kernel.org>; Wed, 11 Feb 2026 15:00:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4850F4A32;
+	Wed, 11 Feb 2026 15:19:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770822014; cv=none; b=YsWsDzM3pG/k83I/4/4RZPATw2A01CbcXJ7/fZJKpZ0+P7IbeptmI/VWj18FWhotoDrZFyn8qjwxcJxT2BvSDGby67nu1tNNHZztWbMzllgFoTiRWgmpXFLyJF0HCUUfsI5DZS9jHqTzxKwbIl04usF6ieE14ZqD17dFcySLIF4=
+	t=1770823184; cv=none; b=AFOo3/rdb1sqImhNblCGIJ7OKooddJC9vVCmYCf+5ObtZpKdmgjXcI2gHe9Pqp0lDIdccMHIZJrin7wnBbX1OjwRfUuE8NnEbPP8gyKCPusFRL2jft2Y8LHVTUdvl1mi9lci9bFN6YDLYQd6llwlFqdQgvEIA4aOpRvIxoMd3kM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770822014; c=relaxed/simple;
-	bh=Ky/QR7Ee2qcdEpwlXBwQPNIrYBMs/dVfoUHE4HvpvoE=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=neRaXFqBmWlptSXextAWm0oPqWuoIde2BSQnSMQW33VGPuta1g9JtDjWhi85tp99haLlY3ovc9tq4Fip9lv8MHmdZIswN+qD60KiHvRlCifaJIF6j76kYRJBZoviBFZYQjhJnAEXrUgzQ2tq1wP1e4+wsExQ/4mQj7T9mT+nrqM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=eV1cGgqN; arc=none smtp.client-ip=148.163.156.1
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="eV1cGgqN"
-Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 61ANIh6G476964;
-	Wed, 11 Feb 2026 15:00:02 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:message-id
-	:mime-version:subject:to; s=pp1; bh=1E/8+1W7H70K7J9Mqe0CVRJpjLfG
-	o7JmfRAPwbRx4I0=; b=eV1cGgqN9zbmU2JQuNhsmWPZ2zvnBvM2CoAgNUANRT8i
-	ZsITfsIrOU8vhnjJU2MCwZWhilXsif3JA1QZ+rumFK7e1OgDCGz4I0ngDjYrTl8J
-	Zc+pCZiEiKnEybqL73p29wv9U4O+oW9+gcm4zT+qU9Xnhij0gcacjDTWtTkU2ihc
-	psh1ZMY20zX6Hvzj/2fymSvV+snPF0jjs4QVoOavyY1jTqb1f/H3pFZy8gowyg1t
-	gYbcu/712D859e93f60htHZECZcW3lGIsEiCbpM9k4YR+Vs1UbNjqcwCACyc8QCz
-	k14MWhg1Q+9ct1cTs0MZM6s9UgVvPGT8vv8Ok6OLag==
-Received: from ppma11.dal12v.mail.ibm.com (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4c696w9pxv-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 11 Feb 2026 15:00:02 +0000 (GMT)
-Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma11.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 61BAchph001825;
-	Wed, 11 Feb 2026 15:00:01 GMT
-Received: from smtprelay01.fra02v.mail.ibm.com ([9.218.2.227])
-	by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 4c6je25x9d-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 11 Feb 2026 15:00:01 +0000
-Received: from smtpav01.fra02v.mail.ibm.com (smtpav01.fra02v.mail.ibm.com [10.20.54.100])
-	by smtprelay01.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 61BExvxW54329794
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Wed, 11 Feb 2026 14:59:57 GMT
-Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 7211C20040;
-	Wed, 11 Feb 2026 14:59:57 +0000 (GMT)
-Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id C104620043;
-	Wed, 11 Feb 2026 14:59:56 +0000 (GMT)
-Received: from [192.168.88.251] (unknown [9.111.49.16])
-	by smtpav01.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Wed, 11 Feb 2026 14:59:56 +0000 (GMT)
-From: Christoph Schlameuss <schlameuss@linux.ibm.com>
-Date: Wed, 11 Feb 2026 15:56:53 +0100
-Subject: [PATCH] s390x/kvm: Add ASTFLE facility 2 for nested virtualization
+	s=arc-20240116; t=1770823184; c=relaxed/simple;
+	bh=KS1e7CmG0w1tPJUBX/Ojww7iQLgyqXI8VM7PXu/UY2k=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=R7/dpQ1Kla3p0iTRgwIUP9k/+UQeS3E/or3tCo71fCuwAfgdWyT/ZirNrlRF2gRrFqdr0x+6ZUsJXVv6AYVdMj4DxiALR5PsCBCu82o2jpHYDiIhvXnRg1YCO5h2KtUT5n5SZyJnKRSqGFEaplfWBnN5AhoY1PW8bcFuWeM/TFw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 47853339;
+	Wed, 11 Feb 2026 07:19:36 -0800 (PST)
+Received: from [10.1.196.46] (e134344.arm.com [10.1.196.46])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 0706C3F63F;
+	Wed, 11 Feb 2026 07:19:35 -0800 (PST)
+Message-ID: <a212711a-7af1-4daa-86e7-124ae15a9521@arm.com>
+Date: Wed, 11 Feb 2026 15:19:34 +0000
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC PATCH 09/19] x86/resctrl: Add plza_capable in rdt_resource
+ data structure
+To: Babu Moger <babu.moger@amd.com>, corbet@lwn.net, tony.luck@intel.com,
+ reinette.chatre@intel.com, Dave.Martin@arm.com, james.morse@arm.com,
+ tglx@kernel.org, mingo@redhat.com, bp@alien8.de, dave.hansen@linux.intel.com
+Cc: x86@kernel.org, hpa@zytor.com, peterz@infradead.org,
+ juri.lelli@redhat.com, vincent.guittot@linaro.org, dietmar.eggemann@arm.com,
+ rostedt@goodmis.org, bsegall@google.com, mgorman@suse.de,
+ vschneid@redhat.com, akpm@linux-foundation.org,
+ pawan.kumar.gupta@linux.intel.com, pmladek@suse.com,
+ feng.tang@linux.alibaba.com, kees@kernel.org, arnd@arndb.de,
+ fvdl@google.com, lirongqing@baidu.com, bhelgaas@google.com,
+ seanjc@google.com, xin@zytor.com, manali.shukla@amd.com,
+ dapeng1.mi@linux.intel.com, chang.seok.bae@intel.com,
+ mario.limonciello@amd.com, naveen@kernel.org, elena.reshetova@intel.com,
+ thomas.lendacky@amd.com, linux-doc@vger.kernel.org,
+ linux-kernel@vger.kernel.org, kvm@vger.kernel.org, peternewman@google.com,
+ eranian@google.com, gautham.shenoy@amd.com
+References: <cover.1769029977.git.babu.moger@amd.com>
+ <7b7507eac245988473e7b769a559bd193321e046.1769029977.git.babu.moger@amd.com>
+From: Ben Horgan <ben.horgan@arm.com>
+Content-Language: en-US
+In-Reply-To: <7b7507eac245988473e7b769a559bd193321e046.1769029977.git.babu.moger@amd.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260211-astfleie2-v1-1-cfa11f422fd8@linux.ibm.com>
-X-B4-Tracking: v=1; b=H4sIAAAAAAAC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
- vPSU3UzU4B8JSMDIzMDIwNL3cTikrSc1MxUI10L09TUZMu0FEsjQ2MloPqCotS0zAqwWdGxtbU
- As4OrYVsAAAA=
-X-Change-ID: 20260209-astfleie2-85eec9fd9213
-To: qemu-devel@nongnu.org
-Cc: Christoph Schlameuss <schlameuss@linux.ibm.com>,
-        Halil Pasic <pasic@linux.ibm.com>,
-        Christian Borntraeger <borntraeger@linux.ibm.com>,
-        Eric Farman <farman@linux.ibm.com>,
-        Matthew Rosato <mjrosato@linux.ibm.com>,
-        Richard Henderson <richard.henderson@linaro.org>,
-        Ilya Leoshkevich <iii@linux.ibm.com>,
-        David Hildenbrand <david@kernel.org>, Thomas Huth <thuth@redhat.com>,
-        "Michael S. Tsirkin" <mst@redhat.com>,
-        Cornelia Huck <cohuck@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
-        Hendrik Brueckner <brueckner@linux.ibm.com>,
-        Nina Schoetterl-Glausch <nsg@linux.ibm.com>, qemu-s390x@nongnu.org,
-        kvm@vger.kernel.org
-X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=7621;
- i=schlameuss@linux.ibm.com; h=from:subject:message-id;
- bh=Ky/QR7Ee2qcdEpwlXBwQPNIrYBMs/dVfoUHE4HvpvoE=;
- b=owGbwMvMwCUmoqVx+bqN+mXG02pJDJk9M3O2zrJo3JHxnfWNmEBrTpfRf0nTR97f7HbN5DS0W
- RNxx+9MRykLgxgXg6yYIku1uHVeVV/r0jkHLa/BzGFlAhnCwMUpABPpPMDIMFtZvjvjxOIP/3ds
- ZC47YdBp+0vvpkd2qORVVla7tQu+vGT4H+rLUpDjl9Pcy3XWefkBR7/jRyx/mT3iqZ2lt6xusq4
- QIwA=
-X-Developer-Key: i=schlameuss@linux.ibm.com; a=openpgp;
- fpr=0E34A68642574B2253AF4D31EEED6AB388551EC3
-X-TM-AS-GCONF: 00
-X-Authority-Analysis: v=2.4 cv=YeCwJgRf c=1 sm=1 tr=0 ts=698c9972 cx=c_pps
- a=aDMHemPKRhS1OARIsFnwRA==:117 a=aDMHemPKRhS1OARIsFnwRA==:17
- a=IkcTkHD0fZMA:10 a=HzLeVaNsDn8A:10 a=VkNPw1HP01LnGYTKEx00:22
- a=Mpw57Om8IfrbqaoTuvik:22 a=GgsMoib0sEa3-_RKJdDe:22 a=VnNF1IyMAAAA:8
- a=69wJf7TsAAAA:8 a=KKAkSRfTAAAA:8 a=VwQbUJbxAAAA:8 a=20KFwNOVAAAA:8
- a=xYfkBP9_HwNt4o6cGg8A:9 a=QEXdDO2ut3YA:10 a=Fg1AiH1G6rFz08G2ETeA:22
- a=cvBusfyB2V15izCimMoJ:22
-X-Proofpoint-GUID: 33VE1glq5xrbvX-Io067Rl_oCfnS5C-7
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMjExMDExNCBTYWx0ZWRfX40LR3Ypd8XUn
- h7hYNBVy3BeAFKLsaaaoNWAz/J8k8/AK5ve9pTYUAnimgsSj6dizUWPEImM8HzjBwtthg16d8fM
- wUiyGEAXgp70tJ/m7ybYHFY3eTAOs4CU9abAONURqErtAdPBYd2gYrrdQ/FqAqTeSuAu4NHjbed
- 4HyRLyT6D12j3IAlE10SHDxA9wkeGYQ0rpMy7oeQsJqQvynwTjIiR+1+ZllEompsVweNprBBvb9
- e6f5vzyeOcuqUrvrRuChK6re7rIiX4PjDYTJAehoVSxWSjTDUkObewmedwS7/k6eR3smpNZEO7u
- 3KW6j6pI06RpzjFaUs1QLRFZfwyJjX16txfnFvDQFxmJpBk2zsPRe60VLiTSKMVg+aVwtJ33//b
- TKLmmaD0FPMFM1CHAXdLZ0j68TuZf5Xzq7qnthpTnMt6i1eKBQfeQL+RQeF+vuol6jamFDYkJWU
- 3WUSjQBroovzOnKAe7w==
-X-Proofpoint-ORIG-GUID: 33VE1glq5xrbvX-Io067Rl_oCfnS5C-7
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.51,FMLib:17.12.100.49
- definitions=2026-02-11_01,2026-02-11_04,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- suspectscore=0 adultscore=0 bulkscore=0 malwarescore=0 phishscore=0
- priorityscore=1501 lowpriorityscore=0 clxscore=1011 impostorscore=0
- spamscore=0 classifier=typeunknown authscore=0 authtc= authcc= route=outbound
- adjust=0 reason=mlx scancount=1 engine=8.22.0-2601150000
- definitions=main-2602110114
 
-Allow propagation of the ASTFLEIE2 feature bit.
+Hi Babu,
 
-If the host does have the ASTFLE Interpretive Execution Facility 2 the
-guest can enable the ASTFLE format 2 for its guests.
+On 1/21/26 21:12, Babu Moger wrote:
+> Add plza_capable field to the rdt_resource structure to indicate whether
+> Privilege Level Zero Association (PLZA) is supported for that resource
+> type.
+> 
+> Signed-off-by: Babu Moger <babu.moger@amd.com>
+> ---
+>  arch/x86/kernel/cpu/resctrl/core.c     | 6 ++++++
+>  arch/x86/kernel/cpu/resctrl/rdtgroup.c | 5 +++++
+>  include/linux/resctrl.h                | 3 +++
+>  3 files changed, 14 insertions(+)
+> 
+> diff --git a/arch/x86/kernel/cpu/resctrl/core.c b/arch/x86/kernel/cpu/resctrl/core.c
+> index 2de3140dd6d1..e41fe5fa3f30 100644
+> --- a/arch/x86/kernel/cpu/resctrl/core.c
+> +++ b/arch/x86/kernel/cpu/resctrl/core.c
+> @@ -295,6 +295,9 @@ static __init bool __rdt_get_mem_config_amd(struct rdt_resource *r)
+>  
+>  	r->alloc_capable = true;
+>  
+> +	if (rdt_cpu_has(X86_FEATURE_PLZA))
+> +		r->plza_capable = true;
+> +
+>  	return true;
+>  }
+>  
+> @@ -314,6 +317,9 @@ static void rdt_get_cache_alloc_cfg(int idx, struct rdt_resource *r)
+>  	if (boot_cpu_data.x86_vendor == X86_VENDOR_INTEL)
+>  		r->cache.arch_has_sparse_bitmasks = ecx.split.noncont;
+>  	r->alloc_capable = true;
+> +
+> +	if (rdt_cpu_has(X86_FEATURE_PLZA))
+> +		r->plza_capable = true;
+>  }
+>  
+>  static void rdt_get_cdp_config(int level)
+> diff --git a/arch/x86/kernel/cpu/resctrl/rdtgroup.c b/arch/x86/kernel/cpu/resctrl/rdtgroup.c
+> index 885026468440..540e1e719d7f 100644
+> --- a/arch/x86/kernel/cpu/resctrl/rdtgroup.c
+> +++ b/arch/x86/kernel/cpu/resctrl/rdtgroup.c
+> @@ -229,6 +229,11 @@ bool resctrl_arch_get_cdp_enabled(enum resctrl_res_level l)
+>  	return rdt_resources_all[l].cdp_enabled;
+>  }
+>  
+> +bool resctrl_arch_get_plza_capable(enum resctrl_res_level l)
+> +{
+> +	return rdt_resources_all[l].r_resctrl.plza_capable;
+> +}
+> +
+>  void resctrl_arch_reset_all_ctrls(struct rdt_resource *r)
+>  {
+>  	struct rdt_hw_resource *hw_res = resctrl_to_arch_res(r);
+> diff --git a/include/linux/resctrl.h b/include/linux/resctrl.h
+> index 63d74c0dbb8f..ae252a0e6d92 100644
+> --- a/include/linux/resctrl.h
+> +++ b/include/linux/resctrl.h
+> @@ -319,6 +319,7 @@ struct resctrl_mon {
+>   * @name:		Name to use in "schemata" file.
+>   * @schema_fmt:		Which format string and parser is used for this schema.
+>   * @cdp_capable:	Is the CDP feature available on this resource
+> + * @plza_capable:	Is Privilege Level Zero Association capable?
+>   */
+>  struct rdt_resource {
+>  	int			rid;
+> @@ -334,6 +335,7 @@ struct rdt_resource {
+>  	char			*name;
+>  	enum resctrl_schema_fmt	schema_fmt;
+>  	bool			cdp_capable;
+> +	bool			plza_capable;
 
-Signed-off-by: Christoph Schlameuss <schlameuss@linux.ibm.com>
----
-Cc: qemu-devel@nongnu.org
-Cc: Halil Pasic <pasic@linux.ibm.com>
-Cc: Christian Borntraeger <borntraeger@linux.ibm.com>
-Cc: Eric Farman <farman@linux.ibm.com>
-Cc: Matthew Rosato <mjrosato@linux.ibm.com>
-Cc: Richard Henderson <richard.henderson@linaro.org>
-Cc: Ilya Leoshkevich <iii@linux.ibm.com>
-Cc: David Hildenbrand <david@kernel.org>
-Cc: Thomas Huth <thuth@redhat.com>
-Cc: Michael S. Tsirkin <mst@redhat.com>
-Cc: Cornelia Huck <cohuck@redhat.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>
-Cc: Hendrik Brueckner <brueckner@linux.ibm.com>
-Cc: Nina Schoetterl-Glausch <nsg@linux.ibm.com>
-To: qemu-s390x@nongnu.org
-Cc: kvm@vger.kernel.org
----
+Why are you making plza a resource property? Certainly for MPAM we'd
+want this to be global across resources and I see above that you are
+just checking a cpu property rather then anything per resource.
 
-@Christian, @Hendrik: Please confirm that we want to add ASTFLEIE2 to
-the Z16 default facilities.
----
- hw/s390x/sclp.c                     | 2 ++
- include/hw/s390x/sclp.h             | 4 +++-
- linux-headers/asm-s390/kvm.h        | 1 +
- target/s390x/cpu_features.c         | 3 +++
- target/s390x/cpu_features.h         | 1 +
- target/s390x/cpu_features_def.h.inc | 3 +++
- target/s390x/cpu_models.c           | 2 ++
- target/s390x/gen-features.c         | 2 ++
- target/s390x/kvm/kvm.c              | 1 +
- 9 files changed, 18 insertions(+), 1 deletion(-)
+>  };
+>  
+>  /*
+> @@ -481,6 +483,7 @@ static inline u32 resctrl_get_config_index(u32 closid,
+>  
+>  bool resctrl_arch_get_cdp_enabled(enum resctrl_res_level l);
+>  int resctrl_arch_set_cdp_enabled(enum resctrl_res_level l, bool enable);
+> +bool resctrl_arch_get_plza_capable(enum resctrl_res_level l);
+>  
+>  /**
+>   * resctrl_arch_mbm_cntr_assign_enabled() - Check if MBM counter assignment
 
-diff --git a/hw/s390x/sclp.c b/hw/s390x/sclp.c
-index b9c3983df195c4130ad91e06d05c43afc6f5d9d2..2d2cde7803ff45f531047944a15308d4077eda3a 100644
---- a/hw/s390x/sclp.c
-+++ b/hw/s390x/sclp.c
-@@ -146,6 +146,8 @@ static void read_SCP_info(SCLPDevice *sclp, SCCB *sccb)
-     if (s390_has_feat(S390_FEAT_EXTENDED_LENGTH_SCCB)) {
-         s390_get_feat_block(S390_FEAT_TYPE_SCLP_FAC134,
-                             &read_info->fac134);
-+        s390_get_feat_block(S390_FEAT_TYPE_SCLP_FAC139,
-+                            &read_info->fac139);
-     }
- 
-     read_info->facilities = cpu_to_be64(SCLP_HAS_CPU_INFO |
-diff --git a/include/hw/s390x/sclp.h b/include/hw/s390x/sclp.h
-index ddc61f1c21480824971888207c4ffbfb381b464b..e1f9b0f6bc10d4b2157da2e5fc8f85f8f755efb3 100644
---- a/include/hw/s390x/sclp.h
-+++ b/include/hw/s390x/sclp.h
-@@ -136,7 +136,9 @@ typedef struct ReadInfo {
-     uint32_t hmfai;
-     uint8_t  _reserved7[134 - 128];     /* 128-133 */
-     uint8_t  fac134;
--    uint8_t  _reserved8[144 - 135];     /* 135-143 */
-+    uint8_t  _reserved8[139 - 135];     /* 135-138 */
-+    uint8_t  fac139;
-+    uint8_t  _reserved9[144 - 140];     /* 140-143 */
-     struct CPUEntry entries[];
-     /*
-      * When the Extended-Length SCCB (ELS) feature is enabled the
-diff --git a/linux-headers/asm-s390/kvm.h b/linux-headers/asm-s390/kvm.h
-index ab5a6bce590c722452dac5aeb476bd1969d2235b..45a6d0a7406a3f1b71026c49e00ac25a6fc620ef 100644
---- a/linux-headers/asm-s390/kvm.h
-+++ b/linux-headers/asm-s390/kvm.h
-@@ -444,6 +444,7 @@ struct kvm_s390_vm_cpu_machine {
- #define KVM_S390_VM_CPU_FEAT_PFMFI	11
- #define KVM_S390_VM_CPU_FEAT_SIGPIF	12
- #define KVM_S390_VM_CPU_FEAT_KSS	13
-+#define KVM_S390_VM_CPU_FEAT_ASTFLEIE2	14
- struct kvm_s390_vm_cpu_feat {
- 	__u64 feat[16];
- };
-diff --git a/target/s390x/cpu_features.c b/target/s390x/cpu_features.c
-index 4b5be6798ef5460c71aa0f2567ebeb0aeb9551da..896914888aa98938f4e1984cec599c5f823b0d9a 100644
---- a/target/s390x/cpu_features.c
-+++ b/target/s390x/cpu_features.c
-@@ -148,6 +148,9 @@ void s390_fill_feat_block(const S390FeatBitmap features, S390FeatType type,
-     case S390_FEAT_TYPE_SCLP_FAC134:
-         clear_be_bit(s390_feat_def(S390_FEAT_DIAG_318)->bit, data);
-         break;
-+    case S390_FEAT_TYPE_SCLP_FAC139:
-+        clear_be_bit(s390_feat_def(S390_FEAT_SIE_ASTFLEIE2)->bit, data);
-+        break;
-     default:
-         return;
-     }
-diff --git a/target/s390x/cpu_features.h b/target/s390x/cpu_features.h
-index 5635839d032900089515a440bedb0aca6139a41a..52a82da751ec5ac10fc738121ea28a095c08e8c4 100644
---- a/target/s390x/cpu_features.h
-+++ b/target/s390x/cpu_features.h
-@@ -24,6 +24,7 @@ typedef enum {
-     S390_FEAT_TYPE_SCLP_CONF_CHAR,
-     S390_FEAT_TYPE_SCLP_CONF_CHAR_EXT,
-     S390_FEAT_TYPE_SCLP_FAC134,
-+    S390_FEAT_TYPE_SCLP_FAC139,
-     S390_FEAT_TYPE_SCLP_CPU,
-     S390_FEAT_TYPE_MISC,
-     S390_FEAT_TYPE_PLO,
-diff --git a/target/s390x/cpu_features_def.h.inc b/target/s390x/cpu_features_def.h.inc
-index c017bffcdc4d6fb14855ceaf1e47a2c58865befd..c1eb9c29c595e758329295b8514b0bb777a073af 100644
---- a/target/s390x/cpu_features_def.h.inc
-+++ b/target/s390x/cpu_features_def.h.inc
-@@ -139,6 +139,9 @@ DEF_FEAT(SIE_IBS, "ibs", SCLP_CONF_CHAR_EXT, 10, "SIE: Interlock-and-broadcast-s
- /* Features exposed via SCLP SCCB Facilities byte 134 (bit numbers relative to byte-134) */
- DEF_FEAT(DIAG_318, "diag318", SCLP_FAC134, 0, "Control program name and version codes")
- 
-+/* Features exposed via SCLP SCCB Facilities byte 139 (bit numbers relative to byte-139) */
-+DEF_FEAT(SIE_ASTFLEIE2, "astfleie2", SCLP_FAC139, 1, "SIE: alternate STFLE interpretation facility 2")
-+
- /* Features exposed via SCLP CPU info. */
- DEF_FEAT(SIE_F2, "sief2", SCLP_CPU, 4, "SIE: interception format 2 (Virtual SIE)")
- DEF_FEAT(SIE_SKEY, "skey", SCLP_CPU, 5, "SIE: Storage-key facility")
-diff --git a/target/s390x/cpu_models.c b/target/s390x/cpu_models.c
-index 954a7a99a9e9b79dfb48639993055a10f8f281d8..128f6643ea235a4ab43834b7044929de885a7fab 100644
---- a/target/s390x/cpu_models.c
-+++ b/target/s390x/cpu_models.c
-@@ -263,6 +263,7 @@ bool s390_has_feat(S390Feat feat)
-         case S390_FEAT_SIE_PFMFI:
-         case S390_FEAT_SIE_IBS:
-         case S390_FEAT_CONFIGURATION_TOPOLOGY:
-+        case S390_FEAT_SIE_ASTFLEIE2:
-             return false;
-             break;
-         default:
-@@ -553,6 +554,7 @@ static void check_consistency(const S390CPUModel *model)
-         { S390_FEAT_PLO_QSTG, S390_FEAT_PLO_EXT },
-         { S390_FEAT_PLO_QSTX, S390_FEAT_PLO_EXT },
-         { S390_FEAT_PLO_QSTO, S390_FEAT_PLO_EXT },
-+        { S390_FEAT_SIE_ASTFLEIE2, S390_FEAT_STFLE },
-     };
-     int i;
- 
-diff --git a/target/s390x/gen-features.c b/target/s390x/gen-features.c
-index 8218e6470ec9c8c5eaa3eb7c56f04ee44e8b7ea0..a4013bd2341dd89c742010b4a6d09cfb4ff5e286 100644
---- a/target/s390x/gen-features.c
-+++ b/target/s390x/gen-features.c
-@@ -720,6 +720,7 @@ static uint16_t full_GEN16_GA1[] = {
-     S390_FEAT_PAIE,
-     S390_FEAT_UV_FEAT_AP,
-     S390_FEAT_UV_FEAT_AP_INTR,
-+    S390_FEAT_SIE_ASTFLEIE2,
- };
- 
- static uint16_t full_GEN17_GA1[] = {
-@@ -829,6 +830,7 @@ static uint16_t default_GEN16_GA1[] = {
-     S390_FEAT_RDP,
-     S390_FEAT_PAI,
-     S390_FEAT_PAIE,
-+    S390_FEAT_SIE_ASTFLEIE2,
- };
- 
- static uint16_t default_GEN17_GA1[] = {
-diff --git a/target/s390x/kvm/kvm.c b/target/s390x/kvm/kvm.c
-index 54d28e37d4dda8e341675e6bbaf5cc74ca80f45f..a4733365db3702ea17719a68cefd6fd85d2c8633 100644
---- a/target/s390x/kvm/kvm.c
-+++ b/target/s390x/kvm/kvm.c
-@@ -2305,6 +2305,7 @@ static int kvm_to_feat[][2] = {
-     { KVM_S390_VM_CPU_FEAT_PFMFI, S390_FEAT_SIE_PFMFI},
-     { KVM_S390_VM_CPU_FEAT_SIGPIF, S390_FEAT_SIE_SIGPIF},
-     { KVM_S390_VM_CPU_FEAT_KSS, S390_FEAT_SIE_KSS},
-+    { KVM_S390_VM_CPU_FEAT_ASTFLEIE2, S390_FEAT_SIE_ASTFLEIE2 },
- };
- 
- static int query_cpu_feat(S390FeatBitmap features)
 
----
-base-commit: 0b91040d23dc8820724a60c811223b777f3bc6b7
-change-id: 20260209-astfleie2-85eec9fd9213
+Thanks,
 
-Best regards,
--- 
-Christoph Schlameuss <schlameuss@linux.ibm.com>
+Ben
 
