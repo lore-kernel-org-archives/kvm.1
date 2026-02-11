@@ -1,43 +1,39 @@
-Received: from out-184.mta0.migadu.com (out-184.mta0.migadu.com [91.218.175.184])
+Received: from out-170.mta0.migadu.com (out-170.mta0.migadu.com [91.218.175.170])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 172C7344D83
-	for <kvm@vger.kernel.org>; Wed, 11 Feb 2026 16:29:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.184
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B3BE344D8F
+	for <kvm@vger.kernel.org>; Wed, 11 Feb 2026 16:29:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.170
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770827357; cv=none; b=nUxlDia7xKZCQO45XA8uJa3JSs+S5nR8T704D+CQvS9xE2LipL/N0FEXivhImzC3T52pQhzpu9PmrQ/C5QOx4nkWOE8vg8Mu78BRgaMFi/5XIEoDfr50EGO0MUBqI41z8y3uB1rRP8/EoWCCoLXxgZM5fm8Fk43H+mOw2d+zpEQ=
+	t=1770827358; cv=none; b=EWFyv61xqRiBTjQQIFmo9N9rr5Tn/azRvoOArzfkbIFaaeK4B+KfmAZGA9juHldai8s2jrCT6npIxfTZ1NCdFUK+rKEX9gnVUNumIjTG2ilymC2kFwVZoxNMyyJV6DnlNNBCpsBYnWI09hLF/azLaPRAdp0I3EdDsoKLE0uoTqA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770827357; c=relaxed/simple;
-	bh=/sgsLkfbqIClvvV8rFZNiXHMdUoW7U52VNMIRQlnhjw=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VX3n70ecfRxy1Pe1eeQHLcbGMR3HsJv7fTafbnZ1y2a8vuV2R2DyIPQNO7MP+aSyn+zN3D+y+0nuTv7YdRC9iV8CcFgOEJu86ZiZWvux4q4zwi6AcaGpna111qJyVoNUuiiOkiVViPeLwCLRMe8ADQSeIyAKEpns8YM/J1SORYg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=o+xoKSVX; arc=none smtp.client-ip=91.218.175.184
+	s=arc-20240116; t=1770827358; c=relaxed/simple;
+	bh=kVKmHbIUWsWckH1lyhe1p6lwahhwt3/i3vUSaLMphI4=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=pzLEPRNem1G6vmUAt/eQ0FGo2+drpuTLBvaTsTJH8ucnybbzb75q/UoU6zVD4AsSomoFFk5oPaETOPwNFJ0U4Rrys3glveVpdeCApCtK9mRt4FzlZ2nSRSiCGMi1871hkpHaw8teRFXzrKczUObclOY+PghRyQCnipRWjQNhsrA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=mdQcro6/; arc=none smtp.client-ip=91.218.175.170
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="o+xoKSVX"
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="mdQcro6/"
 X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1770827354;
+	t=1770827345;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=1FICbsfpn2yI8rBPMCG8CPTHNhJDyAKHkEnxlfHtJ8g=;
-	b=o+xoKSVXF6Qw/oWMzkhV5+/1XrWWKis6fBHmVQNLdugwO5JEny1kwirFzCFwzaf9x7mCFY
-	ItVF6LAKi6lLZcrmQHToea1Wgo2ej9W8Gliy5JDI3rX6WNjxwmGoDiXsKDQFYBszyYma/X
-	4GAmm2JGhrmmGYxhC3uz9w4k7pUtLqM=
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=x7RwaZyFvU4PSOAh/+ta0Ky6uzgBdS6yDaUtHjWcJeU=;
+	b=mdQcro6/Wsk6o21gcg8ycAtiHWChtOh5QIHljcUKqJFouFLkgzz2Cgvmkh0wMn8gtWXwN4
+	7RjfmjtlKOIAqrk4mIr0pz2cPdCBJ7ZiT/3/kvxjI4uw5UOvf530q04iZmpFHAxsMXSnQk
+	IA9YjRtZxPGUynqlpVcCR8ricmbBjDQ=
 From: Yosry Ahmed <yosry.ahmed@linux.dev>
 To: Sean Christopherson <seanjc@google.com>
 Cc: Paolo Bonzini <pbonzini@redhat.com>,
 	kvm@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	Yosry Ahmed <yosry.ahmed@linux.dev>
-Subject: [PATCH v2 5/5] KVM: selftests: Extend state_test to check next_rip
-Date: Wed, 11 Feb 2026 16:28:42 +0000
-Message-ID: <20260211162842.454151-6-yosry.ahmed@linux.dev>
-In-Reply-To: <20260211162842.454151-1-yosry.ahmed@linux.dev>
-References: <20260211162842.454151-1-yosry.ahmed@linux.dev>
+Subject: [PATCH v2 0/5] KVM: nSVM: Fix save/restore of NextRIP & interrupt shadow
+Date: Wed, 11 Feb 2026 16:28:37 +0000
+Message-ID: <20260211162842.454151-1-yosry.ahmed@linux.dev>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -47,38 +43,45 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Migadu-Flow: FLOW_OUT
 
-Similar to vGIF, extend state_test to make sure that next_rip is saved
-correctly in nested state. GUEST_SYNC() in L2 causes IO emulation by
-KVM, which advances the RIP to the value of next_rip. Hence, if next_rip
-is saved correctly, its value should match the saved RIP value.
+NextRIP and interrupt shadow are both not sync'd correctly to the cached
+vmcb12 after VMRUN of L2. Sync the cached vmcb12 is the payload of
+nested state, these fields are not saved/restored correctly.
 
-Signed-off-by: Yosry Ahmed <yosry.ahmed@linux.dev>
----
- tools/testing/selftests/kvm/x86/state_test.c | 11 +++++++++++
- 1 file changed, 11 insertions(+)
+Sync both fields correctly, and extend state_test to check vGIF (already
+sync'd field) and next_rip. Checking the interrupt shadow would be
+tricky, as GUEST_SYNC() executes several instructions before exiting to
+L0, so the interrupt shadow will be consumed before the test can check
+for it. L2 could execute STI followed directly by in/out, but that would
+not handle transitioning between L2 and L2 correctly (see
+ucall_arch_do_ucall()).
 
-diff --git a/tools/testing/selftests/kvm/x86/state_test.c b/tools/testing/selftests/kvm/x86/state_test.c
-index 57c7546f3d7c..992a52504a4a 100644
---- a/tools/testing/selftests/kvm/x86/state_test.c
-+++ b/tools/testing/selftests/kvm/x86/state_test.c
-@@ -236,6 +236,17 @@ void svm_check_nested_state(int stage, struct kvm_x86_state *state)
- 		if (stage == 6)
- 			TEST_ASSERT_EQ(!!(vmcb->control.int_ctl & V_GIF_MASK), 0);
- 	}
-+
-+	if (kvm_cpu_has(X86_FEATURE_NRIPS)) {
-+		/*
-+		 * GUEST_SYNC() causes IO emulation in KVM, in which case the
-+		 * RIP is advanced before exiting to userspace. Hence, the RIP
-+		 * in the saved state should be the same as nRIP saved by the
-+		 * CPU in the VMCB.
-+		 */
-+		if (stage == 6)
-+			TEST_ASSERT_EQ(vmcb->control.next_rip, state->regs.rip);
-+	}
- }
- 
- void check_nested_state(int stage, struct kvm_x86_state *state)
+I updated patch 1 to be a minimal fix without moving code around, but I
+kept the code movement in patch 3 as it leaves the code in better shape
+until a more significant rework/cleanup is done. It also leaves the
+FIXME in a more appropriate spot. If you feel strongly, feel free to
+drop patch 3, but I'd rather we keep it.
+
+v1 -> v2:
+- Split patch 1 into a minimal fix without code movement for stable, and
+  code movement patch (patch 3) [Sean].
+- Comments and changelog updates [Sean].
+
+v1: https://lore.kernel.org/kvm/20260210005449.3125133-1-yosry.ahmed@linux.dev/
+
+Yosry Ahmed (5):
+  KVM: nSVM: Sync NextRIP to cached vmcb12 after VMRUN of L2
+  KVM: nSVM: Sync interrupt shadow to cached vmcb12 after VMRUN of L2
+  KVM: nSVM: Move sync'ing to vmcb12 cache after completing interrupts
+  KVM: selftests: Extend state_test to check vGIF
+  KVM: selftests: Extend state_test to check next_rip
+
+ arch/x86/kvm/svm/nested.c                    | 11 ++++--
+ arch/x86/kvm/svm/svm.c                       | 26 +++++++++------
+ tools/testing/selftests/kvm/x86/state_test.c | 35 ++++++++++++++++++++
+ 3 files changed, 59 insertions(+), 13 deletions(-)
+
+
+base-commit: e944fe2c09f405a2e2d147145c9b470084bc4c9a
 -- 
 2.53.0.239.g8d8fc8a987-goog
 
