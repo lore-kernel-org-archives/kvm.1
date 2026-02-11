@@ -1,87 +1,99 @@
-Received: from mail-pj1-f73.google.com (mail-pj1-f73.google.com [209.85.216.73])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from out-183.mta0.migadu.com (out-183.mta0.migadu.com [91.218.175.183])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2173433F38C
-	for <kvm@vger.kernel.org>; Wed, 11 Feb 2026 16:28:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.73
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C8C512D781F
+	for <kvm@vger.kernel.org>; Wed, 11 Feb 2026 16:29:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.183
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770827317; cv=none; b=uim57px+tj7hXJDm+M2B5azMGcDGoHEjC01gCJnS0Vuep/p5ltfzS60P6ItLu0rXhBL3oUj6pTPgvkjAa7nHrtAH+cyDR6fA0dB9+0oFVdvrbQ+Shugw2GcGZ37t0rpg4tzdzcDsDbDzIncPKISWdx7DVPQ9EiWKmqoGMOPKvGI=
+	t=1770827351; cv=none; b=ILuC1wyEE7frcGEVbmXXr101YFGw4HD06vPk3sGny8xhveMupVnGr69pOD5Bwzn+cSp74qWuXUGSR2vqms1HIkKIgqt5kP6cSJ/pgQzXeqEv7G9YeM1HlPl1mW18bxyJ9mAx+satdLpNYSsS9LptpLEyEWA8NuNrGgDi8Z9CUjQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770827317; c=relaxed/simple;
-	bh=U+cPEElKThFnDHVfgnxSQE1ymjjnaLfhLZ4SW2NbBv8=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=bMx9K/VxbTDflO9ADJteh3ujJPoOY/DreeKEJTP+UMWJLzWa++NvQxATIMYSh05/PnPRbgL0jzGpR45r9lwR6KdODPZ7yAkzVn2qeKaYm0HNiYQomiGrslnrHl9JGrPTjiuQtcf5hT2OhlN+ccJvdV1zOF0qeEZYckLMqM4992A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=ss09orXp; arc=none smtp.client-ip=209.85.216.73
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+	s=arc-20240116; t=1770827351; c=relaxed/simple;
+	bh=DwNMt9sTxMJvPffKqssdDnCVH7eazxC3nEWkZRv8nHs=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=OC5qHas84Sk8mqhoPcBxRCY7DZu3uE9foGx9DlWXfQewblhts1rnNiMdq9Ami7vR2aHOY3fvpM20G5nJ9pV0r/ID8yOiDLW6cOSYoIn5KErqi2ZrfI/RQw6uXhHUNxxwn7b2bcKS20VXaCU+VM+dh1DDeRyLgCWp7JenzuIq5wE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=Vh9Zeag0; arc=none smtp.client-ip=91.218.175.183
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="ss09orXp"
-Received: by mail-pj1-f73.google.com with SMTP id 98e67ed59e1d1-354be486779so4341577a91.0
-        for <kvm@vger.kernel.org>; Wed, 11 Feb 2026 08:28:35 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1770827315; x=1771432115; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=H5lF3URYjElzfLukro0tcBvHJBsX+iaWEIkLwMGC0+s=;
-        b=ss09orXpKvV8MlCBQyhHE4x8fZBdpwEORTpKuqg01kujc5xlwdyaKUt2s39yZ7eKLR
-         0Ips4mwVn1LTGu0NghXvLB4gom/Z9JTb/eypDO9JYHNSCBWm0fB8it3FENgOlvQKVZZm
-         uQj2uQTKi062xRLQjVlfx7jiuUTFmu0TF72u8akcyImowxapvOVIeurHBjksM7bOHLqN
-         I/7NrWInZGcThzpFnP9Cr0wZen+fBrW2d6Xv4zOvCqulmUqPNMopy7aj0VHDFxT5P3Pv
-         b2CpVHz7RXtunQROLVTngAdHca9RXmlHEmT4ivTQUcx0BrVi3tNKiSmxvkzE1+V5A/ie
-         e0lA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1770827315; x=1771432115;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=H5lF3URYjElzfLukro0tcBvHJBsX+iaWEIkLwMGC0+s=;
-        b=FwY50DltAB6fDxd4UqJHc4KGJgvhEk79Fe6NkqhBvCcvlZLB7p0P4LHe8vmdpK/QZG
-         riR2NEWU0ezz08enHjQVKo6/ExH2o/rE20VSoIl1xysSZ64VOwEKUjEFRfXNBJsVovaV
-         DtbnZR/KH7xY7lXY0XsR9xsL/U+Jwg36RaNsbWOPWXCKQLEAYzaw9b08uPJ1mgurAeDH
-         nDhhC6DQ+Od8LB5aA/sAW0nI610nPOLukQiwC9owdiIoTSKChQD56xkV6731Fwr+SjDi
-         OTlsRZkwbFv0HGAW1XchLdP3jvaSTWDmdRiP/gPXJaJYVmEQwT/CRE4Nu4X1PfcsPts3
-         LuWA==
-X-Forwarded-Encrypted: i=1; AJvYcCVvHpZpUwNj2RL3IuvxnNhfmHFp0RCud7UNRKrKDkfIRW8eP0AAnIem4mwGPw3OL1jyZUk=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxrHNe+e7UbBgqfgH9bY4V4XZZTSLBzGF6UF1660h1/PJDmxwp3
-	85kXECaDPa6M/gKzZ6TZU5YHQRXXcaX7Uetb9itC4PzOa4628mtL8BD6YovlwdYPmxre/mIqV/9
-	Er9yruQ==
-X-Received: from plsr7.prod.google.com ([2002:a17:902:be07:b0:2a0:84dc:a82f])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a20:6a0c:b0:38e:9e55:6df6
- with SMTP id adf61e73a8af0-393acf9cbe5mr18514534637.3.1770827315468; Wed, 11
- Feb 2026 08:28:35 -0800 (PST)
-Date: Wed, 11 Feb 2026 08:28:34 -0800
-In-Reply-To: <20260211161723.GDaYyrk9gZfONLoARz@fat_crate.local>
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="Vh9Zeag0"
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1770827347;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=E0pfwtfuSAR+toNK8R5pgRmHFl05Ro/5VJ5HwjG4DKw=;
+	b=Vh9Zeag0eUvYHlAg65EfEGWdcAaCR6oDF+VhAkKkBOyWWS60RRx8kH//EPOCMjbqJ6/9LR
+	9eSCnEThzVMUH5/WDZn6fXmCAaMvZO1KB+Ib55HVaiFHpmuH2lprjRLh/513lRyjhNULL9
+	P5tt5Q3DaZDtUr8c+qMyunltnDKvTo4=
+From: Yosry Ahmed <yosry.ahmed@linux.dev>
+To: Sean Christopherson <seanjc@google.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>,
+	kvm@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Yosry Ahmed <yosry.ahmed@linux.dev>,
+	stable@vger.kernel.org
+Subject: [PATCH v2 1/5] KVM: nSVM: Sync NextRIP to cached vmcb12 after VMRUN of L2
+Date: Wed, 11 Feb 2026 16:28:38 +0000
+Message-ID: <20260211162842.454151-2-yosry.ahmed@linux.dev>
+In-Reply-To: <20260211162842.454151-1-yosry.ahmed@linux.dev>
+References: <20260211162842.454151-1-yosry.ahmed@linux.dev>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <aYn3_PhRvHPCJTo7@google.com> <20260209153243.GBaYn-G02QE86Fje7g@fat_crate.local>
- <aYoLcPkjJChCQM7E@google.com> <20260209174559.GDaYodVxWsiesiedLJ@fat_crate.local>
- <aYpNzX8KhnQTmzyH@google.com> <20260210200711.GCaYuP74dOknGNV1DT@fat_crate.local>
- <aYvD6IHpEgS0DZBT@google.com> <20260211133226.GCaYyE6u_IMik5DY4m@fat_crate.local>
- <aYymNqGGnan7Ga1D@google.com> <20260211161723.GDaYyrk9gZfONLoARz@fat_crate.local>
-Message-ID: <aYyuMkN56sNZBY9f@google.com>
-Subject: Re: [PATCH] KVM: x86: synthesize TSA CPUID bits via SCATTERED_F()
-From: Sean Christopherson <seanjc@google.com>
-To: Borislav Petkov <bp@alien8.de>
-Cc: "Carlos =?utf-8?B?TMOzcGV6?=" <clopez@suse.de>, Jim Mattson <jmattson@google.com>, kvm@vger.kernel.org, 
-	Paolo Bonzini <pbonzini@redhat.com>, Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, 
-	"maintainer:X86 ARCHITECTURE (32-BIT AND 64-BIT)" <x86@kernel.org>, "H. Peter Anvin" <hpa@zytor.com>, 
-	"open list:X86 ARCHITECTURE (32-BIT AND 64-BIT)" <linux-kernel@vger.kernel.org>, Babu Moger <bmoger@amd.com>
-Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-Migadu-Flow: FLOW_OUT
 
-On Wed, Feb 11, 2026, Borislav Petkov wrote:
-> On Wed, Feb 11, 2026 at 07:54:30AM -0800, Sean Christopherson wrote:
-> > If the kernel tracks both raw CPUID *and* kernel caps, then KVM can use the
-> > table without having to (re)do CPUID when configuring KVM's feature set.  But
-> > KVM would still need to have processing for SYNTHESIZED_F, PASSTHROUGH_F, and F,
-> > to derive the correct state from the raw+kernel tables.
-> 
-> That's what I meant - the macros and the confusion which one to use would go
-> away.
+After VMRUN in guest mode, nested_sync_control_from_vmcb02() syncs
+fields written by the CPU from vmcb02 to the cached vmcb12. This is
+because the cached vmcb12 is used as the authoritative copy of some of
+the controls, and is the payload when saving/restoring nested state.
 
-Again, the macros would go away, but they would simply be replaced by labels in
-a table.  I.e. the "confusion" won't go away, because it can't simply disappear.
-That knowledge must live somewhere.
+NextRIP is also written by the CPU (in some cases) after VMRUN, but is
+not sync'd to the cached vmcb12. As a result, it is corrupted after
+save/restore (replaced by the original value written by L1 on nested
+VMRUN). This could cause problems for both KVM (e.g. when injecting a
+soft IRQ) or L1 (e.g. when using NextRIP to advance RIP after emulating
+an instruction).
+
+Fix this by sync'ing NextRIP to the cache after VMRUN of L2, but only
+after completing interrupts (not in nested_sync_control_from_vmcb02()),
+as KVM may update NextRIP (e.g. when re-injecting a soft IRQ).
+
+Fixes: cc440cdad5b7 ("KVM: nSVM: implement KVM_GET_NESTED_STATE and KVM_SET_NESTED_STATE")
+CC: stable@vger.kernel.org
+Co-developed-by: Sean Christopherson <seanjc@google.com>
+Signed-off-by: Sean Christopherson <seanjc@google.com>
+Signed-off-by: Yosry Ahmed <yosry.ahmed@linux.dev>
+---
+ arch/x86/kvm/svm/svm.c | 10 ++++++++++
+ 1 file changed, 10 insertions(+)
+
+diff --git a/arch/x86/kvm/svm/svm.c b/arch/x86/kvm/svm/svm.c
+index 5f0136dbdde6..1073a32a96fa 100644
+--- a/arch/x86/kvm/svm/svm.c
++++ b/arch/x86/kvm/svm/svm.c
+@@ -4435,6 +4435,16 @@ static __no_kcsan fastpath_t svm_vcpu_run(struct kvm_vcpu *vcpu, u64 run_flags)
+ 
+ 	svm_complete_interrupts(vcpu);
+ 
++	/*
++	 * Update the cache after completing interrupts to get an accurate
++	 * NextRIP, e.g. when re-injecting a soft interrupt.
++	 *
++	 * FIXME: Rework svm_get_nested_state() to not pull data from the
++	 *        cache (except for maybe int_ctl).
++	 */
++	if (is_guest_mode(vcpu))
++		svm->nested.ctl.next_rip = svm->vmcb->control.next_rip;
++
+ 	return svm_exit_handlers_fastpath(vcpu);
+ }
+ 
+-- 
+2.53.0.239.g8d8fc8a987-goog
+
