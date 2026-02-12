@@ -1,48 +1,48 @@
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D2C93624D5;
-	Thu, 12 Feb 2026 14:36:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9AA553644D0;
+	Thu, 12 Feb 2026 14:36:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.8
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770906992; cv=none; b=MbTrkyS+8fxPCRNA2DUoJdeGfUKwV9nxY1QbgiU0X0tKDfs+7Sf+vs/q0RahjEoFR6Quhz07cVD72yHknGC5lYv4Md+/pEWD561BYLs3SnpKhWYZSr3bHGtnY6YNoS+WhkYfC+oCddlLpawyZAKCn4EeuEAl+FUgwLIMdrGlujo=
+	t=1770906994; cv=none; b=chOnacbxRBxAIsAe6a+iyGYdUqPFBD7+ZErxJESar1KK8YBL0QqvudqRoxmuS405rUYvQEHGjd+w5caxWoSxWcQPsvHUqwGk1nTKNb5+ZMNB3aQeJn8QOqKJpJtTLJdxZPpZcws1o5roD1vbYOYnRwRLsWsyX3j3q8U6QpilcvA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770906992; c=relaxed/simple;
-	bh=0m37CRwwZPmV5NCGPuIvXC/LT6TVulJkCF0YFT2LWH0=;
+	s=arc-20240116; t=1770906994; c=relaxed/simple;
+	bh=/dAN6pjPYkAlspD1dSRRcEHHqjm+lR6Zi8ZYkj93Ua8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=u9iM6E/JzPAAk1L5alAJQ82Edq7s8dP+Xa1FUM+0LvXZ3HD5MMtfdP/byAu6IPRA9mvpdR6i9dC3+0OettWB1zKxkdXbYYeJDZfH5lsv2nKtN3T8H6QxrmeoLEn4FSZJtIeCRmP94Uxjfy7KkbUcA55IryKMbMYX1kce5fDC7Kk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Hf6cszlB; arc=none smtp.client-ip=192.198.163.8
+	 MIME-Version; b=tyamiJZcd9ekheyt5GRJrbSd2yYFVH3GsDEpgg7CLrzNLoLNyR0tjWd3jMS7SmxN6kaKo2iI4kPNWiv8SjEXjiXm7yCYSJ5eeg6CdIXhg4iSRoappGnMQkkFujscoh74AXbqMKF2qS+cnmP5YDob08wSqeXg0ZWVDUGVyJgAC28=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=PGOtdkV2; arc=none smtp.client-ip=192.198.163.8
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Hf6cszlB"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="PGOtdkV2"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1770906990; x=1802442990;
+  t=1770906992; x=1802442992;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=0m37CRwwZPmV5NCGPuIvXC/LT6TVulJkCF0YFT2LWH0=;
-  b=Hf6cszlBBxemAZvVtouRSrOstX1+yyelOeKlE2L5FEjcZfRTMu8hCipz
-   RcvvCVNgDTBF6wC3uAIuQ8ZA54W32dxzZmyeo5bkJnpfSwReqMWOhQNjJ
-   u3RTMXTQ+dW9sNyatAqTDR+/XBOEtkUcGOIsHc1ssGmCSlkMYrly2JLlN
-   GOpRiCUK7OAnY+OhYUYavRSv+SIX7XP6OwlqfepVHZh8dUVgRWXOFP+Cp
-   5m2JTfv4JGSOyPOYyOFj6Cm55A2tyAiSZFJkYg9x5e2VWzZgcaxctYutv
-   Kog5/vyJ09xJAl5Bb0Py8ZtkqUnMDamQzBTbavr3TeCwTNwRt9EI6gnCt
-   Q==;
-X-CSE-ConnectionGUID: OD6uRRc/TtGwAHccMKMUeg==
-X-CSE-MsgGUID: zfnJ7yuoTPGc82bp8STvJg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11699"; a="89662906"
+  bh=/dAN6pjPYkAlspD1dSRRcEHHqjm+lR6Zi8ZYkj93Ua8=;
+  b=PGOtdkV29i7xG+Zl2lzJEo9/YWSmA5pJLuW1WNgSImOj5tc5BJfVUCo0
+   /ylJQr7x7DyYh2nWIFneG2WdxtpcXhkMaOWLY0DOrldVCctiLpaug5Rgg
+   oQAY6a72QUjnOZa2PWpDcrwUjl5SVUxX5LNm3kPNGZGvTD1njq2gt9Fk9
+   aackB3s85D9iPGHA+iVOGh7dilhDPJEhvmDI3oQf0jBH6+VUVV1/3DrGt
+   VO23Rv/bRd+dSD38zDBoZGyIxlO4Uwhz0wEuw5t2KwV0MhQYJW/FXn7M2
+   3ZRIrGg8hDE3NVOuKZCYMoLgr/ibxT99EjhuPDbTSTEqP87JJKzcFTOsn
+   g==;
+X-CSE-ConnectionGUID: C4grW9s+TXyY0AuIr+YiTQ==
+X-CSE-MsgGUID: p/YXFP+uT/K/C90OnMucPw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11699"; a="89662924"
 X-IronPort-AV: E=Sophos;i="6.21,286,1763452800"; 
-   d="scan'208";a="89662906"
+   d="scan'208";a="89662924"
 Received: from fmviesa006.fm.intel.com ([10.60.135.146])
-  by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Feb 2026 06:36:29 -0800
-X-CSE-ConnectionGUID: 3B3hCkM0QLCNtccmVjOzNw==
-X-CSE-MsgGUID: 4AGnhojIS16x9ZuiydG5dA==
+  by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Feb 2026 06:36:31 -0800
+X-CSE-ConnectionGUID: VJxnIGBZRBaT+DKh5UJYAw==
+X-CSE-MsgGUID: 9QdBvV5XR6uJ44/RjkvytQ==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.21,286,1763452800"; 
-   d="scan'208";a="211428296"
+   d="scan'208";a="211428308"
 Received: from 984fee019967.jf.intel.com ([10.23.153.244])
-  by fmviesa006-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Feb 2026 06:36:29 -0800
+  by fmviesa006-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Feb 2026 06:36:31 -0800
 From: Chao Gao <chao.gao@intel.com>
 To: linux-coco@lists.linux.dev,
 	linux-kernel@vger.kernel.org,
@@ -65,14 +65,10 @@ Cc: reinette.chatre@intel.com,
 	vishal.l.verma@intel.com,
 	binbin.wu@linux.intel.com,
 	tony.lindgren@linux.intel.com,
-	Chao Gao <chao.gao@intel.com>,
-	Thomas Gleixner <tglx@kernel.org>,
-	Ingo Molnar <mingo@redhat.com>,
-	Borislav Petkov <bp@alien8.de>,
-	"H. Peter Anvin" <hpa@zytor.com>
-Subject: [PATCH v4 20/24] x86/virt/tdx: Enable TDX Module runtime updates
-Date: Thu, 12 Feb 2026 06:35:23 -0800
-Message-ID: <20260212143606.534586-21-chao.gao@intel.com>
+	Chao Gao <chao.gao@intel.com>
+Subject: [PATCH v4 22/24] coco/tdx-host: Document TDX Module update expectations
+Date: Thu, 12 Feb 2026 06:35:25 -0800
+Message-ID: <20260212143606.534586-23-chao.gao@intel.com>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20260212143606.534586-1-chao.gao@intel.com>
 References: <20260212143606.534586-1-chao.gao@intel.com>
@@ -84,57 +80,83 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-All pieces of TDX Module runtime updates are in place. Enable it if it
-is supported.
+The TDX Module update protocol facilitates compatible runtime updates.
+
+Document the compatibility criteria and indicators of various update
+failures, including violations of the compatibility criteria.
 
 Signed-off-by: Chao Gao <chao.gao@intel.com>
-Reviewed-by: Xu Yilun <yilun.xu@linux.intel.com>
-Reviewed-by: Tony Lindgren <tony.lindgren@linux.intel.com>
+Reviewed-by: Dan Williams <dan.j.williams@intel.com>
 ---
-v4:
- - s/BIT/BIT_ULL [Tony]
+v4
+ - Drop "compat_capable" kernel ABI [Dan]
+ - Document Linux compatibility expectations and results of violating
+   them [Dan]
 ---
- arch/x86/include/asm/tdx.h  | 5 ++++-
- arch/x86/virt/vmx/tdx/tdx.h | 3 ---
- 2 files changed, 4 insertions(+), 4 deletions(-)
+ .../ABI/testing/sysfs-devices-faux-tdx-host   | 53 +++++++++++++++++++
+ 1 file changed, 53 insertions(+)
 
-diff --git a/arch/x86/include/asm/tdx.h b/arch/x86/include/asm/tdx.h
-index ffadbf64d0c1..ad62a7be0443 100644
---- a/arch/x86/include/asm/tdx.h
-+++ b/arch/x86/include/asm/tdx.h
-@@ -32,6 +32,9 @@
- #define TDX_SUCCESS		0ULL
- #define TDX_RND_NO_ENTROPY	0x8000020300000000ULL
- 
-+/* Bit definitions of TDX_FEATURES0 metadata field */
-+#define TDX_FEATURES0_TD_PRESERVING	BIT_ULL(1)
-+#define TDX_FEATURES0_NO_RBP_MOD	BIT_ULL(18)
- #ifndef __ASSEMBLER__
- 
- #include <uapi/asm/mce.h>
-@@ -105,7 +108,7 @@ const struct tdx_sys_info *tdx_get_sysinfo(void);
- 
- static inline bool tdx_supports_runtime_update(const struct tdx_sys_info *sysinfo)
- {
--	return false; /* To be enabled when kernel is ready */
-+	return sysinfo->features.tdx_features0 & TDX_FEATURES0_TD_PRESERVING;
- }
- 
- int tdx_guest_keyid_alloc(void);
-diff --git a/arch/x86/virt/vmx/tdx/tdx.h b/arch/x86/virt/vmx/tdx/tdx.h
-index d1807a476d3b..749f4d74cb2c 100644
---- a/arch/x86/virt/vmx/tdx/tdx.h
-+++ b/arch/x86/virt/vmx/tdx/tdx.h
-@@ -88,9 +88,6 @@ struct tdmr_info {
- 	DECLARE_FLEX_ARRAY(struct tdmr_reserved_area, reserved_areas);
- } __packed __aligned(TDMR_INFO_ALIGNMENT);
- 
--/* Bit definitions of TDX_FEATURES0 metadata field */
--#define TDX_FEATURES0_NO_RBP_MOD	BIT(18)
--
- /*
-  * Do not put any hardware-defined TDX structure representations below
-  * this comment!
+diff --git a/Documentation/ABI/testing/sysfs-devices-faux-tdx-host b/Documentation/ABI/testing/sysfs-devices-faux-tdx-host
+index 88a9c0b2bdfe..fefe762998db 100644
+--- a/Documentation/ABI/testing/sysfs-devices-faux-tdx-host
++++ b/Documentation/ABI/testing/sysfs-devices-faux-tdx-host
+@@ -27,3 +27,56 @@ Description:	(RO) Report the number of remaining updates. TDX maintains a
+ 		Interface Specification, Revision 343755-003, Chapter 3.3
+ 		"SEAMLDR_INFO" and Chapter 4.2 "SEAMLDR.INSTALL" for more
+ 		information.
++
++What:		/sys/devices/faux/tdx_host/firmware/tdx_module
++Contact:	linux-coco@lists.linux.dev
++Description:	(Directory) The tdx_module directory implements the fw_upload
++		sysfs ABI, see Documentation/ABI/testing/sysfs-class-firmware
++		for the general description of the attributes @data, @cancel,
++		@error, @loading, @remaining_size, and @status. This ABI
++		facilitates "Compatible TDX Module Updates". A compatible update
++		is one that meets the following criteria:
++
++		   Does not interrupt or interfere with any current TDX
++		   operation or TD VM.
++
++		   Does not invalidate any previously consumed Module metadata
++		   values outside of the TEE_TCB_SVN_2 field (updated Security
++		   Version Number) in TD Quotes.
++
++		   Does not require validation of new Module metadata fields. By
++		   implication, new Module features and capabilities are only
++		   available by installing the Module at reboot (BIOS or EFI
++		   helper loaded).
++
++		See tdx_host/firmware/tdx_module/error for information on
++		compatibility check failures and how to prevent them.
++
++What:		/sys/devices/faux/tdx_host/firmware/tdx_module/error
++Contact:	linux-coco@lists.linux.dev
++Description:	(RO) See Documentation/ABI/testing/sysfs-class-firmware for
++		baseline expectations for this file. The <ERROR> part in the
++		<STATUS>:<ERROR> format can be:
++
++		   "device-busy": Compatibility checks failed or not all CPUs
++		                  are online
++
++		   "flash-wearout": The number of updates reached the limit.
++
++		   "read-write-error": Memory allocation failed.
++
++		   "hw-error": Cannot communicate with P-SEAMLDR or TDX Module.
++
++		   "firmware-invalid": The provided TDX Module update is invalid
++		                       or other unexpected errors occurred.
++
++		"hw-error" or "firmware-invalid" may be fatal, causing all TDs
++		and the TDX Module to be lost and preventing further TDX
++		operations. This occurs when reading
++		/sys/devices/faux/tdx_host/version returns -ENXIO. For other
++		errors, TDs and the (previous) TDX Module stay running.
++
++		See tdxctl [1] documentation for how to detect compatible
++		updates and whether the current platform components catch errors
++		or let them leak and cause potential TD attestation failures.
++		[1]: <TBD - tdxctl link>
 -- 
 2.47.3
 
