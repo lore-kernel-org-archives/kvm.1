@@ -1,48 +1,48 @@
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E536735FF79;
-	Thu, 12 Feb 2026 14:36:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D6CC835F8C4;
+	Thu, 12 Feb 2026 14:36:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.8
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770906985; cv=none; b=rSHL6z+izF9aAtP1gMhhyIcrcHj01advS1pIS7/ecF+YMKNazl/TQAmb4tMtl4eyyYh3m8V9GQ02SG2yT+qfGSnHZ8B2ME6ojKP5DWficJUW0I9WamgySpSlHI2zISALigRb4LvTgatc1nTombI8QWbPFROKBYqUgXWsDKQmpF4=
+	t=1770906986; cv=none; b=eIwHije70Q7CmIEj09jeqRwxM6PIAfYHna1HRMpgL9AmIYh+avAtRoBCWNeaLPM22qVVxJQtbVLtfhBioYPjDiMjzDCfF+fx/w7yzCw5tGUyZf8HA5w4hc3BSOIKLHhi/rIA1IYZY9kc/mB56jgIlW6k2ZaWQJQeqXQ6kbEuRPM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770906985; c=relaxed/simple;
-	bh=jdrRXNF7aPnIm+3Q3Sa3xsjiQxhL3L60es0JuoyeMLs=;
+	s=arc-20240116; t=1770906986; c=relaxed/simple;
+	bh=AgCy9TantK5Yk8+9KUq1xI53w+qSLhWWbITvV8z1FPk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=mDP26T3elhqhxV4Qj5RHGEWYWZJcLOibmbfSsIHh0+0A0+PGKhLhFwKFRtOdS9p5Ml8SMklPJBb3vevux7Q/hR4sINCHxxKwZoBliF7SY/y22A0E8OPdiDZ9O93JBwtATfjGzxbN71ASux/tV6D8ojVhjrEM/uRJO++J5wOTzpk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=JDhdWFpP; arc=none smtp.client-ip=192.198.163.8
+	 MIME-Version:Content-Type; b=k0HbOPkzxuaK/0ObX7WKcPPaxXgdYK676MrLhvT+hkR+deERE4L66YQsyDtEYWER28Rk9FsnETB5Br9N7X8EhqIXVJ1Jp6mQqAJakzqPBa75ML+Tj/lGoKRM45UQ+pBup1U3xBROPKr+ptBUklVG3kxG0S3mOrUuENzTsfokN9w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=kewzOvIS; arc=none smtp.client-ip=192.198.163.8
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="JDhdWFpP"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="kewzOvIS"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1770906984; x=1802442984;
+  t=1770906983; x=1802442983;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=jdrRXNF7aPnIm+3Q3Sa3xsjiQxhL3L60es0JuoyeMLs=;
-  b=JDhdWFpPraJvvhzwh4/6UvWZdCHd2tSwGvHm3vvb2WvjJS4YkUXUBG6J
-   RtvuBBb7hFRLsY3UKurbeIAnp8MLa0HkcQzLX9Yi8ZOrDpfdbdCXeJtpp
-   FZjxNi2DYxldQSoExFZ3SBssv+EtOwVfPnjHsGqI+IHdBjbqNY7QmpHYv
-   NwRFGgXOdLBnYn492MRPqO66v+d7GhAfmfcEVlMq2Ck5iHturJ3o9n3x8
-   LGluEw/SKdGwUxw2XLbm09tmQniPDcwOU479qNVZyNpkC4tcwcgS0B49i
-   YVBa8b/yjhUDIh5ILBTDLu59HNgrygJAxIA08MJNjGwoW44/wrfIUsvII
+  bh=AgCy9TantK5Yk8+9KUq1xI53w+qSLhWWbITvV8z1FPk=;
+  b=kewzOvISJOYvfjp9KNzaFLRpSZZEQqTY2fMYN4+9jZXzpUf6VsDMEWO9
+   unc3yARYSngf4r4mSFMKFo1iv8hH7HposWtccHAR/Mum49tHbE7e7Eh0U
+   gXaF+nxQcNFSJ6SdfNjvAnPlgn2CiQ/S2NFpPXEkASPIwXIJPZV4O2SZL
+   6DHE7L43P6qAvYwDW5HaJg7xSqJqZn697Ihfg8jJPF+SKSXhkJuhW+JNV
+   C2rdNyPf0NxxzGTxTEYZZo650yReXW/3/krisMX0ULxC+CFOMO48+smZD
+   Oa5yW6Sx+sf3faU3inxG+sfYlJl2lwKm4JBUBm3R25WlrH75OOv3TPO0D
    A==;
-X-CSE-ConnectionGUID: QdEX8vTUR+qHYWWo0ayXhg==
-X-CSE-MsgGUID: xQhIRCvFTYOIic6Vyk3R+A==
-X-IronPort-AV: E=McAfee;i="6800,10657,11699"; a="89662843"
+X-CSE-ConnectionGUID: cGHnVRznT/WaQm/4OIRqPQ==
+X-CSE-MsgGUID: vy7b4WqyQqG9VZMHVlc2fw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11699"; a="89662826"
 X-IronPort-AV: E=Sophos;i="6.21,286,1763452800"; 
-   d="scan'208";a="89662843"
+   d="scan'208";a="89662826"
 Received: from fmviesa006.fm.intel.com ([10.60.135.146])
-  by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Feb 2026 06:36:23 -0800
-X-CSE-ConnectionGUID: 0oKAbTlcSWSOb/U54VCYRg==
-X-CSE-MsgGUID: KrtZ/AP7S4yYX5CYYslwvA==
+  by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Feb 2026 06:36:21 -0800
+X-CSE-ConnectionGUID: TPHcIjqOQ9m8E//WycnF3Q==
+X-CSE-MsgGUID: mNhCmUpuTtK0sfZFQeHjKw==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.21,286,1763452800"; 
-   d="scan'208";a="211428267"
+   d="scan'208";a="211428258"
 Received: from 984fee019967.jf.intel.com ([10.23.153.244])
-  by fmviesa006-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Feb 2026 06:36:23 -0800
+  by fmviesa006-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Feb 2026 06:36:21 -0800
 From: Chao Gao <chao.gao@intel.com>
 To: linux-coco@lists.linux.dev,
 	linux-kernel@vger.kernel.org,
@@ -70,9 +70,9 @@ Cc: reinette.chatre@intel.com,
 	Ingo Molnar <mingo@redhat.com>,
 	Borislav Petkov <bp@alien8.de>,
 	"H. Peter Anvin" <hpa@zytor.com>
-Subject: [PATCH v4 13/24] x86/virt/seamldr: Shut down the current TDX module
-Date: Thu, 12 Feb 2026 06:35:16 -0800
-Message-ID: <20260212143606.534586-14-chao.gao@intel.com>
+Subject: [PATCH v4 11/24] x86/virt/seamldr: Introduce skeleton for TDX Module updates
+Date: Thu, 12 Feb 2026 06:35:14 -0800
+Message-ID: <20260212143606.534586-12-chao.gao@intel.com>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20260212143606.534586-1-chao.gao@intel.com>
 References: <20260212143606.534586-1-chao.gao@intel.com>
@@ -85,197 +85,163 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-The first step of TDX Module updates is shutting down the current TDX
-Module. This step also packs state information that needs to be
-preserved across updates as handoff data, which will be consumed by the
-updated module. The handoff data is stored internally in the SEAM range
-and is hidden from the kernel.
+TDX Module updates require careful synchronization with other TDX
+operations on the host. During updates, only update-related SEAMCALLs are
+permitted; all other SEAMCALLs must be blocked.
 
-To ensure a successful update, the new module must be able to consume
-the handoff data generated by the old module. Since handoff data layout
-may change between modules, the handoff data is versioned. Each module
-has a native handoff version and provides backward support for several
-older versions.
+However, SEAMCALLs can be invoked from different contexts (normal and IRQ
+context) and run in parallel across CPUs. And, all TD vCPUs must remain
+out of guest mode during updates. No single lock primitive can satisfy
+all these synchronization requirements, so stop_machine() is used as the
+only well-understood mechanism that can meet them all.
 
-The complete handoff versioning protocol is complex as it supports both
-module upgrades and downgrades. See details in Intel® Trust Domain
-Extensions (Intel® TDX) Module Base Architecture Specification, Revision
-348549-007, Chapter 4.5.3 "Handoff Versioning".
+The TDX Module update process consists of several steps as described in
+Intel® Trust Domain Extensions (Intel® TDX) Module Base Architecture
+Specification, Revision 348549-007, Chapter 4.5 "TD-Preserving TDX Module
+Update"
 
-Ideally, the kernel needs to retrieve the handoff versions supported by
-the current module and the new module and select a version supported by
-both. But, since the Linux kernel only supports module upgrades, simply
-request the current module to generate handoff data using its highest
-supported version, expecting that the new module will likely support it.
+  - shut down the old module
+  - install the new module
+  - global and per-CPU initialization
+  - restore state information
 
-Note that only one CPU needs to call the TDX Module's shutdown API.
+Some steps must execute on a single CPU, others must run serially across
+all CPUs, and some can run concurrently on all CPUs. There are also
+ordering requirements between steps, so all CPUs must work in a step-locked
+manner.
+
+In summary, TDX Module updates create two requirements:
+
+1. The entire update process must use stop_machine() to synchronize with
+   other TDX workloads
+2. Update steps must be performed in a step-locked manner
+
+To prepare for implementing concrete TDX Module update steps, establish
+the framework by mimicking multi_cpu_stop(), which is a good example of
+performing a multi-step task in step-locked manner. Specifically, use a
+global state machine to control each CPU's work and require all CPUs to
+acknowledge completion before proceeding to the next step.
+
+Potential alternative to stop_machine()
+=======================================
+An alternative approach is to lock all KVM entry points and kick all
+vCPUs. Here, KVM entry points refer to KVM VM/vCPU ioctl entry points,
+implemented in KVM common code (virt/kvm). Adding a locking mechanism
+there would affect all architectures KVM supports. And to lock only TDX
+vCPUs, new logic would be needed to identify TDX vCPUs, which the KVM
+common code currently lacks. This would add significant complexity and
+maintenance overhead to KVM for this TDX-specific use case.
 
 Signed-off-by: Chao Gao <chao.gao@intel.com>
+Reviewed-by: Xu Yilun <yilun.xu@linux.intel.com>
 Reviewed-by: Tony Lindgren <tony.lindgren@linux.intel.com>
 ---
-v4:
- - skip the whole handoff metadata if runtime updates are not supported
-   [Yilun]
-v3:
- - remove autogeneration stuff in the changelog
 v2:
- - add a comment about how handoff version is chosen.
- - remove the first !ret in get_tdx_sys_info_handoff() as we edited the
-   auto-generated code anyway
- - remove !! when determining whether a CPU is the primary one
- - remove unnecessary if-break nesting in TDP_SHUTDOWN
+ - refine the changlog to follow context-problem-solution structure
+ - move alternative discussions at the end of the changelog
+ - add a comment about state machine transition
+ - Move rcu_momentary_eqs() call to the else branch.
 ---
- arch/x86/include/asm/tdx_global_metadata.h  |  5 +++++
- arch/x86/virt/vmx/tdx/seamldr.c             | 10 ++++++++++
- arch/x86/virt/vmx/tdx/tdx.c                 | 15 +++++++++++++++
- arch/x86/virt/vmx/tdx/tdx.h                 |  3 +++
- arch/x86/virt/vmx/tdx/tdx_global_metadata.c | 15 +++++++++++++++
- 5 files changed, 48 insertions(+)
+ arch/x86/virt/vmx/tdx/seamldr.c | 70 ++++++++++++++++++++++++++++++++-
+ 1 file changed, 69 insertions(+), 1 deletion(-)
 
-diff --git a/arch/x86/include/asm/tdx_global_metadata.h b/arch/x86/include/asm/tdx_global_metadata.h
-index 40689c8dc67e..8a9ebd895e70 100644
---- a/arch/x86/include/asm/tdx_global_metadata.h
-+++ b/arch/x86/include/asm/tdx_global_metadata.h
-@@ -40,12 +40,17 @@ struct tdx_sys_info_td_conf {
- 	u64 cpuid_config_values[128][2];
- };
- 
-+struct tdx_sys_info_handoff {
-+	u16 module_hv;
-+};
-+
- struct tdx_sys_info {
- 	struct tdx_sys_info_version version;
- 	struct tdx_sys_info_features features;
- 	struct tdx_sys_info_tdmr tdmr;
- 	struct tdx_sys_info_td_ctrl td_ctrl;
- 	struct tdx_sys_info_td_conf td_conf;
-+	struct tdx_sys_info_handoff handoff;
- };
- 
- #endif
 diff --git a/arch/x86/virt/vmx/tdx/seamldr.c b/arch/x86/virt/vmx/tdx/seamldr.c
-index 70bc577e5957..c59cdd5b1fe4 100644
+index 718cb8396057..21d572d75769 100644
 --- a/arch/x86/virt/vmx/tdx/seamldr.c
 +++ b/arch/x86/virt/vmx/tdx/seamldr.c
-@@ -18,6 +18,7 @@
+@@ -10,8 +10,10 @@
+ #include <linux/cpuhplock.h>
+ #include <linux/cpumask.h>
+ #include <linux/mm.h>
++#include <linux/nmi.h>
+ #include <linux/slab.h>
+ #include <linux/spinlock.h>
++#include <linux/stop_machine.h>
+ 
  #include <asm/seamldr.h>
  
- #include "seamcall_internal.h"
-+#include "tdx.h"
- 
- /* P-SEAMLDR SEAMCALL leaf function */
- #define P_SEAMLDR_INFO			0x8000000000000000
-@@ -196,6 +197,7 @@ static struct seamldr_params *init_seamldr_params(const u8 *data, u32 size)
-  */
- enum tdp_state {
- 	TDP_START,
-+	TDP_SHUTDOWN,
- 	TDP_DONE,
- };
- 
-@@ -228,8 +230,12 @@ static void ack_state(void)
- static int do_seamldr_install_module(void *params)
- {
- 	enum tdp_state newstate, curstate = TDP_START;
-+	int cpu = smp_processor_id();
-+	bool primary;
- 	int ret = 0;
- 
-+	primary = cpumask_first(cpu_online_mask) == cpu;
-+
- 	do {
- 		/* Chill out and re-read tdp_data */
- 		cpu_relax();
-@@ -238,6 +244,10 @@ static int do_seamldr_install_module(void *params)
- 		if (newstate != curstate) {
- 			curstate = newstate;
- 			switch (curstate) {
-+			case TDP_SHUTDOWN:
-+				if (primary)
-+					ret = tdx_module_shutdown();
-+				break;
- 			default:
- 				break;
- 			}
-diff --git a/arch/x86/virt/vmx/tdx/tdx.c b/arch/x86/virt/vmx/tdx/tdx.c
-index b65b2a609e81..f911c8c63800 100644
---- a/arch/x86/virt/vmx/tdx/tdx.c
-+++ b/arch/x86/virt/vmx/tdx/tdx.c
-@@ -1176,6 +1176,21 @@ int tdx_enable(void)
+@@ -186,6 +188,68 @@ static struct seamldr_params *init_seamldr_params(const u8 *data, u32 size)
+ 	return alloc_seamldr_params(module, module_size, sig, sig_size);
  }
- EXPORT_SYMBOL_FOR_KVM(tdx_enable);
  
-+int tdx_module_shutdown(void)
-+{
-+	struct tdx_module_args args = {};
++/*
++ * During a TDX Module update, all CPUs start from TDP_START and progress
++ * to TDP_DONE. Each state is associated with certain work. For some
++ * states, just one CPU needs to perform the work, while other CPUs just
++ * wait during those states.
++ */
++enum tdp_state {
++	TDP_START,
++	TDP_DONE,
++};
 +
-+	/*
-+	 * Shut down the TDX Module and prepare handoff data for the next
-+	 * TDX Module. This SEAMCALL requires a handoff version. Use the
-+	 * module's handoff version, as it is the highest version the
-+	 * module can produce and is more likely to be supported by new
-+	 * modules as new modules likely have higher handoff version.
-+	 */
-+	args.rcx = tdx_sysinfo.handoff.module_hv;
-+	return seamcall_prerr(TDH_SYS_SHUTDOWN, &args);
++static struct {
++	enum tdp_state state;
++	atomic_t thread_ack;
++} tdp_data;
++
++static void set_target_state(enum tdp_state state)
++{
++	/* Reset ack counter. */
++	atomic_set(&tdp_data.thread_ack, num_online_cpus());
++	/* Ensure thread_ack is updated before the new state */
++	smp_wmb();
++	WRITE_ONCE(tdp_data.state, state);
 +}
 +
- static bool is_pamt_page(unsigned long phys)
- {
- 	struct tdmr_info_list *tdmr_list = &tdx_tdmr_list;
-diff --git a/arch/x86/virt/vmx/tdx/tdx.h b/arch/x86/virt/vmx/tdx/tdx.h
-index 82bb82be8567..1c4da9540ae0 100644
---- a/arch/x86/virt/vmx/tdx/tdx.h
-+++ b/arch/x86/virt/vmx/tdx/tdx.h
-@@ -46,6 +46,7 @@
- #define TDH_PHYMEM_PAGE_WBINVD		41
- #define TDH_VP_WR			43
- #define TDH_SYS_CONFIG			45
-+#define TDH_SYS_SHUTDOWN		52
- 
- /*
-  * SEAMCALL leaf:
-@@ -118,4 +119,6 @@ struct tdmr_info_list {
- 	int max_tdmrs;	/* How many 'tdmr_info's are allocated */
- };
- 
-+int tdx_module_shutdown(void);
-+
- #endif
-diff --git a/arch/x86/virt/vmx/tdx/tdx_global_metadata.c b/arch/x86/virt/vmx/tdx/tdx_global_metadata.c
-index 4c9917a9c2c3..6aee10c36489 100644
---- a/arch/x86/virt/vmx/tdx/tdx_global_metadata.c
-+++ b/arch/x86/virt/vmx/tdx/tdx_global_metadata.c
-@@ -100,6 +100,20 @@ static int get_tdx_sys_info_td_conf(struct tdx_sys_info_td_conf *sysinfo_td_conf
- 	return ret;
- }
- 
-+static int get_tdx_sys_info_handoff(struct tdx_sys_info_handoff *sysinfo_handoff)
++/* Last one to ack a state moves to the next state. */
++static void ack_state(void)
 +{
++	if (atomic_dec_and_test(&tdp_data.thread_ack))
++		set_target_state(tdp_data.state + 1);
++}
++
++/*
++ * See multi_cpu_stop() from where this multi-cpu state-machine was
++ * adopted, and the rationale for touch_nmi_watchdog()
++ */
++static int do_seamldr_install_module(void *params)
++{
++	enum tdp_state newstate, curstate = TDP_START;
 +	int ret = 0;
-+	u64 val;
 +
-+	if (!tdx_supports_runtime_update(&tdx_sysinfo))
-+		return 0;
++	do {
++		/* Chill out and re-read tdp_data */
++		cpu_relax();
++		newstate = READ_ONCE(tdp_data.state);
 +
-+	if (!ret && !(ret = read_sys_metadata_field(0x8900000100000000, &val)))
-+		sysinfo_handoff->module_hv = val;
++		if (newstate != curstate) {
++			curstate = newstate;
++			switch (curstate) {
++			default:
++				break;
++			}
++			ack_state();
++		} else {
++			touch_nmi_watchdog();
++			rcu_momentary_eqs();
++		}
++	} while (curstate != TDP_DONE);
 +
 +	return ret;
 +}
 +
- static int get_tdx_sys_info(struct tdx_sys_info *sysinfo)
- {
- 	int ret = 0;
-@@ -115,6 +129,7 @@ static int get_tdx_sys_info(struct tdx_sys_info *sysinfo)
- 	ret = ret ?: get_tdx_sys_info_tdmr(&sysinfo->tdmr);
- 	ret = ret ?: get_tdx_sys_info_td_ctrl(&sysinfo->td_ctrl);
- 	ret = ret ?: get_tdx_sys_info_td_conf(&sysinfo->td_conf);
-+	ret = ret ?: get_tdx_sys_info_handoff(&sysinfo->handoff);
+ DEFINE_FREE(free_seamldr_params, struct seamldr_params *,
+ 	    if (!IS_ERR_OR_NULL(_T)) free_seamldr_params(_T))
  
- 	return ret;
+@@ -223,7 +287,11 @@ int seamldr_install_module(const u8 *data, u32 size)
+ 		return -EBUSY;
+ 	}
+ 
+-	/* TODO: Update TDX Module here */
++	set_target_state(TDP_START + 1);
++	ret = stop_machine_cpuslocked(do_seamldr_install_module, params, cpu_online_mask);
++	if (ret)
++		return ret;
++
+ 	return 0;
  }
+ EXPORT_SYMBOL_FOR_MODULES(seamldr_install_module, "tdx-host");
 -- 
 2.47.3
 
