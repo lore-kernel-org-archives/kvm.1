@@ -1,157 +1,163 @@
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1CB10346E5A;
-	Thu, 12 Feb 2026 14:02:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1BC1335C1B7
+	for <kvm@vger.kernel.org>; Thu, 12 Feb 2026 14:10:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770904968; cv=none; b=JcSF1jCovJhAyUriQzuec00bo3AHnXkklUuT80x+NzoHFFhZsDg7Oduh09LlflYL9oypKiWjdTbyVdMOJ3XaGtUV1pTKAss2hmFNxQtJBj3fxolFvaRRPQG5ujTXubkQD/AaKF+y4E57IIajInEhxOks4if2JaFbEbtwn0CL2EA=
+	t=1770905442; cv=none; b=r7vflkyIbCJAP697O35t8gYFGnh+gQVfo3oQeUaQuK8S3RQOPm+UEpBbewoOqffQBLfsB/6ZA4wU+7CnYQ3jl2BcpH7JvDEfA2GqIfbfYkVkdcU6CCoT2LEXr4KzYajK/RXcTtOAryFsI2dAZguDAWUzTgSQkOKvLVdka9Qj+6M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770904968; c=relaxed/simple;
-	bh=R9x5Z5Kah0FOwz+XsjqJAfOjK2AVQJPUaRi3J+mut2Q=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=UhtGp7e1vEMWp6RwpA+Tn0/iqW9p3T63v8sJ88RWYptkABjf8rgqGqRqafn8P7h9ReHRgLG26GaSHj31JZHQDhQCaEFpfCfEqhj4HtCIwEyXrTq5CA1KsFlmUt/NQcQT4Lw1oFyn8vlh9oUEnMpOdH82hFcgEVS0Nssjz3Axkt0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=cEACVcTX; arc=none smtp.client-ip=148.163.158.5
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+	s=arc-20240116; t=1770905442; c=relaxed/simple;
+	bh=jDyKRBmt0G41/VH3KfVNBmriwhTGiamLDB//4wIkoz4=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=C+OvFdhGZeVJAHrJNKWYyc6HXz96mmFU6SCUpsBqnIzbaElObukn5oxn/7+zjAL8v4Xs91edIfYamdIlaEcv9Yc2DE92NhS3kwudbPEOcQ+jSFvpJENxVR4rJbZMxn9XQhZwJHxJnTTGmQfdUBnyl67ICL8swtsXcItxAN35OBI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=Sh1E5NJy; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=4GvtexwN; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=Sh1E5NJy; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=4GvtexwN; arc=none smtp.client-ip=195.135.223.130
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="cEACVcTX"
-Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 61CDOJAL3414107;
-	Thu, 12 Feb 2026 14:02:35 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=mhB6RF
-	oPQK8dVzbsRqsEX6IfqiK9Fcw9WsnO2/SS6IQ=; b=cEACVcTXq43FhjX/ng0t5b
-	pdozQtOsmKEx06Qq7i3e1Hfgu4dUxWBNVckEBry9nbHhFW28uDgBRJH8trgJXrde
-	7y4Y+EZrAp0UVy7MyVrODW1uDkmYKCjLBJQveBzrdHImRQffBHkJOFpwjhHGuJB6
-	SiD62Sah/l7Db3TnixotSjlZZN03A0UZh66pp8Ydrk7AGUbSLWLfTEDv9CEje7Gn
-	1k9SRfaNEX+Bk+WfNzhRAsyFlb8QZUU/ujhUU4f1kyoNyHG1mVQXTDjzjQUXqmcA
-	9ymprvZKNPZ2Odup4sbRYIqJtxlmda+PQMd38BYIBc+541gH2z9zDd6rzYQiIASQ
-	==
-Received: from ppma11.dal12v.mail.ibm.com (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4c696vbmvc-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 12 Feb 2026 14:02:35 +0000 (GMT)
-Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma11.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 61C9goXG001837;
-	Thu, 12 Feb 2026 14:02:34 GMT
-Received: from smtprelay01.fra02v.mail.ibm.com ([9.218.2.227])
-	by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 4c6je2ad0b-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 12 Feb 2026 14:02:34 +0000
-Received: from smtpav04.fra02v.mail.ibm.com (smtpav04.fra02v.mail.ibm.com [10.20.54.103])
-	by smtprelay01.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 61CE2VSD61669798
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 12 Feb 2026 14:02:31 GMT
-Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 0C62A20043;
-	Thu, 12 Feb 2026 14:02:31 +0000 (GMT)
-Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id BF5F22005A;
-	Thu, 12 Feb 2026 14:02:30 +0000 (GMT)
-Received: from tuxmaker.boeblingen.de.ibm.com (unknown [9.87.85.9])
-	by smtpav04.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Thu, 12 Feb 2026 14:02:30 +0000 (GMT)
-From: Julian Ruess <julianr@linux.ibm.com>
-Date: Thu, 12 Feb 2026 15:02:15 +0100
-Subject: [PATCH 1/3] vfio/pci: Set VFIO_PCI_OFFSET_SHIFT to 48
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="Sh1E5NJy";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="4GvtexwN";
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="Sh1E5NJy";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="4GvtexwN"
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id 52B333E6DD;
+	Thu, 12 Feb 2026 14:10:39 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1770905439; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=/YrbUClmQVL1U5uh49SxY9lMMVv9VNYSFUFYMwRRmQA=;
+	b=Sh1E5NJyPsuCoJnfDS59MPtfBo+qDL5BZ8Ahy+W1Y1FFR3gpQDJhO7vRere+4IhvfE7SMh
+	LJShsWZSEe9a8qt/GHT19eOCd8h+4p4HEJZ8b7fiVb4l/wH4XuiYPMhcb2N8eLrm2kBFwm
+	hI+ANLPW0kMpsvO0DhKE50kiTDFxm6M=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1770905439;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=/YrbUClmQVL1U5uh49SxY9lMMVv9VNYSFUFYMwRRmQA=;
+	b=4GvtexwNPsZ3e4rJ71vocCu2u5M6Z3E8fS6WgYAT8Yae8Da4QoJefjrTVUlXXH9W8ZAgqI
+	/lHKxdMCobN6IMCQ==
+Authentication-Results: smtp-out1.suse.de;
+	none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1770905439; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=/YrbUClmQVL1U5uh49SxY9lMMVv9VNYSFUFYMwRRmQA=;
+	b=Sh1E5NJyPsuCoJnfDS59MPtfBo+qDL5BZ8Ahy+W1Y1FFR3gpQDJhO7vRere+4IhvfE7SMh
+	LJShsWZSEe9a8qt/GHT19eOCd8h+4p4HEJZ8b7fiVb4l/wH4XuiYPMhcb2N8eLrm2kBFwm
+	hI+ANLPW0kMpsvO0DhKE50kiTDFxm6M=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1770905439;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=/YrbUClmQVL1U5uh49SxY9lMMVv9VNYSFUFYMwRRmQA=;
+	b=4GvtexwNPsZ3e4rJ71vocCu2u5M6Z3E8fS6WgYAT8Yae8Da4QoJefjrTVUlXXH9W8ZAgqI
+	/lHKxdMCobN6IMCQ==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 7C5C13EA62;
+	Thu, 12 Feb 2026 14:10:38 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id gAuEG17fjWkSJAAAD6G6ig
+	(envelope-from <clopez@suse.de>); Thu, 12 Feb 2026 14:10:38 +0000
+From: =?UTF-8?q?Carlos=20L=C3=B3pez?= <clopez@suse.de>
+To: kvm@vger.kernel.org,
+	seanjc@google.com,
+	pbonzini@redhat.com
+Cc: =?UTF-8?q?Carlos=20L=C3=B3pez?= <clopez@suse.de>,
+	Thomas Gleixner <tglx@kernel.org>,
+	Ingo Molnar <mingo@redhat.com>,
+	Borislav Petkov <bp@alien8.de>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	x86@kernel.org (maintainer:X86 ARCHITECTURE (32-BIT AND 64-BIT)),
+	"H. Peter Anvin" <hpa@zytor.com>,
+	Kees Cook <kees@kernel.org>,
+	"Gustavo A. R. Silva" <gustavoars@kernel.org>,
+	linux-kernel@vger.kernel.org (open list:X86 ARCHITECTURE (32-BIT AND 64-BIT)),
+	linux-hardening@vger.kernel.org (open list:KERNEL HARDENING (not covered by other areas):Keyword:\b__counted_by(_le|_be)?\b)
+Subject: [PATCH] KVM: x86/pmu: annotate struct kvm_x86_pmu_event_filter with __counted_by()
+Date: Thu, 12 Feb 2026 15:05:56 +0100
+Message-ID: <20260212140556.3883030-2-clopez@suse.de>
+X-Mailer: git-send-email 2.51.0
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260212-vfio_pci_ism-v1-1-333262ade074@linux.ibm.com>
-References: <20260212-vfio_pci_ism-v1-0-333262ade074@linux.ibm.com>
-In-Reply-To: <20260212-vfio_pci_ism-v1-0-333262ade074@linux.ibm.com>
-To: schnelle@linux.ibm.com, wintera@linux.ibm.com, ts@linux.ibm.com,
-        oberpar@linux.ibm.com, gbayer@linux.ibm.com,
-        Alex Williamson <alex@shazbot.org>, Jason Gunthorpe <jgg@ziepe.ca>,
-        Yishai Hadas <yishaih@nvidia.com>,
-        Shameer Kolothum <skolothumtho@nvidia.com>,
-        Kevin Tian <kevin.tian@intel.com>
-Cc: mjrosato@linux.ibm.com, alifm@linux.ibm.com, raspl@linux.ibm.com,
-        hca@linux.ibm.com, agordeev@linux.ibm.com, gor@linux.ibm.com,
-        julianr@linux.ibm.com, kvm@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-s390@vger.kernel.org,
-        linux-pci@vger.kernel.org
-X-Mailer: b4 0.14.2
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: fv3arNPVHzcKc8BmdOyKW6B-d1ksJ0l7
-X-Proofpoint-ORIG-GUID: fv3arNPVHzcKc8BmdOyKW6B-d1ksJ0l7
-X-Authority-Analysis: v=2.4 cv=JdWxbEKV c=1 sm=1 tr=0 ts=698ddd7b cx=c_pps
- a=aDMHemPKRhS1OARIsFnwRA==:117 a=aDMHemPKRhS1OARIsFnwRA==:17
- a=IkcTkHD0fZMA:10 a=HzLeVaNsDn8A:10 a=VkNPw1HP01LnGYTKEx00:22
- a=Mpw57Om8IfrbqaoTuvik:22 a=GgsMoib0sEa3-_RKJdDe:22 a=VnNF1IyMAAAA:8
- a=modniqXMBZv9BQ1X5YgA:9 a=QEXdDO2ut3YA:10
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMjEyMDEwNCBTYWx0ZWRfXwLduAeLBOgD0
- s7s1iJarvhbtDEp0HnZR88d8BWjr8OcFYH14Drr2PlzcDTfIQVw8qCjY8K6VaacbxG84SVjxBTD
- M40uX2I35PMDxk1nHEN8ELesZsYrOGnh9C6acIFvUZgk0h+psJ5oNH7WOzReqNmu/qfz5KExg3X
- paJv6mtOkUkLin6zGiPXyNmGa9UneXA7YWF+Jznknv0F8H8u9gF+ZBY65fjOPKu7uZgq/dAYV6o
- TdQrSeobKEbgmcSndVe+0wDaey5LE2QajnfS73DyjmX+BCZHS47l5gaESjH8nHwXlrHQVpDi3lN
- 0vB3a3HYn8Yg2fqj2LHu2X+a4yU9hbc9TNwG76i/ZnbS8K6VqV9xwImeWay1+rOkaAgnX9Us5qB
- vVVnxAK7HnU4Lg1gH4KfiOzaENgQYJmdAsSlb3LUFOdA+mHnnDsv5g4KuiT+1zle0gem50pu/zN
- uP3yPyXLq6WWyPjYV5A==
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.51,FMLib:17.12.100.49
- definitions=2026-02-12_04,2026-02-12_02,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501 clxscore=1011 impostorscore=0 bulkscore=0
- lowpriorityscore=0 suspectscore=0 adultscore=0 spamscore=0 malwarescore=0
- phishscore=0 classifier=typeunknown authscore=0 authtc= authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2601150000
- definitions=main-2602120104
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Spam-Score: -3.30
+X-Spamd-Result: default: False [-3.30 / 50.00];
+	BAYES_HAM(-3.00)[100.00%];
+	MID_CONTAINS_FROM(1.00)[];
+	NEURAL_HAM_LONG(-1.00)[-1.000];
+	NEURAL_HAM_SHORT(-0.20)[-0.998];
+	MIME_GOOD(-0.10)[text/plain];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	RCVD_TLS_ALL(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	ARC_NA(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
+	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+	TO_MATCH_ENVRCPT_ALL(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	TO_DN_SOME(0.00)[];
+	FROM_EQ_ENVFROM(0.00)[];
+	RCVD_COUNT_TWO(0.00)[2];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:mid,suse.de:email]
+X-Spam-Level: 
+X-Spam-Flag: NO
 
-Extend VFIO_PCI_OFFSET_SHIFT to 48 to use the vfio-pci
-VFIO_PCI_OFFSET_TO_INDEX() mechanism with the 256 TiB pseudo-BAR 0 of
-the ISM device on s390. This bar is never mapped.
+struct kvm_x86_pmu_event_filter has a flexible array member, so annotate
+it with the field that describes the amount of entries in such array.
+Opportunistically replace the open-coded array size calculation with
+flex_array_size() when copying the array portion of the struct from
+userspace.
 
-Acked-by: Alexandra Winter <wintera@linux.ibm.com>
-Signed-off-by: Julian Ruess <julianr@linux.ibm.com>
+Signed-off-by: Carlos López <clopez@suse.de>
 ---
- drivers/vfio/pci/vfio_pci_core.c | 4 ++--
- include/linux/vfio_pci_core.h    | 2 +-
- 2 files changed, 3 insertions(+), 3 deletions(-)
+ arch/x86/include/asm/kvm_host.h | 2 +-
+ arch/x86/kvm/pmu.c              | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/vfio/pci/vfio_pci_core.c b/drivers/vfio/pci/vfio_pci_core.c
-index 3a11e6f450f70105f17a3a621520c195d99e0671..3d70bf6668c7a69c4b46674195954d1ada662006 100644
---- a/drivers/vfio/pci/vfio_pci_core.c
-+++ b/drivers/vfio/pci/vfio_pci_core.c
-@@ -1647,7 +1647,7 @@ static unsigned long vma_to_pfn(struct vm_area_struct *vma)
- 	u64 pgoff;
+diff --git a/arch/x86/include/asm/kvm_host.h b/arch/x86/include/asm/kvm_host.h
+index ff07c45e3c73..d9159b969bd9 100644
+--- a/arch/x86/include/asm/kvm_host.h
++++ b/arch/x86/include/asm/kvm_host.h
+@@ -1261,7 +1261,7 @@ struct kvm_x86_pmu_event_filter {
+ 	__u32 nr_excludes;
+ 	__u64 *includes;
+ 	__u64 *excludes;
+-	__u64 events[];
++	__u64 events[] __counted_by(nevents);
+ };
  
- 	pgoff = vma->vm_pgoff &
--		((1U << (VFIO_PCI_OFFSET_SHIFT - PAGE_SHIFT)) - 1);
-+		((1UL << (VFIO_PCI_OFFSET_SHIFT - PAGE_SHIFT)) - 1);
+ enum kvm_apicv_inhibit {
+diff --git a/arch/x86/kvm/pmu.c b/arch/x86/kvm/pmu.c
+index bd6b785cf261..e218352e3423 100644
+--- a/arch/x86/kvm/pmu.c
++++ b/arch/x86/kvm/pmu.c
+@@ -1256,7 +1256,7 @@ int kvm_vm_ioctl_set_pmu_event_filter(struct kvm *kvm, void __user *argp)
  
- 	return (pci_resource_start(vdev->pdev, index) >> PAGE_SHIFT) + pgoff;
- }
-@@ -1751,7 +1751,7 @@ int vfio_pci_core_mmap(struct vfio_device *core_vdev, struct vm_area_struct *vma
- 	phys_len = PAGE_ALIGN(pci_resource_len(pdev, index));
- 	req_len = vma->vm_end - vma->vm_start;
- 	pgoff = vma->vm_pgoff &
--		((1U << (VFIO_PCI_OFFSET_SHIFT - PAGE_SHIFT)) - 1);
-+		((1UL << (VFIO_PCI_OFFSET_SHIFT - PAGE_SHIFT)) - 1);
- 	req_start = pgoff << PAGE_SHIFT;
+ 	r = -EFAULT;
+ 	if (copy_from_user(filter->events, user_filter->events,
+-			   sizeof(filter->events[0]) * filter->nevents))
++			   flex_array_size(filter, events, filter->nevents)))
+ 		goto cleanup;
  
- 	if (req_start + req_len > phys_len)
-diff --git a/include/linux/vfio_pci_core.h b/include/linux/vfio_pci_core.h
-index 1ac86896875cf5c9b5cc8ef25fae8bbd4394de05..12781707f086a330161990dc3579ec0d75887da8 100644
---- a/include/linux/vfio_pci_core.h
-+++ b/include/linux/vfio_pci_core.h
-@@ -20,7 +20,7 @@
- #ifndef VFIO_PCI_CORE_H
- #define VFIO_PCI_CORE_H
- 
--#define VFIO_PCI_OFFSET_SHIFT   40
-+#define VFIO_PCI_OFFSET_SHIFT   48
- #define VFIO_PCI_OFFSET_TO_INDEX(off)	(off >> VFIO_PCI_OFFSET_SHIFT)
- #define VFIO_PCI_INDEX_TO_OFFSET(index)	((u64)(index) << VFIO_PCI_OFFSET_SHIFT)
- #define VFIO_PCI_OFFSET_MASK	(((u64)(1) << VFIO_PCI_OFFSET_SHIFT) - 1)
+ 	r = prepare_filter_lists(filter);
 
+base-commit: e944fe2c09f405a2e2d147145c9b470084bc4c9a
 -- 
 2.51.0
 
