@@ -1,39 +1,43 @@
-Received: from out-171.mta0.migadu.com (out-171.mta0.migadu.com [91.218.175.171])
+Received: from out-185.mta0.migadu.com (out-185.mta0.migadu.com [91.218.175.185])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B4B303375AE
-	for <kvm@vger.kernel.org>; Thu, 12 Feb 2026 23:08:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B1EB735E553
+	for <kvm@vger.kernel.org>; Thu, 12 Feb 2026 23:08:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.185
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770937708; cv=none; b=CgfaDQB00bOxPJnhFIO6p2MoJ5BKTJs4AcCmBrHGx0OQr8EnWhvNbdMWkpymzstIrOZwrvGCWYlTa96gY/6uaAydtu8qPMIEiV3f2WF2xtFxupYNouC6j+EVJ2NLRjCp46R6D9jgelKwEHXhMDFEA8+8LWZQREnlJ5GTH/U6rt4=
+	t=1770937713; cv=none; b=GBAo9GjsPlX3VjmxvXNeRrnfZ6DAJAI0wjJI8yVHgfmA/WsVEuL8+YNYFyEF893QnQzRejmmsiIo9P6wYrTpWBuX56Q4DY6sIBsoyl1sO5XQ4HvBavz5LxwzDL4VVc3PqUBVTds/VdrWSCFS557Jryxxhjmn/nMIGV5mghb+SNs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770937708; c=relaxed/simple;
-	bh=2XjmFFT0nAD5yJLXJYlL6c5+k5i32jAwKOw0MaTZIEg=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=FejkX2ex33W4DQM6iUfFOj6R9/mVDnuTXqtxOhI/imdPrOHxbjVUJBavfl79FfO5xI1LdSluEG7cmoAlg9A3mnHOteDxsJu0T8ZIOCorujiFQ3KQYP+U077q7jXVUazSY6m8bo77n2OhPIYRXoyJMwp5tV/TsWLKEdHAEnoUB50=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=ApQBC10h; arc=none smtp.client-ip=91.218.175.171
+	s=arc-20240116; t=1770937713; c=relaxed/simple;
+	bh=bAOaJdOA04AkQxS17TJBTKFOnGSDb1vT1i6dJxSl2nQ=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=NMEBYQGfThvSV4qHSZASSg/P30qKHR0ZCEMDOZYevcU/hZzcNBqT5G5xbPKk46Npwi7RU47ufvH5/vTGCXREyiiJ/9gUHGpwJKJKcC1+vI3gytqwCJEW9Vw/PkyvvYchP9n+EMfOVu1bvahj48izh23e2s71TdTGJp38OirNfkc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=m2ge7CAD; arc=none smtp.client-ip=91.218.175.185
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="ApQBC10h"
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="m2ge7CAD"
 X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1770937694;
+	t=1770937704;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=on+ccZ1SuHeXZ8tfm5/Ig0TJ69aIC29yD8YFAu/BSoY=;
-	b=ApQBC10hCa5P20KBhodZbPaweWCJ/mhsbAyfjuyZTD15sZvlWpbRzUqgUV6GCOc84pzzJe
-	jAZTDuElPvgPhbZs7PP+Wi+vbTEWJHWjlGP2pX5g8Oc8PbuhPWHlNkLc8iMD7pOy3IJkio
-	O1UWpmNhz3BrQGxN+tZL9ccuOfpl6ck=
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=Xv3/xFFAZoY8Sit0MX/CbnOjm9pEWm9G+ntyH+it1HQ=;
+	b=m2ge7CADwE8J8TFiGy/AGC7xyp/ExrzJvwKT0sGyjjpZsBBI0nzZWmA8eHVxadU0xR8R1J
+	lSsYeG/39iO2W4/O0QtJwfGwJqjtoSnSN1YwTysAxheQtBKNfWic7PSa8eyiJJ3p4wWTG1
+	GJJWWYso5N7wRV3x9Jb5YqzQhI2462M=
 From: Yosry Ahmed <yosry.ahmed@linux.dev>
 To: Sean Christopherson <seanjc@google.com>
 Cc: Paolo Bonzini <pbonzini@redhat.com>,
 	kvm@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	Yosry Ahmed <yosry.ahmed@linux.dev>
-Subject: [RFC PATCH 0/5] KVM: nSVM: Fix RIP usage in the control area after restore
-Date: Thu, 12 Feb 2026 23:07:46 +0000
-Message-ID: <20260212230751.1871720-1-yosry.ahmed@linux.dev>
+Subject: [RFC PATCH 5/5] DO NOT MERGE: KVM: selftests: Reproduce nested RIP restore bug
+Date: Thu, 12 Feb 2026 23:07:51 +0000
+Message-ID: <20260212230751.1871720-6-yosry.ahmed@linux.dev>
+In-Reply-To: <20260212230751.1871720-1-yosry.ahmed@linux.dev>
+References: <20260212230751.1871720-1-yosry.ahmed@linux.dev>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -43,47 +47,140 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Migadu-Flow: FLOW_OUT
 
-Fix a few bugs in using L2's RIP to construct fields in vmcb02 after
-save+restore. The main problem is that the vmcb12_rip (and
-vmcb12_cs_base) values passed to nested_vmcb02_prepare_control() in the
-restore path are broken.
+Update svm_nested_soft_inject_test such that L1 syncs to userspace
+before running L2. The test then enables single-stepping and steps
+through guest code until VMRUN is execute, and saves/restores the VM
+immediately after (before L2 runs).
 
-The series fixes that by using the correct RIP (and CS) values to
-construct the relevant fields, whether nested state is restored before
-or after regs/sregs.
+This reproduces a bug in save/restore where L2's RIP is not used
+correctly to construct the vmcb02 at the destination.
 
-It also fixes another bug where using vmcb12_rip is incorrect, even if
-it was restored correctly (patch 1).
-
-The series is an RFC mainly because I am not sure if the approach taken
-in patch 4 is the correct way to do this, but otherwise it should be
-good to go (I just jinxed it didn't I).
-
-Patch 5 is a reproducer, not intended for merging. It modifies
-svm_nested_soft_inject_test to reproduce the bug. Patch 2 makes the
-reproducer passes, but if the ordering of vcpu_regs_set() and
-vcpu_nested_state_set() is switched, then it only passes after patch 4.
-
-Yosry Ahmed (5):
-  KVM: nSVM: Do not use L2's RIP for vmcb02's NextRIP after first L2
-    VMRUN
-  KVM: nSVM: Use the correct RIP when restoring vmcb02's control area
-  KVM: nSVM: Move updating NextRIP and soft IRQ RIPs into a helper
-  KVM: SVM: Recalculate nested RIPs after restoring REGS/SREGS
-  DO NOT MERGE: KVM: selftests: Reproduce nested RIP restore bug
-
- arch/x86/include/asm/kvm-x86-ops.h            |  1 +
- arch/x86/include/asm/kvm_host.h               |  1 +
- arch/x86/kvm/svm/nested.c                     | 64 ++++++++++------
- arch/x86/kvm/svm/svm.c                        | 21 ++++++
- arch/x86/kvm/svm/svm.h                        |  2 +
- arch/x86/kvm/x86.c                            |  2 +
+Signed-off-by: Yosry Ahmed <yosry.ahmed@linux.dev>
+---
  .../testing/selftests/kvm/lib/x86/processor.c |  3 +
  .../kvm/x86/svm_nested_soft_inject_test.c     | 74 +++++++++++++++----
- 8 files changed, 129 insertions(+), 39 deletions(-)
+ 2 files changed, 61 insertions(+), 16 deletions(-)
 
-
-base-commit: 183bb0ce8c77b0fd1fb25874112bc8751a461e49
+diff --git a/tools/testing/selftests/kvm/lib/x86/processor.c b/tools/testing/selftests/kvm/lib/x86/processor.c
+index fab18e9be66c..3e8d516ec8d3 100644
+--- a/tools/testing/selftests/kvm/lib/x86/processor.c
++++ b/tools/testing/selftests/kvm/lib/x86/processor.c
+@@ -1291,6 +1291,9 @@ void vcpu_load_state(struct kvm_vcpu *vcpu, struct kvm_x86_state *state)
+ 
+ 	if (state->nested.size)
+ 		vcpu_nested_state_set(vcpu, &state->nested);
++
++	/* Switch between this and the call above */
++	// vcpu_regs_set(vcpu, &state->regs);
+ }
+ 
+ void kvm_x86_state_cleanup(struct kvm_x86_state *state)
+diff --git a/tools/testing/selftests/kvm/x86/svm_nested_soft_inject_test.c b/tools/testing/selftests/kvm/x86/svm_nested_soft_inject_test.c
+index 4bd1655f9e6d..dfefd8eed392 100644
+--- a/tools/testing/selftests/kvm/x86/svm_nested_soft_inject_test.c
++++ b/tools/testing/selftests/kvm/x86/svm_nested_soft_inject_test.c
+@@ -101,6 +101,7 @@ static void l1_guest_code(struct svm_test_data *svm, uint64_t is_nmi, uint64_t i
+ 		vmcb->control.next_rip = vmcb->save.rip;
+ 	}
+ 
++	GUEST_SYNC(true);
+ 	run_guest(vmcb, svm->vmcb_gpa);
+ 	__GUEST_ASSERT(vmcb->control.exit_code == SVM_EXIT_VMMCALL,
+ 		       "Expected VMMCAL #VMEXIT, got '0x%lx', info1 = '0x%lx, info2 = '0x%lx'",
+@@ -131,6 +132,7 @@ static void l1_guest_code(struct svm_test_data *svm, uint64_t is_nmi, uint64_t i
+ 	/* The return address pushed on stack, skip over UD2 */
+ 	vmcb->control.next_rip = vmcb->save.rip + 2;
+ 
++	GUEST_SYNC(true);
+ 	run_guest(vmcb, svm->vmcb_gpa);
+ 	__GUEST_ASSERT(vmcb->control.exit_code == SVM_EXIT_HLT,
+ 		       "Expected HLT #VMEXIT, got '0x%lx', info1 = '0x%lx, info2 = '0x%lx'",
+@@ -140,6 +142,24 @@ static void l1_guest_code(struct svm_test_data *svm, uint64_t is_nmi, uint64_t i
+ 	GUEST_DONE();
+ }
+ 
++static struct kvm_vcpu *save_and_restore_vm(struct kvm_vm *vm, struct kvm_vcpu *vcpu)
++{
++	struct kvm_x86_state *state = vcpu_save_state(vcpu);
++
++	kvm_vm_release(vm);
++	vcpu = vm_recreate_with_one_vcpu(vm);
++	vcpu_load_state(vcpu, state);
++	kvm_x86_state_cleanup(state);
++	return vcpu;
++}
++
++static bool is_nested_run_pending(struct kvm_vcpu *vcpu)
++{
++	struct kvm_x86_state *state = vcpu_save_state(vcpu);
++
++	return state->nested.size && (state->nested.flags & KVM_STATE_NESTED_RUN_PENDING);
++}
++
+ static void run_test(bool is_nmi)
+ {
+ 	struct kvm_vcpu *vcpu;
+@@ -173,22 +193,44 @@ static void run_test(bool is_nmi)
+ 	memset(&debug, 0, sizeof(debug));
+ 	vcpu_guest_debug_set(vcpu, &debug);
+ 
+-	struct ucall uc;
+-
+-	alarm(2);
+-	vcpu_run(vcpu);
+-	alarm(0);
+-	TEST_ASSERT_KVM_EXIT_REASON(vcpu, KVM_EXIT_IO);
+-
+-	switch (get_ucall(vcpu, &uc)) {
+-	case UCALL_ABORT:
+-		REPORT_GUEST_ASSERT(uc);
+-		break;
+-		/* NOT REACHED */
+-	case UCALL_DONE:
+-		goto done;
+-	default:
+-		TEST_FAIL("Unknown ucall 0x%lx.", uc.cmd);
++	for (;;) {
++		struct kvm_guest_debug debug;
++		struct ucall uc;
++
++		alarm(2);
++		vcpu_run(vcpu);
++		alarm(0);
++		TEST_ASSERT_KVM_EXIT_REASON(vcpu, KVM_EXIT_IO);
++
++		switch (get_ucall(vcpu, &uc)) {
++		case UCALL_SYNC:
++			/*
++			 * L1 syncs before calling run_guest(), single-step over
++			 * all instructions until VMRUN, and save+restore right
++			 * after it (before L2 actually runs).
++			 */
++			debug.control = KVM_GUESTDBG_ENABLE | KVM_GUESTDBG_SINGLESTEP;
++			vcpu_guest_debug_set(vcpu, &debug);
++
++			do {
++				vcpu_run(vcpu);
++				TEST_ASSERT_KVM_EXIT_REASON(vcpu, KVM_EXIT_DEBUG);
++			} while (!is_nested_run_pending(vcpu));
++
++			memset(&debug, 0, sizeof(debug));
++			vcpu_guest_debug_set(vcpu, &debug);
++			vcpu = save_and_restore_vm(vm, vcpu);
++			break;
++
++		case UCALL_ABORT:
++			REPORT_GUEST_ASSERT(uc);
++			break;
++			/* NOT REACHED */
++		case UCALL_DONE:
++			goto done;
++		default:
++			TEST_FAIL("Unknown ucall 0x%lx.", uc.cmd);
++		}
+ 	}
+ done:
+ 	kvm_vm_free(vm);
 -- 
 2.53.0.273.g2a3d683680-goog
 
