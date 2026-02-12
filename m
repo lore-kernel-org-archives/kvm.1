@@ -1,135 +1,122 @@
-Received: from mail-wm1-f50.google.com (mail-wm1-f50.google.com [209.85.128.50])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from m16.mail.163.com (m16.mail.163.com [117.135.210.2])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E1D702DE71B
-	for <kvm@vger.kernel.org>; Thu, 12 Feb 2026 10:29:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1AB3D28DB54;
+	Thu, 12 Feb 2026 10:45:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=117.135.210.2
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770892146; cv=none; b=nm5T0jic962ZBFwU9CU8gQ4jnxS1v6Wpt87dOXcgAUQvuUfNbE3dqBpKoluMMiODeYGkUZ99C+a3I8LUToKovxjC1qw+7zyawYqEQ4IBUctVMvUXOc/Q1sEgXLhHuuCf9/owqpOuvcJzVaeVtecHZuWPjamgcuwaTrBXN3T150o=
+	t=1770893110; cv=none; b=qMFwrX0oq3aj0tgfh++CrJsF0keqzz+kK4jcP8hHheuebUUT+vZFLlgY3rDVrVcha6+rt2HB/rBVjJHdF0rGtw4clBrzc+tKRcpc2K2BgbiQ2LUaaOSWxKpj2W9Wbk5IlKaoXLfWVSKS2fNEipQmKG8SO/jtAlrofM8QzzbPui8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770892146; c=relaxed/simple;
-	bh=OJmNjBofLJOddVm/FKRMh+3l2G7M2Vx8ilcqxiy8HAo=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=XwWEj8uPd1OODN5FPcgtSh4t9woAaVZFDDpe6FPi5mfpY0quVD8LcpEwISQj4TB0faSl9NhbMMJD5oJLpKTF0WaygZ561Bp31T6XbSGP0eiVnYdDEAvrUznS7WVPxkVlx2OGSawJO/v9xFRH7KeH7Mz7Ja2l1TK2WqLd9nCnDrE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=PXShR+sm; arc=none smtp.client-ip=209.85.128.50
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1770893110; c=relaxed/simple;
+	bh=q9FkRkt9XTtnYFNQYulC4RjiWoYQrI+55cT2OIRD+ow=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=BAAAv1xvksRI/fW/G3k7RukvzekM3h2ZqgDxpO4YtAnM38vLnYIHcn+2gYWzFLFzJatc/tZmobd/+GyOSa3USD6fDiJ/fEo+HeYJXEwLQ0xF9Z8C+y666BWhyGE1D7MXg8dgS+jmv0DOdB1vDX0p7ZpFWh/RJbnsPTrroRsnqmk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=ZYglXK1R; arc=none smtp.client-ip=117.135.210.2
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="PXShR+sm"
-Received: by mail-wm1-f50.google.com with SMTP id 5b1f17b1804b1-4833115090dso27200105e9.3
-        for <kvm@vger.kernel.org>; Thu, 12 Feb 2026 02:29:04 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1770892143; x=1771496943; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=4ukC8L7aMMcFiC9OBGhE3kC51+n1YuHXGUHKK89uyTY=;
-        b=PXShR+smA5bb5z6JWrNAca3rl2fF04eH/iN7kcVRZ74cfS3cXlbGjv0Glti6QlEXAb
-         yGXWfq9aJcUcck1WWY/ZL4fX1sGCobXWLLq5p7jjvLFlroHNn4hD9DRuXbzeyKoszZ3B
-         pAmYZv467dNV4L0e3JUxw6d5C9QxYWtW1KvNvY5k5Kxzb3mal02La/JmPoQkaS6otdVL
-         yzMH/W2x4bJykTIdn2ds72TK/bndi0Q0F+YwoFpufdBK5QKutN7zZ3mKTPpOIEpbNF6h
-         odhnF1ST6HqxlnFYIrBim/jVOgfwxmkikaubcuLqAM45HZNlmB8WARf8CT1ezt/Q3YGr
-         2A/Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1770892143; x=1771496943;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=4ukC8L7aMMcFiC9OBGhE3kC51+n1YuHXGUHKK89uyTY=;
-        b=qKeuK19jKNnYnK3svT93Po8AuuJSPkObig0u24378tpe3lYMmbRpeXz3046QszTH3A
-         lmiIF+mS8hyuR1Bpub0/R3PgTosMSTieCHaZ0mb1rgxXC4SZxxxUZE6l9L9aocKNKwQA
-         pIm94KPVlfQlClzf2uNOlIJZAarjViG5oThPQgNCLGnZNr2yJ6M5Ggaewv70CR91x1Mo
-         mVcL+wAy7awy66ax/+v6H3M1bDy6jjFtCG8ZlMiRPCr9RYXe9ncorpNCVy4NiAXW1G0A
-         OMZjWAu8UaKMDPzk9ZzMVWhY8eV2wczUYgNeaVXNYTeeVH2E+5dih+lRKZ50QsQbOqXl
-         jaEw==
-X-Gm-Message-State: AOJu0YyyxHQuCM1cTWj+nnfbeUrQMoa3xUzAAcNOLdgxbCyg2x7CGhtp
-	RMR12gjnLoJ5V1JDjgY5f9wikkn/zl0zBaVcJPdaIafMjurqVMY720IVRSwmZUXC
-X-Gm-Gg: AZuq6aLNo6/AVhLU2PRQ0VczopYsIG6NWgWw77Jjfvf6ID3wV4Hba2b+lOefz7K0jp/
-	fD/oai25pbAUgRpDUgQJgK4upMYjrJ33AfQMXreB6w3pe+MAzW59KzgW9Mey/w1nt/dALvR8Z99
-	Tv4L5PxK2eLj0yjSvumzzu7a3f0KL9+/C4maG+fc0cFunee+21Fk4tPjyETFSirPEJIybsU8Sep
-	TzNhvw/SDUrpDxJsaYLd9U1LPuSx9j/rkhjY1hfGAdJZS6KO9IK76nUNrb6v6shr1Vi1ASQ05Wp
-	1qWzr6D2oaxc2sMFPdpuUrWV+p9/qnPQ+vxOCQDn5H/TCQKLp1lATknYAvzOdvxzwBlpFvOq8+H
-	ZzZ0E76Z4Q0ED615bWPwp8OEuRwMevhBR91lWVLd0MYZFyhWno5Fsy3rLSrbRMgv/oVsD4WBWJ3
-	J6JOuTYfX67BASK/gXxs/BerZhougNy3kw1PfxQK9WH0axzperACK5a04=
-X-Received: by 2002:a05:600c:64c9:b0:477:76bf:e1fb with SMTP id 5b1f17b1804b1-48367113bfbmr27264285e9.16.1770892142588;
-        Thu, 12 Feb 2026 02:29:02 -0800 (PST)
-Received: from fedora ([193.77.86.199])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4834d5d77f9sm200650115e9.3.2026.02.12.02.29.01
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 12 Feb 2026 02:29:02 -0800 (PST)
-From: Uros Bizjak <ubizjak@gmail.com>
-To: kvm@vger.kernel.org,
-	x86@kernel.org,
-	linux-kernel@vger.kernel.org
-Cc: Uros Bizjak <ubizjak@gmail.com>,
-	Sean Christopherson <seanjc@google.com>,
-	Paolo Bonzini <pbonzini@redhat.com>,
-	Thomas Gleixner <tglx@kernel.org>,
-	Ingo Molnar <mingo@kernel.org>,
-	Borislav Petkov <bp@alien8.de>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	"H. Peter Anvin" <hpa@zytor.com>
-Subject: [PATCH] KVM: x86: Fix incorrect memory constraint for FXSAVE in emulator
-Date: Thu, 12 Feb 2026 11:27:59 +0100
-Message-ID: <20260212102854.15790-1-ubizjak@gmail.com>
-X-Mailer: git-send-email 2.53.0
+	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="ZYglXK1R"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
+	s=s110527; h=From:To:Subject:Date:Message-ID:MIME-Version; bh=Io
+	7wlVzfMw58uZVcDRMHjuLTKFMhqga3Ka5BB7KcPEU=; b=ZYglXK1RN0i2cTtoej
+	pu05eYjndRabtlVxf4g19G/vcc0wzwNtieRMDvKBAsKrgaCode9RhtqpLe0Sj+By
+	8TXCw8mTMhg8XZ2vC0ptFChPLQI5opzpRq4k9S1q0pDxeQcJGzs6GD95Db69iVuR
+	XGR/Wo+/Jsh1UcwGrQLPkO6Po=
+Received: from 163.com (unknown [])
+	by gzga-smtp-mtada-g0-4 (Coremail) with SMTP id _____wA38f4Tr41pL2eqLA--.10527S3;
+	Thu, 12 Feb 2026 18:44:39 +0800 (CST)
+From: Zhiquan Li <zhiquan_li@163.com>
+To: seanjc@google.com,
+	pbonzini@redhat.com,
+	shuah@kernel.org
+Cc: kvm@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	zhiquan_li@163.com
+Subject: [PATCH v2 1/4] KVM: x86: selftests: Add CPU vendor detection for Hygon
+Date: Thu, 12 Feb 2026 18:38:38 +0800
+Message-ID: <20260212103841.171459-2-zhiquan_li@163.com>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20260212103841.171459-1-zhiquan_li@163.com>
+References: <20260212103841.171459-1-zhiquan_li@163.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:_____wA38f4Tr41pL2eqLA--.10527S3
+X-Coremail-Antispam: 1Uf129KBjvJXoWxWFW5Zw48Zr17KF17Cr17Wrg_yoW5Jw45pF
+	ykAr1rKF10gFnrta4xXr4ktry8XrZ7Wa1Iq34DXry3Aa12yry7Xrs7Ka4jvrZI9FWrW3s8
+	Za4xtF4YgFsrZaUanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x0pi1rWUUUUUU=
+X-CM-SenderInfo: 52kl13xdqbzxi6rwjhhfrp/xtbC6Reul2mNrxfYOAAA37
 
-The inline asm used to invoke FXSAVE in em_fxsave() and fxregs_fixup()
-incorrectly specifies the memory operand as read-write ("+m"). FXSAVE
-does not read from the destination operand; it only writes the current
-FPU state to memory.
+Currently some KVM selftests are failed on Hygon CPUs due to missing
+vendor detection and edge-case handling specific to Hygon's
+architecture.
 
-Using a read-write constraint is incorrect and misleading, as it tells
-the compiler that the previous contents of the buffer are consumed by
-the instruction. In both cases, the buffer passed to FXSAVE is
-uninitialized, and marking it as read-write can therefore create a
-false dependency on uninitialized memory.
+Add CPU vendor detection for Hygon and add a global variable
+"host_cpu_is_hygon" as the basic facility for the following fixes.
 
-Fix the constraint to write-only ("=m") to accurately describe the
-instruction’s behavior and avoid implying that the buffer is read.
-
-No functional change intended.
-
-Signed-off-by: Uros Bizjak <ubizjak@gmail.com>
-Cc: Sean Christopherson <seanjc@google.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>
-Cc: Thomas Gleixner <tglx@kernel.org>
-Cc: Ingo Molnar <mingo@kernel.org>
-Cc: Borislav Petkov <bp@alien8.de>
-Cc: Dave Hansen <dave.hansen@linux.intel.com>
-Cc: "H. Peter Anvin" <hpa@zytor.com>
+Signed-off-by: Zhiquan Li <zhiquan_li@163.com>
 ---
- arch/x86/kvm/emulate.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ tools/testing/selftests/kvm/include/x86/processor.h | 6 ++++++
+ tools/testing/selftests/kvm/lib/x86/processor.c     | 3 +++
+ 2 files changed, 9 insertions(+)
 
-diff --git a/arch/x86/kvm/emulate.c b/arch/x86/kvm/emulate.c
-index c8e292e9a24d..d60094080e3f 100644
---- a/arch/x86/kvm/emulate.c
-+++ b/arch/x86/kvm/emulate.c
-@@ -3717,7 +3717,7 @@ static int em_fxsave(struct x86_emulate_ctxt *ctxt)
+diff --git a/tools/testing/selftests/kvm/include/x86/processor.h b/tools/testing/selftests/kvm/include/x86/processor.h
+index 4ebae4269e68..1338de7111e7 100644
+--- a/tools/testing/selftests/kvm/include/x86/processor.h
++++ b/tools/testing/selftests/kvm/include/x86/processor.h
+@@ -21,6 +21,7 @@
  
- 	kvm_fpu_get();
+ extern bool host_cpu_is_intel;
+ extern bool host_cpu_is_amd;
++extern bool host_cpu_is_hygon;
+ extern uint64_t guest_tsc_khz;
  
--	rc = asm_safe("fxsave %[fx]", , [fx] "+m"(fx_state));
-+	rc = asm_safe("fxsave %[fx]", , [fx] "=m"(fx_state));
+ #ifndef MAX_NR_CPUID_ENTRIES
+@@ -694,6 +695,11 @@ static inline bool this_cpu_is_amd(void)
+ 	return this_cpu_vendor_string_is("AuthenticAMD");
+ }
  
- 	kvm_fpu_put();
++static inline bool this_cpu_is_hygon(void)
++{
++	return this_cpu_vendor_string_is("HygonGenuine");
++}
++
+ static inline uint32_t __this_cpu_has(uint32_t function, uint32_t index,
+ 				      uint8_t reg, uint8_t lo, uint8_t hi)
+ {
+diff --git a/tools/testing/selftests/kvm/lib/x86/processor.c b/tools/testing/selftests/kvm/lib/x86/processor.c
+index fab18e9be66c..f6b1c5324931 100644
+--- a/tools/testing/selftests/kvm/lib/x86/processor.c
++++ b/tools/testing/selftests/kvm/lib/x86/processor.c
+@@ -23,6 +23,7 @@
+ vm_vaddr_t exception_handlers;
+ bool host_cpu_is_amd;
+ bool host_cpu_is_intel;
++bool host_cpu_is_hygon;
+ bool is_forced_emulation_enabled;
+ uint64_t guest_tsc_khz;
  
-@@ -3741,7 +3741,7 @@ static noinline int fxregs_fixup(struct fxregs_state *fx_state,
- 	struct fxregs_state fx_tmp;
- 	int rc;
+@@ -792,6 +793,7 @@ void kvm_arch_vm_post_create(struct kvm_vm *vm, unsigned int nr_vcpus)
  
--	rc = asm_safe("fxsave %[fx]", , [fx] "+m"(fx_tmp));
-+	rc = asm_safe("fxsave %[fx]", , [fx] "=m"(fx_tmp));
- 	memcpy((void *)fx_state + used_size, (void *)&fx_tmp + used_size,
- 	       __fxstate_size(16) - used_size);
+ 	sync_global_to_guest(vm, host_cpu_is_intel);
+ 	sync_global_to_guest(vm, host_cpu_is_amd);
++	sync_global_to_guest(vm, host_cpu_is_hygon);
+ 	sync_global_to_guest(vm, is_forced_emulation_enabled);
+ 	sync_global_to_guest(vm, pmu_errata_mask);
  
+@@ -1424,6 +1426,7 @@ void kvm_selftest_arch_init(void)
+ {
+ 	host_cpu_is_intel = this_cpu_is_intel();
+ 	host_cpu_is_amd = this_cpu_is_amd();
++	host_cpu_is_hygon = this_cpu_is_hygon();
+ 	is_forced_emulation_enabled = kvm_is_forced_emulation_enabled();
+ 
+ 	kvm_init_pmu_errata();
 -- 
-2.53.0
+2.43.0
 
