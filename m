@@ -1,232 +1,232 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from cstnet.cn (smtp25.cstnet.cn [159.226.251.25])
+	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0889F31D39F
-	for <kvm@vger.kernel.org>; Fri, 13 Feb 2026 10:06:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B463D335543;
+	Fri, 13 Feb 2026 10:36:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.25
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770977173; cv=none; b=r0qCGzI0i4UVn+jTHpCrGvWWtlt1m9pq7E7O09YJFkV4KLKcB1xz/eccmlHEGYtMp2stJL0VqcHHfuQEczoQkBxf/40Chl8qoK5AsmzdVtdbKpJ2XiJY+yoe4tSFHkrD4DR+TJmTXybQRwcg8h8Zc7WoggyH9HTnKFtin29eOuo=
+	t=1770979021; cv=none; b=EVobwycMUoy6OzHTl9ih7yoArFEnxptpJrwGrUcRoMRJqgqjfsQWWsu2qCnWs0AlcE+ZgF0XS3NBbVBd15Hy+9GAEQGHRiGCy6IZBXhEWGbe9q7G//t3ylMoaA2oPWa/QZMJoMm/JG58dLtoQ5BXUuMmkZguYfSetPHhgFhyWzY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770977173; c=relaxed/simple;
-	bh=6mIELK5nNn7Xh+eT/MgDDxWv5iQfYKBRmUxr3AG1+lQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition; b=Gg5f7YjqXI1y6otzLKnVpgDfL5JlLoPVhtwzYjwJUOo2ofUwreI3oIdWuWOUAb6QPtS33quV6LBP/X9lcW/SjDBd8lHNOn8LgHKHSc+tXzZFMRZ+/0NERBNfgyDDlHLMbYb14fiDA/BqK+ScUyoy52G3BZQBLXoyp95+sUMJT58=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=XKFPq7fR; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=K1Bc2fTa; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="XKFPq7fR";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="K1Bc2fTa"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1770977170;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=r1LQlvU779hukNCrleE0cgnZ7I3RlCxW4V1fZnT6UB4=;
-	b=XKFPq7fRQ923zeAAUUyNSbvdGIe7x17zQFMJp1txiuSdv4hjzLC0QJ0CxSkADx80ULnhlS
-	yaviPOBvi9mo1AVmQ4b1QF1/jup9nQbPOj+xisGY+VizW48aABMaVMByeZ4qR3/WKvvpAj
-	0YmqhRfoIlkQO5eYZJM7SdSzNufaDQM=
-Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
- [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-183-sgVMfK-4O5OZCEJXzMRpLQ-1; Fri, 13 Feb 2026 05:06:08 -0500
-X-MC-Unique: sgVMfK-4O5OZCEJXzMRpLQ-1
-X-Mimecast-MFC-AGG-ID: sgVMfK-4O5OZCEJXzMRpLQ_1770977168
-Received: by mail-wm1-f69.google.com with SMTP id 5b1f17b1804b1-48071615686so6587145e9.1
-        for <kvm@vger.kernel.org>; Fri, 13 Feb 2026 02:06:08 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1770977167; x=1771581967; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-disposition:mime-version
-         :message-id:subject:cc:to:from:date:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=r1LQlvU779hukNCrleE0cgnZ7I3RlCxW4V1fZnT6UB4=;
-        b=K1Bc2fTa9K0K5/i3vxiR6Ufd6rL9r8JVlsORQBZ2hsVYJAhoyWJcPgd5KJRTCux8vm
-         5Bqm5QakOT+SELGK4VpuQdnGqRkXGzg7XWDIGMgMTLVPqBTBWO4rV8fS/KLQg7QV89Lj
-         qhP0OHLeJ6ixB5Fxt9VDvsv9Op6ZnqHs8ampv7PoLCQo5KtK96sNKcuEQvqp/FempHMN
-         aWr+8M8RpkjhD2K2+I1AINxBwVT0AkvAPG8FjxEKmP1S9Foh6bLKiHAiObK92s7X1iS2
-         fg+REfUKOkjavMWFdVRi/Eh5L3YheHpyKYCg4wh5z3RpcQbl7KUAkRay/qptAJze5A0F
-         fhSQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1770977167; x=1771581967;
-        h=content-transfer-encoding:content-disposition:mime-version
-         :message-id:subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=r1LQlvU779hukNCrleE0cgnZ7I3RlCxW4V1fZnT6UB4=;
-        b=VWLati1XvSWrx0giJCK40IqEha9WUHCGc9F7RRC24jMj39udGy8HDTOYtC1bXMbG5j
-         SOACxPItqIbATFsxg17mJHT7e7fK1P7V/SOExtaeTuqwaqXu6xrFs+SOrCY7nif+j0dJ
-         WTjM+5gkL142BDppe1qME/vA+63211w/RFEa7B0V8O/oiZXIupJSAtcsNDxKz1e1RivT
-         xoWT3BXAFN20hND6q8x9NqHkk5l/rxqAYc+yZaraFI9aE4tioRnDiRrx5UcnJvB74dKq
-         j74hl3Dm8VEv2+7OdD4CEy4t9rx8GedfJzrxB/4RCZl2fZnMUZxVDYlM2KAQUTmCNnZP
-         hDfA==
-X-Gm-Message-State: AOJu0Ywvrzqgcf0BZvWoZ7wWyk/d6ER/NAgi+mVGpurN2UaXxigzeD+W
-	Q+TjWy+RGTHXyZNn+5u6LAGHDC91o1qSMYS2/RRMlBvV79ThfsXtuMnk71U2i2oVBPRd7hkoSQw
-	kYB26Kk2abSVVLOArGOtW51DQU6gMrT2Y/nVHMNH1PfrjJ9EsLYrr7g==
-X-Gm-Gg: AZuq6aKm5YoJHarMEN/FizuVLKxw7FI545FYXWoVvGuS/tDJgDQoaxt/Oiadx8ZNSSG
-	dGCVX+CIpmKc0eSFlMwfFuHAB9PZMmSJz1ygK7i4rKDoNULxCLK1T2Y9f7sJ6kMlx+HdtLaiG7i
-	99F17kRA1pwK//kJxcfs5nvekM8QMtIMZH9iQtBQ4Bt7nz5aOYNSB9P/7cYA15yTtyfeAHB8mHa
-	ZYroDbL9s3St9Q5scxji7ebODeI3XAwCv2NRj0u8h+a8/GngAyMIuB0Pr2Q8pReeDcc4tiyZYyd
-	5PZVs69M9Uhu5yZjH+8IsnclcMbfnU038a5V9Bl9K35n13nhsExIIb4N3QVLP1/mxu6ytbKYYYz
-	pCicZ/Sqway2Qj7hNxJ2sKavFYgpYPpXWHsTm3M5QH/PShw==
-X-Received: by 2002:a05:600c:4704:b0:483:3380:ca11 with SMTP id 5b1f17b1804b1-48373a74dccmr18964895e9.33.1770977167369;
-        Fri, 13 Feb 2026 02:06:07 -0800 (PST)
-X-Received: by 2002:a05:600c:4704:b0:483:3380:ca11 with SMTP id 5b1f17b1804b1-48373a74dccmr18964275e9.33.1770977166842;
-        Fri, 13 Feb 2026 02:06:06 -0800 (PST)
-Received: from redhat.com (IGLD-80-230-34-155.inter.net.il. [80.230.34.155])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-48371a21cbesm20921345e9.5.2026.02.13.02.06.04
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 13 Feb 2026 02:06:06 -0800 (PST)
-Date: Fri, 13 Feb 2026 05:06:02 -0500
-From: "Michael S. Tsirkin" <mst@redhat.com>
-To: Linus Torvalds <torvalds@linux-foundation.org>
-Cc: kvm@vger.kernel.org, virtualization@lists.linux-foundation.org,
-	netdev@vger.kernel.org, linux-kernel@vger.kernel.org, arnd@arndb.de,
-	bartosz.golaszewski@oss.qualcomm.com, bp@alien8.de,
-	eperezma@redhat.com, jasowang@redhat.com, jon@nutanix.com,
-	kshankar@marvell.com, leiyang@redhat.com, lulu@redhat.com,
-	maobibo@loongson.cn, mst@redhat.com, m.szyprowski@samsung.com,
-	seanjc@google.com, sgarzare@redhat.com, stable@vger.kernel.org,
-	thomas.weissschuh@linutronix.de, viresh.kumar@linaro.org,
-	xiyou.wangcong@gmail.com, zhangdongchuan@eswincomputing.com
-Subject: [GIT PULL] virtio,vhost,vdpa: features, fixes
-Message-ID: <20260213050602-mutt-send-email-mst@kernel.org>
+	s=arc-20240116; t=1770979021; c=relaxed/simple;
+	bh=zwMKAQFVwkPKkCQMq65uZ1GxN38XckvtletF7h923/o=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=hPXqFmUou802tEtOcwEKH5QvIP7OUJx3owcZM0q/QLFDSmGJpWCgCUW0QZ9m0zR176eQFfaIZvNeANDYPzsoAYg9idHbm9rSx8RoVn6Zl+ID3nGY3b2edVgiQ1oyWxjzWj2FDPH7c8cnTuuRoyPfw+LKJ3FDzOQbIr4W1cNbAT8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.25
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iscas.ac.cn
+Received: from fric.. (unknown [210.73.43.101])
+	by APP-05 (Coremail) with SMTP id zQCowAC3RgqO_o5pQN4uCA--.25463S4;
+	Fri, 13 Feb 2026 18:36:01 +0800 (CST)
+From: Jiakai Xu <xujiakai2025@iscas.ac.cn>
+To: linux-kernel@vger.kernel.org,
+	kvm@vger.kernel.org,
+	kvm-riscv@lists.infradead.org,
+	linux-riscv@lists.infradead.org,
+	linux-kselftest@vger.kernel.org
+Cc: Anup Patel <anup@brainfault.org>,
+	Atish Patra <atish.patra@linux.dev>,
+	Paul Walmsley <pjw@kernel.org>,
+	Palmer Dabbelt <palmer@dabbelt.com>,
+	Albert Ou <aou@eecs.berkeley.edu>,
+	Alexandre Ghiti <alex@ghiti.fr>,
+	Andrew Jones <ajones@ventanamicro.com>,
+	Paolo Bonzini <pbonzini@redhat.com>,
+	Shuah Khan <shuah@kernel.org>,
+	Jiakai Xu <xujiakai2025@iscas.ac.cn>,
+	Jiakai Xu <jiakaiPeanut@gmail.com>
+Subject: [PATCH v7 2/3] KVM: selftests: Refactor UAPI tests into dedicated function
+Date: Fri, 13 Feb 2026 10:35:56 +0000
+Message-Id: <20260213103557.3207335-3-xujiakai2025@iscas.ac.cn>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20260213103557.3207335-1-xujiakai2025@iscas.ac.cn>
+References: <20260213103557.3207335-1-xujiakai2025@iscas.ac.cn>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-X-Mutt-Fcc: =sent
+X-CM-TRANSID:zQCowAC3RgqO_o5pQN4uCA--.25463S4
+X-Coremail-Antispam: 1UD129KBjvJXoWxtr4kXr17Gr18Jr17urWUtwb_yoW7XFWkpF
+	97CrZIqrW8tr4fKw1xWrWv9F15Gw4vkrn7Zry7Zw4rAr4kKrZrJF1xCryjvF98KFZ5X3Wf
+	Za4SvF47uF4qkF7anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDU0xBIdaVrnRJUUUQY14x267AKxVWrJVCq3wAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
+	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2048vs2IY020E87I2jVAFwI0_Jryl82xGYIkIc2
+	x26xkF7I0E14v26ryj6s0DM28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48ve4kI8wA2z4x0
+	Y4vE2Ix0cI8IcVAFwI0_Gr0_Xr1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI0_Cr0_Gr1UM2
+	8EF7xvwVC2z280aVAFwI0_GcCE3s1l84ACjcxK6I8E87Iv6xkF7I0E14v26rxl6s0DM2vY
+	z4IE04k24VAvwVAKI4IrM2AIxVAIcxkEcVAq07x20xvEncxIr21l5I8CrVACY4xI64kE6c
+	02F40Ex7xfMcIj6xIIjxv20xvE14v26r1j6r18McIj6I8E87Iv67AKxVWUJVW8JwAm72CE
+	4IkC6x0Yz7v_Jr0_Gr1lF7xvr2IYc2Ij64vIr41lF7I21c0EjII2zVCS5cI20VAGYxC7M4
+	IIrI8v6xkF7I0E8cxan2IY04v7MxkF7I0En4kS14v26r1q6r43MxAIw28IcxkI7VAKI48J
+	MxC20s026xCaFVCjc4AY6r1j6r4UMI8I3I0E5I8CrVAFwI0_Jr0_Jr4lx2IqxVCjr7xvwV
+	AFwI0_JrI_JrWlx4CE17CEb7AF67AKxVW8ZVWrXwCIc40Y0x0EwIxGrwCI42IY6xIIjxv2
+	0xvE14v26r1j6r1xMIIF0xvE2Ix0cI8IcVCY1x0267AKxVW8JVWxJwCI42IY6xAIw20EY4
+	v20xvaj40_Jr0_JF4lIxAIcVC2z280aVAFwI0_Jr0_Gr1lIxAIcVC2z280aVCY1x0267AK
+	xVW8JVW8JrUvcSsGvfC2KfnxnUUI43ZEXa7VUbyCJJUUUUU==
+X-CM-SenderInfo: 50xmxthndljiysv6x2xfdvhtffof0/1tbiBwoRCWmOijX6igAAs9
 
-The following changes since commit d8ee3cfdc89b75dc059dc21c27bef2c1440f67eb:
+Move steal time UAPI tests from steal_time_init() into a separate
+check_steal_time_uapi() function for better code organization and
+maintainability.
 
-  vhost/vsock: improve RCU read sections around vhost_vsock_get() (2025-12-24 08:02:57 -0500)
+Previously, x86 and ARM64 architectures performed UAPI validation
+tests within steal_time_init(), mixing initialization logic with
+uapi tests.
 
-are available in the Git repository at:
+Changes by architecture:
+x86_64:
+  - Extract MSR reserved bits test from steal_time_init()
+  - Move to check_steal_time_uapi() which tests that setting
+    MSR_KVM_STEAL_TIME with KVM_STEAL_RESERVED_MASK fails
+ARM64:
+  - Extract three UAPI tests from steal_time_init():
+    	Device attribute support check
+    	Misaligned IPA rejection (EINVAL)
+    	Duplicate IPA setting rejection (EEXIST)
+  - Move all tests to check_steal_time_uapi()
+RISC-V:
+  - Add empty check_steal_time_uapi() stub for future use
+  - No changes to steal_time_init() (had no tests to extract)
 
-  https://git.kernel.org/pub/scm/linux/kernel/git/mst/vhost.git tags/for_linus
+The new check_steal_time_uapi() function:
+  - Is called once before the per-VCPU test loop
 
-for you to fetch changes up to ebcff9dacaf2c1418f8bc927388186d7d3674603:
+No functional change intended.
 
-  vduse: avoid adding implicit padding (2026-02-09 12:21:32 -0500)
+Signed-off-by: Jiakai Xu <xujiakai2025@iscas.ac.cn>
+Signed-off-by: Jiakai Xu <jiakaiPeanut@gmail.com>
+---
+ tools/testing/selftests/kvm/steal_time.c | 63 ++++++++++++++++++------
+ 1 file changed, 47 insertions(+), 16 deletions(-)
 
-----------------------------------------------------------------
-virtio,vhost,vdpa: features, fixes
-
-- in order support in virtio core
-- multiple address space support in vduse
-- fixes, cleanups all over the place, notably
-  - dma alignment fixes for non cache coherent systems
-
-Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
-
-----------------------------------------------------------------
-Arnd Bergmann (1):
-      vduse: avoid adding implicit padding
-
-Bibo Mao (3):
-      crypto: virtio: Add spinlock protection with virtqueue notification
-      crypto: virtio: Remove duplicated virtqueue_kick in virtio_crypto_skcipher_crypt_req
-      crypto: virtio: Replace package id with numa node id
-
-Cindy Lu (3):
-      vdpa/mlx5: update mlx_features with driver state check
-      vdpa/mlx5: reuse common function for MAC address updates
-      vdpa/mlx5: update MAC address handling in mlx5_vdpa_set_attr()
-
-Eugenio Pérez (13):
-      vhost: move vdpa group bound check to vhost_vdpa
-      vduse: add v1 API definition
-      vduse: add vq group support
-      vduse: return internal vq group struct as map token
-      vdpa: document set_group_asid thread safety
-      vhost: forbid change vq groups ASID if DRIVER_OK is set
-      vduse: refactor vdpa_dev_add for goto err handling
-      vduse: remove unused vaddr parameter of vduse_domain_free_coherent
-      vduse: take out allocations from vduse_dev_alloc_coherent
-      vduse: merge tree search logic of IOTLB_GET_FD and IOTLB_GET_INFO ioctls
-      vduse: add vq group asid support
-      vduse: bump version number
-      Documentation: Add documentation for VDUSE Address Space IDs
-
-Jason Wang (19):
-      virtio_ring: rename virtqueue_reinit_xxx to virtqueue_reset_xxx()
-      virtio_ring: switch to use vring_virtqueue in virtqueue_poll variants
-      virtio_ring: unify logic of virtqueue_poll() and more_used()
-      virtio_ring: switch to use vring_virtqueue for virtqueue resize variants
-      virtio_ring: switch to use vring_virtqueue for virtqueue_kick_prepare variants
-      virtio_ring: switch to use vring_virtqueue for virtqueue_add variants
-      virtio: switch to use vring_virtqueue for virtqueue_get variants
-      virtio_ring: switch to use vring_virtqueue for enable_cb_prepare variants
-      virtio_ring: use vring_virtqueue for enable_cb_delayed variants
-      virtio_ring: switch to use vring_virtqueue for disable_cb variants
-      virtio_ring: switch to use vring_virtqueue for detach_unused_buf variants
-      virtio_ring: switch to use unsigned int for virtqueue_poll_packed()
-      virtio_ring: introduce virtqueue ops
-      virtio_ring: determine descriptor flags at one time
-      virtio_ring: factor out core logic of buffer detaching
-      virtio_ring: factor out core logic for updating last_used_idx
-      virtio_ring: factor out split indirect detaching logic
-      virtio_ring: factor out split detaching logic
-      virtio_ring: add in order support
-
-Jon Kohler (1):
-      vhost: use "checked" versions of get_user() and put_user()
-
-Kommula Shiva Shankar (1):
-      vhost: fix caching attributes of MMIO regions by setting them explicitly
-
-Michael S. Tsirkin (16):
-      dma-mapping: add __dma_from_device_group_begin()/end()
-      docs: dma-api: document __dma_from_device_group_begin()/end()
-      dma-mapping: add DMA_ATTR_CPU_CACHE_CLEAN
-      docs: dma-api: document DMA_ATTR_CPU_CACHE_CLEAN
-      dma-debug: track cache clean flag in entries
-      virtio: add virtqueue_add_inbuf_cache_clean API
-      vsock/virtio: fix DMA alignment for event_list
-      vsock/virtio: use virtqueue_add_inbuf_cache_clean for events
-      virtio_input: fix DMA alignment for evts
-      virtio_scsi: fix DMA cacheline issues for events
-      virtio-rng: fix DMA alignment for data buffer
-      virtio_input: use virtqueue_add_inbuf_cache_clean for events
-      vsock/virtio: reorder fields to reduce padding
-      gpio: virtio: fix DMA alignment
-      gpio: virtio: reorder fields to reduce struct padding
-      checkpatch: special-case cacheline group macros
-
-Thomas Weißschuh (1):
-      virtio: uapi: avoid usage of libc types
-
-zhangdongchuan@eswincomputing.com (1):
-      virtio_ring: code cleanup in detach_buf_split
-
- Documentation/core-api/dma-api-howto.rst           |   52 +
- Documentation/core-api/dma-attributes.rst          |    9 +
- Documentation/userspace-api/vduse.rst              |   53 +
- drivers/char/hw_random/virtio-rng.c                |    3 +
- drivers/crypto/virtio/virtio_crypto_common.h       |    2 +-
- drivers/crypto/virtio/virtio_crypto_core.c         |    5 +
- .../crypto/virtio/virtio_crypto_skcipher_algs.c    |    2 -
- drivers/gpio/gpio-virtio.c                         |   15 +-
- drivers/scsi/virtio_scsi.c                         |   17 +-
- drivers/vdpa/mlx5/net/mlx5_vnet.c                  |  156 +--
- drivers/vdpa/vdpa_sim/vdpa_sim.c                   |    6 -
- drivers/vdpa/vdpa_user/iova_domain.c               |   27 +-
- drivers/vdpa/vdpa_user/iova_domain.h               |    8 +-
- drivers/vdpa/vdpa_user/vduse_dev.c                 |  524 +++++++---
- drivers/vhost/vdpa.c                               |    5 +-
- drivers/vhost/vhost.c                              |    8 +-
- drivers/virtio/virtio_input.c                      |    5 +-
- drivers/virtio/virtio_ring.c                       | 1010 +++++++++++++++-----
- include/linux/dma-mapping.h                        |   20 +
- include/linux/vdpa.h                               |    4 +-
- include/linux/virtio.h                             |   11 +-
- include/uapi/linux/vduse.h                         |   85 +-
- include/uapi/linux/virtio_ring.h                   |    5 +-
- kernel/dma/debug.c                                 |   28 +-
- net/vmw_vsock/virtio_transport.c                   |   19 +-
- scripts/checkpatch.pl                              |    4 +-
- 26 files changed, 1567 insertions(+), 516 deletions(-)
+diff --git a/tools/testing/selftests/kvm/steal_time.c b/tools/testing/selftests/kvm/steal_time.c
+index 8edc1fca345ba..a814f6f3f8b41 100644
+--- a/tools/testing/selftests/kvm/steal_time.c
++++ b/tools/testing/selftests/kvm/steal_time.c
+@@ -69,16 +69,10 @@ static bool is_steal_time_supported(struct kvm_vcpu *vcpu)
+ 
+ static void steal_time_init(struct kvm_vcpu *vcpu, uint32_t i)
+ {
+-	int ret;
+-
+ 	/* ST_GPA_BASE is identity mapped */
+ 	st_gva[i] = (void *)(ST_GPA_BASE + i * STEAL_TIME_SIZE);
+ 	sync_global_to_guest(vcpu->vm, st_gva[i]);
+ 
+-	ret = _vcpu_set_msr(vcpu, MSR_KVM_STEAL_TIME,
+-			    (ulong)st_gva[i] | KVM_STEAL_RESERVED_MASK);
+-	TEST_ASSERT(ret == 0, "Bad GPA didn't fail");
+-
+ 	vcpu_set_msr(vcpu, MSR_KVM_STEAL_TIME, (ulong)st_gva[i] | KVM_MSR_ENABLED);
+ }
+ 
+@@ -99,6 +93,18 @@ static void steal_time_dump(struct kvm_vm *vm, uint32_t vcpu_idx)
+ 			st->pad[8], st->pad[9], st->pad[10]);
+ }
+ 
++static void check_steal_time_uapi(struct kvm_vcpu *vcpu)
++{
++	int ret;
++
++	st_gva[0] = (void *)(ST_GPA_BASE);
++	sync_global_to_guest(vcpu->vm, st_gva[0]);
++
++	ret = _vcpu_set_msr(vcpu, MSR_KVM_STEAL_TIME,
++			    (ulong)st_gva[0] | KVM_STEAL_RESERVED_MASK);
++	TEST_ASSERT(ret == 0, "Bad GPA didn't fail");
++}
++
+ #elif defined(__aarch64__)
+ 
+ /* PV_TIME_ST must have 64-byte alignment */
+@@ -170,7 +176,6 @@ static void steal_time_init(struct kvm_vcpu *vcpu, uint32_t i)
+ {
+ 	struct kvm_vm *vm = vcpu->vm;
+ 	uint64_t st_ipa;
+-	int ret;
+ 
+ 	struct kvm_device_attr dev = {
+ 		.group = KVM_ARM_VCPU_PVTIME_CTRL,
+@@ -178,21 +183,12 @@ static void steal_time_init(struct kvm_vcpu *vcpu, uint32_t i)
+ 		.addr = (uint64_t)&st_ipa,
+ 	};
+ 
+-	vcpu_ioctl(vcpu, KVM_HAS_DEVICE_ATTR, &dev);
+-
+ 	/* ST_GPA_BASE is identity mapped */
+ 	st_gva[i] = (void *)(ST_GPA_BASE + i * STEAL_TIME_SIZE);
+ 	sync_global_to_guest(vm, st_gva[i]);
+ 
+-	st_ipa = (ulong)st_gva[i] | 1;
+-	ret = __vcpu_ioctl(vcpu, KVM_SET_DEVICE_ATTR, &dev);
+-	TEST_ASSERT(ret == -1 && errno == EINVAL, "Bad IPA didn't report EINVAL");
+-
+ 	st_ipa = (ulong)st_gva[i];
+ 	vcpu_ioctl(vcpu, KVM_SET_DEVICE_ATTR, &dev);
+-
+-	ret = __vcpu_ioctl(vcpu, KVM_SET_DEVICE_ATTR, &dev);
+-	TEST_ASSERT(ret == -1 && errno == EEXIST, "Set IPA twice without EEXIST");
+ }
+ 
+ static void steal_time_dump(struct kvm_vm *vm, uint32_t vcpu_idx)
+@@ -205,6 +201,34 @@ static void steal_time_dump(struct kvm_vm *vm, uint32_t vcpu_idx)
+ 	ksft_print_msg("    st_time: %ld\n", st->st_time);
+ }
+ 
++static void check_steal_time_uapi(struct kvm_vcpu *vcpu)
++{
++	struct kvm_vm *vm = vcpu->vm;
++	uint64_t st_ipa;
++	int ret;
++
++	struct kvm_device_attr dev = {
++		.group = KVM_ARM_VCPU_PVTIME_CTRL,
++		.attr = KVM_ARM_VCPU_PVTIME_IPA,
++		.addr = (uint64_t)&st_ipa,
++	};
++
++	vcpu_ioctl(vcpu, KVM_HAS_DEVICE_ATTR, &dev);
++
++	st_gva[0] = (void *)(ST_GPA_BASE);
++	sync_global_to_guest(vm, st_gva[0]);
++
++	st_ipa = (ulong)st_gva[0] | 1;
++	ret = __vcpu_ioctl(vcpu, KVM_SET_DEVICE_ATTR, &dev);
++	TEST_ASSERT(ret == -1 && errno == EINVAL, "Bad IPA didn't report EINVAL");
++
++	st_ipa = (ulong)st_gva[0];
++	vcpu_ioctl(vcpu, KVM_SET_DEVICE_ATTR, &dev);
++
++	ret = __vcpu_ioctl(vcpu, KVM_SET_DEVICE_ATTR, &dev);
++	TEST_ASSERT(ret == -1 && errno == EEXIST, "Set IPA twice without EEXIST");
++}
++
+ #elif defined(__riscv)
+ 
+ /* SBI STA shmem must have 64-byte alignment */
+@@ -301,6 +325,11 @@ static void steal_time_dump(struct kvm_vm *vm, uint32_t vcpu_idx)
+ 	pr_info("\n");
+ }
+ 
++static void check_steal_time_uapi(struct kvm_vcpu *vcpu)
++{
++	/* RISC-V UAPI tests will be added in a subsequent patch */
++}
++
+ #endif
+ 
+ static void *do_steal_time(void *arg)
+@@ -369,6 +398,8 @@ int main(int ac, char **av)
+ 	TEST_REQUIRE(is_steal_time_supported(vcpus[0]));
+ 	ksft_set_plan(NR_VCPUS);
+ 
++	check_steal_time_uapi(vcpus[0]);
++
+ 	/* Run test on each VCPU */
+ 	for (i = 0; i < NR_VCPUS; ++i) {
+ 		steal_time_init(vcpus[i], i);
+-- 
+2.34.1
 
