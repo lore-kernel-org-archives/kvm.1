@@ -1,22 +1,21 @@
 Received: from cstnet.cn (smtp25.cstnet.cn [159.226.251.25])
 	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B463D335543;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B46B934D4DE;
 	Fri, 13 Feb 2026 10:36:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.25
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770979021; cv=none; b=EVobwycMUoy6OzHTl9ih7yoArFEnxptpJrwGrUcRoMRJqgqjfsQWWsu2qCnWs0AlcE+ZgF0XS3NBbVBd15Hy+9GAEQGHRiGCy6IZBXhEWGbe9q7G//t3ylMoaA2oPWa/QZMJoMm/JG58dLtoQ5BXUuMmkZguYfSetPHhgFhyWzY=
+	t=1770979022; cv=none; b=XNO3gS0TpjKfiIxg9iaalT6vw2Xli75zQzudwvexVweTZk+3sYlwDC7dDqt9Tl1rCePcSqwhqrBzCtWzeDXOFmyWtLMXor3muxZMltKLELq+TGVRIBM9WjX2NCFTRVGcI3Gwrykdoc0PAuzFfyBZ0hQqIpEmqurze7fTDhoN9nk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770979021; c=relaxed/simple;
-	bh=zwMKAQFVwkPKkCQMq65uZ1GxN38XckvtletF7h923/o=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=hPXqFmUou802tEtOcwEKH5QvIP7OUJx3owcZM0q/QLFDSmGJpWCgCUW0QZ9m0zR176eQFfaIZvNeANDYPzsoAYg9idHbm9rSx8RoVn6Zl+ID3nGY3b2edVgiQ1oyWxjzWj2FDPH7c8cnTuuRoyPfw+LKJ3FDzOQbIr4W1cNbAT8=
+	s=arc-20240116; t=1770979022; c=relaxed/simple;
+	bh=vfBSAmZmvOwXoP+maoSaDabWhGXrw9vGdZpuUOpcqBQ=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=R1r2Ajg7GuTE5JgsZv1GWW4XHo7KeVjO0pO+Jsva4q+ASgy3Tl9rX3WkbzvlVn3Xv+IIeR6h2kTYEWaudJ686qkJ3uVG2CKRCz6ohO+rKs7J8tOe7GrGsqT7mgaP60vJqfnPGouLdQlZbl2q+rsz2tGJs4VNrc40y8dt/2j9ie8=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.25
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iscas.ac.cn
 Received: from fric.. (unknown [210.73.43.101])
-	by APP-05 (Coremail) with SMTP id zQCowAC3RgqO_o5pQN4uCA--.25463S4;
-	Fri, 13 Feb 2026 18:36:01 +0800 (CST)
+	by APP-05 (Coremail) with SMTP id zQCowAC3RgqO_o5pQN4uCA--.25463S2;
+	Fri, 13 Feb 2026 18:35:59 +0800 (CST)
 From: Jiakai Xu <xujiakai2025@iscas.ac.cn>
 To: linux-kernel@vger.kernel.org,
 	kvm@vger.kernel.org,
@@ -32,14 +31,11 @@ Cc: Anup Patel <anup@brainfault.org>,
 	Andrew Jones <ajones@ventanamicro.com>,
 	Paolo Bonzini <pbonzini@redhat.com>,
 	Shuah Khan <shuah@kernel.org>,
-	Jiakai Xu <xujiakai2025@iscas.ac.cn>,
-	Jiakai Xu <jiakaiPeanut@gmail.com>
-Subject: [PATCH v7 2/3] KVM: selftests: Refactor UAPI tests into dedicated function
-Date: Fri, 13 Feb 2026 10:35:56 +0000
-Message-Id: <20260213103557.3207335-3-xujiakai2025@iscas.ac.cn>
+	Jiakai Xu <xujiakai2025@iscas.ac.cn>
+Subject: [PATCH v7 0/3] RISC-V: KVM: Validate SBI STA shmem alignment
+Date: Fri, 13 Feb 2026 10:35:54 +0000
+Message-Id: <20260213103557.3207335-1-xujiakai2025@iscas.ac.cn>
 X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20260213103557.3207335-1-xujiakai2025@iscas.ac.cn>
-References: <20260213103557.3207335-1-xujiakai2025@iscas.ac.cn>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -47,186 +43,52 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:zQCowAC3RgqO_o5pQN4uCA--.25463S4
-X-Coremail-Antispam: 1UD129KBjvJXoWxtr4kXr17Gr18Jr17urWUtwb_yoW7XFWkpF
-	97CrZIqrW8tr4fKw1xWrWv9F15Gw4vkrn7Zry7Zw4rAr4kKrZrJF1xCryjvF98KFZ5X3Wf
-	Za4SvF47uF4qkF7anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDU0xBIdaVrnRJUUUQY14x267AKxVWrJVCq3wAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
-	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2048vs2IY020E87I2jVAFwI0_Jryl82xGYIkIc2
-	x26xkF7I0E14v26ryj6s0DM28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48ve4kI8wA2z4x0
-	Y4vE2Ix0cI8IcVAFwI0_Gr0_Xr1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI0_Cr0_Gr1UM2
-	8EF7xvwVC2z280aVAFwI0_GcCE3s1l84ACjcxK6I8E87Iv6xkF7I0E14v26rxl6s0DM2vY
-	z4IE04k24VAvwVAKI4IrM2AIxVAIcxkEcVAq07x20xvEncxIr21l5I8CrVACY4xI64kE6c
-	02F40Ex7xfMcIj6xIIjxv20xvE14v26r1j6r18McIj6I8E87Iv67AKxVWUJVW8JwAm72CE
-	4IkC6x0Yz7v_Jr0_Gr1lF7xvr2IYc2Ij64vIr41lF7I21c0EjII2zVCS5cI20VAGYxC7M4
-	IIrI8v6xkF7I0E8cxan2IY04v7MxkF7I0En4kS14v26r1q6r43MxAIw28IcxkI7VAKI48J
-	MxC20s026xCaFVCjc4AY6r1j6r4UMI8I3I0E5I8CrVAFwI0_Jr0_Jr4lx2IqxVCjr7xvwV
-	AFwI0_JrI_JrWlx4CE17CEb7AF67AKxVW8ZVWrXwCIc40Y0x0EwIxGrwCI42IY6xIIjxv2
-	0xvE14v26r1j6r1xMIIF0xvE2Ix0cI8IcVCY1x0267AKxVW8JVWxJwCI42IY6xAIw20EY4
-	v20xvaj40_Jr0_JF4lIxAIcVC2z280aVAFwI0_Jr0_Gr1lIxAIcVC2z280aVCY1x0267AK
-	xVW8JVW8JrUvcSsGvfC2KfnxnUUI43ZEXa7VUbyCJJUUUUU==
-X-CM-SenderInfo: 50xmxthndljiysv6x2xfdvhtffof0/1tbiBwoRCWmOijX6igAAs9
+X-CM-TRANSID:zQCowAC3RgqO_o5pQN4uCA--.25463S2
+X-Coremail-Antispam: 1UD129KBjvdXoW7Gw4DZFW8ZFyDCr4UJFy5Jwb_yoWkuFbE9F
+	WIvFZ8Xr4j9F42yay7Kr4DXFWrGr4xG3ZrtF1jqFnF9rn7Zr4DGF1kuw12vFy8Aw45u3sI
+	vFsYyrWfZ34a9jkaLaAFLSUrUUUUjb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
+	9fnUUIcSsGvfJTRUUUbfkFF20E14v26r4j6ryUM7CY07I20VC2zVCF04k26cxKx2IYs7xG
+	6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48ve4kI8w
+	A2z4x0Y4vE2Ix0cI8IcVAFwI0_JFI_Gr1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI0_Gr0_
+	Cr1l84ACjcxK6I8E87Iv67AKxVW0oVCq3wA2z4x0Y4vEx4A2jsIEc7CjxVAFwI0_GcCE3s
+	1lnxkEFVAIw20F6cxK64vIFxWle2I262IYc4CY6c8Ij28IcVAaY2xG8wAqx4xG64xvF2IE
+	w4CE5I8CrVC2j2WlYx0E2Ix0cI8IcVAFwI0_Jr0_Jr4lYx0Ex4A2jsIE14v26r1j6r4UMc
+	vjeVCFs4IE7xkEbVWUJVW8JwACjcxG0xvY0x0EwIxGrwACjI8F5VA0II8E6IAqYI8I648v
+	4I1lFIxGxcIEc7CjxVA2Y2ka0xkIwI1lc7CjxVAaw2AFwI0_Jw0_GFyl42xK82IYc2Ij64
+	vIr41l4I8I3I0E4IkC6x0Yz7v_Jr0_Gr1lx2IqxVAqx4xG67AKxVWUJVWUGwC20s026x8G
+	jcxK67AKxVWUGVWUWwC2zVAF1VAY17CE14v26r1q6r43MIIYrxkI7VAKI48JMIIF0xvE2I
+	x0cI8IcVAFwI0_Jr0_JF4lIxAIcVC0I7IYx2IY6xkF7I0E14v26r4j6F4UMIIF0xvE42xK
+	8VAvwI8IcIk0rVWUJVWUCwCI42IY6I8E87Iv67AKxVWUJVW8JwCI42IY6I8E87Iv6xkF7I
+	0E14v26r4j6r4UJbIYCTnIWIevJa73UjIFyTuYvjfUOmhFUUUUU
+X-CM-SenderInfo: 50xmxthndljiysv6x2xfdvhtffof0/1tbiCRERCWmOigf8agAAs8
 
-Move steal time UAPI tests from steal_time_init() into a separate
-check_steal_time_uapi() function for better code organization and
-maintainability.
+This series fixes a missing validation in the RISC-V KVM SBI
+steal-time accounting (STA) register handling.
 
-Previously, x86 and ARM64 architectures performed UAPI validation
-tests within steal_time_init(), mixing initialization logic with
-uapi tests.
+Patch 1 validates the configured SBI STA shared memory GPA at
+KVM_SET_ONE_REG, enforcing the 64-byte alignment requirement
+defined by the SBI specification or allowing INVALID_GPA to explicitly
+disable steal-time accounting. This prevents invalid userspace state
+from reaching runtime code paths and avoids WARN_ON() triggers during
+KVM_RUN.
 
-Changes by architecture:
-x86_64:
-  - Extract MSR reserved bits test from steal_time_init()
-  - Move to check_steal_time_uapi() which tests that setting
-    MSR_KVM_STEAL_TIME with KVM_STEAL_RESERVED_MASK fails
-ARM64:
-  - Extract three UAPI tests from steal_time_init():
-    	Device attribute support check
-    	Misaligned IPA rejection (EINVAL)
-    	Duplicate IPA setting rejection (EEXIST)
-  - Move all tests to check_steal_time_uapi()
-RISC-V:
-  - Add empty check_steal_time_uapi() stub for future use
-  - No changes to steal_time_init() (had no tests to extract)
+Patch 2 refactors existing UAPI tests from steal_time_init() into
+a dedicated check_steal_time_uapi() function for better code organization,
+and adds an empty stub for RISC-V.
 
-The new check_steal_time_uapi() function:
-  - Is called once before the per-VCPU test loop
+Patch 3 fills in the RISC-V stub with tests that verify KVM correctly
+enforces the STA alignment requirements.
 
-No functional change intended.
+Jiakai Xu (3):
+  RISC-V: KVM: Validate SBI STA shmem alignment in 
+    kvm_sbi_ext_sta_set_reg()
+  KVM: selftests: Refactor UAPI tests into dedicated function
+  RISC-V: KVM: selftests: Add RISC-V SBI STA shmem alignment tests
 
-Signed-off-by: Jiakai Xu <xujiakai2025@iscas.ac.cn>
-Signed-off-by: Jiakai Xu <jiakaiPeanut@gmail.com>
----
- tools/testing/selftests/kvm/steal_time.c | 63 ++++++++++++++++++------
- 1 file changed, 47 insertions(+), 16 deletions(-)
+ arch/riscv/kvm/vcpu_sbi_sta.c            | 16 +++--
+ tools/testing/selftests/kvm/steal_time.c | 87 +++++++++++++++++++-----
+ 2 files changed, 82 insertions(+), 21 deletions(-)
 
-diff --git a/tools/testing/selftests/kvm/steal_time.c b/tools/testing/selftests/kvm/steal_time.c
-index 8edc1fca345ba..a814f6f3f8b41 100644
---- a/tools/testing/selftests/kvm/steal_time.c
-+++ b/tools/testing/selftests/kvm/steal_time.c
-@@ -69,16 +69,10 @@ static bool is_steal_time_supported(struct kvm_vcpu *vcpu)
- 
- static void steal_time_init(struct kvm_vcpu *vcpu, uint32_t i)
- {
--	int ret;
--
- 	/* ST_GPA_BASE is identity mapped */
- 	st_gva[i] = (void *)(ST_GPA_BASE + i * STEAL_TIME_SIZE);
- 	sync_global_to_guest(vcpu->vm, st_gva[i]);
- 
--	ret = _vcpu_set_msr(vcpu, MSR_KVM_STEAL_TIME,
--			    (ulong)st_gva[i] | KVM_STEAL_RESERVED_MASK);
--	TEST_ASSERT(ret == 0, "Bad GPA didn't fail");
--
- 	vcpu_set_msr(vcpu, MSR_KVM_STEAL_TIME, (ulong)st_gva[i] | KVM_MSR_ENABLED);
- }
- 
-@@ -99,6 +93,18 @@ static void steal_time_dump(struct kvm_vm *vm, uint32_t vcpu_idx)
- 			st->pad[8], st->pad[9], st->pad[10]);
- }
- 
-+static void check_steal_time_uapi(struct kvm_vcpu *vcpu)
-+{
-+	int ret;
-+
-+	st_gva[0] = (void *)(ST_GPA_BASE);
-+	sync_global_to_guest(vcpu->vm, st_gva[0]);
-+
-+	ret = _vcpu_set_msr(vcpu, MSR_KVM_STEAL_TIME,
-+			    (ulong)st_gva[0] | KVM_STEAL_RESERVED_MASK);
-+	TEST_ASSERT(ret == 0, "Bad GPA didn't fail");
-+}
-+
- #elif defined(__aarch64__)
- 
- /* PV_TIME_ST must have 64-byte alignment */
-@@ -170,7 +176,6 @@ static void steal_time_init(struct kvm_vcpu *vcpu, uint32_t i)
- {
- 	struct kvm_vm *vm = vcpu->vm;
- 	uint64_t st_ipa;
--	int ret;
- 
- 	struct kvm_device_attr dev = {
- 		.group = KVM_ARM_VCPU_PVTIME_CTRL,
-@@ -178,21 +183,12 @@ static void steal_time_init(struct kvm_vcpu *vcpu, uint32_t i)
- 		.addr = (uint64_t)&st_ipa,
- 	};
- 
--	vcpu_ioctl(vcpu, KVM_HAS_DEVICE_ATTR, &dev);
--
- 	/* ST_GPA_BASE is identity mapped */
- 	st_gva[i] = (void *)(ST_GPA_BASE + i * STEAL_TIME_SIZE);
- 	sync_global_to_guest(vm, st_gva[i]);
- 
--	st_ipa = (ulong)st_gva[i] | 1;
--	ret = __vcpu_ioctl(vcpu, KVM_SET_DEVICE_ATTR, &dev);
--	TEST_ASSERT(ret == -1 && errno == EINVAL, "Bad IPA didn't report EINVAL");
--
- 	st_ipa = (ulong)st_gva[i];
- 	vcpu_ioctl(vcpu, KVM_SET_DEVICE_ATTR, &dev);
--
--	ret = __vcpu_ioctl(vcpu, KVM_SET_DEVICE_ATTR, &dev);
--	TEST_ASSERT(ret == -1 && errno == EEXIST, "Set IPA twice without EEXIST");
- }
- 
- static void steal_time_dump(struct kvm_vm *vm, uint32_t vcpu_idx)
-@@ -205,6 +201,34 @@ static void steal_time_dump(struct kvm_vm *vm, uint32_t vcpu_idx)
- 	ksft_print_msg("    st_time: %ld\n", st->st_time);
- }
- 
-+static void check_steal_time_uapi(struct kvm_vcpu *vcpu)
-+{
-+	struct kvm_vm *vm = vcpu->vm;
-+	uint64_t st_ipa;
-+	int ret;
-+
-+	struct kvm_device_attr dev = {
-+		.group = KVM_ARM_VCPU_PVTIME_CTRL,
-+		.attr = KVM_ARM_VCPU_PVTIME_IPA,
-+		.addr = (uint64_t)&st_ipa,
-+	};
-+
-+	vcpu_ioctl(vcpu, KVM_HAS_DEVICE_ATTR, &dev);
-+
-+	st_gva[0] = (void *)(ST_GPA_BASE);
-+	sync_global_to_guest(vm, st_gva[0]);
-+
-+	st_ipa = (ulong)st_gva[0] | 1;
-+	ret = __vcpu_ioctl(vcpu, KVM_SET_DEVICE_ATTR, &dev);
-+	TEST_ASSERT(ret == -1 && errno == EINVAL, "Bad IPA didn't report EINVAL");
-+
-+	st_ipa = (ulong)st_gva[0];
-+	vcpu_ioctl(vcpu, KVM_SET_DEVICE_ATTR, &dev);
-+
-+	ret = __vcpu_ioctl(vcpu, KVM_SET_DEVICE_ATTR, &dev);
-+	TEST_ASSERT(ret == -1 && errno == EEXIST, "Set IPA twice without EEXIST");
-+}
-+
- #elif defined(__riscv)
- 
- /* SBI STA shmem must have 64-byte alignment */
-@@ -301,6 +325,11 @@ static void steal_time_dump(struct kvm_vm *vm, uint32_t vcpu_idx)
- 	pr_info("\n");
- }
- 
-+static void check_steal_time_uapi(struct kvm_vcpu *vcpu)
-+{
-+	/* RISC-V UAPI tests will be added in a subsequent patch */
-+}
-+
- #endif
- 
- static void *do_steal_time(void *arg)
-@@ -369,6 +398,8 @@ int main(int ac, char **av)
- 	TEST_REQUIRE(is_steal_time_supported(vcpus[0]));
- 	ksft_set_plan(NR_VCPUS);
- 
-+	check_steal_time_uapi(vcpus[0]);
-+
- 	/* Run test on each VCPU */
- 	for (i = 0; i < NR_VCPUS; ++i) {
- 		steal_time_init(vcpus[i], i);
 -- 
 2.34.1
 
