@@ -1,74 +1,63 @@
-Received: from out-174.mta0.migadu.com (out-174.mta0.migadu.com [91.218.175.174])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BAAD4EADC
-	for <kvm@vger.kernel.org>; Fri, 13 Feb 2026 00:38:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7FA836BFCE;
+	Fri, 13 Feb 2026 01:18:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770943129; cv=none; b=HHeAubPbPFG2j4emK1JTUIUFqTcM02m5MqXHGLel4RScHfw5jiVri40bTlbMqG5DXXTf9DhsS5VxE4ZxKAB4jsFRIEjCI9yP5RchWxmM4ah2GervFGE26MGqQXDqXd1W+8PD4KB36wwkQO78JHFAgTznccpz8zR3ff2HCHIhkk0=
+	t=1770945482; cv=none; b=q7+SWU0o+oHBKq46vIvhsfrf3fu/vxJsWMe+Ww8pYzDk7J0TQ+Erm29doOffal5ZsGW2wi9akPHkjyxGj5NjjgcGvbYxMFSNVsru4bLNJcAG31I50mWPetheuMr/FCFYvFnMEli0nP9cOXz7NG747tg2r7FYK6aX+WW6AOWtUvQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770943129; c=relaxed/simple;
-	bh=2DagQ7Z6PSdAo8VfOCBjXEyAmoENTvDEySAijPoTuSg=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=e5LgdEkmlhv11h3UXlUEC4l7TV/y/V8DW8IXymdTGCI98s1Oo9CiTvoXJSx+td+onoq3c2z66I6vuZONZ+QEvymUvZMEmEXqrkgaU4RyIb9R7Z6jnTi60CEWgmi5ogR7K0KTl1FlVT9nMOQKgQRkNKi7PtTucL/bjCQ2bRShX9o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=ebDmN24w; arc=none smtp.client-ip=91.218.175.174
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	s=arc-20240116; t=1770945482; c=relaxed/simple;
+	bh=nMf+v3vGw9GxsDEKxkKutGjHtACwOXC3416TZoZsEuQ=;
+	h=Subject:From:In-Reply-To:References:Message-Id:Date:To:Cc; b=QOFCMPL4IEPhQRDW2L4v5mvqSXQ/fjuT7bRXujcrxNZcebxzJpfjUogFdrj44ij8aXmW9ftbIxHf7yqv+URSLJJbyCQFNm+hNA0N7vKQg7TjsVzi087lLH4zcxx/Y8CrY1N0K1hL58YTKBiGaNDK5T/N2eTkUEQLGASC7EOIULs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=d3Q7UsNV; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="ebDmN24w"
-Date: Fri, 13 Feb 2026 00:38:40 +0000
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1770943126;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=0aysiS4ZcRobHWrxwadZjJ43xW2yhlqYR6hHZ8TyDg0=;
-	b=ebDmN24whAbbbAtaKfyFRMsayDnDkXz27MBZvwuNGgtA5Asmbt9ULXRpKP/mq5zbiGLvv2
-	GsitylfSvWR0PncgJiLMITBvglbw6iPf2n5P5nTjNSyTCtfDgfdXRsFBvVGNLPCnpH1NHY
-	D+k0j4nb9xDj+wG+qp2G+wSCrHaQQeM=
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Yosry Ahmed <yosry.ahmed@linux.dev>
-To: Jim Mattson <jmattson@google.com>
-Cc: Sean Christopherson <seanjc@google.com>, 
-	Paolo Bonzini <pbonzini@redhat.com>, Thomas Gleixner <tglx@kernel.org>, 
-	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, "H. Peter Anvin" <hpa@zytor.com>, 
-	Shuah Khan <shuah@kernel.org>, kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-kselftest@vger.kernel.org
-Subject: Re: [PATCH v4 7/8] KVM: x86: nSVM: Handle restore of legacy nested
- state
-Message-ID: <akwkdvqgoaee6eklcomghwfi5edlu547pruh24ixhwvuqv2q62@wkpdfaa36tiu>
-References: <20260212155905.3448571-1-jmattson@google.com>
- <20260212155905.3448571-8-jmattson@google.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="d3Q7UsNV"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 64E06C4CEF7;
+	Fri, 13 Feb 2026 01:18:02 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1770945482;
+	bh=nMf+v3vGw9GxsDEKxkKutGjHtACwOXC3416TZoZsEuQ=;
+	h=Subject:From:In-Reply-To:References:Date:To:Cc:From;
+	b=d3Q7UsNV+Peflri2TKUn7hbizMDxxYudk+nO+j6X+U3vkBjBN4k3O+fwzZgV/A+fP
+	 633zu9rXR80XdcwVs8QnUXTc4whLCmnZhSTNwmB8AzO4QJWzWvN/qLtCXeNEj4C9AN
+	 P/GGrLQCftY96kOOrEF6TgBf4bNiDvTZ7UutpnmlSohT/S1ED3qmmSujK6J8HPbR35
+	 Rtfv/RThw4srPn7jt/Phj8vpi0G8/44KrYl1mG23waMHbM25O4BQ0gjulibFT/iOoi
+	 aFEmVvtu7AAD/cKT2At/+2V+WKMCJEcEjL+1pE23cWH6PhJQQSQMAf3HZcIvlSQoLs
+	 1B6rq1AIfFd2Q==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id C2425393108D;
+	Fri, 13 Feb 2026 01:17:57 +0000 (UTC)
+Subject: Re: [GIT PULL] VFIO updates for v7.0-rc1
+From: pr-tracker-bot@kernel.org
+In-Reply-To: <20260212141525.6974025b@shazbot.org>
+References: <20260212141525.6974025b@shazbot.org>
+X-PR-Tracked-List-Id: <kvm.vger.kernel.org>
+X-PR-Tracked-Message-Id: <20260212141525.6974025b@shazbot.org>
+X-PR-Tracked-Remote: https://github.com/awilliam/linux-vfio.git tags/vfio-v7.0-rc1
+X-PR-Tracked-Commit-Id: 96ca4caf9066f5ebd35b561a521af588a8eb0215
+X-PR-Merge-Tree: torvalds/linux.git
+X-PR-Merge-Refname: refs/heads/master
+X-PR-Merge-Commit-Id: cebcffe666cc82e68842e27852a019ca54072cb7
+Message-Id: <177094547633.1792804.12624497517888579251.pr-tracker-bot@kernel.org>
+Date: Fri, 13 Feb 2026 01:17:56 +0000
+To: Alex Williamson <alex@shazbot.org>
+Cc: Linus Torvalds <torvalds@linux-foundation.org>, alex@shazbot.org, "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, "kvm@vger.kernel.org" <kvm@vger.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260212155905.3448571-8-jmattson@google.com>
-X-Migadu-Flow: FLOW_OUT
 
-On Thu, Feb 12, 2026 at 07:58:55AM -0800, Jim Mattson wrote:
-> When nested NPT is enabled and KVM_SET_NESTED_STATE is used to restore an
-> old checkpoint (without a valid gPAT), the current IA32_PAT value must be
-> used as L2's gPAT.
-> 
-> Unfortunately, checkpoint restore is non-atomic, and the order in which
-> state components are restored is not specified. Hence, the current IA32_PAT
-> value may be restored by KVM_SET_MSRS after KVM_SET_NESTED_STATE.  To
-> further complicate matters, there may be a KVM_GET_NESTED_STATE before the
-> next KVM_RUN.
-> 
-> Introduce a new boolean, svm->nested.legacy_gpat_semantics. When set, hPAT
-> updates are also applied to gPAT, preserving the old behavior (i.e. L2
-> shares L1's PAT). Set this boolean when restoring legacy state (i.e. nested
-> NPT is enabled, but no GPAT is provided) in KVM_SET_NESTED_STATE. Clear
-> this boolean in svm_vcpu_pre_run(), to ensure that hPAT and gPAT are
-> decoupled before the vCPU resumes execution.
-> 
-> Signed-off-by: Jim Mattson <jmattson@google.com>
+The pull request you sent on Thu, 12 Feb 2026 14:15:25 -0700:
 
-Reviewed-by: Yosry Ahmed <yosry.ahmed@linux.dev>
+> https://github.com/awilliam/linux-vfio.git tags/vfio-v7.0-rc1
+
+has been merged into torvalds/linux.git:
+https://git.kernel.org/torvalds/c/cebcffe666cc82e68842e27852a019ca54072cb7
+
+Thank you!
+
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/prtracker.html
