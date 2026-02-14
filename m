@@ -1,56 +1,56 @@
-Received: from mail-pl1-f202.google.com (mail-pl1-f202.google.com [209.85.214.202])
+Received: from mail-pl1-f201.google.com (mail-pl1-f201.google.com [209.85.214.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67B1829AAFA
-	for <kvm@vger.kernel.org>; Sat, 14 Feb 2026 01:27:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.202
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 08A032E2EEE
+	for <kvm@vger.kernel.org>; Sat, 14 Feb 2026 01:27:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771032455; cv=none; b=ahUmEd/8cienvrsrtVio5MT6Y6Se1n9fZ9amOizdezcivNx+2LSBJCL7eqigJA33pZLOX6w3+5meApliUugDdvBdxvfwTe2UyfMT6ONeXXBTpqwosTD7IZRbyu96M0Mq9TbK+x9X04f3cGVVUYdRwmKLch4eBYbqA8ciHfyerVg=
+	t=1771032455; cv=none; b=GZmuO6p/C6UwstrJ6tAg5LoQuj4XlotKObjEe7yUbFFSXndob5nBFkvwBeFsup4dLwXhN+oDx9OI7Nfk8uLVAjsS5Ve7WJrSCV53mIeSymRXP/2/6tK9bzwHvq9H90K8sSE16M7mMJm24sGHGojzq43CAHholR+ChT/TudSSqOw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1771032455; c=relaxed/simple;
-	bh=n0glIiKij5SE6jJtccYoydGsQfuK8yUaTbTzRTF8FPk=;
+	bh=2jURTAzz81y5fmKZ0nkZ+MRnOfqPxSPZP5ZzXKImRwE=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=UCPNiMKMvVO5P/E6tCHF0+qirGHtJ8T93uy9ANtIYrcrgOgm9KLoaZXTt+2adrbdIc2HKAvgiRkon8dxHI5dqUBP3VnkNpzKakLYyPHdfejOt1r1dCqq1qLHhU3S4ZS5+qCzFwwsGK9ytDhvxhnwdewAZ4Tm/UJMvlRDjzPRyK8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=PWMlD0o+; arc=none smtp.client-ip=209.85.214.202
+	 To:Cc:Content-Type; b=hbr59/ArjFuOKf96bsvZDxwJyiLTBV6HlnyaDJftrIcEVXwQsewsSSvow+tM76zoQQ++lvWUyviyITTuQcv2+SfyhaOHUzC1S/EICI2xoosA3/ZoA0tX9pBq5NO/Jd5sLnN/TQfnnusVLUScEGuBJFHG+EqyzDSFYoS8fw9XXlE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=oPrtfbDX; arc=none smtp.client-ip=209.85.214.201
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="PWMlD0o+"
-Received: by mail-pl1-f202.google.com with SMTP id d9443c01a7336-2a7b7f04a11so66069555ad.3
-        for <kvm@vger.kernel.org>; Fri, 13 Feb 2026 17:27:33 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="oPrtfbDX"
+Received: by mail-pl1-f201.google.com with SMTP id d9443c01a7336-2aaeafeadbcso16554485ad.1
+        for <kvm@vger.kernel.org>; Fri, 13 Feb 2026 17:27:31 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1771032453; x=1771637253; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1771032451; x=1771637251; darn=vger.kernel.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:reply-to:from:to:cc:subject:date:message-id:reply-to;
-        bh=fCDccjCq5My2WdlmlvmFH+sEHO27BgDMTfTEXHYAVac=;
-        b=PWMlD0o+3iMLoQtU44m9hyF7kD1xkm2VN/1hVsF58ld6s/iJwKtUboCn6Fqmbv7oXt
-         bWkuCxQmiLUssrcYE5sMVjVlES441KjpD9KKLEc7etS7k3oXPZUCS6aTRYklaJOIS7fV
-         Fa2Q/n/eYiUA3pVFIRivtidEX7K7FVgIUgkoAenFqwkJnHvuvsIEu/nKBtMEx/VQQmvv
-         pfUUgyqB5KJEOzICbvUcCSyMAKq1t0dnZATGady7p0saJnXMWmLJLu3Gx/Vc8rFeq7yQ
-         L+exN3P8IJF5gk6elSyvMAi6381ael/jbl6kx5jxzGFZLKA/dkyHbZnRONdz+GeMl9bA
-         y4+Q==
+        bh=hrsNdfLewzqAJ4j/aZKlf6lqr1ErBy4WWW6V+vzZ7i0=;
+        b=oPrtfbDXpFGF+Nvkp/7SPz/60rjY57PFvdBOlFwHU5fwCuBzhGjsGWna5Im7oClNHv
+         MJGiWSypeq8hFLRPSuY92UbEomAGadSJGH87KJUMwMEBJ9HZHG9yF6ZwFGdK3YjlxEXe
+         GicFYao3t4s9zoz42mnUn0IcW+gxrpVmk/T8BVTAxyuFORmQP21G1lae/Eq6rQbwR6IR
+         kxMJWhfQHvSi/5t9uneEPMh1ImLYKeaSa2tysv5066X5Lp2FI+bUPXENiK7eX5KHqRoe
+         xM/VPZKpDsPq2xXKNsyd8aOIckZB3c8kz61rUloAV+AK0oJPzCTh9h2lARHmEYT2upOO
+         HKBA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1771032453; x=1771637253;
+        d=1e100.net; s=20230601; t=1771032451; x=1771637251;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:reply-to:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=fCDccjCq5My2WdlmlvmFH+sEHO27BgDMTfTEXHYAVac=;
-        b=OZH65IRIoYuSXxUmWhHevkDrUKiVhXOW1TPlFAQpzQJXfZ15HJXgxpe7zsww/b5SJB
-         3dKSkvp7eqbOOMbvwjUkJDWlPF9hU2hgYHReH6nlrqJMomlKZR67dkC8mUDMatE3Mjc+
-         FnUT6PG6X+lcNwGuPk/0FT44ilPhj8JfDLQ6YFYXUwk9Nm+nSjn0YhHxh5bWJhUnJu3E
-         Mss4xB9h1UfXFA+po7VXx/emd1AJtUzlifcNVAn0PVAlNuYwbSVEYs1s/nCXJUmiRnoY
-         wjH08NKWBU37qk9wM8p8WNkeiewIw0WNBfVxqKPICnmrrQOk0ArmrIcvQ6Ppt2/xS1Yp
-         cvNg==
-X-Forwarded-Encrypted: i=1; AJvYcCWABhua/5ySFFznBxare+QHMBcgQgPe2fh19t95zY0K8aXtcHSbikh7bsxIXcBrcy9be68=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy4+iJ56/niRd1lx5kP/aQ4NqMuuTCuZ2SmaRDZ50R2yi7AVNgn
-	adqTBlXBjMbcEsTMYkNrmGd1WR2+SJCwtssGJ4FqAZ8Tcywx76KsvDjwPszGTwQYDVC10mp5aCW
-	RXDAMrw==
-X-Received: from plse10.prod.google.com ([2002:a17:902:b78a:b0:2a9:5b1d:9c8a])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:903:2450:b0:2aa:d6d5:773c
- with SMTP id d9443c01a7336-2ab50546cb2mr32518995ad.25.1771032452483; Fri, 13
- Feb 2026 17:27:32 -0800 (PST)
+        bh=hrsNdfLewzqAJ4j/aZKlf6lqr1ErBy4WWW6V+vzZ7i0=;
+        b=LbuJvTJrt2c3nq2Z+n4uULQSU8G2Pg9QH6fdGGWcCEDjjtYffHIk4Jho4ZZdVJhhJ/
+         WPs7y5jxhCcn/eUa3MCv+b0LnHuhduFzsaoyePzG1NQY+ycyj6QrJCEiTW9Sz0wNcMrU
+         uqy+hvPFt0e6zjsnjOpA/JGXdv8bL6VlWzOsP05TZrILN2Q/BmKzsDBmU4cKP3IQlPls
+         Yt5sTfLcU+ocgwcn7SIgHnLyHBwgw+iGW65T6g1YExovyMZBYPwtPJ+tQbJh4wnlBxN5
+         XA9musZ2hlOrxpI08tMYEY/AfXuln+M57Q0/qKwosEijA1r1PPDhoBjYeeBjop18occB
+         qAag==
+X-Forwarded-Encrypted: i=1; AJvYcCX8+kQhUXSu4lHoSYXpQ7NskKLCYOu5J48eXbgd3KgxKUS5Xi5LO+5L5vn3BV5Y3M54PwY=@vger.kernel.org
+X-Gm-Message-State: AOJu0Ywn8Z9rM4weNLO45ZAVXv+typ1gZIMancdrwP6uIF32Qn8gwgcU
+	zZyUn+gUTGD7EVoCpKmxJl6id2BrVHCs0WHl2NfAStaOKa3yr99vY3FzN+sdQZEMVo+PySsENoR
+	1b/yQdg==
+X-Received: from plqu18.prod.google.com ([2002:a17:902:a612:b0:2a7:8c71:aa97])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:902:c947:b0:2aa:d647:b3ed
+ with SMTP id d9443c01a7336-2ab505bd0fdmr36326685ad.34.1771032450744; Fri, 13
+ Feb 2026 17:27:30 -0800 (PST)
 Reply-To: Sean Christopherson <seanjc@google.com>
-Date: Fri, 13 Feb 2026 17:27:01 -0800
+Date: Fri, 13 Feb 2026 17:27:00 -0800
 In-Reply-To: <20260214012702.2368778-1-seanjc@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
@@ -60,9 +60,9 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 References: <20260214012702.2368778-1-seanjc@google.com>
 X-Mailer: git-send-email 2.53.0.310.g728cabbaf7-goog
-Message-ID: <20260214012702.2368778-16-seanjc@google.com>
-Subject: [PATCH v3 15/16] KVM: Bury kvm_{en,dis}able_virtualization() in
- kvm_main.c once more
+Message-ID: <20260214012702.2368778-15-seanjc@google.com>
+Subject: [PATCH v3 14/16] x86/virt/tdx: Use ida_is_empty() to detect if any
+ TDs may be running
 From: Sean Christopherson <seanjc@google.com>
 To: Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
 	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
@@ -75,93 +75,65 @@ Cc: linux-kernel@vger.kernel.org, linux-coco@lists.linux.dev,
 	Dan Williams <dan.j.williams@intel.com>
 Content-Type: text/plain; charset="UTF-8"
 
-Now that TDX handles doing VMXON without KVM's involvement, bury the
-top-level APIs to enable and disable virtualization back in kvm_main.c.
+Drop nr_configured_hkid and instead use ida_is_empty() to detect if any
+HKIDs have been allocated/configured.
 
-No functional change intended.
-
+Suggested-by: Dan Williams <dan.j.williams@intel.com>
 Reviewed-by: Dan Williams <dan.j.williams@intel.com>
 Reviewed-by: Chao Gao <chao.gao@intel.com>
 Signed-off-by: Sean Christopherson <seanjc@google.com>
 ---
- include/linux/kvm_host.h |  8 --------
- virt/kvm/kvm_main.c      | 17 +++++++++++++----
- 2 files changed, 13 insertions(+), 12 deletions(-)
+ arch/x86/virt/vmx/tdx/tdx.c | 17 ++++-------------
+ 1 file changed, 4 insertions(+), 13 deletions(-)
 
-diff --git a/include/linux/kvm_host.h b/include/linux/kvm_host.h
-index 981b55c0a3a7..760e0ec2c8eb 100644
---- a/include/linux/kvm_host.h
-+++ b/include/linux/kvm_host.h
-@@ -2605,12 +2605,4 @@ long kvm_arch_vcpu_pre_fault_memory(struct kvm_vcpu *vcpu,
- 				    struct kvm_pre_fault_memory *range);
- #endif
+diff --git a/arch/x86/virt/vmx/tdx/tdx.c b/arch/x86/virt/vmx/tdx/tdx.c
+index ddbab87d2467..bdee937b84d4 100644
+--- a/arch/x86/virt/vmx/tdx/tdx.c
++++ b/arch/x86/virt/vmx/tdx/tdx.c
+@@ -59,8 +59,6 @@ static LIST_HEAD(tdx_memlist);
+ static struct tdx_sys_info tdx_sysinfo __ro_after_init;
+ static bool tdx_module_initialized __ro_after_init;
  
--#ifdef CONFIG_KVM_GENERIC_HARDWARE_ENABLING
--int kvm_enable_virtualization(void);
--void kvm_disable_virtualization(void);
--#else
--static inline int kvm_enable_virtualization(void) { return 0; }
--static inline void kvm_disable_virtualization(void) { }
--#endif
+-static atomic_t nr_configured_hkid;
 -
- #endif
-diff --git a/virt/kvm/kvm_main.c b/virt/kvm/kvm_main.c
-index e081e7244299..737b74b15bb5 100644
---- a/virt/kvm/kvm_main.c
-+++ b/virt/kvm/kvm_main.c
-@@ -1112,6 +1112,9 @@ static inline struct kvm_io_bus *kvm_get_bus_for_destruction(struct kvm *kvm,
- 					 !refcount_read(&kvm->users_count));
+ typedef void (*sc_err_func_t)(u64 fn, u64 err, struct tdx_module_args *args);
+ 
+ static inline void seamcall_err(u64 fn, u64 err, struct tdx_module_args *args)
+@@ -194,7 +192,7 @@ static int tdx_offline_cpu(unsigned int cpu)
+ 	int i;
+ 
+ 	/* No TD is running.  Allow any cpu to be offline. */
+-	if (!atomic_read(&nr_configured_hkid))
++	if (ida_is_empty(&tdx_guest_keyid_pool))
+ 		goto done;
+ 
+ 	/*
+@@ -1545,22 +1543,15 @@ EXPORT_SYMBOL_FOR_KVM(tdx_get_nr_guest_keyids);
+ 
+ int tdx_guest_keyid_alloc(void)
+ {
+-	int ret;
+-
+-	ret = ida_alloc_range(&tdx_guest_keyid_pool, tdx_guest_keyid_start,
+-			      tdx_guest_keyid_start + tdx_nr_guest_keyids - 1,
+-			      GFP_KERNEL);
+-	if (ret >= 0)
+-		atomic_inc(&nr_configured_hkid);
+-
+-	return ret;
++	return ida_alloc_range(&tdx_guest_keyid_pool, tdx_guest_keyid_start,
++			       tdx_guest_keyid_start + tdx_nr_guest_keyids - 1,
++			       GFP_KERNEL);
  }
+ EXPORT_SYMBOL_FOR_KVM(tdx_guest_keyid_alloc);
  
-+static int kvm_enable_virtualization(void);
-+static void kvm_disable_virtualization(void);
-+
- static struct kvm *kvm_create_vm(unsigned long type, const char *fdname)
+ void tdx_guest_keyid_free(unsigned int keyid)
  {
- 	struct kvm *kvm = kvm_arch_alloc_vm();
-@@ -5704,7 +5707,7 @@ static struct syscore kvm_syscore = {
- 	.ops = &kvm_syscore_ops,
- };
- 
--int kvm_enable_virtualization(void)
-+static int kvm_enable_virtualization(void)
- {
- 	int r;
- 
-@@ -5749,9 +5752,8 @@ int kvm_enable_virtualization(void)
- 	--kvm_usage_count;
- 	return r;
+ 	ida_free(&tdx_guest_keyid_pool, keyid);
+-	atomic_dec(&nr_configured_hkid);
  }
--EXPORT_SYMBOL_FOR_KVM_INTERNAL(kvm_enable_virtualization);
+ EXPORT_SYMBOL_FOR_KVM(tdx_guest_keyid_free);
  
--void kvm_disable_virtualization(void)
-+static void kvm_disable_virtualization(void)
- {
- 	guard(mutex)(&kvm_usage_lock);
- 
-@@ -5762,7 +5764,6 @@ void kvm_disable_virtualization(void)
- 	cpuhp_remove_state(CPUHP_AP_KVM_ONLINE);
- 	kvm_arch_disable_virtualization();
- }
--EXPORT_SYMBOL_FOR_KVM_INTERNAL(kvm_disable_virtualization);
- 
- static int kvm_init_virtualization(void)
- {
-@@ -5778,6 +5779,14 @@ static void kvm_uninit_virtualization(void)
- 		kvm_disable_virtualization();
- }
- #else /* CONFIG_KVM_GENERIC_HARDWARE_ENABLING */
-+static int kvm_enable_virtualization(void)
-+{
-+	return 0;
-+}
-+static void kvm_disable_virtualization(void)
-+{
-+
-+}
- static int kvm_init_virtualization(void)
- {
- 	return 0;
 -- 
 2.53.0.310.g728cabbaf7-goog
 
