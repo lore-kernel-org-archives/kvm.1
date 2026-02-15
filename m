@@ -1,169 +1,93 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from out162-62-58-211.mail.qq.com (out162-62-58-211.mail.qq.com [162.62.58.211])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C36701C3BEB;
-	Sun, 15 Feb 2026 15:03:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B36C1E5B7B
+	for <kvm@vger.kernel.org>; Sun, 15 Feb 2026 15:08:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=162.62.58.211
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771167825; cv=none; b=CHaJOUlFQxDXhkmqDQOO9JSj2njioIRmxPFB0WKVeAmE9jmYrr2kUs1iyHw2Tk3BBau48HMhx+Rrm+DTH2gDqsoQVegc625QZI6IAL+hXH/GXNLdZiRcClP28w66Mp8nfwcyuyTApv0mJmakg+WGFgILLsifiXrUzKV1ed11iok=
+	t=1771168100; cv=none; b=q9s8CQBp7njImLHjWpR0Lj/3fYTNILZ/rMEuWth+y0o5FpWHMzJHs115tJI3gddMt85q9r/9cP8Q0FnNq3ldLhnUPo0sUnRnRNqhaXgcZhCK/T8c/rFOQ2wWhNGANDd87tv3udQi8ZRN3DNsiQljKMFBs8JQu2DhE1HE5YeHO2E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771167825; c=relaxed/simple;
-	bh=otmfS5b/+P0gP2CWKmclfBPuwb7aLesR3kVXYTcytYk=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=SNgTi+85c8XktBmEm3vqtuqwilf5/7Jv3xoaaU+PXBGNfU8qnlUZGPJ92DC8uSvXseNoa2pZHaBBzbK4xN+4sSiuu0THYZyC2cKPi6fK+DBplm5ot30GyLLmKUiZ6q4eKNO2ei6RphhCJk8uHodaRpDdlhf4kbNJTtBi6LySanQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HYbqfWQp; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1771168100; c=relaxed/simple;
+	bh=V08+o2yXur7pI17jTybJG/CqAlMqrlVHpgja2XEXPa8=;
+	h=Message-ID:From:To:Cc:Subject:Date:In-Reply-To:References:
+	 MIME-Version; b=SKBAPb8DxAp/ttVbc5LSeY5JKCUOR8N1Vz3SZy1ehWkDhR4P0lhZx1aUsXsmpevoFQ8YVZ18xbj+2oSgblEmhRnDoCVjTVSCCEiAQV/iCMrZRe1CyPeFHyFkSpwVGzR51bHhAv0ARGXzptgPK4IkxxDLvn5w8ZfCdU3/Mp2okQs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=qq.com; spf=pass smtp.mailfrom=qq.com; dkim=pass (1024-bit key) header.d=qq.com header.i=@qq.com header.b=CQCBsr2h; arc=none smtp.client-ip=162.62.58.211
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=qq.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=qq.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HYbqfWQp"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ACF8BC4CEF7;
-	Sun, 15 Feb 2026 15:03:44 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1771167825;
-	bh=otmfS5b/+P0gP2CWKmclfBPuwb7aLesR3kVXYTcytYk=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HYbqfWQp6sVNudfQiHK5jqaf/31e3ZTuygtRulzO8r1wwo2rbd4+ygSB1H1X7VR1N
-	 taD4vQ5kpUkGqNZFMqyXa151jewd0Fj/C+FYEXz+r4hU15NoPYhJZLLcVpQ9PKjfyX
-	 f//RW3IkWOACYvFrEfNJq32auwdjb6aN6VwVXUwKZRXk8YY3m9q4Q08IsD+X1Yj3WM
-	 4f4YKcYeIQvHA8xMhW7s3pfXDlqXNVbL5/q4UwJcZlu3r9ixXl13mi7m8KFfJftqwJ
-	 cnCK1PO0gUJNbAXhTIpY5HUmSE9EvInflguILbsAWzmxlwbkYVsqJ/3yMZn6WnSjX4
-	 sn7jOUyT9HhKw==
-From: Sasha Levin <sashal@kernel.org>
-To: patches@lists.linux.dev,
-	stable@vger.kernel.org
-Cc: Longfang Liu <liulongfang@huawei.com>,
-	Alex Williamson <alex@shazbot.org>,
-	Sasha Levin <sashal@kernel.org>,
-	kvm@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.19-6.18] hisi_acc_vfio_pci: resolve duplicate migration states
-Date: Sun, 15 Feb 2026 10:03:25 -0500
-Message-ID: <20260215150333.2150455-8-sashal@kernel.org>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20260215150333.2150455-1-sashal@kernel.org>
-References: <20260215150333.2150455-1-sashal@kernel.org>
+	dkim=pass (1024-bit key) header.d=qq.com header.i=@qq.com header.b="CQCBsr2h"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qq.com; s=s201512;
+	t=1771168086; bh=bnsRtCdhJSZDx2jLt0N8Jhj0RomGtQGeG4Mj/IZEaWc=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=CQCBsr2hyJ1hfKoAUMTFlKkTdMf4v+Gm3QeZLJ22RF3PykojaRzcqfW2B4+5B89Rc
+	 cPH14tYkxwYpIchgnJQYRfWtIGckgouvlJ1O9rSYPDgV740VPEitJJMt+Ovkl4c21L
+	 mPuyaOzQRDcRlLuLKk30J/eIN+V0HHUrr1ugQaMs=
+Received: from pve.sebastian ([118.250.2.92])
+	by newxmesmtplogicsvrszb51-0.qq.com (NewEsmtp) with SMTP
+	id 10481CF7; Sun, 15 Feb 2026 22:04:04 +0800
+X-QQ-mid: xmsmtpt1771164248tkg82h8la
+Message-ID: <tencent_A1CC0E76805991513AA0C982068255A6A306@qq.com>
+X-QQ-XMAILINFO: MDbayGdXPuoeSKU2iL/mCI88NVWqz26dHwT9E54jNLo7h8WwVAeNmVkeTQ0YMD
+	 Z1aMig46FGSYV8PbRLecIwL8IeFdqOaEuyN7D6PHyOyWQWNPgXtuezs1LDfHkIlK+yDQ0SGKcO99
+	 AWdt41PxZ/o46vWSVret630gHUJkyZTgVASPk0LXtlF5smDa4iPcKnPUIHh3ZrW+kUl0eQcgKhji
+	 PZBFJlYPJ96S6NE+6w3WN4fJYepBHuXPWHABdyrrjkWME38gaRZbrAvXtfeGrmvA8vWLHlWZmIk+
+	 aXcXc5SSRAD4yInUlmTdfm2Vs2KclXprYJdTwIvhnx77CjqdnKC2KeBrSN3vdkjC88xE8ktcMvcC
+	 vyUop8Jbk3Tn5vCWysEDaZTBl/7XbRayfB2SYUo4HowfwA1x47xTYUaYC5XvwKClFJhjzzYwIvN5
+	 su3db+OLsYyBc0ukXJ7ObFX28WIighb1PMUFefGLEMtX3uJ4ne9XeBQC4r2mssAhBCzvOL/K7YZ8
+	 tKU74dW3iG2f8X/EfubyktHCtuKW1jWlRbnIdd72Fm5wRRgPUmzE0PvqnpRk0ePSHkIFGgGhAi3w
+	 W+DffBadFiC8We/s4VN2PCqJqCfxeF30yq63eMUktZvu9yXes9JKoWwCpgDn7icZ+d+57DsvTBJ8
+	 pizqB07BUbXqSY14hor7YxIeD2nYJh8ZVWgWeDaO+hjUCoqeasz81NCKI3j68Ax9OTAR/wFStHJO
+	 ntqXwJ0y4C6WCXZr3odIULpMlssS52E3OWiY4tQRqxtD+PIXB3w6JRbF/nZjthtguoEG6Tsf+70A
+	 kIJoRcBPhnn9tR9bIYRckBgSn2nPK+reV5QTFYrMKVmVJZtL/reAaDlBcYszh8LaCkMPMTfywbD7
+	 9xyz409mBefJAOCFsh5Ty3dsdyA6Q1A5CeumeZe1RNJdPuFGjeMTtJ+1iJXBNCJ8STOlYE7yONHY
+	 i+THJO+fpqHDqGQYExA4GkxH8QV2Tkv+OmaIf7eQ+0m2tw6mwPb/F1c+5v0EfDrlDecUIW5fXgBp
+	 s/LX16FrSE5r7m+Ugyxw/pjJWhbzUndEc1xFjGMw==
+X-QQ-XMRINFO: NS+P29fieYNwqS3WCnRCOn9D1NpZuCnCRA==
+From: 76824143@qq.com
+To: pbonzini@redhat.com
+Cc: kvm@vger.kernel.org,
+	zhanghao <zhanghao1@kylinos.cn>
+Subject: [PATCH 2/3] KVM: x86: Skip IN_GUEST_MODE vCPUs in kvm_vcpu_on_spin main loop
+Date: Sun, 15 Feb 2026 22:04:01 +0800
+X-OQ-MSGID: <20260215140402.24659-3-76824143@qq.com>
+X-Mailer: git-send-email 2.39.2
+In-Reply-To: <20260215140402.24659-1-76824143@qq.com>
+References: <20260215140402.24659-1-76824143@qq.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-stable: review
-X-Patchwork-Hint: Ignore
-X-stable-base: Linux 6.19
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-From: Longfang Liu <liulongfang@huawei.com>
+From: zhanghao <zhanghao1@kylinos.cn>
 
-[ Upstream commit 8c6ac1730a977234dff74cc1753b4a953f59be7b ]
+Add a check in the kvm_vcpu_on_spin() main loop to skip vCPUs
+that are already running in guest mode.
 
-In special scenarios involving duplicate migrations, after the
-first migration is completed, if the original VF device is used
-again and then migrated to another destination, the state indicating
-data migration completion for the VF device is not reset.
-This results in the second migration to the destination being skipped
-without performing data migration.
-After the modification, it ensures that a complete data migration
-is performed after the subsequent migration.
+Reduces unnecessary yield_to() calls and VM exits.
 
-Signed-off-by: Longfang Liu <liulongfang@huawei.com>
-Link: https://lore.kernel.org/r/20260122020205.2884497-4-liulongfang@huawei.com
-Signed-off-by: Alex Williamson <alex@shazbot.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: zhanghao <zhanghao1@kylinos.cn>
 ---
+ virt/kvm/kvm_main.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-LLM Generated explanations, may be completely bogus:
-
-### 3. Understanding the Bug Mechanism
-
-Now the bug is crystal clear:
-
-1. **`vf_qm_check_match()`** (line 401-453) performs VF device
-   matching/validation during migration. Once matching succeeds, it sets
-   `match_done = true` (line 451).
-
-2. On subsequent calls, if `match_done` is already `true`, it **skips
-   all validation** (line 411: early return 0).
-
-3. **The bug**: When the device is opened for a second migration,
-   `match_done` is never reset to 0. So `vf_qm_check_match()` returns
-   immediately without performing the actual data migration matching,
-   effectively **skipping the migration data transfer**.
-
-4. **The fix**: Reset `match_done = 0` in
-   `hisi_acc_vfio_pci_open_device()`, ensuring that each time the device
-   is opened for a new migration, matching starts fresh.
-
-### 4. Classification
-
-This is a **clear functional bug fix**. It fixes incorrect behavior
-where sequential VFIO device migrations fail silently after the first
-one. The second migration appears to succeed but doesn't actually
-transfer data.
-
-### 5. Scope and Risk Assessment
-
-- **One line change**: `hisi_acc_vdev->match_done = 0;`
-- **Single file**: `drivers/vfio/pci/hisilicon/hisi_acc_vfio_pci.c`
-- **Minimal risk**: The change simply resets a state flag when a device
-  is opened, which is the expected correct behavior
-- **Located in the right place**: Inside the `open_device` function
-  where other state is already being initialized (`mig_state`,
-  `dev_opened`)
-- **Under proper locking**: Inside the `open_mutex` critical section
-- **Driver-specific**: Only affects HiSilicon accelerator VFIO devices,
-  no risk to other subsystems
-
-### 6. User Impact
-
-- **Who is affected**: Users of HiSilicon accelerator hardware (common
-  in Huawei/HiSilicon server platforms) performing VFIO-based VM live
-  migration
-- **Severity**: HIGH — silent data migration failure means VM state is
-  silently corrupted or lost during the second migration. The VM may
-  crash or behave incorrectly on the new host
-- **Frequency**: Any time a VM is migrated more than once (a standard
-  operation in cloud/datacenter environments for load balancing,
-  maintenance, etc.)
-
-### 7. Stable Kernel Criteria Check
-
-- **Obviously correct**: Yes — resetting state on device open is clearly
-  the right thing to do
-- **Fixes a real bug**: Yes — second migrations silently fail
-- **Small and contained**: Yes — single line addition in a single file
-- **No new features**: Correct — this is purely a state reset bug fix
-- **Tested**: Accepted by the VFIO maintainer (Alex Williamson)
-
-### 8. Dependency Check
-
-No dependencies on other commits. The `match_done` field and the
-`open_device` function structure already exist in stable trees that have
-the HiSilicon VFIO migration support.
-
-### Conclusion
-
-This is a textbook stable backport candidate: a one-line fix for a clear
-functional bug (state not being reset between migrations) that causes
-silent data migration failures in production environments. The fix is
-minimal, obviously correct, properly placed under existing locking, and
-carries essentially zero regression risk.
-
-**YES**
-
- drivers/vfio/pci/hisilicon/hisi_acc_vfio_pci.c | 1 +
- 1 file changed, 1 insertion(+)
-
-diff --git a/drivers/vfio/pci/hisilicon/hisi_acc_vfio_pci.c b/drivers/vfio/pci/hisilicon/hisi_acc_vfio_pci.c
-index cf45f6370c369..39bff70f1e14b 100644
---- a/drivers/vfio/pci/hisilicon/hisi_acc_vfio_pci.c
-+++ b/drivers/vfio/pci/hisilicon/hisi_acc_vfio_pci.c
-@@ -1547,6 +1547,7 @@ static int hisi_acc_vfio_pci_open_device(struct vfio_device *core_vdev)
- 		}
- 		hisi_acc_vdev->mig_state = VFIO_DEVICE_STATE_RUNNING;
- 		hisi_acc_vdev->dev_opened = true;
-+		hisi_acc_vdev->match_done = 0;
- 		mutex_unlock(&hisi_acc_vdev->open_mutex);
- 	}
+diff --git a/virt/kvm/kvm_main.c b/virt/kvm/kvm_main.c
+index 476ecdb18bdd..663df3a121c8 100644
+--- a/virt/kvm/kvm_main.c
++++ b/virt/kvm/kvm_main.c
+@@ -4026,6 +4026,10 @@ void kvm_vcpu_on_spin(struct kvm_vcpu *me, bool yield_to_kernel_mode)
+ 		vcpu = xa_load(&kvm->vcpu_array, idx);
+ 		if (!READ_ONCE(vcpu->ready))
+ 			continue;
++
++		if (READ_ONCE(vcpu->mode) == IN_GUEST_MODE)
++			continue;
++
+ 		if (kvm_vcpu_is_blocking(vcpu) && !vcpu_dy_runnable(vcpu))
+ 			continue;
  
 -- 
-2.51.0
+2.39.2
 
