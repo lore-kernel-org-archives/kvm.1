@@ -1,93 +1,118 @@
-Received: from out162-62-58-211.mail.qq.com (out162-62-58-211.mail.qq.com [162.62.58.211])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B36C1E5B7B
-	for <kvm@vger.kernel.org>; Sun, 15 Feb 2026 15:08:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=162.62.58.211
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8148E281532;
+	Sun, 15 Feb 2026 17:45:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771168100; cv=none; b=q9s8CQBp7njImLHjWpR0Lj/3fYTNILZ/rMEuWth+y0o5FpWHMzJHs115tJI3gddMt85q9r/9cP8Q0FnNq3ldLhnUPo0sUnRnRNqhaXgcZhCK/T8c/rFOQ2wWhNGANDd87tv3udQi8ZRN3DNsiQljKMFBs8JQu2DhE1HE5YeHO2E=
+	t=1771177515; cv=none; b=py0o6qucLEHzt7tZ/5iergYRdY5fLBuypKqsA6LatZipsM1iZZ5VoWOdPdIYeTLGTxcHXrsQai9beRfSiRVA0OZH7RY3z6JDwo982UrIwLH3UT0kcPlGo21E0NkYzJpLpWk0NjHml1RTcJNJC4ma+kSHRjqif1wfHte24VAaamE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771168100; c=relaxed/simple;
-	bh=V08+o2yXur7pI17jTybJG/CqAlMqrlVHpgja2XEXPa8=;
-	h=Message-ID:From:To:Cc:Subject:Date:In-Reply-To:References:
-	 MIME-Version; b=SKBAPb8DxAp/ttVbc5LSeY5JKCUOR8N1Vz3SZy1ehWkDhR4P0lhZx1aUsXsmpevoFQ8YVZ18xbj+2oSgblEmhRnDoCVjTVSCCEiAQV/iCMrZRe1CyPeFHyFkSpwVGzR51bHhAv0ARGXzptgPK4IkxxDLvn5w8ZfCdU3/Mp2okQs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=qq.com; spf=pass smtp.mailfrom=qq.com; dkim=pass (1024-bit key) header.d=qq.com header.i=@qq.com header.b=CQCBsr2h; arc=none smtp.client-ip=162.62.58.211
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=qq.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=qq.com
+	s=arc-20240116; t=1771177515; c=relaxed/simple;
+	bh=8+vsibyilKDKEZUlnlJrlviFTSx+hiIe6MQ75WXS7Rk=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=pdHC6xNAgkUavojOajT8wEGVfL1Sad9zm4Mv3IgD6JgWb9dipzN5D3mEotc9m5a8Cp8WMkvheIei/8Xe4RpU33HDEljq/Vtr1G8Jxn8l/0PrrVzPukFfuNMSU62OBB/dWGLhVlAcja3F3QvcAcKIJmmhaScxlg+FdUJAduNTbWA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BG+JR1Dy; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=qq.com header.i=@qq.com header.b="CQCBsr2h"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qq.com; s=s201512;
-	t=1771168086; bh=bnsRtCdhJSZDx2jLt0N8Jhj0RomGtQGeG4Mj/IZEaWc=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=CQCBsr2hyJ1hfKoAUMTFlKkTdMf4v+Gm3QeZLJ22RF3PykojaRzcqfW2B4+5B89Rc
-	 cPH14tYkxwYpIchgnJQYRfWtIGckgouvlJ1O9rSYPDgV740VPEitJJMt+Ovkl4c21L
-	 mPuyaOzQRDcRlLuLKk30J/eIN+V0HHUrr1ugQaMs=
-Received: from pve.sebastian ([118.250.2.92])
-	by newxmesmtplogicsvrszb51-0.qq.com (NewEsmtp) with SMTP
-	id 10481CF7; Sun, 15 Feb 2026 22:04:04 +0800
-X-QQ-mid: xmsmtpt1771164248tkg82h8la
-Message-ID: <tencent_A1CC0E76805991513AA0C982068255A6A306@qq.com>
-X-QQ-XMAILINFO: MDbayGdXPuoeSKU2iL/mCI88NVWqz26dHwT9E54jNLo7h8WwVAeNmVkeTQ0YMD
-	 Z1aMig46FGSYV8PbRLecIwL8IeFdqOaEuyN7D6PHyOyWQWNPgXtuezs1LDfHkIlK+yDQ0SGKcO99
-	 AWdt41PxZ/o46vWSVret630gHUJkyZTgVASPk0LXtlF5smDa4iPcKnPUIHh3ZrW+kUl0eQcgKhji
-	 PZBFJlYPJ96S6NE+6w3WN4fJYepBHuXPWHABdyrrjkWME38gaRZbrAvXtfeGrmvA8vWLHlWZmIk+
-	 aXcXc5SSRAD4yInUlmTdfm2Vs2KclXprYJdTwIvhnx77CjqdnKC2KeBrSN3vdkjC88xE8ktcMvcC
-	 vyUop8Jbk3Tn5vCWysEDaZTBl/7XbRayfB2SYUo4HowfwA1x47xTYUaYC5XvwKClFJhjzzYwIvN5
-	 su3db+OLsYyBc0ukXJ7ObFX28WIighb1PMUFefGLEMtX3uJ4ne9XeBQC4r2mssAhBCzvOL/K7YZ8
-	 tKU74dW3iG2f8X/EfubyktHCtuKW1jWlRbnIdd72Fm5wRRgPUmzE0PvqnpRk0ePSHkIFGgGhAi3w
-	 W+DffBadFiC8We/s4VN2PCqJqCfxeF30yq63eMUktZvu9yXes9JKoWwCpgDn7icZ+d+57DsvTBJ8
-	 pizqB07BUbXqSY14hor7YxIeD2nYJh8ZVWgWeDaO+hjUCoqeasz81NCKI3j68Ax9OTAR/wFStHJO
-	 ntqXwJ0y4C6WCXZr3odIULpMlssS52E3OWiY4tQRqxtD+PIXB3w6JRbF/nZjthtguoEG6Tsf+70A
-	 kIJoRcBPhnn9tR9bIYRckBgSn2nPK+reV5QTFYrMKVmVJZtL/reAaDlBcYszh8LaCkMPMTfywbD7
-	 9xyz409mBefJAOCFsh5Ty3dsdyA6Q1A5CeumeZe1RNJdPuFGjeMTtJ+1iJXBNCJ8STOlYE7yONHY
-	 i+THJO+fpqHDqGQYExA4GkxH8QV2Tkv+OmaIf7eQ+0m2tw6mwPb/F1c+5v0EfDrlDecUIW5fXgBp
-	 s/LX16FrSE5r7m+Ugyxw/pjJWhbzUndEc1xFjGMw==
-X-QQ-XMRINFO: NS+P29fieYNwqS3WCnRCOn9D1NpZuCnCRA==
-From: 76824143@qq.com
-To: pbonzini@redhat.com
-Cc: kvm@vger.kernel.org,
-	zhanghao <zhanghao1@kylinos.cn>
-Subject: [PATCH 2/3] KVM: x86: Skip IN_GUEST_MODE vCPUs in kvm_vcpu_on_spin main loop
-Date: Sun, 15 Feb 2026 22:04:01 +0800
-X-OQ-MSGID: <20260215140402.24659-3-76824143@qq.com>
-X-Mailer: git-send-email 2.39.2
-In-Reply-To: <20260215140402.24659-1-76824143@qq.com>
-References: <20260215140402.24659-1-76824143@qq.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BG+JR1Dy"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7335BC4CEF7;
+	Sun, 15 Feb 2026 17:45:08 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1771177515;
+	bh=8+vsibyilKDKEZUlnlJrlviFTSx+hiIe6MQ75WXS7Rk=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=BG+JR1Dyi5VqlUUTMQf5o+IiWg/T2f3iM50oVhUC5iCYomQGcsnmguUIxywRlub2p
+	 egB1quc0DK4f9M6/YLQTkMXWoMuBxZURAiXTZJqY4zFmhsg0k951pvj6wr8eH9F8wU
+	 AM5JBmF6GY00arsIj/PxFJgo7GvSr9q2JubVLEHPAeo7A8BtVruoSMUZ7BFkzRhuog
+	 Ex2bquQwk1LKEv9t0ST+8RVfYCe9ouxUlpG0FOs2qowxphlyDvx+mfSzVM+KgqcIxV
+	 mUUtlI+5N1rCjkyk4hN+zdv8vjrFDLhhO5ln9E5kcqJad0eDxPxQ4gCLobLT56qZZr
+	 ODkw7iWdblQ1w==
+Date: Sun, 15 Feb 2026 19:45:04 +0200
+From: Mike Rapoport <rppt@kernel.org>
+To: Peter Xu <peterx@redhat.com>
+Cc: linux-mm@kvack.org, Andrea Arcangeli <aarcange@redhat.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Axel Rasmussen <axelrasmussen@google.com>,
+	Baolin Wang <baolin.wang@linux.alibaba.com>,
+	David Hildenbrand <david@redhat.com>,
+	Hugh Dickins <hughd@google.com>,
+	James Houghton <jthoughton@google.com>,
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	Michal Hocko <mhocko@suse.com>, Muchun Song <muchun.song@linux.dev>,
+	Nikita Kalyazin <kalyazin@amazon.com>,
+	Oscar Salvador <osalvador@suse.de>,
+	Paolo Bonzini <pbonzini@redhat.com>,
+	Sean Christopherson <seanjc@google.com>,
+	Shuah Khan <shuah@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Vlastimil Babka <vbabka@suse.cz>, linux-kernel@vger.kernel.org,
+	kvm@vger.kernel.org, linux-kselftest@vger.kernel.org
+Subject: Re: [PATCH RFC 10/17] shmem, userfaultfd: implement shmem uffd
+ operations using vm_uffd_ops
+Message-ID: <aZIGIH9--qOamaMe@kernel.org>
+References: <20260127192936.1250096-1-rppt@kernel.org>
+ <20260127192936.1250096-11-rppt@kernel.org>
+ <aYIzCuh8cjd09zrP@x1.local>
+ <aYhm_4difwN5XXxe@kernel.org>
+ <aYzf-hS4pUY9ulss@x1.local>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <aYzf-hS4pUY9ulss@x1.local>
 
-From: zhanghao <zhanghao1@kylinos.cn>
+On Wed, Feb 11, 2026 at 03:00:58PM -0500, Peter Xu wrote:
+> On Sun, Feb 08, 2026 at 12:35:43PM +0200, Mike Rapoport wrote:
+> > > > +static void shmem_mfill_filemap_remove(struct folio *folio,
+> > > > +				       struct vm_area_struct *vma)
+> > > > +{
+> > > > +	struct inode *inode = file_inode(vma->vm_file);
+> > > > +
+> > > > +	filemap_remove_folio(folio);
+> > > > +	shmem_recalc_inode(inode, 0, 0);
+> > > >  	folio_unlock(folio);
+> > > > -	folio_put(folio);
+> > > > -out_unacct_blocks:
+> > > > -	shmem_inode_unacct_blocks(inode, 1);
+> > > 
+> > > This looks wrong, or maybe I miss somewhere we did the unacct_blocks()?
+> > 
+> > This is handled by shmem_recalc_inode(inode, 0, 0).
+> 
+> IIUC shmem_recalc_inode() only does the fixup of shmem_inode_info over
+> possiblly changing inode->i_mapping->nrpages.  It's not for reverting the
+> accounting in the failure paths here.
+> 
+> OTOH, we still need to maintain accounting for the rest things with
+> correctly invoke shmem_inode_unacct_blocks().  One thing we can try is
+> testing this series against either shmem quota support (since 2023, IIUC
+> it's relevant to "quota" mount option), or max_blocks accountings (IIUC,
+> "size" mount option), etc.  Any of those should reflect a difference if my
+> understanding is correct.
+> 
+> So IIUC we still need the unacct_blocks(), please kindly help double check.
 
-Add a check in the kvm_vcpu_on_spin() main loop to skip vCPUs
-that are already running in guest mode.
+I followed shmem_get_folio_gfp() error handling, and unless I missed
+something we should have the same sequence with uffd.
 
-Reduces unnecessary yield_to() calls and VM exits.
+In shmem_mfill_filemap_add() we increment both i_mapping->nrpages and
+info->alloced in shmem_add_to_page_cache() and 
+shmem_recalc_inode(inode, 1, 0) respectively.
 
-Signed-off-by: zhanghao <zhanghao1@kylinos.cn>
----
- virt/kvm/kvm_main.c | 4 ++++
- 1 file changed, 4 insertions(+)
-
-diff --git a/virt/kvm/kvm_main.c b/virt/kvm/kvm_main.c
-index 476ecdb18bdd..663df3a121c8 100644
---- a/virt/kvm/kvm_main.c
-+++ b/virt/kvm/kvm_main.c
-@@ -4026,6 +4026,10 @@ void kvm_vcpu_on_spin(struct kvm_vcpu *me, bool yield_to_kernel_mode)
- 		vcpu = xa_load(&kvm->vcpu_array, idx);
- 		if (!READ_ONCE(vcpu->ready))
- 			continue;
-+
-+		if (READ_ONCE(vcpu->mode) == IN_GUEST_MODE)
-+			continue;
-+
- 		if (kvm_vcpu_is_blocking(vcpu) && !vcpu_dy_runnable(vcpu))
- 			continue;
+Then in shmem_filemap_remove() the call to filemap_remove_folio()
+decrements i_mapping->nrpages and shmem_recalc_inode(inode, 0, 0) will see
+freed=1 and will call shmem_inode_unacct_blocks().
  
--- 
-2.39.2
+> Thanks,
+> 
+> -- 
+> Peter Xu
+> 
 
+-- 
+Sincerely yours,
+Mike.
