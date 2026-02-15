@@ -1,93 +1,174 @@
-Received: from xmbghk7.mail.qq.com (xmbghk7.mail.qq.com [43.163.128.48])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38120221265
-	for <kvm@vger.kernel.org>; Sun, 15 Feb 2026 14:07:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=43.163.128.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E42522D4D3;
+	Sun, 15 Feb 2026 15:03:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771164458; cv=none; b=kGt+rGHuIqkdk9Y/PooCgiACfbjKCL05KqioOVBPDJmDcpWht5cRs0ujbo1x2y5gm5PADDNkgou4M5ULxCbU0VWh4zWmGuwc1uyg5NvHX1gbluFmKXOvD6+Rl1J4tgRwu03tQHtUe+E/55/BEvMP5Px1s4ldaJnayxzNUxZIIIA=
+	t=1771167819; cv=none; b=QP9/7owSgp1X4YIrbUJ5rBn8jh9Jbz90/3Zj3MmnIbcOG2qdRXDVCZA26UIj51BfjCOBpmD/mOyrLsBcLVPt0xep/lieMokzZo2zQZcrwublJu0iwNZLtYGtGlYWF1Ha3LtSWnNL/yhf/0pa07M0cshNSdfVPjCecAuOQEgG1ac=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771164458; c=relaxed/simple;
-	bh=U6KYEXATx/ZCb6Bg2e0PEz/fg7fICtelTaeSAArkc3w=;
-	h=Message-ID:From:To:Cc:Subject:Date:In-Reply-To:References:
-	 MIME-Version; b=qFccdHIZRvSUsF/705NW/K7gAZTdFobqgjhBND4BIh/ciA4VN4JTKDyb4VRFLDsR6c1NHdOMPvVTbY/dGajCVV/u4VBGqE1C/HDFBN0yi68yKRhxuNsl5k3QVdoiLIeN/s01s5IDBGMqglM9Yhp8GXfWSno5YNURx2XdwSl4bqQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=qq.com; spf=pass smtp.mailfrom=qq.com; dkim=pass (1024-bit key) header.d=qq.com header.i=@qq.com header.b=dKXLYDK9; arc=none smtp.client-ip=43.163.128.48
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=qq.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=qq.com
+	s=arc-20240116; t=1771167819; c=relaxed/simple;
+	bh=IiC1peG8g8mQra+e1gdqk8iHIl+MuKKrcRSX/qkzaDI=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=Pw6GksX95QCqluCKvnjDJIg213dsAITx91K62pPKmkBjDtMTII7Z/h4SRmnnKIa+LPCWo1GYUT26AxpGaYhS+ULY1tjG2wVn0181rH7w+sdBeJoaZ3spM0rc40sm43dXCR35sDU4L0UVpu1KbBBLp8V6GX5d+k+v6mQyWuOeXyE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cx2Xoyfl; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=qq.com header.i=@qq.com header.b="dKXLYDK9"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qq.com; s=s201512;
-	t=1771164447; bh=MkD6nItPwMd4tt8SWDWFZGGMOk990r8XHR1o3xlig9E=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=dKXLYDK9zQlDHFDNpjAnmRVW8IAdwaR+Y9LV09iMi9UzJydfmfim4rI2nOeoa7G+P
-	 2RHZH+VNeeII1NnYuJ/4vHma5vxI8uZykPvdktVHFUf8k6Uy7uec+va2UJPhCMxdxV
-	 DfoqWPgF4TD2c0mWWf4SgWNFz2d2C/zW+TmyH0qU=
-Received: from pve.sebastian ([118.250.2.92])
-	by newxmesmtplogicsvrszb51-0.qq.com (NewEsmtp) with SMTP
-	id 10481CF7; Sun, 15 Feb 2026 22:04:04 +0800
-X-QQ-mid: xmsmtpt1771164245tza7zjg4d
-Message-ID: <tencent_606610DBCF4CC9C810B0694110E12E135C05@qq.com>
-X-QQ-XMAILINFO: NAuAIaytDrXpxXCDmZmOCKCK1bOKUjrgBwWL8uGpm/wWSjQstzq0IUX6btbuxZ
-	 Qmg79n5QM10IRy/nLfo31B+V1dnJV1VE2THpCViQj6iY9BZ6wjX+OCyWbQbLVivHuJoDIq/Fv+Mv
-	 dZKyczOmNFKEtLG3m7xPqQ8ri5SMi5KslJuzGl+RCPkWNnmm5n4tfc1XSBKc7DADL6WvDT0BAx1I
-	 G8mAki8Hjz06ujdzbKeKWJ76xhQqVECSRB/q1byBhLByLGOU4KUotUBSTFKwRGELdHIHKJCNG09o
-	 E2S58cDKv7QfFMFVNL4956+zS+fPbZ5pNI3KQpULlhUo2RUR2VzIwAWtoolZ+9iRxVFBKKd69b6o
-	 3FqXe4vhsxm6V3EBfOf3yoHS+btob27uFxuVV2lJ3jAg+P7JkZjFrXYnpyPaLFabazHp72awm3fo
-	 9N6WPrCL0HHjC+xnb90UY3G5m/CK3QSPNdS3e59SKjhCohMybUgjog4akzYqYGNteYvH3I3ZhVPq
-	 faCP+ohxWdD0XMC6t7LTcq1N/UJ3e536zEtw2/34SugrXGHn+RRWiqIxm0wEYTCo+wCu3iEptQdW
-	 k1+DwzOovQ1vxF169B8t+HUdLEtYIZQ9T8tiwPZt3JR0V7bo1kl1c333GpmT0Bt8dK/RDtyHLnmj
-	 xqzLFhF1utSceBis4SoM/v5Xq/YTAQ61Us0z3LYzrWc0t6Fe/kG/vN8qenOj8pkfjfZC5Hjj/Sn7
-	 4QlY+UVV0MGm+8V7Nq5woora8EPpjzz+6+RYenrm8m7t67t2v542UMD3xcmRwtvW/miRpjFDu5K8
-	 txD2LvEgyUljpKaPOUr9O4wqwpPb0S0P47fdvEvRPrdfESyvK5/vnZ/6laEp//hErXUxzr+Wyozo
-	 xFtITJMSxMeTWn8SEVpoRjoU44hNpquZL0G4qY+53t9XlG+NBNmKs+10IyOo/y5kOM+jg64+SbeY
-	 R2LIEcefGcCyBMkvD06AOxaXlIbm6R/lhZo9TJqdEhVPodxyPkDe3VWLKJwoRlr0jVm4G+MoKzpy
-	 J/bmPt3LbSnlVpTfNF
-X-QQ-XMRINFO: OD9hHCdaPRBwH5bRRRw8tsiH4UAatJqXfg==
-From: 76824143@qq.com
-To: pbonzini@redhat.com
-Cc: kvm@vger.kernel.org,
-	zhanghao <zhanghao1@kylinos.cn>
-Subject: [PATCH 1/3] KVM: x86: Enhance kvm_vcpu_eligible_for_directed_yield to detect golden targets
-Date: Sun, 15 Feb 2026 22:04:00 +0800
-X-OQ-MSGID: <20260215140402.24659-2-76824143@qq.com>
-X-Mailer: git-send-email 2.39.2
-In-Reply-To: <20260215140402.24659-1-76824143@qq.com>
-References: <20260215140402.24659-1-76824143@qq.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cx2Xoyfl"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8CD76C4AF0B;
+	Sun, 15 Feb 2026 15:03:38 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1771167819;
+	bh=IiC1peG8g8mQra+e1gdqk8iHIl+MuKKrcRSX/qkzaDI=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=cx2XoyflwCbfy/+wdaIHhyKvAhm8Ikd7XgVW3+6DvmUC6w5q6vsxoujo+n/I6mucb
+	 zNyxQQWphfaHXPjaG5+yTYhQpZJi1D/uekAr/Ak76S7uG46Ek4MSPBiRqc79qrezbx
+	 3MwR3P8vQw0jueLd/J1w3sPMy+Uvg0yp0OaNVi4Lez3QTz/WaZQ6JfLJB65030tBfC
+	 i6bNMHki0I/3MLgCBzSJgOq8KMSx1Oaeg61SZLdCDMiaBCJ89PgVjvc0m4mpVEOsOo
+	 1+uwis75YoQrH07BdQ4T+TbIeuV0R71Fz4tBJJxRXGah7LzFKFwGJrjjC4o+Uv8AeN
+	 QQNKQh6SYvY6A==
+From: Sasha Levin <sashal@kernel.org>
+To: patches@lists.linux.dev,
+	stable@vger.kernel.org
+Cc: Longfang Liu <liulongfang@huawei.com>,
+	Alex Williamson <alex@shazbot.org>,
+	Sasha Levin <sashal@kernel.org>,
+	kvm@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.19-6.1] hisi_acc_vfio_pci: update status after RAS error
+Date: Sun, 15 Feb 2026 10:03:20 -0500
+Message-ID: <20260215150333.2150455-3-sashal@kernel.org>
+X-Mailer: git-send-email 2.51.0
+In-Reply-To: <20260215150333.2150455-1-sashal@kernel.org>
+References: <20260215150333.2150455-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+X-stable: review
+X-Patchwork-Hint: Ignore
+X-stable-base: Linux 6.19
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-From: zhanghao <zhanghao1@kylinos.cn>
+From: Longfang Liu <liulongfang@huawei.com>
 
-Detect "golden targets" - vCPUs that are preempted and ready.
-These are ideal yield targets as they can be immediately scheduled.
+[ Upstream commit 8be14dd48dfee0df91e511acceb4beeb2461a083 ]
 
-This check reduces unnecessary yield attempts to vCPUs that are
-unlikely to benefit from directed yield.
+After a RAS error occurs on the accelerator device, the accelerator
+device will be reset. The live migration state will be abnormal
+after reset, and the original state needs to be restored during
+the reset process.
+Therefore, reset processing needs to be performed in a live
+migration scenario.
 
-Signed-off-by: zhanghao <zhanghao1@kylinos.cn>
+Signed-off-by: Longfang Liu <liulongfang@huawei.com>
+Link: https://lore.kernel.org/r/20260122020205.2884497-3-liulongfang@huawei.com
+Signed-off-by: Alex Williamson <alex@shazbot.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- virt/kvm/kvm_main.c | 3 +++
- 1 file changed, 3 insertions(+)
 
-diff --git a/virt/kvm/kvm_main.c b/virt/kvm/kvm_main.c
-index 61dca8d37abc..476ecdb18bdd 100644
---- a/virt/kvm/kvm_main.c
-+++ b/virt/kvm/kvm_main.c
-@@ -3927,6 +3927,9 @@ static bool kvm_vcpu_eligible_for_directed_yield(struct kvm_vcpu *vcpu)
- #ifdef CONFIG_HAVE_KVM_CPU_RELAX_INTERCEPT
- 	bool eligible;
+LLM Generated explanations, may be completely bogus:
+
+This confirms the critical finding.
+
+### 3. Bug Classification: Logic Error Causing Failed Reset After RAS
+Error
+
+The old condition was:
+```c
+if (hisi_acc_vdev->core_device.vdev.migration_flags !=
+VFIO_MIGRATION_STOP_COPY)
+    return;
+```
+
+But `migration_flags` is set to `VFIO_MIGRATION_STOP_COPY |
+VFIO_MIGRATION_PRE_COPY` (line 1590), which is `0x1 | 0x4 = 0x5`, not
+`0x1`.
+
+So the condition `migration_flags != VFIO_MIGRATION_STOP_COPY` evaluates
+to `0x5 != 0x1` = **TRUE**, causing the function to **always return
+early** and **never perform the reset**.
+
+This means:
+- After a RAS error, the device resets
+- The migration state becomes inconsistent
+- The `hisi_acc_vf_reset()` call that should restore state is **never
+  reached**
+- The device is left in a broken/inconsistent migration state
+
+The new condition `!mig_ops` correctly checks whether migration is
+supported (the pointer is non-NULL when migration ops are registered),
+which aligns with how the VFIO core itself checks for migration
+capability.
+
+### 4. Scope and Risk Assessment
+
+- **Change size**: 2 lines modified (one condition check)
+- **Files touched**: 1 file
+- **Risk**: Very low - the change is a simple condition check
+  improvement
+- **Scope**: Well-contained to the AER reset handler for HiSilicon
+  accelerator VFIO devices
+
+### 5. User Impact
+
+- **Who is affected**: Users of HiSilicon accelerators (SEC, HPRE, ZIP
+  engines) with live migration enabled, especially in
+  cloud/virtualization environments
+- **Severity**: After a RAS error during live migration, the device
+  state would not be properly restored, potentially causing:
+  - Failed live migrations
+  - Corrupted device state
+  - Guest VM malfunction after host-side RAS recovery
+
+### 6. Stability Indicators
+
+- Merged by Alex Williamson (VFIO subsystem maintainer)
+- The fix is obviously correct - the old check was demonstrably wrong
+  due to the exact equality comparison against a bitmask field that has
+  multiple bits set
+
+### 7. Dependency Check
+
+This change is self-contained. It doesn't depend on other commits. The
+`mig_ops` field has existed in `struct vfio_device` since the VFIO
+migration rework (which is present in recent stable kernels).
+
+### Conclusion
+
+This is a clear bug fix. The old condition had a logic error that caused
+the migration reset handler to be completely non-functional — it would
+**always** return early because `migration_flags` was set to `STOP_COPY
+| PRE_COPY` but was compared with exact equality to just `STOP_COPY`.
+The fix is minimal (2 lines), obviously correct, and addresses a real
+data integrity/reliability issue during RAS error recovery in live
+migration scenarios. The change was accepted by the VFIO maintainer.
+
+The only consideration is whether `mig_ops` exists in stable tree
+versions, but since it's part of the VFIO migration rework that preceded
+the addition of `PRE_COPY` support, it should be present in any kernel
+that has this driver with `PRE_COPY` capability.
+
+**YES**
+
+ drivers/vfio/pci/hisilicon/hisi_acc_vfio_pci.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
+
+diff --git a/drivers/vfio/pci/hisilicon/hisi_acc_vfio_pci.c b/drivers/vfio/pci/hisilicon/hisi_acc_vfio_pci.c
+index 8ed00f6183622..1c0b960de93c6 100644
+--- a/drivers/vfio/pci/hisilicon/hisi_acc_vfio_pci.c
++++ b/drivers/vfio/pci/hisilicon/hisi_acc_vfio_pci.c
+@@ -1192,8 +1192,7 @@ static void hisi_acc_vf_pci_aer_reset_done(struct pci_dev *pdev)
+ {
+ 	struct hisi_acc_vf_core_device *hisi_acc_vdev = hisi_acc_drvdata(pdev);
  
-+	if (READ_ONCE(vcpu->preempted) && READ_ONCE(vcpu->mode) == IN_GUEST_MODE)
-+		return true;
-+
- 	eligible = !vcpu->spin_loop.in_spin_loop ||
- 		    vcpu->spin_loop.dy_eligible;
+-	if (hisi_acc_vdev->core_device.vdev.migration_flags !=
+-				VFIO_MIGRATION_STOP_COPY)
++	if (!hisi_acc_vdev->core_device.vdev.mig_ops)
+ 		return;
  
+ 	mutex_lock(&hisi_acc_vdev->state_mutex);
 -- 
-2.39.2
+2.51.0
 
