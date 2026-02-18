@@ -1,54 +1,67 @@
-Received: from fra-out-004.esa.eu-central-1.outbound.mail-perimeter.amazon.com (fra-out-004.esa.eu-central-1.outbound.mail-perimeter.amazon.com [3.74.81.189])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f50.google.com (mail-wr1-f50.google.com [209.85.221.50])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0BA4633F372;
-	Wed, 18 Feb 2026 16:15:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=3.74.81.189
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C871333F397
+	for <kvm@vger.kernel.org>; Wed, 18 Feb 2026 16:28:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771431349; cv=none; b=WKlIUqKr5kFoE92qRyNP8xV7h86qnL88TVcn62uxNi4GnT684goc4ElQo3pipsDk2zfdxWY/YXmf7bzf/45Zaa7wp2jXVhUdi70CI1HakaLv6zkcl2W6wvKEwQF7BqSf0ktrPt7jJ0UxLeNwuRbT0t1fQL+4ffOMfbKr0TTm1f4=
+	t=1771432111; cv=none; b=lehzSzT7nckJ79TAEV5DWPyopAkuSGMY5QuP4MUvPfGUWN8fxLqN6D61ybcfguoPOO9J58l/L1rkspjlc2NPdYo3Qr357AeKVSD7iz01uf8256pw9Pu5KLJ0GafRt0Kl0ji8ItApg8K7g914Yc6AzVUm+qO0oEDWEDjfkrPA054=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771431349; c=relaxed/simple;
-	bh=pLYYOrpA7grcmgI9QgFt2BL1wUilDA3lWOvB954SmGA=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=q/NrCgcw2AS59QN1QkFBigFzlti+zPDVkw9Assmqzq0VP6DPnKhV9cLsePCvjoBdT592j9rEmW4upDp0zJVkPhiatU5iuQiuWWNjf5dYXuag5nb0fw6wU7o/HEjyUhfW4ZzBCQxmrGW3zBWqvLmAK/EUopsbl59JX5VM+UUmAM8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com; spf=pass smtp.mailfrom=amazon.co.uk; dkim=pass (2048-bit key) header.d=amazon.com header.i=@amazon.com header.b=C2kaBWD8; arc=none smtp.client-ip=3.74.81.189
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amazon.co.uk
+	s=arc-20240116; t=1771432111; c=relaxed/simple;
+	bh=l6yGQpInHHh1jxWiSTXfMpcfIB/+CdobiVII3dGD54Q=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=syuhPwLnrwdrAf3gP8ij07lAFPDLFgnmChnzXNXIlCsv/sv1Bp28VikJcHWkT8/aGMwpvY1WI8+XVO9IIjkUNU73Z95xzzROo3KOMdOQKZdCI1yp9cr0X7WBhurLtsxprfRxaXhyOc5NN0YmyS17xVDdmgLKhsIddRPjMcWw8Ww=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=CyvNfMUV; arc=none smtp.client-ip=209.85.221.50
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=amazon.com header.i=@amazon.com header.b="C2kaBWD8"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="CyvNfMUV"
+Received: by mail-wr1-f50.google.com with SMTP id ffacd0b85a97d-43767807cf3so17732f8f.1
+        for <kvm@vger.kernel.org>; Wed, 18 Feb 2026 08:28:29 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=amazon.com; i=@amazon.com; q=dns/txt; s=amazoncorp2;
-  t=1771431347; x=1802967347;
-  h=message-id:date:mime-version:reply-to:subject:to:cc:
-   references:from:in-reply-to:content-transfer-encoding;
-  bh=wSzHe6m0TOKXzMcTEo72KwMsIc/pKIUgWL2l1xsjlBI=;
-  b=C2kaBWD8CeNcfOFeqe3ZDcUay4aiOIZzlB2DzSn8PgnyvsSmVXU18Q9P
-   sNz1A+SOKtfZnUM/xMpKcK3FEbdLErxo0/Irao+rXW7piMGvXOh+cfGcx
-   +X71m99N5AkBspALetbXw5RaHy4W1lMjm9TwAlky2HLsstSG1Ou2bXpzO
-   1tvieUmXmVZZ7DQKc/6r67kgDlOfH6rud74hgF9bNg5t6OP9lxmkXPAnj
-   QXQ2iJs1B/LCIGfJaSLkfqYCb+pPTiEwGYu6bOUNrteXQMb4PdtQiwN8c
-   sJv3CNOvfFn0iMqcDHwHt7+XuYyt1RRPLLIc0/4k5Dygsgb4mRKnMNhvg
-   w==;
-X-CSE-ConnectionGUID: kSJRjUKgTJ6O17EjyUvVPw==
-X-CSE-MsgGUID: F+HHANxySqqhHr/JNDCajw==
-X-IronPort-AV: E=Sophos;i="6.21,298,1763424000"; 
-   d="scan'208";a="9637505"
-Received: from ip-10-6-6-97.eu-central-1.compute.internal (HELO smtpout.naws.eu-central-1.prod.farcaster.email.amazon.dev) ([10.6.6.97])
-  by internal-fra-out-004.esa.eu-central-1.outbound.mail-perimeter.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Feb 2026 16:15:43 +0000
-Received: from EX19MTAEUC001.ant.amazon.com [54.240.197.225:31180]
- by smtpin.naws.eu-central-1.prod.farcaster.email.amazon.dev [10.0.34.104:2525] with esmtp (Farcaster)
- id 20f0e6fd-71e0-41cf-97a3-e2e57bea3536; Wed, 18 Feb 2026 16:15:43 +0000 (UTC)
-X-Farcaster-Flow-ID: 20f0e6fd-71e0-41cf-97a3-e2e57bea3536
-Received: from EX19D005EUB003.ant.amazon.com (10.252.51.31) by
- EX19MTAEUC001.ant.amazon.com (10.252.51.155) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.35;
- Wed, 18 Feb 2026 16:15:35 +0000
-Received: from [192.168.2.195] (10.106.83.9) by EX19D005EUB003.ant.amazon.com
- (10.252.51.31) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.35; Wed, 18 Feb 2026
- 16:15:34 +0000
-Message-ID: <7e46af52-b6f3-43cf-a970-8c179a964729@amazon.com>
-Date: Wed, 18 Feb 2026 16:15:33 +0000
+        d=gmail.com; s=20230601; t=1771432108; x=1772036908; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=iojUpQORmA6q2fiJwfUXXrXkOovQJ/gRPbEyrdAFY1Y=;
+        b=CyvNfMUVBvOlaysQEXrKPpfodlxvgLQqmpVXJ1IdTkc64/97GHWDBA5Ml6lx5MX8KB
+         2YXRU1K1YOWHQvK2I9cXJxALGeSHRHh2jFzLuJUfSi6552HEgvrzenKOU0nsxnSvy8G6
+         8ApzRtW+ecVQtlNlf/prorQjfoV9tlxUSsHnF2shwRk6OypYq43eT6HOf2sOQy4UiHug
+         2v9aUY/iXCLctFAE1bTAhIHJfh5R2v3zoqnBOKUnM5YYUFTezeVKkAL3elnWZfL7GxmG
+         m500r8Kxj3fli2uQK0d1uWdnCJpqhqBV2+i3yum8soKPLrchJ2ckP8s/ZdyS4+DxRUNB
+         gWbg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1771432108; x=1772036908;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=iojUpQORmA6q2fiJwfUXXrXkOovQJ/gRPbEyrdAFY1Y=;
+        b=FYUlwllGB/37NFpG22iOD44TdRmrR7QiV/A0C1yTi32eldRO48zunSBMc3pDBSRAsv
+         hBFixHyrOrNTfotjr+QEJ8UD0BEKznlcvZEKr3RG6CGbBDgYJ+vd4xdgytaZraLKPwUA
+         UouRjoN+9x+pcYEINVOdWEo6sOksjKM6O4SZ5LhwWEUWWHRTnb1xqvVDqj9AyPHh+ySu
+         J6H0gGaZMAFL5AyUpuhJYkxKvRvcGNV47ogv7pa5BXPk1tpGindbHifhlIb4NUlHaCN7
+         VOHEdKdOjQfJVt/uFzM55X+kmqP6xvgzl/KGvgkG4ZRo0AMBlg2K1FlHH6X/hvA4zziM
+         bGzw==
+X-Forwarded-Encrypted: i=1; AJvYcCXNh2cbzU+c3Qn9H4jgIq7Kciqqw7XxTu5t0+/IqMUdQf02kBCXAI2ev1S0/Qt6Guy6Szg=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwtOSUn/R2ucpv9cmkSWdWs2R+K4sL0VdQpqlmsnC2vo0Yz8vP1
+	2RcchmoE8caF1jsH+pswbQ/L1+jE4wr6h9E/qcDZ8Kqd2I0ADLFrv5wg
+X-Gm-Gg: AZuq6aIJiW86M+ADQceYujoBRDTE0K9XrlR3CzYUEmlh5S52K5siozjG0+0NZ2FvfoC
+	vYnO5ZvIDaY49zD7O859jzBZSQVyMw0lU3+TRxJUyRDqnP+GLoDWU7rl+97+a9FB1VVsXrndaf/
+	/WERfpAL4lNqaF3PAWm6xWXlHv8ozvMngTdvekRhhPTfVMV0ZRj4j7ILQzxM7Wd0eswonUY8sRC
+	BIJ34oUU1zehJIyGAUQEZMZY5CxItWtNGW79AfpUjWevlqwdvl1xGf+02TSKrlijdelNP95tero
+	HsJ8hadTvblcoyJHZPEB50if2gcRfMnBZ/JD6NUgl2ZautqmjxEniSGOXisVS9GEuG7/L8eGteG
+	V0c867ZjYeBdfV0NQpa9tr3cdNqU9RpBuadYYOFOD2s6JlYx/6mZdtxMuCa4IRtq/OmmpZfmBEj
+	T+ZtbgkiDLlnYEOkBvm4MBD0IIpMmlcBGup7R7TT1o+xWn+Ct2+q3Am6hDVyCo3RsH5fQAgAwxs
+	EbrZsJshjQSzPYVuMOdK7yjJ5dE66PDPVOVJquuLGD/AhkZotoYPkG7
+X-Received: by 2002:a5d:5d10:0:b0:437:7168:af4f with SMTP id ffacd0b85a97d-4379db6485emr29058399f8f.27.1771432107727;
+        Wed, 18 Feb 2026 08:28:27 -0800 (PST)
+Received: from [192.168.1.100] ([46.248.82.114])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-43796ac8d82sm42798707f8f.31.2026.02.18.08.28.25
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 18 Feb 2026 08:28:27 -0800 (PST)
+Message-ID: <e00f9f7e-1915-473b-977a-751b6e28a54f@gmail.com>
+Date: Wed, 18 Feb 2026 17:28:17 +0100
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -56,206 +69,176 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Reply-To: <kalyazin@amazon.com>
-Subject: Re: [PATCH v4 4/4] KVM: Avoid synchronize_srcu() in
- kvm_io_bus_register_dev()
-To: Keir Fraser <keirf@google.com>
-CC: Sean Christopherson <seanjc@google.com>,
-	<linux-arm-kernel@lists.infradead.org>, <linux-kernel@vger.kernel.org>,
-	<kvm@vger.kernel.org>, Eric Auger <eric.auger@redhat.com>, Oliver Upton
-	<oliver.upton@linux.dev>, Marc Zyngier <maz@kernel.org>, Will Deacon
-	<will@kernel.org>, Paolo Bonzini <pbonzini@redhat.com>, Li RongQing
-	<lirongqing@baidu.com>
-References: <20250909100007.3136249-1-keirf@google.com>
- <20250909100007.3136249-5-keirf@google.com>
- <a84ddba8-12da-489a-9dd1-ccdf7451a1ba@amazon.com>
- <aY-x0OlJQEqInyNF@google.com>
- <dcbd7a58-c961-4510-ae48-ef7fd4f4d75c@amazon.com>
- <aZS8XXOW7vhMkNWQ@google.com>
- <162cedc3-cd6c-494c-b39e-daadfbd6d8db@amazon.com>
- <aZXifSagpbj4CjBn@google.com>
+Subject: Re: [PATCH 3/6] x86/sev: add support for RMPOPT instruction
+To: Ashish Kalra <Ashish.Kalra@amd.com>, tglx@kernel.org, mingo@redhat.com,
+ bp@alien8.de, dave.hansen@linux.intel.com, x86@kernel.org, hpa@zytor.com,
+ seanjc@google.com, peterz@infradead.org, thomas.lendacky@amd.com,
+ herbert@gondor.apana.org.au, davem@davemloft.net, ardb@kernel.org
+Cc: pbonzini@redhat.com, aik@amd.com, Michael.Roth@amd.com,
+ KPrateek.Nayak@amd.com, Tycho.Andersen@amd.com, Nathan.Fontenot@amd.com,
+ jackyli@google.com, pgonda@google.com, rientjes@google.com,
+ jacobhxu@google.com, xin@zytor.com, pawan.kumar.gupta@linux.intel.com,
+ babu.moger@amd.com, dyoung@redhat.com, nikunj@amd.com, john.allen@amd.com,
+ darwi@linutronix.de, linux-kernel@vger.kernel.org,
+ linux-crypto@vger.kernel.org, kvm@vger.kernel.org, linux-coco@lists.linux.dev
+References: <cover.1771321114.git.ashish.kalra@amd.com>
+ <66348e8ad761a1b0ccb26c8027efedf46329db54.1771321114.git.ashish.kalra@amd.com>
 Content-Language: en-US
-From: Nikita Kalyazin <kalyazin@amazon.com>
-Autocrypt: addr=kalyazin@amazon.com; keydata=
- xjMEY+ZIvRYJKwYBBAHaRw8BAQdA9FwYskD/5BFmiiTgktstviS9svHeszG2JfIkUqjxf+/N
- JU5pa2l0YSBLYWx5YXppbiA8a2FseWF6aW5AYW1hem9uLmNvbT7CjwQTFggANxYhBGhhGDEy
- BjLQwD9FsK+SyiCpmmTzBQJnrNfABQkFps9DAhsDBAsJCAcFFQgJCgsFFgIDAQAACgkQr5LK
- IKmaZPOpfgD/exazh4C2Z8fNEz54YLJ6tuFEgQrVQPX6nQ/PfQi2+dwBAMGTpZcj9Z9NvSe1
- CmmKYnYjhzGxzjBs8itSUvWIcMsFzjgEY+ZIvRIKKwYBBAGXVQEFAQEHQCqd7/nb2tb36vZt
- ubg1iBLCSDctMlKHsQTp7wCnEc4RAwEIB8J+BBgWCAAmFiEEaGEYMTIGMtDAP0Wwr5LKIKma
- ZPMFAmes18AFCQWmz0MCGwwACgkQr5LKIKmaZPNTlQEA+q+rGFn7273rOAg+rxPty0M8lJbT
- i2kGo8RmPPLu650A/1kWgz1AnenQUYzTAFnZrKSsXAw5WoHaDLBz9kiO5pAK
-In-Reply-To: <aZXifSagpbj4CjBn@google.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
+From: Uros Bizjak <ubizjak@gmail.com>
+In-Reply-To: <66348e8ad761a1b0ccb26c8027efedf46329db54.1771321114.git.ashish.kalra@amd.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: EX19D003EUB003.ant.amazon.com (10.252.51.36) To
- EX19D005EUB003.ant.amazon.com (10.252.51.31)
 
 
 
-On 18/02/2026 16:02, Keir Fraser wrote:
-> On Wed, Feb 18, 2026 at 12:55:11PM +0000, Nikita Kalyazin wrote:
->>
->>
->> On 17/02/2026 19:07, Sean Christopherson wrote:
->>> On Mon, Feb 16, 2026, Nikita Kalyazin wrote:
->>>> On 13/02/2026 23:20, Sean Christopherson wrote:
->>>>> On Fri, Feb 13, 2026, Nikita Kalyazin wrote:
->>>>>> I am not aware of way to make it fast for both use cases and would be more
->>>>>> than happy to hear about possible solutions.
->>>>>
->>>>> What if we key off of vCPUS being created?  The motivation for Keir's change was
->>>>> to avoid stalling during VM boot, i.e. *after* initial VM creation.
->>>>
->>>> It doesn't work as is on x86 because the delay we're seeing occurs after the
->>>> created_cpus gets incremented
->>>
->>> I don't follow, the suggestion was to key off created_vcpus in
->>> kvm_io_bus_register_dev(), not in kvm_swap_active_memslots().  I can totally
->>> imagine the patch not working, but the ordering in kvm_vm_ioctl_create_vcpu()
->>> should be largely irrelevant.
->>
->> Yes, you're right, it's irrelevant.  I had made the change in
->> kvm_io_bus_register_dev() like proposed, but have no idea how I couldn't see
->> the effect.  I retested it now and it's obvious that it works on x86.  Sorry
->> for the confusion.
->>
->>>
->>> Probably a moot point though.
->>
->> Yes, this will not solve the problem on ARM.
+On 2/17/26 21:10, Ashish Kalra wrote:
+> From: Ashish Kalra <ashish.kalra@amd.com>
 > 
-> Sorry for being late to this thread. I'm a bit confused now. Did
-> Sean's original patch (reintroducing the old logic, based on whether
-> any vcpus have been created) work for both/either/neither arch? I
-> would have expected it to work for both ARM and X86, despite the
-> offending synchronize_srcu() not being in the vcpu-creation ioctl on
-> ARM, and I think that is finally what your testing seems to show? If
-> so then that seems the pragmatic if somewhat ugly way forward.
-
-The original patch from Sean works for x86.  I didn't test it on ARM as 
-it's harder for me to do, but I don't expect it to work because it only 
-affects the pre-vcpu-creation phase.
-
-We discussed the second patch at the KVM sync earlier today, then I 
-retested it and it appears to solve the issue for both, but I'm going to 
-have more complete results tomorrow.
-
-Are you by chance able to have a look whether KVM_SET_USER_MEMORY_REGION 
-execution elongates on ARM in your environment (with the 4/4 patch)? 
-I'd be curious to know why not if it doesn't.
-
+> As SEV-SNP is enabled by default on boot when an RMP table is
+> allocated by BIOS, the hypervisor and non-SNP guests are subject to
+> RMP write checks to provide integrity of SNP guest memory.
 > 
->   Cheers,
->    Keir
+> RMPOPT is a new instruction that minimizes the performance overhead of
+> RMP checks on the hypervisor and on non-SNP guests by allowing RMP
+> checks to be skipped for 1GB regions of memory that are known not to
+> contain any SEV-SNP guest memory.
 > 
+> Enable RMPOPT optimizations globally for all system RAM at RMP
+> initialization time. RMP checks can initially be skipped for 1GB memory
+> ranges that do not contain SEV-SNP guest memory (excluding preassigned
+> pages such as the RMP table and firmware pages). As SNP guests are
+> launched, RMPUPDATE will disable the corresponding RMPOPT optimizations.
 > 
->>>
->>>> so it doesn't allow to differentiate the two
->>>> cases (below is kvm_vm_ioctl_create_vcpu):
->>>>
->>>>         kvm->created_vcpus++; // <===== incremented here
->>>>         mutex_unlock(&kvm->lock);
->>>>
->>>>         vcpu = kmem_cache_zalloc(kvm_vcpu_cache, GFP_KERNEL_ACCOUNT);
->>>>         if (!vcpu) {
->>>>                 r = -ENOMEM;
->>>>                 goto vcpu_decrement;
->>>>         }
->>>>
->>>>         BUILD_BUG_ON(sizeof(struct kvm_run) > PAGE_SIZE);
->>>>         page = alloc_page(GFP_KERNEL_ACCOUNT | __GFP_ZERO);
->>>>         if (!page) {
->>>>                 r = -ENOMEM;
->>>>                 goto vcpu_free;
->>>>         }
->>>>         vcpu->run = page_address(page);
->>>>
->>>>         kvm_vcpu_init(vcpu, kvm, id);
->>>>
->>>>         r = kvm_arch_vcpu_create(vcpu); // <===== the delay is here
->>>>
->>>>
->>>> firecracker   583 [001]   151.297145: probe:synchronize_srcu_expedited:
->>>> (ffffffff813e5cf0)
->>>>       ffffffff813e5cf1 synchronize_srcu_expedited+0x1 ([kernel.kallsyms])
->>>>       ffffffff81234986 kvm_swap_active_memslots+0x136 ([kernel.kallsyms])
->>>>       ffffffff81236cdd kvm_set_memslot+0x1cd ([kernel.kallsyms])
->>>>       ffffffff81237518 kvm_set_memory_region.part.0+0x478 ([kernel.kallsyms])
->>>>       ffffffff81264dbc __x86_set_memory_region+0xec ([kernel.kallsyms])
->>>>       ffffffff8127e2dc kvm_alloc_apic_access_page+0x5c ([kernel.kallsyms])
->>>>       ffffffff812b9ed3 vmx_vcpu_create+0x193 ([kernel.kallsyms])
->>>>       ffffffff8126788a kvm_arch_vcpu_create+0x1da ([kernel.kallsyms])
->>>>       ffffffff8123c54c kvm_vm_ioctl+0x5fc ([kernel.kallsyms])
->>>>       ffffffff8167b331 __x64_sys_ioctl+0x91 ([kernel.kallsyms])
->>>>       ffffffff8251a89c do_syscall_64+0x4c ([kernel.kallsyms])
->>>>       ffffffff8100012b entry_SYSCALL_64_after_hwframe+0x76 ([kernel.kallsyms])
->>>>                 6512de ioctl+0x32 (/mnt/host/firecracker)
->>>>                  d99a7 std::rt::lang_start+0x37 (/mnt/host/firecracker)
->>>>
->>>> Also, given that it stumbles after the KVM_CREATE_VCPU on ARM (in
->>>> KVM_SET_USER_MEMORY_REGION), it doesn't look like a universal solution.
->>>
->>> Hmm.  Under the hood, __synchronize_srcu() itself uses __call_srcu, so I _think_
->>> the only practical difference (aside from waiting, obviously) between call_srcu()
->>> and synchronize_srcu_expedited() with respect to "transferring" grace period
->>> latency is that using call_srcu() could start a normal, non-expedited grace period.
->>>
->>> IIUC, SRCU has best-effort logic to shift in-flight non-expedited grace periods
->>> to expedited mode, but if the normal grace period has already started the timer
->>> for the delayed invocation of process_srcu(), then SRCU will still wait for one
->>> jiffie, i.e. won't immediately queue the work.
->>>
->>> I have no idea if this is sane and/or acceptable, but before looping in Paul and
->>> others, can you try this to see if it helps?
->>
->> That's exactly what I tried myself before and it didn't help, probably for
->> the reason you mentioned above (a normal GP being already started).
->>
->>>
->>> diff --git a/include/linux/srcu.h b/include/linux/srcu.h
->>> index 344ad51c8f6c..30437dc8d818 100644
->>> --- a/include/linux/srcu.h
->>> +++ b/include/linux/srcu.h
->>> @@ -89,6 +89,8 @@ void __srcu_read_unlock(struct srcu_struct *ssp, int idx) __releases(ssp);
->>>
->>>    void call_srcu(struct srcu_struct *ssp, struct rcu_head *head,
->>>                   void (*func)(struct rcu_head *head));
->>> +void call_srcu_expedited(struct srcu_struct *ssp, struct rcu_head *rhp,
->>> +                        rcu_callback_t func);
->>>    void cleanup_srcu_struct(struct srcu_struct *ssp);
->>>    void synchronize_srcu(struct srcu_struct *ssp);
->>>
->>> diff --git a/kernel/rcu/srcutree.c b/kernel/rcu/srcutree.c
->>> index ea3f128de06f..03333b079092 100644
->>> --- a/kernel/rcu/srcutree.c
->>> +++ b/kernel/rcu/srcutree.c
->>> @@ -1493,6 +1493,13 @@ void call_srcu(struct srcu_struct *ssp, struct rcu_head *rhp,
->>>    }
->>>    EXPORT_SYMBOL_GPL(call_srcu);
->>>
->>> +void call_srcu_expedited(struct srcu_struct *ssp, struct rcu_head *rhp,
->>> +                        rcu_callback_t func)
->>> +{
->>> +       __call_srcu(ssp, rhp, func, rcu_gp_is_normal());
->>> +}
->>> +EXPORT_SYMBOL_GPL(call_srcu_expedited);
->>> +
->>>    /*
->>>     * Helper function for synchronize_srcu() and synchronize_srcu_expedited().
->>>     */
->>> diff --git a/virt/kvm/kvm_main.c b/virt/kvm/kvm_main.c
->>> index 737b74b15bb5..26215f98c98f 100644
->>> --- a/virt/kvm/kvm_main.c
->>> +++ b/virt/kvm/kvm_main.c
->>> @@ -6036,7 +6036,7 @@ int kvm_io_bus_register_dev(struct kvm *kvm, enum kvm_bus bus_idx, gpa_t addr,
->>>           memcpy(new_bus->range + i + 1, bus->range + i,
->>>                   (bus->dev_count - i) * sizeof(struct kvm_io_range));
->>>           rcu_assign_pointer(kvm->buses[bus_idx], new_bus);
->>> -       call_srcu(&kvm->srcu, &bus->rcu, __free_bus);
->>> +       call_srcu_expedited(&kvm->srcu, &bus->rcu, __free_bus);
->>>
->>>           return 0;
->>>    }
->>
+> Suggested-by: Thomas Lendacky <thomas.lendacky@amd.com>
+> Signed-off-by: Ashish Kalra <ashish.kalra@amd.com>
+> ---
+>   arch/x86/virt/svm/sev.c | 84 +++++++++++++++++++++++++++++++++++++++++
+>   1 file changed, 84 insertions(+)
+> 
+> diff --git a/arch/x86/virt/svm/sev.c b/arch/x86/virt/svm/sev.c
+> index e6b784d26c33..a0d38fc50698 100644
+> --- a/arch/x86/virt/svm/sev.c
+> +++ b/arch/x86/virt/svm/sev.c
+> @@ -19,6 +19,7 @@
+>   #include <linux/iommu.h>
+>   #include <linux/amd-iommu.h>
+>   #include <linux/nospec.h>
+> +#include <linux/kthread.h>
+>   
+>   #include <asm/sev.h>
+>   #include <asm/processor.h>
+> @@ -127,10 +128,17 @@ static DEFINE_SPINLOCK(snp_leaked_pages_list_lock);
+>   
+>   static unsigned long snp_nr_leaked_pages;
+>   
+> +enum rmpopt_function {
+> +	RMPOPT_FUNC_VERIFY_AND_REPORT_STATUS,
+> +	RMPOPT_FUNC_REPORT_STATUS
+> +};
+> +
+>   #define RMPOPT_TABLE_MAX_LIMIT_IN_TB	2
+>   #define NUM_TB(pfn_min, pfn_max)	\
+>   	(((pfn_max) - (pfn_min)) / (1 << (40 - PAGE_SHIFT)))
+>   
+> +static struct task_struct *rmpopt_task;
+> +
+>   struct rmpopt_socket_config {
+>   	unsigned long start_pfn, end_pfn;
+>   	cpumask_var_t cpulist;
+> @@ -527,6 +535,66 @@ static void get_cpumask_of_primary_threads(cpumask_var_t cpulist)
+>   	}
+>   }
+>   
+> +/*
+> + * 'val' is a system physical address aligned to 1GB OR'ed with
+> + * a function selection. Currently supported functions are 0
+> + * (verify and report status) and 1 (report status).
+> + */
+> +static void rmpopt(void *val)
+> +{
+> +	asm volatile(".byte 0xf2, 0x0f, 0x01, 0xfc\n\t"
+
+There is no need for \n\t instruction delimiter with single instruction 
+in the asm template, it will just confuse compiler's insn count estimator.
+
+Uros.
+
+> +		     : : "a" ((u64)val & PUD_MASK), "c" ((u64)val & 0x1)
+> +		     : "memory", "cc");
+> +}
+> +
+> +static int rmpopt_kthread(void *__unused)
+> +{
+> +	phys_addr_t pa_start, pa_end;
+> +	cpumask_var_t cpus;
+> +
+> +	if (!zalloc_cpumask_var(&cpus, GFP_KERNEL))
+> +		return -ENOMEM;
+> +
+> +	pa_start = ALIGN_DOWN(PFN_PHYS(min_low_pfn), PUD_SIZE);
+> +	pa_end = ALIGN(PFN_PHYS(max_pfn), PUD_SIZE);
+> +
+> +	while (!kthread_should_stop()) {
+> +		phys_addr_t pa;
+> +
+> +		pr_info("RMP optimizations enabled on physical address range @1GB alignment [0x%016llx - 0x%016llx]\n",
+> +			pa_start, pa_end);
+> +
+> +		/* Only one thread per core needs to issue RMPOPT instruction */
+> +		get_cpumask_of_primary_threads(cpus);
+> +
+> +		/*
+> +		 * RMPOPT optimizations skip RMP checks at 1GB granularity if this range of
+> +		 * memory does not contain any SNP guest memory.
+> +		 */
+> +		for (pa = pa_start; pa < pa_end; pa += PUD_SIZE) {
+> +			/* Bit zero passes the function to the RMPOPT instruction. */
+> +			on_each_cpu_mask(cpus, rmpopt,
+> +					 (void *)(pa | RMPOPT_FUNC_VERIFY_AND_REPORT_STATUS),
+> +					 true);
+> +
+> +			 /* Give a chance for other threads to run */
+> +			cond_resched();
+> +		}
+> +
+> +		set_current_state(TASK_INTERRUPTIBLE);
+> +		schedule();
+> +	}
+> +
+> +	free_cpumask_var(cpus);
+> +	return 0;
+> +}
+> +
+> +static void rmpopt_all_physmem(void)
+> +{
+> +	if (rmpopt_task)
+> +		wake_up_process(rmpopt_task);
+> +}
+> +
+>   static void __configure_rmpopt(void *val)
+>   {
+>   	u64 rmpopt_base = ((u64)val & PUD_MASK) | MSR_AMD64_RMPOPT_ENABLE;
+> @@ -687,6 +755,22 @@ static __init void configure_and_enable_rmpopt(void)
+>   	else
+>   		configure_rmpopt_large_physmem(primary_threads_cpulist);
+>   
+> +	rmpopt_task = kthread_create(rmpopt_kthread, NULL, "rmpopt_kthread");
+> +	if (IS_ERR(rmpopt_task)) {
+> +		pr_warn("Unable to start RMPOPT kernel thread\n");
+> +		rmpopt_task = NULL;
+> +		goto free_cpumask;
+> +	}
+> +
+> +	pr_info("RMPOPT worker thread created with PID %d\n", task_pid_nr(rmpopt_task));
+> +
+> +	/*
+> +	 * Once all per-CPU RMPOPT tables have been configured, enable RMPOPT
+> +	 * optimizations on all physical memory.
+> +	 */
+> +	rmpopt_all_physmem();
+> +
+> +free_cpumask:
+>   	free_cpumask_var(primary_threads_cpulist);
+>   }
+>   
 
