@@ -1,55 +1,55 @@
-Received: from mail-pj1-f74.google.com (mail-pj1-f74.google.com [209.85.216.74])
+Received: from mail-pj1-f73.google.com (mail-pj1-f73.google.com [209.85.216.73])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9216333A9F2
-	for <kvm@vger.kernel.org>; Wed, 18 Feb 2026 23:10:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.74
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA6E933A9FE
+	for <kvm@vger.kernel.org>; Wed, 18 Feb 2026 23:10:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.73
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771456210; cv=none; b=pHB3DLgqt/vg1SsMQ0GgcI4AuuIkqCWi/NsuOcwwPNfV/iWMkCrCNUL+yz2ytblbDGFDTtTE/w78KiFmF+9PcSswzb/scI4Kf/9XI/+cQp51AE7tAFnvk8N6alyE631OuYdNx2CljVbexUeVDVT8jwYqpL6zGpmE9btcvVi2rBo=
+	t=1771456216; cv=none; b=DvzmxGKNSat0r6jJIACvk1voEBLniE0eB11g0W2b5bWYSDUB2o3xbD111cjIAoN28RD3WXlOMcJeat1raOMeq6lqgnDTqY8FzA26ck8I25+Po6cxeCS7pP1RkPXDUMXg/tcnN3WLuziIeqPX6uxoQGR3iIWcLuRCHfKq1LjBefk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771456210; c=relaxed/simple;
-	bh=TJc3a0fOKqplazQ93Hs1c6kkIjHj5kNcKANcDg2K5q0=;
+	s=arc-20240116; t=1771456216; c=relaxed/simple;
+	bh=lp/uTjjtBQSfze7HySN85sutooSpbSENQzv6kea1z28=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=DLbeaLdZ3AJ6j3nQuEHiIt6SVxCRxrFam705JQEWlBIodXYNFjlJT1q3BseFoQpLp6ApjJy8J7pX1k4l5BH+fp+eLvrBqnTwrJcCQs+oVUQx/Zwh5/HcuiIRaX4srIJoN+dSWnC3rUFq8hyrNJr3gfirUa2qRoxswMP/vtorQj0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=WZu3KLKI; arc=none smtp.client-ip=209.85.216.74
+	 To:Cc:Content-Type; b=rJcSWUHNpbDPW2cItw3pTdTmrryHTPnlV3aoKa3hVYmfjNoaUVQ9qI4oEeXbltFgDt1UjCuUFeD0EJosdauoq4b1dKeAxT2Sp7hIrGg0ijHUKZ11RVhk2abWaUxJtGkSHMS0b3FhTjVF/KXDSx/7HQY4uqtN3SYlHS9T9QGp6fw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=vPlccHqg; arc=none smtp.client-ip=209.85.216.73
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="WZu3KLKI"
-Received: by mail-pj1-f74.google.com with SMTP id 98e67ed59e1d1-354c0234c1fso255428a91.2
-        for <kvm@vger.kernel.org>; Wed, 18 Feb 2026 15:10:09 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="vPlccHqg"
+Received: by mail-pj1-f73.google.com with SMTP id 98e67ed59e1d1-352de7a89e1so258451a91.1
+        for <kvm@vger.kernel.org>; Wed, 18 Feb 2026 15:10:14 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1771456209; x=1772061009; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1771456214; x=1772061014; darn=vger.kernel.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:reply-to:from:to:cc:subject:date:message-id:reply-to;
-        bh=twtjOlMbJ4yptA1dUwvsBsUlXuZKEvWo2vQHzG7BXWs=;
-        b=WZu3KLKIK2izaUr4xY3z8tG//vtO1NQbKZTH+L3/H+/y49dL6l03YcHo1OeslRv2zF
-         Yl4beFOdzujvQaSgJeX2Uc2PDo7OktMXng4R6dWILhBCm/cYGvfgFgIXtM8c61Io/Nzz
-         JmznaI8yPkGn0qhIIZYFUoVnZBdbwL5QN4oxq95RyQvwW2zqPgjzystozTWGZTPQIF1g
-         E7R2Ie07ssKw5NmAiZuv1qLxNJkZTWDkfCxry5HDsTq0jPhE5bo0A0IyXzyVzNHxZVVC
-         gf/2mjjL5iffLpPaoRez60Anr5BNaPmwH1EMWisZvRsBITw/fQqqHOhAVQGj2SAm4GFd
-         8few==
+        bh=BtN/pTdYbIU/D5c0aBEqj7mrLMqBg1yrQ95ctx4mzdo=;
+        b=vPlccHqgV+uAv5z+ClHvDGyIKsjKoiJ2zQdtGv6bBWNLFKDNBdECko1E6hh8xSiz/m
+         Pgb+g0rNEGhy1OpRViSkd70LZ2O1s7yjhWcsFYc+aUfR98sqb5z5ryoJc9gPhsn0JzuS
+         iT0BEf7ei2xoErYcCrRThmqWdCMx77Ohq2t1O8RCqobzafbz3VflRKeYQQo1drueEnuM
+         LTO1pL3yegXIp8Gw5kXY+4rMqeJDTsdJhvekbr8JOws97VhNRISJzSxa/SYPiRUXVyte
+         31LjjtAcdNHib4SS30mbLBmicv518uzArvs+9qri1hZnUsF3UznoN9oEf/PM04IcYhQI
+         HO2w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1771456209; x=1772061009;
+        d=1e100.net; s=20230601; t=1771456214; x=1772061014;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:reply-to:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=twtjOlMbJ4yptA1dUwvsBsUlXuZKEvWo2vQHzG7BXWs=;
-        b=KVRoE0OVYq8mY2oZBuvKuASz5ViLB+fNhLc7osW7wgWPQAOiba2OJKK8YiTnjx6gwC
-         kxpwCxO8h1NEpf9mFCXXTckrtSzBy6FvyJPgNMkEETEhLXhuRaHPPSNyIb1wNOxDTgRz
-         L0U8M/9LDYrndzyJ39jetMUByUM+CbJVwA8NU5LtGjg8TBYqwg52cPDqBVEWZ4WR3Wdz
-         y4e1xIhdyrIB5s2AhhHZlrsRbNNWvWMCgpBEhO3kkuQaHATkN6tPdDa7+fndksf7xPgU
-         EZR86Td8ulpXPP3kzW90MQyYGAylGty3fvWNMp9RbFgk9C9QDzVadHzQe5GzgD7ufVyh
-         3A5w==
-X-Gm-Message-State: AOJu0YwMr94PLssoNpwPdQjyd4f+0mKjiZAo2/mTy7sJzudMl0DljNlT
-	GMwkGg88oA99/6IpRN8UZ4DexqBxyiUugRN6RB8E9L6Gp+ItaCKggPL50PTUTzyc0LY0CCw0VCz
-	2F64RbA==
-X-Received: from pjug8.prod.google.com ([2002:a17:90a:ce88:b0:354:7c11:76e1])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:548f:b0:354:c6a9:ee33
- with SMTP id 98e67ed59e1d1-358450ed21amr15098266a91.36.1771456208874; Wed, 18
- Feb 2026 15:10:08 -0800 (PST)
+        bh=BtN/pTdYbIU/D5c0aBEqj7mrLMqBg1yrQ95ctx4mzdo=;
+        b=pPSm3vPH285fFUUrau7fInP3nnOh111aFbLAxQoASnJcRRkNOUdHnpy4Ig1fkBWAOB
+         5u0QKfRf8LLTdQfztTJk+s8e+82hDDRh/oV64nLRAFKFLccAnYP6dbPtJJ5xr3GJLqEh
+         A3weQagBxPN01Dg6E5FVSX5p1uDA08xJkVmHgGMI+BHp2ctqcqPYMJqm1wEIhcKC1pPj
+         VIDqabNR2WvbOq8GADYzfGlU6HOO5Rcx5u70fHPjJwVEoN8tK/KyVYfstKRj/rG95MeD
+         aj3ezOFEgScAO3NOtpkZJKUnzxmPGUTRBlZgtQ8Fz3O4LYujLto6/HVG35+yRToomAU7
+         G5pw==
+X-Gm-Message-State: AOJu0YyLarRa+XCW9E1NM2Q6sNr+zSB7A+mP5+cw7BGgUZ4pmy4Qfahv
+	903XVkkfnFPEvfefWK+5AboWAgkJYTgNhfDmku7lHCxi7pac8rpi1qJeUO1/VOtv4BKQ+AMqAxg
+	3Nm6Q2A==
+X-Received: from pjyl12.prod.google.com ([2002:a17:90a:ec0c:b0:34c:2f02:7f5d])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:4b0e:b0:356:5cf2:eb77
+ with SMTP id 98e67ed59e1d1-3588902c42bmr2574011a91.2.1771456214190; Wed, 18
+ Feb 2026 15:10:14 -0800 (PST)
 Reply-To: Sean Christopherson <seanjc@google.com>
-Date: Wed, 18 Feb 2026 15:09:54 -0800
+Date: Wed, 18 Feb 2026 15:09:57 -0800
 In-Reply-To: <20260218230958.2877682-1-seanjc@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
@@ -59,37 +59,91 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 References: <20260218230958.2877682-1-seanjc@google.com>
 X-Mailer: git-send-email 2.53.0.345.g96ddfc5eaa-goog
-Message-ID: <20260218230958.2877682-5-seanjc@google.com>
-Subject: [PATCH v2 4/8] KVM: nSVM: Directly (re)calc vmcb02 intercepts from nested_vmcb02_prepare_control()
+Message-ID: <20260218230958.2877682-8-seanjc@google.com>
+Subject: [PATCH v2 7/8] KVM: nSVM: Move vmcb_ctrl_area_cached.bus_lock_rip to svm_nested_state
 From: Sean Christopherson <seanjc@google.com>
 To: Sean Christopherson <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>
 Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
 	Yosry Ahmed <yosry.ahmed@linux.dev>
 Content-Type: text/plain; charset="UTF-8"
 
-Now that nested_vmcb02_recalc_intercepts() provides guardrails against it
-being incorrectly called without vmcb02 active, invoke it directly from
-nested_vmcb02_recalc_intercepts() instead of bouncing through
-svm_mark_intercepts_dirty(), which unnecessarily marks vmcb01 as dirty.
+Move "bus_lock_rip" from "vmcb_ctrl_area_cached" to "svm_nested_state" as
+"last_bus_lock_rip" to more accurately reflect what it tracks, and because
+it is NOT a cached vmcb12 control field.  The misplaced field isn't all
+that apparent in the current code base, as KVM uses "svm->nested.ctl"
+broadly, but the bad placement becomes glaringly obvious if
+"svm->nested.ctl" is captured as a local "vmcb12_ctrl" variable.
+
+No functional change intended.
 
 Signed-off-by: Sean Christopherson <seanjc@google.com>
 ---
- arch/x86/kvm/svm/nested.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/x86/kvm/svm/nested.c | 8 ++++----
+ arch/x86/kvm/svm/svm.c    | 2 +-
+ arch/x86/kvm/svm/svm.h    | 2 +-
+ 3 files changed, 6 insertions(+), 6 deletions(-)
 
 diff --git a/arch/x86/kvm/svm/nested.c b/arch/x86/kvm/svm/nested.c
-index 793f5d2eed3a..e8512de5aef7 100644
+index bbb8dfc9979b..bcd6304f3c0c 100644
 --- a/arch/x86/kvm/svm/nested.c
 +++ b/arch/x86/kvm/svm/nested.c
-@@ -916,7 +916,7 @@ static void nested_vmcb02_prepare_control(struct vcpu_svm *svm,
- 	 * Merge guest and host intercepts - must be called with vcpu in
- 	 * guest-mode to take effect.
+@@ -806,7 +806,7 @@ static void nested_vmcb02_prepare_control(struct vcpu_svm *svm,
+ 	 * L1 re-enters L2, the same instruction will trigger a VM-Exit and the
+ 	 * entire cycle start over.
  	 */
--	svm_mark_intercepts_dirty(svm);
-+	nested_vmcb02_recalc_intercepts(svm);
- }
+-	if (vmcb02->save.rip && (svm->nested.ctl.bus_lock_rip == vmcb02->save.rip))
++	if (vmcb02->save.rip && (svm->nested.last_bus_lock_rip == vmcb02->save.rip))
+ 		vmcb02->control.bus_lock_counter = 1;
+ 	else
+ 		vmcb02->control.bus_lock_counter = 0;
+@@ -1191,11 +1191,11 @@ int nested_svm_vmexit(struct vcpu_svm *svm)
+ 	}
  
- static void nested_svm_copy_common_state(struct vmcb *from_vmcb, struct vmcb *to_vmcb)
+ 	/*
+-	 * Invalidate bus_lock_rip unless KVM is still waiting for the guest
+-	 * to make forward progress before re-enabling bus lock detection.
++	 * Invalidate last_bus_lock_rip unless KVM is still waiting for the
++	 * guest to make forward progress before re-enabling bus lock detection.
+ 	 */
+ 	if (!vmcb02->control.bus_lock_counter)
+-		svm->nested.ctl.bus_lock_rip = INVALID_GPA;
++		svm->nested.last_bus_lock_rip = INVALID_GPA;
+ 
+ 	nested_svm_copy_common_state(svm->nested.vmcb02.ptr, svm->vmcb01.ptr);
+ 
+diff --git a/arch/x86/kvm/svm/svm.c b/arch/x86/kvm/svm/svm.c
+index 9e76bf1671da..7c832a0decc2 100644
+--- a/arch/x86/kvm/svm/svm.c
++++ b/arch/x86/kvm/svm/svm.c
+@@ -3223,7 +3223,7 @@ static int bus_lock_exit(struct kvm_vcpu *vcpu)
+ 	vcpu->arch.complete_userspace_io = complete_userspace_buslock;
+ 
+ 	if (is_guest_mode(vcpu))
+-		svm->nested.ctl.bus_lock_rip = vcpu->arch.cui_linear_rip;
++		svm->nested.last_bus_lock_rip = vcpu->arch.cui_linear_rip;
+ 
+ 	return 0;
+ }
+diff --git a/arch/x86/kvm/svm/svm.h b/arch/x86/kvm/svm/svm.h
+index 92a1691dc7be..c4ed1be38ceb 100644
+--- a/arch/x86/kvm/svm/svm.h
++++ b/arch/x86/kvm/svm/svm.h
+@@ -173,7 +173,6 @@ struct vmcb_ctrl_area_cached {
+ 	u64 nested_cr3;
+ 	u64 virt_ext;
+ 	u32 clean;
+-	u64 bus_lock_rip;
+ 	union {
+ #if IS_ENABLED(CONFIG_HYPERV) || IS_ENABLED(CONFIG_KVM_HYPERV)
+ 		struct hv_vmcb_enlightenments hv_enlightenments;
+@@ -188,6 +187,7 @@ struct svm_nested_state {
+ 	u64 vm_cr_msr;
+ 	u64 vmcb12_gpa;
+ 	u64 last_vmcb12_gpa;
++	u64 last_bus_lock_rip;
+ 
+ 	/*
+ 	 * The MSR permissions map used for vmcb02, which is the merge result
 -- 
 2.53.0.345.g96ddfc5eaa-goog
 
