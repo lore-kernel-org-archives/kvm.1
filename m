@@ -1,55 +1,55 @@
-Received: from mail-pj1-f74.google.com (mail-pj1-f74.google.com [209.85.216.74])
+Received: from mail-pl1-f202.google.com (mail-pl1-f202.google.com [209.85.214.202])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3E8533A9F4
-	for <kvm@vger.kernel.org>; Wed, 18 Feb 2026 23:10:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.74
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A65AB33ADA8
+	for <kvm@vger.kernel.org>; Wed, 18 Feb 2026 23:10:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.202
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771456218; cv=none; b=uCBZXcuTcmGvMc2wi5lJhhzuW22CxrO/NyfrnxUmDBwOSdSfE60x/JdTQmLAxYpottHqYuxAyX6XybzLnrooQq5jdi7Y3L05CXfRkVAyunJ5Z7IdIQEQuDznT1PKd+MQDMzAceX0C+VtS7mczD03Q57MC8OaqGbDyZhCNSSOA0o=
+	t=1771456218; cv=none; b=gyqjBUW/Fy97nwPPqsLoMQ2YAXFYEu3zgbbZmiJZFrhooVvMynLnKPkV9nkPobw32zjI2lqhzDSz5oA8P0Gu6mA/gapUeyG+xP6UbcPJ7YV76nfYQGJ/yx1r0x85uej/5WbRtpbgacmock4DcYh1cAh8INbNK5JV7J8fOwGDARY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1771456218; c=relaxed/simple;
-	bh=6FyplMM1/1R9SGHEATi52jcFIHbZhtgrlM8MlbeHBx0=;
+	bh=NMDuvD7HrMiDW7irrkEtcqX9feVJnOUeWUwcpv6qmIw=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=FtQ4MA+MhNxqBKRlUtcLd3yXXIeZhbxuuYy6DrgjOu1VmYHevEtBgUZwSh6ezaMo390/prSVgqDb7sCHjmjdvHOm6PYf6Ogcwq/eVLnB5/x4RecFMLq916tgAQ1PYFXCfDIOVg+bTB5We9ZSLcgFSPxzLS4vJlz63ihR/g4qm14=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=FPB5h3Ne; arc=none smtp.client-ip=209.85.216.74
+	 To:Cc:Content-Type; b=K01PJuVT0knraUdJD73Of60iskCjgejfw/qwwB7aqOt5MqfFHEGqkFXasSVw8gxpCgw6sU55+xXMl6+tKsATVZd06Wm4yp5YbVOabqBMDOXxOyFeEwg2Z5Rykv1h6IWXOpZLmeHVEf8HgPcdWGJxv+IHzML3TjOSyYOJqbvWF4g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=iwMV5LUg; arc=none smtp.client-ip=209.85.214.202
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="FPB5h3Ne"
-Received: by mail-pj1-f74.google.com with SMTP id 98e67ed59e1d1-354c0234c1fso255465a91.2
-        for <kvm@vger.kernel.org>; Wed, 18 Feb 2026 15:10:11 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="iwMV5LUg"
+Received: by mail-pl1-f202.google.com with SMTP id d9443c01a7336-2a79164b686so3887065ad.0
+        for <kvm@vger.kernel.org>; Wed, 18 Feb 2026 15:10:16 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1771456211; x=1772061011; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1771456216; x=1772061016; darn=vger.kernel.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:reply-to:from:to:cc:subject:date:message-id:reply-to;
-        bh=CwBzC8ApcuV0uoozPZcU/zrvhWxwiR2ykbpvaueWHXY=;
-        b=FPB5h3Ne1Wu3a58F+GMnDsHUPKHA0LHBfe5X9pbcl0K6mNNoqe+c8lCeoxrvdo3gx2
-         MiKOsoKJksbqsuNnfgJn/W+BLPsfVdGjdhPtIlIMeqB82zXDnLljyuRFstdKrobP2tfL
-         vp67Gw4NuU09Pevjrf+yAYP9yAH7NcGH2rpeOMLIiSPatpkof+mMXN2bwK6wQn53EuKq
-         IOPmbmvNqJLAmEUdl00eN9p6ZrxxdE6jcVz+uyh7kQ1ywimr2HPBJ+RIeOdIJq/mZG+H
-         Zs3/C67qP3L/4YXlxR43w97LvAk0iBb98RzBsSduhnuQIyWBgEdjNoOpOrGIeP5V5hWt
-         uwoA==
+        bh=LLLEX7R/aRYWwzEE41grxY+H/LHczaoT3FkuhfJMqq4=;
+        b=iwMV5LUgopwy6STRvmLJJ/3+mGb94X2kjz10QcjvZ9ffN9nHnDV3Q7y+/EXo8LHQdO
+         T1uLFMnHuzPEYatDar+qXL8TYbtKkwn4Xrvy2J/+L3ZDDzkuQSjyBNVuN4X1YwLDVDAg
+         Ga3EpKcPlF2i8vkOq5d4XaOpsin/9KyixgXt5zWYbz/pSjefhKreyuA7PsVvW6bSbrdI
+         B2E+Uxw9W0fqPrKesICRlMe61NlgLdD6KCYQR5bxUOI8G7hBYLGF9PjsJbOUVYn0bZnJ
+         QowJX+9sf5N/eMxwxwmGwe1ixQDvZo1jIT77GIz5py09CGjJDNtRM9++nAJpG1MofN/t
+         btNg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1771456211; x=1772061011;
+        d=1e100.net; s=20230601; t=1771456216; x=1772061016;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:reply-to:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=CwBzC8ApcuV0uoozPZcU/zrvhWxwiR2ykbpvaueWHXY=;
-        b=WIdAbLGODhOOSgQkJkPQX4PRmwcHpkf12iADiclSW3XNOu7ytVLoE9sM3hQjexgSBr
-         BEdRKYY5w9Uq4sjwDjrPlviA1BN1rwtf0Yf8CG9/MMVC46+OLrdIKmesG4naw+3n0Z2q
-         2osAcsHSKZ4+mT9rnPUvNjbXymCGs35QN2rGpgKajdCRttiE/EsxqDjgXRsx4DlGpk5Q
-         Hk9aqzquzPcYTYxgFbSlXMJ6mFpOxbguQMTEeHMO8awePafRsMcvgrNMCag7sfP1g++p
-         Vsnxn1ybQbmaIaw/Mxkg5lA4sEG9wpj5Fo1di7yiJJYYFdMfCujQSjjTxQ9aK9+2LYy+
-         lQUg==
-X-Gm-Message-State: AOJu0YwmguWRi6mIfEKNpXtLA7srnwffS1TsdOIX+bRmQitmHXDsS+1I
-	KpOquF3ORCOJfW9JaUXOd/Bg3Go5yYK6ot2hloWTHgKOcHNxo1IkGBVzYIB/ZyMb1NfxVfG64q8
-	Oqjin9w==
-X-Received: from pjph2.prod.google.com ([2002:a17:90a:9c02:b0:351:c17:c7b9])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:3cd:b0:356:3ba2:1233
- with SMTP id 98e67ed59e1d1-35844f9bf1dmr8741212a91.22.1771456210724; Wed, 18
- Feb 2026 15:10:10 -0800 (PST)
+        bh=LLLEX7R/aRYWwzEE41grxY+H/LHczaoT3FkuhfJMqq4=;
+        b=JUC1o7LtYZW3bi5ZMDmzwje5VGC5/9cfj3U9SfE7NgJoaxTqX00Fs5Rfzwxqp4SPvb
+         l2SKCxbFm9cSIvFFIDOgQK8cpMvcfbBa2fzhXylF73Z6BkOuyPAjV0SEW4VEmriLQKTC
+         I8mbVmR7ZpVlZFppkKDzPtL+Qhxu6b8HIIf5TZrGySxLMud2q5zlBEJg+tMuACoVqZJa
+         DsuvRBHRQF9ouLubAOXVeAe+tNff7uyYD+3SDPv0Lfnsr4ATb6rR1O7ZaGaup4V2X3fU
+         nGYp+LevsyiAlBHvdVUwQxUwBAae8V2/D+e60CAXBZ9m6+eMmsX1ZZ2xclEfgsVi3IQx
+         cMWw==
+X-Gm-Message-State: AOJu0Yw6zPqZR78PNc2epk78K+0pIITCcWHmeecvf0LGDoMZwTNa5Ad8
+	g6nv1HTS5y5fxEialqSXfWV6UFkIIo+4/74K3wzzoDFrQ2NeSRn7/zZ8XjkoaJee0txY+9W9yYe
+	SGuSvKw==
+X-Received: from plw19.prod.google.com ([2002:a17:903:45d3:b0:2a7:6eb5:7e30])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:903:910:b0:2a9:4450:abb7
+ with SMTP id d9443c01a7336-2ad50f6378fmr28512385ad.39.1771456215835; Wed, 18
+ Feb 2026 15:10:15 -0800 (PST)
 Reply-To: Sean Christopherson <seanjc@google.com>
-Date: Wed, 18 Feb 2026 15:09:55 -0800
+Date: Wed, 18 Feb 2026 15:09:58 -0800
 In-Reply-To: <20260218230958.2877682-1-seanjc@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
@@ -59,116 +59,141 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 References: <20260218230958.2877682-1-seanjc@google.com>
 X-Mailer: git-send-email 2.53.0.345.g96ddfc5eaa-goog
-Message-ID: <20260218230958.2877682-6-seanjc@google.com>
-Subject: [PATCH v2 5/8] KVM: nSVM: Use intuitive local variables in nested_vmcb02_recalc_intercepts()
+Message-ID: <20260218230958.2877682-9-seanjc@google.com>
+Subject: [PATCH v2 8/8] KVM: nSVM: Capture svm->nested.ctl as vmcb12_ctrl when
+ preparing vmcb02
 From: Sean Christopherson <seanjc@google.com>
 To: Sean Christopherson <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>
 Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
 	Yosry Ahmed <yosry.ahmed@linux.dev>
 Content-Type: text/plain; charset="UTF-8"
 
-Now that nested_vmcb02_recalc_intercepts() is explicitly scoped to deal
-with *only* recalculating vmcb02 intercepts, rename its local variables to
-use more intuivite names.  The current "c", "h", and "g" local variables,
-for the current VMCB, vmcb01, and (cached) vmcb12 respectively, are short
-and sweet, but don't do much to help unfamiliar readers understand what
-the code is doing.
+Grab svm->nested.ctl as vmcb12_ctrl when preparing the vmcb02 controls to
+make it more obvious that much of the data is coming from vmcb12 (or
+rather, a snapshot of vmcb12 at the time of L1's VMRUN).
 
-Use vmcb12_ctrl/vmcb01/vmcb02/vmcb12_ctrl in lieu of c/h/g to make it clear
-the function is updating intercepts in vmcb02 based on the intercepts in
-vmcb01 and (cached) vmcb12.
-
-Opportunistically change the existing WARN_ON to a WARN_ON_ONCE so that a
-KVM bug doesn't unintentionally DoS the host.
+Opportunistically reorder the variable definitions to create a pretty
+reverse fir tree.
 
 No functional change intended.
 
-Signed-off-by: Yosry Ahmed <yosry.ahmed@linux.dev>
-[sean: use WARN_ON_ONCE, keep local vmcb12 cache as vmcb12_ctrl]
+Cc: Yosry Ahmed <yosry.ahmed@linux.dev>
 Signed-off-by: Sean Christopherson <seanjc@google.com>
 ---
- arch/x86/kvm/svm/nested.c | 35 ++++++++++++++++-------------------
- 1 file changed, 16 insertions(+), 19 deletions(-)
+ arch/x86/kvm/svm/nested.c | 39 +++++++++++++++++++--------------------
+ 1 file changed, 19 insertions(+), 20 deletions(-)
 
 diff --git a/arch/x86/kvm/svm/nested.c b/arch/x86/kvm/svm/nested.c
-index e8512de5aef7..bda2d6d613c9 100644
+index bcd6304f3c0c..1814522db6b4 100644
 --- a/arch/x86/kvm/svm/nested.c
 +++ b/arch/x86/kvm/svm/nested.c
-@@ -124,23 +124,20 @@ static bool nested_vmcb_needs_vls_intercept(struct vcpu_svm *svm)
+@@ -745,11 +745,11 @@ static void nested_vmcb02_prepare_control(struct vcpu_svm *svm,
+ 	u32 int_ctl_vmcb01_bits = V_INTR_MASKING_MASK;
+ 	u32 int_ctl_vmcb12_bits = V_TPR_MASK | V_IRQ_INJECTION_BITS_MASK;
  
- void nested_vmcb02_recalc_intercepts(struct vcpu_svm *svm)
- {
--	struct vmcb_control_area *c, *h;
--	struct vmcb_ctrl_area_cached *g;
+-	struct kvm_vcpu *vcpu = &svm->vcpu;
+-	struct vmcb *vmcb01 = svm->vmcb01.ptr;
 +	struct vmcb_ctrl_area_cached *vmcb12_ctrl = &svm->nested.ctl;
-+	struct vmcb *vmcb02 = svm->nested.vmcb02.ptr;
+ 	struct vmcb *vmcb02 = svm->nested.vmcb02.ptr;
+-	u32 pause_count12;
+-	u32 pause_thresh12;
 +	struct vmcb *vmcb01 = svm->vmcb01.ptr;
- 	unsigned int i;
++	struct kvm_vcpu *vcpu = &svm->vcpu;
++	u32 pause_count12, pause_thresh12;
  
--	if (WARN_ON_ONCE(svm->vmcb != svm->nested.vmcb02.ptr))
-+	if (WARN_ON_ONCE(svm->vmcb != vmcb02))
- 		return;
+ 	nested_svm_transition_tlb_flush(vcpu);
  
--	vmcb_mark_dirty(svm->vmcb, VMCB_INTERCEPTS);
--
--	c = &svm->vmcb->control;
--	h = &svm->vmcb01.ptr->control;
--	g = &svm->nested.ctl;
-+	vmcb_mark_dirty(vmcb02, VMCB_INTERCEPTS);
+@@ -762,7 +762,7 @@ static void nested_vmcb02_prepare_control(struct vcpu_svm *svm,
+ 	 */
  
- 	for (i = 0; i < MAX_INTERCEPT; i++)
--		c->intercepts[i] = h->intercepts[i];
-+		vmcb02->control.intercepts[i] = vmcb01->control.intercepts[i];
+ 	if (guest_cpu_cap_has(vcpu, X86_FEATURE_VGIF) &&
+-	    (svm->nested.ctl.int_ctl & V_GIF_ENABLE_MASK))
++	    (vmcb12_ctrl->int_ctl & V_GIF_ENABLE_MASK))
+ 		int_ctl_vmcb12_bits |= (V_GIF_MASK | V_GIF_ENABLE_MASK);
+ 	else
+ 		int_ctl_vmcb01_bits |= (V_GIF_MASK | V_GIF_ENABLE_MASK);
+@@ -820,10 +820,9 @@ static void nested_vmcb02_prepare_control(struct vcpu_svm *svm,
+ 	if (nested_npt_enabled(svm))
+ 		nested_svm_init_mmu_context(vcpu);
  
--	if (g->int_ctl & V_INTR_MASKING_MASK) {
-+	if (vmcb12_ctrl->int_ctl & V_INTR_MASKING_MASK) {
- 		/*
- 		 * If L2 is active and V_INTR_MASKING is enabled in vmcb12,
- 		 * disable intercept of CR8 writes as L2's CR8 does not affect
-@@ -151,9 +148,9 @@ void nested_vmcb02_recalc_intercepts(struct vcpu_svm *svm)
- 		 * the effective RFLAGS.IF for L1 interrupts will never be set
- 		 * while L2 is running (L2's RFLAGS.IF doesn't affect L1 IRQs).
- 		 */
--		vmcb_clr_intercept(c, INTERCEPT_CR8_WRITE);
--		if (!(svm->vmcb01.ptr->save.rflags & X86_EFLAGS_IF))
--			vmcb_clr_intercept(c, INTERCEPT_VINTR);
-+		vmcb_clr_intercept(&vmcb02->control, INTERCEPT_CR8_WRITE);
-+		if (!(vmcb01->save.rflags & X86_EFLAGS_IF))
-+			vmcb_clr_intercept(&vmcb02->control, INTERCEPT_VINTR);
- 	}
+-	vcpu->arch.tsc_offset = kvm_calc_nested_tsc_offset(
+-			vcpu->arch.l1_tsc_offset,
+-			svm->nested.ctl.tsc_offset,
+-			svm->tsc_ratio_msr);
++	vcpu->arch.tsc_offset = kvm_calc_nested_tsc_offset(vcpu->arch.l1_tsc_offset,
++							   vmcb12_ctrl->tsc_offset,
++							   svm->tsc_ratio_msr);
+ 
+ 	vmcb02->control.tsc_offset = vcpu->arch.tsc_offset;
+ 
+@@ -832,13 +831,13 @@ static void nested_vmcb02_prepare_control(struct vcpu_svm *svm,
+ 		nested_svm_update_tsc_ratio_msr(vcpu);
+ 
+ 	vmcb02->control.int_ctl             =
+-		(svm->nested.ctl.int_ctl & int_ctl_vmcb12_bits) |
++		(vmcb12_ctrl->int_ctl & int_ctl_vmcb12_bits) |
+ 		(vmcb01->control.int_ctl & int_ctl_vmcb01_bits);
+ 
+-	vmcb02->control.int_vector          = svm->nested.ctl.int_vector;
+-	vmcb02->control.int_state           = svm->nested.ctl.int_state;
+-	vmcb02->control.event_inj           = svm->nested.ctl.event_inj;
+-	vmcb02->control.event_inj_err       = svm->nested.ctl.event_inj_err;
++	vmcb02->control.int_vector          = vmcb12_ctrl->int_vector;
++	vmcb02->control.int_state           = vmcb12_ctrl->int_state;
++	vmcb02->control.event_inj           = vmcb12_ctrl->event_inj;
++	vmcb02->control.event_inj_err       = vmcb12_ctrl->event_inj_err;
  
  	/*
-@@ -161,14 +158,14 @@ void nested_vmcb02_recalc_intercepts(struct vcpu_svm *svm)
- 	 * flush feature is enabled.
+ 	 * next_rip is consumed on VMRUN as the return address pushed on the
+@@ -849,7 +848,7 @@ static void nested_vmcb02_prepare_control(struct vcpu_svm *svm,
+ 	 * prior to injecting the event).
  	 */
- 	if (!nested_svm_l2_tlb_flush_enabled(&svm->vcpu))
--		vmcb_clr_intercept(c, INTERCEPT_VMMCALL);
-+		vmcb_clr_intercept(&vmcb02->control, INTERCEPT_VMMCALL);
+ 	if (guest_cpu_cap_has(vcpu, X86_FEATURE_NRIPS))
+-		vmcb02->control.next_rip    = svm->nested.ctl.next_rip;
++		vmcb02->control.next_rip    = vmcb12_ctrl->next_rip;
+ 	else if (boot_cpu_has(X86_FEATURE_NRIPS))
+ 		vmcb02->control.next_rip    = vmcb12_rip;
  
- 	for (i = 0; i < MAX_INTERCEPT; i++)
--		c->intercepts[i] |= g->intercepts[i];
-+		vmcb02->control.intercepts[i] |= vmcb12_ctrl->intercepts[i];
- 
- 	/* If SMI is not intercepted, ignore guest SMI intercept as well  */
- 	if (!intercept_smi)
--		vmcb_clr_intercept(c, INTERCEPT_SMI);
-+		vmcb_clr_intercept(&vmcb02->control, INTERCEPT_SMI);
- 
- 	if (nested_vmcb_needs_vls_intercept(svm)) {
- 		/*
-@@ -176,10 +173,10 @@ void nested_vmcb02_recalc_intercepts(struct vcpu_svm *svm)
- 		 * we must intercept these instructions to correctly
- 		 * emulate them in case L1 doesn't intercept them.
- 		 */
--		vmcb_set_intercept(c, INTERCEPT_VMLOAD);
--		vmcb_set_intercept(c, INTERCEPT_VMSAVE);
-+		vmcb_set_intercept(&vmcb02->control, INTERCEPT_VMLOAD);
-+		vmcb_set_intercept(&vmcb02->control, INTERCEPT_VMSAVE);
- 	} else {
--		WARN_ON(!(c->virt_ext & VIRTUAL_VMLOAD_VMSAVE_ENABLE_MASK));
-+		WARN_ON_ONCE(!(vmcb02->control.virt_ext & VIRTUAL_VMLOAD_VMSAVE_ENABLE_MASK));
+@@ -859,7 +858,7 @@ static void nested_vmcb02_prepare_control(struct vcpu_svm *svm,
+ 		svm->soft_int_csbase = vmcb12_csbase;
+ 		svm->soft_int_old_rip = vmcb12_rip;
+ 		if (guest_cpu_cap_has(vcpu, X86_FEATURE_NRIPS))
+-			svm->soft_int_next_rip = svm->nested.ctl.next_rip;
++			svm->soft_int_next_rip = vmcb12_ctrl->next_rip;
+ 		else
+ 			svm->soft_int_next_rip = vmcb12_rip;
  	}
- }
+@@ -870,11 +869,11 @@ static void nested_vmcb02_prepare_control(struct vcpu_svm *svm,
+ 		vmcb02->control.virt_ext |= VIRTUAL_VMLOAD_VMSAVE_ENABLE_MASK;
+ 
+ 	if (guest_cpu_cap_has(vcpu, X86_FEATURE_PAUSEFILTER))
+-		pause_count12 = svm->nested.ctl.pause_filter_count;
++		pause_count12 = vmcb12_ctrl->pause_filter_count;
+ 	else
+ 		pause_count12 = 0;
+ 	if (guest_cpu_cap_has(vcpu, X86_FEATURE_PFTHRESHOLD))
+-		pause_thresh12 = svm->nested.ctl.pause_filter_thresh;
++		pause_thresh12 = vmcb12_ctrl->pause_filter_thresh;
+ 	else
+ 		pause_thresh12 = 0;
+ 	if (kvm_pause_in_guest(svm->vcpu.kvm)) {
+@@ -888,7 +887,7 @@ static void nested_vmcb02_prepare_control(struct vcpu_svm *svm,
+ 		vmcb02->control.pause_filter_thresh = vmcb01->control.pause_filter_thresh;
+ 
+ 		/* ... but ensure filtering is disabled if so requested.  */
+-		if (vmcb12_is_intercept(&svm->nested.ctl, INTERCEPT_PAUSE)) {
++		if (vmcb12_is_intercept(vmcb12_ctrl, INTERCEPT_PAUSE)) {
+ 			if (!pause_count12)
+ 				vmcb02->control.pause_filter_count = 0;
+ 			if (!pause_thresh12)
+@@ -905,7 +904,7 @@ static void nested_vmcb02_prepare_control(struct vcpu_svm *svm,
+ 	 * L2 is the "guest").
+ 	 */
+ 	if (guest_cpu_cap_has(vcpu, X86_FEATURE_ERAPS))
+-		vmcb02->control.erap_ctl = (svm->nested.ctl.erap_ctl &
++		vmcb02->control.erap_ctl = (vmcb12_ctrl->erap_ctl &
+ 					    ERAP_CONTROL_ALLOW_LARGER_RAP) |
+ 					   ERAP_CONTROL_CLEAR_RAP;
  
 -- 
 2.53.0.345.g96ddfc5eaa-goog
