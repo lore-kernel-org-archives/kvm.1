@@ -1,199 +1,88 @@
-Received: from mail-qt1-f171.google.com (mail-qt1-f171.google.com [209.85.160.171])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail.zytor.com (terminus.zytor.com [198.137.202.136])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7699B33ADA4
-	for <kvm@vger.kernel.org>; Wed, 18 Feb 2026 23:40:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.160.171
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771458038; cv=pass; b=Wuy3TcG3hdcFLxfSxihkmwi7Wxqnr8DJAG8+cIVkaWt80ifircMSeRvdTln9E77K2Lc+TbcbtCSbTQNU+lFPzJjeQFvhH6LlwGUvVMs0onSGAj3qL4tQ/5tj3WRL5076MNU4J0e/6o6EWGhrkRh5LR9DJ/DCDCVfr0fboIZJUIA=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771458038; c=relaxed/simple;
-	bh=JCYIyYfQkXj6y+2FydgfZ0XMji9ZHAOjYEUYt5DGHJw=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Content-Type; b=ZM+8flvJZNTGO6Qa2tWE52a1ixxXNujHgJaigZ9QlXR16E7UEWIz2fG/eOIM0tfPSk2Vmm8oh7P596uBZmkQOpfyh0M6+Vn9V9Lu9Mj9UaYzg35Xvo1VjET8uIdiPB9OvKbC4k7fIQQ/dgSs77pCShthDzCOrvuoOGhO40CE+HA=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=zVMXu7KH; arc=pass smtp.client-ip=209.85.160.171
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC7672DEA62;
+	Wed, 18 Feb 2026 23:53:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.137.202.136
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1771458800; cv=none; b=gzNtoLPUDPp6haRqeBNqT4qpSu+JP8lgpgFBEV7TE/YlSGIsbUJKaoE2pJLhvAy711sxpg3cJFVVRXA08AaZnxdJtuOZOoKaJXkEGe+m5MVa0b+QmJ7R/mNjaRhWJrFAte6kxBpvx2k50ttCW0ewiDUYHkkOMfpCIuEg2P46cFo=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1771458800; c=relaxed/simple;
+	bh=ud6jjHkpXOUroYYoHpbbrgqTadOtji00RvwIixGXf/Q=;
+	h=Date:From:To:CC:Subject:In-Reply-To:References:Message-ID:
+	 MIME-Version:Content-Type; b=JeB2wgL+SMpmdk/FnSzSsImSY9tmKsjHEDcShjl5skiV99N3YK4/kde3Um4HjYEreemoIkq5vfZ6dp7EmEU3ANFrQbGhkI35VwbFNGC8cv3kiWzE9qh78WsJg1QHjY1EsRJKaFmPtKYsi5UnxIedwSQGdnYkYyhPLJ1VvvrBFtc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zytor.com; spf=pass smtp.mailfrom=zytor.com; dkim=pass (2048-bit key) header.d=zytor.com header.i=@zytor.com header.b=PgUUqgvO; arc=none smtp.client-ip=198.137.202.136
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zytor.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=zytor.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="zVMXu7KH"
-Received: by mail-qt1-f171.google.com with SMTP id d75a77b69052e-505d3baf1a7so88031cf.1
-        for <kvm@vger.kernel.org>; Wed, 18 Feb 2026 15:40:36 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1771458035; cv=none;
-        d=google.com; s=arc-20240605;
-        b=MGuYk/DpUdEbsKyLk0miijrGN99pqC06AZUUm+xMiGBCAg6yA5Nl6NneK5Unc7YMZG
-         1VD91tCxSPph3lWH3M9UjnBP+UrKyjUyiRVtZUn7S7HtsN/lCXaRwzujdpfl+yhXRjsH
-         ++BzyovCvg/E3gUgUbrikroCqe6mLvSa8w5UUyzOw2AvUB6YhrsodTx76cfNVzQoVru1
-         C+GBYNMjXIIaUleI6ihdeUTWKpbPaRMxofIb92vid5YZRzSx4kGCdqq+oUOZQXl/eOtx
-         1Zv6nlX2RyXYEaHvU/1lhUdBeJAWu6TEk2ssi1gWcHeI9Bsbq2B7FSVWJhaDEX2ps1+7
-         snFA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=xjxPiN30X7H58ROVHwhzf4/X04sTDdl8fl/0yuhsL/4=;
-        fh=Y/ITJD2B9sYaXrLbrUEmCq/nS1FRW1948xP2WNSX7Do=;
-        b=VYdyvMZVt+3nN6JK33QGMbgjPraDb3ZDnJb/QKB4fiVTGbo25KXMb1CMaRmeegPEeH
-         PNSjixiilmuAEIOUu9KWxPHUGnhWFlDkRWP+/XIjJOFn3zYAWWNxgSRZ++IDWU6iDsHk
-         ojR0RnXXVIAicyxKQr/EZqkcYBH3pBKRQgdMtb0/7xujA8N7WBOVnjeoAIKuGKzw1mCa
-         epXL3GHN1OwK3URhVaCARBIlNwpan26XjZLyhP1xYEUyjq0odCmT2TNjqNZ7rQYIml6M
-         VXwgwvuFByzxAqtHDws0cY2mq3mZRml3qIXH1n/EqSu40p75QqEKD/WC0D+5pHn9O/4Z
-         TlQQ==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1771458035; x=1772062835; darn=vger.kernel.org;
-        h=content-transfer-encoding:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=xjxPiN30X7H58ROVHwhzf4/X04sTDdl8fl/0yuhsL/4=;
-        b=zVMXu7KHpfOUkepe4q8ggIvfeLArGHjvU4jVku5YBg1hWHhGVJaUl+2ifQAjdSoWYc
-         igEaqjMl2E3Lgt58ji10Pgr2f7Vwv7OAjPhOqoEZp7qvs0PusD5GrOeG8Winv/3hLrER
-         7cwwgf/kC1K0YZ+UwTLSgw9h/8BOzWQKHpux7XaJJD9b82Y4PEFXDR/Rr3jIVVgU3/a3
-         z218YeIZ3q58w5hU2ICwHkaRuleUDM5w5mX1PegHPESs7GIGPlj9OmYSLvjFiG4vjy72
-         t9ITOCANNOSH+mFVPtlVkOCzOWl7nj4U7oQv5aRkM/KUod4EG3F/8A9NgN2Pu32UKaQx
-         2tTQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1771458035; x=1772062835;
-        h=content-transfer-encoding:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=xjxPiN30X7H58ROVHwhzf4/X04sTDdl8fl/0yuhsL/4=;
-        b=gE3i4clypubU62xmXm2cmX3Nw/KRKmlK3vviaxQwFC39qSs0FZ8tgnSyHtCeWGbWI7
-         D4puJAMlSmUgAMIM1M6QRV/M0zIoudo+T3xRFygq/teCcmG6icSLZNdeDBgROg/G+Ksd
-         +nq1Hxt3lNya1hlrDZ2pbg3OncHdozRGShD5TQ9A3FncCw7Em4q27U+hW2Vz0Uhb2a0Q
-         5Niac5IY/7pNzBFon5Yw0a5o9NAc5f4dFPBM8IZgJ1sHB8AFY39N2hwRkzQmgSUQG2nb
-         ARDM+rlLwx0UZe/xXnRUqdTFktUkYwWZrLAr8sVxqGBZQKhOaEdqnvaLMNHQoxQ917RY
-         n/sA==
-X-Forwarded-Encrypted: i=1; AJvYcCXazpH19sMoMqBF/Uw+zitHA7WPLk2vHm5LEu0XwyVg+xRJbRH42lbZrTBBsaGt1vhBsmc=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyuRTa7XiXV/lbNLQLPOVI+bzdXCgTMOUujDJmgwASv5tiYDGA1
-	EHkCbR9+xSto+2p4mwapBqTug+KC+Jh+rU/PkCb1yfhte8tfPV9g9Dm35Zk0Zrl+2Oj7UPhNlSH
-	J4Q9ez2zJd/k+cbWAwynVw7dYp1cqsoUPihCXjtQu
-X-Gm-Gg: AZuq6aIMRUTLGiI5tfruA/imu/BZ0MvcHXraqKWiOnSa7Oywi1z9Y9sleG3ID29q3Qf
-	ijZNIVZhiMteXliajeNr5PlZNXNiI07WklgcBZeWgG7dU8vlt4iIfrgSPu+HinS50DviNteQDon
-	9ei2uepyRgZ2wbsZevXrcaqRP6ex3fLGelccepERBpbFcf/YKz0dqER4ycFUFMb811w8BrtPlj4
-	70eiX2W+59YpUPCDDLcosmVhaVRMORWu+10+To4oR3yDm5CdW4yvrToDLZbAj8Tx0tead3Aa72L
-	yPrK4g==
-X-Received: by 2002:a05:622a:1a8d:b0:506:1f23:e22c with SMTP id
- d75a77b69052e-506f1dbd1b1mr2143471cf.6.1771458034886; Wed, 18 Feb 2026
- 15:40:34 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=zytor.com header.i=@zytor.com header.b="PgUUqgvO"
+Received: from ehlo.thunderbird.net (c-76-133-66-138.hsd1.ca.comcast.net [76.133.66.138])
+	(authenticated bits=0)
+	by mail.zytor.com (8.18.1/8.17.1) with ESMTPSA id 61INastk2596160
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NO);
+	Wed, 18 Feb 2026 15:36:55 -0800
+DKIM-Filter: OpenDKIM Filter v2.11.0 mail.zytor.com 61INastk2596160
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=zytor.com;
+	s=2026012301; t=1771457815;
+	bh=ud6jjHkpXOUroYYoHpbbrgqTadOtji00RvwIixGXf/Q=;
+	h=Date:From:To:CC:Subject:In-Reply-To:References:From;
+	b=PgUUqgvOFZlif81k2hIvBmtYJBzWZ5kYIVHUMsJf2gEHl4gVutCow+eQo9TdLZGy0
+	 Q28R8L2Nd+0oJVYqTwfEck5wxEy9s/IlWtW6tGkIc1u8eeHg4tZkDbmk7nW2RGVZ5I
+	 UGWz7mjAYb4IDILOZrQEZQp4RKcejpczDsRMZbE+409bz1bSa9RhGwaWVJvIYF8sev
+	 bIy8b37Y78oq4RND5Lc4T7JVKgd1b8mnoJt15hOBocPwGLxyCz2DvS4ESg1x9CyUl/
+	 wuk2hUqP5Z+RzOl5C+9UB0dH51yfw2mwq5zxC1YLRG1jm7OCTR7vA9ufW7Cq9CA7K5
+	 QNJLti+LuNxZA==
+Date: Wed, 18 Feb 2026 15:36:48 -0800
+From: "H. Peter Anvin" <hpa@zytor.com>
+To: Dave Hansen <dave.hansen@intel.com>,
+        Sean Christopherson <seanjc@google.com>,
+        Juergen Gross <jgross@suse.com>
+CC: linux-kernel@vger.kernel.org, x86@kernel.org, kvm@vger.kernel.org,
+        llvm@lists.linux.dev, Xin Li <xin@zytor.com>,
+        Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>,
+        Borislav Petkov <bp@alien8.de>,
+        Dave Hansen <dave.hansen@linux.intel.com>,
+        Paolo Bonzini <pbonzini@redhat.com>,
+        Nathan Chancellor <nathan@kernel.org>,
+        Nick Desaulniers <nick.desaulniers+lkml@gmail.com>,
+        Bill Wendling <morbo@google.com>,
+        Justin Stitt <justinstitt@google.com>
+Subject: =?US-ASCII?Q?Re=3A_=5BPATCH_v3_09/16=5D_x86/msr=3A_Use_t?=
+ =?US-ASCII?Q?he_alternatives_mechanism_for_WRMSR?=
+User-Agent: K-9 Mail for Android
+In-Reply-To: <e05a65a7-bf8e-420b-8a36-2d76e56b43b0@intel.com>
+References: <20260218082133.400602-1-jgross@suse.com> <20260218082133.400602-10-jgross@suse.com> <aZYoUE7CmrLg3SVe@google.com> <e05a65a7-bf8e-420b-8a36-2d76e56b43b0@intel.com>
+Message-ID: <7F627940-578D-4EDF-9812-41DDF3275B4F@zytor.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260217163250.2326001-1-surenb@google.com> <20260217163250.2326001-3-surenb@google.com>
- <dtdfrko7uqif6flc4mefnlar7wnmrbyswfu7bvb2ar24gkeejo@ypzhmyklbeh7>
- <CAJuCfpGViU4dDaLtPR8U0C+=FXO=1TuU-hT3fypNQO3LGOjbcA@mail.gmail.com> <lfnqadtmpkxjhsne3nto6bpourjv3nxw26y2a5kovump3beld7@c2pdvgxxj3ar>
-In-Reply-To: <lfnqadtmpkxjhsne3nto6bpourjv3nxw26y2a5kovump3beld7@c2pdvgxxj3ar>
-From: Suren Baghdasaryan <surenb@google.com>
-Date: Wed, 18 Feb 2026 15:40:23 -0800
-X-Gm-Features: AaiRm53lCb3-A9mP4T-Ip4RZ_UT27OIlQVbKAc0RvblZzhy-3EiGT7cqg8sX1Wc
-Message-ID: <CAJuCfpFr-MvDAo5wur0gGX-AMCd2kP=pBYOemwAP=G3UUVP4vQ@mail.gmail.com>
-Subject: Re: [PATCH v2 2/3] mm: replace vma_start_write() with vma_start_write_killable()
-To: "Liam R. Howlett" <Liam.Howlett@oracle.com>, Suren Baghdasaryan <surenb@google.com>, 
-	akpm@linux-foundation.org, willy@infradead.org, david@kernel.org, 
-	ziy@nvidia.com, matthew.brost@intel.com, joshua.hahnjy@gmail.com, 
-	rakie.kim@sk.com, byungchul@sk.com, gourry@gourry.net, 
-	ying.huang@linux.alibaba.com, apopple@nvidia.com, lorenzo.stoakes@oracle.com, 
-	baolin.wang@linux.alibaba.com, npache@redhat.com, ryan.roberts@arm.com, 
-	dev.jain@arm.com, baohua@kernel.org, lance.yang@linux.dev, vbabka@suse.cz, 
-	jannh@google.com, rppt@kernel.org, mhocko@suse.com, pfalcato@suse.de, 
-	kees@kernel.org, maddy@linux.ibm.com, npiggin@gmail.com, mpe@ellerman.id.au, 
-	chleroy@kernel.org, borntraeger@linux.ibm.com, frankja@linux.ibm.com, 
-	imbrenda@linux.ibm.com, hca@linux.ibm.com, gor@linux.ibm.com, 
-	agordeev@linux.ibm.com, svens@linux.ibm.com, gerald.schaefer@linux.ibm.com, 
-	linux-mm@kvack.org, linuxppc-dev@lists.ozlabs.org, kvm@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-s390@vger.kernel.org, 
-	"Ritesh Harjani (IBM)" <ritesh.list@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain;
+ charset=utf-8
 Content-Transfer-Encoding: quoted-printable
 
-On Wed, Feb 18, 2026 at 8:46=E2=80=AFAM Liam R. Howlett <Liam.Howlett@oracl=
-e.com> wrote:
+On February 18, 2026 1:37:42 PM PST, Dave Hansen <dave=2Ehansen@intel=2Ecom=
+> wrote:
+>On 2/18/26 13:00, Sean Christopherson wrote:
+>> On Wed, Feb 18, 2026, Juergen Gross wrote:
+>>> When available use one of the non-serializing WRMSR variants (WRMSRNS
+>>> with or without an immediate operand specifying the MSR register) in
+>>> __wrmsrq()=2E
+>> Silently using a non-serializing version (or not) seems dangerous (not =
+for KVM,
+>> but for the kernel at-large), unless the rule is going to be that MSR w=
+rites need
+>> to be treated as non-serializing by default=2E
 >
-> * Suren Baghdasaryan <surenb@google.com> [260217 16:03]:
-> > On Tue, Feb 17, 2026 at 11:19=E2=80=AFAM Liam R. Howlett
-> > <Liam.Howlett@oracle.com> wrote:
-> > >
-> > > * Suren Baghdasaryan <surenb@google.com> [260217 11:33]:
-> > > > Now that we have vma_start_write_killable() we can replace most of =
-the
-> > > > vma_start_write() calls with it, improving reaction time to the kil=
-l
-> > > > signal.
-> > > >
-> > > > There are several places which are left untouched by this patch:
-> > > >
-> > > > 1. free_pgtables() because function should free page tables even if=
- a
-> > > > fatal signal is pending.
-> > > >
-> > > > 2. process_vma_walk_lock(), which requires changes in its callers a=
-nd
-> > > > will be handled in the next patch.
-> > > >
-> > > > 3. userfaultd code, where some paths calling vma_start_write() can
-> > > > handle EINTR and some can't without a deeper code refactoring.
-> > > >
-> > > > 4. vm_flags_{set|mod|clear} require refactoring that involves movin=
-g
-> > > > vma_start_write() out of these functions and replacing it with
-> > > > vma_assert_write_locked(), then callers of these functions should
-> > > > lock the vma themselves using vma_start_write_killable() whenever
-> > > > possible.
-> > > >
-> > > > Suggested-by: Matthew Wilcox <willy@infradead.org>
-> > > > Signed-off-by: Suren Baghdasaryan <surenb@google.com>
-> > > > Reviewed-by: Ritesh Harjani (IBM) <ritesh.list@gmail.com> # powerpc
-> > > > ---
-> > > >  arch/powerpc/kvm/book3s_hv_uvmem.c |  5 +-
-> > > >  include/linux/mempolicy.h          |  5 +-
-> > > >  mm/khugepaged.c                    |  5 +-
-> > > >  mm/madvise.c                       |  4 +-
-> > > >  mm/memory.c                        |  2 +
-> > > >  mm/mempolicy.c                     | 23 ++++++--
-> > > >  mm/mlock.c                         | 20 +++++--
-> > > >  mm/mprotect.c                      |  4 +-
-> > > >  mm/mremap.c                        |  4 +-
-> > > >  mm/vma.c                           | 93 +++++++++++++++++++++-----=
-----
-> > > >  mm/vma_exec.c                      |  6 +-
-> > > >  11 files changed, 123 insertions(+), 48 deletions(-)
-> > > >
+>Yeah, there's no way we can do this in general=2E It'll work for 99% of
+>the MSRs on 99% of the systems for a long time=2E Then the one new system
+>with WRMSRNS is going to have one hell of a heisenbug that'll take years
+>off some poor schmuck's life=2E
 >
-> ...
->
-> > >
-> > >
-> > > ...
-> > >
-> > > > @@ -3089,7 +3120,7 @@ int expand_upwards(struct vm_area_struct *vma=
-, unsigned long address)
-> > >
-> > > Good luck testing this one.
-> >
-> > Yeah... Any suggestions for tests I should use?
->
-> I think you have to either isolate it or boot parisc.
->
-> To boot parisc, you can use the debian hppa image [1].  The file is a
-> zip file which can be decompressed to a qcow2, initrd, and kernel.  You
-> can boot with qemu-system-hppa (debian has this in qemu-system-misc
-> package), there is a readme that has a boot line as well.
->
-> Building can be done using the cross-compiler tools for hppa [2] and the
-> make command with CROSS_COMPILE=3D<path>/bin/hppa64-linux-
+>We should really encourage *new* code to use wrmsrns() when it can at
+>least for annotation that it doesn't need serialization=2E But I don't
+>think we should do anything to old, working code=2E
 
-Ah, I thought you were referring to the difficulty of finding specific
-tests to verify this change but these instructions are helpful too.
-Thanks!
-
-
->
-> Cheers,
-> Liam
->
-> [1]. https://people.debian.org/~gio/dqib/
-> [2]. https://cdn.kernel.org/pub/tools/crosstool/files/bin/x86_64/15.2.0/
->
->
+Correct=2E We need to do this on a user by user basis=2E
