@@ -1,202 +1,196 @@
-Received: from mail.zytor.com (terminus.zytor.com [198.137.202.136])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f74.google.com (mail-pj1-f74.google.com [209.85.216.74])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C53F4311972;
-	Wed, 18 Feb 2026 20:54:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.137.202.136
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 732DB349B0B
+	for <kvm@vger.kernel.org>; Wed, 18 Feb 2026 20:56:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.74
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771448084; cv=none; b=uZQrUEEbW+ZdhuDy4kjvQJmuCMYPQt4Xop3fUa0UQVFSRYIVZBi0dzW6UAQtajhnhJkfA+HHlu6twLDY6uS8fl3M+Aj2njcnlgGcNX3vL0msku08+DNFgDqoWsPTiA5YNKvVM8gwPAQ5zEcVCaubP7oN4sMQqoRgszTqxYdjgSw=
+	t=1771448188; cv=none; b=qjXOA7VgcP5T2KjpLXd+j2J5j7zd66M3n+Ylxo45JqLylcav6sSLcmCvOZrfLbn766BTAeoSKwjeDzKDifeudpMqErai73mLlvnqDKDHM7C60TZRe0Bna1ulePjsUTX4/hP7TbOZomhqojVE4EPAFkw+JUQfkavKXOF1anMd+Wo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771448084; c=relaxed/simple;
-	bh=NSU5ZxTFZs+vcgV4zbWJc+O5FYAL+ah44/3CcMJAvog=;
-	h=Date:From:To:CC:Subject:In-Reply-To:References:Message-ID:
-	 MIME-Version:Content-Type; b=ffnhUSA+7uyQtoMwtFBviBh2yKgGdztRKwXZFdvbcJSBUsd0RjddiQKMHWM7lFyRmdda+u/xSmsTTKmeUa0wn5ko+1lOiryOUR4CTj30B46VW3tKRxfU46+jLYaC9jurfaEjmOQjrWRVEGLb/7doQEXXDpFS/QB5EHjOh4J1i/4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zytor.com; spf=pass smtp.mailfrom=zytor.com; dkim=pass (2048-bit key) header.d=zytor.com header.i=@zytor.com header.b=txRKTC99; arc=none smtp.client-ip=198.137.202.136
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zytor.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=zytor.com
+	s=arc-20240116; t=1771448188; c=relaxed/simple;
+	bh=az8pKqGTqLPKEg70OjYkXanOeX00kgot4vjebxI5Rd0=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=uz3V4xwRsdBASaPiEeZxAkkcYym/w5jpsAaxADV95i9pvYydtelhzmUkmTOgUuryKly7nGRtI11PEmvOCcXEh64eidZrJajbAeUXcw5GUw1vDbKdDXC691iwTC51+r52JPNchObP6QH+494nwBGLk6vYqa8/HO++3gJDMvhZWoY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=m2hSGXQJ; arc=none smtp.client-ip=209.85.216.74
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=zytor.com header.i=@zytor.com header.b="txRKTC99"
-Received: from ehlo.thunderbird.net (c-76-133-66-138.hsd1.ca.comcast.net [76.133.66.138])
-	(authenticated bits=0)
-	by mail.zytor.com (8.18.1/8.17.1) with ESMTPSA id 61IKbu3I2307125
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NO);
-	Wed, 18 Feb 2026 12:37:56 -0800
-DKIM-Filter: OpenDKIM Filter v2.11.0 mail.zytor.com 61IKbu3I2307125
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=zytor.com;
-	s=2026012301; t=1771447078;
-	bh=/4gUyx2Ogqc4pykP2NXlf3ww6HtU65MDbCy+ciTKta0=;
-	h=Date:From:To:CC:Subject:In-Reply-To:References:From;
-	b=txRKTC99yxQoQhaycyi7tJEOgs9h1U2j5kNLU2/1fwUwtmdQCUwUeEffkAabj72/F
-	 ukff8fZVPMHYRTwmPLaZZGgZSRPefZOtaglDoqq/xRMxcmW0y0HbctJr8LQsjWYLQK
-	 O6BowOLQ73YDd32xR02o7iliOviwQfGShMkbSfNL1NNO3hDb124q5coP7LtTukCrv8
-	 eFIsqBvQBtd8mP5roCm/HLGwm3E5AbDDDTSL/htD5wmZD5oyabOgyU4N/H2+l29yfi
-	 tegGzouqXoi0lCfrG4Cfb4XcWEQvgvnEJNiY8Xg+H/e8oJU5xeLp+CxABvSA1teX2D
-	 ggrrWY1MeeKrQ==
-Date: Wed, 18 Feb 2026 12:37:50 -0800
-From: "H. Peter Anvin" <hpa@zytor.com>
-To: Juergen Gross <jgross@suse.com>, linux-kernel@vger.kernel.org,
-        x86@kernel.org, linux-coco@lists.linux.dev, kvm@vger.kernel.org,
-        linux-hyperv@vger.kernel.org, virtualization@lists.linux.dev,
-        llvm@lists.linux.dev
-CC: Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>,
-        Borislav Petkov <bp@alien8.de>,
-        Dave Hansen <dave.hansen@linux.intel.com>,
-        Kiryl Shutsemau <kas@kernel.org>,
-        Rick Edgecombe <rick.p.edgecombe@intel.com>,
-        Sean Christopherson <seanjc@google.com>,
-        Paolo Bonzini <pbonzini@redhat.com>,
-        "K. Y. Srinivasan" <kys@microsoft.com>,
-        Haiyang Zhang <haiyangz@microsoft.com>, Wei Liu <wei.liu@kernel.org>,
-        Dexuan Cui <decui@microsoft.com>, Long Li <longli@microsoft.com>,
-        Vitaly Kuznetsov <vkuznets@redhat.com>,
-        Boris Ostrovsky <boris.ostrovsky@oracle.com>,
-        xen-devel@lists.xenproject.org, Ajay Kaher <ajay.kaher@broadcom.com>,
-        Alexey Makhalov <alexey.makhalov@broadcom.com>,
-        Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>,
-        Andy Lutomirski <luto@kernel.org>,
-        Peter Zijlstra <peterz@infradead.org>, Xin Li <xin@zytor.com>,
-        Nathan Chancellor <nathan@kernel.org>,
-        Nick Desaulniers <nick.desaulniers+lkml@gmail.com>,
-        Bill Wendling <morbo@google.com>,
-        Justin Stitt <justinstitt@google.com>,
-        Josh Poimboeuf <jpoimboe@kernel.org>, andy.cooper@citrix.com
-Subject: Re: [PATCH v3 00/16] x86/msr: Inline rdmsr/wrmsr instructions
-User-Agent: K-9 Mail for Android
-In-Reply-To: <20260218082133.400602-1-jgross@suse.com>
-References: <20260218082133.400602-1-jgross@suse.com>
-Message-ID: <3D1FE2A7-F237-4232-9E39-6AFC75F3A4F0@zytor.com>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="m2hSGXQJ"
+Received: by mail-pj1-f74.google.com with SMTP id 98e67ed59e1d1-354c7febaefso733513a91.3
+        for <kvm@vger.kernel.org>; Wed, 18 Feb 2026 12:56:27 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1771448187; x=1772052987; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=Gre4sWSuNgzzkfFkiG0uuZShlGPNxvNAn5AYWvywWnE=;
+        b=m2hSGXQJAlWbaUHKBljsoI8geiuHAv/HbSleOzF1KSGwv8+2HDC5213DKovJXr0bjI
+         PM2XXLGc36moABtRJS04JGuV8mObZ4am2fhZ1wq+mFzRIwW9VfzC50BrEBb810OVOQ+r
+         0PgbMxsciyHJVXEIUL7DboLv7upKETDj3NHqop6WDwLCUyxrBefnuLLkSbpUSsfa2JqV
+         9NgBFJ054kFVcAhH2/pB2T2SjJEGi+R8U+uDVRq50kqY+dLjUjyjNYgTmLABPJwx0bCm
+         brA7WgABuBjTxe2j0XUJq0JSYJawoA16bXzT6RFjWkq0hh5NtasYuohtH1OdX7gTgci5
+         +HGA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1771448187; x=1772052987;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=Gre4sWSuNgzzkfFkiG0uuZShlGPNxvNAn5AYWvywWnE=;
+        b=po0RkdNYsemi/v+GArI/WFFHICK9A5MyJKO/u5Jn0U3fUlaDsWLt5lmzBtBdBg8CSm
+         vWOMl7p2DWuZ1rpstH/JCmUxM+UK5fpbV/3jpnBQF1fjxhXehYvPP59ZxItUX2m+GE34
+         dlgnMwqZsGAinHhsB3etV5vRGaBOh5jwWf9fwnrBzf7D0x9nt9F8mWx+AJZhGX5gHK1K
+         oU9OGRPD4j8XZCwpWeXszXFGAcB+8Ln61co4u4xRBnFQmhIukD2pTO97MhiPrrtJc2fq
+         RCtCXrfMx5Y5mq/mOwNgxzvkC6L08IkSwdedzc4Z7U2N+gawHJwdYO7nQeJuM5zexgiK
+         oBhA==
+X-Forwarded-Encrypted: i=1; AJvYcCX32WrIHc5davz5tPDixVq0+6iCesye+pvzPteRvxWt0vCnMcX1UcPemeGo/x+fw3XaJMA=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwButUghCjAFESLQp6sqG6KmVex1IDp7V/NAZDqgTvAlk7MzuSV
+	xMYtzePws6aicUWSERuE9AguAE76URz5MuoB56iZWHggb4djNpA6zK4P9BrGLFBjF+8mZlSts1K
+	1KowgrA==
+X-Received: from pjzb12.prod.google.com ([2002:a17:90a:e38c:b0:353:454:939c])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:5704:b0:356:4c1f:98d4
+ with SMTP id 98e67ed59e1d1-358890dda32mr2710883a91.13.1771448186543; Wed, 18
+ Feb 2026 12:56:26 -0800 (PST)
+Date: Wed, 18 Feb 2026 12:56:25 -0800
+In-Reply-To: <aYuC87rMLlBYIZRc@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain;
- charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Mime-Version: 1.0
+References: <67a2f20537354628bcb835586a7c6255@huawei.com> <aYuC87rMLlBYIZRc@google.com>
+Message-ID: <aZYneb7Dvuu-HQsP@google.com>
+Subject: Re: Re: [BUG REPORT] USE_AFTER_FREE in complete_emulated_mmio found
+ by KASAN/Syzkaller fuzz test (v5.10.0)
+From: Sean Christopherson <seanjc@google.com>
+To: Zhangjiaji <zhangjiaji1@huawei.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>, "kvm@vger.kernel.org" <kvm@vger.kernel.org>, 
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, "Wangqinxiao (Tom)" <wangqinxiao@huawei.com>, 
+	zhangyashu <zhangyashu2@h-partners.com>, "wangyanan (Y)" <wangyanan55@huawei.com>
+Content-Type: text/plain; charset="us-ascii"
 
-On February 18, 2026 12:21:17 AM PST, Juergen Gross <jgross@suse=2Ecom> wro=
-te:
->When building a kernel with CONFIG_PARAVIRT_XXL the paravirt
->infrastructure will always use functions for reading or writing MSRs,
->even when running on bare metal=2E
->
->Switch to inline RDMSR/WRMSR instructions in this case, reducing the
->paravirt overhead=2E
->
->The first patch is a prerequisite fix for alternative patching=2E Its
->is needed due to the initial indirect call needs to be padded with
->NOPs in some cases with the following patches=2E
->
->In order to make this less intrusive, some further reorganization of
->the MSR access helpers is done in the patches 1-6=2E
->
->The next 4 patches are converting the non-paravirt case to use direct
->inlining of the MSR access instructions, including the WRMSRNS
->instruction and the immediate variants of RDMSR and WRMSR if possible=2E
->
->Patches 11-13 are some further preparations for making the real switch
->to directly patch in the native MSR instructions easier=2E
->
->Patch 14 is switching the paravirt MSR function interface from normal
->call ABI to one more similar to the native MSR instructions=2E
->
->Patch 15 is a little cleanup patch=2E
->
->Patch 16 is the final step for patching in the native MSR instructions
->when not running as a Xen PV guest=2E
->
->This series has been tested to work with Xen PV and on bare metal=2E
->
->Note that there is more room for improvement=2E This series is sent out
->to get a first impression how the code will basically look like=2E
+On Tue, Feb 10, 2026, Sean Christopherson wrote:
+> On Tue, Feb 10, 2026, Zhangjiaji wrote:
+> > > I think there's a not-completely-awful solution buried in this gigantic cesspool.
+> > > The only time KVM uses on-stack variables is for qword or smaller accesses, i.e.
+> > > 8 bytes in size or less.  For larger fragments, e.g. AVX to/from MMIO, the target
+> > > value will always be an operand in the emulator context.  And so rather than
+> > > disallow stack variables, for "small" fragments, we can rework the handling to
+> > > copy the value to/from each fragment on-demand instead of stashing a pointer to
+> > > the value.
+> > 
+> > Since we can store the frag->val in struct kvm_mmio_fragment,
+> > why not just point frag->data to it? This Way we can save a lot code about
+> > (frag->data == NULL).
+> 
+> It's not quite that simple, because we need to handle reads as well.
+> 
+> > Though this patch will block any read-into-stack calls, we can add a special path
+> > in function emulator_read_write handling feasible read-into-stack calls -- the
+> > target is released just after emulator_read_write returns.
+> > 
+> > ---
+> >  arch/x86/kvm/x86.c       | 9 ++++++++-
+> >  include/linux/kvm_host.h | 3 ++-
+> >  2 files changed, 10 insertions(+), 2 deletions(-)
+> > 
+> > diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
+> > index 72d37c8930ad..12d53d441a39 100644
+> > --- a/arch/x86/kvm/x86.c
+> > +++ b/arch/x86/kvm/x86.c
+> > @@ -8197,7 +8197,14 @@ static int emulator_read_write_onepage(unsigned long addr, void *val,
+> >  	WARN_ON(vcpu->mmio_nr_fragments >= KVM_MAX_MMIO_FRAGMENTS);
+> >  	frag = &vcpu->mmio_fragments[vcpu->mmio_nr_fragments++];
+> >  	frag->gpa = gpa;
+> > -	frag->data = val;
+> > +	if (bytes > 8u || ! write) {
+> > +		if (WARN_ON_ONCE(object_is_on_stack(val)))
+> 
+> This is user-triggerable, e.g. em_popa(), em_pop_sreg(), emulate_iret_real(),
+> em_ret_near_imm(), em_ret_far(), and em_ret().
 
-Does that mean you are considering this patchset an RFC? If so, you should=
- put that in the subject header=2E=20
+*sigh*
 
->Right now the same problem is solved differently for the paravirt and
->the non-paravirt cases=2E In case this is not desired, there are two
->possibilities to merge the two implementations=2E Both solutions have
->the common idea to have rather similar code for paravirt and
->non-paravirt variants, but just use a different main macro for
->generating the respective code=2E For making the code of both possible
->scenarios more similar, the following variants are possible:
->
->1=2E Remove the micro-optimizations of the non-paravirt case, making
->   it similar to the paravirt code in my series=2E This has the
->   advantage of being more simple, but might have a very small
->   negative performance impact (probably not really detectable)=2E
->
->2=2E Add the same micro-optimizations to the paravirt case, requiring
->   to enhance paravirt patching to support a to be patched indirect
->   call in the middle of the initial code snipplet=2E
->
->In both cases the native MSR function variants would no longer be
->usable in the paravirt case, but this would mostly affect Xen, as it
->would need to open code the WRMSR/RDMSR instructions to be used
->instead the native_*msr*() functions=2E
->
->Changes since V2:
->- switch back to the paravirt approach
->
->Changes since V1:
->- Use Xin Li's approach for inlining
->- Several new patches
->
->Juergen Gross (16):
->  x86/alternative: Support alt_replace_call() with instructions after
->    call
->  coco/tdx: Rename MSR access helpers
->  x86/sev: Replace call of native_wrmsr() with native_wrmsrq()
->  KVM: x86: Remove the KVM private read_msr() function
->  x86/msr: Minimize usage of native_*() msr access functions
->  x86/msr: Move MSR trace calls one function level up
->  x86/opcode: Add immediate form MSR instructions
->  x86/extable: Add support for immediate form MSR instructions
->  x86/msr: Use the alternatives mechanism for WRMSR
->  x86/msr: Use the alternatives mechanism for RDMSR
->  x86/alternatives: Add ALTERNATIVE_4()
->  x86/paravirt: Split off MSR related hooks into new header
->  x86/paravirt: Prepare support of MSR instruction interfaces
->  x86/paravirt: Switch MSR access pv_ops functions to instruction
->    interfaces
->  x86/msr: Reduce number of low level MSR access helpers
->  x86/paravirt: Use alternatives for MSR access with paravirt
->
-> arch/x86/coco/sev/internal=2Eh              |   7 +-
-> arch/x86/coco/tdx/tdx=2Ec                   |   8 +-
-> arch/x86/hyperv/ivm=2Ec                     |   2 +-
-> arch/x86/include/asm/alternative=2Eh        |   6 +
-> arch/x86/include/asm/fred=2Eh               |   2 +-
-> arch/x86/include/asm/kvm_host=2Eh           |  10 -
-> arch/x86/include/asm/msr=2Eh                | 345 ++++++++++++++++------
-> arch/x86/include/asm/paravirt-msr=2Eh       | 148 ++++++++++
-> arch/x86/include/asm/paravirt=2Eh           |  67 -----
-> arch/x86/include/asm/paravirt_types=2Eh     |  57 ++--
-> arch/x86/include/asm/qspinlock_paravirt=2Eh |   4 +-
-> arch/x86/kernel/alternative=2Ec             |   5 +-
-> arch/x86/kernel/cpu/mshyperv=2Ec            |   7 +-
-> arch/x86/kernel/kvmclock=2Ec                |   2 +-
-> arch/x86/kernel/paravirt=2Ec                |  42 ++-
-> arch/x86/kvm/svm/svm=2Ec                    |  16 +-
-> arch/x86/kvm/vmx/tdx=2Ec                    |   2 +-
-> arch/x86/kvm/vmx/vmx=2Ec                    |   8 +-
-> arch/x86/lib/x86-opcode-map=2Etxt           |   5 +-
-> arch/x86/mm/extable=2Ec                     |  35 ++-
-> arch/x86/xen/enlighten_pv=2Ec               |  52 +++-
-> arch/x86/xen/pmu=2Ec                        |   4 +-
-> tools/arch/x86/lib/x86-opcode-map=2Etxt     |   5 +-
-> tools/objtool/check=2Ec                     |   1 +
-> 24 files changed, 576 insertions(+), 264 deletions(-)
-> create mode 100644 arch/x86/include/asm/paravirt-msr=2Eh
->
+And I was wrong.  I finally sat down to write some comments for all of this, and
+realized that reads _never_ pass an on-stack @val to emulator_read_write_onepage(),
+because read_emulated() always buffers reads through ctxt->mem_read.
 
-Could you clarify *on the high design level* what "go back to the paravirt=
- approach" means, and the motivation for that?
+So not only is my fancy, complex code unnecessary, it's actively broken.  If a
+read splits a page boundary, and the first page is NOT emulated MMIO, trying to
+fulfill the read on-demand falls apart because the @val points at the start of
+the operand (technically its cache "entry").  I'm sure that's a solvable problem,
+but I don't see any point in manufacturing a problem in the first place.
 
-Note that for Xen *most* MSRs fall in one of two categories: those that ar=
-e dropped entirely and those that are just passed straight on to the hardwa=
-re=2E
+I need to write a changelog, but as Yashu suggested, the fix can more simply be:
 
-I don't know if anyone cares about optimizing PV Xen anymore, but at least=
- in theory Xen can un-paravirtualize most sites=2E
+--
+From: Sean Christopherson <seanjc@google.com>
+Date: Tue, 10 Feb 2026 09:45:37 -0800
+Subject: [PATCH 01/14] KVM: x86: Use scratch field in MMIO fragment to hold
+ small write values
+
+Fixes: f78146b0f923 ("KVM: Fix page-crossing MMIO")
+Suggested-by: Yashu Zhang <zhangjiaji1@huawei.com>
+Reported-by: Yashu Zhang <zhangjiaji1@huawei.com>
+Closes: https://lore.kernel.org/all/369eaaa2b3c1425c85e8477066391bc7@huawei.com
+Cc: stable@vger.kernel.org
+Signed-off-by: Sean Christopherson <seanjc@google.com>
+---
+ arch/x86/kvm/x86.c       | 14 +++++++++++++-
+ include/linux/kvm_host.h |  3 ++-
+ 2 files changed, 15 insertions(+), 2 deletions(-)
+
+diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
+index db3f393192d9..ff3a6f86973f 100644
+--- a/arch/x86/kvm/x86.c
++++ b/arch/x86/kvm/x86.c
+@@ -8226,7 +8226,13 @@ static int emulator_read_write_onepage(unsigned long addr, void *val,
+ 	WARN_ON(vcpu->mmio_nr_fragments >= KVM_MAX_MMIO_FRAGMENTS);
+ 	frag = &vcpu->mmio_fragments[vcpu->mmio_nr_fragments++];
+ 	frag->gpa = gpa;
+-	frag->data = val;
++	if (write && bytes <= 8u) {
++		frag->val = 0;
++		frag->data = &frag->val;
++		memcpy(&frag->val, val, bytes);
++	} else {
++		frag->data = val;
++	}
+ 	frag->len = bytes;
+ 	return X86EMUL_CONTINUE;
+ }
+@@ -8241,6 +8247,9 @@ static int emulator_read_write(struct x86_emulate_ctxt *ctxt,
+ 	gpa_t gpa;
+ 	int rc;
+ 
++	if (WARN_ON_ONCE((bytes > 8u || !ops->write) && object_is_on_stack(val)))
++		return X86EMUL_UNHANDLEABLE;
++
+ 	if (ops->read_write_prepare &&
+ 		  ops->read_write_prepare(vcpu, val, bytes))
+ 		return X86EMUL_CONTINUE;
+@@ -11847,6 +11856,9 @@ static int complete_emulated_mmio(struct kvm_vcpu *vcpu)
+ 		frag++;
+ 		vcpu->mmio_cur_fragment++;
+ 	} else {
++		if (WARN_ON_ONCE(frag->data == &frag->val))
++			return -EIO;
++
+ 		/* Go forward to the next mmio piece. */
+ 		frag->data += len;
+ 		frag->gpa += len;
+diff --git a/include/linux/kvm_host.h b/include/linux/kvm_host.h
+index 2c7d76262898..0bb2a34fb93d 100644
+--- a/include/linux/kvm_host.h
++++ b/include/linux/kvm_host.h
+@@ -320,7 +320,8 @@ static inline bool kvm_vcpu_can_poll(ktime_t cur, ktime_t stop)
+ struct kvm_mmio_fragment {
+ 	gpa_t gpa;
+ 	void *data;
+-	unsigned len;
++	u64 val;
++	unsigned int len;
+ };
+ 
+ struct kvm_vcpu {
+
+base-commit: 183bb0ce8c77b0fd1fb25874112bc8751a461e49
+--
