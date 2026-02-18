@@ -1,82 +1,82 @@
-Received: from mail-wr1-f49.google.com (mail-wr1-f49.google.com [209.85.221.49])
+Received: from mail-yx1-f49.google.com (mail-yx1-f49.google.com [74.125.224.49])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7EAC53328E0
-	for <kvm@vger.kernel.org>; Wed, 18 Feb 2026 16:02:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E43F328626
+	for <kvm@vger.kernel.org>; Wed, 18 Feb 2026 16:15:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.224.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771430535; cv=none; b=eiYjIRQqga5kjwNxzEwYKT3tQNIQXY9NOkf3Ji9BwCT/aux7dGES77R6p5Eeaucj1vHwM5EMVeQAzXIWmCVxiyik9VUgP3jxFhyx4cpLv7sOs8lQeF6OG4o06KRn7jJnSBIlJ/dDIZZ1hH9o1kE1/TAdk+5AP9fPdwV3TM4iAlo=
+	t=1771431344; cv=none; b=agXRY+W0Fsclltfkcha+ozFRPUsLEd7Dy6dskoX4xmFLCK7/7YcS0mLf+gQvlO6lPcx4Pw8G3wVu780FQpM39iowXyFnJm+IspFSGc2DW6DfgOnK/nWHIHFW3AOdB6RRyTCKsVkA2oXh4xaWIGlodkLjlXBQ5W0GnYFz486TQYI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771430535; c=relaxed/simple;
-	bh=Sya9btRRHCzFM+Kc07ob/2EMmNBJBIrHqnz7VyaAlYA=;
+	s=arc-20240116; t=1771431344; c=relaxed/simple;
+	bh=M8x3Eta6dsHBZmEiqBxFrizv2ZeW28diPeGIt7lnfCA=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=LzUPLXKI/fcmWw+Q5ihcGKefX4WU0Xll6Epb8mKa0iYyj5I5FGX1q4PiRrvYwr9i06Tw+F8Kq0Ya0QJuKjWJKl+cUVBa/g4D8Rak1wubzN3GcZjvwRuKPRkZFIQ5jC59aAamtL9IUUl+1XDbbSqpx+c+BV61jBZA60rb85Qhcqo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=ilGh/R4q; arc=none smtp.client-ip=209.85.221.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	 Content-Type:Content-Disposition:In-Reply-To; b=bAAsfsNETbDAj5M4UzfekUkHqNW02KNpbTSPWncLj/oow9xA+dIj67iktuMlCdBu6zkxslivn5XCO8vr1c8D/0sN9J8I6dX1qyxgY5LoDUAShnvs58zVzhJb/dNz/HN2aNafIV46eaqen4ScFRcGcTjmcKzVbHvFLIaXS+8eGWY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=jand+f8M; arc=none smtp.client-ip=74.125.224.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="ilGh/R4q"
-Received: by mail-wr1-f49.google.com with SMTP id ffacd0b85a97d-4359228b7c6so4209876f8f.2
-        for <kvm@vger.kernel.org>; Wed, 18 Feb 2026 08:02:13 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="jand+f8M"
+Received: by mail-yx1-f49.google.com with SMTP id 956f58d0204a3-649278a69c5so4985995d50.3
+        for <kvm@vger.kernel.org>; Wed, 18 Feb 2026 08:15:41 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1771430532; x=1772035332; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1771431341; x=1772036141; darn=vger.kernel.org;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=6WI6XVVgb/sjOKhoe/ZrjdLzkj8wj+eqRqsuqmM7G5c=;
-        b=ilGh/R4q1e54/vmRdKPSG2jCNkw3RZ2sUD5ufG8vDhmvgbNU+/4Ktc9NRa4qlScuLG
-         nR4bMsk9XyBvmtVyWkk2KmaHCF78P833RZDM/rAPTkqkDMBAJXAJrJBQxOJNf6Y/IN4z
-         K89eP1SyJTvzxTEcRAhoA8DCajfK9Sf6t+dhAxVx0AqDrjHfy5Ea3/vEFKZ+ATwll2Xe
-         BfRR/g9HG8qGT32koYy9rDwrzMvc3mBbGjHEGtEWRur3H6C8fZYuPO7QveIdJJF4Pesg
-         pROrcEohlljNq0hifK5lFy8KlI8UqCPDxo2CufomIGTO6ozabW1vj1V6v4Q+7eSS2mpk
-         iO/g==
+        bh=2QPsjXZQUdipsGNcNiU7XkuEdRr5aKeXHMLyIc5cKOk=;
+        b=jand+f8M3Jd5O3rcSzxwSXS3iXpIymlb5nzewPOdqK0MB2H8r2pVIQtTsfaE1fqGwQ
+         woFexX9sumlrZ3IpXGi62Jwwywe8Qb8NrzYQDffeoFkpj86kt17hwnW+T9RURb1futKv
+         wDcFcPtjocXiWm1cdi9QMZhl4VNsS8Ijl9/+8Km0Bc0GHk5UF67sfHMpjgrEO0dK7o9L
+         /632maIJJCSz2ucDEAYS01S/I3H7egf58AhrjY1fL2mx4K1HJCJ3c1Kn0VP+wPJNHjbX
+         vCuC22r9gOqSTB7tQYGr4eWB+cNbbv4N1+GCxbhzOE27BapNm0u50lcivnrwvpteOM0c
+         33zg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1771430532; x=1772035332;
+        d=1e100.net; s=20230601; t=1771431341; x=1772036141;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=6WI6XVVgb/sjOKhoe/ZrjdLzkj8wj+eqRqsuqmM7G5c=;
-        b=MZYo2eubnOdMmlgDrsj7QZ9hLFBRMc+JymTRX/E1X2b7JB55628vuBWyIwcE69fujn
-         UrfMLbUtqZJfQYtFBVI8pdVy1G0OL+J6pClx7h2d081+xZmNKZE/9aFdId4JqNnFK1jb
-         jz+clNfSwZJ3NvWrTsiOHcHXHpcwvZsH5XosjtXC7Kq37OePj6W0UA88cJoG0olUcVhg
-         +vQRCTbjzvO0X13HtqIIMfmDlkfO0vLh+mBi0SJScXBHsZwq9gCwlhasHybUQz8wzVaR
-         BKtjWPwVE6NuZULvRdESE9f/0b3RIJdRFMLaH4PJR6jLYwE5CvlYJJpzTr/yGT6wKHtb
-         CZkg==
-X-Forwarded-Encrypted: i=1; AJvYcCXcFxtrTQccEm5Zt/Oed8Psm0cPiae/IacnCofeK4emu1pBrzm0v2F6UvBYYIEsskdPQZI=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzZVxDNi+Vl9aYVnpbhnr08pVneotcLDR703TVjuqaD1dwrDlSq
-	3nNe20Gn94kgfczMclJWG3vefg8tZ8sgtK1dCWZnC/Pmnt9t6I7D5jR4yndA04wlYA==
-X-Gm-Gg: AZuq6aLrc67YMD//q/U69HEh1syFe4pdjJpJ6ScVgjSZAWvsb+MLlODygL45NWXloED
-	Em4aVFsFOhuA1G6Hjt4hcj0lmxfjCW7kQ/zLisDHidYUauz/1RJJ0/Dexb7/1vMINNLj+guj+Dv
-	A0yEZ5PEUm8GqCc8l8+PshhyjCHQWU7yp58qz4ttbRIE6E91wxHhwRv6Ueq2+bsHS7OMvqI83CG
-	qpDC7covRe8OQ9zpBhAGRK9+awCTmUl+IPV0cNVu5o78TrYA+3tPhHmjdKNVt1RbfAHqjiyBhTY
-	AIJUDvgwHjFnjZFOTQsv67vyxlHBfKjaAQT/AGwxv5V59r/qhW29Vpsl08/xJGDO9+8d1XSqro1
-	y4lTbj/ktbrwiTRGAZoX6ELdBwhmcKD/0cWuB/or8t5pAljIeUwtWrr3yUM1lkUg/Wi+AmX77vx
-	u6esi9WvmpBozFQB/hW20LA1x0W9Pqx8QXkKPtyyZZrLuWe/N7HPArqP5EeIfsk9UdBwLidwI=
-X-Received: by 2002:a05:6000:2510:b0:42b:3246:1681 with SMTP id ffacd0b85a97d-4379db64295mr25862256f8f.18.1771430529420;
-        Wed, 18 Feb 2026 08:02:09 -0800 (PST)
-Received: from google.com (164.102.240.35.bc.googleusercontent.com. [35.240.102.164])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-43796ac800esm45562165f8f.27.2026.02.18.08.02.08
+        bh=2QPsjXZQUdipsGNcNiU7XkuEdRr5aKeXHMLyIc5cKOk=;
+        b=V/Oi0bWrXShmq4qKIjC2aY2StMiBHJQkkqjBPRrVO8eczsv2qipEV4lungvMMoEj4F
+         mIVS3UYHFBj9CK5y0aqtxTOcLx0loCHUQKAqUiEXjnymqdOm/DypXzdQQyH3DPGvx7ic
+         IZ+ogDHQTtdsjBW4ztoPqCrM9Cim6helBIGrwYmkKOevQKA9fP4oP1kfW4EB03w43wHk
+         MxjDMr8CBCDl2RmHUCmTQDmwUFCED2KApMCn0kZG2th2Y3PoCjtf9LZyPb+SM8R1oJgn
+         xsnY2pFGWgC6y1qwFQ6OnrVzTbc4ljd5Hi1r2cXJoAebO7yt9YBj+VsqB+CMHUmoI7Cm
+         VypQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXVz+NXZ29SGwGjGYpp0INtyWcfgMzbExmWqgRAL0MP2xXIU+fzX6CuwqNWOrqaJUhN2/o=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxR6ZUYx1tSbITtgOgXhcij4MoTBryo4KAyrOoNoIv2rwTVxhS8
+	u35cxlFfv/i5rRqMJHIpQkZcfCK9wWc42ulHmp/vCFeKbhfODmuhXOkk
+X-Gm-Gg: AZuq6aKGYxVwxdxs8IA9zpLdfc2JIKqKW9n1UEf08cnqih0TI/Zl6JnTffVVnTOU+tx
+	uPmA6uZbK7keHejfCKpKxUJgIh0MH+xezkdkfDWNOKydpvKrzzxp7+z0ygazpV0zt0aPogfdkdd
+	gGBAdTlZk0hJWrJvxLM8JM4pM58yipiyH38VQ2A67mMv3GUUdOH/utXlV2cniQZDKzXOA/Cg6dK
+	ySWFvSMKszLVLf40kqiXOinnGiDGtxzAOZc9/lsK5bkEe1g31y1TVX76l/Ho3aMXxXGS1ghA6ZF
+	K9wL35Glyw8pCOnguBH2TbMAuJvp8xHmZYn5LXT9Do+fHKnshFTf9Omtn+rr51yqBNlm+LC05K/
+	KzXpC4UOpm/FhAzEovXPPnR4Eo2oIq7Wxh1k6zZFVNB9y3jK6nYYI2b2B3kQgEX8gTMQZeaRt18
+	WXQvDqwu66WW7GzVrtuRKa8gy/xOQf6oTJ5fXf4qN0KzZJt0Y=
+X-Received: by 2002:a53:de11:0:b0:649:3897:ba21 with SMTP id 956f58d0204a3-64c14d381f8mr13378167d50.52.1771431341018;
+        Wed, 18 Feb 2026 08:15:41 -0800 (PST)
+Received: from devvm11784.nha0.facebook.com ([2a03:2880:25ff:55::])
+        by smtp.gmail.com with ESMTPSA id 956f58d0204a3-64c22ea3ddfsm5898507d50.8.2026.02.18.08.15.40
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 18 Feb 2026 08:02:08 -0800 (PST)
-Date: Wed, 18 Feb 2026 16:02:05 +0000
-From: Keir Fraser <keirf@google.com>
-To: Nikita Kalyazin <kalyazin@amazon.com>
-Cc: Sean Christopherson <seanjc@google.com>,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-	kvm@vger.kernel.org, Eric Auger <eric.auger@redhat.com>,
-	Oliver Upton <oliver.upton@linux.dev>,
-	Marc Zyngier <maz@kernel.org>, Will Deacon <will@kernel.org>,
-	Paolo Bonzini <pbonzini@redhat.com>,
-	Li RongQing <lirongqing@baidu.com>
-Subject: Re: [PATCH v4 4/4] KVM: Avoid synchronize_srcu() in
- kvm_io_bus_register_dev()
-Message-ID: <aZXifSagpbj4CjBn@google.com>
-References: <20250909100007.3136249-1-keirf@google.com>
- <20250909100007.3136249-5-keirf@google.com>
- <a84ddba8-12da-489a-9dd1-ccdf7451a1ba@amazon.com>
- <aY-x0OlJQEqInyNF@google.com>
- <dcbd7a58-c961-4510-ae48-ef7fd4f4d75c@amazon.com>
- <aZS8XXOW7vhMkNWQ@google.com>
- <162cedc3-cd6c-494c-b39e-daadfbd6d8db@amazon.com>
+        Wed, 18 Feb 2026 08:15:40 -0800 (PST)
+Date: Wed, 18 Feb 2026 08:15:38 -0800
+From: Bobby Eshleman <bobbyeshleman@gmail.com>
+To: Stefano Garzarella <sgarzare@redhat.com>
+Cc: "David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	Stefan Hajnoczi <stefanha@redhat.com>,
+	Shuah Khan <shuah@kernel.org>,
+	Bobby Eshleman <bobbyeshleman@meta.com>,
+	"Michael S. Tsirkin" <mst@redhat.com>,
+	virtualization@lists.linux.dev, netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
+	linux-kselftest@vger.kernel.org,
+	Daan De Meyer <daan.j.demeyer@gmail.com>
+Subject: Re: [PATCH net] vsock: lock down child_ns_mode as write-once
+Message-ID: <aZXlqv5ukWymz/NI@devvm11784.nha0.facebook.com>
+References: <20260217-vsock-ns-write-once-v1-1-a1fb30f289a9@meta.com>
+ <aZV6HRAIsf_rNRM2@sgarzare-redhat>
+ <aZWUmbiH11Eh3Y4v@sgarzare-redhat>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -85,156 +85,240 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <162cedc3-cd6c-494c-b39e-daadfbd6d8db@amazon.com>
+In-Reply-To: <aZWUmbiH11Eh3Y4v@sgarzare-redhat>
 
-On Wed, Feb 18, 2026 at 12:55:11PM +0000, Nikita Kalyazin wrote:
-> 
-> 
-> On 17/02/2026 19:07, Sean Christopherson wrote:
-> > On Mon, Feb 16, 2026, Nikita Kalyazin wrote:
-> > > On 13/02/2026 23:20, Sean Christopherson wrote:
-> > > > On Fri, Feb 13, 2026, Nikita Kalyazin wrote:
-> > > > > I am not aware of way to make it fast for both use cases and would be more
-> > > > > than happy to hear about possible solutions.
-> > > > 
-> > > > What if we key off of vCPUS being created?  The motivation for Keir's change was
-> > > > to avoid stalling during VM boot, i.e. *after* initial VM creation.
+On Wed, Feb 18, 2026 at 11:43:42AM +0100, Stefano Garzarella wrote:
+> On Wed, Feb 18, 2026 at 11:02:02AM +0100, Stefano Garzarella wrote:
+> > On Tue, Feb 17, 2026 at 05:45:10PM -0800, Bobby Eshleman wrote:
+> > > From: Bobby Eshleman <bobbyeshleman@meta.com>
 > > > 
-> > > It doesn't work as is on x86 because the delay we're seeing occurs after the
-> > > created_cpus gets incremented
+> > > To improve the security posture of vsock namespacing, this patch locks
+> > > down the vsock child_ns_mode sysctl setting with a write-once policy.
+> > > The user may write to child_ns_mode only once in each namespace, making
+> > > changes to either local or global mode be irreversible.
+> > > 
+> > > This avoids security breaches where a process in a local namespace may
+> > > attempt to jailbreak into the global vsock ns space by setting
+> > > child_ns_mode to "global", creating a new namespace, and accessing the
+> > > global space through the new namespace.
 > > 
-> > I don't follow, the suggestion was to key off created_vcpus in
-> > kvm_io_bus_register_dev(), not in kvm_swap_active_memslots().  I can totally
-> > imagine the patch not working, but the ordering in kvm_vm_ioctl_create_vcpu()
-> > should be largely irrelevant.
-> 
-> Yes, you're right, it's irrelevant.  I had made the change in
-> kvm_io_bus_register_dev() like proposed, but have no idea how I couldn't see
-> the effect.  I retested it now and it's obvious that it works on x86.  Sorry
-> for the confusion.
-> 
+> > Commit 6a997f38bdf8 ("vsock: prevent child netns mode switch from local
+> > to global") should avoid exactly that, so I don't get this. Can you
+> > elaborate more how this can happen without this patch?
 > > 
-> > Probably a moot point though.
-> 
-> Yes, this will not solve the problem on ARM.
+> > I think here we should talk more about what we described in
+> > https://lore.kernel.org/netdev/aZNNBc390y6V09qO@sgarzare-redhat/ which
+> > is that two administrator processes could compete in setting
+> > `child_ns_mode` and end up creating a namespace with an `ns_mode`
+> > different from the one set in `child_ns_mode`. But I would also explain
+> > that this can still be detected by the process by looking at `ns_mode`
+> > and trying again.  With this patch, we avoid this and allow the
+> > namespace manager to set it once and be sure that it cannot be changed
+> > again.
 
-Sorry for being late to this thread. I'm a bit confused now. Did
-Sean's original patch (reintroducing the old logic, based on whether
-any vcpus have been created) work for both/either/neither arch? I
-would have expected it to work for both ARM and X86, despite the
-offending synchronize_srcu() not being in the vcpu-creation ioctl on
-ARM, and I think that is finally what your testing seems to show? If
-so then that seems the pragmatic if somewhat ugly way forward.
-
- Cheers,
-  Keir
-
+Oh that's right, I lost track of the original intent when writing this.
 
 > > 
-> > > so it doesn't allow to differentiate the two
-> > > cases (below is kvm_vm_ioctl_create_vcpu):
 > > > 
-> > >        kvm->created_vcpus++; // <===== incremented here
-> > >        mutex_unlock(&kvm->lock);
-> > > 
-> > >        vcpu = kmem_cache_zalloc(kvm_vcpu_cache, GFP_KERNEL_ACCOUNT);
-> > >        if (!vcpu) {
-> > >                r = -ENOMEM;
-> > >                goto vcpu_decrement;
-> > >        }
-> > > 
-> > >        BUILD_BUG_ON(sizeof(struct kvm_run) > PAGE_SIZE);
-> > >        page = alloc_page(GFP_KERNEL_ACCOUNT | __GFP_ZERO);
-> > >        if (!page) {
-> > >                r = -ENOMEM;
-> > >                goto vcpu_free;
-> > >        }
-> > >        vcpu->run = page_address(page);
-> > > 
-> > >        kvm_vcpu_init(vcpu, kvm, id);
-> > > 
-> > >        r = kvm_arch_vcpu_create(vcpu); // <===== the delay is here
-> > > 
-> > > 
-> > > firecracker   583 [001]   151.297145: probe:synchronize_srcu_expedited:
-> > > (ffffffff813e5cf0)
-> > >      ffffffff813e5cf1 synchronize_srcu_expedited+0x1 ([kernel.kallsyms])
-> > >      ffffffff81234986 kvm_swap_active_memslots+0x136 ([kernel.kallsyms])
-> > >      ffffffff81236cdd kvm_set_memslot+0x1cd ([kernel.kallsyms])
-> > >      ffffffff81237518 kvm_set_memory_region.part.0+0x478 ([kernel.kallsyms])
-> > >      ffffffff81264dbc __x86_set_memory_region+0xec ([kernel.kallsyms])
-> > >      ffffffff8127e2dc kvm_alloc_apic_access_page+0x5c ([kernel.kallsyms])
-> > >      ffffffff812b9ed3 vmx_vcpu_create+0x193 ([kernel.kallsyms])
-> > >      ffffffff8126788a kvm_arch_vcpu_create+0x1da ([kernel.kallsyms])
-> > >      ffffffff8123c54c kvm_vm_ioctl+0x5fc ([kernel.kallsyms])
-> > >      ffffffff8167b331 __x64_sys_ioctl+0x91 ([kernel.kallsyms])
-> > >      ffffffff8251a89c do_syscall_64+0x4c ([kernel.kallsyms])
-> > >      ffffffff8100012b entry_SYSCALL_64_after_hwframe+0x76 ([kernel.kallsyms])
-> > >                6512de ioctl+0x32 (/mnt/host/firecracker)
-> > >                 d99a7 std::rt::lang_start+0x37 (/mnt/host/firecracker)
-> > > 
-> > > Also, given that it stumbles after the KVM_CREATE_VCPU on ARM (in
-> > > KVM_SET_USER_MEMORY_REGION), it doesn't look like a universal solution.
+> > > Additionally, fix the test functions that this change would otherwise
+> > > break by adding "global-parent" and "local-parent" namespaces and using
+> > > them as intermediaries to spawn namespaces in the given modes. This
+> > > avoids the need to change "child_ns_mode" in the init_ns. nsenter must
+> > > be used because ip netns unshares the mount namespace so nested "ip
+> > > netns add" breaks exec calls from the init ns.
 > > 
-> > Hmm.  Under the hood, __synchronize_srcu() itself uses __call_srcu, so I _think_
-> > the only practical difference (aside from waiting, obviously) between call_srcu()
-> > and synchronize_srcu_expedited() with respect to "transferring" grace period
-> > latency is that using call_srcu() could start a normal, non-expedited grace period.
+> > I'm not sure what the policy is in netdev, but I would prefer to have
+> > selftest changes in another patch (I think earlier in the series so as
+> > not to break the bisection), in order to simplify backporting (e.g. in
+> > CentOS Stream, to keep the backport small, I didn't backport the dozens
+> > of patches for selftest that we did previously).
+
+Sounds good! I wasn't sure if breakage so tightly coupled should be in
+the same patch or not, I'm happy to split it up to ease backporting.
+
 > > 
-> > IIUC, SRCU has best-effort logic to shift in-flight non-expedited grace periods
-> > to expedited mode, but if the normal grace period has already started the timer
-> > for the delayed invocation of process_srcu(), then SRCU will still wait for one
-> > jiffie, i.e. won't immediately queue the work.
+> > Obviously, if it's not possible and breaks the bisection, I can safely
+> > skip these changes during the backport.
 > > 
-> > I have no idea if this is sane and/or acceptable, but before looping in Paul and
-> > others, can you try this to see if it helps?
+> > > 
+> > > Test run:
+> > > 
+> > > 1..25
+> > > ok 1 vm_server_host_client
+> > > ok 2 vm_client_host_server
+> > > ok 3 vm_loopback
+> > > ok 4 ns_host_vsock_ns_mode_ok
+> > > ok 5 ns_host_vsock_child_ns_mode_ok
+> > > ok 6 ns_global_same_cid_fails
+> > > ok 7 ns_local_same_cid_ok
+> > > ok 8 ns_global_local_same_cid_ok
+> > > ok 9 ns_local_global_same_cid_ok
+> > > ok 10 ns_diff_global_host_connect_to_global_vm_ok
+> > > ok 11 ns_diff_global_host_connect_to_local_vm_fails
+> > > ok 12 ns_diff_global_vm_connect_to_global_host_ok
+> > > ok 13 ns_diff_global_vm_connect_to_local_host_fails
+> > > ok 14 ns_diff_local_host_connect_to_local_vm_fails
+> > > ok 15 ns_diff_local_vm_connect_to_local_host_fails
+> > > ok 16 ns_diff_global_to_local_loopback_local_fails
+> > > ok 17 ns_diff_local_to_global_loopback_fails
+> > > ok 18 ns_diff_local_to_local_loopback_fails
+> > > ok 19 ns_diff_global_to_global_loopback_ok
+> > > ok 20 ns_same_local_loopback_ok
+> > > ok 21 ns_same_local_host_connect_to_local_vm_ok
+> > > ok 22 ns_same_local_vm_connect_to_local_host_ok
+> > > ok 23 ns_delete_vm_ok
+> > > ok 24 ns_delete_host_ok
+> > > ok 25 ns_delete_both_ok
+> > > SUMMARY: PASS=25 SKIP=0 FAIL=0
+> > 
+> > IMO this can be removed from the commit message, doesn't add much value
+> > other than say that all test passes.
+
+sgtm!
+
+> > 
+> > > 
+> > > Fixes: eafb64f40ca4 ("vsock: add netns to vsock core")
+> > > Signed-off-by: Bobby Eshleman <bobbyeshleman@meta.com>
+> > > Suggested-by: Daan De Meyer <daan.j.demeyer@gmail.com>
+> > > Suggested-by: Stefano Garzarella <sgarzare@redhat.com>
+> > > ---
+> > > include/net/af_vsock.h                  |  6 +++++-
+> > > include/net/netns/vsock.h               |  1 +
+> > > net/vmw_vsock/af_vsock.c                | 10 ++++++----
+> > > tools/testing/selftests/vsock/vmtest.sh | 35
+> > > +++++++++++++++------------------
+> > > 4 files changed, 28 insertions(+), 24 deletions(-)
+> > > 
+> > > diff --git a/include/net/af_vsock.h b/include/net/af_vsock.h
+> > > index d3ff48a2fbe0..c7de33039907 100644
+> > > --- a/include/net/af_vsock.h
+> > > +++ b/include/net/af_vsock.h
+> > > @@ -276,10 +276,14 @@ static inline bool vsock_net_mode_global(struct vsock_sock *vsk)
+> > > 	return vsock_net_mode(sock_net(sk_vsock(vsk))) == VSOCK_NET_MODE_GLOBAL;
+> > > }
+> > > 
+> > > -static inline void vsock_net_set_child_mode(struct net *net,
+> > > +static inline bool vsock_net_set_child_mode(struct net *net,
+> > > 					    enum vsock_net_mode mode)
+> > > {
+> > > +	if (xchg(&net->vsock.child_ns_mode_locked, 1))
+> > > +		return false;
+> > > +
+> > > 	WRITE_ONCE(net->vsock.child_ns_mode, mode);
+> > > +	return true;
+> > > }
+> > > 
+> > > static inline enum vsock_net_mode vsock_net_child_mode(struct net *net)
+> > > diff --git a/include/net/netns/vsock.h b/include/net/netns/vsock.h
+> > > index b34d69a22fa8..8c855fff8039 100644
+> > > --- a/include/net/netns/vsock.h
+> > > +++ b/include/net/netns/vsock.h
+> > > @@ -17,5 +17,6 @@ struct netns_vsock {
+> > > 
+> > > 	enum vsock_net_mode mode;
+> > > 	enum vsock_net_mode child_ns_mode;
+> > > +	int child_ns_mode_locked;
+> > > };
+> > > #endif /* __NET_NET_NAMESPACE_VSOCK_H */
+> > > diff --git a/net/vmw_vsock/af_vsock.c b/net/vmw_vsock/af_vsock.c
+> > > index 9880756d9eff..35e097f4fde8 100644
+> > > --- a/net/vmw_vsock/af_vsock.c
+> > > +++ b/net/vmw_vsock/af_vsock.c
+> > > @@ -90,14 +90,15 @@
+> > > *
+> > > *   - /proc/sys/net/vsock/ns_mode (read-only) reports the current namespace's
+> > > *     mode, which is set at namespace creation and immutable thereafter.
+> > > - *   - /proc/sys/net/vsock/child_ns_mode (writable) controls what mode future
+> > > + *   - /proc/sys/net/vsock/child_ns_mode (write-once) controls what mode future
+> > > *     child namespaces will inherit when created. The initial value matches
+> > > *     the namespace's own ns_mode.
+> > > *
+> > > *   Changing child_ns_mode only affects newly created namespaces, not the
+> > > *   current namespace or existing children. A "local" namespace cannot set
+> > > - *   child_ns_mode to "global". At namespace creation, ns_mode is inherited
+> > > - *   from the parent's child_ns_mode.
+> > > + *   child_ns_mode to "global". child_ns_mode is write-once, so that it may
+> > > + *   be configured and locked down by a namespace manager. At namespace
+> > > + *   creation, ns_mode is inherited from the parent's child_ns_mode.
+> > 
+> > We just merged commit a07c33c6f2fc ("vsock: document namespace mode
+> > sysctls") in the net tree, so we should update also
+> > Documentation/admin-guide/sysctl/net.rst
+
+Indeed.
+
+> > 
+> > > *
+> > > *   The init_net mode is "global" and cannot be modified.
+> > 
+> > Maybe we should also emphasise in the documentation and in the commit
+> > description that `child_ns_mode` in `init_net` also is write-once, so
+> > writing `local` to that one by the init process (e.g. systemd),
+> > essentially will make all the new namespaces in `local` mode. This could
+> > be useful for container/namespace managers.
+> > 
+
+Sounds good.
+
+> > > *
+> > > @@ -2853,7 +2854,8 @@ static int vsock_net_child_mode_string(const struct ctl_table *table, int write,
+> > > 		    new_mode == VSOCK_NET_MODE_GLOBAL)
+> > > 			return -EPERM;
+> > > 
+> > > -		vsock_net_set_child_mode(net, new_mode);
+> > > +		if (!vsock_net_set_child_mode(net, new_mode))
+> > > +			return -EPERM;
+> > 
+> > So, if `child_ns_mode` is set to `local` but locked, writing `local`
+> > again will return -EPERM, is this really what we want?
+> > 
+> > I'm not sure if we can relax it a bit, but then we may race between
+> > reader and writer, so maybe it's fine like it is in this patch, but we
+> > should document better that any writes (even same value) after the first
+> > one will return -EPERM.
 > 
-> That's exactly what I tried myself before and it didn't help, probably for
-> the reason you mentioned above (a normal GP being already started).
+> I think we can try in this way:
+> 
+> static inline bool vsock_net_set_child_mode(struct net *net,
+> 					    enum vsock_net_mode mode)
+> {
+> 	int new_locked = mode + 1;
+> 	int old_locked = 0;
+> 
+> 	if (try_cmpxchg(&net->vsock.child_ns_mode_locked,
+> 			&old_locked, new_locked)) {
+> 		WRITE_ONCE(net->vsock.child_ns_mode, mode);
+> 		return true;
+> 	}
+> 
+> 	return old_locked == new_locked;
+> }
+> 
+> With a comment like this near child_ns_mode_locked in struct netns_vsock:
+> /* 0 = unlocked
+>  * 1 = locked to GLOBAL (VSOCK_NET_MODE_GLOBAL + 1)
+>  * 2 = locked to LOCAL  (VSOCK_NET_MODE_LOCAL + 1)
+>  */
+
+This looks good to me. Will change.
+
+> 
+> While writing that, I thought that we can even remove `child_ns_mode_locked`
+> and use a single variable where encode the value and the state, but maybe
+> it's an unnecessary extra complexity.
+> 
+> Stefano
 > 
 > > 
-> > diff --git a/include/linux/srcu.h b/include/linux/srcu.h
-> > index 344ad51c8f6c..30437dc8d818 100644
-> > --- a/include/linux/srcu.h
-> > +++ b/include/linux/srcu.h
-> > @@ -89,6 +89,8 @@ void __srcu_read_unlock(struct srcu_struct *ssp, int idx) __releases(ssp);
+> > About that, should we return something different, like -EBUSY ?
+> > Not a strong opinion, just to differentiate with the other check before.
 > > 
-> >   void call_srcu(struct srcu_struct *ssp, struct rcu_head *head,
-> >                  void (*func)(struct rcu_head *head));
-> > +void call_srcu_expedited(struct srcu_struct *ssp, struct rcu_head *rhp,
-> > +                        rcu_callback_t func);
-> >   void cleanup_srcu_struct(struct srcu_struct *ssp);
-> >   void synchronize_srcu(struct srcu_struct *ssp);
-> > 
-> > diff --git a/kernel/rcu/srcutree.c b/kernel/rcu/srcutree.c
-> > index ea3f128de06f..03333b079092 100644
-> > --- a/kernel/rcu/srcutree.c
-> > +++ b/kernel/rcu/srcutree.c
-> > @@ -1493,6 +1493,13 @@ void call_srcu(struct srcu_struct *ssp, struct rcu_head *rhp,
-> >   }
-> >   EXPORT_SYMBOL_GPL(call_srcu);
-> > 
-> > +void call_srcu_expedited(struct srcu_struct *ssp, struct rcu_head *rhp,
-> > +                        rcu_callback_t func)
-> > +{
-> > +       __call_srcu(ssp, rhp, func, rcu_gp_is_normal());
-> > +}
-> > +EXPORT_SYMBOL_GPL(call_srcu_expedited);
-> > +
-> >   /*
-> >    * Helper function for synchronize_srcu() and synchronize_srcu_expedited().
-> >    */
-> > diff --git a/virt/kvm/kvm_main.c b/virt/kvm/kvm_main.c
-> > index 737b74b15bb5..26215f98c98f 100644
-> > --- a/virt/kvm/kvm_main.c
-> > +++ b/virt/kvm/kvm_main.c
-> > @@ -6036,7 +6036,7 @@ int kvm_io_bus_register_dev(struct kvm *kvm, enum kvm_bus bus_idx, gpa_t addr,
-> >          memcpy(new_bus->range + i + 1, bus->range + i,
-> >                  (bus->dev_count - i) * sizeof(struct kvm_io_range));
-> >          rcu_assign_pointer(kvm->buses[bus_idx], new_bus);
-> > -       call_srcu(&kvm->srcu, &bus->rcu, __free_bus);
-> > +       call_srcu_expedited(&kvm->srcu, &bus->rcu, __free_bus);
-> > 
-> >          return 0;
-> >   }
+> > Thanks,
+> > Stefano
 > 
+
+Differentiating with -EBUSY sounds useful. Will add that and document.
+
+Best,
+Bobby
