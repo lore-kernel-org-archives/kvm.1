@@ -1,62 +1,64 @@
-Received: from mail-pl1-f180.google.com (mail-pl1-f180.google.com [209.85.214.180])
+Received: from mail-pl1-f177.google.com (mail-pl1-f177.google.com [209.85.214.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 778DE1990C7
-	for <kvm@vger.kernel.org>; Thu, 19 Feb 2026 04:02:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.180
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ACDA22116E0
+	for <kvm@vger.kernel.org>; Thu, 19 Feb 2026 04:02:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.177
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771473730; cv=none; b=HWfsXagGdbU2ep8RGxuBv77I3pgYrcKKTttECfOGpY/J1aoW9Oz2P8WRAesb2VxL3aRsFuTyN3x9kb1aBxDX2UKlZKmEr9rEnxva7uB6WwKEhCx8urUu1aRU5OFJ8/CyjERzF4La3q4fkL0N9pr1RSYAj0yozly8lMY3nAPyZzM=
+	t=1771473732; cv=none; b=WO83YUkj9sOIkcnPT2QeQcsLPq7i7FpvxdKkU//SbF3y0F++jG5c5cMbk/M5Vy/nRvPOnVBmQPORINP2p01RvqbZi/bNeh6R4pYtjdhK/0mm0mwNvDQN/mhRrL/3bUNMUH+lcC5uHBcRZApCvBgTxqw3yKeSdwaPvjnjH09TqvE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771473730; c=relaxed/simple;
-	bh=33oz8Two74SLR/hf+VRIYbH1Pwgm1rlXwQobW6+Vlsw=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=RgoKNOX+7i8wVjfXWtL1y2cEyVmmXNqHGWQ6QkSEsFUBfkbMZ5be3R9PpRYtTJrUjm075qCSc+imCF5zUrYQl39OEWHV/ZdOLDq0raGaqGcc1YkWAQ/BvF01qR6OR0LTSabPmaxuNZLEv4FgF85L+Us5IGVtyByvMr42599wrk8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=ObxVuioa; arc=none smtp.client-ip=209.85.214.180
+	s=arc-20240116; t=1771473732; c=relaxed/simple;
+	bh=QDskWK0kFXVCA78wM2Bxyx80frm8xdqaolOOsKUlfTM=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=GAqzqTbZQC5KyI2tBqXJ4GHFNn4CQrX8RNLyj+W3c5p+nJYcQYhk8j63XQveLojElLnM8/RFIZh7KSEYGn77FzRZoirBcrYtxzWsDYTw99iJN9PJj2kpUNskKzWXhXOSr07awWRVPh/OXAGRrrZjx+3fMgyj2kOd8RX48MUsk68=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=SjmOgplS; arc=none smtp.client-ip=209.85.214.177
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="ObxVuioa"
-Received: by mail-pl1-f180.google.com with SMTP id d9443c01a7336-2aad1dc8856so2986205ad.1
-        for <kvm@vger.kernel.org>; Wed, 18 Feb 2026 20:02:09 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="SjmOgplS"
+Received: by mail-pl1-f177.google.com with SMTP id d9443c01a7336-2a9296b3926so3220395ad.1
+        for <kvm@vger.kernel.org>; Wed, 18 Feb 2026 20:02:11 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1771473729; x=1772078529; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=g+k/37VNyM44S8IKpnLIeLYphIGYrb6n3z+1yI/fqF0=;
-        b=ObxVuioaYI5wwv4mN8Lh4GjaLjQDVBF6NfDO/TcVVuhn9jYWLcmEZPO0mtEKgCihdV
-         s1lN5wB2HQay+AoMXwLksQ502x6eEWNqB5wxAnmdjRbi7ANFaZofhnzqjyrhrqVPCtTE
-         r2Yf1Ck8fhURsTrztlYNxZrDaauSyxQdDn4LVnQn1zEoNGfL8x0m5b1/YL31sY6Iz3Tr
-         PTVa3z+yqZAIjdHrFyuoJGBzi9JiMdDbneQhy7xYFVExIz8MkgQPUs67ytjdY/LGOXAg
-         DzQKxpAo5chwhB9H+oeAPGEgPht0F8ejZMFe6uQw23wF9cerzawREVb/wgCwQqMmFYE4
-         tVdg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1771473729; x=1772078529;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=linaro.org; s=google; t=1771473731; x=1772078531; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=g+k/37VNyM44S8IKpnLIeLYphIGYrb6n3z+1yI/fqF0=;
-        b=UQ6s00sOxwS7Tt0rNK1GvFpEMPUWI5ff9id27/qn5dY64rEF0Ym8oz51eCc0Wc84f2
-         n0OFjiCfA/5yvEKfJW7YtP9J1Ml5TCrWs3wYkilJrtQ7pRfKYIhhFh/tlU6Xsj2L+bYD
-         CkwNl7vWNNyCXM6W0FH55pBuB/DECPGxiRhGdPjCsk7mXlEN2SBE2csczfGXPMXqofI2
-         VuhjMVXf4WV5yr++rgFP72BQheMzOyOPXExulKAdkFUQYRTG7SDTCZSQbgPEWnWgBjhr
-         k6TSCgTIHplZizhH6Cj/+Vy9u+IjeI9R20hH+N5N9yUC9XKHZVcZS6dymXtdKRnpIelQ
-         b08A==
-X-Forwarded-Encrypted: i=1; AJvYcCXSqob0xYP86zOm9Fei15FTRqKHvEyBswhhK7dMpEHAD0iv4dEKAfLyT6QXDRLYpQw0itM=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yzny8AvziRbewLUPVlcCEhoIi5ujLzHuQyoYqZxsHjPGvW8l7C0
-	MpRVhnOawVdOOuJPBZnrHQIEZ5G+IgmkyIhNpYk3dKOjeLQeRyaKkbQNyBLRMjpauCQ=
-X-Gm-Gg: AZuq6aIY71Xvn7oWJafX5QGn7Vl9sUh3/yqSq3cRAPMd2uL72aKNSTikOb8ejWDhWkd
-	xXjfTecal+7imclFilx3H8bYS/d3/VPY8GZRyqi7q5pkDc1VI+WQstCiRyIsBSG4iquo8NLekQf
-	VU+rW55heU2TjAUPbNsuFdcR+hB/I+415QNH6pURiDb1uXRO4xsHj2vqawDyckVwgkcaOGF4kIQ
-	nZTZwL5C24J09OLMseiQcFoCxtQ8LcWPUiu/VdEDUC2XIKtC+MXOv+F1r/JJdYe/XTmXEisDDD6
-	mWUIzYai+XRSA8+++y/R59orwDEzYB0ZfVoE+If+uMZ+DHSDsIjSz5ut5orZrS6fXh9Z4XPa+ZG
-	2USo8OBW1nlyerBe8E93Zs09K/h8+BlMSFgWLRWb3TUnGVJVboYYGD5b3+LwlN15Qut9uVHgeGk
-	aJ0r9PnJbqSpyLlkAsqIu7tvGjEGloz86KbvU3+xgh7t9s9uup3F4xx2HIw1HhrscUxYnbCr2Ru
-	XVTH9Es/ZUiT+g=
-X-Received: by 2002:a17:903:2284:b0:2a9:2ab2:e50d with SMTP id d9443c01a7336-2ad17586af9mr127169705ad.51.1771473728472;
-        Wed, 18 Feb 2026 20:02:08 -0800 (PST)
+        bh=X+EWQStl3OxtO/agizp2TzeqNHuyOddWzArd5felHRI=;
+        b=SjmOgplSXDqcR7jKL0KjCVWzJekCDv0thuNslTcU8q6SmpgwvysmuIl5Z0zdAu73GQ
+         jiFrQvSgO+7ETIzxkmufEsAPsDlK+tUfigNWrrRkk/to/p122syAHyQqTYKWZ3ghoMAk
+         nihT4iGmpmuVxmkDbZxzGahp9ADgYvcLI5rXv+Big6s/aYNm34OWXnubXZYmcQN4eiJI
+         18isoJEETJ3sLkR7kiayjEMqhjL5gmNL2HbntCOqW6UHzqn3YdpPtYsTq9iHK8tmE9Fz
+         8+eKvQ1eEhSqjxC649fvz9CgAuHiBJx9ifCwyovUnAAtF7iDmnf+JKDxlzX44MmOTDZ6
+         8N1g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1771473731; x=1772078531;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=X+EWQStl3OxtO/agizp2TzeqNHuyOddWzArd5felHRI=;
+        b=K2mVr3Nu8rUKxS9abtNSL+6TKhBsdXoMMQChdiQFf5bqj438AIe6HvboxdoPDMQO4t
+         K1UdG9DxlrOPBZ88yC8o9DW/yVDfq6j/wDCzX7JL4basKsuUjP1GShZICXN50SrWedyl
+         M4LNfFwKb7/AzS3KJZFLr8w31LjMK44HnfSQUXgFFQpK1RpuiqeYdy05Dqy73LfcFPGH
+         Terec7nAlfYPssGJzV3EWYXA3lrcQnCooBicZGHW4J+9WEOmLADYH+4wlaaWq2BULb/X
+         KcokQUauzjXnPYhWYf+bq43NBisE2EFmmWlC1vO31jp8CJJ4Oa+vLRKRT+fTrnl0yhE6
+         giMg==
+X-Forwarded-Encrypted: i=1; AJvYcCXHIXA2/uMhDTBeT2lvH46+yo/JKFHTc0hEOzdmTBzu0gviIDdIMjixjApecMCV2+ooCeo=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxNX6XmCKkXDrvU/JPArxWQ3eaN9j5njh2wuM9jVVQnfqMz72sV
+	ylxXt6k/BkY4UkeustjHGs4eLX9zflI0wRFUVccPeVmuY94RAWDy+SJGAYJuV+x2d6Y=
+X-Gm-Gg: AZuq6aJVM+ioIGkgSEoEBHTeTCt37UA+9XVfxxaKdiBlppk53T7P1GJ3aXePfx+toZh
+	07l1LBgs+kExMrWBufXnw2iFUzlXCWIDnKmqqy0c4T7aMl/Ih4Qb5JhsmHu/x0AP+H1zP3GzgMa
+	T/FeHmG9x21Oq9IP5893xsAxIIFg/lAg1B/pUB0lq0SsdIhV9TtaQXn1g9UoM8pQ+nh/OUQIjbA
+	r+w/k9CSL/vZQKHCGE3JDI2RNgSyBxQhwRLCOFUKcHC7IoEYYrr+38O7z/XYwTrFFJnn6gjCoJk
+	9Blglan0q2nyayGzT9Me3CmdG/tw0HM+CTorCxwvSCt+4XOfryWz65QCvrAhwbTUJxbsiRf1AHD
+	rnf4q44UjWTSSzmNPTuDTC2Y9hUytxf4LI/pbbGDxx6nxHntBLx5ta/ppUWx9h7cIRBpye8lYyq
+	de13pm0UlbPYl4LJE3LeWvhsdg9qeRSADVBT59mbSb5mPfu3rNdqp8qYLsA4JsY7IYb+lOM58Vm
+	ur1
+X-Received: by 2002:a17:903:32c7:b0:2aa:d60c:d48a with SMTP id d9443c01a7336-2ad50e77664mr37975015ad.7.1771473730975;
+        Wed, 18 Feb 2026 20:02:10 -0800 (PST)
 Received: from pc.taild8403c.ts.net (216-71-219-44.dyn.novuscom.net. [216.71.219.44])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2ad1a73200asm147636225ad.36.2026.02.18.20.02.07
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2ad1a73200asm147636225ad.36.2026.02.18.20.02.10
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 18 Feb 2026 20:02:07 -0800 (PST)
+        Wed, 18 Feb 2026 20:02:10 -0800 (PST)
 From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
@@ -69,163 +71,68 @@ Cc: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
 	anjo@rev.ng,
 	Peter Maydell <peter.maydell@linaro.org>,
 	Jim MacArthur <jim.macarthur@linaro.org>
-Subject: [PATCH v4 00/14] target/arm: single-binary
-Date: Wed, 18 Feb 2026 20:01:36 -0800
-Message-ID: <20260219040150.2098396-1-pierrick.bouvier@linaro.org>
+Subject: [PATCH v4 02/14] target/arm: Don't require helper prototypes in helper.c
+Date: Wed, 18 Feb 2026 20:01:38 -0800
+Message-ID: <20260219040150.2098396-3-pierrick.bouvier@linaro.org>
 X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20260219040150.2098396-1-pierrick.bouvier@linaro.org>
+References: <20260219040150.2098396-1-pierrick.bouvier@linaro.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-This series continues cleaning target/arm, especially tcg folder.
+From: Peter Maydell <peter.maydell@linaro.org>
 
-For now, it contains some cleanups in headers, and it splits helpers per
-category, thus removing several usage of TARGET_AARCH64.
-First version was simply splitting 32 vs 64-bit helpers, and Richard asked
-to split per sub category.
+In arm_cpu_do_interrupt_aarch64() we call the TCG helper function
+helper_rebuild_hflags_a64(), which requires helper.c to include the
+TCG helper function prototypes even when this file is being compiled
+with TCG disabled.
 
-v4
---
+We don't actually need to do this -- because we have already written
+the new EL into pstate and updated env->aarch64, we can call
+aarch64_rebuild_hflags() to achieve the same effect. This is the
+function we use everywhere else in this file to update hflags.
 
-- add two patches from Peter removing helper in non-tcg files
-  20260216160349.3079657-1-peter.maydell@linaro.org
-  This fixes build failure with kvm-only and xen-only builds on aarch64.
-  I didn't split helper and gen_helper headers. If that really matters, it can
-  be done in v5.
+Switch to aarch64_rebuild_hflags() and drop the include of the
+TCG helper headers.
 
-v3
---
+Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
+Reviewed-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+Signed-off-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+---
+ target/arm/helper.c | 5 +----
+ 1 file changed, 1 insertion(+), 4 deletions(-)
 
-- translate.h: missing vaddr replacement
-- move tcg_use_softmmu to tcg/tcg-internal.h to avoid duplicating compilation
-  units between system and user builds.
-- eradicate TARGET_INSN_START_EXTRA_WORDS by calling tcg_gen_insn_start with
-  additional 0 parameters if needed.
-
-v2
---
-
-- add missing kvm_enabled() in arm-qmp-cmds.c
-- didn't extract arm_wfi for tcg/psci.c. If that's a hard requirement, I can do
-  it in next version.
-- restricted scope of series to helper headers, so we can validate things one
-  step at a time. Series will keep on growing once all patches are reviewed.
-- translate.h: use vaddr where appropriate, as asked by Richard.
-
-Peter Maydell (2):
-  target/arm: Move TCG-specific code out of debug_helper.c
-  target/arm: Don't require helper prototypes in helper.c
-
-Pierrick Bouvier (12):
-  target/arm: extract helper-mve.h from helper.h
-  target/arm: extract helper-a64.h from helper.h
-  target/arm: extract helper-sve.h from helper.h
-  target/arm: extract helper-sme.h from helper.h
-  tcg: move tcg_use_softmmu to tcg/tcg-internal.h
-  target/arm: move exec/helper-* plumbery to helper.h
-  target/arm/tcg/psci.c: make compilation unit common
-  target/arm/tcg/cpu-v7m.c: make compilation unit common
-  target/arm/tcg/vec_helper.c: make compilation unit common
-  target/arm/tcg/translate.h: replace target_ulong with vaddr
-  target/arm/tcg/translate.h: replace target_long with int64_t
-  include/tcg/tcg-op.h: eradicate TARGET_INSN_START_EXTRA_WORDS
-
- include/tcg/tcg-op-common.h                   |   8 +
- include/tcg/tcg-op.h                          |  29 -
- include/tcg/tcg.h                             |   6 -
- target/alpha/cpu-param.h                      |   2 -
- target/arm/cpu-param.h                        |   7 -
- target/arm/helper-a64.h                       |  14 +
- target/arm/helper-mve.h                       |  14 +
- target/arm/helper-sme.h                       |  14 +
- target/arm/helper-sve.h                       |  14 +
- target/arm/helper.h                           |  17 +-
- .../tcg/{helper-a64.h => helper-a64-defs.h}   |   0
- target/arm/tcg/{helper.h => helper-defs.h}    |   0
- .../tcg/{helper-mve.h => helper-mve-defs.h}   |   0
- .../tcg/{helper-sme.h => helper-sme-defs.h}   |   0
- .../tcg/{helper-sve.h => helper-sve-defs.h}   |   0
- target/arm/tcg/translate-a32.h                |   2 +-
- target/arm/tcg/translate.h                    |  22 +-
- target/arm/tcg/vec_internal.h                 |  49 ++
- target/avr/cpu-param.h                        |   2 -
- target/hexagon/cpu-param.h                    |   2 -
- target/hppa/cpu-param.h                       |   2 -
- target/i386/cpu-param.h                       |   2 -
- target/loongarch/cpu-param.h                  |   2 -
- target/m68k/cpu-param.h                       |   2 -
- target/microblaze/cpu-param.h                 |   2 -
- target/mips/cpu-param.h                       |   2 -
- target/or1k/cpu-param.h                       |   2 -
- target/ppc/cpu-param.h                        |   2 -
- target/riscv/cpu-param.h                      |   7 -
- target/rx/cpu-param.h                         |   2 -
- target/s390x/cpu-param.h                      |   2 -
- target/sh4/cpu-param.h                        |   2 -
- target/sparc/cpu-param.h                      |   2 -
- target/tricore/cpu-param.h                    |   2 -
- target/xtensa/cpu-param.h                     |   2 -
- tcg/tcg-internal.h                            |   6 +
- target/alpha/translate.c                      |   4 +-
- target/arm/debug_helper.c                     | 769 -----------------
- target/arm/helper.c                           |   5 +-
- target/arm/tcg/arith_helper.c                 |   4 +-
- target/arm/tcg/crypto_helper.c                |   4 +-
- target/arm/tcg/debug.c                        | 780 ++++++++++++++++++
- target/arm/tcg/gengvec64.c                    |   3 +-
- target/arm/tcg/helper-a64.c                   |   6 +-
- target/arm/tcg/hflags.c                       |   4 +-
- target/arm/tcg/m_helper.c                     |   2 +-
- target/arm/tcg/mte_helper.c                   |   3 +-
- target/arm/tcg/mve_helper.c                   |   6 +-
- target/arm/tcg/neon_helper.c                  |   4 +-
- target/arm/tcg/op_helper.c                    |   2 +-
- target/arm/tcg/pauth_helper.c                 |   3 +-
- target/arm/tcg/psci.c                         |   4 +-
- target/arm/tcg/sme_helper.c                   |   5 +-
- target/arm/tcg/sve_helper.c                   |   6 +-
- target/arm/tcg/tlb_helper.c                   |   4 +-
- target/arm/tcg/translate-a64.c                |   3 +
- target/arm/tcg/translate-mve.c                |   1 +
- target/arm/tcg/translate-sme.c                |   3 +
- target/arm/tcg/translate-sve.c                |   3 +
- target/arm/tcg/translate.c                    |  28 +-
- target/arm/tcg/vec_helper.c                   | 224 +----
- target/arm/tcg/vec_helper64.c                 | 142 ++++
- target/arm/tcg/vfp_helper.c                   |   4 +-
- target/avr/translate.c                        |   2 +-
- target/hexagon/translate.c                    |   2 +-
- target/i386/tcg/translate.c                   |   2 +-
- target/loongarch/tcg/translate.c              |   2 +-
- target/m68k/translate.c                       |   2 +-
- target/microblaze/translate.c                 |   2 +-
- target/or1k/translate.c                       |   2 +-
- target/ppc/translate.c                        |   2 +-
- target/rx/translate.c                         |   2 +-
- target/sh4/translate.c                        |   4 +-
- target/sparc/translate.c                      |   2 +-
- target/tricore/translate.c                    |   2 +-
- target/xtensa/translate.c                     |   2 +-
- tcg/tcg.c                                     |   4 -
- target/arm/tcg/meson.build                    |  13 +-
- 78 files changed, 1165 insertions(+), 1149 deletions(-)
- create mode 100644 target/arm/helper-a64.h
- create mode 100644 target/arm/helper-mve.h
- create mode 100644 target/arm/helper-sme.h
- create mode 100644 target/arm/helper-sve.h
- rename target/arm/tcg/{helper-a64.h => helper-a64-defs.h} (100%)
- rename target/arm/tcg/{helper.h => helper-defs.h} (100%)
- rename target/arm/tcg/{helper-mve.h => helper-mve-defs.h} (100%)
- rename target/arm/tcg/{helper-sme.h => helper-sme-defs.h} (100%)
- rename target/arm/tcg/{helper-sve.h => helper-sve-defs.h} (100%)
- create mode 100644 target/arm/tcg/debug.c
- create mode 100644 target/arm/tcg/vec_helper64.c
-
+diff --git a/target/arm/helper.c b/target/arm/helper.c
+index 8c5769477cf..033baf7e715 100644
+--- a/target/arm/helper.c
++++ b/target/arm/helper.c
+@@ -36,9 +36,6 @@
+ #include "target/arm/gtimer.h"
+ #include "qemu/plugin.h"
+ 
+-#define HELPER_H "tcg/helper.h"
+-#include "exec/helper-proto.h.inc"
+-
+ static void switch_mode(CPUARMState *env, int mode);
+ 
+ int compare_u64(const void *a, const void *b)
+@@ -9473,7 +9470,7 @@ static void arm_cpu_do_interrupt_aarch64(CPUState *cs)
+     aarch64_restore_sp(env, new_el);
+ 
+     if (tcg_enabled()) {
+-        helper_rebuild_hflags_a64(env, new_el);
++        arm_rebuild_hflags(env);
+     }
+ 
+     env->pc = addr;
 -- 
 2.47.3
 
