@@ -1,60 +1,61 @@
-Received: from SN4PR0501CU005.outbound.protection.outlook.com (mail-southcentralusazon11011030.outbound.protection.outlook.com [40.93.194.30])
+Received: from PH8PR06CU001.outbound.protection.outlook.com (mail-westus3azon11012001.outbound.protection.outlook.com [40.107.209.1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A12D23033FB;
-	Mon, 23 Feb 2026 15:55:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.93.194.30
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E945930BF4E;
+	Mon, 23 Feb 2026 15:55:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.209.1
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771862149; cv=fail; b=p01GO4/fT6RBOyT+TLYhmkWYoKQKq2OY2Kr84rTRj3BxwwJNU2gt0bcZffjnt6+XCIIIm6n5oclXw7ybF4GhLitTjjJlCD06s7DJgiFswH1qizPP4NBHG/2aq+qXvNwy63HiRUasUbaPnFmUlGgWTQUOjD+dp+xX6pcY5mHmMAY=
+	t=1771862149; cv=fail; b=uv07MbN6NKUTqgDb7OzgFfAH70QuVgUokJZ8htyMxfFtlYxu2PD+BXGyaASL4KIZ+AqInZmbIOFmtGD3IBj9ioL0OGOv4v1g5ZAPZFFMHuyGB/9uZHcCSPaMhlGYeHiIoxImk7Zvbu6ROmHLqepq/T3Wr3okt5Ab3L2cQ8oZN4I=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1771862149; c=relaxed/simple;
-	bh=g9WGhvD9ngoFTjnzO0NsB0gWhptpyW6E12+YgNdnhGU=;
+	bh=0nAnMzpd4HZk6HLjn3GC6O2yU1yT9WOtR/w7lr7UGZU=;
 	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=a0sjuQcWimYV+wVVpxLwIClRjkljQAWYKhJN97tNGaxQZclafOEcm1bGNlJvos2V1KAuO07hHchC4IcAMabMdgbaaEEKnnnf6J1ifXJX4XVSxfKQpb7W8nnm4gghC6xT+sHzM765VFTeucI9pjAXdtr9TglzHVcbvaGXnvsfRRo=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=GpuvIa9S; arc=fail smtp.client-ip=40.93.194.30
+	 MIME-Version:Content-Type; b=AQI2RDRKwxTmqHTywGpMyTZcDVimKN6YPiXbuX1Y0rmewBWR/B7ICm/ID2C5A0m2JDljM/dpJWbS1FboGdNMpOzgtXH1UwfI6MCzLm4iQfWfXGI3FYOZ8nplQZQBbQyI5cojLLHVKAe8iqAT7Tl1cvvaYGspWpCZxecYMirl6uM=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=lVasQ/b3; arc=fail smtp.client-ip=40.107.209.1
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="GpuvIa9S"
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="lVasQ/b3"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=CgM2MmLdCi5gyb0IGeR2dt+VLe9Ua0aJdzCKJXq3acgdex/LQqNKVPb9B5F1izg6SUMQS3w5367zK5qUWeGtgSpiM6P3s7odQeBdWHHoWMOjz4xaKVeR2SFgpgh56bRSSzfzeppDzL456MTr7+MYK0bPfIHuYFFLiUt8bR+ToHOFOhMQWRPbAQCg7JBgU7pSLVeLTWgqmIRgGPS6Guik4Zv8t3GQ8V2UhbIleQCL3c7z5Lqg2Et6acBQy8dbqXQmJ4KoVX1l6FnxSCGCbdxoaiq6RoExlqHm62pSyAvCXkvRvu8cV6BNO6RUjkz65BQu61YsIMLohsuBxwcwhtaAbA==
+ b=h1gSelVqFAuaqjpQF7L/k9m8QvwLX9jXoA9vIfKky8pPbTu56skw5I6Zo0tCilMANFsmaFk+XNQLviH6kz9hz1R/N6SRZWjSggSyZoGwBQ44sff6fg8GolZyGIWNGQl/1EuzvaQmcSDhMdAA3DVioPHri+oLocfspqKAGyXw1TTggSch54zu7CyiHVcCHTw1/PMZ7JzNjhc9UL3QbvA7mKonDVMbvtuuOdQ/nWqgsbvqkPNL2ZuUI7oiDv8E/zKsjTg7XqWrfiJkY7FXTmq+klw8QcDOyfiadecCWAj+zWUd7CuuEBOlMd0iHNcYZs1lZQP3UptJeiEsN8diNJlkWA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=wE57MkPHKMH6S3M6xJWU835IV+am9ffEU6YlWoEmW78=;
- b=mbfPVTcXaBLm1pTcNlYRhVSUjJroi2e0Z4jSYptOD1QZmm2ZKTDNmZGafR2THYFaGInW1RWMtW5Z6WR2e626qZ4MO4L5drMWzdTWX+TdNYIMP3eIoRmWiH6g64hRVegEFnwsuXO7sxn8ObSN++snFK41a+4SRJiBOsbkbEH5H9ukg2ZO92rWTzqUbn1AixGJNbbhlfYNmm1CVnYZAtKy70TAvBfi+zDW4NnUflggkh7KYpu6qSmPGCvWGY1YbG1f2kZHGsgqhB/6PzYspfn0fR9wn23nEqNSgOVtsiXOYZSAI+FERaFNlJ3cDriRLBOtupautt20hPMsbWATTE3ycg==
+ bh=+I25YG4LtbfsLnMnjEVrZbpE+juFFCg8XJlnCv4ZLVU=;
+ b=lW+8Dh7jImjN0fTtZQaC101DWhq9MunJBOknlDVUQZnVl+8kQ6pO60ia6phIIHDmMeIdfE91Ls+YxbdnNZasedTk1xlHbVFYxMe3uapGwv3vYtiEEV6vvUHdxNOP10a9c/wj0cfk20Lpt5lnKI26UQVRQX4BatFTDqc/Bwhud3ws9E/ADZwZ2FWMPbUOvddSuXFWmrwY3/vzNyXJ4BKRgssuL1uYZCVygaD+FQT28iQzaljQybEr1UVBkA7YCEW3yQ8jSIdfoZgK64oGyMuxdGzMpFk/Gs0iDVuwOkQXsqhw0Rj8jD4mD/hE7OmV3TpJsFtUcMmv8VtjktvzUqUe7A==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 216.228.118.232) smtp.rcpttodomain=ziepe.ca smtp.mailfrom=nvidia.com;
+ 216.228.118.233) smtp.rcpttodomain=ziepe.ca smtp.mailfrom=nvidia.com;
  dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
  dkim=none (message not signed); arc=none (0)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
  s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=wE57MkPHKMH6S3M6xJWU835IV+am9ffEU6YlWoEmW78=;
- b=GpuvIa9SVMUiP0yTogbc/0eKcT56Sjz4hs5JJafJ4RMYdJ0Srx++bYJP6i0Atc1KyrGpaXCb6gQ/BlaKuS4o8vHz+ButpkKqcQOvLXrw8RASNG/BazjlSFfalTW6+ywFMOe3DNUFgtgIWRCbLQfl6YDcktl24A5r94TMcUQbOk9uW1UtzWPhaZKRzLKlXTH4e3cNJV74+w4LaX4Vzttj2uzJwdeq1PtdaojIb2cfOtDfVZ2bi0yD5QGRjrf9CvYY4yZz8n/LwIfwc2nBPi7qvl1gylXS/BKG+iACv6SyrANIlf6Z7Cc7hYQkClqP4luV8rV3z7Mt0fdX9sdPWFFJ1g==
-Received: from DM5PR08CA0027.namprd08.prod.outlook.com (2603:10b6:4:60::16) by
- DS0PR12MB8044.namprd12.prod.outlook.com (2603:10b6:8:148::14) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.9632.21; Mon, 23 Feb 2026 15:55:38 +0000
-Received: from DS3PEPF0000C37B.namprd04.prod.outlook.com
- (2603:10b6:4:60:cafe::6f) by DM5PR08CA0027.outlook.office365.com
- (2603:10b6:4:60::16) with Microsoft SMTP Server (version=TLS1_3,
+ bh=+I25YG4LtbfsLnMnjEVrZbpE+juFFCg8XJlnCv4ZLVU=;
+ b=lVasQ/b35qgEIJZIooEuQjIPuDC7B4KTooOehQ38mJklA1Dy08988YBsCVdF8cg0ZIciZx93iEmf3gPO1cw3TD0k//SKcwRhnCwLvrJ9ZKCNnV3RYrEVlDgV5TTRHg23aHpX4mJ5xTIL56tQO4P8QB1wNR6RidQdr2rmVJd9PfQyyjvtV1NDxVg1itJOR7sxX3jwbgltOFG1OGx2MiojoyVx1mcULdkdqF5PjwwOuNMK5a5m5N2NfP2qK2qORuy74HpMF7mQ3+Jdd6a2Dni7ac8UibQZMMsT+h6Hmrikbu/PrMrTguDIn5ZiMZK42UIoR3HLmkZ6uFScw4Ojx3aloQ==
+Received: from CH2PR05CA0050.namprd05.prod.outlook.com (2603:10b6:610:38::27)
+ by SJ0PR12MB5634.namprd12.prod.outlook.com (2603:10b6:a03:429::7) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9611.15; Mon, 23 Feb
+ 2026 15:55:38 +0000
+Received: from CH2PEPF0000009D.namprd02.prod.outlook.com
+ (2603:10b6:610:38:cafe::8f) by CH2PR05CA0050.outlook.office365.com
+ (2603:10b6:610:38::27) with Microsoft SMTP Server (version=TLS1_3,
  cipher=TLS_AES_256_GCM_SHA384) id 15.20.9632.21 via Frontend Transport; Mon,
- 23 Feb 2026 15:55:38 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.118.232)
+ 23 Feb 2026 15:55:37 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.118.233)
  smtp.mailfrom=nvidia.com; dkim=none (message not signed)
  header.d=none;dmarc=pass action=none header.from=nvidia.com;
 Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
- 216.228.118.232 as permitted sender) receiver=protection.outlook.com;
- client-ip=216.228.118.232; helo=mail.nvidia.com; pr=C
-Received: from mail.nvidia.com (216.228.118.232) by
- DS3PEPF0000C37B.mail.protection.outlook.com (10.167.23.5) with Microsoft SMTP
- Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.9632.12 via Frontend Transport; Mon, 23 Feb 2026 15:55:38 +0000
+ 216.228.118.233 as permitted sender) receiver=protection.outlook.com;
+ client-ip=216.228.118.233; helo=mail.nvidia.com; pr=C
+Received: from mail.nvidia.com (216.228.118.233) by
+ CH2PEPF0000009D.mail.protection.outlook.com (10.167.244.25) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.9632.12 via Frontend Transport; Mon, 23 Feb 2026 15:55:37 +0000
 Received: from drhqmail201.nvidia.com (10.126.190.180) by mail.nvidia.com
- (10.127.129.5) with Microsoft SMTP Server (version=TLS1_2,
+ (10.127.129.6) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20; Mon, 23 Feb
- 2026 07:55:19 -0800
+ 2026 07:55:18 -0800
 Received: from drhqmail201.nvidia.com (10.126.190.180) by
  drhqmail201.nvidia.com (10.126.190.180) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
@@ -70,9 +71,9 @@ To: <ankita@nvidia.com>, <vsethi@nvidia.com>, <jgg@nvidia.com>,
 CC: <cjia@nvidia.com>, <zhiw@nvidia.com>, <kjaju@nvidia.com>,
 	<yishaih@nvidia.com>, <kevin.tian@intel.com>, <kvm@vger.kernel.org>,
 	<linux-kernel@vger.kernel.org>
-Subject: [PATCH RFC v2 10/15] vfio/nvgrace-egm: Clear Memory before handing out to VM
-Date: Mon, 23 Feb 2026 15:55:09 +0000
-Message-ID: <20260223155514.152435-11-ankita@nvidia.com>
+Subject: [PATCH RFC v2 08/15] vfio/nvgrace-egm: Expose EGM region as char device
+Date: Mon, 23 Feb 2026 15:55:07 +0000
+Message-ID: <20260223155514.152435-9-ankita@nvidia.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20260223155514.152435-1-ankita@nvidia.com>
 References: <20260223155514.152435-1-ankita@nvidia.com>
@@ -87,151 +88,200 @@ Content-Type: text/plain
 X-NV-OnPremToCloud: ExternallySecured
 X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DS3PEPF0000C37B:EE_|DS0PR12MB8044:EE_
-X-MS-Office365-Filtering-Correlation-Id: 6c802257-a8da-45f1-8f07-08de72f3fd59
+X-MS-TrafficTypeDiagnostic: CH2PEPF0000009D:EE_|SJ0PR12MB5634:EE_
+X-MS-Office365-Filtering-Correlation-Id: 3845b4f7-7aa1-448c-f2df-08de72f3fcdc
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|36860700013|1800799024|82310400026|376014;
+	BCL:0;ARA:13230040|376014|36860700013|82310400026|1800799024;
 X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?IOY9QG53JE+lt/ZaYYKw7beFTrGMLWaVZcREiP96Tm5kD6MaIbYRDKfLW+EG?=
- =?us-ascii?Q?Y/FKB0nFx171phm7yfhxBEmfvCmcGaD+48k8Gww7AV4W2x8gqjSvgOBFkF7a?=
- =?us-ascii?Q?SXOHMPRGdoirBMxyqGvRzRzuvRSYyLmBnK87Pt0gfpwZrpedH5k2ACg8uuo8?=
- =?us-ascii?Q?I3nhXryO1RszGk8Kcy5HX1a9+PthlwOhjyridtpt5Ng29+BSoAN0cGQnoYJD?=
- =?us-ascii?Q?ufTm07Rf90MARDjEzRLrdX9gTP6mtv00AKxGrKuvhaRFhGj7M633fwiFUL8i?=
- =?us-ascii?Q?x/IIlXXxz7m8LE7Semw8grS1leYrp2d+dN6JPy5T+YU4Xt2K2yM6AWX8k9W1?=
- =?us-ascii?Q?RINx957oei8g9S/lOzk2qLMVoPHbYgQxPxTnghBQGx/+ZkEToIszVuSPBbcp?=
- =?us-ascii?Q?VMTeQ9yhY8N9qpHWIHqEWXy7JmYjcs/KaAHbkUyOxOd9xUkcwmMb+e+1zRLp?=
- =?us-ascii?Q?2jH+HXPhrJ/ljp5qs4MMWGPETYsk0GWTLLJnbeyu5HkCDAR53vNgo3UhkvUF?=
- =?us-ascii?Q?dfueBmBJPz6Ibc8fdwfJWpvMUJpyhNboUbc2IrJdV4nA2tPNL1DMTVdappnr?=
- =?us-ascii?Q?H8YZXNZNM4W8wWSWkaDRt/R3nkfND3FVkTMF+1CT2bl8gOU1AGH2XyFEQTJ3?=
- =?us-ascii?Q?aur06NzZ5u14J7nH5KyGWV87h2z5MQ+8ziDM1fQQWkQAmhUTuj88L4B6CLbq?=
- =?us-ascii?Q?VBvFib9sZ5/mOvpCTB2ea89+4JcXqrWT07NbYoi5rZnLeLiTYVpoxPPD0g8R?=
- =?us-ascii?Q?AAFLBLOSCn4F3FxistEwran5wwRHd8aN4PfYy8JbyokejK5T5Mo8t3Asrj7I?=
- =?us-ascii?Q?Smc7PhwifVlcjvwRbsIlLkImomsLtvXzDXnKlAuZso5IUPudoKFGv9UBRAsg?=
- =?us-ascii?Q?4zi9/Q5CGos2Tb3QC8+0BWPAme0soT9FxYKkiN5VQCTfAlXRv0341zFsyhKM?=
- =?us-ascii?Q?HUqq84XmW7XXSW0VuMTpGAZ6RQGkBx8pJ3eYUzXgqyVy4WYCz8m9/7T+/LZp?=
- =?us-ascii?Q?rdjScTQJYvA8eZp/KBCu/+JX4kQCiZJB8zIF0CKmCyV2DCI/Esk9UcoWYdG0?=
- =?us-ascii?Q?fmaB/Fe2SKLE+w32/7qtTHhEdR82dK+f2B/GCCAE36sIvE1x0tq9raOWEi6n?=
- =?us-ascii?Q?y1uUlv9nrtlD0+hX7k+w2AX0xCpbkMXrprbhaB7E0SlNMWWM1Q0Cv/Q+tFnr?=
- =?us-ascii?Q?CYLkT7BdBOXiMFNl11ODTUMk34oyhE04HZizApbNqUgoafsQkjsI98oo/fpn?=
- =?us-ascii?Q?B/V2bOB5v34R/15OZI55qngp4Ft8Rad4quW2pqKFfakhx+L+K5J91sdOVPgf?=
- =?us-ascii?Q?L53UnkL16Yv1FhfQWRQU+mzEnK+RtjtvWKt+EijoLD2USwOE60K5QKqHSxi3?=
- =?us-ascii?Q?Ha+WgOZqRU3JT9h4kruHeAJIsni+azpaBa7bCUZMs5tna9WqPK0xNQPoQ4kG?=
- =?us-ascii?Q?3+0TIxx5Hf13niuNXBzlWyy9J3zd345UTnP0IATaCB66dnnK1v9OEBu0WVAs?=
- =?us-ascii?Q?/xmu4io7FllSoq2GVPzAYafpx31vjbtnCcHhi3S/Lwy5hFX8Lg9zu3FZFUSE?=
- =?us-ascii?Q?ZJCk6SRRDEdyh2pJ5UT2DBvckvp0av6znDTGjJHpp3/2zPAftwV/EIHdJF8X?=
- =?us-ascii?Q?a69Pe2ZBa6kBKnaVo9WUjlTUpm1FGwvkngvZmIb5zGGlicqBg2Z73FPHBwGG?=
- =?us-ascii?Q?spJD4Q=3D=3D?=
+	=?us-ascii?Q?vAVEM4KCrUw/Ab7PQNmDyA2J3SsuebhkvVaIN+crqNefOVuBQ2GR4Gw/iJlG?=
+ =?us-ascii?Q?Gr/Q/nd7GHGuM8blEnQYCrPFscOjkU86mvuHxdQt79WAynJYg/El6fCL6rka?=
+ =?us-ascii?Q?H04bUn0zDOIww7aTePfk//vbtVwLXmYfV+ue2uMV39QUmTDYJpl59J3Sde0g?=
+ =?us-ascii?Q?+4y1dWiQerpbWjm4IUVqlAYsdkJ/5I82tVP3EQje6Bv8osAG6DSuCvNxsweU?=
+ =?us-ascii?Q?1IrjZi30ER3z3hp3IVoMFMxsgi0O5CIbUZt0Nq/iSubzTvmgjVlZE3CbVqkj?=
+ =?us-ascii?Q?hI1/wvjwca3s/Gz97+o0TlTxjuw7i/HjpvEmpwWbH07h8sZJuHFNSd3zE0/5?=
+ =?us-ascii?Q?h7TafMssIz9o4w00/nW9Dx+SUUGImxAPirI4dvRln566P4mDzQsYO7sAsgvu?=
+ =?us-ascii?Q?0oZ5CcJ7/ZgMOAM0PEBQL31l/5TdQl/khIruoVfLQoJROd+G24lwcuVahW91?=
+ =?us-ascii?Q?keUmuH1m3d2GFLDZAD1FTFtEsx/kKvsxOL8vQX/6BHSPlc83iSgU2RtbpeFk?=
+ =?us-ascii?Q?wqnVDrGyijQaYSFeLBFPOcBOa4KT7ePjLiAinOsrnvCgLbkTEXSszcF/TjpW?=
+ =?us-ascii?Q?Xf4VzX5Qp4QKRWedRJhRN1s3dDdukFUP9ZKrwSlQpJWy6aa1r+I7R0vlVC0s?=
+ =?us-ascii?Q?iJinVFI+YJ1ofabxlGu9bpqaDE9xFR+qYAT3GI6WA38E28d+HYOHGw/D72zr?=
+ =?us-ascii?Q?bpKF6kKrSwtDRe7W3X850Xz3gY9gx23/z9HhccAFSZ1289TUJflBM/PKU3E2?=
+ =?us-ascii?Q?BcYx2Z2JTqwTnIrPRTX201uhHH81OHJ0KgLtN85hlwhHnxkrRxsadJf/6j0x?=
+ =?us-ascii?Q?3Nv0U8QvJVNRY2J8/Y9vhLqHiCL6HjcxfZxFKfqHTaECeuyI1dU3CYJBMDWJ?=
+ =?us-ascii?Q?hbHu7oUztgwXbhX+SWCbOd2n9stIPQAjnKtnmdCSYtZLyHyV79rt0ZqnGMmr?=
+ =?us-ascii?Q?Ez2szK1FyJN7/QHR474wFdjc5mG9R+kBbuF2bQcXIzUdzRHAiC15sGypztMu?=
+ =?us-ascii?Q?iEA2A46nJQXioUlLXF0DwZok9NU2RVwxuZJlkRwOIpIpoeHc3UxwM2RPE37m?=
+ =?us-ascii?Q?2c7mM6q4EZhwqLUUHl9+hDQv8aed6Ut66Z+8h/ef9ERQpIATdP9eg9WVy2ZE?=
+ =?us-ascii?Q?re0XFv68RrMVpexcwXHZW9MZRfB68oVHoLNxwEI4ByV0AW5fU8UF1o+ZNzFU?=
+ =?us-ascii?Q?SE54EEgjXF6fDWBRK4fOkcYGBjCLekKrANQCa0wU24EbIT+uXBHZm1wOJP6P?=
+ =?us-ascii?Q?zsN8CEDnSkZTg102RfiktEzy2H3H3zJxPMJbThhGRPoJohbIp+h98chqt6GF?=
+ =?us-ascii?Q?JwPBgHK8BBRth/e92Wtr4jZYpX+DOmwEHRveKwmrRUYKha00Cbx/pBM5lceh?=
+ =?us-ascii?Q?ingrVnIXAMNcCKPF0s+KaZc5053GwLosNxE41kdLIeE0ZqbcQ5Y+QDTl/ZQ+?=
+ =?us-ascii?Q?6770pgUFLmY0Ks9VoQ5PMT5Vs6VszlwF68JoYeNI9X33AZh8FX4TeEXyKwbT?=
+ =?us-ascii?Q?R8iu3N1GGp9SaSgQ15fzk6axFvBajPkkMod7aaZHCHseG28oVa+vPUJWSBX0?=
+ =?us-ascii?Q?BwP9F+fhYBPmyAf68623MHHc/GWT0JRqIFPl64oq1njd8eWsATjjMA/a1oQN?=
+ =?us-ascii?Q?W1O6Bm61q1u4uhTg6193FTheIL8Mw8SrwQaoBKE01qcCgMzdAX5D8jiQGwNm?=
+ =?us-ascii?Q?LOVLKQ=3D=3D?=
 X-Forefront-Antispam-Report:
-	CIP:216.228.118.232;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc7edge1.nvidia.com;CAT:NONE;SFS:(13230040)(36860700013)(1800799024)(82310400026)(376014);DIR:OUT;SFP:1101;
+	CIP:216.228.118.233;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc7edge2.nvidia.com;CAT:NONE;SFS:(13230040)(376014)(36860700013)(82310400026)(1800799024);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	m/oCOBcoo6Vt3BLohvRkupBC7Y3y+0ZvkClAMaUnb+eMO8Ltc5Av41NJSp9Z+lKJdjfo2qrEMl/bHcx3xtPWDCkENcZMoQjGku5qsZvahVLHqao653osHsY5DMMWoRIT2UOg2omXLODVAtBdtwI86P2l9AzBs3q22WfIOm2mX//+/aIG3mZt0lPKEG6flkpPQmOuKWtwqJDmXHMO5+sOOY2gkUFKoWmd4PCZKDxJnuG/AchMoWLdNf03zdDbrLTwLk/6Cfxm6LMgA5R84ZfHHny5MwnRpCNztihhbLckmgxuTsHX1ytHooUcq9ziclr/ZYG2EaMjwky1szJi6Zwi8NbfRxGW3MyxuenaGeAj+h0bFd6CTt+AtvamT9GKp/Z+bhSueFU9psWySgu0faJf2xVLTikZMMIf64uSkMcWlP0I0alzVE7YIesDbYdjddqm
+	qNq7v5EjV/iElsuPUOpBlI2NvtGGGM0SvPDF1nOe+ZvedZRFOqOxu10FOTBd4UvFrPXje8nWufT9bc32HrcCTVnUJbpHWtXi/Q3LFnZSk2Kiksb0p3qwXk09SXZ9YalLe1rD7JzOfC2l3yAXFsQm9HESmXRGekjTouOl9PXN3qaYvoYkxrleQEyE4R5L8EDFZCa5FgiIzCcwO0C4mHZ68LeQEewb99QqCLvKormNFcMg83YDfXm8Mu8NyjivY2hfvZFI2lnwfXQDZsRr3PIEsK438yTX31qdhckHZxL4Ndp0J/nNfzNoRU4+uyB53CwxbyC7xaKG7wt9OOMQzwssyBKhFUiE6PTV4+O2Qm9APUoc9iTeKmrJf/MMZmO7jIudaMOndioB/XVvGJBlCLS3HKhgNkcRkD6AQwnnWtm5Ey5Bhp2hGElME5VRQUzvh8//
 X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 23 Feb 2026 15:55:38.4758
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 23 Feb 2026 15:55:37.6683
  (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 6c802257-a8da-45f1-8f07-08de72f3fd59
+X-MS-Exchange-CrossTenant-Network-Message-Id: 3845b4f7-7aa1-448c-f2df-08de72f3fcdc
 X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.118.232];Helo=[mail.nvidia.com]
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.118.233];Helo=[mail.nvidia.com]
 X-MS-Exchange-CrossTenant-AuthSource:
-	DS3PEPF0000C37B.namprd04.prod.outlook.com
+	CH2PEPF0000009D.namprd02.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Anonymous
 X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS0PR12MB8044
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ0PR12MB5634
 
 From: Ankit Agrawal <ankita@nvidia.com>
 
-The EGM region is invisible to the host Linux kernel and it does not
-manage the region. The EGM module manages the EGM memory and thus is
-responsible to clear out the region before handing out to the VM.
+The EGM module expose the various EGM regions as a char device. A
+usermode app such as Qemu may mmap to the region and use as VM sysmem.
+Each EGM region is represented with a unique char device /dev/egmX
+bearing a distinct minor number.
 
-Clear EGM region on EGM chardev open. To avoid CPU lockup logs,
-zap the region in 1G chunks.
+EGM module implements the mmap file_ops to manage the usermode app's
+VMA mapping to the EGM region. The appropriate region is determined
+from the minor number.
 
-Suggested-by: Vikram Sethi <vsethi@nvidia.com>
+Note that the EGM memory region is invisible to the host kernel as it
+is not present in the host EFI map. The host Linux MM thus cannot manage
+the memory, even though it is accessible on the host SPA. The EGM module
+thus use remap_pfn_range() to perform the VMA mapping to the EGM region.
+
+Suggested-by: Aniket Agashe <aniketa@nvidia.com>
 Signed-off-by: Ankit Agrawal <ankita@nvidia.com>
 ---
- drivers/vfio/pci/nvgrace-gpu/egm.c | 43 ++++++++++++++++++++++++++++++
- 1 file changed, 43 insertions(+)
+ drivers/vfio/pci/nvgrace-gpu/egm.c | 99 ++++++++++++++++++++++++++++++
+ 1 file changed, 99 insertions(+)
 
 diff --git a/drivers/vfio/pci/nvgrace-gpu/egm.c b/drivers/vfio/pci/nvgrace-gpu/egm.c
-index 5786ebe374a5..de7771a4145d 100644
+index 6fd6302a004a..d7e4f61a241c 100644
 --- a/drivers/vfio/pci/nvgrace-gpu/egm.c
 +++ b/drivers/vfio/pci/nvgrace-gpu/egm.c
-@@ -15,6 +15,7 @@ static DEFINE_XARRAY(egm_chardevs);
- struct chardev {
- 	struct device device;
- 	struct cdev cdev;
-+	atomic_t open_count;
- };
+@@ -10,15 +10,114 @@
  
- static struct nvgrace_egm_dev *
-@@ -30,6 +31,42 @@ static int nvgrace_egm_open(struct inode *inode, struct file *file)
+ static dev_t dev;
+ static struct class *class;
++static DEFINE_XARRAY(egm_chardevs);
++
++struct chardev {
++	struct device device;
++	struct cdev cdev;
++};
++
++static int nvgrace_egm_open(struct inode *inode, struct file *file)
++{
++	return 0;
++}
++
++static int nvgrace_egm_release(struct inode *inode, struct file *file)
++{
++	return 0;
++}
++
++static int nvgrace_egm_mmap(struct file *file, struct vm_area_struct *vma)
++{
++	return 0;
++}
++
++static const struct file_operations file_ops = {
++	.owner = THIS_MODULE,
++	.open = nvgrace_egm_open,
++	.release = nvgrace_egm_release,
++	.mmap = nvgrace_egm_mmap,
++};
++
++static void egm_chardev_release(struct device *dev)
++{
++	struct chardev *egm_chardev = container_of(dev, struct chardev, device);
++
++	kfree(egm_chardev);
++}
++
++static struct chardev *
++setup_egm_chardev(struct nvgrace_egm_dev *egm_dev)
++{
++	struct chardev *egm_chardev;
++	int ret;
++
++	egm_chardev = kzalloc(sizeof(*egm_chardev), GFP_KERNEL);
++	if (!egm_chardev)
++		goto create_err;
++
++	device_initialize(&egm_chardev->device);
++
++	/*
++	 * Use the proximity domain number as the device minor
++	 * number. So the EGM corresponding to node X would be
++	 * /dev/egmX.
++	 */
++	egm_chardev->device.devt = MKDEV(MAJOR(dev), egm_dev->egmpxm);
++	egm_chardev->device.class = class;
++	egm_chardev->device.release = egm_chardev_release;
++	egm_chardev->device.parent = &egm_dev->aux_dev.dev;
++	cdev_init(&egm_chardev->cdev, &file_ops);
++	egm_chardev->cdev.owner = THIS_MODULE;
++
++	ret = dev_set_name(&egm_chardev->device, "egm%lld", egm_dev->egmpxm);
++	if (ret)
++		goto error_exit;
++
++	ret = cdev_device_add(&egm_chardev->cdev, &egm_chardev->device);
++	if (ret)
++		goto error_exit;
++
++	return egm_chardev;
++
++error_exit:
++	put_device(&egm_chardev->device);
++create_err:
++	return NULL;
++}
++
++static void del_egm_chardev(struct chardev *egm_chardev)
++{
++	cdev_device_del(&egm_chardev->cdev, &egm_chardev->device);
++	put_device(&egm_chardev->device);
++}
+ 
+ static int egm_driver_probe(struct auxiliary_device *aux_dev,
+ 			    const struct auxiliary_device_id *id)
  {
- 	struct chardev *egm_chardev =
- 		container_of(inode->i_cdev, struct chardev, cdev);
 +	struct nvgrace_egm_dev *egm_dev =
-+		egm_chardev_to_nvgrace_egm_dev(egm_chardev);
-+	void *memaddr;
++		container_of(aux_dev, struct nvgrace_egm_dev, aux_dev);
++	struct chardev *egm_chardev;
 +
-+	if (atomic_cmpxchg(&egm_chardev->open_count, 0, 1) != 0)
-+		return -EBUSY;
++	egm_chardev = setup_egm_chardev(egm_dev);
++	if (!egm_chardev)
++		return -EINVAL;
 +
-+	/*
-+	 * nvgrace-egm module is responsible to manage the EGM memory as
-+	 * the host kernel has no knowledge of it. Clear the region before
-+	 * handing over to userspace.
-+	 */
-+	memaddr = memremap(egm_dev->egmphys, egm_dev->egmlength, MEMREMAP_WB);
-+	if (!memaddr) {
-+		atomic_dec(&egm_chardev->open_count);
-+		return -ENOMEM;
-+	}
-+
-+	/*
-+	 * Clear in chunks of 1G to avoid CPU lockup logs.
-+	 */
-+	{
-+		size_t remaining = egm_dev->egmlength;
-+		u8 *chunk_addr = (u8 *)memaddr;
-+		size_t chunk_size;
-+
-+		while (remaining > 0) {
-+			chunk_size = min(remaining, SZ_1G);
-+			memset(chunk_addr, 0, chunk_size);
-+			cond_resched();
-+			chunk_addr += chunk_size;
-+			remaining -= chunk_size;
-+		}
-+	}
-+
-+	memunmap(memaddr);
- 
- 	file->private_data = egm_chardev;
- 
-@@ -38,8 +75,13 @@ static int nvgrace_egm_open(struct inode *inode, struct file *file)
- 
- static int nvgrace_egm_release(struct inode *inode, struct file *file)
- {
-+	struct chardev *egm_chardev =
-+		container_of(inode->i_cdev, struct chardev, cdev);
-+
- 	file->private_data = NULL;
- 
-+	atomic_dec(&egm_chardev->open_count);
++	xa_store(&egm_chardevs, egm_dev->egmpxm, egm_chardev, GFP_KERNEL);
 +
  	return 0;
  }
  
-@@ -108,6 +150,7 @@ setup_egm_chardev(struct nvgrace_egm_dev *egm_dev)
- 	egm_chardev->device.parent = &egm_dev->aux_dev.dev;
- 	cdev_init(&egm_chardev->cdev, &file_ops);
- 	egm_chardev->cdev.owner = THIS_MODULE;
-+	atomic_set(&egm_chardev->open_count, 0);
+ static void egm_driver_remove(struct auxiliary_device *aux_dev)
+ {
++	struct nvgrace_egm_dev *egm_dev =
++		container_of(aux_dev, struct nvgrace_egm_dev, aux_dev);
++	struct chardev *egm_chardev = xa_erase(&egm_chardevs, egm_dev->egmpxm);
++
++	if (!egm_chardev)
++		return;
++
++	del_egm_chardev(egm_chardev);
+ }
  
- 	ret = dev_set_name(&egm_chardev->device, "egm%lld", egm_dev->egmpxm);
- 	if (ret)
+ static const struct auxiliary_device_id egm_id_table[] = {
 -- 
 2.34.1
 
