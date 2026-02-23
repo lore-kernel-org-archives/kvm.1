@@ -1,153 +1,225 @@
-Received: from mail-pj1-f73.google.com (mail-pj1-f73.google.com [209.85.216.73])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD9D034CFA8
-	for <kvm@vger.kernel.org>; Mon, 23 Feb 2026 07:05:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.73
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE7B534D907
+	for <kvm@vger.kernel.org>; Mon, 23 Feb 2026 08:55:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771830310; cv=none; b=mdfi/mbuwjSws+rKfiTdHBQlg2wV+G1C0j8apf9XzYgIKSNgl4MVaC0al1EeLY5hEJDPkNjg6dwlhkzWm9Sk3ZrJeIJVz1Wj+dnMQj4QTt49WDmImK8nS7vDvHTDIwe+zFR1f3L4Fa9FrdRXdBTDRP6y6mnOeasTeIeO3IXK+cY=
+	t=1771836954; cv=none; b=NUN4HclgqVTKPrFtGJLc87Q3hC5QEW63OW+9uW8hMpLCs9TUKU9mtWJlPjctAsVZ9j5mfwSQgRCyRLN++JHSfViyl6xRvhuw/q/KqXFSS1APDSNq2xBkdo51WnaA9XEe2pDmcDsbMTLD5CbWsplL2+1ZoWWSqWqvUkpB2+Jya0w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771830310; c=relaxed/simple;
-	bh=ea4iA5nlwgN+CFTzjyIou+eBChaZJ3B2VNlr77gxrsY=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=PQsYoXuzK76EWoIJqBEoCQSykBm3oorVnUAdp+xYanzkcjZYejwmZ9J1AGEwsNqDx0GA9mF9eNIqCYZT4OoAZrDdOM6OStop0n1+ZL6VygFq8Qtxo+5LpDKqQ8z9MO1AOF3sf1QouDf+S1aKeF2khq9zlDSevXQBp12SqRK8hvs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--ackerleytng.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=je3w3GSQ; arc=none smtp.client-ip=209.85.216.73
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--ackerleytng.bounces.google.com
+	s=arc-20240116; t=1771836954; c=relaxed/simple;
+	bh=KYFlfC8sXrxlylue5TpXssTcOuehH7BERDSDVQq92dw=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=fx22c/f0dEuXiH9pTQJQIac68XlIc8XmRsGyUacTs9At94z6reZM7oyK3fn+gmdxS8Y7PsNdzDIK7AJvuJmLsqCbEM8SiDQLxMPf5by4cxIG0KM575EP8y/KIpyqYqTUHvqdEsR7I8L7juqagQsB/7pnYY5GHxCPnF47cawybvI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=SvQWh2Uy; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=WqJTvPst; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="je3w3GSQ"
-Received: by mail-pj1-f73.google.com with SMTP id 98e67ed59e1d1-35464d7c539so3848233a91.0
-        for <kvm@vger.kernel.org>; Sun, 22 Feb 2026 23:05:04 -0800 (PST)
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="SvQWh2Uy";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="WqJTvPst"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1771836952;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=HlfPtuoIVP7zNl5EzRr0slKeeyrKnAzFG3uyLdGjiYo=;
+	b=SvQWh2UywOtaOIy6cITrTLU3BgR/hH+taokJGWPvzJiSx29F+WLHpjFzv8WNDVKcczf8Bd
+	7oTh59r3QmTzG5GQlCHAL7bG9KGh1eoih5Wo6CP/MIw1Z5eIKgNsopB5mijfSY0WVFOGre
+	hJg6lTDrmLkFjndygkwDOTLCOA8rzbE=
+Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
+ [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-167-GgTTJniqOj2sOsfpjTvpaw-1; Mon, 23 Feb 2026 03:55:50 -0500
+X-MC-Unique: GgTTJniqOj2sOsfpjTvpaw-1
+X-Mimecast-MFC-AGG-ID: GgTTJniqOj2sOsfpjTvpaw_1771836949
+Received: by mail-wm1-f70.google.com with SMTP id 5b1f17b1804b1-4836cc0b38eso42120475e9.2
+        for <kvm@vger.kernel.org>; Mon, 23 Feb 2026 00:55:49 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1771830304; x=1772435104; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=29bxp0SrERjlT2nttg/iVluHBRhM/KYKZg8jrRhN0Y0=;
-        b=je3w3GSQoCU+0acbqtQWtBrzOqtRPaSjXu1hWW8XIk9qkdODHGWfe0WpZOjhsYHAL+
-         k5ahNSwIOQrm+lJH/nmA7bOEjtYYLuLluijZd2Yr0jmd1l1j3kxNAjKqab2Z1123jjY+
-         wA/n52FEfu/geyjv+Tr1Bm9H5gYf2bjqMWgs9ZU0MU+2144dIJECaBvgp4duskBby2bE
-         QzCZq4SVgq3fusFu1Fpov0//XzkVqNjBQbJgJjYX2DvefE4DC/lPJeoy0HcNWVNi3kje
-         +T3KHXxZprkzY62UH3EboFg2CpXshkaYsaYQU+BKSjrm/OYmy0hZxXbL40lZ/4wEW9Pt
-         khOw==
+        d=redhat.com; s=google; t=1771836949; x=1772441749; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:references
+         :in-reply-to:subject:cc:to:from:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=HlfPtuoIVP7zNl5EzRr0slKeeyrKnAzFG3uyLdGjiYo=;
+        b=WqJTvPstOAsmsURzTxsrFNVrNCNCpBQBE5tOnt+IiRfJt2MuadzlrQPYFsg5ZpurSB
+         9dr/AWY3OsptDDVj0o9VLmxBpZwNHO43S7xP1BSK1nr5Kt65CVg4Df3CCbQN1/+iR5RY
+         2eYkgsmSGT9tfYjarHB/SM4G+sZgPxNT6DzJ0GBi7BZX6KZ3NHoaMPgM+3MCHRuCY0c2
+         83GPd1+Bbp+7JhwKrcT44CB4ZUyjf6yd1OdGSJLzBm38NI/2GrRdGYMNZx9icswf3K2G
+         WlmGQA4x7dKPyOocR41Nb/wLf8VrNLkHFG42/KgQtt/2MQtvRK1e9EjDdv5x/y6Z0W/X
+         vkdA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1771830304; x=1772435104;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=29bxp0SrERjlT2nttg/iVluHBRhM/KYKZg8jrRhN0Y0=;
-        b=YpbD6yq8oQdMmn3Te5sGYg5BsJdWtudhp9jqStFyostRYaac6hb38RXPOB9H8zUNWf
-         XlsTQoDaecYI9Ic4Fm84Id2cBGhiJCf7N8yGt3vjNERi9XoGMUsxF4gEDiGNCbBrzwkf
-         8bY7ctodSb+dJ+9Dk4onyO45PuqDno7ucQZ1fkJeX7QYIzvJe5wenDXBpKdW0MTQ/cbc
-         +l0RdmBPgrPMnMzZUCNRFPhIoZi5qZDqNybJhW3VPn+65pGw7o46nade8AMdEa2fa0p8
-         3bNZwZker3+aRembJbEq3P4eu0Ky40uyIikVZ25lcN61yWdt3W3NI2NSR+JRE+JwtPeo
-         TGAw==
-X-Forwarded-Encrypted: i=1; AJvYcCVcI7bVhTkCZVLCg8S+g4AoDjQmJfZtB66HuCXjjCHkVIIrNchiB2vjy5v4eWqG6EHaIgA=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwRhpSdXfDah6d1hvsfWk7fe6nBpvBKgqMVRofVqEg/qvRqOGcY
-	ZD0Cxil6etcp1m0a2h5COH9nDBltNNa7iN9EkwTtGUqbwnAsIagFCBQy/sZZyMcwwOEDJywLmvm
-	ffnkwyM5mIhC39JRF1tRV+PRPZA==
-X-Received: from pjbtb14.prod.google.com ([2002:a17:90b:53ce:b0:353:3526:238b])
- (user=ackerleytng job=prod-delivery.src-stubby-dispatcher) by
- 2002:a17:90b:2b8c:b0:356:2c7b:c010 with SMTP id 98e67ed59e1d1-358ae812409mr8015127a91.11.1771830303714;
- Sun, 22 Feb 2026 23:05:03 -0800 (PST)
-Date: Mon, 23 Feb 2026 07:04:42 +0000
-In-Reply-To: <cover.1771826352.git.ackerleytng@google.com>
+        d=1e100.net; s=20230601; t=1771836949; x=1772441749;
+        h=content-transfer-encoding:mime-version:message-id:date:references
+         :in-reply-to:subject:cc:to:from:x-gm-gg:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=HlfPtuoIVP7zNl5EzRr0slKeeyrKnAzFG3uyLdGjiYo=;
+        b=VC124i2dI4JzNnJ7wbhweDLNtU3TSbzorF84fGilm4SMDBW0xKgVrjdHqMm2Oww3JU
+         70GRnqu4k7WiWTM6QffcadChf8bcBFfNXRUvulmyu/nJq/e6Zav4w6M/r1hkRrreM2Mz
+         JB55U+nYryMLy5IjHuAxFw9cchIZU+DkfrNZayRilP346221tP3G5vvYJabSN4xI1VN6
+         N9yiaogzR++2BH92IoTiHM1PSG1zWxtei9MM2tHjJ/e04VWIUU3yRHUEPzlWUREub2HM
+         QasBme32KpVnqn+mr4J7p+yaMprsTCxvIV+haLVjRRi3XLR4yiFanfJ+OcSqLryV94Hf
+         Xa/Q==
+X-Gm-Message-State: AOJu0YzmhYIJ8kITeZPbkcszvBoSnSSH8n/Nxwdc5w7sJQJmUqrBtjDz
+	Pn45YiQkNowErR1235MYd5hqpSDByDJheEStuBRw01VJoa7Mx58YykFxPncsCn7jkHqjW0LeWT8
+	EG8ICnIf7WNaY6JhOpQQa0ppE3w/v4WGNYY8MSulMcF5V4LbBkJEptg==
+X-Gm-Gg: AZuq6aJ8BYZB9G+Ux4lC/ejfjGUBJr39ciZC0I8Tv2R02lvYdLY36mQa2xyzV0mfZbW
+	mdmQ6Fgy8jMLZqFnyxeyncuCq93C16WIMZi6kbv2miCZP4wrWxNFeOCuC5tfjE/bzRy77htUVdX
+	myG/xhSqyH7+a/BaxPbEQYgekaMgRbNKBlXVBH1HGnUSH34L65G5YwNfsNm1iWTXz/gPc+IiBk6
+	SqDrXuli9r12BpVrm8oDR5Uod7FczOlSirTxJPg6I6SXtHr4oG7XEHmUXi361h8BX2a358RkOIZ
+	gHfvem1a4lTBN5FUkr7CKsQ6XKe8Y7oBhezZNIlPJ4WFodyBZ1K4OwreyPFJzMjngGai/PQszGJ
+	sLf31v7o8MoRZ4ZzGxw==
+X-Received: by 2002:a05:600c:5394:b0:483:6a8d:b2fc with SMTP id 5b1f17b1804b1-483a95b7162mr109762335e9.8.1771836948631;
+        Mon, 23 Feb 2026 00:55:48 -0800 (PST)
+X-Received: by 2002:a05:600c:5394:b0:483:6a8d:b2fc with SMTP id 5b1f17b1804b1-483a95b7162mr109762035e9.8.1771836948063;
+        Mon, 23 Feb 2026 00:55:48 -0800 (PST)
+Received: from fedora (g3.ign.cz. [91.219.240.17])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-483a4424106sm193187565e9.0.2026.02.23.00.55.47
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 23 Feb 2026 00:55:47 -0800 (PST)
+From: Vitaly Kuznetsov <vkuznets@redhat.com>
+To: Sean Christopherson <seanjc@google.com>, Manuel Andreas
+ <manuel.andreas@tum.de>
+Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org, Paolo Bonzini
+ <pbonzini@redhat.com>
+Subject: Re: [PATCH] x86/hyper-v: Validate entire GVA range for
+ non-canonical addresses during PV TLB flush
+In-Reply-To: <aZiYgTNHfM5Y_Mo7@google.com>
+References: <00a7a31b-573b-4d92-91f8-7d7e2f88ea48@tum.de>
+ <aZiYgTNHfM5Y_Mo7@google.com>
+Date: Mon, 23 Feb 2026 09:55:46 +0100
+Message-ID: <87pl5vu9d9.fsf@redhat.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <cover.1771826352.git.ackerleytng@google.com>
-X-Mailer: git-send-email 2.53.0.345.g96ddfc5eaa-goog
-Message-ID: <3525199b4a04f0054566abe90eb99cdd5b9939e4.1771826352.git.ackerleytng@google.com>
-Subject: [RFC PATCH v1 09/10] KVM: selftests: Wrap fstat() to assert success
-From: Ackerley Tng <ackerleytng@google.com>
-To: linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
-	linux-fsdevel@vger.kernel.org, kvm@vger.kernel.org, 
-	linux-kselftest@vger.kernel.org
-Cc: akpm@linux-foundation.org, david@kernel.org, lorenzo.stoakes@oracle.com, 
-	Liam.Howlett@oracle.com, vbabka@suse.cz, rppt@kernel.org, surenb@google.com, 
-	mhocko@suse.com, willy@infradead.org, pbonzini@redhat.com, shuah@kernel.org, 
-	ackerleytng@google.com, seanjc@google.com, shivankg@amd.com, 
-	rick.p.edgecombe@intel.com, yan.y.zhao@intel.com, rientjes@google.com, 
-	fvdl@google.com, jthoughton@google.com, vannapurve@google.com, 
-	pratyush@kernel.org, pasha.tatashin@soleen.com, kalyazin@amazon.com, 
-	tabba@google.com, michael.roth@amd.com
-Content-Type: text/plain; charset="UTF-8"
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-Extend kvm_syscalls.h to wrap fstat() to assert success. This will be used
-in the next patch.
+Sean Christopherson <seanjc@google.com> writes:
 
-Signed-off-by: Ackerley Tng <ackerleytng@google.com>
----
- tools/testing/selftests/kvm/guest_memfd_test.c    | 15 +++++----------
- .../testing/selftests/kvm/include/kvm_syscalls.h  |  2 ++
- 2 files changed, 7 insertions(+), 10 deletions(-)
+> +Vitaly and Paolo
+>
+> Please use scripts/get_maintainer.pl, otherwise your emails might not rea=
+ch the
+> right eyeballs.
+>
+> On Thu, Feb 19, 2026, Manuel Andreas wrote:
+>> In KVM guests with Hyper-V hypercalls enabled, the hypercalls
+>> HVCALL_FLUSH_VIRTUAL_ADDRESS_LIST and HVCALL_FLUSH_VIRTUAL_ADDRESS_LIST_=
+EX
+>> allow a guest to request invalidation of portions of a virtual TLB.
+>> For this, the hypercall parameter includes a list of GVAs that are suppo=
+sed
+>> to be invalidated.
+>>=20
+>> Currently, only the base GVA is checked to be canonical. In reality,
+>> this check needs to be performed for the entire range of GVAs.
+>> This still enables guests running on Intel hardware to trigger a
+>> WARN_ONCE in the host (see prior commit below).
+>>=20
+>> This patch simply moves the check for non-canonical addresses to be
+>> performed for every single GVA of the supplied range. This should also
+>> be more in line with the Hyper-V specification, since, although
+>> unlikely, a range starting with an invalid GVA may still contain
+>> GVAs that are valid.
+>>=20
+>> Fixes: fa787ac07b3c ("KVM: x86/hyper-v: Skip non-canonical addresses dur=
+ing PV TLB flush")
+>> Signed-off-by: Manuel Andreas <manuel.andreas@tum.de>
+>> ---
+>>  arch/x86/kvm/hyperv.c | 9 +++++----
+>>  1 file changed, 5 insertions(+), 4 deletions(-)
+>>=20
+>> diff --git a/arch/x86/kvm/hyperv.c b/arch/x86/kvm/hyperv.c
+>> index de92292eb1f5..f4f6accf1a33 100644
+>> --- a/arch/x86/kvm/hyperv.c
+>> +++ b/arch/x86/kvm/hyperv.c
+>> @@ -1981,16 +1981,17 @@ int kvm_hv_vcpu_flush_tlb(struct kvm_vcpu *vcpu)
+>>  		if (entries[i] =3D=3D KVM_HV_TLB_FLUSHALL_ENTRY)
+>>  			goto out_flush_all;
+>>=20=20
+>> -		if (is_noncanonical_invlpg_address(entries[i], vcpu))
+>> -			continue;
+>> -
+>>  		/*
+>>  		 * Lower 12 bits of 'address' encode the number of additional
+>>  		 * pages to flush.
+>>  		 */
+>>  		gva =3D entries[i] & PAGE_MASK;
+>> -		for (j =3D 0; j < (entries[i] & ~PAGE_MASK) + 1; j++)
+>> +		for (j =3D 0; j < (entries[i] & ~PAGE_MASK) + 1; j++) {
+>> +			if (is_noncanonical_invlpg_address(gva + j * PAGE_SIZE, vcpu))
+>> +				continue;
+>> +
+>>  			kvm_x86_call(flush_tlb_gva)(vcpu, gva + j * PAGE_SIZE);
+>> +		}
+>
+> Vitaly, can we treat the entire request as garbage and throw it away if a=
+ny part
+> isn't valid?  Or do you think we should go with the more conservative app=
+roach
+> as above?
 
-diff --git a/tools/testing/selftests/kvm/guest_memfd_test.c b/tools/testing/selftests/kvm/guest_memfd_test.c
-index 618c937f3c90f..81387f06e770a 100644
---- a/tools/testing/selftests/kvm/guest_memfd_test.c
-+++ b/tools/testing/selftests/kvm/guest_memfd_test.c
-@@ -212,10 +212,8 @@ static void test_mmap_not_supported(int fd, size_t total_size)
- static void test_file_size(int fd, size_t total_size)
- {
- 	struct stat sb;
--	int ret;
- 
--	ret = fstat(fd, &sb);
--	TEST_ASSERT(!ret, "fstat should succeed");
-+	kvm_fstat(fd, &sb);
- 	TEST_ASSERT_EQ(sb.st_size, total_size);
- 	TEST_ASSERT_EQ(sb.st_blksize, page_size);
- }
-@@ -303,25 +301,22 @@ static void test_create_guest_memfd_invalid_sizes(struct kvm_vm *vm,
- 
- static void test_create_guest_memfd_multiple(struct kvm_vm *vm)
- {
--	int fd1, fd2, ret;
-+	int fd1, fd2;
- 	struct stat st1, st2;
- 
- 	fd1 = __vm_create_guest_memfd(vm, page_size, 0);
- 	TEST_ASSERT(fd1 != -1, "memfd creation should succeed");
- 
--	ret = fstat(fd1, &st1);
--	TEST_ASSERT(ret != -1, "memfd fstat should succeed");
-+	kvm_fstat(fd1, &st1);
- 	TEST_ASSERT(st1.st_size == page_size, "memfd st_size should match requested size");
- 
- 	fd2 = __vm_create_guest_memfd(vm, page_size * 2, 0);
- 	TEST_ASSERT(fd2 != -1, "memfd creation should succeed");
- 
--	ret = fstat(fd2, &st2);
--	TEST_ASSERT(ret != -1, "memfd fstat should succeed");
-+	kvm_fstat(fd2, &st2);
- 	TEST_ASSERT(st2.st_size == page_size * 2, "second memfd st_size should match requested size");
- 
--	ret = fstat(fd1, &st1);
--	TEST_ASSERT(ret != -1, "memfd fstat should succeed");
-+	kvm_fstat(fd1, &st1);
- 	TEST_ASSERT(st1.st_size == page_size, "first memfd st_size should still match requested size");
- 	TEST_ASSERT(st1.st_ino != st2.st_ino, "different memfd should have different inode numbers");
- 
-diff --git a/tools/testing/selftests/kvm/include/kvm_syscalls.h b/tools/testing/selftests/kvm/include/kvm_syscalls.h
-index d4e613162bba9..3f039c34e12e0 100644
---- a/tools/testing/selftests/kvm/include/kvm_syscalls.h
-+++ b/tools/testing/selftests/kvm/include/kvm_syscalls.h
-@@ -2,6 +2,7 @@
- #ifndef SELFTEST_KVM_SYSCALLS_H
- #define SELFTEST_KVM_SYSCALLS_H
- 
-+#include <sys/stat.h>
- #include <sys/syscall.h>
- 
- #define MAP_ARGS0(m,...)
-@@ -77,5 +78,6 @@ __KVM_SYSCALL_DEFINE(munmap, 2, void *, mem, size_t, size);
- __KVM_SYSCALL_DEFINE(close, 1, int, fd);
- __KVM_SYSCALL_DEFINE(fallocate, 4, int, fd, int, mode, loff_t, offset, loff_t, len);
- __KVM_SYSCALL_DEFINE(ftruncate, 2, unsigned int, fd, off_t, length);
-+__KVM_SYSCALL_DEFINE(fstat, 2, int, fd, struct stat *, buf);
- 
- #endif /* SELFTEST_KVM_SYSCALLS_H */
--- 
-2.53.0.345.g96ddfc5eaa-goog
+I don't remember if I have ever seen real Windows trying to flush
+anything non-canonical at all but my gut feeling tells me we should
+rather play safe and use Manuel's 'conservative' approach. Also, this
+should be consistent with TLFS which says:
+
+"Invalid GVAs (those that specify addresses beyond the end of the
+partition=E2=80=99s GVA space) are ignored."
+
+i.e. it doesn't say 'Invalid GVA RANGES are ignored'.
+
+>
+> diff --git a/arch/x86/kvm/hyperv.c b/arch/x86/kvm/hyperv.c
+> index de92292eb1f5..f568f3d4f6e5 100644
+> --- a/arch/x86/kvm/hyperv.c
+> +++ b/arch/x86/kvm/hyperv.c
+> @@ -1967,8 +1967,8 @@ int kvm_hv_vcpu_flush_tlb(struct kvm_vcpu *vcpu)
+>         struct kvm_vcpu_hv_tlb_flush_fifo *tlb_flush_fifo;
+>         struct kvm_vcpu_hv *hv_vcpu =3D to_hv_vcpu(vcpu);
+>         u64 entries[KVM_HV_TLB_FLUSH_FIFO_SIZE];
+> +       gva_t gva, extra_pages;
+>         int i, j, count;
+> -       gva_t gva;
+>=20=20
+>         if (!tdp_enabled || !hv_vcpu)
+>                 return -EINVAL;
+> @@ -1978,18 +1978,22 @@ int kvm_hv_vcpu_flush_tlb(struct kvm_vcpu *vcpu)
+>         count =3D kfifo_out(&tlb_flush_fifo->entries, entries, KVM_HV_TLB=
+_FLUSH_FIFO_SIZE);
+>=20=20
+>         for (i =3D 0; i < count; i++) {
+> +
+>                 if (entries[i] =3D=3D KVM_HV_TLB_FLUSHALL_ENTRY)
+>                         goto out_flush_all;
+>=20=20
+> -               if (is_noncanonical_invlpg_address(entries[i], vcpu))
+> -                       continue;
+> -
+>                 /*
+>                  * Lower 12 bits of 'address' encode the number of additi=
+onal
+>                  * pages to flush.
+>                  */
+>                 gva =3D entries[i] & PAGE_MASK;
+> -               for (j =3D 0; j < (entries[i] & ~PAGE_MASK) + 1; j++)
+> +               extra_pages =3D (entries[i] & ~PAGE_MASK);
+> +
+> +               if (is_noncanonical_invlpg_address(gva, vcpu) ||
+> +                   is_noncanonical_invlpg_address(gva + extra_pages * PA=
+GE_SIZE))
+> +                       continue;
+> +
+> +               for (j =3D 0; j < extra_pages + 1; j++)
+>                         kvm_x86_call(flush_tlb_gva)(vcpu, gva + j * PAGE_=
+SIZE);
+>=20=20
+>                 ++vcpu->stat.tlb_flush;
+>
+
+--=20
+Vitaly
 
