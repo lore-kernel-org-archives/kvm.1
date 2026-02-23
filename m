@@ -1,42 +1,47 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B4D8F30FC29;
-	Mon, 23 Feb 2026 16:00:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A044B313E01;
+	Mon, 23 Feb 2026 16:31:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771862436; cv=none; b=ZVp05lp3GwYCkiccxXzgMqKA6+VUimE7pz0oQSkuX1H6Vqa2yP9746zzru28dPekUN561LgyKYeCkBGWKRNpHJbzyMkks6y8LJle0s8I/1ed0MgB908GvX3a9XjRzlaNh2Sdc4C4Ys4jKJq2MAgywr7S7tq7mjv8EVWMdCWc3aw=
+	t=1771864279; cv=none; b=DXkQyHMjlkJPDol3iveC5DxKaldO25gyncrX7/XdGF6CRTPiWSm+yj/73Jk+MFnVQndbZQP5IXZMuHFms3xlbHwl/VNHdL/pekv0yKGDrFd6wTl0jqVyN00L5Jv+VEVeGTcATsr2lBJ3nWfZVfysWIddiW8edXN2GAOs5+FkTE0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771862436; c=relaxed/simple;
-	bh=UKIhO7k7VLQSgpTXiMxkaWE6pX9f9Kduyb6QirGAR1I=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=m3tZEtflAxSyKvxR7TaqOJL2YLAGlFYOXRVWUkQwLvtkl0IAb7EKc7h+OmqhpvijxnEn/F/FTn/LS4RDG0zJp8bgC43lXca79hdfLZmkV3OFMsw7wR85nFTxTTnroCismpixpFYjVrQRGtpSoRFQhaf8GuvlMauhdlY1mK0FHG0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FsZdLBDj; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1771864279; c=relaxed/simple;
+	bh=uuaG1+35nzjKYKeAcl5WM3Rz2Y1FHB1m2vHOyxf+ISs=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=UhzMTPbq4PqG0NyxK5ZIM1jRguFWih2hTOyJ7b8A7stc7nnXnQ4/eRLJayRxo8SQTyu5RXZMYgHuiT7/DH6GnKZ8nX+Sd2CGeXiuVa8xGShYnF8rYvqG2HW7MbIHhvq0xXC8HNs3Gs7PjhB1eW0od+aSGgVczVkOPXsiulKZm1M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=b99W0qSZ; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FsZdLBDj"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1D452C2BC87;
-	Mon, 23 Feb 2026 16:00:36 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="b99W0qSZ"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 38A74C116C6;
+	Mon, 23 Feb 2026 16:31:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1771862436;
-	bh=UKIhO7k7VLQSgpTXiMxkaWE6pX9f9Kduyb6QirGAR1I=;
+	s=k20201202; t=1771864279;
+	bh=uuaG1+35nzjKYKeAcl5WM3Rz2Y1FHB1m2vHOyxf+ISs=;
 	h=From:To:Cc:Subject:Date:From;
-	b=FsZdLBDjEJUxdXZcm5UP08dJ3SCq5dXZBKUUZfLIOTe/JTGDZbuNoSm2tnZ1VCJLe
-	 KAAbD7RxD5LRWKE1lWRYrUZSWYsanD+BTRIVmIuBElt3CoimYKrru+3xAMdTRm6kTM
-	 DwWpruTckuDudPpDWaw0H8ElsivatrsVQ8/y3RcwNJNL9VnQFepsUVcZitWTIbcSOp
-	 sviYiGz/sxtq7amVM6yEa/2KH1N5N7yOpunOp+cs9oKCtX3SoHeETt1m+MjapijHqL
-	 0HpLpPj4dYlwogCnmaZ0cwCjjwz9KueQVdbsAlZ9DvBVXv+AD0kVp0sP5Vya2FwDEi
-	 VCmQiKjHmok+g==
-From: Yosry Ahmed <yosry@kernel.org>
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: Johannes Weiner <hannes@cmpxchg.org>,
-	Nhat Pham <nphamcs@gmail.com>,
-	linux-mm@kvack.org,
-	kvm@vger.kernel.org,
+	b=b99W0qSZjSHcF7gPMKTJtPLuZ/DxMbs3zKjGpzHr8sQMLAal8d22Ue1YgHeyrp6cF
+	 +CSJzjtSLIkyQYmBJ0NpGUZPzUmuly5fKelK6ak6FFF7snTiYtpycDeYHYtMrkvAnX
+	 5bVKBQbXOjYhvKBXmYvd5MlwAlybbOcLvap2qzdUXfMzrWRuqePjEnu7POm5/Y1pQY
+	 890BLaSqRXrR49tVgpTndiL3yMFDOc7e5v6InL/FGWxd53eZeT1ap62cOCNgzoqveR
+	 DNFBbyqqSwRxmfqxfi2clypo7Z+PHUhy4o+KJT9rHq4ItK7LaTMJFD3wkt+wuL99uS
+	 SDEL5CgjJcKUQ==
+From: Tycho Andersen <tycho@kernel.org>
+To: Ashish Kalra <ashish.kalra@amd.com>,
+	Tom Lendacky <thomas.lendacky@amd.com>,
+	John Allen <john.allen@amd.com>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
+	Sean Christopherson <seanjc@google.com>,
+	Paolo Bonzini <pbonzini@redhat.com>,
+	Shuah Khan <shuah@kernel.org>,
+	"David S. Miller" <davem@davemloft.net>
+Cc: linux-crypto@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
-	Yosry Ahmed <yosry@kernel.org>
-Subject: [PATCH] MAINTAINERS: Update Yosry Ahmed's email address
-Date: Mon, 23 Feb 2026 16:00:26 +0000
-Message-ID: <20260223160027.122307-1-yosry@kernel.org>
-X-Mailer: git-send-email 2.53.0.345.g96ddfc5eaa-goog
+	kvm@vger.kernel.org,
+	linux-kselftest@vger.kernel.org
+Subject: [PATCH 0/4] Allow setting RAPL_DIS during SNP_INIT_EX
+Date: Mon, 23 Feb 2026 09:28:56 -0700
+Message-ID: <20260223162900.772669-1-tycho@kernel.org>
+X-Mailer: git-send-email 2.53.0
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -45,41 +50,29 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Use my kernel.org email address.
+From: "Tycho Andersen (AMD)" <tycho@kernel.org>
 
-Signed-off-by: Yosry Ahmed <yosry@kernel.org>
----
- .mailmap    | 3 ++-
- MAINTAINERS | 2 +-
- 2 files changed, 3 insertions(+), 2 deletions(-)
+There was support for setting the policy bit, but not the flag during
+SNP_INIT_EX, which meant VM creation would always fail. Plumb a module
+parameter for setting the flag during SNP_INIT_EX.
 
-diff --git a/.mailmap b/.mailmap
-index e1cf6bb85d333..15b7a064b0bb6 100644
---- a/.mailmap
-+++ b/.mailmap
-@@ -890,7 +890,8 @@ Yanteng Si <si.yanteng@linux.dev> <siyanteng@loongson.cn>
- Ying Huang <huang.ying.caritas@gmail.com> <ying.huang@intel.com>
- Yixun Lan <dlan@kernel.org> <dlan@gentoo.org>
- Yixun Lan <dlan@kernel.org> <yixun.lan@amlogic.com>
--Yosry Ahmed <yosry.ahmed@linux.dev> <yosryahmed@google.com>
-+Yosry Ahmed <yosry@kernel.org> <yosryahmed@google.com>
-+Yosry Ahmed <yosry@kernel.org> <yosry.ahmed@linux.dev>
- Yu-Chun Lin <eleanor.lin@realtek.com> <eleanor15x@gmail.com>
- Yusuke Goda <goda.yusuke@renesas.com>
- Zack Rusin <zack.rusin@broadcom.com> <zackr@vmware.com>
-diff --git a/MAINTAINERS b/MAINTAINERS
-index b8d8a5c415976..58e0684cd757e 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -29185,7 +29185,7 @@ K:	zstd
- 
- ZSWAP COMPRESSED SWAP CACHING
- M:	Johannes Weiner <hannes@cmpxchg.org>
--M:	Yosry Ahmed <yosry.ahmed@linux.dev>
-+M:	Yosry Ahmed <yosry@kernel.org>
- M:	Nhat Pham <nphamcs@gmail.com>
- R:	Chengming Zhou <chengming.zhou@linux.dev>
- L:	linux-mm@kvack.org
+Also clean up some selftests and add a smoke test for RAPL_DISABLE
+when the module parameter is set appropriately.
+
+Tycho Andersen (AMD) (4):
+  selftests/kvm: allow retrieving underlying SEV firmware error
+  selftests/kvm: check that SEV-ES VMs are allowed in SEV-SNP mode
+  crypto/ccp: support setting RAPL_DIS in SNP_INIT_EX
+  selftests/kvm: smoke test support for RAPL_DIS
+
+ drivers/crypto/ccp/sev-dev.c                  | 14 +++++
+ tools/testing/selftests/kvm/include/x86/sev.h |  7 ++-
+ .../selftests/kvm/x86/sev_migrate_tests.c     |  2 +-
+ .../selftests/kvm/x86/sev_smoke_test.c        | 61 ++++++++++++++++++-
+ 4 files changed, 79 insertions(+), 5 deletions(-)
+
+
+base-commit: 6de23f81a5e08be8fbf5e8d7e9febc72a5b5f27f
 -- 
-2.53.0.345.g96ddfc5eaa-goog
+2.53.0
 
