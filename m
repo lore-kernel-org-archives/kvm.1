@@ -1,119 +1,159 @@
-Received: from 013.lax.mailroute.net (013.lax.mailroute.net [199.89.1.16])
+Received: from mail.zytor.com (terminus.zytor.com [198.137.202.136])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0843037998F;
-	Mon, 23 Feb 2026 21:51:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=199.89.1.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 035243793DC;
+	Mon, 23 Feb 2026 21:51:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.137.202.136
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771883501; cv=none; b=dJIRu1lX/PrJ76YXi8rMlJhiOU65l8Zqj275RuXGX5LZm8vebggpv8feZ0V7fBGQ+/RF2yy2rSESYB0a+YSGmK2uY0RxTSvuhdH7mpTDIFhfLsTDk3OquTGHtMp+lg7MlYLdlGEcMRTrWvCdvJxqeisKUPw2c5paOMCZHBlToo4=
+	t=1771883513; cv=none; b=s96ZxnYSRLGfN4ZKuK4P1IORYpI8IftW3OgYK7tYrxlkFzmDgQOE5+c4YSel/Eg3YS71GPU4uHHim52RCdw02mh1/u+D/Rzp2emPeIzVJ4a4uevDtvgp6jAiXChGD3At2EXQoxp0FADDxQ1cuOblnQWCOU/kgXjSFSijkDtCVTc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771883501; c=relaxed/simple;
-	bh=QYCXc/vB9DxQdb00BuJBNc58h9ZeSHNFRJ42Bx4WGCI=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mQNnNH3Tn7FrsZwC458lJsFSffAQhTxX/6//gx0UYv9bhXTJfHjK21sO8db7r7/0hpmC/W5llZEIV64eQFDXxM6g3IioyE/HdFvM0rN/FohgYU9Z3hDQFYNNdMoqx7nrEFltWF4IQJrpyYK1kbw9jAl+rSvPtYC3kyDwueA3u0M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=acm.org; spf=pass smtp.mailfrom=acm.org; dkim=pass (2048-bit key) header.d=acm.org header.i=@acm.org header.b=Op12PJ/c; arc=none smtp.client-ip=199.89.1.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=acm.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=acm.org
+	s=arc-20240116; t=1771883513; c=relaxed/simple;
+	bh=WKnPEDwDIfx+k5AfNNeAwDt7AQEjK30PPk/wAUXfwj8=;
+	h=Date:From:To:CC:Subject:In-Reply-To:References:Message-ID:
+	 MIME-Version:Content-Type; b=VxdNr8DNKS6ch3FYfCwZ+Z9wODuHvndefGV99L0ATMahzNh8i5ZcrfOE8D/xJzJkqLtj2H9llYWQ4VbqdQrIBmQh0PxhHdJcpwdVGlXQgDFXH1HqmRoEpvpMhrnnrvVCBUxwkEXNRKUMtZXp1EaHEswqfIprGvYLaivnAj05yms=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zytor.com; spf=pass smtp.mailfrom=zytor.com; dkim=pass (2048-bit key) header.d=zytor.com header.i=@zytor.com header.b=gm79Vk5c; arc=none smtp.client-ip=198.137.202.136
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zytor.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=zytor.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=acm.org header.i=@acm.org header.b="Op12PJ/c"
-Received: from localhost (localhost [127.0.0.1])
-	by 013.lax.mailroute.net (Postfix) with ESMTP id 4fKZLg5m91zlfddf;
-	Mon, 23 Feb 2026 21:51:39 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=acm.org; h=
-	content-transfer-encoding:mime-version:references:in-reply-to
-	:x-mailer:message-id:date:date:subject:subject:from:from
-	:received:received; s=mr01; t=1771883496; x=1774475497; bh=//njW
-	9JPPBtas9P8/yhoGtlWZGfoIZrsR3E99SonYGE=; b=Op12PJ/ckHIuaNT5xF7V+
-	paJphTNY4DXImgNT5ekQ8dSz/I6KzXYIlzUceskeO+GKX8UYAy6a9vqSaGLDOzux
-	WGGDAO8UyJK+pKrMlY8LIdcpjaBS3+emK8H0NV80ka7vpcYzIDweGMkW8rDwGRjd
-	hwMV5sjOrrktfCKHGPBvz4HVpbsFJZPAnv1BrWmyOHKJk0jzdB4rIrsswSew+06T
-	zUuvTAToprMtfsWH4lcH32+iGPDG37FjOwoe1mssTkFTWFQQ7dXKXwCeiksJ+kUW
-	SJqh1c4KNcL04/XlOWHb8X9X3iYwbbDjgRdNfCDcRiUPTjGkYheKFOug5fQVVCn7
-	A==
-X-Virus-Scanned: by MailRoute
-Received: from 013.lax.mailroute.net ([127.0.0.1])
- by localhost (013.lax [127.0.0.1]) (mroute_mailscanner, port 10029) with LMTP
- id 6v5hPw-TNd1z; Mon, 23 Feb 2026 21:51:36 +0000 (UTC)
-Received: from bvanassche.mtv.corp.google.com (unknown [104.135.180.219])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	(Authenticated sender: bvanassche@acm.org)
-	by 013.lax.mailroute.net (Postfix) with ESMTPSA id 4fKZLX4nHnzlfgQH;
-	Mon, 23 Feb 2026 21:51:32 +0000 (UTC)
-From: Bart Van Assche <bvanassche@acm.org>
-To: Peter Zijlstra <peterz@infradead.org>
-Cc: Ingo Molnar <mingo@redhat.com>,
-	Will Deacon <will@kernel.org>,
-	Boqun Feng <boqun@kernel.org>,
-	Waiman Long <longman@redhat.com>,
-	linux-kernel@vger.kernel.org,
-	Marco Elver <elver@google.com>,
-	Christoph Hellwig <hch@lst.de>,
-	Steven Rostedt <rostedt@goodmis.org>,
-	Nick Desaulniers <ndesaulniers@google.com>,
-	Nathan Chancellor <nathan@kernel.org>,
-	Kees Cook <kees@kernel.org>,
-	Jann Horn <jannh@google.com>,
-	Bart Van Assche <bvanassche@acm.org>,
-	Sean Christopherson <seanjc@google.com>,
-	Paolo Bonzini <pbonzini@redhat.com>,
-	kvm@vger.kernel.org
-Subject: [PATCH 01/62] kvm: Make pi_enable_wakeup_handler() easier to analyze
-Date: Mon, 23 Feb 2026 13:50:16 -0800
-Message-ID: <20260223215118.2154194-2-bvanassche@acm.org>
-X-Mailer: git-send-email 2.53.0.371.g1d285c8824-goog
-In-Reply-To: <20260223215118.2154194-1-bvanassche@acm.org>
-References: <20260223215118.2154194-1-bvanassche@acm.org>
+	dkim=pass (2048-bit key) header.d=zytor.com header.i=@zytor.com header.b="gm79Vk5c"
+Received: from ehlo.thunderbird.net (c-76-133-66-138.hsd1.ca.comcast.net [76.133.66.138])
+	(authenticated bits=0)
+	by mail.zytor.com (8.18.1/8.17.1) with ESMTPSA id 61NLYvH01544899
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NO);
+	Mon, 23 Feb 2026 13:34:57 -0800
+DKIM-Filter: OpenDKIM Filter v2.11.0 mail.zytor.com 61NLYvH01544899
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=zytor.com;
+	s=2026012301; t=1771882498;
+	bh=OaFmr3lJa5FSZUIHPiZLMbyOO2f/Re90qGLN732/lLY=;
+	h=Date:From:To:CC:Subject:In-Reply-To:References:From;
+	b=gm79Vk5cwr8hNbIiGsR3JzHXzJQGWJTEtYUA+hPYy6TkMmg7Mr1W2UizsTNuqVPzr
+	 YwcmONmbFNgNXkWq0pDAWWEZLPyG7x4xWO0eP19Lr3Jex99pdgsRU+Elo8HHHBPcDY
+	 fyKtu++A/UxVfX6Z55Jxpw0PHCP44DcmN+0auikXCRF8aJ6GnUYfYW3d/k5IVHU9oj
+	 BSZNEFhf7ntBhItORhDSYcI8iNzILj+RNyFJphbBSRQMrbJ267Z0MwmbzE/8Zqqusn
+	 B18floV2S7wSJFcL3w2xZOpwgm+14a7FZyYvNVs4S9UAKjM/g60ZeBugjQp4wht6Mp
+	 FSnHcqszWoNOA==
+Date: Mon, 23 Feb 2026 13:34:49 -0800
+From: "H. Peter Anvin" <hpa@zytor.com>
+To: Xin Li <xin@zytor.com>, Dave Hansen <dave.hansen@intel.com>
+CC: =?ISO-8859-1?Q?J=FCrgen_Gro=DF?= <jgross@suse.com>,
+        Sean Christopherson <seanjc@google.com>, linux-kernel@vger.kernel.org,
+        x86@kernel.org, kvm@vger.kernel.org, llvm@lists.linux.dev,
+        Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>,
+        Borislav Petkov <bp@alien8.de>,
+        Dave Hansen <dave.hansen@linux.intel.com>,
+        Paolo Bonzini <pbonzini@redhat.com>,
+        Nathan Chancellor <nathan@kernel.org>,
+        Nick Desaulniers <nick.desaulniers+lkml@gmail.com>,
+        Bill Wendling <morbo@google.com>,
+        Justin Stitt <justinstitt@google.com>
+Subject: =?US-ASCII?Q?Re=3A_=5BPATCH_v3_09/16=5D_x86/msr=3A_Use_t?=
+ =?US-ASCII?Q?he_alternatives_mechanism_for_WRMSR?=
+User-Agent: K-9 Mail for Android
+In-Reply-To: <14FE6A05-0864-4BD5-8331-0C2E6B8A28F8@zytor.com>
+References: <20260218082133.400602-1-jgross@suse.com> <20260218082133.400602-10-jgross@suse.com> <aZYoUE7CmrLg3SVe@google.com> <e05a65a7-bf8e-420b-8a36-2d76e56b43b0@intel.com> <d622a318-f7f8-4cff-b540-38d159ca87f4@suse.com> <437EC937-24B7-4E69-B369-F9FAFC46F1B1@zytor.com> <542ff5d7-1cff-4ef9-af48-f0378aa2a05c@intel.com> <14FE6A05-0864-4BD5-8331-0C2E6B8A28F8@zytor.com>
+Message-ID: <9BD31A13-A285-4C81-B590-5241C47D3F5C@zytor.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain;
+ charset=utf-8
 Content-Transfer-Encoding: quoted-printable
 
-The Clang thread-safety analyzer does not support comparing expressions
-that use per_cpu(). Hence introduce a new local variable to capture the
-address of a per-cpu spinlock. This patch prepares for enabling the
-Clang thread-safety analyzer.
+On February 23, 2026 9:56:28 AM PST, Xin Li <xin@zytor=2Ecom> wrote:
+>
+>>>> I _really_ thought this was discussed upfront by Xin before he sent o=
+ut his
+>>>> first version of the series=2E
+>>> I actually reached out to the Intel architects about this before I sta=
+rted
+>>> coding=2E Turns out, if the CPU supports WRMSRNS, you can use it acros=
+s the
+>>> board=2E  The hardware is smart enough to perform a serialized write w=
+henever
+>>> a non-serialized one isn't proper, so there=E2=80=99s no risk=2E
+>>=20
+>> Could we be a little more specific here, please?
+>
+>Sorry as I=E2=80=99m no longer with Intel, I don=E2=80=99t have access to=
+ those emails=2E
+>
+>Got to mention, also to reply to Sean=E2=80=99s challenge, as usual I did=
+n=E2=80=99t get
+>detailed explanation about how would hardware implement WRMSRNS,
+>except it falls back to do a serialized write when it=E2=80=99s not *prop=
+er*=2E
+>
+>
+>>=20
+>> If it was universally safe to s/WRMSR/WRMSRNS/, then there wouldn't hav=
+e
+>> been a need for WRMSRNS in the ISA=2E
+>>=20
+>> Even the WRMSRNS description in the SDM talks about some caveats with
+>> "performance-monitor events" MSRs=2E That sounds like it contradicts th=
+e
+>> idea that the "hardware is smart enough" universally to tolerate using
+>> WRMSRNS *EVERYWHERE*=2E
+>>=20
+>> It also says:
+>>=20
+>> Like WRMSR, WRMSRNS will ensure that all operations before it do
+>> not use the new MSR value and that all operations after the
+>> WRMSRNS do use the new value=2E
+>>=20
+>> Which is a handy guarantee for sure=2E But, it's far short of a fully
+>> serializing instruction=2E
+>
+>
 
-Cc: Sean Christopherson <seanjc@google.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>
-Cc: kvm@vger.kernel.org
-Signed-off-by: Bart Van Assche <bvanassche@acm.org>
----
- arch/x86/kvm/vmx/posted_intr.c | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+So to get a little bit of clarity here as to the architectural contract as=
+ opposed to the current implementations:
 
-diff --git a/arch/x86/kvm/vmx/posted_intr.c b/arch/x86/kvm/vmx/posted_int=
-r.c
-index 4a6d9a17da23..f8711b7b85a8 100644
---- a/arch/x86/kvm/vmx/posted_intr.c
-+++ b/arch/x86/kvm/vmx/posted_intr.c
-@@ -164,6 +164,7 @@ static void pi_enable_wakeup_handler(struct kvm_vcpu =
-*vcpu)
- 	struct pi_desc *pi_desc =3D vcpu_to_pi_desc(vcpu);
- 	struct vcpu_vt *vt =3D to_vt(vcpu);
- 	struct pi_desc old, new;
-+	raw_spinlock_t *wakeup_lock;
-=20
- 	lockdep_assert_irqs_disabled();
-=20
-@@ -179,11 +180,11 @@ static void pi_enable_wakeup_handler(struct kvm_vcp=
-u *vcpu)
- 	 * entirety of the sched_out critical section, i.e. the wakeup handler
- 	 * can't run while the scheduler locks are held.
- 	 */
--	raw_spin_lock_nested(&per_cpu(wakeup_vcpus_on_cpu_lock, vcpu->cpu),
--			     PI_LOCK_SCHED_OUT);
-+	wakeup_lock =3D &per_cpu(wakeup_vcpus_on_cpu_lock, vcpu->cpu);
-+	raw_spin_lock_nested(wakeup_lock, PI_LOCK_SCHED_OUT);
- 	list_add_tail(&vt->pi_wakeup_list,
- 		      &per_cpu(wakeup_vcpus_on_cpu, vcpu->cpu));
--	raw_spin_unlock(&per_cpu(wakeup_vcpus_on_cpu_lock, vcpu->cpu));
-+	raw_spin_unlock(wakeup_lock);
-=20
- 	WARN(pi_test_sn(pi_desc), "PI descriptor SN field set before blocking")=
-;
-=20
+1=2E WRNSRNS is indeed intended as an opt-in, as opposed to declaring rand=
+om registers non-serializing a posteori by sheer necessity in technical vio=
+lation of the ISA=2E
+
+We should not blindly replace all WRMSRs with WRMSRNS=2E We should, howeve=
+r, make wrmsrns() fall back to WRMSR on hardware which does not support it,=
+ so we can unconditionally replace it at call sites=2E Many, probably most,=
+ would be possible to replace, but for those that make no difference perfor=
+mance-wise there is really no reason to worry about the testing=2E=20
+
+It is also quite likely we will find cases where we need *one* serializati=
+on after writing to a whole group of MSRs=2E In that case, we may want to a=
+dd a sync_cpu_after_wrmsrns() [or something like that] which does a sync_cp=
+u() if and only if WRMSRNS is supported=2E
+
+I don't know if there will ever be any CPUs which support WRMSRNS but not =
+SERIALIZE, so it might be entirely reasonable to have WRMSRNS depend on SER=
+IALIZE and not bother with the IRET fallback variation=2E
+
+2=2E WRMSRNS *may* perform a fully serializing write if the hardware imple=
+mentation does not support a faster write method for a certain MSR=2E This =
+is particularly likely for MSRs that have system-wide consequences, but it =
+is also a legitimate option for the hardware implementation for MSRs that a=
+re not expected to have any kind of performance impact (full serialization =
+is a very easy way to ensure full consistency and so reduces implementation=
+ and verification burden=2E)
+
+3=2E All registers, including MSRs, in x86 are subject to scoreboarding, m=
+eaning that so-called "psychic effects" (a direct effect being observable b=
+efore the cause) or use of stale resources are never permitted=2E This does=
+ *not* imply that events cannot be observed out of order, and cross-CPU vis=
+ibility has its own rules, but that is not relevant for most registers=2E
+
+4=2E WRMSRNS immediate can be reasonably expected to be significantly fast=
+er than even WRMSRNS ecx (at least for MSRs deemed valuable to optimize), b=
+ecause the MSR number is available to the hardware at the very beginning of=
+ the instruction pipeline=2E To take proper advantage of that, it is desira=
+ble to avoid calling wrmsrns() with a non-constant value in code paths wher=
+e performance matters, even if it bloats the code somewhat=2E The main case=
+ which I can think about that might actually matter is context-switching wi=
+th perf enabled (also a good example for wanting to SERIALIZE or at least M=
+FENCE or LFENCE after the batch write if they will have effects before retu=
+rning to user space=2E) There is also of course the option of dynamically g=
+enerating a code snippet if the list of MSRs is too dynamic=2E
+
