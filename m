@@ -1,67 +1,67 @@
-Received: from mail-yw1-f176.google.com (mail-yw1-f176.google.com [209.85.128.176])
+Received: from mail-yw1-f193.google.com (mail-yw1-f193.google.com [209.85.128.193])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C1C722C11D6
-	for <kvm@vger.kernel.org>; Mon, 23 Feb 2026 22:38:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.176
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9996F37BE96
+	for <kvm@vger.kernel.org>; Mon, 23 Feb 2026 22:38:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.193
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771886336; cv=none; b=ogwAjCLH07YrdCWpDAA4ffuB/XtUZNgImWl+IIgwnwSXfQcSRcpUisvj8QwAPBrBteqUDODjAx1zET5GE1j2AFylIjHxoLuZ8JaHxgY6Z1eOiyY4OeBBhusiXZwd2AXo28Ka0SfjX4tUUKE9ZCeEbvCJpB/lcWHefhHRtjDVB+w=
+	t=1771886338; cv=none; b=QLugztoUtSdtOfrCJlNK8uVfZdaxz2p8e45ev0FBNlNgQBX/Ifaicwdb1Yhfo6khCd6DGiK9R3SZ60Q50oak+uVnWW5VmZYogZw4oyNks0Wqa9763tF6V9yOuiP9jWR4klMQRFjDhhrZoAIazgFjxQU2gWVpYKXDXIMvtzqKGK0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771886336; c=relaxed/simple;
-	bh=H9xSN+o2u3DPOyU3qSAxjvQ1NV6WYvyCbOgeBvy/A0A=;
+	s=arc-20240116; t=1771886338; c=relaxed/simple;
+	bh=ZIS40BN/lVEtVVMEAyUeO8Q0LmXvqKfPsebwIKGBEeo=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=a6JWg2RVotdPHb86s9PopuOUkLuHG9V/QTFKvcCk1bmBPCzUzoO9nk2QGRZHAyKZsDGybzeCZ4S95u5hGChoqUgMBu6+IwDTVTE4z7UlnZ+AJW7c8NARLonDMxRXjpulGtikyRZmyT6yEaX0eDTv8DaynHkO2MsDSihcLdAqNyk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Fx1eohyf; arc=none smtp.client-ip=209.85.128.176
+	 In-Reply-To:To:Cc; b=nNVBkGosvsZTrX/oLyAhToA369CgH5HBwH0XNXkEMJNJBx7n06AtJbW3qv3iKuLm4FzaDbcGxRgU/5NngLeAIy7rSLAzAFYu7j6/5R/4FzCNcj8qJ+2g/wVSsZBVdMNqQ7/EyfK0xfua6V9NGkZtG+Y7ZGxI/TnapWWVL7iMm1A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=WXwcJ5nH; arc=none smtp.client-ip=209.85.128.193
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Fx1eohyf"
-Received: by mail-yw1-f176.google.com with SMTP id 00721157ae682-79430ef54c3so42658537b3.2
-        for <kvm@vger.kernel.org>; Mon, 23 Feb 2026 14:38:54 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="WXwcJ5nH"
+Received: by mail-yw1-f193.google.com with SMTP id 00721157ae682-79818c7600eso33884217b3.0
+        for <kvm@vger.kernel.org>; Mon, 23 Feb 2026 14:38:56 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1771886334; x=1772491134; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1771886336; x=1772491136; darn=vger.kernel.org;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=M6YNbaSbY/a/RFjAEl4EW9IaCZutb07kY998isXwAsE=;
-        b=Fx1eohyffkGHHbjY1dC1zf8vtzUj9QGwo+dO7ADM9n7bciwc6Gs3QCRY5g+VKISPfW
-         gRrQNpKubUfNLy79WSE7xzVLcjT7FAUXv6YMMkfD2zu05cmy1TuxR/0JDfnte8stKX+x
-         BCSKbxdhbis5kVe8HLrEEMI3jXoHZnOv1AUlm0jDDnzvOM1wdcSlYf74cj1Pc2n5EoJ6
-         rDnP2pR4f23rWOJSQ04z+a0DUsCnqC2voT+H7P4dQ3AClHJ8fgtUoIPL4nCS5o7pTrMe
-         zXBSI5hiQ5yW01d0ytFJ5bF6wCcfUqJxL2J9HOltbdxKOdeYx/4pttsuKqbJholVz++/
-         6T4g==
+        bh=0cemh6Unm8avZ318Zd18G/NSlRGlTIfX9gcE2w2y6Xk=;
+        b=WXwcJ5nHT2Wm/PBC1YtI6EPOCYBowHp3Lk1cw+rFZMNUHtzbT9DCmAW/xRAREIgHIB
+         CnIiKyBKNvtAZMG5pxeq1heJClkrSVPTvrFX6EzwNyNnnZ+2b1peTvJ3YNl+K/i3b9It
+         3SG10I3GoZgiQeLqR+RkMFANZ1ahMjQJRrQhhLT7Q2slVUOgqdPcJ2IgQppjMTVsgohD
+         qx4TerJTJdvZgXiiO3oK6UUFl6VWQsjKft6zZa2ffx8XMU1NmU62gK5aBFvPG5mpS5bW
+         U/ek6YQgDPh+GqfXaffTgfXOdkrHi8+rzPfeSNMt4Ueqs4X+XVLJ6RmLkGSxbqs+Xeal
+         wdBQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1771886334; x=1772491134;
+        d=1e100.net; s=20230601; t=1771886336; x=1772491136;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:x-gm-gg:x-gm-message-state:from:to
          :cc:subject:date:message-id:reply-to;
-        bh=M6YNbaSbY/a/RFjAEl4EW9IaCZutb07kY998isXwAsE=;
-        b=PXguyUwG0m4burIsUXIb5pbSWdE5+mnrCAPpvs5g2WTjBdimV1RFRcCwB4SPn/GBjQ
-         4WffCm/zdjiC2Jbth+8seYFbww/dsDr2Q7Io907LQX/+IBk74sjnqEcywIUdgWcFm0Yl
-         WdtLDwIJOCE8A3mYXayO8flJFHYlBnbl2ewYYmGCuulE0x4RMR64XZ1dm7HqYbmAgH+J
-         k9tkvVVxeZ2EHOkaue10e9Cjpm2xHmdgkQbxWlLKXSe0VXCfFrZzulQIcYHfq20zOaRb
-         0UKPtwZxkDorTMIR0D3Pim+TPok73rVKfUaWEwEk+uknVUxXMT0n2MWDc0Ilh2kHWYmu
-         uNrA==
-X-Forwarded-Encrypted: i=1; AJvYcCVfz9osrt/51xIoJSBzOiirl+vJ4bwD9MlxK7OqjxZ9tIgJMa8jit+7LIeQ74QB+1bDL84=@vger.kernel.org
-X-Gm-Message-State: AOJu0Ywby6sEapf2J1wRUtsV7+z8FyBAUFNgLoOJSzxnKqk/ZeOH9KWD
-	wsfeRTSu7rue4tjIgbLR67yW20W8F1MsnAeZvq20VxGl43TOMisAi9Tq
-X-Gm-Gg: ATEYQzyC13ziouY8KwCKKi8UGStoKjNIACb8IcNMXI53yLRtqLnIga35XUU6yFjanzm
-	y5tfH4ToAiBcwPJRHTOzFfSvFB3ETgIErvJCWoPj4B6EPg+jHzUu6ojuu6JFhFoNd+seSwjtL4B
-	c2ZtqUCNvGr/vHusl9wjvHUr3E0dnJcc3BJWs+TpUlDQM/0hAwkBVzB49RIW1W1KWaF06/JZrtW
-	3byOB8QHwI/tlK61X85CEMctRmTchlc/GFUJuWMdeAJQFos+MMPTRkLUCNAw+TKLJ2hEzFxsjke
-	S7nrIdWWs/qI3EZjMthEcZb9spZ8UjNhTF4XqdKJaTKR9j9nf+gpUTKZte59e0fP3pBIkqnDyba
-	Itp+ay/dmMYm01/7zC2XB0zYbHK5K7GqH/tUAUbw/gtZFY35uETnAUp9GcQ8MGniaR8VepHU9LZ
-	oTEbFPBiYvy0oz7ZqJ5zcD
-X-Received: by 2002:a05:690c:6d91:b0:794:baaa:cca7 with SMTP id 00721157ae682-79828f1e7b7mr96957847b3.20.1771886333827;
-        Mon, 23 Feb 2026 14:38:53 -0800 (PST)
-Received: from localhost ([2a03:2880:25ff:5::])
-        by smtp.gmail.com with ESMTPSA id 00721157ae682-7982ddccc24sm37639337b3.40.2026.02.23.14.38.53
+        bh=0cemh6Unm8avZ318Zd18G/NSlRGlTIfX9gcE2w2y6Xk=;
+        b=oBHCfzJqnZPTK5MMYNl/LrFWdQE3WDO7KXPFKxJ5gu84hqK6M1v7eTgxaCMcCrqG5p
+         woOHB3vC2ec0PhkCW/8+yTqd2+pYt83RbH+/xKaWZ/SD+QTgabnuCnSe1cS0eJmtTseX
+         eCM0+NYVPbTI7fQod5f/jQPAzL8GA6wMt/8GQF5ODy6uJyRC0PukODWRQgRvzmJ+Vhae
+         TszoxLkRyJc9Fz9IzPAm8CjKNr/C8yI3MShv57xTYUaju2qph+bNOXEFNHZFjkMon9x6
+         /j+1cuyzoFP2cAYCQS0jXoqOBbRYm4aKRe34KIqBBolaha+blCdge7/5nv5ntvGRbc3t
+         nxRQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUvYNUp3DniZcn5PxBWJp53DMjGGIRMESew5x1skRs+ru23hDsmBBIzy6RoKVZNyjCMUf0=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxPxSyZE4Pq97Vzv13+57zeAZ6ZUr79bDlJ7eRo1sWSWLsc8Fh7
+	//Plz5bomckGNK4LraUf19xpW85VdXu9oEK2xrxTxopQ9SnS1bZmLK8I
+X-Gm-Gg: ATEYQzx/uJMIa9TbYw2CtT84um0TLXRqr1EBwtk/UD9Q4TURuaXyjARCfwGzHMuaddN
+	chbKjOgjU7VnpRDzkrsyANs+u6ceViCZFqnzyNCXlff9ynBA27wRayN5VfC/tGl7IIF85j9zMCN
+	oHOPNn1u2h8Bsv6facMRscgzV62DZORIrwj80xURVmAewfazbHttsC5tkKH16w+2ct5kZB1b4Av
+	poQK7iA4PRxo6u9YoNixbesh3Iw3O8c4JREzI3t9hIZhBCYdpjGGdz5iOn4JhtjqmBil1wIOl0t
+	pTpHgpCrRc85zd8m5nRcWkuB2AJ08fvFyI1cBz9YozfhxEVjo3QOTIBhSOZ8AbF1tkXtWm+JFxs
+	XVCOScRPKdQ/f663vhhv89GK10nhKsTP14C8sQu9oT4ls4lpqOVd/R3qel6CBXcBx7DkcNrqoIu
+	kBlasLVKeKiQAkXlpTc73/gg==
+X-Received: by 2002:a05:690c:d89:b0:796:34f7:8ea2 with SMTP id 00721157ae682-79828fd308cmr92461117b3.31.1771886335647;
+        Mon, 23 Feb 2026 14:38:55 -0800 (PST)
+Received: from localhost ([2a03:2880:25ff:58::])
+        by smtp.gmail.com with ESMTPSA id 00721157ae682-7982dd87fa2sm37132007b3.28.2026.02.23.14.38.55
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 23 Feb 2026 14:38:53 -0800 (PST)
+        Mon, 23 Feb 2026 14:38:55 -0800 (PST)
 From: Bobby Eshleman <bobbyeshleman@gmail.com>
-Date: Mon, 23 Feb 2026 14:38:32 -0800
-Subject: [PATCH net v3 1/3] selftests/vsock: change tests to respect
- write-once child ns mode
+Date: Mon, 23 Feb 2026 14:38:34 -0800
+Subject: [PATCH net v3 3/3] vsock: document write-once behavior of the
+ child_ns_mode sysctl
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -70,7 +70,7 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260223-vsock-ns-write-once-v3-1-c0cde6959923@meta.com>
+Message-Id: <20260223-vsock-ns-write-once-v3-3-c0cde6959923@meta.com>
 References: <20260223-vsock-ns-write-once-v3-0-c0cde6959923@meta.com>
 In-Reply-To: <20260223-vsock-ns-write-once-v3-0-c0cde6959923@meta.com>
 To: Stefano Garzarella <sgarzare@redhat.com>, 
@@ -88,107 +88,32 @@ X-Mailer: b4 0.14.3
 
 From: Bobby Eshleman <bobbyeshleman@meta.com>
 
-The child_ns_mode sysctl parameter becomes write-once in a future patch
-in this series, which breaks existing tests. This patch updates the
-tests to respect this new policy. No additional tests are added.
+Update the vsock child_ns_mode documentation to include the new
+write-once semantics of setting child_ns_mode. The semantics are
+implemented in a preceding patch in this series.
 
-Add "global-parent" and "local-parent" namespaces as intermediaries to
-spawn namespaces in the given modes. This avoids the need to change
-"child_ns_mode" in the init_ns. nsenter must be used because ip netns
-unshares the mount namespace so nested "ip netns add" breaks exec calls
-from the init ns. Adds nsenter to the deps check.
-
-Reviewed-by: Stefano Garzarella <sgarzare@redhat.com>
 Signed-off-by: Bobby Eshleman <bobbyeshleman@meta.com>
 ---
- tools/testing/selftests/vsock/vmtest.sh | 41 +++++++++++++++++----------------
- 1 file changed, 21 insertions(+), 20 deletions(-)
+Changes in v3:
+- update language to clarify language that first value is locked, but subsequent
+  writes succeed.
+---
+ Documentation/admin-guide/sysctl/net.rst | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/tools/testing/selftests/vsock/vmtest.sh b/tools/testing/selftests/vsock/vmtest.sh
-index dc8dbe74a6d0..86e338886b33 100755
---- a/tools/testing/selftests/vsock/vmtest.sh
-+++ b/tools/testing/selftests/vsock/vmtest.sh
-@@ -210,16 +210,21 @@ check_result() {
- }
+diff --git a/Documentation/admin-guide/sysctl/net.rst b/Documentation/admin-guide/sysctl/net.rst
+index c10530624f1e..3b2ad61995d4 100644
+--- a/Documentation/admin-guide/sysctl/net.rst
++++ b/Documentation/admin-guide/sysctl/net.rst
+@@ -594,6 +594,9 @@ Values:
+ 	  their sockets will only be able to connect within their own
+ 	  namespace.
  
- add_namespaces() {
--	local orig_mode
--	orig_mode=$(cat /proc/sys/net/vsock/child_ns_mode)
--
--	for mode in "${NS_MODES[@]}"; do
--		echo "${mode}" > /proc/sys/net/vsock/child_ns_mode
--		ip netns add "${mode}0" 2>/dev/null
--		ip netns add "${mode}1" 2>/dev/null
--	done
--
--	echo "${orig_mode}" > /proc/sys/net/vsock/child_ns_mode
-+	ip netns add "global-parent" 2>/dev/null
-+	echo "global" | ip netns exec "global-parent" \
-+		tee /proc/sys/net/vsock/child_ns_mode &>/dev/null
-+	ip netns add "local-parent" 2>/dev/null
-+	echo "local" | ip netns exec "local-parent" \
-+		tee /proc/sys/net/vsock/child_ns_mode &>/dev/null
++The first write to ``child_ns_mode`` locks its value. Subsequent writes of the
++same value succeed, but writing a different value returns ``-EBUSY``.
 +
-+	nsenter --net=/var/run/netns/global-parent \
-+		ip netns add "global0" 2>/dev/null
-+	nsenter --net=/var/run/netns/global-parent \
-+		ip netns add "global1" 2>/dev/null
-+	nsenter --net=/var/run/netns/local-parent \
-+		ip netns add "local0" 2>/dev/null
-+	nsenter --net=/var/run/netns/local-parent \
-+		ip netns add "local1" 2>/dev/null
- }
- 
- init_namespaces() {
-@@ -237,6 +242,8 @@ del_namespaces() {
- 		log_host "removed ns ${mode}0"
- 		log_host "removed ns ${mode}1"
- 	done
-+	ip netns del "global-parent" &>/dev/null
-+	ip netns del "local-parent" &>/dev/null
- }
- 
- vm_ssh() {
-@@ -287,7 +294,7 @@ check_args() {
- }
- 
- check_deps() {
--	for dep in vng ${QEMU} busybox pkill ssh ss socat; do
-+	for dep in vng ${QEMU} busybox pkill ssh ss socat nsenter; do
- 		if [[ ! -x $(command -v "${dep}") ]]; then
- 			echo -e "skip:    dependency ${dep} not found!\n"
- 			exit "${KSFT_SKIP}"
-@@ -1231,12 +1238,8 @@ test_ns_local_same_cid_ok() {
- }
- 
- test_ns_host_vsock_child_ns_mode_ok() {
--	local orig_mode
--	local rc
--
--	orig_mode=$(cat /proc/sys/net/vsock/child_ns_mode)
-+	local rc="${KSFT_PASS}"
- 
--	rc="${KSFT_PASS}"
- 	for mode in "${NS_MODES[@]}"; do
- 		local ns="${mode}0"
- 
-@@ -1246,15 +1249,13 @@ test_ns_host_vsock_child_ns_mode_ok() {
- 			continue
- 		fi
- 
--		if ! echo "${mode}" > /proc/sys/net/vsock/child_ns_mode; then
--			log_host "child_ns_mode should be writable to ${mode}"
-+		if ! echo "${mode}" | ip netns exec "${ns}" \
-+			tee /proc/sys/net/vsock/child_ns_mode &>/dev/null; then
- 			rc="${KSFT_FAIL}"
- 			continue
- 		fi
- 	done
- 
--	echo "${orig_mode}" > /proc/sys/net/vsock/child_ns_mode
--
- 	return "${rc}"
- }
+ Changing ``child_ns_mode`` only affects namespaces created after the change;
+ it does not modify the current namespace or any existing children.
  
 
 -- 
