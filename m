@@ -1,112 +1,220 @@
-Received: from mail.zytor.com (terminus.zytor.com [198.137.202.136])
+Received: from omta38.uswest2.a.cloudfilter.net (omta38.uswest2.a.cloudfilter.net [35.89.44.37])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 413D233B961;
-	Mon, 23 Feb 2026 18:14:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.137.202.136
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B2A8634107C
+	for <kvm@vger.kernel.org>; Mon, 23 Feb 2026 18:39:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=35.89.44.37
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771870458; cv=none; b=uipAZKt8LE2fLTib2y8dsroAnFk0NB3TmlxxI2Y0cF6OhdcYyMBaDPNFof353HvjgAW5vKcN/MJPxbfN7wCxBRLnEFz5fjDyH0RQuxZlvsNwe5N4kOInCoqGBbgg+hVnub1D5MAWm4wYrPJn3TCNEttWS9gTauoRyuKwx8e9Aa0=
+	t=1771871971; cv=none; b=ts+KgQTIiVgUqKS3+rmwLgb1oKsuQnbN3g/tLSuJ8BTp7n8decuz2lAMolL0uuOefWy8Psyk7h1nvl7Bk9QWJ/nnTxDanH1pFmUYeu02grYStYcLkSFELFJxVe6z+A6Vg50C6fAFtOGgjr+yoSIww1b1+WoPlaYZghAxFoVWPBg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771870458; c=relaxed/simple;
-	bh=Ko32fvtk6bixsPt4HIta8+/b+k3DorDq8sDvEEsEea4=;
-	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
-	 Message-Id:References:To; b=ZJKHaPlknPe/fPN3b7frVFXbGbBK0N9aAzbIWSOHyZCxOUqD04OU1ElwjVAUQbXTeFOleaKibddR5HSqMXPEdSsm+PVfK6d8/+42vBsw9o6gH3FSYQy46jQQHFZ4YLsNTQ7wxWgzZnxWdUvYpGJ9+HWynCrBrJxrcVJ3HbQft18=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zytor.com; spf=pass smtp.mailfrom=zytor.com; dkim=pass (2048-bit key) header.d=zytor.com header.i=@zytor.com header.b=JOqCJZkl; arc=none smtp.client-ip=198.137.202.136
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zytor.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=zytor.com
+	s=arc-20240116; t=1771871971; c=relaxed/simple;
+	bh=aPbuXDWVTlTr4MTV+J1z5na0bvWZqujDr8myGZRL6u0=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=QsEyzmo+r0SUqzMaGFL/JXD176+FIw/PwbE0pE7xMUAaYmOCBZrw71HvX9fqqQIKgtRxMepZP4Fyb7g1ynGyFDqFL15fnsIqIWNo3aXRORBXAETB8QrIgxzVH8LYTO1Je7xpxM3bXhCr/JlM9GjdIXxDSxt5oRrPqNHxp36jrNE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=embeddedor.com; spf=pass smtp.mailfrom=embeddedor.com; dkim=pass (2048-bit key) header.d=embeddedor.com header.i=@embeddedor.com header.b=GP8hxvu0; arc=none smtp.client-ip=35.89.44.37
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=embeddedor.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=embeddedor.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=zytor.com header.i=@zytor.com header.b="JOqCJZkl"
-Received: from smtpclient.apple (c-24-130-165-117.hsd1.ca.comcast.net [24.130.165.117])
-	(authenticated bits=0)
-	by mail.zytor.com (8.18.1/8.17.1) with ESMTPSA id 61NHucxE1192396
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NO);
-	Mon, 23 Feb 2026 09:56:38 -0800
-DKIM-Filter: OpenDKIM Filter v2.11.0 mail.zytor.com 61NHucxE1192396
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=zytor.com;
-	s=2026012301; t=1771869399;
-	bh=UV96YJDSAQHhfhSHSBGJYnGRmXZYA4GrMJlSRNVtwT0=;
-	h=Subject:From:In-Reply-To:Date:Cc:References:To:From;
-	b=JOqCJZklLApkfkbiGjk/A1+vXEYsAraKpb5+o55SVCygM8fz/+wcu/Nl8q9vXqtJd
-	 tK7mP/fDISsqFbR/J8cceyGu5T9c0TOgEQsHyH9aCSsEOhG79yT6kBWJVLedTNTGFm
-	 gBQV3D/IzTZvm6bRCF13K+YL07eV8QjrNnJVZR5lokI7dNNZRetzSkM3eugIQRR59n
-	 kBKRQO9Cgm7mQL9SlE4ipjAqO9ezexUavEmJ/U6TlvvpzxGTQBaTf+iUVRPT62xUe+
-	 k94/IlhfHOsA2UEVlqTc7WMUako3Di60mkoC7JNQ665JYQiSXaJKvB0yJfMIrbp1Vv
-	 RSBGbRbNskG8A==
-Content-Type: text/plain;
-	charset=utf-8
+	dkim=pass (2048-bit key) header.d=embeddedor.com header.i=@embeddedor.com header.b="GP8hxvu0"
+Received: from eig-obgw-6004b.ext.cloudfilter.net ([10.0.30.210])
+	by cmsmtp with ESMTPS
+	id uZTAvAtLxipkCuaq3vRmPX; Mon, 23 Feb 2026 18:39:23 +0000
+Received: from gator4166.hostgator.com ([108.167.133.22])
+	by cmsmtp with ESMTPS
+	id uaq2vfdI9K8vzuaq2via4i; Mon, 23 Feb 2026 18:39:22 +0000
+X-Authority-Analysis: v=2.4 cv=cJDgskeN c=1 sm=1 tr=0 ts=699c9edb
+ a=1YbLdUo/zbTtOZ3uB5T3HA==:117 a=k5Y5iPg+dmTXVWgYE/XtfQ==:17
+ a=IkcTkHD0fZMA:10 a=HzLeVaNsDn8A:10 a=7T7KSl7uo7wA:10 a=cm27Pg_UAAAA:8
+ a=FHDQm2CFppvGkXip7MwA:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
+ a=2aFnImwKRvkU0tJ3nQRT:22
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=embeddedor.com; s=default; h=Content-Transfer-Encoding:Content-Type:
+	In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender
+	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
+	List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=taVw0B+z5tsgngiAZBQo/LxSMSdHPHO1dbCTb0UWDZ4=; b=GP8hxvu0JEWG6Ydl+BN8EUaMik
+	/Q/juWmy47Ut/Utyr02oSxVbdftQQEZGg7lzMSvYkpBmPYCOKHyXN2F2WdqWd3U7arxIpRgBX8u9t
+	uS2Jl61ZcfgZdA2LS9rglqYE3r55Rcl1orTjq5amI7H2+tFOxPMbg4bx8ODS2E5AxxQQht2t4bvmt
+	vLABfz22UQCX970FO0IQz666BErT8vE7pteOReXfw75Zi0301dFPtnXBHuqxUrvsmyIqCmnUQgOcF
+	cGK9PF0fqE89VgCbEFjJ1MnAt/i90w9oJkHdY+6Y3EIwxyTX3Cz6LWxS1DoS1MFPJ0uARRPyVIL/e
+	C9upAmpQ==;
+Received: from [177.238.16.13] (port=50750 helo=[192.168.0.104])
+	by gator4166.hostgator.com with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
+	(Exim 4.99.1)
+	(envelope-from <gustavo@embeddedor.com>)
+	id 1vuaq1-00000000GtO-0dHq;
+	Mon, 23 Feb 2026 12:39:21 -0600
+Message-ID: <da02314c-e6da-4d9e-a2c8-cd3ee096bc0c@embeddedor.com>
+Date: Mon, 23 Feb 2026 12:38:07 +0900
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3864.400.21\))
-Subject: Re: [PATCH v3 09/16] x86/msr: Use the alternatives mechanism for
- WRMSR
-From: Xin Li <xin@zytor.com>
-In-Reply-To: <542ff5d7-1cff-4ef9-af48-f0378aa2a05c@intel.com>
-Date: Mon, 23 Feb 2026 09:56:28 -0800
-Cc: =?utf-8?B?SsO8cmdlbiBHcm/Dnw==?= <jgross@suse.com>,
-        Sean Christopherson <seanjc@google.com>, linux-kernel@vger.kernel.org,
-        x86@kernel.org, kvm@vger.kernel.org, llvm@lists.linux.dev,
-        "H. Peter Anvin" <hpa@zytor.com>, Thomas Gleixner <tglx@kernel.org>,
-        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
-        Dave Hansen <dave.hansen@linux.intel.com>,
-        Paolo Bonzini <pbonzini@redhat.com>,
-        Nathan Chancellor <nathan@kernel.org>,
-        Nick Desaulniers <nick.desaulniers+lkml@gmail.com>,
-        Bill Wendling <morbo@google.com>,
-        Justin Stitt <justinstitt@google.com>
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <14FE6A05-0864-4BD5-8331-0C2E6B8A28F8@zytor.com>
-References: <20260218082133.400602-1-jgross@suse.com>
- <20260218082133.400602-10-jgross@suse.com> <aZYoUE7CmrLg3SVe@google.com>
- <e05a65a7-bf8e-420b-8a36-2d76e56b43b0@intel.com>
- <d622a318-f7f8-4cff-b540-38d159ca87f4@suse.com>
- <437EC937-24B7-4E69-B369-F9FAFC46F1B1@zytor.com>
- <542ff5d7-1cff-4ef9-af48-f0378aa2a05c@intel.com>
-To: Dave Hansen <dave.hansen@intel.com>
-X-Mailer: Apple Mail (2.3864.400.21)
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH][next] treewide: uapi: Replace zero-length arrays with
+ flexible-array members
+To: David Woodhouse <dwmw2@infradead.org>, keescook@chromium.org
+Cc: daniel@iogearbox.net, gustavoars@kernel.org, jgg@ziepe.ca,
+ kvm@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <aaa7ac93db25459fa5a629d0da5abf13e93d8301.camel@infradead.org>
+Content-Language: en-US
+From: "Gustavo A. R. Silva" <gustavo@embeddedor.com>
+In-Reply-To: <aaa7ac93db25459fa5a629d0da5abf13e93d8301.camel@infradead.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - gator4166.hostgator.com
+X-AntiAbuse: Original Domain - vger.kernel.org
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - embeddedor.com
+X-BWhitelist: no
+X-Source-IP: 177.238.16.13
+X-Source-L: No
+X-Exim-ID: 1vuaq1-00000000GtO-0dHq
+X-Source: 
+X-Source-Args: 
+X-Source-Dir: 
+X-Source-Sender: ([192.168.0.104]) [177.238.16.13]:50750
+X-Source-Auth: gustavo@embeddedor.com
+X-Email-Count: 2
+X-Org: HG=hgshared;ORG=hostgator;
+X-Source-Cap: Z3V6aWRpbmU7Z3V6aWRpbmU7Z2F0b3I0MTY2Lmhvc3RnYXRvci5jb20=
+X-Local-Domain: yes
+X-CMAE-Envelope: MS4xfD3YtrnDVHp9i6g5w+l7p9shhAG3YMIU9ktIxXBChnk//xZAFE6urhf794o4GyCH5qjK/tZIeLcm9u2G1kk6mdHeTD+d8C3R97/Z2VEEkb6tWkt4D4yW
+ vNzYT9H2SkhaYHUyA2WkcsMjo4z1C2062TMwo9ovE3uIP5yfBmRnQkiH5gD8rsZTsLC4HRBIW4us/JohSzNaadT41Sf3ImWyJBQ=
 
 
->>> I _really_ thought this was discussed upfront by Xin before he sent =
-out his
->>> first version of the series.
->> I actually reached out to the Intel architects about this before I =
-started
->> coding. Turns out, if the CPU supports WRMSRNS, you can use it across =
-the
->> board.  The hardware is smart enough to perform a serialized write =
-whenever
->> a non-serialized one isn't proper, so there=E2=80=99s no risk.
->=20
-> Could we be a little more specific here, please?
 
-Sorry as I=E2=80=99m no longer with Intel, I don=E2=80=99t have access =
-to those emails.
+On 2/23/26 23:28, David Woodhouse wrote:
+> On 2022-07-28 at 10:54:58 -0700, Kees Cook <keescook@chromium.org> wrote:
+>> The issue here seems to be a collision between "unknown array size"
+>> and known sizes:
+>>
+>> struct bpf_lpm_trie_key {
+>>          __u32   prefixlen;      /* up to 32 for AF_INET, 128 for AF_INET6 */
+>>          __u8    data[0];        /* Arbitrary size */
+>> };
+>>
+>> struct lpm_key {
+>> 	struct bpf_lpm_trie_key trie_key;
+>> 	__u32 data;
+>> };
+>>
+>> This is treating trie_key as a header, which it's not: it's a complete
+>> structure. :)
+>>
+>> Perhaps:
+>>
+>> struct lpm_key {
+>>          __u32 prefixlen;
+>>          __u32 data;
+>> };
+>>
+>> I don't see anything else trying to include bpf_lpm_trie_key.
+> 
+> What was the eventual conclusion here?
+> 
+> These changes broke userspace compilation, because a *lot* of these
+> structures ending with VLAs are very much used as headers.
+> 
+> QEMU does it, for example...
+> 
+> uint64_t kvm_arch_get_supported_msr_feature(KVMState *s, uint32_t index)
+> {
+>      struct {
+>          struct kvm_msrs info;
+>          struct kvm_msr_entry entries[1];
+>      } msr_data = {};
+> 
+> 
+> ... which works in C but not in C++, which gives an error I can't work
+> out how to avoid.
+> 
+> Am I missing something, or did we break our userspace headers for C++
+> and make them C-only?
+> 
+>   $ cat test_kvm.cpp
+> #include <cstdlib>
+> #include <asm/kvm.h>
+> 
+> struct msr_data {
+> 	struct kvm_msrs info;
+> 	struct kvm_msr_entry entries[1];
+> };
 
-Got to mention, also to reply to Sean=E2=80=99s challenge, as usual I =
-didn=E2=80=99t get
-detailed explanation about how would hardware implement WRMSRNS,
-except it falls back to do a serialized write when it=E2=80=99s not =
-*proper*.
+Something like this should eventually land:
+
+diff --git a/tools/arch/x86/include/uapi/asm/kvm.h b/tools/arch/x86/include/uapi/asm/kvm.h
+index 7ceff6583652..295b2a54b25d 100644
+--- a/tools/arch/x86/include/uapi/asm/kvm.h
++++ b/tools/arch/x86/include/uapi/asm/kvm.h
+@@ -192,11 +192,14 @@ struct kvm_msr_entry {
+         __u64 data;
+  };
+
+-/* for KVM_GET_MSRS and KVM_SET_MSRS */
+-struct kvm_msrs {
++struct kvm_msrs_hdr {
+         __u32 nmsrs; /* number of msrs in entries */
+         __u32 pad;
++};
+
++/* for KVM_GET_MSRS and KVM_SET_MSRS */
++struct kvm_msrs {
++       struct kvm_msrs_hdr;
+         struct kvm_msr_entry entries[];
+  };
+
+diff --git a/tools/testing/selftests/kvm/Makefile.kvm b/tools/testing/selftests/kvm/Makefile.kvm
+index fdec90e85467..a354ee1ef359 100644
+--- a/tools/testing/selftests/kvm/Makefile.kvm
++++ b/tools/testing/selftests/kvm/Makefile.kvm
+@@ -261,6 +261,8 @@ CFLAGS += -Wall -Wstrict-prototypes -Wuninitialized -O2 -g -std=gnu99 \
+         -fno-builtin-memcmp -fno-builtin-memcpy \
+         -fno-builtin-memset -fno-builtin-strnlen \
+         -fno-stack-protector -fno-PIE -fno-strict-aliasing \
++       -Wno-microsoft-anon-tag \
++       -fms-extensions \
+         -I$(LINUX_TOOL_INCLUDE) -I$(LINUX_TOOL_ARCH_INCLUDE) \
+         -I$(LINUX_HDR_PATH) -Iinclude -I$(<D) -Iinclude/$(ARCH) \
+         -I ../rseq -I.. $(EXTRA_CFLAGS) $(KHDR_INCLUDES)
+diff --git a/tools/testing/selftests/kvm/lib/x86/processor.c b/tools/testing/selftests/kvm/lib/x86/processor.c
+index fab18e9be66c..0f881ee8c37c 100644
+--- a/tools/testing/selftests/kvm/lib/x86/processor.c
++++ b/tools/testing/selftests/kvm/lib/x86/processor.c
+@@ -1076,7 +1076,7 @@ uint64_t vcpu_get_msr(struct kvm_vcpu *vcpu, uint64_t msr_index)
+  int _vcpu_set_msr(struct kvm_vcpu *vcpu, uint64_t msr_index, uint64_t msr_value)
+  {
+         struct {
+-               struct kvm_msrs header;
++               struct kvm_msrs_hdr header;
+                 struct kvm_msr_entry entry;
+         } buffer = {};
 
 
->=20
-> If it was universally safe to s/WRMSR/WRMSRNS/, then there wouldn't =
-have
-> been a need for WRMSRNS in the ISA.
->=20
-> Even the WRMSRNS description in the SDM talks about some caveats with
-> "performance-monitor events" MSRs. That sounds like it contradicts the
-> idea that the "hardware is smart enough" universally to tolerate using
-> WRMSRNS *EVERYWHERE*.
->=20
-> It also says:
->=20
-> Like WRMSR, WRMSRNS will ensure that all operations before it do
-> not use the new MSR value and that all operations after the
-> WRMSRNS do use the new value.
->=20
-> Which is a handy guarantee for sure. But, it's far short of a fully
-> serializing instruction.
+(patch above untested)
+
+-Gustavo
+
+> 
+> struct msr_data *alloc_msr_data(void)
+> {
+> 	return static_cast<struct msr_data *>(malloc(sizeof(struct msr_data)));
+> }
+> 
+>   $ g++    -c -o test_kvm.o test_kvm.cpp
+> In file included from test_kvm.cpp:2:
+> /usr/include/x86_64-linux-gnu/asm/kvm.h:194:30: error: flexible array member ‘kvm_msrs::entries’ not at end of ‘struct msr_data’
+>    194 |         struct kvm_msr_entry entries[];
+>        |                              ^~~~~~~
+> test_kvm.cpp:6:30: note: next member ‘kvm_msr_entry msr_data::entries [1]’ declared here
+>      6 |         struct kvm_msr_entry entries[1];
+>        |                              ^~~~~~~
+> test_kvm.cpp:4:8: note: in the definition of ‘struct msr_data’
+>      4 | struct msr_data {
+>        |        ^~~~~~~~
+> 
 
