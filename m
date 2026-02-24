@@ -1,138 +1,199 @@
-Received: from mail-pg1-f201.google.com (mail-pg1-f201.google.com [209.85.215.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 787D133AD92
-	for <kvm@vger.kernel.org>; Tue, 24 Feb 2026 20:42:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B96FF223702;
+	Tue, 24 Feb 2026 20:54:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771965780; cv=none; b=YLeX+YTVCDu8lpwSjmlwqEC/XDR+56H/NfhGF+Uu1tCPfaXWhvXREuxe44MLrzqZ5629aluGl2OC6P5+MIFvrD8nPLLtqINRf8ppvCioBV2g/p59/3rP8nrs2Wvnmf0aEhuerAWnHINOHInBmDP62sFkvb5dzbDi5yJHE8FbGp0=
+	t=1771966458; cv=none; b=UrnWBL1gfcFxHD4yBnnAz/tsqFruYyYCYy8arFGsY8udGfjxr1VZhY0iDfZ97FT3az4J4UK5UYG3N95hhOBzMCvklGZFO9SYeOa4qHGJsboR9RPZDPDFo6qvlOLp2llmWX1PMeKzfMWkhbj9fyw06/PfDZcUgRfphNmbtvtNbH4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771965780; c=relaxed/simple;
-	bh=FFSIws9UZGCXCXlSxRzmXwLBnorm0MrWfAEBYQi/VmE=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=ojlzb7sI5UaOSRsmY3h6sb0qAH30T1aYgnfE4wyJWYUlTWi4ZLG2rpV8k/0S1IRdGpSV1ReObTIfDxPdaDoGLH2Lo3IYdrIoIk9CjAQJ31xkMzcnZyXvhMSEDbP0DigQ6IV54BdJCDuDISlvFz5wxnkUEZTid7hJ0Q8w0lq3PJU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=TE+Tekd7; arc=none smtp.client-ip=209.85.215.201
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+	s=arc-20240116; t=1771966458; c=relaxed/simple;
+	bh=EgVAY0e5tBoSz6A6iwW5/XO8EvjgmD/hBAtfckjnAIc=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=DYAnzz9U5FxQuc4Rqy2FvOFxvDucL3f8KD4suueeBHMUNoT65/1L3p18QpxlaZMypcuRRyPHwTUsrxUXeKJnCEucpZ+X/dqjB2S4vz9bSufpCdTNTepXugqXrWhR4ZqvrCff0tOy71HcYw/OboNreJlLI4JJdDQ4QZ89hfRDxBM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fU9VoxpY; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="TE+Tekd7"
-Received: by mail-pg1-f201.google.com with SMTP id 41be03b00d2f7-b6ce1b57b9cso5236474a12.1
-        for <kvm@vger.kernel.org>; Tue, 24 Feb 2026 12:42:59 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1771965779; x=1772570579; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:from:subject:message-id:references
-         :mime-version:in-reply-to:date:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=HQvkurqnzRl0s4Cu5TERD53tESfJg6za9bkF8vg/CkM=;
-        b=TE+Tekd7Wz7ojRzrcmmlV5AsSft7za7NWXFnkZj7xOJzugQ9Z1C0P5c9RZfeSRtPC5
-         7dsZls594EkfmT6lYh2GT2uXwvWq0fRpFdLPudSeImbWVeTjSRsUM/m7felW4efxNZoU
-         ZWpERE+O0HUsVF8bH2GibyFRAwKYOISoqWAkEMaVdKChk2akbuBPLOWtE9Q4bNhr247X
-         9opT/Bv+rEDxy5ZwFUghPJCwNz6nzq4hscnN4fWFYPIK41acDf2jgYCyaq0qztnLRybN
-         ZRitTEKJfb+MRwzMnEEkRz8i/WQgTlRLRn1lyt5n9/2/92oxNUsBd4AaF0I2tVGppXAI
-         2VSg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1771965779; x=1772570579;
-        h=content-transfer-encoding:cc:to:from:subject:message-id:references
-         :mime-version:in-reply-to:date:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=HQvkurqnzRl0s4Cu5TERD53tESfJg6za9bkF8vg/CkM=;
-        b=Gv/wdO4dLonUKjopoWJb/9uV55avRp8SffdbgQInDjy2k99jqDoqUSS3Gm7/ZDzMQ5
-         r2m9T/jrhSIh3RzjnNGNmZXC1oQNaivVM7qV9sywaWr7IRo/6HzlZpH0OaLjDwTNkLZR
-         2dG7p23xKxP58JRfmSvCQg6xisVZN9obirYRLyUrkLwjU/UpcN084mymmtMeBylGmb+g
-         eDQs9suC1th8MBY6/1K7eaN61XEl0ALzQnlSlgyMQ+vtQSclzq9w6c4k7tNLv0voOJ74
-         bEwz32a5mUzXp22IVx0cs97IxO93qKMCdV1kIYdo/tZ/oy1XQUV4RGNpkMu1HPtuPRkY
-         AYSw==
-X-Forwarded-Encrypted: i=1; AJvYcCX+yaUEQG8efkcixlmDhzZaDzVSW8B8dsgOQb5MROg+RyZx/sWMPTZkqWsbfBt3vgSAnjU=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxdZf/FoeDYKlC2318RtXvmg56rK6hz7P7cFwEYGhUCsQoJHYmk
-	laopRfyAN0Pi1jhKpbI0AL839B/g6B34nxWohMJKeIoz462QsTQ8XMOblVu734ny0QkNwFGhT5y
-	8kRtJcg==
-X-Received: from pgeh26.prod.google.com ([2002:a05:6a02:53da:b0:c6e:1954:345])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a20:3c89:b0:364:be7:6fe9
- with SMTP id adf61e73a8af0-3959f2f33b9mr96391637.32.1771965778642; Tue, 24
- Feb 2026 12:42:58 -0800 (PST)
-Date: Tue, 24 Feb 2026 12:42:57 -0800
-In-Reply-To: <d6820308325d5f8fee7918996ef98ab3f7b6ce6d.camel@intel.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fU9VoxpY"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 279EDC116D0;
+	Tue, 24 Feb 2026 20:54:18 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1771966458;
+	bh=EgVAY0e5tBoSz6A6iwW5/XO8EvjgmD/hBAtfckjnAIc=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=fU9VoxpYqnAVrd4t/fIENYWIsMId2KNEP3dfw2h4SjQzeH/MBV/5Cee/wntRTQCP6
+	 8EADR9JKKOK/hSexd/fEomD/ZrU3e+Mo0cAkKAlisOPYRwuKJXzT3MA26tdQTXMvpb
+	 cFKvEXyKAe/X10m3pmNX2H1z0cczPw3iZWdEsiJJoujd4S5bnLIF7pTBSYnWQRgIVb
+	 lO1qmLmIs5NJLzUq5pV5qVfuG1vDdgGb4JylPzxBqN/lvS2sL0Y7jYkwDaBcxLLsMY
+	 M8xREJGMjxcu5uVJY3DLJp8/BXSitkrqLBWUKwurl88mBMEyWsx/eqM0TQ42RGOP4K
+	 O37lVNZp675Mw==
+Date: Tue, 24 Feb 2026 12:54:16 -0800
+From: Oliver Upton <oupton@kernel.org>
+To: Yeoreum Yun <yeoreum.yun@arm.com>
+Cc: linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+	kvmarm@lists.linux.dev, kvm@vger.kernel.org,
+	linux-kselftest@vger.kernel.org, catalin.marinas@arm.com,
+	will@kernel.org, maz@kernel.org, miko.lenczewski@arm.com,
+	kevin.brodsky@arm.com, broonie@kernel.org, ardb@kernel.org,
+	suzuki.poulose@arm.com, lpieralisi@kernel.org,
+	yangyicong@hisilicon.com, joey.gouly@arm.com, yuzenghui@huawei.com
+Subject: Re: [PATCH v13 7/8] KVM: arm64: use CASLT instruction for swapping
+ guest descriptor
+Message-ID: <aZ4P-AcVjxfCFsew@kernel.org>
+References: <20260223174802.458411-1-yeoreum.yun@arm.com>
+ <20260223174802.458411-8-yeoreum.yun@arm.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20260223214336.722463-1-changyuanl@google.com>
- <213d614fe73e183a230c8f4e0c8fa1cc3d45df39.camel@intel.com>
- <fd3b58fd-a450-471a-89a3-541c3f88c874@linux.intel.com> <aZ3LxD5XMepnU8jh@google.com>
- <d6820308325d5f8fee7918996ef98ab3f7b6ce6d.camel@intel.com>
-Message-ID: <aZ4NUZdbH6PPUr5K@google.com>
-Subject: Re: [PATCH] KVM: TDX: Set SIGNIFCANT_INDEX flag for supported CPUIDs
-From: Sean Christopherson <seanjc@google.com>
-To: Rick P Edgecombe <rick.p.edgecombe@intel.com>
-Cc: "binbin.wu@linux.intel.com" <binbin.wu@linux.intel.com>, "kvm@vger.kernel.org" <kvm@vger.kernel.org>, 
-	"changyuanl@google.com" <changyuanl@google.com>, Binbin Wu <binbin.wu@intel.com>, 
-	"x86@kernel.org" <x86@kernel.org>, "kas@kernel.org" <kas@kernel.org>, Xiaoyao Li <xiaoyao.li@intel.com>, 
-	"hpa@zytor.com" <hpa@zytor.com>, "mingo@redhat.com" <mingo@redhat.com>, "bp@alien8.de" <bp@alien8.de>, 
-	"pbonzini@redhat.com" <pbonzini@redhat.com>, "tglx@kernel.org" <tglx@kernel.org>, 
-	Isaku Yamahata <isaku.yamahata@intel.com>, 
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, 
-	"linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>, 
-	"dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260223174802.458411-8-yeoreum.yun@arm.com>
 
-On Tue, Feb 24, 2026, Rick P Edgecombe wrote:
-> On Tue, 2026-02-24 at 08:03 -0800, Sean Christopherson wrote:
-> > > But adding the consistency check here would cause compatibility issue=
-.
-> > > Generally, if a new CPUID indexed function is added for some new CPU =
-and
-> > > the TDX module reports it, KVM versions without the CPUID function in
-> > > the list will trigger the warning.
-> >=20
-> > IMO, that's a good thing and working as intended.=C2=A0 WARNs aren't in=
-herently
-> > evil. While the goal is to be WARN-free, in this case triggering the WA=
-RN if
-> > the TDX Module is updated (or new silicon arrives) is desirable, becaus=
-e it
-> > alerts us to that new behavior, so that we can go update KVM.
-> >=20
-> > But we should "fix" 0x23 and 0x24 before landing this patch.
->=20
-> Would we backport those changes then? I would usually think that if the T=
-DX
-> module updates in such a way that triggers a warning in the kernel then i=
-t's a
-> TDX module bug.
+On Mon, Feb 23, 2026 at 05:48:01PM +0000, Yeoreum Yun wrote:
+> Use the CASLT instruction to swap the guest descriptor when FEAT_LSUI
+> is enabled, avoiding the need to clear the PAN bit.
+> 
+> Signed-off-by: Yeoreum Yun <yeoreum.yun@arm.com>
+> ---
+>  arch/arm64/include/asm/futex.h | 17 +----------------
+>  arch/arm64/include/asm/lsui.h  | 27 +++++++++++++++++++++++++++
+>  arch/arm64/kvm/at.c            | 32 +++++++++++++++++++++++++++++++-
+>  3 files changed, 59 insertions(+), 17 deletions(-)
+>  create mode 100644 arch/arm64/include/asm/lsui.h
+> 
+> diff --git a/arch/arm64/include/asm/futex.h b/arch/arm64/include/asm/futex.h
+> index b579e9d0964d..6779c4ad927f 100644
+> --- a/arch/arm64/include/asm/futex.h
+> +++ b/arch/arm64/include/asm/futex.h
+> @@ -7,11 +7,9 @@
+>  
+>  #include <linux/futex.h>
+>  #include <linux/uaccess.h>
+> -#include <linux/stringify.h>
+>  
+> -#include <asm/alternative.h>
+> -#include <asm/alternative-macros.h>
+>  #include <asm/errno.h>
+> +#include <asm/lsui.h>
+>  
+>  #define FUTEX_MAX_LOOPS	128 /* What's the largest number you can think of? */
+>  
+> @@ -91,8 +89,6 @@ __llsc_futex_cmpxchg(u32 __user *uaddr, u32 oldval, u32 newval, u32 *oval)
+>  
+>  #ifdef CONFIG_ARM64_LSUI
+>  
+> -#define __LSUI_PREAMBLE	".arch_extension lsui\n"
+> -
+>  #define LSUI_FUTEX_ATOMIC_OP(op, asm_op)				\
+>  static __always_inline int						\
+>  __lsui_futex_atomic_##op(int oparg, u32 __user *uaddr, int *oval)	\
+> @@ -235,17 +231,6 @@ __lsui_futex_cmpxchg(u32 __user *uaddr, u32 oldval, u32 newval, u32 *oval)
+>  {
+>  	return __lsui_cmpxchg32(uaddr, oldval, newval, oval);
+>  }
+> -
+> -#define __lsui_llsc_body(op, ...)					\
+> -({									\
+> -	alternative_has_cap_unlikely(ARM64_HAS_LSUI) ?			\
+> -		__lsui_##op(__VA_ARGS__) : __llsc_##op(__VA_ARGS__);	\
+> -})
+> -
+> -#else	/* CONFIG_ARM64_LSUI */
+> -
+> -#define __lsui_llsc_body(op, ...)	__llsc_##op(__VA_ARGS__)
+> -
+>  #endif	/* CONFIG_ARM64_LSUI */
+>  
+>  
+> diff --git a/arch/arm64/include/asm/lsui.h b/arch/arm64/include/asm/lsui.h
+> new file mode 100644
+> index 000000000000..4f956188835e
+> --- /dev/null
+> +++ b/arch/arm64/include/asm/lsui.h
+> @@ -0,0 +1,27 @@
+> +/* SPDX-License-Identifier: GPL-2.0 */
+> +#ifndef __ASM_LSUI_H
+> +#define __ASM_LSUI_H
+> +
+> +#include <linux/compiler_types.h>
+> +#include <linux/stringify.h>
+> +#include <asm/alternative.h>
+> +#include <asm/alternative-macros.h>
+> +#include <asm/cpucaps.h>
+> +
+> +#ifdef CONFIG_ARM64_LSUI
+> +
+> +#define __LSUI_PREAMBLE	".arch_extension lsui\n"
+> +
+> +#define __lsui_llsc_body(op, ...)					\
+> +({									\
+> +	alternative_has_cap_unlikely(ARM64_HAS_LSUI) ?			\
+> +		__lsui_##op(__VA_ARGS__) : __llsc_##op(__VA_ARGS__);	\
+> +})
+> +
+> +#else	/* CONFIG_ARM64_LSUI */
+> +
+> +#define __lsui_llsc_body(op, ...)	__llsc_##op(__VA_ARGS__)
+> +
+> +#endif	/* CONFIG_ARM64_LSUI */
+> +
+> +#endif	/* __ASM_LSUI_H */
+> diff --git a/arch/arm64/kvm/at.c b/arch/arm64/kvm/at.c
+> index 885bd5bb2f41..1aceeef04567 100644
+> --- a/arch/arm64/kvm/at.c
+> +++ b/arch/arm64/kvm/at.c
+> @@ -9,6 +9,7 @@
+>  #include <asm/esr.h>
+>  #include <asm/kvm_hyp.h>
+>  #include <asm/kvm_mmu.h>
+> +#include <asm/lsui.h>
+>  
+>  static void fail_s1_walk(struct s1_walk_result *wr, u8 fst, bool s1ptw)
+>  {
+> @@ -1704,6 +1705,33 @@ int __kvm_find_s1_desc_level(struct kvm_vcpu *vcpu, u64 va, u64 ipa, int *level)
+>  	}
+>  }
+>  
+> +#ifdef CONFIG_ARM64_LSUI
+> +static int __lsui_swap_desc(u64 __user *ptep, u64 old, u64 new)
+> +{
+> +	u64 tmp = old;
+> +	int ret = 0;
+> +
+> +	uaccess_ttbr0_enable();
+> +
+> +	asm volatile(__LSUI_PREAMBLE
+> +		     "1: caslt	%[old], %[new], %[addr]\n"
+> +		     "2:\n"
+> +		     _ASM_EXTABLE_UACCESS_ERR(1b, 2b, %w[ret])
+> +		     : [old] "+r" (old), [addr] "+Q" (*ptep), [ret] "+r" (ret)
+> +		     : [new] "r" (new)
+> +		     : "memory");
+> +
+> +	uaccess_ttbr0_disable();
+> +
+> +	if (ret)
+> +		return ret;
+> +	if (tmp != old)
+> +		return -EAGAIN;
+> +
+> +	return ret;
+> +}
+> +#endif
+> +
+>  static int __lse_swap_desc(u64 __user *ptep, u64 old, u64 new)
+>  {
+>  	u64 tmp = old;
+> @@ -1779,7 +1807,9 @@ int __kvm_at_swap_desc(struct kvm *kvm, gpa_t ipa, u64 old, u64 new)
+>  		return -EPERM;
+>  
+>  	ptep = (u64 __user *)hva + offset;
+> -	if (cpus_have_final_cap(ARM64_HAS_LSE_ATOMICS))
+> +	if (IS_ENABLED(CONFIG_ARM64_LSUI) && cpus_have_final_cap(ARM64_HAS_LSUI))
 
-To stable@?  No, I don't think see any reason to do that.
+cpucap_is_possible() is where the Kconfig check should go.
 
-> I'm still not clear on the impact of this one, but assuming it's not too
-> serious, could we discuss the WIP CPUID bit TDX arch stuff in PUCK before=
- doing
-> the change?
-
-Sure, I don't see a rush on the patch.
-
-> We were initially focusing on the problem of CPUID bits that affect host =
-state,
-> but then recently were discussing how many other categories of potential
-> problems we should worry about at this point. So it would be good to unde=
-rstand
-> the impact here.
->=20
-> If this warn is a trend towards doubling back on the initial decision to =
-expose
-> the CPUID interface to userspace,
-
-Maybe I'm missing something, but I think you're reading into the WARN waaaa=
-y too
-much.  I suggested it purely as a paranoid guard against the TDX Module doi=
-ng
-something bizarre and/or the kernel fat-fingering a CPUID function.  I.e. t=
-here's
-no ulterior motive here, unless maybe Changyuan is planning world dominatio=
-n or
-something. :-D
-
-> which I think is still doable and worth considering as an alternative, th=
-en
-> this also affects how we would want the TDX module changes to work.
+Thanks,
+Oliver
