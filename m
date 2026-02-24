@@ -1,76 +1,127 @@
-Received: from cstnet.cn (smtp21.cstnet.cn [159.226.251.21])
-	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4478ADF59;
-	Tue, 24 Feb 2026 00:50:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.21
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D1C0CDF59
+	for <kvm@vger.kernel.org>; Tue, 24 Feb 2026 00:51:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771894242; cv=none; b=YnXLW0D4ZhHdcsXwZ1gC3HbtVecw2Q3yd+3rBpWMo+Hviuv6JzUAyHxn9+NzyLHhexMkr46VovE2FyBWzdPY0YlxwByQuRvJofy4ah2kFSnBOl0nWV5m1jZ95YTmVvrGhgz6Rv1tjaJH3msGnZdjM2llzoF/iqeOcTsKd4RLO2U=
+	t=1771894276; cv=none; b=LIGAlnkWDVyqP45c/yGuyB5YC0KwYFPBChZW/raBKz3BCmYNnMX0AudnPVhRr67a7MkRQ/IT6448eQB1sk3+48yZ8vKBsqpdXRnN1Y6CeIIqQfE48rZDgFqMfKIEI7Rq0us9GaDd9MvuuBeU0P2kfpTZazxTTTpx4DeOnWabztg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771894242; c=relaxed/simple;
-	bh=2tzj0jyPREPsI/4mmp4+9uVJiVadSzsWqSXSwmTxmZA=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=ZofB2t/5q9EM4AFTPCjnS4nA/WaTeLnKR2OLUg4hiAamWt8WsLwjNd5JipayI7YQCLFvqlLi2N1HGS45vqa1n5AjMfbG7rzjMc4uezjscWAutlOvIOyEVb/hWAENSa85GnZEaXdpfX5YVXwAVbiOoDU2eXOGw+hwhzyma0xTUXY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.21
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iscas.ac.cn
-Received: from fric.. (unknown [210.73.43.101])
-	by APP-01 (Coremail) with SMTP id qwCowAC3X2vK9ZxpYRabCA--.55558S2;
-	Tue, 24 Feb 2026 08:50:18 +0800 (CST)
-From: Jiakai Xu <xujiakai2025@iscas.ac.cn>
-To: xujiakai2025@iscas.ac.cn
-Cc: alex@ghiti.fr,
-	anup@brainfault.org,
-	aou@eecs.berkeley.edu,
-	atish.patra@linux.dev,
-	jiakaiPeanut@gmail.com,
-	kvm-riscv@lists.infradead.org,
-	kvm@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-riscv@lists.infradead.org,
-	palmer@dabbelt.com,
-	paul.walmsley@sifive.com
-Subject: Re: [PATCH] RISC-V: KVM: Fix null pointer dereference in kvm_riscv_vcpu_aia_rmw_topei()
-Date: Tue, 24 Feb 2026 00:50:18 +0000
-Message-Id: <20260224005018.3979656-1-xujiakai2025@iscas.ac.cn>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20260130101557.1314385-1-xujiakai2025@iscas.ac.cn>
-References: <20260130101557.1314385-1-xujiakai2025@iscas.ac.cn>
+	s=arc-20240116; t=1771894276; c=relaxed/simple;
+	bh=QyBeWgJTo9UA9GrHncoMlxJYBEa6ccrv4Man4D/b5I4=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=O94z+WUli23RiZjUkNt2VzNboHQp+0Wr75jxTZZRoFCnBcr0B2jzBitSiiRLkzNeQafQqSlc8GF+JrXa0+1aE+j6ZMWawOXInXUgDjoHynqpHjQH1Gdmkq+ECREDUOvQoUZU+7mjSQtYDZDEKLF9zODUYtp9XOMQsL4eV5v1cQ8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kY13hAt/; arc=none smtp.client-ip=10.30.226.201
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kY13hAt/"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 92F16C2BC86
+	for <kvm@vger.kernel.org>; Tue, 24 Feb 2026 00:51:16 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1771894276;
+	bh=QyBeWgJTo9UA9GrHncoMlxJYBEa6ccrv4Man4D/b5I4=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=kY13hAt/LRgrT+LJxmzBEQZi7eT+DerHFe/7FHbQ2avnpzUXh+sWH4iWp8YWIWWc9
+	 uyAXj80zAnqIFMNGM+G9Je9WhjVQsQHfnA6WoXIChwVBr9faF24STxdsS6RlI4Y4Eq
+	 FcfKuX9U2byXotcv4dPp8blW3sq6Wky6/zXdiJzVfPW/GibkhmFGmkSSJ2sPAQKhBK
+	 92r7MenqnmHukhkHYxvzt496rSvS1+H7RPTjt8bJ8tWSOaiWyBxVdmos6jC9ZUxBLV
+	 2Gzn+eGct4NVjutv3JIOvQt8kefWmYuTmMnpa+A7+KoDFQPHnfuJjqFI9e9KD8Sb6v
+	 3a+uazSEDurUw==
+Received: by mail-ej1-f46.google.com with SMTP id a640c23a62f3a-b8845cb580bso755596266b.3
+        for <kvm@vger.kernel.org>; Mon, 23 Feb 2026 16:51:16 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCUFWt0cj503IZkLJGnHlqWrPMdRtVtNptqrlmOYR/WfbZAobsWtef7PEjNDHF+6r31nois=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yyr2N4L4LEBwYB8LyIBzPBtJ79pamqAyGzvJS5gbyBULw/x14jd
+	FJq7G6mzcLnjkF6rhc8Nm023/uP3pmzpT/dO76oDw24QLpPAOYLu7wEswgnP8UBL60stiFd9gE4
+	PTjdGQtFjQ2SlHCtIfL6SgeJcQoQI9ac=
+X-Received: by 2002:a17:907:94cc:b0:b87:12d2:fa1a with SMTP id
+ a640c23a62f3a-b908191f1d6mr627159866b.12.1771894275333; Mon, 23 Feb 2026
+ 16:51:15 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:qwCowAC3X2vK9ZxpYRabCA--.55558S2
-X-Coremail-Antispam: 1UD129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7v73
-	VFW2AGmfu7bjvjm3AaLaJ3UjIYCTnIWjp_UUUO57AC8VAFwI0_Gr0_Xr1l1xkIjI8I6I8E
-	6xAIw20EY4v20xvaj40_Wr0E3s1l1IIY67AEw4v_Jr0_Jr4l8cAvFVAK0II2c7xJM28Cjx
-	kF64kEwVA0rcxSw2x7M28EF7xvwVC0I7IYx2IY67AKxVW8JVW5JwA2z4x0Y4vE2Ix0cI8I
-	cVCY1x0267AKxVW8JVWxJwA2z4x0Y4vEx4A2jsIE14v26r4UJVWxJr1l84ACjcxK6I8E87
-	Iv6xkF7I0E14v26r4UJVWxJr1lnxkEFVAIw20F6cxK64vIFxWle2I262IYc4CY6c8Ij28I
-	cVAaY2xG8wAqx4xG64xvF2IEw4CE5I8CrVC2j2WlYx0E2Ix0cI8IcVAFwI0_JrI_JrylYx
-	0Ex4A2jsIE14v26r1j6r4UMcvjeVCFs4IE7xkEbVWUJVW8JwACjcxG0xvY0x0EwIxGrwAC
-	jI8F5VA0II8E6IAqYI8I648v4I1lFIxGxcIEc7CjxVA2Y2ka0xkIwI1lc2xSY4AK67AK6w
-	1l42xK82IYc2Ij64vIr41l4c8EcI0Ec7CjxVAaw2AFwI0_Jw0_GFyl4I8I3I0E4IkC6x0Y
-	z7v_Jr0_Gr1lx2IqxVAqx4xG67AKxVWUJVWUGwC20s026x8GjcxK67AKxVWUGVWUWwC2zV
-	AF1VAY17CE14v26r1q6r43MIIYrxkI7VAKI48JMIIF0xvE2Ix0cI8IcVAFwI0_Jr0_JF4l
-	IxAIcVC0I7IYx2IY6xkF7I0E14v26r4j6F4UMIIF0xvE42xK8VAvwI8IcIk0rVWUJVWUCw
-	CI42IY6I8E87Iv67AKxVWUJVW8JwCI42IY6I8E87Iv6xkF7I0E14v26r4j6r4UJbIYCTnI
-	WIevJa73UjIFyTuYvjfU5nmRUUUUU
-X-CM-SenderInfo: 50xmxthndljiysv6x2xfdvhtffof0/1tbiCQ8ICWmcbKfMkwAAsm
+References: <20260206190851.860662-1-yosry.ahmed@linux.dev>
+ <20260206190851.860662-7-yosry.ahmed@linux.dev> <aZzyanOAcoAnh01A@google.com>
+In-Reply-To: <aZzyanOAcoAnh01A@google.com>
+From: Yosry Ahmed <yosry@kernel.org>
+Date: Mon, 23 Feb 2026 16:51:04 -0800
+X-Gmail-Original-Message-ID: <CAO9r8zMv6E5j7=c-1oqpOihWk0w6a0rexf5FRaP-7PZSwV4vBQ@mail.gmail.com>
+X-Gm-Features: AaiRm52y2dulrFZMsHBcOpUK4cHWuIY5Yvz9WheIyyxhCE9Z1O45g3b-M2dxO24
+Message-ID: <CAO9r8zMv6E5j7=c-1oqpOihWk0w6a0rexf5FRaP-7PZSwV4vBQ@mail.gmail.com>
+Subject: Re: [PATCH v5 06/26] KVM: nSVM: Triple fault if mapping VMCB12 fails
+ on nested #VMEXIT
+To: Sean Christopherson <seanjc@google.com>
+Cc: Yosry Ahmed <yosry.ahmed@linux.dev>, Paolo Bonzini <pbonzini@redhat.com>, kvm@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 
-Hi all,
+> > @@ -1146,8 +1136,16 @@ int nested_svm_vmexit(struct vcpu_svm *svm)
+> >       /* in case we halted in L2 */
+> >       kvm_set_mp_state(vcpu, KVM_MP_STATE_RUNNABLE);
+> >
+> > +     svm->nested.vmcb12_gpa = 0;
+> > +
+> > +     if (kvm_vcpu_map(vcpu, gpa_to_gfn(vmcb12_gpa), &map)) {
+> > +             kvm_make_request(KVM_REQ_TRIPLE_FAULT, vcpu);
+> > +             return 1;
+>
+> Returning early isn't entirely correct.  In fact, I think it's worse than the
+> current behavior in many aspects.
+>
+> By doing leave_guest_mode() and not switching back to vmcb01 and not putting
+> vcpu->arch.mmu back to root_mmu, the vCPU will be in L1 but with vmcb02 and L2's
+> MMU active.
 
-Just a gentle ping on the patch below, sent about three weeks ago.
+Hmm yeah, the same problem also exists in
+nested_svm_vmrun_error_vmexit() after "KVM: nSVM: Restrict mapping
+VMCB12 on nested VMRUN". In that path, we only need to map vmcb12 to
+zero event_inj in __nested_svm_vmexit(). We can probably move them to
+the callers (nested_svm_vmrun_error_vmexit() and nested_svm_vmexit())
+to make it easier to skip if mapping fails.
 
-This fixes a NULL pointer dereference in the AIA TOPEI RMW path that can
-be triggered by fuzzed ioctl sequences before per-vCPU IMSIC state is
-initialized.
+>
+> The idea I can come up with is to isolate the vmcb12 writes (which is suprisingly
+> straightforward), and then simply skip the vmcb12 updates.  E.g.
+>
+> ---
+[..]
+> @@ -1184,14 +1168,53 @@ int nested_svm_vmexit(struct vcpu_svm *svm)
+>         if (guest_cpu_cap_has(vcpu, X86_FEATURE_NRIPS))
+>                 vmcb12->control.next_rip  = vmcb02->control.next_rip;
+>
+> +       if (nested_vmcb12_has_lbrv(vcpu))
+> +               svm_copy_lbrs(&vmcb12->save, &vmcb02->save);
+> +
+>         vmcb12->control.int_ctl           = svm->nested.ctl.int_ctl;
+>         vmcb12->control.event_inj         = svm->nested.ctl.event_inj;
+>         vmcb12->control.event_inj_err     = svm->nested.ctl.event_inj_err;
+>
+> +       trace_kvm_nested_vmexit_inject(vmcb12->control.exit_code,
+> +                                      vmcb12->control.exit_info_1,
+> +                                      vmcb12->control.exit_info_2,
+> +                                      vmcb12->control.exit_int_info,
+> +                                      vmcb12->control.exit_int_info_err,
+> +                                      KVM_ISA_SVM);
+> +}
+> +
+> +int nested_svm_vmexit(struct vcpu_svm *svm)
+> +{
+> +       struct kvm_vcpu *vcpu = &svm->vcpu;
+> +       struct vmcb *vmcb01 = svm->vmcb01.ptr;
+> +       struct vmcb *vmcb02 = svm->nested.vmcb02.ptr;
+> +       struct vmcb *vmcb12;
+> +       struct kvm_host_map map;
+> +       int rc;
+> +
+> +       if (!kvm_vcpu_map(vcpu, gpa_to_gfn(svm->nested.vmcb12_gpa), &map)) {
+> +               vmcb12 = map.hva;
 
-Any feedback would be appreciated.
+Maybe also kvm_vcpu_map() mapping call to
+nested_svm_vmexit_update_vmcb12() and inject a tripe fault if it
+fails? Probably plays nicer with "KVM: nSVM: Restrict mapping VMCB12
+on nested VMRUN".
 
-Thanks,
-Jiakai
+Otherwise it looks good to me.
 
+Should I send a new version to add all the changes?
