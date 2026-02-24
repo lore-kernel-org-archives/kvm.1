@@ -1,54 +1,54 @@
-Received: from mail-pl1-f202.google.com (mail-pl1-f202.google.com [209.85.214.202])
+Received: from mail-pj1-f74.google.com (mail-pj1-f74.google.com [209.85.216.74])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 72EC9238C0B
-	for <kvm@vger.kernel.org>; Tue, 24 Feb 2026 00:55:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.202
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 55A17256C9E
+	for <kvm@vger.kernel.org>; Tue, 24 Feb 2026 00:55:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.74
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771894523; cv=none; b=gG/BOSLzANcUYfkVVsGpUskT7mCgWa9Irz1XmvHZ7V0af9WXW6iDCF8/r2SwjTQPenVKJrwPVaCQBdZAcMqDgnGAShXRUGXr8CaOas7PG5ufriO5NUutkThZFtwZGrdoxMT0fGQexUEn5mMIVNGYBFKHIl+2AeuhgtD4j0lRQpQ=
+	t=1771894525; cv=none; b=EA4NmJG8I1owyCKZP9vxv0gw6FSZNqyeRCimZRfu8s7EiJV9DqUVj6Y6tW+hR7z0yoF9dRz5rPdDiBiXtfC4ka+LzRa8vGKqyinpjUiZ2vszj+Kn/2asiUsnXTKAMLbzOt20VxAInXT2egwC7N3R4rBATBoFXwoaEQG0WXEDYP4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771894523; c=relaxed/simple;
-	bh=cN5NunlFvoGOAe6HoYHTXV75STvfy1Ko7x7rssTBKYM=;
+	s=arc-20240116; t=1771894525; c=relaxed/simple;
+	bh=D0wfVSvJ1UsJp3MyQ6wAzujmp3VR7K5htA+colO4tiU=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=IkVs5hAR2sVsD5jTJgss/Ao11XixE4twFBhtpl78a9e4sxjSLITflMaJ/mclPgzAhVBe4vTmD/QaRK0MTuuAi65YIw4xoFPgutXAMC49yd5kSVtouRhFW6REBq9YtXeOVPKxOs7URIfuHbI/Y95RwfCDt93urf3gl/eTRUQ19HE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--jmattson.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=0gQxFBfT; arc=none smtp.client-ip=209.85.214.202
+	 To:Cc:Content-Type; b=aIKnu3QnClqqz4BjYCxLVBlp6zaiQ3EeeheXTPsAWmOEhpuncXZjm9SKJw1If/a+artcP/fyBY21GnxOK3+Q8UYGedyFNI89Vknd8UT4xJIuQ7Wuz26WtpGvEqzEXjtewRdhRaBfxS/3zu2amaw3ndWes7hLlxYpkgg1/txcChg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--jmattson.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=pRtpSPsq; arc=none smtp.client-ip=209.85.216.74
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--jmattson.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="0gQxFBfT"
-Received: by mail-pl1-f202.google.com with SMTP id d9443c01a7336-2aad5fec175so216765535ad.2
-        for <kvm@vger.kernel.org>; Mon, 23 Feb 2026 16:55:18 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="pRtpSPsq"
+Received: by mail-pj1-f74.google.com with SMTP id 98e67ed59e1d1-354c0eb08ceso33473214a91.1
+        for <kvm@vger.kernel.org>; Mon, 23 Feb 2026 16:55:23 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1771894518; x=1772499318; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1771894523; x=1772499323; darn=vger.kernel.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=wFzHPQE8L/64zORmW1YjNFU61I5i8m5XPko55YlqUjg=;
-        b=0gQxFBfTrhUpLUMtIZlx0iylDB4SQ4bJ/LejYfp9peUwgXo5brzz5mBOAlK1LyxkUQ
-         a4YFhBlS87AUDctkxOHUbN1XFpRiWjo75mNfnG484aC4Q8eNopiKCANv6pvvHffbG/Vh
-         H0q0id78A+LTew2r1X8MZ9pSvjAwsxeyhSCxV9SrLSEYCoOl9n7P+7194Y0Yxa67L4t7
-         DGI6Jw5kZKa5QjenCllnh8dqEshoG1PfCI2TcswwFkca09+BoCcxmhp58BiIi9WvhoMc
-         mZhO/9udhkMucbrRaKWzoi/GunucukAqnwXZAKaig0GLrA6Oupch12vDBBhNmFszf/Ps
-         nKsA==
+        bh=M8RJNlKzUYHH3Z91vbtEnFmofJjfz47joowNwa+7Nt8=;
+        b=pRtpSPsqxIy5r/2Z+T/r2olIPtMJ7f3IGw6jVp878fEgCFA0JD+l9SxYu24VyL2ZqC
+         rzOwO5T/xhkCN2pi3HSlyLeXB8SCUAkYW/TeHpRKP1OcEY+gZN2qV12q+0+rulOWuFpr
+         o/3Uu3rGjR3j6ZVHXU9yfv21+pMOBug1jwj+zPF7XV4Tslc8PYDNKhN20sHz6NkoWI6S
+         6wD5QZIJsrMzGIrRR8DNhdV1fwZTPw6jdnN6ixcT7BB2cxGrywMkh0IkjEAgob50zXtL
+         9tftFx3LhXd4KqjM4gvHHSNSmOSyBB8xXsYF+4Fh1vFpeu4pHtZEc4gqJJLbIY7LRubW
+         e2WA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1771894518; x=1772499318;
+        d=1e100.net; s=20230601; t=1771894523; x=1772499323;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=wFzHPQE8L/64zORmW1YjNFU61I5i8m5XPko55YlqUjg=;
-        b=YgawpB0EeL87xz6+5KuxhMAk7RLK9o55IouXWTtgKQ7b+iJvPHtto7qy4Oe94TV8x7
-         O53ZydP+o5zSKLkmMVUCrmtlqGOCEEI4HeX3MqA+WZWrU/pa1y7V5vdOapfuY5OCoSy5
-         ojoFTGQFeEE5GDkGiUf6ams6dOkpQRSepuMyA16KmiXmSbRCUeC7RX4iAUrQYMpxMLtr
-         zidysgZ7kAqIEQwUQcNE0FyXdxj0lJu3hIjbpwKxZIBmVzJ5jRbBitOFp6IvlXJ9NIrF
-         IcPas+ee37MDltVlqWFL+vFFaPdA/Q4wMwPhRN4C/5YdiRsenZl4/R1j/A4HjSqj0jef
-         c/vA==
-X-Forwarded-Encrypted: i=1; AJvYcCUkN6w3mKbMysQCICusO8wGrkibDzabLKATGjWJvx41KR0CtuaXZj9j12nChqWLmN+rwSw=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyAh+d67ZQmJqPeShtEj8wbrJbh817tZ8bLF1qLYI9HlIOJ8Kux
-	pkYFQy/fQI5q0nTN7zgyG1op4KnDB1NJ65iJZMcM7THL5wY3a+biuYbCIpFVBSb+XgHU2U0jum+
-	nqoUrgHIY+odgqQ==
-X-Received: from pgkm14.prod.google.com ([2002:a63:ed4e:0:b0:c63:55bd:18f0])
+        bh=M8RJNlKzUYHH3Z91vbtEnFmofJjfz47joowNwa+7Nt8=;
+        b=DcWdqgC7sY10DGpXkmKG9cX5K/exIGvEcHCaOFR1wATe7ETg1cqXwPoc7gJtbxJPbc
+         Cmakhkw0GZvmCaMbSuWqioHqO5RLpwYTxiH1WOGJ1ExLP+UtJoGUSWyr2nToW2rAhwiF
+         qaKLhUz2vMhstylddkVdUJy0ljs+nN5pyFC+rJdKpqEvFCsTYSDfZixtK/Zl79mlhn1w
+         vIIzGgVt3XIZvKDpl+b4RybUc8mnXCivxd+OPFKhnKZ0Jxeeq+7UNtytzplu6CFCN7be
+         Zo7n88CYWXfJuwzwo9xcQByJe2E899mIILkhPgqrV0qO2O8RZdc3rNlU2/y5WxPkzJwz
+         3FEw==
+X-Forwarded-Encrypted: i=1; AJvYcCU7o6b04qh1loJqQ8dBr3quILflVna+0ekURN6huD/JxjlDKWaMbf3sY3CkyQt0MDvOqG4=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz4J2OqYyRK+fjh3d9wQELj4yV9iQX1JJ3V0+g3eCrvJAiNbZKn
+	G4raNONKe5ek9cLmAJHqk605rq+HMPabaeNGmAHHavvZZciu5rAJtJ1rKYKHlG4gc27yqxnQ/Iv
+	UQAV7OL9Js/dOOA==
+X-Received: from pjug8.prod.google.com ([2002:a17:90a:ce88:b0:354:7c11:76e1])
  (user=jmattson job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:6a20:94cf:b0:393:7575:a8c7 with SMTP id adf61e73a8af0-39545e3994fmr10015601637.19.1771894517673;
- Mon, 23 Feb 2026 16:55:17 -0800 (PST)
-Date: Mon, 23 Feb 2026 16:54:44 -0800
+ 2002:a17:90b:56ce:b0:336:9dcf:ed14 with SMTP id 98e67ed59e1d1-358ae8d0c60mr8820057a91.23.1771894522639;
+ Mon, 23 Feb 2026 16:55:22 -0800 (PST)
+Date: Mon, 23 Feb 2026 16:54:47 -0800
 In-Reply-To: <20260224005500.1471972-1-jmattson@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
@@ -58,8 +58,8 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 References: <20260224005500.1471972-1-jmattson@google.com>
 X-Mailer: git-send-email 2.53.0.371.g1d285c8824-goog
-Message-ID: <20260224005500.1471972-7-jmattson@google.com>
-Subject: [PATCH v5 06/10] KVM: x86: Remove common handling of MSR_IA32_CR_PAT
+Message-ID: <20260224005500.1471972-10-jmattson@google.com>
+Subject: [PATCH v5 09/10] KVM: x86: nSVM: Handle restore of legacy nested state
 From: Jim Mattson <jmattson@google.com>
 To: Sean Christopherson <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>, 
 	Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
@@ -70,74 +70,115 @@ To: Sean Christopherson <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>
 Cc: Jim Mattson <jmattson@google.com>
 Content-Type: text/plain; charset="UTF-8"
 
-SVM now has completely independent handling of MSR_IA32_CR_PAT in
-svm_get_msr() and svm_set_msr().
+When nested NPT is enabled and KVM_SET_NESTED_STATE is used to restore an
+old checkpoint (without a valid gPAT), the current IA32_PAT value must be
+used as L2's gPAT.
 
-To avoid any confusion, move the logic for MSR_IA32_CR_PAT from
-kvm_get_msr_common() and kvm_set_msr_common() into vmx_get_msr() and
-vmx_set_msr().
+Unfortunately, checkpoint restore is non-atomic, and the order in which
+state components are restored is not specified. Hence, the current IA32_PAT
+value may be restored by KVM_SET_MSRS after KVM_SET_NESTED_STATE.  To
+further complicate matters, there may be a KVM_GET_NESTED_STATE before the
+next KVM_RUN.
+
+Introduce a new boolean, svm->nested.legacy_gpat_semantics. When set, hPAT
+updates are also applied to gPAT, preserving the old behavior (i.e. L2
+shares L1's PAT). Set this boolean when restoring legacy state (i.e. nested
+NPT is enabled, but no GPAT is provided) in KVM_SET_NESTED_STATE. Clear
+this boolean in svm_vcpu_pre_run(), to ensure that hPAT and gPAT are
+decoupled before the vCPU resumes execution. Also clear this boolean when
+the vCPU is forced out of guest mode by svm_leave_nested().
 
 Signed-off-by: Jim Mattson <jmattson@google.com>
 ---
- arch/x86/kvm/vmx/vmx.c | 9 ++++++---
- arch/x86/kvm/x86.c     | 9 ---------
- 2 files changed, 6 insertions(+), 12 deletions(-)
+ arch/x86/kvm/svm/nested.c | 13 ++++++++++---
+ arch/x86/kvm/svm/svm.c    |  8 ++++++--
+ arch/x86/kvm/svm/svm.h    |  9 +++++++++
+ 3 files changed, 25 insertions(+), 5 deletions(-)
 
-diff --git a/arch/x86/kvm/vmx/vmx.c b/arch/x86/kvm/vmx/vmx.c
-index 967b58a8ab9d..f5127dbd9104 100644
---- a/arch/x86/kvm/vmx/vmx.c
-+++ b/arch/x86/kvm/vmx/vmx.c
-@@ -2146,6 +2146,9 @@ int vmx_get_msr(struct kvm_vcpu *vcpu, struct msr_data *msr_info)
- 		    !(vcpu->arch.arch_capabilities & ARCH_CAP_TSX_CTRL_MSR))
- 			return 1;
- 		goto find_uret_msr;
-+	case MSR_IA32_CR_PAT:
-+		msr_info->data = vcpu->arch.pat;
-+		break;
- 	case MSR_IA32_UMWAIT_CONTROL:
- 		if (!msr_info->host_initiated && !vmx_has_waitpkg(vmx))
- 			return 1;
-@@ -2468,10 +2471,10 @@ int vmx_set_msr(struct kvm_vcpu *vcpu, struct msr_data *msr_info)
- 			return 1;
- 		goto find_uret_msr;
- 	case MSR_IA32_CR_PAT:
--		ret = kvm_set_msr_common(vcpu, msr_info);
--		if (ret)
--			break;
-+		if (!kvm_pat_valid(data))
-+			return 1;
+diff --git a/arch/x86/kvm/svm/nested.c b/arch/x86/kvm/svm/nested.c
+index 5a35277f2364..b68eddcbc217 100644
+--- a/arch/x86/kvm/svm/nested.c
++++ b/arch/x86/kvm/svm/nested.c
+@@ -1537,6 +1537,7 @@ void svm_leave_nested(struct kvm_vcpu *vcpu)
+ 	if (is_guest_mode(vcpu)) {
+ 		svm->nested.nested_run_pending = 0;
+ 		svm->nested.vmcb12_gpa = INVALID_GPA;
++		svm->nested.legacy_gpat_semantics = false;
  
-+		vcpu->arch.pat = data;
- 		if (is_guest_mode(vcpu) &&
- 		    get_vmcs12(vcpu)->vm_exit_controls & VM_EXIT_SAVE_IA32_PAT)
- 			get_vmcs12(vcpu)->guest_ia32_pat = data;
-diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
-index 416899b5dbe4..41936f83a17f 100644
---- a/arch/x86/kvm/x86.c
-+++ b/arch/x86/kvm/x86.c
-@@ -4025,12 +4025,6 @@ int kvm_set_msr_common(struct kvm_vcpu *vcpu, struct msr_data *msr_info)
- 			return 1;
+ 		leave_guest_mode(vcpu);
+ 
+@@ -2075,9 +2076,15 @@ static int svm_set_nested_state(struct kvm_vcpu *vcpu,
+ 
+ 	svm_switch_vmcb(svm, &svm->nested.vmcb02);
+ 
+-	if (nested_npt_enabled(svm) &&
+-	    (kvm_state->hdr.svm.flags & KVM_STATE_SVM_VALID_GPAT))
+-		vmcb_set_gpat(svm->vmcb, kvm_state->hdr.svm.gpat);
++	svm->nested.legacy_gpat_semantics =
++		nested_npt_enabled(svm) &&
++		!(kvm_state->hdr.svm.flags & KVM_STATE_SVM_VALID_GPAT);
++	if (nested_npt_enabled(svm)) {
++		u64 g_pat = svm->nested.legacy_gpat_semantics ?
++			    vcpu->arch.pat : kvm_state->hdr.svm.gpat;
++
++		vmcb_set_gpat(svm->nested.vmcb02.ptr, g_pat);
++	}
+ 
+ 	nested_vmcb02_prepare_control(svm, svm->vmcb->save.rip, svm->vmcb->save.cs.base);
+ 
+diff --git a/arch/x86/kvm/svm/svm.c b/arch/x86/kvm/svm/svm.c
+index 00dba10991a5..ac45702f566e 100644
+--- a/arch/x86/kvm/svm/svm.c
++++ b/arch/x86/kvm/svm/svm.c
+@@ -2727,7 +2727,8 @@ static bool svm_pat_accesses_gpat(struct kvm_vcpu *vcpu, bool from_host)
+ 	 * with older kernels.
+ 	 */
+ 	WARN_ON_ONCE(from_host && vcpu->wants_to_run);
+-	return !from_host && is_guest_mode(vcpu) && nested_npt_enabled(svm);
++	return !svm->nested.legacy_gpat_semantics && !from_host &&
++		is_guest_mode(vcpu) && nested_npt_enabled(svm);
+ }
+ 
+ static u64 svm_get_pat(struct kvm_vcpu *vcpu, bool from_host)
+@@ -2749,7 +2750,8 @@ static void svm_set_pat(struct kvm_vcpu *vcpu, bool from_host, u64 data)
+ 		if (npt_enabled) {
+ 			vmcb_set_gpat(svm->vmcb01.ptr, data);
+ 			if (is_guest_mode(&svm->vcpu) &&
+-			    !nested_npt_enabled(svm))
++			    (svm->nested.legacy_gpat_semantics ||
++			     !nested_npt_enabled(svm)))
+ 				vmcb_set_gpat(svm->vmcb, data);
  		}
- 		break;
--	case MSR_IA32_CR_PAT:
--		if (!kvm_pat_valid(data))
--			return 1;
--
--		vcpu->arch.pat = data;
--		break;
- 	case MTRRphysBase_MSR(0) ... MSR_MTRRfix4K_F8000:
- 	case MSR_MTRRdefType:
- 		return kvm_mtrr_set_msr(vcpu, msr, data);
-@@ -4436,9 +4430,6 @@ int kvm_get_msr_common(struct kvm_vcpu *vcpu, struct msr_data *msr_info)
- 		msr_info->data = kvm_scale_tsc(rdtsc(), ratio) + offset;
- 		break;
  	}
--	case MSR_IA32_CR_PAT:
--		msr_info->data = vcpu->arch.pat;
--		break;
- 	case MSR_MTRRcap:
- 	case MTRRphysBase_MSR(0) ... MSR_MTRRfix4K_F8000:
- 	case MSR_MTRRdefType:
+@@ -4262,6 +4264,8 @@ static int svm_vcpu_pre_run(struct kvm_vcpu *vcpu)
+ 	if (to_kvm_sev_info(vcpu->kvm)->need_init)
+ 		return -EINVAL;
+ 
++	to_svm(vcpu)->nested.legacy_gpat_semantics = false;
++
+ 	return 1;
+ }
+ 
+diff --git a/arch/x86/kvm/svm/svm.h b/arch/x86/kvm/svm/svm.h
+index 58b0b935d049..626efef878a5 100644
+--- a/arch/x86/kvm/svm/svm.h
++++ b/arch/x86/kvm/svm/svm.h
+@@ -238,6 +238,15 @@ struct svm_nested_state {
+ 	 * on its side.
+ 	 */
+ 	bool force_msr_bitmap_recalc;
++
++	/*
++	 * Indicates that a legacy nested state (without a valid gPAT) was
++	 * recently restored. Until the next KVM_RUN, updates to hPAT are
++	 * also applied to gPAT, preserving legacy behavior (i.e. L2 shares
++	 * L1's PAT). Because checkpoint restore is non-atomic, this
++	 * complication is necessary for backward compatibility.
++	 */
++	bool legacy_gpat_semantics;
+ };
+ 
+ struct vcpu_sev_es_state {
 -- 
 2.53.0.371.g1d285c8824-goog
 
