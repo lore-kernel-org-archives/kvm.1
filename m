@@ -1,147 +1,110 @@
-Received: from 011.lax.mailroute.net (011.lax.mailroute.net [199.89.1.14])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f73.google.com (mail-pj1-f73.google.com [209.85.216.73])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6906D2F617C;
-	Tue, 24 Feb 2026 19:26:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=199.89.1.14
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D1B0930F53C
+	for <kvm@vger.kernel.org>; Tue, 24 Feb 2026 19:37:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.73
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771961168; cv=none; b=TgpfjQwCwWcnT0i1O61s0LcTbMJyTQQoJqBCwsSZz6D2mh4IaU3aecZ2TPWLUeatzhnWDens8Aq+chru32KQXgycLGWSOB4/AeY0dBOky8bdjLj/UUPAl/Tjaqsf730857jTUOPZWI7AHm1yKO6ZExVi0fSO93CaSZ/XqVi5xGw=
+	t=1771961861; cv=none; b=FKNGyGFbBKTcgQt03yuGn8Zvhjmnc+xPurfMLlr66b/g9JuiL8o2Bcjg+B1v6h/rBO3Z+FQdZCqAirDj+z7sS7faeRboqyf9N5eOI3XY1vhzI19xxkFAYZqwPXFep0LM5rHW7WM5MH6Af2QF+HtgJ1oQV3Qit9lzPQRIYxAWQOI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771961168; c=relaxed/simple;
-	bh=m23sxk2fsrDn0ix0e/ZaHu0BCuHJX82d/xQJo5X520k=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=FaTgUQO7rds5OEa+3mL9s8/h6KdI4mQGj4Cj4XV2LdAD86IkohxXY0Ds3UkhHjuA1PJ/XMY+8iBaYL6Fz+K0zyuD0BkaX2lF9AxcH+aCu3uXPMZzuPPpAzNkJ05N+m+bt0b+W5LFNbuwfelLwAsDOQWUN1tPkH+mWXkiUJNNeDw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=acm.org; spf=pass smtp.mailfrom=acm.org; dkim=pass (2048-bit key) header.d=acm.org header.i=@acm.org header.b=Ge3kA35s; arc=none smtp.client-ip=199.89.1.14
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=acm.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=acm.org
+	s=arc-20240116; t=1771961861; c=relaxed/simple;
+	bh=TUjME4e4ee/WT/NlNRYr/K81TzZEWNbu4EqawuIqT9c=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=q3mta7npRBtZ01w0FOUZ7ed3n+FnjnZcE0G7dS2pYquuGcdtVNTGh1FxmlRxV8QQ3ZwMySGNdOtWRYNAJqJj2oD+xidvZqBwfmzcv9lv0hOJQQ38dnhReDdDBsqWCSyui5IXwJgItW0HQW5b96d3NmPl1wo2K3YS5fZdrhLC90U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Ose65Rib; arc=none smtp.client-ip=209.85.216.73
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=acm.org header.i=@acm.org header.b="Ge3kA35s"
-Received: from localhost (localhost [127.0.0.1])
-	by 011.lax.mailroute.net (Postfix) with ESMTP id 4fL74G4bGYz1XM6JH;
-	Tue, 24 Feb 2026 19:26:06 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=acm.org; h=
-	content-transfer-encoding:content-type:content-type:in-reply-to
-	:from:from:content-language:references:subject:subject
-	:user-agent:mime-version:date:date:message-id:received:received;
-	 s=mr01; t=1771961163; x=1774553164; bh=YUwsQGY2aFfZKK7Wlzh+EJtf
-	iWdyE9X0mtY4U0hZqxM=; b=Ge3kA35sBhCoJF8c3Ti1glvz8fLxq82vKp/Kwnwb
-	+iTUsyjRNVXuQ7SFVkqBPKfkCCAwkR6gm7dU77rxAs78UKc4sFO6oa1JP/5tbOAK
-	AdTUZhh3kGegZDXLJE9z5HsonLgH9kQME2EChYeK9WpyZipCfLLgSmoc35HVdKuY
-	mgo5qiMeG61wGt8ty4lSq2/1mUZWqoqVWvjy9OBCHz9FOnjQKZUlZtYWAdLJ23lu
-	qJD9VLoA0r7HYl5XIellHSPrUtYCStYskIvtGRyfi8YBJZftVFMv68yQQlR22Um1
-	ymblRp5e8wWR8qNO8bixPnrN1iaxlks6949ViZ5AMl3HWw==
-X-Virus-Scanned: by MailRoute
-Received: from 011.lax.mailroute.net ([127.0.0.1])
- by localhost (011.lax [127.0.0.1]) (mroute_mailscanner, port 10029) with LMTP
- id J7sLZpho_xoS; Tue, 24 Feb 2026 19:26:03 +0000 (UTC)
-Received: from [172.20.2.156] (unknown [4.28.11.157])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	(Authenticated sender: bvanassche@acm.org)
-	by 011.lax.mailroute.net (Postfix) with ESMTPSA id 4fL7464Psrz1XM6J6;
-	Tue, 24 Feb 2026 19:25:58 +0000 (UTC)
-Message-ID: <7a22294b-1150-4c55-a95a-ea918cfb9b76@acm.org>
-Date: Tue, 24 Feb 2026 11:25:56 -0800
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Ose65Rib"
+Received: by mail-pj1-f73.google.com with SMTP id 98e67ed59e1d1-354c0eb08ceso37622875a91.1
+        for <kvm@vger.kernel.org>; Tue, 24 Feb 2026 11:37:40 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1771961860; x=1772566660; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=y4OyuNHT7ap5XzoM1m50GD/I12ZIB1MFriXuxmmpl50=;
+        b=Ose65Rib3jgeAF/H6S6ISu/jsPEYQMOPV7/UqGqud6ZEy/YTh+pGhILe5F518wZOKw
+         OPscuy1pLFjZc/D+aItJrH9fFG2vf2xww1dMHl1R/qLuIPevTPI9cTFERKLvrh7LwAc5
+         Hh+whtNp9swnF5ozbZ459dowfG0jMqperScX1nbS6MjVCtdyDU03YZZqIz1L0ZhtA709
+         bFZS6KMPclHJrRQhfVjf3AUBtsiONe3E0NzcML2xaXRumpq/1epc7gjsjN2fUVNSk3xV
+         U9NgB5KzQFzAAzpPgEl1S6ZOqu3dkz5vPMe84Y2D+V+wK5BgQdU0HWJBgPoH0YQTdqsC
+         Xb+A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1771961860; x=1772566660;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=y4OyuNHT7ap5XzoM1m50GD/I12ZIB1MFriXuxmmpl50=;
+        b=ZhoCDSQeC2kOLFeli/KrG12EWknysBiwqMk7PzLCKwJaaP+5bFhkqQWtWt8QL7yv3D
+         1amW39zzliM0flvHdiimfIWh7JdfNj/d46ps4UTOuwGuzpLTTl+VRljz9GbSzRhhQvki
+         FAcNjvWWcMLm3q+0L7Os6UHeuYOZ4w3tbQ5ZyY5od2zERAlaEu9Mnwl23HdnbniD6K5N
+         SZ9/4IJygfXXDoB/09PF7HBAPvC1dVeAk3rfFX4m95uToFGeHg3Y9feFgt58I0GwNTWz
+         31m1ReFqwG/cIlt5UKvXyGSFyBGl9k0NcjDwMXfIPPSC9jaUCu4x4UZWlvO8ylON5Q9C
+         XOcQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUOU/FXYqU/BN2tV/G0csMlE/Rzgjas9FLVkVruxh04AGQfZZXT0IggMXvKS14EO7pobcw=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy47Df6w3QSPqFMl1/BcA/sDjmCz6JkKn7HqaOodYqiEocEe006
+	kZ/7s2qGdAsdNx2xekMWhiQtk9puJC7c4SMTriOC1Da+UVr9wPnG/OpNl2YBZh6hFeEVLZK9Wl1
+	fR9h2wA==
+X-Received: from pjqf14.prod.google.com ([2002:a17:90a:a78e:b0:354:9f74:37d])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:35c8:b0:353:5595:3246
+ with SMTP id 98e67ed59e1d1-358ae8b6672mr10708334a91.21.1771961859876; Tue, 24
+ Feb 2026 11:37:39 -0800 (PST)
+Date: Tue, 24 Feb 2026 11:37:38 -0800
+In-Reply-To: <CAO9r8zNrQGKM0N345+KG=W72FyV1pp2EqOLcTMUZkz6bCA3MgQ@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 01/62] kvm: Make pi_enable_wakeup_handler() easier to
- analyze
-To: Sean Christopherson <seanjc@google.com>
-Cc: Peter Zijlstra <peterz@infradead.org>, Ingo Molnar <mingo@redhat.com>,
- Will Deacon <will@kernel.org>, Boqun Feng <boqun@kernel.org>,
- Waiman Long <longman@redhat.com>, linux-kernel@vger.kernel.org,
- Marco Elver <elver@google.com>, Christoph Hellwig <hch@lst.de>,
- Steven Rostedt <rostedt@goodmis.org>,
- Nick Desaulniers <ndesaulniers@google.com>,
- Nathan Chancellor <nathan@kernel.org>, Kees Cook <kees@kernel.org>,
- Jann Horn <jannh@google.com>, Paolo Bonzini <pbonzini@redhat.com>,
- kvm@vger.kernel.org
-References: <20260223215118.2154194-1-bvanassche@acm.org>
- <20260223215118.2154194-2-bvanassche@acm.org> <aZ3r5_P74tUJm2oF@google.com>
-Content-Language: en-US
-From: Bart Van Assche <bvanassche@acm.org>
-In-Reply-To: <aZ3r5_P74tUJm2oF@google.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Mime-Version: 1.0
+References: <20260224071822.369326-1-chengkev@google.com> <20260224071822.369326-4-chengkev@google.com>
+ <aZ3gg2VsrWGKrX4l@google.com> <CAO9r8zNrQGKM0N345+KG=W72FyV1pp2EqOLcTMUZkz6bCA3MgQ@mail.gmail.com>
+Message-ID: <aZ3-AqK3liE1XNGB@google.com>
+Subject: Re: [PATCH V2 3/4] KVM: VMX: Don't consult original exit
+ qualification for nested EPT violation injection
+From: Sean Christopherson <seanjc@google.com>
+To: Yosry Ahmed <yosry@kernel.org>
+Cc: Kevin Cheng <chengkev@google.com>, pbonzini@redhat.com, kvm@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, yosry.ahmed@linux.dev
+Content-Type: text/plain; charset="us-ascii"
 
-On 2/24/26 10:20 AM, Sean Christopherson wrote:
-> For the scope, please use:
+On Tue, Feb 24, 2026, Yosry Ahmed wrote:
+> > > @@ -496,7 +510,7 @@ static int FNAME(walk_addr_generic)(struct guest_walker *walker,
+> > >        * [2:0] - Derive from the access bits. The exit_qualification might be
+> > >        *         out of date if it is serving an EPT misconfiguration.
+> > >        * [5:3] - Calculated by the page walk of the guest EPT page tables
+> > > -      * [7:8] - Derived from [7:8] of real exit_qualification
+> > > +      * [7:8] - Set at the kvm_translate_gpa() call sites above
+> > >        *
+> > >        * The other bits are set to 0.
+> > >        */
+> > > diff --git a/arch/x86/kvm/vmx/nested.c b/arch/x86/kvm/vmx/nested.c
+> > > index 248635da67661..6a167b1d51595 100644
+> > > --- a/arch/x86/kvm/vmx/nested.c
+> > > +++ b/arch/x86/kvm/vmx/nested.c
+> > > @@ -444,9 +444,6 @@ static void nested_ept_inject_page_fault(struct kvm_vcpu *vcpu,
+> > >                       exit_qualification = 0;
+> > >               } else {
+> > >                       exit_qualification = fault->exit_qualification;
+> > > -                     exit_qualification |= vmx_get_exit_qual(vcpu) &
+> > > -                                           (EPT_VIOLATION_GVA_IS_VALID |
+> > > -                                            EPT_VIOLATION_GVA_TRANSLATED);
+> >
+> > Hmm, this isn't quite correct.  If KVM injects an EPT Violation (or a #NPF) when
+> > handling an EPT Violation (or #NPF) from L2, then KVM _should_ follow hardware.
+> >
+> > Aha!  I think the easiest way to deal with that is to flag nested page faults
+> > that were the result of walking L1's TDP when handling an L2 TDP page fault, and
+> > then let vendor code extract the fault information out of hardaware.
 > 
->     KVM: VMX:
-> 
-> On Mon, Feb 23, 2026, Bart Van Assche wrote:
->> The Clang thread-safety analyzer does not support comparing expressions
->> that use per_cpu(). Hence introduce a new local variable to capture the
->> address of a per-cpu spinlock. This patch prepares for enabling the
->> Clang thread-safety analyzer.
->>
->> Cc: Sean Christopherson <seanjc@google.com>
->> Cc: Paolo Bonzini <pbonzini@redhat.com>
->> Cc: kvm@vger.kernel.org
->> Signed-off-by: Bart Van Assche <bvanassche@acm.org>
->> ---
->>   arch/x86/kvm/vmx/posted_intr.c | 7 ++++---
->>   1 file changed, 4 insertions(+), 3 deletions(-)
->>
->> diff --git a/arch/x86/kvm/vmx/posted_intr.c b/arch/x86/kvm/vmx/posted_intr.c
->> index 4a6d9a17da23..f8711b7b85a8 100644
->> --- a/arch/x86/kvm/vmx/posted_intr.c
->> +++ b/arch/x86/kvm/vmx/posted_intr.c
->> @@ -164,6 +164,7 @@ static void pi_enable_wakeup_handler(struct kvm_vcpu *vcpu)
->>   	struct pi_desc *pi_desc = vcpu_to_pi_desc(vcpu);
->>   	struct vcpu_vt *vt = to_vt(vcpu);
->>   	struct pi_desc old, new;
->> +	raw_spinlock_t *wakeup_lock;
->>   
->>   	lockdep_assert_irqs_disabled();
->>   
->> @@ -179,11 +180,11 @@ static void pi_enable_wakeup_handler(struct kvm_vcpu *vcpu)
->>   	 * entirety of the sched_out critical section, i.e. the wakeup handler
->>   	 * can't run while the scheduler locks are held.
->>   	 */
->> -	raw_spin_lock_nested(&per_cpu(wakeup_vcpus_on_cpu_lock, vcpu->cpu),
->> -			     PI_LOCK_SCHED_OUT);
->> +	wakeup_lock = &per_cpu(wakeup_vcpus_on_cpu_lock, vcpu->cpu);
-> 
-> Addressing this piecemeal doesn't seem maintainable in the long term.  The odds
-> of unintentionally regressing the coverage with a cleanup are rather high.  Or
-> we'll end up with confused and/or grumpy developers because they're required to
-> write code in a very specific way because of what are effectively shortcomings
-> in the compiler.
+> Is it not possible that KVM gets an EPT Violation (or a #NPF) on an L2
+> memory access while the CPU is walking L2's page tables, then KVM
+> walks L1's TDP and finds mappings for the L2 page tables but not the
+> final translation? Or will KVM always just fixup the immediate EPT
+> Violation (or #NPF) by inserting a shadow mapping of L2's page tables
+> and retry the instruction immediately?
 
-I think it's worth mentioning that the number of patches similar to the
-above is small. If I remember correctly, I only encountered two similar
-cases in the entire kernel tree.
+The latter, assuming by "shadow mapping of L2's page tables" out meant "installing
+a shadow mapping of the faulting L2 GPA according to L1's TDP page tables".
 
-Regarding why the above patch is necessary, I don't think that it is
-fair to blame the compiler in this case. The macros that implement
-per_cpu() make it impossible for the compiler to conclude that the
-pointers passed to the raw_spin_lock_nested() and raw_spin_unlock()
-calls are identical:
-
-/*
-  * Add an offset to a pointer.  Use RELOC_HIDE() to prevent the compiler
-  * from making incorrect assumptions about the pointer value.
-  */
-#define SHIFT_PERCPU_PTR(__p, __offset)				\
-	RELOC_HIDE(PERCPU_PTR(__p), (__offset))
-
-#define RELOC_HIDE(ptr, off)					\
-({								\
-	unsigned long __ptr;					\
-	__asm__ ("" : "=r"(__ptr) : "0"(ptr));			\
-	(typeof(ptr)) (__ptr + (off));				\
-})
-
-By the way, the above patch is not the only possible solution for
-addressing the thread-safety warning Clang reports for this function. 
-Another possibility is adding __no_context_analysis to the function
-definition. Is the latter perhaps what you prefer?
-
-Bart.
+I.e. when servicing an L2 TDP fault, KVM is only resolving the fault for the reported
+L2 GPA, _not_ the originating L2 GVA (if there is one).
