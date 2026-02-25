@@ -1,95 +1,55 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from canpmsgout06.his.huawei.com (canpmsgout06.his.huawei.com [113.46.200.221])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F0452641FC
-	for <kvm@vger.kernel.org>; Wed, 25 Feb 2026 03:51:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A45BA155C82;
+	Wed, 25 Feb 2026 04:04:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=113.46.200.221
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771991514; cv=none; b=ZF4AfxI0NOQSpvQ61viJdVLOOvRl0SeNef+7yFuiX/3zXOqMKMfT84txoWdJDDDiu0MEBLMzCcpo6MeLe6gwuuAEA2R9V/PpkjRhTynEQNcy1bZwxGCR5/67ZwFG7vpwjm5S2NI1rnyGUXJiqCFF+uQ8IVtAT7H0VphQWh1fyIk=
+	t=1771992269; cv=none; b=hhL9GIKg8moVcxvOcu+r1A0ZR1cYXY70THIAfnxnZK26pjiHYGA9zZgkicvMVd2kmXK1NZvG1Umbvpb6Tx1X82deCw/FHqStpgW+DBZkk6f2TgHubC/SaNb3+F1NwuMYh5CdBvQy2fhZp+UROwJ3dP2YAapIiuL2lRTqVIBO1D0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771991514; c=relaxed/simple;
-	bh=JxATHAEirCV2Xi9bhU3Rtjp8u0tgIjSxay95AflnYZc=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Bm56Ed/odj6c9SHHv92G6ulkxDN72zZv9E334kkS7FVPPmLxZUYeXjKNefFQ0Y1X/jRCDRPEulNFiT8xrE5oBsv+r3Bk4xk2Qq++0SioV5yHEVj6aAVM0ZtJOyp6qtjbYkxg+oD2QA6/zhvoCZN++JZBmS1OOA3a+2oqU7K8zxM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=DeIXeUZa; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=jUFjfRRf; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1771992269; c=relaxed/simple;
+	bh=ENenO/cy/T/hJWbdFyRSqVxSeHMgdjnk3MQXCRXpHX0=;
+	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=mYsx7Xo917Di91C0w9Cs/laXOzS5hOUEbtBepGmlgB1M5nTVJpelgskbpLw8A8vfK6G+uAYK2N0oumT4I7AcV6L3QunD5lbZA9lP1KjjjCiPASz9yBl5/1ZgQZlHaFF4D9bxsFTSRZKEVeWtdKDoamRFE+s4p8rDULSRFuSchKY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b=iJbwssON; arc=none smtp.client-ip=113.46.200.221
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="DeIXeUZa";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="jUFjfRRf"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1771991512;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=lWSmk7aS39eozNMeUrD49ba8qpOrFdvcFtxo/v8o3SM=;
-	b=DeIXeUZa+i6OTzls1BNn3vLetmqJQZniHzDEp01ST+zIuaSqGuRh5HRabO4E/ZrbKdHqiB
-	sLjV8w+bA/6hZp+z74kZTWMhYlgkhqsoFCGai5Hqlm7h8sEzMTESMrwwLzBqeQy2Eu6ZEr
-	NYfBG8qWnZStnljApSC2PKF2Ev5RcWg=
-Received: from mail-pj1-f69.google.com (mail-pj1-f69.google.com
- [209.85.216.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-399-xgA7jYHDMIGmUwt6cpN0tw-1; Tue, 24 Feb 2026 22:51:50 -0500
-X-MC-Unique: xgA7jYHDMIGmUwt6cpN0tw-1
-X-Mimecast-MFC-AGG-ID: xgA7jYHDMIGmUwt6cpN0tw_1771991510
-Received: by mail-pj1-f69.google.com with SMTP id 98e67ed59e1d1-35641c14663so6638373a91.2
-        for <kvm@vger.kernel.org>; Tue, 24 Feb 2026 19:51:50 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1771991510; x=1772596310; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=lWSmk7aS39eozNMeUrD49ba8qpOrFdvcFtxo/v8o3SM=;
-        b=jUFjfRRfi+zavxXapeVOWpjpoP6kSq1VFrjC/Bhr+jNJlfIpXdIuFZjuQzLM+ujCmR
-         tx8XEH04hYOLSt5ywYS8y8pw6pkiMErHxiChm05ZWrzJx9lX/d/TZ7JBX5Btmhf/Hx5c
-         8AMqJf7W4U3gM7GNyzhWwmgf+wfkGPN6y7G2xz9RlVxPBY6Kakywu0Ri1XNe4Ay8wiZ5
-         yTD67xTkPpNPBG9YLfbMaoXi8fW39RJks6lrN0n+B5pcFeaGohXFy3cDVmABFHL0hfL2
-         f/opPJxFd2nWGgYtnoZZGdnrrQ1yTHDzMWiqk781/l/YeZqR5DlamdyhKPMRarNGfWlv
-         +Kiw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1771991510; x=1772596310;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=lWSmk7aS39eozNMeUrD49ba8qpOrFdvcFtxo/v8o3SM=;
-        b=prsErczVbKt2gYtRJZEnLUqJgug/RyMWhmdxa+UBl5G9lpBzudoQyV6DL6tpCfsWJK
-         X2mEoG+VA6+pBeEjp/3tyVobDQ3sNv6t2cL1g/+n+N1SoqCoejtUngN/SYo7zO8fRIBR
-         d002hnOAkp1adK1jEtLzjgmfhMLP9wRvWDWD+ANOtphyV2jYTUWNw/B4U8MOD/aX+GYw
-         NZHfchKsSJkRWQgYa1uiV4H52Wj5TD8bU4NLoaMB8IoxV0PAYMQY6hCIvJqvKXjAKHgz
-         BC0fXakEp3TOcL6lvmmtIFxmsggEvs8E7Re8U/DA/pg/NLEi6F1bqO1zY11282sJbJDA
-         bF4Q==
-X-Forwarded-Encrypted: i=1; AJvYcCUBL2Tq/zXaaw8P6afw2SFYSeBMMJ0mJ4u7poQsm7f+HpEogur/P1LkCxLuU8ew0by5ZRc=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yxto6Ca3eyZVUNMuPrk+/bV97luaFjp6nOV9C711TQBhkaYPGbM
-	asBINQZtMm25jTWbBlj+2GoPoVTWpkC1m73opFPSYboECaxqQNF2wKr1BzV5reeVoJEeq/qVIz5
-	LJ5PUGz1hvBR8rHNbFRdEzWWc7R08l7zRWisq5GxAl3O+VQpOU/Jlgw==
-X-Gm-Gg: ATEYQzx8WvFA+SZ3+G3RSHDNX6cGRFBvXI2ZUzvoEZhgqvRhajgRlxlvZNrqwi0na3I
-	kyXOv2lEI+ivvPx2m/0LPD8e8eqbuV+Vp9I96nJ4R2ueMz+/lFFs+0pUodWubVWmtG0RnNdtmbo
-	KnGaJkd7/7JsfnLoi75vG1fo7/2qQ6G4H2SEgozMzxcZo75wXe5k5RwPTkJelCZ7FiO79H5iclT
-	s0zR6s3UEx9rbP+eCYMHnhcql55BWoT5BjHPyAtlIUplzNWfuJ4yKHU0UwgO0UqbzuC0ofGWHWU
-	l8b85uZB2Ep/qGp+c0ZHqeAljZxQkiYfVdJP+4WEk+WqTSRmHc8cORmECKiNJFc7J/SQjNJufOB
-	G0vozKIdLr60Og2QL5j0w3r4yOlBgA+jMa6GqkcSepBEoNkqapa5WUOg=
-X-Received: by 2002:a17:90b:5624:b0:356:2eff:df05 with SMTP id 98e67ed59e1d1-358ae8a7d46mr13550207a91.16.1771991509817;
-        Tue, 24 Feb 2026 19:51:49 -0800 (PST)
-X-Received: by 2002:a17:90b:5624:b0:356:2eff:df05 with SMTP id 98e67ed59e1d1-358ae8a7d46mr13550190a91.16.1771991509471;
-        Tue, 24 Feb 2026 19:51:49 -0800 (PST)
-Received: from rhel9-box.lan ([122.176.129.56])
-        by smtp.googlemail.com with ESMTPSA id 98e67ed59e1d1-359018838b2sm1186006a91.5.2026.02.24.19.51.46
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 24 Feb 2026 19:51:49 -0800 (PST)
-From: Ani Sinha <anisinha@redhat.com>
-To: Paolo Bonzini <pbonzini@redhat.com>
-Cc: Ani Sinha <anisinha@redhat.com>,
-	kraxel@redhat.com,
-	ani@anisinha.ca,
-	kvm@vger.kernel.org,
-	qemu-devel@nongnu.org
-Subject: [PATCH v6 30/35] kvm/vcpu: add notifiers to inform vcpu file descriptor change
-Date: Wed, 25 Feb 2026 09:19:35 +0530
-Message-ID: <20260225035000.385950-31-anisinha@redhat.com>
-X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20260225035000.385950-1-anisinha@redhat.com>
-References: <20260225035000.385950-1-anisinha@redhat.com>
+	dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b="iJbwssON"
+dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
+	c=relaxed/relaxed; q=dns/txt;
+	h=From;
+	bh=lvq/O+R+y6qCmOEUVjR2PUgdD2ilp/5PaX6r9kRJGgc=;
+	b=iJbwssONMnPTRBgo5fw1t6+rLsbPEMOcqvZPDl2ktV9XH7Kf26BtkeotL5os9jUmfXVD/ezk5
+	YwA7byABP7pxRQ9yfdlnqIAlzDD9ze6AwIYfP09dDFKaLIhN6ZECjyvQWl0RtgMlbKV8AhdTkhs
+	CtMZYK070yqV7n0l4XDFoV4=
+Received: from mail.maildlp.com (unknown [172.19.162.223])
+	by canpmsgout06.his.huawei.com (SkyGuard) with ESMTPS id 4fLLSn6sNVzRhRJ;
+	Wed, 25 Feb 2026 11:59:37 +0800 (CST)
+Received: from kwepemr100010.china.huawei.com (unknown [7.202.195.125])
+	by mail.maildlp.com (Postfix) with ESMTPS id 021D640569;
+	Wed, 25 Feb 2026 12:04:24 +0800 (CST)
+Received: from huawei.com (10.50.163.32) by kwepemr100010.china.huawei.com
+ (7.202.195.125) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.36; Wed, 25 Feb
+ 2026 12:04:23 +0800
+From: Tian Zheng <zhengtian10@huawei.com>
+To: <maz@kernel.org>, <oupton@kernel.org>, <catalin.marinas@arm.com>,
+	<corbet@lwn.net>, <pbonzini@redhat.com>, <will@kernel.org>,
+	<zhengtian10@huawei.com>
+CC: <yuzenghui@huawei.com>, <wangzhou1@hisilicon.com>,
+	<liuyonglong@huawei.com>, <Jonathan.Cameron@huawei.com>,
+	<yezhenyu2@huawei.com>, <linuxarm@huawei.com>, <joey.gouly@arm.com>,
+	<kvmarm@lists.linux.dev>, <kvm@vger.kernel.org>,
+	<linux-arm-kernel@lists.infradead.org>, <linux-doc@vger.kernel.org>,
+	<linux-kernel@vger.kernel.org>, <skhan@linuxfoundation.org>,
+	<suzuki.poulose@arm.com>, <leo.bras@arm.com>
+Subject: [PATCH v3 1/5] arm64/sysreg: Add HDBSS related register information
+Date: Wed, 25 Feb 2026 12:04:17 +0800
+Message-ID: <20260225040421.2683931-2-zhengtian10@huawei.com>
+X-Mailer: git-send-email 2.33.0
+In-Reply-To: <20260225040421.2683931-1-zhengtian10@huawei.com>
+References: <20260225040421.2683931-1-zhengtian10@huawei.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -97,119 +57,76 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: kwepems500002.china.huawei.com (7.221.188.17) To
+ kwepemr100010.china.huawei.com (7.202.195.125)
 
-When new vcpu file descriptors are created and bound to the new kvm file
-descriptor as a part of the confidential guest reset mechanism, various
-subsystems needs to know about it. This change adds notifiers so that various
-subsystems can take appropriate actions when vcpu fds change by registering
-their handlers to this notifier.
-Subsequent changes will register specific handlers to this notifier.
+From: eillon <yezhenyu2@huawei.com>
 
-Signed-off-by: Ani Sinha <anisinha@redhat.com>
+The ARM architecture added the HDBSS feature and descriptions of
+related registers (HDBSSBR/HDBSSPROD) in the DDI0601(ID121123) version,
+add them to Linux.
+
+Signed-off-by: eillon <yezhenyu2@huawei.com>
+Signed-off-by: Tian Zheng <zhengtian10@huawei.com>
 ---
- accel/kvm/kvm-all.c    | 26 ++++++++++++++++++++++++++
- accel/stubs/kvm-stub.c | 10 ++++++++++
- include/system/kvm.h   | 17 +++++++++++++++++
- 3 files changed, 53 insertions(+)
+ arch/arm64/include/asm/esr.h |  2 ++
+ arch/arm64/tools/sysreg      | 29 +++++++++++++++++++++++++++++
+ 2 files changed, 31 insertions(+)
 
-diff --git a/accel/kvm/kvm-all.c b/accel/kvm/kvm-all.c
-index a347a71a2e..a1f910e9df 100644
---- a/accel/kvm/kvm-all.c
-+++ b/accel/kvm/kvm-all.c
-@@ -127,6 +127,9 @@ static NotifierList kvm_irqchip_change_notifiers =
- static NotifierWithReturnList register_vmfd_changed_notifiers =
-     NOTIFIER_WITH_RETURN_LIST_INITIALIZER(register_vmfd_changed_notifiers);
- 
-+static NotifierWithReturnList register_vcpufd_changed_notifiers =
-+    NOTIFIER_WITH_RETURN_LIST_INITIALIZER(register_vcpufd_changed_notifiers);
+diff --git a/arch/arm64/include/asm/esr.h b/arch/arm64/include/asm/esr.h
+index 7e86d400864e..81c17320a588 100644
+--- a/arch/arm64/include/asm/esr.h
++++ b/arch/arm64/include/asm/esr.h
+@@ -160,6 +160,8 @@
+ #define ESR_ELx_CM 		(UL(1) << ESR_ELx_CM_SHIFT)
+
+ /* ISS2 field definitions for Data Aborts */
++#define ESR_ELx_HDBSSF_SHIFT	(11)
++#define ESR_ELx_HDBSSF		(UL(1) << ESR_ELx_HDBSSF_SHIFT)
+ #define ESR_ELx_TnD_SHIFT	(10)
+ #define ESR_ELx_TnD 		(UL(1) << ESR_ELx_TnD_SHIFT)
+ #define ESR_ELx_TagAccess_SHIFT	(9)
+diff --git a/arch/arm64/tools/sysreg b/arch/arm64/tools/sysreg
+index 9d1c21108057..e166ab322de2 100644
+--- a/arch/arm64/tools/sysreg
++++ b/arch/arm64/tools/sysreg
+@@ -4528,6 +4528,35 @@ Sysreg	GCSPR_EL2	3	4	2	5	1
+ Fields	GCSPR_ELx
+ EndSysreg
+
++Sysreg	HDBSSBR_EL2	3	4	2	3	2
++Res0	63:56
++Field	55:12	BADDR
++Res0	11:4
++Enum	3:0	SZ
++	0b0000	4KB
++	0b0001	8KB
++	0b0010	16KB
++	0b0011	32KB
++	0b0100	64KB
++	0b0101	128KB
++	0b0110	256KB
++	0b0111	512KB
++	0b1000	1MB
++	0b1001	2MB
++EndEnum
++EndSysreg
 +
- static int map_kvm_run(KVMState *s, CPUState *cpu, Error **errp);
- static int map_kvm_dirty_gfns(KVMState *s, CPUState *cpu, Error **errp);
- static int vcpu_unmap_regions(KVMState *s, CPUState *cpu);
-@@ -2314,6 +2317,22 @@ static int kvm_vmfd_change_notify(Error **errp)
-                                             &vmfd_notifier, errp);
- }
- 
-+void kvm_vcpufd_add_change_notifier(NotifierWithReturn *n)
-+{
-+    notifier_with_return_list_add(&register_vcpufd_changed_notifiers, n);
-+}
++Sysreg	HDBSSPROD_EL2	3	4	2	3	3
++Res0	63:32
++Enum	31:26	FSC
++	0b000000	OK
++	0b010000	ExternalAbort
++	0b101000	GPF
++EndEnum
++Res0	25:19
++Field	18:0	INDEX
++EndSysreg
 +
-+void kvm_vcpufd_remove_change_notifier(NotifierWithReturn *n)
-+{
-+    notifier_with_return_remove(n);
-+}
-+
-+static int kvm_vcpufd_change_notify(Error **errp)
-+{
-+    return notifier_with_return_list_notify(&register_vcpufd_changed_notifiers,
-+                                            &vmfd_notifier, errp);
-+}
-+
- int kvm_irqchip_get_virq(KVMState *s)
- {
-     int next_virq;
-@@ -2841,6 +2860,13 @@ static int kvm_reset_vmfd(MachineState *ms)
-     }
-     assert(!err);
- 
-+    /* notify everyone that vcpu fd has changed. */
-+    ret = kvm_vcpufd_change_notify(&err);
-+    if (ret < 0) {
-+        return ret;
-+    }
-+    assert(!err);
-+
-     /* these can be only called after ram_block_rebind() */
-     memory_listener_register(&kml->listener, &address_space_memory);
-     memory_listener_register(&kvm_io_listener, &address_space_io);
-diff --git a/accel/stubs/kvm-stub.c b/accel/stubs/kvm-stub.c
-index a6e8a6e16c..c4617caac6 100644
---- a/accel/stubs/kvm-stub.c
-+++ b/accel/stubs/kvm-stub.c
-@@ -87,6 +87,16 @@ void kvm_vmfd_remove_change_notifier(NotifierWithReturn *n)
- {
- }
- 
-+void kvm_vcpufd_add_change_notifier(NotifierWithReturn *n)
-+{
-+    return;
-+}
-+
-+void kvm_vcpufd_remove_change_notifier(NotifierWithReturn *n)
-+{
-+    return;
-+}
-+
- int kvm_irqchip_add_irqfd_notifier_gsi(KVMState *s, EventNotifier *n,
-                                        EventNotifier *rn, int virq)
- {
-diff --git a/include/system/kvm.h b/include/system/kvm.h
-index fbe23608a1..4b0e1b4ab1 100644
---- a/include/system/kvm.h
-+++ b/include/system/kvm.h
-@@ -590,4 +590,21 @@ void kvm_vmfd_add_change_notifier(NotifierWithReturn *n);
-  */
- void kvm_vmfd_remove_change_notifier(NotifierWithReturn *n);
- 
-+/**
-+ * kvm_vcpufd_add_change_notifier - register a notifier to get notified when
-+ * a KVM vcpu file descriptors changes as a part of the confidential guest
-+ * "reset" process. Various subsystems should use this mechanism to take
-+ * actions such as re-issuing vcpu ioctls as a part of setting up vcpu
-+ * features.
-+ * @n: notifier with return value.
-+ */
-+void kvm_vcpufd_add_change_notifier(NotifierWithReturn *n);
-+
-+/**
-+ * kvm_vcpufd_remove_change_notifier - de-register a notifer previously
-+ * registered with kvm_vcpufd_add_change_notifier call.
-+ * @n: notifier that was previously registered.
-+ */
-+void kvm_vcpufd_remove_change_notifier(NotifierWithReturn *n);
-+
- #endif
--- 
-2.42.0
+ Sysreg	DACR32_EL2	3	4	3	0	0
+ Res0	63:32
+ Field	31:30	D15
+--
+2.33.0
 
