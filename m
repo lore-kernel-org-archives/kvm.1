@@ -1,47 +1,47 @@
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AFA1E221F24
-	for <kvm@vger.kernel.org>; Wed, 25 Feb 2026 12:05:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA8EC310636
+	for <kvm@vger.kernel.org>; Wed, 25 Feb 2026 12:05:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772021136; cv=none; b=ZY28HKysuqZZjqQ6IhjVrtcPAcEuSDq3wwE1VU01Znn6nXl2g/KhOdxQj5kB96lhy+6w9tMQzXl/L6zATJMSoInLQoRqpzBtno2KZIZHsmHps21sbvhnQ1Cfr9J4O17A+UMq/F09lrcYwCqTA83jAk1e5cf+2eEoSzNaubq9fao=
+	t=1772021139; cv=none; b=VnGYu6jvm2ZvchpVD7Ui60VqvhOj0ol5ATt4t05MQ3Nmxis7iq9I47Ryngb24qykGTaVM9Ur3s4R9WY+N5ddfOMb/9vkDx3A+zMZ7vdXrR0ShGOYRUcgn/MezBgc+FIJuG8q8fGFRLbD/jPWeVH8DcQiSFApfKiOG4fQvrMdoPo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772021136; c=relaxed/simple;
-	bh=TlQc338n0J+6SC6E+LWbRhonIKEqIMSdITlyXWSTUu8=;
+	s=arc-20240116; t=1772021139; c=relaxed/simple;
+	bh=aAhmnFU5iK61m0s6eT+tQt+2zx7oAaoKUwFS1RbdqzE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=INJB5Gl3KQaSjMSv0ArG7RxU1aw2wjWF/8StGW4ifDDz5uX6BscpLqWjK5jCTe/2PzfO9sqTGLw9yuvVEGpvkNWJ6HENJIXImYwj9TRfpG1OpngStnn6YcCYweAflnlbb3aCfz3FjxFZLqW2hYcWJ5tvDprNIwmsk5uL8ATSfpA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=Z4S35KuQ; arc=none smtp.client-ip=170.10.133.124
+	 MIME-Version:Content-Type; b=D5LM+3/PoxB9nXi6SO4VX8yUg10/e5pzJj1XbqKtpXH+fbs8Y7MZVTKVw27FWNo3GDYSZAjuLIB2mfTn+ejNPK5Pj3YFs2fU4c+lCt3oYxjR34Da9LHLiiA//P69C60goGKKcH6kz0QiUMAH4J21+AFz89vDMK7+VfmGy3DxnmY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=ANDXw3fq; arc=none smtp.client-ip=170.10.133.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="Z4S35KuQ"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="ANDXw3fq"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1772021133;
+	s=mimecast20190719; t=1772021137;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=RaPxp1WEdRt0jnZCBSLHJX1sxKAQNNgjpbASlQsTY/o=;
-	b=Z4S35KuQ+HmCCrJSXonNtefNzE5mmP6JxwdI5BuqILXtxUDTiKTEW7OosFwJHg5NsWLE6f
-	pps4YUulja01T9orejmdq8K0LV7D3gIIB+UdEB3cmDge2zDx4DJYpCAR+BvnVH7ohjDa4C
-	ACjtYxNk2ZkCd/jbj4zMLVIEk24Eu8k=
-Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+	bh=z2KGzf0HMEkIVAc9UiJzuxWJ25Lw3QMqbgo+wk0wHYQ=;
+	b=ANDXw3fqAN+FWkEDqxmysx50BbgrJvEXErolnmxLUmx8JYjudMj5yg3I/zCx3ebeKovMPP
+	UI9l96CL38+PnBqm+/sgHWpxK6p3j5vtFtJBJgqF0DCU7Bs3aDXQIFGhZd0LKkhm6tHRtS
+	9ybJIOGRDD22oyXBq6z8eLOzPH6Z6XQ=
+Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-694-UhbaNF1kO8OIerHXDyerwA-1; Wed,
- 25 Feb 2026 07:05:30 -0500
-X-MC-Unique: UhbaNF1kO8OIerHXDyerwA-1
-X-Mimecast-MFC-AGG-ID: UhbaNF1kO8OIerHXDyerwA_1772021129
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-134-n_6TUgIhPkmo0D55ubu2BA-1; Wed,
+ 25 Feb 2026 07:05:34 -0500
+X-MC-Unique: n_6TUgIhPkmo0D55ubu2BA-1
+X-Mimecast-MFC-AGG-ID: n_6TUgIhPkmo0D55ubu2BA_1772021132
 Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 3225A19560A2;
-	Wed, 25 Feb 2026 12:05:29 +0000 (UTC)
+	by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 804C218004BB;
+	Wed, 25 Feb 2026 12:05:32 +0000 (UTC)
 Received: from localhost (unknown [10.48.1.67])
-	by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id B82E21955F43;
-	Wed, 25 Feb 2026 12:05:27 +0000 (UTC)
+	by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 1C5311955F43;
+	Wed, 25 Feb 2026 12:05:31 +0000 (UTC)
 From: marcandre.lureau@redhat.com
 To: qemu-devel@nongnu.org
 Cc: Paolo Bonzini <pbonzini@redhat.com>,
@@ -56,9 +56,9 @@ Cc: Paolo Bonzini <pbonzini@redhat.com>,
 	Ben Chaney <bchaney@akamai.com>,
 	Fabiano Rosas <farosas@suse.de>,
 	=?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>
-Subject: [PATCH v2 11/14] system/ram-discard-manager: drop replay from source interface
-Date: Wed, 25 Feb 2026 13:04:52 +0100
-Message-ID: <20260225120456.3170057-12-marcandre.lureau@redhat.com>
+Subject: [PATCH v2 13/14] system/memory: add RamDiscardManager reference counting and cleanup
+Date: Wed, 25 Feb 2026 13:04:54 +0100
+Message-ID: <20260225120456.3170057-14-marcandre.lureau@redhat.com>
 In-Reply-To: <20260225120456.3170057-1-marcandre.lureau@redhat.com>
 References: <20260225120456.3170057-1-marcandre.lureau@redhat.com>
 Precedence: bulk
@@ -73,257 +73,65 @@ X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
 
 From: Marc-André Lureau <marcandre.lureau@redhat.com>
 
-Remove replay_populated and replay_discarded from RamDiscardSourceClass
-now that the RamDiscardManager handles replay iteration internally via
-is_populated.
+Listeners now hold a reference to the RamDiscardManager, ensuring it
+stays alive while listeners are registered. The RDM is eagerly freed
+when the last source and listener are removed, and also unreffed during
+MemoryRegion finalization as a safety net.
 
-Remove the now-dead replay methods, helpers, and
-for_each_populated/discarded_section() from ram-block-attributes, which
-was the last source still carrying this code.
+This completes the TODO left in the previous commit and prevents both
+use-after-free and memory leaks of the RamDiscardManager.
 
 Signed-off-by: Marc-André Lureau <marcandre.lureau@redhat.com>
 ---
- include/system/ram-discard-manager.h |  52 +++--------
- system/ram-block-attributes.c        | 130 ---------------------------
- 2 files changed, 10 insertions(+), 172 deletions(-)
+ system/memory.c              | 7 +++++--
+ system/ram-discard-manager.c | 2 ++
+ 2 files changed, 7 insertions(+), 2 deletions(-)
 
-diff --git a/include/system/ram-discard-manager.h b/include/system/ram-discard-manager.h
-index b188e09a30f..b5dbcb4a82d 100644
---- a/include/system/ram-discard-manager.h
-+++ b/include/system/ram-discard-manager.h
-@@ -77,8 +77,8 @@ static inline void ram_discard_listener_init(RamDiscardListener *rdl,
- /**
-  * typedef ReplayRamDiscardState:
-  *
-- * The callback handler for #RamDiscardSourceClass.replay_populated/
-- * #RamDiscardSourceClass.replay_discarded to invoke on populated/discarded
-+ * The callback handler used by ram_discard_manager_replay_populated() and
-+ * ram_discard_manager_replay_discarded() to invoke on populated/discarded
-  * parts.
-  *
-  * @section: the #MemoryRegionSection of populated/discarded part
-@@ -134,42 +134,6 @@ struct RamDiscardSourceClass {
-      */
-     bool (*is_populated)(const RamDiscardSource *rds,
-                          const MemoryRegionSection *section);
--
--    /**
--     * @replay_populated:
--     *
--     * Call the #ReplayRamDiscardState callback for all populated parts within
--     * the #MemoryRegionSection via the #RamDiscardSource.
--     *
--     * In case any call fails, no further calls are made.
--     *
--     * @rds: the #RamDiscardSource
--     * @section: the #MemoryRegionSection
--     * @replay_fn: the #ReplayRamDiscardState callback
--     * @opaque: pointer to forward to the callback
--     *
--     * Returns 0 on success, or a negative error if any notification failed.
--     */
--    int (*replay_populated)(const RamDiscardSource *rds,
--                            const MemoryRegionSection *section,
--                            ReplayRamDiscardState replay_fn, void *opaque);
--
--    /**
--     * @replay_discarded:
--     *
--     * Call the #ReplayRamDiscardState callback for all discarded parts within
--     * the #MemoryRegionSection via the #RamDiscardSource.
--     *
--     * @rds: the #RamDiscardSource
--     * @section: the #MemoryRegionSection
--     * @replay_fn: the #ReplayRamDiscardState callback
--     * @opaque: pointer to forward to the callback
--     *
--     * Returns 0 on success, or a negative error if any notification failed.
--     */
--    int (*replay_discarded)(const RamDiscardSource *rds,
--                            const MemoryRegionSection *section,
--                            ReplayRamDiscardState replay_fn, void *opaque);
- };
- 
- /**
-@@ -226,8 +190,10 @@ bool ram_discard_manager_is_populated(const RamDiscardManager *rdm,
- /**
-  * ram_discard_manager_replay_populated:
-  *
-- * A wrapper to call the #RamDiscardSourceClass.replay_populated callback
-- * of the #RamDiscardSource sources.
-+ * Iterate the given #MemoryRegionSection at minimum granularity, calling
-+ * #RamDiscardSourceClass.is_populated for each chunk, and invoke @replay_fn
-+ * for each contiguous populated range. In case any call fails, no further
-+ * calls are made.
-  *
-  * @rdm: the #RamDiscardManager
-  * @section: the #MemoryRegionSection
-@@ -244,8 +210,10 @@ int ram_discard_manager_replay_populated(const RamDiscardManager *rdm,
- /**
-  * ram_discard_manager_replay_discarded:
-  *
-- * A wrapper to call the #RamDiscardSourceClass.replay_discarded callback
-- * of the #RamDiscardSource sources.
-+ * Iterate the given #MemoryRegionSection at minimum granularity, calling
-+ * #RamDiscardSourceClass.is_populated for each chunk, and invoke @replay_fn
-+ * for each contiguous discarded range. In case any call fails, no further
-+ * calls are made.
-  *
-  * @rdm: the #RamDiscardManager
-  * @section: the #MemoryRegionSection
-diff --git a/system/ram-block-attributes.c b/system/ram-block-attributes.c
-index e921e09f5b3..718c7075cec 100644
---- a/system/ram-block-attributes.c
-+++ b/system/ram-block-attributes.c
-@@ -32,106 +32,6 @@ ram_block_attributes_get_block_size(void)
-     return qemu_real_host_page_size();
+diff --git a/system/memory.c b/system/memory.c
+index 8a4cb7b59ac..664d24109ab 100644
+--- a/system/memory.c
++++ b/system/memory.c
+@@ -1817,6 +1817,7 @@ static void memory_region_finalize(Object *obj)
+     memory_region_clear_coalescing(mr);
+     g_free((char *)mr->name);
+     g_free(mr->ioeventfds);
++    object_unref(mr->rdm);
  }
  
--typedef int (*ram_block_attributes_section_cb)(MemoryRegionSection *s,
--                                               void *arg);
+ Object *memory_region_owner(MemoryRegion *mr)
+@@ -2123,8 +2124,10 @@ void memory_region_del_ram_discard_source(MemoryRegion *mr,
+     g_assert(mr->rdm);
+ 
+     ram_discard_manager_del_source(mr->rdm, source);
 -
--static int
--ram_block_attributes_for_each_populated_section(const RamBlockAttributes *attr,
--                                                const MemoryRegionSection *section,
--                                                void *arg,
--                                                ram_block_attributes_section_cb cb)
--{
--    unsigned long first_bit, last_bit;
--    uint64_t offset, size;
--    const size_t block_size = ram_block_attributes_get_block_size();
--    int ret = 0;
--
--    first_bit = section->offset_within_region / block_size;
--    first_bit = find_next_bit(attr->bitmap, attr->bitmap_size,
--                              first_bit);
--
--    while (first_bit < attr->bitmap_size) {
--        MemoryRegionSection tmp = *section;
--
--        offset = first_bit * block_size;
--        last_bit = find_next_zero_bit(attr->bitmap, attr->bitmap_size,
--                                      first_bit + 1) - 1;
--        size = (last_bit - first_bit + 1) * block_size;
--
--        if (!memory_region_section_intersect_range(&tmp, offset, size)) {
--            break;
--        }
--
--        ret = cb(&tmp, arg);
--        if (ret) {
--            error_report("%s: Failed to notify RAM discard listener: %s",
--                         __func__, strerror(-ret));
--            break;
--        }
--
--        first_bit = find_next_bit(attr->bitmap, attr->bitmap_size,
--                                  last_bit + 2);
--    }
--
--    return ret;
--}
--
--static int
--ram_block_attributes_for_each_discarded_section(const RamBlockAttributes *attr,
--                                                const MemoryRegionSection *section,
--                                                void *arg,
--                                                ram_block_attributes_section_cb cb)
--{
--    unsigned long first_bit, last_bit;
--    uint64_t offset, size;
--    const size_t block_size = ram_block_attributes_get_block_size();
--    int ret = 0;
--
--    first_bit = section->offset_within_region / block_size;
--    first_bit = find_next_zero_bit(attr->bitmap, attr->bitmap_size,
--                                   first_bit);
--
--    while (first_bit < attr->bitmap_size) {
--        MemoryRegionSection tmp = *section;
--
--        offset = first_bit * block_size;
--        last_bit = find_next_bit(attr->bitmap, attr->bitmap_size,
--                                 first_bit + 1) - 1;
--        size = (last_bit - first_bit + 1) * block_size;
--
--        if (!memory_region_section_intersect_range(&tmp, offset, size)) {
--            break;
--        }
--
--        ret = cb(&tmp, arg);
--        if (ret) {
--            error_report("%s: Failed to notify RAM discard listener: %s",
--                         __func__, strerror(-ret));
--            break;
--        }
--
--        first_bit = find_next_zero_bit(attr->bitmap,
--                                       attr->bitmap_size,
--                                       last_bit + 2);
--    }
--
--    return ret;
--}
--
--
--typedef struct RamBlockAttributesReplayData {
--    ReplayRamDiscardState fn;
--    void *opaque;
--} RamBlockAttributesReplayData;
--
--static int ram_block_attributes_rds_replay_cb(MemoryRegionSection *section,
--                                              void *arg)
--{
--    RamBlockAttributesReplayData *data = arg;
--
--    return data->fn(section, data->opaque);
--}
--
- /* RamDiscardSource interface implementation */
- static uint64_t
- ram_block_attributes_rds_get_min_granularity(const RamDiscardSource *rds,
-@@ -159,34 +59,6 @@ ram_block_attributes_rds_is_populated(const RamDiscardSource *rds,
-     return first_discarded_bit > last_bit;
+-    /* if there is no source and no listener left, we could free rdm */
++    if (QLIST_EMPTY(&mr->rdm->source_list) && QLIST_EMPTY(&mr->rdm->rdl_list)) {
++        object_unref(mr->rdm);
++        mr->rdm = NULL;
++    }
  }
  
--static int
--ram_block_attributes_rds_replay_populated(const RamDiscardSource *rds,
--                                          const MemoryRegionSection *section,
--                                          ReplayRamDiscardState replay_fn,
--                                          void *opaque)
--{
--    RamBlockAttributes *attr = RAM_BLOCK_ATTRIBUTES(rds);
--    RamBlockAttributesReplayData data = { .fn = replay_fn, .opaque = opaque };
--
--    g_assert(section->mr == attr->ram_block->mr);
--    return ram_block_attributes_for_each_populated_section(attr, section, &data,
--                                                           ram_block_attributes_rds_replay_cb);
--}
--
--static int
--ram_block_attributes_rds_replay_discarded(const RamDiscardSource *rds,
--                                          const MemoryRegionSection *section,
--                                          ReplayRamDiscardState replay_fn,
--                                          void *opaque)
--{
--    RamBlockAttributes *attr = RAM_BLOCK_ATTRIBUTES(rds);
--    RamBlockAttributesReplayData data = { .fn = replay_fn, .opaque = opaque };
--
--    g_assert(section->mr == attr->ram_block->mr);
--    return ram_block_attributes_for_each_discarded_section(attr, section, &data,
--                                                           ram_block_attributes_rds_replay_cb);
--}
--
- static bool
- ram_block_attributes_is_valid_range(RamBlockAttributes *attr, uint64_t offset,
-                                     uint64_t size)
-@@ -346,6 +218,4 @@ static void ram_block_attributes_class_init(ObjectClass *klass,
+ /* Called with rcu_read_lock held.  */
+diff --git a/system/ram-discard-manager.c b/system/ram-discard-manager.c
+index 5592bfd3486..904a98cbef1 100644
+--- a/system/ram-discard-manager.c
++++ b/system/ram-discard-manager.c
+@@ -549,6 +549,7 @@ void ram_discard_manager_register_listener(RamDiscardManager *rdm,
  
-     rdsc->get_min_granularity = ram_block_attributes_rds_get_min_granularity;
-     rdsc->is_populated = ram_block_attributes_rds_is_populated;
--    rdsc->replay_populated = ram_block_attributes_rds_replay_populated;
--    rdsc->replay_discarded = ram_block_attributes_rds_replay_discarded;
+     g_assert(section->mr == rdm->mr);
+ 
++    object_ref(rdm);
+     rdl->section = memory_region_section_new_copy(section);
+     QLIST_INSERT_HEAD(&rdm->rdl_list, rdl, next);
+ 
+@@ -570,6 +571,7 @@ void ram_discard_manager_unregister_listener(RamDiscardManager *rdm,
+     memory_region_section_free_copy(rdl->section);
+     rdl->section = NULL;
+     QLIST_REMOVE(rdl, next);
++    object_unref(rdm);
  }
+ 
+ int ram_discard_manager_replay_populated_to_listeners(RamDiscardManager *rdm)
 -- 
 2.53.0
 
