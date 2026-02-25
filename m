@@ -1,55 +1,55 @@
-Received: from mail-pj1-f74.google.com (mail-pj1-f74.google.com [209.85.216.74])
+Received: from mail-pg1-f201.google.com (mail-pg1-f201.google.com [209.85.215.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E7F932820A0
-	for <kvm@vger.kernel.org>; Wed, 25 Feb 2026 01:21:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.74
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A2B5283FDB
+	for <kvm@vger.kernel.org>; Wed, 25 Feb 2026 01:21:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771982477; cv=none; b=AYiCPhrUwUJWo7nH2Bykzd+u78URgflsESvvnJ9Oe7kj4sLVoTN4jaJbZcStIzuewDEbLYfEMt3Eg+CdKUhBzXx536FDBurHWPle7Ohap3p8yAJsR3v/oHxrbVE/zLy/5mpNfwoJEP/HjrHlhTHur/MA/7HiggN2ftU6Iaj1R2Q=
+	t=1771982478; cv=none; b=JPIQXAJnVRpzFdOSYNyVOpv4J3rm4oofYhwaWs+VpmnAh0y1R0YnaVuC7CoCcOipGDLnIdWuJ0h3ExcdZ81bQtX3KbkyvOFmdu4BE8i4M9r8UD7HNmw8w9n5eFk106wY1BHkEmCY0cyrgpuLUYLupPHweIJF9hx+a5iGlvwcTCo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771982477; c=relaxed/simple;
-	bh=XAkvXmxYSWcnAm2ngYtj/+yAtyCpKD+kGWhH+fNj3zE=;
+	s=arc-20240116; t=1771982478; c=relaxed/simple;
+	bh=Qy31+uRAyXc552YjYjFbiMoMOXbW3e9UP2BZgteKHMs=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=dTY7DFC2sPo3GzhDpodN3xze03WBrXZqzbxOn7VWTNHqDu7MWPksTah5OAiBHXXG+OFgXjlZnnQdEi+C8UJ9SaTsEc1dbmXVKFg4lGn+WkV51vnB1B9uIL4ExTiqR1Fm2WekD5nBnFQnMCT2GXnD6hqyfQNFxQb6g856wQzQpjw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=txXm5jUT; arc=none smtp.client-ip=209.85.216.74
+	 To:Cc:Content-Type; b=QSxjpmL9A+jWNrmy0LiesOTaXrIYEVFIZoIOCiEQj5FrbwQUMaMCyiXsnhR5hMoDnCauOMIYLhRAPE9o1aK1MchTf5V46JJdYpCc//ebw3PV8pGC/uvE4cH4gDUMrO5KJinTjSqJ4EMGI8q36hM+AvfhvtJ7huXA6Ls048zBsQM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=zH1okmbq; arc=none smtp.client-ip=209.85.215.201
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="txXm5jUT"
-Received: by mail-pj1-f74.google.com with SMTP id 98e67ed59e1d1-3568090851aso39449517a91.1
-        for <kvm@vger.kernel.org>; Tue, 24 Feb 2026 17:21:13 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="zH1okmbq"
+Received: by mail-pg1-f201.google.com with SMTP id 41be03b00d2f7-c6e74e55d35so4068028a12.3
+        for <kvm@vger.kernel.org>; Tue, 24 Feb 2026 17:21:17 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1771982473; x=1772587273; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1771982477; x=1772587277; darn=vger.kernel.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:reply-to:from:to:cc:subject:date:message-id:reply-to;
-        bh=cC3kOG4PMTKHbBJlg/C79tGxZ75SzIpZ8/Nyw/YcEt4=;
-        b=txXm5jUTtjG2qaNQibAT1ILeyH3rvkgFc38bzZWG+lkFX9V1r8ZGBOu47LlMZLzgvz
-         5vlSmFhKkw9UyDkDMXeG8ppHMEEnez/Ue5Buau4uDtNL1XFR5rheE5oFPV+ng1v1yuiH
-         Aa44i75Xd4SGFNMPlcWyvFhEg2wEQmatg+KiQRqJWtuiktbpJrNbjjTrjPyKFFniXH8n
-         nzTmrYYPQOp8ESklKI9HC9VylQSnJoOgC4LxaEDpCAPi8f8KrdLOp2Z/K6aqcs1Gy8XL
-         lo7ki9o648kzXuqxVnaKrm9Z9pXjeHrrOhvo27sY+4LgJTFBCuz2Sqm93gKPb01cHwij
-         FQsg==
+        bh=LC9/uqgNjMKR3Pk2VQH/jaz/lG7goMkRYlbLKdqdUyY=;
+        b=zH1okmbqk7N039NOHaa7iZu7VCsU59eWPClkOHV62+tC+WvWTXksNXYyxMfvikYiVK
+         N0UnKPFYdwmB4C+G408v4rAQJj/xXpC9XBFDs1CCbNcC4m/WFfWCpWpYlC6DrDANKXF+
+         UE1FqGWpX3Sel3Ta8mk7Y3LqtndiPn/fM1NOPqW54l9woHTnu9ZS7q9/hHykGeyWXbwc
+         AutQdKJRNvw4h4/bQ5YaX2vQQgOlRUlMnc7YMzVvL3jWSs5NqjIxAivCDKoytSWb+6EW
+         LUah5xsfGVcTR+jEQ6F3wB1jQBNFzRY/bDC1mW3yCHOpdAew93EKY+XL4PJ9waPCiVo9
+         NUOw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1771982473; x=1772587273;
+        d=1e100.net; s=20230601; t=1771982477; x=1772587277;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:reply-to:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=cC3kOG4PMTKHbBJlg/C79tGxZ75SzIpZ8/Nyw/YcEt4=;
-        b=vaz8zZ5s4c6rG7Dt6dBUM8NlUH6g+JOEQTufdFS2lq4TbTg1aLqvq+VabPzdqjEnnu
-         PlU1M0IJaGjZdfzxeC5XkTf+CK1DqUbno/dCpo4HaOqgY+q8M9PioTIPEUTew7nhtADy
-         ZD5kvZ1hkQBhJAPn6folos8v8h79P+hXtbYVy2dHk+xBjfZDxf0pPACD28u4CRePkc+d
-         pvKLS3ezJBD/VGKSo+r1ytCqSOiSgu6VLdI1pMIcTnjwS7LMIqCF3dNojMisZC8N5CpE
-         hMH4/Z/s5AJhV8LYbNPX8N5IX0sHPMsysqb5GEhjhXBHkC4fVTjge15nvkNXOOfMagCQ
-         dr+A==
-X-Gm-Message-State: AOJu0Yw2sf9bIRglrzzIfZyCZfB+kNtwW1eKY5b16ekMHWFdQACvpGzz
-	jHTtFXxccysfqe5eew1xoBAoyalBGflNF3J3mm1UGDhsH0Bjc3axs075Dr4CmfJ3K7gbpVE8fDo
-	VtzNOJw==
-X-Received: from pjre10.prod.google.com ([2002:a17:90a:b38a:b0:359:41:e301])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:4ec5:b0:343:7714:4ca8
- with SMTP id 98e67ed59e1d1-3590f08c0e8mr548564a91.15.1771982473219; Tue, 24
- Feb 2026 17:21:13 -0800 (PST)
+        bh=LC9/uqgNjMKR3Pk2VQH/jaz/lG7goMkRYlbLKdqdUyY=;
+        b=WaFft8xrF2LYybQne1TTEDN/O6li/S2hhToz/5GFGnTbPXTmDSL6NKPyqlnCcGz9Ki
+         BgSmgDtqswMWt4kpmjULfVU6eUppNr6nzRWUvCGOnHEFp22pRd8p6XgG/g/llmx9CiMm
+         w7mLDPBIi+33iXj6rykuH6iLBiKS+h+OpPlPNM2+TfI/+S1JsuPTbMpEDHFtj61Cws07
+         b5DNuHj1l3N7EKMnqductNfpdsCvOAqoarxwXOvMoDTp2h5mE877PsA9HRxVXBVdTRtq
+         5jW/V5FAiLNykr1THvNspn89gOt4GjqwGCXtGM9lxJVMWSsW5z11XWPiuSnrs2gAjYUC
+         dtwA==
+X-Gm-Message-State: AOJu0YxOkKTLXJc7EaUTc/Kl0g2CUOplyel+24av13hcq1yk3uaaHnOy
+	iPj8AuQ+d2Q+nXRke2fC7zCtTuzBIFe+PgnbTr5h0kGyr3hX7DFO4v+uLlhkmOs591KdCXZK89t
+	kqV8ZOQ==
+X-Received: from pgbcz10.prod.google.com ([2002:a05:6a02:230a:b0:c6d:cb1b:286e])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a20:6a04:b0:394:8455:d1a9
+ with SMTP id adf61e73a8af0-39545e5081dmr10146147637.2.1771982476785; Tue, 24
+ Feb 2026 17:21:16 -0800 (PST)
 Reply-To: Sean Christopherson <seanjc@google.com>
-Date: Tue, 24 Feb 2026 17:20:46 -0800
+Date: Tue, 24 Feb 2026 17:20:48 -0800
 In-Reply-To: <20260225012049.920665-1-seanjc@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
@@ -59,8 +59,9 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 References: <20260225012049.920665-1-seanjc@google.com>
 X-Mailer: git-send-email 2.53.0.414.gf7e9f6c205-goog
-Message-ID: <20260225012049.920665-12-seanjc@google.com>
-Subject: [PATCH 11/14] KVM: x86: Fold emulator_write_phys() into write_emulate()
+Message-ID: <20260225012049.920665-14-seanjc@google.com>
+Subject: [PATCH 13/14] KVM: x86: Don't panic the kernel if completing
+ userspace I/O / MMIO goes sideways
 From: Sean Christopherson <seanjc@google.com>
 To: Sean Christopherson <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>, 
 	Kiryl Shutsemau <kas@kernel.org>
@@ -71,69 +72,59 @@ Cc: kvm@vger.kernel.org, x86@kernel.org, linux-coco@lists.linux.dev,
 	Michael Roth <michael.roth@amd.com>
 Content-Type: text/plain; charset="UTF-8"
 
-Fold emulator_write_phys() into write_emulate() to drop a superfluous
-wrapper, and to provide more symmetry between the read and write paths.
-
-No functional change intended.
+Kill the VM instead of the host kernel if KVM botches I/O and/or MMIO
+handling.  There is zero danger to the host or guest, i.e. panicking the
+host isn't remotely justified.
 
 Signed-off-by: Sean Christopherson <seanjc@google.com>
 ---
- arch/x86/include/asm/kvm_host.h |  3 ---
- arch/x86/kvm/x86.c              | 20 +++++++-------------
- 2 files changed, 7 insertions(+), 16 deletions(-)
+ arch/x86/kvm/x86.c | 12 ++++++++----
+ 1 file changed, 8 insertions(+), 4 deletions(-)
 
-diff --git a/arch/x86/include/asm/kvm_host.h b/arch/x86/include/asm/kvm_host.h
-index ff07c45e3c73..aa030fbd669d 100644
---- a/arch/x86/include/asm/kvm_host.h
-+++ b/arch/x86/include/asm/kvm_host.h
-@@ -2097,9 +2097,6 @@ void kvm_zap_gfn_range(struct kvm *kvm, gfn_t gfn_start, gfn_t gfn_end);
- 
- int load_pdptrs(struct kvm_vcpu *vcpu, unsigned long cr3);
- 
--int emulator_write_phys(struct kvm_vcpu *vcpu, gpa_t gpa,
--			  const void *val, int bytes);
--
- extern bool tdp_enabled;
- 
- u64 vcpu_tsc_khz(struct kvm_vcpu *vcpu);
 diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
-index 5fb5259c208f..5a3ba161db7b 100644
+index f3e2ec7e1828..5376b370b4db 100644
 --- a/arch/x86/kvm/x86.c
 +++ b/arch/x86/kvm/x86.c
-@@ -8102,18 +8102,6 @@ static int vcpu_mmio_gva_to_gpa(struct kvm_vcpu *vcpu, unsigned long gva,
- 	return vcpu_is_mmio_gpa(vcpu, gva, *gpa, write);
- }
+@@ -9710,7 +9710,8 @@ static int complete_fast_pio_in(struct kvm_vcpu *vcpu)
+ 	unsigned long val;
  
--int emulator_write_phys(struct kvm_vcpu *vcpu, gpa_t gpa,
--			const void *val, int bytes)
--{
--	int ret;
--
--	ret = kvm_vcpu_write_guest(vcpu, gpa, val, bytes);
--	if (ret < 0)
--		return 0;
--	kvm_page_track_write(vcpu, gpa, val, bytes);
--	return 1;
--}
--
- struct read_write_emulator_ops {
- 	int (*read_write_emulate)(struct kvm_vcpu *vcpu, gpa_t gpa,
- 				  void *val, int bytes);
-@@ -8131,7 +8119,13 @@ static int read_emulate(struct kvm_vcpu *vcpu, gpa_t gpa,
- static int write_emulate(struct kvm_vcpu *vcpu, gpa_t gpa,
- 			 void *val, int bytes)
+ 	/* We should only ever be called with arch.pio.count equal to 1 */
+-	BUG_ON(vcpu->arch.pio.count != 1);
++	if (KVM_BUG_ON(vcpu->arch.pio.count != 1, vcpu->kvm))
++		return -EIO;
+ 
+ 	if (unlikely(!kvm_is_linear_rip(vcpu, vcpu->arch.cui_linear_rip))) {
+ 		vcpu->arch.pio.count = 0;
+@@ -11820,7 +11821,8 @@ static inline int complete_emulated_io(struct kvm_vcpu *vcpu)
+ 
+ static int complete_emulated_pio(struct kvm_vcpu *vcpu)
  {
--	return emulator_write_phys(vcpu, gpa, val, bytes);
-+	int ret;
-+
-+	ret = kvm_vcpu_write_guest(vcpu, gpa, val, bytes);
-+	if (ret < 0)
-+		return 0;
-+	kvm_page_track_write(vcpu, gpa, val, bytes);
-+	return 1;
- }
+-	BUG_ON(!vcpu->arch.pio.count);
++	if (KVM_BUG_ON(!vcpu->arch.pio.count, vcpu->kvm))
++		return -EIO;
  
- static int emulator_read_write_onepage(unsigned long addr, void *val,
+ 	return complete_emulated_io(vcpu);
+ }
+@@ -11849,7 +11851,8 @@ static int complete_emulated_mmio(struct kvm_vcpu *vcpu)
+ 	struct kvm_mmio_fragment *frag;
+ 	unsigned len;
+ 
+-	BUG_ON(!vcpu->mmio_needed);
++	if (KVM_BUG_ON(!vcpu->mmio_needed, vcpu->kvm))
++		return -EIO;
+ 
+ 	/* Complete previous fragment */
+ 	frag = &vcpu->mmio_fragments[vcpu->mmio_cur_fragment];
+@@ -14262,7 +14265,8 @@ static int complete_sev_es_emulated_mmio(struct kvm_vcpu *vcpu)
+ 	struct kvm_mmio_fragment *frag;
+ 	unsigned int len;
+ 
+-	BUG_ON(!vcpu->mmio_needed);
++	if (KVM_BUG_ON(!vcpu->mmio_needed, vcpu->kvm))
++		return -EIO;
+ 
+ 	/* Complete previous fragment */
+ 	frag = &vcpu->mmio_fragments[vcpu->mmio_cur_fragment];
 -- 
 2.53.0.414.gf7e9f6c205-goog
 
