@@ -1,55 +1,55 @@
 Received: from mail-pj1-f73.google.com (mail-pj1-f73.google.com [209.85.216.73])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E518126E708
-	for <kvm@vger.kernel.org>; Wed, 25 Feb 2026 01:21:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D22A265CBE
+	for <kvm@vger.kernel.org>; Wed, 25 Feb 2026 01:21:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.73
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771982469; cv=none; b=kAuWgfHEKLpIP4++7HbJ/w4KHMj0E9iPBEUDGhQ8goJAV+TQlgbzgCI+rTH68A72rKbL++bv8xkthhRmkcs47vdE3IR4t6runGKGPOZPZ+v9QHR6QKT+bb/EJSOCZIjq5IY6zL96zgfbduswmPqQxUIhVhJAGdm9xvqQfbdkc/g=
+	t=1771982471; cv=none; b=GHzAX9xJkMbiAUZG5qHxwIKMtxVoSk9z2pk8LxpfWiVrf8UKYY+/SQWVpqh5Rk8aQ+vXbZgRNhmjPpLdEk8Bwaw5mcRkowNULgf+3LKwfaX+V/ZiFCREpocB3wCvwCO8lVqg3Q9kNhmlT3VVXb5avQGm+tTj9hI9bs24rsxCCKw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771982469; c=relaxed/simple;
-	bh=YugX2YLyYIqesMyLVhe1vuRLpba0vyw2iEWUNwc9aeU=;
+	s=arc-20240116; t=1771982471; c=relaxed/simple;
+	bh=jhFdYJ/k2G4ufjPQSuQbjjN1qZ0Psh4hxK61qelisac=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=Fky8UW84wgrNPkEbEEzExyMog1d7hzKaioum/eiWDNQrGETP8jqqZ6DbkABhRrcTD9mnuKJS86ISD/7kFMZH7RkuJ1DHUe/pD/bte+C8sWiqozTPx+RbWruqVVx9nZplqmtjbvJwIuO1pR7Mog/T8XfYqPVemTI+Phz854h/xqQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=EghX4vDZ; arc=none smtp.client-ip=209.85.216.73
+	 To:Cc:Content-Type; b=Timk2gvTfrpDG1wRlsxNDwrJD6YhlhPdWUX49i4KP92ZfV+tnWAiEEhtmStb5+hVItX5UVJmNl1wPo7ls1fXYneI6spMaBgUlJwXmuocvYx8vAGDgC4WyVejCZuvN1XTKbiVY2nyb5O+TkcRsKWOJRG69R1n/CWBDFA16rC22Ec=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=xC4R8j28; arc=none smtp.client-ip=209.85.216.73
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="EghX4vDZ"
-Received: by mail-pj1-f73.google.com with SMTP id 98e67ed59e1d1-3561f5bd22eso5144329a91.2
-        for <kvm@vger.kernel.org>; Tue, 24 Feb 2026 17:21:06 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="xC4R8j28"
+Received: by mail-pj1-f73.google.com with SMTP id 98e67ed59e1d1-3568090851aso39449265a91.1
+        for <kvm@vger.kernel.org>; Tue, 24 Feb 2026 17:21:10 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1771982466; x=1772587266; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1771982470; x=1772587270; darn=vger.kernel.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:reply-to:from:to:cc:subject:date:message-id:reply-to;
-        bh=U5hmNv02IBvGPnO8Neh+XMn/il3YSxAkvHfsbK9B4L0=;
-        b=EghX4vDZyn+mqoAu5lR8XTM56GUhSs0EV/EXjz0SQCYmIUvAvFNu7Nx68/ESPD82MF
-         djiQIsBNz7FcqVrApJEPDV7VYUAtaTIbRUSQoLeBgfAa64Nf1QmbLTwfLY4vf+eu+Rnw
-         NBDt3P86dI0YRcwahUHq8VWcpX2O18SK7I6G8bW5rtHQUlY9MU/hSJ/IIVfP2+5HuSeO
-         gJgaUBVJQrPtrqthmd7sPO4kAyKK7Mitc3ECvwiTJhPmlZYQC5Q08H6xUIOSeCEeJ94O
-         4b5yXvYKVnA4ox2n7ja8OuhpTLxjX44CcbQg4Smco5jW5QQJ9VPjiX7tOYxcZm4WCLv3
-         L1Bw==
+        bh=sb25WqFS5MOa5y8whWmlEi7jKLk6DH13/xEv6hI9zy0=;
+        b=xC4R8j28BYATpbd4dNrttLzukZgp4xeTD460YuiSAiIKVOUbvqmHHn4vIV7upcAM3N
+         3vLWzOGvlCuLOydh3/n6icAZpWu0d+bhvyXe/9B25tkpqlh5wTIEbNaq94VXlknwzU5V
+         +16gLG0hng1RzWTVnTTuGZX1pTkpwtqHlYK5VjtMMiV/yL3YlfSHyWShcn1Bo3mySqpW
+         B21CixIfnMBbaKJRA3vtWVmkRedDCvXPURcYICVHa/PG6nE7pGS3q6gzS3mDHdu5ryY4
+         Rq31VrO+2n0XZREPbJmGjhHJzTj0myd7T+booGaY0cB5/tv9oNV1ksSE+PKs8uVPY3Ew
+         rkrQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1771982466; x=1772587266;
+        d=1e100.net; s=20230601; t=1771982470; x=1772587270;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:reply-to:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=U5hmNv02IBvGPnO8Neh+XMn/il3YSxAkvHfsbK9B4L0=;
-        b=aFLheMYMXxunXm5vaO5FKXRwTUqd18KCnrcrAIozg+K1zogQ9r5T+HHobTMG63IxdR
-         8Yto+mz9KhhBqx66IvOwAowkkcL3kUyMywh2KGk90GrdpaT/pfWkEUvbZd7NAVFxP4eZ
-         EfRqpFlwLgXYrz8nJJv3SKoBhh6hOKojVSkl2iMNITLx3j9irLcQmH1ljjVP3hW1ZSEy
-         BbCLQgtzMEKGhK1rCWXjRWZKUHpfZ9umJ2lBGBnV4ULbzXZB7PCRyTGDLWb94eoeD709
-         UJ1hL+EqUBtJGqcCJfOXQrg/Gf+8+vhBRRGRa2i57o9OrOBuQlc/a+3L9nJ+BhBxRp5g
-         6rZg==
-X-Gm-Message-State: AOJu0YwOpetm8IRfzoJkT972wW7VT/2qixXDSB9khdH9Pj+cqW6wXkFi
-	HVOHVkVnAd/r/2qS9qwxPrmBjyN9saqobH+Mwd9SmoyiuDlKuFC0Mo/hZRX7Lo0yBfqP8S+LUCL
-	1Hll0QA==
-X-Received: from pjee13.prod.google.com ([2002:a17:90b:578d:b0:358:f01f:25f3])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:248f:b0:359:79e:39bb
- with SMTP id 98e67ed59e1d1-359079e3faemr996889a91.24.1771982465502; Tue, 24
- Feb 2026 17:21:05 -0800 (PST)
+        bh=sb25WqFS5MOa5y8whWmlEi7jKLk6DH13/xEv6hI9zy0=;
+        b=bYSmdQbpgpCCus6e3zgTPfb8yHQqlQYggllwmF3nmmxQ3iuwAb3ZhcTL0OXNoiVIIl
+         R65Y24L8Gsi68jPyERKLG7e0RlzB1Bx6FRJaCj1jl0kHAqA01CzCkJtpRCr3IFBllrkY
+         1cdEdzS7Q6/UWlQtAtbafSbWms67QeR595MXPeKPuHnx8xJbCXgZytHWf/kZNEFyUjvp
+         tnqncKcawqJO2mwj0ogPjX7PmmsYi1BT1NcqBNktZnmAszZ4I6YdHJr1rAPsSUIFSIzN
+         fjEpmZhB6WSDTc4SpcPSTGqi37bwUt8V6HgNzbwL7dmk3v61k9Y2B4PUdE3sNXA9ZMqx
+         iJaQ==
+X-Gm-Message-State: AOJu0YzcA1E8n9X2iUPr9mJhdvihGRiO6R9smJZB97DM8accgZD/UDuE
+	NRbz6jnCz7NYVdjFqc27g1cQMK7yWQCXbessCzFlnz2D7lHgMs+RecorQcxfel/WGa6h/02FWzQ
+	xUG9sSA==
+X-Received: from pjz13.prod.google.com ([2002:a17:90b:56cd:b0:354:c1db:b113])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:1f8e:b0:356:2c7b:c013
+ with SMTP id 98e67ed59e1d1-3590f205431mr539675a91.29.1771982469774; Tue, 24
+ Feb 2026 17:21:09 -0800 (PST)
 Reply-To: Sean Christopherson <seanjc@google.com>
-Date: Tue, 24 Feb 2026 17:20:42 -0800
+Date: Tue, 24 Feb 2026 17:20:44 -0800
 In-Reply-To: <20260225012049.920665-1-seanjc@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
@@ -59,8 +59,9 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 References: <20260225012049.920665-1-seanjc@google.com>
 X-Mailer: git-send-email 2.53.0.414.gf7e9f6c205-goog
-Message-ID: <20260225012049.920665-8-seanjc@google.com>
-Subject: [PATCH 07/14] KVM: x86: Harden SEV-ES MMIO against on-stack use-after-free
+Message-ID: <20260225012049.920665-10-seanjc@google.com>
+Subject: [PATCH 09/14] KVM: x86: Consolidate SEV-ES MMIO emulation into a
+ single public API
 From: Sean Christopherson <seanjc@google.com>
 To: Sean Christopherson <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>, 
 	Kiryl Shutsemau <kas@kernel.org>
@@ -71,55 +72,134 @@ Cc: kvm@vger.kernel.org, x86@kernel.org, linux-coco@lists.linux.dev,
 	Michael Roth <michael.roth@amd.com>
 Content-Type: text/plain; charset="UTF-8"
 
-Add a sanity check to ensure KVM doesn't use an on-stack variable when
-handling an MMIO request for an SEV-ES guest.  The source/destination
-for SEV-ES MMIO should _always_ be the #VMGEXIT scratch area.
+Dedup kvm_sev_es_mmio_{read,write}() into a single API, as the "cost" of
+plumbing in a boolean is largely negligible since KVM pulls out a boolean
+for ops->write anyways, and consolidating the APIs will allow for
+additional cleanups.
 
-Opportunistically update the comment in the completion side of things
-to clarify that frag->data doesn't need to be copied anywhere, and the
-VMEGEXIT is trap-like (the current comment doesn't clarify *how* RIP is
-advanced).
+No functional change intended.
 
 Signed-off-by: Sean Christopherson <seanjc@google.com>
 ---
- arch/x86/kvm/x86.c | 10 ++++++----
- 1 file changed, 6 insertions(+), 4 deletions(-)
+ arch/x86/kvm/svm/sev.c | 20 ++++++--------------
+ arch/x86/kvm/x86.c     | 29 +++++++++--------------------
+ arch/x86/kvm/x86.h     |  6 ++----
+ 3 files changed, 17 insertions(+), 38 deletions(-)
 
+diff --git a/arch/x86/kvm/svm/sev.c b/arch/x86/kvm/svm/sev.c
+index ea515cf41168..723f4452302a 100644
+--- a/arch/x86/kvm/svm/sev.c
++++ b/arch/x86/kvm/svm/sev.c
+@@ -4434,25 +4434,17 @@ int sev_handle_vmgexit(struct kvm_vcpu *vcpu)
+ 
+ 	switch (control->exit_code) {
+ 	case SVM_VMGEXIT_MMIO_READ:
+-		ret = setup_vmgexit_scratch(svm, true, control->exit_info_2);
+-		if (ret)
+-			break;
++	case SVM_VMGEXIT_MMIO_WRITE: {
++		bool is_write = control->exit_code == SVM_VMGEXIT_MMIO_WRITE;
+ 
+-		ret = kvm_sev_es_mmio_read(vcpu,
+-					   control->exit_info_1,
+-					   control->exit_info_2,
+-					   svm->sev_es.ghcb_sa);
+-		break;
+-	case SVM_VMGEXIT_MMIO_WRITE:
+-		ret = setup_vmgexit_scratch(svm, false, control->exit_info_2);
++		ret = setup_vmgexit_scratch(svm, !is_write, control->exit_info_2);
+ 		if (ret)
+ 			break;
+ 
+-		ret = kvm_sev_es_mmio_write(vcpu,
+-					    control->exit_info_1,
+-					    control->exit_info_2,
+-					    svm->sev_es.ghcb_sa);
++		ret = kvm_sev_es_mmio(vcpu, is_write, control->exit_info_1,
++				      control->exit_info_2, svm->sev_es.ghcb_sa);
+ 		break;
++	}
+ 	case SVM_VMGEXIT_NMI_COMPLETE:
+ 		++vcpu->stat.nmi_window_exits;
+ 		svm->nmi_masked = false;
 diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
-index 7abd6f93c386..2db0bf738d2d 100644
+index f93f0f8961af..022e953906f7 100644
 --- a/arch/x86/kvm/x86.c
 +++ b/arch/x86/kvm/x86.c
-@@ -14273,8 +14273,10 @@ static int complete_sev_es_emulated_mmio(struct kvm_vcpu *vcpu)
- 	if (vcpu->mmio_cur_fragment >= vcpu->mmio_nr_fragments) {
- 		vcpu->mmio_needed = 0;
+@@ -14293,9 +14293,8 @@ static int complete_sev_es_emulated_mmio(struct kvm_vcpu *vcpu)
+ 	return 0;
+ }
  
--		// VMG change, at this point, we're always done
--		// RIP has already been advanced
-+		/*
-+		 * All done, as frag->data always points at the GHCB scratch
-+		 * area and VMGEXIT is trap-like (RIP is advanced by hardware).
-+		 */
+-static int kvm_sev_es_do_mmio(struct kvm_vcpu *vcpu, gpa_t gpa,
+-			      unsigned int bytes, void *data,
+-			      const struct read_write_emulator_ops *ops)
++int kvm_sev_es_mmio(struct kvm_vcpu *vcpu, bool is_write, gpa_t gpa,
++		    unsigned int bytes, void *data)
+ {
+ 	struct kvm_mmio_fragment *frag;
+ 	int handled;
+@@ -14303,7 +14302,10 @@ static int kvm_sev_es_do_mmio(struct kvm_vcpu *vcpu, gpa_t gpa,
+ 	if (!data || WARN_ON_ONCE(object_is_on_stack(data)))
+ 		return -EINVAL;
+ 
+-	handled = ops->read_write_mmio(vcpu, gpa, bytes, data);
++	if (is_write)
++		handled = vcpu_mmio_write(vcpu, gpa, bytes, data);
++	else
++		handled = vcpu_mmio_read(vcpu, gpa, bytes, data);
+ 	if (handled == bytes)
  		return 1;
- 	}
  
-@@ -14297,7 +14299,7 @@ int kvm_sev_es_mmio_write(struct kvm_vcpu *vcpu, gpa_t gpa, unsigned int bytes,
- 	int handled;
- 	struct kvm_mmio_fragment *frag;
+@@ -14326,8 +14328,8 @@ static int kvm_sev_es_do_mmio(struct kvm_vcpu *vcpu, gpa_t gpa,
  
--	if (!data)
-+	if (!data || WARN_ON_ONCE(object_is_on_stack(data)))
- 		return -EINVAL;
+ 	vcpu->run->mmio.phys_addr = gpa;
+ 	vcpu->run->mmio.len = min(8u, frag->len);
+-	vcpu->run->mmio.is_write = ops->write;
+-	if (ops->write)
++	vcpu->run->mmio.is_write = is_write;
++	if (is_write)
+ 		memcpy(vcpu->run->mmio.data, frag->data, min(8u, frag->len));
+ 	vcpu->run->exit_reason = KVM_EXIT_MMIO;
  
- 	handled = write_emultor.read_write_mmio(vcpu, gpa, bytes, data);
-@@ -14336,7 +14338,7 @@ int kvm_sev_es_mmio_read(struct kvm_vcpu *vcpu, gpa_t gpa, unsigned int bytes,
- 	int handled;
- 	struct kvm_mmio_fragment *frag;
+@@ -14335,20 +14337,7 @@ static int kvm_sev_es_do_mmio(struct kvm_vcpu *vcpu, gpa_t gpa,
  
--	if (!data)
-+	if (!data || WARN_ON_ONCE(object_is_on_stack(data)))
- 		return -EINVAL;
+ 	return 0;
+ }
+-
+-int kvm_sev_es_mmio_write(struct kvm_vcpu *vcpu, gpa_t gpa, unsigned int bytes,
+-			  void *data)
+-{
+-	return kvm_sev_es_do_mmio(vcpu, gpa, bytes, data, &write_emultor);
+-}
+-EXPORT_SYMBOL_FOR_KVM_INTERNAL(kvm_sev_es_mmio_write);
+-
+-int kvm_sev_es_mmio_read(struct kvm_vcpu *vcpu, gpa_t gpa, unsigned int bytes,
+-			 void *data)
+-{
+-	return kvm_sev_es_do_mmio(vcpu, gpa, bytes, data, &read_emultor);
+-}
+-EXPORT_SYMBOL_FOR_KVM_INTERNAL(kvm_sev_es_mmio_read);
++EXPORT_SYMBOL_FOR_KVM_INTERNAL(kvm_sev_es_mmio);
  
- 	handled = read_emultor.read_write_mmio(vcpu, gpa, bytes, data);
+ static void advance_sev_es_emulated_pio(struct kvm_vcpu *vcpu, unsigned count, int size)
+ {
+diff --git a/arch/x86/kvm/x86.h b/arch/x86/kvm/x86.h
+index 94d4f07aaaa0..1d0f0edd31b3 100644
+--- a/arch/x86/kvm/x86.h
++++ b/arch/x86/kvm/x86.h
+@@ -712,10 +712,8 @@ static inline bool __kvm_is_valid_cr4(struct kvm_vcpu *vcpu, unsigned long cr4)
+ 	__reserved_bits;                                \
+ })
+ 
+-int kvm_sev_es_mmio_write(struct kvm_vcpu *vcpu, gpa_t src, unsigned int bytes,
+-			  void *dst);
+-int kvm_sev_es_mmio_read(struct kvm_vcpu *vcpu, gpa_t src, unsigned int bytes,
+-			 void *dst);
++int kvm_sev_es_mmio(struct kvm_vcpu *vcpu, bool is_write, gpa_t gpa,
++		    unsigned int bytes, void *data);
+ int kvm_sev_es_string_io(struct kvm_vcpu *vcpu, unsigned int size,
+ 			 unsigned int port, void *data,  unsigned int count,
+ 			 int in);
 -- 
 2.53.0.414.gf7e9f6c205-goog
 
