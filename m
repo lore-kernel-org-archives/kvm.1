@@ -1,208 +1,177 @@
-Received: from mail-pl1-f172.google.com (mail-pl1-f172.google.com [209.85.214.172])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A77702C21F1
-	for <kvm@vger.kernel.org>; Wed, 25 Feb 2026 23:41:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.172
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B7DB7376BFF;
+	Wed, 25 Feb 2026 23:42:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772062871; cv=none; b=etuoGvkV0fq/lbJnrIdoS3kGRUJPUrYvBK+H+YBMdhkB9uesN2iiUe4HxUFs1/RkFeWfDI7VjAo6mOGz+AWjKuxgWNdkM5TmditqK3l+q/TOY/XPSGqb1g33tDyNAkU54LrDl1UxIGYUZXtSl0DIK71gSucWvl12gCwniNQYsuU=
+	t=1772062971; cv=none; b=gh9ntpVlSR7lkqq10rRiy7MH9Dgl607zS9lsjxQ5VsrcXPv+E+ioKuF6DX2Ll1QKXBJu0PmP5qzKd0GGUZz8Ayr2pL8OqQI+YVbN9C3d9gcSfXLhPuxoH6nLcqTg2FSSjUU5fjMSC3oGupQ/bXWawtPEN9YYaMNH3SVYFbRNOok=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772062871; c=relaxed/simple;
-	bh=bKI2pGpfY+ZCgdQUPM1XvD0dVj7imv1jMLjUvrJ34gY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Rn/owKxLCjSV1R5SDXL0aF/N+Rwpj0MhvRYrkHlw8zNjX6cGFOFjWIC5RheSeeBqEolxbwnZ4BLuPTZZRtBnqPKDI4qHfmxqf6RApLjFgQ1w7tYpI6cjssB8lz28UU4HFjgaQgLOxyZsMIffwsdFYA+5EygCKPIHWEN1CxlJU2I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Ic4P6Fkf; arc=none smtp.client-ip=209.85.214.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	s=arc-20240116; t=1772062971; c=relaxed/simple;
+	bh=LJlpi5wuKe2Ygqgec+SIKK0p59KvieoD4ReMMDS1aGU=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=sZcleSPwnMC2Pgo15B5AS+fAIjHY+hQIBpgdYLfBRfOMyzMP3hSYJa7wlMYHJybGHpip8H5wdLxChbVVWmPShIBlWroYnFxoPAAGvUJn7wrRrwBvXpenVv6L5GMkDHI2Mn6KvgjesBXyVGoXnOeLX2Q6R4GPj5kHUCGEv48xggQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=Nx61voTY; arc=none smtp.client-ip=148.163.156.1
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Ic4P6Fkf"
-Received: by mail-pl1-f172.google.com with SMTP id d9443c01a7336-2a9296b3926so1838285ad.1
-        for <kvm@vger.kernel.org>; Wed, 25 Feb 2026 15:41:10 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1772062870; x=1772667670; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=/CK8Xw2Z8/jwhJKdKy0esOogFCKRH5zkiTBeIKoVGlM=;
-        b=Ic4P6Fkf/OXgNQ7BDlUnM2oIkuJMigxtpE353Q9PHMHUy8KOdfb/1AhXq8PqsRxaSa
-         m6syzRvsuaI1TgkDNs2grnAoEIj7bWPlrj4VWShTXl7iDrARPiMPoSqkpGqHNQED7SJq
-         sjDbCi10DOaC+SHAoHd9Q4nCSS8RWBjp9qw6oz5NoO6dSD4QNeh2TJHWLpYw0ODvYnTn
-         v+8wV7PBBRjogrV24GXaeu7V/xKAw+w/ubVwn7sNdvaxR1vkIGn3FaUkv9a/jCqto8SF
-         Gpe4rhG8F06u8QkjdUIFYrSI6mk1aDROt2IVSF511yCdy54NqgTXDMOVGZ7X+hVAhKvE
-         Tf1g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1772062870; x=1772667670;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=/CK8Xw2Z8/jwhJKdKy0esOogFCKRH5zkiTBeIKoVGlM=;
-        b=J3sSvO/iKaYtTR4PMsoq49Qg1/twqOJCQjSla65HXAZBkNUADR4/weTvuf6OeKvpBY
-         LXhbLFF7xc4/KSG7VQdcnz4k1r8AaN1m75WGgbPktmkmPvr47wOF707S2dE99s9l6BPl
-         e3jLxPqy5FrjGfh9vz9lVTUvzAJoo4CihES9dD8m6pG6M2HYZmQZen2FlM5YAT6tYNt7
-         6RAWix/BGTP63ZiIwM76P+/dzWh359ygbtEXEyiL+jZ3XL3buJa7ofqezSC1uNAS6q0m
-         XbZlC383WH6m1yOvCqIawGTXEiKpajywR/x8FaMXhel+2/HHjkZyXWbt3+jIz7251t3S
-         v3iw==
-X-Forwarded-Encrypted: i=1; AJvYcCUk/KQYheSi2pEZgIip9QR5QaZbpna3zts31S53Mi6T5+caaxYIuAzCc9opI7teDmWkuK8=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz3zWlzPzY17zfNG6BygJF6Q5DZbf5NPmpwwjMjyKlZw19dt/NN
-	6yRt3/Ypg3BBXyBOmC+qvmtD4LxKyOCmOIH/GAmY4AVnxGMSnYLASrqNQVOz8+eGeg==
-X-Gm-Gg: ATEYQzxYkQ8gac3UPJleMYTVHRvZ0UdYuKsFQaXD1IRoBjiu8erhzjwRAeMcAYV9ijY
-	J42V88PopC0li5cUXJieuckWnZlZtystVqje6nrLnqWemFcQDYL7ZITQEBLOz1vI5Z+yk/G/HYV
-	RiR+F/WugXdTPH7PZGkBNUfgxloxtD3hl7SEZWPQ1d7jBTOMJJ7o4h6MExFJxmoEaiclmAG1NZW
-	nWKsXjBsXK07ywH/4MtJ1zqtLoetpQ9gY5lRypBqKeSIr58OBJ2ZjC9UZkk4mJofWCcSNFJffke
-	Oio5UUX4bOe3c4vhljih1NPorojTsydbiZSYxAlN8dG/QTjVC6j8zTvHdbEKWlNUBnoDEa3mJ+l
-	mhkfvPZI4Gs9NL28u/UetRwhb2Xjvl7HW7OaP53ALrj2PoG6rrlgytkmgHIhi2ffsD0nKpyogRt
-	qmndI+7Ozq/1jyusvogrDTLojRK1W70HnWvL3OovzknCftSYcUq9LxHCPvI7FXGg==
-X-Received: by 2002:a17:902:cccf:b0:2a1:e19:ff0 with SMTP id d9443c01a7336-2ae035d235dmr1928845ad.39.1772062869584;
-        Wed, 25 Feb 2026 15:41:09 -0800 (PST)
-Received: from google.com (239.23.105.34.bc.googleusercontent.com. [34.105.23.239])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2adfb6b5813sm3778175ad.63.2026.02.25.15.41.08
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 25 Feb 2026 15:41:08 -0800 (PST)
-Date: Wed, 25 Feb 2026 23:41:04 +0000
-From: David Matlack <dmatlack@google.com>
-To: Alex Williamson <alex@shazbot.org>
-Cc: Adithya Jayachandran <ajayachandra@nvidia.com>,
-	Alexander Graf <graf@amazon.com>, Alex Mastro <amastro@fb.com>,
-	Alistair Popple <apopple@nvidia.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Ankit Agrawal <ankita@nvidia.com>,
-	Bjorn Helgaas <bhelgaas@google.com>, Chris Li <chrisl@kernel.org>,
-	David Rientjes <rientjes@google.com>,
-	Jacob Pan <jacob.pan@linux.microsoft.com>,
-	Jason Gunthorpe <jgg@nvidia.com>, Jason Gunthorpe <jgg@ziepe.ca>,
-	Jonathan Corbet <corbet@lwn.net>, Josh Hilke <jrhilke@google.com>,
-	Kevin Tian <kevin.tian@intel.com>, kexec@lists.infradead.org,
-	kvm@vger.kernel.org, Leon Romanovsky <leon@kernel.org>,
-	Leon Romanovsky <leonro@nvidia.com>, linux-doc@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org,
-	linux-mm@kvack.org, linux-pci@vger.kernel.org,
-	Lukas Wunner <lukas@wunner.de>,
-	 =?utf-8?Q?Micha=C5=82?= Winiarski <michal.winiarski@intel.com>,
-	Mike Rapoport <rppt@kernel.org>, Parav Pandit <parav@nvidia.com>,
-	Pasha Tatashin <pasha.tatashin@soleen.com>,
-	Pranjal Shrivastava <praan@google.com>,
-	Pratyush Yadav <pratyush@kernel.org>,
-	Raghavendra Rao Ananta <rananta@google.com>,
-	Rodrigo Vivi <rodrigo.vivi@intel.com>,
-	Saeed Mahameed <saeedm@nvidia.com>,
-	Samiullah Khawaja <skhawaja@google.com>,
-	Shuah Khan <skhan@linuxfoundation.org>,
-	Thomas =?iso-8859-1?Q?Hellstr=F6m?= <thomas.hellstrom@linux.intel.com>,
-	Tomita Moeko <tomitamoeko@gmail.com>,
-	Vipin Sharma <vipinsh@google.com>,
-	Vivek Kasireddy <vivek.kasireddy@intel.com>,
-	William Tu <witu@nvidia.com>, Yi Liu <yi.l.liu@intel.com>,
-	Zhu Yanjun <yanjun.zhu@linux.dev>
-Subject: Re: [PATCH v2 05/22] vfio/pci: Preserve vfio-pci device files across
- Live Update
-Message-ID: <aZ-IkNFOLJUff1hC@google.com>
-References: <20260129212510.967611-1-dmatlack@google.com>
- <20260129212510.967611-6-dmatlack@google.com>
- <20260225154124.78e18fa4@shazbot.org>
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="Nx61voTY"
+Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 61PKla3W2460426;
+	Wed, 25 Feb 2026 23:42:50 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=hmdacT
+	ALJh28DvVcdwZtkaL65/31pNSDaP4wG4Nd1t0=; b=Nx61voTYz+2nyc8256tY6C
+	jsbH5g83YI7wWorMCCUvjt2I0o/ypc0lVAfNtYvkUDY52N7GZUt/YvTBAJV0PwvE
+	UsLagrP5LlqIc5JhT4Zy6QmUTW4dXUTRi96dJjwwhWWF8oF5kfbNoVHaNDfa6B5O
+	jxN+hdkYEh/3Aeacx9u1MVfzNEc3p6Ik0esRvDOUTaF0fiWBVniYQ4+xE//C847e
+	0MH2DFThS5tmrjuyQSKPTELWQiTLlS7AxYlVYDUrdZLY6q/c/KugTCbX8jinUbNK
+	idC6ptlWYeJOs0d6rjCcaz41+cS96ubsdLPQo0EMgoCMHb77HYOIMnRbx1HhUhJQ
+	==
+Received: from ppma12.dal12v.mail.ibm.com (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4cf4cr35n9-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 25 Feb 2026 23:42:49 +0000 (GMT)
+Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma12.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 61PMbpAn015962;
+	Wed, 25 Feb 2026 23:42:49 GMT
+Received: from smtprelay07.wdc07v.mail.ibm.com ([172.16.1.74])
+	by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 4cfq1sr757-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 25 Feb 2026 23:42:49 +0000
+Received: from smtpav03.wdc07v.mail.ibm.com (smtpav03.wdc07v.mail.ibm.com [10.39.53.230])
+	by smtprelay07.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 61PNglXd66191660
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Wed, 25 Feb 2026 23:42:47 GMT
+Received: from smtpav03.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 68B9B5805D;
+	Wed, 25 Feb 2026 23:42:47 +0000 (GMT)
+Received: from smtpav03.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id AD12D5805A;
+	Wed, 25 Feb 2026 23:42:46 +0000 (GMT)
+Received: from [9.61.38.72] (unknown [9.61.38.72])
+	by smtpav03.wdc07v.mail.ibm.com (Postfix) with ESMTP;
+	Wed, 25 Feb 2026 23:42:46 +0000 (GMT)
+Message-ID: <67c8bb91-32ac-4e1e-8b97-9ff8f55a4e61@linux.ibm.com>
+Date: Wed, 25 Feb 2026 18:42:46 -0500
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260225154124.78e18fa4@shazbot.org>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/2] KVM: s390: Limit adapter indicator access to mapped
+ page
+To: Janosch Frank <frankja@linux.ibm.com>, kvm@vger.kernel.org
+Cc: linux-s390@vger.kernel.org, imbrenda@linux.ibm.com,
+        borntraeger@linux.ibm.com, freimuth@linux.ibm.com
+References: <20260217090230.8116-1-frankja@linux.ibm.com>
+ <20260217090230.8116-2-frankja@linux.ibm.com>
+Content-Language: en-US
+From: Matthew Rosato <mjrosato@linux.ibm.com>
+In-Reply-To: <20260217090230.8116-2-frankja@linux.ibm.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: GEFaDYcRZuzS82YOs7OZ3M7l4lHQHZeK
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMjI1MDIyNiBTYWx0ZWRfXzLRXARkGE/6s
+ zgGr/9EyyecA3uozxtH/ogtUfhjEwj8WNBmHCER9il+QGJqIlo2kzTv5wuvwL4xMCntiPrPslxP
+ 5n5vuUS74fwyDC3bnGvbdZIxXjGBqDfq2n7IwIqTxZN72KAbJL3mKfnglO49V0yGtCQuxN5nx3a
+ AxxLRmcmhm4pCKsZ9d0SjSYzU4QfRNgr8COoZWstAOf0naGmhX+hj/a3l8buq/rgPflbtfDMjcX
+ UHY6Jbn75gn/9zIfCLco2K08eXdfkjEPWl+jepfZo+/tnULpj/8eonhPOdk9XayY8qSpXvHobTN
+ Wh1+edZcnUFNmEDpKwlfiKxZPbCZ/pLp8Rhc8EpS4AvwfPCAq4rquRFUVgAiyFLRwl+TrKpYmAM
+ dRWvW9odNxS7ti4LsDzcc8IxmaIGOH23YkGWvEUELD9Gd/8jrk6vQ0H+ysdjnOmw6mZk7D105Os
+ 4rQWwAO3SYRFHwXGGCQ==
+X-Proofpoint-GUID: GEFaDYcRZuzS82YOs7OZ3M7l4lHQHZeK
+X-Authority-Analysis: v=2.4 cv=bbBmkePB c=1 sm=1 tr=0 ts=699f88fa cx=c_pps
+ a=bLidbwmWQ0KltjZqbj+ezA==:117 a=bLidbwmWQ0KltjZqbj+ezA==:17
+ a=IkcTkHD0fZMA:10 a=HzLeVaNsDn8A:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=Mpw57Om8IfrbqaoTuvik:22 a=GgsMoib0sEa3-_RKJdDe:22 a=VnNF1IyMAAAA:8
+ a=G87O5jEwh3kmkZiQiTUA:9 a=QEXdDO2ut3YA:10
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.51,FMLib:17.12.100.49
+ definitions=2026-02-25_04,2026-02-25_02,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ malwarescore=0 bulkscore=0 adultscore=0 impostorscore=0 lowpriorityscore=0
+ priorityscore=1501 suspectscore=0 clxscore=1015 phishscore=0 spamscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2601150000 definitions=main-2602250226
 
-On 2026-02-25 03:41 PM, Alex Williamson wrote:
-> On Thu, 29 Jan 2026 21:24:52 +0000 David Matlack <dmatlack@google.com> wrote:
-
-> >  static bool vfio_pci_liveupdate_can_preserve(struct liveupdate_file_handler *handler,
-> >  					     struct file *file)
-> >  {
-> > -	return false;
-> > +	struct vfio_device_file *df = to_vfio_device_file(file);
-> > +
-> > +	if (!df)
-> > +		return false;
-> > +
-> > +	/* Live Update support is limited to cdev files. */
-> > +	if (df->group)
-> > +		return false;
-> > +
-> > +	return df->device->ops == &vfio_pci_ops;
-> >  }
+On 2/17/26 3:54 AM, Janosch Frank wrote:
+> While we check the address for errors, we don't seem to check the bit
+> offsets and since they are 32 and 64 bits a lot of memory can be
+> reached indirectly via those offsets.
 > 
-> Why can't we use vfio_device_cdev_opened() here and avoid all the new
-> exposure in public headers?
-
-I thought I explored using vfio_device_cdev_opened() but I can't
-remember now why I went with df->group. Maybe there wasn't a good
-reason. I'll switch to vfio_device_cdev_opened() in the next version.
-
-> >  
-> >  static int vfio_pci_liveupdate_preserve(struct liveupdate_file_op_args *args)
-> >  {
-> > -	return -EOPNOTSUPP;
-> > +	struct vfio_device *device = vfio_device_from_file(args->file);
-> > +	struct vfio_pci_core_device_ser *ser;
-> > +	struct vfio_pci_core_device *vdev;
-> > +	struct pci_dev *pdev;
-> > +
-> > +	vdev = container_of(device, struct vfio_pci_core_device, vdev);
-> > +	pdev = vdev->pdev;
-> > +
-> > +	if (IS_ENABLED(CONFIG_VFIO_PCI_ZDEV_KVM))
-> > +		return -EINVAL;
-> > +
-> > +	if (vfio_pci_is_intel_display(pdev))
-> > +		return -EINVAL;
+> Signed-off-by: Janosch Frank <frankja@linux.ibm.com>
+> Fixes: 84223598778b ("KVM: s390: irq routing for adapter interrupts.")
+> ---
+>  arch/s390/kvm/interrupt.c | 12 ++++++++++++
+>  1 file changed, 12 insertions(+)
 > 
-> Some comments describing what's missing, if these are TODO or DONTCARE
-> would be useful.
+> diff --git a/arch/s390/kvm/interrupt.c b/arch/s390/kvm/interrupt.c
+> index 1c2bb5cd7e12..cd4851e33a5b 100644
+> --- a/arch/s390/kvm/interrupt.c
+> +++ b/arch/s390/kvm/interrupt.c
+> @@ -2724,6 +2724,9 @@ static unsigned long get_ind_bit(__u64 addr, unsigned long bit_nr, bool swap)
+>  
+>  	bit = bit_nr + (addr % PAGE_SIZE) * 8;
+>  
+> +	/* kvm_set_routing_entry() should never allow this to happen */
+> +	WARN_ON_ONCE(bit > (PAGE_SIZE * BITS_PER_BYTE - 1));
+> +
+>  	return swap ? (bit ^ (BITS_PER_LONG - 1)) : bit;
+>  }
+>  
+> @@ -2852,6 +2855,7 @@ int kvm_set_routing_entry(struct kvm *kvm,
+>  			  struct kvm_kernel_irq_routing_entry *e,
+>  			  const struct kvm_irq_routing_entry *ue)
+>  {
+> +	const struct kvm_irq_routing_s390_adapter *adapter;
+>  	u64 uaddr_s, uaddr_i;
+>  	int idx;
+>  
+> @@ -2862,6 +2866,14 @@ int kvm_set_routing_entry(struct kvm *kvm,
+>  			return -EINVAL;
+>  		e->set = set_adapter_int;
+>  
+> +		adapter = &ue->u.adapter;
+> +		if (adapter->summary_addr + BITS_TO_BYTES(adapter->summary_offset) >=
+> +		    (adapter->summary_addr & PAGE_MASK) + PAGE_SIZE)
+> +			return -EINVAL;
+> +		if (adapter->ind_addr + BITS_TO_BYTES(adapter->ind_offset) >=
+> +		    (adapter->ind_addr & PAGE_MASK) + PAGE_SIZE)
+> +			return -EINVAL;
+> +
 
-Will do.
 
-> > +static int vfio_pci_liveupdate_freeze(struct liveupdate_file_op_args *args)
-> > +{
-> > +	struct vfio_device *device = vfio_device_from_file(args->file);
-> > +	struct vfio_pci_core_device *vdev;
-> > +	struct pci_dev *pdev;
-> > +	int ret;
-> > +
-> > +	vdev = container_of(device, struct vfio_pci_core_device, vdev);
-> > +	pdev = vdev->pdev;
-> > +
-> > +	guard(mutex)(&device->dev_set->lock);
-> > +
-> > +	/*
-> > +	 * Userspace must disable interrupts on the device prior to freeze so
-> > +	 * that the device does not send any interrupts until new interrupt
-> > +	 * handlers have been established by the next kernel.
-> > +	 */
-> > +	if (vdev->irq_type != VFIO_PCI_NUM_IRQS) {
-> > +		pci_err(pdev, "Freeze failed! Interrupts are still enabled.\n");
-> > +		return -EINVAL;
-> > +	}
-> > +
-> > +	pci_dev_lock(pdev);
-> 
-> device_lock() is a dangerous source of deadlocks, for instance how can
-> we know the freeze isn't occurring with an outstanding driver unbind?
+I think this is slightly off.
 
-I can change this to a try-lock and return an error if taking the lock
-fails. The freeze() callbacks are triggered by liveupdate_reboot() which
-is called from kernel_kexec(). So returning an error to userspace is
-possible.
+The offset should indicate a bit offset from the beginning of the byte, so offsets 0-7 are all within the same byte as the specified address, 8-15 are in the next byte, etc.
 
-My only concern is whether using try-lock would make kexec flaky, or if
-it would only fail if userspace is misbehavior (e.g. unbinding drivers
-while kexecing).
+I hacked QEMU and tested something like...
+1) addr 8126efff offset 7 -- this would be the very last bit in the page.
+2) addr 8126efff offset 8 -- this would be the very first bit in the next page.  
+3) addr 8126efff offset 9 -- this would be the 2nd bit in the next page.
 
-> > -static struct vfio_device *vfio_device_from_file(struct file *file)
-> > -{
-> > -	struct vfio_device_file *df = file->private_data;
-> > -
-> > -	if (file->f_op != &vfio_device_fops)
-> > -		return NULL;
-> > -	return df->device;
-> > -}
-> > +EXPORT_SYMBOL_GPL(vfio_device_fops);
-> 
-> Seems we just need to export vfio_device_from_file().  Thanks,
+I expected (1) to pass while (2) and (3) were rejected, but all 3 were rejected by your check.
 
-Will do.
+I think the problem is that BITS_TO_BYTES rounds up.  So:
+BITS_TO_BYTES(0) = 0
+BITS_TO_BYTES(1..8) = 1
+BITS_TO_BYTES(9..16) = 2
+and so on.
+
+But your offset check expects
+0..7 = 0
+8..15 = 1
+and so on.
+
+AFAICT replacing BITS_TO_BYTES(offset) with (offset / 8) would work.
+
+
+>  		idx = srcu_read_lock(&kvm->srcu);
+>  		uaddr_s = gpa_to_hva(kvm, ue->u.adapter.summary_addr);
+>  		uaddr_i = gpa_to_hva(kvm, ue->u.adapter.ind_addr);
+
