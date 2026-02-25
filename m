@@ -1,55 +1,55 @@
-Received: from mail-pg1-f201.google.com (mail-pg1-f201.google.com [209.85.215.201])
+Received: from mail-pg1-f202.google.com (mail-pg1-f202.google.com [209.85.215.202])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD45428488D
-	for <kvm@vger.kernel.org>; Wed, 25 Feb 2026 01:21:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C4DC286D64
+	for <kvm@vger.kernel.org>; Wed, 25 Feb 2026 01:21:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.202
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771982480; cv=none; b=e+P7Jm5SewAmKan96YSkYPc7oBvohNHLnoESLrBMmoslrj4xf6l6+XQENrHxcnNfOb7BmmDQ1OMuPA/0xMlGIAMfR6kmOWV1YPr5TGJHGOgV77NL/rmC+u+zDYdgJ+d/fWeUSuPjaqWdMqdxmEB5XTGMl08Hj3RR1A6h0AHx2Go=
+	t=1771982480; cv=none; b=CamICrnQq+fhwA8YTP8LPkqgnntcB0XMExMTqx/sDslKeKe8WPL82f4LpKMsE6gZNaiKfon43/32o1YzQQ33+5lcjzZRUCoCzUg2helDq7osG+iGHDTe3KucGwcsZzfeBIyYQWQeZWQA0Mpde6RXz/AutOCnE9RmNPSP6lh5eC8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1771982480; c=relaxed/simple;
-	bh=85i39OWQhVtkn+KmWvGw+H0S5qjkbaqht3+QjSVkoLI=;
+	bh=IuDnIRUgFkFMGAUuxCS338MB/VHIWV/Tt1I66OqunQE=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=CnjfJK/Q4y2u/vYa47qwTIBj4uBrg5ZvbsqNcQ+JR7yXVttKKpJJ3GJcdLly3BmXRNOYJmgHPTDOcfI9x8JV69yiTqBJMy+Wda4s4GYFkUjREiqpencPzuLqWZ2OMupBJP5Vj1VtT+uao0Lo5aqBDgnFlw8DUj8G3ZcQdbhw5zw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=WxnGNGx9; arc=none smtp.client-ip=209.85.215.201
+	 To:Cc:Content-Type; b=LY/wA3NwZADj5eWXMHGhigUEWu289LUyQhob+2H8iJnJvr7wBhFwmamXJWapSeHO8wLOMs9x4MsGqzC4y4pWtDIREan4zI2KEFRroyHzxm6jJInWfECBYn3+FzwJaQOlVz6HaODAN0cOpVL6OcUpV49mdOoO5ry1v5efaqGkEyU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=BH2WDDCB; arc=none smtp.client-ip=209.85.215.202
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="WxnGNGx9"
-Received: by mail-pg1-f201.google.com with SMTP id 41be03b00d2f7-c70e8e7fe55so51235a12.2
-        for <kvm@vger.kernel.org>; Tue, 24 Feb 2026 17:21:15 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="BH2WDDCB"
+Received: by mail-pg1-f202.google.com with SMTP id 41be03b00d2f7-c6e24ee93a6so228291a12.0
+        for <kvm@vger.kernel.org>; Tue, 24 Feb 2026 17:21:19 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1771982475; x=1772587275; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1771982479; x=1772587279; darn=vger.kernel.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:reply-to:from:to:cc:subject:date:message-id:reply-to;
-        bh=PEtXjeylvLkO6uPQdY2VXz1BpnUVZoay6R5c8Z2Fy64=;
-        b=WxnGNGx9MHeq6Vnm9AblAYlxLtsfYWdaxUYa51xS2cIYozLVBka5m3nTHIYUOwfeMF
-         e0e6LBhGb0UHaY1JDiWeCSDeox/awWImdp49hc9f//17RYa97DWlCPAq0hRw+R8U5q5X
-         9lt6KCyq4G68ZLtNKoQC0yXclx9CF7Hnya2VrZj1EB0N0lI0M1LngyV9wnH1YkSbb0W5
-         2osq3hozdRJAgImHkNE6NXHyEOqR6dYZVXZK3HRJAhzacHEDsAurB9+lnxJuOTZLr7Z0
-         gcq+J/PVrMKqZqYoQzh5yRQ6zkXVaKDC/4K6xc4k9Pg89EFa8dEZEhU2KTwBvPVVXzzI
-         daBg==
+        bh=06Kr2IGpW9wlaU49L7FaC2EfLlqxR0kfrYYtwtYSIqY=;
+        b=BH2WDDCBdSTPYuywWHLI7FH7LB7c4yiB9eBtYCCMOsx8Y/Ue5MmmbBiwulwW6eTTzk
+         MczA0kws+5MaxIGhEH/eifdoy13BY4330sIM5kgfyGfaodGuxnGJwlgeyrlg6e9NUzdv
+         O8gH3rtGgDv4oCZZNq5mviSvkookc11ZvE2018R3eLA5+uPOeCCq13ucga57dzLFcgLz
+         ehOLVBHrlnnsNYI813oQcLnvottbzM1nrZlMzTO8SKpfCJEZtVCGeyGoMHA/H8u63WM7
+         GtZDD01Gy2yk8nQg9BXRmu2XfPDgStsWJ5kh7QtNgiLEc7YJg/QOrySmKqYYH2O7DRCy
+         EtGA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1771982475; x=1772587275;
+        d=1e100.net; s=20230601; t=1771982479; x=1772587279;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:reply-to:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=PEtXjeylvLkO6uPQdY2VXz1BpnUVZoay6R5c8Z2Fy64=;
-        b=qXqtYCWw37yFpLTSYjmaD27terrfYybqY/d/ysIsr8iCrdA9DDGrZykXzth4LHegqS
-         Rj/ZlnEAheKWMqrSxT2lo8cIS86XRsk0wxyANU71urB0pcvGZ6vH1/L6Ux+KHTc2jwum
-         kzsl++sT8BVJhG4JP5ZpHaVlVAqhj09qBLqdbS7aFqNEDFP9Vowt3xmB4YbCke/LR9BI
-         X1Y+b+Bets9hvYokZRf/WCtVzdC1r9Nrnl7ngAAqyhUOSKnMp9Mhh4OfHTIW09Z59JPm
-         mKxrAQ9XyPkJv15MrBIHZiZs3AUsjz+UWdul8VZ2j5jTjTnbv9N3/HargaOaJxeNxyce
-         rcfQ==
-X-Gm-Message-State: AOJu0YyuZUuPeVTGkjLCZ7bUuTXA0dIg+k/Y6A4samJJRmgCFPSzx8T7
-	4rLRmnLl89Wrd63yJeDMPsB8/ZJOEAco2uAAXVcorlQc8hA/BIxg5OPjJm0bgoJMS2gqXZj4CIo
-	dsgwJnA==
-X-Received: from pgbdw17.prod.google.com ([2002:a05:6a02:4491:b0:c6e:2e2c:d4a2])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a20:cf85:b0:395:9d89:db69
- with SMTP id adf61e73a8af0-3959f270843mr632443637.7.1771982474849; Tue, 24
- Feb 2026 17:21:14 -0800 (PST)
+        bh=06Kr2IGpW9wlaU49L7FaC2EfLlqxR0kfrYYtwtYSIqY=;
+        b=phgZRwHNEhzU693paQ/pq7BCXTBQqykdCXWrfxA6aKrNayBN7i4ypeaWMFJTurO7L7
+         s7SInTdOc7K1IaF5oFYBFUI7jrD7hRgXvoDaAx6MFvMKxfc1iHMOkgcPoOxWm/evwltl
+         cK3KGfhGcuH4dlLfiGd1UGHV86HApiPyBBfbpQVtDmv0/fsnzUgDDnrQsQZ7iGcKavbK
+         xADwqdrCrrWPy51l0elluLWhtamq696Jx6ia+QpHTHbaGh9dDhe8r15IYaHO9ZD2EEIk
+         CUNpJrceymaw6s74+nlhmj6KhRQGbrh/kbCdpuuW4D85QnR+vNcJpH7mhx2D8J10cwhn
+         CH6Q==
+X-Gm-Message-State: AOJu0YwoKsLgFweXnGSkbmlVqqlhYtmhb7gNVjdKCmp8iK3Un9QJWKV5
+	IKxtkJJiy+Tn9noQFlxD6oRWMHw317eKJS+tKJXGKCNUtQ5GtdGUZJEeeEcXf8C/yursHd4kOmH
+	v7gZ5cw==
+X-Received: from pgeh5.prod.google.com ([2002:a05:6a02:53c5:b0:c6e:8a5c:a772])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a20:7d9b:b0:37c:b74c:d8c7
+ with SMTP id adf61e73a8af0-3959ac989c4mr1507787637.22.1771982478801; Tue, 24
+ Feb 2026 17:21:18 -0800 (PST)
 Reply-To: Sean Christopherson <seanjc@google.com>
-Date: Tue, 24 Feb 2026 17:20:47 -0800
+Date: Tue, 24 Feb 2026 17:20:49 -0800
 In-Reply-To: <20260225012049.920665-1-seanjc@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
@@ -59,8 +59,9 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 References: <20260225012049.920665-1-seanjc@google.com>
 X-Mailer: git-send-email 2.53.0.414.gf7e9f6c205-goog
-Message-ID: <20260225012049.920665-13-seanjc@google.com>
-Subject: [PATCH 12/14] KVM: x86: Rename .read_write_emulate() to .read_write_guest()
+Message-ID: <20260225012049.920665-15-seanjc@google.com>
+Subject: [PATCH 14/14] KVM: x86: Add helpers to prepare kvm_run for userspace
+ MMIO exit
 From: Sean Christopherson <seanjc@google.com>
 To: Sean Christopherson <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>, 
 	Kiryl Shutsemau <kas@kernel.org>
@@ -71,110 +72,183 @@ Cc: kvm@vger.kernel.org, x86@kernel.org, linux-coco@lists.linux.dev,
 	Michael Roth <michael.roth@amd.com>
 Content-Type: text/plain; charset="UTF-8"
 
-Rename the ops and helpers to read/write guest memory to clarify that they
-do exactly that, i.e. aren't generic emulation flows and don't do anything
-related to emulated MMIO.
-
-Opportunistically add comments to explain the flow, e.g. it's not exactly
-obvious that KVM deliberately treats "failed" accesses to guest memory as
-emulated MMIO.
+Add helpers to fill kvm_run for userspace MMIO exits to deduplicate a
+variety of code, and to allow for a cleaner return path in
+emulator_read_write().
 
 No functional change intended.
 
+Cc: Rick Edgecombe <rick.p.edgecombe@intel.com>
+Cc: Binbin Wu <binbin.wu@linux.intel.com>
+Cc: Xiaoyao Li <xiaoyao.li@intel.com>
+Cc: Tom Lendacky <thomas.lendacky@amd.com>
+Cc: Michael Roth <michael.roth@amd.com>
 Signed-off-by: Sean Christopherson <seanjc@google.com>
 ---
- arch/x86/kvm/x86.c | 38 ++++++++++++++++++++++++++++----------
- 1 file changed, 28 insertions(+), 10 deletions(-)
+ arch/x86/kvm/vmx/tdx.c | 14 ++++----------
+ arch/x86/kvm/x86.c     | 42 ++++++++----------------------------------
+ arch/x86/kvm/x86.h     | 24 ++++++++++++++++++++++++
+ 3 files changed, 36 insertions(+), 44 deletions(-)
 
+diff --git a/arch/x86/kvm/vmx/tdx.c b/arch/x86/kvm/vmx/tdx.c
+index 5df9d32d2058..a813c502336c 100644
+--- a/arch/x86/kvm/vmx/tdx.c
++++ b/arch/x86/kvm/vmx/tdx.c
+@@ -1467,17 +1467,11 @@ static int tdx_emulate_mmio(struct kvm_vcpu *vcpu)
+ 
+ 	/* Request the device emulation to userspace device model. */
+ 	vcpu->mmio_is_write = write;
+-	if (!write)
++
++	__kvm_prepare_emulated_mmio_exit(vcpu, gpa, size, &val, write);
++
++	if (!write) {
+ 		vcpu->arch.complete_userspace_io = tdx_complete_mmio_read;
+-
+-	vcpu->run->mmio.phys_addr = gpa;
+-	vcpu->run->mmio.len = size;
+-	vcpu->run->mmio.is_write = write;
+-	vcpu->run->exit_reason = KVM_EXIT_MMIO;
+-
+-	if (write) {
+-		memcpy(vcpu->run->mmio.data, &val, size);
+-	} else {
+ 		vcpu->mmio_fragments[0].gpa = gpa;
+ 		vcpu->mmio_fragments[0].len = size;
+ 		trace_kvm_mmio(KVM_TRACE_MMIO_READ_UNSATISFIED, size, gpa, NULL);
 diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
-index 5a3ba161db7b..f3e2ec7e1828 100644
+index 5376b370b4db..889a9098403c 100644
 --- a/arch/x86/kvm/x86.c
 +++ b/arch/x86/kvm/x86.c
-@@ -8103,21 +8103,21 @@ static int vcpu_mmio_gva_to_gpa(struct kvm_vcpu *vcpu, unsigned long gva,
- }
- 
- struct read_write_emulator_ops {
--	int (*read_write_emulate)(struct kvm_vcpu *vcpu, gpa_t gpa,
--				  void *val, int bytes);
-+	int (*read_write_guest)(struct kvm_vcpu *vcpu, gpa_t gpa,
-+				void *val, int bytes);
- 	int (*read_write_mmio)(struct kvm_vcpu *vcpu, gpa_t gpa,
- 			       int bytes, void *val);
- 	bool write;
- };
- 
--static int read_emulate(struct kvm_vcpu *vcpu, gpa_t gpa,
--			void *val, int bytes)
-+static int emulator_read_guest(struct kvm_vcpu *vcpu, gpa_t gpa,
-+			       void *val, int bytes)
+@@ -8210,7 +8210,6 @@ static int emulator_read_write(struct x86_emulate_ctxt *ctxt,
+ 			const struct read_write_emulator_ops *ops)
  {
- 	return !kvm_vcpu_read_guest(vcpu, gpa, val, bytes);
- }
+ 	struct kvm_vcpu *vcpu = emul_to_vcpu(ctxt);
+-	struct kvm_mmio_fragment *frag;
+ 	int rc;
  
--static int write_emulate(struct kvm_vcpu *vcpu, gpa_t gpa,
--			 void *val, int bytes)
-+static int emulator_write_guest(struct kvm_vcpu *vcpu, gpa_t gpa,
-+				void *val, int bytes)
- {
- 	int ret;
+ 	if (WARN_ON_ONCE((bytes > 8u || !ops->write) && object_is_on_stack(val)))
+@@ -8268,12 +8267,9 @@ static int emulator_read_write(struct x86_emulate_ctxt *ctxt,
  
-@@ -8157,11 +8157,22 @@ static int emulator_read_write_onepage(unsigned long addr, void *val,
- 			return X86EMUL_PROPAGATE_FAULT;
- 	}
+ 	vcpu->mmio_needed = 1;
+ 	vcpu->mmio_cur_fragment = 0;
++	vcpu->mmio_is_write = ops->write;
  
--	if (!ret && ops->read_write_emulate(vcpu, gpa, val, bytes))
-+	/*
-+	 * If the memory is not _known_ to be emulated MMIO, attempt to access
-+	 * guest memory.  If accessing guest memory fails, e.g. because there's
-+	 * no memslot, then handle the access as MMIO.  Note, treating the
-+	 * access as emulated MMIO is technically wrong if there is a memslot,
-+	 * i.e. if accessing host user memory failed, but this has been KVM's
-+	 * historical ABI for decades.
-+	 */
-+	if (!ret && ops->read_write_guest(vcpu, gpa, val, bytes))
- 		return X86EMUL_CONTINUE;
+-	frag = &vcpu->mmio_fragments[0];
+-	vcpu->run->mmio.len = min(8u, frag->len);
+-	vcpu->run->mmio.is_write = vcpu->mmio_is_write = ops->write;
+-	vcpu->run->exit_reason = KVM_EXIT_MMIO;
+-	vcpu->run->mmio.phys_addr = frag->gpa;
++	kvm_prepare_emulated_mmio_exit(vcpu, &vcpu->mmio_fragments[0]);
  
  	/*
--	 * Is this MMIO handled locally?
-+	 * Attempt to handle emulated MMIO within the kernel, e.g. for accesses
-+	 * to an in-kernel local or I/O APIC, or to an ioeventfd range attached
-+	 * to MMIO bus.  If the access isn't fully resolved, insert an MMIO
-+	 * fragment with the relevant details.
+ 	 * For MMIO reads, stop emulating and immediately exit to userspace, as
+@@ -8283,11 +8279,7 @@ static int emulator_read_write(struct x86_emulate_ctxt *ctxt,
+ 	 * after completing emulation (see the check on vcpu->mmio_needed in
+ 	 * x86_emulate_instruction()).
  	 */
- 	handled = ops->read_write_mmio(vcpu, gpa, bytes, val);
- 	if (handled == bytes)
-@@ -8182,6 +8193,13 @@ static int emulator_read_write_onepage(unsigned long addr, void *val,
- 		frag->data = val;
- 	}
- 	frag->len = bytes;
-+
-+	/*
-+	 * Continue emulating, even though KVM needs to (eventually) do an MMIO
-+	 * exit to userspace.  If the access splits multiple pages, then KVM
-+	 * needs to exit to userspace only after emulating both parts of the
-+	 * access.
-+	 */
- 	return X86EMUL_CONTINUE;
+-	if (!ops->write)
+-		return X86EMUL_IO_NEEDED;
+-
+-	memcpy(vcpu->run->mmio.data, frag->data, min(8u, frag->len));
+-	return X86EMUL_CONTINUE;
++	return ops->write ? X86EMUL_CONTINUE : X86EMUL_IO_NEEDED;
  }
  
-@@ -8279,7 +8297,7 @@ static int emulator_read_emulated(struct x86_emulate_ctxt *ctxt,
- 				  struct x86_exception *exception)
+ static int emulator_read_emulated(struct x86_emulate_ctxt *ctxt,
+@@ -11884,12 +11876,7 @@ static int complete_emulated_mmio(struct kvm_vcpu *vcpu)
+ 		return complete_emulated_io(vcpu);
+ 	}
+ 
+-	run->exit_reason = KVM_EXIT_MMIO;
+-	run->mmio.phys_addr = frag->gpa;
+-	if (vcpu->mmio_is_write)
+-		memcpy(run->mmio.data, frag->data, min(8u, frag->len));
+-	run->mmio.len = min(8u, frag->len);
+-	run->mmio.is_write = vcpu->mmio_is_write;
++	kvm_prepare_emulated_mmio_exit(vcpu, frag);
+ 	vcpu->arch.complete_userspace_io = complete_emulated_mmio;
+ 	return 0;
+ }
+@@ -14296,15 +14283,8 @@ static int complete_sev_es_emulated_mmio(struct kvm_vcpu *vcpu)
+ 	}
+ 
+ 	// More MMIO is needed
+-	run->mmio.phys_addr = frag->gpa;
+-	run->mmio.len = min(8u, frag->len);
+-	run->mmio.is_write = vcpu->mmio_is_write;
+-	if (run->mmio.is_write)
+-		memcpy(run->mmio.data, frag->data, min(8u, frag->len));
+-	run->exit_reason = KVM_EXIT_MMIO;
+-
++	kvm_prepare_emulated_mmio_exit(vcpu, frag);
+ 	vcpu->arch.complete_userspace_io = complete_sev_es_emulated_mmio;
+-
+ 	return 0;
+ }
+ 
+@@ -14333,23 +14313,17 @@ int kvm_sev_es_mmio(struct kvm_vcpu *vcpu, bool is_write, gpa_t gpa,
+ 	 *       requests that split a page boundary.
+ 	 */
+ 	frag = vcpu->mmio_fragments;
+-	vcpu->mmio_nr_fragments = 1;
+ 	frag->len = bytes;
+ 	frag->gpa = gpa;
+ 	frag->data = data;
+ 
+ 	vcpu->mmio_needed = 1;
+ 	vcpu->mmio_cur_fragment = 0;
++	vcpu->mmio_nr_fragments = 1;
++	vcpu->mmio_is_write = is_write;
+ 
+-	vcpu->run->mmio.phys_addr = gpa;
+-	vcpu->run->mmio.len = min(8u, frag->len);
+-	vcpu->run->mmio.is_write = is_write;
+-	if (is_write)
+-		memcpy(vcpu->run->mmio.data, frag->data, min(8u, frag->len));
+-	vcpu->run->exit_reason = KVM_EXIT_MMIO;
+-
++	kvm_prepare_emulated_mmio_exit(vcpu, frag);
+ 	vcpu->arch.complete_userspace_io = complete_sev_es_emulated_mmio;
+-
+ 	return 0;
+ }
+ EXPORT_SYMBOL_FOR_KVM_INTERNAL(kvm_sev_es_mmio);
+diff --git a/arch/x86/kvm/x86.h b/arch/x86/kvm/x86.h
+index 1d0f0edd31b3..d66f1c53d2b5 100644
+--- a/arch/x86/kvm/x86.h
++++ b/arch/x86/kvm/x86.h
+@@ -718,6 +718,30 @@ int kvm_sev_es_string_io(struct kvm_vcpu *vcpu, unsigned int size,
+ 			 unsigned int port, void *data,  unsigned int count,
+ 			 int in);
+ 
++static inline void __kvm_prepare_emulated_mmio_exit(struct kvm_vcpu *vcpu,
++						    gpa_t gpa, unsigned int len,
++						    const void *data,
++						    bool is_write)
++{
++	struct kvm_run *run = vcpu->run;
++
++	run->mmio.len = min(8u, len);
++	run->mmio.is_write = is_write;
++	run->exit_reason = KVM_EXIT_MMIO;
++	run->mmio.phys_addr = gpa;
++	if (is_write)
++		memcpy(run->mmio.data, data, min(8u, len));
++}
++
++static inline void kvm_prepare_emulated_mmio_exit(struct kvm_vcpu *vcpu,
++						  struct kvm_mmio_fragment *frag)
++{
++	WARN_ON_ONCE(!vcpu->mmio_needed || !vcpu->mmio_nr_fragments);
++
++	__kvm_prepare_emulated_mmio_exit(vcpu, frag->gpa, frag->len, frag->data,
++					 vcpu->mmio_is_write);
++}
++
+ static inline bool user_exit_on_hypercall(struct kvm *kvm, unsigned long hc_nr)
  {
- 	static const struct read_write_emulator_ops ops = {
--		.read_write_emulate = read_emulate,
-+		.read_write_guest = emulator_read_guest,
- 		.read_write_mmio = vcpu_mmio_read,
- 		.write = false,
- 	};
-@@ -8294,7 +8312,7 @@ static int emulator_write_emulated(struct x86_emulate_ctxt *ctxt,
- 			    struct x86_exception *exception)
- {
- 	static const struct read_write_emulator_ops ops = {
--		.read_write_emulate = write_emulate,
-+		.read_write_guest = emulator_write_guest,
- 		.read_write_mmio = vcpu_mmio_write,
- 		.write = true,
- 	};
+ 	return kvm->arch.hypercall_exit_enabled & BIT(hc_nr);
 -- 
 2.53.0.414.gf7e9f6c205-goog
 
