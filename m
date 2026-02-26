@@ -1,121 +1,222 @@
-Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B2AD04657EE;
-	Thu, 26 Feb 2026 19:54:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.109.113.108
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13DE14657FA
+	for <kvm@vger.kernel.org>; Thu, 26 Feb 2026 19:57:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772135685; cv=none; b=bRrjrdM+OOhCnWLhdqL6lyf1JvSh3fDljoOEWEghzkycBUcGdanRnWOg6n6qZVnPtpuk16JXDE1OEbEmLESCEapumPRV0CBeRk7sovYUfXbTym92Olp3p/gX/s3AAWbLtN5hZD+7WwluBtH4bmVGu54x+IQ2GKbhzI1k6RLG9hQ=
+	t=1772135828; cv=none; b=T3Vza5Q/c7QF2xPG6nkzZOWmOQHd4zxXCoW9ME5eIjnMhXwkN3JTIXThAeBTZpCzdmqKlBAdnS/h0I32/EKQ75HJ3g3oZMHlaLdM8blIHuntS9FR4SmrKRTV1ILWXZotdRenh4zhgyTFfFjVYVjrxQd82S7G+dR5xzeLrqvb970=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772135685; c=relaxed/simple;
-	bh=x54d2baeE77yNhu6wwVcv6qrUq9rnBCcXS6uVsR2SGc=;
-	h=Date:From:To:CC:Subject:In-Reply-To:References:Message-ID:
-	 MIME-Version:Content-Type; b=ep5BEWhYCm7dVnojU4/80nFUq9/WU2ujDFDNA6R7/hjd5CFRxNi623YinObPQGcuRZYr6k8icV+vUPiSlo4teVdV1KUtoEzoksCBBN2zNTUUCqFfZrRZ5QT5Q+92zkH8gbpbsabaui9h/wZKoMxRoezYQiFmDwGA+lqS6PvJmiM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de; spf=pass smtp.mailfrom=alien8.de; dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b=P9ThSoxi; arc=none smtp.client-ip=65.109.113.108
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
+	s=arc-20240116; t=1772135828; c=relaxed/simple;
+	bh=SiuvbzDLjYJ34WrOYg7+5Z9QXufJQMzvQ+vyXzqtH2s=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=nVAAjYl7Vjc0rfbnMnv2yfOzm3E7E/fi0IXt47gUFKVKhNdF8oCBR0OCh2IM0r88965mncI3Ld6oqYOt9Z2xbnaeqLV5X7Eu2P7h0FNqLqwcOT80fQZEXyiqDSTP8Lgp9Lr332wWJsa59iPAnI0GT/UsrIPaXFUxZEuAQGnyJD4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=T1D30GlW; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=D/xdPTYe; arc=none smtp.client-ip=205.220.168.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="P9ThSoxi"
-Received: from localhost (localhost.localdomain [127.0.0.1])
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id D133E40E0184;
-	Thu, 26 Feb 2026 19:54:41 +0000 (UTC)
-X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
-Received: from mail.alien8.de ([127.0.0.1])
-	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
-	with ESMTP id lMKEdv77YEpW; Thu, 26 Feb 2026 19:54:40 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
-	t=1772135678; bh=x54d2baeE77yNhu6wwVcv6qrUq9rnBCcXS6uVsR2SGc=;
-	h=Date:From:To:CC:Subject:In-Reply-To:References:From;
-	b=P9ThSoxizN6hmJ+QfHBqfM1qFoWkUvT+vuq3klyihOL9TBGrYZonO1OcQLTxLUajh
-	 TNCGmaBOa9blFViA/lU+DCfIgdjX0/WsU2TPNDmDphnFW3RN4NF3/j3iX4NpwFdtwJ
-	 hr2efNSL1vtsCbllW3YLL13wKXbsBHpSVdkyWLeO3EAuRpegCGPRqXtjS5uZn7lcZV
-	 sGvQGFKh+KTdqhTPkk4qmb970cuLnn4/kzHY9CrtJxcNiIX2ouEvg2XwA1jG0AdPhF
-	 YrPBEz/ZxToWjn6I09OrDlimULEhTW51NIk54GRUnb9HtOFOJmBBlq/ud8qRDLvFDI
-	 sszXPTQUmqWJJc/6vuBqNui141k4MdnDyWOn59PbbQc25ntUKcq3bINGNXPik4NCmC
-	 tEl0ue4njjC0+GxeNh+9MyZkEwCJMYfddTBjtrKHKMux5eCBLROhow0jHajMnFkYhB
-	 tI2bOYiP0kLzJRCw2MiV6NNVZow1VlT4OXinm9wVGsVkgI9bCIphqWF+e85DnZCxPY
-	 l+cadTsPZMkmMalAr9k1O1nSvwxI+prZOgZrj0FeGA0s0m6Fe/vFkhwIryEn4cj+4d
-	 nMsr7d9E+EZ19XEAfaxjA5hrqy0yRzA0k4rZ8NVGy7YZjDXyimI+y9WOsk64z8bmmy
-	 QZJKwLN3jVP+/6DrUJz37AzQ=
-Received: from ehlo.thunderbird.net (unknown [IPv6:2a02:3033:6db:bde8:b104:c2ae:3935:ab76])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (P-256) server-digest SHA256)
-	(No client certificate requested)
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id DA2E540E016E;
-	Thu, 26 Feb 2026 19:53:40 +0000 (UTC)
-Date: Thu, 26 Feb 2026 19:52:33 +0000
-From: Borislav Petkov <bp@alien8.de>
-To: Alexey Kardashevskiy <aik@amd.com>, x86@kernel.org
-CC: linux-kernel@vger.kernel.org, kvm@vger.kernel.org, linux-pci@vger.kernel.org,
- Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
- Dave Hansen <dave.hansen@linux.intel.com>, "H. Peter Anvin" <hpa@zytor.com>,
- Sean Christopherson <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>,
- Andy Lutomirski <luto@kernel.org>, Peter Zijlstra <peterz@infradead.org>,
- Bjorn Helgaas <bhelgaas@google.com>, Dan Williams <dan.j.williams@intel.com>,
- Marek Szyprowski <m.szyprowski@samsung.com>,
- Robin Murphy <robin.murphy@arm.com>,
- Andrew Morton <akpm@linux-foundation.org>,
- Catalin Marinas <catalin.marinas@arm.com>,
- Michael Ellerman <mpe@ellerman.id.au>, Mike Rapoport <rppt@kernel.org>,
- Tom Lendacky <thomas.lendacky@amd.com>, Ard Biesheuvel <ardb@kernel.org>,
- Neeraj Upadhyay <Neeraj.Upadhyay@amd.com>,
- Ashish Kalra <ashish.kalra@amd.com>,
- Stefano Garzarella <sgarzare@redhat.com>, Melody Wang <huibo.wang@amd.com>,
- Seongman Lee <augustus92@kaist.ac.kr>, Joerg Roedel <joerg.roedel@amd.com>,
- Nikunj A Dadhania <nikunj@amd.com>, Michael Roth <michael.roth@amd.com>,
- Suravee Suthikulpanit <suravee.suthikulpanit@amd.com>,
- Andi Kleen <ak@linux.intel.com>,
- Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
- Tony Luck <tony.luck@intel.com>, David Woodhouse <dwmw@amazon.co.uk>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Denis Efremov <efremov@linux.com>, Geliang Tang <geliang@kernel.org>,
- Piotr Gregor <piotrgregor@rsyncme.org>,
- "Michael S. Tsirkin" <mst@redhat.com>, Alex Williamson <alex@shazbot.org>,
- Arnd Bergmann <arnd@arndb.de>, Jesse Barnes <jbarnes@virtuousgeek.org>,
- Jacob Pan <jacob.jun.pan@linux.intel.com>, Yinghai Lu <yinghai@kernel.org>,
- Kevin Brodsky <kevin.brodsky@arm.com>,
- Jonathan Cameron <jonathan.cameron@huawei.com>,
- "Aneesh Kumar K.V (Arm)" <aneesh.kumar@kernel.org>,
- Xu Yilun <yilun.xu@linux.intel.com>,
- Herbert Xu <herbert@gondor.apana.org.au>,
- Kim Phillips <kim.phillips@amd.com>,
- Konrad Rzeszutek Wilk <konrad.wilk@oracle.com>,
- Stefano Stabellini <sstabellini@kernel.org>,
- Claire Chang <tientzu@chromium.org>, linux-coco@lists.linux.dev,
- iommu@lists.linux.dev
-Subject: =?US-ASCII?Q?Re=3A_=5BPATCH_kernel_7/9=5D_coco/sev-guest=3A_Impl?=
- =?US-ASCII?Q?ement_the_guest_support_for_SEV_TIO_=28phase2=29?=
-User-Agent: K-9 Mail for Android
-In-Reply-To: <428d4373-1b78-4882-baf9-1df563f66a86@amd.com>
-References: <20260225053806.3311234-1-aik@amd.com> <20260225053806.3311234-8-aik@amd.com> <ABE746F3-53E9-4730-BBFC-52111166A7B9@alien8.de> <428d4373-1b78-4882-baf9-1df563f66a86@amd.com>
-Message-ID: <688A7E51-B268-482F-B022-420D3A18A91B@alien8.de>
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="T1D30GlW";
+	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="D/xdPTYe"
+Received: from pps.filterd (m0279863.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 61QI4cY21395110
+	for <kvm@vger.kernel.org>; Thu, 26 Feb 2026 19:57:04 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-type:date:from:in-reply-to:message-id:mime-version
+	:references:subject:to; s=qcppdkim1; bh=e9T0r9qPbJXEHEbE1DDUwuy1
+	sFl7CYMlXpPV3+ZDZi4=; b=T1D30GlWpBTy7Fw5YVU5jHPnPcoQFM1DW5bOlomS
+	G7W2fA8KNbLusn4Qm442rSpHBAYDx9aibSMdsziJ2WvVDYfAFzBPzTUsWmVe6V9l
+	GJIQMqvHKa3Jo052jZirdYeWDM1RqDSMEvejXg3D8uvyMSePW51AYIKrShf+bLqB
+	J+Wah9TMbrRt/JKsxaHj/K2mseAquS6wmKUlP57UUI2QH1ctwHvaR4tQoU6TLcYE
+	qvoVVQz5nFb28OId1e2Rd9LLXVZk1kTBuG5aClPpZFNRPg6XTy7sarFi9ObtfdLd
+	PodhJWY20rkoq+08ayYZUN70ITDaGQjGrcD/9R5C9Rk4rQ==
+Received: from mail-dl1-f71.google.com (mail-dl1-f71.google.com [74.125.82.71])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4cju4r0hhg-1
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
+	for <kvm@vger.kernel.org>; Thu, 26 Feb 2026 19:57:04 +0000 (GMT)
+Received: by mail-dl1-f71.google.com with SMTP id a92af1059eb24-1273665df8fso2063016c88.1
+        for <kvm@vger.kernel.org>; Thu, 26 Feb 2026 11:57:04 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=oss.qualcomm.com; s=google; t=1772135823; x=1772740623; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=e9T0r9qPbJXEHEbE1DDUwuy1sFl7CYMlXpPV3+ZDZi4=;
+        b=D/xdPTYeByPqyI3xsGcdMn8rDt2MiDsnMV6PaAXrB+yZ0jqOw7VMr1IhJnUZFXIVFi
+         wTSqGZidPAz2qxO5ROhknNjPF8fKgEi8svOAp2rNNwhf+WEacbcIe7l2785rCBBlvsw6
+         Wb7KguC6WpMViMvewJxKc2xL6M9Wf4xjVF8WSsQFNdOa98q4h5cjXdkI1T874g49yHu0
+         nz2MMaq/DJs9qD+XlyL2mWLN3nv/s2EZRlUiCDhN35vNGATBXNxpt2sfRw4OEIR4YoOP
+         CS2Zg4IN5B1uK6qbRfb+NsmE6QamIxk7HViGrqR0vzIc48yk5Y6I0AKLnrRY9bzsNXDZ
+         AkPw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1772135823; x=1772740623;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=e9T0r9qPbJXEHEbE1DDUwuy1sFl7CYMlXpPV3+ZDZi4=;
+        b=anF9Ve8W21whiXi8G+viZZ5GR28h+Y5uMkSShEaxubygqwnK8iUri+vQcJ4hkk0pQd
+         7F5bYOL652toEdjyyQ3Af7NfMZL9TaEp93gTtZiJ7jcFZCG7iOWGloajzqd01NuNAeYz
+         7h9feP2NsiU6kyx8xvBcOMEz4f9l+tG6pV6CdPrUSPLaTi1Eu25nx4JRNUlQ2sGiaZmT
+         AR7VencAygwV1yXNqWrZyGrfFbv6CRYdov/qt5YOOLzzUJg7C/8d2ci4tKWEeiJFGOKu
+         PnQJDW//5/Wj3AFo2m1kjPOFxE2AbFo3s+482qdcLiZq9kNQ2Wl25L82P795OAISfjtA
+         3flg==
+X-Forwarded-Encrypted: i=1; AJvYcCUmnPz2oORb5KYB22M31BhxzJqb41gWg/wimjtZekwVR7lzSnZ5mqzePRQGQRo1Vz29W8w=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxtpwkBCtu2FDRZfCcUzq444Z8DfJsypcLNgTyZz1EGVY6uicg1
+	+fLVAvYOwheM0UOjlPsZsiloC+eTXmB8ZVrUKB5EHskwH6LJ/9lspA7IQiXLVB8DsSqY6sZEwBQ
+	ElTEETwdgAVSGwCPsHKe62h6GfKdWVZ55QCuJRcSjLiujMSLUaYSfy0w=
+X-Gm-Gg: ATEYQzyYEB302RHy4+mKAqD27iNdTmApbNTGMhupJo4hp/hCXiDOmZeQj3F8MXQhtS6
+	yGewVFORoUZ74SMlm5dyIStT/phnai/A31aNaC0pRFOUmApVY2ukCtt1S/dLK/+WdH+VSlKIOi2
+	+NxGmfh86E2xT9cJGT/bk+xjQi+2ab4XChRuBIkhCWuQQF6NKJVvUchQEcZTyXTs2l4v4unx6/F
+	VFdVHwrNoXlxwwt+iD6KLsEoExMhNgPUOF6yggj1x9Anx11JeRBX89+LJIv1xvNLC4ZPyxVWKDT
+	ncVCRN6tTNeh/ibTw2uhWYu6j1Mpl8dflNeROGjAWmQwncHkynVmzvI3aiSW1ul3wMgxnbmCH1U
+	EszA4LHJem2jDeF/sSiA6qmzY9X1x72Y=
+X-Received: by 2002:a05:7022:512:b0:119:e55a:9c03 with SMTP id a92af1059eb24-1278fc3bf63mr58107c88.31.1772135823060;
+        Thu, 26 Feb 2026 11:57:03 -0800 (PST)
+X-Received: by 2002:a05:7022:512:b0:119:e55a:9c03 with SMTP id a92af1059eb24-1278fc3bf63mr58096c88.31.1772135822464;
+        Thu, 26 Feb 2026 11:57:02 -0800 (PST)
+Received: from localhost ([140.82.166.162])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-2bdd1e04361sm2885359eec.14.2026.02.26.11.57.01
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 26 Feb 2026 11:57:01 -0800 (PST)
+Date: Thu, 26 Feb 2026 13:57:00 -0600
+From: Andrew Jones <andrew.jones@oss.qualcomm.com>
+To: Jiakai Xu <xujiakai2025@iscas.ac.cn>
+Cc: linux-riscv@lists.infradead.org, linux-kernel@vger.kernel.org,
+        kvm-riscv@lists.infradead.org, linux-kselftest@vger.kernel.org,
+        kvm@vger.kernel.org, Alexandre Ghiti <alex@ghiti.fr>,
+        Paolo Bonzini <pbonzini@redhat.com>, Shuah Khan <shuah@kernel.org>,
+        Paul Walmsley <pjw@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>,
+        Andrew Jones <ajones@ventanamicro.com>,
+        Anup Patel <anup@brainfault.org>, Atish Patra <atish.patra@linux.dev>,
+        Albert Ou <aou@eecs.berkeley.edu>, Jiakai Xu <jiakaiPeanut@gmail.com>
+Subject: Re: [PATCH v8 3/3] RISC-V: KVM: selftests: Add RISC-V SBI STA shmem
+ alignment tests
+Message-ID: <ywgpwvhzvtkmhw26exwwam5hfo5euhiewbrzyzh2uzkls2rkbe@g7p5kxnhtgso>
+References: <20260226083234.634716-1-xujiakai2025@iscas.ac.cn>
+ <20260226083234.634716-4-xujiakai2025@iscas.ac.cn>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain;
- charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260226083234.634716-4-xujiakai2025@iscas.ac.cn>
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMjI2MDE4MiBTYWx0ZWRfX89PYGETVXpIf
+ k1XeRg4sxLDkFMUqn6YXEyffeRsBMIuXYEqGdD9WxB0jeuC81AgkwP1BoU0u9VMFoHoWegf7xiV
+ gkzS1I9MtexzUn4st6vvMO2exbPI0BsEcKOQFmwCKQPvqjkI63lsHuc33qITtdtbTeumGzBNbGd
+ jGuQQyTBh8pxFYWEVMMEYFIgxKPrHckzmCjRO9zzEYKyYXWrNCUGGfYis4E7z3fM/i3BUHAuro1
+ 8HcsMyvVwAB8yUyI0jW2RZ5vKX8d0iSicAY93dvEsHEvKg2KS8jnqjEsU8YjsekIyIcQ7eoSzLK
+ WUGI6KkXybXKxVPw8d+ig9oeTClyIuIHw2EO9sWARJt0MkH9ZTJDXBhYiFA/PaKOijsU+L81yNX
+ csHdzMUDikuwnM6N2I/QHKfeK+QQAvvrzMvQ3+9pviVdm7p6Vq3rBwYkLY+F8DJQxeCZ72YledO
+ VQ4SjXr5KCT/GXy89bw==
+X-Proofpoint-GUID: sG9aRY9gCTCTfx1GB-Mgds82gigZumJm
+X-Authority-Analysis: v=2.4 cv=KZzfcAYD c=1 sm=1 tr=0 ts=69a0a590 cx=c_pps
+ a=JYo30EpNSr/tUYqK9jHPoA==:117 a=cvcws7F5//HeuvjG1O1erQ==:17
+ a=kj9zAlcOel0A:10 a=HzLeVaNsDn8A:10 a=s4-Qcg_JpJYA:10
+ a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22 a=yOCtJkima9RkubShWh1s:22
+ a=pGLkceISAAAA:8 a=xMjqbsr0sL_NellN6QoA:9 a=CjuIK1q_8ugA:10
+ a=Fk4IpSoW4aLDllm1B1p-:22
+X-Proofpoint-ORIG-GUID: sG9aRY9gCTCTfx1GB-Mgds82gigZumJm
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.51,FMLib:17.12.100.49
+ definitions=2026-02-26_02,2026-02-26_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ clxscore=1015 lowpriorityscore=0 priorityscore=1501 suspectscore=0
+ malwarescore=0 bulkscore=0 adultscore=0 phishscore=0 spamscore=0
+ impostorscore=0 classifier=typeunknown authscore=0 authtc= authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2602130000
+ definitions=main-2602260182
 
-On February 26, 2026 3:39:37 AM UTC, Alexey Kardashevskiy <aik@amd=2Ecom> w=
-rote:
->I struggle to separate these more without making individual patches usele=
-ss for any purpose
+On Thu, Feb 26, 2026 at 08:32:34AM +0000, Jiakai Xu wrote:
+> Add RISC-V KVM selftests to verify the SBI Steal-Time Accounting (STA)
+> shared memory alignment requirements.
+> 
+> The SBI specification requires the STA shared memory GPA to be 64-byte
+> aligned, or set to all-ones to explicitly disable steal-time accounting.
+> This test verifies that KVM enforces the expected behavior when
+> configuring the SBI STA shared memory via KVM_SET_ONE_REG.
+> 
+> Specifically, the test checks that:
+> - misaligned GPAs are rejected with -EINVAL
+> - 64-byte aligned GPAs are accepted
+> - all-ones GPA is accepted
+> 
+> Signed-off-by: Jiakai Xu <xujiakai2025@iscas.ac.cn>
+> Signed-off-by: Jiakai Xu <jiakaiPeanut@gmail.com>
+> ---
+> V7 -> V8: Moved INVALID_GPA definition to kvm_util_types.h.
+>           Removed comments in RISC-V check_steal_time_uapi().
+>           Corrected reg.id assignment for SBI STA.
+> V6 -> V7: Removed RISCV_SBI_STA_REG() macro addition and used existing
+>            KVM_REG_RISCV_SBI_STA_REG(shmem_lo) instead.
+>           Refined assertion messages per review feedback.
+>           Split into two patches per Andrew Jones' suggestion:
+>            Refactored UAPI tests from steal_time_init() into dedicated
+>             check_steal_time_uapi() function and added empty stub for
+>             RISC-V.
+>            Filled in RISC-V stub with STA alignment tests. (this patch)
+> ---
+>  .../selftests/kvm/include/kvm_util_types.h    |  4 +++
+>  tools/testing/selftests/kvm/steal_time.c      | 25 +++++++++++++++++++
+>  2 files changed, 29 insertions(+)
+> 
+> diff --git a/tools/testing/selftests/kvm/include/kvm_util_types.h b/tools/testing/selftests/kvm/include/kvm_util_types.h
+> index ec787b97cf184..90567f8243fe9 100644
+> --- a/tools/testing/selftests/kvm/include/kvm_util_types.h
+> +++ b/tools/testing/selftests/kvm/include/kvm_util_types.h
+> @@ -17,4 +17,8 @@
+>  typedef uint64_t vm_paddr_t; /* Virtual Machine (Guest) physical address */
+>  typedef uint64_t vm_vaddr_t; /* Virtual Machine (Guest) virtual address */
+>  
+> +#if defined(__riscv)
 
-You sound like someone who hasn't been reviewing patches and scratching hi=
-s head how to approach such a conglomerate as yours which does many things =
-at once=2E=2E=2E
+Why this #if ? INVALID_GPA is common to all architectures (see
+include/linux/kvm_types.h). That's why I suggested putting it in this
+shared header.
 
-The rule is very simple actually: a patch should do one logical thing only=
-=2E And no more=2E It doesn't matter whether the patch is "useless" by itse=
-lf=2E It matters only whether it is reviewable and one can to a certain deg=
-ree see that the transformation it contains is relatively bugfree=2E
+> +#define INVALID_GPA (~(uint64_t)0)
+> +#endif
+> +
+>  #endif /* SELFTEST_KVM_UTIL_TYPES_H */
+> diff --git a/tools/testing/selftests/kvm/steal_time.c b/tools/testing/selftests/kvm/steal_time.c
+> index 6f77df4deaad3..e90aad9561ff7 100644
+> --- a/tools/testing/selftests/kvm/steal_time.c
+> +++ b/tools/testing/selftests/kvm/steal_time.c
+> @@ -324,6 +324,31 @@ static void steal_time_dump(struct kvm_vm *vm, uint32_t vcpu_idx)
+>  
+>  static void check_steal_time_uapi(struct kvm_vcpu *vcpu)
+>  {
+> +	struct kvm_one_reg reg;
+> +	uint64_t shmem;
+> +	int ret;
+> +
+> +	reg.id = KVM_REG_RISCV |
+> +			 KVM_REG_SIZE_ULONG |
+> +			 KVM_REG_RISCV_SBI_STATE |
+> +			 KVM_REG_RISCV_SBI_STA |
+> +			 KVM_REG_RISCV_SBI_STA_REG(shmem_lo);
+> +	reg.addr = (uint64_t)&shmem;
+> +
+> +	shmem = ST_GPA_BASE + 1;
+> +	ret = __vcpu_ioctl(vcpu, KVM_SET_ONE_REG, &reg);
+> +	TEST_ASSERT(ret == -1 && errno == EINVAL,
+> +		    "misaligned STA shmem returns -EINVAL");
+> +
+> +	shmem = ST_GPA_BASE;
+> +	ret = __vcpu_ioctl(vcpu, KVM_SET_ONE_REG, &reg);
+> +	TEST_ASSERT(ret == 0,
+> +		    "aligned STA shmem succeeds");
+> +
+> +	shmem = INVALID_GPA;
+> +	ret = __vcpu_ioctl(vcpu, KVM_SET_ONE_REG, &reg);
+> +	TEST_ASSERT(ret == 0,
+> +		    "all-ones for STA shmem succeeds");
+>  }
+>  
+>  #endif
+> -- 
+> 2.34.1
+>
 
-And I'm very sure that when you start reviewing patches, you'll be pretty =
-much asking people sending conglomerates like yours, to split them=2E
-
-Thx=2E
---=20
-Small device=2E Typos and formatting crap
+Thanks,
+drew
