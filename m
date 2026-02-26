@@ -1,40 +1,42 @@
 Received: from mx0a-00082601.pphosted.com (mx0b-00082601.pphosted.com [67.231.153.30])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE79B466B7D;
-	Thu, 26 Feb 2026 20:22:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B88AE466B7E;
+	Thu, 26 Feb 2026 20:22:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=67.231.153.30
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772137377; cv=none; b=JnaXDcmhI36rouBNCVuPDQD2VPPNcMmngLSdO2fAA69o+9bDPW5G5tZiqgc5cBnGe3IXD7RQOyNLMhJOI0aaTpLgIb0CMkbJ0VfUOoIs4VQAVFwZpjG1Cw/eRykqlnK+UicHciYOYs3IRV8P/UaGYbSFCbaSiSX6YdgEB9jkR3A=
+	t=1772137380; cv=none; b=ugSWk4LNui8DVfnHRdXOtG37XL8hMiT/8zJoJtUv2dCyJYVbLmboHa+h2LlQnKonMMs+BvgnvpBiOnMj8ICblvaMbsTGiNDpyf41JBDkLpuRJPwAXcCp0nx+scr2ulpMk2iDFISqmeM59XgBLXsoiW3Jn3cO0mqPFyDeaC1z41U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772137377; c=relaxed/simple;
-	bh=CcGPeBG42UP2rnyboBds8Y7DlMDMrlC5RAeHln8YN6M=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=eZL7UFt8wEPOjKl+htOJ4RkuAaQwMdyg526z5dCYzRoduFtlqF5INly0JEbOmxs2uAgCvEhlhW+v/bRNwoi4vXPQbubSkQ32GQG9MhU/A8zQ9fhRPuOA/qU8sEosjXLP8pOehKih9PIAifO4Bu4nRHFo7sVD7rmNFi2ftFgZEho=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=meta.com; spf=pass smtp.mailfrom=meta.com; dkim=pass (2048-bit key) header.d=meta.com header.i=@meta.com header.b=RROaW/RV; arc=none smtp.client-ip=67.231.153.30
+	s=arc-20240116; t=1772137380; c=relaxed/simple;
+	bh=FXtJ8uXbYjqLfElClLaW+FTDD2+Ilt7t5tsXROC01Dw=;
+	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=WjKnE5MSpiU1q5ka+qCaN/UmPJp8+E1tQpddSZFHR/oXjmkgt8JW7+rtHMEaWqmew4C4P6Do5R5VZUejm0nlvU9Fu0QZT/fanpA6UwGnMWLAR+dK5g8BCFHuwbbAK9eNbqxR94HcEDzh2Lx4BDpDz5dtsTfkMOvvhcJ/SR0gyms=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=meta.com; spf=pass smtp.mailfrom=meta.com; dkim=pass (2048-bit key) header.d=meta.com header.i=@meta.com header.b=KIUObFs6; arc=none smtp.client-ip=67.231.153.30
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=meta.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=meta.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=meta.com header.i=@meta.com header.b="RROaW/RV"
+	dkim=pass (2048-bit key) header.d=meta.com header.i=@meta.com header.b="KIUObFs6"
 Received: from pps.filterd (m0089730.ppops.net [127.0.0.1])
-	by m0089730.ppops.net (8.18.1.11/8.18.1.11) with ESMTP id 61QHqVfg1068162;
-	Thu, 26 Feb 2026 12:22:40 -0800
+	by m0089730.ppops.net (8.18.1.11/8.18.1.11) with ESMTP id 61QHqVfh1068162;
+	Thu, 26 Feb 2026 12:22:47 -0800
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=meta.com; h=cc
-	:content-transfer-encoding:content-type:date:from:message-id
-	:mime-version:subject:to; s=s2048-2025-q2; bh=IZiM70zfm7C3RbNIw1
-	5Xtxv/zgzm0pVY5jx3r3lSttA=; b=RROaW/RVt+7Y/kjneYboZVoldW4u5KfMMa
-	uG8In4NkuwMC7E0si/E0mP6iXbPVAa4nNbdWZaL3gCFV//6zk1YwPpEHZRNWimgS
-	gB9KkG93UM5yo66G6srgzjWnr2ON5LhiZ4IpsgmPkXzKmynJRHQu/2dK3JhDKTYT
-	tRPO/dwA789Mtg/ph9Dke3UpvyJTUeuOJ+9JtVoS3JswsMzJVsTMG4w6PHmQpDwk
-	g2HLPesV0t2TpP2kTmgpBjnfs7VI4pB3nU3ALfriYiyGs8xOJJTUfQH0R6jLd7GM
-	q2lJjdDPSNiVSH1xYWyIeK858vD4obhCERAxfqoVPwayNXdDJvOg==
-Received: from maileast.thefacebook.com ([163.114.135.16])
-	by m0089730.ppops.net (PPS) with ESMTPS id 4cjnjmd8wv-1
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=s2048-2025-q2;
+	 bh=wgkQLaliju+4WFlO7qLaX85dVVOBwH0k4aL0NBvLBFY=; b=KIUObFs6mawO
+	H8gW175OMdT7S//aDU67kzttjNBMHxP7P4BFzUTYXm26J9j4fVHsoucbNf/DY+pB
+	MuBO+ADrIuEGtnjAyGVw0n91X/1JTp11lMGfEiitC7umRTZIavLOKYUq9oeHT1gE
+	0rUPJjqRr2x0dYv3d70A/CEEA99t75Voqzgn2ehpW3wGOzM5cOBQjdFuZbFfFaEH
+	hlYDgy2UzBf3QfVluh17AKrGOhiH+4YVWoa8biTSoLa2YQlctCcVcQ+3CfbRc5XO
+	6owI48m10DRKX/Cyy8D7SVNxLpkuO4SQon0piBZpZ63v4CHZyW27yxuMEnAC0Fl7
+	Ofjh4gqxGw==
+Received: from mail.thefacebook.com ([163.114.134.16])
+	by m0089730.ppops.net (PPS) with ESMTPS id 4cjnjmd8y5-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
-	Thu, 26 Feb 2026 12:22:40 -0800 (PST)
-Received: from localhost (2620:10d:c0a8:1c::11) by mail.thefacebook.com
- (2620:10d:c0a9:6f::237c) with Microsoft SMTP Server (version=TLS1_2,
+	Thu, 26 Feb 2026 12:22:47 -0800 (PST)
+Received: from localhost (2620:10d:c085:208::f) by mail.thefacebook.com
+ (2620:10d:c08b:78::2ac9) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.2.2562.35; Thu, 26 Feb
- 2026 20:22:39 +0000
+ 2026 20:22:46 +0000
 From: Matt Evans <mattev@meta.com>
 To: Alex Williamson <alex@shazbot.org>, Leon Romanovsky <leon@kernel.org>,
         Jason Gunthorpe <jgg@nvidia.com>, Alex Mastro <amastro@fb.com>,
@@ -55,10 +57,12 @@ CC: =?UTF-8?q?Bj=C3=B6rn=20T=C3=B6pel?= <bjorn@kernel.org>,
         <linux-kernel@vger.kernel.org>, <linux-media@vger.kernel.org>,
         <dri-devel@lists.freedesktop.org>, <linaro-mm-sig@lists.linaro.org>,
         <kvm@vger.kernel.org>
-Subject: [RFC PATCH 0/7] vfio/pci: Add mmap() for DMABUFs
-Date: Thu, 26 Feb 2026 12:21:56 -0800
-Message-ID: <20260226202211.929005-1-mattev@meta.com>
+Subject: [RFC PATCH 2/7] vfio/pci: Clean up DMABUFs before disabling function
+Date: Thu, 26 Feb 2026 12:21:58 -0800
+Message-ID: <20260226202211.929005-3-mattev@meta.com>
 X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20260226202211.929005-1-mattev@meta.com>
+References: <20260226202211.929005-1-mattev@meta.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -67,188 +71,59 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMjI2MDE4NiBTYWx0ZWRfX5h9s9Ky4ODAC
- uK7iwKepqZbDWB9zNVY3+AX6ltHfKbj/relQzSOkL2/MgDwWoZ3ZW2VhkFQy3lSnEcDSFt8vD9m
- GzsjlSYERzJ4axZgC2ZiBZ2uCmq45TGH7ukX6jBvnd/B+OWnP43+oWNi8aHTVcq2eNy+UxA68tT
- jDj1fKEKc7NnuJc4J4jfUlicEhIz3jcwmQgpOM33VzWKmyTsuRwVMDxBYjbJm6FP+eKIe1KRunq
- +br2DO9NDBwVRJgai/nvSdnObrKwXZ/ZM4AEwtuoD1XT8u/XXnnjmVn/HegEWKz9BHUBei1FCsA
- Xj26Z+xPMut0QwS7TtAUvq8hhFzF+vXJEt6fzS5djZ6bxfUt6fWrIuFv6Q7JR+9BWhbOCkwroJp
- fYaetFADM7ZsG653BtMwZf0EhrfIclEHAQ4eMmgi12qgKCdWa3jq/zlAUT87avzqN1h8oN8xMMc
- YUuZj6qMN4zcbgMobzg==
-X-Proofpoint-ORIG-GUID: c_IRwxbK9RMEctVN9Z230XiPI5d-bVBW
-X-Authority-Analysis: v=2.4 cv=B/m0EetM c=1 sm=1 tr=0 ts=69a0ab90 cx=c_pps
- a=MfjaFnPeirRr97d5FC5oHw==:117 a=MfjaFnPeirRr97d5FC5oHw==:17
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMjI2MDE4NiBTYWx0ZWRfX/tneem6RxYSY
+ I63y2vdjAzVgmXqrSbpAn9wulSCZI9FtA/q8vCnvkyYZLcEsT5oTzQEj6M6vln7/2HgM12Ve4kq
+ TjK2sLyRtY89P7N7j0PDW3XDE9U5QMhKh19n7tlc+X5KDm8d9p1bJEdz7Jnu+7Kv1DaggvEpQVz
+ s6KVs3PQcPOqFATCUKBddJFPwd2d0iVLdCWz24BAJK0I54HO5qnF5xdsBkXZkY24Nc9gUBaZKV3
+ DmLDdRwTr4V4KIabstnOlq+a9IWs6Sp/vArSukdVwe2UftaHXwGxaXgVgeXYUDp2g+S0SnR/XdL
+ ArJ7tVkxsP3JoOTU6TuznHmAnAdI3PIqpDC43TsKUe/c6yM9y7PLOtlJ2i3oLEHtrLQXhlArN8Z
+ 5sfdSLxYLMAxv/kESr/r/CPMvzv1NHahHW4dibZj450rEk2+kzSZkbYdzmisDNWfyg9+zMryTex
+ poMP2xMKKHpHd5VOIDg==
+X-Proofpoint-ORIG-GUID: ZCwoLGeJgQMU9zaWzcqZlJwB0q3GSBt_
+X-Authority-Analysis: v=2.4 cv=B/m0EetM c=1 sm=1 tr=0 ts=69a0ab97 cx=c_pps
+ a=CB4LiSf2rd0gKozIdrpkBw==:117 a=CB4LiSf2rd0gKozIdrpkBw==:17
  a=HzLeVaNsDn8A:10 a=VkNPw1HP01LnGYTKEx00:22 a=Mpw57Om8IfrbqaoTuvik:22
- a=GgsMoib0sEa3-_RKJdDe:22 a=VwQbUJbxAAAA:8 a=FOH2dFAWAAAA:8
- a=r96HxJact8T_fHbaSv8A:9
-X-Proofpoint-GUID: c_IRwxbK9RMEctVN9Z230XiPI5d-bVBW
+ a=GgsMoib0sEa3-_RKJdDe:22 a=VabnemYjAAAA:8 a=4DpnPWOeRWuCnonzwFEA:9
+ a=gKebqoRLp9LExxC7YDUY:22
+X-Proofpoint-GUID: ZCwoLGeJgQMU9zaWzcqZlJwB0q3GSBt_
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.51,FMLib:17.12.100.49
  definitions=2026-02-26_02,2026-02-26_01,2025-10-01_01
 
-Hi all,
+On device shutdown, make vfio_pci_core_close_device() call
+vfio_pci_dma_buf_cleanup() before the function is disabled via
+vfio_pci_core_disable().  This ensures that any access to DMABUFs is
+revoked (and importers act on move_notify()) before the function's
+BARs become inaccessible.
 
+This fixes an issue where, if the function is disabled first, a tiny
+window exists in which the function's MSE is cleared and yet BARs
+could still be accessed via the DMABUF.  Worse, the resources would
+also be free/up for grabs by a different driver.
 
-There were various suggestions in the September 2025 thread "[TECH
-TOPIC] vfio, iommufd: Enabling user space drivers to vend more
-granular access to client processes" [0], and LPC discussions, around
-improving the situation for multi-process userspace driver designs.
-This RFC series implements some of these ideas.
+Fixes: 5d74781ebc86c ("vfio/pci: Add dma-buf export support for MMIO regions")
+Signed-off-by: Matt Evans <mattev@meta.com>
+---
+ drivers/vfio/pci/vfio_pci_core.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-
-Background: Multi-process USDs
-==============================
-
-The userspace driver scenario discussed in that thread involves a
-primary process driving a PCIe function through VFIO/iommufd, which
-manages the function-wide ownership/lifecycle.  The function is
-designed to provide multiple distinct programming interfaces (for
-example, several independent MMIO register frames in one function),
-and the primary process delegates control of these interfaces to
-multiple independent client processes (which do the actual work).
-This scenario clearly relies on a HW design that provides appropriate
-isolation between the programming interfaces.
-
-The two key needs are:
-
- 1.  Mechanisms to safely delegate a subset of the device MMIO
-     resources to a client process without over-sharing wider access
-     (or influence over whole-device activities, such as reset).
-
- 2.  Mechanisms to allow a client process to do its own iommufd
-     management w.r.t. its address space, in a way that's isolated
-     from DMA relating to other clients.
-
-
-mmap() of VFIO DMABUFs
-======================
-
-First, this RFC addresses #1, implementing the proposals in [0] to add
-mmap() support to the existing VFIO DMABUF exporter.
-
-This enables a userspace driver to define DMABUF ranges corresponding
-to sub-ranges of a BAR, and grant a given client (via a shared fd)
-the capability to access (only) those sub-ranges.  The VFIO device fds
-would be kept private to the primary process.  All the client can do
-with that fd is map (or iomap via iommufd) that specific subset of
-resources, and the impact of bugs/malice is contained.
-
- (We'll follow up on #2 separately, as a related-but-distinct problem.
-  PASIDs are one way to achieve per-client isolation of DMA; another
-  could be sharing of a single IOVA space via 'constrained' iommufds.)
-
-
-Revocation/reclaim
-==================
-
-That's useful as-is, but then the lifetime of access granted to a
-client needs to be managed well.  For example, a protocol between the
-primary process and the client can indicate when the client is done,
-and when it's safe to reuse the resources elsewhere.
-
-Resources could be released cooperatively, but it's much more robust
-to enable the driver to make the resources guaranteed-inaccessible
-when it chooses, so that it can re-assign them to other uses in
-future.
-
-So, second, I've suggested a PoC/example mechanism for reclaiming
-ranges shared with clients: a new DMABUF ioctl, DMA_BUF_IOCTL_REVOKE,
-is routed to a DMABUF exporter callback.  The VFIO DMABUF exporter's
-implementation permanently revokes a DMABUF (notifying importers, and
-zapping PTEs for any mappings).  This makes the DMABUF defunct and any
-client (or third party the client has shared the buffer onto!) cannot
-be used to access the BAR ranges, whether via DMABUF import or mmap().
-
-A primary driver process would do this operation when the client's
-tenure ends to reclaim "loaned-out" MMIO interfaces, at which point
-the interfaces could be safely re-used.
-
-This ioctl is one of several possible approaches to achieve buffer
-revocation, but I wanted to demonstrate something here as it's an
-important part of the buffer lifecycle in this driver scenario.  An
-alternative implementation could be some VFIO-specific operation to
-search for a DMABUF (by address?) and kill it, but if the server keeps
-hold of the DMABUF fd that's already a clean way to locate it later.
-
-
-BAR mapping access attributes
-=============================
-
-Third, inspired by Alex [Mastro] and Jason's comments in [0], and
-Mahmoud's work in [1] with the goal of controlling CPU access
-attributes for VFIO BAR mappings (e.g. WC) I noticed that once we can
-mmap() VFIO DMABUFs representing BAR sub-spans, it's straightforward
-to decorate them with access attributes for the VMA.
-
-I've proposed reserving a field in struct
-vfio_device_feature_dma_buf's flags to specify an attribute for its
-ranges.  Although that keeps the (UAPI) struct unchanged, it means all
-ranges in a DMABUF share the same attribute.  I feel a single
-attribute-to-mmap() relation is logical/reasonable.  An application
-can also create multiple DMABUFs to describe any BAR layout and mix of
-attributes.
-
-
-Tests
-=====
-
-I've included an [RFC ONLY] userspace test program which I am _not_
-proposing to merge, but am sharing for context.  It illustrates &
-tests various map/revoke cases, but doesn't use the existing VFIO
-selftests and relies on a (tweaked) QEMU EDU function.  I'm working on
-integrating the scenarios into the existing VFIO selftests.
-
-This code has been tested in mapping DMABUFs of single/multiple
-ranges, aliasing mmap()s, aliasing ranges across DMABUFs, vm_pgoff >
-0, revocation, shutdown/cleanup scenarios, and hugepage mappings seem
-to work correctly.  I've lightly tested WC mappings also (by observing
-resulting PTEs as having the correct attributes...).
-
-
-(The first two commits are a couple of tiny bugfixes which I can send
-separately, should reviewers prefer.)
-
-This series is based on v6.19 but I expect to rebase, at least onto
-Leon's recent work [2] ("vfio: Wait for dma-buf invalidation to
-complete").
-
-What are people's thoughts?  I'll respin to de-RFC and capture
-comments, if we think this approach is appropriate.
-
-
-Thanks,
-
-
-Matt
-
-
-References:
-
-[0]: https://lore.kernel.org/linux-iommu/20250918214425.2677057-1-amastro@fb.com/
-[1]: https://lore.kernel.org/all/20250804104012.87915-1-mngyadam@amazon.de/
-[2]: https://lore.kernel.org/linux-iommu/20260205-nocturnal-poetic-chamois-f566ad@houat/T/#m310cd07011e3a1461b6fda45e3f9b886ba76571a
-
-
-Matt Evans (7):
-  vfio/pci: Ensure VFIO barmap is set up before creating a DMABUF
-  vfio/pci: Clean up DMABUFs before disabling function
-  vfio/pci: Support mmap() of a DMABUF
-  dma-buf: uapi: Mechanism to revoke DMABUFs via ioctl()
-  vfio/pci: Permanently revoke a DMABUF on request
-  vfio/pci: Add mmap() attributes to DMABUF feature
-  [RFC ONLY] selftests: vfio: Add standalone vfio_dmabuf_mmap_test
-
- drivers/dma-buf/dma-buf.c                     |   5 +
- drivers/vfio/pci/vfio_pci_core.c              |   4 +-
- drivers/vfio/pci/vfio_pci_dmabuf.c            | 300 ++++++-
- include/linux/dma-buf.h                       |  22 +
- include/uapi/linux/dma-buf.h                  |   1 +
- include/uapi/linux/vfio.h                     |  12 +-
- tools/testing/selftests/vfio/Makefile         |   1 +
- .../vfio/standalone/vfio_dmabuf_mmap_test.c   | 822 ++++++++++++++++++
- 8 files changed, 1153 insertions(+), 14 deletions(-)
- create mode 100644 tools/testing/selftests/vfio/standalone/vfio_dmabuf_mmap_test.c
-
+diff --git a/drivers/vfio/pci/vfio_pci_core.c b/drivers/vfio/pci/vfio_pci_core.c
+index 3a11e6f450f7..8d0e3605fbc7 100644
+--- a/drivers/vfio/pci/vfio_pci_core.c
++++ b/drivers/vfio/pci/vfio_pci_core.c
+@@ -726,10 +726,10 @@ void vfio_pci_core_close_device(struct vfio_device *core_vdev)
+ #if IS_ENABLED(CONFIG_EEH)
+ 	eeh_dev_release(vdev->pdev);
+ #endif
+-	vfio_pci_core_disable(vdev);
+-
+ 	vfio_pci_dma_buf_cleanup(vdev);
+ 
++	vfio_pci_core_disable(vdev);
++
+ 	mutex_lock(&vdev->igate);
+ 	vfio_pci_eventfd_replace_locked(vdev, &vdev->err_trigger, NULL);
+ 	vfio_pci_eventfd_replace_locked(vdev, &vdev->req_trigger, NULL);
 -- 
 2.47.3
 
