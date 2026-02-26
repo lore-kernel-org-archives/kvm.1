@@ -1,165 +1,275 @@
-Received: from AM0PR02CU008.outbound.protection.outlook.com (mail-westeuropeazon11013067.outbound.protection.outlook.com [52.101.72.67])
+Received: from pdx-out-006.esa.us-west-2.outbound.mail-perimeter.amazon.com (pdx-out-006.esa.us-west-2.outbound.mail-perimeter.amazon.com [52.26.1.71])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 162E13ACEEB;
-	Thu, 26 Feb 2026 13:53:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.72.67
-ARC-Seal:i=3; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772114040; cv=fail; b=ce5BYlDDLeDyp7glRhhMJHuSvfvTWLMlxwOGUIXICz3DGmM6dJp/qsDb+RjYWA0BrriMwVle59RS41iPPDONkBTFZApm9HrQx5QQB821523yDKSk+u4N03+pMHeYSoUYHbTl3TBqA0o6Cx9kdhfWJVY8fYcQluJL82TgIdUoF8A=
-ARC-Message-Signature:i=3; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772114040; c=relaxed/simple;
-	bh=DGEYwjnSR/bLM4l2UvJeL63pFHWIpht63DlnaaeSs5c=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=b9AJW2YFYbyOeCBnA2NCCXChYGTCtthHlWgpbs3wyTzwT423HDYwfyJpsmLaEy/09nrIUPyBfe5gtB19IQQ/LK8V0oISsL4e75yZpfISmCwCeDxMG6dMdPc7ULMVS12mlf5uBX5oPgnHANdu/gJoo3jDSJvs8hGKiGQHTky3N58=
-ARC-Authentication-Results:i=3; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=qhX8cZlM; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=qhX8cZlM; arc=fail smtp.client-ip=52.101.72.67
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 35FFC3A0EAB
+	for <kvm@vger.kernel.org>; Thu, 26 Feb 2026 13:54:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=52.26.1.71
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1772114047; cv=none; b=lJgCZYAiLnP25B9vm9jhx9TeLttdX8z7Mu9WzSdmG+jpmeeD4Wz3pTwEQGRqo76XnWfPqajtwCET+OKb3eOv723lH2VSM7jznYAkopiOFNTt+StNmxFoEWOz9sfms908FsLXkJMTzieBPCNwOZhA+l/95K0TNS1EmRN1YaP6NDs=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1772114047; c=relaxed/simple;
+	bh=wgp7h4u8JWSCG9MXNfyYcwya18YPvWlQN7yLCRCIFXU=;
+	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=omyMhhUHt3kK5VkUrFWTy9DDr2Uyewqq8w4H21ChDjKJbPn/5wlAKxPVfytXFEReJy0efUV7bziRE5PfWQTIloucDMhb/cz/mGoToOjGwFnf5O/j2UT/pUcr0rWFJ3IDRwEeXKMGmWMOap+dxIgOqYShWkgi2VvF/mlK+vw6iIw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com; spf=pass smtp.mailfrom=amazon.co.uk; dkim=pass (2048-bit key) header.d=amazon.com header.i=@amazon.com header.b=ssyzlWw3; arc=none smtp.client-ip=52.26.1.71
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amazon.co.uk
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="qhX8cZlM";
-	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="qhX8cZlM"
-ARC-Seal: i=2; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=pass;
- b=adLmRl/do+9jLtrsVDLOcx+nM5OHgpvSPA86WO3nW0eUwlGYpSspkdE77yJED+xzqGwI4TCspX2FE5+ub+0CaB7xOzpLjM8mkSgQ5QoyxZyh3ZqMIe7uvcEWJLWBJRaNxa3YVaGK8pEyb+tBXYaLV8FfJ9i04cBFNaY+zleFr8E8M1O9LAkvI3UthOWbh6urRZgNTSOR17s5fAxsIjAN2NeVldP5MjgtKCKVIp23N9/zPpRrZBSwlH5OphL2TKxqGJyQNAH+GVliWl7YYmlLlCPVbGx5D6YXPXbHtUD0/EeoJ/ZMfYvBXJsT8WwBm40iBgxbC6mMyx3qRbYTq8/LNA==
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=a3sK3jw6CNqK8xtk2NT0JalV2P1QpvpcbQ/HPeUjC8w=;
- b=P5/ZvL0ZStVQoxymNchQmiFfrCizo0N2IByd3eVlUXwcF+nEOiXQhrnjGRmR5VI1l1wR3Wm4cRJx1ZDu+tTOxNg2X1U6Aqmvrr9lk0psAni7qnbjYEy6DukNcJUmvREDj5NrVCK4LQ8h8B0Wr5lJBMvqV11aRGHNgCctY174Wd+W7oD6zKCTeCx/Qrkn4ABZuGesCqrldKTLZNidaNIkatOZtLpC+TFG7063Z3EeKjNSzL8rX+5K5XkYEYHuaAOQStch9U5zP5nPvWuDAIqj5pwshUJVJhh4P+lHC6nFONscdhSwiBkdeN91fMTrzgafdpkUaclQ41uC+reB2dU4eQ==
-ARC-Authentication-Results: i=2; mx.microsoft.com 1; spf=pass (sender ip is
- 4.158.2.129) smtp.rcpttodomain=kernel.org smtp.mailfrom=arm.com; dmarc=pass
- (p=none sp=none pct=100) action=none header.from=arm.com; dkim=pass
- (signature was verified) header.d=arm.com; arc=pass (0 oda=1 ltdi=1
- spf=[1,1,smtp.mailfrom=arm.com] dkim=[1,1,header.d=arm.com]
- dmarc=[1,1,header.from=arm.com])
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arm.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=a3sK3jw6CNqK8xtk2NT0JalV2P1QpvpcbQ/HPeUjC8w=;
- b=qhX8cZlMJGMxLKPtREXmWBRZb5vcG/GYCut9Rx/aZAiJ+m9GcWfnUlXYfGpCsLOkjmfMHbv/AAlRpDEyZ+EKM+LqfQYyV88HHzHzNvBai3ach5MWUtEkMP0MBLejKcpFgcrxtoZHY8IibQbos40yiZgZSHW8RzU4ClLdvaXbloE=
-Received: from AS4PR09CA0029.eurprd09.prod.outlook.com (2603:10a6:20b:5d4::18)
- by AS2PR08MB9920.eurprd08.prod.outlook.com (2603:10a6:20b:55a::20) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9654.11; Thu, 26 Feb
- 2026 13:53:51 +0000
-Received: from AM4PEPF00027A6A.eurprd04.prod.outlook.com
- (2603:10a6:20b:5d4:cafe::37) by AS4PR09CA0029.outlook.office365.com
- (2603:10a6:20b:5d4::18) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.20.9632.26 via Frontend Transport; Thu,
- 26 Feb 2026 13:53:51 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 4.158.2.129)
- smtp.mailfrom=arm.com; dkim=pass (signature was verified)
- header.d=arm.com;dmarc=pass action=none header.from=arm.com;
-Received-SPF: Pass (protection.outlook.com: domain of arm.com designates
- 4.158.2.129 as permitted sender) receiver=protection.outlook.com;
- client-ip=4.158.2.129; helo=outbound-uk1.az.dlp.m.darktrace.com; pr=C
-Received: from outbound-uk1.az.dlp.m.darktrace.com (4.158.2.129) by
- AM4PEPF00027A6A.mail.protection.outlook.com (10.167.16.88) with Microsoft
- SMTP Server (version=TLS1_3, cipher=TLS_AES_256_GCM_SHA384) id 15.20.9632.12
- via Frontend Transport; Thu, 26 Feb 2026 13:53:51 +0000
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=MiCttE/AE+f4wQJyZ7IoImv0tLzVgyvrmJq/HB44Gcl7tX2yO9Bta+8PR7YjOdv/SsdptVe5GKZn/rbXVqcMYqNQxTs9PCE+fp7DILMsSmyMHMSjy5+9TR7Vc/IPC/+FqwLTX4AwVCLXpDU6Dh6eIKyCQp7I3qfdhT2NCu+wAP5NqALDJuAnm9VU8HBxQEc9f24WuQTeTaMpMGqE5pHC7noA4a5IbLYZwV5OJXFR3hBx5HvOL6BPJpna50N74Busy0A9gi3tGrxxK+3JvRlsKfV/XYewESQL9SSzd3hkkPS+oWUYTof2C1S+gkeceZj88+eB5Dy5tNzA4YDuDV4puQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=a3sK3jw6CNqK8xtk2NT0JalV2P1QpvpcbQ/HPeUjC8w=;
- b=fEbdIdkTEZVvZMI3RMxnc+/wRVEbKRuH4k/qe9V5037yRIK5dvkph+KH4kBkOqE8viIz+q+UhW1bKjxdy5IrpK3S+3Wtvlvxa/DmzdU5+fjJ3/JzuYe7E2ifNXggEAf+LZfd3kLohUsH+h4PDG0Vxhzqo6m7EjDeTN7l5+biLCLgr+nZQq+ci3W5x3r9XP2WzjmLN9ymxzKxcBPSo1GEdennPLPbR15JupnCKeAGWqvS3N0bzJit8e5C7DLShGGqy8he4xLhaoQYF7wbosdIDHGZ9Iqm5xwaX6ZIQgsJ4/VFInxbaXGam9dMw7kSDTxR+FOBfBJYu7f4ruw9oEVMIw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=arm.com; dmarc=pass action=none header.from=arm.com; dkim=pass
- header.d=arm.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arm.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=a3sK3jw6CNqK8xtk2NT0JalV2P1QpvpcbQ/HPeUjC8w=;
- b=qhX8cZlMJGMxLKPtREXmWBRZb5vcG/GYCut9Rx/aZAiJ+m9GcWfnUlXYfGpCsLOkjmfMHbv/AAlRpDEyZ+EKM+LqfQYyV88HHzHzNvBai3ach5MWUtEkMP0MBLejKcpFgcrxtoZHY8IibQbos40yiZgZSHW8RzU4ClLdvaXbloE=
-Authentication-Results-Original: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=arm.com;
-Received: from GV1PR08MB10521.eurprd08.prod.outlook.com
- (2603:10a6:150:163::20) by DB9PR08MB11312.eurprd08.prod.outlook.com
- (2603:10a6:10:608::17) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9654.14; Thu, 26 Feb
- 2026 13:52:49 +0000
-Received: from GV1PR08MB10521.eurprd08.prod.outlook.com
- ([fe80::8c9b:58d2:2080:eb98]) by GV1PR08MB10521.eurprd08.prod.outlook.com
- ([fe80::8c9b:58d2:2080:eb98%3]) with mapi id 15.20.9654.014; Thu, 26 Feb 2026
- 13:52:48 +0000
-Date: Thu, 26 Feb 2026 13:52:45 +0000
-From: Yeoreum Yun <yeoreum.yun@arm.com>
-To: Oliver Upton <oupton@kernel.org>
-Cc: linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-	kvmarm@lists.linux.dev, kvm@vger.kernel.org,
-	linux-kselftest@vger.kernel.org, catalin.marinas@arm.com,
-	will@kernel.org, maz@kernel.org, miko.lenczewski@arm.com,
-	kevin.brodsky@arm.com, broonie@kernel.org, ardb@kernel.org,
-	suzuki.poulose@arm.com, lpieralisi@kernel.org, joey.gouly@arm.com,
-	yuzenghui@huawei.com
-Subject: Re: [PATCH v14 7/8] KVM: arm64: use CASLT instruction for swapping
- guest descriptor
-Message-ID: <aaBQLTOe2NwoVZf8@e129823.arm.com>
-References: <20260225182708.3225211-1-yeoreum.yun@arm.com>
- <20260225182708.3225211-8-yeoreum.yun@arm.com>
- <aaAwtrrJ-qFrqktX@kernel.org>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <aaAwtrrJ-qFrqktX@kernel.org>
-X-ClientProxiedBy: LO2P123CA0036.GBRP123.PROD.OUTLOOK.COM (2603:10a6:600::24)
- To GV1PR08MB10521.eurprd08.prod.outlook.com (2603:10a6:150:163::20)
+	dkim=pass (2048-bit key) header.d=amazon.com header.i=@amazon.com header.b="ssyzlWw3"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+  d=amazon.com; i=@amazon.com; q=dns/txt; s=amazoncorp2;
+  t=1772114046; x=1803650046;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=1cLW7dxL7oQwjTjxBqoOixl0aP0gjPtuUQLoyunm2uo=;
+  b=ssyzlWw34/mo1mP657n+OamcTUhLTM5Ct9yjlD19DPPhJJGfdUsSg8WF
+   H+GbtoEaZaYX+xtFa0C1YwbI/Ta4obENt4C4Oq+qG1jy508jNZvlY2snd
+   FSJ07CDw48LEj0LXQkb0avLXKRj3/cs53w2qN0BGSQ9otJMky6/0lItAx
+   vbi+WZV14JJYrm7Xk8RTDbFJx23OB9RhFKrTDdcVRY1obLn9NXo4VxBD3
+   c/TgbgFZ3gTiQyC7EYYgaJthUzCr/20U1QlmP7fVz7sI6GzDuD1QUirYq
+   j/u5Qm1+joDVtYefZdtQqT4knxMd9D+u0IGHOO2aCVSDZGTqZAwoeVsgQ
+   g==;
+X-CSE-ConnectionGUID: UnQZldRaQ+CneeRvrZqllw==
+X-CSE-MsgGUID: qcCfNm5sREe1Y0R1JKfxPg==
+X-IronPort-AV: E=Sophos;i="6.21,312,1763424000"; 
+   d="scan'208";a="13862865"
+Received: from ip-10-5-6-203.us-west-2.compute.internal (HELO smtpout.naws.us-west-2.prod.farcaster.email.amazon.dev) ([10.5.6.203])
+  by internal-pdx-out-006.esa.us-west-2.outbound.mail-perimeter.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Feb 2026 13:54:05 +0000
+Received: from EX19MTAUWA002.ant.amazon.com [205.251.233.234:12513]
+ by smtpin.naws.us-west-2.prod.farcaster.email.amazon.dev [10.0.61.162:2525] with esmtp (Farcaster)
+ id 16a9a065-b96e-4a71-857f-c89ebcaf7b0f; Thu, 26 Feb 2026 13:54:05 +0000 (UTC)
+X-Farcaster-Flow-ID: 16a9a065-b96e-4a71-857f-c89ebcaf7b0f
+Received: from EX19D001UWA001.ant.amazon.com (10.13.138.214) by
+ EX19MTAUWA002.ant.amazon.com (10.250.64.202) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.37;
+ Thu, 26 Feb 2026 13:54:00 +0000
+Received: from dev-dsk-itazur-1b-11e7fc0f.eu-west-1.amazon.com (172.19.66.53)
+ by EX19D001UWA001.ant.amazon.com (10.13.138.214) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.37;
+ Thu, 26 Feb 2026 13:53:58 +0000
+From: Takahiro Itazuri <itazur@amazon.com>
+To: <kvm@vger.kernel.org>, Sean Christopherson <seanjc@google.com>, "Paolo
+ Bonzini" <pbonzini@redhat.com>
+CC: Vitaly Kuznetsov <vkuznets@redhat.com>, Fuad Tabba <tabba@google.com>,
+	Brendan Jackman <jackmanb@google.com>, David Hildenbrand <david@kernel.org>,
+	David Woodhouse <dwmw2@infradead.org>, Paul Durrant <pdurrant@amazon.com>,
+	Nikita Kalyazin <kalyazin@amazon.com>, Patrick Roy
+	<patrick.roy@campus.lmu.de>, Takahiro Itazuri <zulinx86@gmail.com>
+Subject: [RFC PATCH v2 7/7] KVM: pfncache: Invalidate on gmem invalidation and memattr updates
+Date: Thu, 26 Feb 2026 13:53:08 +0000
+Message-ID: <20260226135309.29493-8-itazur@amazon.com>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20260226135309.29493-1-itazur@amazon.com>
+References: <20260226135309.29493-1-itazur@amazon.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-TrafficTypeDiagnostic:
-	GV1PR08MB10521:EE_|DB9PR08MB11312:EE_|AM4PEPF00027A6A:EE_|AS2PR08MB9920:EE_
-X-MS-Office365-Filtering-Correlation-Id: ca665ad6-b434-4a3b-24ad-08de753e7964
-x-checkrecipientrouted: true
-NoDisclaimer: true
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam-Untrusted:
- BCL:0;ARA:13230040|376014|7416014|1800799024|366016;
-X-Microsoft-Antispam-Message-Info-Original:
- guHKZ5zTsc4WaPOrv65lbTeMde9hqcu1aixiVmhxv0FurLHw+oHdn/eR4eB/CGNbza6SvNnD21bmKpsJOT+UMBHnhvXwyindWwp9c4u4w6Z0l9mUc0yjV9nZjmj8P+af5Guie/cgc4AsadZ/fhPdyW2ECAiBbxc0xiTRN1nQb7nBbIrF8a0wwaiE/07z/0sxxC1RwkvpjAdCBgAF1rNSrV9ba49tRXjvk/308BMKP0dBzugXhrKaROw+Esj80D+MOz13n1VxOIAAamK6VNX4HRnuwHZSADKUuzdLIT10CEI1nylovnLpXY34kcCuMnuXB5sJF7L7N97jCn/X9R2emn1Dce09XOZU5a41nUJ1kShhvErHmfQEmy7NaEV/MW+IDgdIMWSteY1izHqbdNTPPSfSN9wiT8k/VYEsvgO6wqTToCBgu/NbOQd8tblr7H+YTIMN7F7u2l9huEEq/yiQkYfcQ+E0MRkOPAkBE1Ins5q0eTNdBPpRZ7bhBCopVll0QzqQy1qBuxSapD3fwIcAM9o0rVnvXuSPUUJViaTbkpML7xV851DqmiswELxt2kgaz1XMowwHMJbRWKABzgY7gsmcpYqCEttL8LcxZOWaEL60qzmySxmaNFF+OCiE4nHEuyKZJ239p5O+0KzQQ5HsQHbRgjRcZZJwIZNgSC+tDJyQdrTJ7FD5wm21zFITkPcdlqDpt++06hN1iESVZ2CF9B0ym4VTVTtJsmqSIl8y1PY=
-X-Forefront-Antispam-Report-Untrusted:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:GV1PR08MB10521.eurprd08.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(1800799024)(366016);DIR:OUT;SFP:1101;
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DB9PR08MB11312
-X-EOPAttributedMessage: 0
-X-MS-Exchange-Transport-CrossTenantHeadersStripped:
- AM4PEPF00027A6A.eurprd04.prod.outlook.com
-X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id-Prvs:
-	1d1b3a04-798c-4227-ab8c-08de753e5381
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|376014|7416014|82310400026|36860700013|35042699022|14060799003;
-X-Microsoft-Antispam-Message-Info:
-	ylbvX6RMNfERNUeNbCApGhFMRB5UsMVQ9/V5LpdZtCVPQHdfXXW+JMW92JIDJjAXYYzmDFhLSouIBc8q7UYk2siYn1rwfE7X7+KjaVdBKViOMwC/ExHbBl5rdKMVhXXUrlnlyMCwDc9LuY1GthpwFWDWwXiIhchaRkcslUkjoGIUdiVu1F3Ttq24uMjYjHIZqHhc0WrqmeWiadJfcjH0+MZrYgT4SVODausc2oqmSoG0BdDdZkkRVK+OJ4qacXCLMPbHiw4NTEOHKcgZeFPh7qrpzoEgZ8OgWPOn6YJGSa6zgCXcEFvSnmwUU/sDsFZGcbAXr3Gan4ZXheX1UQFxfYZqjp7whCTwKe26RdIgcKiR+LtaIx4rxK+slT9SOucz3P4cLAwaPRTzGaH38JVujb74xUmgfBytcrVtMcxAR0oXj/81mosb70YcgvUGDG6xf1oDKajQHqSBM4nD2PolvkUG8KaZ84efA1FjomsZEAtwC54s0ghUN1EyZCuR0Xgj400uJ38cg7JCrvhHfgwG99DgU8ZGkZ/YBv4TJI0KaQR3pQFcW62w6JGbvT4zQP38XQREyvauJ6a7PrhhyHDXpMfjNsXOW51gG8+KkHkGTh55xU/HNh8337rcANL9n4tMafYjxMlBE8bGdSThQ8ACh1DL8gFefxn1RimvkZsThXsTLKkk0pmQsk+nfv88mI/MyO6yhikjSsPg0sqBmhMUgJn4Jhi+JHMnxCRMkvSjFOPN4FJhxYO/UKAkQa53f87LjL9gUWD2a0X2VHHnwtVen9e8UoWfek3lP3l/eGnfMT+nDlsPX/yQKXStvc6ELdu4qXJS/Sb1bjyHMDsOuW6+qg==
-X-Forefront-Antispam-Report:
-	CIP:4.158.2.129;CTRY:GB;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:outbound-uk1.az.dlp.m.darktrace.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(1800799024)(376014)(7416014)(82310400026)(36860700013)(35042699022)(14060799003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	DjpXNpg1p0XTBiReWARXM1vS0EdmNl8RprYOnUkP1dw3dYZ1zWb76rTVxg822mOSDiWvkU3sgTQB/fmPjDN2G0YFdzX/YPUlSBjUejmYu9Jw4eJAUc51LXsrlObqJibmpq+DCdGt4+lAhTKVWg2w4PLeq897myUz2Pkn9SiSIfd+O79j+Uite+LdfwRSVgKpMsyKB2q49+kd4i86tpZlpudTREWcVTAa41GEfgxOWCuqG+EvZGQ0pJC/pXGvawAzvJ/vhYFnyfd7dPhgarB1g1mcfjs751fUi7V8/qIrxqpelm6t2INMpAX+uWpQs3gAi8dwGBduXMLDfI5rBQWForpVcbX/rpDjkB56FzGoIdTGsGkE+DL7VF3ZFit+W3sHH3dzCvEz3Wwk4tuk9QWLM2Him9YUCwemhvnXEYn+UdFmrbNBcDRxSi+w06h9Za4j
-X-OriginatorOrg: arm.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 26 Feb 2026 13:53:51.7278
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: ca665ad6-b434-4a3b-24ad-08de753e7964
-X-MS-Exchange-CrossTenant-Id: f34e5979-57d9-4aaa-ad4d-b122a662184d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=f34e5979-57d9-4aaa-ad4d-b122a662184d;Ip=[4.158.2.129];Helo=[outbound-uk1.az.dlp.m.darktrace.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	AM4PEPF00027A6A.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS2PR08MB9920
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain
+X-ClientProxiedBy: EX19D044UWB002.ant.amazon.com (10.13.139.188) To
+ EX19D001UWA001.ant.amazon.com (10.13.138.214)
 
-Hi Oliver,
-> On Wed, Feb 25, 2026 at 06:27:07PM +0000, Yeoreum Yun wrote:
-> > +	asm volatile(__LSUI_PREAMBLE
-> > +		     "1: caslt	%[old], %[new], %[addr]\n"
->
-> The other two flavors of this use relaxed ordering, why can't we do the
-> same with LSUI?
+Invalidate pfncaches when guest_memfd invalidation or memory attribute
+updates render cached PFN resolutions stale.
 
-Right. I've misunderstood caslt is relaxed symantic.
-I should change with CAST.
+Reuse active_invalidate_count to synchronize with the existing retry
+logic and preserve ordering against mmu_invalidate_seq.
 
-Thanks!
+Invalidation needs to be performed using HVA ranges so that both
+GPA-based and HVA-based pfncaches are covered.  Internally GPA-based
+ones translate GPA to memslot/UHVA first and then resolve PFN, while
+HVA-based ones only resolve PFN and do not store memslot/GPA context.
+Technically, it is possible to make HVA-based pfncaches search the
+corresponding memslot/GPA when activated / refreshed, but it would add
+overhead to a greater ot lesser extent, regardless of guest_memfd-backed
+or not.  At the time of writing, only Xen uses HVA-based pfncaches.
 
---
-Sincerely,
-Yeoreum Yun
+Signed-off-by: Takahiro Itazuri <itazur@amazon.com>
+Suggested-by: David Hildenbrand (Red Hat) <david@kernel.org>
+---
+ virt/kvm/guest_memfd.c | 50 ++++++++++++++++++++++++++++++++++++++++++
+ virt/kvm/kvm_main.c    | 45 +++++++++++++++++++++++++++++++++++++
+ virt/kvm/pfncache.c    |  4 ++--
+ 3 files changed, 97 insertions(+), 2 deletions(-)
+
+diff --git a/virt/kvm/guest_memfd.c b/virt/kvm/guest_memfd.c
+index 79f34dad0c2f..eb2f1a7e54dc 100644
+--- a/virt/kvm/guest_memfd.c
++++ b/virt/kvm/guest_memfd.c
+@@ -215,6 +215,33 @@ static void __kvm_gmem_invalidate_start(struct gmem_fi=
+le *f, pgoff_t start,
+ 	struct kvm *kvm =3D f->kvm;
+ 	unsigned long index;
+=20
++	/*
++	 * Prevent pfncaches from being activated / refreshed using stale PFN
++	 * resolutions.  To invalidate pfncaches _before_ invalidating the
++	 * secondary MMUs (i.e. without acquiring mmu_lock), pfncaches must use
++	 * active_invalidate_count instead of mmu_invalidate_in_progress.
++	 */
++	spin_lock(&kvm->invalidate_lock);
++	kvm->active_invalidate_count++;
++	spin_unlock(&kvm->invalidate_lock);
++
++	/*
++	 * Invalidation of pfncaches must be done using a HVA range.  pfncaches
++	 * can be either GPA-based or HVA-based, and all pfncaches store uhva
++	 * while HVA-based pfncaches do not have gpa/memslot info.  Thus,
++	 * using GFN ranges would miss invalidating HVA-based ones.
++	 */
++	xa_for_each_range(&f->bindings, index, slot, start, end - 1) {
++		pgoff_t pgoff =3D slot->gmem.pgoff;
++		gfn_t gfn_start =3D slot->base_gfn + max(pgoff, start) - pgoff;
++		gfn_t gfn_end =3D slot->base_gfn + min(pgoff + slot->npages, end) - pgof=
+f;
++
++		unsigned long hva_start =3D gfn_to_hva_memslot(slot, gfn_start);
++		unsigned long hva_end =3D gfn_to_hva_memslot(slot, gfn_end);
++
++		gpc_invalidate_hva_range_start(kvm, hva_start, hva_end);
++	}
++
+ 	xa_for_each_range(&f->bindings, index, slot, start, end - 1) {
+ 		pgoff_t pgoff =3D slot->gmem.pgoff;
+=20
+@@ -259,12 +286,35 @@ static void __kvm_gmem_invalidate_end(struct gmem_fil=
+e *f, pgoff_t start,
+ 				      pgoff_t end)
+ {
+ 	struct kvm *kvm =3D f->kvm;
++	bool wake;
+=20
+ 	if (xa_find(&f->bindings, &start, end - 1, XA_PRESENT)) {
+ 		KVM_MMU_LOCK(kvm);
+ 		kvm_mmu_invalidate_end(kvm);
+ 		KVM_MMU_UNLOCK(kvm);
+ 	}
++
++	/*
++	 * This must be done after the increment of mmu_invalidate_seq and
++	 * smp_wmb() in kvm_mmu_invalidate_end() to guarantee that
++	 * gpc_invalidate_retry() observes either the old (non-zero)
++	 * active_invalidate_count or the new (incremented) mmu_invalidate_seq.
++	 */
++	spin_lock(&kvm->invalidate_lock);
++	if (!WARN_ON_ONCE(!kvm->active_invalidate_count))
++		kvm->active_invalidate_count--;
++	wake =3D !kvm->active_invalidate_count;
++	spin_unlock(&kvm->invalidate_lock);
++
++	/*
++	 * guest_memfd invalidation itself doesn't need to block active memslots
++	 * swap as bindings updates are serialized by filemap_invalidate_lock().
++	 * However, active_invalidate_count is shared with the MMU notifier
++	 * path, so the waiter must be waked when active_invalidate_count drops
++	 * to zero.
++	 */
++	if (wake)
++		rcuwait_wake_up(&kvm->memslots_update_rcuwait);
+ }
+=20
+ static void kvm_gmem_invalidate_end(struct inode *inode, pgoff_t start,
+diff --git a/virt/kvm/kvm_main.c b/virt/kvm/kvm_main.c
+index f51056e971d0..f56b98c85175 100644
+--- a/virt/kvm/kvm_main.c
++++ b/virt/kvm/kvm_main.c
+@@ -2583,6 +2583,8 @@ static int kvm_vm_set_mem_attributes(struct kvm *kvm,=
+ gfn_t start, gfn_t end,
+ 		.on_lock =3D kvm_mmu_invalidate_end,
+ 		.may_block =3D true,
+ 	};
++	struct kvm_memslots *slots =3D kvm_memslots(kvm);
++	struct kvm_memory_slot *slot;
+ 	unsigned long i;
+ 	void *entry;
+ 	int r =3D 0;
+@@ -2609,6 +2611,34 @@ static int kvm_vm_set_mem_attributes(struct kvm *kvm=
+, gfn_t start, gfn_t end,
+ 		cond_resched();
+ 	}
+=20
++	/*
++	 * Prevent pfncaches from being activated / refreshed using stale PFN
++	 * resolutions.  To invalidate pfncaches _before_ invalidating the
++	 * secondary MMUs (i.e. without acquiring mmu_lock), pfncaches must use
++	 * active_invalidate_count instead of mmu_invalidate_in_progress.
++	 */
++	spin_lock(&kvm->invalidate_lock);
++	kvm->active_invalidate_count++;
++	spin_unlock(&kvm->invalidate_lock);
++
++	/*
++	 * Invalidation of pfncaches must be done using a HVA range.  pfncaches
++	 * can be either GPA-based or HVA-based, and all pfncaches store uhva
++	 * while HVA-based pfncaches do not have gpa/memslot info.  Thus,
++	 * using GFN ranges would miss invalidating HVA-based ones.
++	 */
++	kvm_for_each_memslot(slot, slots) {
++		gfn_t gfn_start =3D max(start, slot->base_gfn);
++		gfn_t gfn_end =3D min(end, slot->base_gfn + slot->npages);
++
++		if (gfn_start < gfn_end) {
++			unsigned long hva_start =3D gfn_to_hva_memslot(slot, gfn_start);
++			unsigned long hva_end =3D gfn_to_hva_memslot(slot, gfn_end);
++
++			gpc_invalidate_hva_range_start(kvm, hva_start, hva_end);
++		}
++	}
++
+ 	kvm_handle_gfn_range(kvm, &pre_set_range);
+=20
+ 	for (i =3D start; i < end; i++) {
+@@ -2620,6 +2650,21 @@ static int kvm_vm_set_mem_attributes(struct kvm *kvm=
+, gfn_t start, gfn_t end,
+=20
+ 	kvm_handle_gfn_range(kvm, &post_set_range);
+=20
++	/*
++	 * This must be done after the increment of mmu_invalidate_seq and
++	 * smp_wmb() in kvm_mmu_invalidate_end() to guarantee that
++	 * gpc_invalidate_retry() observes either the old (non-zero)
++	 * active_invalidate_count or the new (incremented) mmu_invalidate_seq.
++	 *
++	 * memslots_update_rcuwait does not need to be waked when
++	 * active_invalidate_count drops to zero because active memslots swap is
++	 * also done while holding slots_lock.
++	 */
++	spin_lock(&kvm->invalidate_lock);
++	if (!WARN_ON_ONCE(!kvm->active_invalidate_count))
++		kvm->active_invalidate_count--;
++	spin_unlock(&kvm->invalidate_lock);
++
+ out_unlock:
+ 	mutex_unlock(&kvm->slots_lock);
+=20
+diff --git a/virt/kvm/pfncache.c b/virt/kvm/pfncache.c
+index 2880a36257c2..2b44da46d2ab 100644
+--- a/virt/kvm/pfncache.c
++++ b/virt/kvm/pfncache.c
+@@ -144,7 +144,7 @@ static void gpc_unmap(kvm_pfn_t pfn, void *khva)
+ #endif
+ }
+=20
+-static inline bool mmu_notifier_retry_cache(struct kvm *kvm, unsigned long=
+ mmu_seq)
++static inline bool gpc_invalidate_retry(struct kvm *kvm, unsigned long mmu=
+_seq)
+ {
+ 	/*
+ 	 * active_invalidate_count acts for all intents and purposes like
+@@ -274,7 +274,7 @@ static kvm_pfn_t gpc_to_pfn_retry(struct gfn_to_pfn_cac=
+he *gpc)
+ 		 * attempting to refresh.
+ 		 */
+ 		WARN_ON_ONCE(gpc->valid);
+-	} while (mmu_notifier_retry_cache(gpc->kvm, mmu_seq));
++	} while (gpc_invalidate_retry(gpc->kvm, mmu_seq));
+=20
+ 	gpc->valid =3D true;
+ 	gpc->pfn =3D new_pfn;
+--=20
+2.50.1
+
