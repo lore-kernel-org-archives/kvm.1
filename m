@@ -1,215 +1,136 @@
-Received: from mail-vs1-f51.google.com (mail-vs1-f51.google.com [209.85.217.51])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from jpms-ob02.noc.sony.co.jp (jpms-ob02.noc.sony.co.jp [211.125.140.165])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 238D938F232
-	for <kvm@vger.kernel.org>; Thu, 26 Feb 2026 07:19:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.217.51
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772090341; cv=pass; b=paLhUVTUbQ7tWJeLppFo8IdbrSwrj+QAXUeMf+9sGMzfCfCBRRLFzFBPU5wMNg3X0sUlhatkUyzThj/mTIqCmilDsghW/AZtB0picqopOknlDPnSmdyrN2Uk4zA6s5axFuTq6IN2mKPqJtUoBgbK3veCHxGryGqIAq0aIJO30I4=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772090341; c=relaxed/simple;
-	bh=5kZAYgXFbfkfi4UQTiPb13p2MazR2wn4poiXvnKgRZ4=;
-	h=From:In-Reply-To:References:MIME-Version:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=WG+Lhc4N1T9W/mj23exI7fXMJroVNIPxYYq3OXbm9mgQnMrndwl+dfceU8y62ufv/FGeHVN1eGV7zmqAu49PiotU5tabYye7LrNhMXR5eB2joX2K7m2OoO65z2o4w/QPPIL+KmdaRKfUu3807vnHn1TDUS9e0yAa1h4GWgNf3p0=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=UkVgGHqo; arc=pass smtp.client-ip=209.85.217.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D420038F921;
+	Thu, 26 Feb 2026 07:35:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.125.140.165
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1772091329; cv=none; b=hsfyvzXsnhQ4mW4/OiyhEFnqpryhqatM/i0BMyzPGCGVSFH9f9FcNETt3cwlditFQJaZzs16ujIjqLjFzAWgvNeuSb7yaMQCnPgoUNta5pWHs+II/SmGvVOEUDq9YeQalrBxzRBbNzfzLAxwhrvZVkB1ukkcnpIhGNANpXlYgNs=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1772091329; c=relaxed/simple;
+	bh=P8+TGDnvkg7gufbIf6sOV2gE+oWXesLj+BT+qqAjWd0=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=KxR2AFQyMuRrBLtIOpT/44wZfXkX+yBQ+an49vxHABjkBaXA5fm6hbryBLy3AECSnAvwRT400reFxduWPZTnJC/+PhUj+kmjaMN4qGJZf7VUt0aEhEknH/u6RgxpcHsAkRfl2OWyKUprQHgPuvFF8OQbFCtZkVd7/5xoRvRflIQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sony.com; spf=pass smtp.mailfrom=sony.com; dkim=pass (2048-bit key) header.d=sony.com header.i=@sony.com header.b=KcYHtes9; arc=none smtp.client-ip=211.125.140.165
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sony.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sony.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="UkVgGHqo"
-Received: by mail-vs1-f51.google.com with SMTP id ada2fe7eead31-5ff10630b18so122140137.3
-        for <kvm@vger.kernel.org>; Wed, 25 Feb 2026 23:19:00 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1772090339; cv=none;
-        d=google.com; s=arc-20240605;
-        b=G08UO+12kjz1k8oLZ/fl7lYR18q2O7/bnBshUmXPnVAxcnjNSlwEqTn/zokTgip7ls
-         u+ELQ8X3MXN0owgC3pW61eOb4PiNwSOaMhNq0EYGdwwLGdNmlQiwxzVDURvcyNHZytDO
-         XQnn9Jlvz7l79hjcKVa3c3YLjvRetTscCTvKJf/lBk1Nf+cSAzfGXOfUCpEoQuW6H7jL
-         YXr0ACUoH4ebSnyrdMVtkOr1MayQrT9McV4k4uK2ih53HT2hAYw5n/m48KyzWl+XE0lG
-         WLG2toVLUsLlBq8f7fue8yxO6hwWvrSRshiUbHow5JrOC8zKd+sv9aJ/BpLwZjKQi3wW
-         7RuA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
-         :from:dkim-signature;
-        bh=38TkFjWu/yMjVfuieCXSU8i+AJioChf0CvAqY9rgty4=;
-        fh=X98mRtsDGzrEsEo68vaV5c45lRAouWvaZnl2RTIrlg0=;
-        b=lNoAcD2sBN5dj723Z5voHeAhPMOpEoAGuW2V8FSfslp9U+VAZ65stinAUSrDqTvqm9
-         UMfXcD2095TuQLWDIzfHepNedZjO7JfDZQWItPXkXjrV6kt0TAYehGo8UwfbOUf6Gb2I
-         /ql+Qgusc+fx0iBz1Is0RPTHoBziojRLe12swWJkUckYztVFrBTDnJ8Vmu2aFfs70Xmm
-         8A7qCPqmQBl6xsEIpDlSpPFwf2YJehdvjOs1/0Ql2HjP9xPOoQndHoye2YFWCtk7jpY2
-         I6ibgK1ddepFjg/QrXfJSBwFx1T+2G35hRRHhoqY8DXL4IvBn1NCd1pTYdN4y37SVXp1
-         WzsQ==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	dkim=pass (2048-bit key) header.d=sony.com header.i=@sony.com header.b="KcYHtes9"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1772090339; x=1772695139; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
-         :from:from:to:cc:subject:date:message-id:reply-to;
-        bh=38TkFjWu/yMjVfuieCXSU8i+AJioChf0CvAqY9rgty4=;
-        b=UkVgGHqohjH+9DegPTESkRCcW5GUEqXvHEODRmFWxtri5m9ThGxc4fKgZxf5Saqr8L
-         YJrx321iwCj2lurexXPSzZLRMuMfSLaeQ5XJwZpvWgrEsjqL6YSH3oI9aYCxLuciOV2h
-         Th3mtvnHTE3jibadRUa+/d1c3fLeqAjVIhgsNS7MDhAsuzKLu/kTjFW7wFk1pfE0UK89
-         rLmkznK+fNm1ZoxRdE2UwXAQWBk0B+shMZuOtjUKqb9gSdMWSDPA94hpuqoEAeCbC5Ws
-         /qtppmWA9nUOL4IdxWS/iQwOlrAUzPQIRiWQ0MavabJ8C/bh7UY+dLfjza95EZAGluFR
-         tEGQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1772090339; x=1772695139;
-        h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
-         :from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=38TkFjWu/yMjVfuieCXSU8i+AJioChf0CvAqY9rgty4=;
-        b=Umt/hH1Xq8boURdJiu+N8aNFGPf11piQmxJylNkWOU68AeLgHCRGc/KmrbPtffWA2A
-         sVPx0kIk5OTW3ug2Gz4sLejPenXRHe0D20T1Kh/bwZE/VpgnYyjSjo3h2jto0w5ttSze
-         RQkzpv6iCbrmBYuPF5XWpBBW6pkdgT8AwwwjJAcOVVPbNEm45VbLD2KwkZS1b0w7+/xQ
-         Ahp+RAJJauTTYyUNmUeakLSOKTUglcmAjytMnnXD3GJPyIAeYlP74hNfW+fRHlWgujqJ
-         tOS1e/xQlMgPlT+I081GHHMQTfwgxsQsaGzNenhINDNoRdeTdCBLYmZSpfZS4aVDvzxY
-         Twpg==
-X-Forwarded-Encrypted: i=1; AJvYcCX7cvUaqvtxs5IAUNMRP7jsFf95AtZ/PlxaYno8twtDuZTCiZIwO8W9EO9OVYhtEeP9CxQ=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxMVf0ut6HCUHGDsc8KXQLi0EbXbQtrO7pEDQUcp/n+GwOgoJla
-	Q3HVzcWpganuCro5kMjK9k8TRQlD/kt3og/qYowmsmL0jbK+cNGcQiXopCnmyoLlPoAHk6O944d
-	fkblcz+XWeAEoC7a+2Slub8nHGABqWV11jZE545Ya
-X-Gm-Gg: ATEYQzzX5nFux2/frVztu27sreIqWPEZMquvMrqwifr7dzz/VBXyMPW3Tw2x3h1vVVd
-	8esoIkKcOzvrwIsn+5+XQnoW4ULQtx0CoCMNrfeZhA9oiegkRIeHV9jbNY4Nhpy5ehXzd4UxH4q
-	E7En189bTXl1xouBu672rwZjDtOReKOr4FH9/G5xvrzKoxsnDRBbA0yccaUcsTEGS6TCOVxAoIU
-	bpkmYY2V+BXu1v6IznvRCGUwY9byXUxOAPlikJH2j4Q656WRFS9vKZpV+jJc+zOe2lUxHM+1hpO
-	pTFg9IltY/GlgOUFGsCCpAQW1VfBogvHQ7SvVIY17x8oWp5wHvj1sL/ca8dOENWWnzs+KQ==
-X-Received: by 2002:a05:6102:3581:b0:5ef:2cb8:e9db with SMTP id
- ada2fe7eead31-5ff13ef650bmr1386972137.18.1772090338420; Wed, 25 Feb 2026
- 23:18:58 -0800 (PST)
-Received: from 176938342045 named unknown by gmailapi.google.com with
- HTTPREST; Wed, 25 Feb 2026 23:18:57 -0800
-Received: from 176938342045 named unknown by gmailapi.google.com with
- HTTPREST; Wed, 25 Feb 2026 23:18:57 -0800
-From: Ackerley Tng <ackerleytng@google.com>
-In-Reply-To: <f6649b09-aa64-4c91-bf3a-ba706f023180@kernel.org>
-References: <cover.1771826352.git.ackerleytng@google.com> <a97045a9-8866-40fe-aa15-d319cafa6f2c@kernel.org>
- <CAEvNRgFF0+g9pmp1yitX48ebK=fDpYKSOQDmRfOjzSHxM5UpeQ@mail.gmail.com>
- <9ef9a0bd-4cff-4518-b7fb-e65c9b761a5a@kernel.org> <CAEvNRgESctVm9CcEyK36hY8Ta=DEDOS1oW5w0qRDoNfdd=470g@mail.gmail.com>
- <CAEvNRgFyRsqhv7CuuDARHTFSanzOHaudM6JMBLwxDwsrjTNCGQ@mail.gmail.com> <f6649b09-aa64-4c91-bf3a-ba706f023180@kernel.org>
+  d=sony.com; s=s1jp; t=1772091326; x=1803627326;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=okgIaffSuE7iTDSP0gw48/bn86X3WVAG8sCQHMc54fQ=;
+  b=KcYHtes9avrkA27FxmBskqP1CAajtqUObEK+T86A2EN7bhIZiqcDj+Iv
+   /FQ+Zl7eFu0aL/NCf4FPv9IJsMG/pSHvEcNpnaPZUBHkhG7ye7CGQpFmT
+   HNEU740zbTws79IFkZdYNkfS4goNN80PAmmkFwaepmIDjJOMZuWvPesog
+   o933GmG+9/iWpx2+MTc8djPU7/7QWNHYbsF51RUxSqLv5fWPSegXoQKui
+   4E41Q//nTrbKknDif1nRH34HZxFSEfYd7+2j9nY7tWYeU4pUEbGIJmD5U
+   0rL8ORX/PPetVQ/9CQsptgB62s+JjFccF0mtQ32c/u3SQwfYF12KmyFxN
+   Q==;
+Received: from unknown (HELO jpmta-ob1.noc.sony.co.jp) ([IPv6:2001:cf8:0:6e7::6])
+  by jpms-ob02.noc.sony.co.jp with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Feb 2026 16:35:24 +0900
+X-IronPort-AV: E=Sophos;i="6.21,311,1763391600"; 
+   d="scan'208";a="616141560"
+Received: from unknown (HELO asagi..) ([43.11.56.84])
+  by jpmta-ob1.noc.sony.co.jp with ESMTP; 26 Feb 2026 16:35:23 +0900
+From: Yohei Kojima <yohei.kojima@sony.com>
+To: Paolo Bonzini <pbonzini@redhat.com>,
+	Shuah Khan <shuah@kernel.org>
+Cc: Yohei Kojima <yohei.kojima@sony.com>,
+	Daniel Palmer <daniel.palmer@sony.com>,
+	Tim Bird <tim.bird@sony.com>,
+	kvm@vger.kernel.org,
+	linux-kselftest@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH 1/2] KVM: selftests: Extract memslot setup code from spawn_vm()
+Date: Thu, 26 Feb 2026 16:37:14 +0900
+Message-ID: <57c05d4d7db845be9250b7a4f6537e98636d70ca.1772090306.git.yohei.kojima@sony.com>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <cover.1772090306.git.yohei.kojima@sony.com>
+References: <cover.1772090306.git.yohei.kojima@sony.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Date: Wed, 25 Feb 2026 23:18:57 -0800
-X-Gm-Features: AaiRm51uhp_e3rB2FjbroD20Md18UNjoNkKYVi3b2D7VPNikPNLP_eyGmYzYmA4
-Message-ID: <CAEvNRgHaDDTW_CFT_91Rqzx=OErmiP1GvtuCYnAs_wNRWb-hZw@mail.gmail.com>
-Subject: Re: [RFC PATCH v1 00/10] guest_memfd: Track amount of memory
- allocated on inode
-To: "David Hildenbrand (Arm)" <david@kernel.org>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
-	linux-fsdevel@vger.kernel.org, kvm@vger.kernel.org, 
-	linux-kselftest@vger.kernel.org
-Cc: akpm@linux-foundation.org, lorenzo.stoakes@oracle.com, 
-	Liam.Howlett@oracle.com, vbabka@suse.cz, rppt@kernel.org, surenb@google.com, 
-	mhocko@suse.com, willy@infradead.org, pbonzini@redhat.com, shuah@kernel.org, 
-	seanjc@google.com, shivankg@amd.com, rick.p.edgecombe@intel.com, 
-	yan.y.zhao@intel.com, rientjes@google.com, fvdl@google.com, 
-	jthoughton@google.com, vannapurve@google.com, pratyush@kernel.org, 
-	pasha.tatashin@soleen.com, kalyazin@amazon.com, tabba@google.com, 
-	michael.roth@amd.com
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
 
-"David Hildenbrand (Arm)" <david@kernel.org> writes:
+Add vm_userspace_mem_region_add_map() function to set up memslot, and
+update spawn_vm() to use it. This helps the test cases to create
+additional memslots easily.
 
-> On 2/25/26 08:31, Ackerley Tng wrote:
->> Ackerley Tng <ackerleytng@google.com> writes:
->>
->>> "David Hildenbrand (Arm)" <david@kernel.org> writes:
->>>
->>>>
->>>> [...snip...]
->>>>
->>>>
->>>> If that avoids having to implement truncation completely ourselves, that might be one
->>>> option we could discuss, yes.
->>>>
->>>> Something like:
->>>>
->>>> diff --git a/Documentation/filesystems/vfs.rst b/Documentation/filesystems/vfs.rst
->>>> index 7c753148af88..94f8bb81f017 100644
->>>> --- a/Documentation/filesystems/vfs.rst
->>>> +++ b/Documentation/filesystems/vfs.rst
->>>> @@ -764,6 +764,7 @@ cache in your filesystem.  The following members are defined:
->>>>                 sector_t (*bmap)(struct address_space *, sector_t);
->>>>                 void (*invalidate_folio) (struct folio *, size_t start, size_t len);
->>>>                 bool (*release_folio)(struct folio *, gfp_t);
->>>> +               void (*remove_folio)(struct folio *folio);
->>>>                 void (*free_folio)(struct folio *);
->>>>                 ssize_t (*direct_IO)(struct kiocb *, struct iov_iter *iter);
->>>>                 int (*migrate_folio)(struct mapping *, struct folio *dst,
->>>> @@ -922,6 +923,11 @@ cache in your filesystem.  The following members are defined:
->>>>         its release_folio will need to ensure this.  Possibly it can
->>>>         clear the uptodate flag if it cannot free private data yet.
->>>>
->>>> +``remove_folio``
->>>> +       remove_folio is called just before the folio is removed from the
->>>> +       page cache in order to allow the cleanup of properties (e.g.,
->>>> +       accounting) that needs the address_space mapping.
->>>> +
->>>>  ``free_folio``
->>>>         free_folio is called once the folio is no longer visible in the
->>>>         page cache in order to allow the cleanup of any private data.
->>>> diff --git a/include/linux/fs.h b/include/linux/fs.h
->>>> index 8b3dd145b25e..f7f6930977a1 100644
->>>> --- a/include/linux/fs.h
->>>> +++ b/include/linux/fs.h
->>>> @@ -422,6 +422,7 @@ struct address_space_operations {
->>>>         sector_t (*bmap)(struct address_space *, sector_t);
->>>>         void (*invalidate_folio) (struct folio *, size_t offset, size_t len);
->>>>         bool (*release_folio)(struct folio *, gfp_t);
->>>> +       void (*remove_folio)(struct folio *folio);
->>>>         void (*free_folio)(struct folio *folio);
->>>>         ssize_t (*direct_IO)(struct kiocb *, struct iov_iter *iter);
->>>>         /*
->>>> diff --git a/mm/filemap.c b/mm/filemap.c
->>>> index 6cd7974d4ada..5a810eaacab2 100644
->>>> --- a/mm/filemap.c
->>>> +++ b/mm/filemap.c
->>>> @@ -250,8 +250,14 @@ void filemap_free_folio(struct address_space *mapping, struct folio *folio)
->>>>  void filemap_remove_folio(struct folio *folio)
->>>>  {
->>>>         struct address_space *mapping = folio->mapping;
->>>> +       void (*remove_folio)(struct folio *);
->>>>
->>>>         BUG_ON(!folio_test_locked(folio));
->>>> +
->>>> +       remove_folio = mapping->a_ops->remove_folio;
->>>> +       if (unlikely(remove_folio))
->>>> +               remove_folio(folio);
->>>> +
->>>>         spin_lock(&mapping->host->i_lock);
->>>>         xa_lock_irq(&mapping->i_pages);
->>>>         __filemap_remove_folio(folio, NULL);
->>>>
->>>
->>> Thanks for this suggestion, I'll try this out and send another revision.
->>>
->>>>
->>>> Ideally we'd perform it under the lock just after clearing folio->mapping, but I guess that
->>>> might be more controversial.
->>>>
->>
->> I'm not sure which lock you were referring to, I hope it's not the
->> inode's i_lock? Why is calling the callback under lock frowned upon?
->
-> I meant the two locks: mapping->host->i_lock and mapping->i_pages.
->
-> I'd assume new callbacks that might result in holding these precious
-> locks longer might be a problem for some people. Well, maybe, maybe not.
->
+Signed-off-by: Yohei Kojima <yohei.kojima@sony.com>
+---
+ .../selftests/kvm/set_memory_region_test.c    | 47 ++++++++++++-------
+ 1 file changed, 29 insertions(+), 18 deletions(-)
 
-The extra time (for guest_memfd, and almost no extra time for other
-filesystems) is on the truncation path, hopefully that isn't a hot path!
+diff --git a/tools/testing/selftests/kvm/set_memory_region_test.c b/tools/testing/selftests/kvm/set_memory_region_test.c
+index 7fe427ff9b38..8d4fd713347c 100644
+--- a/tools/testing/selftests/kvm/set_memory_region_test.c
++++ b/tools/testing/selftests/kvm/set_memory_region_test.c
+@@ -107,31 +107,42 @@ static void wait_for_vcpu(void)
+ 	usleep(100000);
+ }
+ 
++static void vm_userspace_mem_region_add_map(struct kvm_vm *vm,
++		uint64_t addr, uint32_t slot, size_t size, uint32_t flags)
++{
++	uint64_t *hva;
++	uint64_t gpa;
++
++	vm_userspace_mem_region_add(vm, VM_MEM_SRC_ANONYMOUS_THP,
++				    addr, slot,
++				    size / getpagesize(), flags);
++
++	/*
++	 * Allocate and map two pages so that the GPA accessed by guest_code()
++	 * stays valid across the memslot move.
++	 */
++	gpa = vm_phy_pages_alloc(vm, 2, addr, slot);
++	TEST_ASSERT(gpa == addr, "Failed vm_phy_pages_alloc\n");
++
++	virt_map(vm, addr, addr, 2);
++
++	/* Ditto for the host mapping so that both pages can be zeroed. */
++	hva = addr_gpa2hva(vm, MEM_REGION_GPA);
++	memset(hva, 0, 2 * 4096);
++}
++
+ static struct kvm_vm *spawn_vm(struct kvm_vcpu **vcpu, pthread_t *vcpu_thread,
+ 			       void *guest_code)
+ {
+ 	struct kvm_vm *vm;
+-	uint64_t *hva;
+-	uint64_t gpa;
+ 
+ 	vm = vm_create_with_one_vcpu(vcpu, guest_code);
+ 
+-	vm_userspace_mem_region_add(vm, VM_MEM_SRC_ANONYMOUS_THP,
+-				    MEM_REGION_GPA, MEM_REGION_SLOT,
+-				    MEM_REGION_SIZE / getpagesize(), 0);
+-
+-	/*
+-	 * Allocate and map two pages so that the GPA accessed by guest_code()
+-	 * stays valid across the memslot move.
+-	 */
+-	gpa = vm_phy_pages_alloc(vm, 2, MEM_REGION_GPA, MEM_REGION_SLOT);
+-	TEST_ASSERT(gpa == MEM_REGION_GPA, "Failed vm_phy_pages_alloc\n");
+-
+-	virt_map(vm, MEM_REGION_GPA, MEM_REGION_GPA, 2);
+-
+-	/* Ditto for the host mapping so that both pages can be zeroed. */
+-	hva = addr_gpa2hva(vm, MEM_REGION_GPA);
+-	memset(hva, 0, 2 * 4096);
++	vm_userspace_mem_region_add_map(vm,
++					MEM_REGION_GPA,
++					MEM_REGION_SLOT,
++					MEM_REGION_SIZE,
++					0);
+ 
+ 	pthread_create(vcpu_thread, NULL, vcpu_worker, *vcpu);
+ 
+-- 
+2.43.0
 
-> I guess .free_folio() is called outside the lock because it's assumed to
-> possibly do more expensive operations.
->
-
-I thought .free_folio() was called outside of the lock because after the
-folio is removed from the filemap, there should be no more inode/filemap
-related contention, so any cleanup can definitely be done outside the
-inode/filemap locks.
-
-> --
-> Cheers,
->
-> David
