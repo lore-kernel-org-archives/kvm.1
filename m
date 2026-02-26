@@ -1,236 +1,193 @@
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+Received: from pdx-out-015.esa.us-west-2.outbound.mail-perimeter.amazon.com (pdx-out-015.esa.us-west-2.outbound.mail-perimeter.amazon.com [50.112.246.219])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B8C12DE6F8;
-	Thu, 26 Feb 2026 12:49:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E30E73BFE3F
+	for <kvm@vger.kernel.org>; Thu, 26 Feb 2026 13:53:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=50.112.246.219
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772110184; cv=none; b=QuwzlbgvafsSDgXF41cbdtciFgqNFeiRudOPUvZKePaZ16ojDb+ZeC13VB/oWySwyzQtTY7ueVHZey7/neE5QA90IO1CeO8bFVrLYtUypBelU8CYgy1CQLAd556T/JAPLGtf9uItlyj3DRyiqcU0mMmIvoYIaILKUckDmtGu0SA=
+	t=1772114004; cv=none; b=g0mMchRurOfuZ4XayiuiRJsyR9CswK2RExTF2tIaEaCIyg490VSdJgvn6b0RCXX63AulOzuCs5Ny1sWZ42lV+dZaybTb/OofMzrI5kFyNyQFMkqjaDZXV7M9MVZoPwNd6xCN26BNEMFPR1E9D1JvBz4wo37vuPFu02tqjiBke3s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772110184; c=relaxed/simple;
-	bh=ZIqxY6W0ZcZ5iLLFHa1cyFtDYEEWUpbHS4odS/r1WmE=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=PM1eUFaOAJ2ogrvOPgyhY9jjY6Ho/SynXPuLE+ZcmaPL/nQGMvhwTab47mjVi5xrxhgeSrZKLPMao99jmW676wqXkFxlq1MlbLvsJvoYMkGQeUbiwmqLRgJGw/G7HE0ZQ1aM2qMVqvzdQuF9h5tPdJFF9Q8SSS1yMqtPaDwxamU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=OCg6GjXW; arc=none smtp.client-ip=148.163.158.5
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+	s=arc-20240116; t=1772114004; c=relaxed/simple;
+	bh=V/ecV38XRCknm2TsQfiajIIe/T5oTvfftTK0C2cdAKs=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=DngiGvXf4O3ifOTJt8VWKL5DLoV6k5AeDAH1++PE6Nnnbl2tR8NiRl3OcGAiT0MxOzJ1qCk3GLqChpGMFvKvBQymWFyLVsm6N/0d+TSSKHEERgl6cbPUToeD8hk3zBEIrwC61Na/V2Tyh9zGafMwxOd5QD022Zr9B8G1u4wcJlk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com; spf=pass smtp.mailfrom=amazon.co.uk; dkim=pass (2048-bit key) header.d=amazon.com header.i=@amazon.com header.b=OnoUrsKS; arc=none smtp.client-ip=50.112.246.219
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amazon.co.uk
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="OCg6GjXW"
-Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 61Q77ass3207066;
-	Thu, 26 Feb 2026 12:49:38 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=ovunRP
-	X2H9YhBbxfQeE/ZYkdJpTdD9b2gM/uETFqAek=; b=OCg6GjXWtaaT4NvNM9yoC2
-	EO62GRYWKMN9FzCI2+H7Xm0iSpKqhRKjWkunLWHHpv4ZyVZe/TJ68dlBVA2BMBnY
-	Csn8v4SA460LCC7T9SLKR/+L3KNgeWuoRWGhL3u7cx3Cs+4PX0q8dTQ6p0oRNotK
-	80oyW5vGmWehCHfj7HW8PCDvP1UGQkRT+uOzRMFrgHoY+MptKImXXwdsoO/v3OV9
-	1XPqvmGSR1n3G8oLkXgXaZDCui0v4aW9gQ+a6UHjjDoFHDZpU/O/3wcxgF/lvBnP
-	Pdr6K+CCg7XF9h1ZGYyXFkXpHYQRB5jD3zmNW8VevUUxO4DkW0tMO6XVjezeWR4w
-	==
-Received: from ppma12.dal12v.mail.ibm.com (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4cf24gnrhv-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 26 Feb 2026 12:49:37 +0000 (GMT)
-Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma12.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 61Q9p2AC015970;
-	Thu, 26 Feb 2026 12:49:37 GMT
-Received: from smtprelay04.fra02v.mail.ibm.com ([9.218.2.228])
-	by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 4cfq1sugrv-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 26 Feb 2026 12:49:37 +0000
-Received: from smtpav02.fra02v.mail.ibm.com (smtpav02.fra02v.mail.ibm.com [10.20.54.101])
-	by smtprelay04.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 61QCnXgZ14942696
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 26 Feb 2026 12:49:33 GMT
-Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 424B620040;
-	Thu, 26 Feb 2026 12:49:33 +0000 (GMT)
-Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 0882520043;
-	Thu, 26 Feb 2026 12:49:33 +0000 (GMT)
-Received: from [9.52.198.32] (unknown [9.52.198.32])
-	by smtpav02.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Thu, 26 Feb 2026 12:49:32 +0000 (GMT)
-From: Christoph Schlameuss <schlameuss@linux.ibm.com>
-Date: Thu, 26 Feb 2026 13:49:07 +0100
-Subject: [PATCH v2 4/4] KVM: s390: vsie: Implement ASTFLEIE facility 2
+	dkim=pass (2048-bit key) header.d=amazon.com header.i=@amazon.com header.b="OnoUrsKS"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+  d=amazon.com; i=@amazon.com; q=dns/txt; s=amazoncorp2;
+  t=1772113998; x=1803649998;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=/QNB2dXPqy1YPmXhJW3qMGsbKw/SnbTXx4Vhs6ewyzo=;
+  b=OnoUrsKS/Jrsoq7C64lQUxdAnCFDcRCD1l/tI9behDPA2JdIB3WUEFsS
+   5Xjc5gE3ZsXRLhSgQN2W+/o4dFg4ns5//aHHqc3s5TRDc3R9jTydtFcvW
+   47TDL9exiQn+Mqac9wzP5lPka/u3tYVgyFj4e4rMWr/H+ChShUt/Ok96G
+   rqkZZHrbHxeuQinu4yZifdqmBZxf4Mb87mUn69Gf2SGIFFel4rT6CYVP6
+   MLDAlYPn+1JhLYcvabZptCjuFPDXjj3vrnU+If7MIsr5XWSh9yMRXutLW
+   KsxrIi2nCiq1d5Rdd9pKuKfsPgyeXomvgHyR8PduhJhCdTSFKl5vGB05U
+   Q==;
+X-CSE-ConnectionGUID: gA4+wClBSvi74HwIk7T++Q==
+X-CSE-MsgGUID: zloy7dDlTz2Omu8WZuNXJA==
+X-IronPort-AV: E=Sophos;i="6.21,312,1763424000"; 
+   d="scan'208";a="13683928"
+Received: from ip-10-5-12-219.us-west-2.compute.internal (HELO smtpout.naws.us-west-2.prod.farcaster.email.amazon.dev) ([10.5.12.219])
+  by internal-pdx-out-015.esa.us-west-2.outbound.mail-perimeter.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Feb 2026 13:53:16 +0000
+Received: from EX19MTAUWA001.ant.amazon.com [205.251.233.182:27455]
+ by smtpin.naws.us-west-2.prod.farcaster.email.amazon.dev [10.0.6.153:2525] with esmtp (Farcaster)
+ id 684e611e-85c1-4f92-8d54-dd10cbc0505a; Thu, 26 Feb 2026 13:53:16 +0000 (UTC)
+X-Farcaster-Flow-ID: 684e611e-85c1-4f92-8d54-dd10cbc0505a
+Received: from EX19D001UWA001.ant.amazon.com (10.13.138.214) by
+ EX19MTAUWA001.ant.amazon.com (10.250.64.218) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.37;
+ Thu, 26 Feb 2026 13:53:14 +0000
+Received: from dev-dsk-itazur-1b-11e7fc0f.eu-west-1.amazon.com (172.19.66.53)
+ by EX19D001UWA001.ant.amazon.com (10.13.138.214) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.37;
+ Thu, 26 Feb 2026 13:53:12 +0000
+From: Takahiro Itazuri <itazur@amazon.com>
+To: <kvm@vger.kernel.org>, Sean Christopherson <seanjc@google.com>, "Paolo
+ Bonzini" <pbonzini@redhat.com>
+CC: Vitaly Kuznetsov <vkuznets@redhat.com>, Fuad Tabba <tabba@google.com>,
+	Brendan Jackman <jackmanb@google.com>, David Hildenbrand <david@kernel.org>,
+	David Woodhouse <dwmw2@infradead.org>, Paul Durrant <pdurrant@amazon.com>,
+	Nikita Kalyazin <kalyazin@amazon.com>, Patrick Roy
+	<patrick.roy@campus.lmu.de>, Takahiro Itazuri <zulinx86@gmail.com>
+Subject: [RFC PATCH v2 0/7] KVM: pfncache: Add guest_memfd support to pfncache
+Date: Thu, 26 Feb 2026 13:53:01 +0000
+Message-ID: <20260226135309.29493-1-itazur@amazon.com>
+X-Mailer: git-send-email 2.47.3
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260226-vsie-alter-stfle-fac-v2-4-914974cb922c@linux.ibm.com>
-References: <20260226-vsie-alter-stfle-fac-v2-0-914974cb922c@linux.ibm.com>
-In-Reply-To: <20260226-vsie-alter-stfle-fac-v2-0-914974cb922c@linux.ibm.com>
-To: linux-s390@vger.kernel.org
-Cc: David Hildenbrand <david@kernel.org>,
-        Christian Borntraeger <borntraeger@linux.ibm.com>,
-        Janosch Frank <frankja@linux.ibm.com>,
-        Claudio Imbrenda <imbrenda@linux.ibm.com>,
-        Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>,
-        Alexander Gordeev <agordeev@linux.ibm.com>,
-        Sven Schnelle <svens@linux.ibm.com>,
-        Hendrik Brueckner <brueckner@linux.ibm.com>,
-        Nina Schoetterl-Glausch <nsg@linux.ibm.com>, kvm@vger.kernel.org,
-        linux-kernel@vger.kernel.org,
-        Christoph Schlameuss <schlameuss@linux.ibm.com>
-X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=4464;
- i=schlameuss@linux.ibm.com; h=from:subject:message-id;
- bh=9LmIGZVQ/QH/YcfnPYrtIP32NlrCLnbTxCM6e03UlPY=;
- b=owGbwMvMwCUmoqVx+bqN+mXG02pJDJkLHKPtM5r2ZlhsDGU04Vti0lFUWHnTxU/vZdrdP99iF
- p9TWi7XUcrCIMbFICumyFItbp1X1de6dM5By2swc1iZQIYwcHEKwETk+Rj+h9z6/0Al9knhjjr2
- Y60ab2KdHSf+ORJWtlfw9Wz9hMW/lBn+iptKz01QffNc/mrHhOoja/n3l33If3w2asX6qIZHM/c
- fYAcA
-X-Developer-Key: i=schlameuss@linux.ibm.com; a=openpgp;
- fpr=0E34A68642574B2253AF4D31EEED6AB388551EC3
-X-TM-AS-GCONF: 00
-X-Authority-Analysis: v=2.4 cv=TNRIilla c=1 sm=1 tr=0 ts=69a04161 cx=c_pps
- a=bLidbwmWQ0KltjZqbj+ezA==:117 a=bLidbwmWQ0KltjZqbj+ezA==:17
- a=IkcTkHD0fZMA:10 a=HzLeVaNsDn8A:10 a=VkNPw1HP01LnGYTKEx00:22
- a=Mpw57Om8IfrbqaoTuvik:22 a=GgsMoib0sEa3-_RKJdDe:22 a=VnNF1IyMAAAA:8
- a=F8FVqei25e47uhyEDlAA:9 a=QEXdDO2ut3YA:10
-X-Proofpoint-GUID: X1isxHoUPp8n2WTyDgOIaXy_grlxIYyM
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMjI2MDExNCBTYWx0ZWRfX8xzyRuhsf+iQ
- DNLR1RLsn/Nb2hMPkoXkSc5R90YsdkG0F1PCFLGsdOsmV4xdnvLYSxEN4gXuGuqPCeWuoCn/GRY
- uRj4xpRlWjhUoUH48DqB9FnMyYeCUuzbsHeXE5hrD11Y5gznQ9AOt0g5vjZJ6cfk++qqqSvHrfB
- cYKV457Qq2rZayEJ1O25eQ+g291hM6pUv+Z6KkoiWdmZt9bOjt67h8HBt/+uKoLt7ymzvN6/SQa
- LYS7Vt9M56mlJ83Jay+YQGOMgND/O0anJFno4ydGzLwKzEP2yCLxHbGIZuEmV4GDXAR1U4QT7zw
- +j5uDI8c5OstYvWb+ys5f4tYcfuhL6SeqPy9i9pjIP3hUSvjetv48lzTx1xNRVvdj+0oAMqyeEa
- e6xPqXHOiZzAdeLQqiOm1FPU7uEzWdBX/8r4/VIMHuXJuDzz6mOzJfrjCSmE8Bb0OYGTXJeQsky
- DhnwZM1dRVqcQG701yQ==
-X-Proofpoint-ORIG-GUID: X1isxHoUPp8n2WTyDgOIaXy_grlxIYyM
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.51,FMLib:17.12.100.49
- definitions=2026-02-25_04,2026-02-26_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- malwarescore=0 suspectscore=0 adultscore=0 priorityscore=1501 impostorscore=0
- spamscore=0 clxscore=1015 bulkscore=0 lowpriorityscore=0 phishscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2601150000 definitions=main-2602260114
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain
+X-ClientProxiedBy: EX19D031UWA001.ant.amazon.com (10.13.139.88) To
+ EX19D001UWA001.ant.amazon.com (10.13.138.214)
 
-From: Nina Schoetterl-Glausch <nsg@linux.ibm.com>
+[ based on v6.18 with [1] ]
 
-Implement shadowing of format-2 facility list when running in VSIE.
+This patch series is a follow-up to RFC v1.  (This is still labelled RFC
+since its dependency [1]  has not yet been merged.)
 
-ASTFLEIE2 is available since IBM z16.
-To function G1 has to run this KVM code and G1 and G2 have to run QEMU
-with ASTFLEIE2 support.
+=3D=3D=3D Problem Statement =3D=3D=3D
 
-Signed-off-by: Nina Schoetterl-Glausch <nsg@linux.ibm.com>
-Co-developed-by: Christoph Schlameuss <schlameuss@linux.ibm.com>
-Signed-off-by: Christoph Schlameuss <schlameuss@linux.ibm.com>
----
- arch/s390/include/asm/kvm_host.h |  7 +++++++
- arch/s390/kvm/kvm-s390.c         |  2 ++
- arch/s390/kvm/vsie.c             | 34 ++++++++++++++++++++++++++++++----
- 3 files changed, 39 insertions(+), 4 deletions(-)
+gfn_to_pfn_cache (a.k.a. pfncache) does not work with guest_memfd.  As
+of today, pfncaches resolve PFNs via hva_to_pfn(), which requires a
+userspace mapping and relies on GUP.  This does not work for guest_memfd
+in the following two ways:
 
-diff --git a/arch/s390/include/asm/kvm_host.h b/arch/s390/include/asm/kvm_host.h
-index 23d17700319a5ef2031eabcad34b6191d1ef9b21..89a797e436336b9671119d93b02f3b39b0ed45e6 100644
---- a/arch/s390/include/asm/kvm_host.h
-+++ b/arch/s390/include/asm/kvm_host.h
-@@ -506,6 +506,13 @@ struct kvm_s390_cpu_model {
- 	struct kvm_s390_vm_cpu_uv_feat uv_feat_guest;
- };
- 
-+#define S390_ARCH_FAC_FORMAT_2 2
-+struct kvm_s390_f2_flcb {
-+	u8	reserved0[7];
-+	u8	length;
-+	u64	facilities[S390_ARCH_FAC_LIST_SIZE_U64];
-+};
-+
- typedef int (*crypto_hook)(struct kvm_vcpu *vcpu);
- 
- struct kvm_s390_crypto {
-diff --git a/arch/s390/kvm/kvm-s390.c b/arch/s390/kvm/kvm-s390.c
-index 1a4abac697a40079c4dd6566581aaed321871a1f..ff9edc7d265b3b5babb265d47ea36464f684a040 100644
---- a/arch/s390/kvm/kvm-s390.c
-+++ b/arch/s390/kvm/kvm-s390.c
-@@ -460,6 +460,8 @@ static void __init kvm_s390_cpu_feat_init(void)
- 		allow_cpu_feat(KVM_S390_VM_CPU_FEAT_IBS);
- 	if (sclp.has_kss)
- 		allow_cpu_feat(KVM_S390_VM_CPU_FEAT_KSS);
-+	if (sclp.has_astfleie2)
-+		allow_cpu_feat(KVM_S390_VM_CPU_FEAT_ASTFLEIE2);
- 	/*
- 	 * KVM_S390_VM_CPU_FEAT_SKEY: Wrong shadow of PTE.I bits will make
- 	 * all skey handling functions read/set the skey from the PGSTE
-diff --git a/arch/s390/kvm/vsie.c b/arch/s390/kvm/vsie.c
-index 3a2c644ef4fc630e2a13475fc1600c8053520bcd..bae96ff4a7c7b6e8ea2906007ce6fc9a386e0038 100644
---- a/arch/s390/kvm/vsie.c
-+++ b/arch/s390/kvm/vsie.c
-@@ -65,9 +65,9 @@ struct vsie_page {
- 	gpa_t scb_gpa;				/* 0x0258 */
- 	/* the shadow gmap in use by the vsie_page */
- 	struct gmap_cache gmap_cache;		/* 0x0260 */
--	__u8 reserved[0x0700 - 0x0278];		/* 0x0278 */
--	struct kvm_s390_crypto_cb crycb;	/* 0x0700 */
--	__u8 fac[S390_ARCH_FAC_LIST_SIZE_BYTE];	/* 0x0800 */
-+	__u8 reserved[0x06f8 - 0x0278];		/* 0x0278 */
-+	struct kvm_s390_crypto_cb crycb;	/* 0x06f8 */
-+	__u8 fac[8 + S390_ARCH_FAC_LIST_SIZE_BYTE];/* 0x0800 */
- };
- 
- static_assert(sizeof(struct vsie_page) == PAGE_SIZE);
-@@ -999,6 +999,28 @@ static int handle_stfle_0(struct kvm_vcpu *vcpu, struct vsie_page *vsie_page,
- 	return 0;
- }
- 
-+static int handle_stfle_2(struct kvm_vcpu *vcpu, struct vsie_page *vsie_page, u32 fac_list_origin)
-+{
-+	struct kvm_s390_f2_flcb *flcb_s = (struct kvm_s390_f2_flcb *)vsie_page->fac;
-+	struct kvm_s390_sie_block *scb_s = &vsie_page->scb_s;
-+	u64 len;
-+
-+	if (read_guest_real(vcpu, fac_list_origin, &len, sizeof(len)))
-+		return set_validity_icpt(scb_s, 0x1090U);
-+
-+	/* discard reserved bits */
-+	len = (len & U8_MAX);
-+	flcb_s->length = len;
-+	len += 1;
-+
-+	if (read_guest_real(vcpu, fac_list_origin + offsetof(struct kvm_s390_f2_flcb, facilities),
-+			    &flcb_s->facilities, len * sizeof(u64)))
-+		return set_validity_icpt(scb_s, 0x1090U);
-+
-+	scb_s->fac = (u32)virt_to_phys(&vsie_page->fac) | S390_ARCH_FAC_FORMAT_2;
-+	return 0;
-+}
-+
- /*
-  * Try to shadow + enable the guest 2 provided facility list.
-  * Retry instruction execution if enabled for and provided by guest 2.
-@@ -1013,6 +1035,8 @@ static int handle_stfle(struct kvm_vcpu *vcpu, struct vsie_page *vsie_page)
- 	int format_mask, format;
- 	u32 origin;
- 
-+	/* assert no overflow with maximum len */
-+	BUILD_BUG_ON(sizeof(vsie_page->fac) < ((S390_ARCH_FAC_LIST_SIZE_U64 + 1) * sizeof(u64)));
- 	BUILD_BUG_ON(!IS_ALIGNED(offsetof(struct vsie_page, fac), 8));
- 
- 	if (fac && test_kvm_facility(vcpu->kvm, 7)) {
-@@ -1028,9 +1052,11 @@ static int handle_stfle(struct kvm_vcpu *vcpu, struct vsie_page *vsie_page)
- 		case 0:
- 			return handle_stfle_0(vcpu, vsie_page, origin);
- 		case 1:
-+			return set_validity_icpt(&vsie_page->scb_s, 0x1330U);
- 		case 2:
-+			return handle_stfle_2(vcpu, vsie_page, origin);
- 		case 3:
--			unreachable();
-+			return set_validity_icpt(&vsie_page->scb_s, 0x1330U);
- 		}
- 	}
- 	return 0;
+  * guest_memfd created with GUEST_MEMFD_FLAP_MMAP does not have a
+    userspace mapping due to the nature of private memory.
 
--- 
-2.53.0
+  * guest_memfd created with GUEST_MEMFD_FLAG_NO_DIRECT_MAP uses an
+    AS_NO_DIRECT_MAP mapping, which is rejected by GUP.
+
+In addition, pfncaches map RAM pages via kmap(), which typically returns
+an address derived from the direct map.  So kmap() cannot be used for
+NO_DIRECT_MAP guest_memfd.  pfncaches require fault-free KHVAs since
+they can be used from atomic context.  Thus, it cannot fall back to
+access via a userspace mapping like KVM does for other accesses to
+NO_DIRECT_MAP guest_memfd.
+
+The introduction of guest_memfd support necessitates additional
+invalidation paths in addition to the existing MMU notifier path: one
+from guest_memfd invalidation and another from memory attribute updates.
+
+=3D=3D=3D Core Approach =3D=3D=3D
+
+The core part keeps the original approach in RFC v1:
+
+  * Resolve PFNs for guest_memfd-backed GPAs via kvm_gmem_get_pfn()
+
+  * Obtain a fault-free KHVA for NO_DIRECT_MAP pages via vmap()
+
+=3D=3D=3D Changes since RFC v1 =3D=3D=3D
+
+  * Hook pfncache invalidation into guest_memfd invalidation (punch hole
+    / release / error handling) as well as into memory attribute updates
+    (switch between shared and private memories).
+
+=3D=3D=3D  Design Considerations (Feedback Appreciated) =3D=3D=3D
+
+To implement the above change, this series tries to reuse as much of the
+existing invalidation and retry infrastructure as possible.  The
+following points are potential design trade-offs where feedback is
+especially welcome:
+
+  * Generalize and reuse the existing mn_active_invalidate_count
+    (renamed to active_invalidate_count).  This allows reusing the
+    existing pfncache retry logic as-is and enables invalidating
+    pfncaches without holding mmu_lock from guest_memfd invalidation
+    context.  As a side effect, active memslots swap is blocked while
+    active_invalidate_count > 0.  To avoid this block, it would be
+    possible to introduce a dedicated gmem_active_invalidate_count in
+    struct kvm instead.
+
+  * Although both guest_memfd invalidation and memory attribute update
+    are driven by GFN ranges, pfncache invalidation is performed using
+    HVA ranges and reuses the existing function.  This is because
+    GPA-based pfncaches translate GPA->UHVA->PFN and therefore have
+    memslot/GPA info, whereas HVA-based pfncaches resolve PFN directly
+    from UHVA and do not store memslot/GPA info.  Using GFN-based
+    invalidation would therefore miss HVA-based pfncaches.  Technically,
+    it would be possible to refactor HVA-based pfncaches to search for
+    and retain the corresponding memslot/GPA at activation / refresh
+    time instead of at invalidation time.
+
+  * pfncaches are not dynamically allocated but are statically allocated
+    on a per-VM and per-vCPU basis.  For a normal VM (i.e. non-Xen),
+    there is one pfncache per vCPU.  For a Xen VM, there is one per-VM
+    pfncache and five per-vCPU pfncaches.  Given the maximum of 1024
+    vCPUs, a normal VM can have up to 1024 pfncaches, consuming 4 MB of
+    virtual address space.  A Xen VM can have up to 5121 pfncaches,
+    consuming approximately 20 MB of virtual address space.  Although
+    the vmalloc area is limited on 32-bit systems, it should be large
+    enough and typically tens of TB on 64-bit systems (e.g. 32 TB for
+    4-level paging and 12800 TB for 5-level paging on x86_64).  If
+    virtual address space exhaustion became a concern, migration to
+    mm-local region (forthcoming mermap?) could be considered in the
+    future.  Note that vmap() only creates virtual mappings to existing
+    pages; they do not allocate new physical pages.
+
+  * With this patch series, HVA-based pfncaches always resolve PFNs
+    via hva_to_pfn(), and thus activation for NO_DIRECT_MAP guest_memfd
+    fails.  It is technically possible to support this scenario, but it
+    would require searching the corresponding memslot and GPA from the
+    given UHVA in order to determine whether it is backed by
+    guest_memfd.  Doing so would add overhead to the HVA-based pfncache
+    activation / refresh paths, to a greater or lesser extent,
+    regardless of guest_memfd-backed or not.  At the time of writing,
+    only Xen uses HVA-based pfncaches.
+
+RFC v1: https://lore.kernel.org/all/20251203144159.6131-1-itazur@amazon.com/
+
+[1]: https://lore.kernel.org/all/20260126164445.11867-1-kalyazin@amazon.com/
+
+Takahiro Itazuri (7):
+  KVM: x86: Avoid silent kvm-clock activation failures
+  KVM: pfncache: Resolve PFNs via kvm_gmem_get_pfn() for gmem-backed GPAs
+  KVM: pfncache: Obtain KHVA via vmap() for gmem with NO_DIRECT_MAP
+  KVM: Rename invalidate_begin to invalidate_start for consistency
+  KVM: pfncache: Rename invalidate_start() helper
+  KVM: Rename mn_* invalidate-related fields to generic ones
+  KVM: pfncache: Invalidate on gmem invalidation and memattr updates
+
+ Documentation/virt/kvm/locking.rst |   8 +--
+ arch/x86/kvm/mmu/mmu.c             |   2 +-
+ arch/x86/kvm/x86.c                 |  18 ++---
+ include/linux/kvm_host.h           |  13 ++--
+ include/linux/mmu_notifier.h       |   4 +-
+ virt/kvm/guest_memfd.c             |  64 +++++++++++++++--
+ virt/kvm/kvm_main.c                |  99 +++++++++++++++++++-------
+ virt/kvm/kvm_mm.h                  |  12 ++--
+ virt/kvm/pfncache.c                | 110 ++++++++++++++++++++---------
+ 9 files changed, 235 insertions(+), 95 deletions(-)
+
+--=20
+2.50.1
 
