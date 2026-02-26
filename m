@@ -1,218 +1,321 @@
-Received: from www3579.sakura.ne.jp (www3579.sakura.ne.jp [49.212.243.89])
+Received: from PH8PR06CU001.outbound.protection.outlook.com (mail-westus3azon11012057.outbound.protection.outlook.com [40.107.209.57])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 846263DA7C3;
-	Thu, 26 Feb 2026 14:53:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=49.212.243.89
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772117621; cv=none; b=hu+Dv0h+WDhhY3vzk8OaZeRQ0bbQAM8zs6OIV3O9o3EqpZdEccT3WW7AnI5apoLNcBVduSZHH3RbXGpQ9zRmpFTbWIE9XNhXoKd90I6t6MzT54ZrJt4VZifoOrCe/zBbSGKcpnkAN4mMyDXhSHiQA4wX10S/28XaQB7nQibAFG4=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772117621; c=relaxed/simple;
-	bh=FXfqsAF5PRH26O8N70kDI+3KThd+V1nxBXQXGcLCcrY=;
-	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
-	 In-Reply-To:Content-Type; b=n89oLDPeDur24TKl7STz5zQvo9J/36mWwhDmUvpn5rFiZd7+iyb+H7+Rx8+Z34ot/n7qM2ijcfbgKm5HwL/cxY2yxalbdO6Illy4AG5FdkfABBznjEjXKgypOLeKOCModZw53zXT7oSXM6YY5/AyxmsN7fqRtMYeDGk/a9TxInI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rsg.ci.i.u-tokyo.ac.jp; spf=pass smtp.mailfrom=rsg.ci.i.u-tokyo.ac.jp; dkim=fail (0-bit key) header.d=rsg.ci.i.u-tokyo.ac.jp header.i=@rsg.ci.i.u-tokyo.ac.jp header.b=O0e558B3 reason="key not found in DNS"; arc=none smtp.client-ip=49.212.243.89
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rsg.ci.i.u-tokyo.ac.jp
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rsg.ci.i.u-tokyo.ac.jp
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA601374166;
+	Thu, 26 Feb 2026 14:55:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.209.57
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1772117745; cv=fail; b=nu8hYyjz+hXxYpkI5lJdJ22/Xr/2RIWyZi3NEYV5dqCXOq0cluw9vi5KnJmVLErqShDB5+yn4mv4NCJvvyGB4iQMJJ6vlh7YxbRKoGqW0gZ1HsSOCuvBLUkj+IqYcKijDKCGg2zv/BD5mBXr0qnoZ2vvCMxZW9ij0Wg8mXGYB+Y=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1772117745; c=relaxed/simple;
+	bh=a9WMdDK4soJIUE/9w6irJhyUqThIu/Lh4oDrZfCxEMY=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=mHSJ46SAf0+niBohPvSrtIGZOFRbpxLTdbANfpOKpVVNPc0KYDcP6gNzhBkqQAumFT2RnNWbqv2ZCYRVVblLhiRfSvVVKnKFcDKx5hvhIFdYghrfRZv0Ow22xB1cNZTODPmJf+jfzEL8/xuNsrF2e7+h7W5fRAtl6ozF7ac5rT0=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=jOi/ppEe; arc=fail smtp.client-ip=40.107.209.57
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="key not found in DNS" (0-bit key) header.d=rsg.ci.i.u-tokyo.ac.jp header.i=@rsg.ci.i.u-tokyo.ac.jp header.b="O0e558B3"
-Received: from [192.168.10.111] (p865013-ipoe.ipoe.ocn.ne.jp [153.242.222.12])
-	(authenticated bits=0)
-	by www3579.sakura.ne.jp (8.16.1/8.16.1) with ESMTPSA id 61QElsGn068080
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NO);
-	Thu, 26 Feb 2026 23:47:59 +0900 (JST)
-	(envelope-from odaki@rsg.ci.i.u-tokyo.ac.jp)
-DKIM-Signature: a=rsa-sha256; bh=cStohuBeyAJqBHNqMSHkFL9km00palixDSHGcKIHiUU=;
-        c=relaxed/relaxed; d=rsg.ci.i.u-tokyo.ac.jp;
-        h=From:Message-ID:To:Subject:Date;
-        s=rs20250326; t=1772117280; v=1;
-        b=O0e558B30Bbqk4IAi9+ee1np2GsjTDtoU6rJg8vGudlHF03MY4pwZ7YoY0VViA5J
-         /agupfL+eGC+jVenFzh4dX5iFRCDJ0ohKWPy3apT2qsbaGihaZIKwqiLP8AaGI2O
-         8knDPqYYHBFmv56E1U7mBDZu4upBwZPNtX7q4JwnUU8LgjlZLAPc7CFrBEc2mOaT
-         wcEo/w1gQTvSJj/tUqiM5vKRO4QRxMT17zXl1YuKJG/dupasiVrsU+12ewfZv65k
-         jaXWK4KrpKw0EKYs7CK/Vy8GRYvK9tuPAwW2GiQzV+OIgPsNZIgfVL20OEx0VueU
-         nZCAXvyz8s/YQEAeGpqaCA==
-Message-ID: <b81cbeb7-6541-4a1f-b08e-2b5c9ee66b69@rsg.ci.i.u-tokyo.ac.jp>
-Date: Thu, 26 Feb 2026 23:47:54 +0900
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="jOi/ppEe"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=G6Ju0hRjpBt/oEf/NA/rhfDYeyLx+d+EqAzMXbiKZrMA6wVXSQWuky3p+sjbe5tsymLM8Z4DAe95QK0O6gHO5zaXIPtmzM2tiNg9bca2fB7ISFBPwJUDQEcpKvpehPurqGc/gJtTKzDkidkUGeVjPzw4OdqduZwh5nrx3e4OKWFqkLjW25X7Q76AjxNkRcbjn3q53V1NutAfUvzHXp6SuSdmISKfWjkC4VUmJOYhgxj6QQhNnMAZSEsEU9++/glk7DxfuC+1GO1izogjWbKTrPiTmyJboytyALFtrcNx2gCzTky16G5If/MUZsdi9nuaEtoJc5jQVodLSqmWA+H6yQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=e4AkYfraqlQC//6Kd5/qAWAgjxpimUK1n0P+/Ih4glo=;
+ b=iqnkeInj+/1mTiKEG0P+up8n9gj149g1WFPrUWItZiuFnKlgaXf4k3DXzNV1BjQ194X92/Li4INiUxhfWf11B32matlPHMqw6HHebykg6e0MkIFIEbKdbhbnNjbkruGRBZQ5scNNqrDz+Es8UU7mfu629eRQbFaJ8TmIyBJRUDx/0RQ3UVC6Rv+K8bGN/Y2BOHeeo7fW0gww0MUOB2jx8lzR9gzCH8jQyZLmJG2KDhjmbRvoB+BShRz4boSELiZ+7HBxquecSO132fW+yoknN78+5rfhbEfviDucqfzGAuu2yg1nMNZgRVctbtzm5NK+ZDEWeGb3kX3PxlZtx7Ck4w==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=e4AkYfraqlQC//6Kd5/qAWAgjxpimUK1n0P+/Ih4glo=;
+ b=jOi/ppEe/I2xHK8otV+E2UsxldfQOShekiSBV2XfAIwxlIML0xMns9lDnh+BND9hPvrDbIYrs4P1Dhq0GbAgCyWZTPi28FMT9gk+D6qZzjNcvihR7jWZIHa5KUzWAZYExUZ3B7hQ802DFEUwEbkZqcwsvHAFac2q9LhV338/rWW5Z8rYzPUeJZkQqwO4S/z0UCihriQYViuFUF7BnvvMw+dK+W5Yu1N+xaKaMFLwETjC6zhbqrB6A6jCdaZZJ+UkaD+9MVtpYVJ+ya5rql6HvDTDVLkifhWdDZNs8afmcUCImJPAmXSsc4vfK3/0dFbE1epiRH+RYlkEeN3PBhBSEA==
+Received: from CH3PR12MB7548.namprd12.prod.outlook.com (2603:10b6:610:144::12)
+ by CY5PR12MB6372.namprd12.prod.outlook.com (2603:10b6:930:e::5) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9632.23; Thu, 26 Feb
+ 2026 14:55:37 +0000
+Received: from CH3PR12MB7548.namprd12.prod.outlook.com
+ ([fe80::b710:d6a1:ab16:76de]) by CH3PR12MB7548.namprd12.prod.outlook.com
+ ([fe80::b710:d6a1:ab16:76de%5]) with mapi id 15.20.9654.007; Thu, 26 Feb 2026
+ 14:55:37 +0000
+From: Shameer Kolothum Thodi <skolothumtho@nvidia.com>
+To: Ankit Agrawal <ankita@nvidia.com>, Vikram Sethi <vsethi@nvidia.com>, Jason
+ Gunthorpe <jgg@nvidia.com>, Matt Ochs <mochs@nvidia.com>, "jgg@ziepe.ca"
+	<jgg@ziepe.ca>, "alex@shazbot.org" <alex@shazbot.org>
+CC: Neo Jia <cjia@nvidia.com>, Zhi Wang <zhiw@nvidia.com>, Krishnakant Jaju
+	<kjaju@nvidia.com>, Yishai Hadas <yishaih@nvidia.com>, "kevin.tian@intel.com"
+	<kevin.tian@intel.com>, "kvm@vger.kernel.org" <kvm@vger.kernel.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Subject: RE: [PATCH RFC v2 03/15] vfio/nvgrace-gpu: track GPUs associated with
+ the EGM regions
+Thread-Topic: [PATCH RFC v2 03/15] vfio/nvgrace-gpu: track GPUs associated
+ with the EGM regions
+Thread-Index: AQHcpN0G7hlCgK1VJ0ykiA7gpchG17WVEHyw
+Date: Thu, 26 Feb 2026 14:55:37 +0000
+Message-ID:
+ <CH3PR12MB75483F6074324471868CC05EAB72A@CH3PR12MB7548.namprd12.prod.outlook.com>
+References: <20260223155514.152435-1-ankita@nvidia.com>
+ <20260223155514.152435-4-ankita@nvidia.com>
+In-Reply-To: <20260223155514.152435-4-ankita@nvidia.com>
+Accept-Language: en-US, en-GB
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: CH3PR12MB7548:EE_|CY5PR12MB6372:EE_
+x-ms-office365-filtering-correlation-id: 6ebc75af-87c7-47bb-2035-08de75471a37
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam:
+ BCL:0;ARA:13230040|1800799024|366016|376014|38070700021|7053199007;
+x-microsoft-antispam-message-info:
+ fU9t5iK7w3K9UXeuEvArJt8Enth1PLIeN7fUbIbwj1Euh4eyLj10yf2O6TtbtqzG8EpI3P5wBDXyrp7oYQdIiuCm3w/ZaDLq94wwsQi9WKQ9ASJHbaT1aLPPlfLTOwppcXcNiCMjoWqS/32fMJabgZZJztGCEezNojnpvIf52stzi8W/bBMLXykvwD9CR9ue3UBsAbbJ75DgUFv1nnRA1mKYNahaRl4BAxnzVMk2H4sU8dj2KWbZxCfSf3/bHRcOU2nYB2ElvpSY+Dqj5rSZRu1qhUJsho83sUwIPJolMOoWHMJ05LsSl83q3mWbrDPdM4+vxAGkE3l0qA4/f5pbKG+WCqZ924h/DBe1mlUptL+ZMH76ZMYGhXMlxcDv9Qjl4CV8KMTIXrGi5S5BJAC/tQR3zZvM0EDpw1on+sdbfr6uY9LYMCWLFyEpvtSBmUGj+2gs1rbgF9W0Fpe1Hez++H7HbtxBnut/BLRtvRq1CqGOkOMFxq0M9M+NCwzrKG2FpbGnRJDQBFpAx36BE1ftnGjjmT0ELasRidIrmkZSdcWvuD1nKiWlr7MiBcwL1qGymqjN+svQXLYVO3MAe4ZiX9ly4MPg2/Fj6IjrVGKi0efU89GKJEcP+RJIPT2XmWg/06Ap+i0B6s1nGA1dOF4MyxZ+svE8hyPnnatatjBOlrnS9zVwIQl9oP7+UmxTzi5BrVAeJPj0GpILyFZDqe8jSR12SpEzmbZhX+1VzaorRdMQJP4x/naXZplQusDh+IYWe9lwXG3sHb5NnS/R/nEPyy1s2fsBn2UbCFZOII2QdS8=
+x-forefront-antispam-report:
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH3PR12MB7548.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(376014)(38070700021)(7053199007);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0:
+ =?us-ascii?Q?/N6MazB2blFCP1wLafqiJwki6T2QbBTCqYrS61ZNaLcK5ll0zO02G9ich2EK?=
+ =?us-ascii?Q?F/Ktv/ASFulupAQ+263su24iQvr+He13yxSOGjgUNYhxPMiSICFxo/4aOqNN?=
+ =?us-ascii?Q?dgSgOqkpfR66ZRAVWExMeaL13vsfiuRvPY5nHJoU9Kqhc4P0cU3TQfnsdkZM?=
+ =?us-ascii?Q?V2mvmorb1WSMPV05jM7XPNwXX5AosHQWbV6Fwy/JTOjH91KVQoN0i7d4sTw0?=
+ =?us-ascii?Q?MTPgtamDJqsVGuO9er+Lo2ihKIxgAAaMUr3E4x36rcBbE8KdYXskMw6mF6rR?=
+ =?us-ascii?Q?PpmZnXuTjevL/gd1/fBdXfnw6bPABpabbTIe1B7iL9DmxPWO2Gp1mQK23dDS?=
+ =?us-ascii?Q?HwkHoFStaNcAsLpU0fWk6LptnsCXRBzloVzKiJXhcEDwOhKmaFJYqzfbQJpp?=
+ =?us-ascii?Q?sTbIVCaPdwrpcEJr7+uYpWcvDp61O6nu0+gNRDA2oTYaCWWINA3381qfalUb?=
+ =?us-ascii?Q?YYDqEWvkZgIzkNQdQxgGsmRONs54mUr0A/wzmJt/kYiDerp0KDDGtt5f5OHr?=
+ =?us-ascii?Q?qWgJFD/DZFuLSpmKvtUcgUlwcGhvhPdNsCrwQP8daPORQNKV/XwOSYc4I2IO?=
+ =?us-ascii?Q?TSiDwCLYhLXt+6OX+/PUY+9XqGZyYivqf2e8Q2zy1f1CVQBskpN06gfC8aEB?=
+ =?us-ascii?Q?O4m6WX4KofQFerGHddgPFgf8VM5etXN+Y5G1QjYg14tA+39JfqxINGcjusi+?=
+ =?us-ascii?Q?xgZYhlLIvAK8Yg+WlfRQyxb2wQBiNooy3wPg1LIkG3CVy+MJJfsD4kXpPexE?=
+ =?us-ascii?Q?GLs7aPwSqS6k0kS4JGOc2kG1wncS51AjQHP5Cfc+YVCXxJtiE/jGApSzfA2I?=
+ =?us-ascii?Q?crEHjsM8jb4Jp6dNQzM3kHjZEGZ3h2ZZ80pA/xWanvFW30dRupQSDyqc42ip?=
+ =?us-ascii?Q?QXm1JiT7399cHkZ6E2Zu08oAIfkGW3sqlFChIH3y5sNh2CERXX676xt5RAg7?=
+ =?us-ascii?Q?EDk7D3v6ARDtkyV6zI5RSL8zEnU3U86W1tIO307qFET3AVTgJKsB/OXvmck3?=
+ =?us-ascii?Q?NqBQ6wU1BB1Hcj3Uly5lbT91tz4FWbQZ5aHYozDlGscmtJ775Fzlsyh6MA9O?=
+ =?us-ascii?Q?ykghImCh9r9XR7h13quv+4Ep7qbzzulgfp18CHIDDlzVOgu9gKsMNAur1DtP?=
+ =?us-ascii?Q?A2lmCkV0JlJJ3QdRSJG++D+Ms6yFJ/w2pU8vJLy4SHfR3lSoObCoFzNX2wux?=
+ =?us-ascii?Q?wnAjbsD0qAmplrmUbIkg/+0AFEzw02cigXZNcMVO8dBF+xX3JDZ9B4j51puu?=
+ =?us-ascii?Q?awmIe32A4MQW+d6kUCO1aSYlLlVd/GF8OTcOmjdrIO2xz0FUjKZXxt7sKBx7?=
+ =?us-ascii?Q?uiP953D4789KBSTvtTyAZtF1o0ZtO/2UMmwedoYSeeyNTj/s8WcU43gSvpRR?=
+ =?us-ascii?Q?snEErI6Kp0IIcJRJ3wzeX8CXUu4EqgizNoViDQEztBwsoLSebupOizdzKt8z?=
+ =?us-ascii?Q?kvncZXvqg5av/teSKJcFgiuIOXa1BwHOFf43U0szIHMQ8Wkjp6LCpv661Wzg?=
+ =?us-ascii?Q?Ltu7twjx1ACJL+5wNOGDMAClYjjrqhqOMZLhJ5RIcSN8uKIny9QyUOZ603A0?=
+ =?us-ascii?Q?7IX4Z8VjIlEt48Die51ktV3dzBmBQn8pXD/4Ketf1zlIx8cyQF8ih96yzw2o?=
+ =?us-ascii?Q?+lqUTljc0fFKMTaE49HVnWm5kkxtIqZp8iRcl+dio21xPfFbDRHBNZ+PkFxJ?=
+ =?us-ascii?Q?TK9OU9jsubyyybmFS9XfZJRJzweICu7G16VNUrrHSNKZprXo+MlGy1/dUmXS?=
+ =?us-ascii?Q?RLyguKc0yg=3D=3D?=
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 1/2] KVM: arm64: PMU: Introduce FIXED_COUNTERS_ONLY
-From: Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>
-To: Oliver Upton <oupton@kernel.org>
-Cc: Marc Zyngier <maz@kernel.org>, Joey Gouly <joey.gouly@arm.com>,
-        Suzuki K Poulose <suzuki.poulose@arm.com>,
-        Zenghui Yu
- <yuzenghui@huawei.com>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Will Deacon <will@kernel.org>, Kees Cook <kees@kernel.org>,
-        "Gustavo A. R. Silva" <gustavoars@kernel.org>,
-        Paolo Bonzini <pbonzini@redhat.com>, Jonathan Corbet <corbet@lwn.net>,
-        Shuah Khan <shuah@kernel.org>, linux-arm-kernel@lists.infradead.org,
-        kvmarm@lists.linux.dev, linux-kernel@vger.kernel.org,
-        linux-hardening@vger.kernel.org, devel@daynix.com, kvm@vger.kernel.org,
-        linux-doc@vger.kernel.org, linux-kselftest@vger.kernel.org
-References: <20260225-hybrid-v3-0-46e8fe220880@rsg.ci.i.u-tokyo.ac.jp>
- <20260225-hybrid-v3-1-46e8fe220880@rsg.ci.i.u-tokyo.ac.jp>
- <aaA0gn9O8QAf9Gpu@kernel.org>
- <fbcadab4-676b-44e4-8afa-b8bd095f8981@rsg.ci.i.u-tokyo.ac.jp>
-Content-Language: en-US
-In-Reply-To: <fbcadab4-676b-44e4-8afa-b8bd095f8981@rsg.ci.i.u-tokyo.ac.jp>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: CH3PR12MB7548.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 6ebc75af-87c7-47bb-2035-08de75471a37
+X-MS-Exchange-CrossTenant-originalarrivaltime: 26 Feb 2026 14:55:37.5824
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: fFp7aNPGZ1Ihb5S/IZ8/+0fNbKZvk153QogFxOd/mGDY7/3wm3Osk9uflz0P4h8zfbPhRY8FQZBxDZf6mYGrUg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CY5PR12MB6372
 
-On 2026/02/26 23:43, Akihiko Odaki wrote:
-> On 2026/02/26 20:54, Oliver Upton wrote:
->> Hi Akihiko,
->>
->> On Wed, Feb 25, 2026 at 01:31:15PM +0900, Akihiko Odaki wrote:
->>> @@ -629,6 +629,8 @@ void kvm_arch_vcpu_load(struct kvm_vcpu *vcpu, 
->>> int cpu)
->>>           kvm_vcpu_load_vhe(vcpu);
->>>       kvm_arch_vcpu_load_fp(vcpu);
->>>       kvm_vcpu_pmu_restore_guest(vcpu);
->>> +    if (test_bit(KVM_ARCH_FLAG_PMU_V3_FIXED_COUNTERS_ONLY, &vcpu- 
->>> >kvm->arch.flags))
->>> +        kvm_make_request(KVM_REQ_CREATE_PMU, vcpu);
->>
->> We only need to set the request if the vCPU has migrated to a different
->> PMU implementation, no?
-> 
-> Indeed. I was too lazy to implement such a check since it won't affect 
-> performance unless the new feature is requested, but having one may be 
-> still nice.
-> 
->>
->>>       if (kvm_arm_is_pvtime_enabled(&vcpu->arch))
->>>           kvm_make_request(KVM_REQ_RECORD_STEAL, vcpu);
->>> @@ -1056,6 +1058,9 @@ static int check_vcpu_requests(struct kvm_vcpu 
->>> *vcpu)
->>>           if (kvm_check_request(KVM_REQ_RELOAD_PMU, vcpu))
->>>               kvm_vcpu_reload_pmu(vcpu);
->>> +        if (kvm_check_request(KVM_REQ_CREATE_PMU, vcpu))
->>> +            kvm_vcpu_create_pmu(vcpu);
->>> +
->>
->> My strong preference would be to squash the migration handling into
->> kvm_vcpu_reload_pmu(). It is already reprogramming PMU events in
->> response to other things.
-> 
-> Can you share a reason for that?
-> 
-> In terms of complexity, I don't think it will help reducing complexity 
-> since the only common things between kvm_vcpu_reload_pmu() and 
-> kvm_vcpu_create_pmu() are the enumeration of enabled counters, which is 
-> simple enough.
-> 
-> In terms of performance, I guess it is better to keep 
-> kvm_vcpu_create_pmu() small since it is triggered for each migration.
-> 
->>
->>>           if (kvm_check_request(KVM_REQ_RESYNC_PMU_EL0, vcpu))
->>>               kvm_vcpu_pmu_restore_guest(vcpu);
->>> @@ -1516,7 +1521,8 @@ static int kvm_setup_vcpu(struct kvm_vcpu *vcpu)
->>>        * When the vCPU has a PMU, but no PMU is set for the guest
->>>        * yet, set the default one.
->>>        */
->>> -    if (kvm_vcpu_has_pmu(vcpu) && !kvm->arch.arm_pmu)
->>> +    if (kvm_vcpu_has_pmu(vcpu) && !kvm->arch.arm_pmu &&
->>> +        !test_bit(KVM_ARCH_FLAG_PMU_V3_FIXED_COUNTERS_ONLY, &kvm- 
->>> >arch.flags))
->>>           ret = kvm_arm_set_default_pmu(kvm);
->>
->> I'd rather just initialize it to a default than have to deal with the
->> field being sometimes null.
-> 
-> I agree. I'll change this with the next version.
-> 
->>
->>> -static bool kvm_pmu_counter_is_enabled(struct kvm_pmc *pmc)
->>> +static u64 kvm_pmu_enabled_counter_mask(struct kvm_vcpu *vcpu)
->>>   {
->>> -    struct kvm_vcpu *vcpu = kvm_pmc_to_vcpu(pmc);
->>> -    unsigned int mdcr = __vcpu_sys_reg(vcpu, MDCR_EL2);
->>> +    u64 mask = 0;
->>> -    if (!(__vcpu_sys_reg(vcpu, PMCNTENSET_EL0) & BIT(pmc->idx)))
->>> -        return false;
->>> +    if (__vcpu_sys_reg(vcpu, MDCR_EL2) & MDCR_EL2_HPME)
->>> +        mask |= kvm_pmu_hyp_counter_mask(vcpu);
->>> -    if (kvm_pmu_counter_is_hyp(vcpu, pmc->idx))
->>> -        return mdcr & MDCR_EL2_HPME;
->>> +    if (kvm_vcpu_read_pmcr(vcpu) & ARMV8_PMU_PMCR_E)
->>> +        mask |= ~kvm_pmu_hyp_counter_mask(vcpu);
->>> -    return kvm_vcpu_read_pmcr(vcpu) & ARMV8_PMU_PMCR_E;
->>> +    return __vcpu_sys_reg(vcpu, PMCNTENSET_EL0) & mask;
->>> +}
->>> +
->>> +static bool kvm_pmu_counter_is_enabled(struct kvm_pmc *pmc)
->>> +{
->>> +    struct kvm_vcpu *vcpu = kvm_pmc_to_vcpu(pmc);
->>> +
->>> +    return kvm_pmu_enabled_counter_mask(vcpu) & BIT(pmc->idx);
->>>   }
->>
->> You're churning a good bit of code, this needs to happen in a separate
->> patch (if at all).
-> 
-> It makes sense. The next version will have a separate patch for this.
-> 
->>
->>> @@ -689,6 +710,14 @@ static void kvm_pmu_create_perf_event(struct 
->>> kvm_pmc *pmc)
->>>       int eventsel;
->>>       u64 evtreg;
->>> +    if (!arm_pmu) {
->>> +        arm_pmu = kvm_pmu_probe_armpmu(vcpu->cpu);
->>
->> kvm_pmu_probe_armpmu() takes a global mutex, I'm not sure that's what we
->> want.
->>
->> What prevents us from opening a PERF_TYPE_RAW event and allowing perf to
->> work out the right PMU for this CPU?
-> 
-> Unfortunately perf does not seem to have a capability to switch to the 
-> right PMU. tools/perf/Documentation/intel-hybrid.txt says the perf tool 
-> creates events for each PMU in a hybird configuration, for example.
 
-I think I misunderstood what you meant. Letting 
-perf_event_create_kernel_counter() to figure out what a PMU to use may 
-be a good idea. I'll give a try with the next version.
 
-> 
->>
->>> +        if (!arm_pmu) {
->>> +            vcpu_set_on_unsupported_cpu(vcpu);
->>
->> At this point it seems pretty late to flag the CPU as unsupported. Maybe
->> instead we can compute the union cpumask for all the PMU implemetations
->> the VM may schedule on.
-> 
-> This is just a safe guard and it is a responsibility of the userspace to 
-> schedule the VCPU properly. It is conceptually same with what 
-> kvm_arch_vcpu_load() does when migrating to an unsupported CPU.
-> 
->>
->>> @@ -1249,6 +1299,10 @@ int kvm_arm_pmu_v3_get_attr(struct kvm_vcpu 
->>> *vcpu, struct kvm_device_attr *attr)
->>>           irq = vcpu->arch.pmu.irq_num;
->>>           return put_user(irq, uaddr);
->>>       }
->>> +    case KVM_ARM_VCPU_PMU_V3_FIXED_COUNTERS_ONLY:
->>> +        lockdep_assert_held(&vcpu->kvm->arch.config_lock);
->>> +        if (test_bit(KVM_ARCH_FLAG_PMU_V3_FIXED_COUNTERS_ONLY, 
->>> &vcpu->kvm->arch.flags))
->>> +            return 0;
->>
->> We don't need a getter for this, userspace should remember how it
->> provisioned the VM.
-> 
-> The getter is useful for debugging and testing. The selftest will use it 
-> to query the current state.
-> 
-> Regards,
-> Akihiko Odaki
+> -----Original Message-----
+> From: Ankit Agrawal <ankita@nvidia.com>
+> Sent: 23 February 2026 15:55
+> To: Ankit Agrawal <ankita@nvidia.com>; Vikram Sethi <vsethi@nvidia.com>;
+> Jason Gunthorpe <jgg@nvidia.com>; Matt Ochs <mochs@nvidia.com>;
+> jgg@ziepe.ca; Shameer Kolothum Thodi <skolothumtho@nvidia.com>;
+> alex@shazbot.org
+> Cc: Neo Jia <cjia@nvidia.com>; Zhi Wang <zhiw@nvidia.com>; Krishnakant
+> Jaju <kjaju@nvidia.com>; Yishai Hadas <yishaih@nvidia.com>;
+> kevin.tian@intel.com; kvm@vger.kernel.org; linux-kernel@vger.kernel.org
+> Subject: [PATCH RFC v2 03/15] vfio/nvgrace-gpu: track GPUs associated wit=
+h
+> the EGM regions
+>=20
+> From: Ankit Agrawal <ankita@nvidia.com>
+>=20
+> Grace Blackwell systems could have multiple GPUs on a socket and
+> thus are associated with the corresponding EGM region for that
+> socket. Track the GPUs as a list.
+>=20
+> On the device probe, the device pci_dev struct is added to a
+> linked list of the appropriate EGM region.
+>=20
+> Similarly on device remove, the pci_dev struct for the GPU
+> is removed from the EGM region.
+>=20
+> Since the GPUs on a socket have the same EGM region, they have
+> the have the same set of EGM region information. Skip the EGM
+> region information fetch if already done through a differnt
+> GPU on the same socket.
+>=20
+> Signed-off-by: Ankit Agrawal <ankita@nvidia.com>
+> ---
+>  drivers/vfio/pci/nvgrace-gpu/egm_dev.c | 29 ++++++++++++++++++++
+>  drivers/vfio/pci/nvgrace-gpu/egm_dev.h |  4 +++
+>  drivers/vfio/pci/nvgrace-gpu/main.c    | 37 +++++++++++++++++++++++---
+>  include/linux/nvgrace-egm.h            |  6 +++++
+>  4 files changed, 72 insertions(+), 4 deletions(-)
+>=20
+> diff --git a/drivers/vfio/pci/nvgrace-gpu/egm_dev.c
+> b/drivers/vfio/pci/nvgrace-gpu/egm_dev.c
+> index faf658723f7a..0bf95688a486 100644
+> --- a/drivers/vfio/pci/nvgrace-gpu/egm_dev.c
+> +++ b/drivers/vfio/pci/nvgrace-gpu/egm_dev.c
+> @@ -17,6 +17,33 @@ int nvgrace_gpu_has_egm_property(struct pci_dev
+> *pdev, u64 *pegmpxm)
+>  					pegmpxm);
+>  }
+>=20
+> +int add_gpu(struct nvgrace_egm_dev *egm_dev, struct pci_dev *pdev)
+> +{
+> +	struct gpu_node *node;
+> +
+> +	node =3D kzalloc(sizeof(*node), GFP_KERNEL);
+> +	if (!node)
+> +		return -ENOMEM;
+> +
+> +	node->pdev =3D pdev;
+> +
+> +	list_add_tail(&node->list, &egm_dev->gpus);
+> +
+> +	return 0;
+> +}
+> +
+> +void remove_gpu(struct nvgrace_egm_dev *egm_dev, struct pci_dev *pdev)
+> +{
+> +	struct gpu_node *node, *tmp;
+> +
+> +	list_for_each_entry_safe(node, tmp, &egm_dev->gpus, list) {
+
+Looks like this gpu list also will require a lock.
+Can we get rid of this gpu list by having a refcount_t in struct nvgrace_eg=
+m_dev?
+
+> +		if (node->pdev =3D=3D pdev) {
+> +			list_del(&node->list);
+> +			kfree(node);
+> +		}
+> +	}
+> +}
+> +
+>  static void nvgrace_gpu_release_aux_device(struct device *device)
+>  {
+>  	struct auxiliary_device *aux_dev =3D container_of(device, struct
+> auxiliary_device, dev);
+> @@ -37,6 +64,8 @@ nvgrace_gpu_create_aux_device(struct pci_dev *pdev,
+> const char *name,
+>  		goto create_err;
+>=20
+>  	egm_dev->egmpxm =3D egmpxm;
+> +	INIT_LIST_HEAD(&egm_dev->gpus);
+> +
+>  	egm_dev->aux_dev.id =3D egmpxm;
+>  	egm_dev->aux_dev.name =3D name;
+>  	egm_dev->aux_dev.dev.release =3D nvgrace_gpu_release_aux_device;
+> diff --git a/drivers/vfio/pci/nvgrace-gpu/egm_dev.h
+> b/drivers/vfio/pci/nvgrace-gpu/egm_dev.h
+> index c00f5288f4e7..1635753c9e50 100644
+> --- a/drivers/vfio/pci/nvgrace-gpu/egm_dev.h
+> +++ b/drivers/vfio/pci/nvgrace-gpu/egm_dev.h
+> @@ -10,6 +10,10 @@
+>=20
+>  int nvgrace_gpu_has_egm_property(struct pci_dev *pdev, u64 *pegmpxm);
+>=20
+> +int add_gpu(struct nvgrace_egm_dev *egm_dev, struct pci_dev *pdev);
+> +
+> +void remove_gpu(struct nvgrace_egm_dev *egm_dev, struct pci_dev *pdev);
+> +
+>  struct nvgrace_egm_dev *
+>  nvgrace_gpu_create_aux_device(struct pci_dev *pdev, const char *name,
+>  			      u64 egmphys);
+> diff --git a/drivers/vfio/pci/nvgrace-gpu/main.c b/drivers/vfio/pci/nvgra=
+ce-
+> gpu/main.c
+> index 23028e6e7192..3dd0c57e5789 100644
+> --- a/drivers/vfio/pci/nvgrace-gpu/main.c
+> +++ b/drivers/vfio/pci/nvgrace-gpu/main.c
+> @@ -77,9 +77,10 @@ static struct list_head egm_dev_list;
+>=20
+>  static int nvgrace_gpu_create_egm_aux_device(struct pci_dev *pdev)
+>  {
+> -	struct nvgrace_egm_dev_entry *egm_entry;
+> +	struct nvgrace_egm_dev_entry *egm_entry =3D NULL;
+>  	u64 egmpxm;
+>  	int ret =3D 0;
+> +	bool is_new_region =3D false;
+>=20
+>  	/*
+>  	 * EGM is an optional feature enabled in SBIOS. If disabled, there
+> @@ -90,6 +91,19 @@ static int nvgrace_gpu_create_egm_aux_device(struct
+> pci_dev *pdev)
+>  	if (nvgrace_gpu_has_egm_property(pdev, &egmpxm))
+>  		goto exit;
+>=20
+> +	list_for_each_entry(egm_entry, &egm_dev_list, list) {
+> +		/*
+> +		 * A system could have multiple GPUs associated with an
+> +		 * EGM region and will have the same set of EGM region
+> +		 * information. Skip the EGM region information fetch if
+> +		 * already done through a differnt GPU on the same socket.
+> +		 */
+> +		if (egm_entry->egm_dev->egmpxm =3D=3D egmpxm)
+> +			goto add_gpu;
+> +	}
+> +
+> +	is_new_region =3D true;
+> +
+>  	egm_entry =3D kzalloc(sizeof(*egm_entry), GFP_KERNEL);
+>  	if (!egm_entry)
+>  		return -ENOMEM;
+> @@ -98,13 +112,24 @@ static int
+> nvgrace_gpu_create_egm_aux_device(struct pci_dev *pdev)
+>  		nvgrace_gpu_create_aux_device(pdev,
+> NVGRACE_EGM_DEV_NAME,
+>  					      egmpxm);
+>  	if (!egm_entry->egm_dev) {
+> -		kvfree(egm_entry);
+>  		ret =3D -EINVAL;
+> -		goto exit;
+> +		goto free_egm_entry;
+>  	}
+>=20
+> -	list_add_tail(&egm_entry->list, &egm_dev_list);
+> +add_gpu:
+> +	ret =3D add_gpu(egm_entry->egm_dev, pdev);
+> +	if (ret)
+> +		goto free_dev;
+>=20
+> +	if (is_new_region)
+> +		list_add_tail(&egm_entry->list, &egm_dev_list);
+
+So this is where you address the previous patch comment I suppose...
+If so, need to change the commit description there.
+
+> +	return 0;
+> +
+> +free_dev:
+> +	if (is_new_region)
+> +		auxiliary_device_destroy(&egm_entry->egm_dev->aux_dev);
+> +free_egm_entry:
+> +	kvfree(egm_entry);
+
+Suppose the add_gpu() above fails, then you will end up here with an existi=
+ng=20
+egm_entry which might be in use.
+
+Thanks,
+Shameer
 
