@@ -1,174 +1,89 @@
-Received: from mx0b-00082601.pphosted.com (mx0b-00082601.pphosted.com [67.231.153.30])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8FBF342B73A;
-	Thu, 26 Feb 2026 20:23:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=67.231.153.30
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 377CE44CAED;
+	Thu, 26 Feb 2026 20:59:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772137416; cv=none; b=P8576bpHlhzhnboO1a8VWff1WP0vlSbaNJf/1bwxcMf3NkiXQbgtOBtOEOYaJJQRswK2rm2eduVDz2UDCI+RNjQ55RmUy2+QO0nHE25GSyl3uiPCDRmyEyAnsxMAg6PwMReqYN4L6LuL+bAWYAwbGrKljK8cIe8Kz33kNLBamhA=
+	t=1772139564; cv=none; b=FsylgrEv5C1Ehhf8PmfjWFdruICluaQ+ZUzXhobbKrnXku7miZxhmRCsNONx/4VlNUSbSh2vTJ4kVO0mrjlmJHydH8liMye/qKZXPzE9S/u+xI2MVlMv5Ez2gIugtZVCFMmzEafg8Lba8TXsJjtrNzdP2Zt0FWsduA1poiOMpfk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772137416; c=relaxed/simple;
-	bh=ei5XNdXJKikl8/7jifxxAaS/BesM4w0YMmJ/rsrK2/A=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=q8caLHoU903oP+xhePjXSoN3o6CHR8xR1RWEeoS+L+k6T7jjbRANYFij9gzWM5JDT7zvRaxPwH8/C95rYEMM/19QYmwS9AFus85Wdw4y1+UXcCwZpj4eCC72oxqUkqIePVPdBbsWeyJtunUEjeL9E7Posa2Cx60lt5K+s6sZ2Dc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=meta.com; spf=pass smtp.mailfrom=meta.com; dkim=pass (2048-bit key) header.d=meta.com header.i=@meta.com header.b=jAK5Llk0; arc=none smtp.client-ip=67.231.153.30
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=meta.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=meta.com
+	s=arc-20240116; t=1772139564; c=relaxed/simple;
+	bh=qWBjnKxweipSLzAbTf4M/P9qFFraSj8HuEvZL4idUcU=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=ck1Qk9MCHzemEzVROkZCzaxtdtgVb6+5yc5E5avl1m5Atz+qvMqnWJuCiLYQMQ4qM0Lb8cRgZ8cgGFi19+WtTZk7VZqHFq1+UgJTTXRtpjjfqAMBvT3Yu0Pt99cUEOt4wVMuWsAe1tUANnlXxMlqzFsPtjbw0FlfgfRY/FWEMvM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=D+lZWLBM; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=meta.com header.i=@meta.com header.b="jAK5Llk0"
-Received: from pps.filterd (m0109332.ppops.net [127.0.0.1])
-	by mx0a-00082601.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 61QH7RIi1891443;
-	Thu, 26 Feb 2026 12:23:03 -0800
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=meta.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=s2048-2025-q2;
-	 bh=Ipxihht3rtz9Tq9wOD86jRBR0utkMeevU4ePkGLhZLs=; b=jAK5Llk0qYpV
-	CZJn6avQTWfS5A1ZnTGjr1ZjBl+rcDXhGdjiv0xfNFgNwIIYg6QFemLoLmnHwsuj
-	645X5vJx2JntNTMmsF7GnqdaSI9rW99y6n9bF7GtpCEQlsxT+5X888LNcJKzCVwn
-	rO1ZR0wEfCH/HqjJTdtyroRJY2ueQY5VMcADYX2KqwgUUohoPCGQ1kzPpsEfDiJX
-	F/ty1gStBCHTHNwUJCnZIxLHaUIZ/ao0wDTsBQh9CYZIVP8Xk9TEolInOW3JWvbf
-	WgmmMKhQGtMeuaAi28ToVQrs8hLjkP+omDS8z9xRQYgQrIXDyyj7zfrw8qI8nVjV
-	hQEtrIlv7w==
-Received: from maileast.thefacebook.com ([163.114.135.16])
-	by mx0a-00082601.pphosted.com (PPS) with ESMTPS id 4cjmp9dnms-2
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
-	Thu, 26 Feb 2026 12:23:03 -0800 (PST)
-Received: from localhost (2620:10d:c0a8:1b::30) by mail.thefacebook.com
- (2620:10d:c0a9:6f::8fd4) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.2.2562.35; Thu, 26 Feb
- 2026 20:22:51 +0000
-From: Matt Evans <mattev@meta.com>
-To: Alex Williamson <alex@shazbot.org>, Leon Romanovsky <leon@kernel.org>,
-        Jason Gunthorpe <jgg@nvidia.com>, Alex Mastro <amastro@fb.com>,
-        Mahmoud Adam
-	<mngyadam@amazon.de>,
-        David Matlack <dmatlack@google.com>
-CC: =?UTF-8?q?Bj=C3=B6rn=20T=C3=B6pel?= <bjorn@kernel.org>,
-        Sumit Semwal
-	<sumit.semwal@linaro.org>,
-        =?UTF-8?q?Christian=20K=C3=B6nig?=
-	<christian.koenig@amd.com>,
-        Kevin Tian <kevin.tian@intel.com>, Ankit Agrawal
-	<ankita@nvidia.com>,
-        Pranjal Shrivastava <praan@google.com>,
-        Alistair Popple
-	<apopple@nvidia.com>,
-        Vivek Kasireddy <vivek.kasireddy@intel.com>,
-        <linux-kernel@vger.kernel.org>, <linux-media@vger.kernel.org>,
-        <dri-devel@lists.freedesktop.org>, <linaro-mm-sig@lists.linaro.org>,
-        <kvm@vger.kernel.org>
-Subject: [RFC PATCH 4/7] dma-buf: uapi: Mechanism to revoke DMABUFs via ioctl()
-Date: Thu, 26 Feb 2026 12:22:00 -0800
-Message-ID: <20260226202211.929005-5-mattev@meta.com>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260226202211.929005-1-mattev@meta.com>
-References: <20260226202211.929005-1-mattev@meta.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="D+lZWLBM"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 56D38C19425;
+	Thu, 26 Feb 2026 20:59:22 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1772139563;
+	bh=qWBjnKxweipSLzAbTf4M/P9qFFraSj8HuEvZL4idUcU=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=D+lZWLBM7gwe7s3XKtau6bIucSKnJVNqG9MJAmoOrDoelvSi2qQDK04i97S3vT8RM
+	 j3Px6vTrnh0aizTfll9s/sbZ7gfjqLyND/GZ9SUbDkdVR4CFvUYU1oxuNGzQpV+ZPZ
+	 ClC0nm+ZYaHHwHPFSssfN09y1cxah8Notl4S6lWpDVRsVWzoWIFptiitA2g8YIGS3Z
+	 Ic45V6/uw0fsdsclo7PlQGyg4iDtdav+6LCV2rrcaPOHKCoHfX1Dxo/XUqU0r/yQBu
+	 N+cFNBSHh16nmm4r86pwNYSxaA16wcQa5wiLclskp2TLyxQomgIq96RuBysWbvJvLK
+	 0xEQfxYTA6sGw==
+Date: Thu, 26 Feb 2026 13:59:20 -0700
+From: Tycho Andersen <tycho@kernel.org>
+To: Sean Christopherson <seanjc@google.com>
+Cc: Ashish Kalra <ashish.kalra@amd.com>,
+	Tom Lendacky <thomas.lendacky@amd.com>,
+	John Allen <john.allen@amd.com>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
+	Paolo Bonzini <pbonzini@redhat.com>, Shuah Khan <shuah@kernel.org>,
+	"David S. Miller" <davem@davemloft.net>,
+	linux-crypto@vger.kernel.org, linux-kernel@vger.kernel.org,
+	kvm@vger.kernel.org, linux-kselftest@vger.kernel.org
+Subject: Re: [PATCH 2/4] selftests/kvm: check that SEV-ES VMs are allowed in
+ SEV-SNP mode
+Message-ID: <aaC0KGXmfhOMOrJ9@tycho.pizza>
+References: <20260223162900.772669-1-tycho@kernel.org>
+ <20260223162900.772669-3-tycho@kernel.org>
+ <aZyCEBo07EHw2Prk@google.com>
+ <aZyE4zvPtujZ4-6X@tycho.pizza>
+ <aZyLIWtffvEnmtYh@google.com>
+ <aZzQy7c8VqCaZ_fE@tycho.pizza>
+ <aZ3ntHUPXNTNoyx2@google.com>
+ <aZ8xje-iM0_9ACie@tycho.pizza>
+ <aZ8077EfpxRGmT-O@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Proofpoint-GUID: 3U3DcNRGCAe6_3BsET19AsMQ1cy24XLl
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMjI2MDE4NiBTYWx0ZWRfX8lmNm/Jl/UBZ
- vDCn1uiQX5OuErzlyFJYljwghvJ3HU6ZIrVIYEXf1k5ehQSurN5dCQe5oe1HtquJulGkb6YdbId
- rDNl4rvY8+rrwZ3isIymDRmTMf8F3L5LS+GE2LtTWwC2cxuV7k5QEP9M5Xhp60JlH9r4/CzwWO5
- 1wQgry6CgYt3uxuLm0OuOYSJPrhh4zkPtTRRyuP/SSB2O1/ugQkmMfTSaKsO49tClVnTvqu6G5W
- S8sP0TDyDpRzUqheqWyWy0P4MGMZN9NrmwtCVHObi5Ynk25rgwohKMKrOwJNWKbAeK44VzeYmcI
- 5l4B23+k6N/VN6cvHthLrkQq3V0oDpliH6J3dM9v2vNh10b/7dwtUBgkZ8m5bCR1w9P+/CNB3O9
- CKCav36FYEKKqdUMb66wJXBT/HEGpxnNPqRUmV0i3YMfdWh96QszON1j4cbgn3jwMRDf0hrcN8c
- 3+IE/7pp62u5fmi9RdQ==
-X-Proofpoint-ORIG-GUID: 3U3DcNRGCAe6_3BsET19AsMQ1cy24XLl
-X-Authority-Analysis: v=2.4 cv=abZsXBot c=1 sm=1 tr=0 ts=69a0aba7 cx=c_pps
- a=MfjaFnPeirRr97d5FC5oHw==:117 a=MfjaFnPeirRr97d5FC5oHw==:17
- a=HzLeVaNsDn8A:10 a=VkNPw1HP01LnGYTKEx00:22 a=Mpw57Om8IfrbqaoTuvik:22
- a=GgsMoib0sEa3-_RKJdDe:22 a=VabnemYjAAAA:8 a=xZTfp-UuNEzyo7XdMfQA:9
- a=gKebqoRLp9LExxC7YDUY:22
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.51,FMLib:17.12.100.49
- definitions=2026-02-26_02,2026-02-26_01,2025-10-01_01
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <aZ8077EfpxRGmT-O@google.com>
 
-Add a new dma-buf ioctl() op, DMA_BUF_IOCTL_REVOKE, connected to a new
-(optional) dma_buf_ops callback, revoke().  An exporter receiving this
-will _permanently_ revoke the DMABUF, meaning it can no longer be
-mapped/attached/mmap()ed.  It also guarantees that existing
-importers have been detached (e.g. via move_notify) and all mappings
-made inaccessible.
+On Wed, Feb 25, 2026 at 09:44:15AM -0800, Sean Christopherson wrote:
+> Ya, I don't have a better idea.  Bleeding VM types into the CCP driver might be
+> a bit wonky, though I guess it is uAPI so it's certainly not a KVM-internal detail.
 
-This is useful for lifecycle management in scenarios where a process
-has created a DMABUF representing a resource, then delegated it to
-a client process; access to the resource is revoked when the client is
-deemed "done", and the resource can be safely re-used elsewhere.
+Turns out this approach breaks the selftests, which is at least one
+userspace:
 
-Signed-off-by: Matt Evans <mattev@meta.com>
----
- drivers/dma-buf/dma-buf.c    |  5 +++++
- include/linux/dma-buf.h      | 22 ++++++++++++++++++++++
- include/uapi/linux/dma-buf.h |  1 +
- 3 files changed, 28 insertions(+)
+# ./sev_init2_tests
+Random seed: 0x6b8b4567
+==== Test Assertion Failure ====
+  x86/sev_init2_tests.c:141: have_sev_es == !!(kvm_check_cap(KVM_CAP_VM_TYPES) & BIT(KVM_X86_SEV_ES_VM))
+  pid=12498 tid=12498 errno=0 - Success
+     1	0x0000000000402747: main at sev_init2_tests.c:141 (discriminator 2)
+     2	0x00007f9adae2a1c9: ?? ??:0
+     3	0x00007f9adae2a28a: ?? ??:0
+     4	0x0000000000402934: _start at ??:?
+  sev-es: KVM_CAP_VM_TYPES (15) does not match cpuid (checking 8)
 
-diff --git a/drivers/dma-buf/dma-buf.c b/drivers/dma-buf/dma-buf.c
-index edaa9e4ee4ae..b9b315317f2d 100644
---- a/drivers/dma-buf/dma-buf.c
-+++ b/drivers/dma-buf/dma-buf.c
-@@ -561,6 +561,11 @@ static long dma_buf_ioctl(struct file *file,
- 	case DMA_BUF_IOCTL_IMPORT_SYNC_FILE:
- 		return dma_buf_import_sync_file(dmabuf, (const void __user *)arg);
- #endif
-+	case DMA_BUF_IOCTL_REVOKE:
-+		if (dmabuf->ops->revoke)
-+			return dmabuf->ops->revoke(dmabuf);
-+		else
-+			return -EINVAL;
- 
- 	default:
- 		return -ENOTTY;
-diff --git a/include/linux/dma-buf.h b/include/linux/dma-buf.h
-index 0bc492090237..a68c9ad7aebd 100644
---- a/include/linux/dma-buf.h
-+++ b/include/linux/dma-buf.h
-@@ -277,6 +277,28 @@ struct dma_buf_ops {
- 
- 	int (*vmap)(struct dma_buf *dmabuf, struct iosys_map *map);
- 	void (*vunmap)(struct dma_buf *dmabuf, struct iosys_map *map);
-+
-+	/**
-+	 * @revoke:
-+	 *
-+	 * This callback is invoked from a userspace
-+	 * DMA_BUF_IOCTL_REVOKE operation, and requests that access to
-+	 * the buffer is immediately and permanently revoked.  On
-+	 * successful return, the buffer is not accessible through any
-+	 * mmap() or dma-buf import.  The request fails if the buffer
-+	 * is pinned; otherwise, the exporter marks the buffer as
-+	 * inaccessible and uses the move_notify callback to inform
-+	 * importers of the change.  The buffer is permanently
-+	 * disabled, and the exporter must refuse all map, mmap,
-+	 * attach, etc. requests.
-+	 *
-+	 * Returns:
-+	 *
-+	 * 0 on success, or a negative error code on failure:
-+	 * -ENODEV if the associated device no longer exists/is closed.
-+	 * -EBADFD if the buffer has already been revoked.
-+	 */
-+	int (*revoke)(struct dma_buf *dmabuf);
- };
- 
- /**
-diff --git a/include/uapi/linux/dma-buf.h b/include/uapi/linux/dma-buf.h
-index 5a6fda66d9ad..84bf2dd2d0f3 100644
---- a/include/uapi/linux/dma-buf.h
-+++ b/include/uapi/linux/dma-buf.h
-@@ -178,5 +178,6 @@ struct dma_buf_import_sync_file {
- #define DMA_BUF_SET_NAME_B	_IOW(DMA_BUF_BASE, 1, __u64)
- #define DMA_BUF_IOCTL_EXPORT_SYNC_FILE	_IOWR(DMA_BUF_BASE, 2, struct dma_buf_export_sync_file)
- #define DMA_BUF_IOCTL_IMPORT_SYNC_FILE	_IOW(DMA_BUF_BASE, 3, struct dma_buf_import_sync_file)
-+#define DMA_BUF_IOCTL_REVOKE	_IO(DMA_BUF_BASE, 4)
- 
- #endif
--- 
-2.47.3
+As near as I can tell qemu doesn't do the same anywhere. SNP guests
+run fine, and SEV-ES says something reasonable:
 
+qemu-system-x86_64: sev_launch_start: LAUNCH_START ret=1 fw_error=21 'Feature not supported'
+qemu-system-x86_64: sev_common_kvm_init: failed to create encryption context
+qemu-system-x86_64: failed to initialize kvm: Operation not permitted
+
+Thoughts?
+
+Tycho
