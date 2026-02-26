@@ -1,152 +1,213 @@
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.3])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 96DE7285056
-	for <kvm@vger.kernel.org>; Thu, 26 Feb 2026 12:31:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC66E4A33;
+	Thu, 26 Feb 2026 12:39:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.31.3
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772109107; cv=none; b=awBTUzWRvtaryzaBZmkY9SWCZQWvAdRiwRIxiSp1y2oKStqUCIHvMY2sNa7sWBf3df6VMvdNm6EgVJZl+3vpGgOoAlhlEcM4B1xVNw8Lzl2VXwE1Z8XpRTB6JWard3KqRuiU8ie5bmthceqcoi1sGY5E3Ww14XhrIo6RtgSyYKk=
+	t=1772109576; cv=none; b=iLJoRNgpqrzu8HOdllh0heFvd6mlvqIDBmTP68QCQFtn2yYqMl1gsFXqPGcfwH03jnwRl+jjuefjqkEctIIpM3YU9DW2oK1NRpmw8GVOfRMWoS5ArDRFqeaOaDeZcymLpxYxvx6nH5Tw2x/Pyn9hOCC4YvkXsHhklX4vLRrSMpI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772109107; c=relaxed/simple;
-	bh=YKaeuaDYeNuOykIoWYqQiy4RBmNAjGUyUtnfcUBcqZw=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=PsjDatgDonitQlVz37yY+tDydJVuRNKJ+HBJeyRt5BJqocYOLLtihun6aw0UCpSGYvkMSgGZU6wVsi39lfVBQIKIVmk5G2RDya6J+A/86E1C7g+zgl3V9PkX9rvxLOtU5bjMNEHVOmIajvaRx32GwBiShUwGfyF2T8kIrmDxhKI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz; spf=pass smtp.mailfrom=suse.cz; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=vSIQtv1E; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=5N5MjjgV; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=vSIQtv1E; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=5N5MjjgV; arc=none smtp.client-ip=195.135.223.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.cz
+	s=arc-20240116; t=1772109576; c=relaxed/simple;
+	bh=L/jjvSxW5H2A+dWZvxzWzgt4opVODwPP1+tJ6asfIyE=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=J9p70mE1upEJFfs6whXPgVSbkz9MBNasSofsKqoS4wt8irBep3xcy8IUnfiF4myu3thlE24Y6P5CzCxGexS5YlqlOEj7ypKeKFUC1mlmqwv8ZoL7D2Nf3IcDSMETov17RfUgClZKWPqxf36Bnh7tVB4CAYO6gcXTKmSScqs+KdE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=pPqNYmPq; arc=none smtp.client-ip=220.197.31.3
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="vSIQtv1E";
-	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="5N5MjjgV";
-	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="vSIQtv1E";
-	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="5N5MjjgV"
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id 76C801FA8E;
-	Thu, 26 Feb 2026 12:31:44 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1772109104; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=f5WEnpROlC9fgWu+KGiqZFKe3oMMY1tyFav7WdEwLBc=;
-	b=vSIQtv1E7WnqPn0ENIfIOEmaSpvOt9Q0fMqP2kUhYl09j9A20zwA4LTFWE8UHxDzOkQuxs
-	5B2qs3tj1TPz7CPUGMBtl06RQNtZ92ZkC6lFLSfnUuiYnk4ZSzLIOa3jWTasYwcfhJW6/b
-	w4lg49Z+os+DhYIqbt6kXcOHCIGau80=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1772109104;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=f5WEnpROlC9fgWu+KGiqZFKe3oMMY1tyFav7WdEwLBc=;
-	b=5N5MjjgVLaDn8W3omolC50q8cwfMNo9NPN0KBHCWuKhhRO4JrhUZVuXf1uFNS1Jr0BgPqz
-	c5zrlc4TlDcKfIAg==
-Authentication-Results: smtp-out2.suse.de;
-	none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1772109104; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=f5WEnpROlC9fgWu+KGiqZFKe3oMMY1tyFav7WdEwLBc=;
-	b=vSIQtv1E7WnqPn0ENIfIOEmaSpvOt9Q0fMqP2kUhYl09j9A20zwA4LTFWE8UHxDzOkQuxs
-	5B2qs3tj1TPz7CPUGMBtl06RQNtZ92ZkC6lFLSfnUuiYnk4ZSzLIOa3jWTasYwcfhJW6/b
-	w4lg49Z+os+DhYIqbt6kXcOHCIGau80=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1772109104;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=f5WEnpROlC9fgWu+KGiqZFKe3oMMY1tyFav7WdEwLBc=;
-	b=5N5MjjgVLaDn8W3omolC50q8cwfMNo9NPN0KBHCWuKhhRO4JrhUZVuXf1uFNS1Jr0BgPqz
-	c5zrlc4TlDcKfIAg==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 6912F3EA62;
-	Thu, 26 Feb 2026 12:31:44 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id /mugGTA9oGlzHQAAD6G6ig
-	(envelope-from <jack@suse.cz>); Thu, 26 Feb 2026 12:31:44 +0000
-Received: by quack3.suse.cz (Postfix, from userid 1000)
-	id 2B3A0A0A27; Thu, 26 Feb 2026 13:31:40 +0100 (CET)
-Date: Thu, 26 Feb 2026 13:31:40 +0100
-From: Jan Kara <jack@suse.cz>
-To: Ackerley Tng <ackerleytng@google.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>, 
-	Andrew Morton <akpm@linux-foundation.org>, David Hildenbrand <david@kernel.org>, 
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
-	Vlastimil Babka <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>, 
-	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>, Shuah Khan <shuah@kernel.org>, Jonathan Corbet <corbet@lwn.net>, 
-	Alexander Viro <viro@zeniv.linux.org.uk>, Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>, 
-	seanjc@google.com, rientjes@google.com, rick.p.edgecombe@intel.com, 
-	yan.y.zhao@intel.com, fvdl@google.com, jthoughton@google.com, vannapurve@google.com, 
-	shivankg@amd.com, michael.roth@amd.com, pratyush@kernel.org, 
-	pasha.tatashin@soleen.com, kalyazin@amazon.com, tabba@google.com, kvm@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org, linux-fsdevel@vger.kernel.org, 
-	linux-kselftest@vger.kernel.org, linux-doc@vger.kernel.org
-Subject: Re: [PATCH RFC v2 3/6] fs: Add .unaccount_folio callback
-Message-ID: <2s33j7wg6ehizvdoz5fggc6kfa5byrs4yg2hk4fvwvfjp7nigo@se7fhyaknqqm>
-References: <20260225-gmem-st-blocks-v2-0-87d7098119a9@google.com>
- <20260225-gmem-st-blocks-v2-3-87d7098119a9@google.com>
+	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="pPqNYmPq"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
+	s=s110527; h=From:To:Subject:Date:Message-ID:MIME-Version; bh=Y2
+	dSiRAjxppeg7/bGSsyFayGIlsunKAgYoY2n1sc7os=; b=pPqNYmPqDBptzKg1gY
+	xGF6A0ig0IRHqUa5DKQJfT+ziY/j/oM3HfaUoIPiLFWu7NyGmrjzSollUMGOzkUv
+	nNtSeNvgOnXctNOkbWZutFtgdnXyobC7jP09pm83J4YIluoep+bqciW15esTVvKX
+	MBJc1ktGn2nvA5H+SZ2yINfbw=
+Received: from whoami-MS-7D95.. (unknown [])
+	by gzga-smtp-mtada-g1-1 (Coremail) with SMTP id _____wBXnkmsPqBppcMFMw--.51195S2;
+	Thu, 26 Feb 2026 20:38:05 +0800 (CST)
+From: Jinyu Tang <tjytimi@163.com>
+To: Anup Patel <anup@brainfault.org>,
+	Atish Patra <atish.patra@linux.dev>,
+	Andrew Jones <andrew.jones@oss.qualcomm.com>,
+	Conor Dooley <conor.dooley@microchip.com>,
+	Yong-Xuan Wang <yongxuan.wang@sifive.com>,
+	Nutty Liu <nutty.liu@hotmail.com>,
+	Paul Walmsley <pjw@kernel.org>,
+	Paul Walmsley <paul.walmsley@sifive.com>,
+	Palmer Dabbelt <palmer@dabbelt.com>,
+	Albert Ou <aou@eecs.berkeley.edu>,
+	Alexandre Ghiti <alex@ghiti.fr>
+Cc: kvm@vger.kernel.org,
+	kvm-riscv@lists.infradead.org,
+	linux-riscv@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	Jinyu Tang <tjytimi@163.com>
+Subject: [PATCH v6] KVM: riscv: Skip CSR restore if VCPU is reloaded on the same core
+Date: Thu, 26 Feb 2026 20:38:02 +0800
+Message-ID: <20260226123802.154855-1-tjytimi@163.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260225-gmem-st-blocks-v2-3-87d7098119a9@google.com>
-X-Spam-Score: -3.80
-X-Spam-Level: 
-X-Spamd-Result: default: False [-3.80 / 50.00];
-	BAYES_HAM(-3.00)[100.00%];
-	NEURAL_HAM_LONG(-1.00)[-1.000];
-	MID_RHS_NOT_FQDN(0.50)[];
-	NEURAL_HAM_SHORT(-0.20)[-1.000];
-	MIME_GOOD(-0.10)[text/plain];
-	MISSING_XM_UA(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	RCPT_COUNT_TWELVE(0.00)[35];
-	ARC_NA(0.00)[];
-	TO_DN_SOME(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	RCVD_COUNT_THREE(0.00)[3];
-	R_RATELIMIT(0.00)[to_ip_from(RLkt8wp3x8qpcm6dn39p5ieksq)];
-	FROM_EQ_ENVFROM(0.00)[];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	TO_MATCH_ENVRCPT_ALL(0.00)[];
-	DKIM_SIGNED(0.00)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
-	RCVD_TLS_LAST(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.com:email,imap1.dmz-prg2.suse.org:helo]
-X-Spam-Flag: NO
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:_____wBXnkmsPqBppcMFMw--.51195S2
+X-Coremail-Antispam: 1Uf129KBjvJXoW3WrWxurWxXr4xXr4xCw1UGFg_yoW7ZF15pF
+	W7CFn5Ww48Gr13G347Xr4v9r4YgwsYgw1fJ34UZ3yayr45try5AFs5KFyUAFZ8GrW8ZFyS
+	yF1DtFy09Fn0vaUanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x0pROdbbUUUUU=
+X-CM-SenderInfo: xwm13xlpl6il2tof0z/xtbC0A09tWmgPq1brgAA36
 
-On Wed 25-02-26 07:20:38, Ackerley Tng wrote:
-> Add .unaccount_folio callback to allow filesystems to do accounting-related
-> updates to the inode or struct address_space mapping, when the folio is
-> about to be removed from the filemap/page_cache.
-> 
-> .free_folio cannot be used since .free_folio cannot assume that struct
-> address_space mapping still exists.
+Currently, kvm_arch_vcpu_load() unconditionally restores guest CSRs and
+HGATP. However, when a VCPU is loaded back on the same physical CPU,
+and no other KVM VCPU has run on this CPU since it was last put,
+the hardware CSRs are still valid.
 
-I agree .free_folio isn't the right place.
+This patch optimizes the vcpu_load path by skipping the expensive CSR
+writes if all the following conditions are met:
+1. It is being reloaded on the same CPU (vcpu->arch.last_exit_cpu == cpu).
+2. The CSRs are not dirty (!vcpu->arch.csr_dirty).
+3. No other VCPU used this CPU (vcpu == __this_cpu_read(kvm_former_vcpu)).
 
-> From the name, .invalidate_folio and .release_folio seem suitable, but
-> those are meant only to handle freeing of a folio's private
-> data. .release_folio is also not called in the truncation path.
+To ensure this fast-path doesn't break corner cases:
+- Live migration and VCPU reset are naturally safe. KVM initializes
+  last_exit_cpu to -1, which guarantees the fast-path won't trigger.
+- A new 'csr_dirty' flag is introduced to track runtime userspace
+  interventions. If userspace modifies guest configurations (e.g.,
+  hedeleg via KVM_SET_GUEST_DEBUG, or CSRs via KVM_SET_ONE_REG) while
+  the VCPU is preempted, the flag is set to skip fast path.
+
+Note that kvm_riscv_vcpu_aia_load() is kept outside the skip logic
+to ensure IMSIC/AIA interrupt states are always properly
+synchronized.
+
+Signed-off-by: Jinyu Tang <tjytimi@163.com>
+---
+ v5 -> v6:
+ As suggested by Andrew Jones, checking 'last_exit_cpu' first (most
+ likely to fail on busy hosts) and placing the expensive
+ __this_cpu_read() last, skipping __this_cpu_write() in kvm_arch_vcpu_put()
+ if kvm_former_vcpu is already set to the current VCPU.
+
+ v4 -> v5:
+ - Dropped the 'vcpu->scheduled_out' check as Andrew Jones pointed out,
+   relying on 'last_exit_cpu', 'former_vcpu', and '!csr_dirty'
+   is sufficient and safe. This expands the optimization to cover many
+   userspace exits (e.g., MMIO) as well.
+ - Added a block comment in kvm_arch_vcpu_load() to warn future
+   developers about maintaining the 'csr_dirty' dependency, as Andrew's
+   suggestion to reduce fragility.
+ - Removed unnecessary single-line comments and fixed indentation nits.
+
+ v3 -> v4:
+ - Addressed Anup Patel's review regarding hardware state inconsistency.
+ - Introduced 'csr_dirty' flag to track dynamic userspace CSR/CONFIG
+   modifications (KVM_SET_ONE_REG, KVM_SET_GUEST_DEBUG), forcing a full
+   restore when debugging or modifying states at userspace.
+ - Kept kvm_riscv_vcpu_aia_load() out of the skip block to resolve IMSIC
+   VS-file instability.
+
+ v2 -> v3:
+ v2 was missing a critical check because I generated the patch from my
+ wrong (experimental) branch. This is fixed in v3. Sorry for my trouble.
+
+ v1 -> v2:
+ Apply the logic to aia csr load. Thanks for Andrew Jones's advice.
+---
+ arch/riscv/include/asm/kvm_host.h |  3 +++
+ arch/riscv/kvm/vcpu.c             | 22 ++++++++++++++++++++++
+ arch/riscv/kvm/vcpu_onereg.c      |  2 ++
+ 3 files changed, 27 insertions(+)
+
+diff --git a/arch/riscv/include/asm/kvm_host.h b/arch/riscv/include/asm/kvm_host.h
+index 24585304c..7ee47b83c 100644
+--- a/arch/riscv/include/asm/kvm_host.h
++++ b/arch/riscv/include/asm/kvm_host.h
+@@ -273,6 +273,9 @@ struct kvm_vcpu_arch {
+ 	/* 'static' configurations which are set only once */
+ 	struct kvm_vcpu_config cfg;
  
-But this I don't quite understand. .invalidate_folio is called when
-the file is truncated (or when the whole inode is being evicted from
-memory). Filesystem can do whatever it wishes there, not just free folio
-private data. Are you pointing at folio_needs_release() check? But you can
-mark your mappings with mapping_release_always() - it's there exactly for
-such usecases... Am I missing something?
-
-								Honza
++	/* Indicates modified guest CSRs */
++	bool csr_dirty;
++
+ 	/* SBI steal-time accounting */
+ 	struct {
+ 		gpa_t shmem;
+diff --git a/arch/riscv/kvm/vcpu.c b/arch/riscv/kvm/vcpu.c
+index a55a95da5..ff51a312d 100644
+--- a/arch/riscv/kvm/vcpu.c
++++ b/arch/riscv/kvm/vcpu.c
+@@ -24,6 +24,8 @@
+ #define CREATE_TRACE_POINTS
+ #include "trace.h"
+ 
++static DEFINE_PER_CPU(struct kvm_vcpu *, kvm_former_vcpu);
++
+ const struct _kvm_stats_desc kvm_vcpu_stats_desc[] = {
+ 	KVM_GENERIC_VCPU_STATS(),
+ 	STATS_DESC_COUNTER(VCPU, ecall_exit_stat),
+@@ -537,6 +539,8 @@ int kvm_arch_vcpu_ioctl_set_guest_debug(struct kvm_vcpu *vcpu,
+ 		vcpu->arch.cfg.hedeleg |= BIT(EXC_BREAKPOINT);
+ 	}
+ 
++	vcpu->arch.csr_dirty = true;
++
+ 	return 0;
+ }
+ 
+@@ -581,6 +585,20 @@ void kvm_arch_vcpu_load(struct kvm_vcpu *vcpu, int cpu)
+ 	struct kvm_vcpu_csr *csr = &vcpu->arch.guest_csr;
+ 	struct kvm_vcpu_config *cfg = &vcpu->arch.cfg;
+ 
++	/*
++	 * If VCPU is being reloaded on the same physical CPU and no
++	 * other KVM VCPU has run on this CPU since it was last put,
++	 * we can skip the expensive CSR and HGATP writes.
++	 *
++	 * Note: If a new CSR is added to this fast-path skip block,
++	 * make sure that 'csr_dirty' is set to true in any
++	 * ioctl (e.g., KVM_SET_ONE_REG) that modifies it.
++	 */
++	if (vcpu->arch.last_exit_cpu == cpu && !vcpu->arch.csr_dirty &&
++	    vcpu == __this_cpu_read(kvm_former_vcpu))
++		goto csr_restore_done;
++
++	vcpu->arch.csr_dirty = false;
+ 	if (kvm_riscv_nacl_sync_csr_available()) {
+ 		nsh = nacl_shmem();
+ 		nacl_csr_write(nsh, CSR_VSSTATUS, csr->vsstatus);
+@@ -624,6 +642,7 @@ void kvm_arch_vcpu_load(struct kvm_vcpu *vcpu, int cpu)
+ 
+ 	kvm_riscv_mmu_update_hgatp(vcpu);
+ 
++csr_restore_done:
+ 	kvm_riscv_vcpu_timer_restore(vcpu);
+ 
+ 	kvm_riscv_vcpu_host_fp_save(&vcpu->arch.host_context);
+@@ -645,6 +664,9 @@ void kvm_arch_vcpu_put(struct kvm_vcpu *vcpu)
+ 	void *nsh;
+ 	struct kvm_vcpu_csr *csr = &vcpu->arch.guest_csr;
+ 
++	if (vcpu != __this_cpu_read(kvm_former_vcpu))
++		__this_cpu_write(kvm_former_vcpu, vcpu);
++
+ 	vcpu->cpu = -1;
+ 
+ 	kvm_riscv_vcpu_aia_put(vcpu);
+diff --git a/arch/riscv/kvm/vcpu_onereg.c b/arch/riscv/kvm/vcpu_onereg.c
+index e7ab6cb00..fc08bf833 100644
+--- a/arch/riscv/kvm/vcpu_onereg.c
++++ b/arch/riscv/kvm/vcpu_onereg.c
+@@ -652,6 +652,8 @@ static int kvm_riscv_vcpu_set_reg_csr(struct kvm_vcpu *vcpu,
+ 	if (rc)
+ 		return rc;
+ 
++	vcpu->arch.csr_dirty = true;
++
+ 	return 0;
+ }
+ 
 -- 
-Jan Kara <jack@suse.com>
-SUSE Labs, CR
+2.43.0
+
