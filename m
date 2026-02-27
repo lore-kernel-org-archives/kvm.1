@@ -1,91 +1,97 @@
-Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4EF982D73BC;
-	Fri, 27 Feb 2026 20:06:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=13.77.154.182
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA0A82D73BC;
+	Fri, 27 Feb 2026 20:09:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772222792; cv=none; b=DSM3ziyjrA5r7XXsVAvZRJT28T7RlZn015njHjuJjfsmekK+Zihk+ce9fceEp0qvvl8DIHEY7PhpgXitKNqQUf8trfhS9fnXweMkW6aKZRuycOcoYLAlOk253tFOTSV+BMSTRpEoypZG7o1n4yKnj1QYWSwxCrZopj9eADDLkSM=
+	t=1772222941; cv=none; b=Qzvebvq6hMxmKM/4JSbZeiICI4xPiTRsZDttk9t0/DHrp1a/G+0pK4JQrm2PX/Z0SUtYq7UkufhB0GEUtKIxMEWICFIp6Y0wWDhxaIN/7GAivpKhDbfgVZfuZa+oDpxJ4sdO5s9kjO3O6oOOPYFOfTxUcn/9AmknFWHuUZZfAJA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772222792; c=relaxed/simple;
-	bh=rzB214xGCqD3xv4mmMmHeRsaLlWaJqiFq7PjvbJrxVY=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=FpXH2X6/WrCjYvXAn2F8tGCXgmaSeDwCOHhSBqlp5j3GzAjeSgN6cpXYGzy7KhCtWTpoLXgU4B3YvTSXS4Sv6W3YF00yF0khWMga1tBsQNTBE9UUAx8mxvIC5vv0mK6YOA78jCUrF4DfZOleUa/tKo0we5kDjSWQL47lh+LOC/8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com; spf=pass smtp.mailfrom=linux.microsoft.com; dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b=PQdNdYk5; arc=none smtp.client-ip=13.77.154.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.microsoft.com
+	s=arc-20240116; t=1772222941; c=relaxed/simple;
+	bh=+0xJWv0Lt6lH8XeECmzMB5rMfZrGfkXmNV493TaaUhs=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition; b=b94Vyzbh2Jyi7bhx9gejjytztVmLY4giKVi3xctZriq/PjKsVbMFMhRv2wgjFSInzC2vfObryNsE+F0P8mBTCpyAainC9o+2z3AXUi0xtrTFBsgll03Fsb7JwdADdAnTu+pAX2ZFSuc8VYMsqVlFDW0kG2L+bWpMjHhocYjbd34=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YG0tEJJT; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b="PQdNdYk5"
-Received: from [192.168.0.88] (192-184-212-33.fiber.dynamic.sonic.net [192.184.212.33])
-	by linux.microsoft.com (Postfix) with ESMTPSA id 96F8920B6F02;
-	Fri, 27 Feb 2026 12:06:30 -0800 (PST)
-DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 96F8920B6F02
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
-	s=default; t=1772222790;
-	bh=Lgc0xTJY6n96ZqmNpJBXHUF+t6nBKy6gbV8xtTVGovc=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=PQdNdYk58FNrxwz9wt1xzJqO13MT8WXHPbe8sPcoMZ8b4HD4EgohHJnndrhftyyFp
-	 avTKsPsEOehVmOf5Hn5X+50n5XftixLe77/oP01dSXDLJgdIWcr94dqgVSc7bZwvme
-	 rp7ZotNw7oLvV12UU+mcrB0VPNkXIf3BPAegTvF8=
-Message-ID: <68f419eb-2f0f-e747-762a-45bd8181e819@linux.microsoft.com>
-Date: Fri, 27 Feb 2026 12:06:29 -0800
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YG0tEJJT"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 080CAC19421;
+	Fri, 27 Feb 2026 20:09:00 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1772222941;
+	bh=+0xJWv0Lt6lH8XeECmzMB5rMfZrGfkXmNV493TaaUhs=;
+	h=Date:From:To:Cc:Subject:From;
+	b=YG0tEJJTJfoLj6ARnOgB1bTSgSNKqd8i442WohX7dinOs7axJ3xEjwyfREcddRfF3
+	 MZSI3F783bSmwApK0YGKE1/NKNdhkpFQLAyzjyKAqoJXV0TFSR2Law8HRKHrsNODN1
+	 zbPNCJ1yzcjAf7NPH0anptpYdWJIXJ2O3V7xJm2hR2M7tC4F1UXQxZ3lqo5dtVFtrL
+	 syewUm609N0x38TT4CCAcQcGvd7bFhkfSiyexqLs86QBUuH0Ro4j5wSpjlbUNOoItT
+	 YEzsegr316MDzW5LuHEeVwX3p8mvHiFlVh9zwxXL6Q7iY/soq4PdRFYoxh1z6fSsZS
+	 snsd6askwgy0w==
+Date: Fri, 27 Feb 2026 14:08:59 -0600
+From: Bjorn Helgaas <helgaas@kernel.org>
+To: Linus Torvalds <torvalds@linux-foundation.org>
+Cc: linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org,
+	Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>,
+	Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
+	Manivannan Sadhasivam <mani@kernel.org>,
+	David Woodhouse <dwmw2@infradead.org>,
+	Baruch Siach <baruch@tkos.co.il>,
+	Alex Williamson <alex@shazbot.org>,
+	Niklas Cassel <cassel@kernel.org>, Frank Li <Frank.Li@nxp.com>,
+	Shin'ichiro Kawasaki <shinichiro.kawasaki@wdc.com>,
+	Koichiro Den <den@valinux.co.jp>, Shawn Guo <shawnguo@kernel.org>,
+	kvm@vger.kernel.org
+Subject: [GIT PULL] PCI fixes for v7.0
+Message-ID: <20260227200859.GA3913790@bhelgaas>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.13.1
-Subject: Re: VFIO support on hyperv (vfio_pci_core_ioctl())
-Content-Language: en-US
-To: Alex Williamson <alex@shazbot.org>
-Cc: kvm@vger.kernel.org, "wei.liu@kernel.org" <wei.liu@kernel.org>,
- "linux-hyperv@vger.kernel.org" <linux-hyperv@vger.kernel.org>
-References: <1f50dae2-ec4a-7914-a14f-2ada803eb0e3@linux.microsoft.com>
- <20260227122957.1e555024@shazbot.org>
-From: Mukesh R <mrathor@linux.microsoft.com>
-In-Reply-To: <20260227122957.1e555024@shazbot.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-On 2/27/26 11:29, Alex Williamson wrote:
-> On Wed, 25 Feb 2026 14:04:49 -0800
-> Mukesh R <mrathor@linux.microsoft.com> wrote:
-> 
->> Hi Alex et al:
->>
->> I've been looking at making pci passthru irq setup/remap work on hyperv
->> for the latest (6.19) version using vfio core. Unfortunately, it's just
->> not fitting well because in case of hyperv the irq remap is done by
->> the hypervisor. Specifically, for a robust and proper solution, we need
->> to override vfio_pci_set_msi_trigger(). As such, for the best way forward
->> I am trying to figure how much flexibility there is to modify
->> vfio_pci_intrs.c with "if (running_on_hyperv())" branches (putting hyperv
->> code in separate file).
->>
->> If none, then the alternative would be to create vfio-hyperv.c with
->> vfio_device_ops.ioctl = hyperv_vfio_pci_core_ioctl(). But, then I'd
->> be replicating code for other sub ioctls like vfio_pci_ioctl_get_info(),
->> vfio_pci_ioctl_get_irq_info(), etc. Would it be acceptable to make them
->> non static in this case?
->>
->> Please let me know your thoughts or if you have other suggestions.
-> 
-> Hi Mukesh,
-> 
-> In general, littering the code with running_on_hyperv() tests is not
-> acceptable, but the presented alternative isn't really accurate either.
-> If you want to substitute in your own ioctl callback, you can still
-> call vfio_pci_core_ioctl() for all the unhandled ioctls, without extra
+The following changes since commit 6de23f81a5e08be8fbf5e8d7e9febc72a5b5f27f:
 
-Yes, I realized that after looking at how other callers were using it.
+  Linux 7.0-rc1 (2026-02-22 13:18:59 -0800)
 
-> exports.  We can also look at whether vfio_pci_device_ops could have a
-> callback specifically addressing an alternative set_msi_trigger
-> handler.  Thanks,
+are available in the Git repository at:
 
-Sounds good. thanks as always,
--Mukesh
+  git://git.kernel.org/pub/scm/linux/kernel/git/pci/pci.git tags/pci-v7.0-fixes-2
 
+for you to fetch changes up to 39195990e4c093c9eecf88f29811c6de29265214:
 
-> Alex
+  PCI: Correct PCI_CAP_EXP_ENDPOINT_SIZEOF_V2 value (2026-02-27 10:24:25 -0600)
 
+The last two commits fix issues that are quite old, but I think they're
+worth including in v7.0.
+
+----------------------------------------------------------------
+
+- Update MAINTAINERS email address (Shawn Guo)
+
+- Refresh cached Endpoint driver MSI Message Address to fix a v7.0
+  regression when kernel changes the address after firmware has configured
+  it (Niklas Cassel)
+
+- Flush Endpoint MSI-X writes so they complete before the outbound ATU
+  entry is unmapped (Niklas Cassel)
+
+- Correct the PCI_CAP_EXP_ENDPOINT_SIZEOF_V2 value, which broke VMM use of
+  PCI capabilities (Bjorn Helgaas)
+
+----------------------------------------------------------------
+Bjorn Helgaas (1):
+      PCI: Correct PCI_CAP_EXP_ENDPOINT_SIZEOF_V2 value
+
+Niklas Cassel (2):
+      PCI: dwc: ep: Refresh MSI Message Address cache on change
+      PCI: dwc: ep: Flush MSI-X write before unmapping its ATU entry
+
+Shawn Guo (1):
+      MAINTAINERS: Update Shawn Guo's address for HiSilicon PCIe controller driver
+
+ MAINTAINERS                                     |  2 +-
+ drivers/pci/controller/dwc/pcie-designware-ep.c | 25 ++++++++++++++++---------
+ include/uapi/linux/pci_regs.h                   |  2 +-
+ 3 files changed, 18 insertions(+), 11 deletions(-)
