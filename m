@@ -1,124 +1,83 @@
-Received: from mail-pf1-f179.google.com (mail-pf1-f179.google.com [209.85.210.179])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E9DAE30CD81
-	for <kvm@vger.kernel.org>; Fri, 27 Feb 2026 12:27:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.179
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0ED0421772A;
+	Fri, 27 Feb 2026 12:37:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772195257; cv=none; b=JZyzVq5q2BVEyKb+y6XY0hDSxHsBlhmeZNVVEFKCTby7JtKinkbHWhYksZ7AbystKx+4oA54XtUOHR5DKraFmSE2+1k91+wZu5HkYrH9isjqOtPA67yDQ0UiS+jyJ4NJEjM9IXxSTzDJ6H/iR4KSmW8f28cM7SXja5lAlv534Jc=
+	t=1772195821; cv=none; b=VOG6h75MwKYY3u/+cLEkOvxYeML5tb0DJ9nwPcUx685Upn7v/lon1924yshW2wrR2AETUebdpIQQcZ8yizjjpXB0SY0cbgB9/M9aRl6yuicP81JJVKGJspNQolDpIIEmb9yrE2Hs9wNNzGWa2nvzjM4V3dcrC+J3s9SEwFtyu1U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772195257; c=relaxed/simple;
-	bh=PzpkNLsWIGHZiCrOjhr7MHI8LKyh0/MD9t8kysr1W78=;
-	h=From:To:Cc:Subject:In-Reply-To:Date:Message-ID:References:
-	 MIME-version:Content-type; b=c07ERLCRnRtj2PBHrCdOTpb9sxz2D+Bq7IxZooaEmpBorTrJw29xasrG+n7TsgZIEXnS7ob/uS575Gzhbhnn0jP6OQkyW0tcIEMEn+8xgljSKJmGpDG6WSxsJA7l6J+QCDtxlvE8JnzWh10dC3yALlmHrEhiWH5Gxr3daZiTn3o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=b7kdlOl1; arc=none smtp.client-ip=209.85.210.179
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1772195821; c=relaxed/simple;
+	bh=dsee9eRlHaKPY3/htEY7eYUTcjs6v6upQYrzS0dDUus=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=VVOQ56pKxflEQxoHZbRqHhFwX893zsapKg7g5ku1SV99YBMJ5uexdgWVL28imuuRP6Lq8MGFSdB1NT//4uoruS4zVRIrl/XFhCWZPC+D4BSIL3lR95rnpkGzUwwqUH1stA5qZ4YRpJDp+X+BxvCx3v7hb+6QAOpImeMW8tYXUNs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WGETGO3J; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="b7kdlOl1"
-Received: by mail-pf1-f179.google.com with SMTP id d2e1a72fcca58-824adc96ad2so1981957b3a.3
-        for <kvm@vger.kernel.org>; Fri, 27 Feb 2026 04:27:35 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1772195255; x=1772800055; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:message-id:date
-         :in-reply-to:subject:cc:to:from:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=BBCa2Iq0/hu0sJwRb681qcL3bM1nOatkl9qB4gJ48xY=;
-        b=b7kdlOl11DaWcjhxH3Kr45UGFQV02XThQ2j/a8JNFy1tpKfHXM42zt21uMRXpz+E9Z
-         wctsYmvCaBCPeKu6v/9/bQzCOSYX92H++u8banen8T0mR1SO4S9SgyZvCsCeqM+Lbyev
-         K/NyrENhIOFzQ5qJNsHPXSa0IZOiprIhZpDjb1YRHFv62jbGk13ZDZ/pnzD2CR4iKPst
-         FQ5ZY62jgKfdAFe4u1m6dWygMFhro8SLr8N/rEbiPmI8AYnGR9WwV/Enn3utwxH7CNsu
-         u1pWkKE5fSiUDbpYrCjrtvqRmTMOSWlUNx2jVsOxDGXKfYpi1miTvsj7SDVyNOAc2Ue6
-         WHGw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1772195255; x=1772800055;
-        h=content-transfer-encoding:mime-version:references:message-id:date
-         :in-reply-to:subject:cc:to:from:x-gm-gg:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=BBCa2Iq0/hu0sJwRb681qcL3bM1nOatkl9qB4gJ48xY=;
-        b=LZY2ZqqbH2z1EQ98F3P1S22D4ftZY5VhwmdbXxd26hp0nw4lgCyueDD2bMjIiWBBvI
-         UjCR70frqY1KuO/usB34nDLNq0kDz4yrA5hnAoMNs0CpKuqDc3TstljJpwnRP4s6aLRY
-         Paa4xhgZAqFu0fOFDkjKlq1xJ1udwrHhYx7gWBgzUG1U2yHlVbHvL5kVD5x0k/NtTGr1
-         Wg1ndWtqDGAkrhDaWqI5ptgQBLgzL9l3VvnhNw3MeKQdAF2fvfVIR3Iskt+0Z2ApzOt4
-         DsPBxTjnm2QkpGfpdVZLAiQYah7wS3yja+lSsCBQdZbw6ID1Opga+9RIEzeU036x5O2G
-         Bxxw==
-X-Forwarded-Encrypted: i=1; AJvYcCUxVtMImumRIhvRA7DNaKlqMfms72BIm55I3E/V6UqSj2CsQxU1/fCCoVjACVItnelzs8Y=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyBqJYCJndmbW6vAjRSgli9UPNbYk9kNcKpuPxmOkH1kNolb8dA
-	hjEx6fdf1ElfUNyS0SIDLWaQJh/2c4U/pD33kzwjTPmve5m5NuTpSZBy
-X-Gm-Gg: ATEYQzwxYvTZL4djS2DnWgNsrJ8wr7TZ3ff9NMKpBz2TDITje6YuruCboDBXsLkfTRg
-	byiiPWSugtz3xM0zKnjYqiL8oDfONwuUjXHxBBKbP+BOpskuSKC4JEOqmF2f9P3u08nfg7MoO9u
-	5lxuS9A7S87EVMx6GPTWM3e1rGRgOg4cJYXrdpXsGSZIc2ylLGuVC98SJDNmbw0rlf3DyKpfohU
-	drT1hkhIgEjDLqpYc66iq7jGfPoYTmEC+aBPF2OZUeL8gr1NeqwY7cdVbqYbq6RfevqTOCLTGlC
-	aWw/OXPAnPUtAktkqoHAtxQCQFvdH9QcpBai/Zv+s692Y/hhV1pp6m/JC3QbNg2f+CGp1+gwzJM
-	5+4FkVzDqBZzwsq4Ej3jpR+q63dgO495TQKGnGsVOrxSKdaXIacJALEbt7dQ+LixqaJ46pe93/w
-	ZozrUj5kErSUgm1xwXNw==
-X-Received: by 2002:a05:6a00:4c81:b0:81f:3ae9:3f71 with SMTP id d2e1a72fcca58-8274d9d0704mr2242350b3a.28.1772195255179;
-        Fri, 27 Feb 2026 04:27:35 -0800 (PST)
-Received: from dw-tp ([203.81.240.187])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-82739ff1c9esm5479908b3a.32.2026.02.27.04.27.31
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 27 Feb 2026 04:27:34 -0800 (PST)
-From: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
-To: "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>, linuxppc-dev@lists.ozlabs.org
-Cc: linux-mm@kvack.org, kvm@vger.kernel.org, Alex Williamson <alex@shazbot.org>, Peter Xu <peterx@redhat.com>
-Subject: Re: [RFC v1 2/2] powerpc/64s: Add support for huge pfnmaps
-In-Reply-To: <abfbe83b-23fb-400d-9069-b8bf4ad21d95@kernel.org>
-Date: Fri, 27 Feb 2026 16:02:25 +0530
-Message-ID: <87pl5qh3ye.ritesh.list@gmail.com>
-References: <0b8fce7a61561640634317a5e287cdb4794715fd.1772170860.git.ritesh.list@gmail.com> <d159058a45ac5e225f2e64cc7c8bbbd1583e51f3.1772170860.git.ritesh.list@gmail.com> <abfbe83b-23fb-400d-9069-b8bf4ad21d95@kernel.org>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WGETGO3J"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 83EA7C116C6;
+	Fri, 27 Feb 2026 12:37:00 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1772195820;
+	bh=dsee9eRlHaKPY3/htEY7eYUTcjs6v6upQYrzS0dDUus=;
+	h=From:To:Cc:Subject:Date:From;
+	b=WGETGO3JBTefW1vOvnYv3JF00EwegeaUPWNDmob4fWwcFSDNAfhxVGEydPYrZh2yW
+	 WWrCdZco5wY/d8fVQnf0eO21CXZPwm7l25FBxG3LfAQNBBHe5jX3MWB+XqZGNMOseH
+	 xClpJrMMUdjHK3Uk9Yj5yF3upd4nUHZCR20LEZWsIHcvC1AbSZDbNHTlfggFRUJBdx
+	 jMADBpStQytFhRd8qwINWIbuVfgYHWWL9i7SVnNQ0G2jyZ2Komg0P/lP76FHGO6oj/
+	 WWQBTPuEUfNPhTggHUaQY5qTc+hR5rdQCS9DZ/8BlK/kX1dN1ZhFwv4lcuknKvS3M9
+	 DpQasjwlrFFgQ==
+From: Bjorn Helgaas <helgaas@kernel.org>
+To: linux-pci@vger.kernel.org,
+	David Woodhouse <dwmw2@infradead.org>,
+	Alex Williamson <alex@shazbot.org>
+Cc: Baruch Siach <baruch@tkos.co.il>,
+	kvm@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Bjorn Helgaas <bhelgaas@google.com>
+Subject: [PATCH] PCI: Correct PCI_CAP_EXP_ENDPOINT_SIZEOF_V2 value
+Date: Fri, 27 Feb 2026 06:36:53 -0600
+Message-ID: <20260227123653.3891008-1-bhelgaas@google.com>
+X-Mailer: git-send-email 2.51.0
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-version: 1.0
-Content-type: text/plain; charset=utf-8
+MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-"Christophe Leroy (CS GROUP)" <chleroy@kernel.org> writes:
+fb82437fdd8c ("PCI: Change capability register offsets to hex") incorrectly
+converted the PCI_CAP_EXP_ENDPOINT_SIZEOF_V2 value from decimal 52 to hex
+0x32:
 
-> Le 27/02/2026 à 07:16, Ritesh Harjani (IBM) a écrit :
->> This uses _RPAGE_SW2 bit for the PMD and PUDs similar to PTEs.
->> This also adds support for {pte,pmd,pud}_pgprot helpers needed for
->> follow_pfnmap APIs.
->> 
->> This allows us to extend the PFN mappings, e.g. PCI MMIO bars where
->> it can grow as large as 8GB or even bigger, to map at PMD / PUD level.
->> VFIO PCI core driver already supports fault handling at PMD / PUD level
->> for more efficient BAR mappings.
->> 
->> Signed-off-by: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
->
-> Reviewed-by: Christophe Leroy (CS GROUP) <chleroy@kernel.org>
->
->
+  -#define PCI_CAP_EXP_ENDPOINT_SIZEOF_V2 52      /* v2 endpoints with link end here */
+  +#define PCI_CAP_EXP_ENDPOINT_SIZEOF_V2 0x32    /* end of v2 EPs w/ link */
 
-Thanks for the review!
+Change PCI_CAP_EXP_ENDPOINT_SIZEOF_V2 to the correct value of 0x34.
 
->>   #define __HAVE_ARCH_PMDP_SET_ACCESS_FLAGS
->>   extern int pmdp_set_access_flags(struct vm_area_struct *vma,
->> diff --git a/arch/powerpc/include/asm/pgtable.h b/arch/powerpc/include/asm/pgtable.h
->> index dcd3a88caaf6..2d27cb1c2334 100644
->> --- a/arch/powerpc/include/asm/pgtable.h
->> +++ b/arch/powerpc/include/asm/pgtable.h
->> @@ -63,6 +63,18 @@ static inline pgprot_t pte_pgprot(pte_t pte)
->>   	return __pgprot(pte_flags);
->>   }
->> 
->> +#define pmd_pgprot pmd_pgprot
->> +static inline pgprot_t pmd_pgprot(pmd_t pmd)
->> +{
->> +	return pte_pgprot(pmd_pte(pmd));
->> +}
->> +
->> +#define pud_pgprot pud_pgprot
->> +static inline pgprot_t pud_pgprot(pud_t pud)
->> +{
->> +	return pte_pgprot(pud_pte(pud));
->> +}
->> +
+fb82437fdd8c was from Baruch Siach <baruch@tkos.co.il>, but this was not
+Baruch's fault; it's a mistake I made when applying the patch.
 
-In v2 - I will add above under #ifdef CONFIG_PPC_BOOK3S_64 
-to avoid build issues with 32-bit PPC.
+Fixes: fb82437fdd8c ("PCI: Change capability register offsets to hex")
+Reported-by: David Woodhouse <dwmw2@infradead.org>
+Closes: https://lore.kernel.org/all/3ae392a0158e9d9ab09a1d42150429dd8ca42791.camel@infradead.org
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+---
+ include/uapi/linux/pci_regs.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
--ritesh
+diff --git a/include/uapi/linux/pci_regs.h b/include/uapi/linux/pci_regs.h
+index ec1c54b5a310..14f634ab9350 100644
+--- a/include/uapi/linux/pci_regs.h
++++ b/include/uapi/linux/pci_regs.h
+@@ -712,7 +712,7 @@
+ #define  PCI_EXP_LNKCTL2_HASD		0x0020 /* HW Autonomous Speed Disable */
+ #define PCI_EXP_LNKSTA2		0x32	/* Link Status 2 */
+ #define  PCI_EXP_LNKSTA2_FLIT		0x0400 /* Flit Mode Status */
+-#define PCI_CAP_EXP_ENDPOINT_SIZEOF_V2	0x32	/* end of v2 EPs w/ link */
++#define PCI_CAP_EXP_ENDPOINT_SIZEOF_V2	0x34	/* end of v2 EPs w/ link */
+ #define PCI_EXP_SLTCAP2		0x34	/* Slot Capabilities 2 */
+ #define  PCI_EXP_SLTCAP2_IBPD	0x00000001 /* In-band PD Disable Supported */
+ #define PCI_EXP_SLTCTL2		0x38	/* Slot Control 2 */
+-- 
+2.51.0
+
