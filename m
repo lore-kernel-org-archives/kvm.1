@@ -1,119 +1,76 @@
-Received: from mail-yw1-f174.google.com (mail-yw1-f174.google.com [209.85.128.174])
+Received: from mail-oo1-f71.google.com (mail-oo1-f71.google.com [209.85.161.71])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 18945478856
-	for <kvm@vger.kernel.org>; Sat, 28 Feb 2026 15:22:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 312201E8320
+	for <kvm@vger.kernel.org>; Sat, 28 Feb 2026 15:57:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.161.71
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772292170; cv=none; b=GEXJr4oZ0L6YSkKRXy6nJ5kX4gs7BsA3Z06vvttM3ATGh4y5v8qRgD8u9T24WqmwaiM+7o4zYU4qL8z7wJ5irSgxyl4rN2NdgIeofysiJKVhUjCqlcehXiM182Y9jNjS7XHWxG421BOjtWX+zpRGBcNdU4pX2HcJQ1UzdysiFJc=
+	t=1772294225; cv=none; b=jfHdsA7evJeAE6k4SE2rGWyAoMZAurYsggDRSzi7HPljfGQmh9t/iT/t9QeqWpgDAB+R9H+ER7IB9K+9uE5nD9bYjiholrCJ97Bjx+gqGiTeGMioCr0f6I7zMHmkibJ4mhwFTEnQhlk9ckDdyA0JRcpdEe5uJsy4afaxs9akx0Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772292170; c=relaxed/simple;
-	bh=S6uDKROnJeeqIi0NYupNmyjs6pTJRDFiU0dtOZkVFus=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=I5b+2G6wqZ1qMpJytDbThIpw2+AQ2/Ek5DSUvBwkFXrgcEO2vq9guRWhXo4l5iFfmhFRjpr/x5UCzuXXdFpEygBbAZhYqFmxDvlmv9NP+w3GK7br2Hmow1nQjlZEp/EP5+YjpmzD9RK2b3DjpHAY4v86Z0Nr5ZLlXF4BauY+Mrw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=eXZfU7fi; arc=none smtp.client-ip=209.85.128.174
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="eXZfU7fi"
-Received: by mail-yw1-f174.google.com with SMTP id 00721157ae682-7987531082aso28998707b3.3
-        for <kvm@vger.kernel.org>; Sat, 28 Feb 2026 07:22:47 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1772292167; x=1772896967; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=8gJIyL9AfQkuFfPNEXdWTtLgAIKWa7r6TpMrqBv02Ok=;
-        b=eXZfU7fiZdyEB5cPUCL2lek1qIrBMg3MoNoO3T7Wvkb0hiDUwSxZZw5nB/mdggLhdu
-         WWmREOdEwOFezDWlTQ0tyyCx+190RahDv1FSqp6GloKFbWfrMHHF25RHpIUpx4aItRCI
-         /hR6Vb4y2DujPIfmOrvHRrI4JamhHRk4E9LXrzhGKAlY/1WAycuyDiCHFl98IEFIeEFZ
-         eACjPL2mJqj5Foj9MrodBEwARpGv/0yrbkyFRKQMbeeAiJyATiiTVrzV6/umuCI5FdEw
-         WwOiJJPnJ/rIjEcY5RV0kyywb+FIoJzpYODHisvIH2b6x5f0R5OJrba/+Uim9vQuxhTG
-         AnPg==
+	s=arc-20240116; t=1772294225; c=relaxed/simple;
+	bh=VU9ClshQ4AjoYILXK+ofmUahe+cXnPSNQCKVmqUzIw4=;
+	h=MIME-Version:Date:In-Reply-To:Message-ID:Subject:From:To:
+	 Content-Type; b=TSnJyaFbmgvSbRMke7UxetRKMXoB7ol/aFz4F3BoG2xfZWxrh9Cwum1qYuYX1/Z0TjJURj59Ao9t1EZyNVDG6qHNGT2sZhySv214wBNTiy+aTe1q12c6CG6J2EsDTTNamfsWn55IMn/yw3h66pySZyXHIeVco4BprbOXkMO9Oww=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.161.71
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
+Received: by mail-oo1-f71.google.com with SMTP id 006d021491bc7-679c6ef1538so69250977eaf.3
+        for <kvm@vger.kernel.org>; Sat, 28 Feb 2026 07:57:02 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1772292167; x=1772896967;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=8gJIyL9AfQkuFfPNEXdWTtLgAIKWa7r6TpMrqBv02Ok=;
-        b=UzkpWvT6Yy6dNexsK2oJ34b3Ss0PYqVFcK/QFteSgZFoHR6skea4jIKmkZIalCxPiJ
-         1U5eX8EtqtzS1Ay/vWi9BuwnoZX0ED+XG6IafrzgsuRW2Lv+Pwct4HdmloCKMbfD3vjp
-         iWNCsIAbC6mJt/rHKYcvI0ejA/hfgY0b1iWK3I7NH22QGhZhG/xA2Mebk+7Syn/UlpUF
-         RDrw+5A7Zw/GVg8biWaE3cqNDkLKKQjeLqYVs61crdtfBPfrgxLvdbw2QiEY5JkAHa69
-         XV5zFm0mOh93E4WI4Rt+/D0llmzoeoTwEXiQ34EfoYnIRFA6i6jXsEqYvu62nrXRF1TK
-         1GSQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVCWnEfk81uJs8zEc4lG9MwyqOG0GKf9JiMp6wDnpwJU/3kLbq0Gc5hwFinnAvZIBhfZVQ=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzxYIOXAkzrYB7E9pt9PRqpM4ienT2OvPPOXTtQRUMzaRUUMgpN
-	xacuFjYjIFxmxKsFvEM/leyp6UGugBxjzq9x1UuNtUoEeKExgHlP82Pd
-X-Gm-Gg: ATEYQzy5X68ywqeAFBtssK9y3VepEnU4piBRQfgv3ilLinN4dyk01N1Fcq0U25d+Quw
-	GhoYGXO3qsk6u4Ky/1psdPqc0bixrGv9Gi1vAI/OudXm24ywf6EVBmLG24kOBQdX2yp5Q9cVahN
-	93zcn8i8RfB++wDdPMaYsSM5PH7xqjmKg//KVaVxsP4CvESbe60KDZ/7NZ4IxVw8rXtX/3Z1rFF
-	vimVCWvdmjPeuuYZq/GdOsMieizvvhWOlOdKt28dTVpezT+M2BtkZeZy971dPKkUVRb6eAmpUWa
-	byhKFPSSP5euc7ltSqJQ4k3SJm3vISlRGaJdDD1zKBmQ/1nOrqe09vM5KT6js3OY0c9HBZvTi97
-	omWqcUQC5SGF6aDpKT5vpZtPh++foMdcKOi+l4WwbD/cDW8PQ+9++G4/SmCR9sBgu13q6AgxjJN
-	P2igY5cjBWx87FYEuY4vR2aiPlkvesLNorOzGjzR46BLrfNJmx+b+BRLtIDllzkP2tNQ5kPSYa4
-	2+Pv+8xjGagLDbWMhO/cvaO
-X-Received: by 2002:a05:690c:1b:b0:796:74cf:df0c with SMTP id 00721157ae682-798855082c6mr61686407b3.24.1772292167012;
-        Sat, 28 Feb 2026 07:22:47 -0800 (PST)
-Received: from tux ([2601:7c0:c37c:4c00::5c0b])
-        by smtp.gmail.com with ESMTPSA id 00721157ae682-79876a92039sm32861897b3.8.2026.02.28.07.22.46
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 28 Feb 2026 07:22:46 -0800 (PST)
-From: Ethan Tidmore <ethantidmore06@gmail.com>
-To: anup@brainfault.org
-Cc: atish.patra@linux.dev,
-	pjw@kernel.org,
-	palmer@dabbelt.com,
-	aou@eecs.berkeley.edu,
-	alex@ghiti.fr,
-	ajones@ventanamicro.com,
-	kvm@vger.kernel.org,
-	kvm-riscv@lists.infradead.org,
-	linux-riscv@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	Ethan Tidmore <ethantidmore06@gmail.com>
-Subject: [PATCH] RISC-V: KVM: Fix out-of-bounds by 1
-Date: Sat, 28 Feb 2026 09:22:26 -0600
-Message-ID: <20260228152226.2116895-1-ethantidmore06@gmail.com>
-X-Mailer: git-send-email 2.53.0
+        d=1e100.net; s=20230601; t=1772294222; x=1772899022;
+        h=to:from:subject:message-id:in-reply-to:date:mime-version
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=smD2HaiHLIOJ/xJDEhd0WTnFcnRAIKeje4UXvrICVpU=;
+        b=ny74kSQgwptxjDdG7XstrFmN9Vea8j8qTagXW9Qu9iRLOZBdccb5RZ0yP9BUedSHby
+         Azusmb1nbFRAiRdl6DSnF5E3/aDG12s88ybk4v+Q7XEf0epaRnqmQBN7Bktk+5q6gkUL
+         Ze5bVAJz4EUf5QyqBTj2TWG39BOXH2C56BA/mADgAA0gOsrM3owsDTvFk3wsQiItCYBf
+         sFMYxcIqm8JTiJNmR0CQ+Q73wJA9Wa/VFq+yYo1rTthUsvHZZM2kDTXUv/Vqi9N+vq+b
+         52s//B5Ws0VIFZXJdq6lKvy5+X2mMLHL3TIFvaQ2Z8njoChzbpmCgV0YornLtvIhfpbz
+         Eqxw==
+X-Forwarded-Encrypted: i=1; AJvYcCXv9TWHRbWWlUNbzc9rrc0Mm1+Fk8XeFpk90Hd8rS0zAhVZHvZZy9L2wsuBhdte4ODB1JA=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyCUA5wVGLJjFBqsgWqXWP7mPtxecT4trwxJFO4TTh88xBOvTzt
+	K6zVyBCKwGlg4BzI6P2wacgZx8L+L4naf5lfbYiWNp4upwpoGtVg05EdUJ0fTgM5O/isjN9Et/+
+	lIWCI0aSRor83uLwIw1a1MD4gPVqytx9XEgE7G0U7iSfU+i2Iz/QDQbeoNvc=
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-Received: by 2002:a05:6820:228a:b0:66e:7aaa:be76 with SMTP id
+ 006d021491bc7-679faf0f951mr3959548eaf.43.1772294222196; Sat, 28 Feb 2026
+ 07:57:02 -0800 (PST)
+Date: Sat, 28 Feb 2026 07:57:02 -0800
+In-Reply-To: <874in0ex49.wl-maz@kernel.org>
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <69a3104e.050a0220.3a55be.0041.GAE@google.com>
+Subject: Re: [syzbot] [kvmarm?] [kvm?] BUG: unable to handle kernel paging
+ request in kvm_vgic_destroy
+From: syzbot <syzbot+f6a46b038fc243ac0175@syzkaller.appspotmail.com>
+To: catalin.marinas@arm.com, joey.gouly@arm.com, kvm@vger.kernel.org, 
+	kvmarm@lists.linux.dev, linux-arm-kernel@lists.infradead.org, 
+	linux-kernel@vger.kernel.org, maz@kernel.org, oupton@kernel.org, 
+	suzuki.poulose@arm.com, syzkaller-bugs@googlegroups.com, 
+	syzkaller@googlegroups.com, will@kernel.org, yuzenghui@huawei.com
+Content-Type: text/plain; charset="UTF-8"
 
-The array kvpmu->pmc is defined as:
+Hello,
 
-struct kvm_pmc pmc[RISCV_KVM_MAX_COUNTERS];
+syzbot has tested the proposed patch and the reproducer did not trigger any issue:
 
-So, accessing it with index RISCV_KVM_MAX_COUNTERS would be
-out-of-bounds by 1.
+Reported-by: syzbot+f6a46b038fc243ac0175@syzkaller.appspotmail.com
+Tested-by: syzbot+f6a46b038fc243ac0175@syzkaller.appspotmail.com
 
-Change index check from > to >=.
+Tested on:
 
-Detected by Smatch:
-arch/riscv/kvm/vcpu_pmu.c:528 kvm_riscv_vcpu_pmu_ctr_info() error:
-buffer overflow 'kvpmu->pmc' 64 <= 64
+commit:         949862c2 KVM: arm64: Eagerly init vgic dist/redist on ..
+git tree:       git://git.kernel.org/pub/scm/linux/kernel/git/maz/arm-platforms.git kvm-arm64/vgic-fixes-7.0
+console output: https://syzkaller.appspot.com/x/log.txt?x=15f88952580000
+kernel config:  https://syzkaller.appspot.com/x/.config?x=31d0db0315ae5d07
+dashboard link: https://syzkaller.appspot.com/bug?extid=f6a46b038fc243ac0175
+compiler:       Debian clang version 21.1.8 (++20251221033036+2078da43e25a-1~exp1~20251221153213.50), Debian LLD 21.1.8
+userspace arch: arm64
 
-Fixes: 8f0153ecd3bf1 ("RISC-V: KVM: Add skeleton support for perf")
-Signed-off-by: Ethan Tidmore <ethantidmore06@gmail.com>
----
- arch/riscv/kvm/vcpu_pmu.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/arch/riscv/kvm/vcpu_pmu.c b/arch/riscv/kvm/vcpu_pmu.c
-index 3a4d54aa96d8..51a12f90fb30 100644
---- a/arch/riscv/kvm/vcpu_pmu.c
-+++ b/arch/riscv/kvm/vcpu_pmu.c
-@@ -520,7 +520,7 @@ int kvm_riscv_vcpu_pmu_ctr_info(struct kvm_vcpu *vcpu, unsigned long cidx,
- {
- 	struct kvm_pmu *kvpmu = vcpu_to_pmu(vcpu);
- 
--	if (cidx > RISCV_KVM_MAX_COUNTERS || cidx == 1) {
-+	if (cidx >= RISCV_KVM_MAX_COUNTERS || cidx == 1) {
- 		retdata->err_val = SBI_ERR_INVALID_PARAM;
- 		return 0;
- 	}
--- 
-2.53.0
-
+Note: no patches were applied.
+Note: testing is done by a robot and is best-effort only.
