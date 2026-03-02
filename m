@@ -1,202 +1,99 @@
-Received: from out-179.mta0.migadu.com (out-179.mta0.migadu.com [91.218.175.179])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f74.google.com (mail-pj1-f74.google.com [209.85.216.74])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0F6441163E
-	for <kvm@vger.kernel.org>; Mon,  2 Mar 2026 15:48:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.179
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 81BCC41B361
+	for <kvm@vger.kernel.org>; Mon,  2 Mar 2026 15:52:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.74
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772466526; cv=none; b=Bj1mie1ZBXkHEADYCmCCgxt1L5cbR89KqyLWHyS0JJzT4WDvhJCIjI5xQ+C7lU4K3BcBPUhmpr1z61rlxZzodlt/Kiiv81RhCwma+b/zUbqfZ5jHxBDAWM26RNFyNmngay3/wve51kjHzeiIfGU4tgRTilCHXJM6P/ECUKv5bOY=
+	t=1772466725; cv=none; b=JdhJSDkopKJDVd7lFItEVOh+l7AJU6ALQ25gMOUDgAVw/h4zChWoSCV5ajRzMtU8UWoWCAamQGUEkmNwsOMBtGVeLbf92AjWB9Hg33kTpfgJJ5kcagD8yAfAMK8bWuYNKF5PAT8puaowceVItQVJCIfdWyqPObxYMFtvKzxPmSI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772466526; c=relaxed/simple;
-	bh=+EtwxgqdOWRZ2FQfy7w/Q9MnqfJZ8XSUbgIqg74laiY=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=fSkJhUDwfZ6HUfTRo++1WCzG4qQdqiDpx8QyiW62jtAUStWl3MyKK4dpAO48W8rP7X0ZkFQ9voUHZsIow2jINM10+tUEiv9XVTwUX6N2KlaxrFOhQkUIHdrnVGBSXFQiyDP8xjlwM96H3hohMRqn0ecDCCXWkip6Bo91DvqgwoU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=qn2tNu2a; arc=none smtp.client-ip=91.218.175.179
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	s=arc-20240116; t=1772466725; c=relaxed/simple;
+	bh=B+o1rsb8OmzJfPsA0gPC6Soareqf1xfasJ2vFgutzvU=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=mx6p7exoGgv1RF3dj+cVBBKsSRBCKY7iH2QCkuw+PYmGFy9IVVb3LxsAw0l73ox5twUsbVxJ3GLrcXkC8eh7lBl+ucn0EIDew16fmPL0JJcK4267naHfJ6ihnagZl55ua2T5IgyzsJ3cNXOXT31nnzuaAOaJ5f4qz5jZp2Ki1YI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=JiB3Loky; arc=none smtp.client-ip=209.85.216.74
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="qn2tNu2a"
-Message-ID: <42a719d3-5fbd-4b96-a150-6c0b4a1521a3@linux.dev>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1772466512;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=FTECatV7Hem2M5Whzj/+5qLaShaqM0faNoQsDp0E1eI=;
-	b=qn2tNu2asGcPBaNPiLBEHqPA1ISUAYvFdlA3yDgMEjvnV9wFHAHANAKzMMQI7p+eoGhJbw
-	GB+5m+Qs2PPeTQk6Pxy5HsBkMVi/kh8tLAqThalAcm3txH4p/T0ROgVUJGN2DzQ2qMT7uD
-	UjSW9pewzRKpXJGWz1nxJ1hYJh2XlGg=
-Date: Mon, 2 Mar 2026 23:48:11 +0800
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="JiB3Loky"
+Received: by mail-pj1-f74.google.com with SMTP id 98e67ed59e1d1-3594620fe97so24003118a91.1
+        for <kvm@vger.kernel.org>; Mon, 02 Mar 2026 07:52:02 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1772466722; x=1773071522; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=RyUPIfgfZZduoActvTOHlc6gVP0traggxHBpX3oyJGg=;
+        b=JiB3Loky2/vtrfS2kXtT+xEucbyUyOu0Nr8OwRU6mqMtz5pjmKkTqFk/W7Y7xOFKAE
+         3rRMfNkD8zgpwyqSWKffEoqg7CjNALpM9MuYCffTI+I/6/C2iXzI9Yn2bD32PjJnyfe9
+         fS1YV7CFKWBgNPyooUmaMSxMaiKl0p2ITPHbQSKaOY7xHL6QBP03UX4r4nheh+2Rddlz
+         GpcDxtZm6EZn07QxiewcWGJ6hqytZKC2bMW4m0Q1oxWmvqI2MSNLTHcw8o8AJGrooiIX
+         ktazh8MpKkxSfiEYWy6AE4wXe+5aY3awI5c5Eupa2iFXm4ZReu4kzJeVdYn/YEb59iL+
+         5FfA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1772466722; x=1773071522;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=RyUPIfgfZZduoActvTOHlc6gVP0traggxHBpX3oyJGg=;
+        b=MXFIJiTtUvHg7QosGhX073XCEEO0hXrjEypSO2hbM6D2h4vSscd8Fk2Dwapeg741qa
+         Q4HF4IEdT0m0F/gel+kR3eLmfVwlb9acyY2mmYqop7+J/k8oktNx9TiC7sTZE3BWeIzy
+         DAt72jrvlvHaxThYZyDDL5MlNeTRLML9M8z5rXP9sHOP7JCCRU8q5FpLiPyrfvmFE+Qq
+         iJHlNRStkBK+CcesVkNbG0itCJxnL9LFyMOmd/1AMDEzb0xV+QyUtoUFlJVm3ZuNMlFV
+         IjgOwT+rt4w+qEYNSTKxgcoz1yBTPWpvForvg2ZlLekJ0nQWhI/HJ0vRZEJQZnYN7w7t
+         YmLQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXu/pOysDTRJ99EcmWzo/mn2xRbhtF5HOvqyCPZMy23RAUnTmznCGPaXDwmiB4EoDyPoz0=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxT6qhx6Yba/QohpH977DmzAqDUiP+pi9O6dg9tsq+nwV4pD/OJ
+	qWdNY75DLOMQgXHZnp0FfpbTXH22KkhohtkA9rx1Sh7jeSr4zJs6kr49GS9sNjraHl5wCwumzFL
+	T6mbh/Q==
+X-Received: from pjbch12.prod.google.com ([2002:a17:90a:f40c:b0:359:7dba:bdec])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90a:f950:b0:349:9d63:8511
+ with SMTP id 98e67ed59e1d1-35965cc5566mr9935398a91.25.1772466721474; Mon, 02
+ Mar 2026 07:52:01 -0800 (PST)
+Date: Mon, 2 Mar 2026 07:51:59 -0800
+In-Reply-To: <20260302154249.784529-1-yosry@kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Subject: Re: [PATCH v5 2/2] x86/tlb: skip redundant sync IPIs for native TLB
- flush
-Content-Language: en-US
-To: Peter Zijlstra <peterz@infradead.org>
-Cc: akpm@linux-foundation.org, david@kernel.org, dave.hansen@intel.com,
- dave.hansen@linux.intel.com, ypodemsk@redhat.com, hughd@google.com,
- will@kernel.org, aneesh.kumar@kernel.org, npiggin@gmail.com,
- tglx@linutronix.de, mingo@redhat.com, bp@alien8.de, x86@kernel.org,
- hpa@zytor.com, arnd@arndb.de, lorenzo.stoakes@oracle.com, ziy@nvidia.com,
- baolin.wang@linux.alibaba.com, Liam.Howlett@oracle.com, npache@redhat.com,
- ryan.roberts@arm.com, dev.jain@arm.com, baohua@kernel.org,
- shy828301@gmail.com, riel@surriel.com, jannh@google.com, jgross@suse.com,
- seanjc@google.com, pbonzini@redhat.com, boris.ostrovsky@oracle.com,
- virtualization@lists.linux.dev, kvm@vger.kernel.org,
- linux-arch@vger.kernel.org, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, ioworker0@gmail.com
-References: <20260302063048.9479-1-lance.yang@linux.dev>
- <20260302063048.9479-3-lance.yang@linux.dev>
- <20260302145652.GH1395266@noisy.programming.kicks-ass.net>
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Lance Yang <lance.yang@linux.dev>
-In-Reply-To: <20260302145652.GH1395266@noisy.programming.kicks-ass.net>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Migadu-Flow: FLOW_OUT
+Mime-Version: 1.0
+References: <20260302154249.784529-1-yosry@kernel.org>
+Message-ID: <aaWyHyB91OolxRD7@google.com>
+Subject: Re: [PATCH] KVM: x86: Drop redundant call to kvm_deliver_exception_payload()
+From: Sean Christopherson <seanjc@google.com>
+To: Yosry Ahmed <yosry@kernel.org>
+Cc: Paolo Bonzini <pbonzini@redhat.com>, Kevin Cheng <chengkev@google.com>, kvm@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="us-ascii"
 
-
-
-On 2026/3/2 22:56, Peter Zijlstra wrote:
-> On Mon, Mar 02, 2026 at 02:30:36PM +0800, Lance Yang wrote:
+On Mon, Mar 02, 2026, Yosry Ahmed wrote:
+> In kvm_check_and_inject_events(), kvm_deliver_exception_payload() is
+> called for pending #DB exceptions. However, shortly after, the
+> per-vendor inject_exception callbacks are made. Both
+> vmx_inject_exception() and svm_inject_exception() unconditionally call
+> kvm_deliver_exception_payload(), so the call in
+> kvm_check_and_inject_events() is redundant.
 > 
+> Note that the extra call for pending #DB exceptions is harmless, as
+> kvm_deliver_exception_payload() clears exception.has_payload after the
+> first call.
 > 
->> @@ -221,3 +222,18 @@ NOKPROBE_SYMBOL(native_load_idt);
->>   
->>   EXPORT_SYMBOL(pv_ops);
->>   EXPORT_SYMBOL_GPL(pv_info);
->> +
->> +void __init native_pv_tlb_init(void)
->> +{
->> +	/*
->> +	 * If PV backend already set the property, respect it.
->> +	 * Otherwise, check if native TLB flush sends real IPIs to all target
->> +	 * CPUs (i.e., not using INVLPGB broadcast invalidation).
->> +	 */
->> +	if (pv_ops.mmu.flush_tlb_multi_implies_ipi_broadcast)
->> +		return;
->> +
->> +	if (pv_ops.mmu.flush_tlb_multi == native_flush_tlb_multi &&
->> +	    !cpu_feature_enabled(X86_FEATURE_INVLPGB))
->> +		pv_ops.mmu.flush_tlb_multi_implies_ipi_broadcast = true;
->> +}
+> The call in kvm_check_and_inject_events() was added in commit
+> f10c729ff965 ("kvm: vmx: Defer setting of DR6 until #DB delivery"). At
+> that point, the call was likely needed because svm_queue_exception()
+> checked whether an exception for L2 is intercepted by L1 before calling
+> kvm_deliver_exception_payload(), as SVM did not have a
+> check_nested_events callback. Since DR6 is updated before the #DB
+> intercept in SVM (unlike VMX), it was necessary to deliver the DR6
+> payload before calling svm_queue_exception().
 > 
-> How about making this a static_branch instead?
+> After that, commit 7c86663b68ba ("KVM: nSVM: inject exceptions via
+> svm_check_nested_events") added a check_nested_events callback for SVM,
+> which checked for L1 intercepts for L2's exceptions, and delivered the
+> the payload appropriately before the intercept. At that point,
+> svm_queue_exception() started calling kvm_deliver_exception_payload()
+> unconditionally, and the call to kvm_deliver_exception_payload() from
+> its caller became redundant.
 
-Cool. Thanks for the suggestion!
-
-> 
->> diff --git a/arch/x86/include/asm/tlb.h b/arch/x86/include/asm/tlb.h
->> index 866ea78ba156..87ef7147eac8 100644
->> --- a/arch/x86/include/asm/tlb.h
->> +++ b/arch/x86/include/asm/tlb.h
->> @@ -5,10 +5,23 @@
->>   #define tlb_flush tlb_flush
->>   static inline void tlb_flush(struct mmu_gather *tlb);
->>   
->> +#define tlb_table_flush_implies_ipi_broadcast tlb_table_flush_implies_ipi_broadcast
->> +static inline bool tlb_table_flush_implies_ipi_broadcast(void);
->> +
->>   #include <asm-generic/tlb.h>
->>   #include <linux/kernel.h>
->>   #include <vdso/bits.h>
->>   #include <vdso/page.h>
->> +#include <asm/paravirt.h>
->> +
->> +static inline bool tlb_table_flush_implies_ipi_broadcast(void)
->> +{
->> +#ifdef CONFIG_PARAVIRT
->> +	return pv_ops.mmu.flush_tlb_multi_implies_ipi_broadcast;
->> +#else
->> +	return !cpu_feature_enabled(X86_FEATURE_INVLPGB);
->> +#endif
->> +}
-> 
-> Then this turns into:
-> 
-> static inline bool tlb_table_flush_implies_ipi_broadcast(void)
-> {
-> 	return static_branch_likely(&tlb_ipi_broadcast_key);
-> }
-
-Right. That would be cleaner and faster, eliminating the branch overhead.
-
-Trying using static_branch on top of this series, something like:
-
----8<---
-diff --git a/arch/x86/include/asm/tlb.h b/arch/x86/include/asm/tlb.h
-index 87ef7147eac8..409bbf335f26 100644
---- a/arch/x86/include/asm/tlb.h
-+++ b/arch/x86/include/asm/tlb.h
-@@ -10,17 +10,16 @@ static inline bool 
-tlb_table_flush_implies_ipi_broadcast(void);
-
-  #include <asm-generic/tlb.h>
-  #include <linux/kernel.h>
-+#include <linux/jump_label.h>
-  #include <vdso/bits.h>
-  #include <vdso/page.h>
-  #include <asm/paravirt.h>
-
-+DECLARE_STATIC_KEY_FALSE(tlb_ipi_broadcast_key);
-+
-  static inline bool tlb_table_flush_implies_ipi_broadcast(void)
-  {
--#ifdef CONFIG_PARAVIRT
--	return pv_ops.mmu.flush_tlb_multi_implies_ipi_broadcast;
--#else
--	return !cpu_feature_enabled(X86_FEATURE_INVLPGB);
--#endif
-+	return static_branch_likely(&tlb_ipi_broadcast_key);
-  }
-
-  static inline void tlb_flush(struct mmu_gather *tlb)
-diff --git a/arch/x86/kernel/paravirt.c b/arch/x86/kernel/paravirt.c
-index b681b8319295..bcf28980c319 100644
---- a/arch/x86/kernel/paravirt.c
-+++ b/arch/x86/kernel/paravirt.c
-@@ -15,6 +15,7 @@
-  #include <linux/kprobes.h>
-  #include <linux/pgtable.h>
-  #include <linux/static_call.h>
-+#include <linux/jump_label.h>
-
-  #include <asm/bug.h>
-  #include <asm/paravirt.h>
-@@ -223,6 +224,8 @@ NOKPROBE_SYMBOL(native_load_idt);
-  EXPORT_SYMBOL(pv_ops);
-  EXPORT_SYMBOL_GPL(pv_info);
-
-+DEFINE_STATIC_KEY_FALSE(tlb_ipi_broadcast_key);
-+
-  void __init native_pv_tlb_init(void)
-  {
-  	/*
-@@ -230,10 +233,14 @@ void __init native_pv_tlb_init(void)
-  	 * Otherwise, check if native TLB flush sends real IPIs to all target
-  	 * CPUs (i.e., not using INVLPGB broadcast invalidation).
-  	 */
--	if (pv_ops.mmu.flush_tlb_multi_implies_ipi_broadcast)
-+	if (pv_ops.mmu.flush_tlb_multi_implies_ipi_broadcast) {
-+		static_branch_enable(&tlb_ipi_broadcast_key);
-  		return;
-+	}
-
-  	if (pv_ops.mmu.flush_tlb_multi == native_flush_tlb_multi &&
--	    !cpu_feature_enabled(X86_FEATURE_INVLPGB))
-+	    !cpu_feature_enabled(X86_FEATURE_INVLPGB)) {
-  		pv_ops.mmu.flush_tlb_multi_implies_ipi_broadcast = true;
-+		static_branch_enable(&tlb_ipi_broadcast_key);
-+	}
-  }
----
-
-
-Thanks,
-Lance
-
+Nice!  I vaguely remember staring at this code when working on 5623f751bd9c
+("KVM: x86: Treat #DBs from the emulator as fault-like (code and DR7.GD=1)"),
+but never pieced together that it was redundant.
