@@ -1,184 +1,205 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A025C8EB
-	for <kvm@vger.kernel.org>; Mon,  2 Mar 2026 14:31:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8460E3FFAD2;
+	Mon,  2 Mar 2026 14:40:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772461867; cv=none; b=qK7fBOptPLnxPccza8g6mAurngBDr54y/JA+8Pqdvj5BPcUlfa/och7gYKvjozGT+70tOjG4bHcF+Ma66oQigRgiYFGO+6C0UEHAgtfbjXeacbZxJHj2p+K+bKsW4NcONOHhx9Ku90/QZlZ2G5++1gYd+8w71Opi7KJUwJc6Oe8=
+	t=1772462457; cv=none; b=FeaY3VdcThMVODyrQq3PQFBNs2od1qLazCyFrP/7k4LFUYo/aO9yOoAoSVPXzfv07nbLS7WGXwPFmIl2rtlM35CbzaIqZeq84n4dZUAsqF+F9VjSU64HsML2mEBRGqcdvHHmzCYvSM/TvszEUSDu4y3SaYgBotJJjbbqY6jJHgY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772461867; c=relaxed/simple;
-	bh=tu6vW5JzAvAhrtnD0Orm8DgWyEhTriU4R1yaRjCyZQc=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=iaNlEu0SMr9ij9gKxYvzI7KJaUFZtFTn4ND2O4eOaZjkj+O+/wE58qcQQh3A2BdsTR7DXAHX3nYKRkOL1lmGz3jXR9/JUNxJalc65Y3FcQj0WiJ1fspoRsDUAGzmULV7wwUaDgD6mqxAoeoHpvkEM7AGHSLlqNI0LD/wZqoJRFU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=FOMo/0SW; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=qnFcY04Q; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1772462457; c=relaxed/simple;
+	bh=0BX32rikMvdKmXC/ZetcwR4NQo3eeiBaEA6cl/8/jL4=;
+	h=Date:Message-ID:From:To:Cc:Subject:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=cvJiO9cwbniwLYIc4oaEKE23DXeWQ1ma8r8vvp4GFtqpIKTjTHIggRT7qoVFEpuGYeIcniWXR2mhwwiBbgNeOF2LHI5/nZded0sKVrKnVfOXCz9MWIgzLnT+YD4t6NiaxIMnRBCZnfW1EtOycRNmyP20pRugz2nUv/gk2VqUe1w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bQnl2Efj; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="FOMo/0SW";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="qnFcY04Q"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1772461864;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=SKZvtx1jQH7FuclJfSavk4MXL11q6SiX0sIanHFtIBI=;
-	b=FOMo/0SWrxVbghAOHZMptVK13+Y0e7xsTsV8DeeSt2FX3pg4vQeSV/MpHKrIZxvE2OzXBq
-	KFhTsRyP7KrMgZoq0NxNX9A/3iZUgU2O8HnH8iFQBlTSlwW0obmjkThAmzMhQtWJk95zPL
-	4xLVebMK4P1C19/wtcfu61gFUEuRUeU=
-Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
- [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-497-xVjns6W4Meiw9xQ3reEYlg-1; Mon, 02 Mar 2026 09:31:03 -0500
-X-MC-Unique: xVjns6W4Meiw9xQ3reEYlg-1
-X-Mimecast-MFC-AGG-ID: xVjns6W4Meiw9xQ3reEYlg_1772461862
-Received: by mail-wm1-f70.google.com with SMTP id 5b1f17b1804b1-4837b7903f3so56036275e9.2
-        for <kvm@vger.kernel.org>; Mon, 02 Mar 2026 06:31:03 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1772461862; x=1773066662; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=SKZvtx1jQH7FuclJfSavk4MXL11q6SiX0sIanHFtIBI=;
-        b=qnFcY04QZhtGR/Q79DN22LxyPSlJMCrxEGWYhXtPkaiY1vh7Y9c6rBygQM/CDxsQIX
-         3i60swndx7rl3Qk6IUbhIckBLiwkOVlpweZiLr45Jpx2+7tITucbxrfNgoHlhztRFmHK
-         kmWoXXVk7ClcBqvKY+Jt0bFsIkUStT+j40hamsbo9e7Kmxh1tROXFruxzfC4+BNjvA6x
-         2HYQyduwO/VpocpHyRj1puBnN8IX+0eYxEPjHXixYKxyLbv/cIf8HRW29sYdEPL+3wrX
-         Ek7SnU16GQD6LEhOJf+5qjYsKo8SupWV6SroRzE6tGFgXjYn0mVcHV5c60OJzBEX3nCI
-         VBZQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1772461862; x=1773066662;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=SKZvtx1jQH7FuclJfSavk4MXL11q6SiX0sIanHFtIBI=;
-        b=MUxJH3REbGhdnuwSPHMR3teyrQTw0Uz8JErnti3qYp5tIiok+WkmQcv/vefNbYYH+s
-         iFr0CzbHsbn57yAqdjE/IUG3If7mhcOvhvjxi0lR67bSgvt9FKhHZv0esVGqyy1Zn/mX
-         kT1XaJLYEUDAiwBqKO2GdFyyUxVPeKneikZU655K4bjuY6/xaz/a6XxOtxZkK1omhZ9r
-         k0OdegfIKRxegbJOdp2/CQeEsrmViJrZCUulM3EtaYeYubnm2e3w+8zfMwSqpjLcBKDZ
-         SR7btvCA+oA/1r8lWDxVt3b8jIlx6Kh/YWwigB7v9IqKiIHyGnl+/si1cLmEzhn/RvO/
-         88Ag==
-X-Forwarded-Encrypted: i=1; AJvYcCXfqAn4ZnhoxQ2UY5CM8GgnU62EE9tZf5j6NPi9gJ7mBUrgIZKeh2o2xD/Fti/rv8+1ZnQ=@vger.kernel.org
-X-Gm-Message-State: AOJu0Ywl+bnBB2MFrGIgNrBVDjNitnFZUX1e0SkYgFVDhshUJYtR9yfV
-	zmDHDGGq2S6GhAaHzVwPawD997zK9S8QCV3t7j12eCWkVWeKRfUKKqM6g1Oj2VTaC8Ia3pdBLWr
-	YS0nYbB756+0Nr46n1KvP0vnOWLinl3116HOA/HLDkIUAhj4Ox7J1kw==
-X-Gm-Gg: ATEYQzwltArE2rNwmdtJyXtopq8Uhp48TSDC/AOfcxTAn63T97ftkfCnN+al5NMRG0l
-	C0Y07dIASgNferud3ieXhyzjx2xt1PBfIK8f4SjmjgPwITl0abB6aYdRDGX+z2MHncPxf5xZl9p
-	wK1P0uQ5Ntd5DPySSdbxbcxTlE4KqcWsdduFPN0zfJ37R3WjYiIU6CJqUqr28KiGqBeSNcT7IX7
-	9yZ/Q/jOxT0a1rDr3DjWDWR8uCVEmCjBQgAfmIZUMgpRj9n28rAVFiHyGMcZkuKPsMqXTNSnZdX
-	jM6N85PfdCgCDkaFkvR7ZkbldoPkSCjP8N2Ma83GB9LCP/DspLqJSKte/o5YsCKubiWEp6iY0Y8
-	zIX4DO4aDbeG0I7wk2kvWqxLLx/XP+wpEoFpsWPVxZILCQl4XZJbLRK72M+5lxRYWclKCU+k=
-X-Received: by 2002:a05:600c:64c7:b0:47d:73a4:45a7 with SMTP id 5b1f17b1804b1-483c9c19a6emr218449405e9.24.1772461862153;
-        Mon, 02 Mar 2026 06:31:02 -0800 (PST)
-X-Received: by 2002:a05:600c:64c7:b0:47d:73a4:45a7 with SMTP id 5b1f17b1804b1-483c9c19a6emr218448515e9.24.1772461861478;
-        Mon, 02 Mar 2026 06:31:01 -0800 (PST)
-Received: from sgarzare-redhat (host-82-53-134-58.retail.telecomitalia.it. [82.53.134.58])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-483bfcb318fsm206220415e9.6.2026.03.02.06.30.57
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 02 Mar 2026 06:31:00 -0800 (PST)
-Date: Mon, 2 Mar 2026 15:30:53 +0100
-From: Stefano Garzarella <sgarzare@redhat.com>
-To: "Michael S. Tsirkin" <mst@redhat.com>
-Cc: linux-kernel@vger.kernel.org, ShuangYu <shuangyu@yunyoo.cc>, 
-	Stefan Hajnoczi <stefanha@redhat.com>, Jason Wang <jasowang@redhat.com>, 
-	Eugenio =?utf-8?B?UMOpcmV6?= <eperezma@redhat.com>, kvm@vger.kernel.org, virtualization@lists.linux.dev, 
-	netdev@vger.kernel.org
-Subject: Re: [PATCH RFC] vhost: fix vhost_get_avail_idx for a non empty ring
-Message-ID: <aaWTjPXDqhMZlwLr@sgarzare-redhat>
-References: <559b04ae6ce52973c535dc47e461638b7f4c3d63.1772441455.git.mst@redhat.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bQnl2Efj"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2CD32C2BC87;
+	Mon,  2 Mar 2026 14:40:57 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1772462457;
+	bh=0BX32rikMvdKmXC/ZetcwR4NQo3eeiBaEA6cl/8/jL4=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=bQnl2EfjARf61qvvtmuKW2BmsdeY+7kF/+PPxOJsE6Ua/U1JITg9L3KPIwlNhwF/k
+	 prOm/v6D06rZ1UjUkTyOzW4CzXAbKppBTYmZ6/K3VLID1KROqhErHkbriTPSwoQNwS
+	 McRg5FPUb/rTUdi7rHTYU0G3IN4JcFE98+RQBolSjxGAaCAPztGb+7Hj8M47Jy2Wm2
+	 D+aegsuvJmrguzO+2AaAYCEZc/pdl7Cb2v/fhvcreFmjJzztvguK4a+gM4h7NmtjNg
+	 kb2ttvq8Niyg0hX3in9bZa4Oqksy/II0DgpIAmLaz8/Z37RreUvXo4/DIgNNEWuBt5
+	 1kKmMX+xxPrmQ==
+Received: from sofa.misterjones.org ([185.219.108.64] helo=goblin-girl.misterjones.org)
+	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.98.2)
+	(envelope-from <maz@kernel.org>)
+	id 1vx4S6-0000000FHIR-37Cg;
+	Mon, 02 Mar 2026 14:40:54 +0000
+Date: Mon, 02 Mar 2026 14:40:54 +0000
+Message-ID: <86seai8fbd.wl-maz@kernel.org>
+From: Marc Zyngier <maz@kernel.org>
+To: Steven Price <steven.price@arm.com>
+Cc: kvm@vger.kernel.org,
+	kvmarm@lists.linux.dev,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Will Deacon <will@kernel.org>,
+	James Morse <james.morse@arm.com>,
+	Oliver Upton <oliver.upton@linux.dev>,
+	Suzuki K Poulose <suzuki.poulose@arm.com>,
+	Zenghui Yu <yuzenghui@huawei.com>,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	Joey Gouly <joey.gouly@arm.com>,
+	Alexandru Elisei <alexandru.elisei@arm.com>,
+	Christoffer Dall <christoffer.dall@arm.com>,
+	Fuad Tabba <tabba@google.com>,
+	linux-coco@lists.linux.dev,
+	Ganapatrao Kulkarni <gankulkarni@os.amperecomputing.com>,
+	Gavin Shan <gshan@redhat.com>,
+	Shanker Donthineni <sdonthineni@nvidia.com>,
+	Alper Gun <alpergun@google.com>,
+	"Aneesh Kumar K . V" <aneesh.kumar@kernel.org>,
+	Emi Kisanuki <fj0570is@fujitsu.com>,
+	Vishal Annapurve <vannapurve@google.com>
+Subject: Re: [PATCH v12 11/46] arm64: RMI: Activate realm on first VCPU run
+In-Reply-To: <20251217101125.91098-12-steven.price@arm.com>
+References: <20251217101125.91098-1-steven.price@arm.com>
+	<20251217101125.91098-12-steven.price@arm.com>
+User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
+ FLIM-LB/1.14.9 (=?UTF-8?B?R29qxY0=?=) APEL-LB/10.8 EasyPG/1.0.0 Emacs/30.1
+ (aarch64-unknown-linux-gnu) MULE/6.0 (HANACHIRUSATO)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii; format=flowed
-Content-Disposition: inline
-In-Reply-To: <559b04ae6ce52973c535dc47e461638b7f4c3d63.1772441455.git.mst@redhat.com>
+MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
+Content-Type: text/plain; charset=US-ASCII
+X-SA-Exim-Connect-IP: 185.219.108.64
+X-SA-Exim-Rcpt-To: steven.price@arm.com, kvm@vger.kernel.org, kvmarm@lists.linux.dev, catalin.marinas@arm.com, will@kernel.org, james.morse@arm.com, oliver.upton@linux.dev, suzuki.poulose@arm.com, yuzenghui@huawei.com, linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, joey.gouly@arm.com, alexandru.elisei@arm.com, christoffer.dall@arm.com, tabba@google.com, linux-coco@lists.linux.dev, gankulkarni@os.amperecomputing.com, gshan@redhat.com, sdonthineni@nvidia.com, alpergun@google.com, aneesh.kumar@kernel.org, fj0570is@fujitsu.com, vannapurve@google.com
+X-SA-Exim-Mail-From: maz@kernel.org
+X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
 
-On Mon, Mar 02, 2026 at 03:51:49AM -0500, Michael S. Tsirkin wrote:
->vhost_get_avail_idx is supposed to report whether it has updated
->vq->avail_idx. Instead, it returns whether all entries have been
->consumed, which is usually the same. But not always - in
->drivers/vhost/net.c and when mergeable buffers have been enabled, the
->driver checks whether the combined entries are big enough to store an
->incoming packet. If not, the driver re-enables notifications with
->available entries still in the ring. The incorrect return value from
->vhost_get_avail_idx propagates through vhost_enable_notify and causes
->the host to livelock if the guest is not making progress, as vhost will
->immediately disable notifications and retry using the available entries.
+On Wed, 17 Dec 2025 10:10:48 +0000,
+Steven Price <steven.price@arm.com> wrote:
+> 
+> When a VCPU migrates to another physical CPU check
 
-Here I'd add something like this just to make it clear the full picture, 
-because I spent quite some time to understand how it was related to the 
-Fixes tag (which I agree is the right one to use).
+To another physical CPU?
 
-   This goes back to commit d3bb267bbdcb ("vhost: cache avail index in
-   vhost_enable_notify()") which changed vhost_enable_notify() to compare
-   the freshly read avail index against vq->last_avail_idx instead of the
-   previously cached vq->avail_idx. Commit 7ad472397667 ("vhost: move
-   smp_rmb() into vhost_get_avail_idx()") then carried over the same
-   comparison when refactoring vhost_enable_notify() to call the unified
-   vhost_get_avail_idx().
+That's not what kvm_arch_vcpu_run_pid_change() tracks. It really is
+limited to a new PID being associated to the vpcu thread. Which is
+indeed the case when the vpcu runs for the first time, but that's
+about it.
 
->
->The obvious fix is to make vhost_get_avail_idx do what the comment
->says it does and report whether new entries have been added.
->
->Reported-by: ShuangYu <shuangyu@yunyoo.cc>
->Fixes: d3bb267bbdcb ("vhost: cache avail index in vhost_enable_notify()")
->Cc: Stefano Garzarella <sgarzare@redhat.com>
->Cc: Stefan Hajnoczi <stefanha@redhat.com>
->Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
->---
->
->Lightly tested, posting early to simplify testing for the reporter.
+If you need to track the physical CPU, we have some tracking for it in
+vcpu_load(), but that'd need some rework.
 
-Tested with vhost-vsock and I didn't see any issue.
+> if this is the first
+> time the guest has run, and if so activate the realm.
+> 
+> Before the realm can be activated it must first be created, this is a
+> stub in this patch and will be filled in by a later patch.
+> 
+> Signed-off-by: Steven Price <steven.price@arm.com>
+> ---
+> New patch for v12
+> ---
+>  arch/arm64/include/asm/kvm_rmi.h |  1 +
+>  arch/arm64/kvm/arm.c             |  6 +++++
+>  arch/arm64/kvm/rmi.c             | 42 ++++++++++++++++++++++++++++++++
+>  3 files changed, 49 insertions(+)
+> 
+> diff --git a/arch/arm64/include/asm/kvm_rmi.h b/arch/arm64/include/asm/kvm_rmi.h
+> index cb7350f8a01a..e4534af06d96 100644
+> --- a/arch/arm64/include/asm/kvm_rmi.h
+> +++ b/arch/arm64/include/asm/kvm_rmi.h
+> @@ -69,6 +69,7 @@ void kvm_init_rmi(void);
+>  u32 kvm_realm_ipa_limit(void);
+>  
+>  int kvm_init_realm_vm(struct kvm *kvm);
+> +int kvm_activate_realm(struct kvm *kvm);
+>  void kvm_destroy_realm(struct kvm *kvm);
+>  void kvm_realm_destroy_rtts(struct kvm *kvm);
+>  
+> diff --git a/arch/arm64/kvm/arm.c b/arch/arm64/kvm/arm.c
+> index 941d1bec8e77..542df37b9e82 100644
+> --- a/arch/arm64/kvm/arm.c
+> +++ b/arch/arm64/kvm/arm.c
+> @@ -951,6 +951,12 @@ int kvm_arch_vcpu_run_pid_change(struct kvm_vcpu *vcpu)
+>  			return ret;
+>  	}
+>  
+> +	if (kvm_is_realm(vcpu->kvm)) {
+> +		ret = kvm_activate_realm(kvm);
+> +		if (ret)
+> +			return ret;
+> +	}
+> +
+>  	mutex_lock(&kvm->arch.config_lock);
+>  	set_bit(KVM_ARCH_FLAG_HAS_RAN_ONCE, &kvm->arch.flags);
+>  	mutex_unlock(&kvm->arch.config_lock);
+> diff --git a/arch/arm64/kvm/rmi.c b/arch/arm64/kvm/rmi.c
+> index e57e8b7eafa9..98929382c365 100644
+> --- a/arch/arm64/kvm/rmi.c
+> +++ b/arch/arm64/kvm/rmi.c
+> @@ -223,6 +223,48 @@ void kvm_realm_destroy_rtts(struct kvm *kvm)
+>  	WARN_ON(realm_tear_down_rtt_range(realm, 0, (1UL << ia_bits)));
+>  }
+>  
+> +static int realm_ensure_created(struct kvm *kvm)
+> +{
+> +	/* Provided in later patch */
+> +	return -ENXIO;
+> +}
+> +
+> +int kvm_activate_realm(struct kvm *kvm)
+> +{
+> +	struct realm *realm = &kvm->arch.realm;
+> +	int ret;
+> +
+> +	if (!kvm_is_realm(kvm))
+> +		return -ENXIO;
 
-Thanks!
+nit: you already checked for this in caller.
 
-Reviewed-by: Stefano Garzarella <sgarzare@redhat.com>
+> +
+> +	if (kvm_realm_state(kvm) == REALM_STATE_ACTIVE)
+> +		return 0;
 
->
-> drivers/vhost/vhost.c | 11 +++++++----
-> 1 file changed, 7 insertions(+), 4 deletions(-)
->
->diff --git a/drivers/vhost/vhost.c b/drivers/vhost/vhost.c
->index 2f2c45d20883..db329a6f6145 100644
->--- a/drivers/vhost/vhost.c
->+++ b/drivers/vhost/vhost.c
->@@ -1522,6 +1522,7 @@ static void vhost_dev_unlock_vqs(struct vhost_dev *d)
-> static inline int vhost_get_avail_idx(struct vhost_virtqueue *vq)
-> {
-> 	__virtio16 idx;
->+	u16 avail_idx;
-> 	int r;
->
-> 	r = vhost_get_avail(vq, idx, &vq->avail->idx);
->@@ -1532,17 +1533,19 @@ static inline int vhost_get_avail_idx(struct vhost_virtqueue *vq)
-> 	}
->
-> 	/* Check it isn't doing very strange thing with available indexes */
->-	vq->avail_idx = vhost16_to_cpu(vq, idx);
->-	if (unlikely((u16)(vq->avail_idx - vq->last_avail_idx) > vq->num)) {
->+	avail_idx = vhost16_to_cpu(vq, idx);
->+	if (unlikely((u16)(avail_idx - vq->last_avail_idx) > vq->num)) {
-> 		vq_err(vq, "Invalid available index change from %u to %u",
->-		       vq->last_avail_idx, vq->avail_idx);
->+		       vq->last_avail_idx, avail_idx);
-> 		return -EINVAL;
-> 	}
->
-> 	/* We're done if there is nothing new */
->-	if (vq->avail_idx == vq->last_avail_idx)
->+	if (avail_idx == vq->avail_idx)
-> 		return 0;
->
->+	vq->avail_idx = avail_idx;
->+
-> 	/*
-> 	 * We updated vq->avail_idx so we need a memory barrier between
-> 	 * the index read above and the caller reading avail ring entries.
->-- 
->MST
->
+You probably also want to return early once the realm has been marked
+as dead -- it shouldn't be able to be a zombie and die twice.
 
+> +
+> +	guard(mutex)(&kvm->arch.config_lock);
+> +	/* Check again with the lock held */
+> +	if (kvm_realm_state(kvm) == REALM_STATE_ACTIVE)
+> +		return 0;
+> +
+> +	ret = realm_ensure_created(kvm);
+> +	if (ret)
+> +		return ret;
+> +
+> +	/* Mark state as dead in case we fail */
+> +	WRITE_ONCE(realm->state, REALM_STATE_DEAD);
+> +
+> +	if (!irqchip_in_kernel(kvm)) {
+> +		/* Userspace irqchip not yet supported with realms */
+> +		return -EOPNOTSUPP;
+> +	}
+> +
+> +	ret = rmi_realm_activate(virt_to_phys(realm->rd));
+> +	if (ret)
+> +		return -ENXIO;
+> +
+> +	WRITE_ONCE(realm->state, REALM_STATE_ACTIVE);
+> +	return 0;
+> +}
+> +
+>  void kvm_destroy_realm(struct kvm *kvm)
+>  {
+>  	struct realm *realm = &kvm->arch.realm;
+
+Thanks,
+
+	M.
+
+-- 
+Without deviation from the norm, progress is not possible.
