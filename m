@@ -1,190 +1,195 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F6A040F8D8
-	for <kvm@vger.kernel.org>; Mon,  2 Mar 2026 15:12:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E0CC8430B86;
+	Mon,  2 Mar 2026 15:23:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772464342; cv=none; b=b8BKKnntCWH4H/T6/fhLjLjt+L11iUDDYeSf2QhW8PAgXr0ipBQ6X0GmxrlDC14kWFdq+YW1aaKJJykqAgcq9GmaoPrgWxutmmH8jH2HGaUDZY9RBGAezd3PQx8Mf8McXHteMGl2PIgSejvvSZbL4qIbTxFfWz8GzCDMsg7jL80=
+	t=1772465036; cv=none; b=D+Gf3A/91xEX2XKkj11SmEydmunQzzq/6BqZ+SfTIp5Rm1dhgP+813yGKspipol7RhxRX5SFEI2DViEuEwmYCVRMrUhPoyiIyvbUMq50hxqvOUHsFaLUYGYwwM00KYGP25xftqlVS1DAkqKtHN6INlatQ8aG6gm9KV55ilOmLuw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772464342; c=relaxed/simple;
-	bh=op0liavrrZXpHIYFE8b5murCMpJBWBYITF7jRogwVXU=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Gf+e3PYXaYvBxLDMFM+uMLON/5+5QUZzBbDoHSB8wXTvdoNBmPoYntVr94X2jzaH0AMeX85RISIvQqX3sqESUNhd4qFhu2g7sBYTYkl7bcuk27RVCaL73M1MpLAFSwLNrAQ5pu+EtBKt91gsmhZdnXJda2MIpkLvsTsv8gpBmSA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=WNrY60Ac; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=FiKaHq+2; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="WNrY60Ac";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="FiKaHq+2"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1772464339;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=RF0n2SJ1RvllNep2fFvHq0JPMVeIU4OKpnJDj8ItlsE=;
-	b=WNrY60AciXkRUrU7h7ICByvMGUZj1SnNtt+hm75P8we+1+FJxkJ1wIOUoE9QZ/1D0nKLG3
-	vzhXClEwxWSPQ3ufLyXyqY1TbJcpfigwvcUFWe9lBcv71DesprVc0EvDAklpJXCSl8koL3
-	KS/8gcEt4+G7JCvQsWinErhHURtZKMc=
-Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
- [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-526-_BYLGL49Ns6Pi39d7GmT7g-1; Mon, 02 Mar 2026 10:12:16 -0500
-X-MC-Unique: _BYLGL49Ns6Pi39d7GmT7g-1
-X-Mimecast-MFC-AGG-ID: _BYLGL49Ns6Pi39d7GmT7g_1772464335
-Received: by mail-wm1-f72.google.com with SMTP id 5b1f17b1804b1-4832c4621c2so50439805e9.3
-        for <kvm@vger.kernel.org>; Mon, 02 Mar 2026 07:12:16 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1772464335; x=1773069135; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=RF0n2SJ1RvllNep2fFvHq0JPMVeIU4OKpnJDj8ItlsE=;
-        b=FiKaHq+2tyH8zoTrCU34EKgaF6VI4eGrN7Cpbgpl+PK5i9Xi1gzBpVkXVTuX0/q+a0
-         GrU8h9k5AzbcY92nNVQACuup3wznw+f/TOJ1Dc5QUwJMgS/3gUHhyvOFMOw+SKm/jmAa
-         7vwIfA2H4OV8wzoSeCRzOKTBwyFtVgHf+qkV3silkj5mu1YfM4P+q/evcNISgDe5MiMV
-         lmm3qELJZMuLhM74D257VLkImoXcgGS/tVtoQm++PHkshiu8gSx8VvdOBrU3UvvtxzpZ
-         nIzYn0LoiPHZR9xsY1hAI0CCwwM8DHzHmYdaWSQzVcBdWNrlRJVWcxQtELEQHGcZahdd
-         /9GA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1772464335; x=1773069135;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=RF0n2SJ1RvllNep2fFvHq0JPMVeIU4OKpnJDj8ItlsE=;
-        b=euPVpqQlHWS2TdyX+5IFEqWqT4hDoiylw3fLSIOI51RjtCmXaP1W/g25eIdbxqjQco
-         xDZ16Fqcu7HgFnfeax04saxfPB4t61k9VTCD2igQ0u86Qc/ORI9NhDy6wUjIrSBCJ/+c
-         JwCyrCuR01gmgLdlhlHKCJY9E3zAOoeqg7lK3eITchKG+NsTmXJ6GglUAxV8gu1VeLax
-         2JKQzvEGcJ8xnfdrHlIR0eKi4MNxiaGHJa0jwG0seHIiP0087JW4HRFaIw4EnflicFDK
-         93M29XDZ5b2Mm33yJk8MYl0DS+YfeM/uOnF5tbEoCvgSTZ0EpG8ykMBYCMfonEa3jKec
-         lo7g==
-X-Forwarded-Encrypted: i=1; AJvYcCWr7WiFitrq6ZvuWJ1Q+Uz5U+r1e2p6Hrd9cuOunywrFvnIxDj+GquzFC9pdle0QHv2usM=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwoynpFxX423OTrifVU2kEEzR+IUW5kMjFLdWi6n8zix/AbFFoD
-	y2TgI9SOGtXbUD83vHsJsfYuvA6+1w1maoqqQmnwfJma5K43P2ecCOySwNKKOrRKPwnVytYzZBN
-	piOZQUPMd+7GfayL/TwWHD6v+XJYdskme9gSOYDfvWHDroFUFTwkkPw==
-X-Gm-Gg: ATEYQzyDMnnTkCGYblt0ANzvqDlw5pn7mtfedCNicC198Ra+8iyFoQesYcunq/asrRa
-	dKm7MReZlfhuLUAeOblxdJCJr3U3AhyS25rlvuiQFMsB6KyTOQ1yO7AVTlBinziMeCu4pqXOyL6
-	3CxguvBDpZPCJcAkEEozHoKFgErNZFxPbi8DVtOwmWT/El1si3SM/X+4Mhl+nhqRgpZePO+WW6L
-	+s75WhWzhgP+0ukmmwDdsLtKVWH6SkF0mr/Vr113iMvYo7dXNvlMkrSzgWtZYAYNnWKuzby6i21
-	4LW4Wtb0AWqjGTRinvLEBsVR1U7upPUdIdNdD5/5hqECY210DHyvFApzyN971nPHpPU06frDsJI
-	fZbC+pX9/5NkFDbTiJbpa159FYY7jmXfNeZXlbGFWb8cZgg==
-X-Received: by 2002:a05:600c:8106:b0:46f:c55a:5a8d with SMTP id 5b1f17b1804b1-483c9bb6559mr206067715e9.4.1772464335135;
-        Mon, 02 Mar 2026 07:12:15 -0800 (PST)
-X-Received: by 2002:a05:600c:8106:b0:46f:c55a:5a8d with SMTP id 5b1f17b1804b1-483c9bb6559mr206067215e9.4.1772464334575;
-        Mon, 02 Mar 2026 07:12:14 -0800 (PST)
-Received: from redhat.com (IGLD-80-230-79-166.inter.net.il. [80.230.79.166])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-483bd765604sm360962425e9.15.2026.03.02.07.12.13
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 02 Mar 2026 07:12:13 -0800 (PST)
-Date: Mon, 2 Mar 2026 10:12:11 -0500
-From: "Michael S. Tsirkin" <mst@redhat.com>
-To: Stefano Garzarella <sgarzare@redhat.com>
-Cc: linux-kernel@vger.kernel.org, ShuangYu <shuangyu@yunyoo.cc>,
-	Stefan Hajnoczi <stefanha@redhat.com>,
-	Jason Wang <jasowang@redhat.com>,
-	Eugenio =?iso-8859-1?Q?P=E9rez?= <eperezma@redhat.com>,
-	kvm@vger.kernel.org, virtualization@lists.linux.dev,
-	netdev@vger.kernel.org
-Subject: Re: [PATCH RFC] vhost: fix vhost_get_avail_idx for a non empty ring
-Message-ID: <20260302101125-mutt-send-email-mst@kernel.org>
-References: <559b04ae6ce52973c535dc47e461638b7f4c3d63.1772441455.git.mst@redhat.com>
- <aaWTjPXDqhMZlwLr@sgarzare-redhat>
+	s=arc-20240116; t=1772465036; c=relaxed/simple;
+	bh=tLCuqa+/nT1cfOuo1J57XX9pR1rNtyqiOT6GDPiNeCM=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=fo2bcmC08A9MpQSYVx+trITGDJxsAvMQzxUoCOM4iFNv0iMZ3GzI6m2/DzjOiGM/1eiOQOQ1bAEfCPuT3VAdVTjXm1oCcnrwG9enyqEHqAU8eCErgpVLPtFjGvOqohKw0y5omteDHTXtYvSTBth/zsv88zjo1C/3pVnesuPADac=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 00BD11477;
+	Mon,  2 Mar 2026 07:23:46 -0800 (PST)
+Received: from [10.57.55.216] (unknown [10.57.55.216])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id D6E7F3F73B;
+	Mon,  2 Mar 2026 07:23:46 -0800 (PST)
+Message-ID: <33053e22-6cc6-4d55-bc7f-01f873a15d28@arm.com>
+Date: Mon, 2 Mar 2026 15:23:44 +0000
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <aaWTjPXDqhMZlwLr@sgarzare-redhat>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v12 06/46] arm64: RMI: Define the user ABI
+To: Marc Zyngier <maz@kernel.org>
+Cc: kvm@vger.kernel.org, kvmarm@lists.linux.dev,
+ Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>,
+ James Morse <james.morse@arm.com>, Oliver Upton <oliver.upton@linux.dev>,
+ Suzuki K Poulose <suzuki.poulose@arm.com>, Zenghui Yu
+ <yuzenghui@huawei.com>, linux-arm-kernel@lists.infradead.org,
+ linux-kernel@vger.kernel.org, Joey Gouly <joey.gouly@arm.com>,
+ Alexandru Elisei <alexandru.elisei@arm.com>,
+ Christoffer Dall <christoffer.dall@arm.com>, Fuad Tabba <tabba@google.com>,
+ linux-coco@lists.linux.dev,
+ Ganapatrao Kulkarni <gankulkarni@os.amperecomputing.com>,
+ Gavin Shan <gshan@redhat.com>, Shanker Donthineni <sdonthineni@nvidia.com>,
+ Alper Gun <alpergun@google.com>, "Aneesh Kumar K . V"
+ <aneesh.kumar@kernel.org>, Emi Kisanuki <fj0570is@fujitsu.com>,
+ Vishal Annapurve <vannapurve@google.com>
+References: <20251217101125.91098-1-steven.price@arm.com>
+ <20251217101125.91098-7-steven.price@arm.com> <86tsuy8g0u.wl-maz@kernel.org>
+From: Steven Price <steven.price@arm.com>
+Content-Language: en-GB
+In-Reply-To: <86tsuy8g0u.wl-maz@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Mon, Mar 02, 2026 at 03:30:53PM +0100, Stefano Garzarella wrote:
-> On Mon, Mar 02, 2026 at 03:51:49AM -0500, Michael S. Tsirkin wrote:
-> > vhost_get_avail_idx is supposed to report whether it has updated
-> > vq->avail_idx. Instead, it returns whether all entries have been
-> > consumed, which is usually the same. But not always - in
-> > drivers/vhost/net.c and when mergeable buffers have been enabled, the
-> > driver checks whether the combined entries are big enough to store an
-> > incoming packet. If not, the driver re-enables notifications with
-> > available entries still in the ring. The incorrect return value from
-> > vhost_get_avail_idx propagates through vhost_enable_notify and causes
-> > the host to livelock if the guest is not making progress, as vhost will
-> > immediately disable notifications and retry using the available entries.
-> 
-> Here I'd add something like this just to make it clear the full picture,
-> because I spent quite some time to understand how it was related to the
-> Fixes tag (which I agree is the right one to use).
-> 
->   This goes back to commit d3bb267bbdcb ("vhost: cache avail index in
->   vhost_enable_notify()") which changed vhost_enable_notify() to compare
->   the freshly read avail index against vq->last_avail_idx instead of the
->   previously cached vq->avail_idx. Commit 7ad472397667 ("vhost: move
->   smp_rmb() into vhost_get_avail_idx()") then carried over the same
->   comparison when refactoring vhost_enable_notify() to call the unified
->   vhost_get_avail_idx().
+Hi Marc,
 
-Indeed.
+On 02/03/2026 14:25, Marc Zyngier wrote:
+> On Wed, 17 Dec 2025 10:10:43 +0000,
+> Steven Price <steven.price@arm.com> wrote:
+>>
+>> There is one CAP which identified the presence of CCA, and two ioctls.
+>> One ioctl is used to populate memory and the other is used when user
+>> space is providing the PSCI implementation to identify the target of the
+>> operation.
+>>
+>> Signed-off-by: Steven Price <steven.price@arm.com>
+>> ---
+>> Changes since v11:
+>>  * Completely reworked to be more implicit. Rather than having explicit
+>>    CAP operations to progress the realm construction these operations
+>>    are done when needed (on populating and on first vCPU run).
+>>  * Populate and PSCI complete are promoted to proper ioctls.
+>> Changes since v10:
+>>  * Rename symbols from RME to RMI.
+>> Changes since v9:
+>>  * Improvements to documentation.
+>>  * Bump the magic number for KVM_CAP_ARM_RME to avoid conflicts.
+>> Changes since v8:
+>>  * Minor improvements to documentation following review.
+>>  * Bump the magic numbers to avoid conflicts.
+>> Changes since v7:
+>>  * Add documentation of new ioctls
+>>  * Bump the magic numbers to avoid conflicts
+>> Changes since v6:
+>>  * Rename some of the symbols to make their usage clearer and avoid
+>>    repetition.
+>> Changes from v5:
+>>  * Actually expose the new VCPU capability (KVM_ARM_VCPU_REC) by bumping
+>>    KVM_VCPU_MAX_FEATURES - note this also exposes KVM_ARM_VCPU_HAS_EL2!
+>> ---
+>>  Documentation/virt/kvm/api.rst | 57 ++++++++++++++++++++++++++++++++++
+>>  include/uapi/linux/kvm.h       | 23 ++++++++++++++
+>>  2 files changed, 80 insertions(+)
+>>
+>> diff --git a/Documentation/virt/kvm/api.rst b/Documentation/virt/kvm/api.rst
+>> index 01a3abef8abb..2d5dc7e48954 100644
+>> --- a/Documentation/virt/kvm/api.rst
+>> +++ b/Documentation/virt/kvm/api.rst
+>> @@ -6517,6 +6517,54 @@ the capability to be present.
+>>  
+>>  `flags` must currently be zero.
+>>  
+>> +4.144 KVM_ARM_VCPU_RMI_PSCI_COMPLETE
+>> +------------------------------------
+>> +
+>> +:Capability: KVM_CAP_ARM_RMI
+>> +:Architectures: arm64
+>> +:Type: vcpu ioctl
+>> +:Parameters: struct kvm_arm_rmi_psci_complete (in)
+>> +:Returns: 0 if successful, < 0 on error
+>> +
+>> +::
+>> +
+>> +  struct kvm_arm_rmi_psci_complete {
+>> +	__u64 target_mpidr;
+>> +	__u32 psci_status;
+>> +	__u32 padding[3];
+>> +  };
+>> +
+>> +Where PSCI functions are handled by user space, the RMM needs to be informed of
+>> +the target of the operation using `target_mpidr`, along with the status
+>> +(`psci_status`). The RMM v1.0 specification defines two functions that require
+>> +this call: PSCI_CPU_ON and PSCI_AFFINITY_INFO.
+>> +
+>> +If the kernel is handling PSCI then this is done automatically and the VMM
+>> +doesn't need to call this ioctl.
+> 
+> Shouldn't we make handling of PSCI mandatory for VMMs that deal with
+> CCA? I suspect it would simplify the implementation significantly.
 
-> > 
-> > The obvious fix is to make vhost_get_avail_idx do what the comment
-> > says it does and report whether new entries have been added.
-> > 
-> > Reported-by: ShuangYu <shuangyu@yunyoo.cc>
-> > Fixes: d3bb267bbdcb ("vhost: cache avail index in vhost_enable_notify()")
-> > Cc: Stefano Garzarella <sgarzare@redhat.com>
-> > Cc: Stefan Hajnoczi <stefanha@redhat.com>
-> > Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
-> > ---
-> > 
-> > Lightly tested, posting early to simplify testing for the reporter.
+What do you mean by making it "mandatory for VMMs"? If you mean PSCI is
+always forwarded to user space then I don't think it's going to make
+much difference. Patch 27 handles the PSCI changes (72 lines added), and
+some of that is adding this uAPI for the VMM to handle it.
+
+Removing the functionality to allow the VMM to handle it would obviously
+simplify things a bit (we can drop this uAPI), but I think the desire is
+to push this onto user space.
+
+> What vcpu fd does this apply to? The vcpu calling the PSCI function?
+> Or the target? This is pretty important for PSCI_ON. My guess is that
+> this is setting the return value for the caller?
+
+Yes the fd is the vcpu calling PSCI. As you say, this is for the return
+value to be set correctly.
+
+> Assuming this is indeed for the caller, why do we have a different
+> flow from anything else that returns a result from a hypercall?
+
+I'm not entirely sure what you are suggesting. Do you mean why are we
+not just writing to the GPRS that would contain the result? The issue
+here is that the RMM needs to know the PA of the target REC structure -
+this isn't a return to the guest, but information for the RMM itself to
+complete the PSCI call.
+
+Ultimately even in the case where the VMM is handling PSCI, it's
+actually a combination of the VMM and the RMM - with the RMM validating
+the responses.
+
+>> +
+>> +4.145 KVM_ARM_RMI_POPULATE
+>> +--------------------------
+>> +
+>> +:Capability: KVM_CAP_ARM_RMI
+>> +:Architectures: arm64
+>> +:Type: vm ioctl
+>> +:Parameters: struct kvm_arm_rmi_populate (in)
+>> +:Returns: number of bytes populated, < 0 on error
+>> +
+>> +::
+>> +
+>> +  struct kvm_arm_rmi_populate {
+>> +	__u64 base;
+>> +	__u64 size;
+>> +	__u64 source_uaddr;
+>> +	__u32 flags;
+>> +	__u32 reserved;
+>> +  };
+>> +
+>> +Populate a region of protected address space by copying the data from the user
+>> +space pointer provided. This is only valid before any VCPUs have been run.
+>> +The ioctl might not populate the entire region and user space may have to
+>> +repeatedly call it (with updated pointers) to populate the entire region.
 > 
-> Tested with vhost-vsock and I didn't see any issue.
-> 
-> Thanks!
-> 
-> Reviewed-by: Stefano Garzarella <sgarzare@redhat.com>
-> 
-> > 
-> > drivers/vhost/vhost.c | 11 +++++++----
-> > 1 file changed, 7 insertions(+), 4 deletions(-)
-> > 
-> > diff --git a/drivers/vhost/vhost.c b/drivers/vhost/vhost.c
-> > index 2f2c45d20883..db329a6f6145 100644
-> > --- a/drivers/vhost/vhost.c
-> > +++ b/drivers/vhost/vhost.c
-> > @@ -1522,6 +1522,7 @@ static void vhost_dev_unlock_vqs(struct vhost_dev *d)
-> > static inline int vhost_get_avail_idx(struct vhost_virtqueue *vq)
-> > {
-> > 	__virtio16 idx;
-> > +	u16 avail_idx;
-> > 	int r;
-> > 
-> > 	r = vhost_get_avail(vq, idx, &vq->avail->idx);
-> > @@ -1532,17 +1533,19 @@ static inline int vhost_get_avail_idx(struct vhost_virtqueue *vq)
-> > 	}
-> > 
-> > 	/* Check it isn't doing very strange thing with available indexes */
-> > -	vq->avail_idx = vhost16_to_cpu(vq, idx);
-> > -	if (unlikely((u16)(vq->avail_idx - vq->last_avail_idx) > vq->num)) {
-> > +	avail_idx = vhost16_to_cpu(vq, idx);
-> > +	if (unlikely((u16)(avail_idx - vq->last_avail_idx) > vq->num)) {
-> > 		vq_err(vq, "Invalid available index change from %u to %u",
-> > -		       vq->last_avail_idx, vq->avail_idx);
-> > +		       vq->last_avail_idx, avail_idx);
-> > 		return -EINVAL;
-> > 	}
-> > 
-> > 	/* We're done if there is nothing new */
-> > -	if (vq->avail_idx == vq->last_avail_idx)
-> > +	if (avail_idx == vq->avail_idx)
-> > 		return 0;
-> > 
-> > +	vq->avail_idx = avail_idx;
-> > +
-> > 	/*
-> > 	 * We updated vq->avail_idx so we need a memory barrier between
-> > 	 * the index read above and the caller reading avail ring entries.
-> > -- 
-> > MST
-> > 
+> size as a __u64 is odd, as the return value from the ioctl is a signed
+> int. This implies that you can't really report how many bytes you have
+> copied.  Some form of consistency wouldn't hurt.
+
+Good spot. In practice this works because >2GB in one operation is
+highly unlikely to be processed in one go. But I guess I'll change this
+to have an output size argument. I guess I could make the kernel update
+all of base,size,source_uaddr which would simplify user space.
+
+Thanks,
+Steve
 
