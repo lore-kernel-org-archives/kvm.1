@@ -1,224 +1,255 @@
-Received: from SA9PR02CU001.outbound.protection.outlook.com (mail-southcentralusazon11013061.outbound.protection.outlook.com [40.93.196.61])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 50891AD24;
-	Mon,  2 Mar 2026 00:01:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.93.196.61
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772409706; cv=fail; b=faXALROwknizLAfEYY89NfCxU+l4znv1b5VP2m85t3iKTGreHPXVtqC3YY5xRTlsT8Iv4OmyXmeIepsAaHUDvOxhYYgPcBGjNc6WPHORIWkOoLhrt33FRtJxHSpBHSn8vQTdmiyAl0qhsqIpysZwdvJUiVHFUH5Z/Ivl9md3y1E=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772409706; c=relaxed/simple;
-	bh=jdzxwSm7ai8ePebrDSsNmEaPLrqyXmoa2Vq6Avz5D1M=;
-	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=kT4vKz1K56d/u36S+OfwhoyUbUiwqQy81x8pyPee8MyUQvr9c0YNLMahVLRFdhU7W7rZcHASy1gT770UgUYCLan5roe9ITb16iUcc5v1cicWnFco8VXi7R6rkTl6e0yhXAcvm14HhvsWWYoNfO9EAwX7dnA3Pu5qhyz0hFlB/+E=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=lGLY9ZHd; arc=fail smtp.client-ip=40.93.196.61
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 95EC84A23
+	for <kvm@vger.kernel.org>; Mon,  2 Mar 2026 00:10:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1772410213; cv=none; b=O8pCc1KtzPyqjZ6RuuYAvi2ekZ/mVPi+OaojbC0p7eJfx7tq7hXR8hx2HK6pgLM2RhMAiwmiGb2TDgk4dU6ukQQM1jLOQHAGjJbbmP0vB/MD7MYd8C1kFHCbTRlkFHe7LsHBuKNbSZYzZ+LyBsd3JLnKR/YkZkZkjW5pEFGPG+M=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1772410213; c=relaxed/simple;
+	bh=d3go857C3XICc8MKrQoqnJS5JBMZD9L2ydEsTsmHHY4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=gohs0ITSdvrR/v7l2kF4aSdgLBX0eLVgXHgjlYqqol52E8ts1K+ko8zZamdCfgtqVTZOcP3TYaG0TZUTtcbgkTPSN9mvRd6/llCoEzI7eHdLiweDzM3G05TZqg2DbH9YxhunVhfj7Rqj5O3hClfw9MwlXZ/UjhVPPb1Q8kRzINQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=JxruV2Et; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=nViAaVNJ; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="lGLY9ZHd"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=ZDR12V9Q9/yMZCvS08OZHuXJ6SRMRdkUm5ey9FDHdssuxwHlFvXam4P0K/8jvQPffbvhbMoNBkM2COo4rvt7gFVzv7y8zW4qn4d/fjfl0kfmoFfybLVEaBbAbSyCsTW6tJ6GBXavT1zeCITb/h1p/XLNJTWWgl4bD8dVKPsIrWYor7h0ei02LRoYwny7wSIWeM3WxQ5jQxnI1UlpsOqmnFxmSthMxefbaTVnFHrOKMwYCj7TzJBjIJeoQB0SoZbajrQiywv4VQZAvH4LPswUCCbvBdl2eeD2r2nF/kbC3ZUWfCTCUPb7PWzVJGgGA00U5fst+q8mBrlxbmyScbRuWQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=e6G+K6cCwnv7M5AQHuUxt4whVOVF2uupdnefYegrI1I=;
- b=kAlD/mgHlzT3/sh4KDssWVXPdlW/VngVZOfKXjB3bostkLRef6slP+HL6R3LvwYnZ9ojc7V6wMFwKyi6hEJCCeahkG29pOZYtV0G5fB6//yAfwAl9Y0zdbhkGsye10cPimmRB2QOm4P1RHMlVebBlCdGit+xbXfsFEK4JCQudIdKi24afRke1nj/B3jB4vk2HNdkOxADkFB97kcjkLWKH0KwnJPr98Y/7SY/mdwdBFxMPAfeuM9auy84XXLy75+OH6Sn/+qbF9qY/PjPJ5APAJTRPbn+wL6XXlqaSAx1qYEQBGa9H/6V3cxZySjmOM2sLE2YdhGMKiB96EfFm9jpmg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
- header.d=amd.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=e6G+K6cCwnv7M5AQHuUxt4whVOVF2uupdnefYegrI1I=;
- b=lGLY9ZHdqe7pk/WCtJy3/82tUO4FMLo4kiWYojUxex7rtEuIUeueF7TzhSlQd3gURYeCLud0GVg+rcqwIpKrIkVMd5k2IB0R+GBdPtfX3TN0I14u631oCZBfNjJ2mmC99JUrBjtReozWn1gTV23geSce4IQMjpSvwAHJNrOhrSg=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=amd.com;
-Received: from CH3PR12MB9194.namprd12.prod.outlook.com (2603:10b6:610:19f::7)
- by DS7PR12MB6048.namprd12.prod.outlook.com (2603:10b6:8:9f::5) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.9654.18; Mon, 2 Mar 2026 00:01:41 +0000
-Received: from CH3PR12MB9194.namprd12.prod.outlook.com
- ([fe80::1e6b:ca8b:7715:6fee]) by CH3PR12MB9194.namprd12.prod.outlook.com
- ([fe80::1e6b:ca8b:7715:6fee%4]) with mapi id 15.20.9654.015; Mon, 2 Mar 2026
- 00:01:41 +0000
-Message-ID: <2a5b2d8c-7359-42bd-9e8e-2c3efacee747@amd.com>
-Date: Mon, 2 Mar 2026 11:01:24 +1100
-User-Agent: Mozilla Thunderbird Beta
-Subject: Re: [PATCH kernel 6/9] x86/dma-direct: Stop changing encrypted page
- state for TDISP devices
-To: Jason Gunthorpe <jgg@ziepe.ca>, Robin Murphy <robin.murphy@arm.com>
-Cc: x86@kernel.org, linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
- linux-pci@vger.kernel.org, Thomas Gleixner <tglx@linutronix.de>,
- Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
- Dave Hansen <dave.hansen@linux.intel.com>, "H. Peter Anvin" <hpa@zytor.com>,
- Sean Christopherson <seanjc@google.com>, Paolo Bonzini
- <pbonzini@redhat.com>, Andy Lutomirski <luto@kernel.org>,
- Peter Zijlstra <peterz@infradead.org>, Bjorn Helgaas <bhelgaas@google.com>,
- Dan Williams <dan.j.williams@intel.com>,
- Marek Szyprowski <m.szyprowski@samsung.com>,
- Andrew Morton <akpm@linux-foundation.org>,
- Catalin Marinas <catalin.marinas@arm.com>,
- Michael Ellerman <mpe@ellerman.id.au>, Mike Rapoport <rppt@kernel.org>,
- Tom Lendacky <thomas.lendacky@amd.com>, Ard Biesheuvel <ardb@kernel.org>,
- Neeraj Upadhyay <Neeraj.Upadhyay@amd.com>,
- Ashish Kalra <ashish.kalra@amd.com>, Stefano Garzarella
- <sgarzare@redhat.com>, Melody Wang <huibo.wang@amd.com>,
- Seongman Lee <augustus92@kaist.ac.kr>, Joerg Roedel <joerg.roedel@amd.com>,
- Nikunj A Dadhania <nikunj@amd.com>, Michael Roth <michael.roth@amd.com>,
- Suravee Suthikulpanit <suravee.suthikulpanit@amd.com>,
- Andi Kleen <ak@linux.intel.com>,
- Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
- Tony Luck <tony.luck@intel.com>, David Woodhouse <dwmw@amazon.co.uk>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Denis Efremov <efremov@linux.com>, Geliang Tang <geliang@kernel.org>,
- Piotr Gregor <piotrgregor@rsyncme.org>, "Michael S. Tsirkin"
- <mst@redhat.com>, Alex Williamson <alex@shazbot.org>,
- Arnd Bergmann <arnd@arndb.de>, Jesse Barnes <jbarnes@virtuousgeek.org>,
- Jacob Pan <jacob.jun.pan@linux.intel.com>, Yinghai Lu <yinghai@kernel.org>,
- Kevin Brodsky <kevin.brodsky@arm.com>,
- Jonathan Cameron <jonathan.cameron@huawei.com>,
- "Aneesh Kumar K.V (Arm)" <aneesh.kumar@kernel.org>,
- Xu Yilun <yilun.xu@linux.intel.com>, Herbert Xu
- <herbert@gondor.apana.org.au>, Kim Phillips <kim.phillips@amd.com>,
- Konrad Rzeszutek Wilk <konrad.wilk@oracle.com>,
- Stefano Stabellini <sstabellini@kernel.org>,
- Claire Chang <tientzu@chromium.org>, linux-coco@lists.linux.dev,
- iommu@lists.linux.dev, Jiri Pirko <jiri@resnulli.us>
-References: <20260225053806.3311234-1-aik@amd.com>
- <20260225053806.3311234-7-aik@amd.com>
- <d8102507-e537-4e7c-8137-082a43fd270d@arm.com>
- <20260228000630.GN44359@ziepe.ca>
-From: Alexey Kardashevskiy <aik@amd.com>
-Content-Language: en-US
-In-Reply-To: <20260228000630.GN44359@ziepe.ca>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: SY5P282CA0151.AUSP282.PROD.OUTLOOK.COM
- (2603:10c6:10:24a::12) To CH3PR12MB9194.namprd12.prod.outlook.com
- (2603:10b6:610:19f::7)
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="JxruV2Et";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="nViAaVNJ"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1772410209;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=MpxCTRSJjeW1MLXWf2X8Dcr2BcSTB+ElcgetpkYQgRE=;
+	b=JxruV2EtD+TTzdOO6A3UPzuUiy6FqJIZSodCGcBmx/sbafU3rtOitc0tHFX1IPIlfLHNOz
+	tgeCuWeyTgCsaVlhnxg6BO7sot0xtcg1IPJNqI9ToYWZYrIuino35EIAWlKZeInV1UBGEC
+	P8gAPD4dQTLi3R0SgSXv33uD5VnVePA=
+Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
+ [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-553-bx5Fz60kMPieJisjiVrmEQ-1; Sun, 01 Mar 2026 19:10:08 -0500
+X-MC-Unique: bx5Fz60kMPieJisjiVrmEQ-1
+X-Mimecast-MFC-AGG-ID: bx5Fz60kMPieJisjiVrmEQ_1772410207
+Received: by mail-wr1-f71.google.com with SMTP id ffacd0b85a97d-439bab2d095so14376f8f.3
+        for <kvm@vger.kernel.org>; Sun, 01 Mar 2026 16:10:08 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=redhat.com; s=google; t=1772410207; x=1773015007; darn=vger.kernel.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=MpxCTRSJjeW1MLXWf2X8Dcr2BcSTB+ElcgetpkYQgRE=;
+        b=nViAaVNJaUN+ppLz25WThrSX7QKYxfegwrqipHksJaqyUqzceLj6Y9OW+9bd6/xtZC
+         +HGn7d/JDwLQa9eQI6odY3kwMoYZOQR7zLxAYNl8Vhrr2/865Rxox1zmj1Nfqn3ZmrvC
+         J4Au3t1QU0EnZAO4tx66wXzqt8pMC+QJGuKapZlh0b7vxk4ONJNFnzsWaBJpv/nm+nEU
+         ILeTfF4o0K+mZUcX9pZO6LU3xS4jIN3kvdTM/viZlyKFN2udte+LTT9N0t+aQxdRaCUU
+         1XI3IvkuX0y97fyZ8Bbkoj/2nDZzmOX6RdTPZ9KFwXwbVgfao7C+KHPl8Reg3NG6wjSi
+         pEUA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1772410207; x=1773015007;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=MpxCTRSJjeW1MLXWf2X8Dcr2BcSTB+ElcgetpkYQgRE=;
+        b=c9D0XGkROSGWVE8ZnQgLvaOrk1WYM80402iKDR6U8OBRi0tArQK2oob5Df5oX2PQ4F
+         tDc7pFk9DVyUBloJGzVxU9EECwWMmRbSdgFc6IYq9j2/QRos5tULPT8nG1k7kw0ZoHKD
+         9Jw5dYjqGZ9/Cf8PpJBIvR3UOsydGMNTEGGTFGpPmgrznpC1zMB7cDLuI4b8Zm+1gzbc
+         GqXxpr7ws/iMABsNy6GptauYWg4Narf06V5IKYoz1cm0T/nV16UDVgZmOFDFHWaqAmEY
+         avahAbUFdPlrq5cM60kYZ+aUwsV4x4Z4BMIpa55X1v2GV+6IHqIpLlv7dtm+yYOIkGbe
+         6jcA==
+X-Forwarded-Encrypted: i=1; AJvYcCUqh41THDjmqQMd1d1Pgyt93T31ZSLkb7WoVvuCLbq+gY5WKRtSFevOGivCDQBLdzcfPEI=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxO37ER8R4qfSKc+AMpcd6YT+KNVyssdadazpzIqgYR3QpOfGX9
+	GqXy/TyZNLnU6DHxnOKgCA0UY/Om4w1O6QwFWrOuMAnxIyTniRD0IT/davc3cv2SejCXfMrwH/A
+	DjYIvg8NQXmZFY+D6d5Ik5rMJueyT5k5y/KmbOT2ZjN0UhQRTCarXHQ==
+X-Gm-Gg: ATEYQzz7cHA6zDseClZZZ4FaPJrSbQTIZy5gmgT5ZoRdTQL7JAD3JrYLskYjNdKQLto
+	LGQYZGmILx9FFY8mklnuM1kZgGL0Db/Fq/RB7YISfzntjAj12lGI9YwaS1g790iW1lGcInKbFrL
+	/4DctEAcQxOOTraHkw6emBRhFZczem2fqRwWO7+8rGCRWPvnXWeujB+0dGRQBsIwxSkgbDx0b7/
+	6CsOr89tT+KcLc5maHjl/xF41b7FjMaELaN2XQVwAzXYR1PXL0mfz38oCd++DGTnmcwj1qqVOfD
+	WrqpUExc5zvAnaFBCawseWb2rOtueGPHpcBtQbXUe1O4a3HYU0EAmrNTh36s12OhLo/FqFn1rXy
+	Hj6H/p01scLTYSM0yjVBZiMaZywYKJKXEIwwMlSU4qoqbOg==
+X-Received: by 2002:a05:6000:1889:b0:439:afcc:8a2f with SMTP id ffacd0b85a97d-439afcc8ab6mr6991039f8f.18.1772410207231;
+        Sun, 01 Mar 2026 16:10:07 -0800 (PST)
+X-Received: by 2002:a05:6000:1889:b0:439:afcc:8a2f with SMTP id ffacd0b85a97d-439afcc8ab6mr6991008f8f.18.1772410206755;
+        Sun, 01 Mar 2026 16:10:06 -0800 (PST)
+Received: from redhat.com (IGLD-80-230-79-166.inter.net.il. [80.230.79.166])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-4399c75a523sm23000888f8f.19.2026.03.01.16.10.04
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 01 Mar 2026 16:10:05 -0800 (PST)
+Date: Sun, 1 Mar 2026 19:10:02 -0500
+From: "Michael S. Tsirkin" <mst@redhat.com>
+To: ShuangYu <shuangyu@yunyoo.cc>
+Cc: "jasowang@redhat.com" <jasowang@redhat.com>,
+	"virtualization@lists.linux.dev" <virtualization@lists.linux.dev>,
+	"netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"kvm@vger.kernel.org" <kvm@vger.kernel.org>
+Subject: Re: [BUG] vhost_net: livelock in handle_rx() when GRO packet exceeds
+ virtqueue capacity
+Message-ID: <20260301190906-mutt-send-email-mst@kernel.org>
+References: <9ac0a071e79e9da8128523ddeba19085f4f8c9aa.decbd9ef.1293.41c3.bf27.48cdc12b9ce6@larksuite.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CH3PR12MB9194:EE_|DS7PR12MB6048:EE_
-X-MS-Office365-Filtering-Correlation-Id: 76c66932-964c-47c9-8ff0-08de77eee1db
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|366016|376014|7416014;
-X-Microsoft-Antispam-Message-Info:
-	l1QGT5xyWzrH/kOtM0L6A5UgWO14Ksr6I0mVUbGl6A6UGS8CQ9hK7KfyGIw0HQtFVMBVqSAJU/TCPRASLxkDinJG8egHaU8H5G/9UrBCdvRaDeN8IlWA/LlMB0yrVsrWnFRSBWj07LddHAAnvSCO9Z9B2cQxoEj+JLFLKXSAosdB2ce3KizR6tqhOST2sqLn8R4sZwJO5cA0WqEaZQ5DJUC7jqLA+xxCpE5AlNcIyOeJSCAHdHmIO+KLy5nkUgrfZcwMO+pave0OB9mvjyDnspdzSAg1+3c4SgwT9OgKfqkDWQUfjJV6lZT11uH46g9kcUYyUMZpyIzF/dFkLH6BYocer/gGgcD9rMPLeqOaeanTfRPBLgY2QgU3U8niWX2JUqFrr9LAfhP1mqeUeqHRiKGNKW4GHVIT+bn+gwCJMzatl6TeYQoQ6Nu52egTHtmsm0YuUAA+LJauihIEefp8JfLBxiwG73hrYcgiEq2VD+BfbUX4Eershtz8DSt8EwaKSPkLd03EWKV0R7ZGutqvupI1d/eaDfFO6WLFEBlcnZSf+cWPm5v1Guf9RwZpJWdKXRBNsOxrzMXVQH9CVDoHlmK8OmqBWomHQ19gAUcR/+GGcyxEwlwG0MPBPaTTzJ7dJxKnF5KZf3dahEcnt0iwpzJioTcVdE2qd1aTl4NCLpGchzK81UCtPgOtmFtACbJZVaRijDZTlOv0UIuHj9f3yqoShsc1DcR68x5rHfcDwhU=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH3PR12MB9194.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(376014)(7416014);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?QlFSVytuQk5INmlhOUVzOS84YkZnUmMzVTUrNk5MY25yTXh3ZUxCUEFjMWxV?=
- =?utf-8?B?SFcvUXlUN25YdHNGMSs0NFlDdDZWL2w1K2c3RE1rYmJNM01saWdFd3ExWThS?=
- =?utf-8?B?TFUvdVcreWMrK0p0a09TakxhZzgvaEUwU1dCTFlpY2NOaEQ1dzhJcDZqSlkv?=
- =?utf-8?B?V3JqVlNTVjRNRmVicW8yMkErR1NYdjFLUVVXWjFpeHhQenlkWlBXWHJycGFG?=
- =?utf-8?B?VVpRNkJjUVRrdy9XY2ZFVW1PMmZKVXZrT0dwQ0QzR2Evb0Q2NHNBVWFOWDBk?=
- =?utf-8?B?SDFLZ1NHZEN5UTg5VG9VUk1sSWZZNjJyWnZQMkFKSmlPMjQ3YnczcXdJZzFs?=
- =?utf-8?B?NkNwbWRDU1pWeEdtLzFYSE1hNXRIMTlXcnpoVVhkNENiTTRnb2JJY1l1MGIx?=
- =?utf-8?B?Ymcvc0tJcGkvNThlcWhReS9MS1dhcVNObytmWXBRb3NtUGFxVUkvV3VjT1dN?=
- =?utf-8?B?SDRGZ3A3QlBKTHZJQ1h6NmFmTy90NTR6azhpRHdLbjJraExNOTJXWEhmTmNo?=
- =?utf-8?B?QnhsTURXRWxSTlRtREhZL0laK1QwYmdheG9ESTNWbEpkbG1DZ29Ia0FpU1lY?=
- =?utf-8?B?NWM4N2V4SytiL1NUcDFUeTAvTm5ldTFNRnNwaTJaSHdxcmh4S2FNTFl2YUFD?=
- =?utf-8?B?b0ZTa3VRRmMvQ3pCMHF2dHVCY256Yi9aa1lMVnFYWElZdGJMcVBpU0UyQy9W?=
- =?utf-8?B?SDV6NDRqNldmMFJPSmFGSVY1KzVhYk45WkF1VVQ0clBMQXZOLzlLeSs3K1pp?=
- =?utf-8?B?dmZtQnFMK2JKcjZ4UUwrdG9tcVRNaWhYRHNwV3NETnd2cDJuY0lndVo0SXNC?=
- =?utf-8?B?VFJiNXVUVzIvK0hQbWdtclJveXRlS2h1SVJibUo1UTVESnVpdVhEckwrczBK?=
- =?utf-8?B?bWZrL01uVk0va0lXdGZZcFlzbDQ0cmgxWUZWa2owemlhZHhSbVRMZDU0RFgz?=
- =?utf-8?B?VjBZZmJjdnc5U2lvR0xJcVV5bXB4S0V6UmtnQlpUQ052bWUrOUkrL3FkT1p6?=
- =?utf-8?B?V3lGNWZzbG9YT2F5bm9PUWhEY3o5KzFrYnpSTzhmYkltUlZiS2kzRytBZXQy?=
- =?utf-8?B?TkI5bTBWZldTblZkbXNHc2pkYnZCclZWdzZTalg4dW1adzBHVTZkMUxibjVN?=
- =?utf-8?B?eEVQZWVjRmt2ck9mcUVVdXpZeENCd3NVcGsxdldyRS9jWDBCeE0xNHoyTnpP?=
- =?utf-8?B?QWZpbDVObDd1QldEMkRoMEw3QmFIejE3SUEwSTVzS29GaTdHem9RYkJ6ci9F?=
- =?utf-8?B?bVJIZW8wKy9PTlNIM2cyV1g1bXdsajZuWjBqR3QzRFhWZEhZTVVIa2srcjl1?=
- =?utf-8?B?ZWVBUFlIbUxKYlNHNlE0RTdMbURGZjFhRWlxVHZTM0dsSk9YZm01a1FHOWk3?=
- =?utf-8?B?K0tDbzN6dmFmWWQyc3JxMWhhc0c2N0tCbSs4eG03WXk5NzQyTVd4ZHd2VWky?=
- =?utf-8?B?b2pSaFVSYWw1bXVCYU1ya2JXTjR4RGRlYnhsM1liZkpYZmZKSnB0YXNDZ2hT?=
- =?utf-8?B?ZDNybW50TVBJL2htUmxEWU0yUk5JRnV0QlVkR2lBdDZhU2lOZFY3ZTlkR3I5?=
- =?utf-8?B?d1pHTEZGU3RLTGp1VjhLQlA4dlVhY1NyaHJPTk1VYjB5MTFnSW1pclFmVXpZ?=
- =?utf-8?B?V3NxaXBiVDhodHVMbE1yU2wxVFNQTHdsd3NzYVBTaktpN2hqZzFDc3dRYlB2?=
- =?utf-8?B?UUpvdUdQcURmbktkWlFCOG03ZjRMVU1NeU9lMVNKNkhtZWJ3M3NBTjVBRGc3?=
- =?utf-8?B?Z3lNdWs2UzFTSUZnOEUzclB4OUJJb0ttWW9TUWxtQ2c1ME1QcWNRdFk4UHlz?=
- =?utf-8?B?Rml2Nm9aSjgzS29NTlliWDliM0JPenF0TS9oM3ZjZ3J5UW9qTWpnU0RoaTlN?=
- =?utf-8?B?eFhtYk1sN2lUbjd1QTUyb1JSOVNPeVM5VmNmR2ZtTVFlNHR0SUxEcm9EYlJi?=
- =?utf-8?B?Zk1iSG1oVGV4bE81eloxVDE5ZElLZXpmdTVxYWxlUC96WGFBR2pGNGcrNDJa?=
- =?utf-8?B?Q29sMFVMc3Z2SVJYMGxteHRhWEkxczNmOTYraGsrbjZBT3BJOG9IV3FVWlBW?=
- =?utf-8?B?VkQyL1NhZFJoQlk4UVRTdytqV1VNTTR0UnhZalBrZWJaS2l1enBLdHVWZXNp?=
- =?utf-8?B?dWZmR05LOHo5REZFUFArdnlyWnFlMG9PbDd1d0hHc3BnWnlHYlRCOWg5T0FW?=
- =?utf-8?B?aWFjL1VoZDYyQ01zWUlrdUdlNnQvZS9ncEZETW0wRHNyR2F3bjcwMTQ4RTg0?=
- =?utf-8?B?ZHZNWnFiTVRNaUZ5WnpyWHg4clluNWo5MW14Z1cvT3poZWp3d0dZN0oyUUpR?=
- =?utf-8?B?M0tRQmNzUi9uT0YxaFZUUlhEWlRXL29qMC9BbnJwWUdqU1BFQkNXdz09?=
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 76c66932-964c-47c9-8ff0-08de77eee1db
-X-MS-Exchange-CrossTenant-AuthSource: CH3PR12MB9194.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 02 Mar 2026 00:01:41.0174
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: HlMfyNw9t2Kh4QJVurvjQDM7cgazvcB5e8k15Fv0UC6w3BnQ0KJyTG7ABR/pn/eKao6rZsu2Bc2Uev6liv4vIw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS7PR12MB6048
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <9ac0a071e79e9da8128523ddeba19085f4f8c9aa.decbd9ef.1293.41c3.bf27.48cdc12b9ce6@larksuite.com>
 
-
-
-On 28/2/26 11:06, Jason Gunthorpe wrote:
-> On Wed, Feb 25, 2026 at 05:08:37PM +0000, Robin Murphy wrote:
+On Sun, Mar 01, 2026 at 10:36:39PM +0000, ShuangYu wrote:
+> Hi,
 > 
->> I guess this comes back to the point I just raised on the previous patch -
->> the current assumption is that devices cannot access private memory at all,
->> and thus phys_to_dma() is implicitly only dealing with the mechanics of how
->> the given device accesses shared memory. Once that no longer holds, I don't
->> see how we can find the right answer without also consulting the relevant
->> state of paddr itself, and that really *should* be able to be commonly
->> abstracted across CoCo environments.
+> We have hit a severe livelock in vhost_net on 6.18.x. The vhost
+> kernel thread spins at 100% CPU indefinitely in handle_rx(), and
+> QEMU becomes unkillable (stuck in D state).
+> [This is a text/plain messages]
 > 
-> Definately, I think building on this is a good place to start
+> Environment
+> -----------
+>   Kernel:  6.18.10-1.el8.elrepo.x86_64
+>   QEMU:    7.2.19
+>   Virtio:  VIRTIO_F_IN_ORDER is negotiated
+>   Backend: vhost (kernel)
 > 
-> https://lore.kernel.org/all/20260223095136.225277-2-jiri@resnulli.us/
-
-cool, thanks for the pointer.
-
-> Probably this series needs to take DMA_ATTR_CC_DECRYPTED and push it
-> down into the phys_to_dma() and make the swiotlb shared allocation
-> code force set it.
+> Symptoms
+> --------
+>   - vhost-<pid> kernel thread at 100% CPU (R state, never yields)
+>   - QEMU stuck in D state at vhost_dev_flush() after receiving SIGTERM
+>   - kill -9 has no effect on the QEMU process
+>   - libvirt management plane deadlocks ("cannot acquire state change lock")
 > 
-> But what value is stored in the phys_addr_t for shared pages on the
-> three arches? Does ARM and Intel set the high GPA/IPA bit in the
-> phys_addr or do they set it through the pgprot? What does AMD do?
-> ie can we test a bit in the phys_addr_t to reliably determine if it is
-> shared or private?
-
-Without secure vIOMMU, no Cbit in the S2 table (==host) for any VM. SDTE (==IOMMU) decides on shared/private for the device, i.e. (device_cc_accepted()?private:shared).
-
-With secure vIOMMU, PTEs in VM will or won't have the SME mask.
-
->>> pci_device_add() enforces the FFFF_FFFF coherent DMA mask so
->>> dma_alloc_coherent() fails when SME=on, this is how I ended up fixing
->>> phys_to_dma() and not quite sure it is the right fix.
+> Root Cause
+> ----------
+> The livelock is triggered when a GRO-merged packet on the host TAP
+> interface (e.g., ~60KB) exceeds the remaining free capacity of the
+> guest's RX virtqueue (e.g., ~40KB of available buffers).
 > 
-> Does AMD have the shared/private GPA split like ARM and Intel do? Ie
-> shared is always at a high GPA? What is the SME mask?
+> The loop in handle_rx() (drivers/vhost/net.c) proceeds as follows:
+> 
+>   1. get_rx_bufs() calls vhost_get_vq_desc_n() to fetch descriptors.
+>     It advances vq->last_avail_idx and vq->next_avail_head as it
+>     consumes buffers, but runs out before satisfying datalen.
+> 
+>   2. get_rx_bufs() jumps to err: and calls
+>     vhost_discard_vq_desc(vq, headcount, n), which rolls back
+>     vq->last_avail_idx and vq->next_avail_head.
+> 
+>     Critically, vq->avail_idx (the cached copy of the guest's
+>     avail->idx) is NOT rolled back. This is correct behavior in
+>     isolation, but creates a persistent mismatch:
+> 
+>       vq->avail_idx      = 108  (cached, unchanged)
+>       vq->last_avail_idx = 104  (rolled back)
+> 
+>   3. handle_rx() sees headcount == 0 and calls vhost_enable_notify().
+>     Inside, vhost_get_avail_idx() finds:
+> 
+>       vq->avail_idx (108) != vq->last_avail_idx (104)
+> 
+>     It returns 1 (true), indicating "new buffers available."
+>     But these are the SAME buffers that were just discarded.
+> 
+>   4. handle_rx() hits `continue`, restarting the loop.
+> 
+>   5. In the next iteration, vhost_get_vq_desc_n() checks:
+> 
+>       if (vq->avail_idx == vq->last_avail_idx)
+> 
+>     This is FALSE (108 != 104), so it skips re-reading the guest's
+>     actual avail->idx and directly fetches the same descriptors.
+> 
+>   6. The exact same sequence repeats: fetch -> too small -> discard
+>     -> rollback -> "new buffers!" -> continue. Indefinitely.
+> 
+> This appears to be a regression introduced by the VIRTIO_F_IN_ORDER
+> support, which added vhost_get_vq_desc_n() with the cached avail_idx
+> short-circuit check, and the two-argument vhost_discard_vq_desc()
+> with next_avail_head rollback. The mismatch between the rollback
+> scope (last_avail_idx, next_avail_head) and the check scope
+> (avail_idx vs last_avail_idx) was not present before this change.
+> 
+> bpftrace Evidence
+> -----------------
+> During the 100% CPU lockup, we traced:
+> 
+>   @get_rx_ret[0]:      4468052   // get_rx_bufs() returns 0 every time
+>   @peek_ret[60366]:    4385533   // same 60KB packet seen every iteration
+>   @sock_err[recvmsg]:        0   // tun_recvmsg() is never reached
+> 
+> vhost_get_vq_desc_n() was observed iterating over the exact same 11
+> descriptor addresses millions of times per second.
+> 
+> Workaround
+> ----------
+> Either of the following avoids the livelock:
+> 
+>   - Disable GRO/GSO on the TAP interface:
+>      ethtool -K <tap> gro off gso off
+> 
+>   - Switch from kernel vhost to userspace QEMU backend:
+>      <driver name='qemu'/> in libvirt XML
+> 
+> Bisect
+> ------
+> We have not yet completed a full git bisect, but the issue does not
+> occur on 6.17.x kernels which lack the VIRTIO_F_IN_ORDER vhost
+> support. We will follow up with a Fixes: tag if we can identify the
+> exact commit.
+> 
+> Suggested Fix Direction
+> -----------------------
+> In handle_rx(), when get_rx_bufs() returns 0 (headcount == 0) due to
+> insufficient buffers (not because the queue is truly empty), the code
+> should break out of the loop rather than relying on
+> vhost_enable_notify() to make that determination. For example, when
+> get_rx_bufs() returns r == 0 with datalen still > 0, this indicates a
+> "packet too large" condition, not a "queue empty" condition, and
+> should be handled differently.
+> 
+> Thanks,
+> ShuangYu
 
-sorry but I do not follow this entirely.
-
-In general, GPA != DMA handle. Cbit (bit51) is not an address bit in a GPA but it is a DMA handle so I mask it there.
-
-With one exception - 1) host 2) mem_encrypt=on 3) iommu=pt, but we default to IOMMU in the case of host+mem_encrypt=on and don't have Cbit in host's DMA handles.
-
-For CoCoVM, I could map everything again at the 1<<51 offset in the same S2 table to leak Cbit to the bus (useless though).
-
-There is vTOM in SDTE which is "every phys_addr_t above vTOM is no Cbit, below - with Cbit" (and there is the same thing for the CPU side in SEV) but this not it, right?
-
-AMD's SME mask for shared is 0, for private - 1<<51.
-
-Thanks,
+Hmm. On a hunch, does the following help? completely untested,
+it is night here, sorry.
 
 
--- 
-Alexey
+diff --git a/drivers/vhost/vhost.c b/drivers/vhost/vhost.c
+index 2f2c45d20883..aafae15d5156 100644
+--- a/drivers/vhost/vhost.c
++++ b/drivers/vhost/vhost.c
+@@ -1522,6 +1522,7 @@ static void vhost_dev_unlock_vqs(struct vhost_dev *d)
+ static inline int vhost_get_avail_idx(struct vhost_virtqueue *vq)
+ {
+ 	__virtio16 idx;
++	u16 avail_idx;
+ 	int r;
+ 
+ 	r = vhost_get_avail(vq, idx, &vq->avail->idx);
+@@ -1532,17 +1533,19 @@ static inline int vhost_get_avail_idx(struct vhost_virtqueue *vq)
+ 	}
+ 
+ 	/* Check it isn't doing very strange thing with available indexes */
+-	vq->avail_idx = vhost16_to_cpu(vq, idx);
+-	if (unlikely((u16)(vq->avail_idx - vq->last_avail_idx) > vq->num)) {
++	avail_idx = vhost16_to_cpu(vq, idx);
++	if (unlikely((u16)(avail_idx - vq->last_avail_idx) > vq->num)) {
+ 		vq_err(vq, "Invalid available index change from %u to %u",
+ 		       vq->last_avail_idx, vq->avail_idx);
+ 		return -EINVAL;
+ 	}
+ 
+ 	/* We're done if there is nothing new */
+-	if (vq->avail_idx == vq->last_avail_idx)
++	if (avail_idx == vq->avail_idx)
+ 		return 0;
+ 
++	vq->avail_idx == avail_idx;
++
+ 	/*
+ 	 * We updated vq->avail_idx so we need a memory barrier between
+ 	 * the index read above and the caller reading avail ring entries.
 
