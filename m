@@ -1,126 +1,131 @@
-Received: from mail.loongson.cn (mail.loongson.cn [114.242.206.163])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EE623374E53;
-	Tue,  3 Mar 2026 03:54:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=114.242.206.163
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1809145948
+	for <kvm@vger.kernel.org>; Tue,  3 Mar 2026 04:14:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772510099; cv=none; b=RxLsYllVO9KiY/3eZKQIWEZt40YUc99y/qmop7sZTV7rixYcRMdV3TcaN4NBDQJS/LNH6gH00EciaBetlUsLNZq/hUaEDWOptxQrN8dvCPOBzWba4ga5aAFNxLY0f/JyeLXnbuU1GZoq95xoeD1/S0ZM8AIhwGtQjdzap6Yb9aw=
+	t=1772511273; cv=none; b=LGNhKsjI8Joc7QO6bocgbvTQatchztXGqwtDi+TdbzW27iPs6YS/XtVQh2mu++VAclHJL6rzL3Dt7Ri4s6VqG/k/F/NRuBDmsGWuaJMVMnZ9rt5Sk249IAJoa+kjmtpOgfNG6hsq7QFwsAOdlDuJxLoco0I0Wp2pYSMXNtV+UVg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772510099; c=relaxed/simple;
-	bh=RGWnQo32idVwzGjSVUcvWaFpWkVwatNcwHnmCfLFbDc=;
-	h=Subject:To:Cc:References:From:Message-ID:Date:MIME-Version:
-	 In-Reply-To:Content-Type; b=NNbgpzOWqft1aLwVEZrkLgAWEVQlFPAtYoGPDDCEeWZViZbXPTnV4ZK8N5Oz1Yakq8opTYni6Zw+At17YiprF8GSn8vjQ9PE200EqWfJL8Jw6peI+D2TfVyikI/jsx5danUwPKhzKsnDTotgq0mbph+YGYA3+giTAWAecKZOeQs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn; spf=pass smtp.mailfrom=loongson.cn; arc=none smtp.client-ip=114.242.206.163
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=loongson.cn
-Received: from loongson.cn (unknown [10.2.10.30])
-	by gateway (Coremail) with SMTP id _____8Dx88CHW6Zp0+kWAA--.9819S3;
-	Tue, 03 Mar 2026 11:54:47 +0800 (CST)
-Received: from [10.2.10.30] (unknown [10.2.10.30])
-	by front1 (Coremail) with SMTP id qMiowJAxWcGFW6ZpMXdNAA--.2933S3;
-	Tue, 03 Mar 2026 11:54:45 +0800 (CST)
-Subject: Re: [PATCH v6 0/2] LongArch: KVM: Add DMSINTC support irqchip in
- kernel
-To: Yao Zi <me@ziyao.cc>, maobibo@loongson.cn, chenhuacai@kernel.org
-Cc: kvm@vger.kernel.org, loongarch@lists.linux.dev, kernel@xen0n.name,
- linux-kernel@vger.kernel.org
-References: <20260206012028.3318291-1-gaosong@loongson.cn>
- <aYVhSp_eGBkpXdp-@pie>
-From: gaosong <gaosong@loongson.cn>
-Message-ID: <df4de374-c5ef-6652-985f-39598e234e35@loongson.cn>
-Date: Tue, 3 Mar 2026 11:54:45 +0800
-User-Agent: Mozilla/5.0 (X11; Linux loongarch64; rv:68.0) Gecko/20100101
- Thunderbird/68.7.0
+	s=arc-20240116; t=1772511273; c=relaxed/simple;
+	bh=ZSQHLmAb+Ryn7kywl6DTB7LYe5JnGGQK4k8s3bcjzDY=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=nKkDHMv23srxvQ4Z08rrqhx8YU6f9Jcr3+wwoU+ha6DjnFsQZ2aVKGm9Z2nr0ESLeNVpMsGbk/bh4uldXIKFnxGPShtdGjOjwUOlh1CwU6U0hzCzSxnDYG0tWkmNojCo41TOOBuc/mpMgp+yH46WFem2Ktxq4qRGYAnMrHrMpQo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Bw2AvQwV; arc=none smtp.client-ip=10.30.226.201
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Bw2AvQwV"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E056FC2BCB1
+	for <kvm@vger.kernel.org>; Tue,  3 Mar 2026 04:14:32 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1772511272;
+	bh=ZSQHLmAb+Ryn7kywl6DTB7LYe5JnGGQK4k8s3bcjzDY=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=Bw2AvQwVXt9MAZhIzWW3dXPxyy4PJpWBpBbJTEV8i4vGJKfJ7jdRZ9HTvTb910Vl2
+	 lnFQeTFu9jLBj8WkQ9YFhYgkhc+6LgobvWHfH537ALrUTEk22YWNMfn4HiVmGKV0PZ
+	 VbHvxIgPeRhZHUR89+7GTZweUH2Esv/oM5YnP/aBG8i9LDxCdO23CntbE1OFPQ0Krf
+	 HwL1uuVsEdWA3Kky9MFYGicxG1wr4ZYHLCJGNJcaOXLrXxl04abnloyHfhn698qX0D
+	 TckT3sYX+RFltSGV9glv3NmG/NYvByV9DDp5ikVrBRHyM8KGi1kHdeKvVJMACikdGd
+	 5WVV5hvxojX5A==
+Received: by mail-ed1-f41.google.com with SMTP id 4fb4d7f45d1cf-65fa79f5c98so1825555a12.1
+        for <kvm@vger.kernel.org>; Mon, 02 Mar 2026 20:14:32 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCWDFi9cg5aHRTtKXMFhmu+iKfW62uNj3HDHDDcrQSw20rV74TQbGMWg681/lE9srQMd/Sw=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzTHTZL0RWBy3vsNYl0dRxrGw4wJ0CENbCTJ6q9IcgNuhf3kSk6
+	q+qxgpTU1Pu5N83X04WxTczz5Av25ku4Spg94NqZWwF+IT4Th8sUBemTX/k9rxSMfjtGSAsT4wR
+	sxOOg7eO/LBhIfsYtz5KhrEEPWYRDchs=
+X-Received: by 2002:a05:6402:270c:b0:64b:5d42:52f4 with SMTP id
+ 4fb4d7f45d1cf-660a466a6a6mr359374a12.15.1772511271244; Mon, 02 Mar 2026
+ 20:14:31 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-In-Reply-To: <aYVhSp_eGBkpXdp-@pie>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Content-Language: en-US
-X-CM-TRANSID:qMiowJAxWcGFW6ZpMXdNAA--.2933S3
-X-CM-SenderInfo: 5jdr20tqj6z05rqj20fqof0/
-X-Coremail-Antispam: 1Uk129KBj93XoWxJr1DCr48Zw1fAFW8trWfXrc_yoW8Xw47pF
-	W7Ga4jkrWDXw15Kws29FW0ga1jvrn3Jry8W39Iqa42kFWDur1xWr4fGrWjy3s2g3yfGw1S
-	y3srW343ZF1UZFXCm3ZEXasCq-sJn29KB7ZKAUJUUUU8529EdanIXcx71UUUUU7KY7ZEXa
-	sCq-sGcSsGvfJ3Ic02F40EFcxC0VAKzVAqx4xG6I80ebIjqfuFe4nvWSU5nxnvy29KBjDU
-	0xBIdaVrnRJUUUvFb4IE77IF4wAFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2
-	IYs7xG6rWj6s0DM7CIcVAFz4kK6r106r15M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48v
-	e4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Jr0_JF4l84ACjcxK6xIIjxv20xvEc7CjxVAFwI
-	0_Jr0_Gr1l84ACjcxK6I8E87Iv67AKxVWxJVW8Jr1l84ACjcxK6I8E87Iv6xkF7I0E14v2
-	6r4UJVWxJr1le2I262IYc4CY6c8Ij28IcVAaY2xG8wAqjxCEc2xF0cIa020Ex4CE44I27w
-	Aqx4xG64xvF2IEw4CE5I8CrVC2j2WlYx0E2Ix0cI8IcVAFwI0_JrI_JrylYx0Ex4A2jsIE
-	14v26r1j6r4UMcvjeVCFs4IE7xkEbVWUJVW8JwACjcxG0xvEwIxGrwCYjI0SjxkI62AI1c
-	AE67vIY487MxAIw28IcxkI7VAKI48JMxC20s026xCaFVCjc4AY6r1j6r4UMI8I3I0E5I8C
-	rVAFwI0_Jr0_Jr4lx2IqxVCjr7xvwVAFwI0_JrI_JrWlx4CE17CEb7AF67AKxVWUAVWUtw
-	CIc40Y0x0EwIxGrwCI42IY6xIIjxv20xvE14v26r1j6r1xMIIF0xvE2Ix0cI8IcVCY1x02
-	67AKxVWUJVW8JwCI42IY6xAIw20EY4v20xvaj40_Jr0_JF4lIxAIcVC2z280aVAFwI0_Jr
-	0_Gr1lIxAIcVC2z280aVCY1x0267AKxVWUJVW8JbIYCTnIWIevJa73UjIFyTuYvjxUzZ2-
-	UUUUU
+References: <20260206012028.3318291-1-gaosong@loongson.cn> <aYVhSp_eGBkpXdp-@pie>
+ <df4de374-c5ef-6652-985f-39598e234e35@loongson.cn>
+In-Reply-To: <df4de374-c5ef-6652-985f-39598e234e35@loongson.cn>
+From: Huacai Chen <chenhuacai@kernel.org>
+Date: Tue, 3 Mar 2026 12:14:34 +0800
+X-Gmail-Original-Message-ID: <CAAhV-H6w0hr1byyw6XEfFhR774_jDEeMQW=7omYNm9qnjDHufg@mail.gmail.com>
+X-Gm-Features: AaiRm51sVum94D2VetgZyQNifNDhziF_-ggE4pI6Lo6yoqjEYVwcnMAjyXETbqQ
+Message-ID: <CAAhV-H6w0hr1byyw6XEfFhR774_jDEeMQW=7omYNm9qnjDHufg@mail.gmail.com>
+Subject: Re: [PATCH v6 0/2] LongArch: KVM: Add DMSINTC support irqchip in kernel
+To: gaosong <gaosong@loongson.cn>
+Cc: Yao Zi <me@ziyao.cc>, maobibo@loongson.cn, kvm@vger.kernel.org, 
+	loongarch@lists.linux.dev, kernel@xen0n.name, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-在 2026/2/6 上午11:34, Yao Zi 写道:
-> On Fri, Feb 06, 2026 at 09:20:26AM +0800, Song Gao wrote:
->> Hi,
->>
->> This series  implements the DMSINTC in-kernel irqchip device,
->> enables irqfd to deliver MSI to DMSINTC, and supports injecting MSI interrupts
->> to the target vCPU.
->> applied this series.  use netperf test.
->> VM with one CPU and start netserver, host run netperf.
->> disable dmsintc
->> taskset 0x2f  netperf -H 192.168.122.204 -t UDP_RR  -l 36000
->> Local /Remote
->> Socket Size   Request  Resp.   Elapsed  Trans.
->> Send   Recv   Size     Size    Time     Rate
->> bytes  Bytes  bytes    bytes   secs.    per sec
->>
->> 212992 212992 1        1       36000.00   27107.36
->>
->> enable dmsintc
->> Local /Remote
->> Socket Size   Request  Resp.   Elapsed  Trans.
->> Send   Recv   Size     Size    Time     Rate
->> bytes  Bytes  bytes    bytes   secs.    per sec
->>
->> 212992 212992 1        1       36000.00   28831.14  (+6.3%)
->>
->> v6:
->>    Fix kvm_device leak in kvm_dmsintc_destroy().
->>
->> v5:
->>    Combine patch2 and patch3
->>    Add check msgint feature when register DMSINT device.
->>
->> V4: Rebase and R-b;
->>     replace DINTC to DMSINTC.
->>
->>
->> V3: Fix kvm_arch_set_irq_inatomic() missing dmsintc set msi.(patch3)
->>
->> V2:
->> https://patchew.org/linux/20251128091125.2720148-1-gaosong@loongson.cn/
->>
->> Thanks.
->> Song Gao
->>
->> Song Gao (2):
->>    LongArch: KVM: Add DMSINTC device support
->>    LongArch: KVM: Add dmsintc inject msi to the dest vcpu
-> There's a typo in the titles, it should be LoongArch instead of
-> "LongArch".
-
-Hi,   huacai
-
-Should I need send v7 to fix this typo error?
-
-Thanks.
-
-Song Gao
+On Tue, Mar 3, 2026 at 11:54=E2=80=AFAM gaosong <gaosong@loongson.cn> wrote=
+:
 >
-> Best regards,
-> Yao Zi
+> =E5=9C=A8 2026/2/6 =E4=B8=8A=E5=8D=8811:34, Yao Zi =E5=86=99=E9=81=93:
+> > On Fri, Feb 06, 2026 at 09:20:26AM +0800, Song Gao wrote:
+> >> Hi,
+> >>
+> >> This series  implements the DMSINTC in-kernel irqchip device,
+> >> enables irqfd to deliver MSI to DMSINTC, and supports injecting MSI in=
+terrupts
+> >> to the target vCPU.
+> >> applied this series.  use netperf test.
+> >> VM with one CPU and start netserver, host run netperf.
+> >> disable dmsintc
+> >> taskset 0x2f  netperf -H 192.168.122.204 -t UDP_RR  -l 36000
+> >> Local /Remote
+> >> Socket Size   Request  Resp.   Elapsed  Trans.
+> >> Send   Recv   Size     Size    Time     Rate
+> >> bytes  Bytes  bytes    bytes   secs.    per sec
+> >>
+> >> 212992 212992 1        1       36000.00   27107.36
+> >>
+> >> enable dmsintc
+> >> Local /Remote
+> >> Socket Size   Request  Resp.   Elapsed  Trans.
+> >> Send   Recv   Size     Size    Time     Rate
+> >> bytes  Bytes  bytes    bytes   secs.    per sec
+> >>
+> >> 212992 212992 1        1       36000.00   28831.14  (+6.3%)
+> >>
+> >> v6:
+> >>    Fix kvm_device leak in kvm_dmsintc_destroy().
+> >>
+> >> v5:
+> >>    Combine patch2 and patch3
+> >>    Add check msgint feature when register DMSINT device.
+> >>
+> >> V4: Rebase and R-b;
+> >>     replace DINTC to DMSINTC.
+> >>
+> >>
+> >> V3: Fix kvm_arch_set_irq_inatomic() missing dmsintc set msi.(patch3)
+> >>
+> >> V2:
+> >> https://patchew.org/linux/20251128091125.2720148-1-gaosong@loongson.cn=
+/
+> >>
+> >> Thanks.
+> >> Song Gao
+> >>
+> >> Song Gao (2):
+> >>    LongArch: KVM: Add DMSINTC device support
+> >>    LongArch: KVM: Add dmsintc inject msi to the dest vcpu
+> > There's a typo in the titles, it should be LoongArch instead of
+> > "LongArch".
 >
+> Hi,   huacai
 >
+> Should I need send v7 to fix this typo error?
+Wait a moment, maybe there are other comments.
 
+Huacai
+
+>
+> Thanks.
+>
+> Song Gao
+> >
+> > Best regards,
+> > Yao Zi
+> >
+> >
+>
