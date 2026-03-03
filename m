@@ -1,166 +1,146 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 274F6345CD3;
-	Tue,  3 Mar 2026 13:23:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD0BE35773F;
+	Tue,  3 Mar 2026 13:54:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772544224; cv=none; b=eQHQONCdbku/dIBWMvUxSYgOC2LTupXX8Ij/8Qo55efTAJ9/fyMVpc458aUxB09meYSj+sD0AmqGr/jgpfwYwFKgbQUIBeD5apPL9ruDRin3HxigyBezEFXNsGI2p43KBK3GBy53hBVSod4mfXV7p4sk+Pvz/7gvXpRN7cuExVI=
+	t=1772546050; cv=none; b=hQeAKP5w90mnV5ltK2l1GZwB2jOWOkvgLW3YT0WQSkduIeMycwrQBQc286BJLSBqkKX/IpsM0zl1+rGp4IVbneMb7QI6dc55Anx9t6idD3ykwsGu+jg+D3LSHPgDIoix5M3qE+W91exrxxQ+Q8SbNtO6w1SvIZBr9wmxIGjbhzw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772544224; c=relaxed/simple;
-	bh=QXKFZaIGCPMx+aACFmMjJlQcbli93BFDeSlduovypIE=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=oYvFByKF4oBMoOxG2Fuk6yJDlbM2xNVjCXLjge33phcmrdHQLtAKBL1VW6lYO0xw85tymfAdh/G7pLvE8ABx/1CFqwDV01zM/GocT2kaHa3YWr6Y7qkufXcl36gXmOoXnXoAD/M3V0fWdfv2995hgcNm+dvnGfAqoQmPeYb7u7I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RUqskrCw; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1772546050; c=relaxed/simple;
+	bh=W3Z5heyTlUTJJYt0yzYC2uotK3sfAELcH31/p+K/ZIw=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=Du14ddo5dbr29t03q0r8PN8lXAgzNsr/VE3fhoXDrp4X9i3IkgsdgIt7UTFgRgIllhIVqdhAEGqQ/3fK4LMn9SrRoDOSLmL1Rp68m6iYTJqlCbaJy5IZUrL9EBHLma3ri/TSc0BGZwBKp2ciyYQdhZJd4gbN6ekZFMeTQzpjebo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=qGFNIW3Y; arc=none smtp.client-ip=148.163.158.5
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RUqskrCw"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3D507C116C6;
-	Tue,  3 Mar 2026 13:23:39 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772544223;
-	bh=QXKFZaIGCPMx+aACFmMjJlQcbli93BFDeSlduovypIE=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=RUqskrCwytKCoz7NpxBgmM4C3jhH3crzoSTNxyVDDTwdv8G6ut6sKfUyApTW2XPoX
-	 9WHaPeALwgD1XPhAKHOr8dE5Mmp1hV0mv0icFbbVLyfqOMlB3UFv/NkSMzIy7aazPM
-	 LdTVjsG8/D2BW2Zl/G9fcDN8ulWmHcRG52y8mHgO0MyvHUIjhvPYk2YZ18z0zXPDpj
-	 yuJOHNq8K+qFXpcELSHkihdCXpjX+HOVnTo0OJK69xLWZ/AgFFQfFspe14PlLLfoZJ
-	 NKogQHOeytqZA3J7+vluUG0QdVF0rs6keDsM4BukFNuOL5XGuuFpvWPQbjoNvL4Gc4
-	 iY8vhh/W4qIcw==
-Message-ID: <29d38308-e8ae-42aa-8eeb-1c3b347c284b@kernel.org>
-Date: Tue, 3 Mar 2026 14:23:32 +0100
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="qGFNIW3Y"
+Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 6237YdNu2139963;
+	Tue, 3 Mar 2026 13:54:08 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:date:from:in-reply-to:message-id
+	:mime-version:references:subject:to; s=pp1; bh=xD7RVCTOIaZ4KkqZs
+	X81F5F4s3SlydJ+5TfZG2HgbT8=; b=qGFNIW3Yw6lk9JFYTZMvBImalY4U+Lgfu
+	NZAt7a8EAIQdC7dYopRh6PJXnISd40IQlpddi8lnYytd3yn1agb5DGHj91mww+rl
+	E0/zwemmhODhkpwltNXGvv42Ysk0rmjGaWCcN8Uebu+6QujlL0n4iov425Uvx/dL
+	DUQs3eh9UsfyV3fG7ONWd5XFY1dbMEbmkmw5cbrqh6cbjcaliSpKPByJjUSnh+E5
+	iDA1wsff7duhqj+eDNvTgFFD4wOLsjogMPp9XSci7ll6RcSvxOABx1KVBbbHRjOF
+	djyq0iUNtoIscrnuWMAxbW13hMI9cqYkbEoV+I3O+un4weImwF/tw==
+Received: from ppma12.dal12v.mail.ibm.com (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4ckssmjy1m-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 03 Mar 2026 13:54:07 +0000 (GMT)
+Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma12.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 623Dhsgd029080;
+	Tue, 3 Mar 2026 13:54:07 GMT
+Received: from smtprelay01.fra02v.mail.ibm.com ([9.218.2.227])
+	by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 4cmaps2p6a-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 03 Mar 2026 13:54:06 +0000
+Received: from smtpav03.fra02v.mail.ibm.com (smtpav03.fra02v.mail.ibm.com [10.20.54.102])
+	by smtprelay01.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 623Ds3M826870130
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Tue, 3 Mar 2026 13:54:03 GMT
+Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 70ADB20043;
+	Tue,  3 Mar 2026 13:54:03 +0000 (GMT)
+Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 51B1F2004D;
+	Tue,  3 Mar 2026 13:54:03 +0000 (GMT)
+Received: from b46lp25.lnxne.boe (unknown [9.87.84.240])
+	by smtpav03.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Tue,  3 Mar 2026 13:54:03 +0000 (GMT)
+From: Janosch Frank <frankja@linux.ibm.com>
+To: kvm@vger.kernel.org
+Cc: linux-s390@vger.kernel.org, mjrosato@linux.ibm.com, freimuth@linux.ibm.com,
+        imbrenda@linux.ibm.com, borntraeger@linux.ibm.com
+Subject: [PATCH v2 1/2] KVM: s390: Limit adapter indicator access to mapped page
+Date: Tue,  3 Mar 2026 13:46:34 +0000
+Message-ID: <20260303135250.3665-2-frankja@linux.ibm.com>
+X-Mailer: git-send-email 2.51.0
+In-Reply-To: <20260303135250.3665-1-frankja@linux.ibm.com>
+References: <20260303135250.3665-1-frankja@linux.ibm.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: Stalls when starting a VSOCK listening socket: soft lockups, RCU
- stalls, timeout
-Content-Language: en-GB, fr-BE
-To: Jiri Slaby <jirislaby@kernel.org>
-Cc: kvm@vger.kernel.org, virtualization@lists.linux.dev,
- Netdev <netdev@vger.kernel.org>, rcu@vger.kernel.org,
- MPTCP Linux <mptcp@lists.linux.dev>,
- Linux Kernel <linux-kernel@vger.kernel.org>,
- Peter Zijlstra <peterz@infradead.org>, Thomas Gleixner <tglx@kernel.org>,
- Shinichiro Kawasaki <shinichiro.kawasaki@wdc.com>,
- "Paul E. McKenney" <paulmck@kernel.org>,
- Dave Hansen <dave.hansen@linux.intel.com>,
- Stefan Hajnoczi <stefanha@redhat.com>, "luto@kernel.org" <luto@kernel.org>,
- Stefano Garzarella <sgarzare@redhat.com>
-References: <b24ffcb3-09d5-4e48-9070-0b69bc654281@kernel.org>
- <7f3e74d7-67dc-48d7-99d2-0b87f671651b@kernel.org>
-From: Matthieu Baerts <matttbe@kernel.org>
-Autocrypt: addr=matttbe@kernel.org; keydata=
- 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
- lzVbFe7fduHbABmYz9cefQpO7wDE/Q==
-Organization: NGI0 Core
-In-Reply-To: <7f3e74d7-67dc-48d7-99d2-0b87f671651b@kernel.org>
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMzAzMDEwOCBTYWx0ZWRfX99F2jtK/vM79
+ f+Maqh/fe2KvpxJ75/DMXUXNjfRa5TmXtwFzxHg2UBzeOOjoKk/nx97Y3Bl2bcnxJ8yEaD/fgnh
+ lrKJvPjaaTM1Ukb7/vFQRKZ6gnCNaBh7O3oP+/IHmmeMP1bClmIF7TBMki3MDpb8DnZ8XvUGyJI
+ NbnqyNeo7bH0ua96S805rsvQN7cavYqPy7/2emAr3qenHs39HFHNuVUIYMlYooFgzh3yrWIIZek
+ ItoIBRgxEMvbR32n7vWQxJYX+TGpvoUvWgp09KeoxzXS9ACUMjM1pqTp0Fa+1+iRCNt93MkxlgR
+ RLWK0xXquo+N/eHL5rVo4pcZSn4QsDXT/HhcjTlGZRwvFBYcxAy9hg1dDPl2I6VGIY+gdRypiWY
+ Dz8kQi4u0oWjBxUEZyQenT4zRB2RG/zMNNNFpHZ9FA1DelZHdjF1jX8wS2Vzq70YZ2pGJr7ilqe
+ OzBwISH8k34TNhTRDjQ==
+X-Proofpoint-ORIG-GUID: ojGW4Wm1-OOlqZxZjaWYJgf2StcoTR3f
+X-Proofpoint-GUID: ojGW4Wm1-OOlqZxZjaWYJgf2StcoTR3f
+X-Authority-Analysis: v=2.4 cv=AobjHe9P c=1 sm=1 tr=0 ts=69a6e7ff cx=c_pps
+ a=bLidbwmWQ0KltjZqbj+ezA==:117 a=bLidbwmWQ0KltjZqbj+ezA==:17
+ a=Yq5XynenixoA:10 a=VkNPw1HP01LnGYTKEx00:22 a=RnoormkPH1_aCDwRdu11:22
+ a=RzCfie-kr_QcCd8fBx8p:22 a=VnNF1IyMAAAA:8 a=jGWXv5dM_gJt9w-Nn-UA:9
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.51,FMLib:17.12.100.49
+ definitions=2026-03-02_05,2026-03-03_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ phishscore=0 lowpriorityscore=0 bulkscore=0 impostorscore=0 malwarescore=0
+ spamscore=0 clxscore=1015 suspectscore=0 adultscore=0 priorityscore=1501
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2602130000 definitions=main-2603030108
 
-Hi Jiri,
+While we check the address for errors, we don't seem to check the bit
+offsets and since they are 32 and 64 bits a lot of memory can be
+reached indirectly via those offsets.
 
-On 26/02/2026 11:37, Jiri Slaby wrote:
-> On 06. 02. 26, 12:54, Matthieu Baerts wrote:
->> Our CI for the MPTCP subsystem is now regularly hitting various stalls
->> before even starting the MPTCP test suite. These issues are visible on
->> top of the latest net and net-next trees, which have been sync with
->> Linus' tree yesterday. All these issues have been seen on a "public CI"
->> using GitHub-hosted runners with KVM support, where the tested kernel is
->> launched in a nested (I suppose) VM. I can see the issue with or without
->> debug.config. According to the logs, it might have started around
->> v6.19-rc0, but I was unavailable for a few weeks, and I couldn't react
->> quicker, sorry for that. Unfortunately, I cannot reproduce this locally,
->> and the CI doesn't currently have the ability to execute bisections.
-> 
-> Hmm, after the switch of the qemu guest kernels to 6.19, our (opensuse)
-> build service is stalling in smp_call_function_many_cond() randomly too:
-> https://bugzilla.suse.com/show_bug.cgi?id=1258936
-> 
-> The attachment from there contains sysrq-t logs too:
-> https://bugzilla.suse.com/attachment.cgi?id=888612
+Signed-off-by: Janosch Frank <frankja@linux.ibm.com>
+Fixes: 84223598778b ("KVM: s390: irq routing for adapter interrupts.")
+Suggested-by: Claudio Imbrenda <imbrenda@linux.ibm.com>
+---
+ arch/s390/kvm/interrupt.c | 12 ++++++++++++
+ 1 file changed, 12 insertions(+)
 
-I'm glad I'm not the only one with this issue :)
-
-In your case, do you also have nested VMs with KVM support?
-
-Are you able to easily reproduce the issue and change the guest kernel
-in your build service?
-
-On my side, any debugging steps need to be automated. Lately, it looks
-like the issue is more easily triggered on a stable 6.19 kernel, than on
-the last RC.
-
->> The stalls happen before starting the MPTCP test suite. The init program
->> creates a VSOCK listening socket via socat [1], and different hangs are
->> then visible: RCU stalls followed by a soft lockup [2], only a soft
->> lockup [3], sometimes the soft lockup comes with a delay [4] [5], or
->> there is no RCU stalls or soft lockups detected after one minute, but VM
->> is stalled [6]. In the last case, the VM is stopped after having
->> launched GDB to get more details about what was being executed.
->>
->> It feels like the issue is not directly caused by the VSOCK listening
->> socket, but the stalls always happen after having started the socat
->> command [1] in the background.
-> 
-> It fails randomly while building random packages (go, libreoffice,
-> bayle, ...). I don't think it is VSOCK related in those cases, but who
-> knows what the builds do...
-
-Indeed, unlikely to be VSOCK then.
-
-> I cannot reproduce locally either.
-> 
-> I came across:
->   614da1d3d4cd x86: make page fault handling disable interrupts properly
-> but I have no idea if it could have impact on this at all.
-
-Did it help to revert it?
-
-Cheers,
-Matt
+diff --git a/arch/s390/kvm/interrupt.c b/arch/s390/kvm/interrupt.c
+index 18932a65ca68..1a702e8ef574 100644
+--- a/arch/s390/kvm/interrupt.c
++++ b/arch/s390/kvm/interrupt.c
+@@ -2724,6 +2724,9 @@ static unsigned long get_ind_bit(__u64 addr, unsigned long bit_nr, bool swap)
+ 
+ 	bit = bit_nr + (addr % PAGE_SIZE) * 8;
+ 
++	/* kvm_set_routing_entry() should never allow this to happen */
++	WARN_ON_ONCE(bit > (PAGE_SIZE * BITS_PER_BYTE - 1));
++
+ 	return swap ? (bit ^ (BITS_PER_LONG - 1)) : bit;
+ }
+ 
+@@ -2852,6 +2855,7 @@ int kvm_set_routing_entry(struct kvm *kvm,
+ 			  struct kvm_kernel_irq_routing_entry *e,
+ 			  const struct kvm_irq_routing_entry *ue)
+ {
++	const struct kvm_irq_routing_s390_adapter *adapter;
+ 	u64 uaddr_s, uaddr_i;
+ 	int idx;
+ 
+@@ -2862,6 +2866,14 @@ int kvm_set_routing_entry(struct kvm *kvm,
+ 			return -EINVAL;
+ 		e->set = set_adapter_int;
+ 
++		adapter = &ue->u.adapter;
++		if (adapter->summary_addr + (adapter->summary_offset / 8) >=
++		    (adapter->summary_addr & PAGE_MASK) + PAGE_SIZE)
++			return -EINVAL;
++		if (adapter->ind_addr + (adapter->ind_offset / 8) >=
++		    (adapter->ind_addr & PAGE_MASK) + PAGE_SIZE)
++			return -EINVAL;
++
+ 		idx = srcu_read_lock(&kvm->srcu);
+ 		uaddr_s = gpa_to_hva(kvm, ue->u.adapter.summary_addr);
+ 		uaddr_i = gpa_to_hva(kvm, ue->u.adapter.ind_addr);
 -- 
-Sponsored by the NGI0 Core fund.
+2.51.0
 
