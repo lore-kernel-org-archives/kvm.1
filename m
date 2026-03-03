@@ -1,52 +1,51 @@
 Received: from mx-2023-1.gwdg.de (mx-2023-1.gwdg.de [134.76.10.21])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 974603E51E9;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 972B6390CA3;
 	Tue,  3 Mar 2026 14:19:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=134.76.10.21
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772547597; cv=none; b=lhuBjGEppNfTiqccUZ6K1p9ZuwVMl62Gg2zNdOcYfQScOxqhtfXX8ZiBRcmh3XC30VHjeh/LkKGY7MxYdVXOypUXQecizkAKNZv/3lQFxOEtGHWsmoNHutC56wWsrRHjY56h5gRnRoHMS7ZhVt4YBVCervmO75rxiX/HA78UF5A=
+	t=1772547597; cv=none; b=D1sjwUJM2CPZnx1Y3k6V9SDo+E29OucpB5yjq+KJFtUgelMGx1YoAm4iQwcYUOomFgV21qAyq3HZHPXl2C0nQIpeioGtdJLsxy+DBVSHKZXGgaO6BWQZsbzmnyd99mh0eFQ/FxImpx+W7yPajgmdS/az5SBhEYFO1YK5Y5N7lk4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1772547597; c=relaxed/simple;
-	bh=TvGiCrPJ5gB7ACBx6XkfQjs2TuYKmp071Y3ILmNLpS0=;
-	h=From:Subject:Date:Message-ID:MIME-Version:Content-Type:To:CC; b=XPJi88wab/EPiYmLwNIUV/WYNYofWvIXr5xStkKYcxD3jlRMu9xeW0Cl7oOWEl0Tjf9c3IIayYteNA8hp+XEenbUDahtH7Sg+/zhS6kjNh+EEeb5h32cBU/Z1+IEIaKwAH9mq/9NCwucal+BmzsTsOdO4K12K+3lHPqvgIV4F68=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=cispa.de; spf=pass smtp.mailfrom=cispa.de; dkim=pass (2048-bit key) header.d=cispa.de header.i=@cispa.de header.b=G/X50Yg2; arc=none smtp.client-ip=134.76.10.21
+	bh=BlH7+hXy1ms4n8/da7TKhRnIXRsOiXYku1MgTJCyimE=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-ID:References:
+	 In-Reply-To:To:CC; b=HgvX1lhaWcHG7rq0xjgOGyGBygmvsvOy9QLwBwIPXMF+U2vSa/J00TtjqionN52adAWaz+vo7hbb5StYObgnIeQJQhdqzcg1pKIMagqpZpanmEmUd3Wf+yv49DSVQARsq5cL2Dc/Be3bPMUd3/G3m5J7UxsDl+Z/+njMgfXVpbs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=cispa.de; spf=pass smtp.mailfrom=cispa.de; dkim=pass (2048-bit key) header.d=cispa.de header.i=@cispa.de header.b=BaKNGRcY; arc=none smtp.client-ip=134.76.10.21
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=cispa.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cispa.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=cispa.de header.i=@cispa.de header.b="G/X50Yg2"
+	dkim=pass (2048-bit key) header.d=cispa.de header.i=@cispa.de header.b="BaKNGRcY"
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=cispa.de;
-	s=2023-rsa; h=CC:To:Content-Transfer-Encoding:Content-Type:MIME-Version:
-	Message-ID:Date:Subject:From:Sender:Reply-To:Content-ID:Content-Description:
-	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
-	In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
-	List-Post:List-Owner:List-Archive;
-	bh=Yk82U+KWKNBJrJErXLIwO/U/S9eC+6zTWy0oWkG4+U4=; b=G/X50Yg2QttbkXpWRAy/Gurn9r
-	zl2DC3ZgCG84DKKNEuZ19k3oRwrGlsArhHbu4Laryc1uyzYxxWRIiU+1o3Cl8u3RH4Js29eRaIpBB
-	Wh8q1BkMO5pzgJ6etzc9cikEMrSTmN8FRlHzee3WrH1qe7pNIIolJIvbH6q1TxuyscnTgVRlKRc+3
-	//27EvAWVYhMhTbou86owUHkCGc/kmgJVaEv2l8IerNOHfcYIF+C4z4sY+Le5S1PCsWS5WkzI5YgU
-	OT9KEli6uXJCHmwFng7T9QkEtZb5EZ8npaBy016/XoHpXTHID7xlBfFEbmaILESsAkC4wljdZD3p1
-	eAKZdU1Q==;
-Received: from mailer.gwdg.de ([134.76.10.26]:42647)
+	s=2023-rsa; h=CC:To:In-Reply-To:References:Message-ID:
+	Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:From:Sender:
+	Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender
+	:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
+	List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=yVoHntqSoUsA+2/rgo1maXXswKzLzoa8w8hdNMp26VE=; b=BaKNGRcYaT/fUwvHRRF/o511AP
+	CXi6cuSX62g5rl5agqvxu7/lqIETCxr71zT6Se1G9X3VPG/yQYvPyDxCZxhS6O/hr1osYZUR2FmyG
+	RY+UMsvrNUZr3paUuP0eJlMTWrJwg0Y8e8cR/mocK7zhY4pZ/fFr2mHM4creha1cndcIIO1hr9sdt
+	0p0mG2zCRqhm5HTf20vcvCrWsahNSPrsKBfacNDoV641YG2kusQ285HyHxu/XSRxnKGErU9ejHpJE
+	qGR+FrvC22o8X0VYsKPcGvNGQc5/Ah6V03eWm+js9xl8uOBxqT3cR7lPcHrzamDWabxU7cVFZ29YQ
+	ShBOErRw==;
+Received: from mailer.gwdg.de ([134.76.10.26]:56797)
 	by mailer.gwdg.de with esmtp (GWDG Mailer)
 	(envelope-from <lukas.gerlach@cispa.de>)
-	id 1vxQb7-00850E-2q;
-	Tue, 03 Mar 2026 15:19:42 +0100
+	id 1vxQb8-00850R-2P;
+	Tue, 03 Mar 2026 15:19:43 +0100
 Received: from mbx19-sub-05.um.gwdg.de ([10.108.142.70] helo=email.gwdg.de)
 	by mailer.gwdg.de with esmtps (TLS1.2:ECDHE-RSA-AES128-GCM-SHA256:128)
 	(GWDG Mailer)
 	(envelope-from <lukas.gerlach@cispa.de>)
-	id 1vxQb8-0006k0-25;
-	Tue, 03 Mar 2026 15:19:42 +0100
+	id 1vxQb9-0006kV-1Z;
+	Tue, 03 Mar 2026 15:19:43 +0100
 Received: from lukass-mbp-7.lan (10.250.9.200) by MBX19-SUB-05.um.gwdg.de
  (10.108.142.70) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.2.2562.37; Tue, 3 Mar
  2026 15:19:42 +0100
 From: Lukas Gerlach <lukas.gerlach@cispa.de>
-Subject: [PATCH v2 0/4] KVM: riscv: Fix Spectre-v1 vulnerabilities in
- register access
-Date: Tue, 3 Mar 2026 15:19:40 +0100
-Message-ID: <20260303-kvm-riscv-spectre-v1-v2-0-192caab8e0dc@cispa.de>
+Date: Tue, 3 Mar 2026 15:19:42 +0100
+Subject: [PATCH v2 2/4] KVM: riscv: Fix Spectre-v1 in AIA CSR access
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -55,10 +54,9 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-X-B4-Tracking: v=1; b=H4sIAAAAAAAC/4WNTQrCMBCFr1Jm7UgSa7CuvId0EZKpHcS2zJSgl
- Nzd2AsIb/M93s8GSsKkcG02EMqsPE8V3KGBOIbpQcipMjjjvHHO4zO/UFhjRl0orkKYLbbJtCn
- 6S6wJqNVFaOD3PnvvK4+s6yyf/SXbn/tnsMrgeehOhoL1vrO3yLqEYyLoSylfvYoXFbcAAAA=
-X-Change-ID: 20260226-kvm-riscv-spectre-v1-4d04dc68c226
+Message-ID: <20260303-kvm-riscv-spectre-v1-v2-2-192caab8e0dc@cispa.de>
+References: <20260303-kvm-riscv-spectre-v1-v2-0-192caab8e0dc@cispa.de>
+In-Reply-To: <20260303-kvm-riscv-spectre-v1-v2-0-192caab8e0dc@cispa.de>
 To: Anup Patel <anup@brainfault.org>, Atish Patra <atish.patra@linux.dev>,
 	Paul Walmsley <pjw@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>, Albert
  Ou <aou@eecs.berkeley.edu>, Alexandre Ghiti <alex@ghiti.fr>, Andrew Jones
@@ -70,13 +68,13 @@ CC: =?utf-8?q?Radim_Kr=C4=8Dm=C3=A1=C5=99?= <radim.krcmar@oss.qualcomm.com>,
 	Marton Bognar <marton.bognar@kuleuven.be>, Jo Van Bulck
 	<jo.vanbulck@kuleuven.be>, Lukas Gerlach <lukas.gerlach@cispa.de>
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1070;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2077;
  i=lukas.gerlach@cispa.de; h=from:subject:message-id;
- bh=TvGiCrPJ5gB7ACBx6XkfQjs2TuYKmp071Y3ILmNLpS0=;
- b=owGbwMvMwCGWoTIjqP/42kTG02pJDJnL3v6V+iDzwOlfkeXPiGve/rvOGf4ujki/cPWizUJF3
- RvzJqVM6ChlYRDjYJAVU2SZKviasW+PA09S5uFzMHNYmUCGMHBxCsBERJkZ/mfvPhJgcfZpQDXX
- z03fE08Zrq/aV3g0xHP6yiVf22U+2Exg+O/B2mQ6demek9s6es1YL9jP/dJqdboxTOi4x5GzD5S
- XTeIFAA==
+ bh=BlH7+hXy1ms4n8/da7TKhRnIXRsOiXYku1MgTJCyimE=;
+ b=owGbwMvMwCGWoTIjqP/42kTG02pJDJnL3v69fFpB2FgmvejjhFmfOq/tboxouxV1K7+VO+ET8
+ 1bug1ePdZSyMIhxMMiKKbJMFXzN2LfHgScp8/A5mDmsTCBDGLg4BWAiv2UY/plJBJ5lrlRUyncQ
+ ThJybn0+2dA4MTbASW666s52j+iJvYwM73aKfH4/+VHQxQc6B02SxRweznnXE2knFn6vM4e1ofA
+ 6PwA=
 X-Developer-Key: i=lukas.gerlach@cispa.de; a=openpgp;
  fpr=9511EB018EBC400C6269C3CE682498528FC7AD61
 X-ClientProxiedBy: MBX19-SUB-05.um.gwdg.de (10.108.142.70) To
@@ -84,34 +82,64 @@ X-ClientProxiedBy: MBX19-SUB-05.um.gwdg.de (10.108.142.70) To
 X-Virus-Scanned: (clean) by clamav
 X-Spam-Level: -
 
-This series adds array_index_nospec() to RISC-V KVM to prevent
-speculative out-of-bounds access to kernel memory.
+User-controlled indices are used to access AIA CSR registers.
+Sanitize them with array_index_nospec() to prevent speculative
+out-of-bounds access.
 
-Similar fixes exist for x86 (ioapic, lapic, PMU) and arm64 (vgic).
+Similar to x86 commit 8c86405f606c ("KVM: x86: Protect
+ioapic_read_indirect() from Spectre-v1/L1TF attacks") and arm64
+commit 41b87599c743 ("KVM: arm/arm64: vgic: fix possible spectre-v1
+in vgic_get_irq()").
 
+Reviewed-by: Radim Krčmář <radim.krcmar@oss.qualcomm.com>
 Signed-off-by: Lukas Gerlach <lukas.gerlach@cispa.de>
 ---
-Changes in v2:
-Add array_index_nospec() to four additional sites in vcpu_pmu.c
-(Radim Krčmář)
+ arch/riscv/kvm/aia.c | 11 +++++++++--
+ 1 file changed, 9 insertions(+), 2 deletions(-)
 
----
-Lukas Gerlach (4):
-      KVM: riscv: Fix Spectre-v1 in ONE_REG register access
-      KVM: riscv: Fix Spectre-v1 in AIA CSR access
-      KVM: riscv: Fix Spectre-v1 in floating-point register access
-      KVM: riscv: Fix Spectre-v1 in PMU counter access
+diff --git a/arch/riscv/kvm/aia.c b/arch/riscv/kvm/aia.c
+index cac3c2b51d72..38de97d2f5b8 100644
+--- a/arch/riscv/kvm/aia.c
++++ b/arch/riscv/kvm/aia.c
+@@ -13,6 +13,7 @@
+ #include <linux/irqchip/riscv-imsic.h>
+ #include <linux/irqdomain.h>
+ #include <linux/kvm_host.h>
++#include <linux/nospec.h>
+ #include <linux/percpu.h>
+ #include <linux/spinlock.h>
+ #include <asm/cpufeature.h>
+@@ -182,10 +183,13 @@ int kvm_riscv_vcpu_aia_get_csr(struct kvm_vcpu *vcpu,
+ 			       unsigned long *out_val)
+ {
+ 	struct kvm_vcpu_aia_csr *csr = &vcpu->arch.aia_context.guest_csr;
++	unsigned long regs_max = sizeof(struct kvm_riscv_aia_csr) / sizeof(unsigned long);
+ 
+-	if (reg_num >= sizeof(struct kvm_riscv_aia_csr) / sizeof(unsigned long))
++	if (reg_num >= regs_max)
+ 		return -ENOENT;
+ 
++	reg_num = array_index_nospec(reg_num, regs_max);
++
+ 	*out_val = 0;
+ 	if (kvm_riscv_aia_available())
+ 		*out_val = ((unsigned long *)csr)[reg_num];
+@@ -198,10 +202,13 @@ int kvm_riscv_vcpu_aia_set_csr(struct kvm_vcpu *vcpu,
+ 			       unsigned long val)
+ {
+ 	struct kvm_vcpu_aia_csr *csr = &vcpu->arch.aia_context.guest_csr;
++	unsigned long regs_max = sizeof(struct kvm_riscv_aia_csr) / sizeof(unsigned long);
+ 
+-	if (reg_num >= sizeof(struct kvm_riscv_aia_csr) / sizeof(unsigned long))
++	if (reg_num >= regs_max)
+ 		return -ENOENT;
+ 
++	reg_num = array_index_nospec(reg_num, regs_max);
++
+ 	if (kvm_riscv_aia_available()) {
+ 		((unsigned long *)csr)[reg_num] = val;
+ 
 
- arch/riscv/kvm/aia.c         | 11 +++++++++--
- arch/riscv/kvm/vcpu_fp.c     | 17 +++++++++++++----
- arch/riscv/kvm/vcpu_onereg.c | 36 ++++++++++++++++++++++++++++--------
- arch/riscv/kvm/vcpu_pmu.c    | 14 +++++++++++---
- 4 files changed, 61 insertions(+), 17 deletions(-)
----
-base-commit: f4d0ec0aa20d49f09dc01d82894ce80d72de0560
-change-id: 20260226-kvm-riscv-spectre-v1-4d04dc68c226
-
-Best regards,
 -- 
-Lukas Gerlach <lukas.gerlach@cispa.de>
+2.51.0
 
