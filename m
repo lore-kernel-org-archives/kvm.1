@@ -1,114 +1,126 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A70FC37DE86;
-	Tue,  3 Mar 2026 03:16:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.11
+Received: from mail.loongson.cn (mail.loongson.cn [114.242.206.163])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EE623374E53;
+	Tue,  3 Mar 2026 03:54:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=114.242.206.163
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772507818; cv=none; b=T1YOl8EVleNJMIg7l8mRFFnlXrTO5peNpyVoESIJifbgvl5VMoEMlfi8rb1TSV+rViJNjVrTIkmXYr/9SNA4H6el8GnuyXcnQ0tPC/0SUHE4mj11ig6WlJLK1jLmDu5rBCnl7zn4dOAu/zFrYp+L/n22hPb3RGZkFz+2s3aqUN8=
+	t=1772510099; cv=none; b=RxLsYllVO9KiY/3eZKQIWEZt40YUc99y/qmop7sZTV7rixYcRMdV3TcaN4NBDQJS/LNH6gH00EciaBetlUsLNZq/hUaEDWOptxQrN8dvCPOBzWba4ga5aAFNxLY0f/JyeLXnbuU1GZoq95xoeD1/S0ZM8AIhwGtQjdzap6Yb9aw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772507818; c=relaxed/simple;
-	bh=iYVt9C5yvLI2eOsTWWG1TjQnrAOxXhw/BLhiSFLSju4=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sgEqtMvfnzdlpTNXG7aWcV0q+ncdN2uDe8/bTMy/9lPGzsTUw+MwIo+4hgOp1qeXgbw1EqLKQaXJOgatY48eIECkQIGTy8fdLTZRr9OAkHDFjMBnf+z95I6C8Xtd9T9MJVli2T4hfBlHz9R7OwNaP2n8MKXJ6s0gJ0PzcBTZp30=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=VLCtgPWr; arc=none smtp.client-ip=198.175.65.11
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="VLCtgPWr"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1772507817; x=1804043817;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=iYVt9C5yvLI2eOsTWWG1TjQnrAOxXhw/BLhiSFLSju4=;
-  b=VLCtgPWrIZwArviPJ9D1k4ZHM3mdnX80yBYAznGZCxM+kDt9ACcSLzIs
-   SQKn0POg7r0uq9InsaAN8URnb9H27p70RdpgapnMlhOP76NpkvrPzNfhy
-   INHtCQWDZWGcsHYvjPZaD6F9zfM1wbuT80rPujp9J6jeejDflAkv+MYFA
-   Smz406vl9Yiv0iFIBEiQFWG7MJH7RgsZ+Wr86ZHZNJ//t+OB06adg01Z5
-   LRiBOy9QusV8bMPt+ONiA9BEvMhBbpVRRbebud5hulHDni8PyZ5n2bwe0
-   sZ4i1YS0V9A5oEXakD+B/ObsYvZpy6gcpq/DQjh1aasI6MIzmvQhOF7pK
-   g==;
-X-CSE-ConnectionGUID: 4lficw6nRhSFGrB2oXxAtQ==
-X-CSE-MsgGUID: UVoOFlMRTrKO0UQbxh94+A==
-X-IronPort-AV: E=McAfee;i="6800,10657,11717"; a="83869751"
-X-IronPort-AV: E=Sophos;i="6.21,321,1763452800"; 
-   d="scan'208";a="83869751"
-Received: from orviesa006.jf.intel.com ([10.64.159.146])
-  by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Mar 2026 19:16:57 -0800
-X-CSE-ConnectionGUID: Dkset0lMQlayXqdkFxfWiQ==
-X-CSE-MsgGUID: Cve+RGnASG+h2ppquqjd4g==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,321,1763452800"; 
-   d="scan'208";a="216988924"
-Received: from lxy-clx-4s.sh.intel.com ([10.239.48.22])
-  by orviesa006.jf.intel.com with ESMTP; 02 Mar 2026 19:16:54 -0800
-From: Xiaoyao Li <xiaoyao.li@intel.com>
-To: Dave Hansen <dave.hansen@linux.intel.com>,
-	Kiryl Shutsemau <kas@kernel.org>,
-	Sean Christopherson <seanjc@google.com>,
-	Paolo Bonzini <pbonzini@redhat.com>
-Cc: Thomas Gleixner <tglx@linutronix.de>,
-	Ingo Molnar <mingo@redhat.com>,
-	Borislav Petkov <bp@alien8.de>,
-	"H. Peter Anvin" <hpa@zytor.com>,
-	linux-coco@lists.linux.dev,
-	kvm@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	x86@kernel.org,
-	Rick Edgecombe <rick.p.edgecombe@intel.com>,
-	Kai Huang <kai.huang@intel.com>,
-	binbin.wu@linux.intel.com,
-	Tony Lindgren <tony.lindgren@linux.intel.com>,
-	xiaoyao.li@intel.com
-Subject: [PATCH v4 4/4] KVM: TDX: Rename KVM_SUPPORTED_TD_ATTRS to KVM_SUPPORTED_TDX_TD_ATTRS
-Date: Tue,  3 Mar 2026 11:03:35 +0800
-Message-ID: <20260303030335.766779-5-xiaoyao.li@intel.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20260303030335.766779-1-xiaoyao.li@intel.com>
-References: <20260303030335.766779-1-xiaoyao.li@intel.com>
+	s=arc-20240116; t=1772510099; c=relaxed/simple;
+	bh=RGWnQo32idVwzGjSVUcvWaFpWkVwatNcwHnmCfLFbDc=;
+	h=Subject:To:Cc:References:From:Message-ID:Date:MIME-Version:
+	 In-Reply-To:Content-Type; b=NNbgpzOWqft1aLwVEZrkLgAWEVQlFPAtYoGPDDCEeWZViZbXPTnV4ZK8N5Oz1Yakq8opTYni6Zw+At17YiprF8GSn8vjQ9PE200EqWfJL8Jw6peI+D2TfVyikI/jsx5danUwPKhzKsnDTotgq0mbph+YGYA3+giTAWAecKZOeQs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn; spf=pass smtp.mailfrom=loongson.cn; arc=none smtp.client-ip=114.242.206.163
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=loongson.cn
+Received: from loongson.cn (unknown [10.2.10.30])
+	by gateway (Coremail) with SMTP id _____8Dx88CHW6Zp0+kWAA--.9819S3;
+	Tue, 03 Mar 2026 11:54:47 +0800 (CST)
+Received: from [10.2.10.30] (unknown [10.2.10.30])
+	by front1 (Coremail) with SMTP id qMiowJAxWcGFW6ZpMXdNAA--.2933S3;
+	Tue, 03 Mar 2026 11:54:45 +0800 (CST)
+Subject: Re: [PATCH v6 0/2] LongArch: KVM: Add DMSINTC support irqchip in
+ kernel
+To: Yao Zi <me@ziyao.cc>, maobibo@loongson.cn, chenhuacai@kernel.org
+Cc: kvm@vger.kernel.org, loongarch@lists.linux.dev, kernel@xen0n.name,
+ linux-kernel@vger.kernel.org
+References: <20260206012028.3318291-1-gaosong@loongson.cn>
+ <aYVhSp_eGBkpXdp-@pie>
+From: gaosong <gaosong@loongson.cn>
+Message-ID: <df4de374-c5ef-6652-985f-39598e234e35@loongson.cn>
+Date: Tue, 3 Mar 2026 11:54:45 +0800
+User-Agent: Mozilla/5.0 (X11; Linux loongarch64; rv:68.0) Gecko/20100101
+ Thunderbird/68.7.0
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+In-Reply-To: <aYVhSp_eGBkpXdp-@pie>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
+Content-Language: en-US
+X-CM-TRANSID:qMiowJAxWcGFW6ZpMXdNAA--.2933S3
+X-CM-SenderInfo: 5jdr20tqj6z05rqj20fqof0/
+X-Coremail-Antispam: 1Uk129KBj93XoWxJr1DCr48Zw1fAFW8trWfXrc_yoW8Xw47pF
+	W7Ga4jkrWDXw15Kws29FW0ga1jvrn3Jry8W39Iqa42kFWDur1xWr4fGrWjy3s2g3yfGw1S
+	y3srW343ZF1UZFXCm3ZEXasCq-sJn29KB7ZKAUJUUUU8529EdanIXcx71UUUUU7KY7ZEXa
+	sCq-sGcSsGvfJ3Ic02F40EFcxC0VAKzVAqx4xG6I80ebIjqfuFe4nvWSU5nxnvy29KBjDU
+	0xBIdaVrnRJUUUvFb4IE77IF4wAFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2
+	IYs7xG6rWj6s0DM7CIcVAFz4kK6r106r15M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48v
+	e4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Jr0_JF4l84ACjcxK6xIIjxv20xvEc7CjxVAFwI
+	0_Jr0_Gr1l84ACjcxK6I8E87Iv67AKxVWxJVW8Jr1l84ACjcxK6I8E87Iv6xkF7I0E14v2
+	6r4UJVWxJr1le2I262IYc4CY6c8Ij28IcVAaY2xG8wAqjxCEc2xF0cIa020Ex4CE44I27w
+	Aqx4xG64xvF2IEw4CE5I8CrVC2j2WlYx0E2Ix0cI8IcVAFwI0_JrI_JrylYx0Ex4A2jsIE
+	14v26r1j6r4UMcvjeVCFs4IE7xkEbVWUJVW8JwACjcxG0xvEwIxGrwCYjI0SjxkI62AI1c
+	AE67vIY487MxAIw28IcxkI7VAKI48JMxC20s026xCaFVCjc4AY6r1j6r4UMI8I3I0E5I8C
+	rVAFwI0_Jr0_Jr4lx2IqxVCjr7xvwVAFwI0_JrI_JrWlx4CE17CEb7AF67AKxVWUAVWUtw
+	CIc40Y0x0EwIxGrwCI42IY6xIIjxv20xvE14v26r1j6r1xMIIF0xvE2Ix0cI8IcVCY1x02
+	67AKxVWUJVW8JwCI42IY6xAIw20EY4v20xvaj40_Jr0_JF4lIxAIcVC2z280aVAFwI0_Jr
+	0_Gr1lIxAIcVC2z280aVCY1x0267AKxVWUJVW8JbIYCTnIWIevJa73UjIFyTuYvjxUzZ2-
+	UUUUU
 
-Rename KVM_SUPPORTED_TD_ATTRS to KVM_SUPPORTED_TDX_TD_ATTRS to include
-"TDX" in the name, making it clear that it pertains to TDX.
+在 2026/2/6 上午11:34, Yao Zi 写道:
+> On Fri, Feb 06, 2026 at 09:20:26AM +0800, Song Gao wrote:
+>> Hi,
+>>
+>> This series  implements the DMSINTC in-kernel irqchip device,
+>> enables irqfd to deliver MSI to DMSINTC, and supports injecting MSI interrupts
+>> to the target vCPU.
+>> applied this series.  use netperf test.
+>> VM with one CPU and start netserver, host run netperf.
+>> disable dmsintc
+>> taskset 0x2f  netperf -H 192.168.122.204 -t UDP_RR  -l 36000
+>> Local /Remote
+>> Socket Size   Request  Resp.   Elapsed  Trans.
+>> Send   Recv   Size     Size    Time     Rate
+>> bytes  Bytes  bytes    bytes   secs.    per sec
+>>
+>> 212992 212992 1        1       36000.00   27107.36
+>>
+>> enable dmsintc
+>> Local /Remote
+>> Socket Size   Request  Resp.   Elapsed  Trans.
+>> Send   Recv   Size     Size    Time     Rate
+>> bytes  Bytes  bytes    bytes   secs.    per sec
+>>
+>> 212992 212992 1        1       36000.00   28831.14  (+6.3%)
+>>
+>> v6:
+>>    Fix kvm_device leak in kvm_dmsintc_destroy().
+>>
+>> v5:
+>>    Combine patch2 and patch3
+>>    Add check msgint feature when register DMSINT device.
+>>
+>> V4: Rebase and R-b;
+>>     replace DINTC to DMSINTC.
+>>
+>>
+>> V3: Fix kvm_arch_set_irq_inatomic() missing dmsintc set msi.(patch3)
+>>
+>> V2:
+>> https://patchew.org/linux/20251128091125.2720148-1-gaosong@loongson.cn/
+>>
+>> Thanks.
+>> Song Gao
+>>
+>> Song Gao (2):
+>>    LongArch: KVM: Add DMSINTC device support
+>>    LongArch: KVM: Add dmsintc inject msi to the dest vcpu
+> There's a typo in the titles, it should be LoongArch instead of
+> "LongArch".
 
-Suggested-by: Sean Christopherson <seanjc@google.com>
-Signed-off-by: Xiaoyao Li <xiaoyao.li@intel.com>
-Reviewed-by: Rick Edgecombe <rick.p.edgecombe@intel.com>
-Reviewed-by: Kiryl Shutsemau <kas@kernel.org>
-Acked-by: Sean Christopherson <seanjc@google.com>
----
- arch/x86/kvm/vmx/tdx.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+Hi,   huacai
 
-diff --git a/arch/x86/kvm/vmx/tdx.c b/arch/x86/kvm/vmx/tdx.c
-index c5065f84b78b..eaeda1cfb227 100644
---- a/arch/x86/kvm/vmx/tdx.c
-+++ b/arch/x86/kvm/vmx/tdx.c
-@@ -75,7 +75,7 @@ void tdh_vp_wr_failed(struct vcpu_tdx *tdx, char *uclass, char *op, u32 field,
- 	pr_err("TDH_VP_WR[%s.0x%x]%s0x%llx failed: 0x%llx\n", uclass, field, op, val, err);
- }
- 
--#define KVM_SUPPORTED_TD_ATTRS (TDX_TD_ATTR_SEPT_VE_DISABLE)
-+#define KVM_SUPPORTED_TDX_TD_ATTRS (TDX_TD_ATTR_SEPT_VE_DISABLE)
- 
- static __always_inline struct kvm_tdx *to_kvm_tdx(struct kvm *kvm)
- {
-@@ -89,7 +89,7 @@ static __always_inline struct vcpu_tdx *to_tdx(struct kvm_vcpu *vcpu)
- 
- static u64 tdx_get_supported_attrs(const struct tdx_sys_info_td_conf *td_conf)
- {
--	u64 val = KVM_SUPPORTED_TD_ATTRS;
-+	u64 val = KVM_SUPPORTED_TDX_TD_ATTRS;
- 
- 	if ((val & td_conf->attributes_fixed1) != td_conf->attributes_fixed1)
- 		return 0;
--- 
-2.43.0
+Should I need send v7 to fix this typo error?
+
+Thanks.
+
+Song Gao
+>
+> Best regards,
+> Yao Zi
+>
+>
 
