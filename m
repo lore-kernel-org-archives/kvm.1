@@ -1,138 +1,121 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E15A5384231;
-	Tue,  3 Mar 2026 19:15:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 85D04396560
+	for <kvm@vger.kernel.org>; Tue,  3 Mar 2026 19:17:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772565356; cv=none; b=jBe+fqBlgdu7vOE7DcbmF52MEdBndmIANcJngcZPDQzNUT4jTVeeHSN3X/W7w2ZbEBoNy3yeU+WSpS5humkuIaUnFvo7GLn9sbSBiETea952wLtvPBjgUmOAjF3ypMNcmwqBrQ5I5DDG+ELiwV7sBNvJXpXSzoLnlZSd16wTVRc=
+	t=1772565463; cv=none; b=YcnmYqmnFoYVpydP5+5z4KyVwCRO+QEQ0TXKJKs8Ko/Jye+M69pDavxom8pxOyJ/9IdGkg2Ar6oJAiCPdDzS+fnnlLTmkJ1Czlie55GgGaMo9WojXskl0QfXMaZmvc3ZvHjyUMyrOB64JIqVhfQwOnkiU4DohX2t0iZI45QMI4A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772565356; c=relaxed/simple;
-	bh=tgcMP1DjiSuWdQdTXNizhC+/un3ZdmwWd5CjtmNWK04=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DjB0Rb/Jt5DZtAJUwuDT5IuZvTdNUrTnUA9blxoTV+FvLmc3HvAKjlWSBij2Eh2zOJaE/0EB5rBLPG/CY2jGe6S7JH3ulKShIWz6MgsVqe29g4Wl7Hq+bZeDKHLmJNFZGbOI7Uk3SJpMDfyG/Sp7oiIwHQ0J5NrFXmRaRTCUtFw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Zs4O+trg; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1772565463; c=relaxed/simple;
+	bh=yjtw1Psq4vZHIIZX0uC8+vtVWzPHPxJVXn9G4aTgN7M=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=HVXT0ZqJGCr/hb9akAQaFlCJIXSs0iylV6fXpQ+YpqNpjBiuXwiYJOXM2gSG8VQPxW6qLbR5Qmr70yCteKo0PWsa6ydhdxmm8GEv9sl3L3Yb+QdM2Rt2SxNXZUj57pYy55m/icKJotkrzYcV8dZAMcj9Qts/ZGfY6pCYQi94NCs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KP3h890R; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Zs4O+trg"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A3EF6C2BCB0;
-	Tue,  3 Mar 2026 19:15:53 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KP3h890R"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3CC36C4AF09
+	for <kvm@vger.kernel.org>; Tue,  3 Mar 2026 19:17:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772565355;
-	bh=tgcMP1DjiSuWdQdTXNizhC+/un3ZdmwWd5CjtmNWK04=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Zs4O+trggAO5+VjU3bcSHqykfHaMlyCqdUz0t73lLf9fwJPz1P4BCRJSm69JxTKoZ
-	 T4HmVXGvhklGqZGsH/mzdXFwZNNONIyy9wP86jEPs5W/XQfnPR7O7i3QwsP+2uyjlV
-	 1dtrxai1mgldJh+oCfw8PaO8EcIAGfqhyHRqoD1EXUZ19P8K+HM5VJVaim8zrWCSvq
-	 uR4y6B961iZf4HGl3Zygib4nL17QQyl1pde4XLO4e0O7sb2dl+tRlEIoO/tsIxLBon
-	 TqH7J51oND/UuWR6ohmGBd0Puh4Dhx7epJ+ry/XT4LJBarTnEov7oUk+0bT7eW2p16
-	 FKd1pH6H3gokQ==
-From: Tycho Andersen <tycho@kernel.org>
-To: Sean Christopherson <seanjc@google.com>,
-	Paolo Bonzini <pbonzini@redhat.com>,
-	Thomas Gleixner <tglx@kernel.org>,
-	Ingo Molnar <mingo@redhat.com>,
-	Borislav Petkov <bp@alien8.de>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	x86@kernel.org,
-	"H. Peter Anvin" <hpa@zytor.com>,
-	Ashish Kalra <ashish.kalra@amd.com>,
-	Tom Lendacky <thomas.lendacky@amd.com>,
-	John Allen <john.allen@amd.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
-	"David S. Miller" <davem@davemloft.net>,
-	Shuah Khan <shuah@kernel.org>
-Cc: Kim Phillips <kim.phillips@amd.com>,
-	Alexey Kardashevskiy <aik@amd.com>,
-	Nikunj A Dadhania <nikunj@amd.com>,
-	kvm@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-crypto@vger.kernel.org,
-	linux-kselftest@vger.kernel.org
-Subject: [PATCH 5/5] selftests/kvm: teach sev_*_test about revoking VM types
-Date: Tue,  3 Mar 2026 12:15:09 -0700
-Message-ID: <20260303191509.1565629-6-tycho@kernel.org>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260303191509.1565629-1-tycho@kernel.org>
-References: <20260303191509.1565629-1-tycho@kernel.org>
+	s=k20201202; t=1772565463;
+	bh=yjtw1Psq4vZHIIZX0uC8+vtVWzPHPxJVXn9G4aTgN7M=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=KP3h890RzDVKUWNvlNOqqqTvgIxIPMulrSpJdfknBLveJ2a2HGWM/1ESYRWba8wnu
+	 7/z7/KwCZJjRGQXnQIpVVHH56ma4EXJOaBtFIJ9baHfVI63UeXYIWLkfbk5+bltcbr
+	 gFa7Mhqzqeaum9Wn+i0GODEIgUIrg1fexHqkS+LXb6UPfxqE+PpQy3CghphD3Mc15A
+	 cba+Fso5jJpQoAYbwGA2N9N/KTpD3AwMVWm6yW5hXlkDEszUT6rq6tek6ASBSjOzW8
+	 IGhMPlYEmsKebNO3aVttVLWqio3m6dgjcwCsDVxr9kQl+OJs3tajCPsNeSJwFrZMSG
+	 1hFeaOdFjpNlw==
+Received: by mail-ej1-f47.google.com with SMTP id a640c23a62f3a-b939cfc1e83so407281566b.0
+        for <kvm@vger.kernel.org>; Tue, 03 Mar 2026 11:17:43 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCWr8GPtRFwwWap1vGf2u997gm+DtvkdqZEVY7GFU5qjpNJEZcRoz50tGzB030IH+eV8Q8g=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx3tmcW9A0PpRw05MYO+R+/LfdB/qabrhAmwnPEr/h6kHceGTw+
+	TFYSrN7/ugs5HFv5MByZ/8IXnaNzNmHZkNShwGf8jCQiEKuAvUQ5C/OKfTz1DpsQbeKoszxjC6A
+	5nzB6etWYw1DFm9VzDXoQn3GwDqNBjt0=
+X-Received: by 2002:a17:906:3b89:b0:b88:5e4c:f842 with SMTP id
+ a640c23a62f3a-b9376568f73mr734490966b.47.1772565462016; Tue, 03 Mar 2026
+ 11:17:42 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20260303003421.2185681-1-yosry@kernel.org> <20260303003421.2185681-16-yosry@kernel.org>
+ <aacSr2LanhJczBs-@google.com>
+In-Reply-To: <aacSr2LanhJczBs-@google.com>
+From: Yosry Ahmed <yosry@kernel.org>
+Date: Tue, 3 Mar 2026 11:17:30 -0800
+X-Gmail-Original-Message-ID: <CAO9r8zO6YY1LRxef1UiSiSG8TxPAOq15HEEWnvg-HpxMYdteDg@mail.gmail.com>
+X-Gm-Features: AaiRm53hbrjB16JldiahylPsdwMCF5i7REQR1tdtfPzUJPo0cLkIQ-lmWt2uE8o
+Message-ID: <CAO9r8zO6YY1LRxef1UiSiSG8TxPAOq15HEEWnvg-HpxMYdteDg@mail.gmail.com>
+Subject: Re: [PATCH v7 15/26] KVM: nSVM: Add missing consistency check for
+ nCR3 validity
+To: Sean Christopherson <seanjc@google.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>, kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-From: "Tycho Andersen (AMD)" <tycho@kernel.org>
+On Tue, Mar 3, 2026 at 8:56=E2=80=AFAM Sean Christopherson <seanjc@google.c=
+om> wrote:
+>
+> On Tue, Mar 03, 2026, Yosry Ahmed wrote:
+> > >From the APM Volume #2, 15.25.4 (24593=E2=80=94Rev. 3.42=E2=80=94March=
+ 2024):
+> >
+> >       When VMRUN is executed with nested paging enabled
+> >       (NP_ENABLE =3D 1), the following conditions are considered illega=
+l
+> >       state combinations, in addition to those mentioned in
+> >       =E2=80=9CCanonicalization and Consistency Checks=E2=80=9D:
+> >       =E2=80=A2 Any MBZ bit of nCR3 is set.
+> >       =E2=80=A2 Any G_PAT.PA field has an unsupported type encoding or =
+any
+> >       reserved field in G_PAT has a nonzero value.
+> >
+> > Add the consistency check for nCR3 being a legal GPA with no MBZ bits
+> > set. The G_PAT.PA check was proposed separately [*].
+> >
+> > [*]https://lore.kernel.org/kvm/20260205214326.1029278-3-jmattson@google=
+.com/
+> >
+> > Fixes: 4b16184c1cca ("KVM: SVM: Initialize Nested Nested MMU context on=
+ VMRUN")
+> > Cc: stable@vger.kernel.org
+> > Signed-off-by: Yosry Ahmed <yosry@kernel.org>
+> > ---
+> >  arch/x86/kvm/svm/nested.c | 5 +++++
+> >  1 file changed, 5 insertions(+)
+> >
+> > diff --git a/arch/x86/kvm/svm/nested.c b/arch/x86/kvm/svm/nested.c
+> > index 613d5e2e7c3d1..3aaa4f0bb31ab 100644
+> > --- a/arch/x86/kvm/svm/nested.c
+> > +++ b/arch/x86/kvm/svm/nested.c
+> > @@ -348,6 +348,11 @@ static bool nested_vmcb_check_controls(struct kvm_=
+vcpu *vcpu,
+> >       if (CC(control->asid =3D=3D 0))
+> >               return false;
+> >
+> > +     if (control->nested_ctl & SVM_NESTED_CTL_NP_ENABLE) {
+> > +             if (CC(!kvm_vcpu_is_legal_gpa(vcpu, control->nested_cr3))=
+)
+> > +                     return false;
+>
+> Put the full if-statement in CC(), that way the tracepoint will capture t=
+he entire
+> clause, i.e. will help the reader understand than nested_cr3 was checked
+> specifically because NPT was enabled.
 
-Instead of using CPUID, use the VM type bit to determine support, since
-those now reflect the correct status of support by the kernel and firmware
-configurations.
+I had it this way in v6 because there was another consistency check
+dependent on NPT being enabled:
+https://lore.kernel.org/kvm/20260224223405.3270433-21-yosry@kernel.org/.
 
-Suggested-by: Sean Christopherson <seanjc@google.com>
-Signed-off-by: Tycho Andersen (AMD) <tycho@kernel.org>
----
- tools/testing/selftests/kvm/x86/sev_init2_tests.c  | 14 ++++++--------
- .../testing/selftests/kvm/x86/sev_migrate_tests.c  |  2 +-
- tools/testing/selftests/kvm/x86/sev_smoke_test.c   |  4 ++--
- 3 files changed, 9 insertions(+), 11 deletions(-)
+I dropped the patch in v7 as I realized L1's CR0.PG was already being
+checked, but it didn't occur to me to go back and update this. Good
+catch.
 
-diff --git a/tools/testing/selftests/kvm/x86/sev_init2_tests.c b/tools/testing/selftests/kvm/x86/sev_init2_tests.c
-index b238615196ad..97bd036b4f1c 100644
---- a/tools/testing/selftests/kvm/x86/sev_init2_tests.c
-+++ b/tools/testing/selftests/kvm/x86/sev_init2_tests.c
-@@ -136,16 +136,14 @@ int main(int argc, char *argv[])
- 		    kvm_check_cap(KVM_CAP_VM_TYPES), 1 << KVM_X86_SEV_VM);
- 
- 	TEST_REQUIRE(kvm_check_cap(KVM_CAP_VM_TYPES) & BIT(KVM_X86_SEV_VM));
--	have_sev_es = kvm_cpu_has(X86_FEATURE_SEV_ES);
-+	have_sev_es = kvm_check_cap(KVM_CAP_VM_TYPES) & BIT(KVM_X86_SEV_ES_VM);
- 
--	TEST_ASSERT(have_sev_es == !!(kvm_check_cap(KVM_CAP_VM_TYPES) & BIT(KVM_X86_SEV_ES_VM)),
--		    "sev-es: KVM_CAP_VM_TYPES (%x) does not match cpuid (checking %x)",
--		    kvm_check_cap(KVM_CAP_VM_TYPES), 1 << KVM_X86_SEV_ES_VM);
-+	TEST_ASSERT(!have_sev_es || kvm_cpu_has(X86_FEATURE_SEV_ES),
-+		    "sev-es: SEV_ES_VM supported without SEV_ES in CPUID");
- 
--	have_snp = kvm_cpu_has(X86_FEATURE_SEV_SNP);
--	TEST_ASSERT(have_snp == !!(kvm_check_cap(KVM_CAP_VM_TYPES) & BIT(KVM_X86_SNP_VM)),
--		    "sev-snp: KVM_CAP_VM_TYPES (%x) indicates SNP support (bit %d), but CPUID does not",
--		    kvm_check_cap(KVM_CAP_VM_TYPES), KVM_X86_SNP_VM);
-+	have_snp = kvm_check_cap(KVM_CAP_VM_TYPES) & BIT(KVM_X86_SNP_VM);
-+	TEST_ASSERT(!have_snp || kvm_cpu_has(X86_FEATURE_SEV_SNP),
-+		    "sev-snp: SNP_VM supported without SEV_SNP in CPUID");
- 
- 	test_vm_types();
- 
-diff --git a/tools/testing/selftests/kvm/x86/sev_migrate_tests.c b/tools/testing/selftests/kvm/x86/sev_migrate_tests.c
-index 0a6dfba3905b..3f2c3b00e3bc 100644
---- a/tools/testing/selftests/kvm/x86/sev_migrate_tests.c
-+++ b/tools/testing/selftests/kvm/x86/sev_migrate_tests.c
-@@ -376,7 +376,7 @@ int main(int argc, char *argv[])
- 
- 	TEST_REQUIRE(kvm_cpu_has(X86_FEATURE_SEV));
- 
--	have_sev_es = kvm_cpu_has(X86_FEATURE_SEV_ES);
-+	have_sev_es = kvm_check_cap(KVM_CAP_VM_TYPES) & BIT(KVM_X86_SEV_ES_VM);
- 
- 	if (kvm_has_cap(KVM_CAP_VM_MOVE_ENC_CONTEXT_FROM)) {
- 		test_sev_migrate_from(/* es= */ false);
-diff --git a/tools/testing/selftests/kvm/x86/sev_smoke_test.c b/tools/testing/selftests/kvm/x86/sev_smoke_test.c
-index 86ad1c7d068f..16ec940de5ac 100644
---- a/tools/testing/selftests/kvm/x86/sev_smoke_test.c
-+++ b/tools/testing/selftests/kvm/x86/sev_smoke_test.c
-@@ -219,10 +219,10 @@ int main(int argc, char *argv[])
- 
- 	test_sev_smoke(guest_sev_code, KVM_X86_SEV_VM, 0);
- 
--	if (kvm_cpu_has(X86_FEATURE_SEV_ES))
-+	if (kvm_check_cap(KVM_CAP_VM_TYPES) & BIT(KVM_X86_SEV_ES_VM))
- 		test_sev_smoke(guest_sev_es_code, KVM_X86_SEV_ES_VM, SEV_POLICY_ES);
- 
--	if (kvm_cpu_has(X86_FEATURE_SEV_SNP))
-+	if (kvm_check_cap(KVM_CAP_VM_TYPES) & BIT(KVM_X86_SNP_VM))
- 		test_sev_smoke(guest_snp_code, KVM_X86_SNP_VM, snp_default_policy());
- 
- 	return 0;
--- 
-2.53.0
-
+>
+>         if (CC((control->nested_ctl & SVM_NESTED_CTL_NP_ENABLE) &&
+>                !kvm_vcpu_is_legal_gpa(vcpu, control->nested_cr3)))
+>                 return false;
