@@ -1,221 +1,100 @@
-Received: from mail-pg1-f201.google.com (mail-pg1-f201.google.com [209.85.215.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from out30-97.freemail.mail.aliyun.com (out30-97.freemail.mail.aliyun.com [115.124.30.97])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1785B1C5486
-	for <kvm@vger.kernel.org>; Wed,  4 Mar 2026 00:44:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B35EB322A;
+	Wed,  4 Mar 2026 00:47:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.30.97
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772585062; cv=none; b=XAzzZt5W0A9LQznTM/Xenk4Pokwn2lx5UStT9hruFtrFT2pFuEEGpf/GuRms2+E2HeLuSlOvhFXmKUVHv1r4QNq7hrGloSYPmvqicH8BA6Jc2uuBvG7Cd6fC57ziLntjWwHzaMI8Ky/Bszvee3GoOf84zrI0mCIUaalFKYVGhOI=
+	t=1772585249; cv=none; b=NVt0YOUHSbJFbDXBumFR2Uq86LaWSkmXOlkO7lSk6L16RPz+XArh8A+Bz7XvT7TLsbMoUHLwqRWePk4H62V+QbhJAqhJ+Q0G4j+Q43xVz/nIV8c0xVj3vOxiCpqxnahDnoGescPbcrGZ6kyK2lwdkD9LbYOh6PPA2FngTyyuyy8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772585062; c=relaxed/simple;
-	bh=8EUfImJqXCjwEv07osmggtN7dOfogWe0w9ZDpEIMa58=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=HWMsS0AcMzHiD/E69twighU36ZXh0ItOXFIs/MfTyMeT4qhRdoKZ4jLtOIlvCxAwa3VLuTMcD8EJjApSllBkbypXn196oZm5oKhB8eJRqlKMvcxZEsxvoJsJkoFEweP06raLB0FdfzR3iZ3e7Sqz5RARkxqYIEh1yfv+6weWw5g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=t8cOi5ey; arc=none smtp.client-ip=209.85.215.201
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+	s=arc-20240116; t=1772585249; c=relaxed/simple;
+	bh=+L7SUxV5+ZgZqW2wk1K5g+AlZf4y17v2y0NfpGKOCFU=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=k4erPdQ7PhKI3rT2CXM2mgBb8ialVdirNDI2BwRPGJzbqLk43wfQJyBOMKyHt3PkrsE1X3ks5s/XSigQGhDbJ2w1gYFAs9lQEAMyU0DpQxZZHpnHcYyEFdpu3Lqnf24R8ddLZtFdXnvAywHt34aq4AYpgK6azDadLQBtnknnWzM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; spf=pass smtp.mailfrom=linux.alibaba.com; dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b=iokcO/JE; arc=none smtp.client-ip=115.124.30.97
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.alibaba.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="t8cOi5ey"
-Received: by mail-pg1-f201.google.com with SMTP id 41be03b00d2f7-c6fd07933aaso3351201a12.0
-        for <kvm@vger.kernel.org>; Tue, 03 Mar 2026 16:44:20 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1772585060; x=1773189860; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=2TShG9/ZQ57MX/DikZ+o/2CGuAlBGVqbkJk365Mxb28=;
-        b=t8cOi5eyGUfddZApwlSXf16xFCFV2yhoeqxi73ZzjREe9QCD3FlSIgsMG8UgIbdjpC
-         884Pbwmt7J8eW1+b69A/MfJsRxaJ6hLURkTXZFRa+hxYaZCSo+CqoU06jamEiyUFrl0i
-         ufgbTuCL1BVbLj/Wivfk2oochP3rt0gHXc9vDcZYIwCh+jYB3yz9a8DRS6Rsx0ZObCm4
-         4nNuF29IKv7jYOg6snvJeBTkbfscwxId0RB6ndVAYFQbhe9deL5Sf8lRWK84Nc4O437e
-         7fEfqJVBCoYffgQKg6u2kZBRGWVjd+XceqwCY4A6UYXOczMV2Dr3nicv0S6zUgF0DFTY
-         dX9g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1772585060; x=1773189860;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=2TShG9/ZQ57MX/DikZ+o/2CGuAlBGVqbkJk365Mxb28=;
-        b=Ix6vXheLkB9Ys1GHfAeZiYbYyRBp81mobPFgi0TVLsvTMsol2hI8rj8mchAKArdozY
-         CKFX7cj9zfoIzFpvKKLje8tTmXH1mTTgkyFS49+BCZytMaPorYKHRtvzhFtcATXUIkH/
-         TJqRLkEFxvAxDXKtg3NnGADjnFBhVc9Ps7go9Rvi/YBN548dpZX62/YrAZrgzQc4tumr
-         gSFwnxxmI9deM44R0m+2wOCy6z6zpGOL1BPY0WMwS+0ylPLK1lEh6Ofn33g3XEWaJBwd
-         S4yXIJSPZJ8/wpOUK7yrRmEWvLuCo5o8jxIp3k4I8Y7Xm3RFyVOUBr+xcvWgSakJp6Zy
-         kMnw==
-X-Forwarded-Encrypted: i=1; AJvYcCXuKspx1oIqLMxXuxIyrKaiCTEnx23LSOstM/D3swMfCXCpH6qrK7+rhCKydp7ywSBYev8=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxGQdFpaE28FW2FhNPxf1daKzyTF5cL7Bi3/4MQqh+v2uVf9Ye1
-	GWWuZL3f9bC35ZOiUkiNFeFO8HyJ7TK83n4rdDUpY9aQK+I4Sm2WB8MAw14YsP7B/yBqDM7Lt91
-	E9h/Waw==
-X-Received: from pgbfq7.prod.google.com ([2002:a05:6a02:2987:b0:c6e:18ac:7af8])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a20:d794:b0:393:e25b:7d77
- with SMTP id adf61e73a8af0-3982dd55feemr145106637.13.1772585060135; Tue, 03
- Mar 2026 16:44:20 -0800 (PST)
-Date: Tue, 3 Mar 2026 16:44:18 -0800
-In-Reply-To: <CAO9r8zMDQkHAMKVewDgvH6_WAHo5eL4=Xwf7h=87JPOJPYQAFQ@mail.gmail.com>
+	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b="iokcO/JE"
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux.alibaba.com; s=default;
+	t=1772585236; h=Date:From:To:Subject:Message-ID:MIME-Version:Content-Type;
+	bh=b5u3CcUv0pgAolzm4rEmwpoEocfcJX1iiE9qFfZsikE=;
+	b=iokcO/JEn+R2MBMTfwecYJLFP25EVGeija/tAoAeTHqQhwFHutZRS06kbJSV1kxhzLiISDqW1SZEcrNLwaDJNUYOlKHYgQdsE9+MK1Oi++vD21dI+lGs9PDULU8PWIhSudCJVV9sUdqjXQij8XIgzsExza/9D64jbW4kvIyi9DM=
+Received: from localhost(mailfrom:yaoyuan@linux.alibaba.com fp:SMTPD_---0X-B3A1p_1772585235 cluster:ay36)
+          by smtp.aliyun-inc.com;
+          Wed, 04 Mar 2026 08:47:16 +0800
+Date: Wed, 4 Mar 2026 08:47:15 +0800
+From: Yao Yuan <yaoyuan@linux.alibaba.com>
+To: Alex Mastro <amastro@fb.com>
+Cc: Alex Williamson <alex@shazbot.org>, 
+	David Matlack <dmatlack@google.com>, Shuah Khan <shuah@kernel.org>, kvm@vger.kernel.org, 
+	linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] vfio: selftests: fix crash in vfio_dma_mapping_mmio_test
+Message-ID: <vps7in2ph6yyb2vl3zuxie7sp2cyzh4endrvdsdjgtqhjxvoqp@po4m7zddafi5>
+References: <20260303-fix-mmio-test-v1-1-78b4a9e46a4e@fb.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20260303003421.2185681-1-yosry@kernel.org> <20260303003421.2185681-4-yosry@kernel.org>
- <aacOPmIS7HUtzJA6@google.com> <CAO9r8zMDQkHAMKVewDgvH6_WAHo5eL4=Xwf7h=87JPOJPYQAFQ@mail.gmail.com>
-Message-ID: <aaeAYv2i7wjGahY4@google.com>
-Subject: Re: [PATCH v7 03/26] KVM: SVM: Add missing save/restore handling of
- LBR MSRs
-From: Sean Christopherson <seanjc@google.com>
-To: Yosry Ahmed <yosry@kernel.org>
-Cc: Paolo Bonzini <pbonzini@redhat.com>, kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	stable@vger.kernel.org, Jim Mattson <jmattson@google.com>
-Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260303-fix-mmio-test-v1-1-78b4a9e46a4e@fb.com>
 
-On Tue, Mar 03, 2026, Yosry Ahmed wrote:
-> > > diff --git a/arch/x86/kvm/svm/nested.c b/arch/x86/kvm/svm/nested.c
-> > So all in all (not yet tested), this?  If this is the only issue in the series,
-> > or at least in the stable@ part of the series, no need for a v8 (I've obviously
-> > already done the fixup).
-> 
-> Looks good with a minor nit below (could be a followup).
-> 
-> > @@ -3075,6 +3075,38 @@ static int svm_set_msr(struct kvm_vcpu *vcpu, struct msr_data *msr)
-> >                 vmcb_mark_dirty(svm->vmcb, VMCB_LBR);
-> >                 svm_update_lbrv(vcpu);
-> >                 break;
-> > +       case MSR_IA32_LASTBRANCHFROMIP:
-> > +               if (!lbrv)
-> > +                       return KVM_MSR_RET_UNSUPPORTED;
-> > +               if (!msr->host_initiated)
-> > +                       return 1;
-> > +               svm->vmcb->save.br_from = data;
-> > +               vmcb_mark_dirty(svm->vmcb, VMCB_LBR);
-> > +               break;
-> > +       case MSR_IA32_LASTBRANCHTOIP:
-> > +               if (!lbrv)
-> > +                       return KVM_MSR_RET_UNSUPPORTED;
-> > +               if (!msr->host_initiated)
-> > +                       return 1;
-> > +               svm->vmcb->save.br_to = data;
-> > +               vmcb_mark_dirty(svm->vmcb, VMCB_LBR);
-> > +               break;
-> > +       case MSR_IA32_LASTINTFROMIP:
-> > +               if (!lbrv)
-> > +                       return KVM_MSR_RET_UNSUPPORTED;
-> > +               if (!msr->host_initiated)
-> > +                       return 1;
-> > +               svm->vmcb->save.last_excp_from = data;
-> > +               vmcb_mark_dirty(svm->vmcb, VMCB_LBR);
-> > +               break;
-> > +       case MSR_IA32_LASTINTTOIP:
-> > +               if (!lbrv)
-> > +                       return KVM_MSR_RET_UNSUPPORTED;
-> > +               if (!msr->host_initiated)
-> > +                       return 1;
-> > +               svm->vmcb->save.last_excp_to = data;
-> > +               vmcb_mark_dirty(svm->vmcb, VMCB_LBR);
-> > +               break;
-> 
-> There's so much repeated code here. 
+On Tue, Mar 03, 2026 at 11:46:24AM +0800, Alex Mastro wrote:
+> Remove the __iommu_unmap() call on a region that was never mapped.
+> When __iommu_map() fails (expected for MMIO vaddrs in non-VFIO
+> modes), the region is not added to the dma_regions list, leaving its
+> list_head zero-initialized. If the unmap ioctl returns success,
+> __iommu_unmap() calls list_del_init() on this zeroed node and crashes.
+>
+> This fixes the iommufd_compat_type1 and iommufd_compat_type1v2
+> test variants.
+>
+> Fixes: 080723f4d4c3 ("vfio: selftests: Add vfio_dma_mapping_mmio_test")
+> Signed-off-by: Alex Mastro <amastro@fb.com>
+> ---
+> The bug was missed because the test was originally run against a kernel
+> without commit afb47765f923 ("iommufd: Make vfio_compat's unmap succeed
+> if the range is already empty"). Without that fix, the unmap ioctl
+> returned -ENOENT, taking the early return before list_del_init().
+> ---
+>  tools/testing/selftests/vfio/vfio_dma_mapping_mmio_test.c | 1 -
+>  1 file changed, 1 deletion(-)
+>
+> diff --git a/tools/testing/selftests/vfio/vfio_dma_mapping_mmio_test.c b/tools/testing/selftests/vfio/vfio_dma_mapping_mmio_test.c
+> index 957a89ce7b3a..d7f25ef77671 100644
+> --- a/tools/testing/selftests/vfio/vfio_dma_mapping_mmio_test.c
+> +++ b/tools/testing/selftests/vfio/vfio_dma_mapping_mmio_test.c
+> @@ -100,7 +100,6 @@ static void do_mmio_map_test(struct iommu *iommu,
+>  		iommu_unmap(iommu, &region);
+>  	} else {
 
-Ya :-(
+Hi Alex,
 
-> We can use gotos to share code, but I am not sure if that's a strict
-> improvement. We can also use a helper, perhaps?
+>  		VFIO_ASSERT_NE(__iommu_map(iommu, &region), 0);
+> -		VFIO_ASSERT_NE(__iommu_unmap(iommu, &region, NULL), 0);
 
+This is the more simply way to work w/ or w/o commit
+afb47765f923 ("iommufd: Make vfio_compat's unmap succeed if
+the range is already empty"), may worth to add this point
+into the commit message.
 
-Where's your sense of adventure?
+For the changes:
 
-	case MSR_IA32_LASTBRANCHFROMIP:
-	case MSR_IA32_LASTBRANCHTOIP:
-	case MSR_IA32_LASTINTFROMIP:
-	case MSR_IA32_LASTINTTOIP:
-		if (!lbrv)
-			return KVM_MSR_RET_UNSUPPORTED;
-		if (!msr->host_initiated)
-			return 1;
-		*(&svm->vmcb->save.br_from + (ecx - MSR_IA32_LASTBRANCHFROMIP)) = data;
-		vmcb_mark_dirty(svm->vmcb, VMCB_LBR);
-		break;
+Reviewed-by: Yuan Yao <yaoyuan@linux.alibaba.com>
 
-Jokes aside, maybe this, to dedup get() at the same time?
-
-diff --git a/arch/x86/kvm/svm/svm.c b/arch/x86/kvm/svm/svm.c
-index 68b747a94294..f1811105e89f 100644
---- a/arch/x86/kvm/svm/svm.c
-+++ b/arch/x86/kvm/svm/svm.c
-@@ -2720,6 +2720,23 @@ static int svm_get_feature_msr(u32 msr, u64 *data)
-        return 0;
- }
- 
-+static __always_inline u64 *svm_vmcb_lbr(struct vcpu_svm *svm, u32 msr)
-+{
-+       switch (msr) {
-+       case MSR_IA32_LASTBRANCHFROMIP:
-+               return &svm->vmcb->save.br_from;
-+       case MSR_IA32_LASTBRANCHTOIP:
-+               return &svm->vmcb->save.br_to;
-+       case MSR_IA32_LASTINTFROMIP:
-+               return &svm->vmcb->save.last_excp_from;
-+       case MSR_IA32_LASTINTTOIP:
-+               return &svm->vmcb->save.last_excp_to;
-+       default:
-+               break;
-+       }
-+       BUILD_BUG();
-+}
-+
- static bool sev_es_prevent_msr_access(struct kvm_vcpu *vcpu,
-                                      struct msr_data *msr_info)
- {
-@@ -2838,16 +2855,10 @@ static int svm_get_msr(struct kvm_vcpu *vcpu, struct msr_data *msr_info)
-                msr_info->data = lbrv ? svm->vmcb->save.dbgctl : 0;
-                break;
-        case MSR_IA32_LASTBRANCHFROMIP:
--               msr_info->data = lbrv ? svm->vmcb->save.br_from : 0;
--               break;
-        case MSR_IA32_LASTBRANCHTOIP:
--               msr_info->data = lbrv ? svm->vmcb->save.br_to : 0;
--               break;
-        case MSR_IA32_LASTINTFROMIP:
--               msr_info->data = lbrv ? svm->vmcb->save.last_excp_from : 0;
--               break;
-        case MSR_IA32_LASTINTTOIP:
--               msr_info->data = lbrv ? svm->vmcb->save.last_excp_to : 0;
-+               msr_info->data = lbrv ? *svm_vmcb_lbr(svm, msr_info->index) : 0;
-                break;
-        case MSR_VM_HSAVE_PA:
-                msr_info->data = svm->nested.hsave_msr;
-@@ -3122,35 +3133,14 @@ static int svm_set_msr(struct kvm_vcpu *vcpu, struct msr_data *msr)
-                svm_update_lbrv(vcpu);
-                break;
-        case MSR_IA32_LASTBRANCHFROMIP:
--               if (!lbrv)
--                       return KVM_MSR_RET_UNSUPPORTED;
--               if (!msr->host_initiated)
--                       return 1;
--               svm->vmcb->save.br_from = data;
--               vmcb_mark_dirty(svm->vmcb, VMCB_LBR);
--               break;
-        case MSR_IA32_LASTBRANCHTOIP:
--               if (!lbrv)
--                       return KVM_MSR_RET_UNSUPPORTED;
--               if (!msr->host_initiated)
--                       return 1;
--               svm->vmcb->save.br_to = data;
--               vmcb_mark_dirty(svm->vmcb, VMCB_LBR);
--               break;
-        case MSR_IA32_LASTINTFROMIP:
--               if (!lbrv)
--                       return KVM_MSR_RET_UNSUPPORTED;
--               if (!msr->host_initiated)
--                       return 1;
--               svm->vmcb->save.last_excp_from = data;
--               vmcb_mark_dirty(svm->vmcb, VMCB_LBR);
--               break;
-        case MSR_IA32_LASTINTTOIP:
-                if (!lbrv)
-                        return KVM_MSR_RET_UNSUPPORTED;
-                if (!msr->host_initiated)
-                        return 1;
--               svm->vmcb->save.last_excp_to = data;
-+               *svm_vmcb_lbr(svm, ecx) = data;
-                vmcb_mark_dirty(svm->vmcb, VMCB_LBR);
-                break;
-        case MSR_VM_HSAVE_PA:
+>  	}
+>  }
+>
+>
+> ---
+> base-commit: 96ca4caf9066f5ebd35b561a521af588a8eb0215
+> change-id: 20260303-fix-mmio-test-d3bd688105f3
+>
+> Best regards,
+> --
+> Alex Mastro <amastro@fb.com>
+>
