@@ -1,281 +1,137 @@
-Received: from fout-b5-smtp.messagingengine.com (fout-b5-smtp.messagingengine.com [202.12.124.148])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A636A345CCD;
-	Wed,  4 Mar 2026 18:09:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.148
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 908143CB2E7
+	for <kvm@vger.kernel.org>; Wed,  4 Mar 2026 18:15:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772647746; cv=none; b=bJAQwbV1EZ1gPvbxr/NWW8Ezzzq9UnkvooFBeTyM9r44chhQwApgsETkgd/DDAPO4eexHo6c7zSmKp8c5rdcWwleqTmzXlebByu1PXUaNKdiOwXJWP///0/KvBbTKg9OHnT0RTkkgtGeVQDgDhkXkyG2MKX1uwbUPbRqKfXBnDg=
+	t=1772648104; cv=none; b=ov2TaJaY6aCiWMVRKLHCQO/JAQrdPAIw7HEXSwjtvz+mQpYZXyH7RetC4ofB3IEbXWmuGKSP7XeAjeucYiTUpNCGLtyqn4H0aPVg6Me2f++NcBQb8KjG3bkkLyqTFQRiUjRls+2za/wM6OD9E16+muU6N+lhyO10mnqc4SZPHfs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772647746; c=relaxed/simple;
-	bh=OGC+EenJ845Wlw134ixacvcp63TuPzlu5ztD9r3t6XY=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=UotfEe8HohfDY0/LZnute0V/qLrhfqFP/99ZkBjF0MWoIpLtJ90tqcAFwXs4+oZzu9KilyeKoc4BAcF+Bed2cOEUJ2HRmr8svsrSzra/Lt8yBeJUVpkVoNM7OL0dm1J3R6Xf8+ytH3/Ry0e4q5Ghxf8oabiHNmAdiWkWBp2oZTk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=shazbot.org; spf=pass smtp.mailfrom=shazbot.org; dkim=pass (2048-bit key) header.d=shazbot.org header.i=@shazbot.org header.b=W2u/vM5b; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=2W+epVkR; arc=none smtp.client-ip=202.12.124.148
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=shazbot.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=shazbot.org
+	s=arc-20240116; t=1772648104; c=relaxed/simple;
+	bh=N0SHoLljF/MCoB389ZwqutDCaAw1GwpReyOAlqS5GW8=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=QOaLhwuy222roxrxaQooUFDsLF8kWutqShm1SGx8X5gmrwCj/n/YcfMZrF1qv4vBWt3JH19sNnCCs0SQkb6nG9GgKRRjHxVjxeX1rycVtvD4ja6qt2q7rvqmB0RAzWsDHrMxnalH2NLDZZH5kjucILyb9sv3pCZ7l/YGY5JkqDQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=UgmKwLxU; arc=none smtp.client-ip=198.175.65.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=shazbot.org header.i=@shazbot.org header.b="W2u/vM5b";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="2W+epVkR"
-Received: from phl-compute-11.internal (phl-compute-11.internal [10.202.2.51])
-	by mailfout.stl.internal (Postfix) with ESMTP id 309171D00173;
-	Wed,  4 Mar 2026 13:09:03 -0500 (EST)
-Received: from phl-frontend-04 ([10.202.2.163])
-  by phl-compute-11.internal (MEProxy); Wed, 04 Mar 2026 13:09:03 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shazbot.org; h=
-	cc:cc:content-transfer-encoding:content-type:content-type:date
-	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to; s=fm3; t=1772647742;
-	 x=1772734142; bh=HWf9FeNm6sIENyq4ht0InEdflnyGyn1wn6KJliPEu9g=; b=
-	W2u/vM5blxDvie5F0MHnfEnPIo1VLZa+3XM1cTGP1WulKSDsMGUeDpcgijOUvjBP
-	TY4piTTytj7L2Po8rRm4I31kSJ8X9DcYx8cwf/WADK0nK9zvizri8veXWK/ziMKe
-	LEukOINZOuXIBiB1DxuKNbfmnpxJLhcN7sCs3ykpwtKCYEmwyrxradvMKksXoTkL
-	LxD9N9nMxVO8Q5A3aBE6S+kQERLVun64O8UpXP6wWh1qNebDgdrsoh6W9JNdqn82
-	pV2CJX70Il/Pgzl+PKdYR4VMkDzomY2pQQF17KPMbsPaEHfeBjIpKP7aUd0C5D99
-	XsNDjnL031gAv6igkz3RPQ==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=1772647742; x=
-	1772734142; bh=HWf9FeNm6sIENyq4ht0InEdflnyGyn1wn6KJliPEu9g=; b=2
-	W+epVkRCxikeYclVLwIHWQFsTDo0MjujhnEC62/0InFlIQpeh2KZBKORXOsDpUAh
-	l8z0zrG4jTIZz6T4IbsalxjLNNw5t/34MMRtTJObFZQp1NohytcWs1af5CmpkQ85
-	a4Mb/boNOJpDBKt0YhQXgKIHbGJd3F0u0n6ggraWTgmsrrusjLIqfZLfG+PRp3j4
-	WH2CfwbHLLQGBY+lc5U7NfzQvQC6AmUdqcx6AF9LlYXxJe42oQwuytlQe7U3IGZ4
-	LcKtJaTcTg2ZuAMLod0fbcuD+2GTtFiV5YuQzLWqQqKDBNToTkmllMonFVwe6jid
-	BXCXTFZaQpO+JvWK2QFZQ==
-X-ME-Sender: <xms:PnWoaWdrME59lLPgYEYoz-Zq9oZcizByU9RqaSZXu6OVlPopO0Kdtw>
-    <xme:PnWoaVaMkFDV3eDum_C1x0IQdmEoA0-vGdGeH1iCvLHN3QSHJGd0prUm3cJbFMZcs
-    sGJ_D_a8MyXxuKGhLzfADSIo88PIlLyjr8CjslzRHiqkY4O3Yg>
-X-ME-Received: <xmr:PnWoaa6MUz6FJiXwIremDY2LybzS5tUW9mySrDw4iMGb5EJ8zVbNZhD0N5k>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgddvieegudekucetufdoteggodetrf
-    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
-    rghilhhouhhtmecufedttdenucenucfjughrpeffhffvvefukfgjfhfogggtgfesthejre
-    dtredtvdenucfhrhhomheptehlvgigucghihhllhhirghmshhonhcuoegrlhgvgiesshhh
-    rgiisghothdrohhrgheqnecuggftrfgrthhtvghrnhepvdekfeejkedvudfhudfhteekud
-    fgudeiteetvdeukedvheetvdekgfdugeevueeunecuvehluhhsthgvrhfuihiivgeptden
-    ucfrrghrrghmpehmrghilhhfrhhomheprghlvgigsehshhgriigsohhtrdhorhhgpdhnsg
-    gprhgtphhtthhopedugedpmhhouggvpehsmhhtphhouhhtpdhrtghpthhtoheprghnkhhi
-    thgrsehnvhhiughirgdrtghomhdprhgtphhtthhopehvshgvthhhihesnhhvihguihgrrd
-    gtohhmpdhrtghpthhtohepjhhgghesnhhvihguihgrrdgtohhmpdhrtghpthhtohepmhho
-    tghhshesnhhvihguihgrrdgtohhmpdhrtghpthhtohepjhhgghesiihivghpvgdrtggrpd
-    hrtghpthhtohepshhkohhlohhthhhumhhthhhosehnvhhiughirgdrtghomhdprhgtphht
-    thhopegtjhhirgesnhhvihguihgrrdgtohhmpdhrtghpthhtohepiihhihifsehnvhhiug
-    hirgdrtghomhdprhgtphhtthhopehkjhgrjhhusehnvhhiughirgdrtghomh
-X-ME-Proxy: <xmx:PnWoaTd5fczA4teZ7YFuPh40NUXM_AxSbm0WIM8eRztxGufV38_fyA>
-    <xmx:PnWoadyZgx_kT1XNeaXmHfjDilJcCX3cA8g0fauQn8eed11Rv4Rzug>
-    <xmx:PnWoaZqq9IaP3FCo4wVUXLWQcNtMh5n7J9OmQRemWnM3SF5VyZwvAg>
-    <xmx:PnWoabyQJlxy3NkRuHbuVW2MM4n8Lnq4jEL50-W_RGzhgh_jHeOZ4w>
-    <xmx:PnWoaUpU1hFbNI2w5gkt0aulrCvGxn9gdBWXreLV4JxW7dy3F8L1EMex>
-Feedback-ID: i03f14258:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
- 4 Mar 2026 13:09:01 -0500 (EST)
-Date: Wed, 4 Mar 2026 11:09:00 -0700
-From: Alex Williamson <alex@shazbot.org>
-To: <ankita@nvidia.com>
-Cc: <vsethi@nvidia.com>, <jgg@nvidia.com>, <mochs@nvidia.com>,
- <jgg@ziepe.ca>, <skolothumtho@nvidia.com>, <cjia@nvidia.com>,
- <zhiw@nvidia.com>, <kjaju@nvidia.com>, <yishaih@nvidia.com>,
- <kevin.tian@intel.com>, <kvm@vger.kernel.org>,
- <linux-kernel@vger.kernel.org>, alex@shazbot.org
-Subject: Re: [PATCH RFC v2 05/15] vfio/nvgrace-egm: Introduce module to
- manage EGM
-Message-ID: <20260304110900.47151cc8@shazbot.org>
-In-Reply-To: <20260223155514.152435-6-ankita@nvidia.com>
-References: <20260223155514.152435-1-ankita@nvidia.com>
-	<20260223155514.152435-6-ankita@nvidia.com>
-X-Mailer: Claws Mail 4.3.1 (GTK 3.24.51; x86_64-pc-linux-gnu)
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="UgmKwLxU"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1772648103; x=1804184103;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=N0SHoLljF/MCoB389ZwqutDCaAw1GwpReyOAlqS5GW8=;
+  b=UgmKwLxU/0QUDmzHdI+/KB0D1GZw3nAhr5k98L6an3sY5f87Hk9+XOx/
+   olqjkJ09VNALNd++MD0nYkTxfzvjXwtk97uSd79VQLMBH2O1Kf0vFkibx
+   uW0oWEEFtzROBi9tyrcbt291K+80BnVxbC9km3kT089Ly728aCd+9aedC
+   SA6JybjU/8aUN1u6NAS7blh+YHtLtKyemOa3F5vEEcSOlO/Z5eoZX+Zbd
+   ozRO2iv3QF6oDyoa+VGdJQyLwf2J2LxgRptsDCkyC50kRStIj5hFystz6
+   Fo7lw5gSTZaAPl5gc/uuWk83obTFpbOjw66D9YIlCoQiD/6eXorJZHGgq
+   Q==;
+X-CSE-ConnectionGUID: 0T3kEGIzSqWjsTZMTGU2TA==
+X-CSE-MsgGUID: wGyXrWlPT3yhpNUkbEqCGA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11719"; a="73909262"
+X-IronPort-AV: E=Sophos;i="6.21,324,1763452800"; 
+   d="scan'208";a="73909262"
+Received: from fmviesa009.fm.intel.com ([10.60.135.149])
+  by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Mar 2026 10:15:02 -0800
+X-CSE-ConnectionGUID: g2Lg8O2sRgWzUlux0pcPqg==
+X-CSE-MsgGUID: eb69BEjESYqikboFM3I7fA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.21,324,1763452800"; 
+   d="scan'208";a="214542758"
+Received: from 9cc2c43eec6b.jf.intel.com ([10.54.77.43])
+  by fmviesa009-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Mar 2026 10:15:01 -0800
+From: Zide Chen <zide.chen@intel.com>
+To: qemu-devel@nongnu.org,
+	kvm@vger.kernel.org,
+	Paolo Bonzini <pbonzini@redhat.com>,
+	Zhao Liu <zhao1.liu@intel.com>,
+	Peter Xu <peterx@redhat.com>,
+	Fabiano Rosas <farosas@suse.de>,
+	Sandipan Das <sandipan.das@amd.com>
+Cc: Xiaoyao Li <xiaoyao.li@intel.com>,
+	Dongli Zhang <dongli.zhang@oracle.com>,
+	Dapeng Mi <dapeng1.mi@linux.intel.com>,
+	Zide Chen <zide.chen@intel.com>
+Subject: [PATCH V3 00/13] target/i386: Misc PMU fixes and enabling
+Date: Wed,  4 Mar 2026 10:06:59 -0800
+Message-ID: <20260304180713.360471-1-zide.chen@intel.com>
+X-Mailer: git-send-email 2.53.0
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-On Mon, 23 Feb 2026 15:55:04 +0000
-<ankita@nvidia.com> wrote:
+This series contains a set of fixes, cleanups, and improvements in
+target/i386 PMU: legacy PEBS, Topdown metrics, and generic MSR
+handling.
 
-> From: Ankit Agrawal <ankita@nvidia.com>
-> 
-> The Extended GPU Memory (EGM) feature that enables the GPU to access
-> the system memory allocations within and across nodes through high
-> bandwidth path on Grace Based systems. The GPU can utilize the
-> system memory located on the same socket or from a different socket
-> or even on a different node in a multi-node system [1].
-> 
-> When the EGM mode is enabled through SBIOS, the host system memory is
-> partitioned into 2 parts: One partition for the Host OS usage
-> called Hypervisor region, and a second Hypervisor-Invisible (HI) region
-> for the VM. Only the hypervisor region is part of the host EFI map
-> and is thus visible to the host OS on bootup. Since the entire VM
-> sysmem is eligible for EGM allocations within the VM, the HI partition
-> is interchangeably called as EGM region in the series. This HI/EGM region
-> range base SPA and size is exposed through the ACPI DSDT properties.
-> 
-> Whilst the EGM region is accessible on the host, it is not added to
-> the kernel. The HI region is assigned to a VM by mapping the QEMU VMA
-> to the SPA using remap_pfn_range().
-> 
-> The following figure shows the memory map in the virtualization
-> environment.
-> 
-> |---- Sysmem ----|                  |--- GPU mem ---|  VM Memory
-> |                |                  |               |
-> |IPA <-> SPA map |                  |IPA <-> SPA map|
-> |                |                  |               |
-> |--- HI / EGM ---|-- Host Mem --|   |--- GPU mem ---|  Host Memory
-> 
-> Introduce a new nvgrace-egm auxiliary driver module to manage and
-> map the HI/EGM region in the Grace Blackwell systems. This binds to
-> the auxiliary device created by the parent nvgrace-gpu (in-tree
-> module for device assignment) / nvidia-vgpu-vfio (out-of-tree open
-> source module for SRIOV vGPU) to manage the EGM region for the VM.
-> Note that there is a unique EGM region per socket and the auxiliary
-> device gets created for every region. The parent module fetches the
-> EGM region information from the ACPI tables and populate to the data
-> structures shared with the auxiliary nvgrace-egm module.
-> 
-> nvgrace-egm module handles the following:
+The patches are grouped into a single series for review convenience.
+Some of them are not tightly coupled and can be reviewed and applied
+individually.
 
-Or it will eventually, not in this commit.
+For example, the PEBS-related changes could be a separate series, and
+the Topdown metrics patch could be separate.  However, they touch
+closely related PMU and MSR code paths, and keeping them together here
+makes review easier and helps avoid potential merge conflicts.
 
-> 1. Fetch the EGM memory properties (base HPA, length, proximity domain)
-> from the parent device shared EGM region structure.
-> 2. Create a char device that can be used as memory-backend-file by Qemu
-> for the VM and implement file operations. The char device is /dev/egmX,
-> where X is the PXM node ID of the EGM being mapped fetched in 1.
-> 3. Zero the EGM memory on first device open().
-> 4. Map the QEMU VMA to the EGM region using remap_pfn_range.
-> 5. Cleaning up state and destroying the chardev on device unbind.
-> 6. Handle presence of retired ECC pages on the EGM region.
-> 
-> Suggested-by: Jason Gunthorpe <jgg@nvidia.com>
-> Signed-off-by: Ankit Agrawal <ankita@nvidia.com>
-> ---
->  MAINTAINERS                           |  6 ++++++
->  drivers/vfio/pci/nvgrace-gpu/Kconfig  | 12 ++++++++++++
->  drivers/vfio/pci/nvgrace-gpu/Makefile |  3 +++
->  drivers/vfio/pci/nvgrace-gpu/egm.c    | 22 ++++++++++++++++++++++
->  drivers/vfio/pci/nvgrace-gpu/main.c   |  1 +
->  5 files changed, 44 insertions(+)
->  create mode 100644 drivers/vfio/pci/nvgrace-gpu/egm.c
-> 
-> diff --git a/MAINTAINERS b/MAINTAINERS
-> index 5b3d86de9ec0..1fc551d7d667 100644
-> --- a/MAINTAINERS
-> +++ b/MAINTAINERS
-> @@ -27384,6 +27384,12 @@ F:	drivers/vfio/pci/nvgrace-gpu/egm_dev.h
->  F:	drivers/vfio/pci/nvgrace-gpu/main.c
->  F:	include/linux/nvgrace-egm.h
->  
-> +VFIO NVIDIA GRACE EGM DRIVER
-> +M:	Ankit Agrawal <ankita@nvidia.com>
-> +L:	kvm@vger.kernel.org
-> +S:	Supported
-> +F:	drivers/vfio/pci/nvgrace-gpu/egm.c
+Patch series overview:
+Patches 1-6: Miscellaneous PMU/MSR fixes and cleanups.
+Patches 7-8, 11–12: Complete legacy PEBS support in QEMU.
+Patches 9-10: Refactoring in preparation for pebs-fmt support.
+Patch 13: Add Topdown metrics feature support.
 
-I'm not sure a separate MAINTAINERS entry is warranted here, these are
-intertwined, even if constructed to allow this EGM driver to be used by
-an out-of-tree driver.  It's also an unclean split, with Makefile and
-Kconfig dependencies under the nvgrace-gpu heading.  It should probably
-be self contained in a separate sub-dir to justify a new MAINTAINERS
-entry.
+The KVM patch series for Topdown metrics support:
+https://lore.kernel.org/kvm/20260226230606.146532-1-zide.chen@intel.com/T/#t
 
-> +
->  VFIO PCI DEVICE SPECIFIC DRIVERS
->  R:	Jason Gunthorpe <jgg@nvidia.com>
->  R:	Yishai Hadas <yishaih@nvidia.com>
-> diff --git a/drivers/vfio/pci/nvgrace-gpu/Kconfig b/drivers/vfio/pci/nvgrace-gpu/Kconfig
-> index a7f624b37e41..7989d8d1c377 100644
-> --- a/drivers/vfio/pci/nvgrace-gpu/Kconfig
-> +++ b/drivers/vfio/pci/nvgrace-gpu/Kconfig
-> @@ -1,8 +1,20 @@
->  # SPDX-License-Identifier: GPL-2.0-only
-> +config NVGRACE_EGM
-> +	tristate "EGM driver for NVIDIA Grace Hopper and Blackwell Superchip"
-> +	depends on ARM64 || (COMPILE_TEST && 64BIT)
-> +	depends on NVGRACE_GPU_VFIO_PCI
-> +	help
-> +	  Extended GPU Memory (EGM) support for the GPU in the NVIDIA Grace
-> +	  based chips required to avail the CPU memory as additional
-> +	  cross-node/cross-socket memory for GPU using KVM/qemu.
-> +
-> +	  If you don't know what to do here, say N.
-> +
->  config NVGRACE_GPU_VFIO_PCI
->  	tristate "VFIO support for the GPU in the NVIDIA Grace Hopper Superchip"
->  	depends on ARM64 || (COMPILE_TEST && 64BIT)
->  	select VFIO_PCI_CORE
-> +	select NVGRACE_EGM
+Changes since v2:
+- Add new patch 13/13 to support Topdown metrics.
+- Separate the adjustment of maximum PMU counters to patch 4/13, in
+  order not to bump PMU migration version_id twice.
+- Re-base on top of most recent mainline QEMU: d8a9d97317d0
+- Remove MSR_AMD64_PERF_CNTR_GLOBAL_STATUS_CLR in patch 2/13.
+- Do not support pebs-fmt=0.
+- Fix the vmstate name of msr_ds_pebs.
+- Misc fixes and cleanup.
 
-This should be dropped, it creates a circular dependency where we
-cannot actually unselect NVGRACE_EGM with NVGRACE_GPU_VFIO_PCI
-selected.
+Changes since v1:
+- Add two new patches to clean up and refactor LBR format handling.
+- Introduce a new pebs-fmt command-line option.
+- Add a patch to avoid exposing PEBS capabilities when not enabled.
+- Trivial fixes and cleanups.
 
->  	help
->  	  VFIO support for the GPU in the NVIDIA Grace Hopper Superchip is
->  	  required to assign the GPU device to userspace using KVM/qemu/etc.
-> diff --git a/drivers/vfio/pci/nvgrace-gpu/Makefile b/drivers/vfio/pci/nvgrace-gpu/Makefile
-> index e72cc6739ef8..d0d191be56b9 100644
-> --- a/drivers/vfio/pci/nvgrace-gpu/Makefile
-> +++ b/drivers/vfio/pci/nvgrace-gpu/Makefile
-> @@ -1,3 +1,6 @@
->  # SPDX-License-Identifier: GPL-2.0-only
->  obj-$(CONFIG_NVGRACE_GPU_VFIO_PCI) += nvgrace-gpu-vfio-pci.o
->  nvgrace-gpu-vfio-pci-y := main.o egm_dev.o
-> +
-> +obj-$(CONFIG_NVGRACE_EGM) += nvgrace-egm.o
-> +nvgrace-egm-y := egm.o
-> diff --git a/drivers/vfio/pci/nvgrace-gpu/egm.c b/drivers/vfio/pci/nvgrace-gpu/egm.c
-> new file mode 100644
-> index 000000000000..999808807019
-> --- /dev/null
-> +++ b/drivers/vfio/pci/nvgrace-gpu/egm.c
-> @@ -0,0 +1,22 @@
-> +// SPDX-License-Identifier: GPL-2.0-only
-> +/*
-> + * Copyright (c) 2025, NVIDIA CORPORATION & AFFILIATES. All rights reserved
+v1: https://lore.kernel.org/qemu-devel/20260117011053.80723-1-zide.chen@intel.com/
+v2: https://lore.kernel.org/qemu-devel/20260128231003.268981-1-zide.chen@intel.com/T/#t
 
-2026
+Dapeng Mi (4):
+  target/i386: Don't save/restore PERF_GLOBAL_OVF_CTRL MSRs
+  target/i386: Support full-width writes for perf counters
+  target/i386: Add get/set/migrate support for legacy PEBS MSRs
+  target/i386: Add Topdown metrics feature support
 
-> + */
-> +
-> +#include <linux/vfio_pci_core.h>
+Zide Chen (9):
+  target/i386: Disable unsupported BTS for guest
+  target/i386: Gate enable_pmu on kvm_enabled()
+  target/i386: Adjust maximum number of PMU counters
+  target/i386: Increase MSR_BUF_SIZE and split KVM_[GET/SET]_MSRS calls
+  target/i386: Make some PEBS features user-visible
+  target/i386: Clean up LBR format handling
+  target/i386: Refactor LBR format handling
+  target/i386: Add pebs-fmt CPU option
+  target/i386: Clean up Intel Debug Store feature dependencies
 
-Premature?
+ target/i386/cpu.c         | 140 ++++++++++++++++++++---------
+ target/i386/cpu.h         |  42 ++++++---
+ target/i386/kvm/kvm-cpu.c |   3 +
+ target/i386/kvm/kvm.c     | 179 +++++++++++++++++++++++++++++++-------
+ target/i386/machine.c     |  54 ++++++++++--
+ 5 files changed, 328 insertions(+), 90 deletions(-)
 
-> +
-> +static int __init nvgrace_egm_init(void)
-> +{
-> +	return 0;
-> +}
-> +
-> +static void __exit nvgrace_egm_cleanup(void)
-> +{
-> +}
-> +
-> +module_init(nvgrace_egm_init);
-> +module_exit(nvgrace_egm_cleanup);
-> +
-> +MODULE_LICENSE("GPL");
-> +MODULE_AUTHOR("Ankit Agrawal <ankita@nvidia.com>");
-> +MODULE_DESCRIPTION("NVGRACE EGM - Module to support Extended GPU Memory on NVIDIA Grace Based systems");
-> diff --git a/drivers/vfio/pci/nvgrace-gpu/main.c b/drivers/vfio/pci/nvgrace-gpu/main.c
-> index b356e941340a..0bb427cca31f 100644
-> --- a/drivers/vfio/pci/nvgrace-gpu/main.c
-> +++ b/drivers/vfio/pci/nvgrace-gpu/main.c
-> @@ -1410,3 +1410,4 @@ MODULE_LICENSE("GPL");
->  MODULE_AUTHOR("Ankit Agrawal <ankita@nvidia.com>");
->  MODULE_AUTHOR("Aniket Agashe <aniketa@nvidia.com>");
->  MODULE_DESCRIPTION("VFIO NVGRACE GPU PF - User Level driver for NVIDIA devices with CPU coherently accessible device memory");
-> +MODULE_SOFTDEP("pre: nvgrace-egm");
+-- 
+2.53.0
 
-Premature and wrong if necessary.  AIUI the aux device created should
-generate uevents and modules loaded automatically via device tables.
-Thanks,
-
-Alex
