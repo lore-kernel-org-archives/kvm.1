@@ -1,181 +1,281 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
+Received: from fout-b5-smtp.messagingengine.com (fout-b5-smtp.messagingengine.com [202.12.124.148])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 56327377EAC;
-	Wed,  4 Mar 2026 17:59:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.14
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A636A345CCD;
+	Wed,  4 Mar 2026 18:09:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.148
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772647148; cv=none; b=Z44kvCZ0wlAqGO5RH1NJgmMGMflOUBpQcIHQ7krDAssxZi0yDzpaThOhQYIhcgBEmhP3F3MHl19Sa8rlZOpTIY1OnOJH2eCwNPif8J3iVOUW4YbKMPmDja0wwyZHSPSwRUDIWDkOiMSQVXGy/r5OIC00oGkRdoWiBpY0M6jYrDw=
+	t=1772647746; cv=none; b=bJAQwbV1EZ1gPvbxr/NWW8Ezzzq9UnkvooFBeTyM9r44chhQwApgsETkgd/DDAPO4eexHo6c7zSmKp8c5rdcWwleqTmzXlebByu1PXUaNKdiOwXJWP///0/KvBbTKg9OHnT0RTkkgtGeVQDgDhkXkyG2MKX1uwbUPbRqKfXBnDg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772647148; c=relaxed/simple;
-	bh=/CV0BOByGYSuzWxUSGsbDoPh7GMERLO9A3GhGMQraAA=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=TUX4RX27KNln7MxRSKPBr/ICIvQiyePjRYjbmpxfZU5Td19VtNTtlvf6NoZlvEolNng7nsMkVzy8TMW04FhwnzlBCHLObIbrRPBh41gvZGNzLCWZ3wapnKsie2F2LOEdiGPM8+Cs08oDJi1bgnf6qpdeNuJJa1ZnAhRrpjiq4m8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=AlDMCLmC; arc=none smtp.client-ip=192.198.163.14
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1772647746; c=relaxed/simple;
+	bh=OGC+EenJ845Wlw134ixacvcp63TuPzlu5ztD9r3t6XY=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=UotfEe8HohfDY0/LZnute0V/qLrhfqFP/99ZkBjF0MWoIpLtJ90tqcAFwXs4+oZzu9KilyeKoc4BAcF+Bed2cOEUJ2HRmr8svsrSzra/Lt8yBeJUVpkVoNM7OL0dm1J3R6Xf8+ytH3/Ry0e4q5Ghxf8oabiHNmAdiWkWBp2oZTk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=shazbot.org; spf=pass smtp.mailfrom=shazbot.org; dkim=pass (2048-bit key) header.d=shazbot.org header.i=@shazbot.org header.b=W2u/vM5b; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=2W+epVkR; arc=none smtp.client-ip=202.12.124.148
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=shazbot.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=shazbot.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="AlDMCLmC"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1772647148; x=1804183148;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=/CV0BOByGYSuzWxUSGsbDoPh7GMERLO9A3GhGMQraAA=;
-  b=AlDMCLmCSRZCWW9UitxGhyy4llheFqqcN5dqJEe4gOBnxKCBY5lf+kDF
-   XDNOrl/djQK7M3teDxV9POFQ5u/kSWqmajH8Ag1l4txDON82XXP7NGw3x
-   golHBI+FNTZ0mcs4PZqY1Z3ZHIOMzDgn50He+jFH7gtzOB9cx5zCCklNX
-   lt0h7IBpx03x63c1rA/bRSQqO1Hwd+yoBmeeRfBwC4RTUiyUW3spafB0b
-   MQYubVMENFN+kpZfiyqn3DNx7YEcoaDWXOopkPcZ8KFP5Txd5LpksZ2FE
-   JQsafOzk5Ko1d1WPhFAKY/qrNdQcGKy7VMmZnP/yDdbP9n/qN7uYd5zFX
-   Q==;
-X-CSE-ConnectionGUID: iwhxa97CSFOv9xL3CL2vuw==
-X-CSE-MsgGUID: X3R9V1wlSD++beltOfuxPg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11719"; a="73787456"
-X-IronPort-AV: E=Sophos;i="6.21,324,1763452800"; 
-   d="scan'208";a="73787456"
-Received: from fmviesa009.fm.intel.com ([10.60.135.149])
-  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Mar 2026 09:59:07 -0800
-X-CSE-ConnectionGUID: 4TQsiUvKR6SROeOWGs/bKg==
-X-CSE-MsgGUID: m6KG54ICSbu6tHecqNx0sQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,324,1763452800"; 
-   d="scan'208";a="214537504"
-Received: from aschende-mobl.amr.corp.intel.com (HELO [10.125.108.205]) ([10.125.108.205])
-  by fmviesa009-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Mar 2026 09:59:05 -0800
-Message-ID: <7dc30fbf-17c0-47db-8457-24b531cd0071@intel.com>
-Date: Wed, 4 Mar 2026 09:59:11 -0800
+	dkim=pass (2048-bit key) header.d=shazbot.org header.i=@shazbot.org header.b="W2u/vM5b";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="2W+epVkR"
+Received: from phl-compute-11.internal (phl-compute-11.internal [10.202.2.51])
+	by mailfout.stl.internal (Postfix) with ESMTP id 309171D00173;
+	Wed,  4 Mar 2026 13:09:03 -0500 (EST)
+Received: from phl-frontend-04 ([10.202.2.163])
+  by phl-compute-11.internal (MEProxy); Wed, 04 Mar 2026 13:09:03 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shazbot.org; h=
+	cc:cc:content-transfer-encoding:content-type:content-type:date
+	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to; s=fm3; t=1772647742;
+	 x=1772734142; bh=HWf9FeNm6sIENyq4ht0InEdflnyGyn1wn6KJliPEu9g=; b=
+	W2u/vM5blxDvie5F0MHnfEnPIo1VLZa+3XM1cTGP1WulKSDsMGUeDpcgijOUvjBP
+	TY4piTTytj7L2Po8rRm4I31kSJ8X9DcYx8cwf/WADK0nK9zvizri8veXWK/ziMKe
+	LEukOINZOuXIBiB1DxuKNbfmnpxJLhcN7sCs3ykpwtKCYEmwyrxradvMKksXoTkL
+	LxD9N9nMxVO8Q5A3aBE6S+kQERLVun64O8UpXP6wWh1qNebDgdrsoh6W9JNdqn82
+	pV2CJX70Il/Pgzl+PKdYR4VMkDzomY2pQQF17KPMbsPaEHfeBjIpKP7aUd0C5D99
+	XsNDjnL031gAv6igkz3RPQ==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=1772647742; x=
+	1772734142; bh=HWf9FeNm6sIENyq4ht0InEdflnyGyn1wn6KJliPEu9g=; b=2
+	W+epVkRCxikeYclVLwIHWQFsTDo0MjujhnEC62/0InFlIQpeh2KZBKORXOsDpUAh
+	l8z0zrG4jTIZz6T4IbsalxjLNNw5t/34MMRtTJObFZQp1NohytcWs1af5CmpkQ85
+	a4Mb/boNOJpDBKt0YhQXgKIHbGJd3F0u0n6ggraWTgmsrrusjLIqfZLfG+PRp3j4
+	WH2CfwbHLLQGBY+lc5U7NfzQvQC6AmUdqcx6AF9LlYXxJe42oQwuytlQe7U3IGZ4
+	LcKtJaTcTg2ZuAMLod0fbcuD+2GTtFiV5YuQzLWqQqKDBNToTkmllMonFVwe6jid
+	BXCXTFZaQpO+JvWK2QFZQ==
+X-ME-Sender: <xms:PnWoaWdrME59lLPgYEYoz-Zq9oZcizByU9RqaSZXu6OVlPopO0Kdtw>
+    <xme:PnWoaVaMkFDV3eDum_C1x0IQdmEoA0-vGdGeH1iCvLHN3QSHJGd0prUm3cJbFMZcs
+    sGJ_D_a8MyXxuKGhLzfADSIo88PIlLyjr8CjslzRHiqkY4O3Yg>
+X-ME-Received: <xmr:PnWoaa6MUz6FJiXwIremDY2LybzS5tUW9mySrDw4iMGb5EJ8zVbNZhD0N5k>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgddvieegudekucetufdoteggodetrf
+    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
+    rghilhhouhhtmecufedttdenucenucfjughrpeffhffvvefukfgjfhfogggtgfesthejre
+    dtredtvdenucfhrhhomheptehlvgigucghihhllhhirghmshhonhcuoegrlhgvgiesshhh
+    rgiisghothdrohhrgheqnecuggftrfgrthhtvghrnhepvdekfeejkedvudfhudfhteekud
+    fgudeiteetvdeukedvheetvdekgfdugeevueeunecuvehluhhsthgvrhfuihiivgeptden
+    ucfrrghrrghmpehmrghilhhfrhhomheprghlvgigsehshhgriigsohhtrdhorhhgpdhnsg
+    gprhgtphhtthhopedugedpmhhouggvpehsmhhtphhouhhtpdhrtghpthhtoheprghnkhhi
+    thgrsehnvhhiughirgdrtghomhdprhgtphhtthhopehvshgvthhhihesnhhvihguihgrrd
+    gtohhmpdhrtghpthhtohepjhhgghesnhhvihguihgrrdgtohhmpdhrtghpthhtohepmhho
+    tghhshesnhhvihguihgrrdgtohhmpdhrtghpthhtohepjhhgghesiihivghpvgdrtggrpd
+    hrtghpthhtohepshhkohhlohhthhhumhhthhhosehnvhhiughirgdrtghomhdprhgtphht
+    thhopegtjhhirgesnhhvihguihgrrdgtohhmpdhrtghpthhtohepiihhihifsehnvhhiug
+    hirgdrtghomhdprhgtphhtthhopehkjhgrjhhusehnvhhiughirgdrtghomh
+X-ME-Proxy: <xmx:PnWoaTd5fczA4teZ7YFuPh40NUXM_AxSbm0WIM8eRztxGufV38_fyA>
+    <xmx:PnWoadyZgx_kT1XNeaXmHfjDilJcCX3cA8g0fauQn8eed11Rv4Rzug>
+    <xmx:PnWoaZqq9IaP3FCo4wVUXLWQcNtMh5n7J9OmQRemWnM3SF5VyZwvAg>
+    <xmx:PnWoabyQJlxy3NkRuHbuVW2MM4n8Lnq4jEL50-W_RGzhgh_jHeOZ4w>
+    <xmx:PnWoaUpU1hFbNI2w5gkt0aulrCvGxn9gdBWXreLV4JxW7dy3F8L1EMex>
+Feedback-ID: i03f14258:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
+ 4 Mar 2026 13:09:01 -0500 (EST)
+Date: Wed, 4 Mar 2026 11:09:00 -0700
+From: Alex Williamson <alex@shazbot.org>
+To: <ankita@nvidia.com>
+Cc: <vsethi@nvidia.com>, <jgg@nvidia.com>, <mochs@nvidia.com>,
+ <jgg@ziepe.ca>, <skolothumtho@nvidia.com>, <cjia@nvidia.com>,
+ <zhiw@nvidia.com>, <kjaju@nvidia.com>, <yishaih@nvidia.com>,
+ <kevin.tian@intel.com>, <kvm@vger.kernel.org>,
+ <linux-kernel@vger.kernel.org>, alex@shazbot.org
+Subject: Re: [PATCH RFC v2 05/15] vfio/nvgrace-egm: Introduce module to
+ manage EGM
+Message-ID: <20260304110900.47151cc8@shazbot.org>
+In-Reply-To: <20260223155514.152435-6-ankita@nvidia.com>
+References: <20260223155514.152435-1-ankita@nvidia.com>
+	<20260223155514.152435-6-ankita@nvidia.com>
+X-Mailer: Claws Mail 4.3.1 (GTK 3.24.51; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v6 2/2] x86/tlb: skip redundant sync IPIs for native TLB
- flush
-To: Lance Yang <lance.yang@linux.dev>, akpm@linux-foundation.org
-Cc: peterz@infradead.org, david@kernel.org, dave.hansen@linux.intel.com,
- ypodemsk@redhat.com, hughd@google.com, will@kernel.org,
- aneesh.kumar@kernel.org, npiggin@gmail.com, tglx@linutronix.de,
- mingo@redhat.com, bp@alien8.de, x86@kernel.org, hpa@zytor.com,
- arnd@arndb.de, lorenzo.stoakes@oracle.com, ziy@nvidia.com,
- baolin.wang@linux.alibaba.com, Liam.Howlett@oracle.com, npache@redhat.com,
- ryan.roberts@arm.com, dev.jain@arm.com, baohua@kernel.org,
- shy828301@gmail.com, riel@surriel.com, jannh@google.com, jgross@suse.com,
- seanjc@google.com, pbonzini@redhat.com, boris.ostrovsky@oracle.com,
- virtualization@lists.linux.dev, kvm@vger.kernel.org,
- linux-arch@vger.kernel.org, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, ioworker0@gmail.com
-References: <20260304021046.18550-1-lance.yang@linux.dev>
- <20260304021046.18550-3-lance.yang@linux.dev>
-Content-Language: en-US
-From: Dave Hansen <dave.hansen@intel.com>
-Autocrypt: addr=dave.hansen@intel.com; keydata=
- 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
-In-Reply-To: <20260304021046.18550-3-lance.yang@linux.dev>
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On 3/3/26 18:10, Lance Yang wrote:
-...
-> +	if (pv_ops.mmu.flush_tlb_multi == native_flush_tlb_multi &&
-> +	    !cpu_feature_enabled(X86_FEATURE_INVLPGB)) {
-> +		pv_ops.mmu.flush_tlb_multi_implies_ipi_broadcast = true;
-> +		static_branch_enable(&tlb_ipi_broadcast_key);
-> +	}
-> +}
-...
-> +#ifndef CONFIG_PARAVIRT
-> +void __init native_pv_tlb_init(void)
+On Mon, 23 Feb 2026 15:55:04 +0000
+<ankita@nvidia.com> wrote:
+
+> From: Ankit Agrawal <ankita@nvidia.com>
+> 
+> The Extended GPU Memory (EGM) feature that enables the GPU to access
+> the system memory allocations within and across nodes through high
+> bandwidth path on Grace Based systems. The GPU can utilize the
+> system memory located on the same socket or from a different socket
+> or even on a different node in a multi-node system [1].
+> 
+> When the EGM mode is enabled through SBIOS, the host system memory is
+> partitioned into 2 parts: One partition for the Host OS usage
+> called Hypervisor region, and a second Hypervisor-Invisible (HI) region
+> for the VM. Only the hypervisor region is part of the host EFI map
+> and is thus visible to the host OS on bootup. Since the entire VM
+> sysmem is eligible for EGM allocations within the VM, the HI partition
+> is interchangeably called as EGM region in the series. This HI/EGM region
+> range base SPA and size is exposed through the ACPI DSDT properties.
+> 
+> Whilst the EGM region is accessible on the host, it is not added to
+> the kernel. The HI region is assigned to a VM by mapping the QEMU VMA
+> to the SPA using remap_pfn_range().
+> 
+> The following figure shows the memory map in the virtualization
+> environment.
+> 
+> |---- Sysmem ----|                  |--- GPU mem ---|  VM Memory
+> |                |                  |               |
+> |IPA <-> SPA map |                  |IPA <-> SPA map|
+> |                |                  |               |
+> |--- HI / EGM ---|-- Host Mem --|   |--- GPU mem ---|  Host Memory
+> 
+> Introduce a new nvgrace-egm auxiliary driver module to manage and
+> map the HI/EGM region in the Grace Blackwell systems. This binds to
+> the auxiliary device created by the parent nvgrace-gpu (in-tree
+> module for device assignment) / nvidia-vgpu-vfio (out-of-tree open
+> source module for SRIOV vGPU) to manage the EGM region for the VM.
+> Note that there is a unique EGM region per socket and the auxiliary
+> device gets created for every region. The parent module fetches the
+> EGM region information from the ACPI tables and populate to the data
+> structures shared with the auxiliary nvgrace-egm module.
+> 
+> nvgrace-egm module handles the following:
+
+Or it will eventually, not in this commit.
+
+> 1. Fetch the EGM memory properties (base HPA, length, proximity domain)
+> from the parent device shared EGM region structure.
+> 2. Create a char device that can be used as memory-backend-file by Qemu
+> for the VM and implement file operations. The char device is /dev/egmX,
+> where X is the PXM node ID of the EGM being mapped fetched in 1.
+> 3. Zero the EGM memory on first device open().
+> 4. Map the QEMU VMA to the EGM region using remap_pfn_range.
+> 5. Cleaning up state and destroying the chardev on device unbind.
+> 6. Handle presence of retired ECC pages on the EGM region.
+> 
+> Suggested-by: Jason Gunthorpe <jgg@nvidia.com>
+> Signed-off-by: Ankit Agrawal <ankita@nvidia.com>
+> ---
+>  MAINTAINERS                           |  6 ++++++
+>  drivers/vfio/pci/nvgrace-gpu/Kconfig  | 12 ++++++++++++
+>  drivers/vfio/pci/nvgrace-gpu/Makefile |  3 +++
+>  drivers/vfio/pci/nvgrace-gpu/egm.c    | 22 ++++++++++++++++++++++
+>  drivers/vfio/pci/nvgrace-gpu/main.c   |  1 +
+>  5 files changed, 44 insertions(+)
+>  create mode 100644 drivers/vfio/pci/nvgrace-gpu/egm.c
+> 
+> diff --git a/MAINTAINERS b/MAINTAINERS
+> index 5b3d86de9ec0..1fc551d7d667 100644
+> --- a/MAINTAINERS
+> +++ b/MAINTAINERS
+> @@ -27384,6 +27384,12 @@ F:	drivers/vfio/pci/nvgrace-gpu/egm_dev.h
+>  F:	drivers/vfio/pci/nvgrace-gpu/main.c
+>  F:	include/linux/nvgrace-egm.h
+>  
+> +VFIO NVIDIA GRACE EGM DRIVER
+> +M:	Ankit Agrawal <ankita@nvidia.com>
+> +L:	kvm@vger.kernel.org
+> +S:	Supported
+> +F:	drivers/vfio/pci/nvgrace-gpu/egm.c
+
+I'm not sure a separate MAINTAINERS entry is warranted here, these are
+intertwined, even if constructed to allow this EGM driver to be used by
+an out-of-tree driver.  It's also an unclean split, with Makefile and
+Kconfig dependencies under the nvgrace-gpu heading.  It should probably
+be self contained in a separate sub-dir to justify a new MAINTAINERS
+entry.
+
+> +
+>  VFIO PCI DEVICE SPECIFIC DRIVERS
+>  R:	Jason Gunthorpe <jgg@nvidia.com>
+>  R:	Yishai Hadas <yishaih@nvidia.com>
+> diff --git a/drivers/vfio/pci/nvgrace-gpu/Kconfig b/drivers/vfio/pci/nvgrace-gpu/Kconfig
+> index a7f624b37e41..7989d8d1c377 100644
+> --- a/drivers/vfio/pci/nvgrace-gpu/Kconfig
+> +++ b/drivers/vfio/pci/nvgrace-gpu/Kconfig
+> @@ -1,8 +1,20 @@
+>  # SPDX-License-Identifier: GPL-2.0-only
+> +config NVGRACE_EGM
+> +	tristate "EGM driver for NVIDIA Grace Hopper and Blackwell Superchip"
+> +	depends on ARM64 || (COMPILE_TEST && 64BIT)
+> +	depends on NVGRACE_GPU_VFIO_PCI
+> +	help
+> +	  Extended GPU Memory (EGM) support for the GPU in the NVIDIA Grace
+> +	  based chips required to avail the CPU memory as additional
+> +	  cross-node/cross-socket memory for GPU using KVM/qemu.
+> +
+> +	  If you don't know what to do here, say N.
+> +
+>  config NVGRACE_GPU_VFIO_PCI
+>  	tristate "VFIO support for the GPU in the NVIDIA Grace Hopper Superchip"
+>  	depends on ARM64 || (COMPILE_TEST && 64BIT)
+>  	select VFIO_PCI_CORE
+> +	select NVGRACE_EGM
+
+This should be dropped, it creates a circular dependency where we
+cannot actually unselect NVGRACE_EGM with NVGRACE_GPU_VFIO_PCI
+selected.
+
+>  	help
+>  	  VFIO support for the GPU in the NVIDIA Grace Hopper Superchip is
+>  	  required to assign the GPU device to userspace using KVM/qemu/etc.
+> diff --git a/drivers/vfio/pci/nvgrace-gpu/Makefile b/drivers/vfio/pci/nvgrace-gpu/Makefile
+> index e72cc6739ef8..d0d191be56b9 100644
+> --- a/drivers/vfio/pci/nvgrace-gpu/Makefile
+> +++ b/drivers/vfio/pci/nvgrace-gpu/Makefile
+> @@ -1,3 +1,6 @@
+>  # SPDX-License-Identifier: GPL-2.0-only
+>  obj-$(CONFIG_NVGRACE_GPU_VFIO_PCI) += nvgrace-gpu-vfio-pci.o
+>  nvgrace-gpu-vfio-pci-y := main.o egm_dev.o
+> +
+> +obj-$(CONFIG_NVGRACE_EGM) += nvgrace-egm.o
+> +nvgrace-egm-y := egm.o
+> diff --git a/drivers/vfio/pci/nvgrace-gpu/egm.c b/drivers/vfio/pci/nvgrace-gpu/egm.c
+> new file mode 100644
+> index 000000000000..999808807019
+> --- /dev/null
+> +++ b/drivers/vfio/pci/nvgrace-gpu/egm.c
+> @@ -0,0 +1,22 @@
+> +// SPDX-License-Identifier: GPL-2.0-only
+> +/*
+> + * Copyright (c) 2025, NVIDIA CORPORATION & AFFILIATES. All rights reserved
+
+2026
+
+> + */
+> +
+> +#include <linux/vfio_pci_core.h>
+
+Premature?
+
+> +
+> +static int __init nvgrace_egm_init(void)
 > +{
-> +	/*
-> +	 * For non-PARAVIRT builds, check if native TLB flush sends real IPIs
-> +	 * (i.e., not using INVLPGB broadcast invalidation).
-> +	 */
-> +	if (!cpu_feature_enabled(X86_FEATURE_INVLPGB))
-> +		static_branch_enable(&tlb_ipi_broadcast_key);
+> +	return 0;
 > +}
-> +#endif
+> +
+> +static void __exit nvgrace_egm_cleanup(void)
+> +{
+> +}
+> +
+> +module_init(nvgrace_egm_init);
+> +module_exit(nvgrace_egm_cleanup);
+> +
+> +MODULE_LICENSE("GPL");
+> +MODULE_AUTHOR("Ankit Agrawal <ankita@nvidia.com>");
+> +MODULE_DESCRIPTION("NVGRACE EGM - Module to support Extended GPU Memory on NVIDIA Grace Based systems");
+> diff --git a/drivers/vfio/pci/nvgrace-gpu/main.c b/drivers/vfio/pci/nvgrace-gpu/main.c
+> index b356e941340a..0bb427cca31f 100644
+> --- a/drivers/vfio/pci/nvgrace-gpu/main.c
+> +++ b/drivers/vfio/pci/nvgrace-gpu/main.c
+> @@ -1410,3 +1410,4 @@ MODULE_LICENSE("GPL");
+>  MODULE_AUTHOR("Ankit Agrawal <ankita@nvidia.com>");
+>  MODULE_AUTHOR("Aniket Agashe <aniketa@nvidia.com>");
+>  MODULE_DESCRIPTION("VFIO NVGRACE GPU PF - User Level driver for NVIDIA devices with CPU coherently accessible device memory");
+> +MODULE_SOFTDEP("pre: nvgrace-egm");
 
-I really despise duplicated logic. The X86_FEATURE_INVLPGB check is
-small, but it is duplicated. You're also setting the static branch in a
-*bunch* of different places.
+Premature and wrong if necessary.  AIUI the aux device created should
+generate uevents and modules loaded automatically via device tables.
+Thanks,
 
-Can this be arranged so that the PV code just tells the core code that
-it is compatible with flush_tlb_multi_implies_ipi_broadcast?
-
-void __init bool is_pv_ok(void)
-{
-	/* This check is super sketchy an unexplained: */
-	if (pv_ops.mmu.flush_tlb_multi_implies_ipi_broadcast)
-		return true;
-
-	if (pv_ops.mmu.flush_tlb_multi != native_flush_tlb_multi)
-		return false;
-
-	pv_ops.mmu.flush_tlb_multi_implies_ipi_broadcast = true;
-
-	return true;
-}
-
-void __init tlb_init(void)
-{
-	if (!is_pv_ok())
-		return;
-
-	if (cpu_feature_enabled(X86_FEATURE_INVLPGB))
-		return;
-		
-	static_branch_enable(&tlb_ipi_broadcast_key);
-}
-
-Isn't that like a billion times more readable? It has one
-X86_FEATURE_INVLPGB check and one static_branch_enable() point and no
-#ifdeffery other than defining a stub is_pv_ok().
-
-BTW, why is there even an early return for the case where
-flush_tlb_multi_implies_ipi_broadcast is already set? Isn't this
-decision made once on the boot CPU and then never touched again? Do any
-PV instances actually set the bit?
+Alex
