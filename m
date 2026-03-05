@@ -1,186 +1,115 @@
-Received: from mail-pg1-f201.google.com (mail-pg1-f201.google.com [209.85.215.201])
+Received: from mail-pj1-f73.google.com (mail-pj1-f73.google.com [209.85.216.73])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 637311F0E29
-	for <kvm@vger.kernel.org>; Thu,  5 Mar 2026 04:21:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66F681E3DCD
+	for <kvm@vger.kernel.org>; Thu,  5 Mar 2026 04:22:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.73
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772684469; cv=none; b=fyCKgAYReo3G8ted/WWRcKKn1k+u32O3I01qhwM0+ES7wBnbe9uaudtlZAcpy5AFWJXhAV++lTKS1bWxbUoTV1qvYfg+EHh+BNUeyVYHV1pFvppKlcIOGw0yQtDc3q8Npm0DUFoyoUs1QCFzNTTp7MLi9D9QOCA0XSGt0nSc0xg=
+	t=1772684567; cv=none; b=T67szmsk4ZvXQOWrASnKx1di0ThYFOcBKLF7kxQaZkmrvTmZnokcxZgTjLHCvEPoL0Hi/eIpbUmosfoPbwo3kSbA2e7QNsRTYQlbo5K9NwjqwYHWIuMxASrrAXqWzcl8326xKF698xo2CMMEeQJWQ3zEYIBwoNPD3kwn17N8Nnk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772684469; c=relaxed/simple;
-	bh=mCfnJLaJLg+daVBBNaHa3/R5EF5xE+Cjpkd0CDVtjtw=;
+	s=arc-20240116; t=1772684567; c=relaxed/simple;
+	bh=81yLoi3tXabw0dqSXUmCvROMbXPWzxbqe15oyfoa03k=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=BFPT/3N2G5o3oPRtaE/bUJiykB2lc9LJlm+qCydTefU7nsr5vh9t4c7PbHFnkSo60cMPAd43Xg5ecM0cYJfROR+BXQzZB1LiJAq51AWnYDQEWMEB1Ld8adVQc/NeLxr/x4oE3oNoCCnPwYbT/6EffNnDQZBt0A4Zk6Bp0z1mLIM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=LlBae1wC; arc=none smtp.client-ip=209.85.215.201
+	 To:Cc:Content-Type; b=aU5I5QXpFzffp0I4a7jur1Y7ajShQ7lLzqyRSVgKb5Rn+XJCpe+gnz26dRxNuBfPQ3YTs3Azo9ZHNKyKWohGgDZVDBmL/Dfeopdl7CrzT1jpXHrjk0khkQwqEz43Ltn5EZ3fVvGXgDdxFe60CN2GC9P2fgq8f+39FD4+D1iiy7k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=aMhWlKPN; arc=none smtp.client-ip=209.85.216.73
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="LlBae1wC"
-Received: by mail-pg1-f201.google.com with SMTP id 41be03b00d2f7-c6e24ee93a6so4645486a12.0
-        for <kvm@vger.kernel.org>; Wed, 04 Mar 2026 20:21:08 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="aMhWlKPN"
+Received: by mail-pj1-f73.google.com with SMTP id 98e67ed59e1d1-358f058973fso7217657a91.1
+        for <kvm@vger.kernel.org>; Wed, 04 Mar 2026 20:22:45 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1772684468; x=1773289268; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1772684565; x=1773289365; darn=vger.kernel.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=ceZ3dTJkwg4Hdhcsp9fwJ65sqpITXml71eHPvJD5bDs=;
-        b=LlBae1wC9wjNODUto144Notsr2tHNx2rbqw7S/rdKhcNeKbR2YRCn2fye3OEcuK7F6
-         1QkZMWzeV4vH6k4u7m/p5+3/VN9TiVz/Uoa2WIfAPSNx7xIaJNNk/EwJw/ga4Uda9PfD
-         0sUU5cmGvcTz5Vd96fjYTWd1QJ5K6kCQB+6ZW5ioJoeofyD1oUBt51DSX+V4CfgQ9MnI
-         9MeHPbPBNLv3iF9PuCm80qcJWkfI5iUYx81xZGLFohEqmjGm/bxYkJlLWNj07is1zz2w
-         w8pdcYK7CJIima0YJ5fLJCSXcgdxIOcmFkGhNvQph6HgDWwaju0nmDLbYgSEMNBSJjkq
-         FIOw==
+        bh=5W+vjOw4sHJfZ2ztYmHn3awEcYReG2mo7cvKhP8YlFQ=;
+        b=aMhWlKPN90aycq0h0qZjHK5zbht4c94Y2IYQ2aje0FfaD/vAEZU9/J/ZOLlD6tViYc
+         GH+eYp1bQCWtt631PazBYXz7EnhGhj4nktRkaLCWe0ZkCAycmUjDWUpB7+QqTbx/UH/l
+         sgHYgeiX1KroHEECsdXoLGsuNuOzZv8guC5sznHG14g/HHt/3wYZNZ1g7npXP6Y2Y9qc
+         mErEU7s4yX3oXv+iaLUpEOrSLahEYwKSkZ73ZVF1MkfEjEu2sWxXi7dxc+4Hgj7RCEdr
+         Me3dvyFd6FbNz5yqEbOfro++4wBoR0AAag2F3ulIJzDDr6FZRls1OBXCLhcwFiO1xaee
+         MViA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1772684468; x=1773289268;
+        d=1e100.net; s=20230601; t=1772684565; x=1773289365;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=ceZ3dTJkwg4Hdhcsp9fwJ65sqpITXml71eHPvJD5bDs=;
-        b=LuSPkpkrnt2JaxiV97ZiEsy4k1hM8ALGTFninZbe/xzMjuFDqc7ZY+siY7NdmmYvHt
-         9RmK1DdpmO8V9lagkk20i3BCxIaMZC8aGOO/d+yrdoHm4417aVK9La0pLvKP+aTrCi09
-         2Ba4+RIoC5KDg1gj5SwZ/b7VAO0un8vZ525grVrSuD25jMih7T3gb2g23vw7OMIpXCdi
-         rn6X32OLUfxMUokzXRyOt04sDN92Ll+7ZbZPVAfpH+RIvCk4EnhB4JhINhbBnBFBbMd6
-         D4ydXLN0oI9pFcLlob02IbUdKD1a3YWJ7FYnUNnpvf3NfL2ov5yHpjXoMc0/aHrYbJ3C
-         8xPw==
-X-Forwarded-Encrypted: i=1; AJvYcCVeLkXXwWCNxmdkblbJuyVLaqqMDQy7secvslPx1Po+wUnRFnHrVJHmerePM3JD1kBXwYI=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzXxqPRIFWkH20qXMs8l0Ejwe+t3yFweE68AKsTuL9FG68xsR9a
-	wKDg+V2S6RU3X4TGlYLIt9JM6t9pZ/gVsNe9PGxyRDo+ucM9wu0GcBRbFKyoC5AW20Fpxa+XREt
-	Z83GawQ==
-X-Received: from pgww16.prod.google.com ([2002:a05:6a02:2c90:b0:c6e:18d8:7280])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a20:d509:b0:38e:974e:af00
- with SMTP id adf61e73a8af0-39842626e0bmr1012163637.38.1772684467465; Wed, 04
- Mar 2026 20:21:07 -0800 (PST)
-Date: Wed, 4 Mar 2026 20:21:05 -0800
-In-Reply-To: <20260112235408.168200-5-chang.seok.bae@intel.com>
+        bh=5W+vjOw4sHJfZ2ztYmHn3awEcYReG2mo7cvKhP8YlFQ=;
+        b=FqGFrN+Jm5gLcCl1BdMaDLEPIipAs1gYYDk9s4LxxQ2xHw8dgrLuNuEZAC23ola6VR
+         3hy9YPWp64sh55gJli/15SMWNDl47ekDoKqN4mW5AqnSq0OB+gUrKt7w7bma46gAysCj
+         I2HEJdPov/T41t2i/8rfxw6RHsmfwABxO0m6jcwDtWtpCRDrTkAcLE/N9AMsB4GC7JJs
+         iaMRskh4p5wut1l2FjJyGbq+4TKSK0gkSLtyRzNDM4FnojpvbNRXHgJmvxwztQpEW2jB
+         bloxRoIzo3WulNIEDryi+fRUDIfEwYYu9aT/PKZBEFhVaKhJLhuC1cybmRlVNNBmU66a
+         rOjg==
+X-Forwarded-Encrypted: i=1; AJvYcCXTJhsv2QivFh2exJmmJYw4bIcRElFriyYNacyWtW0KHEq3Q2H+TT0IlHxKkmlC65PrDCQ=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yyu7Y1gyheEw980AlHiM/8P2gWGIua6OLGaY2RZaq+pBnUspIZH
+	Op3IWQ2d6dlK82FOxyXMvK1zQX23DuPL571qoPYxjPx+808qT7uq0PzUX3yObe/612eAmiC8RsB
+	7HbVyHQ==
+X-Received: from pjd13.prod.google.com ([2002:a17:90b:54cd:b0:358:eda2:4a10])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:4fc7:b0:356:7b41:d355
+ with SMTP id 98e67ed59e1d1-359a69a0346mr3119329a91.1.1772684564578; Wed, 04
+ Mar 2026 20:22:44 -0800 (PST)
+Date: Wed, 4 Mar 2026 20:22:43 -0800
+In-Reply-To: <20260112235408.168200-10-chang.seok.bae@intel.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-References: <20260112235408.168200-1-chang.seok.bae@intel.com> <20260112235408.168200-5-chang.seok.bae@intel.com>
-Message-ID: <aakEsXJgO-3m2xca@google.com>
-Subject: Re: [PATCH v2 04/16] KVM: VMX: Introduce unified instruction info structure
+References: <20260112235408.168200-1-chang.seok.bae@intel.com> <20260112235408.168200-10-chang.seok.bae@intel.com>
+Message-ID: <aakFE4BMwsdOXL55@google.com>
+Subject: Re: [PATCH v2 09/16] KVM: emulate: Support EGPR accessing and tracking
 From: Sean Christopherson <seanjc@google.com>
 To: "Chang S. Bae" <chang.seok.bae@intel.com>
 Cc: pbonzini@redhat.com, kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
 	chao.gao@intel.com
 Content-Type: text/plain; charset="us-ascii"
 
+For the scope,
+
+KVM: x86:
+
+because other architectures have emulator code, and as is the case here, x86's
+emulator code isn't strictly contained to the emulate.c.
+
 On Mon, Jan 12, 2026, Chang S. Bae wrote:
-> Define a unified data structure that can represent both the legacy and
-> extended VMX instruction information formats.
+> Extend the emulator context and GPR accessors to handle EGPRs before
+> adding support for REX2-prefixed instructions.
 > 
-> VMX provides per-instruction metadata for VM exits to help decode the
-> attributes of the instruction that triggered the exit. The legacy format,
-> however, only supports up to 16 GPRs and thus cannot represent EGPRs. To
-> support these new registers, VMX introduces an extended 64-bit layout.
-> 
-> Instead of maintaining separate storage for each format, a single
-> union structure makes the overall handling simple. The field names are
-> consistent across both layouts. While the presence of certain fields
-> depends on the instruction type, the offsets remain fixed within each
-> format.
+> Now the KVM GPR accessors can handle EGPRs. Then, the emulator can
+> uniformly cache and track all GPRs without requiring separate handling.
 > 
 > Signed-off-by: Chang S. Bae <chang.seok.bae@intel.com>
 > ---
->  arch/x86/kvm/vmx/vmx.h | 61 ++++++++++++++++++++++++++++++++++++++++++
->  1 file changed, 61 insertions(+)
+>  arch/x86/kvm/kvm_emulate.h | 10 +++++-----
+>  arch/x86/kvm/x86.c         |  4 ++--
+>  2 files changed, 7 insertions(+), 7 deletions(-)
 > 
-> diff --git a/arch/x86/kvm/vmx/vmx.h b/arch/x86/kvm/vmx/vmx.h
-> index bc3ed3145d7e..567320115a5a 100644
-> --- a/arch/x86/kvm/vmx/vmx.h
-> +++ b/arch/x86/kvm/vmx/vmx.h
-> @@ -311,6 +311,67 @@ struct kvm_vmx {
->  	u64 *pid_table;
->  };
->  
-> +/*
-> + * 32-bit layout of the legacy instruction information field. This format
-> + * supports the 16 legacy GPRs.
-> + */
-> +struct base_insn_info {
-> +	u32 scale		: 2;	/* Scaling factor */
-> +	u32 reserved1		: 1;
-> +	u32 reg1		: 4;	/* First register index */
-> +	u32 asize		: 3;	/* Address size */
-> +	u32 is_reg		: 1;	/* 0: memory, 1: register */
-> +	u32 osize		: 2;	/* Operand size */
-> +	u32 reserved2		: 2;
-> +	u32 seg			: 3;	/* Segment register index */
-> +	u32 index		: 4;	/* Index register index */
-> +	u32 index_invalid	: 1;	/* 0: valid, 1: invalid */
-> +	u32 base		: 4;	/* Base register index */
-> +	u32 base_invalid	: 1;	/* 0: valid, 1: invalid */
-> +	u32 reg2		: 4;	/* Second register index */
-> +};
-> +
-> +/*
-> + * 64-bit layout of the extended instruction information field, which
-> + * supports EGPRs.
-> + */
-> +struct ext_insn_info {
-> +	u64 scale		: 2;	/* Scaling factor */
-> +	u64 asize		: 2;	/* Address size */
-> +	u64 is_reg		: 1;	/* 0: memory, 1: register */
-> +	u64 osize		: 2;	/* Operand size */
-> +	u64 seg			: 3;	/* Segment register index */
-> +	u64 index_invalid	: 1;	/* 0: valid, 1: invalid */
-> +	u64 base_invalid	: 1;	/* 0: valid, 1: invalid */
-> +	u64 reserved1		: 4;
-> +	u64 reg1		: 5;	/* First register index */
-> +	u64 reserved2		: 3;
-> +	u64 index		: 5;	/* Index register index */
-> +	u64 reserved3		: 3;
-> +	u64 base		: 5;	/* Base register index */
-> +	u64 reserved4		: 3;
-> +	u64 reg2		: 5;	/* Second register index */
-> +	u64 reserved5		: 19;
-> +};
-> +
-> +/* Union for accessing either the legacy or extended format. */
-> +union insn_info {
-> +	struct base_insn_info base;
-> +	struct ext_insn_info  ext;
-> +	u32 word;
-> +	u64 dword;
+> diff --git a/arch/x86/kvm/kvm_emulate.h b/arch/x86/kvm/kvm_emulate.h
+> index fb3dab4b5a53..16b35a796a7f 100644
+> --- a/arch/x86/kvm/kvm_emulate.h
+> +++ b/arch/x86/kvm/kvm_emulate.h
+> @@ -105,13 +105,13 @@ struct x86_instruction_info {
+>  struct x86_emulate_ops {
+>  	void (*vm_bugged)(struct x86_emulate_ctxt *ctxt);
+>  	/*
+> -	 * read_gpr: read a general purpose register (rax - r15)
+> +	 * read_gpr: read a general purpose register (rax - r31)
+>  	 *
+>  	 * @reg: gpr number.
+>  	 */
+>  	ulong (*read_gpr)(struct x86_emulate_ctxt *ctxt, unsigned reg);
+>  	/*
+> -	 * write_gpr: write a general purpose register (rax - r15)
+> +	 * write_gpr: write a general purpose register (rax - r31)
+>  	 *
+>  	 * @reg: gpr number.
+>  	 * @val: value to write.
+> @@ -314,7 +314,7 @@ typedef void (*fastop_t)(struct fastop *);
+>   * a ModRM or SIB byte.
+>   */
+>  #ifdef CONFIG_X86_64
+> -#define NR_EMULATOR_GPRS	16
+> +#define NR_EMULATOR_GPRS	32
 
-word is 16 bits, dword is 32 bits, qword is 64 bits.
-
-> +};
-> +
-> +/*
-> + * Wrapper structure combining the instruction info and a flag indicating
-> + * whether the extended layout is in use.
-> + */
-> +struct vmx_insn_info {
-> +	/* true if using the extended layout */
-> +	bool extended;
-> +	union insn_info info;
-> +};
-
-Absolutely not.  I despise bit fields, as they're extremely difficult to review,
-don't help developers/debuggers understand the expected layout (finding flags and
-whatnot in .h files is almost always faster than searching the SDM), and they
-often generate suboptimal code.
-
-This is also infrastructure overkill.  Two bitfields, a union, and another struct,
-just to track a 64-bit value.  And the macros added later on only add to the
-obfuscation.
-
-Even worse, saving the "extended" flag on the stack and passing it around turns
-a static branch into a dynamic branch.
-
-I don't see any reason to do anything more complicated than:
-
-static inline u64 vmx_get_insn_info(void)
-{
-	if (vmx_insn_info_extended())
-		return vmcs_read64(EXTENDED_INSTRUCTION_INFO);
-
-	return vmcs_read32(VMX_INSTRUCTION_INFO);
-}
-
-static inline int vmx_get_insn_info_reg(u64 insn_info)
-{
-	return vmx_insn_info_extended() ? (insn_info >> ??) & 0x1f :
-					  (insn_info >> 3) & 0xf;
-}
+If we add Kconfig, this would be the place to use it...
