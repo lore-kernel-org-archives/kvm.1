@@ -1,37 +1,37 @@
 Received: from mail.zytor.com (terminus.zytor.com [198.137.202.136])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 59A4013D891;
-	Thu,  5 Mar 2026 06:00:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 12D9F1D47B4;
+	Thu,  5 Mar 2026 06:13:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.137.202.136
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772690402; cv=none; b=WPzp00VT+8U3UkLBrEkCJSqTcwl7pkgTR4/XzmfEW2nz6Q81pKQlC/iN/uW6LSj4vYPpXs0EUtbg2OlMyI39Cc6KgNJ6ZO5wvz0/RnjCImxrcWE18OlzU+x2vEzeda9RB0x7ydkiQVx6BUzzOhawAUuWWM/Z4K2pysS/6EdkyeE=
+	t=1772691200; cv=none; b=bf7S/PCg6ZpuQZA1R9OEa/9veoDzUwn7Q4p1gDSG2wgk6kqbeViIE5OHuwlk7LQdi+3r0BMTSELpVDp0g+ayR1DuqRjDvx5MPu/yfgEh4NuADmsZXTVKjmMzRCHerD0vy18AomLAqRQkydFpxlvOl7HTt0aKdLuK3S0cOB9Wb14=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772690402; c=relaxed/simple;
-	bh=kRl0dFzmzJVFvVrDPwTGJzGoVWZ8CXbDkZD9sYp1f38=;
+	s=arc-20240116; t=1772691200; c=relaxed/simple;
+	bh=ko7F95C/qNfEuKQ7fgpE6IoqafkSggugoMhxPZdpimc=;
 	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
-	 Message-Id:References:To; b=Qy7JOSrihaUx4DphJDW9pmNxj30tFcDR1J0jaVxlhu0+90JR567W4/1FRcOPAVSR32/y224HvGHwH5Vb0m1UBl0BNhwCrM3oiCzD0bm6nutEOgkitu/zkw1NvrX9rd7BxV+BO3/jmuEU3MC/FkET7uXuc5QZz0NprztjljDyYLo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zytor.com; spf=pass smtp.mailfrom=zytor.com; dkim=pass (2048-bit key) header.d=zytor.com header.i=@zytor.com header.b=SomfLdAg; arc=none smtp.client-ip=198.137.202.136
+	 Message-Id:References:To; b=f9pqZ/HYN7+tFZp6P0bNx21SZwE5M9lFpTAR5kA3VE+uxJUo+yaChDL4ibg1VRzJvu7tpJrsQKpYML14BPVjgLYCebpjeRNq9T+MrYElNxUMVgwvi1ODWr/JP92edCHuxRghKBkWgs8YZhUVyDW6FHp4nX22v201EpsgPj9bRI0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zytor.com; spf=pass smtp.mailfrom=zytor.com; dkim=pass (2048-bit key) header.d=zytor.com header.i=@zytor.com header.b=lED43wNG; arc=none smtp.client-ip=198.137.202.136
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zytor.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=zytor.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=zytor.com header.i=@zytor.com header.b="SomfLdAg"
+	dkim=pass (2048-bit key) header.d=zytor.com header.i=@zytor.com header.b="lED43wNG"
 Received: from smtpclient.apple (c-24-130-165-117.hsd1.ca.comcast.net [24.130.165.117])
 	(authenticated bits=0)
-	by mail.zytor.com (8.18.1/8.17.1) with ESMTPSA id 6255RIQs2343052
+	by mail.zytor.com (8.18.1/8.17.1) with ESMTPSA id 6255uqoE2389035
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NO);
-	Wed, 4 Mar 2026 21:27:18 -0800
-DKIM-Filter: OpenDKIM Filter v2.11.0 mail.zytor.com 6255RIQs2343052
+	Wed, 4 Mar 2026 21:56:53 -0800
+DKIM-Filter: OpenDKIM Filter v2.11.0 mail.zytor.com 6255uqoE2389035
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=zytor.com;
-	s=2026022301; t=1772688440;
-	bh=KA5gN2wC89NrKPDnrGFrieYaC050Cg169d1qgwroiwc=;
+	s=2026022301; t=1772690215;
+	bh=ko7F95C/qNfEuKQ7fgpE6IoqafkSggugoMhxPZdpimc=;
 	h=Subject:From:In-Reply-To:Date:Cc:References:To:From;
-	b=SomfLdAgQhI/vJVfqLfsic/psO4zSViGxGwX9XiWanqa1wF/QLw68781ii0LsTcRE
-	 qJkiUOdZ5AupVw9Ig1/cDsJc+9rcGobpAWzRxGUJvqFGjZ+fY8OaHZXojGH0gc0BBX
-	 9JJJOTJyqfecYZCYSQFM/nTj6X2EChZbkdNHkoH6SJLWln4ZKboSw2llOUxCsbHrMa
-	 oFWCi4YhORn9rosomWuuuupfhGXLuH2ldhT0KofMv9wJxmVjAhvLVyUqeTNUWr858U
-	 rsTZnIwg+H6oRBcdmTl6VNCJIa8nqzPsEzqw3s/0uLM7fro59ejCfbBSqllwOjypFu
-	 BA1f4u8zay5zg==
+	b=lED43wNG7PaOWoUEpDO8IcogseMsNgNxMXF7oXdhEK9RO4Tg3ummE/XQxc9Vv7SIZ
+	 Flk94mMxOoBqcfigznNlwzZ4ysarTWAOQZqqGg4BLIkVmuAFTszwwUqbrauP6/eFba
+	 yTQoNx0tyTjxUp1q6qgdYvDKAww1gjHZmNc9D5JMdsEx+PKTXjYp3shZuZ7a+KOmtc
+	 C5wfznj0a7EXi09daEf7ZsRsAQL3jyCMzAKgUOjX38n/IQBTOeNFGebmhsaQX4GbgO
+	 GYOwHBd4l6lZ23Yq+gSOJWBNNoGa40ebFNO8nM2/znl2YnycTVfBNogGyp2hu3yaHO
+	 u/3WycfhKVI2g==
 Content-Type: text/plain;
 	charset=utf-8
 Precedence: bulk
@@ -40,133 +40,60 @@ List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3864.400.21\))
-Subject: Re: [PATCH v9 07/22] KVM: VMX: Initialize VMCS FRED fields
+Subject: Re: [PATCH v9 08/22] KVM: VMX: Set FRED MSR intercepts
 From: Xin Li <xin@zytor.com>
-In-Reply-To: <aahchI7oiFrjFAmb@google.com>
-Date: Wed, 4 Mar 2026 21:27:07 -0800
-Cc: Binbin Wu <binbin.wu@linux.intel.com>, linux-kernel@vger.kernel.org,
+In-Reply-To: <aajS9HFx5HabmCTq@google.com>
+Date: Wed, 4 Mar 2026 21:56:42 -0800
+Cc: Chao Gao <chao.gao@intel.com>, linux-kernel@vger.kernel.org,
         kvm@vger.kernel.org, linux-doc@vger.kernel.org, pbonzini@redhat.com,
         corbet@lwn.net, tglx@linutronix.de, mingo@redhat.com, bp@alien8.de,
         dave.hansen@linux.intel.com, x86@kernel.org, hpa@zytor.com,
         luto@kernel.org, peterz@infradead.org, andrew.cooper3@citrix.com,
-        chao.gao@intel.com, hch@infradead.org, sohil.mehta@intel.com
+        hch@infradead.org, sohil.mehta@intel.com
 Content-Transfer-Encoding: quoted-printable
-Message-Id: <99463361-58F3-42F9-9BCC-4BF0BF73D247@zytor.com>
+Message-Id: <C5C396E6-0C34-4419-8F7A-F6EE07B2346C@zytor.com>
 References: <20251026201911.505204-1-xin@zytor.com>
- <20251026201911.505204-8-xin@zytor.com>
- <8731e234-22b8-4ccf-89ef-63feed09e9c5@linux.intel.com>
- <aahchI7oiFrjFAmb@google.com>
+ <20251026201911.505204-9-xin@zytor.com> <aRQf1sQZ9Z3CTB8i@intel.com>
+ <aajS9HFx5HabmCTq@google.com>
 To: Sean Christopherson <seanjc@google.com>
 X-Mailer: Apple Mail (2.3864.400.21)
 
 
 
-> On Mar 4, 2026, at 8:23=E2=80=AFAM, Sean Christopherson =
+> On Mar 4, 2026, at 4:48=E2=80=AFPM, Sean Christopherson =
 <seanjc@google.com> wrote:
 >=20
-> On Wed, Jan 21, 2026, Binbin Wu wrote:
->> On 10/27/2025 4:18 AM, Xin Li (Intel) wrote:
->>> diff --git a/arch/x86/kvm/vmx/vmx.c b/arch/x86/kvm/vmx/vmx.c
->>> index fcfa99160018..c8b5359123bf 100644
->>> --- a/arch/x86/kvm/vmx/vmx.c
->>> +++ b/arch/x86/kvm/vmx/vmx.c
->>> @@ -1459,6 +1459,15 @@ void vmx_vcpu_load_vmcs(struct kvm_vcpu =
-*vcpu, int cpu)
->>>    (unsigned long)(cpu_entry_stack(cpu) + 1));
->>> }
+> On Wed, Nov 12, 2025, Chao Gao wrote:
+>> On Sun, Oct 26, 2025 at 01:18:56PM -0700, Xin Li (Intel) wrote:
+>>> From: Xin Li <xin3.li@intel.com>
 >>>=20
->>> + /* Per-CPU FRED MSRs */
->=20
-> Meh, this is pretty self-explanatory code.
-
-I want to remind that this is =E2=80=9CPer-CPU=E2=80=9D.
-
-On the other side, FRED_CONFIG and FRED_STKLVLS are typically the same =
-on
-all CPUs, and they don=E2=80=99t need to be updated during vCPU =
-migration.
-
-But anyway vCPU migration only cares per-CPU MSRs, so this is redundant.
-
-It often bothers me whether to explain the code a bit more or not, with =
-a
-short brief comment or a lengthy one.
-
->=20
->>> + if (kvm_cpu_cap_has(X86_FEATURE_FRED)) {
->>> +#ifdef CONFIG_X86_64
+>>> On a userspace MSR filter change, set FRED MSR intercepts.
+>>>=20
+>>> The eight FRED MSRs, MSR_IA32_FRED_RSP[123], MSR_IA32_FRED_STKLVLS,
+>>> MSR_IA32_FRED_SSP[123] and MSR_IA32_FRED_CONFIG, are all safe to
+>>> passthrough, because each has a corresponding host and guest field
+>>> in VMCS.
 >>=20
->> Nit:
->>=20
->> Is this needed?
->>=20
->> FRED is initialized by X86_64_F(), if CONFIG_X86_64 is not enabled, =
-this
->> path is not reachable.
->> There should be no compilation issue without #ifdef CONFIG_X86_64 / =
-#endif.
->>=20
->> There are several similar patterns in this patch, using  #ifdef =
-CONFIG_X86_64 /=20
->> #endif or not seems not consistent. E.g. __vmx_vcpu_reset() and =
-init_vmcs()
->> doesn't check the config, but here does.
->>=20
->>> + vmcs_write64(HOST_IA32_FRED_RSP1, =
-__this_cpu_ist_top_va(ESTACK_DB));
->>> + vmcs_write64(HOST_IA32_FRED_RSP2, =
-__this_cpu_ist_top_va(ESTACK_NMI));
->>> + vmcs_write64(HOST_IA32_FRED_RSP3, =
-__this_cpu_ist_top_va(ESTACK_DF));
+>> Sean prefers to pass through MSRs only when there is a reason to do =
+that rather
+>> than just because it is free. My thinking is that RSPs and SSPs are =
+per-task
+>> and are context-switched frequently, so we need to pass through them. =
+But I am
+>> not sure if there is a reason for STKLVLS and CONFIG.
 >=20
-> IMO, this is flawed for other reasons.  KVM shouldn't be relying on =
-kernel
-> implementation details with respect to what FRED stack handles what =
-event.
+> There are VMCS fields, at which point intercepting and emulating is =
+probably
+> more work than just letting the guest access directly. :-/
 >=20
-> The simplest approach would be to read the actual MSR.  _If_ using a =
-per-CPU read
-> provides meaningful performance benefits over RDMSR (or RDMSR w/ =
-immediate?  I
-> don't see an API for that...), then have the kernel provide a =
-dedicated accessor.
+> Ah, and there needs to be VMCS fields because presumably everything =
+needs to be
+> switch atomically, e.g. an NMI that arrives shortly after VM-Exit =
+presumbably
+> consumes STKLVLS and CONFIG.
 
-I think you asked for it:
+Yes, first it is a correctness issue and I assumed it=E2=80=99s obvious =
+(like we
+need a valid IDT/GDT immediately after VM exit).
 
-https://lore.kernel.org/kvm/ZmoWB_XtA0wR2K4Q@google.com/
-
-I assume fetching through per-CPU cache is fast, but I might have =
-misunderstood
-your suggestion.
-
-
->=20
-> Then the accessor can be a non-inlined functions, and this code can be =
-e.g.:
->=20
-> if (IS_ENABLED(CONFIG_X86_64) && kvm_cpu_cap_has(X86_FEATURE_FRED)) {
-> vmcs_write64(HOST_IA32_FRED_RSP1, fred_rsp(MSR_IA32_FRED_RSP1));
-> vmcs_write64(HOST_IA32_FRED_RSP2, fred_rsp(MSR_IA32_FRED_RSP2));
-> vmcs_write64(HOST_IA32_FRED_RSP3, fred_rsp(MSR_IA32_FRED_RSP2));
-> }
->=20
-> where fred_rsp() is _declared_ unconditionally, but implemented only =
-for 64-bit.
-> That way the compiler will be happy, and the actual usage will be =
-dropped before
-> linking via dead-code elimination.
-
-If KVM can=E2=80=99t rely on kernel side implementation details, =
-fred_rsp() has to read
-directly from the corresponding MSRs, right?
-
-
->=20
-> Actually, we can probably do one better?
->=20
-> if (cpu_feature_enabled(X86_FEATURE_FRED) && =
-kvm_cpu_cap_has(X86_FEATURE_FRED)) {
-
-I think KVM now forces X86_FEATURE_FRED=3Dy, no?
-
-
+Anyway, Peter had given a much better write-up and I switched to it.=
