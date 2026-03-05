@@ -1,43 +1,40 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 60F0233A9DE;
-	Thu,  5 Mar 2026 20:30:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F55233A9DA;
+	Thu,  5 Mar 2026 20:30:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772742625; cv=none; b=Uo4LWBP2A8OfJvIkqBo9WIRuORraJG/4LKNfoKiZx3lauKR1tpmHxv8XKTg6WvaixNzJBBD9+q50INGoFTpMdeU94OSM6G16fgkt+HJo6RdkfI6ie22E74H/QN0ZwdOAzx+LmQNzKWA64d/nzhDXRn5JTOEQz78SSLQs/6CvY/4=
+	t=1772742625; cv=none; b=eLqAhlPiCwYYo2pfGqDOkm7uIADvCTghfTfofuVpwoU0VURecfp+IBGXEw0Gn2s0Ua9e+QPNOqWc9M/1odxfi/B+D0pcGmydy2jkc+gynTigyoJE/A224G46Z6Js1H61cT6AXiG7sbnJ4XBwgAsOLeoTDNbyObKKGa/90zmWuoU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1772742625; c=relaxed/simple;
-	bh=rSa2W0G7aR8oOklcUQq87bd3yTbbQ5Kd8Baa+AD/1iY=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MvtVP0O6XX5x3o3hhejLENdgFlLWybgJToFv6Y6clrAIIJwFwXBzxdeIz6kynWq3FDZh4isRi8fYpThdvAprjVDAtSX1Bnk1iuhYDbthf8C81ntUjcOTpzwFmgbwMSt/G9Ex9gt2aph2e/3qH1mdbrpn/vpqLuSwJoWu1z0pvfA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RUSOa6nO; arc=none smtp.client-ip=10.30.226.201
+	bh=7V2AL0ZPto6MM+QjVkRasFLILnR+/GavNDnwdDmHzdE=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=t5nCoz2D7j4Cp4YI6nGUc63lVa+zjEOhzxfa/O/bj+Sk+Y3gXMLUQ9ZVBFZWQK88WXoZwwta5VU/qC8brh1cqFw/SVtyDggQCEFhoLHUKi+qDwKvTGSZXeYztE+T4WJVZbqVxWjM+ZbgaIZjMDZ9V28+U8r33mzMFJ8CVyvATAI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=g/Bwp+RG; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RUSOa6nO"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DEB8FC19422;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="g/Bwp+RG"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 802F3C116C6;
 	Thu,  5 Mar 2026 20:30:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772742625;
-	bh=rSa2W0G7aR8oOklcUQq87bd3yTbbQ5Kd8Baa+AD/1iY=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RUSOa6nOBiKNmzJpkdg/KEjaV/dUDdPQYAz+DGv/436F1+KK/auKIIbqo8qYHaqkC
-	 s4XhQSD4kv4kCv/Jd31o7DEsmQ+8rpkC5zSKgGBzGjVtLCzAglMjB+9U6IqWYu0WFM
-	 ULhsEee2FD5YrNItpS5VuushXm6nv/gwFQ6kgEBA+4zwaPmd9pPgPSoq7mA0s/ph8P
-	 2r2v9fHPrGHLlKE7UmDdd9ocBpyJ2mimUWqAEI1UK9+RAxrbJH3GEKUlnoWeuZ4BB7
-	 EkoIicdrrSkON8/7QlRykFq1jIVlwoxr+YOP5mcyAh4u5FEABAdb84zmXMegOcQYaw
-	 zmK0iXhnizfmw==
+	s=k20201202; t=1772742624;
+	bh=7V2AL0ZPto6MM+QjVkRasFLILnR+/GavNDnwdDmHzdE=;
+	h=From:To:Cc:Subject:Date:From;
+	b=g/Bwp+RGfAS3AmaIonVSRF6UTSYZ+PIfaTObzRiYLBvq2DdD/duwW/YhPEUrFRD/j
+	 w7h/khP8395T2f76vhzy1Gh6hrtYMgN1efSlkT6ubqGF8dH3htFTY7OC+8S8kDwRWP
+	 DDxtgpKEhEbZvq8vn1918rVUrTMyY5W7O+dOHf8l/ShoHG/PMYuunHEONqOq1qc967
+	 1sI+q3e4NjVgqBc2p+nS3C+LvVwR/m3ijjmn5vl9Tdc5hRJ7rVI0UMx6tl9uPwHApT
+	 eJBknrXq1TNSai6ztl6zdPfA6w7hf7jNUlNdnh47vxyW1/MmxdEF8WsOdu6Ire10/7
+	 mOzKeXrX61uEw==
 From: Yosry Ahmed <yosry@kernel.org>
 To: Sean Christopherson <seanjc@google.com>
 Cc: Paolo Bonzini <pbonzini@redhat.com>,
 	kvm@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	Yosry Ahmed <yosry@kernel.org>
-Subject: [PATCH 1/2] KVM: nSVM: Simplify error handling of nested_svm_copy_vmcb12_to_cache()
-Date: Thu,  5 Mar 2026 20:30:04 +0000
-Message-ID: <20260305203005.1021335-2-yosry@kernel.org>
+Subject: [PATCH 0/2] KVM: nSVM: Minor post-war fixups
+Date: Thu,  5 Mar 2026 20:30:03 +0000
+Message-ID: <20260305203005.1021335-1-yosry@kernel.org>
 X-Mailer: git-send-email 2.53.0.473.g4a7958ca14-goog
-In-Reply-To: <20260305203005.1021335-1-yosry@kernel.org>
-References: <20260305203005.1021335-1-yosry@kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -46,68 +43,32 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-nested_svm_vmrun() currently stores the return value of
-nested_svm_copy_vmcb12_to_cache() in a local variable 'err', separate
-from the generally used 'ret' variable. This is done to have a single
-call to kvm_skip_emulated_instruction(), such that we can store the
-return value of kvm_skip_emulated_instruction() in 'ret', and then
-re-check the return value of nested_svm_copy_vmcb12_to_cache() in 'err'.
+A couple of fixups in the aftermath of all nSVM patches, the first one
+is just a cleanup suggested offlist by Sean, and the second is a fix for
+the test to make sure it's checking #GP on VMRUN not VMLOAD.
 
-The code is unnecessarily confusing. Instead, call
-kvm_skip_emulated_instruction() in the failure path of
-nested_svm_copy_vmcb12_to_cache() if the return value is not -EFAULT,
-and drop 'err'.
+In all honestly, I am not sure *why* the test was passing and a #GP was
+generated on VMLOAD with a very large but valid GPA. vls=1, so KVM
+should not be intercepting VMLOAD (in which case it would inject the
+#GP). A #NPF is generated on the VMLOAD, and through tracing I found out
+that kvm_mmu_page_fault() returns 1 (RETRY) to npf_interception(). There
+shouldn't be a corresponding memslot, so I am not sure if KVM stuffed an
+invalid mapping in the NPTs, or if KVM did nothing and the CPU #GP due
+to an infinite #NPF loop (although npf_interception() was only called
+once). Anyway, figuring that out is irrelevant to the fixup, which makes
+sure we're actually getting #GP on VMRUN.
 
-Suggested-by: Sean Christopherson <seanjc@google.com>
-Signed-off-by: Yosry Ahmed <yosry@kernel.org>
----
- arch/x86/kvm/svm/nested.c | 23 ++++++++++++-----------
- 1 file changed, 12 insertions(+), 11 deletions(-)
+Yosry Ahmed (2):
+  KVM: nSVM: Simplify error handling of
+    nested_svm_copy_vmcb12_to_cache()
+  KVM: selftests: Actually check #GP on VMRUN with invalid vmcb12
 
-diff --git a/arch/x86/kvm/svm/nested.c b/arch/x86/kvm/svm/nested.c
-index b191c6cab57db..54227bacc12e4 100644
---- a/arch/x86/kvm/svm/nested.c
-+++ b/arch/x86/kvm/svm/nested.c
-@@ -1079,7 +1079,7 @@ static int nested_svm_copy_vmcb12_to_cache(struct kvm_vcpu *vcpu, u64 vmcb12_gpa
- int nested_svm_vmrun(struct kvm_vcpu *vcpu)
- {
- 	struct vcpu_svm *svm = to_svm(vcpu);
--	int ret, err;
-+	int ret;
- 	u64 vmcb12_gpa;
- 	struct vmcb *vmcb01 = svm->vmcb01.ptr;
- 
-@@ -1104,19 +1104,20 @@ int nested_svm_vmrun(struct kvm_vcpu *vcpu)
- 		return -EINVAL;
- 
- 	vmcb12_gpa = svm->vmcb->save.rax;
--	err = nested_svm_copy_vmcb12_to_cache(vcpu, vmcb12_gpa);
--	if (err == -EFAULT) {
--		kvm_inject_gp(vcpu, 0);
--		return 1;
-+	ret = nested_svm_copy_vmcb12_to_cache(vcpu, vmcb12_gpa);
-+	if (ret) {
-+		/*
-+		 * Advance RIP if #GP or #UD are not injected, but otherwise
-+		 * stop if copying and checking vmcb12 failed.
-+		 */
-+		if (ret == -EFAULT) {
-+			kvm_inject_gp(vcpu, 0);
-+			return 1;
-+		}
-+		return kvm_skip_emulated_instruction(vcpu);
- 	}
- 
--	/*
--	 * Advance RIP if #GP or #UD are not injected, but otherwise stop if
--	 * copying and checking vmcb12 failed.
--	 */
- 	ret = kvm_skip_emulated_instruction(vcpu);
--	if (err)
--		return ret;
- 
- 	/*
- 	 * Since vmcb01 is not in use, we can use it to store some of the L1
+ arch/x86/kvm/svm/nested.c                     | 23 +++++++-------
+ .../kvm/x86/svm_nested_invalid_vmcb12_gpa.c   | 31 +++++++++----------
+ 2 files changed, 26 insertions(+), 28 deletions(-)
+
+
+base-commit: 5128b972fb2801ad9aca54d990a75611ab5283a9
 -- 
 2.53.0.473.g4a7958ca14-goog
 
