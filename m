@@ -1,336 +1,119 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mail.zytor.com (terminus.zytor.com [198.137.202.136])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 842C130B53A
-	for <kvm@vger.kernel.org>; Thu,  5 Mar 2026 07:33:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D10F3148A8;
+	Thu,  5 Mar 2026 07:37:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.137.202.136
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772696029; cv=none; b=qSPPoM40OH9Or2IT6kf7JBRo6zHIhTikWOJIouuyq2RD2rl6sWemGjBMMFLzUoqFCFD70MS84BGP9+9PSU6zl5SMLbBhuqLQ5wPQSv3axec5BwOYJ/FWy6kmB0IX8XxMaNeJm4hQ9/AkqKwck1MIsiOjCVqR0BZtAINmcl1nCXs=
+	t=1772696259; cv=none; b=SpAMz+b2ap5YGYmE8tKuQ3xOX83NIxbulJ2Ht/yRq8djrPA7Cqn+/D7z2XBBvDWL4K/MGci6pirqnJ7pMcGvO2H0PD6Et2HSk6DqaBiLjx8s6mwGKyuYVvgC1eQrkWN9WA/jSMx6KmmkCMrLCQJkh8oDcmHirzEnUbMwIvslVmc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772696029; c=relaxed/simple;
-	bh=4VQbdHSXddQBtT4jGJshiZPul2Aj6mriSxVAhWAE3RQ=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=TPQRa6UxS2/3RjaveOxjRpDJ5auKdJ0q6F0gWr8aNO5+pCFT4qxBicxgWJbJRTFWPk0Sl09Myzg3dQlGXXs68HTcXB5Bi5XbAlaGtxCpkaqjea7D6oVQGr0hSAl1IX9gWfENOnBEs+yfw4ig5tIKRGRqiJYts7f0l3IKX646dm0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ehFfM/bo; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1772696259; c=relaxed/simple;
+	bh=yKdPZRHtC4vsnb6bfrw9K3eHXDoGHRCqWFCpHzKSIoM=;
+	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
+	 Message-Id:References:To; b=HuYoCJoWpcYHJCzvz8+DsVRT27+qO5vdJklVmS243QMos8gWzhcfyp+f9NeUaOcA06sXO5W2abgD4WZEZ6Z4BVbMjZdQ+UZH26fgI5UTxx5TZHUu78QhCw0VoZuZ0PDsZmtGejPZvkirHMCTufENNXer/yFbXcJ2QguAUImwJbg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zytor.com; spf=pass smtp.mailfrom=zytor.com; dkim=pass (2048-bit key) header.d=zytor.com header.i=@zytor.com header.b=WWHC4Tcr; arc=none smtp.client-ip=198.137.202.136
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zytor.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=zytor.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ehFfM/bo"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 45AFFC4AF0B
-	for <kvm@vger.kernel.org>; Thu,  5 Mar 2026 07:33:49 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772696029;
-	bh=4VQbdHSXddQBtT4jGJshiZPul2Aj6mriSxVAhWAE3RQ=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=ehFfM/boPEsqX2z0TQgHynEnMN7nkcZ4akI+We6w7xsXNGJYK5YwBCQZ7TqN7H2kl
-	 qMPwae2ycS5c5A4FPM1e7cuI3mHk7jtF94AdE2+SAWMd9nl3euKLt4Yd1k1pTds6px
-	 Q5Fj3oqxtG54WynNRNeMdIDH4VHTv2jzFWWNX81G6TncOplI0puZ4xguTa7rbd1paO
-	 cBBQ5N7sZfbTMc3NYmo4n+c3gBzWYQu5rXdhkRcXNouYG82DJUI8m1AJ8EEG7nv4f+
-	 fVlp2NshXgeoimv5j/RVrXZAOQgK+JFOkwmpNOaMdGN5dVvVC9YOyXrS/lijdZfFnk
-	 uTjQNuDA76Wdg==
-Received: by mail-ed1-f45.google.com with SMTP id 4fb4d7f45d1cf-65b9d8d6b7dso12543092a12.2
-        for <kvm@vger.kernel.org>; Wed, 04 Mar 2026 23:33:49 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCV2OdMuOO5dlwWRY3Htwsa3T9pfrWM6Dqc+gg5vQw4e6X107B0GvtCLl/N/IfGycIoCRlE=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyZorg15WtBAd67Y8G27BGuiwUu2x5ptptPYXWNyO5U5/2TSe6R
-	8liBg+jFzN2W0nMbH4Xqn0CJEPBZrp/LpRN9/HwhnRzjaLMHb+fHflh7QafJKwwE2M3eUWi70ae
-	qgfLbbOd6WivvW7QvZcfT0mBroCGVV8g=
-X-Received: by 2002:a05:6402:13c9:b0:660:39f:1cce with SMTP id
- 4fb4d7f45d1cf-660f00d27f3mr2640022a12.20.1772696027702; Wed, 04 Mar 2026
- 23:33:47 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=zytor.com header.i=@zytor.com header.b="WWHC4Tcr"
+Received: from smtpclient.apple (c-24-130-165-117.hsd1.ca.comcast.net [24.130.165.117])
+	(authenticated bits=0)
+	by mail.zytor.com (8.18.1/8.17.1) with ESMTPSA id 6257L65c2523977
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NO);
+	Wed, 4 Mar 2026 23:21:06 -0800
+DKIM-Filter: OpenDKIM Filter v2.11.0 mail.zytor.com 6257L65c2523977
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=zytor.com;
+	s=2026022301; t=1772695268;
+	bh=Ua9Xhs42ev8puz1YiP2KsxyYlLZtoIPUgEQtRJtAWIM=;
+	h=Subject:From:In-Reply-To:Date:Cc:References:To:From;
+	b=WWHC4Tcr1cMd274trpbLCcb+bVPiUOCGeKYVJjfFda1kozsNg3eAExZH9/jpYyEA8
+	 P2Pfn2sJZWKjfadLwO9lEQlFDiJexUiRBCFCkNfnibB/fMc9ijqmNgTB1wqN95bS2/
+	 mVmwqaicE7Go2xQqJ+ob++wQCP3q+JYq3oor72hp/+0+lWZB9beGfDFU+omQjn6tou
+	 g0KweOXsvIqEeUuMSSBsMe6qIPLlFj072xtdmliqTfBeFQ6c3pM87yX3fFMY2d5Cpc
+	 frfGxVdoPQInVHMKcoJXFScrgVw6v3txndBA2Vg1kvVOMWT4T8kwT9+FBH8uflnLm4
+	 FdRacRp0kVVow==
+Content-Type: text/plain;
+	charset=us-ascii
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <20260206012028.3318291-1-gaosong@loongson.cn> <20260206012028.3318291-3-gaosong@loongson.cn>
-In-Reply-To: <20260206012028.3318291-3-gaosong@loongson.cn>
-From: Huacai Chen <chenhuacai@kernel.org>
-Date: Thu, 5 Mar 2026 15:33:25 +0800
-X-Gmail-Original-Message-ID: <CAAhV-H6-dsyV+2FsYYo1ZovrKP+WxkWRqjFFkjRSxEw4m6jhYQ@mail.gmail.com>
-X-Gm-Features: AaiRm50NeOQFjiC9QarfMHXB0y7H5gICg1wH3k2WVgm_37Pgk85I8N7Pf4rydVI
-Message-ID: <CAAhV-H6-dsyV+2FsYYo1ZovrKP+WxkWRqjFFkjRSxEw4m6jhYQ@mail.gmail.com>
-Subject: Re: [PATCH v6 2/2] LongArch: KVM: Add dmsintc inject msi to the dest vcpu
-To: Song Gao <gaosong@loongson.cn>
-Cc: maobibo@loongson.cn, kvm@vger.kernel.org, loongarch@lists.linux.dev, 
-	kernel@xen0n.name, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3864.400.21\))
+Subject: Re: [PATCH v9 15/22] KVM: x86: Mark CR4.FRED as not reserved
+From: Xin Li <xin@zytor.com>
+In-Reply-To: <aajVJlU2Zg4Djqqz@google.com>
+Date: Wed, 4 Mar 2026 23:20:56 -0800
+Cc: Chao Gao <chao.gao@intel.com>, linux-kernel@vger.kernel.org,
+        kvm@vger.kernel.org, linux-doc@vger.kernel.org, pbonzini@redhat.com,
+        corbet@lwn.net, tglx@linutronix.de, mingo@redhat.com, bp@alien8.de,
+        dave.hansen@linux.intel.com, x86@kernel.org, hpa@zytor.com,
+        luto@kernel.org, peterz@infradead.org, andrew.cooper3@citrix.com,
+        hch@infradead.org, sohil.mehta@intel.com
 Content-Transfer-Encoding: quoted-printable
-
-Hi, Song,
-
-On Fri, Feb 6, 2026 at 9:45=E2=80=AFAM Song Gao <gaosong@loongson.cn> wrote=
-:
->
-> Implement irqfd deliver msi to vcpu and vcpu dmsintc inject irq.
-> Add irqfd choice dmsintc to set msi irq by the msg_addr and
-> implement dmsintc set msi irq.
->
-> Signed-off-by: Song Gao <gaosong@loongson.cn>
-> ---
->  arch/loongarch/include/asm/kvm_dmsintc.h |  1 +
->  arch/loongarch/include/asm/kvm_host.h    |  5 ++
->  arch/loongarch/kvm/intc/dmsintc.c        |  6 +++
->  arch/loongarch/kvm/interrupt.c           |  1 +
->  arch/loongarch/kvm/irqfd.c               | 42 +++++++++++++++--
->  arch/loongarch/kvm/vcpu.c                | 58 ++++++++++++++++++++++++
->  6 files changed, 109 insertions(+), 4 deletions(-)
->
-> diff --git a/arch/loongarch/include/asm/kvm_dmsintc.h b/arch/loongarch/in=
-clude/asm/kvm_dmsintc.h
-> index 1d4f66996f3c..9b5436a2fcbe 100644
-> --- a/arch/loongarch/include/asm/kvm_dmsintc.h
-> +++ b/arch/loongarch/include/asm/kvm_dmsintc.h
-> @@ -11,6 +11,7 @@ struct loongarch_dmsintc  {
->         struct kvm *kvm;
->         uint64_t msg_addr_base;
->         uint64_t msg_addr_size;
-> +       uint32_t cpu_mask;
->  };
->
->  struct dmsintc_state {
-> diff --git a/arch/loongarch/include/asm/kvm_host.h b/arch/loongarch/inclu=
-de/asm/kvm_host.h
-> index 5e9e2af7312f..91e0190aeaec 100644
-> --- a/arch/loongarch/include/asm/kvm_host.h
-> +++ b/arch/loongarch/include/asm/kvm_host.h
-> @@ -258,6 +258,11 @@ struct kvm_vcpu_arch {
->         } st;
->  };
->
-> +void loongarch_dmsintc_inject_irq(struct kvm_vcpu *vcpu);
-> +int kvm_loongarch_deliver_msi_to_vcpu(struct kvm *kvm,
-> +                               struct kvm_vcpu *vcpu,
-> +                               u32 vector, int level);
-> +
->  static inline unsigned long readl_sw_gcsr(struct loongarch_csrs *csr, in=
-t reg)
->  {
->         return csr->csrs[reg];
-> diff --git a/arch/loongarch/kvm/intc/dmsintc.c b/arch/loongarch/kvm/intc/=
-dmsintc.c
-> index 00e401de0464..1bb61e55d061 100644
-> --- a/arch/loongarch/kvm/intc/dmsintc.c
-> +++ b/arch/loongarch/kvm/intc/dmsintc.c
-> @@ -15,6 +15,7 @@ static int kvm_dmsintc_ctrl_access(struct kvm_device *d=
-ev,
->         void __user *data;
->         struct loongarch_dmsintc *s =3D dev->kvm->arch.dmsintc;
->         u64 tmp;
-> +       u32 cpu_bit;
->
->         data =3D (void __user *)attr->addr;
->         switch (addr) {
-> @@ -30,6 +31,11 @@ static int kvm_dmsintc_ctrl_access(struct kvm_device *=
-dev,
->                                 s->msg_addr_base =3D tmp;
->                         else
->                                 return  -EFAULT;
-> +                       s->msg_addr_base =3D tmp;
-> +                       cpu_bit =3D find_first_bit((unsigned long *)&(s->=
-msg_addr_base), 64)
-> +                                               - AVEC_CPU_SHIFT;
-> +                       cpu_bit =3D min(cpu_bit, AVEC_CPU_BIT);
-> +                       s->cpu_mask =3D GENMASK(cpu_bit - 1, 0) & AVEC_CP=
-U_MASK;
->                 }
->                 break;
->         case KVM_DEV_LOONGARCH_DMSINTC_MSG_ADDR_SIZE:
-I'm not sure but maybe this part should go to the first patch?
-
-> diff --git a/arch/loongarch/kvm/interrupt.c b/arch/loongarch/kvm/interrup=
-t.c
-> index a6d42d399a59..893a81ca1079 100644
-> --- a/arch/loongarch/kvm/interrupt.c
-> +++ b/arch/loongarch/kvm/interrupt.c
-> @@ -33,6 +33,7 @@ static int kvm_irq_deliver(struct kvm_vcpu *vcpu, unsig=
-ned int priority)
->                 irq =3D priority_to_irq[priority];
->
->         if (cpu_has_msgint && (priority =3D=3D INT_AVEC)) {
-> +               loongarch_dmsintc_inject_irq(vcpu);
->                 set_gcsr_estat(irq);
->                 return 1;
->         }
-> diff --git a/arch/loongarch/kvm/irqfd.c b/arch/loongarch/kvm/irqfd.c
-> index 9a39627aecf0..3bbb26f4e2b7 100644
-> --- a/arch/loongarch/kvm/irqfd.c
-> +++ b/arch/loongarch/kvm/irqfd.c
-> @@ -6,6 +6,7 @@
->  #include <linux/kvm_host.h>
->  #include <trace/events/kvm.h>
->  #include <asm/kvm_pch_pic.h>
-> +#include <asm/kvm_vcpu.h>
->
->  static int kvm_set_pic_irq(struct kvm_kernel_irq_routing_entry *e,
->                 struct kvm *kvm, int irq_source_id, int level, bool line_=
-status)
-> @@ -16,6 +17,38 @@ static int kvm_set_pic_irq(struct kvm_kernel_irq_routi=
-ng_entry *e,
->         return 0;
->  }
->
-> +static int kvm_dmsintc_set_msi_irq(struct kvm *kvm, u32 addr, int data, =
-int level)
-> +{
-> +       unsigned int virq, dest;
-> +       struct kvm_vcpu *vcpu;
-> +
-> +       virq =3D (addr >> AVEC_IRQ_SHIFT) & AVEC_IRQ_MASK;
-> +       dest =3D (addr >> AVEC_CPU_SHIFT) & kvm->arch.dmsintc->cpu_mask;
-> +       if (dest > KVM_MAX_VCPUS)
-> +               return -EINVAL;
-> +       vcpu =3D kvm_get_vcpu_by_cpuid(kvm, dest);
-> +       if (!vcpu)
-> +               return -EINVAL;
-> +       return kvm_loongarch_deliver_msi_to_vcpu(kvm, vcpu, virq, level);
-> +}
-> +
-> +static int loongarch_set_msi(struct kvm_kernel_irq_routing_entry *e,
-> +                       struct kvm *kvm, int level)
-> +{
-> +       u64 msg_addr;
-> +
-> +       msg_addr =3D (((u64)e->msi.address_hi) << 32) | e->msi.address_lo=
-;
-> +       if (cpu_has_msgint && kvm->arch.dmsintc &&
-> +               msg_addr >=3D kvm->arch.dmsintc->msg_addr_base &&
-> +               msg_addr < (kvm->arch.dmsintc->msg_addr_base  + kvm->arch=
-.dmsintc->msg_addr_size)) {
-> +               return kvm_dmsintc_set_msi_irq(kvm, msg_addr, e->msi.data=
-, level);
-> +       } else {
-> +               pch_msi_set_irq(kvm, e->msi.data, level);
-> +       }
-> +
-> +       return 0;
-> +}
-Rename loongarch_set_msi() to loongarch_msi_set_irq(), rename
-kvm_dmsintc_set_msi_irq() to dmsintc_msi_set_irq(), this makes the
-naming more consistent.
-
-> +
->  /*
->   * kvm_set_msi: inject the MSI corresponding to the
->   * MSI routing entry
-> @@ -29,9 +62,7 @@ int kvm_set_msi(struct kvm_kernel_irq_routing_entry *e,
->         if (!level)
->                 return -1;
->
-> -       pch_msi_set_irq(kvm, e->msi.data, level);
-> -
-> -       return 0;
-> +       return loongarch_set_msi(e, kvm, level);
->  }
->
->  /*
-> @@ -71,12 +102,15 @@ int kvm_set_routing_entry(struct kvm *kvm,
->  int kvm_arch_set_irq_inatomic(struct kvm_kernel_irq_routing_entry *e,
->                 struct kvm *kvm, int irq_source_id, int level, bool line_=
-status)
->  {
-> +       if (!level)
-> +               return -EWOULDBLOCK;
-> +
->         switch (e->type) {
->         case KVM_IRQ_ROUTING_IRQCHIP:
->                 pch_pic_set_irq(kvm->arch.pch_pic, e->irqchip.pin, level)=
-;
->                 return 0;
->         case KVM_IRQ_ROUTING_MSI:
-> -               pch_msi_set_irq(kvm, e->msi.data, level);
-> +               loongarch_set_msi(e, kvm, level);
->                 return 0;
->         default:
->                 return -EWOULDBLOCK;
-> diff --git a/arch/loongarch/kvm/vcpu.c b/arch/loongarch/kvm/vcpu.c
-> index 656b954c1134..325bb084d704 100644
-> --- a/arch/loongarch/kvm/vcpu.c
-> +++ b/arch/loongarch/kvm/vcpu.c
-> @@ -14,6 +14,64 @@
->  #define CREATE_TRACE_POINTS
->  #include "trace.h"
->
-> +void loongarch_dmsintc_inject_irq(struct kvm_vcpu *vcpu)
-> +{
-> +       struct dmsintc_state *ds =3D &vcpu->arch.dmsintc_state;
-> +       unsigned int i;
-> +       unsigned long temp[4], old;
-> +
-> +       if (!ds)
-> +               return;
-> +
-> +       for (i =3D 0; i < 4; i++) {
-> +               old =3D atomic64_read(&(ds->vector_map[i]));
-> +               if (old)
-> +                       temp[i] =3D atomic64_xchg(&(ds->vector_map[i]), 0=
-);
-> +       }
-> +
-> +       if (temp[0]) {
-> +               old =3D kvm_read_hw_gcsr(LOONGARCH_CSR_ISR0);
-> +               kvm_write_hw_gcsr(LOONGARCH_CSR_ISR0, temp[0]|old);
-> +       }
-> +
-> +       if (temp[1]) {
-> +               old =3D kvm_read_hw_gcsr(LOONGARCH_CSR_ISR1);
-> +               kvm_write_hw_gcsr(LOONGARCH_CSR_ISR1, temp[1]|old);
-> +       }
-> +
-> +       if (temp[2]) {
-> +               old =3D kvm_read_hw_gcsr(LOONGARCH_CSR_ISR2);
-> +               kvm_write_hw_gcsr(LOONGARCH_CSR_ISR2, temp[2]|old);
-> +       }
-> +
-> +       if (temp[3]) {
-> +               old =3D kvm_read_hw_gcsr(LOONGARCH_CSR_ISR3);
-> +               kvm_write_hw_gcsr(LOONGARCH_CSR_ISR3, temp[3]|old);
-> +       }
-> +}
-The only caller is in interrupt.c, so rename
-loongarch_dmsintc_inject_irq() to msgint_inject_irq() (or
-dmsintc_inject_irq() if you prefer), and move it to interrupt.c, then
-we don't need to declare it as a extern function.
-
-> +
-> +int kvm_loongarch_deliver_msi_to_vcpu(struct kvm *kvm,
-> +                               struct kvm_vcpu *vcpu,
-> +                               u32 vector, int level)
-> +{
-> +       struct kvm_interrupt vcpu_irq;
-> +       struct dmsintc_state *ds;
-> +
-> +       if (!level)
-> +               return 0;
-> +       if (!vcpu || vector >=3D 256)
-> +               return -EINVAL;
-> +       ds =3D &vcpu->arch.dmsintc_state;
-> +       if (!ds)
-> +               return -ENODEV;
-> +       set_bit(vector, (unsigned long *)&ds->vector_map);
-> +       vcpu_irq.irq =3D INT_AVEC;
-> +       kvm_vcpu_ioctl_interrupt(vcpu, &vcpu_irq);
-> +       kvm_vcpu_kick(vcpu);
-> +       return 0;
-> +}
-The only caller is in irqfd.c, so rename
-kvm_loongarch_deliver_msi_to_vcpu() to dmsintc_deliver_msi_to_vcpu(),
-and move it to irqfd.c, then we don't need to declare it as a extern
-function.
-
-And in addition, from Documentation/arch/loongarch/irq-chip-model.rst,
-all msi irq are triggered from "pch_msi_irq", which means it is not
-reasonable to dispatch the dmsintc/pch_msi paths in
-loongarch_set_msi(). Instead, we should dispatch the dmsintc/eiointc
-paths in pch_msi_set_irq(), this needs a rework...
+Message-Id: <263F364B-D516-40B3-B065-A5369BFB1A7F@zytor.com>
+References: <20251026201911.505204-1-xin@zytor.com>
+ <20251026201911.505204-16-xin@zytor.com> <aR1xNLrhqEWu+rmE@intel.com>
+ <aajVJlU2Zg4Djqqz@google.com>
+To: Sean Christopherson <seanjc@google.com>
+X-Mailer: Apple Mail (2.3864.400.21)
 
 
-Huacai
+>> 2. mk_cr_64() drops the high 32 bits of the new CR4 value. So, =
+CR4.FRED is always
+>>   dropped. This may need an update.
+>=20
+> Ugh, I didn't realize FRED broke into bits 63:32.  Yeah, that needs to =
+be updated,
+> and _that_ one is unique to the emulator.
+>=20
+> Unless Chao and I can't read code and are missing magic, KVM's =
+virtualization of
+> FRED is quite lacking.
+>=20
+> More importantly, I don't see *any* tests.  At a bare minimum, KVM's =
+msrs_test
+> needs to be updated too get coverage for userspace vs. guest accesses, =
+save/restore
+> needs to be covered (maybe nothing additional required?), and there =
+need to be
+> negative tests for things like leaving 64-bit mode with FRED=3D1.  We =
+can probably
+> get enough confidence in the "happy" paths just by running VMs, but =
+even then I
+> would ideally like to see tests for edge cases that are relatively =
+rare when just
+> running a VM.
+>=20
+> I'm straight up not going to look at new versions if there aren't =
+tests.  Like
+> CET before it, both Intel and AMD are pushing FRED and want to get it =
+merged,
+> yet no one is providing tests.  That's not going to fly this time, as =
+I don't
+> have the bandwidth to help write the number of testcases FRED =
+warrants.
 
-> +
-> +
->  const struct _kvm_stats_desc kvm_vcpu_stats_desc[] =3D {
->         KVM_GENERIC_VCPU_STATS(),
->         STATS_DESC_COUNTER(VCPU, int_exits),
-> --
-> 2.39.3
->
->
+
+I must admit the issues Chao raised were a clear oversight on my part.
+
+
+I wrote some basic functionality unit tests in kernel selftests, which =
+were included in v1 and v2.
+
+Later I started to create FRED tests in kvm-unit-tests and extended one =
+nested test case to CET:
+
+https://lore.kernel.org/kvm/aJ9DB12YVJEyDORD@intel.com/
+
+I planned to send out these new kvm unit tests (not just FRED tests) =
+after KVM FRED patch series gets merged.
+
+
+
+
+
+
+
+
+
