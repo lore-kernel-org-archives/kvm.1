@@ -1,83 +1,92 @@
-Received: from mail-pl1-f202.google.com (mail-pl1-f202.google.com [209.85.214.202])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A91D111713
-	for <kvm@vger.kernel.org>; Thu,  5 Mar 2026 04:28:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.202
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1BC39288AD;
+	Thu,  5 Mar 2026 04:29:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.12
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772684889; cv=none; b=TIo7MKu6311h9dYFb0j2xEu8nAqDWqbAoK90FM598OoxpHS/eCeBYvWROzrGpvq6eMndwm7y6mKzGh/FlrGYr91/STkmUBrC8I9dwYbJsTRzljjKP2EO/7FT1aoCym98CCKr6pBcH9GP+IdZivdcNPf4ZGw15Yuwr6K80CATSQ8=
+	t=1772684986; cv=none; b=oofncvRZEkff1mhskrkOKmhJxEm6FWeay/sVFCFPeBS4ahLHXaCF1uiQq8fQNZ61QEyaVt46IvPBI+z3BbSGRDil0Sbg7gg3uEIS0eWtAV7z45PhKGPkkm4AwsWB0MJej5QNG0C6/Z5HXBripXZioqMKddCwyfDERta36H1Kn4Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772684889; c=relaxed/simple;
-	bh=o5fKDhy74cdzgL9PNph7IkA920FfByjOquD6Ft0H/zY=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=CWxEIhz0TuxoRjUOlIZBdh8dKojuaVnDHF54W71qg4Tz0+3PmTPE69oSxQthoUykGUnzBB8CTBs0yUTFHjsbtB1iKy73pxbAJigM/e5+ffroypnv1S5RJWartR5ytLZPuVY8TkUohlUKzDTcs45pl8co8sf2C/FQqoufAR5UdMM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=AQlcclL3; arc=none smtp.client-ip=209.85.214.202
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+	s=arc-20240116; t=1772684986; c=relaxed/simple;
+	bh=6Chbtbh91JQswn6MUozfrBBtYQHYxdhIh4GFF8DHSbQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=FGQ1orVVEXuQgxDi+Zw+Wgnbuc9eCzNADvYzIOhgYHS31phruOfNuL2TMTjiYo0D2Aqiwjf7zgRb7LUda6hFaUy7TlMS1e5AuZswY1oQ8eCxdS+sf9a3z4sB5+APRt4zbc1Q5+Gk3BP6xG6B9TEN9kstlHtnfcxWoMzAXp7ZXBY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Ugkqsr9j; arc=none smtp.client-ip=198.175.65.12
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="AQlcclL3"
-Received: by mail-pl1-f202.google.com with SMTP id d9443c01a7336-2ae4b96c259so45145165ad.1
-        for <kvm@vger.kernel.org>; Wed, 04 Mar 2026 20:28:08 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1772684888; x=1773289688; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=Iz3l6YwXaDjdGRQXPgHOcgcLShfAqlVagFuNQ/atjtw=;
-        b=AQlcclL3ABbG8q3uHhWZuUhD9djiZNrVkMhQuTITwONOvQEEaZ3RdMvoD8rEGI8R7R
-         IcJJ5Gd74rBD7hmVExSJioTR+JTJVvSHGWCekVvoCmUb5h7/pSJwpFns+en3Hh1K/6yb
-         4bueRjr0bFvvxuCIUB2pH1Kbegiv6QqXjDmZGi4+BJpQFjwmukJJeR+1TnPnjcoGJqJz
-         TLcHenQOlilU4av5N3mkmLAaL922ls7G9x83Bi0BNHKlY5gNJLdwziC3rzPors5mtnep
-         Ne7WjpsZiMixS5MpM9sRh3mtRg5mzRBRp0LlVuR5aSmsEBLCNE0IMk5066P22pMunIH1
-         MTKw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1772684888; x=1773289688;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=Iz3l6YwXaDjdGRQXPgHOcgcLShfAqlVagFuNQ/atjtw=;
-        b=C4ZeP8SxZsmasKG5eNhHYYd/ePXgrfz/30IieocFWy/jS19ibaLwTAfP+IBlGmYjkv
-         nx0UVoUT3M2EZN5jpdAtM+S2b3W0wdxH0CywYjjxJiKY4z4sqanEcPBcdbZ6IkcEVPHb
-         bm0v8fsyMArtJ1j9S84zNyInRT2Tl3lvplQ5ab4qhWq46tY9JblLG9uDCmT0BAHVHrNr
-         t14PklEKGcRRyczu6dFmKmmpRy74njnHjMMz+UpcEpOydcXNjQITwd3goVwtR+9fLAcP
-         DpseoLILrxE6ZbtSkbrN8qyDsmNrl4O/5yn728dh6VchE5PHzKZRVagWznCii73NYQ0A
-         ic2Q==
-X-Forwarded-Encrypted: i=1; AJvYcCV0I1KjNiBoTEZXe74iFx9GudH7p/PtV9HDq1e+I9dUsIKdOX3rptxiKH4BYz6/IL4WrN0=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yyu5EiQ9brmFEYy5FwaVS1W4IFu5qQnDb1qJzhYZdVLjgYwzLa3
-	xWeP9ov27YOW1clG8fCLM4r+DLzzjAUKb8maL31rhx13YOz1Y1AIv6PWABzZ2cpbYWMMILEjLYW
-	kzIvHmg==
-X-Received: from plbjx13.prod.google.com ([2002:a17:903:138d:b0:2ae:3cee:978a])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:902:f548:b0:2ad:a96c:e40c
- with SMTP id d9443c01a7336-2ae75bb4d0bmr10245955ad.16.1772684887659; Wed, 04
- Mar 2026 20:28:07 -0800 (PST)
-Date: Wed, 4 Mar 2026 20:28:06 -0800
-In-Reply-To: <20260112235408.168200-17-chang.seok.bae@intel.com>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Ugkqsr9j"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1772684986; x=1804220986;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=6Chbtbh91JQswn6MUozfrBBtYQHYxdhIh4GFF8DHSbQ=;
+  b=Ugkqsr9j/jtg4obzq43ncSLx3S1wJEax6EOuz9KnqkKr9Wc1dqGntgQx
+   es1742aET4rUpJQ3mnPj6UPSwXb1aKVVGyuQmx1cA/IQ1bcn6C1Sc3m9/
+   tvjCK7JwaHohPXT4lLIKjrJfreugNTxEVTL3lQafp3Z8FeVMwCqczSigH
+   2mpqpe2tfFFWId4kgRv2mRA/sVz+IFraeMVUF6CN/p55yKO7IxWvuN7F9
+   WajVlyuBtFBG3KE1t8Lg3LDv4UdG0GC9ZEeqi89e89/WBTqq9hGBscL/r
+   vtDy5gdbt/TG0lDwShO8rVlZcbakTPOCkG0+VH+4NG7XLVKKqMC1wYUMo
+   A==;
+X-CSE-ConnectionGUID: gTfR8UlDRbCipxERM734gQ==
+X-CSE-MsgGUID: Edphk48aT6GBN9YRI2PpEA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11719"; a="85233160"
+X-IronPort-AV: E=Sophos;i="6.21,325,1763452800"; 
+   d="scan'208";a="85233160"
+Received: from fmviesa010.fm.intel.com ([10.60.135.150])
+  by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Mar 2026 20:29:45 -0800
+X-CSE-ConnectionGUID: s4U3BI54Sk6/QBIZSOJy4g==
+X-CSE-MsgGUID: 0fsv4OblQDKlhJeyEOmozQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.21,325,1763452800"; 
+   d="scan'208";a="215836413"
+Received: from yilunxu-optiplex-7050.sh.intel.com (HELO localhost) ([10.239.159.165])
+  by fmviesa010.fm.intel.com with ESMTP; 04 Mar 2026 20:29:39 -0800
+Date: Thu, 5 Mar 2026 12:09:46 +0800
+From: Xu Yilun <yilun.xu@linux.intel.com>
+To: Chao Gao <chao.gao@intel.com>
+Cc: linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org,
+	kvm@vger.kernel.org, x86@kernel.org, reinette.chatre@intel.com,
+	ira.weiny@intel.com, kai.huang@intel.com, dan.j.williams@intel.com,
+	sagis@google.com, vannapurve@google.com, paulmck@kernel.org,
+	nik.borisov@suse.com, zhenzhong.duan@intel.com, seanjc@google.com,
+	rick.p.edgecombe@intel.com, kas@kernel.org,
+	dave.hansen@linux.intel.com, vishal.l.verma@intel.com,
+	binbin.wu@linux.intel.com, tony.lindgren@linux.intel.com,
+	Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>,
+	Borislav Petkov <bp@alien8.de>, "H. Peter Anvin" <hpa@zytor.com>
+Subject: Re: [PATCH v4 09/24] x86/virt/seamldr: Check update limit before TDX
+ Module updates
+Message-ID: <aakCCudhc/P+4cJh@yilunxu-OptiPlex-7050>
+References: <20260212143606.534586-1-chao.gao@intel.com>
+ <20260212143606.534586-10-chao.gao@intel.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20260112235408.168200-1-chang.seok.bae@intel.com> <20260112235408.168200-17-chang.seok.bae@intel.com>
-Message-ID: <aakGVnGI4jZ8yCUM@google.com>
-Subject: Re: [PATCH v2 16/16] KVM: x86: selftests: Add APX state handling and
- XCR0 sanity checks
-From: Sean Christopherson <seanjc@google.com>
-To: "Chang S. Bae" <chang.seok.bae@intel.com>
-Cc: pbonzini@redhat.com, kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	chao.gao@intel.com
-Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260212143606.534586-10-chao.gao@intel.com>
 
-On Mon, Jan 12, 2026, Chang S. Bae wrote:
-> Now that KVM exposes the APX feature to guests on APX-capable systems,
-> extend the selftests to validate XCR0 configuration and state management.
+On Thu, Feb 12, 2026 at 06:35:12AM -0800, Chao Gao wrote:
+> TDX maintains a log about each TDX Module which has been loaded. This
+> log has a finite size which limits the number of TDX Module updates
+> which can be performed.
 > 
-> Since APX repurposes the XSAVE area previously used by MPX in the
-> non-compacted format, add a check to ensure that MPX states are not set
-> when APX is enabled.
+> After each successful update, the remaining updates reduces by one. Once
+> it reaches zero, further updates will fail until next reboot.
 > 
-> Also, load non-init APX state data in the guest so that XSTATE_BV[APX] is
-> set, allowing validation of APX state testing.
+> Before updating the TDX Module, verify that the update limit has not been
+> exceeded. Otherwise, P-SEAMLDR will detect this violation after the old TDX
+> Module is gone and all TDs will be killed.
+> 
+> Note that userspace should perform this check before updates. Perform this
+> check in kernel as well to make the update process more robust.
+> 
+> Signed-off-by: Chao Gao <chao.gao@intel.com>
+> Reviewed-by: Tony Lindgren <tony.lindgren@linux.intel.com>
 
-I assume/hope there a more tests coming in future versions...
-
-KVM-Unit-Tests' x86/xsave.c would be a good fit, or at least a good reference
-for what we should be testing as far as EGPR accesses are concerned.
+Reviewed-by: Xu Yilun <yilun.xu@linux.intel.com>
