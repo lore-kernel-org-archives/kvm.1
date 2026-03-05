@@ -1,93 +1,176 @@
-Received: from mail.zytor.com (terminus.zytor.com [198.137.202.136])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f202.google.com (mail-pl1-f202.google.com [209.85.214.202])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C17D366078;
-	Thu,  5 Mar 2026 18:19:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.137.202.136
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 345CC3A1E84
+	for <kvm@vger.kernel.org>; Thu,  5 Mar 2026 18:36:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.202
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772734772; cv=none; b=nxoMywkqECt8TregZpgmujQMMPbMrg/rs2uVfTvS2R3lxS0rfl1hoGd83fNVu7f2wCDt5TXg+8dKtdxtBWcxDTvWb2z+vEbnpWMo/3XWE4BbxhCSpjpusklnd80/cUZV/Fum6px2/WZM04EjLHY1fYYt3+V/kNyF66hHuxTqIdY=
+	t=1772735810; cv=none; b=sg7f36B4yZyQ5wWoSUMEuZSBs1iebEP015C0I9VKs665GedduTrNNqd/xEQ8RRErelMHfPkF1YqZAXwT+uc4Rxd9G78ArOGjZkTGVh0vx4HrhAhJVjH7aC8ZHocAsaIrZRPdYMWmnmmyIHuFH9aqAdDcxYW2eHk6U3olK2y3q/c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772734772; c=relaxed/simple;
-	bh=4Tc/KAY0GBDAe9mAqjvKIM20YswWBDTUfMNyQxN460A=;
-	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
-	 Message-Id:References:To; b=uNjeTbGxyqCYxTZb+S1Wf5sqftCsVEnH2jV9LPADx+Ivb2gSsSRqfzDmRXD2qBWNeCNXPOh/fPIlz56XFqKD3fshbk2MQmNa3QhQeNYrln+s7bvlzN+xmbLIoxT7Emx2AccucvdswYWq/NCh/R6JUXcvsfP/ONygVRrWZq0G41o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zytor.com; spf=pass smtp.mailfrom=zytor.com; dkim=pass (2048-bit key) header.d=zytor.com header.i=@zytor.com header.b=Hb8f9C6V; arc=none smtp.client-ip=198.137.202.136
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zytor.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=zytor.com
+	s=arc-20240116; t=1772735810; c=relaxed/simple;
+	bh=/nCQbIM9WF/udWJhsd5kHZLLjcm5NPQ7KZuVjgfTAQk=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=tFY4QDqpLHIbtClqVy7XT5R4btyT9bDLR+zeSjvVT6quYdD0Y0P5ReZFJQpjjXY9FjBDELPh65j+Wcltx7Y1eDGhqbvOHsfGEZJgV/t/8uCS3e6MbIj+cpevJ4IRVdUQC9R0crg/qijZ/6ch9AxG/DJmeddrzCoOKVYJs3TOtIs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=X59brTXW; arc=none smtp.client-ip=209.85.214.202
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=zytor.com header.i=@zytor.com header.b="Hb8f9C6V"
-Received: from smtpclient.apple (c-24-130-165-117.hsd1.ca.comcast.net [24.130.165.117])
-	(authenticated bits=0)
-	by mail.zytor.com (8.18.1/8.17.1) with ESMTPSA id 625Hl8vd3560389
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NO);
-	Thu, 5 Mar 2026 09:47:08 -0800
-DKIM-Filter: OpenDKIM Filter v2.11.0 mail.zytor.com 625Hl8vd3560389
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=zytor.com;
-	s=2026022301; t=1772732829;
-	bh=CjTCnaKYWUbRJ1sgAvN35vorMdc+lmIlICQF5lNVu68=;
-	h=Subject:From:In-Reply-To:Date:Cc:References:To:From;
-	b=Hb8f9C6VdtZ+JuFRr/E/XJ8g+T8xD8ogv5ZAC7Cx0ZwoAyvSJRwBzTgW6FT/GdoU8
-	 1LZFVQ6gEpD/jiGjfVJyzgrb09epiEGLNA/wQh/flrircnIxp1NQaUrHW9mp4LTOic
-	 kKVgx8lyZMg5fjR+tJHgCqEh6ZwnxNQSbBdaMeVsfEpJB6aPjiJwiN/lL3NUuOX/BC
-	 ql5Ki54WqYIrbRh6JEPJXdVhQvFsT12iDI70pNhceppAk2pnUNAALo6cPaDbWLn99z
-	 qy6/ryv7dxsz6Mi0DF/Fr6/Goj/QE5pBEZJF0zyF7+uFIxdfiIaRBs51eTC+L083kn
-	 w/1zy1Wq6z0SQ==
-Content-Type: text/plain;
-	charset=utf-8
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="X59brTXW"
+Received: by mail-pl1-f202.google.com with SMTP id d9443c01a7336-2ae6dd98043so18778775ad.3
+        for <kvm@vger.kernel.org>; Thu, 05 Mar 2026 10:36:49 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1772735808; x=1773340608; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:from:subject:message-id:references
+         :mime-version:in-reply-to:date:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=8SIBi7LZpDXEzALEhfUg4rA5WlAeQaGU2tPtYlr/3VA=;
+        b=X59brTXWvkeP9yGA5NDRQwh8Ho2KBhhdtJHwTbnzc7iTs/Fv+M6CplU9BlK5K8/Ezz
+         cvqfxDttg57fiLahuA93ZrpD79L90Hh9hPid59JRwHkCim19pWIw3eZsM9+6O3ywxc7D
+         mnUuZNn37UKNL7SmO931MAKh9wUDm1Ika8/+OGvPoJ6UuAu9fn2XoeKuzcrPMFfSOEIp
+         4obyHzwJQfXNDMuQ7f0K48JLhZ0/u6X9QCa4qCESKrsJkRETLqVTLEdbnOjDu8Hn6aT+
+         Rp5XR+o59EmkVsFE76eIJJhXWxkqMrAJkxxVjOg/XAzgHpMo4HxATt/NrO/hjQrnH+UJ
+         x5oA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1772735808; x=1773340608;
+        h=content-transfer-encoding:cc:to:from:subject:message-id:references
+         :mime-version:in-reply-to:date:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=8SIBi7LZpDXEzALEhfUg4rA5WlAeQaGU2tPtYlr/3VA=;
+        b=T94yMg/Fa30qrNLl3Gl4e6LAq8ean1UrxrjXMNqnpGdSE7lO5NVLSIZ5SruFLFu51e
+         iaVUfijSEf7iQLZf06+nQlam5ncL9fBQ4ydEfSvqZw/2xvLo76phHmo7YwIeO+2HqdLa
+         89lBZ9oD76pzqO3oaGHkm0kB6e3mtHQQeRyjLpDQ5/Ui1OfuQtsAE2F1oVyF4jsQkBe5
+         ALxSf+NDgxUY0O1kq9lFWJH7rcgAfwJCzyF/HUnBJi25svE7ZnanICijyVMKBDwIFPjf
+         LpvlD6+DDnKRFXZwTG6219s2aXk4WjNIL9VlntHSgTyGGIeybb57nJ0UiDa7kAPSV/db
+         mtVw==
+X-Forwarded-Encrypted: i=1; AJvYcCUw3srA3wyx7ZoQkyxUMnMjD/UFIKAHRmtkauknbUgpAU5v6GAkxbnBk6EMphhKTr9xm34=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw9XMudkXOIGuTEUMU6KZdeHlEapGTSpuw/UDVVPnPgwZ+BaDKp
+	JvNRqsek3omIDEKAGHPvOcYouZTM8iH98ja9M9I9W0rlHwFKFo3FvOiFDcFyxLEjBFu0brQJZn9
+	lr458dw==
+X-Received: from pldq21.prod.google.com ([2002:a17:902:c9d5:b0:2ae:635f:4b2b])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:903:2443:b0:2ae:7f28:124b
+ with SMTP id d9443c01a7336-2ae7f281273mr9581445ad.22.1772735808319; Thu, 05
+ Mar 2026 10:36:48 -0800 (PST)
+Date: Thu, 5 Mar 2026 10:36:47 -0800
+In-Reply-To: <97d40dd0e6abaf28f43d4d8ccf9c547a16c52e33.camel@infradead.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3864.400.21\))
-Subject: Re: [PATCH v9 15/22] KVM: x86: Mark CR4.FRED as not reserved
-From: Xin Li <xin@zytor.com>
-In-Reply-To: <B07CDF1A-1FD2-4EC5-BEB3-3D906A880153@zytor.com>
-Date: Thu, 5 Mar 2026 09:46:58 -0800
-Cc: Chao Gao <chao.gao@intel.com>, linux-kernel@vger.kernel.org,
-        kvm@vger.kernel.org, linux-doc@vger.kernel.org, pbonzini@redhat.com,
-        corbet@lwn.net, tglx@linutronix.de, mingo@redhat.com, bp@alien8.de,
-        dave.hansen@linux.intel.com, x86@kernel.org, hpa@zytor.com,
-        luto@kernel.org, peterz@infradead.org, andrew.cooper3@citrix.com,
-        hch@infradead.org, sohil.mehta@intel.com
+Mime-Version: 1.0
+References: <aaa7ac93db25459fa5a629d0da5abf13e93d8301.camel@infradead.org>
+ <da02314c-e6da-4d9e-a2c8-cd3ee096bc0c@embeddedor.com> <97d40dd0e6abaf28f43d4d8ccf9c547a16c52e33.camel@infradead.org>
+Message-ID: <aanNPwnH7l-j61Ds@google.com>
+Subject: Re: [PATCH] KVM: x86: Fix C++ user API for structures with variable
+ length arrays
+From: Sean Christopherson <seanjc@google.com>
+To: David Woodhouse <dwmw2@infradead.org>
+Cc: "Gustavo A. R. Silva" <gustavo@embeddedor.com>, keescook@chromium.org, daniel@iogearbox.net, 
+	gustavoars@kernel.org, jgg@ziepe.ca, kvm@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, Paolo Bonzini <pbonzini@redhat.com>, 
+	Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
+	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
+	"H. Peter Anvin" <hpa@zytor.com>
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: quoted-printable
-Message-Id: <237876C4-5253-4059-ABBC-3FB4EB5C2ABC@zytor.com>
-References: <20251026201911.505204-1-xin@zytor.com>
- <20251026201911.505204-16-xin@zytor.com> <aR1xNLrhqEWu+rmE@intel.com>
- <aajVJlU2Zg4Djqqz@google.com>
- <263F364B-D516-40B3-B065-A5369BFB1A7F@zytor.com>
- <aamisPkG1JZ2UDdQ@google.com>
- <B07CDF1A-1FD2-4EC5-BEB3-3D906A880153@zytor.com>
-To: Sean Christopherson <seanjc@google.com>
-X-Mailer: Apple Mail (2.3864.400.21)
 
+On Thu, Feb 26, 2026, David Woodhouse wrote:
+> From: David Woodhouse <dwmw@amazon.co.uk>
+>=20
+> Commit 94dfc73e7cf4 ("treewide: uapi: Replace zero-length arrays with
+> flexible-array members") broke the userspace API for C++. Not just in
+> the sense of 'userspace needs to be updated, but UAPI is supposed to be
+> stable", but broken in the sense that I can't actually see *how* the
+> structures can be used from C++ in the same way that they were usable
+> before.
+>=20
+> These structures ending in VLAs are typically a *header*, which can be
+> followed by an arbitrary number of entries. Userspace typically creates
+> a larger structure with some non-zero number of entries, for example in
+> QEMU's kvm_arch_get_supported_msr_feature():
+>=20
+>     struct {
+>         struct kvm_msrs info;
+>         struct kvm_msr_entry entries[1];
+>     } msr_data =3D {};
+>=20
+> While that works in C, it fails in C++ with an error like:
+>  flexible array member =E2=80=98kvm_msrs::entries=E2=80=99 not at end of =
+=E2=80=98struct msr_data=E2=80=99
+>=20
+> Fix this by using __DECLARE_FLEX_ARRAY() for the VLA, which is a helper
+> provided by <linux/stddef.h> that already uses [0] for C++ compilation.
+>=20
+> Also put the header fields into a struct_group() to provide (in C) a
+> separate struct (e.g 'struct kvm_msrs_hdr') without the trailing VLA.
 
+Unless I'm missing something, this is an entirely optional change that need=
+s to
+be done separately, especialy since I want to tag this for:
 
-> On Mar 5, 2026, at 9:09=E2=80=AFAM, Xin Li <xin@zytor.com> wrote:
->=20
->=20
->>> I planned to send out these new kvm unit tests (not just FRED tests) =
-after
->>> KVM FRED patch series gets merged.
->>=20
->> Definitely send them before.  Even if no one outside of Intel can run =
-them (I
->> forget when FRED hardware is coming), people like me can at least see =
-what you're
->> testing, which makes it more likely that we'll spot bugs.  E.g. in =
-this case, the
->> lack of negative tests for CR4.FRED is a big red flag.
->=20
-> No excuse, sadly mk_cr_64() completely escaped my notice.
+  Cc: stable@vger.kernel.org
 
-BTW, mk_cr_64() looks a bad name to me, it=E2=80=99s more like =
-mk_cr_32().
+I definitely don't hate the __struct_group definitions, but I don't know th=
+at I
+love them either as they make the code a bit harder to read, and more impor=
+tantly
+there's a non-zero chance that defining the new structurs could break users=
+pace
+builds and force an update, e.g. if userspace already concocts its own head=
+er
+overlay, which would be very unpleasant for a stable@ patch.
 
->=20
-> And I didn=E2=80=99t even think about adding a CR4 test for FRED.
->=20
-> And as you expected, the happy path doesn=E2=80=99t expose it at all.
->=20
->=20
->=20
+If we do define headers, I think I'd want a wrapper around __struct_group()=
+ to
+prettify the common case and force consistent naming, e.g.
 
+#define kvm_struct_header(NAME, MEMBERS...)				\
+	__struct_group(NAME ##_header, h, /* no attrs */, MEMBERS)
+
+struct kvm_msrs {
+	kvm_struct_header(kvm_msrs,
+		__u32 nmsrs; /* number of msrs in entries */
+		__u32 pad;
+	);
+
+	__DECLARE_FLEX_ARRAY(struct kvm_msr_entry, entries);
+};
+
+But that's likely going to lead to some amount of bikeshedding, e.g. arguab=
+ly
+kvm_header() would be sufficient and easier on the eyes.  Which is all the =
+more
+reason to handle it separately.
+
+> Fixes: 94dfc73e7cf4 ("treewide: uapi: Replace zero-length arrays with fle=
+xible-array members")
+> Signed-off-by: David Woodhouse <dwmw@amazon.co.uk>
+> ---
+>  arch/x86/include/uapi/asm/kvm.h | 29 ++++++++++++++++++-----------
+>  include/uapi/linux/kvm.h        |  9 ++++++---
+>  /* for KVM_GET_PIT and KVM_SET_PIT */
+> @@ -397,8 +402,10 @@ struct kvm_xsave {
+>  	 * The offsets of the state save areas in struct kvm_xsave follow
+>  	 * the contents of CPUID leaf 0xD on the host.
+>  	 */
+> -	__u32 region[1024];
+> -	__u32 extra[];
+> +	__struct_group(kvm_xsave_hdr, hdr, /* no attrs */,
+> +		__u32 region[1024];
+> +	);
+
+This is *very* misleading, as XSTATE itself has a header, but this is somet=
+hing
+else entirely (just the always-allocated region).
+
+> +	__DECLARE_FLEX_ARRAY(__u32, extra);
+>  };
+
+There are several structs that got missed:
+
+  kvm_pmu_event_filter
+  kvm_reg_list
+  kvm_signal_mask
+  kvm_coalesced_mmio_ring
+  kvm_cpuid
+  kvm_stats_desc
