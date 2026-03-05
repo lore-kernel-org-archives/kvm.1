@@ -1,542 +1,390 @@
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F93039B964;
-	Thu,  5 Mar 2026 12:20:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 624D839B4A9;
+	Thu,  5 Mar 2026 12:20:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772713236; cv=none; b=iVtIgKEVrg+h/Rk08Re5cDBASpENUItFNcsolTsGg9kbvkXyPBUPjIG6mQ192g71MDu7fLw/SwdhVzb2BR6iM14q3bDl5lKlXvuQZmkWRk/O6TGzijDqiswyFT5sUaorubCNa+eURaOEZ2U579mo4xbuUj4R4Aw+dtc+Q28RuLM=
+	t=1772713244; cv=none; b=PKzmcodhc5tA6kyiu8O6bW6qk8GpjZcLvtCih/QaCkmG/Y8Vqq0e7fVxBA+0aXfM5xLxbuMWtOjgbdOgHsOmigfDEd+EBk7gjEFNnuS0aMJVG+82hhfJXdBe0PeJfmVBkkj7Xfyc/NMBVayU3FEpNHnxs9f/mjMHp02lG0UKv38=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772713236; c=relaxed/simple;
-	bh=XFrlnu2RmJSvrucifwgNNILqQ0TiUwZy30HT5cqci4g=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=s23rUH1WBGP+jn75h6sRqZw6HAak2Y5TWijSKBWbz/yadNUm7aVj97I//Z45tvEAkq/fsMuzaU7L5e6KXjyPYXPK0ehEfzs/D4GJn9qNCACJj4eEa2AU1wcm28DVMTURJcwvTrTiyd2uqolnfKb6n/+9ZQysmvwDj4E1SbH3ELY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=jdM/R0ec; arc=none smtp.client-ip=148.163.156.1
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+	s=arc-20240116; t=1772713244; c=relaxed/simple;
+	bh=U5lxhOuqwUbiy2xkCmrhXkFJSrEQf8eev2E3LnOTsDE=;
+	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
+	 In-Reply-To:Content-Type; b=VSlNC8HHdrgAnpTaMwc5a6m9TZfH6hSwwqjJtRg81mXt4lGOcM5ocRbfj+Y+43XpRuUY77Ii6Ara4s4fxrGxzcC7nAd+aGIQbaMwbBlBZLq6TNC/FkIeOvgzNT6+JpoF99tLuBm19pvADLhisCVc03he7tu4OaUSj0p0eggM33c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=chw6X8EF; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="jdM/R0ec"
-Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 6252bYAo1943382;
-	Thu, 5 Mar 2026 12:20:28 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=IDfS3o
-	pUnbwKKUCTALbPCselFPYMIhdkXVl+r0d7A4U=; b=jdM/R0ecsqmaFPtQG/E5d7
-	j2lzLvj9qcmQz+MNxCRs8S80lrcIIfPBOjrBsxAX7m17Zggx+HuJA1oJ33/OWo5q
-	mCgw3T8Fp43bSEdeZui9nxk0SDlDOl8u4huJOlGv9wGcCUFGrgSOAlApkM2CWzYz
-	LBgcPshhFl8KggmGxc6SgfVzRnBloSHXa3flNoQzpDFBL3c/nL0flI/Em0xgxmag
-	nYjkNCjG+F+pt3gNToLelL813FjSWqOd09rNclUa8EqHSJa9rpF/J5F+xGUqsssq
-	j8NWuQca8ClFVCBgnGgQsWq3Rz0JtzTdqoa7CPXe91ipsixnXl7wd9eMuqTmYnmA
-	==
-Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4ckskd3k4m-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 05 Mar 2026 12:20:28 +0000 (GMT)
-Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma22.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 6259XiCQ003243;
-	Thu, 5 Mar 2026 12:20:27 GMT
-Received: from smtprelay07.fra02v.mail.ibm.com ([9.218.2.229])
-	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4cmb2ybapc-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 05 Mar 2026 12:20:27 +0000
-Received: from smtpav04.fra02v.mail.ibm.com (smtpav04.fra02v.mail.ibm.com [10.20.54.103])
-	by smtprelay07.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 625CKNnO51642736
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 5 Mar 2026 12:20:23 GMT
-Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 22DFE20040;
-	Thu,  5 Mar 2026 12:20:23 +0000 (GMT)
-Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id C1AA320043;
-	Thu,  5 Mar 2026 12:20:22 +0000 (GMT)
-Received: from tuxmaker.boeblingen.de.ibm.com (unknown [9.87.85.9])
-	by smtpav04.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Thu,  5 Mar 2026 12:20:22 +0000 (GMT)
-From: Julian Ruess <julianr@linux.ibm.com>
-Date: Thu, 05 Mar 2026 13:20:14 +0100
-Subject: [PATCH v3 2/3] vfio/ism: Implement vfio_pci driver for ISM devices
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="chw6X8EF"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4A444C116C6;
+	Thu,  5 Mar 2026 12:20:40 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1772713244;
+	bh=U5lxhOuqwUbiy2xkCmrhXkFJSrEQf8eev2E3LnOTsDE=;
+	h=Date:Subject:From:To:Cc:References:In-Reply-To:From;
+	b=chw6X8EFrVIaWJYhJLjegGnZ062oNzPfSUn9kxcD7kfYerdhgwCD3SDs8FvxXH0Yt
+	 rfqGJIPaGyUIPQaI+ZRF4fPE2XOeSau857IacwRvpZ/03krLqQB+WMR/hnNlAX1MlZ
+	 jA7UW5TCOqG2CyJ9VPljINXlJO/cU57jfor1ZFewzBV2pa/znsxShpFJYuuzrgCI0c
+	 Q3o5spVsibwQOpU6qvMOELDrbaZ0pM7P34CK7bepJv4m6oIQvsihmt+vc0TbuYr0EV
+	 RVz6D8zxk65eJ7j/or8fGmWArrKZx3K8gwlbHTHd4jRYXn3YOWes7BGgTJtepAQn8f
+	 H/ntBEx/l2B9Q==
+Message-ID: <ba067933-bf3b-476d-a0bb-53eda56996ca@kernel.org>
+Date: Thu, 5 Mar 2026 13:20:38 +0100
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260305-vfio_pci_ism-v3-2-1217076c81d9@linux.ibm.com>
-References: <20260305-vfio_pci_ism-v3-0-1217076c81d9@linux.ibm.com>
-In-Reply-To: <20260305-vfio_pci_ism-v3-0-1217076c81d9@linux.ibm.com>
-To: schnelle@linux.ibm.com, wintera@linux.ibm.com, ts@linux.ibm.com,
-        oberpar@linux.ibm.com, gbayer@linux.ibm.com,
-        Alex Williamson <alex@shazbot.org>, Jason Gunthorpe <jgg@ziepe.ca>,
-        Yishai Hadas <yishaih@nvidia.com>,
-        Shameer Kolothum <skolothumtho@nvidia.com>,
-        Kevin Tian <kevin.tian@intel.com>
-Cc: mjrosato@linux.ibm.com, alifm@linux.ibm.com, raspl@linux.ibm.com,
-        hca@linux.ibm.com, agordeev@linux.ibm.com, gor@linux.ibm.com,
-        julianr@linux.ibm.com, kvm@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-s390@vger.kernel.org,
-        linux-pci@vger.kernel.org
-X-Mailer: b4 0.14.2
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: bkIJfC1Sf5VVt7CHIzADAvRLzkiSwuIF
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMzA1MDA5OSBTYWx0ZWRfX7SrKlE+WLYD+
- aZX33Jft9bXOyj2EVGxe83dnzKHpN81SqE/3yGaonrg7Q0TNpCI5Ms66ux/XR0y1Be6Znc/HXfG
- XRDRfblOq61r3PTJP0sFFuPxOvB12rWWrI16tl2dR2maHX8oVwxJzwOTkNSKkOLMUzxDJdPIiXb
- OnNCWEpqFEV67/YWWq7tDyhnSclu0qaxO2b1tIXg3WopRQyF92QjIS+/Ptz53KHhY97I0LaLs+3
- glr3EJvarP/vpL0IMV+cIxIvpUfinyvuAdpSkcFruCCOwc1rBrnt32PbuMgwMjePD0TM+N4t7j3
- VEUqjHCgEds2KifWah8qnPst7rqLTbK/FToFJmw0HivjYUzafxgg3N4jZ4nEdnHRG941AsMFtr1
- 3gWQQHvDaBaexyKCvV1c4MNlugIa7XbEiUJUh9N7rexvKxFtF5c6NDpjVQEn9ofmrLkTDoGFvkK
- SJC/2Q9Qtol8O3IARHg==
-X-Authority-Analysis: v=2.4 cv=H7DWAuYi c=1 sm=1 tr=0 ts=69a9750c cx=c_pps
- a=5BHTudwdYE3Te8bg5FgnPg==:117 a=5BHTudwdYE3Te8bg5FgnPg==:17
- a=IkcTkHD0fZMA:10 a=Yq5XynenixoA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=RnoormkPH1_aCDwRdu11:22 a=uAbxVGIbfxUO_5tXvNgY:22 a=VnNF1IyMAAAA:8
- a=Cakb2dha6NNJ7eZIcBAA:9 a=QEXdDO2ut3YA:10
-X-Proofpoint-ORIG-GUID: bkIJfC1Sf5VVt7CHIzADAvRLzkiSwuIF
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
- definitions=2026-03-05_04,2026-03-04_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- impostorscore=0 suspectscore=0 phishscore=0 clxscore=1015 priorityscore=1501
- adultscore=0 bulkscore=0 spamscore=0 malwarescore=0 lowpriorityscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2602130000 definitions=main-2603050099
+User-Agent: Mozilla Thunderbird
+Subject: Re: Stalls when starting a VSOCK listening socket: soft lockups, RCU
+ stalls, timeout
+From: Jiri Slaby <jirislaby@kernel.org>
+To: Peter Zijlstra <peterz@infradead.org>, Thomas Gleixner <tglx@kernel.org>
+Cc: Matthieu Baerts <matttbe@kernel.org>,
+ Stefan Hajnoczi <stefanha@redhat.com>,
+ Stefano Garzarella <sgarzare@redhat.com>, kvm@vger.kernel.org,
+ virtualization@lists.linux.dev, Netdev <netdev@vger.kernel.org>,
+ rcu@vger.kernel.org, MPTCP Linux <mptcp@lists.linux.dev>,
+ Linux Kernel <linux-kernel@vger.kernel.org>,
+ Shinichiro Kawasaki <shinichiro.kawasaki@wdc.com>,
+ "Paul E. McKenney" <paulmck@kernel.org>,
+ Dave Hansen <dave.hansen@linux.intel.com>, "luto@kernel.org"
+ <luto@kernel.org>, =?UTF-8?Q?Michal_Koutn=C3=BD?= <MKoutny@suse.com>,
+ Waiman Long <longman@redhat.com>
+References: <b24ffcb3-09d5-4e48-9070-0b69bc654281@kernel.org>
+ <7f3e74d7-67dc-48d7-99d2-0b87f671651b@kernel.org>
+ <863a5291-a636-47d0-891c-bb0524d2e134@kernel.org>
+ <20260302114636.GL606826@noisy.programming.kicks-ass.net>
+ <717310d8-6274-4b7f-8a19-561c45f5f565@kernel.org>
+ <a2b573b4-af61-4b84-a7d1-012ed6bb23c9@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=jirislaby@kernel.org; keydata=
+ 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
+In-Reply-To: <a2b573b4-af61-4b84-a7d1-012ed6bb23c9@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-Add a vfio_pci variant driver for the s390-specific Internal Shared
-Memory (ISM) devices used for inter-VM communication.
+On 05. 03. 26, 12:53, Jiri Slaby wrote:
+> On 05. 03. 26, 8:00, Jiri Slaby wrote:
+>> On 02. 03. 26, 12:46, Peter Zijlstra wrote:
+>>> On Mon, Mar 02, 2026 at 06:28:38AM +0100, Jiri Slaby wrote:
+>>>
+>>>> The state of the lock:
+>>>>
+>>>> crash> struct rq.__lock -x ffff8d1a6fd35dc0
+>>>>    __lock = {
+>>>>      raw_lock = {
+>>>>        {
+>>>>          val = {
+>>>>            counter = 0x40003
+>>>>          },
+>>>>          {
+>>>>            locked = 0x3,
+>>>>            pending = 0x0
+>>>>          },
+>>>>          {
+>>>>            locked_pending = 0x3,
+>>>>            tail = 0x4
+>>>>          }
+>>>>        }
+>>>>      }
+>>>>    },
+>>>>
+>>>
+>>>
+>>> That had me remember the below patch that never quite made it. I've
+>>> rebased it to something more recent so it applies.
+>>>
+>>> If you stick that in, we might get a clue as to who is owning that lock.
+>>> Provided it all wants to reproduce well enough.
+>>
+>> Thanks, I applied it, but to date it is still not accepted yet:
+>> https://build.opensuse.org/requests/1335893
+> 
+> OK, I have a first dump with the patch applied:
+>    __lock = {
+>      raw_lock = {
+>        {
+>          val = {
+>            counter = 0x2c0003
+>          },
+>          {
+>            locked = 0x3,
+>            pending = 0x0
+>          },
+>          {
+>            locked_pending = 0x3,
+>            tail = 0x2c
+>          }
+>        }
+>      }
+>    },
+> 
+> I am not sure if it is of any help?
+> 
+> 
+> 
+> 
+> BUT: I have another dump with LOCKDEP (but NOT the patch above). The 
+> kernel is again spinning in mm_get_cid(), presumably waiting for a free 
+> bit in the map as before [1]:
+> 
+> 
+> [  162.660584] rcu: INFO: rcu_preempt detected stalls on CPUs/tasks:
+> ...
+> [  162.661378] Sending NMI from CPU 3 to CPUs 1:
+> [  162.661398] NMI backtrace for cpu 1
+> ...
+> [  162.661411] RIP: 0010:mm_get_cid+0x54/0xc0
+> 
+> 
+> 7680 is active on CPU 1:
+> PID: 7680     TASK: ffff8cc4038525c0  CPU: 1    COMMAND: "asm"
+> 
+> 
+> CPU3 is waiting for the CPU1's rq_lock:
+> RDX: 0000000000000000  RSI: 0000000000000003  RDI: ffff8cc72fcb8500
+> ...
+>   #3 [ffffd2e9c0083da0] raw_spin_rq_lock_nested+0x20 at ffffffff9339e700
+> 
+> crash> struct rq.__lock -x ffff8cc72fcb8500
+>    __lock = {
+>      raw_lock = {
+>        {
+>          val = {
+>            counter = 0x100003
+>          },
+>          {
+>            locked = 0x3,
+>            pending = 0x0
+>          },
+>          {
+>            locked_pending = 0x3,
+>            tail = 0x10
+>          }
+>        }
+>      },
+>      magic = 0xdead4ead,
+>      owner_cpu = 0x1,
+>      owner = 0xffff8cc4038b8000,
+>      dep_map = {
+>        key = 0xffffffff96245970 <__key.7>,
+>        class_cache = {0xffffffff9644b488 <lock_classes+10600>, 0x0},
+>        name = 0xffffffff94ba3ab3 "&rq->__lock",
+>        wait_type_outer = 0x0,
+>        wait_type_inner = 0x2,
+>        lock_type = 0x0
+>      }
+>    },
+> 
+> owner_cpu is 1, owner is:
+> PID: 7508     TASK: ffff8cc4038b8000  CPU: 1    COMMAND: "compile"
+> 
+> But as you can see above, CPU1 is occupied with a different task:
+> crash> bt -sxc 1
+> PID: 7680     TASK: ffff8cc4038525c0  CPU: 1    COMMAND: "asm"
+> 
+> spinning in mm_get_cid() as I wrote. See the objdump of mm_get_cid below.
 
-This enables the development of vfio-pci-based user space drivers for
-ISM devices.
+You might be interested in mm_cid dumps:
 
-On s390, kernel primitives such as ioread() and iowrite() are switched
-over from function handle based PCI load/stores instructions to PCI
-memory-I/O (MIO) loads/stores when these are available and not
-explicitly disabled. Since these instructions cannot be used with ISM
-devices, ensure that classic function handle-based PCI instructions are
-used instead.
+====== PID 7508 (sleeping, holding the rq lock) ======
 
-The driver is still required even when MIO instructions are disabled, as
-the ISM device relies on the PCI store block (PCISTB) instruction to
-perform write operations.
+crash> task -R mm_cid -x 7508
+PID: 7508     TASK: ffff8cc4038b8000  CPU: 1    COMMAND: "compile"
+   mm_cid = {
+     active = 0x1,
+     cid = 0x40000003
+   },
 
-Stores are not fragmented, therefore one ioctl corresponds to exactly
-one PCISTB instruction. User space must ensure to not write more than
-4096 bytes at once to an ISM BAR which is the maximum payload of the
-PCISTB instruction.
+crash> p ((struct task_struct *)(0xffff8cc4038b8000))->mm->mm_cid|head -4
+$6 = {
+   pcpu = 0x66222619df40,
+   mode = 1073741824,
+   max_cids = 4,
 
-Reviewed-by: Niklas Schnelle <schnelle@linux.ibm.com>
-Signed-off-by: Julian Ruess <julianr@linux.ibm.com>
----
- drivers/vfio/pci/Kconfig      |   2 +
- drivers/vfio/pci/Makefile     |   2 +
- drivers/vfio/pci/ism/Kconfig  |  10 ++
- drivers/vfio/pci/ism/Makefile |   3 +
- drivers/vfio/pci/ism/main.c   | 343 ++++++++++++++++++++++++++++++++++++++++++
- 5 files changed, 360 insertions(+)
 
-diff --git a/drivers/vfio/pci/Kconfig b/drivers/vfio/pci/Kconfig
-index 1e82b44bda1a0a544e1add7f4b06edecf35aaf81..296bf01e185ecacc388ebc69e92706c99e47c814 100644
---- a/drivers/vfio/pci/Kconfig
-+++ b/drivers/vfio/pci/Kconfig
-@@ -60,6 +60,8 @@ config VFIO_PCI_DMABUF
- 
- source "drivers/vfio/pci/mlx5/Kconfig"
- 
-+source "drivers/vfio/pci/ism/Kconfig"
-+
- source "drivers/vfio/pci/hisilicon/Kconfig"
- 
- source "drivers/vfio/pci/pds/Kconfig"
-diff --git a/drivers/vfio/pci/Makefile b/drivers/vfio/pci/Makefile
-index e0a0757dd1d2b0bc69b7e4d79441d5cacf4e1cd8..6138f1bf241df04e7419f196b404abdf9b194050 100644
---- a/drivers/vfio/pci/Makefile
-+++ b/drivers/vfio/pci/Makefile
-@@ -11,6 +11,8 @@ obj-$(CONFIG_VFIO_PCI) += vfio-pci.o
- 
- obj-$(CONFIG_MLX5_VFIO_PCI)           += mlx5/
- 
-+obj-$(CONFIG_ISM_VFIO_PCI)           += ism/
-+
- obj-$(CONFIG_HISI_ACC_VFIO_PCI) += hisilicon/
- 
- obj-$(CONFIG_PDS_VFIO_PCI) += pds/
-diff --git a/drivers/vfio/pci/ism/Kconfig b/drivers/vfio/pci/ism/Kconfig
-new file mode 100644
-index 0000000000000000000000000000000000000000..02f47d25fed2d34c732b67b3a3655b64a7625467
---- /dev/null
-+++ b/drivers/vfio/pci/ism/Kconfig
-@@ -0,0 +1,10 @@
-+# SPDX-License-Identifier: GPL-2.0
-+config ISM_VFIO_PCI
-+	tristate "VFIO support for ISM devices"
-+	depends on S390
-+	select VFIO_PCI_CORE
-+	help
-+	  This provides user space support for IBM Internal Shared Memory (ISM)
-+	  Adapter devices using the VFIO framework.
-+
-+	  If you don't know what to do here, say N.
-diff --git a/drivers/vfio/pci/ism/Makefile b/drivers/vfio/pci/ism/Makefile
-new file mode 100644
-index 0000000000000000000000000000000000000000..32cc3c66dd11395da85a2b6f05b3d97036ed8a35
---- /dev/null
-+++ b/drivers/vfio/pci/ism/Makefile
-@@ -0,0 +1,3 @@
-+# SPDX-License-Identifier: GPL-2.0
-+obj-$(CONFIG_ISM_VFIO_PCI) += ism-vfio-pci.o
-+ism-vfio-pci-y := main.o
-diff --git a/drivers/vfio/pci/ism/main.c b/drivers/vfio/pci/ism/main.c
-new file mode 100644
-index 0000000000000000000000000000000000000000..54a378140aa3300bd1ff9f6d9c626ef56f6be067
---- /dev/null
-+++ b/drivers/vfio/pci/ism/main.c
-@@ -0,0 +1,343 @@
-+// SPDX-License-Identifier: GPL-2.0
-+/*
-+ * vfio-ISM driver for s390
-+ *
-+ * Copyright IBM Corp.
-+ */
-+
-+#include "../vfio_pci_priv.h"
-+#include "linux/slab.h"
-+
-+#define ISM_VFIO_PCI_OFFSET_SHIFT   48
-+#define ISM_VFIO_PCI_OFFSET_TO_INDEX(off) (off >> ISM_VFIO_PCI_OFFSET_SHIFT)
-+#define ISM_VFIO_PCI_INDEX_TO_OFFSET(index) ((u64)(index) << ISM_VFIO_PCI_OFFSET_SHIFT)
-+#define ISM_VFIO_PCI_OFFSET_MASK (((u64)(1) << ISM_VFIO_PCI_OFFSET_SHIFT) - 1)
-+
-+struct kmem_cache *store_block_cache;
-+
-+struct ism_vfio_pci_core_device {
-+	struct vfio_pci_core_device core_device;
-+};
-+
-+static int ism_pci_open_device(struct vfio_device *core_vdev)
-+{
-+	struct ism_vfio_pci_core_device *ivdev;
-+	struct vfio_pci_core_device *vdev;
-+	int ret;
-+
-+	ivdev = container_of(core_vdev, struct ism_vfio_pci_core_device,
-+			     core_device.vdev);
-+	vdev = &ivdev->core_device;
-+
-+	ret = vfio_pci_core_enable(vdev);
-+	if (ret)
-+		return ret;
-+
-+	vfio_pci_core_finish_enable(vdev);
-+	return 0;
-+}
-+
-+/*
-+ * ism_vfio_pci_do_io_r()
-+ *
-+ * On s390, kernel primitives such as ioread() and iowrite() are switched over
-+ * from function handle based PCI load/stores instructions to PCI memory-I/O (MIO)
-+ * loads/stores when these are available and not explicitly disabled. Since these
-+ * instructions cannot be used with ISM devices, ensure that classic function
-+ * handle-based PCI instructions are used instead.
-+ */
-+static ssize_t ism_vfio_pci_do_io_r(struct vfio_pci_core_device *vdev,
-+				    char __user *buf, loff_t off, size_t count,
-+				    int bar)
-+{
-+	struct zpci_dev *zdev = to_zpci(vdev->pdev);
-+	ssize_t ret, done = 0;
-+	u64 req, length, tmp;
-+
-+	while (count) {
-+		if (count >= 8 && IS_ALIGNED(off, 8))
-+			length = 8;
-+		else if (count >= 4 && IS_ALIGNED(off, 4))
-+			length = 4;
-+		else if (count >= 2 && IS_ALIGNED(off, 2))
-+			length = 2;
-+		else
-+			length = 1;
-+		req = ZPCI_CREATE_REQ(READ_ONCE(zdev->fh), bar, length);
-+		/*
-+		 * Use __zpci_load() to bypass automatic use of PCI MIO instructions
-+		 * which are not supported on ISM devices
-+		 */
-+		ret = __zpci_load(&tmp, req, off);
-+		if (ret)
-+			return ret;
-+		if (copy_to_user(buf, &tmp, length))
-+			return -EFAULT;
-+		count -= length;
-+		done += length;
-+		off += length;
-+		buf += length;
-+	}
-+	return done;
-+}
-+
-+/*
-+ * ism_vfio_pci_do_io_w()
-+ *
-+ * Ensure that the PCI store block (PCISTB) instruction is used as required by the
-+ * ISM device. The ISM device also uses a 256 TiB BAR 0 for write operations,
-+ * which requires a 48bit region address space (ISM_VFIO_PCI_OFFSET_SHIFT).
-+ */
-+static ssize_t ism_vfio_pci_do_io_w(struct vfio_pci_core_device *vdev,
-+				    char __user *buf, loff_t off, size_t count,
-+				    int bar)
-+{
-+	struct zpci_dev *zdev = to_zpci(vdev->pdev);
-+	ssize_t ret;
-+	void *data;
-+	u64 req;
-+
-+	if (count > zdev->maxstbl)
-+		return -EINVAL;
-+	if (((off % PAGE_SIZE) + count) > PAGE_SIZE)
-+		return -EINVAL;
-+
-+	data = kmem_cache_zalloc(store_block_cache, GFP_KERNEL);
-+	if (!data)
-+		return -ENOMEM;
-+
-+	if (copy_from_user(data, buf, count)) {
-+		ret = -EFAULT;
-+		goto out_free;
-+	}
-+
-+	req = ZPCI_CREATE_REQ(READ_ONCE(zdev->fh), bar, count);
-+	ret = __zpci_store_block(data, req, off);
-+	if (ret)
-+		goto out_free;
-+
-+	ret = count;
-+
-+out_free:
-+	kmem_cache_free(store_block_cache, data);
-+	return ret;
-+}
-+
-+static ssize_t ism_vfio_pci_bar_rw(struct vfio_pci_core_device *vdev,
-+				   char __user *buf, size_t count, loff_t *ppos,
-+				   bool iswrite)
-+{
-+	int bar = ISM_VFIO_PCI_OFFSET_TO_INDEX(*ppos);
-+	loff_t pos = *ppos & ISM_VFIO_PCI_OFFSET_MASK;
-+	resource_size_t end;
-+	ssize_t done = 0;
-+
-+	if (pci_resource_start(vdev->pdev, bar))
-+		end = pci_resource_len(vdev->pdev, bar);
-+	else
-+		return -EINVAL;
-+
-+	if (pos >= end)
-+		return -EINVAL;
-+
-+	count = min(count, (size_t)(end - pos));
-+
-+	if (iswrite)
-+		done = ism_vfio_pci_do_io_w(vdev, buf, pos, count, bar);
-+	else
-+		done = ism_vfio_pci_do_io_r(vdev, buf, pos, count, bar);
-+
-+	if (done >= 0)
-+		*ppos += done;
-+
-+	return done;
-+}
-+
-+static ssize_t ism_vfio_pci_config_rw(struct vfio_pci_core_device *vdev,
-+				      char __user *buf, size_t count,
-+				      loff_t *ppos, bool iswrite)
-+{
-+	loff_t pos = *ppos;
-+	size_t done = 0;
-+	int ret = 0;
-+
-+	pos &= ISM_VFIO_PCI_OFFSET_MASK;
-+
-+	while (count) {
-+		/*
-+		 * zPCI must not use MIO instructions for config space access,
-+		 * so we can use common code path here.
-+		 */
-+		ret = vfio_pci_config_rw_single(vdev, buf, count, &pos, iswrite);
-+		if (ret < 0)
-+			return ret;
-+
-+		count -= ret;
-+		done += ret;
-+		buf += ret;
-+		pos += ret;
-+	}
-+
-+	*ppos += done;
-+
-+	return done;
-+}
-+
-+static ssize_t ism_vfio_pci_rw(struct vfio_device *core_vdev, char __user *buf,
-+			       size_t count, loff_t *ppos, bool iswrite)
-+{
-+	unsigned int index = ISM_VFIO_PCI_OFFSET_TO_INDEX(*ppos);
-+	struct vfio_pci_core_device *vdev;
-+	int ret;
-+
-+	vdev = container_of(core_vdev, struct vfio_pci_core_device, vdev);
-+
-+	if (!count)
-+		return 0;
-+
-+	switch (index) {
-+	case VFIO_PCI_CONFIG_REGION_INDEX:
-+		ret = ism_vfio_pci_config_rw(vdev, buf, count, ppos, iswrite);
-+		break;
-+
-+	case VFIO_PCI_BAR0_REGION_INDEX ... VFIO_PCI_BAR5_REGION_INDEX:
-+		ret = ism_vfio_pci_bar_rw(vdev, buf, count, ppos, iswrite);
-+		break;
-+
-+	default:
-+		return -EINVAL;
-+	}
-+
-+	return ret;
-+}
-+
-+static ssize_t ism_vfio_pci_read(struct vfio_device *core_vdev,
-+				 char __user *buf, size_t count, loff_t *ppos)
-+{
-+	return ism_vfio_pci_rw(core_vdev, buf, count, ppos, false);
-+}
-+
-+static ssize_t ism_vfio_pci_write(struct vfio_device *core_vdev,
-+				  const char __user *buf, size_t count,
-+				  loff_t *ppos)
-+{
-+	return ism_vfio_pci_rw(core_vdev, (char __user *)buf, count, ppos,
-+			       true);
-+}
-+
-+static int ism_vfio_pci_ioctl_get_region_info(struct vfio_device *core_vdev,
-+					      struct vfio_region_info *info,
-+					      struct vfio_info_cap *caps)
-+{
-+	struct vfio_pci_core_device *vdev =
-+		container_of(core_vdev, struct vfio_pci_core_device, vdev);
-+	struct pci_dev *pdev = vdev->pdev;
-+
-+	switch (info->index) {
-+	case VFIO_PCI_CONFIG_REGION_INDEX:
-+		info->offset = ISM_VFIO_PCI_INDEX_TO_OFFSET(info->index);
-+		info->size = pdev->cfg_size;
-+		info->flags = VFIO_REGION_INFO_FLAG_READ |
-+			      VFIO_REGION_INFO_FLAG_WRITE;
-+		break;
-+	case VFIO_PCI_BAR0_REGION_INDEX ... VFIO_PCI_BAR5_REGION_INDEX:
-+		info->offset = ISM_VFIO_PCI_INDEX_TO_OFFSET(info->index);
-+		info->size = pci_resource_len(pdev, info->index);
-+		if (!info->size) {
-+			info->flags = 0;
-+			break;
-+		}
-+		info->flags = VFIO_REGION_INFO_FLAG_READ |
-+			      VFIO_REGION_INFO_FLAG_WRITE;
-+		break;
-+	default:
-+		info->offset = 0;
-+		info->size = 0;
-+		info->flags = 0;
-+	}
-+	return 0;
-+}
-+
-+static const struct vfio_device_ops ism_pci_ops = {
-+	.name = "ism-vfio-pci",
-+	.init = vfio_pci_core_init_dev,
-+	.release = vfio_pci_core_release_dev,
-+	.open_device = ism_pci_open_device,
-+	.close_device = vfio_pci_core_close_device,
-+	.ioctl = vfio_pci_core_ioctl,
-+	.get_region_info_caps = ism_vfio_pci_ioctl_get_region_info,
-+	.device_feature = vfio_pci_core_ioctl_feature,
-+	.read = ism_vfio_pci_read,
-+	.write = ism_vfio_pci_write,
-+	.request = vfio_pci_core_request,
-+	.match = vfio_pci_core_match,
-+	.match_token_uuid = vfio_pci_core_match_token_uuid,
-+	.bind_iommufd = vfio_iommufd_physical_bind,
-+	.unbind_iommufd = vfio_iommufd_physical_unbind,
-+	.attach_ioas = vfio_iommufd_physical_attach_ioas,
-+	.detach_ioas = vfio_iommufd_physical_detach_ioas,
-+};
-+
-+static int ism_vfio_pci_probe(struct pci_dev *pdev,
-+			      const struct pci_device_id *id)
-+{
-+	struct ism_vfio_pci_core_device *ivpcd;
-+	struct zpci_dev *zdev = to_zpci(pdev);
-+	int ret;
-+
-+	ivpcd = vfio_alloc_device(ism_vfio_pci_core_device, core_device.vdev,
-+				  &pdev->dev, &ism_pci_ops);
-+	if (IS_ERR(ivpcd))
-+		return PTR_ERR(ivpcd);
-+
-+	store_block_cache = kmem_cache_create("store_block_cache",
-+					      zdev->maxstbl, 0, 0, NULL);
-+	if (!store_block_cache)
-+		return -ENOMEM;
-+
-+	dev_set_drvdata(&pdev->dev, &ivpcd->core_device);
-+	ret = vfio_pci_core_register_device(&ivpcd->core_device);
-+	if (ret) {
-+		kmem_cache_destroy(store_block_cache);
-+		vfio_put_device(&ivpcd->core_device.vdev);
-+	}
-+
-+	return ret;
-+}
-+
-+static void ism_vfio_pci_remove(struct pci_dev *pdev)
-+{
-+	struct vfio_pci_core_device *core_device;
-+	struct ism_vfio_pci_core_device *ivpcd;
-+
-+	core_device = dev_get_drvdata(&pdev->dev);
-+	ivpcd = container_of(core_device, struct ism_vfio_pci_core_device,
-+			     core_device);
-+
-+	vfio_pci_core_unregister_device(&ivpcd->core_device);
-+	vfio_put_device(&ivpcd->core_device.vdev);
-+
-+	kmem_cache_destroy(store_block_cache);
-+}
-+
-+static const struct pci_device_id ism_device_table[] = {
-+	{ PCI_DRIVER_OVERRIDE_DEVICE_VFIO(PCI_VENDOR_ID_IBM,
-+					  PCI_DEVICE_ID_IBM_ISM) },
-+	{}
-+};
-+MODULE_DEVICE_TABLE(pci, ism_device_table);
-+
-+static struct pci_driver ism_vfio_pci_driver = {
-+	.name = KBUILD_MODNAME,
-+	.id_table = ism_device_table,
-+	.probe = ism_vfio_pci_probe,
-+	.remove = ism_vfio_pci_remove,
-+	.err_handler = &vfio_pci_core_err_handlers,
-+	.driver_managed_dma = true,
-+};
-+
-+module_pci_driver(ism_vfio_pci_driver);
-+
-+MODULE_LICENSE("GPL");
-+MODULE_DESCRIPTION("vfio-pci variant driver for the IBM Internal Shared Memory (ISM) device");
-+MODULE_AUTHOR("IBM Corporation");
+====== PID 7680 (spinning in mm_get_cid()) ======
+
+crash> task -R mm_cid -x 7680
+PID: 7680     TASK: ffff8cc4038525c0  CPU: 1    COMMAND: "asm"
+   mm_cid = {
+     active = 0x1,
+     cid = 0x80000000
+   },
+
+crash> p ((struct task_struct *)(0xffff8cc4038b8000))->mm->mm_cid|head -4
+$8 = {
+   pcpu = 0x66222619df40,
+   mode = 1073741824,
+   max_cids = 4,
+
+
+====== per-cpu for CPU1 ======
+
+crash> struct mm_cid_pcpu -x fffff2e9bfc89f40
+struct mm_cid_pcpu {
+   cid = 0x40000003
+}
+
+
+
+Dump of any other's mm_cids needed?
+
+> [1] https://bugzilla.suse.com/show_bug.cgi?id=1258936#c17
+> 
+> 
+>> ffffffff8139cd40 <mm_get_cid>:
+>> mm_get_cid():
+>> include/linux/cpumask.h:1020
+>> ffffffff8139cd40:       8b 05 9a d7 40 02       mov    
+>> 0x240d79a(%rip),%eax        # ffffffff837aa4e0 <nr_cpu_ids>
+>> kernel/sched/sched.h:3779
+>> ffffffff8139cd46:       55                      push   %rbp
+>> ffffffff8139cd47:       53                      push   %rbx
+>> include/linux/mm_types.h:1477
+>> ffffffff8139cd48:       48 8d 9f 80 0b 00 00    lea    0xb80(%rdi),%rbx
+>> kernel/sched/sched.h:3780 (discriminator 2)
+>> ffffffff8139cd4f:       8b b7 0c 01 00 00       mov    0x10c(%rdi),%esi
+>> include/linux/cpumask.h:1020
+>> ffffffff8139cd55:       83 c0 3f                add    $0x3f,%eax
+>> ffffffff8139cd58:       c1 e8 03                shr    $0x3,%eax
+>> kernel/sched/sched.h:3780 (discriminator 2)
+>> ffffffff8139cd5b:       48 89 f5                mov    %rsi,%rbp
+>> include/linux/mm_types.h:1479 (discriminator 1)
+>> ffffffff8139cd5e:       25 f8 ff ff 1f          and    $0x1ffffff8,%eax
+>> include/linux/mm_types.h:1489 (discriminator 1)
+>> ffffffff8139cd63:       48 8d 3c 43             lea    (%rbx,%rax,2),%rdi
+>> include/linux/find.h:393
+>> ffffffff8139cd67:       e8 44 d8 6e 00          call   
+>> ffffffff81a8a5b0 <_find_first_zero_bit>
+>> kernel/sched/sched.h:3771
+>> ffffffff8139cd6c:       39 e8                   cmp    %ebp,%eax
+>> ffffffff8139cd6e:       73 7c                   jae    
+>> ffffffff8139cdec <mm_get_cid+0xac>
+>> ffffffff8139cd70:       89 c1                   mov    %eax,%ecx
+>> kernel/sched/sched.h:3773 (discriminator 1)
+>> ffffffff8139cd72:       89 c2                   mov    %eax,%edx
+>> include/linux/cpumask.h:1020
+>> ffffffff8139cd74:       8b 05 66 d7 40 02       mov    
+>> 0x240d766(%rip),%eax        # ffffffff837aa4e0 <nr_cpu_ids>
+>> ffffffff8139cd7a:       83 c0 3f                add    $0x3f,%eax
+>> ffffffff8139cd7d:       c1 e8 03                shr    $0x3,%eax
+>> include/linux/mm_types.h:1479 (discriminator 1)
+>> ffffffff8139cd80:       25 f8 ff ff 1f          and    $0x1ffffff8,%eax
+>> include/linux/mm_types.h:1489 (discriminator 1)
+>> ffffffff8139cd85:       48 8d 04 43             lea    (%rbx,%rax,2),%rax
+>> arch/x86/include/asm/bitops.h:136
+>> ffffffff8139cd89:       f0 48 0f ab 10          lock bts %rdx,(%rax)
+>> kernel/sched/sched.h:3773 (discriminator 2)
+>> ffffffff8139cd8e:       73 4b                   jae    
+>> ffffffff8139cddb <mm_get_cid+0x9b>
+>> ffffffff8139cd90:       eb 5a                   jmp    
+>> ffffffff8139cdec <mm_get_cid+0xac>
+>> arch/x86/include/asm/vdso/processor.h:13
+>> ffffffff8139cd92:       f3 90                   pause
+>> include/linux/cpumask.h:1020
+>> ffffffff8139cd94:       8b 05 46 d7 40 02       mov    
+>> 0x240d746(%rip),%eax        # ffffffff837aa4e0 <nr_cpu_ids>
+> 
+> The CPU1 was caught by the NMI here ^^^^^^^^^^^^^^^^^^^^.
+> 
+> 
+> 
+> 
+>> In the meantime, me and Michal K. did some digging into qemu dumps. 
+>> Details at (and a couple previous comments):
+>> https://bugzilla.suse.com/show_bug.cgi?id=1258936#c17
+>>
+>> tl;dr:
+>>
+>> In one of the dumps, one process sits in
+>>    context_switch
+>>      -> mm_get_cid (before switch_to())
+>>
+>>  > 65 kworker/1:1 SP= 0xffffcf82c022fd98 -> __schedule+0x16ee 
+>> (ffffffff820f162e) -> call mm_get_cid
+>>
+>> Michal extracted the vCPU's RIP and it turned out:
+>>  > Hm, I'd say the CPU could be spinning in mm_get_cid() waiting for a 
+>> free CID.
+>>  > ...
+>>  > ffff8a88458137c0:  000000000000000f 000000000000000f
+>>  >                                                    ^
+>>  > Hm, so indeed CIDs for all four CPUs are occupied.
+>>
+>> To me (I don't know what CID is either), this might point as a 
+>> possible culprit to Thomas' "sched/mmcid: Cure mode transition woes" [1].
+>>
+>> Funnily enough, 47ee94efccf6 ("sched/mmcid: Protect transition on 
+>> weakly ordered systems") spells:
+>>  >     As a consequence the task will
+>>  >     not drop the CID when scheduling out before the fixup is 
+>> completed, which
+>>  >     means the CID space can be exhausted and the next task 
+>> scheduling in will
+>>  >     loop in mm_get_cid() and the fixup thread can livelock on the 
+>> held runqueue
+>>  >     lock as above.
+>>
+>> Which sounds like what exactly happens here. Except the patch is from 
+>> the series above, so is already in 6.19 obviously.
+>>
+>>
+>> I noticed there is also a 7.0-rc1 fix:
+>>    1e83ccd5921a sched/mmcid: Don't assume CID is CPU owned on mode switch
+>> But that got into 6.19.1 already (we are at 6.19.3). So does not 
+>> improve the situation.
+>>
+>> Any ideas?
+>>
+>>
+>>
+>> [1] https://lore.kernel.org/all/20260201192234.380608594@kernel.org/
+>>
+>> thanks,
+> 
 
 -- 
-2.51.0
+js
+suse labs
 
