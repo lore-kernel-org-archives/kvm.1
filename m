@@ -1,48 +1,48 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 946B53D34AA;
-	Thu,  5 Mar 2026 17:44:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.17
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 810073E5EC4;
+	Thu,  5 Mar 2026 17:44:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.15
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772732676; cv=none; b=VT7crFUu3dpXFPMYV1T7XBOLQ+udOmKnP/pBm2TAO1kPVRorfoMNW5tUAwstPxTShLpYsa8FcA0BdbYQ1H/ZxF0QlqZRWi1WYoEzPtAV55WIz4j5lv83rHqFgEaJhXP8PH5qQyMuxq4bRBXt3t8f0mv/wtib0YrGLhTYLYsjhPE=
+	t=1772732677; cv=none; b=p7+LNa7kxBxlnegPId2RjihYPYTcnRx1wZsD5plDKAioz0sjGxTODOmObYexSfUxMh1blRo+9FUF8XYFwMWlRS+w2eWxgN92lMHAfWThYq9HCqfeIRoParWzeqRDwuxI97nHJ94R4Fx1v5KW3KsFvb+PtVt7+wWOv1lAhD85Vko=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772732676; c=relaxed/simple;
-	bh=AndZdF2dnr4dl7StGRCBgKDGf0RD400+CZHrbT41vT0=;
+	s=arc-20240116; t=1772732677; c=relaxed/simple;
+	bh=Yow8OIG86TjnCjM50N/U6/GhpCYIQvgvpKOXPwEOWGE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mrD+FiCbqeT8pTxb7EslfhOLHd3vJrKUiREE+xEGdK5bR1BdW+Y5pikDAq50z38DrJqYrKe8IvHQxzD0GaBFzubY+OCPjw27tb9Qr9jeStmT9Hf4beKfGywoNvD9MnfdWoXPMNb0oecBNuiihGvbZ43Ap70/bh8FFdXtCh+AHsk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=fVGZPlpW; arc=none smtp.client-ip=198.175.65.17
+	 MIME-Version; b=Szx/l+ZzAwV3i7PRJ92SareRzM0+QFMwbgKzES09fVKwUspqzdHNMAEdSKOYLWFIBCfjwHrJm1FWp8cDMJCuuxJEySJ/6KhrNbZlEO9vriT4YNESxtdrRV7CiFb2OUThZjFJnlA6i62TsaT0jzNKTUiGCS6LEGPf8I7yhO0Sgo8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=OLu3ZWuk; arc=none smtp.client-ip=198.175.65.15
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="fVGZPlpW"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="OLu3ZWuk"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1772732674; x=1804268674;
+  t=1772732676; x=1804268676;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=AndZdF2dnr4dl7StGRCBgKDGf0RD400+CZHrbT41vT0=;
-  b=fVGZPlpW6Em6DLCUr23RMBr6rwtu12WsLqUK9OqFnEwDOKwEvMqy2z89
-   ERaD1tOZJxrJvLR3Dp8hEl7i2ododS3FrioID1VhH/hnI0DtwGrfo6Aar
-   kMrrt6WrHvGVXnx+toXHmehia2s2Ht17OjwEeZSaK8gMyRQjkfsbDCZTQ
-   g/gIrOFhnA0FcHMl9KaPZZ1EgIVPt+WLB7831zk8l76Q9AOU7194mkcEn
-   iLVxLj/YadZTV5RA991uUJs+FC/OAIxDISjg4wDdTBDB+iBYL3MRb7kap
-   pMbohbeO63Y6v3JJz96WkIRMEmgdrHs8IfR7ki7na72SBrB8zNWHIr/zr
-   g==;
-X-CSE-ConnectionGUID: CXu/IdQxTlWCaxAW0Qfqiw==
-X-CSE-MsgGUID: R2Bo+4odRoqKjC4wzMkqmQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11720"; a="73798204"
+  bh=Yow8OIG86TjnCjM50N/U6/GhpCYIQvgvpKOXPwEOWGE=;
+  b=OLu3ZWuk7QLpwhJ/tkr6aWSctbETXK77UuQZOBdHYzh9UUMF3sk2MTK3
+   SHzRrHOcyGsV3YPiaTMlX14L5NPWwCfxEK9cZ3AldZE2UDX1DFl67Uw1G
+   Vx1Fmj7+v5W+IHmN27E6JcsK7oxgijd/DLZr/AwRJGUoWDeUn2Nyr284V
+   sRJAS3zePeZwaHb/ikbbihlxaUnDPCiqX/X1abhpG1/fKdbd0mW7dBd/L
+   ydp3JSjmdsDM+Qludhdn7+coAI6K8JizheIQ7UNlGOckU3rKSeBsdyQHd
+   qoAVnM+h2oKX4xLWV2J23MXhVv8tbWIvnFR9lAXfF5aUUAszofvxioJTU
+   A==;
+X-CSE-ConnectionGUID: PcR7PbocTtiAefMFsSPT9Q==
+X-CSE-MsgGUID: xRnhXS4SQ2yPeOzyhiyMlQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11720"; a="77431553"
 X-IronPort-AV: E=Sophos;i="6.23,103,1770624000"; 
-   d="scan'208";a="73798204"
-Received: from fmviesa006.fm.intel.com ([10.60.135.146])
-  by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Mar 2026 09:44:33 -0800
-X-CSE-ConnectionGUID: 28hV1UAVTSy2MCJA/ScLuA==
-X-CSE-MsgGUID: di7V6GA2RA6PA3/7jUZHTg==
+   d="scan'208";a="77431553"
+Received: from fmviesa005.fm.intel.com ([10.60.135.145])
+  by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Mar 2026 09:44:34 -0800
+X-CSE-ConnectionGUID: Rx5TImDLS1S9qWNQNjsutg==
+X-CSE-MsgGUID: Dxx303+dTtGs4Yr7CpGvow==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.23,103,1770624000"; 
-   d="scan'208";a="215527245"
+   d="scan'208";a="223447853"
 Received: from mdroper-mobl2.amr.corp.intel.com (HELO localhost) ([10.124.220.244])
-  by fmviesa006-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Mar 2026 09:44:33 -0800
+  by fmviesa005-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Mar 2026 09:44:34 -0800
 From: isaku.yamahata@intel.com
 To: kvm@vger.kernel.org
 Cc: isaku.yamahata@intel.com,
@@ -51,9 +51,9 @@ Cc: isaku.yamahata@intel.com,
 	Sean Christopherson <seanjc@google.com>,
 	linux-kernel@vger.kernel.org,
 	Yang Zhong <yang.zhong@linux.intel.com>
-Subject: [PATCH v2 02/36] KVM: x86: Implement APIC virt timer helpers with callbacks
-Date: Thu,  5 Mar 2026 09:43:42 -0800
-Message-ID: <727502c8f79850fae6a8a476a624e5902861db39.1772732517.git.isaku.yamahata@intel.com>
+Subject: [PATCH v2 05/36] KVM: x86/lapic: Add a trace point for guest virtual timer
+Date: Thu,  5 Mar 2026 09:43:45 -0800
+Message-ID: <bdedde0a49beb4c148bfb24c281f44cebd40e8fd.1772732517.git.isaku.yamahata@intel.com>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <cover.1772732517.git.isaku.yamahata@intel.com>
 References: <cover.1772732517.git.isaku.yamahata@intel.com>
@@ -67,201 +67,67 @@ Content-Transfer-Encoding: 8bit
 
 From: Yang Zhong <yang.zhong@linux.intel.com>
 
-Add an additional APIC emulation mode for APIC timer virtualization.  When
-the guest programs the local APIC timer mode, switch to this new emulation
-mode using the newly added hooks when APIC timer virtualization is
-available.
-
-Add five x86 KVM callbacks for APIC timer virtualization.  These callbacks
-are analogous to those used for the preemption timer and will be invoked by
-kvm/lapic.  These helpers start/stop the timer once the APIC virt timer
-feature is enabled and the guest sets the MSR_IA32_TSC_DEADLINE.  Upon
-updating the TSC deadline mode in the APIC_LVTT register, KVM's LAPIC will
-initiate the APIC virt timer instead of the preemption timer.
+Add a trace point for changing the guest virtual timer, similar to the hv
+timer case.
 
 Signed-off-by: Yang Zhong <yang.zhong@linux.intel.com>
 Co-developed-by: Isaku Yamahata <isaku.yamahata@intel.com>
 Signed-off-by: Isaku Yamahata <isaku.yamahata@intel.com>
 ---
- arch/x86/include/asm/kvm-x86-ops.h |  5 ++
- arch/x86/include/asm/kvm_host.h    |  6 +++
- arch/x86/kvm/lapic.c               | 82 +++++++++++++++++++++++++++++-
- arch/x86/kvm/lapic.h               |  1 +
- 4 files changed, 92 insertions(+), 2 deletions(-)
+ arch/x86/kvm/lapic.c |  5 +++++
+ arch/x86/kvm/trace.h | 16 ++++++++++++++++
+ 2 files changed, 21 insertions(+)
 
-diff --git a/arch/x86/include/asm/kvm-x86-ops.h b/arch/x86/include/asm/kvm-x86-ops.h
-index de709fb5bd76..09f664aa72c1 100644
---- a/arch/x86/include/asm/kvm-x86-ops.h
-+++ b/arch/x86/include/asm/kvm-x86-ops.h
-@@ -118,6 +118,11 @@ KVM_X86_OP_OPTIONAL_RET0(dy_apicv_has_pending_interrupt)
- KVM_X86_OP_OPTIONAL(protected_apic_has_interrupt)
- KVM_X86_OP_OPTIONAL(set_hv_timer)
- KVM_X86_OP_OPTIONAL(cancel_hv_timer)
-+KVM_X86_OP_OPTIONAL(can_use_apic_virt_timer)
-+KVM_X86_OP_OPTIONAL(set_apic_virt_timer)
-+KVM_X86_OP_OPTIONAL(cancel_apic_virt_timer)
-+KVM_X86_OP_OPTIONAL(set_guest_tsc_deadline_virt)
-+KVM_X86_OP_OPTIONAL(get_guest_tsc_deadline_virt)
- KVM_X86_OP(setup_mce)
- #ifdef CONFIG_KVM_SMM
- KVM_X86_OP(smi_allowed)
-diff --git a/arch/x86/include/asm/kvm_host.h b/arch/x86/include/asm/kvm_host.h
-index c94556fefb75..345ea21b45f8 100644
---- a/arch/x86/include/asm/kvm_host.h
-+++ b/arch/x86/include/asm/kvm_host.h
-@@ -1934,6 +1934,12 @@ struct kvm_x86_ops {
- 	int (*set_hv_timer)(struct kvm_vcpu *vcpu, u64 guest_deadline_tsc,
- 			    bool *expired);
- 	void (*cancel_hv_timer)(struct kvm_vcpu *vcpu);
-+	bool (*can_use_apic_virt_timer)(struct kvm_vcpu *vcpu);
-+	void (*set_apic_virt_timer)(struct kvm_vcpu *vcpu, u16 vector);
-+	void (*cancel_apic_virt_timer)(struct kvm_vcpu *vcpu);
-+	void (*set_guest_tsc_deadline_virt)(struct kvm_vcpu *vcpu,
-+					    u64 tscdeadline);
-+	u64 (*get_guest_tsc_deadline_virt)(struct kvm_vcpu *vcpu);
- 
- 	void (*setup_mce)(struct kvm_vcpu *vcpu);
- 
 diff --git a/arch/x86/kvm/lapic.c b/arch/x86/kvm/lapic.c
-index 9381c58d4c85..0d91834d972c 100644
+index 10aa7040686f..abbd51c4da7f 100644
 --- a/arch/x86/kvm/lapic.c
 +++ b/arch/x86/kvm/lapic.c
-@@ -188,7 +188,8 @@ static inline u32 kvm_x2apic_id(struct kvm_lapic *apic)
- static bool kvm_can_post_timer_interrupt(struct kvm_vcpu *vcpu)
- {
- 	return pi_inject_timer && kvm_vcpu_apicv_active(vcpu) &&
--		(kvm_mwait_in_guest(vcpu->kvm) || kvm_hlt_in_guest(vcpu->kvm));
-+		(kvm_mwait_in_guest(vcpu->kvm) || kvm_hlt_in_guest(vcpu->kvm)) &&
-+		!vcpu->arch.apic->lapic_timer.apic_virt_timer_in_use;
+@@ -1895,6 +1895,9 @@ static void cancel_apic_virt_timer(struct kvm_lapic *apic)
+ 
+ 	kvm_x86_call(cancel_apic_virt_timer)(vcpu);
+ 	apic->lapic_timer.apic_virt_timer_in_use = false;
++
++	trace_kvm_apic_virt_timer_state(vcpu->vcpu_id,
++					apic->lapic_timer.apic_virt_timer_in_use);
  }
  
- static bool kvm_can_use_hv_timer(struct kvm_vcpu *vcpu)
-@@ -1864,17 +1865,82 @@ static void limit_periodic_timer_frequency(struct kvm_lapic *apic)
+ static void apic_cancel_apic_virt_timer(struct kvm_lapic *apic)
+@@ -1923,6 +1926,8 @@ static void apic_set_apic_virt_timer(struct kvm_lapic *apic)
+ 	kvm_x86_call(set_apic_virt_timer)(vcpu, vector);
+ 	kvm_x86_call(set_guest_tsc_deadline_virt)(vcpu, ktimer->tscdeadline);
+ 	ktimer->apic_virt_timer_in_use = true;
++
++	trace_kvm_apic_virt_timer_state(vcpu->vcpu_id, ktimer->apic_virt_timer_in_use);
  }
  
- static void cancel_hv_timer(struct kvm_lapic *apic);
-+static void cancel_apic_virt_timer(struct kvm_lapic *apic);
+ static bool kvm_can_use_apic_virt_timer(struct kvm_vcpu *vcpu)
+diff --git a/arch/x86/kvm/trace.h b/arch/x86/kvm/trace.h
+index e7fdbe9efc90..ca9456955254 100644
+--- a/arch/x86/kvm/trace.h
++++ b/arch/x86/kvm/trace.h
+@@ -1649,6 +1649,22 @@ TRACE_EVENT(kvm_hv_timer_state,
+ 			__entry->hv_timer_in_use)
+ );
  
--static void cancel_apic_timer(struct kvm_lapic *apic)
-+static void __cancel_apic_timer(struct kvm_lapic *apic)
- {
- 	hrtimer_cancel(&apic->lapic_timer.timer);
- 	preempt_disable();
- 	if (apic->lapic_timer.hv_timer_in_use)
- 		cancel_hv_timer(apic);
-+	else if (apic->lapic_timer.apic_virt_timer_in_use)
-+		cancel_apic_virt_timer(apic);
- 	preempt_enable();
-+}
++TRACE_EVENT(kvm_apic_virt_timer_state,
++		TP_PROTO(unsigned int vcpu_id, unsigned int apic_virt_timer_in_use),
++		TP_ARGS(vcpu_id, apic_virt_timer_in_use),
++		TP_STRUCT__entry(
++			__field(unsigned int, vcpu_id)
++			__field(unsigned int, apic_virt_timer_in_use)
++			),
++		TP_fast_assign(
++			__entry->vcpu_id = vcpu_id;
++			__entry->apic_virt_timer_in_use = apic_virt_timer_in_use;
++			),
++		TP_printk("vcpu_id %x apic_virt_timer %x",
++			__entry->vcpu_id,
++			__entry->apic_virt_timer_in_use)
++);
 +
-+static void cancel_apic_timer(struct kvm_lapic *apic)
-+{
-+	__cancel_apic_timer(apic);
- 	atomic_set(&apic->lapic_timer.pending, 0);
- }
- 
-+static void start_apic_timer(struct kvm_lapic *apic);
-+
-+static void cancel_apic_virt_timer(struct kvm_lapic *apic)
-+{
-+	struct kvm_vcpu *vcpu = apic->vcpu;
-+
-+	apic->lapic_timer.tscdeadline = kvm_x86_call(get_guest_tsc_deadline_virt)(vcpu);
-+	kvm_x86_call(set_guest_tsc_deadline_virt)(vcpu, 0);
-+
-+	kvm_x86_call(cancel_apic_virt_timer)(vcpu);
-+	apic->lapic_timer.apic_virt_timer_in_use = false;
-+}
-+
-+static void apic_cancel_apic_virt_timer(struct kvm_lapic *apic)
-+{
-+	if (!apic->lapic_timer.apic_virt_timer_in_use)
-+		return;
-+
-+	cancel_apic_virt_timer(apic);
-+	start_apic_timer(apic);
-+}
-+
-+static void apic_set_apic_virt_timer(struct kvm_lapic *apic)
-+{
-+	struct kvm_timer *ktimer = &apic->lapic_timer;
-+	struct kvm_vcpu *vcpu = apic->vcpu;
-+	u8 vector;
-+	u32 reg;
-+
-+	if (apic->lapic_timer.apic_virt_timer_in_use)
-+		return;
-+
-+	reg = kvm_lapic_get_reg(apic, APIC_LVTT);
-+	vector = reg & APIC_VECTOR_MASK;
-+
-+	__cancel_apic_timer(apic);
-+	kvm_x86_call(set_apic_virt_timer)(vcpu, vector);
-+	kvm_x86_call(set_guest_tsc_deadline_virt)(vcpu, ktimer->tscdeadline);
-+	ktimer->apic_virt_timer_in_use = true;
-+}
-+
-+static bool kvm_can_use_apic_virt_timer(struct kvm_vcpu *vcpu)
-+{
-+	return kvm_x86_ops.can_use_apic_virt_timer &&
-+		lapic_in_kernel(vcpu) &&
-+		apic_lvt_enabled(vcpu->arch.apic, APIC_LVTT) &&
-+		kvm_x86_call(can_use_apic_virt_timer)(vcpu);
-+}
-+
-+static void apic_update_apic_virt_timer(struct kvm_lapic *apic)
-+{
-+	if (kvm_can_use_apic_virt_timer(apic->vcpu))
-+		apic_set_apic_virt_timer(apic);
-+	else
-+		apic_cancel_apic_virt_timer(apic);
-+}
-+
- static void apic_update_lvtt(struct kvm_lapic *apic)
- {
- 	u32 timer_mode = kvm_lapic_get_reg(apic, APIC_LVTT) &
-@@ -1887,10 +1953,19 @@ static void apic_update_lvtt(struct kvm_lapic *apic)
- 			kvm_lapic_set_reg(apic, APIC_TMICT, 0);
- 			apic->lapic_timer.period = 0;
- 			apic->lapic_timer.tscdeadline = 0;
-+
-+			if (apic->lapic_timer.apic_virt_timer_in_use)
-+				kvm_x86_call(set_guest_tsc_deadline_virt)(apic->vcpu, 0);
- 		}
- 		apic->lapic_timer.timer_mode = timer_mode;
- 		limit_periodic_timer_frequency(apic);
- 	}
-+
-+	/*
-+	 * Update on not only timer mode change, but also mask change
-+	 * for the case of timer_mode = TSCDEADLINE, mask = 1.
-+	 */
-+	apic_update_apic_virt_timer(apic);
- }
- 
  /*
-@@ -2312,6 +2387,9 @@ static void restart_apic_timer(struct kvm_lapic *apic)
- 	if (!apic_lvtt_period(apic) && atomic_read(&apic->lapic_timer.pending))
- 		goto out;
- 
-+	if (apic->lapic_timer.apic_virt_timer_in_use)
-+		goto out;
-+
- 	if (!start_hv_timer(apic))
- 		start_sw_timer(apic);
- out:
-diff --git a/arch/x86/kvm/lapic.h b/arch/x86/kvm/lapic.h
-index 274885af4ebc..ba1090f9a3c8 100644
---- a/arch/x86/kvm/lapic.h
-+++ b/arch/x86/kvm/lapic.h
-@@ -57,6 +57,7 @@ struct kvm_timer {
- 	u32 timer_advance_ns;
- 	atomic_t pending;			/* accumulated triggered timers */
- 	bool hv_timer_in_use;
-+	bool apic_virt_timer_in_use;
- };
- 
- struct kvm_lapic {
+  * Tracepoint for kvm_hv_flush_tlb.
+  */
 -- 
 2.45.2
 
