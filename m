@@ -1,59 +1,58 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0134F3FFAC7;
-	Thu,  5 Mar 2026 17:44:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.12
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5EC173E7176;
+	Thu,  5 Mar 2026 17:44:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.12
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772732689; cv=none; b=OjqFYowc2TV9l02osAJBX1KRdGg3X1v9/ZyYApu++Dfn1RFAMDlF/dFkcwSZBHa8lvUZF1I+uIl3DCGHHEYsAFH6kax8bKCSLDZsHZnCp6wF29elrInwHcsSHEm5K6eBulPROHa8+BtQMHMQmNb2mZMdO1WetVKXzb/URIL9vM8=
+	t=1772732690; cv=none; b=eKZj9ASaoatlk25O8DrSHQAccSkLfx+u/KzjozhVWa12ewuoO+6dcbGYFF4bWA0PCcT4L8R+QkemGHOAp6dlar1920Rn1nd1/BML0jT7s1zpMyS8jTcO3kJmFU9wIyAyRqGwI55RjxCdNGVebQ76MVZ4d8iWAmyIY9jbBXMmDsg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772732689; c=relaxed/simple;
-	bh=1Ct/a9/bBoOc/zftIrXLz+ZeBhZv/LgEZuxduIZrBiQ=;
+	s=arc-20240116; t=1772732690; c=relaxed/simple;
+	bh=wn1c0mMi0EQMu1HoAaIYunIacKiukKqa9rHPqNsGVBo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=C4G6GJl7QIUlLR//SNAc2wgQUgnzgHM602dmEn6i/D37TK0zqTI/jrho1GfRiTunGl2GqNJSNlsRC1+u1CBOX1pth5AMrXDoPCJ6o5ZlYJI/ZSMsAeQUhWmOh4ZZVwQUzROYdRpwcoQfAVaDgbAFP6bU2o0tLpkvZ+NwaEFL/bE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=N+R5Cx/a; arc=none smtp.client-ip=198.175.65.12
+	 MIME-Version; b=iFdX6d9s/TY6xMYYzRxg/OW3fJHXa646VitWqk0uC5LmyJOyC/Xu0RhHcM98aQbleOQdkpYA55nlc4yawk8AfzyzHIXvwcKK+pRW6SxoIIFbgkzCZTAYvgmhthp3FaVYKzYOtt6FKtXNtMojkMyc4ardSyKFePT1XAqc4e+fnx4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=ImdzyLjN; arc=none smtp.client-ip=192.198.163.12
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="N+R5Cx/a"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="ImdzyLjN"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1772732688; x=1804268688;
+  t=1772732689; x=1804268689;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=1Ct/a9/bBoOc/zftIrXLz+ZeBhZv/LgEZuxduIZrBiQ=;
-  b=N+R5Cx/aHsPvFOKJUWc4854HLaHZRJIsVWS1RZVC6bp6ldTHYL2foUlF
-   Fo0XEv3E35aua1ah6ECFcD6bGl/H4516nS2So8ufnVzf6vVlWF49VPKZJ
-   GbgX2rs1TnvOuVIRRHLfqmqkowUdtj6S6+7YxQHj+AXusUNsBRVLsXVPB
-   Z7pNooVadt50vLb7DMLTX3Un1d3uBi1V8k0N44xuqPkVOOF1qTYptaTZz
-   sBcued4U40VVjDK+HfxfiT83/0tzTj41MHibz6lbPda3/hizKly2hoh1h
-   kSFvdIbaToB2Q2TGUylOAHqWO5DikMz9VGUukDPfPjestq9/wAByqJG11
+  bh=wn1c0mMi0EQMu1HoAaIYunIacKiukKqa9rHPqNsGVBo=;
+  b=ImdzyLjNEgH/ZCO/FQe8mZcAZd8rdAnzdmzZ4kAqbyC3NkGWW5RQ5l1D
+   wJ34YSlSI/O2ZrhqYR5oKhvWA6HNZp5s1ovWaTlrBf1oba3JujWOLjl3X
+   /06Nv8F1e3O4WOQFpm2dSivBl5WsKu+sLEkScH6RX6rtGQ+oxXnaxCWVl
+   AE4/ttlWcMI/jCk7yFGRIJUdQVu6/URrRBuMQW5E+wA9Mu8v3ilRXQa/q
+   qPbvqDVfTdEOoSg2VkUwIyW4e/BxvltvwmK/4yRreITPK+9/UtCPAnsJD
+   RmjzDbJ+M600704lLS/bt8vMKlhPFxk5U2SMYsce2JI/tfg2MqjcvIRyQ
    w==;
-X-CSE-ConnectionGUID: GoMFQoT0SmqhkxBHghFdJg==
-X-CSE-MsgGUID: K3qLwgudSreoMREb15GidQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11720"; a="85301949"
+X-CSE-ConnectionGUID: gEn7gd3lRhy0nmeK51B73g==
+X-CSE-MsgGUID: BEe8R4LvT/ae8BgrjxF0bQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11720"; a="77701134"
 X-IronPort-AV: E=Sophos;i="6.23,103,1770624000"; 
-   d="scan'208";a="85301949"
-Received: from orviesa003.jf.intel.com ([10.64.159.143])
-  by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Mar 2026 09:44:47 -0800
-X-CSE-ConnectionGUID: ZuVXfMIWRbO7LtRsw0M08g==
-X-CSE-MsgGUID: GSWJsuRFRICVdEsYn+RMcw==
+   d="scan'208";a="77701134"
+Received: from orviesa001.jf.intel.com ([10.64.159.141])
+  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Mar 2026 09:44:48 -0800
+X-CSE-ConnectionGUID: x0tobNUMSZ2PhuEeYNwGvg==
+X-CSE-MsgGUID: fwG/PlbjQMqos6fng9N1TA==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.23,103,1770624000"; 
-   d="scan'208";a="222896518"
+   d="scan'208";a="256647649"
 Received: from mdroper-mobl2.amr.corp.intel.com (HELO localhost) ([10.124.220.244])
-  by ORVIESA003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Mar 2026 09:44:44 -0800
+  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Mar 2026 09:44:48 -0800
 From: isaku.yamahata@intel.com
 To: kvm@vger.kernel.org
 Cc: isaku.yamahata@intel.com,
 	isaku.yamahata@gmail.com,
 	Paolo Bonzini <pbonzini@redhat.com>,
 	Sean Christopherson <seanjc@google.com>,
-	linux-kernel@vger.kernel.org,
-	Yang Zhong <yang.zhong@linux.intel.com>
-Subject: [PATCH v2 23/36] KVM: VMX: Introduce module parameter for APIC virt timer support
-Date: Thu,  5 Mar 2026 09:44:03 -0800
-Message-ID: <d8b7a892afb21bcb8b653b89da0ab134e7f86264.1772732517.git.isaku.yamahata@intel.com>
+	linux-kernel@vger.kernel.org
+Subject: [PATCH v2 26/36] KVM: selftests: Add nVMX support to timer_latency test case
+Date: Thu,  5 Mar 2026 09:44:06 -0800
+Message-ID: <d8c2441ff84677b91b61ead6c8bc7bca6ac3c349.1772732517.git.isaku.yamahata@intel.com>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <cover.1772732517.git.isaku.yamahata@intel.com>
 References: <cover.1772732517.git.isaku.yamahata@intel.com>
@@ -65,59 +64,257 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: Yang Zhong <yang.zhong@linux.intel.com>
+From: Isaku Yamahata <isaku.yamahata@intel.com>
 
-Introduce a new module parameter, apic_timer_virt, to control the
-virtualization of the APIC timer in KVM. The primary improvement offered by
-APIC timer virtualization over the preemption timer is the passthrough of
-MSR_IA32_TSC_DEADLINE to the VM. This passthrough capability reduces the
-number of VM exits triggered by MSR write operations, thereby enhancing the
-performance of the virtual machine.
+Support nVMX for the timer_latency test case to exercise the nVMX APIC
+timer virtualization.
 
-The apic_timer_virt parameter is set to true by default on processor
-platforms that support APIC timer virtualization.  On platforms that do not
-support this feature, the parameter will indicate that APIC timer
-virtualization is not available.
-
-Signed-off-by: Yang Zhong <yang.zhong@linux.intel.com>
 Signed-off-by: Isaku Yamahata <isaku.yamahata@intel.com>
 ---
- arch/x86/kvm/vmx/vmx.c | 8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+ tools/testing/selftests/kvm/include/x86/vmx.h |  10 ++
+ .../testing/selftests/kvm/x86/timer_latency.c | 132 +++++++++++++++++-
+ 2 files changed, 139 insertions(+), 3 deletions(-)
 
-diff --git a/arch/x86/kvm/vmx/vmx.c b/arch/x86/kvm/vmx/vmx.c
-index b3974125a902..0271514162df 100644
---- a/arch/x86/kvm/vmx/vmx.c
-+++ b/arch/x86/kvm/vmx/vmx.c
-@@ -119,6 +119,9 @@ module_param(enable_ipiv, bool, 0444);
+diff --git a/tools/testing/selftests/kvm/include/x86/vmx.h b/tools/testing/selftests/kvm/include/x86/vmx.h
+index 92b918700d24..4be103c7b367 100644
+--- a/tools/testing/selftests/kvm/include/x86/vmx.h
++++ b/tools/testing/selftests/kvm/include/x86/vmx.h
+@@ -24,6 +24,7 @@
+ #define CPU_BASED_RDTSC_EXITING			0x00001000
+ #define CPU_BASED_CR3_LOAD_EXITING		0x00008000
+ #define CPU_BASED_CR3_STORE_EXITING		0x00010000
++#define CPU_BASED_ACTIVATE_TERTIARY_CONTROLS	0x00020000
+ #define CPU_BASED_CR8_LOAD_EXITING		0x00080000
+ #define CPU_BASED_CR8_STORE_EXITING		0x00100000
+ #define CPU_BASED_TPR_SHADOW			0x00200000
+@@ -63,6 +64,12 @@
+ #define SECONDARY_ENABLE_XSAV_RESTORE		0x00100000
+ #define SECONDARY_EXEC_TSC_SCALING		0x02000000
  
- module_param(enable_device_posted_irqs, bool, 0444);
- 
-+static bool __read_mostly enable_apic_timer_virt = true;
-+module_param_named(apic_timer_virt, enable_apic_timer_virt, bool, 0444);
++/*
++ * Definitions of Tertiary Processor-Based VM-Execution Controls.
++ * It's 64 bit unlike primary/secondary processor based vm-execution controls.
++ */
++#define TERTIARY_EXEC_GUEST_APIC_TIMER		0x0000000000000100ULL
 +
- /*
-  * If nested=1, nested virtualization is supported, i.e., guests may use
-  * VMX and be a hypervisor for its own guests. If nested=0, guests may not
-@@ -2804,7 +2807,7 @@ static int setup_vmcs_config(struct vmcs_config *vmcs_conf,
- 			adjust_vmx_controls64(KVM_OPTIONAL_VMX_TERTIARY_VM_EXEC_CONTROL,
- 					      MSR_IA32_VMX_PROCBASED_CTLS3);
- 
--	if (!IS_ENABLED(CONFIG_X86_64) ||
-+	if (!IS_ENABLED(CONFIG_X86_64) || !enable_apic_timer_virt ||
- 	    !(_cpu_based_2nd_exec_control & SECONDARY_EXEC_VIRTUAL_INTR_DELIVERY))
- 		_cpu_based_3rd_exec_control &= ~TERTIARY_EXEC_GUEST_APIC_TIMER;
- 
-@@ -8835,6 +8838,9 @@ __init int vmx_hardware_setup(void)
- 	if (!cpu_has_vmx_preemption_timer())
- 		enable_preemption_timer = false;
- 
-+	if (!cpu_has_vmx_apic_timer_virt())
-+		enable_apic_timer_virt = false;
+ #define PIN_BASED_EXT_INTR_MASK			0x00000001
+ #define PIN_BASED_NMI_EXITING			0x00000008
+ #define PIN_BASED_VIRTUAL_NMIS			0x00000020
+@@ -104,6 +111,7 @@
+ enum vmcs_field {
+ 	VIRTUAL_PROCESSOR_ID		= 0x00000000,
+ 	POSTED_INTR_NV			= 0x00000002,
++	GUEST_APIC_TIMER_VECTOR         = 0x0000000a,
+ 	GUEST_ES_SELECTOR		= 0x00000800,
+ 	GUEST_CS_SELECTOR		= 0x00000802,
+ 	GUEST_SS_SELECTOR		= 0x00000804,
+@@ -163,6 +171,8 @@ enum vmcs_field {
+ 	ENCLS_EXITING_BITMAP_HIGH	= 0x0000202F,
+ 	TSC_MULTIPLIER			= 0x00002032,
+ 	TSC_MULTIPLIER_HIGH		= 0x00002033,
++	TERTIARY_VM_EXEC_CONTROL        = 0x00002034,
++	TERTIARY_VM_EXEC_CONTROL_HIGH   = 0x00002035,
+ 	GUEST_PHYSICAL_ADDRESS		= 0x00002400,
+ 	GUEST_PHYSICAL_ADDRESS_HIGH	= 0x00002401,
+ 	VMCS_LINK_POINTER		= 0x00002800,
+diff --git a/tools/testing/selftests/kvm/x86/timer_latency.c b/tools/testing/selftests/kvm/x86/timer_latency.c
+index 7c2e8225f299..17f41a0d15da 100644
+--- a/tools/testing/selftests/kvm/x86/timer_latency.c
++++ b/tools/testing/selftests/kvm/x86/timer_latency.c
+@@ -15,6 +15,10 @@
+ #include "kvm_util.h"
+ #include "processor.h"
+ #include "apic.h"
++#include "vmx.h"
 +
- 	if (enable_preemption_timer) {
- 		u64 use_timer_freq = 5000ULL * 1000 * 1000;
++#define L2_GUEST_STACK_SIZE 256
++static unsigned long l2_guest_stack[L2_GUEST_STACK_SIZE];
  
+ #define LOCAL_TIMER_VECTOR	0xec
+ 
+@@ -30,6 +34,7 @@ struct options {
+ 	bool use_oneshot_timer;
+ 	bool use_x2apic;
+ 	bool use_poll;
++	bool nested;
+ 
+ 	uint64_t timer_inc_ns;
+ 	uint64_t allowed_timer_latency_ns;
+@@ -307,6 +312,65 @@ static void guest_code(void)
+ 	GUEST_DONE();
+ }
+ 
++static void l1_guest_code(struct vmx_pages *vmx_pages)
++{
++	union vmx_ctrl_msr ctls_msr, ctls2_msr;
++	uint64_t pin, ctls, ctls2, ctls3;
++
++	GUEST_ASSERT(prepare_for_vmx_operation(vmx_pages));
++	GUEST_ASSERT(load_vmcs(vmx_pages));
++	prepare_vmcs(vmx_pages, guest_code,
++		     &l2_guest_stack[L2_GUEST_STACK_SIZE]);
++
++	/* Check prerequisites */
++	GUEST_ASSERT(!rdmsr_safe(MSR_IA32_VMX_PROCBASED_CTLS, &ctls_msr.val));
++	GUEST_ASSERT(ctls_msr.clr & CPU_BASED_ACTIVATE_SECONDARY_CONTROLS);
++	GUEST_ASSERT(ctls_msr.clr & CPU_BASED_ACTIVATE_TERTIARY_CONTROLS);
++
++	GUEST_ASSERT(!rdmsr_safe(MSR_IA32_VMX_PROCBASED_CTLS2, &ctls2_msr.val));
++	GUEST_ASSERT(ctls2_msr.clr & SECONDARY_EXEC_VIRTUAL_INTR_DELIVERY);
++
++	GUEST_ASSERT(!rdmsr_safe(MSR_IA32_VMX_PROCBASED_CTLS3, &ctls3));
++	GUEST_ASSERT(ctls3 & TERTIARY_EXEC_GUEST_APIC_TIMER);
++
++	/*
++	 * SECONDARY_EXEC_VIRTUAL_INTR_DELIVERY requires
++	 * PIN_BASED_EXT_INTR_MASK
++	 */
++	pin = vmreadz(PIN_BASED_VM_EXEC_CONTROL);
++	pin |= PIN_BASED_EXT_INTR_MASK;
++	GUEST_ASSERT(!vmwrite(PIN_BASED_VM_EXEC_CONTROL, pin));
++
++	ctls = vmreadz(CPU_BASED_VM_EXEC_CONTROL);
++	ctls |= CPU_BASED_USE_MSR_BITMAPS | CPU_BASED_TPR_SHADOW |
++		CPU_BASED_ACTIVATE_SECONDARY_CONTROLS |
++		CPU_BASED_ACTIVATE_TERTIARY_CONTROLS;
++	GUEST_ASSERT(!vmwrite(CPU_BASED_VM_EXEC_CONTROL, ctls));
++
++	/* guest apic timer requires virtual interrutp delivery */
++	ctls2 = vmreadz(SECONDARY_VM_EXEC_CONTROL);
++	ctls2 |= SECONDARY_EXEC_VIRTUALIZE_X2APIC_MODE |
++		SECONDARY_EXEC_APIC_REGISTER_VIRT |
++		SECONDARY_EXEC_VIRTUAL_INTR_DELIVERY;
++	vmwrite(SECONDARY_VM_EXEC_CONTROL, ctls2);
++
++	ctls3 = vmreadz(TERTIARY_VM_EXEC_CONTROL);
++	ctls3 |= TERTIARY_EXEC_GUEST_APIC_TIMER;
++	GUEST_ASSERT(!vmwrite(TERTIARY_VM_EXEC_CONTROL, ctls3));
++
++	/*
++	 * We don't emulate apic registers(including APIC_LVTT) for simplicity.
++	 * Directly set vector for timer interrupt instead.
++	 */
++	GUEST_ASSERT(!vmwrite(GUEST_APIC_TIMER_VECTOR, LOCAL_TIMER_VECTOR));
++
++	/* launch L2 */
++	GUEST_ASSERT(!vmlaunch());
++	GUEST_ASSERT_EQ(vmreadz(VM_EXIT_REASON), EXIT_REASON_VMCALL);
++
++	GUEST_DONE();
++}
++
+ static void __run_vcpu(struct kvm_vcpu *vcpu)
+ {
+ 	struct ucall uc;
+@@ -411,12 +475,40 @@ static void setup_timer_freq(struct kvm_vm *vm,
+ 		ns_to_tsc(data, options.allowed_timer_latency_ns);
+ }
+ 
++static void clear_msr_bitmap(struct vmx_pages *vmx, int msr)
++{
++	clear_bit(msr, vmx->msr_hva);
++	clear_bit(msr, vmx->msr_hva + 2048);
++}
++
+ static void setup(struct kvm_vm **vm__, struct kvm_vcpu **vcpu__)
+ {
+ 	struct kvm_vcpu *vcpu;
+ 	struct kvm_vm *vm;
+ 
+-	vm = vm_create_with_one_vcpu(&vcpu, guest_code);
++	if (options.nested) {
++		vm_vaddr_t vmx_pages_gva = 0;
++		struct vmx_pages *vmx;
++
++		vm = vm_create_with_one_vcpu(&vcpu, l1_guest_code);
++
++		vmx = vcpu_alloc_vmx(vm, &vmx_pages_gva);
++		memset(vmx->msr_hva, 0xff, 4096);
++
++		/* Allow nested apic timer virtualization. */
++		clear_msr_bitmap(vmx, MSR_IA32_TSC_DEADLINE);
++
++		/*  Rely on x2apic virtualization. */
++		clear_msr_bitmap(vmx, MSR_IA32_APICBASE);
++		clear_msr_bitmap(vmx, APIC_BASE_MSR + (APIC_TDCR >> 4));
++		clear_msr_bitmap(vmx, APIC_BASE_MSR + (APIC_LVTT >> 4));
++		clear_msr_bitmap(vmx, APIC_BASE_MSR + (APIC_SPIV >> 4));
++		clear_msr_bitmap(vmx, APIC_BASE_MSR + (APIC_EOI >> 4));
++
++		vcpu_args_set(vcpu, 1, vmx_pages_gva);
++	} else
++		vm = vm_create_with_one_vcpu(&vcpu, guest_code);
++
+ 	vm_install_exception_handler(vm, LOCAL_TIMER_VECTOR,
+ 				     guest_timer_interrupt_handler);
+ 	setup_timer_freq(vm, &shared_data);
+@@ -509,6 +601,8 @@ static void help(const char *name)
+ 	printf("-P: print result stat\n");
+ 	printf("-x: use xAPIC mode\n");
+ 	printf("-X: use x2APIC mode (default)\n");
++	printf("-n: Only measure nested VM (L2)\n");
++	printf("-N: Don't measure nested VM (L2)\n");
+ 	puts("");
+ 
+ 	exit(EXIT_SUCCESS);
+@@ -518,8 +612,10 @@ int main(int argc, char **argv)
+ {
+ 	int opt;
+ 	unsigned int duration = TEST_DURATION_DEFAULT_IN_SEC;
++	bool nested_only = false;
++	bool no_nest = false;
+ 
+-	while ((opt = getopt(argc, argv, "hld:p:a:otxXP")) != -1) {
++	while ((opt = getopt(argc, argv, "hld:p:a:otxXPnN")) != -1) {
+ 		switch (opt) {
+ 		case 'l':
+ 			options.use_poll = true;
+@@ -557,6 +653,15 @@ int main(int argc, char **argv)
+ 			options.print_result = true;
+ 			break;
+ 
++		case 'n':
++			nested_only = true;
++			no_nest = false;
++			break;
++		case 'N':
++			nested_only = false;
++			no_nest = true;
++			break;
++
+ 		case 'h':
+ 		default:
+ 			help(argv[0]);
+@@ -572,7 +677,28 @@ int main(int argc, char **argv)
+ 	if (options.use_x2apic)
+ 		TEST_REQUIRE(kvm_cpu_has(X86_FEATURE_X2APIC));
+ 
+-	run_test(duration);
++	if (!nested_only) {
++		options.nested = false;
++		run_test(duration);
++	}
++
++	if (!no_nest) {
++		union vmx_ctrl_msr ctls;
++		uint64_t ctls3;
++
++		ctls.val = kvm_get_feature_msr(MSR_IA32_VMX_TRUE_PROCBASED_CTLS);
++		TEST_REQUIRE(ctls.clr & CPU_BASED_ACTIVATE_TERTIARY_CONTROLS);
++
++		ctls3 = kvm_get_feature_msr(MSR_IA32_VMX_PROCBASED_CTLS3);
++		TEST_REQUIRE(ctls3 & TERTIARY_EXEC_GUEST_APIC_TIMER);
++
++		/* L1 doesn't emulate HLT and memory-mapped APIC. */
++		options.use_poll = true;
++		options.use_oneshot_timer = false;
++
++		options.nested = true;
++		run_test(duration);
++	}
+ 
+ 	return 0;
+ }
 -- 
 2.45.2
 
