@@ -1,148 +1,93 @@
-Received: from mail-pl1-f201.google.com (mail-pl1-f201.google.com [209.85.214.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail.zytor.com (terminus.zytor.com [198.137.202.136])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8495928FA91
-	for <kvm@vger.kernel.org>; Thu,  5 Mar 2026 17:50:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C17D366078;
+	Thu,  5 Mar 2026 18:19:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.137.202.136
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772733033; cv=none; b=aZb+iZUYDRwmqvgHLAlUkcRUL6RF5pEXjVDEkwhxJzzTJPhiWiBOdd3ls1KtlS/3YnRnZQqq4YrR7ZHiDMXp6mkJu9XxFaJPcKOUV9EfQFrpxtfEpVw7jIBmXywvnQKVm1zCCs3FkUhoyqFg0h2Q/Nagn+9wgnKfdBeYmL6ep3g=
+	t=1772734772; cv=none; b=nxoMywkqECt8TregZpgmujQMMPbMrg/rs2uVfTvS2R3lxS0rfl1hoGd83fNVu7f2wCDt5TXg+8dKtdxtBWcxDTvWb2z+vEbnpWMo/3XWE4BbxhCSpjpusklnd80/cUZV/Fum6px2/WZM04EjLHY1fYYt3+V/kNyF66hHuxTqIdY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772733033; c=relaxed/simple;
-	bh=pJQ8g5TP0hmDQ4/6b83s3S93OAhZkcoXKYKt/g76WnA=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=pxkA2SLBhinpb0xzxDUw0apAagEnQLt5XXTNfDdQwtzATpOCQewARDTrIIJ3JHHJFukP2TwLpw7dkKX0ybJv0l6dfBWaWaY0bP+n6PhKpzns/OYbzqf7q5gV34/1Z1jt3r97wHKvmhTXeZ+rZFe3SpZ032rfhqdPpb41ZytCZQo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=SKFE1Zpy; arc=none smtp.client-ip=209.85.214.201
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+	s=arc-20240116; t=1772734772; c=relaxed/simple;
+	bh=4Tc/KAY0GBDAe9mAqjvKIM20YswWBDTUfMNyQxN460A=;
+	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
+	 Message-Id:References:To; b=uNjeTbGxyqCYxTZb+S1Wf5sqftCsVEnH2jV9LPADx+Ivb2gSsSRqfzDmRXD2qBWNeCNXPOh/fPIlz56XFqKD3fshbk2MQmNa3QhQeNYrln+s7bvlzN+xmbLIoxT7Emx2AccucvdswYWq/NCh/R6JUXcvsfP/ONygVRrWZq0G41o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zytor.com; spf=pass smtp.mailfrom=zytor.com; dkim=pass (2048-bit key) header.d=zytor.com header.i=@zytor.com header.b=Hb8f9C6V; arc=none smtp.client-ip=198.137.202.136
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zytor.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=zytor.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="SKFE1Zpy"
-Received: by mail-pl1-f201.google.com with SMTP id d9443c01a7336-2ae405e95f5so56828545ad.2
-        for <kvm@vger.kernel.org>; Thu, 05 Mar 2026 09:50:32 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1772733032; x=1773337832; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=8au/7yipgWN1+r+E+RWXdIOdOFOabndtCd9xTFDxZq0=;
-        b=SKFE1ZpyLJzAdAN0vF4cO+2purwAMbjfQgioTnh/BnmDoWp2+M28wQlzDFdCo8n9E6
-         ezde0wsKykOTeb5yTk2FKho0sUNBcfIZrK9ItG8lI1++MovNE8e0dovDDwc3r/eX7xMm
-         VXXMwSsoMep9dGwffa7LgCffnF9BOJlG8GWacAPlO3qO2l3kLL2fBhjERe+Mwv68x4+6
-         zn+AjHF9qosuE19Up/IRl7GdZHuxPr0Tac+Tm8gLjYmndYQ+wzKq0yMm/TdKSaO9Nq9e
-         DAM+cDSRIyJfjxjb5K2qhIU6igUItGhBisCT1ZGq5II02iQFzEJJkcqblakce8OsTNsP
-         VguA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1772733032; x=1773337832;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=8au/7yipgWN1+r+E+RWXdIOdOFOabndtCd9xTFDxZq0=;
-        b=baJKyuYAmbuDi454+zu828yg1flWvjVHUzrfZe3PTbLE50zHk2yBr2Dnyuk0cCA0fn
-         sHWHtFxj2lfjMMYB+DzK6+EZL2h4D1nMP8nBP2duK/ToE0Q8Gbs9QHNEC7adGEeFbEC2
-         Xby24mP5PO2Y0FZc6sJMdCN4IQZv/4EdYxgp4HK8Ipc19V1Un1VTdgyd4CEHYGZRzVFA
-         t3NI6J60spiYkEYIjNIX0z+2LakYivHmKEtJ08lASO7gR+21XGRCMMiTsDuwrO14j7wt
-         7mPo5UfZGvzzi9BgPz2R4XaZmI24EB1XsgHHoBY9Dc+VvCfFeBmIoY1UyRj3AqFwSFGj
-         VsOg==
-X-Gm-Message-State: AOJu0Yzyg1r64MFyHdLiB4iwV7islI2+7BhFPE+hwpAX2nix+uZkBWUC
-	Avee2fwmUbFBw5obT8oQ1tnmgGDcn7+bSEsZdXAeqmbapWmMW05dUOOSDxKy7/yKZmsdVBvyOza
-	ZzEpLyg==
-X-Received: from plge4.prod.google.com ([2002:a17:902:cf44:b0:2ae:3af2:e21])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:903:3c68:b0:2ae:4cb8:484a
- with SMTP id d9443c01a7336-2ae80156882mr5060795ad.17.1772733031675; Thu, 05
- Mar 2026 09:50:31 -0800 (PST)
-Date: Thu, 5 Mar 2026 09:50:30 -0800
-In-Reply-To: <20260226135309.29493-2-itazur@amazon.com>
+	dkim=pass (2048-bit key) header.d=zytor.com header.i=@zytor.com header.b="Hb8f9C6V"
+Received: from smtpclient.apple (c-24-130-165-117.hsd1.ca.comcast.net [24.130.165.117])
+	(authenticated bits=0)
+	by mail.zytor.com (8.18.1/8.17.1) with ESMTPSA id 625Hl8vd3560389
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NO);
+	Thu, 5 Mar 2026 09:47:08 -0800
+DKIM-Filter: OpenDKIM Filter v2.11.0 mail.zytor.com 625Hl8vd3560389
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=zytor.com;
+	s=2026022301; t=1772732829;
+	bh=CjTCnaKYWUbRJ1sgAvN35vorMdc+lmIlICQF5lNVu68=;
+	h=Subject:From:In-Reply-To:Date:Cc:References:To:From;
+	b=Hb8f9C6VdtZ+JuFRr/E/XJ8g+T8xD8ogv5ZAC7Cx0ZwoAyvSJRwBzTgW6FT/GdoU8
+	 1LZFVQ6gEpD/jiGjfVJyzgrb09epiEGLNA/wQh/flrircnIxp1NQaUrHW9mp4LTOic
+	 kKVgx8lyZMg5fjR+tJHgCqEh6ZwnxNQSbBdaMeVsfEpJB6aPjiJwiN/lL3NUuOX/BC
+	 ql5Ki54WqYIrbRh6JEPJXdVhQvFsT12iDI70pNhceppAk2pnUNAALo6cPaDbWLn99z
+	 qy6/ryv7dxsz6Mi0DF/Fr6/Goj/QE5pBEZJF0zyF7+uFIxdfiIaRBs51eTC+L083kn
+	 w/1zy1Wq6z0SQ==
+Content-Type: text/plain;
+	charset=utf-8
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20260226135309.29493-1-itazur@amazon.com> <20260226135309.29493-2-itazur@amazon.com>
-Message-ID: <aanCZqjXd0YiSmjR@google.com>
-Subject: Re: [RFC PATCH v2 1/7] KVM: x86: Avoid silent kvm-clock activation failures
-From: Sean Christopherson <seanjc@google.com>
-To: Takahiro Itazuri <itazur@amazon.com>
-Cc: kvm@vger.kernel.org, Paolo Bonzini <pbonzini@redhat.com>, 
-	Vitaly Kuznetsov <vkuznets@redhat.com>, Fuad Tabba <tabba@google.com>, 
-	Brendan Jackman <jackmanb@google.com>, David Hildenbrand <david@kernel.org>, 
-	David Woodhouse <dwmw2@infradead.org>, Paul Durrant <pdurrant@amazon.com>, 
-	Nikita Kalyazin <kalyazin@amazon.com>, Patrick Roy <patrick.roy@campus.lmu.de>, 
-	Takahiro Itazuri <zulinx86@gmail.com>
-Content-Type: text/plain; charset="us-ascii"
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3864.400.21\))
+Subject: Re: [PATCH v9 15/22] KVM: x86: Mark CR4.FRED as not reserved
+From: Xin Li <xin@zytor.com>
+In-Reply-To: <B07CDF1A-1FD2-4EC5-BEB3-3D906A880153@zytor.com>
+Date: Thu, 5 Mar 2026 09:46:58 -0800
+Cc: Chao Gao <chao.gao@intel.com>, linux-kernel@vger.kernel.org,
+        kvm@vger.kernel.org, linux-doc@vger.kernel.org, pbonzini@redhat.com,
+        corbet@lwn.net, tglx@linutronix.de, mingo@redhat.com, bp@alien8.de,
+        dave.hansen@linux.intel.com, x86@kernel.org, hpa@zytor.com,
+        luto@kernel.org, peterz@infradead.org, andrew.cooper3@citrix.com,
+        hch@infradead.org, sohil.mehta@intel.com
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <237876C4-5253-4059-ABBC-3FB4EB5C2ABC@zytor.com>
+References: <20251026201911.505204-1-xin@zytor.com>
+ <20251026201911.505204-16-xin@zytor.com> <aR1xNLrhqEWu+rmE@intel.com>
+ <aajVJlU2Zg4Djqqz@google.com>
+ <263F364B-D516-40B3-B065-A5369BFB1A7F@zytor.com>
+ <aamisPkG1JZ2UDdQ@google.com>
+ <B07CDF1A-1FD2-4EC5-BEB3-3D906A880153@zytor.com>
+To: Sean Christopherson <seanjc@google.com>
+X-Mailer: Apple Mail (2.3864.400.21)
 
-On Thu, Feb 26, 2026, Takahiro Itazuri wrote:
-> kvm_write_system_time() previously ignored the return value of
-> kvm_gpc_activate().  As a result, kvm-clock activation could fail
-> silently, making debugging harder.
-> 
-> Propagate the return value so that the MSR write fail properly instead
-> of continuing silently.
 
-Hrm.  For better or worse, KVM's ABI when it comes to PV stuff is to silently
-ignore failures.  I 100% agree it makes debugging painful, but it's unfortunately
-also "safer" in many cases, e.g. often results in degraded behavior versus flat
-out crashing the guest.
 
-The other wrinkle is that success isn't actually guaranteed, because the actual
-writes don't happen until KVM_RUN via kvm_guest_time_update(), i.e. only failing
-in _some_ cases creates a weird ABI.
+> On Mar 5, 2026, at 9:09=E2=80=AFAM, Xin Li <xin@zytor.com> wrote:
+>=20
+>=20
+>>> I planned to send out these new kvm unit tests (not just FRED tests) =
+after
+>>> KVM FRED patch series gets merged.
+>>=20
+>> Definitely send them before.  Even if no one outside of Intel can run =
+them (I
+>> forget when FRED hardware is coming), people like me can at least see =
+what you're
+>> testing, which makes it more likely that we'll spot bugs.  E.g. in =
+this case, the
+>> lack of negative tests for CR4.FRED is a big red flag.
+>=20
+> No excuse, sadly mk_cr_64() completely escaped my notice.
 
-And most importantly, this would be a breaking change in guest- and user-visible
-behavior.  So while I agree silently failing is ugly, all things considered I
-think it's the least awful choice here :-/
+BTW, mk_cr_64() looks a bad name to me, it=E2=80=99s more like =
+mk_cr_32().
 
-> Signed-off-by: Takahiro Itazuri <itazur@amazon.com>
-> ---
->  arch/x86/kvm/x86.c | 18 ++++++++++--------
->  1 file changed, 10 insertions(+), 8 deletions(-)
-> 
-> diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
-> index a447663d5eff..a729b8419b61 100644
-> --- a/arch/x86/kvm/x86.c
-> +++ b/arch/x86/kvm/x86.c
-> @@ -2438,7 +2438,7 @@ static void kvm_write_wall_clock(struct kvm *kvm, gpa_t wall_clock, int sec_hi_o
->  	kvm_write_guest(kvm, wall_clock, &version, sizeof(version));
->  }
->  
-> -static void kvm_write_system_time(struct kvm_vcpu *vcpu, gpa_t system_time,
-> +static int kvm_write_system_time(struct kvm_vcpu *vcpu, gpa_t system_time,
->  				  bool old_msr, bool host_initiated)
->  {
->  	struct kvm_arch *ka = &vcpu->kvm->arch;
-> @@ -2455,12 +2455,12 @@ static void kvm_write_system_time(struct kvm_vcpu *vcpu, gpa_t system_time,
->  
->  	/* we verify if the enable bit is set... */
->  	if (system_time & 1)
-> -		kvm_gpc_activate(&vcpu->arch.pv_time, system_time & ~1ULL,
-> -				 sizeof(struct pvclock_vcpu_time_info));
-> -	else
-> -		kvm_gpc_deactivate(&vcpu->arch.pv_time);
-> +		return kvm_gpc_activate(&vcpu->arch.pv_time,
-> +					system_time & ~1ULL,
-> +					sizeof(struct pvclock_vcpu_time_info));
->  
-> -	return;
-> +	kvm_gpc_deactivate(&vcpu->arch.pv_time);
-> +	return 0;
->  }
->  
->  static uint32_t div_frac(uint32_t dividend, uint32_t divisor)
-> @@ -4156,13 +4156,15 @@ int kvm_set_msr_common(struct kvm_vcpu *vcpu, struct msr_data *msr_info)
->  		if (!guest_pv_has(vcpu, KVM_FEATURE_CLOCKSOURCE2))
->  			return 1;
->  
-> -		kvm_write_system_time(vcpu, data, false, msr_info->host_initiated);
-> +		if (kvm_write_system_time(vcpu, data, false, msr_info->host_initiated))
-> +			return 1;
->  		break;
->  	case MSR_KVM_SYSTEM_TIME:
->  		if (!guest_pv_has(vcpu, KVM_FEATURE_CLOCKSOURCE))
->  			return 1;
->  
-> -		kvm_write_system_time(vcpu, data, true,  msr_info->host_initiated);
-> +		if (kvm_write_system_time(vcpu, data, true,  msr_info->host_initiated))
-> +			return 1;
->  		break;
->  	case MSR_KVM_ASYNC_PF_EN:
->  		if (!guest_pv_has(vcpu, KVM_FEATURE_ASYNC_PF))
-> -- 
-> 2.50.1
-> 
+>=20
+> And I didn=E2=80=99t even think about adding a CR4 test for FRED.
+>=20
+> And as you expected, the happy path doesn=E2=80=99t expose it at all.
+>=20
+>=20
+>=20
+
