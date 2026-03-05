@@ -1,91 +1,95 @@
-Received: from mail-pj1-f73.google.com (mail-pj1-f73.google.com [209.85.216.73])
+Received: from mail-pf1-f201.google.com (mail-pf1-f201.google.com [209.85.210.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E72F3E1229
-	for <kvm@vger.kernel.org>; Thu,  5 Mar 2026 17:13:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.73
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C4B8C3E1229
+	for <kvm@vger.kernel.org>; Thu,  5 Mar 2026 17:19:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772730833; cv=none; b=ld7SJ9hQsP7pv2jSjlS6LUApokSUeBh42rUTSrCz0GMZTgWZhHOGgFa4qL31YgN4yeZDwdC/Q/emmAEBP6kFcpnSRt4y8GZrXmXVgcay3K2+epdPZmBZyBL4v7rpTrHT9Q4AqkPaNSTFanrI/zaIwFAq3M4AAG7Z2ZotBr4tbnk=
+	t=1772731177; cv=none; b=FyTVO8EE9tOk32ePLhBj8yVpG15gFar1zO7GIAnloaBOpcwtPh9z+3xvkuk29tBtOTyJXwK3jY51jrU9gGMre6oYEaw06BstBFz6RSywnTfir9KY+Sl2HdVVQR8/+2VQK6S+W0VOkq7N3ZSUF3n5nv6AYBmvaDP93Lj5M7pHygM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772730833; c=relaxed/simple;
-	bh=0XUD5BAnUCRqJrt5J3VfKN54QNwr0xLXKDTL1rvjViE=;
+	s=arc-20240116; t=1772731177; c=relaxed/simple;
+	bh=44DsyPZjR3+ZY9GszCDwqZ3g/HaaKmi7IKLakzXhb6E=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=C3ltTFH8RtquRXT7nRo0BKFhNy4+EnB/KfCMDPD+C7kGQGZ62KME9IM9BVkcA5jKTAa7mtIfAzJ9egO9+aiyred2/1tEWjU2SFJDio9akFn08Ova04IbEFolPTofXYYdykxx13o2S3macVEWojKuQBEAxw/j7bTwTAPRPQg4648=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Iyii2bst; arc=none smtp.client-ip=209.85.216.73
+	 To:Cc:Content-Type; b=u0J7V227nH5Gd6gAG26Dv9W7BecOQ73/9Xypn2ZcFLFmxWgEa8dO6cadbfFfxy+7BtiHPmZhUEPsftC5u11cdmjSI3ypF2Toy2t32ypqk2GVXbyX4OdC+4kYbls/nFbxcnpxVrn50fZYZ08Wr4GZ8Wjh0KalVzcRFIl+H0XtGHk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=GCMhfHi0; arc=none smtp.client-ip=209.85.210.201
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Iyii2bst"
-Received: by mail-pj1-f73.google.com with SMTP id 98e67ed59e1d1-359812e4fefso3529125a91.1
-        for <kvm@vger.kernel.org>; Thu, 05 Mar 2026 09:13:52 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="GCMhfHi0"
+Received: by mail-pf1-f201.google.com with SMTP id d2e1a72fcca58-824af3c6c0cso3550427b3a.3
+        for <kvm@vger.kernel.org>; Thu, 05 Mar 2026 09:19:36 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1772730832; x=1773335632; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1772731176; x=1773335976; darn=vger.kernel.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=CRZNdKY8tcJVfQEc8w3qKnNfGaHAS44lUi77zj94QkM=;
-        b=Iyii2bstoZp520uCQzk25DnB1mZ7R2cMiBWbD/+XfBe8Z+3nvE+MfMsFmJ8Msg/nYX
-         w7DRV4m1ymWbrNmMJbtqshc1Eb6pTY3fwWu4RfoWm7cghT8lksenxPJXMIYV/0iDzaGk
-         agu9Wk/z5aNmxjv0O9JjQQWpafp0ZHkuVuk8iYmrWu3Ks3YW/kzS7Z6KYnJASmWStEe5
-         gICOoAG32G+GfQFqHtnlxsmNCRGYUC2AUT2vae+H3MFUW98FJOL8kaUp5I8zAmlZEcR9
-         ZWmFEEZr8PpyjTDzUG1Hbhhyha/yKwEZpo0NJgEtNzpusJxC9LvRiX2NnciU7gJTV3K9
-         OkJg==
+        bh=jvL7QI7vtAV/elV7wuwJjb0ouQ5MS/0W571Ri2ejdh8=;
+        b=GCMhfHi039z0xYJI1g53I6vSeQvWegx9IdH6BuHB9ae1dJye7XciAjY25sZ+R7h03a
+         +8xOBbjkbQoXMXG2cuGv+Y2veFW/RDj1y5hIQ9arJaumsbt+DD7s9fQ+Fxo5EtQ6D/9Y
+         lZrJBwy5awiuOgDpLGBPR+qIV+c1a0WI30zX5FlKfodjoW4dwpf7FyC3VVQYUhHFRJQK
+         CyAfo0+LLQxxp5Cw2s0jPVWcxoohsAGoZyFLsp+ZycJHUleAdsbezYwtecTBDmRC+rzE
+         RtcKuYsOKaNzN3NiWSZryIC3JA6h4NJD2Fxpdc4//BsRKlClUn+3qC9Gh5EdT5inx4Pu
+         G25A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1772730832; x=1773335632;
+        d=1e100.net; s=20230601; t=1772731176; x=1773335976;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=CRZNdKY8tcJVfQEc8w3qKnNfGaHAS44lUi77zj94QkM=;
-        b=pk7TSTuOTS9S1YntGf7fexlxberVDGRY3N4gEmkUnaxXZ0UhXZl33BbwGTwO9TBwSz
-         fzoSAwvE2b6NqKZo5xbdEnc8zSGmH40krFemL5gXK8s/W94ocXa8bUjz2kSkS+ALaSkY
-         UcpoeE7p3fMpCr1f+INDqerz3WeuLFvItZ6oLtzrFQWWsLf/sLwr9whhYo8Qvyc5tQzz
-         YhvpSpyRHBQB7k9BGsihAUngU+knPCU1GWeC0DTttas3pvbPSbCYVUzEzRKEXmgFuRTC
-         Zc2XLZW4KgwcXL0aCjrREZR1S4itMy5C6wiCUrRqbfnqNhW+ucX3EfJz8WXcs1tH0yrr
-         J1gQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWHqohc3PXiMkGYJ7aU+SAuNi1iXhs6vX3qjSq07nq6Vnu6dGFvfsAsmPHgsD+mQE6RSPU=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwltpFgnUKGX723vRSAiI9ZVOxWfHh5nCYkPoUowHqeL6vDbt72
-	x1pHKs/jBuKYTiq8aSOEGNYaUhWETjuXFpEapYU+9EB5TU3XznyK7Gh5G1mUtE5TAVy9m9RKPit
-	2Mdla0Q==
-X-Received: from plbbh8.prod.google.com ([2002:a17:902:a988:b0:2ae:3c5d:ec0e])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:902:c410:b0:2ae:5346:d4e6
- with SMTP id d9443c01a7336-2ae75c6c932mr33611435ad.28.1772730831639; Thu, 05
- Mar 2026 09:13:51 -0800 (PST)
-Date: Thu,  5 Mar 2026 09:08:41 -0800
-In-Reply-To: <20260211102928.100944-1-ubizjak@gmail.com>
+        bh=jvL7QI7vtAV/elV7wuwJjb0ouQ5MS/0W571Ri2ejdh8=;
+        b=WOZTXqepll+alIRrx2OgxYYvfZkVWMG3t/NhtZPHcnUoYmsCHZ8NAvdTfeG4V3HEHQ
+         KHLgNVWjcc0bCL7pEbSgxbfbYg/i4jqZ0jsxF7ZZXiPZDr8FlkSxX7cyl6cVbhn5INv9
+         CNfWloMxpQREFcElM8mzWVF6VVC+92KhpjbSIFkvrZt8QFx/u85OpfWdwTdEj5qKnDCe
+         V0zoemBsSbnbVS0CHIhut03kmZXFBloUqyoX2tRAFf+uJlMTF60ROqo2Ba9Nmf3gRjDL
+         mwDP4jVi5LkQlF6QryN0RHArtBZAiWkkHCetxQpMNEr9gXFLYSPIncQmgJb5Pej3UKUj
+         QNKg==
+X-Forwarded-Encrypted: i=1; AJvYcCUdSHvkvLybq1UTQUTrmMLtXR7pXhHCDb1N/BoT1Gyfg29CQfeBV/2J69KERPcEOCRRB7o=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyI4Q7eOykL8lUPXyEhC+kgIQLbiFCuqBPhAPauK9yGTDUbIs+n
+	5Z90GXHMLjrMFOxBdl1FnghDCvpKCT7sH6ztsk+G65SeuqWRoTgMzqtHSLRGt2x3u/GEJyIqHp0
+	BXZhX6g==
+X-Received: from pfcp25.prod.google.com ([2002:a05:6a00:a259:b0:829:808f:cb8d])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:4295:b0:81b:d5d9:a83a
+ with SMTP id d2e1a72fcca58-8299ae60809mr419972b3a.61.1772731175885; Thu, 05
+ Mar 2026 09:19:35 -0800 (PST)
+Date: Thu, 5 Mar 2026 09:19:34 -0800
+In-Reply-To: <20260220004223.4168331-5-dmatlack@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-References: <20260211102928.100944-1-ubizjak@gmail.com>
-X-Mailer: git-send-email 2.53.0.473.g4a7958ca14-goog
-Message-ID: <177272954596.1565167.8442601996349101861.b4-ty@google.com>
-Subject: Re: [PATCH 1/2] KVM: VMX: Drop obsolete branch hint prefixes from
- inline asm
+References: <20260220004223.4168331-1-dmatlack@google.com> <20260220004223.4168331-5-dmatlack@google.com>
+Message-ID: <aam7JsCyQ5Oacvl5@google.com>
+Subject: Re: [PATCH v2 04/10] KVM: selftests: Use u64 instead of uint64_t
 From: Sean Christopherson <seanjc@google.com>
-To: Sean Christopherson <seanjc@google.com>, kvm@vger.kernel.org, x86@kernel.org, 
-	linux-kernel@vger.kernel.org, Uros Bizjak <ubizjak@gmail.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>, Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@kernel.org>, 
-	Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, 
-	"H. Peter Anvin" <hpa@zytor.com>
-Content-Type: text/plain; charset="utf-8"
+To: David Matlack <dmatlack@google.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>, Ackerley Tng <ackerleytng@google.com>, 
+	Albert Ou <aou@eecs.berkeley.edu>, Alexandre Ghiti <alex@ghiti.fr>, 
+	Andrew Jones <ajones@ventanamicro.com>, Anup Patel <anup@brainfault.org>, 
+	Atish Patra <atish.patra@linux.dev>, Bibo Mao <maobibo@loongson.cn>, 
+	Christian Borntraeger <borntraeger@linux.ibm.com>, Claudio Imbrenda <imbrenda@linux.ibm.com>, 
+	Colin Ian King <colin.i.king@gmail.com>, David Hildenbrand <david@kernel.org>, Fuad Tabba <tabba@google.com>, 
+	Huacai Chen <chenhuacai@kernel.org>, James Houghton <jthoughton@google.com>, 
+	Janosch Frank <frankja@linux.ibm.com>, Joey Gouly <joey.gouly@arm.com>, kvmarm@lists.linux.dev, 
+	kvm-riscv@lists.infradead.org, kvm@vger.kernel.org, 
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
+	linux-kselftest@vger.kernel.org, linux-riscv@lists.infradead.org, 
+	Lisa Wang <wyihan@google.com>, loongarch@lists.linux.dev, 
+	Marc Zyngier <maz@kernel.org>, Maxim Levitsky <mlevitsk@redhat.com>, Nutty Liu <nutty.liu@hotmail.com>, 
+	Oliver Upton <oupton@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>, Paul Walmsley <pjw@kernel.org>, 
+	"Pratik R. Sampat" <prsampat@amd.com>, Rahul Kumar <rk0006818@gmail.com>, Shuah Khan <shuah@kernel.org>, 
+	Suzuki K Poulose <suzuki.poulose@arm.com>, Tianrui Zhao <zhaotianrui@loongson.cn>, 
+	Wu Fei <wu.fei9@sanechips.com.cn>, Yosry Ahmed <yosry.ahmed@linux.dev>, 
+	Zenghui Yu <yuzenghui@huawei.com>
+Content-Type: text/plain; charset="us-ascii"
 
-On Wed, 11 Feb 2026 11:28:49 +0100, Uros Bizjak wrote:
-> Remove explicit branch hint prefixes (.byte 0x2e / 0x3e) from VMX
-> inline assembly sequences.
-> 
-> These prefixes (CS/DS segment overrides used as branch hints on
-> very old x86 CPUs) have been ignored by modern processors for a
-> long time. Keeping them provides no measurable benefit and only
-> enlarges the generated code.
-> 
-> [...]
+On Fri, Feb 20, 2026, David Matlack wrote:
+> -static uint64_t pread_uint64(int fd, const char *filename, uint64_t index)
+> +static u64 pread_uint64(int fd, const char *filename, u64 index)
 
-Applied to kvm-x86 vmx, thanks!
+I think it's also worth converting the function to pread_u64().
 
-[1/2] KVM: VMX: Drop obsolete branch hint prefixes from inline asm
-      https://github.com/kvm-x86/linux/commit/6dad59124e15
-[2/2] KVM: VMX: Use ASM_INPUT_RM in __vmcs_writel
-      https://github.com/kvm-x86/linux/commit/192f777b3af0
-
---
-https://github.com/kvm-x86/linux/tree/next
+>  {
+> -	uint64_t value;
+> +	u64 value;
+>  	off_t offset = index * sizeof(value);
+>  
+>  	TEST_ASSERT(pread(fd, &value, sizeof(value), offset) == sizeof(value),
