@@ -1,88 +1,104 @@
-Received: from mail-pl1-f201.google.com (mail-pl1-f201.google.com [209.85.214.201])
+Received: from mail-pg1-f201.google.com (mail-pg1-f201.google.com [209.85.215.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B21283E1200
-	for <kvm@vger.kernel.org>; Thu,  5 Mar 2026 17:12:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 56F9A3DBD6F
+	for <kvm@vger.kernel.org>; Thu,  5 Mar 2026 17:12:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772730760; cv=none; b=SgD2Ijzk3LMUz4BOHxX6WOPS6NHNjjnnlBwp+ZQSVJHCi+RU3OCWhK5beLIWEAhvAB34JVxrJo7oHIGwtmIm6cwOQnFq/rMbKe5nw7dON7M1kGBfMY32BCSUFcxuoPWDvFxdPpXjwsyDVhd03HiqYg8b5tUBaRkhZeTUQlyztAI=
+	t=1772730770; cv=none; b=eY35OndAZIW/3JhAfXfR3osOx/lk9ZDNQVYPNl8gQVrPJ1VJajfL068noXmfiDVonsLB7/AlwzkOd/+cjHcVjgGCp48ugAosSCKw27VK9g5C//02bgW5uKXSSTtign7e0tISK39nsTDrc2YflLZ4A2e/z6/70LvHqvsyWgEHip8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772730760; c=relaxed/simple;
-	bh=/GBXVfac68MdWpS9IPkjlYgDOQ7R+pVysyaAoMFshkI=;
+	s=arc-20240116; t=1772730770; c=relaxed/simple;
+	bh=ZaBb4JNwBVgVwOLsXtYZ0XbkOEfJ9ksmC7f7Vu/tW6Y=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=tD9FmXvRMHP63lDnI4FC2bZDQjW82wA2BtBAI3KHwy7RqooCNAsLhnI2H/UWPhAu/uXlURkfYbjemD+dM6FE46q2GvKbLbFqcI9hCGqll1PKkrxz+Yw6Sduv5zlLar7RrjFQWcaV8HGWUQmbHrB4ApgealsyBMXNgRtV4IyFkD4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=DFsGiG73; arc=none smtp.client-ip=209.85.214.201
+	 To:Cc:Content-Type; b=Q2Zn0rS0DEcUOIRVAaMYn9bQGSuxKEt7BGxSyepANWixlUDXEjVMly3iRIhLQ8Bu1bCm2otXiIcz2UvfK8aYbwH/U/I8r96oZmogUdyVJW4zsaVe9W4i33UxwdjlJhIDnOkfCwIvGoTJvi8aGQ+Qf3SLEbwNi/g1/cH3OjTzjAU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=OeYN8Hiw; arc=none smtp.client-ip=209.85.215.201
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="DFsGiG73"
-Received: by mail-pl1-f201.google.com with SMTP id d9443c01a7336-2ae4e9577ceso202205065ad.1
-        for <kvm@vger.kernel.org>; Thu, 05 Mar 2026 09:12:39 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="OeYN8Hiw"
+Received: by mail-pg1-f201.google.com with SMTP id 41be03b00d2f7-b630b4d8d52so5247373a12.3
+        for <kvm@vger.kernel.org>; Thu, 05 Mar 2026 09:12:49 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1772730759; x=1773335559; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1772730769; x=1773335569; darn=vger.kernel.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=xVU6FN0uky/dFXnRa2qLZyTUmWtwIpEtVM3+JzMj2G8=;
-        b=DFsGiG73oNRHF3ik9JGjRp9oBJeCINfnncqwo8XWR1/TuKmn1kbLHiTuxG82OJt9Iq
-         dmvkw3cagc3zEUMsJ2XpKyM/FAM5Ik16KVMrpe5Dy8whkijpviEDfkiN9c0okmXjatDL
-         dOCKRtGDVrEP5RUNyqumtec2eExM4T4oyCEZVzRXgVRaslrPACPYYqZDNA+30/ZxvbEK
-         XLFEI5gq/RYIL4Ebdgeqo/iD7HvG4bIFsVD1hCgBeX3qTYpgeF+eZ1SZXswMHe5lqOoS
-         ElPTHES+1JGyGrVkGYDOdw07U1ddpdgkcxLLqAHmx/9tr2ofKiRgmmUUtZHPdZ/+oPRp
-         b/Zg==
+        bh=1DMtEmZw22gwZCFk8s6N2UxKC05S+mS3q4aVnmQqn4U=;
+        b=OeYN8HiwqaF/EHJZnB56e3wr3y1nTpYRjYn4FhS49cdbuVhJ0WBDVx8byFpH4UWngV
+         nT0Ft5flxF+qjEyxIuNOk12qqi7OWGBeyAz78K1NK5oheOYBdsSm+ocifBAicgyooMRQ
+         TkV8jEeN9szS4yQRHoGUjuC54ey2QNi2Mm/QMLy2rNxKYJpNCC8vSANgbZhHjqpS8nsO
+         dx1W7eWMsa11dwovH68RcxE2cuLB1K2uKkRFwsjCf8T3XNSBGqqDtK89p87OlNmXOT8N
+         hImPfjryXYW4vfUMjsC8OPFed64Adv6dW3iOeboun+3skI7m/9zx869RLK2ewqSL55Co
+         Eepw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1772730759; x=1773335559;
+        d=1e100.net; s=20230601; t=1772730769; x=1773335569;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=xVU6FN0uky/dFXnRa2qLZyTUmWtwIpEtVM3+JzMj2G8=;
-        b=mrOegd5DoD4USa/UnaFQMQdOZFh6jU77o65O63hF0KJ2u/g9ICOz3qBd3KMr49kpyR
-         fVH7ZWYAvWo4oyXlzxsbL/TBWZvxGZsfN5Vk9WavthWCgNuhbuZRmmDm1zfzISIbDyPO
-         C3meST1ZWi+jLcFjRa9t3BN4EJ4oDAvB2KL1XOUopJEEcKd7f1kf2I4MEHVQaaxaW6N2
-         2bQW4q2yiuJmkkGOszJKTV5DMfZi5LvBL5vEs3MoN6oBSVb2AxiEOOV5xanbEKHNJT84
-         t9xnveqkjiaqA65gZSevUWkLYvtWmdYLnF0brTr2t/MhsturqMVzpRrUpRwMCq6BKq+F
-         ZKlA==
-X-Forwarded-Encrypted: i=1; AJvYcCX4unKyAbyaJgjmF2YZw4sZ00cE/oImzHbOvsBOltBpu5aENpcaAGAkWPiReJHBSiVI568=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yxql0m8VJenRQ2pZwGYZzG6rR36koGFQ5rsCUYTmHmaAxQhhzqn
-	6KZ0NDwkn2SgVB7rjQBSugnRtprl6+Uj88c/mYyPfDh7OC9crc4KG4QeWfUNKOwpjUXjYjHKOQc
-	6NF+xZw==
-X-Received: from plpg12.prod.google.com ([2002:a17:902:934c:b0:2a9:63f4:124])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:903:2f8b:b0:2ae:5104:571e
- with SMTP id d9443c01a7336-2ae6a9deed1mr57715595ad.9.1772730758990; Thu, 05
- Mar 2026 09:12:38 -0800 (PST)
-Date: Thu,  5 Mar 2026 09:08:21 -0800
-In-Reply-To: <20260224225017.3303870-1-yosry@kernel.org>
+        bh=1DMtEmZw22gwZCFk8s6N2UxKC05S+mS3q4aVnmQqn4U=;
+        b=oFryZQi5baqhf8yV+Uly7Eu/SUO1v4umb1X3/PJqiJHk+qIf95Qr+uuAF1uFAq6gy9
+         LmnUBFkliqOxyGiDQgjhhFVneqO0xDxrCEznLyaGGHGFowzbFC95txpPQtdHOWTSEWwp
+         5gvZ0yb77bFKrdP83NmBSy3lSYq9YgmZRWnPP302PLb1AOcSba4roiW5FFAPDeJ6dlKR
+         U6Culc/bf1C86kErCjisA3h8wMucLw9o/EcZcn97XxgDCuZp7Lq2Sj0GGE6tf158ESW4
+         eCcRFbDmT4QjxrZMlkqbn/pND7oASaUs83aZeBYWqqErArssLRQ5LtUlh0Kb8CyLhWqR
+         zG/A==
+X-Forwarded-Encrypted: i=1; AJvYcCXk3dba9N3HY7phhWlsFWSh+6uVDeWnLwRZEky9L9FPAeqCmydrBjnV7pTfRVf6bHv9t1E=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyC4DOVObC8NuESa7855gcvBAweIA2FTItIWKkn8beZOfCM7Txn
+	JpPlk8xazkQeRh6DvMwMMSfe/yOHbrYG5rP6V1MgC9iVJwyJ0wHWyMtSC73VrudOLNdO1+f1uma
+	zmWMxAA==
+X-Received: from pfbbk2.prod.google.com ([2002:aa7:8302:0:b0:7fa:f279:2d1d])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:4b15:b0:829:8e38:65f
+ with SMTP id d2e1a72fcca58-8298e380cebmr1843029b3a.8.1772730768467; Thu, 05
+ Mar 2026 09:12:48 -0800 (PST)
+Date: Thu,  5 Mar 2026 09:08:23 -0800
+In-Reply-To: <20260225005950.3739782-1-yosry@kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-References: <20260224225017.3303870-1-yosry@kernel.org>
+References: <20260225005950.3739782-1-yosry@kernel.org>
 X-Mailer: git-send-email 2.53.0.473.g4a7958ca14-goog
-Message-ID: <177272744743.1549777.12918725553146045215.b4-ty@google.com>
-Subject: Re: [PATCH] KVM: nSVM: Ensure AVIC is inhibited when restoring a vCPU
- to guest mode
+Message-ID: <177272749875.1550510.3992327395685137590.b4-ty@google.com>
+Subject: Re: [PATCH v3 0/8] KVM: nSVM: Save/restore fixes for (Next)RIP
 From: Sean Christopherson <seanjc@google.com>
 To: Sean Christopherson <seanjc@google.com>, Yosry Ahmed <yosry@kernel.org>
-Cc: Paolo Bonzini <pbonzini@redhat.com>, Jim Mattson <jmattson@google.com>, 
-	Maxim Levitsky <mlevitsk@redhat.com>, kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	stable@vger.kernel.org
+Cc: Paolo Bonzini <pbonzini@redhat.com>, kvm@vger.kernel.org, linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="utf-8"
 
-On Tue, 24 Feb 2026 22:50:17 +0000, Yosry Ahmed wrote:
-> On nested VMRUN, KVM ensures AVIC is inhibited by requesting
-> KVM_REQ_APICV_UPDATE, triggering a check of inhibit reasons, finding
-> APICV_INHIBIT_REASON_NESTED, and disabling AVIC.
+On Wed, 25 Feb 2026 00:59:42 +0000, Yosry Ahmed wrote:
+> This is a combined v3 of series [1] and v2 of series [2], as patch 1
+> here is a dependency of patch 5. Without patch 1, NextRIP is not sync'd
+> correctly to the cache, and restoring it for a guest without NRIPS is a
+> bug.
 > 
-> However, when KVM_SET_NESTED_STATE is performed on a vCPU not in guest
-> mode with AVIC enabled, KVM_REQ_APICV_UPDATE is not requested, and AVIC
-> is not inhibited.
+> The series fixes two classes of save/restore bugs:
+> - Some fields written by the CPU are not sync'd from vmcb02 to cached
+>   vmcb12 after VMRUN, so are not up-to-date in KVM_GET_NESTED_STATE
+>   payload (fixes in patches 1 & 2, tests in patches 3 & 4).
+> - Ordering between KVM_SET_NESTED_STATE and KVM_SET_{S}REGS could cause
+>   vmcb02 to be incorrectly initialized after save+restore (fixes in
+>   patches 5 to 7).
 > 
 > [...]
 
-Applied to kvm-x86 nested, thanks!
+Applied to kvm-x86 nested, with the mess of fixups.  Thanks!
 
-[1/1] KVM: nSVM: Ensure AVIC is inhibited when restoring a vCPU to guest mode
-      https://github.com/kvm-x86/linux/commit/24f7d36b824b
+[1/8] KVM: nSVM: Sync NextRIP to cached vmcb12 after VMRUN of L2
+      https://github.com/kvm-x86/linux/commit/778d8c1b2a6f
+[2/8] KVM: nSVM: Sync interrupt shadow to cached vmcb12 after VMRUN of L2
+      https://github.com/kvm-x86/linux/commit/03bee264f8eb
+[3/8] KVM: selftests: Extend state_test to check vGIF
+      https://github.com/kvm-x86/linux/commit/2303ca26fbb0
+[4/8] KVM: selftests: Extend state_test to check next_rip
+      https://github.com/kvm-x86/linux/commit/e5cdd34b5f74
+[5/8] KVM: nSVM: Always use NextRIP as vmcb02's NextRIP after first L2 VMRUN
+      https://github.com/kvm-x86/linux/commit/8d397582f6b5
+[6/8] KVM: nSVM: Delay stuffing L2's current RIP into NextRIP until vCPU run
+      https://github.com/kvm-x86/linux/commit/a0592461f39c
+[7/8] KVM: nSVM: Delay setting soft IRQ RIP tracking fields until vCPU run
+      https://github.com/kvm-x86/linux/commit/c64bc6ed1764
+[8/8] DO NOT MERGE: KVM: selftests: Reproduce nested RIP restore bug
+      (DROP - your wish is my command)
 
 --
 https://github.com/kvm-x86/linux/tree/next
