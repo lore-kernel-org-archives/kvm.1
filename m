@@ -1,48 +1,48 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D9243EBF16;
-	Thu,  5 Mar 2026 17:44:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.17
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C805A3E8C6F;
+	Thu,  5 Mar 2026 17:44:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.15
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772732681; cv=none; b=FzdCKFrFEiAFdTG5FpX1GX5PEut+AQPpmSvbnIxtsw8VE+5Qjs6JLlp5JMZtWd9o3eBRxL5Mfei6yBefTMxr8uyslWadOdBoPlpeyAotvekeLNgKJ1G/20UuNOt6dOp3UWeylcAreKM2SzfDaqNChK7PTS9BVL768eiHlfuqeQY=
+	t=1772732681; cv=none; b=Ox69a8mSFPBja8bxUs/JKGtv2T8es2ue7fEFX9k7mkO3wB2umN0Df1+PDbz/s2FQ0EW9xx5Z3TU+3vPRnD70+GJ42kOTusnbPnW50W6gAx0DQZAXHRuLqmCjpJMCciC9kAaX4Ma3lFRQheUr/TBQFJtxId2O/Otn5rGFQsYrTjs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1772732681; c=relaxed/simple;
-	bh=wXZavH4PFskMoph6+sp6WaxRRQcx0bbNdaC4hw/pmB4=;
+	bh=kSruFzXc1Zum96mNVfzSPzNRNnCqz3iLxx8kTs52I20=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Q882GOgIdQgR+rbqczYUo1UjlFvKvR4dne0yksYyKifyj6IXbSTIDGzSsyPvKD0Rqu2yrcin9l1xB/Eq92GZ0bcrr337LiuuIS50d4X3NGvCRyjZlPLbCn0kyxAM/aT4+kFMkr62Kc+OSpH7fIe0Zln5EOGgkvpTCvaXKlDPgJI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=eoyDarV2; arc=none smtp.client-ip=198.175.65.17
+	 MIME-Version; b=ZA3RrgQVztSqSsdAYiXq8ZMGCumZiD60VeUd5Q+yn11v2LNFyDwJmVJNBdRCi1ajtl1Pda5pMPzGg0mGkFIMWiYU3LIeZVM5u+un9ItAiVRXM96tiqH16THziQ3K3HKxjJBnTLju1iE56lefHJnDvLFI6PSgZUCKyON3MuXI2WM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=aaxebCE3; arc=none smtp.client-ip=198.175.65.15
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="eoyDarV2"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="aaxebCE3"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1772732679; x=1804268679;
+  t=1772732678; x=1804268678;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=wXZavH4PFskMoph6+sp6WaxRRQcx0bbNdaC4hw/pmB4=;
-  b=eoyDarV2OLTIfADJCUFEb81SSJ72XfEtR3JlXjltIaIA0SgsITFwCMXr
-   /yy4siHBTwtfzUFf8O6AJejVJTl4ma8N8F6+EzV6Gm/XAZvNp2/z930F6
-   FaU+jWq5VLijvPHXIluMa/dcf6UqMPiZkKKe3Rmk8E/wzyJis1Lg3dByU
-   x6i+4eDKLU6titT6OLwpfQVAEyVduYfvlPBn31G8yyFTMVlZMACegDbyI
-   vQPqWpGI5PrDKoGgjP+AIFWDb+OheMtQ1Q8V/DnjV5E8xqrYpTFnpCj6U
-   h+m2O0jGmyB0FVLtsJ0lOIzNH0c7pipzIERi/yv8350e8Q6n9KhucwhDB
+  bh=kSruFzXc1Zum96mNVfzSPzNRNnCqz3iLxx8kTs52I20=;
+  b=aaxebCE3Jgjh4qp24adqSiUimOWtF/91MEyLyp3vZLz+qykFKfJlHxJe
+   jko723CLK8OD5whKdiD2moc9ioe5TDbk92KhRfx7iQfyJQmFljs6AyE7/
+   DI+AxhKfwu3iiIPN3oVEvTQC+beiNBCZJTYh7huOQD7d8Itoyg3PmW4ev
+   VHg+DscCIsvY82RYKRorAZ8SruTcpTNYYXxS/wfYRq5L7XImEdIDyKvgs
+   TFVBB9rJKyKSUjKehhSsSguHPYgE5lBi09WACYY2z7Ik31P+adJF55Osf
+   31Stal62FqkGXl8YhjaDGigM7tMqHAxa9vbyam2gYwJc6wi2oJWu593lF
    A==;
-X-CSE-ConnectionGUID: oByQ+lkAS8SUgwwJrq2DKA==
-X-CSE-MsgGUID: ShUYAmOhQuGh/EetOk9gpA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11720"; a="73798235"
+X-CSE-ConnectionGUID: Wtr4i5GYRUKIE4T0+ZjTPA==
+X-CSE-MsgGUID: PiiHdOHRQ8OEx+0nRGbDOg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11720"; a="77431570"
 X-IronPort-AV: E=Sophos;i="6.23,103,1770624000"; 
-   d="scan'208";a="73798235"
-Received: from fmviesa006.fm.intel.com ([10.60.135.146])
-  by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Mar 2026 09:44:39 -0800
-X-CSE-ConnectionGUID: 0Zoys+SbT2Kfet9GNXhITQ==
-X-CSE-MsgGUID: WHXnxA1STpucYuiqLWfsgA==
+   d="scan'208";a="77431570"
+Received: from fmviesa005.fm.intel.com ([10.60.135.145])
+  by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Mar 2026 09:44:37 -0800
+X-CSE-ConnectionGUID: 49uCp5y9Q3eDjhM4KFggQg==
+X-CSE-MsgGUID: MvTPDXUKRr6v8ZY0d9jMaQ==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.23,103,1770624000"; 
-   d="scan'208";a="215527274"
+   d="scan'208";a="223447871"
 Received: from mdroper-mobl2.amr.corp.intel.com (HELO localhost) ([10.124.220.244])
-  by fmviesa006-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Mar 2026 09:44:39 -0800
+  by fmviesa005-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Mar 2026 09:44:36 -0800
 From: isaku.yamahata@intel.com
 To: kvm@vger.kernel.org
 Cc: isaku.yamahata@intel.com,
@@ -50,9 +50,9 @@ Cc: isaku.yamahata@intel.com,
 	Paolo Bonzini <pbonzini@redhat.com>,
 	Sean Christopherson <seanjc@google.com>,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH v2 17/36] KVM: nVMX: Add VM entry checks related to APIC timer virtualization
-Date: Thu,  5 Mar 2026 09:43:57 -0800
-Message-ID: <daaf78a433b9e7448cc06da787225fb6b801ff2e.1772732517.git.isaku.yamahata@intel.com>
+Subject: [PATCH v2 11/36] KVM: nVMX: Add alignment check for struct vmcs12
+Date: Thu,  5 Mar 2026 09:43:51 -0800
+Message-ID: <7112ca5bb871e809e469aa03b586f8b220d2d827.1772732517.git.isaku.yamahata@intel.com>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <cover.1772732517.git.isaku.yamahata@intel.com>
 References: <cover.1772732517.git.isaku.yamahata@intel.com>
@@ -66,33 +66,29 @@ Content-Transfer-Encoding: 8bit
 
 From: Isaku Yamahata <isaku.yamahata@intel.com>
 
-Add checks of VMX controls for APIC timer virtualization on VM entries.
-
-The spec adds some checks on VMX controls related to the APIC timer
-virtualization on VM entry.
+As struct vmcs12 has __packed attributes and it has manual alignment,
+it's easy to add unaligned member without any warnings.  Add alignment
+check to avoid accidental misalignment.
 
 Signed-off-by: Isaku Yamahata <isaku.yamahata@intel.com>
 ---
- arch/x86/kvm/vmx/nested.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ arch/x86/kvm/vmx/vmcs12.h | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/arch/x86/kvm/vmx/nested.c b/arch/x86/kvm/vmx/nested.c
-index 3f1318736205..65f7260d02df 100644
---- a/arch/x86/kvm/vmx/nested.c
-+++ b/arch/x86/kvm/vmx/nested.c
-@@ -3069,6 +3069,12 @@ static int nested_check_vm_execution_controls(struct kvm_vcpu *vcpu,
- 	    CC(!vmcs12->tsc_multiplier))
- 		return -EINVAL;
+diff --git a/arch/x86/kvm/vmx/vmcs12.h b/arch/x86/kvm/vmx/vmcs12.h
+index 21cd1b75e4fd..8c9d4c22b960 100644
+--- a/arch/x86/kvm/vmx/vmcs12.h
++++ b/arch/x86/kvm/vmx/vmcs12.h
+@@ -217,7 +217,8 @@ struct __packed vmcs12 {
+  * although appending fields and/or filling gaps is obviously allowed.
+  */
+ #define CHECK_OFFSET(field, loc) \
+-	ASSERT_STRUCT_OFFSET(struct vmcs12, field, loc)
++	ASSERT_STRUCT_OFFSET(struct vmcs12, field, loc);		\
++	static_assert(loc % __alignof(((struct vmcs12 *)0)->field) == 0)
  
-+	if (nested_cpu_has_guest_apic_timer(vmcs12) &&
-+	    (CC(!nested_cpu_has_vid(vmcs12)) ||
-+	     CC(nested_cpu_has(vmcs12, CPU_BASED_RDTSC_EXITING)) ||
-+	     CC(vmcs12->virtual_timer_vector > 255)))
-+		return -EINVAL;
-+
- 	return 0;
- }
- 
+ static inline void vmx_check_vmcs12_offsets(void)
+ {
 -- 
 2.45.2
 
