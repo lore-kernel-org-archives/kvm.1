@@ -1,62 +1,58 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 848F447DFA8;
-	Thu,  5 Mar 2026 17:45:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.12
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0DEAD3E7161
+	for <kvm@vger.kernel.org>; Thu,  5 Mar 2026 17:47:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.12
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772732707; cv=none; b=BB5njfHgQk5CxpPAw8mOz4TxuMk1Z02wITM4W84gVNkSEWKCiegpsFUtkjTOlZeKFXGIL88NbOtPslB+Hnvohzlt3wHxXATab3/TcOsvtzm5VWtYUv9LnYAlN/JDfgnApiUPAGjLmN45yfkk75YxG2iy+WXwUflxcXWYmYKPM0U=
+	t=1772732876; cv=none; b=cBUGrw9Ac25RuIHbJ59Yyp19gnRK4Cc21ugqkv5pKctxyb33hX89fL3PUhxIhvOQKVwK43RmwJMLoKl6FG7e9zYYN8liVsZCW2TWgqz1B8f/p+B2K0+YaSn0PJSugaaWgeDrtASZjn+mQ7Xzck7uTHS4owybyvIZBrKzQmW3BLM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772732707; c=relaxed/simple;
-	bh=kQ0CuBb7Q7+35jEaO5dVDxI7MgYm7NKrH5dxieMJ5jk=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BfzMMvvzLk9TByytTRzxmlQfkz7PFWrLOYZ1WKb8hCUgtVJwib9flyy87SBJeRinVzpvKYU+uWlIvUs2ws1AmVdu2O5BoupUzV3Ux9FPcpxem69LWDo310jBUQ2FqNfutHyZW6fHXcC+Z/yesOC0PnBRsDlX3I+fpHAqTZ8R5BA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=CN7l5v3e; arc=none smtp.client-ip=198.175.65.12
+	s=arc-20240116; t=1772732876; c=relaxed/simple;
+	bh=jJBvYBi6+iqjWfkOB3CFyeZTZOFIIPxoF3NXT7Ialoc=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=mIUECR8nZBlKrDvoOgywPOOJIFbYPwkKDvbiKHqm+jDx8nIVgupnaqB3/bdIuHlzITubp7MwQHLITljwBCZWBQQvdpfV6jJyPx8c3Q3NZxP+NJ4h51TjxQXPB+VnooRGbGEVuk2AFK5IkwgcIG2R6IhMFRYp+Xx6wF1qFcDDxv4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=OkNL5QNo; arc=none smtp.client-ip=192.198.163.12
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="CN7l5v3e"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="OkNL5QNo"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1772732705; x=1804268705;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=kQ0CuBb7Q7+35jEaO5dVDxI7MgYm7NKrH5dxieMJ5jk=;
-  b=CN7l5v3ethOPoYwBb9MCNgbAk4r5aX5BE6MfjXH0zYZWIDxoTmZiQAPN
-   MoxnZjHcbER48NgmE0aDlLrMj5OWMSSWvItRimjmVYmJEFx4i48t3TEan
-   q3Y+8RfRouBfGaoApBsOBeV4yxEusPPjNTrndKiIBhRdtEAQhc6CNHmt9
-   ONna7ZWRMT5XOqb4zubJFyrxYnhqjcR3N5UvXb9J6rzHk7Egz/i/0TGgX
-   2Nqbuy5mKLHwVu36p3kexu4nm+ow/Qi1SPoUd3LmZ47X+n6V2PNrhj8dl
-   Y3Mh/LLqiX4Yzv3jZx3NDe6FoyS+RRta3bTfq8Uy6VHJwKOqF01NAYFe6
-   A==;
-X-CSE-ConnectionGUID: aV0DfMm6SayrTMpN9HL6tQ==
-X-CSE-MsgGUID: otYmvnnzSo6PLWPFmgXsdQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11720"; a="85301990"
+  t=1772732875; x=1804268875;
+  h=from:to:cc:subject:date:message-id:reply-to:mime-version:
+   content-transfer-encoding;
+  bh=jJBvYBi6+iqjWfkOB3CFyeZTZOFIIPxoF3NXT7Ialoc=;
+  b=OkNL5QNoyHrizXjGruh09SwKOY9Pn9LhfWnGlr3sqKQpaNClHtTsshfD
+   uqoutNOx9w4zaUEUDC94/B/6S6Im30V19oCtweKkhujTqQMTSipOJVabI
+   nM0y9mqntfo3EA2lWL+DOnYjWJuLFzQJZq5Q3AcUvezsuJgYvQS4zN06o
+   XUgTD0WbU9vvrnW0f57S0td1C+F6qN1j1Ks17uF1s6MF461RnbXDNK534
+   b5ggaF4BJF+E9SJHH7/+KMG19jUvu8csTPbdknpOja8ofSfE9kQ3z3b9u
+   d5Sw/P3bQhFivG561Ham3Pbd+ZtoNntFUE9C4hBm9qdwqjtemW/gULUg4
+   w==;
+X-CSE-ConnectionGUID: 5VCTgRQdSByed5tVBZDZ+Q==
+X-CSE-MsgGUID: g5bpviPxR3SRglyyu3RwwA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11720"; a="77701392"
 X-IronPort-AV: E=Sophos;i="6.23,103,1770624000"; 
-   d="scan'208";a="85301990"
-Received: from orviesa003.jf.intel.com ([10.64.159.143])
-  by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Mar 2026 09:44:56 -0800
-X-CSE-ConnectionGUID: xxhPB5U8S6OGiz1F5I2KUA==
-X-CSE-MsgGUID: WCLlac57QqiMSE0Q+unE+w==
+   d="scan'208";a="77701392"
+Received: from orviesa001.jf.intel.com ([10.64.159.141])
+  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Mar 2026 09:47:55 -0800
+X-CSE-ConnectionGUID: Z/T+IqvBS62KZywv2ER8mw==
+X-CSE-MsgGUID: dQBExEHzQ5mxYnIQrkTQ1w==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.23,103,1770624000"; 
-   d="scan'208";a="222896557"
+   d="scan'208";a="256648746"
 Received: from mdroper-mobl2.amr.corp.intel.com (HELO localhost) ([10.124.220.244])
-  by ORVIESA003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Mar 2026 09:44:55 -0800
+  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Mar 2026 09:47:54 -0800
 From: isaku.yamahata@intel.com
 To: kvm@vger.kernel.org
 Cc: isaku.yamahata@intel.com,
 	isaku.yamahata@gmail.com,
 	Paolo Bonzini <pbonzini@redhat.com>,
-	Sean Christopherson <seanjc@google.com>,
-	linux-kernel@vger.kernel.org,
-	syzbot+ci66a37fb2e2f8de71@syzkaller.appspotmail.com
-Subject: [PATCH v2 35/36] KVM: selftests: Test VMX apic timer virt with inkernel apic disable
-Date: Thu,  5 Mar 2026 09:44:15 -0800
-Message-ID: <d4195a040c68667c9a86b810b8375dfa17539a92.1772732517.git.isaku.yamahata@intel.com>
+	Sean Christopherson <seanjc@google.com>
+Subject: [PATCH v2 1/2] x86: apic, vmexit: Replace NOP with CPUID to serialize deadline timer
+Date: Thu,  5 Mar 2026 09:47:52 -0800
+Message-ID: <f7e98f7d5a21375ad584004db94e0d34806c4840.1772678359.git.isaku.yamahata@intel.com>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <cover.1772732517.git.isaku.yamahata@intel.com>
-References: <cover.1772732517.git.isaku.yamahata@intel.com>
+Reply-To: 7acdd9974effabe5dc461aa755eacf9fb0697467.1770116601.git.isaku.yamahata@intel.com
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -67,207 +63,90 @@ Content-Transfer-Encoding: 8bit
 
 From: Isaku Yamahata <isaku.yamahata@intel.com>
 
-Add a test case to excercize APIC timer virtuliazation support with
-inkernel APIC disabled as Syzbot reported GP fault if inkernel APIC is
-disabled.
+Fix apic and vmexit test cases to pass with APIC timer virtualization by
+replacing the NOP instruction with the CPUID instruction, a serializing
+instruction.  Use CPUID instead of the SERIALIZE instruction for simplicity
+because SERIALIZE is not universally available, but CPUID is.
 
-Reported-by: syzbot+ci66a37fb2e2f8de71@syzkaller.appspotmail.com
+apic and vmexit test cases use "wrmsr(TSCDEADLINE, past value); nop"
+sequence to cause the deadline timer to fire immediately at the NOP
+instruction.  It's not guaranteed because wrmsr(TSCDEADLINE) isn't a
+serializing instruction according to SDM [1].  With APIC timer
+virtualization enabled, those tests can fail.  It worked before because KVM
+intercepts wrmsr(TSCDEADLINE).  KVM doesn't intercept it with APIC timer
+virtualization enabled.
+
+[1] From SDM 3a Serializing intructions
+  An execution of WRMSR to any non-serializing MSR is not
+  serializing. Non-serializing MSRs include the following: IA32_SPEC_CTRL
+  MSR (MSR index 48H), IA32_PRED_CMD MSR (MSR index 49H), IA32_TSX_CTRL MSR
+  (MSR index 122H), IA32_TSC_DEADLINE MSR (MSR index 6E0H), IA32_PKRS MSR
+  (MSR index 6E1H), IA32_HWP_REQUEST MSR (MSR index 774H), or any of the
+  x2APIC MSRs (MSR indices 802H to 83FH).
+
+Suggested-by: Sean Christopherson <seanjc@google.com>
 Signed-off-by: Isaku Yamahata <isaku.yamahata@intel.com>
 --
 Changes v1 -> v2:
-- Newly added.
+- Introduce wrmsr_tscdeadline_serialize().
+- use cpuid(0, 0) instread of serialize instruction.
 ---
- tools/testing/selftests/kvm/Makefile.kvm      |   1 +
- .../kvm/x86/vmx_tertiary_ctls_test.c          | 168 ++++++++++++++++++
- 2 files changed, 169 insertions(+)
- create mode 100644 tools/testing/selftests/kvm/x86/vmx_tertiary_ctls_test.c
+ lib/x86/processor.h | 10 ++++++++++
+ x86/apic.c          |  3 +--
+ x86/vmexit.c        |  3 +--
+ 3 files changed, 12 insertions(+), 4 deletions(-)
 
-diff --git a/tools/testing/selftests/kvm/Makefile.kvm b/tools/testing/selftests/kvm/Makefile.kvm
-index 424ae9a56481..928b665f8086 100644
---- a/tools/testing/selftests/kvm/Makefile.kvm
-+++ b/tools/testing/selftests/kvm/Makefile.kvm
-@@ -148,6 +148,7 @@ TEST_GEN_PROGS_x86 += x86/aperfmperf_test
- TEST_GEN_PROGS_x86 += x86/timer_latency
- TEST_GEN_PROGS_x86 += x86/vmx_apic_timer_virt_test
- TEST_GEN_PROGS_x86 += x86/vmx_apic_timer_virt_vmcs_test
-+TEST_GEN_PROGS_x86 += x86/vmx_tertiary_ctls_test
- TEST_GEN_PROGS_x86 += access_tracking_perf_test
- TEST_GEN_PROGS_x86 += coalesced_io_test
- TEST_GEN_PROGS_x86 += dirty_log_perf_test
-diff --git a/tools/testing/selftests/kvm/x86/vmx_tertiary_ctls_test.c b/tools/testing/selftests/kvm/x86/vmx_tertiary_ctls_test.c
-new file mode 100644
-index 000000000000..9ef120e00d6d
---- /dev/null
-+++ b/tools/testing/selftests/kvm/x86/vmx_tertiary_ctls_test.c
-@@ -0,0 +1,168 @@
-+// SPDX-License-Identifier: GPL-2.0-only
-+/*
-+ * VMX tertiary controls test
-+ *
-+ * Copyright (C) 2026 Intel Corporation
-+ */
-+#include "kvm_util.h"
-+#include "vmx.h"
-+
-+static bool has_guest_apic_timer_virt = true;
-+#define TIMER_VECTOR	0xec
-+
-+#define L2_GUEST_STACK_SIZE 64
-+static unsigned long l2_guest_stack[L2_GUEST_STACK_SIZE];
-+
-+static void l2_guest_code(void)
+diff --git a/lib/x86/processor.h b/lib/x86/processor.h
+index 42dd2d2a4787..7255e515f548 100644
+--- a/lib/x86/processor.h
++++ b/lib/x86/processor.h
+@@ -1085,6 +1085,16 @@ static inline void wrtsc(u64 tsc)
+ 	wrmsr(MSR_IA32_TSC, tsc);
+ }
+ 
++static inline void wrmsr_tscdeadline_serialize(u64 deadline)
 +{
-+	vmcall();
++	wrmsr(MSR_IA32_TSCDEADLINE, deadline);
 +
-+	/* L1 stops L2 vcpu at above vmcall(). */
-+	GUEST_FAIL("L2 should not reach here.");
-+}
-+
-+static void setup_l2(struct vmx_pages *vmx_pages)
-+{
-+	uint64_t ctls;
-+
-+	GUEST_ASSERT(prepare_for_vmx_operation(vmx_pages));
-+	GUEST_ASSERT(load_vmcs(vmx_pages));
-+	prepare_vmcs(vmx_pages, l2_guest_code,
-+		     &l2_guest_stack[L2_GUEST_STACK_SIZE]);
-+
-+	GUEST_ASSERT(!vmread(PIN_BASED_VM_EXEC_CONTROL, &ctls));
-+	ctls |= PIN_BASED_EXT_INTR_MASK;
-+	GUEST_ASSERT(!vmwrite(PIN_BASED_VM_EXEC_CONTROL, ctls));
-+
-+	GUEST_ASSERT(!vmread(CPU_BASED_VM_EXEC_CONTROL, &ctls));
-+	ctls |= CPU_BASED_USE_MSR_BITMAPS | CPU_BASED_TPR_SHADOW |
-+		CPU_BASED_ACTIVATE_SECONDARY_CONTROLS;
-+	ctls |= CPU_BASED_ACTIVATE_TERTIARY_CONTROLS;
-+	GUEST_ASSERT(!vmwrite(CPU_BASED_VM_EXEC_CONTROL, ctls));
-+
-+	GUEST_ASSERT(!vmread(SECONDARY_VM_EXEC_CONTROL, &ctls));
-+	ctls |= SECONDARY_EXEC_VIRTUALIZE_X2APIC_MODE |
-+		SECONDARY_EXEC_APIC_REGISTER_VIRT |
-+		SECONDARY_EXEC_VIRTUAL_INTR_DELIVERY;
-+	GUEST_ASSERT(!vmwrite(SECONDARY_VM_EXEC_CONTROL, ctls));
-+
-+	GUEST_ASSERT(!vmread(TERTIARY_VM_EXEC_CONTROL, &ctls));
-+	ctls |= TERTIARY_EXEC_GUEST_APIC_TIMER;
 +	/*
-+	 * vmwrite() succeeds even if unsuported bit is set.
-+	 * follwoing vmenter will fail instead.
++	 * Use the CPUID instruction to serialize because the SERIALZE
++	 * instruction is not universally available.
 +	 */
-+	GUEST_ASSERT(!vmwrite(TERTIARY_VM_EXEC_CONTROL, ctls));
-+
-+	if (has_guest_apic_timer_virt) {
-+		GUEST_ASSERT(!vmwrite(GUEST_DEADLINE_VIR, 0));
-+		GUEST_ASSERT(!vmwrite(GUEST_DEADLINE_PHY, 0));
-+		GUEST_ASSERT(!vmwrite(GUEST_APIC_TIMER_VECTOR, TIMER_VECTOR));
-+	} else {
-+		GUEST_ASSERT(vmwrite(GUEST_DEADLINE_VIR, 0));
-+		GUEST_ASSERT(vmwrite(GUEST_DEADLINE_PHY, 0));
-+		GUEST_ASSERT(vmwrite(GUEST_APIC_TIMER_VECTOR, TIMER_VECTOR));
-+	}
++	raw_cpuid(0, 0);
 +}
-+
-+static void l1_guest_code(struct vmx_pages *vmx_pages)
-+{
-+	/* Prepare the VMCS for L2 execution. */
-+	setup_l2(vmx_pages);
-+
-+	/* Run L2 */
-+	if (!has_guest_apic_timer_virt) {
-+		uint64_t ctls3;
-+
-+		GUEST_ASSERT(vmlaunch());
-+
-+		GUEST_ASSERT(!vmread(TERTIARY_VM_EXEC_CONTROL, &ctls3));
-+		ctls3 &= ~TERTIARY_EXEC_GUEST_APIC_TIMER;
-+		GUEST_ASSERT(!vmwrite(TERTIARY_VM_EXEC_CONTROL, ctls3));
-+	}
-+	GUEST_ASSERT(!vmlaunch());
-+	GUEST_ASSERT(vmreadz(VM_EXIT_REASON) == EXIT_REASON_VMCALL);
-+
-+	GUEST_DONE();
-+}
-+
-+static void vmx_tertiary_controls_test(void)
-+{
-+	uint64_t ctls, ctls3, r;
-+	struct kvm_vcpu *vcpu;
-+	vm_vaddr_t guest_gva;
-+	struct kvm_vm *vm;
-+	bool done;
-+
-+	vm = vm_create_with_one_vcpu(&vcpu, l1_guest_code);
-+	vcpu_alloc_vmx(vm, &guest_gva);
-+	vcpu_args_set(vcpu, 1, guest_gva);
-+
-+	ctls = vcpu_get_msr(vcpu, MSR_IA32_VMX_TRUE_PROCBASED_CTLS);
-+	ctls |= (uint64_t)CPU_BASED_ACTIVATE_TERTIARY_CONTROLS << 32;
-+	vcpu_set_msr(vcpu, MSR_IA32_VMX_TRUE_PROCBASED_CTLS, ctls);
-+
-+	ctls3 = vcpu_get_msr(vcpu, MSR_IA32_VMX_PROCBASED_CTLS3);
-+	ctls3 |= TERTIARY_EXEC_GUEST_APIC_TIMER;
-+
-+	r = _vcpu_set_msr(vcpu, MSR_IA32_VMX_PROCBASED_CTLS3, ctls3);
-+	if (has_guest_apic_timer_virt)
-+		TEST_ASSERT_MSR(r == 1,
-+			       "KVM_SET_MSR on %s failed value = 0x%lx",
-+				MSR_IA32_VMX_PROCBASED_CTLS3,
-+				"MSR_IA32_VMX_PROCBASED_CTLS3",
-+				ctls3);
-+	else {
-+		TEST_ASSERT_MSR(r != 1,
-+				"KVM_SET_MSR on %s should fail value = 0x%lx",
-+				MSR_IA32_VMX_PROCBASED_CTLS3,
-+				"MSR_IA32_VMX_PROCBASED_CTLS3",
-+				ctls3);
-+	}
-+	sync_global_to_guest(vm, has_guest_apic_timer_virt);
-+
-+	done = false;
-+	while (!done) {
-+		struct ucall uc;
-+
-+		vcpu_run(vcpu);
-+		TEST_ASSERT_KVM_EXIT_REASON(vcpu, KVM_EXIT_IO);
-+
-+		switch (get_ucall(vcpu, &uc)) {
-+		case UCALL_ABORT:
-+			REPORT_GUEST_ASSERT(uc);
-+			/* NOT REACHED */
-+		case UCALL_DONE:
-+			done = true;
-+			break;
-+		default:
-+			TEST_ASSERT(false, "Unknown ucall %lu", uc.cmd);
-+		}
-+	}
-+
-+	kvm_vm_free(vm);
-+}
-+
-+int main(void)
-+{
-+	union vmx_ctrl_msr ctls;
-+	uint64_t ctls3;
-+
-+	TEST_REQUIRE(kvm_cpu_has(X86_FEATURE_VMX));
-+
-+	ctls.val = kvm_get_feature_msr(MSR_IA32_VMX_TRUE_PROCBASED_CTLS);
-+	TEST_REQUIRE(ctls.clr & CPU_BASED_ACTIVATE_TERTIARY_CONTROLS);
-+
-+	ctls3 = kvm_get_feature_msr(MSR_IA32_VMX_PROCBASED_CTLS3);
-+	has_guest_apic_timer_virt = ctls3 & TERTIARY_EXEC_GUEST_APIC_TIMER;
-+
-+	disable_inkernel_irqchip = false;
-+	vmx_tertiary_controls_test();
-+
-+	/* nested apic timer virtualization requires in-kernel apic */
-+	disable_inkernel_irqchip = true;
-+	has_guest_apic_timer_virt = false;
-+	vmx_tertiary_controls_test();
-+
-+	return 0;
-+}
+ 
+ static inline void invlpg(volatile void *va)
+ {
+diff --git a/x86/apic.c b/x86/apic.c
+index 0a52e9a45f1c..4c9659626911 100644
+--- a/x86/apic.c
++++ b/x86/apic.c
+@@ -34,8 +34,7 @@ static void __test_tsc_deadline_timer(void)
+ {
+ 	handle_irq(TSC_DEADLINE_TIMER_VECTOR, tsc_deadline_timer_isr);
+ 
+-	wrmsr(MSR_IA32_TSCDEADLINE, rdmsr(MSR_IA32_TSC));
+-	asm volatile ("nop");
++	wrmsr_tscdeadline_serialize(rdmsr(MSR_IA32_TSC));
+ 	report(tdt_count == 1, "tsc deadline timer");
+ 	report(rdmsr(MSR_IA32_TSCDEADLINE) == 0, "tsc deadline timer clearing");
+ }
+diff --git a/x86/vmexit.c b/x86/vmexit.c
+index 5296ed38aa34..1b675c00f930 100644
+--- a/x86/vmexit.c
++++ b/x86/vmexit.c
+@@ -436,8 +436,7 @@ static int has_tscdeadline(void)
+ 
+ static void tscdeadline_immed(void)
+ {
+-	wrmsr(MSR_IA32_TSCDEADLINE, rdtsc());
+-	asm volatile("nop");
++	wrmsr_tscdeadline_serialize(rdtsc());
+ }
+ 
+ static void tscdeadline(void)
+
+base-commit: 86e53277ac80dabb04f4fa5fa6a6cc7649392bdc
 -- 
 2.45.2
 
