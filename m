@@ -1,81 +1,86 @@
-Received: from mail.zytor.com (terminus.zytor.com [198.137.202.136])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f202.google.com (mail-pl1-f202.google.com [209.85.214.202])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0DEF2215075;
-	Thu,  5 Mar 2026 17:10:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.137.202.136
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3EF7E3CE4A0
+	for <kvm@vger.kernel.org>; Thu,  5 Mar 2026 17:10:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.202
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772730605; cv=none; b=dhMHDiplVXLQpbXOwO5o2QN2KS6Vb+hY20HeY4RnA4JzwzAj5E5AxOszxUTeZO74hWi8juxSLT8NZx4NK5Zp/YvRI7sCyWavA8Dh/UFG+oOmghnTaZLc6c68dHwBLyCC9asg7z9GnzBImLK5AMWN2BSyao4iRGpG+pAUy4q9u/A=
+	t=1772730606; cv=none; b=A4uHo9ZYcwz7DMuy91sUlHfRO1HIUhkXmpIVmmgse3+XH9/Smz3Vzdm4XAh/RkP/aqVHVdafo33Tny9FTHU4D+qfnuzpWGwDL63R47UbAlj4cEJFrJg2t6/azh59U+l4tq3e/T1/0S6axlvZqmVZGVCmo6PotYh2L6jf0jqGQ8k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772730605; c=relaxed/simple;
-	bh=RfT0f7vWA2mrexhTtUJsQeiXxCqLubDPU4wLv5jwW1M=;
-	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
-	 Message-Id:References:To; b=joOnADr4SIH/BjDiMB3IMGP4u8pXxRQIjXZggHxO5yJtYiDmQBvJosFCoktghCHJN7BTXudeuNIKjSO0l2Jpm53KzH2pLDiJi3mVAELwQCEJ4zST3lER0+jPjz/LkpZFksgNgejk1KjgkShOGlEptLoPElM9aqHd9G0NMkFUDR0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zytor.com; spf=pass smtp.mailfrom=zytor.com; dkim=pass (2048-bit key) header.d=zytor.com header.i=@zytor.com header.b=aM7XMe3Y; arc=none smtp.client-ip=198.137.202.136
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zytor.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=zytor.com
+	s=arc-20240116; t=1772730606; c=relaxed/simple;
+	bh=L3RYSu1T2N19K0U1xTMmiGCiOFUx1IC/oSSIOr8cyKE=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=TUMIJdrRd1HaGySdi1OpYuJ3wj1oHHC7pdaGVhP4VoBX7BUOgLyVcsBEH2kXLisTfMRN0mj/ZQTM3ezpl84/YUtr+Zn/k/wt4j7ftdG5CnEppNN2PCKFYdHJbdc2v3pfYW09Bt/9LnNWHsUmUYdiKmdZ/UFnk65mRuiRCMSRtZI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Juu/zVXj; arc=none smtp.client-ip=209.85.214.202
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=zytor.com header.i=@zytor.com header.b="aM7XMe3Y"
-Received: from smtpclient.apple (c-24-130-165-117.hsd1.ca.comcast.net [24.130.165.117])
-	(authenticated bits=0)
-	by mail.zytor.com (8.18.1/8.17.1) with ESMTPSA id 625H9J2E3494905
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NO);
-	Thu, 5 Mar 2026 09:09:19 -0800
-DKIM-Filter: OpenDKIM Filter v2.11.0 mail.zytor.com 625H9J2E3494905
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=zytor.com;
-	s=2026022301; t=1772730560;
-	bh=+1y5MvbjQL4jaYiB+MHx6KKMMG1bQpE5wCYGmarD9Uw=;
-	h=Subject:From:In-Reply-To:Date:Cc:References:To:From;
-	b=aM7XMe3Y1sDknDpx0TJimpHX98NwEYNxWVd4j87Ona8HCjHxe7L1Y4b6XVAX38GG8
-	 dzFjxQGPCM+CAU9lUIfO+46rErEm9n62AdC5z6Sy0c+eLgSlI7tUzMcRTF9wylya58
-	 xeMtJ5iDNklEFF+iYkqP4qsc0gUWS9qVLvAbjYGoGtVCgMHVVwIeOuGgH3PCUuYXvh
-	 vdyXB75RCZ9CxLEEJvVq5UWV9aWA7Nu7tc29yBrjvArTZcI7MI9Rhp9QVTnu5P/zs8
-	 gcWZua364pcUWcFdjvl5f/K9NEWyinOsouZquUlXAEa8Td449AmNuKgE/7WqmO/YOh
-	 0mdE1R0cqFDxA==
-Content-Type: text/plain;
-	charset=utf-8
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Juu/zVXj"
+Received: by mail-pl1-f202.google.com with SMTP id d9443c01a7336-2ae3f446ccfso51330965ad.2
+        for <kvm@vger.kernel.org>; Thu, 05 Mar 2026 09:10:05 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1772730604; x=1773335404; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=JJ+V04ocRWIJudwBCiZNPVDH3Kw+t4jmYStMiZHQYXQ=;
+        b=Juu/zVXjgJLfcgeeHd6JGCg4yoU3+sz2x5QJzT1++sjHkIePvF90wpekxCKqY+RrO1
+         cF1ZW7rxkBzJgMw/CCRKGQEcpAx0vM320mkvQgjyt/el/AUeJfamNvNeWdG8vRYbQ2mE
+         DfwvHZYbz7xKRJN96QDsUyhy6RBqNVjBfGb6y2lZwmvF5A7ZvZBA3ss5U5UfqQzO4NQi
+         kX9a+i2/lcKBdfLwTNkuN5p5NTrJQbZdJ4/L3GsDQM5jEvyPXU4TFm3OPUAH64W9broo
+         mCi3yrpjPUG6apn/FUKFchS6NIhA5l0uNJ1AK0ARU+7KcoIVo6yScnSl30fOICd5cLNb
+         QZRA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1772730604; x=1773335404;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=JJ+V04ocRWIJudwBCiZNPVDH3Kw+t4jmYStMiZHQYXQ=;
+        b=GctusS4asBbv8HhyaCFzihCQvnCBIeNa3AQgywAAk5ykte+vMCb2cjpmNy76VbHDPz
+         JEbT9qZ1e5Wbid/FEvB1geGZ0brBK/O8Vh5Sbgq8lnK3R59Nef3e2tcIrVCqO1nQtZBm
+         YpIiH5ZFb09jU1VYHaV9tmktPzu0zBXdqb8ydsAjWUn7hvYnCuKXGOu2h4B7ciK18O1L
+         s51oPbcPVqm6oIMnPpFizuxkpHp4PRia2KIYvZ9n21bVhD60WBZa6h15QPpcUvRruogd
+         9cPJpsDqQOhF3IHig8hL2QqiUifqq49JrYQx7ycUCwkZlhvnoC0MiemIOG91llTiudlt
+         oiog==
+X-Gm-Message-State: AOJu0Yz/fZZo9sD7Cciqes5s4h34D3pnwCXnOZjOEAW/f3fWPOT3WF18
+	hnbUs+wdmmKLH0OQYjqYfveDP83f4xP9rE+nt+okkOw2ECojgilyAF0+T0G1HeeUG5c2C/SfJAT
+	DiuCR0Q==
+X-Received: from plrd24.prod.google.com ([2002:a17:902:aa98:b0:2ae:4655:2b3b])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:903:190:b0:2a0:8ca7:69de
+ with SMTP id d9443c01a7336-2ae6ab1f727mr65695835ad.41.1772730604332; Thu, 05
+ Mar 2026 09:10:04 -0800 (PST)
+Date: Thu,  5 Mar 2026 09:07:43 -0800
+In-Reply-To: <20260302170239.596810-1-seanjc@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3864.400.21\))
-Subject: Re: [PATCH v9 15/22] KVM: x86: Mark CR4.FRED as not reserved
-From: Xin Li <xin@zytor.com>
-In-Reply-To: <aamisPkG1JZ2UDdQ@google.com>
-Date: Thu, 5 Mar 2026 09:09:08 -0800
-Cc: Chao Gao <chao.gao@intel.com>, linux-kernel@vger.kernel.org,
-        kvm@vger.kernel.org, linux-doc@vger.kernel.org, pbonzini@redhat.com,
-        corbet@lwn.net, tglx@linutronix.de, mingo@redhat.com, bp@alien8.de,
-        dave.hansen@linux.intel.com, x86@kernel.org, hpa@zytor.com,
-        luto@kernel.org, peterz@infradead.org, andrew.cooper3@citrix.com,
-        hch@infradead.org, sohil.mehta@intel.com
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <B07CDF1A-1FD2-4EC5-BEB3-3D906A880153@zytor.com>
-References: <20251026201911.505204-1-xin@zytor.com>
- <20251026201911.505204-16-xin@zytor.com> <aR1xNLrhqEWu+rmE@intel.com>
- <aajVJlU2Zg4Djqqz@google.com>
- <263F364B-D516-40B3-B065-A5369BFB1A7F@zytor.com>
- <aamisPkG1JZ2UDdQ@google.com>
-To: Sean Christopherson <seanjc@google.com>
-X-Mailer: Apple Mail (2.3864.400.21)
+Mime-Version: 1.0
+References: <20260302170239.596810-1-seanjc@google.com>
+X-Mailer: git-send-email 2.53.0.473.g4a7958ca14-goog
+Message-ID: <177273035456.1571669.11141510645130203244.b4-ty@google.com>
+Subject: Re: [PATCH v2] Documentation: KVM: Formalizing taking vcpu->mutex
+ *outside* of kvm->slots_lock
+From: Sean Christopherson <seanjc@google.com>
+To: Sean Christopherson <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>
+Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	Marc Zyngier <maz@kernel.org>, Oliver Upton <oupton@kernel.org>
+Content-Type: text/plain; charset="utf-8"
 
+On Mon, 02 Mar 2026 09:02:39 -0800, Sean Christopherson wrote:
+> Explicitly document the ordering of vcpu->mutex being taken *outside* of
+> kvm->slots_lock.  While somewhat unintuitive since vCPUs conceptually have
+> narrower scope than VMs, the scope of the owning object (vCPU versus VM)
+> doesn't automatically carry over to the lock.  In this case, vcpu->mutex
+> has far broader scope than kvm->slots_lock.  As Paolo put it, it's a
+> "don't worry about multiple ioctls at the same time" mutex that's intended
+> to be taken at the outer edges of KVM.
+> 
+> [...]
 
->> I planned to send out these new kvm unit tests (not just FRED tests) =
-after
->> KVM FRED patch series gets merged.
->=20
-> Definitely send them before.  Even if no one outside of Intel can run =
-them (I
-> forget when FRED hardware is coming), people like me can at least see =
-what you're
-> testing, which makes it more likely that we'll spot bugs.  E.g. in =
-this case, the
-> lack of negative tests for CR4.FRED is a big red flag.
+Applied to kvm-x86 generic.
 
-No excuse, sadly mk_cr_64() completely escaped my notice.
+[1/1] Documentation: KVM: Formalizing taking vcpu->mutex *outside* of kvm->slots_lock
+      https://github.com/kvm-x86/linux/commit/f8211e95dfda
 
-And I didn=E2=80=99t even think about adding a CR4 test for FRED.
-
-And as you expected, the happy path doesn=E2=80=99t expose it at all.
-
+--
+https://github.com/kvm-x86/linux/tree/next
