@@ -1,46 +1,46 @@
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 918263E5ECA;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5BF6D3E5592;
 	Thu,  5 Mar 2026 17:44:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.15
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772732677; cv=none; b=LC6d5PyaPS/+gF+Xcx+AyWS0UIjrEYdbRnPWhixp18aRCuu2Rc9kuSEYa0+or6fzFD8LumvYpGYKEHiz1iW+jQIlzwlU7O2rZBJ0funviL7/n9ziI+MkDPiwA/ykqL2Cl+40GewMBytaEbA+iHDlWTW0L7vfxmhQu7RLogg9No0=
+	t=1772732677; cv=none; b=A789GpREYRKniVXyBEFcabspUcaThwVYBScnsS6xONofE4GYeWJzjNICyF22CVuv0JnOkeGkwqUjliF3CEbJxFD4oQJNWrCaAIw/ppJSUsXfSI/l/wWDCNCteo572tLo/00gBvus2Ji5B7mOYtfvVABSmd9owprgLF8KXzNf2rI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1772732677; c=relaxed/simple;
-	bh=08yovv4kHpvB18sUdnUiqahcaPf2xrtmKjUIG/qy/84=;
+	bh=xB2Kfqn84lfYRfoS8Qtq4/aK7PLAYxPYq1braCsQrkg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=b6XUQc0ni/SyB6LmJAaYgxCRDX6az0sjrH2s5Nw4MIvK+uLNCECjoEBfbzcig274uBKQK8/V8WzMBN1aRa9YC2XS4u5akmtUscZPFakEETJID1HGtyH7bO5t62eISSGk2Yk/ZjbEF1UJ/F79+9ZK4Cc9//OCjkV4ySQb7TVO+k8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=SSWES8Ww; arc=none smtp.client-ip=198.175.65.15
+	 MIME-Version; b=bsXVhwrn1xHJgXlUKmR0BvdIri6Zyk0br8nB4NBWteSHal5Nni0zJrW+Mo2kkGLUQfHlQW9sLoI6mlsRABw9PKbRzCh0MvuKbXdscgHophdGPqmo8M1HxgcwdbDIid6PPQMxP0Inq3gdr4DEiLDArzjIQN+cSv/EVX2ZnemZr2Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=KgLSfh+5; arc=none smtp.client-ip=198.175.65.15
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="SSWES8Ww"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="KgLSfh+5"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
   t=1772732676; x=1804268676;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=08yovv4kHpvB18sUdnUiqahcaPf2xrtmKjUIG/qy/84=;
-  b=SSWES8Ww4Clo0LpVrJPeppuqfJ3npcjGJmthzO2k6CkMCnenLl20OUCm
-   h66wvXNWgngkeVhPRlxCaIW7X2eOnJBQUnckQ8wIA2pbGJWhNO1Uw82yG
-   72SNtya3soYFdK2F+l4U/SIkIlSernoqq+fdSiuK3+HFLHLho1oGDCLZp
-   nfmNLyovH545wC8VHGaPd1uupEr10Z6/mbKjzCBMigMLs3IHej0G0r2fG
-   5fBFuyl8fGFyNP7Hpj+5sFHv3kfwNACnX/32MS1iWe/fbUE/T6/rQi3Rd
-   qGwSPtL3rFndZy3rRx6KmsmOrfLJ5X/skHl7Ixw9osnRnLHZoKgg75jls
-   A==;
-X-CSE-ConnectionGUID: Letf9nEZT5Cgw+fY5c/9Dw==
-X-CSE-MsgGUID: oWzqppd0QGqPP/UIfvgaWw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11720"; a="77431558"
+  bh=xB2Kfqn84lfYRfoS8Qtq4/aK7PLAYxPYq1braCsQrkg=;
+  b=KgLSfh+5g2rsvt3fKV9ie2JxlKEefudeeiIQ0PiyR4gJ9l2M/h+fQwqt
+   uT0xduG67JArRAzHe2oCnYbEQlM5C8dsmhXe7yrvALIcI9lakxwLzF1Et
+   Y1V2IPoBdecDGmW1mR3a1VW1iwB2/uETCO1GLJCafVP8qs5/cm27sGuuO
+   5rWY7gUjK+PajEFm4fqBYYkCGSCzjTvIifzYBTDzd/RsbwyXe92WG2Q3i
+   hzIjBz2dOxya3Wf8kpP/6sAGNm0FmN+XacuovOiavQ+/g4Q/dN9h5aJw7
+   hnyCCNdyD35rZgxCCO1uejtrNEmQlqsDmGv7WM6mo5HGhGknA+U489wTl
+   Q==;
+X-CSE-ConnectionGUID: NT/W91gxRSahBVFInqsTcA==
+X-CSE-MsgGUID: afFbghvJR5KfawJRPNwPxw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11720"; a="77431548"
 X-IronPort-AV: E=Sophos;i="6.23,103,1770624000"; 
-   d="scan'208";a="77431558"
+   d="scan'208";a="77431548"
 Received: from fmviesa005.fm.intel.com ([10.60.135.145])
-  by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Mar 2026 09:44:35 -0800
-X-CSE-ConnectionGUID: J7zvM55GTB2ZQKjv5n9KSQ==
-X-CSE-MsgGUID: 9Cgu3wgjTF2q9alRznE3iw==
+  by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Mar 2026 09:44:34 -0800
+X-CSE-ConnectionGUID: dXOB0RGwRHCLoBCHodR6cw==
+X-CSE-MsgGUID: 768vz48QRYKESR4DVzZsPw==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.23,103,1770624000"; 
-   d="scan'208";a="223447857"
+   d="scan'208";a="223447850"
 Received: from mdroper-mobl2.amr.corp.intel.com (HELO localhost) ([10.124.220.244])
   by fmviesa005-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Mar 2026 09:44:34 -0800
 From: isaku.yamahata@intel.com
@@ -49,11 +49,10 @@ Cc: isaku.yamahata@intel.com,
 	isaku.yamahata@gmail.com,
 	Paolo Bonzini <pbonzini@redhat.com>,
 	Sean Christopherson <seanjc@google.com>,
-	linux-kernel@vger.kernel.org,
-	Yang Zhong <yang.zhong@linux.intel.com>
-Subject: [PATCH v2 06/36] KVM: VMX: Implement the hooks for VMX guest virtual deadline timer
-Date: Thu,  5 Mar 2026 09:43:46 -0800
-Message-ID: <865b011e272dce6995119cbe41cdbd367bc2d8ad.1772732517.git.isaku.yamahata@intel.com>
+	linux-kernel@vger.kernel.org
+Subject: [PATCH v2 04/36] KVM: x86/lapic: Wire DEADLINE MSR update to guest virtual TSC deadline
+Date: Thu,  5 Mar 2026 09:43:44 -0800
+Message-ID: <3f740669e391708e4420d91bd7f7d61a40b84463.1772732517.git.isaku.yamahata@intel.com>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <cover.1772732517.git.isaku.yamahata@intel.com>
 References: <cover.1772732517.git.isaku.yamahata@intel.com>
@@ -65,192 +64,40 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: Yang Zhong <yang.zhong@linux.intel.com>
+From: Isaku Yamahata <isaku.yamahata@intel.com>
 
-Implement the hooks for the VMX backend for APIC timer virtualization to
-access the related VMCS fields.
+Wire userpace read/write (KVM_GET_MSRS, KVM_SET_MSRS) of TSCDEADLINE MSR to
+the vendor backend to update the VMCS field of GUEST TSCDEADLINE and
+GUEST TSCDEADLINE shadow.
 
-Signed-off-by: Yang Zhong <yang.zhong@linux.intel.com>
-Co-developed-by: Isaku Yamahata <isaku.yamahata@intel.com>
 Signed-off-by: Isaku Yamahata <isaku.yamahata@intel.com>
 ---
-Changes:
-v1 -> v2:
-Move kvm_cpu_apicv_active() before kvm_lapic_lvtt_timer_mode() as
-it checks in-kernel apic check.
----
- arch/x86/kvm/lapic.h            |  5 ++
- arch/x86/kvm/vmx/capabilities.h |  6 +++
- arch/x86/kvm/vmx/main.c         |  5 ++
- arch/x86/kvm/vmx/vmx.c          | 83 ++++++++++++++++++++++++++++++++-
- arch/x86/kvm/vmx/x86_ops.h      |  5 ++
- 5 files changed, 103 insertions(+), 1 deletion(-)
+ arch/x86/kvm/lapic.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/arch/x86/kvm/lapic.h b/arch/x86/kvm/lapic.h
-index 5e96299c31f7..2f510503f5b3 100644
---- a/arch/x86/kvm/lapic.h
-+++ b/arch/x86/kvm/lapic.h
-@@ -237,6 +237,11 @@ static inline int kvm_lapic_latched_init(struct kvm_vcpu *vcpu)
- 	return lapic_in_kernel(vcpu) && test_bit(KVM_APIC_INIT, &vcpu->arch.apic->pending_events);
+diff --git a/arch/x86/kvm/lapic.c b/arch/x86/kvm/lapic.c
+index ab59722e291e..10aa7040686f 100644
+--- a/arch/x86/kvm/lapic.c
++++ b/arch/x86/kvm/lapic.c
+@@ -2802,6 +2802,10 @@ u64 kvm_get_lapic_tscdeadline_msr(struct kvm_vcpu *vcpu)
+ 	if (!kvm_apic_present(vcpu) || !apic_lvtt_tscdeadline(apic))
+ 		return 0;
+ 
++	if (apic->lapic_timer.apic_virt_timer_in_use)
++		apic->lapic_timer.tscdeadline =
++			kvm_x86_call(get_guest_tsc_deadline_virt)(vcpu);
++
+ 	return apic->lapic_timer.tscdeadline;
  }
  
-+static inline int kvm_lapic_lvtt_timer_mode(struct kvm_vcpu *vcpu)
-+{
-+	return vcpu->arch.apic->lapic_timer.timer_mode;
-+}
-+
- bool kvm_apic_pending_eoi(struct kvm_vcpu *vcpu, int vector);
+@@ -2814,6 +2818,8 @@ void kvm_set_lapic_tscdeadline_msr(struct kvm_vcpu *vcpu, u64 data)
  
- bool kvm_lapic_suppress_eoi_broadcast(struct kvm_lapic *apic);
-diff --git a/arch/x86/kvm/vmx/capabilities.h b/arch/x86/kvm/vmx/capabilities.h
-index 4e371c93ae16..c5cb098f579b 100644
---- a/arch/x86/kvm/vmx/capabilities.h
-+++ b/arch/x86/kvm/vmx/capabilities.h
-@@ -90,6 +90,12 @@ static inline bool cpu_has_vmx_preemption_timer(void)
- 		PIN_BASED_VMX_PREEMPTION_TIMER;
+ 	hrtimer_cancel(&apic->lapic_timer.timer);
+ 	apic->lapic_timer.tscdeadline = data;
++	if (apic->lapic_timer.apic_virt_timer_in_use)
++		kvm_x86_call(set_guest_tsc_deadline_virt)(vcpu, data);
+ 	start_apic_timer(apic);
  }
- 
-+static inline bool cpu_has_vmx_apic_timer_virt(void)
-+{
-+	return vmcs_config.cpu_based_3rd_exec_ctrl &
-+		TERTIARY_EXEC_GUEST_APIC_TIMER;
-+}
-+
- static inline bool cpu_has_vmx_posted_intr(void)
- {
- 	return vmcs_config.pin_based_exec_ctrl & PIN_BASED_POSTED_INTR;
-diff --git a/arch/x86/kvm/vmx/main.c b/arch/x86/kvm/vmx/main.c
-index dbebddf648be..ed20c859def3 100644
---- a/arch/x86/kvm/vmx/main.c
-+++ b/arch/x86/kvm/vmx/main.c
-@@ -994,6 +994,11 @@ struct kvm_x86_ops vt_x86_ops __initdata = {
- #ifdef CONFIG_X86_64
- 	.set_hv_timer = vt_op(set_hv_timer),
- 	.cancel_hv_timer = vt_op(cancel_hv_timer),
-+	.can_use_apic_virt_timer = vmx_can_use_apic_virt_timer,
-+	.set_apic_virt_timer = vmx_set_apic_virt_timer,
-+	.cancel_apic_virt_timer = vmx_cancel_apic_virt_timer,
-+	.set_guest_tsc_deadline_virt = vmx_set_guest_tsc_deadline_virt,
-+	.get_guest_tsc_deadline_virt = vmx_get_guest_tsc_deadline_virt,
- #endif
- 
- 	.setup_mce = vt_op(setup_mce),
-diff --git a/arch/x86/kvm/vmx/vmx.c b/arch/x86/kvm/vmx/vmx.c
-index 4ccb2e42322d..b70641bfecab 100644
---- a/arch/x86/kvm/vmx/vmx.c
-+++ b/arch/x86/kvm/vmx/vmx.c
-@@ -2802,7 +2802,8 @@ static int setup_vmcs_config(struct vmcs_config *vmcs_conf,
- 					      & ~TERTIARY_EXEC_GUEST_APIC_TIMER,
- 					      MSR_IA32_VMX_PROCBASED_CTLS3);
- 
--	if (!(_cpu_based_2nd_exec_control & SECONDARY_EXEC_VIRTUAL_INTR_DELIVERY))
-+	if (!IS_ENABLED(CONFIG_X86_64) ||
-+	    !(_cpu_based_2nd_exec_control & SECONDARY_EXEC_VIRTUAL_INTR_DELIVERY))
- 		_cpu_based_3rd_exec_control &= ~TERTIARY_EXEC_GUEST_APIC_TIMER;
- 
- 	if (adjust_vmx_controls(KVM_REQUIRED_VMX_VM_EXIT_CONTROLS,
-@@ -8364,6 +8365,86 @@ void vmx_cancel_hv_timer(struct kvm_vcpu *vcpu)
- {
- 	to_vmx(vcpu)->hv_deadline_tsc = -1;
- }
-+
-+bool vmx_can_use_apic_virt_timer(struct kvm_vcpu *vcpu)
-+{
-+	if (vcpu->kvm->arch.vm_type != KVM_X86_DEFAULT_VM)
-+		return false;
-+
-+	return cpu_has_vmx_apic_timer_virt() &&
-+		/* SECONDARY_EXEC_VIRTUAL_INTR_DELIVERY and in-kernel apic */
-+		kvm_vcpu_apicv_active(vcpu) &&
-+		/* VMX guest virtual timer supports only TSC deadline mode. */
-+		kvm_lapic_lvtt_timer_mode(vcpu) == APIC_LVT_TIMER_TSCDEADLINE &&
-+		/* KVM doesn't use RDTSC existing. Safeguard. */
-+		!(exec_controls_get(to_vmx(vcpu)) & CPU_BASED_RDTSC_EXITING);
-+}
-+
-+void vmx_set_apic_virt_timer(struct kvm_vcpu *vcpu, u16 vector)
-+{
-+	vmcs_write16(GUEST_APIC_TIMER_VECTOR, vector);
-+	vmx_disable_intercept_for_msr(vcpu, MSR_IA32_TSC_DEADLINE, MSR_TYPE_RW);
-+	tertiary_exec_controls_setbit(to_vmx(vcpu), TERTIARY_EXEC_GUEST_APIC_TIMER);
-+}
-+
-+void vmx_cancel_apic_virt_timer(struct kvm_vcpu *vcpu)
-+{
-+	vmx_enable_intercept_for_msr(vcpu, MSR_IA32_TSC_DEADLINE, MSR_TYPE_RW);
-+	tertiary_exec_controls_clearbit(to_vmx(vcpu), TERTIARY_EXEC_GUEST_APIC_TIMER);
-+}
-+
-+static u64 vmx_calc_deadline_l1_to_host(struct kvm_vcpu *vcpu, u64 l1_tsc)
-+{
-+	u64 host_tsc_now = rdtsc();
-+	u64 l1_tsc_now = kvm_read_l1_tsc(vcpu, host_tsc_now);
-+	u64 host_tsc;
-+
-+	/* 0 means that timer is disarmed. */
-+	if (!l1_tsc)
-+		return 0;
-+
-+	host_tsc = l1_tsc - vcpu->arch.l1_tsc_offset;
-+	if (vcpu->arch.l1_tsc_scaling_ratio != kvm_caps.default_tsc_scaling_ratio)
-+		if (u64_shl_div_u64(l1_tsc,
-+				    kvm_caps.tsc_scaling_ratio_frac_bits,
-+				    vcpu->arch.l1_tsc_scaling_ratio,
-+				    &host_tsc))
-+			host_tsc = ~0ull;
-+
-+	/*
-+	 * Clamp the result on overflow.
-+	 * TSC deadline isn't supposed to overflow in practice.
-+	 * ~0ull is considered that the timer is armed, but won't fire in
-+	 * practical time frame.
-+	 */
-+	if (l1_tsc > l1_tsc_now && host_tsc <= host_tsc_now)
-+		host_tsc = ~0ull;
-+	/*
-+	 * Clamp the result on underflow.
-+	 * The past value means fire the timer immediately.
-+	 * Pick the obvious past value.
-+	 */
-+	if (l1_tsc <= l1_tsc_now && host_tsc > host_tsc_now)
-+		host_tsc = 1ull;
-+
-+	if (!host_tsc)
-+		host_tsc = 1ull;
-+
-+	return host_tsc;
-+}
-+
-+void vmx_set_guest_tsc_deadline_virt(struct kvm_vcpu *vcpu,
-+				     u64 guest_deadline_virt)
-+{
-+	vmcs_write64(GUEST_DEADLINE_VIR, guest_deadline_virt);
-+	vmcs_write64(GUEST_DEADLINE_PHY,
-+		     vmx_calc_deadline_l1_to_host(vcpu, guest_deadline_virt));
-+}
-+
-+u64 vmx_get_guest_tsc_deadline_virt(struct kvm_vcpu *vcpu)
-+{
-+	return vmcs_read64(GUEST_DEADLINE_VIR);
-+}
- #endif
- 
- void vmx_update_cpu_dirty_logging(struct kvm_vcpu *vcpu)
-diff --git a/arch/x86/kvm/vmx/x86_ops.h b/arch/x86/kvm/vmx/x86_ops.h
-index d09abeac2b56..364050e0427c 100644
---- a/arch/x86/kvm/vmx/x86_ops.h
-+++ b/arch/x86/kvm/vmx/x86_ops.h
-@@ -117,6 +117,11 @@ void vmx_update_cpu_dirty_logging(struct kvm_vcpu *vcpu);
- int vmx_set_hv_timer(struct kvm_vcpu *vcpu, u64 guest_deadline_tsc,
- 		     bool *expired);
- void vmx_cancel_hv_timer(struct kvm_vcpu *vcpu);
-+bool vmx_can_use_apic_virt_timer(struct kvm_vcpu *vcpu);
-+void vmx_set_apic_virt_timer(struct kvm_vcpu *vcpu, u16 vector);
-+void vmx_cancel_apic_virt_timer(struct kvm_vcpu *vcpu);
-+void vmx_set_guest_tsc_deadline_virt(struct kvm_vcpu *vcpu, u64 guest_deadline_tsc);
-+u64 vmx_get_guest_tsc_deadline_virt(struct kvm_vcpu *vcpu);
- #endif
- void vmx_setup_mce(struct kvm_vcpu *vcpu);
  
 -- 
 2.45.2
