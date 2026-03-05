@@ -1,99 +1,172 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
+Received: from mail.zytor.com (terminus.zytor.com [198.137.202.136])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 06C0227A916;
-	Thu,  5 Mar 2026 04:42:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.11
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 59A4013D891;
+	Thu,  5 Mar 2026 06:00:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.137.202.136
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772685748; cv=none; b=IpfSknXRBX87xjrc8ECR7GW84tsb34nlg8SvMM1ivOPR6klt2hMRbhtx8QlVpN2I8dkDzSCvpNuZGvrOyPB7YpbCNrsBbt68xd6s/RLE92j3Yj/j4BLPqt6GcGNXRD9s7w3c7pfMRUFqsAGmAsu5ds7mmNuNErFHmEagSVBrAIA=
+	t=1772690402; cv=none; b=WPzp00VT+8U3UkLBrEkCJSqTcwl7pkgTR4/XzmfEW2nz6Q81pKQlC/iN/uW6LSj4vYPpXs0EUtbg2OlMyI39Cc6KgNJ6ZO5wvz0/RnjCImxrcWE18OlzU+x2vEzeda9RB0x7ydkiQVx6BUzzOhawAUuWWM/Z4K2pysS/6EdkyeE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772685748; c=relaxed/simple;
-	bh=NLWgvlVt8wEdRkMYr465gb4yvlov99EASllX8462tlc=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=HpgAumVixqkZnTlb+ofxVpceAf69T4eFNy3h3b8nVorTd3NwHjdtv0UY99KkpEvJnsyjIjfHWjXc/ak0JROfZW1ZfV97NMUMM7mkPCx5bYYpwpgXuovvu2zqj7FOkFCb1tXSO9Qd5/JQnj+oS4VIA7O1JSHl/Wd6I3fQ7Uaun8M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=N9uLVvgf; arc=none smtp.client-ip=198.175.65.11
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+	s=arc-20240116; t=1772690402; c=relaxed/simple;
+	bh=kRl0dFzmzJVFvVrDPwTGJzGoVWZ8CXbDkZD9sYp1f38=;
+	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
+	 Message-Id:References:To; b=Qy7JOSrihaUx4DphJDW9pmNxj30tFcDR1J0jaVxlhu0+90JR567W4/1FRcOPAVSR32/y224HvGHwH5Vb0m1UBl0BNhwCrM3oiCzD0bm6nutEOgkitu/zkw1NvrX9rd7BxV+BO3/jmuEU3MC/FkET7uXuc5QZz0NprztjljDyYLo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zytor.com; spf=pass smtp.mailfrom=zytor.com; dkim=pass (2048-bit key) header.d=zytor.com header.i=@zytor.com header.b=SomfLdAg; arc=none smtp.client-ip=198.137.202.136
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zytor.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=zytor.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="N9uLVvgf"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1772685747; x=1804221747;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=NLWgvlVt8wEdRkMYr465gb4yvlov99EASllX8462tlc=;
-  b=N9uLVvgfAGz9Axh4+wVGqsWhgXpu0KGlhhaMrfifEqzdJTP+geylneFC
-   7AayY7tfHfdVjd3zP9L4deOo136caXm2oH6aLPtMrgrEOVjns92zTrUNR
-   rJnpRai/wgYSDyiDqz7UCxaHZTMeShBGjePOX4eozqzj35k+MwCB0w1ig
-   n8UltvbYJByHYiTMAYy7MTZvdOkpVWOyhLsj8stlBujELKrCu13JLeNx6
-   V5uFTJVKSxfVjUMnQLkVHx9fS4Fke3MoMjSCkbxglAQuGiG9iz933iQvx
-   x4M1SSPFS65Ue6NRWLVEJDvHnCKzLmGco3knZHh5shbm45hePBWVqAwmn
-   w==;
-X-CSE-ConnectionGUID: panqRKz5R5mVkGVdk/N2lA==
-X-CSE-MsgGUID: RhqEXcBhR92Gsw9pwfCsqg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11719"; a="84096919"
-X-IronPort-AV: E=Sophos;i="6.21,325,1763452800"; 
-   d="scan'208";a="84096919"
-Received: from orviesa008.jf.intel.com ([10.64.159.148])
-  by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Mar 2026 20:42:27 -0800
-X-CSE-ConnectionGUID: YcoNZ1GoRfiW8I1vhUQwkQ==
-X-CSE-MsgGUID: F2espSgKR8i2QJRW1tYOeg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,325,1763452800"; 
-   d="scan'208";a="218552335"
-Received: from yilunxu-optiplex-7050.sh.intel.com (HELO localhost) ([10.239.159.165])
-  by orviesa008.jf.intel.com with ESMTP; 04 Mar 2026 20:42:20 -0800
-Date: Thu, 5 Mar 2026 12:22:27 +0800
-From: Xu Yilun <yilun.xu@linux.intel.com>
-To: "Huang, Kai" <kai.huang@intel.com>
-Cc: "kvm@vger.kernel.org" <kvm@vger.kernel.org>,
-	"linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"Gao, Chao" <chao.gao@intel.com>, "x86@kernel.org" <x86@kernel.org>,
-	"dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>,
-	"tony.lindgren@linux.intel.com" <tony.lindgren@linux.intel.com>,
-	"binbin.wu@linux.intel.com" <binbin.wu@linux.intel.com>,
-	"seanjc@google.com" <seanjc@google.com>,
-	"kas@kernel.org" <kas@kernel.org>,
-	"Chatre, Reinette" <reinette.chatre@intel.com>,
-	"Verma, Vishal L" <vishal.l.verma@intel.com>,
-	"nik.borisov@suse.com" <nik.borisov@suse.com>,
-	"mingo@redhat.com" <mingo@redhat.com>,
-	"Weiny, Ira" <ira.weiny@intel.com>, "hpa@zytor.com" <hpa@zytor.com>,
-	"Annapurve, Vishal" <vannapurve@google.com>,
-	"sagis@google.com" <sagis@google.com>,
-	"Duan, Zhenzhong" <zhenzhong.duan@intel.com>,
-	"Edgecombe, Rick P" <rick.p.edgecombe@intel.com>,
-	"paulmck@kernel.org" <paulmck@kernel.org>,
-	"tglx@kernel.org" <tglx@kernel.org>,
-	"Williams, Dan J" <dan.j.williams@intel.com>,
-	"bp@alien8.de" <bp@alien8.de>
-Subject: Re: [PATCH v4 16/24] x86/virt/seamldr: Install a new TDX Module
-Message-ID: <aakFA6X74x+8tYGR@yilunxu-OptiPlex-7050>
-References: <20260212143606.534586-1-chao.gao@intel.com>
- <20260212143606.534586-17-chao.gao@intel.com>
- <6f1f835e27bef3462ae419906e25bd887eb8577b.camel@intel.com>
+	dkim=pass (2048-bit key) header.d=zytor.com header.i=@zytor.com header.b="SomfLdAg"
+Received: from smtpclient.apple (c-24-130-165-117.hsd1.ca.comcast.net [24.130.165.117])
+	(authenticated bits=0)
+	by mail.zytor.com (8.18.1/8.17.1) with ESMTPSA id 6255RIQs2343052
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NO);
+	Wed, 4 Mar 2026 21:27:18 -0800
+DKIM-Filter: OpenDKIM Filter v2.11.0 mail.zytor.com 6255RIQs2343052
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=zytor.com;
+	s=2026022301; t=1772688440;
+	bh=KA5gN2wC89NrKPDnrGFrieYaC050Cg169d1qgwroiwc=;
+	h=Subject:From:In-Reply-To:Date:Cc:References:To:From;
+	b=SomfLdAgQhI/vJVfqLfsic/psO4zSViGxGwX9XiWanqa1wF/QLw68781ii0LsTcRE
+	 qJkiUOdZ5AupVw9Ig1/cDsJc+9rcGobpAWzRxGUJvqFGjZ+fY8OaHZXojGH0gc0BBX
+	 9JJJOTJyqfecYZCYSQFM/nTj6X2EChZbkdNHkoH6SJLWln4ZKboSw2llOUxCsbHrMa
+	 oFWCi4YhORn9rosomWuuuupfhGXLuH2ldhT0KofMv9wJxmVjAhvLVyUqeTNUWr858U
+	 rsTZnIwg+H6oRBcdmTl6VNCJIa8nqzPsEzqw3s/0uLM7fro59ejCfbBSqllwOjypFu
+	 BA1f4u8zay5zg==
+Content-Type: text/plain;
+	charset=utf-8
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <6f1f835e27bef3462ae419906e25bd887eb8577b.camel@intel.com>
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3864.400.21\))
+Subject: Re: [PATCH v9 07/22] KVM: VMX: Initialize VMCS FRED fields
+From: Xin Li <xin@zytor.com>
+In-Reply-To: <aahchI7oiFrjFAmb@google.com>
+Date: Wed, 4 Mar 2026 21:27:07 -0800
+Cc: Binbin Wu <binbin.wu@linux.intel.com>, linux-kernel@vger.kernel.org,
+        kvm@vger.kernel.org, linux-doc@vger.kernel.org, pbonzini@redhat.com,
+        corbet@lwn.net, tglx@linutronix.de, mingo@redhat.com, bp@alien8.de,
+        dave.hansen@linux.intel.com, x86@kernel.org, hpa@zytor.com,
+        luto@kernel.org, peterz@infradead.org, andrew.cooper3@citrix.com,
+        chao.gao@intel.com, hch@infradead.org, sohil.mehta@intel.com
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <99463361-58F3-42F9-9BCC-4BF0BF73D247@zytor.com>
+References: <20251026201911.505204-1-xin@zytor.com>
+ <20251026201911.505204-8-xin@zytor.com>
+ <8731e234-22b8-4ccf-89ef-63feed09e9c5@linux.intel.com>
+ <aahchI7oiFrjFAmb@google.com>
+To: Sean Christopherson <seanjc@google.com>
+X-Mailer: Apple Mail (2.3864.400.21)
 
-> > -static int do_seamldr_install_module(void *params)
-> > +static int do_seamldr_install_module(void *seamldr_params)
-> 
-> Nit:
-> 
-> IMHO such renaming is just a noise to this patch, since in patch 10/11 it's
 
-Agree. Otherwise
 
-Reviewed-by: Xu Yilun <yilun.xu@linux.intel.com>
+> On Mar 4, 2026, at 8:23=E2=80=AFAM, Sean Christopherson =
+<seanjc@google.com> wrote:
+>=20
+> On Wed, Jan 21, 2026, Binbin Wu wrote:
+>> On 10/27/2025 4:18 AM, Xin Li (Intel) wrote:
+>>> diff --git a/arch/x86/kvm/vmx/vmx.c b/arch/x86/kvm/vmx/vmx.c
+>>> index fcfa99160018..c8b5359123bf 100644
+>>> --- a/arch/x86/kvm/vmx/vmx.c
+>>> +++ b/arch/x86/kvm/vmx/vmx.c
+>>> @@ -1459,6 +1459,15 @@ void vmx_vcpu_load_vmcs(struct kvm_vcpu =
+*vcpu, int cpu)
+>>>    (unsigned long)(cpu_entry_stack(cpu) + 1));
+>>> }
+>>>=20
+>>> + /* Per-CPU FRED MSRs */
+>=20
+> Meh, this is pretty self-explanatory code.
 
-> clear that the 'params' you passed in is seamldr_params.  No?
-> 
-> Perhaps just name it 'seamldr_params' at patch 11?
+I want to remind that this is =E2=80=9CPer-CPU=E2=80=9D.
+
+On the other side, FRED_CONFIG and FRED_STKLVLS are typically the same =
+on
+all CPUs, and they don=E2=80=99t need to be updated during vCPU =
+migration.
+
+But anyway vCPU migration only cares per-CPU MSRs, so this is redundant.
+
+It often bothers me whether to explain the code a bit more or not, with =
+a
+short brief comment or a lengthy one.
+
+>=20
+>>> + if (kvm_cpu_cap_has(X86_FEATURE_FRED)) {
+>>> +#ifdef CONFIG_X86_64
+>>=20
+>> Nit:
+>>=20
+>> Is this needed?
+>>=20
+>> FRED is initialized by X86_64_F(), if CONFIG_X86_64 is not enabled, =
+this
+>> path is not reachable.
+>> There should be no compilation issue without #ifdef CONFIG_X86_64 / =
+#endif.
+>>=20
+>> There are several similar patterns in this patch, using  #ifdef =
+CONFIG_X86_64 /=20
+>> #endif or not seems not consistent. E.g. __vmx_vcpu_reset() and =
+init_vmcs()
+>> doesn't check the config, but here does.
+>>=20
+>>> + vmcs_write64(HOST_IA32_FRED_RSP1, =
+__this_cpu_ist_top_va(ESTACK_DB));
+>>> + vmcs_write64(HOST_IA32_FRED_RSP2, =
+__this_cpu_ist_top_va(ESTACK_NMI));
+>>> + vmcs_write64(HOST_IA32_FRED_RSP3, =
+__this_cpu_ist_top_va(ESTACK_DF));
+>=20
+> IMO, this is flawed for other reasons.  KVM shouldn't be relying on =
+kernel
+> implementation details with respect to what FRED stack handles what =
+event.
+>=20
+> The simplest approach would be to read the actual MSR.  _If_ using a =
+per-CPU read
+> provides meaningful performance benefits over RDMSR (or RDMSR w/ =
+immediate?  I
+> don't see an API for that...), then have the kernel provide a =
+dedicated accessor.
+
+I think you asked for it:
+
+https://lore.kernel.org/kvm/ZmoWB_XtA0wR2K4Q@google.com/
+
+I assume fetching through per-CPU cache is fast, but I might have =
+misunderstood
+your suggestion.
+
+
+>=20
+> Then the accessor can be a non-inlined functions, and this code can be =
+e.g.:
+>=20
+> if (IS_ENABLED(CONFIG_X86_64) && kvm_cpu_cap_has(X86_FEATURE_FRED)) {
+> vmcs_write64(HOST_IA32_FRED_RSP1, fred_rsp(MSR_IA32_FRED_RSP1));
+> vmcs_write64(HOST_IA32_FRED_RSP2, fred_rsp(MSR_IA32_FRED_RSP2));
+> vmcs_write64(HOST_IA32_FRED_RSP3, fred_rsp(MSR_IA32_FRED_RSP2));
+> }
+>=20
+> where fred_rsp() is _declared_ unconditionally, but implemented only =
+for 64-bit.
+> That way the compiler will be happy, and the actual usage will be =
+dropped before
+> linking via dead-code elimination.
+
+If KVM can=E2=80=99t rely on kernel side implementation details, =
+fred_rsp() has to read
+directly from the corresponding MSRs, right?
+
+
+>=20
+> Actually, we can probably do one better?
+>=20
+> if (cpu_feature_enabled(X86_FEATURE_FRED) && =
+kvm_cpu_cap_has(X86_FEATURE_FRED)) {
+
+I think KVM now forces X86_FEATURE_FRED=3Dy, no?
+
+
