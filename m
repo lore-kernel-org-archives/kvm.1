@@ -1,87 +1,81 @@
-Received: from mail-pg1-f201.google.com (mail-pg1-f201.google.com [209.85.215.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail.zytor.com (terminus.zytor.com [198.137.202.136])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF78B3DBD6F
-	for <kvm@vger.kernel.org>; Thu,  5 Mar 2026 17:09:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0DEF2215075;
+	Thu,  5 Mar 2026 17:10:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.137.202.136
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772730568; cv=none; b=pK3EUNE+YV2GBowaDJG+p9K36+uGZr4dnV4LLAKzdU8t90kmlhGj30ebyUym2rI1DadqB2AFFQCLyF+tQ8ueRPhU5uDG1JrESep5/zM7EANUS2Bwja8ECST6FurB4cC9/q9FOIjvxyc3cwLV5cKA9ETAAtU821UfTspc5Q7QUuo=
+	t=1772730605; cv=none; b=dhMHDiplVXLQpbXOwO5o2QN2KS6Vb+hY20HeY4RnA4JzwzAj5E5AxOszxUTeZO74hWi8juxSLT8NZx4NK5Zp/YvRI7sCyWavA8Dh/UFG+oOmghnTaZLc6c68dHwBLyCC9asg7z9GnzBImLK5AMWN2BSyao4iRGpG+pAUy4q9u/A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772730568; c=relaxed/simple;
-	bh=IOxD4RMWl0XT1BquGevJUbg9V0DTPXIxl+uwM6zy6DM=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=NePNeD7CPsZKDs4QvXMIvRPO+4WzMKNrWrHEqBSAM4H23YhJzFihC0Ix7QJ8hYclyPQ3Z0WXl3CSHOwQuXZlnq0tpwzZRhk0+bmzYWjepIiwwFzgz1V7gQ7ivRy3Wzw/0YJSZw/1+zSlIEu3jnK60brZD4ZyjbL8JwtVOUyHzQc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=qkHZ4CXT; arc=none smtp.client-ip=209.85.215.201
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+	s=arc-20240116; t=1772730605; c=relaxed/simple;
+	bh=RfT0f7vWA2mrexhTtUJsQeiXxCqLubDPU4wLv5jwW1M=;
+	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
+	 Message-Id:References:To; b=joOnADr4SIH/BjDiMB3IMGP4u8pXxRQIjXZggHxO5yJtYiDmQBvJosFCoktghCHJN7BTXudeuNIKjSO0l2Jpm53KzH2pLDiJi3mVAELwQCEJ4zST3lER0+jPjz/LkpZFksgNgejk1KjgkShOGlEptLoPElM9aqHd9G0NMkFUDR0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zytor.com; spf=pass smtp.mailfrom=zytor.com; dkim=pass (2048-bit key) header.d=zytor.com header.i=@zytor.com header.b=aM7XMe3Y; arc=none smtp.client-ip=198.137.202.136
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zytor.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=zytor.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="qkHZ4CXT"
-Received: by mail-pg1-f201.google.com with SMTP id 41be03b00d2f7-c7387c70046so841179a12.0
-        for <kvm@vger.kernel.org>; Thu, 05 Mar 2026 09:09:27 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1772730567; x=1773335367; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=jvpCZZ0a9Yq+2yPdrdKB9QY+RilUr22l4yi9tVPddtU=;
-        b=qkHZ4CXTx+Kn3hle6nnUwY1Pdhho+2AMAirDWyKM+RernKDZB0bP+N/k90rExohiKh
-         OMfcIr8GCK/lz5WlXfYSJZOsH3iA4+yo0gcNIlyZ6knwUM0XOWrYlfsbxjMKVw9Mc5TS
-         UFCNVsRBiKULuHx/htUS2wsC54fM6mq7uOf7qdWSj2ADs/uGqcfltvUJ0lkJy1o4Mj2e
-         1qvWarKWoDaP4GXhWnfQw+qiolRKuuGRR8kXLGbATfi7/0O6K8tRwc2SzpX5dhCj3Yqr
-         zat6+tm73JC9dsLF05J+uvmYk4xyRLIa/FEtFhZW4qbt64ubrEchEzKUd6LuxMQYqX3W
-         x/Lw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1772730567; x=1773335367;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=jvpCZZ0a9Yq+2yPdrdKB9QY+RilUr22l4yi9tVPddtU=;
-        b=uX+noxcMxFmk7EIb5K/q3mmXbP+kbFk4ujgFT7lNgsvRVcdtErPF5X1p63p/g8iUjh
-         6bvgYLE2McUq9llFuH2bVrv10rAyLuvVzj8EOx0b7hWnAEot+Zjjozl91FxnZeW+lDS7
-         1M4A9eKBg1vz8L1ryHD6aUF14CWCRiG93vj+XDSEp9Q2lEp1wcV6UQDI4cz4fLTmQbgF
-         UyjISR4JbYh4aOFwiJzT1ptvEm1hlwxRIdrTZ1cLNXL2DlWgMKEfDOg15G1vQ7ib21N5
-         s1+770Vnkrpg4MHbjyV5yatkAotzQ1Q2dIuw3WI5g6ALf5VViGAKfEvloEffPcK3pSdH
-         Hzfw==
-X-Gm-Message-State: AOJu0YzvcWe1wlsyGE7jSsb6LNW0dc3aFpCFHI4eMqoOZmGygU0WbHwQ
-	MsWOFPFDNVTdLAWJStj1PSK+KAj/u9hY5V8ihwJQoGqI9bOXX/ccLg+WSu+ptCHs+hvyP3gAISq
-	ChnN8dw==
-X-Received: from pfjj9.prod.google.com ([2002:a05:6a00:2349:b0:829:9475:6dd])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:21c9:b0:824:36f8:3461
- with SMTP id d2e1a72fcca58-82972b67282mr5893351b3a.23.1772730566836; Thu, 05
- Mar 2026 09:09:26 -0800 (PST)
-Date: Thu,  5 Mar 2026 09:07:41 -0800
-In-Reply-To: <20260203190711.458413-1-seanjc@google.com>
+	dkim=pass (2048-bit key) header.d=zytor.com header.i=@zytor.com header.b="aM7XMe3Y"
+Received: from smtpclient.apple (c-24-130-165-117.hsd1.ca.comcast.net [24.130.165.117])
+	(authenticated bits=0)
+	by mail.zytor.com (8.18.1/8.17.1) with ESMTPSA id 625H9J2E3494905
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NO);
+	Thu, 5 Mar 2026 09:09:19 -0800
+DKIM-Filter: OpenDKIM Filter v2.11.0 mail.zytor.com 625H9J2E3494905
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=zytor.com;
+	s=2026022301; t=1772730560;
+	bh=+1y5MvbjQL4jaYiB+MHx6KKMMG1bQpE5wCYGmarD9Uw=;
+	h=Subject:From:In-Reply-To:Date:Cc:References:To:From;
+	b=aM7XMe3Y1sDknDpx0TJimpHX98NwEYNxWVd4j87Ona8HCjHxe7L1Y4b6XVAX38GG8
+	 dzFjxQGPCM+CAU9lUIfO+46rErEm9n62AdC5z6Sy0c+eLgSlI7tUzMcRTF9wylya58
+	 xeMtJ5iDNklEFF+iYkqP4qsc0gUWS9qVLvAbjYGoGtVCgMHVVwIeOuGgH3PCUuYXvh
+	 vdyXB75RCZ9CxLEEJvVq5UWV9aWA7Nu7tc29yBrjvArTZcI7MI9Rhp9QVTnu5P/zs8
+	 gcWZua364pcUWcFdjvl5f/K9NEWyinOsouZquUlXAEa8Td449AmNuKgE/7WqmO/YOh
+	 0mdE1R0cqFDxA==
+Content-Type: text/plain;
+	charset=utf-8
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20260203190711.458413-1-seanjc@google.com>
-X-Mailer: git-send-email 2.53.0.473.g4a7958ca14-goog
-Message-ID: <177273040930.1572436.340994491480957114.b4-ty@google.com>
-Subject: Re: [PATCH 0/2] KVM: SVM: Fix CR8 intercpetion woes with AVIC
-From: Sean Christopherson <seanjc@google.com>
-To: Sean Christopherson <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>
-Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	Jim Mattson <jmattson@google.com>, Naveen N Rao <naveen@kernel.org>, 
-	"Maciej S . Szmigiero" <maciej.szmigiero@oracle.com>
-Content-Type: text/plain; charset="utf-8"
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3864.400.21\))
+Subject: Re: [PATCH v9 15/22] KVM: x86: Mark CR4.FRED as not reserved
+From: Xin Li <xin@zytor.com>
+In-Reply-To: <aamisPkG1JZ2UDdQ@google.com>
+Date: Thu, 5 Mar 2026 09:09:08 -0800
+Cc: Chao Gao <chao.gao@intel.com>, linux-kernel@vger.kernel.org,
+        kvm@vger.kernel.org, linux-doc@vger.kernel.org, pbonzini@redhat.com,
+        corbet@lwn.net, tglx@linutronix.de, mingo@redhat.com, bp@alien8.de,
+        dave.hansen@linux.intel.com, x86@kernel.org, hpa@zytor.com,
+        luto@kernel.org, peterz@infradead.org, andrew.cooper3@citrix.com,
+        hch@infradead.org, sohil.mehta@intel.com
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <B07CDF1A-1FD2-4EC5-BEB3-3D906A880153@zytor.com>
+References: <20251026201911.505204-1-xin@zytor.com>
+ <20251026201911.505204-16-xin@zytor.com> <aR1xNLrhqEWu+rmE@intel.com>
+ <aajVJlU2Zg4Djqqz@google.com>
+ <263F364B-D516-40B3-B065-A5369BFB1A7F@zytor.com>
+ <aamisPkG1JZ2UDdQ@google.com>
+To: Sean Christopherson <seanjc@google.com>
+X-Mailer: Apple Mail (2.3864.400.21)
 
-On Tue, 03 Feb 2026 11:07:08 -0800, Sean Christopherson wrote:
-> Fix a bug (or rather, a class of bugs) where SVM leaves the CR8 write
-> intercept enabled after AVIC is enabled.  On its own, the dangling CR8
-> intercept is "just" a performance issue.  But combined with the TPR sync bug
-> fixed by commit d02e48830e3f ("KVM: SVM: Sync TPR from LAPIC into VMCB::V_TPR
-> even if AVIC is active"), the danging intercept is fatal to Windows guests as
-> the TPR seen by hardware gets wildly out of sync with reality.
-> 
-> [...]
 
-Applied to kvm-x86 fixes, thanks!
+>> I planned to send out these new kvm unit tests (not just FRED tests) =
+after
+>> KVM FRED patch series gets merged.
+>=20
+> Definitely send them before.  Even if no one outside of Intel can run =
+them (I
+> forget when FRED hardware is coming), people like me can at least see =
+what you're
+> testing, which makes it more likely that we'll spot bugs.  E.g. in =
+this case, the
+> lack of negative tests for CR4.FRED is a big red flag.
 
-[1/2] KVM: SVM: Initialize AVIC VMCB fields if AVIC is enabled with in-kernel APIC
-      https://github.com/kvm-x86/linux/commit/9071d0eb6955
-[2/2] KVM: SVM: Set/clear CR8 write interception when AVIC is (de)activated
-      https://github.com/kvm-x86/linux/commit/e992bf67bcba
+No excuse, sadly mk_cr_64() completely escaped my notice.
 
---
-https://github.com/kvm-x86/linux/tree/next
+And I didn=E2=80=99t even think about adding a CR4 test for FRED.
+
+And as you expected, the happy path doesn=E2=80=99t expose it at all.
+
