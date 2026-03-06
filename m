@@ -1,90 +1,115 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4BC034B18E;
-	Fri,  6 Mar 2026 09:57:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C3A91B4257;
+	Fri,  6 Mar 2026 10:16:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772791040; cv=none; b=qBYyQa+Gh+5o+W/b0LietsEhM/WYTqqgltB6mkjwX1rmhZrlBLwBLgypA3jZzOOn4flwR6/XhB3uHpKWjYSfuScy7jjcRa3zlH28tdbsB3SriCn3wYKj7ox8PsrMis/bz8xKtwR9J+aP+Pid+F0OBx1YkvGSeQOXftUYpVm3KlY=
+	t=1772792172; cv=none; b=Jc6jC98gMaNAZr5FLZHAShjkWRaTe9mQA9RdDq04ehNQP/F5c8RvWoY961d8nrY5sG/yMQB770BIuTfYE/FOw8HSlDSEcOFFOMzWVIImI7vEcbImucVemILHVHs+MzmjfvOfUxYTq39A5oZqEb7BTcgeYCWUHK4eu7JqfhlVjQQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772791040; c=relaxed/simple;
-	bh=pkUmUb2g7nlB5B4CBhLHrn/LJcujtm0BE3qbKB1dNzw=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=OVyUpg2f2Lx7jZC4mUmg5E7kGZ4ubUHc0nXnJ/vmBjYZ5cY8OF/E0XozYBOCgItNvnW8LjLoVR1OQbhE1ySGiRJxUKGPzLIQT0ugAnF/uTeG9rFxxKLLpkeKq+5p1XdTvdRDjVhUahP3IY+ytkaJvuGm3qlioX7GJDlzCe+bLUU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=sKS/oUlo; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1772792172; c=relaxed/simple;
+	bh=aN1f11VNXm8TEP7a6s26GhJ/SMe/0NluR98vebxUP6U=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=GPwbuUsCqhDw2BYmPdoJfAXdaTdlM5xma+ZywQ6zh/PQKfeXvyNSNP0GOOyhdb1laV9tVtpHgwIt2c7aR507WrW+FFu6kZ6PysIHrnuFPfC7/sWOBNCrcM9VDFBtMDL81RDv4jKj8P4b6yI+u2C8gypJWPFuj5aKIChemImJz48=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CHBI0MPc; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="sKS/oUlo"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA38CC19422;
-	Fri,  6 Mar 2026 09:57:18 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CHBI0MPc"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7A777C4CEF7;
+	Fri,  6 Mar 2026 10:16:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772791039;
-	bh=pkUmUb2g7nlB5B4CBhLHrn/LJcujtm0BE3qbKB1dNzw=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=sKS/oUlo15AAxdnctAxUwY2A1P2GQWdJK4gC1hid5Z0qldhSQiA/r9UWPt9d+eFMl
-	 5eFbKs0mKAYurXL1agu9sz6qDzBJ0i4Jcr+JNoieCv7QjaN+93GVXyF8cSGIVRm+zQ
-	 EBtSLT06ZjEPHbaRfYyFNaDQOzjoLX2Cwu6cVoi0SFlmoDABpyw/bw0lXXSbnR0sgZ
-	 zkmCq2VjSAVQ+2E+SVWJve839VfqrNBJombhWZWtCjIyC7jxWpgZL6+c0ZRNvG2OLn
-	 nyL+hpCk1272FRNnhcH689uJ0P3VZqG+DCCRj5vwH0qRJunhCx1nevyBm42cuSGtCB
-	 a6e49CQbKv9Yw==
-From: Thomas Gleixner <tglx@kernel.org>
-To: Jiri Slaby <jirislaby@kernel.org>, Peter Zijlstra <peterz@infradead.org>
-Cc: Matthieu Baerts <matttbe@kernel.org>, Stefan Hajnoczi
- <stefanha@redhat.com>, Stefano Garzarella <sgarzare@redhat.com>,
- kvm@vger.kernel.org, virtualization@lists.linux.dev, Netdev
- <netdev@vger.kernel.org>, rcu@vger.kernel.org, MPTCP Linux
- <mptcp@lists.linux.dev>, Linux Kernel <linux-kernel@vger.kernel.org>,
- Shinichiro Kawasaki <shinichiro.kawasaki@wdc.com>, "Paul E. McKenney"
- <paulmck@kernel.org>, Dave Hansen <dave.hansen@linux.intel.com>,
- "luto@kernel.org" <luto@kernel.org>, Michal =?utf-8?Q?Koutn=C3=BD?=
- <MKoutny@suse.com>,
- Waiman Long <longman@redhat.com>
-Subject: Re: Stalls when starting a VSOCK listening socket: soft lockups,
- RCU stalls, timeout
-In-Reply-To: <7efde2b5-3b72-4858-9db0-22493d446301@kernel.org>
-References: <b24ffcb3-09d5-4e48-9070-0b69bc654281@kernel.org>
- <7f3e74d7-67dc-48d7-99d2-0b87f671651b@kernel.org>
- <863a5291-a636-47d0-891c-bb0524d2e134@kernel.org>
- <20260302114636.GL606826@noisy.programming.kicks-ass.net>
- <717310d8-6274-4b7f-8a19-561c45f5f565@kernel.org>
- <a2b573b4-af61-4b84-a7d1-012ed6bb23c9@kernel.org>
- <ba067933-bf3b-476d-a0bb-53eda56996ca@kernel.org> <87zf4m2qvo.ffs@tglx>
- <47cba228-bba7-4e58-a69d-ea41f8de6602@kernel.org> <87tsuu2i59.ffs@tglx>
- <7efde2b5-3b72-4858-9db0-22493d446301@kernel.org>
-Date: Fri, 06 Mar 2026 10:57:15 +0100
-Message-ID: <87qzpx2sck.ffs@tglx>
+	s=k20201202; t=1772792172;
+	bh=aN1f11VNXm8TEP7a6s26GhJ/SMe/0NluR98vebxUP6U=;
+	h=From:To:Cc:Subject:Date:From;
+	b=CHBI0MPcs3WqAo1RU5sZKFW8fwe2JFRLkXD2gEBfA05SDEdafzPVDHMH8aw0ejrD1
+	 crqje38RReq5vJVpM1YI1zNvWsClMXXuzPbjwWw2W0Br0k8sZvXTCojMTKdsEYTBoF
+	 TQZEpdbvWip2ZmFiT0To1T7WuSrRK/oAtsAHSsmxayfcl3ww60vjF9VLaepfe0bLPX
+	 d9L6oZeF8Ol+LMb77zqQx3p9ZtaiJ7pb9/WGw38ryflhSGSDKO4NV7WRWCCrWtG+lG
+	 kpXRz5yWs5U5TkzVWGjSi37i/3Xtj+xBxmdbgu53ij+gVc0IPtQbMLSP9cYAJC/xSl
+	 sb3JchfU6+kZw==
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+To: linux-kernel@vger.kernel.org
+Cc: linux-mm@kvack.org,
+	linuxppc-dev@lists.ozlabs.org,
+	kvm@vger.kernel.org,
+	"David Hildenbrand (Arm)" <david@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Nicholas Piggin <npiggin@gmail.com>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	"Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
+	Muchun Song <muchun.song@linux.dev>,
+	Oscar Salvador <osalvador@suse.de>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>,
+	Jann Horn <jannh@google.com>,
+	Pedro Falcato <pfalcato@suse.de>,
+	Paolo Bonzini <pbonzini@redhat.com>,
+	Dan Williams <dan.j.williams@intel.com>
+Subject: [PATCH v1 0/4] mm: move vma_(kernel|mmu)_pagesize() out of hugetlb.c
+Date: Fri,  6 Mar 2026 11:15:56 +0100
+Message-ID: <20260306101600.57355-1-david@kernel.org>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Transfer-Encoding: 8bit
 
-On Fri, Mar 06 2026 at 06:48, Jiri Slaby wrote:
-> On 05. 03. 26, 20:25, Thomas Gleixner wrote:
->> Is there simple way to reproduce?
->
-> Unfortunately not at all. To date, I even cannot reproduce locally, it 
-> reproduces exclusively in opensuse build service (and github CI as per 
-> Matthieu's report). I have a project in there with packages which fail 
-> more often than others:
->    https://build.opensuse.org/project/monitor/home:jirislaby:softlockup
-> But it's all green ATM.
->
-> Builds of Go 1.24 and tests of rust 1.90 fail the most. The former even 
-> takes only ~ 8 minutes, so it's not that intensive build at all. So the 
-> reasons are unknown to me. At least, Go apparently uses threads for 
-> building (unlike gcc/clang with forks/processes). Dunno about rust.
+Looking into vma_(kernel|mmu)_pagesize(), I realized that there is one
+scenario where DAX would not do the right thing when the kernel is
+not compiled with hugetlb support.
 
-I tried with tons of test cases which stress test mmcid with threads and
-failed.
+Without hugetlb support, vma_(kernel|mmu)_pagesize() will always return
+PAGE_SIZE instead of using the ->pagesize() result provided by dax-device
+code.
 
-Can you provide me your .config, source version, VM setup (Number of
-CPUs, memory etc.)?
+Fix that by moving vma_kernel_pagesize() to core MM code, where it belongs.
+I don't think this is stable material, but am not 100% sure.
 
-I tried to find it on that github page Matthiue mentioned but I'm
-probably too stupid to navigate this clicky interface.
+Also, move vma_mmu_pagesize() while at it. Remove the unnecessary hugetlb.h
+inclusion from KVM code.
 
-Thanks
+Cross-compiled heavily.
 
-        tglx
+Cc: Andrew Morton <akpm@linux-foundation.org>
+Cc: Madhavan Srinivasan <maddy@linux.ibm.com>
+Cc: Nicholas Piggin <npiggin@gmail.com>
+Cc: Michael Ellerman <mpe@ellerman.id.au>
+Cc: "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>
+Cc: Muchun Song <muchun.song@linux.dev>
+Cc: Oscar Salvador <osalvador@suse.de>
+Cc: Lorenzo Stoakes <ljs@kernel.org>
+Cc: "Liam R. Howlett" <Liam.Howlett@oracle.com>
+Cc: Vlastimil Babka <vbabka@kernel.org>
+Cc: Mike Rapoport <rppt@kernel.org>
+Cc: Suren Baghdasaryan <surenb@google.com>
+Cc: Michal Hocko <mhocko@suse.com>
+Cc: Jann Horn <jannh@google.com>
+Cc: Pedro Falcato <pfalcato@suse.de>
+Cc: Paolo Bonzini <pbonzini@redhat.com>
+Cc: Dan Williams <dan.j.williams@intel.com>
+
+David Hildenbrand (Arm) (4):
+  mm: move vma_kernel_pagesize() from hugetlb to mm.h
+  mm: move vma_mmu_pagesize() from hugetlb to vma.c
+  KVM: remove hugetlb.h inclusion
+  KVM: PPC: remove hugetlb.h inclusion
+
+ arch/powerpc/kvm/book3s_hv.c |  1 -
+ include/linux/hugetlb.h      | 14 --------------
+ include/linux/mm.h           | 22 ++++++++++++++++++++++
+ mm/hugetlb.c                 | 28 ----------------------------
+ mm/vma.c                     | 21 +++++++++++++++++++++
+ virt/kvm/kvm_main.c          |  1 -
+ 6 files changed, 43 insertions(+), 44 deletions(-)
+
+
+base-commit: f75825cdfc4c5477cffcfd2cafa4e5ce5aa67f13
+-- 
+2.43.0
+
