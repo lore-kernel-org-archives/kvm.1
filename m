@@ -1,40 +1,69 @@
-Received: from mx1.zhaoxin.com (MX1.ZHAOXIN.COM [210.0.225.12])
+Received: from SA9PR02CU001.outbound.protection.outlook.com (mail-southcentralusazon11013069.outbound.protection.outlook.com [40.93.196.69])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 98738341AD6
-	for <kvm@vger.kernel.org>; Fri,  6 Mar 2026 09:36:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=210.0.225.12
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772789784; cv=none; b=uGQjin0bOQqIZR4ulOT2gyxZuNF7l2kAlb6VZEtZV9dke2/U+osmJQNk8fUgn5sloGN/rq0ypRUBDbI6Kq3ahSQkDgCVHeqHILq9at3hXTSjUCHCx7SxHkEODpejnVnT+xI3yDAd37HT5LOR3+D6WlEqz9tdvia7w6KH1AqM2is=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772789784; c=relaxed/simple;
-	bh=aNf+1Sju5FqmSNLvPwNju4jHtRGQlyCVOCZYMGr4LY8=;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 674D9345754;
+	Fri,  6 Mar 2026 09:41:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.93.196.69
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1772790066; cv=fail; b=JIQ24CPxSi7fbUfYvHh2ftLAW0nj9mTefgi9nHOexU9II2UGssPC6HCySBXp2KlgTbIBZShE3cSXsxjG0k2lugIhWvliRnIqx8luvXBLY4cKAzINM55VH+NrXn2Ne4/SXvrfvKtH13MWynMOBw/qVgBNjKatTOHTUZSI5/UZjQo=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1772790066; c=relaxed/simple;
+	bh=9kO3jXWrPg7Lkba3fWghx0TTnO0yCbVWZTo37R/3zCw=;
 	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=Sf+qFOL897ACnBnyJWRWuULFCbEoQP6Qh6dYhE5VaKj2b9kkdzvy+ah3600PzZVWV504ad7qr5687f7SsVCAfhft/0glKDHS79v8AZkZuBAbG0Nzc6vAlsDxZw8WiIkb2YIEkt9elbVQ5lZPZiu04f8Clo63ftjIMogp2u8fbEc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=zhaoxin.com; spf=pass smtp.mailfrom=zhaoxin.com; arc=none smtp.client-ip=210.0.225.12
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=zhaoxin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=zhaoxin.com
-X-ASG-Debug-ID: 1772789770-086e235c855d6b0001-HEqcsx
-Received: from ZXBJMBX02.zhaoxin.com (ZXBJMBX02.zhaoxin.com [10.29.252.6]) by mx1.zhaoxin.com with ESMTP id hoLwjjbQVw1crtgc (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NO); Fri, 06 Mar 2026 17:36:10 +0800 (CST)
-X-Barracuda-Envelope-From: EwanHai-oc@zhaoxin.com
-X-Barracuda-RBL-Trusted-Forwarder: 10.29.252.6
-Received: from ZXSHMBX1.zhaoxin.com (10.28.252.163) by ZXBJMBX02.zhaoxin.com
- (10.29.252.6) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.59; Fri, 6 Mar
- 2026 17:36:09 +0800
-Received: from ZXSHMBX1.zhaoxin.com ([fe80::936:f2f9:9efa:3c85]) by
- ZXSHMBX1.zhaoxin.com ([fe80::936:f2f9:9efa:3c85%7]) with mapi id
- 15.01.2507.059; Fri, 6 Mar 2026 17:36:09 +0800
-X-Barracuda-RBL-Trusted-Forwarder: 10.29.252.6
-Received: from ewan-server.zhaoxin.com (10.28.44.15) by zxbjmbx1.zhaoxin.com
- (10.29.252.163) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.59; Fri, 6 Mar
- 2026 17:12:56 +0800
-Received: from [10.28.44.4] (EwanHaiuntuMini.zhaoxin.com [10.28.44.4])
-	by ewan-server.zhaoxin.com (Postfix) with ESMTP id 72B722D0004E;
-	Fri,  6 Mar 2026 04:12:56 -0500 (EST)
-Message-ID: <940af9a3-399d-4981-95c3-794d4f834ea8@zhaoxin.com>
-Date: Fri, 6 Mar 2026 17:12:56 +0800
+	 In-Reply-To:Content-Type; b=tuTL7po2JJ1B7wTmDAfjibd0bq6psgY2ksH+x6bSxP56WaqoaEOP1+fDS3BElTHlEzqDJ4s8xmlA+FqmS1xDYML2LSzoUOlcDjQDlclLKloLK7+Ey0VUIlbEEV8zC5gUW2BBKJKho7uZmUF2wsGu5TPbakS/5OvT4DiOBLjzm6Q=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=AzW3JJn5; arc=fail smtp.client-ip=40.93.196.69
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="AzW3JJn5"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=JSIjzLXr0HVjVIY7nJkIE35lXwZIq2V7rMytmgqL3MRd0yufrIQsPCjtrO5e5Y5mDn6eIm7KQvVGnyoFqhXdc/6F7HFVRdDOfmP3HyF2+ps74bYMWrgcBnYt90PpP+eqwwezvyEXrHpLDklLZD26oWC2OQMEgyNjLc1xwsH/i2Mx0+k1QS6pFR/sH0NyhcZqCBG+uizul4HQc12+JeQBNMI1yNA0MEe1pJXcN1rv3QXL5nMyrSn64MVpS++d0r9zWyWzGLjsYRMPSvECbN4wqFXPJtQmnJQBnvhAs4qzCe4x9rNxlK6xl11ZVWWRKkIgEUuvogybskkIHYW5WwPyNg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=GFuRhIy62JlIS0eRHjURDsyG4KVbo3+63ys19uPTq4U=;
+ b=uKSL00/XcvQjGuvZo7Sb25qCDO9drV0CUVpxFAwuw/C6NYHKbjJklRsg9dfg4f1nj2b+v4+w2EsYKKJ3pmWHfs9UwIXyZYvPLbTlCLcKZIkxCAao44ro3DhEkhRKw+slljOhbcbM87lBOQg93wmuFKwe1klvez7bR4IT4wtUFVS/hx5J8VJhDJKFiahtEuOMjqD0hUr5xwjvyGhfUQcDhlAKskkUuBfylfKMBEGrFh2JAHqI664AoZOT3xuUtyIHS6ZoYIbn6sczABWSRdGeHnL16VFNJJR4wWnCwHaSTU3XGA0OZnafUUmPBXrD2l3+gDJiNawhysHiVAaxxjooGQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=citrix.com smtp.mailfrom=amd.com; dmarc=pass
+ (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=GFuRhIy62JlIS0eRHjURDsyG4KVbo3+63ys19uPTq4U=;
+ b=AzW3JJn5wPGAEXZBUOg7f6lFcyJpiKokCPoubMARhjD4iz7X4bcLHaE/MuFi6oUSJxuziKaa/Q90GpvLQUr5bB3SB+5X4fAjfkebO31HlnNMPILE7cQLRSv8RtbdHI9szdeZbyg7cZehtXZ7wnugrqKa0z8h0B3FHyjWrRnMHk0=
+Received: from SA0PR11CA0147.namprd11.prod.outlook.com (2603:10b6:806:131::32)
+ by DS0PR12MB7827.namprd12.prod.outlook.com (2603:10b6:8:146::9) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9678.18; Fri, 6 Mar
+ 2026 09:41:01 +0000
+Received: from SN1PEPF0002636C.namprd02.prod.outlook.com
+ (2603:10b6:806:131:cafe::52) by SA0PR11CA0147.outlook.office365.com
+ (2603:10b6:806:131::32) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.9678.18 via Frontend Transport; Fri,
+ 6 Mar 2026 09:41:01 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
+ smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=satlexmb07.amd.com; pr=C
+Received: from satlexmb07.amd.com (165.204.84.17) by
+ SN1PEPF0002636C.mail.protection.outlook.com (10.167.241.137) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.9678.18 via Frontend Transport; Fri, 6 Mar 2026 09:41:00 +0000
+Received: from satlexmb10.amd.com (10.181.42.219) by satlexmb07.amd.com
+ (10.181.42.216) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.17; Fri, 6 Mar
+ 2026 03:40:59 -0600
+Received: from satlexmb08.amd.com (10.181.42.217) by satlexmb10.amd.com
+ (10.181.42.219) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.17; Fri, 6 Mar
+ 2026 03:33:38 -0600
+Received: from [10.143.199.149] (10.180.168.240) by satlexmb08.amd.com
+ (10.181.42.217) with Microsoft SMTP Server id 15.2.2562.17 via Frontend
+ Transport; Fri, 6 Mar 2026 03:33:33 -0600
+Message-ID: <f092feb8-c0e4-45da-ae28-06e5dd4b7aa6@amd.com>
+Date: Fri, 6 Mar 2026 15:03:32 +0530
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -42,147 +71,84 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] KVM: x86: Add KVM-only CPUID.0xC0000001:EDX feature bits
-To: Sean Christopherson <seanjc@google.com>
-X-ASG-Orig-Subj: Re: [PATCH] KVM: x86: Add KVM-only CPUID.0xC0000001:EDX feature bits
-CC: <pbonzini@redhat.com>, <tglx@kernel.org>, <mingo@redhat.com>,
-	<bp@alien8.de>, <dave.hansen@linux.intel.com>, <x86@kernel.org>,
-	<hpa@zytor.com>, <kvm@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-	<cobechen@zhaoxin.com>, <tonywwang@zhaoxin.com>, <ludloff@gmail.com>
-References: <20260305110519.308860-1-ewanhai-oc@zhaoxin.com>
- <aanc9xtztj5cYFvk@google.com>
+Subject: Re: [PATCH 0/7] KVM: SVM: Enable FRED support
+To: Andrew Cooper <andrew.cooper3@citrix.com>
+CC: <bp@alien8.de>, <dave.hansen@linux.intel.com>, <hpa@zytor.com>,
+	<kvm@vger.kernel.org>, <linux-kernel@vger.kernel.org>, <mingo@redhat.com>,
+	<nikunj.dadhania@amd.com>, <pbonzini@redhat.com>, <seanjc@google.com>,
+	<tglx@linutronix.de>, <x86@kernel.org>, <xin@zytor.com>
+References: <85958aa8-98ee-40bc-8fcf-750bbf62ccce@amd.com>
+ <f3959d60-9622-4817-8b85-2b704c46c583@citrix.com>
 Content-Language: en-US
-From: Ewan Hai <ewanhai-oc@zhaoxin.com>
-In-Reply-To: <aanc9xtztj5cYFvk@google.com>
+From: Shivansh Dhiman <shivansh.dhiman@amd.com>
+In-Reply-To: <f3959d60-9622-4817-8b85-2b704c46c583@citrix.com>
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: ZXSHCAS1.zhaoxin.com (10.28.252.161) To
- zxbjmbx1.zhaoxin.com (10.29.252.163)
-X-Moderation-Data: 3/6/2026 5:36:07 PM
-X-Barracuda-Connect: ZXBJMBX02.zhaoxin.com[10.29.252.6]
-X-Barracuda-Start-Time: 1772789770
-X-Barracuda-Encrypted: ECDHE-RSA-AES128-GCM-SHA256
-X-Barracuda-URL: https://mx2.zhaoxin.com:4443/cgi-mod/mark.cgi
-X-Virus-Scanned: by bsmtpd at zhaoxin.com
-X-Barracuda-Scan-Msg-Size: 4770
-X-Barracuda-BRTS-Status: 1
-X-Barracuda-Bayes: INNOCENT GLOBAL 0.0000 1.0000 -2.0210
-X-Barracuda-Spam-Score: -2.02
-X-Barracuda-Spam-Status: No, SCORE=-2.02 using global scores of TAG_LEVEL=1000.0 QUARANTINE_LEVEL=1000.0 KILL_LEVEL=9.0 tests=
-X-Barracuda-Spam-Report: Code version 3.2, rules version 3.2.3.155454
-	Rule breakdown below
-	 pts rule name              description
-	---- ---------------------- --------------------------------------------------
+Content-Transfer-Encoding: 8bit
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: SN1PEPF0002636C:EE_|DS0PR12MB7827:EE_
+X-MS-Office365-Filtering-Correlation-Id: d0f241b9-f6d3-4361-dfae-08de7b647a2f
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|36860700016|82310400026|7416014|376014|1800799024|13003099007;
+X-Microsoft-Antispam-Message-Info:
+	JZa6xG0mb8sWZDOVOIu1CdNthwG1SbFHnuvdwp7zAuk3exFHxyFqLgbffDs/NWdKibO8sMHlGIhufXxQgdfF6c+7CVIL8Cu1JCTCw/9T18+nW6QgF15/h2mJHb703nJWNQQMyk143c9eZpbOYp9L9V+5oNd8cX//GFMihBnP0FFQ4+nNLaFCIPzOzuPSqSkJA4GsB3JWIXQZC5TbZ1lG6IUw/zMsKdQzclCYGFwqTNYsnk/RVqaGD+MSRSy3XOsKABxuM3K3cx60b1UDZ30w2e+wfKy0Rq7DBRc48Qe+f5+83WZ1lfPja/ngHiyqG4EfIcfoaoiR+Zniupo47fYKUM0tgauDQi0ndDYYLP6vNaDsauhzTBI07YpOCwA4sBCOnud6Lyi5+58Ujn83K7gFYXa2cfFqbcHlsRkGHDEKYcI4qf5zdwBF77ha8bE2Z7aC3PjNJGzlE9PqvR/YHkyw2VCoDfE64c0CeFU2AynZepCoYLGDKG/5YYn28rdfwI1kk+8ctytfYw71mVwb+HpvtOsflA5okMUAA20SZEDmN0WjteeVt+k81KjU9FhPu0W/xA9URfWcUfIL7JfZifDbm0Xfe0tdwmbvO+xMtbe7KlGmd49AN+dPryLd8Vqne32Jxxc0b8DDHwQ+5kwZQKVmbjisp0bWyWoe4hc/M3mSTstRCEi2sxDIsufUw7QG4sx2j1e+TENa77cKDXYL8Far6nVnDKNYSy7T3a1LUcANXCTRF/BkbJgZH6+iP6dZw3yDcDCLHrJ127doQl2STPgqjg==
+X-Forefront-Antispam-Report:
+	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb07.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(36860700016)(82310400026)(7416014)(376014)(1800799024)(13003099007);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	ZhWvIK3aWQR7XFMxHkEOtUGL452YQ1KcXtd0gaaC2G/Ky2A4618Agux0WAorQ9aaHWdQCslpw0DaHnS+GuNPgFaA/GJLPCrBExEDLY+2hiOpOlcWlFt+3mjRczcdleGp6Qd40w5VFVtFbjYqh1E5Tkpy+KoCGeB3KKJaFpjcMQCLtqVI+/xyh5ZKwMsbUUR6hmL+K44p/KkCDyU99x49N0uyevzQbN4KXkxkTJUxYsmP802BtLgRrTsXWvYv4sN7L9DAXJ8bk6lFTTEqpRy/w5mZ1Aly4KwGDfChZGcbF3yN7pWsdZ4NhIQWLGHbJCVUw0vfA6PG9GfPZvYSud2tf03YNqO22e5elV7YupQ59F2nQ0x7Pb20Y/QyTQnSbB+vQ5p1EDql4wTnoLMq5tDiDvLcpbnXC8q6FPvvbF56z15pFCcjVn+aAoAk1PQPtHd4
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 06 Mar 2026 09:41:00.9450
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: d0f241b9-f6d3-4361-dfae-08de7b647a2f
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[satlexmb07.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	SN1PEPF0002636C.namprd02.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS0PR12MB7827
 
-On 3/6/26 3:43 AM, Sean Christopherson wrote:
+Hi Andrew,
+
+On 11-02-2026 06:23, Andrew Cooper wrote:
+>> Here is the newly published FRED virtualization spec by AMD for reference:
+>>
+>> 	https://docs.amd.com/v/u/en-US/69191-PUB
+>>
+>> Please feel free to share any feedback or questions.
 > 
 > 
-> On Thu, Mar 05, 2026, Ewan Hai wrote:
->> Per Paolo's suggestion, add the missing CPUID.0xC0000001:EDX feature
->> bits as KVM-only X86_FEATURE_* definitions, so KVM can expose them to
->> userspace before they are added to the generic cpufeatures definitions.
->>
->> Wire the new bits into kvm_set_cpu_caps() for CPUID_C000_0001_EDX.
->>
->> As a result, KVM_GET_SUPPORTED_CPUID reports these bits according to
->> host capability, allowing VMMs to advertise only host-supported
->> features to guests.
+> FYI, there is a fun behaviour captured in the sentence:
 > 
-> There needs to be a _lot_ more documentation explaining what these features are,
-> and most importantly why it's safe/sane for KVM to advertise support to userspace
-> without any corresponding code changes in KVM.
+> "If FRED virtualization is enabled, NMI virtualization must be enabled
+> in order to properly handle guest NMIs"
 > 
+> i.e. hypervisors need to make sure not run the guest with FRED &&
+> !vNMI.  AIUI, there's no ERETUx intercept similar to the IRET intercept
+> with with to emulate NMI window tracking in !vNMI mode.
 
-Agreed. We don't have public documentation for most of these features at the
-moment, but I will do my best to provide sufficient detail about each feature
-and its safety implications in the next submission.
-
-> The _EN flags in particular suggest some amount of emulation is required.
-
-Right, I oversimplified this in the initial patch. I will investigate the _EN
-bits more carefully and document what each one actually controls and whether KVM
-needs to do anything beyond passthrough.
+Thanks for letting me know about this. Seems like a legitimate consistency
+check. I'll try to integrate it.
 
 > 
-> The patch also needs to be split up into related feature bundles (or invididual
-> patches if each and every feature flag represents a completely independent feature).
+> I requested that this become a VMRUN consistency check, but was
+> declined.  I've asked that at least the wording change to "undefined
+> behaviour" so something sane can be done for the nested case where L1
+> tries to do something daft.
 > 
+> 
+> There are two other issues which are going to be adjusted.  One is the
+> consistency check concerning SS.DPL==3 && INTR_SHADOW==0 (not a valid
+> restriction in later drafts of the spec), and one is "On an intercepted
+> #DB, EXITINFO2 has DR6 register value."  Both do/will (not sure which)
+> behave like Intel, rather than as currently documented.
 
-Makes sense. I will do thorough research on these features and group them into
-logical bundles based on their functionality for the next version.
+Can you tell under which conditions does the #DB issue may arise?
 
->> Link: https://lore.kernel.org/all/b3632083-f8ff-4127-a488-05a2c7acf1ad@redhat.com/
->> Signed-off-by: Ewan Hai <ewanhai-oc@zhaoxin.com>
->> ---
->>  arch/x86/kvm/cpuid.c         | 14 ++++++++++++++
->>  arch/x86/kvm/reverse_cpuid.h | 19 +++++++++++++++++++
->>  2 files changed, 33 insertions(+)
->>
->> diff --git a/arch/x86/kvm/cpuid.c b/arch/x86/kvm/cpuid.c
->> index 88a5426674a1..529705079904 100644
->> --- a/arch/x86/kvm/cpuid.c
->> +++ b/arch/x86/kvm/cpuid.c
->> @@ -1242,8 +1242,12 @@ void kvm_set_cpu_caps(void)
->>               kvm_cpu_cap_set(X86_FEATURE_NULL_SEL_CLR_BASE);
->>
->>       kvm_cpu_cap_init(CPUID_C000_0001_EDX,
->> +             F(SM2),
->> +             F(SM2_EN),
->>               F(XSTORE),
->>               F(XSTORE_EN),
->> +             F(CCS),
->> +             F(CCS_EN),
->>               F(XCRYPT),
->>               F(XCRYPT_EN),
->>               F(ACE2),
->> @@ -1252,6 +1256,16 @@ void kvm_set_cpu_caps(void)
->>               F(PHE_EN),
->>               F(PMM),
->>               F(PMM_EN),
->> +             F(PARALLAX),
->> +             F(PARALLAX_EN),
->> +             F(TM3),
->> +             F(TM3_EN),
->> +             F(RNG2),
->> +             F(RNG2_EN),
->> +             F(PHE2),
->> +             F(PHE2_EN),
->> +             F(RSA),
->> +             F(RSA_EN),
->>       );
->>
->>       /*
->> diff --git a/arch/x86/kvm/reverse_cpuid.h b/arch/x86/kvm/reverse_cpuid.h
->> index 81b4a7acf72e..33e6a2755c84 100644
->> --- a/arch/x86/kvm/reverse_cpuid.h
->> +++ b/arch/x86/kvm/reverse_cpuid.h
->> @@ -59,6 +59,25 @@
->>  #define KVM_X86_FEATURE_TSA_SQ_NO    KVM_X86_FEATURE(CPUID_8000_0021_ECX, 1)
->>  #define KVM_X86_FEATURE_TSA_L1_NO    KVM_X86_FEATURE(CPUID_8000_0021_ECX, 2)
->>
->> +/*
->> + * Zhaoxin/Centaur-defined CPUID level 0xC0000001 (EDX) features that are
->> + * currently KVM-only and not defined in cpufeatures.h.
->> + */
->> +#define X86_FEATURE_SM2             KVM_X86_FEATURE(CPUID_C000_0001_EDX, 0)
->> +#define X86_FEATURE_SM2_EN          KVM_X86_FEATURE(CPUID_C000_0001_EDX, 1)
->> +#define X86_FEATURE_CCS             KVM_X86_FEATURE(CPUID_C000_0001_EDX, 4)
->> +#define X86_FEATURE_CCS_EN          KVM_X86_FEATURE(CPUID_C000_0001_EDX, 5)
->> +#define X86_FEATURE_PARALLAX        KVM_X86_FEATURE(CPUID_C000_0001_EDX, 16)
->> +#define X86_FEATURE_PARALLAX_EN     KVM_X86_FEATURE(CPUID_C000_0001_EDX, 17)
->> +#define X86_FEATURE_TM3             KVM_X86_FEATURE(CPUID_C000_0001_EDX, 20)
->> +#define X86_FEATURE_TM3_EN          KVM_X86_FEATURE(CPUID_C000_0001_EDX, 21)
->> +#define X86_FEATURE_RNG2            KVM_X86_FEATURE(CPUID_C000_0001_EDX, 22)
->> +#define X86_FEATURE_RNG2_EN         KVM_X86_FEATURE(CPUID_C000_0001_EDX, 23)
->> +#define X86_FEATURE_PHE2            KVM_X86_FEATURE(CPUID_C000_0001_EDX, 25)
->> +#define X86_FEATURE_PHE2_EN         KVM_X86_FEATURE(CPUID_C000_0001_EDX, 26)
->> +#define X86_FEATURE_RSA             KVM_X86_FEATURE(CPUID_C000_0001_EDX, 27)
->> +#define X86_FEATURE_RSA_EN          KVM_X86_FEATURE(CPUID_C000_0001_EDX, 28)
->> +
->>  struct cpuid_reg {
->>       u32 function;
->>       u32 index;
->> --
->> 2.34.1
->>
+> 
+> ~Andrew
 
+- Shivansh
