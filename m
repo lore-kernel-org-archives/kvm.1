@@ -1,147 +1,105 @@
-Received: from mail-oo1-f50.google.com (mail-oo1-f50.google.com [209.85.161.50])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from cstnet.cn (smtp25.cstnet.cn [159.226.251.25])
+	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7ECCC371D1C
-	for <kvm@vger.kernel.org>; Fri,  6 Mar 2026 07:04:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.161.50
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772780691; cv=pass; b=gpVxDZ2+b6ccmIgOOpo9SQmbBRSyWdoxQvDQ7u2d23Hq4QRzGEdeU5S4XExlNFIxVos16OdztwHjPEFNyAevdT1Depl6R+nZpwd4D+vVIEfudar335OfMssYApA1U1YOrWcxd91nDwnAO5GRN48xBWCIdHfuljvGiSmv3rGcPyQ=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772780691; c=relaxed/simple;
-	bh=+nlpLSj6Acf1T5Fy14+xUwvr2HwA2i3QvZ87SqnoJ6k=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=nvlq95MqQX8UwaShL9eprZqbt3WTunHOose5XTKTS+DZ/DF3roCB6OixEbz8cNwa1rhLx8yqxE99NmKvUB9cwIiFskTapIc1c2kPQtTTyM7zXMB0POjb5pjuBeHFz4jjDzpWcahUtODBREcVF3/MlE4/cTPgTPsapN1PcGkASHQ=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=brainfault.org; spf=none smtp.mailfrom=brainfault.org; dkim=pass (2048-bit key) header.d=brainfault-org.20230601.gappssmtp.com header.i=@brainfault-org.20230601.gappssmtp.com header.b=wVJ31CiO; arc=pass smtp.client-ip=209.85.161.50
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=brainfault.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=brainfault.org
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=brainfault-org.20230601.gappssmtp.com header.i=@brainfault-org.20230601.gappssmtp.com header.b="wVJ31CiO"
-Received: by mail-oo1-f50.google.com with SMTP id 006d021491bc7-66307e10d1dso5695594eaf.0
-        for <kvm@vger.kernel.org>; Thu, 05 Mar 2026 23:04:49 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1772780688; cv=none;
-        d=google.com; s=arc-20240605;
-        b=CA/OG17zJ40Se9Vp59MI3BB5YfOcgDZO8E/iSAXNTYZWqPiMp3HMTzIv5NDWT5P0WK
-         R9yD40xIbXrObapyAQUJx1bSjXv3UBXQScVBHUcVAEwEUFXZCa4fM4j1UMJybK1vzefm
-         NUGjyE5FKVNrCoQUbe2HTLDBi8+ZY5mMZLIqh3wSn0HHdoQVBfI2TTaAdmY90zlkG02o
-         5sc5nzhgGOTx6sKC3TtwoketRuhgf8Iuy/akymF1JAY3QTym2/obGhFtHuYFkmdX4GVk
-         vNQNz/luWIvgq5O6hwEardFj2yKg0YQ1S70OoqW4seqgu7HP587IOkLyLeHnO70OAWkW
-         xb8Q==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=HVySQsieckJFK9NwiXNz9/fIecprCPpUdU69L33AQGM=;
-        fh=mS5KXmcEh9H573eUqOKn7szYAcNAiSA7Q+EbDb1fZf0=;
-        b=IvyhzKyIVsxnYJV05TnVvO3wy3Wo5Iz2+qtQ+QKLyLuXI/WDNqeskzyO+gE93zMKu9
-         g3T4Szd9+AkGTdS4o2T/JC7N8syF/lf+RW7Rhj8MnlyhbD3pSPWJkeAXswvBhNyRGiFZ
-         Rzy9OPWdWvML1mLyvuQjtyt90Bo4gK6HCmEOKIbAlLKKFntFrXW6GEiuTUDloh5ITarW
-         p7EZ+qJvC0wlaB/eR3t+zIwd8r10N2FhdnpOIDxok0ZBAWVqy8hnvXAhbxjKAx5Kyb10
-         NyFVjN73Xh69uvW1XVfo3Z1Za4vyXLcOXmZPx9kR/HO/IZ54jCdUM1uoKmbwbwqy8ggM
-         EGZw==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=brainfault-org.20230601.gappssmtp.com; s=20230601; t=1772780688; x=1773385488; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=HVySQsieckJFK9NwiXNz9/fIecprCPpUdU69L33AQGM=;
-        b=wVJ31CiOIRxdh8damH5PXG8QZ1Cr7wuq16FajrZ7UqLseitFXtou+nXkK9xL9A0hN2
-         jYPhNxgdL8RPkWlFJTuA5cASfi4J/yZPfnLu1YC4kisvcnvS1LRXR/0BYglZWWrRikvS
-         Rie+jrJX3QV91eu4Ra4+H0UT+rCb/jqgWHOn/QxK7QmgmqyTKDT9NORZA09a9lK3jAEJ
-         kg5dawT9fojV0KGRILyVvKEqvE8Pe4WDwxLjc4UYtkhgAS6WXIvmMY7DeiQXdt0NqHcq
-         3Zx6ffO52qFPIt4lwXYb1C0CA3TeGoxqbe0mb3TE0L9WQaHNqjuJqeUB/6ZJxQPynJZE
-         /waQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1772780688; x=1773385488;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=HVySQsieckJFK9NwiXNz9/fIecprCPpUdU69L33AQGM=;
-        b=C8+f346vYSAvYbVFTl90oPp8CYh4YZURueESCvRlxIJ+iMuQoBzUwqKHzHK7NA829d
-         +3XdDTX2vM3+plrepovBqorK2XIEsndgPqaf8Lo4ebyP02Uy++yWKcqJa2vuXD4mgtGV
-         06UWT5tb+i+0ArkNYH9w0vPznoVaSNUSIFze1GZxMB+1v5s4K12q6ASRdCKYKlPN7HQX
-         E9l1WLSn70qJn7FC/JLY0pH3dYRT9mvNf0BcVWFFOafNCPiumVAj1OWLElaAd9CSGiqM
-         EUr4RX0A0jlM1Z0Km4QgEAa/pSlAfdajDH2SULBVH92Sa6snrBxVbAQPuySilo597U2F
-         pkog==
-X-Forwarded-Encrypted: i=1; AJvYcCV3af9cPgbhGnM3BBmzi43UQeRYi50Cy3eJorUD+Lf3u5CDAu6qx0ROCeUwwvkEw3LCct4=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxzOEAX7wK/s8b8+TNDnW5Z3S5OqKsG6pqt3zIQ6c8qXpjD+DZ2
-	kkna77CWOWt4hLRNA09ow38awaVEmLMam1jPKCYMl4eNYM/alXr8FIytVmM3HuJl2j3x+P1eRd+
-	JE0CcfgJV3cQCYKktrSHv3McWG7cLqbygtNLnBpXAjg==
-X-Gm-Gg: ATEYQzxQhktVAEUrOTQ5JDDJ9dKJkiGShnwt6ofB9rehORyg8ykMB6NwGPYFhEzCxKh
-	mc88A23yMeGAKbUjmeilAWXyAHuYThhDwAZW5+jEUkJ43nfGyfzJfgG3rZFsn+3brXsaNA5oM2E
-	DzOrp06Py4HOr69+YqL9abs5i25IQBUYEaBpDXntFy1BFWFt1xXLW98/E5B0mTfiH+w0vUW4LMf
-	P8qF8C1yByv8ZM2kvTutgj7jLxZML20u375jr990phrXA4N5yxfyqCu40C0CLuCH1fmCPUyiQiB
-	8mJMOJ/s1thiFffCRc6dya8+AX++JxCPBNNId5Qv3EPJrRlKRW4hybPQz2dEiJCrBQTEq+v2juv
-	05UydXUtP3lHgNDL1IkdDR2RZhw==
-X-Received: by 2002:a05:6820:1ca3:b0:67a:3dd:3fe7 with SMTP id
- 006d021491bc7-67b9bd2ef0fmr746008eaf.47.1772780688470; Thu, 05 Mar 2026
- 23:04:48 -0800 (PST)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 43E98375F6D;
+	Fri,  6 Mar 2026 07:38:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.25
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1772782691; cv=none; b=LS9AmSk2ZrO+8AX1xYeAlHP5VryRNFXOwjn0mTnLkG2aJ/+y76byz0rUnq1ar86B/CrxX2njZglN4gsOsxuiy1ZyQwetmtU/7X1p/pXF8lY8nV9XDrLBSM6qsytshTJubBaYC5GyhH3YBvQIY5nyLcy/ZFs8ReKWbmCyyeZU0Xo=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1772782691; c=relaxed/simple;
+	bh=fzg++KsgVr1ZMcQc2GYBomHZ7Tljflo24TGzZiJpFD0=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=GrmEMhXXeOBNxQN/qoNystevBeynOEP0fGUDCcHBZDW5e6AJSjvUXfAcbLxltJHHKtKkUgFn5wX4KKUHZDrZy/nSpiG1MWotoGTBNLQ/xp6PuB1sClenuZfzB9ADR1BQcvON/2HYM54t1xHFroHvZY5r1oZnkyvzljsF9NInakk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.25
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iscas.ac.cn
+Received: from fric.. (unknown [210.73.43.101])
+	by APP-05 (Coremail) with SMTP id zQCowAAXpglFhKppgcC9CQ--.1822S3;
+	Fri, 06 Mar 2026 15:37:43 +0800 (CST)
+From: Jiakai Xu <xujiakai2025@iscas.ac.cn>
+To: linux-kernel@vger.kernel.org,
+	linux-riscv@lists.infradead.org,
+	kvm-riscv@lists.infradead.org,
+	kvm@vger.kernel.org
+Cc: Andrew Jones <ajones@ventanamicro.com>,
+	Alexandre Ghiti <alex@ghiti.fr>,
+	Albert Ou <aou@eecs.berkeley.edu>,
+	Palmer Dabbelt <palmer@dabbelt.com>,
+	Paul Walmsley <pjw@kernel.org>,
+	Atish Patra <atish.patra@linux.dev>,
+	Anup Patel <anup@brainfault.org>,
+	Jiakai Xu <xujiakai2025@iscas.ac.cn>,
+	Jiakai Xu <jiakaiPeanut@gmail.com>
+Subject: [PATCH 1/2] RISC-V: KVM: Fix array out-of-bounds in pmu_ctr_read()
+Date: Fri,  6 Mar 2026 07:37:38 +0000
+Message-Id: <20260306073739.3441292-2-xujiakai2025@iscas.ac.cn>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20260306073739.3441292-1-xujiakai2025@iscas.ac.cn>
+References: <20260306073739.3441292-1-xujiakai2025@iscas.ac.cn>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260120080013.2153519-1-anup.patel@oss.qualcomm.com> <20260120080013.2153519-4-anup.patel@oss.qualcomm.com>
-In-Reply-To: <20260120080013.2153519-4-anup.patel@oss.qualcomm.com>
-From: Anup Patel <anup@brainfault.org>
-Date: Fri, 6 Mar 2026 12:34:37 +0530
-X-Gm-Features: AaiRm52vplQjZIJ_yYHgtG1kWnM8unoFggovyMF3JIYyAr9uZDY-IpREqe4Zs_A
-Message-ID: <CAAhSdy1jeJVHgABQxEzKCqYKLQteVkzM6p5mz2vJBY5A0gmFkg@mail.gmail.com>
-Subject: Re: [PATCH 03/27] RISC-V: KVM: Check host Ssaia extension when
- creating AIA irqchip
-To: Anup Patel <anup.patel@oss.qualcomm.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>, Atish Patra <atish.patra@linux.dev>, 
-	Palmer Dabbelt <palmer@dabbelt.com>, Paul Walmsley <pjw@kernel.org>, Alexandre Ghiti <alex@ghiti.fr>, 
-	Shuah Khan <shuah@kernel.org>, Andrew Jones <andrew.jones@oss.qualcomm.com>, 
-	kvm-riscv@lists.infradead.org, kvm@vger.kernel.org, 
-	linux-riscv@lists.infradead.org, linux-kernel@vger.kernel.org, 
-	linux-kselftest@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:zQCowAAXpglFhKppgcC9CQ--.1822S3
+X-Coremail-Antispam: 1UD129KBjvJXoW7Cw43uw45GF1xXw43Ar1fJFb_yoW8Ar15pr
+	sFkr9a93s5trs29w1Yyw1Duw4jyw4kGan8CrWDGF18Ar4a9r97JF1v93srJr1fAFZFqa4x
+	ta1Fka4xCFW5Xa7anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDU0xBIdaVrnRJUUUQF14x267AKxVWrJVCq3wAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
+	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2048vs2IY020E87I2jVAFwI0_Jr4l82xGYIkIc2
+	x26xkF7I0E14v26r4j6ryUM28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48ve4kI8wA2z4x0
+	Y4vE2Ix0cI8IcVAFwI0_Ar0_tr1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI0_Gr1j6F4UJw
+	A2z4x0Y4vEx4A2jsIE14v26rxl6s0DM28EF7xvwVC2z280aVCY1x0267AKxVW0oVCq3wAa
+	c4AC62xK8xCEY4vEwIxC4wAS0I0E0xvYzxvE52x082IY62kv0487Mc02F40EFcxC0VAKzV
+	Aqx4xG6I80ewAv7VC0I7IYx2IY67AKxVWUJVWUGwAv7VC2z280aVAFwI0_Gr0_Cr1lOx8S
+	6xCaFVCjc4AY6r1j6r4UM4x0Y48IcxkI7VAKI48JM4x0x7Aq67IIx4CEVc8vx2IErcIFxw
+	ACI402YVCY1x02628vn2kIc2xKxwCY1x0262kKe7AKxVWUtVW8ZwCF04k20xvY0x0EwIxG
+	rwCFx2IqxVCFs4IE7xkEbVWUJVW8JwC20s026c02F40E14v26r1j6r18MI8I3I0E7480Y4
+	vE14v26r106r1rMI8E67AF67kF1VAFwI0_Jw0_GFylIxkGc2Ij64vIr41lIxAIcVC0I7IY
+	x2IY67AKxVWUJVWUCwCI42IY6xIIjxv20xvEc7CjxVAFwI0_Gr0_Cr1lIxAIcVCF04k26c
+	xKx2IYs7xG6r1j6r1xMIIF0xvEx4A2jsIE14v26r1j6r4UMIIF0xvEx4A2jsIEc7CjxVAF
+	wI0_Gr0_Gr1UYxBIdaVFxhVjvjDU0xZFpf9x0JUn18PUUUUU=
+X-CM-SenderInfo: 50xmxthndljiysv6x2xfdvhtffof0/1tbiBgwSCWmqYdd74wAAs8
 
-On Tue, Jan 20, 2026 at 1:30=E2=80=AFPM Anup Patel <anup.patel@oss.qualcomm=
-.com> wrote:
->
-> The KVM user-space may create KVM AIA irqchip before checking
-> VCPU Ssaia extension availability so KVM AIA irqchip must fail
-> when host does not have Ssaia extension.
->
-> Fixes: 89d01306e34d ("RISC-V: KVM: Implement device interface for AIA irq=
-chip")
-> Signed-off-by: Anup Patel <anup.patel@oss.qualcomm.com>
+When a guest invokes SBI_EXT_PMU_COUNTER_FW_READ on a firmware counter
+that has not been configured via SBI_EXT_PMU_COUNTER_CFG_MATCH, the
+pmc->event_idx remains SBI_PMU_EVENT_IDX_INVALID (0xFFFFFFFF).
+get_event_code() extracts the lower 16 bits, yielding 0xFFFF (65535),
+which is then used to index into kvpmu->fw_event[]. Since fw_event is
+only RISCV_KVM_MAX_FW_CTRS (32) entries, this triggers an
+array-index-out-of-bounds:
 
-Queued this as fix for Linux-7.0-rcX
+  UBSAN: array-index-out-of-bounds in arch/riscv/kvm/vcpu_pmu.c:255:37
+  index 65535 is out of range for type 'kvm_fw_event [32]'
 
-Regards,
-Anup
+Add a bounds check on fevent_code before accessing the fw_event array,
+returning -EINVAL for invalid event codes.
 
-> ---
->  arch/riscv/kvm/aia_device.c | 4 ++++
->  1 file changed, 4 insertions(+)
->
-> diff --git a/arch/riscv/kvm/aia_device.c b/arch/riscv/kvm/aia_device.c
-> index b195a93add1c..bed4d2c8c44c 100644
-> --- a/arch/riscv/kvm/aia_device.c
-> +++ b/arch/riscv/kvm/aia_device.c
-> @@ -11,6 +11,7 @@
->  #include <linux/irqchip/riscv-imsic.h>
->  #include <linux/kvm_host.h>
->  #include <linux/uaccess.h>
-> +#include <linux/cpufeature.h>
->
->  static int aia_create(struct kvm_device *dev, u32 type)
->  {
-> @@ -22,6 +23,9 @@ static int aia_create(struct kvm_device *dev, u32 type)
->         if (irqchip_in_kernel(kvm))
->                 return -EEXIST;
->
-> +       if (!riscv_isa_extension_available(NULL, SSAIA))
-> +               return -ENODEV;
-> +
->         ret =3D -EBUSY;
->         if (kvm_trylock_all_vcpus(kvm))
->                 return ret;
-> --
-> 2.43.0
->
+Fixes: badc386869e2c ("RISC-V: KVM: Support firmware events")
+Signed-off-by: Jiakai Xu <xujiakai2025@iscas.ac.cn>
+Signed-off-by: Jiakai Xu <jiakaiPeanut@gmail.com>
+---
+ arch/riscv/kvm/vcpu_pmu.c | 4 ++++
+ 1 file changed, 4 insertions(+)
+
+diff --git a/arch/riscv/kvm/vcpu_pmu.c b/arch/riscv/kvm/vcpu_pmu.c
+index e873430e596b..c6d42459c2a1 100644
+--- a/arch/riscv/kvm/vcpu_pmu.c
++++ b/arch/riscv/kvm/vcpu_pmu.c
+@@ -252,6 +252,10 @@ static int pmu_ctr_read(struct kvm_vcpu *vcpu, unsigned long cidx,
+ 
+ 	if (pmc->cinfo.type == SBI_PMU_CTR_TYPE_FW) {
+ 		fevent_code = get_event_code(pmc->event_idx);
++		if (fevent_code >= SBI_PMU_FW_MAX) {
++			pr_warn("Invalid firmware event code [%d] for counter [%ld]\n", fevent_code, cidx);
++			return -EINVAL;
++		}
+ 		pmc->counter_val = kvpmu->fw_event[fevent_code].value;
+ 	} else if (pmc->perf_event) {
+ 		pmc->counter_val += perf_event_read_value(pmc->perf_event, &enabled, &running);
+-- 
+2.34.1
+
