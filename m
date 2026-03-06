@@ -1,154 +1,247 @@
-Received: from SA9PR02CU001.outbound.protection.outlook.com (mail-southcentralusazon11013069.outbound.protection.outlook.com [40.93.196.69])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 674D9345754;
-	Fri,  6 Mar 2026 09:41:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.93.196.69
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772790066; cv=fail; b=JIQ24CPxSi7fbUfYvHh2ftLAW0nj9mTefgi9nHOexU9II2UGssPC6HCySBXp2KlgTbIBZShE3cSXsxjG0k2lugIhWvliRnIqx8luvXBLY4cKAzINM55VH+NrXn2Ne4/SXvrfvKtH13MWynMOBw/qVgBNjKatTOHTUZSI5/UZjQo=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772790066; c=relaxed/simple;
-	bh=9kO3jXWrPg7Lkba3fWghx0TTnO0yCbVWZTo37R/3zCw=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=tuTL7po2JJ1B7wTmDAfjibd0bq6psgY2ksH+x6bSxP56WaqoaEOP1+fDS3BElTHlEzqDJ4s8xmlA+FqmS1xDYML2LSzoUOlcDjQDlclLKloLK7+Ey0VUIlbEEV8zC5gUW2BBKJKho7uZmUF2wsGu5TPbakS/5OvT4DiOBLjzm6Q=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=AzW3JJn5; arc=fail smtp.client-ip=40.93.196.69
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C079A34CFC0;
+	Fri,  6 Mar 2026 09:55:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.13
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1772790959; cv=none; b=EGETNeuD7KjCz+DzyV5Q2mddUyTTzV2nvld4g03NeYOwPJWfFW72vN60E4WxJrEFa1QkJaSSB6rbknUaHUbgyaH9XnLwT+Z/1i/BJsxyRNnZl1KylFGEDFFtNHXlXiGiwpoO6KbF7HDamxLQgY8ubeOQ3VkdtHIH3JxMvoEH+hI=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1772790959; c=relaxed/simple;
+	bh=cDZV9LfCWUPqqLU+zejqwkrlt+4RZGI/9jA3pBR+zNI=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=sVIKwsKFuI/oa1QBr/8Mxe0nQp7m3fDOLWIM3oRyIrVTmWNltwGEy/WZNDfCct8oH1Iq+RRTSDUXskO1rylF+zNqF/sGYHiutmUumsWw4XEpTeQ1GlHo4Mo+mTAznPGxbosV0ZymL9KJ8PIMpRjNrqPs+Tx2OwpWuVepb3mGIH0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=iCVuGZWs; arc=none smtp.client-ip=198.175.65.13
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="AzW3JJn5"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=JSIjzLXr0HVjVIY7nJkIE35lXwZIq2V7rMytmgqL3MRd0yufrIQsPCjtrO5e5Y5mDn6eIm7KQvVGnyoFqhXdc/6F7HFVRdDOfmP3HyF2+ps74bYMWrgcBnYt90PpP+eqwwezvyEXrHpLDklLZD26oWC2OQMEgyNjLc1xwsH/i2Mx0+k1QS6pFR/sH0NyhcZqCBG+uizul4HQc12+JeQBNMI1yNA0MEe1pJXcN1rv3QXL5nMyrSn64MVpS++d0r9zWyWzGLjsYRMPSvECbN4wqFXPJtQmnJQBnvhAs4qzCe4x9rNxlK6xl11ZVWWRKkIgEUuvogybskkIHYW5WwPyNg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=GFuRhIy62JlIS0eRHjURDsyG4KVbo3+63ys19uPTq4U=;
- b=uKSL00/XcvQjGuvZo7Sb25qCDO9drV0CUVpxFAwuw/C6NYHKbjJklRsg9dfg4f1nj2b+v4+w2EsYKKJ3pmWHfs9UwIXyZYvPLbTlCLcKZIkxCAao44ro3DhEkhRKw+slljOhbcbM87lBOQg93wmuFKwe1klvez7bR4IT4wtUFVS/hx5J8VJhDJKFiahtEuOMjqD0hUr5xwjvyGhfUQcDhlAKskkUuBfylfKMBEGrFh2JAHqI664AoZOT3xuUtyIHS6ZoYIbn6sczABWSRdGeHnL16VFNJJR4wWnCwHaSTU3XGA0OZnafUUmPBXrD2l3+gDJiNawhysHiVAaxxjooGQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 165.204.84.17) smtp.rcpttodomain=citrix.com smtp.mailfrom=amd.com; dmarc=pass
- (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
- dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=GFuRhIy62JlIS0eRHjURDsyG4KVbo3+63ys19uPTq4U=;
- b=AzW3JJn5wPGAEXZBUOg7f6lFcyJpiKokCPoubMARhjD4iz7X4bcLHaE/MuFi6oUSJxuziKaa/Q90GpvLQUr5bB3SB+5X4fAjfkebO31HlnNMPILE7cQLRSv8RtbdHI9szdeZbyg7cZehtXZ7wnugrqKa0z8h0B3FHyjWrRnMHk0=
-Received: from SA0PR11CA0147.namprd11.prod.outlook.com (2603:10b6:806:131::32)
- by DS0PR12MB7827.namprd12.prod.outlook.com (2603:10b6:8:146::9) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9678.18; Fri, 6 Mar
- 2026 09:41:01 +0000
-Received: from SN1PEPF0002636C.namprd02.prod.outlook.com
- (2603:10b6:806:131:cafe::52) by SA0PR11CA0147.outlook.office365.com
- (2603:10b6:806:131::32) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.20.9678.18 via Frontend Transport; Fri,
- 6 Mar 2026 09:41:01 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
- smtp.mailfrom=amd.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=amd.com;
-Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
- 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=satlexmb07.amd.com; pr=C
-Received: from satlexmb07.amd.com (165.204.84.17) by
- SN1PEPF0002636C.mail.protection.outlook.com (10.167.241.137) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.9678.18 via Frontend Transport; Fri, 6 Mar 2026 09:41:00 +0000
-Received: from satlexmb10.amd.com (10.181.42.219) by satlexmb07.amd.com
- (10.181.42.216) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.17; Fri, 6 Mar
- 2026 03:40:59 -0600
-Received: from satlexmb08.amd.com (10.181.42.217) by satlexmb10.amd.com
- (10.181.42.219) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.17; Fri, 6 Mar
- 2026 03:33:38 -0600
-Received: from [10.143.199.149] (10.180.168.240) by satlexmb08.amd.com
- (10.181.42.217) with Microsoft SMTP Server id 15.2.2562.17 via Frontend
- Transport; Fri, 6 Mar 2026 03:33:33 -0600
-Message-ID: <f092feb8-c0e4-45da-ae28-06e5dd4b7aa6@amd.com>
-Date: Fri, 6 Mar 2026 15:03:32 +0530
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="iCVuGZWs"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1772790958; x=1804326958;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:content-transfer-encoding:in-reply-to;
+  bh=cDZV9LfCWUPqqLU+zejqwkrlt+4RZGI/9jA3pBR+zNI=;
+  b=iCVuGZWsu7OjUKTUMyq6pQ85IFUUUnSiWUKkeYbPvOJp90n5aiAIqslr
+   OeH2XbTcyz1WMGIFsJn/hOynHKdgENCYv5p+aDbgfF7pqbd0AQ2Y1GtBA
+   gvkG7RfPx7Sr+pVW665CPKaDFR2I+vd2fTSNWCObLob8oVgNUYwzjt0N0
+   g9oYyS1zOGxvkF6jGZgSoyFYHxwIIB+G3NoZ8PDDkxv4MKA5kCjQXvIZk
+   j8FJ6fgb3t8X7RTlJmGqmq12GUSw3i3oD3tPaMfBMOEcdLibH3rXUE7iY
+   0Hh+ozh78W6ilyOl4yS9admTJmwZvUokWSP7qvpjKOpu3tmM6fTQ1W5Xj
+   A==;
+X-CSE-ConnectionGUID: N1OfjzFpQ92ZsWPchLRKsw==
+X-CSE-MsgGUID: 7XCjx35cTDS3Q5Y3lmcdSA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11720"; a="84980169"
+X-IronPort-AV: E=Sophos;i="6.23,104,1770624000"; 
+   d="scan'208";a="84980169"
+Received: from orviesa005.jf.intel.com ([10.64.159.145])
+  by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Mar 2026 01:55:57 -0800
+X-CSE-ConnectionGUID: mHXGC9QXRbyy6qWTW6J3eA==
+X-CSE-MsgGUID: 5Ig/g1V2RpK88YOUDrN7TA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.23,104,1770624000"; 
+   d="scan'208";a="223942937"
+Received: from igk-lkp-server01.igk.intel.com (HELO 9958d990ccf2) ([10.211.93.152])
+  by orviesa005.jf.intel.com with ESMTP; 06 Mar 2026 01:55:56 -0800
+Received: from kbuild by 9958d990ccf2 with local (Exim 4.98.2)
+	(envelope-from <lkp@intel.com>)
+	id 1vyRuT-000000002EL-2EGh;
+	Fri, 06 Mar 2026 09:55:53 +0000
+Date: Fri, 6 Mar 2026 10:55:25 +0100
+From: kernel test robot <lkp@intel.com>
+To: Anshuman Khandual <anshuman.khandual@arm.com>,
+	linux-kernel@vger.kernel.org
+Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
+	Anshuman Khandual <anshuman.khandual@arm.com>,
+	Paolo Bonzini <pbonzini@redhat.com>, kvm@vger.kernel.org
+Subject: Re: [PATCH] KVM: Change [g|h]va_t as u64
+Message-ID: <202603061007.7Z2iBYzb-lkp@intel.com>
+References: <20260306041125.45643-1-anshuman.khandual@arm.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 0/7] KVM: SVM: Enable FRED support
-To: Andrew Cooper <andrew.cooper3@citrix.com>
-CC: <bp@alien8.de>, <dave.hansen@linux.intel.com>, <hpa@zytor.com>,
-	<kvm@vger.kernel.org>, <linux-kernel@vger.kernel.org>, <mingo@redhat.com>,
-	<nikunj.dadhania@amd.com>, <pbonzini@redhat.com>, <seanjc@google.com>,
-	<tglx@linutronix.de>, <x86@kernel.org>, <xin@zytor.com>
-References: <85958aa8-98ee-40bc-8fcf-750bbf62ccce@amd.com>
- <f3959d60-9622-4817-8b85-2b704c46c583@citrix.com>
-Content-Language: en-US
-From: Shivansh Dhiman <shivansh.dhiman@amd.com>
-In-Reply-To: <f3959d60-9622-4817-8b85-2b704c46c583@citrix.com>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SN1PEPF0002636C:EE_|DS0PR12MB7827:EE_
-X-MS-Office365-Filtering-Correlation-Id: d0f241b9-f6d3-4361-dfae-08de7b647a2f
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|36860700016|82310400026|7416014|376014|1800799024|13003099007;
-X-Microsoft-Antispam-Message-Info:
-	JZa6xG0mb8sWZDOVOIu1CdNthwG1SbFHnuvdwp7zAuk3exFHxyFqLgbffDs/NWdKibO8sMHlGIhufXxQgdfF6c+7CVIL8Cu1JCTCw/9T18+nW6QgF15/h2mJHb703nJWNQQMyk143c9eZpbOYp9L9V+5oNd8cX//GFMihBnP0FFQ4+nNLaFCIPzOzuPSqSkJA4GsB3JWIXQZC5TbZ1lG6IUw/zMsKdQzclCYGFwqTNYsnk/RVqaGD+MSRSy3XOsKABxuM3K3cx60b1UDZ30w2e+wfKy0Rq7DBRc48Qe+f5+83WZ1lfPja/ngHiyqG4EfIcfoaoiR+Zniupo47fYKUM0tgauDQi0ndDYYLP6vNaDsauhzTBI07YpOCwA4sBCOnud6Lyi5+58Ujn83K7gFYXa2cfFqbcHlsRkGHDEKYcI4qf5zdwBF77ha8bE2Z7aC3PjNJGzlE9PqvR/YHkyw2VCoDfE64c0CeFU2AynZepCoYLGDKG/5YYn28rdfwI1kk+8ctytfYw71mVwb+HpvtOsflA5okMUAA20SZEDmN0WjteeVt+k81KjU9FhPu0W/xA9URfWcUfIL7JfZifDbm0Xfe0tdwmbvO+xMtbe7KlGmd49AN+dPryLd8Vqne32Jxxc0b8DDHwQ+5kwZQKVmbjisp0bWyWoe4hc/M3mSTstRCEi2sxDIsufUw7QG4sx2j1e+TENa77cKDXYL8Far6nVnDKNYSy7T3a1LUcANXCTRF/BkbJgZH6+iP6dZw3yDcDCLHrJ127doQl2STPgqjg==
-X-Forefront-Antispam-Report:
-	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb07.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(36860700016)(82310400026)(7416014)(376014)(1800799024)(13003099007);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	ZhWvIK3aWQR7XFMxHkEOtUGL452YQ1KcXtd0gaaC2G/Ky2A4618Agux0WAorQ9aaHWdQCslpw0DaHnS+GuNPgFaA/GJLPCrBExEDLY+2hiOpOlcWlFt+3mjRczcdleGp6Qd40w5VFVtFbjYqh1E5Tkpy+KoCGeB3KKJaFpjcMQCLtqVI+/xyh5ZKwMsbUUR6hmL+K44p/KkCDyU99x49N0uyevzQbN4KXkxkTJUxYsmP802BtLgRrTsXWvYv4sN7L9DAXJ8bk6lFTTEqpRy/w5mZ1Aly4KwGDfChZGcbF3yN7pWsdZ4NhIQWLGHbJCVUw0vfA6PG9GfPZvYSud2tf03YNqO22e5elV7YupQ59F2nQ0x7Pb20Y/QyTQnSbB+vQ5p1EDql4wTnoLMq5tDiDvLcpbnXC8q6FPvvbF56z15pFCcjVn+aAoAk1PQPtHd4
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 06 Mar 2026 09:41:00.9450
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: d0f241b9-f6d3-4361-dfae-08de7b647a2f
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[satlexmb07.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	SN1PEPF0002636C.namprd02.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS0PR12MB7827
+In-Reply-To: <20260306041125.45643-1-anshuman.khandual@arm.com>
 
-Hi Andrew,
+Hi Anshuman,
 
-On 11-02-2026 06:23, Andrew Cooper wrote:
->> Here is the newly published FRED virtualization spec by AMD for reference:
->>
->> 	https://docs.amd.com/v/u/en-US/69191-PUB
->>
->> Please feel free to share any feedback or questions.
-> 
-> 
-> FYI, there is a fun behaviour captured in the sentence:
-> 
-> "If FRED virtualization is enabled, NMI virtualization must be enabled
-> in order to properly handle guest NMIs"
-> 
-> i.e. hypervisors need to make sure not run the guest with FRED &&
-> !vNMI.  AIUI, there's no ERETUx intercept similar to the IRET intercept
-> with with to emulate NMI window tracking in !vNMI mode.
+kernel test robot noticed the following build errors:
 
-Thanks for letting me know about this. Seems like a legitimate consistency
-check. I'll try to integrate it.
+[auto build test ERROR on kvm/queue]
+[also build test ERROR on kvm/next kvm/linux-next linus/master v7.0-rc2 next-20260305]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch#_base_tree_information]
 
-> 
-> I requested that this become a VMRUN consistency check, but was
-> declined.  I've asked that at least the wording change to "undefined
-> behaviour" so something sane can be done for the nested case where L1
-> tries to do something daft.
-> 
-> 
-> There are two other issues which are going to be adjusted.  One is the
-> consistency check concerning SS.DPL==3 && INTR_SHADOW==0 (not a valid
-> restriction in later drafts of the spec), and one is "On an intercepted
-> #DB, EXITINFO2 has DR6 register value."  Both do/will (not sure which)
-> behave like Intel, rather than as currently documented.
+url:    https://github.com/intel-lab-lkp/linux/commits/Anshuman-Khandual/KVM-Change-g-h-va_t-as-u64/20260306-123029
+base:   https://git.kernel.org/pub/scm/virt/kvm/kvm.git queue
+patch link:    https://lore.kernel.org/r/20260306041125.45643-1-anshuman.khandual%40arm.com
+patch subject: [PATCH] KVM: Change [g|h]va_t as u64
+config: x86_64-kexec (https://download.01.org/0day-ci/archive/20260306/202603061007.7Z2iBYzb-lkp@intel.com/config)
+compiler: clang version 20.1.8 (https://github.com/llvm/llvm-project 87f0227cb60147a26a1eeb4fb06e3b505e9c7261)
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260306/202603061007.7Z2iBYzb-lkp@intel.com/reproduce)
 
-Can you tell under which conditions does the #DB issue may arise?
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202603061007.7Z2iBYzb-lkp@intel.com/
 
-> 
-> ~Andrew
+All error/warnings (new ones prefixed by >>):
 
-- Shivansh
+   In file included from arch/x86/kvm/x86.c:89:
+   In file included from arch/x86/kvm/trace.h:1976:
+   In file included from include/trace/define_trace.h:132:
+   In file included from include/trace/trace_events.h:256:
+>> arch/x86/kvm/trace.h:973:40: warning: format specifies type 'unsigned long' but the argument has type 'gva_t' (aka 'unsigned long long') [-Wformat]
+     954 |                 __field(gpa_t, gpa)
+         |                 ~~~~~~~~~~~~~~~~~~~
+     955 |                 __field(bool, write)
+         |                 ~~~~~~~~~~~~~~~~~~~~
+     956 |                 __field(bool, gpa_match)
+         |                 ~~~~~~~~~~~~~~~~~~~~~~~~
+     957 |                 ),
+         |                 ~~
+     958 | 
+     959 |         TP_fast_assign(
+         |         ~~~~~~~~~~~~~~~
+     960 |                 __entry->gva = gva;
+         |                 ~~~~~~~~~~~~~~~~~~~
+     961 |                 __entry->gpa = gpa;
+         |                 ~~~~~~~~~~~~~~~~~~~
+     962 |                 __entry->write = write;
+         |                 ~~~~~~~~~~~~~~~~~~~~~~~
+     963 |                 __entry->gpa_match = gpa_match
+         |                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+     964 |                 ),
+         |                 ~~
+     965 | 
+     966 |         TP_printk("gva %#lx gpa %#llx %s %s", __entry->gva, __entry->gpa,
+         |         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~
+         |                        %#llx
+     967 |                   __entry->write ? "Write" : "Read",
+         |                   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+     968 |                   __entry->gpa_match ? "GPA" : "GVA")
+         |                   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+     969 | );
+         | ~
+   include/trace/stages/stage3_trace_output.h:6:17: note: expanded from macro '__entry'
+       6 | #define __entry field
+         |                 ^
+   include/trace/stages/stage3_trace_output.h:9:43: note: expanded from macro 'TP_printk'
+       9 | #define TP_printk(fmt, args...) fmt "\n", args
+         |                                 ~~~       ^
+   include/trace/trace_events.h:45:16: note: expanded from macro 'TRACE_EVENT'
+      40 |         DECLARE_EVENT_CLASS(name,                              \
+         |         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      41 |                              PARAMS(proto),                    \
+         |                              ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      42 |                              PARAMS(args),                     \
+         |                              ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      43 |                              PARAMS(tstruct),                  \
+         |                              ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      44 |                              PARAMS(assign),                   \
+         |                              ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      45 |                              PARAMS(print));                   \
+         |                              ~~~~~~~^~~~~~~
+   include/linux/tracepoint.h:140:25: note: expanded from macro 'PARAMS'
+     140 | #define PARAMS(args...) args
+         |                         ^~~~
+   include/trace/trace_events.h:219:27: note: expanded from macro 'DECLARE_EVENT_CLASS'
+     219 |         trace_event_printf(iter, print);                                \
+         |                                  ^~~~~
+>> arch/x86/kvm/x86.c:8897:25: error: incompatible function pointer types initializing 'int (*)(struct x86_emulate_ctxt *, unsigned long, void *, unsigned int, struct x86_exception *, bool)' (aka 'int (*)(struct x86_emulate_ctxt *, unsigned long, void *, unsigned int, struct x86_exception *, _Bool)') with an expression of type 'int (struct x86_emulate_ctxt *, gva_t, void *, unsigned int, struct x86_exception *, bool)' (aka 'int (struct x86_emulate_ctxt *, unsigned long long, void *, unsigned int, struct x86_exception *, _Bool)') [-Wincompatible-function-pointer-types]
+    8897 |         .read_std            = emulator_read_std,
+         |                                ^~~~~~~~~~~~~~~~~
+   arch/x86/kvm/x86.c:8898:25: error: incompatible function pointer types initializing 'int (*)(struct x86_emulate_ctxt *, unsigned long, void *, unsigned int, struct x86_exception *, bool)' (aka 'int (*)(struct x86_emulate_ctxt *, unsigned long, void *, unsigned int, struct x86_exception *, _Bool)') with an expression of type 'int (struct x86_emulate_ctxt *, gva_t, void *, unsigned int, struct x86_exception *, bool)' (aka 'int (struct x86_emulate_ctxt *, unsigned long long, void *, unsigned int, struct x86_exception *, _Bool)') [-Wincompatible-function-pointer-types]
+    8898 |         .write_std           = emulator_write_std,
+         |                                ^~~~~~~~~~~~~~~~~~
+>> arch/x86/kvm/x86.c:8899:25: error: incompatible function pointer types initializing 'int (*)(struct x86_emulate_ctxt *, unsigned long, void *, unsigned int, struct x86_exception *)' with an expression of type 'int (struct x86_emulate_ctxt *, gva_t, void *, unsigned int, struct x86_exception *)' (aka 'int (struct x86_emulate_ctxt *, unsigned long long, void *, unsigned int, struct x86_exception *)') [-Wincompatible-function-pointer-types]
+    8899 |         .fetch               = kvm_fetch_guest_virt,
+         |                                ^~~~~~~~~~~~~~~~~~~~
+   1 warning and 3 errors generated.
+--
+>> arch/x86/kvm/vmx/vmx.c:574:15: warning: format specifies type 'unsigned long' but the argument has type 'gva_t' (aka 'unsigned long long') [-Wformat]
+     573 |         vmx_insn_failed("invvpid failed: ext=0x%lx vpid=%u gva=0x%lx\n",
+         |                                                                  ~~~
+         |                                                                  %llx
+     574 |                         ext, vpid, gva);
+         |                                    ^~~
+   arch/x86/kvm/vmx/vmx.c:532:22: note: expanded from macro 'vmx_insn_failed'
+     532 |         pr_warn_ratelimited(fmt);       \
+         |                             ^~~
+   include/linux/printk.h:721:49: note: expanded from macro 'pr_warn_ratelimited'
+     721 |         printk_ratelimited(KERN_WARNING pr_fmt(fmt), ##__VA_ARGS__)
+         |                                                ~~~     ^~~~~~~~~~~
+   include/linux/printk.h:705:17: note: expanded from macro 'printk_ratelimited'
+     705 |                 printk(fmt, ##__VA_ARGS__);                             \
+         |                        ~~~    ^~~~~~~~~~~
+   include/linux/printk.h:511:60: note: expanded from macro 'printk'
+     511 | #define printk(fmt, ...) printk_index_wrap(_printk, fmt, ##__VA_ARGS__)
+         |                                                     ~~~    ^~~~~~~~~~~
+   include/linux/printk.h:483:19: note: expanded from macro 'printk_index_wrap'
+     483 |                 _p_func(_fmt, ##__VA_ARGS__);                           \
+         |                         ~~~~    ^~~~~~~~~~~
+   1 warning generated.
+
+
+vim +8897 arch/x86/kvm/x86.c
+
+16ccadefa295af arch/x86/kvm/x86.c Maxim Levitsky      2024-09-06  8892  
+0225fb509d51fc arch/x86/kvm/x86.c Mathias Krause      2012-08-30  8893  static const struct x86_emulate_ops emulate_ops = {
+1cca2f8c501fa0 arch/x86/kvm/x86.c Sean Christopherson 2022-05-26  8894  	.vm_bugged           = emulator_vm_bugged,
+dd856efafe6097 arch/x86/kvm/x86.c Avi Kivity          2012-08-27  8895  	.read_gpr            = emulator_read_gpr,
+dd856efafe6097 arch/x86/kvm/x86.c Avi Kivity          2012-08-27  8896  	.write_gpr           = emulator_write_gpr,
+ce14e868a54ede arch/x86/kvm/x86.c Paolo Bonzini       2018-06-06 @8897  	.read_std            = emulator_read_std,
+ce14e868a54ede arch/x86/kvm/x86.c Paolo Bonzini       2018-06-06  8898  	.write_std           = emulator_write_std,
+1871c6020d7308 arch/x86/kvm/x86.c Gleb Natapov        2010-02-10 @8899  	.fetch               = kvm_fetch_guest_virt,
+bbd9b64e37aff5 drivers/kvm/x86.c  Carsten Otte        2007-10-30  8900  	.read_emulated       = emulator_read_emulated,
+bbd9b64e37aff5 drivers/kvm/x86.c  Carsten Otte        2007-10-30  8901  	.write_emulated      = emulator_write_emulated,
+bbd9b64e37aff5 drivers/kvm/x86.c  Carsten Otte        2007-10-30  8902  	.cmpxchg_emulated    = emulator_cmpxchg_emulated,
+3cb16fe78ce919 arch/x86/kvm/x86.c Avi Kivity          2011-04-20  8903  	.invlpg              = emulator_invlpg,
+cf8f70bfe38b32 arch/x86/kvm/x86.c Gleb Natapov        2010-03-18  8904  	.pio_in_emulated     = emulator_pio_in_emulated,
+cf8f70bfe38b32 arch/x86/kvm/x86.c Gleb Natapov        2010-03-18  8905  	.pio_out_emulated    = emulator_pio_out_emulated,
+1aa366163b8b69 arch/x86/kvm/x86.c Avi Kivity          2011-04-27  8906  	.get_segment         = emulator_get_segment,
+1aa366163b8b69 arch/x86/kvm/x86.c Avi Kivity          2011-04-27  8907  	.set_segment         = emulator_set_segment,
+5951c442372475 arch/x86/kvm/x86.c Gleb Natapov        2010-04-28  8908  	.get_cached_segment_base = emulator_get_cached_segment_base,
+2dafc6c234b606 arch/x86/kvm/x86.c Gleb Natapov        2010-03-18  8909  	.get_gdt             = emulator_get_gdt,
+160ce1f1a8fe64 arch/x86/kvm/x86.c Mohammed Gamal      2010-08-04  8910  	.get_idt	     = emulator_get_idt,
+1ac9d0cfb07e8a arch/x86/kvm/x86.c Avi Kivity          2011-04-20  8911  	.set_gdt             = emulator_set_gdt,
+1ac9d0cfb07e8a arch/x86/kvm/x86.c Avi Kivity          2011-04-20  8912  	.set_idt	     = emulator_set_idt,
+52a4661737ecc9 arch/x86/kvm/x86.c Gleb Natapov        2010-03-18  8913  	.get_cr              = emulator_get_cr,
+52a4661737ecc9 arch/x86/kvm/x86.c Gleb Natapov        2010-03-18  8914  	.set_cr              = emulator_set_cr,
+9c5372445c1ad4 arch/x86/kvm/x86.c Gleb Natapov        2010-03-18  8915  	.cpl                 = emulator_get_cpl,
+35aa5375d407ec arch/x86/kvm/x86.c Gleb Natapov        2010-04-28  8916  	.get_dr              = emulator_get_dr,
+35aa5375d407ec arch/x86/kvm/x86.c Gleb Natapov        2010-04-28  8917  	.set_dr              = emulator_set_dr,
+ac8d6cad3c7b39 arch/x86/kvm/x86.c Hou Wenlong         2022-03-07  8918  	.set_msr_with_filter = emulator_set_msr_with_filter,
+ac8d6cad3c7b39 arch/x86/kvm/x86.c Hou Wenlong         2022-03-07  8919  	.get_msr_with_filter = emulator_get_msr_with_filter,
+717746e382e58f arch/x86/kvm/x86.c Avi Kivity          2011-04-20  8920  	.get_msr             = emulator_get_msr,
+7bb7fce13601d2 arch/x86/kvm/x86.c Sean Christopherson 2024-01-09  8921  	.check_rdpmc_early   = emulator_check_rdpmc_early,
+222d21aa070a48 arch/x86/kvm/x86.c Avi Kivity          2011-11-10  8922  	.read_pmc            = emulator_read_pmc,
+6c3287f7c50500 arch/x86/kvm/x86.c Avi Kivity          2011-04-20  8923  	.halt                = emulator_halt,
+bcaf5cc543bdb8 arch/x86/kvm/x86.c Avi Kivity          2011-04-20  8924  	.wbinvd              = emulator_wbinvd,
+d6aa10003b0cde arch/x86/kvm/x86.c Avi Kivity          2011-04-20  8925  	.fix_hypercall       = emulator_fix_hypercall,
+c4f035c60dad45 arch/x86/kvm/x86.c Avi Kivity          2011-04-04  8926  	.intercept           = emulator_intercept,
+bdb42f5afebe20 arch/x86/kvm/x86.c Stephan B�rwolf     2012-01-12  8927  	.get_cpuid           = emulator_get_cpuid,
+5ae78e95ed0c77 arch/x86/kvm/x86.c Sean Christopherson 2019-12-17  8928  	.guest_has_movbe     = emulator_guest_has_movbe,
+5ae78e95ed0c77 arch/x86/kvm/x86.c Sean Christopherson 2019-12-17  8929  	.guest_has_fxsr      = emulator_guest_has_fxsr,
+a836839cbfe60d arch/x86/kvm/x86.c Hou Wenlong         2022-03-02  8930  	.guest_has_rdpid     = emulator_guest_has_rdpid,
+d99e4cb2ae2e02 arch/x86/kvm/x86.c Sean Christopherson 2024-04-05  8931  	.guest_cpuid_is_intel_compatible = emulator_guest_cpuid_is_intel_compatible,
+801806d956c2c1 arch/x86/kvm/x86.c Nadav Amit          2015-01-26  8932  	.set_nmi_mask        = emulator_set_nmi_mask,
+32e69f232db4ca arch/x86/kvm/x86.c Maxim Levitsky      2022-11-29  8933  	.is_smm              = emulator_is_smm,
+ecc513e5bb7ed5 arch/x86/kvm/x86.c Sean Christopherson 2021-06-09  8934  	.leave_smm           = emulator_leave_smm,
+25b17226cd9a77 arch/x86/kvm/x86.c Sean Christopherson 2021-06-09  8935  	.triple_fault        = emulator_triple_fault,
+f106797f81d633 arch/x86/kvm/x86.c Paolo Bonzini       2025-11-13  8936  	.get_xcr             = emulator_get_xcr,
+02d4160fbd7651 arch/x86/kvm/x86.c Vitaly Kuznetsov    2019-08-13  8937  	.set_xcr             = emulator_set_xcr,
+37a41847b770c7 arch/x86/kvm/x86.c Binbin Wu           2023-09-13  8938  	.get_untagged_addr   = emulator_get_untagged_addr,
+16ccadefa295af arch/x86/kvm/x86.c Maxim Levitsky      2024-09-06  8939  	.is_canonical_addr   = emulator_is_canonical_addr,
+bbd9b64e37aff5 drivers/kvm/x86.c  Carsten Otte        2007-10-30  8940  };
+bbd9b64e37aff5 drivers/kvm/x86.c  Carsten Otte        2007-10-30  8941  
+
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
