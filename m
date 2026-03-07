@@ -1,46 +1,46 @@
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC46A286412;
-	Sat,  7 Mar 2026 01:04:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D4682288530;
+	Sat,  7 Mar 2026 01:04:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.13
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772845454; cv=none; b=GqyZUHE+EdIFnV6MDPCiuU2pa+m3p9SdEMedQqUCrBy18JmAPek0gTCKN5GPa6FHZmLtx5ZMHFk4My32pRg84hK+JmH6ew9RQQF/oisiTyoMcUyt9kbcvWzlCoeWnlrHYjwFu9ymtjQHbECjfeiJrUuVmeimCkV0vmc5adD+6t0=
+	t=1772845457; cv=none; b=uHAzxHzAYhjkbF5RmHQuewWbUKngHAtX07zOY+BgmJ+Vno1wFLGiG0Tp263a5OLsy7y0YBU7DYicPuRhfVtaDzATFbRh5YIsdN4zoBahHrukgthw1ndA+Vkb/eehryWsx5MN53vr2vZK6JzxHMeil1uWxG6obuplZIO8BKpuEEk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772845454; c=relaxed/simple;
-	bh=oTLfhSSlOmM92LJkqNFBzQ2K3fHxLneuG0MsPSGtmy0=;
+	s=arc-20240116; t=1772845457; c=relaxed/simple;
+	bh=Y9KMueimA6TuqteFC7M2S3rpvtCygw0L+mAHMgMh3rQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hHGEGKrXUbqLj5zZWk4A50rT0sWoUfF4NgRT6Tl5pZQuEu/u2NHUQFVtDftsUT5+fVxFZRFZHwO+o8R07yhxOOMMC3BqjhU8BT+AyLOLZr9msd5fRyCshpt1BSFyNUNWydgs81sD+lGYujIR5zPej3hullRwT7uPEkZiy47gD5k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=gxmL/SI6; arc=none smtp.client-ip=192.198.163.13
+	 MIME-Version; b=SpEVDxlM6+/qt/a88IQIYXyT8ethb64We7jAHmJk8hyiTZ9sEapp4rJBaOismq/ho6ziB74v2bSntwurqE5PxI4qHnhu28jKqv0JFH+bkVk6JVLtTlaI7ETtRmLkAeXEhTsJ+kBMd+H7q6FjcTUOJdxdoXMo1VwQ9LJUyq4fSNQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Y+OM1eSm; arc=none smtp.client-ip=192.198.163.13
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="gxmL/SI6"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Y+OM1eSm"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1772845452; x=1804381452;
+  t=1772845456; x=1804381456;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=oTLfhSSlOmM92LJkqNFBzQ2K3fHxLneuG0MsPSGtmy0=;
-  b=gxmL/SI6b32xMC1EdZSj5DWNmfK/qK2dWtDa8CN3zeEYc7IZKV3kYurA
-   hrDmKd68mi3P1PV4MO1lqvWjbefR+b8MhkbjkXgcUmpe0l2F3OPS34OyC
-   pqP+TmUXT2oN/Tmsg53r6s2+e2KUTkL0/7gSA1OX+Q99uunD/Iv6GqfiM
-   pvr+1s18XP1Sx5sD8sVdqq4aLkgjJRdYjklaWZx49kNGLvsDvomgk1wLT
-   ACQJxWAolrFUDsfJl4jUJJQZDAuA9gx7xNF5bEm39h0Rao3WVSqLh6u7r
-   GG4lMk109tSQo8nS6k9U2DrzSsyrPzxEJcy6PbOKzso4l0kV9TNlKHqjN
-   g==;
-X-CSE-ConnectionGUID: VUhxL4GKRUGX6VFw9ygfMA==
-X-CSE-MsgGUID: MBip9xhpTBWsmIYs2O26hw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11721"; a="76565944"
+  bh=Y9KMueimA6TuqteFC7M2S3rpvtCygw0L+mAHMgMh3rQ=;
+  b=Y+OM1eSm2SymZ4SFan+19WU+OsOlyfFFUCwxVnD3du5AkowSb7cpmu7V
+   NVz4E0kKsLdK2hYHCw1rzcfg/UJK19eNUyzcDgmnV2dyjOlQ9YZ0tUEM8
+   u8fG8sJzkoGe/Ck/lv3bQ20yz68HaDwcGypE0bwbPq9PKbJ0Fynx2bf19
+   gePVH9o0F3k+KrchyPFG3MU6gRgMKgmUmyMhll2JMb7BTOIwcCIRgSUEv
+   rd6hNX5Rieedd4lRhl7OSle7xqbsOa4hwUakQMmeObYvegdq/3SRTqxoq
+   94Xnr9mhEZS/BGB8RrcUJLEyZZce0Npt+lqKwgMkURPEHLsMC6Xx7A0g6
+   w==;
+X-CSE-ConnectionGUID: QOwr+Sh9RJumJQ14YB2BpA==
+X-CSE-MsgGUID: MpxwBD9rS5SKPXKfdQ0tXQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11721"; a="76565957"
 X-IronPort-AV: E=Sophos;i="6.23,105,1770624000"; 
-   d="scan'208";a="76565944"
+   d="scan'208";a="76565957"
 Received: from orviesa006.jf.intel.com ([10.64.159.146])
   by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Mar 2026 17:04:08 -0800
-X-CSE-ConnectionGUID: +yrCuu/GSI6QofSK7FcTIw==
-X-CSE-MsgGUID: tmPMvj9KQfmWXtAEsa0ZTg==
+X-CSE-ConnectionGUID: LcrIWqwxSGms1ueyVs2t3g==
+X-CSE-MsgGUID: eytv7WfRQvemAVuA54gpAA==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.23,105,1770624000"; 
-   d="scan'208";a="218329622"
+   d="scan'208";a="218329628"
 Received: from rpedgeco-desk.jf.intel.com ([10.88.27.139])
   by orviesa006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Mar 2026 17:04:08 -0800
 From: Rick Edgecombe <rick.p.edgecombe@intel.com>
@@ -61,9 +61,9 @@ To: bp@alien8.de,
 	ackerleytng@google.com
 Cc: rick.p.edgecombe@intel.com,
 	vishal.l.verma@intel.com
-Subject: [PATCH 2/4] x86/virt/tdx: Pull kexec cache flush logic into arch/x86
-Date: Fri,  6 Mar 2026 17:03:56 -0800
-Message-ID: <20260307010358.819645-3-rick.p.edgecombe@intel.com>
+Subject: [PATCH 4/4] KVM: x86: Disable the TDX module during kexec and kdump
+Date: Fri,  6 Mar 2026 17:03:58 -0800
+Message-ID: <20260307010358.819645-5-rick.p.edgecombe@intel.com>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260307010358.819645-1-rick.p.edgecombe@intel.com>
 References: <20260307010358.819645-1-rick.p.edgecombe@intel.com>
@@ -75,127 +75,100 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-KVM tries to take care of some required cache flushing earlier in the
-kexec path in order to be kind to some long standing races that can occur
-later in the operation. Until recently, VMXOFF was handled within KVM.
-Since VMX being enabled is required to make a SEAMCALL, it had the best
-per-cpu scoped operation to plug the flushing into.
+From: Vishal Verma <vishal.l.verma@intel.com>
 
-This early kexec cache flushing in KVM happens via a syscore shutdown 
-callback. Now that VMX enablement control has moved to arch/x86, which has 
-grown its own syscore shutdown callback, it no longer make sense for it to 
-live in KVM. It fits better with the TDX enablement managing code.
+Use the TDH.SYS.DISABLE SEAMCALL, which disables the TDX module,
+reclaims all memory resources assigned to TDX, and clears any
+partial-write induced poison, to allow kexec and kdump on platforms with
+the partial write errata.
 
-In addition, future changes will add a SEAMCALL that happens immediately
-before VMXOFF, which means the cache flush in KVM will be too late to be
-helpful. So move it to the newly added TDX arch/x86 syscore shutdown
-handler.
+On TDX-capable platforms with the partial write erratum, kexec has been
+disabled because the new kernel could hit a machine check reading a
+previously poisoned memory location.
 
-Since tdx_cpu_flush_cache_for_kexec() is no longer needed by KVM, make it 
-static and remove the export. Since it is also not part of an operation 
-spread across disparate components, remove the redundant comments and 
-verbose naming.
+Later TDX modules support TDH.SYS.DISABLE, which disables the module and
+reclaims all TDX memory resources, allowing the new kernel to re-initialize
+TDX from scratch. This operation also clears the old memory, cleaning up
+any poison.
 
+Add tdx_sys_disable() to tdx_shutdown(), which is called in the
+syscore_shutdown path for kexec. This is done just before tdx_shutdown()
+disables VMX on all CPUs.
+
+For kdump, call tdx_sys_disable() in the crash path before
+x86_virt_emergency_disable_virtualization_cpu() does VMXOFF.
+
+Since this clears any poison on TDX-managed memory, the
+X86_BUG_TDX_PW_MCE check in machine_kexec() that blocked kexec on
+partial write errata platforms can be removed.
+
+Signed-off-by: Vishal Verma <vishal.l.verma@intel.com>
 Signed-off-by: Rick Edgecombe <rick.p.edgecombe@intel.com>
 ---
- arch/x86/include/asm/tdx.h  |  6 ------
- arch/x86/kvm/vmx/tdx.c      | 10 ----------
- arch/x86/virt/vmx/tdx/tdx.c | 39 +++++++++++++++++++------------------
- 3 files changed, 20 insertions(+), 35 deletions(-)
+ arch/x86/kernel/crash.c            |  2 ++
+ arch/x86/kernel/machine_kexec_64.c | 16 ----------------
+ arch/x86/virt/vmx/tdx/tdx.c        |  1 +
+ 3 files changed, 3 insertions(+), 16 deletions(-)
 
-diff --git a/arch/x86/include/asm/tdx.h b/arch/x86/include/asm/tdx.h
-index 0c1ae4954f17..f0826b0a512a 100644
---- a/arch/x86/include/asm/tdx.h
-+++ b/arch/x86/include/asm/tdx.h
-@@ -206,11 +206,5 @@ static inline const char *tdx_dump_mce_info(struct mce *m) { return NULL; }
- static inline const struct tdx_sys_info *tdx_get_sysinfo(void) { return NULL; }
- #endif	/* CONFIG_INTEL_TDX_HOST */
+diff --git a/arch/x86/kernel/crash.c b/arch/x86/kernel/crash.c
+index cd796818d94d..623d4474631a 100644
+--- a/arch/x86/kernel/crash.c
++++ b/arch/x86/kernel/crash.c
+@@ -38,6 +38,7 @@
+ #include <linux/kdebug.h>
+ #include <asm/cpu.h>
+ #include <asm/reboot.h>
++#include <asm/tdx.h>
+ #include <asm/intel_pt.h>
+ #include <asm/crash.h>
+ #include <asm/cmdline.h>
+@@ -112,6 +113,7 @@ void native_machine_crash_shutdown(struct pt_regs *regs)
  
--#ifdef CONFIG_KEXEC_CORE
--void tdx_cpu_flush_cache_for_kexec(void);
--#else
--static inline void tdx_cpu_flush_cache_for_kexec(void) { }
--#endif
--
- #endif /* !__ASSEMBLER__ */
- #endif /* _ASM_X86_TDX_H */
-diff --git a/arch/x86/kvm/vmx/tdx.c b/arch/x86/kvm/vmx/tdx.c
-index b7264b533feb..50a5cfdbd33e 100644
---- a/arch/x86/kvm/vmx/tdx.c
-+++ b/arch/x86/kvm/vmx/tdx.c
-@@ -440,16 +440,6 @@ void tdx_disable_virtualization_cpu(void)
- 		tdx_flush_vp(&arg);
- 	}
- 	local_irq_restore(flags);
--
+ 	crash_smp_send_stop();
+ 
++	tdx_sys_disable();
+ 	x86_virt_emergency_disable_virtualization_cpu();
+ 
+ 	/*
+diff --git a/arch/x86/kernel/machine_kexec_64.c b/arch/x86/kernel/machine_kexec_64.c
+index 0590d399d4f1..c3f4a389992d 100644
+--- a/arch/x86/kernel/machine_kexec_64.c
++++ b/arch/x86/kernel/machine_kexec_64.c
+@@ -347,22 +347,6 @@ int machine_kexec_prepare(struct kimage *image)
+ 	unsigned long reloc_end = (unsigned long)__relocate_kernel_end;
+ 	int result;
+ 
 -	/*
--	 * Flush cache now if kexec is possible: this is necessary to avoid
--	 * having dirty private memory cachelines when the new kernel boots,
--	 * but WBINVD is a relatively expensive operation and doing it during
--	 * kexec can exacerbate races in native_stop_other_cpus().  Do it
--	 * now, since this is a safe moment and there is going to be no more
--	 * TDX activity on this CPU from this point on.
+-	 * Some early TDX-capable platforms have an erratum.  A kernel
+-	 * partial write (a write transaction of less than cacheline
+-	 * lands at memory controller) to TDX private memory poisons that
+-	 * memory, and a subsequent read triggers a machine check.
+-	 *
+-	 * On those platforms the old kernel must reset TDX private
+-	 * memory before jumping to the new kernel otherwise the new
+-	 * kernel may see unexpected machine check.  For simplicity
+-	 * just fail kexec/kdump on those platforms.
 -	 */
--	tdx_cpu_flush_cache_for_kexec();
- }
- 
- #define TDX_SEAMCALL_RETRIES 10000
+-	if (boot_cpu_has_bug(X86_BUG_TDX_PW_MCE)) {
+-		pr_info_once("Not allowed on platform with tdx_pw_mce bug\n");
+-		return -EOPNOTSUPP;
+-	}
+-
+ 	/* Setup the identity mapped 64bit page table */
+ 	result = init_pgtable(image, __pa(control_page));
+ 	if (result)
 diff --git a/arch/x86/virt/vmx/tdx/tdx.c b/arch/x86/virt/vmx/tdx/tdx.c
-index cb9b3210ab71..0802d0fd18a4 100644
+index 68bd2618dde4..b388fbce5d76 100644
 --- a/arch/x86/virt/vmx/tdx/tdx.c
 +++ b/arch/x86/virt/vmx/tdx/tdx.c
-@@ -224,8 +224,28 @@ static int tdx_offline_cpu(unsigned int cpu)
- 	return 0;
- }
+@@ -252,6 +252,7 @@ static void tdx_shutdown_cpu(void *ign)
  
-+static void tdx_cpu_flush_cache(void)
-+{
-+	lockdep_assert_preemption_disabled();
-+
-+	if (!this_cpu_read(cache_state_incoherent))
-+		return;
-+
-+	wbinvd();
-+	this_cpu_write(cache_state_incoherent, false);
-+}
-+
- static void tdx_shutdown_cpu(void *ign)
+ static void tdx_shutdown(void *ign)
  {
-+	/*
-+	 * Flush cache now if kexec is possible: this is necessary to avoid
-+	 * having dirty private memory cachelines when the new kernel boots,
-+	 * but WBINVD is a relatively expensive operation and doing it during
-+	 * kexec can exacerbate races in native_stop_other_cpus().  Do it
-+	 * now, since this is a safe moment and there is going to be no more
-+	 * TDX activity on this CPU from this point on.
-+	 */
-+	tdx_cpu_flush_cache();
- 	x86_virt_put_ref(X86_FEATURE_VMX);
++	tdx_sys_disable();
+ 	on_each_cpu(tdx_shutdown_cpu, NULL, 1);
  }
  
-@@ -1920,22 +1940,3 @@ u64 tdh_phymem_page_wbinvd_hkid(u64 hkid, struct page *page)
- 	return seamcall(TDH_PHYMEM_PAGE_WBINVD, &args);
- }
- EXPORT_SYMBOL_FOR_KVM(tdh_phymem_page_wbinvd_hkid);
--
--#ifdef CONFIG_KEXEC_CORE
--void tdx_cpu_flush_cache_for_kexec(void)
--{
--	lockdep_assert_preemption_disabled();
--
--	if (!this_cpu_read(cache_state_incoherent))
--		return;
--
--	/*
--	 * Private memory cachelines need to be clean at the time of
--	 * kexec.  Write them back now, as the caller promises that
--	 * there should be no more SEAMCALLs on this CPU.
--	 */
--	wbinvd();
--	this_cpu_write(cache_state_incoherent, false);
--}
--EXPORT_SYMBOL_FOR_KVM(tdx_cpu_flush_cache_for_kexec);
--#endif
 -- 
 2.53.0
 
