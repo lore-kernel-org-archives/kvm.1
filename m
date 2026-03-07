@@ -1,88 +1,92 @@
-Received: from mail-pl1-f201.google.com (mail-pl1-f201.google.com [209.85.214.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3F5F28B7EA
-	for <kvm@vger.kernel.org>; Sat,  7 Mar 2026 00:56:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BDF8A288C81
+	for <kvm@vger.kernel.org>; Sat,  7 Mar 2026 00:58:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772844983; cv=none; b=dZ6+H9ytfUe8zwBjhPtgPUIyRWCzmU9pcOCazOMRgJ3jjyoYEUI6ba32BzWfr2Vo4GMFDSUbZY9zklNij8X+rwLUEeLMgn7QrPOyOe/ozQhUN+hs7EFGRfB8huYwF+X2ZtP3t6HERiit7Cmrh5XJxhBVUqYXF3yNkJ6hbjR5pSg=
+	t=1772845112; cv=none; b=ivpFNKCFZaHdB9AQnTGQe3XdkiHF68D5/qMmAdDzUMPFqxLQFwJFNl8RSuOd5v4dH5DZdAUMMwuRJ2JyvR8DkpsoV8HQqWnnl4yROG7S/TSiRp5k4ln9GHJ5as3hAHQmiVkMgIUnX52kCyuNf24A7tp7C8y1cUEssbEIkYZYWog=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772844983; c=relaxed/simple;
-	bh=1m13UFepxi8vBneZxZNY81BKCJukqFX3H7//5GS9Pzo=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=DwHLyTQtFrq42ONN3DAT0sQWqgmsBgCI40mLUyCeH2R4VZEVU4v9BBGJLRw6T4m5NSRVJDNNCUz4oWd7oDsT51qnu5CdGYbhZLFbdGFFkuGMTN1p43giI+2rqg5HtnBj082JZKC4m99DkqoHjoJYq/AQlpWWaGJ2VaibE59lPjk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=LNzzOMXG; arc=none smtp.client-ip=209.85.214.201
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+	s=arc-20240116; t=1772845112; c=relaxed/simple;
+	bh=gUeTy650d69CYnjPmbPWI6oaDbdEdVumUYsXTrZYpwc=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=b4NDGaaD/yD6sD5m/Ul3yNCOI94K0VlLcD1W6Pwx4k4lBn6hcwG68CF+ghsMpNNqec62cMgkDMa4x4SXIH/KxOJ0bV7ByyV1XOsT1WbGArhPNAs+2A+RGaD3D2QT9VZ1pfCokXfu38TWqirmxFW823bw/nvzmY+oYJ0pTZtWhNQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=S12lkoSb; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="LNzzOMXG"
-Received: by mail-pl1-f201.google.com with SMTP id d9443c01a7336-2ae59e057f1so67975505ad.1
-        for <kvm@vger.kernel.org>; Fri, 06 Mar 2026 16:56:22 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1772844982; x=1773449782; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=dIjbhoDQye7OtYRjc13MZ8awPXBgsWkB1DkXIBBQwYQ=;
-        b=LNzzOMXG3ynpDNYadHkZvk7wBlM1M1SMSqsrcI4R1e34hx7fltsc94tfdX1uGn0/dP
-         JrHYl3umEo98UJBtB03fscS1sGS7mnteDDbflu1gdBrunInzi8m7Lg7qQsWf1sL2DLiC
-         3+5v7rLSt0radYk7DGI8K0AsRpeEZglkKFkLBMKP1Cf4ZhFyxCiLvG7Ifw6Y3oOPgejp
-         SSeXYMZscndDPHbnF7oHWuHH5dK9KPMSEhJOMY3M4gwGK1EldDi0R5etAIzUuFbqJ51n
-         bCXYQvAzGkYplDr88G4methTc/3tE87/1LhkmxL/E1/ppwC2WlAkXqd3MFZIKvioVASs
-         uFVA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1772844982; x=1773449782;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=dIjbhoDQye7OtYRjc13MZ8awPXBgsWkB1DkXIBBQwYQ=;
-        b=AJppVYnERnIFGtH6PuyuUcvAmD3cphF+JLgywp37gY1w8c3jmtkxMRE5VHhrNOWVkm
-         qMbT0A7PYnyFxZy/LjiDFJZlkNYCamJY361MQ2lg4hizzPceTL23EeSXU7Sm3V/muuPL
-         1NJlAWOWKcxckhuQ3zwtc/BDuUvlMzfIz5MOQZdDCuK4Tpn5VWOXmfwvPXrfobubEquG
-         c/rxe/TPoT4/z7WO6X7qfjPc0OirXY2yH4JPCMmW1vyxlaSOJBzpVM1Fwo/Xgi+JYDLA
-         m1c+mTH+Khdlv/J5QjA+Exb9a0QFIvy3K/y6PTGi0imeDU7SUgCtkHyVgE9IokAj1vgQ
-         /Zuw==
-X-Forwarded-Encrypted: i=1; AJvYcCXpOItJ9fuw9SL8ADacsQTi5aXXIelOfLYjNcgf3kjhj7JRePtwVuNgK0UGl+d6Si+GIP0=@vger.kernel.org
-X-Gm-Message-State: AOJu0YytkZhq3Fg1QbwRRfWkR2+qsV4UCyiPNp04kzgrI4yi3J7ExZKp
-	db4hzwpf3rscAihDZIXWdQCTQ67Ye7ZwCnyBtJYza/kYJgkfSZ726lpEbKImnjbprlXkOhXc+zs
-	0XRqSOg==
-X-Received: from plbkn5.prod.google.com ([2002:a17:903:785:b0:2ae:478e:82bd])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:903:244e:b0:2ad:d0ff:2ed4
- with SMTP id d9443c01a7336-2ae8236740amr38087585ad.6.1772844981812; Fri, 06
- Mar 2026 16:56:21 -0800 (PST)
-Date: Fri, 6 Mar 2026 16:56:19 -0800
-In-Reply-To: <CAO9r8zO+sTttrKscx+9Sr+TECLrb5rHFTPThHYZG_e1qKSo+Cg@mail.gmail.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="S12lkoSb"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A0D68C2BC86
+	for <kvm@vger.kernel.org>; Sat,  7 Mar 2026 00:58:32 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1772845112;
+	bh=gUeTy650d69CYnjPmbPWI6oaDbdEdVumUYsXTrZYpwc=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=S12lkoSbVLj11SUne4oTYFbIKSlfsxGg20s8XIU3l+SlpQ5tuxQOYppKJDAnUdAtn
+	 QEwWl6n1q0G9Rg2tGE5xNN5JT+2w+FtG+B6Fg/MI2FDqZR71j0GGp41JBYU8Y31zCo
+	 /wiKEPPcmcyfxdEMJRCXuRl2C3Enqd6sN8YD5RYF09oTUzpdxuFUme814nyoZYQXxX
+	 GpdogX4fFLGea9DZ4hi6wsK9Mn+GVpRfQugWYXuuM3Qay4XQYyzZEfW0sA3CWolWui
+	 c1ihYNHj5eqnKpEOLl4FnB+5TvZ4p414mvftpkzef1aGKU7m85tXmHnh1bgTOZ6Uya
+	 ZlpddS1u9yxpA==
+Received: by mail-ej1-f44.google.com with SMTP id a640c23a62f3a-b8d7f22d405so1437402266b.0
+        for <kvm@vger.kernel.org>; Fri, 06 Mar 2026 16:58:32 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCWMvkD2HRwpbolX7nwb3k7C7LDWHr82bCE5aS4yzmiAGu/VhW7r63NwcJQvYg85HH2I0m4=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzqoW/ZcpMrIAxQGDjxmg6ZWrTjOKaRxPuqQ2vWMORHq8uDt3Zb
+	wW7YD9QAC+1Mcb+4ij2taPAsBFlFElRyH0bhNNCSv1BrZ6mX/3+gWSPy3R4WYj6o9os7ixkb6L6
+	v6lgBi/HnOwZFBg9Q7HleMvGi/b5Zef4=
+X-Received: by 2002:a17:907:7f86:b0:b88:783e:64fd with SMTP id
+ a640c23a62f3a-b942df8345amr214819066b.45.1772845111370; Fri, 06 Mar 2026
+ 16:58:31 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
+MIME-Version: 1.0
 References: <20260306002327.1225504-1-yosry@kernel.org> <aar-gDulqlXtVDhR@google.com>
- <CAO9r8zO+sTttrKscx+9Sr+TECLrb5rHFTPThHYZG_e1qKSo+Cg@mail.gmail.com>
-Message-ID: <aat3s9EjKB_IsQQf@google.com>
+ <CAO9r8zO+sTttrKscx+9Sr+TECLrb5rHFTPThHYZG_e1qKSo+Cg@mail.gmail.com> <aat3s9EjKB_IsQQf@google.com>
+In-Reply-To: <aat3s9EjKB_IsQQf@google.com>
+From: Yosry Ahmed <yosry@kernel.org>
+Date: Fri, 6 Mar 2026 16:58:20 -0800
+X-Gmail-Original-Message-ID: <CAO9r8zOq=HJZbGiCyfn1OpQAVkq0=eA+KH7jBF7g+Frfi1myzA@mail.gmail.com>
+X-Gm-Features: AaiRm51cDQM9BmX_CNMiLkszwGjjTxk3zcwqBXCFc3x163cqJxEVeSHFG7wudMM
+Message-ID: <CAO9r8zOq=HJZbGiCyfn1OpQAVkq0=eA+KH7jBF7g+Frfi1myzA@mail.gmail.com>
 Subject: Re: [PATCH] KVM: SVM: Propagate Translation Cache Extensions to the guest
-From: Sean Christopherson <seanjc@google.com>
-To: Yosry Ahmed <yosry@kernel.org>
+To: Sean Christopherson <seanjc@google.com>
 Cc: Paolo Bonzini <pbonzini@redhat.com>, Venkatesh Srinivas <venkateshs@google.com>, kvm@vger.kernel.org, 
 	linux-kernel@vger.kernel.org, Venkatesh Srinivas <venkateshs@chromium.org>
-Content-Type: text/plain; charset="us-ascii"
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Fri, Mar 06, 2026, Yosry Ahmed wrote:
-> > Hrm, I think we should handle all of the kvm_enable_efer_bits() calls that are
-> > conditioned only on CPU support in common code.  While it's highly unlikely Intel
-> > CPUs will ever support more EFER-based features, if they do, then KVM will
-> > over-report support since kvm_initialize_cpu_caps() will effectively enable the
-> > feature, but VMX won't enable the corresponding EFER bit.
+On Fri, Mar 6, 2026 at 4:56=E2=80=AFPM Sean Christopherson <seanjc@google.c=
+om> wrote:
+>
+> On Fri, Mar 06, 2026, Yosry Ahmed wrote:
+> > > Hrm, I think we should handle all of the kvm_enable_efer_bits() calls=
+ that are
+> > > conditioned only on CPU support in common code.  While it's highly un=
+likely Intel
+> > > CPUs will ever support more EFER-based features, if they do, then KVM=
+ will
+> > > over-report support since kvm_initialize_cpu_caps() will effectively =
+enable the
+> > > feature, but VMX won't enable the corresponding EFER bit.
+> > >
+> > > I can't think anything that will go sideways if we rely purely on KVM=
+ caps, so
+> > > get to something like this as prep work, and then land TCE in common =
+x86?
 > >
-> > I can't think anything that will go sideways if we rely purely on KVM caps, so
-> > get to something like this as prep work, and then land TCE in common x86?
-> 
-> Taking a second look here, doesn't this break the changes introduced
-> by commit 11988499e62b ("KVM: x86: Skip EFER vs. guest CPUID checks
-> for host-initiated writes")? Userspace writes may fail if the
-> corresponding CPUID feature is not enabled.
+> > Taking a second look here, doesn't this break the changes introduced
+> > by commit 11988499e62b ("KVM: x86: Skip EFER vs. guest CPUID checks
+> > for host-initiated writes")? Userspace writes may fail if the
+> > corresponding CPUID feature is not enabled.
+>
+> No, because kvm_cpu_cap_has() =3D=3D boot_cpu_has() filtered by what KVM =
+supports.
+> All of these EFER updates subtly rely on KVM enabling the associated CPUI=
+D
+> feature in kvm_set_cpu_caps().
+>
+> If we used guest_cpu_cap_has(), then yes, that would be a problem.
 
-No, because kvm_cpu_cap_has() == boot_cpu_has() filtered by what KVM supports.
-All of these EFER updates subtly rely on KVM enabling the associated CPUID
-feature in kvm_set_cpu_caps().
-
-If we used guest_cpu_cap_has(), then yes, that would be a problem.
+Gaah I mixed up guest_cpu_cap_has() and kvm_cpu_cap_has(), sorry for the no=
+ise.
