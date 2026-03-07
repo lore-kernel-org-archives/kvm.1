@@ -1,130 +1,88 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
+Received: from mail.zytor.com (terminus.zytor.com [198.137.202.136])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B10CE2DB7A9;
-	Sat,  7 Mar 2026 02:41:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.21
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5DA418287E;
+	Sat,  7 Mar 2026 03:01:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.137.202.136
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772851300; cv=none; b=k/TWMATghM82EePfGqWEf+q88D6if6gSxRMu1KR86pCuzr1rPn34Cp1ekvPHDHkrx+0OFzyBtXGymQw70EvjgIfTAGT7KoDZTpp2evj41lo0LaXr0LT9QsAslUlqHzu8ueflUr0hhY5AXUOdenWvN9A/wSbR2BEPcKay2yiLGZE=
+	t=1772852487; cv=none; b=M49xWOvpFWY1ITSTYPsg/MfUNV5/QzBl0ZgowtrcPThUGieuYkTvlyxLJc021eDTKb+jAKGYIKqjKZv8r9PCPUm/haQXy+wO3uLRDy3F4RLRZJOpmTlLBy5q0CGGmKPn6Mz1Xl7pUL6BdGKYzw4tkeoPu1UvNH3yfKTg1TNZib8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772851300; c=relaxed/simple;
-	bh=2Hk+Ukv/JmDB+0sEW1ekV1MWEyBKDUQoHCydvOVio5k=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ALXG5P1VAa1BTg5fkW573DXMkylfkcnjXYqk3Eav4jsFkfiHtQcWmv+8zbdN0FptbTadvmJt11sZwWdo1w98ANzAspZxfBz5+UgSTKjUsljvBFaUfi3txfGHtJiaMSYA431bTDaqYnksFOTlJMas7NCS7xEVQjsCtEgfA/Geq1c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=PxNRdUUJ; arc=none smtp.client-ip=198.175.65.21
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+	s=arc-20240116; t=1772852487; c=relaxed/simple;
+	bh=leEmfI7wf5aP5vv1HAijwEvKw4E5sOOWzhu790o1rGQ=;
+	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
+	 Message-Id:References:To; b=K+AMDQIR7OZQDQj5Vn29naBPv9ibnvc6dKVZ7K62FELa0pQpGyprDYgG1MLk5tfFvOtOYYpKBtlwkDYhVmBr3P99POPwY8Z3cGM0AROocO/KyZyvjvQ+WmlAyrbSSR2pzWFCxAojV1DgpVMfOvurZoXAPPSP5ksTyNSMM0Fuiko=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zytor.com; spf=pass smtp.mailfrom=zytor.com; dkim=pass (2048-bit key) header.d=zytor.com header.i=@zytor.com header.b=f0ZZFo74; arc=none smtp.client-ip=198.137.202.136
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zytor.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=zytor.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="PxNRdUUJ"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1772851299; x=1804387299;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:content-transfer-encoding:in-reply-to;
-  bh=2Hk+Ukv/JmDB+0sEW1ekV1MWEyBKDUQoHCydvOVio5k=;
-  b=PxNRdUUJ+Oalj0nj/sqUXC7vT/ysStuwv46joUQ3CIE4rLUCN2Vg5PF5
-   wfoNJh37HQnj8ZZomG1XV8EDn0Mi5BpRjjvr5wyKSbsLd+k7cssUsDymm
-   i1C3SZsZNCMET/WN4S2WzdpCh5bJWPu1Wj4QA0GegrNmb7pVDGYE5ng7c
-   O6COvk6zf0fO0oxFbETxTJOQG4VA6XaSXRdQwcRcCl0bAwcR/q7hUqigt
-   o/fqf0mOdmp8dx8QT2SEWBZQrGwx5duQQEVS5DBYgF1LFdWp0StON/DV3
-   EJOdf6YVb/X2JCJ/xAhVdQD2Q6joVlWeObP886d+FcNsHRopJ3nii+mEl
-   g==;
-X-CSE-ConnectionGUID: 7JVLumOnRlSR26zhSy3uSQ==
-X-CSE-MsgGUID: WcZTbAIKQxy9p5FDRYA4tQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11721"; a="73838112"
-X-IronPort-AV: E=Sophos;i="6.23,106,1770624000"; 
-   d="scan'208";a="73838112"
-Received: from orviesa005.jf.intel.com ([10.64.159.145])
-  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Mar 2026 18:41:39 -0800
-X-CSE-ConnectionGUID: t6dpALQoTMCsPGXJYig7kA==
-X-CSE-MsgGUID: quy5FKj0TL+ldilYeavCkA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,106,1770624000"; 
-   d="scan'208";a="224135610"
-Received: from guptapa-desk.jf.intel.com (HELO desk) ([10.165.239.46])
-  by orviesa005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Mar 2026 18:41:39 -0800
-Date: Fri, 6 Mar 2026 18:41:32 -0800
-From: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
-To: Jim Mattson <jmattson@google.com>
-Cc: x86@kernel.org, David Kaplan <david.kaplan@amd.com>,
-	Nikolay Borisov <nik.borisov@suse.com>,
-	"H. Peter Anvin" <hpa@zytor.com>,
-	Josh Poimboeuf <jpoimboe@kernel.org>,
-	Sean Christopherson <seanjc@google.com>,
-	Paolo Bonzini <pbonzini@redhat.com>, Borislav Petkov <bp@alien8.de>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
-	Asit Mallick <asit.k.mallick@intel.com>,
-	Tao Zhang <tao1.zhang@intel.com>, David Dunn <daviddunn@google.com>,
-	chao.gao@intel.com
-Subject: Re: [PATCH v4 04/11] x86/bhi: Make clear_bhb_loop() effective on
- newer CPUs
-Message-ID: <20260307024132.wleqtpovzd6wtvm7@desk>
-References: <20251119-vmscape-bhb-v4-0-1adad4e69ddc@linux.intel.com>
- <20251119-vmscape-bhb-v4-4-1adad4e69ddc@linux.intel.com>
- <CALMp9eQNBZsJNdfCVwbJ4v1DgCNqRV3DVcEeCPFt=dd29+qy-A@mail.gmail.com>
- <20260306223225.l2beapz3nvmqefou@desk>
- <CALMp9eQoE13d1cqD3PNJtvdKUGZeVm1g-9TWh+M+MJj_sm9CzA@mail.gmail.com>
- <20260306232920.dja5n7cngrsyj6tk@desk>
- <CALMp9eSoNaifKyppbjJjNx1YEw9KFv0LGAJ6xD-ko0zJnNXEbw@mail.gmail.com>
- <20260307010051.u4ugg3nyvsu6hwbg@desk>
- <CALMp9eQGZcekQ3QtL=J7TqHJ9YfZ+SbrgY5P8fp14p4KNThYmw@mail.gmail.com>
+	dkim=pass (2048-bit key) header.d=zytor.com header.i=@zytor.com header.b="f0ZZFo74"
+Received: from smtpclient.apple (c-24-130-165-117.hsd1.ca.comcast.net [24.130.165.117])
+	(authenticated bits=0)
+	by mail.zytor.com (8.18.1/8.17.1) with ESMTPSA id 62730QQ12586312
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NO);
+	Fri, 6 Mar 2026 19:00:26 -0800
+DKIM-Filter: OpenDKIM Filter v2.11.0 mail.zytor.com 62730QQ12586312
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=zytor.com;
+	s=2026022301; t=1772852428;
+	bh=QBHttWEcOd9CsFf4fWMdGGKljMFFqGLzRplj0cwrQdM=;
+	h=Subject:From:In-Reply-To:Date:Cc:References:To:From;
+	b=f0ZZFo74i3S54L1IYnShFjd5B9VZVuTjc0zTrQDnM2zLAhZb1WVofvbSKi/CMIokE
+	 vC4LOw5qEOMsD3w2kpkUsF6k9fMEiUGYOFtJfmiqimqCHK8SE813sHDq/w/tZVwX8K
+	 2tE5GN+pohKLtDFhZtfSsPv9EtmHDQaoPGHEG1z76XAPd+1OdTkwgHZ4zbYG0ewCjM
+	 wFUiVDLma2To2ZtaXBcIi6N/WyDYbRuw1+s/F0Xy3nLksn1HfQhvreoyCNjmVFxOW7
+	 mCpwXaQn4/uouzioWg+goxi7ZNeNCh6TPcxE+/oj+25ZMy8Ai+1Zo5KIcUsYbh+YBS
+	 ZZstkd4GZl7XQ==
+Content-Type: text/plain;
+	charset=utf-8
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CALMp9eQGZcekQ3QtL=J7TqHJ9YfZ+SbrgY5P8fp14p4KNThYmw@mail.gmail.com>
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3864.400.21\))
+Subject: Re: [PATCH v7 16/21] KVM: x86: Advertise support for FRED
+From: Xin Li <xin@zytor.com>
+In-Reply-To: <aauKQSACQXFYvCCH@google.com>
+Date: Fri, 6 Mar 2026 19:00:15 -0800
+Cc: linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
+        linux-doc@vger.kernel.org, pbonzini@redhat.com, corbet@lwn.net,
+        tglx@linutronix.de, mingo@redhat.com, bp@alien8.de,
+        dave.hansen@linux.intel.com, x86@kernel.org, hpa@zytor.com,
+        luto@kernel.org, peterz@infradead.org, andrew.cooper3@citrix.com,
+        chao.gao@intel.com, hch@infradead.org
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <2FAFAC32-AD3A-4D69-BE78-00A9BC570311@zytor.com>
+References: <20250829153149.2871901-1-xin@zytor.com>
+ <20250829153149.2871901-17-xin@zytor.com> <aauKQSACQXFYvCCH@google.com>
+To: Sean Christopherson <seanjc@google.com>
+X-Mailer: Apple Mail (2.3864.400.21)
 
-On Fri, Mar 06, 2026 at 05:10:23PM -0800, Jim Mattson wrote:
-> On Fri, Mar 6, 2026 at 5:01 PM Pawan Gupta
-> <pawan.kumar.gupta@linux.intel.com> wrote:
-> >
-> > +Chao
-> >
-> > On Fri, Mar 06, 2026 at 04:35:49PM -0800, Jim Mattson wrote:
-> > > > > > > I think we need an explicit CPUID bit that a hypervisor can set to
-> > > > > > > indicate that the underlying hardware might be SPR or later.
-> > > > > >
-> > > > > > Something similar was attempted via virtual-MSRs in the below series:
-> > > > > >
-> > > > > > [RFC PATCH v3 09/10] KVM: VMX: Advertise MITI_CTRL_BHB_CLEAR_SEQ_S_SUPPORT
-> > > > > > https://lore.kernel.org/lkml/20240410143446.797262-10-chao.gao@intel.com/
-> > > > > >
-> > > > > > Do you think a rework of this approach would help?
-> > > > >
-> > > > > No, I think that whole idea is ill-conceived.  As I said above, the
-> > > > > hypervisor should just set IA32_SPEC_CTRL.BHI_DIS_S on the guest's
-> > > > > behalf when BHI_CTRL is not advertised to the guest. I don't see any
-> > > > > value in predicating this mitigation on guest usage of the short BHB
-> > > > > clearing sequence. Just do it.
-> > > >
-> > > > There are cases where this would be detrimental:
-> > > >
-> > > > 1. A guest disabling the mitigation in favor of performance.
-> > > > 2. A guest deploying the long SW sequence would suffer from two mitigations
-> > > >    for the same vulnerability.
-> > >
-> > > The guest is already getting a performance boost from the newer
-> > > microarchitecture, so I think this argument is moot.
-> >
-> > For a Linux guest this is mostly true. IIRC, there is atleast one major
-> > non-Linux OS that suffers heavily from BHI_DIS_S.
-> 
-> Presumably, this guest OS wants to deploy the long sequence (if it may
-> run on SPR and later) and doesn't want BHI_DIS_S foisted on it. I
-> don't recall that negotiation being possible with
-> MSR_VIRTUAL_MITIGATION_CTRL.
 
-Patch 4/10 of that series is about BHI_DIS_S negotiation. A guest had to
-set MITI_CTRL_BHB_CLEAR_SEQ_S_USED to indicate that it isn't aware of the
-BHI_DIS_S control and is using the short sequence (ya, there is nothing
-about the long sequence). When KVM sees this bit set, it deploys BHI_DIS_S
-for that guest.
+> On Mar 6, 2026, at 6:15=E2=80=AFPM, Sean Christopherson =
+<seanjc@google.com> wrote:
+>=20
+>> Advertise support for FRED to userspace after changes required to =
+enable
+>> FRED in a KVM guest are in place.
+>=20
+> Mostly a note to myself, if VMX and SVM land separately, we need to do =
+the same
+> thing we did for CET and explicitly clear FRED in svm_set_cpu_caps().  =
+But ideally
+> this would just be the last patch after both VMX and SVM support are =
+in place.
 
-x86/bugs: Use Virtual MSRs to request BHI_DIS_S
-https://lore.kernel.org/lkml/20240410143446.797262-5-chao.gao@intel.com/
+
+This reply is to v7.
+
+Chao, Binbin, and you *all* asked me to make the change:
+
+https://lore.kernel.org/lkml/aRQ3ngRvif%2F0QRTC@intel.com/
+
+
+Yes, I have done it in v10.
+
+I will post v10 after I clean up and post FRED kvm-unit-tests.
+
+
+
