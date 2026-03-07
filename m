@@ -1,180 +1,105 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CDE7328851F;
-	Sat,  7 Mar 2026 01:04:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.13
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE319261B9B
+	for <kvm@vger.kernel.org>; Sat,  7 Mar 2026 01:09:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772845458; cv=none; b=YP6UwELAqeKRtCFsTkfntR45X4htztgWfFEUBMbPkQXkaYmYq/t/HGVqtaOeu5DGDLCt/fNC+9sBjs+TuI+7wU3oOC1Erk9Ep104kc9xP+ErNZ9hPumdIbPJfJV3uj4qKwx6ZSGRSrzgtj251zeF+zCYn0ayNaf1u9TZ2IZy1Wg=
+	t=1772845791; cv=none; b=LttlEY1311SPQGXZIN9MzIgfGLPuCzcnY6dTBGEaSiusuGVTHc/1AXFgJo8OIJ1x+PLIW1NK+v8G50cIbPgFbqijlJyRRo8fid0lQyEtZD8ShjHUR1Rs2crk8o8vhqUnIE+Ids31WqjG5RoEBsYrJpuCtElDeDfDP+seo7DXMUY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772845458; c=relaxed/simple;
-	bh=Ib4A2dLqs3t1llyi121mdd/5hQlAcyxmpeDuX6pTBgM=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QtftTb+eUsK9UA8jYHNVrg+RalqnRkgpz9YV0YCdcNmKfSyvKCLxzkxKG/nBbPwlA4RB5lbxEsRSSFsszD9ThJHLOjgl7JIRqRrU7rfvhK5j8gfN5YqsVsv+onUCuwJk+YNHarcKc8TEGEYyQ1eEr0FlKtjaR8xJf4ZFaMAdU/E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=aPwR+Nn2; arc=none smtp.client-ip=192.198.163.13
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1772845791; c=relaxed/simple;
+	bh=3TvYy04KOxe8wRJbdPBcJUmCZB7Dr4IJF8X7Rke1ugc=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=G+5v6jX7Hb6Asp1ea0gP6uVheEtN264f9PdkSPLKqa7gGqnHC75vm8q+i7rhvAOONETRzaaZeBK8Cg3CQpVB1vnRfXbvLEXCwy4NT0QLD9nNqnjzvPFFnQQR+VUzqSsBYRg8I9AKnt1DWUo545UKGIneaeRvIFrwbcQFrBw+edg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lCb8OVwW; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="aPwR+Nn2"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1772845456; x=1804381456;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=Ib4A2dLqs3t1llyi121mdd/5hQlAcyxmpeDuX6pTBgM=;
-  b=aPwR+Nn2gyZqWRTnI+hGzlr4sqMc8aERkS7r1pbshZXIqjHTmMYBq5kn
-   u5zx17cb4W/JleA1tDylKfzmfb4wPhLGwg4maDbKUwjP3SKl3TeqOf6VB
-   4ySB3yCqqcdoJL/eEXZeF7p2/cWnmhHqkUlXvrhSLyQtSMMPUzjbODxI3
-   JftMkB4UabhmNeG6jj/OhhL2rFxWbFqo/stss2qyCWef08EgecABrM2Lr
-   /3YaB7B+46+WUnHZ/9jHdNFowoesRWzsAtchb2wlCBU05Tun+JjJt2rzd
-   dapMYmaEyzoumbmvMrvxqxN1Tyf+U8lpx3tHwxVKavMk81bnYNXSccr3h
-   g==;
-X-CSE-ConnectionGUID: nKMn6jmsR0iVC5jAvfgu3g==
-X-CSE-MsgGUID: BcqkT5oMQS+0D3K2DdyD2A==
-X-IronPort-AV: E=McAfee;i="6800,10657,11721"; a="76565951"
-X-IronPort-AV: E=Sophos;i="6.23,105,1770624000"; 
-   d="scan'208";a="76565951"
-Received: from orviesa006.jf.intel.com ([10.64.159.146])
-  by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Mar 2026 17:04:08 -0800
-X-CSE-ConnectionGUID: z6oddU4cTMajb1kLg7sgzg==
-X-CSE-MsgGUID: FKN6yTkOSg2ojlhEfXf0bQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,105,1770624000"; 
-   d="scan'208";a="218329625"
-Received: from rpedgeco-desk.jf.intel.com ([10.88.27.139])
-  by orviesa006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Mar 2026 17:04:08 -0800
-From: Rick Edgecombe <rick.p.edgecombe@intel.com>
-To: bp@alien8.de,
-	dave.hansen@intel.com,
-	hpa@zytor.com,
-	kas@kernel.org,
-	kvm@vger.kernel.org,
-	linux-coco@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	mingo@redhat.com,
-	pbonzini@redhat.com,
-	seanjc@google.com,
-	tglx@kernel.org,
-	x86@kernel.org,
-	chao.gao@intel.com,
-	kai.huang@intel.com,
-	ackerleytng@google.com
-Cc: rick.p.edgecombe@intel.com,
-	vishal.l.verma@intel.com
-Subject: [PATCH 3/4] x86/virt/tdx: Add SEAMCALL wrapper for TDH.SYS.DISABLE
-Date: Fri,  6 Mar 2026 17:03:57 -0800
-Message-ID: <20260307010358.819645-4-rick.p.edgecombe@intel.com>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260307010358.819645-1-rick.p.edgecombe@intel.com>
-References: <20260307010358.819645-1-rick.p.edgecombe@intel.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lCb8OVwW"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7E92DC2BCAF
+	for <kvm@vger.kernel.org>; Sat,  7 Mar 2026 01:09:51 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1772845791;
+	bh=3TvYy04KOxe8wRJbdPBcJUmCZB7Dr4IJF8X7Rke1ugc=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=lCb8OVwWRzd1+XLQaM9id24uLxIDcwg9OYxOrxjr3VZ3gpol6M1SGKAN6Pqmmy0UX
+	 oCY4ZV5zb0BwZk/Nw1jHRrVhUT9jrAGOjuot+oRZFC+mo2L53/xC5jCaesWWeT8fdz
+	 iu4sydQCKZRiEQfh5+koPywzmYmqqFxsb/SMJAwiiRCs1bAw8+kqwtVMC4ApczQbd6
+	 a3LC0hGdZWPBzZDIdBF/3S2gpYy63jmMVWvFoD+a7RXL0T5fDl5FphXuGySKhzSr7a
+	 9GnRY/WKkE9DJbELF2eOI4u8T0NibuvJbXb6vf5PeE98VL9I550mO7l4EYgLYEYqwa
+	 cjGA0fWlB0KRQ==
+Received: by mail-ej1-f49.google.com with SMTP id a640c23a62f3a-b93695f7cdcso1319724366b.3
+        for <kvm@vger.kernel.org>; Fri, 06 Mar 2026 17:09:51 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCVSA9UKAJVuf8qLRrAGP+9QcUwHvVdU8NVAenFdODToOmg6VJGfXo3BpfUwc3WfFB/HhAc=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzykIo+c83/zB7cxJL43AhKWC8G2jUgZcdD3jyZOhXVSw7b0Ylx
+	XM97J5osAEohrgLdn3VvPdov0BEOGxNhUnTgM2PKH95Uu3K5169bTOMVcg36xYSGN3VmtrFIZ/4
+	wj6WjLGE6hobcv79+fM8kcYZQbq+GkPg=
+X-Received: by 2002:a17:907:844:b0:b94:2913:2d12 with SMTP id
+ a640c23a62f3a-b942dce9a8cmr225153566b.17.1772845790249; Fri, 06 Mar 2026
+ 17:09:50 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20260306210900.1933788-1-yosry@kernel.org> <20260306210900.1933788-5-yosry@kernel.org>
+In-Reply-To: <20260306210900.1933788-5-yosry@kernel.org>
+From: Yosry Ahmed <yosry@kernel.org>
+Date: Fri, 6 Mar 2026 17:09:39 -0800
+X-Gmail-Original-Message-ID: <CAO9r8zMJw-MGFTiuYbtVfoyA9guYCcA5B4siMttbV5Oka2cs6g@mail.gmail.com>
+X-Gm-Features: AaiRm53E1yWUQBvWmAffQN_WTd1m2KpZ6MF5yHaakEe-wgGQkr_7-43743PI4Vg
+Message-ID: <CAO9r8zMJw-MGFTiuYbtVfoyA9guYCcA5B4siMttbV5Oka2cs6g@mail.gmail.com>
+Subject: Re: [PATCH v2 4/6] KVM: nSVM: Fail emulation of VMRUN/VMLOAD/VMSAVE
+ if mapping vmcb12 fails
+To: Sean Christopherson <seanjc@google.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>, Jim Mattson <jmattson@google.com>, kvm@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-From: Vishal Verma <vishal.l.verma@intel.com>
+On Fri, Mar 6, 2026 at 1:09=E2=80=AFPM Yosry Ahmed <yosry@kernel.org> wrote=
+:
+>
+> KVM currently injects a #GP if mapping vmcb12 fails when emulating
+> VMRUN/VMLOAD/VMSAVE. This is not architectural behavior, as #GP should
+> only be injected if the physical address is not supported or not aligned
+> (which hardware will do before the VMRUN intercept is checked).
+>
+> Instead, handle it as an emulation failure, similar to how nVMX handles
+> failures to read/write guest memory in several emulation paths.
+>
+> When virtual VMLOAD/VMSAVE is enabled, if vmcb12's GPA is not mapped in
+> the NPTs a VMEXIT(#NPF) will be generated, and KVM will install an MMIO
+> SPTE and emulate the instruction if there is no corresponding memslot.
+> x86_emulate_insn() will return EMULATION_FAILED as VMLOAD/VMSAVE are not
+> handled as part of the twobyte_insn cases.
+>
+> Even though this will also result in an emulation failure, it will only
+> result in a straight return to userspace if
+> KVM_CAP_EXIT_ON_EMULATION_FAILURE is set. Otherwise, it would inject #UD
+> and only exit to userspace if not in guest mode. So the behavior is
+> slightly different if virtual VMLOAD/VMSAVE is enabled.
+>
+> Fixes: 3d6368ef580a ("KVM: SVM: Add VMRUN handler")
+> Reported-by: Jim Mattson <jmattson@google.com>
+> Signed-off-by: Yosry Ahmed <yosry@kernel.org>
+> ---
 
-Some early TDX-capable platforms have an erratum where a partial write
-to TDX private memory can cause a machine check on a subsequent read.
-On these platforms, kexec and kdump have been disabled in these cases,
-because the old kernel cannot safely hand off TDX state to the new
-kernel. Later TDX modules support the TDH.SYS.DISABLE SEAMCALL, which
-provides a way to cleanly disable TDX and allow kexec to proceed.
+Nice find from AI bot, we should probably update gp_interception() to
+make sure we reinject a #GP if the address exceeds MAXPHYADDR.
+Something like:
 
-This can be a long running operation, and the time needed largely
-depends on the amount of memory that has been allocated to TDs. If all
-TDs have been destroyed prior to the sys_disable call, then it is fast,
-with only needing to override the TDX module memory.
+diff --git a/arch/x86/kvm/svm/svm.c b/arch/x86/kvm/svm/svm.c
+index 5362443f4bbce..1c52d6d59c480 100644
+--- a/arch/x86/kvm/svm/svm.c
++++ b/arch/x86/kvm/svm/svm.c
+@@ -2320,7 +2320,8 @@ static int gp_interception(struct kvm_vcpu *vcpu)
+                                EMULTYPE_VMWARE_GP | EMULTYPE_NO_DECODE);
+        } else {
+                /* All SVM instructions expect page aligned RAX */
+-               if (svm->vmcb->save.rax & ~PAGE_MASK)
++               if (svm->vmcb->save.rax & ~PAGE_MASK ||
++                   svm->vmcb->save.rax & rsvd_bits(cpuid_maxphyaddr(vcpu),=
+ 63))
+                        goto reinject;
 
-After the SEAMCALL completes, the TDX module is disabled and all memory
-resources allocated to TDX are freed and reset. The next kernel can then
-re-initialize the TDX module from scratch via the normal TDX bring-up
-sequence.
-
-The SEAMCALL may be interrupted by an interrupt. In this case, it
-returns TDX_INTERRUPTED_RESUMABLE, and it must be retried in a loop
-until the operation completes successfully.
-
-Add a tdx_sys_disable() helper, which implements the retry loop around
-the SEAMCALL to provide this functionality.
-
-Signed-off-by: Vishal Verma <vishal.l.verma@intel.com>
-Signed-off-by: Rick Edgecombe <rick.p.edgecombe@intel.com>
----
- arch/x86/include/asm/tdx.h  |  3 +++
- arch/x86/virt/vmx/tdx/tdx.c | 18 ++++++++++++++++++
- arch/x86/virt/vmx/tdx/tdx.h |  1 +
- 3 files changed, 22 insertions(+)
-
-diff --git a/arch/x86/include/asm/tdx.h b/arch/x86/include/asm/tdx.h
-index f0826b0a512a..baaf43a09e99 100644
---- a/arch/x86/include/asm/tdx.h
-+++ b/arch/x86/include/asm/tdx.h
-@@ -173,6 +173,8 @@ static inline int pg_level_to_tdx_sept_level(enum pg_level level)
-         return level - 1;
- }
- 
-+void tdx_sys_disable(void);
-+
- u64 tdh_vp_enter(struct tdx_vp *vp, struct tdx_module_args *args);
- u64 tdh_mng_addcx(struct tdx_td *td, struct page *tdcs_page);
- u64 tdh_mem_page_add(struct tdx_td *td, u64 gpa, struct page *page, struct page *source, u64 *ext_err1, u64 *ext_err2);
-@@ -204,6 +206,7 @@ static inline void tdx_init(void) { }
- static inline u32 tdx_get_nr_guest_keyids(void) { return 0; }
- static inline const char *tdx_dump_mce_info(struct mce *m) { return NULL; }
- static inline const struct tdx_sys_info *tdx_get_sysinfo(void) { return NULL; }
-+static inline void tdx_sys_disable(void) { }
- #endif	/* CONFIG_INTEL_TDX_HOST */
- 
- #endif /* !__ASSEMBLER__ */
-diff --git a/arch/x86/virt/vmx/tdx/tdx.c b/arch/x86/virt/vmx/tdx/tdx.c
-index 0802d0fd18a4..68bd2618dde4 100644
---- a/arch/x86/virt/vmx/tdx/tdx.c
-+++ b/arch/x86/virt/vmx/tdx/tdx.c
-@@ -37,6 +37,7 @@
- #include <asm/msr.h>
- #include <asm/cpufeature.h>
- #include <asm/tdx.h>
-+#include <asm/shared/tdx_errno.h>
- #include <asm/cpu_device_id.h>
- #include <asm/processor.h>
- #include <asm/mce.h>
-@@ -1940,3 +1941,20 @@ u64 tdh_phymem_page_wbinvd_hkid(u64 hkid, struct page *page)
- 	return seamcall(TDH_PHYMEM_PAGE_WBINVD, &args);
- }
- EXPORT_SYMBOL_FOR_KVM(tdh_phymem_page_wbinvd_hkid);
-+
-+void tdx_sys_disable(void)
-+{
-+	struct tdx_module_args args = {};
-+
-+	/*
-+	 * SEAMCALLs that can return TDX_INTERRUPTED_RESUMABLE are guaranteed
-+	 * to make forward progress between interrupts, so it is safe to loop
-+	 * unconditionally here.
-+	 *
-+	 * This is a 'destructive' SEAMCALL, in that no other SEAMCALL can be
-+	 * run after this until a full reinitialization is done.
-+	 */
-+	while (seamcall(TDH_SYS_DISABLE, &args) == TDX_INTERRUPTED_RESUMABLE)
-+		;
-+}
-+
-diff --git a/arch/x86/virt/vmx/tdx/tdx.h b/arch/x86/virt/vmx/tdx/tdx.h
-index dde219c823b4..e2cf2dd48755 100644
---- a/arch/x86/virt/vmx/tdx/tdx.h
-+++ b/arch/x86/virt/vmx/tdx/tdx.h
-@@ -46,6 +46,7 @@
- #define TDH_PHYMEM_PAGE_WBINVD		41
- #define TDH_VP_WR			43
- #define TDH_SYS_CONFIG			45
-+#define TDH_SYS_DISABLE			69
- 
- /*
-  * SEAMCALL leaf:
--- 
-2.53.0
-
+                return emulate_svm_instr(vcpu, opcode);
