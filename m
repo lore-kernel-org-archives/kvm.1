@@ -1,58 +1,144 @@
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 014E217A2F6;
-	Sun,  8 Mar 2026 13:36:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from ewsoutbound.kpnmail.nl (ewsoutbound.kpnmail.nl [195.121.94.167])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E9EE1313E17
+	for <kvm@vger.kernel.org>; Sun,  8 Mar 2026 13:37:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.121.94.167
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772976969; cv=none; b=oVxH8sqqDj9CsdY5ekNb4DHq5ElcLlrFNIytPVHj1RxNnm772jGXXm29iJqWnEXdfE9fwLn01Kx1ZByxFRWqguCeaikLEKQJE7u6WYvPOaD0nMNAwbJRCtPMTzvSj9yUE/TyYKESgFTPQYrQteIReK0Iaw/yesBcqJF6hKX9g8A=
+	t=1772977050; cv=none; b=sZIaLPJG5Yyg0TG5miJnI2E14e65EOmvhl309j2C/lP4gNaR1BWOd0pASwvDZ7VlAj733jvuWM/wkYRmXMfA95lwplMAOESv/D2hiVmKDqAIn+feU1dVwZPGra2by+ooVImI+GpHpBECQ1zlLtNzoOkWU5IsKlgEgRx1o6uwkAg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772976969; c=relaxed/simple;
-	bh=3lFOlLrQgsrVvPDaRIq9XVA9VRdlnEhw7AtlBfqzLSQ=;
-	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
-	 In-Reply-To:Content-Type; b=ap0nyIr+SgmRb87SSvffi+eXqi2MxTep6UIK0lnKY9J7o03i0KayhA1Nachz4posUdITH4gWvkt+xeivYi6R0TdbOV5jOSMHshwhmQ4CWE8JB0gTLShJHz4tDxRis0lxkp1mTqEgluB1L7dKgv2cc5UmUsL9WyWUkYi7y6PBkcE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id C02A51570;
-	Sun,  8 Mar 2026 06:35:59 -0700 (PDT)
-Received: from [10.163.174.99] (unknown [10.163.174.99])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 3C8393F7BE;
-	Sun,  8 Mar 2026 06:36:03 -0700 (PDT)
-Message-ID: <ebbb0ebd-9556-4c8f-b557-6990902ccbc5@arm.com>
-Date: Sun, 8 Mar 2026 19:05:59 +0530
+	s=arc-20240116; t=1772977050; c=relaxed/simple;
+	bh=0NvfC6vfW8WYD0Nk6N7E/5rGJ2db5KGh3f9xQYzzeOc=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Yne3QVrmz750ApcjzVEZWQUrsCIlMR+EaLOzZ2+dm4G8kYR0FXrJo0voMgOHu9+RBbXmk6Df64x/Z4o4ySFA9+ra7Hqb5ySUvVPVPAivnU9jcfFrGa7O15faLmJzwpCrtgMjPv773AMS8zpG10A8GxRJ7UQjiRApO7CajZwxh6g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=xs4all.nl; spf=pass smtp.mailfrom=xs4all.nl; dkim=pass (2048-bit key) header.d=xs4all.nl header.i=@xs4all.nl header.b=eAanaU6m; arc=none smtp.client-ip=195.121.94.167
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=xs4all.nl
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=xs4all.nl
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=xs4all.nl header.i=@xs4all.nl header.b="eAanaU6m"
+X-KPN-MessageId: f248eed0-1af3-11f1-969b-005056abbe64
+Received: from smtp.kpnmail.nl (unknown [10.31.155.39])
+	by ewsoutbound.so.kpn.org (Halon) with ESMTPS
+	id f248eed0-1af3-11f1-969b-005056abbe64;
+	Sun, 08 Mar 2026 14:37:26 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=xs4all.nl; s=xs4all01;
+	h=mime-version:message-id:date:subject:to:from;
+	bh=3tY10PRCxb6Spz7EbJ5jkohqOnUvfcSP7anbBvZfeNY=;
+	b=eAanaU6mSxJvrFs+RnW7GLxAGDnqxJw7rASXFTXXf6G3o9JWpygLG/eAuPR4TdZjtsm5Fc9Cg2a4f
+	 Pus9G1PbGYci7krebCtcnoAoE6s/+qICqgmVDpPgzxTbuYSfgoPA1V80Gv3s5+haOH6wet7JCtJBoG
+	 dnhoWYftR01FourzX5mwkMvGCsgYksSXJPUu3Oy36nbp5hAGAGeaQvLcFQ85Ig5V25xWREt4yTNa8o
+	 wyzz3mXc4xpY7+m5q5Dl8xfrOGOXuDCzIlrvNlSK+36/EfKrQ7ByOD/r3DFbjXvZxL3mJFQAm3ogRG
+	 z9F7pfNDy85COksrYrvdNpujz3UE5qA==
+X-KPN-MID: 33|JRRn5BnP7NQIE72njQ+Uhx5gaQeADMJWO/cc2ll9gBQzkoawKrwEI6ECzrm/MP2
+ ro1ndyGrPPLQtwm0zl9lO0G2ZjNB8fnA760gEmFVw/u8=
+X-KPN-VerifiedSender: Yes
+X-CMASSUN: 33|JvVbe5geC7FkzHxUFmMGtgvPTQevq4ZabhMT9HBBuUyDZqz0YQMzCElNJ5bFTuu
+ JTKcwkN2GyPco2cwJExlVnA==
+Received: from daedalus.home (unknown [178.229.45.71])
+	by smtp.xs4all.nl (Halon) with ESMTPSA
+	id ef9dfa17-1af3-11f1-8011-005056ab7447;
+	Sun, 08 Mar 2026 14:37:26 +0100 (CET)
+From: Jori Koolstra <jkoolstra@xs4all.nl>
+To: gregkh@linuxfoundation.org,
+	Kirti Wankhede <kwankhede@nvidia.com>
+Cc: Jori Koolstra <jkoolstra@xs4all.nl>,
+	kvm@vger.kernel.org (open list:VFIO MEDIATED DEVICE DRIVERS),
+	linux-kernel@vger.kernel.org (open list)
+Subject: [PATCH] vfio: mdev: replace mtty_dev->vd_class with a const struct class
+Date: Sun,  8 Mar 2026 14:37:33 +0100
+Message-ID: <20260308133733.1110551-1-jkoolstra@xs4all.nl>
+X-Mailer: git-send-email 2.53.0
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] KVM: Change [g|h]va_t as u64
-From: Anshuman Khandual <anshuman.khandual@arm.com>
-To: Sean Christopherson <seanjc@google.com>
-Cc: linux-kernel@vger.kernel.org, Paolo Bonzini <pbonzini@redhat.com>,
- kvm@vger.kernel.org
-References: <20260306041125.45643-1-anshuman.khandual@arm.com>
- <aasZ5NNo7q9MRgzD@google.com> <abc4ed51-2129-4bed-a156-e0e9ec4e81c4@arm.com>
-Content-Language: en-US
-In-Reply-To: <abc4ed51-2129-4bed-a156-e0e9ec4e81c4@arm.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
+The class_create() call has been deprecated in favor of class_register()
+as the driver core now allows for a struct class to be in read-only
+memory. Replace mtty_dev->vd_class with a const struct class and drop the
+class_create() call.
 
+Compile tested and found no errors/warns in dmesg after enabling
+CONFIG_VFIO and CONFIG_SAMPLE_VFIO_MDEV_MTTY.
 
-On 08/03/26 6:28 PM, Anshuman Khandual wrote:
-> On 06/03/26 11:46 PM, Sean Christopherson wrote:
->> On Fri, Mar 06, 2026, Anshuman Khandual wrote:
->>> Change both [g|h]va_t as u64 to be consistent with other address types.
->>
->> That's hilariously, blatantly wrong.
-> 
-> Sorry did not understand how this is wrong. Both guest and host
-> virtual address types should be be contained in u64 rather than
-> 'unsigned long'. Did I miss something else here.
+Link: https://lore.kernel.org/all/2023040244-duffel-pushpin-f738@gregkh/
 
-Is this about 32 bit systems where unsigned long would have matched
-a 32 bit pointer size where as u64 will not ? But would not the u64
-still contain 32 bit pointer without any issues.
+Suggested-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Jori Koolstra <jkoolstra@xs4all.nl>
+---
+ samples/vfio-mdev/mtty.c | 27 ++++++++++++++-------------
+ 1 file changed, 14 insertions(+), 13 deletions(-)
+
+diff --git a/samples/vfio-mdev/mtty.c b/samples/vfio-mdev/mtty.c
+index bd92c38379b8..792f5c212fd1 100644
+--- a/samples/vfio-mdev/mtty.c
++++ b/samples/vfio-mdev/mtty.c
+@@ -68,13 +68,16 @@
+  * Global Structures
+  */
+ 
++static const struct class mtty_class = {
++	.name	= MTTY_CLASS_NAME
++};
++
+ static struct mtty_dev {
+-	dev_t		vd_devt;
+-	struct class	*vd_class;
+-	struct cdev	vd_cdev;
+-	struct idr	vd_idr;
+-	struct device	dev;
+-	struct mdev_parent parent;
++	dev_t			vd_devt;
++	struct cdev		vd_cdev;
++	struct idr		vd_idr;
++	struct device		dev;
++	struct mdev_parent	parent;
+ } mtty_dev;
+ 
+ struct mdev_region_info {
+@@ -1980,15 +1983,14 @@ static int __init mtty_dev_init(void)
+ 	if (ret)
+ 		goto err_cdev;
+ 
+-	mtty_dev.vd_class = class_create(MTTY_CLASS_NAME);
++	ret = class_register(&mtty_class);
+ 
+-	if (IS_ERR(mtty_dev.vd_class)) {
++	if (ret) {
+ 		pr_err("Error: failed to register mtty_dev class\n");
+-		ret = PTR_ERR(mtty_dev.vd_class);
+ 		goto err_driver;
+ 	}
+ 
+-	mtty_dev.dev.class = mtty_dev.vd_class;
++	mtty_dev.dev.class = &mtty_class;
+ 	mtty_dev.dev.release = mtty_device_release;
+ 	dev_set_name(&mtty_dev.dev, "%s", MTTY_NAME);
+ 
+@@ -2007,7 +2009,7 @@ static int __init mtty_dev_init(void)
+ 	device_del(&mtty_dev.dev);
+ err_put:
+ 	put_device(&mtty_dev.dev);
+-	class_destroy(mtty_dev.vd_class);
++	class_unregister(&mtty_class);
+ err_driver:
+ 	mdev_unregister_driver(&mtty_driver);
+ err_cdev:
+@@ -2026,8 +2028,7 @@ static void __exit mtty_dev_exit(void)
+ 	mdev_unregister_driver(&mtty_driver);
+ 	cdev_del(&mtty_dev.vd_cdev);
+ 	unregister_chrdev_region(mtty_dev.vd_devt, MINORMASK + 1);
+-	class_destroy(mtty_dev.vd_class);
+-	mtty_dev.vd_class = NULL;
++	class_unregister(&mtty_class);
+ 	pr_info("mtty_dev: Unloaded!\n");
+ }
+ 
+
+base-commit: d466c332e106fe666d1e2f5a24d08e308bebbfa1
+-- 
+2.53.0
 
