@@ -1,195 +1,174 @@
-Received: from fhigh-a4-smtp.messagingengine.com (fhigh-a4-smtp.messagingengine.com [103.168.172.155])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f173.google.com (mail-pl1-f173.google.com [209.85.214.173])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E5ED14EC73
-	for <kvm@vger.kernel.org>; Mon,  9 Mar 2026 21:46:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.155
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 940ED333727
+	for <kvm@vger.kernel.org>; Mon,  9 Mar 2026 22:06:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773092803; cv=none; b=U7rUwktXww42ck0rOFgzjblXln1ZfiAcFNR+odk9JxJSAJ2FGXL3hExCPE7wQmqUqPly/E+M3Rtcke23zNPuTN8htvIWM/VuL4qGtwDGgLOlDL8cj7xrisN8BU2uhdqjnCfoJ6cK6gmU+eB8gV56sOwRjXgt99qIyttdL2+f3MM=
+	t=1773094005; cv=none; b=uQ40/91P1dRp5N0tVdFj0sNCIYXfHAK++SoJ+ta5+16JP+MzDdG273qHCShJWsMBzTBeRZZKK+itoeE5h5eUbv5bW4RONpgtV3fkI521MvpHicumSAgcKGCPozKGHO6dZQd9VLquXmGMmQS8EisogadUI8QRlZ/p7e0+usgrAoM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773092803; c=relaxed/simple;
-	bh=eVG8etrdaN7EVEVe1xXCXMcGtEyzvnu6gTKsqAjb2BM=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=C7lIapNnpKu4/KWT9BM7Qz2ukhjRPwXar4OOqwMOz2Jt2c8yAkiywugus18D96/tFMMXZbA241MjOr9EuiWSWLNa4EUwPJ59CTy+dPrE3OGCBlgCKS3P89kpmegtdhOqecY7pRgCgGzhYE/oRjLNslbWGdwFgPN54b8+GX+0cAI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=shazbot.org; spf=pass smtp.mailfrom=shazbot.org; dkim=pass (2048-bit key) header.d=shazbot.org header.i=@shazbot.org header.b=ER0mN4Xi; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=hNj5e+g5; arc=none smtp.client-ip=103.168.172.155
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=shazbot.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=shazbot.org
+	s=arc-20240116; t=1773094005; c=relaxed/simple;
+	bh=q4mBz85JHUVMnUljq9Qg0t6tmIokk4zhP8/Xm8XWNZU=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=ZNjbkh7eeIm44d2JVXu42z4DxCHQB9nylWHbrZD5s0bFlngpocyRgnyYobVx6FXX9uDDfdwwiKl4QdNeVgSTJljvXYpMI6RdMeEOoluckXo1tRwzMTjCMHPfW4pW35PLlk14kVF4Rf2Z1ExCR1S5Zpu2giFPfz05PgneRbcvB7g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=G9SNVYEu; arc=none smtp.client-ip=209.85.214.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=shazbot.org header.i=@shazbot.org header.b="ER0mN4Xi";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="hNj5e+g5"
-Received: from phl-compute-06.internal (phl-compute-06.internal [10.202.2.46])
-	by mailfhigh.phl.internal (Postfix) with ESMTP id 3C5B614001B2;
-	Mon,  9 Mar 2026 17:46:39 -0400 (EDT)
-Received: from phl-frontend-03 ([10.202.2.162])
-  by phl-compute-06.internal (MEProxy); Mon, 09 Mar 2026 17:46:39 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shazbot.org; h=
-	cc:cc:content-transfer-encoding:content-type:content-type:date
-	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to; s=fm3; t=1773092799;
-	 x=1773179199; bh=pNMQxrTvWN57AG9Ak2GM8Z+gnkCL4ATfy4hgapY0eDQ=; b=
-	ER0mN4Xieq0aEpyr2Y4T9JPq/qIzSDzZDIkU+GqMSDjgULXK3ZojVWaFNMn9dmOc
-	Md7lKL96wp9Kg97nrLtmHsGi/KRHvH3/OjGufKJlyD6DdE00qVKKB9dpWr1VR6VT
-	T1/WHskbJ9qrLttbzqdJeMLX5uuPcKVA70/2K24ZaUDbSumnapUUPTcaB5Mrdig8
-	CsDYMouBWOad8x0jUp9MQzE66clVH2XaSgmqVv8RCOXQ+NqvByGaUc4zihslfyFv
-	nhFTOFD2C6Veyhor4rJ2zErXcMHC3FmbyngAH2h9BrvnwEyOP3MguHDosWKXQaIx
-	3Yq1UkuNNF+rlhBmWBUUBw==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=1773092799; x=
-	1773179199; bh=pNMQxrTvWN57AG9Ak2GM8Z+gnkCL4ATfy4hgapY0eDQ=; b=h
-	Nj5e+g5qC5e/J3L7YLCaO9TcsNLn1bi2aHDhDaPoZhCNJGZbP8gXZBlAhrCjTAg0
-	o+KI9YsoJ25u8kBNfm2uLByS5WFqaOMZUhfUeGbTqNxsyZDSfQEuamqUV0QyuxBS
-	dYlOAUsuQyWClnyKv4CgwPcZoKONMerSrxjISVXcUQ5qOcrGDLOwd+HID5F9MgEo
-	+ZgNq/NZ19hU1ozRn9CUtyMGjBTBrXK/RoqvLI0eIkpwS+RpQJvMG5CjPK452ALl
-	oZ58AXB6xf3poW4XTOTFlsmgo9znMz4B2TiXuE0j4EGyu8F9EJxnUxPbQsndak5t
-	vBylqm2jnbGv8MV6OSx4A==
-X-ME-Sender: <xms:vj-vaVrdRJpJGFxkQ8JrEYoQbTDle3FI-5BWPgerncvobysh9r5n0g>
-    <xme:vj-vaToZ4Ymee86AW9uRr4rzKi3GsJXkJCn4d-vfT39vM7hgBLkRoXPlByeXFzQfv
-    emHgWKtdDvOR9rC4hkgx-XKiJjdW9QmrbPNlEJByiOc_Ibehps7>
-X-ME-Received: <xmr:vj-vaUYqvQEI-cyHyAiS8Qn4MOMtlq8oNGDo8g7xydIO6NGN7JAYnpKYpyA>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgddvjeelvdehucetufdoteggodetrf
-    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
-    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
-    gurhepfffhvfevuffkjghfofggtgfgsehtqhertdertdejnecuhfhrohhmpeetlhgvgicu
-    hghilhhlihgrmhhsohhnuceorghlvgigsehshhgriigsohhtrdhorhhgqeenucggtffrrg
-    htthgvrhhnpeetuefgleefhfdvueegffdtffevhfffgfffiedutdetgffhheejtdekfeek
-    ieehgfenucffohhmrghinhepkhgvrhhnvghlrdhorhhgnecuvehluhhsthgvrhfuihiivg
-    eptdenucfrrghrrghmpehmrghilhhfrhhomheprghlvgigsehshhgriigsohhtrdhorhhg
-    pdhnsggprhgtphhtthhopeekpdhmohguvgepshhmthhpohhuthdprhgtphhtthhopehrih
-    htvghshhdrlhhishhtsehgmhgrihhlrdgtohhmpdhrtghpthhtoheplhhinhhugihpphgt
-    qdguvghvsehlihhsthhsrdhoiihlrggsshdrohhrghdprhgtphhtthhopehmrgguugihse
-    hlihhnuhigrdhisghmrdgtohhmpdhrtghpthhtoheptghhlhgvrhhohieskhgvrhhnvghl
-    rdhorhhgpdhrtghpthhtoheplhhinhhugidqmhhmsehkvhgrtghkrdhorhhgpdhrtghpth
-    htohepkhhvmhesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehpvghtvghr
-    giesrhgvughhrghtrdgtohhmpdhrtghpthhtoheprghlvgigsehshhgriigsohhtrdhorh
-    hg
-X-ME-Proxy: <xmx:vj-vaR_EwZAnrT2pYrOehA4E935LJ47UYXG7Jat2rB_06a7GwOH3Ng>
-    <xmx:vj-vaSkwZu6q2NK-gkaDkYoJypyKav0xrY4CW6KvvOgYLWMN9Ciy2Q>
-    <xmx:vj-vaewMIFI-8DzcnX86t6Z0KZNTDE_6G464zTpp5jf5OQDrAHrBHQ>
-    <xmx:vj-vaU64UdZ3Z9H6LG_PxcOjZb9fuSjrS1hq00T34k-9sMKHm2HFBQ>
-    <xmx:vz-vaRadkRTVmYW3fguCihEDIZVohjG_73koUf7cPmbSiaz3zhUzy02e>
-Feedback-ID: i03f14258:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
- 9 Mar 2026 17:46:38 -0400 (EDT)
-Date: Mon, 9 Mar 2026 15:46:37 -0600
-From: Alex Williamson <alex@shazbot.org>
-To: "Ritesh Harjani (IBM)" <ritesh.list@gmail.com>
-Cc: linuxppc-dev@lists.ozlabs.org, Madhavan Srinivasan
- <maddy@linux.ibm.com>, Christophe Leroy <chleroy@kernel.org>,
- linux-mm@kvack.org, kvm@vger.kernel.org, Peter Xu <peterx@redhat.com>,
- alex@shazbot.org
-Subject: Re: [PATCH v2 1/2] drivers/vfio_pci_core: Change PXD_ORDER check
- from switch case to if/else block
-Message-ID: <20260309154637.3abf76af@shazbot.org>
-In-Reply-To: <b155e19993ee1f5584c72050192eb468b31c5029.1773058761.git.ritesh.list@gmail.com>
-References: <b155e19993ee1f5584c72050192eb468b31c5029.1773058761.git.ritesh.list@gmail.com>
-X-Mailer: Claws Mail 4.3.1 (GTK 3.24.51; x86_64-pc-linux-gnu)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="G9SNVYEu"
+Received: by mail-pl1-f173.google.com with SMTP id d9443c01a7336-2ae4b40999bso15265ad.1
+        for <kvm@vger.kernel.org>; Mon, 09 Mar 2026 15:06:44 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1773094004; x=1773698804; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=2jbEGDtNXpvjI8o8Q1xoh+wtAtBiT8CMXNwqnXytvlA=;
+        b=G9SNVYEukK7rUHQOwUEgBzeT4vMv7VJns7Zb1cyC3V/SsKF1HHBbXKXMARIfLT5kGp
+         f1QuHiJZiB0x8PqymWX2yAP/0LNATnIiwgsdZUmkbeC31bv7VSfROfB4rg2zDRt1Qnje
+         4QIqLPdsxrZzHfGOrx5IKCtao5pyEu24Pn/W2oyOotOljk6JG4qTZrdXvF94SRYy9aVa
+         pZD0iGQ3PsnfjHKyxByw6WoA7KTb387V4aI7dIhReI023CZT1h3L+Fh+bCuXuenN4mtX
+         jUjQt0IJLBs5q/7B/5jx46fRX2UFzkvvNyWPrtqOHu2focbUgvd1uAKw0dLk0ohy3uPK
+         6b4w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1773094004; x=1773698804;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=2jbEGDtNXpvjI8o8Q1xoh+wtAtBiT8CMXNwqnXytvlA=;
+        b=xKoVTxgRD1TPBTemTy1KJUXXXUJfGVgZl2XoG44BypI1DoYhoXZuTqWswncoU0aLUv
+         fwlrfS6uBU2l3YJrBdu7MF8IiLbwlW24goInVrueOAaK6dlVNO3kl14DEkdBmKmSXzEh
+         0WZ+lDUTjlgnvKzjA7lSLZY5M3yeUFTLgTaO7/JII3T8jUrLJLxZmuZvIAI8E08/iXws
+         SB2iWiSpupaXUlwbstnMAqK3tbvrbpDkV+SlaMfp5G067VOjeZMH5GbThfALxeNIiWU6
+         q4XsxIfgsUxh34G3c9aWKy7dE8KsblyHad7EEu6VY4Qtusa3I6Du/idex4SNDTfAZPEJ
+         1ZaA==
+X-Forwarded-Encrypted: i=1; AJvYcCXPGRUVX0n6KvCQXrqeQXjtG8IXDmlKmS4SO5qLqt2Q5DzoxEpzfKa3/GlWKfKXq4sCfgY=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz5rQjRh8EWiokw6fR03mpadgCClSfhFgLqIPsWm9djRZhgk8bu
+	OWbi+SJSKOyChiazEZglKNW8fZ2eVL12AX3K6fVfqtY4yRoTee/Q2iRhWoGQBoZh0whl7uci5OZ
+	Qdt5LDg==
+X-Gm-Gg: ATEYQzwW+aDIJbhWxG9mF18n2+C5oBcrTLd6VPXw8Ku4+QkelzLYb7nbFw81l/Vq6e/
+	k+GIAjhvrSPJF+KN4hYnsAP6deg/IQV6RD44387z9IT2UKuIb8nkqsSp5EI9qySWi/YJxRVoUUu
+	WA3Xj6RMEqM9ZdgB3eQEpgkrj4JOeMitT7COwtLnealvcFwS8QXvTFjrK7LLew7icoghDEfBxbm
+	48uXhSuOAgbV/e66NAca0Z1I4anMFazXeBwWkTM9lWcoTfyiz0PvyTzF2xxDNmI0bKUyrfHZt3l
+	UvFhMOH7YTtBEfm/R3J8sCjOItGRbX2trOEIHzjrbPCA7Q/M6Wfy3yBWOhQroqzx5hYT6vbyGo8
+	v+Fd2fH83vAO44Mze4hpDoyyeQ2w0+KJrMSDiJL2bninYBVhnsVeU8axTwMF48ZnR5zwe7jyKpg
+	4C/Fe04V+OgKNXGT8UnVDeepE5vCPgen/hfR2GVnpuk6OaBpjBdBmvwVrtxg==
+X-Received: by 2002:a17:902:db03:b0:2ae:4aa6:dc09 with SMTP id d9443c01a7336-2aea30c497cmr960975ad.14.1773094003557;
+        Mon, 09 Mar 2026 15:06:43 -0700 (PDT)
+Received: from google.com (60.89.247.35.bc.googleusercontent.com. [35.247.89.60])
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-c739e181f15sm10041931a12.23.2026.03.09.15.06.42
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 09 Mar 2026 15:06:42 -0700 (PDT)
+Date: Mon, 9 Mar 2026 15:06:38 -0700
+From: Vipin Sharma <vipinsh@google.com>
+To: Raghavendra Rao Ananta <rananta@google.com>
+Cc: David Matlack <dmatlack@google.com>, Alex Williamson <alex@shazbot.org>,
+	Josh Hilke <jrhilke@google.com>, kvm@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v6 3/8] vfio: selftests: Introduce a sysfs lib
+Message-ID: <20260309220638.GA690765.vipinsh@google.com>
+References: <20260303193822.2526335-1-rananta@google.com>
+ <20260303193822.2526335-4-rananta@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260303193822.2526335-4-rananta@google.com>
 
-
-Subject prefix should be "vfio/pci:".
-
-On Mon,  9 Mar 2026 18:08:37 +0530
-"Ritesh Harjani (IBM)" <ritesh.list@gmail.com> wrote:
-
-> Architectures like PowerPC uses runtime defined values for
-
-s/uses/use/
-
-> PMD_ORDER/PUD_ORDER. This is because it can use either RADIX or HASH MMU
-> at runtime using kernel cmdline. So the pXd_index_size is not known at
-> compile time. Without this fix, when we add huge pfn support on powerpc
-> in the next patch, vfio_pci_core driver compilation can fail with the
-> following errors.
->=20
->   CC [M]  drivers/vfio/vfio_main.o
->   CC [M]  drivers/vfio/group.o
->   CC [M]  drivers/vfio/container.o
->   CC [M]  drivers/vfio/virqfd.o
->   CC [M]  drivers/vfio/vfio_iommu_spapr_tce.o
->   CC [M]  drivers/vfio/pci/vfio_pci_core.o
->   CC [M]  drivers/vfio/pci/vfio_pci_intrs.o
->   CC [M]  drivers/vfio/pci/vfio_pci_rdwr.o
->   CC [M]  drivers/vfio/pci/vfio_pci_config.o
->   CC [M]  drivers/vfio/pci/vfio_pci.o
->   AR      kernel/built-in.a
-> ../drivers/vfio/pci/vfio_pci_core.c: In function =E2=80=98vfio_pci_vmf_in=
-sert_pfn=E2=80=99:
-> ../drivers/vfio/pci/vfio_pci_core.c:1678:9: error: case label does not re=
-duce to an integer constant
->  1678 |         case PMD_ORDER:
->       |         ^~~~
-> ../drivers/vfio/pci/vfio_pci_core.c:1682:9: error: case label does not re=
-duce to an integer constant
->  1682 |         case PUD_ORDER:
->       |         ^~~~
-> make[6]: *** [../scripts/Makefile.build:289: drivers/vfio/pci/vfio_pci_co=
-re.o] Error 1
-> make[6]: *** Waiting for unfinished jobs....
-> make[5]: *** [../scripts/Makefile.build:546: drivers/vfio/pci] Error 2
-> make[5]: *** Waiting for unfinished jobs....
-> make[4]: *** [../scripts/Makefile.build:546: drivers/vfio] Error 2
-> make[3]: *** [../scripts/Makefile.build:546: drivers] Error 2
->=20
-> Fixes: f9e54c3a2f5b7 ("vfio/pci: implement huge_fault support")
-> Signed-off-by: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
-> ---
-> v1 -> v2:
-> 1. addressed review comments from Christophe [1]
-> [1]: https://lore.kernel.org/linuxppc-dev/0b8fce7a61561640634317a5e287cdb=
-4794715fd.1772170860.git.ritesh.list@gmail.com/
->=20
->  drivers/vfio/pci/vfio_pci_core.c | 19 +++++++------------
->  1 file changed, 7 insertions(+), 12 deletions(-)
->=20
-> diff --git a/drivers/vfio/pci/vfio_pci_core.c b/drivers/vfio/pci/vfio_pci=
-_core.c
-> index d43745fe4c84..0967307235b8 100644
-> --- a/drivers/vfio/pci/vfio_pci_core.c
-> +++ b/drivers/vfio/pci/vfio_pci_core.c
-> @@ -1670,21 +1670,16 @@ vm_fault_t vfio_pci_vmf_insert_pfn(struct vfio_pc=
-i_core_device *vdev,
->  	if (vdev->pm_runtime_engaged || !__vfio_pci_memory_enabled(vdev))
->  		return VM_FAULT_SIGBUS;
->=20
-> -	switch (order) {
-> -	case 0:
-> +	if (!order)
->  		return vmf_insert_pfn(vmf->vma, vmf->address, pfn);
-> -#ifdef CONFIG_ARCH_SUPPORTS_PMD_PFNMAP
-> -	case PMD_ORDER:
+On 2026-03-03 19:38:17, Raghavendra Rao Ananta wrote:
+> +char *sysfs_sriov_vf_bdf_get(const char *pf_bdf, int i)
+> +{
+> +	char vf_path[PATH_MAX];
+> +	char path[PATH_MAX];
+> +	char *out_vf_bdf;
+> +	int ret;
 > +
-> +	if (IS_ENABLED(CONFIG_ARCH_SUPPORTS_PMD_PFNMAP) && order =3D=3D PMD_ORD=
-ER)
->  		return vmf_insert_pfn_pmd(vmf, pfn, false);
-> -#endif
-> -#ifdef CONFIG_ARCH_SUPPORTS_PUD_PFNMAP
-> -	case PUD_ORDER:
-> +
-> +	if (IS_ENABLED(CONFIG_ARCH_SUPPORTS_PUD_PFNMAP) && order =3D=3D PUD_ORD=
-ER)
->  		return vmf_insert_pfn_pud(vmf, pfn, false);
-> -		break;
-> -#endif
-> -	default:
-> -		return VM_FAULT_FALLBACK;
-> -	}
-> +
-> +	return VM_FAULT_FALLBACK;
->  }
->  EXPORT_SYMBOL_GPL(vfio_pci_vmf_insert_pfn);
+> +	out_vf_bdf = calloc(16, sizeof(char));
 
-Otherwise LGTM.  This appears to be no change for current use cases, so
-I assume this will go in through ppc trees.
+A comment of /* ../0000:00:00.0 */ would be nice to tell why 16 is
+chosen.
 
-Reviewed-by: Alex Williamson <alex@shazbot.org>
+> +	VFIO_ASSERT_NOT_NULL(out_vf_bdf);
+> +
+> +	snprintf_assert(path, PATH_MAX, "/sys/bus/pci/devices/%s/virtfn%d", pf_bdf, i);
+> +
+> +	ret = readlink(path, vf_path, PATH_MAX);
+> +	VFIO_ASSERT_NE(ret, -1);
+> +	vf_path[ret] = '\0';
+
+Can we just initialize vf_path to {0} at the beginning and not worry
+here?
+
+> +
+> +	ret = sscanf(basename(vf_path), "%s", out_vf_bdf);
+> +	VFIO_ASSERT_EQ(ret, 1);
+> +
+> +	return out_vf_bdf;
+> +}
+> +
+> +unsigned int sysfs_iommu_group_get(const char *bdf)
+> +{
+> +	char dev_iommu_group_path[PATH_MAX];
+> +	char path[PATH_MAX];
+> +	unsigned int group;
+
+Why unsigned int? In kernel iommu_group id is int itself. Caller of this
+function also casting it to int.
+
+> +	int ret;
+> +
+> +	snprintf_assert(path, PATH_MAX, "/sys/bus/pci/devices/%s/iommu_group", bdf);
+> +
+> +	ret = readlink(path, dev_iommu_group_path, sizeof(dev_iommu_group_path));
+> +	VFIO_ASSERT_NE(ret, -1, "Failed to get the IOMMU group for device: %s\n", bdf);
+> +	dev_iommu_group_path[ret] = '\0';
+
+Same, initialize at beginning.
+
+> +
+> +	ret = sscanf(basename(dev_iommu_group_path), "%u", &group);
+
+Can we combine these operations into a single function? Seems like vfio,
+iommu_group and driver all use the same pattern.
+
+> +	VFIO_ASSERT_EQ(ret, 1, "Failed to get the IOMMU group for device: %s\n", bdf);
+> +
+> +	return group;
+> +}
+> +
+> +char *sysfs_driver_get(const char *bdf)
+> +{
+> +	char driver_path[PATH_MAX];
+> +	char path[PATH_MAX];
+> +	char *out_driver;
+> +	int ret;
+> +
+> +	out_driver = calloc(64, sizeof(char));
+
+Comment on why 64?
+
+> +	VFIO_ASSERT_NOT_NULL(out_driver);
+> +
+> +	snprintf_assert(path, PATH_MAX, "/sys/bus/pci/devices/%s/driver", bdf);
+> +	ret = readlink(path, driver_path, PATH_MAX);
+> +	if (ret == -1) {
+> +		free(out_driver);
+> +
+> +		if (errno == ENOENT)
+> +			return NULL;
+> +
+> +		VFIO_FAIL("Failed to read %s\n", path);
+> +	}
+> +	driver_path[ret] = '\0';
+
+Same, initialize at beginning.
+
+> +
+> +	strcpy(out_driver, basename(driver_path));
+
+They both have different lengths. Should we use strncpy()?
+
+> +	return out_driver;
