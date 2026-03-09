@@ -1,154 +1,155 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f174.google.com (mail-pl1-f174.google.com [209.85.214.174])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 34A9D256C84;
-	Mon,  9 Mar 2026 22:29:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.12
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8CAF7274B3B
+	for <kvm@vger.kernel.org>; Mon,  9 Mar 2026 22:32:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773095383; cv=none; b=k+DG6ltRVFXoNWZxhRbuUVHcHKJxvGzN1NW6ZhdML2732hTxqUVSGnFeoy1/9rpXiwaQfOZPF9wXfAPYCn6n5DRw5X+SIbYe3T+mBAOuZ+Nv8yAYOL4dNckywabpqHM1xpQpOBkN/1hfWb7r2f5AnvbwBFGPXJpM30co7RNy6G8=
+	t=1773095526; cv=none; b=L9WBBkZ1iH0KNSeQ6skyQ0wvC1sDSW3VhxA/gIgcsTvPj7FERp269tWWGKE42B4YXx7At2CAX23FfiCO72tiSczvIonVg1bdCiZ7SCGNyzfJJIVM3iOqZ1PQqYjZnXTZsbqjnRUnAGkcwsobzg+2nIB7VLgzpP1drihMSLdgGXM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773095383; c=relaxed/simple;
-	bh=V2wdr7cTcTPUcgee1WyP7BSbVoqbGWoQdWvtSHidEeo=;
+	s=arc-20240116; t=1773095526; c=relaxed/simple;
+	bh=Ka0jVISzipJAqHRkCGQhv2ocUOj57W+L55ihA8NY06k=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=mPEE5fkcgKn+wQLerdARZZ3P4gI6vALJr8Tt/daiaA/qPST6vu6zd9wV89bQoFdioNW6/N/xbfxwaudO0z3uUs5KBHe1KytdWdfTPdusvFA9ve0GW3a+Ki8aTDncNAkyJPR1xuuYFz0CGkHjwmowLsSCfPPi+iXVELc6kQgmv6Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=CBJ1c+Zx; arc=none smtp.client-ip=198.175.65.12
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+	 Content-Type:Content-Disposition:In-Reply-To; b=O7heGCbaqQvdbPM/wO9wK2caS9WjFAiCzN1jU4QXadFwDlt1Ycv2w3dSW6A5EqK5p4C1nwc//pq0M+Dxr6zhR/3O5l0+C/fOM3XGmZKlubS/WMScqnsDoBmofUcCoelhnlDyaLEMYlD+AdL4ynhqEpfEmHxpvCpYZzekIZQa2zE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=DrCZceSZ; arc=none smtp.client-ip=209.85.214.174
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="CBJ1c+Zx"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1773095383; x=1804631383;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:content-transfer-encoding:in-reply-to;
-  bh=V2wdr7cTcTPUcgee1WyP7BSbVoqbGWoQdWvtSHidEeo=;
-  b=CBJ1c+ZxenpviBC5OX5PkXE4cMQgzVoEJ45RmhYuEs9X2742hnQoP7LP
-   4iLMwNiln97PVs+q5LDml7a/re7Cul4JLv2ruSeIjeLWGNzdUKXy4a0u4
-   A1ftCoRVsvxhxpypWMmV8ULHjkMMYdyzX0oZFkXowUfHmEe/L1/Kpiu9T
-   s/hIQO2t7Mw6TB/8mKjB8R73861jul2xuj6jy0uf2/f1yD/1eHdtjT9rf
-   vINuHAlf3B7rpBdDzLXMlLUHeqQuqK7nlsWC22AZtfjS/EdBx3RaMFx9D
-   owZLXn+wmU1hZoCIzhIocvY2GwzKls50+CQles00aLtyZOMxCQIRRJItm
-   w==;
-X-CSE-ConnectionGUID: rO/9auUiQXOGx7rZu8ZTmg==
-X-CSE-MsgGUID: 93qtJG9aQsOE1+7fLYZzAQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11724"; a="85606300"
-X-IronPort-AV: E=Sophos;i="6.23,111,1770624000"; 
-   d="scan'208";a="85606300"
-Received: from orviesa009.jf.intel.com ([10.64.159.149])
-  by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Mar 2026 15:29:42 -0700
-X-CSE-ConnectionGUID: i6y54SdsQUupYrNhHv6IsQ==
-X-CSE-MsgGUID: c/094YonSR2B5Mg31Kx4mg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,111,1770624000"; 
-   d="scan'208";a="219844844"
-Received: from guptapa-desk.jf.intel.com (HELO desk) ([10.165.239.46])
-  by orviesa009-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Mar 2026 15:29:41 -0700
-Date: Mon, 9 Mar 2026 15:29:35 -0700
-From: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
-To: Jim Mattson <jmattson@google.com>
-Cc: x86@kernel.org, David Kaplan <david.kaplan@amd.com>,
-	Nikolay Borisov <nik.borisov@suse.com>,
-	"H. Peter Anvin" <hpa@zytor.com>,
-	Josh Poimboeuf <jpoimboe@kernel.org>,
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="DrCZceSZ"
+Received: by mail-pl1-f174.google.com with SMTP id d9443c01a7336-2aea4ebb048so5595ad.1
+        for <kvm@vger.kernel.org>; Mon, 09 Mar 2026 15:32:05 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1773095525; x=1773700325; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=IBkcZ4vNzPnscp2wv/tDrm8if6LphvMnNawG/F/pvx8=;
+        b=DrCZceSZargkLUVKGz53iBEIsfokL3DKF8MEcIHoWQo8g1C+7SPJZrQHYbY4QarKBp
+         Y1r/0A7aq/Tw5zbsr91k0BbkncsWtPC5YGxrDpgBqtkzE6VvISUoN9NpO2muYEcxq1Xs
+         073AOb2kWznabLjkl14HVSZ2hQLfjZEWpG7nwFUwelcZ3/0r5QAQFj1XR6Xe4y9OhCtV
+         RcF6a2bGZUVv0hWalXgW/iccqjwrhgNdfoi1MDFCYF3cqYnaRuQeJ3RToSL//drD24zJ
+         fEw+OhJKmK6dOMfHuXhIrfoIlIvSCSBFHRpuXIRpy+XJRqJfVpRW11qaIQOHus3lM4zP
+         htRA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1773095525; x=1773700325;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=IBkcZ4vNzPnscp2wv/tDrm8if6LphvMnNawG/F/pvx8=;
+        b=AaQlq8JFX7M0LXPVhj0L0eMASyQ+hSAjd1ddsIL+HRSZlWsraoMrOUX8ivTy9aWiKt
+         m2Mtfdb4oq4zBn0vvVmJ9qXy007NAKgbQ5bYCAOzZk0LxgKsED4ORJD5Or4FzPhIKaQO
+         rWrlTj47ZpZZJ99sOSElK1IhGMuEBEhzsbq4I4w4ma57MvpgDvPLVMoB9hSxpihloPZB
+         h0pNgClNzil+kAsCwwb4NivK9jPq+S0OdlfzYuJ8+vXIj219HsLTV95WIPnYVj0II3A8
+         kagdZu2f2r1lpFVOEk90cD99r1oP+FUjJhHA3r7QZrBht+mI8T+FnvxdjWx/VTMIWhFG
+         qQxg==
+X-Forwarded-Encrypted: i=1; AJvYcCUuaAwn5Anv6pzx69/eKhSrOsJaAlAKfx35jWHKFM5dmmgGklzcru+e4XJ6Pmcnc1x0jeY=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyEtviLkTPTT7vNQ4DizfG01MPPfxOJyj4wtxS1pfcDsEEYGVI+
+	AOeT1+g/tqAnwoMlUyGwXVHaIqJmlKhQxbu3WrBOtGLogNJntuz8/+Q1xtu9C14A5A==
+X-Gm-Gg: ATEYQzyBSksfNMbwjMGbVn91/sSjTTXwGbKUl/gAiEX/qZOP1AvU42DGr+ZEGZVh0Ew
+	Dj4GcnKQ+AiZ0Btdt8y1FblIt8ajDQhxQAein6zCiR1DmIrnWRdfzSZNDwcThuVKJwUEmSwRbdP
+	i3YpIDOiEWJQNx9hNcL5uuAiDybO4v9inqaaqlTeUFZNmbUbLs+ILROPtEe+KMrGx7kTZEWi5L8
+	uSSIxoGwDxeuGovlHuyHMBoInYR4hM7Mm7xG4+OCDt7lXc8+UMSvkR5LB5QwgxGmLFUzr7d+M84
+	sv5jfZjXBuOv10T3W3Q1fYJGVWsudt7yD9X9F9RRXNkoCJkTqk/c0XulS3jaT3yeZOF6mzdGhki
+	APGsdbSBMqyv9bYgxmRswc3ImsGvwBWzGFe7QCMtLcG2v3JtBMEXVhXEq0zjhnhSI3zuoVeCA99
+	+IPU71lmCSs8LKfuqe4OugkzdTdwRtnqtYXaqRX1OiR5I6h/bt6kB9JnXiNvYuNsFQ/9F4Jokli
+	E3Njg==
+X-Received: by 2002:a17:903:46c7:b0:2a7:5652:50b2 with SMTP id d9443c01a7336-2aea456730emr562725ad.9.1773095524481;
+        Mon, 09 Mar 2026 15:32:04 -0700 (PDT)
+Received: from google.com (197.23.125.34.bc.googleusercontent.com. [34.125.23.197])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-829a4867e54sm11494132b3a.35.2026.03.09.15.32.01
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 09 Mar 2026 15:32:02 -0700 (PDT)
+Date: Mon, 9 Mar 2026 22:31:56 +0000
+From: Sami Tolvanen <samitolvanen@google.com>
+To: Carlos Llamas <cmllamas@google.com>
+Cc: Kees Cook <keescook@chromium.org>,
+	Peter Zijlstra <peterz@infradead.org>,
 	Sean Christopherson <seanjc@google.com>,
-	Paolo Bonzini <pbonzini@redhat.com>, Borislav Petkov <bp@alien8.de>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
-	Asit Mallick <asit.k.mallick@intel.com>,
-	Tao Zhang <tao1.zhang@intel.com>, David Dunn <daviddunn@google.com>,
-	chao.gao@intel.com
-Subject: Re: [PATCH v4 04/11] x86/bhi: Make clear_bhb_loop() effective on
- newer CPUs
-Message-ID: <20260309222935.2wu6xhydsgikkjpn@desk>
-References: <20251119-vmscape-bhb-v4-4-1adad4e69ddc@linux.intel.com>
- <CALMp9eQNBZsJNdfCVwbJ4v1DgCNqRV3DVcEeCPFt=dd29+qy-A@mail.gmail.com>
- <20260306223225.l2beapz3nvmqefou@desk>
- <CALMp9eQoE13d1cqD3PNJtvdKUGZeVm1g-9TWh+M+MJj_sm9CzA@mail.gmail.com>
- <20260306232920.dja5n7cngrsyj6tk@desk>
- <CALMp9eSoNaifKyppbjJjNx1YEw9KFv0LGAJ6xD-ko0zJnNXEbw@mail.gmail.com>
- <20260307010051.u4ugg3nyvsu6hwbg@desk>
- <CALMp9eQGZcekQ3QtL=J7TqHJ9YfZ+SbrgY5P8fp14p4KNThYmw@mail.gmail.com>
- <20260307024132.wleqtpovzd6wtvm7@desk>
- <CALMp9eTO0irFX9sZaVU84r1aW5E7Q2B3bE8uWfgViSug6Hx+og@mail.gmail.com>
+	LKML <linux-kernel@vger.kernel.org>,
+	linux-arm-kernel <linux-arm-kernel@lists.infradead.org>,
+	kvmarm <kvmarm@lists.cs.columbia.edu>, kvm@vger.kernel.org,
+	Will McVicker <willmcvicker@google.com>
+Subject: Re: [PATCH v4 09/17] perf/core: Use static_call to optimize
+ perf_guest_info_callbacks
+Message-ID: <20260309223156.GA73501@google.com>
+References: <20211111020738.2512932-1-seanjc@google.com>
+ <20211111020738.2512932-10-seanjc@google.com>
+ <YfrQzoIWyv9lNljh@google.com>
+ <CABCJKufg=ONNOvF8+BRXfLoTUfeiZZsdd8TnpV-GaNK_o-HuaA@mail.gmail.com>
+ <202202061011.A255DE55B@keescook>
+ <YgAvhG4wvnslbTqP@hirez.programming.kicks-ass.net>
+ <202202061854.B5B11282@keescook>
+ <aa8fNT3P54t5W53T@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CALMp9eTO0irFX9sZaVU84r1aW5E7Q2B3bE8uWfgViSug6Hx+og@mail.gmail.com>
+In-Reply-To: <aa8fNT3P54t5W53T@google.com>
 
-On Fri, Mar 06, 2026 at 09:05:01PM -0800, Jim Mattson wrote:
-> On Fri, Mar 6, 2026 at 6:41 PM Pawan Gupta
-> <pawan.kumar.gupta@linux.intel.com> wrote:
-> >
-> > On Fri, Mar 06, 2026 at 05:10:23PM -0800, Jim Mattson wrote:
-> > > On Fri, Mar 6, 2026 at 5:01 PM Pawan Gupta
-> > > <pawan.kumar.gupta@linux.intel.com> wrote:
-> > > >
-> > > > +Chao
-> > > >
-> > > > On Fri, Mar 06, 2026 at 04:35:49PM -0800, Jim Mattson wrote:
-> > > > > > > > > I think we need an explicit CPUID bit that a hypervisor can set to
-> > > > > > > > > indicate that the underlying hardware might be SPR or later.
-> > > > > > > >
-> > > > > > > > Something similar was attempted via virtual-MSRs in the below series:
-> > > > > > > >
-> > > > > > > > [RFC PATCH v3 09/10] KVM: VMX: Advertise MITI_CTRL_BHB_CLEAR_SEQ_S_SUPPORT
-> > > > > > > > https://lore.kernel.org/lkml/20240410143446.797262-10-chao.gao@intel.com/
-> > > > > > > >
-> > > > > > > > Do you think a rework of this approach would help?
-> > > > > > >
-> > > > > > > No, I think that whole idea is ill-conceived.  As I said above, the
-> > > > > > > hypervisor should just set IA32_SPEC_CTRL.BHI_DIS_S on the guest's
-> > > > > > > behalf when BHI_CTRL is not advertised to the guest. I don't see any
-> > > > > > > value in predicating this mitigation on guest usage of the short BHB
-> > > > > > > clearing sequence. Just do it.
-> > > > > >
-> > > > > > There are cases where this would be detrimental:
-> > > > > >
-> > > > > > 1. A guest disabling the mitigation in favor of performance.
-> > > > > > 2. A guest deploying the long SW sequence would suffer from two mitigations
-> > > > > >    for the same vulnerability.
-> > > > >
-> > > > > The guest is already getting a performance boost from the newer
-> > > > > microarchitecture, so I think this argument is moot.
-> > > >
-> > > > For a Linux guest this is mostly true. IIRC, there is atleast one major
-> > > > non-Linux OS that suffers heavily from BHI_DIS_S.
-> > >
-> > > Presumably, this guest OS wants to deploy the long sequence (if it may
-> > > run on SPR and later) and doesn't want BHI_DIS_S foisted on it. I
-> > > don't recall that negotiation being possible with
-> > > MSR_VIRTUAL_MITIGATION_CTRL.
-> >
-> > Patch 4/10 of that series is about BHI_DIS_S negotiation. A guest had to
-> > set MITI_CTRL_BHB_CLEAR_SEQ_S_USED to indicate that it isn't aware of the
-> > BHI_DIS_S control and is using the short sequence (ya, there is nothing
-> > about the long sequence). When KVM sees this bit set, it deploys BHI_DIS_S
-> > for that guest.
-> >
-> > x86/bugs: Use Virtual MSRs to request BHI_DIS_S
-> > https://lore.kernel.org/lkml/20240410143446.797262-5-chao.gao@intel.com/
+Hi Carlos,
+
+On Mon, Mar 09, 2026 at 07:27:49PM +0000, Carlos Llamas wrote:
+> On Sun, Feb 06, 2022 at 06:55:56PM -0800, Kees Cook wrote:
+> > On Sun, Feb 06, 2022 at 09:28:52PM +0100, Peter Zijlstra wrote:
+> > > On Sun, Feb 06, 2022 at 10:45:15AM -0800, Kees Cook wrote:
+> > > 
+> > > > I'm digging through the macros to sort this out, but IIUC, an example of
+> > > > the problem is:
+> > > > 
+> > > 
+> > > > so the caller is expecting "unsigned int (*)(void)" but the prototype
+> > > > of __static_call_return0 is "long (*)(void)":
+> > > > 
+> > > > long __static_call_return0(void);
+> > > > 
+> > > > Could we simply declare a type-matched ret0 trampoline too?
+> > > 
+> > > That'll work for this case, but the next case the function will have
+> > > arguments we'll need even more nonsense...
+> > 
+> > Shouldn't the typeof() work there too, though? I.e. as long as the
+> > return value can hold a "0", it'd work.
 > 
-> Ah. I see now. I missed this part of the specification: "Guest OSes
-> that are using long or TSX sequences can optionally clear
-> BHB_CLEAR_SEQ_S_USED bit in order to communicate this to the VMM."
+> I gave this a shot but then hit a wall with the arguments indeed:
 > 
-> Maybe this would be less confusing if BHB_CLEAR_SEQ_S_USED were named
-> more clearly. Perhaps something like "SET_BHI_DIS_S_FOR_ME"?
+> typedef int (perf_snapshot_branch_stack_t)(struct perf_branch_entry *entries,
+> 					   unsigned int cnt);
+> [...]
+> DEFINE_STATIC_CALL_RET0(perf_snapshot_branch_stack, perf_snapshot_branch_stack_t);
+> 
+> I can generate a stub with the matching return type using typeof() but
+> the arguments have to be fixed e.g. to (void):
+> 
+> #define DEFINE_STATIC_CALL_RET0(name, _func)				\
+> 	static inline typeof(((typeof(_func)*)0)())			\
+> 		__static_call_ret0_##name(void) { return 0; }		\
+> 	__DEFINE_STATIC_CALL(name, _func, __static_call_ret0_##name)
+> 
+> I believe this would work for most perf callbacks cases except the one
+> above because the arguments would generate a different hash for CFI.
 
-Ya, that would have been clearer.
+If you need a stub with a matching CFI type for an arbitrary function,
+perhaps you can do something like this (arm64, untested):
 
-> Is it reasonable to assume that without the presence of BHI_CTRL, the
-> non-Linux OS we've been discussing will (ironically) only use the long
-> sequence if the hypervisor advertises BHB_CLEAR_SEQ_S_SUPPORT? That
-> is, without BHB_CLEAR_SEQ_S_SUPPORT, does it assume the short sequence
-> is adequate?
+  #define DEFINE_TYPED_STUB_RET0(name, reffunc)			\
+	typeof(reffunc) name;					\
+	__ADDRESSABLE(name);					\
+	asm(							\
+	"	" __ALIGN_STR "				\n"	\
+	"	.4byte	__kcfi_typeid_" #name "		\n"	\
+	#name ":					\n"	\
+	"	bti c					\n"	\
+	"	mov x0, xzr				\n"	\
+	"	ret					"	\
+	)
 
-I don't know. But, it doesn't seem logical to assume short sequence is
-adequate when the guest can't ensure that VMM would do BHI_DIS_S for it. It
-should be the other way around.
+For the !CONFIG_CFI case, or architectures that implement static calls,
+you can probably just point the stub to __static_call_return0:
+
+  #define DEFINE_TYPED_STUB_RET0(name, reffunc) \
+	typeof(reffunc) name __asm__("__static_call_return0")
+
+Sami
