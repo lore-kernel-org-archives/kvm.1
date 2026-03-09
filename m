@@ -1,140 +1,155 @@
-Received: from mail-pg1-f170.google.com (mail-pg1-f170.google.com [209.85.215.170])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from fout-a2-smtp.messagingengine.com (fout-a2-smtp.messagingengine.com [103.168.172.145])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D93C8217659
-	for <kvm@vger.kernel.org>; Mon,  9 Mar 2026 22:53:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.215.170
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773096818; cv=pass; b=lteBSE4Hd/SECzYiEtFJrqWq7HYoIzK9IxCsOL+VZMxgxWlytIWtrYZbnk92UzgSTkS8tx7q5/FEjTcE4tsboFFqBsjr70BpCF7FJVnmwrXZRcwWMbX/I3Jrk6qXmqM1RzXK/CEwQlJNb/lZ6mpCzMoc2amLcKlc1piOX6vEJWg=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773096818; c=relaxed/simple;
-	bh=q2w4hH754zt9HNN6xhYqQlu8wGNsJth+nKvF5WyWk7A=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=CUYgjLbYjKbhFexisAXVIVUiKCsYMQbWhEmwiqd9EoMzitX/lVQ8KVc3lg5TCY5QlQ7Z9T3zzIRRD33RTYPrbD3vcCkL5mJznXtXxmnFxc/LsmuS9J7G6CsKLraAThQYkNpr73MywAuIPZykfV60L7mr5T61+y6+OlwF+LZ740I=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=hHfm18XL; arc=pass smtp.client-ip=209.85.215.170
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B4131F03D7
+	for <kvm@vger.kernel.org>; Mon,  9 Mar 2026 23:02:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.145
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1773097374; cv=none; b=XRgDavuz7kVwdFpdaZ+I+k3Eq7xDMHcflpOotVpfPYwLcJ5YKOqkeGS4O5VnuztBRgBcOwa8IG5EHq4FA4w038LTKmKksV2VUz+TdVoX3tiXrE7Qm05lVwrNa1HH4uzgMzYpo6hZVfDp81+GTEgKXtH9y4ulwrNUwS4XDDgX/pY=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1773097374; c=relaxed/simple;
+	bh=46ojE7ub3NikZu06fNrPU7TbW5ICTow3JhkRPWroNME=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=NWc150Qyz4NFUNFPnDB3wBEYkFA2Hg40HidwLudHUdDemO2PMP4I/urLW4L5g3gdXqoABRHS9wVPgCrl6+OQjx0zumrQ1qJFgZFQZan1b0Q1kT4rDB9ZdSUygYjOILMk0PiWoOFQcSGfBMalVdKezTRpiW70/KENZiCwY04/ico=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=shazbot.org; spf=pass smtp.mailfrom=shazbot.org; dkim=pass (2048-bit key) header.d=shazbot.org header.i=@shazbot.org header.b=Zm+4v/l+; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=B6yGj3rD; arc=none smtp.client-ip=103.168.172.145
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=shazbot.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=shazbot.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="hHfm18XL"
-Received: by mail-pg1-f170.google.com with SMTP id 41be03b00d2f7-c73a5473bbdso844904a12.2
-        for <kvm@vger.kernel.org>; Mon, 09 Mar 2026 15:53:36 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1773096816; cv=none;
-        d=google.com; s=arc-20240605;
-        b=LuHWOj2rsG8sMK8uU+Xnj8AP68qMI47xT71Mj9jVydgDPlrA+P6PxQnwEdhQTgVgt0
-         in3wHXMF4K4WQ8WR2iQAutldfQjm6rHgp/CwUwIj0MSnwrpLXFYQnsh7Hn+uUiHxOU0x
-         XxxIflWkYsvowDuXbC27SCHeXkC7hR2YqdKRhKcPWjuVSPthO820hdYNWi2iu1ngziVR
-         tD2HvgySQ1Hx26NveJ5+tcxN12uBnioJTE/BgpiYNtFkZCyI9bdWIRciA2lnw0p4Kn1m
-         bPhgsy3bqMOuDjuM8/uApRjfkqnSTnCzRtZ6Z4chrlSH0bf95lO+gJrmBX05a+iSkuHZ
-         jYRw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=QvV41XeFEw10F2wL6kGciRjV5fBV2gYyjdKUcejekgM=;
-        fh=NwyDxWJBNHMxfZasGFJ3CQfK4Mnto1vIMBbcvfYpEjw=;
-        b=el11016XRkDLg0AVSKCidwUQ3phWeDsdEvzwpK92RctLbP6+xQv+HgDjv4Hx9Z8A3s
-         pgFZZNb3fQsalGVeSEcDjEVS3QvWaGe6WTC8V21tG4BuPqlxjD5KYjnMSQaY1ynZt0O+
-         I+Qz0ZwufcVliOnu2g3lWHjFgKmUU4aasyxWmkVd+4oKxARASfcPokU2qIfDyswpOGQI
-         UDosSdn98wBc6Dwl4pP6MVcAxepmnvMsgeyfTUE3nPcUiPlyXMsKTObYyv+8IpUtefhg
-         wHcKGcA7DLXu8Fg1Gk5tZuhThZ1GenNF57OfH50HHhEIncAyAAB5UYc6BZa5EN9skW2v
-         TcCQ==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1773096816; x=1773701616; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=QvV41XeFEw10F2wL6kGciRjV5fBV2gYyjdKUcejekgM=;
-        b=hHfm18XLvDz3DQQA7MjJWto/teFQf0T9x6M4X10R2fDijFXluH0IfwQQE7xMhQ3HwC
-         kUjiJcTPV4js0W947odmoAKjxGImxd3TBbIKGGDsLv8UR48dy6+BYV3NTjs6Ipv/B1El
-         TD9Mzx05/ypq3Ve1QpzuTBoYcwtZpOJtqhnCA=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1773096816; x=1773701616;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=QvV41XeFEw10F2wL6kGciRjV5fBV2gYyjdKUcejekgM=;
-        b=NB/Y9+hc8BtVSMKWYMvMIsrNO58zlIo6xfJWBBYV5S+FUN9cmaQDdWOoE9vPta8Ut9
-         uPVqyPMpwLiCkmSzAR0X9eFC3QHGIz/Az8NFqwFEVHxAaah+Hf8KZQRMy2AM/QklRcje
-         e1RC0+Rm8MTlKO5TcQqWSfuobQyMhv0FZ/Zw9qr+X6+D0QfE/r5E8LKLHzUdcLMk2P9l
-         Y53+OCbbcYWoBHK4MZizi1MzpkoWCeSaDS37whNZbCI9tXd6WtTuZQbccs8Xb5sVG3tU
-         9tJrueOOu5zFEyG9tGZveppGiUT2QRg8D3jwo58hBiP3Mf/Y+YsghCZKbXGDzs4YfGmu
-         4aEA==
-X-Forwarded-Encrypted: i=1; AJvYcCVMW439zicsYHG1Mlf3Kpao9XOCKQG05hB39sGz5r4EB+oU+oTexGo7tWYw8MHzsmgFnnA=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwtXsoN4BDGU5mjDuQ890niIyveegYRmCE9myDURd2SbG+WJErV
-	ldlomRsIrC76DzGosFpSvaZY3vUbhkCq11XqB0vdui+pzGOGmshwd/p0j2gUzCw6TafDRj8SZUm
-	flBT3Ou+mCpxM0gow93nkGq2mDTIibMaoZmxccpKi
-X-Gm-Gg: ATEYQzwmngsuKz29/mDKAick8WeTXE9JDDKi2PV5AbOMVGnnNacgjwasKdEP/88z1T0
-	DINUF1//NMnRPi1wFSFPvjCuprSwR71m3i//+Bf9ZEEp+bTMzg4pUh+rKbmyBRbx46OQYWZyt55
-	zTBIlVDh+1nIAlm47RP8ZqT4XJRNvaiZjoN71nxQiavJcQ2oWTWAkksoqnSfoCiQ2HF5eSjq5CV
-	Egh2OpHlN9tvMKgWkNmGwmMA6CNJLGyk8UsG5Hi71zwW1rEC328cbCyrT4R9scn4IucuvWsjckH
-	A0EsrgI=
-X-Received: by 2002:a05:6a20:d523:b0:394:5463:7330 with SMTP id
- adf61e73a8af0-398590b1ebcmr11616921637.51.1773096816308; Mon, 09 Mar 2026
- 15:53:36 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=shazbot.org header.i=@shazbot.org header.b="Zm+4v/l+";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="B6yGj3rD"
+Received: from phl-compute-11.internal (phl-compute-11.internal [10.202.2.51])
+	by mailfout.phl.internal (Postfix) with ESMTP id B3A3AEC02EA;
+	Mon,  9 Mar 2026 19:02:50 -0400 (EDT)
+Received: from phl-frontend-04 ([10.202.2.163])
+  by phl-compute-11.internal (MEProxy); Mon, 09 Mar 2026 19:02:50 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shazbot.org; h=
+	cc:cc:content-transfer-encoding:content-type:content-type:date
+	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to; s=fm3; t=1773097370;
+	 x=1773183770; bh=5u523kejBO028cHk2FR7XhN0EcufVz5twjaS8TosreQ=; b=
+	Zm+4v/l+hCGCSnTyorcJPepTTMPhwhwE+6IDZGGo6LHgBEtTmcbVA/XN+sX63U6t
+	SFSCWnn1X/QppycuPgTxeWAgP4zU1jqzypy6BT4Uzpt5QfT8oJAXIH/ULrK0qYUv
+	1gwSa1W2eMEYUln7dIj8uzfjJjAo0nutOzU7Mh2BiJwoGwb/9uV6eWMKb3ctjo7P
+	lL/eU3bQGOeUYk84MWs2cPYBbWX4LONAvxDrPJkPPovN+S90U7et2VqfOmfCnljp
+	CmaxzlnP1jnTuhpJUVDY7OYvinghT+aNnbx1O6LOEIu3oDoDS+Qaoa6uruDQpYGc
+	TeEAUIrOayfcU5y48hxRnw==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=1773097370; x=
+	1773183770; bh=5u523kejBO028cHk2FR7XhN0EcufVz5twjaS8TosreQ=; b=B
+	6yGj3rDfRmVAdrj8A7kdY1JLxplMt37EDKkRRTiudWN9pEP+Z32mrbbFuU3zvX+O
+	ht0JQ3mNoWoaaVb+mlcCbmBKCVE4hoBEbh3q3ueDXrk+ACYrQ36cu84sQMtHLjLI
+	l9R2k0QZRDCSJ1XMJEu1n1mLrPIrcb2UIZq+lsStRXNBTI3DHYvP2Hu1wyPEgBk+
+	t6n6NEvOBO05sUUSjw1Oy1vpPhGgTRQZq6J6ltonEmY+E0yvzg035w5ATv72GIOc
+	aUDRHLqfe3JIOlnxTQHLNuWYee8L2Cr5GT636+fWkbdX68V2706o9dX5D7k/5r/y
+	BtGm0Dguhgnx94MFYQ6VQ==
+X-ME-Sender: <xms:mlGvaddg6pTo-HE6QHZwumzcxcu_XlNMfxANIuH1tmUEV0dmuGxdyQ>
+    <xme:mlGvadxFtOWdUT5hhTaBusLahMmiS_kXFeSKbyKbvki0c3dGxMw_XwZC7NeK6SPc9
+    7URIDdCNGLriM53sD4W77CLrpZVwpZ7S8tc4ejgnU21fvxSZEcK1Q>
+X-ME-Received: <xmr:mlGvaaI7c3pGit9o9StS_EO4Ihc4ReY9PKKfGwJSRRcJBPuW3I-YOuhLVVI>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgddvjeelgeduucetufdoteggodetrf
+    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
+    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
+    gurhepfffhvfevuffkjghfofggtgfgsehtjeertdertddvnecuhfhrohhmpeetlhgvgicu
+    hghilhhlihgrmhhsohhnuceorghlvgigsehshhgriigsohhtrdhorhhgqeenucggtffrrg
+    htthgvrhhnpedvkeefjeekvdduhfduhfetkedugfduieettedvueekvdehtedvkefgudeg
+    veeuueenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpe
+    grlhgvgiesshhhrgiisghothdrohhrghdpnhgspghrtghpthhtohepledpmhhouggvpehs
+    mhhtphhouhhtpdhrtghpthhtohepshhumhgrnhdrkhhumhgrrhdrtghhrghkrhgrsghorh
+    hthiesihhnthgvlhdrtghomhdprhgtphhtthhopehjghhgseiiihgvphgvrdgtrgdprhgt
+    phhtthhopeihihhshhgrihhhsehnvhhiughirgdrtghomhdprhgtphhtthhopehskhholh
+    hothhhuhhmthhhohesnhhvihguihgrrdgtohhmpdhrtghpthhtohepkhgvvhhinhdrthhi
+    rghnsehinhhtvghlrdgtohhmpdhrtghpthhtohepghhiohhvrghnnhhirdgtrggsihguug
+    husehinhhtvghlrdgtohhmpdhrtghpthhtohepkhhvmhesvhhgvghrrdhkvghrnhgvlhdr
+    ohhrghdprhgtphhtthhopehqrghtqdhlihhnuhigsehinhhtvghlrdgtohhmpdhrtghpth
+    htoheprghlvgigsehshhgriigsohhtrdhorhhg
+X-ME-Proxy: <xmx:mlGvaXGliC2X7LSQaYTAs0O27Itcfo57YZhv_Hr6F0G8a_2L3NEwxw>
+    <xmx:mlGvae8mfitwyRMrEgOeSOuOXA0nlCJskjee1MR0n5SsrfMCqZ6WFQ>
+    <xmx:mlGvafIDpxMKf-PzEd9c44biyE5g_W2CCuWlEPc3hp0hprTN-4qG_Q>
+    <xmx:mlGvaUsWx7NDyUYvhsCbc8yGED3XOh9-zEIeMj0OkS4Xd1SmChmdUA>
+    <xmx:mlGvaf_N1ClRWVT9KmLUuEjqsp79osNikjCN41Y5pY_zN0JnuTos-36_>
+Feedback-ID: i03f14258:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
+ 9 Mar 2026 19:02:49 -0400 (EDT)
+Date: Mon, 9 Mar 2026 17:02:47 -0600
+From: Alex Williamson <alex@shazbot.org>
+To: Suman Kumar Chakraborty <suman.kumar.chakraborty@intel.com>
+Cc: jgg@ziepe.ca, yishaih@nvidia.com, skolothumtho@nvidia.com,
+ kevin.tian@intel.com, giovanni.cabiddu@intel.com, kvm@vger.kernel.org,
+ qat-linux@intel.com, alex@shazbot.org
+Subject: Re: [PATCH] vfio/qat: extend Kconfig dependencies for 420xx and
+ 6xxx devices
+Message-ID: <20260309170247.2bd96b78@shazbot.org>
+In-Reply-To: <20260213091403.72338-1-suman.kumar.chakraborty@intel.com>
+References: <20260213091403.72338-1-suman.kumar.chakraborty@intel.com>
+X-Mailer: Claws Mail 4.3.1 (GTK 3.24.51; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260307011619.2324234-4-yosry@kernel.org> <34cbc227-f01f-4d4b-b6ab-19bcb02d7e3c@citrix.com>
-In-Reply-To: <34cbc227-f01f-4d4b-b6ab-19bcb02d7e3c@citrix.com>
-From: Venkatesh Srinivas <venkateshs@chromium.org>
-Date: Mon, 9 Mar 2026 15:53:24 -0700
-X-Gm-Features: AaiRm50hy9_dhgvOfv0mnqtvIhNx4HhbczsyXYdm5Cyxe4ZtebOmUF4k4KW5Sio
-Message-ID: <CAA0tLEoXuoOvwc5dOmdRAJDsUw3bfbvFiWji9vjjcd6TQrc8Sg@mail.gmail.com>
-Subject: Re: [PATCH v2 3/3] KVM: SVM: Advertise Translation Cache Extensions
- to userspace
-To: Andrew Cooper <andrew.cooper3@citrix.com>
-Cc: yosry@kernel.org, kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	pbonzini@redhat.com, seanjc@google.com, venkateshs@google.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-On Fri, Mar 6, 2026 at 5:54=E2=80=AFPM Andrew Cooper <andrew.cooper3@citrix=
-.com> wrote:
->
-> > From: Venkatesh Srinivas <venkateshs@chromium.org>
-> >
-> > TCE augments the behavior of TLB invalidating instructions (INVLPG,
-> > INVLPGB, and INVPCID) to only invalidate translations for relevant
-> > intermediate mappings to the address range, rather than ALL intermdiate
-> > translations.
-> >
-> > The Linux kernel has been setting EFER.TCE if supported by the CPU sinc=
-e
-> > commit 440a65b7d25f ("x86/mm: Enable AMD translation cache extensions")=
-,
-> > as it may improve performance.
-> >
-> > KVM does not need to do anything to virtualize the feature, only
-> > advertise it and allow setting EFER.TCE. If a TLB invalidating
-> > instruction is not intercepted, it will behave according to the guest's
-> > setting of EFER.TCE as the value will be loaded on VM-Enter. Otherwise,
-> > KVM's emulation may invalidate more TLB entries, which is perfectly fin=
-e
-> > as the CPU is allowed to invalidate more TLB entries that it strictly
-> > needs to.
-> >
-> > Advertise X86_FEATURE_TCE to userspace, and allow the guest to set
-> > EFER.TCE if available.
-> >
-> > Signed-off-by: Venkatesh Srinivas <venkateshs@chromium.org>
-> > Co-developed-by: Yosry Ahmed <yosry@kernel.org>
-> > Signed-off-by: Yosry Ahmed <yosry@kernel.org>
->
-> I'll repeat what I said on that referenced patch.
->
-> What's the point?  AMD have said that TCE doesn't exist any more; it's a
-> bit that's no longer wired into anything.
->
-> You've got to get to pre-Zen hardware before this has any behavioural
-> effect, at which point the breath of testing is almost 0.
+On Fri, 13 Feb 2026 09:14:03 +0000
+Suman Kumar Chakraborty <suman.kumar.chakraborty@intel.com> wrote:
 
-Interesting, I missed that. Do you know where AMD said that?
-(If so, why did we take 440a65b7d25f ("x86/mm: Enable AMD translation
-cache extensions")?)
+> From: Vijay Sundar Selvamani <vijay.sundar.selvamani@intel.com>
+> 
+> Currently, the QAT VFIO PCI driver can only be configured when the 4xxx
+> QAT driver (CRYPTO_DEV_QAT_4XXX) is enabled. This is too restrictive as
+> the VFIO driver also supports VFs from the 420xx and 6xxx device
+> families, which share a compatible migration interface.
+> 
+> Extends the Kconfig dependencies to allow configuration when any of the
+> supported QAT device families (4xxx, 420xx, or 6xxx) are enabled.
 
-Thanks,
--- vs;
+420xx seems to be device ID 0x4947:
+
+drivers/crypto/intel/qat/qat_common/adf_accel_devices.h
+#define PCI_DEVICE_ID_INTEL_QAT_420XXIOV 0x4947
+
+We don't currently have that in the ID table for the vfio qat driver:
+
+static const struct pci_device_id qat_vf_vfio_pci_table[] = {
+        /* Intel QAT GEN4 4xxx VF device */
+        { PCI_DRIVER_OVERRIDE_DEVICE_VFIO(PCI_VENDOR_ID_INTEL, 0x4941) },
+        { PCI_DRIVER_OVERRIDE_DEVICE_VFIO(PCI_VENDOR_ID_INTEL, 0x4943) },
+        { PCI_DRIVER_OVERRIDE_DEVICE_VFIO(PCI_VENDOR_ID_INTEL, 0x4945) },
+        /* Intel QAT GEN6 6xxx VF device */
+        { PCI_DRIVER_OVERRIDE_DEVICE_VFIO(PCI_VENDOR_ID_INTEL, 0x4949) },
+        {}
+};
+
+Are we missing support for this device and is this Kconfig change
+therefore a little overeager?  Thanks,
+
+Alex
+
+> Signed-off-by: Vijay Sundar Selvamani <vijay.sundar.selvamani@intel.com>
+> Signed-off-by: Suman Kumar Chakraborty <suman.kumar.chakraborty@intel.com>
+> Reviewed-by: Giovanni Cabiddu <giovanni.cabiddu@intel.com>
+> ---
+>  drivers/vfio/pci/qat/Kconfig | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/drivers/vfio/pci/qat/Kconfig b/drivers/vfio/pci/qat/Kconfig
+> index bf52cfa4b595..83f037d7e9a4 100644
+> --- a/drivers/vfio/pci/qat/Kconfig
+> +++ b/drivers/vfio/pci/qat/Kconfig
+> @@ -2,7 +2,7 @@
+>  config QAT_VFIO_PCI
+>  	tristate "VFIO support for QAT VF PCI devices"
+>  	select VFIO_PCI_CORE
+> -	depends on CRYPTO_DEV_QAT_4XXX
+> +	depends on CRYPTO_DEV_QAT_4XXX || CRYPTO_DEV_QAT_420XX || CRYPTO_DEV_QAT_6XXX
+>  	help
+>  	  This provides migration support for Intel(R) QAT Virtual Function
+>  	  using the VFIO framework.
+> 
+> base-commit: b10c62483b324e60e45fb27d7fdc09c9198993d7
+
