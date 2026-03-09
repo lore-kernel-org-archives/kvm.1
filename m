@@ -1,145 +1,89 @@
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C24E520B22;
-	Mon,  9 Mar 2026 13:31:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C69D35958
+	for <kvm@vger.kernel.org>; Mon,  9 Mar 2026 13:37:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.19
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773063104; cv=none; b=LWfFNpQbVvHYO4dDGpnczlgqH7oe9LpKdoQgJY5ZfS/ZWeCwcAwAHYRomaULQbB8TF2k1Ak9F5sNsUbeNPwBCkUG1uxtBB+6Hy55j7+6uu8AYJOohPI7oieLclLt2mKtL0l8xv0cPvpSrws8SIxA2IDnfAhAX9tbQ9ZsXf2m3DU=
+	t=1773063444; cv=none; b=EvRHt+s9Iti/9RWBxmmtBbp++yDnBNKpYLYiB11hW+NhskXHj6XxPaJ4aTuVEclfLhf+mR74Ek+gNEU4yJGMHI1HLetj/uPPsXA2Nay1hF+2BsN2PfmyP8nLjmXnYhCrYOczilqIPf+3pn8zxHaUCWJAh4K0+n2TdN6s9ZcT0x0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773063104; c=relaxed/simple;
-	bh=6BNPmUyzSbSNypouwU29Ish4OEWhUbIEgWdZ+sIYifE=;
+	s=arc-20240116; t=1773063444; c=relaxed/simple;
+	bh=4mWCyx1Te9ugLEsZU9ic00xrG8f/5qA2VFmRrRi9YPs=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=tIBS0lkthMG1vBa5of5SHCnhrcoHrFwCP55pTyNB3+2sLok6xGLXP9pvW6gGTwIDAxwmqinhHs2n5ZJqG3TXamQYwayZB2sEVXTgDhSK2LXMBClhgXPw5opze1qOK12s/FIPPaIAfTXx2GwZ0elF93py0Ug3ZhEAvMoDmnqu3OU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=bxCZkHhV; arc=none smtp.client-ip=148.163.156.1
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+	 Content-Type:Content-Disposition:In-Reply-To; b=qM+RIOBVc8s4LvF2sfOJLax+jgK50dVDwZB5eC3kjzV8zyUyw1nJ9a+TnkeShNXHbiu0Yj0Rw8daoA+amefdz6WySX4nvkJDwezCDn2yUN9cUWzd3VCVVkRkIcgHhkpX4M+J5nYjzLIc8UqBcCVm9jVuum0xw2f6iNCDKOLxFEk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=dSXMd5y6; arc=none smtp.client-ip=192.198.163.19
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="bxCZkHhV"
-Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 628Jehhn1200596;
-	Mon, 9 Mar 2026 13:31:43 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-type:date:from:in-reply-to:message-id:mime-version
-	:references:subject:to; s=pp1; bh=hHqTiuRqBrT9mk7+wPR2kot50c6/t8
-	Vgdo77Q8CvCq8=; b=bxCZkHhVWfaE1KN+igvdqZCHGPQbsB5CtmwD3yF3J+wn1o
-	ptDzjiHnC4PGtbCUjSRjmGD2CLoVPb2s0aGr55+SB3Ra6nCbltGdQq913LvGmIpH
-	UExuwZ/rm0/hLBCnwQVx7HBOwSMd5InMHtUIUSIotUPtx+DS8FxZxg+iBHq2HC2G
-	OED5L5ot2fzOMUz3AgZekN5G2Ai0Mmsu0+wgSkWSF9b/CGYN+w9LOBZFMeL2La9d
-	+83ODYyRAky7pRk7oJ7PfZ8sJg1A/lyfdvhZ5gAxeDy0eTGyDCdpzmZJALIMHzyT
-	P+CKs//1+z+RD21OFpBNX9ccmqKSW4DGGoY6nWoA==
-Received: from ppma11.dal12v.mail.ibm.com (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4crcyw6pw5-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 09 Mar 2026 13:31:42 +0000 (GMT)
-Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma11.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 629B7lij015706;
-	Mon, 9 Mar 2026 13:31:42 GMT
-Received: from smtprelay04.fra02v.mail.ibm.com ([9.218.2.228])
-	by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 4cs121vtn5-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 09 Mar 2026 13:31:41 +0000
-Received: from smtpav02.fra02v.mail.ibm.com (smtpav02.fra02v.mail.ibm.com [10.20.54.101])
-	by smtprelay04.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 629DVbtX15466772
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 9 Mar 2026 13:31:37 GMT
-Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 250ED2004B;
-	Mon,  9 Mar 2026 13:31:37 +0000 (GMT)
-Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id BA8DC20040;
-	Mon,  9 Mar 2026 13:31:36 +0000 (GMT)
-Received: from osiris (unknown [9.111.32.176])
-	by smtpav02.fra02v.mail.ibm.com (Postfix) with ESMTPS;
-	Mon,  9 Mar 2026 13:31:36 +0000 (GMT)
-Date: Mon, 9 Mar 2026 14:31:35 +0100
-From: Heiko Carstens <hca@linux.ibm.com>
-To: Janosch Frank <frankja@linux.ibm.com>
-Cc: kvm@vger.kernel.org, linux-s390@vger.kernel.org, imbrenda@linux.ibm.com,
-        borntraeger@linux.ibm.com, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] s390/mm: add missing secure storage access fixups for
- donated memory
-Message-ID: <20260309133135.30265H8b-hca@linux.ibm.com>
-References: <20260309125311.31937-5-frankja@linux.ibm.com>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="dSXMd5y6"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1773063440; x=1804599440;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:content-transfer-encoding:in-reply-to;
+  bh=4mWCyx1Te9ugLEsZU9ic00xrG8f/5qA2VFmRrRi9YPs=;
+  b=dSXMd5y6KJ4yW4DPEMEY6PsoMrF9ff2nPNBxo28ipQAqs+udDqPiNb2g
+   YSBjKjLQG21xsiuiSvaLiVnyBPbZVXgO/8OF94KH/kf8odH8omHopnmZy
+   3iCocmzzOQgFRskELvzFd+2cCrL5fqx7hhdrMnPBiWhkA+Lsa1w6iEZot
+   9/CxA+H4U+ephdoy2BDEhfyscz0TdN8uNx1dUoPxuZmrKuqwkVNB31Ybg
+   eoZesmRdc1iY+b29i6I4uyaM/jA/cbp15S43uMDjVW1xf/wSpkHgT+lgp
+   FsvzH7OLgdHN5riVc2ySY056i6MuqantCfWHmPc5BFwLRfZm5kbdOd/0h
+   A==;
+X-CSE-ConnectionGUID: Xi6OVm72SoWJU6fcpJXcwQ==
+X-CSE-MsgGUID: PrhvWGByRXik0PuwRwskRw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11723"; a="73108724"
+X-IronPort-AV: E=Sophos;i="6.23,109,1770624000"; 
+   d="scan'208";a="73108724"
+Received: from orviesa004.jf.intel.com ([10.64.159.144])
+  by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Mar 2026 06:37:19 -0700
+X-CSE-ConnectionGUID: hC0GY+T1Toqai1gyjXyYWQ==
+X-CSE-MsgGUID: NuXr/z8SQzC8gv/wAiCMhw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.23,109,1770624000"; 
+   d="scan'208";a="224203764"
+Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost) ([10.239.160.39])
+  by orviesa004.jf.intel.com with ESMTP; 09 Mar 2026 06:37:18 -0700
+Date: Mon, 9 Mar 2026 22:03:28 +0800
+From: Zhao Liu <zhao1.liu@intel.com>
+To: Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>
+Cc: qemu-devel@nongnu.org, "Michael S. Tsirkin" <mst@redhat.com>,
+	Paolo Bonzini <pbonzini@redhat.com>, Thomas Huth <thuth@redhat.com>,
+	Marcelo Tosatti <mtosatti@redhat.com>, kvm@vger.kernel.org
+Subject: Re: [PATCH 3/4] target/i386/kvm: Remove
+ X86CPU::hyperv_synic_kvm_only field
+Message-ID: <aa7TMGlD57JYsMLi@intel.com>
+References: <20260307150042.78030-1-philmd@linaro.org>
+ <20260307150042.78030-4-philmd@linaro.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
-In-Reply-To: <20260309125311.31937-5-frankja@linux.ibm.com>
-X-TM-AS-GCONF: 00
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMzA5MDEyMyBTYWx0ZWRfX+VXydZnQyvU6
- jXuCQom8XMiLEXsL1Ty7UZRNGQogDO4E2EDudzm8VvLkpQYzOyTZKRLs1sdy84T329U2AC5/8Py
- orgAvveaOTtAOgjptKHxXXDp8g3idL/kdFflHCD//5uFqtlEhCaWl4hKCstz/Nmu9nG3LF8gdaZ
- qJJlcuVF53AWEjlTDW7WuLoHujccSyrYtwFvewH4va9jyPVXGe8rHTV6Y7Tu/V9Gg2zf1aCl5Sc
- /i6mv1rnJxq0kkwPaki2EpUaSKBS1onhJj8h6xFpuDKdijFZam62MPA74vW1F3qeGE5N1d1w2sE
- AtibHUpEhqSZKyPT5TivMo9XffGXV4hkYXIfjy/XFHwxlszrJfX9Y4QO1PnlL8X3bh5Hu+Z3Xe+
- G5Kp0NHpdy9u+Bc0VUU/JSLKHANEZNfljpNBRvvqElhS1cfP58v2Wyo/j3eT/tZXc5KPq7e2fCV
- WOokqXGl2E9q8vcLGyQ==
-X-Authority-Analysis: v=2.4 cv=QaVrf8bv c=1 sm=1 tr=0 ts=69aecbbe cx=c_pps
- a=aDMHemPKRhS1OARIsFnwRA==:117 a=aDMHemPKRhS1OARIsFnwRA==:17
- a=kj9zAlcOel0A:10 a=Yq5XynenixoA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=RnoormkPH1_aCDwRdu11:22 a=U7nrCbtTmkRpXpFmAIza:22 a=VnNF1IyMAAAA:8
- a=TrE2I5bt53qSS1KpehMA:9 a=CjuIK1q_8ugA:10
-X-Proofpoint-GUID: lJCR9h8VoHXjYYwetiKv_zc0gPVA2bJ5
-X-Proofpoint-ORIG-GUID: lJCR9h8VoHXjYYwetiKv_zc0gPVA2bJ5
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
- definitions=2026-03-09_03,2026-03-09_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- malwarescore=0 spamscore=0 impostorscore=0 clxscore=1015 adultscore=0
- bulkscore=0 lowpriorityscore=0 priorityscore=1501 suspectscore=0 phishscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2602130000 definitions=main-2603090123
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20260307150042.78030-4-philmd@linaro.org>
 
-On Mon, Mar 09, 2026 at 12:53:15PM +0000, Janosch Frank wrote:
-> There are special cases where secure storage access exceptions happen
-> in a kernel context for pages that don't have the PG_arch_1 bit
-> set. That bit is set for non-exported guest secure storage (memory)
-> but is absent on storage donated to the Ultravisor since the kernel
-> isn't allowed to export donated pages.
+On Sat, Mar 07, 2026 at 04:00:41PM +0100, Philippe Mathieu-Daudé wrote:
+> Date: Sat,  7 Mar 2026 16:00:41 +0100
+> From: Philippe Mathieu-Daudé <philmd@linaro.org>
+> Subject: [PATCH 3/4] target/i386/kvm: Remove X86CPU::hyperv_synic_kvm_only
+>  field
+> X-Mailer: git-send-email 2.52.0
 > 
-> Prior to this patch we would try to export the page by calling
-> arch_make_folio_accessible() which would instantly return since the
-> arch bit is absent signifying that the page was already exported and
-> no further action is necessary. This leads to secure storage access
-> exception loops which can never be resolved.
+> The X86CPU::hyperv_synic_kvm_only boolean (see commit 9b4cf107b09
+> "hyperv: only add SynIC in compatible configurations") was only set
+> in the pc_compat_3_0[] array, via the 'x-hv-synic-kvm-only=on'
+> property. We removed all machines using that array, lets remove that
+> property and all the code around it.
 > 
-> With this patch we unconditionally try to export and if that fails we
-> fixup.
-> 
-> Fixes: 084ea4d611a3 ("s390/mm: add (non)secure page access exceptions handlers")
-> Reported-by: Heiko Carstens <hca@linux.ibm.com>
-> Signed-off-by: Janosch Frank <frankja@linux.ibm.com>
+> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 > ---
->  arch/s390/mm/fault.c | 9 +++++++--
->  1 file changed, 7 insertions(+), 2 deletions(-)
-> 
-> diff --git a/arch/s390/mm/fault.c b/arch/s390/mm/fault.c
-> index a52aa7a99b6b..71bad4257aab 100644
-> --- a/arch/s390/mm/fault.c
-> +++ b/arch/s390/mm/fault.c
-> @@ -441,10 +441,15 @@ void do_secure_storage_access(struct pt_regs *regs)
->  		folio = phys_to_folio(addr);
->  		if (unlikely(!folio_try_get(folio)))
->  			return;
-> -		rc = arch_make_folio_accessible(folio);
-> +		rc = uv_convert_from_secure(folio_to_phys(folio));
->  		folio_put(folio);
-> +		/*
-> +		 * There are some valid fixup types for kernel
-> +		 * accesses to donated secure memory. zeropad is one
-> +		 * of them.
-> +		 */
->  		if (rc)
-> -			BUG();
-> +			return handle_fault_error(regs, 0);
+>  target/i386/cpu.h     |  1 -
+>  target/i386/cpu.c     |  2 --
+>  target/i386/kvm/kvm.c | 15 ++++-----------
+>  3 files changed, 4 insertions(+), 14 deletions(-)
 
-This context doesn't hold mmlock, so it should be:
+Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
 
-			return handle_fault_error_nolock(regs, 0);
-
-And, yes, you can blame me, since I proposed the wrong call off-list.
