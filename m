@@ -1,171 +1,195 @@
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+Received: from fhigh-a4-smtp.messagingengine.com (fhigh-a4-smtp.messagingengine.com [103.168.172.155])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 04B1A354ADB
-	for <kvm@vger.kernel.org>; Mon,  9 Mar 2026 21:12:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E5ED14EC73
+	for <kvm@vger.kernel.org>; Mon,  9 Mar 2026 21:46:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.155
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773090768; cv=none; b=KmqN4xqJ1UMgZAlXPyZfTRBZY8HKLcNzS2nkL1vD6adnx6g9LgZ8U3M5A9bc2zKYU92kYW22rfWXbqAN7fIZB9dtRTKQJYGRFx/FxrOWz/GPlhLpA1N7oBWhbQMBNkrC42+fL17QnKcNaF2goi7MSXDLGs0of3Sj2O/T59oGJOg=
+	t=1773092803; cv=none; b=U7rUwktXww42ck0rOFgzjblXln1ZfiAcFNR+odk9JxJSAJ2FGXL3hExCPE7wQmqUqPly/E+M3Rtcke23zNPuTN8htvIWM/VuL4qGtwDGgLOlDL8cj7xrisN8BU2uhdqjnCfoJ6cK6gmU+eB8gV56sOwRjXgt99qIyttdL2+f3MM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773090768; c=relaxed/simple;
-	bh=OisU8/8uhjX0zILNpoyDakUxcHZy8b4fCJ0S1Nzcj2A=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Gi+Yka1J7rBvwdNP4K8IFYBtSpqP4ymIkuiaVmLe7oC9J2ToheRvU8EO10CPRPcLmFAocwYa2twxSfetCi0Y9iJDE8sQL/P2piCxAVgkK1bgglltbmzFQQLNzuDpZgt/Woa//WnJmS+ZvJipRGx5wDQot20mwKIJnzedSDvty4g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=iwctoPmu; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=YKfUw8C9; arc=none smtp.client-ip=205.220.168.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+	s=arc-20240116; t=1773092803; c=relaxed/simple;
+	bh=eVG8etrdaN7EVEVe1xXCXMcGtEyzvnu6gTKsqAjb2BM=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=C7lIapNnpKu4/KWT9BM7Qz2ukhjRPwXar4OOqwMOz2Jt2c8yAkiywugus18D96/tFMMXZbA241MjOr9EuiWSWLNa4EUwPJ59CTy+dPrE3OGCBlgCKS3P89kpmegtdhOqecY7pRgCgGzhYE/oRjLNslbWGdwFgPN54b8+GX+0cAI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=shazbot.org; spf=pass smtp.mailfrom=shazbot.org; dkim=pass (2048-bit key) header.d=shazbot.org header.i=@shazbot.org header.b=ER0mN4Xi; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=hNj5e+g5; arc=none smtp.client-ip=103.168.172.155
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=shazbot.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=shazbot.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="iwctoPmu";
-	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="YKfUw8C9"
-Received: from pps.filterd (m0279862.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 629HC5NR3280630
-	for <kvm@vger.kernel.org>; Mon, 9 Mar 2026 21:12:45 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-type:date:from:in-reply-to:message-id:mime-version
-	:references:subject:to; s=qcppdkim1; bh=hIRGX75FqhGaD3BMA10Fm2iv
-	i9uf9Iqa56+NA2iQds4=; b=iwctoPmuglmq0Tf+ez67wQOU7T44KIlV1E5lOjbX
-	bcNC4aXZ4D6Gzwyp3ADUzKFH6lmeJwdOSjiXKTvKwvcMdEtmiZYFyeUzUuiuFp40
-	VAbZ/7znO6OIghtb5LL6ebpNHstAtdHXaBxA2FJRHnkD2T0+WCOl/9wbu4uJ4eqD
-	mM2ZEaGJ018xRi7699eftmMw1bcfPEGSpTXEwgOPHOFl+8FsH4CMBvh7RyEEyCs3
-	tqQ+mU7KJbPRZiY8MrtuIczgqdvj/zKiMWC7r9GdIJXYELL+wfepJMQMi4ggbypU
-	qR/ZOUhCgrwm/aFcvBctADV4jotTPmIJvjEdnF4+4E7JlQ==
-Received: from mail-oo1-f71.google.com (mail-oo1-f71.google.com [209.85.161.71])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4csqcyb885-1
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <kvm@vger.kernel.org>; Mon, 09 Mar 2026 21:12:45 +0000 (GMT)
-Received: by mail-oo1-f71.google.com with SMTP id 006d021491bc7-672c40f3873so204669983eaf.2
-        for <kvm@vger.kernel.org>; Mon, 09 Mar 2026 14:12:45 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=oss.qualcomm.com; s=google; t=1773090764; x=1773695564; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=hIRGX75FqhGaD3BMA10Fm2ivi9uf9Iqa56+NA2iQds4=;
-        b=YKfUw8C9eCPcvlazAv+h4dMkhZpYCZUeB2aBSKwHj4rkzvy/OGP7EyczLUS9Q2GPuZ
-         XXEe93fRGFT6hSaHwnP9FF1B9+b9y00rNFJoatbi28VGhpQnwE3VYvteUaTzbr2ZYyZW
-         lxUDvOSrvnFBiHEIRg/0+O23fbBJvjBfMGz3cnL5bB1v91ion/g+n5vpzCCt+QyFZ/PL
-         06uBu7EuI2kSkYbbwH0oDyS6uqiH6qTpF8yWTvJA881Lww7ewajXAY+MEPGXLz2WHwA3
-         3dTRm8GO2O5TSRKghqTc4j17aSicIx7ILtgfmOYYa4PXFRhGadjieHcZKJN7r5qXKqeN
-         QZ7Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1773090764; x=1773695564;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=hIRGX75FqhGaD3BMA10Fm2ivi9uf9Iqa56+NA2iQds4=;
-        b=a4/SFxM/mjxXOegFB215DdJGS5TlflQ/xk+SEEeR7AkAgGvSoxwvXaGuZun0QSt85r
-         kUwescI22TEawGgg2WrI/L+/yclvkrBEfiZW2VKW0WLAABzGWeLk/YkskjfQ9R2Tgmgz
-         6AcWNd+JPb+5BxrBwF2+1hv9eDE5ErzooB+4F8QmqCwmxQtc8FesUS1ijlD4UCRoec+u
-         Jee1y0taWx+SjPYp1JwPgkUb8P08UyEbPXtLsZmVpvJdhnkRCTZrD1TKPWirFh7nYo3T
-         KQ28Y/Nh6VdjatT9fMMl/wdJlaFqXGblwkL1PKyff78L3qU49BMZ/KWmmoIW3a5KrRY6
-         DA6A==
-X-Forwarded-Encrypted: i=1; AJvYcCUROc0o7XHjLS/GYhrK9YOPT5WBVJfpu4mT9w0V0I7z59hLTtbIUXdWQRTVm2L9QRwJQ4M=@vger.kernel.org
-X-Gm-Message-State: AOJu0Ywju3VS3Y/M9iG0p1L0LOgM+WZzFx9x8Y0qK8DB8YaC+Mz6ItbV
-	aNOt6MGhEeXyQzIRSgvXpLRjQugu6o5CfQBpB7iHow3YJaBf+D0h7yFpbD57QK5d4EP9etKv7Mh
-	y3iRGVQunxquzp6nHoTKjIt7dJclQv3Gux3Yg8r5BKNMyoXTrP5KHxUnF8H0eZJM=
-X-Gm-Gg: ATEYQzyh7/kcvfaxnIMogWMrlxo3SiBB71SIO/92R7rqTS302BCihnGirB4Xhirfp7f
-	WIePIS2Wpkh4j9F3WgZmH1EvIlRpxQVcGAd66XuhFmuYCnKRpIEDi+1W0J3k8Yr2XkJjdSgDAcC
-	ecOo8XqAMyiyzUkso3hrBkaJ6QaQbBWZf2pRUNn9LKIGGzFzLblJw/RZn374VDfrhPbZEDXNuD9
-	Z15ztLB5R3wSEmIv9mXQ8UKzFqy0/nk8Ptu4bh+xDlR81HS12COgu1NFv8q1YTat/edR2MNFbw7
-	MHs3ZjPr61u8LJPvm0vGbbMsmsMQPGttygwzGHGrRxrkDEdztXYCTxuhM1fggZJFAYQwqpR9tSe
-	doofAUo+6fXIuhL+3a/uakUnWDTxFa6U=
-X-Received: by 2002:a05:6820:1991:b0:67a:1d88:46d5 with SMTP id 006d021491bc7-67b9bcd3839mr7601096eaf.31.1773090764526;
-        Mon, 09 Mar 2026 14:12:44 -0700 (PDT)
-X-Received: by 2002:a05:6820:1991:b0:67a:1d88:46d5 with SMTP id 006d021491bc7-67b9bcd3839mr7601074eaf.31.1773090764040;
-        Mon, 09 Mar 2026 14:12:44 -0700 (PDT)
-Received: from localhost ([140.82.166.162])
-        by smtp.gmail.com with ESMTPSA id 006d021491bc7-67bacd85dd6sm3996753eaf.11.2026.03.09.14.12.43
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 09 Mar 2026 14:12:43 -0700 (PDT)
-Date: Mon, 9 Mar 2026 16:12:43 -0500
-From: Andrew Jones <andrew.jones@oss.qualcomm.com>
-To: Osama Abdelkader <osama.abdelkader@gmail.com>
-Cc: Anup Patel <anup@brainfault.org>, Atish Patra <atish.patra@linux.dev>,
-        Paul Walmsley <pjw@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>,
-        Albert Ou <aou@eecs.berkeley.edu>, Alexandre Ghiti <alex@ghiti.fr>,
-        Andrew Jones <ajones@ventanamicro.com>, kvm@vger.kernel.org,
-        kvm-riscv@lists.infradead.org, linux-riscv@lists.infradead.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] RISC-V: KVM: fix PMU snapshot_set_shmem on 32-bit hosts
-Message-ID: <guxeojlqqz6cfjdilxnuaeyft4cn4lwdrbplat7xgd5w5hod44@uxqymidomd55>
-References: <20260307234355.69831-1-osama.abdelkader@gmail.com>
+	dkim=pass (2048-bit key) header.d=shazbot.org header.i=@shazbot.org header.b="ER0mN4Xi";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="hNj5e+g5"
+Received: from phl-compute-06.internal (phl-compute-06.internal [10.202.2.46])
+	by mailfhigh.phl.internal (Postfix) with ESMTP id 3C5B614001B2;
+	Mon,  9 Mar 2026 17:46:39 -0400 (EDT)
+Received: from phl-frontend-03 ([10.202.2.162])
+  by phl-compute-06.internal (MEProxy); Mon, 09 Mar 2026 17:46:39 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shazbot.org; h=
+	cc:cc:content-transfer-encoding:content-type:content-type:date
+	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to; s=fm3; t=1773092799;
+	 x=1773179199; bh=pNMQxrTvWN57AG9Ak2GM8Z+gnkCL4ATfy4hgapY0eDQ=; b=
+	ER0mN4Xieq0aEpyr2Y4T9JPq/qIzSDzZDIkU+GqMSDjgULXK3ZojVWaFNMn9dmOc
+	Md7lKL96wp9Kg97nrLtmHsGi/KRHvH3/OjGufKJlyD6DdE00qVKKB9dpWr1VR6VT
+	T1/WHskbJ9qrLttbzqdJeMLX5uuPcKVA70/2K24ZaUDbSumnapUUPTcaB5Mrdig8
+	CsDYMouBWOad8x0jUp9MQzE66clVH2XaSgmqVv8RCOXQ+NqvByGaUc4zihslfyFv
+	nhFTOFD2C6Veyhor4rJ2zErXcMHC3FmbyngAH2h9BrvnwEyOP3MguHDosWKXQaIx
+	3Yq1UkuNNF+rlhBmWBUUBw==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=1773092799; x=
+	1773179199; bh=pNMQxrTvWN57AG9Ak2GM8Z+gnkCL4ATfy4hgapY0eDQ=; b=h
+	Nj5e+g5qC5e/J3L7YLCaO9TcsNLn1bi2aHDhDaPoZhCNJGZbP8gXZBlAhrCjTAg0
+	o+KI9YsoJ25u8kBNfm2uLByS5WFqaOMZUhfUeGbTqNxsyZDSfQEuamqUV0QyuxBS
+	dYlOAUsuQyWClnyKv4CgwPcZoKONMerSrxjISVXcUQ5qOcrGDLOwd+HID5F9MgEo
+	+ZgNq/NZ19hU1ozRn9CUtyMGjBTBrXK/RoqvLI0eIkpwS+RpQJvMG5CjPK452ALl
+	oZ58AXB6xf3poW4XTOTFlsmgo9znMz4B2TiXuE0j4EGyu8F9EJxnUxPbQsndak5t
+	vBylqm2jnbGv8MV6OSx4A==
+X-ME-Sender: <xms:vj-vaVrdRJpJGFxkQ8JrEYoQbTDle3FI-5BWPgerncvobysh9r5n0g>
+    <xme:vj-vaToZ4Ymee86AW9uRr4rzKi3GsJXkJCn4d-vfT39vM7hgBLkRoXPlByeXFzQfv
+    emHgWKtdDvOR9rC4hkgx-XKiJjdW9QmrbPNlEJByiOc_Ibehps7>
+X-ME-Received: <xmr:vj-vaUYqvQEI-cyHyAiS8Qn4MOMtlq8oNGDo8g7xydIO6NGN7JAYnpKYpyA>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgddvjeelvdehucetufdoteggodetrf
+    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
+    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
+    gurhepfffhvfevuffkjghfofggtgfgsehtqhertdertdejnecuhfhrohhmpeetlhgvgicu
+    hghilhhlihgrmhhsohhnuceorghlvgigsehshhgriigsohhtrdhorhhgqeenucggtffrrg
+    htthgvrhhnpeetuefgleefhfdvueegffdtffevhfffgfffiedutdetgffhheejtdekfeek
+    ieehgfenucffohhmrghinhepkhgvrhhnvghlrdhorhhgnecuvehluhhsthgvrhfuihiivg
+    eptdenucfrrghrrghmpehmrghilhhfrhhomheprghlvgigsehshhgriigsohhtrdhorhhg
+    pdhnsggprhgtphhtthhopeekpdhmohguvgepshhmthhpohhuthdprhgtphhtthhopehrih
+    htvghshhdrlhhishhtsehgmhgrihhlrdgtohhmpdhrtghpthhtoheplhhinhhugihpphgt
+    qdguvghvsehlihhsthhsrdhoiihlrggsshdrohhrghdprhgtphhtthhopehmrgguugihse
+    hlihhnuhigrdhisghmrdgtohhmpdhrtghpthhtoheptghhlhgvrhhohieskhgvrhhnvghl
+    rdhorhhgpdhrtghpthhtoheplhhinhhugidqmhhmsehkvhgrtghkrdhorhhgpdhrtghpth
+    htohepkhhvmhesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehpvghtvghr
+    giesrhgvughhrghtrdgtohhmpdhrtghpthhtoheprghlvgigsehshhgriigsohhtrdhorh
+    hg
+X-ME-Proxy: <xmx:vj-vaR_EwZAnrT2pYrOehA4E935LJ47UYXG7Jat2rB_06a7GwOH3Ng>
+    <xmx:vj-vaSkwZu6q2NK-gkaDkYoJypyKav0xrY4CW6KvvOgYLWMN9Ciy2Q>
+    <xmx:vj-vaewMIFI-8DzcnX86t6Z0KZNTDE_6G464zTpp5jf5OQDrAHrBHQ>
+    <xmx:vj-vaU64UdZ3Z9H6LG_PxcOjZb9fuSjrS1hq00T34k-9sMKHm2HFBQ>
+    <xmx:vz-vaRadkRTVmYW3fguCihEDIZVohjG_73koUf7cPmbSiaz3zhUzy02e>
+Feedback-ID: i03f14258:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
+ 9 Mar 2026 17:46:38 -0400 (EDT)
+Date: Mon, 9 Mar 2026 15:46:37 -0600
+From: Alex Williamson <alex@shazbot.org>
+To: "Ritesh Harjani (IBM)" <ritesh.list@gmail.com>
+Cc: linuxppc-dev@lists.ozlabs.org, Madhavan Srinivasan
+ <maddy@linux.ibm.com>, Christophe Leroy <chleroy@kernel.org>,
+ linux-mm@kvack.org, kvm@vger.kernel.org, Peter Xu <peterx@redhat.com>,
+ alex@shazbot.org
+Subject: Re: [PATCH v2 1/2] drivers/vfio_pci_core: Change PXD_ORDER check
+ from switch case to if/else block
+Message-ID: <20260309154637.3abf76af@shazbot.org>
+In-Reply-To: <b155e19993ee1f5584c72050192eb468b31c5029.1773058761.git.ritesh.list@gmail.com>
+References: <b155e19993ee1f5584c72050192eb468b31c5029.1773058761.git.ritesh.list@gmail.com>
+X-Mailer: Claws Mail 4.3.1 (GTK 3.24.51; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260307234355.69831-1-osama.abdelkader@gmail.com>
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMzA5MDE4OCBTYWx0ZWRfX4f1RPPm8IWXy
- /UBGrQS0msCMMHhkBQsA9NDqP2r3FqvUTuOhcGu7WJiGykRGE5u9ljOEYd64IL8xovoKXS5utWu
- qNNq0+Rwuo6QfSezRHs/09zLtedqLq392650i4RKpw96qXDatEiMw5c9klas7IXXswHYciThpSM
- F9IscPRJXB7moqfvPWt/bv//P53bEQh3AhxaqMcSTxPumt9usyHHu5XAqp5ktHcOru4BV4CGtGJ
- /lPHZrF91zNfA5szC2RzEh7TB0gxkUEwM53t2qNSSuIb0jbFvYhlvMI64+R/Zg4Zk1a6ZADfP10
- M4Fvi6gYUuvcdR6hayHUwgFfWmrLB6kJgaE72LRtIbmtEx7zInXPwYNAoukV9biou5UgpLdgcqN
- ggWJIzJjsYv6r08BzUI7Snmuvr77ZSduR0BV6+h7ZWJ/CCuMRnbhXv6+OSfFAQtm/1zwj3G1Mc/
- RLu74HA5J9Q0z0LlFow==
-X-Authority-Analysis: v=2.4 cv=QJtlhwLL c=1 sm=1 tr=0 ts=69af37cd cx=c_pps
- a=V4L7fE8DliODT/OoDI2WOg==:117 a=cvcws7F5//HeuvjG1O1erQ==:17
- a=kj9zAlcOel0A:10 a=Yq5XynenixoA:10 a=s4-Qcg_JpJYA:10
- a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22 a=_K5XuSEh1TEqbUxoQ0s3:22
- a=JfrnYn6hAAAA:8 a=pGLkceISAAAA:8 a=EUspDBNiAAAA:8 a=tWgbADMcUQFZQAcJDasA:9
- a=NqO74GWdXPXpGKcKHaDJD/ajO6k=:19 a=CjuIK1q_8ugA:10 a=WZGXeFmKUf7gPmL3hEjn:22
- a=1CNFftbPRP8L7MoqJWF3:22
-X-Proofpoint-ORIG-GUID: UHW0rd--iGNDQorCF7kftlj3yTOmHJ0h
-X-Proofpoint-GUID: UHW0rd--iGNDQorCF7kftlj3yTOmHJ0h
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
- definitions=2026-03-09_06,2026-03-09_02,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- clxscore=1015 suspectscore=0 adultscore=0 spamscore=0 phishscore=0
- lowpriorityscore=0 malwarescore=0 priorityscore=1501 bulkscore=0
- impostorscore=0 classifier=typeunknown authscore=0 authtc= authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2602130000
- definitions=main-2603090188
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 
-On Sun, Mar 08, 2026 at 12:43:54AM +0100, Osama Abdelkader wrote:
-> When saddr_high != 0 on RV32, the goto out was unconditional, causing
-> valid 64-bit addresses to be rejected. Only goto out when the address
-> is invalid (64-bit host with saddr_high != 0).
-> 
-> Fixes: c2f41ddbcdd7 ("RISC-V: KVM: Implement SBI PMU Snapshot feature")
-> Signed-off-by: Osama Abdelkader <osama.abdelkader@gmail.com>
+
+Subject prefix should be "vfio/pci:".
+
+On Mon,  9 Mar 2026 18:08:37 +0530
+"Ritesh Harjani (IBM)" <ritesh.list@gmail.com> wrote:
+
+> Architectures like PowerPC uses runtime defined values for
+
+s/uses/use/
+
+> PMD_ORDER/PUD_ORDER. This is because it can use either RADIX or HASH MMU
+> at runtime using kernel cmdline. So the pXd_index_size is not known at
+> compile time. Without this fix, when we add huge pfn support on powerpc
+> in the next patch, vfio_pci_core driver compilation can fail with the
+> following errors.
+>=20
+>   CC [M]  drivers/vfio/vfio_main.o
+>   CC [M]  drivers/vfio/group.o
+>   CC [M]  drivers/vfio/container.o
+>   CC [M]  drivers/vfio/virqfd.o
+>   CC [M]  drivers/vfio/vfio_iommu_spapr_tce.o
+>   CC [M]  drivers/vfio/pci/vfio_pci_core.o
+>   CC [M]  drivers/vfio/pci/vfio_pci_intrs.o
+>   CC [M]  drivers/vfio/pci/vfio_pci_rdwr.o
+>   CC [M]  drivers/vfio/pci/vfio_pci_config.o
+>   CC [M]  drivers/vfio/pci/vfio_pci.o
+>   AR      kernel/built-in.a
+> ../drivers/vfio/pci/vfio_pci_core.c: In function =E2=80=98vfio_pci_vmf_in=
+sert_pfn=E2=80=99:
+> ../drivers/vfio/pci/vfio_pci_core.c:1678:9: error: case label does not re=
+duce to an integer constant
+>  1678 |         case PMD_ORDER:
+>       |         ^~~~
+> ../drivers/vfio/pci/vfio_pci_core.c:1682:9: error: case label does not re=
+duce to an integer constant
+>  1682 |         case PUD_ORDER:
+>       |         ^~~~
+> make[6]: *** [../scripts/Makefile.build:289: drivers/vfio/pci/vfio_pci_co=
+re.o] Error 1
+> make[6]: *** Waiting for unfinished jobs....
+> make[5]: *** [../scripts/Makefile.build:546: drivers/vfio/pci] Error 2
+> make[5]: *** Waiting for unfinished jobs....
+> make[4]: *** [../scripts/Makefile.build:546: drivers/vfio] Error 2
+> make[3]: *** [../scripts/Makefile.build:546: drivers] Error 2
+>=20
+> Fixes: f9e54c3a2f5b7 ("vfio/pci: implement huge_fault support")
+> Signed-off-by: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
 > ---
->  arch/riscv/kvm/vcpu_pmu.c | 5 +++--
->  1 file changed, 3 insertions(+), 2 deletions(-)
-> 
-> diff --git a/arch/riscv/kvm/vcpu_pmu.c b/arch/riscv/kvm/vcpu_pmu.c
-> index 4d8d5e9aa53d..045099ca904b 100644
-> --- a/arch/riscv/kvm/vcpu_pmu.c
-> +++ b/arch/riscv/kvm/vcpu_pmu.c
-> @@ -425,9 +425,10 @@ int kvm_riscv_vcpu_pmu_snapshot_set_shmem(struct kvm_vcpu *vcpu, unsigned long s
->  	if (saddr_high != 0) {
->  		if (IS_ENABLED(CONFIG_32BIT))
->  			saddr |= ((gpa_t)saddr_high << 32);
-> -		else
-> +		else {
->  			sbiret = SBI_ERR_INVALID_ADDRESS;
-> -		goto out;
-> +			goto out;
-> +		}
+> v1 -> v2:
+> 1. addressed review comments from Christophe [1]
+> [1]: https://lore.kernel.org/linuxppc-dev/0b8fce7a61561640634317a5e287cdb=
+4794715fd.1772170860.git.ritesh.list@gmail.com/
+>=20
+>  drivers/vfio/pci/vfio_pci_core.c | 19 +++++++------------
+>  1 file changed, 7 insertions(+), 12 deletions(-)
+>=20
+> diff --git a/drivers/vfio/pci/vfio_pci_core.c b/drivers/vfio/pci/vfio_pci=
+_core.c
+> index d43745fe4c84..0967307235b8 100644
+> --- a/drivers/vfio/pci/vfio_pci_core.c
+> +++ b/drivers/vfio/pci/vfio_pci_core.c
+> @@ -1670,21 +1670,16 @@ vm_fault_t vfio_pci_vmf_insert_pfn(struct vfio_pc=
+i_core_device *vdev,
+>  	if (vdev->pm_runtime_engaged || !__vfio_pci_memory_enabled(vdev))
+>  		return VM_FAULT_SIGBUS;
+>=20
+> -	switch (order) {
+> -	case 0:
+> +	if (!order)
+>  		return vmf_insert_pfn(vmf->vma, vmf->address, pfn);
+> -#ifdef CONFIG_ARCH_SUPPORTS_PMD_PFNMAP
+> -	case PMD_ORDER:
+> +
+> +	if (IS_ENABLED(CONFIG_ARCH_SUPPORTS_PMD_PFNMAP) && order =3D=3D PMD_ORD=
+ER)
+>  		return vmf_insert_pfn_pmd(vmf, pfn, false);
+> -#endif
+> -#ifdef CONFIG_ARCH_SUPPORTS_PUD_PFNMAP
+> -	case PUD_ORDER:
+> +
+> +	if (IS_ENABLED(CONFIG_ARCH_SUPPORTS_PUD_PFNMAP) && order =3D=3D PUD_ORD=
+ER)
+>  		return vmf_insert_pfn_pud(vmf, pfn, false);
+> -		break;
+> -#endif
+> -	default:
+> -		return VM_FAULT_FALLBACK;
+> -	}
+> +
+> +	return VM_FAULT_FALLBACK;
+>  }
+>  EXPORT_SYMBOL_GPL(vfio_pci_vmf_insert_pfn);
 
-nit: Could add the {} to the if-arm too in order to keep things balanced.
-Otherwise,
+Otherwise LGTM.  This appears to be no change for current use cases, so
+I assume this will go in through ppc trees.
 
-Reviewed-by: Andrew Jones <andrew.jones@oss.qualcomm.com>
-
-Thanks,
-drew
-
->  	}
->  
->  	kvpmu->sdata = kzalloc(snapshot_area_size, GFP_ATOMIC);
-> -- 
-> 2.43.0
-> 
-> 
-> -- 
-> kvm-riscv mailing list
-> kvm-riscv@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/kvm-riscv
+Reviewed-by: Alex Williamson <alex@shazbot.org>
