@@ -1,184 +1,395 @@
-Received: from out-181.mta0.migadu.com (out-181.mta0.migadu.com [91.218.175.181])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from relay1-o.mailbaby.net (relay1-o.mailbaby.net [206.72.200.46])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C83D1F4611
-	for <kvm@vger.kernel.org>; Mon,  9 Mar 2026 02:08:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.181
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773022089; cv=none; b=IAkrJdJZ3Xrf/6SX06TnVrekb98j3VOFttL+boPZgSEXXlTZR8z3FTepYFBNfrNV9z4qQoZWtDMU/ZSMHN0icTtgfQVMpfNI0AP0sNt58PBtoBwlGBq5LYncP7qD8YSseorroXQLqiu5GJA9o1TF2oT7O5mBVBR2TTWblxGepKg=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773022089; c=relaxed/simple;
-	bh=zNIItgh7ntSYU7+lrBgR4jVh5f49+XCj10qUQg3NJbs=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XJmWC31BmAfewkuVbCzOQLIjQ2U0bFz2t09btU1XK+mwsst8OyeTuaZFawf47VK6zGkUV3bFJYEofC9+VlzLZA0jBQb7LdGr2++Sm09wsWFPytCl3X7Q1wmOzp8bYzTyXmK3AGtI5ft7StvzCQ50OS93BHnev3TTO9YCrtoQZso=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=jxjPjnqU; arc=none smtp.client-ip=91.218.175.181
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0882B27FD45
+	for <kvm@vger.kernel.org>; Mon,  9 Mar 2026 03:57:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=206.72.200.46
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1773028681; cv=pass; b=nGfofrx/u+EfsjHbE7aUh5QsTVvs7lsk3a5M5imuuV8jWBRk1Qzr8N8Vsq7PohU4SiVLCHLBpwHKHY3qHsTo9e0bwvMQqs62Jpn5hW9QejSo0C1u+M9rzJkl/3g68gqKlNxJkQOmkNkKOShlBRhPxbRuc4p8ndcIzUpfB+D60II=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1773028681; c=relaxed/simple;
+	bh=lwwoDMt07BHVae2SSuCm++Lq88pVo29Jxl5PRDwfYYo=;
+	h=Message-ID:Date:MIME-Version:From:Subject:To:Cc:References:
+	 In-Reply-To:Content-Type; b=NeVqKnujmJaj/bTh/EWBtjrTNN6JrFzXLBTGcp7ODPbW820wu91j7xSbnuXVJ8OZRo5DCN9SaVYR6hTpH8yfTpifha6ukCG2AqpSOCAmtZpCaKOq1nqLeNapq3dWN0oErsjuR0jw+Dsu4GVmvk5ro/2BVSCrFl95EUBBpXQew6Y=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=aosc.io; spf=pass smtp.mailfrom=aosc.io; dkim=pass (1024-bit key) header.d=mailbaby.net header.i=@mailbaby.net header.b=VLkDzgE3; dkim=pass (1024-bit key) header.d=aosc.io header.i=@aosc.io header.b=YaJhHei8; arc=pass smtp.client-ip=206.72.200.46
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=aosc.io
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=aosc.io
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="jxjPjnqU"
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1773022075;
+	dkim=pass (1024-bit key) header.d=mailbaby.net header.i=@mailbaby.net header.b="VLkDzgE3";
+	dkim=pass (1024-bit key) header.d=aosc.io header.i=@aosc.io header.b="YaJhHei8"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mailbaby.net;
+ q=dns/txt; s=key2; bh=lwwoDMt07BHVae2SSuCm++Lq88pVo29Jxl5PRDwfYYo=;
+ h=from:subject:date:message-id:to:cc:mime-version:content-type:content-transfer-encoding:in-reply-to:references:feedback-id;
+ b=VLkDzgE3OGbb8Vzk68XKf2ucmQVWpaqCmdwOWds8VRRGjoVUf0H+vtQkOsMEu7A6fsiBAjY6D
+ Afp/Mfp0TGxJ0p3vvlJtoxSZPSWs9PNSdlXd3wWNVX4gVGp5/pPHayyTTp3Lj2sCg75zZu7/nuh
+ goIuIFme3svYYOgtxWdmSPc=
+Received: from mb-nj-kvm1.internal (mb-nj-kvm1.internal [10.10.2.10])
+ (Authenticated sender: mb86144)
+ by relay1-o.mailbaby.net (MailBabyMTA) with ESMTPSA id 19cd0b9c0600003c69.001
+ for <kvm@vger.kernel.org>
+ (version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384);
+ Mon, 09 Mar 2026 03:52:40 +0000
+X-Zone-Loop: 7c02d7f363910f71accc11795ae95160b4f8f065076a
+ARC-Authentication-Results: i=1;	rspamdcluster9.mailbaby.net;	auth=pass
+ smtp.auth=mb86144 smtp.mailfrom=liushuyu@aosc.io
+ARC-Seal: i=1; a=rsa-sha256; d=mailbaby.net; s=detka; cv=none;
+ t=1773028360;
+	b=WARoSrt8GSSjWdM7b02KAe/7w0dF0zfSIm9Dl/yNQcaZkXnioTQXNJJA08D3A+xDkGFrrl
+	8pzTEuPtwHyMBp/K1uy96mZOhwyflBYAifX8+5cUQfAw858uNTkyUk4/a50NE/lUHYuu1l
+	g4bRsH2BDFEDpu//fLNYVe+lLSFVb5bbYkxHmeiG80Z6Q8yaf93BdXsxYYftrkLjBDkWTl
+	Bwq5ejy4v1a+HSKt9uxECv+1o9u5XXj8YmqoI9pJcfHqraXnr/iLFxORoG1aR4diAYz5vu
+	uj/UGZj09SHx3328eqiQbh9FRl7IO8hPnlGPRI7BY0GCjbfWPqb6wCDZYMG4AA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=mailbaby.net;	s=detka; t=1773028360;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=vn2CrPvigyubKEvhLFY6y0EU5doWg0tOHWyGKpSN0ek=;
-	b=jxjPjnqULvEez8p4Oy7hdYwOkQGz1hX7HYANCPl+tjIG6YKtj9++2Nk+cax/xIfyCAhUOu
-	OtIoU4B1eIms7cVGebpndOgcNcMyprydgi85x7kPzVtGmtYmNOwvZMpJjgba4KSyFjOEo9
-	YJ4LyL5QnlzE/o8LYlWZDRxnNlki4vk=
-From: Lance Yang <lance.yang@linux.dev>
-To: akpm@linux-foundation.org
-Cc: peterz@infradead.org,
-	david@kernel.org,
-	dave.hansen@intel.com,
-	dave.hansen@linux.intel.com,
-	ypodemsk@redhat.com,
-	hughd@google.com,
-	will@kernel.org,
-	aneesh.kumar@kernel.org,
-	npiggin@gmail.com,
-	tglx@linutronix.de,
-	mingo@redhat.com,
-	bp@alien8.de,
-	x86@kernel.org,
-	hpa@zytor.com,
-	arnd@arndb.de,
-	lorenzo.stoakes@oracle.com,
-	ziy@nvidia.com,
-	baolin.wang@linux.alibaba.com,
-	Liam.Howlett@oracle.com,
-	npache@redhat.com,
-	ryan.roberts@arm.com,
-	dev.jain@arm.com,
-	baohua@kernel.org,
-	shy828301@gmail.com,
-	riel@surriel.com,
-	jannh@google.com,
-	jgross@suse.com,
-	seanjc@google.com,
-	pbonzini@redhat.com,
-	boris.ostrovsky@oracle.com,
-	virtualization@lists.linux.dev,
-	kvm@vger.kernel.org,
-	linux-arch@vger.kernel.org,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	ioworker0@gmail.com,
-	Lance Yang <lance.yang@linux.dev>
-Subject: [PATCH v7 1/2] mm/mmu_gather: prepare to skip redundant sync IPIs
-Date: Mon,  9 Mar 2026 10:07:10 +0800
-Message-ID: <20260309020711.20831-2-lance.yang@linux.dev>
-In-Reply-To: <20260309020711.20831-1-lance.yang@linux.dev>
-References: <20260309020711.20831-1-lance.yang@linux.dev>
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=lwwoDMt07BHVae2SSuCm++Lq88pVo29Jxl5PRDwfYYo=;
+	b=cSOv5hNAqjai+OcBb56RWBWmi+reQuL2NfNs1z3JOSmFirMUugzm7qfWAMI7QaBt4Kg9ph
+	6Tavt8DH5wivkgTMXELj/z5Tfm+mFHhu2WdrcD0PYjzhCB62kJ2FAQWuWB6ahje1z1ZaWC
+	N6d6cfXEHQaLL9wWX+zi+QmHh0X5OrW43oHQ9IiCNBzP4FguIrceGn2l9Sw0Xk+oton4/U
+	wttFGibIyWkOuWMpFUvZ5rbY8Pjvb77glMGpFg9ldff/S+AC93qowSF0wyiVoUp3r3Iur0
+	Piu6whDLX9RBtNhc7NdLeaEgH4e4o3cymzyG7ZUC0A992CEpxMRi83y4pUigMQ==
+X-MB-ID: mb86144
+X-SPF: pass
+Feedback-ID: mb86144:19cd0b9c0600003c69:587f4d465843594778405947455d:mbaby
+X-NS-SCAN: PASS
+X-MAILBABY-ORIGIN: PASS
+Received: from relay2.mymailcheap.com (relay2.mymailcheap.com [217.182.113.132])
+	by relay5.mymailcheap.com (Postfix) with ESMTPS id 8F56220130;
+	Mon,  9 Mar 2026 03:52:30 +0000 (UTC)
+Received: from nf1.mymailcheap.com (nf1.mymailcheap.com [51.75.14.91])
+	by relay2.mymailcheap.com (Postfix) with ESMTPS id 429653EB87;
+	Mon,  9 Mar 2026 03:52:22 +0000 (UTC)
+Received: from mail20.mymailcheap.com (mail20.mymailcheap.com [51.83.111.147])
+	by nf1.mymailcheap.com (Postfix) with ESMTPSA id 0A7CE40087;
+	Mon,  9 Mar 2026 03:52:22 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=aosc.io; s=default;
+	t=1773028341; bh=lwwoDMt07BHVae2SSuCm++Lq88pVo29Jxl5PRDwfYYo=;
+	h=Date:From:Subject:To:Cc:References:In-Reply-To:From;
+	b=YaJhHei8YyBBteM0/73IuHjvJ4YA5IX1eyAPh0R7r47WGTBXoQzSr0R+CUEBF2WmT
+	 fh2Z4Ef8uIP6BggGtP0nJ86kqugBRyeDMF8p9Lp/OTDZDK+3vay7X60YQDjb8Bgmy2
+	 USehboiKw4Y3vNOW6t8eDGZgbiQBenKpe/NraWOw=
+Received: from [127.0.0.1] (unknown [117.151.13.182])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mail20.mymailcheap.com (Postfix) with ESMTPSA id 9049640D09;
+	Mon,  9 Mar 2026 03:52:17 +0000 (UTC)
+Message-ID: <f39c14fc-6fe9-4478-b595-b7480f859443@aosc.io>
+Date: Mon, 9 Mar 2026 11:52:15 +0800
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+From: liushuyu <liushuyu@aosc.io>
+Subject: Re: [PATCH v5] KVM: Add KVM_GET_REG_LIST ioctl for LoongArch
+To: Bibo Mao <maobibo@loongson.cn>, WANG Xuerui <kernel@xen0n.name>,
+ Huacai Chen <chenhuacai@kernel.org>
+Cc: Kexy Biscuit <kexybiscuit@aosc.io>, Mingcong Bai <jeffbai@aosc.io>,
+ Paolo Bonzini <pbonzini@redhat.com>, Jonathan Corbet <corbet@lwn.net>,
+ Tianrui Zhao <zhaotianrui@loongson.cn>, Paul Walmsley <pjw@kernel.org>,
+ Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>,
+ Alexandre Ghiti <alex@ghiti.fr>, kvm@vger.kernel.org,
+ linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
+ loongarch@lists.linux.dev, linux-riscv@lists.infradead.org
+References: <20260205051822.1318253-1-liushuyu@aosc.io>
+ <aa35c7a6-6361-9f83-a726-89d7deff8560@loongson.cn>
+ <c4be7e68-6e51-4f2b-8a51-bef658a8ac4a@aosc.io>
+ <f4ba7538-e413-d8c8-d4b6-7c8686c4aec6@loongson.cn>
+Content-Language: en-US-large, en-US
+In-Reply-To: <f4ba7538-e413-d8c8-d4b6-7c8686c4aec6@loongson.cn>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
+X-Spamd-Result: default: False [-0.30 / 10.00];
+	R_DKIM_ALLOW(-0.10)[aosc.io:s=default];
+	R_SPF_ALLOW(-0.10)[+mx];
+	MIME_GOOD(-0.10)[text/plain];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ARC_NA(0.00)[];
+	TO_DN_SOME(0.00)[];
+	RCVD_COUNT_ONE(0.00)[1];
+	RCPT_COUNT_TWELVE(0.00)[17];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_TLS_ALL(0.00)[];
+	RECEIVED_HELO_LOCALHOST(0.00)[];
+	FROM_EQ_ENVFROM(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DMARC_POLICY_ALLOW(0.00)[aosc.io,quarantine];
+	TO_MATCH_ENVRCPT_SOME(0.00)[];
+	LOCAL_OUTBOUND(0.00)[];
+	DKIM_TRACE(0.00)[aosc.io:+]
+X-Rspamd-Action: no action
+X-Rspamd-Server: nf1.mymailcheap.com
+X-Rspamd-Queue-Id: 0A7CE40087
 
-From: Lance Yang <lance.yang@linux.dev>
+Hi Bibo,
 
-When page table operations require synchronization with software/lockless
-walkers, they call tlb_remove_table_sync_{one,rcu}() after flushing the
-TLB (tlb->freed_tables or tlb->unshared_tables).
+It seems like my last email might have got bounced or landed in your
+spam filter.
 
-On architectures where the TLB flush already sends IPIs to all target CPUs,
-the subsequent sync IPI broadcast is redundant. This is not only costly on
-large systems where it disrupts all CPUs even for single-process page table
-operations, but has also been reported to hurt RT workloads[1].
+So this email is a re-send of the last one.
 
-Introduce tlb_table_flush_implies_ipi_broadcast() to check if the prior TLB
-flush already provided the necessary synchronization. When true, the sync
-calls can early-return.
+> On 2026/2/10 上午11:23, liushuyu wrote:
+>> Hi Bibo,
+>>
+>>>
+>>> On 2026/2/5 下午1:18, Zixing Liu wrote:
+>>>> This ioctl can be used by the userspace applications to determine
+>>>> which
+>>>> (special) registers are get/set-able in a meaningful way.
+>>>>
+>>>> This can be very useful for cross-platform VMMs so that they do not
+>>>> have
+>>>> to hardcode register indices for each supported architectures.
+>>>>
+>>>> Signed-off-by: Zixing Liu <liushuyu@aosc.io>
+>>>> ---
+>>>>    Documentation/virt/kvm/api.rst |   2 +-
+>>>>    arch/loongarch/kvm/vcpu.c      | 120
+>>>> +++++++++++++++++++++++++++++++++
+>>>>    2 files changed, 121 insertions(+), 1 deletion(-)
+>>>>
+>>>> diff --git a/Documentation/virt/kvm/api.rst
+>>>> b/Documentation/virt/kvm/api.rst
+>>>> index 01a3abef8abb..f46dd8be282f 100644
+>>>> --- a/Documentation/virt/kvm/api.rst
+>>>> +++ b/Documentation/virt/kvm/api.rst
+>>>> @@ -3603,7 +3603,7 @@ VCPU matching underlying host.
+>>>>    ---------------------
+>>>>      :Capability: basic
+>>>> -:Architectures: arm64, mips, riscv, x86 (if KVM_CAP_ONE_REG)
+>>>> +:Architectures: arm64, loongarch, mips, riscv, x86 (if
+>>>> KVM_CAP_ONE_REG)
+>>>>    :Type: vcpu ioctl
+>>>>    :Parameters: struct kvm_reg_list (in/out)
+>>>>    :Returns: 0 on success; -1 on error
+>>>> diff --git a/arch/loongarch/kvm/vcpu.c b/arch/loongarch/kvm/vcpu.c
+>>>> index 656b954c1134..de02e409ae39 100644
+>>>> --- a/arch/loongarch/kvm/vcpu.c
+>>>> +++ b/arch/loongarch/kvm/vcpu.c
+>>>> @@ -5,6 +5,7 @@
+>>>>      #include <linux/kvm_host.h>
+>>>>    #include <asm/fpu.h>
+>>>> +#include <asm/kvm_host.h>
+>>>>    #include <asm/lbt.h>
+>>>>    #include <asm/loongarch.h>
+>>>>    #include <asm/setup.h>
+>>>> @@ -14,6 +15,8 @@
+>>>>    #define CREATE_TRACE_POINTS
+>>>>    #include "trace.h"
+>>>>    +#define NUM_LBT_REGS 6
+>>>> +
+>>>>    const struct _kvm_stats_desc kvm_vcpu_stats_desc[] = {
+>>>>        KVM_GENERIC_VCPU_STATS(),
+>>>>        STATS_DESC_COUNTER(VCPU, int_exits),
+>>>> @@ -1186,6 +1189,105 @@ static int kvm_loongarch_vcpu_set_attr(struct
+>>>> kvm_vcpu *vcpu,
+>>>>        return ret;
+>>>>    }
+>>>>    +static int kvm_loongarch_walk_csrs(struct kvm_vcpu *vcpu, u64
+>>>> __user *uindices)
+>>>> +{
+>>>> +    unsigned int i, count;
+>>>> +    const unsigned int csrs_to_save[] = {
+>>>> +        LOONGARCH_CSR_CRMD,      LOONGARCH_CSR_PRMD,
+>>>> +        LOONGARCH_CSR_EUEN,      LOONGARCH_CSR_MISC,
+>>>> +        LOONGARCH_CSR_ECFG,      LOONGARCH_CSR_ESTAT,
+>>>> +        LOONGARCH_CSR_ERA,      LOONGARCH_CSR_BADV,
+>>>> +        LOONGARCH_CSR_BADI,      LOONGARCH_CSR_EENTRY,
+>>>> +        LOONGARCH_CSR_TLBIDX,      LOONGARCH_CSR_TLBEHI,
+>>>> +        LOONGARCH_CSR_TLBELO0,      LOONGARCH_CSR_TLBELO1,
+>>>> +        LOONGARCH_CSR_ASID,      LOONGARCH_CSR_PGDL,
+>>>> +        LOONGARCH_CSR_PGDH,      LOONGARCH_CSR_PGD,
+>>>> +        LOONGARCH_CSR_PWCTL0,      LOONGARCH_CSR_PWCTL1,
+>>>> +        LOONGARCH_CSR_STLBPGSIZE, LOONGARCH_CSR_RVACFG,
+>>>> +        LOONGARCH_CSR_CPUID,      LOONGARCH_CSR_PRCFG1,
+>>>> +        LOONGARCH_CSR_PRCFG2,      LOONGARCH_CSR_PRCFG3,
+>>>> +        LOONGARCH_CSR_KS0,      LOONGARCH_CSR_KS1,
+>>>> +        LOONGARCH_CSR_KS2,      LOONGARCH_CSR_KS3,
+>>>> +        LOONGARCH_CSR_KS4,      LOONGARCH_CSR_KS5,
+>>>> +        LOONGARCH_CSR_KS6,      LOONGARCH_CSR_KS7,
+>>>> +        LOONGARCH_CSR_TMID,      LOONGARCH_CSR_CNTC,
+>>>> +        LOONGARCH_CSR_TINTCLR,      LOONGARCH_CSR_LLBCTL,
+>>>> +        LOONGARCH_CSR_IMPCTL1,      LOONGARCH_CSR_IMPCTL2,
+>>>> +        LOONGARCH_CSR_TLBRENTRY,  LOONGARCH_CSR_TLBRBADV,
+>>>> +        LOONGARCH_CSR_TLBRERA,      LOONGARCH_CSR_TLBRSAVE,
+>>>> +        LOONGARCH_CSR_TLBRELO0,      LOONGARCH_CSR_TLBRELO1,
+>>>> +        LOONGARCH_CSR_TLBREHI,      LOONGARCH_CSR_TLBRPRMD,
+>>>> +        LOONGARCH_CSR_DMWIN0,      LOONGARCH_CSR_DMWIN1,
+>>>> +        LOONGARCH_CSR_DMWIN2,      LOONGARCH_CSR_DMWIN3,
+>>>> +        LOONGARCH_CSR_TVAL,      LOONGARCH_CSR_TCFG,
+>>>> +    };
+>>> this increases much kernel stack size usage :)
+>>>
+>>> Please wait a moment, I am considering how to cleanup code about CSR
+>>> registers.
+>> Okay.
 
-A few cases rely on this synchronization:
+I am also very interested in how this CSR register logic clean-up would
+work.
 
-1) hugetlb PMD unshare[2]: The problem is not the freeing but the reuse
-   of the PMD table for other purposes in the last remaining user after
-   unsharing.
+Can you share some details regarding this clean-up?
 
-2) khugepaged collapse[3]: Ensure no concurrent GUP-fast before collapsing
-   and (possibly) freeing the page table / re-depositing it.
-
-Currently always returns false (no behavior change). The follow-up patch
-will enable the optimization for x86.
-
-[1] https://lore.kernel.org/linux-mm/1b27a3fa-359a-43d0-bdeb-c31341749367@kernel.org/
-[2] https://lore.kernel.org/linux-mm/6a364356-5fea-4a6c-b959-ba3b22ce9c88@kernel.org/
-[3] https://lore.kernel.org/linux-mm/2cb4503d-3a3f-4f6c-8038-7b3d1c74b3c2@kernel.org/
-
-Suggested-by: David Hildenbrand (Arm) <david@kernel.org>
-Signed-off-by: Lance Yang <lance.yang@linux.dev>
----
- include/asm-generic/tlb.h | 17 +++++++++++++++++
- mm/mmu_gather.c           | 15 +++++++++++++++
- 2 files changed, 32 insertions(+)
-
-diff --git a/include/asm-generic/tlb.h b/include/asm-generic/tlb.h
-index bdcc2778ac64..cb41cc6a0024 100644
---- a/include/asm-generic/tlb.h
-+++ b/include/asm-generic/tlb.h
-@@ -240,6 +240,23 @@ static inline void tlb_remove_table(struct mmu_gather *tlb, void *table)
- }
- #endif /* CONFIG_MMU_GATHER_TABLE_FREE */
- 
-+/**
-+ * tlb_table_flush_implies_ipi_broadcast - does TLB flush imply IPI sync
-+ *
-+ * When page table operations require synchronization with software/lockless
-+ * walkers, they flush the TLB (tlb->freed_tables or tlb->unshared_tables)
-+ * then call tlb_remove_table_sync_{one,rcu}(). If the flush already sent
-+ * IPIs to all CPUs, the sync call is redundant.
-+ *
-+ * Returns false by default. Architectures can override by defining this.
-+ */
-+#ifndef tlb_table_flush_implies_ipi_broadcast
-+static inline bool tlb_table_flush_implies_ipi_broadcast(void)
-+{
-+	return false;
-+}
-+#endif
-+
- #ifdef CONFIG_MMU_GATHER_RCU_TABLE_FREE
- /*
-  * This allows an architecture that does not use the linux page-tables for
-diff --git a/mm/mmu_gather.c b/mm/mmu_gather.c
-index 3985d856de7f..37a6a711c37e 100644
---- a/mm/mmu_gather.c
-+++ b/mm/mmu_gather.c
-@@ -283,6 +283,14 @@ void tlb_remove_table_sync_one(void)
- 	 * It is however sufficient for software page-table walkers that rely on
- 	 * IRQ disabling.
- 	 */
-+
-+	/*
-+	 * Skip IPI if the preceding TLB flush already synchronized with
-+	 * all CPUs that could be doing software/lockless page table walks.
-+	 */
-+	if (tlb_table_flush_implies_ipi_broadcast())
-+		return;
-+
- 	smp_call_function(tlb_remove_table_smp_sync, NULL, 1);
- }
- 
-@@ -312,6 +320,13 @@ static void tlb_remove_table_free(struct mmu_table_batch *batch)
-  */
- void tlb_remove_table_sync_rcu(void)
- {
-+	/*
-+	 * Skip RCU wait if the preceding TLB flush already synchronized
-+	 * with all CPUs that could be doing software/lockless page table walks.
-+	 */
-+	if (tlb_table_flush_implies_ipi_broadcast())
-+		return;
-+
- 	synchronize_rcu();
- }
- 
--- 
-2.49.0
-
+>>> And KVM_GET_REG_LIST is not so urgent, else there is
+>>> KVM_read_from_REG_LIST/KVM_write_from_REG_LIST ioctl commands to
+>>> access registers in batch mode.
+>>>
+>> Adding KVM_GET_REG_LIST is not urgent. However, unlike
+>> KVM_read_from_REG_LIST and KVM_write_from_REG_LIST, KVM_GET_REG_LIST
+>> serves a different purpose.
+>>
+>> The KVM_GET_REG_LIST ioctl lets user-space VMMs determine the number of
+>> get/set-able registers (via KVM_GET_ONE_REG/KVM_SET_ONE_REG) and their
+>> register IDs. User-space VMMs use this ioctl so they don't have to
+>> hardcode a register ID table for each architecture.
+> In theory it is so, I only know QEMU VMM now, is there other VMMs
+> which does not use hardcoded register ID for different architecture?
+> Which one if there is actually.
+There is https://github.com/firecracker-microvm/firecracker (from
+Amazon), which uses https://github.com/rust-vmm/kvm as the VMM library
+(which uses the KVM_GET_REG_LIST ioctl to determine how many registers
+to save).
+> There is some potential issues by my knowledge such as:
+> 1. How to solve the compatible issue if KVM_GET_REG_LIST does not
+> support? 
+I agree this could be an issue for LoongArch as we are trying to add
+this ioctl very late. I am guessing we either tell the user that you
+will need to use Linux 7.1 or something for this to work; or, for older
+kernel versions, we have to resort to embedding a table in the
+user-space VMM (and maybe remove it after a few years). For other
+architectures, they implemented it somewhat early and did not have this
+issue.
+> 2. How to solve dependency between registers? Dependency should be
+> solved in VMM or KVM hypervisr. 
+If the dependency issue can be solved by simply re-ordering the register
+IDs in the list returned to the user space, we can help the user space
+VMM by sorting the list to the correct order when the kernel-side is
+walking the CSR list (for instance, put the registers that require other
+registers to be saved last). If that is not the case, we will need to
+add a paragraph to the KVM documentation explaining how to properly
+interpret the list returned by this ioctl.
+> Regards
+> Bibo Mao
+>> I also had trouble finding information on the KVM_read_from_REG_LIST and
+>> KVM_write_from_REG_LIST ioctl commands. As of commit
+>> 3d29a326eba82d987a82fd59379d6d668b769965, I could not find any logic or
+>> identifiers for these two ioctls.
+>>
+>> In some cases, KVM_GET_REG_LIST is a prerequisite for using
+>> KVM_read_from_REG_LIST or KVM_write_from_REG_LIST (assuming they exist),
+>> as you still need to know the register IDs to use these ioctls.
+>>
+>>> Regards
+>>> Bibo Mao
+>>>
+>>>> +
+>>>> +    for (i = 0, count = 0;
+>>>> +         i < sizeof(csrs_to_save) / sizeof(csrs_to_save[0]); i++) {
+>>>> +        const u64 reg = KVM_IOC_CSRID(i);
+>>>> +        if (uindices && put_user(reg, uindices++))
+>>>> +            return -EFAULT;
+>>>> +        count++;
+>>>> +    }
+>>>> +
+>>>> +    /* Skip PMU CSRs if not supported by the guest */
+>>>> +    if (!kvm_guest_has_pmu(&vcpu->arch))
+>>>> +        return count;
+>>>> +    for (i = LOONGARCH_CSR_PERFCTRL0; i <= LOONGARCH_CSR_PERFCNTR3;
+>>>> i++) {
+>>>> +        const u64 reg = KVM_IOC_CSRID(i);
+>>>> +        if (uindices && put_user(reg, uindices++))
+>>>> +            return -EFAULT;
+>>>> +        count++;
+>>>> +    }
+>>>> +
+>>>> +    return count;
+>>>> +}
+>>>> +
+>>>> +static unsigned long kvm_loongarch_num_regs(struct kvm_vcpu *vcpu)
+>>>> +{
+>>>> +    /* +1 for the KVM_REG_LOONGARCH_COUNTER register */
+>>>> +    unsigned long res =
+>>>> +        kvm_loongarch_walk_csrs(vcpu, NULL) + KVM_MAX_CPUCFG_REGS
+>>>> + 1;
+>>>> +
+>>>> +    if (kvm_guest_has_lbt(&vcpu->arch))
+>>>> +        res += NUM_LBT_REGS;
+>>>> +
+>>>> +    return res;
+>>>> +}
+>>>> +
+>>>> +static int kvm_loongarch_copy_reg_indices(struct kvm_vcpu *vcpu,
+>>>> +                      u64 __user *uindices)
+>>>> +{
+>>>> +    u64 reg;
+>>>> +    unsigned int i;
+>>>> +
+>>>> +    i = kvm_loongarch_walk_csrs(vcpu, uindices);
+>>>> +    if (i < 0)
+>>>> +        return i;
+>>>> +    uindices += i;
+>>>> +
+>>>> +    for (i = 0; i < KVM_MAX_CPUCFG_REGS; i++) {
+>>>> +        reg = KVM_IOC_CPUCFG(i);
+>>>> +        if (put_user(reg, uindices++))
+>>>> +            return -EFAULT;
+>>>> +    }
+>>>> +
+>>>> +    reg = KVM_REG_LOONGARCH_COUNTER;
+>>>> +    if (put_user(reg, uindices++))
+>>>> +        return -EFAULT;
+>>>> +
+>>>> +    if (!kvm_guest_has_lbt(&vcpu->arch))
+>>>> +        return 0;
+>>>> +
+>>>> +    for (i = 1; i <= NUM_LBT_REGS; i++) {
+>>>> +        reg = (KVM_REG_LOONGARCH_LBT | KVM_REG_SIZE_U64 | i);
+>>>> +        if (put_user(reg, uindices++))
+>>>> +            return -EFAULT;
+>>>> +    }
+>>>> +
+>>>> +    return 0;
+>>>> +}
+>>>> +
+>>>>    long kvm_arch_vcpu_ioctl(struct file *filp,
+>>>>                 unsigned int ioctl, unsigned long arg)
+>>>>    {
+>>>> @@ -1251,6 +1353,24 @@ long kvm_arch_vcpu_ioctl(struct file *filp,
+>>>>            r = kvm_loongarch_vcpu_set_attr(vcpu, &attr);
+>>>>            break;
+>>>>        }
+>>>> +    case KVM_GET_REG_LIST: {
+>>>> +        struct kvm_reg_list __user *user_list = argp;
+>>>> +        struct kvm_reg_list reg_list;
+>>>> +        unsigned n;
+>>>> +
+>>>> +        r = -EFAULT;
+>>>> +        if (copy_from_user(&reg_list, user_list, sizeof(reg_list)))
+>>>> +            break;
+>>>> +        n = reg_list.n;
+>>>> +        reg_list.n = kvm_loongarch_num_regs(vcpu);
+>>>> +        if (copy_to_user(user_list, &reg_list, sizeof(reg_list)))
+>>>> +            break;
+>>>> +        r = -E2BIG;
+>>>> +        if (n < reg_list.n)
+>>>> +            break;
+>>>> +        r = kvm_loongarch_copy_reg_indices(vcpu, user_list->reg);
+>>>> +        break;
+>>>> +    }
+>>>>        default:
+>>>>            r = -ENOIOCTLCMD;
+>>>>            break;
+>>>>
+>>>
+>> Thanks,
+>> Zixing
+>>
+>
+Thanks,
+Zixing
