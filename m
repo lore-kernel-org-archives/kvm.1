@@ -1,44 +1,45 @@
-Received: from CY7PR03CU001.outbound.protection.outlook.com (mail-westcentralusazon11010026.outbound.protection.outlook.com [40.93.198.26])
+Received: from BN8PR05CU002.outbound.protection.outlook.com (mail-eastus2azon11011027.outbound.protection.outlook.com [52.101.57.27])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E434F346776
-	for <kvm@vger.kernel.org>; Tue, 10 Mar 2026 06:00:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.93.198.26
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A48C2F4A16
+	for <kvm@vger.kernel.org>; Tue, 10 Mar 2026 06:00:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.57.27
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773122450; cv=fail; b=oiHy1+gTbP4Q4TuagW+yNQqwQQmuoDEBk2W9zQb8YZs7TageThnSgKRj5q3HC+P5A+bWmII5Owk2mCGP61NN4iRbLlZikY/4boYw+mSg1rO2FBqfPQzfVQtJvqXnSxXMHzT6b/eUZCw9L1iwu0XpxTirjJgUr/tzkLpqvWuGqTo=
+	t=1773122451; cv=fail; b=JOXYvWYcyie5E6a4WsKbRAyK59flWUYErJMSY0q4O/RO4dGuDWNw8ue6Jy5cW9PWhI8Z2plystOVxsVBqmuBJanPlQpLU1nz3rBANreWRdLQMk1w53AJu0+TyPZUI563DPBXZDJ6ci0oovj4sISiefBjn+nqt00s1mvdSJ5gP40=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773122450; c=relaxed/simple;
-	bh=h6xgbzlJjEAlMzQJDMOUsVoEhsT3NOIod4Mr6fvphNc=;
+	s=arc-20240116; t=1773122451; c=relaxed/simple;
+	bh=ZKvRgzMvvsrcE4xIXUOZhthTUTlbPk6UtvrxdPCzm80=;
 	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=OAtq2cVYuRqjFypWbS89SPUnQR/pgPozf3gTB4c5a34Gamm4SjQf1kH/Yq/U7y0Couvq5fIue2d8xeYEzblySLww7H2bmeL0IRtIZ5cOoaWNUjBu3maKlRL3KbSIVSbFHjPf1oWYxZGpu/RTBoAuTru9txwpDP8GudtpAUwPoS8=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=M9oVas8S; arc=fail smtp.client-ip=40.93.198.26
+	 MIME-Version:Content-Type; b=U15sCIC75MrFNIDGILrSCbDs3zPBvw12V3r9qNrJZzt8I7knnC9hy3QeTYhViouYQcNTNQAxBwrq/P0pC4hV11WaQO1r+BPjTFXTrUIaNuzgblk2d6kzGHyQztZcgsvmoW3U7vdNAJdTa/ZMyJFV8zzdQWEyQCa20+lSWIR7grY=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=Wrz7Bm3G; arc=fail smtp.client-ip=52.101.57.27
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
 Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="M9oVas8S"
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="Wrz7Bm3G"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=skkMzKsyBo9BSbcBXPc3IMBPAayACt0i18Uvj3qAVaeRlGLPgLhgXbU6HKwcq9g68cw3rJck5ho3fVfznhzUOeQ7zXWniLK3a1Zm8PNqyrKpg+m8GEjjjDKIoqevt6uRTklhI0tHQn/6sV+Ex1gt8hHv2lukS8lV0GFMYyF8GmPK2ua8jahWxpIX2Au25OElGKqDnazjqa8UQcA4R2g8yv9gIST6ZrzFnaHg60vbNW0F8d3jT5Ec97UL9nVOO56N6u6CnneuTZowt2t/uYrWLk3b8duSPlpDOsbM0CUWtBw5FQruEN2HaWSrcYVfNU3Y0aX+M2eDUAdZ0/W+jDfwow==
+ b=tVvjDRbZWNZbughHt6ubI6A8j+vLx634DCL7as5WWD9HQhuFc/AmE/RW0cTkuHBsSH6nqaGjWU4hPcNJVR3rsJ1ruaDDjT0aToMgm17Y80MnB1ZGDXQDgsnMquOCfzMtVfdJ3QSNgE789k+mgG8uAiHKcWJNa7AgoqOHm3FBdqbSIiHCh1GM6MmxaKbG3WVPYIriEwOYoLfUxiqFlB/8k6m8WaHYxwAiUrCFIn+vSh3Ka3ZCYhX7QvlObTs/pknK8j3Ip9WFHHdwSUzryKBLptq6KJhkZPWxSdHILdGIvHMuRpu/vLgLANh83/dJBXFx+ZZRbZtbjVvrcL8xATHJ/Q==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=ev65VqgMhuAXz9XiqOkot/BytX3hXsAZm1lnKAul2YM=;
- b=CK1D1/FMIRJj1lm6PuXNUA93mg2uC6qIJDYeaazsmQAlIYtzrLHv/NnJlgLNLwn65hdt7ZN2AUtup8T5W+YjFFOgGOaj/OAbaWc9ZudIOZHJp8rzvcvhGeW/VtNHrLfnUU2Enhe7+3tnKr3dAxVs/0M6fQbcQ9xFnIuDC59ug14HtOW2dPel4RjbmUfl6uhpV2nsyOA6cifFhUQ2f3W1AFM1kKURpZKHZYGSB0BdrTeQ3DNFooBsC89GvHX86Pyb4QWz2PDOLr1vosy18x8xUWDeyPWJuiPu3c0uKIz/yR9/yIati7iYGEKSh8DAdLIAVfhyUvYVjISh/zaC957uOQ==
+ bh=GszhwqBqzvbws5TqLpV2t6GxEC2UNXR+dTpYwizd6Qc=;
+ b=HdDqhXdf4mwT/h1KCG7XRZSVpEeBgxqqJ2h8DBsAoSaCeZ66qrqLqtyioL3DDmQNgvyiU/4lLwIMZYKF5J4zGEgjn4DcHJ3OOriOQXazHiQCEfVQ1z/VjgC2rMf/8l+iByJTER4787NAwCrkv7ygoZF2aabm2C5zgY3ZAAJLIif90/asqJ6//Kr+jGEPR0x/2gKS0ELX0NKW/eYLG3Vsvh2DpF0eIFyPc7vL+6xp5lr742vqXy3EqhzmZ16Ds67W0ZBYBTmBc9sSMEsP3TXYlpjiJegRI0T/u89hk5ciK6fz5M1XQn2D3gr716nUnDhWBPJ6y+1ZVc2LnxQCK7HpjA==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
  165.204.84.17) smtp.rcpttodomain=google.com smtp.mailfrom=amd.com; dmarc=pass
  (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
  dkim=none (message not signed); arc=none (0)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=ev65VqgMhuAXz9XiqOkot/BytX3hXsAZm1lnKAul2YM=;
- b=M9oVas8SBhKQhFh9B4kub9jUOqypr+nmFznJaTSDnU4322+tqwGjQZcGwGFiO4UugG3Cohea6EJfWwnhNxNe1S9Qd/hwhr9oiOCiPOAFBiurpyMaI52HU1LN60CfS2BhGknlakbzpzZJ7H6XSSErCB/l4tP0HTd+fuVZKBcCemE=
-Received: from MN2PR01CA0051.prod.exchangelabs.com (2603:10b6:208:23f::20) by
- CH3PR12MB8306.namprd12.prod.outlook.com (2603:10b6:610:12c::5) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.9700.11; Tue, 10 Mar 2026 06:00:37 +0000
+ bh=GszhwqBqzvbws5TqLpV2t6GxEC2UNXR+dTpYwizd6Qc=;
+ b=Wrz7Bm3GoQtEtFXCaGCtlgoJD8mzk1kQZPlx6+ok2E4LCmBO4WIWSpvr8VX3gUdsEQYGNr6nPIhKBbe90wQB5nqorjlPCnGJGc8xXDaZMY43I4skhs/j9nqEAzLAVXzXsypwTyqOiTAVw7NVn4+JG8xbEakMTRpMbFuy+8kPkM4=
+Received: from MN2PR01CA0060.prod.exchangelabs.com (2603:10b6:208:23f::29) by
+ MN0PR12MB6199.namprd12.prod.outlook.com (2603:10b6:208:3c4::20) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9700.11; Tue, 10 Mar
+ 2026 06:00:42 +0000
 Received: from BL02EPF0001A0FE.namprd03.prod.outlook.com
- (2603:10b6:208:23f:cafe::26) by MN2PR01CA0051.outlook.office365.com
- (2603:10b6:208:23f::20) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.20.9678.25 via Frontend Transport; Tue,
+ (2603:10b6:208:23f:cafe::98) by MN2PR01CA0060.outlook.office365.com
+ (2603:10b6:208:23f::29) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.9678.24 via Frontend Transport; Tue,
  10 Mar 2026 06:00:23 +0000
 X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
  smtp.mailfrom=amd.com; dkim=none (message not signed)
@@ -49,20 +50,20 @@ Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
 Received: from satlexmb07.amd.com (165.204.84.17) by
  BL02EPF0001A0FE.mail.protection.outlook.com (10.167.242.105) with Microsoft
  SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.9678.18 via Frontend Transport; Tue, 10 Mar 2026 06:00:37 +0000
+ 15.20.9678.18 via Frontend Transport; Tue, 10 Mar 2026 06:00:42 +0000
 Received: from volcano-f23bhost.amd.com (10.180.168.240) by satlexmb07.amd.com
  (10.181.42.216) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.17; Tue, 10 Mar
- 2026 01:00:36 -0500
+ 2026 01:00:40 -0500
 From: Manali Shukla <manali.shukla@amd.com>
 To: <seanjc@google.com>, <pbonzini@redhat.com>
 CC: <mingo@redhat.com>, <bp@alien8.de>, <kvm@vger.kernel.org>,
 	<x86@kernel.org>, <santosh.shukla@amd.com>, <nikunj.dadhania@amd.com>,
 	<Naveen.Rao@amd.com>, <dapeng1.mi@linux.intel.com>, <ravi.bangoria@amd.com>,
 	<peterz@infradead.org>, <Sandipan.Das@amd.com>
-Subject: [PATCH v3 3/9] KVM: x86/cpuid: Add a KVM-only leaf for IBS capabilities
-Date: Tue, 10 Mar 2026 06:00:15 +0000
-Message-ID: <20260310060022.15120-4-manali.shukla@amd.com>
+Subject: [PATCH v3 7/9] perf/x86/amd: Enable VPMU passthrough capability for IBS PMU
+Date: Tue, 10 Mar 2026 06:00:19 +0000
+Message-ID: <20260310060022.15120-8-manali.shukla@amd.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20260310060022.15120-1-manali.shukla@amd.com>
 References: <20260310060022.15120-1-manali.shukla@amd.com>
@@ -78,88 +79,64 @@ X-ClientProxiedBy: satlexmb07.amd.com (10.181.42.216) To satlexmb07.amd.com
  (10.181.42.216)
 X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BL02EPF0001A0FE:EE_|CH3PR12MB8306:EE_
-X-MS-Office365-Filtering-Correlation-Id: 2d52e5ed-553f-44d2-1caf-08de7e6a5a3d
+X-MS-TrafficTypeDiagnostic: BL02EPF0001A0FE:EE_|MN0PR12MB6199:EE_
+X-MS-Office365-Filtering-Correlation-Id: ada91cff-b22c-4dd5-afc0-08de7e6a5ce8
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
 	BCL:0;ARA:13230040|376014|82310400026|36860700016|1800799024;
 X-Microsoft-Antispam-Message-Info:
-	y/jjNsaKY++Vrtc7VSP1wzakb7FcUG84yBSuZU0d35ptbsZoa/jYKZxBFi1Vox1nQo3l4/+YIi6/0acVAeMhea4H5BjUgsn9RY3JZIr43+s02MLHYiGXFwwC9+dz4v2e4RQXDhm3UWWQtJ5Fot/vqoQk+1cN4/HbbuDdusnGy4BoEcTpu0wXCY9xVXdD4QtdRqA/pnLB16iPQyPR2TGDl2mN5XbxE12NuCKKHM31L/K1tBnQLPtoXa++pYEOwny1VocZ8JNG8sMoFehN4WC0MN15VyTTh4q6bqeB30vryoZlXlW+s/6VVJSB6nnnohJkcfTa4mg+Z1n47hbQPc1zf1cWOV2kSKi6hu2Ckf+4j/YUfphAcuvHjV75RW3JCa19odG9l/IgA037wZ/JOtDTETXu3evcp06yXVyXiA2d5cWdHJYTg3F5yF1Y4m04pWhpMWwOUssQ6KPn0IvGm7tswWm2MVhazP74BWMoKRoUBSc4uYDUheTxon68noFtL6nAl+uZldV98zHWnFUn1Xd6D/Lk+IBYPSC5JA8Az4Z0VIns6NHc5EcBgKSajTd8E9cLYn+I6z1exclCXf/GV1b42UBAdGHIVC/V7t6hkzzHKgETQ/GPHxHc6gJWicjLcnhXz59U+sVDoER3UPa19lkT752roOww396OM2A1QHvy1e8++Aa+YB450IiTtgxRWiQiDWuYhxysLlgx0yJeIJjqIAUc3S86uXxTAJCREWoPGQMP6BudbCkBRIHM3ciIT61KV/gqtXijr97bSzsbBVw50g==
+	8xTF/PZsI97+TCtjVnpJmYTXsQ9dvQx+2NlyryumdwvyJZEzBLdf3kysgCpz0p/Xus77gpcyLBzmrDlCjoMUjTTqFrTeBKxg1W9dc19960TWOjsCYzg2Jc8wMXWA8Oy4tuivego3wRWF5JR0/6mvLuQc1suh+yGpaRjRYsm/+WeTgrWDTB/kLBuyzVAEpVBzDue735+2+dSvSctFQKipUEhDZ2h/8KL44RK0ZNTLOsWdevE4md7TfpmNuz+iea1qFZLx2G9g34Otn8wlPxELnadqh85302HtGVpWei8eAuEFGq6YCJ90iJcxcqob8A1JTf+gnkWUvX+6lSJg9+eZWBrY7iGKsnoFAqcXbgF+YWXjyGgONGlU+RQ2Ox35lsztwkosCKWl11QCBnf2Sm8Nl63jAsn0Dnzn3tDCNOrqlGIjRE/nbarm4BT21fRVAIT8+panBdLz5yfFD6MzCALJskdU8HXjI/bUIkS4Amsxvrvpq1jsrnP0TVeQG7IJPWqVeq4XHwrEiOR3e8Tx7jdOCVbm/dmI3/ia664dz2nU9RPlv4eumA5lRkA4X0Mu0ynibCGG5Q5YAqLJjFdS46f1O8/cHB3fOaPR8ZsK9dbfflubHYPMHCRk0IYBgy3QIioCMovxZXdU0Z76E74ngrjVHa//XiVdzdxdhwUATsK+jxefugUMd+VjPIwLqy5V5hSE954pbWMmlYiGoRAm05vJtbjcO9/r8qq8ue57OM6O7dhuLmykyKeDc/CmfXw7207XcQEOAOj7SBSnP52X41RnNw==
 X-Forefront-Antispam-Report:
 	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb07.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(376014)(82310400026)(36860700016)(1800799024);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	2RPijYsd+zLuzq5QZbJ3knSnlZx25zZypqwc4BVxxe+XNwpSTi18K8FtH5cn+uS4nJAZkiSNPCdBkI3668YmlOnwy9sGlSmeI/ka9LfS5JkVZ7QWhRIXHOZ2mt6U1nWRX8TzDgqA4cfE72lxW39X8v7FJDTdkoUzNVfn8LW/N38g2m/GAtOOC9FjgKOl+MXdDOVDyaWpqUJk3y2CP+D9smaHi6eVR0OwGBjf5wg1jAI6yEGZAXsKuNPQL86ST5ufkDuiyym5M0pxxOPJLekRrRdvvm5p1BNM92qzgAbUyPvTmZEllz63OFmp3RGWiKr7bLHcQ268EvDRDLnX8aqJ8MKPO++a/ST0h2pDF1WGTrRKFZJ7rq2GprD9eSR7pTSPAtA8YSieEHJeJ8D0+BnGCEfYqqumln5YpA7zIpQSuwT6cE7UPnQEO1uCDjg7PjGQ
+	+/FOMUP7KAOSY0HwBm5GLuae74t9Men2htYfpW71iKhzMOqwt1ejkgIPrt7nPkikZmUUbvPonwfm21cUIlTHxYRkG46Rs9hst36G0CijpEmDHImUcGy/drEpyMaBKwaYT/VNGild9FwBhXccG5Wgn7ZEk/K0o2sm+uaOw1XI/72A7kDGszg/6d2CNMtQzaCpr/BZ31uCa9g/E2FeN0WI3WFoL11SZHTXskTq2ijs9FWEc9kWglG4vNfNlWeH3rRNCamZPqKgopt0iNO9hCaNcgOl9by/i7/5OP1BaV+b8ocLVUPiPGEzl57VuMtUUv0RI2ibr8/tp5UtSMecc5dEIB2thCpZoZhVv8LZhboR7y3+bISYayjusfQQIdHo5rE/quneJ61tgXkHY6g9NWAFpf5kEDzI5VlXvoneAiKqmkkP38wfbeipRiUifWvWng1F
 X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 10 Mar 2026 06:00:37.8337
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 10 Mar 2026 06:00:42.3123
  (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 2d52e5ed-553f-44d2-1caf-08de7e6a5a3d
+X-MS-Exchange-CrossTenant-Network-Message-Id: ada91cff-b22c-4dd5-afc0-08de7e6a5ce8
 X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
 X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[satlexmb07.amd.com]
 X-MS-Exchange-CrossTenant-AuthSource:
 	BL02EPF0001A0FE.namprd03.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Anonymous
 X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH3PR12MB8306
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MN0PR12MB6199
 
-Add a KVM-only leaf for AMD's Instruction Based Sampling capabilities.
-Multiple IBS related capabilities are added to KVM-only leaf, so that KVM
-can set these capabilities for the guest, when IBS feature bit is
-enabled on the guest.
+IBS MSRs are classified as Swap Type C, which requires the hypervisor
+to save and restore its own IBS state before VMENTRY and after VMEXIT.
+
+To support this, set the ibs_op and ibs_fetch PMUs with the
+PERF_PMU_CAP_MEDIATED_VPMU capability. This ensures that these PMUs are
+exclusively owned by the guest while it is running, allowing the
+hypervisor to manage IBS state transitions correctly.
 
 Signed-off-by: Manali Shukla <manali.shukla@amd.com>
 ---
- arch/x86/include/asm/kvm_host.h |  1 +
- arch/x86/kvm/reverse_cpuid.h    | 16 ++++++++++++++++
- 2 files changed, 17 insertions(+)
+ arch/x86/events/amd/ibs.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/arch/x86/include/asm/kvm_host.h b/arch/x86/include/asm/kvm_host.h
-index 32dd2d55e6f0..01abdf7f112b 100644
---- a/arch/x86/include/asm/kvm_host.h
-+++ b/arch/x86/include/asm/kvm_host.h
-@@ -782,6 +782,7 @@ enum kvm_only_cpuid_leafs {
- 	CPUID_12_EAX	 = NCAPINTS,
- 	CPUID_7_1_EDX,
- 	CPUID_8000_0007_EDX,
-+	CPUID_8000_001B_EAX,
- 	CPUID_8000_0022_EAX,
- 	CPUID_7_2_EDX,
- 	CPUID_24_0_EBX,
-diff --git a/arch/x86/kvm/reverse_cpuid.h b/arch/x86/kvm/reverse_cpuid.h
-index 657f5f743ed9..22cfdb331e9e 100644
---- a/arch/x86/kvm/reverse_cpuid.h
-+++ b/arch/x86/kvm/reverse_cpuid.h
-@@ -76,6 +76,21 @@
- #define KVM_X86_FEATURE_TSA_SQ_NO	KVM_X86_FEATURE(CPUID_8000_0021_ECX, 1)
- #define KVM_X86_FEATURE_TSA_L1_NO	KVM_X86_FEATURE(CPUID_8000_0021_ECX, 2)
- 
-+/* AMD defined Instruction-base Sampling capabilities. CPUID level 0x8000001B (EAX). */
-+#define X86_FEATURE_IBS_AVAIL			KVM_X86_FEATURE(CPUID_8000_001B_EAX, 0)
-+#define X86_FEATURE_IBS_FETCHSAM		KVM_X86_FEATURE(CPUID_8000_001B_EAX, 1)
-+#define X86_FEATURE_IBS_OPSAM			KVM_X86_FEATURE(CPUID_8000_001B_EAX, 2)
-+#define X86_FEATURE_IBS_RDWROPCNT		KVM_X86_FEATURE(CPUID_8000_001B_EAX, 3)
-+#define X86_FEATURE_IBS_OPCNT			KVM_X86_FEATURE(CPUID_8000_001B_EAX, 4)
-+#define X86_FEATURE_IBS_BRNTRGT			KVM_X86_FEATURE(CPUID_8000_001B_EAX, 5)
-+#define X86_FEATURE_IBS_OPCNTEXT		KVM_X86_FEATURE(CPUID_8000_001B_EAX, 6)
-+#define X86_FEATURE_IBS_RIPINVALIDCHK		KVM_X86_FEATURE(CPUID_8000_001B_EAX, 7)
-+#define X86_FEATURE_IBS_OPBRNFUSE		KVM_X86_FEATURE(CPUID_8000_001B_EAX, 8)
-+#define X86_FEATURE_IBS_FETCHCTLEXTD		KVM_X86_FEATURE(CPUID_8000_001B_EAX, 9)
-+#define X86_FEATURE_IBS_ZEN4_EXT		KVM_X86_FEATURE(CPUID_8000_001B_EAX, 11)
-+#define X86_FEATURE_IBS_LOADLATFIL		KVM_X86_FEATURE(CPUID_8000_001B_EAX, 12)
-+#define X86_FEATURE_IBS_ZEN4_DTLBSTAT		KVM_X86_FEATURE(CPUID_8000_001B_EAX, 19)
-+
- struct cpuid_reg {
- 	u32 function;
- 	u32 index;
-@@ -105,6 +120,7 @@ static const struct cpuid_reg reverse_cpuid[] = {
- 	[CPUID_8000_0022_EAX] = {0x80000022, 0, CPUID_EAX},
- 	[CPUID_7_2_EDX]       = {         7, 2, CPUID_EDX},
- 	[CPUID_24_0_EBX]      = {      0x24, 0, CPUID_EBX},
-+	[CPUID_8000_001B_EAX] = {0x8000001b, 0, CPUID_EAX},
- 	[CPUID_8000_0021_ECX] = {0x80000021, 0, CPUID_ECX},
- 	[CPUID_7_1_ECX]       = {         7, 1, CPUID_ECX},
- 	[CPUID_1E_1_EAX]      = {      0x1e, 1, CPUID_EAX},
+diff --git a/arch/x86/events/amd/ibs.c b/arch/x86/events/amd/ibs.c
+index 09b56bab510a..034a992bbfe3 100644
+--- a/arch/x86/events/amd/ibs.c
++++ b/arch/x86/events/amd/ibs.c
+@@ -971,6 +971,7 @@ static struct perf_ibs perf_ibs_fetch = {
+ 		.stop		= perf_ibs_stop,
+ 		.read		= perf_ibs_read,
+ 		.check_period	= perf_ibs_check_period,
++		.capabilities	= PERF_PMU_CAP_MEDIATED_VPMU,
+ 	},
+ 	.msr			= MSR_AMD64_IBSFETCHCTL,
+ 	.msr2			= MSR_AMD64_IBSFETCHCTL2,
+@@ -997,6 +998,7 @@ static struct perf_ibs perf_ibs_op = {
+ 		.stop		= perf_ibs_stop,
+ 		.read		= perf_ibs_read,
+ 		.check_period	= perf_ibs_check_period,
++		.capabilities	= PERF_PMU_CAP_MEDIATED_VPMU,
+ 	},
+ 	.msr			= MSR_AMD64_IBSOPCTL,
+ 	.msr2			= MSR_AMD64_IBSOPCTL2,
 -- 
 2.43.0
 
