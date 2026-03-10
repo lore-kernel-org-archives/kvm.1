@@ -1,139 +1,159 @@
-Received: from mail-pl1-f177.google.com (mail-pl1-f177.google.com [209.85.214.177])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D3ED73B2FC7
-	for <kvm@vger.kernel.org>; Tue, 10 Mar 2026 18:40:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.177
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E38F392C32;
+	Tue, 10 Mar 2026 18:51:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773168052; cv=none; b=ixZNC4KBP+3JGNoc+3GoM6ooQQIMoq/USK+AZ8TIcvQXV9O7JkE1Ya4cj6qRWv4cA/lW9MH3TuCZ30i26s2L8sb8Z29ceswLYlfBM7zL2T7sD9gFWqfYkSkTLRB5CscDbdPo4Ld5RCuSdvgnlfdlAqGvfTAh+Ns6O73+S2bTWZ8=
+	t=1773168677; cv=none; b=CeadIkCFqYlFX8nVCdS5251o7hvIbuy/wzRvNmem//DkllTzUEgNBiYO4Q5OyR81oMjS/9C+Z4O69dsu+6X0pnkRTczVQl/t7i+4T3vLSi4bSqOTu1PrDyjKXEdsFS/nz+ZKwKR1kDnwWbGkwA9AcPEh8Rmctg14tFG+dw+wVUU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773168052; c=relaxed/simple;
-	bh=67BO0RZg8rxb/E50RmGcBJlsPR5Ae9xmCy+Q7v8QtDY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=eYq0jhtxtkJEBJfA2amrKu4p7VqKRcMa2HJ8aKvfKiotppQSpqGKSupaJLHjFqyn9MLnh3l6j5EBEfQWchLwXJzDKtWg8NVOBoC6htWu+9W300cQ++4ozyffTG/q16XjGx7VwzTN8t6RAacAhiPLU+Vl0LLYFFr31XRFrUN/Jl4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=kH0xiiWz; arc=none smtp.client-ip=209.85.214.177
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1773168677; c=relaxed/simple;
+	bh=wL+Z3HwtHugqokmow9y5JIZpHy81o1+IrrrnJygERCk=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=oXnkZ+rKuDZnq5tso4RirPuyJAGyhd4riBcx3e5NtnOmMOKqg/tVTrk4KLWO1FJkR+XPfQ7CruNhSD3JzDrTXQsaHroftEKu+FFR/8aCfeWbZEhzcXHoBq/CGxfBLmtFzEMwNU0KfOYaQlIq9AsggqkjwcAOSEaesD8P6SwKgQs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=e7EpZioZ; arc=none smtp.client-ip=148.163.158.5
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="kH0xiiWz"
-Received: by mail-pl1-f177.google.com with SMTP id d9443c01a7336-2ae4d48dc2fso44031915ad.3
-        for <kvm@vger.kernel.org>; Tue, 10 Mar 2026 11:40:50 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1773168050; x=1773772850; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=bjFZ9oZWWc3RZ4UdO5rq+AZbr7uPDX73K58gh1+yuH0=;
-        b=kH0xiiWz4KeHg8qM+UQYFRGEoaB5YhGQ1/l342lI48vVjCWqHFWSBUDJtSv8g6YdEb
-         WUvbLXs80bxV+xnMTu2IxnxqQ1WawTtw06PwWKuvZNeHk5D3euuYdO1/s0++E4FpGP2z
-         +c3ttwFV6WwPOQpNHM7WUIHZNaqG5koiMMCxTax1rBk+j7pB0850FJbGseMzgmcav/Sc
-         D4sAVnEuBVkUt07E/ANMW8DM/NJ+n/hx2N6JUcXYsLZYrFMsnwCK7vKttbH8x8ketzgA
-         AEJgLDRmf5idGKEt1ix0VwO4x51qzzz9/bjh5SLZJM6RE+ISqePxLY2ZYvsw4O/i3F73
-         NyLA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1773168050; x=1773772850;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=bjFZ9oZWWc3RZ4UdO5rq+AZbr7uPDX73K58gh1+yuH0=;
-        b=p4EoyRU/kKX2Z1HiMQ5W5AxbyXSIR+wB1PwVkph7II7mtf6mrt1KTveegcNmUPOT23
-         N7vc6nahvUazH7cRLiTQBjm7qfxjl/H6/QjrsZLWBRFLHhwUB+0F17HPWIhT9aRN3rz0
-         B+UAcwYzC7OeOCB2JTxFZpXCv7CF2xj/KmMVT0VDQCaJxpNVLNQPH3F9QjyQeSIQEgC8
-         XOsC8txa2EFjFLV4ULtiOKeQfxb1qYeuIm2Dv8qvMPipgdo5OGyUIkRau+VLm2eSrGrj
-         SVXMSpFu8vIPM0QR6LqFOSi4YdqmkQPFkAVWm8EU4evoEzs9Dz89QVQXceTsJBgnzPbw
-         xSOA==
-X-Forwarded-Encrypted: i=1; AJvYcCX6Bol4WqWrScjrK60b49q9Cqs1aEqLJSu63uOjUaVzNOo0do3N/SJlPqqxMVr2To9GOeg=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxcXNF0nCQIf8NnJCp3mh4o0fSydQSYDTKqyRA8nQfUC1eFbbUw
-	9LSCJEwfd7zlqx0FJJPgzlmKQJf8f0dMrETGno9j8iScdUrAiprPY0h8
-X-Gm-Gg: ATEYQzxIfcnFjb92Ayh/XfqT5YTCfCWqHj3WKMP8AU5U6SQGsORGbXy12nqYr/70Npc
-	TPEHe5X8CK8ms8qjIwmdPBeplW+Yo3jDW7sJ6HTbrW2a3XozEQCXonOYS3yPJNc2qDeijBF3Msw
-	arj6kcb3A6ggSF3gzXwwzMRGYy8FzTJc2iVVfoV5rdzDwztdyttcZq2AICEXydOqsBkgwhJcKtn
-	0ANE55c1zx7689UQKYChtcGGpUVQsjclfMB76jHAzxPvFsqxKV1EO+vuS5+abyulfgEcpacCfGw
-	3ALS+BRySOqmqt2ehi5Lf/80xGVIEmX9ewvs4hdk5eM6XJXQNz2g15qWBT4B7XN0f7TIhkjHlo+
-	yo0fFoLeEuaN22/Iyv3ppYtNQxhlMGHCNKDB7ABE66fY5uFPe7ftULMDK9zGY1LI47d4NBuakQ5
-	58vGZ1Kw/5vNxcH3oxDKe9bV0gPKK5VprRXPbt+p6d9Z8pbw==
-X-Received: by 2002:a17:903:28c8:b0:2ae:5671:7071 with SMTP id d9443c01a7336-2ae8252cf0fmr96662285ad.43.1773168050081;
-        Tue, 10 Mar 2026 11:40:50 -0700 (PDT)
-Received: from google.com ([2402:7500:a44:85b:2953:97d3:b283:95c3])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2ae83e58592sm220535625ad.14.2026.03.10.11.40.38
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 10 Mar 2026 11:40:49 -0700 (PDT)
-Date: Wed, 11 Mar 2026 02:40:36 +0800
-From: Kuan-Wei Chiu <visitorckw@gmail.com>
-To: Philipp Hahn <phahn-oss@avm.de>
-Cc: amd-gfx@lists.freedesktop.org, apparmor@lists.ubuntu.com,
-	bpf@vger.kernel.org, ceph-devel@vger.kernel.org, cocci@inria.fr,
-	dm-devel@lists.linux.dev, dri-devel@lists.freedesktop.org,
-	gfs2@lists.linux.dev, intel-gfx@lists.freedesktop.org,
-	intel-wired-lan@lists.osuosl.org, iommu@lists.linux.dev,
-	kvm@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-	linux-block@vger.kernel.org, linux-bluetooth@vger.kernel.org,
-	linux-btrfs@vger.kernel.org, linux-cifs@vger.kernel.org,
-	linux-clk@vger.kernel.org, linux-erofs@lists.ozlabs.org,
-	linux-ext4@vger.kernel.org, linux-fsdevel@vger.kernel.org,
-	linux-gpio@vger.kernel.org, linux-hyperv@vger.kernel.org,
-	linux-input@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-leds@vger.kernel.org, linux-media@vger.kernel.org,
-	linux-mips@vger.kernel.org, linux-mm@kvack.org,
-	linux-modules@vger.kernel.org, linux-mtd@lists.infradead.org,
-	linux-nfs@vger.kernel.org, linux-omap@vger.kernel.org,
-	linux-phy@lists.infradead.org, linux-pm@vger.kernel.org,
-	linux-rockchip@lists.infradead.org, linux-s390@vger.kernel.org,
-	linux-scsi@vger.kernel.org, linux-sctp@vger.kernel.org,
-	linux-security-module@vger.kernel.org, linux-sh@vger.kernel.org,
-	linux-sound@vger.kernel.org,
-	linux-stm32@st-md-mailman.stormreply.com,
-	linux-trace-kernel@vger.kernel.org, linux-usb@vger.kernel.org,
-	linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-	ntfs3@lists.linux.dev, samba-technical@lists.samba.org,
-	sched-ext@lists.linux.dev, target-devel@vger.kernel.org,
-	tipc-discussion@lists.sourceforge.net, v9fs@lists.linux.dev
-Subject: Re: [PATCH 00/61] treewide: Use IS_ERR_OR_NULL over manual NULL
- check - refactor
-Message-ID: <abBlpGKO842B3yl9@google.com>
-References: <20260310-b4-is_err_or_null-v1-0-bd63b656022d@avm.de>
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="e7EpZioZ"
+Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 62A9HCIL1581148;
+	Tue, 10 Mar 2026 18:51:15 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=dUZfjg
+	R1YdloTZPblL1GRW0KfIEpr3vi3PegTQN42ZA=; b=e7EpZioZo9K7OpTwDuy6CB
+	g5HPjQc0NMwc2mXhfhw3wh2a4ID4+bTr1RbO8g+fxhM5nFEmTTs+vBDZfSi4qun1
+	sscJiE7MPXWedVKCQAdew2rLdscTRO1r+I9grSdQ1MeVMejmk4a4EzX2v6sBNtuA
+	9FSnDaTBzFDLsNXXDTSGbfhOtpUFIqgRKbIL9dYZ3zVHIrG1jwO2BuCXpjipAngT
+	jh+kSNO0fa5UsKHsQZuDCKKFLQicCeB7xPsbXk4TJz5tWG+4LppOgcVO7fzvTuef
+	8ZVeaK+9lmQFUskB9M3KZKmohm+O7d0PfXsy4edbhp8C4Jg76ESKJOXypcKHnftw
+	==
+Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4crcunc39d-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 10 Mar 2026 18:51:15 +0000 (GMT)
+Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma23.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 62AFJHN5029306;
+	Tue, 10 Mar 2026 18:51:14 GMT
+Received: from smtprelay02.fra02v.mail.ibm.com ([9.218.2.226])
+	by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4csp6uq21m-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 10 Mar 2026 18:51:14 +0000
+Received: from smtpav05.fra02v.mail.ibm.com (smtpav05.fra02v.mail.ibm.com [10.20.54.104])
+	by smtprelay02.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 62AIpAA445547984
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Tue, 10 Mar 2026 18:51:10 GMT
+Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 4922B2004F;
+	Tue, 10 Mar 2026 18:51:10 +0000 (GMT)
+Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 2B6862004D;
+	Tue, 10 Mar 2026 18:51:10 +0000 (GMT)
+Received: from p-imbrenda (unknown [9.52.223.175])
+	by smtpav05.fra02v.mail.ibm.com (Postfix) with SMTP;
+	Tue, 10 Mar 2026 18:51:10 +0000 (GMT)
+Date: Tue, 10 Mar 2026 19:50:29 +0100
+From: Claudio Imbrenda <imbrenda@linux.ibm.com>
+To: Janosch Frank <frankja@linux.ibm.com>
+Cc: kvm@vger.kernel.org, linux-s390@vger.kernel.org, hca@linux.ibm.com,
+        borntraeger@linux.ibm.com, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2] s390/mm: add missing secure storage access fixups
+ for donated memory
+Message-ID: <20260310195029.6c529693@p-imbrenda>
+In-Reply-To: <20260310150408.160722-1-frankja@linux.ibm.com>
+References: <20260310150408.160722-1-frankja@linux.ibm.com>
+Organization: IBM
+X-Mailer: Claws Mail 4.3.1 (GTK 3.24.49; x86_64-redhat-linux-gnu)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260310-b4-is_err_or_null-v1-0-bd63b656022d@avm.de>
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: ZNHtAPtzcdF2PeH4Y5tLhQlPzr9uRugT
+X-Authority-Analysis: v=2.4 cv=Hp172kTS c=1 sm=1 tr=0 ts=69b06823 cx=c_pps
+ a=3Bg1Hr4SwmMryq2xdFQyZA==:117 a=3Bg1Hr4SwmMryq2xdFQyZA==:17
+ a=kj9zAlcOel0A:10 a=Yq5XynenixoA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=RnoormkPH1_aCDwRdu11:22 a=Y2IxJ9c9Rs8Kov3niI8_:22 a=VnNF1IyMAAAA:8
+ a=absFpL8vnmusHIZpY_EA:9 a=CjuIK1q_8ugA:10
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMzEwMDE1OCBTYWx0ZWRfX062k4wVKYiva
+ S2Mgf2uX9tPo6AucZMsj5FY4kq42ZftH/T1HgH+Aj9xBtearSX5CqZSbanF9+ZWTR9r64fUnm3L
+ xyQMLASerQonhnJukwm7j/OhkxVvkiTl12UH6JeUJs/70ada+k8tcqJHRx5UqxFe56SJyf9NmsJ
+ IBW1VsLftt8DITveUC6sl55cRutFSWbL6nyURtnrtGf4H4qNJdscQjvSQ87Eb7EK/3am/0XbsgS
+ jHA79hMYvUIuxE6MIuVkJwwsAwHOt5O0aKzfDPMT2RkTEMMjTEVtHEyKsyDK2a75evyU+qf0e8+
+ UI7EFBw2OxmTIp1la8NXlvKXxarHvJObMh38SxV9LNx2IkV8Fw5XCVFbA78C3DUdZwF2D6j0vMa
+ vkJR5vUS7ErWLdLULIPSPd8y1VQK9LxICKCIRwJtRphm9o1QFnMpoMb7DeFgxMoSkau9nC2qfGQ
+ 3Ib5g2+C5vW1vJM0uEQ==
+X-Proofpoint-ORIG-GUID: ZNHtAPtzcdF2PeH4Y5tLhQlPzr9uRugT
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
+ definitions=2026-03-10_04,2026-03-09_02,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ bulkscore=0 adultscore=0 malwarescore=0 impostorscore=0 suspectscore=0
+ spamscore=0 phishscore=0 clxscore=1015 priorityscore=1501 lowpriorityscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2602130000 definitions=main-2603100158
 
-Hi Philipp,
+On Tue, 10 Mar 2026 15:02:42 +0000
+Janosch Frank <frankja@linux.ibm.com> wrote:
 
-On Tue, Mar 10, 2026 at 12:48:26PM +0100, Philipp Hahn wrote:
-> While doing some static code analysis I stumbled over a common pattern,
-> where IS_ERR() is combined with a NULL check. For that there is
-> IS_ERR_OR_NULL().
+> There are special cases where secure storage access exceptions happen
+> in a kernel context for pages that don't have the PG_arch_1 bit
+> set. That bit is set for non-exported guest secure storage (memory)
+> but is absent on storage donated to the Ultravisor since the kernel
+> isn't allowed to export donated pages.
 > 
-> I've written a Coccinelle patch to find and patch those instances.
-> The patches follow grouped by subsystem.
+> Prior to this patch we would try to export the page by calling
+> arch_make_folio_accessible() which would instantly return since the
+> arch bit is absent signifying that the page was already exported and
+> no further action is necessary. This leads to secure storage access
+> exception loops which can never be resolved.
 > 
-> Patches 55-58 may be dropped as they have a (minor?) semantic change:
-> They use WARN_ON() or WARN_ON_ONCE(), but only in the IS_ERR() path, not
-> for the NULL check. Iff it is okay to print the warning also for NULL,
-> then the patches can be applied.
+> With this patch we unconditionally try to export and if that fails we
+> fixup.
 > 
-> While generating the patch set `checkpatch` complained about mixing
-> [un]likely() with IS_ERR_OR_NULL(), which already uses likely()
-> internally. I found and fixed several locations, where that combination
-> has been used.
+> Fixes: 084ea4d611a3 ("s390/mm: add (non)secure page access exceptions handlers")
+> Reported-by: Heiko Carstens <hca@linux.ibm.com>
+> Suggested-by: Heiko Carstens <hca@linux.ibm.com>
+> Signed-off-by: Janosch Frank <frankja@linux.ibm.com>
 
-Thanks for the patchset. However, I think we need a explanation for why
-switching to IS_ERR_OR_NULL() is an improvement over the existing code.
+Reviewed-by: Claudio Imbrenda <imbrenda@linux.ibm.com>
 
-IMHO, the necessity of IS_ERR_OR_NULL() often highlights a confusing or
-flawed API design. It usually implies that the caller is unsure whether
-a failure results in an error pointer or a NULL pointer. Rather than
-doing a treewide conversion of this pattern, I believe it would be much
-more meaningful to review these instances case-by-case and fix the
-underlying APIs or caller logic instead.
+> ---
+> 
+> Changed fault error handling to nolock. (Heiko)
+> Added PG_arch_1 cleanup requested off-list. (Claudio)
+> 
+> ---
+>  arch/s390/mm/fault.c | 11 +++++++++--
+>  1 file changed, 9 insertions(+), 2 deletions(-)
+> 
+> diff --git a/arch/s390/mm/fault.c b/arch/s390/mm/fault.c
+> index a52aa7a99b6b..191cc53caead 100644
+> --- a/arch/s390/mm/fault.c
+> +++ b/arch/s390/mm/fault.c
+> @@ -441,10 +441,17 @@ void do_secure_storage_access(struct pt_regs *regs)
+>  		folio = phys_to_folio(addr);
+>  		if (unlikely(!folio_try_get(folio)))
+>  			return;
+> -		rc = arch_make_folio_accessible(folio);
+> +		rc = uv_convert_from_secure(folio_to_phys(folio));
+> +		if (!rc)
+> +			clear_bit(PG_arch_1, &folio->flags.f);
+>  		folio_put(folio);
+> +		/*
+> +		 * There are some valid fixup types for kernel
+> +		 * accesses to donated secure memory. zeropad is one
+> +		 * of them.
+> +		 */
+>  		if (rc)
+> -			BUG();
+> +			return handle_fault_error_nolock(regs, 0);
+>  	} else {
+>  		if (faulthandler_disabled())
+>  			return handle_fault_error_nolock(regs, 0);
 
-Additionally, a treewide refactoring like this has the practical
-drawback of creating unnecessary merge conflicts when backporting to
-stable trees.
-
-Regards,
-Kuan-Wei
