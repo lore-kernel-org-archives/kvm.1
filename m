@@ -1,38 +1,38 @@
-Received: from mail.avm.de (mail.avm.de [212.42.244.119])
+Received: from mail.avm.de (mail.avm.de [212.42.244.120])
 	(using TLSv1.2 with cipher DHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B63BC48C8C2;
-	Tue, 10 Mar 2026 11:55:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.42.244.119
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 014E24968E8;
+	Tue, 10 Mar 2026 11:55:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.42.244.120
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773143762; cv=none; b=XVdIJ1UJOuLjMVtIa1iVItB05/YxCKKDcoHeqbODwDeYSopE4NJVYRuB5Lq/S6wEWmx3f6ZnhjkJBfwwte/GivYyOfeqVzwZeWjuBu7tL54vugRfJZxNyjFwTx4jqcdqJZyoqieZqtutUnZ7hjg5p267lXFA40lvsZnnzizJWLs=
+	t=1773143764; cv=none; b=pshesgbfC4vIbcs6XdnGuh39e+D1czh8NBDjl7G6x9W6UEhAyswF8QPoKScqtk9KVjdIsZLfuyRNjOb9hoSPa4nYUjFwuDssQBFXzVEMMZS7rSfOVbXOTjFL2WURjnDPe/z66ZxFH2G/TbVZcbothzMnwf++ohkhxSfRBDeUsxs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773143762; c=relaxed/simple;
-	bh=ZbyyRff0LT6QULh5d8SMPc41iTaBzP0/3JVOQy1bx0k=;
+	s=arc-20240116; t=1773143764; c=relaxed/simple;
+	bh=7kdqP+tYIFKXEbW/CcutoIH+BaTJGO9lG8xGd+KBKlA=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=BYwTE/639Nccll4CG4TFZLm6df0DJqxwzcAjZz1ckBFhHDjtT/BHzZxoUDG9VHK3kjVE9ZUQ8TOQVbe6h8JEZ6wdMNs4a3GE9Tx+BBDx8IpKr7Gxa0iljOYE8Y8PhJfT2tvMfDxBsbCd8I9lwZQY3CaLJD1kGVsq02tCk2+EVfw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=avm.de; spf=pass smtp.mailfrom=avm.de; dkim=pass (1024-bit key) header.d=avm.de header.i=@avm.de header.b=aVdcR7RT; arc=none smtp.client-ip=212.42.244.119
+	 In-Reply-To:To:Cc; b=YHLdMobQADxlthOt9fk312EEYNARM0YBhWPOVAwvsW53xiZwRKfm2s8DmVn09CT8qw2M+12kdc5wbLRaLMpDKidyPGwoDDlrFgrtsLLYXWewq5qkfclqe/Sc3k0nl284mCCr7cUNEuaNru06gfJzxHKIi0z9VknDSpeTOPKaraI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=avm.de; spf=pass smtp.mailfrom=avm.de; dkim=pass (1024-bit key) header.d=avm.de header.i=@avm.de header.b=nh38mtwH; arc=none smtp.client-ip=212.42.244.120
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=avm.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=avm.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=avm.de header.i=@avm.de header.b="aVdcR7RT"
+	dkim=pass (1024-bit key) header.d=avm.de header.i=@avm.de header.b="nh38mtwH"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=avm.de; s=mail;
-	t=1773143728; bh=ZbyyRff0LT6QULh5d8SMPc41iTaBzP0/3JVOQy1bx0k=;
+	t=1773143726; bh=7kdqP+tYIFKXEbW/CcutoIH+BaTJGO9lG8xGd+KBKlA=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
-	b=aVdcR7RTuv8C7CerJpQOdVZlvXCBSYXBl1Kv3fGDCxhNKTGGiEGlaXMofbFocGsc4
-	 PzD9er4ULxnCoKhdyrJwuV7PXDV42OgML5UN/9dor/cwn1OQ+AYgKJ5KgncLE+Nq9J
-	 Tp/LrzPDmFSH5N41KkG4TAeS71Wuyf5xaF4BLtTc=
-Received: from [2001:bf0:244:244::71] (helo=mail.avm.de)
+	b=nh38mtwHyUV9SKw+BNpXSRFMzfO8/FcrsieQzDWw9oji2O+z7Psbni6v7KAffehjx
+	 qmid8HatIGHMRnktoTMo9XRdUV6Ztkx3lRZel+NdFrmuz3TY6gos5gVQP+DoaQPsNi
+	 ndWgzemtoyfAka1Tah5hiKpjxy0BL5dDr2HvKeZc=
+Received: from [212.42.244.71] (helo=mail.avm.de)
 	by mail.avm.de with ESMTP (eXpurgate 4.55.2)
 	(envelope-from <phahn-oss@avm.de>)
-	id 69b006b0-2367-7f0000032729-7f000001c9d2-1
-	for <multiple-recipients>; Tue, 10 Mar 2026 12:55:28 +0100
-Received: from mail-auth.avm.de (dovecot-mx-01.avm.de [IPv6:2001:bf0:244:244::71])
+	id 69b006ae-b734-7f0000032729-7f000001c0a2-1
+	for <multiple-recipients>; Tue, 10 Mar 2026 12:55:26 +0100
+Received: from mail-auth.avm.de (dovecot-mx-01.avm.de [212.42.244.71])
 	by mail.avm.de (Postfix) with ESMTPS;
-	Tue, 10 Mar 2026 12:55:28 +0100 (CET)
+	Tue, 10 Mar 2026 12:55:26 +0100 (CET)
 From: Philipp Hahn <phahn-oss@avm.de>
-Date: Tue, 10 Mar 2026 12:49:15 +0100
-Subject: [PATCH 49/61] media: Prefer IS_ERR_OR_NULL over manual NULL check
+Date: Tue, 10 Mar 2026 12:49:09 +0100
+Subject: [PATCH 43/61] s390: Prefer IS_ERR_OR_NULL over manual NULL check
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -41,7 +41,7 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260310-b4-is_err_or_null-v1-49-bd63b656022d@avm.de>
+Message-Id: <20260310-b4-is_err_or_null-v1-43-bd63b656022d@avm.de>
 References: <20260310-b4-is_err_or_null-v1-0-bd63b656022d@avm.de>
 In-Reply-To: <20260310-b4-is_err_or_null-v1-0-bd63b656022d@avm.de>
 To: amd-gfx@lists.freedesktop.org, apparmor@lists.ubuntu.com, 
@@ -71,23 +71,24 @@ To: amd-gfx@lists.freedesktop.org, apparmor@lists.ubuntu.com,
  sched-ext@lists.linux.dev, target-devel@vger.kernel.org, 
  tipc-discussion@lists.sourceforge.net, v9fs@lists.linux.dev, 
  Philipp Hahn <phahn-oss@avm.de>
-Cc: Shuah Khan <skhan@linuxfoundation.org>, 
- Kieran Bingham <kieran.bingham@ideasonboard.com>, 
- Mauro Carvalho Chehab <mchehab@kernel.org>
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1137; i=phahn-oss@avm.de;
- h=from:subject:message-id; bh=ZbyyRff0LT6QULh5d8SMPc41iTaBzP0/3JVOQy1bx0k=;
- b=owGbwMvMwMVoossWfHHNmtuMp9WSGDI3sNXOaG8LSpQxY8hSPVKqIh1pc5sxIOPz7VZbeXXdX
- ZHfDi7vZDRmYWDkYpAVU2SxzPmQuzbhSoEJ07IZMINYmUCmMHBxCsBETr7kYJhV9Mu9xk6ccYGt
- z5eI8srl4dfXXYqUXRzEX+fI1uJjH6WxrLeo7biojv5WpVXreE2zezbYn9tpWFQcfdhA7GboGts
- YsRtM2Sv+M4kcacuwnNqZvb/GZGJWrZS8LE8bh/QGFvGyvRsUfnm1/N3xyXReUlT8crHiVPEW88
- th9t3G59lklUJeXporbNhhPOddhfW2O0w/bnRvOz2h//fC3tr8X+mn7tezeLhE/9TY8ugub9qq6
- ED20BjzW2dmxov+rXp6lOvAkub/n+Z/6nD5cFX/zdFNpRcPRKxfsPR8nlf6/VdXbs812Sme8b7r
- xv6PtjP3CotJpB81uFK+Mnp2gw1/TIQQc7bV7OyuT17mAA==
+Cc: Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>, 
+ Alexander Gordeev <agordeev@linux.ibm.com>, 
+ Christian Borntraeger <borntraeger@linux.ibm.com>, 
+ Sven Schnelle <svens@linux.ibm.com>
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1168; i=phahn-oss@avm.de;
+ h=from:subject:message-id; bh=7kdqP+tYIFKXEbW/CcutoIH+BaTJGO9lG8xGd+KBKlA=;
+ b=owEBbQGS/pANAwAKATQtBlPRrKzbAcsmYgBpsAZn1sZXeMLIPVJuPMvtIFyA6+Lb/ZSleHAPf
+ T0qLrc6EciJATMEAAEKAB0WIQQ5bPBtrWDUcDQCppg0LQZT0ays2wUCabAGZwAKCRA0LQZT0ays
+ 20K6B/45z034OMVnc7IW5eSlZRm22idjp9lRSYx7bSAgasz9Q69aq8L0v4zLmsPUTUANCklIZV3
+ Ky9LpL/JQ27BKEBlPFUkZv7HOQgdozWfUf51X/x0BdMhEpEPDFIJUTovRoUphEHN8rw1r9KUQDQ
+ dRKeWS5ua07ZtP69du+2qOW1Bjj55fWBu+uxvI7fohNlQeSwssQzt0rpy3r+7xRxxg0LdKDF+Eo
+ Y+QuFzLHRhLpEtgPju+jKGgQPeWyFuaSnteU1ZzTdDhjn5fvjXBJ7IuXzcVk6epAYwi3YolC11O
+ rwheclTeEca9nqJY9eYYhG9OXtZeHQ7d173Po939eVnoDlQn
 X-Developer-Key: i=phahn-oss@avm.de; a=openpgp;
  fpr=58AF7C2E007CDBE62C59E078F50EFDCF8AD04B1A
-X-purgate-ID: 149429::1773143728-1F4BEE1F-D1FCF248/0/0
+X-purgate-ID: 149429::1773143726-E3DCEA3D-4F569189/0/0
 X-purgate-type: clean
-X-purgate-size: 1139
+X-purgate-size: 1170
 X-purgate-Ad: Categorized by eleven eXpurgate (R) https://www.eleven.de
 X-purgate: This mail is considered clean (visit https://www.eleven.de for further information)
 X-purgate: clean
@@ -97,29 +98,31 @@ check.
 
 Change generated with coccinelle.
 
-To: Shuah Khan <skhan@linuxfoundation.org>
-To: Kieran Bingham <kieran.bingham@ideasonboard.com>
-To: Mauro Carvalho Chehab <mchehab@kernel.org>
-Cc: linux-media@vger.kernel.org
+To: Heiko Carstens <hca@linux.ibm.com>
+To: Vasily Gorbik <gor@linux.ibm.com>
+To: Alexander Gordeev <agordeev@linux.ibm.com>
+To: Christian Borntraeger <borntraeger@linux.ibm.com>
+To: Sven Schnelle <svens@linux.ibm.com>
+Cc: linux-s390@vger.kernel.org
 Cc: linux-kernel@vger.kernel.org
 Signed-off-by: Philipp Hahn <phahn-oss@avm.de>
 ---
- drivers/media/test-drivers/vimc/vimc-streamer.c | 2 +-
+ drivers/s390/char/tape_class.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/media/test-drivers/vimc/vimc-streamer.c b/drivers/media/test-drivers/vimc/vimc-streamer.c
-index 15d863f97cbf96b7ca7fbf3d7b6b6ec39fcc8ae3..da5aca50bcb4990c06f28e5a883eb398606991e9 100644
---- a/drivers/media/test-drivers/vimc/vimc-streamer.c
-+++ b/drivers/media/test-drivers/vimc/vimc-streamer.c
-@@ -167,7 +167,7 @@ static int vimc_streamer_thread(void *data)
- 		for (i = stream->pipe_size - 1; i >= 0; i--) {
- 			frame = stream->ved_pipeline[i]->process_frame(
- 					stream->ved_pipeline[i], frame);
--			if (!frame || IS_ERR(frame))
-+			if (IS_ERR_OR_NULL(frame))
- 				break;
- 		}
- 		//wait for 60hz
+diff --git a/drivers/s390/char/tape_class.c b/drivers/s390/char/tape_class.c
+index b69430220a813e764ec1514c27ad486ac9e95575..aad4fff1faea69ae055b517910ec6467b14cb6e8 100644
+--- a/drivers/s390/char/tape_class.c
++++ b/drivers/s390/char/tape_class.c
+@@ -100,7 +100,7 @@ EXPORT_SYMBOL(register_tape_dev);
+ 
+ void unregister_tape_dev(struct device *device, struct tape_class_device *tcd)
+ {
+-	if (tcd != NULL && !IS_ERR(tcd)) {
++	if (!IS_ERR_OR_NULL(tcd)) {
+ 		sysfs_remove_link(&device->kobj, tcd->mode_name);
+ 		device_destroy(&tape_class, tcd->char_device->dev);
+ 		cdev_del(tcd->char_device);
 
 -- 
 2.43.0
