@@ -1,489 +1,224 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8B4E438FFB;
-	Tue, 10 Mar 2026 10:06:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 48D9B2AD3D
+	for <kvm@vger.kernel.org>; Tue, 10 Mar 2026 10:09:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773137175; cv=none; b=uYph+YAF9jqgtQjuUGbcpt6K+qnCAfVLQSo4/ZAZtZW2sc73Ue7xxNtJizH99Mva00GrBfOUr50z+RGuJWsuOtjhOd5qiPuE3f2fjEYFP8zPUe67TejxF1U1HbaQ5jrkjruW4PiYj0bn1oZtsYECNm+ck3gWomyevudBx3R8u/s=
+	t=1773137375; cv=none; b=DEgKZzobQf8ryGpMRAN5SgWzP9HRYaPWk+qDUXtZbbu1FAaaP4zeDae8tLJAW5p+Ph1sVGysfWj29T3Hh/ZcSwWGW5NHlj9KrBU5YyxO3PrGyfHqtNb4hyFpOM+72OZIAwj37dkMzxDiyT6dTN4mD5hiaVgQyN5ormtPqemI85A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773137175; c=relaxed/simple;
-	bh=nkTeKtYAxvOE8cjUWoFY/AoxsTZhGKLRXEKPvssARPg=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=MI7nBmmLi4t0iOfvEb6bkHpqG6D7DMDCfDp/aE64GX/D2jFhpb64ScouFrj7b9b08IKVOkU7Q3uwTe2/CZyaUwFf/bRf7GGddu7sIphPW2DQx2Bj+D5n4RiwPn/W4+2jrI7xxnbUi7Ro1ouE8aLahOj1XLU6BAKZlzRFqAx0Gpo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=legXCpth; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1773137375; c=relaxed/simple;
+	bh=ox7BeE23vHKCeR4iQdb+QppadlKleEuwmEoOXCObhVE=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=XVXjStHqVL5W+ke5I0HXBY90YZxPBjK9brwecaBE1P60Ir3gxxzKCDUAIULW9mxMBmzZ3kyh5xq7G2csq8VjjIQ4A1nM/yNvvRcF/mbcXaDuU73WAwv221ddmKi3hwHvowqsYPWKLGJVwa2g4Ad8QOlZD9+SywiaAVWfHH3ZpN0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=im6Le8Lt; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=tcoTQ1Lf; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="legXCpth"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BBD12C19423;
-	Tue, 10 Mar 2026 10:06:14 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773137175;
-	bh=nkTeKtYAxvOE8cjUWoFY/AoxsTZhGKLRXEKPvssARPg=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=legXCpthGDI6HF6Z/0f4SsBc9/7skaC07+94t14VCGrxQZybTR7XHXwIDkj6XIZ+o
-	 KQdAOE+2HSVg2lX7cJq59LBKCB0ZvE2U+5jyPnWuILfRVETHuSL0kYUaU2/PC5AxoC
-	 IKHmzr08yvZ9Yqnp0nfDyE+1d1iON+f2znz4VaPPKRGNJ21LHsg/A1vjeUw1NZdWlj
-	 wpV1hJVjeSUF1ircpvVCKhssHUuPmTA+FsTh5Ti1Cz79hMT6dTceMjqTNKACG8OuZY
-	 O2pJaiPVy55xtTL51qxvAxXTi/ATtcQqN4bqa705dUAozhHkYFvgaxAzfXs8lDG1Ub
-	 DSZwWDQFbdCww==
-From: Thomas Gleixner <tglx@kernel.org>
-To: Jiri Slaby <jirislaby@kernel.org>, Matthieu Baerts <matttbe@kernel.org>
-Cc: Peter Zijlstra <peterz@infradead.org>, Stefan Hajnoczi
- <stefanha@redhat.com>, Stefano Garzarella <sgarzare@redhat.com>,
- kvm@vger.kernel.org, virtualization@lists.linux.dev, Netdev
- <netdev@vger.kernel.org>, rcu@vger.kernel.org, MPTCP Linux
- <mptcp@lists.linux.dev>, Linux Kernel <linux-kernel@vger.kernel.org>,
- Shinichiro Kawasaki <shinichiro.kawasaki@wdc.com>, "Paul E. McKenney"
- <paulmck@kernel.org>, Dave Hansen <dave.hansen@linux.intel.com>,
- luto@kernel.org, Michal =?utf-8?Q?Koutn=C3=BD?= <MKoutny@suse.com>, Waiman
- Long <longman@redhat.com>, Marco Elver <elver@google.com>
-Subject: Re: Stalls when starting a VSOCK listening socket: soft lockups,
- RCU stalls, timeout
-In-Reply-To: <878qc0rofr.ffs@tglx>
-References: <863a5291-a636-47d0-891c-bb0524d2e134@kernel.org>
- <717310d8-6274-4b7f-8a19-561c45f5f565@kernel.org>
- <a2b573b4-af61-4b84-a7d1-012ed6bb23c9@kernel.org>
- <ba067933-bf3b-476d-a0bb-53eda56996ca@kernel.org> <87zf4m2qvo.ffs@tglx>
- <47cba228-bba7-4e58-a69d-ea41f8de6602@kernel.org> <87tsuu2i59.ffs@tglx>
- <7efde2b5-3b72-4858-9db0-22493d446301@kernel.org> <87qzpx2sck.ffs@tglx>
- <20260306152458.GT606826@noisy.programming.kicks-ass.net>
- <87ldg42eu7.ffs@tglx> <87h5qr2rzi.ffs@tglx> <87eclu3coa.ffs@tglx>
- <87v7f61cnl.ffs@tglx> <57c1e171-9520-4288-9e2d-10a72a499968@kernel.org>
- <87pl5ds88r.ffs@tglx> <0ae4d678-5676-4523-bae3-5ad73b526e27@kernel.org>
- <87eclsrtqg.ffs@tglx> <e846cb5f-65c4-4a9b-9f9b-593e4af526d8@kernel.org>
- <76e2b909-98db-49de-a8eb-f6f0a192f630@kernel.org> <878qc0rofr.ffs@tglx>
-Date: Tue, 10 Mar 2026 11:06:11 +0100
-Message-ID: <874imorobw.ffs@tglx>
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="im6Le8Lt";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="tcoTQ1Lf"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1773137373;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=OSNodHH8ELupC2ygl2Np+FE81l2qd5e7jwH69v98Gwo=;
+	b=im6Le8Lt6dWOOQYileI8+gce7AYK/+DFOMo3urdYAzH9o5zYjJX5P91/d6E++IQMwstg2C
+	SpBHShEwu0KCzVVtTpejYLE921HZN7l8JQBv9t+wrgjiTzzOQuv8B4puMJXd8q31/GfA72
+	RQ6eAWkexyEaUvu6muePzf9FpqBg4Yg=
+Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
+ [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-650-yUUlKucCM1SULPkKlLGOwA-1; Tue, 10 Mar 2026 06:09:32 -0400
+X-MC-Unique: yUUlKucCM1SULPkKlLGOwA-1
+X-Mimecast-MFC-AGG-ID: yUUlKucCM1SULPkKlLGOwA_1773137371
+Received: by mail-wr1-f69.google.com with SMTP id ffacd0b85a97d-439cbc5fb4fso6132824f8f.0
+        for <kvm@vger.kernel.org>; Tue, 10 Mar 2026 03:09:31 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=redhat.com; s=google; t=1773137371; x=1773742171; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:from:to:cc:subject:date:message-id:reply-to;
+        bh=OSNodHH8ELupC2ygl2Np+FE81l2qd5e7jwH69v98Gwo=;
+        b=tcoTQ1LfZK1a/BRTime1ZCeTG9FqymwyIqhE10tGOxFS4vKHWI+9JAHs4t7dQicD40
+         nRncl7rFesbTQ1ql84VjtzUtqUhUmGxUzbdIOzqLNm66z8K4CurNTYUoKPTI+82Fv0wo
+         UeWVhYLpOk9FWMQkiMjtA2ECnjM/boiLLfDwsPxTXwp548QY1A406oHzwqOCtiFyicwa
+         w3bUPz6BXUsoe2dwQQORITyRr7jTQnMhv3VX6b5KJnlTBKTI49xMmh7Dc7bBn58qYYp2
+         +EIyMDLQl25vufEAjZgBthpb1iK7Wl+nlb7/gN6LOM1OGS5zEF1iCzbBq5NR56xViTAJ
+         Jg4g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1773137371; x=1773742171;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=OSNodHH8ELupC2ygl2Np+FE81l2qd5e7jwH69v98Gwo=;
+        b=UROT9/RnimiPN8fZR2P8A0S7wWInwLk7zDBXE0Oaohyj78UB3xldIoCC7V8BOahOQZ
+         maHMymHzEHZgD8v4+emhCj0zhS2qc2Bdk2UDK5uJ1WqAknYZ4BpUcKzw0QPapuekEKeq
+         qQy8je1JqHNAzchv1tfvdSUO7qgn44ipCf0cvjmoiWdDyIIvOmEozuCstuNULwpcffz/
+         ojJJIsrS8JMLrvGE12ermx7Xj8nUgsaNJB+ex6fS/TgBjRowXSQ8E2RjnMJoh7MBB0V+
+         kFXEDez6z2yj3CeUxZsjjJKqVZFUU0VywxWj9V51zn20Sore7j14qUYTy2pXnesWJQ/O
+         M6xg==
+X-Forwarded-Encrypted: i=1; AJvYcCW3i2+SKB9uGZD8pVB5z3YRj6WkiAGQ7YYnekUe14wpwhKp0tK/cmFV6UKhsEiCBWdw6Vk=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxWWILTU6uM8P/kHB4vCYV06IZNmaLyV8BwYy5N3Flx9YpHp5I/
+	eDPIPfyGWdhhl+qJfxayT0MYe4RGjHUcG3qms4G+M9SyxqG6esBL6mvjYo9m7c+K3NY4ernsI55
+	g7jvYX3EQHHz17qq4iQIKWh9vdMNlm3o1KvdXhVaqGRn4FYmcnzglew==
+X-Gm-Gg: ATEYQzx1Ez5jy5JggANkp1n8xJl4IFiR57ZWCReL37DVUzrEZsBu/dsC8P5oVs4gzeL
+	T6LHpoyFalMAiOS6QJLuv2BVofpYlFbdK1EchaOm5EE66uU4npRlHDSUyWqDYD5n3bJLeqaOUWg
+	05Xxdl/xrN/ENW+dsSP4CFhA433kKdokiq2pdZBuZbkfgeJGC6R3SypNol7F1u6PVdG1dLWuNAG
+	OCFpMjdDovBWWoVqRSXXGet8hE64sCUIUjNCUq8gtHg0PAnV49YhZgvWj65riSROBUg+fJNO/yq
+	HpxtAN32IQWfs+/Uz+UGAJo+VsnJD2EkAAEVpj6SecmMSoDPJw43vy+WfRK78QEhM/v6dhZ4RwB
+	De+hfO30LpfJkHTrsHdvA4T5Ece6SFiXTyMafxMQS9yzquL5yL0kFIg45SMx4
+X-Received: by 2002:a05:6000:3113:b0:439:905e:1236 with SMTP id ffacd0b85a97d-439da55584amr25597537f8f.2.1773137370549;
+        Tue, 10 Mar 2026 03:09:30 -0700 (PDT)
+X-Received: by 2002:a05:6000:3113:b0:439:905e:1236 with SMTP id ffacd0b85a97d-439da55584amr25597465f8f.2.1773137370065;
+        Tue, 10 Mar 2026 03:09:30 -0700 (PDT)
+Received: from ?IPV6:2a01:e0a:280:24f0:9db0:474c:ff43:9f5c? ([2a01:e0a:280:24f0:9db0:474c:ff43:9f5c])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-439dae49177sm33617229f8f.35.2026.03.10.03.09.28
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 10 Mar 2026 03:09:29 -0700 (PDT)
+Message-ID: <97e3c514-a434-4cef-8d94-2f3bfd97068b@redhat.com>
+Date: Tue, 10 Mar 2026 11:09:28 +0100
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH vfio 0/6] Add support for PRE_COPY initial bytes
+ re-initialization
+To: Yishai Hadas <yishaih@nvidia.com>, Alex Williamson <alex@shazbot.org>,
+ Peter Xu <peterx@redhat.com>
+Cc: jgg@nvidia.com, kvm@vger.kernel.org, kevin.tian@intel.com,
+ joao.m.martins@oracle.com, leonro@nvidia.com, maorg@nvidia.com,
+ avihaih@nvidia.com, liulongfang@huawei.com, giovanni.cabiddu@intel.com,
+ kwankhede@nvidia.com
+References: <20260224082019.25772-1-yishaih@nvidia.com>
+ <20260227132327.3e627601@shazbot.org>
+ <f74867bd-02b0-40d8-98be-c22a4129320a@redhat.com>
+ <b16fc66f-bea8-4b42-ae68-8e37a6d09bda@nvidia.com>
+ <4da90bae-c087-4191-9e96-1bd815468a6a@nvidia.com>
+Content-Language: en-US, fr
+From: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>
+Autocrypt: addr=clg@redhat.com; keydata=
+ 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
+ uVKe8BVz4atMOoktmt0GWTOC8P4=
+In-Reply-To: <4da90bae-c087-4191-9e96-1bd815468a6a@nvidia.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-On Tue, Mar 10 2026 at 11:03, Thomas Gleixner wrote:
-> On Tue, Mar 10 2026 at 10:00, Jiri Slaby wrote:
-> Yes. There is an issue. Peter and me just discovered that as well, but
-> in the case at hand it can't be the problem. The missing task is on the
-> CPU which means it must be visible in the thread list and task list.
+On 3/10/26 10:46, Yishai Hadas wrote:
+> On 01/03/2026 14:43, Yishai Hadas wrote:
+>> On 28/02/2026 8:27, Cédric Le Goater wrote:
+>>> Hello,
+>>>
+>>> On 2/27/26 21:23, Alex Williamson wrote:
+>>>>
+>>>> +Cédric, +Peter, please see what you think of this approach relative to
+>>>> QEMU.  The broken uAPI for flags on the PRECOPY_INFO ioctl is
+>>>> unfortunate, but we need an opt-in for the driver to enable REINIT
+>>>> reporting anyway.  Thanks,
+>>>>
+>>>> Alex
+>>>
+>>>
+>>> I took a quick look. The series would be a little cleaner if
+>>> vfio_check_precopy_ioctl() came first
+>>
+>> The motivation to introduce that core helper and adapt all the drivers to use it, was to centralize the common code and ensures that output flags are cleared on entry.
+>>
+>> This can be done only after that we have the previous opt-in patch as we would like to keep the V1 behavior for compatibility reasons.
+>>
+>>> and some parts are little ugly
+>>> (precopy_info_flags_fix). Will take a closer look when back from PTO.
+>>>
+>>
+>> I'm open for any better name, any specific suggestion ?
+> 
+> How about renaming it to precopy_info_v2, which is closer to the feature name ?
 
-The updated debug patch fixes this fork problem and adds more tracing to
-it.
+I found the prefix '_fix'  confusing and saw no connection with
+the names of the new flag (VFIO_PRECOPY_INFO_REINIT) or ioctl
+VFIO_DEVICE_FEATURE_MIG_PRECOPY_INFOv2.
 
-Mathieu, can you give it another spin please?
+
+Based on how 'precopy_info_flags_fix' is used in mlx5vf_precopy_ioctl() :
+
+   +	/*
+   +	 * opt-in for VFIO_DEVICE_FEATURE_MIG_PRECOPY_INFOv2 serves
+   +	 * as opt-in for VFIO_PRECOPY_INFO_REINIT as well
+   +	 */
+   +	reinit_state = mvdev->core_device.vdev.precopy_info_flags_fix &&
+   +			migration_state == MLX5_QUERY_VHCA_MIG_STATE_OPER_MIGRATION_INIT;
+
+
+a name like 'precopy_reinit_allow' seems appropriate to me.
+'precopy_info_v2' could work just as well but that would tie the
+precopy reinit/reset to an ioctl which might me a bit limiting.
+As you wish.
+
+
+>>> Is there a QEMU implementation ?
+>>
+>> Yes, please see here [1] the candidate QEMU patches that the kernel series was tested with.
+>>
+>> [1] https://github.com/avihai1122/qemu/commits/vfio_precopy_info_reinit/
+>>
+> 
+> Cedric,
+> Did you have the chance to look at the matching QEMU patches ?
+
+I will this week. I just got back and work has piled up on many fronts.
+
+> For now, only minor notes remain open, and I would like to send a V1 soon to make progress.
+
+you should send the QEMU series. Naming is not a blocker and it will
+help assess kernel support and compatibility.
 
 Thanks,
 
-        tglx
----
- include/linux/sched.h        |    2 
- include/trace/events/mmcid.h |  171 +++++++++++++++++++++++++++++++++++++++++++
- kernel/fork.c                |    2 
- kernel/sched/core.c          |   34 ++++++--
- kernel/sched/sched.h         |   20 ++++-
- 5 files changed, 215 insertions(+), 14 deletions(-)
+C.
 
---- a/include/linux/sched.h
-+++ b/include/linux/sched.h
-@@ -2354,7 +2354,6 @@ static __always_inline void alloc_tag_re
- #ifdef CONFIG_SCHED_MM_CID
- void sched_mm_cid_before_execve(struct task_struct *t);
- void sched_mm_cid_after_execve(struct task_struct *t);
--void sched_mm_cid_fork(struct task_struct *t);
- void sched_mm_cid_exit(struct task_struct *t);
- static __always_inline int task_mm_cid(struct task_struct *t)
- {
-@@ -2363,7 +2362,6 @@ static __always_inline int task_mm_cid(s
- #else
- static inline void sched_mm_cid_before_execve(struct task_struct *t) { }
- static inline void sched_mm_cid_after_execve(struct task_struct *t) { }
--static inline void sched_mm_cid_fork(struct task_struct *t) { }
- static inline void sched_mm_cid_exit(struct task_struct *t) { }
- static __always_inline int task_mm_cid(struct task_struct *t)
- {
---- /dev/null
-+++ b/include/trace/events/mmcid.h
-@@ -0,0 +1,171 @@
-+/* SPDX-License-Identifier: GPL-2.0 */
-+#undef TRACE_SYSTEM
-+#define TRACE_SYSTEM mmcid
-+
-+#if !defined(_TRACE_MMCID_H) || defined(TRACE_HEADER_MULTI_READ)
-+#define _TRACE_MMCID_H
-+
-+#include <linux/sched.h>
-+#include <linux/tracepoint.h>
-+
-+DECLARE_EVENT_CLASS(mmcid_class,
-+
-+	TP_PROTO(struct mm_struct *mm, unsigned int cid),
-+
-+	TP_ARGS(mm, cid),
-+
-+	TP_STRUCT__entry(
-+		__field( void *,	mm	)
-+		__field( unsigned int,	cid	)
-+	),
-+
-+	TP_fast_assign(
-+		__entry->mm	= mm;
-+		__entry->cid	= cid;
-+	),
-+
-+	TP_printk("mm=%p cid=%08x", __entry->mm, __entry->cid)
-+);
-+
-+DEFINE_EVENT(mmcid_class, mmcid_getcid,
-+
-+	TP_PROTO(struct mm_struct *mm, unsigned int cid),
-+
-+	TP_ARGS(mm, cid)
-+);
-+
-+DEFINE_EVENT(mmcid_class, mmcid_putcid,
-+
-+	TP_PROTO(struct mm_struct *mm, unsigned int cid),
-+
-+	TP_ARGS(mm, cid)
-+);
-+
-+DECLARE_EVENT_CLASS(mmcid_task_class,
-+
-+	TP_PROTO(struct task_struct *t, struct mm_struct *mm, unsigned int cid),
-+
-+	TP_ARGS(t, mm, cid),
-+
-+	TP_STRUCT__entry(
-+		__field( unsigned int,	pid	)
-+		__field( unsigned int,	cid	)
-+		__field( void *,	mm	)
-+	),
-+
-+	TP_fast_assign(
-+		__entry->pid	= t->pid;
-+		__entry->cid	= cid;
-+		__entry->mm	= mm;
-+	),
-+
-+	TP_printk("pid=%u cid=%08x mm=%p", __entry->pid, __entry->cid, __entry->mm)
-+);
-+
-+DEFINE_EVENT(mmcid_task_class, mmcid_task_update,
-+
-+	TP_PROTO(struct task_struct *t, struct mm_struct *mm, unsigned int cid),
-+
-+	TP_ARGS(t, mm, cid)
-+);
-+
-+DECLARE_EVENT_CLASS(mmcid_fixup_class,
-+
-+	TP_PROTO(struct task_struct *t, unsigned int users),
-+
-+	TP_ARGS(t, users),
-+
-+	TP_STRUCT__entry(
-+		__field( unsigned int,	pid	)
-+		__field( unsigned int,	cid	)
-+		__field( unsigned int,	active	)
-+		__field( unsigned int,	users	)
-+		__field( void *,	mm	)
-+	),
-+
-+	TP_fast_assign(
-+		__entry->pid	= t->pid;
-+		__entry->cid	= t->mm_cid.cid;
-+		__entry->active	= t->mm_cid.active;
-+		__entry->users	= users;
-+		__entry->mm	= t->mm;
-+	),
-+
-+	TP_printk("pid=%u cid=%08x active=%u users=%u mm=%p", __entry->pid, __entry->cid,
-+		  __entry->active, __entry->users, __entry->mm)
-+);
-+
-+DEFINE_EVENT(mmcid_fixup_class, mmcid_fixup_task,
-+
-+	TP_PROTO(struct task_struct *t, unsigned int users),
-+
-+	TP_ARGS(t, users)
-+);
-+
-+DECLARE_EVENT_CLASS(mmcid_cpu_class,
-+
-+	TP_PROTO(unsigned int cpu, struct mm_struct *mm, unsigned int cid),
-+
-+	TP_ARGS(cpu, mm, cid),
-+
-+	TP_STRUCT__entry(
-+		__field( unsigned int,	cpu	)
-+		__field( unsigned int,	cid	)
-+		__field( void *,	mm	)
-+	),
-+
-+	TP_fast_assign(
-+		__entry->cpu	= cpu;
-+		__entry->cid	= cid;
-+		__entry->mm	= mm;
-+	),
-+
-+	TP_printk("cpu=%u cid=%08x mm=%p", __entry->cpu, __entry->cid, __entry->mm)
-+);
-+
-+DEFINE_EVENT(mmcid_cpu_class, mmcid_cpu_update,
-+
-+	TP_PROTO(unsigned int cpu, struct mm_struct *mm, unsigned int cid),
-+
-+	TP_ARGS(cpu, mm, cid)
-+);
-+
-+DECLARE_EVENT_CLASS(mmcid_user_class,
-+
-+	TP_PROTO(struct task_struct *t, struct mm_struct *mm),
-+
-+	TP_ARGS(t, mm),
-+
-+	TP_STRUCT__entry(
-+		__field( unsigned int,	pid	)
-+		__field( unsigned int,	users	)
-+		__field( void *,	mm	)
-+	),
-+
-+	TP_fast_assign(
-+		__entry->pid	= t->pid;
-+		__entry->users	= mm->mm_cid.users;
-+		__entry->mm	= mm;
-+	),
-+
-+	TP_printk("pid=%u users=%u mm=%p", __entry->pid, __entry->users, __entry->mm)
-+);
-+
-+DEFINE_EVENT(mmcid_user_class, mmcid_user_add,
-+
-+	TP_PROTO(struct task_struct *t, struct mm_struct *mm),
-+
-+	TP_ARGS(t, mm)
-+);
-+
-+DEFINE_EVENT(mmcid_user_class, mmcid_user_del,
-+
-+	TP_PROTO(struct task_struct *t, struct mm_struct *mm),
-+
-+	     TP_ARGS(t, mm)
-+);
-+
-+#endif
-+
-+/* This part must be outside protection */
-+#include <trace/define_trace.h>
---- a/kernel/fork.c
-+++ b/kernel/fork.c
-@@ -1586,7 +1586,6 @@ static int copy_mm(u64 clone_flags, stru
- 
- 	tsk->mm = mm;
- 	tsk->active_mm = mm;
--	sched_mm_cid_fork(tsk);
- 	return 0;
- }
- 
-@@ -2498,7 +2497,6 @@ static bool need_futex_hash_allocate_def
- 	exit_nsproxy_namespaces(p);
- bad_fork_cleanup_mm:
- 	if (p->mm) {
--		sched_mm_cid_exit(p);
- 		mm_clear_owner(p->mm, p);
- 		mmput(p->mm);
- 	}
---- a/kernel/sched/core.c
-+++ b/kernel/sched/core.c
-@@ -86,6 +86,7 @@
- #include <linux/sched/rseq_api.h>
- #include <trace/events/sched.h>
- #include <trace/events/ipi.h>
-+#include <trace/events/mmcid.h>
- #undef CREATE_TRACE_POINTS
- 
- #include "sched.h"
-@@ -4729,8 +4730,12 @@ void sched_cancel_fork(struct task_struc
- 	scx_cancel_fork(p);
- }
- 
-+static void sched_mm_cid_fork(struct task_struct *t);
-+
- void sched_post_fork(struct task_struct *p)
- {
-+	if (IS_ENABLED(CONFIG_SCHED_MM_CID))
-+		sched_mm_cid_fork(p);
- 	uclamp_post_fork(p);
- 	scx_post_fork(p);
- }
-@@ -10569,7 +10574,9 @@ static inline void mm_cid_transit_to_tas
- 		unsigned int cid = cpu_cid_to_cid(t->mm_cid.cid);
- 
- 		t->mm_cid.cid = cid_to_transit_cid(cid);
-+		trace_mmcid_task_update(t, t->mm, t->mm_cid.cid);
- 		pcp->cid = t->mm_cid.cid;
-+		trace_mmcid_cpu_update(task_cpu(t), t->mm, pcp->cid);
- 	}
- }
- 
-@@ -10602,7 +10609,9 @@ static void mm_cid_fixup_cpus_to_tasks(s
- 			if (!cid_in_transit(cid)) {
- 				cid = cid_to_transit_cid(cid);
- 				rq->curr->mm_cid.cid = cid;
-+				trace_mmcid_task_update(rq->curr, rq->curr->mm, cid);
- 				pcp->cid = cid;
-+				trace_mmcid_cpu_update(cpu, mm, cid);
- 			}
- 		}
- 	}
-@@ -10613,7 +10622,9 @@ static inline void mm_cid_transit_to_cpu
- {
- 	if (cid_on_task(t->mm_cid.cid)) {
- 		t->mm_cid.cid = cid_to_transit_cid(t->mm_cid.cid);
-+		trace_mmcid_task_update(t, t->mm, t->mm_cid.cid);
- 		pcp->cid = t->mm_cid.cid;
-+		trace_mmcid_cpu_update(task_cpu(t), t->mm, pcp->cid);
- 	}
- }
- 
-@@ -10646,15 +10657,17 @@ static void mm_cid_do_fixup_tasks_to_cpu
- 	 * possible switch back to per task mode happens either in the
- 	 * deferred handler function or in the next fork()/exit().
- 	 *
--	 * The caller has already transferred. The newly incoming task is
--	 * already accounted for, but not yet visible.
-+	 * The caller has already transferred so remove it from the users
-+	 * count. The incoming task is already visible and has mm_cid.active,
-+	 * but has task::mm_cid::cid == UNSET. Still it needs to be accounted
-+	 * for. Concurrent fork()s might add more threads, but all of them have
-+	 * task::mm_cid::active = 0, so they don't affect the accounting here.
- 	 */
--	users = mm->mm_cid.users - 2;
--	if (!users)
--		return;
-+	users = mm->mm_cid.users - 1;
- 
- 	guard(rcu)();
- 	for_other_threads(current, t) {
-+		trace_mmcid_fixup_task(t, users);
- 		if (mm_cid_fixup_task_to_cpu(t, mm))
- 			users--;
- 	}
-@@ -10666,6 +10679,7 @@ static void mm_cid_do_fixup_tasks_to_cpu
- 	for_each_process_thread(p, t) {
- 		if (t == current || t->mm != mm)
- 			continue;
-+		trace_mmcid_fixup_task(t, users);
- 		if (mm_cid_fixup_task_to_cpu(t, mm)) {
- 			if (--users == 0)
- 				return;
-@@ -10685,15 +10699,19 @@ static bool sched_mm_cid_add_user(struct
- {
- 	t->mm_cid.active = 1;
- 	mm->mm_cid.users++;
-+	trace_mmcid_user_add(t, mm);
- 	return mm_update_max_cids(mm);
- }
- 
--void sched_mm_cid_fork(struct task_struct *t)
-+static void sched_mm_cid_fork(struct task_struct *t)
- {
- 	struct mm_struct *mm = t->mm;
- 	bool percpu;
- 
--	WARN_ON_ONCE(!mm || t->mm_cid.cid != MM_CID_UNSET);
-+	if (!mm)
-+		return;
-+
-+	WARN_ON_ONCE(t->mm_cid.cid != MM_CID_UNSET);
- 
- 	guard(mutex)(&mm->mm_cid.mutex);
- 	scoped_guard(raw_spinlock_irq, &mm->mm_cid.lock) {
-@@ -10727,6 +10745,7 @@ void sched_mm_cid_fork(struct task_struc
- 	} else {
- 		mm_cid_fixup_cpus_to_tasks(mm);
- 		t->mm_cid.cid = mm_get_cid(mm);
-+		trace_mmcid_task_update(t, t->mm, t->mm_cid.cid);
- 	}
- }
- 
-@@ -10739,6 +10758,7 @@ static bool sched_mm_cid_remove_user(str
- 		mm_unset_cid_on_task(t);
- 	}
- 	t->mm->mm_cid.users--;
-+	trace_mmcid_user_del(t, t->mm);
- 	return mm_update_max_cids(t->mm);
- }
- 
---- a/kernel/sched/sched.h
-+++ b/kernel/sched/sched.h
-@@ -75,6 +75,7 @@
- #include <linux/delayacct.h>
- #include <linux/mmu_context.h>
- 
-+#include <trace/events/mmcid.h>
- #include <trace/events/power.h>
- #include <trace/events/sched.h>
- 
-@@ -3809,6 +3810,7 @@ static __always_inline bool cid_on_task(
- 
- static __always_inline void mm_drop_cid(struct mm_struct *mm, unsigned int cid)
- {
-+	trace_mmcid_putcid(mm, cid);
- 	clear_bit(cid, mm_cidmask(mm));
- }
- 
-@@ -3817,6 +3819,7 @@ static __always_inline void mm_unset_cid
- 	unsigned int cid = t->mm_cid.cid;
- 
- 	t->mm_cid.cid = MM_CID_UNSET;
-+	trace_mmcid_task_update(t, t->mm, t->mm_cid.cid);
- 	if (cid_on_task(cid))
- 		mm_drop_cid(t->mm, cid);
- }
-@@ -3838,6 +3841,7 @@ static inline unsigned int __mm_get_cid(
- 		return MM_CID_UNSET;
- 	if (test_and_set_bit(cid, mm_cidmask(mm)))
- 		return MM_CID_UNSET;
-+	trace_mmcid_getcid(mm, cid);
- 	return cid;
- }
- 
-@@ -3845,9 +3849,17 @@ static inline unsigned int mm_get_cid(st
- {
- 	unsigned int cid = __mm_get_cid(mm, READ_ONCE(mm->mm_cid.max_cids));
- 
--	while (cid == MM_CID_UNSET) {
--		cpu_relax();
--		cid = __mm_get_cid(mm, num_possible_cpus());
-+	if (cid == MM_CID_UNSET) {
-+		ktime_t t0 = ktime_get();
-+
-+		while (cid == MM_CID_UNSET) {
-+			cpu_relax();
-+			cid = __mm_get_cid(mm, num_possible_cpus());
-+			if (ktime_get() - t0 > 50 * NSEC_PER_MSEC) {
-+				tracing_off();
-+				WARN_ON_ONCE(1);
-+			}
-+		}
- 	}
- 	return cid;
- }
-@@ -3874,6 +3886,7 @@ static inline unsigned int mm_cid_conver
- static __always_inline void mm_cid_update_task_cid(struct task_struct *t, unsigned int cid)
- {
- 	if (t->mm_cid.cid != cid) {
-+		trace_mmcid_task_update(t, t->mm, cid);
- 		t->mm_cid.cid = cid;
- 		rseq_sched_set_ids_changed(t);
- 	}
-@@ -3881,6 +3894,7 @@ static __always_inline void mm_cid_updat
- 
- static __always_inline void mm_cid_update_pcpu_cid(struct mm_struct *mm, unsigned int cid)
- {
-+	trace_mmcid_cpu_update(smp_processor_id(), mm, cid);
- 	__this_cpu_write(mm->mm_cid.pcpu->cid, cid);
- }
- 
+
