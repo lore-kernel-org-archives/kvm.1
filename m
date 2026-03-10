@@ -1,129 +1,107 @@
-Received: from mail-pg1-f202.google.com (mail-pg1-f202.google.com [209.85.215.202])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8BDCC175A7D
-	for <kvm@vger.kernel.org>; Tue, 10 Mar 2026 01:23:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.202
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8855119D071;
+	Tue, 10 Mar 2026 01:29:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.12
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773105822; cv=none; b=Loo8yXuHQtl/vF1dKzPDf/aJQuGlvRJu/ZISKnpPKSqjRiKOtnMtPKJgebpshRxLCFo2fvrpEb74ctjtGu8pKr9bsRKTd9G2RMwBkwlBPujoyoNsojiyhfI3lMeAeuAuiKGRZxJlME9SFHbA8GxXiXde8wpI/cvk+TrlIgNnU1g=
+	t=1773106192; cv=none; b=PcVSsIYQa2TPQBKr5hggLoV+YuaUUfDuOXbPNnKr/aDSqJ/5Rj3kEvTUNQDghXVYDYbIGZfh2BeeIP2vODm/Z/4AWEM8+W3jV90d457V4O+teJznhW8w178oSuIfzCPoXjdJ014qaaCch6W9T1spwE8m4+KVQJf6r02SwB/89eA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773105822; c=relaxed/simple;
-	bh=Ikq9su4tNDDYRWV/1O357FdADGVw/FOYEt38D0zW5mw=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=NhuHCxFYchnd9Lx7Io3XVAVM9i1Lk/+MnaZJSP05MHovvl2R2u/Xfb8q9/FihEzoCXIbb2JSqnHvrhxnl+TJqCY5tJuDLwgbWUJYrz5ZTMffJnsLCWDmDfAxCR4b0a6qnefDimHgkPikjX9IrUt1IHEO8leBpAVid0BrkAh98J8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=t7L3rb8k; arc=none smtp.client-ip=209.85.215.202
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+	s=arc-20240116; t=1773106192; c=relaxed/simple;
+	bh=gz43Mj2oXlYu+w6zv6iXQcm0PwcTvoq9HfUZw6RWieE=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=Q3Nj4qarbmNfIu4rbkbFjV6y7/MCR3oqr9RMK8ld8ZGVrLQJqIjrlGQtqsnWNXhH65+b6d3AK2hRiBPsiCtQJPocfyhyjfeV+Qump0dqYbLj8YTWkrtBtfdryDVZ0Aamrh47gCdMVBGDpWhNpNhcywWMm7CX+vfOxEPOWuM9xbI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Iw9hR1eX; arc=none smtp.client-ip=198.175.65.12
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="t7L3rb8k"
-Received: by mail-pg1-f202.google.com with SMTP id 41be03b00d2f7-c73a4983fc0so1602011a12.3
-        for <kvm@vger.kernel.org>; Mon, 09 Mar 2026 18:23:41 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1773105821; x=1773710621; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=Cs+GOxICcXwU8t1ZQYHwvaCjjXXjM0HQUD44iKLKJtE=;
-        b=t7L3rb8kVgFIoc/oM9i95G46I8B0LNvQFP55o0KOpl6FnanTOjyf+bjEkb82RdAxHz
-         agYogGNUGaNiPJ2pmiNsZG+iaP7epGdseRptD7nxE6VRazA888zlpOESihUuRWGN8oZY
-         ZiAjXfHaR83supg4QPy/CV0WkiwV0up/pNVefeLStR+rS2mh4DWuoWHFcZYkTURSiLah
-         +txwUKj/M39gDJzjsPpDhnPaGaoFWLPiHsyanf23dCGEfol2Agr3ygeKeNn5JEp+Oek5
-         JvhUixpSr9MckH2x5WiFFG6HC1Mds+Abf9juQMuU6BBUzFKZ2xUOjGxGx+vw0YiDCDUx
-         YqCg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1773105821; x=1773710621;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=Cs+GOxICcXwU8t1ZQYHwvaCjjXXjM0HQUD44iKLKJtE=;
-        b=ZCIbWArwPO1m1BqCcBY4+TCJUtkHvBVErtVnI+ufBxBLJWQksGadYVybZJ59CKq7EN
-         UQ5Gc7uLf+gdZGzSH1tg9+c3YmOqWCKHQJHPNBJDwihp7mRlyZhzYbNNSxy7F8HmKUcV
-         0wE+gvFu794gd/5QJeogG2o0wLmYyo/O1aWQI4Ek/JDWj8dREPUXyjEfVA6B5Vxoj7Pj
-         9h6Wpx90bxskYH8i5gofKMS7wFNRBu4UVuk6WS5dj85vsKXEXo0zbdlpD32Ce3Gq8E1I
-         hy8hm5+FXqKdnRqzeXlA7k4WNWW2ZVwkabBHpw9yimasUQes0/fG7L9y+EuY/Onz/U3h
-         X68g==
-X-Forwarded-Encrypted: i=1; AJvYcCWZy1dtfGW9JJMstgVbbGcXkJBTrj4u3of6Wo/YGMq6CbgJINSp2I36EBqIdNTEV8rLh6k=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxHjIAmgrwcYxvtXSZkT/T3kW/2mgG5WmvJbUBy0W3wQpu/k3/y
-	JaZ5W9giQM7Lcl+Xo57CrYfUbAEXyMIpliML1xC3oMvuAjw1vNFDKNca6LNw8via1dvTbMUXCdQ
-	8el+WQQ==
-X-Received: from pgbdr21.prod.google.com ([2002:a05:6a02:fd5:b0:c6e:28c3:dd5c])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a20:d045:b0:398:7e66:3c1c
- with SMTP id adf61e73a8af0-3987e663e94mr8704894637.66.1773105820767; Mon, 09
- Mar 2026 18:23:40 -0700 (PDT)
-Date: Mon, 9 Mar 2026 18:23:39 -0700
-In-Reply-To: <b5b9efce-9205-4282-acc2-380d348c4f50@intel.com>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Iw9hR1eX"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1773106192; x=1804642192;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=gz43Mj2oXlYu+w6zv6iXQcm0PwcTvoq9HfUZw6RWieE=;
+  b=Iw9hR1eXGsNpOYpbUMAOUQBj1bwu3JbKB18e5/TLDjQsVn9PgMNIJnfO
+   OgbNPoM1filxdUicB2it3uniNxXW0MvQpBMa7M7cZ91UFJDpklYysDUuG
+   AqWnLw63bdV15WMuSlZzdSJBNGj9gObTWt6777x/dBCxEwWWKWgULMgjH
+   BMurrZC5w6uClZZ6XGZNRTSq8llDQdtjAKaQR0bxfwKYGhHfCRWnCsALt
+   I5yO4yOgZrWzmKiHSI2/aEm4Cm6vp117ShZRDktsc44LrbF80k8oFVBAV
+   OLbokWXsHbArANdR5pg+2RiTWFxDZXoe/0CjW0DYfg+CCRsFwiFEZ+Z2Q
+   w==;
+X-CSE-ConnectionGUID: DBLrUxOpSIeUP1/ueHpQjw==
+X-CSE-MsgGUID: fROjqRBKTaaOttr0sSfVMQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11724"; a="85619075"
+X-IronPort-AV: E=Sophos;i="6.23,111,1770624000"; 
+   d="scan'208";a="85619075"
+Received: from fmviesa006.fm.intel.com ([10.60.135.146])
+  by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Mar 2026 18:29:51 -0700
+X-CSE-ConnectionGUID: XbYawSbvS/qxFZEU60kr8g==
+X-CSE-MsgGUID: AZ7OPRmWRyeOqF922POAQw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.23,111,1770624000"; 
+   d="scan'208";a="216378204"
+Received: from unknown (HELO [10.238.1.107]) ([10.238.1.107])
+  by fmviesa006-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Mar 2026 18:29:49 -0700
+Message-ID: <5a1fb240-1806-420c-bf30-8789752aa717@intel.com>
+Date: Tue, 10 Mar 2026 09:29:46 +0800
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20260112235408.168200-1-chang.seok.bae@intel.com>
- <20260112235408.168200-2-chang.seok.bae@intel.com> <aajd6Fa8gHz6lW78@google.com>
- <b5b9efce-9205-4282-acc2-380d348c4f50@intel.com>
-Message-ID: <aa9ym-SWeOdTrz0O@google.com>
-Subject: Re: [PATCH v2 01/16] KVM: x86: Rename register accessors to be GPR-specific
-From: Sean Christopherson <seanjc@google.com>
-To: "Chang S. Bae" <chang.seok.bae@intel.com>
-Cc: pbonzini@redhat.com, kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	chao.gao@intel.com
-Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] KVM: x86/tdp_mmu: Fix base gfn check when zapping private
+ huge SPTE
+To: Sean Christopherson <seanjc@google.com>, pcjer <pcj3195161583@163.com>
+Cc: kvm@vger.kernel.org, pbonzini@redhat.com, linux-kernel@vger.kernel.org
+References: <20260309083844.217215-1-pcj3195161583@163.com>
+ <aa7X3YNbQ9Zuq6cJ@google.com>
+Content-Language: en-US
+From: Xiaoyao Li <xiaoyao.li@intel.com>
+In-Reply-To: <aa7X3YNbQ9Zuq6cJ@google.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On Fri, Mar 06, 2026, Chang S. Bae wrote:
-> On 3/4/2026 5:35 PM, Sean Christopherson wrote:
-> > On Mon, Jan 12, 2026, Chang S. Bae wrote:
-> > > Refactor the VCPU register state accessors to make them explicitly
-> > > GPR-only.
-> > 
-> > I like "register" though.
+On 3/9/2026 10:23 PM, Sean Christopherson wrote:
+> On Mon, Mar 09, 2026, pcjer wrote:
+>> Signed-off-by: pcjer <pcj3195161583@163.com>
+>> ---
+>>   arch/x86/kvm/mmu/tdp_mmu.c | 4 ++--
+>>   1 file changed, 2 insertions(+), 2 deletions(-)
+>>
+>> diff --git a/arch/x86/kvm/mmu/tdp_mmu.c b/arch/x86/kvm/mmu/tdp_mmu.c
+>> index 1266d5452..8482a85d6 100644
+>> --- a/arch/x86/kvm/mmu/tdp_mmu.c
+>> +++ b/arch/x86/kvm/mmu/tdp_mmu.c
+>> @@ -1025,8 +1025,8 @@ static bool tdp_mmu_zap_leafs(struct kvm *kvm, struct kvm_mmu_page *root,
+>>   
+>>   			slot = gfn_to_memslot(kvm, gfn);
+>>   			if (kvm_hugepage_test_mixed(slot, gfn, iter.level) ||
+>> -			    (gfn & mask) < start ||
+>> -			    end < (gfn & mask) + KVM_PAGES_PER_HPAGE(iter.level)) {
+>> +			    (gfn & ~mask) < start ||
+>> +			    end < (gfn & ~mask) + KVM_PAGES_PER_HPAGE(iter.level)) {
 > 
-> Yeah, agree that it is more general.
+> Somewhat to my surprise, this does indeed look like a legitimate fix, ignoring
+> that the code in question was never merged and was lasted posted 2+ years ago[*]
+> (and has long since been replaced).
 > 
-> > 
-> > > The existing register accessors operate on the cached VCPU register
-> > > state. That cache holds GPRs and RIP. RIP has its own interface already.
-> > 
-> > Isn't it possible that e.g. get_vmx_mem_address() will do kvm_register_read()
-> > for a RIP-relative address?
-
-Answering my own question: no, this isn't possible, specifically because RIP can't
-be addressed via "normal" methods (as Chang points out below, KVM's index of 16
-is completely arbitrary).
-
-Instead, for RIP relative addressing, the full "offset" gets reported via
-EXIT_QUALIFICATION.
-
-> One could RIP isn't a pure GPR, but it's also not something entirely different either.
+> The bug likely went unnoticed during development because "(gfn & mask) < start"
+> would almost always be true (mask == 511 for a 2MiB page).  Though mask should
+> really just be inverted from the get go in this code
 > 
-> The 'reg' argument has historically matched the index of the register cache
-> array, vcpu::arch::regs[]. When extending the accessors to support EGPRs, it
-> looked smooth to keep using it as a register ID, since that wires up cleanly
-> with VMX instruction info and emulator sites. But then reg=16 immediately
-> conflicts with RIP.
+> +		if (is_private && kvm_gfn_shared_mask(kvm) &&
+> +		    is_large_pte(iter.old_spte)) {
+> +			gfn_t gfn = iter.gfn & ~kvm_gfn_shared_mask(kvm);
+> +			gfn_t mask = KVM_PAGES_PER_HPAGE(iter.level) - 1;
+> +
+> +			struct kvm_memory_slot *slot;
+> +			struct kvm_mmu_page *sp;
+> +
 > 
-> Separating accessors for RIP and GPRs was an option. Yes, the usages are
-> very close and EGPRs are strictly not *legacy* GPRs.
+> [*] https://lore.kernel.org/all/c656573ccc68e212416d323d35f884bff25e6e2d.1708933624.git.isaku.yamahata@intel.com
 > 
-> Then, another option would be adjust RIP numbering. For example, use
-> something like VCPU_REGS_RIP=32 for the accessor, while keeping a separate
-> value like __VCPU_REGS_RIP=16 for the reg cache index. But there are many
-> sites directly referencing regs[] and the change looked rather ugly -- two
-> numberings for RIP alone.
 
-Oh, yikes, I didn't even see that this series is playing games with the register
-indices.
-
-Whatever we do, the changelog asbolutely needs to call out the real motiviation.
-Because nothing in here screams "KVM's APX implementation depends on this and
-things will break horribly if kvm_gpr_read() is called with VCPU_REGS_RIP".
-
-  The existing register accessors operate on the cached VCPU register
-  state. That cache holds GPRs and RIP. RIP has its own interface already.
-  This renaming clarifies GPR access only.
-
-I'll try to come back to this tomorrow with more complete thoughts and hopefully
-an idea or two on where to go, but I am most definitely against the current
-implementation drops the safeguards provided by kvm_register_{read,write}_raw().
-E.g. passing in VCPU_REGS_RIP to kvm_gpr_read() will compile just fine, but will
-read the wrong register on APX capable hardware.
-
-There's still kinda sorta some protection there as kvm_read_egpr() will WARN on
-!APX hardware, but the hole scheme is kludgy at best.
+/faceplam, the buggy code was written by me.
