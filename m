@@ -1,188 +1,222 @@
-Received: from BYAPR05CU005.outbound.protection.outlook.com (mail-westusazon11010032.outbound.protection.outlook.com [52.101.85.32])
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 44F6E1A9FB7
-	for <kvm@vger.kernel.org>; Tue, 10 Mar 2026 06:17:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.85.32
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773123466; cv=fail; b=FChKVTI2AV8qdAAU0hmIQ4VOFbzZ7MvriYwdXZHvl4fH29JXK/3cIvnaXNcQbok3f6raiwUfdPWKCDaRAEkieTdB4Zd9ozrtaie1HkOo5gdxnIZ+iH1sL2+pJVXPrTuirPmNqb9j223CADn7IcK/sehoSASnHkH2lae2tvZ7Af0=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773123466; c=relaxed/simple;
-	bh=rjiO/Nx7yHqwtMZXItO7F6Zb6xOpIy/YlmRCtN4LTPk=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=cNiho2QXvBBfKAkcrpIuvTMiqIA2FfZdi23tgv7hhU5YkPdGI2zK0jaz5ss/Ilz2pJ+G0x8lhwCOtpBkAS6pSYrfFiU5nQfFxq9JsoXzvT9dPi/j0mHw99jBBPMbxm2Io/fNrpVIj8udrRU1YZOYH6QHMI0kBkoT47yDkBLtC2I=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=E+KXBrlQ; arc=fail smtp.client-ip=52.101.85.32
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA5A838DF9
+	for <kvm@vger.kernel.org>; Tue, 10 Mar 2026 06:28:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1773124103; cv=none; b=V3L40rs5AowG52Q+dAnsJXjmpP5RT/t+UfPGxnIm/c+/JUnqRGbtGC4kQO5BQO1xef7kSZI+Ojep9X6oHJ2RjzOG76GOF/MzPCp059ARATnYCClKSGJutXBRj1eqbKode49BoeitN35pyeTYpiW0gUpbk3pHjIrEw/DWppPGs+A=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1773124103; c=relaxed/simple;
+	bh=6Nkq3VwrTHIttx+uQ0XDi0oCv7zklnOr5TuIATEvo8E=;
+	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
+	 Message-Id:References:To; b=FBPOTC1W3ZxkfYw5T8UVgaEYMxtq1ZqjrLWUoKcGKb8Hj5qNZf9B5C1bx8Ul6pn45pfpoP7Rx/xyO17SjSqt5xnr224q+LHBVCa7BCXN1+OBeRkB/bbT4IeELbwSlLmnib9XCHVt3lGj0+yuwYx4MG/PivoJwmmvL+qBuRIW0l0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=swuCtPFk; arc=none smtp.client-ip=148.163.158.5
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="E+KXBrlQ"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=ixuDzFTu3o3cLhDLxAXw9k36ajpWBQcElWs2KF7poV4i31se9bnq1Ib+1RBOLhqOTaFl55Eu9hwhXN18OAwYhXsTITSEAbiBqa6HKbmYB6vH3E2gkD/MRgBbka/HSsu6orkl6pQ+gDquJ26UmHftA+w656bp+Onk858w9bu+KH5KWpYtqVxJNrEJ1yxDGDEE4RNxxXsT3l3+QLFcdEKpA19gqaOWkzpuc3fEJHPrjh2KbVfNTDN3nvvc1m85T7k80qnZBblyVS1SzC4M9oe6sx1tS4WtyyrEgM9U0x8ltoWGPHp6mLFiMW0p8fe7qZFhjJc2OCatBjYM8cSaZ6PosQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=wCWFu4amVIxmXIBcf5KEkUitagPlG2sTyC0lEmmZMtY=;
- b=Fp8GrQYm8xeOtqFZl3NRkJnYxPaVLUKIF7vui0oZK9J99TbHjG7g5Ad+4sFsY+YooPWfoX1/xx1oUlprbfMJEEwX88dvxVqkfGnsoG4b45PjsdBKCa9HriiN6sag3+V+sq9AFnpAQB6C4OKrXYgZXmHPO3rViPi1zgl5ptyEeWzK7rZYz/AZxiUaqdg5x7Vx9pSGb0F+95+tEnIP29hLj1q574yfYDqu+Lh8IpUjwEjzDD3ZWGYyKvS5/19a8twIxvgPqyZ3PnXdunzUB2YzURM3rXbL78i9P315o1L8OzhizOqpiRdmQW9Jd76oUEkLJV/jWAXtde31DrGZMGbvgQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 165.204.84.17) smtp.rcpttodomain=google.com smtp.mailfrom=amd.com; dmarc=pass
- (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
- dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=wCWFu4amVIxmXIBcf5KEkUitagPlG2sTyC0lEmmZMtY=;
- b=E+KXBrlQeCW768chc34C0NYYnNkj8oq/DL06rlcNPFmgiFDp2PBcAux0uWQMLyJrzOGh4mFUpW0HmeFxxPdSbcWPUQ8sJLTpewtJ1h+vcOw9hmftOjlUVLGiawPRyS17J3HhVJA3i3J+6v8jkHgPk5YXug/cNUSt6OAUZqnE9Mk=
-Received: from BL1PR13CA0167.namprd13.prod.outlook.com (2603:10b6:208:2bd::22)
- by PH7PR12MB5593.namprd12.prod.outlook.com (2603:10b6:510:133::9) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9700.11; Tue, 10 Mar
- 2026 06:17:41 +0000
-Received: from BN3PEPF0000B073.namprd04.prod.outlook.com
- (2603:10b6:208:2bd:cafe::eb) by BL1PR13CA0167.outlook.office365.com
- (2603:10b6:208:2bd::22) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.20.9678.24 via Frontend Transport; Tue,
- 10 Mar 2026 06:17:41 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
- smtp.mailfrom=amd.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=amd.com;
-Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
- 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=satlexmb08.amd.com; pr=C
-Received: from satlexmb08.amd.com (165.204.84.17) by
- BN3PEPF0000B073.mail.protection.outlook.com (10.167.243.118) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.9678.18 via Frontend Transport; Tue, 10 Mar 2026 06:17:41 +0000
-Received: from satlexmb10.amd.com (10.181.42.219) by satlexmb08.amd.com
- (10.181.42.217) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.17; Tue, 10 Mar
- 2026 01:17:40 -0500
-Received: from satlexmb08.amd.com (10.181.42.217) by satlexmb10.amd.com
- (10.181.42.219) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.17; Tue, 10 Mar
- 2026 01:17:40 -0500
-Received: from [10.143.193.101] (10.180.168.240) by satlexmb08.amd.com
- (10.181.42.217) with Microsoft SMTP Server id 15.2.2562.17 via Frontend
- Transport; Tue, 10 Mar 2026 01:17:37 -0500
-Message-ID: <0a9b715c-0476-469d-a09e-b56cb9f41455@amd.com>
-Date: Tue, 10 Mar 2026 11:47:31 +0530
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="swuCtPFk"
+Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 62A5OGHR512979;
+	Tue, 10 Mar 2026 06:27:58 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=11zp6X
+	lu9HtM8NgFiRuGpK0JWZedKvnXV7uxGUZO7MI=; b=swuCtPFktVoEWAhDPvQATG
+	6SLj/C369oEPuaO1oaPXI0DhluFzkddCKx8M5LS3+6TDj0qT3JVhhoa4gavTzPhS
+	1Y6dOs7pcx5SEYD3rrWYhmDw1LHrpZG1aGSW2SQ2CDA3y6nCxz2pqFtyc9BNzai7
+	8Zif7aXwsPx8JTQPO5x3hahR0m1xNkrA28GVtlroU32K134ZzOG3SKJY7+VFpb3z
+	BxFa+24z3lYRE6e/xfu9TtqgiV7Ggi94wCSvnqVXABYzZQyZ5NPL48UoCSppPUN0
+	Zxh86vb2tdUmbvUTwyFD7pIFbhdX8J8W/GXoFgTNapNb/RPVW5flon7F5zx5YBlg
+	==
+Received: from ppma13.dal12v.mail.ibm.com (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4crd1mhbu5-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 10 Mar 2026 06:27:57 +0000 (GMT)
+Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma13.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 62A1qrKr024660;
+	Tue, 10 Mar 2026 06:27:57 GMT
+Received: from smtprelay01.wdc07v.mail.ibm.com ([172.16.1.68])
+	by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 4cs0jjysgj-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 10 Mar 2026 06:27:57 +0000
+Received: from smtpav02.dal12v.mail.ibm.com (smtpav02.dal12v.mail.ibm.com [10.241.53.101])
+	by smtprelay01.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 62A6RuaC7734126
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Tue, 10 Mar 2026 06:27:56 GMT
+Received: from smtpav02.dal12v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id F34EC5805A;
+	Tue, 10 Mar 2026 06:27:55 +0000 (GMT)
+Received: from smtpav02.dal12v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id C6B9E58051;
+	Tue, 10 Mar 2026 06:27:53 +0000 (GMT)
+Received: from smtpclient.apple (unknown [9.98.109.174])
+	by smtpav02.dal12v.mail.ibm.com (Postfix) with ESMTPS;
+	Tue, 10 Mar 2026 06:27:53 +0000 (GMT)
+Content-Type: text/plain;
+	charset=utf-8
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v1 0/9] KVM: x86: Add support for AMD Extended APIC
- registers
-To: <seanjc@google.com>, <pbonzini@redhat.com>
-CC: <mingo@redhat.com>, <bp@alien8.de>, <dave.hansen@linux.intel.com>,
-	<kvm@vger.kernel.org>, <x86@kernel.org>, <santosh.shukla@amd.com>,
-	<nikunj.dadhania@amd.com>, <Naveen.Rao@amd.com>, <dapeng1.mi@linux.intel.com>
-References: <20260204074452.55453-1-manali.shukla@amd.com>
-Content-Language: en-US
-From: Manali Shukla <manali.shukla@amd.com>
-In-Reply-To: <20260204074452.55453-1-manali.shukla@amd.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 7bit
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BN3PEPF0000B073:EE_|PH7PR12MB5593:EE_
-X-MS-Office365-Filtering-Correlation-Id: 9d9911a3-ad0b-4791-5373-08de7e6cbc3d
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|376014|82310400026|1800799024|36860700016|13003099007;
-X-Microsoft-Antispam-Message-Info:
-	YUD2ap7dtbs+MhxSa/P5FqXOTq2YRIsS7EtlGw/GKOKvUGIYYMlCEn43cnVMfW6lmuKejqPDG6VTxdl1LC93haN+WR4yMimcvGRHcDiirFdBoWkmsRL0Oab6uUPi1Z3jLi94iW6iBT4lhNzXWaIwYdps8Qs1WocfVqZTHmEakD63Hb/5jYhJ6diM2aB7adnqjE6MtAiWzd5itkpsYto2rqAkZ8dcDTNZ/+Kbp0pVU+mbXfTTHXCavYxqqj+JCdLqVPm9dDexe0ee8v9o+U09CWFC/JySx/2IY9YmA+C20Yr0gzB082iaH9CqTLVF8QOXdzZ4OoudaRUkRLeO8eUfnQABXGgiErQxs6KKAaO+7+lExOJuWaDSR8htqrAX0aEpLwabeUH8R6PrP2jFEMnc1osT+ACNk/aMoPtRru30KSZanjMuUn6l34DGW57ozKM9aONd7iUpVQTC/tiZDbc4LD5EsEhWilCErSWZrB+oTDifa4J1dpKJsDIwGI7Zy9WXT123mKEvcpnEMv/7Vz7NMFqfqAEgPxIvtrI/bUOcwrtS6oPm4BNz/rW4QK9CjwYO0JRaMHzg7sajonav3M9n34OYWKggvIM5Cz9l5MnPl76SqY9abeO0UfjeBxWCrB902qSxPls+bLWLOZ4tW4bkWUjwEOq47MIJpkm8K8oU8ZzwQ3JdIeHKeC/FtXYTbVYkRD1Dy3BaAjzdO7QZb7AL+9n98ApENiLpZsgcJN4F9QY=
-X-Forefront-Antispam-Report:
-	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb08.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(376014)(82310400026)(1800799024)(36860700016)(13003099007);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	Wi92LoRQRqpdPHUW9HfNR48Dd3yFeUe6BqE4NPJOa+RvIL4Qwx7i6WnbtLrNSYLWr0G8u2g8Bw22+DqyotjtDb+zSYHuvYWrIzoxCgQYbnzqzmat3JHhgmCQe2Txlv0hiixjbuhSCPoGVHD/XnqgvS1cPhJBrNBHV4B2r18YwV7Zt1DOXL4rV2XJgqJQelt4KhK2i5tR3cDiqdWMZnMFSj73AuXGtSlvV63SeCbuvLTfmogUqAIONKKE+lY3wDcDAmISIyceh0Dx10XEldc0wEOL6vpFOPTAyzaYLizuxmEjnsbYHwHo4YTb3iD3Peuq3TsF9r2no7TBIgq0kLAVuzE52JPrsSztpRlN60A4BCSpx7CuVlilPl4f6pd8OjsgC/9BQ/N33NMDMg8iKso5tsUfVv7+SbGPl2U62ygZR+nlMmeXsdgNjfb1UC/gCvP+
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 10 Mar 2026 06:17:41.2469
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 9d9911a3-ad0b-4791-5373-08de7e6cbc3d
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[satlexmb08.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	BN3PEPF0000B073.namprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH7PR12MB5593
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3864.300.41.1.7\))
+Subject: Re: [PATCH v2 1/2] drivers/vfio_pci_core: Change PXD_ORDER check from
+ switch case to if/else block
+From: Venkat <venkat88@linux.ibm.com>
+In-Reply-To: <b155e19993ee1f5584c72050192eb468b31c5029.1773058761.git.ritesh.list@gmail.com>
+Date: Tue, 10 Mar 2026 11:57:41 +0530
+Cc: linuxppc-dev@lists.ozlabs.org, Madhavan Srinivasan <maddy@linux.ibm.com>,
+        Christophe Leroy <chleroy@kernel.org>, linux-mm@kvack.org,
+        kvm@vger.kernel.org, Alex Williamson <alex@shazbot.org>,
+        Peter Xu <peterx@redhat.com>
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <D0752596-C64F-4454-88F6-2D205CB43B4D@linux.ibm.com>
+References: <b155e19993ee1f5584c72050192eb468b31c5029.1773058761.git.ritesh.list@gmail.com>
+To: "Ritesh Harjani (IBM)" <ritesh.list@gmail.com>
+X-Mailer: Apple Mail (2.3864.300.41.1.7)
+X-TM-AS-GCONF: 00
+X-Proofpoint-Reinject: loops=2 maxloops=12
+X-Authority-Analysis: v=2.4 cv=ds3Wylg4 c=1 sm=1 tr=0 ts=69afb9ee cx=c_pps
+ a=AfN7/Ok6k8XGzOShvHwTGQ==:117 a=AfN7/Ok6k8XGzOShvHwTGQ==:17
+ a=IkcTkHD0fZMA:10 a=Yq5XynenixoA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=RnoormkPH1_aCDwRdu11:22 a=V8glGbnc2Ofi9Qvn3v5h:22 a=VwQbUJbxAAAA:8
+ a=pGLkceISAAAA:8 a=VnNF1IyMAAAA:8 a=TkzObPc7TtdjdkxZWH0A:9 a=QEXdDO2ut3YA:10
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMzEwMDA0OCBTYWx0ZWRfX8Pbw1pZPSi2w
+ 8OEl2HmIth+EiBcYA5T11NX1NjHkkp6oRIuiq5ZYirgBIrxSd6K1LFFjFsJb0JLtjcHARShhdVi
+ damULwfsnb1cVpzYQ7MX0TGoFDGT/pVZYHYG0JNx8zRj4DdvDj+Fh/5y2OP8E2S1Qrb7VGgsAbH
+ oMETb8vmDg29Z2CcRX0XTkQhUUPDB3Muv/+W/Le1o1369QECfF/5BYEoLUj/nCijrY8Doc7a4nk
+ Hvvrs8wJKR607HcyVbYNFuSh1hDS5iQHhnsmFJLgZ4oD5gxoI8wYoXiJtkw0p4ZfumyYVm+Slx9
+ YB6HQZrRZixAfwjXWKP7Mnyzj3qF3v7QWzQgm6yyKqWXkBG1f/t+kzvqPaJChwkWyDjhxFFAPRS
+ 3iAGI6D4O+Xak4mL/f1iEc+Sa1DtEd8ueeotcjh7uew5ETjIDoxUd6/mJi1voZm6aYoZm2xoHu7
+ 0MzqoETFVvPLNqfOBBg==
+X-Proofpoint-GUID: rUIBbepxIgIMAZgVxnhSla9Np10kf9Vh
+X-Proofpoint-ORIG-GUID: Yn-QkYj-UwAT8YKWAgDDbqyS4eMFwDC4
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
+ definitions=2026-03-10_01,2026-03-09_02,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ spamscore=0 phishscore=0 clxscore=1011 impostorscore=0 suspectscore=0
+ priorityscore=1501 lowpriorityscore=0 malwarescore=0 adultscore=0 bulkscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2602130000 definitions=main-2603100048
 
-On 2/4/2026 1:14 PM, Manali Shukla wrote:
-> Add support for AMD's Extended APIC registers, which reside in a 4KB
-> APIC page instead of the legacy 1KB APIC register space.  Extended LVT
-> registers (offsets 0x500-0x530) provide additional interrupt vectors
-> for features like Instruction Based Sampling (IBS).
-> 
-> Introduce KVM_CAP_LAPIC2 to allow userspace to opt into the full 4KB
-> APIC register space. The capability uses a bitmask to support different
-> APIC extensions:
-> 
->   KVM_LAPIC2_DEFAULT: 4KB APIC register space (common foundation)
->   KVM_LAPIC2_AMD_DEFAULT: Extended LVT registers (AMD-specific)
-> 
-> Add KVM_GET/SET_LAPIC2 ioctls that operate on a 4KB APIC register space
-> accommodate extended registers.  Legacy KVM_GET/SET_LAPIC continue to
-> work for backward compatibility.
-> 
-> Emulate extended APIC registers (APIC_EFEAT, APIC_ECTRL, APIC_EILVTn)
-> when the guest has X86_FEATURE_EXTAPIC and userspace enables
-> KVM_CAP_LAPIC2.  Current AMD processors support four extended LVT
-> entries, future processors may support up to 255.
-> 
-> Integrate with AVIC to accelerate extended LVT MSR access when
-> AVIC_EXTLVT is supported.  Reads are accelerated without VM-exits;
-> writes trigger trap-style VM-exits.
-> 
-> Tested on AMD hardware with Extapic support:
-> - Extended APIC register read/write emulation and AVIC acceleration
->   with IBS driver running on the guest
-> - VM migration with extended APIC state and without extended APIC state
-> - Backward compatibility check:
->   Fallback to legacy IOCTLs when KVM_CAP_LAPIC2 capability is not enabled
-> 
-> Equivalent Qemu changes can be found at:
-> https://github.com/AMDESE/qemu/tree/extlvt_v1
-> 
-> Patches are prepared on kvm-x86/next (003f68c79227).
-> 
-> Manali Shukla (7):
->   KVM: x86: Refactor APIC register mask handling to support extended
->     APIC registers
->   x86/apic: Add helper to get maximum number of Extended LVT registers
->   KVM: SVM: Set kvm_caps.has_extapic when CPU supports Extended APIC
->   KVM: x86: Introduce KVM_CAP_LAPIC2 for 4KB APIC register space support
->   KVM: x86: Refactor APIC state get/set to accept variable-sized buffers
->   KVM: Add KVM_GET_LAPIC2 and KVM_SET_LAPIC2 for extended APIC
->   KVM: SVM: Add AVIC support for extended LVT MSRs
-> 
-> Santosh Shukla (2):
->   KVM: x86: Emulate Extended LVT registers for AMD guests
->   x86/cpufeatures: Add CPUID feature bit for Extended LVT AVIC
->     acceleration
-> 
->  Documentation/virt/kvm/api.rst     |  75 +++++++++++++
->  arch/x86/include/asm/apic.h        |   1 +
->  arch/x86/include/asm/apicdef.h     |  18 +++
->  arch/x86/include/asm/cpufeatures.h |   1 +
->  arch/x86/include/asm/kvm_host.h    |  12 ++
->  arch/x86/include/uapi/asm/kvm.h    |   5 +
->  arch/x86/kernel/apic/apic.c        |  17 +++
->  arch/x86/kvm/cpuid.c               |  10 +-
->  arch/x86/kvm/lapic.c               | 169 ++++++++++++++++++++---------
->  arch/x86/kvm/lapic.h               |  14 ++-
->  arch/x86/kvm/svm/avic.c            |  14 +++
->  arch/x86/kvm/svm/svm.c             |   3 +
->  arch/x86/kvm/vmx/vmx.c             |  10 +-
->  arch/x86/kvm/x86.c                 |  93 +++++++++++++++-
->  arch/x86/kvm/x86.h                 |   2 +
->  include/uapi/linux/kvm.h           |   7 ++
->  16 files changed, 390 insertions(+), 61 deletions(-)
-> 
 
-A Gentle reminder to review.
 
--Manali
+> On 9 Mar 2026, at 6:08=E2=80=AFPM, Ritesh Harjani (IBM) =
+<ritesh.list@gmail.com> wrote:
+>=20
+> Architectures like PowerPC uses runtime defined values for
+> PMD_ORDER/PUD_ORDER. This is because it can use either RADIX or HASH =
+MMU
+> at runtime using kernel cmdline. So the pXd_index_size is not known at
+> compile time. Without this fix, when we add huge pfn support on =
+powerpc
+> in the next patch, vfio_pci_core driver compilation can fail with the
+> following errors.
+>=20
+>  CC [M]  drivers/vfio/vfio_main.o
+>  CC [M]  drivers/vfio/group.o
+>  CC [M]  drivers/vfio/container.o
+>  CC [M]  drivers/vfio/virqfd.o
+>  CC [M]  drivers/vfio/vfio_iommu_spapr_tce.o
+>  CC [M]  drivers/vfio/pci/vfio_pci_core.o
+>  CC [M]  drivers/vfio/pci/vfio_pci_intrs.o
+>  CC [M]  drivers/vfio/pci/vfio_pci_rdwr.o
+>  CC [M]  drivers/vfio/pci/vfio_pci_config.o
+>  CC [M]  drivers/vfio/pci/vfio_pci.o
+>  AR      kernel/built-in.a
+> ../drivers/vfio/pci/vfio_pci_core.c: In function =
+=E2=80=98vfio_pci_vmf_insert_pfn=E2=80=99:
+> ../drivers/vfio/pci/vfio_pci_core.c:1678:9: error: case label does not =
+reduce to an integer constant
+> 1678 |         case PMD_ORDER:
+>      |         ^~~~
+> ../drivers/vfio/pci/vfio_pci_core.c:1682:9: error: case label does not =
+reduce to an integer constant
+> 1682 |         case PUD_ORDER:
+>      |         ^~~~
+> make[6]: *** [../scripts/Makefile.build:289: =
+drivers/vfio/pci/vfio_pci_core.o] Error 1
+> make[6]: *** Waiting for unfinished jobs....
+> make[5]: *** [../scripts/Makefile.build:546: drivers/vfio/pci] Error 2
+> make[5]: *** Waiting for unfinished jobs....
+> make[4]: *** [../scripts/Makefile.build:546: drivers/vfio] Error 2
+> make[3]: *** [../scripts/Makefile.build:546: drivers] Error 2
+>=20
+> Fixes: f9e54c3a2f5b7 ("vfio/pci: implement huge_fault support")
+> Signed-off-by: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
+> ---
+
+Tested-by: Venkat Rao Bagalkote <venkat88@linux.ibm.com>
+
+Tested this patch, and with this, build is successful and reported issue =
+is fixed.
+
+
+WithOut this patch:
+
+drivers/vfio/pci/vfio_pci_core.c: In function =
+=E2=80=98vfio_pci_vmf_insert_pfn=E2=80=99:
+drivers/vfio/pci/vfio_pci_core.c:1677:9: error: case label does not =
+reduce to an integer constant
+ 1677 |         case PMD_ORDER:
+      |         ^~~~
+drivers/vfio/pci/vfio_pci_core.c:1681:9: error: case label does not =
+reduce to an integer constant
+ 1681 |         case PUD_ORDER:
+      |         ^~~~
+
+Regards,
+Venkat.
+> v1 -> v2:
+> 1. addressed review comments from Christophe [1]
+> [1]: =
+https://lore.kernel.org/linuxppc-dev/0b8fce7a61561640634317a5e287cdb479471=
+5fd.1772170860.git.ritesh.list@gmail.com/
+>=20
+> drivers/vfio/pci/vfio_pci_core.c | 19 +++++++------------
+> 1 file changed, 7 insertions(+), 12 deletions(-)
+>=20
+> diff --git a/drivers/vfio/pci/vfio_pci_core.c =
+b/drivers/vfio/pci/vfio_pci_core.c
+> index d43745fe4c84..0967307235b8 100644
+> --- a/drivers/vfio/pci/vfio_pci_core.c
+> +++ b/drivers/vfio/pci/vfio_pci_core.c
+> @@ -1670,21 +1670,16 @@ vm_fault_t vfio_pci_vmf_insert_pfn(struct =
+vfio_pci_core_device *vdev,
+> if (vdev->pm_runtime_engaged || !__vfio_pci_memory_enabled(vdev))
+> return VM_FAULT_SIGBUS;
+>=20
+> - switch (order) {
+> - case 0:
+> + if (!order)
+> return vmf_insert_pfn(vmf->vma, vmf->address, pfn);
+> -#ifdef CONFIG_ARCH_SUPPORTS_PMD_PFNMAP
+> - case PMD_ORDER:
+> +
+> + if (IS_ENABLED(CONFIG_ARCH_SUPPORTS_PMD_PFNMAP) && order =3D=3D =
+PMD_ORDER)
+> return vmf_insert_pfn_pmd(vmf, pfn, false);
+> -#endif
+> -#ifdef CONFIG_ARCH_SUPPORTS_PUD_PFNMAP
+> - case PUD_ORDER:
+> +
+> + if (IS_ENABLED(CONFIG_ARCH_SUPPORTS_PUD_PFNMAP) && order =3D=3D =
+PUD_ORDER)
+> return vmf_insert_pfn_pud(vmf, pfn, false);
+> - break;
+> -#endif
+> - default:
+> - return VM_FAULT_FALLBACK;
+> - }
+> +
+> + return VM_FAULT_FALLBACK;
+> }
+> EXPORT_SYMBOL_GPL(vfio_pci_vmf_insert_pfn);
+>=20
+> --
+> 2.39.5
+>=20
+>=20
 
