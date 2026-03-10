@@ -1,56 +1,55 @@
-Received: from mail-pg1-f201.google.com (mail-pg1-f201.google.com [209.85.215.201])
+Received: from mail-pf1-f202.google.com (mail-pf1-f202.google.com [209.85.210.202])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2688E3F54C0
-	for <kvm@vger.kernel.org>; Tue, 10 Mar 2026 23:49:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 221403F65F9
+	for <kvm@vger.kernel.org>; Tue, 10 Mar 2026 23:49:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.202
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773186553; cv=none; b=KfQDwledcAG94iFywd1KCpilAsiJqhTyDzNoygJD0SYRJUKkEQqqiuqRfKXy4+DrCvogqs8jtypJTrF5gCRvIg7kJ/EnZdq1H/PV4JvD8C3y4SHy6KvJ2GkZbmFAt95o27PrcoSHokKzWQKOAhY4BAejiAPW0v6UH8/vjApas5s=
+	t=1773186555; cv=none; b=ug8b3wPKNyCcFb3KYQxVC4cafnZbcaiEmq4rFZcwnlqwhzdk5xr+KNOrg9B6ucY8ldDa6y0ApcT1qrECmZFjivKSzZ/DEaY/Ktjyjwn/VqQXwfat3AGewUc7AF16FmLTDQDJcnktCPlgvDud7ATle+w6v7Kg7lL8GZnkEl+B7yo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773186553; c=relaxed/simple;
-	bh=lQVINFRBfCNVeU648cAxFtZU2dxkYDd+1iFEZqJg0K4=;
+	s=arc-20240116; t=1773186555; c=relaxed/simple;
+	bh=wxT6ANPDWoUdiA3RflJKhdUGnjSjqmEv68Sd9E4VFWA=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=t+utf24vwIaKq1Drb9mo2qQipDLnJXuhQOacEfAnnm5nEDss9duGI/kGBUwzwwIr9kIWrWNcWqkeIwsxanOOaOam8MExmIk0g5WWTxvSGapViLUwjU1G50M2RPJkxk/gbFb5YPJ1FtRs3lRCv61C16VkBb3OBgVhWrCwQvpl8AY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=XKcY62KK; arc=none smtp.client-ip=209.85.215.201
+	 To:Cc:Content-Type; b=l705sr1nHgn+TO0wqc24OkID5j3N0GFi7VRaDxxYZVeQwh52QwF/upd+wM4Y20zLLFAWuDE+M1RYCLMFoSZ2CdWwDQCogtdZ+0wN8dKpbbG/HwZt4ugpj7IW+KhERz9OfuMGnTH3UVacO0/I1dlSL767atm5lWjWfQLlu8nHrPI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=sUXsVkUp; arc=none smtp.client-ip=209.85.210.202
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="XKcY62KK"
-Received: by mail-pg1-f201.google.com with SMTP id 41be03b00d2f7-c7385e8fa73so3644152a12.3
-        for <kvm@vger.kernel.org>; Tue, 10 Mar 2026 16:49:12 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="sUXsVkUp"
+Received: by mail-pf1-f202.google.com with SMTP id d2e1a72fcca58-82984468f85so3415131b3a.1
+        for <kvm@vger.kernel.org>; Tue, 10 Mar 2026 16:49:13 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1773186552; x=1773791352; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:from:subject:message-id:references
-         :mime-version:in-reply-to:date:reply-to:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=KGe66xfGbOxCz1mpJAIyMP4Fec52GFDEzf1ERh019gQ=;
-        b=XKcY62KKxm8ZcVKVlCbfG0B/vVU3BRe0ff2dIClw9DEHuq9XnqgvdqAJroF84ivftI
-         TQykyxTXyZuslrPb1h5CbXSEo8pTGI2OXUmcAt569lgfLinugZDwQF1v4hXA3CLNyK5v
-         YipkomTscxtjAxFc3DENBaqdZencVq5YRrTvgqSw26fnXY159Odgkg18EGz+TZvdCL2r
-         xIC6MlRMX96strefSJ+HdeFWOK5WQO1GuI0d7u61Rx2iDNDtz2zXn9BXoPOKFFGarc1P
-         OQTQQA7QfCMeNr42I/qpr9i7Yht0YS0LLC5vF1Z17pGzY2NTnkysU08fQZR5M0SX/j8o
-         lidA==
+        d=google.com; s=20230601; t=1773186553; x=1773791353; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:reply-to:from:to:cc:subject:date:message-id:reply-to;
+        bh=S/oj221AyjL7p0LimTIXezs2T/jJm5OAuCv1irweo4I=;
+        b=sUXsVkUpLTwMDzrrM91zSWBX9YLV4diFt0ij+vfW6YHRQnIaoQw7iUuXDfkdd0NqwM
+         wPT8jZ1m13YMCirOLrT5LrRP8ivTrhUjmcC81rPeXo3yVGNS3e3WiJuLNS61j5LlqRaJ
+         nBx8yScxpTpudUYxpzmuZSToxJmShCLq22zPU+2jwItJ+ULjzKFE+GZl3Vfp6ShfER8N
+         xiuUwfRmL8vxEA2Tlc7fzR9qfqh1NdXIli72evfgaqfTAlAGy0Wc6u7oOUlDk7DxQEW1
+         dGVPIdbPx6sMWKgqDN8+xwtWr30IO4Hz3WQY13iiX3xZa66DNZiqIFa5SF8Ok5L8lWqg
+         9sTQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1773186552; x=1773791352;
-        h=content-transfer-encoding:cc:to:from:subject:message-id:references
-         :mime-version:in-reply-to:date:reply-to:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=KGe66xfGbOxCz1mpJAIyMP4Fec52GFDEzf1ERh019gQ=;
-        b=pTjS/PpcScM3AzQe+34kiyQvDx+SochN3N+m9AnP1OJI4Ov0a1wrfTimhQIR+YLWgS
-         tsrhRSlpt/WdGEre+ez9tcnOhH3S4ugeMk1+lDkpA0P0VycpZSaCdAm76JdZeLx1s72x
-         ulovVx09HwN7He9wtP9R039wfg2vvRhVXwy/RMHxu/037HcfFw00bnk3yDjmTS3MZYYh
-         vw2789bst6i/alabNoWy428N8NnkKWAsu8T3AJOcbzFOEIfkWB60oQESayqsYsewUR4a
-         /EQB2KDYxYOYiG9YzdwlX3h97kDGZymFomrIxdJIvMQKfmRHFL82hBMsjTns0ZVeK0qa
-         //Lg==
-X-Gm-Message-State: AOJu0YwlMujqQNH1jrShJlv7FTDbEaqcqkzEW5MuH/9s6D/3icuWcaOh
-	kqLc7iB/UVMVMwhuYhm7sHvr/a/X18czRTA7VjLZ+xOxBCaQ9GEzHforsxwZyA3qAA7OwTQ48yX
-	yKHprKw==
-X-Received: from pgam3.prod.google.com ([2002:a05:6a02:2b43:b0:c61:35ea:4553])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a21:691:b0:394:5ff3:2a98
- with SMTP id adf61e73a8af0-398c60e3834mr350163637.46.1773186551520; Tue, 10
- Mar 2026 16:49:11 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1773186553; x=1773791353;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:reply-to:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=S/oj221AyjL7p0LimTIXezs2T/jJm5OAuCv1irweo4I=;
+        b=bIMsfzV4v7uFJiQYp7nM9NY6YVJPX0qqpHPEYOFkyHTn5NDVgL9nQAbiktSvxVFEBe
+         aGjpiF0zUoT3D8jyGUq8pA6dP/z3m9gYbIl7QZWL+YeQUwLg/eW2EAuIZkDGB0tDAmtt
+         rby8EEclTdc3DraU5euUc2rDxO/5iTgwv661Ye5ED1wwJUBxkvSKx0Eqc2LdCh09DLmc
+         d6tAW4TQ5Dg3FXBoZJzWxrZFfpdyn4SKP/xWt+eeWgvBKSoz/+flMwX5V96vIsujTNnB
+         UWA30T0bz0A5lzx3/vUXAPu16fO/GWgnQWw/6V8hkfTDlmpZi1LXNaW2ES51iXF1PbXr
+         Ea6w==
+X-Gm-Message-State: AOJu0YzCYIGXaNcrTGLPN0u5mbOxE5BNc9c7bO2YlyvF0rYXh9j//LLV
+	jLCt4ZyBxA50gAcajOIROzO3EJBNxlHBoskfAvGJvrnP01uBUdyeo2J+EEglUexcNxpn+sNRnOR
+	ZMUI8aA==
+X-Received: from pfbef18.prod.google.com ([2002:a05:6a00:2c92:b0:81f:9d66:115b])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:2d1a:b0:81b:d5d9:a83a
+ with SMTP id d2e1a72fcca58-829f7269925mr520796b3a.61.1773186553338; Tue, 10
+ Mar 2026 16:49:13 -0700 (PDT)
 Reply-To: Sean Christopherson <seanjc@google.com>
-Date: Tue, 10 Mar 2026 16:48:28 -0700
+Date: Tue, 10 Mar 2026 16:48:29 -0700
 In-Reply-To: <20260310234829.2608037-1-seanjc@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
@@ -60,107 +59,59 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 References: <20260310234829.2608037-1-seanjc@google.com>
 X-Mailer: git-send-email 2.53.0.473.g4a7958ca14-goog
-Message-ID: <20260310234829.2608037-21-seanjc@google.com>
-Subject: [PATCH 20/21] KVM: SVM: Move lock-protected allocation of SEV ASID
- into a separate helper
+Message-ID: <20260310234829.2608037-22-seanjc@google.com>
+Subject: [PATCH 21/21] KVM: SEV: Goto an existing error label if charging
+ misc_cg for an ASID fails
 From: Sean Christopherson <seanjc@google.com>
 To: Sean Christopherson <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>
 Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
 	Jethro Beekman <jethro@fortanix.com>, Alexander Potapenko <glider@google.com>, 
 	"=?UTF-8?q?Carlos=20L=C3=B3pez?=" <clopez@suse.de>
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 
-From: Carlos L=C3=B3pez <clopez@suse.de>
-
-Extract the lock-protected parts of SEV ASID allocation into a new helper
-and opportunistically convert it to use guard() when acquiring the mutex.
-
-Preserve the goto even though it's a little odd, as it's there's a fair
-amount of subtlety that makes it surprisingly difficult to replicate the
-functionality with a loop construct, and arguably using goto yields the
-most readable code.
+Dedup a small amount of cleanup code in SEV ASID allocation by reusing
+an existing error label.
 
 No functional change intended.
 
-Signed-off-by: Carlos L=C3=B3pez <clopez@suse.de>
-[sean: move code to separate helper, rework shortlog+changelog]
 Signed-off-by: Sean Christopherson <seanjc@google.com>
 ---
- arch/x86/kvm/svm/sev.c | 37 +++++++++++++++++++++++--------------
- 1 file changed, 23 insertions(+), 14 deletions(-)
+ arch/x86/kvm/svm/sev.c | 11 +++++------
+ 1 file changed, 5 insertions(+), 6 deletions(-)
 
 diff --git a/arch/x86/kvm/svm/sev.c b/arch/x86/kvm/svm/sev.c
-index 36a33e8ade4d..c35eb9e30993 100644
+index c35eb9e30993..32d7f329f92c 100644
 --- a/arch/x86/kvm/svm/sev.c
 +++ b/arch/x86/kvm/svm/sev.c
-@@ -237,6 +237,28 @@ static void sev_misc_cg_uncharge(struct kvm_sev_info *=
-sev)
- 	misc_cg_uncharge(type, sev->misc_cg, 1);
- }
-=20
-+static unsigned int sev_alloc_asid(unsigned int min_asid, unsigned int max=
-_asid)
-+{
-+	unsigned int asid;
-+	bool retry =3D true;
-+
-+	guard(mutex)(&sev_bitmap_lock);
-+
-+again:
-+	asid =3D find_next_zero_bit(sev_asid_bitmap, max_asid + 1, min_asid);
-+	if (asid > max_asid) {
-+		if (retry && __sev_recycle_asids(min_asid, max_asid)) {
-+			retry =3D false;
-+			goto again;
-+		}
-+
-+		return asid;
-+	}
-+
-+	__set_bit(asid, sev_asid_bitmap);
-+	return asid;
-+}
-+
- static int sev_asid_new(struct kvm_sev_info *sev, unsigned long vm_type)
- {
- 	/*
-@@ -244,7 +266,6 @@ static int sev_asid_new(struct kvm_sev_info *sev, unsig=
-ned long vm_type)
- 	 * SEV-ES-enabled guest can use from 1 to min_sev_asid - 1.
- 	 */
- 	unsigned int min_asid, max_asid, asid;
--	bool retry =3D true;
- 	int ret;
-=20
- 	if (vm_type =3D=3D KVM_X86_SNP_VM) {
-@@ -277,24 +298,12 @@ static int sev_asid_new(struct kvm_sev_info *sev, uns=
-igned long vm_type)
- 		return ret;
- 	}
-=20
--	mutex_lock(&sev_bitmap_lock);
--
--again:
--	asid =3D find_next_zero_bit(sev_asid_bitmap, max_asid + 1, min_asid);
-+	asid =3D sev_alloc_asid(min_asid, max_asid);
+@@ -289,14 +289,11 @@ static int sev_asid_new(struct kvm_sev_info *sev, unsigned long vm_type)
+ 	if (min_asid > max_asid)
+ 		return -ENOTTY;
+ 
+-	WARN_ON(sev->misc_cg);
++	WARN_ON_ONCE(sev->misc_cg);
+ 	sev->misc_cg = get_current_misc_cg();
+ 	ret = sev_misc_cg_try_charge(sev);
+-	if (ret) {
+-		put_misc_cg(sev->misc_cg);
+-		sev->misc_cg = NULL;
+-		return ret;
+-	}
++	if (ret)
++		goto e_put_cg;
+ 
+ 	asid = sev_alloc_asid(min_asid, max_asid);
  	if (asid > max_asid) {
--		if (retry && __sev_recycle_asids(min_asid, max_asid)) {
--			retry =3D false;
--			goto again;
--		}
--		mutex_unlock(&sev_bitmap_lock);
- 		ret =3D -EBUSY;
- 		goto e_uncharge;
- 	}
-=20
--	__set_bit(asid, sev_asid_bitmap);
--
--	mutex_unlock(&sev_bitmap_lock);
--
- 	sev->asid =3D asid;
+@@ -306,8 +303,10 @@ static int sev_asid_new(struct kvm_sev_info *sev, unsigned long vm_type)
+ 
+ 	sev->asid = asid;
  	return 0;
++
  e_uncharge:
---=20
+ 	sev_misc_cg_uncharge(sev);
++e_put_cg:
+ 	put_misc_cg(sev->misc_cg);
+ 	sev->misc_cg = NULL;
+ 	return ret;
+-- 
 2.53.0.473.g4a7958ca14-goog
 
