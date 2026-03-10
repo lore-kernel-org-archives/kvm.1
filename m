@@ -1,92 +1,92 @@
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C1453EAC75
-	for <kvm@vger.kernel.org>; Tue, 10 Mar 2026 20:24:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F58C3E9F84
+	for <kvm@vger.kernel.org>; Tue, 10 Mar 2026 20:24:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773174266; cv=none; b=mBz7j7NJmOln0k5wQv5PlMzCtjKYidOH3G6j/y/pNppDwoBC5Tel6360UFsLs8w+cQGX5xoN8EwS9srv/3HS/BnsxYvmOpPBf+/KM4hPIOaB7AkiYkUYD6jVtnBVq96OswjRtF8HtJa0oh0cLnh3m4RFCHzLFEM1lE9qoKTnFzQ=
+	t=1773174266; cv=none; b=ccrcnGP808exdLN+OTHCobGsuV15VF0NmIw7/nmggJqmlI0Vg0pwlPMGsPvUL7xe4tFOM5UQX4251Dh0bxCP/r6LWYaeWZFJ6Lyv0FM/jOBUnuJ2Lt4u1BMsEOYCsoVV5bWkzP58Igk8OdZX40mS5NqazE4fnA6cOyLJy7XxaW8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1773174266; c=relaxed/simple;
-	bh=JJO5qewKWIqGbxpfcpQoE00DHR/fbyp+xQU2r4R6u5Q=;
+	bh=XzfjV0NwKwYFZsCPkm9GQbhIVKJ1rr5+J23oLRZx2CI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=D4cECKHYn+qsf3J/SNhamG5JJwgC9Yd2W8SMZZwN8ih7bcP+fsBU4yMaATdHlDRDK137Lh6EjXaNxNGbdbxEom6BkSF0g+AMGWTTJ54coGEnwB85ruWtEflugZ0JayPmft1TQ2PsoOZzPPUbOBNVMd7CmDDDZBIMkWvpIMy2obw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=LkLPTygH; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=ENN7Aunw; arc=none smtp.client-ip=170.10.133.124
+	 MIME-Version; b=dGiDKBvGXC8Mk2KwL4x39KNE4nD86HeUCBHgljTgdMbTJhNeNo5lqpPVMeleLeQBpUScYju6uaZcJs86FnJ89M5Rr5p9kMOvnfx51ubdwSZ8A+6Zf3I10KJUyD8CqGAMELZ6/RjgNfw6VzdJdS/e6zA3N4YQonFpa0sVaeKL0N0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=cn1AjjU2; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=kNxpTrwY; arc=none smtp.client-ip=170.10.133.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="LkLPTygH";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="ENN7Aunw"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="cn1AjjU2";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="kNxpTrwY"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1773174262;
+	s=mimecast20190719; t=1773174264;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=BJ85Lkzx3nSPKz8vbaVq+hpymVq+1ScaQgtLPpniKs4=;
-	b=LkLPTygHV/HP4DVQUeK0YijcwFAJCa3WOmhdCU9mE7xN7yyS7Hh7dD8Q7KRAXB7m3qqh5d
-	AhQ3cugOVz4PC5HsvK/9oNvtpO1uJ1sYwQknDRJpq0xvfG/zZVkzqDMoCZvdxM/xvvWP86
-	hnP+DmJ8IfgbyoJdDbuGKQZWLh6Moik=
-Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
- [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=8TGyObaOA+0rXaSG+XOwiWbo5MYOrwO/NaEY5gkjsyg=;
+	b=cn1AjjU2nLIH6KVFkAjtpPpY5wBwHVs1RDF8z4mJyFnmstxT+5S3+e6kMAPLdWli88ojxc
+	8kJGIWR4wH/rmf62Gp0xAySZHkUXQnfqYLkgzQKDTv5aNMYPUe6y5nhHAnkBn3B6YA6UXT
+	h47AIG02hXHnlgBRjVQWkB72FjUdWXk=
+Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
+ [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-614-tSAOabruN-qjg43U5lTKYw-1; Tue, 10 Mar 2026 16:24:20 -0400
-X-MC-Unique: tSAOabruN-qjg43U5lTKYw-1
-X-Mimecast-MFC-AGG-ID: tSAOabruN-qjg43U5lTKYw_1773174259
-Received: by mail-wr1-f70.google.com with SMTP id ffacd0b85a97d-439b50320a0so199363f8f.1
-        for <kvm@vger.kernel.org>; Tue, 10 Mar 2026 13:24:20 -0700 (PDT)
+ us-mta-472-bBgoWbP7MzCd46eRVDNXFQ-1; Tue, 10 Mar 2026 16:24:22 -0400
+X-MC-Unique: bBgoWbP7MzCd46eRVDNXFQ-1
+X-Mimecast-MFC-AGG-ID: bBgoWbP7MzCd46eRVDNXFQ_1773174262
+Received: by mail-wm1-f72.google.com with SMTP id 5b1f17b1804b1-4837b6f6b93so105958955e9.3
+        for <kvm@vger.kernel.org>; Tue, 10 Mar 2026 13:24:22 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1773174259; x=1773779059; darn=vger.kernel.org;
+        d=redhat.com; s=google; t=1773174261; x=1773779061; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=BJ85Lkzx3nSPKz8vbaVq+hpymVq+1ScaQgtLPpniKs4=;
-        b=ENN7AunwnuoxQNdjN9tfHrr0HKXiET+Gl7YqtAzhncsOaua049ULloIia0dTfg2/pH
-         Vnc6gSGuBaQJ6zb3nYNtPYauC9VO1vlivLVJ3XvDN/RKpWFIokA/TDaiw81jnmgElGGt
-         APn4S6+w8+WGLIFyST3Q7Mlg7oqPYFcHfksrab5/mfn+nS24laPkl1e/FrNNvIqyIzeA
-         q+iZxg5NoCbp49RZD8ywG1ToovQaASe8xQ/AOSRil/qjQdHzgcMiveHtlcQKU8Dg4JCG
-         tP/n6DoMmLEzu5nbGwjh10FQhlP1wXkeXqzrDxTBmmPHcquChGlnGKU7Uk/sBkof8/TV
-         QLkg==
+        bh=8TGyObaOA+0rXaSG+XOwiWbo5MYOrwO/NaEY5gkjsyg=;
+        b=kNxpTrwYlxYQ0WloV7oTR1vx5LiwnzL0JXw6B7/FFxYfI/i7ubT75+DXlvuEmpMebb
+         Ef6uDtFyK7YTYEztXKMt+9ioC/ZIPMm233QM7v8h8owJaas+DP/W38EFWNFZ6QVYFrE4
+         C9NUfXAvtQN3D4+4MnrLiFxp6elY9mJyWn6L0xf21XntXasW+nrqszoir5PM9Fo947kU
+         BrDeoVv+9htAd1IZ/G92UqZsEh2GUGehZt4ZfpenQR7V5l0nJ+NCG7pXOlWgZYwHIcE9
+         GdrFNCoTcrEhY0hXrb5qoxa9p2fyifyDPdHxoI5bJqpjL/BZ31qJz1tW9qp0l8EFys5p
+         BJ8Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1773174259; x=1773779059;
+        d=1e100.net; s=20230601; t=1773174261; x=1773779061;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=BJ85Lkzx3nSPKz8vbaVq+hpymVq+1ScaQgtLPpniKs4=;
-        b=OagUte4l3C5E7msOIxt9R3eNQquc3oA6JvaC2oYboF+vBfesz0wTIarnhTquF4bhTY
-         xQzbMDLN63e6Sbzt+cCdDuvWeUznv2Z80E3ZTHSA05WKtCAH7CCpVnULMOySRvKMbHCv
-         aj7ILYnvD/oRgPSumq0ovHlMj4w0UpXERZUEjUc+psv/TkXSmpcGAvGIMNSspea2nMQ6
-         Ip4Vdj4hJiRF64txUP6QM22ztKJ2tRKh2KJeVSQEgAfCYQoNCs/ET+qv10v8TsnC/qcI
-         1IvU8TXYqMXmjXThU/K68ciBWZIqT7/ZT9t5u8Y+p3nsvAI7WSEU53elimF+r3V0qkjo
-         LRpw==
-X-Forwarded-Encrypted: i=1; AJvYcCXuHiX45GlzbDvcBRLICMP0mt34x4ZxzErTn31DKBi9PHNtY6gG6PtKx5Sx3KypGQgarQY=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy8ddnaM8HqHPC6eybFlUBPt0JpiwZBg47EV6GJHXAQW2eMSw9x
-	2/hoU1Ljss+Iq+d+Yp/bTPXFPBvkL1FLNGKECTczP586lv3tNB1jp5yyHv05yquyJdMCa+9Tr+Y
-	hyPgEFA5bvYjycnMRkzchJiP1aPdEt/ylPouFdmoZoMr2U3Z60k8ZQw==
-X-Gm-Gg: ATEYQzzufzUE+O0yclceYSW/U4LpV+bIptzD5Q5QyT4Mk+Sja+fv1I4x+TR1563pEC9
-	roPAVB4zWD7gJlqdHZfMlDd6cjeeXRmD1pjencWsxqUOWuiu7QXCNpbuI4NUVRjV+TLksYEpVdv
-	sQbLnG8z72Dax4c5a82JoIq8uU4L+RInj/aOnHK3KryB/c2aLQaRyzZxZZX1Dz9y7KRglRs6fKl
-	gHbJMUNNWLFWyvPWcFmb4Z6P4OtGRFKdR3XEbTe2QPBx1kO9S6X9BIboeDa8WmIb9SwEV6ZtCn4
-	A9UFEQY81imAbGPOpUOSCi5KzgIzcxU+jEf0xiAxtCK7hA8ytYLyxu+w+T88FzKmhSa+gcgLMXg
-	N3Gb5zJ5oKc54x0R7n6+q4kJOzj+6Fojln9MfLsw9W/W4jZnENBMca1eNcW8yA1vuSjoWVgZVpK
-	PjWnuAyywsSr4CCDtZayySwvhHS3s=
-X-Received: by 2002:a05:6000:2908:b0:439:b6b3:faa7 with SMTP id ffacd0b85a97d-439f8c10e3dmr43753f8f.28.1773174259341;
-        Tue, 10 Mar 2026 13:24:19 -0700 (PDT)
-X-Received: by 2002:a05:6000:2908:b0:439:b6b3:faa7 with SMTP id ffacd0b85a97d-439f8c10e3dmr43703f8f.28.1773174258827;
-        Tue, 10 Mar 2026 13:24:18 -0700 (PDT)
+        bh=8TGyObaOA+0rXaSG+XOwiWbo5MYOrwO/NaEY5gkjsyg=;
+        b=ahQvaCKXGZ21nTgC5xNrupHUMrUfU6xMZwVGgQVjLsCxqrvvz4hFPGYinEChX/dHWX
+         mzr9BYBignMvU/P8h+qBtCGGqvvr4iyV8ZWKHiy3wXEvBHr6f0koq7PftLVYUU2mwFEy
+         7fDiQ/Lgl3ZMT3VFfaCbDZsXcf+Wt0SLcNW9slf60mTPJcNak58xQ4pGR+WJIhj7TnIL
+         zQ/GrbJNU7vFr0Y0DXbjMoPpfiVi8+kOmgCLOe7pJ2wGGAuDYLGmd9flWjzXwp3Q4Wj8
+         cqVQ3N4UHs7DC3IleQeCmUSlLta9zfWrdv2/xDMQWl5LU5ISfOoUkm9KwjG1CopuQye6
+         prng==
+X-Forwarded-Encrypted: i=1; AJvYcCWRj8Aey9nDGe74x7uumRHyx4EmpGyqJBz99wzqOSEFp3oa4+UjYdBq2YX2DIpt8ChLO04=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yxf3zzcrMiqYW/3JD1hs2MDORsYEckZ4hUxwQl7q/U7e9eRN8yN
+	djdH+mvMtFXcSV+br8i28+mJMI9lRX4/8Dkd9lBQU2wEgpFxMdfFA4MUOurmrEY4C2w6Q+l8ibf
+	Ib+sqVHZNOmGaMTtuI1NCrDP6ogwzPQm4wvLQUjY2JkB+TA2Z6kgOgg==
+X-Gm-Gg: ATEYQzxWPUmD7YOjLRJJUwOkQPWxi1i0LhDxESNY4wZ9uT0Von1FOqFiEiEB7hncdEd
+	LwUc4PW1UC0n1UizbsZzdZgCD5DM9sczGvrNBYYXxm9y7t4RbnrgQVjN4w7keUkCxkX9RHCqR48
+	gWRHsuewbUsfzxxwVTywAeWLabmJbNuMHi7ANL42Lnc5UN4IWSe0j0nplNt2cO/1AybXGY6BubF
+	jG/eZPINq1eAO1rd6ysszzc31soaeMXnfpoLi5GeKYL3TAkdVW87iZIlIB6rBQ6xpBm4V8Gpl1y
+	v7J6uMHOJarm+EnOSnEWWQOkhu2l2GaQi4fdHUBJsijv1YG9CAZ0TKp+XLGN7Op7zXrQbC9VvTs
+	7kemNyvHsAatd2wjnsSo+DMJaFyi7j+8oMZUtwOcoOUIDF3K1v8tX3Ska54VjWSB/3mFRfCYoLY
+	WZAgfqSmdyOU9anf6Foc6L9Y7NXJU=
+X-Received: by 2002:a05:600c:1d16:b0:483:1403:c47f with SMTP id 5b1f17b1804b1-4854b0a6fcamr2153815e9.6.1773174261640;
+        Tue, 10 Mar 2026 13:24:21 -0700 (PDT)
+X-Received: by 2002:a05:600c:1d16:b0:483:1403:c47f with SMTP id 5b1f17b1804b1-4854b0a6fcamr2153445e9.6.1773174261198;
+        Tue, 10 Mar 2026 13:24:21 -0700 (PDT)
 Received: from [192.168.10.48] ([151.95.144.138])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-439f81a3638sm621443f8f.9.2026.03.10.13.24.16
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4854b0cc00asm1231095e9.7.2026.03.10.13.24.19
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 10 Mar 2026 13:24:16 -0700 (PDT)
+        Tue, 10 Mar 2026 13:24:19 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: linux-kernel@vger.kernel.org,
 	kvm@vger.kernel.org
 Cc: seanjc@google.com,
 	xinyang@anthropic.com,
 	stable@vger.kernel.org
-Subject: [PATCH 1/5] KVM: VMX: check validity of VMCS controls when returning from SMM
-Date: Tue, 10 Mar 2026 21:24:10 +0100
-Message-ID: <20260310202414.406078-2-pbonzini@redhat.com>
+Subject: [PATCH 2/5] KVM: SVM: check validity of VMCB when returning from SMM
+Date: Tue, 10 Mar 2026 21:24:11 +0100
+Message-ID: <20260310202414.406078-3-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260310202414.406078-1-pbonzini@redhat.com>
 References: <20260310202414.406078-1-pbonzini@redhat.com>
@@ -98,132 +98,79 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-The VMCS12 is not available while in SMM.  However, it can be overwritten
-if userspace manages to trigger copy_enlightened_to_vmcs12() - for example
-via KVM_GET_NESTED_STATE.
+The VMCB12 is stored in guest memory and can be mangled while in SMM; it
+is then reloaded by svm_leave_smm(), but it is not checked again for
+validity.
 
-Because of this, the VMCS12 has to be checked for validity before it is
-used to generate the VMCS02.  Move the check code out of vmx_set_nested_state()
+Move the check code out of vmx_set_nested_state()
 (the other "not a VMLAUNCH/VMRESUME" path that emulates a nested vmentry)
-and reuse it in vmx_leave_smm().
+and reuse it in svm_leave_smm().
 
 Cc: stable@vger.kernel.org
-Reported-by: Xinyang Ge <xinyang@anthropic.com>
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- arch/x86/kvm/vmx/nested.c | 39 +++++++++++++++++++++++++++------------
- arch/x86/kvm/vmx/nested.h |  1 +
- arch/x86/kvm/vmx/vmx.c    |  4 ++++
- 3 files changed, 32 insertions(+), 12 deletions(-)
+ arch/x86/kvm/svm/nested.c | 12 ++++++++++--
+ arch/x86/kvm/svm/svm.c    |  4 ++++
+ arch/x86/kvm/svm/svm.h    |  1 +
+ 3 files changed, 15 insertions(+), 2 deletions(-)
 
-diff --git a/arch/x86/kvm/vmx/nested.c b/arch/x86/kvm/vmx/nested.c
-index cb925cc53389..d4bc47079809 100644
---- a/arch/x86/kvm/vmx/nested.c
-+++ b/arch/x86/kvm/vmx/nested.c
-@@ -6849,13 +6849,34 @@ void vmx_leave_nested(struct kvm_vcpu *vcpu)
- 	free_nested(vcpu);
+diff --git a/arch/x86/kvm/svm/nested.c b/arch/x86/kvm/svm/nested.c
+index 7b61124051a7..de9906adb73b 100644
+--- a/arch/x86/kvm/svm/nested.c
++++ b/arch/x86/kvm/svm/nested.c
+@@ -419,6 +419,15 @@ static bool nested_vmcb_check_controls(struct kvm_vcpu *vcpu)
+ 	return __nested_vmcb_check_controls(vcpu, ctl);
  }
  
-+int nested_vmx_check_restored_vmcs12(struct kvm_vcpu *vcpu)
++int nested_svm_check_cached_vmcb12(struct kvm_vcpu *vcpu)
 +{
-+	enum vm_entry_failure_code ignored;
-+	struct vmcs12 *vmcs12 = get_vmcs12(vcpu);
-+
-+	if (nested_cpu_has_shadow_vmcs(vmcs12) &&
-+	    vmcs12->vmcs_link_pointer != INVALID_GPA) {
-+		struct vmcs12 *shadow_vmcs12 = get_shadow_vmcs12(vcpu);
-+
-+		if (shadow_vmcs12->hdr.revision_id != VMCS12_REVISION ||
-+		    !shadow_vmcs12->hdr.shadow_vmcs)
-+			return -EINVAL;
-+	}
-+
-+	if (nested_vmx_check_controls(vcpu, vmcs12) ||
-+	    nested_vmx_check_host_state(vcpu, vmcs12) ||
-+	    nested_vmx_check_guest_state(vcpu, vmcs12, &ignored))
++	if (!nested_vmcb_check_save(vcpu) ||
++	    !nested_vmcb_check_controls(vcpu))
 +		return -EINVAL;
 +
 +	return 0;
 +}
 +
- static int vmx_set_nested_state(struct kvm_vcpu *vcpu,
- 				struct kvm_nested_state __user *user_kvm_nested_state,
- 				struct kvm_nested_state *kvm_state)
- {
- 	struct vcpu_vmx *vmx = to_vmx(vcpu);
- 	struct vmcs12 *vmcs12;
--	enum vm_entry_failure_code ignored;
- 	struct kvm_vmx_nested_state_data __user *user_vmx_nested_state =
- 		&user_kvm_nested_state->data.vmx[0];
- 	int ret;
-@@ -6986,25 +7007,20 @@ static int vmx_set_nested_state(struct kvm_vcpu *vcpu,
- 	vmx->nested.mtf_pending =
- 		!!(kvm_state->flags & KVM_STATE_NESTED_MTF_PENDING);
+ /*
+  * If a feature is not advertised to L1, clear the corresponding vmcb12
+  * intercept.
+@@ -1034,8 +1043,7 @@ int nested_svm_vmrun(struct kvm_vcpu *vcpu)
+ 	nested_copy_vmcb_control_to_cache(svm, &vmcb12->control);
+ 	nested_copy_vmcb_save_to_cache(svm, &vmcb12->save);
  
--	ret = -EINVAL;
- 	if (nested_cpu_has_shadow_vmcs(vmcs12) &&
- 	    vmcs12->vmcs_link_pointer != INVALID_GPA) {
- 		struct vmcs12 *shadow_vmcs12 = get_shadow_vmcs12(vcpu);
- 
-+		ret = -EINVAL;
- 		if (kvm_state->size <
- 		    sizeof(*kvm_state) +
- 		    sizeof(user_vmx_nested_state->vmcs12) + sizeof(*shadow_vmcs12))
- 			goto error_guest_mode;
- 
-+		ret = -EFAULT;
- 		if (copy_from_user(shadow_vmcs12,
- 				   user_vmx_nested_state->shadow_vmcs12,
--				   sizeof(*shadow_vmcs12))) {
--			ret = -EFAULT;
--			goto error_guest_mode;
--		}
--
--		if (shadow_vmcs12->hdr.revision_id != VMCS12_REVISION ||
--		    !shadow_vmcs12->hdr.shadow_vmcs)
-+				   sizeof(*shadow_vmcs12)))
- 			goto error_guest_mode;
- 	}
- 
-@@ -7015,9 +7031,8 @@ static int vmx_set_nested_state(struct kvm_vcpu *vcpu,
- 			kvm_state->hdr.vmx.preemption_timer_deadline;
- 	}
- 
--	if (nested_vmx_check_controls(vcpu, vmcs12) ||
--	    nested_vmx_check_host_state(vcpu, vmcs12) ||
--	    nested_vmx_check_guest_state(vcpu, vmcs12, &ignored))
-+	ret = nested_vmx_check_restored_vmcs12(vcpu);
-+	if (ret < 0)
- 		goto error_guest_mode;
- 
- 	vmx->nested.dirty_vmcs12 = true;
-diff --git a/arch/x86/kvm/vmx/nested.h b/arch/x86/kvm/vmx/nested.h
-index b844c5d59025..213a448104af 100644
---- a/arch/x86/kvm/vmx/nested.h
-+++ b/arch/x86/kvm/vmx/nested.h
-@@ -22,6 +22,7 @@ void nested_vmx_setup_ctls_msrs(struct vmcs_config *vmcs_conf, u32 ept_caps);
- void nested_vmx_hardware_unsetup(void);
- __init int nested_vmx_hardware_setup(int (*exit_handlers[])(struct kvm_vcpu *));
- void nested_vmx_set_vmcs_shadowing_bitmap(void);
-+int nested_vmx_check_restored_vmcs12(struct kvm_vcpu *vcpu);
- void nested_vmx_free_vcpu(struct kvm_vcpu *vcpu);
- enum nvmx_vmentry_status nested_vmx_enter_non_root_mode(struct kvm_vcpu *vcpu,
- 						     bool from_vmentry);
-diff --git a/arch/x86/kvm/vmx/vmx.c b/arch/x86/kvm/vmx/vmx.c
-index 48f0e426a8a2..e9fa59e92548 100644
---- a/arch/x86/kvm/vmx/vmx.c
-+++ b/arch/x86/kvm/vmx/vmx.c
-@@ -8540,6 +8540,10 @@ int vmx_leave_smm(struct kvm_vcpu *vcpu, const union kvm_smram *smram)
- 	}
- 
- 	if (vmx->nested.smm.guest_mode) {
-+		/* Triple fault if the state is invalid.  */
-+		if (nested_vmx_check_restored_vmcs12(vcpu) < 0)
-+			return 1;
+-	if (!nested_vmcb_check_save(vcpu) ||
+-	    !nested_vmcb_check_controls(vcpu)) {
++	if (nested_svm_check_cached_vmcb12(vcpu) < 0) {
+ 		vmcb12->control.exit_code    = SVM_EXIT_ERR;
+ 		vmcb12->control.exit_info_1  = 0;
+ 		vmcb12->control.exit_info_2  = 0;
+diff --git a/arch/x86/kvm/svm/svm.c b/arch/x86/kvm/svm/svm.c
+index 477fda63653b..95495048902c 100644
+--- a/arch/x86/kvm/svm/svm.c
++++ b/arch/x86/kvm/svm/svm.c
+@@ -4890,6 +4890,10 @@ static int svm_leave_smm(struct kvm_vcpu *vcpu, const union kvm_smram *smram)
+ 	vmcb12 = map.hva;
+ 	nested_copy_vmcb_control_to_cache(svm, &vmcb12->control);
+ 	nested_copy_vmcb_save_to_cache(svm, &vmcb12->save);
 +
- 		ret = nested_vmx_enter_non_root_mode(vcpu, false);
- 		if (ret)
- 			return ret;
++	if (nested_svm_check_cached_vmcb12(vcpu) < 0)
++		goto unmap_save;
++
+ 	ret = enter_svm_guest_mode(vcpu, smram64->svm_guest_vmcb_gpa, vmcb12, false);
+ 
+ 	if (ret)
+diff --git a/arch/x86/kvm/svm/svm.h b/arch/x86/kvm/svm/svm.h
+index ebd7b36b1ceb..6942e6b0eda6 100644
+--- a/arch/x86/kvm/svm/svm.h
++++ b/arch/x86/kvm/svm/svm.h
+@@ -797,6 +797,7 @@ static inline int nested_svm_simple_vmexit(struct vcpu_svm *svm, u32 exit_code)
+ 
+ int nested_svm_exit_handled(struct vcpu_svm *svm);
+ int nested_svm_check_permissions(struct kvm_vcpu *vcpu);
++int nested_svm_check_cached_vmcb12(struct kvm_vcpu *vcpu);
+ int nested_svm_check_exception(struct vcpu_svm *svm, unsigned nr,
+ 			       bool has_error_code, u32 error_code);
+ int nested_svm_exit_special(struct vcpu_svm *svm);
 -- 
 2.53.0
 
