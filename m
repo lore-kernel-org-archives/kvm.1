@@ -1,85 +1,125 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from relay8-d.mail.gandi.net (relay8-d.mail.gandi.net [217.70.183.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 426D540DFD2;
-	Tue, 10 Mar 2026 13:47:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A4ECB2FFF90;
+	Tue, 10 Mar 2026 13:56:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773150460; cv=none; b=dY77Sz8OwaSkqGLiWTn10XgYNwDnkZLN+ZhEzclNN6IiaHEgimpPKkP/fgRVpuCW5ZnUiee3ba7pXLWqg9FOVkEfuRsn5IbEtD8oPZsEsANfxKjJ61hDIq92YmP+chY3UqzWZy44ghhUuhykZ0x9gRbnt1zQT9wXESHOmv4xIAM=
+	t=1773150974; cv=none; b=Qk4/Xrgt5Sj9P95xXLzQSzP3bfCVB+xh5G6PbnPTyGgXknF1nIwFyDD4BheE+1PFH4RbQIJspfylvolmZBxmc2OIKLujB+PDdXK2DOn9YGSUijqFBwmAgM/niwzj+34UXZO65dOV8+5pm8gMp0V0dH61m4yTpayLAgN7r1Fjxss=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773150460; c=relaxed/simple;
-	bh=2+IBJ8l0YArk9c6MpfP8rThaUSBwcqM1jZp+Xt9Q7uQ=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=eJQOMkKFK9rawd7kqqDGYo3NEF7T7/Yxadbf0+S+zkNk0D3RW1YOnZ11H2+6nH7iRCl4LLRdVMPwzxkJSuLoyJcNehil0faicn5J3jpaCymo1zbCRJzbZwezTIJhvr2QRaHbwFUiHFJ8c0So/FbOkCiCTOIUiFAChmXOLK/66OI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=f8rkrF9/; arc=none smtp.client-ip=10.30.226.201
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="f8rkrF9/"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 14F03C19423;
-	Tue, 10 Mar 2026 13:47:38 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773150459;
-	bh=2+IBJ8l0YArk9c6MpfP8rThaUSBwcqM1jZp+Xt9Q7uQ=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=f8rkrF9/ZK/NwePW8e7bG5OrZ7E3hPqK4XLnXB+19kaG/qPwUE/jGeWJtrt9sXA+c
-	 WRqkAfNhAaKHFwChsql8pCUYnojyznTHIwVrTTjSJzdwCR71LlodMbMhVGy4ao0A4S
-	 kPSl3eEBZEIKXIK6k13Wokh86en03vtdxNU5oQhuo1YyBYSYWP7D/SY6AkAUUS8Z8T
-	 mdn74yJTLwQYsJBN/XwYSuAZx9K2Z1ed26Yl9DQPdl5NAUAvNVbOiljQeHfT0T5G/s
-	 p0VFQfDZpZ3vjXnMYqCcj2gZBcmbBxA4G+VYnmitBwSYv0i9EuSAGd8Gu/Q5Ee6PyQ
-	 yfRy5/HywG+hQ==
-From: Thomas Gleixner <tglx@kernel.org>
-To: Matthieu Baerts <matttbe@kernel.org>, Peter Zijlstra <peterz@infradead.org>
-Cc: Jiri Slaby <jirislaby@kernel.org>, Stefan Hajnoczi
- <stefanha@redhat.com>, Stefano Garzarella <sgarzare@redhat.com>,
- kvm@vger.kernel.org, virtualization@lists.linux.dev, Netdev
- <netdev@vger.kernel.org>, rcu@vger.kernel.org, MPTCP Linux
- <mptcp@lists.linux.dev>, Linux Kernel <linux-kernel@vger.kernel.org>,
- Shinichiro Kawasaki <shinichiro.kawasaki@wdc.com>, "Paul E. McKenney"
- <paulmck@kernel.org>, Dave Hansen <dave.hansen@linux.intel.com>,
- luto@kernel.org, Michal =?utf-8?Q?Koutn=C3=BD?= <MKoutny@suse.com>, Waiman
- Long
- <longman@redhat.com>, Marco Elver <elver@google.com>
-Subject: Re: Stalls when starting a VSOCK listening socket: soft lockups,
- RCU stalls, timeout
-In-Reply-To: <a5cabf68-df88-4a5e-8075-bb10debc44f7@kernel.org>
-References: <87v7f61cnl.ffs@tglx>
- <57c1e171-9520-4288-9e2d-10a72a499968@kernel.org> <87pl5ds88r.ffs@tglx>
- <0ae4d678-5676-4523-bae3-5ad73b526e27@kernel.org> <87eclsrtqg.ffs@tglx>
- <e846cb5f-65c4-4a9b-9f9b-593e4af526d8@kernel.org>
- <76e2b909-98db-49de-a8eb-f6f0a192f630@kernel.org> <878qc0rofr.ffs@tglx>
- <874imorobw.ffs@tglx> <4cad1b9a-e157-427b-9896-cf54cf6fba36@kernel.org>
- <20260310115433.GV1282955@noisy.programming.kicks-ass.net>
- <87y0jzrhqn.ffs@tglx> <a5cabf68-df88-4a5e-8075-bb10debc44f7@kernel.org>
-Date: Tue, 10 Mar 2026 14:47:35 +0100
-Message-ID: <87v7f3re2w.ffs@tglx>
+	s=arc-20240116; t=1773150974; c=relaxed/simple;
+	bh=FDMwXaHKDrOM7khDAib7qUUe1UeRwowP+SR16jql6lQ=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=ZTIc6zSixu52GG6Cq6DFY5tJLrjwcodwjvew156TLPu3UZdI/AjKkUoXgOHKlz5EhlvD0JwfW9l6hkoTCobqwWX4GpFOJz/Rmhc6shERJ+T2pbqVQYjj2Ua3YEWV9POuFDCGFdks1EToRJhzERQReKQXEpnzrNJCKxMa84Jkcbo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=hadess.net; spf=pass smtp.mailfrom=hadess.net; arc=none smtp.client-ip=217.70.183.201
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=hadess.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=hadess.net
+Received: by mail.gandi.net (Postfix) with ESMTPSA id 539B3433BD;
+	Tue, 10 Mar 2026 13:55:53 +0000 (UTC)
+Message-ID: <375c7c30c184d331c199876e45920976030f3cbc.camel@hadess.net>
+Subject: Re: [PATCH 25/61] net/bluetooth: Prefer IS_ERR_OR_NULL over manual
+ NULL check
+From: Bastien Nocera <hadess@hadess.net>
+To: Philipp Hahn <phahn-oss@avm.de>, amd-gfx@lists.freedesktop.org, 
+	apparmor@lists.ubuntu.com, bpf@vger.kernel.org, ceph-devel@vger.kernel.org,
+ 	cocci@inria.fr, dm-devel@lists.linux.dev, dri-devel@lists.freedesktop.org,
+ 	gfs2@lists.linux.dev, intel-gfx@lists.freedesktop.org, 
+	intel-wired-lan@lists.osuosl.org, iommu@lists.linux.dev,
+ kvm@vger.kernel.org, 	linux-arm-kernel@lists.infradead.org,
+ linux-block@vger.kernel.org, 	linux-bluetooth@vger.kernel.org,
+ linux-btrfs@vger.kernel.org, 	linux-cifs@vger.kernel.org,
+ linux-clk@vger.kernel.org, 	linux-erofs@lists.ozlabs.org,
+ linux-ext4@vger.kernel.org, 	linux-fsdevel@vger.kernel.org,
+ linux-gpio@vger.kernel.org, 	linux-hyperv@vger.kernel.org,
+ linux-input@vger.kernel.org, 	linux-kernel@vger.kernel.org,
+ linux-leds@vger.kernel.org, 	linux-media@vger.kernel.org,
+ linux-mips@vger.kernel.org, linux-mm@kvack.org, 
+	linux-modules@vger.kernel.org, linux-mtd@lists.infradead.org, 
+	linux-nfs@vger.kernel.org, linux-omap@vger.kernel.org, 
+	linux-phy@lists.infradead.org, linux-pm@vger.kernel.org, 
+	linux-rockchip@lists.infradead.org, linux-s390@vger.kernel.org, 
+	linux-scsi@vger.kernel.org, linux-sctp@vger.kernel.org, 
+	linux-security-module@vger.kernel.org, linux-sh@vger.kernel.org, 
+	linux-sound@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com, 
+	linux-trace-kernel@vger.kernel.org, linux-usb@vger.kernel.org, 
+	linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+ ntfs3@lists.linux.dev, 	samba-technical@lists.samba.org,
+ sched-ext@lists.linux.dev, 	target-devel@vger.kernel.org,
+ tipc-discussion@lists.sourceforge.net, 	v9fs@lists.linux.dev
+Cc: Marcel Holtmann <marcel@holtmann.org>, Johan Hedberg
+	 <johan.hedberg@gmail.com>, Luiz Augusto von Dentz <luiz.dentz@gmail.com>
+Date: Tue, 10 Mar 2026 14:55:52 +0100
+In-Reply-To: <20260310-b4-is_err_or_null-v1-25-bd63b656022d@avm.de>
+References: <20260310-b4-is_err_or_null-v1-0-bd63b656022d@avm.de>
+	 <20260310-b4-is_err_or_null-v1-25-bd63b656022d@avm.de>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.58.3 (3.58.3-1.fc43) 
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+X-GND-Sasl: hadess@hadess.net
+X-GND-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgddvkeduudelucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecuifetpfffkfdpucggtfgfnhhsuhgsshgtrhhisggvnecuuegrihhlohhuthemuceftddunecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjughrpefkuffhvfevffgjfhgtgfgfggesthhqredttderjeenucfhrhhomhepuegrshhtihgvnhcupfhotggvrhgruceohhgruggvshhssehhrgguvghsshdrnhgvtheqnecuggftrfgrthhtvghrnhepieffgfehtedtgefgjeeggfffgeeuvdegveekveejfeekkedujeehteffueefffeunecukfhppedvrgdtudemvgefgeemvggtjeefmegtfhdvtdemsggrgeefmegrieejieemtgdvugefmeejrgehfeenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepihhnvghtpedvrgdtudemvgefgeemvggtjeefmegtfhdvtdemsggrgeefmegrieejieemtgdvugefmeejrgehfedphhgvlhhopeglkffrvheimedvrgdtudemvgefgeemvggtjeefmegtfhdvtdemsggrgeefmegrieejieemtgdvugefmeejrgehfegnpdhmrghilhhfrhhomhephhgruggvshhssehhrgguvghsshdrnhgvthdpqhhiugepheefleeufeegfeefueffpdhmohguvgepshhmthhpohhuthdpnhgspghrtghpthhtohepheejpdhrtghpthhtohepphhhrghhnhdqohhsshesrghvmhdruggvpdhrtghpthhtoheprghmugdqghhfgieslhhishhtshdrfhhrvggvu
+ ggvshhkthhophdrohhrghdprhgtphhtthhopegrphhprghrmhhorheslhhishhtshdruhgsuhhnthhurdgtohhmpdhrtghpthhtohepsghpfhesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopegtvghphhdquggvvhgvlhesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopegtohgttghisehinhhrihgrrdhfrh
+X-GND-State: clean
+X-GND-Score: -100
 
-On Tue, Mar 10 2026 at 14:40, Matthieu Baerts wrote:
-> On 10/03/2026 13:28, Thomas Gleixner wrote:
->
-> (...)
->
->> I've updated the debug patch and removed the @users conditionals so it
->> keeps searching. So it should find that magic 73.
->
-> It looks like it does, thank you! I just tried this new debug patch, and
-> I managed to boot 100 times without issues, while before I was getting
-> it after max 20 attempts. I left the test running to boot up to 1000
-> times, just in case.
+On Tue, 2026-03-10 at 12:48 +0100, Philipp Hahn wrote:
+> Prefer using IS_ERR_OR_NULL() over using IS_ERR() and a manual NULL
+> check.
+>=20
+> Change generated with coccinelle.
+>=20
+> To: Marcel Holtmann <marcel@holtmann.org>
+> To: Johan Hedberg <johan.hedberg@gmail.com>
+> To: Luiz Augusto von Dentz <luiz.dentz@gmail.com>
+> Cc: linux-bluetooth@vger.kernel.org
+> Cc: linux-kernel@vger.kernel.org
+> Signed-off-by: Philipp Hahn <phahn-oss@avm.de>
 
-Now that I actually understood the problem, I was able to write a
-reproducer which triggers the issue 100% reliable.
+Reviewed-by: Bastien Nocera <hadess@hadess.net>
 
-The debug patch does cure it and it does the right thing. I have a
-better version of that in testing right now which avoid all that flaky
-accounting and especially in the vfork() case the full tasklist walk.
-I'll send out a complete patch series with changelogs etc. later.
-
-Thanks a lot for your patience and invaluable help. Very appreciated!
-
-        tglx
+> ---
+> =C2=A0net/bluetooth/mgmt.c | 6 +++---
+> =C2=A01 file changed, 3 insertions(+), 3 deletions(-)
+>=20
+> diff --git a/net/bluetooth/mgmt.c b/net/bluetooth/mgmt.c
+> index
+> a7238fd3b03bb54f39af1afee74dc1acd931c324..06d2da67bbe14e17ee478aa939d
+> e26526c333d91 100644
+> --- a/net/bluetooth/mgmt.c
+> +++ b/net/bluetooth/mgmt.c
+> @@ -4169,7 +4169,7 @@ static void set_default_phy_complete(struct
+> hci_dev *hdev, void *data, int err)
+> =C2=A0		mgmt_phy_configuration_changed(hdev, cmd->sk);
+> =C2=A0	}
+> =C2=A0
+> -	if (skb && !IS_ERR(skb))
+> +	if (!IS_ERR_OR_NULL(skb))
+> =C2=A0		kfree_skb(skb);
+> =C2=A0
+> =C2=A0	mgmt_pending_free(cmd);
+> @@ -5730,7 +5730,7 @@ static void read_local_oob_data_complete(struct
+> hci_dev *hdev, void *data,
+> =C2=A0			=C2=A0 MGMT_STATUS_SUCCESS, &mgmt_rp, rp_size);
+> =C2=A0
+> =C2=A0remove:
+> -	if (skb && !IS_ERR(skb))
+> +	if (!IS_ERR_OR_NULL(skb))
+> =C2=A0		kfree_skb(skb);
+> =C2=A0
+> =C2=A0	mgmt_pending_free(cmd);
+> @@ -8277,7 +8277,7 @@ static void
+> read_local_oob_ext_data_complete(struct hci_dev *hdev, void *data,
+> =C2=A0				 mgmt_rp, sizeof(*mgmt_rp) +
+> eir_len,
+> =C2=A0				 HCI_MGMT_OOB_DATA_EVENTS, cmd->sk);
+> =C2=A0done:
+> -	if (skb && !IS_ERR(skb))
+> +	if (!IS_ERR_OR_NULL(skb))
+> =C2=A0		kfree_skb(skb);
+> =C2=A0
+> =C2=A0	kfree(mgmt_rp);
