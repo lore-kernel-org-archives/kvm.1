@@ -1,222 +1,210 @@
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+Received: from pdx-out-006.esa.us-west-2.outbound.mail-perimeter.amazon.com (pdx-out-006.esa.us-west-2.outbound.mail-perimeter.amazon.com [52.26.1.71])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA5A838DF9
-	for <kvm@vger.kernel.org>; Tue, 10 Mar 2026 06:28:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 568A8264A97
+	for <kvm@vger.kernel.org>; Tue, 10 Mar 2026 06:36:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=52.26.1.71
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773124103; cv=none; b=V3L40rs5AowG52Q+dAnsJXjmpP5RT/t+UfPGxnIm/c+/JUnqRGbtGC4kQO5BQO1xef7kSZI+Ojep9X6oHJ2RjzOG76GOF/MzPCp059ARATnYCClKSGJutXBRj1eqbKode49BoeitN35pyeTYpiW0gUpbk3pHjIrEw/DWppPGs+A=
+	t=1773124620; cv=none; b=Nd8FxBxWd3axuzHREIfry6P2ydxA1hBa2jKtuW+wpzZkYJkIvHA1kmYZY8TALuebugS7T8TeynDFW9F156W0q3M1bshnbaGgQFWKxp9Xm//0ZtskVRArhErtrctWkFUveRaRgCSuP9HDR9njyAfhkaJSCbI3NQSGDHm7Cer2Q7A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773124103; c=relaxed/simple;
-	bh=6Nkq3VwrTHIttx+uQ0XDi0oCv7zklnOr5TuIATEvo8E=;
-	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
-	 Message-Id:References:To; b=FBPOTC1W3ZxkfYw5T8UVgaEYMxtq1ZqjrLWUoKcGKb8Hj5qNZf9B5C1bx8Ul6pn45pfpoP7Rx/xyO17SjSqt5xnr224q+LHBVCa7BCXN1+OBeRkB/bbT4IeELbwSlLmnib9XCHVt3lGj0+yuwYx4MG/PivoJwmmvL+qBuRIW0l0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=swuCtPFk; arc=none smtp.client-ip=148.163.158.5
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+	s=arc-20240116; t=1773124620; c=relaxed/simple;
+	bh=0+8U2b8VXYGXrDNtU4h6DgW1k26pziiM3lKC4kN1Ru4=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=Aa6sO+wMdwp3sQ0JYVyD17CylFVi+ZS7e2liAu5K0CiZhSyOQ8bhY2MhAJjaDLLjBPJ3ERz5/Ragro8XNxjRyKqIy0iSl/SCNjVIIbJNQ2ZOJvTRmgJooooPZ34uLwjMDGI3xBvQBHpeoWX77tAK+mYoLnGWMZpN1xz3l4NoxvI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com; spf=pass smtp.mailfrom=amazon.co.uk; dkim=pass (2048-bit key) header.d=amazon.com header.i=@amazon.com header.b=SUTRTPfi; arc=none smtp.client-ip=52.26.1.71
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amazon.co.uk
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="swuCtPFk"
-Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 62A5OGHR512979;
-	Tue, 10 Mar 2026 06:27:58 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=11zp6X
-	lu9HtM8NgFiRuGpK0JWZedKvnXV7uxGUZO7MI=; b=swuCtPFktVoEWAhDPvQATG
-	6SLj/C369oEPuaO1oaPXI0DhluFzkddCKx8M5LS3+6TDj0qT3JVhhoa4gavTzPhS
-	1Y6dOs7pcx5SEYD3rrWYhmDw1LHrpZG1aGSW2SQ2CDA3y6nCxz2pqFtyc9BNzai7
-	8Zif7aXwsPx8JTQPO5x3hahR0m1xNkrA28GVtlroU32K134ZzOG3SKJY7+VFpb3z
-	BxFa+24z3lYRE6e/xfu9TtqgiV7Ggi94wCSvnqVXABYzZQyZ5NPL48UoCSppPUN0
-	Zxh86vb2tdUmbvUTwyFD7pIFbhdX8J8W/GXoFgTNapNb/RPVW5flon7F5zx5YBlg
-	==
-Received: from ppma13.dal12v.mail.ibm.com (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4crd1mhbu5-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 10 Mar 2026 06:27:57 +0000 (GMT)
-Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma13.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 62A1qrKr024660;
-	Tue, 10 Mar 2026 06:27:57 GMT
-Received: from smtprelay01.wdc07v.mail.ibm.com ([172.16.1.68])
-	by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 4cs0jjysgj-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 10 Mar 2026 06:27:57 +0000
-Received: from smtpav02.dal12v.mail.ibm.com (smtpav02.dal12v.mail.ibm.com [10.241.53.101])
-	by smtprelay01.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 62A6RuaC7734126
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 10 Mar 2026 06:27:56 GMT
-Received: from smtpav02.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id F34EC5805A;
-	Tue, 10 Mar 2026 06:27:55 +0000 (GMT)
-Received: from smtpav02.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id C6B9E58051;
-	Tue, 10 Mar 2026 06:27:53 +0000 (GMT)
-Received: from smtpclient.apple (unknown [9.98.109.174])
-	by smtpav02.dal12v.mail.ibm.com (Postfix) with ESMTPS;
-	Tue, 10 Mar 2026 06:27:53 +0000 (GMT)
-Content-Type: text/plain;
-	charset=utf-8
+	dkim=pass (2048-bit key) header.d=amazon.com header.i=@amazon.com header.b="SUTRTPfi"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+  d=amazon.com; i=@amazon.com; q=dns/txt; s=amazoncorp2;
+  t=1773124619; x=1804660619;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=ZBxIO/6K2vcG2mFfsbi0JwgR3ZSXAQbjOnmiOv3SSb8=;
+  b=SUTRTPfiR1TV3D7OF+p8A79yxAHTH0iIlmtfMscivuYSXmJ9vOrJ2bO9
+   agDVVPo7rnh+N0mZTa+9M30MT9/W0kyEa3Ks2wCuEEQxUHrxvAi043gAK
+   WkItL8tRiZDamw7hbRLGp+4m9jghjEZxm/cDH8Khi2PtRbhAZhIX1rLFS
+   8a4wSjCPMAhw6GLnGR26OYnWXRL2Kd7K0+t1ocNLnZ86aoJU9i+MS4Oj5
+   TxZwBANYwgLRZJ5k5vAprQ3EeNbxzHKnZyMjtE8LB8fKn6A9r3AHVgZ75
+   Xni2E4P6aYSKX0/UJbVUVWuxG3R4Y0S3UWG/ffEnOP7GW667YHSQp5K5M
+   g==;
+X-CSE-ConnectionGUID: 2lORn6mIRiubJ6N51zocQA==
+X-CSE-MsgGUID: thzzB5dgSWGnWNHc9NNjUg==
+X-IronPort-AV: E=Sophos;i="6.23,111,1770595200"; 
+   d="scan'208";a="14690291"
+Received: from ip-10-5-0-115.us-west-2.compute.internal (HELO smtpout.naws.us-west-2.prod.farcaster.email.amazon.dev) ([10.5.0.115])
+  by internal-pdx-out-006.esa.us-west-2.outbound.mail-perimeter.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Mar 2026 06:36:56 +0000
+Received: from EX19MTAUWB002.ant.amazon.com [205.251.233.48:8137]
+ by smtpin.naws.us-west-2.prod.farcaster.email.amazon.dev [10.0.31.3:2525] with esmtp (Farcaster)
+ id d5e9b66b-a635-4444-a6b7-3b769a8654e1; Tue, 10 Mar 2026 06:36:55 +0000 (UTC)
+X-Farcaster-Flow-ID: d5e9b66b-a635-4444-a6b7-3b769a8654e1
+Received: from EX19D001UWA001.ant.amazon.com (10.13.138.214) by
+ EX19MTAUWB002.ant.amazon.com (10.250.64.231) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.37;
+ Tue, 10 Mar 2026 06:36:55 +0000
+Received: from dev-dsk-itazur-1b-11e7fc0f.eu-west-1.amazon.com (172.19.66.53)
+ by EX19D001UWA001.ant.amazon.com (10.13.138.214) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.37;
+ Tue, 10 Mar 2026 06:36:53 +0000
+From: Takahiro Itazuri <itazur@amazon.com>
+To: <kvm@vger.kernel.org>, Sean Christopherson <seanjc@google.com>, "Paolo
+ Bonzini" <pbonzini@redhat.com>
+CC: Vitaly Kuznetsov <vkuznets@redhat.com>, Fuad Tabba <tabba@google.com>,
+	Brendan Jackman <jackmanb@google.com>, David Hildenbrand <david@kernel.org>,
+	David Woodhouse <dwmw2@infradead.org>, Paul Durrant <pdurrant@amazon.com>,
+	Nikita Kalyazin <kalyazin@amazon.com>, Patrick Roy
+	<patrick.roy@campus.lmu.de>, Takahiro Itazuri <zulinx86@gmail.com>
+Subject: [RFC PATCH v3 0/6] KVM: pfncache: Add guest_memfd support to pfncache
+Date: Tue, 10 Mar 2026 06:36:35 +0000
+Message-ID: <20260310063647.15665-1-itazur@amazon.com>
+X-Mailer: git-send-email 2.47.3
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3864.300.41.1.7\))
-Subject: Re: [PATCH v2 1/2] drivers/vfio_pci_core: Change PXD_ORDER check from
- switch case to if/else block
-From: Venkat <venkat88@linux.ibm.com>
-In-Reply-To: <b155e19993ee1f5584c72050192eb468b31c5029.1773058761.git.ritesh.list@gmail.com>
-Date: Tue, 10 Mar 2026 11:57:41 +0530
-Cc: linuxppc-dev@lists.ozlabs.org, Madhavan Srinivasan <maddy@linux.ibm.com>,
-        Christophe Leroy <chleroy@kernel.org>, linux-mm@kvack.org,
-        kvm@vger.kernel.org, Alex Williamson <alex@shazbot.org>,
-        Peter Xu <peterx@redhat.com>
+MIME-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
-Message-Id: <D0752596-C64F-4454-88F6-2D205CB43B4D@linux.ibm.com>
-References: <b155e19993ee1f5584c72050192eb468b31c5029.1773058761.git.ritesh.list@gmail.com>
-To: "Ritesh Harjani (IBM)" <ritesh.list@gmail.com>
-X-Mailer: Apple Mail (2.3864.300.41.1.7)
-X-TM-AS-GCONF: 00
-X-Proofpoint-Reinject: loops=2 maxloops=12
-X-Authority-Analysis: v=2.4 cv=ds3Wylg4 c=1 sm=1 tr=0 ts=69afb9ee cx=c_pps
- a=AfN7/Ok6k8XGzOShvHwTGQ==:117 a=AfN7/Ok6k8XGzOShvHwTGQ==:17
- a=IkcTkHD0fZMA:10 a=Yq5XynenixoA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=RnoormkPH1_aCDwRdu11:22 a=V8glGbnc2Ofi9Qvn3v5h:22 a=VwQbUJbxAAAA:8
- a=pGLkceISAAAA:8 a=VnNF1IyMAAAA:8 a=TkzObPc7TtdjdkxZWH0A:9 a=QEXdDO2ut3YA:10
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMzEwMDA0OCBTYWx0ZWRfX8Pbw1pZPSi2w
- 8OEl2HmIth+EiBcYA5T11NX1NjHkkp6oRIuiq5ZYirgBIrxSd6K1LFFjFsJb0JLtjcHARShhdVi
- damULwfsnb1cVpzYQ7MX0TGoFDGT/pVZYHYG0JNx8zRj4DdvDj+Fh/5y2OP8E2S1Qrb7VGgsAbH
- oMETb8vmDg29Z2CcRX0XTkQhUUPDB3Muv/+W/Le1o1369QECfF/5BYEoLUj/nCijrY8Doc7a4nk
- Hvvrs8wJKR607HcyVbYNFuSh1hDS5iQHhnsmFJLgZ4oD5gxoI8wYoXiJtkw0p4ZfumyYVm+Slx9
- YB6HQZrRZixAfwjXWKP7Mnyzj3qF3v7QWzQgm6yyKqWXkBG1f/t+kzvqPaJChwkWyDjhxFFAPRS
- 3iAGI6D4O+Xak4mL/f1iEc+Sa1DtEd8ueeotcjh7uew5ETjIDoxUd6/mJi1voZm6aYoZm2xoHu7
- 0MzqoETFVvPLNqfOBBg==
-X-Proofpoint-GUID: rUIBbepxIgIMAZgVxnhSla9Np10kf9Vh
-X-Proofpoint-ORIG-GUID: Yn-QkYj-UwAT8YKWAgDDbqyS4eMFwDC4
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
- definitions=2026-03-10_01,2026-03-09_02,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- spamscore=0 phishscore=0 clxscore=1011 impostorscore=0 suspectscore=0
- priorityscore=1501 lowpriorityscore=0 malwarescore=0 adultscore=0 bulkscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2602130000 definitions=main-2603100048
+Content-Type: text/plain
+X-ClientProxiedBy: EX19D044UWB003.ant.amazon.com (10.13.139.168) To
+ EX19D001UWA001.ant.amazon.com (10.13.138.214)
 
+[ based on v6.18 with [1] ]
 
+This patch series is another follow-up to RFC v1 with minor fixes of RFC
+v2.  (This is still labelled RFC since its dependency [1] has not yet
+been merged.)  This change was tested for guest_memfd created with
+GUEST_MEMFD_FLAG_MMAP and GUEST_MEMFD_FLAG_NO_DIRECT_MAP in the feature
+branch of Firecracker [2].
 
-> On 9 Mar 2026, at 6:08=E2=80=AFPM, Ritesh Harjani (IBM) =
-<ritesh.list@gmail.com> wrote:
->=20
-> Architectures like PowerPC uses runtime defined values for
-> PMD_ORDER/PUD_ORDER. This is because it can use either RADIX or HASH =
-MMU
-> at runtime using kernel cmdline. So the pXd_index_size is not known at
-> compile time. Without this fix, when we add huge pfn support on =
-powerpc
-> in the next patch, vfio_pci_core driver compilation can fail with the
-> following errors.
->=20
->  CC [M]  drivers/vfio/vfio_main.o
->  CC [M]  drivers/vfio/group.o
->  CC [M]  drivers/vfio/container.o
->  CC [M]  drivers/vfio/virqfd.o
->  CC [M]  drivers/vfio/vfio_iommu_spapr_tce.o
->  CC [M]  drivers/vfio/pci/vfio_pci_core.o
->  CC [M]  drivers/vfio/pci/vfio_pci_intrs.o
->  CC [M]  drivers/vfio/pci/vfio_pci_rdwr.o
->  CC [M]  drivers/vfio/pci/vfio_pci_config.o
->  CC [M]  drivers/vfio/pci/vfio_pci.o
->  AR      kernel/built-in.a
-> ../drivers/vfio/pci/vfio_pci_core.c: In function =
-=E2=80=98vfio_pci_vmf_insert_pfn=E2=80=99:
-> ../drivers/vfio/pci/vfio_pci_core.c:1678:9: error: case label does not =
-reduce to an integer constant
-> 1678 |         case PMD_ORDER:
->      |         ^~~~
-> ../drivers/vfio/pci/vfio_pci_core.c:1682:9: error: case label does not =
-reduce to an integer constant
-> 1682 |         case PUD_ORDER:
->      |         ^~~~
-> make[6]: *** [../scripts/Makefile.build:289: =
-drivers/vfio/pci/vfio_pci_core.o] Error 1
-> make[6]: *** Waiting for unfinished jobs....
-> make[5]: *** [../scripts/Makefile.build:546: drivers/vfio/pci] Error 2
-> make[5]: *** Waiting for unfinished jobs....
-> make[4]: *** [../scripts/Makefile.build:546: drivers/vfio] Error 2
-> make[3]: *** [../scripts/Makefile.build:546: drivers] Error 2
->=20
-> Fixes: f9e54c3a2f5b7 ("vfio/pci: implement huge_fault support")
-> Signed-off-by: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
-> ---
+=3D=3D=3D Problem Statement =3D=3D=3D
 
-Tested-by: Venkat Rao Bagalkote <venkat88@linux.ibm.com>
+gfn_to_pfn_cache (a.k.a. pfncache) does not work with guest_memfd.  As
+of today, pfncaches resolve PFNs via hva_to_pfn(), which requires a
+userspace mapping and relies on GUP.  This does not work for guest_memfd
+in the following two ways:
 
-Tested this patch, and with this, build is successful and reported issue =
-is fixed.
+  * guest_memfd created with GUEST_MEMFD_FLAG_MMAP does not have a
+    userspace mapping due to the nature of private memory.
 
+  * guest_memfd created with GUEST_MEMFD_FLAG_NO_DIRECT_MAP uses an
+    AS_NO_DIRECT_MAP mapping, which is rejected by GUP.
 
-WithOut this patch:
+In addition, pfncaches map RAM pages via kmap(), which typically returns
+an address derived from the direct map.  So kmap() cannot be used for
+NO_DIRECT_MAP guest_memfd.  pfncaches require fault-free KHVAs since
+they can be used from atomic context.  Thus, it cannot fall back to
+access via a userspace mapping like KVM does for other accesses to
+NO_DIRECT_MAP guest_memfd.
 
-drivers/vfio/pci/vfio_pci_core.c: In function =
-=E2=80=98vfio_pci_vmf_insert_pfn=E2=80=99:
-drivers/vfio/pci/vfio_pci_core.c:1677:9: error: case label does not =
-reduce to an integer constant
- 1677 |         case PMD_ORDER:
-      |         ^~~~
-drivers/vfio/pci/vfio_pci_core.c:1681:9: error: case label does not =
-reduce to an integer constant
- 1681 |         case PUD_ORDER:
-      |         ^~~~
+The introduction of guest_memfd support necessitates additional
+invalidation paths in addition to the existing MMU notifier path: one
+from guest_memfd invalidation and another from memory attribute updates.
 
-Regards,
-Venkat.
-> v1 -> v2:
-> 1. addressed review comments from Christophe [1]
-> [1]: =
-https://lore.kernel.org/linuxppc-dev/0b8fce7a61561640634317a5e287cdb479471=
-5fd.1772170860.git.ritesh.list@gmail.com/
->=20
-> drivers/vfio/pci/vfio_pci_core.c | 19 +++++++------------
-> 1 file changed, 7 insertions(+), 12 deletions(-)
->=20
-> diff --git a/drivers/vfio/pci/vfio_pci_core.c =
-b/drivers/vfio/pci/vfio_pci_core.c
-> index d43745fe4c84..0967307235b8 100644
-> --- a/drivers/vfio/pci/vfio_pci_core.c
-> +++ b/drivers/vfio/pci/vfio_pci_core.c
-> @@ -1670,21 +1670,16 @@ vm_fault_t vfio_pci_vmf_insert_pfn(struct =
-vfio_pci_core_device *vdev,
-> if (vdev->pm_runtime_engaged || !__vfio_pci_memory_enabled(vdev))
-> return VM_FAULT_SIGBUS;
->=20
-> - switch (order) {
-> - case 0:
-> + if (!order)
-> return vmf_insert_pfn(vmf->vma, vmf->address, pfn);
-> -#ifdef CONFIG_ARCH_SUPPORTS_PMD_PFNMAP
-> - case PMD_ORDER:
-> +
-> + if (IS_ENABLED(CONFIG_ARCH_SUPPORTS_PMD_PFNMAP) && order =3D=3D =
-PMD_ORDER)
-> return vmf_insert_pfn_pmd(vmf, pfn, false);
-> -#endif
-> -#ifdef CONFIG_ARCH_SUPPORTS_PUD_PFNMAP
-> - case PUD_ORDER:
-> +
-> + if (IS_ENABLED(CONFIG_ARCH_SUPPORTS_PUD_PFNMAP) && order =3D=3D =
-PUD_ORDER)
-> return vmf_insert_pfn_pud(vmf, pfn, false);
-> - break;
-> -#endif
-> - default:
-> - return VM_FAULT_FALLBACK;
-> - }
-> +
-> + return VM_FAULT_FALLBACK;
-> }
-> EXPORT_SYMBOL_GPL(vfio_pci_vmf_insert_pfn);
->=20
-> --
-> 2.39.5
->=20
->=20
+=3D=3D=3D Core Approach =3D=3D=3D
+
+The core part keeps the original approach in RFC v1:
+
+  * Resolve PFNs for guest_memfd-backed GPAs via kvm_gmem_get_pfn()
+
+  * Obtain a fault-free KHVA for NO_DIRECT_MAP pages via vmap()
+
+=3D=3D=3D Main Change since RFC v1 =3D=3D=3D
+
+  * Hook pfncache invalidation into guest_memfd invalidation (punch hole
+    / release / error handling) as well as into memory attribute updates
+    (switch between shared and private memories).
+
+=3D=3D=3D  Design Considerations (Feedback Appreciated) =3D=3D=3D
+
+To implement the above change, this series tries to reuse as much of the
+existing invalidation and retry infrastructure as possible.  The
+following points are potential design trade-offs where feedback is
+especially welcome:
+
+  * Generalize and reuse the existing mn_active_invalidate_count
+    (renamed to active_invalidate_count).  This allows reusing the
+    existing pfncache retry logic as-is and enables invalidating
+    pfncaches without holding mmu_lock from guest_memfd invalidation
+    context.  As a side effect, active memslots swap is blocked while
+    active_invalidate_count > 0.  To avoid this block, it would be
+    possible to introduce a dedicated counter like
+    gmem_active_invalidate_count in struct kvm instead.
+
+  * Although both guest_memfd invalidation and memory attribute update
+    are driven by GFN ranges, pfncache invalidation is performed using
+    HVA ranges and reuses the existing function.  This is because
+    GPA-based pfncaches translate GPA->UHVA->PFN and therefore have
+    memslot/GPA info, whereas HVA-based pfncaches resolve PFN directly
+    from UHVA and do not store memslot/GPA info.  Using GFN-based
+    invalidation would therefore miss HVA-based pfncaches.  Technically,
+    it would be possible to refactor HVA-based pfncaches to search for
+    and retain the corresponding memslot/GPA at activation / refresh
+    time instead of at invalidation time.
+
+  * pfncaches are not dynamically allocated but are statically allocated
+    on a per-VM and per-vCPU basis.  For a normal VM (i.e. non-Xen),
+    there is one pfncache per vCPU.  For a Xen VM, there is one per-VM
+    pfncache and five per-vCPU pfncaches.  Given the maximum of 1024
+    vCPUs, a normal VM can have up to 1024 pfncaches, consuming 4 MB of
+    virtual address space.  A Xen VM can have up to 5121 pfncaches,
+    consuming approximately 20 MB of virtual address space.  Although
+    the vmalloc area is limited on 32-bit systems, it should be large
+    enough and typically tens of TB on 64-bit systems (e.g. 32 TB for
+    4-level paging and 12800 TB for 5-level paging on x86_64).  If
+    virtual address space exhaustion became a concern, migration to
+    mm-local region (forthcoming mermap?) could be considered in the
+    future.  Note that vmap() only creates virtual mappings to existing
+    pages; they do not allocate new physical pages.
+
+  * With this patch series, HVA-based pfncaches always resolve PFNs
+    via hva_to_pfn(), and thus activation for NO_DIRECT_MAP guest_memfd
+    fails.  It is technically possible to support this scenario, but it
+    would require searching the corresponding memslot and GPA from the
+    given UHVA in order to determine whether it is backed by
+    guest_memfd.  Doing so would add overhead to the HVA-based pfncache
+    activation / refresh paths, to a greater or lesser extent,
+    regardless of guest_memfd-backed or not.  At the time of writing,
+    only Xen uses HVA-based pfncaches.
+
+=3D=3D=3D Changelog =3D=3D=3D
+
+Changes since RFC v2:
+- Drop avoidance of silent kvm-clock activation failure.
+- Fix a compile error for kvm_for_each_memslot().
+
+Changes since RFC v1:
+- Prevent kvm-clock activation from failing silently.
+- Generalize serialization mechanism for invalidation.
+- Hook pfncache invalidation into guest_memfd invalidation and memory
+  attribute updates.
+
+RFC v2: https://lore.kernel.org/all/20260226135309.29493-1-itazur@amazon.co=
+m/
+RFC v1: https://lore.kernel.org/all/20251203144159.6131-1-itazur@amazon.com/
+
+[1]: https://lore.kernel.org/all/20260126164445.11867-1-kalyazin@amazon.com/
+[2]: https://github.com/firecracker-microvm/firecracker/tree/feature/secret=
+-hiding
+
+Takahiro Itazuri (6):
+  KVM: pfncache: Resolve PFNs via kvm_gmem_get_pfn() for gmem-backed GPAs
+  KVM: pfncache: Obtain KHVA via vmap() for gmem with NO_DIRECT_MAP
+  KVM: Rename invalidate_begin to invalidate_start for consistency
+  KVM: pfncache: Rename invalidate_start() helper
+  KVM: Rename mn_* invalidate-related fields to generic ones
+  KVM: pfncache: Invalidate on gmem invalidation and memattr updates
+
+ Documentation/virt/kvm/locking.rst |   8 +-
+ arch/x86/kvm/mmu/mmu.c             |   2 +-
+ include/linux/kvm_host.h           |  13 ++--
+ include/linux/mmu_notifier.h       |   4 +-
+ virt/kvm/guest_memfd.c             |  64 ++++++++++++++--
+ virt/kvm/kvm_main.c                | 101 ++++++++++++++++++-------
+ virt/kvm/kvm_mm.h                  |  12 +--
+ virt/kvm/pfncache.c                | 114 ++++++++++++++++++++---------
+ 8 files changed, 229 insertions(+), 89 deletions(-)
+
+--=20
+2.50.1
 
