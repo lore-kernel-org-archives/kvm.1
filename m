@@ -1,39 +1,38 @@
-Received: from mail.avm.de (mail.avm.de [212.42.244.119])
+Received: from mail.avm.de (mail.avm.de [212.42.244.94])
 	(using TLSv1.2 with cipher DHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2AD0048A2BE;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2FB93481A9C;
 	Tue, 10 Mar 2026 11:55:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.42.244.119
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.42.244.94
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773143759; cv=none; b=QUkIwche64xqrDUe1yGvHUZYZ0k9xf5O6S2J8vGd1sDmRj9STP5dvFRMFkcxDrV08ZopqZVLJul3w8Hk/f77mfAaXRP0UshCP3wKN2jHpMj6y/I5aO/2WplheWmH3wDs7h5ou42uzjOQLfGKy8dH58QyDaOf4SlQJcLQbnOoABk=
+	t=1773143759; cv=none; b=XYGi4/q8B56AB4RaSXahiHp9KjTJgIb0ZyyypZMKYWKm5upAA6z3yE/RkBORYQK1iEi4TcNQ1avqF/Yuyb+BIzPoGGD2HFGjSkOM6MrgqH9XiPPY5Z0ZkY35mTsCWGh/Yh7wQED48g9OJo1olNn/DC7NJuVwDEOS3HSQI+MlvbY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1773143759; c=relaxed/simple;
-	bh=w6c4PA3VGZ44yyLt8mghr+WTJ9TxkFa/GQpFHp0jaRg=;
+	bh=5jNhYM960jMlYUrL3T2we+u9wPA7QX8xb/YhMa8cGzI=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=IyAUM1y9FdBccfCk153rUGJ/DdtIyXIAsl5Up361VoTZBnG1Dg2dJ8Z59kqwTb4441ob+DdiR4/Vab2RHRsm3Z+HJmM9BKs+ed7iMwzXXtMjH2TxeKGeH3qZb8WcOZQ91cczkk6xobExAzDfqO91hUtfhl4ZKgjeFGJtPq8VJZ0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=avm.de; spf=pass smtp.mailfrom=avm.de; dkim=pass (1024-bit key) header.d=avm.de header.i=@avm.de header.b=QeZmxS4Y; arc=none smtp.client-ip=212.42.244.119
+	 In-Reply-To:To:Cc; b=h7xQAP5bfZQARJpHVVMFGFU4tfwVERq8wUTFFOF8nBhTK41dv+CaQ36DuUci7kPm3+l3yMPCjn6eoCKZPJPl32orLtEjfc6blpjs4pTgvtC2hm3RP9b69UOz+7mOoj9xPrXnUP7THGJubNTTepOHrUjQL5iJdCcR7d+IunhF40c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=avm.de; spf=pass smtp.mailfrom=avm.de; dkim=pass (1024-bit key) header.d=avm.de header.i=@avm.de header.b=M5sopbNY; arc=none smtp.client-ip=212.42.244.94
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=avm.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=avm.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=avm.de header.i=@avm.de header.b="QeZmxS4Y"
+	dkim=pass (1024-bit key) header.d=avm.de header.i=@avm.de header.b="M5sopbNY"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=avm.de; s=mail;
-	t=1773143726; bh=w6c4PA3VGZ44yyLt8mghr+WTJ9TxkFa/GQpFHp0jaRg=;
+	t=1773143727; bh=5jNhYM960jMlYUrL3T2we+u9wPA7QX8xb/YhMa8cGzI=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
-	b=QeZmxS4Y9ZxzJ1P+c7PyBalRHGdguYBtzjQZ1WHuqnNfndJHBOWadzXneNpIO/Cpe
-	 WtbDE01JXbjsGwDZW/SJl+0F8SgXDtITpS9jrWOZKuA2MxhvXL4esHAjK0cxyNxT8g
-	 cX9nlCS2vI2XLhpV0lZEIvKvUcBSNRY+QxXEviZg=
-Received: from [212.42.244.71] (helo=mail.avm.de)
+	b=M5sopbNY66qmWa+2q+MLa+uKDQnYhARDVpHPBaPhnBAWxbQH6mILrzFzXoehD/OnN
+	 XfkL39v7DGJAyVHbunl2dtyoz4/s+HQp68/tCQVMA+YzssNFiXbaAEz8Yvn1XdtigU
+	 NmV3lEhKYunB5kPsVmat/OQepTdLQIWCI8jH5Ufw=
+Received: from [2001:bf0:244:244::71] (helo=mail.avm.de)
 	by mail.avm.de with ESMTP (eXpurgate 4.55.2)
 	(envelope-from <phahn-oss@avm.de>)
-	id 69b006ad-2367-7f0000032729-7f0000019da4-1
-	for <multiple-recipients>; Tue, 10 Mar 2026 12:55:25 +0100
-Received: from mail-auth.avm.de (dovecot-mx-01.avm.de [212.42.244.71])
+	id 69b006af-e21d-7f0000032729-7f000001ba7e-1
+	for <multiple-recipients>; Tue, 10 Mar 2026 12:55:27 +0100
+Received: from mail-auth.avm.de (dovecot-mx-01.avm.de [IPv6:2001:bf0:244:244::71])
 	by mail.avm.de (Postfix) with ESMTPS;
-	Tue, 10 Mar 2026 12:55:25 +0100 (CET)
+	Tue, 10 Mar 2026 12:55:27 +0100 (CET)
 From: Philipp Hahn <phahn-oss@avm.de>
-Date: Tue, 10 Mar 2026 12:48:56 +0100
-Subject: [PATCH 30/61] net/sunrpc: Prefer IS_ERR_OR_NULL over manual NULL
- check
+Date: Tue, 10 Mar 2026 12:49:10 +0100
+Subject: [PATCH 44/61] target: Prefer IS_ERR_OR_NULL over manual NULL check
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -42,7 +41,7 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260310-b4-is_err_or_null-v1-30-bd63b656022d@avm.de>
+Message-Id: <20260310-b4-is_err_or_null-v1-44-bd63b656022d@avm.de>
 References: <20260310-b4-is_err_or_null-v1-0-bd63b656022d@avm.de>
 In-Reply-To: <20260310-b4-is_err_or_null-v1-0-bd63b656022d@avm.de>
 To: amd-gfx@lists.freedesktop.org, apparmor@lists.ubuntu.com, 
@@ -72,27 +71,21 @@ To: amd-gfx@lists.freedesktop.org, apparmor@lists.ubuntu.com,
  sched-ext@lists.linux.dev, target-devel@vger.kernel.org, 
  tipc-discussion@lists.sourceforge.net, v9fs@lists.linux.dev, 
  Philipp Hahn <phahn-oss@avm.de>
-Cc: Trond Myklebust <trondmy@kernel.org>, Anna Schumaker <anna@kernel.org>, 
- Chuck Lever <chuck.lever@oracle.com>, Jeff Layton <jlayton@kernel.org>, 
- NeilBrown <neil@brown.name>, Olga Kornievskaia <okorniev@redhat.com>, 
- Dai Ngo <Dai.Ngo@oracle.com>, Tom Talpey <tom@talpey.com>, 
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
- Simon Horman <horms@kernel.org>
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2551; i=phahn-oss@avm.de;
- h=from:subject:message-id; bh=w6c4PA3VGZ44yyLt8mghr+WTJ9TxkFa/GQpFHp0jaRg=;
- b=owEBbQGS/pANAwAKATQtBlPRrKzbAcsmYgBpsAY7O6x5f/jrEOlM2kM2YjYC7Xq22wW3Mikry
- 9AY9ISieLCJATMEAAEKAB0WIQQ5bPBtrWDUcDQCppg0LQZT0ays2wUCabAGOwAKCRA0LQZT0ays
- 24W7CACaVIegavbFPh1+6gPSjqv5T1Ou5hQU0OcaZ20nx5fdOimad+jK3UuGfZrC9Vgv0QMm0ym
- 3OSuSluEWbuIv6zcFp3UbdEj9aI7TM7en4Ha7pCkmDfNfPts09fhhi9VrPo390VGOMeNWeVMtD/
- CQde1U2q7DKI3QtGXyjY9I//uCPpAfeRw/e0X1QSKZ9eOdV+c4uWgQhNCPrPJZrHvycJx2lFn3Q
- ZNRGEplISNXY/bb/iuclRgqFYvGWnoUgBYQkpTrGJqDvFREwT8LcHN3+0nwKoz0xIqQbO7gBWgt
- +Dgbc3vk23keeP8aHFv6AZ7K16GCQyMm+zwDBr92eUq+pHvN
+Cc: "Martin K. Petersen" <martin.petersen@oracle.com>
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1611; i=phahn-oss@avm.de;
+ h=from:subject:message-id; bh=5jNhYM960jMlYUrL3T2we+u9wPA7QX8xb/YhMa8cGzI=;
+ b=owEBbQGS/pANAwAKATQtBlPRrKzbAcsmYgBpsAZrwlPF0cTtka85RKXa/jq01klA6219EkbVF
+ sAxzvkaF5OJATMEAAEKAB0WIQQ5bPBtrWDUcDQCppg0LQZT0ays2wUCabAGawAKCRA0LQZT0ays
+ 26c3B/97YbFOVY+7aU+X20/OGHSJFO2zRY48bbypRSoZTJJvUVhT9k9LgthUke6q7t50KfcaKxO
+ +ji7TT6hO8Cm4OsGah0c5lQCV8UQAJc4iRbI/bt93UQwIqQrpJeR9mDiRtZ63zuk53hAKMaouvF
+ y6MARoN+FEiA3sHGmWk/DuFGtzf6I3rn5UIuUm1ckeIx7XgHZwxEQLChAjM+0RUA9PFCwYu/qm6
+ 9IpeMJ2V/nIZwaOJH7XMvW452VksCcG4pysYBM4gaKPDiw/aj9RS8erUS771tOWY6ZGy4Wx4+7y
+ JX63QRv+rPmmYyTOxZi58eVjXbcoNvE3qP8qFHWJHKPRXuOf
 X-Developer-Key: i=phahn-oss@avm.de; a=openpgp;
  fpr=58AF7C2E007CDBE62C59E078F50EFDCF8AD04B1A
-X-purgate-ID: 149429::1773143725-8A498E1F-7900509A/0/0
+X-purgate-ID: 149429::1773143727-8B66AF2F-B220D537/0/0
 X-purgate-type: clean
-X-purgate-size: 2553
+X-purgate-size: 1613
 X-purgate-Ad: Categorized by eleven eXpurgate (R) https://www.eleven.de
 X-purgate: This mail is considered clean (visit https://www.eleven.de for further information)
 X-purgate: clean
@@ -102,70 +95,46 @@ check.
 
 Change generated with coccinelle.
 
-To: Trond Myklebust <trondmy@kernel.org>
-To: Anna Schumaker <anna@kernel.org>
-To: Chuck Lever <chuck.lever@oracle.com>
-To: Jeff Layton <jlayton@kernel.org>
-To: NeilBrown <neil@brown.name>
-To: Olga Kornievskaia <okorniev@redhat.com>
-To: Dai Ngo <Dai.Ngo@oracle.com>
-To: Tom Talpey <tom@talpey.com>
-To: "David S. Miller" <davem@davemloft.net>
-To: Eric Dumazet <edumazet@google.com>
-To: Jakub Kicinski <kuba@kernel.org>
-To: Paolo Abeni <pabeni@redhat.com>
-To: Simon Horman <horms@kernel.org>
-Cc: linux-nfs@vger.kernel.org
-Cc: netdev@vger.kernel.org
+To: "Martin K. Petersen" <martin.petersen@oracle.com>
+Cc: linux-scsi@vger.kernel.org
+Cc: target-devel@vger.kernel.org
 Cc: linux-kernel@vger.kernel.org
 Signed-off-by: Philipp Hahn <phahn-oss@avm.de>
 ---
- net/sunrpc/xprtrdma/svc_rdma_transport.c | 12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
+ drivers/target/target_core_fabric_configfs.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/net/sunrpc/xprtrdma/svc_rdma_transport.c b/net/sunrpc/xprtrdma/svc_rdma_transport.c
-index 9b623849723ed0eb74b827881c6f32d3434c891b..b4d03e59a8202f20360cff1e2e79b1e325396517 100644
---- a/net/sunrpc/xprtrdma/svc_rdma_transport.c
-+++ b/net/sunrpc/xprtrdma/svc_rdma_transport.c
-@@ -578,7 +578,7 @@ static struct svc_xprt *svc_rdma_accept(struct svc_xprt *xprt)
-  errout:
- 	/* Take a reference in case the DTO handler runs */
- 	svc_xprt_get(&newxprt->sc_xprt);
--	if (newxprt->sc_qp && !IS_ERR(newxprt->sc_qp))
-+	if (!IS_ERR_OR_NULL(newxprt->sc_qp))
- 		ib_destroy_qp(newxprt->sc_qp);
- 	rdma_destroy_id(newxprt->sc_cm_id);
- 	rpcrdma_rn_unregister(dev, &newxprt->sc_rn);
-@@ -608,7 +608,7 @@ static void svc_rdma_free(struct svc_xprt *xprt)
- 	might_sleep();
+diff --git a/drivers/target/target_core_fabric_configfs.c b/drivers/target/target_core_fabric_configfs.c
+index 331689b30f8540c8e78de3eae32c1f8cd4906213..20d57d766ada6ba24cbd2d44d0107cdff9483a68 100644
+--- a/drivers/target/target_core_fabric_configfs.c
++++ b/drivers/target/target_core_fabric_configfs.c
+@@ -479,7 +479,7 @@ static struct config_group *target_fabric_make_np(
+ 	}
  
- 	/* This blocks until the Completion Queues are empty */
--	if (rdma->sc_qp && !IS_ERR(rdma->sc_qp))
-+	if (!IS_ERR_OR_NULL(rdma->sc_qp))
- 		ib_drain_qp(rdma->sc_qp);
- 	flush_workqueue(svcrdma_wq);
+ 	se_tpg_np = tf->tf_ops->fabric_make_np(se_tpg, group, name);
+-	if (!se_tpg_np || IS_ERR(se_tpg_np))
++	if (IS_ERR_OR_NULL(se_tpg_np))
+ 		return ERR_PTR(-EINVAL);
  
-@@ -619,16 +619,16 @@ static void svc_rdma_free(struct svc_xprt *xprt)
- 	svc_rdma_recv_ctxts_destroy(rdma);
+ 	se_tpg_np->tpg_np_parent = se_tpg;
+@@ -937,7 +937,7 @@ static struct config_group *target_fabric_make_tpg(
+ 	}
  
- 	/* Destroy the QP if present (not a listener) */
--	if (rdma->sc_qp && !IS_ERR(rdma->sc_qp))
-+	if (!IS_ERR_OR_NULL(rdma->sc_qp))
- 		ib_destroy_qp(rdma->sc_qp);
+ 	se_tpg = tf->tf_ops->fabric_make_tpg(wwn, name);
+-	if (!se_tpg || IS_ERR(se_tpg))
++	if (IS_ERR_OR_NULL(se_tpg))
+ 		return ERR_PTR(-EINVAL);
  
--	if (rdma->sc_sq_cq && !IS_ERR(rdma->sc_sq_cq))
-+	if (!IS_ERR_OR_NULL(rdma->sc_sq_cq))
- 		ib_free_cq(rdma->sc_sq_cq);
+ 	config_group_init_type_name(&se_tpg->tpg_group, name,
+@@ -1112,7 +1112,7 @@ static struct config_group *target_fabric_make_wwn(
+ 	}
  
--	if (rdma->sc_rq_cq && !IS_ERR(rdma->sc_rq_cq))
-+	if (!IS_ERR_OR_NULL(rdma->sc_rq_cq))
- 		ib_free_cq(rdma->sc_rq_cq);
+ 	wwn = tf->tf_ops->fabric_make_wwn(tf, group, name);
+-	if (!wwn || IS_ERR(wwn))
++	if (IS_ERR_OR_NULL(wwn))
+ 		return ERR_PTR(-EINVAL);
  
--	if (rdma->sc_pd && !IS_ERR(rdma->sc_pd))
-+	if (!IS_ERR_OR_NULL(rdma->sc_pd))
- 		ib_dealloc_pd(rdma->sc_pd);
- 
- 	/* Destroy the CM ID */
+ 	wwn->cmd_compl_affinity = SE_COMPL_AFFINITY_CPUID;
 
 -- 
 2.43.0
