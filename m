@@ -1,262 +1,192 @@
 Received: from mail-pl1-f201.google.com (mail-pl1-f201.google.com [209.85.214.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 01A733BED45
-	for <kvm@vger.kernel.org>; Tue, 10 Mar 2026 22:45:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2C2936C0DD
+	for <kvm@vger.kernel.org>; Tue, 10 Mar 2026 23:12:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773182755; cv=none; b=jfzuB6f36XkcWFiPDfpxqXr2xo31f0rHR70mqEJCnc7LUgLELVfCIovzxBmeUioPzskt/AtalNzHqh9B+B+dBBIP+SOGwnrLKbqng8s1lrGmBpE2nXdvnGF/E2ivZg/ic2G51uk2vfSy8GllYfFPnkkHSUh9UUCkHGXJJ+jty5s=
+	t=1773184351; cv=none; b=OD/r3L2GVaf8qfvkd81pJGl0yBBfw6P9YWDpw4EJaYxrun1lcyMQFUrXeQvdz/EFu4J1BB6hKXRFmCjTQ5xPhq60pQ3MlfRV2qlx9ACpXXYHb/48c7H+AAqd63qX0FSntoweMY6IwfrklEo6749OV32HEnyj1wc03SQ4xzv/F9k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773182755; c=relaxed/simple;
-	bh=FZWkyRtDd5sYp24vsvD+gZbVOVt0EAV2B3Zfqrqy1QI=;
+	s=arc-20240116; t=1773184351; c=relaxed/simple;
+	bh=Tjs1OZVra2n3huyBmN5QCBfV3DAvkk3floZpEuptYrQ=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=qIoPezdYm8TIiMq6EsIQaJFXqcveEK1MO32Ygen5tSSkT8olc3T8W3nyp5YNhcNGMWGergVHh4JOxvSyYPpWolRam5OS2nMW3zV2Ar6yC1tKOuBxauV55hY7V+uS8i/mJYtZ1/pdfyYx30eAGJRkt8h73DfqU+RUPBSFigtKiKY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=oKsB0MKT; arc=none smtp.client-ip=209.85.214.201
+	 To:Cc:Content-Type; b=sMSKF7pNvS+dasB53w06s1qfXV/xs2TGYvMYoq/w+5q4Xs5QY9Vr8xy1ErsZeqNNq53DbQpE1Yp5DQfwSfaT62fC1IBp/FJn34w4OCWgaUTO6naKq4uf7kzm26Qxs7tc2LviybMasGpXtZ3Y/qUK/KwnD9lswL9fOuWIflgeR6Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=O9GBxNsx; arc=none smtp.client-ip=209.85.214.201
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="oKsB0MKT"
-Received: by mail-pl1-f201.google.com with SMTP id d9443c01a7336-2ae57228f64so98569935ad.0
-        for <kvm@vger.kernel.org>; Tue, 10 Mar 2026 15:45:53 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="O9GBxNsx"
+Received: by mail-pl1-f201.google.com with SMTP id d9443c01a7336-2adc527eaf5so82232435ad.0
+        for <kvm@vger.kernel.org>; Tue, 10 Mar 2026 16:12:29 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1773182753; x=1773787553; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1773184349; x=1773789149; darn=vger.kernel.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:reply-to:from:to:cc:subject:date:message-id:reply-to;
-        bh=hvcwGyyqhhK+9ujMD1DpAI6luR3guQH7bK6OSfrMLVU=;
-        b=oKsB0MKTMYAaEsfXUJRY59/k2J7dBzZW5a7uyLiqZftSm1n2/FDnoClcTt9Qpb4smQ
-         SkAxwVrMrVy+JO+ewopSvvmMTTLt4DWbu/TpalHGtKQgOt0+Ym71U1MLQBEDABmyYpPx
-         7+nxu59KpjlP+RJo5WCKNTxXwNvmViSvLibjJn2vECICmALJb2FUl5EFg3PR4TTt4Rix
-         Hy3ian7fkbUPXQnmzWXV45+3dHeJSDa42r79KZ+oz+1Xz671bws3FB/el+8BRGskxWsz
-         y+8I6Y5QY8bO763UsXVtdz+aQw3l3Sf1k31URK9K0ihuXo8TdZDnWmOJ6HIN9rGz1dQx
-         bdyw==
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=A1leDsb8RPc9uphgU7OUO7uZEtpg/5r81dXHSE9Lmy0=;
+        b=O9GBxNsxmS9TPiZP9CekMSUDUcxArUVavy6zB1z25VWoRR+qMzK9hfeEk76AXxC/Lh
+         NZ1GSOzvCAftHHRTeGXfCvLtoRt1zBLKSZjuNCoGa0tNvzYP7HzpGA+gQ5IhplejtyTU
+         PDbaxQYPzBiuH/WumuG/n4IYnIjqascT/+KcHE1PVpVA+Nps2YjqsJi8Wm6rW5hSwcmg
+         8Frjb772xZv+pNxmQHpi0Ej9nUIffs2tJzcSBSf+DW/GdhCRviOoZ3ZF+ziYqGA9ZYyn
+         v6+Va7w6tqHEh167FcrG7iqekXz958/eY/FiIK6j0SUlEyFEUxKDq6Y3QLA/LvD9jVcM
+         CtTg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1773182753; x=1773787553;
+        d=1e100.net; s=20230601; t=1773184349; x=1773789149;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:reply-to:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=hvcwGyyqhhK+9ujMD1DpAI6luR3guQH7bK6OSfrMLVU=;
-        b=O9uIoMJlih2KijOMRSam46LB4O2ubZCvm+iUL23QiByXTsjMo7QvdReKlm3Z4Zt1o/
-         xrpg0uWnvxBU1kHKXZX8ja9EEQDgaafhW54jCLum2w/gaXin4eZXpKwte0CqzdA/dv1X
-         SwUHe5AO7+2cqg/rTCu1oWvBLu/iKY9xYG02PH+LUXA2D8S6wTbYxnkEj/nCWwRaXBzD
-         XqnZQR7Tsqqf57jFAxVqftjmm8vprW5GllAEU7wiePWRyPAel4UCP1nxYhUJ4ija8JM0
-         darYwi0+eKwBkKonufk35QaIE4C1znKR4EAIYI3vpLkpmpfkKCK59wSeJ4LqUMrqgMlE
-         k97Q==
-X-Gm-Message-State: AOJu0YwtaFKgxGL7oyrCzQtCCQSU8EsR19V6ZJj6YsS05K9aK+FzJ0k4
-	HCqPS/9EaWMz+Qu4utbpoyRSBt0euElG/nc/tdADZGqIzYerv7Yz1WaiYmbNYn5kbsjPQSnBkEE
-	aA91vvA==
-X-Received: from pgbdp14.prod.google.com ([2002:a05:6a02:f0e:b0:c73:84bb:9d81])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:902:e888:b0:2ae:467f:11d8
- with SMTP id d9443c01a7336-2aeae891e96mr3395745ad.30.1773182753192; Tue, 10
- Mar 2026 15:45:53 -0700 (PDT)
-Reply-To: Sean Christopherson <seanjc@google.com>
-Date: Tue, 10 Mar 2026 15:45:46 -0700
-In-Reply-To: <20260310224546.2582118-1-seanjc@google.com>
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=A1leDsb8RPc9uphgU7OUO7uZEtpg/5r81dXHSE9Lmy0=;
+        b=I7L93CMJ3E+pIS1D+2VSfmih2xZDo/Lb/2YJPJsIYCWLQtW5AeckQOO1cynGQ5ogdM
+         wUhw322SrIyc0Cxh8RN8jLedc9/AjPUTMwIT4urNtNLkDtes0a3F2NE5tOrdwUe4lJso
+         ys7pg/c8guB0vhRAIjfengPQ0PwOPaqHhvh+q0tdp+bqla85xNqmkL6zMwbpSy0Nc5vb
+         63rPUS1N5s6D1BEcwRspdHXiqg5DURq8MB2pXS8EOCgjdosO7Nn2hhuB9Z3EtOjZQmHT
+         EK9HRoqO2OuQ0TjqBWYWybuhA612tNR4SAQcd60Lesg0+k3m7VpH5WMbPSKgEr67NWEO
+         T1Zw==
+X-Forwarded-Encrypted: i=1; AJvYcCW674k2SbsATlPi3xJu3QAq2PohlT7Lb1v0YW0wzuglq8AuNtuQAJnECC3HWi4q0bM4ub0=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwsU3KgmJPCq18VhAcsvKLRnQ2+mEkL71T9BAhVRJEBFkqpIzff
+	FPffTV6JrFwxoj9DtxISddas2VcrQj33ASxVQPZjrKSgfMa2HAMsQBEzt3pIF65kLVlot3FJ8fb
+	NqhwHgw==
+X-Received: from pgam2.prod.google.com ([2002:a05:6a02:2b42:b0:c73:97d4:afe0])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a21:7703:b0:398:951c:b67
+ with SMTP id adf61e73a8af0-398c60df84emr266304637.46.1773184349173; Tue, 10
+ Mar 2026 16:12:29 -0700 (PDT)
+Date: Tue, 10 Mar 2026 16:12:27 -0700
+In-Reply-To: <31093743-97e2-42a7-a989-84704f25f40e@intel.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-References: <20260310224546.2582118-1-seanjc@google.com>
-X-Mailer: git-send-email 2.53.0.473.g4a7958ca14-goog
-Message-ID: <20260310224546.2582118-3-seanjc@google.com>
-Subject: [PATCH 2/2] KVM: x86: Suppress WARNs on nested_run_pending after
- userspace exit
+References: <20260112235408.168200-1-chang.seok.bae@intel.com>
+ <20260112235408.168200-2-chang.seok.bae@intel.com> <aajd6Fa8gHz6lW78@google.com>
+ <b5b9efce-9205-4282-acc2-380d348c4f50@intel.com> <aa9ym-SWeOdTrz0O@google.com>
+ <31093743-97e2-42a7-a989-84704f25f40e@intel.com>
+Message-ID: <abClW229Q_LHobgX@google.com>
+Subject: Re: [PATCH v2 01/16] KVM: x86: Rename register accessors to be GPR-specific
 From: Sean Christopherson <seanjc@google.com>
-To: Sean Christopherson <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>
-Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	Yosry Ahmed <yosry@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+To: "Chang S. Bae" <chang.seok.bae@intel.com>
+Cc: pbonzini@redhat.com, kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	chao.gao@intel.com
+Content-Type: text/plain; charset="us-ascii"
 
-To end an ongoing game of whack-a-mole between KVM and syzkaller, WARN on
-illegally cancelling a pending nested VM-Enter if and only if userspace
-has NOT gained control of the vCPU since the nested run was initiated.  As
-proven time and time again by syzkaller, userspace can clobber vCPU state
-so as to force a VM-Exit that violates KVM's architectural modelling of
-VMRUN/VMLAUNCH/VMRESUME.
+On Tue, Mar 10, 2026, Chang S. Bae wrote:
+> On 3/9/2026 6:23 PM, Sean Christopherson wrote:
+> > 
+> > Oh, yikes, I didn't even see that this series is playing games with the register
+> > indices.
+> > 
+> > Whatever we do, the changelog asbolutely needs to call out the real motiviation.
+> 
+> Given the discussion here, it looks so apparent the changelog is missing
+> that detail. I'll ensure something like what you wrote here to the revision.
+> 
+> > I'll try to come back to this tomorrow with more complete thoughts and hopefully
+> 
+> Sure, you call it. I know you have a lot on your plate, so I hope you feel
+> free to take your time. Thanks!
+> 
+> > E.g. passing in VCPU_REGS_RIP to kvm_gpr_read() will compile just fine, but will
+> > read the wrong register on APX capable hardware.
+> 
+> Right, so new semantics likely need to be established. As responded before,
+> one option would be separate them in structure:
+> 
+> diff --git a/arch/x86/include/asm/kvm_host.h
+> b/arch/x86/include/asm/kvm_host.h
+> index ff07c45e3c73..ff8a317be5cf 100644
+> --- a/arch/x86/include/asm/kvm_host.h
+> +++ b/arch/x86/include/asm/kvm_host.h
+> @@ -795,10 +795,14 @@ enum kvm_only_cpuid_leafs {
+> 
+>  struct kvm_vcpu_arch {
+>         /*
+> -        * rip and regs accesses must go through
+> -        * kvm_{register,rip}_{read,write} functions.
+> +        * regs accesses must go through kvm_register_{read,write}
+> +        * functions.
+>          */
+>         unsigned long regs[NR_VCPU_REGS];
+> +
+> +       /* rip accesses must go through kvm_rip_{read,write} */
+> +       unsigned long rip;
 
-To detect that userspace has gained control, while minimizing the risk of
-operating on stale data, convert nested_run_pending from a pure boolean to
-a tri-state of sorts, where '0' is still "not pending", '1' is "pending",
-and '2' is "pending but untrusted".  Then on KVM_RUN, if the flag is in
-the "trusted pending" state, move it to "untrusted pending".
+Ya, this is where I ended up too.  And then as prep work, we can and should
+convert regs_{avail,dirty} to proper bitmaps so that the size can be dynamic
+for 32-bit vs. 64-bit vs. APX-capable (or we could just use a "unsigned long",
+it would only change what BUILD_BUG_ON()s are needed).
 
-Signed-off-by: Sean Christopherson <seanjc@google.com>
----
- arch/x86/include/asm/kvm_host.h |  8 +++++++-
- arch/x86/kvm/svm/nested.c       | 11 +++++++----
- arch/x86/kvm/svm/svm.c          |  2 +-
- arch/x86/kvm/vmx/nested.c       | 12 +++++++-----
- arch/x86/kvm/vmx/vmx.c          |  2 +-
- arch/x86/kvm/x86.c              |  7 +++++++
- arch/x86/kvm/x86.h              | 10 ++++++++++
- 7 files changed, 40 insertions(+), 12 deletions(-)
+E.g. I have
 
-diff --git a/arch/x86/include/asm/kvm_host.h b/arch/x86/include/asm/kvm_host.h
-index a1bf0aaedad8..acec03d7bb1e 100644
---- a/arch/x86/include/asm/kvm_host.h
-+++ b/arch/x86/include/asm/kvm_host.h
-@@ -1105,8 +1105,14 @@ struct kvm_vcpu_arch {
- 	 * can only occur at instruction boundaries.  The only exception is
- 	 * VMX's "notify" exits, which exist in large part to break the CPU out
- 	 * of infinite ucode loops, but can corrupt vCPU state in the process!
-+	 *
-+	 * For all intents and purposes, this is a boolean, but it's tracked as
-+	 * a u8 so that KVM can detect when userspace may have stuffed vCPU
-+	 * state and generated an architecturally-impossible VM-Exit.
- 	 */
--	bool nested_run_pending;
-+#define KVM_NESTED_RUN_PENDING			1
-+#define KVM_NESTED_RUN_PENDING_UNTRUSTED	2
-+	u8 nested_run_pending;
- 
- #if IS_ENABLED(CONFIG_HYPERV)
- 	hpa_t hv_root_tdp;
-diff --git a/arch/x86/kvm/svm/nested.c b/arch/x86/kvm/svm/nested.c
-index 782d6a34d173..af741823c08c 100644
---- a/arch/x86/kvm/svm/nested.c
-+++ b/arch/x86/kvm/svm/nested.c
-@@ -1131,7 +1131,7 @@ int nested_svm_vmrun(struct kvm_vcpu *vcpu)
- 	if (!npt_enabled)
- 		vmcb01->save.cr3 = kvm_read_cr3(vcpu);
- 
--	vcpu->arch.nested_run_pending = 1;
-+	vcpu->arch.nested_run_pending = KVM_NESTED_RUN_PENDING;
- 
- 	if (enter_svm_guest_mode(vcpu, vmcb12_gpa, true) ||
- 	    !nested_svm_merge_msrpm(vcpu)) {
-@@ -1277,7 +1277,8 @@ void nested_svm_vmexit(struct vcpu_svm *svm)
- 	/* Exit Guest-Mode */
- 	leave_guest_mode(vcpu);
- 	svm->nested.vmcb12_gpa = 0;
--	WARN_ON_ONCE(vcpu->arch.nested_run_pending);
-+
-+	kvm_warn_on_nested_run_pending(vcpu);
- 
- 	kvm_clear_request(KVM_REQ_GET_NESTED_STATE_PAGES, vcpu);
- 
-@@ -1984,8 +1985,10 @@ static int svm_set_nested_state(struct kvm_vcpu *vcpu,
- 
- 	svm_set_gif(svm, !!(kvm_state->flags & KVM_STATE_NESTED_GIF_SET));
- 
--	vcpu->arch.nested_run_pending =
--		!!(kvm_state->flags & KVM_STATE_NESTED_RUN_PENDING);
-+	if (kvm_state->flags & KVM_STATE_NESTED_RUN_PENDING)
-+		vcpu->arch.nested_run_pending = KVM_NESTED_RUN_PENDING_UNTRUSTED;
-+	else
-+		vcpu->arch.nested_run_pending = 0;
- 
- 	svm->nested.vmcb12_gpa = kvm_state->hdr.svm.vmcb_pa;
- 
-diff --git a/arch/x86/kvm/svm/svm.c b/arch/x86/kvm/svm/svm.c
-index 112731515ee3..7de2c6621b98 100644
---- a/arch/x86/kvm/svm/svm.c
-+++ b/arch/x86/kvm/svm/svm.c
-@@ -5035,7 +5035,7 @@ static int svm_leave_smm(struct kvm_vcpu *vcpu, const union kvm_smram *smram)
- 	if (ret)
- 		goto unmap_save;
- 
--	vcpu->arch.nested_run_pending = 1;
-+	vcpu->arch.nested_run_pending = KVM_NESTED_RUN_PENDING;
- 
- unmap_save:
- 	kvm_vcpu_unmap(vcpu, &map_save);
-diff --git a/arch/x86/kvm/vmx/nested.c b/arch/x86/kvm/vmx/nested.c
-index 65e45cee871c..6a107025e7e2 100644
---- a/arch/x86/kvm/vmx/nested.c
-+++ b/arch/x86/kvm/vmx/nested.c
-@@ -3844,7 +3844,7 @@ static int nested_vmx_run(struct kvm_vcpu *vcpu, bool launch)
- 	 * We're finally done with prerequisite checking, and can start with
- 	 * the nested entry.
- 	 */
--	vcpu->arch.nested_run_pending = 1;
-+	vcpu->arch.nested_run_pending = KVM_NESTED_RUN_PENDING;
- 	vmx->nested.has_preemption_timer_deadline = false;
- 	status = nested_vmx_enter_non_root_mode(vcpu, true);
- 	if (unlikely(status != NVMX_VMENTRY_SUCCESS))
-@@ -5056,7 +5056,7 @@ void __nested_vmx_vmexit(struct kvm_vcpu *vcpu, u32 vm_exit_reason,
- 	vmx->nested.mtf_pending = false;
- 
- 	/* trying to cancel vmlaunch/vmresume is a bug */
--	WARN_ON_ONCE(vcpu->arch.nested_run_pending);
-+	kvm_warn_on_nested_run_pending(vcpu);
- 
- #ifdef CONFIG_KVM_HYPERV
- 	if (kvm_check_request(KVM_REQ_GET_NESTED_STATE_PAGES, vcpu)) {
-@@ -6679,7 +6679,7 @@ bool nested_vmx_reflect_vmexit(struct kvm_vcpu *vcpu)
- 	unsigned long exit_qual;
- 	u32 exit_intr_info;
- 
--	WARN_ON_ONCE(vcpu->arch.nested_run_pending);
-+	kvm_warn_on_nested_run_pending(vcpu);
- 
- 	/*
- 	 * Late nested VM-Fail shares the same flow as nested VM-Exit since KVM
-@@ -6987,8 +6987,10 @@ static int vmx_set_nested_state(struct kvm_vcpu *vcpu,
- 	if (!(kvm_state->flags & KVM_STATE_NESTED_GUEST_MODE))
- 		return 0;
- 
--	vcpu->arch.nested_run_pending =
--		!!(kvm_state->flags & KVM_STATE_NESTED_RUN_PENDING);
-+	if (kvm_state->flags & KVM_STATE_NESTED_RUN_PENDING)
-+		vcpu->arch.nested_run_pending = KVM_NESTED_RUN_PENDING_UNTRUSTED;
-+	else
-+		vcpu->arch.nested_run_pending = 0;
- 
- 	vmx->nested.mtf_pending =
- 		!!(kvm_state->flags & KVM_STATE_NESTED_MTF_PENDING);
-diff --git a/arch/x86/kvm/vmx/vmx.c b/arch/x86/kvm/vmx/vmx.c
-index 0e7e0a17bb75..dbe0f234aefb 100644
---- a/arch/x86/kvm/vmx/vmx.c
-+++ b/arch/x86/kvm/vmx/vmx.c
-@@ -8423,7 +8423,7 @@ int vmx_leave_smm(struct kvm_vcpu *vcpu, const union kvm_smram *smram)
- 		if (ret)
- 			return ret;
- 
--		vcpu->arch.nested_run_pending = 1;
-+		vcpu->arch.nested_run_pending = KVM_NESTED_RUN_PENDING;
- 		vmx->nested.smm.guest_mode = false;
- 	}
- 	return 0;
-diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
-index 879cdeb6adde..cad16c83dcff 100644
---- a/arch/x86/kvm/x86.c
-+++ b/arch/x86/kvm/x86.c
-@@ -12090,6 +12090,13 @@ int kvm_arch_vcpu_ioctl_run(struct kvm_vcpu *vcpu)
- 	if (r <= 0)
- 		goto out;
- 
-+	/*
-+	 * If userspace may have modified vCPU state, mark nested_run_pending
-+	 * as "untrusted" to avoid triggering false-positive WARNs.
-+	 */
-+	if (vcpu->arch.nested_run_pending == KVM_NESTED_RUN_PENDING)
-+		vcpu->arch.nested_run_pending = KVM_NESTED_RUN_PENDING_UNTRUSTED;
-+
- 	r = vcpu_run(vcpu);
- 
- out:
-diff --git a/arch/x86/kvm/x86.h b/arch/x86/kvm/x86.h
-index 44a28d343d40..38a905fa86de 100644
---- a/arch/x86/kvm/x86.h
-+++ b/arch/x86/kvm/x86.h
-@@ -188,6 +188,16 @@ static inline bool kvm_can_set_cpuid_and_feature_msrs(struct kvm_vcpu *vcpu)
- 	return vcpu->arch.last_vmentry_cpu == -1 && !is_guest_mode(vcpu);
- }
- 
-+/*
-+ * WARN if a nested VM-Enter is pending completion, and userspace hasn't gained
-+ * control since the nested VM-Enter was initiated (in which case, userspace
-+ * may have modified vCPU state to induce an architecturally invalid VM-Exit).
-+ */
-+static inline void kvm_warn_on_nested_run_pending(struct kvm_vcpu *vcpu)
-+{
-+	WARN_ON_ONCE(vcpu->arch.nested_run_pending == KVM_NESTED_RUN_PENDING);
-+}
-+
- static inline void kvm_set_mp_state(struct kvm_vcpu *vcpu, int mp_state)
- {
- 	vcpu->arch.mp_state = mp_state;
--- 
-2.53.0.473.g4a7958ca14-goog
+        unsigned long regs[NR_VCPU_GENERAL_PURPOSE_REGS];
+        unsigned long rip;
+        DECLARE_BITMAP(regs_avail, NR_VCPU_TOTAL_REGS);
+        DECLARE_BITMAP(regs_dirty, NR_VCPU_TOTAL_REGS);
+
+and then the below as a final testing hack for APX.  I should be able to post a
+small series later today, which will map out out most of the register crud (I
+didn't do anything with the emulator, so it's not a complete prep series, but
+it should be enough to allow us to choose a direction).
+
+enum kvm_reg {
+        VCPU_REGS_RAX = __VCPU_REGS_RAX,
+        VCPU_REGS_RCX = __VCPU_REGS_RCX,
+        VCPU_REGS_RDX = __VCPU_REGS_RDX,
+        VCPU_REGS_RBX = __VCPU_REGS_RBX,
+        VCPU_REGS_RSP = __VCPU_REGS_RSP,
+        VCPU_REGS_RBP = __VCPU_REGS_RBP,
+        VCPU_REGS_RSI = __VCPU_REGS_RSI,
+        VCPU_REGS_RDI = __VCPU_REGS_RDI,
+#ifdef CONFIG_X86_64
+        VCPU_REGS_R8  = __VCPU_REGS_R8,
+        VCPU_REGS_R9  = __VCPU_REGS_R9,
+        VCPU_REGS_R10 = __VCPU_REGS_R10,
+        VCPU_REGS_R11 = __VCPU_REGS_R11,
+        VCPU_REGS_R12 = __VCPU_REGS_R12,
+        VCPU_REGS_R13 = __VCPU_REGS_R13,
+        VCPU_REGS_R14 = __VCPU_REGS_R14,
+        VCPU_REGS_R15 = __VCPU_REGS_R15,
+#define CONFIG_X86_APX
+
+#endif
+
+#ifdef CONFIG_X86_APX
+        VCPU_REG_R16 = VCPU_REGS_R15 + 1,
+        VCPU_REG_R17,
+        VCPU_REG_R18,
+        VCPU_REG_R19,
+        VCPU_REG_R20,
+        VCPU_REG_R21,
+        VCPU_REG_R22,
+        VCPU_REG_R23,
+        VCPU_REG_R24,
+        VCPU_REG_R25,
+        VCPU_REG_R26,
+        VCPU_REG_R27,
+        VCPU_REG_R28,
+        VCPU_REG_R29,
+        VCPU_REG_R30,
+        VCPU_REG_R31,
+#endif
+        NR_VCPU_GENERAL_PURPOSE_REGS,
+
+        VCPU_REG_RIP = NR_VCPU_GENERAL_PURPOSE_REGS,
+
+        VCPU_REG_PDPTR,
+        VCPU_REG_CR0,
+        /*
+         * Alias AMD's ERAPS (not a real register) to CR3 so that common code
+         * can trigger emulation of the RAP (Return Address Predictor) with
+         * minimal support required in common code.  Piggyback CR3 as the RAP
+         * is cleared on writes to CR3, i.e. marking CR3 dirty will naturally
+         * mark ERAPS dirty as well.
+         */
+        VCPU_REG_CR3,
+        VCPU_REG_ERAPS = VCPU_REG_CR3,
+        VCPU_REG_CR4,
+        VCPU_REG_RFLAGS,
+        VCPU_REG_SEGMENTS,
+        VCPU_REG_EXIT_INFO_1,
+        VCPU_REG_EXIT_INFO_2,
+
+        NR_VCPU_TOTAL_REGS,
+};
 
