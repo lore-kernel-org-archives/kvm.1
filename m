@@ -1,355 +1,92 @@
-Received: from mail.loongson.cn (mail.loongson.cn [114.242.206.163])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9B97F44E05C;
-	Tue, 10 Mar 2026 09:52:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=114.242.206.163
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A0F1144A725;
+	Tue, 10 Mar 2026 10:03:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773136352; cv=none; b=ViEt7pnVqbhZn1YutYkAmxdJqojzWpwvvkQM1nVl+XVrS/wOBGcvArjvimYW+HGC3tqGwuYZNMa9gIWMC8GOe1yFtbMLSsIf/qpsRx20stL+Bjhd+qPTQ13lkk1mV/BCvbduBbquDck2Mgn8yQyCbHsWHSxbWWslICKx7ij8rl4=
+	t=1773137037; cv=none; b=RzBaQlOdEkD/Lmw6kqdlfzESy5bvt0A6lnEJFF+WiQaJjnuQgBWgHx4fSJxdpIH40NDZZrmgEl1K4cUQWKqNklWbLsP/zvO15zftFqVfI3WpXj7UBesUsRI9x2+rVeChyzsTxz4+KaWUzHYu5bEpea7iJO8G4l1anSSAGomhnTU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773136352; c=relaxed/simple;
-	bh=a1uKxUjJubkgg11olvLlobm//6jTJ9MXX1VV2jbmJIg=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=uj1Gvr7gC+LV6ZedTvCWKNGZ3QmpBwpgc1dw2ryxsaO210zgGSE9K7ATIkv12sf9SQ+P+IJ1XnOJuUhTsm4i8HkDdWG3/90fKD5t7zH4qeOl3fOq1rbjCRnf2gMkpxn5dvKI6RTtTrfbb4qgnuIC9QNxexdfcy3c6xa/BpD006A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn; spf=pass smtp.mailfrom=loongson.cn; arc=none smtp.client-ip=114.242.206.163
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=loongson.cn
-Received: from loongson.cn (unknown [10.2.5.185])
-	by gateway (Coremail) with SMTP id _____8Cx68LQ6a9pE3cZAA--.9031S3;
-	Tue, 10 Mar 2026 17:52:16 +0800 (CST)
-Received: from localhost.localdomain (unknown [10.2.5.185])
-	by front1 (Coremail) with SMTP id qMiowJDxzsLP6a9p7gVSAA--.24922S4;
-	Tue, 10 Mar 2026 17:52:16 +0800 (CST)
-From: Song Gao <gaosong@loongson.cn>
-To: chenhuacai@kernel.org,
-	maobibo@loongson.cn
-Cc: loongarch@lists.linux.dev,
-	kernel@xen0n.name,
-	kvm@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH 2/3] KVM: LoongArch: selftests: Add basic PMU event counting test
-Date: Tue, 10 Mar 2026 17:26:56 +0800
-Message-Id: <20260310092657.1023650-3-gaosong@loongson.cn>
-X-Mailer: git-send-email 2.39.1
-In-Reply-To: <20260310092657.1023650-1-gaosong@loongson.cn>
-References: <20260310092657.1023650-1-gaosong@loongson.cn>
+	s=arc-20240116; t=1773137037; c=relaxed/simple;
+	bh=/u2WQp5fcyZioDQPVTsvawNu/rZDRBfSQ4FJERE46Es=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=Pp9ugbw31IDHQaWWYxt2gh2yPAQhcA9Q0KNjwW87qIQSDt5SlHbd3zWv58fODzfN9+ouQib34UQMvudzqeOrZXgOWTOhYa/dn0k5/nb2pPI/Ss+Ynwg8zXeGjtWj+aEIsR0NyrVe2XAq+jOKWiEcRiDWjNzxk5t/QFMKxyYJ30Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ps7jYfJl; arc=none smtp.client-ip=10.30.226.201
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ps7jYfJl"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 42CC8C2BCB9;
+	Tue, 10 Mar 2026 10:03:55 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1773137037;
+	bh=/u2WQp5fcyZioDQPVTsvawNu/rZDRBfSQ4FJERE46Es=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+	b=ps7jYfJlkO/135q6uJIpCJxv8N3QQmQQZYf8wqQ0nHQnGTWPOidr2ZoiCVPRdlXjq
+	 HeiaG2cjDw2cOvwj3sMh6BXEEVSacKzshS2e78bko9EHKCN3cCiKFiJUpKkifGgA+r
+	 qy4iFh+ssIkJyjTCkQY7wYUl3VJdGiHvY0PXSqReVlmmEbyESpIY2776zLCyIvE050
+	 yb+pvEdZmZ4wGzHM5Vy+LgopgO8sS1TdW0ORurwHemCzQkTH1WiF2Df4lCM9t1YSCc
+	 pXfryUmV6x0lw84L9A29rv6SCcE8QaqWoN2I8uymA91DAlxCY+t7fZQfObs7WHhn0o
+	 XDVzFVlWaFr/w==
+From: Thomas Gleixner <tglx@kernel.org>
+To: Jiri Slaby <jirislaby@kernel.org>, Matthieu Baerts <matttbe@kernel.org>
+Cc: Peter Zijlstra <peterz@infradead.org>, Stefan Hajnoczi
+ <stefanha@redhat.com>, Stefano Garzarella <sgarzare@redhat.com>,
+ kvm@vger.kernel.org, virtualization@lists.linux.dev, Netdev
+ <netdev@vger.kernel.org>, rcu@vger.kernel.org, MPTCP Linux
+ <mptcp@lists.linux.dev>, Linux Kernel <linux-kernel@vger.kernel.org>,
+ Shinichiro Kawasaki <shinichiro.kawasaki@wdc.com>, "Paul E. McKenney"
+ <paulmck@kernel.org>, Dave Hansen <dave.hansen@linux.intel.com>,
+ luto@kernel.org, Michal =?utf-8?Q?Koutn=C3=BD?= <MKoutny@suse.com>, Waiman
+ Long
+ <longman@redhat.com>, Marco Elver <elver@google.com>
+Subject: Re: Stalls when starting a VSOCK listening socket: soft lockups,
+ RCU stalls, timeout
+In-Reply-To: <76e2b909-98db-49de-a8eb-f6f0a192f630@kernel.org>
+References: <863a5291-a636-47d0-891c-bb0524d2e134@kernel.org>
+ <20260302114636.GL606826@noisy.programming.kicks-ass.net>
+ <717310d8-6274-4b7f-8a19-561c45f5f565@kernel.org>
+ <a2b573b4-af61-4b84-a7d1-012ed6bb23c9@kernel.org>
+ <ba067933-bf3b-476d-a0bb-53eda56996ca@kernel.org> <87zf4m2qvo.ffs@tglx>
+ <47cba228-bba7-4e58-a69d-ea41f8de6602@kernel.org> <87tsuu2i59.ffs@tglx>
+ <7efde2b5-3b72-4858-9db0-22493d446301@kernel.org> <87qzpx2sck.ffs@tglx>
+ <20260306152458.GT606826@noisy.programming.kicks-ass.net>
+ <87ldg42eu7.ffs@tglx> <87h5qr2rzi.ffs@tglx> <87eclu3coa.ffs@tglx>
+ <87v7f61cnl.ffs@tglx> <57c1e171-9520-4288-9e2d-10a72a499968@kernel.org>
+ <87pl5ds88r.ffs@tglx> <0ae4d678-5676-4523-bae3-5ad73b526e27@kernel.org>
+ <87eclsrtqg.ffs@tglx> <e846cb5f-65c4-4a9b-9f9b-593e4af526d8@kernel.org>
+ <76e2b909-98db-49de-a8eb-f6f0a192f630@kernel.org>
+Date: Tue, 10 Mar 2026 11:03:52 +0100
+Message-ID: <878qc0rofr.ffs@tglx>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:qMiowJDxzsLP6a9p7gVSAA--.24922S4
-X-CM-SenderInfo: 5jdr20tqj6z05rqj20fqof0/
-X-Coremail-Antispam: 1Uk129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7KY7
-	ZEXasCq-sGcSsGvfJ3UbIjqfuFe4nvWSU5nxnvy29KBjDU0xBIdaVrnUUvcSsGvfC2Kfnx
-	nUUI43ZEXa7xR_UUUUUUUUU==
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-Introduce a basic PMU test that verifies hardware event counting for
-four performance counters. The test enables events for CPU cycles,
-instructions retired, branch instructions, and branch misses, runs a
-fixed number of loops, and checks that the counter values fall within
-expected ranges. It also validates that the host supports PMU and that
-the VM feature is enabled.
+On Tue, Mar 10 2026 at 10:00, Jiri Slaby wrote:
+> On 10. 03. 26, 9:56, Jiri Slaby wrote:
+>> Thomas,
+>>=20
+>> On 10. 03. 26, 9:09, Thomas Gleixner wrote:
+>>> =C2=A0=C2=A0=C2=A0 2) task is not longer in the task list w/o going thr=
+ough do_exit()
+>>=20
+>> After a quick look (I have to run now, so I could be completely wrong):=
+=20
+>> what about the task is not in the list *yet*. You use RCU ->=20
+>> for_each_process_thread(), so there could be a race with attach_pid()=20
+>> protected by tasklist_lock.
+>
+> Not attach_pid(), that's irrelevant here.
+>
+> But one line below in copy_process(): list_add_tail().
 
-Signed-off-by: Song Gao <gaosong@loongson.cn>
----
- tools/testing/selftests/kvm/Makefile.kvm      |   1 +
- .../selftests/kvm/include/loongarch/pmu.h     |  46 +++++
- .../kvm/include/loongarch/processor.h         |   1 +
- .../selftests/kvm/lib/loongarch/processor.c   |   6 +-
- .../selftests/kvm/loongarch/guest_pmu_test.c  | 171 ++++++++++++++++++
- 5 files changed, 224 insertions(+), 1 deletion(-)
- create mode 100644 tools/testing/selftests/kvm/include/loongarch/pmu.h
- create mode 100644 tools/testing/selftests/kvm/loongarch/guest_pmu_test.c
+Yes. There is an issue. Peter and me just discovered that as well, but
+in the case at hand it can't be the problem. The missing task is on the
+CPU which means it must be visible in the thread list and task list.
 
-diff --git a/tools/testing/selftests/kvm/Makefile.kvm b/tools/testing/selftests/kvm/Makefile.kvm
-index fdec90e85467..137f97ad34c0 100644
---- a/tools/testing/selftests/kvm/Makefile.kvm
-+++ b/tools/testing/selftests/kvm/Makefile.kvm
-@@ -221,6 +221,7 @@ TEST_GEN_PROGS_riscv += rseq_test
- TEST_GEN_PROGS_riscv += steal_time
- 
- TEST_GEN_PROGS_loongarch = arch_timer
-+TEST_GEN_PROGS_loongarch += loongarch/guest_pmu_test
- TEST_GEN_PROGS_loongarch += coalesced_io_test
- TEST_GEN_PROGS_loongarch += demand_paging_test
- TEST_GEN_PROGS_loongarch += dirty_log_perf_test
-diff --git a/tools/testing/selftests/kvm/include/loongarch/pmu.h b/tools/testing/selftests/kvm/include/loongarch/pmu.h
-new file mode 100644
-index 000000000000..0d9ecb9de8c3
---- /dev/null
-+++ b/tools/testing/selftests/kvm/include/loongarch/pmu.h
-@@ -0,0 +1,46 @@
-+/* SPDX-License-Identifier: GPL-2.0-only */
-+/*
-+ * LoongArch PMU specific interface
-+ */
-+#ifndef SELFTEST_KVM_LOONGARCH_PMU_H
-+#define SELFTEST_KVM_LOONGARCH_PMU_H
-+
-+#include "processor.h"
-+
-+/* Performance Counter registers */
-+#define LOONGARCH_CSR_PERFCTRL0			0x200   /* perf event 0 config */
-+#define LOONGARCH_CSR_PERFCNTR0			0x201   /* perf event 0 count value */
-+#define LOONGARCH_CSR_PERFCTRL1			0x202   /* perf event 1 config */
-+#define LOONGARCH_CSR_PERFCNTR1			0x203   /* perf event 1 count value */
-+#define LOONGARCH_CSR_PERFCTRL2			0x204   /* perf event 2 config */
-+#define LOONGARCH_CSR_PERFCNTR2			0x205   /* perf event 2 count value */
-+#define LOONGARCH_CSR_PERFCTRL3			0x206   /* perf event 3 config */
-+#define LOONGARCH_CSR_PERFCNTR3			0x207   /* perf event 3 count value */
-+#define  CSR_PERFCTRL_PLV0			BIT(16)
-+#define  CSR_PERFCTRL_PLV1			BIT(17)
-+#define  CSR_PERFCTRL_PLV2			BIT(18)
-+#define  CSR_PERFCTRL_PLV3			BIT(19)
-+#define PMU_ENVENT_ENABLED	(CSR_PERFCTRL_PLV0 | CSR_PERFCTRL_PLV1 |\
-+				CSR_PERFCTRL_PLV2 | CSR_PERFCTRL_PLV3)
-+
-+#define LOONGARCH_CPUCFG6			0x6
-+#define  CPUCFG6_PMP				BIT(0)
-+#define  CPUCFG6_PAMVER				GENMASK(3, 1)
-+#define  CPUCFG6_PMNUM				GENMASK(7, 4)
-+#define  CPUCFG6_PMNUM_SHIFT			4
-+#define  CPUCFG6_PMBITS				GENMASK(13, 8)
-+#define  CPUCFG6_PMBITS_SHIFT			8
-+#define  CPUCFG6_UPM				BIT(14)
-+
-+/* Hardware event codes (from LoongArch perf_event.c */
-+#define LOONGARCH_PMU_EVENT_CYCLES		0x00  /* CPU cycles */
-+#define LOONGARCH_PMU_EVENT_INSTR_RETIRED	0x01  /* Instructions retired */
-+#define PERF_COUNT_HW_BRANCH_INSTRUCTIONS	0x02  /* Branch instructions */
-+#define PERF_COUNT_HW_BRANCH_MISSES		0x03  /* Branch misses */
-+
-+#define NUM_LOOPS                               1000
-+#define EXPECTED_INSTR_MIN                      (NUM_LOOPS + 10)  /* Loop + overhead */
-+#define EXPECTED_CYCLES_MIN                     NUM_LOOPS       /* At least 1 cycle per iteration */
-+#define UPPER_BOUND				(10 * NUM_LOOPS)
-+
-+#endif
-diff --git a/tools/testing/selftests/kvm/include/loongarch/processor.h b/tools/testing/selftests/kvm/include/loongarch/processor.h
-index b8f6c3348ddd..af8d05820961 100644
---- a/tools/testing/selftests/kvm/include/loongarch/processor.h
-+++ b/tools/testing/selftests/kvm/include/loongarch/processor.h
-@@ -189,6 +189,7 @@ struct handlers {
- 	handler_fn exception_handlers[VECTOR_NUM];
- };
- 
-+void loongarch_vcpu_setup(struct kvm_vcpu *vcpu);
- void vm_init_descriptor_tables(struct kvm_vm *vm);
- void vm_install_exception_handler(struct kvm_vm *vm, int vector, handler_fn handler);
- 
-diff --git a/tools/testing/selftests/kvm/lib/loongarch/processor.c b/tools/testing/selftests/kvm/lib/loongarch/processor.c
-index 68eb34032a99..a64d47ad6ce8 100644
---- a/tools/testing/selftests/kvm/lib/loongarch/processor.c
-+++ b/tools/testing/selftests/kvm/lib/loongarch/processor.c
-@@ -7,6 +7,7 @@
- #include "kvm_util.h"
- #include "processor.h"
- #include "ucall_common.h"
-+#include "pmu.h"
- 
- #define LOONGARCH_PAGE_TABLE_PHYS_MIN		0x200000
- #define LOONGARCH_GUEST_STACK_VADDR_MIN		0x200000
-@@ -275,11 +276,12 @@ static void loongarch_set_cpucfg(struct kvm_vcpu *vcpu, uint64_t id, uint64_t va
- 	__vcpu_set_reg(vcpu, cfgid, val);
- }
- 
--static void loongarch_vcpu_setup(struct kvm_vcpu *vcpu)
-+void loongarch_vcpu_setup(struct kvm_vcpu *vcpu)
- {
- 	int width;
- 	unsigned long val;
- 	struct kvm_vm *vm = vcpu->vm;
-+	uint32_t cfg6;
- 
- 	switch (vm->mode) {
- 	case VM_MODE_P36V47_16K:
-@@ -290,6 +292,8 @@ static void loongarch_vcpu_setup(struct kvm_vcpu *vcpu)
- 		TEST_FAIL("Unknown guest mode, mode: 0x%x", vm->mode);
- 	}
- 
-+	cfg6 = read_cpucfg(LOONGARCH_CPUCFG6);
-+	loongarch_set_cpucfg(vcpu, LOONGARCH_CPUCFG6, cfg6);
- 	/* kernel mode and page enable mode */
- 	val = PLV_KERN | CSR_CRMD_PG;
- 	loongarch_set_csr(vcpu, LOONGARCH_CSR_CRMD, val);
-diff --git a/tools/testing/selftests/kvm/loongarch/guest_pmu_test.c b/tools/testing/selftests/kvm/loongarch/guest_pmu_test.c
-new file mode 100644
-index 000000000000..59ec945b6e05
---- /dev/null
-+++ b/tools/testing/selftests/kvm/loongarch/guest_pmu_test.c
-@@ -0,0 +1,171 @@
-+// SPDX-License-Identifier: GPL-2.0
-+/*
-+ * LoongArch KVM PMU event counting test
-+ *
-+ * Test hardware event counting: CPU_CYCLES, INSTR_RETIRED,
-+ * BRANCH_INSTRUCTIONS and BRANCH_MISSES.
-+ *
-+ */
-+#include "kvm_util.h"
-+#include "loongarch/processor.h"
-+#include "pmu.h"
-+#include <linux/bitops.h>
-+
-+/* Guest test code - runs inside VM */
-+static void guest_pmu_base_test(void)
-+{
-+	uint64_t cnt[4];
-+	int i;
-+	uint32_t cfg6, pmnum;
-+
-+	cfg6 = read_cpucfg(LOONGARCH_CPUCFG6);
-+	pmnum = (cfg6 >> 4) & 0xf;
-+	GUEST_PRINTF("CPUCFG6 = 0x%x\n", cfg6);
-+	GUEST_PRINTF("PMP enabled: %s\n", (cfg6 & 0x1) ? "YES" : "NO");
-+	GUEST_PRINTF("Number of counters (PMNUM): %x\n", pmnum + 1);
-+	GUEST_ASSERT(pmnum == 3);
-+
-+	GUEST_PRINTF("Clean csr_perfcntr0-3\n");
-+	csr_write(0, LOONGARCH_CSR_PERFCNTR0);
-+	csr_write(0, LOONGARCH_CSR_PERFCNTR1);
-+	csr_write(0, LOONGARCH_CSR_PERFCNTR2);
-+	csr_write(0, LOONGARCH_CSR_PERFCNTR3);
-+	GUEST_PRINTF("Set csr_perfctrl0 for cycles event\n");
-+	csr_write(PMU_ENVENT_ENABLED |
-+		LOONGARCH_PMU_EVENT_CYCLES, LOONGARCH_CSR_PERFCTRL0);
-+	GUEST_PRINTF("Set csr_perfctrl1 for instr_retired event\n");
-+	csr_write(PMU_ENVENT_ENABLED |
-+		LOONGARCH_PMU_EVENT_INSTR_RETIRED, LOONGARCH_CSR_PERFCTRL1);
-+	GUEST_PRINTF("Set csr_perfctrl2 for branch_instructions event\n");
-+	csr_write(PMU_ENVENT_ENABLED |
-+		PERF_COUNT_HW_BRANCH_INSTRUCTIONS, LOONGARCH_CSR_PERFCTRL2);
-+	GUEST_PRINTF("Set csr_perfctrl3 for branch_misses event\n");
-+	csr_write(PMU_ENVENT_ENABLED |
-+		PERF_COUNT_HW_BRANCH_MISSES, LOONGARCH_CSR_PERFCTRL3);
-+
-+	for (i = 0; i < NUM_LOOPS; i++)
-+		cpu_relax();
-+
-+	cnt[0] = csr_read(LOONGARCH_CSR_PERFCNTR0);
-+	GUEST_PRINTF("csr_perfcntr0 is %lx\n", cnt[0]);
-+	cnt[1] = csr_read(LOONGARCH_CSR_PERFCNTR1);
-+	GUEST_PRINTF("csr_perfcntr1 is %lx\n", cnt[1]);
-+	cnt[2] = csr_read(LOONGARCH_CSR_PERFCNTR2);
-+	GUEST_PRINTF("csr_perfcntr2 is %lx\n", cnt[2]);
-+	cnt[3] = csr_read(LOONGARCH_CSR_PERFCNTR3);
-+	GUEST_PRINTF("csr_perfcntr3 is %lx\n", cnt[3]);
-+
-+	GUEST_PRINTF("assert csr_perfcntr0 >EXPECTED_CYCLES_MIN && csr_perfcntr0 < UPPER_BOUND\n");
-+	GUEST_ASSERT(cnt[0] > EXPECTED_CYCLES_MIN && cnt[0] < UPPER_BOUND);
-+	GUEST_PRINTF("assert csr_perfcntr1 > EXPECTED_INSTR_MIN && csr_perfcntr1 < UPPER_BOUND\n");
-+	GUEST_ASSERT(cnt[1] > EXPECTED_INSTR_MIN && cnt[1] < UPPER_BOUND);
-+	GUEST_PRINTF("assert csr_perfcntr2 > 0 && csr_perfcntr2 < UPPER_BOUND\n");
-+	GUEST_ASSERT(cnt[2] > 0 && cnt[2] < UPPER_BOUND);
-+	GUEST_PRINTF("assert csr_perfcntr3 > 0 && csr_perfcntr3 < UPPER_BOUND\n");
-+	GUEST_ASSERT(cnt[3] > 0 && cnt[3] < UPPER_BOUND);
-+
-+}
-+
-+static void guest_code(void)
-+{
-+	guest_pmu_base_test();
-+
-+	GUEST_DONE();
-+}
-+
-+/* check PMU support */
-+static bool kvm_has_pmu_support(void)
-+{
-+	uint32_t cfg6;
-+
-+	/* Read CPUCFG6 to check PMU */
-+	cfg6 = read_cpucfg(LOONGARCH_CPUCFG6);
-+
-+	/* Check PMU present bit */
-+	if (!(cfg6 & CPUCFG6_PMP))
-+		return false;
-+
-+	/* Check that at least one counter exists */
-+	if (((cfg6 & CPUCFG6_PMNUM) >> CPUCFG6_PMNUM_SHIFT) == 0)
-+		return false;
-+
-+	return true;
-+}
-+/* Dump PMU capabilities */
-+static void dump_pmu_caps(void)
-+{
-+	uint32_t cfg6;
-+	int nr_counters, counter_bits;
-+
-+	cfg6 = read_cpucfg(LOONGARCH_CPUCFG6);
-+	nr_counters = ((cfg6 & CPUCFG6_PMNUM) >> CPUCFG6_PMNUM_SHIFT) + 1;
-+	counter_bits = ((cfg6 & CPUCFG6_PMBITS) >> CPUCFG6_PMBITS_SHIFT) + 1;
-+
-+	pr_info("PMU capabilities:\n");
-+	pr_info("  Counters present: %s\n", cfg6 & CPUCFG6_PMP ? "yes" : "no");
-+	pr_info("  Number of counters: %d\n", nr_counters);
-+	pr_info("  Counter width: %d bits\n", counter_bits);
-+}
-+
-+int main(int argc, char *argv[])
-+{
-+	struct kvm_device_attr attr;
-+	struct kvm_vcpu *vcpu;
-+	struct kvm_vm *vm;
-+	int ret = 0;
-+	struct ucall uc;
-+
-+	/* Check host KVM PMU support */
-+	if (!kvm_has_pmu_support()) {
-+		print_skip("PMU not supported by host hardware\n");
-+		dump_pmu_caps();
-+		return KSFT_SKIP;
-+	}
-+	pr_info("Host support PMU\n");
-+
-+	/* Dump PMU capabilities */
-+	dump_pmu_caps();
-+
-+	vm = vm_create(VM_MODE_P47V47_16K);
-+	vcpu = vm_vcpu_add(vm, 0, guest_code);
-+
-+	vm_init_descriptor_tables(vm);
-+	loongarch_vcpu_setup(vcpu);
-+
-+	attr.group = KVM_LOONGARCH_VM_FEAT_CTRL,
-+	attr.attr = KVM_LOONGARCH_VM_FEAT_PMU,
-+
-+	ret = ioctl(vm->fd, KVM_HAS_DEVICE_ATTR, &attr);
-+
-+	if (ret == 0) {
-+		pr_info("PMU is enabled in VM\n");
-+	} else {
-+		print_skip("PMU not enabled by VM config\n");
-+		return KSFT_SKIP;
-+	}
-+
-+	while (1) {
-+		vcpu_run(vcpu);
-+		switch (get_ucall(vcpu, &uc)) {
-+		case UCALL_PRINTF:
-+			printf("%s", (const char *)uc.buffer);
-+			break;
-+		case UCALL_DONE:
-+			printf("PMU test PASSED\n");
-+			goto done;
-+		case UCALL_ABORT:
-+			printf("PMU test FAILED\n");
-+			ret = -1;
-+			goto done;
-+		default:
-+			printf("Unexpected exit\n");
-+			ret = -1;
-+			goto done;
-+		}
-+	}
-+
-+done:
-+	kvm_vm_free(vm);
-+	return ret;
-+}
-+
--- 
-2.47.3
+Thanks,
 
+        tglx
