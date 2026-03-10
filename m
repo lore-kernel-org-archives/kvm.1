@@ -1,55 +1,55 @@
-Received: from mail-pl1-f201.google.com (mail-pl1-f201.google.com [209.85.214.201])
+Received: from mail-pl1-f202.google.com (mail-pl1-f202.google.com [209.85.214.202])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C6293C8704
-	for <kvm@vger.kernel.org>; Tue, 10 Mar 2026 23:48:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 21DF53B9DB2
+	for <kvm@vger.kernel.org>; Tue, 10 Mar 2026 23:48:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.202
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773186524; cv=none; b=J1v6JF87C6z2j+cccibV4T9W2m3LB/bGzcHj+v4PLROFn3EYs75nhqNw/Jjo6FerzZj3/p+IMUv/enrhubhtBlY1ODe0w1o95xpRsFwPCqsCgzoRGp089MMXSLE+ODDS9NpQLvpH46vzO0LY94m2WIFKqQLEZVmW3KygLJ72cxs=
+	t=1773186526; cv=none; b=OxF8O5eszdjMq1qCnQ6niqVnc/rUbDrqp0Qr6nnDWq9OSuao17asNptnK3DE5yB6syHqcLKhSQgltn09+8vBJ/ZgMJf7MZO2H/Qk/9vRATOzVt0qLDs/UFzcDr7CSoughEXnHkzYynKQhoiSYMs4yTlVzwf2MC2qqeyYEtQSx3g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773186524; c=relaxed/simple;
-	bh=wCT56whpBWZMgqHPWbSdWWOQ4rqPp8/QKwF0p6KcqTM=;
+	s=arc-20240116; t=1773186526; c=relaxed/simple;
+	bh=+CE1sMVEOlVNGNuq/FjIldXhgSK+ycKYDyubuZu6f6M=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=Yo4Izy0FrmRaMy2833BOKsdWhkOe6wYaZnFtgMU13/t7LHu4Rmggiw2ZbHlHiW/iyvhk2N6oJ3MxaaAuNTiZ/zjBIORZze9eApcKeVaRoVZihGjiFPHfSrdG8AWsxpkY1hZ5O13inZUO7Y3XkYkMlxdi3+GvKp251put5ixwrv8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=MTG40A8o; arc=none smtp.client-ip=209.85.214.201
+	 To:Cc:Content-Type; b=LPwv/bOG3u4hb8UEmkocGRUcQmNNyGZPortQeadpTR2lyoEulm+yYc8kQV73DRcWj/SiVb3VBTh/gI1peFI1rDSP0WTs/c2B/rEkUQGH522L/ry0IaYDrl0xfrEjwfBwDQ1p+g5ds/vvrCUttGiGylMOHOXcmNENXH8fbO8NbtA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=MYjlzU+l; arc=none smtp.client-ip=209.85.214.202
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="MTG40A8o"
-Received: by mail-pl1-f201.google.com with SMTP id d9443c01a7336-2ae669a8ff1so402696115ad.3
-        for <kvm@vger.kernel.org>; Tue, 10 Mar 2026 16:48:43 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="MYjlzU+l"
+Received: by mail-pl1-f202.google.com with SMTP id d9443c01a7336-2ae6961bff0so398923205ad.2
+        for <kvm@vger.kernel.org>; Tue, 10 Mar 2026 16:48:44 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1773186523; x=1773791323; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1773186524; x=1773791324; darn=vger.kernel.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:reply-to:from:to:cc:subject:date:message-id:reply-to;
-        bh=W84stS8+3WuLFZ+raEjrLuySDqRuwilAh+kUtsTzbCI=;
-        b=MTG40A8o8HFRc56mbZoD+RnrWksX9sLnJSborcfiBrgXuZQ04LD3p4aEAd+o83xzRL
-         IAhnpqxz3qn7Vu5HcS7cnV2BzvgGUX/QTTaPW4ftnEbNdx/Qz5c3Pxxt4bdZLWEdkHa5
-         OrCn95ETrY28pRhjsUBDt2q9EaVFjG+DE3EdTaa1bQcwWu/RVQRLYek6UkYHkKc2aiUJ
-         FXjWWKR/1HbukBfhMvIRTCR1kqTViA1+ZVNwwJuGCiXjSwNBaWTkwu6GG1JUMXWQofdB
-         lb4eJcO2ei/ITzSBXts9eW0zRnPlJWVDJ+S357Ab83LXPkCI/cbRm6VGnOu8t74IPi7z
-         zRkA==
+        bh=hnqlr1WU2mcNUm5UpgctK6uX9nSxmpmXtaHcxlHX+rw=;
+        b=MYjlzU+l+8u05Vsojp3Ug2veuYeL4oGpNoufcEfdVpM5ookE6kjUpYkFpHbP7uPHwl
+         DBpBIK0jOaYgp+/oinj3vvrlnEwF+twzYZuwkuKtQcIkVAVSWOww7akDdjSkl91wmJJn
+         D2gg02Q2orWZWzQQ1rpAAU3GQ2Id4QETLA2tsA6O2am+9CZKWJ4F5kR5NS5XqiItLMcV
+         ULHSNSnk00SGUKvndU9NWFwzW9movX1Gvk/HGqTThSP2FRCq0X4sEvQ4b5hF+YmlEKFT
+         hZQXUla0JszQo28hbnGOX9TK2VprSSUaXMHA+orxnfUfQBSv2y6d0jd3BHkhiTGzmgwB
+         h+3w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1773186523; x=1773791323;
+        d=1e100.net; s=20230601; t=1773186524; x=1773791324;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:reply-to:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=W84stS8+3WuLFZ+raEjrLuySDqRuwilAh+kUtsTzbCI=;
-        b=Oz0IzEo7PZ4WK5nu6uIsnXdiEdhBLNA9LMEEm+cCGqSDDj0fne92rk7f6+GeCq++k1
-         YT7vCSDvHmyHUnekY82gJOEpGrms6wZKuHa27aF/vXDPPCnEaA2JBPbKFReBdD8lvdkR
-         3jc3CbbfrM3gRxtU8OzX6QaBYPJ1pdKlGwgNDonHLSxM94fs1ANVCzG3+I5NLSjLK+FO
-         QVxbAmZ1pCXuTWOZ2ZqkhOS0OCehDyV0oShXOqMm43UFnhpq1t1u1eobWAOxL9AaJPMS
-         HV2vtWKDOYAPCR1KsH2/gFG13E6+fIyF1r3+i2lmZqftzdAckVtMjcLkS7S5aYLU9LSP
-         wgng==
-X-Gm-Message-State: AOJu0Yx/XreEfStDSqlHYBMK+qaR/33Dl9zcA8Z4QF0iAXOl8z0Z9+AW
-	fCiAl1Lun6O1o7nA7S0ja2AsKCW1JcKr3DH1Kc++1Bd6K5o9We0sLD6CFl7ZojHC3A8oi5xjd+i
-	1fo64jg==
-X-Received: from pgbcz14.prod.google.com ([2002:a05:6a02:230e:b0:c73:7981:791d])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:903:2f92:b0:2ae:5723:afb2
- with SMTP id d9443c01a7336-2aeae90050bmr4364395ad.54.1773186522529; Tue, 10
- Mar 2026 16:48:42 -0700 (PDT)
+        bh=hnqlr1WU2mcNUm5UpgctK6uX9nSxmpmXtaHcxlHX+rw=;
+        b=QOSkglgeWIwDGjB45p5f24SdR2T36oiP2M4GTFr87h7x54ij5/Qb82kgiVUN7IuGKP
+         1n8T1VTgn/E4deYifxTt7+d8uQiS1MhcgdWtvIZ3o9rQaUD/GLnsdnWpJMpiN/aYtS9w
+         Kb+AbT3ED1/Taa9vFEPygfXyrwtvO8N+z8YwZ3awbKPBgUg3RxW9aH1gCFVq7dz63NUn
+         tNFMEvDbt8GqIB8b8jfPIdmYRZ/nhSEGcaKYH+utAfnA/F9a/HfvxNnI0B3n1tdjQVVi
+         7Y1BGtWk3ESWUWd82OwXcagTLRu4mnopnSnjGlzS87lQ+tI21iTyDFawTPWWYDt1DGGH
+         x1UQ==
+X-Gm-Message-State: AOJu0Yzj+pZKLt8SvhqbqZRbKVtOfbM/dMtcCqr+3sangW3yQ7hwYvBt
+	ISmE/X3PByoDZlnwrYWpkiItk/E71+Y9tnbmBJMe9jmUDuFhlgKBAotzgAJetm7VYbVil7p630r
+	b9hHBow==
+X-Received: from pgww3.prod.google.com ([2002:a05:6a02:2c83:b0:c6e:1eff:44ec])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:903:2349:b0:2ae:7f49:dba6
+ with SMTP id d9443c01a7336-2aeae7b9c7amr5610675ad.17.1773186524360; Tue, 10
+ Mar 2026 16:48:44 -0700 (PDT)
 Reply-To: Sean Christopherson <seanjc@google.com>
-Date: Tue, 10 Mar 2026 16:48:12 -0700
+Date: Tue, 10 Mar 2026 16:48:13 -0700
 In-Reply-To: <20260310234829.2608037-1-seanjc@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
@@ -59,9 +59,9 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 References: <20260310234829.2608037-1-seanjc@google.com>
 X-Mailer: git-send-email 2.53.0.473.g4a7958ca14-goog
-Message-ID: <20260310234829.2608037-5-seanjc@google.com>
-Subject: [PATCH 04/21] KVM: SEV: Disallow LAUNCH_FINISH if vCPUs are actively
- being created
+Message-ID: <20260310234829.2608037-6-seanjc@google.com>
+Subject: [PATCH 05/21] KVM: SEV: Lock all vCPUs when synchronzing VMSAs for
+ SNP launch finish
 From: Sean Christopherson <seanjc@google.com>
 To: Sean Christopherson <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>
 Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
@@ -69,84 +69,80 @@ Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org,
 	"=?UTF-8?q?Carlos=20L=C3=B3pez?=" <clopez@suse.de>
 Content-Type: text/plain; charset="UTF-8"
 
-Reject LAUNCH_FINISH for SEV-ES and SNP VMs if KVM is actively creating
-one or more vCPUs, as KVM needs to process and encrypt each vCPU's VMSA.
-Letting userspace create vCPUs while LAUNCH_FINISH is in-progress is
-"fine", at least in the current code base, as kvm_for_each_vcpu() operates
-on online_vcpus, LAUNCH_FINISH (all SEV+ sub-ioctls) holds kvm->mutex, and
-fully onlining a vCPU in kvm_vm_ioctl_create_vcpu() is done under
-kvm->mutex.  I.e. there's no difference between an in-progress vCPU and a
-vCPU that is created entirely after LAUNCH_FINISH.
+Lock all vCPUs when synchronizing and encrypting VMSAs for SNP guests, as
+allowing userspace to manipulate and/or run a vCPU while its state is being
+synchronized would at best corrupt vCPU state, and at worst crash the host
+kernel.
 
-However, given that concurrent LAUNCH_FINISH and vCPU creation can't
-possibly work (for any reasonable definition of "work"), since userspace
-can't guarantee whether a particular vCPU will be encrypted or not,
-disallow the combination as a hardening measure, to reduce the probability
-of introducing bugs in the future, and to avoid having to reason about the
-safety of future changes related to LAUNCH_FINISH.
+Opportunistically assert that vcpu->mutex is held when synchronizing its
+VMSA (the SEV-ES path already locks vCPUs).
 
-Cc: Jethro Beekman <jethro@fortanix.com>
-Closes: https://lore.kernel.org/all/b31f7c6e-2807-4662-bcdd-eea2c1e132fa@fortanix.com
+Fixes: ad27ce155566 ("KVM: SEV: Add KVM_SEV_SNP_LAUNCH_FINISH command")
 Cc: stable@vger.kernel.org
 Signed-off-by: Sean Christopherson <seanjc@google.com>
 ---
- arch/x86/kvm/svm/sev.c   | 10 ++++++++--
- include/linux/kvm_host.h |  7 +++++++
- 2 files changed, 15 insertions(+), 2 deletions(-)
+ arch/x86/kvm/svm/sev.c | 16 +++++++++++++---
+ 1 file changed, 13 insertions(+), 3 deletions(-)
 
 diff --git a/arch/x86/kvm/svm/sev.c b/arch/x86/kvm/svm/sev.c
-index 7da040baba1c..5de36bbc4c53 100644
+index 5de36bbc4c53..c10c71608208 100644
 --- a/arch/x86/kvm/svm/sev.c
 +++ b/arch/x86/kvm/svm/sev.c
-@@ -1030,6 +1030,9 @@ static int sev_launch_update_vmsa(struct kvm *kvm, struct kvm_sev_cmd *argp)
- 	if (!sev_es_guest(kvm))
- 		return -ENOTTY;
+@@ -882,6 +882,8 @@ static int sev_es_sync_vmsa(struct vcpu_svm *svm)
+ 	u8 *d;
+ 	int i;
  
-+	if (kvm_is_vcpu_creation_in_progress(kvm))
-+		return -EBUSY;
++	lockdep_assert_held(&vcpu->mutex);
 +
- 	kvm_for_each_vcpu(i, vcpu, kvm) {
- 		ret = mutex_lock_killable(&vcpu->mutex);
- 		if (ret)
-@@ -2050,8 +2053,8 @@ static int sev_check_source_vcpus(struct kvm *dst, struct kvm *src)
- 	struct kvm_vcpu *src_vcpu;
- 	unsigned long i;
+ 	if (vcpu->arch.guest_state_protected)
+ 		return -EINVAL;
  
--	if (src->created_vcpus != atomic_read(&src->online_vcpus) ||
--	    dst->created_vcpus != atomic_read(&dst->online_vcpus))
-+	if (kvm_is_vcpu_creation_in_progress(src) ||
-+	    kvm_is_vcpu_creation_in_progress(dst))
+@@ -2456,6 +2458,10 @@ static int snp_launch_update_vmsa(struct kvm *kvm, struct kvm_sev_cmd *argp)
+ 	if (kvm_is_vcpu_creation_in_progress(kvm))
  		return -EBUSY;
  
- 	if (!sev_es_guest(src))
-@@ -2450,6 +2453,9 @@ static int snp_launch_update_vmsa(struct kvm *kvm, struct kvm_sev_cmd *argp)
- 	unsigned long i;
- 	int ret;
- 
-+	if (kvm_is_vcpu_creation_in_progress(kvm))
-+		return -EBUSY;
++	ret = kvm_lock_all_vcpus(kvm);
++	if (ret)
++		return ret;
 +
  	data.gctx_paddr = __psp_pa(sev->snp_context);
  	data.page_type = SNP_PAGE_TYPE_VMSA;
  
-diff --git a/include/linux/kvm_host.h b/include/linux/kvm_host.h
-index 34759a262b28..3c7f8557f7af 100644
---- a/include/linux/kvm_host.h
-+++ b/include/linux/kvm_host.h
-@@ -1029,6 +1029,13 @@ static inline struct kvm_vcpu *kvm_get_vcpu_by_id(struct kvm *kvm, int id)
- 	return NULL;
+@@ -2465,12 +2471,12 @@ static int snp_launch_update_vmsa(struct kvm *kvm, struct kvm_sev_cmd *argp)
+ 
+ 		ret = sev_es_sync_vmsa(svm);
+ 		if (ret)
+-			return ret;
++			goto err;
+ 
+ 		/* Transition the VMSA page to a firmware state. */
+ 		ret = rmp_make_private(pfn, INITIAL_VMSA_GPA, PG_LEVEL_4K, sev->asid, true);
+ 		if (ret)
+-			return ret;
++			goto err;
+ 
+ 		/* Issue the SNP command to encrypt the VMSA */
+ 		data.address = __sme_pa(svm->sev_es.vmsa);
+@@ -2479,7 +2485,7 @@ static int snp_launch_update_vmsa(struct kvm *kvm, struct kvm_sev_cmd *argp)
+ 		if (ret) {
+ 			snp_page_reclaim(kvm, pfn);
+ 
+-			return ret;
++			goto err;
+ 		}
+ 
+ 		svm->vcpu.arch.guest_state_protected = true;
+@@ -2494,6 +2500,10 @@ static int snp_launch_update_vmsa(struct kvm *kvm, struct kvm_sev_cmd *argp)
+ 	}
+ 
+ 	return 0;
++
++err:
++	kvm_unlock_all_vcpus(kvm);
++	return ret;
  }
  
-+static inline bool kvm_is_vcpu_creation_in_progress(struct kvm *kvm)
-+{
-+	lockdep_assert_held(&kvm->lock);
-+
-+	return kvm->created_vcpus != atomic_read(&kvm->online_vcpus);
-+}
-+
- void kvm_destroy_vcpus(struct kvm *kvm);
- 
- int kvm_trylock_all_vcpus(struct kvm *kvm);
+ static int snp_launch_finish(struct kvm *kvm, struct kvm_sev_cmd *argp)
 -- 
 2.53.0.473.g4a7958ca14-goog
 
