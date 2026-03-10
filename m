@@ -1,33 +1,65 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from CY7PR03CU001.outbound.protection.outlook.com (mail-westcentralusazon11010041.outbound.protection.outlook.com [40.93.198.41])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 11C8A31DDBB;
-	Tue, 10 Mar 2026 15:19:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773155995; cv=none; b=tBI4AnhI35N9a5l8J88TgOT61kEj6T4aWv2Pj/pjj0W/v28iEF7bDSG0I7RkdaI2Ukk1P48WVXGpGekhoYkohXGIHjmjbvx7DqG+czbbaAWvobSz258bYdfWTfrQsVwFI1HXq1cCfXECZW60AiSbhLfNYRXWYL8UA7W+oIgIenM=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773155995; c=relaxed/simple;
-	bh=5OKV6TxeCTi4sil1+d8DZk4DTK+h6fJGntFraZNhPgY=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=enw+5BjvsYo0m28HZhQV/4bk8YXa5O9vYSfXUhnxinv1Oe7w1vwD6y32mFt14aOfIoqpcZN6+F05RFQqbrIIxKMhd0pAe/ebGRoBhQr2uTsRjnsS2jy5yRGvynduyWRHUhJE7TDes865a/8wonU8JkiwjBjUFpj079YQJCtJvKI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Ihk+5INR; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C464D2E7648;
+	Tue, 10 Mar 2026 15:41:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.93.198.41
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1773157305; cv=fail; b=iJRlqBU/mdxTQO8AC1vAQOYIx8WWOo7l2a2Lq7cbdnmOYQaVAxfVJ5uuGgNM9bHV/RC5Ut9ePwgir5tPkcxjV/unl53LO8cMIwbEO+sdZQrmZakqa15ZEIrctRljhyRI7xYUZ/qPX6wu5HNQZLvwJ5tfExQVdpMT5S0vYtFOoiI=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1773157305; c=relaxed/simple;
+	bh=qZtoqQQXvirBqofIoKobDJZFg9lR4mL3la7CHLyA5+0=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=TaQsvSHTuzyhnjRWTQ31f9l9g0xtI0a/g1xTdjQQzzcIr+f0+Znhreaw2tu+69iV/ZOSYEGVWlA6LM0Pkl8x6+lKPsHOQd5ehicQMbHCiwsllA164rIAgUFWPpEUsgAEfAqYU/ZHzrIM4C7zx1Y+McrHKfidhR22g/fnvHeYBoc=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=in9bCO/M; arc=fail smtp.client-ip=40.93.198.41
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Ihk+5INR"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4DC89C2BC86;
-	Tue, 10 Mar 2026 15:19:51 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773155994;
-	bh=5OKV6TxeCTi4sil1+d8DZk4DTK+h6fJGntFraZNhPgY=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=Ihk+5INRlhnWGKIdjJKu6qnnkZDU3yal33YR/9tUilN7QnhcFJJ2p1jZXqZFNUI7x
-	 nzsfOJNTuGx3tIGq2IUFbnyo+sdV82nTYltLOYQ50P9NcTGjg8qsQHbLYz1WTJp790
-	 nKK5ZpaEX3ua+8OglDfE3gKw5M9addaiebRAUI0SxKn47xDqo/WlWGjB6TEKEtxjhV
-	 BkCV62YXk3s3Nuuf+1QsjPcE6LSiySYZK786xyZikrMmgsJRorGyWrjhpFeN3nkHkd
-	 ScJkmZv9AYp2ufZHlTSTla332zomkyyc+0q0OMKT3xIFcbf48S8xfnwL3QaQPy1JkS
-	 8ozPeOOB+3q4Q==
-Message-ID: <0a652e7e-339e-4f98-b591-7fe5680e2006@kernel.org>
-Date: Tue, 10 Mar 2026 16:19:47 +0100
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="in9bCO/M"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=Cp+OrTOXTEsS00kRnl1GXKcYFQGLjEKhbS0BKeyhT06FNE0wMO6COqliOJDGTAs/Mb2fohNOnXLnNdZwnWDx3F1OtVldcajA5jzssb/SfNhEFCNq8hEkxfCnpopwEprPBQq0G6swYmhuTiGebk0tvF8zvIptGAdFVuj3rKjKNK6xkKIx8DJcH0H7AFjJbP/8N0YjCHG8+N2BfMSRZoBbu3GtqXAg1ulEUKdgD3w7KCWvtQpOCldEDY4zLY/9i+TGgloLcDFVIw3KzNmHWqpUDvsEUPmzK/nxcsTk0C8s8FBVi3Vgq8lGruebfKOP3XFyExjnX4cFQdAuLRhFPPz0UQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=e7UJCdDuLuXULhJzW1XnnlDi0dBKthKLiWAvbRQyBYM=;
+ b=u4g07GeeePj8WwUInXTqDK7MC5pGUF3bKuRLEExXv2jXcUIWcSEizYNnJ5az+7dYfqv+0ysWOGcx8pFxKpoKk57B5hEh/r/QauK0JbAg0qxl0n4EQVnJi5mJIQAjVXt0uNKa/Ps3uj32gYz4FiElSaezYVcL9J3A6qA0hyGtNnN1alSpbIZ0z9JPnCGi9l2rxxkga/nLnSdUStPg/HgHNmTJ66jJ095zDUeACDPOi7b+mW7TFEzaNTC5HNaEIkHbzKcUQDJJK5/6FkECZ7UNASTqQc5tNf28a6HmQDmYUuKdLZ8A0/H1R6sfs+9fQj8Uf3X5n0ip5/TNHyyxGxsWDg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=google.com smtp.mailfrom=amd.com; dmarc=pass
+ (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=e7UJCdDuLuXULhJzW1XnnlDi0dBKthKLiWAvbRQyBYM=;
+ b=in9bCO/Msg00pWWXLevXYpVdAK544lcgerYous93kHf/5A+PHyekH21I0OHtxUYcLxZAMYF/SxlZRQM5gXD/dlXdGo2xhP3hghy1uDnGs8rjMZst9V9NbKNA8GkTq41FimXRrnlEiMu9Z48oTYAaubHWOjiCwDxDwsUrgyPFXbM=
+Received: from BN9PR03CA0200.namprd03.prod.outlook.com (2603:10b6:408:f9::25)
+ by CYXPR12MB9385.namprd12.prod.outlook.com (2603:10b6:930:e2::13) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9700.11; Tue, 10 Mar
+ 2026 15:41:37 +0000
+Received: from BN2PEPF00004FBE.namprd04.prod.outlook.com
+ (2603:10b6:408:f9:cafe::81) by BN9PR03CA0200.outlook.office365.com
+ (2603:10b6:408:f9::25) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.9678.23 via Frontend Transport; Tue,
+ 10 Mar 2026 15:41:35 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
+ smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=satlexmb07.amd.com; pr=C
+Received: from satlexmb07.amd.com (165.204.84.17) by
+ BN2PEPF00004FBE.mail.protection.outlook.com (10.167.243.184) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.9678.18 via Frontend Transport; Tue, 10 Mar 2026 15:41:37 +0000
+Received: from satlexmb07.amd.com (10.181.42.216) by satlexmb07.amd.com
+ (10.181.42.216) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.17; Tue, 10 Mar
+ 2026 10:41:37 -0500
+Received: from [10.143.197.5] (10.180.168.240) by satlexmb07.amd.com
+ (10.181.42.216) with Microsoft SMTP Server id 15.2.2562.17 via Frontend
+ Transport; Tue, 10 Mar 2026 10:41:34 -0500
+Message-ID: <19935696-36cf-411b-af90-aabe6a98d7e7@amd.com>
+Date: Tue, 10 Mar 2026 21:11:34 +0530
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -35,280 +67,211 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC 1/1] mm/pagewalk: don't split device-backed huge pfnmaps
-To: "Boone, Max" <mboone@akamai.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
- Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
- "Liam R . Howlett" <Liam.Howlett@oracle.com>,
- Vlastimil Babka <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>,
- Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
- Alex Williamson <alex@shazbot.org>, "linux-mm@kvack.org"
- <linux-mm@kvack.org>, "kvm@vger.kernel.org" <kvm@vger.kernel.org>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- "Tottenham, Max" <mtottenh@akamai.com>, "Hunt, Joshua" <johunt@akamai.com>,
- "Pelland, Matt" <mpelland@akamai.com>
-References: <20260309174949.2514565-1-mboone@akamai.com>
- <20260309174949.2514565-2-mboone@akamai.com>
- <51eeb09d-d3f4-412f-85da-690fdc0f8e6a@kernel.org>
- <CH2PR17MB3797A91D5107B6E347EEDD97BF79A@CH2PR17MB3797.namprd17.prod.outlook.com>
- <da2ebc9f-ec82-4c55-851c-b27110efdf8c@kernel.org>
- <83842620-AD01-4619-845F-8DE7DF1F8F31@akamai.com>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
+Subject: Re: [PATCH 2/2] KVM: SVM: Set/clear CR8 write interception when AVIC
+ is (de)activated
+To: Sean Christopherson <seanjc@google.com>, Paolo Bonzini
+	<pbonzini@redhat.com>
+CC: <kvm@vger.kernel.org>, <linux-kernel@vger.kernel.org>, Jim Mattson
+	<jmattson@google.com>, Naveen N Rao <naveen@kernel.org>, "Maciej S .
+ Szmigiero" <maciej.szmigiero@oracle.com>
+References: <20260203190711.458413-1-seanjc@google.com>
+ <20260203190711.458413-3-seanjc@google.com>
 Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- xsFNBFXLn5EBEAC+zYvAFJxCBY9Tr1xZgcESmxVNI/0ffzE/ZQOiHJl6mGkmA1R7/uUpiCjJ
- dBrn+lhhOYjjNefFQou6478faXE6o2AhmebqT4KiQoUQFV4R7y1KMEKoSyy8hQaK1umALTdL
- QZLQMzNE74ap+GDK0wnacPQFpcG1AE9RMq3aeErY5tujekBS32jfC/7AnH7I0v1v1TbbK3Gp
- XNeiN4QroO+5qaSr0ID2sz5jtBLRb15RMre27E1ImpaIv2Jw8NJgW0k/D1RyKCwaTsgRdwuK
- Kx/Y91XuSBdz0uOyU/S8kM1+ag0wvsGlpBVxRR/xw/E8M7TEwuCZQArqqTCmkG6HGcXFT0V9
- PXFNNgV5jXMQRwU0O/ztJIQqsE5LsUomE//bLwzj9IVsaQpKDqW6TAPjcdBDPLHvriq7kGjt
- WhVhdl0qEYB8lkBEU7V2Yb+SYhmhpDrti9Fq1EsmhiHSkxJcGREoMK/63r9WLZYI3+4W2rAc
- UucZa4OT27U5ZISjNg3Ev0rxU5UH2/pT4wJCfxwocmqaRr6UYmrtZmND89X0KigoFD/XSeVv
- jwBRNjPAubK9/k5NoRrYqztM9W6sJqrH8+UWZ1Idd/DdmogJh0gNC0+N42Za9yBRURfIdKSb
- B3JfpUqcWwE7vUaYrHG1nw54pLUoPG6sAA7Mehl3nd4pZUALHwARAQABzS5EYXZpZCBIaWxk
- ZW5icmFuZCAoQ3VycmVudCkgPGRhdmlkQGtlcm5lbC5vcmc+wsGQBBMBCAA6AhsDBQkmWAik
- AgsJBBUKCQgCFgICHgUCF4AWIQQb2cqtc1xMOkYN/MpN3hD3AP+DWgUCaYJt/AIZAQAKCRBN
- 3hD3AP+DWriiD/9BLGEKG+N8L2AXhikJg6YmXom9ytRwPqDgpHpVg2xdhopoWdMRXjzOrIKD
- g4LSnFaKneQD0hZhoArEeamG5tyo32xoRsPwkbpIzL0OKSZ8G6mVbFGpjmyDLQCAxteXCLXz
- ZI0VbsuJKelYnKcXWOIndOrNRvE5eoOfTt2XfBnAapxMYY2IsV+qaUXlO63GgfIOg8RBaj7x
- 3NxkI3rV0SHhI4GU9K6jCvGghxeS1QX6L/XI9mfAYaIwGy5B68kF26piAVYv/QZDEVIpo3t7
- /fjSpxKT8plJH6rhhR0epy8dWRHk3qT5tk2P85twasdloWtkMZ7FsCJRKWscm1BLpsDn6EQ4
- jeMHECiY9kGKKi8dQpv3FRyo2QApZ49NNDbwcR0ZndK0XFo15iH708H5Qja/8TuXCwnPWAcJ
- DQoNIDFyaxe26Rx3ZwUkRALa3iPcVjE0//TrQ4KnFf+lMBSrS33xDDBfevW9+Dk6IISmDH1R
- HFq2jpkN+FX/PE8eVhV68B2DsAPZ5rUwyCKUXPTJ/irrCCmAAb5Jpv11S7hUSpqtM/6oVESC
- 3z/7CzrVtRODzLtNgV4r5EI+wAv/3PgJLlMwgJM90Fb3CB2IgbxhjvmB1WNdvXACVydx55V7
- LPPKodSTF29rlnQAf9HLgCphuuSrrPn5VQDaYZl4N/7zc2wcWM7BTQRVy5+RARAA59fefSDR
- 9nMGCb9LbMX+TFAoIQo/wgP5XPyzLYakO+94GrgfZjfhdaxPXMsl2+o8jhp/hlIzG56taNdt
- VZtPp3ih1AgbR8rHgXw1xwOpuAd5lE1qNd54ndHuADO9a9A0vPimIes78Hi1/yy+ZEEvRkHk
- /kDa6F3AtTc1m4rbbOk2fiKzzsE9YXweFjQvl9p+AMw6qd/iC4lUk9g0+FQXNdRs+o4o6Qvy
- iOQJfGQ4UcBuOy1IrkJrd8qq5jet1fcM2j4QvsW8CLDWZS1L7kZ5gT5EycMKxUWb8LuRjxzZ
- 3QY1aQH2kkzn6acigU3HLtgFyV1gBNV44ehjgvJpRY2cC8VhanTx0dZ9mj1YKIky5N+C0f21
- zvntBqcxV0+3p8MrxRRcgEtDZNav+xAoT3G0W4SahAaUTWXpsZoOecwtxi74CyneQNPTDjNg
- azHmvpdBVEfj7k3p4dmJp5i0U66Onmf6mMFpArvBRSMOKU9DlAzMi4IvhiNWjKVaIE2Se9BY
- FdKVAJaZq85P2y20ZBd08ILnKcj7XKZkLU5FkoA0udEBvQ0f9QLNyyy3DZMCQWcwRuj1m73D
- sq8DEFBdZ5eEkj1dCyx+t/ga6x2rHyc8Sl86oK1tvAkwBNsfKou3v+jP/l14a7DGBvrmlYjO
- 59o3t6inu6H7pt7OL6u6BQj7DoMAEQEAAcLBfAQYAQgAJgIbDBYhBBvZyq1zXEw6Rg38yk3e
- EPcA/4NaBQJonNqrBQkmWAihAAoJEE3eEPcA/4NaKtMQALAJ8PzprBEXbXcEXwDKQu+P/vts
- IfUb1UNMfMV76BicGa5NCZnJNQASDP/+bFg6O3gx5NbhHHPeaWz/VxlOmYHokHodOvtL0WCC
- 8A5PEP8tOk6029Z+J+xUcMrJClNVFpzVvOpb1lCbhjwAV465Hy+NUSbbUiRxdzNQtLtgZzOV
- Zw7jxUCs4UUZLQTCuBpFgb15bBxYZ/BL9MbzxPxvfUQIPbnzQMcqtpUs21CMK2PdfCh5c4gS
- sDci6D5/ZIBw94UQWmGpM/O1ilGXde2ZzzGYl64glmccD8e87OnEgKnH3FbnJnT4iJchtSvx
- yJNi1+t0+qDti4m88+/9IuPqCKb6Stl+s2dnLtJNrjXBGJtsQG/sRpqsJz5x1/2nPJSRMsx9
- 5YfqbdrJSOFXDzZ8/r82HgQEtUvlSXNaXCa95ez0UkOG7+bDm2b3s0XahBQeLVCH0mw3RAQg
- r7xDAYKIrAwfHHmMTnBQDPJwVqxJjVNr7yBic4yfzVWGCGNE4DnOW0vcIeoyhy9vnIa3w1uZ
- 3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
- CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
- qIws/H2t
-In-Reply-To: <83842620-AD01-4619-845F-8DE7DF1F8F31@akamai.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+From: "Aithal, Srikanth" <sraithal@amd.com>
+In-Reply-To: <20260203190711.458413-3-seanjc@google.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: BN2PEPF00004FBE:EE_|CYXPR12MB9385:EE_
+X-MS-Office365-Filtering-Correlation-Id: 993fba21-cd03-4c16-cdf5-08de7ebb8433
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|36860700016|1800799024|376014|82310400026|13003099007|18002099003|22082099003|56012099003;
+X-Microsoft-Antispam-Message-Info:
+	u9APeVtKvTvIDsVocfPbqF592O23USHr+hfWRDo4hJnBoi1H848JGHyqSE5z4kZGWqGWI/cFkd3ikGxIzWgDMj/hNOhY36TVRGS6ymLUn67U08YaEls3vLS3z8B2UgkuLjgjncPz50z02Kua6qWFCPNE4o/ajKOvz8jy+hd5sJo613pLci0cLDLYMW9pO7HGRMkPpqXVUNDvwb8UtVvjsZqrW0pSwtIh7LhkqMDygnKqHGvssee+j4Eb5+JrxJ+JU91FW9YxjWDkrmNyskJwWYNn5LbTO8cjmCqotzqoqiLYbFLR3b5cpvzFi1T+z2fle4oE1d+tYI32zcMZSTEeTtRmXN0zaHL8bruGqyMm3HZWMxRQDPJgsPsBlfb1T+OTzpAbpXhAd7uM7piXCJKp6V7iJOW0UGUl6N/1x44s8NlSgGpK4LzMGdFsYKMo8tnU7JJt0eUAaz4ors0uUT2tp/CEvi99h2qDLWkLXoR851GihJ/KM72yH9XSDXyQpm6Twnx65boVo3VK0YfxtTa5TURVP6X+q9SAdKCKB+bRzjpTGyiQbuCKXu+CIcNzmVn8IriM1c8sD43TDxrHvnpYLZy/HUfiFQ/Z+/SDzvIMESY5MYzzQqaLE4RruUSOluxmj7sm5VhYUQzYNsW+q/WwtLJ9gG395KoBZOQsgMSWXHHd0JxLN93SkgeoRl0yNUvsYFhplraylVpJAECFYPmjJp2QAtsJc1gbYzW6HhpU+ro0P1HHSKEBao5J7ZxwCsixxCFC/IiqJG3E3jpvPnnvvw==
+X-Forefront-Antispam-Report:
+	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb07.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(36860700016)(1800799024)(376014)(82310400026)(13003099007)(18002099003)(22082099003)(56012099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	9A1cXOi8/oKQ8NFnphOlEDT9+DuRZTU93xEI8/qIC/dE6OayjOaiyduVreHKKYshE/0EhPurDMrlvcn7Chvh/5oI5tt5a04tVPFUZwcgQOYR6NGPvpGfTu+nvgqcDfbzG6kg8cBWYPX1MflFAL94HBBK5uRROe0hpEM2A5A9Ccgxu6Yd20zR6FKcNFLvRGj2tBTMZFvcaGjFNzVtZ3L5l1iULg0P1WKi3A5/E1TnwEE0j/D0W3tdDZzqXVRY0y+AoKMddT92hx54RnWsf3xkRNh7TKF0/bGueHd81monDnCNx97W1cRM7acs2OkpDVAcQPBqikTA1Uo35/pL+r67mcZDcZvRBWW18ihZA3Pi6nFia1c+gIlXWXRYU42GiHDhKXzA6azWt55/ncq4rsYKmx1oE/jBUv0wzzxlj2l47AE4l4KMid7wLYNX1qD7M2WG
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 10 Mar 2026 15:41:37.4729
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 993fba21-cd03-4c16-cdf5-08de7ebb8433
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[satlexmb07.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	BN2PEPF00004FBE.namprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CYXPR12MB9385
 
->> Because the very same problem can likely be triggered by having the
->> splitting/unmapping be triggered from another thread in some other
->> code path concurrently.
+
+Hello Sean,
+
+ From next-20260304 onwards [1], including recent next kernel 
+next-20260309, booting an SEV-ES guest on AMD EPYC Turin and AMD EPYC 
+Genoa has been failing. However, on EPYC Milan, the SEV-ES guest boots 
+fine.
+
+I am using the same QEMU command line (given below) with the same 
+versions of QEMU and OVMF on all three platforms.
+
+"$QEMU_BIN" \
+-machine q35,confidential-guest-support=sev0,vmport=off \
+-object sev-guest,id=sev0,policy=0x5,cbitpos=51,reduced-phys-bits=1 \
+-name guest=vm,debug-threads=on \
+-drive if=pflash,format=raw,unit=0,file="$OVMF_PATH",readonly=on \
+-m 2048 \
+-object memory-backend-ram,size=2048M,id=mem-machine_mem \
+-smp 1,maxcpus=1,cores=1,threads=1,dies=1,sockets=1 \
+-cpu host \
+-drive id=disk0,file="$DISK_IMAGE",format=qcow2,if=none \
+-device virtio-scsi-pci,id=scsi0,disable-legacy=on,iommu_platform=true \
+-device scsi-hd,drive=disk0 \
+-enable-kvm \
+-nographic \
+-monitor tcp:localhost:4444,server,nowait
+
+QEMU version: v10.2.1
+OVMF version: edk2-stable202602
+
+The SEV-ES guest crashes with the following QEMU trace:
+error: kvm run failed Invalid argument
+EAX=00000000 EBX=00000000 ECX=00000000 EDX=00a10f10
+ESI=00000000 EDI=00000000 EBP=00000000 ESP=00000000
+EIP=0000fff0 EFL=00000002 [-------] CPL=0 II=0 A20=1 SMM=0 HLT=0
+ES =0000 00000000 0000ffff 00009300
+CS =f000 ffff0000 0000ffff 00009b00
+SS =0000 00000000 0000ffff 00009300
+DS =0000 00000000 0000ffff 00009300
+FS =0000 00000000 0000ffff 00009300
+GS =0000 00000000 0000ffff 00009300
+LDT=0000 00000000 0000ffff 00008200
+TR =0000 00000000 0000ffff 00008b00
+GDT= 00000000 0000ffff
+IDT= 00000000 0000ffff
+CR0=60000010 CR2=00000000 CR3=00000000 CR4=00000000
+DR0=0000000000000000 DR1=0000000000000000 DR2=0000000000000000 
+DR3=0000000000000000
+DR6=00000000ffff0ff0 DR7=0000000000000400
+EFER=0000000000000000
+Code=30 17 4d 99 a6 74 ad 5a a1 1d d2 22 78 9f 73 25 ab 00 2f c0 <cd> d3 
+ee 26 63 0d f5 de f3 ea c3 91 28 ba b5 ac ?? ?? ?? ?? ?? ?? ?? ?? ?? ?? 
+?? ?? ?? ??
+
+KVM host serial log message that appears when the crash happens:
+text
+
+[ 4379.695497] kvm_amd: kvm [5809]: vcpu0, guest rIP: 0x0 vmgexit: 
+unsupported event - exit_info_1=0x18, exit_info_2=0x0
+
+Bisecting shows that this commit is the first bad one. When I revert it, 
+I am able to boot the SEV-ES guest successfully on both Turin and Genoa 
+platforms:
+
+e992bf67bcbab07a7f59963b2c4ed32ef65c8431 is the first bad commit
+commit e992bf67bcbab07a7f59963b2c4ed32ef65c8431
+Author: Sean Christopherson <seanjc@google.com>
+Date:   Tue Feb 3 11:07:10 2026 -0800
+
+     KVM: SVM: Set/clear CR8 write interception when AVIC is (de)activated
+
+[1]: 
+https://git.kernel.org/pub/scm/linux/kernel/git/next/linux-next.git, 
+next-20260304
+
+Will be happy to get any more information required. Thank you.
+
+Srikanth Aithal <sraithal@amd.com>
+
+On 2/4/2026 12:37 AM, Sean Christopherson wrote:
+> Explicitly set/clear CR8 write interception when AVIC is (de)activated to
+> fix a bug where KVM leaves the interception enabled after AVIC is
+> activated.  E.g. if KVM emulates INIT=>WFS while AVIC is deactivated, CR8
+> will remain intercepted in perpetuity.
 > 
-> I was previously testing on 6.12 and didn’t see any changes to vfio-pci or
-> pagewalk.c which prompted me to check whether I could reproduce the
-> bug in a more recent kernel.  
+> On its own, the dangling CR8 intercept is "just" a performance issue, but
+> combined with the TPR sync bug fixed by commit d02e48830e3f ("KVM: SVM:
+> Sync TPR from LAPIC into VMCB::V_TPR even if AVIC is active"), the danging
+> intercept is fatal to Windows guests as the TPR seen by hardware gets
+> wildly out of sync with reality.
 > 
-> However, when I tried to reproduce the bug on 7.0-rc2 (after adding some
-> tracing to get a clearer picture of the sequence of events) it doesn’t happen.
-> The VFIO DMA set operation is much faster on 7.0, so possibly the race 
-> window is too small for it to occur in reasonable time.
-
-Interesting. You could try adding a delay to a test kernel to see if you
-can still provoke it.
-
-There is the slight possibility that something else fixed the race for
-your reproducer by "accident".
-
-[...]
-
->>>
->>>
->>> Hehe, first timer, still figuring out the process.
->>
->> :)
->>
->>>
->>>
->>> I think so, the bug can be easily triggered by repeatedly booting up a VM that passes through a PCI device with large BARs while continuously reading the numa_maps of the main VM process. The reproducer script is mainly to narrow down to the specific part where the race occurs, the VFIO DMA set ioctl.
->>>
->>> Should I raise a bug email to refer to, and resubmit a new RFC v2 (without the cover letter), or keep discussion in this thread for now?
->>
->> No, it's okay. Let's first discuss the proper fix.
->>
->>>
->>>
->>> Have only seen it with PUDs, will try forcing the mapping to happen with PMDs tomorrow.
->>
->> Can you try the following:
->>
->>
->> From b3f0a85b9f071e338097147f997f20d1ac796155 Mon Sep 17 00:00:00 2001
->> From: "David Hildenbrand (Arm)" <david@kernel.org>
->> Date: Tue, 10 Mar 2026 10:09:39 +0100
->> Subject: [PATCH] tmp
->>
->> Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
->> ---
->> mm/pagewalk.c | 22 ++++++++++++++++++----
->> 1 file changed, 18 insertions(+), 4 deletions(-)
->>
->> diff --git a/mm/pagewalk.c b/mm/pagewalk.c
->> index cb358558807c..779f6fa00ab7 100644
->> --- a/mm/pagewalk.c
->> +++ b/mm/pagewalk.c
->> @@ -96,6 +96,7 @@ static int walk_pte_range(pmd_t *pmd, unsigned long addr, unsigned long end,
->> static int walk_pmd_range(pud_t *pud, unsigned long addr, unsigned long end,
->>   struct mm_walk *walk)
->> {
->> + pud_t pudval = pudp_get(pud);
->> pmd_t *pmd;
->> unsigned long next;
->> const struct mm_walk_ops *ops = walk->ops;
->> @@ -104,6 +105,18 @@ static int walk_pmd_range(pud_t *pud, unsigned long addr, unsigned long end,
->> int err = 0;
->> int depth = real_depth(3);
->>
->> + /*
->> +  * For PTE handling, pte_offset_map_lock() takes care of checking
->> +  * whether there actually is a page table. But it also has to be
->> +  * very careful about concurrent page table reclaim. If we spot a PMD
->> +  * table, it cannot go away, so we can just walk it. However, if we find
->> +  * something else, we have to retry.
->> +  */
->> + if (!pud_present(pudval) || pud_leaf(pudval)) {
->> + walk->action = ACTION_AGAIN;
->> + return 0;
->> + }
->> +
->> pmd = pmd_offset(pud, addr);
->> do {
->> again:
->> @@ -176,7 +189,7 @@ static int walk_pud_range(p4d_t *p4d, unsigned long addr, unsigned long end,
->>
->> pud = pud_offset(p4d, addr);
->> do {
->> - again:
->> +again:
->> next = pud_addr_end(addr, end);
->> if (pud_none(*pud)) {
->> if (has_install)
->> @@ -217,12 +230,13 @@ static int walk_pud_range(p4d_t *p4d, unsigned long addr, unsigned long end,
->> else if (pud_leaf(*pud) || !pud_present(*pud))
->> continue; /* Nothing to do. */
->>
->> - if (pud_none(*pud))
->> - goto again;
->> -
->> err = walk_pmd_range(pud, addr, next, walk);
->> if (err)
->> break;
->> +
->> + if (walk->action == ACTION_AGAIN)
->> + goto again;
->> +
->> } while (pud++, addr = next, addr != end);
->>
->> return err;
->> -- 
->> 2.43.0
+> Note, VMX isn't affected by the bug as TPR_THRESHOLD is explicitly ignored
+> when Virtual Interrupt Delivery is enabled, i.e. when APICv is active in
+> KVM's world.  I.e. there's no need to trigger update_cr8_intercept(), this
+> is firmly an SVM implementation flaw/detail.
 > 
-> That works, awesome!
+> WARN if KVM gets a CR8 write #VMEXIT while AVIC is active, as KVM should
+> never enter the guest with AVIC enabled and CR8 writes intercepted.
 > 
-> interestingly enough the VFIO ioctl now also returns “[Errno 22] Invalid argument” where
-> I would previously see the process reading numa_maps crash.
+> Fixes: 3bbf3565f48c ("svm: Do not intercept CR8 when enable AVIC")
+> Cc: stable@vger.kernel.org
+> Cc: Jim Mattson <jmattson@google.com>
+> Cc: Naveen N Rao (AMD) <naveen@kernel.org>
+> Cc: Maciej S. Szmigiero <maciej.szmigiero@oracle.com>
+> Signed-off-by: Sean Christopherson <seanjc@google.com>
+> ---
+>   arch/x86/kvm/svm/avic.c | 6 ++++--
+>   arch/x86/kvm/svm/svm.c  | 9 +++++----
+>   2 files changed, 9 insertions(+), 6 deletions(-)
 > 
-> [dma_map]
-> dma_map iova=0x000000000000 size=0x000004000000 vaddr=0x00007f7800000000
-> dma_map FAILED iova=0x020000000000: [Errno 22] Invalid argument
-> dma_map iova=0x040000000000 size=0x000002000000 vaddr=0x00007f5780000000 
+> diff --git a/arch/x86/kvm/svm/avic.c b/arch/x86/kvm/svm/avic.c
+> index 44e07c27b190..13a4a8949aba 100644
+> --- a/arch/x86/kvm/svm/avic.c
+> +++ b/arch/x86/kvm/svm/avic.c
+> @@ -189,12 +189,12 @@ static void avic_activate_vmcb(struct vcpu_svm *svm)
+>   	struct kvm_vcpu *vcpu = &svm->vcpu;
+>   
+>   	vmcb->control.int_ctl &= ~(AVIC_ENABLE_MASK | X2APIC_MODE_MASK);
+> -
+>   	vmcb->control.avic_physical_id &= ~AVIC_PHYSICAL_MAX_INDEX_MASK;
+>   	vmcb->control.avic_physical_id |= avic_get_max_physical_id(vcpu);
+> -
+>   	vmcb->control.int_ctl |= AVIC_ENABLE_MASK;
+>   
+> +	svm_clr_intercept(svm, INTERCEPT_CR8_WRITE);
+> +
+>   	/*
+>   	 * Note: KVM supports hybrid-AVIC mode, where KVM emulates x2APIC MSR
+>   	 * accesses, while interrupt injection to a running vCPU can be
+> @@ -226,6 +226,8 @@ static void avic_deactivate_vmcb(struct vcpu_svm *svm)
+>   	vmcb->control.int_ctl &= ~(AVIC_ENABLE_MASK | X2APIC_MODE_MASK);
+>   	vmcb->control.avic_physical_id &= ~AVIC_PHYSICAL_MAX_INDEX_MASK;
+>   
+> +	svm_set_intercept(svm, INTERCEPT_CR8_WRITE);
+> +
+>   	/*
+>   	 * If running nested and the guest uses its own MSR bitmap, there
+>   	 * is no need to update L0's msr bitmap
+> diff --git a/arch/x86/kvm/svm/svm.c b/arch/x86/kvm/svm/svm.c
+> index e8313fdc5465..aa3ab22215f5 100644
+> --- a/arch/x86/kvm/svm/svm.c
+> +++ b/arch/x86/kvm/svm/svm.c
+> @@ -1077,8 +1077,7 @@ static void init_vmcb(struct kvm_vcpu *vcpu, bool init_event)
+>   	svm_set_intercept(svm, INTERCEPT_CR0_WRITE);
+>   	svm_set_intercept(svm, INTERCEPT_CR3_WRITE);
+>   	svm_set_intercept(svm, INTERCEPT_CR4_WRITE);
+> -	if (!kvm_vcpu_apicv_active(vcpu))
+> -		svm_set_intercept(svm, INTERCEPT_CR8_WRITE);
+> +	svm_set_intercept(svm, INTERCEPT_CR8_WRITE);
+>   
+>   	set_dr_intercepts(svm);
+>   
+> @@ -2674,9 +2673,11 @@ static int dr_interception(struct kvm_vcpu *vcpu)
+>   
+>   static int cr8_write_interception(struct kvm_vcpu *vcpu)
+>   {
+> -	int r;
+> -
+>   	u8 cr8_prev = kvm_get_cr8(vcpu);
+> +	int r;
+> +
+> +	WARN_ON_ONCE(kvm_vcpu_apicv_active(vcpu));
+> +
+>   	/* instruction emulation calls kvm_set_cr8() */
+>   	r = cr_interception(vcpu);
+>   	if (lapic_in_kernel(vcpu))
 
-Just to double-check: is that expected?
-
-I wonder why "-EINVAL" would be returned here. Do you know?
-
-> 
-> For my own understanding, why is this patch preferred over:
-> - if (pud_none(*pud))
-> + if (pud_none(*pud) || pud_leaf(*pud))
-> in the walk_pud_range function?
-
-It might currently work for PUDs, but as soon as we have non-present PUD
-entries (like migration entries) the code could become shaky: pud_leaf()
-is only guaranteed to yield the right result if pud_present() is true.
-
-So I decided to instead make walk_pud_range() look more similar to
-walk_pmd_range(), which is quite helpful for spotting actual differences
-in the logic.
-
-> 
-> I do think moving the check to walk_pmd_range is a more clear on the code’s intent and
-> personally prefer the code there, but I don’t see why this check is removing the possibility
-> of a race after the (!pud_present(pudval) || pud_leaf(pudval)) check, as to me it looks
-> like the PMD entry was possible to disappear between the splitting and this check?
-
-I distilled that in the comment: PMD page tables cannot/are not
-reclaimed. So once you see a PMD page table, it's not going anywhere
-while you hold relevant locks (mmap_lock or VMA lock).
-
-Only PMD leaf entries can get zapped any time and PMD none entries can
-get populated any time. But not PMD page tables.
-
-> 
-> Anyways, regardless, this patch resolves the bug and looks good to me - what’s the 
-> course of action as we probably want to backport this to earlier kernels as well. Shall
-> I send in a new PATCH without cover letter and take it from there?
-
-Right, I think you should:
-
-(1) rework the patch description to incorporate the essential stuff from
-    the cover letter
-(2) Identify and add Fixes: tag and Cc: stable
-(3) Document that we are reworking the code to mimic what we do in
-    walk_pmd_range(), to have less inconsistency on the core logic
-(4) Document why you think the reproducer fails on newer kernels. (or
-    best try to get it reproduced by adding some delays in the code)
-(5) Clarify that only PUD handling are prone to the race and that PMDs
-    are fine (and point out why)
-(6) Use a patch subject like "mm/pagewalk: fix race between unmapping
-    and refaulting in walk_pud_range()"
-
-Once you resend, best to add
-
-	Co-developed-by: David Hildenbrand (Arm) <david@kernel.org>
-	Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
-
-Above your SOB.
-
-To get something like:
-
-	Co-developed-by: David Hildenbrand (Arm) <david@kernel.org>
-	Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
-	Signed-off-by: Max Boone <mboone@akamai.com>
-
-Note that the existing
-
-	Signed-off-by: Max Tottenham <mtottenh@akamai.com>
-
-Is weird, as Max Tottenham did not send out this patch. If he was
-involved in the development, you should either make him
-
-	Suggested-by:
-
-Or
-	Debugged-by:
-
-Or
-	Co-developed-by: + Signed-off-by:
-
-See Documentation/process/submitting-patches.rst
-
-
-Let me know if you have any questions :)
-
--- 
-Cheers,
-
-David
