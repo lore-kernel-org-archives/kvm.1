@@ -1,49 +1,49 @@
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 656A43AD50D
-	for <kvm@vger.kernel.org>; Tue, 10 Mar 2026 13:22:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED0D33AD51C
+	for <kvm@vger.kernel.org>; Tue, 10 Mar 2026 13:22:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773148922; cv=none; b=Wp9G1GFA6DDsjgTJaHoOHuHMSdsGjSCn7C35wNG7dntqW7uRukj+ch6JofOqYUll7GCKeqq7irisVhcoS/yXvYBVZrwsvPZ67CjnxOYcduhTmfE1bjYBaP5eA7v7NyBvbb2iHuMZzx+4v9oknArkv4PZm9bIVFjrtrh3fiRL4qQ=
+	t=1773148925; cv=none; b=HVuAnStCm1GL0PKVbujn586R1lVnfn9Aut4cm0/k7ZGYsthQKulE43E+3wbHu/tekiLZvfjyDAAa9edtSkHcF45jwHPVTj01fq8dev9qjhWt7OVq9EGLnN7dUXxg5pM3/Z4Hf5YS0ofdNJAoA5+iyXYnGmVcWzBNrPKwiHAt2+o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773148922; c=relaxed/simple;
-	bh=2ZcEWenQOD+NOl65pkIQhL0NtL0EvUW3sXsfPcDiJYY=;
+	s=arc-20240116; t=1773148925; c=relaxed/simple;
+	bh=bnL+tp1vHCrRLvS1xchXw+fChY4GYRrF/2lrO/9JAkI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mnCOl5S+x+E+4rmOv5Lw0+zvZNZp1KZgH6Xk4gaZsUbZbc7uCY7l+TuGLN5vaWddep/mPWxf0FPlRG6kOrvtezDWaD1aAjCtOgj+6stU+XgILCXhNnvo3reCLVh+vPBRaMtFtL2QZXrVEvemL+IiXiMginckLRXVoHIBzxKHuPo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=ey9CoLXk; arc=none smtp.client-ip=170.10.129.124
+	 MIME-Version; b=cM5Uc7hoqy/sfxDVkDZwW8sWiKSbKINweb/mZoAgtrrrSQdISvxcanPc/3Kwzj3bfy7YmiOcW2k4chsJwuqDp9RDH2V1kDW1Uqok00nT4ITn47atQbv8wXwcsfPZmVtwIjLUprjif0mqsJfCx4wz3FEPHceyO8K4sKd/GptlA4M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=YlVUNqJP; arc=none smtp.client-ip=170.10.129.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="ey9CoLXk"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="YlVUNqJP"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1773148920;
+	s=mimecast20190719; t=1773148922;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=9ofQ4nmwEu3wL7Z0Aby5YaVlITUvrkllN4FHvtGxenI=;
-	b=ey9CoLXkBUuPUjG8u9kTTZXwqTjWh1IFqYQH0XJK6KcFfXyP1Yg5/tX1G3Fj8AWT5F351f
-	mUfwgJYP1dUYjLI3wcIMbBA5Jvx+CktVKC0VT/DhqSPFiPnBYNQFi1asJTOsxC7D7j7c/C
-	OnHd4sxBTRH/QDxYXoKttiAmLkgFn4s=
-Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+	bh=bWghBUkeSE3zI2cdCfl1UKaHfHhMgE7oEA7r9bNf++E=;
+	b=YlVUNqJPSyA4CJLb9YV6yh5o82k9mz4gBmSe5KI8cbnWun6wWNJBr3Cwo0ZYIrn78vG+4M
+	1HDo7Hn/kxoHUudz+llELmPr7VvuR9OgGrrwMg57lXzZs1AO6MWBuzIdaDu9WClel2RmNU
+	X3ZBKUvaGfk7uXLpk04/KUsioObISLg=
+Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-55-GtC0Yw3fMlOGmRVcTOWRpQ-1; Tue,
- 10 Mar 2026 09:21:59 -0400
-X-MC-Unique: GtC0Yw3fMlOGmRVcTOWRpQ-1
-X-Mimecast-MFC-AGG-ID: GtC0Yw3fMlOGmRVcTOWRpQ_1773148918
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-391-7si1zSQGNJiQhW1BCcNKQg-1; Tue,
+ 10 Mar 2026 09:22:01 -0400
+X-MC-Unique: 7si1zSQGNJiQhW1BCcNKQg-1
+X-Mimecast-MFC-AGG-ID: 7si1zSQGNJiQhW1BCcNKQg_1773148920
 Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id A194E1956050;
-	Tue, 10 Mar 2026 13:21:57 +0000 (UTC)
+	by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 3A499180056E;
+	Tue, 10 Mar 2026 13:22:00 +0000 (UTC)
 Received: from sirius.home.kraxel.org (unknown [10.45.225.19])
-	by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 0A0811800351;
-	Tue, 10 Mar 2026 13:21:56 +0000 (UTC)
+	by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id CE5DA180035F;
+	Tue, 10 Mar 2026 13:21:59 +0000 (UTC)
 Received: by sirius.home.kraxel.org (Postfix, from userid 1000)
-	id DB1CD1800850; Tue, 10 Mar 2026 14:21:54 +0100 (CET)
+	id F3F681800865; Tue, 10 Mar 2026 14:21:54 +0100 (CET)
 From: Gerd Hoffmann <kraxel@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: kvm@vger.kernel.org,
@@ -57,10 +57,10 @@ Cc: kvm@vger.kernel.org,
 	=?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
 	=?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
 	Kashyap Chamarthy <kchamart@redhat.com>,
-	Oliver Steffen <osteffen@redhat.com>
-Subject: [PULL 1/3] docs/interop: Add AMD SEV-SNP SVSM interface to firmware.json
-Date: Tue, 10 Mar 2026 14:21:52 +0100
-Message-ID: <20260310132154.2783257-2-kraxel@redhat.com>
+	Luigi Leonardi <leonardi@redhat.com>
+Subject: [PULL 2/3] igvm: fix build when igvm is not installed in a well known path
+Date: Tue, 10 Mar 2026 14:21:53 +0100
+Message-ID: <20260310132154.2783257-3-kraxel@redhat.com>
 In-Reply-To: <20260310132154.2783257-1-kraxel@redhat.com>
 References: <20260310132154.2783257-1-kraxel@redhat.com>
 Precedence: bulk
@@ -72,40 +72,101 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
 
-From: Oliver Steffen <osteffen@redhat.com>
+From: Luigi Leonardi <leonardi@redhat.com>
 
-AMD SEV-SNP defines a guest to Secure VM Service Module (SVSM) firmware
-[1] interface. Add a corresponding item to the FirmwareOSInterface
-enum.
+`stubs/igvm.c` includes `igvm-internal.h`, that in turn includes the igvm library.
+This is required just for the QIgvm declaration and creates an
+unnecessary dependency on the library.
 
-[1]
-https://docs.amd.com/api/khub/documents/Al5Q~fSl~kWKkJ3zC0vk_g/content
+Since igvm is not listed as a dependency of stubs, this results in build
+failing when the library is not installed in a "well known" path of the
+system.
 
-Signed-off-by: Oliver Steffen <osteffen@redhat.com>
-Message-ID: <20260123083204.999920-3-osteffen@redhat.com>
+Add a forward declaration for QIgvm and move the definition of
+`qigvm_directive_madt` to `igvm.h` so that we can drop `igvm-internal.h` from
+`stubs/igvm.c`.
+
+Fixes: dea1f68a5c ("igvm: Fill MADT IGVM parameter field on x86_64")
+Suggested-by: Stefano Garzarella <sgarzare@redhat.com>
+Signed-off-by: Luigi Leonardi <leonardi@redhat.com>
+Message-ID: <20260309-master-v2-1-7e02f07a1096@redhat.com>
 Signed-off-by: Gerd Hoffmann <kraxel@redhat.com>
 ---
- docs/interop/firmware.json | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ include/qemu/typedefs.h        | 1 +
+ include/system/igvm-internal.h | 9 ++-------
+ include/system/igvm.h          | 5 +++++
+ stubs/igvm.c                   | 1 -
+ 4 files changed, 8 insertions(+), 8 deletions(-)
 
-diff --git a/docs/interop/firmware.json b/docs/interop/firmware.json
-index 3c71914a526c..421bee0e5ed4 100644
---- a/docs/interop/firmware.json
-+++ b/docs/interop/firmware.json
-@@ -40,10 +40,12 @@
- #     example, firmware built from the edk2 (EFI Development Kit II)
- #     project usually provides this interface.
- #
-+# @svsm: AMD SEV-SNP Secure VM Service Module (SVSM) guest protocol.
-+#
- # Since: 3.0
- ##
- { 'enum' : 'FirmwareOSInterface',
--  'data' : [ 'bios', 'openfirmware', 'uboot', 'uefi' ] }
-+  'data' : [ 'bios', 'openfirmware', 'svsm', 'uboot', 'uefi' ] }
+diff --git a/include/qemu/typedefs.h b/include/qemu/typedefs.h
+index 416a8c9acead..cbe6f7f4c7c1 100644
+--- a/include/qemu/typedefs.h
++++ b/include/qemu/typedefs.h
+@@ -102,6 +102,7 @@ typedef struct QEMUSGList QEMUSGList;
+ typedef struct QemuSpin QemuSpin;
+ typedef struct QEMUTimer QEMUTimer;
+ typedef struct QEMUTimerListGroup QEMUTimerListGroup;
++typedef struct QIgvm QIgvm;
+ typedef struct QList QList;
+ typedef struct QNull QNull;
+ typedef struct QNum QNum;
+diff --git a/include/system/igvm-internal.h b/include/system/igvm-internal.h
+index 38004bd908e7..76ae1bc3be92 100644
+--- a/include/system/igvm-internal.h
++++ b/include/system/igvm-internal.h
+@@ -42,7 +42,7 @@ typedef struct QIgvmParameterData {
+  * QIgvm contains the information required during processing of a single IGVM
+  * file.
+  */
+-typedef struct QIgvm {
++struct QIgvm {
+     IgvmHandle file;
+     MachineState *machine_state;
+     ConfidentialGuestSupportClass *cgsc;
+@@ -67,16 +67,11 @@ typedef struct QIgvm {
+     unsigned region_start_index;
+     unsigned region_last_index;
+     unsigned region_page_count;
+-} QIgvm;
++};
  
- ##
- # @FirmwareDevice:
+ IgvmHandle qigvm_file_init(char *filename, Error **errp);
+ 
+ QIgvmParameterData*
+ qigvm_find_param_entry(QIgvm *igvm, uint32_t parameter_area_index);
+ 
+-/*
+- *  IGVM parameter handlers
+- */
+-int qigvm_directive_madt(QIgvm *ctx, const uint8_t *header_data, Error **errp);
+-
+ #endif
+diff --git a/include/system/igvm.h b/include/system/igvm.h
+index 5573a6111ae7..f9231f03ec80 100644
+--- a/include/system/igvm.h
++++ b/include/system/igvm.h
+@@ -27,4 +27,9 @@ int qigvm_x86_get_mem_map_entry(int index,
+ int qigvm_x86_set_vp_context(void *data, int index,
+                              Error **errp);
+ 
++/*
++ *  IGVM parameter handlers
++ */
++int qigvm_directive_madt(QIgvm *ctx, const uint8_t *header_data, Error **errp);
++
+ #endif
+diff --git a/stubs/igvm.c b/stubs/igvm.c
+index 47d5130d9d74..9e9f683fc960 100644
+--- a/stubs/igvm.c
++++ b/stubs/igvm.c
+@@ -12,7 +12,6 @@
+ #include "qemu/osdep.h"
+ 
+ #include "system/igvm.h"
+-#include "system/igvm-internal.h"
+ 
+ int qigvm_x86_get_mem_map_entry(int index,
+                                 ConfidentialGuestMemoryMapEntry *entry,
 -- 
 2.53.0
 
