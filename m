@@ -1,85 +1,112 @@
-Received: from mail-pl1-f201.google.com (mail-pl1-f201.google.com [209.85.214.201])
+Received: from mail-pj1-f73.google.com (mail-pj1-f73.google.com [209.85.216.73])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F160738D6B3
-	for <kvm@vger.kernel.org>; Tue, 10 Mar 2026 21:18:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6E413C9EC1
+	for <kvm@vger.kernel.org>; Tue, 10 Mar 2026 21:18:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.73
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773177526; cv=none; b=ERIxJIw/de6yzKxinIQQubn4zh84Z121qMIo1Zh2O5499+DWgl0B3Tq8mZMw0HZ6NPMEFi7G0904I5nubALLv7rmntOHvWghKeqfeLsTY7omu/VPJ0hGmemJXldjo239LrN2H8FmtBCtjC6TaT2IfAbPfy8kqT8S4yOlIdIYSeU=
+	t=1773177528; cv=none; b=SAT2GLkEX6aDksWvA08jkbqGmj3B9VvRM7R+YHuV2CbEThgP2QIXfDAEFVkdzhVnngbKB5l6MZKh7zR8xUHtTHJD59w14Er0b36h36kYKo5SYtt1S/aRoH0I5FWMBxTCD6TqopnkZwzksQbMn1DvHcs5kdFIyFA7QRAGXo9E0rk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773177526; c=relaxed/simple;
-	bh=lXoyEpibePIMwN7X8+UZ8Xzd0ZU8KaHfUstvDxz/4HA=;
-	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=Bqm86YrF18Wv6wRj1zH2sFdOCQc4dnmrVo/ZtPYXhrJWBtrzy1KkP5cY7aDc7seANGYlA2ZfaYaz51vtHX+kjylipLwMNj3iavGl5VtGTm5mcRSSWThD8Yx1Zw1wpYNzA/lyXkAKfXGjyr4Phq3O/i/sNCibMzPo5Z0gGonUZDI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=LYaKCPBl; arc=none smtp.client-ip=209.85.214.201
+	s=arc-20240116; t=1773177528; c=relaxed/simple;
+	bh=I6/K8Mr0bjHYxOECs28OHjZKcjEU5wZuhZrOi8DO2X0=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=kItUYOFsq1CRETc2ISbD0NuNHmc+XgmygfcnfhxSyZkahpH4F5i+48AVjNlMpeLgWAY7C1jRcPgOoSHLxYIqN7LdwDFoitD4LfsbBMVqvF7fVrGV2bKGpdqOLIXIzMkLXyd7Rl5QukJNRQ0dQWA6HzGjZV9zGA9nmVASasUZbRA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=W2Uo46m2; arc=none smtp.client-ip=209.85.216.73
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="LYaKCPBl"
-Received: by mail-pl1-f201.google.com with SMTP id d9443c01a7336-2ae4e9577ceso487352585ad.1
-        for <kvm@vger.kernel.org>; Tue, 10 Mar 2026 14:18:44 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="W2Uo46m2"
+Received: by mail-pj1-f73.google.com with SMTP id 98e67ed59e1d1-3598518beceso10197062a91.2
+        for <kvm@vger.kernel.org>; Tue, 10 Mar 2026 14:18:46 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1773177524; x=1773782324; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:mime-version:date:reply-to:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=OJ/NCAm6P1x5beG5L23G1Uyw+WvXuMXJ331NsI7Ka2w=;
-        b=LYaKCPBlkhKyVMPapldS9FV6Q891+YO5jSp9GPPJujKB+5v4oijWy77OF8DwqknArF
-         HeHWm7daUDWnfm7CntSB9hJNB6F/aD1rpONWIMybdM9ChgnSUYOWh86GA94TgTB9GfrT
-         yP+iZYBBhKhUecY8iA+PN155rqvHPHAeqISrHglJ1jpmbsZ4BRv1m3/9PPeg71nkuy53
-         M1qWMJmwRUSd1nS+TY+UXjOzRj/LEzNVB1E4/dQnJpSY6M97/xW7Dx6sefDzQKcj52fC
-         FKyVmukMf8e/QIJMyAvlwcXxECXhjGPAsuHZ+XF2dIx/BPmQAGs/UAU31TwnT/9UGgjb
-         5/SA==
+        d=google.com; s=20230601; t=1773177526; x=1773782326; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:reply-to:from:to:cc:subject:date:message-id:reply-to;
+        bh=7fUvP6PMmMjoOVXqU7ieGLMVIjfZdL4Sg65k3US/tM0=;
+        b=W2Uo46m2NV2VA80fWZxXi4/suK+QcYoyrQfPilc/0/aXJnC4lK/xpEdu9N/7/AX8bt
+         ErRKGjA1un6LBF2f9jfHR/MDEoG3v2qJ/CIpnAjmtl4bf0hiIsygPn4OJJTh8gH2htzL
+         t91kUf71JC/rPq6h/j5OoCjYrOQTGm/eg60eeQBmkDMc7Mp7mD9BH4rkbmlX5/T0j7Fj
+         9C4XjH53gck+YLMRFKgEgAL4gSCXuiAqm9YFwaDwcwAcJwDZUG9i9/ATssPdSSgSXPhR
+         ogY1SDy/kroc5UGh4Gvj0goIXD3bXKr94hJfNm92g9faJVppF+/FaljyEpOIGYFEIljs
+         zjoA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1773177524; x=1773782324;
-        h=cc:to:from:subject:message-id:mime-version:date:reply-to
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=OJ/NCAm6P1x5beG5L23G1Uyw+WvXuMXJ331NsI7Ka2w=;
-        b=YoWpqJ6tezX7tZouYS5NSUDI0PkY/bwgeXxeZ7ptXKJPUo9+tpSDBb/LY5Xo6wYaoo
-         kj2VWbXIPQPv/Tx+BBOD2zwS+bdetlQyWYUcgJ1wdXXLL70/DTSLWhqCeybJiF9zhvtC
-         agJ72cyx2ppJJPlFLGSQo9snf+DeLoGkxb7CN1d2/ZAv68jsZVFocjVmIQPryE0tSGny
-         /t6qwiBOukqxnAlfsUfkdZ5ZtkZ6TTuZoLxoSgugZdW5WpJjq9SxyqUBPhwKVZxKChCt
-         /7z22XZdL3VphYF3vLLWxue193Q0Q0hO6iUcMVq5sAB2KIsQ+PnO4yuSbPFfD3Zmrsr+
-         EJ8Q==
-X-Gm-Message-State: AOJu0Yw+msErqXyHCRANmWiAGqiSR3r/Xaq3kXuvzq37+zCRDEID0R5y
-	TozdyW6S9r+mk1F9277mbV8JBfZRT6bAF5JykBIlwCED4Jx7WUSJqktWBdfhsY1JiRg7ZHgS47E
-	UQyHsqA==
-X-Received: from plmm19.prod.google.com ([2002:a17:902:c453:b0:2ae:4964:6fe2])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:903:2f8d:b0:2aa:d67b:ef96
- with SMTP id d9443c01a7336-2aeae85b0cbmr1783765ad.31.1773177524108; Tue, 10
- Mar 2026 14:18:44 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1773177526; x=1773782326;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:reply-to:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=7fUvP6PMmMjoOVXqU7ieGLMVIjfZdL4Sg65k3US/tM0=;
+        b=c0HMSn0FhVtX+UYmtjNk7vtJIGt7OYZ7a6lVIHglc6YVNdTTPXiGzrHP8iZne9T1QN
+         DvBS43qa3HZbwxfGpYakzYYX9R0Js69GIXmjUZCNsedj5bnUysxM2N/jX70qZa4wRB75
+         N/gTFPVN+hlcaOzwKsL3eZVVP+m7vJw6Y0xEbFM1zeJGsXrP7dv4ywcft/J5hEEluBr7
+         oRAEZzHz9IWHIJoTHlzSFGPganhO7d11jmVyeuIKfQyAfiEYK7/0ndosMIbZ7WZsK1Am
+         /0KmlrbtwyurL9t0kLRG8wtrTdzzSk8S1nc6c5Kw0Hupq16q8eT3hiYPfFTwzyoahVzU
+         oG5w==
+X-Gm-Message-State: AOJu0YyCuEZwZdKJjKfjtIgo4XPwwDWKN+KqKc1V3ltBh9ceQu16Lnzb
+	9Ps/VbjoJpgJvIwNGW1YWPXWafaGjSLfrTjUNiwv3fAMr40TaTochz5GRxAE805M1AU5IBiTIHl
+	VIQOy7g==
+X-Received: from pgki21.prod.google.com ([2002:a63:e455:0:b0:c73:9c8b:4186])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a21:6b8c:b0:398:7df5:2dae
+ with SMTP id adf61e73a8af0-398c5e6067fmr65812637.9.1773177526121; Tue, 10 Mar
+ 2026 14:18:46 -0700 (PDT)
 Reply-To: Sean Christopherson <seanjc@google.com>
-Date: Tue, 10 Mar 2026 14:18:39 -0700
+Date: Tue, 10 Mar 2026 14:18:40 -0700
+In-Reply-To: <20260310211841.2552361-1-seanjc@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
+References: <20260310211841.2552361-1-seanjc@google.com>
 X-Mailer: git-send-email 2.53.0.473.g4a7958ca14-goog
-Message-ID: <20260310211841.2552361-1-seanjc@google.com>
-Subject: [PATCH 0/2] KVM: SEV: Fix a CR8 intercept goof with SEV-ES guests
+Message-ID: <20260310211841.2552361-2-seanjc@google.com>
+Subject: [PATCH 1/2] KVM: SEV: Don't set CR8 write intercept when disabling
+ AVIC for SEV-ES guests
 From: Sean Christopherson <seanjc@google.com>
 To: Sean Christopherson <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>
 Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
 	Srikanth Aithal <sraithal@amd.com>, Naveen N Rao <naveen@kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 
-Fix a recently introduced bug where KVM incorrectly enables CR8 write
-interception when inhibiting AVIC for SEV-ES guests, and extend the SEV+
-smoke selftest to guard against similar goofs in the future.
+Don't set the CR8 write intercept when disabling AVIC for SEV-ES vCPUs, as
+attempting to intercept CR8 will generate a #VC and in all likelihood kill
+the VM.
 
-Sean Christopherson (2):
-  KVM: SEV: Don't set CR8 write intercept when disabling AVIC for SEV-ES
-    guests
-  KVM: selftests: Verify SEV+ guests can read and write EFER, CR0, CR4,
-    and CR8
+Note!  At first glance, one might think KVM's handling of CR8 write traps
+for SEV-ES is flawed, as KVM traps CR8 writes even when AVIC is enabled,
+despite the fact that hardware updates the AVIC backing page as well.  But
+KVM unconditionally inhibits AVIC for SEV-ES guests as current hardware
+apparently can't support it (see c538dc792ff7 ("KVM: SVM: Do not activate
+AVIC for SEV-enabled guest")).
 
- arch/x86/kvm/svm/avic.c                       |  3 +-
- .../selftests/kvm/include/x86/processor.h     | 23 ++++++++++++++
- .../selftests/kvm/x86/sev_smoke_test.c        | 30 +++++++++++++++++++
- 3 files changed, 55 insertions(+), 1 deletion(-)
+However, KVM's overall handling of CR8 _is_ broken, as sync_cr8_to_lapic()
+will clobber with stale information from the unencrypted VMCB.  That issue
+will be fixed separately.
 
+Reported-by: Srikanth Aithal <sraithal@amd.com>
+Closes: https://lore.kernel.org/all/19935696-36cf-411b-af90-aabe6a98d7e7@amd.com
+Fixes: e992bf67bcba ("KVM: SVM: Set/clear CR8 write interception when AVIC is (de)activated")
+Cc: stable@vger.kernel.org
+Acked-by: Naveen N Rao (AMD) <naveen@kernel.org>
+Signed-off-by: Sean Christopherson <seanjc@google.com>
+---
+ arch/x86/kvm/svm/avic.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-base-commit: 3271085a7f1030ba9897cab60452acd370423ff1
+diff --git a/arch/x86/kvm/svm/avic.c b/arch/x86/kvm/svm/avic.c
+index 13a4a8949aba..f7ec7914e3c4 100644
+--- a/arch/x86/kvm/svm/avic.c
++++ b/arch/x86/kvm/svm/avic.c
+@@ -226,7 +226,8 @@ static void avic_deactivate_vmcb(struct vcpu_svm *svm)
+ 	vmcb->control.int_ctl &= ~(AVIC_ENABLE_MASK | X2APIC_MODE_MASK);
+ 	vmcb->control.avic_physical_id &= ~AVIC_PHYSICAL_MAX_INDEX_MASK;
+ 
+-	svm_set_intercept(svm, INTERCEPT_CR8_WRITE);
++	if (!sev_es_guest(svm->vcpu.kvm))
++		svm_set_intercept(svm, INTERCEPT_CR8_WRITE);
+ 
+ 	/*
+ 	 * If running nested and the guest uses its own MSR bitmap, there
 -- 
 2.53.0.473.g4a7958ca14-goog
 
