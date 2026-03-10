@@ -1,182 +1,104 @@
-Received: from cstnet.cn (smtp81.cstnet.cn [159.226.251.81])
-	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
+Received: from pdx-out-006.esa.us-west-2.outbound.mail-perimeter.amazon.com (pdx-out-006.esa.us-west-2.outbound.mail-perimeter.amazon.com [52.26.1.71])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF4193AA1AE;
-	Tue, 10 Mar 2026 05:56:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.81
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9FCA03D3319
+	for <kvm@vger.kernel.org>; Tue, 10 Mar 2026 05:58:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=52.26.1.71
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773122209; cv=none; b=EaCMCRhqOKqBOXe9hsxDdAToV+tR/t16n/mryXiC1pGSReK7FqRpOs6dCQoEserdkC0QrdOz4/v6EaiRMvT8hSMRl2TgnXZvayCAgBC257oezcwtbGPyqACRqiAeXtD0DUQnICA7mK7GjwFC5242p+NyAnSkMmw3kVQswIy42VU=
+	t=1773122308; cv=none; b=LLavCUKHdcTtH4tK9jaY0EyWKrPATDdDqLXuXES6poqBitF7AQseFg8vpbAfBszP+VKS2Roy6LCdAxutMFu+tWfqwBRsegWcfsmhAdxXYc7PYBvfzaKJl4ihXT2UvucT2qH6Y9Z4wQLe9hhKZ8gEdhOwdupXPIflmiTtTVu/G2o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773122209; c=relaxed/simple;
-	bh=OAjBEVenncfpi3DIxb2NAElidxvomPoHDW/7S6p8hwA=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=lqJJSfKgrI312zlcGYQwiRfXaE6zIS9rqky+IrnQSTF+L96pDh7EybaXRJt6cfNtuS+t6X08O2p5rJXSemyo/NdWcPP74w+dDutD6d6umrxbj+sQBQn8HEkoqTTu7V2Zi3vXn3YUVvqmQm1RAbWTxMpwjcnEMucKOp76inmYq1k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.81
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iscas.ac.cn
-Received: from fric.. (unknown [210.73.43.101])
-	by APP-03 (Coremail) with SMTP id rQCowAC30Ndvsq9p08A4Cg--.55585S4;
-	Tue, 10 Mar 2026 13:56:00 +0800 (CST)
-From: Jiakai Xu <xujiakai2025@iscas.ac.cn>
-To: kvm-riscv@lists.infradead.org,
-	kvm@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-kselftest@vger.kernel.org,
-	linux-riscv@lists.infradead.org
-Cc: Albert Ou <aou@eecs.berkeley.edu>,
-	Alexandre Ghiti <alex@ghiti.fr>,
-	Andrew Jones <ajones@ventanamicro.com>,
-	Anup Patel <anup@brainfault.org>,
-	Atish Patra <atish.patra@linux.dev>,
-	Palmer Dabbelt <palmer@dabbelt.com>,
-	Paolo Bonzini <pbonzini@redhat.com>,
-	Paul Walmsley <pjw@kernel.org>,
-	Shuah Khan <shuah@kernel.org>,
-	Jiakai Xu <xujiakai2025@iscas.ac.cn>,
-	Jiakai Xu <jiakaiPeanut@gmail.com>
-Subject: [PATCH v3 2/2] RISC-V: KVM: selftests: Fix firmware counter read in sbi_pmu_test
-Date: Tue, 10 Mar 2026 05:55:57 +0000
-Message-Id: <20260310055557.835531-3-xujiakai2025@iscas.ac.cn>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20260310055557.835531-1-xujiakai2025@iscas.ac.cn>
-References: <20260310055557.835531-1-xujiakai2025@iscas.ac.cn>
+	s=arc-20240116; t=1773122308; c=relaxed/simple;
+	bh=YwbmprIkDtutINfk3sBxaUCdm/OmSlnPX5jH2QN1F0Y=;
+	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=aWgq3TBGftS/DcWPIhge8ol36tjKzgH+5EOHlPPlj3zfq3e2m1+EDSj0SlDIVuA4jo3cx/RRBwzUdfSrnW8MaXz9O7kpt/Kdpjdz73ljSB5vBgRFJJqqTMH6GqsjPPvKl19hjJ1WZDHDeUcEpFldIE2YfO2LHVpAkyhnSejZq0w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com; spf=pass smtp.mailfrom=amazon.co.uk; dkim=pass (2048-bit key) header.d=amazon.com header.i=@amazon.com header.b=c7ps2RiT; arc=none smtp.client-ip=52.26.1.71
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amazon.co.uk
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=amazon.com header.i=@amazon.com header.b="c7ps2RiT"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+  d=amazon.com; i=@amazon.com; q=dns/txt; s=amazoncorp2;
+  t=1773122301; x=1804658301;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=nt2g2G+5DYfHQuv+2HMCz3ZelNBjKrMJvT2XXgxuY1E=;
+  b=c7ps2RiTiggnP08GgoDKUm948670GwAfb2dE6yy7U8jFwlo/p0c1Jc+8
+   uYraBS8/gKeLA1b/AWZkJhTzODtmsKh2dMLZz46yBfCSeFN77B+qmO0rX
+   iYZIGyNr5qgijdyvLMnzUZdIJEEOe3RbQBEF/8OpfBbpLm4gW/l2XhR4L
+   i5Od0sFoIo7yjFhA+YCeU2/l72HU46LDKRTeNrvzfegzG+zvNyl5FX57+
+   02QVf+cnm/Jcr7wz3++RXloAxgCd2hk590E4M3LWQZUw/O/ULIVa74omi
+   iHnSwR8P4koaBi5p8zEu9xKxWxQ2mkWNA/y4PdtFP++feJ2RDXQlnwSf8
+   A==;
+X-CSE-ConnectionGUID: g5GgTMBBSFqBXQHIs+IinQ==
+X-CSE-MsgGUID: 6w3mohR+Q42GMyTInTiIEg==
+X-IronPort-AV: E=Sophos;i="6.23,111,1770595200"; 
+   d="scan'208";a="14688221"
+Received: from ip-10-5-9-48.us-west-2.compute.internal (HELO smtpout.naws.us-west-2.prod.farcaster.email.amazon.dev) ([10.5.9.48])
+  by internal-pdx-out-006.esa.us-west-2.outbound.mail-perimeter.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Mar 2026 05:58:18 +0000
+Received: from EX19MTAUWB001.ant.amazon.com [205.251.233.51:30114]
+ by smtpin.naws.us-west-2.prod.farcaster.email.amazon.dev [10.0.52.102:2525] with esmtp (Farcaster)
+ id 5a5a57e9-3fa5-470f-b761-4fae4911677a; Tue, 10 Mar 2026 05:58:18 +0000 (UTC)
+X-Farcaster-Flow-ID: 5a5a57e9-3fa5-470f-b761-4fae4911677a
+Received: from EX19D001UWA001.ant.amazon.com (10.13.138.214) by
+ EX19MTAUWB001.ant.amazon.com (10.250.64.248) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.37;
+ Tue, 10 Mar 2026 05:58:16 +0000
+Received: from dev-dsk-itazur-1b-11e7fc0f.eu-west-1.amazon.com (172.19.66.53)
+ by EX19D001UWA001.ant.amazon.com (10.13.138.214) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.37;
+ Tue, 10 Mar 2026 05:58:14 +0000
+From: Takahiro Itazuri <itazur@amazon.com>
+To: <seanjc@google.com>
+CC: <david@kernel.org>, <dwmw2@infradead.org>, <itazur@amazon.com>,
+	<jackmanb@google.com>, <kalyazin@amazon.com>, <kvm@vger.kernel.org>,
+	<patrick.roy@campus.lmu.de>, <pbonzini@redhat.com>, <pdurrant@amazon.com>,
+	<tabba@google.com>, <vkuznets@redhat.com>, <zulinx86@gmail.com>
+Subject: Re: Re: [RFC PATCH v2 1/7] KVM: x86: Avoid silent kvm-clock activation failures
+Date: Tue, 10 Mar 2026 05:58:09 +0000
+Message-ID: <20260310055809.2690-1-itazur@amazon.com>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <aanCZqjXd0YiSmjR@google.com>
+References: <aanCZqjXd0YiSmjR@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:rQCowAC30Ndvsq9p08A4Cg--.55585S4
-X-Coremail-Antispam: 1UD129KBjvJXoWxGw4ftFW7ZFWkXFWDZF1DWrg_yoWrWw1xpF
-	W8JFWYkrWrtFnFyFy3A3ZFgr1UXan3Za4xKrW7Wry2yr4UZryfXwsIgF9Fyan8CFZYg343
-	Aw1Iga1rCFnxJaUanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDU0xBIdaVrnRJUUUH014x267AKxVWrJVCq3wAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
-	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2048vs2IY020E87I2jVAFwI0_Jryl82xGYIkIc2
-	x26xkF7I0E14v26ryj6s0DM28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48ve4kI8wA2z4x0
-	Y4vE2Ix0cI8IcVAFwI0_Xr0_Ar1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI0_Gr1j6F4UJw
-	A2z4x0Y4vEx4A2jsIE14v26rxl6s0DM28EF7xvwVC2z280aVCY1x0267AKxVW0oVCq3wAa
-	c4AC62xK8xCEY4vEwIxC4wAS0I0E0xvYzxvE52x082IY62kv0487Mc02F40EFcxC0VAKzV
-	Aqx4xG6I80ewAv7VC0I7IYx2IY67AKxVWUXVWUAwAv7VC2z280aVAFwI0_Gr0_Cr1lOx8S
-	6xCaFVCjc4AY6r1j6r4UM4x0Y48IcxkI7VAKI48JM4x0x7Aq67IIx4CEVc8vx2IErcIFxw
-	ACI402YVCY1x02628vn2kIc2xKxwCY1x0262kKe7AKxVWUtVW8ZwCY02Avz4vE14v_GrWl
-	42xK82IYc2Ij64vIr41l4I8I3I0E4IkC6x0Yz7v_Jr0_Gr1lx2IqxVAqx4xG67AKxVWUJV
-	WUGwC20s026x8GjcxK67AKxVWUGVWUWwC2zVAF1VAY17CE14v26r4a6rW5MIIYrxkI7VAK
-	I48JMIIF0xvE2Ix0cI8IcVAFwI0_Jr0_JF4lIxAIcVC0I7IYx2IY6xkF7I0E14v26F4j6r
-	4UJwCI42IY6xAIw20EY4v20xvaj40_Jr0_JF4lIxAIcVC2z280aVAFwI0_Jr0_Gr1lIxAI
-	cVC2z280aVCY1x0267AKxVW8JVW8JrUvcSsGvfC2KfnxnUUI43ZEXa7VUjppBDUUUUU==
-X-CM-SenderInfo: 50xmxthndljiysv6x2xfdvhtffof0/1tbiDAgCCWmvpGApOQAAsd
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain
+X-ClientProxiedBy: EX19D036UWC003.ant.amazon.com (10.13.139.214) To
+ EX19D001UWA001.ant.amazon.com (10.13.138.214)
 
-The current sbi_pmu_test attempts to read firmware counters without
-configuring them first with SBI_EXT_PMU_COUNTER_CFG_MATCH.
+On Thu, 5 Mar 2026 09:50:30 -0800, Sean Christopherson wrote:
+> On Thu, Feb 26, 2026, Takahiro Itazuri wrote:
+> > kvm_write_system_time() previously ignored the return value of
+> > kvm_gpc_activate().  As a result, kvm-clock activation could fail
+> > silently, making debugging harder.
+> >=20
+> > Propagate the return value so that the MSR write fail properly instead
+> > of continuing silently.
+>=20
+> Hrm.  For better or worse, KVM's ABI when it comes to PV stuff is to sile=
+ntly
+> ignore failures.  I 100% agree it makes debugging painful, but it's unfor=
+tunately
+> also "safer" in many cases, e.g. often results in degraded behavior versu=
+s flat
+> out crashing the guest.
+>=20
+> The other wrinkle is that success isn't actually guaranteed, because the =
+actual
+> writes don't happen until KVM_RUN via kvm_guest_time_update(), i.e. only =
+failing
+> in _some_ cases creates a weird ABI.
+>=20
+> And most importantly, this would be a breaking change in guest- and user-=
+visible
+> behavior.  So while I agree silently failing is ugly, all things consider=
+ed I
+> think it's the least awful choice here :-/
 
-Previously this did not fail because KVM incorrectly allowed the read
-and accessed fw_event[] with an out-of-bounds index when the counter
-was unconfigured. After fixing that bug, the read now correctly returns
-SBI_ERR_INVALID_PARAM, causing the selftest to fail.
-
-Update the test to configure a firmware event before reading the
-counter. Also add a negative test to ensure that attempting to read an
-unconfigured firmware counter fails gracefully.
-
-Signed-off-by: Jiakai Xu <xujiakai2025@iscas.ac.cn>
-Signed-off-by: Jiakai Xu <jiakaiPeanut@gmail.com>
----
-V2 -> V3:
-- Removed unnecessary BIT(ret.value) & counter_mask_available check.
-- Asserted ret.value == i after successful CFG_MATCH.
-- Fixed eidx construction in SBI_EXT_PMU_COUNTER_CFG_MATCH.
----
- .../testing/selftests/kvm/include/riscv/sbi.h | 37 +++++++++++++++++++
- .../selftests/kvm/riscv/sbi_pmu_test.c        | 20 +++++++++-
- 2 files changed, 56 insertions(+), 1 deletion(-)
-
-diff --git a/tools/testing/selftests/kvm/include/riscv/sbi.h b/tools/testing/selftests/kvm/include/riscv/sbi.h
-index 046b432ae896..16f1815ac48f 100644
---- a/tools/testing/selftests/kvm/include/riscv/sbi.h
-+++ b/tools/testing/selftests/kvm/include/riscv/sbi.h
-@@ -97,6 +97,43 @@ enum sbi_pmu_hw_generic_events_t {
- 	SBI_PMU_HW_GENERAL_MAX,
- };
- 
-+enum sbi_pmu_fw_generic_events_t {
-+	SBI_PMU_FW_MISALIGNED_LOAD	= 0,
-+	SBI_PMU_FW_MISALIGNED_STORE	= 1,
-+	SBI_PMU_FW_ACCESS_LOAD		= 2,
-+	SBI_PMU_FW_ACCESS_STORE		= 3,
-+	SBI_PMU_FW_ILLEGAL_INSN		= 4,
-+	SBI_PMU_FW_SET_TIMER		= 5,
-+	SBI_PMU_FW_IPI_SENT		= 6,
-+	SBI_PMU_FW_IPI_RCVD		= 7,
-+	SBI_PMU_FW_FENCE_I_SENT		= 8,
-+	SBI_PMU_FW_FENCE_I_RCVD		= 9,
-+	SBI_PMU_FW_SFENCE_VMA_SENT	= 10,
-+	SBI_PMU_FW_SFENCE_VMA_RCVD	= 11,
-+	SBI_PMU_FW_SFENCE_VMA_ASID_SENT	= 12,
-+	SBI_PMU_FW_SFENCE_VMA_ASID_RCVD	= 13,
-+
-+	SBI_PMU_FW_HFENCE_GVMA_SENT	= 14,
-+	SBI_PMU_FW_HFENCE_GVMA_RCVD	= 15,
-+	SBI_PMU_FW_HFENCE_GVMA_VMID_SENT = 16,
-+	SBI_PMU_FW_HFENCE_GVMA_VMID_RCVD = 17,
-+
-+	SBI_PMU_FW_HFENCE_VVMA_SENT	= 18,
-+	SBI_PMU_FW_HFENCE_VVMA_RCVD	= 19,
-+	SBI_PMU_FW_HFENCE_VVMA_ASID_SENT = 20,
-+	SBI_PMU_FW_HFENCE_VVMA_ASID_RCVD = 21,
-+	SBI_PMU_FW_MAX,
-+};
-+
-+/* SBI PMU event types */
-+enum sbi_pmu_event_type {
-+	SBI_PMU_EVENT_TYPE_HW = 0x0,
-+	SBI_PMU_EVENT_TYPE_CACHE = 0x1,
-+	SBI_PMU_EVENT_TYPE_RAW = 0x2,
-+	SBI_PMU_EVENT_TYPE_RAW_V2 = 0x3,
-+	SBI_PMU_EVENT_TYPE_FW = 0xf,
-+};
-+
- /* SBI PMU counter types */
- enum sbi_pmu_ctr_type {
- 	SBI_PMU_CTR_TYPE_HW = 0x0,
-diff --git a/tools/testing/selftests/kvm/riscv/sbi_pmu_test.c b/tools/testing/selftests/kvm/riscv/sbi_pmu_test.c
-index 924a335d2262..9404577e4ad5 100644
---- a/tools/testing/selftests/kvm/riscv/sbi_pmu_test.c
-+++ b/tools/testing/selftests/kvm/riscv/sbi_pmu_test.c
-@@ -436,6 +436,7 @@ static void test_pmu_basic_sanity(void)
- 	struct sbiret ret;
- 	int num_counters = 0, i;
- 	union sbi_pmu_ctr_info ctrinfo;
-+	unsigned long fw_eidx;
- 
- 	probe = guest_sbi_probe_extension(SBI_EXT_PMU, &out_val);
- 	GUEST_ASSERT(probe && out_val == 1);
-@@ -461,7 +462,24 @@ static void test_pmu_basic_sanity(void)
- 			pmu_csr_read_num(ctrinfo.csr);
- 			GUEST_ASSERT(illegal_handler_invoked);
- 		} else if (ctrinfo.type == SBI_PMU_CTR_TYPE_FW) {
--			read_fw_counter(i, ctrinfo);
-+			/* Read without configure should fail */
-+			ret = sbi_ecall(SBI_EXT_PMU, SBI_EXT_PMU_COUNTER_FW_READ,
-+					i, 0, 0, 0, 0, 0);
-+			GUEST_ASSERT(ret.error == SBI_ERR_INVALID_PARAM);
-+
-+			/*
-+			 * Try to configure with a common firmware event.
-+			 * If configuration succeeds, verify we can read it.
-+			 */
-+			fw_eidx = ((unsigned long)SBI_PMU_EVENT_TYPE_FW << 16) |
-+					  SBI_PMU_FW_ACCESS_LOAD;
-+
-+			ret = sbi_ecall(SBI_EXT_PMU, SBI_EXT_PMU_COUNTER_CFG_MATCH,
-+					i, 1, 0, fw_eidx, 0, 0);
-+			if (ret.error == 0) {
-+				GUEST_ASSERT(ret.value == i);
-+				read_fw_counter(i, ctrinfo);
-+			}
- 		}
- 	}
- 
--- 
-2.34.1
+Fair point.  I'll drop this change in the next version since I spotted a
+compile error in another patch and I need to resend anyway.
 
