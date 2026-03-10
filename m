@@ -1,28 +1,27 @@
-Received: from CY3PR05CU001.outbound.protection.outlook.com (mail-westcentralusazon11013062.outbound.protection.outlook.com [40.93.201.62])
+Received: from BYAPR05CU005.outbound.protection.outlook.com (mail-westusazon11010059.outbound.protection.outlook.com [52.101.85.59])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC3283CAE65
-	for <kvm@vger.kernel.org>; Tue, 10 Mar 2026 16:41:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.93.201.62
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CFC7D391E42
+	for <kvm@vger.kernel.org>; Tue, 10 Mar 2026 16:41:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.85.59
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773160878; cv=fail; b=euFnN16rE3RdcAtNi3NNTin85kAhnibCjXaAOu+UkAGUpU1hmgYE6r0onqVzaDGmla1lQgiEomPKzCPxOWoOQcIZOvWBbXYssCaneBgIUWyBzUjK14tOrHbcggZzRa5TVo4swyQ98/IEkctTWcYRbZuEF6zdZRcx6S54VebUurk=
+	t=1773160881; cv=fail; b=MWghAODCobZnu2axQf78q68kmBOGQU2pAsI2ZwzFeAXw3h3lFgc9gtbmdB2s48wlWgT1RQ57VI73xru+TNUqbiwuwGJYz+jVE2qLsJD5jwm9Y44N2z7Xer78MV7hmI0QsC01W/d1eaQeZvf0mf49UwCRILA5LpVS4uCusFguUrY=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773160878; c=relaxed/simple;
-	bh=1B0rSAHArVkBCSzz5JjIePJ2hfQzYIcsZ8yj628qXzg=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=C40+BcN4ujxuB4xCwSeduzvfHFR1ZFerAzKQtGS44sdxXNfBQcCvGXclTHTz/GuLH+8gxwPxCvWUq+XqaLD/l5FnnnH5YpvM2ckXrGzFEkB7Or7kSIVAPk+lgl+fSpT6116Wp+6VoEri3A+q5rsa8KZSLb8kyqgzRprJy7jh4RQ=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=GR+TyM7X; arc=fail smtp.client-ip=40.93.201.62
+	s=arc-20240116; t=1773160881; c=relaxed/simple;
+	bh=oDXKij/yXdF5j6sZ23rXCQOhWXZ7NDR8zkKiKEfxHDk=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=D/b1sumkKzoK/PxqzAz6/W3HySydRW2FI28RddEdSptsFz2Ys0BZvUnbuSQK3eUqLLlouJIBSbg24CLMwxP+BuZ7qH85oioq63OjAZa4oYtLmXPn07H+bgGMu160hFmlasTuZSMKNlsB2geI8Xk7ZF3dNH8qx7Jx42V9PSeP/8s=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=GcejkXrP; arc=fail smtp.client-ip=52.101.85.59
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="GR+TyM7X"
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="GcejkXrP"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=D5A4ghYRNfJ038VRY6ssIXz5agSHcim8/hfYk/0DdziYTg0cT9ARUKa+KXK8d+IGcD5RSaLBlSMqHOVvKby7VEeFdqIn6JSj2u1mBc2kxpPRNLx7DkoE4wakTCtmyj8DD4RDKYarmQzS7S5z47BI+RQI/ggXA4kRhaosaSmjXLrP2o01MYNk4lFHgm+SRrl138WPARAtX9YHje9lmn4mFOKZSRAUPS+br1xuwUqLHo57DkpuaBx0KOBfMnVnZFqlVm30lrg9pt9htkAHNJ5Yvmsrk0nnaihd+m9vr90gBkMepZMgK46gFzRXOzrqOjEUUE8P3zgywkHPbQLB1ma5UA==
+ b=zSP2kL8XXYeqnINYuasw37qL+AdkRy1BeZ6yotuXehq0O9spxKYGtnFYJSY59vLcpvQrJTcQmG+TC6S2rcYjx1CBQBnLokSKqolR9UezeJFAq8c7HIcpcF8i1uWksX6IJaMoCqhFKQFWkIEwH4/mS5SdTLoipjIizt8Oc/RyqkFNe9V12gEwOK5RaCdCjJnGy0jpYguF5CkgfXdu7MI0DqwaYMfa30H4IbfYj0O2jSiMFvfIGmn9WC6au94oe9jB4sKZ6fYdnztMN9vKIvOA0IWGDeKOa8/UoAUEsusqZ7M+JsTTEb8MriudSGW66oYEUGjkqktBxzoqNkVwecHdSA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=+uae2Ht68ld1/ve+IOsef6jRxahrPcFF9JthsAVAwf8=;
- b=wL8pNHbwqWnfzj2AS4tqrGNKOiK7rSybLDOCkk13wKNFcsc5y3LPmWUpz8NttvnaEaCM7aIo/GOTgiBPmhPPCWl5dAhwr8sCRtQcvtijP0LMN6A/ExnvGnyD565KMhim+HBRwyqXokdFsDxQOLo4P/TMpWEgb44SlfDT5YnSPho1yEVDqJunL8//MkU7xJQ7i7+1rK6Xcd1F/xmLSDMuZowR1ndbVzbJQsXOR7vMTIN5iKfBYfkuziqJbY+v/HKaGgwXz7K2k7f17kNJn/1jktSeQig0Oo7WIu+gVWJVKLck6fepqo9Kcza8NPZMXtbcPsfU7V2G4fjSEeq7mLiENQ==
+ bh=oiqIXIZOnVzqe4mAkB+lWYPoTrIFILbTSB76UtDo6Sc=;
+ b=v4eZ+vaRQpvOxgL1GkFgjFuYV9sdZhI59Xn7ODocQpQWkCxwNIx3S1dNjBaOR7Y25zexPtEYoImFiP8vZRC66BKN71lNI3qUpXXE0neg+G2ARunp+nJ35rXt4+0clH6CA6pDuFBc084fe8j4Snm5Ex/DfOg+uHTvJJKkIouMnUNuvBbu0OrXcjKtMTfR9sfdT04qyjV1YB5mKJMfrKM3ebFo/4HRUT7HNO8pH4UYB/UyDda5j5HxmNb7T+Uae1isjV8kBAt9y/HxLHRzbLMJEtWWEHcDEDFkN1NqVlvC3sl5yYLROB4PR2uJZWaBQK4q/b01DUf0zNC1hQCSyxFCuA==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
  216.228.118.233) smtp.rcpttodomain=shazbot.org smtp.mailfrom=nvidia.com;
  dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
@@ -30,18 +29,18 @@ ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
  s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=+uae2Ht68ld1/ve+IOsef6jRxahrPcFF9JthsAVAwf8=;
- b=GR+TyM7XHe++ADhXVipnT7B2TkYba7R9Y9OdPawFCbfbxMwXNbuSnun5VpzIRO+R1zB36+dfTQenMLBHG1RR77HzpNLNu50U81J/Xm4qGHC7773j8RkmuHDNHcqMEwDcmjq2AyIANhtRVsEqdiSz7yKvy1DRwLZ/AkKsVHHOw4YCkyMu2O092nBAZ1OOrG1Ucw0roNQzFJ/f/c5G1jhTtIn9P2Slplf/oQP1/QRu/91NEl73XWH4u6IbDh7k3QHkYmAx31+Lfi3gumhsmbfdJGdwHzDsh3e+4M4Plizu69lZ2Py5Y20WnirxGoFsLrexgx2r3Z5ZsHGJKXIz7dU8bQ==
-Received: from PH3PEPF000040A5.namprd05.prod.outlook.com (2603:10b6:518:1::54)
- by PH7PR12MB8124.namprd12.prod.outlook.com (2603:10b6:510:2ba::14) with
+ bh=oiqIXIZOnVzqe4mAkB+lWYPoTrIFILbTSB76UtDo6Sc=;
+ b=GcejkXrP/HfjCAJIDcaWvl9O35QHCL8eHzAKXzitkoqL2yLEw/6Hm2D54c728AKEgExYj7TXDNsInQdDGk90NHnYOaHSIsDVhLaAhn0Jl+/Mm50O8sXQrg0GihN5792r0sPLR5GXZwQYBD5/JWav9r3KV+W770TNSu5YEqzX5KKKHBc5iVWVJ0g6FO4IVoFCvc8U/sQjHiC8nsel+cV98a5KAD1gst3UDF9002r4jSlsX6FxJ8LiJ7OFRkWAKlAyc5k72xgBE4iPk3SYLGJN5JmZrbyfpLYo6/Gjys1G+B1cUVuvv8YknQlpzmO/XoIqZDfMpW5nXR8jaCbAfbyjLQ==
+Received: from PH7P220CA0120.NAMP220.PROD.OUTLOOK.COM (2603:10b6:510:32d::22)
+ by IA0PR12MB8714.namprd12.prod.outlook.com (2603:10b6:208:488::18) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9700.11; Tue, 10 Mar
- 2026 16:41:09 +0000
-Received: from SJ1PEPF000023D5.namprd21.prod.outlook.com
- (2a01:111:f403:c902::13) by PH3PEPF000040A5.outlook.office365.com
- (2603:1036:903:49::3) with Microsoft SMTP Server (version=TLS1_3,
+ 2026 16:41:05 +0000
+Received: from SJ1PEPF000023D7.namprd21.prod.outlook.com
+ (2603:10b6:510:32d:cafe::e6) by PH7P220CA0120.outlook.office365.com
+ (2603:10b6:510:32d::22) with Microsoft SMTP Server (version=TLS1_3,
  cipher=TLS_AES_256_GCM_SHA384) id 15.20.9678.25 via Frontend Transport; Tue,
- 10 Mar 2026 16:41:09 +0000
+ 10 Mar 2026 16:41:04 +0000
 X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.118.233)
  smtp.mailfrom=nvidia.com; dkim=none (message not signed)
  header.d=none;dmarc=pass action=none header.from=nvidia.com;
@@ -49,20 +48,20 @@ Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
  216.228.118.233 as permitted sender) receiver=protection.outlook.com;
  client-ip=216.228.118.233; helo=mail.nvidia.com; pr=C
 Received: from mail.nvidia.com (216.228.118.233) by
- SJ1PEPF000023D5.mail.protection.outlook.com (10.167.244.70) with Microsoft
+ SJ1PEPF000023D7.mail.protection.outlook.com (10.167.244.72) with Microsoft
  SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.9723.1 via Frontend Transport; Tue, 10 Mar 2026 16:41:09 +0000
+ 15.20.9723.1 via Frontend Transport; Tue, 10 Mar 2026 16:41:05 +0000
 Received: from drhqmail202.nvidia.com (10.126.190.181) by mail.nvidia.com
  (10.127.129.6) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20; Tue, 10 Mar
- 2026 09:40:54 -0700
+ 2026 09:40:51 -0700
 Received: from drhqmail201.nvidia.com (10.126.190.180) by
  drhqmail202.nvidia.com (10.126.190.181) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.20; Tue, 10 Mar 2026 09:40:54 -0700
+ 15.2.2562.20; Tue, 10 Mar 2026 09:40:50 -0700
 Received: from vdi.nvidia.com (10.127.8.10) by mail.nvidia.com
  (10.126.190.180) with Microsoft SMTP Server id 15.2.2562.20 via Frontend
- Transport; Tue, 10 Mar 2026 09:40:51 -0700
+ Transport; Tue, 10 Mar 2026 09:40:47 -0700
 From: Yishai Hadas <yishaih@nvidia.com>
 To: <alex@shazbot.org>, <jgg@nvidia.com>
 CC: <kvm@vger.kernel.org>, <kevin.tian@intel.com>,
@@ -70,12 +69,10 @@ CC: <kvm@vger.kernel.org>, <kevin.tian@intel.com>,
 	<maorg@nvidia.com>, <avihaih@nvidia.com>, <clg@redhat.com>,
 	<peterx@redhat.com>, <liulongfang@huawei.com>, <giovanni.cabiddu@intel.com>,
 	<kwankhede@nvidia.com>
-Subject: [PATCH V1 vfio 1/6] vfio: Define uAPI for re-init initial bytes during the PRE_COPY phase
-Date: Tue, 10 Mar 2026 18:40:01 +0200
-Message-ID: <20260310164006.4020-2-yishaih@nvidia.com>
+Subject: [PATCH V1 vfio 0/6] Add support for PRE_COPY initial bytes re-initialization
+Date: Tue, 10 Mar 2026 18:40:00 +0200
+Message-ID: <20260310164006.4020-1-yishaih@nvidia.com>
 X-Mailer: git-send-email 2.21.0
-In-Reply-To: <20260310164006.4020-1-yishaih@nvidia.com>
-References: <20260310164006.4020-1-yishaih@nvidia.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -87,120 +84,125 @@ Content-Type: text/plain
 X-NV-OnPremToCloud: ExternallySecured
 X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SJ1PEPF000023D5:EE_|PH7PR12MB8124:EE_
-X-MS-Office365-Filtering-Correlation-Id: 3b3303ce-1e6b-4f38-79ae-08de7ec3d555
+X-MS-TrafficTypeDiagnostic: SJ1PEPF000023D7:EE_|IA0PR12MB8714:EE_
+X-MS-Office365-Filtering-Correlation-Id: 43d1801c-827f-4ea4-5060-08de7ec3d2d2
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|36860700016|82310400026|376014|1800799024|18002099003|22082099003|56012099003;
+	BCL:0;ARA:13230040|1800799024|82310400026|36860700016|376014|18002099003|56012099003|13003099007;
 X-Microsoft-Antispam-Message-Info:
-	bjJ54UVODLO91MvG8J0/++tPPgsJGfZExvho3I4hX9EECtDjX9gc7UOBbU1V5lhg4Iqnsv1j2Aw9XVMWluVE4/KAmcRMcnOKscoFWF8+sX5HUY0kuayktmEFxi1eYxIbGpX/dworBNgRi4ixwiEwDfn+lgMNEdxLBVTn474TQClp7b+zGiWLQC9JIDkoE2MlwVlcNwKIdfqVgHaqVlVmyUl1XXCNjUdXpLZsp1WcVfL8gp3ZMEyRbfQaq8qq7YJ9P8mgChqUrJ4tAI3CTC6nSb9AO6gJo3dKEd2gRiu4yKNy3trJeGgGDomm7b71m/4hjd/fEwFgLgNSytDvV0TewUARJko4OnXJoC/pRKnJ4v3234lepOUMneOwu4j+WTsLAunZ9N690ajrny1cxLFtvB3N/zSRBulpGZZFWrRiouEbg+Hblo18CvRrExyfyx8WDvIqs2LLg3/hM+wtaQLYSgsgHfcyFI6c9JDXMnXpJJ3z0jXdjGnOcOeiBVwm90pKvJUjPEk6HtoFnHMipPCFS4rzC5IreMbxEInnJuSkKTMm9ZRcCsEcOZHA8+IIHnuI4V2YO4KEzihTLIXWntV88Ur9KI316LCAppoDuN0sfjlPJEc3YuJXHIPtYZ+Y3aUt4NWYCL9tXACGnbTC4LZCIukXbDL70xJbeBI6BQKmFUgsfG6iNli/Wp7KMzjfEGofUSUZX84PlORmYgawzjlgQC+n+PHilpX063rvtxwWr8Z9LQz8V0wXeSzQsIwI80J3Socn8TQUETmQi/9XPssTyw==
+	TuHtuQUswToQR1Pm+Y5bKvg/AntZnxALmX6BOChTvokP3V9yehjnrUOxz7k7pA5zUg4tQP+RE5A+w5ZJ3ItNvkJk3Q9Y8Ue3OGM1Kp9FZ+u5CmgFlrP+l/Q1RtvguVb7g1TfYLgSi7CApt051x3Z0p9ZUYBEpjGF5aGb2SXp3a7koU+FRLbEPU5hi06IYN+na6gCmnNpzFPZg10IzUntHQFDfU0ajIMMNWA1KQondRdTDwZtv3eib5ezxGbeFses3nSO6AvZmHM1XVKe7z+mPnaxltyLLqcXFdyNqB9RGaEgsCBbmPvk7y13SYoQ9RB0L9xuvRH7LztO9l2+Z6KvJWpmfmgY9gcwNEDyaManoK3MEREPyLUL1C4r/M7eiudpMxmcq636mcSOKjR7dyFw2sh/mH7nmstY27zUt7zJPw27Y/cbEAyQkw4oI+XGdTGTfO4wbh/m6evM3kvGxcx6aHifnhrxq0DABeaJI/YUX+dObc8s/WDe289dSrMKFX+HaeUmTbGMI4BnVH2CZ2+S6rLf8WPKCuu8yFMI7T6SpEl64vQlpHe793UejOtiqwR+kClapEZ/K5vDo36PlgBqBsRlO/+UCAH1VlP9fP585Dyq+cnzNfgCvlA3pe89oNHvxZGSDDpMYxNAUXkoP+clW942vr9/weU1lfRYCZLWoE5kd4gikm14ShvN1vugEDa9I61CYkHK1yUUyBtuMu2QJ/5E8MVn/wuKHmCAVzB6fOB0UQqqDYwbqdWmJpsBC8xjO2K1sFdy3CVr0yyQRqwhqw==
 X-Forefront-Antispam-Report:
-	CIP:216.228.118.233;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc7edge2.nvidia.com;CAT:NONE;SFS:(13230040)(36860700016)(82310400026)(376014)(1800799024)(18002099003)(22082099003)(56012099003);DIR:OUT;SFP:1101;
+	CIP:216.228.118.233;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc7edge2.nvidia.com;CAT:NONE;SFS:(13230040)(1800799024)(82310400026)(36860700016)(376014)(18002099003)(56012099003)(13003099007);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	PzmKH6xT3Od6hk39T+VbA6Fl6Y6a3whnsCKKv2l8bUN6STD2XOPyjq6C4kh5vRUmfY2gJvuGpO6DJcA/7byBI4PQvccQi0JxfeC3mEJAewn11G4GMIcOhA5/nbR4WpjoQ/HWYBAU+bNe1pmAIIUhqrycW/w1j6EmWMTvjb97uZOBULY5OV9aJOWgY9ehp6cPJMqOU1uUJNUG3Zrxk11/UI84+3Y/v48qev6p4qvux0xa0eB1FLQkG9Xz/hk77dqAKe4yEJBg7CLS5mIJ5QkUsSbFV9p1mhXASVrsyRKgWbqgjsAwN0k2uymghS2lp5lyT43qcDbze70L1I/PRSwaZD15sakVe7GZ17bvOHdR4ayNEjivekTW7PfTk001beuTKGjrxsn50Yo481LpQzqHQe6yYTRbNJp4LM7Km0sbRunyA+bCLZ7kyLVxpzVrKBsl
+	Q+wLWD1SJI+hG5eTC6GsiKlzwkIGpuNVD7XWuLrYD57VlN1b9dRPTnG4alPrWlbVNERd9ZuBuloB5ta9Yv63unDPoJBrYR1IIdqS+WcKN7qN9OBw7e59BZukXa2A8/ahTsYvLUmXP4kC1qn7QTJ3vGSFoKDOnBCLFDbpDMqwhCC2okl+l2dJknrOPJvkmuw2kuZP9gszKm0cliVSjsKp4YdwfQYzp64gQLJTzGxHSzoUmHuULkhi0h08yys23NksoS5UX0kyXJBYr++WWY3k+rdKzLLDkG85kpL95APoHRp1S88/k4vzp6SAzf53xq3tLFTOvtuVwP5QnvBnQB8F8TVSyAaeJH6pzWvyhHDuQmCXWMRPUqWa6+7gTMVg0b5u1Tp50nffaQKIfJEuABAPpc6B9YmDx2zu2KKKM3sC0ZfAT9OO78tMfIB7FZDaNHq/
 X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 10 Mar 2026 16:41:09.5722
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 10 Mar 2026 16:41:05.2965
  (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 3b3303ce-1e6b-4f38-79ae-08de7ec3d555
+X-MS-Exchange-CrossTenant-Network-Message-Id: 43d1801c-827f-4ea4-5060-08de7ec3d2d2
 X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
 X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.118.233];Helo=[mail.nvidia.com]
 X-MS-Exchange-CrossTenant-AuthSource:
-	SJ1PEPF000023D5.namprd21.prod.outlook.com
+	SJ1PEPF000023D7.namprd21.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Anonymous
 X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH7PR12MB8124
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA0PR12MB8714
 
+This series introduces support for re-initializing the initial_bytes
+value during the VFIO PRE_COPY migration phase.
+
+Background
+==========
 As currently defined, initial_bytes is monotonically decreasing and
 precedes dirty_bytes when reading from the saving file descriptor.
 The transition from initial_bytes to dirty_bytes is unidirectional and
 irreversible.
 
-The initial_bytes are considered as critical data that is highly
-recommended to be transferred to the target as part of PRE_COPY, without
-this data, the PRE_COPY phase would be ineffective.
+The initial_bytes are considered critical data that is highly
+recommended to be transferred to the target as part of PRE_COPY.
+Without this data, the PRE_COPY phase would be ineffective.
 
-We come to solve the case when a new chunk of critical data is
-introduced during the PRE_COPY phase and the driver would like to report
-an entirely new value for the initial_bytes.
+Problem Statement
+=================
+In some cases, a new chunk of critical data may appear during the
+PRE_COPY phase. The current API does not provide a mechanism for the
+driver to report an updated initial_bytes value when this occurs.
 
+Solution
+========
 For that, we extend the VFIO_MIG_GET_PRECOPY_INFO ioctl with an output
 flag named VFIO_PRECOPY_INFO_REINIT to allow drivers reporting a new
 initial_bytes value during the PRE_COPY phase.
 
-Currently, existing VFIO_MIG_GET_PRECOPY_INFO implementations don't
-assign info.flags before copy_to_user(), this effectively echoes
+However, Currently, existing VFIO_MIG_GET_PRECOPY_INFO implementations
+don't assign info.flags before copy_to_user(), this effectively echoes
 userspace-provided flags back as output, preventing the field from being
 used to report new reliable data from the drivers.
 
 Reliable use of the new VFIO_PRECOPY_INFO_REINIT flag requires userspace
-to explicitly opt in by enabling the
-VFIO_DEVICE_FEATURE_MIG_PRECOPY_INFOv2 device feature.
+to explicitly opt in. For that we introduce a new feature named
+VFIO_DEVICE_FEATURE_MIG_PRECOPY_INFOv2.
 
-When the caller opts in, the driver may report an entirely new
-value for initial_bytes. It may be larger, it may be smaller, it may
-include the previous unread initial_bytes, it may discard the previous
-unread initial_bytes, up to the driver logic and state.
-The presence of the VFIO_PRECOPY_INFO_REINIT output flag set by the
-driver indicates that new initial data is present on the stream.
+User should opt-in to the above feature with a SET operation, no data is
+required and any supplied data is ignored.
 
-Once the caller sees this flag, the initial_bytes value should be
-re-evaluated relative to the readiness state for transition to
-STOP_COPY.
+When the caller opts in:
+- We set info.flags to zero, otherwise we keep v1 behaviour as is for
+  compatibility reasons.
+- The new output flag VFIO_PRECOPY_INFO_REINIT can be used reliably.
+- The VFIO_PRECOPY_INFO_REINIT output flag indicates that new initial
+  data is present on the stream. The initial_bytes value should be
+  re-evaluated relative to the readiness state for transition to
+  STOP_COPY.
 
-Signed-off-by: Yishai Hadas <yishaih@nvidia.com>
----
- include/uapi/linux/vfio.h | 22 ++++++++++++++++++++++
- 1 file changed, 22 insertions(+)
+The mlx5 VFIO driver is extended to support this case when the
+underlying firmware also supports the REINIT migration state.
 
-diff --git a/include/uapi/linux/vfio.h b/include/uapi/linux/vfio.h
-index bb7b89330d35..90e51e84539d 100644
---- a/include/uapi/linux/vfio.h
-+++ b/include/uapi/linux/vfio.h
-@@ -1266,6 +1266,17 @@ enum vfio_device_mig_state {
-  * The initial_bytes field indicates the amount of initial precopy
-  * data available from the device. This field should have a non-zero initial
-  * value and decrease as migration data is read from the device.
-+ * The presence of the VFIO_PRECOPY_INFO_REINIT output flag indicates
-+ * that new initial data is present on the stream.
-+ * In that case initial_bytes may report a non-zero value irrespective of
-+ * any previously reported values, which progresses towards zero as precopy
-+ * data is read from the data stream. dirty_bytes is also reset
-+ * to zero and represents the state change of the device relative to the new
-+ * initial_bytes.
-+ * VFIO_PRECOPY_INFO_REINIT can be reported only after userspace opts in to
-+ * VFIO_DEVICE_FEATURE_MIG_PRECOPY_INFOv2. Without this opt-in, the flags field
-+ * of struct vfio_precopy_info is reserved for bug-compatibility reasons.
-+ *
-  * It is recommended to leave PRE_COPY for STOP_COPY only after this field
-  * reaches zero. Leaving PRE_COPY earlier might make things slower.
-  *
-@@ -1301,6 +1312,7 @@ enum vfio_device_mig_state {
- struct vfio_precopy_info {
- 	__u32 argsz;
- 	__u32 flags;
-+#define VFIO_PRECOPY_INFO_REINIT (1 << 0) /* output - new initial data is present */
- 	__aligned_u64 initial_bytes;
- 	__aligned_u64 dirty_bytes;
- };
-@@ -1510,6 +1522,16 @@ struct vfio_device_feature_dma_buf {
- 	struct vfio_region_dma_range dma_ranges[] __counted_by(nr_ranges);
- };
- 
-+/*
-+ * Enables the migration precopy_info_v2 behaviour.
-+ *
-+ * VFIO_DEVICE_FEATURE_MIG_PRECOPY_INFOv2.
-+ *
-+ * On SET, enables the v2 pre_copy_info behaviour, where the
-+ * vfio_precopy_info.flags is a valid output field.
-+ */
-+#define VFIO_DEVICE_FEATURE_MIG_PRECOPY_INFOv2  12
-+
- /* -------- API for Type1 VFIO IOMMU -------- */
- 
- /**
+As part of this series, a core helper function is introduced to provide
+shared functionality for implementing the VFIO_MIG_GET_PRECOPY_INFO
+ioctl, and all drivers have been updated to use it.
+
+Changes from V0:
+https://patchwork.kernel.org/project/kvm/cover/20260224082019.25772-1-yishaih@nvidia.com/
+
+Patch #1:
+-Fix a typo in a comment (prepcopy_info_v2 -> precopy_info_v2)
+
+Patch #2,#3,#6:
+-Rename 'precopy_info_flags_fix' to 'precopy_info_v2'.
+
+The corresponding QEMU series can be found here [1].
+[1] https://github.com/avihai1122/qemu/commits/vfio_precopy_info_reinit/
+
+Note:
+We may need to send the net/mlx5 patch to VFIO as a pull request to
+avoid conflicts prior to acceptance.
+
+Yishai
+
+Yishai Hadas (6):
+  vfio: Define uAPI for re-init initial bytes during the PRE_COPY phase
+  vfio: Add support for VFIO_DEVICE_FEATURE_MIG_PRECOPY_INFOv2
+  vfio: Adapt drivers to use the core helper vfio_check_precopy_ioctl
+  net/mlx5: Add IFC bits for migration state
+  vfio/mlx5: consider inflight SAVE during PRE_COPY
+  vfio/mlx5: Add REINIT support to VFIO_MIG_GET_PRECOPY_INFO
+
+ .../vfio/pci/hisilicon/hisi_acc_vfio_pci.c    |  17 +--
+ drivers/vfio/pci/mlx5/cmd.c                   |  25 +++-
+ drivers/vfio/pci/mlx5/cmd.h                   |   6 +-
+ drivers/vfio/pci/mlx5/main.c                  | 118 +++++++++++-------
+ drivers/vfio/pci/qat/main.c                   |  17 +--
+ drivers/vfio/pci/vfio_pci_core.c              |   1 +
+ drivers/vfio/pci/virtio/migrate.c             |  17 +--
+ drivers/vfio/vfio_main.c                      |  20 +++
+ include/linux/mlx5/mlx5_ifc.h                 |  16 ++-
+ include/linux/vfio.h                          |  40 ++++++
+ include/uapi/linux/vfio.h                     |  22 ++++
+ samples/vfio-mdev/mtty.c                      |  16 +--
+ 12 files changed, 217 insertions(+), 98 deletions(-)
+
 -- 
 2.18.1
 
