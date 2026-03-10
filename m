@@ -1,39 +1,38 @@
-Received: from mail.avm.de (mail.avm.de [212.42.244.119])
+Received: from mail.avm.de (mail.avm.de [212.42.244.94])
 	(using TLSv1.2 with cipher DHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C3D22481FC1;
-	Tue, 10 Mar 2026 11:55:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.42.244.119
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED27C495511;
+	Tue, 10 Mar 2026 11:55:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.42.244.94
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773143759; cv=none; b=eJ0/hdpdPfOWmke82ktCpnqGOn65ks8eP1B5nSc/n//2aWBoKzF62KJFIjoFSvzK8EyloMd6jqftHdze5vdZJKtY4liKnU/d8Shv+6U43aFcpMxAlVvUvqV/Woqexo2QieQCTOBSuFYVmziLpZBu+RMCgpLcf1oCd5yvdn0+4C4=
+	t=1773143765; cv=none; b=OOwNQwMb3AhpRbTg950A1Zj3QQ+Rbz/rchgAyX9ghdIetGphOtNgpFePi9eLgDL5f5gI6KO5f0+fOnj9cPmWaIHyv9MnSjLkgykJZ6esintQKW2+QX2o7RyGqc3VTYqb9QTYRwRJ0FyuS1psMEnnWycg5SvvDR13tLB3yPQy838=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773143759; c=relaxed/simple;
-	bh=c7VqPpX5FOMjU1fomf/slDzrk65Fe9+ZUNfqosDKTdI=;
+	s=arc-20240116; t=1773143765; c=relaxed/simple;
+	bh=P8RHvB1pDU6Ba6KZR0cIN2NAbDWAknWQIRz8JMX8gns=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=L+NMWIihcxXus/VGUUuQZ45c6uH2zIuHGoj/+M6j2QtPZFlhIDkf0s13zbeYMzqY69A5oqgywLp8mk+McBexGOvRJyqTYB1k/FcwYrG40RYo2w40TJTswjGoABzxXkwQ4PW3Lo+82qCHjC1gpGfw6k/iJsWrmP04+0CeCBeV/pY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=avm.de; spf=pass smtp.mailfrom=avm.de; dkim=pass (1024-bit key) header.d=avm.de header.i=@avm.de header.b=IViq9CY9; arc=none smtp.client-ip=212.42.244.119
+	 In-Reply-To:To:Cc; b=Ff1VZlQ6OTfWDGkqcvU36LILgf03tdsFZvltywUhEjFbpgVZfcg6gJafOG/qvjO8cvrFAqglS0moHbC2fLuss4uksh/kNffBSQaY9eOyTh0dm3Np7J7wM4hi537QO4l+yRpAokflIpB/lEo8FeFkdpS+ZmKmsk+ODzbUaAUomVk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=avm.de; spf=pass smtp.mailfrom=avm.de; dkim=pass (1024-bit key) header.d=avm.de header.i=@avm.de header.b=Pw5J/ZKa; arc=none smtp.client-ip=212.42.244.94
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=avm.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=avm.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=avm.de header.i=@avm.de header.b="IViq9CY9"
+	dkim=pass (1024-bit key) header.d=avm.de header.i=@avm.de header.b="Pw5J/ZKa"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=avm.de; s=mail;
-	t=1773143725; bh=c7VqPpX5FOMjU1fomf/slDzrk65Fe9+ZUNfqosDKTdI=;
+	t=1773143728; bh=P8RHvB1pDU6Ba6KZR0cIN2NAbDWAknWQIRz8JMX8gns=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
-	b=IViq9CY9kXhTGFn2wUsXBESaNCGz69a5nG3mhGowHHuPZ1SldVYsbRj6+GmFeE33Z
-	 /voEH0js7pDgeDh21Z+MjLukbWz6LUMqpwiLZaBJ7bgJ90kdMj+qEaksFeCP8FnFLU
-	 ahCh3Altzen7MVBVZyzIJ7pSy8eLwZR3MIuEFpPs=
-Received: from [212.42.244.71] (helo=mail.avm.de)
+	b=Pw5J/ZKa7qdOD/KHliFHGAPgoeYPtxmoMsaCQF/FKai+LG5vkmyJowXsEzkD3cPot
+	 34kvrGSUxg1JnjFKHY6NsLgrOVug3M9Be4rVveawRMrk6MR1C1BR6jP8hIlA4X3hU4
+	 jr1s0kl9i2R1ifgZ0ZoS8j1AZYiWtKMhO7fCyfSs=
+Received: from [2001:bf0:244:244::71] (helo=mail.avm.de)
 	by mail.avm.de with ESMTP (eXpurgate 4.55.2)
 	(envelope-from <phahn-oss@avm.de>)
-	id 69b006ad-2367-7f0000032729-7f0000019d84-1
-	for <multiple-recipients>; Tue, 10 Mar 2026 12:55:25 +0100
-Received: from mail-auth.avm.de (dovecot-mx-01.avm.de [212.42.244.71])
+	id 69b006af-e21d-7f0000032729-7f000001bab8-1
+	for <multiple-recipients>; Tue, 10 Mar 2026 12:55:28 +0100
+Received: from mail-auth.avm.de (dovecot-mx-01.avm.de [IPv6:2001:bf0:244:244::71])
 	by mail.avm.de (Postfix) with ESMTPS;
-	Tue, 10 Mar 2026 12:55:25 +0100 (CET)
+	Tue, 10 Mar 2026 12:55:27 +0100 (CET)
 From: Philipp Hahn <phahn-oss@avm.de>
-Date: Tue, 10 Mar 2026 12:48:49 +0100
-Subject: [PATCH 23/61] net/ipv6: Prefer IS_ERR_OR_NULL over manual NULL
- check
+Date: Tue, 10 Mar 2026 12:49:14 +0100
+Subject: [PATCH 48/61] mtd: Prefer IS_ERR_OR_NULL over manual NULL check
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -42,7 +41,7 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260310-b4-is_err_or_null-v1-23-bd63b656022d@avm.de>
+Message-Id: <20260310-b4-is_err_or_null-v1-48-bd63b656022d@avm.de>
 References: <20260310-b4-is_err_or_null-v1-0-bd63b656022d@avm.de>
 In-Reply-To: <20260310-b4-is_err_or_null-v1-0-bd63b656022d@avm.de>
 To: amd-gfx@lists.freedesktop.org, apparmor@lists.ubuntu.com, 
@@ -72,24 +71,22 @@ To: amd-gfx@lists.freedesktop.org, apparmor@lists.ubuntu.com,
  sched-ext@lists.linux.dev, target-devel@vger.kernel.org, 
  tipc-discussion@lists.sourceforge.net, v9fs@lists.linux.dev, 
  Philipp Hahn <phahn-oss@avm.de>
-Cc: "David S. Miller" <davem@davemloft.net>, 
- David Ahern <dsahern@kernel.org>, Eric Dumazet <edumazet@google.com>, 
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
- Simon Horman <horms@kernel.org>
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1558; i=phahn-oss@avm.de;
- h=from:subject:message-id; bh=c7VqPpX5FOMjU1fomf/slDzrk65Fe9+ZUNfqosDKTdI=;
- b=owEBbQGS/pANAwAKATQtBlPRrKzbAcsmYgBpsAYkT2ujfxBt0/qzL4FNFAkOp+gWHYFk2Lkit
- DIh+cvm64iJATMEAAEKAB0WIQQ5bPBtrWDUcDQCppg0LQZT0ays2wUCabAGJAAKCRA0LQZT0ays
- 28wAB/9/0/0cpf5vUgxn9MJJYzgxi6whlUVZ+hEx14I9GPhNabUzF2GH9pZZve+bNpQXnutoTyU
- +K2sycG7CaZHe4KrWGw/XkousnHUY+/rbl34+pCGgHYhtioeCxrYnt9GpyhiDjCITZjPGFnwVQd
- tZoQ5ZBU+ihaHpCBS+WuTGNPnpJCCDmn98dooJV56KJmahzsCdhoR05xOLdt45OLH8bgiYvcsMo
- XA7dPRY2ZqI4sORPZUvgQgkReuo3OWATKHpGF0IEcgG6WPoIcp2tLoXu42clOKjzJCoMFBALo5l
- /DTaIDOUTWpiOr9bQY0VQkO8G6JfVgMRTCJghvSt33zKNrUt
+Cc: Miquel Raynal <miquel.raynal@bootlin.com>, 
+ Richard Weinberger <richard@nod.at>, Vignesh Raghavendra <vigneshr@ti.com>
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1817; i=phahn-oss@avm.de;
+ h=from:subject:message-id; bh=P8RHvB1pDU6Ba6KZR0cIN2NAbDWAknWQIRz8JMX8gns=;
+ b=kA0DAAoBNC0GU9GsrNsByyZiAGmwBnnIluZqwXeZ26oYYynjfBoy02QQTmlYcSsBV5M99kkBR
+ okBMwQAAQoAHRYhBDls8G2tYNRwNAKmmDQtBlPRrKzbBQJpsAZ5AAoJEDQtBlPRrKzbhhQIALOH
+ 7GGUb7lDbOgP/8xq1PNX4SyEuog4C5Kqug0EL27yDZ5DTcHtYtEWvTOVFh3DoBIg9oWZIhltbqf
+ zQqvypi0p020OQBz5OD/FKYzR1JLtT/NpVkDjTnrh0FIsLPISsJn9k8DorrTpQE5Fk5zPEGhmlk
+ HlvpEuSvvQD0MQibzxJjUYSjgq+Ll386Twc/QQfm3hFYZT/c4I4Yb80f4z0CM2WhT7S3udW5nGM
+ BjGFdYImnQ9uAgWz45BEBVAwZb3P7349MoFLUJ9ZHvqc+4UOIWn+5d35lrOEZcvkJpfol2G0RFZ
+ WFsYepS2AbdMtsza99K9TLlncKCIQLIaXnPIWJM=
 X-Developer-Key: i=phahn-oss@avm.de; a=openpgp;
  fpr=58AF7C2E007CDBE62C59E078F50EFDCF8AD04B1A
-X-purgate-ID: 149429::1773143725-85C93E1F-A15B4641/0/0
+X-purgate-ID: 149429::1773143728-90660F2F-3D7E05AD/0/0
 X-purgate-type: clean
-X-purgate-size: 1560
+X-purgate-size: 1819
 X-purgate-Ad: Categorized by eleven eXpurgate (R) https://www.eleven.de
 X-purgate: This mail is considered clean (visit https://www.eleven.de for further information)
 X-purgate: clean
@@ -99,46 +96,54 @@ check.
 
 Change generated with coccinelle.
 
-To: "David S. Miller" <davem@davemloft.net>
-To: David Ahern <dsahern@kernel.org>
-To: Eric Dumazet <edumazet@google.com>
-To: Jakub Kicinski <kuba@kernel.org>
-To: Paolo Abeni <pabeni@redhat.com>
-To: Simon Horman <horms@kernel.org>
-Cc: netdev@vger.kernel.org
+To: Miquel Raynal <miquel.raynal@bootlin.com>
+To: Richard Weinberger <richard@nod.at>
+To: Vignesh Raghavendra <vigneshr@ti.com>
+Cc: linux-mtd@lists.infradead.org
 Cc: linux-kernel@vger.kernel.org
 Signed-off-by: Philipp Hahn <phahn-oss@avm.de>
 ---
- net/ipv6/ila/ila_xlat.c | 2 +-
- net/ipv6/ndisc.c        | 2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
+ drivers/mtd/nand/raw/gpio.c | 10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
-diff --git a/net/ipv6/ila/ila_xlat.c b/net/ipv6/ila/ila_xlat.c
-index 8991805fc3d60cfd2499146e522da142f33ddc50..c5e3954488ab7a1b1c07aff86385f5000945f1e4 100644
---- a/net/ipv6/ila/ila_xlat.c
-+++ b/net/ipv6/ila/ila_xlat.c
-@@ -545,7 +545,7 @@ int ila_xlat_nl_dump(struct sk_buff *skb, struct netlink_callback *cb)
- 	/* Get first entry */
- 	ila = rhashtable_walk_peek(rhiter);
+diff --git a/drivers/mtd/nand/raw/gpio.c b/drivers/mtd/nand/raw/gpio.c
+index 69e5e43532a448aa6273f3df79f53145784ccc05..86a8b62fb9e8510d36f925b8b468ec17c77e26d8 100644
+--- a/drivers/mtd/nand/raw/gpio.c
++++ b/drivers/mtd/nand/raw/gpio.c
+@@ -276,9 +276,9 @@ static void gpio_nand_remove(struct platform_device *pdev)
+ 	nand_cleanup(chip);
  
--	if (ila && !IS_ERR(ila) && skip) {
-+	if (!IS_ERR_OR_NULL(ila) && skip) {
- 		/* Skip over visited entries */
+ 	/* Enable write protection and disable the chip */
+-	if (gpiomtd->nwp && !IS_ERR(gpiomtd->nwp))
++	if (!IS_ERR_OR_NULL(gpiomtd->nwp))
+ 		gpiod_set_value(gpiomtd->nwp, 0);
+-	if (gpiomtd->nce && !IS_ERR(gpiomtd->nce))
++	if (!IS_ERR_OR_NULL(gpiomtd->nce))
+ 		gpiod_set_value(gpiomtd->nce, 0);
+ }
  
- 		while (ila && skip) {
-diff --git a/net/ipv6/ndisc.c b/net/ipv6/ndisc.c
-index f6a5d8c73af9721741c11b543e5abeecdbf2079f..ab340f2489c0c7555f48c1f3f5215cb1d0b5b341 100644
---- a/net/ipv6/ndisc.c
-+++ b/net/ipv6/ndisc.c
-@@ -1083,7 +1083,7 @@ static enum skb_drop_reason ndisc_recv_na(struct sk_buff *skb)
- 		}
- 	}
+@@ -358,7 +358,7 @@ static int gpio_nand_probe(struct platform_device *pdev)
+ 	platform_set_drvdata(pdev, gpiomtd);
  
--	if (neigh && !IS_ERR(neigh)) {
-+	if (!IS_ERR_OR_NULL(neigh)) {
- 		u8 old_flags = neigh->flags;
- 		struct net *net = dev_net(dev);
+ 	/* Disable write protection, if wired up */
+-	if (gpiomtd->nwp && !IS_ERR(gpiomtd->nwp))
++	if (!IS_ERR_OR_NULL(gpiomtd->nwp))
+ 		gpiod_direction_output(gpiomtd->nwp, 1);
  
+ 	/*
+@@ -381,10 +381,10 @@ static int gpio_nand_probe(struct platform_device *pdev)
+ 		return 0;
+ 
+ err_wp:
+-	if (gpiomtd->nwp && !IS_ERR(gpiomtd->nwp))
++	if (!IS_ERR_OR_NULL(gpiomtd->nwp))
+ 		gpiod_set_value(gpiomtd->nwp, 0);
+ out_ce:
+-	if (gpiomtd->nce && !IS_ERR(gpiomtd->nce))
++	if (!IS_ERR_OR_NULL(gpiomtd->nce))
+ 		gpiod_set_value(gpiomtd->nce, 0);
+ 
+ 	return ret;
 
 -- 
 2.43.0
