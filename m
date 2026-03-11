@@ -1,268 +1,125 @@
-Received: from BN1PR04CU002.outbound.protection.outlook.com (mail-eastus2azon11010023.outbound.protection.outlook.com [52.101.56.23])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f74.google.com (mail-ej1-f74.google.com [209.85.218.74])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E9A2F3E0C62;
-	Wed, 11 Mar 2026 15:42:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.56.23
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773243768; cv=fail; b=q44joUCd1miRxmc97gBkC63POzy//q6yMLohocieb7WwPkigPqJst5uTAmEexDffE2y4988rpiZ3/oMe6m2PnSPb0dhvlkP3bBHA7n7SNarYeCB4vqa5nyKkwhG2dMyRedYUGALAssd+rg1xhdSlPjFF19FoLeBjDZPynk3t3CQ=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773243768; c=relaxed/simple;
-	bh=0FWVh6yW5t6KJkLNIk7nWZxo31GHOefal/mjMTGVuNA=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=TflirzJrvE+WIyFCyQhN9xUi6JAoWsr45yTijbUUcAn6jLZOOZUz3mnohi0bRalv9LntNoMYmTBxf/nM4GFbQb4eH7nK1ZibMVJXxV6TAlvzQh8LELk65ccXNjAVcAOt9WOSNXsQShyd6J64kUrqdVB06UiekxfsmDqDEXKtVsQ=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=sXmM3Kpm; arc=fail smtp.client-ip=52.101.56.23
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C32D3D6CAF
+	for <kvm@vger.kernel.org>; Wed, 11 Mar 2026 16:01:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.74
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1773244902; cv=none; b=ePwwtWyEnDyNhJoaaBtFFeRZyUntEh7UM/HH1r2iTll9EjIkj6pXAGmc5Z8BDK+ppq5sznRIjnxFY62Zjdm14jE14Pd4eY9Ea8LhpNLy9RUYjwNYTcetxrZbTorcv3AqgqZcY8hFio/cAmT13Ea/I4p64FnUopslzRznjX4ncjk=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1773244902; c=relaxed/simple;
+	bh=alZSKgg1lU1wQh0A0HBF21ufoC8erK4cgoNEO+IVhhg=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=fX6j0vAmb1oJ9q0GzvEBix6+0UJKGUswaqgGT7eJANxh0vC+IlBQMvFqUCeRpVlHCyV9VJMq7+QJJbWshdhPlw0NjlaqJdgkabIMND+lK0+P0bhwOWMkfWXYKxJomb1DzhZa5xRGfUrx1p1j0GUIdAd0t/K+ZSahDJ0dG6dFt5w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=rgP3KJaq; arc=none smtp.client-ip=209.85.218.74
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="sXmM3Kpm"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=v9KdybSfeFIE1922eYVibzMKmss7SpbX4aTNRoZy6AmWxCFOzAELgK679XdSqaTgSPQhEk4gqdEalEnCf4CUv1yvcTasc8kMzHtUaQHwDP9luMZTNxbhWIo7vdsow87b8zBNskqZ1qXrDSMKQUz8W0ZMt9HuwC4mbwZon0gsAFrb0SqukIYF43QdWQBCjCtj9ozCpOgtfsEnnDszh2hs8TQmFqYPHT9ay8ktiW4fQdJNf28kxVQ5+oMVzJ65x1McepcajFSLh27AncR1wIxLP/kgJCLzXYC86HlXH5xNpmGrUWBHGcrj9vadVp6lGJQSSB/LK1iMPl9G9D69BFxOAw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=qILe/AO6/RxuOPniFZKEUcveQS4QnrxjZlnj+b/6Tu0=;
- b=YV+3d/jYEinLTFqQsZUR9NAm9oYPdyovQEaTFqoarUMaIb58Lp2Db+JXnJkC+CFTU19nWiCj2Eve1yEA6LboQRX/H20E9cIg8LOc78osrqZEDeVQ+vwbdJUxGapnyZXzOA7iPfg5xNfElDQSPAfzZFeT39reoIvPQq+U14CYqMeAiBw86UWz3Q8nUyZYLpcDvVeupGqV5sm50vpdz+nIpPXcyJb8IK1iq+7edQH1yF4zPuKTXc1v4T/sUF35Wyp3ZJfyetiif7An42tb73yuod92FldDoc9+7Fyt7sR22vX9N/DGcy2Bv4E0+MFz+yYbskF8AfhTp5779dzCkjQ21g==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 165.204.84.17) smtp.rcpttodomain=intel.com smtp.mailfrom=amd.com; dmarc=pass
- (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
- dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=qILe/AO6/RxuOPniFZKEUcveQS4QnrxjZlnj+b/6Tu0=;
- b=sXmM3KpmnQHsMzZEuJdo6QYXfdhxJtUAGzhLcQYcF8nYGgkWfSSJLzVdL0Jh5v6l0wyjB4e8ZGm30RRYchO7bfM/s5lKEWhvaPLrA++Sxvc0H/wGZeH+IWjGKemqUeBcptmxbNkKZ9p8b1m9H83pZUOWKlfQQB1mVRXe8F9clTs=
-Received: from SA0PR11CA0206.namprd11.prod.outlook.com (2603:10b6:806:1bc::31)
- by BN7PPFA8145BD40.namprd12.prod.outlook.com (2603:10b6:40f:fc02::6de) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9700.12; Wed, 11 Mar
- 2026 15:42:40 +0000
-Received: from SN1PEPF000397AF.namprd05.prod.outlook.com
- (2603:10b6:806:1bc:cafe::34) by SA0PR11CA0206.outlook.office365.com
- (2603:10b6:806:1bc::31) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.20.9678.26 via Frontend Transport; Wed,
- 11 Mar 2026 15:42:34 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
- smtp.mailfrom=amd.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=amd.com;
-Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
- 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=satlexmb07.amd.com; pr=C
-Received: from satlexmb07.amd.com (165.204.84.17) by
- SN1PEPF000397AF.mail.protection.outlook.com (10.167.248.53) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.9678.18 via Frontend Transport; Wed, 11 Mar 2026 15:42:40 +0000
-Received: from SATLEXMB04.amd.com (10.181.40.145) by satlexmb07.amd.com
- (10.181.42.216) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.2.2562.17; Wed, 11 Mar
- 2026 10:42:40 -0500
-Received: from satlexmb08.amd.com (10.181.42.217) by SATLEXMB04.amd.com
- (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.39; Wed, 11 Mar
- 2026 10:42:39 -0500
-Received: from [172.31.177.76] (10.180.168.240) by satlexmb08.amd.com
- (10.181.42.217) with Microsoft SMTP Server id 15.2.2562.17 via Frontend
- Transport; Wed, 11 Mar 2026 10:42:35 -0500
-Message-ID: <d0eba3fe-2938-4856-bd9b-0e13972e8313@amd.com>
-Date: Wed, 11 Mar 2026 21:12:34 +0530
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="rgP3KJaq"
+Received: by mail-ej1-f74.google.com with SMTP id a640c23a62f3a-b9415f0c4e9so646762066b.0
+        for <kvm@vger.kernel.org>; Wed, 11 Mar 2026 09:01:40 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1773244899; x=1773849699; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=FZ9wJHN98p2eqW+aluFwwdS4VIjV0bOaQ4w+79zBhNs=;
+        b=rgP3KJaqF2BlecOpPvT5kKAcfsza44TQB2S2rx00vuamlvPC3PCFQtN7iBBVErQ0kT
+         4WdJtxceJIxgfEoqrKiMSBM220p/tm52QxQ+p/Vm9qhMEQGFaHmneuWDzyXc37rR6IvX
+         j5BlJPNzE5lVxK7VrA572ygi0hpBk5fcEnP2yH7V3Q+z+BLO1dy4fVpi0jRKEMeOTip2
+         HIDkQduGaTUGLYmL2Eky5xA41gFzkVV4qEEUwksw40H4w8eZCk0GeALUIDP+Gr7DNvF1
+         2+wUJnKujEB5WM6EYBJBnq343bDJzOoB3ZqK8V5pehsfNWev2da3jY31l4UTLmX5NLQo
+         YIPg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1773244899; x=1773849699;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=FZ9wJHN98p2eqW+aluFwwdS4VIjV0bOaQ4w+79zBhNs=;
+        b=l9l8H4fkJCfUkdwXBDW4ApCLKaYB2HH/tVS5DkpAVCW0i/eVSwjxsgAybPO5rUFinK
+         SOJUaaFBqs/nWor0li2YOWbhW82d7bbS74/ghSv5vBdnRLziBpatAH/u/W3n2k+ObtUb
+         5tpkXy3t6DSHT7bEiaURZmHjrxdK2ozj3aVJf6+ZL8Cga59vVGztgv0eca9cy4UrYvmT
+         7Ncp9YtvA8wlAeqlDykj46NnITFEcpsb05xSw7FSkfTBVPcp8Sx4XUiXKajkaFtKdHwy
+         vDok+Pli7Um06RbzrTz6yISqcI+IFC7MeeyNMDU3t/WwvaLsFJtw2lshNv/KsqUa/8VV
+         kauQ==
+X-Forwarded-Encrypted: i=1; AJvYcCW4qqGWfSpWDHgrHAaz7DKyHBi8POA4UagoxE4GX0/bDds5mKsmSi4mgqP4RTApRkcPVm0=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxhFJaUEMlEaDmwyix+MTqzWeP8w+9wtQWyUwVqG6p8jcvwaCeS
+	UPwQUoLG/wG+xB9W/xvgf7sSxhlB2vAe5rpr9AG19m0z14MyBHuZO6DtHiP7GSpJ6SB/fVcmfpe
+	fViPlYqWXQkLfPEJ2hQ==
+X-Received: from wrbgw30.prod.google.com ([2002:a05:6000:40de:b0:439:ac29:98cb])
+ (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a17:907:6d22:b0:b93:3792:4b03 with SMTP id a640c23a62f3a-b972e4f775amr187595066b.32.1773244898034;
+ Wed, 11 Mar 2026 09:01:38 -0700 (PDT)
+Date: Wed, 11 Mar 2026 16:01:36 +0000
+In-Reply-To: <20260311120418.GU1687929@ziepe.ca>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 1/2] x86/cpu: Disable CR pinning during CPU bringup
-To: Dave Hansen <dave.hansen@intel.com>, Tom Lendacky
-	<thomas.lendacky@amd.com>, Borislav Petkov <bp@alien8.de>
-CC: <linux-kernel@vger.kernel.org>, <kvm@vger.kernel.org>, <tglx@kernel.org>,
-	<mingo@redhat.com>, <dave.hansen@linux.intel.com>, <hpa@zytor.com>,
-	<xin@zytor.com>, <seanjc@google.com>, <pbonzini@redhat.com>,
-	<x86@kernel.org>, <sohil.mehta@intel.com>, <jon.grimm@amd.com>
-References: <20260226092349.803491-1-nikunj@amd.com>
- <20260226092349.803491-2-nikunj@amd.com>
- <20260309134640.GOaa7PQJli_C9QATGB@fat_crate.local>
- <cde957ba-3579-4063-9d17-3630e79ea388@intel.com>
- <20260309161516.GAaa7yFMulhdzNQ-pt@fat_crate.local>
- <70644e1d-dd0e-4f0f-81c0-fd095e46e50b@intel.com>
- <7ca205d6-b01b-4ed3-959d-db31a6496d79@amd.com>
- <505a6bbd-3ecf-4de9-8fb9-0b21c3435a96@intel.com>
- <9fa61b80-0e16-4a87-a0e7-3c3dfcda8f7e@amd.com>
- <55a98b6d-e831-47a6-aa5a-8fe357334f67@intel.com>
-Content-Language: en-US
-From: "Nikunj A. Dadhania" <nikunj@amd.com>
-In-Reply-To: <55a98b6d-e831-47a6-aa5a-8fe357334f67@intel.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 7bit
-Received-SPF: None (SATLEXMB04.amd.com: nikunj@amd.com does not designate
- permitted sender hosts)
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SN1PEPF000397AF:EE_|BN7PPFA8145BD40:EE_
-X-MS-Office365-Filtering-Correlation-Id: 41c9dfbf-87d9-404d-f9c9-08de7f84d429
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|376014|7416014|36860700016|82310400026|1800799024|22082099003|56012099003|18002099003;
-X-Microsoft-Antispam-Message-Info:
-	K2GXjVZraZyb+dW9g1FV8HnMuGMo/GcnxfXW81TVhGVJ4+eoCqFlrEya6rvWNOhTDD0yFOkOvOqmQlGQd0ozCal8LB+63FeSkQ2mTtTUNyUriCj0naybugQIZMJ1dgkfiTgU5mZXuiuqwIlEq0e7RDEUY8iTp8LATFjNUfmc/+QrhmW/5z+7WX11YmZbgQCjfe+asc3gisHEPoUvYwiD5yiOSBsOxmwLcE/aqu36PGEU5rZaOYPuG8Dug7Hy+sIFVmg2veN9MxTVttWpupciYEN1AO6uizOYppUloE0SCJcdOGN/zUx+N5Aa29ieBxcz9ujc0ycqi4W1ldWlgVFYOaZz39Ourz2PpC+x7o0eRmQlZf7aOz8oAWgC+3NAIbocpUOxaPJJVB9bXzhmgK3twQ1CFkicJxzSNyuRvsrkaz+4xbdOM+wduPUtO4fjVV2Mz8kf9HYUNZjfuQ4Q4SNbA4z9PPYnZrotKSxqGZthBH2i7hG7qEq9vpAseBQ5lOgTfo6ncdrgipHI2KpRGrBI8juNuRM5ExNz1gRUsEpNcPJQY97ZZ7HDmaGoKkXWneg+vqfJ9pZqsI0masdUuAKbuB4wceYtKSMAW87WCsEm4PBtLmKqq7F2yhF6KajEGBHug7UVsbpUNRgaeb8UQ1eTebeOIpl1/eb703B2nt/PghHClkjiuTIOpTKIPRiVD5yNgkop0tU1iIcI5joitDre2GmQLfVwXRURLZzNsYMoNZJ5++5q4dtZB8X7TWx+z+O1YDoSyQpsCuBXc6eXh0WMlA==
-X-Forefront-Antispam-Report:
-	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb07.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(376014)(7416014)(36860700016)(82310400026)(1800799024)(22082099003)(56012099003)(18002099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	IsVWcpRRf6c+exCjgotUshrEhSnc+fOrcpCZxHwZXuvam9JDHf4/u7QbAKj3kJXKpO4GLR3LpcoeW7o2Gon296jqSib47Vhdb90jSrAFd2iNwVLSYxaQAVapI2u1b+DA4KZDr8787dfaSNA+TGo6/eNJ7q7XUb0yJIK6IKfnMo/7mCWSpIscFfwLIz1EbhdkAnOt1Y1hy7plvmV0B1bTbMsCIpLR3PKdRlHczfI7EGkGZOq4jtcWq69xvGJ52qVQqrn6KH2cE4Zx5ghL+Yi/8NmJKlSCXA16QjL5NqVgrNeTQDZPE9L2DzKEGRyEYrBngj5c7vTQ9CBm/pwjASg3W+/qbCEsuE83gGn3lJ15SFJxxbpyeaKH5+xnEEtaVFw4854kM4pkRrgz3K4UjmSk1+yqcLoXVzeExkF3RZIcpO+Q5zC5LSbKem+vIoigmeWc
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 11 Mar 2026 15:42:40.4462
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 41c9dfbf-87d9-404d-f9c9-08de7f84d429
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[satlexmb07.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	SN1PEPF000397AF.namprd05.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: BN7PPFA8145BD40
+Mime-Version: 1.0
+References: <20260227200848.114019-1-david@kernel.org> <20260227200848.114019-17-david@kernel.org>
+ <20260309142954.GM1687929@ziepe.ca> <61df6369-333c-430a-bd18-c5b1acae68ea@kernel.org>
+ <abE4JYo223OxWCBQ@google.com> <20260311120418.GU1687929@ziepe.ca>
+Message-ID: <abGR4GWMXC2tJyr8@google.com>
+Subject: Re: [PATCH v1 16/16] mm/memory: support VM_MIXEDMAP in zap_special_vma_range()
+From: Alice Ryhl <aliceryhl@google.com>
+To: Jason Gunthorpe <jgg@ziepe.ca>
+Cc: "David Hildenbrand (Arm)" <david@kernel.org>, linux-kernel@vger.kernel.org, 
+	"linux-mm @ kvack . org" <linux-mm@kvack.org>, Andrew Morton <akpm@linux-foundation.org>, 
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
+	Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
+	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, Jann Horn <jannh@google.com>, 
+	Pedro Falcato <pfalcato@suse.de>, David Rientjes <rientjes@google.com>, 
+	Shakeel Butt <shakeel.butt@linux.dev>, "Matthew Wilcox (Oracle)" <willy@infradead.org>, 
+	Madhavan Srinivasan <maddy@linux.ibm.com>, Michael Ellerman <mpe@ellerman.id.au>, 
+	Christian Borntraeger <borntraeger@linux.ibm.com>, Janosch Frank <frankja@linux.ibm.com>, 
+	Claudio Imbrenda <imbrenda@linux.ibm.com>, Alexander Gordeev <agordeev@linux.ibm.com>, 
+	Gerald Schaefer <gerald.schaefer@linux.ibm.com>, Heiko Carstens <hca@linux.ibm.com>, 
+	Vasily Gorbik <gor@linux.ibm.com>, Jarkko Sakkinen <jarkko@kernel.org>, Thomas Gleixner <tglx@kernel.org>, 
+	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+	"Arve =?utf-8?B?SGrDuG5uZXbDpWc=?=" <arve@android.com>, Todd Kjos <tkjos@android.com>, 
+	Christian Brauner <brauner@kernel.org>, Carlos Llamas <cmllamas@google.com>, Ian Abbott <abbotti@mev.co.uk>, 
+	H Hartley Sweeten <hsweeten@visionengravers.com>, Jani Nikula <jani.nikula@linux.intel.com>, 
+	Joonas Lahtinen <joonas.lahtinen@linux.intel.com>, Rodrigo Vivi <rodrigo.vivi@intel.com>, 
+	Tvrtko Ursulin <tursulin@ursulin.net>, David Airlie <airlied@gmail.com>, 
+	Simona Vetter <simona@ffwll.ch>, Leon Romanovsky <leon@kernel.org>, 
+	Dimitri Sivanich <dimitri.sivanich@hpe.com>, Arnd Bergmann <arnd@arndb.de>, 
+	Alexei Starovoitov <ast@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>, 
+	Andrii Nakryiko <andrii@kernel.org>, Peter Zijlstra <peterz@infradead.org>, 
+	Arnaldo Carvalho de Melo <acme@kernel.org>, Namhyung Kim <namhyung@kernel.org>, Andy Lutomirski <luto@kernel.org>, 
+	Vincenzo Frascino <vincenzo.frascino@arm.com>, Eric Dumazet <edumazet@google.com>, 
+	Neal Cardwell <ncardwell@google.com>, "David S. Miller" <davem@davemloft.net>, 
+	David Ahern <dsahern@kernel.org>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+	Miguel Ojeda <ojeda@kernel.org>, linuxppc-dev@lists.ozlabs.org, kvm@vger.kernel.org, 
+	linux-s390@vger.kernel.org, linux-sgx@vger.kernel.org, 
+	intel-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org, 
+	linux-rdma@vger.kernel.org, bpf@vger.kernel.org, 
+	linux-perf-users@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
+	netdev@vger.kernel.org, rust-for-linux@vger.kernel.org, x86@kernel.org
+Content-Type: text/plain; charset="utf-8"
 
-
-
-On 3/11/2026 7:37 PM, Dave Hansen wrote:
-> Nikunj, thanks for tracking this down and filling in the last piece of
-> the puzzle about ALTERNATIVEs patching.
+On Wed, Mar 11, 2026 at 09:04:18AM -0300, Jason Gunthorpe wrote:
+> On Wed, Mar 11, 2026 at 09:38:45AM +0000, Alice Ryhl wrote:
+> > It doesn't really make sense to have multiple binder VMAs. What happens
+> > with Rust Binder is that process A is receiving transactions and has the
+> > VMA mapped once.
 > 
-> On 3/11/26 03:41, Nikunj A. Dadhania wrote:
->> +	/*
->> +	 * Enable FSGSBASE if available. Exception entry code (paranoid_entry)
->> +	 * is patched to use RDGSBASE/WRGSBASE when this feature is present,
->> +	 * and those instructions require CR4.FSGSBASE=1. Secondary CPUs must
->> +	 * enable this before any exceptions occur.
->> +	 */
->> +	if (boot_cpu_has(X86_FEATURE_FSGSBASE))
->> +		cr4 |= X86_CR4_FSGSBASE;
+> IIRC the problem is the kernel doesn't guarentee singleton VMAs,
+> userspace can always clone them with fork or something. Did binder
+> solve this somehow?
+
+The Binder VMA is DONTCOPY, so it will not be present after fork.
+
+> Since you can't assume there is only one VMA the locking becomes a
+> mess to cover all the cases where userspace can trigger a VMA clone.
 > 
-> But this still double-enables X86_CR4_FSGSBASE. Could we initialize
-> X86_CR4_FSGSBASE in *one* place, please?
-
-Makes sense. Moving X86_CR4_FSGSBASE enablement to cr4_init() and calling cr4_init()
-early in the boot CPU path eliminates the double-enable. I've tested this lightly - 
-let me know if this is the right approach.
-
-diff --git a/arch/x86/include/asm/processor.h b/arch/x86/include/asm/processor.h
-index a24c7805acdb..98efbd13a5a6 100644
---- a/arch/x86/include/asm/processor.h
-+++ b/arch/x86/include/asm/processor.h
-@@ -595,7 +595,7 @@ extern void load_fixmap_gdt(int);
- extern void cpu_init(void);
- extern void cpu_init_exception_handling(bool boot_cpu);
- extern void cpu_init_replace_early_idt(void);
--extern void cr4_init(void);
-+extern void cr4_init(bool boot_cpu);
- 
- extern void set_task_blockstep(struct task_struct *task, bool on);
- 
-diff --git a/arch/x86/kernel/cpu/common.c b/arch/x86/kernel/cpu/common.c
-index 1c3261cae40c..aa07e2eef228 100644
---- a/arch/x86/kernel/cpu/common.c
-+++ b/arch/x86/kernel/cpu/common.c
-@@ -496,14 +496,26 @@ unsigned long cr4_read_shadow(void)
- }
- EXPORT_SYMBOL_FOR_KVM(cr4_read_shadow);
- 
--void cr4_init(void)
-+void cr4_init(bool boot_cpu)
- {
- 	unsigned long cr4 = __read_cr4();
- 
--	if (boot_cpu_has(X86_FEATURE_PCID))
--		cr4 |= X86_CR4_PCIDE;
--	if (static_branch_likely(&cr_pinning))
--		cr4 = (cr4 & ~cr4_pinned_mask) | cr4_pinned_bits;
-+	/*
-+	 * CPUs that support FSGSBASE may use RDGSBASE/WRGSBASE in
-+	 * paranoid_entry(). Enable the feature before any exceptions
-+	 * occur.
-+	 */
-+	if (boot_cpu_has(X86_FEATURE_FSGSBASE)) {
-+		cr4 |= X86_CR4_FSGSBASE;
-+		elf_hwcap2 |= HWCAP2_FSGSBASE;
-+	}
-+
-+	if (!boot_cpu) {
-+		if (boot_cpu_has(X86_FEATURE_PCID))
-+			cr4 |= X86_CR4_PCIDE;
-+		if (static_branch_likely(&cr_pinning))
-+			cr4 = (cr4 & ~cr4_pinned_mask) | cr4_pinned_bits;
-+	}
- 
- 	__write_cr4(cr4);
- 
-@@ -2047,12 +2059,6 @@ static void identify_cpu(struct cpuinfo_x86 *c)
- 	setup_umip(c);
- 	setup_lass(c);
- 
--	/* Enable FSGSBASE instructions if available. */
--	if (cpu_has(c, X86_FEATURE_FSGSBASE)) {
--		cr4_set_bits(X86_CR4_FSGSBASE);
--		elf_hwcap2 |= HWCAP2_FSGSBASE;
--	}
--
- 	/*
- 	 * The vendor-specific functions might have changed features.
- 	 * Now we do "generic changes."
-diff --git a/arch/x86/kernel/smpboot.c b/arch/x86/kernel/smpboot.c
-index 5cd6950ab672..52642908c2bf 100644
---- a/arch/x86/kernel/smpboot.c
-+++ b/arch/x86/kernel/smpboot.c
-@@ -233,7 +233,7 @@ static void notrace __noendbr start_secondary(void *unused)
- 	 * before cpu_init(), SMP booting is too fragile that we want to
- 	 * limit the things done here to the most necessary things.
- 	 */
--	cr4_init();
-+	cr4_init(false);
- 
- 	/*
- 	 * 32-bit specific. 64-bit reaches this code with the correct page
-diff --git a/arch/x86/kernel/traps.c b/arch/x86/kernel/traps.c
-index 4dbff8ef9b1c..0f7400257ce5 100644
---- a/arch/x86/kernel/traps.c
-+++ b/arch/x86/kernel/traps.c
-@@ -1685,6 +1685,13 @@ void __init trap_init(void)
- 	/* Init GHCB memory pages when running as an SEV-ES guest */
- 	sev_es_init_vc_handling();
- 
-+	/*
-+	 * Initialize CR4 early, before cpu_init(). This ensures features like
-+	 * FSGSBASE are enabled before exception handlers run, avoiding double
-+	 * initialization later.
-+	 */
-+	cr4_init(true);
-+
- 	/* Initialize TSS before setting up traps so ISTs work */
- 	cpu_init_exception_handling(true);
- 
-diff --git a/arch/x86/xen/smp_pv.c b/arch/x86/xen/smp_pv.c
-index db9b8e222b38..2ab0e20288e9 100644
---- a/arch/x86/xen/smp_pv.c
-+++ b/arch/x86/xen/smp_pv.c
-@@ -58,7 +58,7 @@ static void cpu_bringup(void)
- {
- 	int cpu;
- 
--	cr4_init();
-+	cr4_init(false);
- 	cpuhp_ap_sync_alive();
- 	cpu_init();
- 	fpu__init_cpu();
-
-
+> address space deals with this internally.
 > 
-> Also, please avoid passive voice in stuff like this. It's just more
-> efficient to say:
-> 
-> 	CPUs that support FSGSBASE may use RDGSBASE/WRGSBASE in
-> 	paranoid_entry(). Enable the feature before any exceptions
-> 	occur.
+> Thus, zap_special_vma_range() is extremely hard to use.
 
-Ack
+I mean, the hard part about the locking is keeping them in sync. Binder
+just doesn't do that. Only the original VMA gets pages inserted or
+zapped. If you create a second VMA, you just get a useless read-only VMA
+that you can't do anything with.
 
-Regards,
-Nikunj
-
+Alice
