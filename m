@@ -1,121 +1,158 @@
-Received: from mail-wm1-f45.google.com (mail-wm1-f45.google.com [209.85.128.45])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D9C72F39AB
-	for <kvm@vger.kernel.org>; Wed, 11 Mar 2026 23:18:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0479C377004
+	for <kvm@vger.kernel.org>; Wed, 11 Mar 2026 23:23:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773271122; cv=none; b=WV+FKrbgD0o2/z3R62fBYYUU0maKuLQO/R9I/ujmtMgVSdR5KV0Wddpj5WYFNFqdD5acSCXYaG8I/FodMRiAFNdHtNjlqczIj1nfieJ/dOc3x9VOsqrswb5j663ORt+pAvjAmklG7OVWmsIf1ZWm9/5KmXec3o7RBD85QKhmN0Q=
+	t=1773271384; cv=none; b=tKLc8VG/Ft+uBtnp5xYNXr45wRkMibPQcuiHHRQeuN+/AKINEOdGM+TK7g+8am8UQmlNy6aCokivkuLDVDTBw7wYwocLTC8/BAgY3uV2q/67Eo1YrvIt6LhK62clhdCfu/UajA+oFmhg1hQb8ArrndEWiUy0Q5NdzMBa0k4Uh4M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773271122; c=relaxed/simple;
-	bh=T8TEJyz8kcyblPtbhT0zewCP5AyJ5vZtAEr4d0wvJNE=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=gM6pUgdQ7SxNcp3Nv85Bhq7h/l7TW9TFPvZge2eBbTJu3XU+1floz140l9m8ninAGmSJQNTK6me+A0yM9ViTgc3VWtCWH2U4sn3MZ7YyDhMyP1iH5ar2fjlzJ6nQ81u0UMpvE8G3b4QHf+DARgJEo0jrp132shyn1Qoweo3Bc6U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=AAEhbn7T; arc=none smtp.client-ip=209.85.128.45
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1773271384; c=relaxed/simple;
+	bh=KtTD/BBX1Iq7gQXIC6nvkUsAjDJ7TZBskqfTrlq5/uA=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=bjcUlo5MgsBWLtKN8AdQOsMlgO4Z8a2DRuLnpTDwhtH79nyu5pb40Ypw360vgY2+s2+1VQEF+AicN0C0pCT61EhoAJEAgbiovE1/M1FZ+OCOxwPAOtF3sDEHOSBXtJZobr9zK9gVqZMSOnwPKj+EUDM6L6vza7W/i4lAEXQ0tPk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DKv0KXb2; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="AAEhbn7T"
-Received: by mail-wm1-f45.google.com with SMTP id 5b1f17b1804b1-4852b81c73aso3041895e9.3
-        for <kvm@vger.kernel.org>; Wed, 11 Mar 2026 16:18:41 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1773271120; x=1773875920; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=q/PJeovjjoGLMcedyN4Hvdo++XuOQtv9Fm+hj7Ucl68=;
-        b=AAEhbn7TzdFD2838XSY4jblB3aOu5Cp8ru6iQRfK5Lj1o/biUFUuwIVLmc9BSAIEUr
-         X92ALtXmZODUvotL89tCSm0cWBahJxwVnyB6LH2xU/kklGlw3gYY+wDEzZF3ckjA41mE
-         SNzMAqo78klOrk0VdQ/VUrKVGHMrw5aQdlOCzBFlG0WkxKgsUOFigky7M9BLiGPHPLC3
-         7nwnT3Dm2JtZbNt1qgl/KOgypzEyKTJdbls6+2M8PfwGVfGeuWNJWGRqTmCo0RU4LFBI
-         gH8Oaeqsaxg1SKdZFdKVIXfuHpHbIozDjNg78c3rFK8MCpMRROAC/KQ/T/7ZNNehKxaz
-         Dfpw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1773271120; x=1773875920;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=q/PJeovjjoGLMcedyN4Hvdo++XuOQtv9Fm+hj7Ucl68=;
-        b=J+p+5HIYArq6WB6/d2NhgCdWisV75iP2rWixjZsvoVxcKDiyBlFg8PxFLVA1dIQhUo
-         Uh1EBRPItqln92R9M/xYbxxRcKSAtr4HciHRYQcFcQYlzF4FMHDbJvg7FAwetAfx7fdL
-         ER93trVDkKUlEblVWURFbTd+TpCswS9lCGPjUkBNsnhfO1RsCPWPD9aE7Uidg7ZNaDGR
-         +Aor7Iv/sYjAzjbNJTywEFsEDSIIQRuVXLuLUY38sZmZtCJEIvVdYaE0FzBVnZQCKwNL
-         EsZtFK4NiqPNXhvcO0wMFIwwCHnnhg1pi6lsqJqlvp7apS2LvJhDlFj/tRGqyY7AMH74
-         qYYA==
-X-Forwarded-Encrypted: i=1; AJvYcCVOLgNAQPLxzrtievd8brt0QIgARAPKHcWCcBzjnUlDu8at2II/mseaDJ+Ttp2FUYFM/lw=@vger.kernel.org
-X-Gm-Message-State: AOJu0Ywc7gDacA8VJBzbc5ld/5W/puZ5Bed9n3IAA3ach2jzhx3UqxHl
-	Rc0gwjRoB7xOCIGnodPj0wU446LAy3/CGATtTQMi8iAqzPRnOGqjPvOSSkRmbtDW
-X-Gm-Gg: ATEYQzx1aJuuOkcfDZCyGonmSCjH+Sl5DHZ+8JwCXVR9+h+lquYEgw/Q5v2JBjY79aS
-	tYI5CdsQc0ccItZqpL6+esb1LlExQTtLBH/b1FsrOeJCk9DQy1JS65ScseSiOwoCYSxYw5M/P80
-	XKWU3/FsbVH03o+0onyEhuFzbkjnx2ubk6tIIq4/yTFETZ/EcHGWzMYwhZBZ+as0lGIYPpgSxn/
-	AeQq4t2w3tHLvBMSlCQ8xm+nLd+bIoMMpbv5kX/FYj0rhkXuUcHrwHbQW6PdD1rNGxOfBQ644D/
-	1RFYsg8Ou1PQi3KRk/13lbkVSpxbz28ncQvPWJk1FTRHs0965fCV2xnumYxloPDZUjrLZlvoAtv
-	kKOUb9tDLZ7dRvS1Eaby4yCdNA/+t9xw6fDBIUEZC7zW9vS2OerkEFSBwULgzbcx3jeugjxyBjg
-	fFCoib7B5w2OcXVMGs3597UndGiYK76cZkc5vGy5S0lSdCJHjx8wvNhtFrLHVr
-X-Received: by 2002:a05:600c:1e8f:b0:477:561f:6fc8 with SMTP id 5b1f17b1804b1-4854b0a6c39mr71236095e9.5.1773271119975;
-        Wed, 11 Mar 2026 16:18:39 -0700 (PDT)
-Received: from osama.. ([156.223.222.252])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4854b5f6bb4sm83586675e9.4.2026.03.11.16.18.37
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 11 Mar 2026 16:18:39 -0700 (PDT)
-From: Osama Abdelkader <osama.abdelkader@gmail.com>
-To: Anup Patel <anup@brainfault.org>,
-	Atish Patra <atish.patra@linux.dev>,
-	Paul Walmsley <pjw@kernel.org>,
-	Palmer Dabbelt <palmer@dabbelt.com>,
-	Albert Ou <aou@eecs.berkeley.edu>,
-	Alexandre Ghiti <alex@ghiti.fr>,
-	Andrew Jones <ajones@ventanamicro.com>,
-	kvm@vger.kernel.org,
-	kvm-riscv@lists.infradead.org,
-	linux-riscv@lists.infradead.org,
-	linux-kernel@vger.kernel.org
-Cc: Osama Abdelkader <osama.abdelkader@gmail.com>,
-	Andrew Jones <andrew.jones@oss.qualcomm.com>
-Subject: [PATCH v2] RISC-V: KVM: fix PMU snapshot_set_shmem on 32-bit hosts
-Date: Thu, 12 Mar 2026 00:18:32 +0100
-Message-ID: <20260311231833.13189-1-osama.abdelkader@gmail.com>
-X-Mailer: git-send-email 2.43.0
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DKv0KXb2"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 990E1C116C6
+	for <kvm@vger.kernel.org>; Wed, 11 Mar 2026 23:23:03 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1773271383;
+	bh=KtTD/BBX1Iq7gQXIC6nvkUsAjDJ7TZBskqfTrlq5/uA=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=DKv0KXb2TBfsPWnay/oxSoip7r1ha2KP+cfqY/YaED4j7fvmCLi0wqJI3pn669zss
+	 +VznhJQjMH+AmXosx5tUjtIBY8cKw1zr+tkznd97nDTrwp/i2QhxVYl/6OKzFyb0I6
+	 x2hYtQVHSKeTiG6q6pUZtSe3PubLvRq9qknjYnn+YKFFJumNMcmueFi00P6blcDQoG
+	 2ZJ9Bvq/t489r98Q/rMmoADpprUyfyNreihJUS4Jswl/95feLJg2c4oBUevoN24T6V
+	 pq/JwaEZJj5WhOY++EiDZdZgQ81NVf3a6/NiZkEEaO4WsEPGB4rVmtzNHfJiQOLelw
+	 HliojjGuDlR7A==
+Received: by mail-ej1-f44.google.com with SMTP id a640c23a62f3a-b941bb3e23cso60009966b.0
+        for <kvm@vger.kernel.org>; Wed, 11 Mar 2026 16:23:03 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCU72p5qoN3tPasJKCKv+Gd3feOjmDmRL/mRBcNBMxCJMyrUbFz2PT7C4UkOEXW1xKPqkm0=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yzy8xMh1WOTCDRg+TBBz9zOSBsjQhMZY1urDRmZTqotTg2xLvTp
+	mY9LgJiNYww+cwlfpgz9uP38lQgqoJO55jWvng8iROcJas0+aWKGDQ8ZNb32uLamMrLLmRMrX7n
+	3kVT/uSuIB6OOBH3HlCpEVCx1D8RwDLE=
+X-Received: by 2002:a17:907:7286:b0:b88:5e32:5357 with SMTP id
+ a640c23a62f3a-b972e5ae4e0mr245081366b.59.1773271382437; Wed, 11 Mar 2026
+ 16:23:02 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20260306210900.1933788-2-yosry@kernel.org> <CALMp9eRWwPwUSyQmizy8i2tF1CVO4iLY6x0vX1OoPUiRdCm4NQ@mail.gmail.com>
+ <CAO9r8zOhaDeYWq_6TNdPGyEE323o_8xsWTozGdro9Oni8310kA@mail.gmail.com>
+ <CALMp9eScswzFak+PMOcaDXM-W+cXtkG7fQ=jadq__+5JeqYcTQ@mail.gmail.com>
+ <CAO9r8zOK5+xmkf3FsWRz2wHcUCN30GJ9kfZx-K7DAa1HNGhRVA@mail.gmail.com>
+ <aatyIPwz9ePKdzJx@google.com> <CAO9r8zMxk9yUiYoosnDygr_oeeRYHz3f7hWLm23c5Q0m-DXnWA@mail.gmail.com>
+ <CAO9r8zNHYswypRmHVT5Qn5hFU9-HU1t=Gs3qAh05xRNn5krPXQ@mail.gmail.com>
+ <abHTE5uyEZ4cW-fc@google.com> <CAO9r8zNxtSbHjp6EkQ+QbKavL1hn1WQXgQQ+d2=6AZkW9-mVXA@mail.gmail.com>
+ <abH0RdnM29Xyh_4G@google.com>
+In-Reply-To: <abH0RdnM29Xyh_4G@google.com>
+From: Yosry Ahmed <yosry@kernel.org>
+Date: Wed, 11 Mar 2026 16:22:51 -0700
+X-Gmail-Original-Message-ID: <CAO9r8zOgMWCAHOHGeK-YYbEQ52s-J_OLsc5-KXVb9VNrkzDeBw@mail.gmail.com>
+X-Gm-Features: AaiRm53b3IJThxEoiIBmkOlgKbt1fjA_96pFLKdVq14RUvuWtZCWUbTkm80RD3Q
+Message-ID: <CAO9r8zOgMWCAHOHGeK-YYbEQ52s-J_OLsc5-KXVb9VNrkzDeBw@mail.gmail.com>
+Subject: Re: [PATCH v2 1/6] KVM: SVM: Use maxphyaddr in emulator RAX check for VMRUN/VMLOAD/VMSAVE
+To: Sean Christopherson <seanjc@google.com>
+Cc: Jim Mattson <jmattson@google.com>, Paolo Bonzini <pbonzini@redhat.com>, kvm@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-When saddr_high != 0 on RV32, the goto out was unconditional, causing
-valid 64-bit addresses to be rejected. Only goto out when the address
-is invalid (64-bit host with saddr_high != 0).
+> > > Honestly, why bother keeping check_svme_pa()?  Can't we just do the c=
+hecks in
+> > > svm_check_intercept()?  E.g. vmx_check_intercept() already "injects" =
+#UD for RDTSCP.
+> >
+> > Hmm svm_check_intercept() isn't semantically the right place AFAICT,
+>
+> Actually, I think it is.  Per the APM:
+>
+>   Generally, instruction intercepts are checked after simple exceptions (=
+such as
+>   #GP=E2=80=94when CPL is incorrect=E2=80=94or #UD) have been checked, bu=
+t before exceptions
+>   related to memory accesses (such as page faults) and exceptions based o=
+n
+>   specific operand values.
+>
+> This #GP is operand specific.
 
-Fixes: c2f41ddbcdd7 ("RISC-V: KVM: Implement SBI PMU Snapshot feature")
-Signed-off-by: Osama Abdelkader <osama.abdelkader@gmail.com>
-Reviewed-by: Andrew Jones <andrew.jones@oss.qualcomm.com>
----
-v2:
-- balance braces properly
----
- arch/riscv/kvm/vcpu_pmu.c | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+Yes, but from KVM's perspective, svm_check_intercept() is meant to
+check if the instruction executed by L2 needs to be intercepted by L1.
+What this patch is doing is not specific to instructions executed by
+L2.
 
-diff --git a/arch/riscv/kvm/vcpu_pmu.c b/arch/riscv/kvm/vcpu_pmu.c
-index 4d8d5e9aa53d..ec0c15726da9 100644
---- a/arch/riscv/kvm/vcpu_pmu.c
-+++ b/arch/riscv/kvm/vcpu_pmu.c
-@@ -423,11 +423,12 @@ int kvm_riscv_vcpu_pmu_snapshot_set_shmem(struct kvm_vcpu *vcpu, unsigned long s
- 	saddr = saddr_low;
- 
- 	if (saddr_high != 0) {
--		if (IS_ENABLED(CONFIG_32BIT))
-+		if (IS_ENABLED(CONFIG_32BIT)) {
- 			saddr |= ((gpa_t)saddr_high << 32);
--		else
-+		} else {
- 			sbiret = SBI_ERR_INVALID_ADDRESS;
--		goto out;
-+			goto out;
-+		}
- 	}
- 
- 	kvpmu->sdata = kzalloc(snapshot_area_size, GFP_ATOMIC);
--- 
-2.43.0
+Anyway, that's irrelevant now (see below).
 
+>
+> > and more importantly, it's only called if the instruction is executed
+> > in guest mode (i.e. in L2+).
+>
+> Hold up, we're getting ahead of ourselves.
+>
+> The only legitimate reason the emulator is at all aware of VMSAVE, VMLOAD=
+, and
+> VMRUN is to deal with #GP due to the RAX check, because hardware checks t=
+he GPA
+> against the host's physical address space.  See commit 82a11e9c6fa2 ("KVM=
+: SVM:
+> Add emulation support for #GP triggered by SVM instructions").
+>
+> The emulator "support" was originally added by commit 01de8b09e606 ("KVM:=
+ SVM:
+> Add intercept checks for SVM instructions"), but AFAICT, for all intents =
+and
+> purposes that was dead code when it was added, because the emulator doesn=
+'t
+> actually _emulate_ the instructions.  I assume if they aren't intercepted=
+, and
+> KVM is full on emulating instead of just decoding, they end up at EMULATI=
+ON_FAILED
+> and get a #UD or something.
+>
+> Outside of forced emulation or code stream rewriting, KVM should _never_ =
+fully
+> emulate any of the SVM instructions except VMMCALL (and that is a super s=
+pecial
+> case).  KVM does need to _decode_ the instruction, and it needs to get th=
+e
+> pre-intercept exception checks correct so that KVM correctly injects e.g.=
+ #GP
+> instead of synthesizing a #VMEXIT for the CPL check, but KVM doesn't need=
+ to do
+> *all* of the checks.
+>
+> Note, for L2, the SVME check is meaningless, as EFER.SVME has to be set f=
+or L2
+> to be active, i.e. it's L1's responsibility to handle that check.
+>
+> Back to the physical address thing, KVM _already_ handles that check in t=
+he #GP
+> path,
+
+I guess if KVM is not intercepting #GP, then the hardware injects the
+#GP and the emulator still doesn't have to worry about it -- because
+we don't support the case where RAX can be legal from the host's
+perspective but not the guest's. Makes sense.
+
+> it's just wrong too:
+>
+>                 /* All SVM instructions expect page aligned RAX */
+>                 if (svm->vmcb->save.rax & ~PAGE_MASK)
+>                         goto reinject;
+>
+> So I think what we want is to
+>
+>   (a) fix the RAX check in gp_interception()
+>   (b) drop the RAX check in the emulator
+>   (c) add a CPL check in the emulator (because the intercepted #GP could =
+have
+>       been due to L2 executing at CPL>0, not due to a bad-but-good RAX).
+
+Agree with this (also thanks for pointing out page_address_valid()).
+Will add 3 patches doing this at the beginning of the series instead
+of this one.
