@@ -1,134 +1,121 @@
-Received: from mail-wr1-f49.google.com (mail-wr1-f49.google.com [209.85.221.49])
+Received: from mail-wm1-f45.google.com (mail-wm1-f45.google.com [209.85.128.45])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A6EA63A16B8
-	for <kvm@vger.kernel.org>; Wed, 11 Mar 2026 23:17:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D9C72F39AB
+	for <kvm@vger.kernel.org>; Wed, 11 Mar 2026 23:18:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773271060; cv=none; b=oiTRVVg/GxD0nvtRykYsbypuKM7LyAxyxmBu5vV89UlqW4coYDhejqZcsgbOw+HG8NE73TcJmM7I+NmbeCHsiRKpTW1C9ZBBovzg1wJADW/DdYT5skvRii+1vlmX+OwgDXgXPj8bl4YDvd0Xr0CrgDrEuqpMMMfdnfQdT2Idzv0=
+	t=1773271122; cv=none; b=WV+FKrbgD0o2/z3R62fBYYUU0maKuLQO/R9I/ujmtMgVSdR5KV0Wddpj5WYFNFqdD5acSCXYaG8I/FodMRiAFNdHtNjlqczIj1nfieJ/dOc3x9VOsqrswb5j663ORt+pAvjAmklG7OVWmsIf1ZWm9/5KmXec3o7RBD85QKhmN0Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773271060; c=relaxed/simple;
-	bh=SSaL/js8O/pTdidpxKNeWUGD5hSN+aIWwSSGSr/WNMQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=kCNEL/jwGuf1LJtAFP34qFP9Jq0zy7RhhaNh/RLEM2373cMbIWN4jK2GcBBmoG3ho/C9owFRj2A49R0/ODMsY0RJetR/Gd8OCpH6fzKN1xrk8pp0uamdRi6LolhHJnxXwxqI+Sg2ntpbNcfdxZIb4uZfpmtLJwoJl/cJAT657Qs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=enIjT4Zt; arc=none smtp.client-ip=209.85.221.49
+	s=arc-20240116; t=1773271122; c=relaxed/simple;
+	bh=T8TEJyz8kcyblPtbhT0zewCP5AyJ5vZtAEr4d0wvJNE=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=gM6pUgdQ7SxNcp3Nv85Bhq7h/l7TW9TFPvZge2eBbTJu3XU+1floz140l9m8ninAGmSJQNTK6me+A0yM9ViTgc3VWtCWH2U4sn3MZ7YyDhMyP1iH5ar2fjlzJ6nQ81u0UMpvE8G3b4QHf+DARgJEo0jrp132shyn1Qoweo3Bc6U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=AAEhbn7T; arc=none smtp.client-ip=209.85.128.45
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="enIjT4Zt"
-Received: by mail-wr1-f49.google.com with SMTP id ffacd0b85a97d-439bc14dcf4so1183585f8f.1
-        for <kvm@vger.kernel.org>; Wed, 11 Mar 2026 16:17:38 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="AAEhbn7T"
+Received: by mail-wm1-f45.google.com with SMTP id 5b1f17b1804b1-4852b81c73aso3041895e9.3
+        for <kvm@vger.kernel.org>; Wed, 11 Mar 2026 16:18:41 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1773271057; x=1773875857; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=0YAX8de4YmYeIq/8WNtylATFHnJksgOAf2WopH1Q00E=;
-        b=enIjT4ZtxLSHMPSGI6q/1r3iJP08HPjesosPmf48imqkOcXDJPvCQW9n8IlM6N8eFR
-         7k11Dnda92QINvdu2cVQz6nqLxf0nlOmhb1WV8hEBPAO7kzm363FWgXRR8VWjM23E8Ke
-         XefOhnDNB8RFjgxQ/byzCAtTSj5Yb5WdnZbPIFoshvlU5+cdhA79RO0jaKOennxHqhVD
-         zHZwIPgqW8atg/E60e8EeMxAGiXeR/OvqFM5dzlOV7BHGoSokUBSngKu2XK/otG5hKED
-         zcyf6qAKqtmTZ5Q/RZTPkvJgsbPpdgFM6njHzLZxXjdmClfkgiy5ehgc64J9/6C1qMqR
-         Qb3A==
+        d=gmail.com; s=20230601; t=1773271120; x=1773875920; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=q/PJeovjjoGLMcedyN4Hvdo++XuOQtv9Fm+hj7Ucl68=;
+        b=AAEhbn7TzdFD2838XSY4jblB3aOu5Cp8ru6iQRfK5Lj1o/biUFUuwIVLmc9BSAIEUr
+         X92ALtXmZODUvotL89tCSm0cWBahJxwVnyB6LH2xU/kklGlw3gYY+wDEzZF3ckjA41mE
+         SNzMAqo78klOrk0VdQ/VUrKVGHMrw5aQdlOCzBFlG0WkxKgsUOFigky7M9BLiGPHPLC3
+         7nwnT3Dm2JtZbNt1qgl/KOgypzEyKTJdbls6+2M8PfwGVfGeuWNJWGRqTmCo0RU4LFBI
+         gH8Oaeqsaxg1SKdZFdKVIXfuHpHbIozDjNg78c3rFK8MCpMRROAC/KQ/T/7ZNNehKxaz
+         Dfpw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1773271057; x=1773875857;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=0YAX8de4YmYeIq/8WNtylATFHnJksgOAf2WopH1Q00E=;
-        b=L8bt1yFYFezfDfmYqZHbPo3U0kdQvaaw0/im7V3lA6BUq+rmBj7Ul2RSUTTheufc6K
-         YrKC9CE6lxzeXKyB3byGR0e7l3BSDOSIJCKR9eBGOjKjBp1+hKvY7nljNRZjMZ9oRBm8
-         rf5o1pO4IpU3newoA3lx4NQ8Wb/8OIRkKwNkTh6MgFKYaQnnzQ8RbOhjqtI+FCqv4Iwr
-         5VP0P0SEHe5g4SpWn3OHFb5+sNZQZqriSmTqsuHaMNdv/DWV7EejEI29Eh8WcO/K+yv/
-         671/dU5AqvXaVg641H0fyKSa8VWlEMvBaE9zMnZ/PTtHG7OHr2IyZlk+2j2TbqoUkeQV
-         sXpQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXhdcMWlI8cef1hmrK4UlQ0UYQCn5K9Iq8yEncaHlfKb9ilAbXTElMTgeRZY/g9hqbGYvY=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx0dW+B60JMUIq4S8Zhi4rCDiBUnZf/q03n9P7vTOyhTwfzAyhA
-	6q3//eyI0Pl5behztI0BdpTJhavC7kc8XCPDQWGtA4uGPcT/Sag2utTi
-X-Gm-Gg: ATEYQzwyJOn0ywWK3lTP/azV/iUL1dyN8ObbvkuVO8LJ/6DJq4S7Iu4GU9EGOMZF8OS
-	YOpxIIcGClYDGOEo40aIYNbJj+bDLxQ4589nEJ/ccYfeXpgZ0aSJYns4VnckuZUH/vhQ5iYTY4Y
-	W5mwUhKIvUFukHdSN+EiHSe+340bsqeyhiOD1e77tPQdHcYoS/m7T/L3oUuyKm0lPT+JjwtRcEX
-	s6yPqqRfugoqDw8qvo5/i2ajVhe5+Kz+FySH0uMhDf8I1/KmqsMGXdRm61uwJe7x6XReSDL3D2M
-	yIrjAX5EcwHs0hvGBcSMfdA208pCLSSUGgfF4m/+rMJBZXOBShmlE3Xx2e2/k6odIvgAn27AZtA
-	mHP51vRlhUqSmIXGfPpLSFsy2DfoanG2nBntmiz1eQK8awt7ABW+6rtprahYY8kg8rMJ3SkO5Ll
-	f8x8Yk97pT608G/G3MgNGXBYTIziY/VkxqhgnfyhDf7vFXdwQfdhte7U/KHA==
-X-Received: by 2002:a05:6000:1a8e:b0:439:bde0:62ea with SMTP id ffacd0b85a97d-439fe1ae91fmr2554188f8f.29.1773271056823;
-        Wed, 11 Mar 2026 16:17:36 -0700 (PDT)
-Received: from osama ([156.223.222.252])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-439fe219c41sm2773963f8f.29.2026.03.11.16.17.33
+        d=1e100.net; s=20230601; t=1773271120; x=1773875920;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=q/PJeovjjoGLMcedyN4Hvdo++XuOQtv9Fm+hj7Ucl68=;
+        b=J+p+5HIYArq6WB6/d2NhgCdWisV75iP2rWixjZsvoVxcKDiyBlFg8PxFLVA1dIQhUo
+         Uh1EBRPItqln92R9M/xYbxxRcKSAtr4HciHRYQcFcQYlzF4FMHDbJvg7FAwetAfx7fdL
+         ER93trVDkKUlEblVWURFbTd+TpCswS9lCGPjUkBNsnhfO1RsCPWPD9aE7Uidg7ZNaDGR
+         +Aor7Iv/sYjAzjbNJTywEFsEDSIIQRuVXLuLUY38sZmZtCJEIvVdYaE0FzBVnZQCKwNL
+         EsZtFK4NiqPNXhvcO0wMFIwwCHnnhg1pi6lsqJqlvp7apS2LvJhDlFj/tRGqyY7AMH74
+         qYYA==
+X-Forwarded-Encrypted: i=1; AJvYcCVOLgNAQPLxzrtievd8brt0QIgARAPKHcWCcBzjnUlDu8at2II/mseaDJ+Ttp2FUYFM/lw=@vger.kernel.org
+X-Gm-Message-State: AOJu0Ywc7gDacA8VJBzbc5ld/5W/puZ5Bed9n3IAA3ach2jzhx3UqxHl
+	Rc0gwjRoB7xOCIGnodPj0wU446LAy3/CGATtTQMi8iAqzPRnOGqjPvOSSkRmbtDW
+X-Gm-Gg: ATEYQzx1aJuuOkcfDZCyGonmSCjH+Sl5DHZ+8JwCXVR9+h+lquYEgw/Q5v2JBjY79aS
+	tYI5CdsQc0ccItZqpL6+esb1LlExQTtLBH/b1FsrOeJCk9DQy1JS65ScseSiOwoCYSxYw5M/P80
+	XKWU3/FsbVH03o+0onyEhuFzbkjnx2ubk6tIIq4/yTFETZ/EcHGWzMYwhZBZ+as0lGIYPpgSxn/
+	AeQq4t2w3tHLvBMSlCQ8xm+nLd+bIoMMpbv5kX/FYj0rhkXuUcHrwHbQW6PdD1rNGxOfBQ644D/
+	1RFYsg8Ou1PQi3KRk/13lbkVSpxbz28ncQvPWJk1FTRHs0965fCV2xnumYxloPDZUjrLZlvoAtv
+	kKOUb9tDLZ7dRvS1Eaby4yCdNA/+t9xw6fDBIUEZC7zW9vS2OerkEFSBwULgzbcx3jeugjxyBjg
+	fFCoib7B5w2OcXVMGs3597UndGiYK76cZkc5vGy5S0lSdCJHjx8wvNhtFrLHVr
+X-Received: by 2002:a05:600c:1e8f:b0:477:561f:6fc8 with SMTP id 5b1f17b1804b1-4854b0a6c39mr71236095e9.5.1773271119975;
+        Wed, 11 Mar 2026 16:18:39 -0700 (PDT)
+Received: from osama.. ([156.223.222.252])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4854b5f6bb4sm83586675e9.4.2026.03.11.16.18.37
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 11 Mar 2026 16:17:36 -0700 (PDT)
-Date: Thu, 12 Mar 2026 00:17:31 +0100
+        Wed, 11 Mar 2026 16:18:39 -0700 (PDT)
 From: Osama Abdelkader <osama.abdelkader@gmail.com>
-To: Andrew Jones <andrew.jones@oss.qualcomm.com>
-Cc: Anup Patel <anup@brainfault.org>, Atish Patra <atish.patra@linux.dev>,
-	Paul Walmsley <pjw@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>,
-	Albert Ou <aou@eecs.berkeley.edu>, Alexandre Ghiti <alex@ghiti.fr>,
-	Andrew Jones <ajones@ventanamicro.com>, kvm@vger.kernel.org,
-	kvm-riscv@lists.infradead.org, linux-riscv@lists.infradead.org,
+To: Anup Patel <anup@brainfault.org>,
+	Atish Patra <atish.patra@linux.dev>,
+	Paul Walmsley <pjw@kernel.org>,
+	Palmer Dabbelt <palmer@dabbelt.com>,
+	Albert Ou <aou@eecs.berkeley.edu>,
+	Alexandre Ghiti <alex@ghiti.fr>,
+	Andrew Jones <ajones@ventanamicro.com>,
+	kvm@vger.kernel.org,
+	kvm-riscv@lists.infradead.org,
+	linux-riscv@lists.infradead.org,
 	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] RISC-V: KVM: fix PMU snapshot_set_shmem on 32-bit hosts
-Message-ID: <abH4C8RaycAqxySF@osama>
-References: <20260307234355.69831-1-osama.abdelkader@gmail.com>
- <guxeojlqqz6cfjdilxnuaeyft4cn4lwdrbplat7xgd5w5hod44@uxqymidomd55>
+Cc: Osama Abdelkader <osama.abdelkader@gmail.com>,
+	Andrew Jones <andrew.jones@oss.qualcomm.com>
+Subject: [PATCH v2] RISC-V: KVM: fix PMU snapshot_set_shmem on 32-bit hosts
+Date: Thu, 12 Mar 2026 00:18:32 +0100
+Message-ID: <20260311231833.13189-1-osama.abdelkader@gmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <guxeojlqqz6cfjdilxnuaeyft4cn4lwdrbplat7xgd5w5hod44@uxqymidomd55>
+Content-Transfer-Encoding: 8bit
 
-On Mon, Mar 09, 2026 at 04:12:43PM -0500, Andrew Jones wrote:
-> On Sun, Mar 08, 2026 at 12:43:54AM +0100, Osama Abdelkader wrote:
-> > When saddr_high != 0 on RV32, the goto out was unconditional, causing
-> > valid 64-bit addresses to be rejected. Only goto out when the address
-> > is invalid (64-bit host with saddr_high != 0).
-> > 
-> > Fixes: c2f41ddbcdd7 ("RISC-V: KVM: Implement SBI PMU Snapshot feature")
-> > Signed-off-by: Osama Abdelkader <osama.abdelkader@gmail.com>
-> > ---
-> >  arch/riscv/kvm/vcpu_pmu.c | 5 +++--
-> >  1 file changed, 3 insertions(+), 2 deletions(-)
-> > 
-> > diff --git a/arch/riscv/kvm/vcpu_pmu.c b/arch/riscv/kvm/vcpu_pmu.c
-> > index 4d8d5e9aa53d..045099ca904b 100644
-> > --- a/arch/riscv/kvm/vcpu_pmu.c
-> > +++ b/arch/riscv/kvm/vcpu_pmu.c
-> > @@ -425,9 +425,10 @@ int kvm_riscv_vcpu_pmu_snapshot_set_shmem(struct kvm_vcpu *vcpu, unsigned long s
-> >  	if (saddr_high != 0) {
-> >  		if (IS_ENABLED(CONFIG_32BIT))
-> >  			saddr |= ((gpa_t)saddr_high << 32);
-> > -		else
-> > +		else {
-> >  			sbiret = SBI_ERR_INVALID_ADDRESS;
-> > -		goto out;
-> > +			goto out;
-> > +		}
-> 
-> nit: Could add the {} to the if-arm too in order to keep things balanced.
-> Otherwise,
-> 
-> Reviewed-by: Andrew Jones <andrew.jones@oss.qualcomm.com>
-> 
-> Thanks,
-> drew
->
+When saddr_high != 0 on RV32, the goto out was unconditional, causing
+valid 64-bit addresses to be rejected. Only goto out when the address
+is invalid (64-bit host with saddr_high != 0).
 
-Hi Andrew,
-I'm going to do that in v2, thanks.
-Thanks,
-Osama 
+Fixes: c2f41ddbcdd7 ("RISC-V: KVM: Implement SBI PMU Snapshot feature")
+Signed-off-by: Osama Abdelkader <osama.abdelkader@gmail.com>
+Reviewed-by: Andrew Jones <andrew.jones@oss.qualcomm.com>
+---
+v2:
+- balance braces properly
+---
+ arch/riscv/kvm/vcpu_pmu.c | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
-> >  	}
-> >  
-> >  	kvpmu->sdata = kzalloc(snapshot_area_size, GFP_ATOMIC);
-> > -- 
-> > 2.43.0
-> > 
-> > 
-> > -- 
-> > kvm-riscv mailing list
-> > kvm-riscv@lists.infradead.org
-> > http://lists.infradead.org/mailman/listinfo/kvm-riscv
+diff --git a/arch/riscv/kvm/vcpu_pmu.c b/arch/riscv/kvm/vcpu_pmu.c
+index 4d8d5e9aa53d..ec0c15726da9 100644
+--- a/arch/riscv/kvm/vcpu_pmu.c
++++ b/arch/riscv/kvm/vcpu_pmu.c
+@@ -423,11 +423,12 @@ int kvm_riscv_vcpu_pmu_snapshot_set_shmem(struct kvm_vcpu *vcpu, unsigned long s
+ 	saddr = saddr_low;
+ 
+ 	if (saddr_high != 0) {
+-		if (IS_ENABLED(CONFIG_32BIT))
++		if (IS_ENABLED(CONFIG_32BIT)) {
+ 			saddr |= ((gpa_t)saddr_high << 32);
+-		else
++		} else {
+ 			sbiret = SBI_ERR_INVALID_ADDRESS;
+-		goto out;
++			goto out;
++		}
+ 	}
+ 
+ 	kvpmu->sdata = kzalloc(snapshot_area_size, GFP_ATOMIC);
+-- 
+2.43.0
+
