@@ -1,246 +1,322 @@
-Received: from fout-a5-smtp.messagingengine.com (fout-a5-smtp.messagingengine.com [103.168.172.148])
+Received: from PH7PR06CU001.outbound.protection.outlook.com (mail-westus3azon11010065.outbound.protection.outlook.com [52.101.201.65])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D976345CAF;
-	Wed, 11 Mar 2026 20:37:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.148
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773261433; cv=none; b=f0TBvSxt3WCsjMGuLji2xC+hPly9aOPJwptOid54ffPcxegWw6CDJBapVn2CDnYGfba5Z+Xs8hU71QC1Hq9fCpvEHzjRp4eNXzL1wZFo0Pgec+mhczfAhMwoTHQX+05uWmOeo8Uc1eBeyyc1xDWE/ZGl/+BNnWoRnhGLnkH5xT8=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773261433; c=relaxed/simple;
-	bh=vzUrkheKR7QoaxVezyzPFB9dYygXqrYaS51yD3yo7ck=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=UJbmQnlNsHYEV4D+AcXjI7ltvqN+FNo/phmRMi9Smg8gzegtNOnnVk8gh6cFzmlnCBQZ3rWu2bN1272rKB2AgPQAMx+Xk94XzUJ74D3NnyTGIGpDWy1d5yaEtVQRQzXdRj0F0UKJsH2Bzm9kdGInRrPyGiDkt7fcbE9Ai0+Fe1w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=shazbot.org; spf=pass smtp.mailfrom=shazbot.org; dkim=pass (2048-bit key) header.d=shazbot.org header.i=@shazbot.org header.b=oM8F5fOD; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=1SUbR5lE; arc=none smtp.client-ip=103.168.172.148
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=shazbot.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=shazbot.org
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EEBC938B128;
+	Wed, 11 Mar 2026 20:37:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.201.65
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1773261436; cv=fail; b=JziYxw/xYOesr73mcokx+Wk7B9JjQsv9Hh3+5TfwS1JnG5BibCUtaNuFKcu89o+ufIXOnl7KcuHjIUHgaaPVUDJaqsLJHlsSfrafxHt4SLpoM3zjAFOygpGjtqWZR/Z40c88rzbORiHlLhfUUXyHOw0DDeQs9GsXy+ARtSnjly8=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1773261436; c=relaxed/simple;
+	bh=e4n10ohjFp6RXqcpVVlyAItBgYZ71DyFYfVTlwZtef8=;
+	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=fWhJsDNvZKlS/GJfKxQEGbT7rb/G7k+Yr2KRnLmN0NM8sIwAKVmXJZKNkFcCue90GBBodndY6QOD8TEFYsBey/a3biXlAYnh6gD+T1gk/QetKbWc3aDEfH+MhZ0J5u/AXPm/B/6UyL8jigYKE32rSIuQS3xCBu1VVu3OdcR5FDA=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=qUW/meIW; arc=fail smtp.client-ip=52.101.201.65
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=shazbot.org header.i=@shazbot.org header.b="oM8F5fOD";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="1SUbR5lE"
-Received: from phl-compute-12.internal (phl-compute-12.internal [10.202.2.52])
-	by mailfout.phl.internal (Postfix) with ESMTP id 5AF89EC0B07;
-	Wed, 11 Mar 2026 16:37:09 -0400 (EDT)
-Received: from phl-frontend-03 ([10.202.2.162])
-  by phl-compute-12.internal (MEProxy); Wed, 11 Mar 2026 16:37:09 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shazbot.org; h=
-	cc:cc:content-transfer-encoding:content-type:content-type:date
-	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to; s=fm3; t=1773261429;
-	 x=1773347829; bh=E7ek5mWLrWjVUBWgqKopP0NdS8Jsdmt5+Lc6K4+LiDo=; b=
-	oM8F5fODGLxtavevjvXrO53yPGbZEnOKKuCy109aqUAyv1oJ2yDuri7vXBOPN6DX
-	+YQSx94dGTIhzrt9SJCimz1KpLQUMihON67iGZn54HlzZ4V6kxsQPmZw6FJRegPt
-	fyIXMqkm2Cq3hVKkBMI8nvVaKD6nhno7JrmPML8hhSTF9xFYVkjHMXUCSiJUNn5v
-	SxfbPxdb/L2JGBIAAyNJRyqNlLrqiSw6QPKm2mUiyzEYfMFkUO250aUVi8XnFtnh
-	0XDy/SZIfU3EhxEDF4uYQd3LeESXru86nZZiozrQ4tGTE8B5LDkvG5jPZe3I/8I4
-	1Cd+2KlG0v8JJgBflrYJSg==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=1773261429; x=
-	1773347829; bh=E7ek5mWLrWjVUBWgqKopP0NdS8Jsdmt5+Lc6K4+LiDo=; b=1
-	SUbR5lEWJ0yTTNOa2/vVi/ffkMRyTV3suxW8v957OkpxpBQx+pZ8Kri3EgvjKbEP
-	dicLCoZeJ9HabtpHBAYovO+NoIEZOz2On9kPAui+Hf4pIIehGK50OjHPLtMl2zg0
-	CyxKStgN65fWz6BuRec6xWWJ3pGot5cH3oNoxMo78+NpkqjLgRUrv3UmFj/QSB7p
-	+H6ARZZNF3UEQU0LIw6cuHd8ySHh8n5WGwZ976VqfYTUAWtcHGos9cHwAkbndCfF
-	CF3UPA3rCcBBxlcRJQCIAis6xVLe+5BSieA1qz0LM8KBTtRYGal/zvRDLOwAEa7h
-	z2fG3WQRlvwHuKtfSCYMw==
-X-ME-Sender: <xms:dNKxaZVxe68u_LvebRWfTLJWK9nLLrFGkg7XKBYbh2WzH9cpoKPmlA>
-    <xme:dNKxaeyBd7tjCuC0SNjBjqC9m-cLeWNeWoc9Uk7HVM_1rzkVkB9_Yf6uzgwy3sRfg
-    Ow5uS_19g_mKGPUUbm_K1WEPWdxB9uQ-c3tZWoGLX_TKI_CCLUYJQ>
-X-ME-Received: <xmr:dNKxaYzhlr0G7aAE_U3PllEyozD4sGT2JfAsfuspr-9pOf1F5uic3eNPWMw>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgddvkeegkeekucetufdoteggodetrf
-    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
-    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
-    gurhepfffhvfevuffkjghfofggtgfgsehtqhertdertdejnecuhfhrohhmpeetlhgvgicu
-    hghilhhlihgrmhhsohhnuceorghlvgigsehshhgriigsohhtrdhorhhgqeenucggtffrrg
-    htthgvrhhnpeegudevhfejueefveduieeuueeifeettdekveekhffgvdetfeelueehgfdt
-    heffhfenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpe
-    grlhgvgiesshhhrgiisghothdrohhrghdpnhgspghrtghpthhtohepudegpdhmohguvgep
-    shhmthhpohhuthdprhgtphhtthhopegrnhhkihhtrgesnhhvihguihgrrdgtohhmpdhrtg
-    hpthhtohepvhhsvghthhhisehnvhhiughirgdrtghomhdprhgtphhtthhopehjghhgsehn
-    vhhiughirgdrtghomhdprhgtphhtthhopehmohgthhhssehnvhhiughirgdrtghomhdprh
-    gtphhtthhopehjghhgseiiihgvphgvrdgtrgdprhgtphhtthhopehskhholhhothhhuhhm
-    thhhohesnhhvihguihgrrdgtohhmpdhrtghpthhtoheptghjihgrsehnvhhiughirgdrtg
-    homhdprhgtphhtthhopeiihhhifiesnhhvihguihgrrdgtohhmpdhrtghpthhtohepkhhj
-    rghjuhesnhhvihguihgrrdgtohhm
-X-ME-Proxy: <xmx:dNKxab0PEDuKJBO8nQkB9QrY0wLUBhUaY1UfUsICi2S0ygZ8QK0EgA>
-    <xmx:dNKxaeoUst7x1UM_G6c2ZgwRrIqbw9AJpj8ST2_eIYw0lloJ4D5Tvw>
-    <xmx:dNKxaZCjNUV3_idRVxvTLsgmFJPMcXv7EmR8mHD6D253vyy-qDGZvw>
-    <xmx:dNKxaXqVRZSIdLCFO9R416O3DLNs0pFy7jxMr0gI2Tn7sbdAoIJ7MA>
-    <xmx:ddKxafDkwr30C_jkHZJ9QEX2o4a4VSh-fnh4mhUKOyUbvvtB_xUcmgeO>
-Feedback-ID: i03f14258:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
- 11 Mar 2026 16:37:07 -0400 (EDT)
-Date: Wed, 11 Mar 2026 14:37:06 -0600
-From: Alex Williamson <alex@shazbot.org>
-To: Ankit Agrawal <ankita@nvidia.com>, Jason Gunthorpe <jgg@nvidia.com>
-Cc: Vikram Sethi <vsethi@nvidia.com>, Matt Ochs <mochs@nvidia.com>,
- "jgg@ziepe.ca" <jgg@ziepe.ca>, Shameer Kolothum Thodi
- <skolothumtho@nvidia.com>, Neo Jia <cjia@nvidia.com>, Zhi Wang
- <zhiw@nvidia.com>, Krishnakant Jaju <kjaju@nvidia.com>, Yishai Hadas
- <yishaih@nvidia.com>, "kevin.tian@intel.com" <kevin.tian@intel.com>,
- "kvm@vger.kernel.org" <kvm@vger.kernel.org>, "linux-kernel@vger.kernel.org"
- <linux-kernel@vger.kernel.org>, alex@shazbot.org
-Subject: Re: [PATCH RFC v2 00/15] Add virtualization support for EGM
-Message-ID: <20260311143706.2095a547@shazbot.org>
-In-Reply-To: <SA1PR12MB719904F9ED153FF4BA4EFA28B047A@SA1PR12MB7199.namprd12.prod.outlook.com>
-References: <20260223155514.152435-1-ankita@nvidia.com>
-	<20260305103335.74fb8141@shazbot.org>
-	<SA1PR12MB719904F9ED153FF4BA4EFA28B047A@SA1PR12MB7199.namprd12.prod.outlook.com>
-X-Mailer: Claws Mail 4.3.1 (GTK 3.24.51; x86_64-pc-linux-gnu)
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="qUW/meIW"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=RaO+xXgh2IwBh+xMoDMa8gIWVJ29VAZumCVVPC0lGl0rwuCERlzQyxwfVvNa5PxoFSlZI8XNQNbaaAiHHNa+iVwyFY+51+twyI+RNWJ8Wf/loC/td1+sp8Y753k1WGgJH99k7ZGf08cQa74qkexZMO5cg7TSALkR5m7h9t0Q6pzAno8fwP3zzoHTSNXMOHzZnvf4LeoA0csXsARwF7SpDuOGzR48xWVYeCROlpeeQdvRLj+fxM7vA5SFwLf4wu+pW2SIARtwGg/CBbfkNRZ5Hj7jklXKmhcE0ULeo7JhQ7QTsGf/oektFj43Bdiy19tjY0Oalb76Y//dDfZiX9eh3A==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=5kcutj/1qDb0w1eYvBzYmjC7sE8B17aXoQwdEUaGrQQ=;
+ b=MhOF0r+vY6ZG96EHtrHGY7p22cdOog8gazolXNFHUZCrYuMaCt1EgUZH9SA5ey5JaN8VE6jYyidXv5+kIrafOylwYOAo0OrGEUnVbRHh2wp7fQ5PCIX0F2VvlSlqinMU10qfZIeFCD5vVcoNI2lgL4gv8Gpogb39kUyW+gl/n0hLOfJK77E3jrYOM448nNJBDoR905efVmU0kn1Y6bjG2BnxVux0HrT22OtLiM88KJet8A29vO5nNr+KiRR2SX/qole2qD22b2gMgd64EwlgY4OE1AOgLzU76k9mN7ncdecee4p3FSEIStS2vTKIUEBn9/lfxWEBJv8uoSPXMXTTZQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 216.228.117.161) smtp.rcpttodomain=vger.kernel.org smtp.mailfrom=nvidia.com;
+ dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=5kcutj/1qDb0w1eYvBzYmjC7sE8B17aXoQwdEUaGrQQ=;
+ b=qUW/meIWJZlS5IL6QKMgwhOJzc+eqXTY2ceds+ipsztXZvmJsgUvbeq6dsuv0FbLq1m8ph/cYseZhrfoU/biz9uOhRicTCEK2dqa3Oft6RG8Fyg4kggkme9U0M2HiG/otfUW02IPqKvcIguFs+EO1NxlHN5lRad1u5cubfXMZYK2ZKeXcf1aFPhziRiesLoocxXyVYx3oICxyHDB7FshKhGmgb9yutUVhixBgEwUIDFckrzt8e02VUvEmJ9FrYbhTNhjzAi3mPMyz9NfGI13hEtr1jzlKBZ2xZI7UabwbT05MWw1unOXs+VmghAJkODFy5tuh9e/CoTEm2S6+0SZig==
+Received: from DM6PR05CA0051.namprd05.prod.outlook.com (2603:10b6:5:335::20)
+ by DM6PR12MB4450.namprd12.prod.outlook.com (2603:10b6:5:28e::18) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9723.3; Wed, 11 Mar
+ 2026 20:37:07 +0000
+Received: from DS2PEPF00003448.namprd04.prod.outlook.com
+ (2603:10b6:5:335:cafe::5) by DM6PR05CA0051.outlook.office365.com
+ (2603:10b6:5:335::20) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.9700.15 via Frontend Transport; Wed,
+ 11 Mar 2026 20:37:07 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.117.161)
+ smtp.mailfrom=nvidia.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=nvidia.com;
+Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
+ 216.228.117.161 as permitted sender) receiver=protection.outlook.com;
+ client-ip=216.228.117.161; helo=mail.nvidia.com; pr=C
+Received: from mail.nvidia.com (216.228.117.161) by
+ DS2PEPF00003448.mail.protection.outlook.com (10.167.17.75) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.9678.18 via Frontend Transport; Wed, 11 Mar 2026 20:37:07 +0000
+Received: from rnnvmail204.nvidia.com (10.129.68.6) by mail.nvidia.com
+ (10.129.200.67) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20; Wed, 11 Mar
+ 2026 13:36:43 -0700
+Received: from rnnvmail201.nvidia.com (10.129.68.8) by rnnvmail204.nvidia.com
+ (10.129.68.6) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20; Wed, 11 Mar
+ 2026 13:36:42 -0700
+Received: from nvidia-4028GR-scsim.nvidia.com (10.127.8.11) by mail.nvidia.com
+ (10.129.68.8) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20 via Frontend
+ Transport; Wed, 11 Mar 2026 13:36:35 -0700
+From: <mhonap@nvidia.com>
+To: <aniketa@nvidia.com>, <ankita@nvidia.com>, <alwilliamson@nvidia.com>,
+	<vsethi@nvidia.com>, <jgg@nvidia.com>, <mochs@nvidia.com>,
+	<skolothumtho@nvidia.com>, <alejandro.lucero-palau@amd.com>,
+	<dave@stgolabs.net>, <jonathan.cameron@huawei.com>, <dave.jiang@intel.com>,
+	<alison.schofield@intel.com>, <vishal.l.verma@intel.com>,
+	<ira.weiny@intel.com>, <dan.j.williams@intel.com>, <jgg@ziepe.ca>,
+	<yishaih@nvidia.com>, <kevin.tian@intel.com>
+CC: <cjia@nvidia.com>, <targupta@nvidia.com>, <zhiw@nvidia.com>,
+	<kjaju@nvidia.com>, <linux-kernel@vger.kernel.org>,
+	<linux-cxl@vger.kernel.org>, <kvm@vger.kernel.org>, <mhonap@nvidia.com>
+Subject: [PATCH 14/20] vfio/cxl: Check media readiness and create CXL memdev
+Date: Thu, 12 Mar 2026 02:04:34 +0530
+Message-ID: <20260311203440.752648-15-mhonap@nvidia.com>
+X-Mailer: git-send-email 2.25.1
+In-Reply-To: <20260311203440.752648-1-mhonap@nvidia.com>
+References: <20260311203440.752648-1-mhonap@nvidia.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-NV-OnPremToCloud: ExternallySecured
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DS2PEPF00003448:EE_|DM6PR12MB4450:EE_
+X-MS-Office365-Filtering-Correlation-Id: 125e3338-b950-41a2-e0ab-08de7fadf697
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|36860700016|82310400026|7416014|376014|1800799024|56012099003|18002099003|22082099003|921020;
+X-Microsoft-Antispam-Message-Info:
+	97cSGeU55p2mzWykshNUfv/OfA87fUyHtau2MB2Cp3fGvq69r1ZRy9Rgm6El6b/xOSMVmdEDotZ6tQ6KYZbXndWVqT34I5hA86VBS5WPjAq7slPKf8XTPecmr1GDs8u4vzc5ntL23GDQbYxMhTy9Cs3EVQiT+/Q5DYtotWhAvhacxfpyp9RkXWLnJ4HExlRidCfkaNWCbr/Q2ZC34ZV69Ju2TMtC6Sw4XZ7NE/6vuHYJP4rxo3MCz3/5VkCzAyhMmJhiNa395Z4Lhstxwast9fTQDDJuZ4cpl+tplQNF4qxxKqvTBy31WCqicH9f5xEC+FooCpyFZzwc8k6BJGjsqiXw4PppE36pcdQmOBL8AyL8NvRP27bvHee9uWafC8G39gVrypwGxXEhMEGU+Jt4q0yAsCLPiu0r6YHwI1FS8cLPrLXS2TpYpD4n7clpv0nncvuOXeRZZsl+4GMCLToF/3VpUWDthNwctJsw/+kj9p3W7IzKh3ECBakUeftqhqmIJ7NFzBUC4StsON5jc8q7qToBo1xsOD9q5QccSj68olzONIclqVRxbh7Lm2efASZOm9Y9BgBmri7Fl/vQvtkQn6FWgwn15xAWDh6ZZEQpS6VNcOAg5a1hQHge4gFTpGE3POsesOOIpmYz3yj1bU9tAVs+JE9USeH3nVAejO22qt5Hre6PZgMD8Xh4vbUGZ1CY+z5/fVsmsb3sHAxMcLOAURNXYRZWMRnlQKBxR6WEmDoe1is3ROpGGy32DXMWBE3OHDmPV+lpBAQmoHOnUE+e/Xmqm04letSi4hNbnXJmgppNbqA8OhGLTPwq4EmRIQiR
+X-Forefront-Antispam-Report:
+	CIP:216.228.117.161;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc6edge2.nvidia.com;CAT:NONE;SFS:(13230040)(36860700016)(82310400026)(7416014)(376014)(1800799024)(56012099003)(18002099003)(22082099003)(921020);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	mQO3AdbRK8eGzd90D9W1ZdJpQfdJXkLOJFzzNRNDoE25KV2hEinXRHwbD52isuT+aDbDzm1AXFT6G3SYy133pjz+JCXl18Ey6RgnqxDnXaEph+2v9qzc/BH8L62y+CeGRBJ6V9WsASm5d6ISKsphaquCAIUpgD9RORitX68/OtOcOjhV2OYrt3yBvNacbVh5dQoIQlG2Fkg2JRt8tMx/Mo3+b0/yhiRo60iijdcooSi9AUvjXrgYBnDJO9qnFSzaoShTomN1Y1dnVe+YfiZclbMlMLAto0SCd+09RlioAOJ6Zk7we9CIOI4F5N8H1gm9ZgI7HDQ5wX/cPeQ58kugHx+vthzi/GJkfu3xtkqeQ+hUOrUGUygXSDNVyYirNsJZ71QfZ4iR5t9hMxVPyhgZHEaGSaqZ7rL7uVN0HL4HzlKlyIUUg31cQ7mcN+xhe0u/
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 11 Mar 2026 20:37:07.5032
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 125e3338-b950-41a2-e0ab-08de7fadf697
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.117.161];Helo=[mail.nvidia.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	DS2PEPF00003448.namprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM6PR12MB4450
 
-On Wed, 11 Mar 2026 06:47:12 +0000
-Ankit Agrawal <ankita@nvidia.com> wrote:
+From: Manish Honap <mhonap@nvidia.com>
 
-> Thanks Alex for the review.
->=20
-> >> The patch series introduce a new nvgrace-egm auxiliary driver module
-> >> to manage and map the HI/EGM region in the Grace Blackwell systems.
-> >> This binds to the auxiliary device created by the parent
-> >> nvgrace-gpu (in-tree module for device assignment) / nvidia-vgpu-vfio
-> >> (out-of-tree open source module for SRIOV vGPU) to manage the
-> >> EGM region for the VM. Note that there is a unique EGM region per
-> >> socket and the auxiliary device gets created for every region. The
-> >> parent module fetches the EGM region information from the ACPI
-> >> tables and populate to the data structures shared with the auxiliary
-> >> nvgrace-egm module.
-> >>
-> >> nvgrace-egm module handles the following:
-> >> 1. Fetch the EGM memory properties (base HPA, length, proximity domain)
-> >> from the parent device shared EGM region structure.
-> >> 2. Create a char device that can be used as memory-backend-file by Qemu
-> >> for the VM and implement file operations. The char device is /dev/egmX,
-> >> where X is the PXM node ID of the EGM being mapped fetched in 1.
-> >> 3. Zero the EGM memory on first device open().
-> >> 4. Map the QEMU VMA to the EGM region using remap_pfn_range.
-> >> 5. Cleaning up state and destroying the chardev on device unbind.
-> >> 6. Handle presence of retired poisoned pages on the EGM region.
-> >>
-> >> Since nvgrace-egm is an auxiliary module to the nvgrace-gpu, it is kept
-> >> in the same directory. =20
-> >
-> >
-> > Pondering this series for a bit, is this auxiliary chardev approach
-> > really the model we should be pursuing?
-> >
-> > I know we're trying to disassociate the EGM region from the GPU, and
-> > de-duplicate it between GPUs on the same socket, but is there actually a
-> > use case of the EGM chardev separate from the GPU? =20
->=20
-> It is not just de-duplication. The EGM is a carveout of system memory
-> logically and physically separate and disconnected from the GPU. The
-> uniqueness here is that the information (SPA, size) of the region is pres=
-ent
-> on the GPU ACPI tables.
->=20
-> >
-> > The independent lifecycle of this aux device is troubling and it hasn't
-> > been confirmed whether or not access to the EGM region has some
-> >dependency on the state of the GPU.=C2=A0 =20
->=20
-> The EGM region is independent on the state of the GPU. One can plausibly
-> bootup the VM with just the EGM memory chardev as the backend file and
-> no GPU.
+Check media readiness at probe time and create a CXL memdev for region
+management.
 
-Seems like we have the wrong model then to base the lifecycle of the
-aux devices on the state of the PCI driver if EGM is fully independent
-of the state of the PCI device.
+Media/range-active check is performed at probe time to keep the
+vfio-is-advertised-as-cxl behavior consistent. A pre-committed HDM
+decoder already implies media is active, so set media_ready directly
+instead of calling the potentially blocking cxl_await_range_active().
 
-> > nvgrace-gpu is manipulating sysfs
-> > on devices owned by nvgrace-egm, we don't have mechanisms to manage the
-> > aux device relative to the state of the GPU, we're trying to add a
-> > driver that can bind to device created by an out-of-tree driver, and
-> > we're inventing new uAPIs on the chardev for things that already exist
-> > for vfio regions. =20
->=20
-> Sorry for the confusion. The nvgrace-egm would not bind to the device
-> created by the out-of-tree driver. We would have a separate out-of-tree
-> equivalent of nvgrace-egm to bind to the device by the out-of-tree vfio
-> driver. Maybe we can consider exposing a register/unregister APIs from
-> nvgrace-egm where a module (in-tree nvgrace / out-of-tree) can register
-> a pdev and nvgrace-egm can use to fetch the region info.
+For memdev creation we need to determine capacity before calling
+devm_cxl_add_memdev(). Read the committed decoder size directly from
+HDM decoder hardware registers; the CXL core will see the same values
+when it enumerates decoders inside add_memdev.
 
-Ok, this wasn't clear to me, but does that also mean that if some GPUs
-are managed by nvgrace-gpu and others by out-of-tree drivers that the
-in-kernel and out-of-tree equivalent drivers are both installing
-chardevs as /dev/egmXX?  Playing in the same space is ugly, but what
-happens when the 2 GPUs per socket are split between drivers and they
-both try to added the same chardev?
+For firmware uncommitted decoders, handling will be added in a later
+commit.
 
-> > Therefore, does it actually make more sense to expose EGM as a device
-> > specific region on the vfio device fd?
-> >
-> > For example, nvgrace-gpu might manage the de-duplication by only
-> > exposing this device specific region on the lowest BDF GPU per socket.
-> > The existing REGION_INFO ioctl handles reporting the size to the user.
-> > The direct association to the GPU device handles reporting the node
-> > locality.=C2=A0 If necessary, a capability on the region could report t=
-he
-> > associated PXM, and maybe even the retired page list.
-> >
-> > All of the lifecycle issues are automatically handled, there's no
-> > separate aux device.=C2=A0 If necessary, zapping and faulting across re=
-set
-> > is handled just like a BAR mapping. =20
->=20
-> The EGM memory (which becomes the system memory of the VM) cannot
-> be connected to the GPU reset as it is unrelated to the GPU device. We wo=
-uld
-> not want that to happen to system memory on GPU reset.
+Signed-off-by: Manish Honap <mhonap@nvidia.com>
+---
+ drivers/vfio/pci/cxl/vfio_cxl_core.c | 67 +++++++++++++++++++++++++++-
+ drivers/vfio/pci/cxl/vfio_cxl_emu.c  | 48 ++++++++++++++++++++
+ drivers/vfio/pci/cxl/vfio_cxl_priv.h |  2 +
+ 3 files changed, 115 insertions(+), 2 deletions(-)
 
-It's not the state of the EGM/system memory that I'm concerned about,
-it's the fact that the routing to access that memory traverses two
-GPUs and both the backplane and c2c NVLink connections.  If access
-through that channel is 100% independent of the state of either GPU
-then GPU resets are irrelevant.
+diff --git a/drivers/vfio/pci/cxl/vfio_cxl_core.c b/drivers/vfio/pci/cxl/vfio_cxl_core.c
+index d2401871489d..15b6c0d75d9e 100644
+--- a/drivers/vfio/pci/cxl/vfio_cxl_core.c
++++ b/drivers/vfio/pci/cxl/vfio_cxl_core.c
+@@ -132,6 +132,37 @@ static int vfio_cxl_setup_regs(struct vfio_pci_core_device *vdev)
+ 	return 0;
+ }
+ 
++static int vfio_cxl_create_memdev(struct vfio_pci_core_device *vdev,
++				  resource_size_t capacity)
++{
++	struct vfio_pci_cxl_state *cxl = vdev->cxl;
++	struct pci_dev *pdev = vdev->pdev;
++	int ret;
++
++	ret = cxl_set_capacity(&cxl->cxlds, capacity);
++	if (ret) {
++		pci_err(pdev, "Failed to set capacity: %d\n", ret);
++		return ret;
++	}
++
++	pci_dbg(pdev, "Device capacity: %llu MB (from %s)\n",
++		capacity >> 20,
++		cxl->precommitted ? "committed decoder" : "sysfs");
++	pci_dbg(pdev,
++		"vfio_cxl: creating memdev: capacity=0x%llx bytes (%llu MiB)\n",
++		(unsigned long long)capacity,
++		(unsigned long long)(capacity >> 20));
++
++	cxl->cxlmd = devm_cxl_add_memdev(&cxl->cxlds, NULL);
++	if (IS_ERR(cxl->cxlmd)) {
++		pci_err(pdev, "Failed to add CXL memdev: %ld\n",
++			PTR_ERR(cxl->cxlmd));
++		return PTR_ERR(cxl->cxlmd);
++	}
++
++	return 0;
++}
++
+ int vfio_cxl_create_cxl_region(struct vfio_pci_core_device *vdev, resource_size_t size)
+ {
+ 	struct vfio_pci_cxl_state *cxl = vdev->cxl;
+@@ -250,6 +281,7 @@ void vfio_pci_cxl_detect_and_init(struct vfio_pci_core_device *vdev)
+ {
+ 	struct pci_dev *pdev = vdev->pdev;
+ 	struct vfio_pci_cxl_state *cxl;
++	resource_size_t capacity = 0;
+ 	u16 dvsec;
+ 	int ret;
+ 
+@@ -282,13 +314,44 @@ void vfio_pci_cxl_detect_and_init(struct vfio_pci_core_device *vdev)
+ 		goto failed;
+ 	}
+ 
++	cxl->cxlds.media_ready = !cxl_await_range_active(&cxl->cxlds);
++	if (!cxl->cxlds.media_ready) {
++		pci_disable_device(pdev);
++		pci_err(pdev, "CXL media not ready\n");
++		goto regs_failed;
++	}
++
++	/*
++	 * Take the single authoritative HDM decoder snapshot now that
++	 * MEM_ACTIVE is confirmed and BAR memory is still enabled.  Using
++	 * readl() per-dword ensures correct MMIO serialisation and captures
++	 * the final firmware-written values for all fields including SIZE_HIGH,
++	 * which firmware commits to the BAR at MEM_ACTIVE time.
++	 */
++	vfio_cxl_reinit_comp_regs(vdev);
++
+ 	pci_disable_device(pdev);
+ 
+-	ret = vfio_cxl_create_region_helper(vdev, SZ_256M);
+-	if (ret)
++	capacity = vfio_cxl_read_committed_decoder_size(vdev);
++	if (capacity == 0) {
++		/*
++		 * TODO: Add handling for devices which do not have
++		 * firmware pre-committed decoders
++		 */
++		pci_info(pdev, "Uncommitted region size must be configured via sysfs before bind\n");
+ 		goto regs_failed;
++	}
+ 
+ 	cxl->precommitted = true;
++	cxl->dpa_size = capacity;
++
++	ret = vfio_cxl_create_memdev(vdev, capacity);
++	if (ret)
++		goto regs_failed;
++
++	ret = vfio_cxl_create_region_helper(vdev, capacity);
++	if (ret)
++		goto regs_failed;
+ 
+ 	return;
+ 
+diff --git a/drivers/vfio/pci/cxl/vfio_cxl_emu.c b/drivers/vfio/pci/cxl/vfio_cxl_emu.c
+index d5603c80fe51..178a42267642 100644
+--- a/drivers/vfio/pci/cxl/vfio_cxl_emu.c
++++ b/drivers/vfio/pci/cxl/vfio_cxl_emu.c
+@@ -300,6 +300,54 @@ int vfio_cxl_setup_virt_regs(struct vfio_pci_core_device *vdev)
+ 	return 0;
+ }
+ 
++/*
++ * vfio_cxl_read_committed_decoder_size - Extract committed DPA capacity from
++ *					  comp_reg_virt[].
++ *
++ * Called from probe context after vfio_cxl_reinit_comp_regs() has taken the
++ * post-MEM_ACTIVE readl() snapshot and patched SIZE_HIGH/SIZE_LOW from DVSEC.
++ * comp_reg_virt[] is already correct at this point; no hardware access needed.
++ *
++ * Returns the committed DPA capacity in bytes, or 0 if the decoder is not
++ * committed.
++ */
++resource_size_t
++vfio_cxl_read_committed_decoder_size(struct vfio_pci_core_device *vdev)
++{
++	struct vfio_pci_cxl_state *cxl = vdev->cxl;
++	struct pci_dev *pdev = vdev->pdev;
++	resource_size_t capacity;
++	u32 ctrl, sz_hi, sz_lo;
++
++	if (WARN_ON(!cxl || !cxl->comp_reg_virt))
++		return 0;
++
++	ctrl  = le32_to_cpu(cxl->comp_reg_virt[CXL_HDM_DECODER0_CTRL_OFFSET(0) /
++					       CXL_REG_SIZE_DWORD]);
++	sz_hi = le32_to_cpu(cxl->comp_reg_virt[CXL_HDM_DECODER0_SIZE_HIGH_OFFSET(0) /
++					       CXL_REG_SIZE_DWORD]);
++	sz_lo = le32_to_cpu(cxl->comp_reg_virt[CXL_HDM_DECODER0_SIZE_LOW_OFFSET(0) /
++					       CXL_REG_SIZE_DWORD]);
++
++	if (!(ctrl & CXL_HDM_DECODER0_CTRL_COMMITTED)) {
++		pci_dbg(pdev,
++			"vfio_cxl: decoder0 not committed: ctrl=0x%08x\n",
++			ctrl);
++		return 0;
++	}
++
++	capacity = ((resource_size_t)sz_hi << 32) | (sz_lo & GENMASK(31, 28));
++
++	pci_dbg(pdev,
++		"vfio_cxl: decoder0 committed: sz_hi=0x%08x sz_lo=0x%08x "
++		"capacity=0x%llx (%llu MiB)\n",
++		sz_hi, sz_lo,
++		(unsigned long long)capacity,
++		(unsigned long long)(capacity >> 20));
++
++	return capacity;
++}
++
+ /*
+  * Called with memory_lock write side held (from vfio_cxl_reactivate_region).
+  * Uses the pre-established hdm_iobase, no ioremap() under the lock,
+diff --git a/drivers/vfio/pci/cxl/vfio_cxl_priv.h b/drivers/vfio/pci/cxl/vfio_cxl_priv.h
+index 4f2637874e9d..3ef8d923a7e8 100644
+--- a/drivers/vfio/pci/cxl/vfio_cxl_priv.h
++++ b/drivers/vfio/pci/cxl/vfio_cxl_priv.h
+@@ -26,6 +26,7 @@ struct vfio_pci_cxl_state {
+ 	resource_size_t              comp_reg_offset;
+ 	size_t                       comp_reg_size;
+ 	__le32                      *comp_reg_virt;
++	size_t                       dpa_size;
+ 	void __iomem                *hdm_iobase;
+ 	u32                          hdm_count;
+ 	int                          dpa_region_idx;
+@@ -81,5 +82,6 @@ struct vfio_pci_cxl_state {
+ int vfio_cxl_setup_virt_regs(struct vfio_pci_core_device *vdev);
+ void vfio_cxl_clean_virt_regs(struct vfio_pci_core_device *vdev);
+ void vfio_cxl_reinit_comp_regs(struct vfio_pci_core_device *vdev);
++resource_size_t vfio_cxl_read_committed_decoder_size(struct vfio_pci_core_device *vdev);
+ 
+ #endif /* __LINUX_VFIO_CXL_PRIV_H */
+-- 
+2.25.1
 
-However, I'd then ask the question why we're associating EGM to the GPU
-PCI driver at all.  For instance, why should nvgrace-gpu spawn aux
-devices to feed into an nvgrace-egm driver, and duplicate that whole
-thing in an out-of-tree driver, when we could just have one in-kernel
-platform(?) driver walk ACPI, find these ranges, and expose them as
-chardev entirely independent of the PCI driver bound to the GPU?
-=20
-> > If we need to expose the EGM size and GPU association via sysfs for
-> > management tooling, nvgrace-gpu could add an "egm_size" attribute to the
-> > PCI device's sysfs node.=C2=A0 This could also avoid the implicit
-> >  implementation knowledge about which GPU exposes the EGM device
-> > specific region.
-> >
-> > Was such a design considered?=C2=A0 It seems much, much simpler and cou=
-ld be
-> > implemented by either nvgrace-gpu or identically by an out-of-tree
-> > driver without references in an in-kernel ID table.
-> >
-> > I'd like to understand the pros and cons of such an approach vs the one
-> > presented here.=C2=A0 Thanks, =20
->=20
-> We didn't consider it as a separate BAR / region as the EGM memory (part =
-of the
-> system memory) is unrelated to the GPU device besides having its informat=
-ion
-> in the GPU ACPI table and becomes the system memory of the VM. Considering
-> it as part of the device BAR / region would connect the lifecyle of the E=
-GM region
-> on the GPU device. Also we cannot consider zapping/faulting across GPU re=
-set
-> as it is system memory of the VM.
-
-It's curious why the EGM description is associated to the GPU ACPI
-object if it really is fully independent.  It seems like perhaps it
-should be a unique ACPI object in that case, which would make claiming
-it via a platform driver easier.  Maybe we don't need to be tied to
-that firmware decision in the design of the software driver though.
-Thanks,
-
-Alex
