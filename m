@@ -1,103 +1,159 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6726938AC6B
-	for <kvm@vger.kernel.org>; Wed, 11 Mar 2026 20:08:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7209A274FC2;
+	Wed, 11 Mar 2026 20:24:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773259686; cv=none; b=B5cFRbyu53ZrgawR/vCpzskLIBu4F8ulg2jx2ZK97q7HDP+TUS8AXQu5y2Yq+DoBNamcrg0QOd00Jd+tdT66OeKDArhI5pbTE4u+qD5mpa6xFhaBJ2IGjBUpOtbRj0uBV/z+mSEGiJrbsYLaoynfys+Tr9PURZ/XYrQZublDIHg=
+	t=1773260658; cv=none; b=kW7Nvl5Ie6WbjDTrNz5+a/7/7yb7YkXLtz3JfJj4GvvhG2PUpH/tL/CuBGJRI8j/pU9kQl0p8h8qhcgMIRGr/N219LlOW2mVua8xSJiSxaozuFrXp8bk1eEQod/+EdJZAH46LJoghK+ku53pCGpy5HMYbx0Kj2wWeY9fU3o9IpM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773259686; c=relaxed/simple;
-	bh=aXkmEBMFRxLk7YEe5QX3DIGgMrHhuObLP7PvBTYKa5Y=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=FXp2trmI1lzoQXtDcPuCggPmLI8k7OZBLmuvEChSaIXB1N8lwYSrCKRO3AUdI9fRkZyLAbfcaZ92rF7GeYYS/oj3uHqS4zNgjFbre2nszg6zYTQxrhAa9VGGZ/gqgnU8R+nqD8HC847mONY+B0ahIuwot/3CZWLgvomi4xj/gRU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Ox6Fc2hO; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1773260658; c=relaxed/simple;
+	bh=ztV2/40loRxqZ6d6XM392T8BcyEynwsv8HUGI6yGNh0=;
+	h=Message-ID:Date:MIME-Version:Subject:To:References:From:
+	 In-Reply-To:Content-Type; b=S48ruA61Zukd0xPmAIbCVg5J3CoG8Y9hWKTIKe7X/9kMyotS7Eu4lXKkHsP2GYA6dKFZ6/M5GQSfp3/NL0OxXmYAwqI/ybFUl3m9B0dWkka3Xobc5eJmN+gzkQ0e7J4M3FQmyK09EoQGn3GqD9/V++91O9/A6LJ+lSIKEQ8s4Sc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=BH6LiLKO; arc=none smtp.client-ip=148.163.158.5
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Ox6Fc2hO"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BCF8BC116C6
-	for <kvm@vger.kernel.org>; Wed, 11 Mar 2026 20:08:05 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773259685;
-	bh=aXkmEBMFRxLk7YEe5QX3DIGgMrHhuObLP7PvBTYKa5Y=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=Ox6Fc2hOscg+FTThBri9P3gzYrsptiMGpPUZK31w5HPlH267v6DqMeM9hYMrprG94
-	 DhJuzPyeV7ljpOl77Aea03vnhLnS8LRpSoPQlvy+rfoDoJ+sWrwxZ6exREJNWCWFvc
-	 3rIyTE2QPlyvgbm1tl7fb/yubhJQdaEKkExjpxNh1Cn3DsbUHTAn1dwxxCqECoGQJ+
-	 HbmGAi2ip1sa6UMwexpQAp/jhkrhz3ZQFI1HtUZKKOWw4VFwknc56lXE5FI8HFUjKL
-	 /6FvJT5kuu6KFqCffueOVPLpbBOIG84hbyDt/b6BXZLOMXbrfVAro6tRSs6vB/1SRT
-	 xvKN5FNJRJUcA==
-Received: by mail-ej1-f45.google.com with SMTP id a640c23a62f3a-b7cf4a975d2so26489666b.2
-        for <kvm@vger.kernel.org>; Wed, 11 Mar 2026 13:08:05 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCWNqIg6HYkOzHMuE0K52AlddiFp5tNJJS6vSQEhNT1SYgvwaKC12CKbqYXX4X5+hPUBalY=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzKtAMFZToZH8X+ambuMq7BADKHwXblenloefsPvYc5TLWqv5G/
-	wU3vt1rIwDwYHBUv43GRqZI98EI+Ra4Pd157ZzlEM6ON2Qsl853DndS84woblzXc/SNvrWfzskV
-	+95fmxCklD0ZcQABhTZFC+WdfLdOlK8E=
-X-Received: by 2002:a17:907:7ba0:b0:b97:1009:7536 with SMTP id
- a640c23a62f3a-b972e1b10e3mr225519266b.15.1773259684597; Wed, 11 Mar 2026
- 13:08:04 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="BH6LiLKO"
+Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 62BEHPSe1365092;
+	Wed, 11 Mar 2026 20:24:14 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=
+	content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=nLEyJh
+	toHKBpjqcR8KMxHzx//aKC6UxRxI1fsF8NyTQ=; b=BH6LiLKOCw5R6chl+o2N08
+	1NivAhuaB5Yndvs+gElj4h8sBUqMsKWvNqkItv/folP/1s2QUjajJLST93kD8abZ
+	5yc8k1sn8o4dmppK64yUGXWj7JXlteo+xhcoSBwlU3AXxOHsi2biYVYorQvx3gir
+	xBSHOQQp3uk0iT/jVQ7nA7pklYyuBFgW6Scg9zsPseJP/JupxebVzBM4x6cwLK+9
+	FwlcKE8GHifZsINuDbZM+88ikuZGEtlJ0Lu27W9No2UUDHrheJkUKFjB/c+a18/+
+	1JefslBEianOiZrIqG6By3cBuvmp+d4Ic+oxA2aH6l3PrY1LSqmp6iqh63b8Vjxw
+	==
+Received: from ppma13.dal12v.mail.ibm.com (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4crcunhaeb-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 11 Mar 2026 20:24:14 +0000 (GMT)
+Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma13.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 62BHe32q025052;
+	Wed, 11 Mar 2026 20:24:13 GMT
+Received: from smtprelay06.dal12v.mail.ibm.com ([172.16.1.8])
+	by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 4cs0jk6uav-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 11 Mar 2026 20:24:13 +0000
+Received: from smtpav01.wdc07v.mail.ibm.com (smtpav01.wdc07v.mail.ibm.com [10.39.53.228])
+	by smtprelay06.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 62BKOCPp29164212
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Wed, 11 Mar 2026 20:24:12 GMT
+Received: from smtpav01.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 2453D58063;
+	Wed, 11 Mar 2026 20:24:12 +0000 (GMT)
+Received: from smtpav01.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 9274E5804B;
+	Wed, 11 Mar 2026 20:24:10 +0000 (GMT)
+Received: from [9.61.81.79] (unknown [9.61.81.79])
+	by smtpav01.wdc07v.mail.ibm.com (Postfix) with ESMTP;
+	Wed, 11 Mar 2026 20:24:10 +0000 (GMT)
+Message-ID: <7a3c2e0e-7e5c-479b-8c92-12e16f27f452@linux.ibm.com>
+Date: Wed, 11 Mar 2026 16:24:10 -0400
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260306210900.1933788-1-yosry@kernel.org> <20260306210900.1933788-2-yosry@kernel.org>
- <CALMp9eRWwPwUSyQmizy8i2tF1CVO4iLY6x0vX1OoPUiRdCm4NQ@mail.gmail.com>
- <CAO9r8zOhaDeYWq_6TNdPGyEE323o_8xsWTozGdro9Oni8310kA@mail.gmail.com>
- <CALMp9eScswzFak+PMOcaDXM-W+cXtkG7fQ=jadq__+5JeqYcTQ@mail.gmail.com>
- <CAO9r8zOK5+xmkf3FsWRz2wHcUCN30GJ9kfZx-K7DAa1HNGhRVA@mail.gmail.com>
- <aatyIPwz9ePKdzJx@google.com> <CAO9r8zMxk9yUiYoosnDygr_oeeRYHz3f7hWLm23c5Q0m-DXnWA@mail.gmail.com>
-In-Reply-To: <CAO9r8zMxk9yUiYoosnDygr_oeeRYHz3f7hWLm23c5Q0m-DXnWA@mail.gmail.com>
-From: Yosry Ahmed <yosry@kernel.org>
-Date: Wed, 11 Mar 2026 13:07:52 -0700
-X-Gmail-Original-Message-ID: <CAO9r8zNHYswypRmHVT5Qn5hFU9-HU1t=Gs3qAh05xRNn5krPXQ@mail.gmail.com>
-X-Gm-Features: AaiRm53ZrnHrtDBrJxbFm-c9aSV5gGG_rbhuRkeeQJZuvRMUyUjiW-RzRHLbPcg
-Message-ID: <CAO9r8zNHYswypRmHVT5Qn5hFU9-HU1t=Gs3qAh05xRNn5krPXQ@mail.gmail.com>
-Subject: Re: [PATCH v2 1/6] KVM: SVM: Use maxphyaddr in emulator RAX check for VMRUN/VMLOAD/VMSAVE
-To: Sean Christopherson <seanjc@google.com>
-Cc: Jim Mattson <jmattson@google.com>, Paolo Bonzini <pbonzini@redhat.com>, kvm@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v1 1/3] Add map/unmap ioctl and clean mappings post-guest
+To: Douglas Freimuth <freimuth@linux.ibm.com>, borntraeger@linux.ibm.com,
+        imbrenda@linux.ibm.com, frankja@linux.ibm.com, david@kernel.org,
+        hca@linux.ibm.com, gor@linux.ibm.com, agordeev@linux.ibm.com,
+        svens@linux.ibm.com, kvm@vger.kernel.org, linux-s390@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+References: <20260308030438.88580-1-freimuth@linux.ibm.com>
+ <20260308030438.88580-2-freimuth@linux.ibm.com>
+Content-Language: en-US
+From: Matthew Rosato <mjrosato@linux.ibm.com>
+In-Reply-To: <20260308030438.88580-2-freimuth@linux.ibm.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: HahdpdxlOhyA5sOv7LTq8rKxI4tYcg1y
+X-Authority-Analysis: v=2.4 cv=Hp172kTS c=1 sm=1 tr=0 ts=69b1cf6e cx=c_pps
+ a=AfN7/Ok6k8XGzOShvHwTGQ==:117 a=AfN7/Ok6k8XGzOShvHwTGQ==:17
+ a=IkcTkHD0fZMA:10 a=Yq5XynenixoA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=RnoormkPH1_aCDwRdu11:22 a=Y2IxJ9c9Rs8Kov3niI8_:22 a=VwQbUJbxAAAA:8
+ a=VnNF1IyMAAAA:8 a=eotjit3zeauIBaePo5EA:9 a=QEXdDO2ut3YA:10
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMzExMDE3MCBTYWx0ZWRfX79UXng7ngDuA
+ GcxhPibrNeThOTadPFS5gzkb2Mye6TVn48lZkwBL4szgz5GesLbLQlewnvriKT0teQm14lPfiNt
+ eUOlMmMafEkxj383F0bg4x1kYF7uob6zPjFFxJEj0QwGUptkdy3UyDSfEZ8jW6KERrb8QcGbRPq
+ 3dGklqpwLvBdYXMozrlaZVMJmLL2VHkAMzUcKaUB/Q+/prvMCn28/H7rYeaGkgnhaI6AdS3YrEn
+ YhiyE9Dxz/hNkWhIWjhT4dYF0AzabXxK/RW6llWVr92dDr5oTkRctjGVeM2pnnILIGvBphpWbLF
+ RCcKbaqcG0kRktH9s3G1BoqDVcxGAeF36cmkn4kagvwtGTFDPoFTsZqnQBjHdjkt6Alximt9+XP
+ VYWJKEpQtDGcDdYsn0uxCkLInEDYjwyoinTOim4mSvkTFBnZ6+tvDDDxtUlBIMvoMGqCHCTb+MI
+ hDJ6z6hgnvAH/XlBgYQ==
+X-Proofpoint-ORIG-GUID: HahdpdxlOhyA5sOv7LTq8rKxI4tYcg1y
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
+ definitions=2026-03-11_02,2026-03-09_02,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ bulkscore=0 adultscore=0 malwarescore=0 impostorscore=0 suspectscore=0
+ spamscore=0 phishscore=0 clxscore=1011 priorityscore=1501 lowpriorityscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2602130000 definitions=main-2603110170
 
-On Wed, Mar 11, 2026 at 11:31=E2=80=AFAM Yosry Ahmed <yosry@kernel.org> wro=
-te:
->
-> On Fri, Mar 6, 2026 at 4:32=E2=80=AFPM Sean Christopherson <seanjc@google=
-.com> wrote:
-> >
-> > On Fri, Mar 06, 2026, Yosry Ahmed wrote:
-> > > > > Right, but I am trying to have the #GP check for VMLOAD/VMSAVE be=
-have
-> > > > > consistently with vls=3D1, whether it's done by the hardware or t=
-he
-> > > > > emulator.
-> > > >
-> > > > Consistency should not be an issue, since VLS cannot be enabled whe=
-n
-> > > > the MAXPHYADDRs differ. VLS doesn't work in that scenario.
-> > >
-> > > Why? It's only broken if VMLOAD/VMSAVE is executed with a GPA that
-> > > exceeds the guest's MAXPHYADDR, but not the host's, right? So only
-> > > broken if the guest is misbehaving.
-> > >
-> > > Taking a step back, I am not disagreeing that VLS should not be used
-> > > with different MAXPHYADDRs, I am just saying it might be.
-> >
-> > KVM straight up doesn't support that (see my other reply).
->
-> Sean, I intend to send a new version today with 2 main diffs:
-> - Use cpuid_maxphyaddr() here instead of  kvm_host.maxphyaddr.
-> - Use a common helper for checking RAX for SVM instructions for both
-> the emulator and gp_interception() (see response on patch 4).
->
-> Holler if you want me to wait for further feedback.
+On 3/7/26 10:04 PM, Douglas Freimuth wrote:
+> Patch 1: This patch adds map/unmap ioctls which map the adapter set
 
-I just realized I cannot just do cpuid_maxphyaddr(ctxt->vcpu) in
-check_svme_pa(), because vcpu is defined as a void pointer in
-x86_emulate_ctxt. Looking at commit c9b8b07cded5 ("KVM: x86:
-Dynamically allocate per-vCPU emulation context"), I cannot tell why.
+This comment applies to all patches in the series:
 
-I was going to move emul_to_vcpu() to arch/x86/kvm/kvm_emulate.h, but
-maybe we should just make this a normal struct kvm_vpcu pointer and
-drop emul_to_vcpu() completely?
+Drop the Patch #: intro, it would otherwise end up in git history.
+
+Also remove phrases like 'this patch' and switch to imperative phrasing
+ref: https://www.kernel.org/doc/html/latest/process/submitting-patches.html#describe-your-changes
+
+Also +1 to what Sean said, "KVM: s390: Add map..."
+
+> indicator pages so the pages can be accessed when interrupts are
+> disabled. The mappings are cleaned up when the guest is removed.
+> 
+> Fencing of Fast Inject in Secure Execution environments is enabled in
+This is a bit misleading.  You haven't implemented kvm_ach_set_irq_inatomic at this point, so this patch can't be fencing it yet.
+
+What you are doing is fencing the map/unmap ioctls so that you avoid the longterm pin in SE.  I'd focus on that part here.
+
+And then in patch 3, when you enable the feature, you can point out that it is fenced in SE because the mappings will never be available.
+
+> this patch by not mapping adapter indicator pages. In Secure Execution
+> environments the path of execution available before this patch is followed.
+> Statistical counters to count map/unmap functions for adapter indicator
+> pages are added in this patch. The counters can be used to analyze
+> map/unmap functions in non-Secure Execution environments and similarly
+> can be used to analyze Secure Execution environments where the counters
+> should not be incremented as the adapter indicator pages are not mapped.
+> 
+> Signed-off-by: Douglas Freimuth <freimuth@linux.ibm.com>
+
+
+> @@ -2477,14 +2572,28 @@ static int modify_io_adapter(struct kvm_device *dev,
+>  		if (ret > 0)
+>  			ret = 0;
+>  		break;
+> -	/*
+> -	 * The following operations are no longer needed and therefore no-ops.
+> -	 * The gpa to hva translation is done when an IRQ route is set up. The
+> -	 * set_irq code uses get_user_pages_remote() to do the actual write.
+> -	 */
+>  	case KVM_S390_IO_ADAPTER_MAP:
+>  	case KVM_S390_IO_ADAPTER_UNMAP:
+> -		ret = 0;
+> +		mutex_lock(&dev->kvm->lock);
+> +		if (kvm_s390_pv_is_protected(dev->kvm)) {
+> +			mutex_unlock(&dev->kvm->lock);
+> +			break;
+
+Was mentioned by the kernel bot also -- because you removed the initialization of ret above you will now return something uninitialized if you take this if statement.
+
+Either initialize ret above or return the intended value (0?) here.
+
+Also I think this is worth a comment block above this check stating why you are doing it (e.g. avoid long-term pin for secure exeuction guest)
+
+
