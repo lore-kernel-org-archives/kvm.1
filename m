@@ -1,128 +1,93 @@
-Received: from mail-pl1-f201.google.com (mail-pl1-f201.google.com [209.85.214.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6C2235F61C
-	for <kvm@vger.kernel.org>; Wed, 11 Mar 2026 13:53:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 58E73282F0B;
+	Wed, 11 Mar 2026 14:03:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=216.40.44.13
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773237192; cv=none; b=Z8wqLDfeUXzEhUV7jVLYKMkUMYUTAfmp/t4qy6uz03RwkWBZRcMerThp0Lt8/uO+dQFFPVwRr9N/fOn3pXG7cQfZeLVwYOs4qdh59bkrKIAbbNx4M37w2NzE+TXeqYjYVUAzYF8ANhHF1PURgTC4BoV+f8fHAxJ9fwbLlv+pH78=
+	t=1773237825; cv=none; b=YfeuVXpJaWRmredF+fd+cRX8/fGPonUHt/7I6khwDJcnF020k4gzDFfYRoRK5VVx7mDV9yHvFD4a8TuMfGfXdn70X1rgnHTILZ8lpYu7p5WNP9SolfeNkL3uFQjAFcys1XgnQvyrNQifbM+V4eF/5WLiA3aFFzhXl6lfVUPNVdE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773237192; c=relaxed/simple;
-	bh=dsjoVHQwySAScoTUu+/obDtz+Uxd5/FqEcA7GdZJUyw=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=VLR5Ht+mtfVSiwzYEZY+BdR+rPp9lX4RYUiJGJ9MZdWVZW4dJB8TOpjm6mS4t8Coji1x0NGGpjVPFLY6UF7iZPgBVoZ9eRfcs4HnqKKb/Bw1VlKhecJZ6OrebDi9MvxtjbnESqaTbwsNKvpJm7uFjvJ5uLXlz6Z/YJb4UmedsQw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=YSKH0mkJ; arc=none smtp.client-ip=209.85.214.201
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="YSKH0mkJ"
-Received: by mail-pl1-f201.google.com with SMTP id d9443c01a7336-2ae4e9577ceso536587765ad.1
-        for <kvm@vger.kernel.org>; Wed, 11 Mar 2026 06:53:08 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1773237188; x=1773841988; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=NAa3aHLl162rPpJr9UXwgPodsrtcAfdhM5O3Q0Mg11Y=;
-        b=YSKH0mkJP35Zn48hp7jqnSGpI8nvg9P1Cn+NvbWMzDVlpqVWDT6FwbhYMXlJZ4dOK7
-         ApUtWnsLl4dtb3Pi9uq3seJwjAjvsrgbitI2vaojt1DdWZw3B4gVzJTzHMl0hBSyEtQc
-         vPn0GpzKr5WsmyfI27RreYSWMaDelxuvlmd5Wp8eoIJj1nWHzu73eOt1DAk4K6VsX7UR
-         LJq7WrqqP+XfcCsKTMHqMCgPC0kYQNRUq+N2Cp61VJMn7sSYrVI3uIfcXMyTE8W6B0iz
-         HH+zdrxbETVW3xA0xB2K6b76AiRrYeGSLAugsWqRyBXOKbm8VxUvWnhvLU7LO2vVZCH8
-         n34Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1773237188; x=1773841988;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=NAa3aHLl162rPpJr9UXwgPodsrtcAfdhM5O3Q0Mg11Y=;
-        b=TA7epnoSTClky+a6lXwYlabLs5wnohI8/00+87jimkHCYZIUztz/acwVgendDJ2T6m
-         N83rgaUndOeSfklY3aufY2dJQslDOvnjBVf9QdGfBBpTJgvfYb17n5N+zE2rxZ0KcKA3
-         zJuCpXayDeabg6bPy0b+5ZCWqfded55+JbGUw4Lq5mCxzxZyTN1mXO6SGH6Jvuc5kf8l
-         JyWKCAX4Pu1InaMXMAgQmaHx8mIEjnnepiH/vR8GlCQa8fESLUs8nM7OKJcDi+RrTwql
-         6h9cyMmTgHY0mf8B/ExnuFsFkbB4tvkVaLlHZUhw0ZW1MhvxkDQqHgbZHTlLOuzU8d8R
-         FxoQ==
-X-Gm-Message-State: AOJu0YxNDsuvE6rKyg92QjBPMNU7cmrBeGM7EBNdQ+bqNlVSYDmf+CKQ
-	gsxc/Z+8bUNRVlcQmWfFI0FpHd/cmi4Fv9wfs2/GN9AZuQBXTtfW160E9iSC5lGAUKnP5YOYQim
-	J7y9+CA==
-X-Received: from plpw17.prod.google.com ([2002:a17:902:9a91:b0:2ae:4d0d:bcbe])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:902:f710:b0:2ae:62c8:771b
- with SMTP id d9443c01a7336-2aeae76f58cmr27864595ad.10.1773237187756; Wed, 11
- Mar 2026 06:53:07 -0700 (PDT)
-Date: Wed, 11 Mar 2026 06:53:06 -0700
-In-Reply-To: <20260311105047.18517-1-0wn@theori.io>
+	s=arc-20240116; t=1773237825; c=relaxed/simple;
+	bh=Co6af1PDO/5BNnOq+gUEX5fdYaHwA4r9elfY/kzPOJ0=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=uiJTIUuIlryWbuaxmhTCXv8ixFVpguQMxGNFPjmazsgavTuPnGEl38YL1iU8isiV7frdlvwg83drL2m1s1a39knxy59wChf+oE3JJd7ZLSqLD2u+/gPHmZAHYVLNJG11mv1wjZdNeLn4cPqr8vi7JajcONdd+QBoLOikye2vx9w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=goodmis.org; spf=pass smtp.mailfrom=goodmis.org; arc=none smtp.client-ip=216.40.44.13
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=goodmis.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=goodmis.org
+Received: from omf20.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 4324D139CEA;
+	Wed, 11 Mar 2026 14:03:38 +0000 (UTC)
+Received: from [HIDDEN] (Authenticated sender: rostedt@goodmis.org) by omf20.hostedemail.com (Postfix) with ESMTPA id 0CF3220025;
+	Wed, 11 Mar 2026 14:03:20 +0000 (UTC)
+Date: Wed, 11 Mar 2026 10:03:32 -0400
+From: Steven Rostedt <rostedt@goodmis.org>
+To: "Masami Hiramatsu (Google)" <mhiramat@kernel.org>
+Cc: Philipp Hahn <phahn-oss@avm.de>, amd-gfx@lists.freedesktop.org,
+ apparmor@lists.ubuntu.com, bpf@vger.kernel.org, ceph-devel@vger.kernel.org,
+ cocci@inria.fr, dm-devel@lists.linux.dev, dri-devel@lists.freedesktop.org,
+ gfs2@lists.linux.dev, intel-gfx@lists.freedesktop.org,
+ intel-wired-lan@lists.osuosl.org, iommu@lists.linux.dev,
+ kvm@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+ linux-block@vger.kernel.org, linux-bluetooth@vger.kernel.org,
+ linux-btrfs@vger.kernel.org, linux-cifs@vger.kernel.org,
+ linux-clk@vger.kernel.org, linux-erofs@lists.ozlabs.org,
+ linux-ext4@vger.kernel.org, linux-fsdevel@vger.kernel.org,
+ linux-gpio@vger.kernel.org, linux-hyperv@vger.kernel.org,
+ linux-input@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-leds@vger.kernel.org, linux-media@vger.kernel.org,
+ linux-mips@vger.kernel.org, linux-mm@kvack.org,
+ linux-modules@vger.kernel.org, linux-mtd@lists.infradead.org,
+ linux-nfs@vger.kernel.org, linux-omap@vger.kernel.org,
+ linux-phy@lists.infradead.org, linux-pm@vger.kernel.org,
+ linux-rockchip@lists.infradead.org, linux-s390@vger.kernel.org,
+ linux-scsi@vger.kernel.org, linux-sctp@vger.kernel.org,
+ linux-security-module@vger.kernel.org, linux-sh@vger.kernel.org,
+ linux-sound@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com,
+ linux-trace-kernel@vger.kernel.org, linux-usb@vger.kernel.org,
+ linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+ ntfs3@lists.linux.dev, samba-technical@lists.samba.org,
+ sched-ext@lists.linux.dev, target-devel@vger.kernel.org,
+ tipc-discussion@lists.sourceforge.net, v9fs@lists.linux.dev, Mathieu
+ Desnoyers <mathieu.desnoyers@efficios.com>
+Subject: Re: [PATCH 15/61] trace: Prefer IS_ERR_OR_NULL over manual NULL
+ check
+Message-ID: <20260311100332.6a2ce4b1@gandalf.local.home>
+In-Reply-To: <20260311141332.b611237d36b61b2409e66cb3@kernel.org>
+References: <20260310-b4-is_err_or_null-v1-0-bd63b656022d@avm.de>
+	<20260310-b4-is_err_or_null-v1-15-bd63b656022d@avm.de>
+	<20260310100750.303af303@gandalf.local.home>
+	<20260311141332.b611237d36b61b2409e66cb3@kernel.org>
+X-Mailer: Claws Mail 3.20.0git84 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20260311105047.18517-1-0wn@theori.io>
-Message-ID: <abFzwjGJm1j02L36@google.com>
-Subject: Re: [PATCH] KVM: clear map->gfn in kvm_vcpu_unmap() to prevent stale
- validity checks
-From: Sean Christopherson <seanjc@google.com>
-To: Taeyang Lee <0wn@theori.io>
-Cc: kvm@vger.kernel.org, Konrad Rzeszutek Wilk <konrad.wilk@oracle.com>, 
-	Paolo Bonzini <pbonzini@redhat.com>, KarimAllah Ahmed <karahmed@amazon.de>, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Queue-Id: 0CF3220025
+X-Stat-Signature: ff8ct3tumfmuryqygkfkcm78w16u4scc
+X-Rspamd-Server: rspamout03
+X-Session-Marker: 726F737465647440676F6F646D69732E6F7267
+X-Session-ID: U2FsdGVkX1+skqrXXDxm4il2tsYmj25H0/GTzSRdMUI=
+X-HE-Tag: 1773237800-364001
+X-HE-Meta: U2FsdGVkX1+aU4mY7bFvO8lRauP/vgjT20dobHa0QHVROVhTP6xZNvlHFy+HnthX7C3DUw86Ksayk8kipkioUde1pGRJffeDzlmGTmiRQAtxOhSsM3gHnZJQZGdgNXBABYZdeE7OsMEvCI5Ff4ZQbbyu3yXHRyZXg5AHof/AO0vcusmeqjpCWWhtLLOcuZIY7+tOVjT7VktVnLaFPp1jjRLc3JQ2sJ4jp/SiL4aHgDK/k//b9d34oAYT+AlJT32Fm0BFv3eObF3U3OAnj7CnGXu0MyQ+0edSgYKqKIiOybnUsF1fYSODF4X+zk3bqwV4HOqJnRMkZevrGktYEsiiqb8/qNY0d6MZ
 
-On Wed, Mar 11, 2026, Taeyang Lee wrote:
-> kvm_vcpu_unmap() clears map->hva and map->page but leaves map->gfn with
-> its previous value. This creates an inconsistent state: callers that
-> check gfn != 0 as a proxy for map validity will believe the map is still
+On Wed, 11 Mar 2026 14:13:32 +0900
+Masami Hiramatsu (Google) <mhiramat@kernel.org> wrote:
 
-But that was and still is flat out wrong, '0' is a perfectly legal gfn.
-
-> valid when hva is already NULL.
+> Hmm, now IS_ERR_OR_NULL() is an inline function, so it is safe.
+> But if you want to use IS_ERR_OR_NULL() here, it will be better something like
 > 
-> This pattern caused a null pointer dereference in the 6.1.x LTS branch,
-> where vmx_guest_apic_has_interrupt() checked virtual_apic_map.gfn but
-> dereferenced virtual_apic_map.hva unconditionally. That specific call
-> site no longer exists in mainline due to the gfn_to_pfn_cache
-> refactoring, but the inconsistency in kvm_vcpu_unmap() remains and could
-> affect future kvm_host_map users that rely on gfn for validity.
-> 
-> Similarly, kvm_vcpu_map() does not modify the map struct on failure, so
-> stale gfn values from a previous successful mapping survive a failed
-> remap attempt. Clearing gfn in kvm_vcpu_unmap() ensures that after an
-> unmap-then-failed-remap sequence, gfn correctly reflects that no valid
-> mapping exists.
-> 
-> Clear map->gfn in kvm_vcpu_unmap().
-> 
-> Reported-by: Taeyang Lee <0wn@theori.io>
-> Fixes: e45adf665a53 ("KVM: Introduce a new guest mapping API")
+> node = rhashtable_walk_next(&iter);
+> while (!IS_ERR_OR_NULL(node)) {
+> 	fprobe_remove_node_in_module(mod, node, &alist);
+> 	node = rhashtable_walk_next(&iter);
+> }
 
-This is not the correct fixes, the blame lies squarely on 96c66e87deee ("KVM/nVMX:
-Use kvm_vcpu_map when mapping the virtual APIC page").  The API even provided
-kvm_vcpu_mapped() from the get-go; why commit e45adf665a53 checked the gfn, I have
-no idea.
+But now you need to have a duplicate code in order to acquire "node"
 
-> Signed-off-by: Taeyang Lee <0wn@theori.io>
-> ---
->  virt/kvm/kvm_main.c | 1 +
->  1 file changed, 1 insertion(+)
-> 
-> diff --git a/virt/kvm/kvm_main.c b/virt/kvm/kvm_main.c
-> index 7a4fd1dbe0d7..88fc8b20aa8f 100644
-> --- a/virt/kvm/kvm_main.c
-> +++ b/virt/kvm/kvm_main.c
-> @@ -2887,6 +2887,7 @@ void kvm_vcpu_unmap(struct kvm_vcpu *vcpu, struct kvm_host_map *map, bool dirty)
->  
->  	map->hva = NULL;
->  	map->page = NULL;
-> +	map->gfn = 0;
+I think the patch just makes the code worse.
 
-As above, this is at best misleading.  If we wanted to harden this, we should do
-
-	map->gfn = INVALID_GPA;
-
-but I honestly don't see the point.  Yes, we had terrible code in the past, but
-the above doesn't prevent terrible code.  E.g. the correct invalidation wouldn't
-actually do anything to make the terrible code less broken.
-
-We even (somewhat unintentionally) removed that terrible code in commit 321ef62b0c5f
-("KVM: nVMX: Fold requested virtual interrupt check into has_nested_events()").
-And that commit was tagged for stable@, it just didn't apply.  If we want to do
-anything for 6.1.y (and 6.6.y?), we should backport that entire series:
-
-  https://lore.kernel.org/all/2024072925-straw-mashing-54f6@gregkh
+-- Steve
