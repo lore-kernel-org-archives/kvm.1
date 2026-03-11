@@ -1,121 +1,103 @@
-Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [78.32.30.218])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f202.google.com (mail-pf1-f202.google.com [209.85.210.202])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B058778F39;
-	Wed, 11 Mar 2026 00:16:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=78.32.30.218
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 314C9363C79
+	for <kvm@vger.kernel.org>; Wed, 11 Mar 2026 00:33:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.202
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773188181; cv=none; b=i2EWN6pZMe8+Vt3a1nfivI3TDYN70wUqee/HZulAaULlezQKOJs7HxTawJBPRQHbmwD1JJ+sTqDFhZh4APZJCNgegzcdxeIMiQutwziMqBW71T2+rVkROA+OZyw96+PAW6SKCVjN3vd8ZlE4JokVdJQshqiR8O/ffkeoseKHnw4=
+	t=1773189235; cv=none; b=GMUEzJGvBTAsSq51Wcz52FTcH9r4tGKaksVChP+hgZMDRzk4TTWVYfIke7FqqdWLWHEdkXJeszwNFcQ9aOBFCqyFJrH3XDafBEY9qPCBlJlwFu16ELuIyYlbPA6Tq4vgmGMf9rX3CezshG0yO+Xs/CP9MnGRI53zlLFgiHeMWMc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773188181; c=relaxed/simple;
-	bh=HHmVVMzB7LWlN0zlKien4jBG/TuDlI4RcZGysb9m8Vk=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=fCr4TN/DbSTIZeYdqUctNJeA+l8EomJclrlIObj95OA1pv6ZpTOygP6Tea6nrZD3U8t1nKEbwVlAjbTRISh/e6ssZ439PxfUvXb5k/ABXz9hh6ENTt34TElTXWvgyx4DfaU/7j3RNYTwX3f624dl5YqTeI526pgCb0boWeIgqx4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk; spf=none smtp.mailfrom=armlinux.org.uk; dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b=v5WQ+aGF; arc=none smtp.client-ip=78.32.30.218
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=armlinux.org.uk
+	s=arc-20240116; t=1773189235; c=relaxed/simple;
+	bh=pkeFz4pHI1qOD1pZsBkP4yqTDQt6pCmcAwnlYpu37+c=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=a9fOk1jeijFpSKLS8AlfuzXJwO2KVoSv2pghQjTg4LVSXakLzNcQAo5Vr/4DhDEJ6IadEWHxzxIxUrwDOXMsOobzHOSY9Xy6IwEGBIHKM72k36O0fKPbQ2patv8ZDwBHHzInCtgorkAjGQ4E5M4Wnb35JzWfadKvmCFsrMyjlV8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=wGcITFs1; arc=none smtp.client-ip=209.85.210.202
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b="v5WQ+aGF"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=armlinux.org.uk; s=pandora-2019; h=Sender:In-Reply-To:Content-Type:
-	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
-	List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=G+5qjaihAOE3Wva2YLY8jATPGvyCa7CiJLk7V/SbO+c=; b=v5WQ+aGF0sps0WNhC7Zp3i4qfq
-	0Hb0SCVWpSXvSr7WdAe2bPHF4KfJ/Ed1eiaiCb8D0oCv1z5xwK7JuLf0tC0l8hY2t6eWn1tcNZSpg
-	QYrAEXTacs2n4b4dGxTmR/QZFsu7Xre8GI0M2CDH+d6uoN0gFUU9MJ/Uqp3GyqqaO1XmybhsS5lVz
-	KPXBqq6BLZCCQzpQ8jMEzm8MnKJZE/MMCDQxbCe0qlHGv5pHIS812K52VRhLCysEP1IhQjrayukQi
-	lGpFnxogge7mHLP+wP8QrSVC+xUyVfKJNzw96REdhpsHijJHvcSndISQsei/F/gJP6wWuF34GUcce
-	0I/0wllQ==;
-Received: from shell.armlinux.org.uk ([fd8f:7570:feb6:1:5054:ff:fe00:4ec]:55974)
-	by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.98.2)
-	(envelope-from <linux@armlinux.org.uk>)
-	id 1w07FF-000000005dP-41aF;
-	Wed, 11 Mar 2026 00:16:14 +0000
-Received: from linux by shell.armlinux.org.uk with local (Exim 4.98.2)
-	(envelope-from <linux@shell.armlinux.org.uk>)
-	id 1w07FB-000000005hj-1vhz;
-	Wed, 11 Mar 2026 00:16:09 +0000
-Date: Wed, 11 Mar 2026 00:16:09 +0000
-From: "Russell King (Oracle)" <linux@armlinux.org.uk>
-To: Philipp Hahn <phahn-oss@avm.de>
-Cc: amd-gfx@lists.freedesktop.org, apparmor@lists.ubuntu.com,
-	bpf@vger.kernel.org, ceph-devel@vger.kernel.org, cocci@inria.fr,
-	dm-devel@lists.linux.dev, dri-devel@lists.freedesktop.org,
-	gfs2@lists.linux.dev, intel-gfx@lists.freedesktop.org,
-	intel-wired-lan@lists.osuosl.org, iommu@lists.linux.dev,
-	kvm@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-	linux-block@vger.kernel.org, linux-bluetooth@vger.kernel.org,
-	linux-btrfs@vger.kernel.org, linux-cifs@vger.kernel.org,
-	linux-clk@vger.kernel.org, linux-erofs@lists.ozlabs.org,
-	linux-ext4@vger.kernel.org, linux-fsdevel@vger.kernel.org,
-	linux-gpio@vger.kernel.org, linux-hyperv@vger.kernel.org,
-	linux-input@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-leds@vger.kernel.org, linux-media@vger.kernel.org,
-	linux-mips@vger.kernel.org, linux-mm@kvack.org,
-	linux-modules@vger.kernel.org, linux-mtd@lists.infradead.org,
-	linux-nfs@vger.kernel.org, linux-omap@vger.kernel.org,
-	linux-phy@lists.infradead.org, linux-pm@vger.kernel.org,
-	linux-rockchip@lists.infradead.org, linux-s390@vger.kernel.org,
-	linux-scsi@vger.kernel.org, linux-sctp@vger.kernel.org,
-	linux-security-module@vger.kernel.org, linux-sh@vger.kernel.org,
-	linux-sound@vger.kernel.org,
-	linux-stm32@st-md-mailman.stormreply.com,
-	linux-trace-kernel@vger.kernel.org, linux-usb@vger.kernel.org,
-	linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-	ntfs3@lists.linux.dev, samba-technical@lists.samba.org,
-	sched-ext@lists.linux.dev, target-devel@vger.kernel.org,
-	tipc-discussion@lists.sourceforge.net, v9fs@lists.linux.dev,
-	Igor Russkikh <irusskikh@marvell.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Pavan Chebbi <pavan.chebbi@broadcom.com>,
-	Michael Chan <mchan@broadcom.com>,
-	Potnuri Bharat Teja <bharat@chelsio.com>,
-	Tony Nguyen <anthony.l.nguyen@intel.com>,
-	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
-	Taras Chornyi <taras.chornyi@plvision.eu>,
-	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-	Alexandre Torgue <alexandre.torgue@foss.st.com>,
-	Iyappan Subramanian <iyappan@os.amperecomputing.com>,
-	Keyur Chudgar <keyur@os.amperecomputing.com>,
-	Quan Nguyen <quan@os.amperecomputing.com>,
-	Heiner Kallweit <hkallweit1@gmail.com>
-Subject: Re: [PATCH 38/61] net: Prefer IS_ERR_OR_NULL over manual NULL check
-Message-ID: <abC0Se_cstwTWp9r@shell.armlinux.org.uk>
-References: <20260310-b4-is_err_or_null-v1-0-bd63b656022d@avm.de>
- <20260310-b4-is_err_or_null-v1-38-bd63b656022d@avm.de>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="wGcITFs1"
+Received: by mail-pf1-f202.google.com with SMTP id d2e1a72fcca58-829aa961449so1846861b3a.1
+        for <kvm@vger.kernel.org>; Tue, 10 Mar 2026 17:33:53 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1773189233; x=1773794033; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:mime-version:date:reply-to:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=Y8ZVaqYViHeyZ+pNLWaCA3L4wzmUu/H59FOP4fIvB28=;
+        b=wGcITFs1X6yM+QWMZ6m7aEfsgZU+4AraMPtW8kjWyVImp4bMG7jOTe/utWSsdEKTDQ
+         0xoyA80JkZPFDG636xloK6p/I356amUSOAlyf9NfbAUdZgPQWDvi38Lj0JQe42+JKmcu
+         O0C53FmFP04TriQKq3YCVSFDEXAKdpBvkkVVdrRf5HR5yIEgzWLvpvEu7bfzlmR5DMNw
+         DEQF1KUBPwIHVgOWwJ6wZpxyX70qjJoih+w+SJ5nTrdNVxRVEbEOAZCZpwjRjq27p9K8
+         DQcgHExEa+/1ZUEnaBsc2hlYlzkLfMFCl9H88nHWN1fHYSfT/ydJSvHrjWjgAdOWPaNN
+         d3Kg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1773189233; x=1773794033;
+        h=cc:to:from:subject:message-id:mime-version:date:reply-to
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=Y8ZVaqYViHeyZ+pNLWaCA3L4wzmUu/H59FOP4fIvB28=;
+        b=D5bDBb4yEzL3ncMB8n5C02OfnpEztHYx6dBL5DhTwyR3LvuDYm2ATkDfcvyQ9Lrt4y
+         xfmbZUxt1wKf5Q+7q6CdUlL7NjRr+mN6oGllI51DK+eqD3Qf6sZLDSEyn8yxx2VH5g3W
+         ORmtQcPvbnjjbuXg9fnRnbnGeNe29ivwDs0GZbRPVfJHS4SEPugcGU4P8LjYWF+ldnY3
+         Wm5h8wLRB3rUVOI7WZd9MpkpjWW0j2I6E69wsDDAOIq646e4gEkV6Z44M6G+A0ThPC46
+         X55WwvfdTgqOgetc7uUxYkFPqmra+J0+A4d54M4+F88/3DjBHgJ7vW2vN2L/3aQkFpzm
+         gn5g==
+X-Gm-Message-State: AOJu0Yyx8ef2PhJyVO+cYpeoZ6CneO7lIL6ybzKzXMw1V4UwQUXZcmfP
+	mPbHRgpcYAs6z6j4Rxa32CkqexBottOpHhNrwgPPeQjEcff2VNvIHXFq3eY8gG82d/QtipIKPd6
+	rxqNAZQ==
+X-Received: from pfbde20.prod.google.com ([2002:a05:6a00:4694:b0:829:9167:6d5b])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:8017:b0:829:8c23:f70e
+ with SMTP id d2e1a72fcca58-829f70ac57amr636536b3a.45.1773189233364; Tue, 10
+ Mar 2026 17:33:53 -0700 (PDT)
+Reply-To: Sean Christopherson <seanjc@google.com>
+Date: Tue, 10 Mar 2026 17:33:39 -0700
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260310-b4-is_err_or_null-v1-38-bd63b656022d@avm.de>
-Sender: Russell King (Oracle) <linux@armlinux.org.uk>
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.53.0.473.g4a7958ca14-goog
+Message-ID: <20260311003346.2626238-1-seanjc@google.com>
+Subject: [PATCH 0/7] KVM: x86: APX reg prep work
+From: Sean Christopherson <seanjc@google.com>
+To: Sean Christopherson <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>, 
+	Kiryl Shutsemau <kas@kernel.org>
+Cc: kvm@vger.kernel.org, x86@kernel.org, linux-coco@lists.linux.dev, 
+	linux-kernel@vger.kernel.org, "Chang S . Bae" <chang.seok.bae@intel.com>
+Content-Type: text/plain; charset="UTF-8"
 
-On Tue, Mar 10, 2026 at 12:49:04PM +0100, Philipp Hahn wrote:
-> diff --git a/drivers/net/mdio/mdio-xgene.c b/drivers/net/mdio/mdio-xgene.c
-> index a8f91a4b7fed0927ee14e408000cd3a2bfb9b09a..09b30b563295c6085dc1358ac361301e5cf6b2a8 100644
-> --- a/drivers/net/mdio/mdio-xgene.c
-> +++ b/drivers/net/mdio/mdio-xgene.c
-> @@ -265,7 +265,7 @@ struct phy_device *xgene_enet_phy_register(struct mii_bus *bus, int phy_addr)
->  	struct phy_device *phy_dev;
->  
->  	phy_dev = get_phy_device(bus, phy_addr, false);
-> -	if (!phy_dev || IS_ERR(phy_dev))
-> +	if (IS_ERR_OR_NULL(phy_dev))
+Clean up KVM's register tracking and storage in preparation for landing APX,
+which expands the maximum number of GPRs from 16 to 32.
 
-As noted in reply to your cover message, the check for NULL here is
-incorrect - get_phy_device() returns either a valid pointer or an
-error pointer, but never NULL.
+This is kinda sorta an RFC, as there are some very opinionated changes.  I.e.
+if you dislike something, please speak up.
 
+My thought is to treat R16-R31 as much like other GPRs as possible (though
+maybe we don't need to expand regs[] as sketched out in the last patch?).
+
+Sean Christopherson (7):
+  KVM: x86: Add dedicated storage for guest RIP
+  KVM: x86: Drop the "EX" part of "EXREG" to avoid collision with APX
+  KVM: nVMX: Do a bitwise-AND of regs_avail when switching active VMCS
+  KVM: x86: Add wrapper APIs to reset dirty/available register masks
+  KVM: x86: Track available/dirty register masks as "unsigned long"
+    values
+  KVM: x86: Use a proper bitmap for tracking available/dirty registers
+  *** DO NOT MERGE *** KVM: x86: Pretend that APX is supported on 64-bit
+    kernels
+
+ arch/x86/include/asm/kvm_host.h | 53 +++++++++++++++++++--------
+ arch/x86/kvm/kvm_cache_regs.h   | 64 +++++++++++++++++++++++----------
+ arch/x86/kvm/svm/sev.c          |  2 +-
+ arch/x86/kvm/svm/svm.c          | 16 ++++-----
+ arch/x86/kvm/svm/svm.h          |  2 +-
+ arch/x86/kvm/vmx/nested.c       | 10 +++---
+ arch/x86/kvm/vmx/tdx.c          | 36 +++++++++----------
+ arch/x86/kvm/vmx/vmx.c          | 52 +++++++++++++--------------
+ arch/x86/kvm/vmx/vmx.h          | 24 ++++++-------
+ arch/x86/kvm/x86.c              | 20 +++++------
+ 10 files changed, 166 insertions(+), 113 deletions(-)
+
+
+base-commit: 5128b972fb2801ad9aca54d990a75611ab5283a9
 -- 
-RMK's Patch system: https://www.armlinux.org.uk/developer/patches/
-FTTP is here! 80Mbps down 10Mbps up. Decent connectivity at last!
+2.53.0.473.g4a7958ca14-goog
+
