@@ -1,88 +1,565 @@
-Received: from mail-pj1-f74.google.com (mail-pj1-f74.google.com [209.85.216.74])
+Received: from mail-pl1-f173.google.com (mail-pl1-f173.google.com [209.85.214.173])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D32C3502AA
-	for <kvm@vger.kernel.org>; Wed, 11 Mar 2026 20:57:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.74
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C584324716
+	for <kvm@vger.kernel.org>; Wed, 11 Mar 2026 21:07:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773262653; cv=none; b=OS6xpKf3V//E8o7qE4nh07pH0jeX9y1zTp8N2PghEELebRVjFCVmi27iFXiyfy9VNnz6HYlKGjY/E+Q7YlNGuVis4g6hP3p3STqVkpbeYFR8Aj3xdw9QzmjWFd0Sb6zEp1rL2McmoB0oefgJayAz19GcMSSQJDtZxMuYDNysokA=
+	t=1773263231; cv=none; b=VD1Pt+fTS8RuKAu65Z0RRj+OV/17d7WsFEvJhHFhmno+d9ZJAx22GuViVWRgh9BvQFTEUZR7lsGUtzBC1IhH4y01fLtX6sXCHPlfAypRgZ6aw3+1RFeIMKiBK4fx+lzCU0OwlgzTViagB9t7rXxlmYvwHXR4GGmIQBKzq0pmqcs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773262653; c=relaxed/simple;
-	bh=9n7THgO8BeAYRFo2UTVmcYjFqZ24ZdyK04pasRsp8uc=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=cDqlw3AzsiJBPHWBAqWwBekC356loxs45MxiPXdqkLc2M1GSr4OhYWaSa7vLUahW/HRLoDYG42IrKWAHc+g7BVeplUwF+ZvjHk35qaL9xoDU9lzRg/Jfr+bbqitqVmCQrIZexAEm1rrPcPy1taG/oq2umvMpYt1iUPWdXYIjw8E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=siPQSX9o; arc=none smtp.client-ip=209.85.216.74
+	s=arc-20240116; t=1773263231; c=relaxed/simple;
+	bh=x7ojQGAtNFB9/BA5yUqyXaR/a/Ze/5m3NRuuvcwiU7k=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=lf+KO9UKoUnmqIpo76AKv/6PQiTe7cjW1Gr4cWPVeRK3nlgVoltsxNhuprT8EwDpLi1S3BpxYZc/mmT5JTLITPr7VndYj5rJW30MhTadlv5n1S20FodVgyMT87Lx5FTuW/XmBoflxy6BJhzdo4JTXtj4wuX8d1gdt7J9mpEI4Ls=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=2fR8IYpQ; arc=none smtp.client-ip=209.85.214.173
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="siPQSX9o"
-Received: by mail-pj1-f74.google.com with SMTP id 98e67ed59e1d1-3595485abbbso239045a91.2
-        for <kvm@vger.kernel.org>; Wed, 11 Mar 2026 13:57:32 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="2fR8IYpQ"
+Received: by mail-pl1-f173.google.com with SMTP id d9443c01a7336-2aea4ebb048so10375ad.1
+        for <kvm@vger.kernel.org>; Wed, 11 Mar 2026 14:07:08 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1773262652; x=1773867452; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=I4TfVhVbyP/UFwW/kmzaSUHr2Zq16cL7z//AyGEftuU=;
-        b=siPQSX9omkUL4jihoYCoaFnqZH80A5bAy+eNxm4yXtgkpNE4JnnyPZEtJZN9kbEKFD
-         DYgebKQYwHy7CU4MqfhSCS41pF3bWm3KI0tzWNPyYFHsnseWX9F1jIWel5OqpAML9vtz
-         ks79IhIJZpmN0Klf6NzkeRZlA4as2pJkX/hsI67B3w0ozy9Ew+FRiZ1vQj6NYLEs3ubi
-         Qn7hIWdKGn4XMZZwCvZk4pNYpAAOqeCnmJoJeP7S7+1UmrAhYf55xBXzef6aZ6Ct3eO3
-         +/gYJufqibF3u/9OQgxQn6u83x6QXiotyqIQ0326inkYJ0r6Pqn7nuceItKw3zdrdjs1
-         JqKQ==
+        d=google.com; s=20230601; t=1773263228; x=1773868028; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=pHCxo/G/rAcnDxlQUxDj+DoGxJBnofNqlavWRWu6L04=;
+        b=2fR8IYpQDXxgMKe7Rqnz87wv/3PBjCTAjt9vKO6OffhxaI9/ePveuWyLI4yQaB6KRZ
+         1qpQ23wWA9cnBFf95Aoc4470I5DbVc1lDxq5uaMRUL1dE5WNf3JAPKgSQHnXgLaMXPwT
+         DLlsJtaL6rK136eCkm26xgBhlMOL33JfpuMhdcbT6rXJsNnxPoszNr8jp7Q+KY3AvfNg
+         RBOdcgA8nO8FPNAFiXhFi+9wJ5W7gmwQgnngYY5TqICqRT4Oy/GOZ+p4pvmJNaIIdWIS
+         ITUAdCT9rdxq0o8gX7fEFuRIHFHrMBiSlfrbcNejWvqRgCy1/WC1w6akesAC+ougC+4g
+         fjQQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1773262652; x=1773867452;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=I4TfVhVbyP/UFwW/kmzaSUHr2Zq16cL7z//AyGEftuU=;
-        b=G7hFNVgpdon7EmqLGHpPcPR3CQ1YjNhGgmJi3mfu0dC7bOEFujOLlvPr+jAqnyHBR6
-         /nDbq+2dtocmPL3KE4ae+aRoJRfi8DabhPEn29NbK9DVLxuWEO+0MEegOliWvRTrJ9y5
-         wYsQ+Z1o0UGd2e4BCSU9a/raEPQ4ThWaxU1j4UzTC8PlMHx+B/1pfoLCTBcybbVb2mMY
-         ZcBxX4lPEq+XXPxpx4v/Hkd5H9ByAdxzO8GWvjMY14J601QA0FwVBcabSFPpn0GPCWB1
-         Y6kzJP90Qe6gIQ6l67kgZVMFHSNwR8ph1K+pGPgDiF2AGOxK37Ax9Lr0GA9QOYVGMLub
-         81Uw==
-X-Gm-Message-State: AOJu0Yxwmqyu/z2DgKzlJwNyjBHc274IKDKAT3G9iNeCKydc6M+2KV0X
-	jt4d4E0hPdgM/QRQ94GrtCHSsQKlNWTfuDAO7AAZ7PbYNUE5tTchZNx5Tc41Z7H8/7J0gd+c8pp
-	FeBAa0w==
-X-Received: from pjbhi2.prod.google.com ([2002:a17:90b:30c2:b0:359:f499:6e04])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:2e8d:b0:32e:3829:a71c
- with SMTP id 98e67ed59e1d1-35a0138149bmr3746700a91.16.1773262651493; Wed, 11
- Mar 2026 13:57:31 -0700 (PDT)
-Date: Wed, 11 Mar 2026 13:57:30 -0700
-In-Reply-To: <20260310064403.22218-1-itazur@amazon.com>
+        d=1e100.net; s=20230601; t=1773263228; x=1773868028;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=pHCxo/G/rAcnDxlQUxDj+DoGxJBnofNqlavWRWu6L04=;
+        b=HUjMImjh6oCCVtVMHLrcHq/0aHY0EDPxBa3lXshR3bM9VtUDCB+P2Y1c9li7WLUMeR
+         DPnAQ2eKnFpBvAv2H5V5Q9N2q6w5WjpEG7aFB2RDgk2o2tcaK38yOpD6/zuqaTAjO2w8
+         XZWienqSw0pQry3ymVXbv6JxMkVch1aY5hBwOi6Qn/NGMDzrwFIn9ORJw7+ZBxI1LzS6
+         KF61IH2acSsPRlWpwJtQuEwqnzFHOXpX5Cbe6L1qZQuDOeMUXPqsbkEQ/TDfCtkIPFZs
+         pHriN+z+eEbTm9wEuR+uhvL8OXzJFo8v0Z9pFao53qDXVZRJSzWpPe2VtyKB5C0fAg27
+         16bA==
+X-Forwarded-Encrypted: i=1; AJvYcCVMgGZ9d6LprXFmmF/Iqu4BK0mLSu2KDwQNB5mytg5Sn/IHXCvOzZOiOYF7QM0ytdyIT7E=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxcbjrJYH/xVEqRHN9iRe7TAsseqERcXBoopKYUq6MdykJuSAIZ
+	FDGA1mX6Lho3bccIlbYxHbTBOnggvO7pu3fGDEaOmvw1JpOVs6Ddo5KlxjkQvwxTMA==
+X-Gm-Gg: ATEYQzxIBB6aVc80xW6ohswJukg11zd2KieiEsF8xi7xrScYlJHNH9EZ8rVJqhAJ62q
+	njEnTqciHMqoIDrFLCw8M9T3HEiWu2CW+hXv8DqFLVPLTyt5xmUUR+X+CsciKOtxScn9A6MEugI
+	CplgIWscneljBs7Oi5nSqe5hJjYkV3j19AU3lFf9NZHJ3QkEvk7k0TSfD/f8yPCvGUsfqv6PFzX
+	Kf8shfKWLHHwovUr5WOGKVrufMonpzvTexkW2/ipw0UbZzCQ9Qbouq51YQw7+KER96oDAaR41Q1
+	a70iF/gtS8p7S2SBg3D0gJ7mn7K83iAz4zo1sG33J2GwyzG11tjPeGXiMwwl3TC+zz9SB1LHcrA
+	mHb6TSjTmdtkZZ+Fo+OuGOuD6GFpuQfe8J2RCUUXkAfRm8Q+WYNWNXW+SfbTlSYBATOg/w7NVFm
+	31VvSqznHl83Th6VtU/aoJM5l8mCuFSSUcRB+YuNcqhIsEMtXgGAUMJj9YrA==
+X-Received: by 2002:a17:902:cf0a:b0:2a0:7fac:c031 with SMTP id d9443c01a7336-2aebae3df3fmr895995ad.14.1773263227723;
+        Wed, 11 Mar 2026 14:07:07 -0700 (PDT)
+Received: from google.com (10.129.124.34.bc.googleusercontent.com. [34.124.129.10])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-82a0725bfd0sm698451b3a.14.2026.03.11.14.07.02
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 11 Mar 2026 14:07:07 -0700 (PDT)
+Date: Wed, 11 Mar 2026 21:07:00 +0000
+From: Pranjal Shrivastava <praan@google.com>
+To: Samiullah Khawaja <skhawaja@google.com>
+Cc: David Woodhouse <dwmw2@infradead.org>,
+	Lu Baolu <baolu.lu@linux.intel.com>, Joerg Roedel <joro@8bytes.org>,
+	Will Deacon <will@kernel.org>, Jason Gunthorpe <jgg@ziepe.ca>,
+	Robin Murphy <robin.murphy@arm.com>,
+	Kevin Tian <kevin.tian@intel.com>,
+	Alex Williamson <alex@shazbot.org>, Shuah Khan <shuah@kernel.org>,
+	iommu@lists.linux.dev, linux-kernel@vger.kernel.org,
+	kvm@vger.kernel.org, Saeed Mahameed <saeedm@nvidia.com>,
+	Adithya Jayachandran <ajayachandra@nvidia.com>,
+	Parav Pandit <parav@nvidia.com>,
+	Leon Romanovsky <leonro@nvidia.com>, William Tu <witu@nvidia.com>,
+	Pratyush Yadav <pratyush@kernel.org>,
+	Pasha Tatashin <pasha.tatashin@soleen.com>,
+	David Matlack <dmatlack@google.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Chris Li <chrisl@kernel.org>, Vipin Sharma <vipinsh@google.com>,
+	YiFei Zhu <zhuyifei@google.com>
+Subject: Re: [PATCH 01/14] iommu: Implement IOMMU LU FLB callbacks
+Message-ID: <abHZdOKyLmmmHADz@google.com>
+References: <20260203220948.2176157-1-skhawaja@google.com>
+ <20260203220948.2176157-2-skhawaja@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20260310063647.15665-1-itazur@amazon.com> <20260310064403.22218-1-itazur@amazon.com>
-Message-ID: <abHXOvAaK3X2FIkt@google.com>
-Subject: Re: [RFC PATCH v3 5/6] KVM: Rename mn_* invalidate-related fields to
- generic ones
-From: Sean Christopherson <seanjc@google.com>
-To: Takahiro Itazuri <itazur@amazon.com>
-Cc: kvm@vger.kernel.org, Paolo Bonzini <pbonzini@redhat.com>, 
-	Vitaly Kuznetsov <vkuznets@redhat.com>, Fuad Tabba <tabba@google.com>, 
-	Brendan Jackman <jackmanb@google.com>, David Hildenbrand <david@kernel.org>, 
-	David Woodhouse <dwmw2@infradead.org>, Paul Durrant <pdurrant@amazon.com>, 
-	Nikita Kalyazin <kalyazin@amazon.com>, Patrick Roy <patrick.roy@campus.lmu.de>, 
-	Takahiro Itazuri <zulinx86@gmail.com>
-Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260203220948.2176157-2-skhawaja@google.com>
 
-On Tue, Mar 10, 2026, Takahiro Itazuri wrote:
-> The addition of guest_memfd support to pfncaches introduces additional
-> sources of pfncache invalidation beyond the MMU notifier path.  The
-> existing mn_* naming implies that they are only relevant to MMU
-> notifiers, which is no longer true.
+On Tue, Feb 03, 2026 at 10:09:35PM +0000, Samiullah Khawaja wrote:
+> Add liveupdate FLB for IOMMU state preservation. Use KHO preserve memory
+> alloc/free helper functions to allocate memory for the IOMMU LU FLB
+> object and the serialization structs for device, domain and iommu.
+> 
+> During retrieve, walk through the preserved objs nodes and restore each
+> folio. Also recreate the FLB obj.
+> 
+> Signed-off-by: Samiullah Khawaja <skhawaja@google.com>
+> ---
+>  drivers/iommu/Kconfig         |  11 +++
+>  drivers/iommu/Makefile        |   1 +
+>  drivers/iommu/liveupdate.c    | 177 ++++++++++++++++++++++++++++++++++
+>  include/linux/iommu-lu.h      |  17 ++++
+>  include/linux/kho/abi/iommu.h | 119 +++++++++++++++++++++++
+>  5 files changed, 325 insertions(+)
+>  create mode 100644 drivers/iommu/liveupdate.c
+>  create mode 100644 include/linux/iommu-lu.h
+>  create mode 100644 include/linux/kho/abi/iommu.h
+> 
+> diff --git a/drivers/iommu/Kconfig b/drivers/iommu/Kconfig
+> index f86262b11416..fdcfbedee5ed 100644
+> --- a/drivers/iommu/Kconfig
+> +++ b/drivers/iommu/Kconfig
+> @@ -11,6 +11,17 @@ config IOMMUFD_DRIVER
+>  	bool
+>  	default n
+>  
+> +config IOMMU_LIVEUPDATE
+> +	bool "IOMMU live update state preservation support"
+> +	depends on LIVEUPDATE && IOMMUFD
+> +	help
+> +	  Enable support for preserving IOMMU state across a kexec live update.
+> +
+> +	  This allows devices managed by iommufd to maintain their DMA mappings
+> +	  during kexec base kernel update.
+> +
+> +	  If unsure, say N.
+> +
 
-I very strongly disagree.  Except for kvm_swap_active_memslots() and
-kvm_create_vm(), literally every function here has mmu_notifier in its name.
+I'm wondering if this should be under the if IOMMU_SUPPORT below? I
+believe this was added here because IOMMUFD isn't under IOMMU_SUPPORT,
+but it wouldn't make sense to "preserve" IOMMU across a liveupdate if
+IOMMU_SUPPORT is disabled? Should we probably be move it inside the 
+if IOMMU_SUPPORT block for better organization, or at least have a depends
+on IOMMU_SUPPORT added to it? The IOMMU_LUO still depends on the 
+IOMMU_SUPPORT infrastructure to actually function.. as we add calls
+within core functions like dev_iommu_get etc.
 
-They no longer are used only the for the _kernel's_ MMU-notifier implementation,
-but they're still very much scoped explicitly to KVM's overarching MMU notification
-system.
+>  menuconfig IOMMU_SUPPORT
+>  	bool "IOMMU Hardware Support"
+>  	depends on MMU
+> diff --git a/drivers/iommu/Makefile b/drivers/iommu/Makefile
+> index 0275821f4ef9..b3715c5a6b97 100644
+> --- a/drivers/iommu/Makefile
+> +++ b/drivers/iommu/Makefile
+> @@ -15,6 +15,7 @@ obj-$(CONFIG_IOMMU_IO_PGTABLE_ARMV7S) += io-pgtable-arm-v7s.o
+>  obj-$(CONFIG_IOMMU_IO_PGTABLE_LPAE) += io-pgtable-arm.o
+>  obj-$(CONFIG_IOMMU_IO_PGTABLE_LPAE_KUNIT_TEST) += io-pgtable-arm-selftests.o
+>  obj-$(CONFIG_IOMMU_IO_PGTABLE_DART) += io-pgtable-dart.o
+> +obj-$(CONFIG_IOMMU_LIVEUPDATE) += liveupdate.o
+>  obj-$(CONFIG_IOMMU_IOVA) += iova.o
+>  obj-$(CONFIG_OF_IOMMU)	+= of_iommu.o
+>  obj-$(CONFIG_MSM_IOMMU) += msm_iommu.o
+> diff --git a/drivers/iommu/liveupdate.c b/drivers/iommu/liveupdate.c
+> new file mode 100644
+> index 000000000000..6189ba32ff2c
+> --- /dev/null
+> +++ b/drivers/iommu/liveupdate.c
+> @@ -0,0 +1,177 @@
+> +// SPDX-License-Identifier: GPL-2.0-only
+> +
+> +/*
+> + * Copyright (C) 2025, Google LLC
 
-If we want to come up with a "better" name, then it needs to capture that somewhere
-in the prefix.  Because e.g. invalidate_lock is way, way too generic.  I read that
-and my very first question is "ivalidate what, exactly?".  Ditto for
-memslots_update_rcuwait and pretty much every other field.
+Minor nit: 2026 OR 2025-26, here and everywhere else
+
+> + * Author: Samiullah Khawaja <skhawaja@google.com>
+> + */
+> +
+> +#define pr_fmt(fmt)    "iommu: liveupdate: " fmt
+> +
+> +#include <linux/kexec_handover.h>
+> +#include <linux/liveupdate.h>
+> +#include <linux/iommu-lu.h>
+> +#include <linux/iommu.h>
+> +#include <linux/errno.h>
+> +
+> +static void iommu_liveupdate_restore_objs(u64 next)
+> +{
+> +	struct iommu_objs_ser *objs;
+> +
+> +	while (next) {
+> +		BUG_ON(!kho_restore_folio(next));
+
+Same thing about BUG_ON [1] as mentioned below in the 
+iommu_liveupdate_flb_retrieve() function, can we consider returning an
+error which can be checked in the caller and the error can be bubbled up
+as -ENODATA?
+
+> +		objs = __va(next);
+> +		next = objs->next_objs;
+> +	}
+> +}
+> +
+> +static void iommu_liveupdate_free_objs(u64 next, bool incoming)
+> +{
+> +	struct iommu_objs_ser *objs;
+> +
+> +	while (next) {
+> +		objs = __va(next);
+> +		next = objs->next_objs;
+> +
+> +		if (!incoming)
+> +			kho_unpreserve_free(objs);
+> +		else
+> +			folio_put(virt_to_folio(objs));
+
+Interesting! kho_restore_folio already adjusts the refcount via 
+adjust_managed_page_count which is why folio_put() is needed for a valid
+refcount. Sweet :)
+
+> +	}
+> +}
+> +
+> +static void iommu_liveupdate_flb_free(struct iommu_lu_flb_obj *obj)
+> +{
+> +	if (obj->iommu_domains)
+> +		iommu_liveupdate_free_objs(obj->ser->iommu_domains_phys, false);
+> +
+> +	if (obj->devices)
+> +		iommu_liveupdate_free_objs(obj->ser->devices_phys, false);
+> +
+> +	if (obj->iommus)
+> +		iommu_liveupdate_free_objs(obj->ser->iommus_phys, false);
+> +
+> +	kho_unpreserve_free(obj->ser);
+> +	kfree(obj);
+> +}
+> +
+> +static int iommu_liveupdate_flb_preserve(struct liveupdate_flb_op_args *argp)
+> +{
+> +	struct iommu_lu_flb_obj *obj;
+> +	struct iommu_lu_flb_ser *ser;
+> +	void *mem;
+> +
+> +	obj = kzalloc(sizeof(*obj), GFP_KERNEL);
+
+I know this is obvious but let's add a comment that obj just exists in 
+the "current" kernel whereas mem is supposed to survive the KHO..
+
+> +	if (!obj)
+> +		return -ENOMEM;
+> +
+> +	mutex_init(&obj->lock);
+> +	mem = kho_alloc_preserve(sizeof(*ser));
+> +	if (IS_ERR(mem))
+> +		goto err_free;
+> +
+> +	ser = mem;
+> +	obj->ser = ser;
+> +
+> +	mem = kho_alloc_preserve(PAGE_SIZE);
+> +	if (IS_ERR(mem))
+> +		goto err_free;
+> +
+> +	obj->iommu_domains = mem;
+> +	ser->iommu_domains_phys = virt_to_phys(obj->iommu_domains);
+> +
+> +	mem = kho_alloc_preserve(PAGE_SIZE);
+> +	if (IS_ERR(mem))
+> +		goto err_free;
+> +
+> +	obj->devices = mem;
+> +	ser->devices_phys = virt_to_phys(obj->devices);
+> +
+> +	mem = kho_alloc_preserve(PAGE_SIZE);
+> +	if (IS_ERR(mem))
+> +		goto err_free;
+> +
+> +	obj->iommus = mem;
+> +	ser->iommus_phys = virt_to_phys(obj->iommus);
+> +
+> +	argp->obj = obj;
+> +	argp->data = virt_to_phys(ser);
+> +	return 0;
+> +
+> +err_free:
+> +	iommu_liveupdate_flb_free(obj);
+> +	return PTR_ERR(mem);
+> +}
+> +
+> +static void iommu_liveupdate_flb_unpreserve(struct liveupdate_flb_op_args *argp)
+> +{
+> +	iommu_liveupdate_flb_free(argp->obj);
+> +}
+> +
+> +static void iommu_liveupdate_flb_finish(struct liveupdate_flb_op_args *argp)
+> +{
+> +	struct iommu_lu_flb_obj *obj = argp->obj;
+> +
+> +	if (obj->iommu_domains)
+> +		iommu_liveupdate_free_objs(obj->ser->iommu_domains_phys, true);
+> +
+> +	if (obj->devices)
+> +		iommu_liveupdate_free_objs(obj->ser->devices_phys, true);
+> +
+> +	if (obj->iommus)
+> +		iommu_liveupdate_free_objs(obj->ser->iommus_phys, true);
+> +
+> +	folio_put(virt_to_folio(obj->ser));
+> +	kfree(obj);
+> +}
+> +
+> +static int iommu_liveupdate_flb_retrieve(struct liveupdate_flb_op_args *argp)
+> +{
+> +	struct iommu_lu_flb_obj *obj;
+> +	struct iommu_lu_flb_ser *ser;
+> +
+> +	obj = kzalloc(sizeof(*obj), GFP_ATOMIC);
+
+Why does this have to be GFP_ATOMIC? IIUC, the retrieve path is 
+triggered by a userspace IOCTL in the new kernel. The system should be
+able to sleep here? (unless we have a use-case to call this in IRQ-ctx?)
+AFAICT, we call this under mutexes already, hence there's no situation
+where we could sleep in a spinlock context?
+
+GFP_ATOMIC creates a point of failure if the system is under memory 
+pressure. I believe we should be allowed to sleep for this allocation
+because the "preserved" mappings still allow DMAs to go on and we're in
+no hurry to restore the IOMMU state? I believe this could be GFP_KERNEL.
+
+> +	if (!obj)
+> +		return -ENOMEM;
+> +
+> +	mutex_init(&obj->lock);
+> +	BUG_ON(!kho_restore_folio(argp->data));
+
+The use of BUG_ON in new code is heavily discouraged [1].
+If KHO can't restore the folio for whatever reason, we can be treat it
+as a corruption of the handover data. I believe crashing the kernel for
+it would be an overkill? 
+
+Can we consider returning a graceful failure like -ENODATA or something?
+BUG_ON would instantly cause a kernel panic without providing no 
+opportunity for the system to log the failure or attempt a graceful
+teardown of the 'preserved' mapping.
+
+> +	ser = phys_to_virt(argp->data);
+> +	obj->ser = ser;
+> +
+> +	iommu_liveupdate_restore_objs(ser->iommu_domains_phys);
+> +	obj->iommu_domains = phys_to_virt(ser->iommu_domains_phys);
+> +
+> +	iommu_liveupdate_restore_objs(ser->devices_phys);
+> +	obj->devices = phys_to_virt(ser->devices_phys);
+> +
+> +	iommu_liveupdate_restore_objs(ser->iommus_phys);
+> +	obj->iommus = phys_to_virt(ser->iommus_phys);
+> +
+> +	argp->obj = obj;
+> +
+> +	return 0;
+> +}
+> +
+> +static struct liveupdate_flb_ops iommu_flb_ops = {
+> +	.preserve = iommu_liveupdate_flb_preserve,
+> +	.unpreserve = iommu_liveupdate_flb_unpreserve,
+> +	.finish = iommu_liveupdate_flb_finish,
+> +	.retrieve = iommu_liveupdate_flb_retrieve,
+> +};
+> +
+> +static struct liveupdate_flb iommu_flb = {
+> +	.compatible = IOMMU_LUO_FLB_COMPATIBLE,
+> +	.ops = &iommu_flb_ops,
+> +};
+> +
+> +int iommu_liveupdate_register_flb(struct liveupdate_file_handler *handler)
+> +{
+> +	return liveupdate_register_flb(handler, &iommu_flb);
+> +}
+> +EXPORT_SYMBOL(iommu_liveupdate_register_flb);
+> +
+> +int iommu_liveupdate_unregister_flb(struct liveupdate_file_handler *handler)
+> +{
+> +	return liveupdate_unregister_flb(handler, &iommu_flb);
+> +}
+> +EXPORT_SYMBOL(iommu_liveupdate_unregister_flb);
+> diff --git a/include/linux/iommu-lu.h b/include/linux/iommu-lu.h
+> new file mode 100644
+> index 000000000000..59095d2f1bb2
+> --- /dev/null
+> +++ b/include/linux/iommu-lu.h
+> @@ -0,0 +1,17 @@
+> +/* SPDX-License-Identifier: GPL-2.0 */
+> +
+> +/*
+> + * Copyright (C) 2025, Google LLC
+> + * Author: Samiullah Khawaja <skhawaja@google.com>
+> + */
+> +
+> +#ifndef _LINUX_IOMMU_LU_H
+> +#define _LINUX_IOMMU_LU_H
+> +
+> +#include <linux/liveupdate.h>
+> +#include <linux/kho/abi/iommu.h>
+> +
+> +int iommu_liveupdate_register_flb(struct liveupdate_file_handler *handler);
+> +int iommu_liveupdate_unregister_flb(struct liveupdate_file_handler *handler);
+> +
+> +#endif /* _LINUX_IOMMU_LU_H */
+> diff --git a/include/linux/kho/abi/iommu.h b/include/linux/kho/abi/iommu.h
+> new file mode 100644
+> index 000000000000..8e1c05cfe7bb
+> --- /dev/null
+> +++ b/include/linux/kho/abi/iommu.h
+> @@ -0,0 +1,119 @@
+> +/* SPDX-License-Identifier: GPL-2.0 */
+> +
+> +/*
+> + * Copyright (C) 2025, Google LLC
+> + * Author: Samiullah Khawaja <skhawaja@google.com>
+> + */
+> +
+> +#ifndef _LINUX_KHO_ABI_IOMMU_H
+> +#define _LINUX_KHO_ABI_IOMMU_H
+> +
+> +#include <linux/mutex_types.h>
+> +#include <linux/compiler.h>
+> +#include <linux/types.h>
+> +
+> +/**
+> + * DOC: IOMMU File-Lifecycle Bound (FLB) Live Update ABI
+> + *
+> + * This header defines the ABI for preserving IOMMU state across kexec using
+> + * Live Update File-Lifecycle Bound (FLB) data.
+> + *
+> + * This interface is a contract. Any modification to any of the serialization
+> + * structs defined here constitutes a breaking change. Such changes require
+> + * incrementing the version number in the IOMMU_LUO_FLB_COMPATIBLE string.
+> + */
+> +
+> +#define IOMMU_LUO_FLB_COMPATIBLE "iommu-v1"
+> +
+
+Let's call this "iommu-liveupdate-v1" or "iommu-lu-v1" instead?
+
+> +enum iommu_lu_type {
+> +	IOMMU_INVALID,
+> +	IOMMU_INTEL,
+> +};
+> +
+> +struct iommu_obj_ser {
+> +	u32 idx;
+> +	u32 ref_count;
+> +	u32 deleted:1;
+> +	u32 incoming:1;
+> +} __packed;
+> +
+> +struct iommu_domain_ser {
+> +	struct iommu_obj_ser obj;
+> +	u64 top_table;
+> +	u64 top_level;
+> +	struct iommu_domain *restored_domain;
+> +} __packed;
+> +
+> +struct device_domain_iommu_ser {
+> +	u32 did;
+> +	u64 domain_phys;
+> +	u64 iommu_phys;
+> +} __packed;
+> +
+> +struct device_ser {
+> +	struct iommu_obj_ser obj;
+> +	u64 token;
+> +	u32 devid;
+> +	u32 pci_domain;
+> +	struct device_domain_iommu_ser domain_iommu_ser;
+> +	enum iommu_lu_type type;
+> +} __packed;
+> +
+> +struct iommu_intel_ser {
+> +	u64 phys_addr;
+> +	u64 root_table;
+> +} __packed;
+> +
+> +struct iommu_ser {
+> +	struct iommu_obj_ser obj;
+> +	u64 token;
+> +	enum iommu_lu_type type;
+> +	union {
+> +		struct iommu_intel_ser intel;
+> +	};
+> +} __packed;
+> +
+> +struct iommu_objs_ser {
+> +	u64 next_objs;
+> +	u64 nr_objs;
+> +} __packed;
+> +
+> +struct iommus_ser {
+> +	struct iommu_objs_ser objs;
+> +	struct iommu_ser iommus[];
+> +} __packed;
+> +
+> +struct iommu_domains_ser {
+> +	struct iommu_objs_ser objs;
+> +	struct iommu_domain_ser iommu_domains[];
+> +} __packed;
+> +
+> +struct devices_ser {
+> +	struct iommu_objs_ser objs;
+> +	struct device_ser devices[];
+> +} __packed;
+> +
+> +#define MAX_IOMMU_SERS ((PAGE_SIZE - sizeof(struct iommus_ser)) / sizeof(struct iommu_ser))
+> +#define MAX_IOMMU_DOMAIN_SERS \
+> +		((PAGE_SIZE - sizeof(struct iommu_domains_ser)) / sizeof(struct iommu_domain_ser))
+> +#define MAX_DEVICE_SERS ((PAGE_SIZE - sizeof(struct devices_ser)) / sizeof(struct device_ser))
+> +
+> +struct iommu_lu_flb_ser {
+> +	u64 iommus_phys;
+> +	u64 nr_iommus;
+> +	u64 iommu_domains_phys;
+> +	u64 nr_domains;
+> +	u64 devices_phys;
+> +	u64 nr_devices;
+> +} __packed;
+> +
+> +struct iommu_lu_flb_obj {
+> +	struct mutex lock;
+> +	struct iommu_lu_flb_ser *ser;
+> +
+> +	struct iommu_domains_ser *iommu_domains;
+> +	struct iommus_ser *iommus;
+> +	struct devices_ser *devices;
+> +} __packed;
+> +
+
+Please let's add some comments describing the structs & their members
+here like we have in memfd [2]. This should be descriptive for the user.
+For example:
+
++/**
++ * struct iommu_lu_flb_ser - Main serialization header for IOMMU state.
++ * @iommus_phys:        Physical address of the first page in the IOMMU unit chain.
++ * @nr_iommus:          Total number of hardware IOMMU units preserved.
++ * @iommu_domains_phys: [...]
++ * @nr_domains:         [...]
++ * @devices_phys:       [...]
++ * @nr_devices:         [...]
++ *
++ * This structure acts as the root of the IOMMU state tree. It is hitching a ride
++ * on the iommufd file descriptor's preservation flow.
++ */
++struct iommu_lu_flb_ser {
++	u64 iommus_phys;
++	u64 nr_iommus;
++	u64 iommu_domains_phys;
++	u64 nr_domains;
++	u64 devices_phys;
++	u64 nr_devices;
++} __packed;
+
+> +#endif /* _LINUX_KHO_ABI_IOMMU_H */
+
+Thanks,
+Praan
+
+[1] https://docs.kernel.org/process/coding-style.html#use-warn-rather-than-bug
+[2] https://elixir.bootlin.com/linux/v7.0-rc3/source/include/linux/kho/abi/memfd.h
+
