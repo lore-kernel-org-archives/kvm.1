@@ -1,159 +1,123 @@
-Received: from fout-a6-smtp.messagingengine.com (fout-a6-smtp.messagingengine.com [103.168.172.149])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D8A3632BF41
-	for <kvm@vger.kernel.org>; Wed, 11 Mar 2026 09:54:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.149
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0ED2B2D0617;
+	Wed, 11 Mar 2026 09:59:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773222859; cv=none; b=GViDYmWKnjK3hdwS4Zu5YeMdCwiRG+rdIgyuMnwWesV3boGE1zaR0t8kA0AWj/xvfgLlB0mjkSV9rGRYMwondr1DK04hxdWxIIT/aEZ82WMdeOYeFcpFduuUcueTYdVfX/BPizv+/iI6rotBtBFN2bFqS9M6TGcxei5iL4dPIuw=
+	t=1773223155; cv=none; b=fBzY08GENBXtMqJsB/BXzTw5VlSERP0KSgLstxtfw4BRYdrohKuOpXfaQJzycXw1hOe1qSJIsM3uY2Ng1pCvBofjKvnVmhyJlgp91Dy/a1vCEh8eDL/O0yb7iin81IWRAtVCal7dfRLPqPHFSHJI0mSskfxVDRNH2zFui8+wKus=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773222859; c=relaxed/simple;
-	bh=UN/yE6Ce0RPZJ3e4JvIgGSKqVUUyw8g1ClQU3J+6Z2A=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=XWe6/uj4tPN9mDkVxCwMo3edj5qMMbhUbHQOQvyMEkS36KMGM1qg0Wmj9/uaemsPvOYzXuNBsj6EeM2/+HDEFoE4VDNhqBFxaE29VSrp7ocYq5FqyQO4dKLWbSMcDWRKbVFUyxVASbm1TLpXFS8UV4aAMH8Tpbt1YXa6YZXehuM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=alyssa.is; spf=pass smtp.mailfrom=alyssa.is; dkim=pass (2048-bit key) header.d=alyssa.is header.i=@alyssa.is header.b=jkicxceW; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=EQ6RXFCc; arc=none smtp.client-ip=103.168.172.149
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=alyssa.is
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alyssa.is
+	s=arc-20240116; t=1773223155; c=relaxed/simple;
+	bh=Z5NUwYdO4gon+w2RD6G1dYtfGgOROmoRXV9koOGJKd8=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=R8L9XTkHPgn2cOVfXioKUaKMTjmmrnSwKIHoaJ5i83iZEsxtvXt8WZsmrkOwqBM/aRni5O1mcJLmxbBPX+QjsgZ3Oq52un6FJOJF01Gi7O/aEraa8zoWjPH3Wqrm/MLzVu9IbfYxJlqWnxRapEkj7AEKc21KnUTX/QMwv8l7QQo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GE3fBRAr; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=alyssa.is header.i=@alyssa.is header.b="jkicxceW";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="EQ6RXFCc"
-Received: from phl-compute-10.internal (phl-compute-10.internal [10.202.2.50])
-	by mailfout.phl.internal (Postfix) with ESMTP id 25A0DEC053B;
-	Wed, 11 Mar 2026 05:54:17 -0400 (EDT)
-Received: from phl-frontend-03 ([10.202.2.162])
-  by phl-compute-10.internal (MEProxy); Wed, 11 Mar 2026 05:54:17 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alyssa.is; h=cc
-	:cc:content-transfer-encoding:content-type:content-type:date
-	:date:from:from:in-reply-to:message-id:mime-version:reply-to
-	:subject:subject:to:to; s=fm3; t=1773222857; x=1773309257; bh=P4
-	OySs5EQSXB5RyhkSiCa+1SDn4AAfaohkRKSbCu8J4=; b=jkicxceWwvtaTg04sl
-	lMqWlAYjN8cgbPWwryidN2PltY95C4tSfkK737nalCcUBpmKPLs/Q9Vb5P0ANPZ3
-	VmKoJMS2qZbIyP9P6ghkTaj6y6G/uqJVZ4mFNfgTRAD/uOJKlua2Mi6qli6RtxO3
-	AYu8Pu0hMBq0FoI+3KAwnFo1CINkcXZx/JAxLdAGfBg8axysoM/8Y5+gpIIHLLii
-	jTX6uiWw5Suj9zzBWoTG6nmRnNtyRr5WWLtG9F5Bhy3Da6EHeHOM9Iwt/p0BW9ac
-	eyQqg8xqr340hmgPCsQKz99rj9/SQSC0x4OI7KpGG6jFYCKfCRAXyeMwgIOCr+IP
-	DPGg==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:message-id:mime-version:reply-to:subject
-	:subject:to:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=
-	fm1; t=1773222857; x=1773309257; bh=P4OySs5EQSXB5RyhkSiCa+1SDn4A
-	AfaohkRKSbCu8J4=; b=EQ6RXFCc1/meDHZrlqAFmylPvj36Q/6Ofb1CqvBjtbjJ
-	7T8C1QM2XQdC2z2bkbIlXuXjAEjzYP8KBawFzmsuj2Qu95mDk+ti5RREmsO+g7sH
-	2TaLq+JXNsldxP/7uJSFdabm2swXFDjMX6sVKhBwLkUq2tt70VaqGBGkPLh+NO8e
-	hXu+/rI2Ca5+HYLAR5+RlU3u6vEIuB1wzX3IiQ9iIMg2UB0GK/gGdfiVaAQakzvo
-	MwEq2wnLzEv5u9bKQvo7E/KuciO8b9hSYxWObTfeUmlsnLRQ4dtbVOuNZbcoiPSw
-	jggyoAb0919yFqxzSxy5j+YWMrljWukDHgrW45Hd4w==
-X-ME-Sender: <xms:yDuxaWFNt944ESiQ1eMvQO56r92tpTI9AzMGMHJBOlR16xrPxaHk3g>
-    <xme:yDuxaZkcy_Xz6KUxRT7JjxiXmvzjbvb4NNkUNJd_5mWAlzGaR_HkFGHZ8O2ZozSeb
-    RIUDOlZovRwk_m4q6673gQrMrakcyBVECeNKQJg5_jVrRsxxs33>
-X-ME-Received: <xmr:yDuxaSZ_fBmL34gqlfRwxO2kmfmse-tcawqop11witI7wxnGFCgOo2Xnl5fjevAc>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgddvkeefheelucetufdoteggodetrf
-    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
-    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
-    gurhephffvvefufffkofggtgfgsehtkeertdertdejnecuhfhrohhmpeetlhihshhsrgcu
-    tfhoshhsuceohhhisegrlhihshhsrgdrihhsqeenucggtffrrghtthgvrhhnpeejfeehff
-    ehjeejgfdtffetkedtgfefgfefjeegffekjeejgedtveejleehleelhfenucevlhhushht
-    vghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpehhihesrghlhihsshgrrd
-    hishdpnhgspghrtghpthhtohepjedpmhhouggvpehsmhhtphhouhhtpdhrtghpthhtohep
-    phgvthgvrhdrmhgrhiguvghllheslhhinhgrrhhordhorhhgpdhrtghpthhtohepqhgvmh
-    huqdgrrhhmsehnohhnghhnuhdrohhrghdprhgtphhtthhopehqvghmuhdquggvvhgvlhes
-    nhhonhhgnhhurdhorhhgpdhrtghpthhtohepmhhighhuvghlrdhluhhishesohhrrggtlh
-    gvrdgtohhmpdhrtghpthhtohepvghrihgtrdgruhhgvghrsehrvgguhhgrthdrtghomhdp
-    rhgtphhtthhopehpsghonhiiihhnihesrhgvughhrghtrdgtohhmpdhrtghpthhtohepkh
-    hvmhesvhhgvghrrdhkvghrnhgvlhdrohhrgh
-X-ME-Proxy: <xmx:yDuxaWG19W0Qi6FzeJHs118xgpSzZdyofYj6QKaV77pmVw2tOPf3ZQ>
-    <xmx:yDuxabI0tC0S6_436k3qwjTZh0ehlDPym86r4klrPpkaRlVtfczibQ>
-    <xmx:yDuxaZO7d58vMG4Unf5bzuRA2wvlXG2zR2ex2rxHkRfr8Lf83CHXNA>
-    <xmx:yDuxaTlL31FbJYuCkVVqSJZ9weozYFODYiXcBaPKblrOK3Zc2QDDaQ>
-    <xmx:yTuxaSqT2472sOmb4DKlPqs_hxj30VxLrRRGbu60yKHz71oEoiVuuDK3>
-Feedback-ID: i12284293:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
- 11 Mar 2026 05:54:16 -0400 (EDT)
-Received: by mbp.qyliss.net (Postfix, from userid 1000)
-	id 4D63C7706B21; Wed, 11 Mar 2026 10:54:14 +0100 (CET)
-From: Alyssa Ross <hi@alyssa.is>
-To: Peter Maydell <peter.maydell@linaro.org>,
-	Paolo Bonzini <pbonzini@redhat.com>,
-	qemu-arm@nongnu.org,
-	qemu-devel@nongnu.org,
-	kvm@vger.kernel.org
-Cc: Eric Auger <eric.auger@redhat.com>,
-	Miguel Luis <miguel.luis@oracle.com>
-Subject: [PATCH] target/arm/kvm: fall back if nested unsupported
-Date: Wed, 11 Mar 2026 10:54:05 +0100
-Message-ID: <20260311095405.26297-1-hi@alyssa.is>
-X-Mailer: git-send-email 2.53.0
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GE3fBRAr"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0B46EC4CEF7;
+	Wed, 11 Mar 2026 09:59:11 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1773223154;
+	bh=Z5NUwYdO4gon+w2RD6G1dYtfGgOROmoRXV9koOGJKd8=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=GE3fBRArehqOWxNpJmM5YDSEj3wW4xPPQuT2vIxwWBjmryEYuo25dK7VFxbSzNXBd
+	 K1uD3p9/Fy0LVnjhXFG4TjesehsCaQhTq5YDbpdYVVjvSFQWQlooopyk5rFupsurrk
+	 0xagwO6SlrdldzpCv6BBu68ChDRPlwWFjyj/DTcxEVmxyB9dJUU+FxS+jmxgzDSIPy
+	 cAnj6e6BNviJY+cxnCSBHq/QqhYbjJ+E/yWrTUe8twO75oiGbh2YVl3MHcuWuciO4B
+	 QN17cJrMkLTvAwiaY64G0iBd7Rg9DAPQeMmVUE/LwRlNWDph5wG4Be15NzTYKL4hOk
+	 5XTtfdhikQDvw==
+Message-ID: <5fb9beef-b6fe-401a-aa24-aade48b795d4@kernel.org>
+Date: Wed, 11 Mar 2026 10:59:10 +0100
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC 1/1] mm/pagewalk: don't split device-backed huge pfnmaps
+To: "Boone, Max" <mboone@akamai.com>, Alex Williamson <alex@shazbot.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+ Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+ "Liam R . Howlett" <Liam.Howlett@oracle.com>,
+ Vlastimil Babka <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>,
+ Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
+ "linux-mm@kvack.org" <linux-mm@kvack.org>,
+ "kvm@vger.kernel.org" <kvm@vger.kernel.org>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ "Tottenham, Max" <mtottenh@akamai.com>, "Hunt, Joshua" <johunt@akamai.com>,
+ "Pelland, Matt" <mpelland@akamai.com>
+References: <20260309174949.2514565-1-mboone@akamai.com>
+ <20260309174949.2514565-2-mboone@akamai.com>
+ <51eeb09d-d3f4-412f-85da-690fdc0f8e6a@kernel.org>
+ <CH2PR17MB3797A91D5107B6E347EEDD97BF79A@CH2PR17MB3797.namprd17.prod.outlook.com>
+ <da2ebc9f-ec82-4c55-851c-b27110efdf8c@kernel.org>
+ <83842620-AD01-4619-845F-8DE7DF1F8F31@akamai.com>
+ <0a652e7e-339e-4f98-b591-7fe5680e2006@kernel.org>
+ <6CBB0401-26DD-4EF9-949C-54BEAD3ABA33@akamai.com>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <6CBB0401-26DD-4EF9-949C-54BEAD3ABA33@akamai.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-If I create a machine with more CPUs than KVM supports, but specify
-multiple accelerator options, QEMU will fall back to the next
-accelerator.  This is great, because if I've explicitly specified
-multiple accelerators, I've told QEMU I'm fine with any of them being
-used to provide the machine I want.
+> The -EINVAL originates from:
+> 
+> vfio_dma_do_map -> vfio_pin_map_dma -> vfio_pin_pages_remote
+> -> vaddr_get_pfns -> pin_user_pages_remote (mm/gup.c)
+> 
+> Possibly that’s also the origin of the concurrent PUD modification that requires
+> the retry in the walker in this patch.
 
-When I create a machine with nested virtualization enabled, though,
-this doesn't happen.  KVM often doesn't support it, but TCG always
-does.  The nice thing to do would be for QEMU to fall back to TCG if
-KVM can't provide, like it does when too many CPUs are requested.
-This patch adjusts the behaviour to do that.
+We'd have to find out why we manage to trigger a -EINVAL here. I don't
+see how anything that this patch does could trigger that. So maybe a
+problem in user space? (calling it on unsupported VMAs?).
 
-This is very helpful for OS development scripts that run an OS in QEMU
-— I want everybody to be able to run the script, always with
-virtualization enabled because the OS requires it, but for it to take
-advantage of KVM acceleration when available.
-
-Signed-off-by: Alyssa Ross <hi@alyssa.is>
----
- hw/arm/virt.c    | 6 ------
- target/arm/kvm.c | 8 ++++++++
- 2 files changed, 8 insertions(+), 6 deletions(-)
-
-diff --git a/hw/arm/virt.c b/hw/arm/virt.c
-index 7456614d05..0b63b2eac3 100644
---- a/hw/arm/virt.c
-+++ b/hw/arm/virt.c
-@@ -2372,12 +2372,6 @@ static void machvirt_init(MachineState *machine)
-         exit(1);
-     }
- 
--    if (vms->virt && kvm_enabled() && !kvm_arm_el2_supported()) {
--        error_report("mach-virt: host kernel KVM does not support providing "
--                     "Virtualization extensions to the guest CPU");
--        exit(1);
--    }
--
-     if (vms->virt && !kvm_enabled() && !tcg_enabled() && !qtest_enabled()) {
-         error_report("mach-virt: %s does not support providing "
-                      "Virtualization extensions to the guest CPU",
-diff --git a/target/arm/kvm.c b/target/arm/kvm.c
-index d4a68874b8..20dcc6a820 100644
---- a/target/arm/kvm.c
-+++ b/target/arm/kvm.c
-@@ -615,6 +615,14 @@ int kvm_arch_init(MachineState *ms, KVMState *s)
-         ret = -EINVAL;
-     }
- 
-+    if (object_property_find(OBJECT(ms), "virtualization") &&
-+        object_property_get_bool(OBJECT(ms), "virtualization", NULL) &&
-+        !kvm_arm_el2_supported()) {
-+        error_report("Using ARM nested virtualization with KVM requires "
-+                     "a host kernel with KVM_CAP_ARM_EL2");
-+        ret = -EINVAL;
-+    }
-+
-     if (kvm_check_extension(s, KVM_CAP_ARM_NISV_TO_USER)) {
-         if (kvm_vm_enable_cap(s, KVM_CAP_ARM_NISV_TO_USER, 0)) {
-             error_report("Failed to enable KVM_CAP_ARM_NISV_TO_USER cap");
-
-base-commit: ae56950eac7b61b1abf42003329ee0f3ce111711
 -- 
-2.53.0
+Cheers,
 
+David
