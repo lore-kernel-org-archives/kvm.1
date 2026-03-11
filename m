@@ -1,166 +1,119 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f53.google.com (mail-wm1-f53.google.com [209.85.128.53])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DAD193B9D95;
-	Wed, 11 Mar 2026 10:45:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8FF973D3CF7
+	for <kvm@vger.kernel.org>; Wed, 11 Mar 2026 10:47:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773225956; cv=none; b=EsVGnJBpTgZgPJENRKWhC/3oOR/qCWpm9sz3ha5f850/fX6RE+HcGX19zhd6Ap6O7qfMqkRfqQVTTG4vE50a4tfEQLv80grAi+je9rzkIWwMURaCCbm1A/3Mt13jwvYlMbDQTrWVDEtCTaaD2lH1IEDeaJrjnkOrrTWxFzEIQi0=
+	t=1773226062; cv=none; b=DtLJF66d+WVOpgNgLslaqUxnnQIyYgfU7jEoqdtJcnTKmsCxEzFlpezr+0g1DHX6Ow/3REcowijJmbRz4ntW026nNb202Q3S1PwwS1EWCsy7lmWy8zoKFssK1OMX1Xjh4JtgFOt9l4Aj/HNiTiSA9wL4u1N1glvLHoZEbqdgm58=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773225956; c=relaxed/simple;
-	bh=IFPP8xL/tyriR55iyTpoF7cQe6VFY5o0GCPBN3AxF4Q=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=AIO4yrmHeIQuAmOAQ/Qx7gSdN+Od73gZMrKbgcsFu440L/DTGVzYJpbfh6jshvD7xnID279bSLQRbMsSKqtYRtP6X4BLEUI+cgI9Pkn+Q32fxvq57xxWyf8Z2ijRcnLHzzehvMzoBySBTGSofUoPMqp292mAfarN5zri2fTc6v8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=OpPNZqf5; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1773226062; c=relaxed/simple;
+	bh=zRCIOZXGAulewyBbqGE0TlQlTPqeFeIDTbPGyy24MV0=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=M/Kvey38hxllltljXfUMcc0Q0tWF+/5PyKrN9phktKQxGWnHkG3ATtbdm6KS0CpsAme7GrSDTLiT9fBCVdIL57ALELxUEsO1pj0IgxmWrCUGRlRMNdO7Et2C3DSFDYEl0Y2ARDIs2wdfyOtsmkSOaIdm1vxK5oWecDvWPZ648R4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=l+NfnaGG; arc=none smtp.client-ip=209.85.128.53
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OpPNZqf5"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D805CC4CEF7;
-	Wed, 11 Mar 2026 10:45:53 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773225956;
-	bh=IFPP8xL/tyriR55iyTpoF7cQe6VFY5o0GCPBN3AxF4Q=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=OpPNZqf52sw1+ys4j6//RMTYfTxUs+fksOxNdTQIvRjACvzEw/MbBmu1rMdts4EfE
-	 HR3aF9xIow9QKz1UpWeNS52ACh1bQflI3fU6rOaYeRdKuhUBUYXJA6QAXWG2UPCwoK
-	 SIHRj1skIUxdMMEhTPPk0IVqWDgjMBq5Wh0064yVsx9n4ikeQ+WViyZAVXyFLD1EGT
-	 UKztsBIdcNz2qc2QVzWnz9ozpRk/veaabyvZqRUPAzS3lyJmhGyB/suJUs7udMtGp9
-	 8kB3Bf9fmcoGQNCfExhPW93R7LIiBwsJrP0S4JAwkXtHWYbnpdAgQ5B03jeSUgtdI9
-	 1yQ0dYhItV4oA==
-Message-ID: <d7f3c613-92f5-4400-812e-a368bee45a41@kernel.org>
-Date: Wed, 11 Mar 2026 11:45:52 +0100
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="l+NfnaGG"
+Received: by mail-wm1-f53.google.com with SMTP id 5b1f17b1804b1-48538c5956bso8763855e9.0
+        for <kvm@vger.kernel.org>; Wed, 11 Mar 2026 03:47:40 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1773226059; x=1773830859; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:subject:cc:to:from:date:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=us9WYwCiTBLLsk5cVeG22xmuXfkRkjPu0Kbcd1njBZs=;
+        b=l+NfnaGGhGE/Qag8NAZKtowOcVY2wLQCbEgf8MnpvieTQKfxTgLXG7gVpu41GQE3Cp
+         lhcuSJ3ojhuoA+XvMW4ZK8DqWwguSBIQJdzHM+m0gGn1i58Im+PG8aw4GSSmMwNkHayu
+         W9J2Et5BO3MOuAYEpSQbP4o8f9J9gsDj/OANzpqDRda1qkC6GXeo6tLR1/FbLVhhy7Cf
+         MUxhHc5jx0lvSaHnxQ6WahuluHX1XzGqARVN8PyVe1PrQbU+agAKtUfEmOiyxhtTA+gY
+         BR6kn5ugraDiB91Rov4L/mant481Z758KVbs1s66hkgz+KSI4U1uv3Da1yI4gGWMgZ4d
+         Uvjg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1773226059; x=1773830859;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=us9WYwCiTBLLsk5cVeG22xmuXfkRkjPu0Kbcd1njBZs=;
+        b=UZ2ygl/r6Xa5YpS9LySJPIbJjogrxEP6pEQuUZOlYDXSwIK3UhC8SHpA3FisaUi4iL
+         fZSKzaMm0ecXX53zRYiHCqMzvXml+wYAd61sz+U9GEf7c7EdzD92H3AzjO+KjU284Hnp
+         /8bcI/Tr/Ybr0itodI34A9Hubi+qIqWkzoj6DBvTrzKU1OzHvFbfTcKjKa0ZIDOjCrdB
+         /u88p/LbB2mxyM9XJgRSdHKPLWB7xCuYMBigQQXlNLpgQoACrDpdhFOTfJhI8Q1t1el1
+         /YzVtDWsKxLGLCyX759KwD9Is/w4Hrh9s+qmDjy5ktWQaTI+MBvekz2q1j6PezRV9J6t
+         QSKA==
+X-Forwarded-Encrypted: i=1; AJvYcCXcfyvrZOhz60SdGEM7jx1X1Mj1QqvRZy1aJ6/OgntC5t+G3xpYOcqguT1gw9MZXigCLdI=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxGJs/uuL/8D7pmzJ9Jnu0d29S5Os+KZ3xlLHkrS9Jro2ud4SEr
+	zlpPnhKs34WhF23yWx8xX7vR2WLL/8MLAStCfeQw1uHagDbp6InH35pS
+X-Gm-Gg: ATEYQzwCRngAY6vIY+ptUxKhrS0tKPlEbihrn/99pfYLVccZ/GYdYAKUKgb8+hrVEFf
+	pspcvt7YMoi1F869N+Nl41BLVrDvcBZ6ENI0SLjTYO84RdRRvOSAOi1GhfwMzd50xKuU+GoVllI
+	IB6gJXLk+Uws1MEF1mw2czOjckGkYPulJV1mjVIgjXmbqgObP0Xp31dldXv1Dwf7bYWiS5RxL58
+	qgT/H9aNxbWOtLQjplLbEjoNJt4GX/BgTdpVNkwiq0npOjTyXlwYgn8MqzDgdRWFKluu0QrO26F
+	hBTlbrTCacT/+3NS/wLLT0LnbBX6pHYQO5r+H62hTut7QBhjx0wBCHQLR4J79j17gsfrmSym0mq
+	KjkvsmJnZIF5bdYEFT3axeJLnrqn+V6N/f53x4uKOMCgoO1xRKXNqPsrlz4CGuEYYvYwBTigcFZ
+	ij0ZcJ8SBzyvIC3HG0Xscvg8PqtBEStwOMIv8snwS5vwFQoow87+e4YFBVYoDl3Uh0uM1+BGgns
+	js=
+X-Received: by 2002:a05:600c:5298:b0:479:13e9:3d64 with SMTP id 5b1f17b1804b1-4854b291dc2mr30148705e9.15.1773226058755;
+        Wed, 11 Mar 2026 03:47:38 -0700 (PDT)
+Received: from pumpkin (82-69-66-36.dsl.in-addr.zen.co.uk. [82.69.66.36])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-439f820a2f1sm5725154f8f.30.2026.03.11.03.47.37
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 11 Mar 2026 03:47:38 -0700 (PDT)
+Date: Wed, 11 Mar 2026 10:47:36 +0000
+From: David Laight <david.laight.linux@gmail.com>
+To: Christian Brauner <brauner@kernel.org>
+Cc: Linus Torvalds <torvalds@linux-foundation.org>,
+ linux-kernel@vger.kernel.org, linux-modules@vger.kernel.org,
+ linux-nfs@vger.kernel.org, bpf@vger.kernel.org, kunit-dev@googlegroups.com,
+ linux-doc@vger.kernel.org, linux-trace-kernel@vger.kernel.org,
+ netfs@lists.linux.dev, io-uring@vger.kernel.org, audit@vger.kernel.org,
+ rcu@vger.kernel.org, kvm@vger.kernel.org, virtualization@lists.linux.dev,
+ netdev@vger.kernel.org, linux-mm@kvack.org,
+ linux-security-module@vger.kernel.org, Christian Loehle
+ <christian.loehle@arm.com>, linux-fsdevel@vger.kernel.org
+Subject: Re: [PATCH v2 1/2] kthread: remove kthread_exit()
+Message-ID: <20260311104736.51b53405@pumpkin>
+In-Reply-To: <20260310-work-kernel-exit-v2-1-30711759d87b@kernel.org>
+References: <20260310-work-kernel-exit-v2-0-30711759d87b@kernel.org>
+	<20260310-work-kernel-exit-v2-1-30711759d87b@kernel.org>
+X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; arm-unknown-linux-gnueabihf)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC 1/1] mm/pagewalk: don't split device-backed huge pfnmaps
-To: "Boone, Max" <mboone@akamai.com>
-Cc: Alex Williamson <alex@shazbot.org>,
- Andrew Morton <akpm@linux-foundation.org>,
- Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
- "Liam R . Howlett" <Liam.Howlett@oracle.com>,
- Vlastimil Babka <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>,
- Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
- "linux-mm@kvack.org" <linux-mm@kvack.org>,
- "kvm@vger.kernel.org" <kvm@vger.kernel.org>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- "Tottenham, Max" <mtottenh@akamai.com>, "Hunt, Joshua" <johunt@akamai.com>,
- "Pelland, Matt" <mpelland@akamai.com>
-References: <20260309174949.2514565-1-mboone@akamai.com>
- <20260309174949.2514565-2-mboone@akamai.com>
- <51eeb09d-d3f4-412f-85da-690fdc0f8e6a@kernel.org>
- <CH2PR17MB3797A91D5107B6E347EEDD97BF79A@CH2PR17MB3797.namprd17.prod.outlook.com>
- <da2ebc9f-ec82-4c55-851c-b27110efdf8c@kernel.org>
- <83842620-AD01-4619-845F-8DE7DF1F8F31@akamai.com>
- <0a652e7e-339e-4f98-b591-7fe5680e2006@kernel.org>
- <6CBB0401-26DD-4EF9-949C-54BEAD3ABA33@akamai.com>
- <5fb9beef-b6fe-401a-aa24-aade48b795d4@kernel.org>
- <0A734214-9E4B-4A65-AFB1-055883639358@akamai.com>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-In-Reply-To: <0A734214-9E4B-4A65-AFB1-055883639358@akamai.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-On 3/11/26 11:34, Boone, Max wrote:
-> 
-> 
->> On Mar 11, 2026, at 10:59 AM, David Hildenbrand (Arm) <david@kernel.org> wrote:
->>
->> !-------------------------------------------------------------------|
->>  This Message Is From an External Sender
->>  This message came from outside your organization.
->> |-------------------------------------------------------------------!
->>
->>> The -EINVAL originates from:
->>>
->>> vfio_dma_do_map -> vfio_pin_map_dma -> vfio_pin_pages_remote
->>> -> vaddr_get_pfns -> pin_user_pages_remote (mm/gup.c)
->>>
->>> Possibly that’s also the origin of the concurrent PUD modification that requires
->>> the retry in the walker in this patch.
->>
->> We'd have to find out why we manage to trigger a -EINVAL here. I don't
->> see how anything that this patch does could trigger that. So maybe a
->> problem in user space? (calling it on unsupported VMAs?).
->>
-> 
-> It looks like I was mistaken the EINVAL being from pin_user_pages_remote, 
-> rather it originates from:
-> 
-> vfio_dma_do_map
->   -> vfio_pin_map_dma
->     -> vfio_pin_pages_remote
->       -> vaddr_get_pfns
->         -> follow_fault_pfn
->           -> follow_pfnmap_start (mm/memory.c)
-> 
-> In vfio_iommu_type1.c, follow_fault_pfn first checks whether follow_pfnmap_start
-> returns an error; if it does, it calls fixup_user_fault to fault the mapping in and then 
-> retries follow_pfnmap_start to obtain the PFN.
-> 
-> Sounds to me that the walker is likely re-splitting the PUD entry between 
-> the fixup_user_fault and follow_pfnmap_start calls?
+On Tue, 10 Mar 2026 15:56:09 +0100
+Christian Brauner <brauner@kernel.org> wrote:
 
-Could be. IIRC, there are also scenarios where handle_mm_fault() just
-returns success even though nothing was faulted in (e.g., when it
-detects some races).
+> In 28aaa9c39945 ("kthread: consolidate kthread exit paths to prevent use-after-free")
+> we folded kthread_exit() into do_exit() when we fixed a nasty UAF bug.
+> We left kthread_exit() around as an alias to do_exit(). Remove it
+> completely.
+...
+> -#define module_put_and_kthread_exit(code) kthread_exit(code)
+> +#define module_put_and_kthread_exit(code) do_exit(code)
 
-The code in follow_fault_pfn() should likely be updated to handle more
-than one attempt. That's also what GUP does.
+I'm intrigued...
+How does that actually know to do the module_put()?
+(I know it does one - otherwise my driver wouldn't unload.)
 
-Likely, follow_fault_pfn() was never taught about PFNMAP mappings that
-can be faulted+zapped (in the past they were always static).
+The corresponding try_module_get(THIS_MODULE) is done before the
+kthread_run() (and has to be 'put' if that fails).
+So there is an explicit 'get' but an implicit 'put'.
 
-If you turn that into a (possibly) endless loop, does the problem go away?
+While a loadable module that creates a kthread usually needs to give
+the kthread a reference to its module and then have that reference
+released as the kthread exits, I can imagine cases where that isn't true.
+(Or broken code that just hopes the module won't be unloaded just
+as the kthread exits.)
 
--- 
-Cheers,
+It actually makes me think that module_put_and_exit() ought to have
+a 'module' parameter.
+Or, perhaps, kthread_create() should have the module parameter and
+hold a reference to that module until it exits.
 
-David
+	David
