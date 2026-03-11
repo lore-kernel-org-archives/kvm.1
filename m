@@ -1,210 +1,234 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4261D31F984;
-	Wed, 11 Mar 2026 22:06:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=198.175.65.10
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773266795; cv=fail; b=jdfBNGkdftYfoJhmRiFDHcZr82aTr2Uu9tD+VM/fIzmBnB3xOMMeTlKa3HLy9QQpJKsWXZITcGavAXUpu5z/ll4PAkyvIU57mlJj/qTgbaYQKzDH0KGy08K196C4LOioFMK94g2TgjztnDEYkqdkK8GDDh2XZbwt7t5vIYMQ/SY=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773266795; c=relaxed/simple;
-	bh=ktpMf9Uhnrw0FjuP6qLaKfBMHrlEWNEajJihZ953CYw=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=lruULl2dB3z/0HC873KJ7V7FMlZbeyxfjcuqzqsOXvagp7SS+9wyBdqEHKX8uXPkk4rb4UBRxIzBzAQKYv9CfYWF5KspMadpt//5R4fBtv2bM10CI7os7Sc8qpp2E9wLTwhFBo81nPWv9ooEiD0/F8boiXftSgxn68jEFMhEsjg=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Ozv9V3D7; arc=fail smtp.client-ip=198.175.65.10
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 353823612DD;
+	Wed, 11 Mar 2026 22:20:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.7
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1773267641; cv=none; b=qbx0PUQhFzmMDT0C0onmq+DNCfO4ORD1DMecDCiuD+lsI5t64oIjvAdGhqMRe5KU6J5FlwMVIBv+SBhz4RBwlba42VIHYqCb8mtWXgA/vHrkcfpnCMbq1v3h60bpVzCcNXMffE7Oiw0xzjoHcOo5fS247ZGt4qTWNdUWnNRuZX4=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1773267641; c=relaxed/simple;
+	bh=/d9DhITUST8uE1rImPVyYQNvyz3gCjHjmkCyUv3Dx0M=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=SOwyVgzQxDBl8OXqzGmfRRigdoRZIzX7bZxnA+MoX8r9oZ2i8iYgY+TPvZjlxd7RK8eaBvmijKEVh0ORvzThW/qi05xKv3EfT1KDb1fWTS4wRxosHWe87w0p2vC91rkfdYq7iURwqnAMWzQutLWzlJj3L1dytLRgaZoQsTqjoXk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=IKJu05jg; arc=none smtp.client-ip=192.198.163.7
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Ozv9V3D7"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="IKJu05jg"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1773266794; x=1804802794;
-  h=from:to:cc:subject:date:message-id:references:
-   in-reply-to:content-id:content-transfer-encoding:
-   mime-version;
-  bh=ktpMf9Uhnrw0FjuP6qLaKfBMHrlEWNEajJihZ953CYw=;
-  b=Ozv9V3D757iDK//PZsDsurL2n7Wyolv2WDeZ7tEuUbnxVMhdU2XhmdBT
-   a4NgEw0U0ohfZDy41K0iCFSuGzXfYmNCGrJsqMsSXBIBXgyMIb3a2A47E
-   Ydw9bdDlJCB3COf5Zv0pWU+zE9svHvcsyjQKrwQmTIvKzqh8lvqmN/ffm
-   kJ8z7lsnxfTJpaimXiEpzK75z5j4Xwynnf9LCwTtu6JBOPvJpLHBqa0Bm
-   90uRemiTpW3d9ZfEg46UVoeiBUr+FCwGi14xP521MjOokLmAkjaYE6pjx
-   cd6eHwP/nQ/v+mbGZW//KqzsJg4aK6QCXPA7F/rbX9i3pZYLt3DXIduaS
+  t=1773267639; x=1804803639;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=/d9DhITUST8uE1rImPVyYQNvyz3gCjHjmkCyUv3Dx0M=;
+  b=IKJu05jgE+4HjBpHE+8/1il2qbnfcJ5SAUK9TZoAfDTJRc+JIvJQ66tf
+   YaOdHlx63dF3uC/3Oe3jLxgM/lYXa4S8/ehRy2VU5D/h/uj9A3lutoxyi
+   7euFg21nwvoffqyprPmCGXpmEzj0/e1cpCl4BbZBWibiZX8OBWYySGlVV
+   9h6CAUS32gdisBEB2UPhXdk8kmKhqbzkWgwNPiopbEDH4wsPHo99541kb
+   z+46yrZWTDYmgN2efos/m0U0UyvK9zOvkwHDJDGnSscqpGbvqYpibDwGC
+   CBZY1g9Q5SatgW44HwLmM3CHQTZScgY5W1wHlbcLjEMl6ip7H0T5i2rWm
    Q==;
-X-CSE-ConnectionGUID: 7qwfM6kMRXiegq4tZCwnZw==
-X-CSE-MsgGUID: Qutoj0I4RlaXgwBhD2vFDg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11726"; a="91731270"
+X-CSE-ConnectionGUID: EPI9Nr+NRw+idsqd+IGVVg==
+X-CSE-MsgGUID: oVYV0FwNRyuajDNSPXTW4w==
+X-IronPort-AV: E=McAfee;i="6800,10657,11726"; a="99817461"
 X-IronPort-AV: E=Sophos;i="6.23,115,1770624000"; 
-   d="scan'208";a="91731270"
-Received: from fmviesa007.fm.intel.com ([10.60.135.147])
-  by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Mar 2026 15:06:27 -0700
-X-CSE-ConnectionGUID: UlV592/PRka+a34Mazt9vw==
-X-CSE-MsgGUID: 3+UvmOpOTPKFe3SHU0X35w==
+   d="scan'208";a="99817461"
+Received: from fmviesa006.fm.intel.com ([10.60.135.146])
+  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Mar 2026 15:20:39 -0700
+X-CSE-ConnectionGUID: dEw+9dr5TNunbwVKAyktMA==
+X-CSE-MsgGUID: 2GOiho/AROKnXbgk+YriwQ==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.23,115,1770624000"; 
-   d="scan'208";a="218074337"
-Received: from fmsmsx903.amr.corp.intel.com ([10.18.126.92])
-  by fmviesa007.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Mar 2026 15:06:27 -0700
-Received: from FMSMSX903.amr.corp.intel.com (10.18.126.92) by
- fmsmsx903.amr.corp.intel.com (10.18.126.92) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.37; Wed, 11 Mar 2026 15:06:26 -0700
-Received: from fmsedg903.ED.cps.intel.com (10.1.192.145) by
- FMSMSX903.amr.corp.intel.com (10.18.126.92) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.37 via Frontend Transport; Wed, 11 Mar 2026 15:06:26 -0700
-Received: from CY3PR05CU001.outbound.protection.outlook.com (40.93.201.39) by
- edgegateway.intel.com (192.55.55.83) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.37; Wed, 11 Mar 2026 15:06:26 -0700
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=nyaEXIlyTwUglxzWPZgQOYARUFoVtgVchstd0fqOPRdk4aSRRQgSB2BD79cFnqGumeTEGuGoYuKO7I+XnG5+tofWj+Lh4Vj/pFjAYbj5qGDaOLOccVtaxtqNhMPBi7awH6QDvMuhCNeqzA+/DYgRiO2ezMWp289QfMCW8HOzGYkGUXVkPzm1RUXBBs7qQL8LnIFwp6qmiuWorX1+8zccpmTv8qNftq0Su4nBmU3IEzqjp7ERd58PiwmM6oreikBIsdmMvhRDCG1kfoxSThl/ukydJPXSmmUa+6YJvusS6NHmJzPnLtWnnqe7JE3JLjcieD8oM7IzDWU9ukOjRbUoew==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=ktpMf9Uhnrw0FjuP6qLaKfBMHrlEWNEajJihZ953CYw=;
- b=aEufI4vrK2MPxFA1JHWW2LjcEXIozGTcfrQ+55CKwBzRjtXVg2nMT8rSizrXK9DpdP1TP6kLqrv7h6aZEtVNjeh4wagIID4VHw59OI7oIKo/BAlh0/wCldgiMdvD+p2jI+9pPPggdCEuKEkpYkO/bU++cea1VbfAiW99CTubMl0bEAP7PXiYa7FIkS5S/s7KHgv+ll/Ag3fmjghEK2KmU41r+zDqVmgtO1b83IUfjt8Vse1uasr19s1cluf2y9FOmp5vsWy6FR9P0MTx8AJGJSvvYT5W9VrRtX49ulfInPYLpbcip/gZW/TzuuxzNk9+JKtj0oW0h2gdW4ui4pKecw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Received: from BYAPR11MB2647.namprd11.prod.outlook.com (2603:10b6:a02:be::12)
- by DS7PR11MB9473.namprd11.prod.outlook.com (2603:10b6:8:258::22) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9700.12; Wed, 11 Mar
- 2026 22:06:23 +0000
-Received: from BYAPR11MB2647.namprd11.prod.outlook.com
- ([fe80::32d7:4779:29d3:a1ee]) by BYAPR11MB2647.namprd11.prod.outlook.com
- ([fe80::32d7:4779:29d3:a1ee%4]) with mapi id 15.20.9723.000; Wed, 11 Mar 2026
- 22:06:23 +0000
-From: "Huang, Kai" <kai.huang@intel.com>
-To: "kvm@vger.kernel.org" <kvm@vger.kernel.org>, "linux-coco@lists.linux.dev"
-	<linux-coco@lists.linux.dev>, "linux-kernel@vger.kernel.org"
-	<linux-kernel@vger.kernel.org>, "Gao, Chao" <chao.gao@intel.com>,
-	"x86@kernel.org" <x86@kernel.org>
-CC: "dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>,
-	"tony.lindgren@linux.intel.com" <tony.lindgren@linux.intel.com>,
-	"binbin.wu@linux.intel.com" <binbin.wu@linux.intel.com>, "seanjc@google.com"
-	<seanjc@google.com>, "kas@kernel.org" <kas@kernel.org>, "Chatre, Reinette"
-	<reinette.chatre@intel.com>, "Verma, Vishal L" <vishal.l.verma@intel.com>,
-	"nik.borisov@suse.com" <nik.borisov@suse.com>, "mingo@redhat.com"
-	<mingo@redhat.com>, "Weiny, Ira" <ira.weiny@intel.com>, "hpa@zytor.com"
-	<hpa@zytor.com>, "Annapurve, Vishal" <vannapurve@google.com>,
-	"sagis@google.com" <sagis@google.com>, "Duan, Zhenzhong"
-	<zhenzhong.duan@intel.com>, "Edgecombe, Rick P" <rick.p.edgecombe@intel.com>,
-	"paulmck@kernel.org" <paulmck@kernel.org>, "tglx@kernel.org"
-	<tglx@kernel.org>, "yilun.xu@linux.intel.com" <yilun.xu@linux.intel.com>,
-	"Williams, Dan J" <dan.j.williams@intel.com>, "bp@alien8.de" <bp@alien8.de>
-Subject: Re: [PATCH v4 24/24] [NOT-FOR-REVIEW] x86/virt/seamldr: Save and
- restore current VMCS
-Thread-Topic: [PATCH v4 24/24] [NOT-FOR-REVIEW] x86/virt/seamldr: Save and
- restore current VMCS
-Thread-Index: AQHcnC0D6N826aOF4kysQId97d9HJ7WpcuAAgACbWYA=
-Date: Wed, 11 Mar 2026 22:06:22 +0000
-Message-ID: <d664ac9445b1c7cc864dead103086341c374b094.camel@intel.com>
-References: <20260212143606.534586-1-chao.gao@intel.com>
-	 <20260212143606.534586-25-chao.gao@intel.com> <abFlCkNd7tqaUyAP@intel.com>
-In-Reply-To: <abFlCkNd7tqaUyAP@intel.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-user-agent: Evolution 3.58.3 (3.58.3-1.fc43) 
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: BYAPR11MB2647:EE_|DS7PR11MB9473:EE_
-x-ms-office365-filtering-correlation-id: aeadc0ba-2752-4dee-6338-08de7fba6efa
-x-ld-processed: 46c98d88-e344-4ed4-8496-4ed7712e255d,ExtAddr
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;ARA:13230040|376014|7416014|366016|1800799024|38070700021|56012099003|18002099003|22082099003;
-x-microsoft-antispam-message-info: gRz/twszgW7cN3C3v5loatjKJ8OAUWPTZpF8mLZ6jL+sHrTqUjLIJK5joaUig3h2b3gqS4AzrqncIQsxsWKFcFHX4waivHFGIZ8X79M40LxG5QuMPL5d1AI58BELVuOdBaM77gHFNnfNUiURanL0NsKFiqu9SREdMWpb9xB13avSz/jm0sKl9TXj8PS+FEua0O2BzcK0EAfBeIsjWa2denBH1tQOi7Vfo7M+1BY4APJHyeSjvhsSK4muAr4HbWYheu44LzKXJUtpcPFgkc93d8+vEE3u6hh25xvTiTv0njSLRQcnY0lJPL1aO4vLTS6MVsMAq19/OwbfZGXJSgSCN14S3ZYK2GWFBFaooLjkFSyz6Wuqo9LmjXJeMAX1qJJRssaIS/udq7I92o2VzxhsA1daaVZq4eNu/WEK6kMSgU/3oQPMHq8hgONaYj/R3v7p6zSNOWm1XaAbsNQJw8qOpIBTq9wB3+y5ko5nb+8fM8q+B1ZCeHYSAV+rFcXRxlEE+uDAtMXAW06pN6shmVEQlCBJl8YyJkCxvOiXWYE3/R96vCn4SUopj++M/droHPX96NEWd5POWPglMoTBiom7n9TjWiEtJhPChF/vAbkMrM7bBtTAg6FKPjB5X9Du1wwng5acaZk1TjlWfNgNGi/8jTqD6txdbJ0+Zjd87HYxmBqDIRK9NgheY71NKekP+Rik506UPNewPt2qjbJaFW9a1BdZQD4qi93O6vrSwDX4lVmHbbITYrIsNMGHJNbBgVtdXKqI7OAzhjlHxybgTza17KgNBccVUN09whFfdmCxbt0=
-x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BYAPR11MB2647.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(366016)(1800799024)(38070700021)(56012099003)(18002099003)(22082099003);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?utf-8?B?TTZxZVZ3SGc3UTFOS3JMV3ZXZUtVbXUvdFkyL0dzaGtWcnA0bVpDWWRhOXMw?=
- =?utf-8?B?NHFJMklLZEZZZ3VOOG9oOTBZendyOEhVQ3pDQWVoVGNvaGdvSEwybFZJRVJ3?=
- =?utf-8?B?OUJKNENpeFJPdkxFRzZKY1VkbGEvdm5qUlphbSs1b2I1OURudzVBang4Z2xS?=
- =?utf-8?B?emM0Vi8zeXU5d0J1THN2b1hNU1dTSW5EVm51QnFmN2dDUnBEbGIydXZCQjRJ?=
- =?utf-8?B?dTVWbkpzZTMxZFY0YlE0aWZ5WStVWXZwbFFzQXU1SmtySkZZcWJGZk1aZ1Yr?=
- =?utf-8?B?QmJHTFZhaU40YW1ITlQySEFSeDFWZnpYcGlPeG5nMk5FdVpFRmFkZDh0OVpK?=
- =?utf-8?B?dTN6eEVyR2dzUFZUODNramRQaFpvREphRDRUZlF5VStrMFIvOVlqanluZ3BB?=
- =?utf-8?B?WURLU3ErRzd0WWo5a3diZThMeHhQUGxwVlhueDREcUt3UXRSV09UM3pRUWVE?=
- =?utf-8?B?YmR2cGw1WjE0bUVWdkRPUEFNZTY2NDlodkhLT2Z2L3QvaVBHaFF2cEs2aHFw?=
- =?utf-8?B?NmVjaHZjSzRIaFNBTzJ3Tmd0VUtXTGx6dy9PR21ZYldpL043c2Y3aVd0dFY3?=
- =?utf-8?B?b24rWEM5ME9VZEw2YXhjTjQ4Q3hNamw0a29ydG1JUTMyeERaMW1HSDBiZ2F5?=
- =?utf-8?B?T2dtUkgwemdrQ2dtSHNtR1Q4dXNBSkVzK0ZTS2FwTTdBL013UUpyU2lERkx0?=
- =?utf-8?B?Q3dwNnpxOUw5bGtkWjh2MnFkSnlHVlZ3c3VkZjRBb2R3dFpiSFBZZzVWQVky?=
- =?utf-8?B?eWZpUG5CSk5qZTFYWjYvNE1IMlgxTkpjU3ZPK1BzZ09IU0FhVWRUZXBhT2x1?=
- =?utf-8?B?aUIvUUpPOWRGMDJFd25QYVloNmVhRHp1T1AyVW5UL1Nxa1dvdE1Ld1lCZEM1?=
- =?utf-8?B?TDMvZzRtaFZsUnh4TEtxOGRtV3hqaEVqaGtuVzZ0eUdsV3VpbmEwb1pMaVdM?=
- =?utf-8?B?d0FrUytBQS9xTEpGZlZXUzFCSUxPREE3TzllWjVkY2xoQUZUWlU0VnBhclhN?=
- =?utf-8?B?elVWNm5keHBYcE1nUG9aRVRnd0hicVNDNFdZaXZjTmRYNEtqNmZRWVA3NlIx?=
- =?utf-8?B?Q1pjWHhGRitlaWJKRmhvbWZ6R1h2N0hWTEpEUWloTWxnQU9HbmhDZUR1Wkh4?=
- =?utf-8?B?VnBHd2V0R2FhYS9qMXNFVkJGTGJkcktvYmh2MzhqNzVFZmd5NWUyc0t3L2J1?=
- =?utf-8?B?R2wvSEw2OVRUQmV1bDAvY0gzY1hDVlV1T3cyS3FldVpKdG5SVnVZb1phWWs4?=
- =?utf-8?B?aVFYeDI4dDRCZEk1TFRUOHkrOXh3WDBKNkVIc3MxUXFkdVNXOWtBeU1UVkhW?=
- =?utf-8?B?aXF0QVk2WkRHc0tKcE53cTlwT3BpMkt1akJWTnZJQTh3NkRLYXlUR00zY1pQ?=
- =?utf-8?B?UXpPM1VMeWQ5R09OZmY5YU1sbWZpOGNiS1pycEJ6WEJxVXN3dGpEOUpDYVFH?=
- =?utf-8?B?WEJmeXJYYTUxL2Z1dFU5NnU5VytUbmxsQjZMS0pLcWpOYlBBN1ZSWUhEVmhP?=
- =?utf-8?B?Wk40TWo1ZEVYK0UrSENTUnFvTGVHUkUwRFNkSjdpRGxZaUJSKy9CVEZIVTJX?=
- =?utf-8?B?R2syaDlTa29DZlRRUVkxQkFyejR2djR3clNTWERkSUhpNE14bXhONmhuckk0?=
- =?utf-8?B?WWoxaWpHNndNSDIxQ2hKRnFLRDd5cVB3Y1N1NE5uVGV5M0pVWU9MK1M5SGpP?=
- =?utf-8?B?Smk0Y3Y0bU9vYmp1Y3ZIVlAveUpHRlF6RElsejVvUGl2TFIrT3QrcWNqbWVG?=
- =?utf-8?B?VytUTTNhS0xBRG91RXVxOFBIa2JkOTZKZ0p1NFBSelRvUUZ4emJtcFJYU1Rn?=
- =?utf-8?B?UC85clF3RkJkL2N6Nnh0VVlJeDJlZVRkUmtQaEt3UkJVSTIzUEt1UzdRdE43?=
- =?utf-8?B?NytVWFMxakRTeXlWcCsreE9EUXpLK3lnaVJxeE0reHVHdTlOQ2ppQndIbXBQ?=
- =?utf-8?B?dkg3MjNkUW5BMDF1ajhPTGJuTHZsb3I3aHBUR05nZCt0Z2tzRVVhdGJ0c0to?=
- =?utf-8?B?VzI1OTFkNXVFaHNpK25YamIvOUlUK1hEVXZaQVFLVU5MdVQ5cUFBR3JLT1Fr?=
- =?utf-8?B?R1d6TG5HeG9iZk5JT2R5WFNBOGRsZWw2VHg4cXk1ZTNkeDBERG9MMWhwTlN5?=
- =?utf-8?B?MURsZGxSdnhDWlNCS1ZZY3Bpc05ET2FXaUoxcS9wTGdsZ000K005QmxIdndH?=
- =?utf-8?B?UTJlZXk3VFJucHVZZDd2UFplME4yUm1nVW0zV0xUeXZhR29sZXdnL3JqWVJG?=
- =?utf-8?B?aTExSlFmZ2NnVVlXSHQ2Rk9Nbkl0QlRGb1VHQUhlWEhPbENob08ydGFUYlpt?=
- =?utf-8?B?ZUxSRGsxNjdBbzNIM2tKVjMyT2RRZ0Z5aDRzVjRHWTNQZlc2dHB2Zz09?=
-Content-Type: text/plain; charset="utf-8"
-Content-ID: <FC943599C3A01F41ABADD7296C3841DE@namprd11.prod.outlook.com>
-Content-Transfer-Encoding: base64
+   d="scan'208";a="216803428"
+Received: from rchatre-mobl4.amr.corp.intel.com (HELO [10.125.110.84]) ([10.125.110.84])
+  by fmviesa006-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Mar 2026 15:20:36 -0700
+Message-ID: <5102edd8-8eaa-4688-b3f7-3004c4cbc8f3@intel.com>
+Date: Wed, 11 Mar 2026 15:20:50 -0700
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Exchange-RoutingPolicyChecked: M569oD3pJaZzMMzGBhGW45k3L9THn6NwtUgEihROPXOlS9i0yMfaESQ4gdbLK997gCPtJefctGaQGvImuok+hxXFzCQnSOyiVY66iUm7+KsV6/YXEl7p1R+JY//dL8FJi//DKIngoDJfJgz9Z+MBwBtsZifonktbAadXS2JdFDwPW8gl/ivM4FcjfHE0EopXUQkqtdvdBP+atfjESRCP0rY80eN/g7yCxm/LxaEb394x9XgKa2MxGAqJTkrKgDBj6TCtqQUNe9oqYvtD7kL9kScuFAMznw8/KUIlUbGuhJQ3pEe/iIVQCfbSwRi/o2Qla3Z6/VNQ2LZsbjJsQy/c0w==
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: BYAPR11MB2647.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: aeadc0ba-2752-4dee-6338-08de7fba6efa
-X-MS-Exchange-CrossTenant-originalarrivaltime: 11 Mar 2026 22:06:23.0948
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: cGQB/SFlWlrkFBgCjDwotelpHhPdmlqDDqeZhVi2msq6EPZHtQAB2kz4uly/n6Uz9L7yuaIFKjftw8krw47HzA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS7PR11MB9473
-X-OriginatorOrg: intel.com
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 3/7] x86/sev: add support for RMPOPT instruction
+To: "Kalra, Ashish" <ashish.kalra@amd.com>,
+ Sean Christopherson <seanjc@google.com>
+Cc: tglx@kernel.org, mingo@redhat.com, bp@alien8.de,
+ dave.hansen@linux.intel.com, x86@kernel.org, hpa@zytor.com,
+ peterz@infradead.org, thomas.lendacky@amd.com, herbert@gondor.apana.org.au,
+ davem@davemloft.net, ardb@kernel.org, pbonzini@redhat.com, aik@amd.com,
+ Michael.Roth@amd.com, KPrateek.Nayak@amd.com, Tycho.Andersen@amd.com,
+ Nathan.Fontenot@amd.com, jackyli@google.com, pgonda@google.com,
+ rientjes@google.com, jacobhxu@google.com, xin@zytor.com,
+ pawan.kumar.gupta@linux.intel.com, babu.moger@amd.com, dyoung@redhat.com,
+ nikunj@amd.com, john.allen@amd.com, darwi@linutronix.de,
+ linux-kernel@vger.kernel.org, linux-crypto@vger.kernel.org,
+ kvm@vger.kernel.org, linux-coco@lists.linux.dev
+References: <cover.1772486459.git.ashish.kalra@amd.com>
+ <8dc0198f1261f5ae4b16388fc1ffad5ddb3895f9.1772486459.git.ashish.kalra@amd.com>
+ <aahH4XARlftClMrQ@google.com>
+ <7ab8d3af-b4f5-481c-ab2e-059ddd7e718e@intel.com>
+ <0fbb94ad-bfcf-4fbe-bf40-d79051d67ad8@amd.com>
+ <6a4f4ecf-ffc0-43a9-98d4-06235b42063e@amd.com>
+ <d7ba3790-a959-4150-87e0-c87dea4d09c5@intel.com>
+ <cc9bf918-a14b-4619-a084-3f424fa16ea1@amd.com>
+From: Dave Hansen <dave.hansen@intel.com>
+Content-Language: en-US
+Autocrypt: addr=dave.hansen@intel.com; keydata=
+ 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
+In-Reply-To: <cc9bf918-a14b-4619-a084-3f424fa16ea1@amd.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-DQo+ICBzdGF0aWMgY29uc3Qgc3RydWN0IHg4Nl9jcHVfaWQgdGR4X2hvc3RfaWRzW10gPSB7DQo+
-IAlYODZfTUFUQ0hfRkVBVFVSRShYODZfRkVBVFVSRV9URFhfSE9TVF9QTEFURk9STSwgTlVMTCks
-DQo+IEBAIC0xNzUsNiArMTc3LDcgQEAgc3RhdGljIGludCBzZWFtbGRyX2luaXQoc3RydWN0IGRl
-dmljZSAqZGV2KQ0KPiAgew0KPiAJY29uc3Qgc3RydWN0IHRkeF9zeXNfaW5mbyAqdGR4X3N5c2lu
-Zm8gPSB0ZHhfZ2V0X3N5c2luZm8oKTsNCj4gCXN0cnVjdCBmd191cGxvYWQgKnRkeF9md2w7DQo+
-ICsJdTY0IGJhc2ljX21zcjsNCj4gIA0KPiAJaWYgKFdBUk5fT05fT05DRSghdGR4X3N5c2luZm8p
-KQ0KPiAJCXJldHVybiAtRUlPOw0KPiBAQCAtMTgyLDYgKzE4NSwxNSBAQCBzdGF0aWMgaW50IHNl
-YW1sZHJfaW5pdChzdHJ1Y3QgZGV2aWNlICpkZXYpDQo+IAlpZiAoIXRkeF9zdXBwb3J0c19ydW50
-aW1lX3VwZGF0ZSh0ZHhfc3lzaW5mbykpDQo+IAkJcmV0dXJuIDA7DQo+ICANCj4gKwkvKg0KPiAr
-CSAqIFNvbWUgVERYLWNhcGFibGUgQ1BVcyBoYXZlIGFuIGVycmF0dW0gd2hlcmUgdGhlIGN1cnJl
-bnQgVk1DUyBtYXkNCj4gKwkgKiBiZSBjbGVhcmVkIGFmdGVyIGNhbGxpbmcgaW50byBQLVNFQU1M
-RFIuIEVuc3VyZSBubyBzdWNoIGVycmF0dW0NCj4gKwkgKiBleGlzdHMgYmVmb3JlIGV4cG9zaW5n
-IGFueSBQLVNFQU1MRFIgZnVuY3Rpb25zLg0KPiArCSAqLw0KPiArCXJkbXNycShNU1JfSUEzMl9W
-TVhfQkFTSUMsIGJhc2ljX21zcik7DQo+ICsJaWYgKCEoYmFzaWNfbXNyICYgVk1YX0JBU0lDX1BS
-RVNFUlZFX0NVUlJFTlRfVk1DUykpDQo+ICsJCXJldHVybiAwOw0KPiArDQoNCklJVUMgdGhpcyBz
-aWxlbnRseSBkaXNhYmxlcyBydW50aW1lIHVwZGF0ZSBhbmQgdXNlciB3b24ndCBiZSBhYmxlIHRv
-IGhhdmUNCmFueSBjbHVlIHRvIHRlbGwgd2hhdCB3ZW50IHdyb25nICh3aGlsZSB0aGUgdXNlciBj
-YW4gc2VlIHRoZSBtb2R1bGUgc3VwcG9ydHMNCnRoaXMgZmVhdHVyZSBhbmQgYXBwYXJlbnRseSB0
-aGUga2VybmVsIHNob3VsZCBzdXBwb3J0IGl0KT8NCg0KU2luY2Ugd2UgYWxyZWFkeSBoYXZlIGEg
-WDg2X0JVR19URFhfUFdfTUNFIHdoaWNoIGlzIGRldGVjdGVkIGR1cmluZyBrZXJuZWwNCmJvb3Qg
-aW4gdGR4X2luaXQoKSwgc2hvdWxkbid0IHdlIGp1c3QgZm9sbG93IHNvIHRoYXQgdGhlIHVzZXIg
-Y2FuIGF0IGxlYXN0DQpzZWUgdGhlIENQVSBoYXMgdGhpcyBlcnJhdHVtPw0KDQpBbm90aGVyIGFk
-dmFudGFnZSBpcywgaWYgaW4gdGhlIGZ1dHVyZSBzb21lIG90aGVyIGtlcm5lbCBjb2RlIG5lZWRz
-IHRvIGtub3cNCnRoaXMgZXJyYXR1bSwgaXQgY2FuIGp1c3QgY29uc3VsdCB0aGlzIGZsYWcuDQoN
-CkFuZCBidHcsDQoNCldoaWNoIGNvZGUgYmFzZSB3YXMgdGhpcyBwYXRjaCBnZW5lcmF0ZWQ/ICBJ
-ZiBJIHJlYWQgY29ycmVjdGx5LCBpbiB0aGlzDQpzZXJpZXMgc2VhbWxkcl9pbml0KCkgaXMgYSB2
-b2lkIGZ1bmN0aW9uIGJ1dCBkb2Vzbid0IHJldHVybiBhbnl0aGluZy4NCg==
+On 3/11/26 14:24, Kalra, Ashish wrote:
+...
+> There are 2 active SNP VMs here, with one SNP VM being terminated, the other SNP VM is still running, both VMs are configured with 100GB guest RAM: 
+> 
+> When this loop is executed when the SNP guest terminates:
+> 
+> [  232.789187] SEV-SNP: RMPOPT execution time 391609638 ns for physical address range 0x0000000000000000 - 0x0000020000000000 on all cpus -> ~391 ms
+> 
+> [  234.647462] SEV-SNP: RMPOPT execution time 457933019 ns for physical address range 0x0000000000000000 - 0x0000020000000000 on all cpus -> ~457 ms
+
+That's better, but it's not quite what am looking for.
+
+The most important case (IMNHO) is when RMPOPT falls flat on its face:
+it tries to optimize the full 2TB of memory and manages to optimize nothing.
+
+I doubt that two 100GB VMs will get close to that case. It's
+theoretically possible, but unlikely.
+
+You also didn't mention 4k vs. 2M vs. 1G mappings.
+
+> Now, there are a couple of additional RMPOPT optimizations which can be applied to this loop : 
+> 
+> 1). RMPOPT can skip the bulk of its work if another CPU has already optimized that region.
+> The optimal thing may be to optimize all memory on one CPU first, and then let all the others
+> run RMPOPT in parallel.
+
+Ahh, so the RMP table itself caches the result of the RMPOPT in its 1G
+metadata, then the CPUs can just copy it into their core-local
+optimization table at RMPOPT time?
+
+That's handy.
+
+*But*, for the purposes of finding pathological behavior, it's actually
+contrary to what I think I was asking for which was having all 1G pages
+filled with some private memory. If the system was in the state I want
+to see tested, that optimization won't function.
+
+> [  363.926595] SEV-SNP: RMPOPT execution time 317016656 ns for physical address range 0x0000000000000000 - 0x0000020000000000 on all cpus -> ~317 ms
+> 
+> [  365.415243] SEV-SNP: RMPOPT execution time 369659769 ns for physical address range 0x0000000000000000 - 0x0000020000000000 on all cpus -> ~369 ms.
+> 
+> So, with these two optimizations applied, there is like a ~16-20% performance improvement (when SNP guest terminates) in the execution of this loop
+> which is executing RMPOPT on upto 2TB of RAM on all CPUs.
+> 
+> Any thoughts, feedback on the performance numbers ? 
+
+16-20% isn't horrible, but it isn't really a fundamental change.
+
+It would also be nice to see elapsed time for each CPU. Having one
+pegged CPU for 400ms and 99 mostly idle ones is way different than
+having 100 pegged CPUs for 400ms.
+
+That's why I was interested in "how long it takes per-cpu".
+
+But you could get some pretty good info with your new optimized loop:
+
+                start = ktime_get();
+
+                for (pa = pa_start; pa < pa_end; pa += PUD_SIZE)
+                        rmpopt() // current CPU
+
+                middle = ktime_get();
+
+                for (pa = pa_start; pa < pa_end; pa += PUD_SIZE)
+                        on_each_cpu_mask(...) // remote CPUs
+
+                end = ktime_get();
+
+If you do that ^ with a system:
+
+	1. full of private memory
+	2. empty of private memory
+	3. empty again
+
+You'll hopefully see:
+
+	1. RMPOPT fall on its face. Worst case scenario (what I want to
+	   see most)
+	2. RMPOPT sees great success, but has to scan the RMP at least
+	   once. Remote CPUs get a free ride on the first CPU's scan.
+	   Largest (middle-start) vs. (end-middle)/nr_cpus delta.
+	3. RMPOPT best case. Everything is already optimized.
+
+> Ideally we should be issuing RMPOPTs to only optimize the 1G regions that contained memory associated with that guest and that should be 
+> significantly less than the whole 2TB RAM range. 
+> 
+> But that is something we planned for 1GB hugetlb guest_memfd support getting merged and which i believe has dependency on:
+> 1). in-place conversion for guest_memfd, 
+> 2). 2M hugepage support for guest_memfd and finally 
+> 3). 1GB hugeTLB support for guest_memfd.
+
+It's a no-brainer to do RMPOPT when you have 1GB pages around. You'll
+see zero argument from me.
+
+Doing things per-guest and for smaller pages gets a little bit harder to
+reason about. In the end, this is all about trying to optimize against
+the RMP table which is a global resource. It's going to get wonky if
+RMPOPT is driven purely by guest-local data. There are lots of potential
+pitfalls.
+
+For now, let's just do it as simply as possible. Get maximum bang for
+our buck with minimal data structures and see how that works out. It
+might end up being a:
+
+	queue_delayed_work()
+
+to do some cleanup a few seconds out after each SNP guest terminates. If
+a bunch of guests terminate all at once it'll at least only do a single
+set of IPIs.
