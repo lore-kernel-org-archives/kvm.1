@@ -1,420 +1,370 @@
-Received: from desiato.infradead.org (desiato.infradead.org [90.155.92.199])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f43.google.com (mail-ed1-f43.google.com [209.85.208.43])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 28123375AB4;
-	Wed, 11 Mar 2026 11:49:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.92.199
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7BCE03DE421
+	for <kvm@vger.kernel.org>; Wed, 11 Mar 2026 11:59:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773229801; cv=none; b=sHJXNF2Anr1yCQWoDK/UXrk5aweI/HxGvShEBltKEL+JkftgM6vjaQAgDZMPDmQRcxSndiTck3NbIbFcO+Y9+3HiJ4+eGj/P4nMTe/e8Y9OhplMW7UMFbmI9Ghp8wXMbxN7Dq7K1ln27/bmjeEskRNka6ulas+okNWd4wx5CWOw=
+	t=1773230377; cv=none; b=E5uymD3HbwqWh0v1KtCIcE2W5WfpUiGrMoygXlr3Vr903rD/WhO4y4xeChLdrsy9gZvW8TuLmwieQSK8uaCslRkMU8gGc3WFoO1LWTn5Q8Qw7NPLrNkYxHDesOTL6k3JjjQAakZpGyJ/i4xYIBDiaAOUyek/Lx7fcGZGqc0N06M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773229801; c=relaxed/simple;
-	bh=+ZfJEsefVmIGUvY2UjiN6CWygPz6+FffB/Y5BvtA7dw=;
-	h=Message-ID:Subject:From:To:Date:Content-Type:MIME-Version; b=Tpl1eHWXRTHO2m6mbLFUfsMjF8AdaYCxYCto56bq+lSy+Ed3J1ORK4lzAvJQEVE2J95GSMiTrCxa7snWQaU/nc/xpa/wIpTL+UgfbyPsTMR4DU+SDSBvK36TUShz/jrHRZWq3Gauh83B6JTxN5RihoAEsKOcHnVhHHYxvoxc8wM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=desiato.srs.infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=Ag2KeWAf; arc=none smtp.client-ip=90.155.92.199
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=desiato.srs.infradead.org
+	s=arc-20240116; t=1773230377; c=relaxed/simple;
+	bh=gHxLKLNLtW1cji7d+nB3rsYKS5Hn7R+Q5bOv4VFwznM=;
+	h=Message-ID:Date:MIME-Version:From:Subject:To:Cc:References:
+	 In-Reply-To:Content-Type; b=Cv+Uh8fQy9zqQKhe8RrlR+HTP33QoFgTzYLXiXR3amSM//CNIYM5oWmHxbKZWYu2oig+a8MM9ZwAsiMNoYswVpnCYfwECWzBY9ATSfPj8OjyZO7piHQKqWjjbIfIjd+9FXnlW3Pgu4G5o7wkFvHl90LyFTDfm086NkPn9pfiZpQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=b7Ha8Fgf; arc=none smtp.client-ip=209.85.208.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="Ag2KeWAf"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=desiato.20200630; h=MIME-Version:Content-Type:Date:To:From
-	:Subject:Message-ID:Sender:Reply-To:Cc:Content-Transfer-Encoding:Content-ID:
-	Content-Description:In-Reply-To:References;
-	bh=cAi+vQvauN2eRhd9yncXyqLymth5qbbdsBD30rMeagI=; b=Ag2KeWAfy9EvdBL9nhZKiP9Pgc
-	Mm1viJ5xRrf/XOhm4MhXrONqkYj3oYszUQQKTSeAPZnb/vkm/iMsQbmHDbCo2ZFQQddgedJKEPmDz
-	dAaVSjjjDb/9m1HhysKHfjAhZkYbzq2iuLIMglBhixnCvMkcl8rryrQd0UMnYeOev3qPuP6IV455b
-	qCX1jtkXh+JgPART30DJMjur91zeX59K3yhwbDbwpONc0WV5kKapVrTs0Jp1O9E4v/QLQdN0/x8/u
-	iDT2TmPz6fgBLtEQdmd8L5T9diwquXVMBgj0o1eHJoA5zS80vuJhrDdzvSEgmvwPbkmDZBayVjl85
-	1kF/hE9Q==;
-Received: from [149.13.74.10] (helo=u09cd745991455d.ant.amazon.com)
-	by desiato.infradead.org with esmtpsa (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1w0I4Q-0000000GphT-2J2U;
-	Wed, 11 Mar 2026 11:49:46 +0000
-Message-ID: <c73bc1f22fbdbd88efb21cb80eccdd98d2ea531a.camel@infradead.org>
-Subject: [PATCH v2] KVM: x86: Use gfn_to_pfn_cache for record_steal_time
-From: David Woodhouse <dwmw2@infradead.org>
-To: Carsten Stollmaier <stollmc@amazon.com>, Sean Christopherson
- <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>, Thomas Gleixner
- <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov
- <bp@alien8.de>,  Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
- "H. Peter Anvin" <hpa@zytor.com>,  kvm@vger.kernel.org,
- linux-kernel@vger.kernel.org
-Date: Wed, 11 Mar 2026 12:49:45 +0100
-Content-Type: multipart/signed; micalg="sha-256"; protocol="application/pkcs7-signature";
-	boundary="=-L5Z/AZ/RbgpWLcXCmWQd"
-User-Agent: Evolution 3.52.3-0ubuntu1.1 
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="b7Ha8Fgf"
+Received: by mail-ed1-f43.google.com with SMTP id 4fb4d7f45d1cf-662c6aca253so3092702a12.3
+        for <kvm@vger.kernel.org>; Wed, 11 Mar 2026 04:59:35 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1773230374; x=1773835174; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:content-language:references
+         :cc:to:subject:from:user-agent:mime-version:date:message-id:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=fKwSqge0Bx3u+rCgVUQqBNe12brlVC96iC4+N0TtO+o=;
+        b=b7Ha8FgfiPX6gHhG4bjE/vJsi3HB6B0IPc4bLLRAdELdnx43gIktdeDnH/bzm2huVh
+         NK2DI6tiTFRVlRTdAQUZc66AyOAmhuuM9KkgDGqnWYYUuqLfKLXuODv7GKr0P9lIlwgh
+         H5yL1K+AzkA1Vwz4ifgsp+Ks9KHOQoHScjOzfU0s0KStZdXtOqex7ZtXHYVxrlfE6p7k
+         wQvcjKhw6jpw2lm6OpJCHwfOINRlbJiLU84FRRa0dw9hk2FT6yKeH5BQ/zbEuAPGzxNk
+         3f2mk9CJFYR26onvMPifXiUGXrPBSN6FI2qtzdiYn8d8aCkPzdZIc0hm15fcg7rMf5p9
+         4YTQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1773230374; x=1773835174;
+        h=content-transfer-encoding:in-reply-to:content-language:references
+         :cc:to:subject:from:user-agent:mime-version:date:message-id:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=fKwSqge0Bx3u+rCgVUQqBNe12brlVC96iC4+N0TtO+o=;
+        b=I1WObQa+CByly6D9GQ7/KqjohAZq+0npB6H/50OHXybv8o5F2TG9ebUfpnN1QLQQjA
+         flXk0MIzjalVOaV+XalBJs9IXmNZmaP1R7BAOwDA/AR1YEBq9O9CUxhXOKb+M+EqkRBO
+         r1c9HE9xHNRHqewHj1Qawv8z4ZsdKIOLphLszr1RzPcWAugDY24tRcg87EfbodFevDqE
+         OcCq3GouO4OtfITuA6+zeI4SjZVMlp3M72OIqyNNq82C7RmdLPoP0VCSA6y7HJssB4z4
+         f3X1JyNAVPcyNBBwqpz1BXpqTkC6IWG8tYRTz5EteKNcR1dwy4nDbOTMdgSfHo3FpKPM
+         tbrQ==
+X-Forwarded-Encrypted: i=1; AJvYcCX5X/HECCmELSABcQitthKS9w85YFTs5VEww2U1aR8Oa++bvIx8N7z3WT/2IvMER8ltf3E=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyFmYkZ5nUgqvFWNsZz5plwodmp99cucsgXdlb4Dr2/cIji1+Vx
+	Sz6hQQGs2Za2L8+Wr6HTpQhJZOPn5yDNx+Mvz/Hdy7yk11bcpQ4BC9PHnWj48KwWcUg=
+X-Gm-Gg: ATEYQzyklFrD6dThqFOkgM66CXu7sdxcueNYPCdIIC3NNQ/AAj5IJf0t2msE/Yfon4i
+	W5kQF2YE/ujU3L4r9tdQglBcr/gIP91dsqZYCfP8uzB3zFXq55yOPmS6OwlQRyE1Isd4fRbGdE0
+	fIjLJRtQB5kTRNit3UZXgJWTL1X5Ulgc8jnK/9jfFE0bfEd3zOQr/05gCj1mkT/zREyOnB8i06f
+	FrkYXe8CNdLlQWF3wP+AsM0tzQ8KXlTvlqr8sVfbOAooXYWxAYwpXw+RhOJlUllIGVxU4XFeAHm
+	jZYc0WGJa7uQKIh3Cz2Ykh9Fk3H/HUnnSbyxvIo+N5sPj5iF1PW9XFL4e+m3Qj6F9PGW3GAVcKg
+	jt7N+JGPFaNTOvuyiKzx1xt7Tc2KBAWVyX6HdaL653bEEInEJrntyTQg+NiwQRBIIqrZ5MoVYL0
+	e5FlyaqWtIvVas7XceML6XapDpfeMv
+X-Received: by 2002:a05:6402:5206:b0:65f:aecc:4f24 with SMTP id 4fb4d7f45d1cf-66319ddcba6mr1131945a12.24.1773230373721;
+        Wed, 11 Mar 2026 04:59:33 -0700 (PDT)
+Received: from [192.168.1.3] ([185.48.77.170])
+        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-66315320df2sm484743a12.24.2026.03.11.04.59.32
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 11 Mar 2026 04:59:33 -0700 (PDT)
+Message-ID: <47592c2d-2b12-4d28-ae5d-9d2f68ec7186@linaro.org>
+Date: Wed, 11 Mar 2026 11:59:31 +0000
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-SRS-Rewrite: SMTP reverse-path rewritten from <dwmw2@infradead.org> by desiato.infradead.org. See http://www.infradead.org/rpr.html
-
-
---=-L5Z/AZ/RbgpWLcXCmWQd
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-
-From: Carsten Stollmaier <stollmc@amazon.com>
-
-On vcpu_run, before entering the guest, the update of the steal time
-information causes a page-fault if the page is not present. In our
-scenario, this gets handled by do_user_addr_fault and successively
-handle_userfault since we have the region registered to that.
-
-handle_userfault uses TASK_INTERRUPTIBLE, so it is interruptible by
-signals. do_user_addr_fault then busy-retries it if the pending signal
-is non-fatal. This leads to contention of the mmap_lock.
-
-This patch replaces the use of gfn_to_hva_cache with gfn_to_pfn_cache,
-as gfn_to_pfn_cache ensures page presence for the memory access,
-preventing the contention of the mmap_lock.
-
-As an added bonus, this removes the last open-coded assembler access
-to userspace from arch/x86/kvm/x86.c.
-
-Signed-off-by: Carsten Stollmaier <stollmc@amazon.com>
-Signed-off-by: David Woodhouse <dwmw@amazon.co.uk>
----
- arch/x86/include/asm/kvm_host.h |   2 +-
- arch/x86/kvm/x86.c              | 115 +++++++++++++++-----------------
- 2 files changed, 54 insertions(+), 63 deletions(-)
-
-diff --git a/arch/x86/include/asm/kvm_host.h b/arch/x86/include/asm/kvm_hos=
-t.h
-index ff07c45e3c73..5eb38976af58 100644
---- a/arch/x86/include/asm/kvm_host.h
-+++ b/arch/x86/include/asm/kvm_host.h
-@@ -958,7 +958,7 @@ struct kvm_vcpu_arch {
- 		u8 preempted;
- 		u64 msr_val;
- 		u64 last_steal;
--		struct gfn_to_hva_cache cache;
-+		struct gfn_to_pfn_cache cache;
- 	} st;
-=20
- 	u64 l1_tsc_offset;
-diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
-index a03530795707..7cbef6dc3216 100644
---- a/arch/x86/kvm/x86.c
-+++ b/arch/x86/kvm/x86.c
-@@ -3745,10 +3745,8 @@ EXPORT_SYMBOL_FOR_KVM_INTERNAL(kvm_service_local_tlb=
-_flush_requests);
-=20
- static void record_steal_time(struct kvm_vcpu *vcpu)
- {
--	struct gfn_to_hva_cache *ghc =3D &vcpu->arch.st.cache;
--	struct kvm_steal_time __user *st;
--	struct kvm_memslots *slots;
--	gpa_t gpa =3D vcpu->arch.st.msr_val & KVM_STEAL_VALID_BITS;
-+	struct gfn_to_pfn_cache *gpc =3D &vcpu->arch.st.cache;
-+	struct kvm_steal_time *st;
- 	u64 steal;
- 	u32 version;
-=20
-@@ -3763,42 +3761,26 @@ static void record_steal_time(struct kvm_vcpu *vcpu=
-)
- 	if (WARN_ON_ONCE(current->mm !=3D vcpu->kvm->mm))
- 		return;
-=20
--	slots =3D kvm_memslots(vcpu->kvm);
--
--	if (unlikely(slots->generation !=3D ghc->generation ||
--		     gpa !=3D ghc->gpa ||
--		     kvm_is_error_hva(ghc->hva) || !ghc->memslot)) {
-+	read_lock(&gpc->lock);
-+	while (!kvm_gpc_check(gpc, sizeof(*st))) {
- 		/* We rely on the fact that it fits in a single page. */
- 		BUILD_BUG_ON((sizeof(*st) - 1) & KVM_STEAL_VALID_BITS);
-=20
--		if (kvm_gfn_to_hva_cache_init(vcpu->kvm, ghc, gpa, sizeof(*st)) ||
--		    kvm_is_error_hva(ghc->hva) || !ghc->memslot)
-+		read_unlock(&gpc->lock);
-+
-+		if (kvm_gpc_refresh(gpc, sizeof(*st)))
- 			return;
-+
-+		read_lock(&gpc->lock);
- 	}
-=20
--	st =3D (struct kvm_steal_time __user *)ghc->hva;
-+	st =3D (struct kvm_steal_time *)gpc->khva;
- 	/*
- 	 * Doing a TLB flush here, on the guest's behalf, can avoid
- 	 * expensive IPIs.
- 	 */
- 	if (guest_pv_has(vcpu, KVM_FEATURE_PV_TLB_FLUSH)) {
--		u8 st_preempted =3D 0;
--		int err =3D -EFAULT;
--
--		if (!user_access_begin(st, sizeof(*st)))
--			return;
--
--		asm volatile("1: xchgb %0, %2\n"
--			     "xor %1, %1\n"
--			     "2:\n"
--			     _ASM_EXTABLE_UA(1b, 2b)
--			     : "+q" (st_preempted),
--			       "+&r" (err),
--			       "+m" (st->preempted));
--		if (err)
--			goto out;
--
--		user_access_end();
-+		u8 st_preempted =3D xchg(&st->preempted, 0);
-=20
- 		vcpu->arch.st.preempted =3D 0;
-=20
-@@ -3806,39 +3788,32 @@ static void record_steal_time(struct kvm_vcpu *vcpu=
-)
- 				       st_preempted & KVM_VCPU_FLUSH_TLB);
- 		if (st_preempted & KVM_VCPU_FLUSH_TLB)
- 			kvm_vcpu_flush_tlb_guest(vcpu);
--
--		if (!user_access_begin(st, sizeof(*st)))
--			goto dirty;
- 	} else {
--		if (!user_access_begin(st, sizeof(*st)))
--			return;
--
--		unsafe_put_user(0, &st->preempted, out);
-+		st->preempted =3D 0;
- 		vcpu->arch.st.preempted =3D 0;
- 	}
-=20
--	unsafe_get_user(version, &st->version, out);
-+	version =3D st->version;
- 	if (version & 1)
- 		version +=3D 1;  /* first time write, random junk */
-=20
- 	version +=3D 1;
--	unsafe_put_user(version, &st->version, out);
-+	st->version =3D version;
-=20
- 	smp_wmb();
-=20
--	unsafe_get_user(steal, &st->steal, out);
-+	steal =3D st->steal;
- 	steal +=3D current->sched_info.run_delay -
- 		vcpu->arch.st.last_steal;
- 	vcpu->arch.st.last_steal =3D current->sched_info.run_delay;
--	unsafe_put_user(steal, &st->steal, out);
-+	st->steal =3D steal;
-=20
- 	version +=3D 1;
--	unsafe_put_user(version, &st->version, out);
-+	st->version =3D version;
-+
-+	kvm_gpc_mark_dirty_in_slot(gpc);
-=20
-- out:
--	user_access_end();
-- dirty:
--	mark_page_dirty_in_slot(vcpu->kvm, ghc->memslot, gpa_to_gfn(ghc->gpa));
-+	read_unlock(&gpc->lock);
- }
-=20
- /*
-@@ -4173,8 +4148,12 @@ int kvm_set_msr_common(struct kvm_vcpu *vcpu, struct=
- msr_data *msr_info)
-=20
- 		vcpu->arch.st.msr_val =3D data;
-=20
--		if (!(data & KVM_MSR_ENABLED))
--			break;
-+		if (data & KVM_MSR_ENABLED) {
-+			kvm_gpc_activate(&vcpu->arch.st.cache, data & ~KVM_MSR_ENABLED,
-+					sizeof(struct kvm_steal_time));
-+		} else {
-+			kvm_gpc_deactivate(&vcpu->arch.st.cache);
-+		}
-=20
- 		kvm_make_request(KVM_REQ_STEAL_UPDATE, vcpu);
-=20
-@@ -5237,11 +5216,10 @@ void kvm_arch_vcpu_load(struct kvm_vcpu *vcpu, int =
-cpu)
-=20
- static void kvm_steal_time_set_preempted(struct kvm_vcpu *vcpu)
- {
--	struct gfn_to_hva_cache *ghc =3D &vcpu->arch.st.cache;
--	struct kvm_steal_time __user *st;
--	struct kvm_memslots *slots;
-+	struct gfn_to_pfn_cache *gpc =3D &vcpu->arch.st.cache;
-+	struct kvm_steal_time *st;
- 	static const u8 preempted =3D KVM_VCPU_PREEMPTED;
--	gpa_t gpa =3D vcpu->arch.st.msr_val & KVM_STEAL_VALID_BITS;
-+	unsigned long flags;
-=20
- 	/*
- 	 * The vCPU can be marked preempted if and only if the VM-Exit was on
-@@ -5266,20 +5244,28 @@ static void kvm_steal_time_set_preempted(struct kvm=
-_vcpu *vcpu)
- 	if (unlikely(current->mm !=3D vcpu->kvm->mm))
- 		return;
-=20
--	slots =3D kvm_memslots(vcpu->kvm);
--
--	if (unlikely(slots->generation !=3D ghc->generation ||
--		     gpa !=3D ghc->gpa ||
--		     kvm_is_error_hva(ghc->hva) || !ghc->memslot))
--		return;
-+	read_lock_irqsave(&gpc->lock, flags);
-+	if (!kvm_gpc_check(gpc, sizeof(*st)))
-+		goto out_unlock_gpc;
-=20
--	st =3D (struct kvm_steal_time __user *)ghc->hva;
-+	st =3D (struct kvm_steal_time *)gpc->khva;
- 	BUILD_BUG_ON(sizeof(st->preempted) !=3D sizeof(preempted));
-=20
--	if (!copy_to_user_nofault(&st->preempted, &preempted, sizeof(preempted)))
--		vcpu->arch.st.preempted =3D KVM_VCPU_PREEMPTED;
-+	st->preempted =3D preempted;
-+	vcpu->arch.st.preempted =3D KVM_VCPU_PREEMPTED;
-=20
--	mark_page_dirty_in_slot(vcpu->kvm, ghc->memslot, gpa_to_gfn(ghc->gpa));
-+	kvm_gpc_mark_dirty_in_slot(gpc);
-+
-+out_unlock_gpc:
-+	read_unlock_irqrestore(&gpc->lock, flags);
-+}
-+
-+static void kvm_steal_time_reset(struct kvm_vcpu *vcpu)
-+{
-+	kvm_gpc_deactivate(&vcpu->arch.st.cache);
-+	vcpu->arch.st.preempted =3D 0;
-+	vcpu->arch.st.msr_val =3D 0;
-+	vcpu->arch.st.last_steal =3D 0;
- }
-=20
- void kvm_arch_vcpu_put(struct kvm_vcpu *vcpu)
-@@ -12744,6 +12730,8 @@ int kvm_arch_vcpu_create(struct kvm_vcpu *vcpu)
-=20
- 	kvm_gpc_init(&vcpu->arch.pv_time, vcpu->kvm);
-=20
-+	kvm_gpc_init(&vcpu->arch.st.cache, vcpu->kvm);
-+
- 	if (!irqchip_in_kernel(vcpu->kvm) || kvm_vcpu_is_reset_bsp(vcpu))
- 		kvm_set_mp_state(vcpu, KVM_MP_STATE_RUNNABLE);
- 	else
-@@ -12851,6 +12839,8 @@ void kvm_arch_vcpu_destroy(struct kvm_vcpu *vcpu)
- 	kvm_clear_async_pf_completion_queue(vcpu);
- 	kvm_mmu_unload(vcpu);
-=20
-+	kvm_steal_time_reset(vcpu);
-+
- 	kvmclock_reset(vcpu);
-=20
- 	for_each_possible_cpu(cpu)
-@@ -12971,7 +12961,8 @@ void kvm_vcpu_reset(struct kvm_vcpu *vcpu, bool ini=
-t_event)
- 	kvm_make_request(KVM_REQ_EVENT, vcpu);
- 	vcpu->arch.apf.msr_en_val =3D 0;
- 	vcpu->arch.apf.msr_int_val =3D 0;
--	vcpu->arch.st.msr_val =3D 0;
-+
-+	kvm_steal_time_reset(vcpu);
-=20
- 	kvmclock_reset(vcpu);
-=20
---=20
-2.51.0
+User-Agent: Mozilla Thunderbird
+From: James Clark <james.clark@linaro.org>
+Subject: Re: [PATCH v6 04/19] perf: arm_pmuv3: Introduce method to partition
+ the PMU
+To: Colton Lewis <coltonlewis@google.com>, kvm@vger.kernel.org
+Cc: Alexandru Elisei <alexandru.elisei@arm.com>,
+ Paolo Bonzini <pbonzini@redhat.com>, Jonathan Corbet <corbet@lwn.net>,
+ Russell King <linux@armlinux.org.uk>,
+ Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>,
+ Marc Zyngier <maz@kernel.org>, Oliver Upton <oliver.upton@linux.dev>,
+ Mingwei Zhang <mizhang@google.com>, Joey Gouly <joey.gouly@arm.com>,
+ Suzuki K Poulose <suzuki.poulose@arm.com>, Zenghui Yu
+ <yuzenghui@huawei.com>, Mark Rutland <mark.rutland@arm.com>,
+ Shuah Khan <shuah@kernel.org>,
+ Ganapatrao Kulkarni <gankulkarni@os.amperecomputing.com>,
+ linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org, kvmarm@lists.linux.dev,
+ linux-perf-users@vger.kernel.org, linux-kselftest@vger.kernel.org
+References: <20260209221414.2169465-1-coltonlewis@google.com>
+ <20260209221414.2169465-5-coltonlewis@google.com>
+Content-Language: en-US
+In-Reply-To: <20260209221414.2169465-5-coltonlewis@google.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
 
 
---=-L5Z/AZ/RbgpWLcXCmWQd
-Content-Type: application/pkcs7-signature; name="smime.p7s"
-Content-Disposition: attachment; filename="smime.p7s"
-Content-Transfer-Encoding: base64
+On 09/02/2026 10:13 pm, Colton Lewis wrote:
+> For PMUv3, the register field MDCR_EL2.HPMN partitiones the PMU
+> counters into two ranges where counters 0..HPMN-1 are accessible by
+> EL1 and, if allowed, EL0 while counters HPMN..N are only accessible by
+> EL2.
+> 
+> Create module parameter reserved_host_counters to reserve a number of
+> counters for the host. This number is set at boot because the perf
+> subsystem assumes the number of counters will not change after the PMU
+> is probed.
+> 
+> Introduce the function armv8pmu_partition() to modify the PMU driver's
+> cntr_mask of available counters to exclude the counters being reserved
+> for the guest and record reserved_guest_counters as the maximum
+> allowable value for HPMN.
+> 
+> Due to the difficulty this feature would create for the driver running
+> in nVHE mode, partitioning is only allowed in VHE mode. In order to
+> support a partitioning on nVHE we'd need to explicitly disable guest
+> counters on every exit and reset HPMN to place all counters in the
+> first range.
+> 
+> Signed-off-by: Colton Lewis <coltonlewis@google.com>
+> ---
+>   arch/arm/include/asm/arm_pmuv3.h   |  4 ++
+>   arch/arm64/include/asm/arm_pmuv3.h |  5 ++
+>   arch/arm64/kvm/Makefile            |  2 +-
+>   arch/arm64/kvm/pmu-direct.c        | 22 +++++++++
+>   drivers/perf/arm_pmuv3.c           | 78 +++++++++++++++++++++++++++++-
+>   include/kvm/arm_pmu.h              |  8 +++
+>   include/linux/perf/arm_pmu.h       |  1 +
+>   7 files changed, 117 insertions(+), 3 deletions(-)
+>   create mode 100644 arch/arm64/kvm/pmu-direct.c
+> 
+> diff --git a/arch/arm/include/asm/arm_pmuv3.h b/arch/arm/include/asm/arm_pmuv3.h
+> index 2ec0e5e83fc98..154503f054886 100644
+> --- a/arch/arm/include/asm/arm_pmuv3.h
+> +++ b/arch/arm/include/asm/arm_pmuv3.h
+> @@ -221,6 +221,10 @@ static inline bool kvm_pmu_counter_deferred(struct perf_event_attr *attr)
+>   	return false;
+>   }
+>   
+> +static inline bool has_host_pmu_partition_support(void)
+> +{
+> +	return false;
+> +}
+>   static inline bool kvm_set_pmuserenr(u64 val)
+>   {
+>   	return false;
+> diff --git a/arch/arm64/include/asm/arm_pmuv3.h b/arch/arm64/include/asm/arm_pmuv3.h
+> index cf2b2212e00a2..27c4d6d47da31 100644
+> --- a/arch/arm64/include/asm/arm_pmuv3.h
+> +++ b/arch/arm64/include/asm/arm_pmuv3.h
+> @@ -171,6 +171,11 @@ static inline bool pmuv3_implemented(int pmuver)
+>   		 pmuver == ID_AA64DFR0_EL1_PMUVer_NI);
+>   }
+>   
+> +static inline bool is_pmuv3p1(int pmuver)
+> +{
+> +	return pmuver >= ID_AA64DFR0_EL1_PMUVer_V3P1;
+> +}
+> +
+>   static inline bool is_pmuv3p4(int pmuver)
+>   {
+>   	return pmuver >= ID_AA64DFR0_EL1_PMUVer_V3P4;
+> diff --git a/arch/arm64/kvm/Makefile b/arch/arm64/kvm/Makefile
+> index 3ebc0570345cc..baf0f296c0e53 100644
+> --- a/arch/arm64/kvm/Makefile
+> +++ b/arch/arm64/kvm/Makefile
+> @@ -26,7 +26,7 @@ kvm-y += arm.o mmu.o mmio.o psci.o hypercalls.o pvtime.o \
+>   	 vgic/vgic-its.o vgic/vgic-debug.o vgic/vgic-v3-nested.o \
+>   	 vgic/vgic-v5.o
+>   
+> -kvm-$(CONFIG_HW_PERF_EVENTS)  += pmu-emul.o pmu.o
+> +kvm-$(CONFIG_HW_PERF_EVENTS)  += pmu-emul.o pmu-direct.o pmu.o
+>   kvm-$(CONFIG_ARM64_PTR_AUTH)  += pauth.o
+>   kvm-$(CONFIG_PTDUMP_STAGE2_DEBUGFS) += ptdump.o
+>   
+> diff --git a/arch/arm64/kvm/pmu-direct.c b/arch/arm64/kvm/pmu-direct.c
+> new file mode 100644
+> index 0000000000000..74e40e4915416
+> --- /dev/null
+> +++ b/arch/arm64/kvm/pmu-direct.c
+> @@ -0,0 +1,22 @@
+> +// SPDX-License-Identifier: GPL-2.0-only
+> +/*
+> + * Copyright (C) 2025 Google LLC
+> + * Author: Colton Lewis <coltonlewis@google.com>
+> + */
+> +
+> +#include <linux/kvm_host.h>
+> +
+> +#include <asm/arm_pmuv3.h>
+> +
+> +/**
+> + * has_host_pmu_partition_support() - Determine if partitioning is possible
+> + *
+> + * Partitioning is only supported in VHE mode with PMUv3
+> + *
+> + * Return: True if partitioning is possible, false otherwise
+> + */
+> +bool has_host_pmu_partition_support(void)
+> +{
+> +	return has_vhe() &&
+> +		system_supports_pmuv3();
+> +}
+> diff --git a/drivers/perf/arm_pmuv3.c b/drivers/perf/arm_pmuv3.c
+> index 8d3b832cd633a..798c93678e97c 100644
+> --- a/drivers/perf/arm_pmuv3.c
+> +++ b/drivers/perf/arm_pmuv3.c
+> @@ -42,6 +42,13 @@
+>   #define ARMV8_THUNDER_PERFCTR_L1I_CACHE_PREF_ACCESS		0xEC
+>   #define ARMV8_THUNDER_PERFCTR_L1I_CACHE_PREF_MISS		0xED
+>   
+> +static int reserved_host_counters __read_mostly = -1;
+> +int armv8pmu_max_guest_counters = -1;
+> +
+> +module_param(reserved_host_counters, int, 0);
+> +MODULE_PARM_DESC(reserved_host_counters,
+> +		 "PMU Partition: -1 = No partition; +N = Reserve N counters for the host");
+> +
+>   /*
+>    * ARMv8 Architectural defined events, not all of these may
+>    * be supported on any given implementation. Unsupported events will
+> @@ -532,6 +539,11 @@ static void armv8pmu_pmcr_write(u64 val)
+>   	write_pmcr(val);
+>   }
+>   
+> +static u64 armv8pmu_pmcr_n_read(void)
+> +{
+> +	return FIELD_GET(ARMV8_PMU_PMCR_N, armv8pmu_pmcr_read());
+> +}
+> +
+>   static int armv8pmu_has_overflowed(u64 pmovsr)
+>   {
+>   	return !!(pmovsr & ARMV8_PMU_OVERFLOWED_MASK);
+> @@ -1309,6 +1321,61 @@ struct armv8pmu_probe_info {
+>   	bool present;
+>   };
+>   
+> +/**
+> + * armv8pmu_reservation_is_valid() - Determine if reservation is allowed
+> + * @host_counters: Number of host counters to reserve
+> + *
+> + * Determine if the number of host counters in the argument is an
+> + * allowed reservation, 0 to NR_COUNTERS inclusive.
+> + *
+> + * Return: True if reservation allowed, false otherwise
+> + */
+> +static bool armv8pmu_reservation_is_valid(int host_counters)
+> +{
+> +	return host_counters >= 0 &&
+> +		host_counters <= armv8pmu_pmcr_n_read();
+> +}
+> +
+> +/**
+> + * armv8pmu_partition() - Partition the PMU
+> + * @pmu: Pointer to pmu being partitioned
+> + * @host_counters: Number of host counters to reserve
+> + *
+> + * Partition the given PMU by taking a number of host counters to
+> + * reserve and, if it is a valid reservation, recording the
+> + * corresponding HPMN value in the max_guest_counters field of the PMU and
+> + * clearing the guest-reserved counters from the counter mask.
+> + *
+> + * Return: 0 on success, -ERROR otherwise
 
-MIAGCSqGSIb3DQEHAqCAMIACAQExDzANBglghkgBZQMEAgEFADCABgkqhkiG9w0BBwEAAKCCD9Aw
-ggSOMIIDdqADAgECAhAOmiw0ECVD4cWj5DqVrT9PMA0GCSqGSIb3DQEBCwUAMGUxCzAJBgNVBAYT
-AlVTMRUwEwYDVQQKEwxEaWdpQ2VydCBJbmMxGTAXBgNVBAsTEHd3dy5kaWdpY2VydC5jb20xJDAi
-BgNVBAMTG0RpZ2lDZXJ0IEFzc3VyZWQgSUQgUm9vdCBDQTAeFw0yNDAxMzAwMDAwMDBaFw0zMTEx
-MDkyMzU5NTlaMEExCzAJBgNVBAYTAkFVMRAwDgYDVQQKEwdWZXJva2V5MSAwHgYDVQQDExdWZXJv
-a2V5IFNlY3VyZSBFbWFpbCBHMjCCASIwDQYJKoZIhvcNAQEBBQADggEPADCCAQoCggEBAMjvgLKj
-jfhCFqxYyRiW8g3cNFAvltDbK5AzcOaR7yVzVGadr4YcCVxjKrEJOgi7WEOH8rUgCNB5cTD8N/Et
-GfZI+LGqSv0YtNa54T9D1AWJy08ZKkWvfGGIXN9UFAPMJ6OLLH/UUEgFa+7KlrEvMUupDFGnnR06
-aDJAwtycb8yXtILj+TvfhLFhafxroXrflspavejQkEiHjNjtHnwbZ+o43g0/yxjwnarGI3kgcak7
-nnI9/8Lqpq79tLHYwLajotwLiGTB71AGN5xK+tzB+D4eN9lXayrjcszgbOv2ZCgzExQUAIt98mre
-8EggKs9mwtEuKAhYBIP/0K6WsoMnQCcCAwEAAaOCAVwwggFYMBIGA1UdEwEB/wQIMAYBAf8CAQAw
-HQYDVR0OBBYEFIlICOogTndrhuWByNfhjWSEf/xwMB8GA1UdIwQYMBaAFEXroq/0ksuCMS1Ri6en
-IZ3zbcgPMA4GA1UdDwEB/wQEAwIBhjAdBgNVHSUEFjAUBggrBgEFBQcDBAYIKwYBBQUHAwIweQYI
-KwYBBQUHAQEEbTBrMCQGCCsGAQUFBzABhhhodHRwOi8vb2NzcC5kaWdpY2VydC5jb20wQwYIKwYB
-BQUHMAKGN2h0dHA6Ly9jYWNlcnRzLmRpZ2ljZXJ0LmNvbS9EaWdpQ2VydEFzc3VyZWRJRFJvb3RD
-QS5jcnQwRQYDVR0fBD4wPDA6oDigNoY0aHR0cDovL2NybDMuZGlnaWNlcnQuY29tL0RpZ2lDZXJ0
-QXNzdXJlZElEUm9vdENBLmNybDARBgNVHSAECjAIMAYGBFUdIAAwDQYJKoZIhvcNAQELBQADggEB
-ACiagCqvNVxOfSd0uYfJMiZsOEBXAKIR/kpqRp2YCfrP4Tz7fJogYN4fxNAw7iy/bPZcvpVCfe/H
-/CCcp3alXL0I8M/rnEnRlv8ItY4MEF+2T/MkdXI3u1vHy3ua8SxBM8eT9LBQokHZxGUX51cE0kwa
-uEOZ+PonVIOnMjuLp29kcNOVnzf8DGKiek+cT51FvGRjV6LbaxXOm2P47/aiaXrDD5O0RF5SiPo6
-xD1/ClkCETyyEAE5LRJlXtx288R598koyFcwCSXijeVcRvBB1cNOLEbg7RMSw1AGq14fNe2cH1HG
-W7xyduY/ydQt6gv5r21mDOQ5SaZSWC/ZRfLDuEYwggWbMIIEg6ADAgECAhAH5JEPagNRXYDiRPdl
-c1vgMA0GCSqGSIb3DQEBCwUAMEExCzAJBgNVBAYTAkFVMRAwDgYDVQQKEwdWZXJva2V5MSAwHgYD
-VQQDExdWZXJva2V5IFNlY3VyZSBFbWFpbCBHMjAeFw0yNDEyMzAwMDAwMDBaFw0yODAxMDQyMzU5
-NTlaMB4xHDAaBgNVBAMME2R3bXcyQGluZnJhZGVhZC5vcmcwggIiMA0GCSqGSIb3DQEBAQUAA4IC
-DwAwggIKAoICAQDali7HveR1thexYXx/W7oMk/3Wpyppl62zJ8+RmTQH4yZeYAS/SRV6zmfXlXaZ
-sNOE6emg8WXLRS6BA70liot+u0O0oPnIvnx+CsMH0PD4tCKSCsdp+XphIJ2zkC9S7/yHDYnqegqt
-w4smkqUqf0WX/ggH1Dckh0vHlpoS1OoxqUg+ocU6WCsnuz5q5rzFsHxhD1qGpgFdZEk2/c//ZvUN
-i12vPWipk8TcJwHw9zoZ/ZrVNybpMCC0THsJ/UEVyuyszPtNYeYZAhOJ41vav1RhZJzYan4a1gU0
-kKBPQklcpQEhq48woEu15isvwWh9/+5jjh0L+YNaN0I//nHSp6U9COUG9Z0cvnO8FM6PTqsnSbcc
-0j+GchwOHRC7aP2t5v2stVx3KbptaYEzi4MQHxm/0+HQpMEVLLUiizJqS4PWPU6zfQTOMZ9uLQRR
-ci+c5xhtMEBszlQDOvEQcyEG+hc++fH47K+MmZz21bFNfoBxLP6bjR6xtPXtREF5lLXxp+CJ6KKS
-blPKeVRg/UtyJHeFKAZXO8Zeco7TZUMVHmK0ZZ1EpnZbnAhKE19Z+FJrQPQrlR0gO3lBzuyPPArV
-hvWxjlO7S4DmaEhLzarWi/ze7EGwWSuI2eEa/8zU0INUsGI4ywe7vepQz7IqaAovAX0d+f1YjbmC
-VsAwjhLmveFjNwIDAQABo4IBsDCCAawwHwYDVR0jBBgwFoAUiUgI6iBOd2uG5YHI1+GNZIR//HAw
-HQYDVR0OBBYEFFxiGptwbOfWOtMk5loHw7uqWUOnMDAGA1UdEQQpMCeBE2R3bXcyQGluZnJhZGVh
-ZC5vcmeBEGRhdmlkQHdvb2Rob3Uuc2UwFAYDVR0gBA0wCzAJBgdngQwBBQEBMA4GA1UdDwEB/wQE
-AwIF4DAdBgNVHSUEFjAUBggrBgEFBQcDAgYIKwYBBQUHAwQwewYDVR0fBHQwcjA3oDWgM4YxaHR0
-cDovL2NybDMuZGlnaWNlcnQuY29tL1Zlcm9rZXlTZWN1cmVFbWFpbEcyLmNybDA3oDWgM4YxaHR0
-cDovL2NybDQuZGlnaWNlcnQuY29tL1Zlcm9rZXlTZWN1cmVFbWFpbEcyLmNybDB2BggrBgEFBQcB
-AQRqMGgwJAYIKwYBBQUHMAGGGGh0dHA6Ly9vY3NwLmRpZ2ljZXJ0LmNvbTBABggrBgEFBQcwAoY0
-aHR0cDovL2NhY2VydHMuZGlnaWNlcnQuY29tL1Zlcm9rZXlTZWN1cmVFbWFpbEcyLmNydDANBgkq
-hkiG9w0BAQsFAAOCAQEAQXc4FPiPLRnTDvmOABEzkIumojfZAe5SlnuQoeFUfi+LsWCKiB8Uextv
-iBAvboKhLuN6eG/NC6WOzOCppn4mkQxRkOdLNThwMHW0d19jrZFEKtEG/epZ/hw/DdScTuZ2m7im
-8ppItAT6GXD3aPhXkXnJpC/zTs85uNSQR64cEcBFjjoQDuSsTeJ5DAWf8EMyhMuD8pcbqx5kRvyt
-JPsWBQzv1Dsdv2LDPLNd/JUKhHSgr7nbUr4+aAP2PHTXGcEBh8lTeYea9p4d5k969pe0OHYMV5aL
-xERqTagmSetuIwolkAuBCzA9vulg8Y49Nz2zrpUGfKGOD0FMqenYxdJHgDCCBZswggSDoAMCAQIC
-EAfkkQ9qA1FdgOJE92VzW+AwDQYJKoZIhvcNAQELBQAwQTELMAkGA1UEBhMCQVUxEDAOBgNVBAoT
-B1Zlcm9rZXkxIDAeBgNVBAMTF1Zlcm9rZXkgU2VjdXJlIEVtYWlsIEcyMB4XDTI0MTIzMDAwMDAw
-MFoXDTI4MDEwNDIzNTk1OVowHjEcMBoGA1UEAwwTZHdtdzJAaW5mcmFkZWFkLm9yZzCCAiIwDQYJ
-KoZIhvcNAQEBBQADggIPADCCAgoCggIBANqWLse95HW2F7FhfH9bugyT/danKmmXrbMnz5GZNAfj
-Jl5gBL9JFXrOZ9eVdpmw04Tp6aDxZctFLoEDvSWKi367Q7Sg+ci+fH4KwwfQ8Pi0IpIKx2n5emEg
-nbOQL1Lv/IcNiep6Cq3DiyaSpSp/RZf+CAfUNySHS8eWmhLU6jGpSD6hxTpYKye7PmrmvMWwfGEP
-WoamAV1kSTb9z/9m9Q2LXa89aKmTxNwnAfD3Ohn9mtU3JukwILRMewn9QRXK7KzM+01h5hkCE4nj
-W9q/VGFknNhqfhrWBTSQoE9CSVylASGrjzCgS7XmKy/BaH3/7mOOHQv5g1o3Qj/+cdKnpT0I5Qb1
-nRy+c7wUzo9OqydJtxzSP4ZyHA4dELto/a3m/ay1XHcpum1pgTOLgxAfGb/T4dCkwRUstSKLMmpL
-g9Y9TrN9BM4xn24tBFFyL5znGG0wQGzOVAM68RBzIQb6Fz758fjsr4yZnPbVsU1+gHEs/puNHrG0
-9e1EQXmUtfGn4InoopJuU8p5VGD9S3Ikd4UoBlc7xl5yjtNlQxUeYrRlnUSmdlucCEoTX1n4UmtA
-9CuVHSA7eUHO7I88CtWG9bGOU7tLgOZoSEvNqtaL/N7sQbBZK4jZ4Rr/zNTQg1SwYjjLB7u96lDP
-sipoCi8BfR35/ViNuYJWwDCOEua94WM3AgMBAAGjggGwMIIBrDAfBgNVHSMEGDAWgBSJSAjqIE53
-a4blgcjX4Y1khH/8cDAdBgNVHQ4EFgQUXGIam3Bs59Y60yTmWgfDu6pZQ6cwMAYDVR0RBCkwJ4ET
-ZHdtdzJAaW5mcmFkZWFkLm9yZ4EQZGF2aWRAd29vZGhvdS5zZTAUBgNVHSAEDTALMAkGB2eBDAEF
-AQEwDgYDVR0PAQH/BAQDAgXgMB0GA1UdJQQWMBQGCCsGAQUFBwMCBggrBgEFBQcDBDB7BgNVHR8E
-dDByMDegNaAzhjFodHRwOi8vY3JsMy5kaWdpY2VydC5jb20vVmVyb2tleVNlY3VyZUVtYWlsRzIu
-Y3JsMDegNaAzhjFodHRwOi8vY3JsNC5kaWdpY2VydC5jb20vVmVyb2tleVNlY3VyZUVtYWlsRzIu
-Y3JsMHYGCCsGAQUFBwEBBGowaDAkBggrBgEFBQcwAYYYaHR0cDovL29jc3AuZGlnaWNlcnQuY29t
-MEAGCCsGAQUFBzAChjRodHRwOi8vY2FjZXJ0cy5kaWdpY2VydC5jb20vVmVyb2tleVNlY3VyZUVt
-YWlsRzIuY3J0MA0GCSqGSIb3DQEBCwUAA4IBAQBBdzgU+I8tGdMO+Y4AETOQi6aiN9kB7lKWe5Ch
-4VR+L4uxYIqIHxR7G2+IEC9ugqEu43p4b80LpY7M4KmmfiaRDFGQ50s1OHAwdbR3X2OtkUQq0Qb9
-6ln+HD8N1JxO5nabuKbymki0BPoZcPdo+FeRecmkL/NOzzm41JBHrhwRwEWOOhAO5KxN4nkMBZ/w
-QzKEy4PylxurHmRG/K0k+xYFDO/UOx2/YsM8s138lQqEdKCvudtSvj5oA/Y8dNcZwQGHyVN5h5r2
-nh3mT3r2l7Q4dgxXlovERGpNqCZJ624jCiWQC4ELMD2+6WDxjj03PbOulQZ8oY4PQUyp6djF0keA
-MYIDuzCCA7cCAQEwVTBBMQswCQYDVQQGEwJBVTEQMA4GA1UEChMHVmVyb2tleTEgMB4GA1UEAxMX
-VmVyb2tleSBTZWN1cmUgRW1haWwgRzICEAfkkQ9qA1FdgOJE92VzW+AwDQYJYIZIAWUDBAIBBQCg
-ggE3MBgGCSqGSIb3DQEJAzELBgkqhkiG9w0BBwEwHAYJKoZIhvcNAQkFMQ8XDTI2MDMxMTExNDk0
-NVowLwYJKoZIhvcNAQkEMSIEIN31XcCrtLt1oVD4bbqkhX8EaRdBqrhIxRhJzRTZS+AuMGQGCSsG
-AQQBgjcQBDFXMFUwQTELMAkGA1UEBhMCQVUxEDAOBgNVBAoTB1Zlcm9rZXkxIDAeBgNVBAMTF1Zl
-cm9rZXkgU2VjdXJlIEVtYWlsIEcyAhAH5JEPagNRXYDiRPdlc1vgMGYGCyqGSIb3DQEJEAILMVeg
-VTBBMQswCQYDVQQGEwJBVTEQMA4GA1UEChMHVmVyb2tleTEgMB4GA1UEAxMXVmVyb2tleSBTZWN1
-cmUgRW1haWwgRzICEAfkkQ9qA1FdgOJE92VzW+AwDQYJKoZIhvcNAQEBBQAEggIAbHVdBuWb8IoM
-hFAwGVSr8NjVGJ35HH5QktlSgYV46uQ8ufGRsH9oqOmuuJOBMzvB3wm3ICUAwGnVLj+5n97ZcBM0
-1f8yXqIWTb4VrElG+Dda08pSzkw6skq9E/m35KKSkv5ISPrWGciIs1sgikJn4zZKcOwFzhYfMI5k
-PrKP0kKcSJbE3Igy1G1otmfGWeFbv3HNZqQoPbem7BT7Ne0LDOiG0xzVlcuKzhn49n8WarbX/Frk
-7MDgqffQNzESQtZ4rH2dsWIftZ0V7VEQEWEUyf07gk/k/4FVUbeLcir6OWMYCFIJJHW60J6Bg4o4
-k71EkcYXxHzHyJ6E4y+MgLIx/cy6GEkfFq8qMbTlQh8mUsmbDjqYqm2mrgJEWuFUPYMHLy7LV+W0
-Kur32wqnfGfKrjqGPXfDUVEDzpk2odAI2ZDQ7wv7cZfkZ/SOvBeeXN8RO0ItQPl4USyEL6bJc/l1
-RMsHXs3juJ0wsHTl9/pdVrs2v0pNV7r3SLP0qsxxktxuzFmWC5ss5JvclrQgbBwX4NlU5tNWs0cu
-TG5EVt+NnvYrTG9I9RhptUMk4DGOAhgtN05sSAUb4AWfrT1PhqzBt6xlVHDbWXMXns0DA9LzK8el
-vKuIQeY7CVbJuYSBJ8zs6Du8MPj5q2QgD9b1U27GJ1Rsu6ZGIclb/1s5z+tTbWYAAAAAAAA=
+Hi Colton,
 
+Couple of minor nits. But this error return value isn't used by the caller.
 
---=-L5Z/AZ/RbgpWLcXCmWQd--
+> + */
+> +static int armv8pmu_partition(struct arm_pmu *pmu, int host_counters)
+> +{
+> +	u8 nr_counters;
+> +	u8 hpmn;
+> +
+> +	if (!armv8pmu_reservation_is_valid(host_counters)) {
+> +		pr_err("PMU partition reservation of %d host counters is not valid", host_counters);
+> +		return -EINVAL;
+> +	}
+> +
+> +	nr_counters = armv8pmu_pmcr_n_read();
+> +	hpmn = nr_counters - host_counters;
+> +
+> +	pmu->max_guest_counters = hpmn;
+> +	armv8pmu_max_guest_counters = hpmn;
+
+And this could be more like 'bool armv8pmu_partitioned'. PMUs will have 
+different numbers of counters so it's a bit misleading to have one 
+global, and the actual value isn't used either.
+
+> +
+> +	bitmap_clear(pmu->cntr_mask, 0, hpmn);
+> +	bitmap_set(pmu->cntr_mask, hpmn, host_counters);
+> +	clear_bit(ARMV8_PMU_CYCLE_IDX, pmu->cntr_mask);
+> +
+> +	if (pmuv3_has_icntr())
+> +		clear_bit(ARMV8_PMU_INSTR_IDX, pmu->cntr_mask);
+> +
+> +	pr_info("Partitioned PMU with %d host counters -> %u guest counters", host_counters, hpmn);
+> +
+> +	return 0;
+> +}
+> +
+>   static void __armv8pmu_probe_pmu(void *info)
+>   {
+>   	struct armv8pmu_probe_info *probe = info;
+> @@ -1323,10 +1390,10 @@ static void __armv8pmu_probe_pmu(void *info)
+>   
+>   	cpu_pmu->pmuver = pmuver;
+>   	probe->present = true;
+> +	cpu_pmu->max_guest_counters = -1;
+>   
+>   	/* Read the nb of CNTx counters supported from PMNC */
+> -	bitmap_set(cpu_pmu->cntr_mask,
+> -		   0, FIELD_GET(ARMV8_PMU_PMCR_N, armv8pmu_pmcr_read()));
+> +	bitmap_set(cpu_pmu->cntr_mask, 0, armv8pmu_pmcr_n_read());
+>   
+>   	/* Add the CPU cycles counter */
+>   	set_bit(ARMV8_PMU_CYCLE_IDX, cpu_pmu->cntr_mask);
+> @@ -1335,6 +1402,13 @@ static void __armv8pmu_probe_pmu(void *info)
+>   	if (pmuv3_has_icntr())
+>   		set_bit(ARMV8_PMU_INSTR_IDX, cpu_pmu->cntr_mask);
+>   
+> +	if (reserved_host_counters >= 0) {
+> +		if (has_host_pmu_partition_support())
+> +			armv8pmu_partition(cpu_pmu, reserved_host_counters);
+> +		else
+> +			pr_err("PMU partition is not supported");
+> +	}
+> +
+>   	pmceid[0] = pmceid_raw[0] = read_pmceid0();
+>   	pmceid[1] = pmceid_raw[1] = read_pmceid1();
+>   
+> diff --git a/include/kvm/arm_pmu.h b/include/kvm/arm_pmu.h
+> index 24a471cf59d56..e7172db1e897d 100644
+> --- a/include/kvm/arm_pmu.h
+> +++ b/include/kvm/arm_pmu.h
+> @@ -47,7 +47,10 @@ struct arm_pmu_entry {
+>   	struct arm_pmu *arm_pmu;
+>   };
+>   
+> +extern int armv8pmu_max_guest_counters;
+> +
+>   bool kvm_supports_guest_pmuv3(void);
+> +bool has_host_pmu_partition_support(void);
+>   #define kvm_arm_pmu_irq_initialized(v)	((v)->arch.pmu.irq_num >= VGIC_NR_SGIS)
+>   u64 kvm_pmu_get_counter_value(struct kvm_vcpu *vcpu, u64 select_idx);
+>   void kvm_pmu_set_counter_value(struct kvm_vcpu *vcpu, u64 select_idx, u64 val);
+> @@ -117,6 +120,11 @@ static inline bool kvm_supports_guest_pmuv3(void)
+>   	return false;
+>   }
+>   
+> +static inline bool has_host_pmu_partition_support(void)
+> +{
+> +	return false;
+> +}
+> +
+>   #define kvm_arm_pmu_irq_initialized(v)	(false)
+>   static inline u64 kvm_pmu_get_counter_value(struct kvm_vcpu *vcpu,
+>   					    u64 select_idx)
+> diff --git a/include/linux/perf/arm_pmu.h b/include/linux/perf/arm_pmu.h
+> index 52b37f7bdbf9e..1bee8c6eba46b 100644
+> --- a/include/linux/perf/arm_pmu.h
+> +++ b/include/linux/perf/arm_pmu.h
+> @@ -129,6 +129,7 @@ struct arm_pmu {
+>   
+>   	/* Only to be used by ACPI probing code */
+>   	unsigned long acpi_cpuid;
+> +	int		max_guest_counters;
+>   };
+>   
+>   #define to_arm_pmu(p) (container_of(p, struct arm_pmu, pmu))
+
