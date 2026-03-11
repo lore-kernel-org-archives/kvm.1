@@ -1,40 +1,69 @@
-Received: from mout.web.de (mout.web.de [212.227.15.4])
+Received: from BN1PR04CU002.outbound.protection.outlook.com (mail-eastus2azon11010023.outbound.protection.outlook.com [52.101.56.23])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 58F6C34752D;
-	Wed, 11 Mar 2026 15:12:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.15.4
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773241979; cv=none; b=mr0dKXmazZhSx3bxUaqxllMS/W5d/CNxvBaMYmoODts+hQ4ZXfJfJDN8Lpmoy9g53yN/FpDQ41R9SrVvxw5/pAKxPAxQGeixp/hCd/GBI+w6jiUkd0V+9G4Wa37yeM692V+gGHhxAZIKFQFDbWPPASfKWbCe9fhEc1peE9Oobyk=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773241979; c=relaxed/simple;
-	bh=8xayem6yt0HtfhsQlYY0bHMXVNy1I+u8tIW/Rzn2tYE=;
-	h=Message-ID:Date:MIME-Version:To:Cc:References:Subject:From:
-	 In-Reply-To:Content-Type; b=CvDaTH7uyxAjzVgKz3WLB6p8+McJiXjiIe5Lm0KDItbAkxSeYyLfgswpkJoKVQkTHqZ933ifHb3iQKN0iXV0ZCaIe/p0jbgcAxLmlXIbKb8yDv9ASGuMv6NeBdLSpzG9nLDAOMOlrBNmE+tbtbbyu4VgSfY5VA/mOi/Vy8a6+bs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de; spf=pass smtp.mailfrom=web.de; dkim=pass (2048-bit key) header.d=web.de header.i=markus.elfring@web.de header.b=Wag9Fxf+; arc=none smtp.client-ip=212.227.15.4
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=web.de
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E9A2F3E0C62;
+	Wed, 11 Mar 2026 15:42:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.56.23
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1773243768; cv=fail; b=q44joUCd1miRxmc97gBkC63POzy//q6yMLohocieb7WwPkigPqJst5uTAmEexDffE2y4988rpiZ3/oMe6m2PnSPb0dhvlkP3bBHA7n7SNarYeCB4vqa5nyKkwhG2dMyRedYUGALAssd+rg1xhdSlPjFF19FoLeBjDZPynk3t3CQ=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1773243768; c=relaxed/simple;
+	bh=0FWVh6yW5t6KJkLNIk7nWZxo31GHOefal/mjMTGVuNA=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=TflirzJrvE+WIyFCyQhN9xUi6JAoWsr45yTijbUUcAn6jLZOOZUz3mnohi0bRalv9LntNoMYmTBxf/nM4GFbQb4eH7nK1ZibMVJXxV6TAlvzQh8LELk65ccXNjAVcAOt9WOSNXsQShyd6J64kUrqdVB06UiekxfsmDqDEXKtVsQ=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=sXmM3Kpm; arc=fail smtp.client-ip=52.101.56.23
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=web.de header.i=markus.elfring@web.de header.b="Wag9Fxf+"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=web.de;
-	s=s29768273; t=1773241960; x=1773846760; i=markus.elfring@web.de;
-	bh=giiOm4nN20bJPCHKicALa9KbdO4HtuSxDT6eKFGA2mo=;
-	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:To:Cc:References:
-	 Subject:From:In-Reply-To:Content-Type:Content-Transfer-Encoding:
-	 cc:content-transfer-encoding:content-type:date:from:message-id:
-	 mime-version:reply-to:subject:to;
-	b=Wag9Fxf+yNYQPXsTRyON3wRt6746M7liQFpZpr6olBI3Hroz514SMRate1mi9Xg/
-	 MIASsdEYNcunoz8/0486PBcCtmiUbXpXZk7SZ9UfEjg2yZ/tPzswVOTPVBMcMOZI0
-	 P5tpvgiKmN/AWRSyt4QzAOeFSzOnPlGV7COlz4Px5LChMrnWVtTVF6O0hgI7HspJ9
-	 ZFokJK/ysEIyBkMx8vWGA+V0bsSD1FiKNQpHbXMbvGQ3/XnE4gJZFGitvxFp9Ukqq
-	 G2o9A+gT473BGTVzhrJiV0v2XUcnMqFfYGkufDQuk2aN8veffUebr4e9kMFhtnu0/
-	 59bsB5DtXuFN3mqFBA==
-X-UI-Sender-Class: 814a7b36-bfc1-4dae-8640-3722d8ec6cd6
-Received: from client.hidden.invalid by smtp.web.de (mrweb006
- [213.165.67.108]) with ESMTPSA (Nemesis) id 1N9cHJ-1vWLef0wrt-00vzxd; Wed, 11
- Mar 2026 16:12:40 +0100
-Message-ID: <e6145c17-64ce-494e-a41a-c847df3d999e@web.de>
-Date: Wed, 11 Mar 2026 16:12:34 +0100
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="sXmM3Kpm"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=v9KdybSfeFIE1922eYVibzMKmss7SpbX4aTNRoZy6AmWxCFOzAELgK679XdSqaTgSPQhEk4gqdEalEnCf4CUv1yvcTasc8kMzHtUaQHwDP9luMZTNxbhWIo7vdsow87b8zBNskqZ1qXrDSMKQUz8W0ZMt9HuwC4mbwZon0gsAFrb0SqukIYF43QdWQBCjCtj9ozCpOgtfsEnnDszh2hs8TQmFqYPHT9ay8ktiW4fQdJNf28kxVQ5+oMVzJ65x1McepcajFSLh27AncR1wIxLP/kgJCLzXYC86HlXH5xNpmGrUWBHGcrj9vadVp6lGJQSSB/LK1iMPl9G9D69BFxOAw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=qILe/AO6/RxuOPniFZKEUcveQS4QnrxjZlnj+b/6Tu0=;
+ b=YV+3d/jYEinLTFqQsZUR9NAm9oYPdyovQEaTFqoarUMaIb58Lp2Db+JXnJkC+CFTU19nWiCj2Eve1yEA6LboQRX/H20E9cIg8LOc78osrqZEDeVQ+vwbdJUxGapnyZXzOA7iPfg5xNfElDQSPAfzZFeT39reoIvPQq+U14CYqMeAiBw86UWz3Q8nUyZYLpcDvVeupGqV5sm50vpdz+nIpPXcyJb8IK1iq+7edQH1yF4zPuKTXc1v4T/sUF35Wyp3ZJfyetiif7An42tb73yuod92FldDoc9+7Fyt7sR22vX9N/DGcy2Bv4E0+MFz+yYbskF8AfhTp5779dzCkjQ21g==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=intel.com smtp.mailfrom=amd.com; dmarc=pass
+ (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=qILe/AO6/RxuOPniFZKEUcveQS4QnrxjZlnj+b/6Tu0=;
+ b=sXmM3KpmnQHsMzZEuJdo6QYXfdhxJtUAGzhLcQYcF8nYGgkWfSSJLzVdL0Jh5v6l0wyjB4e8ZGm30RRYchO7bfM/s5lKEWhvaPLrA++Sxvc0H/wGZeH+IWjGKemqUeBcptmxbNkKZ9p8b1m9H83pZUOWKlfQQB1mVRXe8F9clTs=
+Received: from SA0PR11CA0206.namprd11.prod.outlook.com (2603:10b6:806:1bc::31)
+ by BN7PPFA8145BD40.namprd12.prod.outlook.com (2603:10b6:40f:fc02::6de) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9700.12; Wed, 11 Mar
+ 2026 15:42:40 +0000
+Received: from SN1PEPF000397AF.namprd05.prod.outlook.com
+ (2603:10b6:806:1bc:cafe::34) by SA0PR11CA0206.outlook.office365.com
+ (2603:10b6:806:1bc::31) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.9678.26 via Frontend Transport; Wed,
+ 11 Mar 2026 15:42:34 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
+ smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=satlexmb07.amd.com; pr=C
+Received: from satlexmb07.amd.com (165.204.84.17) by
+ SN1PEPF000397AF.mail.protection.outlook.com (10.167.248.53) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.9678.18 via Frontend Transport; Wed, 11 Mar 2026 15:42:40 +0000
+Received: from SATLEXMB04.amd.com (10.181.40.145) by satlexmb07.amd.com
+ (10.181.42.216) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.2.2562.17; Wed, 11 Mar
+ 2026 10:42:40 -0500
+Received: from satlexmb08.amd.com (10.181.42.217) by SATLEXMB04.amd.com
+ (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.39; Wed, 11 Mar
+ 2026 10:42:39 -0500
+Received: from [172.31.177.76] (10.180.168.240) by satlexmb08.amd.com
+ (10.181.42.217) with Microsoft SMTP Server id 15.2.2562.17 via Frontend
+ Transport; Wed, 11 Mar 2026 10:42:35 -0500
+Message-ID: <d0eba3fe-2938-4856-bd9b-0e13972e8313@amd.com>
+Date: Wed, 11 Mar 2026 21:12:34 +0530
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -42,161 +71,198 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-To: Philipp Hahn <phahn-oss@avm.de>, cocci@inria.fr,
- Julia Lawall <Julia.Lawall@inria.fr>, Nicolas Palix <nicolas.palix@imag.fr>
-Cc: amd-gfx@lists.freedesktop.org, apparmor@lists.ubuntu.com,
- bpf@vger.kernel.org, ceph-devel@vger.kernel.org, dm-devel@lists.linux.dev,
- dri-devel@lists.freedesktop.org, gfs2@lists.linux.dev,
- intel-gfx@lists.freedesktop.org, intel-wired-lan@lists.osuosl.org,
- iommu@lists.linux.dev, kvm@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org, linux-block@vger.kernel.org,
- linux-bluetooth@vger.kernel.org, linux-btrfs@vger.kernel.org,
- linux-cifs@vger.kernel.org, linux-clk@vger.kernel.org,
- linux-erofs@lists.ozlabs.org, linux-ext4@vger.kernel.org,
- linux-fsdevel@vger.kernel.org, linux-gpio@vger.kernel.org,
- linux-hyperv@vger.kernel.org, linux-input@vger.kernel.org,
- linux-leds@vger.kernel.org, linux-media@vger.kernel.org,
- linux-mips@vger.kernel.org, linux-mm@kvack.org,
- linux-modules@vger.kernel.org, linux-mtd@lists.infradead.org,
- linux-nfs@vger.kernel.org, linux-omap@vger.kernel.org,
- linux-phy@lists.infradead.org, linux-pm@vger.kernel.org,
- linux-rockchip@lists.infradead.org, linux-s390@vger.kernel.org,
- linux-scsi@vger.kernel.org, linux-sctp@vger.kernel.org,
- linux-security-module@vger.kernel.org, linux-sh@vger.kernel.org,
- linux-sound@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com,
- linux-trace-kernel@vger.kernel.org, linux-usb@vger.kernel.org,
- linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
- ntfs3@lists.linux.dev, samba-technical@lists.samba.org,
- sched-ext@lists.linux.dev, target-devel@vger.kernel.org,
- tipc-discussion@lists.sourceforge.net, v9fs@lists.linux.dev,
- LKML <linux-kernel@vger.kernel.org>
-References: <20260310-b4-is_err_or_null-v1-1-bd63b656022d@avm.de>
-Subject: Re: [PATCH 01/61] Coccinelle: Prefer IS_ERR_OR_NULL over manual NULL
- check
-Content-Language: en-GB, de-DE
-From: Markus Elfring <Markus.Elfring@web.de>
-In-Reply-To: <20260310-b4-is_err_or_null-v1-1-bd63b656022d@avm.de>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:8uNlJJTAs0E3eVrueF6w+kamgZld8V5k307BMa2qc/KwhoVrne3
- cPN5KceT1D2i5YOSNggwsPxOs655cWyte1CKlNlBLyuH93VGvstvy+ggV5GDmk4PUMu8Iwj
- lIBpLLqKBgo7uQxQM9uBZQLnvS5wa1t6ITQ23zK6Z5KinOA9Ud5Ss1etUILA/92IsKQJLWt
- MbIOhZYtTIg4ZGnA6bYYw==
-X-Spam-Flag: NO
-UI-OutboundReport: notjunk:1;M01:P0:JCtAJ/zNjOI=;sDWY82KXUVoSud92r84ZXuFAtv9
- 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
- tJ2F8GMFz7+S2uTh+G9X
+Subject: Re: [PATCH v2 1/2] x86/cpu: Disable CR pinning during CPU bringup
+To: Dave Hansen <dave.hansen@intel.com>, Tom Lendacky
+	<thomas.lendacky@amd.com>, Borislav Petkov <bp@alien8.de>
+CC: <linux-kernel@vger.kernel.org>, <kvm@vger.kernel.org>, <tglx@kernel.org>,
+	<mingo@redhat.com>, <dave.hansen@linux.intel.com>, <hpa@zytor.com>,
+	<xin@zytor.com>, <seanjc@google.com>, <pbonzini@redhat.com>,
+	<x86@kernel.org>, <sohil.mehta@intel.com>, <jon.grimm@amd.com>
+References: <20260226092349.803491-1-nikunj@amd.com>
+ <20260226092349.803491-2-nikunj@amd.com>
+ <20260309134640.GOaa7PQJli_C9QATGB@fat_crate.local>
+ <cde957ba-3579-4063-9d17-3630e79ea388@intel.com>
+ <20260309161516.GAaa7yFMulhdzNQ-pt@fat_crate.local>
+ <70644e1d-dd0e-4f0f-81c0-fd095e46e50b@intel.com>
+ <7ca205d6-b01b-4ed3-959d-db31a6496d79@amd.com>
+ <505a6bbd-3ecf-4de9-8fb9-0b21c3435a96@intel.com>
+ <9fa61b80-0e16-4a87-a0e7-3c3dfcda8f7e@amd.com>
+ <55a98b6d-e831-47a6-aa5a-8fe357334f67@intel.com>
+Content-Language: en-US
+From: "Nikunj A. Dadhania" <nikunj@amd.com>
+In-Reply-To: <55a98b6d-e831-47a6-aa5a-8fe357334f67@intel.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 7bit
+Received-SPF: None (SATLEXMB04.amd.com: nikunj@amd.com does not designate
+ permitted sender hosts)
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: SN1PEPF000397AF:EE_|BN7PPFA8145BD40:EE_
+X-MS-Office365-Filtering-Correlation-Id: 41c9dfbf-87d9-404d-f9c9-08de7f84d429
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|376014|7416014|36860700016|82310400026|1800799024|22082099003|56012099003|18002099003;
+X-Microsoft-Antispam-Message-Info:
+	K2GXjVZraZyb+dW9g1FV8HnMuGMo/GcnxfXW81TVhGVJ4+eoCqFlrEya6rvWNOhTDD0yFOkOvOqmQlGQd0ozCal8LB+63FeSkQ2mTtTUNyUriCj0naybugQIZMJ1dgkfiTgU5mZXuiuqwIlEq0e7RDEUY8iTp8LATFjNUfmc/+QrhmW/5z+7WX11YmZbgQCjfe+asc3gisHEPoUvYwiD5yiOSBsOxmwLcE/aqu36PGEU5rZaOYPuG8Dug7Hy+sIFVmg2veN9MxTVttWpupciYEN1AO6uizOYppUloE0SCJcdOGN/zUx+N5Aa29ieBxcz9ujc0ycqi4W1ldWlgVFYOaZz39Ourz2PpC+x7o0eRmQlZf7aOz8oAWgC+3NAIbocpUOxaPJJVB9bXzhmgK3twQ1CFkicJxzSNyuRvsrkaz+4xbdOM+wduPUtO4fjVV2Mz8kf9HYUNZjfuQ4Q4SNbA4z9PPYnZrotKSxqGZthBH2i7hG7qEq9vpAseBQ5lOgTfo6ncdrgipHI2KpRGrBI8juNuRM5ExNz1gRUsEpNcPJQY97ZZ7HDmaGoKkXWneg+vqfJ9pZqsI0masdUuAKbuB4wceYtKSMAW87WCsEm4PBtLmKqq7F2yhF6KajEGBHug7UVsbpUNRgaeb8UQ1eTebeOIpl1/eb703B2nt/PghHClkjiuTIOpTKIPRiVD5yNgkop0tU1iIcI5joitDre2GmQLfVwXRURLZzNsYMoNZJ5++5q4dtZB8X7TWx+z+O1YDoSyQpsCuBXc6eXh0WMlA==
+X-Forefront-Antispam-Report:
+	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb07.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(376014)(7416014)(36860700016)(82310400026)(1800799024)(22082099003)(56012099003)(18002099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	IsVWcpRRf6c+exCjgotUshrEhSnc+fOrcpCZxHwZXuvam9JDHf4/u7QbAKj3kJXKpO4GLR3LpcoeW7o2Gon296jqSib47Vhdb90jSrAFd2iNwVLSYxaQAVapI2u1b+DA4KZDr8787dfaSNA+TGo6/eNJ7q7XUb0yJIK6IKfnMo/7mCWSpIscFfwLIz1EbhdkAnOt1Y1hy7plvmV0B1bTbMsCIpLR3PKdRlHczfI7EGkGZOq4jtcWq69xvGJ52qVQqrn6KH2cE4Zx5ghL+Yi/8NmJKlSCXA16QjL5NqVgrNeTQDZPE9L2DzKEGRyEYrBngj5c7vTQ9CBm/pwjASg3W+/qbCEsuE83gGn3lJ15SFJxxbpyeaKH5+xnEEtaVFw4854kM4pkRrgz3K4UjmSk1+yqcLoXVzeExkF3RZIcpO+Q5zC5LSbKem+vIoigmeWc
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 11 Mar 2026 15:42:40.4462
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 41c9dfbf-87d9-404d-f9c9-08de7f84d429
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[satlexmb07.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	SN1PEPF000397AF.namprd05.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: BN7PPFA8145BD40
 
-=E2=80=A6
-> +// Confidence: High
 
-Some contributors presented discerning comments for this change approach.
-Thus I became also curious how much they can eventually be taken better in=
-to account
-by the means of the semantic patch language (Coccinelle software).
 
-=E2=80=A6
-+@p1 depends on patch@
-+expression E;
-+@@
-+(
-> +-	E !=3D NULL && !IS_ERR(E)
-> ++	!IS_ERR_OR_NULL(E)
-> +|
-> +-	E =3D=3D NULL || IS_ERR(E)
-> ++	IS_ERR_OR_NULL(E)
-> +|
-> +-	!IS_ERR(E) && E !=3D NULL
-> ++	!IS_ERR_OR_NULL(E)
-> +|
-> +-	IS_ERR(E) || E =3D=3D NULL
-> ++	IS_ERR_OR_NULL(E)
-> +)
+On 3/11/2026 7:37 PM, Dave Hansen wrote:
+> Nikunj, thanks for tracking this down and filling in the last piece of
+> the puzzle about ALTERNATIVEs patching.
+> 
+> On 3/11/26 03:41, Nikunj A. Dadhania wrote:
+>> +	/*
+>> +	 * Enable FSGSBASE if available. Exception entry code (paranoid_entry)
+>> +	 * is patched to use RDGSBASE/WRGSBASE when this feature is present,
+>> +	 * and those instructions require CR4.FSGSBASE=1. Secondary CPUs must
+>> +	 * enable this before any exceptions occur.
+>> +	 */
+>> +	if (boot_cpu_has(X86_FEATURE_FSGSBASE))
+>> +		cr4 |= X86_CR4_FSGSBASE;
+> 
+> But this still double-enables X86_CR4_FSGSBASE. Could we initialize
+> X86_CR4_FSGSBASE in *one* place, please?
 
-Several detected expressions should refer to return values from function c=
-alls.
-https://en.wikipedia.org/wiki/Return_statement
+Makes sense. Moving X86_CR4_FSGSBASE enablement to cr4_init() and calling cr4_init()
+early in the boot CPU path eliminates the double-enable. I've tested this lightly - 
+let me know if this is the right approach.
 
-* Do any development challenges hinder still the determination of correspo=
-nding
-  failure predicates?
+diff --git a/arch/x86/include/asm/processor.h b/arch/x86/include/asm/processor.h
+index a24c7805acdb..98efbd13a5a6 100644
+--- a/arch/x86/include/asm/processor.h
++++ b/arch/x86/include/asm/processor.h
+@@ -595,7 +595,7 @@ extern void load_fixmap_gdt(int);
+ extern void cpu_init(void);
+ extern void cpu_init_exception_handling(bool boot_cpu);
+ extern void cpu_init_replace_early_idt(void);
+-extern void cr4_init(void);
++extern void cr4_init(bool boot_cpu);
+ 
+ extern void set_task_blockstep(struct task_struct *task, bool on);
+ 
+diff --git a/arch/x86/kernel/cpu/common.c b/arch/x86/kernel/cpu/common.c
+index 1c3261cae40c..aa07e2eef228 100644
+--- a/arch/x86/kernel/cpu/common.c
++++ b/arch/x86/kernel/cpu/common.c
+@@ -496,14 +496,26 @@ unsigned long cr4_read_shadow(void)
+ }
+ EXPORT_SYMBOL_FOR_KVM(cr4_read_shadow);
+ 
+-void cr4_init(void)
++void cr4_init(bool boot_cpu)
+ {
+ 	unsigned long cr4 = __read_cr4();
+ 
+-	if (boot_cpu_has(X86_FEATURE_PCID))
+-		cr4 |= X86_CR4_PCIDE;
+-	if (static_branch_likely(&cr_pinning))
+-		cr4 = (cr4 & ~cr4_pinned_mask) | cr4_pinned_bits;
++	/*
++	 * CPUs that support FSGSBASE may use RDGSBASE/WRGSBASE in
++	 * paranoid_entry(). Enable the feature before any exceptions
++	 * occur.
++	 */
++	if (boot_cpu_has(X86_FEATURE_FSGSBASE)) {
++		cr4 |= X86_CR4_FSGSBASE;
++		elf_hwcap2 |= HWCAP2_FSGSBASE;
++	}
++
++	if (!boot_cpu) {
++		if (boot_cpu_has(X86_FEATURE_PCID))
++			cr4 |= X86_CR4_PCIDE;
++		if (static_branch_likely(&cr_pinning))
++			cr4 = (cr4 & ~cr4_pinned_mask) | cr4_pinned_bits;
++	}
+ 
+ 	__write_cr4(cr4);
+ 
+@@ -2047,12 +2059,6 @@ static void identify_cpu(struct cpuinfo_x86 *c)
+ 	setup_umip(c);
+ 	setup_lass(c);
+ 
+-	/* Enable FSGSBASE instructions if available. */
+-	if (cpu_has(c, X86_FEATURE_FSGSBASE)) {
+-		cr4_set_bits(X86_CR4_FSGSBASE);
+-		elf_hwcap2 |= HWCAP2_FSGSBASE;
+-	}
+-
+ 	/*
+ 	 * The vendor-specific functions might have changed features.
+ 	 * Now we do "generic changes."
+diff --git a/arch/x86/kernel/smpboot.c b/arch/x86/kernel/smpboot.c
+index 5cd6950ab672..52642908c2bf 100644
+--- a/arch/x86/kernel/smpboot.c
++++ b/arch/x86/kernel/smpboot.c
+@@ -233,7 +233,7 @@ static void notrace __noendbr start_secondary(void *unused)
+ 	 * before cpu_init(), SMP booting is too fragile that we want to
+ 	 * limit the things done here to the most necessary things.
+ 	 */
+-	cr4_init();
++	cr4_init(false);
+ 
+ 	/*
+ 	 * 32-bit specific. 64-bit reaches this code with the correct page
+diff --git a/arch/x86/kernel/traps.c b/arch/x86/kernel/traps.c
+index 4dbff8ef9b1c..0f7400257ce5 100644
+--- a/arch/x86/kernel/traps.c
++++ b/arch/x86/kernel/traps.c
+@@ -1685,6 +1685,13 @@ void __init trap_init(void)
+ 	/* Init GHCB memory pages when running as an SEV-ES guest */
+ 	sev_es_init_vc_handling();
+ 
++	/*
++	 * Initialize CR4 early, before cpu_init(). This ensures features like
++	 * FSGSBASE are enabled before exception handlers run, avoiding double
++	 * initialization later.
++	 */
++	cr4_init(true);
++
+ 	/* Initialize TSS before setting up traps so ISTs work */
+ 	cpu_init_exception_handling(true);
+ 
+diff --git a/arch/x86/xen/smp_pv.c b/arch/x86/xen/smp_pv.c
+index db9b8e222b38..2ab0e20288e9 100644
+--- a/arch/x86/xen/smp_pv.c
++++ b/arch/x86/xen/smp_pv.c
+@@ -58,7 +58,7 @@ static void cpu_bringup(void)
+ {
+ 	int cpu;
+ 
+-	cr4_init();
++	cr4_init(false);
+ 	cpuhp_ap_sync_alive();
+ 	cpu_init();
+ 	fpu__init_cpu();
 
-* How will interests evolve to improve data processing any further for suc=
-h
-  use cases?
 
+> 
+> Also, please avoid passive voice in stuff like this. It's just more
+> efficient to say:
+> 
+> 	CPUs that support FSGSBASE may use RDGSBASE/WRGSBASE in
+> 	paranoid_entry(). Enable the feature before any exceptions
+> 	occur.
+
+Ack
 
 Regards,
-Markus
+Nikunj
+
