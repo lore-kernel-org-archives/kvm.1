@@ -1,104 +1,145 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f202.google.com (mail-pl1-f202.google.com [209.85.214.202])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E14E2DA759
-	for <kvm@vger.kernel.org>; Wed, 11 Mar 2026 20:50:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 122EC2DF3F2
+	for <kvm@vger.kernel.org>; Wed, 11 Mar 2026 20:53:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.202
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773262217; cv=none; b=QAY6FwDtzLYtQ0yjm99/f9RZ/CMSmyNBSkEI1tnnG4DiXTu0s/unlp/VN0iruOwIedmrDCBHfRfZ5RsqSd+iaAGXfJYYEM4Y/D8CMOSnrwRK42A/m7uUsDaZQ9PoRh14T6/rJTUSAHars0/MgDpEs7lO5bT1Xh3linpeGWWzg9k=
+	t=1773262383; cv=none; b=lMPjIxriYqCIfFeLDzcUCBl+897t7KdjnzNlxG8DRXrlN+Da9ERheHuaQfY5XJMr6/JnasTDRiFh9Otz+Ocjz5Ah4k2n4cAY/SfwijYq5h5bmDOlhpJTS8D7yRlknZyuDRW1p3Y7MXsbyJyLht3QP9Z/BenNouhG+qiZhxUPmh8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773262217; c=relaxed/simple;
-	bh=9vUVXFhaxjT8B8YHSADsXQqUGg9lvFPmYG7hKwYrc/Y=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=NIGFGf6HGVRZojzXd2XHf+h9DWBF+CP+WNM/OaC7yDd25CiZUVgoLXeqf2oEkOMbE1SjJUymLxGC6rQtC5Ee2NW6PhRa/hHT6zWzHylNBRx3AiCCBue0jqvZhGafPW7RXX9dPPTpwbYcwSCfj4IQtSyWoA3RMHaZdvnplQkRmBQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=u4AkWSU3; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1773262383; c=relaxed/simple;
+	bh=o71C/AD5qgvGO5jgpX9yZnbJ7t+Y9wecHkX8KxbFfF0=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=bcG9K9ahUtDom42zXhubAXE2A2WRHz99nsj2EguJ/xXc49Ba3iIqiH7V0ev+0U8KOmtbg1xyDTB3Z0hhke4FDUlZs2LBRgYlOs9Iqlx7PF4TaNM778p9m/Jv8DbCtOL20mj2DloZgv78EEq9hYsf5viEWSyXnR3eKI0PQD30w1g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=zrFe4JmT; arc=none smtp.client-ip=209.85.214.202
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="u4AkWSU3"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 48CD2C2BC86
-	for <kvm@vger.kernel.org>; Wed, 11 Mar 2026 20:50:16 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773262217;
-	bh=9vUVXFhaxjT8B8YHSADsXQqUGg9lvFPmYG7hKwYrc/Y=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=u4AkWSU3aWels8DdCNI/02rcCeSdnQkEvtMEE0SPRCxvTEKAyzYUZVwSOhCc6EaRZ
-	 ariCyFl8nw6ORxBS4dw4iCw07WOvWoxqg/KOCZ2whpkMmKqZVTgRDpTeG62GI5Jki9
-	 FLx8nCULJhukwjH5tyde0/C1Wj9uQEtUU8bNM+rhwgozrBAIwyXAFq1JZMgJvyKN7p
-	 ypsZaX/3ZCP1TmQr03RxW7q3srKYTvidhwFYnXj44H9bMMqL1UNcfxSZapb8LjVs8H
-	 8i4rJgW2xoQRR36bmhItcbNf6rV2fw5THpQVa22BFCX11qLQ4BXkdRIP5WX+TlEwn6
-	 YCQZzQeTSR5pg==
-Received: by mail-ed1-f49.google.com with SMTP id 4fb4d7f45d1cf-661cfb9f3aaso340663a12.2
-        for <kvm@vger.kernel.org>; Wed, 11 Mar 2026 13:50:16 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCX4ScW8fZ+xFGp/0Kx1EKrPSBu2oAC3WmTX+1qffDaEiRidTkMQPzPQy1MuBcCYTO8Aqxs=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz5QG5KgXp7DT+HxtCaGevL5R+QgT0LVgUY0a73yza0bM7PpqOJ
-	hxTrLTR/97cTK7AsvsQdzYjoIYmLiK0s7OuOfo4scYbSPHgrCLK6U/dmw4Bib8r2AyqAZuF74bc
-	llqztPoxCGsFW4MG+3H+RizUzm0Bk6t0=
-X-Received: by 2002:a17:907:2d2c:b0:b96:d85f:40c4 with SMTP id
- a640c23a62f3a-b972e167ab6mr238709366b.12.1773262215062; Wed, 11 Mar 2026
- 13:50:15 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="zrFe4JmT"
+Received: by mail-pl1-f202.google.com with SMTP id d9443c01a7336-2ae50463ba8so24027545ad.0
+        for <kvm@vger.kernel.org>; Wed, 11 Mar 2026 13:53:01 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1773262381; x=1773867181; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=HmyHvPG3F+7VAgjbQPSIEGT763jqLcPD8PY9s1UcjmE=;
+        b=zrFe4JmTv57vTYpWMDW9y3uO03kZORYrFKI3nd0ZaVxtom8u94oNXwm85Lcnyap8DL
+         IFzNfH+n71Fvlm06VOgraqUvvMw7r/PDWmuB4zHVfTPH/IcFyJCByWXk0KIRyhaENzGw
+         PGILaA7dXGxnD2qg22ZdmzSBnPYDq7TH+aCTFpWEee9v1XQ588MU8AmQ69y8Wii04/Ii
+         MAD8nwRIUEDV/w02HaRTF/Dg2OJ6eVWXIVeNYhrNlVpBfCkPdQfFWHrmpxL6d+ka4D8/
+         F+IO2a1AP/Yl2c/ILECxeIa5i8mIiVe77dGXN8gDAtRtvchvlEVoAIWFRDHzqdBjeQtp
+         aOAQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1773262381; x=1773867181;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=HmyHvPG3F+7VAgjbQPSIEGT763jqLcPD8PY9s1UcjmE=;
+        b=Y1ILRGnvtPQ32KDqi7Mdsn2y5FVHBxbPJmGSXSnJmfTS0k8NUH0PykvhCN62kl6N7R
+         pvTnXSMJvlNzkn6WQIcyo2QQndF7h/DqRRCVJTvbDtS9MPEAAV0wV1XgwROhfNiqFrN9
+         pos1GdQDZTThsSKBlvc/Mh8mj5jowwB3sFhcSQ5N8zcV27b5riYcEYvZUl9OvkBYt4BW
+         61TbV/kqLaWVqEO4TTylNmPTdYRjdmqQUsrYkV2g2PGZnxVnwPkSGWLSyYf4h6oVBQAa
+         P4+o95GmTUlgRkZXjb48ppQJndzOMWnl3gU2ngV7dX+0MYS1rKI9tdgMYTzCA69+zL6l
+         rxfQ==
+X-Gm-Message-State: AOJu0Yz9aEtvj4czpaO13514eQdhb91B5Giku/4FdS3JNzmBBwbxixHO
+	o09HSj1ZgpQEtaVKr2Ojn8uyzuN0Bwy74wzGKhGCtTDpFBm59/i87RDO10eKrlDPgNzeeJezPAv
+	OnSLzDA==
+X-Received: from pgjh18.prod.google.com ([2002:a63:df52:0:b0:c73:88da:d470])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a21:682:b0:398:b5c0:565
+ with SMTP id adf61e73a8af0-398c60e592dmr3501826637.39.1773262381321; Wed, 11
+ Mar 2026 13:53:01 -0700 (PDT)
+Date: Wed, 11 Mar 2026 13:53:00 -0700
+In-Reply-To: <20260310064338.21823-1-itazur@amazon.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <20260306210900.1933788-1-yosry@kernel.org> <20260306210900.1933788-2-yosry@kernel.org>
- <CALMp9eRWwPwUSyQmizy8i2tF1CVO4iLY6x0vX1OoPUiRdCm4NQ@mail.gmail.com>
- <CAO9r8zOhaDeYWq_6TNdPGyEE323o_8xsWTozGdro9Oni8310kA@mail.gmail.com>
- <CALMp9eScswzFak+PMOcaDXM-W+cXtkG7fQ=jadq__+5JeqYcTQ@mail.gmail.com>
- <CAO9r8zOK5+xmkf3FsWRz2wHcUCN30GJ9kfZx-K7DAa1HNGhRVA@mail.gmail.com>
- <aatyIPwz9ePKdzJx@google.com> <CAO9r8zMxk9yUiYoosnDygr_oeeRYHz3f7hWLm23c5Q0m-DXnWA@mail.gmail.com>
- <CAO9r8zNHYswypRmHVT5Qn5hFU9-HU1t=Gs3qAh05xRNn5krPXQ@mail.gmail.com> <abHTE5uyEZ4cW-fc@google.com>
-In-Reply-To: <abHTE5uyEZ4cW-fc@google.com>
-From: Yosry Ahmed <yosry@kernel.org>
-Date: Wed, 11 Mar 2026 13:50:02 -0700
-X-Gmail-Original-Message-ID: <CAO9r8zNxtSbHjp6EkQ+QbKavL1hn1WQXgQQ+d2=6AZkW9-mVXA@mail.gmail.com>
-X-Gm-Features: AaiRm51wYnktYsrMFn2RommgfZfy73RztSIkzUiPCsKRrGbpKC2AYtWXp28FHv4
-Message-ID: <CAO9r8zNxtSbHjp6EkQ+QbKavL1hn1WQXgQQ+d2=6AZkW9-mVXA@mail.gmail.com>
-Subject: Re: [PATCH v2 1/6] KVM: SVM: Use maxphyaddr in emulator RAX check for VMRUN/VMLOAD/VMSAVE
-To: Sean Christopherson <seanjc@google.com>
-Cc: Jim Mattson <jmattson@google.com>, Paolo Bonzini <pbonzini@redhat.com>, kvm@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Mime-Version: 1.0
+References: <20260310063647.15665-1-itazur@amazon.com> <20260310064338.21823-1-itazur@amazon.com>
+Message-ID: <abHWLDvJcWlQOdYh@google.com>
+Subject: Re: [RFC PATCH v3 3/6] KVM: Rename invalidate_begin to
+ invalidate_start for consistency
+From: Sean Christopherson <seanjc@google.com>
+To: Takahiro Itazuri <itazur@amazon.com>
+Cc: kvm@vger.kernel.org, Paolo Bonzini <pbonzini@redhat.com>, 
+	Vitaly Kuznetsov <vkuznets@redhat.com>, Fuad Tabba <tabba@google.com>, 
+	Brendan Jackman <jackmanb@google.com>, David Hildenbrand <david@kernel.org>, 
+	David Woodhouse <dwmw2@infradead.org>, Paul Durrant <pdurrant@amazon.com>, 
+	Nikita Kalyazin <kalyazin@amazon.com>, Patrick Roy <patrick.roy@campus.lmu.de>, 
+	Takahiro Itazuri <zulinx86@gmail.com>
+Content-Type: text/plain; charset="us-ascii"
 
-> > > Sean, I intend to send a new version today with 2 main diffs:
-> > > - Use cpuid_maxphyaddr() here instead of  kvm_host.maxphyaddr.
-> > > - Use a common helper for checking RAX for SVM instructions for both
-> > > the emulator and gp_interception() (see response on patch 4).
-> > >
-> > > Holler if you want me to wait for further feedback.
-> >
-> > I just realized I cannot just do cpuid_maxphyaddr(ctxt->vcpu) in
-> > check_svme_pa(), because vcpu is defined as a void pointer in
-> > x86_emulate_ctxt. Looking at commit c9b8b07cded5 ("KVM: x86:
-> > Dynamically allocate per-vCPU emulation context"), I cannot tell why.
->
-> To prevent dereferencing the vcpu object in emulator code.  It's kinda silly
-> because common KVM is tightly coupled to the emulator, but we try to contain
-> what the emulator can do.
->
-> > I was going to move emul_to_vcpu() to arch/x86/kvm/kvm_emulate.h, but
-> > maybe we should just make this a normal struct kvm_vpcu pointer and
-> > drop emul_to_vcpu() completely?
->
-> Heh, talk about scope creep, that'll open a much bigger can of worms and subsequent
-> discussion.
+On Tue, Mar 10, 2026, Takahiro Itazuri wrote:
+> Most MMU-related helpers use "_start" suffix.  Align with the prevailing
+> naming convention for consistency across MMU-related codebase.
+> 
+> ```
+> $ git grep -E "invalidate(_range)?_start" | wc -l
+> 123
+> 
+> $ git grep -E "invalidate(_range)?_begin" | wc -l
+> 14
+> ```
 
-Ack.
+I'm a-ok with the change, but the changelog should make it clear to what KVM is
+conforming.  Very specifically, IMO, all that really matters here is aligning with
+mmu_notifier_ops.invalidate_range_start().
 
-> Honestly, why bother keeping check_svme_pa()?  Can't we just do the checks in
-> svm_check_intercept()?  E.g. vmx_check_intercept() already "injects" #UD for RDTSCP.
+Because for me, "MMU-related" anything in the context of KVM means just that,
+KVM's MMU code.  I don't care what other MMU-related code outside of KVM uses for
+naming, if that code doesn't interact with KVM in any way.  And for KVM specifically,
+it's a much closer race.
 
-Hmm svm_check_intercept() isn't semantically the right place AFAICT,
-and more importantly, it's only called if the instruction is executed
-in guest mode (i.e. in L2+).
+  $ git grep -E "invalidate(_range)?_begin"  **/kvm | wc -l
+  11
+  $ git grep -E "invalidate(_range)?_start"  **/kvm | wc -l
+  16
 
-> Ha!  And dropping check_svme_pa() would technically be a bug fix, because the #GP
-> is supposed to have lower priority than the #UD due to EFER.SVME=0.
+But as above, I'm definitely in favor of matching mmu_notifier_ops.invalidate_range_start().
 
-That can probably be fixed by calling check_svme() before checking RAX
-in check_svme_pa().
+> No functional change intended.
+> 
+> Signed-off-by: Takahiro Itazuri <itazur@amazon.com>
+> ---
+>  arch/x86/kvm/mmu/mmu.c       |  2 +-
+>  include/linux/kvm_host.h     |  2 +-
+>  include/linux/mmu_notifier.h |  4 ++--
+>  virt/kvm/guest_memfd.c       | 14 +++++++-------
+>  virt/kvm/kvm_main.c          |  6 +++---
+>  5 files changed, 14 insertions(+), 14 deletions(-)
 
-I think we should keep check_svme_pa(), but we'll need to extract the
-vCPU from the emulation context one way or another to check
-MAXPHYADDR. We can cast ctxt->vcpu or pull emul_to_vcpu() into
-arch/x86/kvm/kvm_emulate.h and use it.
+...
+
+> diff --git a/include/linux/kvm_host.h b/include/linux/kvm_host.h
+> index 2ea5d2f172f7..618a71894ed1 100644
+> --- a/include/linux/kvm_host.h
+> +++ b/include/linux/kvm_host.h
+> @@ -1566,7 +1566,7 @@ void kvm_mmu_free_memory_cache(struct kvm_mmu_memory_cache *mc);
+>  void *kvm_mmu_memory_cache_alloc(struct kvm_mmu_memory_cache *mc);
+>  #endif
+>  
+> -void kvm_mmu_invalidate_begin(struct kvm *kvm);
+> +void kvm_mmu_invalidate_start(struct kvm *kvm);
+>  void kvm_mmu_invalidate_range_add(struct kvm *kvm, gfn_t start, gfn_t end);
+>  void kvm_mmu_invalidate_end(struct kvm *kvm);
+>  bool kvm_mmu_unmap_gfn_range(struct kvm *kvm, struct kvm_gfn_range *range);
+> diff --git a/include/linux/mmu_notifier.h b/include/linux/mmu_notifier.h
+> index d1094c2d5fb6..8ecf36a84e3b 100644
+> --- a/include/linux/mmu_notifier.h
+> +++ b/include/linux/mmu_notifier.h
+> @@ -134,8 +134,8 @@ struct mmu_notifier_ops {
+>  	 * Invalidation of multiple concurrent ranges may be
+>  	 * optionally permitted by the driver. Either way the
+>  	 * establishment of sptes is forbidden in the range passed to
+> -	 * invalidate_range_begin/end for the whole duration of the
+> -	 * invalidate_range_begin/end critical section.
+> +	 * invalidate_range_start/end for the whole duration of the
+> +	 * invalidate_range_start/end critical section.
+>  	 *
+>  	 * invalidate_range_start() is called when all pages in the
+>  	 * range are still mapped and have at least a refcount of one.
+
+Please move the include/linux/mmu_notifier.h change to its own standalone patch,
+as in, not even part of this series.  It's an obviously correct change (the comment
+has been wrong since commit cddb8a5c14aa ("mmu-notifiers: core")) and has nothing
+to do with KVM.
