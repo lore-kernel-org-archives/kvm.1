@@ -1,191 +1,149 @@
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 75B553009DA
-	for <kvm@vger.kernel.org>; Wed, 11 Mar 2026 17:18:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E58E1A6832
+	for <kvm@vger.kernel.org>; Wed, 11 Mar 2026 17:21:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=170.10.133.124
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773249514; cv=pass; b=JBehqLljPdVZVEsfLHNvYObk8oJ1zN9FkcjXTHhuhPb18wYJPNOZiXVXS6tXvc7wcPmFe+DN2EffDxPUPostGCpISiRr7oC+sKhW9ny2xdFx2DUboD5VL2qxpxXB8Dp34SaT1leUTjbAhvMwtkUWYPRB/8jumN4s/f46Upn7bjI=
+	t=1773249684; cv=pass; b=UD1JKALX2wqWAuOtKOmUV7S2a3Rx200jUxPTNNs/Dybn8ulhfnxNrQ6s6q5gkLAQMlDYaNy+kY69BIAtbTgiRaLDKQL/zZF6leybLm0pohp8+fWYu8tL4Lh96qwUE7r+fyeZVdIFmNguiOUoSEaatvW0fyZI/KrqR0WZJ9grDOk=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773249514; c=relaxed/simple;
-	bh=foOk78D3JIgTIfcuSEjX/vfLimtUJinsVHko7j0mesA=;
+	s=arc-20240116; t=1773249684; c=relaxed/simple;
+	bh=pFn7a0ixOBMHR6MYMhHQKNXZNJwUc+CAyHSh8xjseQA=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=hO3M/G60aEKi3Vjbxkm1ifA0ZcpmjMvB+UXL3Y4wSHkrT6Y/+Bvv3MZyHBEGVH9aBMluWTT1cc96gMpZLqgs76tIxsxa9qMaYoG7pnMY1TadYbaubY7VSZ6RkohQLTio4q92odgKBkQe0Lfg9M9d/mqtGh783W6oYXCy9OSJFeA=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=KbFTpPnU; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=nzHld6Fd; arc=pass smtp.client-ip=170.10.133.124
+	 To:Cc:Content-Type; b=tkMbOSERqg3zqTzkHtwv9mIkbZ+ckRf2loYEGiaORfSYM4h9woNDWn/R43II+Qn6H0UrvZhc338AkRzgD2A7RAfVTSmyRoLAFiiYa1YfUbWpkZvN92a6BSN5M79ILibqsL6YD10Kw/X0avpUzv70wFhXsK4CSLF5+EjSR/NogrI=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=a4vYKUf+; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=QbkS5psS; arc=pass smtp.client-ip=170.10.133.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="KbFTpPnU";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="nzHld6Fd"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="a4vYKUf+";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="QbkS5psS"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1773249512;
+	s=mimecast20190719; t=1773249682;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=ptmQhjKn8gfhE/3QmoRJXKe1h5nH8MiDy/YRTmOjOKU=;
-	b=KbFTpPnUHuYHQ3q9VAA+apP/2Ayqa7zDrRZMky//ElCBXt0YoTdJlvIrZ3faTLnxmZ85FJ
-	jev4lZvKn1mkJMrW6stbx6HaxfGGzqO0sPbVWQXLZxbVqLPQtyAD8hgA8RQuqG412kR1ty
-	0tGeYm8LW5xV+zSo0E8Unuzo9t7+W1I=
-Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
- [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=ej/rbmENpp0KeZLs7YqRgKgNSMUnFNKbOSB/wJoOwn8=;
+	b=a4vYKUf+zvp5DQO6hQ1iT/7BHxiUl41NsrF0cCf4VIkJsmlMy9B5cBLPKZGl4A24YZWAFo
+	m1HnUkVnkd46Oopu8pT1+2CJa2jw093rjBCq2UXnTSUbOsEp4AKgA+RqPAC+ucmU2oCzxA
+	VKAROIJvKRlmpAk+xxI9RpTkVLS3DZM=
+Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
+ [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-438-6oM9b6b4O7WuonOa5qF2yw-1; Wed, 11 Mar 2026 13:18:31 -0400
-X-MC-Unique: 6oM9b6b4O7WuonOa5qF2yw-1
-X-Mimecast-MFC-AGG-ID: 6oM9b6b4O7WuonOa5qF2yw_1773249510
-Received: by mail-wm1-f72.google.com with SMTP id 5b1f17b1804b1-48531e6012bso848555e9.1
-        for <kvm@vger.kernel.org>; Wed, 11 Mar 2026 10:18:30 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1773249510; cv=none;
+ us-mta-30-CoQ3eQ7OPgqajnTtUMnEnQ-1; Wed, 11 Mar 2026 13:21:21 -0400
+X-MC-Unique: CoQ3eQ7OPgqajnTtUMnEnQ-1
+X-Mimecast-MFC-AGG-ID: CoQ3eQ7OPgqajnTtUMnEnQ_1773249680
+Received: by mail-wr1-f70.google.com with SMTP id ffacd0b85a97d-439bab2d095so62857f8f.3
+        for <kvm@vger.kernel.org>; Wed, 11 Mar 2026 10:21:20 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1773249679; cv=none;
         d=google.com; s=arc-20240605;
-        b=hdvthYxYYHsx5jhXGgzx5q9HDaK99SjZRqVpn7YIckFs9SZKxynQkA3j0eJFCfEr1S
-         e9WTEY5XK8UPFqmma5fphxaQjUeptAuoYflTrZMCiLBWnOvfB0of4V8pp5u0DoeLU4Tn
-         smaZl4zLHARkAjVDBHHNlZD21wxtBvaNQ/zwJEJisul/qZviVi3UmpavkmACKx6G/VPp
-         atb8WeaZjtU8xmUfRqrDtr1dEX9jRHK2ykDkr1foPPk2LxU3qqzRsA2DjecJxexg8MI/
-         zZw9Apj64ZH5k24BlkME/dSD7GsYBspibhU7oKiChYRQWJYmo9MGm+EF2TxgTNmCnqyj
-         E9JA==
+        b=KyiRXPzBxERn4tEDxgLXuQ+3Ky5KoRn5eE8KI4gtgaYok7FVzfk7pmK8JBj6Ltvnws
+         yBfyNN3oGlGjpcIazq7+sVIA6TCFxuaUl9bejGxvwxQb4S4o7vjFStXz+MdVBU3LZ7QF
+         OMLYJE3T/+4XH0/2GSClpIqAjVXG85NwH65TV1X7h3h6fdQikHjnrlgISg/idA4qbsZb
+         VlMmzqD5hCmyH4+3hTlw0ORsWBn/sM4DSdEFemULR+Pd/a+HIfC805GLv6QMBh8MciXP
+         MFi+r+LfzDU+hSqqaU6wA40nfdXlyqiZ99gk3I91dIXILoZC/qr30AM0ugFVE38RW6CP
+         bDpw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:dkim-signature;
-        bh=ptmQhjKn8gfhE/3QmoRJXKe1h5nH8MiDy/YRTmOjOKU=;
-        fh=ZuyXBFx7jA2cz000tH00IX6m2ogOa3p9vSbBT3Z1SlU=;
-        b=Ob+/pZGOfCP1mFhExq2VXIPE40QpFT6wmbvQGK3EE2nL1E5mgj2Q+4bNh/s/Ed3dr+
-         huLyZcjc/L7f/LbXvzEk40VwcaefJQmuEAw/5BzAnq/IQIy4qij87cBCofUC+Iq7P4a0
-         lT5aD5tYYRBPhGzwS6EklOax+uqV+jNn3ch68/gFpvVJvvu5S67rLMjDTECHMziu2t8n
-         +NMWDVS73m3GRHilSCs9Xcx6tASOB2tkA13CKKl8ZvFzaUVV2421LHNRtXlx3uZNvi2d
-         RgqqBpoe8rRnRv1x36lfEABLxRmn4rfXwaNz4dhANGUl3wnRcti0TNA32fiPOqbaUrLr
-         cVlw==;
+        bh=ej/rbmENpp0KeZLs7YqRgKgNSMUnFNKbOSB/wJoOwn8=;
+        fh=qaYm4b6GKYlZ0T3gtLZ7fjEfCEC8jMv5XzYe6fOhw1Y=;
+        b=H25Zf5MmKEcPAiWpat9z47RjGjvX5kcDj0lIYOD0z7DUovB+4MjuZ8RuZ8O4fURb0V
+         iNW7NDKSdeYy/y0JUmq6wpVBo+lp7EjLahJ0/7C8F+x0P4Hhwb54fEpzX6kKWF7+kmOd
+         oglxD8VPbYh8T396pwEdtIO/OtyY4YruNkgB81sA/CuFnz/j4nDqqNRrpdd9TZt4IzTf
+         oTolS8Lv5DDPkpfXlIpzGqwiaWcdiu9mzZCARToEfN1mQTxu0bkk6RTtLT4VuwW1MN8T
+         IRoXHH0nMu8YBaCGk81rO+SRp9NP8a20p98yRog6HmryDiFNfZH+v1gmj2QmvSkXlal1
+         ayLg==;
         darn=vger.kernel.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1773249510; x=1773854310; darn=vger.kernel.org;
+        d=redhat.com; s=google; t=1773249679; x=1773854479; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=ptmQhjKn8gfhE/3QmoRJXKe1h5nH8MiDy/YRTmOjOKU=;
-        b=nzHld6FdDulDM9LF5pYdxheEfZm4rU1bcfoBmfmManhWnz2noukdPjqYJFqsrVmdEm
-         k3enK52OF3e0zWUN3C55lxGqueMVUNGZoX709AtoG+wesbEfuLEyGWnqYIy+QKKWUK5t
-         bhuCHUa2jlPllfWs5Uzpsy/BuMxKexYSQU9C0KKkTD55MXdSZiWuUxdC4aF36C9x69mT
-         kxX7FwyjME8g4EYqUnN2DiZcuWqoY/Us3rokz1JhI2esxEPaL02N9Y+cnLXRNnWpLDuJ
-         6o07V5Csa+/FBRHHPFJYK9V4laE7NTCj5yy/YBiHSsZs9jhMMlhqbX3uUGCVR1udzMFK
-         QoqA==
+        bh=ej/rbmENpp0KeZLs7YqRgKgNSMUnFNKbOSB/wJoOwn8=;
+        b=QbkS5psSR/g3ebHBlriVU6YoNaqSpnBjiGSJTRnhDxkR0IhHbKLwqAas5wum4ZTjMH
+         1cQKbX/mQjIGlLBq2C2IwobXEfiQ1NRY4Zqjrh05pqyMSBfIVpYd5mKza+D3ftI/Nq4S
+         urnT5BwCASgdGcgBna6GMdkt8lMVG56qyyX3n7SVsi+F3Wa7tgNxDvwdUKU4OwnUvfRF
+         XHkEp/YC5rYbNt084aCuEgikLudSUDpTnKI+iJyFHjN5AKfsfDXl8wDFr4dDGUQmCxQy
+         dj4Q3kDZ3P2N58DIO+DVzeSwfEa5P7Zpm6rpsImpTyxU9kXn9FZAsRe3/otXZiJ+Kg/U
+         PdVQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1773249510; x=1773854310;
+        d=1e100.net; s=20230601; t=1773249679; x=1773854479;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=ptmQhjKn8gfhE/3QmoRJXKe1h5nH8MiDy/YRTmOjOKU=;
-        b=QUViQdim8sRzjdobAk9yWTQ+EWwfzmzP5d5xiaHtKjwmmEBO202jJF0g+cGqev/zLQ
-         IHvi9QbcyaQm2SBSwvZieYnLoDt+Calk5MyjbUF8moinRDRzoTebMKOIDfUfbzbSvNii
-         u82VRbCHErrtOuaM3svFnqV37GnWLVnJTUkpi9dSsspkAPXNAfYGtccargobSdZnUvKC
-         k5LU/ntFV4ofUfjr4uuumUr3IwcKbuK5hsrZjjQjOLa+uIxlefBz31QXwdpL7ou2qWEf
-         kkEijN8xS+K/I7RtnuflhBdYaF+JzISp7G8rUdBhBAKamriE560TULEidD2Mhysj8eNJ
-         4scA==
-X-Forwarded-Encrypted: i=1; AJvYcCV6kn5fHqhQlg7F8IeqoxCO24hj8FN5fFw+eQGvr6DQs369F822pJa8ODy/mcqzkvSqYGw=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwwRowLQF4t3Dn3xCe7RRWe3jFWMjMY/aXkV4Jud/+UHwBBCk53
-	z0tIvmOC7K5Ai77xTZpVHJREZ+UoJu72TuJF0/9/ow3cO3C1otamTHOahTNNdyU+u1woSY3pc17
-	jraVSmDqb5CpMbD4LW4UKORWwoMLfIXbMG4RzsBg1xUbWvClcWgeZA9hRGsqV3UyYuWeBSXaiS1
-	/w3c1aPRBC2N2VwDOjzRO1T8jXpk8k
-X-Gm-Gg: ATEYQzxLdgGgnDQFu19xeSAKm8ORdpXdhcXkZwauxJdHrjHODZy1nf6lNW9hEswONG6
-	EoMj1yxZeB0pOSmNiANRfU8GO0rjSW+PWOLBm6koDQlrWhKDL5xGW2PGsiAZhcb8B419L265hbV
-	Uan99OhsYjqnvHmtBLMPMvQABoRm0NlmyE3NrUGnV0OryGlNCBgc0szlGwO/DL2lqs+m6pyhOf7
-	2kDwAQZfxiG9mv/Cy1wfNwGgwSdcffZywAIk7VheIPwYtMPw2DIBWKsO10ZolDHW0zKhHYt2WDr
-	NRT69hg=
-X-Received: by 2002:a05:600c:3103:b0:47e:e2eb:bc22 with SMTP id 5b1f17b1804b1-4854b0acb1amr53192575e9.5.1773249509606;
-        Wed, 11 Mar 2026 10:18:29 -0700 (PDT)
-X-Received: by 2002:a05:600c:3103:b0:47e:e2eb:bc22 with SMTP id
- 5b1f17b1804b1-4854b0acb1amr53192065e9.5.1773249509123; Wed, 11 Mar 2026
- 10:18:29 -0700 (PDT)
+        bh=ej/rbmENpp0KeZLs7YqRgKgNSMUnFNKbOSB/wJoOwn8=;
+        b=Sz4m0TRtL1T0dTh6nlOiSnSRdZt/QbMYwnwNl+iWqnHCjEMhahiA2NmD8QfdG+LXgP
+         Ukj84r0CTH4n364+v1H/RS4tb/Ql5KiNPM0TdybN6/KIGNBXF5RDTwJmRyIf94BqKqA3
+         u1BRIPN9DJhsuQ3WxuIRGdfKFAXR3R0Zkl+Q0C2ww4Lnvpy3AZgFAChP4VYYvgXNmCSX
+         zxB4NzN7f4Sz6c7Y38+ep9PS/clMJZLyPdXCFvC+vHg85yA21EFpERxhPLFWcaz+JqBJ
+         MD34r4nqSlb8ghyTyodZJ6EvGclRP3ZnKnNCC6WC0dnY5cBjhsQCudZa6I1cFol+Vhc9
+         NPMQ==
+X-Gm-Message-State: AOJu0YxjvxPLtvYpRyIOsX0FDHSLczv5MrvcZ78akx8qcplZ1KFdL01T
+	QCakPQefuWP9lXpSAHyAPG/oIP2SOvbGLXDNSvN5bPHHEuC/da1nAQ6Ee3/UrYtzmApUbdVOJV0
+	jp+daM7YkxKtBsyyDDPG3FtoF3dgumrzUOuNQJEb4wluNOOzxdJXBJTY9+jCiYkaSZvs2tg/8Wt
+	0YLiFVUm/zwd5PSPUjMdutoD5YDpJ/QNVYtRCv
+X-Gm-Gg: ATEYQzxTy6V5d+5WZeC3he/4e9FM//N9afV2AKMp/dy8rEO62ml8b+bb1lNzJ0V1N/1
+	cM2HAYkSzbEiOPrwmg7pEexp72t7l2H7WL7g/CfzMxehbXUKkcYKz9PxY/w0wH6S3Lz4cuxDXVB
+	8r7SygoyC59iKTA2M80vcDGiGGTovBxrE4zcH8HPF02FBnGJUto7ReIodLJ0gwSdnJWzS6ReFwH
+	R6MM2DuZ56Ur1gW32cwsCpmpXFw2xl2fkpJLeYAF1FukAGohbj8gxePrMgFyQk5wF05s5bdptjp
+	Ulk5fpo=
+X-Received: by 2002:a05:6000:2c01:b0:439:beee:43ab with SMTP id ffacd0b85a97d-439f81dedc4mr6551908f8f.9.1773249678782;
+        Wed, 11 Mar 2026 10:21:18 -0700 (PDT)
+X-Received: by 2002:a05:6000:2c01:b0:439:beee:43ab with SMTP id
+ ffacd0b85a97d-439f81dedc4mr6551865f8f.9.1773249678344; Wed, 11 Mar 2026
+ 10:21:18 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260311095405.26297-1-hi@alyssa.is> <CAFEAcA8GCz2c18e3+bwFooAxYZzBrX3OjjQ58CWJOdLfTYL_dA@mail.gmail.com>
-In-Reply-To: <CAFEAcA8GCz2c18e3+bwFooAxYZzBrX3OjjQ58CWJOdLfTYL_dA@mail.gmail.com>
+References: <20260305193302.1644453-1-seanjc@google.com>
+In-Reply-To: <20260305193302.1644453-1-seanjc@google.com>
 From: Paolo Bonzini <pbonzini@redhat.com>
-Date: Wed, 11 Mar 2026 18:18:17 +0100
-X-Gm-Features: AaiRm50pcEDyXv7xD2lDu3z8yY4Td2KLNxWd2RJSWdw_O47KQFbkXprdMmcDbIo
-Message-ID: <CABgObfavGAHLz0FZy66QTbXHTS7YqWxc_eVmEWnCWo+QBPiN1g@mail.gmail.com>
-Subject: Re: [PATCH] target/arm/kvm: fall back if nested unsupported
-To: Peter Maydell <peter.maydell@linaro.org>
-Cc: Alyssa Ross <hi@alyssa.is>, qemu-arm@nongnu.org, qemu-devel@nongnu.org, 
-	kvm@vger.kernel.org, Eric Auger <eric.auger@redhat.com>, 
-	Miguel Luis <miguel.luis@oracle.com>
+Date: Wed, 11 Mar 2026 18:21:04 +0100
+X-Gm-Features: AaiRm50QMX6sMRa-b604vhNzSDH87UKXMM-u6p3fJKJGRc1eDU4f-QZiloSJtzs
+Message-ID: <CABgObfa4wzKyUpkKVoKn1Mt0M1h9cRwJRXabrPgZTZZizQywMg@mail.gmail.com>
+Subject: Re: [GIT PULL] KVM: Generic changes for 7.0
+To: Sean Christopherson <seanjc@google.com>
+Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Wed, Mar 11, 2026 at 6:03=E2=80=AFPM Peter Maydell <peter.maydell@linaro=
-.org> wrote:
+On Thu, Mar 5, 2026 at 8:33=E2=80=AFPM Sean Christopherson <seanjc@google.c=
+om> wrote:
 >
-> On Wed, 11 Mar 2026 at 09:54, Alyssa Ross <hi@alyssa.is> wrote:
-> >
-> > If I create a machine with more CPUs than KVM supports, but specify
-> > multiple accelerator options, QEMU will fall back to the next
-> > accelerator.  This is great, because if I've explicitly specified
-> > multiple accelerators, I've told QEMU I'm fine with any of them being
-> > used to provide the machine I want.
-> >
-> > When I create a machine with nested virtualization enabled, though,
-> > this doesn't happen.  KVM often doesn't support it, but TCG always
-> > does.  The nice thing to do would be for QEMU to fall back to TCG if
-> > KVM can't provide, like it does when too many CPUs are requested.
-> > This patch adjusts the behaviour to do that.
-> >
-> > This is very helpful for OS development scripts that run an OS in QEMU
-> > =E2=80=94 I want everybody to be able to run the script, always with
-> > virtualization enabled because the OS requires it, but for it to take
-> > advantage of KVM acceleration when available.
-> >
-> > Signed-off-by: Alyssa Ross <hi@alyssa.is>
-> > ---
-> >  hw/arm/virt.c    | 6 ------
-> >  target/arm/kvm.c | 8 ++++++++
-> >  2 files changed, 8 insertions(+), 6 deletions(-)
-> >
-> > diff --git a/hw/arm/virt.c b/hw/arm/virt.c
-> > index 7456614d05..0b63b2eac3 100644
-> > --- a/hw/arm/virt.c
-> > +++ b/hw/arm/virt.c
-> > @@ -2372,12 +2372,6 @@ static void machvirt_init(MachineState *machine)
-> >          exit(1);
-> >      }
-> >
-> > -    if (vms->virt && kvm_enabled() && !kvm_arm_el2_supported()) {
-> > -        error_report("mach-virt: host kernel KVM does not support prov=
-iding "
-> > -                     "Virtualization extensions to the guest CPU");
-> > -        exit(1);
-> > -    }
-> > -
-> >      if (vms->virt && !kvm_enabled() && !tcg_enabled() && !qtest_enable=
-d()) {
-> >          error_report("mach-virt: %s does not support providing "
-> >                       "Virtualization extensions to the guest CPU",
+> Attempt #2 at the flex-array fix and the slots_lock documentation.
 >
-> I think there is a bigger problem here. The code in the virt
-> board init assumes that the accelerator has already been
-> selected: based on whether kvm_enabled() or tcg_enabled()
-> it decides things like which GIC version can be used, whether
-> "-machine gic-version=3Dhost" is valid or not, and so on.
+> The following changes since commit 9ace4753a5202b02191d54e9fdf7f9e3d02b85=
+eb:
 >
-> This bit we're deleting here is just one of multiple checks
-> we do that assume that we know the accelerator already. If
-> we actually don't know if we're going to be using TCG or KVM
-> then all this code needs to be rethought.
+>   Linux 6.19-rc4 (2026-01-04 14:41:55 -0800)
+>
+> are available in the Git repository at:
+>
+>   https://github.com/kvm-x86/linux.git tags/kvm-x86-generic-7.0-rc3
+>
+> for you to fetch changes up to f8211e95dfda702ba81ea2e3e7a8c6c967f385fa:
+>
+>   Documentation: KVM: Formalizing taking vcpu->mutex *outside* of kvm->sl=
+ots_lock (2026-03-02 09:52:09 -0800)
+>
+> ----------------------------------------------------------------
+> KVM generic changes for 7.0
+>
+>  - Remove a subtle pseudo-overlay of kvm_stats_desc, which, aside from be=
+ing
+>    unnecessary and confusing, triggered compiler warnings due to
+>    -Wflex-array-member-not-at-end.
+>
+>  - Document that vcpu->mutex is take outside of kvm->slots_lock and
+>    kvm->slots_arch_lock, which is intentional and desirable despite being
+>    rather unintuitive.
 
-We do. This code runs at the very end of qemu_init()
-(qmp_x_init_preconfig->qemu_init_board->machine_run_board_init).
-
-The bug is on the KVM side, as it lets the configuration slip even
-though it's not valid; the above KVM check should really be more of an
-abort() if anything. (This is also why I picked it despite it touching
-hw/arm/virt.c - from my point of view the KVM fix made the above code
-go dead).
-
-> Paolo, can you unqueue this for a bit while we think about it?
-
-Yes, of course.
+Pulled, thanks.
 
 Paolo
 
