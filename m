@@ -1,180 +1,103 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f174.google.com (mail-pf1-f174.google.com [209.85.210.174])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 79C8926B777
-	for <kvm@vger.kernel.org>; Wed, 11 Mar 2026 03:36:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9DA242E9EC7
+	for <kvm@vger.kernel.org>; Wed, 11 Mar 2026 03:37:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773200172; cv=none; b=pjh15CcUeg9cl3abinYcJf4REuuoR6aNFM2vw+U9x+CmjPuMOXJmE2R7Ti5jijKnxEJHQ0IptXeySwl9ZIluJi0eIJJljFy/ZcrDhH87H0VJxCZL0I8z6JW6Fqx4VL/VUUCkaWf7GdtEqNcb2/LnebUsYvgxOp03fKDWtg0DzDE=
+	t=1773200240; cv=none; b=KQQaU6Pw4BOdiBlYm/ADGPWDgyXYB45fpNEGvA/I06ZWKUhmRh4+a/dLNkliI1NeZ/yWXS+I9ItNeYEnoZD4YIe/6CBHN0EOELJAYbn0GLKSDcWEz83Zy/61krLDgOSWDAwMsjpzZvBK0JdaTF+95R2k/0JhdsvzyXCh5WmYGcA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773200172; c=relaxed/simple;
-	bh=G3lbtVHOqlO5w4/4VTIzsUhn3pEr1KZ39Nfi5EuNHBk=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=BIx7duo7ke1gMuKfYGbkHMwKz6Jzl2vUdbAg5L4ZvOfKj6YIeBRV3q9w+KV8bRwYDaBwoDLbYG0fWsgPTLaioYjUuhTdDy3OtQsBo8G6nOpl/odmgLCYmIyoTr7+zhZbKVcZo11BPHGpNATZRcncP6DSPt4bGR4XgxFehF4KLaE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mm3MFbTu; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1773200240; c=relaxed/simple;
+	bh=zgxGKH5m6Tqc+M2Ej4t1TWZbYs9Cu9E2CfQWxq6i7wE=;
+	h=From:To:Cc:Subject:In-Reply-To:Date:Message-ID:References; b=r9NC0jwek89Mi3o0wnSmj5d5D2VAqqLjpgXHLAkDqn1cACk4Oe4sziHFY2AtXxvMYrlW6WssGPZtLJSud12+CzYP4iAEIq4BCB6ACwxoiixuWxbKUF4G6LR54yU4u5ZBk9VERWqvxsjt+xfOag0IjPBtJ4zhH3UQfjyEF3Nd5h4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=SMAvsXHB; arc=none smtp.client-ip=209.85.210.174
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mm3MFbTu"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 246B4C2BCB0
-	for <kvm@vger.kernel.org>; Wed, 11 Mar 2026 03:36:12 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773200172;
-	bh=G3lbtVHOqlO5w4/4VTIzsUhn3pEr1KZ39Nfi5EuNHBk=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=mm3MFbTuqFNLpmkVcmEkEor190dzL1dYrNfxUfMKc6Jn6qKBL+7HTBN0waFk5IpSS
-	 6MNwjNWxvbJL+LE3LmVWwxZdKkwWqmfRunJD1cucIgb3UqJC+9Oeqh1JBr8g1tvsdE
-	 6josuxQiZGAYEh7vNUsCMdCHCycXgbFwDQ8lecV7rkB7HTd2MdIQMIaYUc5BuwNsa6
-	 WYsjYq49SEhqeO/zOw7k5Rq9tBuNWRS1uSAdQCRlCqX6jJSUqz06JgTLkWwdKonDoW
-	 fcxw6EwRrPYABsK7xtP5RSXW/fGuAGcxFAAY0GwwtZMwVet8XZkvJRVpdfA3+/Q4ip
-	 NInf6PY87npGw==
-Received: by mail-ed1-f43.google.com with SMTP id 4fb4d7f45d1cf-6615c766e60so9632328a12.3
-        for <kvm@vger.kernel.org>; Tue, 10 Mar 2026 20:36:12 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCXMOKAXC/l06ce17qAmT+v4hrQrx+UOLhOOyhgLAj2t2J6npHWpVfmKjdlcUXjFEMzv+D4=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyAfyrUyGjUOC/sCA+POSx45fxaKQrXeESP77uzpRrYHp28Kc28
-	Wwj+SReW7VOf5jz8VSqP0WiGbXixZuN6N92BBgjbQmifTQtmWhyiEVPDBDrobDqv/m8FNxz97zC
-	HeCLsjjfAVgZuVcNDCb8yhmxTRxew8fw=
-X-Received: by 2002:a05:6402:26c4:b0:64b:7f98:c7e with SMTP id
- 4fb4d7f45d1cf-663194cbe6dmr403091a12.1.1773200170607; Tue, 10 Mar 2026
- 20:36:10 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="SMAvsXHB"
+Received: by mail-pf1-f174.google.com with SMTP id d2e1a72fcca58-8296d553142so3512342b3a.3
+        for <kvm@vger.kernel.org>; Tue, 10 Mar 2026 20:37:18 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1773200238; x=1773805038; darn=vger.kernel.org;
+        h=references:message-id:date:in-reply-to:subject:cc:to:from:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=rHxXiAvo6zOonxHyAewJkbWbuOENn2paNkRQUdILloA=;
+        b=SMAvsXHBvxwFHHwI4tLG4izeFsA2TISpVhK5zuPBSUSRUHZvxu2qgg2kBv+je/TcPD
+         7NCvQ1dmdpYlnOULfNKSToR0XZH0emrp7MMG2DxipHN82Oe7qd/sPyNftdyZbZ784x08
+         aeWx/LaAQkwbufvpmZnZZpehm5RzJzr/Sqpg3WyP72pZAK+0nevvZ7pNBH5kzVurK+Yf
+         STYqd9vmUBgKr7LlGm0ZeDsGhPP1yLTpEAufgnMns/BVLEv+57N20vUAGhBXVKIs3bIV
+         5up0xW0tF0dFMQsrqdMMmoLpZsILNJLeJLB8p4NgkEaXTwhjfeZHDB519QsNhVB6lJjO
+         mxFQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1773200238; x=1773805038;
+        h=references:message-id:date:in-reply-to:subject:cc:to:from:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=rHxXiAvo6zOonxHyAewJkbWbuOENn2paNkRQUdILloA=;
+        b=S9kXlcqH6HlXCMoBfcp6t6B069cWI6mlrWJfZ/6po0QIugYpEWhmrww8+TM6GGIuvn
+         eoXwZHCntXp8TFZIRKRM3/JTXIcPpvDFY3XzyTSTQhP6g87goDO1+5wRkSgH93C4XYck
+         PsmODIT3YCdcJt2tNSLS8kDXlL1xYHDrhhZxZ7NEEB/dDJFEOeIrBZ3mhRV6xMbJ4IzH
+         lYz9Q/tZovMGTAivtP1e5FezWE79mFrT04ddKMxWVpZrcR+QUXZi9LnIcMNWZsJkznSV
+         qr4S2cgE0u7cR9H3A/ZwYhojFZOxbzHhDBwC/kciNqgzSfVo3LBQYqVki3j+7OSmgcnY
+         B+SQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWaDSHhHiBY1uRhRgor+fU4A7vnuWLpAVn/4MCriOXXnSvlg4I2ZnPIzQKWrJzsAobcrhI=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwrNWH8p7fc2uObLdLan4B0trqBgdFu4vILIfr8uiTCYuPLap7d
+	xWUUqz+Ojl88SAIDX4Ek7kkOcZgDbIyuPZ/TDZhhDSuQn2hraEhz3dvXI4+GuB7R
+X-Gm-Gg: ATEYQzyJZpIge1nqkFRXGPL7yYn4ewhMT4fJ21UNyKVEJMibmB5odReoeWOe02yt2RZ
+	7i68hV3d03dTMEvFlNHAV7Yv7blqX90qYxo3mvrt4Mys9hufoD8aONQEK/yQLtJr97zyatCAL/c
+	x2zmRr+Tf8ml66z814QydzX8SFGdDKeTQWQL54KqFVzdVopJ81m19WAQv0985lJ15kkdFMgdkoa
+	8afmdZ6AABEGThUsRMfX8pa+/Hf4rG1RkGMWsSTy/pcOll+zaHCoMd4IfSna9cs4eS0J73wY0dE
+	lfAEGNNrqW847383dJFAeKD2pDYFr/5TV7++FWBXljY6fQQbVV8Lh2ZN1Co5qsKcNyg1YMDm54B
+	+OGNT8e15UZD3KaqW6vOwkt+IcMBp6oqC/WE5uoWmpjawZV190H4IDi0Qr+CpCOzg1AdXUDU3Yc
+	OI9B/oEuAGh+cLX0uJUUCErh9LY1yyrj7u
+X-Received: by 2002:a05:6a00:bc93:b0:829:7d88:34c4 with SMTP id d2e1a72fcca58-829f7274b2dmr1088865b3a.64.1773200238028;
+        Tue, 10 Mar 2026 20:37:18 -0700 (PDT)
+Received: from pve-server ([49.205.216.49])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-829f6df3bcbsm752506b3a.15.2026.03.10.20.37.11
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 10 Mar 2026 20:37:17 -0700 (PDT)
+From: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
+To: "David Hildenbrand (Arm)" <david@kernel.org>, linux-kernel@vger.kernel.org
+Cc: linux-mm@kvack.org, linuxppc-dev@lists.ozlabs.org, kvm@vger.kernel.org, "David Hildenbrand (Arm)" <david@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, Madhavan Srinivasan <maddy@linux.ibm.com>, Nicholas Piggin <npiggin@gmail.com>, Michael Ellerman <mpe@ellerman.id.au>, "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>, Muchun Song <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>, Lorenzo Stoakes <ljs@kernel.org>, "Liam R. Howlett" <Liam.Howlett@oracle.com>, Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, Jann Horn <jannh@google.com>, Pedro Falcato <pfalcato@suse.de>, Paolo Bonzini <pbonzini@redhat.com>, Dan Williams <dan.j.williams@intel.com>
+Subject: Re: [PATCH v2 4/4] KVM: PPC: remove hugetlb.h inclusion
+In-Reply-To: <20260309151901.123947-5-david@kernel.org>
+Date: Wed, 11 Mar 2026 09:06:06 +0530
+Message-ID: <y0jzt4ux.ritesh.list@gmail.com>
+References: <20260309151901.123947-1-david@kernel.org> <20260309151901.123947-5-david@kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <20260311031857.3591470-1-maobibo@loongson.cn> <20260311031857.3591470-4-maobibo@loongson.cn>
-In-Reply-To: <20260311031857.3591470-4-maobibo@loongson.cn>
-From: Huacai Chen <chenhuacai@kernel.org>
-Date: Wed, 11 Mar 2026 11:35:59 +0800
-X-Gmail-Original-Message-ID: <CAAhV-H6p=bArdYHkE-0s55Ogvm+Dtv8TVVCLAHGeqA-pnPOXwA@mail.gmail.com>
-X-Gm-Features: AaiRm51EAlIWsRIpqoPTR0FY_eDtNJSwTsPMu6u0RqGl8h9Wro4zNZuQpD3pLio
-Message-ID: <CAAhV-H6p=bArdYHkE-0s55Ogvm+Dtv8TVVCLAHGeqA-pnPOXwA@mail.gmail.com>
-Subject: Re: [PATCH 3/3] LoongArch: KVM: Set vcpu_is_preempted() macro rather
- than function
-To: Bibo Mao <maobibo@loongson.cn>
-Cc: Tianrui Zhao <zhaotianrui@loongson.cn>, kernel@xen0n.name, kvm@vger.kernel.org, 
-	loongarch@lists.linux.dev, linux-kernel@vger.kernel.org, 
-	Juergen Gross <jgross@suse.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 
-Hi, Bibo,
+"David Hildenbrand (Arm)" <david@kernel.org> writes:
 
-On Wed, Mar 11, 2026 at 11:21=E2=80=AFAM Bibo Mao <maobibo@loongson.cn> wro=
-te:
+> hugetlb.h is no longer required now that we moved vma_kernel_pagesize()
+> to mm.h.
 >
-> vcpu_is_preempted() is performance sensitive called in function
-> osq_lock(), here set it as macro. So that parameter is not parsed
-> at most time, it can avoid cache line thrashing across numa node.
-I remember that I had suggested you define vcpu_is_preempted() in the
-header file but you refused.
-
-Huacai
-
->
-> Here is part of unixbench result on 3C5000 DualWay machine with 32
-> Cores and 2 Numa node.
->           origin    with patch    CONFIG_PARAVIRT disabled
-> execl     6871.9    7134.2        7190.8
-> fstime    425.5     959.9         956.1
->
-> From the test result, with macro method it is almost the same with
-> CONFIG_PARAVIRT disabled, and there is some improvment compared with
-> function method.
->
-> Signed-off-by: Bibo Mao <maobibo@loongson.cn>
+> Reviewed-by: Lorenzo Stoakes (Oracle) <ljs@kernel.org>
+> Acked-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+> Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
 > ---
->  arch/loongarch/include/asm/qspinlock.h | 27 +++++++++++++++++++++-----
->  arch/loongarch/kernel/paravirt.c       | 15 ++------------
->  2 files changed, 24 insertions(+), 18 deletions(-)
+>  arch/powerpc/kvm/book3s_hv.c | 1 -
+
+Make sense to me. Please feel free to add:
+
+Reviewed-by: Ritesh Harjani <ritesh.list@gmail.com>
+
+
+>  1 file changed, 1 deletion(-)
 >
-> diff --git a/arch/loongarch/include/asm/qspinlock.h b/arch/loongarch/incl=
-ude/asm/qspinlock.h
-> index 66244801db67..305afd37cdcb 100644
-> --- a/arch/loongarch/include/asm/qspinlock.h
-> +++ b/arch/loongarch/include/asm/qspinlock.h
-> @@ -5,8 +5,10 @@
->  #include <linux/jump_label.h>
->
->  #ifdef CONFIG_PARAVIRT
-> -
-> +#include <asm/kvm_para.h>
->  DECLARE_STATIC_KEY_FALSE(virt_spin_lock_key);
-> +DECLARE_STATIC_KEY_FALSE(virt_preempt_key);
-> +DECLARE_PER_CPU(struct kvm_steal_time, steal_time);
->
->  #define virt_spin_lock virt_spin_lock
->
-> @@ -34,10 +36,25 @@ static inline bool virt_spin_lock(struct qspinlock *l=
-ock)
->         return true;
->  }
->
-> -#define vcpu_is_preempted vcpu_is_preempted
-> -
-> -bool vcpu_is_preempted(int cpu);
-> -
-> +/*
-> + * Macro is better than inline function here
-> + * With inline function, parameter cpu is parsed even though it is not u=
-sed.
-> + * This may cause cache line thrashing across NUMA node.
-> + * With macro method, parameter cpu is parsed only when it is used.
-> + */
-> +#define vcpu_is_preempted(cpu)                                         \
-> +({                                                                     \
-> +       bool __val;                                                     \
-> +                                                                       \
-> +       if (!static_branch_unlikely(&virt_preempt_key))                 \
-> +               __val =3D false;                                         =
- \
-> +       else {                                                          \
-> +               struct kvm_steal_time *src;                             \
-> +               src =3D &per_cpu(steal_time, cpu);                       =
- \
-> +               __val =3D !!(src->preempted & KVM_VCPU_PREEMPTED);       =
- \
-> +       }                                                               \
-> +       __val;                                                          \
-> +})
->  #endif /* CONFIG_PARAVIRT */
->
->  #include <asm-generic/qspinlock.h>
-> diff --git a/arch/loongarch/kernel/paravirt.c b/arch/loongarch/kernel/par=
-avirt.c
-> index b74fe6db49ab..2d1206e486e2 100644
-> --- a/arch/loongarch/kernel/paravirt.c
-> +++ b/arch/loongarch/kernel/paravirt.c
-> @@ -10,8 +10,8 @@
->  #include <asm/paravirt.h>
->
->  static int has_steal_clock;
-> -static DEFINE_PER_CPU(struct kvm_steal_time, steal_time) __aligned(64);
-> -static DEFINE_STATIC_KEY_FALSE(virt_preempt_key);
-> +DEFINE_PER_CPU(struct kvm_steal_time, steal_time) __aligned(64);
-> +DEFINE_STATIC_KEY_FALSE(virt_preempt_key);
->  DEFINE_STATIC_KEY_FALSE(virt_spin_lock_key);
->
->  static bool steal_acc =3D true;
-> @@ -261,17 +261,6 @@ static int pv_time_cpu_down_prepare(unsigned int cpu=
-)
->         return 0;
->  }
->
-> -bool vcpu_is_preempted(int cpu)
-> -{
-> -       struct kvm_steal_time *src;
-> -
-> -       if (!static_branch_unlikely(&virt_preempt_key))
-> -               return false;
-> -
-> -       src =3D &per_cpu(steal_time, cpu);
-> -       return !!(src->preempted & KVM_VCPU_PREEMPTED);
-> -}
-> -EXPORT_SYMBOL(vcpu_is_preempted);
->  #endif
->
->  static void pv_cpu_reboot(void *unused)
-> --
-> 2.39.3
->
->
+> diff --git a/arch/powerpc/kvm/book3s_hv.c b/arch/powerpc/kvm/book3s_hv.c
+> index 08e5816fdd61..61dbeea317f3 100644
+> --- a/arch/powerpc/kvm/book3s_hv.c
+> +++ b/arch/powerpc/kvm/book3s_hv.c
+> @@ -36,7 +36,6 @@
+>  #include <linux/gfp.h>
+>  #include <linux/vmalloc.h>
+>  #include <linux/highmem.h>
+> -#include <linux/hugetlb.h>
+>  #include <linux/kvm_irqfd.h>
+>  #include <linux/irqbypass.h>
+>  #include <linux/module.h>
+> -- 
+> 2.43.0
