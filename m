@@ -1,117 +1,120 @@
-Received: from mail-pf1-f202.google.com (mail-pf1-f202.google.com [209.85.210.202])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 221403F65F9
-	for <kvm@vger.kernel.org>; Tue, 10 Mar 2026 23:49:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.202
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C0E628F5;
+	Wed, 11 Mar 2026 00:02:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=216.40.44.10
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773186555; cv=none; b=ug8b3wPKNyCcFb3KYQxVC4cafnZbcaiEmq4rFZcwnlqwhzdk5xr+KNOrg9B6ucY8ldDa6y0ApcT1qrECmZFjivKSzZ/DEaY/Ktjyjwn/VqQXwfat3AGewUc7AF16FmLTDQDJcnktCPlgvDud7ATle+w6v7Kg7lL8GZnkEl+B7yo=
+	t=1773187341; cv=none; b=VMb0drDCQYkjprcAwMqr63QT9mgJ5cRWE+QZEIXn8JpSfDvax7sNctFDjuKiIA70EUn1na7b10jFb2niXieMoQy1n24IBcP/1dZtIPxV1+58d1brDu0MSlLlgZCGDMGJj1yWGK3GHEnFZWGPBvgDV6OsZ1bHFkBWq1044gihUXs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773186555; c=relaxed/simple;
-	bh=wxT6ANPDWoUdiA3RflJKhdUGnjSjqmEv68Sd9E4VFWA=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=l705sr1nHgn+TO0wqc24OkID5j3N0GFi7VRaDxxYZVeQwh52QwF/upd+wM4Y20zLLFAWuDE+M1RYCLMFoSZ2CdWwDQCogtdZ+0wN8dKpbbG/HwZt4ugpj7IW+KhERz9OfuMGnTH3UVacO0/I1dlSL767atm5lWjWfQLlu8nHrPI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=sUXsVkUp; arc=none smtp.client-ip=209.85.210.202
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="sUXsVkUp"
-Received: by mail-pf1-f202.google.com with SMTP id d2e1a72fcca58-82984468f85so3415131b3a.1
-        for <kvm@vger.kernel.org>; Tue, 10 Mar 2026 16:49:13 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1773186553; x=1773791353; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:reply-to:from:to:cc:subject:date:message-id:reply-to;
-        bh=S/oj221AyjL7p0LimTIXezs2T/jJm5OAuCv1irweo4I=;
-        b=sUXsVkUpLTwMDzrrM91zSWBX9YLV4diFt0ij+vfW6YHRQnIaoQw7iUuXDfkdd0NqwM
-         wPT8jZ1m13YMCirOLrT5LrRP8ivTrhUjmcC81rPeXo3yVGNS3e3WiJuLNS61j5LlqRaJ
-         nBx8yScxpTpudUYxpzmuZSToxJmShCLq22zPU+2jwItJ+ULjzKFE+GZl3Vfp6ShfER8N
-         xiuUwfRmL8vxEA2Tlc7fzR9qfqh1NdXIli72evfgaqfTAlAGy0Wc6u7oOUlDk7DxQEW1
-         dGVPIdbPx6sMWKgqDN8+xwtWr30IO4Hz3WQY13iiX3xZa66DNZiqIFa5SF8Ok5L8lWqg
-         9sTQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1773186553; x=1773791353;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:reply-to:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=S/oj221AyjL7p0LimTIXezs2T/jJm5OAuCv1irweo4I=;
-        b=bIMsfzV4v7uFJiQYp7nM9NY6YVJPX0qqpHPEYOFkyHTn5NDVgL9nQAbiktSvxVFEBe
-         aGjpiF0zUoT3D8jyGUq8pA6dP/z3m9gYbIl7QZWL+YeQUwLg/eW2EAuIZkDGB0tDAmtt
-         rby8EEclTdc3DraU5euUc2rDxO/5iTgwv661Ye5ED1wwJUBxkvSKx0Eqc2LdCh09DLmc
-         d6tAW4TQ5Dg3FXBoZJzWxrZFfpdyn4SKP/xWt+eeWgvBKSoz/+flMwX5V96vIsujTNnB
-         UWA30T0bz0A5lzx3/vUXAPu16fO/GWgnQWw/6V8hkfTDlmpZi1LXNaW2ES51iXF1PbXr
-         Ea6w==
-X-Gm-Message-State: AOJu0YzCYIGXaNcrTGLPN0u5mbOxE5BNc9c7bO2YlyvF0rYXh9j//LLV
-	jLCt4ZyBxA50gAcajOIROzO3EJBNxlHBoskfAvGJvrnP01uBUdyeo2J+EEglUexcNxpn+sNRnOR
-	ZMUI8aA==
-X-Received: from pfbef18.prod.google.com ([2002:a05:6a00:2c92:b0:81f:9d66:115b])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:2d1a:b0:81b:d5d9:a83a
- with SMTP id d2e1a72fcca58-829f7269925mr520796b3a.61.1773186553338; Tue, 10
- Mar 2026 16:49:13 -0700 (PDT)
-Reply-To: Sean Christopherson <seanjc@google.com>
-Date: Tue, 10 Mar 2026 16:48:29 -0700
-In-Reply-To: <20260310234829.2608037-1-seanjc@google.com>
+	s=arc-20240116; t=1773187341; c=relaxed/simple;
+	bh=smzvbB4nmsoWyjvlw6IqwQZpGTU4rmIBF86uCfM5iSI=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=mZ7SZw8AML/61LYZF+cYH3QVClpOnHegGEKkHaYUPO71sjzYDiM5Q+n4lFaME/6BEsW2e1BZyMolXCAJSu5lYFDt+iIzDok/b+Wt2L0EsMSmi2OBcG9piL8W4T14/fiz+ZcJEAo8snm/H1rLrULkiXmcSICjsos5XMZOMusthos=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=goodmis.org; spf=pass smtp.mailfrom=goodmis.org; arc=none smtp.client-ip=216.40.44.10
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=goodmis.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=goodmis.org
+Received: from omf20.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 7BCB113A961;
+	Wed, 11 Mar 2026 00:02:10 +0000 (UTC)
+Received: from [HIDDEN] (Authenticated sender: rostedt@goodmis.org) by omf20.hostedemail.com (Postfix) with ESMTPA id 85BFC20027;
+	Wed, 11 Mar 2026 00:02:06 +0000 (UTC)
+Date: Tue, 10 Mar 2026 20:02:17 -0400
+From: Steven Rostedt <rostedt@goodmis.org>
+To: Christian Brauner <brauner@kernel.org>
+Cc: Linus Torvalds <torvalds@linux-foundation.org>,
+ linux-kernel@vger.kernel.org, linux-modules@vger.kernel.org,
+ linux-nfs@vger.kernel.org, bpf@vger.kernel.org, kunit-dev@googlegroups.com,
+ linux-doc@vger.kernel.org, linux-trace-kernel@vger.kernel.org,
+ netfs@lists.linux.dev, io-uring@vger.kernel.org, audit@vger.kernel.org,
+ rcu@vger.kernel.org, kvm@vger.kernel.org, virtualization@lists.linux.dev,
+ netdev@vger.kernel.org, linux-mm@kvack.org,
+ linux-security-module@vger.kernel.org, Christian Loehle
+ <christian.loehle@arm.com>, linux-fsdevel@vger.kernel.org
+Subject: Re: [PATCH v2 2/2] tree-wide: rename do_exit() to task_exit()
+Message-ID: <20260310200217.451cf37e@gandalf.local.home>
+In-Reply-To: <20260310-work-kernel-exit-v2-2-30711759d87b@kernel.org>
+References: <20260310-work-kernel-exit-v2-0-30711759d87b@kernel.org>
+	<20260310-work-kernel-exit-v2-2-30711759d87b@kernel.org>
+X-Mailer: Claws Mail 3.20.0git84 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20260310234829.2608037-1-seanjc@google.com>
-X-Mailer: git-send-email 2.53.0.473.g4a7958ca14-goog
-Message-ID: <20260310234829.2608037-22-seanjc@google.com>
-Subject: [PATCH 21/21] KVM: SEV: Goto an existing error label if charging
- misc_cg for an ASID fails
-From: Sean Christopherson <seanjc@google.com>
-To: Sean Christopherson <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>
-Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	Jethro Beekman <jethro@fortanix.com>, Alexander Potapenko <glider@google.com>, 
-	"=?UTF-8?q?Carlos=20L=C3=B3pez?=" <clopez@suse.de>
-Content-Type: text/plain; charset="UTF-8"
+MIME-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Stat-Signature: 5bg3rrg18jbru7uwkfxn1hbh397psca6
+X-Rspamd-Server: rspamout01
+X-Rspamd-Queue-Id: 85BFC20027
+X-Session-Marker: 726F737465647440676F6F646D69732E6F7267
+X-Session-ID: U2FsdGVkX18LHCHZ+vV3JFPf+Z89JvS/nvAKMsv+FAI=
+X-HE-Tag: 1773187326-98008
+X-HE-Meta: U2FsdGVkX1/3tMWPLwyG4JCc4wkqvh9SiSPSlhJp6Tv4W/fwSwUFhWXG3UBrBxSzLq3p72eu37Xu4WWh77aTVVkk97xFw9hCg2Tn+gfwvdW114asIqtfy8xHhNrVuERS2G/65ce3/BsvZjC5d8Vnvs35vga+tnTJklfjQ+UttgL5bwbjp5oOgQNdAzx3oibQ4Mzt0N8V0YHeM+nhQRgwSGhlB1291Y2eHefZmXFBYTpQLIIP1XDBd9pac8iHtBZirKQZfE9I0NK+xzIHdGI0aui4vMm56FkppnHJDf/mUfgi8cC8UEAJB61JKAsSDfwj7R599Re8N4CNbTJgYcDwKo1gfVDZt4y9
 
-Dedup a small amount of cleanup code in SEV ASID allocation by reusing
-an existing error label.
+On Tue, 10 Mar 2026 15:56:10 +0100
+Christian Brauner <brauner@kernel.org> wrote:
 
-No functional change intended.
+> diff --git a/tools/testing/selftests/bpf/progs/tracing_failure.c b/tools/testing/selftests/bpf/progs/tracing_failure.c
+> index 65e485c4468c..5144f4cc5787 100644
+> --- a/tools/testing/selftests/bpf/progs/tracing_failure.c
+> +++ b/tools/testing/selftests/bpf/progs/tracing_failure.c
+> @@ -25,7 +25,7 @@ int BPF_PROG(tracing_deny)
+>  	return 0;
+>  }
+>  
+> -SEC("?fexit/do_exit")
+> +SEC("?fexit/task_exit")
+>  int BPF_PROG(fexit_noreturns)
+>  {
+>  	return 0;
+> diff --git a/tools/testing/selftests/ftrace/test.d/dynevent/fprobe_syntax_errors.tc b/tools/testing/selftests/ftrace/test.d/dynevent/fprobe_syntax_errors.tc
+> index fee479295e2f..7e00d8ecd110 100644
+> --- a/tools/testing/selftests/ftrace/test.d/dynevent/fprobe_syntax_errors.tc
+> +++ b/tools/testing/selftests/ftrace/test.d/dynevent/fprobe_syntax_errors.tc
+> @@ -82,7 +82,7 @@ check_error 'f vfs_read arg1=^'			# NO_ARG_BODY
+>  # multiprobe errors
+>  if grep -q "Create/append/" README && grep -q "imm-value" README; then
+>  echo "f:fprobes/testevent $FUNCTION_FORK" > dynamic_events
+> -check_error '^f:fprobes/testevent do_exit%return'	# DIFF_PROBE_TYPE
+> +check_error '^f:fprobes/testevent task_exit%return'	# DIFF_PROBE_TYPE
+>  
+>  # Explicitly use printf "%s" to not interpret \1
+>  printf "%s" "f:fprobes/testevent $FUNCTION_FORK abcd=\\1" > dynamic_events
+> diff --git a/tools/testing/selftests/ftrace/test.d/kprobe/kprobe_multiprobe.tc b/tools/testing/selftests/ftrace/test.d/kprobe/kprobe_multiprobe.tc
+> index f0d5b7777ed7..a95e3824690a 100644
+> --- a/tools/testing/selftests/ftrace/test.d/kprobe/kprobe_multiprobe.tc
+> +++ b/tools/testing/selftests/ftrace/test.d/kprobe/kprobe_multiprobe.tc
+> @@ -5,7 +5,7 @@
+>  
+>  # Choose 2 symbols for target
+>  SYM1=$FUNCTION_FORK
+> -SYM2=do_exit
+> +SYM2=task_exit
+>  EVENT_NAME=kprobes/testevent
+>  
+>  DEF1="p:$EVENT_NAME $SYM1"
+> diff --git a/tools/testing/selftests/ftrace/test.d/kprobe/kprobe_syntax_errors.tc b/tools/testing/selftests/ftrace/test.d/kprobe/kprobe_syntax_errors.tc
+> index 8f1c58f0c239..b55ea3c05cfa 100644
+> --- a/tools/testing/selftests/ftrace/test.d/kprobe/kprobe_syntax_errors.tc
+> +++ b/tools/testing/selftests/ftrace/test.d/kprobe/kprobe_syntax_errors.tc
+> @@ -87,7 +87,7 @@ esac
+>  # multiprobe errors
+>  if grep -q "Create/append/" README && grep -q "imm-value" README; then
+>  echo "p:kprobes/testevent $FUNCTION_FORK" > kprobe_events
+> -check_error '^r:kprobes/testevent do_exit'	# DIFF_PROBE_TYPE
+> +check_error '^r:kprobes/testevent task_exit'	# DIFF_PROBE_TYPE
+>  
+>  # Explicitly use printf "%s" to not interpret \1
+>  printf "%s" "p:kprobes/testevent $FUNCTION_FORK abcd=\\1" > kprobe_events
 
-Signed-off-by: Sean Christopherson <seanjc@google.com>
----
- arch/x86/kvm/svm/sev.c | 11 +++++------
- 1 file changed, 5 insertions(+), 6 deletions(-)
+These tests need to pass on old kernels too. So we can't just do a
+"s/do_exit/task_exit/" conversion. It needs to test for task_exit first,
+and if not found, fallback to do_exit.
 
-diff --git a/arch/x86/kvm/svm/sev.c b/arch/x86/kvm/svm/sev.c
-index c35eb9e30993..32d7f329f92c 100644
---- a/arch/x86/kvm/svm/sev.c
-+++ b/arch/x86/kvm/svm/sev.c
-@@ -289,14 +289,11 @@ static int sev_asid_new(struct kvm_sev_info *sev, unsigned long vm_type)
- 	if (min_asid > max_asid)
- 		return -ENOTTY;
- 
--	WARN_ON(sev->misc_cg);
-+	WARN_ON_ONCE(sev->misc_cg);
- 	sev->misc_cg = get_current_misc_cg();
- 	ret = sev_misc_cg_try_charge(sev);
--	if (ret) {
--		put_misc_cg(sev->misc_cg);
--		sev->misc_cg = NULL;
--		return ret;
--	}
-+	if (ret)
-+		goto e_put_cg;
- 
- 	asid = sev_alloc_asid(min_asid, max_asid);
- 	if (asid > max_asid) {
-@@ -306,8 +303,10 @@ static int sev_asid_new(struct kvm_sev_info *sev, unsigned long vm_type)
- 
- 	sev->asid = asid;
- 	return 0;
-+
- e_uncharge:
- 	sev_misc_cg_uncharge(sev);
-+e_put_cg:
- 	put_misc_cg(sev->misc_cg);
- 	sev->misc_cg = NULL;
- 	return ret;
--- 
-2.53.0.473.g4a7958ca14-goog
+See how we handled the _do_fork() > kernel_clone() rename:
 
+  https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/tools/testing/selftests/ftrace/test.d/functions#n182
+
+-- Steve
