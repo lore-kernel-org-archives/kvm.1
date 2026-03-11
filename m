@@ -1,127 +1,120 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC7C33E6DE8
-	for <kvm@vger.kernel.org>; Wed, 11 Mar 2026 18:51:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B18653DBA0;
+	Wed, 11 Mar 2026 19:10:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773255063; cv=none; b=AICdWeu55otb6yKDbReRrwWQj5UXTVg0RnC0fbZIrZuNdXGBSFEew+XX+cwH+liVNxxJO1fUE01qsmjEdx9PiHnzY89XaD0ZP/Us91PFoBCxQ/MoL7GT3ifNiCE0IqzeAFvrjf3j5LyH9E/YLIELAwag9RDva8NNhnfWX5Dm3bw=
+	t=1773256209; cv=none; b=uoCtkOcY9wbblawNte6pOBzvGJ6gE+ehibyEVJgvP78qh9phqROVN4bEdgJ41p6XVqPFrYKbeM4XTT1c6bcUADyce8HZu2L9gUlD2ObvxghGYCfBHdg/jRRY6cKp+2NwVSqpOZOJv58zj89sbJPj2NG8cn9teVIYi6vHLp5+dKs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773255063; c=relaxed/simple;
-	bh=Te4eI0knPeiotE2hZEjwgv+MSdfSyh85QDbwl4FRJWU=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=duCpFAWmmX2/aeOInxiKkDE52R9CMsaetIHwaSJ7w8YVt/BRnlUm+YOOKLb+MXxwk/FyWB5mrnpe3RgIsol57f+owoUcbqtDb0ecCR2kdq136Ft9QC3O/1JONmbCd+i7hadaW6aBzl4W2bS971pd/v+I0nEyhcg59cSO0LTy48Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=RQvPMMGL; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1773256209; c=relaxed/simple;
+	bh=7ZsLa1T0BFC5juw0defQQ33UROr06FSoMCJDyDGnxkk=;
+	h=Date:Message-ID:From:To:Cc:Subject:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=NjuoK2X127ShkulUqgWB8UtSZpig5av4vv35FcWnudr+RWVu30Gjh//W2GVQbWoJex75buQ4tX+DHtTVAoMEDbbEqVfeoa4TT8rY1kPHCzLjg++djRdlhFeE1uoMSdYqUOv+ewrKMtWRiqjH8dSRKltcaiJevi0ISeLwBR6A4HA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KYWA2VhG; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="RQvPMMGL"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1773255060;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=F7AROcK70CW6XJ2dTy6Mf7xNWM6FalWRhqSf6kMBPFI=;
-	b=RQvPMMGL/Av8frhJLoW73miTWjebQKGt9afS0114QkGmjinNQ1RIw3ooL+csY20s2Ka2Wt
-	Wgso2eC1vhUSPsMh5FmGZizWKPd2utZYTP5v6M4kwsCaqVxNqJYyK5DlrmbGaHPQ5wcrTD
-	KvDuOn2gYCN21l+d1hhG3BBr/O6i/d4=
-Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-133-c7JVzJo7P42rwCjUcTU5QA-1; Wed,
- 11 Mar 2026 14:50:55 -0400
-X-MC-Unique: c7JVzJo7P42rwCjUcTU5QA-1
-X-Mimecast-MFC-AGG-ID: c7JVzJo7P42rwCjUcTU5QA_1773255054
-Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 0550B195605C;
-	Wed, 11 Mar 2026 18:50:54 +0000 (UTC)
-Received: from [10.44.32.138] (unknown [10.44.32.138])
-	by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 8EADF1956095;
-	Wed, 11 Mar 2026 18:50:51 +0000 (UTC)
-Message-ID: <c117141f-61da-4572-98ea-7a8a79eb5bab@redhat.com>
-Date: Wed, 11 Mar 2026 19:50:49 +0100
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KYWA2VhG"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4F338C4CEF7;
+	Wed, 11 Mar 2026 19:10:09 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1773256209;
+	bh=7ZsLa1T0BFC5juw0defQQ33UROr06FSoMCJDyDGnxkk=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=KYWA2VhGx6UU+p+ftz/FLsZ6Y//y8DzdvF0OtJLJjUIItwyyqnxvb13nvzBekRUbk
+	 l6PPgewl9tiij8yTpONZ5At9kTHAM41zo587Uj60R8h2WUyMqdOOlhOdA4y8CCN8WL
+	 dgmEVkRh0RMZ9LbZIIyn+MRzpcTbo6RuR7sKztz300/cIvetlzPYsIUKtsuFQsmozq
+	 4BTNpU/bnfB/96i3xYhwwmJl/DiiXOYWcuRr/0Z04lnhvpImOiHsULnE9KVekm7XAi
+	 UeoJ3bt78awoa9Aq19eizM7McbOzoUtwf9eJvPZe02gj4yDfV+TRvGH+P9M1dewLlt
+	 h0KFekkAVkdFQ==
+Received: from sofa.misterjones.org ([185.219.108.64] helo=lobster-girl.misterjones.org)
+	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.98.2)
+	(envelope-from <maz@kernel.org>)
+	id 1w0OwY-0000000103e-3vLG;
+	Wed, 11 Mar 2026 19:10:07 +0000
+Date: Wed, 11 Mar 2026 19:10:05 +0000
+Message-ID: <87v7f2chde.wl-maz@kernel.org>
+From: Marc Zyngier <maz@kernel.org>
+To: Steven Price <steven.price@arm.com>
+Cc: kvm@vger.kernel.org,
+	kvmarm@lists.linux.dev,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Will Deacon <will@kernel.org>,
+	James Morse <james.morse@arm.com>,
+	Oliver Upton <oliver.upton@linux.dev>,
+	Suzuki K Poulose <suzuki.poulose@arm.com>,
+	Zenghui Yu
+ <yuzenghui@huawei.com>,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	Joey Gouly <joey.gouly@arm.com>,
+	Alexandru Elisei <alexandru.elisei@arm.com>,
+	Christoffer Dall <christoffer.dall@arm.com>,
+	Fuad Tabba <tabba@google.com>,
+	linux-coco@lists.linux.dev,
+	Ganapatrao Kulkarni <gankulkarni@os.amperecomputing.com>,
+	Gavin Shan <gshan@redhat.com>,
+	Shanker Donthineni <sdonthineni@nvidia.com>,
+	Alper Gun <alpergun@google.com>,
+	"Aneesh Kumar K . V"
+ <aneesh.kumar@kernel.org>,
+	Emi Kisanuki <fj0570is@fujitsu.com>,
+	Vishal Annapurve <vannapurve@google.com>
+Subject: Re: [PATCH v12 06/46] arm64: RMI: Define the user ABI
+In-Reply-To: <33053e22-6cc6-4d55-bc7f-01f873a15d28@arm.com>
+References: <20251217101125.91098-1-steven.price@arm.com>
+	<20251217101125.91098-7-steven.price@arm.com>
+	<86tsuy8g0u.wl-maz@kernel.org>
+	<33053e22-6cc6-4d55-bc7f-01f873a15d28@arm.com>
+User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
+ FLIM-LB/1.14.9 (=?UTF-8?B?R29qxY0=?=) APEL-LB/10.8 EasyPG/1.0.0 Emacs/30.1
+ (aarch64-unknown-linux-gnu) MULE/6.0 (HANACHIRUSATO)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 4/7] KVM: x86: Add wrapper APIs to reset dirty/available
- register masks
-To: Sean Christopherson <seanjc@google.com>, Yosry Ahmed <yosry@kernel.org>
-Cc: Kiryl Shutsemau <kas@kernel.org>, kvm@vger.kernel.org, x86@kernel.org,
- linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org,
- "Chang S . Bae" <chang.seok.bae@intel.com>
-References: <20260311003346.2626238-1-seanjc@google.com>
- <20260311003346.2626238-5-seanjc@google.com>
- <CAO9r8zNBEOJrxbx8ob2KRLRKkd_aZjz8tyXGqXxs0=TJq4fU6Q@mail.gmail.com>
- <abFulxXuRziXj039@google.com>
-From: Paolo Bonzini <pbonzini@redhat.com>
-Content-Language: en-US
-Autocrypt: addr=pbonzini@redhat.com; keydata=
- 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
-In-Reply-To: <abFulxXuRziXj039@google.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
+MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
+Content-Type: text/plain; charset=US-ASCII
+X-SA-Exim-Connect-IP: 185.219.108.64
+X-SA-Exim-Rcpt-To: steven.price@arm.com, kvm@vger.kernel.org, kvmarm@lists.linux.dev, catalin.marinas@arm.com, will@kernel.org, james.morse@arm.com, oliver.upton@linux.dev, suzuki.poulose@arm.com, yuzenghui@huawei.com, linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, joey.gouly@arm.com, alexandru.elisei@arm.com, christoffer.dall@arm.com, tabba@google.com, linux-coco@lists.linux.dev, gankulkarni@os.amperecomputing.com, gshan@redhat.com, sdonthineni@nvidia.com, alpergun@google.com, aneesh.kumar@kernel.org, fj0570is@fujitsu.com, vannapurve@google.com
+X-SA-Exim-Mail-From: maz@kernel.org
+X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
 
-On 3/11/26 14:31, Sean Christopherson wrote:
->> Not closely following this series and don't know this code well, but
->> this API is very confusing for me tbh. Especially in comparison with
->> kvm_reset_dirty_registers().
->>
->> Maybe rename this to kvm_clear_available_registers(), and pass in a
->> "clear_mask", then reverse the polarity:
->>
->> vcpu->arch.regs_avail &= ~clear_mask;
-> Oh, yeah, I can do something like that.  I originally misread the TDX code and
-> thought it was explicitly setting regs_avail, and so came up with a roundabout
-> name.  I didn't revisit the naming or the polarity of the param once I realized
-> all callers could use the same scheme.
+On Mon, 02 Mar 2026 15:23:44 +0000,
+Steven Price <steven.price@arm.com> wrote:
 > 
-> No small part of me is tempted to turn it into a straigh "set" though, unless I'm
-> missing something, the whole &= business is an implementation quirk.
+> >> +  struct kvm_arm_rmi_populate {
+> >> +	__u64 base;
+> >> +	__u64 size;
+> >> +	__u64 source_uaddr;
+> >> +	__u32 flags;
+> >> +	__u32 reserved;
+> >> +  };
+> >> +
+> >> +Populate a region of protected address space by copying the data from the user
+> >> +space pointer provided. This is only valid before any VCPUs have been run.
+> >> +The ioctl might not populate the entire region and user space may have to
+> >> +repeatedly call it (with updated pointers) to populate the entire region.
+> > 
+> > size as a __u64 is odd, as the return value from the ioctl is a signed
+> > int. This implies that you can't really report how many bytes you have
+> > copied.  Some form of consistency wouldn't hurt.
+> 
+> Good spot. In practice this works because >2GB in one operation is
+> highly unlikely to be processed in one go. But I guess I'll change this
+> to have an output size argument. I guess I could make the kernel update
+> all of base,size,source_uaddr which would simplify user space.
 
-I like kvm_clear_available_registers() for this + removing the second 
-argument completely for kvm_reset_dirty_registers().
+In a conversation with Suzuki, I suggested that splice(2) could be a
+nicer way to express this, and allow asynchronous use with io-uring.
 
-Paolo
+After all, having a guestmem backend for CCA is not exactly
+outlandish, and having a splice implementation realistic enough.
 
+Thoughts?
+
+	M.
+
+-- 
+Jazz isn't dead. It just smells funny.
