@@ -1,65 +1,33 @@
-Received: from mail-ed1-f43.google.com (mail-ed1-f43.google.com [209.85.208.43])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7BCE03DE421
-	for <kvm@vger.kernel.org>; Wed, 11 Mar 2026 11:59:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2BAEE3D8110;
+	Wed, 11 Mar 2026 11:59:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773230377; cv=none; b=E5uymD3HbwqWh0v1KtCIcE2W5WfpUiGrMoygXlr3Vr903rD/WhO4y4xeChLdrsy9gZvW8TuLmwieQSK8uaCslRkMU8gGc3WFoO1LWTn5Q8Qw7NPLrNkYxHDesOTL6k3JjjQAakZpGyJ/i4xYIBDiaAOUyek/Lx7fcGZGqc0N06M=
+	t=1773230390; cv=none; b=oTpq1UZwJ0B8nCaqTNAs7iA4x/La5BWBJCDVL1e7eQskv2eVMb7NvjbwirSCcV2Gr3OPpxQ47cltLUZbNyorVdcw+1ZpJVYRvedfMsQU8QoCj3eJO98vDkFLkOQzRSwU5AEK2RtBJaHmylqUF+rLUyzd+Vn6KpfaV2C/s62aU4k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773230377; c=relaxed/simple;
-	bh=gHxLKLNLtW1cji7d+nB3rsYKS5Hn7R+Q5bOv4VFwznM=;
-	h=Message-ID:Date:MIME-Version:From:Subject:To:Cc:References:
-	 In-Reply-To:Content-Type; b=Cv+Uh8fQy9zqQKhe8RrlR+HTP33QoFgTzYLXiXR3amSM//CNIYM5oWmHxbKZWYu2oig+a8MM9ZwAsiMNoYswVpnCYfwECWzBY9ATSfPj8OjyZO7piHQKqWjjbIfIjd+9FXnlW3Pgu4G5o7wkFvHl90LyFTDfm086NkPn9pfiZpQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=b7Ha8Fgf; arc=none smtp.client-ip=209.85.208.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+	s=arc-20240116; t=1773230390; c=relaxed/simple;
+	bh=7L05EWimhuh0T0G4AbugcywDE/W3b5BIQqPB/jlupZU=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=ZhNi4O+FgWSTFJcoAzkCMxZZX2x3MnoR7V3IJzmCXlry1R+s4NE8Y/Xv65cU04Q9oS70XVg5iRsv4PVDXoEdf+TblpLajERuTBKG0X5Ps1q5virY8FVsKKpG+Bxmg7alXLg92PSECPm5NTORnheS40mhUVAOHHIG4dCalK+yuh4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MccQFE2M; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="b7Ha8Fgf"
-Received: by mail-ed1-f43.google.com with SMTP id 4fb4d7f45d1cf-662c6aca253so3092702a12.3
-        for <kvm@vger.kernel.org>; Wed, 11 Mar 2026 04:59:35 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1773230374; x=1773835174; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:content-language:references
-         :cc:to:subject:from:user-agent:mime-version:date:message-id:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=fKwSqge0Bx3u+rCgVUQqBNe12brlVC96iC4+N0TtO+o=;
-        b=b7Ha8FgfiPX6gHhG4bjE/vJsi3HB6B0IPc4bLLRAdELdnx43gIktdeDnH/bzm2huVh
-         NK2DI6tiTFRVlRTdAQUZc66AyOAmhuuM9KkgDGqnWYYUuqLfKLXuODv7GKr0P9lIlwgh
-         H5yL1K+AzkA1Vwz4ifgsp+Ks9KHOQoHScjOzfU0s0KStZdXtOqex7ZtXHYVxrlfE6p7k
-         wQvcjKhw6jpw2lm6OpJCHwfOINRlbJiLU84FRRa0dw9hk2FT6yKeH5BQ/zbEuAPGzxNk
-         3f2mk9CJFYR26onvMPifXiUGXrPBSN6FI2qtzdiYn8d8aCkPzdZIc0hm15fcg7rMf5p9
-         4YTQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1773230374; x=1773835174;
-        h=content-transfer-encoding:in-reply-to:content-language:references
-         :cc:to:subject:from:user-agent:mime-version:date:message-id:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=fKwSqge0Bx3u+rCgVUQqBNe12brlVC96iC4+N0TtO+o=;
-        b=I1WObQa+CByly6D9GQ7/KqjohAZq+0npB6H/50OHXybv8o5F2TG9ebUfpnN1QLQQjA
-         flXk0MIzjalVOaV+XalBJs9IXmNZmaP1R7BAOwDA/AR1YEBq9O9CUxhXOKb+M+EqkRBO
-         r1c9HE9xHNRHqewHj1Qawv8z4ZsdKIOLphLszr1RzPcWAugDY24tRcg87EfbodFevDqE
-         OcCq3GouO4OtfITuA6+zeI4SjZVMlp3M72OIqyNNq82C7RmdLPoP0VCSA6y7HJssB4z4
-         f3X1JyNAVPcyNBBwqpz1BXpqTkC6IWG8tYRTz5EteKNcR1dwy4nDbOTMdgSfHo3FpKPM
-         tbrQ==
-X-Forwarded-Encrypted: i=1; AJvYcCX5X/HECCmELSABcQitthKS9w85YFTs5VEww2U1aR8Oa++bvIx8N7z3WT/2IvMER8ltf3E=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyFmYkZ5nUgqvFWNsZz5plwodmp99cucsgXdlb4Dr2/cIji1+Vx
-	Sz6hQQGs2Za2L8+Wr6HTpQhJZOPn5yDNx+Mvz/Hdy7yk11bcpQ4BC9PHnWj48KwWcUg=
-X-Gm-Gg: ATEYQzyklFrD6dThqFOkgM66CXu7sdxcueNYPCdIIC3NNQ/AAj5IJf0t2msE/Yfon4i
-	W5kQF2YE/ujU3L4r9tdQglBcr/gIP91dsqZYCfP8uzB3zFXq55yOPmS6OwlQRyE1Isd4fRbGdE0
-	fIjLJRtQB5kTRNit3UZXgJWTL1X5Ulgc8jnK/9jfFE0bfEd3zOQr/05gCj1mkT/zREyOnB8i06f
-	FrkYXe8CNdLlQWF3wP+AsM0tzQ8KXlTvlqr8sVfbOAooXYWxAYwpXw+RhOJlUllIGVxU4XFeAHm
-	jZYc0WGJa7uQKIh3Cz2Ykh9Fk3H/HUnnSbyxvIo+N5sPj5iF1PW9XFL4e+m3Qj6F9PGW3GAVcKg
-	jt7N+JGPFaNTOvuyiKzx1xt7Tc2KBAWVyX6HdaL653bEEInEJrntyTQg+NiwQRBIIqrZ5MoVYL0
-	e5FlyaqWtIvVas7XceML6XapDpfeMv
-X-Received: by 2002:a05:6402:5206:b0:65f:aecc:4f24 with SMTP id 4fb4d7f45d1cf-66319ddcba6mr1131945a12.24.1773230373721;
-        Wed, 11 Mar 2026 04:59:33 -0700 (PDT)
-Received: from [192.168.1.3] ([185.48.77.170])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-66315320df2sm484743a12.24.2026.03.11.04.59.32
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 11 Mar 2026 04:59:33 -0700 (PDT)
-Message-ID: <47592c2d-2b12-4d28-ae5d-9d2f68ec7186@linaro.org>
-Date: Wed, 11 Mar 2026 11:59:31 +0000
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MccQFE2M"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DC756C4CEF7;
+	Wed, 11 Mar 2026 11:59:46 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1773230389;
+	bh=7L05EWimhuh0T0G4AbugcywDE/W3b5BIQqPB/jlupZU=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=MccQFE2MB47oXOOb4mvYNYBpxTNQR8cze+E2vn7aD2JdRxlDSq3tnJm4uKmDlR4T6
+	 5jPIeiV1/VylKk2qCrMJGpOH37F69pZS2Hwl2Zn1K84UC89TmwfLM9H6Ksqhp1g3Op
+	 805z8YgcDJknSteio4hG1NxOzCW3e4iXA6dDdiICRLOdDbew+9c5Il2eLEiX5foq3Z
+	 hAuGezC4BWpfzlMpKOanpQtGKiIuNo9l3zIIJ0dojxN0Vhb0sOU6BZ2k6eHqzjb2Dj
+	 xCu389Z1OELcl9epnnGEcoewycabonntx2VEiuSjazqeuOeFd52N4zQ/aNTHIdg0Qg
+	 QyH+HM8rnE3cw==
+Message-ID: <6624bc37-8a2a-4718-bd03-32382dd28d67@kernel.org>
+Date: Wed, 11 Mar 2026 12:59:45 +0100
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -67,304 +35,131 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-From: James Clark <james.clark@linaro.org>
-Subject: Re: [PATCH v6 04/19] perf: arm_pmuv3: Introduce method to partition
- the PMU
-To: Colton Lewis <coltonlewis@google.com>, kvm@vger.kernel.org
-Cc: Alexandru Elisei <alexandru.elisei@arm.com>,
- Paolo Bonzini <pbonzini@redhat.com>, Jonathan Corbet <corbet@lwn.net>,
- Russell King <linux@armlinux.org.uk>,
- Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>,
- Marc Zyngier <maz@kernel.org>, Oliver Upton <oliver.upton@linux.dev>,
- Mingwei Zhang <mizhang@google.com>, Joey Gouly <joey.gouly@arm.com>,
- Suzuki K Poulose <suzuki.poulose@arm.com>, Zenghui Yu
- <yuzenghui@huawei.com>, Mark Rutland <mark.rutland@arm.com>,
- Shuah Khan <shuah@kernel.org>,
- Ganapatrao Kulkarni <gankulkarni@os.amperecomputing.com>,
- linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org, kvmarm@lists.linux.dev,
- linux-perf-users@vger.kernel.org, linux-kselftest@vger.kernel.org
-References: <20260209221414.2169465-1-coltonlewis@google.com>
- <20260209221414.2169465-5-coltonlewis@google.com>
+Subject: Re: [RFC 1/1] mm/pagewalk: don't split device-backed huge pfnmaps
+To: "Boone, Max" <mboone@akamai.com>
+Cc: Alex Williamson <alex@shazbot.org>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+ "Liam R . Howlett" <Liam.Howlett@oracle.com>,
+ Vlastimil Babka <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>,
+ Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
+ "linux-mm@kvack.org" <linux-mm@kvack.org>,
+ "kvm@vger.kernel.org" <kvm@vger.kernel.org>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ "Tottenham, Max" <mtottenh@akamai.com>, "Hunt, Joshua" <johunt@akamai.com>,
+ "Pelland, Matt" <mpelland@akamai.com>
+References: <20260309174949.2514565-1-mboone@akamai.com>
+ <20260309174949.2514565-2-mboone@akamai.com>
+ <51eeb09d-d3f4-412f-85da-690fdc0f8e6a@kernel.org>
+ <CH2PR17MB3797A91D5107B6E347EEDD97BF79A@CH2PR17MB3797.namprd17.prod.outlook.com>
+ <da2ebc9f-ec82-4c55-851c-b27110efdf8c@kernel.org>
+ <83842620-AD01-4619-845F-8DE7DF1F8F31@akamai.com>
+ <0a652e7e-339e-4f98-b591-7fe5680e2006@kernel.org>
+ <6CBB0401-26DD-4EF9-949C-54BEAD3ABA33@akamai.com>
+ <5fb9beef-b6fe-401a-aa24-aade48b795d4@kernel.org>
+ <0A734214-9E4B-4A65-AFB1-055883639358@akamai.com>
+ <d7f3c613-92f5-4400-812e-a368bee45a41@kernel.org>
+ <928CF80F-7436-42ED-9791-F63E3D699CBE@akamai.com>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
-In-Reply-To: <20260209221414.2169465-5-coltonlewis@google.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <928CF80F-7436-42ED-9791-F63E3D699CBE@akamai.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-
-
-On 09/02/2026 10:13 pm, Colton Lewis wrote:
-> For PMUv3, the register field MDCR_EL2.HPMN partitiones the PMU
-> counters into two ranges where counters 0..HPMN-1 are accessible by
-> EL1 and, if allowed, EL0 while counters HPMN..N are only accessible by
-> EL2.
+On 3/11/26 12:14, Boone, Max wrote:
 > 
-> Create module parameter reserved_host_counters to reserve a number of
-> counters for the host. This number is set at boot because the perf
-> subsystem assumes the number of counters will not change after the PMU
-> is probed.
 > 
-> Introduce the function armv8pmu_partition() to modify the PMU driver's
-> cntr_mask of available counters to exclude the counters being reserved
-> for the guest and record reserved_guest_counters as the maximum
-> allowable value for HPMN.
+>> On Mar 11, 2026, at 11:45 AM, David Hildenbrand (Arm) <david@kernel.org> wrote:
+>>
+>> The code in follow_fault_pfn() should likely be updated to handle more
+>> than one attempt. That's also what GUP does.
+>>
+>> Likely, follow_fault_pfn() was never taught about PFNMAP mappings that
+>> can be faulted+zapped (in the past they were always static).
+>>
+>> If you turn that into a (possibly) endless loop, does the problem go away?
 > 
-> Due to the difficulty this feature would create for the driver running
-> in nVHE mode, partitioning is only allowed in VHE mode. In order to
-> support a partitioning on nVHE we'd need to explicitly disable guest
-> counters on every exit and reset HPMN to place all counters in the
-> first range.
+> Yep, was just trying that - with this change the problem goes away:
 > 
-> Signed-off-by: Colton Lewis <coltonlewis@google.com>
-> ---
->   arch/arm/include/asm/arm_pmuv3.h   |  4 ++
->   arch/arm64/include/asm/arm_pmuv3.h |  5 ++
->   arch/arm64/kvm/Makefile            |  2 +-
->   arch/arm64/kvm/pmu-direct.c        | 22 +++++++++
->   drivers/perf/arm_pmuv3.c           | 78 +++++++++++++++++++++++++++++-
->   include/kvm/arm_pmu.h              |  8 +++
->   include/linux/perf/arm_pmu.h       |  1 +
->   7 files changed, 117 insertions(+), 3 deletions(-)
->   create mode 100644 arch/arm64/kvm/pmu-direct.c
+> --- a/drivers/vfio/vfio_iommu_type1.c
+> +++ b/drivers/vfio/vfio_iommu_type1.c
+> @@ -532,7 +532,7 @@ static int follow_fault_pfn(struct vm_area_struct *vma, struct mm_struct *mm,
 > 
-> diff --git a/arch/arm/include/asm/arm_pmuv3.h b/arch/arm/include/asm/arm_pmuv3.h
-> index 2ec0e5e83fc98..154503f054886 100644
-> --- a/arch/arm/include/asm/arm_pmuv3.h
-> +++ b/arch/arm/include/asm/arm_pmuv3.h
-> @@ -221,6 +221,10 @@ static inline bool kvm_pmu_counter_deferred(struct perf_event_attr *attr)
->   	return false;
->   }
->   
-> +static inline bool has_host_pmu_partition_support(void)
-> +{
-> +	return false;
-> +}
->   static inline bool kvm_set_pmuserenr(u64 val)
->   {
->   	return false;
-> diff --git a/arch/arm64/include/asm/arm_pmuv3.h b/arch/arm64/include/asm/arm_pmuv3.h
-> index cf2b2212e00a2..27c4d6d47da31 100644
-> --- a/arch/arm64/include/asm/arm_pmuv3.h
-> +++ b/arch/arm64/include/asm/arm_pmuv3.h
-> @@ -171,6 +171,11 @@ static inline bool pmuv3_implemented(int pmuver)
->   		 pmuver == ID_AA64DFR0_EL1_PMUVer_NI);
->   }
->   
-> +static inline bool is_pmuv3p1(int pmuver)
-> +{
-> +	return pmuver >= ID_AA64DFR0_EL1_PMUVer_V3P1;
-> +}
-> +
->   static inline bool is_pmuv3p4(int pmuver)
->   {
->   	return pmuver >= ID_AA64DFR0_EL1_PMUVer_V3P4;
-> diff --git a/arch/arm64/kvm/Makefile b/arch/arm64/kvm/Makefile
-> index 3ebc0570345cc..baf0f296c0e53 100644
-> --- a/arch/arm64/kvm/Makefile
-> +++ b/arch/arm64/kvm/Makefile
-> @@ -26,7 +26,7 @@ kvm-y += arm.o mmu.o mmio.o psci.o hypercalls.o pvtime.o \
->   	 vgic/vgic-its.o vgic/vgic-debug.o vgic/vgic-v3-nested.o \
->   	 vgic/vgic-v5.o
->   
-> -kvm-$(CONFIG_HW_PERF_EVENTS)  += pmu-emul.o pmu.o
-> +kvm-$(CONFIG_HW_PERF_EVENTS)  += pmu-emul.o pmu-direct.o pmu.o
->   kvm-$(CONFIG_ARM64_PTR_AUTH)  += pauth.o
->   kvm-$(CONFIG_PTDUMP_STAGE2_DEBUGFS) += ptdump.o
->   
-> diff --git a/arch/arm64/kvm/pmu-direct.c b/arch/arm64/kvm/pmu-direct.c
-> new file mode 100644
-> index 0000000000000..74e40e4915416
-> --- /dev/null
-> +++ b/arch/arm64/kvm/pmu-direct.c
-> @@ -0,0 +1,22 @@
-> +// SPDX-License-Identifier: GPL-2.0-only
-> +/*
-> + * Copyright (C) 2025 Google LLC
-> + * Author: Colton Lewis <coltonlewis@google.com>
-> + */
-> +
-> +#include <linux/kvm_host.h>
-> +
-> +#include <asm/arm_pmuv3.h>
-> +
-> +/**
-> + * has_host_pmu_partition_support() - Determine if partitioning is possible
-> + *
-> + * Partitioning is only supported in VHE mode with PMUv3
-> + *
-> + * Return: True if partitioning is possible, false otherwise
-> + */
-> +bool has_host_pmu_partition_support(void)
-> +{
-> +	return has_vhe() &&
-> +		system_supports_pmuv3();
-> +}
-> diff --git a/drivers/perf/arm_pmuv3.c b/drivers/perf/arm_pmuv3.c
-> index 8d3b832cd633a..798c93678e97c 100644
-> --- a/drivers/perf/arm_pmuv3.c
-> +++ b/drivers/perf/arm_pmuv3.c
-> @@ -42,6 +42,13 @@
->   #define ARMV8_THUNDER_PERFCTR_L1I_CACHE_PREF_ACCESS		0xEC
->   #define ARMV8_THUNDER_PERFCTR_L1I_CACHE_PREF_MISS		0xED
->   
-> +static int reserved_host_counters __read_mostly = -1;
-> +int armv8pmu_max_guest_counters = -1;
-> +
-> +module_param(reserved_host_counters, int, 0);
-> +MODULE_PARM_DESC(reserved_host_counters,
-> +		 "PMU Partition: -1 = No partition; +N = Reserve N counters for the host");
-> +
->   /*
->    * ARMv8 Architectural defined events, not all of these may
->    * be supported on any given implementation. Unsupported events will
-> @@ -532,6 +539,11 @@ static void armv8pmu_pmcr_write(u64 val)
->   	write_pmcr(val);
->   }
->   
-> +static u64 armv8pmu_pmcr_n_read(void)
-> +{
-> +	return FIELD_GET(ARMV8_PMU_PMCR_N, armv8pmu_pmcr_read());
-> +}
-> +
->   static int armv8pmu_has_overflowed(u64 pmovsr)
->   {
->   	return !!(pmovsr & ARMV8_PMU_OVERFLOWED_MASK);
-> @@ -1309,6 +1321,61 @@ struct armv8pmu_probe_info {
->   	bool present;
->   };
->   
-> +/**
-> + * armv8pmu_reservation_is_valid() - Determine if reservation is allowed
-> + * @host_counters: Number of host counters to reserve
-> + *
-> + * Determine if the number of host counters in the argument is an
-> + * allowed reservation, 0 to NR_COUNTERS inclusive.
-> + *
-> + * Return: True if reservation allowed, false otherwise
-> + */
-> +static bool armv8pmu_reservation_is_valid(int host_counters)
-> +{
-> +	return host_counters >= 0 &&
-> +		host_counters <= armv8pmu_pmcr_n_read();
-> +}
-> +
-> +/**
-> + * armv8pmu_partition() - Partition the PMU
-> + * @pmu: Pointer to pmu being partitioned
-> + * @host_counters: Number of host counters to reserve
-> + *
-> + * Partition the given PMU by taking a number of host counters to
-> + * reserve and, if it is a valid reservation, recording the
-> + * corresponding HPMN value in the max_guest_counters field of the PMU and
-> + * clearing the guest-reserved counters from the counter mask.
-> + *
-> + * Return: 0 on success, -ERROR otherwise
+>                 ret = follow_pfnmap_start(&args);
+>                 if (ret)
+> -                       return ret;
+> +                       return -EAGAIN;
+>         }
 
-Hi Colton,
+Looks like follow_pfnmap_start() only ever returns -EINVAL: for invalid
+parameters (unexpected) and non-present entries.
 
-Couple of minor nits. But this error return value isn't used by the caller.
+Returning -ENOENT when there is no actual entry would be clearer. Then
+you could just translate -ENOENT to -EAGAIN.
 
-> + */
-> +static int armv8pmu_partition(struct arm_pmu *pmu, int host_counters)
-> +{
-> +	u8 nr_counters;
-> +	u8 hpmn;
-> +
-> +	if (!armv8pmu_reservation_is_valid(host_counters)) {
-> +		pr_err("PMU partition reservation of %d host counters is not valid", host_counters);
-> +		return -EINVAL;
-> +	}
-> +
-> +	nr_counters = armv8pmu_pmcr_n_read();
-> +	hpmn = nr_counters - host_counters;
-> +
-> +	pmu->max_guest_counters = hpmn;
-> +	armv8pmu_max_guest_counters = hpmn;
+But just always using -EAGAIN should be fine here I guess.
 
-And this could be more like 'bool armv8pmu_partitioned'. PMUs will have 
-different numbers of counters so it's a bit misleading to have one 
-global, and the actual value isn't used either.
+> 
+>         if (write_fault && !args.writable)
+> 
+> —
+> 
+> I’ll propose that with the VFIO folks when I get the patch for mm/pagewalk.c ready and will refer
+> to that patch, or would it be better to propose two commits under the same cover letter?
 
-> +
-> +	bitmap_clear(pmu->cntr_mask, 0, hpmn);
-> +	bitmap_set(pmu->cntr_mask, hpmn, host_counters);
-> +	clear_bit(ARMV8_PMU_CYCLE_IDX, pmu->cntr_mask);
-> +
-> +	if (pmuv3_has_icntr())
-> +		clear_bit(ARMV8_PMU_INSTR_IDX, pmu->cntr_mask);
-> +
-> +	pr_info("Partitioned PMU with %d host counters -> %u guest counters", host_counters, hpmn);
-> +
-> +	return 0;
-> +}
-> +
->   static void __armv8pmu_probe_pmu(void *info)
->   {
->   	struct armv8pmu_probe_info *probe = info;
-> @@ -1323,10 +1390,10 @@ static void __armv8pmu_probe_pmu(void *info)
->   
->   	cpu_pmu->pmuver = pmuver;
->   	probe->present = true;
-> +	cpu_pmu->max_guest_counters = -1;
->   
->   	/* Read the nb of CNTx counters supported from PMNC */
-> -	bitmap_set(cpu_pmu->cntr_mask,
-> -		   0, FIELD_GET(ARMV8_PMU_PMCR_N, armv8pmu_pmcr_read()));
-> +	bitmap_set(cpu_pmu->cntr_mask, 0, armv8pmu_pmcr_n_read());
->   
->   	/* Add the CPU cycles counter */
->   	set_bit(ARMV8_PMU_CYCLE_IDX, cpu_pmu->cntr_mask);
-> @@ -1335,6 +1402,13 @@ static void __armv8pmu_probe_pmu(void *info)
->   	if (pmuv3_has_icntr())
->   		set_bit(ARMV8_PMU_INSTR_IDX, cpu_pmu->cntr_mask);
->   
-> +	if (reserved_host_counters >= 0) {
-> +		if (has_host_pmu_partition_support())
-> +			armv8pmu_partition(cpu_pmu, reserved_host_counters);
-> +		else
-> +			pr_err("PMU partition is not supported");
-> +	}
-> +
->   	pmceid[0] = pmceid_raw[0] = read_pmceid0();
->   	pmceid[1] = pmceid_raw[1] = read_pmceid1();
->   
-> diff --git a/include/kvm/arm_pmu.h b/include/kvm/arm_pmu.h
-> index 24a471cf59d56..e7172db1e897d 100644
-> --- a/include/kvm/arm_pmu.h
-> +++ b/include/kvm/arm_pmu.h
-> @@ -47,7 +47,10 @@ struct arm_pmu_entry {
->   	struct arm_pmu *arm_pmu;
->   };
->   
-> +extern int armv8pmu_max_guest_counters;
-> +
->   bool kvm_supports_guest_pmuv3(void);
-> +bool has_host_pmu_partition_support(void);
->   #define kvm_arm_pmu_irq_initialized(v)	((v)->arch.pmu.irq_num >= VGIC_NR_SGIS)
->   u64 kvm_pmu_get_counter_value(struct kvm_vcpu *vcpu, u64 select_idx);
->   void kvm_pmu_set_counter_value(struct kvm_vcpu *vcpu, u64 select_idx, u64 val);
-> @@ -117,6 +120,11 @@ static inline bool kvm_supports_guest_pmuv3(void)
->   	return false;
->   }
->   
-> +static inline bool has_host_pmu_partition_support(void)
-> +{
-> +	return false;
-> +}
-> +
->   #define kvm_arm_pmu_irq_initialized(v)	(false)
->   static inline u64 kvm_pmu_get_counter_value(struct kvm_vcpu *vcpu,
->   					    u64 select_idx)
-> diff --git a/include/linux/perf/arm_pmu.h b/include/linux/perf/arm_pmu.h
-> index 52b37f7bdbf9e..1bee8c6eba46b 100644
-> --- a/include/linux/perf/arm_pmu.h
-> +++ b/include/linux/perf/arm_pmu.h
-> @@ -129,6 +129,7 @@ struct arm_pmu {
->   
->   	/* Only to be used by ACPI probing code */
->   	unsigned long acpi_cpuid;
-> +	int		max_guest_counters;
->   };
->   
->   #define to_arm_pmu(p) (container_of(p, struct arm_pmu, pmu))
+Probably be best to send two separate patches. One MM fix and one vfio
+fix. :)
 
+> 
+> I can have a look at follow_fault_pfn but this problem is my first time diving into linux mm
+> so that will probably take a while (and some reading up on my end).
+No worries, just let me know if you have any questions.
+
+-- 
+Cheers,
+
+David
