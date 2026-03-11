@@ -1,188 +1,307 @@
-Received: from desiato.infradead.org (desiato.infradead.org [90.155.92.199])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f178.google.com (mail-pl1-f178.google.com [209.85.214.178])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB0DE34C130;
-	Wed, 11 Mar 2026 23:51:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.92.199
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A1A043859EF
+	for <kvm@vger.kernel.org>; Wed, 11 Mar 2026 23:57:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.178
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773273086; cv=none; b=fJqtfLAeTJZdt4kLIu9dvaW7PYVCBH7hL2rRNUUUJoupCjyZfszJRwjiZocOQ5+Ub3PhHePdAmBhADugNP84HOhih8WEitYYUeYnBrJRqaybl7tZJQLYSvZlREDiRIMuz18QhR5m7BjpTztTrcjtYzbM/XypUC/D4yYbRftR17s=
+	t=1773273442; cv=none; b=u7HQsroWfC9BfUaRSTD1gBKsFRETNUMt5O3TtuGtOxd9/+UfN+yGm0MSLrJ2sJb0oEPJDTTEwrVp+JOhQ7bzoY3ypfI/LBKEUtucl1UoaoVq/htc2Z33bowieerKpFNl+O5koeHVRHP5ahs6XKebfJtJFJDPRGPHQNLCD6gla30=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773273086; c=relaxed/simple;
-	bh=lyH95WcangIC/ibCqyEAZCtnPHdXIv9wZkIqHJbmp+g=;
-	h=Message-ID:Subject:From:To:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=rgkPW9e/BkSP94eUzIiCuqmo6F2QsODFZIylNuWhu8+9Z1urKK2TTcb8EAUbqLUjGLdlL7rDs4Zm1rhmXu7J4Aw1I8OoGE3Wb7OTikUMqc9vcGFFWmOS0Fwuka2rQseS2o/iH28MhYNWYlQOUeYGoJCS1xWxlC2dBdldLYMUKss=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=desiato.srs.infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=IDbC9IUO; arc=none smtp.client-ip=90.155.92.199
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=desiato.srs.infradead.org
+	s=arc-20240116; t=1773273442; c=relaxed/simple;
+	bh=6db33Ofib6t/7S+DBBE2IdfiVvBGcJuuy7Yvv4lLqAw=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=dkJGuGJBSwGMzIhyP0EMXW5AYTIWagPvf6SW3aWR8xknTpIy5yWrLXp/GC2Tmf7JkQgCG3cUTlVpRFEOVrH3TPgHCpuk29jTp+SAfVuXh8H1C/3Rn+ZF5LNFi5c8Vbe1tc3QUK9fWg0hnUBbESqxINdR0DloJhqY4x/Ae8hjkbE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=toGcJqPi; arc=none smtp.client-ip=209.85.214.178
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="IDbC9IUO"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=desiato.20200630; h=MIME-Version:Content-Type:References:
-	In-Reply-To:Date:To:From:Subject:Message-ID:Sender:Reply-To:Cc:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=lyH95WcangIC/ibCqyEAZCtnPHdXIv9wZkIqHJbmp+g=; b=IDbC9IUOj5vw3O4jR8kbJc2sMA
-	lXGKVVkcJwMSGAOn9H3fblAkGCwp2gxcY7zglevF/tk5ETQ6805/znWA+TiTiLITgfJYkQOc7BfHo
-	n3dMePheCIH/x1F9b0KQcHanoJr/7uNCrPj/O2Hq2PqAvRZ+/paRKj5Z4mVTXa3vzznDM6yzV5MWp
-	NE8VweJbF7RJmXV9kWcycmyAwroBzXEGZ/Rmax4KCi/Bis27ZDBiVo0a2JPdvCqv50ZH/LJsWqSGP
-	t/3M4EhKR/IFZsELziE/MohOJW3B+kovQbQZC/81pXVORXD5fmWacsbS87awODA5waM3pFjyEXNGC
-	WWom0TyA==;
-Received: from p578b9deb.dip0.t-ipconnect.de ([87.139.157.235] helo=sea3-dhcp-172-20-3-211.sea3.amazon.com)
-	by desiato.infradead.org with esmtpsa (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1w0TKL-00000000Fx9-3Z8R;
-	Wed, 11 Mar 2026 23:50:59 +0000
-Message-ID: <8e6092706a9890f16d7db351e80c0e4693d73d09.camel@infradead.org>
-Subject: Re: [PATCH v2] KVM: x86: Use gfn_to_pfn_cache for record_steal_time
-From: David Woodhouse <dwmw2@infradead.org>
-To: Carsten Stollmaier <stollmc@amazon.com>, Sean Christopherson
- <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>, Thomas Gleixner
- <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov
- <bp@alien8.de>,  Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
- "H. Peter Anvin" <hpa@zytor.com>,  kvm@vger.kernel.org,
- linux-kernel@vger.kernel.org
-Date: Thu, 12 Mar 2026 00:50:55 +0100
-In-Reply-To: <c73bc1f22fbdbd88efb21cb80eccdd98d2ea531a.camel@infradead.org>
-References: <c73bc1f22fbdbd88efb21cb80eccdd98d2ea531a.camel@infradead.org>
-Content-Type: multipart/signed; micalg="sha-256"; protocol="application/pkcs7-signature";
-	boundary="=-ev1731DgVLNH7Pb4beIQ"
-User-Agent: Evolution 3.52.3-0ubuntu1.1 
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="toGcJqPi"
+Received: by mail-pl1-f178.google.com with SMTP id d9443c01a7336-2ae49120e97so35635ad.0
+        for <kvm@vger.kernel.org>; Wed, 11 Mar 2026 16:57:21 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1773273441; x=1773878241; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=nXkXOvVeSPQRP9S+l1PKLOwx/zmlev4zOCLTWr0JUTw=;
+        b=toGcJqPiHGeIgepiXcilBvvMtRNy4IM9wwmYEieFIPUkqG6eNs2ZOhZkyI/7oYvYl6
+         FTNWb+KuwcRe+B005FxqqpZWW6gXq0zMsFJooj3IP9Y+a3xKmYmnu2bz/5KcqmHy43VB
+         LF8CL+3rD6Wu1R04as6OQVDrk/wIJvgGdrlzeRQrKXS0LofMGnizFyWhQbP2roqjZtWg
+         UIXF4dGkvIqYPdnx11OE+AmRLp7nkQXjiHGbrxLaI4Jb9Bgi5DZXE1YHP+4FaUG890Vz
+         /nM9e6RRLoiToDj+N5uWIfdpfmYnub2f4d+YgXiln4DODi4jLyls5/dxMOI7MJmQEbei
+         90TQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1773273441; x=1773878241;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=nXkXOvVeSPQRP9S+l1PKLOwx/zmlev4zOCLTWr0JUTw=;
+        b=IV7DWn+t+4IoFm02kUjlEQIwPjJLmwpx6EIxzGi7DQRRF8Ykn6xvRqd4b9LLUF5LsK
+         TVsMPD+YIT5NHVhqikqyZh4zd1z6ZjWU6EzKFUjInu5S9hpMtAsyRa9kihj8Pki5EFjV
+         e+A0K9T6bJ7rqMYKe19zt726m+hc4PC9cE8JHVD61z7m7n+P9x64hp+1dezf4xaxVH/w
+         gvXVXpMhZoG0FyQ/bKKdoeBGYkjpNy5D+EgB05rq6NujDkXBNmrI/3AKnc5+zfrnENyw
+         bTdwDH7LD6I1xVa+uLEhK+r6YAgDAG1tZvr5xUCvHNBHz7lPqkVgJPMgyHij6GUDZ+uY
+         PNcA==
+X-Forwarded-Encrypted: i=1; AJvYcCXiYRMC0bmXxRoi3eflSzELTEmwmMvOmihSznHeH6i4rEL8JjsedJNdJq9yz1QBLdNbLJg=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzqngL7Mr6pB6tP0lpPRbelzY/231cc09ix2lu407SQTGk/mbkL
+	VqCCglH6tGElD8aJgghcvWd5FIVnHvrD9hhMlKI+Fjob3Sirxiv5tAK+1tb72kgSgw==
+X-Gm-Gg: ATEYQzyi6HzB7IdSfu9dtrNwl3xqBDJUtUiEY6uQRjmgl+Sds/wwzG2EnCZVlqk4DGF
+	VjPlln6lcwa19OxgUMomlxJECmnlBLGb9+eH1mTzUc4C26gaF1Q7DAsS40eACj6i6Ygx4Y4+LRO
+	MqEPHTaq6TSVqPMJ7htNv4tFUWso9nu26KMLI6zkAgHIS9gsyJeiQNdmonWcRRQAjIFV8X+g0/I
+	6xHTwk4LmPO7gIcRb+ex3gRsx74Zuz6TnEsHX4e9XQcdXBQQhMYpWrzeQ9E3AJKJgVGvG1ksYXw
+	Hg6Iz2ManGkS+KPPELEOP4XXIHBtCT0KCG6a0sYbCtyw5JyQi4lSc//Kug+y2nZMUSYVV1ropl/
+	W4XOr9v1qrHEz2LGGG1KvaqAmPEkaZLKlaj6hmxbTEkvKGMw5fsJdLeB8dgvlhNrqzOK0OhLLga
+	T7Z0/3tOaKttOeAWo+lhA6t8iBFx4ShSHo8NIwRDKgax0pOGjogB5w28/F760u
+X-Received: by 2002:a17:903:94d:b0:2ae:507b:6f9e with SMTP id d9443c01a7336-2aebad67f82mr1312895ad.8.1773273440251;
+        Wed, 11 Mar 2026 16:57:20 -0700 (PDT)
+Received: from google.com (176.13.105.34.bc.googleusercontent.com. [34.105.13.176])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-82a0738422esm784221b3a.55.2026.03.11.16.57.19
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 11 Mar 2026 16:57:19 -0700 (PDT)
+Date: Wed, 11 Mar 2026 16:57:15 -0700
+From: Vipin Sharma <vipinsh@google.com>
+To: Raghavendra Rao Ananta <rananta@google.com>
+Cc: David Matlack <dmatlack@google.com>, Alex Williamson <alex@shazbot.org>,
+	Josh Hilke <jrhilke@google.com>, kvm@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v6 8/8] vfio: selftests: Add tests to validate SR-IOV UAPI
+Message-ID: <20260311235715.GA2738066.vipinsh@google.com>
+References: <20260303193822.2526335-1-rananta@google.com>
+ <20260303193822.2526335-9-rananta@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-SRS-Rewrite: SMTP reverse-path rewritten from <dwmw2@infradead.org> by desiato.infradead.org. See http://www.infradead.org/rpr.html
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260303193822.2526335-9-rananta@google.com>
 
+On 2026-03-03 19:38:22, Raghavendra Rao Ananta wrote:
+> +static int container_setup(struct vfio_pci_device *device, const char *bdf,
+> +			   const char *vf_token)
+> +{
+> +	vfio_pci_group_setup(device, bdf);
+> +	vfio_container_set_iommu(device);
+> +	__vfio_pci_group_get_device_fd(device, bdf, vf_token);
+> +
+> +	/* The device fd will be -1 in case of mismatched tokens */
+> +	return (device->fd < 0);
+> +}
+> +
 
---=-ev1731DgVLNH7Pb4beIQ
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+This is one is exactly similar to vfio_pci_container_setup() except you
+are calling __vfio_pci_group_get_device_fd() which doesn't do assertion.
 
-On Wed, 2026-03-11 at 12:49 +0100, David Woodhouse wrote:
-> From: Carsten Stollmaier <stollmc@amazon.com>
->=20
-> On vcpu_run, before entering the guest, the update of the steal time
-> information causes a page-fault if the page is not present. In our
-> scenario, this gets handled by do_user_addr_fault and successively
-> handle_userfault since we have the region registered to that.
->=20
-> handle_userfault uses TASK_INTERRUPTIBLE, so it is interruptible by
-> signals. do_user_addr_fault then busy-retries it if the pending signal
-> is non-fatal. This leads to contention of the mmap_lock.
->=20
-> This patch replaces the use of gfn_to_hva_cache with gfn_to_pfn_cache,
-> as gfn_to_pfn_cache ensures page presence for the memory access,
-> preventing the contention of the mmap_lock.
->=20
-> As an added bonus, this removes the last open-coded assembler access
-> to userspace from arch/x86/kvm/x86.c.
->=20
-> Signed-off-by: Carsten Stollmaier <stollmc@amazon.com>
-> Signed-off-by: David Woodhouse <dwmw@amazon.co.uk>
+Any reason to not create __vfio_pci_container_setup() in the library and
+just write assertion in vfio_pci_container_setup()? 
 
-I've just spotted this is mostly reverting my commit 7e2175ebd695
-("KVM: x86: Fix recording of guest steal time / preempted status") from
-2021.
+> +static int iommufd_setup(struct vfio_pci_device *device, const char *bdf,
+> +			 const char *vf_token)
+> +{
+> +	vfio_pci_cdev_open(device, bdf);
+> +	return __vfio_device_bind_iommufd(device->fd,
+> +					  device->iommu->iommufd, vf_token);
+> +}
 
-The steal time *used* to use a gfn_to_pfn_cache, back in the days when
-the gfn_to_pfn_cache was entirely hosed before I ripped it out and
-completely reimplemented it.=20
+I see these are also similar to the code in library with some
+differences. May be we can refactor library code and reuse it here.
 
+One option can be to split vfio_pci_iommufd_setup() in two parts where
+first part is what your are doing above and second part is attaching PT.
 
---=-ev1731DgVLNH7Pb4beIQ
-Content-Type: application/pkcs7-signature; name="smime.p7s"
-Content-Disposition: attachment; filename="smime.p7s"
-Content-Transfer-Encoding: base64
+> +
+> +static struct vfio_pci_device *device_init(const char *bdf, struct iommu *iommu,
+> +					   const char *vf_token, int *out_ret)
+> +{
+> +	struct vfio_pci_device *device = vfio_pci_device_alloc(bdf, iommu);
+> +
+> +	if (iommu->mode->container_path)
+> +		*out_ret = container_setup(device, bdf, vf_token);
+> +	else
+> +		*out_ret = iommufd_setup(device, bdf, vf_token);
+> +
+> +	return device;
+> +}
 
-MIAGCSqGSIb3DQEHAqCAMIACAQExDzANBglghkgBZQMEAgEFADCABgkqhkiG9w0BBwEAAKCCD9Aw
-ggSOMIIDdqADAgECAhAOmiw0ECVD4cWj5DqVrT9PMA0GCSqGSIb3DQEBCwUAMGUxCzAJBgNVBAYT
-AlVTMRUwEwYDVQQKEwxEaWdpQ2VydCBJbmMxGTAXBgNVBAsTEHd3dy5kaWdpY2VydC5jb20xJDAi
-BgNVBAMTG0RpZ2lDZXJ0IEFzc3VyZWQgSUQgUm9vdCBDQTAeFw0yNDAxMzAwMDAwMDBaFw0zMTEx
-MDkyMzU5NTlaMEExCzAJBgNVBAYTAkFVMRAwDgYDVQQKEwdWZXJva2V5MSAwHgYDVQQDExdWZXJv
-a2V5IFNlY3VyZSBFbWFpbCBHMjCCASIwDQYJKoZIhvcNAQEBBQADggEPADCCAQoCggEBAMjvgLKj
-jfhCFqxYyRiW8g3cNFAvltDbK5AzcOaR7yVzVGadr4YcCVxjKrEJOgi7WEOH8rUgCNB5cTD8N/Et
-GfZI+LGqSv0YtNa54T9D1AWJy08ZKkWvfGGIXN9UFAPMJ6OLLH/UUEgFa+7KlrEvMUupDFGnnR06
-aDJAwtycb8yXtILj+TvfhLFhafxroXrflspavejQkEiHjNjtHnwbZ+o43g0/yxjwnarGI3kgcak7
-nnI9/8Lqpq79tLHYwLajotwLiGTB71AGN5xK+tzB+D4eN9lXayrjcszgbOv2ZCgzExQUAIt98mre
-8EggKs9mwtEuKAhYBIP/0K6WsoMnQCcCAwEAAaOCAVwwggFYMBIGA1UdEwEB/wQIMAYBAf8CAQAw
-HQYDVR0OBBYEFIlICOogTndrhuWByNfhjWSEf/xwMB8GA1UdIwQYMBaAFEXroq/0ksuCMS1Ri6en
-IZ3zbcgPMA4GA1UdDwEB/wQEAwIBhjAdBgNVHSUEFjAUBggrBgEFBQcDBAYIKwYBBQUHAwIweQYI
-KwYBBQUHAQEEbTBrMCQGCCsGAQUFBzABhhhodHRwOi8vb2NzcC5kaWdpY2VydC5jb20wQwYIKwYB
-BQUHMAKGN2h0dHA6Ly9jYWNlcnRzLmRpZ2ljZXJ0LmNvbS9EaWdpQ2VydEFzc3VyZWRJRFJvb3RD
-QS5jcnQwRQYDVR0fBD4wPDA6oDigNoY0aHR0cDovL2NybDMuZGlnaWNlcnQuY29tL0RpZ2lDZXJ0
-QXNzdXJlZElEUm9vdENBLmNybDARBgNVHSAECjAIMAYGBFUdIAAwDQYJKoZIhvcNAQELBQADggEB
-ACiagCqvNVxOfSd0uYfJMiZsOEBXAKIR/kpqRp2YCfrP4Tz7fJogYN4fxNAw7iy/bPZcvpVCfe/H
-/CCcp3alXL0I8M/rnEnRlv8ItY4MEF+2T/MkdXI3u1vHy3ua8SxBM8eT9LBQokHZxGUX51cE0kwa
-uEOZ+PonVIOnMjuLp29kcNOVnzf8DGKiek+cT51FvGRjV6LbaxXOm2P47/aiaXrDD5O0RF5SiPo6
-xD1/ClkCETyyEAE5LRJlXtx288R598koyFcwCSXijeVcRvBB1cNOLEbg7RMSw1AGq14fNe2cH1HG
-W7xyduY/ydQt6gv5r21mDOQ5SaZSWC/ZRfLDuEYwggWbMIIEg6ADAgECAhAH5JEPagNRXYDiRPdl
-c1vgMA0GCSqGSIb3DQEBCwUAMEExCzAJBgNVBAYTAkFVMRAwDgYDVQQKEwdWZXJva2V5MSAwHgYD
-VQQDExdWZXJva2V5IFNlY3VyZSBFbWFpbCBHMjAeFw0yNDEyMzAwMDAwMDBaFw0yODAxMDQyMzU5
-NTlaMB4xHDAaBgNVBAMME2R3bXcyQGluZnJhZGVhZC5vcmcwggIiMA0GCSqGSIb3DQEBAQUAA4IC
-DwAwggIKAoICAQDali7HveR1thexYXx/W7oMk/3Wpyppl62zJ8+RmTQH4yZeYAS/SRV6zmfXlXaZ
-sNOE6emg8WXLRS6BA70liot+u0O0oPnIvnx+CsMH0PD4tCKSCsdp+XphIJ2zkC9S7/yHDYnqegqt
-w4smkqUqf0WX/ggH1Dckh0vHlpoS1OoxqUg+ocU6WCsnuz5q5rzFsHxhD1qGpgFdZEk2/c//ZvUN
-i12vPWipk8TcJwHw9zoZ/ZrVNybpMCC0THsJ/UEVyuyszPtNYeYZAhOJ41vav1RhZJzYan4a1gU0
-kKBPQklcpQEhq48woEu15isvwWh9/+5jjh0L+YNaN0I//nHSp6U9COUG9Z0cvnO8FM6PTqsnSbcc
-0j+GchwOHRC7aP2t5v2stVx3KbptaYEzi4MQHxm/0+HQpMEVLLUiizJqS4PWPU6zfQTOMZ9uLQRR
-ci+c5xhtMEBszlQDOvEQcyEG+hc++fH47K+MmZz21bFNfoBxLP6bjR6xtPXtREF5lLXxp+CJ6KKS
-blPKeVRg/UtyJHeFKAZXO8Zeco7TZUMVHmK0ZZ1EpnZbnAhKE19Z+FJrQPQrlR0gO3lBzuyPPArV
-hvWxjlO7S4DmaEhLzarWi/ze7EGwWSuI2eEa/8zU0INUsGI4ywe7vepQz7IqaAovAX0d+f1YjbmC
-VsAwjhLmveFjNwIDAQABo4IBsDCCAawwHwYDVR0jBBgwFoAUiUgI6iBOd2uG5YHI1+GNZIR//HAw
-HQYDVR0OBBYEFFxiGptwbOfWOtMk5loHw7uqWUOnMDAGA1UdEQQpMCeBE2R3bXcyQGluZnJhZGVh
-ZC5vcmeBEGRhdmlkQHdvb2Rob3Uuc2UwFAYDVR0gBA0wCzAJBgdngQwBBQEBMA4GA1UdDwEB/wQE
-AwIF4DAdBgNVHSUEFjAUBggrBgEFBQcDAgYIKwYBBQUHAwQwewYDVR0fBHQwcjA3oDWgM4YxaHR0
-cDovL2NybDMuZGlnaWNlcnQuY29tL1Zlcm9rZXlTZWN1cmVFbWFpbEcyLmNybDA3oDWgM4YxaHR0
-cDovL2NybDQuZGlnaWNlcnQuY29tL1Zlcm9rZXlTZWN1cmVFbWFpbEcyLmNybDB2BggrBgEFBQcB
-AQRqMGgwJAYIKwYBBQUHMAGGGGh0dHA6Ly9vY3NwLmRpZ2ljZXJ0LmNvbTBABggrBgEFBQcwAoY0
-aHR0cDovL2NhY2VydHMuZGlnaWNlcnQuY29tL1Zlcm9rZXlTZWN1cmVFbWFpbEcyLmNydDANBgkq
-hkiG9w0BAQsFAAOCAQEAQXc4FPiPLRnTDvmOABEzkIumojfZAe5SlnuQoeFUfi+LsWCKiB8Uextv
-iBAvboKhLuN6eG/NC6WOzOCppn4mkQxRkOdLNThwMHW0d19jrZFEKtEG/epZ/hw/DdScTuZ2m7im
-8ppItAT6GXD3aPhXkXnJpC/zTs85uNSQR64cEcBFjjoQDuSsTeJ5DAWf8EMyhMuD8pcbqx5kRvyt
-JPsWBQzv1Dsdv2LDPLNd/JUKhHSgr7nbUr4+aAP2PHTXGcEBh8lTeYea9p4d5k969pe0OHYMV5aL
-xERqTagmSetuIwolkAuBCzA9vulg8Y49Nz2zrpUGfKGOD0FMqenYxdJHgDCCBZswggSDoAMCAQIC
-EAfkkQ9qA1FdgOJE92VzW+AwDQYJKoZIhvcNAQELBQAwQTELMAkGA1UEBhMCQVUxEDAOBgNVBAoT
-B1Zlcm9rZXkxIDAeBgNVBAMTF1Zlcm9rZXkgU2VjdXJlIEVtYWlsIEcyMB4XDTI0MTIzMDAwMDAw
-MFoXDTI4MDEwNDIzNTk1OVowHjEcMBoGA1UEAwwTZHdtdzJAaW5mcmFkZWFkLm9yZzCCAiIwDQYJ
-KoZIhvcNAQEBBQADggIPADCCAgoCggIBANqWLse95HW2F7FhfH9bugyT/danKmmXrbMnz5GZNAfj
-Jl5gBL9JFXrOZ9eVdpmw04Tp6aDxZctFLoEDvSWKi367Q7Sg+ci+fH4KwwfQ8Pi0IpIKx2n5emEg
-nbOQL1Lv/IcNiep6Cq3DiyaSpSp/RZf+CAfUNySHS8eWmhLU6jGpSD6hxTpYKye7PmrmvMWwfGEP
-WoamAV1kSTb9z/9m9Q2LXa89aKmTxNwnAfD3Ohn9mtU3JukwILRMewn9QRXK7KzM+01h5hkCE4nj
-W9q/VGFknNhqfhrWBTSQoE9CSVylASGrjzCgS7XmKy/BaH3/7mOOHQv5g1o3Qj/+cdKnpT0I5Qb1
-nRy+c7wUzo9OqydJtxzSP4ZyHA4dELto/a3m/ay1XHcpum1pgTOLgxAfGb/T4dCkwRUstSKLMmpL
-g9Y9TrN9BM4xn24tBFFyL5znGG0wQGzOVAM68RBzIQb6Fz758fjsr4yZnPbVsU1+gHEs/puNHrG0
-9e1EQXmUtfGn4InoopJuU8p5VGD9S3Ikd4UoBlc7xl5yjtNlQxUeYrRlnUSmdlucCEoTX1n4UmtA
-9CuVHSA7eUHO7I88CtWG9bGOU7tLgOZoSEvNqtaL/N7sQbBZK4jZ4Rr/zNTQg1SwYjjLB7u96lDP
-sipoCi8BfR35/ViNuYJWwDCOEua94WM3AgMBAAGjggGwMIIBrDAfBgNVHSMEGDAWgBSJSAjqIE53
-a4blgcjX4Y1khH/8cDAdBgNVHQ4EFgQUXGIam3Bs59Y60yTmWgfDu6pZQ6cwMAYDVR0RBCkwJ4ET
-ZHdtdzJAaW5mcmFkZWFkLm9yZ4EQZGF2aWRAd29vZGhvdS5zZTAUBgNVHSAEDTALMAkGB2eBDAEF
-AQEwDgYDVR0PAQH/BAQDAgXgMB0GA1UdJQQWMBQGCCsGAQUFBwMCBggrBgEFBQcDBDB7BgNVHR8E
-dDByMDegNaAzhjFodHRwOi8vY3JsMy5kaWdpY2VydC5jb20vVmVyb2tleVNlY3VyZUVtYWlsRzIu
-Y3JsMDegNaAzhjFodHRwOi8vY3JsNC5kaWdpY2VydC5jb20vVmVyb2tleVNlY3VyZUVtYWlsRzIu
-Y3JsMHYGCCsGAQUFBwEBBGowaDAkBggrBgEFBQcwAYYYaHR0cDovL29jc3AuZGlnaWNlcnQuY29t
-MEAGCCsGAQUFBzAChjRodHRwOi8vY2FjZXJ0cy5kaWdpY2VydC5jb20vVmVyb2tleVNlY3VyZUVt
-YWlsRzIuY3J0MA0GCSqGSIb3DQEBCwUAA4IBAQBBdzgU+I8tGdMO+Y4AETOQi6aiN9kB7lKWe5Ch
-4VR+L4uxYIqIHxR7G2+IEC9ugqEu43p4b80LpY7M4KmmfiaRDFGQ50s1OHAwdbR3X2OtkUQq0Qb9
-6ln+HD8N1JxO5nabuKbymki0BPoZcPdo+FeRecmkL/NOzzm41JBHrhwRwEWOOhAO5KxN4nkMBZ/w
-QzKEy4PylxurHmRG/K0k+xYFDO/UOx2/YsM8s138lQqEdKCvudtSvj5oA/Y8dNcZwQGHyVN5h5r2
-nh3mT3r2l7Q4dgxXlovERGpNqCZJ624jCiWQC4ELMD2+6WDxjj03PbOulQZ8oY4PQUyp6djF0keA
-MYIDuzCCA7cCAQEwVTBBMQswCQYDVQQGEwJBVTEQMA4GA1UEChMHVmVyb2tleTEgMB4GA1UEAxMX
-VmVyb2tleSBTZWN1cmUgRW1haWwgRzICEAfkkQ9qA1FdgOJE92VzW+AwDQYJYIZIAWUDBAIBBQCg
-ggE3MBgGCSqGSIb3DQEJAzELBgkqhkiG9w0BBwEwHAYJKoZIhvcNAQkFMQ8XDTI2MDMxMTIzNTA1
-NVowLwYJKoZIhvcNAQkEMSIEIJ3aRRPy6PMYTlbuwgnTucWbK3TnwnTSB+BQkZZU+9XxMGQGCSsG
-AQQBgjcQBDFXMFUwQTELMAkGA1UEBhMCQVUxEDAOBgNVBAoTB1Zlcm9rZXkxIDAeBgNVBAMTF1Zl
-cm9rZXkgU2VjdXJlIEVtYWlsIEcyAhAH5JEPagNRXYDiRPdlc1vgMGYGCyqGSIb3DQEJEAILMVeg
-VTBBMQswCQYDVQQGEwJBVTEQMA4GA1UEChMHVmVyb2tleTEgMB4GA1UEAxMXVmVyb2tleSBTZWN1
-cmUgRW1haWwgRzICEAfkkQ9qA1FdgOJE92VzW+AwDQYJKoZIhvcNAQEBBQAEggIARVtkHnY+V73B
-1iRWCOo0vZLAcRUViM1csoj26TB7gGzl3Xs6FHHoNYqbA5I02/GxUiB+w4o4toEhokH/K/IYbsVC
-qc9TBcztXEwrrbnxi/xfmpkZnplolWwvwXImnEIBWk39EdrnxSa45KCVCGfxGSR+13aaR2Awceds
-OhgZnbdL7qjBcCVtWr41jkPcWiX3NWIDyGndk2MOWcd/oq5+iHGS7KLvYQVC6uWbdJeoj6PNFKwy
-ppbxLqkzaFpidDOWB+M+ZgoWFPQMyg6MoIAepb/RTDUkJ51CmStCpIWosd2cyBosoYRfOwLZMOb/
-ymVgRIw931TBitjb7qVSRpSexgMrMU7hq31HNGTtAfSZtAZW1j10VqygwqaV8Ev5L5qK7ksRYmTZ
-CA78ueM+kReL+8oK322Czkrarche6zmZensPblk0pfEcLGQHZzvgd1oDoyMb828aLuH0yGHedR4y
-WVieNUNi64lvF4niXlb9N1cO5CEq5dyvf0kyr+hpWqqXvyjNahuWx5S8cbWME32zwqB3AtNYY8Pd
-ec4pS7YjeMl4agKo+9EGmCB8tl2X0v6vgB7cOqVQjat6ayo59XiOajvQZEuIMgIa5Z2CEuHGB0Rn
-jfnuA/VpdXP6R54oG+rtg0xD7Og2DxBccTLmXbbx4G5LbMCpMSi/mkNjR2sbKU4AAAAAAAA=
+Same for this one, vfio_pci_device_init() can be composed of two parts,
+first one being alloc and container/iommufd setup and second device
+setup and driver probe.
 
+My reasoning for this is to avoid having separate code for these common
+flows and avoid them diverging down the line.
 
---=-ev1731DgVLNH7Pb4beIQ--
+> +
+> +static void device_cleanup(struct vfio_pci_device *device)
+> +{
+> +	if (device->fd > 0)
+> +		VFIO_ASSERT_EQ(close(device->fd), 0);
+> +
+> +	if (device->group_fd)
+> +		VFIO_ASSERT_EQ(close(device->group_fd), 0);
+> +
+> +	vfio_pci_device_free(device);
+> +}
+> +
+> +FIXTURE(vfio_pci_sriov_uapi_test) {
+> +	char *vf_bdf;
+
+Nit: Can we just use an array like char vf_bdf[16]? 
+Just not sure why we need to do alloc and free for each run.
+
+> +};
+> +
+> +FIXTURE_SETUP(vfio_pci_sriov_uapi_test)
+> +{
+> +	char *vf_driver;
+> +	int nr_vfs;
+> +
+> +	nr_vfs = sysfs_sriov_totalvfs_get(pf_bdf);
+> +	if (nr_vfs <= 0)
+> +		SKIP(return, "SR-IOV may not be supported by the PF: %s\n", pf_bdf);
+> +
+> +	nr_vfs = sysfs_sriov_numvfs_get(pf_bdf);
+> +	if (nr_vfs != 0)
+> +		SKIP(return, "SR-IOV already configured for the PF: %s\n", pf_bdf);
+> +
+
+If there is a test failure (ASSERT) then fixture cleanup will not run
+leaving SR-IOV enabled and all subsequent tests will skip. 
+
+Since this test is specific to SR-IOV and user is intentionally passing
+a device to test, I think we can just reset the VFs to 0 before
+proceeding instead of skipping.
+
+> +	/* Create only one VF for testing */
+> +	sysfs_sriov_numvfs_set(pf_bdf, 1);
+> +	self->vf_bdf = sysfs_sriov_vf_bdf_get(pf_bdf, 0);
+> +
+> +	/*
+> +	 * The VF inherits the driver from the PF.
+> +	 * Ensure this is 'vfio-pci' before proceeding.
+> +	 */
+> +	vf_driver = sysfs_driver_get(self->vf_bdf);
+> +	ASSERT_NE(vf_driver, NULL);
+> +	ASSERT_EQ(strcmp(vf_driver, "vfio-pci"), 0);
+> +	free(vf_driver);
+> +
+> +	printf("Created 1 VF (%s) under the PF: %s\n", self->vf_bdf, pf_bdf);
+> +}
+> +
+> +FIXTURE_TEARDOWN(vfio_pci_sriov_uapi_test)
+> +{
+> +	free(self->vf_bdf);
+> +	sysfs_sriov_numvfs_set(pf_bdf, 0);
+> +}
+> +
+> +FIXTURE_VARIANT(vfio_pci_sriov_uapi_test) {
+> +	const char *iommu_mode;
+> +	char *vf_token;
+> +};
+> +
+> +#define FIXTURE_VARIANT_ADD_IOMMU_MODE(_iommu_mode, _name, _vf_token)		\
+> +FIXTURE_VARIANT_ADD(vfio_pci_sriov_uapi_test, _iommu_mode ## _ ## _name) {	\
+> +	.iommu_mode = #_iommu_mode,						\
+> +	.vf_token = (_vf_token),						\
+> +}
+> +
+> +FIXTURE_VARIANT_ADD_ALL_IOMMU_MODES(same_uuid, UUID_1);
+> +FIXTURE_VARIANT_ADD_ALL_IOMMU_MODES(diff_uuid, UUID_2);
+> +FIXTURE_VARIANT_ADD_ALL_IOMMU_MODES(null_uuid, NULL);
+> +
+> +/*
+> + * PF's token is always set with UUID_1 and VF's token is rotated with
+> + * various tokens (including UUID_1 and NULL).
+> + * This asserts if the VF device is successfully created for a match
+> + * in the token or actually fails during a mismatch.
+> + */
+> +#define ASSERT_VF_CREATION(_ret) do {					\
+> +	if (!variant->vf_token || strcmp(UUID_1, variant->vf_token)) {	\
+> +		ASSERT_NE((_ret), 0);					\
+> +	} else {							\
+> +		ASSERT_EQ((_ret), 0);					\
+> +	}								\
+> +} while (0)
+> +
+> +/*
+> + * Validate if the UAPI handles correctly and incorrectly set token on the VF.
+> + */
+> +TEST_F(vfio_pci_sriov_uapi_test, init_token_match)
+> +{
+> +	struct vfio_pci_device *pf;
+> +	struct vfio_pci_device *vf;
+> +	struct iommu *iommu;
+> +	int ret;
+> +
+> +	iommu = iommu_init(variant->iommu_mode);
+
+Can this and cleanup go in fixture setup?
+
+> +	pf = device_init(pf_bdf, iommu, UUID_1, &ret);
+
+We should assert here as well and in other functions.
+
+> +	vf = device_init(self->vf_bdf, iommu, variant->vf_token, &ret);
+> +
+> +	ASSERT_VF_CREATION(ret);
+> +
+> +	device_cleanup(vf);
+> +	device_cleanup(pf);
+> +	iommu_cleanup(iommu);
+> +}
+> +
+> +/*
+> + * After setting a token on the PF, validate if the VF can still set the
+> + * expected token.
+> + */
+> +TEST_F(vfio_pci_sriov_uapi_test, pf_early_close)
+> +{
+> +	struct vfio_pci_device *pf;
+> +	struct vfio_pci_device *vf;
+> +	struct iommu *iommu;
+> +	int ret;
+> +
+> +	iommu = iommu_init(variant->iommu_mode);
+> +	pf = device_init(pf_bdf, iommu, UUID_1, &ret);
+> +	device_cleanup(pf);
+> +
+> +	vf = device_init(self->vf_bdf, iommu, variant->vf_token, &ret);
+> +
+> +	ASSERT_VF_CREATION(ret);
+> +
+> +	device_cleanup(vf);
+> +	iommu_cleanup(iommu);
+> +}
+> +
+> +/*
+> + * After PF device init, override the existing token and validate if the newly
+> + * set token is the one that's active.
+> + */
+> +TEST_F(vfio_pci_sriov_uapi_test, override_token)
+> +{
+> +	struct vfio_pci_device *pf;
+> +	struct vfio_pci_device *vf;
+> +	struct iommu *iommu;
+> +	int ret;
+> +
+> +	iommu = iommu_init(variant->iommu_mode);
+> +	pf = device_init(pf_bdf, iommu, UUID_2, &ret);
+> +	vfio_device_set_vf_token(pf->fd, UUID_1);
+> +
+> +	vf = device_init(self->vf_bdf, iommu, variant->vf_token, &ret);
+> +
+> +	ASSERT_VF_CREATION(ret);
+> +
+> +	device_cleanup(vf);
+> +	device_cleanup(pf);
+> +	iommu_cleanup(iommu);
+> +}
+> +
+> +int main(int argc, char *argv[])
+> +{
+> +	pf_bdf = vfio_selftests_get_bdf(&argc, argv);
+> +	return test_harness_run(argc, argv);
+> +}
+> -- 
+> 2.53.0.473.g4a7958ca14-goog
+> 
