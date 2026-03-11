@@ -1,120 +1,103 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B18653DBA0;
-	Wed, 11 Mar 2026 19:10:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6726938AC6B
+	for <kvm@vger.kernel.org>; Wed, 11 Mar 2026 20:08:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773256209; cv=none; b=uoCtkOcY9wbblawNte6pOBzvGJ6gE+ehibyEVJgvP78qh9phqROVN4bEdgJ41p6XVqPFrYKbeM4XTT1c6bcUADyce8HZu2L9gUlD2ObvxghGYCfBHdg/jRRY6cKp+2NwVSqpOZOJv58zj89sbJPj2NG8cn9teVIYi6vHLp5+dKs=
+	t=1773259686; cv=none; b=B5cFRbyu53ZrgawR/vCpzskLIBu4F8ulg2jx2ZK97q7HDP+TUS8AXQu5y2Yq+DoBNamcrg0QOd00Jd+tdT66OeKDArhI5pbTE4u+qD5mpa6xFhaBJ2IGjBUpOtbRj0uBV/z+mSEGiJrbsYLaoynfys+Tr9PURZ/XYrQZublDIHg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773256209; c=relaxed/simple;
-	bh=7ZsLa1T0BFC5juw0defQQ33UROr06FSoMCJDyDGnxkk=;
-	h=Date:Message-ID:From:To:Cc:Subject:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=NjuoK2X127ShkulUqgWB8UtSZpig5av4vv35FcWnudr+RWVu30Gjh//W2GVQbWoJex75buQ4tX+DHtTVAoMEDbbEqVfeoa4TT8rY1kPHCzLjg++djRdlhFeE1uoMSdYqUOv+ewrKMtWRiqjH8dSRKltcaiJevi0ISeLwBR6A4HA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KYWA2VhG; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1773259686; c=relaxed/simple;
+	bh=aXkmEBMFRxLk7YEe5QX3DIGgMrHhuObLP7PvBTYKa5Y=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=FXp2trmI1lzoQXtDcPuCggPmLI8k7OZBLmuvEChSaIXB1N8lwYSrCKRO3AUdI9fRkZyLAbfcaZ92rF7GeYYS/oj3uHqS4zNgjFbre2nszg6zYTQxrhAa9VGGZ/gqgnU8R+nqD8HC847mONY+B0ahIuwot/3CZWLgvomi4xj/gRU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Ox6Fc2hO; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KYWA2VhG"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4F338C4CEF7;
-	Wed, 11 Mar 2026 19:10:09 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Ox6Fc2hO"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BCF8BC116C6
+	for <kvm@vger.kernel.org>; Wed, 11 Mar 2026 20:08:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773256209;
-	bh=7ZsLa1T0BFC5juw0defQQ33UROr06FSoMCJDyDGnxkk=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=KYWA2VhGx6UU+p+ftz/FLsZ6Y//y8DzdvF0OtJLJjUIItwyyqnxvb13nvzBekRUbk
-	 l6PPgewl9tiij8yTpONZ5At9kTHAM41zo587Uj60R8h2WUyMqdOOlhOdA4y8CCN8WL
-	 dgmEVkRh0RMZ9LbZIIyn+MRzpcTbo6RuR7sKztz300/cIvetlzPYsIUKtsuFQsmozq
-	 4BTNpU/bnfB/96i3xYhwwmJl/DiiXOYWcuRr/0Z04lnhvpImOiHsULnE9KVekm7XAi
-	 UeoJ3bt78awoa9Aq19eizM7McbOzoUtwf9eJvPZe02gj4yDfV+TRvGH+P9M1dewLlt
-	 h0KFekkAVkdFQ==
-Received: from sofa.misterjones.org ([185.219.108.64] helo=lobster-girl.misterjones.org)
-	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.98.2)
-	(envelope-from <maz@kernel.org>)
-	id 1w0OwY-0000000103e-3vLG;
-	Wed, 11 Mar 2026 19:10:07 +0000
-Date: Wed, 11 Mar 2026 19:10:05 +0000
-Message-ID: <87v7f2chde.wl-maz@kernel.org>
-From: Marc Zyngier <maz@kernel.org>
-To: Steven Price <steven.price@arm.com>
-Cc: kvm@vger.kernel.org,
-	kvmarm@lists.linux.dev,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Will Deacon <will@kernel.org>,
-	James Morse <james.morse@arm.com>,
-	Oliver Upton <oliver.upton@linux.dev>,
-	Suzuki K Poulose <suzuki.poulose@arm.com>,
-	Zenghui Yu
- <yuzenghui@huawei.com>,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	Joey Gouly <joey.gouly@arm.com>,
-	Alexandru Elisei <alexandru.elisei@arm.com>,
-	Christoffer Dall <christoffer.dall@arm.com>,
-	Fuad Tabba <tabba@google.com>,
-	linux-coco@lists.linux.dev,
-	Ganapatrao Kulkarni <gankulkarni@os.amperecomputing.com>,
-	Gavin Shan <gshan@redhat.com>,
-	Shanker Donthineni <sdonthineni@nvidia.com>,
-	Alper Gun <alpergun@google.com>,
-	"Aneesh Kumar K . V"
- <aneesh.kumar@kernel.org>,
-	Emi Kisanuki <fj0570is@fujitsu.com>,
-	Vishal Annapurve <vannapurve@google.com>
-Subject: Re: [PATCH v12 06/46] arm64: RMI: Define the user ABI
-In-Reply-To: <33053e22-6cc6-4d55-bc7f-01f873a15d28@arm.com>
-References: <20251217101125.91098-1-steven.price@arm.com>
-	<20251217101125.91098-7-steven.price@arm.com>
-	<86tsuy8g0u.wl-maz@kernel.org>
-	<33053e22-6cc6-4d55-bc7f-01f873a15d28@arm.com>
-User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
- FLIM-LB/1.14.9 (=?UTF-8?B?R29qxY0=?=) APEL-LB/10.8 EasyPG/1.0.0 Emacs/30.1
- (aarch64-unknown-linux-gnu) MULE/6.0 (HANACHIRUSATO)
+	s=k20201202; t=1773259685;
+	bh=aXkmEBMFRxLk7YEe5QX3DIGgMrHhuObLP7PvBTYKa5Y=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=Ox6Fc2hOscg+FTThBri9P3gzYrsptiMGpPUZK31w5HPlH267v6DqMeM9hYMrprG94
+	 DhJuzPyeV7ljpOl77Aea03vnhLnS8LRpSoPQlvy+rfoDoJ+sWrwxZ6exREJNWCWFvc
+	 3rIyTE2QPlyvgbm1tl7fb/yubhJQdaEKkExjpxNh1Cn3DsbUHTAn1dwxxCqECoGQJ+
+	 HbmGAi2ip1sa6UMwexpQAp/jhkrhz3ZQFI1HtUZKKOWw4VFwknc56lXE5FI8HFUjKL
+	 /6FvJT5kuu6KFqCffueOVPLpbBOIG84hbyDt/b6BXZLOMXbrfVAro6tRSs6vB/1SRT
+	 xvKN5FNJRJUcA==
+Received: by mail-ej1-f45.google.com with SMTP id a640c23a62f3a-b7cf4a975d2so26489666b.2
+        for <kvm@vger.kernel.org>; Wed, 11 Mar 2026 13:08:05 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCWNqIg6HYkOzHMuE0K52AlddiFp5tNJJS6vSQEhNT1SYgvwaKC12CKbqYXX4X5+hPUBalY=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzKtAMFZToZH8X+ambuMq7BADKHwXblenloefsPvYc5TLWqv5G/
+	wU3vt1rIwDwYHBUv43GRqZI98EI+Ra4Pd157ZzlEM6ON2Qsl853DndS84woblzXc/SNvrWfzskV
+	+95fmxCklD0ZcQABhTZFC+WdfLdOlK8E=
+X-Received: by 2002:a17:907:7ba0:b0:b97:1009:7536 with SMTP id
+ a640c23a62f3a-b972e1b10e3mr225519266b.15.1773259684597; Wed, 11 Mar 2026
+ 13:08:04 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
-Content-Type: text/plain; charset=US-ASCII
-X-SA-Exim-Connect-IP: 185.219.108.64
-X-SA-Exim-Rcpt-To: steven.price@arm.com, kvm@vger.kernel.org, kvmarm@lists.linux.dev, catalin.marinas@arm.com, will@kernel.org, james.morse@arm.com, oliver.upton@linux.dev, suzuki.poulose@arm.com, yuzenghui@huawei.com, linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, joey.gouly@arm.com, alexandru.elisei@arm.com, christoffer.dall@arm.com, tabba@google.com, linux-coco@lists.linux.dev, gankulkarni@os.amperecomputing.com, gshan@redhat.com, sdonthineni@nvidia.com, alpergun@google.com, aneesh.kumar@kernel.org, fj0570is@fujitsu.com, vannapurve@google.com
-X-SA-Exim-Mail-From: maz@kernel.org
-X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
+MIME-Version: 1.0
+References: <20260306210900.1933788-1-yosry@kernel.org> <20260306210900.1933788-2-yosry@kernel.org>
+ <CALMp9eRWwPwUSyQmizy8i2tF1CVO4iLY6x0vX1OoPUiRdCm4NQ@mail.gmail.com>
+ <CAO9r8zOhaDeYWq_6TNdPGyEE323o_8xsWTozGdro9Oni8310kA@mail.gmail.com>
+ <CALMp9eScswzFak+PMOcaDXM-W+cXtkG7fQ=jadq__+5JeqYcTQ@mail.gmail.com>
+ <CAO9r8zOK5+xmkf3FsWRz2wHcUCN30GJ9kfZx-K7DAa1HNGhRVA@mail.gmail.com>
+ <aatyIPwz9ePKdzJx@google.com> <CAO9r8zMxk9yUiYoosnDygr_oeeRYHz3f7hWLm23c5Q0m-DXnWA@mail.gmail.com>
+In-Reply-To: <CAO9r8zMxk9yUiYoosnDygr_oeeRYHz3f7hWLm23c5Q0m-DXnWA@mail.gmail.com>
+From: Yosry Ahmed <yosry@kernel.org>
+Date: Wed, 11 Mar 2026 13:07:52 -0700
+X-Gmail-Original-Message-ID: <CAO9r8zNHYswypRmHVT5Qn5hFU9-HU1t=Gs3qAh05xRNn5krPXQ@mail.gmail.com>
+X-Gm-Features: AaiRm53ZrnHrtDBrJxbFm-c9aSV5gGG_rbhuRkeeQJZuvRMUyUjiW-RzRHLbPcg
+Message-ID: <CAO9r8zNHYswypRmHVT5Qn5hFU9-HU1t=Gs3qAh05xRNn5krPXQ@mail.gmail.com>
+Subject: Re: [PATCH v2 1/6] KVM: SVM: Use maxphyaddr in emulator RAX check for VMRUN/VMLOAD/VMSAVE
+To: Sean Christopherson <seanjc@google.com>
+Cc: Jim Mattson <jmattson@google.com>, Paolo Bonzini <pbonzini@redhat.com>, kvm@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Mon, 02 Mar 2026 15:23:44 +0000,
-Steven Price <steven.price@arm.com> wrote:
-> 
-> >> +  struct kvm_arm_rmi_populate {
-> >> +	__u64 base;
-> >> +	__u64 size;
-> >> +	__u64 source_uaddr;
-> >> +	__u32 flags;
-> >> +	__u32 reserved;
-> >> +  };
-> >> +
-> >> +Populate a region of protected address space by copying the data from the user
-> >> +space pointer provided. This is only valid before any VCPUs have been run.
-> >> +The ioctl might not populate the entire region and user space may have to
-> >> +repeatedly call it (with updated pointers) to populate the entire region.
-> > 
-> > size as a __u64 is odd, as the return value from the ioctl is a signed
-> > int. This implies that you can't really report how many bytes you have
-> > copied.  Some form of consistency wouldn't hurt.
-> 
-> Good spot. In practice this works because >2GB in one operation is
-> highly unlikely to be processed in one go. But I guess I'll change this
-> to have an output size argument. I guess I could make the kernel update
-> all of base,size,source_uaddr which would simplify user space.
+On Wed, Mar 11, 2026 at 11:31=E2=80=AFAM Yosry Ahmed <yosry@kernel.org> wro=
+te:
+>
+> On Fri, Mar 6, 2026 at 4:32=E2=80=AFPM Sean Christopherson <seanjc@google=
+.com> wrote:
+> >
+> > On Fri, Mar 06, 2026, Yosry Ahmed wrote:
+> > > > > Right, but I am trying to have the #GP check for VMLOAD/VMSAVE be=
+have
+> > > > > consistently with vls=3D1, whether it's done by the hardware or t=
+he
+> > > > > emulator.
+> > > >
+> > > > Consistency should not be an issue, since VLS cannot be enabled whe=
+n
+> > > > the MAXPHYADDRs differ. VLS doesn't work in that scenario.
+> > >
+> > > Why? It's only broken if VMLOAD/VMSAVE is executed with a GPA that
+> > > exceeds the guest's MAXPHYADDR, but not the host's, right? So only
+> > > broken if the guest is misbehaving.
+> > >
+> > > Taking a step back, I am not disagreeing that VLS should not be used
+> > > with different MAXPHYADDRs, I am just saying it might be.
+> >
+> > KVM straight up doesn't support that (see my other reply).
+>
+> Sean, I intend to send a new version today with 2 main diffs:
+> - Use cpuid_maxphyaddr() here instead of  kvm_host.maxphyaddr.
+> - Use a common helper for checking RAX for SVM instructions for both
+> the emulator and gp_interception() (see response on patch 4).
+>
+> Holler if you want me to wait for further feedback.
 
-In a conversation with Suzuki, I suggested that splice(2) could be a
-nicer way to express this, and allow asynchronous use with io-uring.
+I just realized I cannot just do cpuid_maxphyaddr(ctxt->vcpu) in
+check_svme_pa(), because vcpu is defined as a void pointer in
+x86_emulate_ctxt. Looking at commit c9b8b07cded5 ("KVM: x86:
+Dynamically allocate per-vCPU emulation context"), I cannot tell why.
 
-After all, having a guestmem backend for CCA is not exactly
-outlandish, and having a splice implementation realistic enough.
-
-Thoughts?
-
-	M.
-
--- 
-Jazz isn't dead. It just smells funny.
+I was going to move emul_to_vcpu() to arch/x86/kvm/kvm_emulate.h, but
+maybe we should just make this a normal struct kvm_vpcu pointer and
+drop emul_to_vcpu() completely?
