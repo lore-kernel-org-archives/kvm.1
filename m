@@ -1,101 +1,141 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E67371A3164
-	for <kvm@vger.kernel.org>; Wed, 11 Mar 2026 01:59:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.20
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A6FDE28469A
+	for <kvm@vger.kernel.org>; Wed, 11 Mar 2026 02:04:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773194371; cv=none; b=hy14gecE+R/trlwTq/sB860YBtM/l/+P9ZRX8ox09jr0CVAsmk+ZbMdmnrcvjbIEAzEuyA99e862/ZGxBrro0fqnX7oaUrFHQXe5k6HZdnr1iY+ZHSM5WHwcEkXxPtteheIE1/T+Rl/dLm3zp61D7hu2OSjp6o9Sh4UDvhEb6CU=
+	t=1773194645; cv=none; b=Jd3YUCIQwRyGZu3LeDqxLu0lzrnYzVdHqWaeISX6CL+/C6CuGWSNQ509FYmenpZRGX6M48PI6p7/+EmraaxotPY/+7p/oTtdg3kzBk6OyXmHtcmhsKCelTQPNc8O4zNQ1mdM3mL3aze8FSDD8FyK0REKLK9SA+GjMOrxcUWXuwE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773194371; c=relaxed/simple;
-	bh=LWK+I08EXWB9IgaAPxS4/Jb1wAD/qklgx6HZMrdy3U8=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=NBIAMy1Niii+349Nz/wHgaVYl9gP2ehVJJ4avZlo0XQ5QJrcBtCPP38igh9XMvydl3weBE2zUDhuWd0mUWtyTq+wSNEwv7uAB4MnEIUYwcL6oX8xpHd9XdiTew1WHS+a7BZCI3jOec7P7Jc8n4kL8w1h9ZHkf939opRY1Z5HzLw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=CGUcTlaO; arc=none smtp.client-ip=198.175.65.20
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1773194645; c=relaxed/simple;
+	bh=PPErToIQW3sWxAd1STr1jsqwiscRK1JDHqYlV2RxXEw=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=Xw/UgFZxKytRjExzRe2IXv5qhbKdIV2VtXHgiqFt/I5Fzzu4TmW3GIWYVz56A5wGtrMgaiBoChjwNK/UpIQrH07YFW9DO9BerxFAJxs4MhzVg6ha+w2CoLuGPgPBd978PUMxvji8y5ZMa47H4xp+skJBIjP2YXRMtJTg7V1LUl8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MD4bS3iB; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="CGUcTlaO"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1773194370; x=1804730370;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=LWK+I08EXWB9IgaAPxS4/Jb1wAD/qklgx6HZMrdy3U8=;
-  b=CGUcTlaO1ZYso8ES88MjqqdzXLipvCuaySwn2k9J6WocOgoCpSM2kq0t
-   CyHWuHSHJw7CeY6Eo4aMFaAH6qEWPrvg/op7zL6KoYdxJGjoBE120ySQx
-   XecejYuizKGWD8WZ2TRp7B9Y4tdBBRGQdz1KkMHJLhB8S1a1EFgAfqfzi
-   UXxFir/SuAVmhptNRBSkbLLDPZISlsXhEHArTxOSCjY1cVUq24vQ/Zl9B
-   XXCwywpG6tj4PhQ31oUhylfYPSzrocuf/wDYQsVrrKklURWawAHo0UqD8
-   KENKLJpbdnUCGflKO/VP6P8iHE1B+VUAXCT05oRaUrs//EHytnnRs3DLP
-   w==;
-X-CSE-ConnectionGUID: vtehfVFiRj2m53S2boQJlA==
-X-CSE-MsgGUID: TAVWey/MQQ2TTh1tTm3iAw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11725"; a="73954870"
-X-IronPort-AV: E=Sophos;i="6.23,113,1770624000"; 
-   d="scan'208";a="73954870"
-Received: from fmviesa005.fm.intel.com ([10.60.135.145])
-  by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Mar 2026 18:59:29 -0700
-X-CSE-ConnectionGUID: XZ95tlEGQEiG4+/Z//8hKg==
-X-CSE-MsgGUID: WknVCiUpR+aJa5x/a7496w==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,113,1770624000"; 
-   d="scan'208";a="225003454"
-Received: from iherna2-mobl4.amr.corp.intel.com (HELO localhost) ([10.124.222.32])
-  by fmviesa005-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Mar 2026 18:59:29 -0700
-From: isaku.yamahata@intel.com
-To: kvm@vger.kernel.org
-Cc: isaku.yamahata@intel.com,
-	isaku.yamahata@gmail.com,
-	Paolo Bonzini <pbonzini@redhat.com>,
-	Sean Christopherson <seanjc@google.com>,
-	kernel test robot <lkp@intel.com>
-Subject: [PATCH] KVM: VMX: Eliminate warnings by sparse in vmcs12.c and hyperv_evmcs.c
-Date: Tue, 10 Mar 2026 18:59:10 -0700
-Message-ID: <47e4570a1db6f68eacdde989c6cf4f53175cea75.1773193126.git.isaku.yamahata@intel.com>
-X-Mailer: git-send-email 2.45.2
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MD4bS3iB"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8C7C2C2BCB2
+	for <kvm@vger.kernel.org>; Wed, 11 Mar 2026 02:04:05 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1773194645;
+	bh=PPErToIQW3sWxAd1STr1jsqwiscRK1JDHqYlV2RxXEw=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=MD4bS3iBtcgWieB3asBVkN1MOGU1gD5yDC/TzMVPWq4bOx/kQdL46HpKVgd4XMUNq
+	 Ulrd8QDJdo95s9mNVLJ1eEwUO9QJJd+8gtBLeWAZ6+O8ewm9GmjOyRNOGftKn+zJzH
+	 OLyChipIlL098KhgSFmig6DqdyTTpgd+LY5RJMjoYvmpDuv9gcKnSdLZKRq26nx64W
+	 up9ZDNxVH33DK15Plngvsovs3vK/rm+TxcMkKR1NmySNMY1tIOzVOs0QmYNJd309mu
+	 UOPM6lAdiCVqcqtGdKQujn6AX+zMWdfgd8HfE8pKl1Sz6q9D6oU4gUWgg3J92ooCs5
+	 fzhw5npi/IH+w==
+Received: by mail-ej1-f41.google.com with SMTP id a640c23a62f3a-b943b75dc42so761640766b.3
+        for <kvm@vger.kernel.org>; Tue, 10 Mar 2026 19:04:05 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCUT1cKRAwrflf1VpSnRxEXifbfsQG4ppyy6rx+DDpf2R2u99hEPM05V8nnQkEf9QzqyQ6Y=@vger.kernel.org
+X-Gm-Message-State: AOJu0YywUe0nrFQjWxde0jHejr2cC9QCfVAZ0asFNtnjwkPEF98vcnAe
+	9c2LHsi/LWXZpHV0w659n9gHnBw5tjP0O77rnVb+2MvGBf/SqUg/WsdG+LuVQl2+FYHMh6Db7b4
+	h5HuUwPXeUs9nDQY2tx7D76lyYfJ4DcE=
+X-Received: by 2002:a17:907:a088:b0:b8a:f7ec:d995 with SMTP id
+ a640c23a62f3a-b972e167afbmr38189666b.9.1773194644316; Tue, 10 Mar 2026
+ 19:04:04 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20260311003346.2626238-1-seanjc@google.com> <20260311003346.2626238-5-seanjc@google.com>
+In-Reply-To: <20260311003346.2626238-5-seanjc@google.com>
+From: Yosry Ahmed <yosry@kernel.org>
+Date: Tue, 10 Mar 2026 19:03:53 -0700
+X-Gmail-Original-Message-ID: <CAO9r8zNBEOJrxbx8ob2KRLRKkd_aZjz8tyXGqXxs0=TJq4fU6Q@mail.gmail.com>
+X-Gm-Features: AaiRm53EpaamTGlu_jPI-y69DhSfy2spGK0sYTQIJ2IkTVwh7LQIU9EaVnAaL2g
+Message-ID: <CAO9r8zNBEOJrxbx8ob2KRLRKkd_aZjz8tyXGqXxs0=TJq4fU6Q@mail.gmail.com>
+Subject: Re: [PATCH 4/7] KVM: x86: Add wrapper APIs to reset dirty/available
+ register masks
+To: Sean Christopherson <seanjc@google.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>, Kiryl Shutsemau <kas@kernel.org>, kvm@vger.kernel.org, 
+	x86@kernel.org, linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org, 
+	"Chang S . Bae" <chang.seok.bae@intel.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-From: Isaku Yamahata <isaku.yamahata@intel.com>
+On Tue, Mar 10, 2026 at 5:34=E2=80=AFPM Sean Christopherson <seanjc@google.=
+com> wrote:
+>
+> Add wrappers for setting regs_{avail,dirty} in anticipation of turning th=
+e
+> fields into proper bitmaps, at which point direct writes won't work so
+> well.
+>
+> Deliberately leave the initialization in kvm_arch_vcpu_create() as-is,
+> because the regs_avail logic in particular is special in that it's the on=
+e
+> and only place where KVM marks eagerly synchronized registers as availabl=
+e.
+>
+> No functional change intended.
+>
+> Signed-off-by: Sean Christopherson <seanjc@google.com>
+> ---
+>  arch/x86/kvm/kvm_cache_regs.h | 19 +++++++++++++++++++
+>  arch/x86/kvm/svm/svm.c        |  4 ++--
+>  arch/x86/kvm/vmx/nested.c     |  4 ++--
+>  arch/x86/kvm/vmx/tdx.c        |  2 +-
+>  arch/x86/kvm/vmx/vmx.c        |  4 ++--
+>  5 files changed, 26 insertions(+), 7 deletions(-)
+>
+> diff --git a/arch/x86/kvm/kvm_cache_regs.h b/arch/x86/kvm/kvm_cache_regs.=
+h
+> index ac1f9867a234..94e31cf38cb8 100644
+> --- a/arch/x86/kvm/kvm_cache_regs.h
+> +++ b/arch/x86/kvm/kvm_cache_regs.h
+> @@ -105,6 +105,25 @@ static __always_inline bool kvm_register_test_and_ma=
+rk_available(struct kvm_vcpu
+>         return arch___test_and_set_bit(reg, (unsigned long *)&vcpu->arch.=
+regs_avail);
+>  }
+>
+> +static __always_inline void kvm_reset_available_registers(struct kvm_vcp=
+u *vcpu,
+> +                                                         u32 available_m=
+ask)
 
-Make ROL16() explicitly mask instead of the truncation by u16 cast.
-Sparse complains as follows for vmcs12.c and hyperv_evmcs.c.
-  > vmcs12.c:17:9: warning: cast truncates bits from constant value
-  > (20002 becomes 2)
+Not closely following this series and don't know this code well, but
+this API is very confusing for me tbh. Especially in comparison with
+kvm_reset_dirty_registers().
 
-It is because ROL16(val, n) includes "(u16)(val) << (n)" whose type is int,
-not u16, due to integer promotion even with a u16 cast.  The outermost u16
-cast in ROL16() may truncate it.  Explicitly mask it to avoid truncation by
-the u16 cast.
+Maybe rename this to kvm_clear_available_registers(), and pass in a
+"clear_mask", then reverse the polarity:
 
-Reported-by: kernel test robot <lkp@intel.com>
-Closes: https://lore.kernel.org/oe-kbuild-all/202603061942.wdSsERnL-lkp@intel.com/
-Signed-off-by: Isaku Yamahata <isaku.yamahata@intel.com>
----
- arch/x86/kvm/vmx/vmcs.h | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+vcpu->arch.regs_avail &=3D ~clear_mask;
 
-diff --git a/arch/x86/kvm/vmx/vmcs.h b/arch/x86/kvm/vmx/vmcs.h
-index 1f16ddeae9cb..b5b5f4870655 100644
---- a/arch/x86/kvm/vmx/vmcs.h
-+++ b/arch/x86/kvm/vmx/vmcs.h
-@@ -18,7 +18,8 @@
-  * wasting too much memory, while the "algorithm" is fast enough to be used to
-  * lookup vmcs12 fields on-demand, e.g. for emulation.
-  */
--#define ROL16(val, n) ((u16)(((u16)(val) << (n)) | ((u16)(val) >> (16 - (n)))))
-+#define ROL16(val, n) ((u16)((((u16)(val) << (n)) & GENMASK_U16(15, 0)) | \
-+			     ((u16)(val) >> (16 - (n)))))
- #define VMCS12_IDX_TO_ENC(idx) ROL16(idx, 10)
- #define ENC_TO_VMCS12_IDX(enc) ROL16(enc, 6)
- 
+Most callers are already passing in an inverse of a mask, so might as
+well pass the mask as-is and invert it here, and it helps make the
+name clear, we're passing in a bitmask to clear from regs_avail.
 
-base-commit: 5128b972fb2801ad9aca54d990a75611ab5283a9
--- 
-2.45.2
-
+> +{
+> +       /*
+> +        * Note the bitwise-AND!  In practice, a straight write would als=
+o work
+> +        * as KVM initializes the mask to all ones and never clears regis=
+ters
+> +        * that are eagerly synchronized.  Using a bitwise-AND adds a bit=
+ of
+> +        * sanity checking as incorrectly marking an eagerly sync'd regis=
+ter
+> +        * unavailable will generate a WARN due to an unexpected cache re=
+quest.
+> +        */
+> +       vcpu->arch.regs_avail &=3D available_mask;
+> +}
+> +
+> +static __always_inline void kvm_reset_dirty_registers(struct kvm_vcpu *v=
+cpu,
+> +                                                     u32 dirty_mask)
+> +{
+> +       vcpu->arch.regs_dirty =3D dirty_mask;
+> +}
+> +
+>  /*
+>   * The "raw" register helpers are only for cases where the full 64 bits =
+of a
+>   * register are read/written irrespective of current vCPU mode.  In othe=
+r words,
