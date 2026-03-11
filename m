@@ -1,188 +1,289 @@
-Received: from mail.loongson.cn (mail.loongson.cn [114.242.206.163])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 71D37238D54;
-	Wed, 11 Mar 2026 03:51:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=114.242.206.163
+Received: from canpmsgout03.his.huawei.com (canpmsgout03.his.huawei.com [113.46.200.218])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40CD640DFB1;
+	Wed, 11 Mar 2026 03:58:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=113.46.200.218
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773201095; cv=none; b=S7coYwkafES19rlacYFkC36yUSePdTi5QGyHCei+WrEF3b1s6KdcxzkOfkJTp36K45wtUXWSrHGG5zdGsvKkRh+RHyQcq0yD6gQe13Hz9zyi80zAAwLPvr283gksfYDq1RFnGV0lzFKgf13Px1XaT6QLNbzaocg3C4rLnOSk2xw=
+	t=1773201526; cv=none; b=DretDqgAFjtt33Qj57wyuw6IQx8MzrXH6amLxO0L+m0u5IDNskiQlcf5rDfk+hnqh8gEnTXvVEXyShFOKJGsFk/kGWOhx2hlFBRIqiuVMjcvD1aROjr/KuyNQW8mvdjpnyzFzYP2inYw7ul4UD/8SOYoxH6SnRkowoEFgMlZGVw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773201095; c=relaxed/simple;
-	bh=fLscIKEdEklbICNBIqYTqXCPeod+lzBdVkT36MSzOfA=;
-	h=Subject:To:Cc:References:From:Message-ID:Date:MIME-Version:
-	 In-Reply-To:Content-Type; b=lGWFXB7ZOdnVy0YrLVMI+H4CeiMIL5xg0BSYl/QW8lLk0d4ePEmm5Y7UKeqePr2fw+jlT/myYzRwJY73i9DkELliBYEocl4mdJd9+aZs1Uj6aWEesViAEUrRz6VXtTVmjkNuJCD2xm/8c6HLmziG0AyfkLQlyra3S3s+o2C016o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn; spf=pass smtp.mailfrom=loongson.cn; arc=none smtp.client-ip=114.242.206.163
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=loongson.cn
-Received: from loongson.cn (unknown [10.20.42.62])
-	by gateway (Coremail) with SMTP id _____8AxDMOw5rBpfcoZAA--.10421S3;
-	Wed, 11 Mar 2026 11:51:12 +0800 (CST)
-Received: from [10.20.42.62] (unknown [10.20.42.62])
-	by front1 (Coremail) with SMTP id qMiowJAx38Jx5rBpsrNSAA--.26277S3;
-	Wed, 11 Mar 2026 11:50:11 +0800 (CST)
-Subject: Re: [PATCH 3/3] LoongArch: KVM: Set vcpu_is_preempted() macro rather
- than function
-To: Huacai Chen <chenhuacai@kernel.org>
-Cc: Tianrui Zhao <zhaotianrui@loongson.cn>, kernel@xen0n.name,
- kvm@vger.kernel.org, loongarch@lists.linux.dev,
- linux-kernel@vger.kernel.org, Juergen Gross <jgross@suse.com>
-References: <20260311031857.3591470-1-maobibo@loongson.cn>
- <20260311031857.3591470-4-maobibo@loongson.cn>
- <CAAhV-H6p=bArdYHkE-0s55Ogvm+Dtv8TVVCLAHGeqA-pnPOXwA@mail.gmail.com>
-From: Bibo Mao <maobibo@loongson.cn>
-Message-ID: <7f4c6ef8-b24f-88c5-82f2-e00d1629ae4c@loongson.cn>
-Date: Wed, 11 Mar 2026 11:47:29 +0800
-User-Agent: Mozilla/5.0 (X11; Linux loongarch64; rv:68.0) Gecko/20100101
- Thunderbird/68.7.0
+	s=arc-20240116; t=1773201526; c=relaxed/simple;
+	bh=sZ4nCfWsR8yY815+6zDXoZ1dq76i1JNYxTrio4/xtjY=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=LrcfSVS+zh2+l+aRruUalfLDd2VyBeye1eHsDDgz5Ralck9mVlllEnJC6uQsRp4UpRgojwoE3YjTUukSRHIqCUOjNQAvjR/PK6Mw7aQM2PNL2pRH+a393gLdrvXZVxYMkJ1Y8IqUO/JdtwLdwHilYM92qTHPHNvyT9Ax8wCWKeY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b=SudqgdOD; arc=none smtp.client-ip=113.46.200.218
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b="SudqgdOD"
+dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
+	c=relaxed/relaxed; q=dns/txt;
+	h=From;
+	bh=mNzmcyvhfZnXS+9QV04AMQ5mZOvlva6gQmdYLnHOFKI=;
+	b=SudqgdODi7xzC/iWjvmwZUXeMEFezPblONvVYoDWLg49KuCURnYbe7lxKc+3B+GYfAbtRywVT
+	ImN6qi9DqaI1OF6FeCMVIvNUpfFtHaeKUxJH3tX2q6TM/RuZuPiegHcNGR84G7eGDYYe7P9KYzv
+	PDb4srZ5kS8rkNRLEqrl09M=
+Received: from mail.maildlp.com (unknown [172.19.162.140])
+	by canpmsgout03.his.huawei.com (SkyGuard) with ESMTPS id 4fVxgC4QcLzpTLm;
+	Wed, 11 Mar 2026 11:53:27 +0800 (CST)
+Received: from kwepemk500009.china.huawei.com (unknown [7.202.194.94])
+	by mail.maildlp.com (Postfix) with ESMTPS id C2D2D2012A;
+	Wed, 11 Mar 2026 11:58:38 +0800 (CST)
+Received: from [10.67.121.161] (10.67.121.161) by
+ kwepemk500009.china.huawei.com (7.202.194.94) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.11; Wed, 11 Mar 2026 11:58:38 +0800
+Message-ID: <8011d25a-da94-44ac-8a77-b81e39174e33@huawei.com>
+Date: Wed, 11 Mar 2026 11:58:37 +0800
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-In-Reply-To: <CAAhV-H6p=bArdYHkE-0s55Ogvm+Dtv8TVVCLAHGeqA-pnPOXwA@mail.gmail.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/1] vfio/pci: add PCIe TPH device ioctl
+To: Wathsala Vithanage <wathsala.vithanage@arm.com>, Alex Williamson
+	<alex@shazbot.org>
+CC: Jeremy Linton <jeremy.linton@arm.com>, <alex.williamson@redhat.com>,
+	<jgg@ziepe.ca>, <pstanner@redhat.com>, <kvm@vger.kernel.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+References: <20251013163515.16565-1-wathsala.vithanage@arm.com>
+ <9df72789-ab35-46a0-86cf-7b1eb3339ac7@arm.com>
+ <4bf8ba8f-57c3-4af2-9f2a-f4313121be87@arm.com>
+ <20251105121541.4d383694.alex@shazbot.org>
+ <e50f810f-a770-47b2-b266-5701172c8041@arm.com>
+ <2e228546-0250-4181-8cef-7b6f990daf7a@arm.com>
 Content-Language: en-US
+From: fengchengwen <fengchengwen@huawei.com>
+In-Reply-To: <2e228546-0250-4181-8cef-7b6f990daf7a@arm.com>
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:qMiowJAx38Jx5rBpsrNSAA--.26277S3
-X-CM-SenderInfo: xpdruxter6z05rqj20fqof0/
-X-Coremail-Antispam: 1Uk129KBj93XoWxCw1UGFy8Cry3urWkZF43urX_yoWrXFWrpF
-	9rCFnYva18Wr1xW3yavr4DCr1Yqws7W3Z2va43Ga4rAF4qqr1kJr1v934j9Fy2qa4kWa1I
-	qF95Wr4xuF1aywcCm3ZEXasCq-sJn29KB7ZKAUJUUUU7529EdanIXcx71UUUUU7KY7ZEXa
-	sCq-sGcSsGvfJ3Ic02F40EFcxC0VAKzVAqx4xG6I80ebIjqfuFe4nvWSU5nxnvy29KBjDU
-	0xBIdaVrnRJUUUBjb4IE77IF4wAFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2
-	IYs7xG6rWj6s0DM7CIcVAFz4kK6r106r15M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48v
-	e4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_JFI_Gr1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI
-	0_Gr0_Cr1l84ACjcxK6I8E87Iv67AKxVW8JVWxJwA2z4x0Y4vEx4A2jsIEc7CjxVAFwI0_
-	Gr0_Gr1UM2kKe7AKxVWUXVWUAwAS0I0E0xvYzxvE52x082IY62kv0487Mc804VCY07AIYI
-	kI8VC2zVCFFI0UMc02F40EFcxC0VAKzVAqx4xG6I80ewAv7VC0I7IYx2IY67AKxVWUXVWU
-	AwAv7VC2z280aVAFwI0_Jr0_Gr1lOx8S6xCaFVCjc4AY6r1j6r4UM4x0Y48IcVAKI48JMx
-	k0xIA0c2IEe2xFo4CEbIxvr21l42xK82IYc2Ij64vIr41l4I8I3I0E4IkC6x0Yz7v_Jr0_
-	Gr1l4IxYO2xFxVAFwI0_JF0_Jw1lx2IqxVAqx4xG67AKxVWUJVWUGwC20s026x8GjcxK67
-	AKxVWUGVWUWwC2zVAF1VAY17CE14v26r126r1DMIIYrxkI7VAKI48JMIIF0xvE2Ix0cI8I
-	cVAFwI0_Jr0_JF4lIxAIcVC0I7IYx2IY6xkF7I0E14v26r1j6r4UMIIF0xvE42xK8VAvwI
-	8IcIk0rVWUJVWUCwCI42IY6I8E87Iv67AKxVWUJVW8JwCI42IY6I8E87Iv6xkF7I0E14v2
-	6r1j6r4UYxBIdaVFxhVjvjDU0xZFpf9x07je0PfUUUUU=
+X-ClientProxiedBy: kwepems500001.china.huawei.com (7.221.188.70) To
+ kwepemk500009.china.huawei.com (7.202.194.94)
 
+We also hope to support this TPH feature in the Kunpeng (ARM server) user-space, and hope that this patch can continue.
 
+@Wathsala, I don't have the previous email, could you please send v2 again? I reviewed v2 [1] and found a few issues that I'd like to discuss.
 
-On 2026/3/11 上午11:35, Huacai Chen wrote:
-> Hi, Bibo,
+[1] https://lkml.org/lkml/2025/6/2/1116
+
+Thanks
+
+On 1/29/2026 10:06 PM, Wathsala Vithanage wrote:
+> Hi Alex,
 > 
-> On Wed, Mar 11, 2026 at 11:21 AM Bibo Mao <maobibo@loongson.cn> wrote:
->>
->> vcpu_is_preempted() is performance sensitive called in function
->> osq_lock(), here set it as macro. So that parameter is not parsed
->> at most time, it can avoid cache line thrashing across numa node.
-> I remember that I had suggested you define vcpu_is_preempted() in the
-> header file but you refused.
-yes, I refuse then, that is a tragedy, I am sorry for that:(
-
-By some benchmarks, vcpu_is_preempted() is called in busy-loop method, 
-more obvious with more CPUs, it may be a bottleneck.
-
-Regards
-Bibo Mao
-
+> Just checking back on the VFIO PCI TPH patch below. You’d mentioned wanting more time to evaluate the implications, so I wanted to see if you had any remaining concerns or if you’d like me to rework this in a different direction.
 > 
-> Huacai
+> Thanks,
+> Wathsala
 > 
+> On 11/6/25 17:19, Wathsala Vithanage wrote:
 >>
->> Here is part of unixbench result on 3C5000 DualWay machine with 32
->> Cores and 2 Numa node.
->>            origin    with patch    CONFIG_PARAVIRT disabled
->> execl     6871.9    7134.2        7190.8
->> fstime    425.5     959.9         956.1
+>> On 11/5/25 13:15, Alex Williamson wrote:
+>>> On Mon, 27 Oct 2025 09:33:33 -0500
+>>> Wathsala Vithanage <wathsala.vithanage@arm.com> wrote:
+>>>
+>>>> On 10/16/25 16:41, Jeremy Linton wrote:
+>>>>> Hi,
+>>>>>
+>>>>> On 10/13/25 11:35 AM, Wathsala Vithanage wrote:
+>>>>>> TLP Processing Hints (TPH) let a requester provide steering hints that
+>>>>>> can enable direct cache injection on supported platforms and PCIe
+>>>>>> devices. The PCIe core already exposes TPH handling to kernel drivers.
+>>>>>>
+>>>>>> This change adds the VFIO_DEVICE_PCI_TPH ioctl and exposes TPH control
+>>>>>> to user space to reduce memory latency and improve throughput for
+>>>>>> polling drivers (e.g., DPDK poll-mode drivers). Through this interface,
+>>>>>> user-space drivers can:
+>>>>>>     - enable or disable TPH for the device function
+>>>>>>     - program steering tags in device-specific mode
+>>>>>>
+>>>>>> The ioctl is available only when the device advertises the TPH
+>>>>>> Capability. Invalid modes or tags are rejected. No functional change
+>>>>>> occurs unless the ioctl is used.
+>>>>>>
+>>>>>> Signed-off-by: Wathsala Vithanage <wathsala.vithanage@arm.com>
+>>>>>> ---
+>>>>>>    drivers/vfio/pci/vfio_pci_core.c | 74 ++++++++++++++++++++++++++++++++
+>>>>>>    include/uapi/linux/vfio.h        | 36 ++++++++++++++++
+>>>>>>    2 files changed, 110 insertions(+)
+>>>>>>
+>>>>>> diff --git a/drivers/vfio/pci/vfio_pci_core.c
+>>>>>> b/drivers/vfio/pci/vfio_pci_core.c
+>>>>>> index 7dcf5439dedc..0646d9a483fb 100644
+>>>>>> --- a/drivers/vfio/pci/vfio_pci_core.c
+>>>>>> +++ b/drivers/vfio/pci/vfio_pci_core.c
+>>>>>> @@ -28,6 +28,7 @@
+>>>>>>    #include <linux/nospec.h>
+>>>>>>    #include <linux/sched/mm.h>
+>>>>>>    #include <linux/iommufd.h>
+>>>>>> +#include <linux/pci-tph.h>
+>>>>>>    #if IS_ENABLED(CONFIG_EEH)
+>>>>>>    #include <asm/eeh.h>
+>>>>>>    #endif
+>>>>>> @@ -1443,6 +1444,77 @@ static int vfio_pci_ioctl_ioeventfd(struct
+>>>>>> vfio_pci_core_device *vdev,
+>>>>>>                      ioeventfd.fd);
+>>>>>>    }
+>>>>>>    +static int vfio_pci_tph_set_st(struct vfio_pci_core_device *vdev,
+>>>>>> +                   const struct vfio_pci_tph_entry *ent)
+>>>>>> +{
+>>>>>> +    int ret, mem_type;
+>>>>>> +    u16 st;
+>>>>>> +    u32 cpu_id = ent->cpu_id;
+>>>>>> +
+>>>>>> +    if (cpu_id >= nr_cpu_ids || !cpu_present(cpu_id))
+>>>>>> +        return -EINVAL;
+>>>>>> +
+>>>>>> +    if (!cpumask_test_cpu(cpu_id, current->cpus_ptr))
+>>>>>> +        return -EINVAL;
+>>>>>> +
+>>>>>> +    switch (ent->mem_type) {
+>>>>>> +    case VFIO_TPH_MEM_TYPE_VMEM:
+>>>>>> +        mem_type = TPH_MEM_TYPE_VM;
+>>>>>> +        break;
+>>>>>> +    case VFIO_TPH_MEM_TYPE_PMEM:
+>>>>>> +        mem_type = TPH_MEM_TYPE_PM;
+>>>>>> +        break;
+>>>>>> +    default:
+>>>>>> +        return -EINVAL;
+>>>>>> +    }
+>>>>>> +    ret = pcie_tph_get_cpu_st(vdev->pdev, mem_type,
+>>>>>> topology_core_id(cpu_id),
+>>>>>> +                  &st);
+>>>>>> +    if (ret)
+>>>>>> +        return ret;
+>>>>>> +    /*
+>>>>>> +     * PCI core enforces table bounds and disables TPH on error.
+>>>>>> +     */
+>>>>>> +    return pcie_tph_set_st_entry(vdev->pdev, ent->index, st);
+>>>>>> +}
+>>>>>> +
+>>>>>> +static int vfio_pci_tph_enable(struct vfio_pci_core_device *vdev,
+>>>>>> int mode)
+>>>>>> +{
+>>>>>> +    /* IV mode is not supported. */
+>>>>>> +    if (mode == PCI_TPH_ST_IV_MODE)
+>>>>>> +        return -EINVAL;
+>>>>>> +    /* PCI core validates 'mode' and returns -EINVAL on bad values. */
+>>>>>> +    return pcie_enable_tph(vdev->pdev, mode);
+>>>>>> +}
+>>>>>> +
+>>>>>> +static int vfio_pci_tph_disable(struct vfio_pci_core_device *vdev)
+>>>>>> +{
+>>>>>> +    pcie_disable_tph(vdev->pdev);
+>>>>>> +    return 0;
+>>>>>> +}
+>>>>>> +
+>>>>>> +static int vfio_pci_ioctl_tph(struct vfio_pci_core_device *vdev,
+>>>>>> +                  void __user *uarg)
+>>>>>> +{
+>>>>>> +    struct vfio_pci_tph tph;
+>>>>>> +
+>>>>>> +    if (copy_from_user(&tph, uarg, sizeof(struct vfio_pci_tph)))
+>>>>>> +        return -EFAULT;
+>>>>>> +
+>>>>>> +    if (tph.argsz != sizeof(struct vfio_pci_tph))
+>>>>>> +        return -EINVAL;
+>>>>>> +
+>>>>>> +    switch (tph.op) {
+>>>>>> +    case VFIO_DEVICE_TPH_ENABLE:
+>>>>>> +        return vfio_pci_tph_enable(vdev, tph.mode);
+>>>>>> +    case VFIO_DEVICE_TPH_DISABLE:
+>>>>>> +        return vfio_pci_tph_disable(vdev);
+>>>>>> +    case VFIO_DEVICE_TPH_SET_ST:
+>>>>>> +        return vfio_pci_tph_set_st(vdev, &tph.ent);
+>>>>>> +    default:
+>>>>>> +        return -EINVAL;
+>>>>>> +    }
+>>>>>> +}
+>>>>>> +
+>>>>>>    long vfio_pci_core_ioctl(struct vfio_device *core_vdev, unsigned
+>>>>>> int cmd,
+>>>>>>                 unsigned long arg)
+>>>>>>    {
+>>>>>> @@ -1467,6 +1539,8 @@ long vfio_pci_core_ioctl(struct vfio_device
+>>>>>> *core_vdev, unsigned int cmd,
+>>>>>>            return vfio_pci_ioctl_reset(vdev, uarg);
+>>>>>>        case VFIO_DEVICE_SET_IRQS:
+>>>>>>            return vfio_pci_ioctl_set_irqs(vdev, uarg);
+>>>>>> +    case VFIO_DEVICE_PCI_TPH:
+>>>>>> +        return vfio_pci_ioctl_tph(vdev, uarg);
+>>>>>>        default:
+>>>>>>            return -ENOTTY;
+>>>>>>        }
+>>>>>> diff --git a/include/uapi/linux/vfio.h b/include/uapi/linux/vfio.h
+>>>>>> index 75100bf009ba..cfdee851031e 100644
+>>>>>> --- a/include/uapi/linux/vfio.h
+>>>>>> +++ b/include/uapi/linux/vfio.h
+>>>>>> @@ -873,6 +873,42 @@ struct vfio_device_ioeventfd {
+>>>>>>      #define VFIO_DEVICE_IOEVENTFD        _IO(VFIO_TYPE, VFIO_BASE + 16)
+>>>>>>    +/**
+>>>>>> + * VFIO_DEVICE_PCI_TPH - _IO(VFIO_TYPE, VFIO_BASE + 22)
+>>>>>> + *
+>>>>>> + * Control PCIe TLP Processing Hints (TPH) on a PCIe device.
+>>>>>> + *
+>>>>>> + * Supported operations:
+>>>>>> + * - VFIO_DEVICE_TPH_ENABLE: enable TPH in no-steering-tag (NS) or
+>>>>>> + *   device-specific (DS) mode. IV mode is not supported via this ioctl
+>>>>>> + *   and returns -EINVAL.
+>>>>>> + * - VFIO_DEVICE_TPH_DISABLE: disable TPH on the device.
+>>>>>> + * - VFIO_DEVICE_TPH_SET_ST: program an entry in the device TPH
+>>>>>> Steering-Tag
+>>>>>> + *   (ST) table. The kernel derives the ST from cpu_id and mem_type;
+>>>>>> the
+>>>>>> + *   value is not returned to userspace.
+>>>>>> + */
+>>>>>> +struct vfio_pci_tph_entry {
+>>>>>> +    __u32 cpu_id;            /* CPU logical ID */
+>>>>>> +    __u8  mem_type;
+>>>>>> +#define VFIO_TPH_MEM_TYPE_VMEM        0   /* Request volatile memory
+>>>>>> ST */
+>>>>>> +#define VFIO_TPH_MEM_TYPE_PMEM        1   /* Request persistent
+>>>>>> memory ST */
+>>>>>> +    __u8  rsvd[1];
+>>>>>> +    __u16 index;            /* ST-table index */
+>>>>>> +};
+>>>>>> +
+>>>>>> +struct vfio_pci_tph {
+>>>>>> +    __u32 argsz;            /* Size of vfio_pci_tph */
+>>>>>> +    __u32 mode;            /* NS and DS modes; IV not supported */
+>>>>>> +    __u32 op;
+>>>>>> +#define VFIO_DEVICE_TPH_ENABLE        0
+>>>>>> +#define VFIO_DEVICE_TPH_DISABLE        1
+>>>>>> +#define VFIO_DEVICE_TPH_SET_ST        2
+>>>>>> +    struct vfio_pci_tph_entry ent;
+>>>>>> +};
+>>>>>> +
+>>>>>> +#define VFIO_DEVICE_PCI_TPH    _IO(VFIO_TYPE, VFIO_BASE + 22)
+>>>>> A quick look at this, it seems its following the way the existing vfio
+>>>>> IOCTls are defined, yet two of them (ENABLE and DISABLE) won't likely
+>>>>> really change their structure, or don't need a structure in the case
+>>>>> of disable. Why not use IOW() and let the kernel error handling deal
+>>>>> with those two as independent ioctls?
+>>>>>
+>>>>>
+>>>>> Thanks,
+>>>>
+>>>> It will require two IOCTLs. I’m ok with having two IOCTLs for this
+>>>> feature if the maintainers are fine with it.
+>>> TBH, I'm not sure why we didn't use a DEVICE_FEATURE for this. Seems
+>>> like we could implement a SET operation that does enable/disable and
 >>
->>  From the test result, with macro method it is almost the same with
->> CONFIG_PARAVIRT disabled, and there is some improvment compared with
->> function method.
+>> Thanks Alex, it was implemented as a DEVICE_FEATURE in RFC v1,
+>> except it had a GET operation to get the tag to the user; which we
+>> decided to drop.
 >>
->> Signed-off-by: Bibo Mao <maobibo@loongson.cn>
->> ---
->>   arch/loongarch/include/asm/qspinlock.h | 27 +++++++++++++++++++++-----
->>   arch/loongarch/kernel/paravirt.c       | 15 ++------------
->>   2 files changed, 24 insertions(+), 18 deletions(-)
+>>> another for steering tags.  I still need to fully grasp the
+>>> implications of this support though.  Thanks,
+>> This is now same as the already merged RDMA TPH feature.
+>> https://lore.kernel.org/linux-rdma/cover.1751907231.git.leon@kernel.org/
 >>
->> diff --git a/arch/loongarch/include/asm/qspinlock.h b/arch/loongarch/include/asm/qspinlock.h
->> index 66244801db67..305afd37cdcb 100644
->> --- a/arch/loongarch/include/asm/qspinlock.h
->> +++ b/arch/loongarch/include/asm/qspinlock.h
->> @@ -5,8 +5,10 @@
->>   #include <linux/jump_label.h>
->>
->>   #ifdef CONFIG_PARAVIRT
->> -
->> +#include <asm/kvm_para.h>
->>   DECLARE_STATIC_KEY_FALSE(virt_spin_lock_key);
->> +DECLARE_STATIC_KEY_FALSE(virt_preempt_key);
->> +DECLARE_PER_CPU(struct kvm_steal_time, steal_time);
->>
->>   #define virt_spin_lock virt_spin_lock
->>
->> @@ -34,10 +36,25 @@ static inline bool virt_spin_lock(struct qspinlock *lock)
->>          return true;
->>   }
->>
->> -#define vcpu_is_preempted vcpu_is_preempted
->> -
->> -bool vcpu_is_preempted(int cpu);
->> -
->> +/*
->> + * Macro is better than inline function here
->> + * With inline function, parameter cpu is parsed even though it is not used.
->> + * This may cause cache line thrashing across NUMA node.
->> + * With macro method, parameter cpu is parsed only when it is used.
->> + */
->> +#define vcpu_is_preempted(cpu)                                         \
->> +({                                                                     \
->> +       bool __val;                                                     \
->> +                                                                       \
->> +       if (!static_branch_unlikely(&virt_preempt_key))                 \
->> +               __val = false;                                          \
->> +       else {                                                          \
->> +               struct kvm_steal_time *src;                             \
->> +               src = &per_cpu(steal_time, cpu);                        \
->> +               __val = !!(src->preempted & KVM_VCPU_PREEMPTED);        \
->> +       }                                                               \
->> +       __val;                                                          \
->> +})
->>   #endif /* CONFIG_PARAVIRT */
->>
->>   #include <asm-generic/qspinlock.h>
->> diff --git a/arch/loongarch/kernel/paravirt.c b/arch/loongarch/kernel/paravirt.c
->> index b74fe6db49ab..2d1206e486e2 100644
->> --- a/arch/loongarch/kernel/paravirt.c
->> +++ b/arch/loongarch/kernel/paravirt.c
->> @@ -10,8 +10,8 @@
->>   #include <asm/paravirt.h>
->>
->>   static int has_steal_clock;
->> -static DEFINE_PER_CPU(struct kvm_steal_time, steal_time) __aligned(64);
->> -static DEFINE_STATIC_KEY_FALSE(virt_preempt_key);
->> +DEFINE_PER_CPU(struct kvm_steal_time, steal_time) __aligned(64);
->> +DEFINE_STATIC_KEY_FALSE(virt_preempt_key);
->>   DEFINE_STATIC_KEY_FALSE(virt_spin_lock_key);
->>
->>   static bool steal_acc = true;
->> @@ -261,17 +261,6 @@ static int pv_time_cpu_down_prepare(unsigned int cpu)
->>          return 0;
->>   }
->>
->> -bool vcpu_is_preempted(int cpu)
->> -{
->> -       struct kvm_steal_time *src;
->> -
->> -       if (!static_branch_unlikely(&virt_preempt_key))
->> -               return false;
->> -
->> -       src = &per_cpu(steal_time, cpu);
->> -       return !!(src->preempted & KVM_VCPU_PREEMPTED);
->> -}
->> -EXPORT_SYMBOL(vcpu_is_preempted);
->>   #endif
->>
->>   static void pv_cpu_reboot(void *unused)
->> --
->> 2.39.3
+>> --wathsala
 >>
 >>
+>>
+> 
+> 
 
