@@ -1,197 +1,177 @@
-Received: from mail-lf1-f46.google.com (mail-lf1-f46.google.com [209.85.167.46])
+Received: from mail-pj1-f54.google.com (mail-pj1-f54.google.com [209.85.216.54])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6139E345CDA
-	for <kvm@vger.kernel.org>; Wed, 11 Mar 2026 02:07:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.167.46
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773194859; cv=pass; b=k6D5LTyVR5mcU0g25mxbdn6mXvcfT3CYWAV7DWFXwJ9oQYfplJv44kuIMVRFTgChO3LAk1V1q5b1zQuFuWMIkVrugTSkQlX3fxF4QYxEWe9DVwtggWkmcQuS/zOPOmgjS+4AGRHAg0RjBYJ16YzsnknJUAwTxZEyGzNQT5gAnuA=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773194859; c=relaxed/simple;
-	bh=8UJnLa/DDQ+b65RDSHa97nR/Rm6zetnRjswOkVb13wc=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=l2g2yzZ4Dybh6kuhvcBULVguDYhdrEOCm8tFVHG5HxZiMK4r1ieV3XC7DvFbBP/+LmMwsbfu65u9ArSpCtaVdbPZteok84/rVMReHCYXmpmbYEy9zrdrliUY8eD89Ecnaq3KiIRSp5NcaBqhT+HUD7Ww+h1VR8ou9i4C8J9QSO4=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=SqpOgAb4; arc=pass smtp.client-ip=209.85.167.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40B9F25F7B9
+	for <kvm@vger.kernel.org>; Wed, 11 Mar 2026 02:23:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.54
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1773195830; cv=none; b=mrhHy8lMTBfSPCGsFqCT3IXJWJIv0HoqUuCbIcyNgt9dhe1HpAsGMevQiel49rpAApWYzhRFDFwj2B1TlP66afPrH+v7bG9Gzis+A9eF4IlZvCx235no43QkadMYCiMj1nN+Ix1/rMwtnz3KHie1TqHOCV536Q4y/B6P9fYCkyQ=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1773195830; c=relaxed/simple;
+	bh=6P4geeJ+KoHlt2CMz/h9pWT+6lXDfH/Gf7m5FqNdcJo=;
+	h=From:To:Cc:Subject:In-Reply-To:Date:Message-ID:References:
+	 MIME-version:Content-type; b=Ledd5O6lCJTLiOfruepBFwJ3XQu99g3s7R1FybN2tQYvlm+8bNK6cg7heA6ahGqvsMRr1wQm4neDtL/b0QZUJ/KC9QLxu3xgTnoJdxWnE735YIziKLYOa1W86s+TA1k0M/dKp+DrEI0AWJI/buNlJ262udnhml8T0VHhe2yo/dM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=CcV+Vj/G; arc=none smtp.client-ip=209.85.216.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="SqpOgAb4"
-Received: by mail-lf1-f46.google.com with SMTP id 2adb3069b0e04-5a1362c9a3cso5630115e87.2
-        for <kvm@vger.kernel.org>; Tue, 10 Mar 2026 19:07:34 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1773194852; cv=none;
-        d=google.com; s=arc-20240605;
-        b=Zk7xGdDtZWCzfrWIlmaGTHm6TG9bPRcBtmX93Mg5AmnXUpq9hygm65jCAdlArQ3jrb
-         h9G1NNZOA6UYXNdBsf9TAnhCnWLA4ktEQY2IV1zprVl/+/ARHAc5cJnxYk7oPq9rTTP5
-         VyRl4VltVypEoplLXeckjqE1Y6TzGA9frbmBPbxuNELMOIah8IOxGcj+HXuPO/dKVt1s
-         5J6XQoT+n3Y+3UjaBRLRwND78QLrQpovcs7enW0UuwWDyhxhfkVyYAfPON+Zt+kclKZw
-         Ezk5hV2+5YQl92d1ObOOST2KLAFHdFjt+CFac84zWDXXS7RW9sZqXnH99bJVYfAollfT
-         ogPA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=+zLBLQzKjcztDlxJqoLP6w+B6xnZmfHibV4jlBQCebA=;
-        fh=VhrjukSvSCEXGZHuy5dmeO0yI3SwXqO/b0nQ961VowE=;
-        b=BW6K3iKqW5CWCw9Jgx3EJhwKttybU2ZRbjzGlNY5RPT9egcdlm5Qlf04EAWnMNJK5Y
-         zPYKlp9APXJfrXKGrhWdnEQZaR23trlfhAHc7W+TPNWywIN3MfFfWm5K5YLoS7rJEQoh
-         JbbTo6egViSYu7E9w9GWs9vSJxwLxGASFCBVcgOjHE2fw8KKxpjX5y2Lg/qPqK1zUkoD
-         DffY9a3XWoWLq0bvixbPst7wCjYPM8sTaiLzLQML+XLtt0BRjS9jwQVg4rg1JzkqH60/
-         PKkcQtfN8uKyCd5tC8Hs5CIXL/sr1FlByG23gFFZDsIuZuTtTH320uebRiWAynztX65W
-         oudA==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="CcV+Vj/G"
+Received: by mail-pj1-f54.google.com with SMTP id 98e67ed59e1d1-359f239ffa6so710501a91.1
+        for <kvm@vger.kernel.org>; Tue, 10 Mar 2026 19:23:48 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1773194852; x=1773799652; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=+zLBLQzKjcztDlxJqoLP6w+B6xnZmfHibV4jlBQCebA=;
-        b=SqpOgAb4CQOCp6QT1IhDiJXNOENCCAthmmQiQ2Xm1LqdH6AuNnr9pWEOxoaM6J2EHp
-         TaZvrNsWvEAAdeAh3rGZCGLrxzU767HUy57VJt43+079ae3+2kuAr2+JBVbU8T9+l/BT
-         vjjO+GANIyds0bGFgUhdgNG0FnF3NJi/nWQH4=
+        d=gmail.com; s=20230601; t=1773195828; x=1773800628; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:message-id:date
+         :in-reply-to:subject:cc:to:from:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=MMltWOW0k43bLww3FIPfAmLCchQbUS14K7m8AEoPvKs=;
+        b=CcV+Vj/GaKKM64BsdkphW1/HStzloWp/JwGIB9i7baRc9FvCezDHUQhoL0gHbhA8Tk
+         BIzSxoJLjoOC2xh0QXo2YHfI36ETPWQdo5yscF7H3CkMFHpfXsMg7qWsmD764kYnHdQn
+         hvqNmsp58wkk7l7SPsBJQ5JBzRUXj9sgP1BlylfRxzNLxgR0x4YR3i7wXaR4Ab3TYzbK
+         6kjuD2vPeflK0G0tqBS6v+GehlrCTc58UzRZ8L2KcF0LVufcKDxj7vlPkZEdnrJ3dV2z
+         9ulf7fZj1NJP7MOcfgzDN1DS/rU4AIGZUdJvgWntiWJZQONiR6CMb7YcOQBUG38J9wj3
+         EwXQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1773194852; x=1773799652;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=+zLBLQzKjcztDlxJqoLP6w+B6xnZmfHibV4jlBQCebA=;
-        b=Wc6Q8BGLhxT8sfaKhSvczW45sU/tVtv5S6LK4+LoMxcDRkcVFXBd6HDMwkJwHiGgIY
-         EpjIenAC49GVNkzpJKob+gYFSQZd3opfROAFKC1pD8uevyIEE2Xw9GTm5VBHsuHJry/G
-         Zfj3pYok+U5o2DB6hjsshPE/tKGtXF316Tq7l6Wnpjcq4jp4hOFi97f0r+LkTFB+kkDH
-         YcXhl80mC+Qd31CgaZjKM+1jeDWoljbovoUpVtSkpWoleeDjb5CTTIvWovkSZ++P2HoM
-         +HIibEGjJjVAt6sOVNh8QfdxWA8CWWz/AM7FaHZgYw6NjmrVBK3uvCV1Edxzy1vcIskz
-         vTlQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVSCr34IBcqaxinlWXKrC2TzyyMROxinwnETKWdHQU8kBct25oWIcMwYPGrui2NaKh7uqM=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxaxfMTvGvq0FihfprBIIzTZIQg3GBH3BM+fw/9b1RFwYFgyXsu
-	ShAd+hv7snnBbQkePpcBHZaclnaU8C+dOEuY+gaEmdrHrvd8Buj3KuchJ/ILX51i1r+Gk/tg4pV
-	MKlkChZF18Q+c9DJySWegwoekOjSa7z2LmOh9mHOe
-X-Gm-Gg: ATEYQzz9YKtQTa8eWEyYpmPfOoB0MBMVgOdRoSeeBxV5+SKzT/dQ88IhRKyA1kejJ69
-	QS2xAnpOdV+FzGgg0NWAX+r5f5xT92JDZEwx+ahKJX4M08n6sELEoK4U4zcNhvIMs8zzgqDZ6hG
-	Ns+XwxHbG91UfffOgFNAvpXLNoNTJeqo90/njqCQya0++42hNcKQIZXzx70w3pct8EnP3PPKJH2
-	Kaa9z+/ojSjPMzGk5eWEhAGz6b9+dwOMVySbWCCFem5c2fImHHcr1T125QBUVKU0zM3vsET24N1
-	XLH7hG1UJQ==
-X-Received: by 2002:ac2:4427:0:b0:5a1:3134:9bac with SMTP id
- 2adb3069b0e04-5a156cbd1bbmr169453e87.28.1773194852284; Tue, 10 Mar 2026
- 19:07:32 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1773195828; x=1773800628;
+        h=content-transfer-encoding:mime-version:references:message-id:date
+         :in-reply-to:subject:cc:to:from:x-gm-gg:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=MMltWOW0k43bLww3FIPfAmLCchQbUS14K7m8AEoPvKs=;
+        b=Rzk6njen1Zo+d/UcAnCKqWociOYmZtlSoLp/DOjqSbyGm8oiIOHB8teF6ahAN9c1E8
+         MrpFpXhwSx7VVwi30KlJkmEgpk2HGmM9GugQneqI9gw5BidgbqC0cfW2ClVLgtz8uY1f
+         FIK66Nc6azmdY2i/yqG2sYH8TvFbzyCbkFwcQ5m4uHenkMIvgtlD8v+M28UL0Xr6XmJm
+         pZpxjWt4LcYtGvn9kbsgD+0+BKvqaffsMUF2vftqoCCNf0Nvxoz8HgtzCziUpDKVPuP5
+         /EIvr2kqR8CEn3IV8tPMdQY4JcIPc66qlsq4Ya0jrYae93I1yGnbBb0J8zje9R5tFUtg
+         hVfg==
+X-Forwarded-Encrypted: i=1; AJvYcCXC7M9dQNUTM9Lyty/47mSslFxIsCxZvIXGHaFQ5Qjt9/iODvLJesTkdn84EdTKJTyO2n0=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzU9L7cTXSSHBggwf2zQVHYGdExBlWWwROVOkvIbZv8b3u+Jxd5
+	pyZXnsT8/O22mVXtKI0wj6zBukBgaQiyGs58sPzQzBHfS5OGoo2UoDrY
+X-Gm-Gg: ATEYQzzougt/R2gOzLVw6d0gbV37oDHgHTylvg9P66DFxlL5OFKTxqbJs+ZTEdz6M6V
+	f1SspHemSZTUNbOTxU4r3zoiy+WMDKiLjTmuGQTN9IRdZVlwV01fj2FVzNKZstHGb8mha/iAKVx
+	utwGQAg318isfOXhpXpZnT04Z3Jhrk04Ll2hasJ7nj119vM3gX5tt3A9+HWvoAEkBsCwaSaeAp5
+	pVfzVqUMfUK8BuNO19Wv2Ye2VNAy8W6CPR+l0w7ujEPqE79Dyq7Fb5ipeIZUef6xq/piMSmGpss
+	j9/agWBHkK5UYrubRoed20hOgm/9yUOusdIGt/uDlWyPRof4t0QttccveJDY8VeoiMCFveRju+l
+	QyIquD7L1WXqQlPpeb1Pw9h6kPeTTNw9VUPJvNUMvzKkXmeo0ZJz3PUQNf3m5TO5VinylyoHkVx
+	I0bCtdZBEW+bbgI47/rkpIxQ==
+X-Received: by 2002:a17:90a:c884:b0:354:c593:b1a8 with SMTP id 98e67ed59e1d1-35a0124b91cmr932718a91.13.1773195828309;
+        Tue, 10 Mar 2026 19:23:48 -0700 (PDT)
+Received: from pve-server ([49.205.216.49])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-359fc97356dsm1413731a91.8.2026.03.10.19.23.44
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 10 Mar 2026 19:23:47 -0700 (PDT)
+From: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
+To: Alex Williamson <alex@shazbot.org>
+Cc: linuxppc-dev@lists.ozlabs.org, Madhavan Srinivasan <maddy@linux.ibm.com>, Christophe Leroy <chleroy@kernel.org>, linux-mm@kvack.org, kvm@vger.kernel.org, Peter Xu <peterx@redhat.com>, alex@shazbot.org
+Subject: Re: [PATCH v2 1/2] drivers/vfio_pci_core: Change PXD_ORDER check from switch case to if/else block
+In-Reply-To: <20260309154637.3abf76af@shazbot.org>
+Date: Wed, 11 Mar 2026 07:50:24 +0530
+Message-ID: <1phrumxj.ritesh.list@gmail.com>
+References: <b155e19993ee1f5584c72050192eb468b31c5029.1773058761.git.ritesh.list@gmail.com> <20260309154637.3abf76af@shazbot.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <20260310-b4-is_err_or_null-v1-0-bd63b656022d@avm.de> <20260310-b4-is_err_or_null-v1-56-bd63b656022d@avm.de>
-In-Reply-To: <20260310-b4-is_err_or_null-v1-56-bd63b656022d@avm.de>
-From: Chen-Yu Tsai <wenst@chromium.org>
-Date: Wed, 11 Mar 2026 11:07:21 +0900
-X-Gm-Features: AaiRm5028PWt8n-JnveiRgn8oYMksdR_-_nk4JOkvxMfplWs-GDr7RRk-OxICyw
-Message-ID: <CAGXv+5FQAVaJjqhv+Xq-ysOc4SHQn2mCNTgCAp8XocmWBWGGoA@mail.gmail.com>
-Subject: Re: [PATCH 56/61] clk: Prefer IS_ERR_OR_NULL over manual NULL check
-To: Philipp Hahn <phahn-oss@avm.de>
-Cc: amd-gfx@lists.freedesktop.org, apparmor@lists.ubuntu.com, 
-	bpf@vger.kernel.org, ceph-devel@vger.kernel.org, cocci@inria.fr, 
-	dm-devel@lists.linux.dev, dri-devel@lists.freedesktop.org, 
-	gfs2@lists.linux.dev, intel-gfx@lists.freedesktop.org, 
-	intel-wired-lan@lists.osuosl.org, iommu@lists.linux.dev, kvm@vger.kernel.org, 
-	linux-arm-kernel@lists.infradead.org, linux-block@vger.kernel.org, 
-	linux-bluetooth@vger.kernel.org, linux-btrfs@vger.kernel.org, 
-	linux-cifs@vger.kernel.org, linux-clk@vger.kernel.org, 
-	linux-erofs@lists.ozlabs.org, linux-ext4@vger.kernel.org, 
-	linux-fsdevel@vger.kernel.org, linux-gpio@vger.kernel.org, 
-	linux-hyperv@vger.kernel.org, linux-input@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-leds@vger.kernel.org, 
-	linux-media@vger.kernel.org, linux-mips@vger.kernel.org, linux-mm@kvack.org, 
-	linux-modules@vger.kernel.org, linux-mtd@lists.infradead.org, 
-	linux-nfs@vger.kernel.org, linux-omap@vger.kernel.org, 
-	linux-phy@lists.infradead.org, linux-pm@vger.kernel.org, 
-	linux-rockchip@lists.infradead.org, linux-s390@vger.kernel.org, 
-	linux-scsi@vger.kernel.org, linux-sctp@vger.kernel.org, 
-	linux-security-module@vger.kernel.org, linux-sh@vger.kernel.org, 
-	linux-sound@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com, 
-	linux-trace-kernel@vger.kernel.org, linux-usb@vger.kernel.org, 
-	linux-wireless@vger.kernel.org, netdev@vger.kernel.org, ntfs3@lists.linux.dev, 
-	samba-technical@lists.samba.org, sched-ext@lists.linux.dev, 
-	target-devel@vger.kernel.org, tipc-discussion@lists.sourceforge.net, 
-	v9fs@lists.linux.dev, Michael Turquette <mturquette@baylibre.com>, 
-	Stephen Boyd <sboyd@kernel.org>, Daniel Lezcano <daniel.lezcano@kernel.org>, 
-	Thomas Gleixner <tglx@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+MIME-version: 1.0
+Content-type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 8bit
 
-On Tue, Mar 10, 2026 at 9:57=E2=80=AFPM Philipp Hahn <phahn-oss@avm.de> wro=
-te:
->
-> Prefer using IS_ERR_OR_NULL() over using IS_ERR() and a manual NULL
-> check.
->
-> Semantich change: Previously the code only printed the warning on error,
-> but not when the pointer was NULL. Now the warning is printed in both
-> cases!
->
-> Change found with coccinelle.
->
-> To: Michael Turquette <mturquette@baylibre.com>
-> To: Stephen Boyd <sboyd@kernel.org>
-> To: Daniel Lezcano <daniel.lezcano@kernel.org>
-> To: Thomas Gleixner <tglx@kernel.org>
-> Cc: linux-clk@vger.kernel.org
-> Cc: linux-kernel@vger.kernel.org
-> Signed-off-by: Philipp Hahn <phahn-oss@avm.de>
-> ---
->  drivers/clk/clk.c               | 4 ++--
->  drivers/clocksource/timer-pxa.c | 2 +-
->  2 files changed, 3 insertions(+), 3 deletions(-)
->
-> diff --git a/drivers/clk/clk.c b/drivers/clk/clk.c
-> index 47093cda9df32223c1120c3710261296027c4cd3..35146e3869a7dd93741d10b72=
-23d4488a9216ed1 100644
-> --- a/drivers/clk/clk.c
-> +++ b/drivers/clk/clk.c
-> @@ -4558,7 +4558,7 @@ void clk_unregister(struct clk *clk)
->         unsigned long flags;
->         const struct clk_ops *ops;
->
-> -       if (!clk || WARN_ON_ONCE(IS_ERR(clk)))
-> +       if (WARN_ON_ONCE(IS_ERR_OR_NULL(clk)))
->                 return;
->
->         clk_debug_unregister(clk->core);
-> @@ -4744,7 +4744,7 @@ void __clk_put(struct clk *clk)
->  {
->         struct module *owner;
->
-> -       if (!clk || WARN_ON_ONCE(IS_ERR(clk)))
-> +       if (WARN_ON_ONCE(IS_ERR_OR_NULL(clk)))
+Alex Williamson <alex@shazbot.org> writes:
 
-clk_get_optional() returns NULL if the clk isn't present.
-
-Drivers would just pass this to clk_put(). Your change here would cause
-this pattern to emit a very big warning.
-
-I don't think this change should be landed.
-
-
-ChenYu
-
->                 return;
+> Subject prefix should be "vfio/pci:".
 >
->         clk_prepare_lock();
-> diff --git a/drivers/clocksource/timer-pxa.c b/drivers/clocksource/timer-=
-pxa.c
-> index 7ad0e5adb2ffac4125c34710fc67f4b45f30331d..f65fb0b7fc318b766227e5e7a=
-4c0fb08ba11c8f9 100644
-> --- a/drivers/clocksource/timer-pxa.c
-> +++ b/drivers/clocksource/timer-pxa.c
-> @@ -218,7 +218,7 @@ void __init pxa_timer_nodt_init(int irq, void __iomem=
- *base)
+> On Mon,  9 Mar 2026 18:08:37 +0530
+> "Ritesh Harjani (IBM)" <ritesh.list@gmail.com> wrote:
 >
->         timer_base =3D base;
->         clk =3D clk_get(NULL, "OSTIMER0");
-> -       if (clk && !IS_ERR(clk)) {
-> +       if (!IS_ERR_OR_NULL(clk)) {
->                 clk_prepare_enable(clk);
->                 pxa_timer_common_init(irq, clk_get_rate(clk));
->         } else {
+>> Architectures like PowerPC uses runtime defined values for
 >
-> --
-> 2.43.0
+> s/uses/use/
 >
+
+@maddy can we wrap this in while applying?
+Otherwise - please let me know and I can re-send another version.
+
+>> PMD_ORDER/PUD_ORDER. This is because it can use either RADIX or HASH MMU
+>> at runtime using kernel cmdline. So the pXd_index_size is not known at
+>> compile time. Without this fix, when we add huge pfn support on powerpc
+>> in the next patch, vfio_pci_core driver compilation can fail with the
+>> following errors.
+>> 
+>>   CC [M]  drivers/vfio/vfio_main.o
+>>   CC [M]  drivers/vfio/group.o
+>>   CC [M]  drivers/vfio/container.o
+>>   CC [M]  drivers/vfio/virqfd.o
+>>   CC [M]  drivers/vfio/vfio_iommu_spapr_tce.o
+>>   CC [M]  drivers/vfio/pci/vfio_pci_core.o
+>>   CC [M]  drivers/vfio/pci/vfio_pci_intrs.o
+>>   CC [M]  drivers/vfio/pci/vfio_pci_rdwr.o
+>>   CC [M]  drivers/vfio/pci/vfio_pci_config.o
+>>   CC [M]  drivers/vfio/pci/vfio_pci.o
+>>   AR      kernel/built-in.a
+>> ../drivers/vfio/pci/vfio_pci_core.c: In function ‘vfio_pci_vmf_insert_pfn’:
+>> ../drivers/vfio/pci/vfio_pci_core.c:1678:9: error: case label does not reduce to an integer constant
+>>  1678 |         case PMD_ORDER:
+>>       |         ^~~~
+>> ../drivers/vfio/pci/vfio_pci_core.c:1682:9: error: case label does not reduce to an integer constant
+>>  1682 |         case PUD_ORDER:
+>>       |         ^~~~
+>> make[6]: *** [../scripts/Makefile.build:289: drivers/vfio/pci/vfio_pci_core.o] Error 1
+>> make[6]: *** Waiting for unfinished jobs....
+>> make[5]: *** [../scripts/Makefile.build:546: drivers/vfio/pci] Error 2
+>> make[5]: *** Waiting for unfinished jobs....
+>> make[4]: *** [../scripts/Makefile.build:546: drivers/vfio] Error 2
+>> make[3]: *** [../scripts/Makefile.build:546: drivers] Error 2
+>> 
+>> Fixes: f9e54c3a2f5b7 ("vfio/pci: implement huge_fault support")
+>> Signed-off-by: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
+>> ---
+>> v1 -> v2:
+>> 1. addressed review comments from Christophe [1]
+>> [1]: https://lore.kernel.org/linuxppc-dev/0b8fce7a61561640634317a5e287cdb4794715fd.1772170860.git.ritesh.list@gmail.com/
+>> 
+>>  drivers/vfio/pci/vfio_pci_core.c | 19 +++++++------------
+>>  1 file changed, 7 insertions(+), 12 deletions(-)
+>> 
+>> diff --git a/drivers/vfio/pci/vfio_pci_core.c b/drivers/vfio/pci/vfio_pci_core.c
+>> index d43745fe4c84..0967307235b8 100644
+>> --- a/drivers/vfio/pci/vfio_pci_core.c
+>> +++ b/drivers/vfio/pci/vfio_pci_core.c
+>> @@ -1670,21 +1670,16 @@ vm_fault_t vfio_pci_vmf_insert_pfn(struct vfio_pci_core_device *vdev,
+>>  	if (vdev->pm_runtime_engaged || !__vfio_pci_memory_enabled(vdev))
+>>  		return VM_FAULT_SIGBUS;
+>> 
+>> -	switch (order) {
+>> -	case 0:
+>> +	if (!order)
+>>  		return vmf_insert_pfn(vmf->vma, vmf->address, pfn);
+>> -#ifdef CONFIG_ARCH_SUPPORTS_PMD_PFNMAP
+>> -	case PMD_ORDER:
+>> +
+>> +	if (IS_ENABLED(CONFIG_ARCH_SUPPORTS_PMD_PFNMAP) && order == PMD_ORDER)
+>>  		return vmf_insert_pfn_pmd(vmf, pfn, false);
+>> -#endif
+>> -#ifdef CONFIG_ARCH_SUPPORTS_PUD_PFNMAP
+>> -	case PUD_ORDER:
+>> +
+>> +	if (IS_ENABLED(CONFIG_ARCH_SUPPORTS_PUD_PFNMAP) && order == PUD_ORDER)
+>>  		return vmf_insert_pfn_pud(vmf, pfn, false);
+>> -		break;
+>> -#endif
+>> -	default:
+>> -		return VM_FAULT_FALLBACK;
+>> -	}
+>> +
+>> +	return VM_FAULT_FALLBACK;
+>>  }
+>>  EXPORT_SYMBOL_GPL(vfio_pci_vmf_insert_pfn);
 >
+> Otherwise LGTM.  This appears to be no change for current use cases, so
+> I assume this will go in through ppc trees.
+>
+
+I think that will make sense to take these 2 patches via the same tree,
+so that we don't see any build issues on powerpc when the next patch
+enables huge pfnmap support.
+
+> Reviewed-by: Alex Williamson <alex@shazbot.org>
+
+Thanks!
