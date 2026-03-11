@@ -1,143 +1,128 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f41.google.com (mail-ed1-f41.google.com [209.85.208.41])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B7F2C32E72F;
-	Wed, 11 Mar 2026 14:07:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.21
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4642535F614
+	for <kvm@vger.kernel.org>; Wed, 11 Mar 2026 14:11:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773238061; cv=none; b=ZwKJLbBfbm/ShAyqxEV0+6JndHjZZPgnNxaVAkLXLUGz1wDKJi5x6RRVtIG0V0vn2Qt/SLaTHTbiakEjo8oCqhF4jOhUGwpJ3waPV4Go9l7Wbmbc6gq5BndTB3AIKRdb2CuRNofk+ZApkVJipEdq+pA8S6gR9t+eT9Sh3Zs5RSQ=
+	t=1773238318; cv=none; b=lCM2MT3I+l87qzs+9imF6uP0tSaF/Iw1hvrPywyxMIbYwGRk9gOCWy52KbCgqpqm5+CA6Tj4Ro6PGnZ9i6oo0TlRopdD6V5h1u3x+pyy7/j9RiBmyIQ8btTq4skNUCzlUllDg4pPOTu+n14gcqJ+o50ty09+sjw5mgYmYxqegBY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773238061; c=relaxed/simple;
-	bh=0Eni1Nt143VNquAjaz/aAH3+Yvkuzz4GLQhX7tSZ9Ag=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=gNXN+1OI/sRRnpfLnMR10o/HqxhAJEPdD896yiJUkG1ZT+2VpKJ7rorqBBedaOvi30iwvEObvQrIpRrjbdlwhRHS1Fd1NNAfTXrEnXb+7gHGIVbS5ob+8g8Y0tCEThaUQ7f8zsHo8zIk6GNYcrtc/rM4FrI6dbBxiSNVEf9nWEg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=G3Ib6OfC; arc=none smtp.client-ip=198.175.65.21
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="G3Ib6OfC"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1773238060; x=1804774060;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=0Eni1Nt143VNquAjaz/aAH3+Yvkuzz4GLQhX7tSZ9Ag=;
-  b=G3Ib6OfChQ3yaWTAfORgJmI0ExSEJhnqAD6kTft7A2L1lw20a25PaXGn
-   IFTnH93Lgso614TjBwuD05Jkc3v/zBKExB5fhWhcrEJ0iNntZ1CWx3jJO
-   JvEkujovg6U7YDyJOTeeoJ7lk1Fn4d3/sMwPgNXmUNchRBjPJLewDSPeu
-   2DmnndvvSv8o1iMP8RhWgmnsaPk8qQGKhp75UaSy/rFECKSAkhqWcYtsA
-   BPr1nzxI8gWmvK/yhzRo4YlC+segeA/8DTrOHUFhNfOuL3RECu3kInJX9
-   LvTIpxnWMPs5wTS5GVqSY0dKH/4Ln7QOt8mL4b0A0df1ABl+zgFutfVkR
-   Q==;
-X-CSE-ConnectionGUID: ZQM/2B5zR8CrS1Qvx5JPQQ==
-X-CSE-MsgGUID: yUv+ysgiQV6FhVtkmSEL5g==
-X-IronPort-AV: E=McAfee;i="6800,10657,11726"; a="74183713"
-X-IronPort-AV: E=Sophos;i="6.23,113,1770624000"; 
-   d="scan'208";a="74183713"
-Received: from fmviesa005.fm.intel.com ([10.60.135.145])
-  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Mar 2026 07:07:39 -0700
-X-CSE-ConnectionGUID: JaGzhmZ9TNKp8a8ff2E2Mg==
-X-CSE-MsgGUID: Q5Tu4cvlRESK0RSnxi/gLA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,113,1770624000"; 
-   d="scan'208";a="225174174"
-Received: from dwoodwor-mobl2.amr.corp.intel.com (HELO [10.125.110.49]) ([10.125.110.49])
-  by fmviesa005-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Mar 2026 07:07:38 -0700
-Message-ID: <55a98b6d-e831-47a6-aa5a-8fe357334f67@intel.com>
-Date: Wed, 11 Mar 2026 07:07:51 -0700
+	s=arc-20240116; t=1773238318; c=relaxed/simple;
+	bh=POUJjzeRhBIXfPGojdZfC417KH92loTKx1KmDpRcfoc=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=Ws/gmBb2vGX6W7y4UfAdIr1BFf424xG7Ma1IJ6PS4BfsImb/nRmbEIk5fgh49O1dD4bQFwaMr03IwWM78Ii0EnkujEI13Cc4HU+StUOFZXGCKDzKq3nUnQfVna784iUzJchHOJlKuBc/F4C5x++QzuzsNjyYcYmD3pKsKROwk1w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.208.41
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-ed1-f41.google.com with SMTP id 4fb4d7f45d1cf-66325f30570so981746a12.1
+        for <kvm@vger.kernel.org>; Wed, 11 Mar 2026 07:11:56 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1773238315; x=1773843115;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=wIz9Fr5w5J45ZN4rxwvT/0kjXMGfLP1VpB2aKPOax7k=;
+        b=TK2oa5vHxEpGyd7T7SSRzLd6H1hDKU6LKkP7cycBolPnjjUUz10uplwlDYzmco4Txr
+         vzPasahE3UjgdFn9dqLzvct09ZLjh4m3zUu0R+TqiRhG7cA6PG9/qd98lVc2MF1iZDh3
+         j0yOelcQ4hHGR9hNEWqgNibrp9f3mIunZEqAQnaqvpDF892saQgYv6b7m74cgpOqKvYN
+         pg6g8psDx37Zda5XzD34Hlhu57JNdExphi6yvxDPr+32tCIvvfzeHcTobEu/LM3mijI7
+         8Ai+ZZviW0BWGJB2mMB1+7awjZGLbbMDL8rwm/7IZDCjA130dZbPsrd4WZUtawRY/NEP
+         XMGw==
+X-Forwarded-Encrypted: i=1; AJvYcCXb2z+qZkwnIMvIb8vGj6mBwjzV0SIRTIbAQgFChkKhS199L1evCkpDqnGD+1xTwwt2E7Y=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yyz8t90zbio0Pv+lm81xKSCZc6pet46qOMv7faZK3HTcodFSHJZ
+	Oi97QzTVC8QrHT0KZVqG+xbux4qCf1514cjBTOyN/DemBGtq/x8dDV4T9hDGiToK4a/LoA==
+X-Gm-Gg: ATEYQzwWbmyweg/QY/zTkCKUnaMJ3LyrpMSziwkHMVXvutSKDUYLvWGOJTJFhfWFjXP
+	iIJ95Hg7JRm+88T0nsalUrMyyDdeQW5qDAYpA4LTALn0lAqsMuUkGr2XjgOmba6os2dsIaCWIEV
+	a35ZiYJMBvJLSFInbF/b22ecZ9DoRqtktwED7osf61T0z7z3R12t5ur2gF03anI0FzfH7pRWVCP
+	9Pi+4hqS1Z/3uIG838L6PKCI6ml882xHEZrrQNejSoGeLsx3XSGbJJXu8hhAAMoQJVFECjPHMKf
+	gdLYOeeG1Mqd7o3PIc7AtP0n6knZ+1mzkqzeS9i4n8jQ+Y25v5DLsQtvHhmRJhsMauWPLTUwJnJ
+	eo3vcyJiyGSpa7Y4XiK/rr5Kk9JQohTy7UHfIJSQpUtlHr554fxusezfQiWX2x9YjysonIYV2Qk
+	GNEpHpIEptrogdUP9YZ6Ocy2kRy66h5BsMtQD27Wwg6ohBibgIaJClk1FmFB8U
+X-Received: by 2002:a05:6402:51d1:b0:65c:b71:e69e with SMTP id 4fb4d7f45d1cf-6631798dcb0mr1453478a12.8.1773238315478;
+        Wed, 11 Mar 2026 07:11:55 -0700 (PDT)
+Received: from mail-ed1-f47.google.com (mail-ed1-f47.google.com. [209.85.208.47])
+        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-6631503c5b2sm584997a12.16.2026.03.11.07.11.55
+        for <kvm@vger.kernel.org>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 11 Mar 2026 07:11:55 -0700 (PDT)
+Received: by mail-ed1-f47.google.com with SMTP id 4fb4d7f45d1cf-66174cf4549so2112213a12.0
+        for <kvm@vger.kernel.org>; Wed, 11 Mar 2026 07:11:55 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCWc3E1plvATa7gXUiD/PhB3jCjq0sdiJRh/fw878Y0AFnI7WAWuQ6c4RZSg6bJsOR6O1Pg=@vger.kernel.org
+X-Received: by 2002:a17:907:6d16:b0:b88:4f25:81da with SMTP id
+ a640c23a62f3a-b97113ff0b9mr462021166b.0.1773237981235; Wed, 11 Mar 2026
+ 07:06:21 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 1/2] x86/cpu: Disable CR pinning during CPU bringup
-To: "Nikunj A. Dadhania" <nikunj@amd.com>,
- Tom Lendacky <thomas.lendacky@amd.com>, Borislav Petkov <bp@alien8.de>
-Cc: linux-kernel@vger.kernel.org, kvm@vger.kernel.org, tglx@kernel.org,
- mingo@redhat.com, dave.hansen@linux.intel.com, hpa@zytor.com, xin@zytor.com,
- seanjc@google.com, pbonzini@redhat.com, x86@kernel.org,
- sohil.mehta@intel.com, jon.grimm@amd.com
-References: <20260226092349.803491-1-nikunj@amd.com>
- <20260226092349.803491-2-nikunj@amd.com>
- <20260309134640.GOaa7PQJli_C9QATGB@fat_crate.local>
- <cde957ba-3579-4063-9d17-3630e79ea388@intel.com>
- <20260309161516.GAaa7yFMulhdzNQ-pt@fat_crate.local>
- <70644e1d-dd0e-4f0f-81c0-fd095e46e50b@intel.com>
- <7ca205d6-b01b-4ed3-959d-db31a6496d79@amd.com>
- <505a6bbd-3ecf-4de9-8fb9-0b21c3435a96@intel.com>
- <9fa61b80-0e16-4a87-a0e7-3c3dfcda8f7e@amd.com>
-Content-Language: en-US
-From: Dave Hansen <dave.hansen@intel.com>
-Autocrypt: addr=dave.hansen@intel.com; keydata=
- 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
-In-Reply-To: <9fa61b80-0e16-4a87-a0e7-3c3dfcda8f7e@amd.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+References: <20260310-b4-is_err_or_null-v1-0-bd63b656022d@avm.de>
+ <20260310-b4-is_err_or_null-v1-15-bd63b656022d@avm.de> <20260310100750.303af303@gandalf.local.home>
+ <20260311141332.b611237d36b61b2409e66cb3@kernel.org> <20260311100332.6a2ce4b1@gandalf.local.home>
+In-Reply-To: <20260311100332.6a2ce4b1@gandalf.local.home>
+From: Geert Uytterhoeven <geert@linux-m68k.org>
+Date: Wed, 11 Mar 2026 15:06:07 +0100
+X-Gmail-Original-Message-ID: <CAMuHMdX4kRGLaKMzPuhS1Pmxh609eiqQW-cAS_jWBBbt-vE6SA@mail.gmail.com>
+X-Gm-Features: AaiRm53WEGMMLW4z34e7P-lM1qFvsCJGZ_o4JNL5NPWbhJPKmcqz6k9bJcyL--8
+Message-ID: <CAMuHMdX4kRGLaKMzPuhS1Pmxh609eiqQW-cAS_jWBBbt-vE6SA@mail.gmail.com>
+Subject: Re: [PATCH 15/61] trace: Prefer IS_ERR_OR_NULL over manual NULL check
+To: Steven Rostedt <rostedt@goodmis.org>
+Cc: "Masami Hiramatsu (Google)" <mhiramat@kernel.org>, Philipp Hahn <phahn-oss@avm.de>, amd-gfx@lists.freedesktop.org, 
+	apparmor@lists.ubuntu.com, bpf@vger.kernel.org, ceph-devel@vger.kernel.org, 
+	cocci@inria.fr, dm-devel@lists.linux.dev, dri-devel@lists.freedesktop.org, 
+	gfs2@lists.linux.dev, intel-gfx@lists.freedesktop.org, 
+	intel-wired-lan@lists.osuosl.org, iommu@lists.linux.dev, kvm@vger.kernel.org, 
+	linux-arm-kernel@lists.infradead.org, linux-block@vger.kernel.org, 
+	linux-bluetooth@vger.kernel.org, linux-btrfs@vger.kernel.org, 
+	linux-cifs@vger.kernel.org, linux-clk@vger.kernel.org, 
+	linux-erofs@lists.ozlabs.org, linux-ext4@vger.kernel.org, 
+	linux-fsdevel@vger.kernel.org, linux-gpio@vger.kernel.org, 
+	linux-hyperv@vger.kernel.org, linux-input@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-leds@vger.kernel.org, 
+	linux-media@vger.kernel.org, linux-mips@vger.kernel.org, linux-mm@kvack.org, 
+	linux-modules@vger.kernel.org, linux-mtd@lists.infradead.org, 
+	linux-nfs@vger.kernel.org, linux-omap@vger.kernel.org, 
+	linux-phy@lists.infradead.org, linux-pm@vger.kernel.org, 
+	linux-rockchip@lists.infradead.org, linux-s390@vger.kernel.org, 
+	linux-scsi@vger.kernel.org, linux-sctp@vger.kernel.org, 
+	linux-security-module@vger.kernel.org, linux-sh@vger.kernel.org, 
+	linux-sound@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com, 
+	linux-trace-kernel@vger.kernel.org, linux-usb@vger.kernel.org, 
+	linux-wireless@vger.kernel.org, netdev@vger.kernel.org, ntfs3@lists.linux.dev, 
+	samba-technical@lists.samba.org, sched-ext@lists.linux.dev, 
+	target-devel@vger.kernel.org, tipc-discussion@lists.sourceforge.net, 
+	v9fs@lists.linux.dev, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+Content-Type: text/plain; charset="UTF-8"
 
-Nikunj, thanks for tracking this down and filling in the last piece of
-the puzzle about ALTERNATIVEs patching.
+Hi Steven,
 
-On 3/11/26 03:41, Nikunj A. Dadhania wrote:
-> +	/*
-> +	 * Enable FSGSBASE if available. Exception entry code (paranoid_entry)
-> +	 * is patched to use RDGSBASE/WRGSBASE when this feature is present,
-> +	 * and those instructions require CR4.FSGSBASE=1. Secondary CPUs must
-> +	 * enable this before any exceptions occur.
-> +	 */
-> +	if (boot_cpu_has(X86_FEATURE_FSGSBASE))
-> +		cr4 |= X86_CR4_FSGSBASE;
+On Wed, 11 Mar 2026 at 15:03, Steven Rostedt <rostedt@goodmis.org> wrote:
+> On Wed, 11 Mar 2026 14:13:32 +0900
+> Masami Hiramatsu (Google) <mhiramat@kernel.org> wrote:
+>
+> > Hmm, now IS_ERR_OR_NULL() is an inline function, so it is safe.
+> > But if you want to use IS_ERR_OR_NULL() here, it will be better something like
+> >
+> > node = rhashtable_walk_next(&iter);
+> > while (!IS_ERR_OR_NULL(node)) {
+> >       fprobe_remove_node_in_module(mod, node, &alist);
+> >       node = rhashtable_walk_next(&iter);
+> > }
+>
+> But now you need to have a duplicate code in order to acquire "node"
+>
+> I think the patch just makes the code worse.
 
-But this still double-enables X86_CR4_FSGSBASE. Could we initialize
-X86_CR4_FSGSBASE in *one* place, please?
+Obviously we need a new for_each_*() helper hiding all the gory internals?
 
-Also, please avoid passive voice in stuff like this. It's just more
-efficient to say:
+Gr{oetje,eeting}s,
 
-	CPUs that support FSGSBASE may use RDGSBASE/WRGSBASE in
-	paranoid_entry(). Enable the feature before any exceptions
-	occur.
+                        Geert
 
+-- 
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
 
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+                                -- Linus Torvalds
