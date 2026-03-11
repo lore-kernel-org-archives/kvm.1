@@ -1,145 +1,127 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F1F113E92B1;
-	Wed, 11 Mar 2026 18:49:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC7C33E6DE8
+	for <kvm@vger.kernel.org>; Wed, 11 Mar 2026 18:51:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773254952; cv=none; b=L6SZ0Q51A0GP+Y+mPxVFw76XH5VwaoCchvdEeAxoenXBL9xXKFfhhG/bkt439xjSDJZRY/oD7wdh16Fe0WFr3NAbI9qRmSop/1udCsNk8ARpmGBLS2jNTnbkYhLNY4vXLZ2j9q/+wqhW1CvUmpmb9KyoLUrInJgwPvhCq37FOEE=
+	t=1773255063; cv=none; b=AICdWeu55otb6yKDbReRrwWQj5UXTVg0RnC0fbZIrZuNdXGBSFEew+XX+cwH+liVNxxJO1fUE01qsmjEdx9PiHnzY89XaD0ZP/Us91PFoBCxQ/MoL7GT3ifNiCE0IqzeAFvrjf3j5LyH9E/YLIELAwag9RDva8NNhnfWX5Dm3bw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773254952; c=relaxed/simple;
-	bh=V6cFeRkZqby++mC9llt12uQIBRckotBb4PevLS2Zh7A=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=q57Tse0VKfS9Nzk1UaHKsIOXUuOsRnZmQFJLY9aCbJcldhOrMGFImFUeKoaEbnUHLAydo5t1DClziYrDup5bMjheUxC4N8xDNMvbBkMsKGQzqu0kBMTarhr5O3RbGZVp9JV8b6CfkzpBgwGgMJnYgc2daBAmJ2H9vIFa2t9y4wk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JgEdtbB2; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1773255063; c=relaxed/simple;
+	bh=Te4eI0knPeiotE2hZEjwgv+MSdfSyh85QDbwl4FRJWU=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=duCpFAWmmX2/aeOInxiKkDE52R9CMsaetIHwaSJ7w8YVt/BRnlUm+YOOKLb+MXxwk/FyWB5mrnpe3RgIsol57f+owoUcbqtDb0ecCR2kdq136Ft9QC3O/1JONmbCd+i7hadaW6aBzl4W2bS971pd/v+I0nEyhcg59cSO0LTy48Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=RQvPMMGL; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JgEdtbB2"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4BED4C19425;
-	Wed, 11 Mar 2026 18:49:04 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773254951;
-	bh=V6cFeRkZqby++mC9llt12uQIBRckotBb4PevLS2Zh7A=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=JgEdtbB2552lw+CZNF+iT4qjBWPNoUdaJrGRaWJeqan1Mdfi5a9y3+1uJSR/wv32s
-	 QX4boMvXHOGzj77PQo1BGxHTnoQO0v/eCIx/awqOamXHSnQ99EQsHhBPgznbBS0lWi
-	 mCrjHiikGeOlJUuB75XBJmwWEMFGMt9uY1e77zsOHq+K45kQ56DZ7NqDw8GFvVZkL1
-	 DYO4WEaT0z6xMrEYBaptEqaIKq/SgXAXI1elpkm3mhjePR1FtlZ+1sJYrAr0FYZ5nl
-	 x92uuR21FLfkhDt1132NzhtHFAe4pC6zGlSi1bT1bhetb8YrwM5mbjw20h3PWQcnig
-	 aOoRuubqwjihw==
-Date: Wed, 11 Mar 2026 20:49:00 +0200
-From: Mike Rapoport <rppt@kernel.org>
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: Andrea Arcangeli <aarcange@redhat.com>,
-	Axel Rasmussen <axelrasmussen@google.com>,
-	Baolin Wang <baolin.wang@linux.alibaba.com>,
-	David Hildenbrand <david@kernel.org>,
-	Hugh Dickins <hughd@google.com>,
-	James Houghton <jthoughton@google.com>,
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
-	Michal Hocko <mhocko@suse.com>, Muchun Song <muchun.song@linux.dev>,
-	Nikita Kalyazin <kalyazin@amazon.com>,
-	Oscar Salvador <osalvador@suse.de>,
-	Paolo Bonzini <pbonzini@redhat.com>, Peter Xu <peterx@redhat.com>,
-	Sean Christopherson <seanjc@google.com>,
-	Shuah Khan <shuah@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Vlastimil Babka <vbabka@suse.cz>, kvm@vger.kernel.org,
-	linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-kselftest@vger.kernel.org, linux-mm@kvack.org
-Subject: Re: [PATCH v2 07/15] userfaultfd: introduce vm_uffd_ops
-Message-ID: <abG5HFV8yoEHOFkh@kernel.org>
-References: <20260306171815.3160826-1-rppt@kernel.org>
- <20260306171815.3160826-8-rppt@kernel.org>
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="RQvPMMGL"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1773255060;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=F7AROcK70CW6XJ2dTy6Mf7xNWM6FalWRhqSf6kMBPFI=;
+	b=RQvPMMGL/Av8frhJLoW73miTWjebQKGt9afS0114QkGmjinNQ1RIw3ooL+csY20s2Ka2Wt
+	Wgso2eC1vhUSPsMh5FmGZizWKPd2utZYTP5v6M4kwsCaqVxNqJYyK5DlrmbGaHPQ5wcrTD
+	KvDuOn2gYCN21l+d1hhG3BBr/O6i/d4=
+Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-133-c7JVzJo7P42rwCjUcTU5QA-1; Wed,
+ 11 Mar 2026 14:50:55 -0400
+X-MC-Unique: c7JVzJo7P42rwCjUcTU5QA-1
+X-Mimecast-MFC-AGG-ID: c7JVzJo7P42rwCjUcTU5QA_1773255054
+Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 0550B195605C;
+	Wed, 11 Mar 2026 18:50:54 +0000 (UTC)
+Received: from [10.44.32.138] (unknown [10.44.32.138])
+	by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 8EADF1956095;
+	Wed, 11 Mar 2026 18:50:51 +0000 (UTC)
+Message-ID: <c117141f-61da-4572-98ea-7a8a79eb5bab@redhat.com>
+Date: Wed, 11 Mar 2026 19:50:49 +0100
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260306171815.3160826-8-rppt@kernel.org>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 4/7] KVM: x86: Add wrapper APIs to reset dirty/available
+ register masks
+To: Sean Christopherson <seanjc@google.com>, Yosry Ahmed <yosry@kernel.org>
+Cc: Kiryl Shutsemau <kas@kernel.org>, kvm@vger.kernel.org, x86@kernel.org,
+ linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org,
+ "Chang S . Bae" <chang.seok.bae@intel.com>
+References: <20260311003346.2626238-1-seanjc@google.com>
+ <20260311003346.2626238-5-seanjc@google.com>
+ <CAO9r8zNBEOJrxbx8ob2KRLRKkd_aZjz8tyXGqXxs0=TJq4fU6Q@mail.gmail.com>
+ <abFulxXuRziXj039@google.com>
+From: Paolo Bonzini <pbonzini@redhat.com>
+Content-Language: en-US
+Autocrypt: addr=pbonzini@redhat.com; keydata=
+ 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
+In-Reply-To: <abFulxXuRziXj039@google.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
 
-On Fri, Mar 06, 2026 at 07:18:07PM +0200, Mike Rapoport wrote:
->  bool vma_can_userfault(struct vm_area_struct *vma, vm_flags_t vm_flags,
->  		       bool wp_async)
->  {
-> -	vm_flags &= __VM_UFFD_FLAGS;
-> +	const struct vm_uffd_ops *ops = vma_uffd_ops(vma);
->  
-> -	if (vma->vm_flags & VM_DROPPABLE)
-> +	/* only VMAs that implement vm_uffd_ops are supported */
-> +	if (!ops)
->  		return false;
+On 3/11/26 14:31, Sean Christopherson wrote:
+>> Not closely following this series and don't know this code well, but
+>> this API is very confusing for me tbh. Especially in comparison with
+>> kvm_reset_dirty_registers().
+>>
+>> Maybe rename this to kvm_clear_available_registers(), and pass in a
+>> "clear_mask", then reverse the polarity:
+>>
+>> vcpu->arch.regs_avail &= ~clear_mask;
+> Oh, yeah, I can do something like that.  I originally misread the TDX code and
+> thought it was explicitly setting regs_avail, and so came up with a roundabout
+> name.  I didn't revisit the naming or the polarity of the param once I realized
+> all callers could use the same scheme.
+> 
+> No small part of me is tempted to turn it into a straigh "set" though, unless I'm
+> missing something, the whole &= business is an implementation quirk.
 
-Just found out that rejecting a VMA that does not have uffd_ops but was
-registered in WP-only mode with WP_ASYNC uffd context breaks
-pagemap_ioctl() test and more broadly it breaks tracking of writes in SysV
-shared memory areas.
+I like kvm_clear_available_registers() for this + removing the second 
+argument completely for kvm_reset_dirty_registers().
 
-This is weird that it's possible to use uffd with SysV SHM, but it's out
-there for some time and I afraid we can't change that :/
-
-Andrew, can you apply this as a fixup please
-
-From 6e3319ceab93d84558e735e1f4f451e80c85b267 Mon Sep 17 00:00:00 2001
-From: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
-Date: Wed, 11 Mar 2026 20:21:38 +0200
-Subject: [PATCH 1/1] userfaultfd: allow registration of WP_ASYNC for any VMA
-
-Registration of a VMA with WP_ASYNC userfaulfd context in write-protect
-mode does not require any VMA-specific resolution of user faults and
-these faults are completely handled by the generic page fault handler.
-
-This functionality existed since the introduction of WP_ASYNC mode and
-it allows tracking writes to SysV shared memory mappings (shmget(2) and
-shmat(2)).
-
-Move the check for WP mode before checking for presence of ->uffd_ops in a
-VMA to restore the original behaviour.
-
-Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
----
- mm/userfaultfd.c | 16 ++++++++--------
- 1 file changed, 8 insertions(+), 8 deletions(-)
-
-diff --git a/mm/userfaultfd.c b/mm/userfaultfd.c
-index b55d4a8d88cc..436795bf218e 100644
---- a/mm/userfaultfd.c
-+++ b/mm/userfaultfd.c
-@@ -2044,22 +2044,22 @@ bool vma_can_userfault(struct vm_area_struct *vma, vm_flags_t vm_flags,
- {
- 	const struct vm_uffd_ops *ops = vma_uffd_ops(vma);
- 
--	/* only VMAs that implement vm_uffd_ops are supported */
--	if (!ops)
--		return false;
--
- 	vm_flags &= __VM_UFFD_FLAGS;
- 
--	if (vma->vm_flags & VM_DROPPABLE)
--		return false;
--
- 	/*
--	 * If wp async enabled, and WP is the only mode enabled, allow any
-+	 * If WP is the only mode enabled and context is wp async, allow any
- 	 * memory type.
- 	 */
- 	if (wp_async && (vm_flags == VM_UFFD_WP))
- 		return true;
- 
-+	/* For any other mode reject VMAs that don't implement vm_uffd_ops */
-+	if (!ops)
-+		return false;
-+
-+	if (vma->vm_flags & VM_DROPPABLE)
-+		return false;
-+
- 	/*
- 	 * If user requested uffd-wp but not enabled pte markers for
- 	 * uffd-wp, then only anonymous memory is supported
--- 
-2.51.0
+Paolo
 
