@@ -1,49 +1,49 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6402F3E4C9E
-	for <kvm@vger.kernel.org>; Wed, 11 Mar 2026 18:42:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 523562FF675
+	for <kvm@vger.kernel.org>; Wed, 11 Mar 2026 18:46:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773254548; cv=none; b=Gr3wz3PqBZqnLv2aWetW3G6x6lgov10qYYdrnEAoyeY8t4O3cxMIowvU7ntYEYIJ0MyeAibj0Mmpj9x+JwQ6XpZUw3Ij6P8cA2CcTAcwTptboiai3icVP0CLe9OI/CpA2po0oDu90WI6U8k/rVjdAoVSroV5zM8DVUCvEtks/Ug=
+	t=1773254819; cv=none; b=cxfGCOvwVMyy+bXiSc+jhy0QLxRG0K03L0wCJ60KEjBjf6bWvGa2C0TwfZXyZF3EiKFc4KcYW6Z6PqVOb2RaLv2mf/lz2e3zakWqljp1OW/WYS5cWSEpRTYRr+JwWfemt8QZ4gupRew01KKoUD5/YLTbTaZolQdcm2H77eX1aK0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773254548; c=relaxed/simple;
-	bh=+gHgVvMd1jj97/gLhAV6tkZrqG1saYf5vIeMZHfxh3E=;
+	s=arc-20240116; t=1773254819; c=relaxed/simple;
+	bh=Iw2qScVqNJWSdZjRj9Ns9nJ9JwvAF0ZGqlGxvR23R0E=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=RZ19OLliTMsSf1rsh6em7JAW44PDHacCPuAwzfYMefdNM1wMkccEl/ekCDPHAqjmYw2zRNQG3ZC+O9eIr/3fZA4ypcgSwZyHw7OP/xBBiS4WAITtuzXupqOoSHO3vZCwcFL/xFQ1NQN8IBeakFBS9CWtMmjgTAhmQJRDV4rn0ZI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=FS0s96SR; arc=none smtp.client-ip=170.10.133.124
+	 In-Reply-To:Content-Type; b=kJoi5fww8f2tbWC+4JyI60WhhtdaaM80+u77Vwkzg1KQCwsU024AQgrqBBa14QJj34ImPUtnBiIM9cKNGUoAXxSVmu/FK7DU0+grGl3hD/dDPMffsZJ7oj7gmKXPKj95qDvUx1764haRUIQphUtKLLRIQCiCCJpzkbuNYbcF1a4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=HQlyKs2v; arc=none smtp.client-ip=170.10.129.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="FS0s96SR"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="HQlyKs2v"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1773254544;
+	s=mimecast20190719; t=1773254817;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=FzkYuMrD6XBES/iaamCN81VeybTibT84+oHMBD3yohg=;
-	b=FS0s96SRR+l+ZJsYirYJnqhPp+9+hKMY8o0XMNPJqSPPSTVm63dihEgwV/k0cpL8qIJy/U
-	zIQBuGQIoTZ8coQi2tbeJ8rhrkQAhU6MQFiOoDucaO2WaZZdCaDtrvv3Tt1hOmUb/Fe8lV
-	7s+tE0bclI1Ux62SCA98KeVGl1dsu1g=
+	bh=/pkEHB5uOFLCM0434mgJGXFNBapXANy5qIwNdAs9qQk=;
+	b=HQlyKs2v5d7ejd1pFsgDyBlZXPHwmKDE9QTDQ9O0av4eXCdOC3Tz0rCHKI4HKyX9HPQklE
+	AMbJZ7ouaK6xUDCJOaEZNAFcF/COgsjXuBhsUu3X77sr3v9rEbrNK2yqxcoMlOYelsCV3y
+	yDUEJJLgIo5hIdk6zBBnhAYSDqRrQrY=
 Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-436-KlW1TR7IMxqtDjhxenUABQ-1; Wed,
- 11 Mar 2026 14:42:20 -0400
-X-MC-Unique: KlW1TR7IMxqtDjhxenUABQ-1
-X-Mimecast-MFC-AGG-ID: KlW1TR7IMxqtDjhxenUABQ_1773254539
-Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-185-ju4yT5yOMeeqzWhzb7KmRQ-1; Wed,
+ 11 Mar 2026 14:46:51 -0400
+X-MC-Unique: ju4yT5yOMeeqzWhzb7KmRQ-1
+X-Mimecast-MFC-AGG-ID: ju4yT5yOMeeqzWhzb7KmRQ_1773254810
+Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 2947B1956089;
-	Wed, 11 Mar 2026 18:42:19 +0000 (UTC)
+	by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 084521956080;
+	Wed, 11 Mar 2026 18:46:50 +0000 (UTC)
 Received: from [10.44.32.138] (unknown [10.44.32.138])
-	by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 8B3931956095;
-	Wed, 11 Mar 2026 18:42:16 +0000 (UTC)
-Message-ID: <072ad56c-24d5-425a-9faf-c1a3ba732005@redhat.com>
-Date: Wed, 11 Mar 2026 19:42:15 +0100
+	by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 9424A30002D2;
+	Wed, 11 Mar 2026 18:46:47 +0000 (UTC)
+Message-ID: <b9d6d345-32ac-498d-8da9-bb8cca386413@redhat.com>
+Date: Wed, 11 Mar 2026 19:46:46 +0100
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -51,15 +51,13 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 16/16] KVM: x86: selftests: Add APX state handling and
- XCR0 sanity checks
-To: "Chang S. Bae" <chang.seok.bae@intel.com>,
- Sean Christopherson <seanjc@google.com>
-Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org, chao.gao@intel.com
-References: <20260112235408.168200-1-chang.seok.bae@intel.com>
- <20260112235408.168200-17-chang.seok.bae@intel.com>
- <aakGVnGI4jZ8yCUM@google.com>
- <5134f57b-8be0-4ddc-aa3a-f3a66ceca411@intel.com>
+Subject: Re: [PATCH 2/7] KVM: x86: Drop the "EX" part of "EXREG" to avoid
+ collision with APX
+To: Sean Christopherson <seanjc@google.com>, Kiryl Shutsemau <kas@kernel.org>
+Cc: kvm@vger.kernel.org, x86@kernel.org, linux-coco@lists.linux.dev,
+ linux-kernel@vger.kernel.org, "Chang S . Bae" <chang.seok.bae@intel.com>
+References: <20260311003346.2626238-1-seanjc@google.com>
+ <20260311003346.2626238-3-seanjc@google.com>
 From: Paolo Bonzini <pbonzini@redhat.com>
 Content-Language: en-US
 Autocrypt: addr=pbonzini@redhat.com; keydata=
@@ -97,26 +95,20 @@ Autocrypt: addr=pbonzini@redhat.com; keydata=
  JBrdmNZSQDz0iKmSrx8xkoXYfA3bgtFN8WJH2xgFL28XnqY4M6dLhJwV3z08tPSRqYFm4NMP
  dRsn0/7oymhneL8RthIvjDDQ5ktUjMe8LtHr70OZE/TT88qvEdhiIVUogHdo4qBrk41+gGQh
  b906Dudw5YhTJFU3nC6bbF2nrLlB4C/XSiH76ZvqzV0Z/cAMBo5NF/w=
-In-Reply-To: <5134f57b-8be0-4ddc-aa3a-f3a66ceca411@intel.com>
+In-Reply-To: <20260311003346.2626238-3-seanjc@google.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
 
-On 3/7/26 02:33, Chang S. Bae wrote:
-> On 3/4/2026 8:28 PM, Sean Christopherson wrote:
->>
->> I assume/hope there a more tests coming in future versions...
->>
->> KVM-Unit-Tests' x86/xsave.c would be a good fit, or at least a good 
->> reference
->> for what we should be testing as far as EGPR accesses are concerned.
+On 3/11/26 01:33, Sean Christopherson wrote:
+> Now that NR_VCPU_REGS is no longer a thing, drop the "EX" is for
+> extended (or maybe extra?") prefix from non-GRP registers to avoid a
+> collision with APX (Advanced Performance Extensions), which adds:
 > 
-> Yeah, I can see establishing a solid test set along with a new feature 
-> is pretty much a requirement for KVM. I'd come up with some updates. 
-> Right now, yes, considering that xsave.c. Thanks a lot!
+>    16 additional general-purpose registers (GPRs) R16–R31, also referred
+>    to as Extended GPRs (EGPRs)  in this document;
 
-Not a lot is needed, but please add at least something that uses the 
-forced emulation prefix to trigger the emulation paths.
+And also, now that RIP is effectively an EXREG.
 
 Paolo
 
