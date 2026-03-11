@@ -1,120 +1,239 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 96DB41B4138
-	for <kvm@vger.kernel.org>; Wed, 11 Mar 2026 21:33:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DDE8328507B;
+	Wed, 11 Mar 2026 21:36:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.176.79.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773264809; cv=none; b=ZaGhPMrU0hfoPKktivdyHE11+QnvTDe/MEyRWz6e+AemoQRxHWiH7EtA+rVAG2QQvGrtGvx6PBDgfcH8kB1VR5HD2i/aC3mSku+VdId9pF/ioOEGHZuOhf+U1CH3Emjuj1YykcwZ3Tj2V2JF1UXGM5Q3qEAGiKmD9c5FQ1//ZiI=
+	t=1773264963; cv=none; b=gfkLhHCHGWpmfHDqTCaXorvgPxt3PPmKdKFKv2oZhPohoGFISN7yX3Fw/hUeWuDCku1E3Vm9qXDLECmjF9q79LWl/oXa67JVB050UOGtMyHVkuJPK2QKi/T8mXuPjj6F0uIZEAXSGMO09GAhCYwQIa7B8Kv69svf5OzJLs2fVjE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773264809; c=relaxed/simple;
-	bh=+xIuMfe1YIl+3JhUhYoHKWOnxuiMmFkWrFkH1lCOOGE=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=u4FWleosjPOt8Ws723OzfI5c6DDvKE33eqmXzGw+/k6OONaU3JAGz8lJ5uhoGGnFlOSgvmeGO0Yyg46ZQWVZgjZHTeWX9VOrtzmUu2ZGB+gYfYUT7sNM+XCd8ulIxdu3RGcTcMc5TzJPfUMWZsyLtQZf/Un9d8NJ12uNmiJaey4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=h2GAh0Po; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="h2GAh0Po"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1773264807;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=0aPsnxhaGZ2SHwckBfXK8SGt64OcxEQa8coX1LgBmlE=;
-	b=h2GAh0PoX5ELCuRIW6s/EDU867ew9EUCCfdngqIP8a6q/h1FOXNhNQhJRTxEQqWVymDdyh
-	FgTh0dj0u2Bg2g8SDEzuCb1jr/4+zcOuXlRJL9zKg7UOfmeA/TJktfPWiMsbAyWPrlksSd
-	+coVmsqvMnsFCQnGddx6mchC7tpdXdw=
-Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-547-nZ0m-JzGMYWgw6iBi8kYGg-1; Wed,
- 11 Mar 2026 17:33:26 -0400
-X-MC-Unique: nZ0m-JzGMYWgw6iBi8kYGg-1
-X-Mimecast-MFC-AGG-ID: nZ0m-JzGMYWgw6iBi8kYGg_1773264804
-Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 9B366180034E;
-	Wed, 11 Mar 2026 21:33:24 +0000 (UTC)
-Received: from [10.44.32.138] (unknown [10.44.32.138])
-	by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 0798D18002A6;
-	Wed, 11 Mar 2026 21:33:21 +0000 (UTC)
-Message-ID: <7ec084f8-812e-42f2-8470-e416fa7ee848@redhat.com>
-Date: Wed, 11 Mar 2026 20:01:21 +0100
+	s=arc-20240116; t=1773264963; c=relaxed/simple;
+	bh=KGKIobWW4qHnK1GBXmBm9IZiT2+mrhufqvLwLka5pFw=;
+	h=Date:From:To:CC:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=c0Tgyc4Tzscmpqu+Cn808SDjhqD9avfPl106gMDe1Bbsye+qNCNP7WZN82OMPeqLIMKJyO4yGrdtA+vf8E+/WI9JHXsCJl4CE4CPZMf+Ut9f1NMXQHgX/1THWuEkkLO9Yh19BrrcWoO8sTK1ysrsopCkM5NkrNG7vovsvG4t4BY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=185.176.79.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+Received: from mail.maildlp.com (unknown [172.18.224.83])
+	by frasgout.his.huawei.com (SkyGuard) with ESMTPS id 4fWPF11xPNzHnGcl;
+	Thu, 12 Mar 2026 05:35:49 +0800 (CST)
+Received: from dubpeml500005.china.huawei.com (unknown [7.214.145.207])
+	by mail.maildlp.com (Postfix) with ESMTPS id A79A540569;
+	Thu, 12 Mar 2026 05:35:57 +0800 (CST)
+Received: from localhost (10.48.148.123) by dubpeml500005.china.huawei.com
+ (7.214.145.207) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Wed, 11 Mar
+ 2026 21:35:56 +0000
+Date: Wed, 11 Mar 2026 21:35:55 +0000
+From: Jonathan Cameron <jonathan.cameron@huawei.com>
+To: "Aneesh Kumar K.V (Arm)" <aneesh.kumar@kernel.org>
+CC: <iommu@lists.linux.dev>, <linux-kernel@vger.kernel.org>,
+	<kvm@vger.kernel.org>, Kevin Tian <kevin.tian@intel.com>, Joerg Roedel
+	<joro@8bytes.org>, Will Deacon <will@kernel.org>, Bjorn Helgaas
+	<helgaas@kernel.org>, Dan Williams <dan.j.williams@intel.com>, "Alexey
+ Kardashevskiy" <aik@amd.com>, Samuel Ortiz <sameo@rivosinc.com>, Xu Yilun
+	<yilun.xu@linux.intel.com>, Jason Gunthorpe <jgg@ziepe.ca>, "Suzuki K
+ Poulose" <Suzuki.Poulose@arm.com>, Steven Price <steven.price@arm.com>
+Subject: Re: [PATCH v2 2/3] iommufd/tsm: add vdevice TSM bind/unbind ioctl
+Message-ID: <20260311213555.00001064@huawei.com>
+In-Reply-To: <20260309111704.2330479-3-aneesh.kumar@kernel.org>
+References: <20260309111704.2330479-1-aneesh.kumar@kernel.org>
+	<20260309111704.2330479-3-aneesh.kumar@kernel.org>
+X-Mailer: Claws Mail 4.3.0 (GTK 3.24.42; x86_64-w64-mingw32)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 0/7] KVM: x86: APX reg prep work
-To: Sean Christopherson <seanjc@google.com>, Kiryl Shutsemau <kas@kernel.org>
-Cc: kvm@vger.kernel.org, x86@kernel.org, linux-coco@lists.linux.dev,
- linux-kernel@vger.kernel.org, "Chang S . Bae" <chang.seok.bae@intel.com>
-References: <20260311003346.2626238-1-seanjc@google.com>
-From: Paolo Bonzini <pbonzini@redhat.com>
-Content-Language: en-US
-Autocrypt: addr=pbonzini@redhat.com; keydata=
- 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
-In-Reply-To: <20260311003346.2626238-1-seanjc@google.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset="US-ASCII"
 Content-Transfer-Encoding: 7bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
+X-ClientProxiedBy: lhrpeml500010.china.huawei.com (7.191.174.240) To
+ dubpeml500005.china.huawei.com (7.214.145.207)
 
-On 3/11/26 01:33, Sean Christopherson wrote:
-> Clean up KVM's register tracking and storage in preparation for landing APX,
-> which expands the maximum number of GPRs from 16 to 32.
+On Mon,  9 Mar 2026 16:47:03 +0530
+"Aneesh Kumar K.V (Arm)" <aneesh.kumar@kernel.org> wrote:
+
+> Introduce IOMMU_VDEVICE_TSM_OP to allow userspace to issue TSM bind/unbind
+> operations for an iommufd vdevice.
 > 
-> This is kinda sorta an RFC, as there are some very opinionated changes.  I.e.
-> if you dislike something, please speak up.
+> The new ioctl:
+> - looks up the vdevice object from vdevice_id
+> - resolves the associated KVM VM from the vIOMMU KVM file reference
+> - dispatches bind/unbind via tsm_bind()/tsm_unbind()
 > 
-> My thought is to treat R16-R31 as much like other GPRs as possible (though
-> maybe we don't need to expand regs[] as sketched out in the last patch?).
+> Also add common TSM helpers in tsm-core and wire vdevice teardown to unbind
+> the device from TSM state.
+> 
+> This provides iommufd plumbing to bind a TDI to a confidential guest through
+> the TSM layer.
 
-The cleanups in patches 1-4 are nice.
+> Signed-off-by: Aneesh Kumar K.V (Arm) <aneesh.kumar@kernel.org>
+Hi Aneesh,
 
-For APX specifically, in abstract it's nice to treat R16-R31 as much as 
-possible as regular GPRs.  On the other hand, the extra 16 regs[] 
-entries would be more or less unused, the ugly switch statements 
-wouldn't go away.  In other words, most of your remarks to Changseok's 
-patches would remain...
+Some superficial code flow suggestions.  I've not gotten
+my head around the broader picture yet, so may well come back with
+more comments later.
 
-Paolo
+Thanks,
+Jonathan
+
+> ---
+>  drivers/iommu/iommufd/Makefile          |  2 +
+>  drivers/iommu/iommufd/iommufd_private.h |  8 +++
+>  drivers/iommu/iommufd/main.c            |  3 ++
+>  drivers/iommu/iommufd/tsm.c             | 67 +++++++++++++++++++++++++
+>  drivers/iommu/iommufd/viommu.c          |  3 ++
+>  drivers/virt/coco/tsm-core.c            | 19 +++++++
+>  include/linux/tsm.h                     | 18 +++++++
+>  include/uapi/linux/iommufd.h            | 18 +++++++
+>  8 files changed, 138 insertions(+)
+>  create mode 100644 drivers/iommu/iommufd/tsm.c
+> 
+> diff --git a/drivers/iommu/iommufd/Makefile b/drivers/iommu/iommufd/Makefile
+> index 71d692c9a8f4..431089089ee9 100644
+> --- a/drivers/iommu/iommufd/Makefile
+> +++ b/drivers/iommu/iommufd/Makefile
+> @@ -10,6 +10,8 @@ iommufd-y := \
+>  	vfio_compat.o \
+>  	viommu.o
+>  
+> +iommufd-$(CONFIG_TSM) += tsm.o
+> +
+Probably no blank line here. Style choices in these are a bit random
+though so this is kind of a taste thing.
+
+>  iommufd-$(CONFIG_IOMMUFD_TEST) += selftest.o
+>  
+>  obj-$(CONFIG_IOMMUFD) += iommufd.o
+
+> diff --git a/drivers/iommu/iommufd/tsm.c b/drivers/iommu/iommufd/tsm.c
+> new file mode 100644
+> index 000000000000..401469110752
+> --- /dev/null
+> +++ b/drivers/iommu/iommufd/tsm.c
+> @@ -0,0 +1,67 @@
+> +// SPDX-License-Identifier: GPL-2.0-only
+> +/*
+> + * Copyright (C) 2026 ARM Ltd.
+> + */
+> +
+> +#include "iommufd_private.h"
+> +#include <linux/tsm.h>
+> +
+> +/**
+> + * iommufd_vdevice_tsm_op_ioctl - Handle vdevice TSM operations
+> + * @ucmd: user command data for IOMMU_VDEVICE_TSM_OP
+> + *
+> + * Currently only supports TSM bind/unbind operations
+> + * Resolve @iommu_vdevice_tsm_op::vdevice_id to a vdevice and dispatch the
+> + * requested bind/unbind operation through the TSM core.
+> + *
+> + * Return: 0 on success, or a negative error code on failure.
+> + */
+> +int iommufd_vdevice_tsm_op_ioctl(struct iommufd_ucmd *ucmd)
+> +{
+> +	int rc;
+> +	struct kvm *kvm;
+> +	struct iommufd_vdevice *vdev;
+> +	struct iommu_vdevice_tsm_op *cmd = ucmd->cmd;
+> +
+> +	if (cmd->flags)
+> +		return -EOPNOTSUPP;
+> +
+> +	vdev = container_of(iommufd_get_object(ucmd->ictx, cmd->vdevice_id,
+> +					       IOMMUFD_OBJ_VDEVICE),
+> +			    struct iommufd_vdevice, obj);
+
+I'd be tempted to do something with a helper function to simplify flow.
+
+	obj = iommufd_get_object();...
+
+	if (IS_ERR(obj) //I think it can be?
+		return PTR_ERR(obj);
+
+	rc = iommufd_vdevice_do_tsm_op_ioctl(obj, ...) //name could be improved
+	iommufd_put_object(ucmd->ictx, &vdev->obj);
+
+	return rc;
+
+Then the helper function can do direct returns on errors given the
+iommfd_object is managed in outer function.
+
+> +	if (IS_ERR(vdev))
+> +		return PTR_ERR(vdev);
+> +
+> +	if (!vdev->viommu->kvm_filp) {
+> +		rc = -ENODEV;
+> +		goto out_put_vdev;
+> +	}
+> +
+> +	kvm = vdev->viommu->kvm_filp->private_data;
+> +	if (!kvm) {
+> +		rc = -ENODEV;
+> +		goto out_put_vdev;
+> +	}
+> +
+> +	/* tsm layer will take care of parallel calls to tsm_bind/unbind */
+> +	switch (cmd->op) {
+> +	case IOMMU_VDEVICE_TSM_BIND:
+> +		rc = tsm_bind(vdev->idev->dev, kvm, vdev->virt_id);
+> +		break;
+> +	case IOMMU_VDEVICE_TSM_UNBIND:
+> +		rc = tsm_unbind(vdev->idev->dev);
+> +		break;
+> +	default:
+> +		rc = -EINVAL;
+> +		goto out_put_vdev;
+> +	}
+> +
+> +	if (rc)
+> +		goto out_put_vdev;
+> +
+> +	rc = iommufd_ucmd_respond(ucmd, sizeof(*cmd));
+> +
+> +out_put_vdev:
+> +	iommufd_put_object(ucmd->ictx, &vdev->obj);
+> +	return rc;
+> +}
+
+> diff --git a/include/linux/tsm.h b/include/linux/tsm.h
+> index 7f72a154b6b2..9f2a7868021a 100644
+> --- a/include/linux/tsm.h
+> +++ b/include/linux/tsm.h
+> @@ -124,6 +124,24 @@ struct tsm_dev *tsm_register(struct device *parent, struct pci_tsm_ops *ops);
+>  void tsm_unregister(struct tsm_dev *tsm_dev);
+>  struct tsm_dev *find_tsm_dev(int id);
+>  struct pci_ide;
+> +struct kvm;
+
+Why up here? struct pci_ide is here for the next two calls, so no need
+to group with that.
+
+>  int tsm_ide_stream_register(struct pci_ide *ide);
+>  void tsm_ide_stream_unregister(struct pci_ide *ide);
+
+Feels like the forwards def belongs here.
+
+> +#ifdef CONFIG_TSM
+> +int tsm_bind(struct device *dev, struct kvm *kvm, u64 tdi_id);
+> +int tsm_unbind(struct device *dev);
+> +
+White space is a bit inconsistent. I don't mind seeing some
+here, but if so, add some around the ifdef above.
+
+> +#else
+> +
+> +static inline int tsm_bind(struct device *dev, struct kvm *kvm, u64 tdi_id)
+> +{
+> +	return -EINVAL;
+> +}
+> +
+> +static inline int tsm_unbind(struct device *dev)
+> +{
+> +	return 0;
+> +}
+> +#endif
+> +
+>  #endif /* __TSM_H */
 
