@@ -1,141 +1,197 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lf1-f46.google.com (mail-lf1-f46.google.com [209.85.167.46])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A6FDE28469A
-	for <kvm@vger.kernel.org>; Wed, 11 Mar 2026 02:04:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773194645; cv=none; b=Jd3YUCIQwRyGZu3LeDqxLu0lzrnYzVdHqWaeISX6CL+/C6CuGWSNQ509FYmenpZRGX6M48PI6p7/+EmraaxotPY/+7p/oTtdg3kzBk6OyXmHtcmhsKCelTQPNc8O4zNQ1mdM3mL3aze8FSDD8FyK0REKLK9SA+GjMOrxcUWXuwE=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773194645; c=relaxed/simple;
-	bh=PPErToIQW3sWxAd1STr1jsqwiscRK1JDHqYlV2RxXEw=;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6139E345CDA
+	for <kvm@vger.kernel.org>; Wed, 11 Mar 2026 02:07:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.167.46
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1773194859; cv=pass; b=k6D5LTyVR5mcU0g25mxbdn6mXvcfT3CYWAV7DWFXwJ9oQYfplJv44kuIMVRFTgChO3LAk1V1q5b1zQuFuWMIkVrugTSkQlX3fxF4QYxEWe9DVwtggWkmcQuS/zOPOmgjS+4AGRHAg0RjBYJ16YzsnknJUAwTxZEyGzNQT5gAnuA=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1773194859; c=relaxed/simple;
+	bh=8UJnLa/DDQ+b65RDSHa97nR/Rm6zetnRjswOkVb13wc=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Xw/UgFZxKytRjExzRe2IXv5qhbKdIV2VtXHgiqFt/I5Fzzu4TmW3GIWYVz56A5wGtrMgaiBoChjwNK/UpIQrH07YFW9DO9BerxFAJxs4MhzVg6ha+w2CoLuGPgPBd978PUMxvji8y5ZMa47H4xp+skJBIjP2YXRMtJTg7V1LUl8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MD4bS3iB; arc=none smtp.client-ip=10.30.226.201
+	 To:Cc:Content-Type; b=l2g2yzZ4Dybh6kuhvcBULVguDYhdrEOCm8tFVHG5HxZiMK4r1ieV3XC7DvFbBP/+LmMwsbfu65u9ArSpCtaVdbPZteok84/rVMReHCYXmpmbYEy9zrdrliUY8eD89Ecnaq3KiIRSp5NcaBqhT+HUD7Ww+h1VR8ou9i4C8J9QSO4=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=SqpOgAb4; arc=pass smtp.client-ip=209.85.167.46
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MD4bS3iB"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8C7C2C2BCB2
-	for <kvm@vger.kernel.org>; Wed, 11 Mar 2026 02:04:05 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773194645;
-	bh=PPErToIQW3sWxAd1STr1jsqwiscRK1JDHqYlV2RxXEw=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=MD4bS3iBtcgWieB3asBVkN1MOGU1gD5yDC/TzMVPWq4bOx/kQdL46HpKVgd4XMUNq
-	 Ulrd8QDJdo95s9mNVLJ1eEwUO9QJJd+8gtBLeWAZ6+O8ewm9GmjOyRNOGftKn+zJzH
-	 OLyChipIlL098KhgSFmig6DqdyTTpgd+LY5RJMjoYvmpDuv9gcKnSdLZKRq26nx64W
-	 up9ZDNxVH33DK15Plngvsovs3vK/rm+TxcMkKR1NmySNMY1tIOzVOs0QmYNJd309mu
-	 UOPM6lAdiCVqcqtGdKQujn6AX+zMWdfgd8HfE8pKl1Sz6q9D6oU4gUWgg3J92ooCs5
-	 fzhw5npi/IH+w==
-Received: by mail-ej1-f41.google.com with SMTP id a640c23a62f3a-b943b75dc42so761640766b.3
-        for <kvm@vger.kernel.org>; Tue, 10 Mar 2026 19:04:05 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCUT1cKRAwrflf1VpSnRxEXifbfsQG4ppyy6rx+DDpf2R2u99hEPM05V8nnQkEf9QzqyQ6Y=@vger.kernel.org
-X-Gm-Message-State: AOJu0YywUe0nrFQjWxde0jHejr2cC9QCfVAZ0asFNtnjwkPEF98vcnAe
-	9c2LHsi/LWXZpHV0w659n9gHnBw5tjP0O77rnVb+2MvGBf/SqUg/WsdG+LuVQl2+FYHMh6Db7b4
-	h5HuUwPXeUs9nDQY2tx7D76lyYfJ4DcE=
-X-Received: by 2002:a17:907:a088:b0:b8a:f7ec:d995 with SMTP id
- a640c23a62f3a-b972e167afbmr38189666b.9.1773194644316; Tue, 10 Mar 2026
- 19:04:04 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="SqpOgAb4"
+Received: by mail-lf1-f46.google.com with SMTP id 2adb3069b0e04-5a1362c9a3cso5630115e87.2
+        for <kvm@vger.kernel.org>; Tue, 10 Mar 2026 19:07:34 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1773194852; cv=none;
+        d=google.com; s=arc-20240605;
+        b=Zk7xGdDtZWCzfrWIlmaGTHm6TG9bPRcBtmX93Mg5AmnXUpq9hygm65jCAdlArQ3jrb
+         h9G1NNZOA6UYXNdBsf9TAnhCnWLA4ktEQY2IV1zprVl/+/ARHAc5cJnxYk7oPq9rTTP5
+         VyRl4VltVypEoplLXeckjqE1Y6TzGA9frbmBPbxuNELMOIah8IOxGcj+HXuPO/dKVt1s
+         5J6XQoT+n3Y+3UjaBRLRwND78QLrQpovcs7enW0UuwWDyhxhfkVyYAfPON+Zt+kclKZw
+         Ezk5hV2+5YQl92d1ObOOST2KLAFHdFjt+CFac84zWDXXS7RW9sZqXnH99bJVYfAollfT
+         ogPA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=+zLBLQzKjcztDlxJqoLP6w+B6xnZmfHibV4jlBQCebA=;
+        fh=VhrjukSvSCEXGZHuy5dmeO0yI3SwXqO/b0nQ961VowE=;
+        b=BW6K3iKqW5CWCw9Jgx3EJhwKttybU2ZRbjzGlNY5RPT9egcdlm5Qlf04EAWnMNJK5Y
+         zPYKlp9APXJfrXKGrhWdnEQZaR23trlfhAHc7W+TPNWywIN3MfFfWm5K5YLoS7rJEQoh
+         JbbTo6egViSYu7E9w9GWs9vSJxwLxGASFCBVcgOjHE2fw8KKxpjX5y2Lg/qPqK1zUkoD
+         DffY9a3XWoWLq0bvixbPst7wCjYPM8sTaiLzLQML+XLtt0BRjS9jwQVg4rg1JzkqH60/
+         PKkcQtfN8uKyCd5tC8Hs5CIXL/sr1FlByG23gFFZDsIuZuTtTH320uebRiWAynztX65W
+         oudA==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google; t=1773194852; x=1773799652; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=+zLBLQzKjcztDlxJqoLP6w+B6xnZmfHibV4jlBQCebA=;
+        b=SqpOgAb4CQOCp6QT1IhDiJXNOENCCAthmmQiQ2Xm1LqdH6AuNnr9pWEOxoaM6J2EHp
+         TaZvrNsWvEAAdeAh3rGZCGLrxzU767HUy57VJt43+079ae3+2kuAr2+JBVbU8T9+l/BT
+         vjjO+GANIyds0bGFgUhdgNG0FnF3NJi/nWQH4=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1773194852; x=1773799652;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=+zLBLQzKjcztDlxJqoLP6w+B6xnZmfHibV4jlBQCebA=;
+        b=Wc6Q8BGLhxT8sfaKhSvczW45sU/tVtv5S6LK4+LoMxcDRkcVFXBd6HDMwkJwHiGgIY
+         EpjIenAC49GVNkzpJKob+gYFSQZd3opfROAFKC1pD8uevyIEE2Xw9GTm5VBHsuHJry/G
+         Zfj3pYok+U5o2DB6hjsshPE/tKGtXF316Tq7l6Wnpjcq4jp4hOFi97f0r+LkTFB+kkDH
+         YcXhl80mC+Qd31CgaZjKM+1jeDWoljbovoUpVtSkpWoleeDjb5CTTIvWovkSZ++P2HoM
+         +HIibEGjJjVAt6sOVNh8QfdxWA8CWWz/AM7FaHZgYw6NjmrVBK3uvCV1Edxzy1vcIskz
+         vTlQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVSCr34IBcqaxinlWXKrC2TzyyMROxinwnETKWdHQU8kBct25oWIcMwYPGrui2NaKh7uqM=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxaxfMTvGvq0FihfprBIIzTZIQg3GBH3BM+fw/9b1RFwYFgyXsu
+	ShAd+hv7snnBbQkePpcBHZaclnaU8C+dOEuY+gaEmdrHrvd8Buj3KuchJ/ILX51i1r+Gk/tg4pV
+	MKlkChZF18Q+c9DJySWegwoekOjSa7z2LmOh9mHOe
+X-Gm-Gg: ATEYQzz9YKtQTa8eWEyYpmPfOoB0MBMVgOdRoSeeBxV5+SKzT/dQ88IhRKyA1kejJ69
+	QS2xAnpOdV+FzGgg0NWAX+r5f5xT92JDZEwx+ahKJX4M08n6sELEoK4U4zcNhvIMs8zzgqDZ6hG
+	Ns+XwxHbG91UfffOgFNAvpXLNoNTJeqo90/njqCQya0++42hNcKQIZXzx70w3pct8EnP3PPKJH2
+	Kaa9z+/ojSjPMzGk5eWEhAGz6b9+dwOMVySbWCCFem5c2fImHHcr1T125QBUVKU0zM3vsET24N1
+	XLH7hG1UJQ==
+X-Received: by 2002:ac2:4427:0:b0:5a1:3134:9bac with SMTP id
+ 2adb3069b0e04-5a156cbd1bbmr169453e87.28.1773194852284; Tue, 10 Mar 2026
+ 19:07:32 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260311003346.2626238-1-seanjc@google.com> <20260311003346.2626238-5-seanjc@google.com>
-In-Reply-To: <20260311003346.2626238-5-seanjc@google.com>
-From: Yosry Ahmed <yosry@kernel.org>
-Date: Tue, 10 Mar 2026 19:03:53 -0700
-X-Gmail-Original-Message-ID: <CAO9r8zNBEOJrxbx8ob2KRLRKkd_aZjz8tyXGqXxs0=TJq4fU6Q@mail.gmail.com>
-X-Gm-Features: AaiRm53EpaamTGlu_jPI-y69DhSfy2spGK0sYTQIJ2IkTVwh7LQIU9EaVnAaL2g
-Message-ID: <CAO9r8zNBEOJrxbx8ob2KRLRKkd_aZjz8tyXGqXxs0=TJq4fU6Q@mail.gmail.com>
-Subject: Re: [PATCH 4/7] KVM: x86: Add wrapper APIs to reset dirty/available
- register masks
-To: Sean Christopherson <seanjc@google.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>, Kiryl Shutsemau <kas@kernel.org>, kvm@vger.kernel.org, 
-	x86@kernel.org, linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org, 
-	"Chang S . Bae" <chang.seok.bae@intel.com>
+References: <20260310-b4-is_err_or_null-v1-0-bd63b656022d@avm.de> <20260310-b4-is_err_or_null-v1-56-bd63b656022d@avm.de>
+In-Reply-To: <20260310-b4-is_err_or_null-v1-56-bd63b656022d@avm.de>
+From: Chen-Yu Tsai <wenst@chromium.org>
+Date: Wed, 11 Mar 2026 11:07:21 +0900
+X-Gm-Features: AaiRm5028PWt8n-JnveiRgn8oYMksdR_-_nk4JOkvxMfplWs-GDr7RRk-OxICyw
+Message-ID: <CAGXv+5FQAVaJjqhv+Xq-ysOc4SHQn2mCNTgCAp8XocmWBWGGoA@mail.gmail.com>
+Subject: Re: [PATCH 56/61] clk: Prefer IS_ERR_OR_NULL over manual NULL check
+To: Philipp Hahn <phahn-oss@avm.de>
+Cc: amd-gfx@lists.freedesktop.org, apparmor@lists.ubuntu.com, 
+	bpf@vger.kernel.org, ceph-devel@vger.kernel.org, cocci@inria.fr, 
+	dm-devel@lists.linux.dev, dri-devel@lists.freedesktop.org, 
+	gfs2@lists.linux.dev, intel-gfx@lists.freedesktop.org, 
+	intel-wired-lan@lists.osuosl.org, iommu@lists.linux.dev, kvm@vger.kernel.org, 
+	linux-arm-kernel@lists.infradead.org, linux-block@vger.kernel.org, 
+	linux-bluetooth@vger.kernel.org, linux-btrfs@vger.kernel.org, 
+	linux-cifs@vger.kernel.org, linux-clk@vger.kernel.org, 
+	linux-erofs@lists.ozlabs.org, linux-ext4@vger.kernel.org, 
+	linux-fsdevel@vger.kernel.org, linux-gpio@vger.kernel.org, 
+	linux-hyperv@vger.kernel.org, linux-input@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-leds@vger.kernel.org, 
+	linux-media@vger.kernel.org, linux-mips@vger.kernel.org, linux-mm@kvack.org, 
+	linux-modules@vger.kernel.org, linux-mtd@lists.infradead.org, 
+	linux-nfs@vger.kernel.org, linux-omap@vger.kernel.org, 
+	linux-phy@lists.infradead.org, linux-pm@vger.kernel.org, 
+	linux-rockchip@lists.infradead.org, linux-s390@vger.kernel.org, 
+	linux-scsi@vger.kernel.org, linux-sctp@vger.kernel.org, 
+	linux-security-module@vger.kernel.org, linux-sh@vger.kernel.org, 
+	linux-sound@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com, 
+	linux-trace-kernel@vger.kernel.org, linux-usb@vger.kernel.org, 
+	linux-wireless@vger.kernel.org, netdev@vger.kernel.org, ntfs3@lists.linux.dev, 
+	samba-technical@lists.samba.org, sched-ext@lists.linux.dev, 
+	target-devel@vger.kernel.org, tipc-discussion@lists.sourceforge.net, 
+	v9fs@lists.linux.dev, Michael Turquette <mturquette@baylibre.com>, 
+	Stephen Boyd <sboyd@kernel.org>, Daniel Lezcano <daniel.lezcano@kernel.org>, 
+	Thomas Gleixner <tglx@kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Tue, Mar 10, 2026 at 5:34=E2=80=AFPM Sean Christopherson <seanjc@google.=
-com> wrote:
+On Tue, Mar 10, 2026 at 9:57=E2=80=AFPM Philipp Hahn <phahn-oss@avm.de> wro=
+te:
 >
-> Add wrappers for setting regs_{avail,dirty} in anticipation of turning th=
-e
-> fields into proper bitmaps, at which point direct writes won't work so
-> well.
+> Prefer using IS_ERR_OR_NULL() over using IS_ERR() and a manual NULL
+> check.
 >
-> Deliberately leave the initialization in kvm_arch_vcpu_create() as-is,
-> because the regs_avail logic in particular is special in that it's the on=
-e
-> and only place where KVM marks eagerly synchronized registers as availabl=
-e.
+> Semantich change: Previously the code only printed the warning on error,
+> but not when the pointer was NULL. Now the warning is printed in both
+> cases!
 >
-> No functional change intended.
+> Change found with coccinelle.
 >
-> Signed-off-by: Sean Christopherson <seanjc@google.com>
+> To: Michael Turquette <mturquette@baylibre.com>
+> To: Stephen Boyd <sboyd@kernel.org>
+> To: Daniel Lezcano <daniel.lezcano@kernel.org>
+> To: Thomas Gleixner <tglx@kernel.org>
+> Cc: linux-clk@vger.kernel.org
+> Cc: linux-kernel@vger.kernel.org
+> Signed-off-by: Philipp Hahn <phahn-oss@avm.de>
 > ---
->  arch/x86/kvm/kvm_cache_regs.h | 19 +++++++++++++++++++
->  arch/x86/kvm/svm/svm.c        |  4 ++--
->  arch/x86/kvm/vmx/nested.c     |  4 ++--
->  arch/x86/kvm/vmx/tdx.c        |  2 +-
->  arch/x86/kvm/vmx/vmx.c        |  4 ++--
->  5 files changed, 26 insertions(+), 7 deletions(-)
+>  drivers/clk/clk.c               | 4 ++--
+>  drivers/clocksource/timer-pxa.c | 2 +-
+>  2 files changed, 3 insertions(+), 3 deletions(-)
 >
-> diff --git a/arch/x86/kvm/kvm_cache_regs.h b/arch/x86/kvm/kvm_cache_regs.=
-h
-> index ac1f9867a234..94e31cf38cb8 100644
-> --- a/arch/x86/kvm/kvm_cache_regs.h
-> +++ b/arch/x86/kvm/kvm_cache_regs.h
-> @@ -105,6 +105,25 @@ static __always_inline bool kvm_register_test_and_ma=
-rk_available(struct kvm_vcpu
->         return arch___test_and_set_bit(reg, (unsigned long *)&vcpu->arch.=
-regs_avail);
->  }
+> diff --git a/drivers/clk/clk.c b/drivers/clk/clk.c
+> index 47093cda9df32223c1120c3710261296027c4cd3..35146e3869a7dd93741d10b72=
+23d4488a9216ed1 100644
+> --- a/drivers/clk/clk.c
+> +++ b/drivers/clk/clk.c
+> @@ -4558,7 +4558,7 @@ void clk_unregister(struct clk *clk)
+>         unsigned long flags;
+>         const struct clk_ops *ops;
 >
-> +static __always_inline void kvm_reset_available_registers(struct kvm_vcp=
-u *vcpu,
-> +                                                         u32 available_m=
-ask)
+> -       if (!clk || WARN_ON_ONCE(IS_ERR(clk)))
+> +       if (WARN_ON_ONCE(IS_ERR_OR_NULL(clk)))
+>                 return;
+>
+>         clk_debug_unregister(clk->core);
+> @@ -4744,7 +4744,7 @@ void __clk_put(struct clk *clk)
+>  {
+>         struct module *owner;
+>
+> -       if (!clk || WARN_ON_ONCE(IS_ERR(clk)))
+> +       if (WARN_ON_ONCE(IS_ERR_OR_NULL(clk)))
 
-Not closely following this series and don't know this code well, but
-this API is very confusing for me tbh. Especially in comparison with
-kvm_reset_dirty_registers().
+clk_get_optional() returns NULL if the clk isn't present.
 
-Maybe rename this to kvm_clear_available_registers(), and pass in a
-"clear_mask", then reverse the polarity:
+Drivers would just pass this to clk_put(). Your change here would cause
+this pattern to emit a very big warning.
 
-vcpu->arch.regs_avail &=3D ~clear_mask;
+I don't think this change should be landed.
 
-Most callers are already passing in an inverse of a mask, so might as
-well pass the mask as-is and invert it here, and it helps make the
-name clear, we're passing in a bitmask to clear from regs_avail.
 
-> +{
-> +       /*
-> +        * Note the bitwise-AND!  In practice, a straight write would als=
-o work
-> +        * as KVM initializes the mask to all ones and never clears regis=
-ters
-> +        * that are eagerly synchronized.  Using a bitwise-AND adds a bit=
- of
-> +        * sanity checking as incorrectly marking an eagerly sync'd regis=
-ter
-> +        * unavailable will generate a WARN due to an unexpected cache re=
-quest.
-> +        */
-> +       vcpu->arch.regs_avail &=3D available_mask;
-> +}
-> +
-> +static __always_inline void kvm_reset_dirty_registers(struct kvm_vcpu *v=
-cpu,
-> +                                                     u32 dirty_mask)
-> +{
-> +       vcpu->arch.regs_dirty =3D dirty_mask;
-> +}
-> +
->  /*
->   * The "raw" register helpers are only for cases where the full 64 bits =
-of a
->   * register are read/written irrespective of current vCPU mode.  In othe=
-r words,
+ChenYu
+
+>                 return;
+>
+>         clk_prepare_lock();
+> diff --git a/drivers/clocksource/timer-pxa.c b/drivers/clocksource/timer-=
+pxa.c
+> index 7ad0e5adb2ffac4125c34710fc67f4b45f30331d..f65fb0b7fc318b766227e5e7a=
+4c0fb08ba11c8f9 100644
+> --- a/drivers/clocksource/timer-pxa.c
+> +++ b/drivers/clocksource/timer-pxa.c
+> @@ -218,7 +218,7 @@ void __init pxa_timer_nodt_init(int irq, void __iomem=
+ *base)
+>
+>         timer_base =3D base;
+>         clk =3D clk_get(NULL, "OSTIMER0");
+> -       if (clk && !IS_ERR(clk)) {
+> +       if (!IS_ERR_OR_NULL(clk)) {
+>                 clk_prepare_enable(clk);
+>                 pxa_timer_common_init(irq, clk_get_rate(clk));
+>         } else {
+>
+> --
+> 2.43.0
+>
+>
