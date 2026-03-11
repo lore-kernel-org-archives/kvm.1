@@ -1,262 +1,312 @@
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+Received: from BL2PR02CU003.outbound.protection.outlook.com (mail-eastusazon11011044.outbound.protection.outlook.com [52.101.52.44])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 511FB3043DC;
-	Wed, 11 Mar 2026 20:24:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773260692; cv=none; b=bbdERLCcAGxixXuxoLGEwuo6gwXDqtuWib3Y2klzRy9oW8UBOIbLZjkJIOEqjd7nIuaiTYF+xLxZXuPx3Vk/+LS4pyUL22DjROi/FIC8hGt7dJ2NeMUkdRGtA/CwixMKJWUgeSTskiRrlgoAvBPxlPFSIvFoAMBfIHgWhyFahVM=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773260692; c=relaxed/simple;
-	bh=OZDjC1uCYwquj6LEjogkQwQlw/1E1JEum6n52cX/nxQ=;
-	h=Message-ID:Date:MIME-Version:Subject:To:References:From:
-	 In-Reply-To:Content-Type; b=hhSBGAbXpMT6f+QD6UD85hx0thmDH0oBVcZn1b950LYNTXNOtA5hzMU0go1p8ZTy5p7AoRbYLqKsrkPuaI8Z8iIm3CXtVAt7prYhwseBxk97rBPvo+jQWPh3QT7hq/zN+ZgDuMHp1xAP9ux0u/V0TG9Y2KoUlOhLOnkk/UWJiKw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=LUQkwkY9; arc=none smtp.client-ip=148.163.156.1
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD06D345CAF;
+	Wed, 11 Mar 2026 20:35:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.52.44
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1773261327; cv=fail; b=B9l0wVZ0G7tr6ifg+fC4xySxBtfF8CxhFEArUmId/Cgv9JWOcN8RGSEzfIRV1u13oeGx10OsWHceAsxIg3AEy0dnqBpAbgbBvPqK29lles3CO18lCf+7XbMd8/8MepuAU/1UksjeMXegjjXCBxF5RJDGRJMW9kzgdDMHYRBqXuM=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1773261327; c=relaxed/simple;
+	bh=CCoptU9NBkVwvzcMhPg6iCcmJLCPRE4D7CQ0CaSYnNI=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=OARvWAAHwdxqBOuWHa8BGuT6C45lYICY3flzxO7Q2I3aszWlOOS/Oz2Elpq8dYFdwdWdxt/2OAqqOlPLizYYQAZI0HVV5GvR/kF5Cu3IxybQDygP2Xgeqt5qCDXE9MmQEOzo0Wjsd2uTgW98WsjVi37ZEsvWJFYktKfoaJvq6ek=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=Rz41WQxe; arc=fail smtp.client-ip=52.101.52.44
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="LUQkwkY9"
-Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 62B9Wowd336696;
-	Wed, 11 Mar 2026 20:24:49 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=
-	content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=g7VgYe
-	JOt2tn3RxIgHi7avmGM75cDnoT06A+kgIWG2U=; b=LUQkwkY9OQELoe3MKXCFKL
-	dTe0wncuGCg1TMu3VV/zCH//4N95VS2XMCzUJehlQwcRgE+wla2K3DJyxUQRoGZc
-	xJDZDlxRK0rHD6j8kEmTqWovbKCeZXxKT3mFFpYrxyTkZTjvhQvPFoEtj93g22ya
-	MHWldFe9NBehHT0A6Hk08jCHtGjLTAHM/rQ7epaPkM18aFo04LqQensBSHCe8/Xi
-	zIOIvqQ5h+WfS/A8uUz9maFNk6vRRAXnt67oYoL6kl9CSb82OfwQSZmB3jfXTlk9
-	mBLj8WGyqBe+Yoi8Q/ed+B7s36Z7/lKECxOH8UMAygyrpIgkJZOOYxdsCHQCNxVA
-	==
-Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4crcywhu3m-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 11 Mar 2026 20:24:48 +0000 (GMT)
-Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma22.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 62BGWN15023022;
-	Wed, 11 Mar 2026 20:24:47 GMT
-Received: from smtprelay07.wdc07v.mail.ibm.com ([172.16.1.74])
-	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4ct8ng7ya1-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 11 Mar 2026 20:24:47 +0000
-Received: from smtpav01.wdc07v.mail.ibm.com (smtpav01.wdc07v.mail.ibm.com [10.39.53.228])
-	by smtprelay07.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 62BKOkdm33358484
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Wed, 11 Mar 2026 20:24:46 GMT
-Received: from smtpav01.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 6B9D35804B;
-	Wed, 11 Mar 2026 20:24:46 +0000 (GMT)
-Received: from smtpav01.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id DB97D58059;
-	Wed, 11 Mar 2026 20:24:44 +0000 (GMT)
-Received: from [9.61.81.79] (unknown [9.61.81.79])
-	by smtpav01.wdc07v.mail.ibm.com (Postfix) with ESMTP;
-	Wed, 11 Mar 2026 20:24:44 +0000 (GMT)
-Message-ID: <e0f9d530-c691-4d1f-ab82-33b5456fca9f@linux.ibm.com>
-Date: Wed, 11 Mar 2026 16:24:44 -0400
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="Rz41WQxe"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=V3tqXLnTLen+HvkjVb3gmBWVoSlF3RdA9HlEGj6vEKYlMov2mKv0b0xswnfonSR/qFEMj4BIKOrXImk1f8snOrCHlH7sg2y7LhyONjQccxW8Fqe93VN/1AZYztGQPXsrTXcaRX7TboI+c8Zxgu/dDR3bs+sxgYGENm7CuLCK9blbnTwy/EuGuhlnvLbJb9bjys6NmVoSWrnMtDIbMkOPMfrQV2CiLs0BOwZZUSu25gjroVXdGb2rDenO63dhziwoSfwbCcZ9Wny8pERMmv8F25zKDiWnR9GBIAylFxSjl0NFMfNrc0i7aEkVCjbGmQcX+J/+CwWm/bdjahar/gU1SA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=3Bi1PXfW/ybVm6/aNbvMAZsNkI3VzFhLhG6PSK8i488=;
+ b=qEQyfoJiX7VX0YHJhsqwo48hzdCrGLAAKSqxb4m/3WS1w+pvCxPW7vw281TnfBDxXYgdz8el0SWeado3J+MzlvYvvhusTChzJq+HxdUGDtM3owHf9LcxZp5l63OeZgKbfnwuu21tZrtHOqmotiyoWqtR87h7E1EXZxe6n532ZSdCWnlZHqnbMHvQAxSqkOB3+zSP1KrXw/pjP0OvLYXedewviifHq2rbppFP9IGypqL3wGUpQymrnlPa7UjFhkrFnJTSC3aV2iCxPwxXYDtwLIfFxBFyOU1AhZ/xxrNKEVQ+zyy2QU/TtfWZC9Kt6hrYlqhH740mfroeY1Qs4jPxZA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 216.228.117.161) smtp.rcpttodomain=vger.kernel.org smtp.mailfrom=nvidia.com;
+ dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=3Bi1PXfW/ybVm6/aNbvMAZsNkI3VzFhLhG6PSK8i488=;
+ b=Rz41WQxeVoSVMGYXetGTcW2B44+qsGrjmgM6xLWmKr36RsuqlKrUHqR1bOzHAE3V1R59g5+yWoOqo9KeQL6JGvcQ2l3seZKq6IRpVVKiIGxcb+AmOo4AlQ8NEFPM1VFLxIQveHJGbgeUP8blFTl16zLnEylSqohRnc0tMvtO4EcgNJr9kFvdHUco6b2VzOhegXNdgugwS+M9eVOW2nrFu8gWbBR7DQtDKl1Xpg4lH7BELvIpIHbDhwInW64gErLnZZKHX6xy2t3ukQwq5MXpEaGCNKUGgl76rPsMdg0sikpeGjX03odT7ydjY/NKFb8zunvvC+cpG7OscflE2feOKA==
+Received: from DM6PR05CA0056.namprd05.prod.outlook.com (2603:10b6:5:335::25)
+ by IA0PR12MB8894.namprd12.prod.outlook.com (2603:10b6:208:483::21) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9700.11; Wed, 11 Mar
+ 2026 20:35:12 +0000
+Received: from DS2PEPF00003448.namprd04.prod.outlook.com
+ (2603:10b6:5:335:cafe::39) by DM6PR05CA0056.outlook.office365.com
+ (2603:10b6:5:335::25) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.9700.15 via Frontend Transport; Wed,
+ 11 Mar 2026 20:35:12 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.117.161)
+ smtp.mailfrom=nvidia.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=nvidia.com;
+Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
+ 216.228.117.161 as permitted sender) receiver=protection.outlook.com;
+ client-ip=216.228.117.161; helo=mail.nvidia.com; pr=C
+Received: from mail.nvidia.com (216.228.117.161) by
+ DS2PEPF00003448.mail.protection.outlook.com (10.167.17.75) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.9678.18 via Frontend Transport; Wed, 11 Mar 2026 20:35:12 +0000
+Received: from rnnvmail201.nvidia.com (10.129.68.8) by mail.nvidia.com
+ (10.129.200.67) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20; Wed, 11 Mar
+ 2026 13:34:57 -0700
+Received: from rnnvmail201.nvidia.com (10.129.68.8) by rnnvmail201.nvidia.com
+ (10.129.68.8) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20; Wed, 11 Mar
+ 2026 13:34:57 -0700
+Received: from nvidia-4028GR-scsim.nvidia.com (10.127.8.11) by mail.nvidia.com
+ (10.129.68.8) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20 via Frontend
+ Transport; Wed, 11 Mar 2026 13:34:49 -0700
+From: <mhonap@nvidia.com>
+To: <aniketa@nvidia.com>, <ankita@nvidia.com>, <alwilliamson@nvidia.com>,
+	<vsethi@nvidia.com>, <jgg@nvidia.com>, <mochs@nvidia.com>,
+	<skolothumtho@nvidia.com>, <alejandro.lucero-palau@amd.com>,
+	<dave@stgolabs.net>, <jonathan.cameron@huawei.com>, <dave.jiang@intel.com>,
+	<alison.schofield@intel.com>, <vishal.l.verma@intel.com>,
+	<ira.weiny@intel.com>, <dan.j.williams@intel.com>, <jgg@ziepe.ca>,
+	<yishaih@nvidia.com>, <kevin.tian@intel.com>
+CC: <cjia@nvidia.com>, <targupta@nvidia.com>, <zhiw@nvidia.com>,
+	<kjaju@nvidia.com>, <linux-kernel@vger.kernel.org>,
+	<linux-cxl@vger.kernel.org>, <kvm@vger.kernel.org>, <mhonap@nvidia.com>,
+	"Alex Williamson" <alex.williamson@redhat.com>, Jonathan Cameron
+	<Jonathan.Cameron@huawei.com>
+Subject: [PATCH 00/20] vfio/pci: Add CXL Type-2 device passthrough support
+Date: Thu, 12 Mar 2026 02:04:20 +0530
+Message-ID: <20260311203440.752648-1-mhonap@nvidia.com>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v1 3/3] Introducing kvm_arch_set_irq_inatomic fast inject
-To: Douglas Freimuth <freimuth@linux.ibm.com>, borntraeger@linux.ibm.com,
-        imbrenda@linux.ibm.com, frankja@linux.ibm.com, david@kernel.org,
-        hca@linux.ibm.com, gor@linux.ibm.com, agordeev@linux.ibm.com,
-        svens@linux.ibm.com, kvm@vger.kernel.org, linux-s390@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-References: <20260308030438.88580-1-freimuth@linux.ibm.com>
- <20260308030438.88580-4-freimuth@linux.ibm.com>
-Content-Language: en-US
-From: Matthew Rosato <mjrosato@linux.ibm.com>
-In-Reply-To: <20260308030438.88580-4-freimuth@linux.ibm.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMzExMDE3MCBTYWx0ZWRfX9vNCs1T6yJza
- i8suX73psxm3iOgekZ1eFfU4fSUw9WOXGS/BRGJOB1qgNU/BaA//B8LyIwR156Zcj+RBVqEV2I5
- noQMkJaaRMiW4fxuWJWnIOOh9p3ElUCxdGQMPawYD9FgujhuaxRDR67lpaCc7EpSrCP8q7wIqU4
- AgWwDj9HcAI3CmAaWkiqeulBli61HauhUFP0aoq/DXaJmr6sYox1weGp4C6xgXb/HG0o8f0syma
- SN95CeI98lXaK/xz9GFm1s+w9YwWMdBx/00CR8ASwJuMJShgVH0GRb5Rd7COssQ5Jxfinnd7iwR
- N22A3zNpy8bkQzX5EXyHpCwUodsDwBgQN3vHO8kcz5bDBMt2x1DU91JBjI6WM2lQEdjlLqjy7yF
- UxZ7Ac2mNhy8qR4tM93EmACMDIUa4C5Ux6xwRdvQeYyGA6up1aF81mUv7CqvCLCwvAJ7OSqxQwm
- Ykb5hI5Pj5w+oLhcK2g==
-X-Authority-Analysis: v=2.4 cv=QaVrf8bv c=1 sm=1 tr=0 ts=69b1cf90 cx=c_pps
- a=5BHTudwdYE3Te8bg5FgnPg==:117 a=5BHTudwdYE3Te8bg5FgnPg==:17
- a=IkcTkHD0fZMA:10 a=Yq5XynenixoA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=RnoormkPH1_aCDwRdu11:22 a=U7nrCbtTmkRpXpFmAIza:22 a=VnNF1IyMAAAA:8
- a=uSkj2Dn4VTC6QYEr51sA:9 a=QEXdDO2ut3YA:10
-X-Proofpoint-GUID: Mpfu2zw87_matOxSNXo3AxquUo-FvMKp
-X-Proofpoint-ORIG-GUID: Mpfu2zw87_matOxSNXo3AxquUo-FvMKp
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
- definitions=2026-03-11_02,2026-03-09_02,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- malwarescore=0 spamscore=0 impostorscore=0 clxscore=1015 adultscore=0
- bulkscore=0 lowpriorityscore=0 priorityscore=1501 suspectscore=0 phishscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2602130000 definitions=main-2603110170
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-NV-OnPremToCloud: ExternallySecured
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DS2PEPF00003448:EE_|IA0PR12MB8894:EE_
+X-MS-Office365-Filtering-Correlation-Id: f7819d6c-403b-442d-ad05-08de7fadb1c1
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|376014|7416014|1800799024|82310400026|36860700016|56012099003|18002099003|3122999024|13003099007|921020;
+X-Microsoft-Antispam-Message-Info:
+	omiXBUJJltGBpNHPa8Tkc5ynoQo8+7HjJCy2oKOPB/waxOXb2gOSx52aLXbTrhg3qk+NfRUZBvrJyZ9zTmhxEza+oE9ut9zy675K7MvxN1xltKuqDPgf7Zw/UL17jPo7Ej9pNIdUz+w0EGxbTuRLzGshkMAzhhMJlAN0dEYJHQ8bDqy2d/nLJw/VbXq+nzDU/rSPZFcHADES8CvkUt3VgsbvyVMFmo8/U8P96NGgB2fUYTkYtAlvIzmudYDXk54VOTwycDpqt4CEimtV4OKEqDxPnT+GGFeGOUiEFeqHTt0qEmBUe4DD2vgurW1lWDz8nepYhltVXs+X9Ks1W/WtrA0dfbksEv0dYgKKffPxb1FEzeSkvz7kaa/6ZXwwgEu4vIXSgS1xscO/t9oV7Cb5R0vYfst3snvmJSaR3FxEnLx7iox6DGO9qP+vfHFz9B5MSuHaTmS702WYDdGM2KWWq+gj70UxQfYCUiQR5eRMN9LphmgR8Fj2rocIR4y4yST7agNDJ99/RwU2s3hWYFgrL0P+jlKwrkdR+5yanZQEPMw0100wHEaCLZn6R0k6Jg21gVMRGGuclihBN9Moeoax+o+X5MfqNkXmHH8vbCKW37EVdnZs47MSJ8PtlEI+R2DBrnEo9fo2UwXX+ipm2YZ81+Z0iQP7xW3Fte/VeT2zxenouMgqHIuJEmqUBhgd3ypBVy/eb2IkxH0EEk2Mgz+a7joflJWW4EUOopeajN562S53mbxZT5mi1wpAUYUTXy3LEacOCak2agyLrpbEjEA67PCPZP6P94PYdc9KWcStq/LulUFMcbliQhdIeIsXlWM4
+X-Forefront-Antispam-Report:
+	CIP:216.228.117.161;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc6edge2.nvidia.com;CAT:NONE;SFS:(13230040)(376014)(7416014)(1800799024)(82310400026)(36860700016)(56012099003)(18002099003)(3122999024)(13003099007)(921020);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	ew01DH/h4DgO3gqZOSIrDPbOnFXLyWUJrzjsuzTAeyy6yRLl5fY9cVQI4098+C2w+DiCQDyBfJruIZyClR1IGWrZIBAL2M/Y+twtJTPUqO7Jn6MAYX7MWKalq83UPp07QTNHsZOERZg33xDsJjT9/3HVUj2SQojLuBIUoe89EYFRdkbHi9VSt+X+PodxDx2mOGAxfcpAFhL0Q7S1Nt+GdNTWYNychU4bJphOupW5sBM3g7OFHB2sZ2fDwoxkB7IJBZrbGf+VePr3+cscJRW6pMhbRfhKy/wyD+zEydOZ1/seeaJQ/UGqB1jvQlsg1XRkbl0pRK4omStkaWPatZCtBosVMnxGzm6PtATVCUE5+rEWyQ6rh1jHaCMkgirDM9bFSVNOYJHIzEGosGsUFvzMpBYQ4lBhBYTTmUCDQEKgOo5kuih6oRfxg+Gg6yg1sT8G
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 11 Mar 2026 20:35:12.0398
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: f7819d6c-403b-442d-ad05-08de7fadb1c1
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.117.161];Helo=[mail.nvidia.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	DS2PEPF00003448.namprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA0PR12MB8894
 
-On 3/7/26 10:04 PM, Douglas Freimuth wrote:
-> Patch 3: This patch introduces kvm_arch_set_irq_inatomic, a fast path
+From: Manish Honap <mhonap@nvidia.com>
 
-See comments from patch 1 of this series.
+This series adds support for passthrough of CXL Type-2 devices to virtual
+machines through VFIO; The goal is to expose CXL functionality through
+the generic vfio-pci core, without any need for a variant driver.
 
-> for irq injection. Instead of placing all interrupts on the global work
-> queue as it does today, this patch provides a fast path for irq
+Current design is based on CXL core APIs provided by Alejandro's CXL
+type-2 device support patch series which is currently in upstream
+review. (see drivers/net/ethernet/sfc/efx_cxl.c) [1].
 
-Maybe add a bit that this depends on creating a path that cannot lose control, namely by pre-pinning the associated indicator pages, conditionally attempting allocations via GFP_ATOMIC and switching a mutex to a spinlock.
+This patchset should be applied on the cxl next branch using the base
+specified at the end of this cover letter + Alejandro's v23 mentioned in
+[1].
 
-This would also be a good point to work in the fact that this is fenced for Secure Execution guests rather than patch 1 beacuse the indicator pages will not be pre-pinned.
+This patch series introduces CONFIG_VFIO_CXL_CORE, a new optional module
+source compiled into vfio-pci-core, that hooks into the vfio-pci
+open/close and reset paths to provide:
 
+  * Automatic CXL Type-2 detection at device open time via the CXL Device
+    DVSEC capability (Vendor ID 0x1E98, ID 0x0000) and HDM Decoder
+    Capability block.
 
-> injection. Statistical counters have been added to enable analysis of irq injection on
-> the fast path and slow path including io_390_inatomic,
-> io_flic_inject_airq, io_set_adapter_int and io_390_inatomic_adapter_masked.
-> > In order to use this kernel series with virtio-pci, a QEMU that includes
-> the 's390x/pci: set kvm_msi_via_irqfd_allowed' fix is needed.
-> Additionally, the guest xml needs a thread pool and threads explicitly
-> assigned per disk device using the common way of defining threads for
-> disks.
+  * Kernel-owned HDM decoder management.  The VMM never programs HDM
+    decoders directly; instead it reads and writes an emulated shadow copy
+    of the HDM register block through a dedicated COMP_REGS VFIO region.
+    All bit-field rules (reserved bits, read-only bits, the
+    COMMIT/COMMITTED latch) are enforced by the kernel.
 
-This last paragraph, while relevant to testing you were doing, delves a bit too much into the specifics of when QEMU will/won't drive this code and doesn't need to be in kernel git history.  I'd suggest either removing it or moving it to the cover-letter.
+  * A DPA VFIO region backed by the kernel-assigned Host Physical Address
+    (HPA).  The VMM maps this region with mmap(); PTEs are inserted lazily
+    on first fault.  During FLR/reset all PTEs are invalidated atomically
+    under memory_lock and re-inserted after the reset path re-enables the
+    decoder.
 
-> 
-> 
-> Signed-off-by: Douglas Freimuth <freimuth@linux.ibm.com>
-> ---
->  arch/s390/include/asm/kvm_host.h |   8 +-
->  arch/s390/kvm/interrupt.c        | 169 ++++++++++++++++++++++++++-----
->  arch/s390/kvm/kvm-s390.c         |  24 ++++-
->  arch/s390/kvm/kvm-s390.h         |   3 +-
->  4 files changed, 170 insertions(+), 34 deletions(-)
-> 
-> diff --git a/arch/s390/include/asm/kvm_host.h b/arch/s390/include/asm/kvm_host.h
-> index 616be8ca4614..a194e9808ae3 100644
-> --- a/arch/s390/include/asm/kvm_host.h
-> +++ b/arch/s390/include/asm/kvm_host.h
-> @@ -359,7 +359,7 @@ struct kvm_s390_float_interrupt {
->  	struct kvm_s390_mchk_info mchk;
->  	struct kvm_s390_ext_info srv_signal;
->  	int last_sleep_cpu;
-> -	struct mutex ais_lock;
-> +	spinlock_t ais_lock;
->  	u8 simm;
->  	u8 nimm;
->  };
-> @@ -450,6 +450,10 @@ struct kvm_vm_stat {
->  	u64 inject_io;
->  	u64 io_390_adapter_map;
->  	u64 io_390_adapter_unmap;
-> +	u64 io_390_inatomic;
-> +	u64 io_flic_inject_airq;
-> +	u64 io_set_adapter_int;
-> +	u64 io_390_inatomic_adapter_masked;
->  	u64 inject_float_mchk;
->  	u64 inject_pfault_done;
->  	u64 inject_service_signal;
-> @@ -481,7 +485,7 @@ struct s390_io_adapter {
->  	bool masked;
->  	bool swap;
->  	bool suppressible;
-> -	struct rw_semaphore maps_lock;
-> +	spinlock_t maps_lock;
+  * CXL DVSEC configuration-space emulation.  Writes to the CXL Control,
+    Status, Control2, Status2, Lock, and Range Base registers in the
+    device's PCI extended configuration space are intercepted and replayed
+    through a per-device shadow (vconfig), enforcing CXL 3.1 register
+    semantics including the RWL/RW1CS/RWO access types and the CONFIG_LOCK
+    one-shot latch.
 
-Patch 1 (re-)introduced the maps_lock, now you are converting it to a spinlock 2 patches later.
+  * A new VFIO_DEVICE_INFO_CAP_CXL capability (id=6) returned in the
+    VFIO_DEVICE_GET_INFO capability chain, carrying all the information a
+    VMM (e.g. QEMU) needs: HDM decoder count, BAR index and offset of the
+    component registers, total DPA size, and indices of the two new VFIO
+    regions.
 
-I realize that you were bringing back code that was previously removed by
+  * Two new VFIO region subtypes under the PCI_VENDOR_ID_CXL vendor
+    namespace: VFIO_REGION_SUBTYPE_CXL (DPA memory) and
+    VFIO_REGION_SUBTYPE_CXL_COMP_REGS (emulated HDM registers).
 
-f65470661f36 KVM: s390/interrupt: do not pin adapter interrupt pages
+  * A module parameter (disable_cxl=1) and a per-device flag
+    (vdev->disable_cxl) so that the feature can be suppressed for
+    individual devices or globally without recompiling.
 
-but for this series wouldn't it make sense to just start by introducing maps_lock as a spinlock from patch 1 vs re-introducing the semaphore for the span of 2 commits?
+  * Comprehensive selftests in tools/testing/selftests/vfio/ covering
+    device detection, capability parsing, region enumeration, HDM register
+    emulation, DPA mmap with page-fault insertion, FLR invalidation, and
+    DVSEC register emulation.
 
+This new design is moved away from variant driver approach and all the
+CXL functionality is now made part of vfio-pci driver.
 
+The reasons for this change are:
 
-> @@ -2700,6 +2706,8 @@ static int flic_inject_airq(struct kvm *kvm, struct kvm_device_attr *attr)
->  	unsigned int id = attr->attr;
->  	struct s390_io_adapter *adapter = get_io_adapter(kvm, id);
->  
-> +	kvm->stat.io_flic_inject_airq++;
-> +
+  * Generic CXL Type-2 support features (DVSEC, HDM, regions, reset)
+    are common to all CXL adapters and don't belong in variant drivers.
+    When something is vendor-specific (e.g. live migration, proprietary
+    features), a variant is appropriate; generic CXL behavior should
+    not require a vendor-specific driver. Generic CXL support belongs
+    in the core, not behind a variant.
 
-This just tracks how often the function is called, and includes instances where the adapter is NULL or the call to kvm_s390_inject_airq failed.
+  * With this new approach, the user always binds to vfio-pci. No need to
+    choose or document a CXL-specific or vendor-specific driver for
+    standard CXL Type-2 passthrough.
 
-Do you want to actually track the number of successful injects only vs every time we call this routine?
+  * For any CXL Type-2 device, enlightened vfio-pci works with any device
+    that presents CXL Device DVSEC and the expected component layout.
 
+  * CXL detection, state, register emulation, region creation, and reset
+    live in a CXL-aware layer invoked from the core (optionally built
+    via CONFIG_VFIO_CXL_CORE). The core stays a single entry point;
+    CXL is an optional extension, not a separate driver stack.
 
+  * Pushing CXL into the pci-core avoids per-device CXL detection and
+    feature toggling inside vendor-specific drivers.
 
-> @@ -2919,15 +2968,15 @@ static int set_adapter_int(struct kvm_kernel_irq_routing_entry *e,
->  	int ret;
->  	struct s390_io_adapter *adapter;
->  
-> +	kvm->stat.io_set_adapter_int++;
-> +
+Series structure
+================
 
-Same comment, would we rather track only the successful cases or only count times we enter the function including things like the 0->1 transition below?
+  * Patches 1-5 extend the CXL subsystem to export the interfaces and
+    defines that vfio-pci-core needs.
 
-Actually, the addition of this counter as well as io_flic_inject_airq seems like it should be a separate patch.
+  * Patches 6-8 lay the vfio-pci-core plumbing.
 
->  	/* We're only interested in the 0->1 transition. */
->  	if (!level)
->  		return 0;
+  * Patches 9-12 implement the core device lifecycle and DPA region.
 
-...
+  * Patches 13-15 implement configuration-space and register emulation.
 
-> +int kvm_arch_set_irq_inatomic(struct kvm_kernel_irq_routing_entry *e,
-> +			      struct kvm *kvm, int irq_source_id, int level,
-> +			      bool line_status)
-> +{
-> +	int ret;
-> +	struct s390_io_adapter *adapter;
-> +	struct kvm_s390_float_interrupt *fi = &kvm->arch.float_int;
-> +	struct kvm_s390_interrupt_info *inti;
-> +	struct kvm_s390_interrupt s390int = {
-> +			.type = KVM_S390_INT_IO(1, 0, 0, 0),
-> +			.parm = 0,
-> +	};
-> +
-> +	kvm->stat.io_390_inatomic++;
+  * Patches 16-18 wire everything together.
 
-Is this the right time to increment this value?  There are plenty of reasons we could -EWOULDBLOCK after this point and fall back to scheduling it.
+  * Patches 19-20 add documentation and testing.
 
-So this will only count how often we call here from irqfd_wakeup() and not how often we actually successfully make it thru the inatomic operation.
+Limitations and future work
+===========================
 
-> +
-> +	/* We're only interested in the 0->1 transition. */
-> +	if (!level)
-> +		return -EWOULDBLOCK;
-> +	if (e->type != KVM_IRQ_ROUTING_S390_ADAPTER)
-> +		return -EWOULDBLOCK;
-> +
-> +	adapter = get_io_adapter(kvm, e->adapter.adapter_id);
-> +	if (!adapter)
-> +		return -EWOULDBLOCK;
-> +
-> +	s390int.parm64 = isc_to_int_word(adapter->isc);
-> +	ret = adapter_indicators_set_fast(kvm, adapter, &e->adapter);
-> +	if (ret < 0)
-> +		return -EWOULDBLOCK;
+  * This series does not yet support switched topologies with more than one
+    caching agent; that is planned for a future series.
 
-We know for sure that a guest that is running in SE will always hit this because no mappings will be available. 
-Did you test if it would be more efficient to check the kvm for SE at the start of kvm_arch_set_irq_inatomic() and immediately return -EWOULDBLOCK there?
+  * RAS / ECC / CCA / Reset Support
+    This design will integrate RAS and ECC handling in generic vfio-pci by
+    leveraging CXL core and RAS capabilities in next patch updates.
 
-> +	if (!ret || adapter->masked) {
-> +		kvm->stat.io_390_inatomic_adapter_masked++;
-> +		return 0;
-> +	}
-> +
-> +	inti = kzalloc_obj(*inti, GFP_ATOMIC);
-> +	if (!inti)
-> +		return -EWOULDBLOCK;
-> +
-> +	if (!test_kvm_facility(kvm, 72) || !adapter->suppressible) {
-> +		ret = kvm_s390_inject_vm(kvm, &s390int, inti);
-> +			if (ret == 0)
+  * cxl_reset support [2]
+    Integrate changes from Srirangan to have VFIO-CXL reset support.
 
-This to me seems like the right spot to kvm->stat.io_390_inatomic++ unless I misunderstand the intent of the counter.
+Dependencies
+============
 
+[1] Type2 device basic support https://lore.kernel.org/linux-cxl/20260201155438.2664640-1-alejandro.lucero-palau@amd.com/
+[2] CXL Reset support for Type 2 devices https://lore.kernel.org/linux-cxl/20260306092322.148765-1-smadhavan@nvidia.com/
 
+Cc: Alex Williamson <alex.williamson@redhat.com>
+Cc: Dan Williams <dan.j.williams@intel.com>
+Cc: Ira Weiny <ira.weiny@intel.com>
+Cc: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Cc: Alejandro Lucero <alejandro.lucero-palau@amd.com>
+Cc: linux-cxl@vger.kernel.org
+Cc: kvm@vger.kernel.org
+
+Co-developed-by: Zhi Wang <zhiw@nvidia.com>
+Signed-off-by: Zhi Wang <zhiw@nvidia.com>
+Signed-off-by: Manish Honap <mhonap@nvidia.com>
+
+--
+
+Manish Honap (20):
+  cxl: Introduce cxl_get_hdm_reg_info()
+  cxl: Expose cxl subsystem specific functions for vfio
+  cxl: Move CXL spec defines to public header
+  cxl: Media ready check refactoring
+  cxl: Expose BAR index and offset from register map
+  vfio/cxl: Add UAPI for CXL Type-2 device passthrough
+  vfio/pci: Add CXL state to vfio_pci_core_device
+  vfio/pci: Add vfio-cxl Kconfig and build infrastructure
+  vfio/cxl: Implement CXL device detection and HDM register probing
+  vfio/cxl: CXL region management
+  vfio/cxl: Expose DPA memory region to userspace with fault+zap mmap
+  vfio/pci: Export config access helpers
+  vfio/cxl: Introduce HDM decoder register emulation framework
+  vfio/cxl: Check media readiness and create CXL memdev
+  vfio/cxl: Introduce CXL DVSEC configuration space emulation
+  vfio/pci: Expose CXL device and region info via VFIO ioctl
+  vfio/cxl: Provide opt-out for CXL feature
+  docs: vfio-pci: Document CXL Type-2 device passthrough
+  selftests/vfio: Add CXL Type-2 passthrough tests
+  selftests/vfio: Fix VLA initialisation in vfio_pci_irq_set()
+
+ Documentation/driver-api/index.rst            |   1 +
+ Documentation/driver-api/vfio-pci-cxl.rst     | 216 +++++
+ drivers/cxl/core/pci.c                        |  80 +-
+ drivers/cxl/core/regs.c                       |  29 +
+ drivers/cxl/cxl.h                             |  34 -
+ drivers/vfio/pci/Kconfig                      |   2 +
+ drivers/vfio/pci/Makefile                     |   1 +
+ drivers/vfio/pci/cxl/Kconfig                  |   7 +
+ drivers/vfio/pci/cxl/vfio_cxl_config.c        | 304 +++++++
+ drivers/vfio/pci/cxl/vfio_cxl_core.c          | 713 +++++++++++++++
+ drivers/vfio/pci/cxl/vfio_cxl_emu.c           | 414 +++++++++
+ drivers/vfio/pci/cxl/vfio_cxl_priv.h          | 123 +++
+ drivers/vfio/pci/vfio_pci.c                   |  32 +
+ drivers/vfio/pci/vfio_pci_config.c            |  58 +-
+ drivers/vfio/pci/vfio_pci_core.c              |  31 +
+ drivers/vfio/pci/vfio_pci_priv.h              |  72 ++
+ drivers/vfio/pci/vfio_pci_rdwr.c              |   8 +
+ include/cxl/cxl.h                             |  52 ++
+ include/linux/vfio_pci_core.h                 |  10 +
+ include/uapi/linux/vfio.h                     |  52 ++
+ tools/testing/selftests/vfio/Makefile         |   1 +
+ .../selftests/vfio/lib/vfio_pci_device.c      |   4 +-
+ .../selftests/vfio/vfio_cxl_type2_test.c      | 816 ++++++++++++++++++
+ 23 files changed, 3013 insertions(+), 47 deletions(-)
+ create mode 100644 Documentation/driver-api/vfio-pci-cxl.rst
+ create mode 100644 drivers/vfio/pci/cxl/Kconfig
+ create mode 100644 drivers/vfio/pci/cxl/vfio_cxl_config.c
+ create mode 100644 drivers/vfio/pci/cxl/vfio_cxl_core.c
+ create mode 100644 drivers/vfio/pci/cxl/vfio_cxl_emu.c
+ create mode 100644 drivers/vfio/pci/cxl/vfio_cxl_priv.h
+ create mode 100644 tools/testing/selftests/vfio/vfio_cxl_type2_test.c
+
+base-commit: 3f7938b1aec7f06d5b23adca83e4542fcf027001
+--
+2.25.1
 
