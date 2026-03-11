@@ -1,33 +1,66 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f53.google.com (mail-wm1-f53.google.com [209.85.128.53])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2BAEE3D8110;
-	Wed, 11 Mar 2026 11:59:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A5A52E62A4
+	for <kvm@vger.kernel.org>; Wed, 11 Mar 2026 12:00:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773230390; cv=none; b=oTpq1UZwJ0B8nCaqTNAs7iA4x/La5BWBJCDVL1e7eQskv2eVMb7NvjbwirSCcV2Gr3OPpxQ47cltLUZbNyorVdcw+1ZpJVYRvedfMsQU8QoCj3eJO98vDkFLkOQzRSwU5AEK2RtBJaHmylqUF+rLUyzd+Vn6KpfaV2C/s62aU4k=
+	t=1773230446; cv=none; b=gbVfzdDUzrMYM9IMrqo8BhTKFfN2Of2C/vGsfKpoImzw07mRoJE+kTfSN3U8VQJZCDKAM+RPCucFycy9KEWrNsbYT6w0pj3sY+wecAmomMjPofKsGSG+ClbA+jOXon50zfauHXCnbJ88dsJS9N00arERtJEr5uRUpzSe8r7hd1s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773230390; c=relaxed/simple;
-	bh=7L05EWimhuh0T0G4AbugcywDE/W3b5BIQqPB/jlupZU=;
+	s=arc-20240116; t=1773230446; c=relaxed/simple;
+	bh=E92Lh4tvjrSsBZrvXHil80NIkNaNGxC/VtXNxe44axA=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=ZhNi4O+FgWSTFJcoAzkCMxZZX2x3MnoR7V3IJzmCXlry1R+s4NE8Y/Xv65cU04Q9oS70XVg5iRsv4PVDXoEdf+TblpLajERuTBKG0X5Ps1q5virY8FVsKKpG+Bxmg7alXLg92PSECPm5NTORnheS40mhUVAOHHIG4dCalK+yuh4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MccQFE2M; arc=none smtp.client-ip=10.30.226.201
+	 In-Reply-To:Content-Type; b=MHXveEsCZpH4Bnj5KFSB6qDGWCw0OxbIczcZOfR20vKGtN46Gh+iAYJW/d/uclzCQu8QvXgpn3gM1NqkmHQmdpokcncmxFU2THt/76EufJr7E58DwW40pBr/AgSNsp8ErcAu9doSLZ0JOMrpoQ2rSUsJ9h48u5GXjAcGRsSy5h4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=g6wX26v9; arc=none smtp.client-ip=209.85.128.53
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MccQFE2M"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DC756C4CEF7;
-	Wed, 11 Mar 2026 11:59:46 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773230389;
-	bh=7L05EWimhuh0T0G4AbugcywDE/W3b5BIQqPB/jlupZU=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=MccQFE2MB47oXOOb4mvYNYBpxTNQR8cze+E2vn7aD2JdRxlDSq3tnJm4uKmDlR4T6
-	 5jPIeiV1/VylKk2qCrMJGpOH37F69pZS2Hwl2Zn1K84UC89TmwfLM9H6Ksqhp1g3Op
-	 805z8YgcDJknSteio4hG1NxOzCW3e4iXA6dDdiICRLOdDbew+9c5Il2eLEiX5foq3Z
-	 hAuGezC4BWpfzlMpKOanpQtGKiIuNo9l3zIIJ0dojxN0Vhb0sOU6BZ2k6eHqzjb2Dj
-	 xCu389Z1OELcl9epnnGEcoewycabonntx2VEiuSjazqeuOeFd52N4zQ/aNTHIdg0Qg
-	 QyH+HM8rnE3cw==
-Message-ID: <6624bc37-8a2a-4718-bd03-32382dd28d67@kernel.org>
-Date: Wed, 11 Mar 2026 12:59:45 +0100
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="g6wX26v9"
+Received: by mail-wm1-f53.google.com with SMTP id 5b1f17b1804b1-48334ee0aeaso115741655e9.1
+        for <kvm@vger.kernel.org>; Wed, 11 Mar 2026 05:00:45 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1773230444; x=1773835244; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=130nMfpxEVLAWE8mJauFzxZjoerVddIIHSIrMCUq+e8=;
+        b=g6wX26v9+yQvJb3F8Phow6poKPlg3nGTyaNtQdwwjFyIgN8T1fGypOfR16znLPAo8Y
+         E7FIrpiPTJbS3z0AeS1WTEU8UZA1CsoJUb/ZBwliNXUEF1FCKiCvxc5yEJKqX/v7rPvn
+         z3Jo/EalJ9Wc6qe4j7xrU3NiCl+qwh07n6zG4jgd4K5EXTuL05IRZvZWfkWo1UdrHX65
+         2kv0K5v0dmvT8417Au+ZB6jSU3lk/8J1WoP8dtvenDMog2TeZ38wO9X8y7xdxMotdX40
+         yybsDoRB2OMx1kuQKW+XZy5oAMqleMn3GChsiomjtthkdNIKPYC1nMGOWNJkJSWZ/sM/
+         fNVA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1773230444; x=1773835244;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=130nMfpxEVLAWE8mJauFzxZjoerVddIIHSIrMCUq+e8=;
+        b=ity4/3TStE3KjaqFMhP0z1tqbwCzEQm2S+Osz35sVUaz1wlnjWEQQfdUMTaq1F+FJ+
+         6LdgI+7qkGAnxmhaRx6o6uGOtT6+BPoBqWJHT4EFsyKAl4eoEbUdFEq5b+L1lyOtUG4C
+         Lh30upSVuZydANk5qtRwWxNWmm4WEPLQr+CAJVaGawbeNopcbatrkLJez/O0HGqIhQNF
+         UwWlasiww9s+AcIp0tOaoBPy5KCkL9F8VI5P3GQLVJbMKMnE4eL+rt7ZYKFCDKZjlp6b
+         wI3FoPKLpQyNqNhZbYSq2Hc05+tLksJCaVsKdOJh37iZ18lTKdO5aYcaALxLyMeYz04N
+         F59Q==
+X-Forwarded-Encrypted: i=1; AJvYcCVndusB2ziQK8O/pTUPIb0U+sVE3L+yS0mvISkR4QRx2rzNkb04FpojdJJLIfwXC6ScJTM=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwzAGDc7QHg/YkufVlpvcGBSPJw0/Bd/vZo7a9mmxY94HZS1yEq
+	5RpQ5zDp6794vLb2cLQ0wN/+7qcW3pP6kd008x3tHnBUxDvsYf2iOsk+fU9S+GAbcSM=
+X-Gm-Gg: ATEYQzyJQk9F1KthS0xYkpTpZ88ZR3vPLmea6HJmiVFVoiS0uqrOX3JayVPHS76XMsJ
+	gndqxlNXf36m1EiTzcKGfftLfSPEPreqZ9DnD0JjY0+cZrmB0Uv7ZUkjXHQxIRT8b3braOZmc32
+	mjQugLCCAgHp/Kvl7kNJx97SvVPKnGJ0gxyPw7OsDBfmMOpZ031OAkhQ5qCrndYaMnemnsCXxp1
+	C+th0c6GNd2wRA7GUaPlDx/53JFotH8+033L32vmlHLrSnOQ98Wy9XSJZqTSeSoPZNOQFDCpCOd
+	4LJs32X4sRQW4hapdK8i/DdTW8tHDgzS8UnIZm/mwbjVBpB8kHIsHb+BL5Wo8Gll/y9DKs5xj98
+	aSaPJjA7pA4PEzqECSiQheDmL+1a9D+hNuX+tUwsyz7FIAP81LGoZcw61Wd9ShAHKhjNQfkoqwy
+	Ieex5drtdaoADm3NfhAzUFf0Nlb6j4
+X-Received: by 2002:a05:600c:3b1c:b0:480:69b6:dfed with SMTP id 5b1f17b1804b1-4854b123903mr37819645e9.24.1773230443521;
+        Wed, 11 Mar 2026 05:00:43 -0700 (PDT)
+Received: from [192.168.1.3] ([185.48.77.170])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-439f818d37fsm6957985f8f.6.2026.03.11.05.00.42
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 11 Mar 2026 05:00:43 -0700 (PDT)
+Message-ID: <1e97d367-ae01-4cd2-8005-f690e6d7f72d@linaro.org>
+Date: Wed, 11 Mar 2026 12:00:42 +0000
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -35,131 +68,157 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC 1/1] mm/pagewalk: don't split device-backed huge pfnmaps
-To: "Boone, Max" <mboone@akamai.com>
-Cc: Alex Williamson <alex@shazbot.org>,
- Andrew Morton <akpm@linux-foundation.org>,
- Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
- "Liam R . Howlett" <Liam.Howlett@oracle.com>,
- Vlastimil Babka <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>,
- Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
- "linux-mm@kvack.org" <linux-mm@kvack.org>,
- "kvm@vger.kernel.org" <kvm@vger.kernel.org>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- "Tottenham, Max" <mtottenh@akamai.com>, "Hunt, Joshua" <johunt@akamai.com>,
- "Pelland, Matt" <mpelland@akamai.com>
-References: <20260309174949.2514565-1-mboone@akamai.com>
- <20260309174949.2514565-2-mboone@akamai.com>
- <51eeb09d-d3f4-412f-85da-690fdc0f8e6a@kernel.org>
- <CH2PR17MB3797A91D5107B6E347EEDD97BF79A@CH2PR17MB3797.namprd17.prod.outlook.com>
- <da2ebc9f-ec82-4c55-851c-b27110efdf8c@kernel.org>
- <83842620-AD01-4619-845F-8DE7DF1F8F31@akamai.com>
- <0a652e7e-339e-4f98-b591-7fe5680e2006@kernel.org>
- <6CBB0401-26DD-4EF9-949C-54BEAD3ABA33@akamai.com>
- <5fb9beef-b6fe-401a-aa24-aade48b795d4@kernel.org>
- <0A734214-9E4B-4A65-AFB1-055883639358@akamai.com>
- <d7f3c613-92f5-4400-812e-a368bee45a41@kernel.org>
- <928CF80F-7436-42ED-9791-F63E3D699CBE@akamai.com>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
+Subject: Re: [PATCH v6 06/19] perf: arm_pmuv3: Keep out of guest counter
+ partition
+To: Colton Lewis <coltonlewis@google.com>, kvm@vger.kernel.org
+Cc: Alexandru Elisei <alexandru.elisei@arm.com>,
+ Paolo Bonzini <pbonzini@redhat.com>, Jonathan Corbet <corbet@lwn.net>,
+ Russell King <linux@armlinux.org.uk>,
+ Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>,
+ Marc Zyngier <maz@kernel.org>, Oliver Upton <oliver.upton@linux.dev>,
+ Mingwei Zhang <mizhang@google.com>, Joey Gouly <joey.gouly@arm.com>,
+ Suzuki K Poulose <suzuki.poulose@arm.com>, Zenghui Yu
+ <yuzenghui@huawei.com>, Mark Rutland <mark.rutland@arm.com>,
+ Shuah Khan <shuah@kernel.org>,
+ Ganapatrao Kulkarni <gankulkarni@os.amperecomputing.com>,
+ linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org, kvmarm@lists.linux.dev,
+ linux-perf-users@vger.kernel.org, linux-kselftest@vger.kernel.org
+References: <20260209221414.2169465-1-coltonlewis@google.com>
+ <20260209221414.2169465-7-coltonlewis@google.com>
 Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-In-Reply-To: <928CF80F-7436-42ED-9791-F63E3D699CBE@akamai.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+From: James Clark <james.clark@linaro.org>
+In-Reply-To: <20260209221414.2169465-7-coltonlewis@google.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On 3/11/26 12:14, Boone, Max wrote:
-> 
-> 
->> On Mar 11, 2026, at 11:45 AM, David Hildenbrand (Arm) <david@kernel.org> wrote:
->>
->> The code in follow_fault_pfn() should likely be updated to handle more
->> than one attempt. That's also what GUP does.
->>
->> Likely, follow_fault_pfn() was never taught about PFNMAP mappings that
->> can be faulted+zapped (in the past they were always static).
->>
->> If you turn that into a (possibly) endless loop, does the problem go away?
-> 
-> Yep, was just trying that - with this change the problem goes away:
-> 
-> --- a/drivers/vfio/vfio_iommu_type1.c
-> +++ b/drivers/vfio/vfio_iommu_type1.c
-> @@ -532,7 +532,7 @@ static int follow_fault_pfn(struct vm_area_struct *vma, struct mm_struct *mm,
-> 
->                 ret = follow_pfnmap_start(&args);
->                 if (ret)
-> -                       return ret;
-> +                       return -EAGAIN;
->         }
 
-Looks like follow_pfnmap_start() only ever returns -EINVAL: for invalid
-parameters (unexpected) and non-present entries.
 
-Returning -ENOENT when there is no actual entry would be clearer. Then
-you could just translate -ENOENT to -EAGAIN.
-
-But just always using -EAGAIN should be fine here I guess.
-
+On 09/02/2026 10:14 pm, Colton Lewis wrote:
+> If the PMU is partitioned, keep the driver out of the guest counter
+> partition and only use the host counter partition.
 > 
->         if (write_fault && !args.writable)
+> Define some functions that determine whether the PMU is partitioned
+> and construct mutually exclusive bitmaps for testing which partition a
+> particular counter is in. Note that despite their separate position in
+> the bitmap, the cycle and instruction counters are always in the guest
+> partition.
 > 
-> —
+> Signed-off-by: Colton Lewis <coltonlewis@google.com>
+> ---
+>   arch/arm/include/asm/arm_pmuv3.h | 18 +++++++
+>   arch/arm64/kvm/pmu-direct.c      | 86 ++++++++++++++++++++++++++++++++
+>   drivers/perf/arm_pmuv3.c         | 40 +++++++++++++--
+>   include/kvm/arm_pmu.h            | 24 +++++++++
+>   4 files changed, 164 insertions(+), 4 deletions(-)
 > 
-> I’ll propose that with the VFIO folks when I get the patch for mm/pagewalk.c ready and will refer
-> to that patch, or would it be better to propose two commits under the same cover letter?
+> diff --git a/arch/arm/include/asm/arm_pmuv3.h b/arch/arm/include/asm/arm_pmuv3.h
+> index 154503f054886..bed4dfa755681 100644
+> --- a/arch/arm/include/asm/arm_pmuv3.h
+> +++ b/arch/arm/include/asm/arm_pmuv3.h
+> @@ -231,6 +231,24 @@ static inline bool kvm_set_pmuserenr(u64 val)
+>   }
+>   
+>   static inline void kvm_vcpu_pmu_resync_el0(void) {}
+> +static inline void kvm_pmu_host_counters_enable(void) {}
+> +static inline void kvm_pmu_host_counters_disable(void) {}
+> +
+> +static inline bool kvm_pmu_is_partitioned(struct arm_pmu *pmu)
+> +{
+> +	return false;
+> +}
+> +
+> +static inline u64 kvm_pmu_host_counter_mask(struct arm_pmu *pmu)
+> +{
+> +	return ~0;
+> +}
+> +
+> +static inline u64 kvm_pmu_guest_counter_mask(struct arm_pmu *pmu)
+> +{
+> +	return ~0;
+> +}
+> +
+>   
+>   /* PMU Version in DFR Register */
+>   #define ARMV8_PMU_DFR_VER_NI        0
+> diff --git a/arch/arm64/kvm/pmu-direct.c b/arch/arm64/kvm/pmu-direct.c
+> index 74e40e4915416..05ac38ec3ea20 100644
+> --- a/arch/arm64/kvm/pmu-direct.c
+> +++ b/arch/arm64/kvm/pmu-direct.c
+> @@ -5,6 +5,8 @@
+>    */
+>   
+>   #include <linux/kvm_host.h>
+> +#include <linux/perf/arm_pmu.h>
+> +#include <linux/perf/arm_pmuv3.h>
+>   
+>   #include <asm/arm_pmuv3.h>
+>   
+> @@ -20,3 +22,87 @@ bool has_host_pmu_partition_support(void)
+>   	return has_vhe() &&
+>   		system_supports_pmuv3();
+>   }
+> +
+> +/**
+> + * kvm_pmu_is_partitioned() - Determine if given PMU is partitioned
+> + * @pmu: Pointer to arm_pmu struct
+> + *
+> + * Determine if given PMU is partitioned by looking at hpmn field. The
+> + * PMU is partitioned if this field is less than the number of
+> + * counters in the system.
+> + *
+> + * Return: True if the PMU is partitioned, false otherwise
+> + */
+> +bool kvm_pmu_is_partitioned(struct arm_pmu *pmu)
+> +{
+> +	if (!pmu)
+> +		return false;
+> +
+> +	return pmu->max_guest_counters >= 0 &&
+> +		pmu->max_guest_counters <= *host_data_ptr(nr_event_counters);
+> +}
+> +
+> +/**
+> + * kvm_pmu_host_counter_mask() - Compute bitmask of host-reserved counters
+> + * @pmu: Pointer to arm_pmu struct
+> + *
+> + * Compute the bitmask that selects the host-reserved counters in the
+> + * {PMCNTEN,PMINTEN,PMOVS}{SET,CLR} registers. These are the counters
+> + * in HPMN..N
+> + *
+> + * Return: Bitmask
+> + */
+> +u64 kvm_pmu_host_counter_mask(struct arm_pmu *pmu)
+> +{
+> +	u8 nr_counters = *host_data_ptr(nr_event_counters);
+> +
+> +	if (!kvm_pmu_is_partitioned(pmu))
+> +		return ARMV8_PMU_CNT_MASK_ALL;
+> +
+> +	return GENMASK(nr_counters - 1, pmu->max_guest_counters);
+> +}
+> +
+> +/**
+> + * kvm_pmu_guest_counter_mask() - Compute bitmask of guest-reserved counters
+> + * @pmu: Pointer to arm_pmu struct
+> + *
+> + * Compute the bitmask that selects the guest-reserved counters in the
+> + * {PMCNTEN,PMINTEN,PMOVS}{SET,CLR} registers. These are the counters
+> + * in 0..HPMN and the cycle and instruction counters.
+> + *
+> + * Return: Bitmask
+> + */
+> +u64 kvm_pmu_guest_counter_mask(struct arm_pmu *pmu)
+> +{
+> +	return ARMV8_PMU_CNT_MASK_C & GENMASK(pmu->max_guest_counters - 1, 0);
 
-Probably be best to send two separate patches. One MM fix and one vfio
-fix. :)
+This should be an | instead of an & otherwise it's always zero. None of 
+the passed through counters count anything with it like this, although 
+the cycle counter always worked even with this issue.
 
-> 
-> I can have a look at follow_fault_pfn but this problem is my first time diving into linux mm
-> so that will probably take a while (and some reading up on my end).
-No worries, just let me know if you have any questions.
+I'm not sure if the selftests that you added catch this? I didn't try 
+running them but seems like checking for non zero counter values is a 
+very easy thing to test.
 
--- 
-Cheers,
 
-David
+
