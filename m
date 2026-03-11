@@ -1,149 +1,188 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0039140DFB1
-	for <kvm@vger.kernel.org>; Wed, 11 Mar 2026 03:48:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+Received: from mail.loongson.cn (mail.loongson.cn [114.242.206.163])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 71D37238D54;
+	Wed, 11 Mar 2026 03:51:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=114.242.206.163
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773200885; cv=none; b=MdD6/yPYbU6QuTVPbwjDSVSyZsfJCQtGa7QeqydcQ9Qj3qRkjV5T2dhgm1Kc0k9oiy4NkKttOfrIF66zN0dOi86Bc8U6Y3zJpaLit7ZGlnICnyTcBwwSpybGewmV4/GO1G1iBt01ZsC8+fFT0pB7EUyFW0ph1I7sc6o/kLOFFhs=
+	t=1773201095; cv=none; b=S7coYwkafES19rlacYFkC36yUSePdTi5QGyHCei+WrEF3b1s6KdcxzkOfkJTp36K45wtUXWSrHGG5zdGsvKkRh+RHyQcq0yD6gQe13Hz9zyi80zAAwLPvr283gksfYDq1RFnGV0lzFKgf13Px1XaT6QLNbzaocg3C4rLnOSk2xw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773200885; c=relaxed/simple;
-	bh=61Es3JhmMi9pg7sw1TbpcO+5S9c+ufrqYZF4iU04SgI=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=AWZI/ycQ9GPtfk0r4lWLUsTdtuhvjvEfH5pKSeRY1tiqfX+ZmSMBFMdf17cHsWn/H7GEExxUeO4xwwTytuykw3eEEwMV7EbHAQ6U69cGFM5CPoyUAXcOXmIFVLi/2SFKSgi0IvCO5UnVwRS09DD6zG4gkYJlDaDiqKjXNRqTTWI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=G9iQSJpD; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=fBrZswCm; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="G9iQSJpD";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="fBrZswCm"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1773200882;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=aF2u6GllzhNzrdWPAaFPtE+a3uz91CYpR9l7tdV1HgE=;
-	b=G9iQSJpDPOFowxhiWarAtyw81YY4zEhoMlfu6RSw+Fe/2F1j1LmK9Qq64r1UTyHUleGvK2
-	nxxnAWsFy/NZdU+T0/dGXYgW+LuKfWXFyrMLvSl5p5yQBQgQxdvvN3Bf4OVjy0WqwiD/54
-	kZlp4gN6aPZMwjy3sz1kyUfLGS7veyo=
-Received: from mail-pj1-f72.google.com (mail-pj1-f72.google.com
- [209.85.216.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-26-FnN3aesuPmSDRCHlksTDXw-1; Tue, 10 Mar 2026 23:47:59 -0400
-X-MC-Unique: FnN3aesuPmSDRCHlksTDXw-1
-X-Mimecast-MFC-AGG-ID: FnN3aesuPmSDRCHlksTDXw_1773200879
-Received: by mail-pj1-f72.google.com with SMTP id 98e67ed59e1d1-354c44bf176so13083939a91.0
-        for <kvm@vger.kernel.org>; Tue, 10 Mar 2026 20:47:59 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1773200878; x=1773805678; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=aF2u6GllzhNzrdWPAaFPtE+a3uz91CYpR9l7tdV1HgE=;
-        b=fBrZswCmWvnui3Vow9JhL6HDylsorWGYLrXWTuXDuNoWSmD1xiES0z/AFWAaPq6BoB
-         ZSjCg3eAJVg3y/ljsmLZpaA9d5IQIry0VtkaS6REJj79M7ogYjCnInGmf7RW5BzBu68m
-         mZk9QHhh0yeWGCq+JCdnIe/upDcaGohef+2SK223N4DhU0yrPByVdzmSUJToxW50GHHI
-         GiN8W2KfwI2xJimcqSch5Cf9YxtCTzvPGXOLxsd/QLA122/6N9AqnGUabeqnGCnEFkcY
-         ARZas+a1S3ZC33q6za9Z95F/551EESnRrZtwCpOi200pmOPEgP71N+Ch4rNVOjLF1+Et
-         qD4Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1773200878; x=1773805678;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=aF2u6GllzhNzrdWPAaFPtE+a3uz91CYpR9l7tdV1HgE=;
-        b=HRllzJvbI+Cq5xojyF0ua++rJDLf+GhJtNyw/szerVWVDfddwoNW6jFbY8BT/3TMnt
-         5e4+BRV5HafrmbYXS7WB1psl5cAdwPEhTzri4Ygo5fTsMTAmCcslboVGEBY8Try9ev1z
-         HH032HNDqKPVO0XjeMYHqTteuDedbiBQSn8TP15OfgSlKz+2RrTihQYOq1PRmhNkLrJK
-         z8/xhRacSqYK3VccuJ7eLQTUo81kh1GGKip7p8xlfwX93dbbUdb9UQWE/8WxwsSlKC60
-         2jvJDkQ0sYgfR7uEPVYheYrWXmYDqSQXJ/mUreC5xqe5J4+cZ3Xu9pKlM72mBPJWxcIV
-         XnuA==
-X-Forwarded-Encrypted: i=1; AJvYcCUh49nC4q+GPq9ZqjrnVnsGZXTTOu10MpvuPnxGxQh84yo8+W+jrqkHcA7A0V30RSV2a2c=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw6NQbTHBg0bSQ7heIbCR95DmM2DnZ5u/ccrGejXGGCE+V8QAw9
-	1GI8GaefXdMYl0F/vUA/vb1AYI8xzH2jTq2nIEiXCKkD0PI68ZVyGnieMXokbUuHK2EWwQ4cWdY
-	yiQjPzGXgPpwljCYjQ8vsKcLz2Vajv82kLiDtuZXm3NWbAVc5XAYItQ==
-X-Gm-Gg: ATEYQzy+EtGAeSWqvO02iXAEOxdOk34a2hPp8wSTikaGwOyEw8elKdWOGZKFiBOjhJ1
-	wZpnRAkBYUv1Tcq489NW6BSs892DGee7YjmqdSvDKMagZdyqznmE1mvAnQkZTEDDkz60IEcRIWb
-	iHuc0Wd8VO9HiY91wgJHmQ1ani/1p3+aMWa++0VQJOoDJctoVpCe5++wrzzDR+R05wztHOs6jxW
-	ZM6NQH8liAkjLxEKsOTbsIE4KWh9YwZ0Cz3eXuaiprP5n7TmK2ckgKfvvt9FvXCC885yFyWxoFG
-	+o97Y3fVEEhBwjjPOWrRKIIGJNJkqqmunBcs/2aBb0qkoJSxzh6ALwHLcTAegyVe2r8D5DkXEW2
-	A7aK+5VQP5kY9CWIaoSAEHSQBmlWOTY9iZplDkgFIo3oEzRpDl3bXKRA=
-X-Received: by 2002:a17:90b:5486:b0:34c:fe57:278c with SMTP id 98e67ed59e1d1-35a01381399mr1169949a91.34.1773200878511;
-        Tue, 10 Mar 2026 20:47:58 -0700 (PDT)
-X-Received: by 2002:a17:90b:5486:b0:34c:fe57:278c with SMTP id 98e67ed59e1d1-35a01381399mr1169921a91.34.1773200878056;
-        Tue, 10 Mar 2026 20:47:58 -0700 (PDT)
-Received: from rhel9-box.lan ([122.176.129.56])
-        by smtp.googlemail.com with ESMTPSA id 41be03b00d2f7-c73cdfa9acbsm603530a12.32.2026.03.10.20.47.55
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 10 Mar 2026 20:47:57 -0700 (PDT)
-From: Ani Sinha <anisinha@redhat.com>
-To: Paolo Bonzini <pbonzini@redhat.com>,
-	Marcelo Tosatti <mtosatti@redhat.com>,
-	Zhao Liu <zhao1.liu@intel.com>
-Cc: Ani Sinha <anisinha@redhat.com>,
-	Peter Maydell <peter.maydell@linaro.org>,
-	qemu-devel@nongnu.org,
-	kvm@vger.kernel.org
-Subject: [PATCH] coverity: fix coverity issues related to confidential guest reset
-Date: Wed, 11 Mar 2026 09:16:53 +0530
-Message-ID: <20260311034653.59826-1-anisinha@redhat.com>
-X-Mailer: git-send-email 2.42.0
+	s=arc-20240116; t=1773201095; c=relaxed/simple;
+	bh=fLscIKEdEklbICNBIqYTqXCPeod+lzBdVkT36MSzOfA=;
+	h=Subject:To:Cc:References:From:Message-ID:Date:MIME-Version:
+	 In-Reply-To:Content-Type; b=lGWFXB7ZOdnVy0YrLVMI+H4CeiMIL5xg0BSYl/QW8lLk0d4ePEmm5Y7UKeqePr2fw+jlT/myYzRwJY73i9DkELliBYEocl4mdJd9+aZs1Uj6aWEesViAEUrRz6VXtTVmjkNuJCD2xm/8c6HLmziG0AyfkLQlyra3S3s+o2C016o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn; spf=pass smtp.mailfrom=loongson.cn; arc=none smtp.client-ip=114.242.206.163
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=loongson.cn
+Received: from loongson.cn (unknown [10.20.42.62])
+	by gateway (Coremail) with SMTP id _____8AxDMOw5rBpfcoZAA--.10421S3;
+	Wed, 11 Mar 2026 11:51:12 +0800 (CST)
+Received: from [10.20.42.62] (unknown [10.20.42.62])
+	by front1 (Coremail) with SMTP id qMiowJAx38Jx5rBpsrNSAA--.26277S3;
+	Wed, 11 Mar 2026 11:50:11 +0800 (CST)
+Subject: Re: [PATCH 3/3] LoongArch: KVM: Set vcpu_is_preempted() macro rather
+ than function
+To: Huacai Chen <chenhuacai@kernel.org>
+Cc: Tianrui Zhao <zhaotianrui@loongson.cn>, kernel@xen0n.name,
+ kvm@vger.kernel.org, loongarch@lists.linux.dev,
+ linux-kernel@vger.kernel.org, Juergen Gross <jgross@suse.com>
+References: <20260311031857.3591470-1-maobibo@loongson.cn>
+ <20260311031857.3591470-4-maobibo@loongson.cn>
+ <CAAhV-H6p=bArdYHkE-0s55Ogvm+Dtv8TVVCLAHGeqA-pnPOXwA@mail.gmail.com>
+From: Bibo Mao <maobibo@loongson.cn>
+Message-ID: <7f4c6ef8-b24f-88c5-82f2-e00d1629ae4c@loongson.cn>
+Date: Wed, 11 Mar 2026 11:47:29 +0800
+User-Agent: Mozilla/5.0 (X11; Linux loongarch64; rv:68.0) Gecko/20100101
+ Thunderbird/68.7.0
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+In-Reply-To: <CAAhV-H6p=bArdYHkE-0s55Ogvm+Dtv8TVVCLAHGeqA-pnPOXwA@mail.gmail.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
 Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:qMiowJAx38Jx5rBpsrNSAA--.26277S3
+X-CM-SenderInfo: xpdruxter6z05rqj20fqof0/
+X-Coremail-Antispam: 1Uk129KBj93XoWxCw1UGFy8Cry3urWkZF43urX_yoWrXFWrpF
+	9rCFnYva18Wr1xW3yavr4DCr1Yqws7W3Z2va43Ga4rAF4qqr1kJr1v934j9Fy2qa4kWa1I
+	qF95Wr4xuF1aywcCm3ZEXasCq-sJn29KB7ZKAUJUUUU7529EdanIXcx71UUUUU7KY7ZEXa
+	sCq-sGcSsGvfJ3Ic02F40EFcxC0VAKzVAqx4xG6I80ebIjqfuFe4nvWSU5nxnvy29KBjDU
+	0xBIdaVrnRJUUUBjb4IE77IF4wAFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2
+	IYs7xG6rWj6s0DM7CIcVAFz4kK6r106r15M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48v
+	e4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_JFI_Gr1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI
+	0_Gr0_Cr1l84ACjcxK6I8E87Iv67AKxVW8JVWxJwA2z4x0Y4vEx4A2jsIEc7CjxVAFwI0_
+	Gr0_Gr1UM2kKe7AKxVWUXVWUAwAS0I0E0xvYzxvE52x082IY62kv0487Mc804VCY07AIYI
+	kI8VC2zVCFFI0UMc02F40EFcxC0VAKzVAqx4xG6I80ewAv7VC0I7IYx2IY67AKxVWUXVWU
+	AwAv7VC2z280aVAFwI0_Jr0_Gr1lOx8S6xCaFVCjc4AY6r1j6r4UM4x0Y48IcVAKI48JMx
+	k0xIA0c2IEe2xFo4CEbIxvr21l42xK82IYc2Ij64vIr41l4I8I3I0E4IkC6x0Yz7v_Jr0_
+	Gr1l4IxYO2xFxVAFwI0_JF0_Jw1lx2IqxVAqx4xG67AKxVWUJVWUGwC20s026x8GjcxK67
+	AKxVWUGVWUWwC2zVAF1VAY17CE14v26r126r1DMIIYrxkI7VAKI48JMIIF0xvE2Ix0cI8I
+	cVAFwI0_Jr0_JF4lIxAIcVC0I7IYx2IY6xkF7I0E14v26r1j6r4UMIIF0xvE42xK8VAvwI
+	8IcIk0rVWUJVWUCwCI42IY6I8E87Iv67AKxVWUJVW8JwCI42IY6I8E87Iv6xkF7I0E14v2
+	6r1j6r4UYxBIdaVFxhVjvjDU0xZFpf9x07je0PfUUUUU=
 
-Fix issues reported by Peter.
 
-Reported-by: Peter Maydell <peter.maydell@linaro.org>
-Signed-off-by: Ani Sinha <anisinha@redhat.com>
----
- system/runstate.c | 5 ++++-
- target/i386/sev.c | 4 ----
- 2 files changed, 4 insertions(+), 5 deletions(-)
 
-diff --git a/system/runstate.c b/system/runstate.c
-index eca722b43c..ca6730d111 100644
---- a/system/runstate.c
-+++ b/system/runstate.c
-@@ -512,9 +512,12 @@ void qemu_system_reset(ShutdownCause reason)
-     ResetType type;
-     AccelClass *ac = ACCEL_GET_CLASS(current_accel());
-     bool guest_state_rebuilt = false;
-+    bool force_vmfd_change = false;
-     int ret;
- 
-     mc = current_machine ? MACHINE_GET_CLASS(current_machine) : NULL;
-+    force_vmfd_change = current_machine ?
-+        current_machine->new_accel_vmfd_on_reset : false;
- 
-     cpu_synchronize_all_states();
- 
-@@ -528,7 +531,7 @@ void qemu_system_reset(ShutdownCause reason)
- 
-     if ((reason == SHUTDOWN_CAUSE_GUEST_RESET ||
-          reason == SHUTDOWN_CAUSE_HOST_QMP_SYSTEM_RESET) &&
--        (current_machine->new_accel_vmfd_on_reset || !cpus_are_resettable())) {
-+        (force_vmfd_change || !cpus_are_resettable())) {
-         if (ac->rebuild_guest) {
-             ret = ac->rebuild_guest(current_machine);
-             if (ret < 0) {
-diff --git a/target/i386/sev.c b/target/i386/sev.c
-index cddffe0da8..9dde972c11 100644
---- a/target/i386/sev.c
-+++ b/target/i386/sev.c
-@@ -2011,10 +2011,6 @@ static void sev_handle_reset(Object *obj, ResetType type)
-     SevCommonState *sev_common = SEV_COMMON(MACHINE(qdev_get_machine())->cgs);
-     SevCommonStateClass *klass = SEV_COMMON_GET_CLASS(sev_common);
- 
--    if (!sev_common) {
--        return;
--    }
--
-     if (!runstate_is_running()) {
-         return;
-     }
--- 
-2.42.0
+On 2026/3/11 上午11:35, Huacai Chen wrote:
+> Hi, Bibo,
+> 
+> On Wed, Mar 11, 2026 at 11:21 AM Bibo Mao <maobibo@loongson.cn> wrote:
+>>
+>> vcpu_is_preempted() is performance sensitive called in function
+>> osq_lock(), here set it as macro. So that parameter is not parsed
+>> at most time, it can avoid cache line thrashing across numa node.
+> I remember that I had suggested you define vcpu_is_preempted() in the
+> header file but you refused.
+yes, I refuse then, that is a tragedy, I am sorry for that:(
+
+By some benchmarks, vcpu_is_preempted() is called in busy-loop method, 
+more obvious with more CPUs, it may be a bottleneck.
+
+Regards
+Bibo Mao
+
+> 
+> Huacai
+> 
+>>
+>> Here is part of unixbench result on 3C5000 DualWay machine with 32
+>> Cores and 2 Numa node.
+>>            origin    with patch    CONFIG_PARAVIRT disabled
+>> execl     6871.9    7134.2        7190.8
+>> fstime    425.5     959.9         956.1
+>>
+>>  From the test result, with macro method it is almost the same with
+>> CONFIG_PARAVIRT disabled, and there is some improvment compared with
+>> function method.
+>>
+>> Signed-off-by: Bibo Mao <maobibo@loongson.cn>
+>> ---
+>>   arch/loongarch/include/asm/qspinlock.h | 27 +++++++++++++++++++++-----
+>>   arch/loongarch/kernel/paravirt.c       | 15 ++------------
+>>   2 files changed, 24 insertions(+), 18 deletions(-)
+>>
+>> diff --git a/arch/loongarch/include/asm/qspinlock.h b/arch/loongarch/include/asm/qspinlock.h
+>> index 66244801db67..305afd37cdcb 100644
+>> --- a/arch/loongarch/include/asm/qspinlock.h
+>> +++ b/arch/loongarch/include/asm/qspinlock.h
+>> @@ -5,8 +5,10 @@
+>>   #include <linux/jump_label.h>
+>>
+>>   #ifdef CONFIG_PARAVIRT
+>> -
+>> +#include <asm/kvm_para.h>
+>>   DECLARE_STATIC_KEY_FALSE(virt_spin_lock_key);
+>> +DECLARE_STATIC_KEY_FALSE(virt_preempt_key);
+>> +DECLARE_PER_CPU(struct kvm_steal_time, steal_time);
+>>
+>>   #define virt_spin_lock virt_spin_lock
+>>
+>> @@ -34,10 +36,25 @@ static inline bool virt_spin_lock(struct qspinlock *lock)
+>>          return true;
+>>   }
+>>
+>> -#define vcpu_is_preempted vcpu_is_preempted
+>> -
+>> -bool vcpu_is_preempted(int cpu);
+>> -
+>> +/*
+>> + * Macro is better than inline function here
+>> + * With inline function, parameter cpu is parsed even though it is not used.
+>> + * This may cause cache line thrashing across NUMA node.
+>> + * With macro method, parameter cpu is parsed only when it is used.
+>> + */
+>> +#define vcpu_is_preempted(cpu)                                         \
+>> +({                                                                     \
+>> +       bool __val;                                                     \
+>> +                                                                       \
+>> +       if (!static_branch_unlikely(&virt_preempt_key))                 \
+>> +               __val = false;                                          \
+>> +       else {                                                          \
+>> +               struct kvm_steal_time *src;                             \
+>> +               src = &per_cpu(steal_time, cpu);                        \
+>> +               __val = !!(src->preempted & KVM_VCPU_PREEMPTED);        \
+>> +       }                                                               \
+>> +       __val;                                                          \
+>> +})
+>>   #endif /* CONFIG_PARAVIRT */
+>>
+>>   #include <asm-generic/qspinlock.h>
+>> diff --git a/arch/loongarch/kernel/paravirt.c b/arch/loongarch/kernel/paravirt.c
+>> index b74fe6db49ab..2d1206e486e2 100644
+>> --- a/arch/loongarch/kernel/paravirt.c
+>> +++ b/arch/loongarch/kernel/paravirt.c
+>> @@ -10,8 +10,8 @@
+>>   #include <asm/paravirt.h>
+>>
+>>   static int has_steal_clock;
+>> -static DEFINE_PER_CPU(struct kvm_steal_time, steal_time) __aligned(64);
+>> -static DEFINE_STATIC_KEY_FALSE(virt_preempt_key);
+>> +DEFINE_PER_CPU(struct kvm_steal_time, steal_time) __aligned(64);
+>> +DEFINE_STATIC_KEY_FALSE(virt_preempt_key);
+>>   DEFINE_STATIC_KEY_FALSE(virt_spin_lock_key);
+>>
+>>   static bool steal_acc = true;
+>> @@ -261,17 +261,6 @@ static int pv_time_cpu_down_prepare(unsigned int cpu)
+>>          return 0;
+>>   }
+>>
+>> -bool vcpu_is_preempted(int cpu)
+>> -{
+>> -       struct kvm_steal_time *src;
+>> -
+>> -       if (!static_branch_unlikely(&virt_preempt_key))
+>> -               return false;
+>> -
+>> -       src = &per_cpu(steal_time, cpu);
+>> -       return !!(src->preempted & KVM_VCPU_PREEMPTED);
+>> -}
+>> -EXPORT_SYMBOL(vcpu_is_preempted);
+>>   #endif
+>>
+>>   static void pv_cpu_reboot(void *unused)
+>> --
+>> 2.39.3
+>>
+>>
 
