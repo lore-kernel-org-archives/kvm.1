@@ -1,109 +1,126 @@
-Received: from mail-pl1-f201.google.com (mail-pl1-f201.google.com [209.85.214.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A1AB3F54AD
-	for <kvm@vger.kernel.org>; Thu, 12 Mar 2026 15:50:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 18FF43F54DD
+	for <kvm@vger.kernel.org>; Thu, 12 Mar 2026 15:50:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773330631; cv=none; b=e5j3l5/YMIpSYe8g/6M8kHzkieGqGYUNSW/dp7rdrIIoS4LSbRmsX5Dn53dSyGb/kkb6Z3DbU5MJwmxAI8vKiLQbMM0lHHghlcF0YxXG7vw05rR/H2Ts1Hu2j7U+im8VFbKkPCNj4i1H0I18eTi7SDbt0AKznjZ1Igxi30Z/qVA=
+	t=1773330634; cv=none; b=D+60cbZN1fGX/pUJ+iok+/BbDXp6eaDr74NWBFdXewWoUlg/1xvyNGkUN4ebepyHjnmQLZQ/GtDL614Taw/yNnUM2yFTfmzMNdkHzTZONViBYQEkzRNxcpsdJcaFzBhwxJ6aHY+mtMHDEigpxi3m33h57VMxPgVoX7KQvGnfaKE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773330631; c=relaxed/simple;
-	bh=tC5jgIfgSYCINxxdwq1QFJLb7O6ggKTCBHAstNbWPpc=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=erh+ZugG1VD3SNqvFN0OIhcLs33l+uEaE4S0S1u4R7xWHMlwiPElFQolgPauQFugbdcXRvVLAxRFCG+C+vzoXkfp70kuMCXxpEwdODhG0DAvB7KWlXPTh8++0QnvdN1tJWj8E83Ov3pDwFWvee4iivs87ULajcoRiH8/1f2vKv0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=w9hUVx8P; arc=none smtp.client-ip=209.85.214.201
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+	s=arc-20240116; t=1773330634; c=relaxed/simple;
+	bh=7dyKY4bT6MOUmMrHAyuUAssa1/e1k8e695kv0vYv1Y8=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=u2ahIVlbbpVJ1ZF09U3aHHyzTyI/wL6CHDW6RLNLa9+fm8xA/UC/jYrp0R4lRGO/ZO2ybYaalljO75iBv1wMCBX8fPVOGHie+jYa+hSu5i69LMQviX6xPBxB12+R6Td/3mbE6l8Jwih5Mto1FUGb4RXayDiEw3h5TiypPXT4dTo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Mz8szP1e; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="w9hUVx8P"
-Received: by mail-pl1-f201.google.com with SMTP id d9443c01a7336-2aebfa0af7dso50319185ad.1
-        for <kvm@vger.kernel.org>; Thu, 12 Mar 2026 08:50:29 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1773330629; x=1773935429; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:from:subject:message-id:references
-         :mime-version:in-reply-to:date:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=txfJ+wO+omwjZcR/mS0HcpAn6dOJzbxTz4QO7lM4xaI=;
-        b=w9hUVx8PTtdJy/jQh8tMtOlcBenBTwI1AOG2AGpfWnZ3jH5h6geB8bVXXHs4MsiT5Y
-         ZhQCT4LLkhbxAaShvlGgPBYQ8Ul1ObaduPFMiHyzUmANu1dA4fuaiazXu3tr/s8Za2Ip
-         ze1pvCo0wqnCkuPDcN5USOnL6VnXNvZuNPD+tnSFesG087imbTWY0ItPdiHs6u5Y2fwz
-         EOR9DpplPmtmz0OA8NYB9Jto1TkQhEwYJc3WXvbNpgKF8Mng05lo3JALvgwWUGunL6QJ
-         AChBpUxq3rWea3u0trNT5FqKRVm404HobWDkzibG43wKYG60mgm6uMLU/80TTE/R3zPT
-         3/8w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1773330629; x=1773935429;
-        h=content-transfer-encoding:cc:to:from:subject:message-id:references
-         :mime-version:in-reply-to:date:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=txfJ+wO+omwjZcR/mS0HcpAn6dOJzbxTz4QO7lM4xaI=;
-        b=tyMPyZHEenrWzmqwHvX0Xa9zCzJps5ltnsPOWLugK4XmQTe5McrVc3wd78k30Hgxv8
-         OYj6vIv59f4zr+0kRx4RI4VCofPTzXFQ8ucHYILNh341Fa2F+5YfE5Aa8WHmjyLbTvyD
-         7eRa3XcJRTE99WkjJgxw+UlgCeT3jx1dEzAn+qntVATqm1FxfxMG6IWW4RAV+Ci2a1UF
-         B5s2M4wpDuQ8KDxh/fNmK0gfaTKlbZ//ZfwWvp/YGVE1S3QRpTYw9/jLzMhoVeSv3wRl
-         53/fekv9100OQ4wpxO1H+Ayj/OVuc4Fc525lYdFfT2v3BI8nfbla4OoabXNqisQyqAWr
-         wmNA==
-X-Gm-Message-State: AOJu0Ywt7GoQAXcsEKNlCxMpsKC9Y1B7CsyyKx+4koZ8tFWMcCR79mjW
-	0OIccgn0kceBbfK53+AFO/ujdP6A4ucNgHPwFAIDECNPW28QcJ45jhXGISRMDOXry3D3gPfgQwP
-	a+L5kMA==
-X-Received: from pgbbx3.prod.google.com ([2002:a05:6a02:503:b0:bdb:36f7:556f])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a20:431f:b0:398:92ef:1d95
- with SMTP id adf61e73a8af0-398c5f3e2dbmr6363198637.21.1773330628648; Thu, 12
- Mar 2026 08:50:28 -0700 (PDT)
-Date: Thu, 12 Mar 2026 08:50:27 -0700
-In-Reply-To: <CABgObfbnKz5HpwXMW+TjLRgQbuoiga2M-cXJ6no=K8hFsd9MCA@mail.gmail.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Mz8szP1e"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9794BC2BC87
+	for <kvm@vger.kernel.org>; Thu, 12 Mar 2026 15:50:33 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1773330633;
+	bh=7dyKY4bT6MOUmMrHAyuUAssa1/e1k8e695kv0vYv1Y8=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=Mz8szP1egF2Fuc9ZwasAFy3WtLRlP6Y6O1bMJInq/FzBaG9nb/Zye1igB3EX0vgkP
+	 xlkBaKr0jiJWPRN6nc4tAqGBnlARXrxabFBEdn4GgeZhR0FyNOHBs78UyHCBKZ1C6F
+	 3uUuZITz/F0l6ovYist92Gt5Nc85Ql4NYS4mSFwU0vyndRUYO9cAFFfQpoNxqffaSm
+	 YKjngfz7johQJkbJqDSErHEvQXbl4Mn3tt9BgQcIAiV5TSVtyOVT3tqKRJxQMGesBs
+	 BmWILud0bGYMIwiu7c4cDofhevf/DuD0pPynKMm3wv27GiC5aCiKEHVNm4cpM3ZaF7
+	 CsPTNmbptG4Jg==
+Received: by mail-qv1-f49.google.com with SMTP id 6a1803df08f44-899a5db525cso15320196d6.3
+        for <kvm@vger.kernel.org>; Thu, 12 Mar 2026 08:50:33 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCXKjqQcBfzFttbb3f7Mbdcw9BZgfH+zOMplzp5s+gRLCgoJDw2NzcblXWy9BtWwdg8hzGA=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yxz8VQWxEOXk/QqJXZTLdIrFen371kHkwvBlEX5OgvcfJo/YPql
+	z0KAN7viZlnC6aK4UunBSMVbXOVVlDmE/kN/xTjqztF+8fjXZPNt0qO1fZRCZtF9eTFvPXg4O0A
+	jO4CCkTfnTzz4tP9Jgqxh7Ks21b173/M=
+X-Received: by 2002:a05:6214:400f:b0:895:1b71:1276 with SMTP id
+ 6a1803df08f44-89a81fe35f3mr2578796d6.67.1773330632882; Thu, 12 Mar 2026
+ 08:50:32 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20260305193053.1643463-1-seanjc@google.com> <abCLG4axO2gmpBb-@google.com>
- <CABgObfYY5GVF6iubP70jmCYj+3cbsYc7DCxiRsPRr=JDbZjQmg@mail.gmail.com>
- <abLHkWQ7ib8m1KhV@google.com> <CABgObfbnKz5HpwXMW+TjLRgQbuoiga2M-cXJ6no=K8hFsd9MCA@mail.gmail.com>
-Message-ID: <abLgw1j1W4N7bsf6@google.com>
-Subject: Re: [GIT PULL] KVM: x86 (and a PPC) fixes for 7.0-rc3+
-From: Sean Christopherson <seanjc@google.com>
-To: Paolo Bonzini <pbonzini@redhat.com>
-Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+References: <20260306210900.1933788-2-yosry@kernel.org> <CALMp9eRWwPwUSyQmizy8i2tF1CVO4iLY6x0vX1OoPUiRdCm4NQ@mail.gmail.com>
+ <CAO9r8zOhaDeYWq_6TNdPGyEE323o_8xsWTozGdro9Oni8310kA@mail.gmail.com>
+ <CALMp9eScswzFak+PMOcaDXM-W+cXtkG7fQ=jadq__+5JeqYcTQ@mail.gmail.com>
+ <CAO9r8zOK5+xmkf3FsWRz2wHcUCN30GJ9kfZx-K7DAa1HNGhRVA@mail.gmail.com>
+ <aatyIPwz9ePKdzJx@google.com> <CAO9r8zMxk9yUiYoosnDygr_oeeRYHz3f7hWLm23c5Q0m-DXnWA@mail.gmail.com>
+ <CAO9r8zNHYswypRmHVT5Qn5hFU9-HU1t=Gs3qAh05xRNn5krPXQ@mail.gmail.com>
+ <abHTE5uyEZ4cW-fc@google.com> <CAO9r8zNxtSbHjp6EkQ+QbKavL1hn1WQXgQQ+d2=6AZkW9-mVXA@mail.gmail.com>
+ <abH0RdnM29Xyh_4G@google.com>
+In-Reply-To: <abH0RdnM29Xyh_4G@google.com>
+From: Yosry Ahmed <yosry@kernel.org>
+Date: Thu, 12 Mar 2026 08:50:19 -0700
+X-Gmail-Original-Message-ID: <CAO9r8zO_Mo-98MqREwHq4JN0bA11H2EpmNmUkAU5QvNm9OGNbg@mail.gmail.com>
+X-Gm-Features: AaiRm51OAwjTOsmRB6DZXNhXbEU6BK9QFJpJ5apXSHrovI23rhsqlkvOXH59zq8
+Message-ID: <CAO9r8zO_Mo-98MqREwHq4JN0bA11H2EpmNmUkAU5QvNm9OGNbg@mail.gmail.com>
+Subject: Re: [PATCH v2 1/6] KVM: SVM: Use maxphyaddr in emulator RAX check for VMRUN/VMLOAD/VMSAVE
+To: Sean Christopherson <seanjc@google.com>
+Cc: Jim Mattson <jmattson@google.com>, Paolo Bonzini <pbonzini@redhat.com>, kvm@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 
-On Thu, Mar 12, 2026, Paolo Bonzini wrote:
-> On Thu, Mar 12, 2026 at 3:18=E2=80=AFPM Sean Christopherson <seanjc@googl=
-e.com> wrote:
-> >
-> > On Wed, Mar 11, 2026, Paolo Bonzini wrote:
-> > > On Tue, Mar 10, 2026 at 10:20=E2=80=AFPM Sean Christopherson <seanjc@=
-google.com> wrote:
-> > > >
-> > > > On Thu, Mar 05, 2026, Sean Christopherson wrote:
-> > > > >  - Update CR8 write interception when AVIC is (de)activated to fi=
-x a bug where
-> > > > >    KVM can run with the CR8 intercept in perpetuity.
-> > > >
-> > > > ...
-> > > >
-> > > > > Sean Christopherson (4):
-> > > > >       KVM: SVM: Initialize AVIC VMCB fields if AVIC is enabled wi=
-th in-kernel APIC
-> > > > >       KVM: SVM: Set/clear CR8 write interception when AVIC is (de=
-)activated
-> > > >
-> > > > The CR8 write patch broke SEV-ES guests.  If you haven't already pr=
-epared the
-> > > > PULL request for Linus, can you apply the fix directly?
-> > >
-> > > Done.
-> >
-> > No?  I see the pull request in kvm.git, but not the below fix-to-the-fi=
-x.
->=20
-> Ah, I had squashed it in directly from the original thread.
+> diff --git a/arch/x86/kvm/emulate.c b/arch/x86/kvm/emulate.c
+> index c8e292e9a24d..74df977a38ca 100644
+> --- a/arch/x86/kvm/emulate.c
+> +++ b/arch/x86/kvm/emulate.c
+> @@ -3867,18 +3867,10 @@ static int check_svme(struct x86_emulate_ctxt *ctxt)
+>         if (!(efer & EFER_SVME))
+>                 return emulate_ud(ctxt);
+>
+> -       return X86EMUL_CONTINUE;
+> -}
+> -
+> -static int check_svme_pa(struct x86_emulate_ctxt *ctxt)
+> -{
+> -       u64 rax = reg_read(ctxt, VCPU_REGS_RAX);
+> -
+> -       /* Valid physical address? */
+> -       if (rax & 0xffff000000000000ULL)
+> +       if (ctxt->ops->cpl(ctxt))
+>                 return emulate_gp(ctxt, 0);
+>
+> -       return check_svme(ctxt);
+> +       return X86EMUL_CONTINUE;
+>  }
+>
+>  static int check_rdtsc(struct x86_emulate_ctxt *ctxt)
+> @@ -3984,10 +3976,10 @@ static const struct opcode group7_rm2[] = {
+>  };
+>
+>  static const struct opcode group7_rm3[] = {
+> -       DIP(SrcNone | Prot | Priv,              vmrun,          check_svme_pa),
+> +       DIP(SrcNone | Prot | Priv,              vmrun,          check_svme),
+>         II(SrcNone  | Prot | EmulateOnUD,       em_hypercall,   vmmcall),
+> -       DIP(SrcNone | Prot | Priv,              vmload,         check_svme_pa),
+> -       DIP(SrcNone | Prot | Priv,              vmsave,         check_svme_pa),
+> +       DIP(SrcNone | Prot | Priv,              vmload,         check_svme),
+> +       DIP(SrcNone | Prot | Priv,              vmsave,         check_svme),
+>         DIP(SrcNone | Prot | Priv,              stgi,           check_svme),
+>         DIP(SrcNone | Prot | Priv,              clgi,           check_svme),
+>         DIP(SrcNone | Prot | Priv,              skinit,         check_svme),
+> diff --git a/arch/x86/kvm/svm/svm.c b/arch/x86/kvm/svm/svm.c
+> index e6691c044913..e1223c07593b 100644
+> --- a/arch/x86/kvm/svm/svm.c
+> +++ b/arch/x86/kvm/svm/svm.c
+> @@ -2294,7 +2294,7 @@ static int gp_interception(struct kvm_vcpu *vcpu)
+>                                 EMULTYPE_VMWARE_GP | EMULTYPE_NO_DECODE);
+>         } else {
+>                 /* All SVM instructions expect page aligned RAX */
+> -               if (svm->vmcb->save.rax & ~PAGE_MASK)
+> +               if (!page_address_valid(vcpu, svm->vmcb->save.rax))
+>                         goto reinject;
 
-OMG, -ENOCOFFEE x2.  I even looked at commit 87d0f901a9bd from your tree, a=
-nd
-the lack of a merge commit for fixes should have been a big clue.
+Final observation (hopefully), this check needs to be moved to the
+VMRUN/VMLOAD/VMSAVE interception functions. As kvm_vcpu_map() failures
+will stop injecting #GP, we still need to handle the case where
+allow_smaller_maxphyaddr is used and the GPA is illegal from the
+vCPU's perspective but not the host. In this case, the CPU does not
+inject a #GP and the instructions are intercepted, so we need to make
+sure the interception functions do the legality check on RAX.
 
-> I have now added on top the testcase.
-
-Thanks much!
+I am doing this in a separate patch after fixing the check, and
+opportunistically cleaning up gp_interception() by doing an early
+return for the non-SVM insn case to reduce indentation. Will send v3
+out after I am done testing.
