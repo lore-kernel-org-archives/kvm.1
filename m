@@ -1,81 +1,178 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 33FF62D7804
-	for <kvm@vger.kernel.org>; Thu, 12 Mar 2026 21:02:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 878C137416E;
+	Thu, 12 Mar 2026 21:04:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.19
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773349322; cv=none; b=XMHB3xvMRMmo6qdLs0VxAxNOw553sQKbVaBKaQSgdYd9BvDcd1rfzRn/hOl4Da6xqFIkCuH/9v9H5+7TPoQBJzxQV4IOhsExK7eUYLGIYbTlACGWXec1DqGvf0PrhPN5kuE+qESGcgvnmp0rGCpqaAAekokY1ToLjVD31Kgmoko=
+	t=1773349448; cv=none; b=uZSlXvMAPGZQYYbLSKEFYKIN0L5mIOXutLLrWpXEN3L/X18cc46+Xzaw3QSfPSULHTL46CHFhpLmDzn3FAWMq5nFsh3dYLj/esPRKIobBz2paJHhGyKrwe+65OLcLlDFAyuv7DeyGUIaH90Exhrbz1+otj6XpNMCXrPEKm8sPqA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773349322; c=relaxed/simple;
-	bh=41b5JliRNXaurE7N0xaH8/k7eOWf0ummk+6mQ6s7pkA=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=X4Vxb4tGx+ORbWVbUmyOTl7/3TJmTaRxnXatqmy6+TyHPj1hL/WFGZsbp9lvK0DIgIM1EL3H1V8BdmCjytkcmDz5+jRQJhhG5w70ZE90WhJibxeBNnGfRt0kIRSSEAKPKPwQ2lCc7qhGtV4PVh0/3/aiuLkDFnTopyHoG3q4QVQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FKEYLd6h; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1773349448; c=relaxed/simple;
+	bh=j1FNz4LXByPf2nqns5m0LbNxXiwrtitDRF+AOO76vRU=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=vBFyz9cxoXRKAE1vDxp0krT+gcyZwL41mIlK55KcDqOMk09htbwAKlUF/5UkgFI+tkVoPw6+pwa08H88uzIsxPrqKbMEpJxHZJRfV1mSLA1dZR93lUChy1M+il8sT81hSSPW6ZpuTAXCs2SxQhsijpznIavEYIW1PFIN+krOHuk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=HK7H0hSM; arc=none smtp.client-ip=198.175.65.19
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FKEYLd6h"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EECCAC2BC87
-	for <kvm@vger.kernel.org>; Thu, 12 Mar 2026 21:02:01 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773349322;
-	bh=41b5JliRNXaurE7N0xaH8/k7eOWf0ummk+6mQ6s7pkA=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=FKEYLd6hiyL0Oj97rYXKbkBZVZ9ne5cfKNesFwjtxO/Ub2Ad6dW+Jw+UQMT7iTFyP
-	 NfF9DL8cJmtTQRk+aB9U7jp97vGSx9YESAEUjunometPW5Qn+/KwIwMRdcEoAPNBCt
-	 sAnq378ggGeLKt8XM+LUSNQODPKN2HnLwRKegOo/HSL7XcKm/9z+a4Sem6zRD23U1w
-	 8iDNxOQRB3QaP/DzVhx3r3XpSphPe/gEb4nVHZVnIP8XPe1kyMwZjwfD41cey3PVjC
-	 9E31zsIh8V5jJhCckSZmCapePczRjGUp/YJa8pz4Dux5JVpilimP6B15bcuQGs3trS
-	 HowoYfq+Xr4kg==
-Received: by mail-ej1-f42.google.com with SMTP id a640c23a62f3a-b9734adc503so244838566b.1
-        for <kvm@vger.kernel.org>; Thu, 12 Mar 2026 14:02:01 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCU47RHTkfiUkJNYzp3gM8wXpVTZFtuVYHVCAyXjO3So8nIhjRF1PtGozyQAYqoVAXyFQWY=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwoluZI88GL+D/NHPZezwhju6CX8CokH1wLJKYvcSttUmhid9JJ
-	XlkXsb1osW2HSruuIu4gv/DhcNsKBI1CyiD0tWIheQyTjs2fAEwErEEnOSoXpfUhivECPeP7HEn
-	kL/BrYTtIfdZ97NHGYgbOcysky6PrQiY=
-X-Received: by 2002:a17:906:d8c3:b0:b96:ecc3:7832 with SMTP id
- a640c23a62f3a-b976516d5b6mr37264666b.45.1773349320804; Thu, 12 Mar 2026
- 14:02:00 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="HK7H0hSM"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1773349447; x=1804885447;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=j1FNz4LXByPf2nqns5m0LbNxXiwrtitDRF+AOO76vRU=;
+  b=HK7H0hSMGtWRsxlGI1K3q+jIBuoXb6/HLmS5iBI3Lv2Non+HwSxYlAvy
+   m+wPkM2AOFawUxcv4IjgqMABwtiQtfcXTmjGX2kkYiH9gxNSbQ+6fENU3
+   VNgCpugamGpj22cZeeA0dEIPAlG2Yme/C0DEvnAS8pVJh45F/wrJmFmi6
+   E6G2FC5cszdOXmbp86qUqIFpXoFOFocb4KaWZ/E6RjAztAbIq1sXNnRzn
+   PflOqE2J5zproKSOzr1tq+H4Irac2OW1rM4G/Dk6wtoKqA1QxMaUslzYX
+   VbLMCRQPuRXdcITnh+3gOr+8+txgLk51KsF7B2MUR4SDmhlLrmAzF02k/
+   g==;
+X-CSE-ConnectionGUID: 5XdeMZK1SuqGkuHURykGqw==
+X-CSE-MsgGUID: k65fXViqQjGxrrW1qILWuA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11727"; a="74349453"
+X-IronPort-AV: E=Sophos;i="6.23,116,1770624000"; 
+   d="scan'208";a="74349453"
+Received: from fmviesa006.fm.intel.com ([10.60.135.146])
+  by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Mar 2026 14:04:06 -0700
+X-CSE-ConnectionGUID: TwkPglvKQpKLCE/h+eme/w==
+X-CSE-MsgGUID: 3B7qsr79TH+bHy5bvDLznQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.23,116,1770624000"; 
+   d="scan'208";a="217021235"
+Received: from aduenasd-mobl5.amr.corp.intel.com (HELO [10.125.110.142]) ([10.125.110.142])
+  by fmviesa006-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Mar 2026 14:04:04 -0700
+Message-ID: <40033fce-2fba-4841-8983-037da1f39bd4@intel.com>
+Date: Thu, 12 Mar 2026 14:04:03 -0700
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260306210900.1933788-1-yosry@kernel.org> <20260306210900.1933788-3-yosry@kernel.org>
- <abMCWGOoIvob2bTv@google.com>
-In-Reply-To: <abMCWGOoIvob2bTv@google.com>
-From: Yosry Ahmed <yosry@kernel.org>
-Date: Thu, 12 Mar 2026 14:01:49 -0700
-X-Gmail-Original-Message-ID: <CAO9r8zOXp_th1-CrKA67jWw0m-Y-U04mGckGPUSCjgN-ggNk+w@mail.gmail.com>
-X-Gm-Features: AaiRm5191QtAAvScBCvgLRRl-VDYbDInXbEhDxksLpHFqGW-MrOPtkSRSMepgVE
-Message-ID: <CAO9r8zOXp_th1-CrKA67jWw0m-Y-U04mGckGPUSCjgN-ggNk+w@mail.gmail.com>
-Subject: Re: [PATCH v2 2/6] KVM: nSVM: Simplify error handling of nested_svm_copy_vmcb12_to_cache()
-To: Sean Christopherson <seanjc@google.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>, Jim Mattson <jmattson@google.com>, kvm@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 06/20] vfio/cxl: Add UAPI for CXL Type-2 device
+ passthrough
+To: mhonap@nvidia.com, aniketa@nvidia.com, ankita@nvidia.com,
+ alwilliamson@nvidia.com, vsethi@nvidia.com, jgg@nvidia.com,
+ mochs@nvidia.com, skolothumtho@nvidia.com, alejandro.lucero-palau@amd.com,
+ dave@stgolabs.net, jonathan.cameron@huawei.com, alison.schofield@intel.com,
+ vishal.l.verma@intel.com, ira.weiny@intel.com, dan.j.williams@intel.com,
+ jgg@ziepe.ca, yishaih@nvidia.com, kevin.tian@intel.com
+Cc: cjia@nvidia.com, targupta@nvidia.com, zhiw@nvidia.com, kjaju@nvidia.com,
+ linux-kernel@vger.kernel.org, linux-cxl@vger.kernel.org, kvm@vger.kernel.org
+References: <20260311203440.752648-1-mhonap@nvidia.com>
+ <20260311203440.752648-7-mhonap@nvidia.com>
+Content-Language: en-US
+From: Dave Jiang <dave.jiang@intel.com>
+In-Reply-To: <20260311203440.752648-7-mhonap@nvidia.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-> I strongly dislike the if-elif approach, because it makes unnecessarily hard to
-> see that *all* ret !=0 cases are handled, i.e. that overwriting ret below is ok.
->
-> The comment is also super confusing, because there's no #UD in sight, but there
-> is a #GP.
->
-> This is what I have locally and am planning on pushing to kvm-x86/next.
->
->         ret = nested_svm_copy_vmcb12_to_cache(vcpu, vmcb12_gpa);
->         if (ret) {
->                 if (ret == -EFAULT) {
->                         kvm_inject_gp(vcpu, 0);
->                         return 1;
->                 }
->
->                 /* Advance RIP past VMRUN as part of the nested #VMEXIT. */
->                 return kvm_skip_emulated_instruction(vcpu);
->         }
->
->         /* At this point, VMRUN is guaranteed to not fault; advance RIP. */
->         ret = kvm_skip_emulated_instruction(vcpu);
 
-Looks good. I will rebase on top of this and drop the patch before
-sending the next version.
+
+On 3/11/26 1:34 PM, mhonap@nvidia.com wrote:
+> From: Manish Honap <mhonap@nvidia.com>
+> 
+> CXL capabilities include:
+> - hdm_count: Number of HDM decoders available
+> - capacity: Total device memory (DPA)
+> - flags: COMMITTED, PRECOMMITTED
+> 
+> This UAPI enables VMMs like QEMU to passthrough CXL Type-2 devices
+> (GPUs, accelerators) with coherent memory to VMs.
+> 
+> Also added user-kernel API definitions for CXL Type-2 device passthrough.
+> Document how VFIO_DEVICE_FLAGS_CXL relates to VFIO_DEVICE_FLAGS_PCI
+> and VFIO_DEVICE_FLAGS_CAPS, and add field and flag descriptions
+> for the CXL capability.
+> 
+> Signed-off-by: Manish Honap <mhonap@nvidia.com>
+> ---
+>  include/uapi/linux/vfio.h | 52 +++++++++++++++++++++++++++++++++++++++
+>  1 file changed, 52 insertions(+)
+> 
+> diff --git a/include/uapi/linux/vfio.h b/include/uapi/linux/vfio.h
+> index ac2329f24141..7ec0f96cc2d9 100644
+> --- a/include/uapi/linux/vfio.h
+> +++ b/include/uapi/linux/vfio.h
+> @@ -215,6 +215,13 @@ struct vfio_device_info {
+>  #define VFIO_DEVICE_FLAGS_FSL_MC (1 << 6)	/* vfio-fsl-mc device */
+>  #define VFIO_DEVICE_FLAGS_CAPS	(1 << 7)	/* Info supports caps */
+>  #define VFIO_DEVICE_FLAGS_CDX	(1 << 8)	/* vfio-cdx device */
+> +/*
+> + * CXL Type-2 device (memory coherent; e.g. GPU, accelerator). When set,
+> + * VFIO_DEVICE_FLAGS_PCI is also set (same device is a PCI device). The
+> + * capability chain (VFIO_DEVICE_FLAGS_CAPS) contains VFIO_DEVICE_INFO_CAP_CXL
+> + * describing HDM decoders, DPA size, and CXL-specific options.
+> + */
+> +#define VFIO_DEVICE_FLAGS_CXL   (1 << 9)        /* Device supports CXL */
+>  	__u32	num_regions;	/* Max region index + 1 */
+>  	__u32	num_irqs;	/* Max IRQ index + 1 */
+>  	__u32   cap_offset;	/* Offset within info struct of first cap */
+> @@ -257,6 +264,39 @@ struct vfio_device_info_cap_pci_atomic_comp {
+>  	__u32 reserved;
+>  };
+>  
+> +/*
+> + * VFIO_DEVICE_INFO_CAP_CXL - CXL Type-2 device capability
+> + *
+> + * Present in the device info capability chain when VFIO_DEVICE_FLAGS_CXL
+> + * is set. Describes Host Managed Device Memory (HDM) layout and CXL
+> + * memory options so that userspace (e.g. QEMU) can expose the CXL region
+> + * and component registers correctly to the guest.
+> + */
+> +#define VFIO_DEVICE_INFO_CAP_CXL		6
+> +struct vfio_device_info_cap_cxl {
+> +	struct vfio_info_cap_header header;
+> +	__u8  hdm_count; /* Number of HDM decoders */
+> +	__u8  hdm_regs_bar_index; /* PCI BAR containing HDM registers */
+> +	__u16 pad;
+> +	__u32 flags;
+> +/* Decoder was committed by host firmware/BIOS */
+
+I'm confused by COMMITTED vs PRECOMMITTED. Should it just say "Decoder is committed" here? Otherwise what is the difference? Also can you explain a little the usage for COMMITTED vs PRECOMMITTED in the commit log please? i.e why does VFIO CXL needs to know a decoder is pre-committed?
+
+DJ
+
+> +#define VFIO_CXL_CAP_COMMITTED		(1 << 0)
+> +/*
+> + * Memory was pre-committed (firmware-programmed); VMM need not allocate
+> + * from CXL pool
+> + */
+> +#define VFIO_CXL_CAP_PRECOMMITTED	(1 << 1)
+> +	__u64 hdm_regs_size; /* Size in bytes of HDM register block */
+> +	__u64 hdm_regs_offset; /* Byte offset within the BAR to the HDM decoder block */
+> +	__u64 dpa_size; /* Device Physical Address (DPA) size in bytes */
+> +	/*
+> +	 * Region indices for the two CXL VFIO device regions.
+> +	 * Avoids forcing userspace to scan all regions by type/subtype.
+> +	 */
+> +	__u32  dpa_region_index;       /* VFIO_REGION_SUBTYPE_CXL */
+> +	__u32  comp_regs_region_index; /* VFIO_REGION_SUBTYPE_CXL_COMP_REGS */
+> +};
+> +
+>  /**
+>   * VFIO_DEVICE_GET_REGION_INFO - _IOWR(VFIO_TYPE, VFIO_BASE + 8,
+>   *				       struct vfio_region_info)
+> @@ -370,6 +410,18 @@ struct vfio_region_info_cap_type {
+>   */
+>  #define VFIO_REGION_SUBTYPE_IBM_NVLINK2_ATSD	(1)
+>  
+> +/* 1e98 vendor PCI sub-types (CXL Consortium) */
+> +/*
+> + * CXL memory region. Use with region type
+> + * (PCI_VENDOR_ID_CXL | VFIO_REGION_TYPE_PCI_VENDOR_TYPE).
+> + * DPA memory region (fault+zap mmap)
+> + */
+> +#define VFIO_REGION_SUBTYPE_CXL                 (1)
+> +/*
+> + * HDM decoder register emulation region (read/write only, no mmap).
+> + */
+> +#define VFIO_REGION_SUBTYPE_CXL_COMP_REGS       (2)
+> +
+>  /* sub-types for VFIO_REGION_TYPE_GFX */
+>  #define VFIO_REGION_SUBTYPE_GFX_EDID            (1)
+>  
+
