@@ -1,197 +1,201 @@
-Received: from mail-wr1-f43.google.com (mail-wr1-f43.google.com [209.85.221.43])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from MW6PR02CU001.outbound.protection.outlook.com (mail-westus2azon11012029.outbound.protection.outlook.com [52.101.48.29])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7618C3AC0D0
-	for <kvm@vger.kernel.org>; Thu, 12 Mar 2026 07:00:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.221.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 151AC2BD5A8;
+	Thu, 12 Mar 2026 07:21:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.48.29
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773298854; cv=pass; b=CTO8REH5UarV/S/Iw6u/DMlCRN72AoalHrQCnP6Zsa6LJ7iKJInNjZ7GI4myCBdcumu0ajKjxliacFgFPOdeBXw491Bn8spDl9A4k/zTgK8mA11xnkDyys3cDK6NrNEfk9qvDjAWwzzVeo5hsoYrzbt3pv3LR6ry1oKIvBq6lx0=
+	t=1773300095; cv=fail; b=Qyyq/tt/fMWDiUi+AtQD5Juju60a+PDclKQrjwWLKY9KlpB0YuCg9ql1GQb81/bJQwdR6EDMo+CI5JBk8+sHxDshzbCGVZFtvpITLQBVyKl/Wo567H7VvkErP1jJ5iuyRNnsmH96FyZgB7vmazDGFu1JVtN4fg3+guYgSrQMreM=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773298854; c=relaxed/simple;
-	bh=qWPLhWSyf1EIfo6jvLDnIYO6doU1eRWodDa3baXdf6k=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=VCCqY22y7VIANADRGdy1N/ejZpJgUZWS9DQDn+ytB6Kjc1iYX8Gj6WAY6qGnQEed3g5YIE84hf5rSEo0Oa/cgzZyYZfdc40ibAj3q+QEL3IFVRIIHJ7uMRJDedEfkOq6ONJkqoYVGH+kA8OfUzGVjeYU9BA/RCQ3OwfQbQF4gKo=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=theori.io; spf=pass smtp.mailfrom=theori.io; dkim=pass (1024-bit key) header.d=theori.io header.i=@theori.io header.b=VLayXvBA; arc=pass smtp.client-ip=209.85.221.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=theori.io
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=theori.io
+	s=arc-20240116; t=1773300095; c=relaxed/simple;
+	bh=OGRVJtTR/WkLKtXSuP0oZOv06vK1tZXWGqbXmLszU38=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=AURZSQzYf7otkuzY7E4QbWbebsKp5EjXflSl229b56EDt1yAdNj4/ANr7Du54euBBOM0tX0kvLggcK+82Y+gWae2uyN7tqRdKMYFElxo1liW9SlRMMGa8NkP0+60GyaL7fsCv/574x+T4Q4/TV+VtXbI7PcI4xKPn+KEya0flEc=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=qm6GmOTD; arc=fail smtp.client-ip=52.101.48.29
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=theori.io header.i=@theori.io header.b="VLayXvBA"
-Received: by mail-wr1-f43.google.com with SMTP id ffacd0b85a97d-439d8df7620so436902f8f.0
-        for <kvm@vger.kernel.org>; Thu, 12 Mar 2026 00:00:52 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1773298851; cv=none;
-        d=google.com; s=arc-20240605;
-        b=N8SjNE6PEJ31PGUJh4zj4pD4/OTmWD2a1KVABGOjnz5oEJh4K2zolwETgjBPESPhgd
-         VrqWldUQJT3mHf2LT/96UQPOcYF91Tkb8oTC/llonxOhUhkzWsdgMInEGUHWd4HynCl8
-         Wp4t9bHTUUaprdXGJU4be6pMeKR3Rm8TQASZ3+9TcCMhgCarUBwEiFZMO1NqVMGgGxTW
-         bby+SAV3rtpaPePyaQzmICEQD7Ywuns0+zNhAghYnRY6/1leOtaEGlFvpRxETuajIpH4
-         adO5q7Nckks5nGqVLNZ8ECpgRQuoM9vzfTcSSkSoRS4tZiUHzlIoQJadhaf2Gm/a7xPb
-         CqHQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=6bQt829ScL64SxJy1/G3Hp8ZoUZESXdhyl388i4pZik=;
-        fh=/goRtTuOe2Gq6c9MWiTHR/PMEOkFwDJC0nx2l6yUx98=;
-        b=Qv4JHczy/WjeoWMzajrxq1k7HFEfpIkFUADH/0ci5D1eFt6wHYvXuFgZMDwHXQYzTu
-         F+S8dSZCfqb7mykg5YJAzdL2NK1eN57McF4vQzI0n3L+9JED3tFWd7iVuW1CNx4T1AAD
-         7YRAezZlItf1OL7SsaxWMfBC9ELoJadaLqLTwEc1wfSukIakJxZlJrg4Gn3NDR9ivKSs
-         GjDjU4oFSC0gpOELchJAQcLRf8VoWUqPkD6MQsJvgGWGYTn93WyLMNqMGKvcqMW9MBnp
-         tuEsVeyChAw2C+kHmeVSUor9VmXj+Bqg4PahGVD4ZvSMAYxlM0oYdS91vY13tli9aCSC
-         hUJA==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=theori.io; s=google; t=1773298851; x=1773903651; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=6bQt829ScL64SxJy1/G3Hp8ZoUZESXdhyl388i4pZik=;
-        b=VLayXvBAeULHEz8iz8Ig1W/lSD6sUiQcT3AWKVHJTMN9AQkgxARiTKULvYn1YaQwS1
-         mFUi+3Jw6G15g3qvAZ4fOwR8jH4LfFY1y+/awU3OKS22DVT12KhuJwI4MVU24kwPIOgg
-         U47p1nqFALhEnV3atnXibzd2AQcidBQBhhQSs=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1773298851; x=1773903651;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=6bQt829ScL64SxJy1/G3Hp8ZoUZESXdhyl388i4pZik=;
-        b=k4Lc+5k9+G4rizmlkyTsUUltbBuBKs2OQhNjAQjamQbKscVvQRvLvq2kz/5o58FeOb
-         k28kVA3lvPhS9KLl5/d1EmwoAnnULGaa7falu+zvF2fTuQgibIwtuE49QI5V+TNMG7hA
-         myn4JoIigvGORcCsMogwZu2lfeVGPKLnetLrxMKxDPjTR8LpLdHZIICn0HwhRgb5pMbZ
-         +NcY4HH+kefv4yNrbwmT045QYrLc/wXMpII4kRilWOECN/xhqVbW+TIuo116v7vyWxud
-         PMBgwDEvaG90UNkfaEguQN1mKAZw5fpFSHjwYfKnuLyrSry90I1R5+qK9ZIpAioiuET0
-         V+ug==
-X-Gm-Message-State: AOJu0YwMqII/ZDGGCNufZMHCZqecUIVMc81LoVapAGVOuKWMwD20R2WV
-	JgDKvzXKwtvPdPyOaZDGa8n2Kl+aXeiuOvOlyChbqXJh0EYqIFvG8FldX/EiNpVqzay46UHfUZA
-	y5J6/qjrcMtn4X2QRbSQJpmkNjkRD6tcdlBn+tcLzhg==
-X-Gm-Gg: ATEYQzxVBQQXfSshebc8bR2XpkXSrrDnXsW9FU6yQ9iHOV0zLy9fdoAYfjyuT8HccV1
-	cNDChyKKjU8w1gZ3BII8V9f/OKCovQkiROwLXWTmJAbwlfbAltCXvD/ZNIoGexPSALIFAVTRZmU
-	EeQswxO918xTuMMjIfY8wKiqcJd1C6G2CMNzngkpnBjbKhLL+FOTLaORukyZvRm/nG0b2kWcghk
-	Mohh/yCi5sC0H5DHE5TTvI02CCPb4Q6jOrN9fNJFTJubWLMmGpBV721HqvLKRbg1O2TdPf7AKpE
-	lC0imUw=
-X-Received: by 2002:a5d:5d84:0:b0:439:df25:b707 with SMTP id
- ffacd0b85a97d-439f84241b0mr10218944f8f.55.1773298850567; Thu, 12 Mar 2026
- 00:00:50 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="qm6GmOTD"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=f6peXhfSyJzdEKkam/SNDaCCEKc80tyH5S1UBJjcDFBhqL5OJIwTRnZvjDm4OUdQb30uCu4/A3grdvYqw3FS9YdPcHOiWU+DHfqP6FBsR3Hor3qjY2xrqh3056VlWIYutT2BRgmVc15z2L7cb3kgFYh11GMI8aYD6v/exmztBgpVeR12ghW7laTylU/TZe2Ny2k1D7M8zlZTkNB9VVa/UhHDEqqHNYUavRDDrMtuNyqNdbCajwmSvxWV26X2GxMFZH9izs9ooexQ07IKZWAJw2E/rSamKGpdGOWdShvGkEmmNebsvqwa8wBICr0DeCyuQygir/MnCm1EUhOjiaZ9zw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=QdRWeK0PZzAzKAdjZZvCqbTlqLmnEAjsTlTCk2iPDW0=;
+ b=fUyRpekiShXhD5n0xp0Mi66ow2dKao01RuU4uYPYw/WqYvXh6Y3dIgFbwdn4F0BbzsMtNkWTYOxIH7Go8RImrbGrYGMc6GLthNXW6fNjZ+8Ta6d5MYvK1pxYzCmPmDc5q0ZTruN69Wabsv0JxLuDy/DSnOZNclom3kJ3dYY89Y+dbBiiW4t4UTnc4UgIV7pnL6fBkHeeuK2jHK48OHqztYigjh6qLrweEWGUkhOEyuKyT4x7WWZbAQ0zIfv/m65YKBMs0mzogecw916Mwf9bO3IA++80nzf3pYp1k51DI2U0UzC1t3JDcvO3YhYKaVAy/hjlYcl1jJU9OpdYexTp0g==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=intel.com smtp.mailfrom=amd.com; dmarc=pass
+ (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=QdRWeK0PZzAzKAdjZZvCqbTlqLmnEAjsTlTCk2iPDW0=;
+ b=qm6GmOTD6ZFd2b7Iloa9/Vbkj0E1YqdYf81VsCkH8Yjm/sLZ+F18LKsOAFEWOyfHMBnSRD/Rz+LhwYUT56cH/XDvTJ1WDwGXL9O6zXnrWL172IZUhYtV4PxOAvulP59pagZgPDqnKNR+i/07CgZ/5SpmyVJaI3jGQh1Jo/WRG8o=
+Received: from MN2PR10CA0015.namprd10.prod.outlook.com (2603:10b6:208:120::28)
+ by BN5PR12MB9511.namprd12.prod.outlook.com (2603:10b6:408:2a9::14) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9723.4; Thu, 12 Mar
+ 2026 07:21:30 +0000
+Received: from BL6PEPF0001AB4A.namprd04.prod.outlook.com
+ (2603:10b6:208:120:cafe::96) by MN2PR10CA0015.outlook.office365.com
+ (2603:10b6:208:120::28) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.9678.27 via Frontend Transport; Thu,
+ 12 Mar 2026 07:21:28 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
+ smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=satlexmb07.amd.com; pr=C
+Received: from satlexmb07.amd.com (165.204.84.17) by
+ BL6PEPF0001AB4A.mail.protection.outlook.com (10.167.242.68) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.9678.18 via Frontend Transport; Thu, 12 Mar 2026 07:21:30 +0000
+Received: from Satlexmb09.amd.com (10.181.42.218) by satlexmb07.amd.com
+ (10.181.42.216) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.17; Thu, 12 Mar
+ 2026 02:21:29 -0500
+Received: from satlexmb08.amd.com (10.181.42.217) by satlexmb09.amd.com
+ (10.181.42.218) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.17; Thu, 12 Mar
+ 2026 00:21:29 -0700
+Received: from [172.31.177.76] (10.180.168.240) by satlexmb08.amd.com
+ (10.181.42.217) with Microsoft SMTP Server id 15.2.2562.17 via Frontend
+ Transport; Thu, 12 Mar 2026 02:21:25 -0500
+Message-ID: <81046249-09e2-4c39-8b77-992de916a7ba@amd.com>
+Date: Thu, 12 Mar 2026 12:51:19 +0530
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260311105047.18517-1-0wn@theori.io> <abFzwjGJm1j02L36@google.com>
-In-Reply-To: <abFzwjGJm1j02L36@google.com>
-From: Taeyang Lee <0wn@theori.io>
-Date: Thu, 12 Mar 2026 16:00:13 +0900
-X-Gm-Features: AaiRm525L8Umq-xcjrFNU1Ty6kjIF9IN9U460nrmqS3kVIvhowjvKbxOTvw-Jvs
-Message-ID: <CAH-2XvJo_JiyAnb21_LYxSz8xZ96oUVF25eTnDyALF+wnZw8ww@mail.gmail.com>
-Subject: Re: [PATCH] KVM: clear map->gfn in kvm_vcpu_unmap() to prevent stale
- validity checks
-To: Sean Christopherson <seanjc@google.com>
-Cc: kvm@vger.kernel.org, Konrad Rzeszutek Wilk <konrad.wilk@oracle.com>, 
-	Paolo Bonzini <pbonzini@redhat.com>, KarimAllah Ahmed <karahmed@amazon.de>, linux-kernel@vger.kernel.org
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 1/2] x86/cpu: Disable CR pinning during CPU bringup
+To: Dave Hansen <dave.hansen@intel.com>, Tom Lendacky
+	<thomas.lendacky@amd.com>, Borislav Petkov <bp@alien8.de>
+CC: <linux-kernel@vger.kernel.org>, <kvm@vger.kernel.org>, <tglx@kernel.org>,
+	<mingo@redhat.com>, <dave.hansen@linux.intel.com>, <hpa@zytor.com>,
+	<xin@zytor.com>, <seanjc@google.com>, <pbonzini@redhat.com>,
+	<x86@kernel.org>, <sohil.mehta@intel.com>, <jon.grimm@amd.com>
+References: <20260226092349.803491-1-nikunj@amd.com>
+ <20260226092349.803491-2-nikunj@amd.com>
+ <20260309134640.GOaa7PQJli_C9QATGB@fat_crate.local>
+ <cde957ba-3579-4063-9d17-3630e79ea388@intel.com>
+ <20260309161516.GAaa7yFMulhdzNQ-pt@fat_crate.local>
+ <70644e1d-dd0e-4f0f-81c0-fd095e46e50b@intel.com>
+ <7ca205d6-b01b-4ed3-959d-db31a6496d79@amd.com>
+ <505a6bbd-3ecf-4de9-8fb9-0b21c3435a96@intel.com>
+ <9fa61b80-0e16-4a87-a0e7-3c3dfcda8f7e@amd.com>
+ <55a98b6d-e831-47a6-aa5a-8fe357334f67@intel.com>
+ <d0eba3fe-2938-4856-bd9b-0e13972e8313@amd.com>
+ <cb492a37-3517-4738-b435-73311402e820@intel.com>
+Content-Language: en-US
+From: "Nikunj A. Dadhania" <nikunj@amd.com>
+In-Reply-To: <cb492a37-3517-4738-b435-73311402e820@intel.com>
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 7bit
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: BL6PEPF0001AB4A:EE_|BN5PR12MB9511:EE_
+X-MS-Office365-Filtering-Correlation-Id: 7786c054-ce98-4b9f-908e-08de8007fb4c
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|376014|82310400026|7416014|1800799024|36860700016|18002099003|56012099003|22082099003;
+X-Microsoft-Antispam-Message-Info:
+	2SEptjRlVPvBRr0HfygOVNcTNUumRx/f8ptz+xqSUaAQ56+8d6p5ySYCY0r0I26BAAB9tofI8PvXQ04FCReHBC5ERk/aaK2PkC5joo0n9YpaoIZ4lYecZGpefEBnNbQTGKeWP2+KqwTKGfTSE7YyNQ/W/gldJ/DwqWuYW6RiPjjB/SH/5A3ugAX+zM+JSMEDCHnP2ROKmnF0abDakQKXv4WNZMv6hNYV2Rs32Z61rS7UA7TNx+sA3ksyvi9ePZKRSMU+8zs/SYVGSWBqh/qa0kmFuDCaT9IEchzC/AZntICsp0LpOijxKNsMwDljLAt6Jxh8U5ZGlWoEHmdYerKX7kkI4qRIBT1crXCqYws9H7qHPk+gW49tE0szcgsufZ15cJVL4GmTaQk8sSGM6FbpSCLqye6XXvCEbDL8po+/3lh7RYcSryZsqsAzXCMGqBEV54RbKwxpuMpOPmk+mMPggY0gxxsCCJLRRSIQKstp7wtl4ltVgAEnH4IU0KLCDdf3gTFz5C4SFX5YwZpeopf0ZJ2QT6l/8M5PRdvUaOGvHziHRH1r5CnmerghLQUVdtizxUKL3CJUQfvpkruiRZwEU5a3x06B7ReAjqr1N6HCbHaKlv1XBFVL7Tr4p8Wc6Vs183qf0gXN5fzElAMQEJpLnh2RVj8w2l9l7zNwbkCaDGL869Hh8ujTm7p4m/ng674xQQCV4GDpsI/yVRHEQ29hyU9e8UIv7hIIAWOplZtqqL2MeOfs9Z/GbMXRmWCfp4745R+K+zuQt8Mo9FFGWhGi6Q==
+X-Forefront-Antispam-Report:
+	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb07.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(376014)(82310400026)(7416014)(1800799024)(36860700016)(18002099003)(56012099003)(22082099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	4PyxUJLmFuhAvHIBs/+Oi5+Yyb47A3OJ6DR/t+cQwS/wXt2IFuq+riDWfCJToc7aG2lN9k8DRJnK0hp0B1n9fCNbAj/qfmZGI186ygBZO7FQgVLlvQN9trDQGbnGtkG37B/R9mJZf29GgyKUJUWz9DOO3nnArxGZQFnnpxB4nURaj3PxS60JBo1igqm4jIpksgPuN8B2Y9odY8B+VyvNwKODD/T5AkNxcoc4o0vuuACXho8hAX4qE+6xjuqfW1rdLI8orxrKyRekohVTnN15t5Tur8R2R8R2JrNRu6wLgNAOA4fbjGq21+lM9zC+6vTxd0DMmKyc8CD9DHaf0FyrV/u+/Ai5ScUKF4ANpFHxxwyHYnDAzWoeT3Vk0B/gocPsqygyUDUtHBpB6fY94fvIuKNOcenMfMs+7PLnDz3OyJlAIq2zo8xwcUY+Cb2CFw9k
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 12 Mar 2026 07:21:30.1917
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 7786c054-ce98-4b9f-908e-08de8007fb4c
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[satlexmb07.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	BL6PEPF0001AB4A.namprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: BN5PR12MB9511
 
-Hi Sean,
 
-Thanks for the detailed review.
 
-On Wed, Mar 11, 2026 at 10:53=E2=80=AFPM Sean Christopherson <seanjc@google=
-.com> wrote:
->
-> On Wed, Mar 11, 2026, Taeyang Lee wrote:
-> > kvm_vcpu_unmap() clears map->hva and map->page but leaves map->gfn with
-> > its previous value. This creates an inconsistent state: callers that
-> > check gfn !=3D 0 as a proxy for map validity will believe the map is st=
-ill
->
-> But that was and still is flat out wrong, '0' is a perfectly legal gfn.
+On 3/11/2026 10:58 PM, Dave Hansen wrote:
+> On 3/11/26 08:42, Nikunj A. Dadhania wrote:
+>> -void cr4_init(void)
+>> +void cr4_init(bool boot_cpu)
+> 
+> I think the "pass a bool to a function" pattern is really not great.
 
-You're right, I hadn't considered that. Setting gfn =3D 0 as a sentinel
-is fundamentally incorrect.
+The reason I introduced it was to avoid double-enabling PCIDE on the boot 
+CPU. The boot CPU already enables PCIDE via setup_pcid().
+ 
+> The problem isn't actually setting CR4 twice. The problem is having two
+> different code paths to set it. Doing the 'bool' doesn't eliminate the
+> code path, it just makes the whole thing more complicated to reason
+> about and further bifurcates the boot and secondary CPU bringup paths.
+> 
+> We want to unify those, not bifurcate them.
+> 
+> Why don't we just universally set X86_CR4_FSGSBASE in cr4_init()?
 
->
-> > valid when hva is already NULL.
-> >
-> > This pattern caused a null pointer dereference in the 6.1.x LTS branch,
-> > where vmx_guest_apic_has_interrupt() checked virtual_apic_map.gfn but
-> > dereferenced virtual_apic_map.hva unconditionally. That specific call
-> > site no longer exists in mainline due to the gfn_to_pfn_cache
-> > refactoring, but the inconsistency in kvm_vcpu_unmap() remains and coul=
-d
-> > affect future kvm_host_map users that rely on gfn for validity.
-> >
-> > Similarly, kvm_vcpu_map() does not modify the map struct on failure, so
-> > stale gfn values from a previous successful mapping survive a failed
-> > remap attempt. Clearing gfn in kvm_vcpu_unmap() ensures that after an
-> > unmap-then-failed-remap sequence, gfn correctly reflects that no valid
-> > mapping exists.
-> >
-> > Clear map->gfn in kvm_vcpu_unmap().
-> >
-> > Reported-by: Taeyang Lee <0wn@theori.io>
-> > Fixes: e45adf665a53 ("KVM: Introduce a new guest mapping API")
->
-> This is not the correct fixes, the blame lies squarely on 96c66e87deee ("=
-KVM/nVMX:
-> Use kvm_vcpu_map when mapping the virtual APIC page").  The API even prov=
-ided
-> kvm_vcpu_mapped() from the get-go; why commit e45adf665a53 checked the gf=
-n, I have
-> no idea.
->
+Right, this approach becomes much simpler with the boot_cpu:
 
-Agreed =E2=80=94 the bug is in the caller misusing gfn instead of
-kvm_vcpu_mapped(), not in the unmap API itself.
+diff --git a/arch/x86/kernel/cpu/common.c b/arch/x86/kernel/cpu/common.c
+index 1c3261cae40c..6c0493eaf813 100644
+--- a/arch/x86/kernel/cpu/common.c
++++ b/arch/x86/kernel/cpu/common.c
+@@ -502,6 +502,17 @@ void cr4_init(void)
+ 
+ 	if (boot_cpu_has(X86_FEATURE_PCID))
+ 		cr4 |= X86_CR4_PCIDE;
++
++	/*
++	 * CPUs that support FSGSBASE may use RDGSBASE/WRGSBASE in
++	 * paranoid_entry(). Enable the feature before any exceptions
++	 * occur.
++	 */
++	if (boot_cpu_has(X86_FEATURE_FSGSBASE)) {
++		cr4 |= X86_CR4_FSGSBASE;
++		elf_hwcap2 |= HWCAP2_FSGSBASE;
++	}
++
+ 	if (static_branch_likely(&cr_pinning))
+ 		cr4 = (cr4 & ~cr4_pinned_mask) | cr4_pinned_bits;
+ 
+@@ -2047,12 +2058,6 @@ static void identify_cpu(struct cpuinfo_x86 *c)
+ 	setup_umip(c);
+ 	setup_lass(c);
+ 
+-	/* Enable FSGSBASE instructions if available. */
+-	if (cpu_has(c, X86_FEATURE_FSGSBASE)) {
+-		cr4_set_bits(X86_CR4_FSGSBASE);
+-		elf_hwcap2 |= HWCAP2_FSGSBASE;
+-	}
+-
+ 	/*
+ 	 * The vendor-specific functions might have changed features.
+ 	 * Now we do "generic changes."
+diff --git a/arch/x86/kernel/traps.c b/arch/x86/kernel/traps.c
+index 4dbff8ef9b1c..0a2b129bda03 100644
+--- a/arch/x86/kernel/traps.c
++++ b/arch/x86/kernel/traps.c
+@@ -1685,6 +1685,13 @@ void __init trap_init(void)
+ 	/* Init GHCB memory pages when running as an SEV-ES guest */
+ 	sev_es_init_vc_handling();
+ 
++	/*
++	 * Initialize CR4 early, before cpu_init(). This ensures features like
++	 * FSGSBASE are enabled before exception handlers run, avoiding double
++	 * initialization later.
++	 */
++	cr4_init();
++
+ 	/* Initialize TSS before setting up traps so ISTs work */
+ 	cpu_init_exception_handling(true);
 
-> > Signed-off-by: Taeyang Lee <0wn@theori.io>
-> > ---
-> >  virt/kvm/kvm_main.c | 1 +
-> >  1 file changed, 1 insertion(+)
-> >
-> > diff --git a/virt/kvm/kvm_main.c b/virt/kvm/kvm_main.c
-> > index 7a4fd1dbe0d7..88fc8b20aa8f 100644
-> > --- a/virt/kvm/kvm_main.c
-> > +++ b/virt/kvm/kvm_main.c
-> > @@ -2887,6 +2887,7 @@ void kvm_vcpu_unmap(struct kvm_vcpu *vcpu, struct=
- kvm_host_map *map, bool dirty)
-> >
-> >       map->hva =3D NULL;
-> >       map->page =3D NULL;
-> > +     map->gfn =3D 0;
->
-> As above, this is at best misleading.  If we wanted to harden this, we sh=
-ould do
->
->         map->gfn =3D INVALID_GPA;
->
-> but I honestly don't see the point.  Yes, we had terrible code in the pas=
-t, but
-> the above doesn't prevent terrible code.  E.g. the correct invalidation w=
-ouldn't
-> actually do anything to make the terrible code less broken.
->
-> We even (somewhat unintentionally) removed that terrible code in commit 3=
-21ef62b0c5f
-> ("KVM: nVMX: Fold requested virtual interrupt check into has_nested_event=
-s()").
-> And that commit was tagged for stable@, it just didn't apply.  If we want=
- to do
-> anything for 6.1.y (and 6.6.y?), we should backport that entire series:
->
->   https://lore.kernel.org/all/2024072925-straw-mashing-54f6@gregkh
 
-I see =E2=80=94 so the proper LTS fix would be to backport that series rath=
-er
-than adding band-aid patches. That makes sense.
-
-For context, I sent the patch because the NULL dereference appears
-to be guest-triggerable on 6.1.y, and I wanted to suggest something
-minimal for the LTS branches. But based on your feedback, backporting
-the series that includes 321ef62b0c5f sounds like the correct fix.
-
-I also sent a minimal NULL check patch for vmx_guest_apic_has_interrupt()
-to stable@vger.kernel.org. Would that still be reasonable as an interim
-fix until the full series is backported, or would you prefer to just
-backport the series directly?
-
-Thanks
