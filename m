@@ -1,95 +1,129 @@
-Received: from mail-pl1-f201.google.com (mail-pl1-f201.google.com [209.85.214.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0ED74364955
-	for <kvm@vger.kernel.org>; Thu, 12 Mar 2026 14:18:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4138336999D;
+	Thu, 12 Mar 2026 14:19:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.9
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773325134; cv=none; b=UYk/3Bq/K49eOx8bXpH0Pm4PMj7MCwxeWBHUCFVLMVV9B8DIHvQR31v77JBtVPyGMun1QowHaFLvFSmQh183VlmAkWfLgO1JTmgUpIjZWzcK9XO+UzQYr88ap0D5+OVXRSR347B0LWGuDZbRGqEhtFQRAVCUjAIGd0zhXJPcSs8=
+	t=1773325194; cv=none; b=FdtM97zcDt/dh7hdI3BktWaK7mBP3MWj8X25EhBskyY2vitdmhRwf/oRqK+HMq/k97ISJH39aroaWhuSEzzdLUW6HFy9Dhzdnq3eO46RUNyTXBuS/lXxf0CynK8bWTxfUuP3Vnig7h3RT46ycaGKWscDo4RGpktcPRnO02UNN74=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773325134; c=relaxed/simple;
-	bh=hGqOf/D1n6zt9lKMaVVi2J90hy3UfDgGbEzRXmPo8f4=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=QNVNmE4Vsbt4LLZo9SO5pOlmeKczrMffLERK8x3l6/YCsa80Ie6dIlIIeYkb3Nj13tlrw2AlS8+sAh7KY1FK9/7dWPkfjLJqu2NAJBCfd8Q8ep3gEnIwSf67o/L+88/1PbebGZMZ3nya/UsdLpJJqNKVuSjvgCCn6Y5m2l3QKpQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=zIRO2fLF; arc=none smtp.client-ip=209.85.214.201
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+	s=arc-20240116; t=1773325194; c=relaxed/simple;
+	bh=bFHw/Ib4fy7tMZh52XXnouVVH4/o3s8q/TOAMQwwSsg=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=Eo1W9H7aDNKhmzYFLdobNl+oPsV2/kcmzkt2/xk5SmrTtL8UWoSkbfynn9Y9/zwyJHGqYnlkI7riTyx0KuSrgPVGSEn59W5yVYyAm4eHiImO4xXNOYoXIGChERhT5G5Jh4vTNRAEnUdf+Jmcxx/OaZI1BvR25b/FCB7Oixvf6WU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=h8qV0jvm; arc=none smtp.client-ip=192.198.163.9
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="zIRO2fLF"
-Received: by mail-pl1-f201.google.com with SMTP id d9443c01a7336-2ae502a1dd9so14123025ad.3
-        for <kvm@vger.kernel.org>; Thu, 12 Mar 2026 07:18:52 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1773325132; x=1773929932; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:from:subject:message-id:references
-         :mime-version:in-reply-to:date:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=gGHhfsi37Eu9JZy+ZrD+abK1cZRx7y4LPxRTu6Z/szY=;
-        b=zIRO2fLFZ8e/BuXXMmXcD5Id9aKnfv2bfW3j91XlmiiF9ymZe9xH6Rrz9hYF+C91V1
-         +D9sqfAlmx0znVUq0pKcMBdn/kkUN57w80vqCQtFkqX/dOyRjk7qNnwXInGtIau5gIm7
-         xA/4a9PSQqZ6ZezrobM+ROJ7cTdlx9kdZK3YQcFKcY8T6+o4FtDcFVahvh1d98r9AUuI
-         34p8nz6F1g/uopRChP82ngwWqbCqu51laXZ+9903nMTCNdvs8TWhevxkNmjqOtDPKr//
-         ztJTMSeEWmBLrNp5e6in5DMtMww2qJO8Wyd2Ft/waA3asO8y+YZyMTp0/b1KbqpAzNxX
-         iB2g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1773325132; x=1773929932;
-        h=content-transfer-encoding:cc:to:from:subject:message-id:references
-         :mime-version:in-reply-to:date:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=gGHhfsi37Eu9JZy+ZrD+abK1cZRx7y4LPxRTu6Z/szY=;
-        b=UdDLAS3ApUTlMOZ8jy8zZFMEKu3ZtZ2f1SblfgdcF7kNfc5+hhcR/aogX3rOFBVcXB
-         4lGPzREm9JsYySW28JBzw6HyO/X1zG4OHcefHpoIOI8CK8Z1zWerq5NDJ5mLImRFa7qV
-         TqhkWtoKlF8K/9HmUw3ywRc1AcohrNB4r7IVCbu9zDpL6Uce8lVclkb7EGMRlc32VNja
-         unuRQ4zhTDK91p7UER6PRlD+zKulQJ6v5DNLNtiuxYcafYvHgzOt/3b3URpl5MnvPGk/
-         cF8QDFpeZw+Cmwnho09sCMUOD6wVWq9FdN5hJw5pz0J8FHBsTFqEoQJwrvk3wqpswODN
-         qfNA==
-X-Gm-Message-State: AOJu0YwDY2YbZYQ4rGYl+mnVFcK+yPdWZuIjKSwspySuoEMvcP16CT9N
-	cPWSu4n6idNPF78MlwSh6qaLO9d92a80D6+7kvPORali3t6uYzHFLA+oDsOUOlHiQFd0qrFCgSE
-	ZjUtzIw==
-X-Received: from pleq1.prod.google.com ([2002:a17:902:f341:b0:2ae:c5fa:9706])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:903:1c3:b0:2ae:4fb6:bb21
- with SMTP id d9443c01a7336-2aeae7e7939mr65856815ad.15.1773325132299; Thu, 12
- Mar 2026 07:18:52 -0700 (PDT)
-Date: Thu, 12 Mar 2026 07:18:51 -0700
-In-Reply-To: <CABgObfYY5GVF6iubP70jmCYj+3cbsYc7DCxiRsPRr=JDbZjQmg@mail.gmail.com>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="h8qV0jvm"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1773325193; x=1804861193;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=bFHw/Ib4fy7tMZh52XXnouVVH4/o3s8q/TOAMQwwSsg=;
+  b=h8qV0jvm82C8wMOcjGhcqL8GyBhagURofnZ3DHt3lrclGupfPZOh4vR/
+   wJyz9OBYgf+KM7kwflF/7xtuXPmOFmSvk98BSLWvDvBwAvKhUSK6t6Sto
+   QCt6duQ5CwgYUoyfOOLhwPsqA+tRhzg3sMVIkuzJ8PK/aReJiex5jgpB9
+   w+mcMIgrBb8H6v/G2V/UrvxjQn/GjHY36XtjHJH4NfkTYMeGZM1Ld52Xd
+   XVzz2aXQLl8C5ipRvlTS3dgmknJN7WVpqEHoq8vxI0CMrM22Fo8cb7Hv5
+   jOzWgNSIYxXMc5OlpMHchqsuNUz26RsBVT/xPMa/xodb6mXBD4JksmH0b
+   g==;
+X-CSE-ConnectionGUID: A7s2CQ5DSa6hKGn33m7hvQ==
+X-CSE-MsgGUID: ipieAhLWTN6U+FaDbMqxjA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11727"; a="85119738"
+X-IronPort-AV: E=Sophos;i="6.23,116,1770624000"; 
+   d="scan'208";a="85119738"
+Received: from orviesa008.jf.intel.com ([10.64.159.148])
+  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Mar 2026 07:19:53 -0700
+X-CSE-ConnectionGUID: mdpQcZvJTdWGKr6KkcLEVA==
+X-CSE-MsgGUID: eHpa0xWQSh6yZD5JoVFRVg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.23,116,1770624000"; 
+   d="scan'208";a="220891107"
+Received: from spandruv-desk1.amr.corp.intel.com (HELO [10.125.110.129]) ([10.125.110.129])
+  by orviesa008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Mar 2026 07:19:53 -0700
+Message-ID: <ab5bf7bb-6511-49dc-a65d-86911e0f7091@intel.com>
+Date: Thu, 12 Mar 2026 07:20:06 -0700
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20260305193053.1643463-1-seanjc@google.com> <abCLG4axO2gmpBb-@google.com>
- <CABgObfYY5GVF6iubP70jmCYj+3cbsYc7DCxiRsPRr=JDbZjQmg@mail.gmail.com>
-Message-ID: <abLHkWQ7ib8m1KhV@google.com>
-Subject: Re: [GIT PULL] KVM: x86 (and a PPC) fixes for 7.0-rc3+
-From: Sean Christopherson <seanjc@google.com>
-To: Paolo Bonzini <pbonzini@redhat.com>
-Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 1/2] x86/cpu: Disable CR pinning during CPU bringup
+To: "Nikunj A. Dadhania" <nikunj@amd.com>,
+ Tom Lendacky <thomas.lendacky@amd.com>, Borislav Petkov <bp@alien8.de>
+Cc: linux-kernel@vger.kernel.org, kvm@vger.kernel.org, tglx@kernel.org,
+ mingo@redhat.com, dave.hansen@linux.intel.com, hpa@zytor.com, xin@zytor.com,
+ seanjc@google.com, pbonzini@redhat.com, x86@kernel.org,
+ sohil.mehta@intel.com, jon.grimm@amd.com
+References: <20260226092349.803491-1-nikunj@amd.com>
+ <20260226092349.803491-2-nikunj@amd.com>
+ <20260309134640.GOaa7PQJli_C9QATGB@fat_crate.local>
+ <cde957ba-3579-4063-9d17-3630e79ea388@intel.com>
+ <20260309161516.GAaa7yFMulhdzNQ-pt@fat_crate.local>
+ <70644e1d-dd0e-4f0f-81c0-fd095e46e50b@intel.com>
+ <7ca205d6-b01b-4ed3-959d-db31a6496d79@amd.com>
+ <505a6bbd-3ecf-4de9-8fb9-0b21c3435a96@intel.com>
+ <9fa61b80-0e16-4a87-a0e7-3c3dfcda8f7e@amd.com>
+ <55a98b6d-e831-47a6-aa5a-8fe357334f67@intel.com>
+ <d0eba3fe-2938-4856-bd9b-0e13972e8313@amd.com>
+ <cb492a37-3517-4738-b435-73311402e820@intel.com>
+ <ddf407e9-359d-4d4e-827d-98f212589e9f@amd.com>
+From: Dave Hansen <dave.hansen@intel.com>
+Content-Language: en-US
+Autocrypt: addr=dave.hansen@intel.com; keydata=
+ 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
+In-Reply-To: <ddf407e9-359d-4d4e-827d-98f212589e9f@amd.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Wed, Mar 11, 2026, Paolo Bonzini wrote:
-> On Tue, Mar 10, 2026 at 10:20=E2=80=AFPM Sean Christopherson <seanjc@goog=
-le.com> wrote:
-> >
-> > On Thu, Mar 05, 2026, Sean Christopherson wrote:
-> > >  - Update CR8 write interception when AVIC is (de)activated to fix a =
-bug where
-> > >    KVM can run with the CR8 intercept in perpetuity.
-> >
-> > ...
-> >
-> > > Sean Christopherson (4):
-> > >       KVM: SVM: Initialize AVIC VMCB fields if AVIC is enabled with i=
-n-kernel APIC
-> > >       KVM: SVM: Set/clear CR8 write interception when AVIC is (de)act=
-ivated
-> >
-> > The CR8 write patch broke SEV-ES guests.  If you haven't already prepar=
-ed the
-> > PULL request for Linus, can you apply the fix directly?
->=20
-> Done.=20
+On 3/12/26 07:08, Nikunj A. Dadhania wrote:
+> 1) Back-porting complexity: The current issue affects kernels (6.9+) 
+>    where SEV-SNP guests fail to boot with FRED enabled. A simpler fix would
+>    be easier to backport and verify across stable branches.
 
-No?  I see the pull request in kvm.git, but not the below fix-to-the-fix.
-
-> > https://lore.kernel.org/all/20260310211841.2552361-2-seanjc@google.com
+The simplest fix is to disable FRED on those kernels, fwiw.
