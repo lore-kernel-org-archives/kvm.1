@@ -1,54 +1,54 @@
-Received: from mail-pj1-f73.google.com (mail-pj1-f73.google.com [209.85.216.73])
+Received: from mail-pl1-f201.google.com (mail-pl1-f201.google.com [209.85.214.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A450401A1F
-	for <kvm@vger.kernel.org>; Thu, 12 Mar 2026 20:03:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.73
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DBD39402420
+	for <kvm@vger.kernel.org>; Thu, 12 Mar 2026 20:03:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773345799; cv=none; b=TeB+X4Cl3h4/t65wm/V25MPXhnDHk9S50J1+IqbkkT4H7Ilut/RKTOm6a9XaBRAC4ZWP5q13GJJzQC9hSFH6+r63fLM0LB9D4Oi2OmjO7GFtIXCtEahJKkUxBp0cYg2Ck6ScaHQgcH0C4X7kN4VuSfrNibDFfIhCWgJxKYVM9Zg=
+	t=1773345801; cv=none; b=TxZtiLjjL+m6ezwe+uZED2K7Vz2MyEBy8jT/ZXAZ7AqoH/+yqOG01wzyuALgWvAxdg5oO8Och7zGCITTRS71xxfLEdhkZcsShnrfeJnuEIYKfAfXm4cRC8XJwUn0ExzU7yCh9epnzNqeHYlwQg6eXa/jWigxsCIqdvqQtCxRUXI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773345799; c=relaxed/simple;
-	bh=QmD8eQIOWS5+AwR0q3zNGzvld1y+nahIW8IwEFOcOU8=;
+	s=arc-20240116; t=1773345801; c=relaxed/simple;
+	bh=8nw0TvuMpQlnXaNrS4SlXA9LIX5DE+Mci6IzGLeJ1E0=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=mT8AaIHR08YDsiswQbq3oCXrT84IunMkVgYum6dAP+PbLtlNtngluzQOpMQ3DXk+/qQwwTIaly0khy0UPbSKiP+dfHo2ekRq/gzYgdlD5sBjNeIGJsar4p2LbeHmy6AGEdMI0AF2sts5pX6tTXaEL3fgZqCy6xFvThGCTREPZaQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--chengkev.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=wtL1p4q7; arc=none smtp.client-ip=209.85.216.73
+	 To:Cc:Content-Type; b=qxnG0FXkoOuqYg18zrn3nIvcr+QFuv1APiJrXJcpcRpsChXRKkSqkQ9aPQNPNSlRajZCz54bTHcCp7pEvPloU1MP/li3DqZky3sOqmY7ReaGHCRO0BbwEFFimIZlUfnLDjZ4gLxm3QcLT+qQKfUKix7do3vN2eIDOI2vk0EhPaw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--chengkev.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=ETdWTw29; arc=none smtp.client-ip=209.85.214.201
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--chengkev.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="wtL1p4q7"
-Received: by mail-pj1-f73.google.com with SMTP id 98e67ed59e1d1-35449510446so1121025a91.0
-        for <kvm@vger.kernel.org>; Thu, 12 Mar 2026 13:03:16 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="ETdWTw29"
+Received: by mail-pl1-f201.google.com with SMTP id d9443c01a7336-2ae3e462daeso9523075ad.0
+        for <kvm@vger.kernel.org>; Thu, 12 Mar 2026 13:03:18 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1773345796; x=1773950596; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1773345798; x=1773950598; darn=vger.kernel.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=ZwLmK6qzx7XSYMEkdNEwzO4eT9/vXNK29O2UsupncTk=;
-        b=wtL1p4q7KLTWayWz6MyBiUbtVL6bYYxXmE4ZXgI1Jj/CqLz8XhmaGb3BYGDve1FTia
-         dxfDf3gh/FRSzqmjdnkew8EkwX14BCuV+rYFjnvUUI4qLdesKIRSfGSLMF/xo3EGaZ5t
-         xCwUpQGR1qud18eg3Ush3zYnwRr/MVu0JBlBmYAuMZHo4KbzrLBUb5FvRzNxQnAw7a2b
-         XTS/8KN4FSnScKc/OzlGjJAQMojNz96du/wmOAP2tgWNUpwyvVCR4VVrM4W/yCwRoztz
-         qwRR71rZv/NW864Rk19K1Bh1X/VMl1ryM96FVWk87CkSrezfN+7s9pL00qIlEVPClrad
-         bFjg==
+        bh=cIeoljr9pAxaloPeeq1/kMgovWnVWrnpbMHXWqV8gN0=;
+        b=ETdWTw290Is8bsxxTsCHld9Cj8Z+8918rjp1j1A9FWSRzL8U7ZOliIR5YnWuroDjY4
+         /F2WrjnqT99kQEwSr8cXZm0FC9nSENim4azFOw75hrg+dvckKbkcz+/vTIeErHRMo72e
+         78spf0fEX9dQ5NEvVh1fi+mO7hKLsgBkCCxHfhkTtscz9CzIDYUe6UFNzUVcXkYyeVKD
+         Rbl1w6s69JNGHZNtK9dXZ1ceRt/uLkGHzVMDt6aFn47wo4uZvKXHW1rGLOXJbuJAUDAG
+         QEnVx8GhxaiBSgurcGH94HSxnDb0KuP3pLVh0L79+Gjz0Ff2mUezUiVzs+kFGQzYzstR
+         9ghg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1773345796; x=1773950596;
+        d=1e100.net; s=20230601; t=1773345798; x=1773950598;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=ZwLmK6qzx7XSYMEkdNEwzO4eT9/vXNK29O2UsupncTk=;
-        b=SWq5fNU/LFBPUf52WRv8eE1SWCZv4a3sSoEniz3swRPGNkba9XN/BFPDOk4nNz1r9J
-         XrUucIQ/T4tm6n51JA8Te4P61Ax6Q+6poXmmiIEFpbP5LTVg1/XX6KfLW6SFJoUaj9wf
-         Sf7p19bnj8G3qf+zVpjdvcZICfhIz8iBjF3qqAanpQ2zSFyJ6mfdG0gNQTvn/hRkx5mB
-         7mIa3jENkWwr3L1OH2CuXkDa9037SBVIFN7iMG5Hcl59QbWCP6N77j9l6/9b1sfwnm85
-         z7EguMyFg5RNvi4kP/LZIJunATYcPYPtbBP0TZ5/iUh7Vyhqe/jQxUFTvjTOeosHVx2m
-         UyaQ==
-X-Gm-Message-State: AOJu0Yw3FWSnAer3pctsnnajQR7vixMI5p8bOAVpTyM2Q54NiFAN2tpf
-	84qUqqMjbAvI4XK8BkBRDGUsOvxGZoR7CxTLrMDpgbNKiNxJo8Fz+bt2zkvL5Ji9grlo/nPseye
-	FFhZOEMz9L9goUvrXsvemv0G3UlbcN3OVOJ6slhN09eQ0AX5SSeV9H2eAzYP6bFU2MiXAXEqAV8
-	o3VYh8PiImuFp0jkvKiJAbvI/ZNr+EQQA1KiO7MExlUa0=
-X-Received: from pgc26.prod.google.com ([2002:a05:6a02:2f9a:b0:c73:cc95:c0e9])
+        bh=cIeoljr9pAxaloPeeq1/kMgovWnVWrnpbMHXWqV8gN0=;
+        b=DX8j6EOdybAq70QuhnXqqzu5bkzeVSuONOEP4zk5EXHfZh5vudyc6T4vvIwPcjo9X4
+         g70e7DXn0CrUQZribSzmOEopzE5HGwd2tvH/Asj7oCnJra6oSXppcJTfBs5puiM/Hksa
+         jiXQwpgBQm8HMTUusmk6nMgU/HyOpfv+p/9KYXQ/eWatrFrG1v49t1Y20HgHmonvlf0f
+         Mer6bcydf9RD3VOW3BqA98rfrkXl5I2zmAti5H/yDndP8Jx+ZJtNImuL+zmAWSovTlIq
+         r/25wAkWuxQ85DYOO0preWeex/OxdrROh/JFTLWNTfZknAKwX0OAQIb6ELFeXvyF/nye
+         a9Uw==
+X-Gm-Message-State: AOJu0YxdVnyQld8jYXiOfkB6ZVTxUzl7NcFe06Wv2jRq7GcCOi6wNSDY
+	Z4+QO9bdsbLpn3K3+cPVD4Rw3T7bVRaCDfBni+wWU75UV7LYxEKBIa2hzBj+zg1DjHsoMlfn3sk
+	Rgnwa32Av0ou33ewnG96c73cQb/RNuJk7+7OuLumHgxKTTmwvqknMqfXScSryYdnI+Bx6nGRcPo
+	HNQDRWM9/fGTkEb9Dvq+azkoPxIG9LVCMtCQHmS/JGRQc=
+X-Received: from plec5.prod.google.com ([2002:a17:902:f305:b0:2a9:6366:197c])
  (user=chengkev job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:6a21:a08:b0:398:7357:bb8f with SMTP id adf61e73a8af0-398eccb9cedmr428107637.41.1773345796001;
- Thu, 12 Mar 2026 13:03:16 -0700 (PDT)
-Date: Thu, 12 Mar 2026 20:03:01 +0000
+ 2002:a17:903:94d:b0:2ae:7ed6:7d15 with SMTP id d9443c01a7336-2aecaacf9famr5974245ad.28.1773345797811;
+ Thu, 12 Mar 2026 13:03:17 -0700 (PDT)
+Date: Thu, 12 Mar 2026 20:03:02 +0000
 In-Reply-To: <20260312200308.3089379-1-chengkev@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
@@ -58,241 +58,376 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 References: <20260312200308.3089379-1-chengkev@google.com>
 X-Mailer: git-send-email 2.53.0.851.ga537e3e6e9-goog
-Message-ID: <20260312200308.3089379-4-chengkev@google.com>
-Subject: [kvm-unit-tests PATCH v3 03/10] x86/svm: Add tests for APIC passthrough
+Message-ID: <20260312200308.3089379-5-chengkev@google.com>
+Subject: [kvm-unit-tests PATCH v3 04/10] x86/nSVM: Add tests for instruction interrupts
 From: Kevin Cheng <chengkev@google.com>
 To: kvm@vger.kernel.org
 Cc: yosry@kernel.org, andrew.jones@linux.dev, thuth@redhat.com, 
 	pbonzini@redhat.com, seanjc@google.com, Kevin Cheng <chengkev@google.com>
 Content-Type: text/plain; charset="UTF-8"
 
-Add two tests to SVM test suite to validate APIC passthrough
-capabilities.
+Add test cases for instruction intercepts. Enable instruction intercepts
+and check that exit codes and exit info are equal to the expected
+results after running corresponding instructions in guest.
 
-In the apic_passthrough test, the guest asserts irq-line to trigger a
-level-triggered interrupt that should be injected directly in the guest.
-Confirm that the remote_irr is set before the guest's EOI and cleared
-after guest's EOI. Include a variant that uses a separate thread to
-trigger the interrupt to ensure cross CPU delivery is handled correctly.
-
-The svm_apic_passthrough_tpr_threshold_test validates that a guest can
-directly modify the host's APIC TPR. The host queues a pending self-IPI
-by disabling interrupts and raising the TPR to a high value. The test
-then runs a guest that lowers the TPR to 0, and upon returning to the
-host, it confirms that the pending interrupt is delivered once
-interrupts are enabled.
-
-The nVMX tests already has coverage for APIC passthrough. Add a similar
-test for nSVM to improve test parity between nSVM and nVMX.
-
-This test uses the old V1 test framework to utilize the test stage for
-specific test event sequencing.
+The nVMX tests already have coverage for instruction intercepts.
+Add a similar test for nSVM to improve test parity between nSVM and
+nVMX.
 
 Signed-off-by: Kevin Cheng <chengkev@google.com>
 ---
- x86/svm_tests.c | 175 ++++++++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 175 insertions(+)
+ lib/x86/processor.h |   6 ++
+ x86/svm.c           |  14 +++
+ x86/svm.h           |   7 ++
+ x86/svm_tests.c     | 202 ++++++++++++++++++++++++++++++++++++++++++++
+ x86/unittests.cfg   |  16 +++-
+ x86/vmx_tests.c     |   5 --
+ 6 files changed, 244 insertions(+), 6 deletions(-)
 
-diff --git a/x86/svm_tests.c b/x86/svm_tests.c
-index 11d0e3d39f5b..0eedad6bc3af 100644
---- a/x86/svm_tests.c
-+++ b/x86/svm_tests.c
-@@ -12,6 +12,7 @@
- #include "util.h"
- #include "x86/usermode.h"
- #include "vmalloc.h"
-+#include "fwcfg.h"
- 
- #define SVM_EXIT_MAX_DR_INTERCEPT 0x3f
- 
-@@ -3575,6 +3576,172 @@ static void svm_shutdown_intercept_test(void)
- 	report(vmcb->control.exit_code == SVM_EXIT_SHUTDOWN, "shutdown test passed");
+diff --git a/lib/x86/processor.h b/lib/x86/processor.h
+index 42dd2d2a4787..b073ee168ce4 100644
+--- a/lib/x86/processor.h
++++ b/lib/x86/processor.h
+@@ -358,6 +358,7 @@ struct x86_cpu_feature {
+  * Extended Leafs, a.k.a. AMD defined
+  */
+ #define X86_FEATURE_SVM			X86_CPU_FEATURE(0x80000001, 0, ECX, 2)
++#define X86_FEATURE_SKINIT		X86_CPU_FEATURE(0x80000001, 0, ECX, 12)
+ #define X86_FEATURE_PERFCTR_CORE	X86_CPU_FEATURE(0x80000001, 0, ECX, 23)
+ #define X86_FEATURE_NX			X86_CPU_FEATURE(0x80000001, 0, EDX, 20)
+ #define X86_FEATURE_GBPAGES		X86_CPU_FEATURE(0x80000001, 0, EDX, 26)
+@@ -522,6 +523,11 @@ static inline u64 this_cpu_supported_xcr0(void)
+ 	       ((u64)this_cpu_property(X86_PROPERTY_SUPPORTED_XCR0_HI) << 32);
  }
  
-+
-+static void set_irq_line_thread(void *data)
++static inline bool this_cpu_has_mwait(void)
 +{
-+	/* Wait until other CPU entered L2 */
-+	while (get_test_stage(data) != 1)
-+		;
-+
-+	/* Set irq-line 0xf to raise vector 0x78 for vCPU 0 */
-+	ioapic_set_redir(0xf, 0x78, TRIGGER_LEVEL);
-+	set_test_stage(data, 2);
++	return this_cpu_has(X86_FEATURE_MWAIT);
 +}
 +
-+static void irq_78_handler_guest(isr_regs_t *regs)
+ struct far_pointer32 {
+ 	u32 offset;
+ 	u16 selector;
+diff --git a/x86/svm.c b/x86/svm.c
+index de9eb19443ca..014feae3b48c 100644
+--- a/x86/svm.c
++++ b/x86/svm.c
+@@ -83,6 +83,20 @@ bool pause_threshold_supported(void)
+ 	return this_cpu_has(X86_FEATURE_PFTHRESHOLD);
+ }
+ 
++bool rdpru_supported(void)
 +{
-+	set_irq_line(0xf, 0);
-+	vmmcall();
-+	eoi();
-+	vmmcall();
++	return this_cpu_has(X86_FEATURE_RDPRU);
 +}
 +
-+static void svm_apic_passthrough_guest(struct svm_test *test)
++bool skinit_supported(void)
 +{
-+	handle_irq(0x78, irq_78_handler_guest);
-+	sti();
++	return this_cpu_has(X86_FEATURE_SKINIT);
++}
 +
-+	/* If requested, wait for other CPU to trigger ioapic scan */
-+	if (get_test_stage(test) < 1) {
-+		set_test_stage(test, 1);
-+		while (get_test_stage(test) != 2)
-+			;
++bool xsave_supported(void)
++{
++	return this_cpu_has(X86_FEATURE_XSAVE);
++}
+ 
+ void default_prepare(struct svm_test *test)
+ {
+diff --git a/x86/svm.h b/x86/svm.h
+index 264583a6547e..052324c68301 100644
+--- a/x86/svm.h
++++ b/x86/svm.h
+@@ -49,6 +49,8 @@ enum {
+ 	INTERCEPT_MONITOR,
+ 	INTERCEPT_MWAIT,
+ 	INTERCEPT_MWAIT_COND,
++	INTERCEPT_XSETBV,
++	INTERCEPT_RDPRU,
+ };
+ 
+ enum {
+@@ -352,6 +354,8 @@ struct __attribute__ ((__packed__)) vmcb {
+ #define SVM_EXIT_MONITOR	0x08a
+ #define SVM_EXIT_MWAIT		0x08b
+ #define SVM_EXIT_MWAIT_COND	0x08c
++#define SVM_EXIT_XSETBV		0x08d
++#define SVM_EXIT_RDPRU		0x08e
+ #define SVM_EXIT_NPF  		0x400
+ 
+ #define SVM_EXIT_ERR		-1
+@@ -423,6 +427,9 @@ bool lbrv_supported(void);
+ bool tsc_scale_supported(void);
+ bool pause_filter_supported(void);
+ bool pause_threshold_supported(void);
++bool rdpru_supported(void);
++bool skinit_supported(void);
++bool xsave_supported(void);
+ void default_prepare(struct svm_test *test);
+ void default_prepare_gif_clear(struct svm_test *test);
+ bool default_finished(struct svm_test *test);
+diff --git a/x86/svm_tests.c b/x86/svm_tests.c
+index 0eedad6bc3af..8dbc033533c0 100644
+--- a/x86/svm_tests.c
++++ b/x86/svm_tests.c
+@@ -2547,6 +2547,207 @@ static void test_dr(void)
+ 	vmcb->save.dr7 = dr_saved;
+ }
+ 
++asm(
++	"insn_sidt: sidt idt_descr;ret\n\t"
++	"insn_sgdt: sgdt gdt_descr;ret\n\t"
++	"insn_sldt: sldt %ax;ret\n\t"
++	"insn_str: str %ax;ret\n\t"
++	"insn_ltr: ltr %ax;ret\n\t"
++	"insn_pushf: pushf;ret\n\t"
++	"insn_popf: popf;ret\n\t"
++	"insn_intn: int $0x22; vmmcall; ret\n\t"
++	"insn_int_handler: iretq\n\t"
++	"insn_stgi: stgi;ret\n\t"
++	"insn_clgi: clgi;ret\n\t"
++	"insn_rdtscp: rdtscp;ret\n\t"
++	"insn_wbinvd: wbinvd;ret\n\t"
++	"insn_lidt: lidt idt_descr;ret\n\t"
++	"insn_lgdt: lgdt gdt_descr;ret\n\t"
++	"insn_lldt: xor %eax, %eax; lldt %ax;ret\n\t"
++	"insn_rdpmc: xor %ecx, %ecx; rdpmc;ret\n\t"
++	"insn_cpuid: mov $10, %eax; cpuid;ret\n\t"
++	"insn_invd: invd;ret\n\t"
++	"insn_pause: pause;ret\n\t"
++	"insn_hlt: hlt;ret\n\t"
++	"insn_invlpg: invlpg 0x12345678;ret\n\t"
++	"insn_rdtsc: rdtsc;ret\n\t"
++	"insn_monitor: xor %eax, %eax; xor %ecx, %ecx; xor %edx, %edx; monitor;ret\n\t"
++	"insn_mwait: xor %eax, %eax; xor %ecx, %ecx; mwait;ret\n\t"
++	"insn_skinit: skinit;ret\n\t"
++	"insn_icebp: .byte 0xf1; ret\n\t"
++	"insn_xsetbv: mov $0, %ecx; xor %edx, %edx; xor %eax, %eax; xgetbv; xsetbv;ret\n\t"
++	"insn_rdpru: xor %ecx, %ecx; .byte 0x0f,0x01,0xfd;ret\n\t"
++);
++
++extern void insn_sidt(struct svm_test *test);
++extern void insn_sgdt(struct svm_test *test);
++extern void insn_sldt(struct svm_test *test);
++extern void insn_str(struct svm_test *test);
++extern void insn_ltr(struct svm_test *test);
++extern void insn_pushf(struct svm_test *test);
++extern void insn_popf(struct svm_test *test);
++extern void insn_intn(struct svm_test *test);
++extern void insn_int_handler(struct svm_test *test);
++extern void insn_stgi(struct svm_test *test);
++extern void insn_clgi(struct svm_test *test);
++extern void insn_rdtscp(struct svm_test *test);
++extern void insn_wbinvd(struct svm_test *test);
++extern void insn_lidt(struct svm_test *test);
++extern void insn_lgdt(struct svm_test *test);
++extern void insn_lldt(struct svm_test *test);
++extern void insn_rdpmc(struct svm_test *test);
++extern void insn_cpuid(struct svm_test *test);
++extern void insn_invd(struct svm_test *test);
++extern void insn_pause(struct svm_test *test);
++extern void insn_hlt(struct svm_test *test);
++extern void insn_invlpg(struct svm_test *test);
++extern void insn_rdtsc(struct svm_test *test);
++extern void insn_monitor(struct svm_test *test);
++extern void insn_mwait(struct svm_test *test);
++extern void insn_skinit(struct svm_test *test);
++extern void insn_icebp(struct svm_test *test);
++extern void insn_xsetbv(struct svm_test *test);
++extern void insn_rdpru(struct svm_test *test);
++
++u64 orig_cr4;
++
++static void insn_intercept_xsetbv_setup(void)
++{
++	orig_cr4 = vmcb->save.cr4;
++	vmcb->save.cr4 |= X86_CR4_OSXSAVE;
++}
++
++static void insn_intercept_xsetbv_cleanup(void)
++{
++	vmcb->save.cr4 = orig_cr4;
++}
++
++static idt_entry_t old_idt_entry;
++
++static void insn_int_setup(void)
++{
++	memcpy(&old_idt_entry, &boot_idt[0x22], sizeof(idt_entry_t));
++	set_idt_entry(0x22, insn_int_handler, 0);
++}
++
++static void insn_int_cleanup(void)
++{
++	memcpy(&boot_idt[0x22], &old_idt_entry, sizeof(idt_entry_t));
++}
++
++struct insn_table {
++	const char *name;
++	u64 intercept;
++	void (*insn_func)(struct svm_test *test);
++	u32 reason;
++	u64 exit_info_1;
++	u64 exit_info_2;
++	bool corrupts_guest;
++	bool (*supported_fn)(void);
++	void (*setup)(void);
++	void (*cleanup)(void);
++};
++
++static struct insn_table insn_table[] = {
++	{ "STORE IDTR", INTERCEPT_STORE_IDTR, insn_sidt, SVM_EXIT_IDTR_READ, 0,
++	  0 },
++	{ "STORE GDTR", INTERCEPT_STORE_GDTR, insn_sgdt, SVM_EXIT_GDTR_READ, 0,
++	  0 },
++	{ "STORE LDTR", INTERCEPT_STORE_LDTR, insn_sldt, SVM_EXIT_LDTR_READ, 0,
++	  0 },
++	{ "STORE TR", INTERCEPT_STORE_TR, insn_str, SVM_EXIT_TR_READ, 0, 0 },
++	/* corrupts_guest: LTR causes a #GP if done with a busy selector */
++	{ "LOAD TR", INTERCEPT_LOAD_TR, insn_ltr, SVM_EXIT_TR_WRITE, 0, 0, true },
++	/* corrupts_guest: PUSHF and POPF corrupt the L2 stack */
++	{ "PUSHF", INTERCEPT_PUSHF, insn_pushf, SVM_EXIT_PUSHF, 0, 0, true },
++	{ "POPF", INTERCEPT_POPF, insn_popf, SVM_EXIT_POPF, 0, 0, true },
++	{ "IRET", INTERCEPT_IRET, insn_intn, SVM_EXIT_IRET, 0, 0, false,
++	  NULL, insn_int_setup, insn_int_cleanup },
++	{ "INTn", INTERCEPT_INTn, insn_intn, SVM_EXIT_SWINT, 0x22, 0, false,
++	  NULL, insn_int_setup, insn_int_cleanup },
++	{ "STGI", INTERCEPT_STGI, insn_stgi, SVM_EXIT_STGI, 0, 0 },
++	{ "CLGI", INTERCEPT_CLGI, insn_clgi, SVM_EXIT_CLGI, 0, 0 },
++	{ "RDTSCP", INTERCEPT_RDTSCP, insn_rdtscp, SVM_EXIT_RDTSCP, 0, 0 },
++	{ "WBINVD", INTERCEPT_WBINVD, insn_wbinvd, SVM_EXIT_WBINVD, 0, 0 },
++	{ "LOAD IDTR", INTERCEPT_LOAD_IDTR, insn_lidt, SVM_EXIT_IDTR_WRITE, 0,
++	  0 },
++	{ "LOAD GDTR", INTERCEPT_LOAD_GDTR, insn_lgdt, SVM_EXIT_GDTR_WRITE, 0,
++	  0 },
++	{ "LOAD LDTR", INTERCEPT_LOAD_LDTR, insn_lldt, SVM_EXIT_LDTR_WRITE, 0,
++	  0 },
++	{ "RDPMC", INTERCEPT_RDPMC, insn_rdpmc, SVM_EXIT_RDPMC, 0, 0 },
++	{ "CPUID", INTERCEPT_CPUID, insn_cpuid, SVM_EXIT_CPUID, 0, 0 },
++	{ "INVD", INTERCEPT_INVD, insn_invd, SVM_EXIT_INVD, 0, 0 },
++	{ "PAUSE", INTERCEPT_PAUSE, insn_pause, SVM_EXIT_PAUSE, 0, 0 },
++	/* corrupts_guest: HLT causes guest to hang */
++	{ "HLT", INTERCEPT_HLT, insn_hlt, SVM_EXIT_HLT, 0, 0, true },
++	{ "INVLPG", INTERCEPT_INVLPG, insn_invlpg, SVM_EXIT_INVLPG, 0x12345678, 0 },
++	{ "RDTSC", INTERCEPT_RDTSC, insn_rdtsc, SVM_EXIT_RDTSC, 0, 0 },
++	{ "MONITOR", INTERCEPT_MONITOR, insn_monitor, SVM_EXIT_MONITOR, 0, 0,
++	  false, this_cpu_has_mwait },
++	{ "MWAIT", INTERCEPT_MWAIT, insn_mwait, SVM_EXIT_MWAIT, 0, 0,
++	  false, this_cpu_has_mwait },
++	{ "SKINIT", INTERCEPT_SKINIT, insn_skinit, SVM_EXIT_SKINIT, 0, 0,
++	  false, skinit_supported },
++	/* corrupts_guest: ICEBP triggers a #DB exception */
++	{ "ICEBP", INTERCEPT_ICEBP, insn_icebp, SVM_EXIT_ICEBP, 0, 0, true },
++	{ "XSETBV", INTERCEPT_XSETBV, insn_xsetbv, SVM_EXIT_XSETBV, 0, 0,
++	  false, xsave_supported, insn_intercept_xsetbv_setup,
++	  insn_intercept_xsetbv_cleanup },
++	{ "RDPRU", INTERCEPT_RDPRU, insn_rdpru, SVM_EXIT_RDPRU, 0, 0,
++	  false, rdpru_supported },
++	{ NULL },
++};
++
++static void svm_insn_intercept_test(void)
++{
++	u64 exit_info_1;
++	u64 exit_info_2;
++	u32 exit_code;
++	u32 cur_insn;
++
++	for (cur_insn = 0; insn_table[cur_insn].name != NULL; ++cur_insn) {
++		struct insn_table insn = insn_table[cur_insn];
++
++		if (insn.supported_fn && !insn.supported_fn()) {
++			report_skip("\tFeature required for %s is not supported.\n",
++				    insn_table[cur_insn].name);
++			continue;
++		}
++
++		test_set_guest(insn.insn_func);
++
++		if (insn.setup)
++			insn.setup();
++
++		if (!insn.corrupts_guest)
++			report(svm_vmrun() == SVM_EXIT_VMMCALL, "execute %s", insn.name);
++
++		vmcb->control.intercept |= (1ULL << insn.intercept);
++		svm_vmrun();
++
++		exit_code = vmcb->control.exit_code;
++		exit_info_1 = vmcb->control.exit_info_1;
++		exit_info_2 = vmcb->control.exit_info_2;
++
++		report(exit_code == insn.reason,
++			"Expected exit code: 0x%x, received exit code: 0x%x",
++			insn.reason, exit_code);
++
++		report(exit_info_1 == insn.exit_info_1,
++		       "Expected exit_info_1: 0x%lx, received exit_info_1: 0x%lx",
++		       insn.exit_info_1, exit_info_1);
++
++		report(exit_info_2 == insn.exit_info_2,
++		       "Expected exit_info_2: 0x%lx, received exit_info_2: 0x%lx",
++		       insn.exit_info_2, exit_info_2);
++
++		if (insn.cleanup)
++			insn.cleanup();
++		vmcb->control.intercept &= ~(1 << insn.intercept);
 +	}
-+
-+	set_irq_line(0xf, 1);
 +}
 +
-+static void svm_disable_intercept_for_x2apic_msrs(void)
-+{
-+	for (u32 msr = APIC_BASE_MSR; msr <= (APIC_BASE_MSR+0xff); ++msr) {
-+		int bit_nr = get_msrpm_bit_nr(msr);
+ /* TODO: verify if high 32-bits are sign- or zero-extended on bare metal */
+ #define	TEST_BITMAP_ADDR(save_intercept, type, addr, exit_code,		\
+ 			 msg) {						\
+@@ -3891,6 +4092,7 @@ struct svm_test svm_tests[] = {
+ 	TEST(svm_tsc_scale_test),
+ 	TEST(pause_filter_test),
+ 	TEST(svm_shutdown_intercept_test),
++	TEST(svm_insn_intercept_test),
+ 	{ NULL, NULL, NULL, NULL, NULL, NULL, NULL }
+ };
+ 
+diff --git a/x86/unittests.cfg b/x86/unittests.cfg
+index 522318d32bf6..1a89101a5b2d 100644
+--- a/x86/unittests.cfg
++++ b/x86/unittests.cfg
+@@ -253,7 +253,21 @@ arch = x86_64
+ [svm]
+ file = svm.flat
+ smp = 2
+-test_args = "-pause_filter_test"
++test_args = "-pause_filter_test -svm_intr_intercept_mix_smi -svm_insn_intercept_test"
++qemu_params = -cpu max,+svm -m 4g
++arch = x86_64
++groups = svm
 +
-+		__clear_bit(bit_nr, msr_bitmap);
-+		__clear_bit(bit_nr + 1, msr_bitmap);
-+	}
-+}
++[svm_insn_intercept_test]
++file = svm.flat
++test_args = svm_insn_intercept_test
++qemu_params = -cpu max,+svm -m 4g
++arch = x86_64
++groups = svm
 +
-+static void svm_apic_passthrough_prepare(struct svm_test *test,
-+					 bool set_irq_line_from_thread)
-+{
-+	if (set_irq_line_from_thread && (cpu_count() < 2)) {
-+		report_skip("%s : CPU count < 2", __func__);
-+		return;
-+	}
-+
-+	/* Test device is required for generating IRQs */
-+	if (!test_device_enabled()) {
-+		report_skip("%s : No test device enabled", __func__);
-+		return;
-+	}
-+
-+	vmcb->control.intercept &= ~(1ULL << INTERCEPT_MSR_PROT);
-+	svm_disable_intercept_for_x2apic_msrs();
-+
-+	vmcb->control.intercept &= ~(1ULL << INTERCEPT_INTR);
-+
-+	if (set_irq_line_from_thread) {
-+		on_cpu_async(1, set_irq_line_thread, test);
-+	} else {
-+		ioapic_set_redir(0xf, 0x78, TRIGGER_LEVEL);
-+		set_test_stage(test, 2);
-+	}
-+}
-+
-+static void svm_apic_passthrough_test_prepare(struct svm_test *test)
-+{
-+	svm_apic_passthrough_prepare(test, false);
-+}
-+
-+static void svm_apic_passthrough_thread_test_prepare(struct svm_test *test)
-+{
-+	svm_apic_passthrough_prepare(test, true);
-+}
-+
-+static bool svm_apic_passthrough_test_finished(struct svm_test *test)
-+{
-+	u32 exit_code = vmcb->control.exit_code;
-+
-+	report(exit_code == SVM_EXIT_VMMCALL, "Expected VMMCALL VM-Exit, got exit reason 0x%x",
-+	       exit_code);
-+
-+	switch (get_test_stage(test)) {
-+	case 2:
-+		/* Jump over VMMCALL instruction */
-+		vmcb->save.rip += 3;
-+
-+		/* Before EOI remote_irr should still be set */
-+		report(1 == (int)ioapic_read_redir(0xf).remote_irr,
-+			"IOAPIC pass-through: remote_irr=1 before EOI");
-+		set_test_stage(test, 3);
-+		return false;
-+	case 3:
-+		/* Jump over VMMCALL instruction */
-+		vmcb->save.rip += 3;
-+
-+		/* After EOI remote_irr should be cleared */
-+		report(0 == (int)ioapic_read_redir(0xf).remote_irr,
-+			"IOAPIC pass-through: remote_irr=0 after EOI");
-+		set_test_stage(test, 4);
-+		return false;
-+	case 4:
-+		break;
-+	default:
-+		report_fail("Unexpected stage %d", get_test_stage(test));
-+	}
-+
-+	return true;
-+}
-+
-+static bool svm_apic_passthrough_test_check(struct svm_test *test)
-+{
-+	return get_test_stage(test) == 4;
-+}
-+
-+static void svm_apic_passthrough_tpr_threshold_guest(struct svm_test *test)
-+{
-+	cli();
-+	apic_set_tpr(0);
-+}
-+
-+static bool svm_apic_passthrough_tpr_threshold_ipi_isr_fired;
-+static void svm_apic_passthrough_tpr_threshold_ipi_isr(isr_regs_t *regs)
-+{
-+	svm_apic_passthrough_tpr_threshold_ipi_isr_fired = true;
-+	eoi();
-+}
-+
-+static void svm_apic_passthrough_tpr_threshold_test(void)
-+{
-+	int ipi_vector = 0xe1;
-+
-+	vmcb->control.intercept &= ~(1ULL << INTERCEPT_MSR_PROT);
-+	svm_disable_intercept_for_x2apic_msrs();
-+
-+	vmcb->control.intercept &= ~(1ULL << INTERCEPT_INTR);
-+	vmcb->control.int_ctl &= ~V_INTR_MASKING_MASK;
-+
-+	/* Raise L0 TPR-threshold by queueing vector in LAPIC IRR */
-+	cli();
-+	apic_set_tpr((ipi_vector >> 4) + 1);
-+	apic_icr_write(APIC_DEST_SELF | APIC_DEST_PHYSICAL |
-+			APIC_DM_FIXED | ipi_vector,
-+			0);
-+
-+	test_set_guest(svm_apic_passthrough_tpr_threshold_guest);
-+	clgi();
-+	svm_vmrun();
-+	stgi();
-+
-+	report(apic_get_tpr() == 0, "TPR was zero by guest");
-+
-+	/* Clean pending self-IPI */
-+	svm_apic_passthrough_tpr_threshold_ipi_isr_fired = false;
-+	handle_irq(ipi_vector, svm_apic_passthrough_tpr_threshold_ipi_isr);
-+	sti_nop();
-+	report(svm_apic_passthrough_tpr_threshold_ipi_isr_fired, "self-IPI fired");
-+}
-+
- struct svm_test svm_tests[] = {
- 	{ "null", default_supported, default_prepare,
- 	  default_prepare_gif_clear, null_test,
-@@ -3694,6 +3861,14 @@ struct svm_test svm_tests[] = {
- 	{ "vgif", vgif_supported, prepare_vgif_enabled,
- 	  default_prepare_gif_clear, test_vgif, vgif_finished,
- 	  vgif_check },
-+	{ "apic_passthrough", default_supported, svm_apic_passthrough_test_prepare,
-+	  default_prepare_gif_clear, svm_apic_passthrough_guest,
-+	  svm_apic_passthrough_test_finished, svm_apic_passthrough_test_check},
-+	{ "apic_passthrough_thread", default_supported,
-+	  svm_apic_passthrough_thread_test_prepare, default_prepare_gif_clear,
-+	  svm_apic_passthrough_guest, svm_apic_passthrough_test_finished,
-+	  svm_apic_passthrough_test_check},
-+	TEST(svm_apic_passthrough_tpr_threshold_test),
- 	TEST(svm_cr4_osxsave_test),
- 	TEST(svm_guest_state_test),
- 	TEST(svm_vmrun_errata_test),
++[svm_intr_intercept_mix_smi]
++file = svm.flat
++test_args = svm_intr_intercept_mix_smi
+ qemu_params = -cpu max,+svm -m 4g
+ arch = x86_64
+ groups = svm
+diff --git a/x86/vmx_tests.c b/x86/vmx_tests.c
+index 5ffb80a3d866..aa875ef72216 100644
+--- a/x86/vmx_tests.c
++++ b/x86/vmx_tests.c
+@@ -855,11 +855,6 @@ u64 cr3;
+ 
+ typedef bool (*supported_fn)(void);
+ 
+-static bool this_cpu_has_mwait(void)
+-{
+-	return this_cpu_has(X86_FEATURE_MWAIT);
+-}
+-
+ struct insn_table {
+ 	const char *name;
+ 	u32 flag;
 -- 
 2.53.0.851.ga537e3e6e9-goog
 
