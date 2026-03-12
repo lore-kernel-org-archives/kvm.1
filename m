@@ -1,287 +1,183 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
+Received: from CY7PR03CU001.outbound.protection.outlook.com (mail-westcentralusazon11010065.outbound.protection.outlook.com [40.93.198.65])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E7F0435B63E;
-	Thu, 12 Mar 2026 14:10:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=198.175.65.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B66763590CD;
+	Thu, 12 Mar 2026 14:11:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.93.198.65
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773324605; cv=fail; b=NIVM49X3s5pnbOehLmGrL8rLm5crvob5ZTVjGJNhnBGd3qoIIog9P79N7XODneUwwAV7ipi+KeVUdw6v2oSUJB6dZSxPmDVEZGhqQI0esFc87q16WtOlyv7uwOBuXZ8j8Q/Aq5cwn9qkv4nGyp08Sp3uWOIDGLg8GyONsQyap3c=
+	t=1773324694; cv=fail; b=kOdNHUWHxnynvQ9iYdv0Ze2TS3U6ZRZtapPhURw5uqy9qE09SV0Fqc11gjlEtcHz87Beh+YL3yevilanD3t7sACYJpuaJJytB19cIwSwOFAFJt47m/+x9VPpeT2RgHP8gfudk3YxLCcD9y2rK1jfXStO4SfDvxu19/AxzyALSoY=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773324605; c=relaxed/simple;
-	bh=uZWXXPyJNzK1ZLC6Xlx5i/8KugRe+m0zrKXi+YhiuNc=;
-	h=Date:From:To:CC:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=u/wr62Q+8HlQ3FgSwO1k97RdPtmdIjmEUb5fdTSY/jFt4CDzRzgOOAVQqv2wZW0IaZnew6M6MG3Z0clb0jOhEnxukKc8NPH/uHQ+T4pBnEDtmken8+yX0aJsXezSANzSznxw9vdHDk620LgY3acodefkYruohqK+qRbw/FXxAMk=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=g3/U0gW9; arc=fail smtp.client-ip=198.175.65.18
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1773324694; c=relaxed/simple;
+	bh=y7wWD1cypFywNGNKhDCyOShnaY4gq52ahemRuyFNOwM=;
+	h=Message-ID:Date:MIME-Version:From:Subject:To:CC:References:
+	 In-Reply-To:Content-Type; b=ikHLBr10iD5jkwRheoL6/PjGZTcyZXmI/Uwpx8nlwGKOa/bSjq9J2EHBUQ4ja3qyn6BwTi2ecz7zpUr35cYxgy4sCNCWttQHdy/g4pONonjkFxuvufMeWI+G1pFOPgoyNvXQxj34cN/9Qxw+XOoz0pkl04UN03lr0T/ljNT9bZc=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=xchiCotj; arc=fail smtp.client-ip=40.93.198.65
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="g3/U0gW9"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1773324604; x=1804860604;
-  h=date:from:to:cc:subject:message-id:references:
-   content-transfer-encoding:in-reply-to:mime-version;
-  bh=uZWXXPyJNzK1ZLC6Xlx5i/8KugRe+m0zrKXi+YhiuNc=;
-  b=g3/U0gW9aRN+gva/R9BdTFtrOwRLnqX8+ffG1BWnOu81Q+bMM+vB4Kff
-   draQxnNxeFj+w0GAkGktu53THcXHIaOghpVQrU/V1YCfb14MOiMu+ZwLk
-   FGIpxDVeZsNPW+raO0r5y0a2pB1Do1qfUAzx95GanDjCEmJG8m8p/p/Fp
-   54ltO7W8JjSVCbxx+LsPirKMpcOjZc/lIjpKXwfqr+AXSvaaLaydOeN1x
-   5cGGUAVQ2GitNWfM5n2b+CsVWPUTSBY/seJ0BCj3WhEHvVygvc1TYt20L
-   BUy+tCU93qTyNK83wfhlwSXfIpyDKLkh1BVB+LEQCWvUlPWqmE78cE2ce
-   g==;
-X-CSE-ConnectionGUID: BtpkZmi5T/m86BKoGPEuCw==
-X-CSE-MsgGUID: H+OmLpeSSYK65eMl+jev/Q==
-X-IronPort-AV: E=McAfee;i="6800,10657,11727"; a="74458441"
-X-IronPort-AV: E=Sophos;i="6.23,116,1770624000"; 
-   d="scan'208";a="74458441"
-Received: from orviesa003.jf.intel.com ([10.64.159.143])
-  by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Mar 2026 07:10:04 -0700
-X-CSE-ConnectionGUID: ag1iKQW5R5SKSj7g6AU5WQ==
-X-CSE-MsgGUID: DN8LlOywSIiPSL5h65zPew==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,116,1770624000"; 
-   d="scan'208";a="224974001"
-Received: from orsmsx903.amr.corp.intel.com ([10.22.229.25])
-  by orviesa003.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Mar 2026 07:10:04 -0700
-Received: from ORSMSX901.amr.corp.intel.com (10.22.229.23) by
- ORSMSX903.amr.corp.intel.com (10.22.229.25) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.37; Thu, 12 Mar 2026 07:10:02 -0700
-Received: from ORSEDG903.ED.cps.intel.com (10.7.248.13) by
- ORSMSX901.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.37 via Frontend Transport; Thu, 12 Mar 2026 07:10:02 -0700
-Received: from SA9PR02CU001.outbound.protection.outlook.com (40.93.196.68) by
- edgegateway.intel.com (134.134.137.113) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.37; Thu, 12 Mar 2026 07:10:02 -0700
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="xchiCotj"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=i5/nCkKIcLORRYME0u3CqCzkiJgoHlLyHanD2c9r6HeUQXa/3MzukvwlbFb0AZ9AXLbRtIJfhYEP1q48s+zyHmbZ05OBd/0FrUCO4zv1APMyKZyIyP/b/uREnrvrsXl+cpUCEwInIWj629rbMwKdMCJjCbVZbTXTVUJtdoq7q5xXrtH37pUoHcQvDp+YoLClpkgkIxByzNEXp2eZY/6wJZnYc741I5FoU1go5ubRf/Cvzu//xAMBpdVZp6S00fKFhMVHt67eHNKDxtCxthNUpmKPIV4UkciZ8lumeyI9gjimOf21kRKgagASzh6bGcFFhpy8SIGHRdFWzDDsWJW7rQ==
+ b=Ybka1ivcw4kpEfSEnsKETBEu+e75rgPLqV+485PkFszh5GvGDZCD1W3dvyDxtX4FQ+QuWYiyG6bW0lj1nyqYgbHejpbqSgwU13HuV4P/mln9W0U/hKA43/NraB6hYnbqDACTD9JxgXvYYHyju/bQyQ8EUys75EW3II7zgadhDgglAN0Fpod8cdJ3sz26us9i5Ukn4ZPgo2yLkQcTN4YZdtMr3jo4qLPDhiLlWm2DSyDHv2AjvbN3QAi48yfzu+NsRnWyg6ZtK5mQLpfIedWTfD/iv/0BhPvRTPQc/jzliyqlDXyMGJvN7+mc4tSd/eCt6mtrUaJ2LjJdBncIb6k8xg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=GL09jymqnc8PRKSlUKZFI7K+qrEaJw5fxuAYLlN8xXw=;
- b=qMkVBhQRKmutxi/zZ6mUML3hZiSnOrW3yYSBpSmIP7rq1aRaIgtF362eih5fVOU/St3YNPzmst+zhgZBR+L1Xw9z/PscM+0UC57FwxBrsv9izqVw4GJeEfFqqdqp7NQa0D7h0Q9i4nj5wwBW/xQ4/PCGGfUeTC5b1ZikobBeewv4AjI2XM54MKvVxowq27OrZs/j+0nn0sPTPeiWm7xBurSPt8Y61gAwri/UW12t1VaCic6omsLhWjwVz1YAPiB/ricCdg//k+r3N4sf5mE20WyZ91zKh64bnizzRRkDGHpGD5mCasLizCPUALR1998lP23se31odKapI8+gXPePBA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-Received: from CH3PR11MB8660.namprd11.prod.outlook.com (2603:10b6:610:1ce::13)
- by IA3PR11MB9228.namprd11.prod.outlook.com (2603:10b6:208:57a::22) with
+ bh=hXqTs6M3zxKgXy/M4FAx+CHLIseQrCqXKX6a5JlyXO4=;
+ b=jz0+RTUhc6tX1l4vNbgs9XcUz6yB4w0aHfZzcxRax3/GU8j8fhXs1Qm4ny3bvPHMnUQ3vL45qMhVZaktiGXzEqFFAH5Ws5DCGMZE6jCnlE4RCy4JWEcotAuuJVFYz5kkeMHMCmebg3cLGqDsKv8x8r8WDTOeKsrPHrIp9bWNeKCAk97wAM/WpfB8w/WOY4BchH5zH5NypM0QMhwrMf2tfLTHlTmWRKeU/vFGjNEVn3JF+dAEu5dlh7NHrNNZUh8UWTYoJNUklAib8ZuSRNf/7532IgSECxGf9MfkdMPLe0GuNHLTYkkYaKG285gCzmKIOOBRL7fgtdmd58pk7MCEUw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=intel.com smtp.mailfrom=amd.com; dmarc=pass
+ (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=hXqTs6M3zxKgXy/M4FAx+CHLIseQrCqXKX6a5JlyXO4=;
+ b=xchiCotjP1x4xROr37adRaVVwPWt/H5R7VJDEO8ujRC43EVePQojdU0ZzyBZtH6fnCZpmsCzm7OOxiT7T5w4cP2HYQ8dX5nPdXIozIZYx6y80SKACWEuSBwR+qKu5+nyJVvnlkFPwzBxVa9fh7NWg5hiN+Cr+YaZqqfATHQehsU=
+Received: from CH0PR08CA0023.namprd08.prod.outlook.com (2603:10b6:610:33::28)
+ by MN0PR12MB5788.namprd12.prod.outlook.com (2603:10b6:208:377::5) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9700.11; Thu, 12 Mar
- 2026 14:09:44 +0000
-Received: from CH3PR11MB8660.namprd11.prod.outlook.com
- ([fe80::fdc2:40ba:101d:40bf]) by CH3PR11MB8660.namprd11.prod.outlook.com
- ([fe80::fdc2:40ba:101d:40bf%6]) with mapi id 15.20.9723.000; Thu, 12 Mar 2026
- 14:09:42 +0000
-Date: Thu, 12 Mar 2026 22:09:29 +0800
-From: Chao Gao <chao.gao@intel.com>
-To: "Edgecombe, Rick P" <rick.p.edgecombe@intel.com>
-CC: "kvm@vger.kernel.org" <kvm@vger.kernel.org>, "linux-coco@lists.linux.dev"
-	<linux-coco@lists.linux.dev>, "linux-kernel@vger.kernel.org"
-	<linux-kernel@vger.kernel.org>, "x86@kernel.org" <x86@kernel.org>, "Huang,
- Kai" <kai.huang@intel.com>, "dave.hansen@linux.intel.com"
-	<dave.hansen@linux.intel.com>, "tony.lindgren@linux.intel.com"
-	<tony.lindgren@linux.intel.com>, "binbin.wu@linux.intel.com"
-	<binbin.wu@linux.intel.com>, "seanjc@google.com" <seanjc@google.com>, "Weiny,
- Ira" <ira.weiny@intel.com>, "Chatre, Reinette" <reinette.chatre@intel.com>,
-	"Verma, Vishal L" <vishal.l.verma@intel.com>, "nik.borisov@suse.com"
-	<nik.borisov@suse.com>, "mingo@redhat.com" <mingo@redhat.com>,
-	"kas@kernel.org" <kas@kernel.org>, "Annapurve, Vishal"
-	<vannapurve@google.com>, "sagis@google.com" <sagis@google.com>, "Duan,
- Zhenzhong" <zhenzhong.duan@intel.com>, "tglx@kernel.org" <tglx@kernel.org>,
-	"paulmck@kernel.org" <paulmck@kernel.org>, "hpa@zytor.com" <hpa@zytor.com>,
-	"bp@alien8.de" <bp@alien8.de>, "yilun.xu@linux.intel.com"
-	<yilun.xu@linux.intel.com>, "Williams, Dan J" <dan.j.williams@intel.com>
-Subject: Re: [PATCH v4 11/24] x86/virt/seamldr: Introduce skeleton for TDX
- Module updates
-Message-ID: <abLJGel27U8xuU6q@intel.com>
-References: <20260212143606.534586-1-chao.gao@intel.com>
- <20260212143606.534586-12-chao.gao@intel.com>
- <daa8080e1195f586af331dcf31ee5239c4ecbd15.camel@intel.com>
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <daa8080e1195f586af331dcf31ee5239c4ecbd15.camel@intel.com>
-X-ClientProxiedBy: TP0P295CA0023.TWNP295.PROD.OUTLOOK.COM
- (2603:1096:910:5::19) To CH3PR11MB8660.namprd11.prod.outlook.com
- (2603:10b6:610:1ce::13)
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9723.3; Thu, 12 Mar
+ 2026 14:11:26 +0000
+Received: from CH3PEPF0000000A.namprd04.prod.outlook.com
+ (2603:10b6:610:33:cafe::5) by CH0PR08CA0023.outlook.office365.com
+ (2603:10b6:610:33::28) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.9678.27 via Frontend Transport; Thu,
+ 12 Mar 2026 14:11:29 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
+ smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=satlexmb07.amd.com; pr=C
+Received: from satlexmb07.amd.com (165.204.84.17) by
+ CH3PEPF0000000A.mail.protection.outlook.com (10.167.244.37) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.9678.18 via Frontend Transport; Thu, 12 Mar 2026 14:11:26 +0000
+Received: from Satlexmb09.amd.com (10.181.42.218) by satlexmb07.amd.com
+ (10.181.42.216) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.17; Thu, 12 Mar
+ 2026 09:11:18 -0500
+Received: from satlexmb08.amd.com (10.181.42.217) by satlexmb09.amd.com
+ (10.181.42.218) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.17; Thu, 12 Mar
+ 2026 07:08:21 -0700
+Received: from [10.252.210.85] (10.180.168.240) by satlexmb08.amd.com
+ (10.181.42.217) with Microsoft SMTP Server id 15.2.2562.17 via Frontend
+ Transport; Thu, 12 Mar 2026 09:08:16 -0500
+Message-ID: <ddf407e9-359d-4d4e-827d-98f212589e9f@amd.com>
+Date: Thu, 12 Mar 2026 19:38:15 +0530
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+From: "Nikunj A. Dadhania" <nikunj@amd.com>
+Subject: Re: [PATCH v2 1/2] x86/cpu: Disable CR pinning during CPU bringup
+To: Dave Hansen <dave.hansen@intel.com>, Tom Lendacky
+	<thomas.lendacky@amd.com>, Borislav Petkov <bp@alien8.de>
+CC: <linux-kernel@vger.kernel.org>, <kvm@vger.kernel.org>, <tglx@kernel.org>,
+	<mingo@redhat.com>, <dave.hansen@linux.intel.com>, <hpa@zytor.com>,
+	<xin@zytor.com>, <seanjc@google.com>, <pbonzini@redhat.com>,
+	<x86@kernel.org>, <sohil.mehta@intel.com>, <jon.grimm@amd.com>
+References: <20260226092349.803491-1-nikunj@amd.com>
+ <20260226092349.803491-2-nikunj@amd.com>
+ <20260309134640.GOaa7PQJli_C9QATGB@fat_crate.local>
+ <cde957ba-3579-4063-9d17-3630e79ea388@intel.com>
+ <20260309161516.GAaa7yFMulhdzNQ-pt@fat_crate.local>
+ <70644e1d-dd0e-4f0f-81c0-fd095e46e50b@intel.com>
+ <7ca205d6-b01b-4ed3-959d-db31a6496d79@amd.com>
+ <505a6bbd-3ecf-4de9-8fb9-0b21c3435a96@intel.com>
+ <9fa61b80-0e16-4a87-a0e7-3c3dfcda8f7e@amd.com>
+ <55a98b6d-e831-47a6-aa5a-8fe357334f67@intel.com>
+ <d0eba3fe-2938-4856-bd9b-0e13972e8313@amd.com>
+ <cb492a37-3517-4738-b435-73311402e820@intel.com>
+Content-Language: en-US
+In-Reply-To: <cb492a37-3517-4738-b435-73311402e820@intel.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 7bit
+X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CH3PR11MB8660:EE_|IA3PR11MB9228:EE_
-X-MS-Office365-Filtering-Correlation-Id: a006aef5-1dc2-4e51-a30a-08de80410157
-X-LD-Processed: 46c98d88-e344-4ed4-8496-4ed7712e255d,ExtAddr
+X-MS-TrafficTypeDiagnostic: CH3PEPF0000000A:EE_|MN0PR12MB5788:EE_
+X-MS-Office365-Filtering-Correlation-Id: d59896d7-0b0a-4554-1fa1-08de80413fc3
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|366016|7416014|376014|22082099003|18002099003|56012099003;
-X-Microsoft-Antispam-Message-Info: RGmLtL6O5Vc2COEJGMaWtmGxpVYQo1RatpUD1FIo7YfP04neTbHsDWhpH0a+icisXxpHaWRHvlbBPnLAhvdj5Q/MaGHIQfmiizVH0iVRlcWBdqu2Rzi3EXI3t1S+pGAXxcqd1YUokB/1+pMnRwm3yNDjPghndPA//7kmeBX/dvK0MewhFEE0dv0FZfNJpFWRcCTdBCM7kwwb3LwVU1sBqjJBXScNc2ArRkqnZNTEfboE9izVFQxUXRBkIjuMcpTfOaohBZ0UJaM73X1w5Kk0iuKL/EJykuLeyqn8cNBSWl6JtKBioNFA2d/Bi6z/EzWyhEaQBkhQHm5OzeUXlNCljGxPGJFRa5ZZmisxq4ApUf1tC5iBAiFRyPDO9vop02H3WW5QLx++1W76HjjdBgtNFefxXjDi6VMy0AFFPQhFTX9XmYvWTlZjMQ6qLcM7r+WE0aE0C7ZE+ToD+FPKk1jJCa20eCH+0T0nXiKRvcOEA0LRV0R9liHzWsXXRTzOPwU613neJwEKMMebqEgVWJD6/UDzGSzBOaE9UDBYNmyxqO6jbiDPzrHXx1JOaZsJmLHPsE+ubmnfIlT9J3jbx0rRuPJWpG4nIr3qCtYWAF0ioXz0e73gKqpfY7I3J2Y0QDparf9MKSOBEzL5xLB+0tpt7uy9mszxAC6JSxVdz+a8pxKvjmrsq00wz5gg2+bhMvZk
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH3PR11MB8660.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(7416014)(376014)(22082099003)(18002099003)(56012099003);DIR:OUT;SFP:1101;
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|30052699003|1800799024|82310400026|36860700016|7416014|376014|56012099003|22082099003|18002099003;
+X-Microsoft-Antispam-Message-Info:
+	69vY5OBVcaVQWUyhn78UX66lwZzooN/b0Qn/Jx0KHw+6VpN49xSmyWvmA9AjXzZM1LKX8DtnVzCGlL+ZVctTEYTbMsuwuqPmleUgeUXLWhPbZ2GdNtvShFa7oeHS/+lzFPm7Zef/Wo1ePTcgKUjHHX12Zcsq2MvLe6UofuGqyU4dHO2w9BxupJ/3iVfBQ70zfDo8A/3Bkrpn1rDZN08qOHyQP89YJ5vkOe+20HPpPqZvdvaHDH5UqTd0ruF2EcM9SoAtJ1dB2L/pbFCffdoRYMBjAFK7gg49biVNGrr3xhkdXNtUO/YVw5NhtGfq0wFD5wpA8HnkQ91eRICxM7b32/HS0lI9RC5JRj43BdXCb+Wj3D/BWTos/rsZb38UrjiPO2fGnPOyQMhTCPZW7804ZSvX4zVs90v+SZVd5Xs2DzMCd+RDai2lP6/k0WvzbXOoFX1gILYpn6HdKSZLs9drdCxTtYw9V9/U+v/RvibxnN5loec9lKEj7Hd9as0cgIDcNldAuAIKDUwYnne+PTeCECVHdwchCNPdth2scC8eVUB3X8PUIkJhW1aUK26ewxoK/S2ZugkrDH6+uT39t9+m1gl22ngzsWi1K2OlryfPk8xCAUM+qn+z6SVlZEtsPFRqWtcN1PVIHlwjJCi80Q1MQ9x7QGWRNNrzsIhHuF267Giw0EdIjdO4O94yYXvRwt7OkRIn+dbZMsXR47vbOPLzxgVHwrkwPEHjx8lDooY8qEnLaUdzUni1Y/g06GO2bqHWYuJXkzSPzHwqbj1B2XfWVA==
+X-Forefront-Antispam-Report:
+	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb07.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(30052699003)(1800799024)(82310400026)(36860700016)(7416014)(376014)(56012099003)(22082099003)(18002099003);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?iso-8859-1?Q?3iwDsrhmFdtHZGPEOViP8jObiYTJGcus+8RPpaMCPW80XRPMnzdza2LoHF?=
- =?iso-8859-1?Q?9EJvjRvugdBDoXBrjTrF25i55yCi0Ked24KOiyDt37MfMQQvofGfWVxG+O?=
- =?iso-8859-1?Q?0P+QBIR4i+nO4Kv6Gx2gBKFt79sd+iqk7/1wsG3PmxPA8YSxQVdZi/uYwN?=
- =?iso-8859-1?Q?Q14X0QantDObNy5E7+SOrFG+TPr/daKkDmJd+bLCWW7BEcibGJM7d8LSDC?=
- =?iso-8859-1?Q?OcOKsvefjb6YqRuPXQy45+k9k130WMg88PsOqWmF9kLkRmpA4/2dYBrUkf?=
- =?iso-8859-1?Q?aG8AFj1SY6oNVD6SnUI8KXc+p1KBQL8WYhs8wn/xAmu3xZLtwyjEe3D+oh?=
- =?iso-8859-1?Q?8HW5MaTxYI9anROijCDPU1a6oUQwgntszW5Q0/ooRL4ykXgo73yECS28mq?=
- =?iso-8859-1?Q?JSVlQDpj2kuJizqAsSlIuPqJlZvaM2BeNLt+tV3x4RwPB+eHGYsskSPKSJ?=
- =?iso-8859-1?Q?CwPoTGf90we8fvrm82ywXNxMnHlQzTKPer2ZqKgK35yPal/rCskLKPwIp6?=
- =?iso-8859-1?Q?3eUvm4Dt1AhmCvX3srTuM2zYpOuz+ci1i1SEYEKT3TpmEL1LN9fpf9HG6i?=
- =?iso-8859-1?Q?FsE5IqhgPr5ZD03Bej8Msb9IEXU10XQB0ze9CbVGBbRu3Yoo2fHgVeL0KA?=
- =?iso-8859-1?Q?Ef8p60vUtktA92TtTrtHTDPATXrLtbNLHMxqmuzQlyu2IBNScl7VLRwV9X?=
- =?iso-8859-1?Q?MLQu5pnMJP4sYN6lDb1RUCQSpmYiWKuwYpgVDqoFfZGjiZnsy4HzGkcyRc?=
- =?iso-8859-1?Q?zMjhbwtV+gH9EuBq1gD7mETlaoK2Fry+yzD6DdJ0qnbrzg83KbBvPlcGBw?=
- =?iso-8859-1?Q?MMfHJy6QFi3ScFj0EIHeBcnHo+5t4r9Uko8MfB5+IlLPcej5CMaQBec8JS?=
- =?iso-8859-1?Q?C+c+w+3iDI4Zp+vdZATNszEY8mNddIiljJeVzbWXMlnpbkvRBzAv9PK8Md?=
- =?iso-8859-1?Q?R6lxq3sqZCt6b4MRvm/cuK+v42qDQuc+SoGDueaS7Ar3/DAIWoReXdxgL0?=
- =?iso-8859-1?Q?tJY5rErjScLt3LJ4YarXnBhbj1fkW6IdYSJo8mkOofT5mepFqYy5uQp2lA?=
- =?iso-8859-1?Q?oL5vYrQQ2S39hEmjv1K+/LgpQpiUONITBRNUM/mzjTFw+BMvudbCNWcr6l?=
- =?iso-8859-1?Q?YF8mhNQTMwxfyrQ+ZqhkScNqXoCO33VZlpedo22jGgZ/QNSIbf4jQK3uYN?=
- =?iso-8859-1?Q?tme/JK73rz+4C4Yw8kYvAjSMAqOO5Abyxmbz0dyfs7cvPHTzst9kalqIiA?=
- =?iso-8859-1?Q?sQndk2g3Vps8wmm/uAkdwzlFGP5ar0C5TCglgp2W5r+L0HQgA28JiUFs1u?=
- =?iso-8859-1?Q?Sjz63j/w9hfmSdhn6FQsCmGoyQqJVBuCMOtYvb/54Ol1JKlIob1nK9rGNE?=
- =?iso-8859-1?Q?I2oau8i4azTyidGAx/bufukbrHt2WdLs8lMhtYuNWVz1FZEY6zxoUY8zpE?=
- =?iso-8859-1?Q?EA0jbJtBwqDeIxpz+9rtQiAp61JEFcKNb/0MHXGTj/BlUsx4wxn35qpJse?=
- =?iso-8859-1?Q?sidxrluUVhRBR+VfrbNPfetC1B3yIq6vUxjil21sL1s/8oTx9r0zigfeZL?=
- =?iso-8859-1?Q?6k9DIQdLdoa9pixz4SCQOtPxJoeiZPpkYVa6av4DM30r1GPy4WrvoeKpuX?=
- =?iso-8859-1?Q?kFANAzHteVSNnJyFg2Csm8wHhw0xaoB0kY0BDo4Oe9ALHVkJPwUyYVnT45?=
- =?iso-8859-1?Q?8X/LZzoREw0T9oqQ6mBI1BVdjTVS4Hd0p6KcHmZz+ZO8eIEpI/ONCyUb5e?=
- =?iso-8859-1?Q?PZfxsW4L8krHrq8Fv5yYnvmlc/XK9QYN7W9pJX1LdWOR2xqNnFmuZFl6yy?=
- =?iso-8859-1?Q?PRhywGo9vQ=3D=3D?=
-X-Exchange-RoutingPolicyChecked: mvtWWPWdad61Qle08AqxeFXPlNY8SiCjHYmxJyzCy0uZQnYKPl44ceARpW2ili0whoOciiWKSBKpfse+z31chVLxuqPZdJilINiJXM5Hsy/upYr1oVDNuBGbIdwrEM/gmM4oIWAYNaJcsIesGmxPpdqDvJCZ+l9n6mOvE3H89JHWVyzWKpR6RMKfWz/fYSBoaZNsgXZWUJ8VtYYkeRuH5BNoNzLwtWdjreFRgReG8zTmf9ltn0BH7YrQxqK5ouQbI1t91nm17OTeg7O4UsYXyRaKS0ek5ZSoSHWbFcs93Hq+mksk329rrmGhtHOoxzLw2+js6IJZ6skoAcjLrR5UBA==
-X-MS-Exchange-CrossTenant-Network-Message-Id: a006aef5-1dc2-4e51-a30a-08de80410157
-X-MS-Exchange-CrossTenant-AuthSource: CH3PR11MB8660.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 12 Mar 2026 14:09:41.9048
+X-MS-Exchange-AntiSpam-MessageData-0:
+	0rWNd1co2x8gOwrqnUA1bKoJssu0lp/vuEzzMJ3rGYS2Fc4e6wnDPfuE+/JbY88JXSTzMpaJVBiVknqiu13eR7NkaRsniZxDhaAryhdGMNGoQqfhpDERzqtrHCpxJ/hIJPpaK+L+Csdx2meA/tsaHtaM1W+VyzdY3/pbPy1zPRZxJ2JzzR9ITbhBnbYF7rKmZt04D7jCtyJS8VDqr5lj3oq9dSuHKIp1+NrJEGB/fOiL5gXLJ5wbtWVZcOdUX/zjyQTlmLD1m3AlSJTn3RLmSmM9dxZYtyXkskP2VObTDse18DNqMH60TqgoE2BMQL+EUK/2VfJ9sgFy/Zoj5zm+Gccc0nA4znjZR/egDEGy9Vuj5lOlNfYpnoye0qjV1a3RY9D+zBW0+IZ9vaeXgHYxSn8tzq3wL9piHMl32VTSZH7gsfnYjkg0RZpPpRp8TuCF
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 12 Mar 2026 14:11:26.3548
  (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: BiJdBPdSfg7MLJ+kWTz36DpQY23FN/k8QNnPLkb/aW9/u3IEa9U9D4UY0bP0frdXZ/djuOh11nBtGytMU7P6Mw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA3PR11MB9228
-X-OriginatorOrg: intel.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: d59896d7-0b0a-4554-1fa1-08de80413fc3
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[satlexmb07.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	CH3PEPF0000000A.namprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MN0PR12MB5788
 
-On Thu, Mar 12, 2026 at 10:00:20AM +0800, Edgecombe, Rick P wrote:
->On Thu, 2026-02-12 at 06:35 -0800, Chao Gao wrote:
->> TDX Module updates require careful synchronization with other TDX
->> operations on the host. During updates, only update-related SEAMCALLs are
->> permitted; all other SEAMCALLs must be blocked.
->> 
->> However, SEAMCALLs can be invoked from different contexts (normal and IRQ
->> context) and run in parallel across CPUs. And, all TD vCPUs must remain
->> out of guest mode during updates.
->> 
->
->Above it says only update-related SEAMCALLs are permitted. Does that not already
->exclude SEAMCALLs that might allow entering the TD?
 
-Those SEAMCALLs would return errors, and TDs would be killed if those errors
-aren't handled properly.
+On 3/11/2026 10:58 PM, Dave Hansen wrote:
+> On 3/11/26 08:42, Nikunj A. Dadhania wrote:
 
-One may argue that we can handle errors and retry after updates. But this just
-provides a new form of synchronization, which is not as clean as the
-well-defined synchronization provided by the kernel.
+> BTW, commit c7ad5ad297e tells some of the tales of woe around CR4 and
+> boot vs. secondary CPUs:
+> 
+> 	cpu_init() is weird: it's called rather late (after early
+> 	identification and after most MMU state is initialized) on the
+> 	boot CPU but is called extremely early (before identification)
+> 	on secondary CPUs.
+> 
+> This weirdness is still biting us today. CR4 pinning just made things
+> worse (or at least harder to understand).
+> 
+> I have the feeling we need to bite the bullet here and actually start
+> thinking about this holistically. I _think_ 'mmu_cr4_features' is
+> conceptually pretty close to what we need. It's just named wrong.
+> 
+> /*
+>  * Current system-wide configuration information for CR4 register.
+>  * All of the bits in these feature masks are supported by the current
+>  * running CPU.
+>  */
+> struct cr4_config {
+...
+> 
+> What do folks think? Can we expand the 'mmu_cr4_features' to more than
+> MMU features?
 
->
->>  No single lock primitive can satisfy
->> all these synchronization requirements, so stop_machine() is used as the
->> only well-understood mechanism that can meet them all.
->> 
->> The TDX Module update process consists of several steps as described in
->> Intel® Trust Domain Extensions (Intel® TDX) Module Base Architecture
->> Specification, Revision 348549-007, Chapter 4.5 "TD-Preserving TDX Module
->> Update"
->> 
->>   - shut down the old module
->>   - install the new module
->>   - global and per-CPU initialization
->>   - restore state information
->> 
->> Some steps must execute on a single CPU, others must run serially across
->> all CPUs, and some can run concurrently on all CPUs. There are also
->> ordering requirements between steps, so all CPUs must work in a step-locked
->> manner.
->
->Does the fact that they can run on other CPUs add any synchronization
->requirements? If not I'd leave it off.
+I'll let you and the other x86 maintainers decide on the cr4_config 
+approach. However, I have two concerns for the immediate fix:
 
-I'm not sure I understand the concern.
+1) Back-porting complexity: The current issue affects kernels (6.9+) 
+   where SEV-SNP guests fail to boot with FRED enabled. A simpler fix would
+   be easier to backport and verify across stable branches.
 
-Lockstep synchronization is needed specifically because we have both multiple
-CPUs and multiple steps.
+2) Scope and risk: The cr4_config refactoring touches core x86 boot paths 
+   and would need careful analysis of all CR4 feature interactions 
+   (PCID, FSGSBASE, SMEP, SMAP, etc.) across different boot scenarios 
+   (boot CPU, secondary CPUs, real-mode transitions, kexec, etc.). 
 
-If updates only required a single CPU, stop_machine() would be sufficient.
+Would it make sense to take a two-phase approach:
 
->
->> 
->> In summary, TDX Module updates create two requirements:
->
->The stop_machine() part seems more like a solution then a requirement.
->
->> 
->> 1. The entire update process must use stop_machine() to synchronize with
->>    other TDX workloads
->> 2. Update steps must be performed in a step-locked manner
->> 
->> To prepare for implementing concrete TDX Module update steps, establish
->> the framework by mimicking multi_cpu_stop(), which is a good example of
->> performing a multi-step task in step-locked manner.
->> 
->
->Offline Chao pointed that Paul suggested this after considering refactoring out
->the common code. I think it might still be worth mentioning why you can't use
->multi_cpu_stop() directly. I guess there are some differences. what are they.
+Phase 1 (suitable for stable as well):
+  1) Universally set X86_CR4_FSGSBASE in cr4_init() and call cr4_init()
+     from trap_init() on the boot CPU
+  2) Disable CR pinning during secondary CPU bringup
+  3) Add #VC handler for FRED and use boot_ghcb during early boot
 
-To be clear, Paul didn't actually suggest this approach. His feedback indicated
-he wasn't concerned about duplicating some of multi_cpu_stop()'s code, i.e., no
-need to refactor out some common code.
+Phase 2:
+  - Build consensus among x86 maintainers on the cr4_config approach
+  - Implement the refactoring once the design is agreed upon
 
-https://lore.kernel.org/all/a7affba9-0cea-4493-b868-392158b59d83@paulmck-laptop/#t
+I'm happy to work on Phase 2 with guidance from the maintainers, but would 
+prefer to decouple it from the urgent boot failure fix.
 
-We can't use multi_cpu_stop() directly because it only provides lockstep
-execution for its own infrastructure, not for the function it runs. If we
-passed a function that performs steps A, B, and C to multi_cpu_stop(), there's
-no guarantee that all CPUs complete step A before any CPU begins step B.
-
->
->>  Specifically, use a
->> global state machine to control each CPU's work and require all CPUs to
->> acknowledge completion before proceeding to the next step.
->
->Maybe add a bit more about the reasoning for requiring the other steps to ack.
->Tie it back to the lockstep part.
->
-
-Ok. How about:
-
-Specifically, add a global state machine where each state represents a step in
-the above update flow. The state advances only after all CPUs acknowledge
-completing their work in the current state. This acknowledgment mechanism is
-what ensures lockstep execution.
-
-<snip>
-
->> +static int do_seamldr_install_module(void *params)
->> +{
->> +	enum tdp_state newstate, curstate = TDP_START;
->> +	int ret = 0;
->> +
->> +	do {
->> +		/* Chill out and re-read tdp_data */
->> +		cpu_relax();
->> +		newstate = READ_ONCE(tdp_data.state);
->> +
->> +		if (newstate != curstate) {
->> +			curstate = newstate;
->> +			switch (curstate) {
->
->Maybe a little comment here like "todo add the steps".
-
-Sure.
+Thanks,
+Nikunj
