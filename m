@@ -1,108 +1,174 @@
-Received: from mail-pl1-f201.google.com (mail-pl1-f201.google.com [209.85.214.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0DDA2366561
-	for <kvm@vger.kernel.org>; Thu, 12 Mar 2026 17:49:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.201
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A959F3FE366;
+	Thu, 12 Mar 2026 17:52:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773337760; cv=none; b=mAVS0ZJf5ugtTdje8BXqTMclvONyoJJvlulHv+Erry2bp6SWQXE0pYAG6q5uB05XLvbtqcyis1MTi+EMOYUPE1YtshNesyoSK8A1VGoBCSt0veuNWR4TD90Zfk6WgrEseVb98x1fi51zduyzrFn/RME5fin+tNjiuQh9jaqdtPU=
+	t=1773337971; cv=none; b=WjQZLh9uwVepr5oIW3FHMWBo8cDU1qkbDpX1ZFcEhhcNYdaEVadImk4j4urQpcXhVNF2T8Hpy3Fd04VSbwTBmALW7L/iJDvH9mRS4mVtA6P1fZGI7BsE5ZbdKkDaS5PwvPWin3WHSTz+IZqPDzD2BVSv3Zzvzw1H+JAgf6Mew6k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773337760; c=relaxed/simple;
-	bh=xpP8GEaWsx0WZR2bBt+NsJMr6G978MTpJRXnplvOTMs=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=Q8tsFKdktpR8oFGqgPv8RyqYqrSj+zlcpERYNbi5C8gNGMjwKPOzUvvomYjrNWeevo2bruFpCxjT824zXKaYmi30rHYNRZnvSLY23lh9kFde2jDxqG1aBS1SnOydE3pltNgUdyzDyvSC5aYrGGO6pEV0d2cPoBG3h6obxUOLq4U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=VHa/w4XT; arc=none smtp.client-ip=209.85.214.201
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="VHa/w4XT"
-Received: by mail-pl1-f201.google.com with SMTP id d9443c01a7336-2ae47b3adacso13025155ad.3
-        for <kvm@vger.kernel.org>; Thu, 12 Mar 2026 10:49:18 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1773337758; x=1773942558; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=Mp2dppEjJ5UkRzLym3Z+pF4WitJgemauS6UzqyQhU6E=;
-        b=VHa/w4XT+618RPE7+wEulZTlqOK6tQ65nAZMj/qSLtxy8pZkna4T9oHHTeivu/LCtB
-         rxCehg0ekH4wMb2ZTzC3cxGp0qKLRnMMtLLAai+WHgdb2KuNb6mvUplovsWMgS84DGuc
-         YgYGVHIgJqS5jrN5BUvb1XyEeKCkZkiMiMi7oDokbRBbH17drHC6yjudlzcR6L/A+juS
-         aIgNRxgXcnXF8LJImluuiS1xFYy9k1V6FlkP1AaA1Mrfxy50abPL5mIjyqdovlZ2sleG
-         66fMU1OVSeuPeBxOYdkMOceVypq27Il8F5vP/stc9gd3vh7/vMcZKf3gvQcs6P2RIT3L
-         hHtA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1773337758; x=1773942558;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=Mp2dppEjJ5UkRzLym3Z+pF4WitJgemauS6UzqyQhU6E=;
-        b=O9S7bK0+balSjE+hLj4wq7Cx3QJVIXtgFKrMPy+vPzdERStbK7VshKyn/a/4zHl8xc
-         LoZ5p6BwMzlC8Jujz2VpdtSL5ND4nSktoWpEULRCwOgP9FoTyBNddZwTyYGC0JPqjyUj
-         L/k9CixoJ9RCccRxnjvtj98O1Z88vsy2MWqSNg0pL/zSQVOcDkFHbEAguFKPbKBcp7YC
-         8q4U8bLq2vdOU1r7gFqOnSrvDdKf4ozfFxdQTEFT2Vq9HEt51i/SGCiZGc2jdnPhOqK+
-         d7ci7wKf3dsyfTBHujVtQ+OllL59wBeCgsPJQzlD+DYDcB6pwk5q01dGWB25YhZhX/5M
-         0tgg==
-X-Gm-Message-State: AOJu0YxuxUPvo8WpYZ/Bc0ONXGSEpbZwHdsFRST0SAMN5bkmaudJA1hv
-	K4naMclJoqouun1HP8e7SBxmP+mes+0XLQ/6lvAh8DmSzuRSZtneVfGumA440bzMVtF2wvwdLZ9
-	tGd5GWg==
-X-Received: from plxx2.prod.google.com ([2002:a17:902:e042:b0:2ae:5fe0:d464])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:903:ac7:b0:2ae:50ec:fa34
- with SMTP id d9443c01a7336-2aecac93676mr2940935ad.46.1773337758105; Thu, 12
- Mar 2026 10:49:18 -0700 (PDT)
-Date: Thu, 12 Mar 2026 10:49:16 -0700
-In-Reply-To: <47e4570a1db6f68eacdde989c6cf4f53175cea75.1773193126.git.isaku.yamahata@intel.com>
+	s=arc-20240116; t=1773337971; c=relaxed/simple;
+	bh=aGZMRJkXF11EHpW5zxb25GXR22S9mh3MN8XDpM1BjHI=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=lRzPqheq6PKfKKU9REVCN9yZxkjio9UJelpxHlm+b7+Y4szozHYDYfM+IC0YnjOJsX8QTYANwsfSScBGNTrOZx7WDsqKCoGH2tqn4afCEoCoKkgpDd35Y+SEUJ6cpxmNtO5HHbrlGNBn9gwtSP8EY3OEZvI+u5z4LSUU5AmPthk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id C2F1A165C;
+	Thu, 12 Mar 2026 10:52:41 -0700 (PDT)
+Received: from e129823.cambridge.arm.com (e129823.arm.com [10.1.197.6])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id 6F2483F73B;
+	Thu, 12 Mar 2026 10:52:45 -0700 (PDT)
+From: Yeoreum Yun <yeoreum.yun@arm.com>
+To: linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	kvmarm@lists.linux.dev,
+	kvm@vger.kernel.org,
+	linux-kselftest@vger.kernel.org
+Cc: catalin.marinas@arm.com,
+	will@kernel.org,
+	maz@kernel.org,
+	oupton@kernel.org,
+	miko.lenczewski@arm.com,
+	kevin.brodsky@arm.com,
+	broonie@kernel.org,
+	ardb@kernel.org,
+	suzuki.poulose@arm.com,
+	lpieralisi@kernel.org,
+	joey.gouly@arm.com,
+	yuzenghui@huawei.com,
+	yeoreum.yun@arm.com
+Subject: [PATCH v16 0/8] support FEAT_LSUI
+Date: Thu, 12 Mar 2026 17:52:35 +0000
+Message-Id: <20260312175243.1593864-1-yeoreum.yun@arm.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <47e4570a1db6f68eacdde989c6cf4f53175cea75.1773193126.git.isaku.yamahata@intel.com>
-Message-ID: <abL8nHNYkUCcS73O@google.com>
-Subject: Re: [PATCH] KVM: VMX: Eliminate warnings by sparse in vmcs12.c and hyperv_evmcs.c
-From: Sean Christopherson <seanjc@google.com>
-To: isaku.yamahata@intel.com
-Cc: kvm@vger.kernel.org, isaku.yamahata@gmail.com, 
-	Paolo Bonzini <pbonzini@redhat.com>, kernel test robot <lkp@intel.com>
-Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
-On Tue, Mar 10, 2026, isaku.yamahata@intel.com wrote:
-> From: Isaku Yamahata <isaku.yamahata@intel.com>
-> 
-> Make ROL16() explicitly mask instead of the truncation by u16 cast.
-> Sparse complains as follows for vmcs12.c and hyperv_evmcs.c.
->   > vmcs12.c:17:9: warning: cast truncates bits from constant value
->   > (20002 becomes 2)
-> 
-> It is because ROL16(val, n) includes "(u16)(val) << (n)" whose type is int,
-> not u16, due to integer promotion even with a u16 cast.  The outermost u16
-> cast in ROL16() may truncate it.  Explicitly mask it to avoid truncation by
-> the u16 cast.
+Since Armv9.6, FEAT_LSUI supplies the load/store instructions for
+previleged level to access to access user memory without clearing
+PSTATE.PAN bit.
 
-Honestly, I'm inclined to ignore sparse.  The code is correct as-is, and adding
-the GENMASK just makes it less readable IMO.
+This patchset support FEAT_LSUI and applies it mainly in
+futex atomic operation and others.
 
-> Reported-by: kernel test robot <lkp@intel.com>
-> Closes: https://lore.kernel.org/oe-kbuild-all/202603061942.wdSsERnL-lkp@intel.com/
-> Signed-off-by: Isaku Yamahata <isaku.yamahata@intel.com>
-> ---
->  arch/x86/kvm/vmx/vmcs.h | 3 ++-
->  1 file changed, 2 insertions(+), 1 deletion(-)
-> 
-> diff --git a/arch/x86/kvm/vmx/vmcs.h b/arch/x86/kvm/vmx/vmcs.h
-> index 1f16ddeae9cb..b5b5f4870655 100644
-> --- a/arch/x86/kvm/vmx/vmcs.h
-> +++ b/arch/x86/kvm/vmx/vmcs.h
-> @@ -18,7 +18,8 @@
->   * wasting too much memory, while the "algorithm" is fast enough to be used to
->   * lookup vmcs12 fields on-demand, e.g. for emulation.
->   */
-> -#define ROL16(val, n) ((u16)(((u16)(val) << (n)) | ((u16)(val) >> (16 - (n)))))
-> +#define ROL16(val, n) ((u16)((((u16)(val) << (n)) & GENMASK_U16(15, 0)) | \
-> +			     ((u16)(val) >> (16 - (n)))))
->  #define VMCS12_IDX_TO_ENC(idx) ROL16(idx, 10)
->  #define ENC_TO_VMCS12_IDX(enc) ROL16(enc, 6)
->  
-> 
-> base-commit: 5128b972fb2801ad9aca54d990a75611ab5283a9
-> -- 
-> 2.45.2
-> 
+This patch based on v7.0-rc3
+
+
+Patch History
+==============
+from v15 to v16:
+  - remove positional operand in futex asm.
+  - rebased to v7.0-rc3
+  - https://lore.kernel.org/all/20260227151705.1275328-1-yeoreum.yun@arm.com/
+
+from v14 to v15:
+  - replace caslt to cast
+  - cleanup the patch
+  - https://lore.kernel.org/all/20260225182708.3225211-1-yeoreum.yun@arm.com/
+
+from v13 to v14:
+  - add LSUI config check in cpucap_is_possible()
+  - fix build failure with clang-19
+  - https://lore.kernel.org/all/20260223174802.458411-1-yeoreum.yun@arm.com/
+
+from v12 to v13:
+  - rebase to v7.0-rc1
+  - apply CASLT for swapping guest descriptor
+  - remove has_lsui() for checking cpu feature.
+  - simplify __lsui_cmpxchg32() according to @Catalin's suggestion.
+  - use uaccess_ttbr0_enable()/disable() for LSUI instructions.
+  - https://lore.kernel.org/all/aYWuqTqM5MvudI5V@e129823.arm.com/
+
+from v11 to v12:
+  - rebase to v6.19-rc6
+  - add CONFIG_ARM64_LSUI
+  - enable LSUI when !CPU_BIG_ENDIAN and PAN presents.
+  - drop the swp emulation with LSUI insns instead, disable it
+    when LSUI presents.
+  - some of small fixes (useless prefix and suffix and etc).
+  - https://lore.kernel.org/all/20251214112248.901769-1-yeoreum.yun@arm.com/
+
+from v10 to v11:
+  - rebase to v6.19-rc1
+  - use cast instruction to emulate deprecated swpb instruction
+  - https://lore.kernel.org/all/20251103163224.818353-1-yeoreum.yun@arm.com/
+
+from v9 to v10:
+  - apply FEAT_LSUI to user_swpX emulation.
+  - add test coverage for LSUI bit in ID_AA64ISAR3_EL1
+  - rebase to v6.18-rc4
+  - https://lore.kernel.org/all/20250922102244.2068414-1-yeoreum.yun@arm.com/
+
+from v8 to v9:
+  - refotoring __lsui_cmpxchg64()
+  - rebase to v6.17-rc7
+  - https://lore.kernel.org/all/20250917110838.917281-1-yeoreum.yun@arm.com/
+
+from v7 to v8:
+  - implements futex_atomic_eor() and futex_atomic_cmpxchg() with casalt
+    with C helper.
+  - Drop the small optimisation on ll/sc futex_atomic_set operation.
+  - modify some commit message.
+  - https://lore.kernel.org/all/20250816151929.197589-1-yeoreum.yun@arm.com/
+
+from v6 to v7:
+  - wrap FEAT_LSUI with CONFIG_AS_HAS_LSUI in cpufeature
+  - remove unnecessary addition of indentation.
+  - remove unnecessary mte_tco_enable()/disable() on LSUI operation.
+  - https://lore.kernel.org/all/20250811163635.1562145-1-yeoreum.yun@arm.com/
+
+from v5 to v6:
+  - rebase to v6.17-rc1
+  - https://lore.kernel.org/all/20250722121956.1509403-1-yeoreum.yun@arm.com/
+
+from v4 to v5:
+  - remove futex_ll_sc.h futext_lsui and lsui.h and move them to futex.h
+  - reorganize the patches.
+  - https://lore.kernel.org/all/20250721083618.2743569-1-yeoreum.yun@arm.com/
+
+from v3 to v4:
+  - rebase to v6.16-rc7
+  - modify some patch's title.
+  - https://lore.kernel.org/all/20250617183635.1266015-1-yeoreum.yun@arm.com/
+
+from v2 to v3:
+  - expose FEAT_LSUI to guest
+  - add help section for LSUI Kconfig
+  - https://lore.kernel.org/all/20250611151154.46362-1-yeoreum.yun@arm.com/
+
+from v1 to v2:
+  - remove empty v9.6 menu entry
+  - locate HAS_LSUI in cpucaps in order
+  - https://lore.kernel.org/all/20250611104916.10636-1-yeoreum.yun@arm.com/
+
+
+Yeoreum Yun (8):
+  arm64: cpufeature: add FEAT_LSUI
+  KVM: arm64: expose FEAT_LSUI to guest
+  KVM: arm64: kselftest: set_id_regs: add test for FEAT_LSUI
+  arm64: futex: refactor futex atomic operation
+  arm64: futex: support futex with FEAT_LSUI
+  arm64: armv8_deprecated: disable swp emulation when FEAT_LSUI present
+  KVM: arm64: use CAST instruction for swapping guest descriptor
+  arm64: Kconfig: add support for LSUI
+
+ arch/arm64/Kconfig                            |  20 ++
+ arch/arm64/include/asm/cpucaps.h              |   2 +
+ arch/arm64/include/asm/futex.h                | 318 ++++++++++++++----
+ arch/arm64/include/asm/lsui.h                 |  27 ++
+ arch/arm64/kernel/armv8_deprecated.c          |  16 +
+ arch/arm64/kernel/cpufeature.c                |  10 +
+ arch/arm64/kvm/at.c                           |  42 ++-
+ arch/arm64/kvm/sys_regs.c                     |   3 +-
+ arch/arm64/tools/cpucaps                      |   1 +
+ .../testing/selftests/kvm/arm64/set_id_regs.c |   1 +
+ 10 files changed, 380 insertions(+), 60 deletions(-)
+ create mode 100644 arch/arm64/include/asm/lsui.h
+
+--
+LEVI:{C3F47F37-75D8-414A-A8BA-3980EC8A46D7}
+
