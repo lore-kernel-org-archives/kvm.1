@@ -1,184 +1,591 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f173.google.com (mail-pl1-f173.google.com [209.85.214.173])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 29E1D38C42E;
-	Thu, 12 Mar 2026 16:34:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=198.175.65.20
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773333282; cv=fail; b=FoF7z/lJNgA4kS0gPPVN1xBgS/nSfKnFGe9WN6Q+qE79UjfiteMXPl9mCUQjT8mqkQPQ6KS7Sg2ymWjTDthx60uAir8XCjv2Go5rcaZXDUO4SJSMxgQ6WfTA+GDo2cC82qP6GCitOHh9xZX9PIAloicInnvdoq7Wu+0mneu5Ku8=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773333282; c=relaxed/simple;
-	bh=Sh8aFiaW9qzEhLN4wmR/AXSx2ltiHenV5gV4qoq4Mfc=;
-	h=Message-ID:Date:Subject:To:CC:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=Nzf5QyteoxAHic9Dd7R+WdyaUWdoaDJlVhPi/j/MC32nyjRUcEayAp+6pdZzfLUSLvsQUyd7QgF+krhGqnq3Pu2im8tE90eTzj5+5j28OfCzUe5P5MrGJEyjhMTMSvRH2jI7oqnwvY4fXvpUNwXZM4PzjZxa+Ns/iR3vFbNZXDQ=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Bwpj9vNB; arc=fail smtp.client-ip=198.175.65.20
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F222339185B
+	for <kvm@vger.kernel.org>; Thu, 12 Mar 2026 16:43:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.173
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1773333788; cv=none; b=hi1Jr9KEMuIsgTUqx9r8JQfL8aB0Z9ua66P2/6JGGl7MaqAFT10zHh3KHn4UUnhHaDs1DRRCwHtLlawFWriKgRek4Wvl/oJIRTBDK2ti6RsHc9jNBPPnmjuZfGwW3ID49urnQ4VrEHpB+epFa/ffGgEORAVPEiRPTu0jtaLoWHM=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1773333788; c=relaxed/simple;
+	bh=YRt0Gd3FYAToebfNIaDkK4Gl3OWzPWUZzyd6NY/kIaU=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=jDBrsUjZPCuX2CzxAr13S7UO2fRHM0NeRWVzdlIEXQry6W+rHvY9SyHNYlp92QVWOutNaLe3jgDVbZeKq5hc351PEPaff+w1hwqRu28TDWvxiwSpFnsMpTfSzqMM+ghrt4/rtle9zUyyNfoy6YFFJw38ot4Niy/s/csuVnG4/H0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=KlrId1w7; arc=none smtp.client-ip=209.85.214.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Bwpj9vNB"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1773333282; x=1804869282;
-  h=message-id:date:subject:to:cc:references:from:
-   in-reply-to:content-transfer-encoding:mime-version;
-  bh=Sh8aFiaW9qzEhLN4wmR/AXSx2ltiHenV5gV4qoq4Mfc=;
-  b=Bwpj9vNBAZrYoOOVKQG9olQvtZwKpTQoqwFAcD2aLNB8BW/5I7kAIIAO
-   OH688tWpra6bkLxGjcf0mIhGqkj4Yd4fjPphgXCNcQ4361RMtLRIhjtug
-   yZtpQALj3lrFynQM44ZOHrEotENG/fcyv9nCKaUXzSPHApyRafMcltdCc
-   ynFY/EANFZycJ6T/lo64V12PhiQkW3CaEhoQc4R/lIgahiRFUJARMVdh+
-   uuA2xHnQBzNpu2sz8mu64dg8r+LmjaW+3RNCWTw9SPvRNa/1HatUqbK9q
-   RPP33GT8reIV7c1oss84QvMib/bWoCXTXXJvJE0ojiNZpLifoLmXpEvvN
-   g==;
-X-CSE-ConnectionGUID: W3wUo1lwQrSvlRsUv/ROog==
-X-CSE-MsgGUID: dy3Gx9QxR/WY+zf0SD94MQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11727"; a="74132596"
-X-IronPort-AV: E=Sophos;i="6.23,116,1770624000"; 
-   d="scan'208";a="74132596"
-Received: from orviesa001.jf.intel.com ([10.64.159.141])
-  by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Mar 2026 09:34:41 -0700
-X-CSE-ConnectionGUID: RCEH7Bj+RDyIBGytU+kwsg==
-X-CSE-MsgGUID: 1/jpVPqZT3GIG6/4RjdlcA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,116,1770624000"; 
-   d="scan'208";a="258787500"
-Received: from orsmsx903.amr.corp.intel.com ([10.22.229.25])
-  by orviesa001.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Mar 2026 09:34:41 -0700
-Received: from ORSMSX903.amr.corp.intel.com (10.22.229.25) by
- ORSMSX903.amr.corp.intel.com (10.22.229.25) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.37; Thu, 12 Mar 2026 09:34:40 -0700
-Received: from ORSEDG901.ED.cps.intel.com (10.7.248.11) by
- ORSMSX903.amr.corp.intel.com (10.22.229.25) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.37 via Frontend Transport; Thu, 12 Mar 2026 09:34:40 -0700
-Received: from CH5PR02CU005.outbound.protection.outlook.com (40.107.200.0) by
- edgegateway.intel.com (134.134.137.111) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.37; Thu, 12 Mar 2026 09:34:38 -0700
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=RYdQ0gAfzqa3Ag0/pvbw+HjZnHoKXHEH8l5APwnDVv4xH3d7lzFXlANnVX/La2SzEOxaE9jHnxk25YdRA+vuWcNEvdodGe4H3ym/7WaKcejuxPJ3wQbOUjk6QxJTaqnRx0RXIWtIlXRK9ira3FfI65vHhR6GZclrlKfJsBuLdOCxWOFLUq/Nm15sqZ7KWl5N/m80VIdcCHNGx3jkazxGq0uxqvD2zRzI++Fw3mWbQoibvqjQZy/n2Fbu2F4BGjQFtCyoIH3wLaXryNi5UXgqbW3Rw+kqlGrD6HtmHNcevoTJR7Ls3VAdr0ygAWZTcMXdW3jJFgSouCj4yEGZG0oLnw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=SYXeMYBO3vZLaaIKIWPVXAT81e0iUqcMSYOdAqPw8nY=;
- b=bfCLd7DinKOxjyYVsLwXEJJLFKasOz0v3R3WHIt1WaCByqTRn8vMy4oBTH/NrWqn9x89ooFAEbPuRa8CpVoBQqp/mFfznGD+7SCVW6Goaqt4MSG19kA4/574nRKr1E5nuLY0WtsspM8IhAEuxONGB9h89F3T6xz//hd0NnrDiqFguSw1eIt99Yb8F/kgsJd4i4al9anaHRk465Aezx3duXGU/z7Io6PA4Ogv67oWCwXR2RLuaNENItUDir/ja2FuL5WGtLtrKfeHIHkvqY+L4pwNpPlgMBkiutPj8aP2aLtLrvmMZGEhLDanfq+A5HeSINVkYxTPUheNu7AL+3c3uw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-Received: from DS0PR11MB7925.namprd11.prod.outlook.com (2603:10b6:8:f8::18) by
- IA3PR11MB9086.namprd11.prod.outlook.com (2603:10b6:208:57b::5) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.9700.11; Thu, 12 Mar 2026 16:34:31 +0000
-Received: from DS0PR11MB7925.namprd11.prod.outlook.com
- ([fe80::60af:89a0:65dc:9c84]) by DS0PR11MB7925.namprd11.prod.outlook.com
- ([fe80::60af:89a0:65dc:9c84%3]) with mapi id 15.20.9723.000; Thu, 12 Mar 2026
- 16:34:31 +0000
-Message-ID: <8853f8d5-57e6-4ea4-b9b5-8a0182d0d012@intel.com>
-Date: Thu, 12 Mar 2026 09:34:28 -0700
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 0/7] KVM: x86: APX reg prep work
-To: Paolo Bonzini <pbonzini@redhat.com>, Sean Christopherson
-	<seanjc@google.com>, Kiryl Shutsemau <kas@kernel.org>
-CC: <kvm@vger.kernel.org>, <x86@kernel.org>, <linux-coco@lists.linux.dev>,
-	<linux-kernel@vger.kernel.org>
-References: <20260311003346.2626238-1-seanjc@google.com>
- <7ec084f8-812e-42f2-8470-e416fa7ee848@redhat.com>
-Content-Language: en-US
-From: "Chang S. Bae" <chang.seok.bae@intel.com>
-In-Reply-To: <7ec084f8-812e-42f2-8470-e416fa7ee848@redhat.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: BYAPR08CA0002.namprd08.prod.outlook.com
- (2603:10b6:a03:100::15) To DS0PR11MB7925.namprd11.prod.outlook.com
- (2603:10b6:8:f8::18)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="KlrId1w7"
+Received: by mail-pl1-f173.google.com with SMTP id d9443c01a7336-2ae49120e97so1185ad.0
+        for <kvm@vger.kernel.org>; Thu, 12 Mar 2026 09:43:06 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1773333786; x=1773938586; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=rvZtrsnjC36gLoMLygup1Zseh91/Jst+qeyqxW/OOws=;
+        b=KlrId1w7/OppnoW5AGeDeFgtwVcKuf4/TnBB5AecEW3Qb5cfsSboUJMMcFACJIZm2a
+         7T7xj0HW9YV4INU4NM3CDjC8CQ9K0Jod43VdgJlrqTCWcwBOOQNW/6vF9WBR6ULhcrlq
+         b8hvyUOAyPwVMQpfLaRFlrpbQ8CCDrTpTbGTfXFu/ZGzNKSAyYClxZf4fNYPiTs6NkNN
+         M8IR6U5Ca9U5Z9WK0Uwjns1d+v/IUE7yn7S9P/4TU25HnW6DuSV+YhVKE5zrzFKgs38T
+         3wO/uN4gsGptFEkvzdtd6Nc3OwjpR5bjcttoYtSspBqt7JapfolB4h3eEJ+84A0DHnGo
+         hcgg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1773333786; x=1773938586;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=rvZtrsnjC36gLoMLygup1Zseh91/Jst+qeyqxW/OOws=;
+        b=i3+oZ3b81gDeF/qdjiqSPHX2MjoowgFhwQ1nLYS1Rwwnb8/IGgNLb+VWEeG5EqXfH7
+         WLgRQ86+CXW+DVYGYRV6cHI45sZQQjyW8trx7V5qqmDJ8x24YST/X11mczl/GnKpY2d8
+         /rCDCGCsIVXeykMSmJ7sK26ab8Y9KkA0PJ5JvMLrQc8GP8BW5yPGP1YYbY1qe11zY0E5
+         Uq2QScWiR1H0X+OCB6L9BW3POOYssYSA4QrHy07GbrBgMnxN818s8Tvgx2TgtvxJa8bZ
+         dOF04ejb66+fU0ZOwGMfli1/Vgi37vYzc12doVnEIdJ4HM/GcCWMd7gO+DfYkFkMAV5S
+         Qe7g==
+X-Forwarded-Encrypted: i=1; AJvYcCVHNkWyVkBadec4PweO18+cTqZna9ucCYEeWhba7TWZrax3HA0uF2AVsTAyX0C8gK8kJQ8=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxsQxcGH9aYLeqsQOSW2GwK4QhbUcaYIRnJXj7mjd7LeDpMJzs9
+	QPuEYMtPFtokvfhFph0EMFrERljoNO8DehRg4nJ4Jjs3+RmxdkR5yS4fRfSR0Y6mbQ==
+X-Gm-Gg: ATEYQzxtPFybEK8ASejknnyv1B72BhNbloDRELrO9zN6oNTSHzvj/Ct7IS99uSe5150
+	cRlTrtIpPvISauPBtufFWKCxlZillXlb54qboZqqPCOejbzW0vCUe5dVMIXyX6iSUORcOKv14s7
+	iss0y/LPwCWjLqgYLGb5uege+0KEXTONQ6ffcEvpVaEbkz13g6lvyrW3Zqo8PNJBNpJ/8aP1tNO
+	AKQXcR3eoLmwGLfI0NSpUTnrS265uQhxWKPM+lL7U17v3UY0Wd33dT43EMhdToFqFev9YlSRwOD
+	xANXd4Q/5EGshFKmnDD8Omy0LDaOoZoFj3vu5fZ6cxp/fRcc2qElHMn0mvmAnUBzFpUDWE1sUs6
+	7Z0ON0mp8DkXx43ZDuTBfhWlA2pVAE4U2Uo6EYnZyrr7By3vrpKxVvQUM7WTOEJreOw5eGuGLUp
+	JQznei0+Fr+iavSz2hI4oRd4S59FRLOQaxr6J8q/GL2nObHb0UJdTyLOsn/HaRpg==
+X-Received: by 2002:a17:902:fc85:b0:2ae:7fa2:6bda with SMTP id d9443c01a7336-2aebd0fdcd8mr2957205ad.1.1773333785519;
+        Thu, 12 Mar 2026 09:43:05 -0700 (PDT)
+Received: from google.com (168.136.83.34.bc.googleusercontent.com. [34.83.136.168])
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-c73cdf9f4e8sm6434951a12.24.2026.03.12.09.43.04
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 12 Mar 2026 09:43:04 -0700 (PDT)
+Date: Thu, 12 Mar 2026 16:43:00 +0000
+From: Samiullah Khawaja <skhawaja@google.com>
+To: Pranjal Shrivastava <praan@google.com>
+Cc: David Woodhouse <dwmw2@infradead.org>, 
+	Lu Baolu <baolu.lu@linux.intel.com>, Joerg Roedel <joro@8bytes.org>, Will Deacon <will@kernel.org>, 
+	Jason Gunthorpe <jgg@ziepe.ca>, Robin Murphy <robin.murphy@arm.com>, 
+	Kevin Tian <kevin.tian@intel.com>, Alex Williamson <alex@shazbot.org>, 
+	Shuah Khan <shuah@kernel.org>, iommu@lists.linux.dev, linux-kernel@vger.kernel.org, 
+	kvm@vger.kernel.org, Saeed Mahameed <saeedm@nvidia.com>, 
+	Adithya Jayachandran <ajayachandra@nvidia.com>, Parav Pandit <parav@nvidia.com>, 
+	Leon Romanovsky <leonro@nvidia.com>, William Tu <witu@nvidia.com>, 
+	Pratyush Yadav <pratyush@kernel.org>, Pasha Tatashin <pasha.tatashin@soleen.com>, 
+	David Matlack <dmatlack@google.com>, Andrew Morton <akpm@linux-foundation.org>, 
+	Chris Li <chrisl@kernel.org>, Vipin Sharma <vipinsh@google.com>, 
+	YiFei Zhu <zhuyifei@google.com>
+Subject: Re: [PATCH 01/14] iommu: Implement IOMMU LU FLB callbacks
+Message-ID: <abLi5giBpi05_CLn@google.com>
+References: <20260203220948.2176157-1-skhawaja@google.com>
+ <20260203220948.2176157-2-skhawaja@google.com>
+ <abHZdOKyLmmmHADz@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DS0PR11MB7925:EE_|IA3PR11MB9086:EE_
-X-MS-Office365-Filtering-Correlation-Id: f9c85637-e1be-4cf5-fd71-08de80553c85
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|1800799024|366016|56012099003|22082099003|18002099003;
-X-Microsoft-Antispam-Message-Info: daiwyLyyuO3dua7hWNlcV1425Ev5JIyvSIyilEXS3CrCvBmR3b24HKVjlY3xBjRuX3ACTviYh9BOgPIq100e0VIGyB5pJwFhnRYIEvnX5IWjwa43i1VMxRw+8hUmGpTTBXEhllrboMtG3EYGcP+DppeDbmFOe7tvK6E8rpjmKpveiQbAskYH5xTHQ2DL68g3O3ZYuJ2WNmBWRnemwnfmLEDkQNWheKCBlTECARMyYm98NpdEcwf/PhfJiyozTp3ZXbhpXIXNCXOQjLirujp7d7M1dIYDOaG8WGZpcbfBL8iFjfZV5wFhsdroSL6coOtT0piZhqF8Cu0IVnfCTYT8VNjNF8acQMH21p/j7Ut+sGUFbn24FS/Vj3S7i/Lx6iIHcjf6PxxDww7QRRPWWvrvSAMNNAz8zlnqxCji5O6uKW2RStiZkDOczm+k3u6DSGxkSOJ81M3bOPyfOUVln/RNSWsrqeWKWENtgAf+rW5oNcJsI4OLe5zt3fWLmYgAqxSKCGu7QSzoibd3HIm8TkJNH+LPqHmr8OTony0plwKyKCsRw0WkEsmZYijxsxCx53GGkzAX9dIISuVMAyTer/yEmluPfIXOMT82MJ/RJHd/nRDbCuSaiRQPTH+7q+lVhvfiGbbosmGYUhHY311v/VHebzpdzyKvoyCtynXZeHNQrg+OlIXQdoXWxcVRa2lfnFzcqa9PAbXJoRdq+GJDEFLBFLUhcd3Ol3W0uD3aK/UXnMo=
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS0PR11MB7925.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(1800799024)(366016)(56012099003)(22082099003)(18002099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?L3JYUGRFZC9xN1FJN011b3lCRzhyQXp4K0hZbTFJTFNtNjdWb2NJclowbXl3?=
- =?utf-8?B?NXZZVkUranl3UTM1TEprQ3Y5UjZQVnEvNmRnK21hOThsTzAzSFFaT0F1bXpo?=
- =?utf-8?B?QldWcFdTZmF1TFlIcVVmelZoeWtlaGF1d21qZTJzWkJTVy9RNW1DQzlWaGJk?=
- =?utf-8?B?VC9RK2ZlMGhSb1hHSHg5WitRNk5MUzZhdE9LcUljUmE0MlNuaUNOakZtQW1j?=
- =?utf-8?B?VWpIcEVSUkR3bGphdkJ3WkpxZXl3b3R3eTF3M2VlWHMzVS9ROEJhTmZLdzdl?=
- =?utf-8?B?RDNBRllRWm9EL2hsSmFZTHFCM2FnRlV6Y3VuenJDSTJYWDQwTkU1TFpqbkl1?=
- =?utf-8?B?YlY3T003bHlwMUVjTWdremRVeDJRUXd3TlVFZjg4UXRObXVpd01yZ01wWi83?=
- =?utf-8?B?UEt3cytDWTVzQlZuTURrbjRibGFzb0RRSW5jbXIwWWxJRHVYcGFkN2poOTBa?=
- =?utf-8?B?YnJTZmMzU0dWQzVoRkZmdW9kekpCcU9sNWRLQVI5SkVhN3FGU3M0VEJyYU5P?=
- =?utf-8?B?Y3ZmT0R0NnB3UE9xQkp2Z0lERUs3WDJZYldqRVl6OGFBdS9kZFl0NUpVY0tY?=
- =?utf-8?B?ZmFWU0pDUnhyWG9WQVZHWWJUMVNnRnF4VXVFVC9nNTJkZ2U5aWtra3pEVWk0?=
- =?utf-8?B?RGVvZjRiM2duVFAyem1LWHJEUm5YRVhBRjVucEZnc1dISDNYS3o2ZDNJVXF4?=
- =?utf-8?B?V0J6WURyYUN6RzFEMkdJK0RMVlg1aGN2d1BFWXVWdWYvTFVPb1lzclgxT2x6?=
- =?utf-8?B?bCtXaWcwSEdXVGlpYnBMamp3Z01nN3hmdzdEZWZ4Sk8yTkc4V1JhQk5zRzAx?=
- =?utf-8?B?Q3E2Tzl5SUpoVnNSMTNINEFyU1N6M3daeTFlYjZnNkUxWEg0RkpmUE1qTk9W?=
- =?utf-8?B?c21yRzFQQ2xjWlBvMUcxTnBwRWZEZDNKdGprQUJvcUd4UGdPczlGdmQzV0JC?=
- =?utf-8?B?UWt3ZnRISUV6NlZLcFkwZlR2Zm9zbS9TRTRWVDBsV08rcVhBTHd6T2M3N1gw?=
- =?utf-8?B?aGlOUTVKT3RINGZlcVZiVjNaMWtPNEZuMXUrVy91UmdOSi9OTFhUd3lHVGNj?=
- =?utf-8?B?MWEvZWIvZjN1SitKNWJVM1k0ay9MNksrWFZDNk1SLzlPTEtuUVBtTkNOTU8v?=
- =?utf-8?B?N0tHazFlSC9TS1h4YUhya09QOVVQTlJpMWlPN0V1aUp6YlVrekVEWitzbWJ6?=
- =?utf-8?B?TjY5czZIZUduRXlWYjh0WFduOEZ3TzVDZ21HTDVDdU1vS1I5VzUvTTFOQU15?=
- =?utf-8?B?YWZGTlJTSWNwa09JSW9sWk9UYzJFTndBT1BZL0VjZmxwRUFhUWNSclo4S09u?=
- =?utf-8?B?TFMzank0Z3ZGMS91QTNHTHpoZEpKbzF1bUVSRDlyNnBLejR1RDRvZFMvOGNF?=
- =?utf-8?B?WVZKZlJxOWo2QWM2WXU3V1ljZThoRno3RGcrYzBjYTN5VjZFcSsvT2tDMHV1?=
- =?utf-8?B?TkhzSTdBL3RuQVZDRXlNUEJkT2pNVENGVG5HdTRLbDFwcUpSUWJOUjM0bVlB?=
- =?utf-8?B?Q2V5YkhGTWgyL3lQd3d0Y2RvbHZrTiszRUZCMGtvOUk3S2xvQXd0V0x3am1J?=
- =?utf-8?B?SGUxbHhYNkRuZFFVSWN4ditZajRMa0lkRU9NSmR0bnVkd0ZFdWlJOXMzdlVs?=
- =?utf-8?B?NnR3cTlwT0tXUndLc1dPK0YrbGJuU2c4Nmg1SHpaZE5vNFBEeXhhWFoyNDFT?=
- =?utf-8?B?RUhoYklpT2dQMm1JaDNHR21QbFR1ck1FWE9ma0wxd09FNk83SU9IQjFXRzRO?=
- =?utf-8?B?SUsvVG90d1BwQnBoRDA4K3QvM0twWnk1eHd6WWowZGU1a1ZnQWMrWi9VUFFj?=
- =?utf-8?B?aUZiL1BYdjg2YWNnc3Vib3QwRDJ0VmlxeWZuZEhHV0t2NUNINmRRMWdndDRZ?=
- =?utf-8?B?ZGFGa2dkb01QMUhoaElPd1gvcS9SZDNqV0tlMGlSTWFpSGk1K2VBeVFNTWxT?=
- =?utf-8?B?QmRGQkdkVFc1M2RvaUdCakpQMUMwKzhyaFF3ajM0WFhsZzdwL3B0NnFBSk13?=
- =?utf-8?B?QzNMVUhpTW9udm8xUEhYbkpiVnlSUnFkWTNkWTF3YWl6MlVGdTNHTVBLZ0lW?=
- =?utf-8?B?UU9veGpxMmVtd29iWFBJUkU5aEc4N2NZTkUvcVRwSW9XNGh6d0xmcmRRMzJ4?=
- =?utf-8?B?YUd5b3ZCWXZtb3VKR1M0d0ZWZ0NZbzRxdXlQNUUvOHFkT0s2QnMvM05ETjFq?=
- =?utf-8?B?R2dCMXBoZUxrQW5IOHJCOGM4aFN1dVRINUQreUhqQURnQVpnQzZheDVzUnZy?=
- =?utf-8?B?bm9Wem9wK3E0MVdFbnF4V3JYZkdZaU1UWVJGdXNFV2tKcDBFUEdaNlhEQjlO?=
- =?utf-8?B?Q2lyUHdXRk9YdDF1dXBmNFBCb2FFd2wydzhEcmdZTi9vL3BkN3FkZz09?=
-X-Exchange-RoutingPolicyChecked: PP7k7jMJk0VGwlt80wPJqnqp3Qn1V+ICYUekSk/MwrIIvAs8Ec2QLyDsYvzTbbWpXy3Qnr4ZDO8y8ctaVGx8QIrSpoxJZ1NwEYI2UV8Fj3g3cV/cVUGTcbVKuTcPXL1hNoY1ioMM9APjPbZyqmu2Spwj0bXrDvW7fDtk7JkBEX24+H1D6EBGpkqaLjO68vtZ8w7E9D5gDxzfAao4hxwODFpHjHBzwZeKZLNRAkrJW3UEtY4FcO/WCUVWmPTXSJp17FhUTKPFf7ls5/dJx0YTGWZ+qh6gystJrsXnOvTPCHvGp/Mt6E8IO5w9nmZCXL6kUvccl00Qt763wyaX1QzvDA==
-X-MS-Exchange-CrossTenant-Network-Message-Id: f9c85637-e1be-4cf5-fd71-08de80553c85
-X-MS-Exchange-CrossTenant-AuthSource: DS0PR11MB7925.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 12 Mar 2026 16:34:31.3179
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: A5j91ZwbfuMPFiTZ2st6IXUAZID4krNNL2ToJgzCZG2L2fvZk2DB3iUZ42lyPXiY3n1kKslnAgVVIswwScfsQr14ACrH5LpzmW+ejklLbts=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA3PR11MB9086
-X-OriginatorOrg: intel.com
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Disposition: inline
+In-Reply-To: <abHZdOKyLmmmHADz@google.com>
 
-On 3/11/2026 12:01 PM, Paolo Bonzini wrote:
-> 
->   On the other hand, the extra 16 regs[] 
-> entries would be more or less unused, the ugly switch statements 
-> wouldn't go away.  In other words, most of your remarks to Changseok's 
-> patches would remain...
+On Wed, Mar 11, 2026 at 09:07:00PM +0000, Pranjal Shrivastava wrote:
+>On Tue, Feb 03, 2026 at 10:09:35PM +0000, Samiullah Khawaja wrote:
+>> Add liveupdate FLB for IOMMU state preservation. Use KHO preserve memory
+>> alloc/free helper functions to allocate memory for the IOMMU LU FLB
+>> object and the serialization structs for device, domain and iommu.
+>>
+>> During retrieve, walk through the preserved objs nodes and restore each
+>> folio. Also recreate the FLB obj.
+>>
+>> Signed-off-by: Samiullah Khawaja <skhawaja@google.com>
+>> ---
+>>  drivers/iommu/Kconfig         |  11 +++
+>>  drivers/iommu/Makefile        |   1 +
+>>  drivers/iommu/liveupdate.c    | 177 ++++++++++++++++++++++++++++++++++
+>>  include/linux/iommu-lu.h      |  17 ++++
+>>  include/linux/kho/abi/iommu.h | 119 +++++++++++++++++++++++
+>>  5 files changed, 325 insertions(+)
+>>  create mode 100644 drivers/iommu/liveupdate.c
+>>  create mode 100644 include/linux/iommu-lu.h
+>>  create mode 100644 include/linux/kho/abi/iommu.h
+>>
+>> diff --git a/drivers/iommu/Kconfig b/drivers/iommu/Kconfig
+>> index f86262b11416..fdcfbedee5ed 100644
+>> --- a/drivers/iommu/Kconfig
+>> +++ b/drivers/iommu/Kconfig
+>> @@ -11,6 +11,17 @@ config IOMMUFD_DRIVER
+>>  	bool
+>>  	default n
+>>
+>> +config IOMMU_LIVEUPDATE
+>> +	bool "IOMMU live update state preservation support"
+>> +	depends on LIVEUPDATE && IOMMUFD
+>> +	help
+>> +	  Enable support for preserving IOMMU state across a kexec live update.
+>> +
+>> +	  This allows devices managed by iommufd to maintain their DMA mappings
+>> +	  during kexec base kernel update.
+>> +
+>> +	  If unsure, say N.
+>> +
+>
+>I'm wondering if this should be under the if IOMMU_SUPPORT below? I
+>believe this was added here because IOMMUFD isn't under IOMMU_SUPPORT,
+>but it wouldn't make sense to "preserve" IOMMU across a liveupdate if
+>IOMMU_SUPPORT is disabled? Should we probably be move it inside the
+>if IOMMU_SUPPORT block for better organization, or at least have a depends
+>on IOMMU_SUPPORT added to it? The IOMMU_LUO still depends on the
+>IOMMU_SUPPORT infrastructure to actually function.. as we add calls
+>within core functions like dev_iommu_get etc.
 
-I think so...
+Agreed. I will move it under IOMMU_SUPPORT and sort out any other
+dependencies.
+>
+>>  menuconfig IOMMU_SUPPORT
+>>  	bool "IOMMU Hardware Support"
+>>  	depends on MMU
+>> diff --git a/drivers/iommu/Makefile b/drivers/iommu/Makefile
+>> index 0275821f4ef9..b3715c5a6b97 100644
+>> --- a/drivers/iommu/Makefile
+>> +++ b/drivers/iommu/Makefile
+>> @@ -15,6 +15,7 @@ obj-$(CONFIG_IOMMU_IO_PGTABLE_ARMV7S) += io-pgtable-arm-v7s.o
+>>  obj-$(CONFIG_IOMMU_IO_PGTABLE_LPAE) += io-pgtable-arm.o
+>>  obj-$(CONFIG_IOMMU_IO_PGTABLE_LPAE_KUNIT_TEST) += io-pgtable-arm-selftests.o
+>>  obj-$(CONFIG_IOMMU_IO_PGTABLE_DART) += io-pgtable-dart.o
+>> +obj-$(CONFIG_IOMMU_LIVEUPDATE) += liveupdate.o
+>>  obj-$(CONFIG_IOMMU_IOVA) += iova.o
+>>  obj-$(CONFIG_OF_IOMMU)	+= of_iommu.o
+>>  obj-$(CONFIG_MSM_IOMMU) += msm_iommu.o
+>> diff --git a/drivers/iommu/liveupdate.c b/drivers/iommu/liveupdate.c
+>> new file mode 100644
+>> index 000000000000..6189ba32ff2c
+>> --- /dev/null
+>> +++ b/drivers/iommu/liveupdate.c
+>> @@ -0,0 +1,177 @@
+>> +// SPDX-License-Identifier: GPL-2.0-only
+>> +
+>> +/*
+>> + * Copyright (C) 2025, Google LLC
+>
+>Minor nit: 2026 OR 2025-26, here and everywhere else
 
-If the host kernel ever starts using EGPRs, the state would need to be 
-switched in the entry code. At that point, they would likely be saved 
-somewhere other than XSAVE buffer. In turn, the guest state would also 
-need to be saved to regs[] on VM exit.
+Will fix in next revision.
+>
+>> + * Author: Samiullah Khawaja <skhawaja@google.com>
+>> + */
+>> +
+>> +#define pr_fmt(fmt)    "iommu: liveupdate: " fmt
+>> +
+>> +#include <linux/kexec_handover.h>
+>> +#include <linux/liveupdate.h>
+>> +#include <linux/iommu-lu.h>
+>> +#include <linux/iommu.h>
+>> +#include <linux/errno.h>
+>> +
+>> +static void iommu_liveupdate_restore_objs(u64 next)
+>> +{
+>> +	struct iommu_objs_ser *objs;
+>> +
+>> +	while (next) {
+>> +		BUG_ON(!kho_restore_folio(next));
+>
+>Same thing about BUG_ON [1] as mentioned below in the
+>iommu_liveupdate_flb_retrieve() function, can we consider returning an
+>error which can be checked in the caller and the error can be bubbled up
+>as -ENODATA?
 
-However, that is sort of what-if scenarios at best. The host kernel 
-still manages EGPR context switching through XSAVE. Saving EGPRs into 
-regs[] would introduce an oddity to synchronize between two buffers: 
-regs[] and gfpu->fpstate, which looks like unnecessary complexity.
+Please see the explanation below on the BUG_ON.
+>
+>> +		objs = __va(next);
+>> +		next = objs->next_objs;
+>> +	}
+>> +}
+>> +
+>> +static void iommu_liveupdate_free_objs(u64 next, bool incoming)
+>> +{
+>> +	struct iommu_objs_ser *objs;
+>> +
+>> +	while (next) {
+>> +		objs = __va(next);
+>> +		next = objs->next_objs;
+>> +
+>> +		if (!incoming)
+>> +			kho_unpreserve_free(objs);
+>> +		else
+>> +			folio_put(virt_to_folio(objs));
+>
+>Interesting! kho_restore_folio already adjusts the refcount via
+>adjust_managed_page_count which is why folio_put() is needed for a valid
+>refcount. Sweet :)
+>
+>> +	}
+>> +}
+>> +
+>> +static void iommu_liveupdate_flb_free(struct iommu_lu_flb_obj *obj)
+>> +{
+>> +	if (obj->iommu_domains)
+>> +		iommu_liveupdate_free_objs(obj->ser->iommu_domains_phys, false);
+>> +
+>> +	if (obj->devices)
+>> +		iommu_liveupdate_free_objs(obj->ser->devices_phys, false);
+>> +
+>> +	if (obj->iommus)
+>> +		iommu_liveupdate_free_objs(obj->ser->iommus_phys, false);
+>> +
+>> +	kho_unpreserve_free(obj->ser);
+>> +	kfree(obj);
+>> +}
+>> +
+>> +static int iommu_liveupdate_flb_preserve(struct liveupdate_flb_op_args *argp)
+>> +{
+>> +	struct iommu_lu_flb_obj *obj;
+>> +	struct iommu_lu_flb_ser *ser;
+>> +	void *mem;
+>> +
+>> +	obj = kzalloc(sizeof(*obj), GFP_KERNEL);
+>
+>I know this is obvious but let's add a comment that obj just exists in
+>the "current" kernel whereas mem is supposed to survive the KHO..
 
-So while ugly, the switch statements are a bit of a trade-off here. Also 
-bits 16-31 in the extended regs_avail will remain unset with APX=y.
+Agreed. Will add in the next revision.
+>
+>> +	if (!obj)
+>> +		return -ENOMEM;
+>> +
+>> +	mutex_init(&obj->lock);
+>> +	mem = kho_alloc_preserve(sizeof(*ser));
+>> +	if (IS_ERR(mem))
+>> +		goto err_free;
+>> +
+>> +	ser = mem;
+>> +	obj->ser = ser;
+>> +
+>> +	mem = kho_alloc_preserve(PAGE_SIZE);
+>> +	if (IS_ERR(mem))
+>> +		goto err_free;
+>> +
+>> +	obj->iommu_domains = mem;
+>> +	ser->iommu_domains_phys = virt_to_phys(obj->iommu_domains);
+>> +
+>> +	mem = kho_alloc_preserve(PAGE_SIZE);
+>> +	if (IS_ERR(mem))
+>> +		goto err_free;
+>> +
+>> +	obj->devices = mem;
+>> +	ser->devices_phys = virt_to_phys(obj->devices);
+>> +
+>> +	mem = kho_alloc_preserve(PAGE_SIZE);
+>> +	if (IS_ERR(mem))
+>> +		goto err_free;
+>> +
+>> +	obj->iommus = mem;
+>> +	ser->iommus_phys = virt_to_phys(obj->iommus);
+>> +
+>> +	argp->obj = obj;
+>> +	argp->data = virt_to_phys(ser);
+>> +	return 0;
+>> +
+>> +err_free:
+>> +	iommu_liveupdate_flb_free(obj);
+>> +	return PTR_ERR(mem);
+>> +}
+>> +
+>> +static void iommu_liveupdate_flb_unpreserve(struct liveupdate_flb_op_args *argp)
+>> +{
+>> +	iommu_liveupdate_flb_free(argp->obj);
+>> +}
+>> +
+>> +static void iommu_liveupdate_flb_finish(struct liveupdate_flb_op_args *argp)
+>> +{
+>> +	struct iommu_lu_flb_obj *obj = argp->obj;
+>> +
+>> +	if (obj->iommu_domains)
+>> +		iommu_liveupdate_free_objs(obj->ser->iommu_domains_phys, true);
+>> +
+>> +	if (obj->devices)
+>> +		iommu_liveupdate_free_objs(obj->ser->devices_phys, true);
+>> +
+>> +	if (obj->iommus)
+>> +		iommu_liveupdate_free_objs(obj->ser->iommus_phys, true);
+>> +
+>> +	folio_put(virt_to_folio(obj->ser));
+>> +	kfree(obj);
+>> +}
+>> +
+>> +static int iommu_liveupdate_flb_retrieve(struct liveupdate_flb_op_args *argp)
+>> +{
+>> +	struct iommu_lu_flb_obj *obj;
+>> +	struct iommu_lu_flb_ser *ser;
+>> +
+>> +	obj = kzalloc(sizeof(*obj), GFP_ATOMIC);
+>
+>Why does this have to be GFP_ATOMIC? IIUC, the retrieve path is
+>triggered by a userspace IOCTL in the new kernel. The system should be
+>able to sleep here? (unless we have a use-case to call this in IRQ-ctx?)
+>AFAICT, we call this under mutexes already, hence there's no situation
+>where we could sleep in a spinlock context?
+>
+>GFP_ATOMIC creates a point of failure if the system is under memory
+>pressure. I believe we should be allowed to sleep for this allocation
+>because the "preserved" mappings still allow DMAs to go on and we're in
+>no hurry to restore the IOMMU state? I believe this could be GFP_KERNEL.
+>
+>> +	if (!obj)
+>> +		return -ENOMEM;
+>> +
+>> +	mutex_init(&obj->lock);
+>> +	BUG_ON(!kho_restore_folio(argp->data));
+>
+>The use of BUG_ON in new code is heavily discouraged [1].
+>If KHO can't restore the folio for whatever reason, we can be treat it
+>as a corruption of the handover data. I believe crashing the kernel for
+>it would be an overkill?
 
+The FLB restore is done during early boot and this has been discussed in
+past in KHO/LUO and IOMMU context also. But basically if this fails, the
+restoration of IOMMU state cannot be done, preserved devices would
+already have corrupted memory due to ongoing DMA as we didn't disable
+translation in the previous kernel. So logging an error and a BUG_ON at
+this point would be most appropriate.
+
+Please see discussion here on this topic:
+https://lore.kernel.org/all/20251118153631.GB90703@nvidia.com/
+>
+>Can we consider returning a graceful failure like -ENODATA or something?
+>BUG_ON would instantly cause a kernel panic without providing no
+>opportunity for the system to log the failure or attempt a graceful
+>teardown of the 'preserved' mapping.
+
+I will update this by adding a comment and also log an error.
+>
+>> +	ser = phys_to_virt(argp->data);
+>> +	obj->ser = ser;
+>> +
+>> +	iommu_liveupdate_restore_objs(ser->iommu_domains_phys);
+>> +	obj->iommu_domains = phys_to_virt(ser->iommu_domains_phys);
+>> +
+>> +	iommu_liveupdate_restore_objs(ser->devices_phys);
+>> +	obj->devices = phys_to_virt(ser->devices_phys);
+>> +
+>> +	iommu_liveupdate_restore_objs(ser->iommus_phys);
+>> +	obj->iommus = phys_to_virt(ser->iommus_phys);
+>> +
+>> +	argp->obj = obj;
+>> +
+>> +	return 0;
+>> +}
+>> +
+>> +static struct liveupdate_flb_ops iommu_flb_ops = {
+>> +	.preserve = iommu_liveupdate_flb_preserve,
+>> +	.unpreserve = iommu_liveupdate_flb_unpreserve,
+>> +	.finish = iommu_liveupdate_flb_finish,
+>> +	.retrieve = iommu_liveupdate_flb_retrieve,
+>> +};
+>> +
+>> +static struct liveupdate_flb iommu_flb = {
+>> +	.compatible = IOMMU_LUO_FLB_COMPATIBLE,
+>> +	.ops = &iommu_flb_ops,
+>> +};
+>> +
+>> +int iommu_liveupdate_register_flb(struct liveupdate_file_handler *handler)
+>> +{
+>> +	return liveupdate_register_flb(handler, &iommu_flb);
+>> +}
+>> +EXPORT_SYMBOL(iommu_liveupdate_register_flb);
+>> +
+>> +int iommu_liveupdate_unregister_flb(struct liveupdate_file_handler *handler)
+>> +{
+>> +	return liveupdate_unregister_flb(handler, &iommu_flb);
+>> +}
+>> +EXPORT_SYMBOL(iommu_liveupdate_unregister_flb);
+>> diff --git a/include/linux/iommu-lu.h b/include/linux/iommu-lu.h
+>> new file mode 100644
+>> index 000000000000..59095d2f1bb2
+>> --- /dev/null
+>> +++ b/include/linux/iommu-lu.h
+>> @@ -0,0 +1,17 @@
+>> +/* SPDX-License-Identifier: GPL-2.0 */
+>> +
+>> +/*
+>> + * Copyright (C) 2025, Google LLC
+>> + * Author: Samiullah Khawaja <skhawaja@google.com>
+>> + */
+>> +
+>> +#ifndef _LINUX_IOMMU_LU_H
+>> +#define _LINUX_IOMMU_LU_H
+>> +
+>> +#include <linux/liveupdate.h>
+>> +#include <linux/kho/abi/iommu.h>
+>> +
+>> +int iommu_liveupdate_register_flb(struct liveupdate_file_handler *handler);
+>> +int iommu_liveupdate_unregister_flb(struct liveupdate_file_handler *handler);
+>> +
+>> +#endif /* _LINUX_IOMMU_LU_H */
+>> diff --git a/include/linux/kho/abi/iommu.h b/include/linux/kho/abi/iommu.h
+>> new file mode 100644
+>> index 000000000000..8e1c05cfe7bb
+>> --- /dev/null
+>> +++ b/include/linux/kho/abi/iommu.h
+>> @@ -0,0 +1,119 @@
+>> +/* SPDX-License-Identifier: GPL-2.0 */
+>> +
+>> +/*
+>> + * Copyright (C) 2025, Google LLC
+>> + * Author: Samiullah Khawaja <skhawaja@google.com>
+>> + */
+>> +
+>> +#ifndef _LINUX_KHO_ABI_IOMMU_H
+>> +#define _LINUX_KHO_ABI_IOMMU_H
+>> +
+>> +#include <linux/mutex_types.h>
+>> +#include <linux/compiler.h>
+>> +#include <linux/types.h>
+>> +
+>> +/**
+>> + * DOC: IOMMU File-Lifecycle Bound (FLB) Live Update ABI
+>> + *
+>> + * This header defines the ABI for preserving IOMMU state across kexec using
+>> + * Live Update File-Lifecycle Bound (FLB) data.
+>> + *
+>> + * This interface is a contract. Any modification to any of the serialization
+>> + * structs defined here constitutes a breaking change. Such changes require
+>> + * incrementing the version number in the IOMMU_LUO_FLB_COMPATIBLE string.
+>> + */
+>> +
+>> +#define IOMMU_LUO_FLB_COMPATIBLE "iommu-v1"
+>> +
+>
+>Let's call this "iommu-liveupdate-v1" or "iommu-lu-v1" instead?
+
+Agreed.
+>
+>> +enum iommu_lu_type {
+>> +	IOMMU_INVALID,
+>> +	IOMMU_INTEL,
+>> +};
+>> +
+>> +struct iommu_obj_ser {
+>> +	u32 idx;
+>> +	u32 ref_count;
+>> +	u32 deleted:1;
+>> +	u32 incoming:1;
+>> +} __packed;
+>> +
+>> +struct iommu_domain_ser {
+>> +	struct iommu_obj_ser obj;
+>> +	u64 top_table;
+>> +	u64 top_level;
+>> +	struct iommu_domain *restored_domain;
+>> +} __packed;
+>> +
+>> +struct device_domain_iommu_ser {
+>> +	u32 did;
+>> +	u64 domain_phys;
+>> +	u64 iommu_phys;
+>> +} __packed;
+>> +
+>> +struct device_ser {
+>> +	struct iommu_obj_ser obj;
+>> +	u64 token;
+>> +	u32 devid;
+>> +	u32 pci_domain;
+>> +	struct device_domain_iommu_ser domain_iommu_ser;
+>> +	enum iommu_lu_type type;
+>> +} __packed;
+>> +
+>> +struct iommu_intel_ser {
+>> +	u64 phys_addr;
+>> +	u64 root_table;
+>> +} __packed;
+>> +
+>> +struct iommu_ser {
+>> +	struct iommu_obj_ser obj;
+>> +	u64 token;
+>> +	enum iommu_lu_type type;
+>> +	union {
+>> +		struct iommu_intel_ser intel;
+>> +	};
+>> +} __packed;
+>> +
+>> +struct iommu_objs_ser {
+>> +	u64 next_objs;
+>> +	u64 nr_objs;
+>> +} __packed;
+>> +
+>> +struct iommus_ser {
+>> +	struct iommu_objs_ser objs;
+>> +	struct iommu_ser iommus[];
+>> +} __packed;
+>> +
+>> +struct iommu_domains_ser {
+>> +	struct iommu_objs_ser objs;
+>> +	struct iommu_domain_ser iommu_domains[];
+>> +} __packed;
+>> +
+>> +struct devices_ser {
+>> +	struct iommu_objs_ser objs;
+>> +	struct device_ser devices[];
+>> +} __packed;
+>> +
+>> +#define MAX_IOMMU_SERS ((PAGE_SIZE - sizeof(struct iommus_ser)) / sizeof(struct iommu_ser))
+>> +#define MAX_IOMMU_DOMAIN_SERS \
+>> +		((PAGE_SIZE - sizeof(struct iommu_domains_ser)) / sizeof(struct iommu_domain_ser))
+>> +#define MAX_DEVICE_SERS ((PAGE_SIZE - sizeof(struct devices_ser)) / sizeof(struct device_ser))
+>> +
+>> +struct iommu_lu_flb_ser {
+>> +	u64 iommus_phys;
+>> +	u64 nr_iommus;
+>> +	u64 iommu_domains_phys;
+>> +	u64 nr_domains;
+>> +	u64 devices_phys;
+>> +	u64 nr_devices;
+>> +} __packed;
+>> +
+>> +struct iommu_lu_flb_obj {
+>> +	struct mutex lock;
+>> +	struct iommu_lu_flb_ser *ser;
+>> +
+>> +	struct iommu_domains_ser *iommu_domains;
+>> +	struct iommus_ser *iommus;
+>> +	struct devices_ser *devices;
+>> +} __packed;
+>> +
+>
+>Please let's add some comments describing the structs & their members
+>here like we have in memfd [2]. This should be descriptive for the user.
+>For example:
+
+I agree. Will add comments for these and others.
+>
+>+/**
+>+ * struct iommu_lu_flb_ser - Main serialization header for IOMMU state.
+>+ * @iommus_phys:        Physical address of the first page in the IOMMU unit chain.
+>+ * @nr_iommus:          Total number of hardware IOMMU units preserved.
+>+ * @iommu_domains_phys: [...]
+>+ * @nr_domains:         [...]
+>+ * @devices_phys:       [...]
+>+ * @nr_devices:         [...]
+>+ *
+>+ * This structure acts as the root of the IOMMU state tree. It is hitching a ride
+>+ * on the iommufd file descriptor's preservation flow.
+>+ */
+>+struct iommu_lu_flb_ser {
+>+	u64 iommus_phys;
+>+	u64 nr_iommus;
+>+	u64 iommu_domains_phys;
+>+	u64 nr_domains;
+>+	u64 devices_phys;
+>+	u64 nr_devices;
+>+} __packed;
+>
+>> +#endif /* _LINUX_KHO_ABI_IOMMU_H */
+>
+>Thanks,
+>Praan
+>
+>[1] https://docs.kernel.org/process/coding-style.html#use-warn-rather-than-bug
+>[2] https://elixir.bootlin.com/linux/v7.0-rc3/source/include/linux/kho/abi/memfd.h
+>
+
+Thanks for the review.
+
+Sami
