@@ -1,119 +1,124 @@
-Received: from cstnet.cn (smtp37.cstnet.cn [159.226.251.37])
-	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CDDD11A0BE0;
-	Thu, 12 Mar 2026 01:21:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.37
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D94BD347BD7
+	for <kvm@vger.kernel.org>; Thu, 12 Mar 2026 01:27:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773278476; cv=none; b=m4RNGlZHg2MaAIOoIyJfjMrFO2a8n9TJjFz3wt7BxU+ZnKLNGkcYOs9GYwxY5jiysJiW2AAgQu9GxVwANgnUwNS76Umt1ehuKPWCFAOTsCCDmDfQwc5BgQwLeinX7gsbo93oJGlIlvlY98EKzEZl1/lZriXO2WQ4CgdxcorXCXM=
+	t=1773278854; cv=none; b=GIXlIltnanzirBdgxK2quYhb4H4lTG28VvSpkKn9lebqUdZBmnwe5ke4cXACyJ5JDyymoh7+RKZ8L/9rq+xHRFT+p4NGphjcFvp8b4GefUglIubLClXG6u4OHtdzLutNCElCrGnbwm+P2Sw8bzymg38VFQ/0+EKMZbYXaa9jViM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773278476; c=relaxed/simple;
-	bh=oh1+8b7GuUmvbpFIKFecxxZDxb8D+SH1xP7FVacf9Qk=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:Content-Type:
-	 MIME-Version:Message-ID; b=LOgwbodYB58fpkyozd48GEOWd8vcQ2grM98HcwEX9JD2XY8cLJ9PP6NA3jLy2TPPgqnx7642jdM9n7vyxYt5ViAAHMR8VeogIitvCgTeDT/lCr0O62U/BC//Au++Rpfo8pCA2IP99ngKdAPbhg2JB0vgbozTu9yv6eUN2Ii/7ZQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.37
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iscas.ac.cn
-Received: from xujiakai2025$iscas.ac.cn ( [210.73.43.101] ) by
- ajax-webmail-APP-12 (Coremail) ; Thu, 12 Mar 2026 09:20:45 +0800
- (GMT+08:00)
-Date: Thu, 12 Mar 2026 09:20:45 +0800 (GMT+08:00)
-X-CM-HeaderCharset: UTF-8
-From: "Jiakai Xu" <xujiakai2025@iscas.ac.cn>
-To: "Andrew Jones" <andrew.jones@oss.qualcomm.com>
-Cc: kvm-riscv@lists.infradead.org, kvm@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org, 
-	linux-riscv@lists.infradead.org, "Albert Ou" <aou@eecs.berkeley.edu>, 
-	"Alexandre Ghiti" <alex@ghiti.fr>, 
-	"Andrew Jones" <ajones@ventanamicro.com>, 
-	"Anup Patel" <anup@brainfault.org>, 
-	"Atish Patra" <atish.patra@linux.dev>, 
-	"Palmer Dabbelt" <palmer@dabbelt.com>, 
-	"Paolo Bonzini" <pbonzini@redhat.com>, 
-	"Paul Walmsley" <pjw@kernel.org>, "Shuah Khan" <shuah@kernel.org>, 
-	"Jiakai Xu" <jiakaiPeanut@gmail.com>
-Subject: Re: Re: [PATCH v3 1/2] RISC-V: KVM: Fix array out-of-bounds in
- pmu_ctr_read() and pmu_fw_ctr_read_hi()
-X-Priority: 3
-X-Mailer: Coremail Webmail Server Version 2024.1-cmXT5 build
- 20240627(e6c6db66) Copyright (c) 2002-2026 www.mailtech.cn cnic.cn
-In-Reply-To: <2apicvahmomu57i7gjd2cgc5cakq4pxsbphz5xnl4cr2sqvp72@hqud4u6bo53b>
-References: <20260310055557.835531-1-xujiakai2025@iscas.ac.cn>
- <20260310055557.835531-2-xujiakai2025@iscas.ac.cn>
- <2apicvahmomu57i7gjd2cgc5cakq4pxsbphz5xnl4cr2sqvp72@hqud4u6bo53b>
-Content-Transfer-Encoding: base64
-Content-Type: text/plain; charset=UTF-8
+	s=arc-20240116; t=1773278854; c=relaxed/simple;
+	bh=Xgw41s1SIiF3bb8KykFH/x/9dNInqT1j5K/FxSyxsVo=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=Fx9X6SCjxp0kAjDRzSrir2PD8Z6z+0bNowPqPHUlV7OQBbuA66yoObvEUa81PzOhuRmEFlidXD1KLuzoqteK1ypNoA4GJbO1QMqV81PHZ34ytZyDHURyx7IfcV6qmzAYnn8lrT7oCjuXvJsOi/RNeWjEoYdS/MhhYylkHscAItQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NWSJ1VS1; arc=none smtp.client-ip=10.30.226.201
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NWSJ1VS1"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9C9FAC19421
+	for <kvm@vger.kernel.org>; Thu, 12 Mar 2026 01:27:34 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1773278854;
+	bh=Xgw41s1SIiF3bb8KykFH/x/9dNInqT1j5K/FxSyxsVo=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=NWSJ1VS1idXa6DEcs93gwDIfyu7R7tuPmo4FxWqHDzVJrIlYkFUxq3+8pMgh6EZqb
+	 o6+sdbKifZDTHaQJJq6Kwnl8AO3XaKj712h6Uaysckny/7zO4Upzdzk+A+YRvoCmz8
+	 wvWQUzlLC3J9HTzN4owgtMrBpSr14NtlPc1YJFYNFspEeQtWtfEJ+TOwDyTawKlcCl
+	 fVE/DF8eqPvWglvw/G2B7vEMMTmwpcg6sQqsSQdkCMoTyznFdK9rLLGLNsfW1pzhKH
+	 xZ2cYO8gTJta1nHspoIie8iMTlam/jVgAF8hv2cZbLJRQJYk1HufI9v+7hjFLwVilp
+	 q9G7BjsbJXwCg==
+Received: by mail-ej1-f54.google.com with SMTP id a640c23a62f3a-b9358dd7f79so67078266b.1
+        for <kvm@vger.kernel.org>; Wed, 11 Mar 2026 18:27:34 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCUB7OXGuEViwZaI73ZocshsbM84nA5jQSKpRlxzunEmymTuEW1da2Efx1ln/hzlrf3de/8=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwE+EtIdD4K+3xUOEH48F2nln/fWCA61q8PPxoFI+NQZJ7V0nZz
+	t/e3VjNdSmY/23Dd/ZP4wz4kGd9VsyOgnXBD7TM0bGrL4zXr1jbkzOJmWwaxeWxxiQEL+oZU969
+	FzeXmKYI+kAZ/P6eq5z2E7F2jHvYpQZg=
+X-Received: by 2002:a17:907:3e98:b0:b88:5158:d106 with SMTP id
+ a640c23a62f3a-b972e5a02f5mr273308266b.52.1773278853411; Wed, 11 Mar 2026
+ 18:27:33 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <70069435.611f3.19cdfa1bfed.Coremail.xujiakai2025@iscas.ac.cn>
-X-Coremail-Locale: en_US
-X-CM-TRANSID:tgCowAC3wtLtFLJpJeEVAA--.7213W
-X-CM-SenderInfo: 50xmxthndljiysv6x2xfdvhtffof0/1tbiBg0ECWmx5lWRSAABs1
-X-Coremail-Antispam: 1Ur529EdanIXcx71UUUUU7IcSsGvfJ3iIAIbVAYjsxI4VW3Jw
-	CS07vEb4IE77IF4wCS07vE1I0E4x80FVAKz4kxMIAIbVAFxVCaYxvI4VCIwcAKzIAtYxBI
-	daVFxhVjvjDU=
+References: <20260306210900.1933788-2-yosry@kernel.org> <CALMp9eRWwPwUSyQmizy8i2tF1CVO4iLY6x0vX1OoPUiRdCm4NQ@mail.gmail.com>
+ <CAO9r8zOhaDeYWq_6TNdPGyEE323o_8xsWTozGdro9Oni8310kA@mail.gmail.com>
+ <CALMp9eScswzFak+PMOcaDXM-W+cXtkG7fQ=jadq__+5JeqYcTQ@mail.gmail.com>
+ <CAO9r8zOK5+xmkf3FsWRz2wHcUCN30GJ9kfZx-K7DAa1HNGhRVA@mail.gmail.com>
+ <aatyIPwz9ePKdzJx@google.com> <CAO9r8zMxk9yUiYoosnDygr_oeeRYHz3f7hWLm23c5Q0m-DXnWA@mail.gmail.com>
+ <CAO9r8zNHYswypRmHVT5Qn5hFU9-HU1t=Gs3qAh05xRNn5krPXQ@mail.gmail.com>
+ <abHTE5uyEZ4cW-fc@google.com> <CAO9r8zNxtSbHjp6EkQ+QbKavL1hn1WQXgQQ+d2=6AZkW9-mVXA@mail.gmail.com>
+ <abH0RdnM29Xyh_4G@google.com> <CAO9r8zOgMWCAHOHGeK-YYbEQ52s-J_OLsc5-KXVb9VNrkzDeBw@mail.gmail.com>
+In-Reply-To: <CAO9r8zOgMWCAHOHGeK-YYbEQ52s-J_OLsc5-KXVb9VNrkzDeBw@mail.gmail.com>
+From: Yosry Ahmed <yosry@kernel.org>
+Date: Wed, 11 Mar 2026 18:27:21 -0700
+X-Gmail-Original-Message-ID: <CAO9r8zN=yryp1F8tJDWKasAe8KO30tWH-A98Uy=EhFn8Lg6WcQ@mail.gmail.com>
+X-Gm-Features: AaiRm509wmM8BDEs3tNNOJ7DOWAt7hiSBoKezL4D8Y4jt8cJqI_p54z7YBSfxZ8
+Message-ID: <CAO9r8zN=yryp1F8tJDWKasAe8KO30tWH-A98Uy=EhFn8Lg6WcQ@mail.gmail.com>
+Subject: Re: [PATCH v2 1/6] KVM: SVM: Use maxphyaddr in emulator RAX check for VMRUN/VMLOAD/VMSAVE
+To: Sean Christopherson <seanjc@google.com>
+Cc: Jim Mattson <jmattson@google.com>, Paolo Bonzini <pbonzini@redhat.com>, kvm@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 
-SGkgZHJldywKClRoYW5rcyBmb3IgdGhlIHJldmlldyBhbmQgc3VnZ2VzdGlvbi4gCkknbGwgZml4
-IHRoZSBhbGlnbm1lbnQgYW5kIHNlbmQgdjQgc2hvcnRseS4KCkJlc3QsCkppYWthaQoKJnF1b3Q7
-QW5kcmV3IEpvbmVzJnF1b3Q7ICZsdDthbmRyZXcuam9uZXNAb3NzLnF1YWxjb21tLmNvbSZndDt3
-cm90ZToKPiBPbiBUdWUsIE1hciAxMCwgMjAyNiBhdCAwNTo1NTo1NkFNICswMDAwLCBKaWFrYWkg
-WHUgd3JvdGU6Cj4gPiBXaGVuIGEgZ3Vlc3QgaW52b2tlcyBTQklfRVhUX1BNVV9DT1VOVEVSX0ZX
-X1JFQUQgb3IKPiA+IFNCSV9FWFRfUE1VX0NPVU5URVJfRldfUkVBRF9ISSBvbiBhIGZpcm13YXJl
-IGNvdW50ZXIgdGhhdCBoYXMgbm90IGJlZW4KPiA+IGNvbmZpZ3VyZWQgdmlhIFNCSV9FWFRfUE1V
-X0NPVU5URVJfQ0ZHX01BVENILCB0aGUgcG1jLT5ldmVudF9pZHggcmVtYWlucwo+ID4gU0JJX1BN
-VV9FVkVOVF9JRFhfSU5WQUxJRCAoMHhGRkZGRkZGRikuIGdldF9ldmVudF9jb2RlKCkgZXh0cmFj
-dHMgdGhlCj4gPiBsb3dlciAxNiBiaXRzLCB5aWVsZGluZyAweEZGRkYgKDY1NTM1KSwgd2hpY2gg
-aXMgdGhlbiB1c2VkIHRvIGluZGV4IGludG8KPiA+IGt2cG11LT5md19ldmVudFtdLiBTaW5jZSBm
-d19ldmVudCBpcyBvbmx5IFJJU0NWX0tWTV9NQVhfRldfQ1RSUyAoMzIpCj4gPiBlbnRyaWVzLCB0
-aGlzIHRyaWdnZXJzIGFuIGFycmF5LWluZGV4LW91dC1vZi1ib3VuZHM6Cj4gPiAKPiA+ICAgVUJT
-QU46IGFycmF5LWluZGV4LW91dC1vZi1ib3VuZHMgaW4gYXJjaC9yaXNjdi9rdm0vdmNwdV9wbXUu
-YzoyNTU6MzcKPiA+ICAgaW5kZXggNjU1MzUgaXMgb3V0IG9mIHJhbmdlIGZvciB0eXBlICdrdm1f
-ZndfZXZlbnQgWzMyXScKPiA+IAo+ID4gQWRkIGEgY2hlY2sgZm9yIHRoZSBrbm93biB1bmNvbmZp
-Z3VyZWQgY2FzZSAoU0JJX1BNVV9FVkVOVF9JRFhfSU5WQUxJRCkKPiA+IGFuZCBhIFdBUk5fT05D
-RSBndWFyZCBmb3IgYW55IHVuZXhwZWN0ZWQgb3V0LW9mLWJvdW5kcyBldmVudCBjb2RlcywKPiA+
-IHJldHVybmluZyAtRUlOVkFMIGluIGJvdGggY2FzZXMuCj4gPiAKPiA+IEZpeGVzOiBiYWRjMzg2
-ODY5ZTJjICgiUklTQy1WOiBLVk06IFN1cHBvcnQgZmlybXdhcmUgZXZlbnRzIikKPiA+IEZpeGVz
-OiAwOGZiMDdkNmRjZjcxICgiUklTQy1WOiBLVk06IFN1cHBvcnQgNjQgYml0IGZpcm13YXJlIGNv
-dW50ZXJzIG9uIFJWMzIiKQo+ID4gU2lnbmVkLW9mZi1ieTogSmlha2FpIFh1IDx4dWppYWthaTIw
-MjVAaXNjYXMuYWMuY24+Cj4gPiBTaWduZWQtb2ZmLWJ5OiBKaWFrYWkgWHUgPGppYWthaVBlYW51
-dEBnbWFpbC5jb20+Cj4gPiAtLS0KPiA+IFYyIC0+IFYzOgo+ID4gLSBBZGRlZCBjaGVjayBmb3Ig
-U0JJX1BNVV9FVkVOVF9JRFhfSU5WQUxJRC4KPiA+IC0gQWRkZWQgV0FSTl9PTkNFIGZvciB1bmV4
-cGVjdGVkIG91dC1vZi1ib3VuZHMgZXZlbnQgY29kZXMuCj4gPiBWMSAtPiBWMjoKPiA+IC0gTWVy
-Z2VkIHRoZSBmaXhlcyBmb3IgcG11X2N0cl9yZWFkKCkgYW5kIHBtdV9md19jdHJfcmVhZF9oaSgp
-IGludG8gYSBzaW5nbGUKPiA+IGNvbW1pdC4KPiA+IC0gUmVtb3ZlZCB0aGUgcHJfd2Fybiwgc2lt
-cGx5IHJldHVybmluZyAtRUlOVkFMIGluc3RlYWQuCj4gPiAtLS0KPiA+ICBhcmNoL3Jpc2N2L2t2
-bS92Y3B1X3BtdS5jIHwgMTQgKysrKysrKysrKysrKysKPiA+ICAxIGZpbGUgY2hhbmdlZCwgMTQg
-aW5zZXJ0aW9ucygrKQo+ID4gCj4gPiBkaWZmIC0tZ2l0IGEvYXJjaC9yaXNjdi9rdm0vdmNwdV9w
-bXUuYyBiL2FyY2gvcmlzY3Yva3ZtL3ZjcHVfcG11LmMKPiA+IGluZGV4IGU4NzM0MzBlNTk2Yi4u
-Yzg3YTdiMDAzN2NmIDEwMDY0NAo+ID4gLS0tIGEvYXJjaC9yaXNjdi9rdm0vdmNwdV9wbXUuYwo+
-ID4gKysrIGIvYXJjaC9yaXNjdi9rdm0vdmNwdV9wbXUuYwo+ID4gQEAgLTIyNiw3ICsyMjYsMTQg
-QEAgc3RhdGljIGludCBwbXVfZndfY3RyX3JlYWRfaGkoc3RydWN0IGt2bV92Y3B1ICp2Y3B1LCB1
-bnNpZ25lZCBsb25nIGNpZHgsCj4gPiAgCWlmIChwbWMtPmNpbmZvLnR5cGUgIT0gU0JJX1BNVV9D
-VFJfVFlQRV9GVykKPiA+ICAJCXJldHVybiAtRUlOVkFMOwo+ID4gIAo+ID4gKwlpZiAocG1jLT5l
-dmVudF9pZHggPT0gU0JJX1BNVV9FVkVOVF9JRFhfSU5WQUxJRCkKPiA+ICsJCXJldHVybiAtRUlO
-VkFMOwo+ID4gKwo+ID4gIAlmZXZlbnRfY29kZSA9IGdldF9ldmVudF9jb2RlKHBtYy0+ZXZlbnRf
-aWR4KTsKPiA+ICsJaWYgKFdBUk5fT05DRShmZXZlbnRfY29kZSA+PSBTQklfUE1VX0ZXX01BWCwK
-PiA+ICsJCQkJICAiSW52YWxpZCBmaXJtd2FyZSBldmVudCBjb2RlOiAlZFxuIiwgZmV2ZW50X2Nv
-ZGUpKQo+IAo+IEFsaWduIHVuZGVyIHByZXZpb3VzIHBhcmFtZXRlciwgbm90IHRoZSA+PSBvcGVy
-YXRvcgo+IAo+ICBpZiAoV0FSTl9PTkNFKGZldmVudF9jb2RlID49IFNCSV9QTVVfRldfTUFYLAo+
-ICAgICAgIkludmFsaWQgZmlybXdhcmUgZXZlbnQgY29kZTogJWRcbiIsIGZldmVudF9jb2RlKSkK
-PiAKPiA+ICsJCXJldHVybiAtRUlOVkFMOwo+ID4gKwo+ID4gIAlwbWMtPmNvdW50ZXJfdmFsID0g
-a3ZwbXUtPmZ3X2V2ZW50W2ZldmVudF9jb2RlXS52YWx1ZTsKPiA+ICAKPiA+ICAJKm91dF92YWwg
-PSBwbWMtPmNvdW50ZXJfdmFsID4+IDMyOwo+ID4gQEAgLTI1MSw3ICsyNTgsMTQgQEAgc3RhdGlj
-IGludCBwbXVfY3RyX3JlYWQoc3RydWN0IGt2bV92Y3B1ICp2Y3B1LCB1bnNpZ25lZCBsb25nIGNp
-ZHgsCj4gPiAgCXBtYyA9ICZrdnBtdS0+cG1jW2NpZHhdOwo+ID4gIAo+ID4gIAlpZiAocG1jLT5j
-aW5mby50eXBlID09IFNCSV9QTVVfQ1RSX1RZUEVfRlcpIHsKPiA+ICsJCWlmIChwbWMtPmV2ZW50
-X2lkeCA9PSBTQklfUE1VX0VWRU5UX0lEWF9JTlZBTElEKQo+ID4gKwkJCXJldHVybiAtRUlOVkFM
-Owo+ID4gKwo+ID4gIAkJZmV2ZW50X2NvZGUgPSBnZXRfZXZlbnRfY29kZShwbWMtPmV2ZW50X2lk
-eCk7Cj4gPiArCQlpZiAoV0FSTl9PTkNFKGZldmVudF9jb2RlID49IFNCSV9QTVVfRldfTUFYLAo+
-ID4gKwkJCQkJICAiSW52YWxpZCBmaXJtd2FyZSBldmVudCBjb2RlOiAlZFxuIiwgZmV2ZW50X2Nv
-ZGUpKQo+ID4gKwkJCXJldHVybiAtRUlOVkFMOwo+ID4gKwo+ID4gIAkJcG1jLT5jb3VudGVyX3Zh
-bCA9IGt2cG11LT5md19ldmVudFtmZXZlbnRfY29kZV0udmFsdWU7Cj4gPiAgCX0gZWxzZSBpZiAo
-cG1jLT5wZXJmX2V2ZW50KSB7Cj4gPiAgCQlwbWMtPmNvdW50ZXJfdmFsICs9IHBlcmZfZXZlbnRf
-cmVhZF92YWx1ZShwbWMtPnBlcmZfZXZlbnQsICZlbmFibGVkLCAmcnVubmluZyk7Cj4gPiAtLSAK
-PiA+IDIuMzQuMQo+ID4KPiAKPiBPdGhlcndpc2UsCj4gCj4gUmV2aWV3ZWQtYnk6IEFuZHJldyBK
-b25lcyA8YW5kcmV3LmpvbmVzQG9zcy5xdWFsY29tbS5jb20+Cg==
+> > Hold up, we're getting ahead of ourselves.
+> >
+> > The only legitimate reason the emulator is at all aware of VMSAVE, VMLOAD, and
+> > VMRUN is to deal with #GP due to the RAX check, because hardware checks the GPA
+> > against the host's physical address space.  See commit 82a11e9c6fa2 ("KVM: SVM:
+> > Add emulation support for #GP triggered by SVM instructions").
+> >
+> > The emulator "support" was originally added by commit 01de8b09e606 ("KVM: SVM:
+> > Add intercept checks for SVM instructions"), but AFAICT, for all intents and
+> > purposes that was dead code when it was added, because the emulator doesn't
+> > actually _emulate_ the instructions.  I assume if they aren't intercepted, and
+> > KVM is full on emulating instead of just decoding, they end up at EMULATION_FAILED
+> > and get a #UD or something.
+> >
+> > Outside of forced emulation or code stream rewriting, KVM should _never_ fully
+> > emulate any of the SVM instructions except VMMCALL (and that is a super special
+> > case).  KVM does need to _decode_ the instruction, and it needs to get the
+> > pre-intercept exception checks correct so that KVM correctly injects e.g. #GP
+> > instead of synthesizing a #VMEXIT for the CPL check, but KVM doesn't need to do
+> > *all* of the checks.
+> >
+> > Note, for L2, the SVME check is meaningless, as EFER.SVME has to be set for L2
+> > to be active, i.e. it's L1's responsibility to handle that check.
+> >
+> > Back to the physical address thing, KVM _already_ handles that check in the #GP
+> > path,
+>
+> I guess if KVM is not intercepting #GP, then the hardware injects the
+> #GP and the emulator still doesn't have to worry about it -- because
+> we don't support the case where RAX can be legal from the host's
+> perspective but not the guest's. Makes sense.
+>
+> > it's just wrong too:
+> >
+> >                 /* All SVM instructions expect page aligned RAX */
+> >                 if (svm->vmcb->save.rax & ~PAGE_MASK)
+> >                         goto reinject;
+> >
+> > So I think what we want is to
+> >
+> >   (a) fix the RAX check in gp_interception()
+> >   (b) drop the RAX check in the emulator
+> >   (c) add a CPL check in the emulator (because the intercepted #GP could have
+> >       been due to L2 executing at CPL>0, not due to a bad-but-good RAX).
+
+Actually, I don't think (c) is needed. In the path where KVM
+intercepts #GP, it doesn't go through the emulation path which ends up
+calling check_svme(), it only uses the emulator to decode the
+instruction.
+
+AFAICT, we can end up in the emulator only when the CPU does not
+produce a #GP, e.g. when we get a #NPF on the address in RAX. In this
+case, the CPU will have already checked the CPL for us, and the
+validity of the address. The emulator checking EFER.SVME check is
+probably also useless, because with Kevin's patches we should always
+be intercepting VMLOAD/VMSAVE when EFER.SVME is disabled by the guest
+and checking EFER.SVME there anyway.
+
+Anyway, I want to touch the emulator as little as possible tbh, so I
+will still do (b) because it unblocks this series (removes the wrong
+GPA check that injects #GP), but will defer any further cleanups.
