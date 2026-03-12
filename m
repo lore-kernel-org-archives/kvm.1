@@ -1,344 +1,269 @@
-Received: from mail-vk1-f179.google.com (mail-vk1-f179.google.com [209.85.221.179])
+Received: from mail-oa1-f73.google.com (mail-oa1-f73.google.com [209.85.160.73])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E97923AB290
-	for <kvm@vger.kernel.org>; Thu, 12 Mar 2026 21:59:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.221.179
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773352789; cv=pass; b=X1cR/+JcKqFQ7eByy/NMWfBEAT/JuFUmAeygjK8LVVVQAHyKaifw50IOux1HOI0m2CHbxbPQGDVQdcITzvpdsgjZf9z2CwAF7paGnq+Qb9BSJR3KdnLHHPepnQi+3fZsErXwYBA8dkHKWDrRwPupw4e5KsKfYs0CZenrti7lLbw=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773352789; c=relaxed/simple;
-	bh=eApaaw+QCMTnSsMJ8+tm4DDnuq11/fr0BZGkfu7iBV0=;
-	h=From:In-Reply-To:References:MIME-Version:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Ag29jvpdNImfNgXsEneByrRpcEQA90XwkKnAOM+dPTnNpnsKHkJ0acTB6iSWlRKWH4BxTKDcke+2nieI1LnK9VdyCzgAZTXygoNedzObczxdb3Hfoy+gbKA3g4Xe9qmOF7DJ9K8Tf/yLFn1Hge6BEbyVZJcUXu/qCQP5UJwzamU=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=VnY3Tb8C; arc=pass smtp.client-ip=209.85.221.179
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A185438A73B
+	for <kvm@vger.kernel.org>; Thu, 12 Mar 2026 22:13:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.73
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1773353624; cv=none; b=n09SF3isbuIl/SYY+dqX2GRGm1t5sEUjYdKTdbrwvrFyrDNtxjeEtd12CWY7KlmULluwSm/DmIwyvMr6Bs7+ch+uv2NhDowoQ0rDa68bNnY2ZPY4NfRDqyxfVjR7vV41WzgllDYskXMdURjDYxmsUvsNNvhWLyp1msXtveZvuyk=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1773353624; c=relaxed/simple;
+	bh=NnNqngGYzOf/+4ZNbTSqtLeCtlFOkgKZlcgLwZ5WeeU=;
+	h=Date:In-Reply-To:Mime-Version:Message-ID:Subject:From:To:Cc:
+	 Content-Type; b=H7vQrFH1TU04f9iiAdBvUcU45QS2N7ds/nRcisdJAgp20Z3Q0szM2UM54gIHzlGRcqr6Z9vceiZn71SS7mWNX68wUI98UldBgQ4Qn7N4qqCcSLy/T6PxtYeIztiyEAhpV5UpToV6tDBQzQOn+s1C54pS0m7GKHOCI2IrIaaz/LY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--coltonlewis.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=xeXAC41k; arc=none smtp.client-ip=209.85.160.73
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--coltonlewis.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="VnY3Tb8C"
-Received: by mail-vk1-f179.google.com with SMTP id 71dfb90a1353d-56b069fed64so631949e0c.2
-        for <kvm@vger.kernel.org>; Thu, 12 Mar 2026 14:59:47 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1773352787; cv=none;
-        d=google.com; s=arc-20240605;
-        b=Wpx9cdTAp4sDLJa0HkB2HVCZIFH9J4ch5nPVNVhNh2wHN9YmMiXoUXsLy+V5idHNRr
-         HcJqYd3UqfPasuT3jAqK7j5YEGOAf3kSIXLFw1IyX/bu5/xaOefukLy1nEZgwjYaUU/9
-         fHZCQLH22F1xJzURRJO0eO4t/TZm9m5352z8/qszI4E5c8OkAC/Ad0c99OkRm2i0zKGK
-         8fLmU5dPETcT2raE5dxKI1ViEUsE0XmG8yRn+J+HvRvFZF+H3CCYfYaUg88E55z05e5t
-         D0gMC6v1yacErxuNzEJVDmHOclfGVQZ8s18kldUsF4lob2MCgnTvuatESsEYdociv9Ht
-         WWcw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
-         :from:dkim-signature;
-        bh=5BRi8Q65G/TYxzzc8DUJBOspDF6bBOCx0tLSyw1Him8=;
-        fh=fy+EN+7a7bCj+TUH/FyqDrPuaJ/HvFmZ3UHyaSEM4mw=;
-        b=XyZay63NW/b6Se0wUh/yaJlzyB04S9HvwgdwEWtfkIj8oZQOPWFJWVWba6MbBHdOq6
-         t585o17E/9iXIGo20DEXMYUaBPvWrptrxl+5rTYjSij1+Eg0h1vPOgsTGc22BbteGmyt
-         VA7Mkdy5k8zS0cPxuxYL85x9HQZ4cnpykyRKKVnM9EvoH9fEfIkZam+udgb6D4xF62aX
-         LB3/w6Mtfk9DR8enm6uFbOGhyjGXGBUtooBmdWJHqHsB1naMxYjHeo18GX/h5nnn9g++
-         odkr2wJO+BHrn+nxsAjsqm5QR5w/9ckD4APnlSDSVeiv/D49latILOEKA80ncK4z6MeY
-         nsqw==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="xeXAC41k"
+Received: by mail-oa1-f73.google.com with SMTP id 586e51a60fabf-4171fdb5a67so11138824fac.0
+        for <kvm@vger.kernel.org>; Thu, 12 Mar 2026 15:13:42 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1773352787; x=1773957587; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
-         :from:from:to:cc:subject:date:message-id:reply-to;
-        bh=5BRi8Q65G/TYxzzc8DUJBOspDF6bBOCx0tLSyw1Him8=;
-        b=VnY3Tb8C1k7MPfmNMOinISFxSc/HSNaroC8BgoRQg+0jNSCDJEs+uFaLn1o+hNP+ra
-         qyiOYvhUMb/3PdKLspBHReEMr4lOkxMBoTBWKJlPQfB7q/VyKFUB/Bw1OK2GrmrqydpG
-         5EfydhrHqqkVwDsVNzrKT0yF/yvs8TkEc3bDqr7Ufp5FUOM8LY1CjdKDcGwWNRk5PKfH
-         e9GNYYMyWkQwJiWmcvtNM+0BIN4h6dU3WlxYGxjfecD7yzbVskwME3Bp/M6amEXVRXpP
-         BCWK8ac2CfJvFlQ23K6jvJifTj5gTbdQkQjpSKis0K2elNNBk4hpt/j6Hh19lCbDvrix
-         X83g==
+        d=google.com; s=20230601; t=1773353622; x=1773958422; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:mime-version:in-reply-to:date:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=OmFUz1YB2HW5cy4NJX5lfbdXHnPjDlIYv+BsMbwLiSY=;
+        b=xeXAC41kTRASOdybQO4Hw79XRdELu8myC9Lb08bgbkDxvP2Je7csQUCyjY49uZavJt
+         KGFKCgSXJiXFZCy8KOsL0vLl1NrrqZKDNB/3e7Dv7M+vJaAuNVt06hQBPjKZDJT/Wukg
+         6dUqSHsfM08XA8M4qb0CWt8Mw0cW3xNDG660vaUALRa8e/YRQemcwDcvnQ7pZOZQ+rIb
+         8xVDGyPHiMEqsvZ9ni3AHU0646GwEqKU/f5mx2bf/YHOOKW/un3EnPICWE0WOGpjziX6
+         3UYlVAH15MO7RK0PFIIQfPC9A5sbussVGLPZ5mbsdEggIT0ERtD4WKd29KhEOkhrgMjN
+         7JLg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1773352787; x=1773957587;
-        h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
-         :from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=5BRi8Q65G/TYxzzc8DUJBOspDF6bBOCx0tLSyw1Him8=;
-        b=gkaUkE3ZYwFeNGgzj6jlnnP+BooIHWg9MHCIEWpdSgR1FJfac511dAtSRi/v86oQvv
-         oWYbybcKizSkdWxEtkYptRktuPut8Ut24WaSvYomDpA5kV372fXcfBxlmlf5dzGBWTW6
-         krv9TQtFgHU1VhHzcEU63rLP8efpCq9PqHySNjMZ/ptq6ZM1uqAySRPf3f72qmKNXfRP
-         vkwvuBDlL8ly/KG5MldWBmsc6iilrzGHY1RrNfYErL/o6Q1dzYzDCXp+Dwg4Q/L8pwze
-         /du2kzNbkMhdULbqKM3G0d6AkvzerkySokjWr5WvcBaSWIsw5BmEZh7Pv/+nk5VcgnrF
-         yZZg==
-X-Gm-Message-State: AOJu0YxtMwntolnMAOoZlrRyJPm1lhlCB/uyl6xzcBAaaTWoiti6y/+t
-	T3tvpHh/Jr7kHB93YXFh0IG+hxFbOOcy0QcAjmyWTbnd/hiMPqTTWyl+cF795WNFn8Fo2b6jqHi
-	W1wxas+FoE5+F0wLUtuvVPRd/+2xTbEM1OdHcJcHB
-X-Gm-Gg: ATEYQzxLBx/CcPeCTgfvh0n8HALu6og817tppecx4LyV5aFHVvKbdf0hxvxBa35F/+f
-	eQWzayc2A05GOo3X/RyWH02u2zp81+yWfBk+auvRHO12m7ZYdJnGA1w0bF9T3u4amQHh2wlHdgC
-	OZxOvcPv7NWPPcTAFIy6Jm2mCGXJVBrvX/0OKyHfAQPraxVfOstqdb28XImT8V653H4U0/zkKzJ
-	JHKID8ZD+BiVzsCNWc/SsP4ax62fdt4VMtgCod+CtJo7ZJmjztOUZMsU/HrGBLmMh005gGiO7N7
-	a3il55cvqE5QIoSz3HYKLZPnHt2l/YuUTmuxqDm3
-X-Received: by 2002:a05:6122:16a0:b0:55b:1938:9183 with SMTP id
- 71dfb90a1353d-56b627e8184mr386492e0c.4.1773352786246; Thu, 12 Mar 2026
- 14:59:46 -0700 (PDT)
-Received: from 176938342045 named unknown by gmailapi.google.com with
- HTTPREST; Thu, 12 Mar 2026 14:59:45 -0700
-Received: from 176938342045 named unknown by gmailapi.google.com with
- HTTPREST; Thu, 12 Mar 2026 14:59:45 -0700
-From: Ackerley Tng <ackerleytng@google.com>
-In-Reply-To: <abLfWHf89TxWqeGZ@google.com>
-References: <cover.1770071243.git.ackerleytng@google.com> <86ad28b767524e1e654b9c960e39ca8bfb24c114.1770071243.git.ackerleytng@google.com>
- <CAEvNRgFMNywpDRr+WeNsVj=MnsbhZp9H3j0QRDo_eOP+kGCNJw@mail.gmail.com>
- <CAEvNRgG-L+GBcm+u_thGvXAxV-Nqzu5VtgXy0PfND6SG0FiyVg@mail.gmail.com>
- <CA+EHjTy2urW2Tj5czQDKUHdri7FCLfw2mafTgmmtFs+-7ueoiw@mail.gmail.com> <abLfWHf89TxWqeGZ@google.com>
+        d=1e100.net; s=20251104; t=1773353622; x=1773958422;
+        h=cc:to:from:subject:message-id:mime-version:in-reply-to:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=OmFUz1YB2HW5cy4NJX5lfbdXHnPjDlIYv+BsMbwLiSY=;
+        b=kzn9M91QGuQHb+8bY3++sN+F+sjI4qgx71xOkrAST9h4ocm6l/BVblKyNsQb+nlsG/
+         4SNAoJLMAR0UN6LM9WafcZ9MhqjezJj9U/y+7Qh7azeyiFdzx5LZNxowwWzpAX/KMKGN
+         leAY+fEoUFGTOPyR1yl6ZrWrJrGH6sqMnFNBv5Qf4RjWjVO7+an7g9IHmqEC7IACYH8C
+         gU1DNCG0KIxXRLmo5pGIK/rwpOtCroTydaunQWlIc+LXEs1Qwvek7Eiu4UWcWTFd4TNX
+         heqvUMb4L18ZBX89kpSuZLm2DJ3Y7XS945vwnIkgV4WFnlGvgU/kh5pbVjdeBqHUcxOm
+         sDoQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUAvDEkVpnlfH/Gt7JgDFg6eAn8JA6Hdps1NDduoOMgy7Zi5FZ62WvAwv8QnLLTjhhWYtY=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwhSru0rWEdib6njdUd/gYpkM6xeYUFehnX7L5V1idSIAC3ygGl
+	awbIWaohJB5RBbTgDU+Q5+qIgeXS34S3SbG3sftvBkgr9OczBrZGmhyRETp/d/r+dc5lvyUmm9e
+	fDefbMmrupHYGYZk9Ubx5wh875g==
+X-Received: from oacsd12.prod.google.com ([2002:a05:6871:5e8c:b0:417:8286:3260])
+ (user=coltonlewis job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:6871:d211:b0:409:bd2b:91a3 with SMTP id 586e51a60fabf-417b939f2d9mr605460fac.32.1773353621508;
+ Thu, 12 Mar 2026 15:13:41 -0700 (PDT)
+Date: Thu, 12 Mar 2026 22:13:40 +0000
+In-Reply-To: <819fa670-f6f6-4251-a528-6d8264451b9f@linaro.org> (message from
+ James Clark on Thu, 5 Mar 2026 10:16:34 +0000)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Date: Thu, 12 Mar 2026 14:59:45 -0700
-X-Gm-Features: AaiRm51WdPA9PYhHM87YIJzRBZGaRjiFMDr05z8vln4-gPCqggi2FDd5_-4bZTU
-Message-ID: <CAEvNRgFUc+9xCoN9Yo5NThHrvbccWAhPwp9nNM2fvx7QqrcJsg@mail.gmail.com>
-Subject: Re: [RFC PATCH v2 09/37] KVM: guest_memfd: Add support for KVM_SET_MEMORY_ATTRIBUTES2
-To: Sean Christopherson <seanjc@google.com>, Fuad Tabba <tabba@google.com>
-Cc: kvm@vger.kernel.org, linux-doc@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org, 
-	linux-trace-kernel@vger.kernel.org, x86@kernel.org, aik@amd.com, 
-	andrew.jones@linux.dev, binbin.wu@linux.intel.com, bp@alien8.de, 
-	brauner@kernel.org, chao.p.peng@intel.com, chao.p.peng@linux.intel.com, 
-	chenhuacai@kernel.org, corbet@lwn.net, dave.hansen@linux.intel.com, 
-	david@kernel.org, hpa@zytor.com, ira.weiny@intel.com, jgg@nvidia.com, 
-	jmattson@google.com, jroedel@suse.de, jthoughton@google.com, 
-	maobibo@loongson.cn, mathieu.desnoyers@efficios.com, maz@kernel.org, 
-	mhiramat@kernel.org, michael.roth@amd.com, mingo@redhat.com, 
-	mlevitsk@redhat.com, oupton@kernel.org, pankaj.gupta@amd.com, 
-	pbonzini@redhat.com, prsampat@amd.com, qperret@google.com, 
-	ricarkol@google.com, rick.p.edgecombe@intel.com, rientjes@google.com, 
-	rostedt@goodmis.org, shivankg@amd.com, shuah@kernel.org, steven.price@arm.com, 
-	tglx@linutronix.de, vannapurve@google.com, vbabka@suse.cz, 
-	willy@infradead.org, wyihan@google.com, yan.y.zhao@intel.com
-Content-Type: text/plain; charset="UTF-8"
+Mime-Version: 1.0
+Message-ID: <gsntms0cofvv.fsf@coltonlewis-kvm.c.googlers.com>
+Subject: Re: [PATCH v6 16/19] KVM: arm64: Add vCPU device attr to partition
+ the PMU
+From: Colton Lewis <coltonlewis@google.com>
+To: James Clark <james.clark@linaro.org>
+Cc: alexandru.elisei@arm.com, pbonzini@redhat.com, corbet@lwn.net, 
+	linux@armlinux.org.uk, catalin.marinas@arm.com, will@kernel.org, 
+	maz@kernel.org, oliver.upton@linux.dev, mizhang@google.com, 
+	joey.gouly@arm.com, suzuki.poulose@arm.com, yuzenghui@huawei.com, 
+	mark.rutland@arm.com, shuah@kernel.org, gankulkarni@os.amperecomputing.com, 
+	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-arm-kernel@lists.infradead.org, kvmarm@lists.linux.dev, 
+	linux-perf-users@vger.kernel.org, linux-kselftest@vger.kernel.org, 
+	kvm@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"; format=flowed; delsp=yes
 
-Sean Christopherson <seanjc@google.com> writes:
+Thanks James for the review.
 
-> On Thu, Mar 12, 2026, Fuad Tabba wrote:
->> Hi Ackerley,
->>
->> Before getting into the UAPI semantics, thank you for all the heavy
->> lifting you've done here. Figuring out how to make it all work across
->> the different platforms is not easy :)
->>
->> <snip>
->>
->> > The policy definitions below provide more details:
->
-> Please drop "CONTENT_POLICY" from the KVM documentation.  From KVM's perspective,
-> these are not "policy", they are purely properties of the underlying memory.
-> Userspace will likely use the attributes to implement policy of some kind, but
-> KVM straight up doesn't care.
+James Clark <james.clark@linaro.org> writes:
 
-Policy might have been the wrong word. I think this is a property of the
-conversion process/request, not a property of the memory like how
-shared/private is a property of the memory?
+> On 09/02/2026 10:14 pm, Colton Lewis wrote:
+>> Add a new PMU device attr to enable the partitioned PMU for a given
+>> VM. This capability can be set when the PMU is initially configured
+>> before the vCPU starts running and is allowed where PMUv3 and VHE are
+>> supported and the host driver was configured with
+>> arm_pmuv3.reserved_host_counters.
 
-I'll have to find another word to describe this enum of
+>> The enabled capability is tracked by the new flag
+>> KVM_ARCH_FLAG_PARTITIONED_PMU_ENABLED.
 
-* KVM_SET_MEMORY_ATTRIBUTES2_ZERO
-* KVM_SET_MEMORY_ATTRIBUTES2_PRESERVE
+> Typo, should be: KVM_ARCH_FLAG_PARTITION_PMU_ENABLED. Or maybe the
+> #define should be fixed.
 
->
->> > ``KVM_SET_MEMORY_ATTRIBUTES2_CONTENT_POLICY_ZERO`` (default)
->
-> The default behavior absolutely cannot be something that's not supported on
-> every conversion type.
->
->> >
->> >   On a private to shared conversion, the host will read zeros from the
->> >   converted memory on the next fault after successful return of the
->> >   KVM_SET_MEMORY_ATTRIBUTES2 ioctl.
->> >
->> >   This is not supported (-EOPNOTSUPP) for a shared to private
->> >   conversion. While some CoCo implementations do zero memory contents
->> >   such that the guest reads zeros after conversion, the guest is not
->> >   expected to trust host-provided zeroing, hence as a UAPI policy, KVM
->> >   does not make any such guarantees.
->>
->> The rationale for not supporting this in the UAPI isn't quite right
->> and I think that the prohibition should be removed. It's true that the
->> guest is not expected to trust host-provided zeroing. However, if the
->> VMM invokes this ioctl with the ZERO policy, the zeroing is performed
->> by the hypervisor, not by the (untrusted) host.
->
-> What entity zeros the data doesn't matter as far as KVM's ABI is concerned.  That's
-> a motivating favor to providing ZERO, e.g. it allow userspace to elide additional
-> zeroing when it _knows_ the memory holds zeros, but that's orthogonal to KVM's
-> contract with userspace.
->
->> Although pKVM handles fresh, zeroed memory provisioning via donation
->> rather than attribute conversion, stating that the UAPI cannot make
->> guarantees due to trust boundaries is incorrect. The hypervisor is
->
-> We should avoid using "hypervisor", because (a) it means different things to
-> different people and (b) even when there's consensus on what "hypervisor" means,
-> whether or not the hypervisor is trusted varies per implementation.
->
->> need to be careful witho precisely the entity the guest trusts to enforce
->> this.
->>
->> The UAPI should define the semantics for a shared-to-private ZERO
->> conversion, even if current architectures return -EOPNOTSUPP because
->> they handle fresh memory provisioning via other mechanisms (like
->> pKVM's donation path).
->>
->> How about something like the following:
->>
->> On a shared to private conversion, the hypervisor will zero the memory
->
-> Again, say _nothing_ about "the hypervisor".  _How_ or when anything happens is
-> completely irrelevant, the only thing that matters here is _what_ happens.
->
->> contents before mapping it into the guest's private address space,
->> preventing the untrusted host from injecting arbitrary data into the
->> guest. If an architecture handles zeroed-provisioning via mechanisms
->> other than attribute conversion, it may return -EOPNOTSUPP.
->
-> No.  I am 100% against bleeding vendor specific information into KVM's ABI for
-> this.  What the vendor code does is irrelevant, the _only_ thing that matters
-> here is KVM's contract with userspace.
->
-> That doesn't mean pKVM guests can't rely on memory being zeroed, but that is a
-> contract between pKVM and its guests, not between KVM and host userspace.
->
+Stale commit message. I will fix.
 
-If pKVM's (kernel, or elsewhere) documentation says something like
 
-  Shared to private (in addition to private to shared already specified
-  in the userspace/KVM contract) conversions through guest_memfd
-  specifying ZERO will have memory contents zeroed.
+> I couldn't see if this was discussed before, but what's the reason to
+> not use the guest partition by default and make this flag control
+> reverting back to use the non passed through PMU?
 
-Would that then cover both perspectives? I see Fuad's point that pKVM
-would like to provide guarantees in the shared to private direction too,
-and I see Sean's point that the shared to private direction isn't a
-userspace/KVM thing.
+> Seems like if you already have to enable it by creating a partition on
+> the host, then you more than likely want your guests to use it. And it's
+> lower overhead so it's "better". Right now it's two things that you have
+> to set at the same time to do one thing.
 
-The awkward part is that we guarantee both directions for PRESERVE but
-not for ZERO.
+> Or does having to set it on the host go away with the dynamic approach
+> here [1]?
 
->> >   For testing purposes, the KVM_X86_SW_PROTECTED_VM testing vehicle
->> >   will support this policy and ensure zeroing for conversions in both
->> >   directions.
->> >
->> > ``KVM_SET_MEMORY_ATTRIBUTES2_CONTENT_POLICY_PRESERVE``
->> >
->> >   On private/shared conversions in both directions, memory contents
->> >   will be preserved and readable. As a concrete example, if the host
->> >   writes ``0xbeef`` to memory and converts the memory to shared, the
->> >   guest will also read ``0xbeef``, after any necessary hardware or
->> >   software provided decryption. After a reverse shared to private
->> >   conversion, the host will also read ``0xbeef``.
->>
->> I think that this example is backwards. If the host writes to memory,
->> that memory is already shared, isn't it? Converting it to shared is
->> redundant. More importantly, if memory undergoes a shared-to-private
->> conversion, the host must lose access entirely.
->
-> Ya, it's messed up.
->
+Yes, the plan is to have it go away on the host with a dynamic approach.
 
-Omg, it is backwards!! Might have been copypasta...
 
->> Maybe a clearer example would reflect actual payload injection and
->> bounce buffer sharing:
->> - Shared-to-Private (Payload Injection): The host writes a payload
->> (e.g., 0xbeef) to shared memory and converts it to private. The guest
->> reads 0xbeef in its private address space. The host loses access.
->> - Private-to-Shared (Bounce Buffer): The guest writes 0xbeef to
->> private memory and converts it to shared. The host reads 0xbeef.
->>
->> >   pKVM (ARM) is the first user of this policy. Since pKVM does not
->> >   protect memory with encryption, a content policy to preserve memory
->> >   will not will not involve any decryption. The guest will be able to
->> >   read what the host wrote with full content preservation.
->>
->> This is correct, but to be precise, I think it should explicitly
->> mention Stage-2 page tables as the protection mechanism, maybe:
->
-> pKVM shouldn't be mentioned in here at all.
->
-> ---
-> By default, KVM makes no guarantees about the in-memory values after memory is
-> convert to/from shared/private.  Optionally, userspace may instruct KVM to
-> ensure the contents of memory are zeroed or preserved, e.g. to enable in-place
-> sharing of data, or as an optimization to avoid having to re-zero memory when
-> the trusted entity guarantees the memory will be zeroed after conversion.
->
+> [1]: https://lore.kernel.org/kvmarm/aWjlfl85vSd6sMwT@willie-the-truck/
 
-How about:
 
-or as an optimization to avoid having to re-zero memory when userspace
-could have relied on the trusted entity to guarantee the memory will be
-zeroed as part of the entire conversion process.
+>> Signed-off-by: Colton Lewis <coltonlewis@google.com>
+>> ---
+>>    arch/arm64/include/asm/kvm_host.h |  2 ++
+>>    arch/arm64/include/uapi/asm/kvm.h |  2 ++
+>>    arch/arm64/kvm/pmu-direct.c       | 35 ++++++++++++++++++++++++++++---
+>>    arch/arm64/kvm/pmu.c              | 14 +++++++++++++
+>>    include/kvm/arm_pmu.h             |  9 ++++++++
+>>    5 files changed, 59 insertions(+), 3 deletions(-)
 
-> The behaviors supported by a given KVM instance can be queried via <cap>.  If
+>> diff --git a/arch/arm64/include/asm/kvm_host.h  
+>> b/arch/arm64/include/asm/kvm_host.h
+>> index 41577ede0254f..f0b0a5edc7252 100644
+>> --- a/arch/arm64/include/asm/kvm_host.h
+>> +++ b/arch/arm64/include/asm/kvm_host.h
+>> @@ -353,6 +353,8 @@ struct kvm_arch {
+>>    #define KVM_ARCH_FLAG_WRITABLE_IMP_ID_REGS		10
+>>    	/* Unhandled SEAs are taken to userspace */
+>>    #define KVM_ARCH_FLAG_EXIT_SEA				11
+>> +	/* Partitioned PMU Enabled */
+>> +#define KVM_ARCH_FLAG_PARTITION_PMU_ENABLED		12
+>>    	unsigned long flags;
 
-I started with some implementation and was questioning the value of a
-CAP. It seems like there won't be anything dynamic about this?
+>>    	/* VM-wide vCPU feature set */
+>> diff --git a/arch/arm64/include/uapi/asm/kvm.h  
+>> b/arch/arm64/include/uapi/asm/kvm.h
+>> index a792a599b9d68..3e0b7619f781d 100644
+>> --- a/arch/arm64/include/uapi/asm/kvm.h
+>> +++ b/arch/arm64/include/uapi/asm/kvm.h
+>> @@ -436,6 +436,8 @@ enum {
+>>    #define   KVM_ARM_VCPU_PMU_V3_FILTER		2
+>>    #define   KVM_ARM_VCPU_PMU_V3_SET_PMU		3
+>>    #define   KVM_ARM_VCPU_PMU_V3_SET_NR_COUNTERS	4
+>> +#define   KVM_ARM_VCPU_PMU_V3_ENABLE_PARTITION	5
+>> +
+>>    #define KVM_ARM_VCPU_TIMER_CTRL		1
+>>    #define   KVM_ARM_VCPU_TIMER_IRQ_VTIMER		0
+>>    #define   KVM_ARM_VCPU_TIMER_IRQ_PTIMER		1
+>> diff --git a/arch/arm64/kvm/pmu-direct.c b/arch/arm64/kvm/pmu-direct.c
+>> index 6ebb59d2aa0e7..1dbf50b8891f6 100644
+>> --- a/arch/arm64/kvm/pmu-direct.c
+>> +++ b/arch/arm64/kvm/pmu-direct.c
+>> @@ -44,8 +44,8 @@ bool kvm_pmu_is_partitioned(struct arm_pmu *pmu)
+>>    }
 
-The userspace code can check what platform it is running on, and then
-decide ZERO or PRESERVE based on the platform:
+>>    /**
+>> - * kvm_vcpu_pmu_is_partitioned() - Determine if given VCPU has a  
+>> partitioned PMU
+>> - * @vcpu: Pointer to kvm_vcpu struct
+>> + * kvm_pmu_is_partitioned() - Determine if given VCPU has a partitioned  
+>> PMU
+>> + * @kvm: Pointer to kvm_vcpu struct
+>>     *
+>>     * Determine if given VCPU has a partitioned PMU by extracting that
+>>     * field and passing it to :c:func:`kvm_pmu_is_partitioned`
+>> @@ -55,7 +55,36 @@ bool kvm_pmu_is_partitioned(struct arm_pmu *pmu)
+>>    bool kvm_vcpu_pmu_is_partitioned(struct kvm_vcpu *vcpu)
+>>    {
+>>    	return kvm_pmu_is_partitioned(vcpu->kvm->arch.arm_pmu) &&
+>> -		false;
+>> +		test_bit(KVM_ARCH_FLAG_PARTITION_PMU_ENABLED, &vcpu->kvm->arch.flags);
+>> +}
+>> +
+>> +/**
+>> + * has_kvm_pmu_partition_support() - If we can enable/disable partition
+>> + *
+>> + * Return: true if allowed, false otherwise.
+>> + */
+>> +bool has_kvm_pmu_partition_support(void)
+>> +{
+>> +	return has_host_pmu_partition_support() &&
+>> +		kvm_supports_guest_pmuv3() &&
+>> +		armv8pmu_max_guest_counters > -1;
+>> +}
+>> +
+>> +/**
+>> + * kvm_pmu_partition_enable() - Enable/disable partition flag
+>> + * @kvm: Pointer to vcpu
+>> + * @enable: Whether to enable or disable
+>> + *
+>> + * If we want to enable the partition, the guest is free to grab
+>> + * hardware by accessing PMU registers. Otherwise, the host maintains
+>> + * control.
+>> + */
+>> +void kvm_pmu_partition_enable(struct kvm *kvm, bool enable)
+>> +{
+>> +	if (enable)
+>> +		set_bit(KVM_ARCH_FLAG_PARTITION_PMU_ENABLED, &kvm->arch.flags);
+>> +	else
+>> +		clear_bit(KVM_ARCH_FLAG_PARTITION_PMU_ENABLED, &kvm->arch.flags);
+>>    }
 
-If the VM is running on TDX, it would want to specify ZERO all the
-time. If the VM were running on pKVM it would want to specify PRESERVE
-if it wants to enable in-place sharing, and ZERO if it wants to zero the
-memory.
+>>    /**
+>> diff --git a/arch/arm64/kvm/pmu.c b/arch/arm64/kvm/pmu.c
+>> index 72d5b7cb3d93e..cdf51f24fdaf3 100644
+>> --- a/arch/arm64/kvm/pmu.c
+>> +++ b/arch/arm64/kvm/pmu.c
+>> @@ -759,6 +759,19 @@ int kvm_arm_pmu_v3_set_attr(struct kvm_vcpu *vcpu,  
+>> struct kvm_device_attr *attr)
 
-If someday TDX supports PRESERVE, then there's room for discovery of
-which algorithm to choose when running the guest. Perhaps that's when
-the CAP should be introduced?
+>>    		return kvm_arm_pmu_v3_set_nr_counters(vcpu, n);
+>>    	}
+>> +	case KVM_ARM_VCPU_PMU_V3_ENABLE_PARTITION: {
+>> +		unsigned int __user *uaddr = (unsigned int __user *)(long)attr->addr;
+>> +		bool enable;
+>> +
+>> +		if (get_user(enable, uaddr))
+>> +			return -EFAULT;
+>> +
+>> +		if (!has_kvm_pmu_partition_support())
+>> +			return -EPERM;
+>> +
+>> +		kvm_pmu_partition_enable(kvm, enable);
+>> +		return 0;
+>> +	}
+>>    	case KVM_ARM_VCPU_PMU_V3_INIT:
+>>    		return kvm_arm_pmu_v3_init(vcpu);
+>>    	}
+>> @@ -798,6 +811,7 @@ int kvm_arm_pmu_v3_has_attr(struct kvm_vcpu *vcpu,  
+>> struct kvm_device_attr *attr)
+>>    	case KVM_ARM_VCPU_PMU_V3_FILTER:
+>>    	case KVM_ARM_VCPU_PMU_V3_SET_PMU:
+>>    	case KVM_ARM_VCPU_PMU_V3_SET_NR_COUNTERS:
+>> +	case KVM_ARM_VCPU_PMU_V3_ENABLE_PARTITION:
+>>    		if (kvm_vcpu_has_pmu(vcpu))
+>>    			return 0;
+>>    	}
+>> diff --git a/include/kvm/arm_pmu.h b/include/kvm/arm_pmu.h
+>> index 93586691a2790..ff898370fa63f 100644
+>> --- a/include/kvm/arm_pmu.h
+>> +++ b/include/kvm/arm_pmu.h
+>> @@ -109,6 +109,8 @@ void kvm_pmu_load(struct kvm_vcpu *vcpu);
+>>    void kvm_pmu_put(struct kvm_vcpu *vcpu);
 
-> the requested behavior is an unsupported, KVM will return -EOPNOTSUPP and
-> reject the conversion request.  Note!  The "ZERO" request is only support for
-> private to shared conversion!
->
+>>    void kvm_pmu_set_physical_access(struct kvm_vcpu *vcpu);
+>> +bool has_kvm_pmu_partition_support(void);
+>> +void kvm_pmu_partition_enable(struct kvm *kvm, bool enable);
 
-Do you mean ZERO is only guaranteed for private to shared? If we say
-"ZERO is only guaranteed for private to shared", then pKVM could
-additionally guarantee zeroing for shared to private. If we say it is
-only supported for private to shared, then should I return -EOPNOTSUPP
-and therefore not allow platforms to provide other guarantees?
+>>    #if !defined(__KVM_NVHE_HYPERVISOR__)
+>>    bool kvm_vcpu_pmu_is_partitioned(struct kvm_vcpu *vcpu);
+>> @@ -311,6 +313,13 @@ static inline void  
+>> kvm_pmu_host_counters_enable(void) {}
+>>    static inline void kvm_pmu_host_counters_disable(void) {}
+>>    static inline void kvm_pmu_handle_guest_irq(struct arm_pmu *pmu, u64  
+>> pmovsr) {}
 
-I think we should stick to guarantees for this
+>> +static inline bool has_kvm_pmu_partition_support(void)
+>> +{
+>> +	return false;
+>> +}
+>> +
+>> +static inline void kvm_pmu_partition_enable(struct kvm *kvm, bool  
+>> enable) {}
+>> +
+>>    #endif
 
-* not specified (default) = no guarantees whatsoever
-* ZERO = guaranteed zero for shared to private, no guarantees for
-         private to shared. Platforms can add on more guarantees.
-* PRESERVE = guaranteed preseved in both directions
-
--EOPNOTSUPP should probably be understood as "There is no way to
-guarantee this" like how TDX would return -EOPNOTSUPP for PRESERVE
-(now).
-
-> ``KVM_SET_MEMORY_ATTRIBUTES2_ZERO``
->
->   On conversion, KVM guarantees all entities that have "allowed" access to the
->   memory will read zeros.  E.g. on private to shared conversion, both trusted
->   and untrusted code will read zeros.
->
->   Zeroing is currently only supported for private-to-shared conversions, as KVM
->   in general is untrusted and thus cannot guarantee the guest (or any trusted
->   entity) will read zeros after conversion.  Note, some CoCo implementations do
->   zero memory contents such that the guest reads zeros after conversion, and
->   the guest may choose to rely on that behavior.  But that's a contract between
->   the trusted CoCo entity and the guest, not between KVM and the guest.
->
-> ``KVM_SET_MEMORY_ATTRIBUTES2_PRESERVE``
->
->   On conversion, KVM guarantees memory contents will be preserved with respect
->   to the last written unencrypted value.  As a concrete example, if the host
->   writes ``0xbeef`` to shared memory and converts the memory to private, the
->   guest will also read ``0xbeef``, even if the in-memory data is encrypted as
->   part of the conversion.  And vice versa, if the guest writes ``0xbeef`` to
->   private memory and then converts the memory to shared, the host (and guest)
->   will read ``0xbeef`` (if the memory is accessible).
-
-Thank you for this summary :)
-
-I see you dropped any documentation to do with testing. I meant to
-document it (at least something about the unspecified case) so it can be
-relied on in selftests, with the understanding (already specified
-elsewhere in Documentation/virt/kvm/api.rst) that nothing about
-KVM_X86_SW_PROTECTED_VM is to be relied on in production, and can be
-changed anytime. What do you think?
+>>    #endif
