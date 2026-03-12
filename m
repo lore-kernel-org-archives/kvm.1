@@ -1,54 +1,54 @@
 Received: from mail-pj1-f73.google.com (mail-pj1-f73.google.com [209.85.216.73])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 297C8401A2E
-	for <kvm@vger.kernel.org>; Thu, 12 Mar 2026 20:03:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A450401A1F
+	for <kvm@vger.kernel.org>; Thu, 12 Mar 2026 20:03:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.73
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773345796; cv=none; b=olRZqh9novUTT0Gz3YgujUnu5tSQleZ/lOGtEAwbPrn+5XWSiQgxIXWHyVIBTNIsd/8E7TSEXyM6cMSOvHNGzXcXF1uWSa7YxBXFCrcd0+z/LDAZKfmQQ+lVVI1klVbx8QqRb2m19+I3F8MigCKVIi2kHoCwWGnNAm/ZSWERj1s=
+	t=1773345799; cv=none; b=TeB+X4Cl3h4/t65wm/V25MPXhnDHk9S50J1+IqbkkT4H7Ilut/RKTOm6a9XaBRAC4ZWP5q13GJJzQC9hSFH6+r63fLM0LB9D4Oi2OmjO7GFtIXCtEahJKkUxBp0cYg2Ck6ScaHQgcH0C4X7kN4VuSfrNibDFfIhCWgJxKYVM9Zg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773345796; c=relaxed/simple;
-	bh=FQ8iNVazckbUMkcl4/LJQBvVBcpKgWPuCZVOJ2XWPzQ=;
+	s=arc-20240116; t=1773345799; c=relaxed/simple;
+	bh=QmD8eQIOWS5+AwR0q3zNGzvld1y+nahIW8IwEFOcOU8=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=cRr684wb3H+CzG43w7G8OykhhFYtP7+kbQ+3mhL8l+7cl8ji1Gs+ioFrxPJcNMMIWCY75mgxMfN/vf130aMqJ5lmi50+QkuHjMbpYOqVXNHcORRe6qOws08XOVprg2fNKzbJBIw2bZiPcCRFEvSWEUCw8vwRGUDjczfFtBRR1SM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--chengkev.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=b5bG9mAH; arc=none smtp.client-ip=209.85.216.73
+	 To:Cc:Content-Type; b=mT8AaIHR08YDsiswQbq3oCXrT84IunMkVgYum6dAP+PbLtlNtngluzQOpMQ3DXk+/qQwwTIaly0khy0UPbSKiP+dfHo2ekRq/gzYgdlD5sBjNeIGJsar4p2LbeHmy6AGEdMI0AF2sts5pX6tTXaEL3fgZqCy6xFvThGCTREPZaQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--chengkev.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=wtL1p4q7; arc=none smtp.client-ip=209.85.216.73
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--chengkev.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="b5bG9mAH"
-Received: by mail-pj1-f73.google.com with SMTP id 98e67ed59e1d1-35a0998a441so8273362a91.2
-        for <kvm@vger.kernel.org>; Thu, 12 Mar 2026 13:03:15 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="wtL1p4q7"
+Received: by mail-pj1-f73.google.com with SMTP id 98e67ed59e1d1-35449510446so1121025a91.0
+        for <kvm@vger.kernel.org>; Thu, 12 Mar 2026 13:03:16 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1773345794; x=1773950594; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1773345796; x=1773950596; darn=vger.kernel.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=2m/hU+Jt8OkIyilzhr8C/19mPs2+B6ibUdC+cQ1kWRY=;
-        b=b5bG9mAHxwukiN6dnas0XLC59zb0F0rpEgCvniwQF73EDOHoOmgea+VYCH0fWKLeXt
-         pU+C++mwNlSMLbkUAEprUwkz2fZxSdpM3Lxa7XwQBwvzIoaLFzq4dMxPCZNiCRELIPTd
-         PFljVklbtfB0szN7zlU3pvD+fcsIqxZA+lMqTVS8t5qSiuX/UZipkzUhS+7UMREbTSdP
-         azhTQbOKBxHLENkk5LkoMqy1wJhrvx+RhBWCHGZCPhW2KgTG7VMBZXJz9HWrBtYF6wHu
-         U+jlIpvyqY8GomTw6CEU83itE20yvSuwcjuWcyhbNbojiN5ADWjbBEaMSlD4j8B3dKO4
-         SvXQ==
+        bh=ZwLmK6qzx7XSYMEkdNEwzO4eT9/vXNK29O2UsupncTk=;
+        b=wtL1p4q7KLTWayWz6MyBiUbtVL6bYYxXmE4ZXgI1Jj/CqLz8XhmaGb3BYGDve1FTia
+         dxfDf3gh/FRSzqmjdnkew8EkwX14BCuV+rYFjnvUUI4qLdesKIRSfGSLMF/xo3EGaZ5t
+         xCwUpQGR1qud18eg3Ush3zYnwRr/MVu0JBlBmYAuMZHo4KbzrLBUb5FvRzNxQnAw7a2b
+         XTS/8KN4FSnScKc/OzlGjJAQMojNz96du/wmOAP2tgWNUpwyvVCR4VVrM4W/yCwRoztz
+         qwRR71rZv/NW864Rk19K1Bh1X/VMl1ryM96FVWk87CkSrezfN+7s9pL00qIlEVPClrad
+         bFjg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1773345794; x=1773950594;
+        d=1e100.net; s=20230601; t=1773345796; x=1773950596;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=2m/hU+Jt8OkIyilzhr8C/19mPs2+B6ibUdC+cQ1kWRY=;
-        b=gFtiAT3trw4e1E47DcqLF7bKyVv8HilqakOXPLk9S6jnqq0tNqdWYSVbqJIeCd4PHb
-         0rIut+DoRkFmgmsUaGUGUT5f/Nuk/ZewiSrpXtHOwX6KEat/rc6bfLwhgMpveSwyJXQu
-         pq5+DUYNYTRvomR+K9MtacMPGA1m7WQaXfJKe1od6gctZX/mSsp8MaoHuO63B7OkAf3S
-         SeBRYW2Sf+/5Y/fxhjmteSqruHqlGsoBrHvuHmiH3ivSd24pd7PMOED76HvcwgxaT0jw
-         3FzKNb82M3vTf2tDK0ZBU92hc5Aq0/aGbqh4nusnUeouscW/Fjsc212MLGBvVboQnpC+
-         iMZA==
-X-Gm-Message-State: AOJu0YzAF1PCOvMKBWXUzVBeNalIwhXU+qXV53jMyh4kwottj+dzbAf9
-	P8aWbBB20mvXVLEoB1mzpqTTth33nLXNHvlnoI9YZPZzgeNeEyNcajnv9hilMGPqLSP92cN+Tux
-	IUohU65YkR64kDm58LuL4V0zbZAPR2IxKcCLFxrkITxXdpVb9Zy2//xi5IR97RnXq+Y7ckVJmEZ
-	5WswiCIfLky7SJsUZWIg5EWyDVILbuOhfe+7LJYFFvjL8=
-X-Received: from pgli38.prod.google.com ([2002:a63:1326:0:b0:c73:cc95:c0ed])
+        bh=ZwLmK6qzx7XSYMEkdNEwzO4eT9/vXNK29O2UsupncTk=;
+        b=SWq5fNU/LFBPUf52WRv8eE1SWCZv4a3sSoEniz3swRPGNkba9XN/BFPDOk4nNz1r9J
+         XrUucIQ/T4tm6n51JA8Te4P61Ax6Q+6poXmmiIEFpbP5LTVg1/XX6KfLW6SFJoUaj9wf
+         Sf7p19bnj8G3qf+zVpjdvcZICfhIz8iBjF3qqAanpQ2zSFyJ6mfdG0gNQTvn/hRkx5mB
+         7mIa3jENkWwr3L1OH2CuXkDa9037SBVIFN7iMG5Hcl59QbWCP6N77j9l6/9b1sfwnm85
+         z7EguMyFg5RNvi4kP/LZIJunATYcPYPtbBP0TZ5/iUh7Vyhqe/jQxUFTvjTOeosHVx2m
+         UyaQ==
+X-Gm-Message-State: AOJu0Yw3FWSnAer3pctsnnajQR7vixMI5p8bOAVpTyM2Q54NiFAN2tpf
+	84qUqqMjbAvI4XK8BkBRDGUsOvxGZoR7CxTLrMDpgbNKiNxJo8Fz+bt2zkvL5Ji9grlo/nPseye
+	FFhZOEMz9L9goUvrXsvemv0G3UlbcN3OVOJ6slhN09eQ0AX5SSeV9H2eAzYP6bFU2MiXAXEqAV8
+	o3VYh8PiImuFp0jkvKiJAbvI/ZNr+EQQA1KiO7MExlUa0=
+X-Received: from pgc26.prod.google.com ([2002:a05:6a02:2f9a:b0:c73:cc95:c0e9])
  (user=chengkev job=prod-delivery.src-stubby-dispatcher) by
- 2002:a17:90b:278d:b0:359:f3ec:c773 with SMTP id 98e67ed59e1d1-35a21e4ee48mr839662a91.3.1773345794356;
- Thu, 12 Mar 2026 13:03:14 -0700 (PDT)
-Date: Thu, 12 Mar 2026 20:03:00 +0000
+ 2002:a05:6a21:a08:b0:398:7357:bb8f with SMTP id adf61e73a8af0-398eccb9cedmr428107637.41.1773345796001;
+ Thu, 12 Mar 2026 13:03:16 -0700 (PDT)
+Date: Thu, 12 Mar 2026 20:03:01 +0000
 In-Reply-To: <20260312200308.3089379-1-chengkev@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
@@ -58,224 +58,241 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 References: <20260312200308.3089379-1-chengkev@google.com>
 X-Mailer: git-send-email 2.53.0.851.ga537e3e6e9-goog
-Message-ID: <20260312200308.3089379-3-chengkev@google.com>
-Subject: [kvm-unit-tests PATCH v3 02/10] x86/nSVM: Add test for NPT A/D bits
+Message-ID: <20260312200308.3089379-4-chengkev@google.com>
+Subject: [kvm-unit-tests PATCH v3 03/10] x86/svm: Add tests for APIC passthrough
 From: Kevin Cheng <chengkev@google.com>
 To: kvm@vger.kernel.org
 Cc: yosry@kernel.org, andrew.jones@linux.dev, thuth@redhat.com, 
 	pbonzini@redhat.com, seanjc@google.com, Kevin Cheng <chengkev@google.com>
 Content-Type: text/plain; charset="UTF-8"
 
-Nested page table entries that were touched during nested page table
-walks for guest PTEs always have their dirty and accessed bits set.
-Write a test that verifies this behavior for guest read and writes. Note
-that non-leaf NPT levels encountered during the GPA to HPA translation
-for guest PTEs only have their accessed bits set.
+Add two tests to SVM test suite to validate APIC passthrough
+capabilities.
 
-The nVMX tests already have coverage for TDP A/D bits. Add a
-similar test for nSVM to improve test parity between nSVM and nVMX.
+In the apic_passthrough test, the guest asserts irq-line to trigger a
+level-triggered interrupt that should be injected directly in the guest.
+Confirm that the remote_irr is set before the guest's EOI and cleared
+after guest's EOI. Include a variant that uses a separate thread to
+trigger the interrupt to ensure cross CPU delivery is handled correctly.
+
+The svm_apic_passthrough_tpr_threshold_test validates that a guest can
+directly modify the host's APIC TPR. The host queues a pending self-IPI
+by disabling interrupts and raising the TPR to a high value. The test
+then runs a guest that lowers the TPR to 0, and upon returning to the
+host, it confirms that the pending interrupt is delivered once
+interrupts are enabled.
+
+The nVMX tests already has coverage for APIC passthrough. Add a similar
+test for nSVM to improve test parity between nSVM and nVMX.
+
+This test uses the old V1 test framework to utilize the test stage for
+specific test event sequencing.
 
 Signed-off-by: Kevin Cheng <chengkev@google.com>
 ---
- x86/svm_npt.c | 178 ++++++++++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 178 insertions(+)
+ x86/svm_tests.c | 175 ++++++++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 175 insertions(+)
 
-diff --git a/x86/svm_npt.c b/x86/svm_npt.c
-index bd5e8f351e34..7b8f57a8c3f0 100644
---- a/x86/svm_npt.c
-+++ b/x86/svm_npt.c
-@@ -380,6 +380,183 @@ skip_pte_test:
- 	vmcb->save.cr4 = sg_cr4;
+diff --git a/x86/svm_tests.c b/x86/svm_tests.c
+index 11d0e3d39f5b..0eedad6bc3af 100644
+--- a/x86/svm_tests.c
++++ b/x86/svm_tests.c
+@@ -12,6 +12,7 @@
+ #include "util.h"
+ #include "x86/usermode.h"
+ #include "vmalloc.h"
++#include "fwcfg.h"
+ 
+ #define SVM_EXIT_MAX_DR_INTERCEPT 0x3f
+ 
+@@ -3575,6 +3576,172 @@ static void svm_shutdown_intercept_test(void)
+ 	report(vmcb->control.exit_code == SVM_EXIT_SHUTDOWN, "shutdown test passed");
  }
  
 +
-+static void clear_npt_ad_pte(unsigned long *pml4e, void *gpa)
++static void set_irq_line_thread(void *data)
 +{
-+	unsigned long *pte;
-+	int l;
++	/* Wait until other CPU entered L2 */
++	while (get_test_stage(data) != 1)
++		;
 +
-+	for (l = PAGE_LEVEL; l > 0; --l) {
-+		pte = get_pte_level(pml4e, gpa, l);
-+		*pte &= ~(PT_AD_MASK);
-+		if (*pte & PT_PAGE_SIZE_MASK)
-+			break;
++	/* Set irq-line 0xf to raise vector 0x78 for vCPU 0 */
++	ioapic_set_redir(0xf, 0x78, TRIGGER_LEVEL);
++	set_test_stage(data, 2);
++}
++
++static void irq_78_handler_guest(isr_regs_t *regs)
++{
++	set_irq_line(0xf, 0);
++	vmmcall();
++	eoi();
++	vmmcall();
++}
++
++static void svm_apic_passthrough_guest(struct svm_test *test)
++{
++	handle_irq(0x78, irq_78_handler_guest);
++	sti();
++
++	/* If requested, wait for other CPU to trigger ioapic scan */
++	if (get_test_stage(test) < 1) {
++		set_test_stage(test, 1);
++		while (get_test_stage(test) != 2)
++			;
++	}
++
++	set_irq_line(0xf, 1);
++}
++
++static void svm_disable_intercept_for_x2apic_msrs(void)
++{
++	for (u32 msr = APIC_BASE_MSR; msr <= (APIC_BASE_MSR+0xff); ++msr) {
++		int bit_nr = get_msrpm_bit_nr(msr);
++
++		__clear_bit(bit_nr, msr_bitmap);
++		__clear_bit(bit_nr + 1, msr_bitmap);
 +	}
 +}
 +
-+/*
-+ * clear_npt_ad : Clear NPT A/D bits for the page table walk and the final
-+ * GPA of a guest address.
-+ */
-+static void clear_npt_ad(u64 *pml4e, unsigned long *guest_cr3,
-+			 void *gva)
++static void svm_apic_passthrough_prepare(struct svm_test *test,
++					 bool set_irq_line_from_thread)
 +{
-+	unsigned long *pte = guest_cr3, gpa;
-+	u64 offset_in_page;
-+	int l;
-+
-+	for (l = PAGE_LEVEL; l > 0; --l) {
-+		pte = get_pte_level(guest_cr3, gva, l);
-+
-+		clear_npt_ad_pte(pml4e, (void *)pte);
-+
-+		assert(*pte & PT_PRESENT_MASK);
-+		if (*pte & PT_PAGE_SIZE_MASK)
-+			break;
-+	}
-+
-+	pte = get_pte_level(guest_cr3, gva, l);
-+	offset_in_page = (u64)gva &  ((1 << PGDIR_BITS(l)) - 1);
-+	gpa = (*pte & PT_ADDR_MASK) | ((u64)gva & offset_in_page);
-+	clear_npt_ad_pte(pml4e, (void *)gpa);
-+}
-+
-+/*
-+ * found_bad_npt_ad : Check the NPT A/D bits at each level for GPA being
-+ * translated. Note that non-leaf NPT levels encountered during translation
-+ * only have the access bit set.
-+ *
-+ * Returns true if incorrect NPT A/D bits are found. Returns false otherwise.
-+ */
-+static bool found_bad_npt_ad(u64 *pml4e, void *gpa, int guest_level,
-+			     int expected_ad)
-+{
-+	int l, expected_ad_level;
-+	unsigned long *pte;
-+	bool leaf;
-+
-+	for (l = PAGE_LEVEL; l > 0; --l) {
-+		pte = get_pte_level(pml4e, gpa, l);
-+		leaf = (l == 1) || (*pte & PT_PAGE_SIZE_MASK);
-+		expected_ad_level = expected_ad;
-+
-+		/* The dirty bit is only set on leaf PTEs */
-+		if (!leaf)
-+			expected_ad_level = expected_ad & ~PT_DIRTY_MASK;
-+
-+		if ((*pte & PT_AD_MASK) != expected_ad_level) {
-+			report_fail("NPT - guest level %d npt level %d page table received: A=%d/D=%d, expected A=%d/D=%d",
-+				    guest_level,
-+				    l,
-+				    !!(*pte & PT_ACCESSED_MASK),
-+				    !!(*pte & PT_DIRTY_MASK),
-+				    !!(expected_ad & PT_ACCESSED_MASK),
-+				    !!(expected_ad & PT_DIRTY_MASK));
-+			return true;
-+		}
-+
-+		if (leaf)
-+			break;
-+	}
-+
-+	return false;
-+}
-+
-+/*
-+ * check_npt_ad : Check the content of NPT A/D bits for the page table walk
-+ * and the final GPA of a guest address.
-+ */
-+static void check_npt_ad(u64 *pml4e, unsigned long *guest_cr3,
-+			 void *gva, int expected_gpa_ad)
-+{
-+	unsigned long *pte = guest_cr3, gpa;
-+	u64 *npt_pte, offset_in_page;
-+	bool bad_pt_ad = false;
-+	int l;
-+
-+	for (l = PAGE_LEVEL; l > 0; --l) {
-+		pte = get_pte_level(guest_cr3, gva, l);
-+		npt_pte = npt_get_pte((u64) pte);
-+
-+		if (!npt_pte) {
-+			report_fail("NPT - guest level %d page table is not mapped.\n", l);
-+			return;
-+		}
-+
-+		if (!bad_pt_ad)
-+			bad_pt_ad |= found_bad_npt_ad(pml4e, (void *)pte, l, PT_AD_MASK);
-+
-+		assert(*pte & PT_PRESENT_MASK);
-+		if (*pte & PT_PAGE_SIZE_MASK)
-+			break;
-+	}
-+
-+	pte = get_pte_level(guest_cr3, gva, l);
-+	offset_in_page = (u64)gva &  ((1 << PGDIR_BITS(l)) - 1);
-+	gpa = (*pte & PT_ADDR_MASK) | ((u64)gva & offset_in_page);
-+
-+	npt_pte = npt_get_pte(gpa);
-+
-+	if (!npt_pte) {
-+		report_fail("NPT - guest physical address is not mapped");
++	if (set_irq_line_from_thread && (cpu_count() < 2)) {
++		report_skip("%s : CPU count < 2", __func__);
 +		return;
 +	}
 +
-+	found_bad_npt_ad(pml4e, (void *)gpa, l, expected_gpa_ad);
-+	report((*npt_pte & PT_AD_MASK) == expected_gpa_ad,
-+	       "NPT - guest physical address received: A=%d/D=%d, expected A=%d/D=%d",
-+	       !!(*npt_pte & PT_ACCESSED_MASK),
-+	       !!(*npt_pte & PT_DIRTY_MASK),
-+	       !!(expected_gpa_ad & PT_ACCESSED_MASK),
-+	       !!(expected_gpa_ad & PT_DIRTY_MASK));
-+}
-+
-+static void npt_ad_read_guest(struct svm_test *test)
-+{
-+	(void)*(volatile u64 *)scratch_page;
-+}
-+
-+static void npt_ad_write_guest(struct svm_test *test)
-+{
-+	*((u64 *)scratch_page) = 42;
-+}
-+
-+static void npt_ad_test(void)
-+{
-+	unsigned long *guest_cr3 = (unsigned long *) vmcb->save.cr3;
-+
-+	if (!npt_supported()) {
-+		report_skip("NPT not supported");
++	/* Test device is required for generating IRQs */
++	if (!test_device_enabled()) {
++		report_skip("%s : No test device enabled", __func__);
 +		return;
 +	}
 +
-+	scratch_page = alloc_page();
++	vmcb->control.intercept &= ~(1ULL << INTERCEPT_MSR_PROT);
++	svm_disable_intercept_for_x2apic_msrs();
 +
-+	clear_npt_ad(npt_get_pml4e(), guest_cr3, scratch_page);
++	vmcb->control.intercept &= ~(1ULL << INTERCEPT_INTR);
 +
-+	test_set_guest(npt_ad_read_guest);
-+	svm_vmrun();
-+
-+	/*
-+	 * NPT walks for guest page tables are write accesses by default unless
-+	 * read-only guest page tables are used. As a result, we expect the
-+	 * dirty bit to be set on NPT mappings of guest page tables. Since the
-+	 * access itself is a read, we expect the final translation to not have
-+	 * the dirty bit set.
-+	 */
-+	check_npt_ad(npt_get_pml4e(), guest_cr3, scratch_page, PT_ACCESSED_MASK);
-+
-+	test_set_guest(npt_ad_write_guest);
-+	svm_vmrun();
-+
-+	check_npt_ad(npt_get_pml4e(), guest_cr3, scratch_page, PT_AD_MASK);
-+
-+	report(*((u64 *)scratch_page) == 42, "Expected: 42, received: %ld",
-+	       *((u64 *)scratch_page));
-+
-+	clear_npt_ad(npt_get_pml4e(), guest_cr3, scratch_page);
++	if (set_irq_line_from_thread) {
++		on_cpu_async(1, set_irq_line_thread, test);
++	} else {
++		ioapic_set_redir(0xf, 0x78, TRIGGER_LEVEL);
++		set_test_stage(test, 2);
++	}
 +}
 +
- #define NPT_V1_TEST(name, prepare, guest_code, check)				\
- 	{ #name, npt_supported, prepare, default_prepare_gif_clear, guest_code,	\
- 	  default_finished, check }
-@@ -395,6 +572,7 @@ static struct svm_test npt_tests[] = {
- 	NPT_V1_TEST(npt_l1mmio, npt_l1mmio_prepare, npt_l1mmio_test, npt_l1mmio_check),
- 	NPT_V1_TEST(npt_rw_l1mmio, npt_rw_l1mmio_prepare, npt_rw_l1mmio_test, npt_rw_l1mmio_check),
- 	NPT_V2_TEST(svm_npt_rsvd_bits_test),
-+	NPT_V2_TEST(npt_ad_test),
- 	{ NULL, NULL, NULL, NULL, NULL, NULL, NULL }
- };
- 
++static void svm_apic_passthrough_test_prepare(struct svm_test *test)
++{
++	svm_apic_passthrough_prepare(test, false);
++}
++
++static void svm_apic_passthrough_thread_test_prepare(struct svm_test *test)
++{
++	svm_apic_passthrough_prepare(test, true);
++}
++
++static bool svm_apic_passthrough_test_finished(struct svm_test *test)
++{
++	u32 exit_code = vmcb->control.exit_code;
++
++	report(exit_code == SVM_EXIT_VMMCALL, "Expected VMMCALL VM-Exit, got exit reason 0x%x",
++	       exit_code);
++
++	switch (get_test_stage(test)) {
++	case 2:
++		/* Jump over VMMCALL instruction */
++		vmcb->save.rip += 3;
++
++		/* Before EOI remote_irr should still be set */
++		report(1 == (int)ioapic_read_redir(0xf).remote_irr,
++			"IOAPIC pass-through: remote_irr=1 before EOI");
++		set_test_stage(test, 3);
++		return false;
++	case 3:
++		/* Jump over VMMCALL instruction */
++		vmcb->save.rip += 3;
++
++		/* After EOI remote_irr should be cleared */
++		report(0 == (int)ioapic_read_redir(0xf).remote_irr,
++			"IOAPIC pass-through: remote_irr=0 after EOI");
++		set_test_stage(test, 4);
++		return false;
++	case 4:
++		break;
++	default:
++		report_fail("Unexpected stage %d", get_test_stage(test));
++	}
++
++	return true;
++}
++
++static bool svm_apic_passthrough_test_check(struct svm_test *test)
++{
++	return get_test_stage(test) == 4;
++}
++
++static void svm_apic_passthrough_tpr_threshold_guest(struct svm_test *test)
++{
++	cli();
++	apic_set_tpr(0);
++}
++
++static bool svm_apic_passthrough_tpr_threshold_ipi_isr_fired;
++static void svm_apic_passthrough_tpr_threshold_ipi_isr(isr_regs_t *regs)
++{
++	svm_apic_passthrough_tpr_threshold_ipi_isr_fired = true;
++	eoi();
++}
++
++static void svm_apic_passthrough_tpr_threshold_test(void)
++{
++	int ipi_vector = 0xe1;
++
++	vmcb->control.intercept &= ~(1ULL << INTERCEPT_MSR_PROT);
++	svm_disable_intercept_for_x2apic_msrs();
++
++	vmcb->control.intercept &= ~(1ULL << INTERCEPT_INTR);
++	vmcb->control.int_ctl &= ~V_INTR_MASKING_MASK;
++
++	/* Raise L0 TPR-threshold by queueing vector in LAPIC IRR */
++	cli();
++	apic_set_tpr((ipi_vector >> 4) + 1);
++	apic_icr_write(APIC_DEST_SELF | APIC_DEST_PHYSICAL |
++			APIC_DM_FIXED | ipi_vector,
++			0);
++
++	test_set_guest(svm_apic_passthrough_tpr_threshold_guest);
++	clgi();
++	svm_vmrun();
++	stgi();
++
++	report(apic_get_tpr() == 0, "TPR was zero by guest");
++
++	/* Clean pending self-IPI */
++	svm_apic_passthrough_tpr_threshold_ipi_isr_fired = false;
++	handle_irq(ipi_vector, svm_apic_passthrough_tpr_threshold_ipi_isr);
++	sti_nop();
++	report(svm_apic_passthrough_tpr_threshold_ipi_isr_fired, "self-IPI fired");
++}
++
+ struct svm_test svm_tests[] = {
+ 	{ "null", default_supported, default_prepare,
+ 	  default_prepare_gif_clear, null_test,
+@@ -3694,6 +3861,14 @@ struct svm_test svm_tests[] = {
+ 	{ "vgif", vgif_supported, prepare_vgif_enabled,
+ 	  default_prepare_gif_clear, test_vgif, vgif_finished,
+ 	  vgif_check },
++	{ "apic_passthrough", default_supported, svm_apic_passthrough_test_prepare,
++	  default_prepare_gif_clear, svm_apic_passthrough_guest,
++	  svm_apic_passthrough_test_finished, svm_apic_passthrough_test_check},
++	{ "apic_passthrough_thread", default_supported,
++	  svm_apic_passthrough_thread_test_prepare, default_prepare_gif_clear,
++	  svm_apic_passthrough_guest, svm_apic_passthrough_test_finished,
++	  svm_apic_passthrough_test_check},
++	TEST(svm_apic_passthrough_tpr_threshold_test),
+ 	TEST(svm_cr4_osxsave_test),
+ 	TEST(svm_guest_state_test),
+ 	TEST(svm_vmrun_errata_test),
 -- 
 2.53.0.851.ga537e3e6e9-goog
 
