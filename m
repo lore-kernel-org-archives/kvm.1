@@ -1,201 +1,274 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f47.google.com (mail-pj1-f47.google.com [209.85.216.47])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5466C39478F;
-	Thu, 12 Mar 2026 19:22:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=192.198.163.16
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773343325; cv=fail; b=CqQfa3+5jYkZsnKHVLSdSFrV2BODa5p/o+rpk77I8wRsGtVlyGi0yywyeAPc1zvprob4F8yebu5hfr+OvlzeS1lZ7xgBt3I6/yd0VRTmNvzs/RvOpaWVhqgG9bpx4AOEXsSGXl8yCqISZcFw7KsFWvPckYu+NR1E1BT6CVW0G7M=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773343325; c=relaxed/simple;
-	bh=iWtg2wP14oNxLaD1TFv7o0V2sc5a1d+vdcaqQfjYVHk=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=FgkjuLSyVBBp/aoQyB4HY+Oo4aIsdheeaQ/wc9AsjXh7IOZy1RzWIsnrYrHBJxmsCFwIhYoWfhY/KpnMSbT8HZ1dhA+Z0y6u91cBqDYPoTpukh62SN6bGQ+zqX7GkZPEbn2Q5GxzMPq5WdTmr9PfZJ6V7gpB9iYhB2DCCK5A3NM=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=OLUT9PO+; arc=fail smtp.client-ip=192.198.163.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5541337C933
+	for <kvm@vger.kernel.org>; Thu, 12 Mar 2026 19:24:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.47
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1773343475; cv=none; b=BMwqc0AvRyCUB5ts0ZixR/Hd5X9ZG5lcWC/hNQBuv/ysgguX5QIpuv9KL0XNJ4fZqAFlCKUaf5aC4MOcQzLOQ3tEr76NcQPIWbJs04AQ5sJ4JeI9RFLzrEI7ZNIE2kX4NsVSO+CZ0PUGpKCrlwh69JzbFZhaRw141yv3GsKo8Xs=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1773343475; c=relaxed/simple;
+	bh=xUOE+P8FDO9EGfqDlA45VndK29UzQdfQjftwfdnIkgs=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=uUd+HozmZa/11xkvpq4plhgY3AN5TRJDRuU0+1EiIU/AADBSQtHHEwQjLBQjfYWt0Te9oOYwrSczCWk9L/TX8qsT+Q/zr2fhjhRP58sJkDH6Y536ZXeVxx3ycceWzsU6mDNgi2ZaAFKTkIeWdBGOWPLFfcP08Xt32boVp92IIVg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=KnbhL9/1; arc=none smtp.client-ip=209.85.216.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="OLUT9PO+"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1773343324; x=1804879324;
-  h=from:to:cc:subject:date:message-id:references:
-   in-reply-to:content-id:content-transfer-encoding:
-   mime-version;
-  bh=iWtg2wP14oNxLaD1TFv7o0V2sc5a1d+vdcaqQfjYVHk=;
-  b=OLUT9PO+hmP+Twzm45NYav3320NQ79XSgNXlKldecQX7mlkmgnglqaOm
-   ZBdfNDa81OiRHPH+fntsIlVonpS0R40HBwo7WUQHqUUb5Q/YBeElT35OB
-   fveOULRG1YMj6yolrAlfeg+ZimXFh/8IIDtaN8nhboZEPYM5KT3MDKd7t
-   OGvEEHZptcq7kSkAxXSFr+DROWHXlGs90yj+uwrCDYagPjeUz94Q+WS4t
-   YbWU0CYTcvKrlKCV+H9jUtKag2VxhkDCPpdKJibMKVmXPp/BJLwbN5iZZ
-   rfcwYOWMzieT5zsUmBcaAFSwnBd0TqXrm1+llgYXdmvazv8j04y/bO7pp
-   Q==;
-X-CSE-ConnectionGUID: DcNqLizSS2uZ+1YTGmsgLw==
-X-CSE-MsgGUID: bFDBBA9PS/SxwpZGNr5KaA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11727"; a="62023019"
-X-IronPort-AV: E=Sophos;i="6.23,116,1770624000"; 
-   d="scan'208";a="62023019"
-Received: from orviesa008.jf.intel.com ([10.64.159.148])
-  by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Mar 2026 12:22:03 -0700
-X-CSE-ConnectionGUID: tKAz2NWIS2+AR8mQHWMcEw==
-X-CSE-MsgGUID: SUMjEuk5QQOr+siSer4oow==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,116,1770624000"; 
-   d="scan'208";a="220988691"
-Received: from fmsmsx902.amr.corp.intel.com ([10.18.126.91])
-  by orviesa008.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Mar 2026 12:22:03 -0700
-Received: from FMSMSX902.amr.corp.intel.com (10.18.126.91) by
- fmsmsx902.amr.corp.intel.com (10.18.126.91) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.37; Thu, 12 Mar 2026 12:22:02 -0700
-Received: from fmsedg903.ED.cps.intel.com (10.1.192.145) by
- FMSMSX902.amr.corp.intel.com (10.18.126.91) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.37 via Frontend Transport; Thu, 12 Mar 2026 12:22:02 -0700
-Received: from PH8PR06CU001.outbound.protection.outlook.com (40.107.209.64) by
- edgegateway.intel.com (192.55.55.83) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.37; Thu, 12 Mar 2026 12:22:02 -0700
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=FH6XN0L7jw/c7mtFls/iEXRdrtaFZfr6Gbqp5Q4wbNDD5KuZtBeZZDvciwkuOPnBWLTmdS99dAdRezSmpsHsk1RblKmOxLDo3dHTozrKfiwp/FGK54yLh6Sr4Xg0YS69fEBJBpcdkZ7PqZnqyX1GTJ70Exr40PloBN6S+H/92DtXNkO6HDLKr6Oejs6J0jezSi2HEr7metyCrBpTrFO/atce9dCDXeA9NyetAiOdq3eyoJoR0RLXZXIjfy97tNeKd7XOB3fcgHj7ARHNJPlrCfx6H/di9WiWA5U7k4KbQzlPe+ZGiWJwqO8H9Xvx2TC/MTOHOVxOrlLN7pZeOtSMLA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=iWtg2wP14oNxLaD1TFv7o0V2sc5a1d+vdcaqQfjYVHk=;
- b=fHW/sUxMu3Y65n5m79XrcQUg1wp9bqno8yR4OAT1PyPgplmD9Vzol3fxhdWBMT09Xdgkz3GQ5b9jsWE2B1/CcrG/YORM9qNKdGUIaZi35q1RQU0uO03DZxZ7A/dbULV5Jzhn+vnNnJqamoMSIQgVXaxlFjOILYKQhyY+ikgci+O/JF6oaFtSOwAE+0EmwIipjegMLp75PW8+6+9zaGsAgK2c3Mjr+VeE9WRFHqeBg4zAWeH5SIBHvvPvDeW8dzTM8NbQfwtQo4rXIdZ/uNIpEPg7rCZNw2Zhg+QP8mlxa1vNTuWLduzgzk8EZuhNFEDuBVAyPZtkHOgBafcBYr9UYA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Received: from MN0PR11MB5963.namprd11.prod.outlook.com (2603:10b6:208:372::10)
- by SA3PR11MB7414.namprd11.prod.outlook.com (2603:10b6:806:31c::19) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9723.4; Thu, 12 Mar
- 2026 19:21:58 +0000
-Received: from MN0PR11MB5963.namprd11.prod.outlook.com
- ([fe80::3ad:5845:3ab9:5b65]) by MN0PR11MB5963.namprd11.prod.outlook.com
- ([fe80::3ad:5845:3ab9:5b65%6]) with mapi id 15.20.9678.017; Thu, 12 Mar 2026
- 19:21:58 +0000
-From: "Edgecombe, Rick P" <rick.p.edgecombe@intel.com>
-To: "kvm@vger.kernel.org" <kvm@vger.kernel.org>, "linux-coco@lists.linux.dev"
-	<linux-coco@lists.linux.dev>, "linux-kernel@vger.kernel.org"
-	<linux-kernel@vger.kernel.org>, "Gao, Chao" <chao.gao@intel.com>,
-	"x86@kernel.org" <x86@kernel.org>
-CC: "Huang, Kai" <kai.huang@intel.com>, "dave.hansen@linux.intel.com"
-	<dave.hansen@linux.intel.com>, "tony.lindgren@linux.intel.com"
-	<tony.lindgren@linux.intel.com>, "binbin.wu@linux.intel.com"
-	<binbin.wu@linux.intel.com>, "seanjc@google.com" <seanjc@google.com>, "Weiny,
- Ira" <ira.weiny@intel.com>, "Chatre, Reinette" <reinette.chatre@intel.com>,
-	"Verma, Vishal L" <vishal.l.verma@intel.com>, "nik.borisov@suse.com"
-	<nik.borisov@suse.com>, "mingo@redhat.com" <mingo@redhat.com>,
-	"kas@kernel.org" <kas@kernel.org>, "Annapurve, Vishal"
-	<vannapurve@google.com>, "sagis@google.com" <sagis@google.com>, "Duan,
- Zhenzhong" <zhenzhong.duan@intel.com>, "tglx@kernel.org" <tglx@kernel.org>,
-	"paulmck@kernel.org" <paulmck@kernel.org>, "hpa@zytor.com" <hpa@zytor.com>,
-	"bp@alien8.de" <bp@alien8.de>, "yilun.xu@linux.intel.com"
-	<yilun.xu@linux.intel.com>, "Williams, Dan J" <dan.j.williams@intel.com>
-Subject: Re: [PATCH v4 09/24] x86/virt/seamldr: Check update limit before TDX
- Module updates
-Thread-Topic: [PATCH v4 09/24] x86/virt/seamldr: Check update limit before TDX
- Module updates
-Thread-Index: AQHcnCz7d3DLAeeagUq/RUL7jSdHg7WrcqKA
-Date: Thu, 12 Mar 2026 19:21:58 +0000
-Message-ID: <651ca665d5f58ac9afd01de32aa5d6053a254ab4.camel@intel.com>
-References: <20260212143606.534586-1-chao.gao@intel.com>
-	 <20260212143606.534586-10-chao.gao@intel.com>
-In-Reply-To: <20260212143606.534586-10-chao.gao@intel.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-user-agent: Evolution 3.44.4-0ubuntu2.1 
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: MN0PR11MB5963:EE_|SA3PR11MB7414:EE_
-x-ms-office365-filtering-correlation-id: 7eda3e4f-4c43-4f54-1711-08de806ca123
-x-ld-processed: 46c98d88-e344-4ed4-8496-4ed7712e255d,ExtAddr
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;ARA:13230040|376014|7416014|1800799024|366016|38070700021|22082099003|56012099003|18002099003;
-x-microsoft-antispam-message-info: kqBrchLreuOYV7mAgXbeKwayazDZKpDI6Bj7GvoNNPd5J/8LuIUgbgLYiGC2rz4ydl2YZgOgZjXAvhcyUntHddP7hD9sFlTTxdtbT8ZmrAHlAJGbMCQrRy8+lK1j2N/6dfqgiSkJZHIXLy9VzS3Bh/Ypxnbqoe/1ntvODTcYDq9jv4Xbm0DgO9OiKzpKo0epzZdaSk/fx0IWzYRDCoDZdVMo/HZigFGGbnIlrRZ5aB+raRE5kONmEpAcmAiEDP4vaohLCAUP8GveB2OcGFNE7lPGBbtWtS+sMhzEC4ri/EKCC3FO5tAMYywSBE4CYhl2Y52pjmRNZZCpjDWsKbG/jA8w9umRP351Z5BF//uS9WF2ovkPShDHvqy0SsPtZvJYBeojX7gMiY1dz4qL2PUy5uafoHxYseAmstvpmd6fsZwlzAYbsl9jCwKotJGGxJKDMad/iNNC1bWTL35iA1RsrBdDov/kzkZukPqTy/Dx5aFPVGKSFBrSWG7W94lmdrrQ2ZjK4lsSlvOqY2KK/+QsPQvrUg75gerKxdMiit0rgEM/ENscBVMT2pArPoUQKv2i3jrF+Cout4vq9nYpNk9N+YGXb5whf9fdFfMXN9hit0om9LHmpX5ElvRE/sMSaefZkxshM+H9iaZu7/hv0bT4nNQnZOB+JUm8yFfz2k4R2rqQgIT0WC7HKJaEwd6HCknHAlM346wYDsbZDsGBL3IG0wVCa44SebLM9hnMP/v/EYMkv4DQFGkExyAaSL6hAz+WBFtQCSzZ3G3LKe4y1KgUNzs5r8STI3tm9lX0xsDFBIo=
-x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MN0PR11MB5963.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(1800799024)(366016)(38070700021)(22082099003)(56012099003)(18002099003);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?utf-8?B?OEVpT0V3dTYxNUhZRzR3V2NYQks1RTZiL0doV2J6Z255dDBpRlpwenVNblQx?=
- =?utf-8?B?STc3SXgxNzV6b1psRmpuRDR0OCsvcnNSTkh2U2I3akkxNjBuM2crdERldkYr?=
- =?utf-8?B?WGU1S2tCUkl4SEtMd1Y5eHFRcmdRZVVpZ3ZJc1FNYksyZmxwSVFpcmcvM09K?=
- =?utf-8?B?VUVvaXhtaUcrL1c3cGFVWUxBdFdYc0VqVGpoaXNDNFVPVDdRMkRPMUoxQkd3?=
- =?utf-8?B?K2h1ME5QSE9rT3pvUW45S0VHL1NESUdTaWgvMXhyZURYQ1Fob2tmY1cwUTRu?=
- =?utf-8?B?Q1E4NXNWVEtCRkJqL1NJR1RzTGxqRVl4bjE4SGExdDJqZkxmVnlUbXdjY0s1?=
- =?utf-8?B?QWM3YWhQZU1ScUVZbW45L2VVczhpRXFwTTgvSm9lcVl1bzZxQVNFSWNOMHlN?=
- =?utf-8?B?am03d0lQcXRpWEZleGNZeWZtZ0crdlRTQWo2SEJuVERzTFR2eFRvVi9OVHhO?=
- =?utf-8?B?czVZYURuV25RNzhXS29Sb2EwYS9kbTdsTXhqVjBDbkVvSVR5U3BVVjVXUHFZ?=
- =?utf-8?B?R200T3pwYzVpbDk3T0hudVh6WDVpeDZ6MWlzbVNheUNKRTM2ZHZtT2dpQUVl?=
- =?utf-8?B?QWJSSTZxWjRVNUg3aWpMRGxLdmJ4MkNjazQyejFRWklPQkJIR1B3a1RSMldW?=
- =?utf-8?B?QllYL283WHVKeTV3TnQrcGdlT0U2UVNvSGN3dXgvRllCWEVnQ1pyVkZoQzgw?=
- =?utf-8?B?d1NyRG9pRUJsVDVGZnNTVGRsM3kwV0xRV2ZtRFEzZnZzMFJGNXRaZmhuSWFq?=
- =?utf-8?B?YTQ3YlNUcHY5c2d5RG5OYVE3TnQyT3grd3ZheG5HbDU1RVJ5YUhPSmMxNGlL?=
- =?utf-8?B?c1FwRTNNMTAzV05tZ3hZa1UzdEo0a1JtLzZrWWUwdDVUZysxek5yeWhxZHJM?=
- =?utf-8?B?R0RFT2xBOU1lcE5yakxPVzdCTllBR1ZraTlGNjErWStPcFpwM0ZXUnFFUkVL?=
- =?utf-8?B?MEdzcmY5NHh5OE94WE1zbW11eE56TDZBZGc5OFk2ZmhhTjNoeXVScVNob3Bq?=
- =?utf-8?B?RmVSZ09hcDA3b3Z0UVI0Z3JTUkRYNXU4WWNmMnVOdnRENDlwdDZvMVZSTEZR?=
- =?utf-8?B?VzZDNlhnRy9OenNaeGE1Tys5Z2NtaGltaDc3ZUVXbXJuVCswQ2JLaWZHOXJo?=
- =?utf-8?B?QTFpN3hDTmxhc1RDbU0zV2NyNWN4aWo4RlBFVGxjbms4SzdCdVFwL3hIWTFa?=
- =?utf-8?B?OG9DUHhSRGJOb2dFRm1uVzgvVzNDd1QzS2o1T2g0NG9MbzFsUGE5Q2JxNU1V?=
- =?utf-8?B?TnplZThIMlhoUlMvNzNzSFg2UmpGZk82Ylc0Wi8yZ0h2Q1FUMForeUczNzcy?=
- =?utf-8?B?d1JudTJRYzlOeE5ENWhzdjJUTWRPOVpWM3d2OXFKTHB1Mm9udDNQSDRYME05?=
- =?utf-8?B?WmNPdWw3T3E3QXYwRlljQnBSWWtYVjVPcmZ6Mm90UkdOcTVwZ2N0TjVKeHho?=
- =?utf-8?B?Uy95Wldkc2JiZEdyMVE0N0IzSEFWOXNZek02NERtSTAxcFZRL3U2OERTUHk1?=
- =?utf-8?B?WlozOHg2eFlXdWM1UE9ZeVBEMHpsYTkxeEpkaVhXQkI0SytoQUE5cHJjSWJ0?=
- =?utf-8?B?MisxOHUxb2FrWGFzaHdkcm5NQlVYZThNT1UySnV3d2FRR0syRXphYmFUTnND?=
- =?utf-8?B?NnRET2hsQ2ZDSVQ1ektFYmM1dHpxYkFFak5aT2hUTzVKRW1qSGwzeUp3UlZj?=
- =?utf-8?B?dUdRKzZuRFVkcytKckFrblFvZjUxMEZTTlEwYkcyYmxIVWxTazczQncycnVj?=
- =?utf-8?B?Y212a2RxMmRoOVFELzV0MFg3MVR3dWRZRnQ2VUtmemtuUTVGUFZYMTVqVUdG?=
- =?utf-8?B?V3dvTlJzL1RmQWhvOVd1NmdORUw4b282M3dkaW1uRkhPRHdvalF5dU1zOXJS?=
- =?utf-8?B?dlUwZTZvWDNzYUQ3cjIxVzEvWnN6Z0RVVTRoRFJ4aHMza3A5bGtFZ0dKN3hv?=
- =?utf-8?B?SlNMWDZkQmoyci9vY0lzMWhNbDVDZDZjb3ZCOFFsV283WjFOM3BoUENEK0RT?=
- =?utf-8?B?bU45SlBJYWlZU3puREkrOS9iYUxDNDNMYklpSUE2ekxnU3N1cU5keFF3K2FW?=
- =?utf-8?B?Z0tkN3RDaDNZVUQ1eldFQ2xFM2tOdmh3U1hTWndjdWc3UUxCYzY4cVFVaHJR?=
- =?utf-8?B?N2RBajNhSlNueGpTM3VFeFZISUFWSWxORFlCc0swVmlienZLT3BjeGg0SWMw?=
- =?utf-8?B?TW11RHJ1NG9qK1ZVR1dYSm0rdHlkWDh1cEhaRDVVWHlYekRWNnNJTXNhK1dk?=
- =?utf-8?B?cFA4dEwwcGhMWGJjclhjZlE4a084V1U4UHBvVVI1bXM2VTF2YjIzT1NoRWl0?=
- =?utf-8?B?WThpM01qYnk2WWswazVvZEYzNThmc01Vc0hOSEpHQm5hUTNBTUc1N0Y0R3F4?=
- =?utf-8?Q?SZe50a+ORBU8JqOE=3D?=
-Content-Type: text/plain; charset="utf-8"
-Content-ID: <6DE968A236E3F24AA41E3E83AE1C5EBC@namprd11.prod.outlook.com>
-Content-Transfer-Encoding: base64
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="KnbhL9/1"
+Received: by mail-pj1-f47.google.com with SMTP id 98e67ed59e1d1-354bc7c2c46so906257a91.0
+        for <kvm@vger.kernel.org>; Thu, 12 Mar 2026 12:24:34 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1773343474; x=1773948274; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=WGesEaqRXeTFjySbmfsSG99nSKH/WuuUlsI/nlH1fCo=;
+        b=KnbhL9/1bYZJTKH3kG7tB+++EDXy88E+ouesiCjweeyeTeaS+SGD5NG79tzSXyzIYE
+         fHkzUPvrJYz+s14uXzD7dmlR8ujubxi87TdOafhzD5fEhAE30FpEAkuCd8rFEsYGgffD
+         6xOjYDaXmqtsNwpvHT6ZGAx3xLtRxdW7ZGj3qhqzGW+6pKP76NBGN9TwzH330LyV7+MV
+         dxA0QsbugjQ+wQ6Mty9qJ3ggr55mkv5hpI0SUCXa7R3wyG+EPX8PH+uCaIZcUNxlHN4r
+         kdIy6gORiCEoSVOCcoVQMUzLusjjclqBi/6ldTrrARt608ZKH6L1Ob5wBQ142lA/h1wz
+         QQAg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1773343474; x=1773948274;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=WGesEaqRXeTFjySbmfsSG99nSKH/WuuUlsI/nlH1fCo=;
+        b=oJJK4o1hTssmMSiyHAJFP7wzMSwTEY7fdKLJCKFGeSXXqsavS3YkJ/c8AVqsW5inQF
+         4pHIIX16iscSPkMPU3GFOKRfMFD7NG4k+pWW9L5F5CWBl6YiUX4VvBt6IfBcXzrSrDhw
+         oxNKBJC/kJ0kfEpwjXI+hmocSZIUe/VukFCt0QuhozjQBZpTm73w6luGmcMVSP+uiKz2
+         39N+Ep0XOGXZzFWrYpmd2r2qTsGW1VGvSW9fxQjtSP3QiwFGalMXH6SchXJqnxgio0I3
+         EChpp2hcY/1lLe44CawTMU5qBGagioJk5o2X+7rTADt8rN2X+1XaaZylgx/1JSNyZbXY
+         tVKg==
+X-Forwarded-Encrypted: i=1; AJvYcCW3re0CayXKmvjAjpXKEwXSGuHJ6nFUgf0wv4B/65F6sqrC8ImSHEyjOUHRrDNHJrtCOqg=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw67pWu3xsL7Fncqrym23bwvWcgYFVKn0d2acgutKAfe8GxQY0W
+	lBTBvUX/OM6EV+yIlYs+CKZmgVyNRez0YZROnegRCo3WaXK2UdUk0qOj
+X-Gm-Gg: ATEYQzw9QDae03vevbAZJFgJQZyQTtGaS/n/YtEpZX+fscnu8txRZeXfKl7XxIixvwP
+	s9CaSgsVn11caUKRHLQeb1ER6CZiZq1vjt+D9SsMxeFYbPtT1XcCVOByqutlRwUPksmrMYbwB8A
+	4wvj2KtRfa6nP1Z1SqwetxgygCqIMZAiMo6qTKipIquCuowrSlwj9BuC2OM7b8UBzvWnv6UqKxn
+	satoP6Y6P853ktAkg0FjNLt0u4haoBQpql9TKh0PlQaGxunJWVNIgkKepeogTH2EEfPDAlgPGPp
+	WldZvhrqjRP/eOCaGmbJe47UqiAmx5NGgJwtbGqy/eB+2TcFd3NkdGuK0UiaT4G93aPioEvleD8
+	5zVgfkbzZ+0bXZXz7ViQbcVIly2nDVMZ9Pcwqvv8+ymLiT831Jdc2j5EDx0saaA9lNV/WTx/sJ1
+	+uuGHMmD9v4ej3L7Ab77oY8VQ1OsesexmIgTNm
+X-Received: by 2002:a17:90b:1e45:b0:359:f0e1:f8c9 with SMTP id 98e67ed59e1d1-35a21efae49mr641423a91.6.1773343473458;
+        Thu, 12 Mar 2026 12:24:33 -0700 (PDT)
+Received: from localhost ([115.96.18.169])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-35a22cc1c91sm96857a91.1.2026.03.12.12.24.32
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 12 Mar 2026 12:24:32 -0700 (PDT)
+Date: Fri, 13 Mar 2026 00:54:28 +0530
+From: shaikh kamaluddin <shaikhkamal2012@gmail.com>
+To: Paolo Bonzini <pbonzini@redhat.com>
+Cc: Sean Christopherson <seanjc@google.com>,
+	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+	kvm@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-rt-devel@lists.linux.dev
+Subject: Re: [PATCH] KVM: mmu_notifier: make mn_invalidate_lock non-sleeping
+ for non-blocking invalidations
+Message-ID: <abMS7MALNrmluvh5@acer-nitro-anv15-41>
+References: <20260209161527.31978-1-shaikhkamal2012@gmail.com>
+ <20260211120944.-eZhmdo7@linutronix.de>
+ <aYyhfvC_2s000P7H@google.com>
+ <aactOOfirdVRYfNS@acer-nitro-anv15-41>
+ <ae2143b3-ce28-4c87-afcf-1505694246d8@redhat.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Exchange-RoutingPolicyChecked: FnV8F6qyAQZzCwKDEpk3Af0Msh3/yZ6GneZLHTpjhuBkljwFgo/yX1bVpZI0DYR8vVBtka1Kw7tvRn3GIvxNVL7jsD/DiuqFcE/6yt0F+ZVDvmTTx5wOhi9QdiwYYd52M5+qeU6SarFwoiXpqR0wMV65Hvl/+GAFo3Kp/rP+BdYlZYZE5LdM5Ck0T8CFdh1VPEWJWAYHLqPeSFetPseuEoO/8T3YwNVx7CCKtPFCn+TBIkO5OKAns39J0cFa6SwzR/Kci0iHLRC8glMm+fwD6NWO16sg767imump4ZSLUEPDM+wLXExnkNb1+qIBmIKImXT67/bLnQH9Mzr1etf52w==
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: MN0PR11MB5963.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 7eda3e4f-4c43-4f54-1711-08de806ca123
-X-MS-Exchange-CrossTenant-originalarrivaltime: 12 Mar 2026 19:21:58.0839
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: hhIJttyjBflNINcjtawiosaal/RDJAjURIi2Z/LnYdNeXbLZgstEhLD5T6eQdFPyMsnm/CF3/m7hGSr1ndGKjGiwIFky3xwcPtZq/cGdR5Q=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA3PR11MB7414
-X-OriginatorOrg: intel.com
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <ae2143b3-ce28-4c87-afcf-1505694246d8@redhat.com>
 
-T24gVGh1LCAyMDI2LTAyLTEyIGF0IDA2OjM1IC0wODAwLCBDaGFvIEdhbyB3cm90ZToNCj4gVERY
-IG1haW50YWlucyBhIGxvZyBhYm91dCBlYWNoIFREWCBNb2R1bGUgd2hpY2ggaGFzIGJlZW4gbG9h
-ZGVkLiBUaGlzDQo+IGxvZyBoYXMgYSBmaW5pdGUgc2l6ZSB3aGljaCBsaW1pdHMgdGhlIG51bWJl
-ciBvZiBURFggTW9kdWxlIHVwZGF0ZXMNCj4gd2hpY2ggY2FuIGJlIHBlcmZvcm1lZC4NCj4gDQo+
-IEFmdGVyIGVhY2ggc3VjY2Vzc2Z1bCB1cGRhdGUsIHRoZSByZW1haW5pbmcgdXBkYXRlcyByZWR1
-Y2VzIGJ5IG9uZS4gT25jZQ0KPiBpdCByZWFjaGVzIHplcm8sIGZ1cnRoZXIgdXBkYXRlcyB3aWxs
-IGZhaWwgdW50aWwgbmV4dCByZWJvb3QuDQo+IA0KPiBCZWZvcmUgdXBkYXRpbmcgdGhlIFREWCBN
-b2R1bGUsIHZlcmlmeSB0aGF0IHRoZSB1cGRhdGUgbGltaXQgaGFzIG5vdCBiZWVuDQo+IGV4Y2Vl
-ZGVkLiBPdGhlcndpc2UsIFAtU0VBTUxEUiB3aWxsIGRldGVjdCB0aGlzIHZpb2xhdGlvbiBhZnRl
-ciB0aGUgb2xkIFREWA0KPiBNb2R1bGUgaXMgZ29uZSBhbmQgYWxsIFREcyB3aWxsIGJlIGtpbGxl
-ZC4NCj4gDQo+IE5vdGUgdGhhdCB1c2Vyc3BhY2Ugc2hvdWxkIHBlcmZvcm0gdGhpcyBjaGVjayBi
-ZWZvcmUgdXBkYXRlcy4gUGVyZm9ybSB0aGlzDQo+IGNoZWNrIGluIGtlcm5lbCBhcyB3ZWxsIHRv
-IG1ha2UgdGhlIHVwZGF0ZSBwcm9jZXNzIG1vcmUgcm9idXN0Lg0KDQpXaGF0IGhhcHBlbnMgaWYg
-d2UgZHJvcCB0aGlzIHBhdGNoPyBUaGUgSUlVQyB0aGUgaWRlYSBpcyB1c2Vyc3BhY2UgbmVlZHMg
-dG8ga25vdw0Kd2hhdCB0aGV5IGFyZSBkb2luZyBhbHJlYWR5Lg0KDQo+IA0KPiBTaWduZWQtb2Zm
-LWJ5OiBDaGFvIEdhbyA8Y2hhby5nYW9AaW50ZWwuY29tPg0KPiBSZXZpZXdlZC1ieTogVG9ueSBM
-aW5kZ3JlbiA8dG9ueS5saW5kZ3JlbkBsaW51eC5pbnRlbC5jb20+DQoNCg==
+On Fri, Mar 06, 2026 at 07:14:40PM +0100, Paolo Bonzini wrote:
+> On 3/3/26 19:49, shaikh kamaluddin wrote:
+> > On Wed, Feb 11, 2026 at 07:34:22AM -0800, Sean Christopherson wrote:
+> > > On Wed, Feb 11, 2026, Sebastian Andrzej Siewior wrote:
+> > > > On 2026-02-09 21:45:27 [+0530], shaikh.kamal wrote:
+> > > > > mmu_notifier_invalidate_range_start() may be invoked via
+> > > > > mmu_notifier_invalidate_range_start_nonblock(), e.g. from oom_reaper(),
+> > > > > where sleeping is explicitly forbidden.
+> > > > > 
+> > > > > KVM's mmu_notifier invalidate_range_start currently takes
+> > > > > mn_invalidate_lock using spin_lock(). On PREEMPT_RT, spin_lock() maps
+> > > > > to rt_mutex and may sleep, triggering:
+> > > > > 
+> > > > >    BUG: sleeping function called from invalid context
+> > > > > 
+> > > > > This violates the MMU notifier contract regardless of PREEMPT_RT;
+> > > 
+> > > I highly doubt that.  kvm.mmu_lock is also a spinlock, and KVM has been taking
+> > > that in invalidate_range_start() since
+> > > 
+> > >    e930bffe95e1 ("KVM: Synchronize guest physical memory map to host virtual memory map")
+> > > 
+> > > which was a full decade before mmu_notifiers even added the blockable concept in
+> > > 
+> > >    93065ac753e4 ("mm, oom: distinguish blockable mode for mmu notifiers")
+> > > 
+> > > and even predate the current concept of a "raw" spinlock introduced by
+> > > 
+> > >    c2f21ce2e312 ("locking: Implement new raw_spinlock")
+> > > 
+> > > > > RT kernels merely make the issue deterministic.
+> > > 
+> > > No, RT kernels change the rules, because suddenly a non-sleeping locking becomes
+> > > sleepable.
+> > > 
+> > > > > Fix by converting mn_invalidate_lock to a raw spinlock so that
+> > > > > invalidate_range_start() remains non-sleeping while preserving the
+> > > > > existing serialization between invalidate_range_start() and
+> > > > > invalidate_range_end().
+> > > 
+> > > This is insufficient.  To actually "fix" this in KVM mmu_lock would need to be
+> > > turned into a raw lock on all KVM architectures.  I suspect the only reason there
+> > > haven't been bug reports is because no one trips an OOM kill on VM while running
+> > > with CONFIG_DEBUG_ATOMIC_SLEEP=y.
+> > > 
+> > > That combination is required because since commit
+> > > 
+> > >    8931a454aea0 ("KVM: Take mmu_lock when handling MMU notifier iff the hva hits a memslot")
+> > > 
+> > > KVM only acquires mmu_lock if the to-be-invalidated range overlaps a memslot,
+> > > i.e. affects memory that may be mapped into the guest.
+> > > 
+> > > E.g. this hack to simulate a non-blockable invalidation
+> > > 
+> > > diff --git a/virt/kvm/kvm_main.c b/virt/kvm/kvm_main.c
+> > > index 7015edce5bd8..7a35a83420ec 100644
+> > > --- a/virt/kvm/kvm_main.c
+> > > +++ b/virt/kvm/kvm_main.c
+> > > @@ -739,7 +739,7 @@ static int kvm_mmu_notifier_invalidate_range_start(struct mmu_notifier *mn,
+> > >                  .handler        = kvm_mmu_unmap_gfn_range,
+> > >                  .on_lock        = kvm_mmu_invalidate_begin,
+> > >                  .flush_on_ret   = true,
+> > > -               .may_block      = mmu_notifier_range_blockable(range),
+> > > +               .may_block      = false,//mmu_notifier_range_blockable(range),
+> > >          };
+> > >          trace_kvm_unmap_hva_range(range->start, range->end);
+> > > @@ -768,6 +768,7 @@ static int kvm_mmu_notifier_invalidate_range_start(struct mmu_notifier *mn,
+> > >           */
+> > >          gfn_to_pfn_cache_invalidate_start(kvm, range->start, range->end);
+> > > +       non_block_start();
+> > >          /*
+> > >           * If one or more memslots were found and thus zapped, notify arch code
+> > >           * that guest memory has been reclaimed.  This needs to be done *after*
+> > > @@ -775,6 +776,7 @@ static int kvm_mmu_notifier_invalidate_range_start(struct mmu_notifier *mn,
+> > >           */
+> > >          if (kvm_handle_hva_range(kvm, &hva_range).found_memslot)
+> > >                  kvm_arch_guest_memory_reclaimed(kvm);
+> > > +       non_block_end();
+> > >          return 0;
+> > >   }
+> > > 
+> > > immediately triggers
+> > > 
+> > >    BUG: sleeping function called from invalid context at kernel/locking/spinlock_rt.c:241
+> > >    in_atomic(): 0, irqs_disabled(): 0, non_block: 1, pid: 4992, name: qemu
+> > >    preempt_count: 0, expected: 0
+> > >    RCU nest depth: 0, expected: 0
+> > >    CPU: 6 UID: 1000 PID: 4992 Comm: qemu Not tainted 6.19.0-rc6-4d0917ffc392-x86_enter_mmio_stack_uaf_no_null-rt #1 PREEMPT_RT
+> > >    Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 0.0.0 02/06/2015
+> > >    Call Trace:
+> > >     <TASK>
+> > >     dump_stack_lvl+0x51/0x60
+> > >     __might_resched+0x10e/0x160
+> > >     rt_write_lock+0x49/0x310
+> > >     kvm_mmu_notifier_invalidate_range_start+0x10b/0x390 [kvm]
+> > >     __mmu_notifier_invalidate_range_start+0x9b/0x230
+> > >     do_wp_page+0xce1/0xf30
+> > >     __handle_mm_fault+0x380/0x3a0
+> > >     handle_mm_fault+0xde/0x290
+> > >     __get_user_pages+0x20d/0xbe0
+> > >     get_user_pages_unlocked+0xf6/0x340
+> > >     hva_to_pfn+0x295/0x420 [kvm]
+> > >     __kvm_faultin_pfn+0x5d/0x90 [kvm]
+> > >     kvm_mmu_faultin_pfn+0x31b/0x6e0 [kvm]
+> > >     kvm_tdp_page_fault+0xb6/0x160 [kvm]
+> > >     kvm_mmu_do_page_fault+0xee/0x1f0 [kvm]
+> > >     kvm_mmu_page_fault+0x8d/0x600 [kvm]
+> > >     vmx_handle_exit+0x18c/0x5a0 [kvm_intel]
+> > >     kvm_arch_vcpu_ioctl_run+0xc70/0x1c90 [kvm]
+> > >     kvm_vcpu_ioctl+0x2d7/0x9a0 [kvm]
+> > >     __x64_sys_ioctl+0x8a/0xd0
+> > >     do_syscall_64+0x5e/0x11b0
+> > >     entry_SYSCALL_64_after_hwframe+0x4b/0x53
+> > >     </TASK>
+> > >    kvm: emulating exchange as write
+> > > 
+> > > 
+> > > It's not at all clear to me that switching mmu_lock to a raw lock would be a net
+> > > positive for PREEMPT_RT.  OOM-killing a KVM guest in a PREEMPT_RT seems like a
+> > > comically rare scenario.  Whereas contending mmu_lock in normal operation is
+> > > relatively common (assuming there are even use cases for running VMs with a
+> > > PREEMPT_RT host kernel).
+> > > 
+> > > In fact, the only reason the splat happens is because mmu_notifiers somewhat
+> > > artificially forces an atomic context via non_block_start() since commit
+> > > 
+> > >    ba170f76b69d ("mm, notifier: Catch sleeping/blocking for !blockable")
+> > > 
+> > > Given the massive amount of churn in KVM that would be required to fully eliminate
+> > > the splat, and that it's not at all obvious that it would be a good change overall,
+> > > at least for now:
+> > > 
+> > > NAK
+> > > 
+> > > I'm not fundamentally opposed to such a change, but there needs to be a _lot_
+> > > more analysis and justification beyond "fix CONFIG_DEBUG_ATOMIC_SLEEP=y".
+> > > 
+> > Hi Sean,
+> > Thanks for the detailed explanation and for spelling out the border
+> > issue.
+> > Understood on both points:
+> > 	1. The changelog wording was too strong; PREEMPT_RT changes
+> > 	spin_lock() semantics, and the splat is fundamentally due to
+> > 	spinlocks becoming sleepable there.
+> > 	2. Converting only mm_invalidate_lock to raw is insufficient
+> > 	since KVM can still take the mmu_lock (and other sleeping locks
+> > 	RT) in invalidate_range_start() when the invalidation hits a
+> > 	memslot.
+> > Given the above, it shounds like "convert locks to raw" is not the right
+> > direction without sinificat rework and justification.
+> > Would an acceptable direction be to handle the !blockable notifier case
+> > by deferring the heavyweight invalidation work(anything that take
+> > mmu_lock/may sleep on RT) to a context that may block(e.g. queued work),
+> > while keeping start()/end() accounting consisting with memslot changes ?
+> > if so, I can protoptype a patch along those lines and share for
+> > feedback.
+> > 
+> > Alternatively, if you think this needs to be addressed in
+> > mmu_notifiers(eg. how non_block_start() is applied), I'm happy to
+> > redirect my efforts there-Please advise.
+> 
+> Have you considered a "OOM entered" callback for MMU notifiers?  KVM's MMU
+> notifier can just remove itself for example, in fact there is code in
+> kvm_destroy_vm() to do that even if invalidations are unbalanced.
+> 
+> Paolo
+>
+Thanks for the suggestion! That's a much cleaner approach than what I was considering.
+
+If I understand correctly, the idea would be:
+1. Add a new MMU notifier callback (e.g., .oom_entered or .release_on_oom)
+2. Have KVM implement it to unregister the notifier when OOM reaper starts
+3. Leverage the existing kvm_destroy_vm() logic that already handles unbalanced invalidations
+
+This avoids the whole "convert locks to raw" problem and the complexity of deferring work.
+
+I have questions on Testing part:
+------------------------------------
+I tried to reproduce the bug scenario using the virtme-ng then running
+the stress-ng putting memory pressure on VM, but not able to reproduce
+the scenario.
+I tried this way ..
+vng -v -r ./arch/x86/boot/bzImage
+VM is up, then running the stress-ng as below 
+stress-ng --vm 2 --vm-bytes 95% --timeout 20s & sleep 5 & dmesg | tail -30 | grep "sleeping function"
+OOM Killer is triggered, but exact bug not able to reproduce, Please
+suggest how to reproduce this bug, even we need to verify after code
+changes which you have suggested.
+
+Shaikh Kamal
