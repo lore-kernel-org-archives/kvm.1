@@ -1,158 +1,257 @@
-Received: from mail-pl1-f201.google.com (mail-pl1-f201.google.com [209.85.214.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 57C1A3CEBB5
-	for <kvm@vger.kernel.org>; Thu, 12 Mar 2026 18:13:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.201
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 470E43FEB07;
+	Thu, 12 Mar 2026 18:17:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773339229; cv=none; b=Dxn/e6BR9V4my8fSZRZ8N8cqEPjiLXPkLBGAeGRIIbeSfXboh/FpaHIf8zojlvt7b4l/v1Q+DOIhHYaf6ol0P+x1i9qhjN/NHibadrbJ0y3LEHeS/D2csTEOWZvBDm1vMvkMgIjHqwYeWS1kMLNglpHCJXiu1SM24Y/ZAGldsWc=
+	t=1773339456; cv=none; b=NbmDJpRHUyHeW7D9bpu5ZRuvnSpDuc/xoKr+k3KDY+AU+D4easM8XxUZw1XH0l8c9a5pQStzhHBu637tzmLjIPN0eRMyseEXoTDMzT2PufTfbb+nt3nc0xlRnVcp4ODOviPtpnu+WUyrCbgWY/UaNKyLddl/0GvqAgCndD+AU/Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773339229; c=relaxed/simple;
-	bh=Ekhb+qCQy2ym84BjGnRnJ9+llgn8+iN3NBF0eKdAvnY=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=tOGMSaW6TGyPAk7ZtkOYKCWoN7Ii9+ZaTVe2DdmnwBhH1dCUg75sA7+I3UNoqvACTMAW4eflHJnQCkgHgK1w8cJJXXfBcwGRH2jB9I/yFg1oS3ZhA35SmKzWtYqOBZDVh4wfKEHnvTp09WRxkPm7jRGNQkDuk9Lj6rXilLLmd8s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=kFJnzWur; arc=none smtp.client-ip=209.85.214.201
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="kFJnzWur"
-Received: by mail-pl1-f201.google.com with SMTP id d9443c01a7336-2ae3badc00dso14987325ad.3
-        for <kvm@vger.kernel.org>; Thu, 12 Mar 2026 11:13:47 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1773339226; x=1773944026; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=4zIIF1a0OywISACpCkGA6XhGEw2fktBd7kbIM2f4eTQ=;
-        b=kFJnzWurhURG97FuIolNSu7cDADItUDHqjcJfdrQs6kcN8jmqwDPiILlyZ3bD1g7R2
-         TYfKBkfW3J0eu4O6FizCbewr/EqY+5PfBIevwoluyl2qM0Rzo13SfmmmIITuikdr0HYA
-         FYvNllBbCaxZNDSprcXS2jHCb/Q2gQmH0MbrGa6aO+ClqAHEbSwi1LbagA4BgEKjNHCC
-         AUmkufZ7LEdb6ic+dzXP2Ye2R6pS8kCegLdHGpV4ZbHTKNvn/z4/jcKqcrjpDRNuFIuO
-         Kh7Km3QSOvJ+3VP1hCt42Y8o9QRXjyxgtqknKpFGh1QjzJhD7gwyOENvFXJPlIURcuBg
-         vPVg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1773339226; x=1773944026;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=4zIIF1a0OywISACpCkGA6XhGEw2fktBd7kbIM2f4eTQ=;
-        b=upNtrRAxlGqg3OUNhIFL7mKtJfUJAJsQEq2zmZhHx4fVr9vlp04ly6+PaQFPkUV5UC
-         6WFFJr4kVKv6TNTAODwgsEHjMvi4TQVFGxXam73kF0qlpqrXyt0NL99ca/Fh4hhSvotJ
-         wyi/mmishpxiX7Q+SFZTPzuTVmMG52LhLsuz9TuXGGniXCQ3d6iy3OgxS0yGEz7LO2+U
-         GaXZwkGgYx0z1ZeRC8GaKVm2BpOEpz5Su2Wk902x8orKj13I5ah4zW+ab89RhLaho17h
-         MbWAj2BZbrDA3Yvwr3YuJJSFEjMcfpRsBcWsCAVeLqRh2kxMqi/b7Xm5M8wNXA9gOXnt
-         Uxaw==
-X-Forwarded-Encrypted: i=1; AJvYcCX0Nc2fEa5Y7hGqLRtphB8PE394ilsnCtHPzz15gJa/OXrteBOOMA8IIcTOthOxHW9lCNY=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwHq6dNPF4GXQCYbQOUCTY0tm4K/qcb96ErlHSXymE3CUOYztzD
-	plrOglo2Y1206RTgBzBgObfuMDu/+gcr2IRSX3b16wEnNpU3Jj5fx4ix8Vs2kbkFBB5QkPRYCe+
-	w7yYY0Q==
-X-Received: from plbke13.prod.google.com ([2002:a17:903:340d:b0:2ae:48ed:5526])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:902:ce11:b0:2ae:c34d:8c4e
- with SMTP id d9443c01a7336-2aecaa9e9c0mr3694775ad.38.1773339226471; Thu, 12
- Mar 2026 11:13:46 -0700 (PDT)
-Date: Thu, 12 Mar 2026 11:13:44 -0700
-In-Reply-To: <20260306210900.1933788-3-yosry@kernel.org>
+	s=arc-20240116; t=1773339456; c=relaxed/simple;
+	bh=oseE2rbEt6AvnSSYQiq+1Dcp8V/0TQwolE8LQt7EC+4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=tByBQODuvM4sooflSIXLSG91uRfS3mEDZR1cTt5jDoi0/CG7jJRVa2BnXGh2MqGwqOGOQwQfVYvmUvr1TDhf7h5Trk3yMKu0o14PX+N6hrAq320NPibHwSqkzpmFYpilYUHHa9F0Ec3vEnY9uH+5GiTpe3uUSA1b1gF4Qxq6HaE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 75E22165C;
+	Thu, 12 Mar 2026 11:17:26 -0700 (PDT)
+Received: from arm.com (usa-sjc-mx-foss1.foss.arm.com [172.31.20.19])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 8B4223F73B;
+	Thu, 12 Mar 2026 11:17:30 -0700 (PDT)
+Date: Thu, 12 Mar 2026 18:17:28 +0000
+From: Catalin Marinas <catalin.marinas@arm.com>
+To: Yeoreum Yun <yeoreum.yun@arm.com>
+Cc: linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+	kvmarm@lists.linux.dev, kvm@vger.kernel.org,
+	linux-kselftest@vger.kernel.org, will@kernel.org, maz@kernel.org,
+	oupton@kernel.org, miko.lenczewski@arm.com, kevin.brodsky@arm.com,
+	broonie@kernel.org, ardb@kernel.org, suzuki.poulose@arm.com,
+	lpieralisi@kernel.org, joey.gouly@arm.com, yuzenghui@huawei.com
+Subject: Re: [PATCH v15 5/8] arm64: futex: support futex with FEAT_LSUI
+Message-ID: <abMDOC5DYEm74And@arm.com>
+References: <20260227151705.1275328-1-yeoreum.yun@arm.com>
+ <20260227151705.1275328-6-yeoreum.yun@arm.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20260306210900.1933788-1-yosry@kernel.org> <20260306210900.1933788-3-yosry@kernel.org>
-Message-ID: <abMCWGOoIvob2bTv@google.com>
-Subject: Re: [PATCH v2 2/6] KVM: nSVM: Simplify error handling of nested_svm_copy_vmcb12_to_cache()
-From: Sean Christopherson <seanjc@google.com>
-To: Yosry Ahmed <yosry@kernel.org>
-Cc: Paolo Bonzini <pbonzini@redhat.com>, Jim Mattson <jmattson@google.com>, kvm@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260227151705.1275328-6-yeoreum.yun@arm.com>
 
-On Fri, Mar 06, 2026, Yosry Ahmed wrote:
-> nested_svm_vmrun() currently stores the return value of
-> nested_svm_copy_vmcb12_to_cache() in a local variable 'err', separate
-> from the generally used 'ret' variable. This is done to have a single
-> call to kvm_skip_emulated_instruction(), such that we can store the
-> return value of kvm_skip_emulated_instruction() in 'ret', and then
-> re-check the return value of nested_svm_copy_vmcb12_to_cache() in 'err'.
-> 
-> The code is unnecessarily confusing. Instead, call
-> kvm_skip_emulated_instruction() in the failure path of
-> nested_svm_copy_vmcb12_to_cache() if the return value is not -EFAULT,
-> and drop 'err'.
-> 
-> Suggested-by: Sean Christopherson <seanjc@google.com>
-> Signed-off-by: Yosry Ahmed <yosry@kernel.org>
+On Fri, Feb 27, 2026 at 03:17:02PM +0000, Yeoreum Yun wrote:
+> +#ifdef CONFIG_ARM64_LSUI
+> +
+> +/*
+> + * FEAT_LSUI is supported since Armv9.6, where FEAT_PAN is mandatory.
+> + * However, this assumption may not always hold:
+> + *
+> + *   - Some CPUs advertise FEAT_LSUI but lack FEAT_PAN.
+> + *   - Virtualisation or ID register overrides may expose invalid
+> + *     feature combinations.
+> + *
+> + * Rather than disabling FEAT_LSUI when FEAT_PAN is absent, wrap LSUI
+> + * instructions with uaccess_ttbr0_enable()/disable() when
+> + * ARM64_SW_TTBR0_PAN is enabled.
+> + */
 
-FYI, I'm going to grab this right now to make it slightly easier to resolve the
-merge conflict with Paolo's SMM fixes (the ret vs. err stuff is so confusing).
+I'd just keep this comment in the commit log. Here you could simply say
+that user access instructions don't require (hardware) PAN toggling. It
+should be obvious why we use ttbr0 toggling like for other uaccess
+routines.
 
-> ---
->  arch/x86/kvm/svm/nested.c | 19 ++++++++++---------
->  1 file changed, 10 insertions(+), 9 deletions(-)
-> 
-> diff --git a/arch/x86/kvm/svm/nested.c b/arch/x86/kvm/svm/nested.c
-> index b191c6cab57db..6d4c053778b21 100644
-> --- a/arch/x86/kvm/svm/nested.c
-> +++ b/arch/x86/kvm/svm/nested.c
-> @@ -1079,7 +1079,7 @@ static int nested_svm_copy_vmcb12_to_cache(struct kvm_vcpu *vcpu, u64 vmcb12_gpa
->  int nested_svm_vmrun(struct kvm_vcpu *vcpu)
->  {
->  	struct vcpu_svm *svm = to_svm(vcpu);
-> -	int ret, err;
-> +	int ret;
->  	u64 vmcb12_gpa;
->  	struct vmcb *vmcb01 = svm->vmcb01.ptr;
->  
-> @@ -1104,19 +1104,20 @@ int nested_svm_vmrun(struct kvm_vcpu *vcpu)
->  		return -EINVAL;
->  
->  	vmcb12_gpa = svm->vmcb->save.rax;
-> -	err = nested_svm_copy_vmcb12_to_cache(vcpu, vmcb12_gpa);
-> -	if (err == -EFAULT) {
-> +	ret = nested_svm_copy_vmcb12_to_cache(vcpu, vmcb12_gpa);
+> +#define LSUI_FUTEX_ATOMIC_OP(op, asm_op)				\
+> +static __always_inline int						\
+> +__lsui_futex_atomic_##op(int oparg, u32 __user *uaddr, int *oval)	\
+> +{									\
+> +	int ret = 0;							\
+> +	int oldval;							\
+> +									\
+> +	uaccess_ttbr0_enable();						\
+> +									\
+> +	asm volatile("// __lsui_futex_atomic_" #op "\n"			\
+> +	__LSUI_PREAMBLE							\
+> +"1:	" #asm_op "al	%w3, %w2, %1\n"					\
+
+As I mentioned on a previous patch, can we not use named operators here?
+
+> +"2:\n"									\
+> +	_ASM_EXTABLE_UACCESS_ERR(1b, 2b, %w0)				\
+> +	: "+r" (ret), "+Q" (*uaddr), "=r" (oldval)			\
+> +	: "r" (oparg)							\
+> +	: "memory");							\
+> +									\
+> +	uaccess_ttbr0_disable();					\
+> +									\
+> +	if (!ret)							\
+> +		*oval = oldval;						\
+> +	return ret;							\
+> +}
+> +
+> +LSUI_FUTEX_ATOMIC_OP(add, ldtadd)
+> +LSUI_FUTEX_ATOMIC_OP(or, ldtset)
+> +LSUI_FUTEX_ATOMIC_OP(andnot, ldtclr)
+> +LSUI_FUTEX_ATOMIC_OP(set, swpt)
+> +
+> +static __always_inline int
+> +__lsui_cmpxchg64(u64 __user *uaddr, u64 *oldval, u64 newval)
+> +{
+> +	int ret = 0;
+> +
+> +	uaccess_ttbr0_enable();
+> +
+> +	asm volatile("// __lsui_cmpxchg64\n"
+> +	__LSUI_PREAMBLE
+> +"1:	casalt	%2, %3, %1\n"
+> +"2:\n"
+> +	_ASM_EXTABLE_UACCESS_ERR(1b, 2b, %w0)
+> +	: "+r" (ret), "+Q" (*uaddr), "+r" (*oldval)
+> +	: "r" (newval)
+> +	: "memory");
+> +
+> +	uaccess_ttbr0_disable();
+> +
+> +	return ret;
+
+So here it returns EFAULT only if the check failed. The EAGAIN is only
+possible in cmpxchg32. That's fine but I have more comments below.
+
+> +}
+> +
+> +static __always_inline int
+> +__lsui_cmpxchg32(u32 __user *uaddr, u32 oldval, u32 newval, u32 *oval)
+> +{
+> +	u64 __user *uaddr64;
+> +	bool futex_pos, other_pos;
+> +	int ret, i;
+> +	u32 other, orig_other;
+> +	union {
+> +		u32 futex[2];
+> +		u64 raw;
+> +	} oval64, orig64, nval64;
+> +
+> +	uaddr64 = (u64 __user *) PTR_ALIGN_DOWN(uaddr, sizeof(u64));
+
+Nit: we don't use space after the type cast.
+
+> +	futex_pos = !IS_ALIGNED((unsigned long)uaddr, sizeof(u64));
+> +	other_pos = !futex_pos;
+> +
+> +	oval64.futex[futex_pos] = oldval;
+> +	ret = get_user(oval64.futex[other_pos], (u32 __user *)uaddr64 + other_pos);
+> +	if (ret)
+> +		return -EFAULT;
+> +
+> +	ret = -EAGAIN;
+> +	for (i = 0; i < FUTEX_MAX_LOOPS; i++) {
+
+I was wondering if we still need the FUTEX_MAX_LOOPS bound with LSUI. I
+guess with CAS we can have some malicious user that keeps updating the
+futex location or the adjacent one on another CPU. However, I think we'd
+need to differentiate between futex_atomic_cmpxchg_inatomic() use and
+the eor case.
+
+> +		orig64.raw = nval64.raw = oval64.raw;
+> +
+> +		nval64.futex[futex_pos] = newval;
+
+I'd keep orig64.raw = oval64.raw and set the nval64 separately (I find
+it clearer, not sure the compiler cares much):
+
+		nval64.futex[futex_pos] = newval;
+		nval64.futex[other_pos] = oval64.futex[other_pos];
+
+> +
+> +		if (__lsui_cmpxchg64(uaddr64, &oval64.raw, nval64.raw))
+> +			return -EFAULT;
+> +
+> +		oldval = oval64.futex[futex_pos];
+> +		other = oval64.futex[other_pos];
+> +		orig_other = orig64.futex[other_pos];
+> +
+> +		if (other == orig_other) {
+> +			ret = 0;
+> +			break;
+> +		}
+
+Is this check correct? What if the cmpxchg64 failed because futex_pos
+was changed but other_pos remained the same, it will just report success
+here. You need to compare the full 64-bit value to ensure the cmpxchg64
+succeeded.
+
+> +	}
+> +
+> +	if (!ret)
+> +		*oval = oldval;
+> +
+> +	return ret;
+> +}
+> +
+> +static __always_inline int
+> +__lsui_futex_atomic_and(int oparg, u32 __user *uaddr, int *oval)
+> +{
+> +	/*
+> +	 * Undo the bitwise negation applied to the oparg passed from
+> +	 * arch_futex_atomic_op_inuser() with FUTEX_OP_ANDN.
+> +	 */
+> +	return __lsui_futex_atomic_andnot(~oparg, uaddr, oval);
+> +}
+> +
+> +static __always_inline int
+> +__lsui_futex_atomic_eor(int oparg, u32 __user *uaddr, int *oval)
+> +{
+> +	u32 oldval, newval, val;
+> +	int ret, i;
+> +
+> +	if (get_user(oldval, uaddr))
+> +		return -EFAULT;
 > +
 > +	/*
-> +	 * Advance RIP if #GP or #UD are not injected, but otherwise
-> +	 * stop if copying and checking vmcb12 failed.
+> +	 * there are no ldteor/stteor instructions...
 > +	 */
-> +	if (ret == -EFAULT) {
->  		kvm_inject_gp(vcpu, 0);
->  		return 1;
-> +	} else if (ret) {
-> +		return kvm_skip_emulated_instruction(vcpu);
->  	}
+> +	for (i = 0; i < FUTEX_MAX_LOOPS; i++) {
+> +		newval = oldval ^ oparg;
+> +
+> +		ret = __lsui_cmpxchg32(uaddr, oldval, newval, &val);
 
-I strongly dislike the if-elif approach, because it makes unnecessarily hard to
-see that *all* ret !=0 cases are handled, i.e. that overwriting ret below is ok.
+Since we have a FUTEX_MAX_LOOPS here, do we need it in cmpxchg32 as
+well?
 
-The comment is also super confusing, because there's no #UD in sight, but there
-is a #GP. 
+For eor, we need a loop irrespective of whether futex_pos or other_pos
+have changed. For cmpxchg, we need the loop only if other_pos has
+changed and return -EAGAIN if futex_pos has changed since the caller
+needs to update oldval and call again.
 
-This is what I have locally and am planning on pushing to kvm-x86/next.
+So try to differentiate these cases, maybe only keep the loop outside
+cmpxchg32 (I haven't put much though into it).
 
-	ret = nested_svm_copy_vmcb12_to_cache(vcpu, vmcb12_gpa);
-	if (ret) {
-		if (ret == -EFAULT) {
-			kvm_inject_gp(vcpu, 0);
-			return 1;
-		}
+> +		if (ret)
+> +			return ret;
+> +
+> +		if (val == oldval) {
+> +			*oval = val;
+> +			return 0;
+> +		}
 
-		/* Advance RIP past VMRUN as part of the nested #VMEXIT. */
-		return kvm_skip_emulated_instruction(vcpu);
-	}
+I can see you are adding another check here for the actual value which
+solves the other_pos comparison earlier but that's only for eor and not
+the __lsui_futex_cmpxchg() case.
 
-	/* At this point, VMRUN is guaranteed to not fault; advance RIP. */
-	ret = kvm_skip_emulated_instruction(vcpu);
+> +
+> +		oldval = val;
+> +	}
+> +
+> +	return -EAGAIN;
+> +}
+> +
+> +static __always_inline int
+> +__lsui_futex_cmpxchg(u32 __user *uaddr, u32 oldval, u32 newval, u32 *oval)
+> +{
+> +	return __lsui_cmpxchg32(uaddr, oldval, newval, oval);
+> +}
+> +#endif	/* CONFIG_ARM64_LSUI */
 
->  
-> -	/*
-> -	 * Advance RIP if #GP or #UD are not injected, but otherwise stop if
-> -	 * copying and checking vmcb12 failed.
-> -	 */
->  	ret = kvm_skip_emulated_instruction(vcpu);
-> -	if (err)
-> -		return ret;
->  
->  	/*
->  	 * Since vmcb01 is not in use, we can use it to store some of the L1
-> -- 
-> 2.53.0.473.g4a7958ca14-goog
-> 
+-- 
+Catalin
