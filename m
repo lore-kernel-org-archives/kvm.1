@@ -1,247 +1,131 @@
-Received: from mail-pl1-f201.google.com (mail-pl1-f201.google.com [209.85.214.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF7F639DBC2
-	for <kvm@vger.kernel.org>; Thu, 12 Mar 2026 20:40:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF29A383C8C;
+	Thu, 12 Mar 2026 20:40:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.13
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773348016; cv=none; b=oW0ooJmWoOl4u8DpwJXytCVqk55vFDTaTDFK0zLA7LWZwfkD0e3gAw99d7Nj7WxRk4aQi+jnp/OhSQHGO5jiqRWWQWqRvGYBSL0pQd3uSTN0sO1mCzE91FPB3l2ECDdh1mAUIl1V780lA3Jid1mGblQaLNQW6y0BmVfZvvgAVdk=
+	t=1773348042; cv=none; b=YW5NKbk7dY3R8AjTKv+TiJKnrPGwQuc/vJbdXc3NJUE5SXwUdHd5R873xBMd1FrCWUA+AUhKUuBCdwx8/4oCLCi+w2rTOC4f6hpzeZlAU72uOJvTrGWtvOpe73PV6R1o95t0NAa/7d+8G7KbFWO3bwFAwAClsCsS28f9YnkiCkE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773348016; c=relaxed/simple;
-	bh=il0ad+YPJs1wmMuW7aUgh7FP2txVZBf5MnaTmaTXxPk=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=TsRtLSS6JQwUt2vVnSczCZIUYCbDBnIDd9tA8+mlarrUMIJVKS6nFzfTGYUYdJohpGHoAJpzdiZlo5lXhql9b7GcyNO+ftCCbui63hHB1L01R0AltTOX8dBatI6gZne1gEi3doVwCsumPwgC/GXnmEAU4bl6kjIRcBCyjHeKXj0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--chengkev.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=ikVuyq5M; arc=none smtp.client-ip=209.85.214.201
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--chengkev.bounces.google.com
+	s=arc-20240116; t=1773348042; c=relaxed/simple;
+	bh=D6iO28mnBcCnXLuSDsXSHJJSvZgXvqYwJ9tZM0VkAj8=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=L24ErOq5aG/RsoAM6ePlBJb33NrlI7ZIQCXbe3kOtEP7IyofFQoKTiokScuos/3mut42Na1FVc31EVnwSBre3SkXscSagxWZg3R6pfRWOdZJqYKJYZWaRAPJkQjIPJ/wj1Hngf5JN2zUFnCejCAAB1YkjslGe8O2rKKfMeGRVsE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=IhHlWWh1; arc=none smtp.client-ip=198.175.65.13
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="ikVuyq5M"
-Received: by mail-pl1-f201.google.com with SMTP id d9443c01a7336-2aeb90532f6so15802025ad.0
-        for <kvm@vger.kernel.org>; Thu, 12 Mar 2026 13:40:14 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1773348014; x=1773952814; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=n12AHJWLdynO/Jqtyit0q+iqx60D6gkwxd0Z537x80w=;
-        b=ikVuyq5M4JexkpueSUIYXDKPU691bYXybH2Muz+9L9ve2HegT+ObE1K+1H0CmlBUG1
-         apNRN9I97RFdoYj073YOqYDTvlABe4t/EZVAFxxSpMgM/TJQRCaI5vkxXfdmuiznAKP7
-         1Q0eEIRGhylOeOm2eNyZsf3aV5DF0CzAWn8/edkIqrFQW2QzGTnPz/fC/ZF0tje0SH1R
-         H+4tEGgnHsZUmttvp7MDanuWDaUCXZpi1clJhWXlxt4xRRuF4pxp3leO0gQxg/zGE747
-         Xn9GH8F6LvitCvfzBQB0agnG86+JI08xCZPZDPaOxgUiRqqHAK0jJfIg/hwgQhpbAbpX
-         liew==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1773348014; x=1773952814;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=n12AHJWLdynO/Jqtyit0q+iqx60D6gkwxd0Z537x80w=;
-        b=Xymy407iBRgXImN7RIb4gAPW4ug9y+BwdmEFZpONxbpZW25hkhayKF7ug5s4vMAcrN
-         YC8s0JGu8Ua1F/vBrURkrnVXI8Mt2u03kh0G5kDMWR2syZH+8Qfr6olzJ1KECfU0/hTK
-         xrefXS9f27GTEAJCEt9/PRpD/Cs2hOWc1LBcGyfV//DK8aySBIL5mwul+8JebkFl7hVj
-         00owfEsOikApbKgo49xBeiDLrub5l/mRrxrSah0tKm03iJJ5uTZYKjg2oGCWam0kwM5I
-         GcaUhGFinAo25QDXa3PXIZhOxRcJXEvK5qqvA9pKKovvcZb9tOL7Nc3LqlSnlPm7spnp
-         94Ow==
-X-Gm-Message-State: AOJu0YzY/GLE0khH9GncjQWV/TVu73TQRLDxPvjZtC4ZdYaN+hWYoFK3
-	Zc/pbLZ2hgmGJDSPAZDIzUsjzE4yVRsYQlxpLyRho05j2MiPat+6QBMi7QXpQcLKn/0voyiBi/V
-	ObyJ7v9MBTZuDk2yzLZZ+KLiIXHrWK454BGg/CZIe8yP3GFir1gFrLu2RSSRic3Mgw7L5hZopET
-	IxYD0KhTYHxYpgkMz2XOil5njHF5GP7kscfpnoEKIWGQw=
-X-Received: from plzu7.prod.google.com ([2002:a17:902:82c7:b0:2ae:5e9d:8d47])
- (user=chengkev job=prod-delivery.src-stubby-dispatcher) by
- 2002:a17:902:d501:b0:2ae:bd12:f830 with SMTP id d9443c01a7336-2aecac9b8e0mr7622225ad.49.1773348013943;
- Thu, 12 Mar 2026 13:40:13 -0700 (PDT)
-Date: Thu, 12 Mar 2026 20:40:09 +0000
-In-Reply-To: <20260312204009.3168871-1-chengkev@google.com>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="IhHlWWh1"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1773348041; x=1804884041;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=D6iO28mnBcCnXLuSDsXSHJJSvZgXvqYwJ9tZM0VkAj8=;
+  b=IhHlWWh1AYOUCSC8ZgfxiKdOqCWKyJRy8ef7Ub1Ul1nSpgzXiSGAHhZp
+   kSAF9rF4uE2BRV+JCKu0u2lis/zOTafpJ6Ec9gv8apy8I+Ouu9l58qEAF
+   6HHoFarQRu5X2H4n1mERDPFEHOmOompm0prMVbsc5/PiMTTGywrh2wvMR
+   QmLwW55MQrumUz4jUC1kfGz/wcdZrkFjM5GmquZty/VWlCFb0/f1RRK9H
+   BgHYeu42UrDreRCOoM1xMhvyMZ9Vs9oYBzhNQdGia/qcF6eWB92pv5NQ9
+   fYZBDSCoA4ZVfZIGmPu3vw+D3lBFoTb7Ww6R3+s3at0Rh0sAGwfltmRl4
+   g==;
+X-CSE-ConnectionGUID: MbmOdR+aQByobQzoL1O07Q==
+X-CSE-MsgGUID: g8alQ0L5RMWSV+j8sAP0iw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11727"; a="85537685"
+X-IronPort-AV: E=Sophos;i="6.23,116,1770624000"; 
+   d="scan'208";a="85537685"
+Received: from orviesa004.jf.intel.com ([10.64.159.144])
+  by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Mar 2026 13:40:41 -0700
+X-CSE-ConnectionGUID: 1XG0X8lVSUClu4/7/HAg3g==
+X-CSE-MsgGUID: B3rqaVpwRqaBbJHLPgCo2g==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.23,116,1770624000"; 
+   d="scan'208";a="225413629"
+Received: from unknown (HELO [10.24.81.183]) ([10.24.81.183])
+  by orviesa004-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Mar 2026 13:40:32 -0700
+Message-ID: <31936a20-929f-489a-9dc6-0f8fcb9307f1@intel.com>
+Date: Thu, 12 Mar 2026 13:40:44 -0700
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20260312204009.3168871-1-chengkev@google.com>
-X-Mailer: git-send-email 2.53.0.851.ga537e3e6e9-goog
-Message-ID: <20260312204009.3168871-3-chengkev@google.com>
-Subject: [kvm-unit-tests PATCH v4 2/2] x86/svm: Add unsupported instruction
- intercept test
-From: Kevin Cheng <chengkev@google.com>
-To: kvm@vger.kernel.org
-Cc: yosry@kernel.org, andrew.jones@linux.dev, thuth@redhat.com, 
-	pbonzini@redhat.com, seanjc@google.com, Kevin Cheng <chengkev@google.com>
-Content-Type: text/plain; charset="UTF-8"
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4 11/24] x86/virt/seamldr: Introduce skeleton for TDX
+ Module updates
+To: Chao Gao <chao.gao@intel.com>, linux-coco@lists.linux.dev,
+ linux-kernel@vger.kernel.org, kvm@vger.kernel.org, x86@kernel.org
+Cc: reinette.chatre@intel.com, ira.weiny@intel.com, kai.huang@intel.com,
+ dan.j.williams@intel.com, yilun.xu@linux.intel.com, sagis@google.com,
+ vannapurve@google.com, paulmck@kernel.org, nik.borisov@suse.com,
+ zhenzhong.duan@intel.com, seanjc@google.com, rick.p.edgecombe@intel.com,
+ kas@kernel.org, dave.hansen@linux.intel.com, vishal.l.verma@intel.com,
+ binbin.wu@linux.intel.com, tony.lindgren@linux.intel.com,
+ Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>,
+ Borislav Petkov <bp@alien8.de>, "H. Peter Anvin" <hpa@zytor.com>
+References: <20260212143606.534586-1-chao.gao@intel.com>
+ <20260212143606.534586-12-chao.gao@intel.com>
+From: Dave Hansen <dave.hansen@intel.com>
+Content-Language: en-US
+Autocrypt: addr=dave.hansen@intel.com; keydata=
+ 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
+In-Reply-To: <20260212143606.534586-12-chao.gao@intel.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-Add tests that expect a nested vm exit, due to an unsupported
-instruction, to be handled by L0 even if L1 intercepts are set for that
-instruction.
+On 2/12/26 06:35, Chao Gao wrote:
+> +static void set_target_state(enum tdp_state state)
+> +{
+> +	/* Reset ack counter. */
+> +	atomic_set(&tdp_data.thread_ack, num_online_cpus());
+> +	/* Ensure thread_ack is updated before the new state */
+> +	smp_wmb();
+> +	WRITE_ONCE(tdp_data.state, state);
+> +}
 
-The new test exercises bug fixed by:
-https://lore.kernel.org/all/20251205070630.4013452-1-chengkev@google.com/
+This looks overly complicated.
 
-Signed-off-by: Kevin Cheng <chengkev@google.com>
----
- lib/x86/processor.h |  1 +
- x86/svm.h           |  5 ++-
- x86/svm_tests.c     | 88 +++++++++++++++++++++++++++++++++++++++++++++
- x86/unittests.cfg   | 11 +++++-
- 4 files changed, 103 insertions(+), 2 deletions(-)
-
-diff --git a/lib/x86/processor.h b/lib/x86/processor.h
-index 42dd2d2a4787..7e1c562aa737 100644
---- a/lib/x86/processor.h
-+++ b/lib/x86/processor.h
-@@ -358,6 +358,7 @@ struct x86_cpu_feature {
-  * Extended Leafs, a.k.a. AMD defined
-  */
- #define X86_FEATURE_SVM			X86_CPU_FEATURE(0x80000001, 0, ECX, 2)
-+#define X86_FEATURE_SKINIT		X86_CPU_FEATURE(0x80000001, 0, ECX, 12)
- #define X86_FEATURE_PERFCTR_CORE	X86_CPU_FEATURE(0x80000001, 0, ECX, 23)
- #define X86_FEATURE_NX			X86_CPU_FEATURE(0x80000001, 0, EDX, 20)
- #define X86_FEATURE_GBPAGES		X86_CPU_FEATURE(0x80000001, 0, EDX, 26)
-diff --git a/x86/svm.h b/x86/svm.h
-index c22c252fed00..e2158ab0622b 100644
---- a/x86/svm.h
-+++ b/x86/svm.h
-@@ -406,7 +406,10 @@ struct __attribute__ ((__packed__)) vmcb {
- #define SVM_EXIT_MONITOR	0x08a
- #define SVM_EXIT_MWAIT		0x08b
- #define SVM_EXIT_MWAIT_COND	0x08c
--#define SVM_EXIT_NPF  		0x400
-+#define SVM_EXIT_XSETBV		0x08d
-+#define SVM_EXIT_RDPRU		0x08e
-+#define SVM_EXIT_INVPCID	0x0a2
-+#define SVM_EXIT_NPF		0x400
- 
- #define SVM_EXIT_ERR		-1
- 
-diff --git a/x86/svm_tests.c b/x86/svm_tests.c
-index f18f2ed16b3f..657e66179f77 100644
---- a/x86/svm_tests.c
-+++ b/x86/svm_tests.c
-@@ -3578,6 +3578,93 @@ static void svm_shutdown_intercept_test(void)
- 	report(vmcb->control.exit_code == SVM_EXIT_SHUTDOWN, "shutdown test passed");
- }
- 
-+struct invpcid_desc desc;
-+
-+asm(
-+	"insn_rdtscp: rdtscp;ret\n\t"
-+	"insn_skinit: skinit;ret\n\t"
-+	"insn_xsetbv: xor %eax, %eax; xor %edx, %edx; xor %ecx, %ecx; xsetbv;ret\n\t"
-+	"insn_rdpru: xor %ecx, %ecx; rdpru;ret\n\t"
-+	"insn_invpcid: xor %eax, %eax; invpcid desc, %rax;ret\n\t"
-+);
-+
-+extern void insn_rdtscp(struct svm_test *test);
-+extern void insn_skinit(struct svm_test *test);
-+extern void insn_xsetbv(struct svm_test *test);
-+extern void insn_rdpru(struct svm_test *test);
-+extern void insn_invpcid(struct svm_test *test);
-+
-+struct insn_table {
-+	const char *name;
-+	u64 intercept;
-+	void (*insn_func)(struct svm_test *test);
-+	u32 reason;
-+};
-+
-+static struct insn_table insn_table[] = {
-+	{ "RDTSCP", INTERCEPT_RDTSCP, insn_rdtscp, SVM_EXIT_RDTSCP},
-+	{ "SKINIT", INTERCEPT_SKINIT, insn_skinit, SVM_EXIT_SKINIT},
-+	{ "XSETBV", INTERCEPT_XSETBV, insn_xsetbv, SVM_EXIT_XSETBV},
-+	{ "RDPRU", INTERCEPT_RDPRU, insn_rdpru, SVM_EXIT_RDPRU},
-+	{ "INVPCID", INTERCEPT_INVPCID, insn_invpcid, SVM_EXIT_INVPCID},
-+	{ NULL },
-+};
-+
-+static void assert_unsupported_instructions(void)
-+{
-+	assert(!this_cpu_has(X86_FEATURE_RDTSCP));
-+	assert(!this_cpu_has(X86_FEATURE_SKINIT));
-+	assert(!this_cpu_has(X86_FEATURE_XSAVE));
-+	assert(!this_cpu_has(X86_FEATURE_RDPRU));
-+	assert(!this_cpu_has(X86_FEATURE_INVPCID));
-+}
-+
-+/*
-+ * Test that L1 does not intercept instructions that are not advertised in
-+ * guest CPUID.
-+ */
-+static void svm_unsupported_instruction_intercept_test(void)
-+{
-+	u32 cur_insn;
-+	u32 exit_code;
-+
-+	assert_unsupported_instructions();
-+
-+	vmcb_set_intercept(INTERCEPT_EXCEPTION_OFFSET + UD_VECTOR);
-+
-+	for (cur_insn = 0; insn_table[cur_insn].name != NULL; ++cur_insn) {
-+		struct insn_table insn = insn_table[cur_insn];
-+
-+		test_set_guest(insn.insn_func);
-+		vmcb_set_intercept(insn.intercept);
-+		svm_vmrun();
-+		exit_code = vmcb->control.exit_code;
-+
-+		if (exit_code == SVM_EXIT_EXCP_BASE + UD_VECTOR)
-+			report_pass("UD Exception injected");
-+		else if (exit_code == insn.reason)
-+			report_fail("L1 should not intercept %s when instruction is not advertised in guest CPUID",
-+				    insn.name);
-+		else
-+			report_fail("Unknown exit reason, 0x%x", exit_code);
-+
-+		/*
-+		 * Verify that the intercept bits are not cleared in the vmcb.
-+		 * This is mainly to catch any potential bugs in the future
-+		 * if we ever directly copy from the cached vmcb12 to L1's
-+		 * vmcb12. KVM currently ignores the L1 intercept by
-+		 * conditionally clearing intercept bits from KVM's cached
-+		 * vmcb12 based on guest's CPUID table. This is only allowed as
-+		 * long as the assumption that the cached vmcb12 doesn't affect
-+		 * L1's vmcb12 holds true.
-+		 */
-+		report(test_and_clear_bit(insn.intercept,
-+					  vmcb->control.intercept),
-+					  "%s intercept bit not cleared by KVM",
-+					  insn.name);
-+	}
-+}
-+
- struct svm_test svm_tests[] = {
- 	{ "null", default_supported, default_prepare,
- 	  default_prepare_gif_clear, null_test,
-@@ -3719,6 +3806,7 @@ struct svm_test svm_tests[] = {
- 	TEST(svm_tsc_scale_test),
- 	TEST(pause_filter_test),
- 	TEST(svm_shutdown_intercept_test),
-+	TEST(svm_unsupported_instruction_intercept_test),
- 	{ NULL, NULL, NULL, NULL, NULL, NULL, NULL }
- };
- 
-diff --git a/x86/unittests.cfg b/x86/unittests.cfg
-index 522318d32bf6..27a1a6810436 100644
---- a/x86/unittests.cfg
-+++ b/x86/unittests.cfg
-@@ -253,11 +253,20 @@ arch = x86_64
- [svm]
- file = svm.flat
- smp = 2
--test_args = "-pause_filter_test"
-+test_args = "-pause_filter_test -svm_unsupported_instruction_intercept_test"
- qemu_params = -cpu max,+svm -m 4g
- arch = x86_64
- groups = svm
- 
-+# RDPRU feature name is not defined in Qemu so it can't be excluded here. This
-+# should be okay though since KVM does not advertise RDPRU by default anyways.
-+[svm_unsupported_instruction_intercept_test]
-+file = svm.flat
-+test_args = "svm_unsupported_instruction_intercept_test"
-+qemu_params = -cpu max,+svm,-rdtscp,-xsave,-invpcid,-skinit
-+arch = x86_64
-+groups = svm
-+
- [svm_pause_filter]
- file = svm.flat
- test_args = pause_filter_test
--- 
-2.53.0.851.ga537e3e6e9-goog
-
+If it doesn't need to be scalable, just make it stupid and simple. Why
+not just protect the whole thing with a spinlock and be done with it?
