@@ -1,106 +1,143 @@
-Received: from lithops.sigma-star.at (mailout.nod.at [116.203.167.152])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f73.google.com (mail-pj1-f73.google.com [209.85.216.73])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 45EED3AC0E2;
-	Thu, 12 Mar 2026 19:33:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=116.203.167.152
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 672C238C423
+	for <kvm@vger.kernel.org>; Thu, 12 Mar 2026 19:55:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.73
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773344034; cv=none; b=j33607n42e689OLFpqcE53xFh+mXzT0DHyFuURweRJDCnHcwW3FtYJuTwAwE7ZtTqn92an8BownNrtmHLhnnlR6hLvKAuI+SoVXShgoz/FNRyMB49rWOhUxMnrt0E5LHZZe0uYfRusDdVxUM+4AJvAJQujoLYUQ8fY7Cwp76ZKA=
+	t=1773345331; cv=none; b=tcETM0O3MvTT/tYAXNJAgxjvsVNKBBpCgUCKpE/DjB+7JnkAbmQcMZg1WgPzW0YiBEO+gb+xeAwF8P2ZIydev9qaXx38nLeA31OXEExb7GWgmPZakjbfjU/MYiidr5I8lcLfGhUdyDYg7KEQPJNzPmwQrKhcKNJXHMBuDctiOos=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773344034; c=relaxed/simple;
-	bh=VQ4I1//oujMg/wMbvtHZ1fNg62i5rEhIWcPKRohhj4U=;
-	h=Date:From:To:Cc:Message-ID:In-Reply-To:References:Subject:
-	 MIME-Version:Content-Type; b=ddy2a7nze40y2XOq6AzX5P+yK/YAMZEsZCu4is1ZBhMnJKS9vFgMZWqpirXNxVgz6pZsokw/214XhfsoPaQlvyfIqpgQ2GBgjj20XFkl4eJeH0Ugf3RmPz5wDBJf3rAKd+aMd7liJ/M4aSZTOFN9EXdHYYjti5z0jySqd1deAiM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=nod.at; spf=fail smtp.mailfrom=nod.at; arc=none smtp.client-ip=116.203.167.152
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=nod.at
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nod.at
-Received: from localhost (localhost [127.0.0.1])
-	by lithops.sigma-star.at (Postfix) with ESMTP id 4DE582C14A8;
-	Thu, 12 Mar 2026 20:33:44 +0100 (CET)
-Received: from lithops.sigma-star.at ([127.0.0.1])
-	by localhost (lithops.sigma-star.at [127.0.0.1]) (amavisd-new, port 10032)
-	with ESMTP id yCwNT8mwVvHB; Thu, 12 Mar 2026 20:33:43 +0100 (CET)
-Received: from localhost (localhost [127.0.0.1])
-	by lithops.sigma-star.at (Postfix) with ESMTP id 8A34D2C14AA;
-	Thu, 12 Mar 2026 20:33:43 +0100 (CET)
-Received: from lithops.sigma-star.at ([127.0.0.1])
-	by localhost (lithops.sigma-star.at [127.0.0.1]) (amavisd-new, port 10026)
-	with ESMTP id 3HN7guaAFMsE; Thu, 12 Mar 2026 20:33:43 +0100 (CET)
-Received: from lithops.sigma-star.at (lithops.sigma-star.at [195.201.40.130])
-	by lithops.sigma-star.at (Postfix) with ESMTP id ABF4A2C14A6;
-	Thu, 12 Mar 2026 20:33:42 +0100 (CET)
-Date: Thu, 12 Mar 2026 20:33:42 +0100 (CET)
-From: Richard Weinberger <richard@nod.at>
-To: Philipp Hahn <phahn-oss@avm.de>
-Cc: amd-gfx <amd-gfx@lists.freedesktop.org>, 
-	apparmor <apparmor@lists.ubuntu.com>, bpf <bpf@vger.kernel.org>, 
-	ceph-devel <ceph-devel@vger.kernel.org>, cocci <cocci@inria.fr>, 
-	dm-devel@lists.linux.dev, 
-	DRI mailing list <dri-devel@lists.freedesktop.org>, 
-	gfs2 <gfs2@lists.linux.dev>, 
-	intel-gfx <intel-gfx@lists.freedesktop.org>, 
-	intel-wired-lan@lists.osuosl.org, iommu@lists.linux.dev, 
-	kvm@vger.kernel.org, 
-	linux-arm-kernel <linux-arm-kernel@lists.infradead.org>, 
-	linux-block <linux-block@vger.kernel.org>, 
-	linux-bluetooth@vger.kernel.org, 
-	linux-btrfs <linux-btrfs@vger.kernel.org>, 
-	linux-cifs <linux-cifs@vger.kernel.org>, linux-clk@vger.kernel.org, 
-	linux-erofs <linux-erofs@lists.ozlabs.org>, 
-	linux-ext4 <linux-ext4@vger.kernel.org>, 
-	linux-fsdevel <linux-fsdevel@vger.kernel.org>, 
-	linux-gpio@vger.kernel.org, 
-	linux-hyperv <linux-hyperv@vger.kernel.org>, 
-	linux-input@vger.kernel.org, 
-	linux-kernel <linux-kernel@vger.kernel.org>, 
-	linux-leds@vger.kernel.org, 
-	linux-media <linux-media@vger.kernel.org>, 
-	linux-mips <linux-mips@vger.kernel.org>, 
-	linux-mm <linux-mm@kvack.org>, linux-modules@vger.kernel.org, 
-	linux-mtd <linux-mtd@lists.infradead.org>, 
-	linux-nfs <linux-nfs@vger.kernel.org>, 
-	linux-omap <linux-omap@vger.kernel.org>, 
-	linux-phy@lists.infradead.org, linux-pm <linux-pm@vger.kernel.org>, 
-	linux-rockchip <linux-rockchip@lists.infradead.org>, 
-	linux-s390 <linux-s390@vger.kernel.org>, 
-	linux-scsi <linux-scsi@vger.kernel.org>, linux-sctp@vger.kernel.org, 
-	LSM <linux-security-module@vger.kernel.org>, 
-	linux-sh <linux-sh@vger.kernel.org>, 
-	linux-sound <linux-sound@vger.kernel.org>, 
-	linux-stm32 <linux-stm32@st-md-mailman.stormreply.com>, 
-	linux-trace-kernel <linux-trace-kernel@vger.kernel.org>, 
-	linux-usb@vger.kernel.org, 
-	linux-wireless <linux-wireless@vger.kernel.org>, 
-	netdev <netdev@vger.kernel.org>, ntfs3 <ntfs3@lists.linux.dev>, 
-	samba-technical <samba-technical@lists.samba.org>, 
-	sched-ext@lists.linux.dev, target-devel@vger.kernel.org, 
-	tipc-discussion@lists.sourceforge.net, v9fs <v9fs@lists.linux.dev>, 
-	Miquel Raynal <miquel.raynal@bootlin.com>, 
-	Vignesh Raghavendra <vigneshr@ti.com>
-Message-ID: <1584421372.26258.1773344022512.JavaMail.zimbra@nod.at>
-In-Reply-To: <20260310-b4-is_err_or_null-v1-48-bd63b656022d@avm.de>
-References: <20260310-b4-is_err_or_null-v1-0-bd63b656022d@avm.de> <20260310-b4-is_err_or_null-v1-48-bd63b656022d@avm.de>
-Subject: Re: [PATCH 48/61] mtd: Prefer IS_ERR_OR_NULL over manual NULL check
+	s=arc-20240116; t=1773345331; c=relaxed/simple;
+	bh=xJZ5W+Tlnl5u86g7EdYowItOjUuecQm5CqUYrR7edVE=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=Vevyf55d2sR7LRJnFaGK8sXkfLWkXBCtLxFXedJTLgs+6KJAANwPuhGaLHejSidQ1jOKiwXgmfAdn5YOeSdu9rO5cVqCupgRFfpAplCj+53CEHIWxKlTjbxkdv82IYOjWBl55Blg/+sIYaYGg7pUElEZFMtsiC+BxOIK5SfjLl8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=mKpp9UA+; arc=none smtp.client-ip=209.85.216.73
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="mKpp9UA+"
+Received: by mail-pj1-f73.google.com with SMTP id 98e67ed59e1d1-358e95e81aeso8251354a91.0
+        for <kvm@vger.kernel.org>; Thu, 12 Mar 2026 12:55:30 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1773345330; x=1773950130; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=hrjSa5sH7XQL3da3DJB6S0oC3QqGZXkp52qJDNxbE6Q=;
+        b=mKpp9UA+Z1WXRQEo2fLz3qXIg4GodO/HbjY0Rb6yrj1p/IelbGr2NgECZSljFhNU9P
+         r+e9+ik9FBRWTnxbQX3hr5qQCIAPcZnTMxhfxD8pnBXtx/e9NZuv32FTezb5Ypx7DdVS
+         aXNcJDpFqVvIUyANBS26IPmMHNg9Omds3VbFxj//J2oT45MOM2wmOXsCRS0ig3nCLA9b
+         aHK8pk3GrcXYD8pnsv/TX32mzEi9Z8O3h1rg2tZfBTWaMNQwcmqvx+NxtwSiloLdD+Vv
+         vQRHYeCrhnyhEs9pWvGcvWnWczMcoNaJXJVo1FJSm11iuVfzqmrVLklPuqmuVhHwdnxD
+         8v0w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1773345330; x=1773950130;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=hrjSa5sH7XQL3da3DJB6S0oC3QqGZXkp52qJDNxbE6Q=;
+        b=U1n+w56YVGnJ+mgGizWA4v9VaOr25VWJ4Md/ZxdJtEMywbFdQSZ17TEC92KaeFxBgQ
+         5nO2UN77awv36ByU4JYsDUvyqD1rkRWsCGHgdZDwHZBMZTEF8IZnqbUKUiXbE84mgmDR
+         N6IZsB+lczNZqE5kH8QQVSt6mWzWmFK6wHiLtjoWDCTHN4mfXZGAybOtNRp8ut6XkJum
+         xfvLE/+dTU/JSz4QO4MmcYCI3n2Ta0doSI9Y8BaBsCZNkqmtqA5xX8RQFMrLqbpKabcD
+         CNq8R+9UzPOnyz0hF3EIu6iP6RnaDYx9eoJxetea4At32vsO+VT7J2ca5gLg1r2SlVvI
+         aGEA==
+X-Forwarded-Encrypted: i=1; AJvYcCWt+N0BRnR6v4pUGp0ek6eVQvL37FYIJUirGRxIzbBiFIZzLrsNTV5abkSuqSEZ+pz59BU=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx1RrMXboEKL9sGW2/Y2JcVz4qgt17yXs9K0Htr+Hmt2Yxy5M0o
+	T3WYkFa/xMiFEpfnxhtDufeo4ChOgMD0Uo1PYPEqPkhJAlq5LFgKb19Xx3JfHEKCRzbBJuc02vE
+	XqLhSaQ==
+X-Received: from pgbcr11.prod.google.com ([2002:a05:6a02:410b:b0:c73:9c8b:4186])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a20:914c:b0:398:8a92:78aa
+ with SMTP id adf61e73a8af0-398eca38eecmr460017637.22.1773345329610; Thu, 12
+ Mar 2026 12:55:29 -0700 (PDT)
+Date: Thu, 12 Mar 2026 12:55:28 -0700
+In-Reply-To: <20260303191509.1565629-2-tycho@kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-X-Mailer: Zimbra 8.8.12_GA_3807 (ZimbraWebClient - FF148 (Linux)/8.8.12_GA_3809)
-Thread-Topic: Prefer IS_ERR_OR_NULL over manual NULL check
-Thread-Index: 0l8CyewQmrWlgaG6N3QgQFfukutRbA==
+Mime-Version: 1.0
+References: <20260303191509.1565629-1-tycho@kernel.org> <20260303191509.1565629-2-tycho@kernel.org>
+Message-ID: <abMaMECwiJPvEXss@google.com>
+Subject: Re: [PATCH 1/5] kvm/sev: don't expose unusable VM types
+From: Sean Christopherson <seanjc@google.com>
+To: Tycho Andersen <tycho@kernel.org>
+Cc: Paolo Bonzini <pbonzini@redhat.com>, Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, 
+	Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
+	"H. Peter Anvin" <hpa@zytor.com>, Ashish Kalra <ashish.kalra@amd.com>, 
+	Tom Lendacky <thomas.lendacky@amd.com>, John Allen <john.allen@amd.com>, 
+	Herbert Xu <herbert@gondor.apana.org.au>, "David S. Miller" <davem@davemloft.net>, 
+	Shuah Khan <shuah@kernel.org>, Kim Phillips <kim.phillips@amd.com>, 
+	Alexey Kardashevskiy <aik@amd.com>, Nikunj A Dadhania <nikunj@amd.com>, kvm@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-crypto@vger.kernel.org, 
+	linux-kselftest@vger.kernel.org
+Content-Type: text/plain; charset="us-ascii"
 
------ Urspr=C3=BCngliche Mail -----
-> Von: "Philipp Hahn" <phahn-oss@avm.de>
-> -=09if (gpiomtd->nwp && !IS_ERR(gpiomtd->nwp))
-> +=09if (!IS_ERR_OR_NULL(gpiomtd->nwp))
+KVM: SEV:
 
-No, please don't.
+On Tue, Mar 03, 2026, Tycho Andersen wrote:
+> From: "Tycho Andersen (AMD)" <tycho@kernel.org>
+> 
+> Commit 0aa6b90ef9d7 ("KVM: SVM: Add support for allowing zero SEV ASIDs")
+> made it possible to make it impossible to use SEV VMs by not allocating
+> them any ASIDs.
+> 
+> Commit 6c7c620585c6 ("KVM: SEV: Add SEV-SNP CipherTextHiding support") did
+> the same thing for SEV-ES.
+> 
+> Do not export KVM_X86_SEV(_ES)_VM as exported types if in either of these
+                                       ^^^^^^^^
+                                       supported
 
-This makes reading the code not easier.
+> situations, so that userspace can use them to determine what is actually
+> supported by the current kernel configuration.
+> 
+> Also move the buildup to a local variable so it is easier to add additional
+> masking in future patches.
+> 
+> Link: https://lore.kernel.org/all/aZyLIWtffvEnmtYh@google.com/
+> Suggested-by: Sean Christopherson <seanjc@google.com>
+> Signed-off-by: Tycho Andersen (AMD) <tycho@kernel.org>
+> ---
+>  arch/x86/kvm/svm/sev.c | 14 +++++++++++---
+>  1 file changed, 11 insertions(+), 3 deletions(-)
+> 
+> diff --git a/arch/x86/kvm/svm/sev.c b/arch/x86/kvm/svm/sev.c
+> index 3f9c1aa39a0a..f941d48626d3 100644
+> --- a/arch/x86/kvm/svm/sev.c
+> +++ b/arch/x86/kvm/svm/sev.c
+> @@ -2957,18 +2957,26 @@ void sev_vm_destroy(struct kvm *kvm)
+>  
+>  void __init sev_set_cpu_caps(void)
+>  {
+> +	int supported_vm_types = 0;
 
-Thanks,
-//richard
+This should be a u32.
+
+> +
+>  	if (sev_enabled) {
+>  		kvm_cpu_cap_set(X86_FEATURE_SEV);
+> -		kvm_caps.supported_vm_types |= BIT(KVM_X86_SEV_VM);
+> +
+> +		if (min_sev_asid <= max_sev_asid)
+> +			supported_vm_types |= BIT(KVM_X86_SEV_VM);
+>  	}
+>  	if (sev_es_enabled) {
+>  		kvm_cpu_cap_set(X86_FEATURE_SEV_ES);
+> -		kvm_caps.supported_vm_types |= BIT(KVM_X86_SEV_ES_VM);
+> +
+> +		if (min_sev_es_asid <= max_sev_es_asid)
+> +			supported_vm_types |= BIT(KVM_X86_SEV_ES_VM);
+>  	}
+>  	if (sev_snp_enabled) {
+>  		kvm_cpu_cap_set(X86_FEATURE_SEV_SNP);
+> -		kvm_caps.supported_vm_types |= BIT(KVM_X86_SNP_VM);
+> +		supported_vm_types |= BIT(KVM_X86_SNP_VM);
+>  	}
+> +
+> +	kvm_caps.supported_vm_types |= supported_vm_types;
+>  }
+>  
+>  static bool is_sev_snp_initialized(void)
+> -- 
+> 2.53.0
+> 
