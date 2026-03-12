@@ -1,111 +1,98 @@
-Received: from mail-pg1-f202.google.com (mail-pg1-f202.google.com [209.85.215.202])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from cstnet.cn (smtp25.cstnet.cn [159.226.251.25])
+	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40E2E2749DC
-	for <kvm@vger.kernel.org>; Thu, 12 Mar 2026 00:55:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.202
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E6DFF1A0BE0;
+	Thu, 12 Mar 2026 01:20:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.25
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773276921; cv=none; b=PIp9yIY981NqhAeDth8Uf15yU/sM8nPFQiGnGyJpIUiZs01ogCeAVdN45cfGaCdOwnyO1OnI9N3UbaiwlS2sGooE7u9lci+iBsw00S4IY1cMVBrECLBrOOSyvAbotyztELWgiIy+wA1ajgTWzHHFBQnIsi3S6L1PetQZeZkKyco=
+	t=1773278405; cv=none; b=eCKMo2KlKdW/YQMSDfhPuez6lEBG3NkJKJX9JknVhYcZTTczNn1oZ0T9EA7P5Z18ohtgNvfTI7oIX5NqmOxIAAOUoiCF94LW0WNOr5fXq5DsAtMOR24McylMj8pbsyB5zWHpktPFdt5MTOGJyX+JoGXFF3OnuXQ6/DwZiI3rRIY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773276921; c=relaxed/simple;
-	bh=6LSdL98ZotrSRX1eDbvuLKAzwAbASYg/e5rmWSoeKG4=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=KNMjAt53v+9h5BUw+wfdjEFJmjk7jzUiyBJXxjLbMB+rY2mjoKJoNmPt20P8vXQNr2Z6ahzfp5bpXhof5qkl9Jm2LobsSjYaQV811nqWHSlq8V1vQ0GabTzFFPPDIDp6lunhVb5cpqZYBnadQpTZa2NMwnY1SJIsg9o3HT8DZ9Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=gt86lFdv; arc=none smtp.client-ip=209.85.215.202
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="gt86lFdv"
-Received: by mail-pg1-f202.google.com with SMTP id 41be03b00d2f7-c73b1376f98so1877283a12.0
-        for <kvm@vger.kernel.org>; Wed, 11 Mar 2026 17:55:20 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1773276919; x=1773881719; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=InAOGSfJmiIFK9a61D7u+f/DlACEHE44oAFbK2VnT1w=;
-        b=gt86lFdvS8byq+SkI8gmJlYZvHjk3is39CxVbmIBPrOtmSeOVH7pIyLp2M5BvSFKF3
-         hDRM3fEYFiy5utFH8NDChSGItSAqUuMv7k4zFJ8nESYI3YafY50wh/mxOjBlVkC78Gy7
-         Mi2ZIBS3KqpPKkmb5wz+Rou64SZLgQQF4eQfdHMwUkxntG5Ii/DJUfeuUVTAnzpezzAW
-         zsL9fOYFQMF0Aa9OQCjXxYop5Otf12d599Kwnxo0P6kAFI1gdIaqazywAOOTP/k/Lk8p
-         xmZ7y5upMd3C9x8Ir5938mg2nWjvO7jSiFzKkVF9QNII4O5JPjNRw/Id1cBwTbhEVheB
-         zZ4A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1773276919; x=1773881719;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=InAOGSfJmiIFK9a61D7u+f/DlACEHE44oAFbK2VnT1w=;
-        b=CCuURdoiuJHu3YNXJBdH0cfb7FnQ3mo9UNNqJ/yqJiZD9ABFx9e5dYWFILEEbzTzyY
-         bjMXb8bsBwEDbM07AdC0lefG9pKF1k83F3r3FpXkkCsH7YF8QF6C7jENVxZj9XjAnZtj
-         4JqbcMMwHhtPQzhNdzuAKtqkercdpxmE1xpRosCXVD0QqO2/KeCHyttPlitEgWUkA20j
-         4Iem8XUcBQIGbc2xCAZYB5g6170JzngadzZKXGVS1TcphujKsCQgJY+9kXtUxFzEL7pk
-         VLGhYJmCFZlqEon5Q5CgzFFgPuChdbAgnKqtu6sXdMO9gqrVYL70qFGtuoqcub6NKvxi
-         gkig==
-X-Forwarded-Encrypted: i=1; AJvYcCXoRnPOOuDFKV73BUSEjCh8TWaYZjgI0r6xbs490HeD28Xc2z8iZo3ZTTCj9OW3Mls5NGQ=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx8yi7iT7rpSiq/Xu6853HndTAt3VBKqHNFJ14NpHFuID8TNl7+
-	l4qRcALhq2WJo+MnPVFukrMKLzAnTW15btqMZ0fI+63hpUYC9sjY246VQ60sNS0Npo2ENuGsarK
-	b0AvR+A==
-X-Received: from pgld31.prod.google.com ([2002:a63:e1f:0:b0:c66:4fdd:d41a])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a21:2989:b0:398:4a5c:d5a3
- with SMTP id adf61e73a8af0-398c60e4390mr4170819637.34.1773276919379; Wed, 11
- Mar 2026 17:55:19 -0700 (PDT)
-Date: Wed, 11 Mar 2026 17:55:18 -0700
-In-Reply-To: <20251114151828.98165-3-kalyazin@amazon.com>
+	s=arc-20240116; t=1773278405; c=relaxed/simple;
+	bh=5ABnQSYglHEWWDIwmcFBddWpOHBhJW2Jv9JdKCWHais=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=CJBOyxZCOcBcj3vyFBY2gTuslZoDTxvN8PATo9t2yH+WZ2rdQQ7sVFoaDrDbPrND3RYkGM6TBX4DOCvsHZ2hbXkvO/RIGLWZ3d2Wa1Yi7f5onvJL/I8c8JkVyUcbzQyKEr9lzaPEwX7cgXrofXTxmHy+99K6ylRTHB9m95ITP0g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.25
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iscas.ac.cn
+Received: from fric.. (unknown [210.73.43.101])
+	by APP-05 (Coremail) with SMTP id zQCowAAntwqkFLJpB6U4Cg--.65391S2;
+	Thu, 12 Mar 2026 09:19:33 +0800 (CST)
+From: Jiakai Xu <xujiakai2025@iscas.ac.cn>
+To: kvm-riscv@lists.infradead.org,
+	kvm@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-kselftest@vger.kernel.org,
+	linux-riscv@lists.infradead.org
+Cc: Albert Ou <aou@eecs.berkeley.edu>,
+	Alexandre Ghiti <alex@ghiti.fr>,
+	Andrew Jones <ajones@ventanamicro.com>,
+	Anup Patel <anup@brainfault.org>,
+	Atish Patra <atish.patra@linux.dev>,
+	Palmer Dabbelt <palmer@dabbelt.com>,
+	Paolo Bonzini <pbonzini@redhat.com>,
+	Paul Walmsley <pjw@kernel.org>,
+	Shuah Khan <shuah@kernel.org>,
+	Jiakai Xu <xujiakai2025@iscas.ac.cn>
+Subject: [PATCH v4 0/2] RISC-V: KVM: Fix array out-of-bounds in firmware counter reads
+Date: Thu, 12 Mar 2026 01:19:29 +0000
+Message-Id: <20260312011931.1352239-1-xujiakai2025@iscas.ac.cn>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20251114151828.98165-1-kalyazin@amazon.com> <20251114151828.98165-3-kalyazin@amazon.com>
-Message-ID: <abIO9teJUlGMj16T@google.com>
-Subject: Re: [PATCH v7 2/2] KVM: selftests: update guest_memfd write tests
-From: Sean Christopherson <seanjc@google.com>
-To: Nikita Kalyazin <kalyazin@amazon.co.uk>
-Cc: "pbonzini@redhat.com" <pbonzini@redhat.com>, "shuah@kernel.org" <shuah@kernel.org>, 
-	"kvm@vger.kernel.org" <kvm@vger.kernel.org>, 
-	"linux-kselftest@vger.kernel.org" <linux-kselftest@vger.kernel.org>, 
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, "david@kernel.org" <david@kernel.org>, 
-	"jthoughton@google.com" <jthoughton@google.com>, "ackerleytng@google.com" <ackerleytng@google.com>, 
-	"vannapurve@google.com" <vannapurve@google.com>, "jackmanb@google.com" <jackmanb@google.com>, 
-	"patrick.roy@linux.dev" <patrick.roy@linux.dev>, Jack Thomson <jackabt@amazon.co.uk>, 
-	Takahiro Itazuri <itazur@amazon.co.uk>, Derek Manwaring <derekmn@amazon.com>, 
-	Marco Cali <xmarcalx@amazon.co.uk>
-Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:zQCowAAntwqkFLJpB6U4Cg--.65391S2
+X-Coremail-Antispam: 1UD129KBjvJXoW7CF4fXw45Cry8Ar47tF4DXFb_yoW8Xr1fpF
+	W3Ka4YkrykJrs7t343A3yktw15Xrs5Ca98GryxGF18Cr45ZryfXr1qkwnxt3WrCrsYqw1Y
+	ya1Igas7CFy5Za7anT9S1TB71UUUUjDqnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDU0xBIdaVrnRJUUUQ014x267AKxVW8JVW5JwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
+	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
+	1l84ACjcxK6xIIjxv20xvE14v26F1j6w1UM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26F4j
+	6r4UJwA2z4x0Y4vEx4A2jsIE14v26r4UJVWxJr1l84ACjcxK6I8E87Iv6xkF7I0E14v26F
+	4UJVW0owAaw2AFwI0_JF0_Jw1lnxkEFVAIw20F6cxK64vIFxWle2I262IYc4CY6c8Ij28I
+	cVAaY2xG8wAqx4xG64xvF2IEw4CE5I8CrVC2j2WlYx0E2Ix0cI8IcVAFwI0_JF0_Jw1lYx
+	0Ex4A2jsIE14v26r1j6r4UMcvjeVCFs4IE7xkEbVWUJVW8JwACjcxG0xvY0x0EwIxGrwAC
+	jI8F5VA0II8E6IAqYI8I648v4I1lFIxGxcIEc7CjxVA2Y2ka0xkIwI1lc7CjxVAaw2AFwI
+	0_GFv_Wrylc2xSY4AK67AK6w4l42xK82IYc2Ij64vIr41l4I8I3I0E4IkC6x0Yz7v_Jr0_
+	Gr1l4IxYO2xFxVAFwI0_JF0_Jw1lx2IqxVAqx4xG67AKxVWUJVWUGwC20s026x8GjcxK67
+	AKxVWUGVWUWwC2zVAF1VAY17CE14v26r1q6r43MIIYrxkI7VAKI48JMIIF0xvE2Ix0cI8I
+	cVAFwI0_Gr0_Xr1lIxAIcVC0I7IYx2IY6xkF7I0E14v26r4j6F4UMIIF0xvE42xK8VAvwI
+	8IcIk0rVWUJVWUCwCI42IY6I8E87Iv67AKxVW8JVWxJwCI42IY6I8E87Iv6xkF7I0E14v2
+	6r4j6r4UJbIYCTnIWIevJa73UjIFyTuYvjTRNeOpDUUUU
+X-CM-SenderInfo: 50xmxthndljiysv6x2xfdvhtffof0/1tbiCQ4ECWmx5mWOZAACs5
 
-On Fri, Nov 14, 2025, Nikita Kalyazin wrote:
-> +static void test_write_supported(int fd, size_t total_size)
-> +{
-> +	size_t page_size = getpagesize();
-> +	void *buf = NULL;
-> +	int ret;
-> +
-> +	ret = posix_memalign(&buf, page_size, total_size);
-> +	TEST_ASSERT_EQ(ret, 0);
-> +
-> +	ret = pwrite(fd, buf, page_size, total_size);
-> +	TEST_ASSERT(ret == -1, "writing past the file size on a guest_mem fd should fail");
-> +	TEST_ASSERT_EQ(errno, EINVAL);
-> +
-> +	ret = pwrite(fd, buf, 1, 0);
-> +	TEST_ASSERT(ret == -1, "writing an unaligned count a guest_mem fd should fail");
-> +	TEST_ASSERT_EQ(errno, EINVAL);
-> +
-> +	ret = pwrite(fd, buf, page_size, 1);
-> +	TEST_ASSERT(ret == -1, "writing to an unaligned offset a guest_mem fd should fail");
-> +	TEST_ASSERT_EQ(errno, EINVAL);
-> +
-> +	ret = pwrite(fd, buf, page_size, 0);
-> +	TEST_ASSERT(ret == page_size, "write on a guest_mem fd should succeed");
+When a guest reads a firmware PMU counter via
+SBI_EXT_PMU_COUNTER_FW_READ or SBI_EXT_PMU_COUNTER_FW_READ_HI without
+first configuring it with SBI_EXT_PMU_COUNTER_CFG_MATCH, the counter's
+event_idx remains SBI_PMU_EVENT_IDX_INVALID (0xFFFFFFFF).
 
-This write should actually verify a given pattern is written, not just that the
-write() returned success.  There should also be testcases for writes that fail,
-e.g. on the first page and also on the nth page.
+get_event_code() extracts the lower 16 bits from event_idx, yielding
+0xFFFF, which is then used to index into kvpmu->fw_event[]. Since the
+fw_event array only contains RISCV_KVM_MAX_FW_CTRS entries, this results
+in an out-of-bounds access that can be detected by UBSAN.
 
-In a perfect world, there would also be testcases for partial writes, but I'm not
-entirely sure how to make that happen, e.g. I'm not sure if an munmap() can pull
-the rug out from under __copy_from_iter().  If we go with the -EFAULT behavior,
-the test can map two pages, then use a separate helper thread to munmap() the pages
-after a delay.  Then in the pwrite() thread, verify all bytes are written on success?
-I'm not sure that's interesting enought to warrant the development cost and effort
-though, e.g. it doesn't seem wildly different than the deterministic "entire page
-failed" case.
+Patch 1 fixes the issue by validating the firmware event code before
+accessing the fw_event array and returning -EINVAL for invalid values.
+
+After fixing the kernel behavior, the existing KVM selftest
+(sbi_pmu_test) fails because it attempts to read firmware counters
+without configuring them first. Patch 2 updates the selftest to
+configure a firmware event before reading the counter and adds a
+negative test to ensure that reading an unconfigured firmware counter
+fails gracefully.
+
+Jiakai Xu (2):
+  RISC-V: KVM: Fix array out-of-bounds in pmu_ctr_read() and
+    pmu_fw_ctr_read_hi()
+  RISC-V: KVM: selftests: Fix firmware counter read in sbi_pmu_test
+
+ arch/riscv/kvm/vcpu_pmu.c                     | 14 +++++++
+ .../testing/selftests/kvm/include/riscv/sbi.h | 37 +++++++++++++++++++
+ .../selftests/kvm/riscv/sbi_pmu_test.c        | 20 +++++++++-
+ 3 files changed, 70 insertions(+), 1 deletion(-)
+
+-- 
+2.34.1
+
