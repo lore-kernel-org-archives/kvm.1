@@ -1,46 +1,46 @@
-Received: from SA9PR02CU001.outbound.protection.outlook.com (mail-southcentralusazon11013040.outbound.protection.outlook.com [40.93.196.40])
+Received: from CO1PR03CU002.outbound.protection.outlook.com (mail-westus2azon11010013.outbound.protection.outlook.com [52.101.46.13])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8551537DE88;
-	Thu, 12 Mar 2026 20:39:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.93.196.40
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B5E663815F4;
+	Thu, 12 Mar 2026 20:39:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.46.13
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773347965; cv=fail; b=FGvp7Lgzfiyg655oET4QOL8xIk0HkLWCexT/AF+gSdBcmkZ+bFt783SZEKxnbTcJFCoBFdhC2CjVYBJikX6IPc+7ZlsPZeXsB6PxfXGsVff6mDRal1Ci7BQavojT8C+F8JROBePmSAmYIsoe+9/EZ8PARy2pr0ShRPq3RuHXuh0=
+	t=1773347973; cv=fail; b=O/NLhArTqnW3+dGOkuzKMpO4ymv52ZwDDQ96gu590NqAn0LZmK5XtKhezIhoFyKcSbECJD03O8T7DSctGWFeEOFuuSQLVKIfpPj/+CYbp6kZqKtuQj7ybm1ErfD3DYE9fbXqPrcO92i/QEsZxapKsCTdbIDAjVn2KJ7g6G3zCeo=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773347965; c=relaxed/simple;
-	bh=yvtWXScegmXC80B4UzEVP2ppK7P6DlS4XTp4M2+ot/w=;
+	s=arc-20240116; t=1773347973; c=relaxed/simple;
+	bh=B7w/CpKWe48VT+mL9VYzc6mGRs9LLekTo6FEYcNYCZE=;
 	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=V5tDp7jFWhIeYQHxccGiLq4FDR65e5taPJfTBwgqeDMHNGn8WZDMRqmQsIu0BR5l2WCFWLG70Wi9tBrFu3F1uhuV+hsEdWkrNGXP412CyLMiHngbuU8ogZr3haFu7dFE5EeFZm0VAnX5Sy7ifG0hqhVlQOsFwSB5pCUKHx5Io2c=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=DA6xeygb; arc=fail smtp.client-ip=40.93.196.40
+	 MIME-Version:Content-Type; b=Mqrp3Glh/nYSgvVOeOmm35+ce7Q/rQSsRimOyGKgLJ+ZXpUK8fJS+OtOfGCCXXRPivDADagwx9Ey3QOSgOZqo8iEnk2iZr6ZXTO/3JXj9s9TK0ugf5/kPWtfqYhaCBb3W0z0bwObydr/V9QdwLrJgPu4AW1Nkyi+lIl460QqQdw=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=T3p8zp7s; arc=fail smtp.client-ip=52.101.46.13
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
 Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="DA6xeygb"
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="T3p8zp7s"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=cJvtppbGaHR7sgEgz0zguiwtM4vlh7+UXVkwXXZY5BEZsUal1DfVSWynM//eBd9bC7eUb/yR9mXeLhP5GPo+0j6PkgaO0WrSemZUzsTRpggR967Y2WOJ18Yex+nJxrH7Q96pXA0nsZOSeLjeRo5XjjRqZBdBCbcXjphYkYlno/eZf+j2S1aLqY/5Zs2cdgDkzkzHzbjhYoRaDbFCvBGl81cKoQH9hF1gvabTGE+zjdx+V7m8/lAWTmloCatsVQ0iKczIoqwLVTT9xD3vT3kMU4lJYtvAiiTz8wtlHl282upa4ZyGZjz7dLn+877c8ZfdtScJTKsxq6zttyOgH0Hzgw==
+ b=vvC3T1W0yJf3kaGlfW1FGi/uSGHTzUkFc3fZYDSzUrWvQerAnkB8eJAgds2jhbKJzWVG1vzfb1RDm7Hlea+YVwkE0ADUjgh9PHwmYq7KmXUrgFMHCWl8KnPDESHU35hk9YRblyBvXw0O/GTeQwy42SXFkcBTxGQ4Jk/Z7i52MlwVA0hoBEDIeKgSS35zhUqdfBpnN1BhnJ+3mKz2AdfbDP4g17xlw0GbiRFOA5Ut8YrzRjMGGVL70gWI/MOisZYPP3CJO5pxLpjZ49DD/Wyetz3QZxgFZZnQ4mPj9QbE+z/Typsqeo476ipxn8WVWb7Am8BCQWpV1mhEo/IZjpdWzg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=DHIY+UgSAwrUxNAT+DrY3bGGc18TjffqKt2fxTSKoWY=;
- b=KzAsRzt5dT+p4X2fGrdEIEy8WwURCY0nG1BNi/z0hc3rEgm08J7HSkElhtfaMNixs6+Ta3rbaSGoqVKO2OPobeGcQFiVnx3JSznqPbF6VPjqrJ96+BgQUYFprjEL2LeScz9Asl8DHFe3Q8ZBa9LcRo6iiJol/meDPJpi6WSHTUiWzt78nX7FWetc/ryhFkRN6sXk/x5YSFKHcSV+ofE8YZrT2F/wtFTI4mxJslxgxsopfbeELHWwgQiUWYPaZxRP71wKYo6fhXkqEFsYE/upGft6XYhO7RLCqxg0fOqkk2mGSoEN4z9eRw7LsS30vJTyvHQi0mtxvJj2WN54InK7WQ==
+ bh=8P8dK58culFkqcTx6EMXHzqv2VJzB1nStPi4Ms6/PHY=;
+ b=UagXelOydXzeAiu7aAoZ9OqRV1FdCKRTGbUX4CaVLgbbxOf1DcRp/fxVBOo7Tq+jJGTHd3yU+i9PqInAgtztaOYwjRfN2lneqn9JofBzpoKYVGD0ZyxJY3JFhtZ0Q8t3zJ9PWM6VNJR3h06sho5a682LzOFGZWF+J+F0zvBHzXoaRJn/s8Va/PR18aUQ3MAGD/NiNG5dCGtcGBGco6jViRgEQaLT4cOKFj0uP5DoDYjOOG4iYy5lWBI0FGSAIWgaEm5vxOltct1SXLYvsQvKw2YMPQlCD9bYIEP0GSNW1pnF+g1ImaiQV/Kk1Ddd3nb663iCZtVbFvxUope9xDxXKw==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
  165.204.84.17) smtp.rcpttodomain=lwn.net smtp.mailfrom=amd.com; dmarc=pass
  (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
  dkim=none (message not signed); arc=none (0)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=DHIY+UgSAwrUxNAT+DrY3bGGc18TjffqKt2fxTSKoWY=;
- b=DA6xeygbaxAUIPJnLilMDnNgfbW03qA4mpahBFllvXzr/gcKR0K+ivCS8p8ZHPICyBPhAJhyFCDelLr8GxK7S9mxc25pWBMR9NTpJ494zRno1b3OQ5rsLyX/tp7Xvpk/9iKT1CGgclnvfFPEazBI7kBsooTuL+R3tYA39VpB+aE=
-Received: from SJ0PR13CA0144.namprd13.prod.outlook.com (2603:10b6:a03:2c6::29)
- by DS5PPF5A66AFD1C.namprd12.prod.outlook.com (2603:10b6:f:fc00::64d) with
+ bh=8P8dK58culFkqcTx6EMXHzqv2VJzB1nStPi4Ms6/PHY=;
+ b=T3p8zp7s60Srjq6E9giH9umyQHNV4Wu1rn/r/WwLh0ol3T4SwAOgZ7T+5qBAkUK07MGqbL4zRTXEmDIRZy45gzQn9S0IUWTu7GCEW9VSssBhrYp54fXHKB9LPq7RO/GWG4/vCt8eEB0SW+a5r58eakcEhXQjN8m2RjQ13/LEzpE=
+Received: from SJ0PR05CA0192.namprd05.prod.outlook.com (2603:10b6:a03:330::17)
+ by PH8PR12MB6793.namprd12.prod.outlook.com (2603:10b6:510:1c4::19) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9723.4; Thu, 12 Mar
- 2026 20:39:15 +0000
-Received: from SJ5PEPF000001D1.namprd05.prod.outlook.com
- (2603:10b6:a03:2c6:cafe::23) by SJ0PR13CA0144.outlook.office365.com
- (2603:10b6:a03:2c6::29) with Microsoft SMTP Server (version=TLS1_3,
+ 2026 20:39:22 +0000
+Received: from SJ5PEPF000001D7.namprd05.prod.outlook.com
+ (2603:10b6:a03:330:cafe::9) by SJ0PR05CA0192.outlook.office365.com
+ (2603:10b6:a03:330::17) with Microsoft SMTP Server (version=TLS1_3,
  cipher=TLS_AES_256_GCM_SHA384) id 15.20.9700.8 via Frontend Transport; Thu,
- 12 Mar 2026 20:39:14 +0000
+ 12 Mar 2026 20:39:21 +0000
 X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
  smtp.mailfrom=amd.com; dkim=none (message not signed)
  header.d=none;dmarc=pass action=none header.from=amd.com;
@@ -48,13 +48,13 @@ Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
  165.204.84.17 as permitted sender) receiver=protection.outlook.com;
  client-ip=165.204.84.17; helo=satlexmb07.amd.com; pr=C
 Received: from satlexmb07.amd.com (165.204.84.17) by
- SJ5PEPF000001D1.mail.protection.outlook.com (10.167.242.53) with Microsoft
+ SJ5PEPF000001D7.mail.protection.outlook.com (10.167.242.59) with Microsoft
  SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.9678.18 via Frontend Transport; Thu, 12 Mar 2026 20:39:14 +0000
+ 15.20.9678.18 via Frontend Transport; Thu, 12 Mar 2026 20:39:22 +0000
 Received: from bmoger-ubuntu.amd.com (10.180.168.240) by satlexmb07.amd.com
  (10.181.42.216) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.17; Thu, 12 Mar
- 2026 15:39:12 -0500
+ 2026 15:39:20 -0500
 From: Babu Moger <babu.moger@amd.com>
 To: <corbet@lwn.net>, <tony.luck@intel.com>, <reinette.chatre@intel.com>,
 	<Dave.Martin@arm.com>, <james.morse@arm.com>, <tglx@kernel.org>,
@@ -73,9 +73,9 @@ CC: <skhan@linuxfoundation.org>, <babu.moger@amd.com>, <x86@kernel.org>,
 	<elena.reshetova@intel.com>, <linux-doc@vger.kernel.org>,
 	<linux-kernel@vger.kernel.org>, <linux-coco@lists.linux.dev>,
 	<kvm@vger.kernel.org>, <eranian@google.com>, <peternewman@google.com>
-Subject: [PATCH v2 14/16] fs/resctrl: Update kmode configuration when cpu_mask changes
-Date: Thu, 12 Mar 2026 15:36:59 -0500
-Message-ID: <0dc7a082a161c988bf75b125754e8461f4aef0ea.1773347820.git.babu.moger@amd.com>
+Subject: [PATCH v2 15/16] x86/resctrl: Refactor show_rdt_tasks() to support PLZA tasks
+Date: Thu, 12 Mar 2026 15:37:00 -0500
+Message-ID: <b22078b618513e2413a8211ceb0146b817a126aa.1773347820.git.babu.moger@amd.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <cover.1773347820.git.babu.moger@amd.com>
 References: <cover.1773347820.git.babu.moger@amd.com>
@@ -91,214 +91,100 @@ X-ClientProxiedBy: satlexmb07.amd.com (10.181.42.216) To satlexmb07.amd.com
  (10.181.42.216)
 X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SJ5PEPF000001D1:EE_|DS5PPF5A66AFD1C:EE_
-X-MS-Office365-Filtering-Correlation-Id: 69866f8a-8e4a-49b8-256e-08de80776cf7
+X-MS-TrafficTypeDiagnostic: SJ5PEPF000001D7:EE_|PH8PR12MB6793:EE_
+X-MS-Office365-Filtering-Correlation-Id: 503ae0ca-e835-48fd-8846-08de80777179
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|82310400026|376014|7416014|36860700016|56012099003|22082099003|18002099003;
+	BCL:0;ARA:13230040|376014|7416014|36860700016|1800799024|82310400026|56012099003|22082099003|18002099003;
 X-Microsoft-Antispam-Message-Info:
-	6IE/ZclM/GbYqRdX3THE6UDJPvveJxioN5ZJjejRTdDX540/fgwAEHrM09qCUZ87Fnss1b64lxhpe1ZIGKH2MskHMN4ENEN/4Zz4dq+rlbF6eOyARckV9ZDphaoOuAQ0fmp5ita4mTTbG358GvaykBp9HKoeNGsNHPDh4iJQG2fWResQiEUW1hHDFexO+qhZuLPyRkX14xVpgU5QGRL5K1rz2i6uczBGGPZXXpixeja+AHrp6rb5yrD1uFEOijqsS8a+B8z222Knx0RZUao88ggKxcS7/6FtWUs5qLujwytp8A+kKkIf3OdBQu7+ZjrwdyZWVEEL1wtjcExOov4szN1QVP76l9Rb+KFgS2jf/GSod9q4DS7nJfscSgDsN1E2TynKZPqLWU46+wa2dHx8Qkveb7jMKP5e5k/oescb4sh4WeyVqcuGRUJpbYa7JqUcKwNDPGHA/1EiX7jYWODz15taCqyAs6uQCoT2GTkWyZTZTTvs+WCBA6OMd99Jn/Xp68z9LinZ6b/p2xzVMUPDuRto5/u9SObsW5z96lZRcrbpsiwB6Ox4bMVc6113gpX7h5T1M5Cp9E5GJfiW4+8Q4DX9diZbKI5ofjAnz5gTjBCJ7mDOG3s4MdHTujJQTwCbLASKHQnH6Iy43Fd+RYaeMhhcMyf2CYoHRFfz3weHIfshy2ua52R53H9lkYZFtEYwwnjr0lgnDMWvnY15ORO+C4mW43E0Sphjpwzm9ApmfFckd2LIk7okSrU8L5/iJxjoUBtl7hgGX94DphTVL7bIrw==
+	LGuwqHmsf0VS0E2XMFi2I4BXH98sUVIOeQ2sSrhLtPOwK9VpacXCOCz0jEpb6WgHVbs4dcbbTJEuWvT6+ZFfBGTydRtw8mzX+SVx2NY9J/xBKNKT6IGcWU3NfidrnQKgxf2ap65pPOfu0l9Wz8hwGxRLLtDeFhea+AFn3XZ+jkyBiphGPtUlY87G4L6cG92WGLf5E5ThrQHOxoiKoirpyjhjzaqfak5mTJgFMQbx/czgrHs6DN8nOt5kW1OUgoHvV7+nqjoW7fmt8yOaAVZjIPBXgTlKPK8RBrPaFX71CNas68s8dlBECfIh371Pu5koy3/kvM5xpz6HdnGHIt73FhPX9foYf3HJlw5CiRt847SjczfASrMT9trRtrOBDd3XOE7smNaJxkrQVhEYJPQEvz/ECt0Q+8b6rX1b/PXa6P2B9PHxX8Vmj+DJLi1EwkdtVJeXCvgFHCfFOA3E4o+8B6Un8INX05zP/4DcGZKvEzFe4kGi/09CNET1OMEQfncQuOtbLmJvpxq7ydDT9+xy898vaapCIaBkM1NmfF3ASjq0Wz1ImorJ9sLC9Gq9hrA1ZMj/311stsD1Z27NtrHGkaQolorQ7VmEW9BLKKbJsj7wWB1Rce/3qh1Zp56nN4nPs0PrTCuk7T9KEqZLNXUvADP6Nbj+vPpcUwJmsv8FC17ZUwBJy1X9mxNj5Npx8+ufy/wd4U0PL1/SVfZi7aHz5V4Ig9/pGBgB0EjpXFmD8u0MAu4tefB7+amaz/y/Ec/+hd3KTLrDnwXrGnHUfg+1PA==
 X-Forefront-Antispam-Report:
-	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb07.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(1800799024)(82310400026)(376014)(7416014)(36860700016)(56012099003)(22082099003)(18002099003);DIR:OUT;SFP:1101;
+	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb07.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(376014)(7416014)(36860700016)(1800799024)(82310400026)(56012099003)(22082099003)(18002099003);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	qHY8uiShNPftDfa0CgjUfkNWjr3UQykeO2+C2rGjuFOsaelD79liKeJ+yRSfMFPblzSTn+viY2zrwdA/fhLkWPCpZaDYDsFjSQq8XnP9W5tzUuA50azQJkVKD9yWXZcQcfyxcePpHQSjLOLqJGlPYvCjjxPJZODdKbzEFg7IoiwEJaHRdVZg8K/ztrxlxPfSwR9vfY5yx+saHQrRq2OYo92gwAy/QgnQK+/6fVjuYCLO0zkc4bE9w4Vv0UTXClFpY1FDjn9VATVAnFcdTbhRkPJN7xFjvNYDAHaoXRHxt3z95TWK0UI0NjjCtJM3NQgg0IK60P1KloP6AglqPy9PImTnDeG/4UMARJDpcIQaSNGgetSBdnCQOR3f0hR0b0jIk3PXeC55XtrY+uNjbS+KodDE5GeE6TefZdCAeXwPkDv5evRNKu+cgIi1aVEmkb16
+	dFaUYgECpcy5mK/tWIe909QR+S7dI9Rw4e/qsQ60aBq7Hhtg9epW9hEpATOKCs7afR1cPNrTG4qQ+y3pv1/giEnlZKx77JVYPXFs9X6mF2yFAPArGOQSRLyE3qHJ+C3KL2bgWAbZJQNufEaQbPFHc0VtE7TcBFtIY1rzc33H0Sr/NbFIdsYhG6c1F57Vd4cAR+KmoqMYrGMoQqWaYohmvr/j9PpWhErncMaLA0ubU/V4Bq8K1agifnN8OtalVotEd5rX7VRxcKpVVfEwJJBmpoQuWEcOFd3e+00yt4QkM9AHvb3k95NEgEr+jb2A1spwm5cBWoNsHLSQziyADzAkGyZW3ZuHyv7F6O2gKdI8C3ENfSmY36GsLDsbfoxA2f03xu5y5ZklT2WZwheLv0fk9VXPIjiNgeG0xfJ4p9kWeTLm+USlJuS8u55fXjmkwycg
 X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 12 Mar 2026 20:39:14.9425
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 12 Mar 2026 20:39:22.5087
  (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 69866f8a-8e4a-49b8-256e-08de80776cf7
+X-MS-Exchange-CrossTenant-Network-Message-Id: 503ae0ca-e835-48fd-8846-08de80777179
 X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
 X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[satlexmb07.amd.com]
 X-MS-Exchange-CrossTenant-AuthSource:
-	SJ5PEPF000001D1.namprd05.prod.outlook.com
+	SJ5PEPF000001D7.namprd05.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Anonymous
 X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS5PPF5A66AFD1C
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH8PR12MB6793
 
-When kernel mode (e.g. PLZA) is active for a resctrl group, per-CPU
-state must stay in sync with the group's cpu_mask. If the user
-changes the cpus file, we must enable kmode on newly added CPUs and
-disable it on CPUs that left the group.
-
-Add cpus_write_kmode(), which calls cpus_ctrl_write_kmode() for
-CTRL_MON groups and cpus_mon_write_kmode() for MON groups.
+Refactor show_rdt_tasks() to use a new rdt_task_match() helper that checks
+t->kmode when kmode (e.g. PLZA) is enabled for a group, falling back to
+CLOSID/RMID matching otherwise. This ensures correct task display for
+PLZA-enabled groups.
 
 Signed-off-by: Babu Moger <babu.moger@amd.com>
 ---
-v2: Fixed few typos in commit message.
-    Added separate functions to handle kmode configuration for CTRL_MON and MON groups.
+v2: Added more code comments for clarity.
 ---
- fs/resctrl/rdtgroup.c | 149 +++++++++++++++++++++++++++++++++++++++++-
- 1 file changed, 148 insertions(+), 1 deletion(-)
+ fs/resctrl/rdtgroup.c | 39 ++++++++++++++++++++++++++++++++++-----
+ 1 file changed, 34 insertions(+), 5 deletions(-)
 
 diff --git a/fs/resctrl/rdtgroup.c b/fs/resctrl/rdtgroup.c
-index 23e610d59111..31479893633a 100644
+index 31479893633a..b41e681f6922 100644
 --- a/fs/resctrl/rdtgroup.c
 +++ b/fs/resctrl/rdtgroup.c
-@@ -456,6 +456,150 @@ static void cpumask_rdtgrp_clear(struct rdtgroup *r, struct cpumask *m)
- 		cpumask_and(&crgrp->cpu_mask, &r->cpu_mask, &crgrp->cpu_mask);
+@@ -966,6 +966,34 @@ static ssize_t rdtgroup_tasks_write(struct kernfs_open_file *of,
+ 	return ret ?: nbytes;
  }
  
 +/**
-+ * cpus_mon_write_kmode() - Update per-CPU kmode when a MON group's cpu_mask changes
-+ * @rdtgrp:	The MON group whose cpu_mask is being updated.
-+ * @newmask:	The new CPU mask requested by the user.
-+ * @tmpmask:	Temporary mask for computing CPU set differences.
++ * rdt_task_match() - Decide if a task belongs to an rdtgroup for display
++ * @t:		Task to check.
++ * @r:		Rdtgroup (for CLOSID/RMID matching when not kmode).
++ * @kmode:	True if @r has kernel mode (e.g. PLZA) enabled.
 + *
-+ * When CPUs are dropped from the group, disables kmode on those CPUs and
-+ * returns them to the parent. When CPUs are added, removes them from sibling
-+ * MON groups and enables kmode on them. Caller must hold rdtgroup_mutex.
++ * When @kmode is true, matches tasks that have kernel mode set (they are
++ * associated with this group via PLZA). Otherwise matches by CLOSID or RMID.
 + *
-+ * Return: 0 on success, or -EINVAL if newmask contains CPUs outside the parent.
++ * Return: true if @t should be shown as belonging to @r.
 + */
-+static int cpus_mon_write_kmode(struct rdtgroup *rdtgrp, cpumask_var_t newmask,
-+				cpumask_var_t tmpmask)
++static inline bool rdt_task_match(struct task_struct *t,
++				  struct rdtgroup *r, bool kmode)
 +{
-+	struct rdtgroup *prgrp = rdtgrp->mon.parent, *crgrp;
-+	struct list_head *head;
++	if (kmode)
++		return t->kmode;
 +
-+	/* Check whether cpus belong to parent ctrl group */
-+	cpumask_andnot(tmpmask, newmask, &prgrp->cpu_mask);
-+	if (!cpumask_empty(tmpmask)) {
-+		rdt_last_cmd_puts("Can only add CPUs to mongroup that belong to parent\n");
-+		return -EINVAL;
-+	}
-+
-+	/* Check whether cpus are dropped from this group */
-+	cpumask_andnot(tmpmask, &rdtgrp->cpu_mask, newmask);
-+	if (!cpumask_empty(tmpmask)) {
-+		/* Give any dropped cpus to parent rdtgroup */
-+		cpumask_or(&prgrp->cpu_mask, &prgrp->cpu_mask, tmpmask);
-+
-+		/* Disable kmode on the dropped CPUs */
-+		resctrl_arch_set_kmode(tmpmask, &resctrl_kcfg, prgrp->closid,
-+				       rdtgrp->mon.rmid, false);
-+	}
-+
-+	/*
-+	 * If we added cpus, remove them from previous group that owned them
-+	 * and enable kmode on added CPUs.
-+	 */
-+	cpumask_andnot(tmpmask, newmask, &rdtgrp->cpu_mask);
-+	if (!cpumask_empty(tmpmask)) {
-+		head = &prgrp->mon.crdtgrp_list;
-+		list_for_each_entry(crgrp, head, mon.crdtgrp_list) {
-+			if (crgrp == rdtgrp)
-+				continue;
-+			cpumask_andnot(&crgrp->cpu_mask, &crgrp->cpu_mask, tmpmask);
-+		}
-+		resctrl_arch_set_kmode(tmpmask, &resctrl_kcfg, prgrp->closid,
-+				       rdtgrp->mon.rmid, true);
-+	}
-+
-+	/* Done pushing/pulling - update this group with new mask */
-+	cpumask_copy(&rdtgrp->cpu_mask, newmask);
-+
-+	return 0;
++	return is_closid_match(t, r) || is_rmid_match(t, r);
 +}
 +
 +/**
-+ * cpus_ctrl_write_kmode() - Update per-CPU kmode when a CTRL group's cpu_mask changes
-+ * @rdtgrp:	The CTRL_MON group whose cpu_mask is being updated.
-+ * @newmask:	The new CPU mask requested by the user.
-+ * @tmpmask:	Temporary mask for computing CPU set differences.
-+ * @tmpmask1:	Second temporary mask (e.g. for cpumask_rdtgrp_clear).
++ * show_rdt_tasks() - List task PIDs that belong to the rdtgroup
++ * @r:		Rdtgroup whose tasks to list.
++ * @s:		seq_file to write PIDs to.
 + *
-+ * When CPUs are dropped from the group, disables kmode on those CPUs (cannot
-+ * drop from default group). When CPUs are added, clears them from child groups
-+ * that owned them and enables kmode on them. Updates this group's cpu_mask and
-+ * intersects child MON group masks with the new parent mask. Caller must hold
-+ * rdtgroup_mutex.
-+ *
-+ * Return: 0 on success, or -EINVAL if dropping CPUs from the default group.
++ * Uses rdt_task_match() so that when the group has kernel mode (e.g. PLZA)
++ * enabled, tasks are matched by t->kmode; otherwise by CLOSID/RMID.
 + */
-+static int cpus_ctrl_write_kmode(struct rdtgroup *rdtgrp, cpumask_var_t newmask,
-+				 cpumask_var_t tmpmask, cpumask_var_t tmpmask1)
-+{
-+	struct rdtgroup *crgrp;
-+	struct list_head *head;
-+
-+	/* Check whether cpus are dropped from this group */
-+	cpumask_andnot(tmpmask, &rdtgrp->cpu_mask, newmask);
-+	if (!cpumask_empty(tmpmask)) {
-+		/* Can't drop from default group */
-+		if (rdtgrp == &rdtgroup_default) {
-+			rdt_last_cmd_puts("Can't drop CPUs from default group\n");
-+			return -EINVAL;
-+		}
-+		/* Disable kmode on the dropped CPUs */
-+		resctrl_arch_set_kmode(tmpmask, &resctrl_kcfg, rdtgrp->closid,
-+				       rdtgrp->mon.rmid, false);
-+	}
-+
-+	/*
-+	 * If we added cpus, remove them from child groups that owned them
-+	 * previously.
-+	 */
-+	cpumask_andnot(tmpmask, newmask, &rdtgrp->cpu_mask);
-+	if (!cpumask_empty(tmpmask)) {
-+		cpumask_rdtgrp_clear(rdtgrp, tmpmask1);
-+		/* Enable kmode on the added CPUs */
-+		resctrl_arch_set_kmode(tmpmask, &resctrl_kcfg, rdtgrp->closid,
-+				       rdtgrp->mon.rmid, true);
-+	}
-+
-+	/* Done pushing/pulling - update this group with new mask */
-+	cpumask_copy(&rdtgrp->cpu_mask, newmask);
-+
-+	/* Clear child mon group masks since there is a new parent mask now */
-+	head = &rdtgrp->mon.crdtgrp_list;
-+	list_for_each_entry(crgrp, head, mon.crdtgrp_list) {
-+		cpumask_and(tmpmask, &rdtgrp->cpu_mask, &crgrp->cpu_mask);
-+	}
-+
-+	return 0;
-+}
-+
-+/**
-+ * cpus_write_kmode() - Update per-CPU kmode for a group's new cpu_mask
-+ * @rdtgrp:	The group (CTRL_MON or MON) whose cpu_mask is being updated.
-+ * @newmask:	The new CPU mask requested by the user.
-+ * @tmpmask:	Temporary mask for computing CPU set differences.
-+ * @tmpmask1:	Second temporary mask (only used for CTRL_MON groups).
-+ *
-+ * Dispatches to cpus_ctrl_write_kmode() or cpus_mon_write_kmode() based on
-+ * group type. Used when the group has kmode enabled and the user writes to
-+ * the cpus file.
-+ *
-+ * Return: 0 on success, or -EINVAL on error.
-+ */
-+static int cpus_write_kmode(struct rdtgroup *rdtgrp, cpumask_var_t newmask,
-+			    cpumask_var_t tmpmask, cpumask_var_t tmpmask1)
-+{
-+	int ret;
-+
-+	if (rdtgrp->type == RDTCTRL_GROUP)
-+		ret = cpus_ctrl_write_kmode(rdtgrp, newmask, tmpmask, tmpmask1);
-+	else if (rdtgrp->type == RDTMON_GROUP)
-+		ret = cpus_mon_write_kmode(rdtgrp, newmask, tmpmask);
-+	else
-+		ret = -EINVAL;
-+
-+	return ret;
-+}
-+
- static int cpus_ctrl_write(struct rdtgroup *rdtgrp, cpumask_var_t newmask,
- 			   cpumask_var_t tmpmask, cpumask_var_t tmpmask1)
+ static void show_rdt_tasks(struct rdtgroup *r, struct seq_file *s)
  {
-@@ -566,7 +710,10 @@ static ssize_t rdtgroup_cpus_write(struct kernfs_open_file *of,
- 		goto unlock;
- 	}
+ 	struct task_struct *p, *t;
+@@ -973,11 +1001,12 @@ static void show_rdt_tasks(struct rdtgroup *r, struct seq_file *s)
  
--	if (rdtgrp->type == RDTCTRL_GROUP)
-+	/* Group has kernel mode: update per-CPU kmode state for new mask. */
-+	if (rdtgrp->kmode)
-+		ret = cpus_write_kmode(rdtgrp, newmask, tmpmask, tmpmask1);
-+	else if (rdtgrp->type == RDTCTRL_GROUP)
- 		ret = cpus_ctrl_write(rdtgrp, newmask, tmpmask, tmpmask1);
- 	else if (rdtgrp->type == RDTMON_GROUP)
- 		ret = cpus_mon_write(rdtgrp, newmask, tmpmask);
+ 	rcu_read_lock();
+ 	for_each_process_thread(p, t) {
+-		if (is_closid_match(t, r) || is_rmid_match(t, r)) {
+-			pid = task_pid_vnr(t);
+-			if (pid)
+-				seq_printf(s, "%d\n", pid);
+-		}
++		if (!rdt_task_match(t, r, r->kmode))
++			continue;
++
++		pid = task_pid_vnr(t);
++		if (pid)
++			seq_printf(s, "%d\n", pid);
+ 	}
+ 	rcu_read_unlock();
+ }
 -- 
 2.43.0
 
