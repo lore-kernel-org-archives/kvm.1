@@ -1,77 +1,123 @@
-Received: from mail-pl1-f202.google.com (mail-pl1-f202.google.com [209.85.214.202])
+Received: from mail-pg1-f201.google.com (mail-pg1-f201.google.com [209.85.215.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF97326C3BD
-	for <kvm@vger.kernel.org>; Thu, 12 Mar 2026 20:00:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.202
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 215522C032C
+	for <kvm@vger.kernel.org>; Thu, 12 Mar 2026 20:03:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773345625; cv=none; b=EXBZMu0r15X/TTydQiYntZQkj13FDvQj8r4PMKLgrXgBEyOPPH4QqFGbIYEKlsOWpGESdG46Q9AcSMMXP+Rk0ikNqsC8z2aS6/P5URw3o0NtsY3MOqJuQ1Dc7EfMFisBzI/RBzIBHs95ZuJJ53MC5/Y6QUECPoqguXemP4yt2Ro=
+	t=1773345793; cv=none; b=N+1VXta6sqaQOygbGYtCMhRejo4xtaEwF2Yv7ZYyZevc9h2fph/Xlst7JzzIEqB5SFdo7xkk6BP2UlpJ5ATwi7KiKwCypBSvoUcFxtoJuKHVneKbAyNApm74N/IicDTfnl0r57ntTl3YG3LK/K8aaZWw7VkjM+QZMPDwjvU0ZFk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773345625; c=relaxed/simple;
-	bh=yx36+WojFqYM9ZBQ6m6lheFZOEsenIDxuibwk4DnuyA=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=a7AF5U024D4S53+4o19ILeV08UeQ4EahRPAjI0i8dKNDEcZdYIhp1M749kM4CIXhEImMHelaVqyEg2l07OZa+RjCRCVLfk3CFH7W1IDxLEM6nzxIYzQ1z3w803bCfv3KAW9ZXbnWWX1SuqI62T0AD68JA2IzTfBZlrp6GgMY4XI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=3Cggo0bH; arc=none smtp.client-ip=209.85.214.202
+	s=arc-20240116; t=1773345793; c=relaxed/simple;
+	bh=2OpDC+mXdkpbCDsMDsM5rwxej15IxzuqIchzwPpBeF8=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=ttL81NKP6fNKsY9U2u8ZqEKBMoMfu8vOKE8aET1YEB4nTCxbMIUtIIWKgjhKz8E7H/dyPJwbZhfEYmzJVNYHGsOF+CYNw0FCWal5ziRUGGTsK0nkm2Qvi4t1AIPj6rQ/qPFb+4s7euKAafr0mr3EYht/+fgcAJWiWo9AxC9hRjc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--chengkev.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=vKuTvflY; arc=none smtp.client-ip=209.85.215.201
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--chengkev.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="3Cggo0bH"
-Received: by mail-pl1-f202.google.com with SMTP id d9443c01a7336-2aea7747aeeso15697895ad.2
-        for <kvm@vger.kernel.org>; Thu, 12 Mar 2026 13:00:24 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="vKuTvflY"
+Received: by mail-pg1-f201.google.com with SMTP id 41be03b00d2f7-b62da7602a0so1048080a12.2
+        for <kvm@vger.kernel.org>; Thu, 12 Mar 2026 13:03:12 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1773345624; x=1773950424; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=yx36+WojFqYM9ZBQ6m6lheFZOEsenIDxuibwk4DnuyA=;
-        b=3Cggo0bHyZGbZjcflfFZbcJQScXCMF8lxzcYVRvkcY09oYjIq6bnE8S35e8iIo7uHX
-         rd3olUzfqNDvb595uXwxXI9VUSFoZWQH9Ohm+A43uke3aGKHGvk3D0wti16NMDx5ZUEf
-         bgZXKbmk7ABWosvpeS9bGvYHd+VflOnz+mYIwBGtixMlh5COUkFD6TCx4xNaNNJRTphq
-         OW/XI5F++HXNNJn0m0xBeCyx+Q4/CcZa0ySHy9MlL28nttq743+KzDZPEPUR5C4X0+eZ
-         icqzBGcdNBH53WG7SCXEYLUSKrZWWfhvhA8weD1iQK9ugLlMukLMATqA3jCWFRt7d3Qj
-         0D+A==
+        d=google.com; s=20230601; t=1773345791; x=1773950591; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=f2tpqh8W4AgI1qCRbOlsij+2dustqzP+K9sIaoFo4co=;
+        b=vKuTvflYefB94vzp0kT9HQ0ZSb+2OAHw0a4Eb4S9LPA0w8/fp+kqt5w0ELgQTmxW5C
+         Ng2/3TQqJ+IBwFAr2d8pWVgSE81M4hvOnuYb9Me3sfwX/Rrk/sPRFEWEyZhILNo3GRNe
+         31dbTuN0v6AuLT157fIkvIqyM4Ba4lYUI0HM9FkPnkwdcqyP1NW7w208mrTkaFrFWu1s
+         /FBaT7QCS5FPzLdjMupyvNguY9E3VEDD/lALkm6qBbNovczqQvzMaonXUQ4masNctIt4
+         UZx4XRqz7KdgU/wPv79MZtVDvW50zf8Tu6xU/lr9/pJt0fzuLWJFjg6a94E45QN8/CxA
+         GxdA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1773345624; x=1773950424;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=yx36+WojFqYM9ZBQ6m6lheFZOEsenIDxuibwk4DnuyA=;
-        b=WHIx20Jsq3iaC5XCTFlt1ubtaoO2QSTifr0JTMPh+exGYuzfPAl1hZVmpdlE4N2UhW
-         1UhygHAz3SdWIqKuhxmoiHJl9ggLJOjsX9mpT53mMBYHjZYX7bQWzNLSKTGn9OX2cXZo
-         Xsb+daQdYA24DBqxuFBEuUZ0v2CruO8PamufXaJnrALTrJUgmb1Be7nY3oTnFwlhbUZg
-         b+XMmk5K28HpLEZVrciWq7bVVaXqW+MqHRhXwpjqOC4NS3d6b/Ten0EJ4aAlgbkFLP3g
-         zNE2eemyOQpF49pwj69VD7u5myxdzjQgCQT+ibvPZihToJsAOcukkjSRlLQNmjfy0A8+
-         0X0g==
-X-Forwarded-Encrypted: i=1; AJvYcCVZrLoKvMKEPg/hrNiW4BQ35WrG5P8zcOiDcos/OYcjiK9jyvEh/Aj6f2A471YFDlj3BKM=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzOlD5nugRwmZwuWGPKLmHXBWwZ4kB0jBS2h1uggO8omsuHmGmo
-	0M0W94LW2Ykhnd4pK9vv+yTB3zmS5SeqWWMgRvGkcW3E2kDQx+2RpbyD27nZOqhetlmX9bBqcDk
-	s4VWxvA==
-X-Received: from plbi18.prod.google.com ([2002:a17:903:20d2:b0:2ae:47b3:aceb])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:903:94d:b0:2ae:3afc:eb38
- with SMTP id d9443c01a7336-2aecaacf9efmr6172755ad.41.1773345623956; Thu, 12
- Mar 2026 13:00:23 -0700 (PDT)
-Date: Thu, 12 Mar 2026 13:00:22 -0700
-In-Reply-To: <20260303191509.1565629-6-tycho@kernel.org>
+        d=1e100.net; s=20230601; t=1773345791; x=1773950591;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=f2tpqh8W4AgI1qCRbOlsij+2dustqzP+K9sIaoFo4co=;
+        b=gKbKOzp6NM71ISdv/hd1sz2/i05k1ckecAxGCAfw/WGGf0016Hsd1GS+JpKWqkPSpa
+         LJ0OBJuL+M0CI/1gMQTztrQOPixguwzukvx2w9d9ndCku2CjRB3COgME/U++VESo5M2L
+         /xOT0p2qJ9+QYwlGiOAW9JijolxvPrYC74V0OezVJ+cWmFRO2TxQMlWdwq7KgAYzVS3j
+         YiOovWelqsT9HyaaOlO5ixHaymmxSVsDhU4HhFzni0Y1rsKb7d8IFhX/ShDdPHZvMVGm
+         dUkl5PkoNmDgohFzVuAt94LGCyfrBhhr5O10q++TTRq98qXeh2MxXfFcIaeQFHmDQjgu
+         U5iw==
+X-Gm-Message-State: AOJu0Ywp8Usl+sWAhEH+W2U4bj7Z0Qyi8t/A3pXBzaWyxnHjCgry2QUL
+	uygTAldfkwxsSXSAl3RRaJVdRe7aWJGF8yoPxQ31ifMlUXfHJFZALfqqodoQkER9u2DhPMI6GtF
+	O7sJTsg6aC5orZnYRMhpHURNgUxFD8ruH70iRlmB/xMdDVpn5/Bf2tj6FFPTQg3caVzbxW6KEg+
+	B02Fdoc7MW9s1Wii8okGui7pImLQaJmO/y13Jxzlbd5hk=
+X-Received: from pfef11.prod.google.com ([2002:a05:6a00:228b:b0:829:92aa:a656])
+ (user=chengkev job=prod-delivery.src-stubby-dispatcher) by
+ 2002:aa7:8896:0:b0:827:2b00:4b21 with SMTP id d2e1a72fcca58-82a19928c63mr486458b3a.66.1773345791050;
+ Thu, 12 Mar 2026 13:03:11 -0700 (PDT)
+Date: Thu, 12 Mar 2026 20:02:58 +0000
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-References: <20260303191509.1565629-1-tycho@kernel.org> <20260303191509.1565629-6-tycho@kernel.org>
-Message-ID: <abMbVi8zTgt0XaE9@google.com>
-Subject: Re: [PATCH 5/5] selftests/kvm: teach sev_*_test about revoking VM types
-From: Sean Christopherson <seanjc@google.com>
-To: Tycho Andersen <tycho@kernel.org>
-Cc: Paolo Bonzini <pbonzini@redhat.com>, Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, 
-	Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
-	"H. Peter Anvin" <hpa@zytor.com>, Ashish Kalra <ashish.kalra@amd.com>, 
-	Tom Lendacky <thomas.lendacky@amd.com>, John Allen <john.allen@amd.com>, 
-	Herbert Xu <herbert@gondor.apana.org.au>, "David S. Miller" <davem@davemloft.net>, 
-	Shuah Khan <shuah@kernel.org>, Kim Phillips <kim.phillips@amd.com>, 
-	Alexey Kardashevskiy <aik@amd.com>, Nikunj A Dadhania <nikunj@amd.com>, kvm@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-crypto@vger.kernel.org, 
-	linux-kselftest@vger.kernel.org
-Content-Type: text/plain; charset="us-ascii"
+X-Mailer: git-send-email 2.53.0.851.ga537e3e6e9-goog
+Message-ID: <20260312200308.3089379-1-chengkev@google.com>
+Subject: [kvm-unit-tests PATCH v3 00/10] Improve test parity between SVM and VMX
+From: Kevin Cheng <chengkev@google.com>
+To: kvm@vger.kernel.org
+Cc: yosry@kernel.org, andrew.jones@linux.dev, thuth@redhat.com, 
+	pbonzini@redhat.com, seanjc@google.com, Kevin Cheng <chengkev@google.com>
+Content-Type: text/plain; charset="UTF-8"
 
-KVM: selftests:
+This series introduces numerous tests for features that VMX testing
+covers but current SVM testing lacks.
 
-(though selftests/kvm is totally fine, but since you need to respin anyways...)
+I went through all VMX tests and identified which ones could have an
+equivalent test written for SVM.
+
+This series also includes some canonicalization and consistency check
+tests as defined by the AMD APM.
+
+v2 -> v3:
+  - Open code assembly instructions in svm_ud_test as per Sean.
+  - Removed unnecessary separate config for svm_ud_test as per Sean.
+
+v2: https://lore.kernel.org/all/20260113003153.3344500-1-chengkev@google.com/
+
+v1 -> v2:
+  - Renamed check_npt_ad_pte() to found_bad_npt_ad().
+  - Renamed test_event_injection() to svm_event_injection() and removed
+    the test from the svm suite to run separately.
+  - For the svm_event_injection test, injecting the CP vector now relies
+    on shadow stack capabilities as suggested by Yosry.
+  - Added a new test for verifying that certain instructions generate a
+    #UD when EFER.SVME=0. This is a regression test in response to a fix
+    that is currently under review [1]
+
+[1] https://lore.kernel.org/all/20260112174535.3132800-5-chengkev@google.com/
+
+v1: https://lore.kernel.org/all/20251219225908.334766-1-chengkev@google.com/
+
+Kevin Cheng (10):
+  x86/svm: Fix virq_inject SVM test failure
+  x86/nSVM: Add test for NPT A/D bits
+  x86/svm: Add tests for APIC passthrough
+  x86/nSVM: Add tests for instruction interrupts
+  x86/svm: Add tests for PF exception testing
+  x86/svm: Extend NPT test coverage for different page table levels
+  x86/svm: Add NPT ignored bits test
+  x86/svm: Add testing for NPT permissions on guest page tables
+  x86/svm: Add event injection check tests
+  x86/svm: Add test for #UD when EFER.SVME=0
+
+ lib/x86/processor.h |  11 +
+ lib/x86/vm.c        |   2 +-
+ lib/x86/vm.h        |   2 +
+ x86/Makefile.common |   2 +
+ x86/access.c        |   7 -
+ x86/access.h        |  11 +
+ x86/svm.c           |  16 +-
+ x86/svm.h           |   9 +
+ x86/svm_npt.c       | 801 ++++++++++++++++++++++++++++++++++++++++----
+ x86/svm_tests.c     | 664 ++++++++++++++++++++++++++++++++----
+ x86/unittests.cfg   |  54 ++-
+ x86/vmx_tests.c     |   5 -
+ 12 files changed, 1440 insertions(+), 144 deletions(-)
+
+--
+2.53.0.851.ga537e3e6e9-goog
+
