@@ -1,159 +1,119 @@
-Received: from mail-pj1-f74.google.com (mail-pj1-f74.google.com [209.85.216.74])
+Received: from mail-wm1-f53.google.com (mail-wm1-f53.google.com [209.85.128.53])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 24F3F330D43
-	for <kvm@vger.kernel.org>; Thu, 12 Mar 2026 19:00:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.74
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D56CC35A390
+	for <kvm@vger.kernel.org>; Thu, 12 Mar 2026 19:06:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773342055; cv=none; b=ZmspBbfzcSqX8vHGUHx+XqHhwr1YFnRi4RKN4YmTwfO2SrHiCAJp+UPqDhnmdMiLIgV7RhS6doyPwXlVifTdUsSIsvcXYMMrX4x8F5LWF4inGBEDHIBjKHe+EIfHe64Fov5D41gTVRugQGc09O5nHpNjlTaNh99LaobEAIka85s=
+	t=1773342365; cv=none; b=E8GgfD4izpKKDUxLtIK3TTfqt+PoATRTAH1mZX99cCEidTqOknW4cF7yincitZXdbwPdmgBElca1V2+lIVQkygOquh1llEXyzJsZg1i0MsGS2JZfIWCVz8NTbNCDwVqx0awuQF26UNYXJ6AuNw8HPLdXgYXXczDqSGR6iw3l2jQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773342055; c=relaxed/simple;
-	bh=o2KJMtYMykxG2p5wBZaW9rrM8bHQ6s9Eh8atWvH/Hvo=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=pg6om3B44JAbwitTyrFsV1Zzz/nZZBqIiwzF6KuVPtLuSnjNJaUlDoVewwBBdM8Avnnple0MkDwdlKfiDRyqJKaqgoU61129ur6Ql+OEfPuXtgHMEgXAcO2kBpzv8hPLss2WPKMmiToJe3xArOrdTca6XXqFiAq/fqPfS+L7FTw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=03FDQh7a; arc=none smtp.client-ip=209.85.216.74
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+	s=arc-20240116; t=1773342365; c=relaxed/simple;
+	bh=hTiL9Bf6qixzA/O8uITqxfCZEdegbOxjoMgziSOM3Zc=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=uqq9CEVpGmEGEAPvNrC1BtUYAHVH8+I89fw7dduXq3N+o1dLOkQ3ia1D1+HUR3cY/OGzn24c9gkcSEnzTIJ13oXwF/HhpCw2Xh4DT7OPtA/g9vEDQ0arf51wiL1siNS+gudyUzH/tDmpD0ujvK2wVXFXhzbUTlWvdl8KGpH7dsM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=h1AbXFmw; arc=none smtp.client-ip=209.85.128.53
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="03FDQh7a"
-Received: by mail-pj1-f74.google.com with SMTP id 98e67ed59e1d1-3598733bec0so8632800a91.2
-        for <kvm@vger.kernel.org>; Thu, 12 Mar 2026 12:00:47 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="h1AbXFmw"
+Received: by mail-wm1-f53.google.com with SMTP id 5b1f17b1804b1-4852a8482fcso10834525e9.3
+        for <kvm@vger.kernel.org>; Thu, 12 Mar 2026 12:06:03 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1773342046; x=1773946846; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=azrlEIUFQPXd0knJ73Otkr8SjGPNupTIDsw2LzFABvI=;
-        b=03FDQh7amxeftR9jGM7TA7Q64tYykf6nqIjU7U3VYff6TL37L1AaZFCKXLsNK/pwNw
-         7Ro9UQIrmD/a0KdYQ/s98Ci5NxotidKn1/2FQcDbV4EpmPOxBXvY/dENf86huEeayI+u
-         SLdPx8x0pcTpxuISFzpgnZAC+bUa47UibyMOUcjVF5r1XmRMPq+MQIOyANVW9CFtsYU/
-         juMkwoqjaQTE4lxA7sCjOEDSIUdOpgoOQpeyG1aqt/UFqavCEkdwaTr4Um7msU511r9t
-         1DV1ltj8hfLCHvrb0NSObi1Wdz5sVZC5EwAG42dDpPqGIXezZamEQCUtjVVoiXcixl4q
-         WSjA==
+        d=gmail.com; s=20230601; t=1773342362; x=1773947162; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:subject:cc:to:from:date:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=SE138O8UHt0c8RSCdcZ+MUjjq1yI/Yk0UU8sBlcjvOo=;
+        b=h1AbXFmwfg/tM3Jbw7DgvodiNmG2KCb3ivpXggbdv2HrMlbKvEKWDh2pj78Xt8SO9i
+         bC26bmFZsGw/LUYV7nGrwxNCKb2UWB78mMEj08TvuVPQQUZrEvgmwsBB1eAyikO+G4T2
+         8lO7cw3vWv8T92Xb0kvpNetCqnIoLWLY5OiGarZPYt2JSeKTT+0SJWr8f4X8cd/9pVhc
+         5cNl1qyq8cya1Y6SwiJsRiewMDkMcmVGK4yCS9bosjJ7U0pP2ngMZUUK9kS7nOWuY/th
+         HWqCacAuylXqhNrIi7jWEbgPtRZ3pOXvSKa0H8gzqLsWwMJgZhnt11KNV8hE7rML1d8K
+         ABsg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1773342046; x=1773946846;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=azrlEIUFQPXd0knJ73Otkr8SjGPNupTIDsw2LzFABvI=;
-        b=hoRW3CvNpRtuROnx9dLwjluv0TI2sQnc+1hOy97+wlWePS4Z5jNYVfgP4VFehXqNDL
-         n3XE3v1sIYV+kvbHwNyTZd2Ue89eWVjcmC7qKfEZIoeug66gtbgdl7Necw3Uohejx/rx
-         cEMduv7gF2LdXgZoJuX4qRTL0CEtJwQtnkifTlM1C+EuhFzUr1098xfISqsRJIIuYzOu
-         dPL8d07iDZMzlL4Ubc1J2UjhfClrM5ASIhVJs7rLuZ7WFufXdVIMI+DJUGEiEYSCFlWF
-         EBJ9OLKRBKwUgffwpfuODg4iHQBYy9h6bpWAYauvbkKL8JK+K44xcxu163KPTxGHSQuI
-         Gg4A==
-X-Forwarded-Encrypted: i=1; AJvYcCXvdRFkB5y/woNoNqQxR93jJ37St71ulvlmgEqZ2JNCuLgHthYmX8Pkcsc3c51J8gKGJyY=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzdlHAkVuo1sjV6oAFbE5LLmxltMrM9CbacR6mwUDDJI4CHCI1F
-	m5kHk7styccZGMO1NF8ok6cGNnEh9nsv8elVGtQQ2AnrP4PsUNlx1K+4rdvRdMTRi+QirF7eT02
-	O8xCpFw==
-X-Received: from pjbsy11.prod.google.com ([2002:a17:90b:2d0b:b0:359:8f94:bc6c])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:1b10:b0:356:3ba2:122c
- with SMTP id 98e67ed59e1d1-35a21efa8cdmr623149a91.9.1773342045999; Thu, 12
- Mar 2026 12:00:45 -0700 (PDT)
-Date: Thu, 12 Mar 2026 12:00:44 -0700
-In-Reply-To: <CAEvNRgH1RAV0rcaUx717JcHryB6=teXYoGtEzZwGwmy3MWwOcw@mail.gmail.com>
+        d=1e100.net; s=20230601; t=1773342362; x=1773947162;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=SE138O8UHt0c8RSCdcZ+MUjjq1yI/Yk0UU8sBlcjvOo=;
+        b=QueR78dHWmjy+ze7u+IYyNNa2YVg1bInjBixlIHWsDySnpBgl/5bF+tc+eg5XUZ14j
+         6bc5f0+4imuFym8e97A6BtFXhfzsenGcKcz/GvJ81Mrq6QdidwcXXdkfQx9lPR/WhnoY
+         to/fB3gWZzN+aZpF/v2dVnbSpCZo6Ljvjz/n6RNzUosA8GkmsXOQqCoykz8BZyHQFvE6
+         3Suahuf6yg1xRMbxiVRza4vmkkJ+pamvK5PervYnzVP1JekMJOfkgtDxZlZuT3r17x/2
+         kjf/ybDQWg3KvYiyL1LcJj+0NqaHnzLrlQxajlRypq8WLZTxzuQHHQMs/5dstH8k8SGC
+         gJjw==
+X-Forwarded-Encrypted: i=1; AJvYcCU3vynGyUIup6VtjO2HBPPidIalmfEiAa7M9TK/q+gANCPj7LdOzfRa430CBf2eHyJwdsQ=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzSu5FVFKyckiFjwpskKPcNMaCDh6KjH7fPM1FWSU0LpS4284+L
+	Zy+nZN3TffIpaewCKpQwrHXoNAicnCxI6g3RPs85QiaM0RpgEETXr4kF
+X-Gm-Gg: ATEYQzy9NQmyq+HZWrcqU4pszLBXHQmIkGAtgarnxpDsORPXqZejMH3q/qg0ALQLWnL
+	gIYj/UPESWQjthO4Iyd5Sk5qnz2W1nUV8ANJIlGNz0150m+Z6SzwYxRjMtsHPEWrwIUhtKkUhlU
+	AI82LxJ3tgkKRTBLTSUPgk9YrvZpkjXfDoN+uZRXn8n8Hzv4DXgfP1CRt0zCBKUDLU7C2KfGqzE
+	ViLfosS5ZYh5YJW3yXIU1NLU8nIOaKj1eOUqbnnBH79mORhSQTpj+UBQueHLekQvEL2ZGAcWPnJ
+	iSt53eNAJ+dniStm3N42Xt4FK83at77/TiNQV/ICLi8VsatuiwqE1r78yLCsrPr8jSSBjGcqgaQ
+	ZRSh1ahY3Ayu8zLpLFZiEBqHL2ZisOlGqx2DbAYmT1uAwOcinTI2lLMu9SL+zqwGAEj7AhCV5rn
+	TQHTIuagrf2XofqYqw0lsfX6p6tYfU8/+e/Eghlq2tuTXB19jeMzG4O4ozzmkNheR4
+X-Received: by 2002:a05:600c:698e:b0:483:1403:c47f with SMTP id 5b1f17b1804b1-485566ca5cdmr7578325e9.6.1773342361935;
+        Thu, 12 Mar 2026 12:06:01 -0700 (PDT)
+Received: from pumpkin (82-69-66-36.dsl.in-addr.zen.co.uk. [82.69.66.36])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4854b66ffe2sm140743645e9.13.2026.03.12.12.06.01
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 12 Mar 2026 12:06:01 -0700 (PDT)
+Date: Thu, 12 Mar 2026 19:06:00 +0000
+From: David Laight <david.laight.linux@gmail.com>
+To: Dave Hansen <dave.hansen@intel.com>
+Cc: "Nikunj A. Dadhania" <nikunj@amd.com>, Tom Lendacky
+ <thomas.lendacky@amd.com>, Borislav Petkov <bp@alien8.de>,
+ linux-kernel@vger.kernel.org, kvm@vger.kernel.org, tglx@kernel.org,
+ mingo@redhat.com, dave.hansen@linux.intel.com, hpa@zytor.com,
+ xin@zytor.com, seanjc@google.com, pbonzini@redhat.com, x86@kernel.org,
+ sohil.mehta@intel.com, jon.grimm@amd.com
+Subject: Re: [PATCH v2 1/2] x86/cpu: Disable CR pinning during CPU bringup
+Message-ID: <20260312190600.09e2493a@pumpkin>
+In-Reply-To: <41851f3e-4372-4bd2-ac48-65aee3dcafe0@intel.com>
+References: <20260226092349.803491-1-nikunj@amd.com>
+	<20260226092349.803491-2-nikunj@amd.com>
+	<20260309134640.GOaa7PQJli_C9QATGB@fat_crate.local>
+	<cde957ba-3579-4063-9d17-3630e79ea388@intel.com>
+	<20260309161516.GAaa7yFMulhdzNQ-pt@fat_crate.local>
+	<70644e1d-dd0e-4f0f-81c0-fd095e46e50b@intel.com>
+	<7ca205d6-b01b-4ed3-959d-db31a6496d79@amd.com>
+	<505a6bbd-3ecf-4de9-8fb9-0b21c3435a96@intel.com>
+	<9fa61b80-0e16-4a87-a0e7-3c3dfcda8f7e@amd.com>
+	<55a98b6d-e831-47a6-aa5a-8fe357334f67@intel.com>
+	<d0eba3fe-2938-4856-bd9b-0e13972e8313@amd.com>
+	<cb492a37-3517-4738-b435-73311402e820@intel.com>
+	<ddf407e9-359d-4d4e-827d-98f212589e9f@amd.com>
+	<ab5bf7bb-6511-49dc-a65d-86911e0f7091@intel.com>
+	<a078ceb4-6e31-4e8a-89d8-023b95f56054@amd.com>
+	<41851f3e-4372-4bd2-ac48-65aee3dcafe0@intel.com>
+X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; arm-unknown-linux-gnueabihf)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20260309-gmem-st-blocks-v3-0-815f03d9653e@google.com>
- <20260309-gmem-st-blocks-v3-2-815f03d9653e@google.com> <aa9uiQ_KBcX7X0My@google.com>
- <CAEvNRgH1RAV0rcaUx717JcHryB6=teXYoGtEzZwGwmy3MWwOcw@mail.gmail.com>
-Message-ID: <abMNXBQUpFD8W1iM@google.com>
-Subject: Re: [PATCH RFC v3 2/4] KVM: guest_memfd: Set release always on
- guest_memfd mappings
-From: Sean Christopherson <seanjc@google.com>
-To: Ackerley Tng <ackerleytng@google.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>, Andrew Morton <akpm@linux-foundation.org>, 
-	David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>, Mike Rapoport <rppt@kernel.org>, 
-	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>, Shuah Khan <shuah@kernel.org>, Jonathan Corbet <corbet@lwn.net>, 
-	Alexander Viro <viro@zeniv.linux.org.uk>, Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>, 
-	rientjes@google.com, rick.p.edgecombe@intel.com, yan.y.zhao@intel.com, 
-	fvdl@google.com, jthoughton@google.com, vannapurve@google.com, 
-	shivankg@amd.com, michael.roth@amd.com, pratyush@kernel.org, 
-	pasha.tatashin@soleen.com, kalyazin@amazon.com, tabba@google.com, 
-	Vlastimil Babka <vbabka@kernel.org>, kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-mm@kvack.org, linux-fsdevel@vger.kernel.org, 
-	linux-kselftest@vger.kernel.org, linux-doc@vger.kernel.org, 
-	Lisa Wang <wyihan@google.com>, Nikita Kalyazin <kalyazin@amazon.co.uk>
-Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 
-On Tue, Mar 10, 2026, Ackerley Tng wrote:
-> Sean Christopherson <seanjc@google.com> writes:
-> > On Mon, Mar 09, 2026, Ackerley Tng wrote:
-> > But even if that's somehow the "right" behavior, we're doing it purely by
-> > accident.
-> >
-> > As for this patch, if we fix that bug by returning 0, then filemap_release_folio()
-> > is definitely reachable by at least one flow, so I think guest_memfd also needs
-> > to implement release_folio()?
-> >
-> 
-> Is posix_fadvise() the one flow you're talking about?
+On Thu, 12 Mar 2026 08:02:53 -0700
+Dave Hansen <dave.hansen@intel.com> wrote:
 
-No, I'm saying if we fix the memory error case, then filemap_release_folio()
-likely becomes reachable.  Though there may be other cases.
+> On 3/12/26 07:53, Nikunj A. Dadhania wrote:
+> >> The simplest fix is to disable FRED on those kernels, fwiw. =20
+> > That would work, but disabling FRED means LTS users will not be able to=
+ use=20
+> > FRED with confidential computing=E2=80=94that's not really a fix. =20
+>=20
+> Why not?
+>=20
+> Is there something out there that *NEEDS* FRED to function?
 
-> It indeed calls filemap_release_folio() through mapping_try_invalidate()
-> -> mapping_evict_folio() -> filemap_release_folio().
-> 
-> >From Documentation/filesystems/locking.rst:
-> 
->   ->release_folio() is called when the MM wants to make a change to the
->   folio that would invalidate the filesystem's private data.  For example,
->   it may be about to be removed from the address_space or split.  The folio
->   is locked and not under writeback.  It may be dirty.  The gfp parameter
->   is not usually used for allocation, but rather to indicate what the
->   filesystem may do to attempt to free the private data.  The filesystem may
->   return false to indicate that the folio's private data cannot be freed.
->   If it returns true, it should have already removed the private data from
->   the folio.  If a filesystem does not provide a ->release_folio method,
->   the pagecache will assume that private data is buffer_heads and call
->   try_to_free_buffers().
-> 
-> I could implement .release_folio().
-> 
-> Returning false seems like the easier solution, and is kind of in line
-> with the documentation above. A guest_memfd folio does not have private
-> data, so without private data, the private data cannot be freed.
+I didn't think there was any real hardware that actually supports FRED.
 
-Eh, not really, If there's no private data, then freeing it always succeeds.
+By the time that exists there might be a sane fix - or a newer LTS kernel.
 
-> (Took me a while to notice that having private data is not the same
-> as having something in folio->private, so this doesn't change even after
-> the direct map removal series lands.)
-> 
-> Returning false is going to break shrink_folio_list(), but that probably
-> won't affect guest_memfd for now.
+	David
 
-Definitely not a problem, I'm very against putting guest_memfd pages on the
-kernel's standard LRU lists.
 
-> Returning false also breaks page_cache_pipe_buf_try_steal(). Does anyone
-> more familiar with splicing know if that could affect guest_memfd?
 
-AFAICT, also not a problem until KVM supports .splice_read().
-
-> Returning true could also work, to indicate that the folio's private
-> data has been "removed". I'd also have to do inode_sub_bytes() in
-> .release_folio() then, since in mapping_evict_folio(), remove_mapping()
-> doesn't call .invalidate_folio().
-> 
-> Then we will have to separately ensure that in truncate_error_folio(),
-> guest_memfd doesn't double-deduct the folio's size from the inode. This
-> should be semantically correct though, since IIUC .invalidate_folio() is
-> when a folio is removed (clean or dirty), but .release_folio() is only
-> for clean folios. If .error_remove_folio() returns MF_DELAYED, the
-> truncation didn't happen and so there should be no call to
-> .release_folio().
-
-Before we dive deep into solutions, what's the motivation for making fstat() work?
-As I asked in the cover letter:
-
-  P.S. In future versions, please explain _why_ you want to add fstat() support,
-  i.e. why you want to account allocated bytes/folios.  For folks like me that do
-  very little userspace programming, and even less filesystems work, fstat() not
-  working means nothing.  Even if the answer is "because literally every other FS
-  in Linux works".
