@@ -1,108 +1,102 @@
-Received: from mail-pj1-f74.google.com (mail-pj1-f74.google.com [209.85.216.74])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from pdx-out-007.esa.us-west-2.outbound.mail-perimeter.amazon.com (pdx-out-007.esa.us-west-2.outbound.mail-perimeter.amazon.com [52.34.181.151])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3BE7E35CBD7
-	for <kvm@vger.kernel.org>; Thu, 12 Mar 2026 14:22:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.74
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 46B63346FA0
+	for <kvm@vger.kernel.org>; Thu, 12 Mar 2026 14:34:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=52.34.181.151
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773325329; cv=none; b=WVAzHMJB5vcx6+Ry2QG3tPFpI77Ypmg8CPQNaQyr3UWgK+gJI2bBRcoRh9bgHa2p+l36gPzIoZu7OHWu/oIxIE2WMDI/LSf7wRCmfkMf4udNrBlCS9KwECT5sGk2bJ/aIToSF30Uj7Lull07C4Pz7AvbHAlr2Ey9xHIc9bqEp0E=
+	t=1773326078; cv=none; b=n6f9qqRZlCKUkt99MAQRmE7szjH0z7mp8L7xIIuVhgzMtCF9xxZV3Ru5DGGfv9ZldkmthnxU3ySvs0tnbRMKg+6W6hFPbCKRPeivWzzWzCFsFBaWT/hXH1Vqo3Rk16kIEjh9EAvPUPnuIbwflmow2z3+G+QQE6gt8XsS8letsG0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773325329; c=relaxed/simple;
-	bh=7uzHRvfR/ufhgXiF/rfcNKOw7xmLA0r/v6L6uESDo8k=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=otKq9ZT+bSmyt+7b15YJRoJn66PgnoynU35uquV0YSR4Frk94cr4sxtjsOhit0NDR6fQCthTvdWNDD7Ww0mmzaPd2MqAB0nMScwDCDiw051Z8VBG1b59SM+qj1YRdR76HCcXjOOU11/SI+jnyT4AIvKHABKwGUHz/Z0MEPgFAaM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=uhBSUGB8; arc=none smtp.client-ip=209.85.216.74
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+	s=arc-20240116; t=1773326078; c=relaxed/simple;
+	bh=mfxrKCupRHu+X+x0cz1Ztl2xdE4Ck9Ir8Gja9HgDHpQ=;
+	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=RYvwc7oABCH1MDYMCdrFWjsXExi5QIkTlmosF3XzOnBIzFtQVFCecZTYKV7Qph8fGFVb/scOS724iUFeOD4B8EvRmRCA9TVONjbN2gv6djqxK4PfDqjoIt749IQGLsw+BZZopZa6I2JFCC2LnsczYF5+F3aLZ7dBRa3Num6HTXo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com; spf=pass smtp.mailfrom=amazon.co.uk; dkim=pass (2048-bit key) header.d=amazon.com header.i=@amazon.com header.b=K8JXgAyt; arc=none smtp.client-ip=52.34.181.151
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amazon.co.uk
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="uhBSUGB8"
-Received: by mail-pj1-f74.google.com with SMTP id 98e67ed59e1d1-354bc535546so1096104a91.3
-        for <kvm@vger.kernel.org>; Thu, 12 Mar 2026 07:22:07 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=amazon.com header.i=@amazon.com header.b="K8JXgAyt"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1773325327; x=1773930127; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:from:subject:message-id:references
-         :mime-version:in-reply-to:date:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=0se2Poh/I/LWasWALFXJj32ndneduPUQmFM4Y6q5SAk=;
-        b=uhBSUGB8OGwfjsoZjMd3p3um1W/ZF7iFkkdSpmlrsQ0/dFpKgMQ4F3OS+U0OACh5Nb
-         ZL/pGCr2xgwORMpxfo49yWpwMPc1UL5phzz2ZTFy+JfRwgsJ4BmvJpipgZPogJsxv7Zn
-         MxMhoMNoRWX7W76unWR+th0lHDCMxKO5kTQYTrTrwwjCyUF6ef+9TqTDka0Y9x530Np8
-         pjspBfk7aegKoMJ4vJyKuIHaRhCn8IvQIn/YtBGxEkAwCA62QNYLuy+nxI2zDFuAV4xx
-         kHC/IpAg2wkcCIq8T63srdFhQ5o+86Os2yaX545/ijQkPb/gwUo1dvsmpk023d1P8lR/
-         jBNQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1773325327; x=1773930127;
-        h=content-transfer-encoding:cc:to:from:subject:message-id:references
-         :mime-version:in-reply-to:date:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=0se2Poh/I/LWasWALFXJj32ndneduPUQmFM4Y6q5SAk=;
-        b=XhKdcCQOm1Z1w0Tt1uTFCsUbrbD31qzce6vjQHHrqjAUvJApWViGg+FCn2/aHDOrys
-         VQK3tJfJzDF7Wc4PqmAELNRR0Fua0Oh5PZJDkxBw/30AXVsUnQBNX+JNIJTgD6p3o/ok
-         qKm0+w4DNvFV0jEF7CAFR+xxqURedmFTMqlU9jmvGa6fc9fNxtv2h2zpnRdYI6JxLgwU
-         +E1R0L/NlNFxTGbB3IVY/vVE3IuflxN88LLIioiEeWlJuwSrPTWF48z/7paR9o0rH/RZ
-         k/LBDIWvRqfhp1bRDUfbdTD0fI0VqpDoHN2Oll71OIRMHyjqCjTw/uXb6aVbfYA0vGID
-         dXCQ==
-X-Forwarded-Encrypted: i=1; AJvYcCU0BsFk6Zjg8EJEjgKpBxIPGgbEKyoUr4Cije0xJAIj35MC/l+B/697ojL67GmXD43kpvo=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxWKcqCe2WkSaFHJtDe/RU4Yw6KbcjbGfuJDVOTW62hyx73PSFj
-	7eWrMRSU8oFZV5HCfuMkipnyTK48HA+0I4kKTB9CnH4d7g2eddDwfELa5CD8WsTqUqn2Xvdvgjf
-	RpluVcQ==
-X-Received: from pjbfa23.prod.google.com ([2002:a17:90a:f0d7:b0:359:84b7:a9a2])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:2fcd:b0:359:f55a:1f13
- with SMTP id 98e67ed59e1d1-35a019e8b90mr5305583a91.35.1773325327352; Thu, 12
- Mar 2026 07:22:07 -0700 (PDT)
-Date: Thu, 12 Mar 2026 07:22:05 -0700
-In-Reply-To: <CAO9r8zOJoc6R9WnYqKxFhssk5d7+TFt+6WGok1Nof=-DJK8pcw@mail.gmail.com>
+  d=amazon.com; i=@amazon.com; q=dns/txt; s=amazoncorp2;
+  t=1773326077; x=1804862077;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=dHgIOldCEHrIq/D7KhUwWFDHZzGA+7EQcTvE7prH4rA=;
+  b=K8JXgAytmRVslWWRhNJ2X3d5EmfrJ6xZeOrItrEjzYyKSohsF/v23VHG
+   iUtJgkEZ/yfmROnumhD71A7uc9FVkpQX7k3oDKEpjyDYDZbMJjC8uAhZv
+   tOLS70O5+koL+or5lY5QqNajGA1jBMSMkNby/AmiZft+OuvJv0nPxEjeZ
+   +M/YJHDn3ij/25OzJxpr8I+WCwUgI3tFA1pqy8MPjB3UrveaVXD7T5YN2
+   JROwpTmE5YjnJ5bM6BVFofFlzZZAnDki2KiEXk9DtI8PklgOVdMdCqqqY
+   O2NA9W8vDSvY9rrToWfG7lnK6YgEB/mGNN9DNytIjtHdNdF+9kCduumNK
+   g==;
+X-CSE-ConnectionGUID: zGRivClASLi8pX7C5WwfOA==
+X-CSE-MsgGUID: NWXjBb5ORW6SEN0qZ4AwpA==
+X-IronPort-AV: E=Sophos;i="6.23,116,1770595200"; 
+   d="scan'208";a="14885265"
+Received: from ip-10-5-9-48.us-west-2.compute.internal (HELO smtpout.naws.us-west-2.prod.farcaster.email.amazon.dev) ([10.5.9.48])
+  by internal-pdx-out-007.esa.us-west-2.outbound.mail-perimeter.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Mar 2026 14:34:33 +0000
+Received: from EX19MTAUWB002.ant.amazon.com [205.251.233.48:14916]
+ by smtpin.naws.us-west-2.prod.farcaster.email.amazon.dev [10.0.34.39:2525] with esmtp (Farcaster)
+ id b00e6002-be4c-4c7d-8ac7-46a44bd68b48; Thu, 12 Mar 2026 14:34:33 +0000 (UTC)
+X-Farcaster-Flow-ID: b00e6002-be4c-4c7d-8ac7-46a44bd68b48
+Received: from EX19D001UWA001.ant.amazon.com (10.13.138.214) by
+ EX19MTAUWB002.ant.amazon.com (10.250.64.231) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.37;
+ Thu, 12 Mar 2026 14:34:33 +0000
+Received: from dev-dsk-itazur-1b-11e7fc0f.eu-west-1.amazon.com (172.19.66.53)
+ by EX19D001UWA001.ant.amazon.com (10.13.138.214) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.37;
+ Thu, 12 Mar 2026 14:34:30 +0000
+From: Takahiro Itazuri <itazur@amazon.com>
+To: <seanjc@google.com>
+CC: <david@kernel.org>, <dwmw2@infradead.org>, <itazur@amazon.com>,
+	<jackmanb@google.com>, <kalyazin@amazon.com>, <kvm@vger.kernel.org>,
+	<patrick.roy@campus.lmu.de>, <pbonzini@redhat.com>, <pdurrant@amazon.com>,
+	<tabba@google.com>, <vkuznets@redhat.com>, <zulinx86@gmail.com>
+Subject: Re: [RFC PATCH v3 5/6] KVM: Rename mn_* invalidate-related fields to generic ones
+Date: Thu, 12 Mar 2026 14:33:59 +0000
+Message-ID: <20260312143427.21678-1-itazur@amazon.com>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <abHXOvAaK3X2FIkt@google.com>
+References: <abHXOvAaK3X2FIkt@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20260310224546.2582118-1-seanjc@google.com> <20260310224546.2582118-3-seanjc@google.com>
- <CAO9r8zMTEi++JvAfKbMd2676Z8cTPQKcWA+mydzXGYPenUrG6g@mail.gmail.com>
- <abFtshMZLoLLbbXO@google.com> <CAO9r8zOJoc6R9WnYqKxFhssk5d7+TFt+6WGok1Nof=-DJK8pcw@mail.gmail.com>
-Message-ID: <abLMDY058srp_rT8@google.com>
-Subject: Re: [PATCH 2/2] KVM: x86: Suppress WARNs on nested_run_pending after
- userspace exit
-From: Sean Christopherson <seanjc@google.com>
-To: Yosry Ahmed <yosry@kernel.org>
-Cc: Paolo Bonzini <pbonzini@redhat.com>, kvm@vger.kernel.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain
+X-ClientProxiedBy: EX19D039UWB004.ant.amazon.com (10.13.138.57) To
+ EX19D001UWA001.ant.amazon.com (10.13.138.214)
 
-On Wed, Mar 11, 2026, Yosry Ahmed wrote:
-> On Wed, Mar 11, 2026 at 6:27=E2=80=AFAM Sean Christopherson <seanjc@googl=
-e.com> wrote:
-> >
-> > On Tue, Mar 10, 2026, Yosry Ahmed wrote:
-> > > > diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
-> > > > index 879cdeb6adde..cad16c83dcff 100644
-> > > > --- a/arch/x86/kvm/x86.c
-> > > > +++ b/arch/x86/kvm/x86.c
-> > > > @@ -12090,6 +12090,13 @@ int kvm_arch_vcpu_ioctl_run(struct kvm_vcp=
-u *vcpu)
-> > > >         if (r <=3D 0)
-> > > >                 goto out;
-> > > >
-> > > > +       /*
-> > > > +        * If userspace may have modified vCPU state, mark nested_r=
-un_pending
-> > > > +        * as "untrusted" to avoid triggering false-positive WARNs.
-> > > > +        */
-> > > > +       if (vcpu->arch.nested_run_pending =3D=3D KVM_NESTED_RUN_PEN=
-DING)
-> > > > +               vcpu->arch.nested_run_pending =3D KVM_NESTED_RUN_PE=
-NDING_UNTRUSTED;
-> > > > +
-> > >
-> > > Why not inside kvm_x86_vcpu_pre_run()?
-> >
-> > That, is a very good question.  /facepalm
+On Wed, 11 Mar 2026 13:57:30 -0700, Sean Christopherson wrote:
+> On Tue, Mar 10, 2026, Takahiro Itazuri wrote:
+> > The addition of guest_memfd support to pfncaches introduces additional
+> > sources of pfncache invalidation beyond the MMU notifier path.  The
+> > existing mn_* naming implies that they are only relevant to MMU
+> > notifiers, which is no longer true.
+>=20
+> I very strongly disagree.  Except for kvm_swap_active_memslots() and
+> kvm_create_vm(), literally every function here has mmu_notifier in its na=
+me.
+>=20
+> They no longer are used only the for the _kernel's_ MMU-notifier implemen=
+tation,
+> but they're still very much scoped explicitly to KVM's overarching MMU no=
+tification
+> system.
+>
+> If we want to come up with a "better" name, then it needs to capture that=
+ somewhere
+> in the prefix.  Because e.g. invalidate_lock is way, way too generic.  I =
+read that
+> and my very first question is "ivalidate what, exactly?".  Ditto for
+> memslots_update_rcuwait and pretty much every other field.
 
-Oh, I know why I put it here.  I didn't want to change nested_run_pending i=
-f
-kvm_x86_vcpu_pre_run() rejected KVM_RUN.  But looking at this again, it doe=
-sn't
-actually matter because for the "untrusted" state to matter, KVM must get p=
-ast
-kvm_x86_vcpu_pre_run() at some point.
+That makes sense to me.  I only had the kernel's MMU notifier in mind
+at that time, which is why I thought this renaming would be appropriate.
+
+Since I'm not particularly seeking a better name, I'll leave these as
+they are.
+
