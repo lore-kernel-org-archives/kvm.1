@@ -1,88 +1,118 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2369C3BE65F;
-	Thu, 12 Mar 2026 10:10:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A3D49238C1B;
+	Thu, 12 Mar 2026 10:45:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773310229; cv=none; b=Ohyen9hha5l5P77GrMDnTOK4JO+1UdMe9k7YKeoh+IAvDtQ0cmHg7NOCkOgVH2s0XC03tzjYymNFanEpjbnGevv1QPMp/j4yPq77a6pNAiqfruqnr6CydP9gwaMMPP7bTHlW06yDx0yHDMjhEQWZTe7eC7XFMFJqKX2OND27Az0=
+	t=1773312327; cv=none; b=kh0srF7+AvCWYFgnJCW7wwcxhSjVAmqAfn05pyJ5uNZp5v9D4ODJullOUqvXGmhHKn4N1FZvS5hX2Jm9dOmS86f8MBoODWwAZBy7/tQ4/zBJELcQiXzZO6py00Mkq44il0frKAMe+4yAjnmkf6HvBfQL421GKAaR5c5cSxW7XDo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773310229; c=relaxed/simple;
-	bh=hKg+5rksY5JYNEPAf/ZmrZr1leDBBBXk3/IFJWMZ4Ts=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=QDuQ48P2/s4RNGiv+pAQwZF4WXXelSw9t3qUft6S6nLPLwZQ1hHzg6fSf7bbmNJwfJe8KIvxtpg1vjS2dYiIGeZszO72R/ScycBSYdu3M60QmrSsKS1zknCEjlls/DeMszRI7vfdcyMPZ5ul/N2bZjvY1zi2BT9txHZtorEkllE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ko9iZpA7; arc=none smtp.client-ip=10.30.226.201
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ko9iZpA7"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A7706C4CEF7;
-	Thu, 12 Mar 2026 10:10:28 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773310228;
-	bh=hKg+5rksY5JYNEPAf/ZmrZr1leDBBBXk3/IFJWMZ4Ts=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=ko9iZpA7OUnwG6I5Y2Q83egrhGdUFbBr2KuzaYBeXHSIn1MJEWrT8NjalUy3VpsHr
-	 4XRADPrxFhgTyKsHeyfNsxZGaTxJSFzXQQJGC29owKO4UiGt9dbr+uB+rMBcwPX15i
-	 rJGTvZR8vPncFox+1vfGBi8KSt+WvQ5IYQME7zFkpIi/FZda4f7m67tYvhVfT6Jm6i
-	 iJEJQFMVA9E/mjv53eDwZL+431sL9q7aJToeIMczSv7y4paFOmQMc9iugm/LTi5yVJ
-	 dwRIsujX6sVumNfMPcQLOLh110QqbqVut54ObZPMIetA72/Maj9AmgB7Ww5xLDszzR
-	 C728oXwt2JV/A==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 7CF183808200;
-	Thu, 12 Mar 2026 10:10:25 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	s=arc-20240116; t=1773312327; c=relaxed/simple;
+	bh=l08jxwdCYCfpzqBDE5vY1CxLuVpa9caXm3o6QBAP73c=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=raXvFbDkqucdotqY014BIeUit+yREZaXuquJ5+AUyO8v6fDxV0UXnMVLWTzgpcXesQPLwXjgFxPbjBDpEDfEbAq95RfXJDtImh0I6gAUvETq3MTS24rENX/qrtfZ6fEIqdM43IlegDX4TGjxjeSz8QNhFtrEI+ZuZuXUxCJhyh0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id CC80E165C;
+	Thu, 12 Mar 2026 03:45:18 -0700 (PDT)
+Received: from [10.1.26.37] (e122027.cambridge.arm.com [10.1.26.37])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 5B85C3F694;
+	Thu, 12 Mar 2026 03:45:21 -0700 (PDT)
+Message-ID: <45798b53-e18b-4e7b-a49c-37d1783f3444@arm.com>
+Date: Thu, 12 Mar 2026 10:45:19 +0000
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net-next v4] vsock: add G2H fallback for CIDs not owned by
- H2G
- transport
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <177331022429.4031253.15687388113936443008.git-patchwork-notify@kernel.org>
-Date: Thu, 12 Mar 2026 10:10:24 +0000
-References: <20260304230027.59857-1-graf@amazon.com>
-In-Reply-To: <20260304230027.59857-1-graf@amazon.com>
-To: Alexander Graf <graf@amazon.com>
-Cc: virtualization@lists.linux.dev, linux-kernel@vger.kernel.org,
- netdev@vger.kernel.org, kvm@vger.kernel.org, eperezma@redhat.com,
- jasowang@redhat.com, mst@redhat.com, sgarzare@redhat.com,
- stefanha@redhat.com, bcm-kernel-feedback-list@broadcom.com, arnd@arndb.de,
- gregkh@linuxfoundation.org, corbet@lwn.net, bryan-bt.tan@broadcom.com,
- vishnu.dasa@broadcom.com, nh-open-source@amazon.com,
- syzbot@syzkaller.appspotmail.com
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v12 06/46] arm64: RMI: Define the user ABI
+To: Marc Zyngier <maz@kernel.org>, Suzuki K Poulose <suzuki.poulose@arm.com>
+Cc: kvm@vger.kernel.org, kvmarm@lists.linux.dev,
+ Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>,
+ James Morse <james.morse@arm.com>, Oliver Upton <oliver.upton@linux.dev>,
+ Zenghui Yu <yuzenghui@huawei.com>, linux-arm-kernel@lists.infradead.org,
+ linux-kernel@vger.kernel.org, Joey Gouly <joey.gouly@arm.com>,
+ Alexandru Elisei <alexandru.elisei@arm.com>,
+ Christoffer Dall <christoffer.dall@arm.com>, Fuad Tabba <tabba@google.com>,
+ linux-coco@lists.linux.dev,
+ Ganapatrao Kulkarni <gankulkarni@os.amperecomputing.com>,
+ Gavin Shan <gshan@redhat.com>, Shanker Donthineni <sdonthineni@nvidia.com>,
+ Alper Gun <alpergun@google.com>, "Aneesh Kumar K . V"
+ <aneesh.kumar@kernel.org>, Emi Kisanuki <fj0570is@fujitsu.com>,
+ Vishal Annapurve <vannapurve@google.com>
+References: <20251217101125.91098-1-steven.price@arm.com>
+ <20251217101125.91098-7-steven.price@arm.com> <86tsuy8g0u.wl-maz@kernel.org>
+ <33053e22-6cc6-4d55-bc7f-01f873a15d28@arm.com> <87v7f2chde.wl-maz@kernel.org>
+ <dd6f4715-e8be-41d1-af60-00f068e9d730@arm.com> <86342575ev.wl-maz@kernel.org>
+From: Steven Price <steven.price@arm.com>
+Content-Language: en-GB
+In-Reply-To: <86342575ev.wl-maz@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-Hello:
-
-This patch was applied to netdev/net-next.git (main)
-by Paolo Abeni <pabeni@redhat.com>:
-
-On Wed, 4 Mar 2026 23:00:27 +0000 you wrote:
-> When no H2G transport is loaded, vsock currently routes all CIDs to the
-> G2H transport (commit 65b422d9b61b ("vsock: forward all packets to the
-> host when no H2G is registered"). Extend that existing behavior: when
-> an H2G transport is loaded but does not claim a given CID, the
-> connection falls back to G2H in the same way.
+On 12/03/2026 09:39, Marc Zyngier wrote:
+> On Thu, 12 Mar 2026 09:28:16 +0000,
+> Suzuki K Poulose <suzuki.poulose@arm.com> wrote:
+>>
+>> On 11/03/2026 19:10, Marc Zyngier wrote:
+>>> On Mon, 02 Mar 2026 15:23:44 +0000,
+>>> Steven Price <steven.price@arm.com> wrote:
+>>>>
+>>>>>> +  struct kvm_arm_rmi_populate {
+>>>>>> +	__u64 base;
+>>>>>> +	__u64 size;
+>>>>>> +	__u64 source_uaddr;
+>>>>>> +	__u32 flags;
+>>>>>> +	__u32 reserved;
+>>>>>> +  };
+>>>>>> +
+>>>>>> +Populate a region of protected address space by copying the data from the user
+>>>>>> +space pointer provided. This is only valid before any VCPUs have been run.
+>>>>>> +The ioctl might not populate the entire region and user space may have to
+>>>>>> +repeatedly call it (with updated pointers) to populate the entire region.
+>>>>>
+>>>>> size as a __u64 is odd, as the return value from the ioctl is a signed
+>>>>> int. This implies that you can't really report how many bytes you have
+>>>>> copied.  Some form of consistency wouldn't hurt.
+>>>>
+>>>> Good spot. In practice this works because >2GB in one operation is
+>>>> highly unlikely to be processed in one go. But I guess I'll change this
+>>>> to have an output size argument. I guess I could make the kernel update
+>>>> all of base,size,source_uaddr which would simplify user space.
+>>>
+>>> In a conversation with Suzuki, I suggested that splice(2) could be a
+>>> nicer way to express this, and allow asynchronous use with io-uring.
+>>>
+>>> After all, having a guestmem backend for CCA is not exactly
+>>> outlandish, and having a splice implementation realistic enough.
+>>>
+>>> Thoughts?
+>>
+>> One issue that I realised, is about the "flags" for the populate.
+>> Data can be loaded as measured vs unmeasured in CCA (and in TDX
+>> and SNP). I don't see a way to convey this with splice.
 > 
-> This matters in environments like Nitro Enclaves, where an instance may
-> run nested VMs via vhost-vsock (H2G) while also needing to reach sibling
-> enclaves at higher CIDs through virtio-vsock-pci (G2H). With the old
-> code, any CID > 2 was unconditionally routed to H2G when vhost was
-> loaded, making those enclaves unreachable without setting
-> VMADDR_FLAG_TO_HOST explicitly on every connect.
-> 
-> [...]
+> Surely that should me a property of the memory region, and not the way
+> it is copied, right?
 
-Here is the summary with links:
-  - [net-next,v4] vsock: add G2H fallback for CIDs not owned by H2G transport
-    https://git.kernel.org/netdev/net-next/c/0de607dc4fd8
+I'm not sure what the current thoughts on the matter are, but there was
+an intention in the past that some data could be measured and some not
+within a region which is logically the same. E.g. the DT might be
+deliberately unmeasured so that the same measurement would cover a
+selection of different configurations (with the guest obviously
+validating that it was sane before continuing). Forcing the memory to be
+split into multiple memslots just so a measurement flag can be set
+correctly seems like a poor uAPI.
 
-You are awesome, thank you!
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
+While splice(2) certainly looks similar to what we want, it does
+(according to the man page at least) have the requirement that "one of
+the file descriptors must refer to a pipe" which seems less than ideal
+for the DT case where it's likely to be generated in memory by the VMM.
+Or is my man page out of date and the pipe restriction isn't there in
+the kernel?
 
+Thanks,
+Steve
 
