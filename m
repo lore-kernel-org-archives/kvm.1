@@ -1,46 +1,46 @@
-Received: from MW6PR02CU001.outbound.protection.outlook.com (mail-westus2azon11012029.outbound.protection.outlook.com [52.101.48.29])
+Received: from CY3PR05CU001.outbound.protection.outlook.com (mail-westcentralusazon11013054.outbound.protection.outlook.com [40.93.201.54])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 151AC2BD5A8;
-	Thu, 12 Mar 2026 07:21:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.48.29
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E8178389119;
+	Thu, 12 Mar 2026 07:27:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.93.201.54
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773300095; cv=fail; b=Qyyq/tt/fMWDiUi+AtQD5Juju60a+PDclKQrjwWLKY9KlpB0YuCg9ql1GQb81/bJQwdR6EDMo+CI5JBk8+sHxDshzbCGVZFtvpITLQBVyKl/Wo567H7VvkErP1jJ5iuyRNnsmH96FyZgB7vmazDGFu1JVtN4fg3+guYgSrQMreM=
+	t=1773300436; cv=fail; b=PKULlqlRcSL9j703ZPdwkGpcuUnHEQkpgiGJRCEDY9E/JQZ/wA0/pamb6U/ixPGn2bv3oQ/wi6BITH/uF3lrC7dWGtG5fFL5jZIUWiCkMVki3GWLHl9OeweSOZB63/pnQuCtN8w6sB+M+CKiQM4e7M45AwwlW/HOxO2bS2jgbac=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773300095; c=relaxed/simple;
-	bh=OGRVJtTR/WkLKtXSuP0oZOv06vK1tZXWGqbXmLszU38=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=AURZSQzYf7otkuzY7E4QbWbebsKp5EjXflSl229b56EDt1yAdNj4/ANr7Du54euBBOM0tX0kvLggcK+82Y+gWae2uyN7tqRdKMYFElxo1liW9SlRMMGa8NkP0+60GyaL7fsCv/574x+T4Q4/TV+VtXbI7PcI4xKPn+KEya0flEc=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=qm6GmOTD; arc=fail smtp.client-ip=52.101.48.29
+	s=arc-20240116; t=1773300436; c=relaxed/simple;
+	bh=KO3G8dQXB/X6az3EHJg3tKwI149KyglAVGvesrq12tM=;
+	h=Message-ID:Date:MIME-Version:Subject:From:To:CC:References:
+	 In-Reply-To:Content-Type; b=W4QO10Y/ARpEje5g1L+HWPquQkRHwASRG+0w1dl8W3+lk8vFzgkr4jCUGfotMMxNOgmeRv2s9uJXFYASecrn7KwP+RHhgq/UUJGqWAbSC9Or7HrsytudPT5t4p6ivNi3zVCjgq3//hyivHSmRWPnYc/y/y6xmiOD4+wZKY4TPVI=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=Zh1erIlI; arc=fail smtp.client-ip=40.93.201.54
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
 Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="qm6GmOTD"
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="Zh1erIlI"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=f6peXhfSyJzdEKkam/SNDaCCEKc80tyH5S1UBJjcDFBhqL5OJIwTRnZvjDm4OUdQb30uCu4/A3grdvYqw3FS9YdPcHOiWU+DHfqP6FBsR3Hor3qjY2xrqh3056VlWIYutT2BRgmVc15z2L7cb3kgFYh11GMI8aYD6v/exmztBgpVeR12ghW7laTylU/TZe2Ny2k1D7M8zlZTkNB9VVa/UhHDEqqHNYUavRDDrMtuNyqNdbCajwmSvxWV26X2GxMFZH9izs9ooexQ07IKZWAJw2E/rSamKGpdGOWdShvGkEmmNebsvqwa8wBICr0DeCyuQygir/MnCm1EUhOjiaZ9zw==
+ b=Wzbot4kIy6UoDiFO2AGmJ1lApMwU4FHRis5JfZuF25SwuRe2FEvtbhX5YiU2hsY5VGbwSo2mIeZz0IOjJMsqSOEJUoeZ356L0a8uRHpeC5ENaP5QINjXI/JupYiJRSN12vjDDjfth6y4JsTf5/yZ56vbH21uBwZVIzLzVaeHK59/adKzKu0oSMtAxXohMOCDHQnfpxSQFnZrvoLEt2vZHzDSiRpazuQjzKUbWx1rE/1kEgIQZitvCUCXOF7pqdS1vrNIlA1rLoKi2/fa5Iv2jfryEwDEy1txYbCNzD7ZnbK5mtVxh8nEliotRHIBG263Uin995vpB7AsCduDgvncVA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=QdRWeK0PZzAzKAdjZZvCqbTlqLmnEAjsTlTCk2iPDW0=;
- b=fUyRpekiShXhD5n0xp0Mi66ow2dKao01RuU4uYPYw/WqYvXh6Y3dIgFbwdn4F0BbzsMtNkWTYOxIH7Go8RImrbGrYGMc6GLthNXW6fNjZ+8Ta6d5MYvK1pxYzCmPmDc5q0ZTruN69Wabsv0JxLuDy/DSnOZNclom3kJ3dYY89Y+dbBiiW4t4UTnc4UgIV7pnL6fBkHeeuK2jHK48OHqztYigjh6qLrweEWGUkhOEyuKyT4x7WWZbAQ0zIfv/m65YKBMs0mzogecw916Mwf9bO3IA++80nzf3pYp1k51DI2U0UzC1t3JDcvO3YhYKaVAy/hjlYcl1jJU9OpdYexTp0g==
+ bh=KO3G8dQXB/X6az3EHJg3tKwI149KyglAVGvesrq12tM=;
+ b=UbIy0ywq1hJvgu9eDX/MPo4Nu0a4W/KmcSboy4uHE+IynUmQMDFQ22Sr3+oCFoyw3kVKTNXl0xhLAqgERJmuIEllQkZ3ma5OUjlS+SjrtIMQObkWBg8hihJS4t+5C8Z2zqe8G6y5W1YMgdIiuRikmMg+PHrB+owl+fxKzrK/JRV8Tp6CKgL4ha3hOymmnRfQDOcAaaH4Aa1WkDLRT89Lh1YEWdCaO51n6u2F/yGWvS8CDOGlx5uHkjFI0VRybcajuHBhid4wfIo9sg6DjbdrFVCp3HxFeCA6UJAEPr7kEmo0h9A8fR34QuofHgTTiWdkeaQQ0B0vPGLoK4wAgHgmDA==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
  165.204.84.17) smtp.rcpttodomain=intel.com smtp.mailfrom=amd.com; dmarc=pass
  (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
  dkim=none (message not signed); arc=none (0)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=QdRWeK0PZzAzKAdjZZvCqbTlqLmnEAjsTlTCk2iPDW0=;
- b=qm6GmOTD6ZFd2b7Iloa9/Vbkj0E1YqdYf81VsCkH8Yjm/sLZ+F18LKsOAFEWOyfHMBnSRD/Rz+LhwYUT56cH/XDvTJ1WDwGXL9O6zXnrWL172IZUhYtV4PxOAvulP59pagZgPDqnKNR+i/07CgZ/5SpmyVJaI3jGQh1Jo/WRG8o=
-Received: from MN2PR10CA0015.namprd10.prod.outlook.com (2603:10b6:208:120::28)
- by BN5PR12MB9511.namprd12.prod.outlook.com (2603:10b6:408:2a9::14) with
+ bh=KO3G8dQXB/X6az3EHJg3tKwI149KyglAVGvesrq12tM=;
+ b=Zh1erIlIGzsYUlc+mVPdVQ9BlBP/AbRBkee7pAonx8/sLktHi9VOlVVqf4xKZpOxM6p1ZVq7rhmOd5hwPKzpo/pGrVZzRDihn5WWfakhIxltkE9gdGWUmodsu0zzNB6a1EyzaFTyDdp44j3t1jK+UuzLOvWwHNIT70GN6wpY9gk=
+Received: from DM6PR18CA0020.namprd18.prod.outlook.com (2603:10b6:5:15b::33)
+ by CH1PR12MB9693.namprd12.prod.outlook.com (2603:10b6:610:2b0::5) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9723.4; Thu, 12 Mar
- 2026 07:21:30 +0000
-Received: from BL6PEPF0001AB4A.namprd04.prod.outlook.com
- (2603:10b6:208:120:cafe::96) by MN2PR10CA0015.outlook.office365.com
- (2603:10b6:208:120::28) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.20.9678.27 via Frontend Transport; Thu,
- 12 Mar 2026 07:21:28 +0000
+ 2026 07:27:05 +0000
+Received: from CH3PEPF00000011.namprd21.prod.outlook.com
+ (2603:10b6:5:15b:cafe::1) by DM6PR18CA0020.outlook.office365.com
+ (2603:10b6:5:15b::33) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.9678.26 via Frontend Transport; Thu,
+ 12 Mar 2026 07:27:06 +0000
 X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
  smtp.mailfrom=amd.com; dkim=none (message not signed)
  header.d=none;dmarc=pass action=none header.from=amd.com;
@@ -48,22 +48,22 @@ Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
  165.204.84.17 as permitted sender) receiver=protection.outlook.com;
  client-ip=165.204.84.17; helo=satlexmb07.amd.com; pr=C
 Received: from satlexmb07.amd.com (165.204.84.17) by
- BL6PEPF0001AB4A.mail.protection.outlook.com (10.167.242.68) with Microsoft
+ CH3PEPF00000011.mail.protection.outlook.com (10.167.244.116) with Microsoft
  SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.9678.18 via Frontend Transport; Thu, 12 Mar 2026 07:21:30 +0000
-Received: from Satlexmb09.amd.com (10.181.42.218) by satlexmb07.amd.com
+ 15.20.9723.1 via Frontend Transport; Thu, 12 Mar 2026 07:27:05 +0000
+Received: from SATLEXMB04.amd.com (10.181.40.145) by satlexmb07.amd.com
  (10.181.42.216) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.17; Thu, 12 Mar
- 2026 02:21:29 -0500
-Received: from satlexmb08.amd.com (10.181.42.217) by satlexmb09.amd.com
- (10.181.42.218) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.17; Thu, 12 Mar
- 2026 00:21:29 -0700
-Received: from [172.31.177.76] (10.180.168.240) by satlexmb08.amd.com
- (10.181.42.217) with Microsoft SMTP Server id 15.2.2562.17 via Frontend
- Transport; Thu, 12 Mar 2026 02:21:25 -0500
-Message-ID: <81046249-09e2-4c39-8b77-992de916a7ba@amd.com>
-Date: Thu, 12 Mar 2026 12:51:19 +0530
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.2.2562.17; Thu, 12 Mar
+ 2026 02:27:05 -0500
+Received: from satlexmb07.amd.com (10.181.42.216) by SATLEXMB04.amd.com
+ (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.39; Thu, 12 Mar
+ 2026 02:27:05 -0500
+Received: from [172.31.177.76] (10.180.168.240) by satlexmb07.amd.com
+ (10.181.42.216) with Microsoft SMTP Server id 15.2.2562.17 via Frontend
+ Transport; Thu, 12 Mar 2026 02:27:00 -0500
+Message-ID: <2b4ebf7f-d534-4380-a6f4-cb835f90b7bb@amd.com>
+Date: Thu, 12 Mar 2026 12:56:54 +0530
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -72,6 +72,7 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 Subject: Re: [PATCH v2 1/2] x86/cpu: Disable CR pinning during CPU bringup
+From: "Nikunj A. Dadhania" <nikunj@amd.com>
 To: Dave Hansen <dave.hansen@intel.com>, Tom Lendacky
 	<thomas.lendacky@amd.com>, Borislav Petkov <bp@alien8.de>
 CC: <linux-kernel@vger.kernel.org>, <kvm@vger.kernel.org>, <tglx@kernel.org>,
@@ -90,112 +91,43 @@ References: <20260226092349.803491-1-nikunj@amd.com>
  <55a98b6d-e831-47a6-aa5a-8fe357334f67@intel.com>
  <d0eba3fe-2938-4856-bd9b-0e13972e8313@amd.com>
  <cb492a37-3517-4738-b435-73311402e820@intel.com>
+ <81046249-09e2-4c39-8b77-992de916a7ba@amd.com>
 Content-Language: en-US
-From: "Nikunj A. Dadhania" <nikunj@amd.com>
-In-Reply-To: <cb492a37-3517-4738-b435-73311402e820@intel.com>
+In-Reply-To: <81046249-09e2-4c39-8b77-992de916a7ba@amd.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: 7bit
+Received-SPF: None (SATLEXMB04.amd.com: nikunj@amd.com does not designate
+ permitted sender hosts)
 X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BL6PEPF0001AB4A:EE_|BN5PR12MB9511:EE_
-X-MS-Office365-Filtering-Correlation-Id: 7786c054-ce98-4b9f-908e-08de8007fb4c
+X-MS-TrafficTypeDiagnostic: CH3PEPF00000011:EE_|CH1PR12MB9693:EE_
+X-MS-Office365-Filtering-Correlation-Id: 9c296cde-d383-40a8-15ef-08de8008c339
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|376014|82310400026|7416014|1800799024|36860700016|18002099003|56012099003|22082099003;
+	BCL:0;ARA:13230040|36860700016|7416014|376014|1800799024|82310400026|56012099003|22082099003|18002099003;
 X-Microsoft-Antispam-Message-Info:
-	2SEptjRlVPvBRr0HfygOVNcTNUumRx/f8ptz+xqSUaAQ56+8d6p5ySYCY0r0I26BAAB9tofI8PvXQ04FCReHBC5ERk/aaK2PkC5joo0n9YpaoIZ4lYecZGpefEBnNbQTGKeWP2+KqwTKGfTSE7YyNQ/W/gldJ/DwqWuYW6RiPjjB/SH/5A3ugAX+zM+JSMEDCHnP2ROKmnF0abDakQKXv4WNZMv6hNYV2Rs32Z61rS7UA7TNx+sA3ksyvi9ePZKRSMU+8zs/SYVGSWBqh/qa0kmFuDCaT9IEchzC/AZntICsp0LpOijxKNsMwDljLAt6Jxh8U5ZGlWoEHmdYerKX7kkI4qRIBT1crXCqYws9H7qHPk+gW49tE0szcgsufZ15cJVL4GmTaQk8sSGM6FbpSCLqye6XXvCEbDL8po+/3lh7RYcSryZsqsAzXCMGqBEV54RbKwxpuMpOPmk+mMPggY0gxxsCCJLRRSIQKstp7wtl4ltVgAEnH4IU0KLCDdf3gTFz5C4SFX5YwZpeopf0ZJ2QT6l/8M5PRdvUaOGvHziHRH1r5CnmerghLQUVdtizxUKL3CJUQfvpkruiRZwEU5a3x06B7ReAjqr1N6HCbHaKlv1XBFVL7Tr4p8Wc6Vs183qf0gXN5fzElAMQEJpLnh2RVj8w2l9l7zNwbkCaDGL869Hh8ujTm7p4m/ng674xQQCV4GDpsI/yVRHEQ29hyU9e8UIv7hIIAWOplZtqqL2MeOfs9Z/GbMXRmWCfp4745R+K+zuQt8Mo9FFGWhGi6Q==
+	zCKnmMCn+QLy6o6gvS7a1EMitKj3xZ2+/QFV8BK4t+gJN3GTFklvzKZ5lsm1cFe3CR6DPFW9vsxF3+NvWxDqaTgiL8rnCjNZSGj4crbUqihpVaL+6TX9Z0y3RjCZj5iZL2KiSCxPlWPWaXD2km9C8ULu2vCLhM8Ylzw76gDVANELQQik00EY5oSLMGbfqP8iM0Lu27lv7E++iWchX6k+biDlo0KpJEM28dD71P/aCWy/mb2pUPQHLnbP8X8hlVhlSajno6uuJrK8nKD0wI54a9MbyqYfPXPttx1xIWTH7T2qlzWnNawW7ewbqLM2IvlTFEn+MG6JhOp9JQIXHcpFf58H45lFSm/MEHOinHeAXDNiewAe+pp1DnJAU1SVu1d9EXBVcHRR7E7m6XLDcOteYw85ED6DcI7mJwwuaIPY8Zba0UXpugZLtpj6Z+pc2ge2JtGFRyDF3MNbE8NeIyXdvfog2s4cv8yBFpWj0Mq82hrnJ83lEzCcLexxDGll4fZrDPAcZEXqeD0kqJuVTD4+NY+ohv6hLsVRIMFIUjXZLJBtQ+YpyFXmww6bsU8e9E0F36OpP1bs8krAgrH0kCkeoCvSWli8WwcXuPc68Awt9tCJJfkg5RYzM3HqQGgqTt4RauvTOaFswxyFeDnK6w/UlF2ojwq9l1goKm4vfYwoGgx+XU5lmtSVBsmw2zjyje+Gk69XaykXQZl2yfnWsw93/zshxi8brLSYIf2s+jR7kcO2fXD94T+5CjhR2jF/rl+Tm2aQ433mN0z9Z+SHtMLqwQ==
 X-Forefront-Antispam-Report:
-	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb07.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(376014)(82310400026)(7416014)(1800799024)(36860700016)(18002099003)(56012099003)(22082099003);DIR:OUT;SFP:1101;
+	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb07.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(36860700016)(7416014)(376014)(1800799024)(82310400026)(56012099003)(22082099003)(18002099003);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	4PyxUJLmFuhAvHIBs/+Oi5+Yyb47A3OJ6DR/t+cQwS/wXt2IFuq+riDWfCJToc7aG2lN9k8DRJnK0hp0B1n9fCNbAj/qfmZGI186ygBZO7FQgVLlvQN9trDQGbnGtkG37B/R9mJZf29GgyKUJUWz9DOO3nnArxGZQFnnpxB4nURaj3PxS60JBo1igqm4jIpksgPuN8B2Y9odY8B+VyvNwKODD/T5AkNxcoc4o0vuuACXho8hAX4qE+6xjuqfW1rdLI8orxrKyRekohVTnN15t5Tur8R2R8R2JrNRu6wLgNAOA4fbjGq21+lM9zC+6vTxd0DMmKyc8CD9DHaf0FyrV/u+/Ai5ScUKF4ANpFHxxwyHYnDAzWoeT3Vk0B/gocPsqygyUDUtHBpB6fY94fvIuKNOcenMfMs+7PLnDz3OyJlAIq2zo8xwcUY+Cb2CFw9k
+	bssqmHVSPtEmFugDHgfT0YsqDz+mmByIb+hgo+OqlI6OgAejsKmQS2bWPSnocbR/a/qCZhLqaiCzG0Vu38bbpsCQiGhDNIp+q8exIRjzwfHU7kbVgV9L3VCUott6dunypl3EdErXFaT4h0TqDOapxB3fgverPz/wYc+1hLW3DE6gsHLInFZatV/p++7NdJ0aLq4JIaXedXdDuWNrpikIeuTi9gzSKIaQFwQriY1R3pPhqQP40oMv+lmZowmpYtF6q6S+Tqsl9WlUJHTEsjTSVHfGkZQCM23craFPWkh5hytkJzoiM6xDK171SllCtMLQmuj+LtnEcfF9oAoyjTq7t30pcoSSFnPHKT/atJ/HjH0H2SGXdMvRFVYnEsm8/WIfrMWy4YMtoDZeBJDTlR9GHmYR5hxmNVuPF4tO9Z9eVKXBOCq76AagxKcqS0w7J1Gn
 X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 12 Mar 2026 07:21:30.1917
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 12 Mar 2026 07:27:05.6045
  (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 7786c054-ce98-4b9f-908e-08de8007fb4c
+X-MS-Exchange-CrossTenant-Network-Message-Id: 9c296cde-d383-40a8-15ef-08de8008c339
 X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
 X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[satlexmb07.amd.com]
 X-MS-Exchange-CrossTenant-AuthSource:
-	BL6PEPF0001AB4A.namprd04.prod.outlook.com
+	CH3PEPF00000011.namprd21.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Anonymous
 X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: BN5PR12MB9511
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH1PR12MB9693
 
 
 
-On 3/11/2026 10:58 PM, Dave Hansen wrote:
-> On 3/11/26 08:42, Nikunj A. Dadhania wrote:
->> -void cr4_init(void)
->> +void cr4_init(bool boot_cpu)
-> 
-> I think the "pass a bool to a function" pattern is really not great.
+On 3/12/2026 12:51 PM, Nikunj A. Dadhania wrote:
+> Right, this approach becomes much simpler with the boot_cpu:
 
-The reason I introduced it was to avoid double-enabling PCIDE on the boot 
-CPU. The boot CPU already enables PCIDE via setup_pcid().
- 
-> The problem isn't actually setting CR4 twice. The problem is having two
-> different code paths to set it. Doing the 'bool' doesn't eliminate the
-> code path, it just makes the whole thing more complicated to reason
-> about and further bifurcates the boot and secondary CPU bringup paths.
-> 
-> We want to unify those, not bifurcate them.
-> 
-> Why don't we just universally set X86_CR4_FSGSBASE in cr4_init()?
-
-Right, this approach becomes much simpler with the boot_cpu:
-
-diff --git a/arch/x86/kernel/cpu/common.c b/arch/x86/kernel/cpu/common.c
-index 1c3261cae40c..6c0493eaf813 100644
---- a/arch/x86/kernel/cpu/common.c
-+++ b/arch/x86/kernel/cpu/common.c
-@@ -502,6 +502,17 @@ void cr4_init(void)
- 
- 	if (boot_cpu_has(X86_FEATURE_PCID))
- 		cr4 |= X86_CR4_PCIDE;
-+
-+	/*
-+	 * CPUs that support FSGSBASE may use RDGSBASE/WRGSBASE in
-+	 * paranoid_entry(). Enable the feature before any exceptions
-+	 * occur.
-+	 */
-+	if (boot_cpu_has(X86_FEATURE_FSGSBASE)) {
-+		cr4 |= X86_CR4_FSGSBASE;
-+		elf_hwcap2 |= HWCAP2_FSGSBASE;
-+	}
-+
- 	if (static_branch_likely(&cr_pinning))
- 		cr4 = (cr4 & ~cr4_pinned_mask) | cr4_pinned_bits;
- 
-@@ -2047,12 +2058,6 @@ static void identify_cpu(struct cpuinfo_x86 *c)
- 	setup_umip(c);
- 	setup_lass(c);
- 
--	/* Enable FSGSBASE instructions if available. */
--	if (cpu_has(c, X86_FEATURE_FSGSBASE)) {
--		cr4_set_bits(X86_CR4_FSGSBASE);
--		elf_hwcap2 |= HWCAP2_FSGSBASE;
--	}
--
- 	/*
- 	 * The vendor-specific functions might have changed features.
- 	 * Now we do "generic changes."
-diff --git a/arch/x86/kernel/traps.c b/arch/x86/kernel/traps.c
-index 4dbff8ef9b1c..0a2b129bda03 100644
---- a/arch/x86/kernel/traps.c
-+++ b/arch/x86/kernel/traps.c
-@@ -1685,6 +1685,13 @@ void __init trap_init(void)
- 	/* Init GHCB memory pages when running as an SEV-ES guest */
- 	sev_es_init_vc_handling();
- 
-+	/*
-+	 * Initialize CR4 early, before cpu_init(). This ensures features like
-+	 * FSGSBASE are enabled before exception handlers run, avoiding double
-+	 * initialization later.
-+	 */
-+	cr4_init();
-+
- 	/* Initialize TSS before setting up traps so ISTs work */
- 	cpu_init_exception_handling(true);
-
-
+s/with/without
