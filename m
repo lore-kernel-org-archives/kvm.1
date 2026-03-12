@@ -1,108 +1,108 @@
-Received: from mail-pl1-f202.google.com (mail-pl1-f202.google.com [209.85.214.202])
+Received: from mail-pl1-f201.google.com (mail-pl1-f201.google.com [209.85.214.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E45739DBE4
-	for <kvm@vger.kernel.org>; Thu, 12 Mar 2026 17:47:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.202
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0DDA2366561
+	for <kvm@vger.kernel.org>; Thu, 12 Mar 2026 17:49:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773337676; cv=none; b=IyBrxu/8KTI0Gb+s1GGT5a2C1c6UWIo1mQ2s8jJN+Fu6FzvsW6f73NnAVdmagFlcEHPSrgcaf/2Qa2pwbx/dyV8G+sssvpJ2cntSo/R+zSB5kdOKHKpdPaLcB09WjOKTio8c1vHFJY/uabvr0J1NV/tPORCsCKep3ZPuMgIV884=
+	t=1773337760; cv=none; b=mAVS0ZJf5ugtTdje8BXqTMclvONyoJJvlulHv+Erry2bp6SWQXE0pYAG6q5uB05XLvbtqcyis1MTi+EMOYUPE1YtshNesyoSK8A1VGoBCSt0veuNWR4TD90Zfk6WgrEseVb98x1fi51zduyzrFn/RME5fin+tNjiuQh9jaqdtPU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773337676; c=relaxed/simple;
-	bh=VA6BT2jedBPBN+XKoIFPCHObG2m2rlF5KycQuzDUrMg=;
+	s=arc-20240116; t=1773337760; c=relaxed/simple;
+	bh=xpP8GEaWsx0WZR2bBt+NsJMr6G978MTpJRXnplvOTMs=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=DHSeALTigLhMA/pKbZ2dzLpNYU6Yi35NQqLru9p+j0tu/4szsoIHfjqpJwFLAzs8nCuSYflo/b9Idi2hW65LCGBDPygSKpf1B+AQ7LpNx46t3GPVlGKJscDxZNKtnj1cPXGh0YleH26niot3XYWe6XICU2Xjf99jN1dhBVAKsP0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=r6wh2oJc; arc=none smtp.client-ip=209.85.214.202
+	 To:Cc:Content-Type; b=Q8tsFKdktpR8oFGqgPv8RyqYqrSj+zlcpERYNbi5C8gNGMjwKPOzUvvomYjrNWeevo2bruFpCxjT824zXKaYmi30rHYNRZnvSLY23lh9kFde2jDxqG1aBS1SnOydE3pltNgUdyzDyvSC5aYrGGO6pEV0d2cPoBG3h6obxUOLq4U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=VHa/w4XT; arc=none smtp.client-ip=209.85.214.201
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="r6wh2oJc"
-Received: by mail-pl1-f202.google.com with SMTP id d9443c01a7336-2ae6961bff0so102522775ad.2
-        for <kvm@vger.kernel.org>; Thu, 12 Mar 2026 10:47:54 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="VHa/w4XT"
+Received: by mail-pl1-f201.google.com with SMTP id d9443c01a7336-2ae47b3adacso13025155ad.3
+        for <kvm@vger.kernel.org>; Thu, 12 Mar 2026 10:49:18 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1773337674; x=1773942474; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:from:subject:message-id:references
-         :mime-version:in-reply-to:date:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=uqT4tJ2p9cV0GLfbL9fmEN2SDx66Fv1ImSC2atPdiGM=;
-        b=r6wh2oJcajsoVPpQu7Gug78US//c/W4k1pYAzcrljR6G2qS6n7BDowZ0DMl8yZ8wU4
-         YfKx36cfqdVd9kh9cDF3VvIfr3pMsNf+OPbAzuNpWxit8+gEqCPh1fHjpc8EfEDutahB
-         5Ti+2DVtOmkIQythp3XW1V+LlU+SPi6nKj74mn73N9X3+QL9EqUoYx61L+cMUONEW4I9
-         aJl2ExxCl2HFyWir9SUN1gdzHOHj3nBmOnAv814fsu0NgbR5/2zFbWPwgdC2Gkh934Yw
-         pVnzvm7Q0VG6AIqObt7eGSmOJ6A+IVjR5FV4o+gi5fkjQrZU6T/R2fQxbc+ULSYX9Xx5
-         dRUA==
+        d=google.com; s=20230601; t=1773337758; x=1773942558; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=Mp2dppEjJ5UkRzLym3Z+pF4WitJgemauS6UzqyQhU6E=;
+        b=VHa/w4XT+618RPE7+wEulZTlqOK6tQ65nAZMj/qSLtxy8pZkna4T9oHHTeivu/LCtB
+         rxCehg0ekH4wMb2ZTzC3cxGp0qKLRnMMtLLAai+WHgdb2KuNb6mvUplovsWMgS84DGuc
+         YgYGVHIgJqS5jrN5BUvb1XyEeKCkZkiMiMi7oDokbRBbH17drHC6yjudlzcR6L/A+juS
+         aIgNRxgXcnXF8LJImluuiS1xFYy9k1V6FlkP1AaA1Mrfxy50abPL5mIjyqdovlZ2sleG
+         66fMU1OVSeuPeBxOYdkMOceVypq27Il8F5vP/stc9gd3vh7/vMcZKf3gvQcs6P2RIT3L
+         hHtA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1773337674; x=1773942474;
-        h=content-transfer-encoding:cc:to:from:subject:message-id:references
-         :mime-version:in-reply-to:date:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=uqT4tJ2p9cV0GLfbL9fmEN2SDx66Fv1ImSC2atPdiGM=;
-        b=Ur1m1rpsH77fyhco0HzzFQg18PbcuN/7vDb09pUpZB5sJHxWCamqJpduY3aIma+Zp9
-         tdL7gX1G1DpC9WeHf6I/ZVrHbQdKvwIcCJ9hrJ6bpP29gZrAK0gfciPryS6OHAOxTq3f
-         mv1RRR9WslAITsR/NxG0/49V+RwfFeJSkAGM3rFdIQshl1V85CMG6Icu2flR535Li38V
-         TscJNtztyJZjS6kpELJWM3+Ub57Gmev50gbs3uGmWY5360dhqdi1QmQ+02/CMqyJH180
-         Bhj3aMpY9O1zlNZYp/+eaW5Jn9Rsb7M8vVRs0fFaxC78w4MZl2oUUSUFMksU/2BmSGX/
-         e6fA==
-X-Forwarded-Encrypted: i=1; AJvYcCVQM/xLZS+7oq3fIkWYFqzxZ59e0VTAOeok9Zaw9gsLxEt5A1wISLqGDxQpbpe/GeRikWI=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxnwUcdgKrtg6JCpPuIEnk8D0t1RUA+qlIzcDssvdJKvt0y95Bi
-	UO5Ti8E+tiErTXu+T5OfzGGM3hZrvpItl34wvScMl+wR/M+KVKUPJ4a1v/P/6ViRn/Z4WVk1vfV
-	0PJejBg==
-X-Received: from plww18.prod.google.com ([2002:a17:902:d112:b0:2ae:54b1:87d9])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:902:c947:b0:2ae:c795:6b37
- with SMTP id d9443c01a7336-2aecaa48f77mr3241095ad.19.1773337674289; Thu, 12
- Mar 2026 10:47:54 -0700 (PDT)
-Date: Thu, 12 Mar 2026 10:47:53 -0700
-In-Reply-To: <8853f8d5-57e6-4ea4-b9b5-8a0182d0d012@intel.com>
+        d=1e100.net; s=20230601; t=1773337758; x=1773942558;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=Mp2dppEjJ5UkRzLym3Z+pF4WitJgemauS6UzqyQhU6E=;
+        b=O9S7bK0+balSjE+hLj4wq7Cx3QJVIXtgFKrMPy+vPzdERStbK7VshKyn/a/4zHl8xc
+         LoZ5p6BwMzlC8Jujz2VpdtSL5ND4nSktoWpEULRCwOgP9FoTyBNddZwTyYGC0JPqjyUj
+         L/k9CixoJ9RCccRxnjvtj98O1Z88vsy2MWqSNg0pL/zSQVOcDkFHbEAguFKPbKBcp7YC
+         8q4U8bLq2vdOU1r7gFqOnSrvDdKf4ozfFxdQTEFT2Vq9HEt51i/SGCiZGc2jdnPhOqK+
+         d7ci7wKf3dsyfTBHujVtQ+OllL59wBeCgsPJQzlD+DYDcB6pwk5q01dGWB25YhZhX/5M
+         0tgg==
+X-Gm-Message-State: AOJu0YxuxUPvo8WpYZ/Bc0ONXGSEpbZwHdsFRST0SAMN5bkmaudJA1hv
+	K4naMclJoqouun1HP8e7SBxmP+mes+0XLQ/6lvAh8DmSzuRSZtneVfGumA440bzMVtF2wvwdLZ9
+	tGd5GWg==
+X-Received: from plxx2.prod.google.com ([2002:a17:902:e042:b0:2ae:5fe0:d464])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:903:ac7:b0:2ae:50ec:fa34
+ with SMTP id d9443c01a7336-2aecac93676mr2940935ad.46.1773337758105; Thu, 12
+ Mar 2026 10:49:18 -0700 (PDT)
+Date: Thu, 12 Mar 2026 10:49:16 -0700
+In-Reply-To: <47e4570a1db6f68eacdde989c6cf4f53175cea75.1773193126.git.isaku.yamahata@intel.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-References: <20260311003346.2626238-1-seanjc@google.com> <7ec084f8-812e-42f2-8470-e416fa7ee848@redhat.com>
- <8853f8d5-57e6-4ea4-b9b5-8a0182d0d012@intel.com>
-Message-ID: <abL8SW5JS1aV5goa@google.com>
-Subject: Re: [PATCH 0/7] KVM: x86: APX reg prep work
+References: <47e4570a1db6f68eacdde989c6cf4f53175cea75.1773193126.git.isaku.yamahata@intel.com>
+Message-ID: <abL8nHNYkUCcS73O@google.com>
+Subject: Re: [PATCH] KVM: VMX: Eliminate warnings by sparse in vmcs12.c and hyperv_evmcs.c
 From: Sean Christopherson <seanjc@google.com>
-To: "Chang S. Bae" <chang.seok.bae@intel.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>, Kiryl Shutsemau <kas@kernel.org>, kvm@vger.kernel.org, 
-	x86@kernel.org, linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
+To: isaku.yamahata@intel.com
+Cc: kvm@vger.kernel.org, isaku.yamahata@gmail.com, 
+	Paolo Bonzini <pbonzini@redhat.com>, kernel test robot <lkp@intel.com>
+Content-Type: text/plain; charset="us-ascii"
 
-On Thu, Mar 12, 2026, Chang S. Bae wrote:
-> On 3/11/2026 12:01 PM, Paolo Bonzini wrote:
-> >=20
-> > =C2=A0 On the other hand, the extra 16 regs[] entries would be more or =
-less
-> > unused, the ugly switch statements wouldn't go away.=C2=A0 In other wor=
-ds,
-> > most of your remarks to Changseok's patches would remain...
->=20
-> I think so...
->=20
-> If the host kernel ever starts using EGPRs, the state would need to be
-> switched in the entry code. At that point, they would likely be saved
-> somewhere other than XSAVE buffer. In turn, the guest state would also ne=
-ed
-> to be saved to regs[] on VM exit.
->=20
-> However, that is sort of what-if scenarios at best. The host kernel still
-> manages EGPR context switching through XSAVE. Saving EGPRs into regs[] wo=
-uld
-> introduce an oddity to synchronize between two buffers: regs[] and
-> gfpu->fpstate, which looks like unnecessary complexity.
->=20
-> So while ugly, the switch statements are a bit of a trade-off here. Also
-> bits 16-31 in the extended regs_avail will remain unset with APX=3Dy.
+On Tue, Mar 10, 2026, isaku.yamahata@intel.com wrote:
+> From: Isaku Yamahata <isaku.yamahata@intel.com>
+> 
+> Make ROL16() explicitly mask instead of the truncation by u16 cast.
+> Sparse complains as follows for vmcs12.c and hyperv_evmcs.c.
+>   > vmcs12.c:17:9: warning: cast truncates bits from constant value
+>   > (20002 becomes 2)
+> 
+> It is because ROL16(val, n) includes "(u16)(val) << (n)" whose type is int,
+> not u16, due to integer promotion even with a u16 cast.  The outermost u16
+> cast in ROL16() may truncate it.  Explicitly mask it to avoid truncation by
+> the u16 cast.
 
-Have you measured performance/latency overhead if KVM goes straight to cont=
-ext
-switching R16-R31 at entry/exit?  With PUSH2/POP2, it's "only" 8 more instr=
-uctions
-on each side.
+Honestly, I'm inclined to ignore sparse.  The code is correct as-is, and adding
+the GENMASK just makes it less readable IMO.
 
-If the overhead is in the noise, I'd be very strongly inclined to say KVM s=
-hould
-swap at entry/exit regardless of kernel behavior so that we don't have to s=
-pecial
-case accesses on the back end.
+> Reported-by: kernel test robot <lkp@intel.com>
+> Closes: https://lore.kernel.org/oe-kbuild-all/202603061942.wdSsERnL-lkp@intel.com/
+> Signed-off-by: Isaku Yamahata <isaku.yamahata@intel.com>
+> ---
+>  arch/x86/kvm/vmx/vmcs.h | 3 ++-
+>  1 file changed, 2 insertions(+), 1 deletion(-)
+> 
+> diff --git a/arch/x86/kvm/vmx/vmcs.h b/arch/x86/kvm/vmx/vmcs.h
+> index 1f16ddeae9cb..b5b5f4870655 100644
+> --- a/arch/x86/kvm/vmx/vmcs.h
+> +++ b/arch/x86/kvm/vmx/vmcs.h
+> @@ -18,7 +18,8 @@
+>   * wasting too much memory, while the "algorithm" is fast enough to be used to
+>   * lookup vmcs12 fields on-demand, e.g. for emulation.
+>   */
+> -#define ROL16(val, n) ((u16)(((u16)(val) << (n)) | ((u16)(val) >> (16 - (n)))))
+> +#define ROL16(val, n) ((u16)((((u16)(val) << (n)) & GENMASK_U16(15, 0)) | \
+> +			     ((u16)(val) >> (16 - (n)))))
+>  #define VMCS12_IDX_TO_ENC(idx) ROL16(idx, 10)
+>  #define ENC_TO_VMCS12_IDX(enc) ROL16(enc, 6)
+>  
+> 
+> base-commit: 5128b972fb2801ad9aca54d990a75611ab5283a9
+> -- 
+> 2.45.2
+> 
