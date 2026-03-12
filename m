@@ -1,134 +1,147 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qt1-f177.google.com (mail-qt1-f177.google.com [209.85.160.177])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1DA263F99F3;
-	Thu, 12 Mar 2026 16:49:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A57283EAC86
+	for <kvm@vger.kernel.org>; Thu, 12 Mar 2026 16:54:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.177
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773334153; cv=none; b=RSB2J/wSI57jGO8WgCbB5D/LrtXCpeqCbTke/vbJlDdhUb+tnDZXVAAuoPPj2Pk+8lInu6i88BvX6B405cA9xorNEO6YZeRv/ITXQ6JBRWxsHF3TowCD3kEJ4ANCF2A/y9WJMX+p5SUP5DK76q0SKFqoPgIwb97mKdIyJob9pjs=
+	t=1773334493; cv=none; b=sXM4l3DPQ3EbILodLNq/diSZxHCk+XZVwGE2TcoTna8pfdnppb9hX3ar+XpygRhd+PRRmJi4RETN8LXlS7X7eo6557pNXYb57L3N71sewxlc5zC5HCfpiWx3pRZtWzmGOzBcbVBcy43oIDy0260Mch898hg1dKuI7s4Y6NrdnT8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773334153; c=relaxed/simple;
-	bh=XKGUGWrzojWOGD6w7apxfZsLbKlnIbAQKM8CcH1wN3o=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=qsE82jMJZ7N/RGfQg4wwRevAoiXFLlodA8gdCW0dT1xj/ODjTB9Xn6+Ek5ggWGPjasD7XliLltPT5c+MnG/KDKiRzduxnwdb3H8LgjXuDfzhibdYlsFcpfgQB13zD7iHQXBvMqjTu7GxkF9MBpQPfDYtekYTQGHR98ThF+IJTds=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=XxZ8RuBb; arc=none smtp.client-ip=198.175.65.18
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1773334493; c=relaxed/simple;
+	bh=ENv0+4bH9YdpFLGeURNwJ3+rEUsnNn74RNCtOl26SEA=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=QP6iTvng5toZXtHmkIxRhCg0rZjRcQPyWOTUwk0jJJs8Se8cPWNGYlZa+kxXRhhAK+wteDlRxDv/QMsNqmvhYW4WIvXBz2TxgE/rjqYPl+3ebCDW8RZJzbtUhuXiNBILzT6iRgufO44ZoloHCa+xSJ8iQ0lAxWExPVYgP8eBP4M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca; spf=pass smtp.mailfrom=ziepe.ca; dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b=TCUycPJz; arc=none smtp.client-ip=209.85.160.177
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ziepe.ca
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="XxZ8RuBb"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1773334146; x=1804870146;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=XKGUGWrzojWOGD6w7apxfZsLbKlnIbAQKM8CcH1wN3o=;
-  b=XxZ8RuBb3rnZwLE90onvLS1W0JkKd6unouwCW/YJemxF2MbZofK4/ppv
-   44e+duxm2TNdkJpulXC9iycNh9l2rlbxNKFoz0BgLPCuXdXNbLIAlJulW
-   xj26ODl5gpMT+e8KGMMQ7OLSOnUWAGxGxGp1V8kFYJgnNkLbQxb0km7J7
-   OrmnTXJ6npHDx67/ib2+Is/e8yPQ6nDi5bNFCZcYZXYt/dbeyCUadXte6
-   cXki+GE132B8N7eOUA/tUANh+tCcI6BXykQqIEvHwjSK3HVcofsThlvsj
-   4th4mr0tA/DF3SdtGTre798Gfzc4AfXYxzD61zEwmFYs+DiBv4GwJ6F8f
-   w==;
-X-CSE-ConnectionGUID: I+byxeoMRN2Bro+lUo1IbA==
-X-CSE-MsgGUID: FH0lcgHhTQGGZ5CytrJD6w==
-X-IronPort-AV: E=McAfee;i="6800,10657,11727"; a="74475832"
-X-IronPort-AV: E=Sophos;i="6.23,116,1770624000"; 
-   d="scan'208";a="74475832"
-Received: from orviesa008.jf.intel.com ([10.64.159.148])
-  by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Mar 2026 09:49:05 -0700
-X-CSE-ConnectionGUID: GPNXZ13yTB6kfywbiIVprw==
-X-CSE-MsgGUID: HkusyPCxTSCZyyLxG9xhWA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,116,1770624000"; 
-   d="scan'208";a="220948914"
-Received: from aduenasd-mobl5.amr.corp.intel.com (HELO [10.125.110.142]) ([10.125.110.142])
-  by orviesa008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Mar 2026 09:49:03 -0700
-Message-ID: <81141774-89c5-4cb8-a7e7-52ae8c55ca25@intel.com>
-Date: Thu, 12 Mar 2026 09:49:02 -0700
+	dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b="TCUycPJz"
+Received: by mail-qt1-f177.google.com with SMTP id d75a77b69052e-5094e1d17d3so7532831cf.3
+        for <kvm@vger.kernel.org>; Thu, 12 Mar 2026 09:54:51 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=ziepe.ca; s=google; t=1773334491; x=1773939291; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=VQXCfPVu6b6dIVECzm0C8AUD7IL7VvpSkD5+M4S95sw=;
+        b=TCUycPJzE2fI+UEqk7FktReSuNB+qmtoLxCPQIhObf2GoM3FGGUoUzmOL4EcJ8nqrV
+         31wLWw0iuRrm5q/A3vl9oGJab4nkcB5GgE9L87TaBE5zWVhGKUEWMOYZrC4hQkz7+K+y
+         MdSN9PZxg9+VlLOffdwRmQphGTW7UoGABbBRu3CtgROAhKqAusDMmmrNFgCXGsGgS+um
+         4b3n9KF8H9mgZuxtPx/c84lVtPd3kX8R2XT1vLZ+RjANCZT5FGS44RpBGA5cN1JRJXTn
+         oCOtB2FnqO56y3+c6Fos0prISIneHSMHrQ7vAs2p/teTVBOn2DfneDCxuRpkTU9D9cja
+         6IGg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1773334491; x=1773939291;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=VQXCfPVu6b6dIVECzm0C8AUD7IL7VvpSkD5+M4S95sw=;
+        b=hMXcPN6U8LKIYn2gL3aFE1nsB84pqxYWNJlUOcegLB8VHDPuPHcWvH7ns2mS7XFMIR
+         Q7l3HKl3xyBk27cYltihmWJv72defzdcNMc/ZFk/8wVAFrEye2GBQuo+mZxUMBz6TxHy
+         VC4pO3qCW+V08VEJAhsVofK1tMFWhPIeB8ZclwIZyDoL9dowedkb77g+Vy8SXa987g6K
+         5tjnCSf8O6AqkyG7i6bLATrk/XJUcOtkDmouxg7OjFhdiY+JSQggU3BDQnlB8kmWaPpN
+         crzKVlU7xFvmXa+In+1muWTWoN0Q0E1JDIZ787dla8gdHdS3FaZoXZ0gYfmAaB1pGrQe
+         1MeA==
+X-Forwarded-Encrypted: i=1; AJvYcCVityPbWYjnwWMqyxomqVMToCjb3yG1s8BwKIyJi7TyyQKI0U/5FzuODZ682436xWNOhUk=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yye883IFM10CSIJzuBZUWN9W/SZuiVBzfJcEpwS1+HLqfE/v5uJ
+	i/SeoxT/iXnCgVtaKjQPmjIF5xiSaTsk/FTpf6jhb6/uVfddnX2ZIDFznmztMDV3eHw=
+X-Gm-Gg: ATEYQzxjJ34ZGegYx+x3sTZq0J0mDCIpWkOTqzRggrHWKdu7BG90ZZ0qxi3YdOlYvhj
+	W1hYeCyiK0JO8GBOYpWK96K3IGOBHocGFZsT62LtuJc63Ig+qOgTIxGWyJDQmyjXPSXyi8tElxz
+	8dLTz5fMmSlBcRMTHe94AwtEgP4zunF3shfBvp1sX7GG8LQoPNPgGmFk1D9ie2eaPbYWV18Sd0d
+	DPAHdnJQj3lSzzhoNBMDDWJkRAyIwmZ/GxbA+HA9IBGiYJBf/V3I37GfeJUbS1cypM/RcMAj8qs
+	WEqjVmDdfTp0eKX1RwL1YsRBfgT6NRTElAXAtvnHMCZMw1MMMHf60gCs+GzNuncBO8988oLD5yo
+	PXeoLk4StMquLRDatKB0FaW4jXI2UdDR7es3Fzh6d4b4UMZ3cAlTrtd8VULC/s7UBt6/JZiwCte
+	GnRkRjc96strM9K0Laq3irx0/t/Dx+QQeUc608f6QQqoVqdGmltOGdDO5xgspBykzw6eStwXRyn
+	4EUJy4FnXeKP0/cc9M=
+X-Received: by 2002:a05:622a:289:b0:509:44c3:5ffa with SMTP id d75a77b69052e-50957e10673mr1403911cf.52.1773334490530;
+        Thu, 12 Mar 2026 09:54:50 -0700 (PDT)
+Received: from ziepe.ca (hlfxns017vw-142-162-112-119.dhcp-dynamic.fibreop.ns.bellaliant.net. [142.162.112.119])
+        by smtp.gmail.com with ESMTPSA id d75a77b69052e-5093a119602sm36658181cf.28.2026.03.12.09.54.49
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 12 Mar 2026 09:54:49 -0700 (PDT)
+Received: from jgg by wakko with local (Exim 4.97)
+	(envelope-from <jgg@ziepe.ca>)
+	id 1w0jJA-00000006i8N-40X9;
+	Thu, 12 Mar 2026 13:54:48 -0300
+Date: Thu, 12 Mar 2026 13:54:48 -0300
+From: Jason Gunthorpe <jgg@ziepe.ca>
+To: James Bottomley <James.Bottomley@hansenpartnership.com>
+Cc: Kuan-Wei Chiu <visitorckw@gmail.com>, Philipp Hahn <phahn-oss@avm.de>,
+	amd-gfx@lists.freedesktop.org, apparmor@lists.ubuntu.com,
+	bpf@vger.kernel.org, ceph-devel@vger.kernel.org, cocci@inria.fr,
+	dm-devel@lists.linux.dev, dri-devel@lists.freedesktop.org,
+	gfs2@lists.linux.dev, intel-gfx@lists.freedesktop.org,
+	intel-wired-lan@lists.osuosl.org, iommu@lists.linux.dev,
+	kvm@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+	linux-block@vger.kernel.org, linux-bluetooth@vger.kernel.org,
+	linux-btrfs@vger.kernel.org, linux-cifs@vger.kernel.org,
+	linux-clk@vger.kernel.org, linux-erofs@lists.ozlabs.org,
+	linux-ext4@vger.kernel.org, linux-fsdevel@vger.kernel.org,
+	linux-gpio@vger.kernel.org, linux-hyperv@vger.kernel.org,
+	linux-input@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-leds@vger.kernel.org, linux-media@vger.kernel.org,
+	linux-mips@vger.kernel.org, linux-mm@kvack.org,
+	linux-modules@vger.kernel.org, linux-mtd@lists.infradead.org,
+	linux-nfs@vger.kernel.org, linux-omap@vger.kernel.org,
+	linux-phy@lists.infradead.org, linux-pm@vger.kernel.org,
+	linux-rockchip@lists.infradead.org, linux-s390@vger.kernel.org,
+	linux-scsi@vger.kernel.org, linux-sctp@vger.kernel.org,
+	linux-security-module@vger.kernel.org, linux-sh@vger.kernel.org,
+	linux-sound@vger.kernel.org,
+	linux-stm32@st-md-mailman.stormreply.com,
+	linux-trace-kernel@vger.kernel.org, linux-usb@vger.kernel.org,
+	linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+	ntfs3@lists.linux.dev, samba-technical@lists.samba.org,
+	sched-ext@lists.linux.dev, target-devel@vger.kernel.org,
+	tipc-discussion@lists.sourceforge.net, v9fs@lists.linux.dev
+Subject: Re: [PATCH 00/61] treewide: Use IS_ERR_OR_NULL over manual NULL
+ check - refactor
+Message-ID: <20260312165448.GN1469476@ziepe.ca>
+References: <20260310-b4-is_err_or_null-v1-0-bd63b656022d@avm.de>
+ <abBlpGKO842B3yl9@google.com>
+ <20260312125730.GI1469476@ziepe.ca>
+ <f5688b895eaebabae6545a0d9baf8f1404e8454e.camel@HansenPartnership.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 02/20] cxl: Expose cxl subsystem specific functions for
- vfio
-To: mhonap@nvidia.com, aniketa@nvidia.com, ankita@nvidia.com,
- alwilliamson@nvidia.com, vsethi@nvidia.com, jgg@nvidia.com,
- mochs@nvidia.com, skolothumtho@nvidia.com, alejandro.lucero-palau@amd.com,
- dave@stgolabs.net, jonathan.cameron@huawei.com, alison.schofield@intel.com,
- vishal.l.verma@intel.com, ira.weiny@intel.com, dan.j.williams@intel.com,
- jgg@ziepe.ca, yishaih@nvidia.com, kevin.tian@intel.com
-Cc: cjia@nvidia.com, targupta@nvidia.com, zhiw@nvidia.com, kjaju@nvidia.com,
- linux-kernel@vger.kernel.org, linux-cxl@vger.kernel.org, kvm@vger.kernel.org
-References: <20260311203440.752648-1-mhonap@nvidia.com>
- <20260311203440.752648-3-mhonap@nvidia.com>
-Content-Language: en-US
-From: Dave Jiang <dave.jiang@intel.com>
-In-Reply-To: <20260311203440.752648-3-mhonap@nvidia.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <f5688b895eaebabae6545a0d9baf8f1404e8454e.camel@HansenPartnership.com>
 
-
-
-On 3/11/26 1:34 PM, mhonap@nvidia.com wrote:
-> From: Manish Honap <mhonap@nvidia.com>
+On Thu, Mar 12, 2026 at 11:32:37AM -0400, James Bottomley wrote:
+> On Thu, 2026-03-12 at 09:57 -0300, Jason Gunthorpe wrote:
+> > On Wed, Mar 11, 2026 at 02:40:36AM +0800, Kuan-Wei Chiu wrote:
+> > 
+> > > IMHO, the necessity of IS_ERR_OR_NULL() often highlights a
+> > > confusing or flawed API design. It usually implies that the caller
+> > > is unsure whether a failure results in an error pointer or a NULL
+> > > pointer. 
+> > 
+> > +1
+> > 
+> > IS_ERR_OR_NULL() should always be looked on with suspicion. Very
+> > little should be returning some tri-state 'ERR' 'NULL' 'SUCCESS'
+> > pointer. What does the middle condition even mean? IS_ERR_OR_NULL()
+> > implies ERR and NULL are semanticly the same, so fix the things to
+> > always use ERR.
 > 
-> Below functions from CXL subsystem will be required in vfio-cxl
-> for supporting the type-2 device passthrough:
->     cxl_find_regblock - To find component registers
->     cxl_probe_component_regs - Probe HDM/RAS capabilities
+> Not in any way supporting the original patch.  However, the pattern
+> ERR, NULL, PTR is used extensively in the dentry code of filesystems. 
+> See the try_lookup..() set of functions in fs/namei.c
 > 
-> Make these functions available via declaring them from include header
-> instead of subsystem-specific header.
+> The meaning is
 > 
-> Signed-off-by: Manish Honap <mhonap@nvidia.com>
-> ---
->  drivers/cxl/cxl.h | 4 ----
->  include/cxl/cxl.h | 7 +++++++
->  2 files changed, 7 insertions(+), 4 deletions(-)
+> PTR - I found it
+> NULL - It definitely doesn't exist
+> ERR - something went wrong during the lookup.
 > 
-> diff --git a/drivers/cxl/cxl.h b/drivers/cxl/cxl.h
-> index 2b1f7d687a0e..10ddab3949ee 100644
-> --- a/drivers/cxl/cxl.h
-> +++ b/drivers/cxl/cxl.h
-> @@ -198,8 +198,6 @@ static inline int ways_to_eiw(unsigned int ways, u8 *eiw)
->  #define   CXLDEV_MBOX_BG_CMD_COMMAND_VENDOR_MASK GENMASK_ULL(63, 48)
->  #define CXLDEV_MBOX_PAYLOAD_OFFSET 0x20
->  
-> -void cxl_probe_component_regs(struct device *dev, void __iomem *base,
-> -			      struct cxl_component_reg_map *map);
->  void cxl_probe_device_regs(struct device *dev, void __iomem *base,
->  			   struct cxl_device_reg_map *map);
->  int cxl_map_device_regs(const struct cxl_register_map *map,
-> @@ -211,8 +209,6 @@ enum cxl_regloc_type;
->  int cxl_count_regblock(struct pci_dev *pdev, enum cxl_regloc_type type);
->  int cxl_find_regblock_instance(struct pci_dev *pdev, enum cxl_regloc_type type,
->  			       struct cxl_register_map *map, unsigned int index);
-> -int cxl_find_regblock(struct pci_dev *pdev, enum cxl_regloc_type type,
-> -		      struct cxl_register_map *map);
->  int cxl_setup_regs(struct cxl_register_map *map);
->  struct cxl_dport;
->  int cxl_dport_map_rcd_linkcap(struct pci_dev *pdev, struct cxl_dport *dport);
-> diff --git a/include/cxl/cxl.h b/include/cxl/cxl.h
-> index 8456177b523e..610711e861d4 100644
-> --- a/include/cxl/cxl.h
-> +++ b/include/cxl/cxl.h
-> @@ -287,4 +287,11 @@ struct cxl_region *cxl_create_region(struct cxl_root_decoder *cxlrd,
->  
->  int cxl_get_hdm_reg_info(struct cxl_dev_state *cxlds, u32 *count,
->  			 resource_size_t *offset, resource_size_t *size);
-> +struct pci_dev;
-> +enum cxl_regloc_type;
-> +int cxl_find_regblock(struct pci_dev *pdev, enum cxl_regloc_type type,
-> +		      struct cxl_register_map *map);
-> +void cxl_probe_component_regs(struct device *dev, void __iomem *base,
-> +			      struct cxl_component_reg_map *map);
+> So I don't think you can blanket say this pattern is wrong.
 
-I do wonder if this needs an ifdef of CONFIG_CXL_BUS given cxl_core can be made as a module or disabled.
+Lots of places also would return ENOENT, I'd argue that is easier to
+use..
 
+But yes, I did use the word "suspicion" not blanket wrong :)
 
-> +
->  #endif /* __CXL_CXL_H__ */
-
+Jason
