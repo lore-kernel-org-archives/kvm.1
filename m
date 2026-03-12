@@ -1,119 +1,226 @@
-Received: from mail-wm1-f53.google.com (mail-wm1-f53.google.com [209.85.128.53])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from fout-b4-smtp.messagingengine.com (fout-b4-smtp.messagingengine.com [202.12.124.147])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D56CC35A390
-	for <kvm@vger.kernel.org>; Thu, 12 Mar 2026 19:06:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1AB113375C5
+	for <kvm@vger.kernel.org>; Thu, 12 Mar 2026 19:08:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.147
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773342365; cv=none; b=E8GgfD4izpKKDUxLtIK3TTfqt+PoATRTAH1mZX99cCEidTqOknW4cF7yincitZXdbwPdmgBElca1V2+lIVQkygOquh1llEXyzJsZg1i0MsGS2JZfIWCVz8NTbNCDwVqx0awuQF26UNYXJ6AuNw8HPLdXgYXXczDqSGR6iw3l2jQ=
+	t=1773342504; cv=none; b=BtHI5NqSPPV9k4+rOuRmHMjieXF+eoZquzdSTXFNujQJijbWlz7LMz52+D7hCVz8hOl08Vzrlf3mfTU4Kr7KIBic8XCN2o0ErIoXazKvzf7kU2AzUh5n1LWhMsMEZs1iJHh3yc6Q1fmo4vEbDlycPjZnXba+oCpfyso0gNb5XXQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773342365; c=relaxed/simple;
-	bh=hTiL9Bf6qixzA/O8uITqxfCZEdegbOxjoMgziSOM3Zc=;
+	s=arc-20240116; t=1773342504; c=relaxed/simple;
+	bh=PHU/VkKjbvSzcsitbW8Sm017KmkW90HHXwiWkq+L/HE=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=uqq9CEVpGmEGEAPvNrC1BtUYAHVH8+I89fw7dduXq3N+o1dLOkQ3ia1D1+HUR3cY/OGzn24c9gkcSEnzTIJ13oXwF/HhpCw2Xh4DT7OPtA/g9vEDQ0arf51wiL1siNS+gudyUzH/tDmpD0ujvK2wVXFXhzbUTlWvdl8KGpH7dsM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=h1AbXFmw; arc=none smtp.client-ip=209.85.128.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	 MIME-Version:Content-Type; b=nBIb4PBfcXeymyLIPhRqpgvn8aGDuNqVRyAxY13jrtfyze+PZQn0ImmNpBnhEts2neYsRXaIryZj2HXTYRcExOaUcysD+viU5cb9frEqOKBm2ksHdV7q1iWsP2hsVfJ+DVQ9UkwQBD1Oesdm8B3QyOOBeAcxmZq1O5gLNZcANYg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=shazbot.org; spf=pass smtp.mailfrom=shazbot.org; dkim=pass (2048-bit key) header.d=shazbot.org header.i=@shazbot.org header.b=NAZRYLGU; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=ya1NmksN; arc=none smtp.client-ip=202.12.124.147
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=shazbot.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=shazbot.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="h1AbXFmw"
-Received: by mail-wm1-f53.google.com with SMTP id 5b1f17b1804b1-4852a8482fcso10834525e9.3
-        for <kvm@vger.kernel.org>; Thu, 12 Mar 2026 12:06:03 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1773342362; x=1773947162; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:subject:cc:to:from:date:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=SE138O8UHt0c8RSCdcZ+MUjjq1yI/Yk0UU8sBlcjvOo=;
-        b=h1AbXFmwfg/tM3Jbw7DgvodiNmG2KCb3ivpXggbdv2HrMlbKvEKWDh2pj78Xt8SO9i
-         bC26bmFZsGw/LUYV7nGrwxNCKb2UWB78mMEj08TvuVPQQUZrEvgmwsBB1eAyikO+G4T2
-         8lO7cw3vWv8T92Xb0kvpNetCqnIoLWLY5OiGarZPYt2JSeKTT+0SJWr8f4X8cd/9pVhc
-         5cNl1qyq8cya1Y6SwiJsRiewMDkMcmVGK4yCS9bosjJ7U0pP2ngMZUUK9kS7nOWuY/th
-         HWqCacAuylXqhNrIi7jWEbgPtRZ3pOXvSKa0H8gzqLsWwMJgZhnt11KNV8hE7rML1d8K
-         ABsg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1773342362; x=1773947162;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=SE138O8UHt0c8RSCdcZ+MUjjq1yI/Yk0UU8sBlcjvOo=;
-        b=QueR78dHWmjy+ze7u+IYyNNa2YVg1bInjBixlIHWsDySnpBgl/5bF+tc+eg5XUZ14j
-         6bc5f0+4imuFym8e97A6BtFXhfzsenGcKcz/GvJ81Mrq6QdidwcXXdkfQx9lPR/WhnoY
-         to/fB3gWZzN+aZpF/v2dVnbSpCZo6Ljvjz/n6RNzUosA8GkmsXOQqCoykz8BZyHQFvE6
-         3Suahuf6yg1xRMbxiVRza4vmkkJ+pamvK5PervYnzVP1JekMJOfkgtDxZlZuT3r17x/2
-         kjf/ybDQWg3KvYiyL1LcJj+0NqaHnzLrlQxajlRypq8WLZTxzuQHHQMs/5dstH8k8SGC
-         gJjw==
-X-Forwarded-Encrypted: i=1; AJvYcCU3vynGyUIup6VtjO2HBPPidIalmfEiAa7M9TK/q+gANCPj7LdOzfRa430CBf2eHyJwdsQ=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzSu5FVFKyckiFjwpskKPcNMaCDh6KjH7fPM1FWSU0LpS4284+L
-	Zy+nZN3TffIpaewCKpQwrHXoNAicnCxI6g3RPs85QiaM0RpgEETXr4kF
-X-Gm-Gg: ATEYQzy9NQmyq+HZWrcqU4pszLBXHQmIkGAtgarnxpDsORPXqZejMH3q/qg0ALQLWnL
-	gIYj/UPESWQjthO4Iyd5Sk5qnz2W1nUV8ANJIlGNz0150m+Z6SzwYxRjMtsHPEWrwIUhtKkUhlU
-	AI82LxJ3tgkKRTBLTSUPgk9YrvZpkjXfDoN+uZRXn8n8Hzv4DXgfP1CRt0zCBKUDLU7C2KfGqzE
-	ViLfosS5ZYh5YJW3yXIU1NLU8nIOaKj1eOUqbnnBH79mORhSQTpj+UBQueHLekQvEL2ZGAcWPnJ
-	iSt53eNAJ+dniStm3N42Xt4FK83at77/TiNQV/ICLi8VsatuiwqE1r78yLCsrPr8jSSBjGcqgaQ
-	ZRSh1ahY3Ayu8zLpLFZiEBqHL2ZisOlGqx2DbAYmT1uAwOcinTI2lLMu9SL+zqwGAEj7AhCV5rn
-	TQHTIuagrf2XofqYqw0lsfX6p6tYfU8/+e/Eghlq2tuTXB19jeMzG4O4ozzmkNheR4
-X-Received: by 2002:a05:600c:698e:b0:483:1403:c47f with SMTP id 5b1f17b1804b1-485566ca5cdmr7578325e9.6.1773342361935;
-        Thu, 12 Mar 2026 12:06:01 -0700 (PDT)
-Received: from pumpkin (82-69-66-36.dsl.in-addr.zen.co.uk. [82.69.66.36])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4854b66ffe2sm140743645e9.13.2026.03.12.12.06.01
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 12 Mar 2026 12:06:01 -0700 (PDT)
-Date: Thu, 12 Mar 2026 19:06:00 +0000
-From: David Laight <david.laight.linux@gmail.com>
-To: Dave Hansen <dave.hansen@intel.com>
-Cc: "Nikunj A. Dadhania" <nikunj@amd.com>, Tom Lendacky
- <thomas.lendacky@amd.com>, Borislav Petkov <bp@alien8.de>,
- linux-kernel@vger.kernel.org, kvm@vger.kernel.org, tglx@kernel.org,
- mingo@redhat.com, dave.hansen@linux.intel.com, hpa@zytor.com,
- xin@zytor.com, seanjc@google.com, pbonzini@redhat.com, x86@kernel.org,
- sohil.mehta@intel.com, jon.grimm@amd.com
-Subject: Re: [PATCH v2 1/2] x86/cpu: Disable CR pinning during CPU bringup
-Message-ID: <20260312190600.09e2493a@pumpkin>
-In-Reply-To: <41851f3e-4372-4bd2-ac48-65aee3dcafe0@intel.com>
-References: <20260226092349.803491-1-nikunj@amd.com>
-	<20260226092349.803491-2-nikunj@amd.com>
-	<20260309134640.GOaa7PQJli_C9QATGB@fat_crate.local>
-	<cde957ba-3579-4063-9d17-3630e79ea388@intel.com>
-	<20260309161516.GAaa7yFMulhdzNQ-pt@fat_crate.local>
-	<70644e1d-dd0e-4f0f-81c0-fd095e46e50b@intel.com>
-	<7ca205d6-b01b-4ed3-959d-db31a6496d79@amd.com>
-	<505a6bbd-3ecf-4de9-8fb9-0b21c3435a96@intel.com>
-	<9fa61b80-0e16-4a87-a0e7-3c3dfcda8f7e@amd.com>
-	<55a98b6d-e831-47a6-aa5a-8fe357334f67@intel.com>
-	<d0eba3fe-2938-4856-bd9b-0e13972e8313@amd.com>
-	<cb492a37-3517-4738-b435-73311402e820@intel.com>
-	<ddf407e9-359d-4d4e-827d-98f212589e9f@amd.com>
-	<ab5bf7bb-6511-49dc-a65d-86911e0f7091@intel.com>
-	<a078ceb4-6e31-4e8a-89d8-023b95f56054@amd.com>
-	<41851f3e-4372-4bd2-ac48-65aee3dcafe0@intel.com>
-X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; arm-unknown-linux-gnueabihf)
+	dkim=pass (2048-bit key) header.d=shazbot.org header.i=@shazbot.org header.b="NAZRYLGU";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="ya1NmksN"
+Received: from phl-compute-01.internal (phl-compute-01.internal [10.202.2.41])
+	by mailfout.stl.internal (Postfix) with ESMTP id 8DB311D00159;
+	Thu, 12 Mar 2026 15:08:20 -0400 (EDT)
+Received: from phl-frontend-04 ([10.202.2.163])
+  by phl-compute-01.internal (MEProxy); Thu, 12 Mar 2026 15:08:21 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shazbot.org; h=
+	cc:cc:content-transfer-encoding:content-type:content-type:date
+	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to; s=fm3; t=1773342500;
+	 x=1773428900; bh=YhqBzNmJdC6Q0Hiqs8L9/Ku2CqXVRprrSQO1RMsuIGY=; b=
+	NAZRYLGUzCtmA4MFyuKYZP6fvCTuHy/9aEcLd+krdRRGE5rn5wnTjvYxe47SS5SR
+	9td2Y2u/EvgNFSsMnm3DGYAAhUHNAnbhzDoL7UknZSyQlPEca+wTQLsDaLIzFh0p
+	GKyE3yBLCpXV9xKZoat+hHWVjLlzA4BDwUduA6aM3V9yk+z6zm4vEVM3GOHxF1Xw
+	wdgWEOP1O7iiHu2QHqzOATIEUQb8v4QKK1Q9jFv0qJwr9qIxSjGNhNSnuRZlWAr9
+	E7GGPB6z0IGQCUaDKlHs2u2dXq3ejNNyht3KK81Lscu/1JnXW44nv6wU9YPYET+p
+	7rh9gdyVi6zl1XMQcXNU6g==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=1773342500; x=
+	1773428900; bh=YhqBzNmJdC6Q0Hiqs8L9/Ku2CqXVRprrSQO1RMsuIGY=; b=y
+	a1NmksNm0WqKEm9opnDxgrnyGS8ZANuVHdq5rPKpDbEH7QM0kX6xGIRmpiESgqde
+	G0Z3G3Ja86yaBKP/krVQ78pyoxgaplNtwNTQQvNKO6b0iwHnpqw4ksrIZmc5abZu
+	XxcytnTpYNMqhhLH+UDqFYIq4A2/rGILzEZW6fCAbGnffuF/uDBKtLZ96vHKpOru
+	ftGaC90moHhgWwvivHo8BomU7HXypEMzEbBbYJjxYTqOvN7HqhMxUObHzmVuj2OY
+	0d6Q90Iw4C9cojLT9TMlmM4+iiwK+HsJ2eCxMO3tKJKgfVIeQXiGy720LhqXI7Bq
+	blgHDGPLgkF7FLYy//vGQ==
+X-ME-Sender: <xms:Iw-zadlfl7ICYH7Ia5r6kP5ODmXyJYPQxyGPWzGIdnvb-Wvir0j_jQ>
+    <xme:Iw-zaQETFFx3e_z1NBhQZwZF_8aECnjEgnCCUOjvT1Ably3W0cSyTaiLp4kuan7ZP
+    PKDSYRB2tK4XpfM9A2BkJxHkBfics6ct1nMt-EXXgK38XggxKF1>
+X-ME-Received: <xmr:Iw-zaehEC9Evo-QcagGIlg9oo9uW2q17dtsFv4AHth2qVmqs65ETrjK1f5s>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgddvkeejheekucetufdoteggodetrf
+    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
+    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
+    gurhepfffhvfevuffkjghfofggtgfgsehtjeertdertddvnecuhfhrohhmpeetlhgvgicu
+    hghilhhlihgrmhhsohhnuceorghlvgigsehshhgriigsohhtrdhorhhgqeenucggtffrrg
+    htthgvrhhnpedvkeefjeekvdduhfduhfetkedugfduieettedvueekvdehtedvkefgudeg
+    veeuueenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpe
+    grlhgvgiesshhhrgiisghothdrohhrghdpnhgspghrtghpthhtohepudegpdhmohguvgep
+    shhmthhpohhuthdprhgtphhtthhopehpvghtvghrgiesrhgvughhrghtrdgtohhmpdhrtg
+    hpthhtohephihishhhrghihhesnhhvihguihgrrdgtohhmpdhrtghpthhtohepjhhgghes
+    nhhvihguihgrrdgtohhmpdhrtghpthhtohepkhhvmhesvhhgvghrrdhkvghrnhgvlhdroh
+    hrghdprhgtphhtthhopehkvghvihhnrdhtihgrnhesihhnthgvlhdrtghomhdprhgtphht
+    thhopehjohgrohdrmhdrmhgrrhhtihhnshesohhrrggtlhgvrdgtohhmpdhrtghpthhtoh
+    eplhgvohhnrhhosehnvhhiughirgdrtghomhdprhgtphhtthhopehmrghorhhgsehnvhhi
+    ughirgdrtghomhdprhgtphhtthhopegrvhhihhgrihhhsehnvhhiughirgdrtghomh
+X-ME-Proxy: <xmx:Iw-zadhO__ZWxX1-X3Eq_f3xIqK372vTvshmveq52FG83SQlA8gx-Q>
+    <xmx:Iw-zaRnhyCgI-vr3pngvrkRQM3fiqXWD90BH8w6I9ubQu3YfeQSREg>
+    <xmx:Iw-zaRbhS-sX6_IplySRt2HYUSJM4r-ssAZQPzmMZG5_K7YNgYMMmQ>
+    <xmx:Iw-zaUwasTB9_yOduttOatT22rbXAdyKYUCveklvK7m5JXtNKM3A8Q>
+    <xmx:JA-zae7ir_sg0cWT08khmp-j7-bcTrgxSY0hc7X9-Ceqg-Z30vsIzKKT>
+Feedback-ID: i03f14258:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
+ 12 Mar 2026 15:08:18 -0400 (EDT)
+Date: Thu, 12 Mar 2026 13:08:17 -0600
+From: Alex Williamson <alex@shazbot.org>
+To: Peter Xu <peterx@redhat.com>
+Cc: Yishai Hadas <yishaih@nvidia.com>, jgg@nvidia.com, kvm@vger.kernel.org,
+ kevin.tian@intel.com, joao.m.martins@oracle.com, leonro@nvidia.com,
+ maorg@nvidia.com, avihaih@nvidia.com, clg@redhat.com,
+ liulongfang@huawei.com, giovanni.cabiddu@intel.com, kwankhede@nvidia.com,
+ alex@shazbot.org
+Subject: Re: [PATCH V1 vfio 6/6] vfio/mlx5: Add REINIT support to
+ VFIO_MIG_GET_PRECOPY_INFO
+Message-ID: <20260312130817.69ff3e60@shazbot.org>
+In-Reply-To: <abL5wKfPGzi88iBy@x1.local>
+References: <20260310164006.4020-1-yishaih@nvidia.com>
+	<20260310164006.4020-7-yishaih@nvidia.com>
+	<abL5wKfPGzi88iBy@x1.local>
+X-Mailer: Claws Mail 4.3.1 (GTK 3.24.51; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-On Thu, 12 Mar 2026 08:02:53 -0700
-Dave Hansen <dave.hansen@intel.com> wrote:
+Hey Peter,
 
-> On 3/12/26 07:53, Nikunj A. Dadhania wrote:
-> >> The simplest fix is to disable FRED on those kernels, fwiw. =20
-> > That would work, but disabling FRED means LTS users will not be able to=
- use=20
-> > FRED with confidential computing=E2=80=94that's not really a fix. =20
->=20
-> Why not?
->=20
-> Is there something out there that *NEEDS* FRED to function?
+On Thu, 12 Mar 2026 13:37:04 -0400
+Peter Xu <peterx@redhat.com> wrote:
 
-I didn't think there was any real hardware that actually supports FRED.
+> Hi, Yishai,
+> 
+> Please feel free to treat my comments as pure questions only.
+> 
+> On Tue, Mar 10, 2026 at 06:40:06PM +0200, Yishai Hadas wrote:
+> > When userspace opts into VFIO_DEVICE_FEATURE_MIG_PRECOPY_INFOv2, the
+> > driver may report the VFIO_PRECOPY_INFO_REINIT output flag in response
+> > to the VFIO_MIG_GET_PRECOPY_INFO ioctl, along with a new initial_bytes
+> > value.  
+> 
+> Does it also mean that VFIO_PRECOPY_INFO_REINIT is almost only a hint that
+> can be deduced by the userspace too, if it remembers the last time fetch of
+> initial_bytes?
 
-By the time that exists there might be a sane fix - or a newer LTS kernel.
+I'll try to answer some of these.  PRECOPY_INFO is already just a hint.
+We essentially define initial_bytes as the "please copy this before
+migration to avoid high latency setup" and dirty_bytes is "I also have
+this much dirty state I could give to you now".  We've defined
+initial_bytes as monotonically decreasing, so a user could deduce that
+they've passed the intended high latency setup threshold, while
+dirty_bytes is purely volatile.
 
-	David
+The trouble comes, for example, if the device has undergone a
+reconfiguration during migration, which may effectively negate the
+initial_bytes and switchover-ack.
 
+A user deducing they've sent enough device data to cover initial_bytes
+is essentially what we have now because our protocol doesn't allow the
+driver to reset initial_bytes.  The driver may choose to send that
+reconfiguration information in dirty_bytes bytes, but we don't
+currently have any way to indicate to the user that data remaining
+there is of higher importance for startup on the target than any other
+dirtying of device state.
 
+Hopefully the user/VMM is already polling the interface for dirty
+bytes, where with the opt-in for the protocol change here, allows the
+driver to split out the priority bytes versus the background dirtying. 
+ 
+> It definitely sounds a bit weird when some initial_* data can actually
+> change, because it's not "initial_" anymore.
 
+It's just a priority scheme.  In the case I've outlined above it might
+be more aptly named setup_bytes or critical_bytes as you've used, but
+another driver might just use it for detecting migration compatibility.
+Naming is hard.
+ 
+> Another question is, if initial_bytes reached zero, could it be boosted
+> again to be non-zero?
+
+Under the new protocol, yes, and the REINIT flag would be set indicate
+it had been reset.  Under the old protocol, no.
+ 
+> I don't see what stops it from happening, if the "we get some fresh new
+> critical data" seem to be able to happen anytime..  but if so, I wonder if
+> it's a problem to QEMU: when initial_bytes reported to 0 at least _once_ it
+> means it's possible src QEMU decides to switchover.  Then looks like it
+> beats the purpose of "don't switchover until we flush the critical data"
+> whole idea.
+
+The definition of the protocol in the header stop it from happening.
+We can't know that there isn't some userspace that follows the
+deduction protocol rather than polling.  We don't know there isn't some
+userspace that segfaults if initial_bytes doesn't follow the published
+protocol.  Therefore opt-in where we have a mechanism to expose a new
+initial_bytes session without it becoming a purely volatile value.
+ 
+> Is there a way the HW can report and confidentally say no further critical
+> data will be generated?
+
+So long as there's a guest userspace running that can reconfigure the
+device, no.  But if you stop the vCPUs and test PRECOPY_INFO, it should
+be reliable.
+
+> > The presence of the VFIO_PRECOPY_INFO_REINIT flag indicates to the
+> > caller that new initial data is available in the migration stream.
+> > 
+> > If the firmware reports a new initial-data chunk, any previously dirty
+> > bytes in memory are treated as initial bytes, since the caller must read
+> > both sets before reaching the end of the initial-data region.  
+> 
+> This is unfortunate.  I believe it's a limtation because of the current
+> single fd streaming protocol, so HW can only append things because it's
+> kind of a pipeline.
+> 
+> One thing to mention is, I recall VFIO migration suffers from a major
+> bottleneck on read() of the VFIO FD, it means this streaming whole design
+> is also causing other perf issues.
+> 
+> Have you or anyone thought about making it not a stream anymore?  Take
+> example of RAM blocks: it is pagesize accessible, with that we can do a lot
+> more, e.g. we don't need to streamline pages, we can send pages in whatever
+> order.  Meanwhile, we can send pages concurrently because they're not
+> streamlined too.
+> 
+> I wonder if VFIO FDs can provide something like that too, as a start it
+> doesn't need to be as fine granule, maybe at least instead of using one
+> stream it can provide two streams, one for initial_bytes (or, I really
+> think this should be called "critical data" or something similar, if it
+> represents that rather than "some initial states", not anymore), another
+> one for dirty.  Then at least when you attach new critical data you don't
+> need to flush dirty queue too.
+> 
+> If to extend it a bit more, then we can also make e.g. dirty queue to be
+> multiple FDs, so that userspace can read() in multiple threads, speeding up
+> the switchover phase.
+> 
+> I had a vague memory that there's sometimes kernel big locks to block it,
+> but from interfacing POV it sounds always better to avoid using one fd to
+> stream everything.
+
+I'll leave it to others to brainstorm improvements, but I'll note that
+flushing dirty_bytes is a driver policy, another driver could consider
+unread dirty bytes as invalidated by new initial_bytes and reset
+counters.
+
+It's not clear to me that there's generic algorithm to use for handling
+device state as addressable blocks rather than serialized into a data
+stream.  Multiple streams of different priorities seems feasible, but
+now we're talking about a v3 migration protocol.  Thanks,
+
+Alex
