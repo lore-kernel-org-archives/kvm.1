@@ -1,23 +1,23 @@
 Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1BCC03FE37E;
-	Thu, 12 Mar 2026 17:53:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 932113FEB29;
+	Thu, 12 Mar 2026 17:53:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773337990; cv=none; b=jgaOiShtgImKBK25E8NV5MrVulpt+n1fEBPQC4byXp6ieC4QqOUNpkVZDNSBKDgtqcPnX/FR+ZWBq52B9qvPb3e/pX62xJRBc/kczGkMaTCRUeBYqXE+ln7DwAIMQ2go4bLsC1FKKxSFpWUXurp1rynzWWaWMRx9MYe+6kn2kJw=
+	t=1773337992; cv=none; b=Y6kRQwDjgF6n3Zw+ilZz/FHQ/T4GVjEMjJK4y4hzpSoE7M05HgZeHJyDJt/zMuKUmpuYw7doGMtHUB/4n89bSvAQ31UKOEW9Cv5HL8pN6R3HsNtYrCpEWGhg/ikGs7N6M0P5A6WqCGjxHAVdJPraqAwvK9qI8oIamcyunka9SGk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773337990; c=relaxed/simple;
-	bh=hmrsPcUKbH2aliBzWhmeFYY6NKNx0rg11MOal3qm7xM=;
+	s=arc-20240116; t=1773337992; c=relaxed/simple;
+	bh=iGDW5vhq3Q6kZFtorZ0MiHnTnFizA2hhJE+6ztz9Y9Q=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=PCo/ryaGeu5dzhZ1sZTsl3nWhouiuD46UQE6K8HTPHUwglExPg79t+mU0tWbPn8yYVtjAYLz5hWLK6V3JYfAAeoCatZrS6T5pccx3Mal50PQsrQ7HYifuEWsBmqRD9qm6u7on7mNGesOoyJXGJCxC2Bm5pjEEJiKlIUDtM7vYT0=
+	 MIME-Version; b=frSTRKM3g703rDsM+VaKZ+AruvN8hAsIQHRFsBTmxZPMR8ncIaR+8svMmN9Kl3zfc7kFuK/Vtk60cOP6RVIVHikKU4DTj0mGuJPivApIE651AgeammcERsHUYvwcbV914lps4TBtwLF59VDJejRGpaiFV25kV3+vTcd1KZrHucQ=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
 Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 606FB165C;
-	Thu, 12 Mar 2026 10:53:01 -0700 (PDT)
-Received: from e129823.cambridge.arm.com (e129823.arm.com [10.1.197.6])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id 0CAA73F73B;
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 2C9FF1A9A;
 	Thu, 12 Mar 2026 10:53:04 -0700 (PDT)
+Received: from e129823.cambridge.arm.com (e129823.arm.com [10.1.197.6])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id CEC293F73B;
+	Thu, 12 Mar 2026 10:53:07 -0700 (PDT)
 From: Yeoreum Yun <yeoreum.yun@arm.com>
 To: linux-arm-kernel@lists.infradead.org,
 	linux-kernel@vger.kernel.org,
@@ -37,9 +37,9 @@ Cc: catalin.marinas@arm.com,
 	joey.gouly@arm.com,
 	yuzenghui@huawei.com,
 	yeoreum.yun@arm.com
-Subject: [PATCH v16 7/8] KVM: arm64: use CAST instruction for swapping guest descriptor
-Date: Thu, 12 Mar 2026 17:52:42 +0000
-Message-Id: <20260312175243.1593864-8-yeoreum.yun@arm.com>
+Subject: [PATCH v16 8/8] arm64: Kconfig: add support for LSUI
+Date: Thu, 12 Mar 2026 17:52:43 +0000
+Message-Id: <20260312175243.1593864-9-yeoreum.yun@arm.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20260312175243.1593864-1-yeoreum.yun@arm.com>
 References: <20260312175243.1593864-1-yeoreum.yun@arm.com>
@@ -51,81 +51,49 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Use the CAST instruction to swap the guest descriptor when FEAT_LSUI
-is enabled, avoiding the need to clear the PAN bit.
+Since Armv9.6, FEAT_LSUI supplies the load/store instructions for
+previleged level to access to access user memory without clearing
+PSTATE.PAN bit.
+
+Add Kconfig option entry for FEAT_LSUI.
 
 Signed-off-by: Yeoreum Yun <yeoreum.yun@arm.com>
+Reviewed-by: Catalin Marinas <catalin.marinas@arm.com>
 ---
- arch/arm64/kvm/at.c | 42 +++++++++++++++++++++++++++++++++++++++++-
- 1 file changed, 41 insertions(+), 1 deletion(-)
+ arch/arm64/Kconfig | 20 ++++++++++++++++++++
+ 1 file changed, 20 insertions(+)
 
-diff --git a/arch/arm64/kvm/at.c b/arch/arm64/kvm/at.c
-index 6588ea251ed7..ccdf76d46a2e 100644
---- a/arch/arm64/kvm/at.c
-+++ b/arch/arm64/kvm/at.c
-@@ -9,6 +9,7 @@
- #include <asm/esr.h>
- #include <asm/kvm_hyp.h>
- #include <asm/kvm_mmu.h>
-+#include <asm/lsui.h>
+diff --git a/arch/arm64/Kconfig b/arch/arm64/Kconfig
+index 38dba5f7e4d2..890a1bedbf4a 100644
+--- a/arch/arm64/Kconfig
++++ b/arch/arm64/Kconfig
+@@ -2215,6 +2215,26 @@ config ARM64_GCS
  
- static void fail_s1_walk(struct s1_walk_result *wr, u8 fst, bool s1ptw)
- {
-@@ -1681,6 +1682,43 @@ int __kvm_find_s1_desc_level(struct kvm_vcpu *vcpu, u64 va, u64 ipa, int *level)
- 	}
- }
+ endmenu # "ARMv9.4 architectural features"
  
-+static int __lsui_swap_desc(u64 __user *ptep, u64 old, u64 new)
-+{
-+	u64 tmp = old;
-+	int ret = 0;
++config AS_HAS_LSUI
++	def_bool $(as-instr,.arch_extension lsui)
++	help
++	  Supported by LLVM 20+ and binutils 2.45+.
 +
-+	/*
-+	 * FEAT_LSUI is supported since Armv9.6, where FEAT_PAN is mandatory.
-+	 * However, this assumption may not always hold:
-+	 *
-+	 *   - Some CPUs advertise FEAT_LSUI but lack FEAT_PAN.
-+	 *   - Virtualisation or ID register overrides may expose invalid
-+	 *     feature combinations.
-+	 *
-+	 * Rather than disabling FEAT_LSUI when FEAT_PAN is absent, wrap LSUI
-+	 * instructions with uaccess_ttbr0_enable()/disable() when
-+	 * ARM64_SW_TTBR0_PAN is enabled.
-+	 */
-+	uaccess_ttbr0_enable();
++menu "ARMv9.6 architectural features"
 +
-+	asm volatile(__LSUI_PREAMBLE
-+		     "1: cast	%[old], %[new], %[addr]\n"
-+		     "2:\n"
-+		     _ASM_EXTABLE_UACCESS_ERR(1b, 2b, %w[ret])
-+		     : [old] "+r" (old), [addr] "+Q" (*ptep), [ret] "+r" (ret)
-+		     : [new] "r" (new)
-+		     : "memory");
++config ARM64_LSUI
++	bool "Support Unprivileged Load Store Instructions (LSUI)"
++	default y
++	depends on AS_HAS_LSUI && !CPU_BIG_ENDIAN
++	help
++	  The Unprivileged Load Store Instructions (LSUI) provides
++	  variants load/store instructions that access user-space memory
++	  from the kernel without clearing PSTATE.PAN bit.
 +
-+	uaccess_ttbr0_disable();
++	  This feature is supported by LLVM 20+ and binutils 2.45+.
 +
-+	if (ret)
-+		return ret;
-+	if (tmp != old)
-+		return -EAGAIN;
++endmenu # "ARMv9.6 architectural feature"
 +
-+	return ret;
-+}
-+
- static int __lse_swap_desc(u64 __user *ptep, u64 old, u64 new)
- {
- 	u64 tmp = old;
-@@ -1756,7 +1794,9 @@ int __kvm_at_swap_desc(struct kvm *kvm, gpa_t ipa, u64 old, u64 new)
- 		return -EPERM;
- 
- 	ptep = (u64 __user *)hva + offset;
--	if (cpus_have_final_cap(ARM64_HAS_LSE_ATOMICS))
-+	if (cpus_have_final_cap(ARM64_HAS_LSUI))
-+		r = __lsui_swap_desc(ptep, old, new);
-+	else if (cpus_have_final_cap(ARM64_HAS_LSE_ATOMICS))
- 		r = __lse_swap_desc(ptep, old, new);
- 	else
- 		r = __llsc_swap_desc(ptep, old, new);
+ config ARM64_SVE
+ 	bool "ARM Scalable Vector Extension support"
+ 	default y
 -- 
 LEVI:{C3F47F37-75D8-414A-A8BA-3980EC8A46D7}
 
