@@ -1,129 +1,253 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qk1-f177.google.com (mail-qk1-f177.google.com [209.85.222.177])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4138336999D;
-	Thu, 12 Mar 2026 14:19:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.9
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773325194; cv=none; b=FdtM97zcDt/dh7hdI3BktWaK7mBP3MWj8X25EhBskyY2vitdmhRwf/oRqK+HMq/k97ISJH39aroaWhuSEzzdLUW6HFy9Dhzdnq3eO46RUNyTXBuS/lXxf0CynK8bWTxfUuP3Vnig7h3RT46ycaGKWscDo4RGpktcPRnO02UNN74=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773325194; c=relaxed/simple;
-	bh=bFHw/Ib4fy7tMZh52XXnouVVH4/o3s8q/TOAMQwwSsg=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Eo1W9H7aDNKhmzYFLdobNl+oPsV2/kcmzkt2/xk5SmrTtL8UWoSkbfynn9Y9/zwyJHGqYnlkI7riTyx0KuSrgPVGSEn59W5yVYyAm4eHiImO4xXNOYoXIGChERhT5G5Jh4vTNRAEnUdf+Jmcxx/OaZI1BvR25b/FCB7Oixvf6WU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=h8qV0jvm; arc=none smtp.client-ip=192.198.163.9
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7CE6735F5FB
+	for <kvm@vger.kernel.org>; Thu, 12 Mar 2026 14:21:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.222.177
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1773325299; cv=pass; b=rTVREnr8pLjgp7jlAX4netrgmrdKmQceKrkKQ/15U7NVi+vtI8irtyBRMP7DNNyeFQbOC9fijZbWdjsuQ9Fuo3E8T0gGNbSdOTKVeGbdRosUfLSl0xCmJ3cJyGC9z5B7a02nK2Y9QXt65RUpFrxAvVHj+2ENgAKW6O//4BkpaEc=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1773325299; c=relaxed/simple;
+	bh=0MmwDt0N+cjGTBkLO+1REp2Kd6NP3k+zduo/AMzi+Ac=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=gfLH0XkjRaPCiqGFnEg9kb0OwaqBepu7mlg22nBFejvfxF2Xyu4Ia5fVxpRdddDFRzO4N/on0D5Xt1KW7CSuoRYLYEKpLPk3Iz+msW2ttOR0b2w1XAupZaf7UKm32nUjdlf624+HXDIOAoVmxI3bsNtWAiOrkBm4b1xRwasKn6U=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=LxAl0QEx; arc=pass smtp.client-ip=209.85.222.177
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="h8qV0jvm"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1773325193; x=1804861193;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=bFHw/Ib4fy7tMZh52XXnouVVH4/o3s8q/TOAMQwwSsg=;
-  b=h8qV0jvm82C8wMOcjGhcqL8GyBhagURofnZ3DHt3lrclGupfPZOh4vR/
-   wJyz9OBYgf+KM7kwflF/7xtuXPmOFmSvk98BSLWvDvBwAvKhUSK6t6Sto
-   QCt6duQ5CwgYUoyfOOLhwPsqA+tRhzg3sMVIkuzJ8PK/aReJiex5jgpB9
-   w+mcMIgrBb8H6v/G2V/UrvxjQn/GjHY36XtjHJH4NfkTYMeGZM1Ld52Xd
-   XVzz2aXQLl8C5ipRvlTS3dgmknJN7WVpqEHoq8vxI0CMrM22Fo8cb7Hv5
-   jOzWgNSIYxXMc5OlpMHchqsuNUz26RsBVT/xPMa/xodb6mXBD4JksmH0b
-   g==;
-X-CSE-ConnectionGUID: A7s2CQ5DSa6hKGn33m7hvQ==
-X-CSE-MsgGUID: ipieAhLWTN6U+FaDbMqxjA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11727"; a="85119738"
-X-IronPort-AV: E=Sophos;i="6.23,116,1770624000"; 
-   d="scan'208";a="85119738"
-Received: from orviesa008.jf.intel.com ([10.64.159.148])
-  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Mar 2026 07:19:53 -0700
-X-CSE-ConnectionGUID: mdpQcZvJTdWGKr6KkcLEVA==
-X-CSE-MsgGUID: eHpa0xWQSh6yZD5JoVFRVg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,116,1770624000"; 
-   d="scan'208";a="220891107"
-Received: from spandruv-desk1.amr.corp.intel.com (HELO [10.125.110.129]) ([10.125.110.129])
-  by orviesa008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Mar 2026 07:19:53 -0700
-Message-ID: <ab5bf7bb-6511-49dc-a65d-86911e0f7091@intel.com>
-Date: Thu, 12 Mar 2026 07:20:06 -0700
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="LxAl0QEx"
+Received: by mail-qk1-f177.google.com with SMTP id af79cd13be357-8cd767d2d70so114831785a.3
+        for <kvm@vger.kernel.org>; Thu, 12 Mar 2026 07:21:38 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1773325297; cv=none;
+        d=google.com; s=arc-20240605;
+        b=bcpDChdRiT0g/QLDtPWBBooToVZi8gtDwu+JJnR59cXIkwTYZa0McOM8BuG+YKs0i8
+         WgkuJfOWU5Naq0tW+8ljeWsW/q1RTgKBtH8h9sd7KzBvCJfL3DBsjOPJzll3wA/8ZFcn
+         Q7V2WIaWsnYb3OPJaJCAIrODETv0WowKFdl84+vhli78Glsooih7XIky6LJR2vWqPtlI
+         L3/Dnq/im18JS2Fw6HV/IlbPy+31HaLD5w0bOIJSIlSMRJmw0IdEJPySKsGpAf4y5XXs
+         04qdVp90w38/bywph5WBM1pxx7VsDWwULeCqZ3Bs7qAi2/s2cqtI7tyyL3KPNV1InbFj
+         MVJQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=niej5qkKc8N5xc0L2AmEIZoSaGSlXVWpm+rorTwVSs4=;
+        fh=s8TnG5S3CzkdsPKA8kkzRNy1ebnmJqo9vcWTB/jXXkU=;
+        b=T32Kv3tgvVRJtNHmu+j+zdIYHjU0OzndL9p2G3XcrXRNAZb3ch6DcJrheAgETKt8Y5
+         8bICwFPpLRF7CJs++hE5AodA5kL1/CMzgKChihk/jnUvX9irU2O6oWg9QeNQCdVYI6IW
+         /5g/WQC+5nnvivuFXIgh2IM/HRY7jjW7OiisPULcA9nUFsgKs6rixNNRG9tICa22bTXv
+         baHN42tBV9qrQ4NSmArq1CbTyPymK3IMPwzQJWJiZw8lzINKRjNBOeSO12w8zKZ5p6He
+         H4tzK1FkPUmMlnDs/2LkCA3CGBHJ8x8A5McJX7pdVWFbNUDh8R/ZKmcte+i1V+2lFlsR
+         ZdmQ==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1773325297; x=1773930097; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=niej5qkKc8N5xc0L2AmEIZoSaGSlXVWpm+rorTwVSs4=;
+        b=LxAl0QExn9LUKBvucDG/jDlOrRgvhigExOy82otyL/5thJUswRid+ZfqpUAltkM4zN
+         gZySjaCVuNbpoKQ/2a7rswJ0BtPlQwkn6oARJl/5OTiR6x7AnRv4f5+VIKIhlZWLRKG8
+         /emupPBV70zIh1oC5VlOBtLYcDeNwk3yOZqaz87jKZZ5WUyzaFPqOesHKaGwwZo+SAhC
+         BnvicX3I92kjcnzwmr/71H+bdHjf6h+oRY97Iq//KHFixTCH/cePr/vLa8G7LdADNE10
+         Y6FKZBmP33s4G7oMDHtk0iQ7ds1SZIkKuLbAaHv5RY/jHOvoDy9JvfFB740W1kSO2zWS
+         56uw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1773325297; x=1773930097;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=niej5qkKc8N5xc0L2AmEIZoSaGSlXVWpm+rorTwVSs4=;
+        b=tyKAy0yRsJbrKW/jUzOUV0AmyjcJe+Hv8f11ane9ZZ9PY2RkkeS1dnwl8RVRThkS/K
+         ctGAZ9kWGnr/5ZLl4vFcaGmXLH5al11R9PJTMd5nkySIQq+O5uyHm1nHpoOuzSHFUslE
+         ZYFUwI7Z07FEu4itEVnpFBn5rmrmk402uBNqi52kYc+5V6iAMe9xz82LuOCm9SfTtL4S
+         nnlRW5kToAfQEgZoZ+75kbjvRELZQo0oSrBl1BibJkSY2qNJIc89BH5Q+LVn9PO9JKz+
+         wHGsp7UV/RgU1qDUzn/ODYfCCT1eQCIfsPz8AeS+4MuQDNzlYpoM8A5jpOBAXwUdh1hj
+         uGPA==
+X-Forwarded-Encrypted: i=1; AJvYcCXzF0OAic7kQHtLAiBATAVdyuvGDHDNzKCYyYRv3TB9CHouWy3+K+MeBoTkdSiKgzZMs2I=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyzrfRlzcDTMf5vjddCnHx7jragctqtHXNkMaEvB7iErvHZu1Pj
+	GkKDXKbCrqwLIMl13ciJds13i5BzdKL+5NWebzsWgzCh0U8uzTKibYM+bBntNTaBvNjoykaVFlF
+	DCcDKk/i7KqmvOMZri5DE12sUSSMvhm0Ra6SbIHo0
+X-Gm-Gg: ATEYQzzd4zW4bjlcutX8riZ+v8QmfDE6ziVRcf6gBf66pReC5SdIiho4hb07dUL+uKk
+	1M3sDr2ZZp6dPHYNsdzLtygAJpm14VkPu3/xpBMvxC0PzBKEQ9IQc87B5m7xyvUIEAUHcnz+UeK
+	c4scnTgOUAjL3Tfo6BXbS69cBYI+/MkEYYyrmQb4nU1vILIO5B3oQRq8wMkvCh6WcojgdtTOZE6
+	7cQCylFMtPuGlKKDIJPG+jnrwlDt3Vt4MVwK9SmBASv7SvUbMQ4VqSqb4ZeczLDe2CfetV0Hj1z
+	ZjXeYToF
+X-Received: by 2002:a05:622a:14c:b0:501:1795:9d52 with SMTP id
+ d75a77b69052e-50939fc1863mr86449811cf.33.1773325296875; Thu, 12 Mar 2026
+ 07:21:36 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 1/2] x86/cpu: Disable CR pinning during CPU bringup
-To: "Nikunj A. Dadhania" <nikunj@amd.com>,
- Tom Lendacky <thomas.lendacky@amd.com>, Borislav Petkov <bp@alien8.de>
-Cc: linux-kernel@vger.kernel.org, kvm@vger.kernel.org, tglx@kernel.org,
- mingo@redhat.com, dave.hansen@linux.intel.com, hpa@zytor.com, xin@zytor.com,
- seanjc@google.com, pbonzini@redhat.com, x86@kernel.org,
- sohil.mehta@intel.com, jon.grimm@amd.com
-References: <20260226092349.803491-1-nikunj@amd.com>
- <20260226092349.803491-2-nikunj@amd.com>
- <20260309134640.GOaa7PQJli_C9QATGB@fat_crate.local>
- <cde957ba-3579-4063-9d17-3630e79ea388@intel.com>
- <20260309161516.GAaa7yFMulhdzNQ-pt@fat_crate.local>
- <70644e1d-dd0e-4f0f-81c0-fd095e46e50b@intel.com>
- <7ca205d6-b01b-4ed3-959d-db31a6496d79@amd.com>
- <505a6bbd-3ecf-4de9-8fb9-0b21c3435a96@intel.com>
- <9fa61b80-0e16-4a87-a0e7-3c3dfcda8f7e@amd.com>
- <55a98b6d-e831-47a6-aa5a-8fe357334f67@intel.com>
- <d0eba3fe-2938-4856-bd9b-0e13972e8313@amd.com>
- <cb492a37-3517-4738-b435-73311402e820@intel.com>
- <ddf407e9-359d-4d4e-827d-98f212589e9f@amd.com>
-From: Dave Hansen <dave.hansen@intel.com>
-Content-Language: en-US
-Autocrypt: addr=dave.hansen@intel.com; keydata=
- xsFNBE6HMP0BEADIMA3XYkQfF3dwHlj58Yjsc4E5y5G67cfbt8dvaUq2fx1lR0K9h1bOI6fC
- oAiUXvGAOxPDsB/P6UEOISPpLl5IuYsSwAeZGkdQ5g6m1xq7AlDJQZddhr/1DC/nMVa/2BoY
- 2UnKuZuSBu7lgOE193+7Uks3416N2hTkyKUSNkduyoZ9F5twiBhxPJwPtn/wnch6n5RsoXsb
- ygOEDxLEsSk/7eyFycjE+btUtAWZtx+HseyaGfqkZK0Z9bT1lsaHecmB203xShwCPT49Blxz
- VOab8668QpaEOdLGhtvrVYVK7x4skyT3nGWcgDCl5/Vp3TWA4K+IofwvXzX2ON/Mj7aQwf5W
- iC+3nWC7q0uxKwwsddJ0Nu+dpA/UORQWa1NiAftEoSpk5+nUUi0WE+5DRm0H+TXKBWMGNCFn
- c6+EKg5zQaa8KqymHcOrSXNPmzJuXvDQ8uj2J8XuzCZfK4uy1+YdIr0yyEMI7mdh4KX50LO1
- pmowEqDh7dLShTOif/7UtQYrzYq9cPnjU2ZW4qd5Qz2joSGTG9eCXLz5PRe5SqHxv6ljk8mb
- ApNuY7bOXO/A7T2j5RwXIlcmssqIjBcxsRRoIbpCwWWGjkYjzYCjgsNFL6rt4OL11OUF37wL
- QcTl7fbCGv53KfKPdYD5hcbguLKi/aCccJK18ZwNjFhqr4MliQARAQABzUVEYXZpZCBDaHJp
- c3RvcGhlciBIYW5zZW4gKEludGVsIFdvcmsgQWRkcmVzcykgPGRhdmUuaGFuc2VuQGludGVs
- LmNvbT7CwXgEEwECACIFAlQ+9J0CGwMGCwkIBwMCBhUIAgkKCwQWAgMBAh4BAheAAAoJEGg1
- lTBwyZKwLZUP/0dnbhDc229u2u6WtK1s1cSd9WsflGXGagkR6liJ4um3XCfYWDHvIdkHYC1t
- MNcVHFBwmQkawxsYvgO8kXT3SaFZe4ISfB4K4CL2qp4JO+nJdlFUbZI7cz/Td9z8nHjMcWYF
- IQuTsWOLs/LBMTs+ANumibtw6UkiGVD3dfHJAOPNApjVr+M0P/lVmTeP8w0uVcd2syiaU5jB
- aht9CYATn+ytFGWZnBEEQFnqcibIaOrmoBLu2b3fKJEd8Jp7NHDSIdrvrMjYynmc6sZKUqH2
- I1qOevaa8jUg7wlLJAWGfIqnu85kkqrVOkbNbk4TPub7VOqA6qG5GCNEIv6ZY7HLYd/vAkVY
- E8Plzq/NwLAuOWxvGrOl7OPuwVeR4hBDfcrNb990MFPpjGgACzAZyjdmYoMu8j3/MAEW4P0z
- F5+EYJAOZ+z212y1pchNNauehORXgjrNKsZwxwKpPY9qb84E3O9KYpwfATsqOoQ6tTgr+1BR
- CCwP712H+E9U5HJ0iibN/CDZFVPL1bRerHziuwuQuvE0qWg0+0SChFe9oq0KAwEkVs6ZDMB2
- P16MieEEQ6StQRlvy2YBv80L1TMl3T90Bo1UUn6ARXEpcbFE0/aORH/jEXcRteb+vuik5UGY
- 5TsyLYdPur3TXm7XDBdmmyQVJjnJKYK9AQxj95KlXLVO38lczsFNBFRjzmoBEACyAxbvUEhd
- GDGNg0JhDdezyTdN8C9BFsdxyTLnSH31NRiyp1QtuxvcqGZjb2trDVuCbIzRrgMZLVgo3upr
- MIOx1CXEgmn23Zhh0EpdVHM8IKx9Z7V0r+rrpRWFE8/wQZngKYVi49PGoZj50ZEifEJ5qn/H
- Nsp2+Y+bTUjDdgWMATg9DiFMyv8fvoqgNsNyrrZTnSgoLzdxr89FGHZCoSoAK8gfgFHuO54B
- lI8QOfPDG9WDPJ66HCodjTlBEr/Cwq6GruxS5i2Y33YVqxvFvDa1tUtl+iJ2SWKS9kCai2DR
- 3BwVONJEYSDQaven/EHMlY1q8Vln3lGPsS11vSUK3QcNJjmrgYxH5KsVsf6PNRj9mp8Z1kIG
- qjRx08+nnyStWC0gZH6NrYyS9rpqH3j+hA2WcI7De51L4Rv9pFwzp161mvtc6eC/GxaiUGuH
- BNAVP0PY0fqvIC68p3rLIAW3f97uv4ce2RSQ7LbsPsimOeCo/5vgS6YQsj83E+AipPr09Caj
- 0hloj+hFoqiticNpmsxdWKoOsV0PftcQvBCCYuhKbZV9s5hjt9qn8CE86A5g5KqDf83Fxqm/
- vXKgHNFHE5zgXGZnrmaf6resQzbvJHO0Fb0CcIohzrpPaL3YepcLDoCCgElGMGQjdCcSQ+Ci
- FCRl0Bvyj1YZUql+ZkptgGjikQARAQABwsFfBBgBAgAJBQJUY85qAhsMAAoJEGg1lTBwyZKw
- l4IQAIKHs/9po4spZDFyfDjunimEhVHqlUt7ggR1Hsl/tkvTSze8pI1P6dGp2XW6AnH1iayn
- yRcoyT0ZJ+Zmm4xAH1zqKjWplzqdb/dO28qk0bPso8+1oPO8oDhLm1+tY+cOvufXkBTm+whm
- +AyNTjaCRt6aSMnA/QHVGSJ8grrTJCoACVNhnXg/R0g90g8iV8Q+IBZyDkG0tBThaDdw1B2l
- asInUTeb9EiVfL/Zjdg5VWiF9LL7iS+9hTeVdR09vThQ/DhVbCNxVk+DtyBHsjOKifrVsYep
- WpRGBIAu3bK8eXtyvrw1igWTNs2wazJ71+0z2jMzbclKAyRHKU9JdN6Hkkgr2nPb561yjcB8
- sIq1pFXKyO+nKy6SZYxOvHxCcjk2fkw6UmPU6/j/nQlj2lfOAgNVKuDLothIxzi8pndB8Jju
- KktE5HJqUUMXePkAYIxEQ0mMc8Po7tuXdejgPMwgP7x65xtfEqI0RuzbUioFltsp1jUaRwQZ
- MTsCeQDdjpgHsj+P2ZDeEKCbma4m6Ez/YWs4+zDm1X8uZDkZcfQlD9NldbKDJEXLIjYWo1PH
- hYepSffIWPyvBMBTW2W5FRjJ4vLRrJSUoEfJuPQ3vW9Y73foyo/qFoURHO48AinGPZ7PC7TF
- vUaNOTjKedrqHkaOcqB185ahG2had0xnFsDPlx5y
-In-Reply-To: <ddf407e9-359d-4d4e-827d-98f212589e9f@amd.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+References: <20260312130639.138988-1-simon.schippers@tu-dortmund.de>
+ <20260312130639.138988-4-simon.schippers@tu-dortmund.de> <CANn89i+tWCtSAAH5i=FDDqRe0jm3XZS-_Ce3kHvZQpkedRqoFQ@mail.gmail.com>
+ <20260312094447-mutt-send-email-mst@kernel.org>
+In-Reply-To: <20260312094447-mutt-send-email-mst@kernel.org>
+From: Eric Dumazet <edumazet@google.com>
+Date: Thu, 12 Mar 2026 15:21:25 +0100
+X-Gm-Features: AaiRm519R7QoAd18JWvrdvhH1ifA15H5AznmUpI-fEIpOmq2LTIYuzUlf4ZNyAg
+Message-ID: <CANn89iLHwZ4foPEL2TdQhYx3Ps3zXiwygb=Qr7OTKW2R7Ldixg@mail.gmail.com>
+Subject: Re: [PATCH net-next v8 3/4] ptr_ring: move free-space check into
+ separate helper
+To: "Michael S. Tsirkin" <mst@redhat.com>
+Cc: Simon Schippers <simon.schippers@tu-dortmund.de>, willemdebruijn.kernel@gmail.com, 
+	jasowang@redhat.com, andrew+netdev@lunn.ch, davem@davemloft.net, 
+	kuba@kernel.org, pabeni@redhat.com, eperezma@redhat.com, leiyang@redhat.com, 
+	stephen@networkplumber.org, jon@nutanix.com, tim.gebauer@tu-dortmund.de, 
+	netdev@vger.kernel.org, linux-kernel@vger.kernel.org, kvm@vger.kernel.org, 
+	virtualization@lists.linux.dev
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On 3/12/26 07:08, Nikunj A. Dadhania wrote:
-> 1) Back-porting complexity: The current issue affects kernels (6.9+) 
->    where SEV-SNP guests fail to boot with FRED enabled. A simpler fix would
->    be easier to backport and verify across stable branches.
+On Thu, Mar 12, 2026 at 2:48=E2=80=AFPM Michael S. Tsirkin <mst@redhat.com>=
+ wrote:
+>
+> On Thu, Mar 12, 2026 at 02:17:16PM +0100, Eric Dumazet wrote:
+> > On Thu, Mar 12, 2026 at 2:06=E2=80=AFPM Simon Schippers
+> > <simon.schippers@tu-dortmund.de> wrote:
+> > >
+> > > This patch moves the check for available free space for a new entry i=
+nto
+> > > a separate function. As a result, __ptr_ring_produce() remains logica=
+lly
+> > > unchanged, while the new helper allows callers to determine in advanc=
+e
+> > > whether subsequent __ptr_ring_produce() calls will succeed. This
+> > > information can, for example, be used to temporarily stop producing u=
+ntil
+> > > __ptr_ring_peek() indicates that space is available again.
+> > >
+> > > Co-developed-by: Tim Gebauer <tim.gebauer@tu-dortmund.de>
+> > > Signed-off-by: Tim Gebauer <tim.gebauer@tu-dortmund.de>
+> > > Signed-off-by: Simon Schippers <simon.schippers@tu-dortmund.de>
+> > > ---
+> > >  include/linux/ptr_ring.h | 14 ++++++++++++--
+> > >  1 file changed, 12 insertions(+), 2 deletions(-)
+> > >
+> > > diff --git a/include/linux/ptr_ring.h b/include/linux/ptr_ring.h
+> > > index 534531807d95..a5a3fa4916d3 100644
+> > > --- a/include/linux/ptr_ring.h
+> > > +++ b/include/linux/ptr_ring.h
+> > > @@ -96,6 +96,14 @@ static inline bool ptr_ring_full_bh(struct ptr_rin=
+g *r)
+> > >         return ret;
+> > >  }
+> > >
+> > > +static inline int __ptr_ring_produce_peek(struct ptr_ring *r)
+> > > +{
+> > > +       if (unlikely(!r->size) || r->queue[r->producer])
+> >
+> > I think this should be
+> >
+> >        if (unlikely(!r->size) || READ_ONCE(r->queue[r->producer]))
+> >
+> > And of course:
+> >
+> > @@ -194,7 +194,7 @@ static inline void *__ptr_ring_peek(struct ptr_ring=
+ *r)
+> >  static inline bool __ptr_ring_empty(struct ptr_ring *r)
+> >  {
+> >         if (likely(r->size))
+> > -               return !r->queue[READ_ONCE(r->consumer_head)];
+> > +               return !READ_ONCE(r->queue[READ_ONCE(r->consumer_head)]=
+);
+> >         return true;
+> >  }
+>
+>
+> I don't understand why it's necessary. consumer_head etc are
+> all lock protected.
+>
+> queue itself is not but we are only checking it for NULL -
+> it is fine if compiler reads it in many chunks and not all
+> at once.
+>
+> > @@ -256,7 +256,7 @@ static inline void __ptr_ring_zero_tail(struct
+> > ptr_ring *r, int consumer_head)
+> >          * besides the first one until we write out all entries.
+> >          */
+> >         while (likely(head > r->consumer_tail))
+> > -               r->queue[--head] =3D NULL;
+> > +               WRITE_ONCE(r->queue[--head], NULL);
+> >
+> >         r->consumer_tail =3D consumer_head;
+> >  }
+> >
+> >
+> > Presumably we should fix this in net tree first.
+>
+>
+> Maybe this one yes but I am not sure at all - KCSAN is happy.
+>
 
-The simplest fix is to disable FRED on those kernels, fwiw.
+Hmmm.. what about this trace ?
+
+BUG: KCSAN: data-race in pfifo_fast_dequeue / pfifo_fast_enqueue
+
+write to 0xffff88811d5ccc00 of 8 bytes by interrupt on cpu 0:
+__ptr_ring_zero_tail include/linux/ptr_ring.h:259 [inline]
+__ptr_ring_discard_one include/linux/ptr_ring.h:291 [inline]
+__ptr_ring_consume include/linux/ptr_ring.h:311 [inline]
+__skb_array_consume include/linux/skb_array.h:98 [inline]
+pfifo_fast_dequeue+0x770/0x8f0 net/sched/sch_generic.c:770
+dequeue_skb net/sched/sch_generic.c:297 [inline]
+qdisc_restart net/sched/sch_generic.c:402 [inline]
+__qdisc_run+0x189/0xc80 net/sched/sch_generic.c:420
+qdisc_run include/net/pkt_sched.h:120 [inline]
+net_tx_action+0x379/0x590 net/core/dev.c:5793
+handle_softirqs+0xb9/0x280 kernel/softirq.c:622
+do_softirq+0x45/0x60 kernel/softirq.c:523
+__local_bh_enable_ip+0x70/0x80 kernel/softirq.c:450
+local_bh_enable include/linux/bottom_half.h:33 [inline]
+bpf_test_run+0x2db/0x620 net/bpf/test_run.c:426
+bpf_prog_test_run_skb+0x9a4/0xef0 net/bpf/test_run.c:1159
+bpf_prog_test_run+0x204/0x340 kernel/bpf/syscall.c:4721
+__sys_bpf+0x52e/0x7e0 kernel/bpf/syscall.c:6246
+__do_sys_bpf kernel/bpf/syscall.c:6341 [inline]
+__se_sys_bpf kernel/bpf/syscall.c:6339 [inline]
+__x64_sys_bpf+0x41/0x50 kernel/bpf/syscall.c:6339
+x64_sys_call+0x10cb/0x3020 arch/x86/include/generated/asm/syscalls_64.h:322
+do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
+do_syscall_64+0x12c/0x370 arch/x86/entry/syscall_64.c:94
+entry_SYSCALL_64_after_hwframe+0x77/0x7f
+
+read to 0xffff88811d5ccc00 of 8 bytes by task 22632 on cpu 1:
+__ptr_ring_produce include/linux/ptr_ring.h:106 [inline]
+ptr_ring_produce include/linux/ptr_ring.h:129 [inline]
+skb_array_produce include/linux/skb_array.h:44 [inline]
+pfifo_fast_enqueue+0xd5/0x2c0 net/sched/sch_generic.c:741
+dev_qdisc_enqueue net/core/dev.c:4144 [inline]
+__dev_xmit_skb net/core/dev.c:4188 [inline]
+__dev_queue_xmit+0x6a4/0x1f20 net/core/dev.c:4795
+dev_queue_xmit include/linux/netdevice.h:3384 [inline]
+__bpf_tx_skb net/core/filter.c:2153 [inline]
+__bpf_redirect_common net/core/filter.c:2197 [inline]
+__bpf_redirect+0x862/0x990 net/core/filter.c:2204
+____bpf_clone_redirect net/core/filter.c:2487 [inline]
+bpf_clone_redirect+0x20c/0x290 net/core/filter.c:2450
+bpf_prog_53f18857bc887b09+0x22/0x2a
+bpf_dispatcher_nop_func include/linux/bpf.h:1402 [inline]
+__bpf_prog_run include/linux/filter.h:723 [inline]
+bpf_prog_run include/linux/filter.h:730 [inline]
+bpf_test_run+0x29d/0x620 net/bpf/test_run.c:423
+bpf_prog_test_run_skb+0x9a4/0xef0 net/bpf/test_run.c:1159
+bpf_prog_test_run+0x204/0x340 kernel/bpf/syscall.c:4721
+__sys_bpf+0x52e/0x7e0 kernel/bpf/syscall.c:6246
+__do_sys_bpf kernel/bpf/syscall.c:6341 [inline]
+__se_sys_bpf kernel/bpf/syscall.c:6339 [inline]
+__x64_sys_bpf+0x41/0x50 kernel/bpf/syscall.c:6339
+x64_sys_call+0x10cb/0x3020 arch/x86/include/generated/asm/syscalls_64.h:322
+do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
+do_syscall_64+0x12c/0x370 arch/x86/entry/syscall_64.c:94
+entry_SYSCALL_64_after_hwframe+0x77/0x7f
+
+value changed: 0xffff888104a93a00 -> 0x0000000000000000
+
+Reported by Kernel Concurrency Sanitizer on:
+CPU: 1 UID: 0 PID: 22632 Comm: syz.0.4135 Tainted: G W syzkaller #0
+PREEMPT(full)
+Tainted: [W]=3DWARN
+Hardware name: Google Google Compute Engine/Google Compute Engine,
+BIOS Google 01/24/2026
