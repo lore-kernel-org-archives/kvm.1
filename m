@@ -1,143 +1,216 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qt1-f182.google.com (mail-qt1-f182.google.com [209.85.160.182])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A54838DD3;
-	Thu, 12 Mar 2026 15:02:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.15
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773327763; cv=none; b=Iyv3RpPe8VqAEv/evKWJzLaAwOVCol0xfyzmqnT0DN5Z5yDqzNeSD6zxSFWznufqtSjoY/zgKmpAZEOnW2ZNRXaxdjj5eiAnIhIT+Bg4b/JyTejIhE/NXkn8LQHmS3n85xI50e6dlvnEsXXDmxQzZLi6HF+8ziQepuQbGjJuVbs=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773327763; c=relaxed/simple;
-	bh=LcEejNAF4axW++zA5T2e7cctYcMhqP2/HGKGTtO0UUo=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=FyhrPxNb1MAV7/UC2j9Qd92KlZ8DFFiYcNRrO/4hsBy6hepThfCH98Z5GCNksBedxZMnU5ic2yE966fYQ9LVRLtMspYF920cA6wCkqhSDU0Lq+4ZqHt6GRTBjtb4oO93ky9x0fGGgkpU1sek2Qjfk5/8ibR9hcLZ9DM450ZD6/U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=fyRGeJDQ; arc=none smtp.client-ip=192.198.163.15
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 291B13C73E3
+	for <kvm@vger.kernel.org>; Thu, 12 Mar 2026 15:12:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.160.182
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1773328373; cv=pass; b=JBMrwMDRvMKEwFUc42AS1WkSHcE9YD7mKe1A3WUd+XHxhwtO12sFYyG4COo1IjI9l+VLperZKVh0hl74tzQDu38bV/PGuF3iIKCrlfThpDh/mV8cUNsEoBiXUw+dfUE5RZQoq/uRT5juJI2/3hZKuqX3WU4zakPBdWSSoNlROV0=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1773328373; c=relaxed/simple;
+	bh=7YFZADDIkKpHkOE9u07SYpGj3k/kMl91AXKVA2N9GNk=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=bs898O0JuXQEp0JQvVEsiykBtukgnBICopYt5KSwLLtSFRz+JHU7uvAqDvcauxAGv2jBIVknZUEL6Y9m73ai2tMqscVDEPFrSeaIVi/DApUjUnOi5SbgpYxgcA/U8vlqz7UVXGoDl7glNPWKBFKGkkeKza17TS4xsY5jHYb2bC8=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=4Q2sPKdX; arc=pass smtp.client-ip=209.85.160.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="fyRGeJDQ"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1773327763; x=1804863763;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=LcEejNAF4axW++zA5T2e7cctYcMhqP2/HGKGTtO0UUo=;
-  b=fyRGeJDQSsg2kGKonakd6Fg6egTAnDLK8A2bx1QzXFN9ok5rSepal1IU
-   0CiKGpTg8BLbvNOqGiR4/jmEXjXZar8PoT6H3lNAeLUIsjwiM9s0BKGif
-   Y5dnBXdJBzaWoxBR+A91hFrpNLzj4xY0aGVmr9g2b71Pfg9GDCiGYvMqp
-   0QSdYv0l24eKYlnRwpWY5hXiRaiREcM6kaExhe7SwwwD/Hk2dl+YsffB5
-   mT6fC4jZPBsqQnz73ubKo8Eu5UZIeEe1Z9jOjnZvOOitZipysoYM/B1cQ
-   lm892oOM/7kXCqtQrI2AWkM4A/QMURUGnQuZtzfDVAzSiPk1G5AjW69Io
-   A==;
-X-CSE-ConnectionGUID: gA4zIRHTSDuYvuAcWVVDzg==
-X-CSE-MsgGUID: a9hHBB91Q9CmtAf+mG7KQw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11727"; a="74535746"
-X-IronPort-AV: E=Sophos;i="6.23,116,1770624000"; 
-   d="scan'208";a="74535746"
-Received: from fmviesa006.fm.intel.com ([10.60.135.146])
-  by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Mar 2026 08:02:41 -0700
-X-CSE-ConnectionGUID: jJSIyl/cQMiTcpZszGCVuA==
-X-CSE-MsgGUID: yOmRVDIZR7e1lst1DYKrNA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,116,1770624000"; 
-   d="scan'208";a="216956350"
-Received: from spandruv-desk1.amr.corp.intel.com (HELO [10.125.110.129]) ([10.125.110.129])
-  by fmviesa006-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Mar 2026 08:02:40 -0700
-Message-ID: <41851f3e-4372-4bd2-ac48-65aee3dcafe0@intel.com>
-Date: Thu, 12 Mar 2026 08:02:53 -0700
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="4Q2sPKdX"
+Received: by mail-qt1-f182.google.com with SMTP id d75a77b69052e-509062d829dso508741cf.1
+        for <kvm@vger.kernel.org>; Thu, 12 Mar 2026 08:12:52 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1773328371; cv=none;
+        d=google.com; s=arc-20240605;
+        b=Pf+q2EFzEf+uw+zgXi8+cI8fGgy1+33ZjqR8ghjqQvOuecFdp5giz46NWmwMbQwWgY
+         oFY6NZhccTVpont625V0SPJemP6WF7PE3xcTFPk0KgmqLekrfVva4OLPCz2DC4xv1Hni
+         xmAt3cW9MpgJV17mLbT4CXHDwmrozXtST+1lq6cltUHK3oha+EqXMRjyUqj6vID17TFU
+         8Nnre1s+Twi1uGEC6QlWGFVWT2w2XxHJTaFMd9hhwGazv4PWdxrY/8qDYhEGPMr2unxI
+         o7z5I+d9fOOXakifvLSRGtFMU5xFJA/gRmpJV0JBUQWvZPCR8FFP2nGf5abZHJyK4hfi
+         uSZQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:dkim-signature;
+        bh=bV1YPTxEaaiJh5nG5MVUucC7TmzLQLODECWQRvstcRw=;
+        fh=cgH2J4qMUFSDEBEMJ82QEUToduYCZ1EuMXfkPFhqlF8=;
+        b=cyRoqdZeEAnGjUsV4glebmzLAp1posBTzVXOmlVfbldZoDNHz7dFH27W5GsbeX9MUv
+         MD54uDaPPZikSQHdCHhN0Mnlmhq7wZUMebcEda5ZXYtxbO/N2lJjKRiUfIbR74+BEjZC
+         RJjHxAn6v7sx9HmXSis5BBReUzZ4h/5/qbN1WAgXgQ+WlHLbKHGh59vI738BaMo6ROOZ
+         P378uvwtUjSNCR1igUQejHF8AQ8agdERdoV/jiKnb9/B+MGNpTOpbC0agZbB1EuVw4pN
+         jAyKNEc3aEkbk/pHBgEG1jkyR5XGJwgA8pj0WyM5m/PnLSePpb/gPnoGdezJSg4BmIyy
+         CUfQ==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1773328371; x=1773933171; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=bV1YPTxEaaiJh5nG5MVUucC7TmzLQLODECWQRvstcRw=;
+        b=4Q2sPKdX/2dvlWhCTFaO6pjY0GcE7Ac3wo4299c2UzBFA3NCV2GNENpZQ2k9LbMeCA
+         7WR3Wrs+TBLQ5qeeTP0LVieQbh+e0Zp4B9dCN/wXv2ccuLaLiJP13yBP98Y7IauYEm4B
+         8J6nw0ZrXOE2lw9KpPe8eESOGDYsYAd+F3omC2RjD/qerJ6yLwnB5MSREnuKwmcQeDQk
+         A0wD4Ea1hg3Fovmmc9pz0epe1D/EfofAXBHIYfDTleloG/ndc5yjqptDKPKoVClDHMxK
+         0ttfZuwnBiEeTIr3dhezC37YrICyB+MYIo7Xr8dyEy6QMA61H4iDbYMuis1NQ8wKjuS3
+         5wKg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1773328371; x=1773933171;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=bV1YPTxEaaiJh5nG5MVUucC7TmzLQLODECWQRvstcRw=;
+        b=GRssTBWuOanXoAOgnWArxTKzanil01d3BcX1OLotat6x0Tt50yR4Xy/HEYXqx3BHkv
+         JNyYAdWA3BzD7HfuMNF1TeQB7X0WhbMY03wydsnTRXariW1qndwYxMapUa+Xp568TCgn
+         dKPbOuomvbTIjknY+lcO+x3WGthWO4JtmBZoBoUeLQAVLA8u0xHy95NBz+dB6YdF6iHb
+         WqVXNy6Rm/nJU0P6sPOrv8sOy7r2V9pXyWMGLkOSI9pkFPxMUUQ9vVW3gsxhyloRtKI4
+         xHq4QAnCLU49sPwAPS5XM4Hkn7Q9PL6HR4Lk5/1bQIQYpXIutMU7mS6rcmkB+deFNz0v
+         HTqg==
+X-Gm-Message-State: AOJu0YxQyFSAQD9oxhFi5flNwYDl1CcTY9ubr+LnM2ezwYMdURzuiqqE
+	aR8NX6fwCwJTfQIOatMZAu084yNNZna+a9SSe3gXciOV5DLRk5jE2X13EcY3A6yQW3EywyGDNQa
+	rAtqozJ/mLnrYInNekCAL1V9sYPnm7HsD5UC5jX+o
+X-Gm-Gg: ATEYQzxIux4w4aUtH+4/LPvGVu2xnUT+UG1SKBdNZljMQ3kW2xm6bFhzZHP7znT5MNB
+	Qh4uLuhoVPR7jhO2HvE9Va4+JrljCdUirzMTssWw9BzNR3W9gxLNQmYKAyid+DpDSMRzYdRYRud
+	noha9liWuCn545kwz++q6AKftjLTH+R5smmZqVrwg5MK2Lfy5AnVjhB0KSSmEOAyEKpj3lSCWlO
+	Lu6DFXrMvbSaPEdLvy3NXdFLO77PjBe2nU8nip8FdEu7LKcyhhSLMGc4gfOvMhDV9p6DKobVDdx
+	nYfiiSbO
+X-Received: by 2002:ac8:7d4f:0:b0:509:1471:1bc2 with SMTP id
+ d75a77b69052e-509497b388cmr12752831cf.17.1773328370105; Thu, 12 Mar 2026
+ 08:12:50 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 1/2] x86/cpu: Disable CR pinning during CPU bringup
-To: "Nikunj A. Dadhania" <nikunj@amd.com>,
- Tom Lendacky <thomas.lendacky@amd.com>, Borislav Petkov <bp@alien8.de>
-Cc: linux-kernel@vger.kernel.org, kvm@vger.kernel.org, tglx@kernel.org,
- mingo@redhat.com, dave.hansen@linux.intel.com, hpa@zytor.com, xin@zytor.com,
- seanjc@google.com, pbonzini@redhat.com, x86@kernel.org,
- sohil.mehta@intel.com, jon.grimm@amd.com
-References: <20260226092349.803491-1-nikunj@amd.com>
- <20260226092349.803491-2-nikunj@amd.com>
- <20260309134640.GOaa7PQJli_C9QATGB@fat_crate.local>
- <cde957ba-3579-4063-9d17-3630e79ea388@intel.com>
- <20260309161516.GAaa7yFMulhdzNQ-pt@fat_crate.local>
- <70644e1d-dd0e-4f0f-81c0-fd095e46e50b@intel.com>
- <7ca205d6-b01b-4ed3-959d-db31a6496d79@amd.com>
- <505a6bbd-3ecf-4de9-8fb9-0b21c3435a96@intel.com>
- <9fa61b80-0e16-4a87-a0e7-3c3dfcda8f7e@amd.com>
- <55a98b6d-e831-47a6-aa5a-8fe357334f67@intel.com>
- <d0eba3fe-2938-4856-bd9b-0e13972e8313@amd.com>
- <cb492a37-3517-4738-b435-73311402e820@intel.com>
- <ddf407e9-359d-4d4e-827d-98f212589e9f@amd.com>
- <ab5bf7bb-6511-49dc-a65d-86911e0f7091@intel.com>
- <a078ceb4-6e31-4e8a-89d8-023b95f56054@amd.com>
-From: Dave Hansen <dave.hansen@intel.com>
-Content-Language: en-US
-Autocrypt: addr=dave.hansen@intel.com; keydata=
- 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
-In-Reply-To: <a078ceb4-6e31-4e8a-89d8-023b95f56054@amd.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+References: <cover.1770071243.git.ackerleytng@google.com> <86ad28b767524e1e654b9c960e39ca8bfb24c114.1770071243.git.ackerleytng@google.com>
+ <CAEvNRgFMNywpDRr+WeNsVj=MnsbhZp9H3j0QRDo_eOP+kGCNJw@mail.gmail.com> <CAEvNRgG-L+GBcm+u_thGvXAxV-Nqzu5VtgXy0PfND6SG0FiyVg@mail.gmail.com>
+In-Reply-To: <CAEvNRgG-L+GBcm+u_thGvXAxV-Nqzu5VtgXy0PfND6SG0FiyVg@mail.gmail.com>
+From: Fuad Tabba <tabba@google.com>
+Date: Thu, 12 Mar 2026 15:12:12 +0000
+X-Gm-Features: AaiRm522D6XFcNwSUoten5LdH11xVpfwhWEV7958HaqQ2gjfWSDLGgyuH4UYDI0
+Message-ID: <CA+EHjTy2urW2Tj5czQDKUHdri7FCLfw2mafTgmmtFs+-7ueoiw@mail.gmail.com>
+Subject: Re: [RFC PATCH v2 09/37] KVM: guest_memfd: Add support for KVM_SET_MEMORY_ATTRIBUTES2
+To: Ackerley Tng <ackerleytng@google.com>
+Cc: kvm@vger.kernel.org, linux-doc@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org, 
+	linux-trace-kernel@vger.kernel.org, x86@kernel.org, aik@amd.com, 
+	andrew.jones@linux.dev, binbin.wu@linux.intel.com, bp@alien8.de, 
+	brauner@kernel.org, chao.p.peng@intel.com, chao.p.peng@linux.intel.com, 
+	chenhuacai@kernel.org, corbet@lwn.net, dave.hansen@linux.intel.com, 
+	david@kernel.org, hpa@zytor.com, ira.weiny@intel.com, jgg@nvidia.com, 
+	jmattson@google.com, jroedel@suse.de, jthoughton@google.com, 
+	maobibo@loongson.cn, mathieu.desnoyers@efficios.com, maz@kernel.org, 
+	mhiramat@kernel.org, michael.roth@amd.com, mingo@redhat.com, 
+	mlevitsk@redhat.com, oupton@kernel.org, pankaj.gupta@amd.com, 
+	pbonzini@redhat.com, prsampat@amd.com, qperret@google.com, 
+	ricarkol@google.com, rick.p.edgecombe@intel.com, rientjes@google.com, 
+	rostedt@goodmis.org, seanjc@google.com, shivankg@amd.com, shuah@kernel.org, 
+	steven.price@arm.com, tglx@linutronix.de, vannapurve@google.com, 
+	vbabka@suse.cz, willy@infradead.org, wyihan@google.com, yan.y.zhao@intel.com
+Content-Type: text/plain; charset="UTF-8"
 
-On 3/12/26 07:53, Nikunj A. Dadhania wrote:
->> The simplest fix is to disable FRED on those kernels, fwiw.
-> That would work, but disabling FRED means LTS users will not be able to use 
-> FRED with confidential computing—that's not really a fix.
+Hi Ackerley,
 
-Why not?
+Before getting into the UAPI semantics, thank you for all the heavy
+lifting you've done here. Figuring out how to make it all work across
+the different platforms is not easy :)
 
-Is there something out there that *NEEDS* FRED to function?
+<snip>
 
-> This isn't just SEV-SNP. Xin Li confirmed Intel TDX has the same issue: FRED
-> is enabled before exception handling is ready, and #VC/#VE can't be handled on
-> secondary CPUs.
-> 
-> The initialization order is wrong for both SEV-SNP and TDX. The fixes are small
-> and targeted—just ensuring FRED state is set up before it's needed.
+> The policy definitions below provide more details:
+>
+> ``KVM_SET_MEMORY_ATTRIBUTES2_CONTENT_POLICY_ZERO`` (default)
+>
+>   On a private to shared conversion, the host will read zeros from the
+>   converted memory on the next fault after successful return of the
+>   KVM_SET_MEMORY_ATTRIBUTES2 ioctl.
+>
+>   This is not supported (-EOPNOTSUPP) for a shared to private
+>   conversion. While some CoCo implementations do zero memory contents
+>   such that the guest reads zeros after conversion, the guest is not
+>   expected to trust host-provided zeroing, hence as a UAPI policy, KVM
+>   does not make any such guarantees.
 
-Sure, it's a theoretical problem for TDX and a practical, demonstrable
-one for SEV-SNP.
+The rationale for not supporting this in the UAPI isn't quite right
+and I think that the prohibition should be removed. It's true that the
+guest is not expected to trust host-provided zeroing. However, if the
+VMM invokes this ioctl with the ZERO policy, the zeroing is performed
+by the hypervisor, not by the (untrusted) host.
+
+Although pKVM handles fresh, zeroed memory provisioning via donation
+rather than attribute conversion, stating that the UAPI cannot make
+guarantees due to trust boundaries is incorrect. The hypervisor is
+precisely the entity the guest trusts to enforce this.
+
+The UAPI should define the semantics for a shared-to-private ZERO
+conversion, even if current architectures return -EOPNOTSUPP because
+they handle fresh memory provisioning via other mechanisms (like
+pKVM's donation path).
+
+How about something like the following:
+
+On a shared to private conversion, the hypervisor will zero the memory
+contents before mapping it into the guest's private address space,
+preventing the untrusted host from injecting arbitrary data into the
+guest. If an architecture handles zeroed-provisioning via mechanisms
+other than attribute conversion, it may return -EOPNOTSUPP.
+
+>   For testing purposes, the KVM_X86_SW_PROTECTED_VM testing vehicle
+>   will support this policy and ensure zeroing for conversions in both
+>   directions.
+>
+> ``KVM_SET_MEMORY_ATTRIBUTES2_CONTENT_POLICY_PRESERVE``
+>
+>   On private/shared conversions in both directions, memory contents
+>   will be preserved and readable. As a concrete example, if the host
+>   writes ``0xbeef`` to memory and converts the memory to shared, the
+>   guest will also read ``0xbeef``, after any necessary hardware or
+>   software provided decryption. After a reverse shared to private
+>   conversion, the host will also read ``0xbeef``.
+
+I think that this example is backwards. If the host writes to memory,
+that memory is already shared, isn't it? Converting it to shared is
+redundant. More importantly, if memory undergoes a shared-to-private
+conversion, the host must lose access entirely.
+
+Maybe a clearer example would reflect actual payload injection and
+bounce buffer sharing:
+- Shared-to-Private (Payload Injection): The host writes a payload
+(e.g., 0xbeef) to shared memory and converts it to private. The guest
+reads 0xbeef in its private address space. The host loses access.
+- Private-to-Shared (Bounce Buffer): The guest writes 0xbeef to
+private memory and converts it to shared. The host reads 0xbeef.
+
+>   pKVM (ARM) is the first user of this policy. Since pKVM does not
+>   protect memory with encryption, a content policy to preserve memory
+>   will not will not involve any decryption. The guest will be able to
+>   read what the host wrote with full content preservation.
+
+This is correct, but to be precise, I think it should explicitly
+mention Stage-2 page tables as the protection mechanism, maybe:
+
+Because pKVM protects private memory via Stage-2 page table isolation
+rather than hardware encryption, content preservation does not require
+cryptographic operations. The hypervisor (at EL2) simply transfers
+page ownership while retaining the data.
+
+Cheers,
+/fuad
+
+
+>   For testing purposes, the KVM_X86_SW_PROTECTED_VM testing vehicle
+>   will support this policy and the contents of converted memory will
+>   be preserved.
+>
+> ``KVM_SET_MEMORY_ATTRIBUTES2_CONTENT_POLICY_NONE``
+>
+>   This is an explicit request that KVM provide no guarantees on memory
+>   contents after conversion. Neither host nor guest should expect any
+>   guarantees about the memory contents after conversion.
+>
+>   For testing purposes, the KVM_X86_SW_PROTECTED_VM testing vehicle will
+>   support this policy and every byte of converted memory will read
+>   ``0xab``.
+>
+> >>  See also: :ref: `KVM_SET_MEMORY_ATTRIBUTES`.
+> >>
+> >
+> > [...snip...]
+> >
