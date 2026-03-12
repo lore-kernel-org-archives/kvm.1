@@ -1,170 +1,194 @@
-Received: from fout-a2-smtp.messagingengine.com (fout-a2-smtp.messagingengine.com [103.168.172.145])
+Received: from desiato.infradead.org (desiato.infradead.org [90.155.92.199])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 261AC2D94BA;
-	Thu, 12 Mar 2026 14:59:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.145
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF7453B6372
+	for <kvm@vger.kernel.org>; Thu, 12 Mar 2026 15:02:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.92.199
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773327551; cv=none; b=kQwBJWmUHbMCZD2DtuTipzokCU+SFwBbgzKUvgCVXcLnl4jnF2xFGQ7HCFjp17hbROzQJu17tKf3wwtUVKB1EAwLyitZR8QAkmdK9CA79SonCgUR9IT8TKUb7tkqyk8mjRWI9f5KLC+2OaSOoSVJYi7WErXDqwrwq8SOitSIAeA=
+	t=1773327741; cv=none; b=piye2GbCDyi9tFzUE6kux6WuFZqqXx5ZhM/cDmEanvW/mgM00eiuF1PurFgvUYIWVqRzU5ce71z11xrScFgdYCV07b1dzS/lvEz4d/Y+sGzi02Rb02F8PrZP/meihBKiimAuRqsoiV/Z31XHlSy9A1eCDxX7TXk4/Pyc12JEeZI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773327551; c=relaxed/simple;
-	bh=EuyUo1TKcXFtyurHlAgiSuSwLwCNan0tiL+7LSJo2Ew=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=kIUAXfXewAMHjdh/C62fULNq8GBRtCQiqkedglcq+v5iQWaBBQjBXAb4nVGT/PlQFVmW7mzDSbFiUVCdTDia1cGCvyneUBu1lHjj5TTInTmLlT0HAB0VE9zMb/x8vX7hQhsbk0IoLfv0F0hrYBLIO2ppONXTcglRnT1v2/JuyiY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=shazbot.org; spf=pass smtp.mailfrom=shazbot.org; dkim=pass (2048-bit key) header.d=shazbot.org header.i=@shazbot.org header.b=MeXXEUjo; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=A7vuiihh; arc=none smtp.client-ip=103.168.172.145
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=shazbot.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=shazbot.org
+	s=arc-20240116; t=1773327741; c=relaxed/simple;
+	bh=KiLMhhzwWhLODlarSRD6cPDGjOMIc0WForjLPVt+iFY=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=V4XhIiLj5bYWeMVOlObW+J/rQKpEnEEB0VwpshosyFezAqLgqIKgbt3I7K/hgv+KxC0Uahfdj3LlLIgC4aT++1aSdP6rkQN4j2dW6VJp6S+ibTrsZ/8YZNiGr9WIn+Rwxg4FoMrN+tJJSLhEXbbth1IhpTCqAJH1b2qe8bWvjU0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=desiato.srs.infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=J4SrIOul; arc=none smtp.client-ip=90.155.92.199
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=desiato.srs.infradead.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=shazbot.org header.i=@shazbot.org header.b="MeXXEUjo";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="A7vuiihh"
-Received: from phl-compute-07.internal (phl-compute-07.internal [10.202.2.47])
-	by mailfout.phl.internal (Postfix) with ESMTP id 13070EC05D2;
-	Thu, 12 Mar 2026 10:59:08 -0400 (EDT)
-Received: from phl-frontend-04 ([10.202.2.163])
-  by phl-compute-07.internal (MEProxy); Thu, 12 Mar 2026 10:59:08 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shazbot.org; h=
-	cc:cc:content-transfer-encoding:content-type:content-type:date
-	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to; s=fm3; t=1773327548;
-	 x=1773413948; bh=A7F7+y6YD+3PKjRpmzyhyLPjW9mm6E0QhfopTYFQlZM=; b=
-	MeXXEUjoLJOFjGonov/f67VpKENvPSN+pc2m1U0FxThEXVDvBInh8ACEzz+K+xaY
-	rupSVJMKzM1x3QYrsZ1RkA0YkSB/UwDFzR+EoXb7VNHuiO6XKMUlUGYGBfPcZ7KH
-	167ZREC2r9xcZXupyPJ7VMflyaaLtkLLgppkW1c8ncI3CeJ3lBI7OONpuIzawCm0
-	6EE6Rke90LrJiUJyR6A4Le3z9om0uoFU6UQJ+1zZWNiobC44nd+YCnmjHRQ3noec
-	xngry662V5miss+n9L4EbqMsJzzA8mak3hzqYuzQssT3Igmd6/yHJjiPh1WNHZiZ
-	xLGl9y39GJiclzPfJ+ZwtA==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=1773327548; x=
-	1773413948; bh=A7F7+y6YD+3PKjRpmzyhyLPjW9mm6E0QhfopTYFQlZM=; b=A
-	7vuiihhR0wBA6uxRH92WMQ7bEvxDxkCakmE05irmCtrOEpMR67S+S3TkPuwjhtCt
-	mnCvlSwpdcv8+wbKiz5yD9Sm02NsD6Y3nRXCFjvpHPbmP+hcgdHC2lmvvXjO37Mv
-	8QE3Abmc9nxbKFIbRDUNN98yqMOM7ean19SH9ZW4XeZXoZv/mi+tuKOGSg7JJTC8
-	6VhBQgwlWSWB8Yrbo6YyTAX5QOc7JOZF5g8BlKoh94mjxlM0xloZE92CZ63VB/nB
-	gHf5pPKBBVDUNXz8Ij6Sxnsi6nVWxbjntwhHnNBwQMr7W59Or3kHQNE+9zJ/GlM0
-	ITPVr8iq3NknWZH5MIaYQ==
-X-ME-Sender: <xms:u9SyabiJBgkhOThNNRpCUca151Xth747-aq7Y8NMaHQqBj_nZTvmpg>
-    <xme:u9SyadM6pG3f4ClPBY9oNOlNoEDIgd1593Pl44wkAkrcK9BBTR2gg61Jhnfu4Q_pc
-    2nTzC3fPoGMFFk3ZMWy6fGgjnX2BV0tSKLVHLBRhWwtn7klmtLKPg>
-X-ME-Received: <xmr:u9SyaecltY-_1Kgeld4e_HMYh7irZYuqrXbMZhkoYsLUfQ4oLBl8-BxTu5s>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgddvkeejtdekucetufdoteggodetrf
-    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
-    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
-    gurhepfffhvfevuffkjghfofggtgfgsehtqhertdertdejnecuhfhrohhmpeetlhgvgicu
-    hghilhhlihgrmhhsohhnuceorghlvgigsehshhgriigsohhtrdhorhhgqeenucggtffrrg
-    htthgvrhhnpeefkeelffehieetuedvhedvgeevieffiefhgeeivdegkeekvdefgeehjeeg
-    ieefteenucffohhmrghinhepnhhvihguihgrrdgtohhmnecuvehluhhsthgvrhfuihiivg
-    eptdenucfrrghrrghmpehmrghilhhfrhhomheprghlvgigsehshhgriigsohhtrdhorhhg
-    pdhnsggprhgtphhtthhopedugedpmhhouggvpehsmhhtphhouhhtpdhrtghpthhtoheprg
-    hnkhhithgrsehnvhhiughirgdrtghomhdprhgtphhtthhopehjghhgsehnvhhiughirgdr
-    tghomhdprhgtphhtthhopehvshgvthhhihesnhhvihguihgrrdgtohhmpdhrtghpthhtoh
-    epmhhotghhshesnhhvihguihgrrdgtohhmpdhrtghpthhtohepjhhgghesiihivghpvgdr
-    tggrpdhrtghpthhtohepshhkohhlohhthhhumhhthhhosehnvhhiughirgdrtghomhdprh
-    gtphhtthhopegtjhhirgesnhhvihguihgrrdgtohhmpdhrtghpthhtohepiihhihifsehn
-    vhhiughirgdrtghomhdprhgtphhtthhopehkjhgrjhhusehnvhhiughirgdrtghomh
-X-ME-Proxy: <xmx:u9SyaXzsQNFgnP7U-rg8QRtIQyoiQQmyD7qVcHPkF6cQ6GHqlQZlGQ>
-    <xmx:u9SyaT2s59kYcfpRyqXJB8gMClrSFttl-uu7h3-OPthEbtdqxza4Ig>
-    <xmx:u9Syaeejf9vrdSqWDf8oKb5bv6yGOVFQmm0Cjh27sDiE0RfJWCJ9IQ>
-    <xmx:u9SyaYXkSdDANuwym1xq-yL6OOcgCjBhpu1XGWqU_8ThvHCGKB8aqg>
-    <xmx:vNSyaf_vEsTB4s2whIHZlPS1NHsn0zeAEgnnqevbh0yaH1dyTAklDFQf>
-Feedback-ID: i03f14258:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
- 12 Mar 2026 10:59:06 -0400 (EDT)
-Date: Thu, 12 Mar 2026 08:59:04 -0600
-From: Alex Williamson <alex@shazbot.org>
-To: Ankit Agrawal <ankita@nvidia.com>
-Cc: Jason Gunthorpe <jgg@nvidia.com>, Vikram Sethi <vsethi@nvidia.com>, Matt
- Ochs <mochs@nvidia.com>, "jgg@ziepe.ca" <jgg@ziepe.ca>, Shameer Kolothum
- Thodi <skolothumtho@nvidia.com>, Neo Jia <cjia@nvidia.com>, Zhi Wang
- <zhiw@nvidia.com>, Krishnakant Jaju <kjaju@nvidia.com>, Yishai Hadas
- <yishaih@nvidia.com>, "kevin.tian@intel.com" <kevin.tian@intel.com>,
- "kvm@vger.kernel.org" <kvm@vger.kernel.org>, "linux-kernel@vger.kernel.org"
- <linux-kernel@vger.kernel.org>, alex@shazbot.org
-Subject: Re: [PATCH RFC v2 00/15] Add virtualization support for EGM
-Message-ID: <20260312085904.42a98f16@shazbot.org>
-In-Reply-To: <SA1PR12MB7199673D9DE79C11DB6B9E33B044A@SA1PR12MB7199.namprd12.prod.outlook.com>
-References: <20260223155514.152435-1-ankita@nvidia.com>
-	<20260305103335.74fb8141@shazbot.org>
-	<SA1PR12MB719904F9ED153FF4BA4EFA28B047A@SA1PR12MB7199.namprd12.prod.outlook.com>
-	<20260311143706.2095a547@shazbot.org>
-	<SA1PR12MB7199673D9DE79C11DB6B9E33B044A@SA1PR12MB7199.namprd12.prod.outlook.com>
-X-Mailer: Claws Mail 4.3.1 (GTK 3.24.51; x86_64-pc-linux-gnu)
+	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="J4SrIOul"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=desiato.20200630; h=MIME-Version:Content-Type:References:
+	In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=KiLMhhzwWhLODlarSRD6cPDGjOMIc0WForjLPVt+iFY=; b=J4SrIOul3cJUwFoI+chAUUicdF
+	VAPZ9xyzZmsZtRO/StqXZTlqmPfyxjxoswYL+Pe+Md36o9O87WnZeCXRmRnsAkNmqOAbO4NREtrYb
+	4Gk987vh0UpDuU4v/G1enwkAzZrnZ2fMNkStEEgOMWNmcdQsI+fHnah47IUKgzYMsJIVLhlMfMSBI
+	gPCioyUySXdRuwNn+kwIwlZoG18eNyBD1CURZYsMg8wE3GB2a7bk2tBF91BBvrez/cO2zqD9HM/Gm
+	UuJ7ofpPNgI7q1qAZOQxptV5thiZbirKSjc5WA9x2sB1TFNPKfP2tlE9K6mGVgrT2/56zWTVnaMSI
+	8wp83EFA==;
+Received: from [212.162.19.134] (helo=u09cd745991455d.ant.amazon.com)
+	by desiato.infradead.org with esmtpsa (Exim 4.98.2 #2 (Red Hat Linux))
+	id 1w0hYB-00000001PEi-1zKp;
+	Thu, 12 Mar 2026 15:02:11 +0000
+Message-ID: <43e9c370c07092e6e1342f70d272166a1f3caedb.camel@infradead.org>
+Subject: Re: [PATCH] KVM: optionally post write on ioeventfd write
+From: David Woodhouse <dwmw2@infradead.org>
+To: Thanos Makatos <thanos.makatos@nutanix.com>, "seanjc@google.com"
+	 <seanjc@google.com>, "Stamatis, Ilias" <ilstam@amazon.com>, Paul Durrant
+	 <paul@xen.org>, graf@amazon.de
+Cc: "pbonzini@redhat.com" <pbonzini@redhat.com>, John Levon
+	 <john.levon@nutanix.com>, "kvm@vger.kernel.org" <kvm@vger.kernel.org>
+Date: Thu, 12 Mar 2026 16:02:10 +0100
+In-Reply-To: <20260306125651.2485-1-thanos.makatos@nutanix.com>
+References: <20260306125651.2485-1-thanos.makatos@nutanix.com>
+Content-Type: multipart/signed; micalg="sha-256"; protocol="application/pkcs7-signature";
+	boundary="=-paEv327EepvQi9CP7NCt"
+User-Agent: Evolution 3.52.3-0ubuntu1.1 
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+X-SRS-Rewrite: SMTP reverse-path rewritten from <dwmw2@infradead.org> by desiato.infradead.org. See http://www.infradead.org/rpr.html
+
+
+--=-paEv327EepvQi9CP7NCt
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Thu, 12 Mar 2026 13:51:20 +0000
-Ankit Agrawal <ankita@nvidia.com> wrote:
-
-> >> > nvgrace-gpu is manipulating sysfs
-> >> > on devices owned by nvgrace-egm, we don't have mechanisms to manage =
-the
-> >> > aux device relative to the state of the GPU, we're trying to add a
-> >> > driver that can bind to device created by an out-of-tree driver, and
-> >> > we're inventing new uAPIs on the chardev for things that already exi=
-st
-> >> > for vfio regions. =20
-> >>
-> >> Sorry for the confusion. The nvgrace-egm would not bind to the device
-> >> created by the out-of-tree driver. We would have a separate out-of-tree
-> >> equivalent of nvgrace-egm to bind to the device by the out-of-tree vfio
-> >> driver. Maybe we can consider exposing a register/unregister APIs from
-> >> nvgrace-egm where a module (in-tree nvgrace / out-of-tree) can register
-> >> a pdev and nvgrace-egm can use to fetch the region info. =20
-> >
-> > Ok, this wasn't clear to me, but does that also mean that if some GPUs
-> > are managed by nvgrace-gpu and others by out-of-tree drivers that the
-> > in-kernel and out-of-tree equivalent drivers are both installing
-> > chardevs as /dev/egmXX?=C2=A0 Playing in the same space is ugly, but wh=
-at
-> > happens when the 2 GPUs per socket are split between drivers and they
-> > both try to added the same chardev? =20
+On Fri, 2026-03-06 at 12:56 +0000, Thanos Makatos wrote:
+> Add a new flag, KVM_IOEVENTFD_FLAG_POST_WRITE, when assigning an
+> ioeventfd that results in the value written by the guest to be copied
+> to user-supplied memory instead of being discarded.
 >=20
-> But that would be an unsupported configuration. It is expected that all t=
-he
-> GPUs on the system and the EGM char devices to be attached to the same
-> VM for full functionality. So either all the devices (GPU and EGM chardev)
-> would be bound to nvgrace or to the out-of-tree module. Please refer sec =
-8.1
-> https://docs.nvidia.com/multi-node-nvlink-systems/partition-guide-v1-2.pdf
-> Perhaps I should add this information in the commit message.
-
-Just because it can be documented as a policy doesn't make it an
-agreeable architecture.
-
-> > However, I'd then ask the question why we're associating EGM to the GPU
-> > PCI driver at all.=C2=A0 For instance, why should nvgrace-gpu spawn aux
-> > devices to feed into an nvgrace-egm driver, and duplicate that whole
-> > thing in an out-of-tree driver, when we could just have one in-kernel
-> > platform(?) driver walk ACPI, find these ranges, and expose them as
-> > chardev entirely independent of the PCI driver bound to the GPU? =20
+> The goal of this new mechanism is to speed up doorbell writes on NVMe
+> controllers emulated outside of the VMM. Currently, a doorbell write to
+> an NVMe SQ tail doorbell requires returning from ioctl(KVM_RUN) and the
+> VMM communicating the event, along with the doorbell value, to the NVMe
+> controller emulation task.=C2=A0 With POST_WRITE, the NVMe emulation task=
+ is
+> directly notified of the doorbell write and can find the doorbell value
+> in a known location, without involving VMM.
 >=20
-> So a new platform driver to walk through the ACPI and look for EGM proper=
-ties
-> and create EGM char devs?=20
+> Add tests for this new functionality.
 >=20
-> Maybe it is okay, but given that all the 4 EGM properties are under the G=
-PU's
-> ACPI node and there being no independent ACPI _HID device identity, it so=
-unds
-> a bit off to me. Do we have a precedent like that?
+> LLM (claude-4.6-opus-high) was used mainly for the tests and to a
+> lesser extent for pre-reviewing this patch.
 >=20
-> But as I mentioned above, the expectation is that the EGM devices and the=
- GPU
-> devices to be assigned to the same VM. So would it not make sense that we
-> keep the association between the EGM devices and the GPU devices?
+> Signed-off-by: Thanos Makatos <thanos.makatos@nutanix.com>
 
-You're telling me that the EGM access is 100% independent of any state
-related to the GPU, so why would we tie the lifecycle of these aux
-devices to any particular driver for the GPU or re-implement it across
-multiple drivers?  That doesn't make sense to me.  Thanks,
+Interesting. Ilias posted a coalesced MMIO patch series=C2=B9 a couple of
+years ago which addressed similar requirements. IIRC his primary focus
+back then was emulating an Intel i82559 NIC, and he identified NVMe
+doorbells as another potential use case.
 
-Alex
+More recently, I think Alex is looking at ways to enable doorbells
+directly between guests with as little interaction from the L0
+hypervisor as possible.
+
+I'd love to see if this KVM_IOEVENTFD_FLAG_POST_WRITE works for the
+i82559 emulation use case. I think back-to-back writes are discarded
+with this model, while Ilias's patches would convey each one?=20
+
+
+=C2=B9 https://lore.kernel.org/all/20240820133333.1724191-1-ilstam@amazon.c=
+om/
+
+--=-paEv327EepvQi9CP7NCt
+Content-Type: application/pkcs7-signature; name="smime.p7s"
+Content-Disposition: attachment; filename="smime.p7s"
+Content-Transfer-Encoding: base64
+
+MIAGCSqGSIb3DQEHAqCAMIACAQExDzANBglghkgBZQMEAgEFADCABgkqhkiG9w0BBwEAAKCCD9Aw
+ggSOMIIDdqADAgECAhAOmiw0ECVD4cWj5DqVrT9PMA0GCSqGSIb3DQEBCwUAMGUxCzAJBgNVBAYT
+AlVTMRUwEwYDVQQKEwxEaWdpQ2VydCBJbmMxGTAXBgNVBAsTEHd3dy5kaWdpY2VydC5jb20xJDAi
+BgNVBAMTG0RpZ2lDZXJ0IEFzc3VyZWQgSUQgUm9vdCBDQTAeFw0yNDAxMzAwMDAwMDBaFw0zMTEx
+MDkyMzU5NTlaMEExCzAJBgNVBAYTAkFVMRAwDgYDVQQKEwdWZXJva2V5MSAwHgYDVQQDExdWZXJv
+a2V5IFNlY3VyZSBFbWFpbCBHMjCCASIwDQYJKoZIhvcNAQEBBQADggEPADCCAQoCggEBAMjvgLKj
+jfhCFqxYyRiW8g3cNFAvltDbK5AzcOaR7yVzVGadr4YcCVxjKrEJOgi7WEOH8rUgCNB5cTD8N/Et
+GfZI+LGqSv0YtNa54T9D1AWJy08ZKkWvfGGIXN9UFAPMJ6OLLH/UUEgFa+7KlrEvMUupDFGnnR06
+aDJAwtycb8yXtILj+TvfhLFhafxroXrflspavejQkEiHjNjtHnwbZ+o43g0/yxjwnarGI3kgcak7
+nnI9/8Lqpq79tLHYwLajotwLiGTB71AGN5xK+tzB+D4eN9lXayrjcszgbOv2ZCgzExQUAIt98mre
+8EggKs9mwtEuKAhYBIP/0K6WsoMnQCcCAwEAAaOCAVwwggFYMBIGA1UdEwEB/wQIMAYBAf8CAQAw
+HQYDVR0OBBYEFIlICOogTndrhuWByNfhjWSEf/xwMB8GA1UdIwQYMBaAFEXroq/0ksuCMS1Ri6en
+IZ3zbcgPMA4GA1UdDwEB/wQEAwIBhjAdBgNVHSUEFjAUBggrBgEFBQcDBAYIKwYBBQUHAwIweQYI
+KwYBBQUHAQEEbTBrMCQGCCsGAQUFBzABhhhodHRwOi8vb2NzcC5kaWdpY2VydC5jb20wQwYIKwYB
+BQUHMAKGN2h0dHA6Ly9jYWNlcnRzLmRpZ2ljZXJ0LmNvbS9EaWdpQ2VydEFzc3VyZWRJRFJvb3RD
+QS5jcnQwRQYDVR0fBD4wPDA6oDigNoY0aHR0cDovL2NybDMuZGlnaWNlcnQuY29tL0RpZ2lDZXJ0
+QXNzdXJlZElEUm9vdENBLmNybDARBgNVHSAECjAIMAYGBFUdIAAwDQYJKoZIhvcNAQELBQADggEB
+ACiagCqvNVxOfSd0uYfJMiZsOEBXAKIR/kpqRp2YCfrP4Tz7fJogYN4fxNAw7iy/bPZcvpVCfe/H
+/CCcp3alXL0I8M/rnEnRlv8ItY4MEF+2T/MkdXI3u1vHy3ua8SxBM8eT9LBQokHZxGUX51cE0kwa
+uEOZ+PonVIOnMjuLp29kcNOVnzf8DGKiek+cT51FvGRjV6LbaxXOm2P47/aiaXrDD5O0RF5SiPo6
+xD1/ClkCETyyEAE5LRJlXtx288R598koyFcwCSXijeVcRvBB1cNOLEbg7RMSw1AGq14fNe2cH1HG
+W7xyduY/ydQt6gv5r21mDOQ5SaZSWC/ZRfLDuEYwggWbMIIEg6ADAgECAhAH5JEPagNRXYDiRPdl
+c1vgMA0GCSqGSIb3DQEBCwUAMEExCzAJBgNVBAYTAkFVMRAwDgYDVQQKEwdWZXJva2V5MSAwHgYD
+VQQDExdWZXJva2V5IFNlY3VyZSBFbWFpbCBHMjAeFw0yNDEyMzAwMDAwMDBaFw0yODAxMDQyMzU5
+NTlaMB4xHDAaBgNVBAMME2R3bXcyQGluZnJhZGVhZC5vcmcwggIiMA0GCSqGSIb3DQEBAQUAA4IC
+DwAwggIKAoICAQDali7HveR1thexYXx/W7oMk/3Wpyppl62zJ8+RmTQH4yZeYAS/SRV6zmfXlXaZ
+sNOE6emg8WXLRS6BA70liot+u0O0oPnIvnx+CsMH0PD4tCKSCsdp+XphIJ2zkC9S7/yHDYnqegqt
+w4smkqUqf0WX/ggH1Dckh0vHlpoS1OoxqUg+ocU6WCsnuz5q5rzFsHxhD1qGpgFdZEk2/c//ZvUN
+i12vPWipk8TcJwHw9zoZ/ZrVNybpMCC0THsJ/UEVyuyszPtNYeYZAhOJ41vav1RhZJzYan4a1gU0
+kKBPQklcpQEhq48woEu15isvwWh9/+5jjh0L+YNaN0I//nHSp6U9COUG9Z0cvnO8FM6PTqsnSbcc
+0j+GchwOHRC7aP2t5v2stVx3KbptaYEzi4MQHxm/0+HQpMEVLLUiizJqS4PWPU6zfQTOMZ9uLQRR
+ci+c5xhtMEBszlQDOvEQcyEG+hc++fH47K+MmZz21bFNfoBxLP6bjR6xtPXtREF5lLXxp+CJ6KKS
+blPKeVRg/UtyJHeFKAZXO8Zeco7TZUMVHmK0ZZ1EpnZbnAhKE19Z+FJrQPQrlR0gO3lBzuyPPArV
+hvWxjlO7S4DmaEhLzarWi/ze7EGwWSuI2eEa/8zU0INUsGI4ywe7vepQz7IqaAovAX0d+f1YjbmC
+VsAwjhLmveFjNwIDAQABo4IBsDCCAawwHwYDVR0jBBgwFoAUiUgI6iBOd2uG5YHI1+GNZIR//HAw
+HQYDVR0OBBYEFFxiGptwbOfWOtMk5loHw7uqWUOnMDAGA1UdEQQpMCeBE2R3bXcyQGluZnJhZGVh
+ZC5vcmeBEGRhdmlkQHdvb2Rob3Uuc2UwFAYDVR0gBA0wCzAJBgdngQwBBQEBMA4GA1UdDwEB/wQE
+AwIF4DAdBgNVHSUEFjAUBggrBgEFBQcDAgYIKwYBBQUHAwQwewYDVR0fBHQwcjA3oDWgM4YxaHR0
+cDovL2NybDMuZGlnaWNlcnQuY29tL1Zlcm9rZXlTZWN1cmVFbWFpbEcyLmNybDA3oDWgM4YxaHR0
+cDovL2NybDQuZGlnaWNlcnQuY29tL1Zlcm9rZXlTZWN1cmVFbWFpbEcyLmNybDB2BggrBgEFBQcB
+AQRqMGgwJAYIKwYBBQUHMAGGGGh0dHA6Ly9vY3NwLmRpZ2ljZXJ0LmNvbTBABggrBgEFBQcwAoY0
+aHR0cDovL2NhY2VydHMuZGlnaWNlcnQuY29tL1Zlcm9rZXlTZWN1cmVFbWFpbEcyLmNydDANBgkq
+hkiG9w0BAQsFAAOCAQEAQXc4FPiPLRnTDvmOABEzkIumojfZAe5SlnuQoeFUfi+LsWCKiB8Uextv
+iBAvboKhLuN6eG/NC6WOzOCppn4mkQxRkOdLNThwMHW0d19jrZFEKtEG/epZ/hw/DdScTuZ2m7im
+8ppItAT6GXD3aPhXkXnJpC/zTs85uNSQR64cEcBFjjoQDuSsTeJ5DAWf8EMyhMuD8pcbqx5kRvyt
+JPsWBQzv1Dsdv2LDPLNd/JUKhHSgr7nbUr4+aAP2PHTXGcEBh8lTeYea9p4d5k969pe0OHYMV5aL
+xERqTagmSetuIwolkAuBCzA9vulg8Y49Nz2zrpUGfKGOD0FMqenYxdJHgDCCBZswggSDoAMCAQIC
+EAfkkQ9qA1FdgOJE92VzW+AwDQYJKoZIhvcNAQELBQAwQTELMAkGA1UEBhMCQVUxEDAOBgNVBAoT
+B1Zlcm9rZXkxIDAeBgNVBAMTF1Zlcm9rZXkgU2VjdXJlIEVtYWlsIEcyMB4XDTI0MTIzMDAwMDAw
+MFoXDTI4MDEwNDIzNTk1OVowHjEcMBoGA1UEAwwTZHdtdzJAaW5mcmFkZWFkLm9yZzCCAiIwDQYJ
+KoZIhvcNAQEBBQADggIPADCCAgoCggIBANqWLse95HW2F7FhfH9bugyT/danKmmXrbMnz5GZNAfj
+Jl5gBL9JFXrOZ9eVdpmw04Tp6aDxZctFLoEDvSWKi367Q7Sg+ci+fH4KwwfQ8Pi0IpIKx2n5emEg
+nbOQL1Lv/IcNiep6Cq3DiyaSpSp/RZf+CAfUNySHS8eWmhLU6jGpSD6hxTpYKye7PmrmvMWwfGEP
+WoamAV1kSTb9z/9m9Q2LXa89aKmTxNwnAfD3Ohn9mtU3JukwILRMewn9QRXK7KzM+01h5hkCE4nj
+W9q/VGFknNhqfhrWBTSQoE9CSVylASGrjzCgS7XmKy/BaH3/7mOOHQv5g1o3Qj/+cdKnpT0I5Qb1
+nRy+c7wUzo9OqydJtxzSP4ZyHA4dELto/a3m/ay1XHcpum1pgTOLgxAfGb/T4dCkwRUstSKLMmpL
+g9Y9TrN9BM4xn24tBFFyL5znGG0wQGzOVAM68RBzIQb6Fz758fjsr4yZnPbVsU1+gHEs/puNHrG0
+9e1EQXmUtfGn4InoopJuU8p5VGD9S3Ikd4UoBlc7xl5yjtNlQxUeYrRlnUSmdlucCEoTX1n4UmtA
+9CuVHSA7eUHO7I88CtWG9bGOU7tLgOZoSEvNqtaL/N7sQbBZK4jZ4Rr/zNTQg1SwYjjLB7u96lDP
+sipoCi8BfR35/ViNuYJWwDCOEua94WM3AgMBAAGjggGwMIIBrDAfBgNVHSMEGDAWgBSJSAjqIE53
+a4blgcjX4Y1khH/8cDAdBgNVHQ4EFgQUXGIam3Bs59Y60yTmWgfDu6pZQ6cwMAYDVR0RBCkwJ4ET
+ZHdtdzJAaW5mcmFkZWFkLm9yZ4EQZGF2aWRAd29vZGhvdS5zZTAUBgNVHSAEDTALMAkGB2eBDAEF
+AQEwDgYDVR0PAQH/BAQDAgXgMB0GA1UdJQQWMBQGCCsGAQUFBwMCBggrBgEFBQcDBDB7BgNVHR8E
+dDByMDegNaAzhjFodHRwOi8vY3JsMy5kaWdpY2VydC5jb20vVmVyb2tleVNlY3VyZUVtYWlsRzIu
+Y3JsMDegNaAzhjFodHRwOi8vY3JsNC5kaWdpY2VydC5jb20vVmVyb2tleVNlY3VyZUVtYWlsRzIu
+Y3JsMHYGCCsGAQUFBwEBBGowaDAkBggrBgEFBQcwAYYYaHR0cDovL29jc3AuZGlnaWNlcnQuY29t
+MEAGCCsGAQUFBzAChjRodHRwOi8vY2FjZXJ0cy5kaWdpY2VydC5jb20vVmVyb2tleVNlY3VyZUVt
+YWlsRzIuY3J0MA0GCSqGSIb3DQEBCwUAA4IBAQBBdzgU+I8tGdMO+Y4AETOQi6aiN9kB7lKWe5Ch
+4VR+L4uxYIqIHxR7G2+IEC9ugqEu43p4b80LpY7M4KmmfiaRDFGQ50s1OHAwdbR3X2OtkUQq0Qb9
+6ln+HD8N1JxO5nabuKbymki0BPoZcPdo+FeRecmkL/NOzzm41JBHrhwRwEWOOhAO5KxN4nkMBZ/w
+QzKEy4PylxurHmRG/K0k+xYFDO/UOx2/YsM8s138lQqEdKCvudtSvj5oA/Y8dNcZwQGHyVN5h5r2
+nh3mT3r2l7Q4dgxXlovERGpNqCZJ624jCiWQC4ELMD2+6WDxjj03PbOulQZ8oY4PQUyp6djF0keA
+MYIDuzCCA7cCAQEwVTBBMQswCQYDVQQGEwJBVTEQMA4GA1UEChMHVmVyb2tleTEgMB4GA1UEAxMX
+VmVyb2tleSBTZWN1cmUgRW1haWwgRzICEAfkkQ9qA1FdgOJE92VzW+AwDQYJYIZIAWUDBAIBBQCg
+ggE3MBgGCSqGSIb3DQEJAzELBgkqhkiG9w0BBwEwHAYJKoZIhvcNAQkFMQ8XDTI2MDMxMjE1MDIx
+MFowLwYJKoZIhvcNAQkEMSIEILWVdOAKD3eQQoLe5JY1CZj4NGPPDVve+HIOXIrEFoWYMGQGCSsG
+AQQBgjcQBDFXMFUwQTELMAkGA1UEBhMCQVUxEDAOBgNVBAoTB1Zlcm9rZXkxIDAeBgNVBAMTF1Zl
+cm9rZXkgU2VjdXJlIEVtYWlsIEcyAhAH5JEPagNRXYDiRPdlc1vgMGYGCyqGSIb3DQEJEAILMVeg
+VTBBMQswCQYDVQQGEwJBVTEQMA4GA1UEChMHVmVyb2tleTEgMB4GA1UEAxMXVmVyb2tleSBTZWN1
+cmUgRW1haWwgRzICEAfkkQ9qA1FdgOJE92VzW+AwDQYJKoZIhvcNAQEBBQAEggIAqCqd4ZsueiXv
+sxYZYI0Upi3NBr6eM8pYZVsF044vA9lh+noqT7sFWIuy/Lasc73q206Jsdo2x6U4WMZOQZCD+gF3
+XIAqV+6Rv7Bll5xsAuXord34+PnApMlILPTy8AfZgPS6IUiEDifdiZthmSO2GdCtNSRm+g804bwh
+o557Lgp/R2HYMc4GCIzZ/jJXRrRyCmNqMccsMk7dOMDNg03zsHl2H+xCSbX0m7Q++mgJBJZugEeX
+f1vN3qaX5jrvjzjNvmPsMFWQu2Xb8rh3JT2XWn2XpUDWNPAXsarDWVg9rqUizTEFGFd6YiPDnDfH
+rMA1NcnbSzRoWuzGCfPxVOUWB4VI1dLSVOmOL0O/APRbwQF/OM8GHZMajOxq8XQ1Cg5bzrTWUTAq
+GioC2bLNnj1Sa2nqus9kZl3Ca8Kv8N24FTFUcHS7wtIEnSPJs/7HGO5hn+E2/TTgxmtF5V2SJYJF
+YDxl/2ONtElhG+3/gY9/BiTWL7r/QjhuAlz8+sPEdb6v01xN2l02Is2hFATVmtH7n+NpD1ztvtOT
+rexuwj/9PGo8zEm/dQ+QH9tfc0soPmaKYLpXji+MvKRu6X3ciGVImCjVHD5RD/1SKunw+XIQha/B
+m9DGmEnVqH6GEwap/TiOgI4B/FUcRFV6n7Mj9BGi4KN+sxRB8zpaGMHVoZiv8h0AAAAAAAA=
+
+
+--=-paEv327EepvQi9CP7NCt--
