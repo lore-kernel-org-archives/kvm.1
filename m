@@ -1,111 +1,129 @@
-Received: from mail-pl1-f169.google.com (mail-pl1-f169.google.com [209.85.214.169])
+Received: from mail-qt1-f181.google.com (mail-qt1-f181.google.com [209.85.160.181])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A87B39BFFE
-	for <kvm@vger.kernel.org>; Thu, 12 Mar 2026 12:37:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.169
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A22363BF661
+	for <kvm@vger.kernel.org>; Thu, 12 Mar 2026 12:57:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.181
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773319080; cv=none; b=jwu9F8kBrYKuodn6oj4jKFoxVYGWPsz2Vl3BNutV+41i3Md0Yy0CavafE6zceqeQzSDQYKJp70h9XWUADJ4iILJ02/M3DcyXccyNCYis/k/uVTlLNUU63UdQYIIMsl6DAUjfQ4S7kk/gPFfR4KNJt+z2w75PDSjW9GQ4mIa1AKQ=
+	t=1773320254; cv=none; b=mi2Thg0GGRRccmGE/tBfuyFldM0RPCqA6Cm0W8mh65C7g49MuR8UrsiS3MuQNVHkNvoSbBactnR8dABKRhVeZi8KA5KJrV01y6RyxHVJaUwL2ddWHgeDKeIaU0lFQEcv30k7GWo89Z/Y88IDqCtDfOl2hTfZIOioPXMlfiDaU9c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773319080; c=relaxed/simple;
-	bh=MjrYeX3O9nNiiB/MKuXQK9ZharRhOnd3F4rdG5ea7r4=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=eWskZAve+8XBllW2eEdyIoAxbbKF3FDRggz7uyapaIA0V/l225msNxxsQ7D4grC8ksFz4h0qKEd3E0gSulNRgsuvqxOFl4UoqPm1mOkCwG4kX7JjzMRw7Sg4FDRNYnvX6ZI/9IHqr7egHDjV1f3S47XSDpoU35oa4EFXe7iHUL4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=PFs6TvmA; arc=none smtp.client-ip=209.85.214.169
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1773320254; c=relaxed/simple;
+	bh=Rr1jkAP22lZkLvo3o90a9fRSWh9+kilNKtAarSScWFY=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Saaewb2zUVyOAdtoims9JacBBeRTsQIqB96AjRPrL7XPLx6FQIlKmrGX+REFRf8P0c33G733IHprj4h+iwb4iE1WJABRkljSf5ln9vv6PKj+RwT22iUkU9IJZvyFbxTGyeBwexx+1uyECicAi8qHQX5tvxUQL1lLrGdRGIwcatM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca; spf=pass smtp.mailfrom=ziepe.ca; dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b=fHqxjqGD; arc=none smtp.client-ip=209.85.160.181
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ziepe.ca
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="PFs6TvmA"
-Received: by mail-pl1-f169.google.com with SMTP id d9443c01a7336-2ae505619baso6951065ad.2
-        for <kvm@vger.kernel.org>; Thu, 12 Mar 2026 05:37:54 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b="fHqxjqGD"
+Received: by mail-qt1-f181.google.com with SMTP id d75a77b69052e-506251815a3so8617381cf.0
+        for <kvm@vger.kernel.org>; Thu, 12 Mar 2026 05:57:32 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1773319074; x=1773923874; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=4kpKB82B808dmXk8GsT3FbFqvAl6veGW+hmwY2lKqMA=;
-        b=PFs6TvmA99jXuNxEGn/CiQLDjxFQF8Q7zL8mhc3aJA3YCiF3V6PBVp8BkYY0CyDLXj
-         Wwy+GgeP2fcissPBtFkA3/NepIECyeBB9dgMUmkcYetJvlo5QG/KGKLcVoBmQPx8l+Fu
-         lJhQLSgUOt5lW/ECzeePf7gW20TE+y3qdHVhPY/ofdV9CUiuQJwqw5V+60+TTNsWyJwH
-         EGfix2H9FBCxovwseeIP3Ff4wcmeyTv2HNpBzVDwlQnNcSSRqP3yIhksE8h7tr7K4B3P
-         prowm4r3oEeouDwkRtT6eajRVohxjhWUoGs37Er2PsXXUrhdSnwOlvTX4Sb5a7Agw/X5
-         3wjw==
+        d=ziepe.ca; s=google; t=1773320252; x=1773925052; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=J1SF1XBHkHR0j7NZVucv0LxpGoGXl67PUefLsfwpAbo=;
+        b=fHqxjqGD7mReR8MT2yBowt9MuNKPAKQc++mWcb4ZOttX6YldICO+OnnxWIQjO0C8L5
+         wjOw0Gg7MqV4U+G9pES+s6h1NtZIjaKrBXMW81hrLyc8SxWYHtvQK3FlTjqiyroZskXE
+         jYj0kUENL7Yhu5zg+0UQ91XYlYYlozX9U8uAqBEFaih0fSnDo8kprjTDRYJ58gzKRExo
+         MSUW+Q+e0P2WpZGotx0DuVRaUqq4vGsUUSX1YbPnOxmRUKlXFY/aNRmXMXDbAEfx0Lnn
+         e41FpuPSZjTSuTkWfTMW8e1MvewVXC2p6zLd4GrSZjvSKS4Q06nDQYaSimUW3qR5RhoY
+         JV6A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1773319074; x=1773923874;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=4kpKB82B808dmXk8GsT3FbFqvAl6veGW+hmwY2lKqMA=;
-        b=oJK7BqGV9U5owIvsH9y/EUzm4EeeCY5EZqXr+zRKUnQVMHRxNEyKNqdpmI+JhwZF6D
-         07bP8V6osl5WeweQhUYR8sPR/UhoEQ8D+UNhYztOfdglODBsds5nKBGsnepsGRA+YJ2y
-         z1KLKayHJdPZudShXuCd5EFDOHHhW3MM2KQS7warXRYiiA4farOLxBT0mDOJS7D19cHB
-         uX0b4G/Kov+3tk+WkBJ48wiwbArLFluwGX29YVHAIEVM7Gqi/Wa4qVmgpb5QsYUjY7va
-         Y6evEHSia+QeFVGVPpgrNjXK5Xtckm01EVdbXyFePTHLixDpd+I6JEz+jLLrMJTNf/m4
-         3gKg==
-X-Forwarded-Encrypted: i=1; AJvYcCXxKwzyptbxY5sjtYgdBkVhxnDtUUuyF9zgi00aqhAbqZlbHio48fDpsuaiGkLeMM03GiQ=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz3MbxlPnkw1ipq0EMTUSkjs63Y4J0GuQXppoktsduxizck/sMJ
-	dLCRnldsQDk9dT7lNha2vmKiuW4gnr8iz2Ua+M9cGoXQ7eRAr8qRDezo
-X-Gm-Gg: ATEYQzxF/8XIp+ptS0LpGwdgcjwT7yyg1MuDv4Nw7fc7q+OJx2x8vBCENT5AkTdu/eb
-	gzT00YGWCh8ovV2rErO4FdFnVB1h9JCI7NW2qdJNAVASr/eErbOK2vNkaFinXSLJUvKDuQI0gWQ
-	h96ocWn+zMlXIWwxjfwnrGdT1x83Vc2MuTm2NexbEGY78U1QyaoNOMLxsFZi4anI5tcv50CgR1N
-	YRB748uZPdYMjk0XZWMX38QftIDIyoTTntgdAwwkpffDuSMbinEO1j2zvoRwLjc0PTQ3bb600EU
-	Wpow+uNH1ssUQu80dls9WHLVenxrcv1y8QlBlB8F70vB0nNayDn0x0Knqnn59xQNSmACXrIpmm8
-	WhFS5kU0TPMZcWaKBsiKGh7qEkaonurGHT2n1D0a05vHPU9yvH/6j0+06u2ULo3sVRl34eWFbs6
-	2tiaoZZ5m6Exqbuo1OToZwZRbiDQt58Eikd+EyKVL3a9ZQBztkDVLQA/MI4PMxZGq969lKf3bLT
-	mvUSb1Sng==
-X-Received: by 2002:a17:903:17cb:b0:2ae:c529:a130 with SMTP id d9443c01a7336-2aec529a950mr10622195ad.9.1773319073829;
-        Thu, 12 Mar 2026 05:37:53 -0700 (PDT)
-Received: from trieu2-huynh-trieuhpn-ubuntu24.bee-live.svc.cluster.local ([27.122.242.65])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2aec7c81621sm4550265ad.83.2026.03.12.05.37.50
+        d=1e100.net; s=20230601; t=1773320252; x=1773925052;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=J1SF1XBHkHR0j7NZVucv0LxpGoGXl67PUefLsfwpAbo=;
+        b=ebkpXRxLoh+QymUXeUoGWWiJPzOh5vEZLgtCp+pYaeSwXddhLVPlMgxaYXh1c5DNS8
+         3sXmC/0/IP2GStr/TKaKKKo3M7pyqGNgzn4r7uQH6G5+knLkUHEf18tRy7zE1s8XAuaM
+         6gAWO0wHOuxN2G/5Tyvq6ZfYEkdaRuEniXY1ZwF1AyB+N2q4sDcilYnwNudzGFNsxmNl
+         5omn6a2ZCMXjT0k34vE3nKKCCT41A+vU0HWda5L/qJjeVC6O9TJmBx7YOFJUOQMAtFs/
+         NH61QrbsLg9UTFUKAYsZUy/Wx3qPZ3dVnY8w7IcMWfYgPHlT84Ae7Lh3WBy5Lu8Ot+Ix
+         rTNQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXqfZSDoG/Wvgo8Dyal+0sLmFM2f81H/Kq2aaIfxo2xBNwTy0GgncRxNNvuDar9ZOJ2PgI=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzGMLo5eU5R61vMzWFFx+T4umWK89nAF9qqUsgV6v4Z7HPWO9CF
+	9/De3UO4Cn7EJaympkNj7Vb2mcPP9rgp9sfDPg/gWbatW21kfIXOdW65Rx5siVKSx6E=
+X-Gm-Gg: ATEYQzwr8E40+3AV/kOxxhuWcv8PIg7RaHgWjdiJjx21eg6kkIb2l4Y8mHjcA9uhtGF
+	jf6edDITarxRsKQEKrB1vT508y+ASH9SWOzq/PCN4SDYuUoUn8X/FVsApeh72Y4hqV8dQrC5Ehs
+	1wOEWa3U3rjS9PQ5YT707IPwtLcjjHcp9iDWXnKY/RKIdd5P8QjuEwboowpEDozCYr1Lets2H4i
+	TJzJrUUDE6IPCuWr8ZQwJeennlhN52P10Tx60KqjN0vxF0u+J6/QtnfpPvLM4WncHRSj/athLNE
+	Z15f/YHlWkMI5FX+5gyXpJh8fT8eDAwOapoEJTxMX+p2068Vn05ov7sCSJVF/MCUf0aeMeLmUcR
+	00WMrA47FMQBOhmxJSi9hyWBHw+hSn3lxjDC+l15ODoFhDiHhybQv7+rylDP25wUN5eYmu0auRe
+	rMe4l60YoW3cW9THYZUpI4JDD0y1zdhxBdJ0oDywY/8hgZKsfPIS6iXSV2IZuObGwEZGocFzpEp
+	LT0zXTa
+X-Received: by 2002:ac8:5d4d:0:b0:509:cbc:127b with SMTP id d75a77b69052e-5093a1bd58fmr77950521cf.60.1773320251710;
+        Thu, 12 Mar 2026 05:57:31 -0700 (PDT)
+Received: from ziepe.ca (hlfxns017vw-142-162-112-119.dhcp-dynamic.fibreop.ns.bellaliant.net. [142.162.112.119])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-89a65bd318fsm33341196d6.8.2026.03.12.05.57.30
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 12 Mar 2026 05:37:53 -0700 (PDT)
-From: Trieu Huynh <vikingtc4@gmail.com>
-To: qemu-devel@nongnu.org
-Cc: Trieu Huynh <vikingtc4@gmail.com>,
-	Paolo Bonzini <pbonzini@redhat.com>,
-	Marcelo Tosatti <mtosatti@redhat.com>,
-	Zhao Liu <zhao1.liu@intel.com>,
-	kvm@vger.kernel.org
-Subject: [PATCH] target/i386: Fix dereferencing before null check
-Date: Thu, 12 Mar 2026 21:37:44 +0900
-Message-ID: <20260312123744.232366-1-vikingtc4@gmail.com>
-X-Mailer: git-send-email 2.43.0
+        Thu, 12 Mar 2026 05:57:31 -0700 (PDT)
+Received: from jgg by wakko with local (Exim 4.97)
+	(envelope-from <jgg@ziepe.ca>)
+	id 1w0fbW-00000006fKD-1POa;
+	Thu, 12 Mar 2026 09:57:30 -0300
+Date: Thu, 12 Mar 2026 09:57:30 -0300
+From: Jason Gunthorpe <jgg@ziepe.ca>
+To: Kuan-Wei Chiu <visitorckw@gmail.com>
+Cc: Philipp Hahn <phahn-oss@avm.de>, amd-gfx@lists.freedesktop.org,
+	apparmor@lists.ubuntu.com, bpf@vger.kernel.org,
+	ceph-devel@vger.kernel.org, cocci@inria.fr,
+	dm-devel@lists.linux.dev, dri-devel@lists.freedesktop.org,
+	gfs2@lists.linux.dev, intel-gfx@lists.freedesktop.org,
+	intel-wired-lan@lists.osuosl.org, iommu@lists.linux.dev,
+	kvm@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+	linux-block@vger.kernel.org, linux-bluetooth@vger.kernel.org,
+	linux-btrfs@vger.kernel.org, linux-cifs@vger.kernel.org,
+	linux-clk@vger.kernel.org, linux-erofs@lists.ozlabs.org,
+	linux-ext4@vger.kernel.org, linux-fsdevel@vger.kernel.org,
+	linux-gpio@vger.kernel.org, linux-hyperv@vger.kernel.org,
+	linux-input@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-leds@vger.kernel.org, linux-media@vger.kernel.org,
+	linux-mips@vger.kernel.org, linux-mm@kvack.org,
+	linux-modules@vger.kernel.org, linux-mtd@lists.infradead.org,
+	linux-nfs@vger.kernel.org, linux-omap@vger.kernel.org,
+	linux-phy@lists.infradead.org, linux-pm@vger.kernel.org,
+	linux-rockchip@lists.infradead.org, linux-s390@vger.kernel.org,
+	linux-scsi@vger.kernel.org, linux-sctp@vger.kernel.org,
+	linux-security-module@vger.kernel.org, linux-sh@vger.kernel.org,
+	linux-sound@vger.kernel.org,
+	linux-stm32@st-md-mailman.stormreply.com,
+	linux-trace-kernel@vger.kernel.org, linux-usb@vger.kernel.org,
+	linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+	ntfs3@lists.linux.dev, samba-technical@lists.samba.org,
+	sched-ext@lists.linux.dev, target-devel@vger.kernel.org,
+	tipc-discussion@lists.sourceforge.net, v9fs@lists.linux.dev
+Subject: Re: [PATCH 00/61] treewide: Use IS_ERR_OR_NULL over manual NULL
+ check - refactor
+Message-ID: <20260312125730.GI1469476@ziepe.ca>
+References: <20260310-b4-is_err_or_null-v1-0-bd63b656022d@avm.de>
+ <abBlpGKO842B3yl9@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <abBlpGKO842B3yl9@google.com>
 
-The 'sev_common' pointer is dereferenced via SEV_COMMON_GET_CLASS()
-before it is checked for NULL.
+On Wed, Mar 11, 2026 at 02:40:36AM +0800, Kuan-Wei Chiu wrote:
 
-Fix this by moving the NULL check to the beginning of the function
-before any dereferencing occurs.
+> IMHO, the necessity of IS_ERR_OR_NULL() often highlights a confusing or
+> flawed API design. It usually implies that the caller is unsure whether
+> a failure results in an error pointer or a NULL pointer. 
 
-Resolves: CID 1645467
++1
 
-Signed-off-by: Trieu Huynh <vikingtc4@gmail.com>
----
- target/i386/sev.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+IS_ERR_OR_NULL() should always be looked on with suspicion. Very
+little should be returning some tri-state 'ERR' 'NULL' 'SUCCESS'
+pointer. What does the middle condition even mean? IS_ERR_OR_NULL()
+implies ERR and NULL are semanticly the same, so fix the things to
+always use ERR.
 
-diff --git a/target/i386/sev.c b/target/i386/sev.c
-index cddffe0da8..d23694e05b 100644
---- a/target/i386/sev.c
-+++ b/target/i386/sev.c
-@@ -2009,11 +2009,10 @@ static int sev_snp_kvm_init(ConfidentialGuestSupport *cgs, Error **errp)
- static void sev_handle_reset(Object *obj, ResetType type)
- {
-     SevCommonState *sev_common = SEV_COMMON(MACHINE(qdev_get_machine())->cgs);
--    SevCommonStateClass *klass = SEV_COMMON_GET_CLASS(sev_common);
--
-     if (!sev_common) {
-         return;
-     }
-+    SevCommonStateClass *klass = SEV_COMMON_GET_CLASS(sev_common);
- 
-     if (!runstate_is_running()) {
-         return;
--- 
-2.43.0
+If you want to improve things work to get rid of the NULL checks this
+script identifies. Remove ERR or NULL because only one can ever
+happen, or fix the source to consistently return ERR.
 
+Jason
