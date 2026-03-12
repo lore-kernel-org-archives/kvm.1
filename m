@@ -1,194 +1,249 @@
-Received: from SN4PR2101CU001.outbound.protection.outlook.com (mail-southcentralusazon11012056.outbound.protection.outlook.com [40.93.195.56])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E1CA31E844;
-	Thu, 12 Mar 2026 13:51:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.93.195.56
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773323486; cv=fail; b=Z0iG9TN3YJhsIXmbf0aK9wjLVBcRTGzamD5C/GtuGvnel2ZEL+KqJ4RmZzV69/tX2rdXxbXSa/tj4ej/msQXjvpQCuV2u/NWVFnLn/9gPtMt71nT5v8RkV8df5QnCGb0J8hjCLmAW6KCbgzTH0X7r9PYs3cZmCoYM0jNy3yHr/E=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773323486; c=relaxed/simple;
-	bh=nRm8/vi3DPvqJsSY4/TzaQO75UDaUZw6is0fQjTzAWk=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=A5G1RFtEIzGymv2EiPKgy+8et7RIfTxlt9FSby9uhJ6cjcEF/Y4Kt3i5m6+s5JOlKSdt95gAKdhN4eCRCvwqcirbRp2Bq6JxryKUGnpejX1BJUoYIWVwA3qenDzwb2/0WiFEwfojxuHcqAIAAGvCs6uW4vnnKCseKGo2wTmFyzU=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=hqTRYw+3; arc=fail smtp.client-ip=40.93.195.56
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C0ECD347BD7
+	for <kvm@vger.kernel.org>; Thu, 12 Mar 2026 13:54:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1773323701; cv=none; b=r+1skBBKq7yPeMi6ZICJzI8tLzbZ6anO6Bo9IyHwxKb6+qe4rRMWrebc53VvfcSGMaLZKw++HdCveODZ8TlY+cj1UqG8wkrjgBN5tqAAoSRreR/0RRNJG7BELv2fG5lg5bSQOoP0o0I84f16ClaryL+Fm36Bhow7cc31dqOZz5M=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1773323701; c=relaxed/simple;
+	bh=SpNehQ1QB2agnleumLY4gSLmRt7ah7+esaG/GMysUtU=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=fdYNAlNq03Xn/lNMWit7H9quoRTn29SddTXrXWff3smQva2zR+zQEXPFEkQPZWSPajeS9as7iZGywq2FTag7UbwdpthcgPAsN7dEFh9Wwe1jNgwc49UXSAAZnGSF6Jok2F9oWTc/MXNCr6egRRx4WQNHL4txG3ugbGatFDB9HOs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=Dx/VhrYD; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=Mot1zpvR; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="hqTRYw+3"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=buVxgFRIeGcsOqUJ21+jx8P+fLLK2uaFY0tTyZQh1+nQT8DL32ikobNzzU37fYZEEjfYyhDiJJZI5o8Kp/Us+5L7b/EHArS1XvNQk5Ww8o5vK7WysXHqJg7taEUFJlGMnTvqJByI+LbCiK/yv/IvtmDG0mkxMKNUG9WZ7KkoaN6BYaNe5zTTj8TY2QCv05rt0mOZu7WD/8nRkYyqFMJ2Qd1xSOBjHDIY+jIJGYapGtcmwoE1lRYW8FtxKtGPh/pD0M+crc6TCwjso1lQz9VpPWh59/DySQc9V/MqITFPzHOeEYHufNMLMXzpIgLDNjiUxegf8MLLE2hPTuadxPZ/aw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=nRm8/vi3DPvqJsSY4/TzaQO75UDaUZw6is0fQjTzAWk=;
- b=ru1IwAGO9VsR33DUXcWLejXgTzTnDUC/QN1AkNwYqsjvk2ZfZu3MLl3qsLZYdsZUvFRkJWs6UaeNgwURmocVBDr7XERD2/DjP96/FMitZndj7hfSVXoI8Wu7g35+IIvsI/Ni0R04146Y6RpAkQnUqbTTHBE/pxlI+aCAnt9bQhRXUUwkUzJ5k7oVeHkbaDN1djoCRMfsAEF6Ot7fHhSa4eL8Eamrw3YOATJ8/6CnoJfljLOOykrMw0joHWwGB3vfOYl0+5pRcyNjf8QbYh50NmJLCNreFy9DVRs83Dw/l4KLrlvkz94RgqAIfvdwbBe3gNCM6mloccy8yqMpI6xQPw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=nRm8/vi3DPvqJsSY4/TzaQO75UDaUZw6is0fQjTzAWk=;
- b=hqTRYw+3cIZFRfWDQXdMnWuKmLCWWO6RAFlFjTEizpGhXvpqqdr47kb+MsmJ/54hDdS2Mwr+b/KHzucmN2aIYVPVuEvL0U5TYVS4ceppNEtXHk8ud/XSgfsHowbKJnqbWOI3RNiMFnqF8NO2AQnwjIetL1RxLQNPRcE6Fli1OxBYgCUAbOdueAJejxeHdG/y7pLyRrHxEwql9/tf5yChwlXz7JThcuZjmD2hPJs9a0IcNrHNarW4lm/iFNNmEdwuKR41kaWPwIqfvLdP/oYMDjTFSyoUTkg3gptCrTVTKwmZ/lDhAJ4K0ORQ/oeD+d3Sa007b3uT6lxRWSzcwl9gDA==
-Received: from SA1PR12MB7199.namprd12.prod.outlook.com (2603:10b6:806:2bc::21)
- by PH8PR12MB7304.namprd12.prod.outlook.com (2603:10b6:510:217::20) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9700.11; Thu, 12 Mar
- 2026 13:51:22 +0000
-Received: from SA1PR12MB7199.namprd12.prod.outlook.com
- ([fe80::928c:89d8:e8d6:72dd]) by SA1PR12MB7199.namprd12.prod.outlook.com
- ([fe80::928c:89d8:e8d6:72dd%6]) with mapi id 15.20.9700.003; Thu, 12 Mar 2026
- 13:51:20 +0000
-From: Ankit Agrawal <ankita@nvidia.com>
-To: Alex Williamson <alex@shazbot.org>, Jason Gunthorpe <jgg@nvidia.com>
-CC: Vikram Sethi <vsethi@nvidia.com>, Matt Ochs <mochs@nvidia.com>,
-	"jgg@ziepe.ca" <jgg@ziepe.ca>, Shameer Kolothum Thodi
-	<skolothumtho@nvidia.com>, Neo Jia <cjia@nvidia.com>, Zhi Wang
-	<zhiw@nvidia.com>, Krishnakant Jaju <kjaju@nvidia.com>, Yishai Hadas
-	<yishaih@nvidia.com>, "kevin.tian@intel.com" <kevin.tian@intel.com>,
-	"kvm@vger.kernel.org" <kvm@vger.kernel.org>, "linux-kernel@vger.kernel.org"
-	<linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH RFC v2 00/15] Add virtualization support for EGM
-Thread-Topic: [PATCH RFC v2 00/15] Add virtualization support for EGM
-Thread-Index: AQHcpNzaOt1igUkxvECzSrGf7z/GFbWgQqmAgAivw4OAAPGAAIABF5E+
-Date: Thu, 12 Mar 2026 13:51:20 +0000
-Message-ID:
- <SA1PR12MB7199673D9DE79C11DB6B9E33B044A@SA1PR12MB7199.namprd12.prod.outlook.com>
-References: <20260223155514.152435-1-ankita@nvidia.com>
-	<20260305103335.74fb8141@shazbot.org>
-	<SA1PR12MB719904F9ED153FF4BA4EFA28B047A@SA1PR12MB7199.namprd12.prod.outlook.com>
- <20260311143706.2095a547@shazbot.org>
-In-Reply-To: <20260311143706.2095a547@shazbot.org>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-msip_labels:
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: SA1PR12MB7199:EE_|PH8PR12MB7304:EE_
-x-ms-office365-filtering-correlation-id: 5c1527f0-ba2a-46ac-f15a-08de803e70da
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam:
- BCL:0;ARA:13230040|376014|366016|1800799024|22082099003|56012099003|18002099003|38070700021;
-x-microsoft-antispam-message-info:
- EXtQqgPZFNa7gYfvUd512lNeHoilAJPAQnW1pHUm+dbgekJys+cp4W9URlhxih3PBHVnWdB6Zf0ff7T0+zbypOsdtHgIlYmt54FWxzwVcgZkAQ2W1n5teHF2ePbYDtx91v9v0ExIb0Hd2dN1z/WrV1cq0NkVIPQnF4sJCXea3nbOBspWeUTalORJgaoku7IZIB0n13FMNSXFG2YbE3ZvYOe8UKnvliplUvId5ZkETZjpKVyV8HNxarNjpTUZSQTTvZ15bN3HPG1XcfwKwIFf9uOTx8txd8PvFlnkV3n6xmZDNKdW/ip5sUS6OBk0TK03npZA3wYmH+SOn08mSQmprgY985+TR+jx1+EZOs/l1tLSgrbzVSdTNU/uCu4RbqBgNGuHFtijxau6ofNS4Ypd4s4pqQ33/rfB1PLBGraD50GZC1I4B3uSslriF8froLRB3DTbrzTM5cQrSzT38EJT/TlVRFDGXQCLRA2DMulafPqNArATggsHEw6YrwBLl74UROe7/QvnnJ3iahz/pR88sSB07NIfGosVHQqVezR8BjUBKPGTJMwcNt/RtAuT/5Qc0npvFCQIwjh8bMIMtvIRPRwHIJq9q1YkGserjijghFMUjjGueSVvywmXwiBYObRmOpsKMST9NJFWqQJ67sowkJP7YSOhust/tTzFVs85+E57kT+ac2YBYMJF0PXI3wYfjPrrlNOIguTY2mumjlmXZSOxP2VGuJFpdKLwh4ngQm+To34Jntkhdxn4xOpALdP1aHz+bKFm2wqK6VUkgQcW81r0g63gj/mRSPhWYISsHlM=
-x-forefront-antispam-report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SA1PR12MB7199.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(366016)(1800799024)(22082099003)(56012099003)(18002099003)(38070700021);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0:
- =?iso-8859-1?Q?KjgKN7AntyrlT5yQS3eVr/gamMwhIN2+MPqHPvkj/JIBMZXQsFcc3vaBaX?=
- =?iso-8859-1?Q?ruoEXh7fnwJUKZrJWB6JIPYaZ3JlP6iNLN1LwpijIF6cna7M5uByU+ySen?=
- =?iso-8859-1?Q?C4tMh5xLYnmjLBaXbQ1KvxYyf2ffusOIIh3dkhYOqJWedjnOpGKuAw+W+j?=
- =?iso-8859-1?Q?gf50LqO4Drk/yoi0UVDTYuihnn5Lm0Y0TFmoYJjPboYLoBZXVaPDIYOhih?=
- =?iso-8859-1?Q?lhWMYk73RUR0Ujdp1L+WHcWPyuGMA06LI4s/syabP6bcWkTGV+0duX7ePO?=
- =?iso-8859-1?Q?jlMJBSt4TZF5zP+m5eVnLx+G26NPWfUfBXTTiE3NrdMQWV8f+vNmSV9ri+?=
- =?iso-8859-1?Q?nj75dx7VJJ+Uvac+SslADGrPcokqcv040tSR7seXi1EX9/aBnPhWWNWoP9?=
- =?iso-8859-1?Q?IuA14XTlRInt6WMZK+8p2naAUaK3Dofk8up2NWGLhAmIbiXMtIAWkRbj88?=
- =?iso-8859-1?Q?j05r7lJLVF1oNH6VTN4GJxg/lBs8U09FYWROmdveYZaY4TmmWpgCq5bIy3?=
- =?iso-8859-1?Q?R0NkLq9oloyY8ZD/3W7/6UbYFe7Btafu9jvaEb5g/yDLQn3UrtT2LFW4yU?=
- =?iso-8859-1?Q?UADm9z6y8KPgV3fCG6ApUfpviJItU3LLZQsttNTjvBrCeDVPkZXU4FJ4c1?=
- =?iso-8859-1?Q?w6SJ5YZLbtqN0pLFHQINMuJW34eQUTZbLz86QrPlMYhiW/xE+KeXDc/G/o?=
- =?iso-8859-1?Q?pf8+yhXz/UwnALWm9SPnC9yk0hf4si+aNZwRYOp7AZBrUZAl969jWqI8fS?=
- =?iso-8859-1?Q?OLNaY4hpxEWEK5xFnfttaFKk+QSUvraTE/R5oi8OSE0V6nN0kBPLmrE29w?=
- =?iso-8859-1?Q?H18eqf4KdaSng1TCxLLbM3u6jA/COwyjsOYJXw+gJZ9oCCe9B333/JQm9S?=
- =?iso-8859-1?Q?0TewqNAL5ihhWzJd6EmGBSFMSdLgQ1F31V6lFeCn8X2LCRebVgUyfdxkQ6?=
- =?iso-8859-1?Q?orR/Ae6W4wdQ6ocvWYklfd2nkbFXKYSzkXCDaktPUqMeJJvzDjK67rvCnM?=
- =?iso-8859-1?Q?hkN3F8TbyBBvigzoFhbkgHH/H3bkFLjk0GNOnkjg2+Ji2fg6IV3u6jMyLq?=
- =?iso-8859-1?Q?QWVLPvc5qdpokIEaFpEJUwlsghK8n2cLAVJDAX8YCCO7CsyDzJQHXAGltS?=
- =?iso-8859-1?Q?pQzaLspnrDp0YKaI/zLZ2lwE5vlCKu0tw7EGew6oUfb8Bj8aArMD1K2smb?=
- =?iso-8859-1?Q?eLRAfCIwojPOY36xa9a9wywqhXLyqXVTNSsrq9bJywFDKmr0Eu+VPKrazO?=
- =?iso-8859-1?Q?dYAGRzfyFyBrAjvXgeiI0P4KmpGVb5v8oq24agI3jQ9/SkfKRAfZF2Wzbu?=
- =?iso-8859-1?Q?wWQjWt2DUFAUJYCqFzNDRQ4/LGZGtXyTjaXsUmVelVnaMfcolhLZXelfAh?=
- =?iso-8859-1?Q?Ue8YUf4hpL9S587PXzB5rRt1YmdRfd0MV7RKW1y9ggESQcfcttLhDCB5KE?=
- =?iso-8859-1?Q?ZP7M1gCQEz6udVEssKEZA9YDr0JY8wjjJh3l8kdLmxVOatDAQcX0LqGfsu?=
- =?iso-8859-1?Q?TrkgsB7CdkQNayjTYLLmnZ5bBbTcfFgOpDh5jO6jMHG25ZLg5bnCpqpzTd?=
- =?iso-8859-1?Q?0SuJ+fYhs/S/o8rea3X1UIzDIUxJGDxYrvd+PB8/V3PJvym3YKQSIJLeAG?=
- =?iso-8859-1?Q?sfWDXeeks7ambVZQYGKOMjEJvr3i7GnjrNmim72qHX0OjYmvmIYk2NG1wj?=
- =?iso-8859-1?Q?tFR93vlyP9Q58Ak2g4aCrbhylWEXfmczqtZPnL8f8Fyrh8WHzH4obtuK41?=
- =?iso-8859-1?Q?Vab504vOiAUaEku576P/Tc9KToexKBpz47BQYvVQWnEeem?=
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="Dx/VhrYD";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="Mot1zpvR"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1773323698;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=Iz0EqyWTioqt5QKyYbfa8QuFQclbTzyA/mBVntajMyE=;
+	b=Dx/VhrYDdaKFnj3ex906otzBg3BV/+QyTLpiM89lmZ+Pgat+j0eWmGlV124uAunhV/I3+Y
+	vJCApbzMJGPz+Zo98IbRgOGKSbJnJSVx9rYHK0IvSzb0ITn9DAv+BC/CxqMj3ULpPC1rEB
+	fLSMaaktQTVwjzwPMV7wGypWR9SmclM=
+Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
+ [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-619--kJJeh-RNuuPAULbfY54hg-1; Thu, 12 Mar 2026 09:54:55 -0400
+X-MC-Unique: -kJJeh-RNuuPAULbfY54hg-1
+X-Mimecast-MFC-AGG-ID: -kJJeh-RNuuPAULbfY54hg_1773323694
+Received: by mail-wr1-f70.google.com with SMTP id ffacd0b85a97d-439c794ec8eso1205191f8f.1
+        for <kvm@vger.kernel.org>; Thu, 12 Mar 2026 06:54:55 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=redhat.com; s=google; t=1773323694; x=1773928494; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=Iz0EqyWTioqt5QKyYbfa8QuFQclbTzyA/mBVntajMyE=;
+        b=Mot1zpvRI5BvN0arffYqIahGxGrUbQJeKSmXTyKapgRCy74Z0x/3sf+L0g8Oa1XwC8
+         vbHHkWBiOjh3IhTmXePAFjPnGrMvPMBtYMwBFQutyMaTOL8ll+UEycV4PL98Y1x0mZko
+         uxv7YWfQVGcMqXipitd8nHYIQxCNQoM2c/yNCXh6VOFehaIChx6RDF1P1AmSCbwYsBK7
+         40WjBCGQoCu/CRKg75prf5Q0Ysczpr5bAXr9Tv9WUSis881nw0OB3ithV/sQee2DoClC
+         hIUTpkkx6gGMEUqRoyeOFVsMAflRQKEo/LxLj8YjE5uHKkxghnQh8RUomaTiADXGTf70
+         BbbA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1773323694; x=1773928494;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=Iz0EqyWTioqt5QKyYbfa8QuFQclbTzyA/mBVntajMyE=;
+        b=ksaDDa0wX0w2xBghywmafMHlBKr3xCWlqeKyzkrBhIETEF/mhnvGcdoIZr8KUb8DU+
+         KXKRxfJ8K0j4vgXPsFxOcx7DUlstjYxaS5OUkbWD/zrsL+Ocfw8HgRfJyRzYF1qlkjWL
+         3CPF5cSFjGp6QCesFNGVXjikNTYTSDHII990kHohCE5CrGYtNUvlRTGj4ft/u02p1Lk0
+         DOSsMVdWIlPnRJ5dm6nJ6R4JTSOd2g3OGaYkY9VruPWMP+hoxHBB3ukP7bbMIO5S+dQc
+         Vkebiw16b017WsP/ThtjHIKfIpZV3KNFV1alTgNHR+EjjCuNVKErPwZ2lyWSNuxgWEw/
+         cD5g==
+X-Forwarded-Encrypted: i=1; AJvYcCUfNxdNLmAOHu1mmoN3pWWRJ4yLJFvrcg7lcjJB5pK1FIRPAcIL7az0SFQ6no9iDo6gYyk=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx7AacaxKzJB/tBghdTIKOtcFyhLHdA3FPqFmHxX1ccLl1KPwiQ
+	VZhnOx+4R05RsiVNcKz5iWxyc/Y1TUELpAPzcl/tvyelWFpq6acQF+sPMqus37/I2UsxkvbwYs+
+	KKSy8CXpFyfFjuzgNtzSecJNI7JQv5C7euXpnJ5YcqvtwtsWaQD6Srg==
+X-Gm-Gg: ATEYQzwG9DAbWmviM3U4r9udj0iO+9/M8kWFFIya9hNh2RJhRLBJLW5fDs0YeRxJLmx
+	PBfWDheQ73ZoeqTP1xrl9b37p8o8GqbVxMs2Tf0NjhPJZsxRctcKJGpmhZOKAspcFbMMUrDhQB1
+	Jr4azpn7xmYDoE4aK2H4tBZPwBVzlVWoXF10MGvpHa8vYYplZ17mODMBKNb7XLREG8wcnJbrqwJ
+	qt5bHuiU341ODpEZ7ihrDq00VVwwin561XBU73vSEKoY2a9vRnSkNKmLggYbxpFESwknI/K2mfJ
+	oBN1jOz+gpIkP2nI1haIvYLZY6nBVVkLXiTIDvDZPgNm/tsg2lUIzpOElgimZBPi3+LOmmk/2qp
+	fdqL1x/982kjsvLO0lQcvX9Kl9kDBOTpezKjchTPujLURxw==
+X-Received: by 2002:a05:6000:2f86:b0:439:abfb:6d34 with SMTP id ffacd0b85a97d-439f84359d8mr11303240f8f.50.1773323694247;
+        Thu, 12 Mar 2026 06:54:54 -0700 (PDT)
+X-Received: by 2002:a05:6000:2f86:b0:439:abfb:6d34 with SMTP id ffacd0b85a97d-439f84359d8mr11303176f8f.50.1773323693676;
+        Thu, 12 Mar 2026 06:54:53 -0700 (PDT)
+Received: from redhat.com (IGLD-80-230-79-166.inter.net.il. [80.230.79.166])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-439fe22529csm7866593f8f.31.2026.03.12.06.54.51
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 12 Mar 2026 06:54:53 -0700 (PDT)
+Date: Thu, 12 Mar 2026 09:54:49 -0400
+From: "Michael S. Tsirkin" <mst@redhat.com>
+To: Simon Schippers <simon.schippers@tu-dortmund.de>
+Cc: willemdebruijn.kernel@gmail.com, jasowang@redhat.com,
+	andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
+	kuba@kernel.org, pabeni@redhat.com, eperezma@redhat.com,
+	leiyang@redhat.com, stephen@networkplumber.org, jon@nutanix.com,
+	tim.gebauer@tu-dortmund.de, netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
+	virtualization@lists.linux.dev
+Subject: Re: [PATCH net-next v8 2/4] vhost-net: wake queue of tun/tap after
+ ptr_ring consume
+Message-ID: <20260312095227-mutt-send-email-mst@kernel.org>
+References: <20260312130639.138988-1-simon.schippers@tu-dortmund.de>
+ <20260312130639.138988-3-simon.schippers@tu-dortmund.de>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: SA1PR12MB7199.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 5c1527f0-ba2a-46ac-f15a-08de803e70da
-X-MS-Exchange-CrossTenant-originalarrivaltime: 12 Mar 2026 13:51:20.2571
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: PVXzm5Ddtw90Csw5QRZEe3jlunmBS2bGk56hDeQ6BJijPlrpxHjox3joqam8/GXeVBQgfVIKriTO18GQNxw/3Q==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH8PR12MB7304
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260312130639.138988-3-simon.schippers@tu-dortmund.de>
 
->> > nvgrace-gpu is manipulating sysfs=0A=
->> > on devices owned by nvgrace-egm, we don't have mechanisms to manage th=
-e=0A=
->> > aux device relative to the state of the GPU, we're trying to add a=0A=
->> > driver that can bind to device created by an out-of-tree driver, and=
-=0A=
->> > we're inventing new uAPIs on the chardev for things that already exist=
-=0A=
->> > for vfio regions.=0A=
->>=0A=
->> Sorry for the confusion. The nvgrace-egm would not bind to the device=0A=
->> created by the out-of-tree driver. We would have a separate out-of-tree=
-=0A=
->> equivalent of nvgrace-egm to bind to the device by the out-of-tree vfio=
-=0A=
->> driver. Maybe we can consider exposing a register/unregister APIs from=
-=0A=
->> nvgrace-egm where a module (in-tree nvgrace / out-of-tree) can register=
-=0A=
->> a pdev and nvgrace-egm can use to fetch the region info.=0A=
->=0A=
-> Ok, this wasn't clear to me, but does that also mean that if some GPUs=0A=
-> are managed by nvgrace-gpu and others by out-of-tree drivers that the=0A=
-> in-kernel and out-of-tree equivalent drivers are both installing=0A=
-> chardevs as /dev/egmXX?=A0 Playing in the same space is ugly, but what=0A=
-> happens when the 2 GPUs per socket are split between drivers and they=0A=
-> both try to added the same chardev?=0A=
-=0A=
-But that would be an unsupported configuration. It is expected that all the=
-=0A=
-GPUs on the system and the EGM char devices to be attached to the same=0A=
-VM for full functionality. So either all the devices (GPU and EGM chardev)=
-=0A=
-would be bound to nvgrace or to the out-of-tree module. Please refer sec 8.=
-1=0A=
-https://docs.nvidia.com/multi-node-nvlink-systems/partition-guide-v1-2.pdf=
-=0A=
-Perhaps I should add this information in the commit message.=0A=
-=0A=
-> However, I'd then ask the question why we're associating EGM to the GPU=
-=0A=
-> PCI driver at all.=A0 For instance, why should nvgrace-gpu spawn aux=0A=
-> devices to feed into an nvgrace-egm driver, and duplicate that whole=0A=
-> thing in an out-of-tree driver, when we could just have one in-kernel=0A=
-> platform(?) driver walk ACPI, find these ranges, and expose them as=0A=
-> chardev entirely independent of the PCI driver bound to the GPU?=0A=
-=0A=
-So a new platform driver to walk through the ACPI and look for EGM properti=
-es=0A=
-and create EGM char devs? =0A=
-=0A=
-Maybe it is okay, but given that all the 4 EGM properties are under the GPU=
-'s=0A=
-ACPI node and there being no independent ACPI _HID device identity, it soun=
-ds=0A=
-a bit off to me. Do we have a precedent like that?=0A=
-=0A=
-But as I mentioned above, the expectation is that the EGM devices and the G=
-PU=0A=
-devices to be assigned to the same VM. So would it not make sense that we=
-=0A=
-keep the association between the EGM devices and the GPU devices?=0A=
+On Thu, Mar 12, 2026 at 02:06:37PM +0100, Simon Schippers wrote:
+> Add tun_wake_queue() to tun.c and export it for use by vhost-net. The
+> function validates that the file belongs to a tun/tap device,
+> dereferences the tun_struct under RCU, and delegates to
+> __tun_wake_queue().
+> 
+> vhost_net_buf_produce() now calls tun_wake_queue() after a successful
+> batched consume of the ring to allow the netdev subqueue to be woken up.
+
+A sentence missing here:
+the point is to allow queue to be stopped when it gets full,
+which is required for traffic shaping - implemented
+by the following
+"avoid ptr_ring tail-drop when a qdisc is present"
+
+
+
+
+> Without the corresponding queue stopping (introduced in a subsequent
+> commit), this patch alone causes a slight throughput regression for a
+> tap+vhost-net setup sending to a qemu VM:
+> 3.948 Mpps to 3.888 Mpps (-1.5%).
+> 
+> Details: AMD Ryzen 5 5600X at 4.3 GHz, 3200 MHz RAM, isolated QEMU
+> threads, XDP drop program active in VM, pktgen sender; Avg over
+> 20 runs @ 100,000,000 packets. SRSO and spectre v2 mitigations disabled.
+>
+
+
+ 
+> Co-developed-by: Tim Gebauer <tim.gebauer@tu-dortmund.de>
+> Signed-off-by: Tim Gebauer <tim.gebauer@tu-dortmund.de>
+> Signed-off-by: Simon Schippers <simon.schippers@tu-dortmund.de>
+> ---
+>  drivers/net/tun.c      | 21 +++++++++++++++++++++
+>  drivers/vhost/net.c    | 15 +++++++++++----
+>  include/linux/if_tun.h |  3 +++
+>  3 files changed, 35 insertions(+), 4 deletions(-)
+> 
+> diff --git a/drivers/net/tun.c b/drivers/net/tun.c
+> index a82d665dab5f..b86582cc6cb6 100644
+> --- a/drivers/net/tun.c
+> +++ b/drivers/net/tun.c
+> @@ -3760,6 +3760,27 @@ struct ptr_ring *tun_get_tx_ring(struct file *file)
+>  }
+>  EXPORT_SYMBOL_GPL(tun_get_tx_ring);
+>  
+> +void tun_wake_queue(struct file *file)
+> +{
+> +	struct tun_file *tfile;
+> +	struct tun_struct *tun;
+> +
+> +	if (file->f_op != &tun_fops)
+> +		return;
+> +	tfile = file->private_data;
+> +	if (!tfile)
+> +		return;
+> +
+> +	rcu_read_lock();
+> +
+> +	tun = rcu_dereference(tfile->tun);
+> +	if (tun)
+> +		__tun_wake_queue(tun, tfile);
+> +
+> +	rcu_read_unlock();
+> +}
+> +EXPORT_SYMBOL_GPL(tun_wake_queue);
+> +
+>  module_init(tun_init);
+>  module_exit(tun_cleanup);
+>  MODULE_DESCRIPTION(DRV_DESCRIPTION);
+> diff --git a/drivers/vhost/net.c b/drivers/vhost/net.c
+> index 80965181920c..c8ef804ef28c 100644
+> --- a/drivers/vhost/net.c
+> +++ b/drivers/vhost/net.c
+> @@ -176,13 +176,19 @@ static void *vhost_net_buf_consume(struct vhost_net_buf *rxq)
+>  	return ret;
+>  }
+>  
+> -static int vhost_net_buf_produce(struct vhost_net_virtqueue *nvq)
+> +static int vhost_net_buf_produce(struct sock *sk,
+> +				 struct vhost_net_virtqueue *nvq)
+>  {
+> +	struct file *file = sk->sk_socket->file;
+>  	struct vhost_net_buf *rxq = &nvq->rxq;
+>  
+>  	rxq->head = 0;
+>  	rxq->tail = ptr_ring_consume_batched(nvq->rx_ring, rxq->queue,
+>  					      VHOST_NET_BATCH);
+> +
+> +	if (rxq->tail)
+> +		tun_wake_queue(file);
+> +
+>  	return rxq->tail;
+>  }
+>  
+> @@ -209,14 +215,15 @@ static int vhost_net_buf_peek_len(void *ptr)
+>  	return __skb_array_len_with_tag(ptr);
+>  }
+>  
+> -static int vhost_net_buf_peek(struct vhost_net_virtqueue *nvq)
+> +static int vhost_net_buf_peek(struct sock *sk,
+> +			      struct vhost_net_virtqueue *nvq)
+>  {
+>  	struct vhost_net_buf *rxq = &nvq->rxq;
+>  
+>  	if (!vhost_net_buf_is_empty(rxq))
+>  		goto out;
+>  
+> -	if (!vhost_net_buf_produce(nvq))
+> +	if (!vhost_net_buf_produce(sk, nvq))
+>  		return 0;
+>  
+>  out:
+> @@ -995,7 +1002,7 @@ static int peek_head_len(struct vhost_net_virtqueue *rvq, struct sock *sk)
+>  	unsigned long flags;
+>  
+>  	if (rvq->rx_ring)
+> -		return vhost_net_buf_peek(rvq);
+> +		return vhost_net_buf_peek(sk, rvq);
+>  
+>  	spin_lock_irqsave(&sk->sk_receive_queue.lock, flags);
+>  	head = skb_peek(&sk->sk_receive_queue);
+> diff --git a/include/linux/if_tun.h b/include/linux/if_tun.h
+> index 80166eb62f41..ab3b4ebca059 100644
+> --- a/include/linux/if_tun.h
+> +++ b/include/linux/if_tun.h
+> @@ -22,6 +22,7 @@ struct tun_msg_ctl {
+>  #if defined(CONFIG_TUN) || defined(CONFIG_TUN_MODULE)
+>  struct socket *tun_get_socket(struct file *);
+>  struct ptr_ring *tun_get_tx_ring(struct file *file);
+> +void tun_wake_queue(struct file *file);
+>  
+>  static inline bool tun_is_xdp_frame(void *ptr)
+>  {
+> @@ -55,6 +56,8 @@ static inline struct ptr_ring *tun_get_tx_ring(struct file *f)
+>  	return ERR_PTR(-EINVAL);
+>  }
+>  
+> +static inline void tun_wake_queue(struct file *f) {}
+> +
+>  static inline bool tun_is_xdp_frame(void *ptr)
+>  {
+>  	return false;
+> -- 
+> 2.43.0
+
