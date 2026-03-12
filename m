@@ -1,23 +1,23 @@
 Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2F8CB3FE659;
-	Thu, 12 Mar 2026 17:52:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1B7D53FE66F;
+	Thu, 12 Mar 2026 17:52:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773337972; cv=none; b=jgI76dKTt8Hqo4U/bKb00vvxWUMY6nGVnZ+bfGy3Haef4YrDFz49BHjsfX0XA43s++NRfWCUpF0DG8Qw65hvEJnhq0u5fSrtVDOmtZZaKGE5LrsB3Gxeim5fMZFSaA+LUMsCP9XVbwV9jloVQI40MvJVAPEoo5YMdLpPTVVfbUs=
+	t=1773337975; cv=none; b=ASbA5xVnzwW/TLrpVfZ0jZgU05DkWKGBF/pZhZ6qyk7Z7iA1lzAzL2bENG64C1ZgaL+1qRhqWyQW7fp3ksROaY7eCG9uT0OXumdEitAUjk4e1AeEy6xRc1dWcVXJW/PDIgDzLrGDQDASa4uz8NHWhFiM9/SGHRwESB8iPirRB78=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773337972; c=relaxed/simple;
-	bh=XESANQC/s6OALJdLs3NlY0zl7jnA3aP+X3rssV/Wfd0=;
+	s=arc-20240116; t=1773337975; c=relaxed/simple;
+	bh=4Gv8iwjh1zDT2SeKSMMFrQ3dnzhmmicacYc/sIOILow=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=LesaPYoNqi7wrZf3RthfVMxrcDPQ6YefMZW/fdef6zkVoaRnHFIEnOOJ6tbzsulY6sbCv3QPWpRZTqKx1ouBG4LmIHb6e0COzuhtXQuUQiT+FjrMA8bbv0Ti37hi8tCsVCb/nm7NQhYtk8ejeLX/0CqONecQqfartv8jPWQ5BlE=
+	 MIME-Version; b=EgBMRKnCAi7w/DfeqmoZvkg/68cLCfuQPm4YTfGCyZWFsi/m0cnsEb+JsBiHXcmeU2oQE6bjgsQuLFWzlALpsu1f4kR2ksoPUw0o7TGeovRcnSiIyZslnFEohjjJs/mDGL2VJpbSgFyKwp/biqUGqZ6PNKTJOLlTBe2ebBJgCRI=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
 Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 8BBF21A9A;
-	Thu, 12 Mar 2026 10:52:44 -0700 (PDT)
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 638CB1E7D;
+	Thu, 12 Mar 2026 10:52:47 -0700 (PDT)
 Received: from e129823.cambridge.arm.com (e129823.arm.com [10.1.197.6])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id 3C3563F73B;
-	Thu, 12 Mar 2026 10:52:48 -0700 (PDT)
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id 08A043F73B;
+	Thu, 12 Mar 2026 10:52:50 -0700 (PDT)
 From: Yeoreum Yun <yeoreum.yun@arm.com>
 To: linux-arm-kernel@lists.infradead.org,
 	linux-kernel@vger.kernel.org,
@@ -37,9 +37,9 @@ Cc: catalin.marinas@arm.com,
 	joey.gouly@arm.com,
 	yuzenghui@huawei.com,
 	yeoreum.yun@arm.com
-Subject: [PATCH v16 1/8] arm64: cpufeature: add FEAT_LSUI
-Date: Thu, 12 Mar 2026 17:52:36 +0000
-Message-Id: <20260312175243.1593864-2-yeoreum.yun@arm.com>
+Subject: [PATCH v16 2/8] KVM: arm64: expose FEAT_LSUI to guest
+Date: Thu, 12 Mar 2026 17:52:37 +0000
+Message-Id: <20260312175243.1593864-3-yeoreum.yun@arm.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20260312175243.1593864-1-yeoreum.yun@arm.com>
 References: <20260312175243.1593864-1-yeoreum.yun@arm.com>
@@ -51,73 +51,36 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Since Armv9.6, FEAT_LSUI introduces load/store instructions that allow
-privileged code to access user memory without clearing the PSTATE.PAN bit.
-
-Add CPU feature detection for FEAT_LSUI and enable its use
-when FEAT_PAN is present so that removes the need for SW_PAN handling
-when using LSUI instructions.
+expose FEAT_LSUI to guest.
 
 Signed-off-by: Yeoreum Yun <yeoreum.yun@arm.com>
+Acked-by: Marc Zyngier <maz@kernel.org>
+Reviewed-by: Catalin Marinas <catalin.marinas@arm.com>
 ---
- arch/arm64/include/asm/cpucaps.h |  2 ++
- arch/arm64/kernel/cpufeature.c   | 10 ++++++++++
- arch/arm64/tools/cpucaps         |  1 +
- 3 files changed, 13 insertions(+)
+ arch/arm64/kvm/sys_regs.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/arch/arm64/include/asm/cpucaps.h b/arch/arm64/include/asm/cpucaps.h
-index 177c691914f8..6e3da333442e 100644
---- a/arch/arm64/include/asm/cpucaps.h
-+++ b/arch/arm64/include/asm/cpucaps.h
-@@ -71,6 +71,8 @@ cpucap_is_possible(const unsigned int cap)
- 		return true;
- 	case ARM64_HAS_PMUV3:
- 		return IS_ENABLED(CONFIG_HW_PERF_EVENTS);
-+	case ARM64_HAS_LSUI:
-+		return IS_ENABLED(CONFIG_ARM64_LSUI);
- 	}
- 
- 	return true;
-diff --git a/arch/arm64/kernel/cpufeature.c b/arch/arm64/kernel/cpufeature.c
-index c31f8e17732a..5074ff32176f 100644
---- a/arch/arm64/kernel/cpufeature.c
-+++ b/arch/arm64/kernel/cpufeature.c
-@@ -281,6 +281,7 @@ static const struct arm64_ftr_bits ftr_id_aa64isar2[] = {
- 
- static const struct arm64_ftr_bits ftr_id_aa64isar3[] = {
- 	ARM64_FTR_BITS(FTR_VISIBLE, FTR_NONSTRICT, FTR_LOWER_SAFE, ID_AA64ISAR3_EL1_FPRCVT_SHIFT, 4, 0),
-+	ARM64_FTR_BITS(FTR_HIDDEN, FTR_NONSTRICT, FTR_LOWER_SAFE, ID_AA64ISAR3_EL1_LSUI_SHIFT, 4, ID_AA64ISAR3_EL1_LSUI_NI),
- 	ARM64_FTR_BITS(FTR_VISIBLE, FTR_NONSTRICT, FTR_LOWER_SAFE, ID_AA64ISAR3_EL1_LSFE_SHIFT, 4, 0),
- 	ARM64_FTR_BITS(FTR_VISIBLE, FTR_NONSTRICT, FTR_LOWER_SAFE, ID_AA64ISAR3_EL1_FAMINMAX_SHIFT, 4, 0),
- 	ARM64_FTR_END,
-@@ -3169,6 +3170,15 @@ static const struct arm64_cpu_capabilities arm64_features[] = {
- 		.cpu_enable = cpu_enable_ls64_v,
- 		ARM64_CPUID_FIELDS(ID_AA64ISAR1_EL1, LS64, LS64_V)
- 	},
-+#ifdef CONFIG_ARM64_LSUI
-+	{
-+		.desc = "Unprivileged Load Store Instructions (LSUI)",
-+		.capability = ARM64_HAS_LSUI,
-+		.type = ARM64_CPUCAP_SYSTEM_FEATURE,
-+		.matches = has_cpuid_feature,
-+		ARM64_CPUID_FIELDS(ID_AA64ISAR3_EL1, LSUI, IMP)
-+	},
-+#endif
- 	{},
- };
- 
-diff --git a/arch/arm64/tools/cpucaps b/arch/arm64/tools/cpucaps
-index 7261553b644b..b7286d977788 100644
---- a/arch/arm64/tools/cpucaps
-+++ b/arch/arm64/tools/cpucaps
-@@ -48,6 +48,7 @@ HAS_LPA2
- HAS_LSE_ATOMICS
- HAS_LS64
- HAS_LS64_V
-+HAS_LSUI
- HAS_MOPS
- HAS_NESTED_VIRT
- HAS_BBML2_NOABORT
+diff --git a/arch/arm64/kvm/sys_regs.c b/arch/arm64/kvm/sys_regs.c
+index 1b4cacb6e918..484f98eaf6d4 100644
+--- a/arch/arm64/kvm/sys_regs.c
++++ b/arch/arm64/kvm/sys_regs.c
+@@ -1805,7 +1805,7 @@ static u64 __kvm_read_sanitised_id_reg(const struct kvm_vcpu *vcpu,
+ 		break;
+ 	case SYS_ID_AA64ISAR3_EL1:
+ 		val &= ID_AA64ISAR3_EL1_FPRCVT | ID_AA64ISAR3_EL1_LSFE |
+-			ID_AA64ISAR3_EL1_FAMINMAX;
++			ID_AA64ISAR3_EL1_FAMINMAX | ID_AA64ISAR3_EL1_LSUI;
+ 		break;
+ 	case SYS_ID_AA64MMFR2_EL1:
+ 		val &= ~ID_AA64MMFR2_EL1_CCIDX_MASK;
+@@ -3252,6 +3252,7 @@ static const struct sys_reg_desc sys_reg_descs[] = {
+ 					ID_AA64ISAR2_EL1_GPA3)),
+ 	ID_WRITABLE(ID_AA64ISAR3_EL1, (ID_AA64ISAR3_EL1_FPRCVT |
+ 				       ID_AA64ISAR3_EL1_LSFE |
++				       ID_AA64ISAR3_EL1_LSUI |
+ 				       ID_AA64ISAR3_EL1_FAMINMAX)),
+ 	ID_UNALLOCATED(6,4),
+ 	ID_UNALLOCATED(6,5),
 -- 
 LEVI:{C3F47F37-75D8-414A-A8BA-3980EC8A46D7}
 
