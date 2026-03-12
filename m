@@ -1,104 +1,132 @@
-Received: from mail-pl1-f201.google.com (mail-pl1-f201.google.com [209.85.214.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C66642C17A0
-	for <kvm@vger.kernel.org>; Thu, 12 Mar 2026 20:04:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 400993FFABE;
+	Thu, 12 Mar 2026 20:14:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.21
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773345895; cv=none; b=J9sTsDQ0TUgnyVPWGIh1M4TL4+ahdhsFgcJdD87/itg6z/TYajkkCt56645mY7c90PXQ+KXdeEVGC99u1kZWuUu3E90Xb8PdAuGkOI7FwiTQF7fyskxuP23WjSEgby8jLUV3Js6J36HsjX1x1eXnxwKSRCpB92Ca4ev22+uNrJ4=
+	t=1773346463; cv=none; b=i+qDcC/XoDKdbDzdxvXqj8TNgmxgfkchBK0cgDBbjt59nllmsOE8TxzTT80s5Bw5xSYY3vG0aIm+9pBmoKIxsi8s2sodvtVpPBTvDBp3RxlKTMZczTDJRPe2zLJcY4oOtfyErmYJT79NdrUXK/GyQY4wan8qS6mZ1Nmu0wF41Sg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773345895; c=relaxed/simple;
-	bh=Q2Dz5/OEh6DH4pX3NgP0K3CGI0lXwl2eOSeT06eOFH4=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=Ul8T/kkeZ2bBOHeQPNEP69i4P7rCmTGTsGkzlHOEdIpxsIWMvM8HMubv9VNF6wi+d+EHy1hCMfLS5gZs+z0yKmACyzwoFKnfL+exJonkEU672mLCkJDMnxTEmWnb4tmGTPsdQuvUpOeoB0QOF6Hq+8sgdyLl8IqIIlgq3tHJUAg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=qS4O+BzF; arc=none smtp.client-ip=209.85.214.201
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+	s=arc-20240116; t=1773346463; c=relaxed/simple;
+	bh=bq2Ea7vaCPO+BA/dfoz59lF0RCI/ELzLNj5R1qoJrDs=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=K3+tDEcPYF1HfUWTdKKfyj1uQmrOepGJhVafO/BWSVdNtogc8UOLIOoZ3L4fCgFJSQ81/rCfOTWf3/WUJXYDIT5ZYfBpPN4WpIEv6q9oEOuzVuyZ9OIrOkinbwrYNCuNmsJSOX34xWKJaOA0LC9HwLMXUGkVlDAzQZ9cERQDFRw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=NZXcwj9u; arc=none smtp.client-ip=198.175.65.21
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="qS4O+BzF"
-Received: by mail-pl1-f201.google.com with SMTP id d9443c01a7336-2ae3e462daeso9529845ad.0
-        for <kvm@vger.kernel.org>; Thu, 12 Mar 2026 13:04:53 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1773345893; x=1773950693; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=mquuBhH5mEBbGKF1zjKCYUJkvskIC0Bertlw5dm983s=;
-        b=qS4O+BzFHSVoxn0NOz01fRbXJYI8xiDIUFNINNAaLM3JjeDpJPsGPXjDeplIgDkGex
-         SIAiUbrvNFpY83Mi+AUl5xXMS/2pw9nkGE9hnOZavHjtojp3Sj0Pt+YZSWOnpLDaHi8p
-         uQkJT/VU5zJ2+DbN+lMQeQA80bLPvQjoI2x1vPX793FJkJHHzkPG0XadXZzA2KV4TNpL
-         4HqMW3rOfsOGHDbBBEGroMOWa8KZTj/0fnpB8PJia+XzlBs3N2oNns2/TzWqpHxN3MOw
-         5eHUNDQr4rXUByN/naaEKIDBxkG4bxkpp+yiG3OAeR+rV+4+BNsDKl3ylBCnYJDC2KTP
-         XhrQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1773345893; x=1773950693;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=mquuBhH5mEBbGKF1zjKCYUJkvskIC0Bertlw5dm983s=;
-        b=e0fAJDAsODRi8yfch/wHF8NgL3wKXAshZnSSNjfgM+0O4XEVJutMSNZi7ZsuWFsvj7
-         fIHMS389HlGj8SVsDjsTNFJX+Q95bFy4kgMv3GspOW6uHFpUQEQZEROhVEMOaVqxA9Vg
-         yZQGsxOORNAjkdrP66+Ah26w6diejv4zuy1c+q09tWGVUkNJ0p4mjCGJfMnqDvs7TsO4
-         yZwBcTndJjRnReW7QZw4tx+HKaM2Eer9qKA0q02CH1fM011yolqxbyy3eU65Apf6Cd7H
-         Yz07HMcqP91io/xb4mL/4Pg6yRzfAvMVp7EQ8HP/RIWW17LcUHov2WgIp7o6EVvoJiCR
-         zeew==
-X-Forwarded-Encrypted: i=1; AJvYcCWmx6b5LjLwlX2hA/jVUjKC9QkN+KG3PYEU1ftFCJC7QfUFMeer//j6RX2/t6ta47effJs=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzpYy4ADo5UFQsUaulVMN55WW1Q3O0gX/AGawC4f33gcpcvdSEK
-	UfoXszUyGICQRxT0HreOBhEklNO4CFT7PSJXMpcV9N14vQA6s53gLsnCBTZ2LE4YNYKOR8icnqL
-	ORJpJIw==
-X-Received: from plcf13.prod.google.com ([2002:a17:903:104d:b0:2ae:c5aa:fcd7])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:902:d485:b0:2ae:5228:e0ff
- with SMTP id d9443c01a7336-2aecaacf65cmr5648905ad.29.1773345892982; Thu, 12
- Mar 2026 13:04:52 -0700 (PDT)
-Date: Thu, 12 Mar 2026 13:04:51 -0700
-In-Reply-To: <20260303191509.1565629-1-tycho@kernel.org>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="NZXcwj9u"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1773346460; x=1804882460;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=bq2Ea7vaCPO+BA/dfoz59lF0RCI/ELzLNj5R1qoJrDs=;
+  b=NZXcwj9uAPZ77WuYn8M4fXx+8SyHQlow7cDntPW8xFL8i1LAm8ZRAJSJ
+   UqACscMmQ8IRyBA4FVeowIT9DjTA7gVPFEzUqRw6M/q6XT2T00YNARqZN
+   ZijPmzsaCWqjtODJc68SCKo0v6eAcUl0okdOnPCR6oWn2mAHeN8EvIWMq
+   amKA4oHKSeyukvHJg77qi5DcJO+XV74DDdTCYR2V66eMPE4VgJd2JKxci
+   JULoz0jfYITvMaHhlvBzXv7DIkGmbZ0b9bIfWaiYu+G78mxhHZLcIzz68
+   nRklcLhVSIMapIM87rMHvZH0DrU0hHat+VzRdNRPmteqqz60cH5NfWQ2q
+   g==;
+X-CSE-ConnectionGUID: 67Nl01PqRMKuCJTz4eJtKw==
+X-CSE-MsgGUID: Hz97viPpRT2/acqhGgGtdg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11727"; a="74334952"
+X-IronPort-AV: E=Sophos;i="6.23,116,1770624000"; 
+   d="scan'208";a="74334952"
+Received: from orviesa004.jf.intel.com ([10.64.159.144])
+  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Mar 2026 13:14:20 -0700
+X-CSE-ConnectionGUID: 16XFmL9CRbKoDMT1GXIMiA==
+X-CSE-MsgGUID: CsJ5Tf2lQESRacpm35rPRQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.23,116,1770624000"; 
+   d="scan'208";a="225394759"
+Received: from unknown (HELO [10.24.81.183]) ([10.24.81.183])
+  by orviesa004-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Mar 2026 13:14:20 -0700
+Message-ID: <85e42dab-865b-425c-bd31-fba7ff5d3443@intel.com>
+Date: Thu, 12 Mar 2026 13:14:33 -0700
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20260303191509.1565629-1-tycho@kernel.org>
-Message-ID: <abMcYw1wMin6cqY8@google.com>
-Subject: Re: [PATCH 0/5] Revoke supported SEV VM types
-From: Sean Christopherson <seanjc@google.com>
-To: Tycho Andersen <tycho@kernel.org>
-Cc: Paolo Bonzini <pbonzini@redhat.com>, Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, 
-	Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
-	"H. Peter Anvin" <hpa@zytor.com>, Ashish Kalra <ashish.kalra@amd.com>, 
-	Tom Lendacky <thomas.lendacky@amd.com>, John Allen <john.allen@amd.com>, 
-	Herbert Xu <herbert@gondor.apana.org.au>, "David S. Miller" <davem@davemloft.net>, 
-	Shuah Khan <shuah@kernel.org>, Kim Phillips <kim.phillips@amd.com>, 
-	Alexey Kardashevskiy <aik@amd.com>, Nikunj A Dadhania <nikunj@amd.com>, kvm@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-crypto@vger.kernel.org, 
-	linux-kselftest@vger.kernel.org
-Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4 04/24] x86/virt/seamldr: Introduce a wrapper for
+ P-SEAMLDR SEAMCALLs
+To: Chao Gao <chao.gao@intel.com>, linux-coco@lists.linux.dev,
+ linux-kernel@vger.kernel.org, kvm@vger.kernel.org, x86@kernel.org
+Cc: reinette.chatre@intel.com, ira.weiny@intel.com, kai.huang@intel.com,
+ dan.j.williams@intel.com, yilun.xu@linux.intel.com, sagis@google.com,
+ vannapurve@google.com, paulmck@kernel.org, nik.borisov@suse.com,
+ zhenzhong.duan@intel.com, seanjc@google.com, rick.p.edgecombe@intel.com,
+ kas@kernel.org, dave.hansen@linux.intel.com, vishal.l.verma@intel.com,
+ binbin.wu@linux.intel.com, tony.lindgren@linux.intel.com,
+ Farrah Chen <farrah.chen@intel.com>, Thomas Gleixner <tglx@kernel.org>,
+ Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+ "H. Peter Anvin" <hpa@zytor.com>
+References: <20260212143606.534586-1-chao.gao@intel.com>
+ <20260212143606.534586-5-chao.gao@intel.com>
+From: Dave Hansen <dave.hansen@intel.com>
+Content-Language: en-US
+Autocrypt: addr=dave.hansen@intel.com; keydata=
+ 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
+In-Reply-To: <20260212143606.534586-5-chao.gao@intel.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Tue, Mar 03, 2026, Tycho Andersen wrote:
-> From: "Tycho Andersen (AMD)" <tycho@kernel.org>
-> 
-> Recent SEV firmware [1] does not support SEV-ES VMs when SNP is enabled.
-> Sean suggested [2] adding an API so that userspace can check for this
-> condition, so do that. Also introduce and use SNP_VERIFY_MITIGATION to
-> determine whether it is present or not.
-> 
-> [1]: https://www.amd.com/en/resources/product-security/bulletin/amd-sb-3023.html
-> [2]: https://lore.kernel.org/all/aZyLIWtffvEnmtYh@google.com/
-> 
-> Tycho Andersen (AMD) (5):
->   kvm/sev: don't expose unusable VM types
->   crypto/ccp: introduce SNP_VERIFY_MITIGATION
->   crypto/ccp: export firmware supported vm types
->   kvm/sev: mask off firmware unsupported vm types
->   selftests/kvm: teach sev_*_test about revoking VM types
-> 
->  arch/x86/kvm/svm/sev.c                        | 16 +++-
->  drivers/crypto/ccp/sev-dev.c                  | 84 +++++++++++++++++++
->  include/linux/psp-sev.h                       | 56 +++++++++++++
->  .../selftests/kvm/x86/sev_init2_tests.c       | 14 ++--
->  .../selftests/kvm/x86/sev_migrate_tests.c     |  2 +-
->  .../selftests/kvm/x86/sev_smoke_test.c        |  4 +-
->  6 files changed, 162 insertions(+), 14 deletions(-)
+On 2/12/26 06:35, Chao Gao wrote:
+> +static __maybe_unused int seamldr_call(u64 fn, struct tdx_module_args *args)
+> +{
+> +	/*
+> +	 * Serialize P-SEAMLDR calls and disable interrupts as the calls
+> +	 * can be made from IRQ context.
+> +	 */
+> +	guard(raw_spinlock_irqsave)(&seamldr_lock);
+> +	return seamcall_prerr(fn, args);
+> +}
 
-Other than a few nits, this LGTM.  Even though the sev-dev.c changes are far more
-extensive, I would prefer to take the KVM changes through kvm-x86 due to the
-effective change in KVM's ABI.  I'd be happy to carry the whole thing, or use a
-stable topic branch as a base (patch 1 can easily become patch 3). 
+What SEAMLDR calls are getting made from IRQ context?
+
+Why does this need to be raw_?
