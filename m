@@ -1,305 +1,286 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-oi1-f202.google.com (mail-oi1-f202.google.com [209.85.167.202])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 682873FF1;
-	Thu, 12 Mar 2026 22:31:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.12
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71A003B47C0
+	for <kvm@vger.kernel.org>; Thu, 12 Mar 2026 22:37:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.202
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773354669; cv=none; b=pG+ze8WOwP0kz9qVjr636XIKsRzO0951dCGjpvfRM1w0Kj0D61nM8ieVAtCZWqECAZ/s/9j+PdJCAwpORUuTvUFOQF4sVOBu5YFk5sC6jRMXs2AeH8qitP/AdTDgnb/Kuta2Qg0TSho/GMm40jFeLyuChRmLsyV7R0yZXnz5sJw=
+	t=1773355063; cv=none; b=g1K2HdJ5EDyiXLP9M8IJgy+nLwgaJbW5C4re3wMCTxfmavxniVYqPQpjLnGmUJDQmiWhE+I8RxkQJLHK2qsCMKZ8n2Ese4ZHICUogggRl2FloGe6djiUxQ9l1B2vYONGFF8B+jgaG8rJeFybT20lRvN8tKAgUCQnpObk2PhFY/4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773354669; c=relaxed/simple;
-	bh=iqVxDsBv64pck64O0Ll+2uZI3/QL8ArXPzimLzg/EXY=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=g/PgR5Ki9NlgWB3Q+PZ1vDZUI0RoFyTKO9VWZrh6LnmZaoefsRCYkAIwgftc81FtpCsxieXhzBlL94qksQBWekg7BZatYczO5UV/Ci846O/VtCNduVfkpk52eWt4fkKyQmhOLc4hiDXVwvjKpOzpuqQoo5MRWsipYa/Kj8BnKw8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=BZYfVJ9u; arc=none smtp.client-ip=198.175.65.12
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1773355063; c=relaxed/simple;
+	bh=riRdHtbC6MOlF1LQ1+Xi70vycwoUYV3bcD9E2Zuu6NY=;
+	h=Date:In-Reply-To:Mime-Version:Message-ID:Subject:From:To:Cc:
+	 Content-Type; b=b9t0bt9SNB6+rE0gavfVgiODjaQs8RAnfHIBNStHa2dJErRUq1DaA5Xv78/N4knUEiJf17mSn1CVvKrS716q60p/VmSfJBC0erbFsCOTUlNbakdcnilaW06lqGMBmpmHp0SwyAY59vTgSS4pfQt1KmYn4qdqxONB7yUABOdPud8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--coltonlewis.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=RH2cAsk2; arc=none smtp.client-ip=209.85.167.202
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--coltonlewis.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="BZYfVJ9u"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1773354668; x=1804890668;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=iqVxDsBv64pck64O0Ll+2uZI3/QL8ArXPzimLzg/EXY=;
-  b=BZYfVJ9uoLu39+CFwNJXvwNGccSy98MKC5CmSE0XodlNP4GpL0TAaSiO
-   R5FdNNh4Hib9pfh4Z1lqKPI1Uq6wssC7ML8qxBZVloD0132tvQ6Sjtd18
-   q9TNLssiKxR7G0MiEPVhBJctr5pI1Jpz+KHMij5Rm1CMO45J6TKud4j9o
-   DLYMoD0VKbgiacvm8Yoh2B0HyH0wkIaBQU2pjvSfXJTQn1kFUSFN2MHB4
-   eiOZ2EgMcI67VqQgFcv72IvSgA0DWalyusfNKK56lFBFj9d3rMDUzQ7y6
-   3D38MC08OcFraIm4ComFa57GabvC+zq6wEUrVRpJ0/iFPgoAEfxAbFFvG
-   A==;
-X-CSE-ConnectionGUID: Q8VBY/nxRWGpezXn8LihNg==
-X-CSE-MsgGUID: 8iIW1PGQRtehBwamT18fXQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11727"; a="85942627"
-X-IronPort-AV: E=Sophos;i="6.23,117,1770624000"; 
-   d="scan'208";a="85942627"
-Received: from fmviesa009.fm.intel.com ([10.60.135.149])
-  by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Mar 2026 15:31:07 -0700
-X-CSE-ConnectionGUID: q77RrV/XSlm3AV9cvV31FQ==
-X-CSE-MsgGUID: 2AyNSjorQE+bYHg+VgSqzg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,117,1770624000"; 
-   d="scan'208";a="215969882"
-Received: from aduenasd-mobl5.amr.corp.intel.com (HELO [10.125.110.142]) ([10.125.110.142])
-  by fmviesa009-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Mar 2026 15:31:05 -0700
-Message-ID: <26be5ee3-d7ba-4bea-9824-c514341cf324@intel.com>
-Date: Thu, 12 Mar 2026 15:31:03 -0700
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="RH2cAsk2"
+Received: by mail-oi1-f202.google.com with SMTP id 5614622812f47-466f705757bso6092069b6e.0
+        for <kvm@vger.kernel.org>; Thu, 12 Mar 2026 15:37:42 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1773355061; x=1773959861; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:mime-version:in-reply-to:date:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=BOQPFUygErdEhR+VhLQ8d5SqWsIL2z8SybdB1Lqp5qg=;
+        b=RH2cAsk2jYAgTt+a/aeaeNNT1KKZTEbP0e25KtkfYRphEHCle1uqF5sWn48LsXH61n
+         27FSYPhontTGRHR9uTfEWKJ76qAcZ+/gcoxtPPx9qPf3PPEY5qFd7tBEHJZTWTkcuDp6
+         GCK0BOu3rW24a3+XqRN2hBtOFG2EcQDR3+P+mLkV/qLelsx4Fxa/uwD+S6fLdzgf8j3g
+         OIl0W2vJejkyQrJPZKnE6uToPLc21JZ9vp8HKALlRwq+jyHkwYjDqowg2dQGNgFQ5qup
+         7w2H3qtdLRYhzqoOIMfX4xiGBB38fgcscDzjaC34lENs4P817ZUNwrzd+wxZhHpO17wF
+         05Mw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1773355061; x=1773959861;
+        h=cc:to:from:subject:message-id:mime-version:in-reply-to:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=BOQPFUygErdEhR+VhLQ8d5SqWsIL2z8SybdB1Lqp5qg=;
+        b=UxNhYh8f5dN7RUE4bY1tU5STXNLojsKm6GClcaX0ARUyDtCxLcD7/G7htk9MtnCLcD
+         JW+cXBp7Vjb9+n8BgotS93umqVCUedN73bX2J/5xtplierWp2wcNTO9PSKxsfboQI36j
+         F66FI/vjRwmP0jScn7Ce/tSCkHCN/j/CIvlXzDrj8E+7nkAmHSUATBhMrb3/6TUuh3+L
+         z/47OS1Mdj5ByuF6d/k0abvhVN7Q/CgduIv+BlQv0Zz9NIkYGoRH0RyNMdyf/xZR/zBX
+         Zn1okMDdQox8kfpcb8Oz+GT8vJrTG53Sq0dNRszDNfUqla4MQMNUgq95LRcoG+yF0tVV
+         2lQw==
+X-Gm-Message-State: AOJu0YwedJpj0/uzfrmNdWVrvy+LLYigULssVJaStNRt/iLCQy668iEK
+	4PQYQhJJLTs+4H6v2JYAwY78gQVawEiIJfyXM+DJDFSDN0sxD0xRQARDmAFm10b727Oo+HVbemy
+	2OxqkeChYk7Nlej4mic0RDdIFGA==
+X-Received: from iobif40.prod.google.com ([2002:a05:6602:1e28:b0:960:f5a:2cea])
+ (user=coltonlewis job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:6820:228b:b0:662:f8bd:fc9 with SMTP id 006d021491bc7-67bdaa2ddeamr684027eaf.41.1773355061163;
+ Thu, 12 Mar 2026 15:37:41 -0700 (PDT)
+Date: Thu, 12 Mar 2026 22:37:40 +0000
+In-Reply-To: <a75924dd-0fa7-4574-837c-1778366195a6@linaro.org> (message from
+ James Clark on Wed, 11 Mar 2026 17:45:55 +0000)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 09/20] vfio/cxl: Implement CXL device detection and HDM
- register probing
-To: mhonap@nvidia.com, aniketa@nvidia.com, ankita@nvidia.com,
- alwilliamson@nvidia.com, vsethi@nvidia.com, jgg@nvidia.com,
- mochs@nvidia.com, skolothumtho@nvidia.com, alejandro.lucero-palau@amd.com,
- dave@stgolabs.net, jonathan.cameron@huawei.com, alison.schofield@intel.com,
- vishal.l.verma@intel.com, ira.weiny@intel.com, dan.j.williams@intel.com,
- jgg@ziepe.ca, yishaih@nvidia.com, kevin.tian@intel.com
-Cc: cjia@nvidia.com, targupta@nvidia.com, zhiw@nvidia.com, kjaju@nvidia.com,
- linux-kernel@vger.kernel.org, linux-cxl@vger.kernel.org, kvm@vger.kernel.org
-References: <20260311203440.752648-1-mhonap@nvidia.com>
- <20260311203440.752648-10-mhonap@nvidia.com>
-Content-Language: en-US
-From: Dave Jiang <dave.jiang@intel.com>
-In-Reply-To: <20260311203440.752648-10-mhonap@nvidia.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Mime-Version: 1.0
+Message-ID: <gsntfr64oerv.fsf@coltonlewis-kvm.c.googlers.com>
+Subject: Re: [PATCH v6 04/19] perf: arm_pmuv3: Introduce method to partition
+ the PMU
+From: Colton Lewis <coltonlewis@google.com>
+To: James Clark <james.clark@linaro.org>
+Cc: kvm@vger.kernel.org, alexandru.elisei@arm.com, pbonzini@redhat.com, 
+	corbet@lwn.net, linux@armlinux.org.uk, catalin.marinas@arm.com, 
+	will@kernel.org, maz@kernel.org, oliver.upton@linux.dev, mizhang@google.com, 
+	joey.gouly@arm.com, suzuki.poulose@arm.com, yuzenghui@huawei.com, 
+	mark.rutland@arm.com, shuah@kernel.org, gankulkarni@os.amperecomputing.com, 
+	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-arm-kernel@lists.infradead.org, kvmarm@lists.linux.dev, 
+	linux-perf-users@vger.kernel.org, linux-kselftest@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"; format=flowed; delsp=yes
 
+James Clark <james.clark@linaro.org> writes:
 
+> On 09/02/2026 10:13 pm, Colton Lewis wrote:
+>> For PMUv3, the register field MDCR_EL2.HPMN partitiones the PMU
+>> counters into two ranges where counters 0..HPMN-1 are accessible by
+>> EL1 and, if allowed, EL0 while counters HPMN..N are only accessible by
+>> EL2.
 
-On 3/11/26 1:34 PM, mhonap@nvidia.com wrote:
-> From: Manish Honap <mhonap@nvidia.com>
-> 
-> Implement the core CXL Type-2 device detection and component register
-> probing logic in vfio_pci_cxl_detect_and_init().
-> 
-> Three private helpers are introduced:
-> 
->   vfio_cxl_create_device_state() allocates the per-device
->   vfio_pci_cxl_state structure using devm_cxl_dev_state_create() so
->   that lifetime is tied to the PCI device binding.
-> 
->   vfio_cxl_find_bar() locates the PCI BAR that contains a given HPA
->   range, returning the BAR index and offset within it.
-> 
->   vfio_cxl_setup_regs() uses the CXL core helpers cxl_find_regblock()
->   and cxl_probe_component_regs() to enumerate the HDM decoder register
->   block, then records its BAR index, offset and size in the CXL state.
-> 
-> vfio_pci_cxl_detect_and_init() orchestrates detection:
->   1. Check for CXL DVSEC via pcie_is_cxl() + pci_find_dvsec_capability().
->   2. Allocate CXL device state.
->   3. Temporarily call pci_enable_device_mem() for ioremap, then disable.
->   4. Probe component registers to find the HDM decoder block.
-> 
-> On any failure vdev->cxl is devm_kfree'd so that device falls back to
-> plain PCI mode transparently.
-> 
-> Signed-off-by: Manish Honap <mhonap@nvidia.com>
-> ---
->  drivers/vfio/pci/cxl/vfio_cxl_core.c | 151 +++++++++++++++++++++++++++
->  drivers/vfio/pci/cxl/vfio_cxl_priv.h |   8 ++
->  2 files changed, 159 insertions(+)
-> 
-> diff --git a/drivers/vfio/pci/cxl/vfio_cxl_core.c b/drivers/vfio/pci/cxl/vfio_cxl_core.c
-> index 7698d94e16be..2da6da1c0605 100644
-> --- a/drivers/vfio/pci/cxl/vfio_cxl_core.c
-> +++ b/drivers/vfio/pci/cxl/vfio_cxl_core.c
-> @@ -18,6 +18,114 @@
->  
->  MODULE_IMPORT_NS("CXL");
->  
-> +static int vfio_cxl_create_device_state(struct vfio_pci_core_device *vdev,
-> +					u16 dvsec)
-> +{
-> +	struct pci_dev *pdev = vdev->pdev;
-> +	struct device *dev = &pdev->dev;
-> +	struct vfio_pci_cxl_state *cxl;
-> +	bool cxl_mem_capable, is_cxl_type3;
-> +	u16 cap_word;
-> +
-> +	/*
-> +	 * The devm allocation for the CXL state remains for the entire time
-> +	 * the PCI device is bound to vfio-pci. From successful CXL init
-> +	 * in probe until the device is released on unbind.
-> +	 * No extra explicit free is needed; devm handles it when
-> +	 * pdev->dev is released.
-> +	 */
-> +	vdev->cxl = devm_cxl_dev_state_create(dev,
-> +					      CXL_DEVTYPE_DEVMEM,
-> +					      pdev->dev.id, dvsec,
-> +					      struct vfio_pci_cxl_state,
-> +					      cxlds, false);
-> +	if (!vdev->cxl)
-> +		return -ENOMEM;
-> +
-> +	cxl = vdev->cxl;
-> +	cxl->dvsec = dvsec;
-> +
-> +	pci_read_config_word(pdev, dvsec + CXL_DVSEC_CAPABILITY_OFFSET,
-> +			     &cap_word);
-> +
-> +	cxl_mem_capable = !!(cap_word & CXL_DVSEC_MEM_CAPABLE);
-> +	is_cxl_type3 = ((pdev->class >> 8) == PCI_CLASS_MEMORY_CXL);
+>> Create module parameter reserved_host_counters to reserve a number of
+>> counters for the host. This number is set at boot because the perf
+>> subsystem assumes the number of counters will not change after the PMU
+>> is probed.
 
-Both of these can use FIELD_GET().
+>> Introduce the function armv8pmu_partition() to modify the PMU driver's
+>> cntr_mask of available counters to exclude the counters being reserved
+>> for the guest and record reserved_guest_counters as the maximum
+>> allowable value for HPMN.
 
-> +
-> +	/*
-> +	 * Type 2 = CXL memory capable but NOT Type 3 (e.g. accelerator/GPU)
-> +	 * Unsupported for non cxl type-2 class of devices.
-> +	 */
-> +	if (!(cxl_mem_capable && !is_cxl_type3)) {
-> +		devm_kfree(&pdev->dev, vdev->cxl);
-> +		vdev->cxl = NULL;
-> +		return -ENODEV;
-> +	}
-> +
-> +	return 0;
-> +}
-> +
-> +static int vfio_cxl_setup_regs(struct vfio_pci_core_device *vdev)
-> +{
-> +	struct vfio_pci_cxl_state *cxl = vdev->cxl;
-> +	struct cxl_register_map *map = &cxl->cxlds.reg_map;
-> +	resource_size_t offset, bar_offset, size;
-> +	struct pci_dev *pdev = vdev->pdev;
-> +	void __iomem *base;
-> +	u32 count;
-> +	int ret;
-> +	u8 bar;
-> +
-> +	if (WARN_ON_ONCE(!pci_is_enabled(pdev)))
-> +		return -EINVAL;
-> +
-> +	/* Find component register block via Register Locator DVSEC */
-> +	ret = cxl_find_regblock(pdev, CXL_REGLOC_RBI_COMPONENT, map);
-> +	if (ret)
-> +		return ret;
-> +
-> +	/* Temporarily map the register block */
-> +	base = ioremap(map->resource, map->max_size);
+>> Due to the difficulty this feature would create for the driver running
+>> in nVHE mode, partitioning is only allowed in VHE mode. In order to
+>> support a partitioning on nVHE we'd need to explicitly disable guest
+>> counters on every exit and reset HPMN to place all counters in the
+>> first range.
 
-Request the mem region before mapping it?
+>> Signed-off-by: Colton Lewis <coltonlewis@google.com>
+>> ---
+>>    arch/arm/include/asm/arm_pmuv3.h   |  4 ++
+>>    arch/arm64/include/asm/arm_pmuv3.h |  5 ++
+>>    arch/arm64/kvm/Makefile            |  2 +-
+>>    arch/arm64/kvm/pmu-direct.c        | 22 +++++++++
+>>    drivers/perf/arm_pmuv3.c           | 78 +++++++++++++++++++++++++++++-
+>>    include/kvm/arm_pmu.h              |  8 +++
+>>    include/linux/perf/arm_pmu.h       |  1 +
+>>    7 files changed, 117 insertions(+), 3 deletions(-)
+>>    create mode 100644 arch/arm64/kvm/pmu-direct.c
 
-DJ
+>> diff --git a/arch/arm/include/asm/arm_pmuv3.h  
+>> b/arch/arm/include/asm/arm_pmuv3.h
+>> index 2ec0e5e83fc98..154503f054886 100644
+>> --- a/arch/arm/include/asm/arm_pmuv3.h
+>> +++ b/arch/arm/include/asm/arm_pmuv3.h
+>> @@ -221,6 +221,10 @@ static inline bool kvm_pmu_counter_deferred(struct  
+>> perf_event_attr *attr)
+>>    	return false;
+>>    }
 
-> +	if (!base)
-> +		return -ENOMEM;
-> +
-> +	/* Probe component register capabilities */
-> +	cxl_probe_component_regs(&pdev->dev, base, &map->component_map);
-> +
-> +	/* Unmap immediately */
-> +	iounmap(base);
-> +
-> +	/* Check if HDM decoder was found */
-> +	if (!map->component_map.hdm_decoder.valid)
-> +		return -ENODEV;
-> +
-> +	pci_dbg(pdev,
-> +		"vfio_cxl: HDM decoder at offset=0x%lx, size=0x%lx\n",
-> +		map->component_map.hdm_decoder.offset,
-> +		map->component_map.hdm_decoder.size);
-> +
-> +	/* Get HDM register info */
-> +	ret = cxl_get_hdm_reg_info(&cxl->cxlds, &count, &offset, &size);
-> +	if (ret)
-> +		return ret;
-> +
-> +	if (!count || !size)
-> +		return -ENODEV;
-> +
-> +	cxl->hdm_count = count;
-> +	cxl->hdm_reg_offset = offset;
-> +	cxl->hdm_reg_size = size;
-> +
-> +	ret = cxl_regblock_get_bar_info(map, &bar, &bar_offset);
-> +	if (ret)
-> +		return ret;
-> +
-> +	cxl->comp_reg_bar = bar;
-> +	cxl->comp_reg_offset = bar_offset;
-> +	cxl->comp_reg_size = CXL_COMPONENT_REG_BLOCK_SIZE;
-> +
-> +	return 0;
-> +}
-> +
->  /**
->   * vfio_pci_cxl_detect_and_init - Detect and initialize CXL Type-2 device
->   * @vdev: VFIO PCI device
-> @@ -28,8 +136,51 @@ MODULE_IMPORT_NS("CXL");
->   */
->  void vfio_pci_cxl_detect_and_init(struct vfio_pci_core_device *vdev)
->  {
-> +	struct pci_dev *pdev = vdev->pdev;
-> +	struct vfio_pci_cxl_state *cxl;
-> +	u16 dvsec;
-> +	int ret;
-> +
-> +	if (!pcie_is_cxl(pdev))
-> +		return;
-> +
-> +	dvsec = pci_find_dvsec_capability(pdev,
-> +					  PCI_VENDOR_ID_CXL,
-> +					  PCI_DVSEC_CXL_DEVICE);
-> +	if (!dvsec)
-> +		return;
-> +
-> +	ret = vfio_cxl_create_device_state(vdev, dvsec);
-> +	if (ret)
-> +		return;
-> +
-> +	cxl = vdev->cxl;
-> +
-> +	/*
-> +	 * Required for ioremap of the component register block and
-> +	 * calls to cxl_probe_component_regs().
-> +	 */
-> +	ret = pci_enable_device_mem(pdev);
-> +	if (ret)
-> +		goto failed;
-> +
-> +	ret = vfio_cxl_setup_regs(vdev);
-> +	if (ret) {
-> +		pci_disable_device(pdev);
-> +		goto failed;
-> +	}
-> +
-> +	pci_disable_device(pdev);
-> +
-> +	return;
-> +
-> +failed:
-> +	devm_kfree(&pdev->dev, vdev->cxl);
-> +	vdev->cxl = NULL;
->  }
->  
->  void vfio_pci_cxl_cleanup(struct vfio_pci_core_device *vdev)
->  {
-> +	if (!vdev->cxl)
-> +		return;
->  }
-> diff --git a/drivers/vfio/pci/cxl/vfio_cxl_priv.h b/drivers/vfio/pci/cxl/vfio_cxl_priv.h
-> index 818a83a3809d..57fed39a80da 100644
-> --- a/drivers/vfio/pci/cxl/vfio_cxl_priv.h
-> +++ b/drivers/vfio/pci/cxl/vfio_cxl_priv.h
-> @@ -26,4 +26,12 @@ struct vfio_pci_cxl_state {
->  	u8                           comp_reg_bar;
->  };
->  
-> +/*
-> + * CXL DVSEC for CXL Devices - register offsets within the DVSEC
-> + * (CXL 2.0+ 8.1.3).
-> + * Offsets are relative to the DVSEC capability base (cxl->dvsec).
-> + */
-> +#define CXL_DVSEC_CAPABILITY_OFFSET 0xa
-> +#define CXL_DVSEC_MEM_CAPABLE	    BIT(2)
-> +
->  #endif /* __LINUX_VFIO_CXL_PRIV_H */
+>> +static inline bool has_host_pmu_partition_support(void)
+>> +{
+>> +	return false;
+>> +}
+>>    static inline bool kvm_set_pmuserenr(u64 val)
+>>    {
+>>    	return false;
+>> diff --git a/arch/arm64/include/asm/arm_pmuv3.h  
+>> b/arch/arm64/include/asm/arm_pmuv3.h
+>> index cf2b2212e00a2..27c4d6d47da31 100644
+>> --- a/arch/arm64/include/asm/arm_pmuv3.h
+>> +++ b/arch/arm64/include/asm/arm_pmuv3.h
+>> @@ -171,6 +171,11 @@ static inline bool pmuv3_implemented(int pmuver)
+>>    		 pmuver == ID_AA64DFR0_EL1_PMUVer_NI);
+>>    }
 
+>> +static inline bool is_pmuv3p1(int pmuver)
+>> +{
+>> +	return pmuver >= ID_AA64DFR0_EL1_PMUVer_V3P1;
+>> +}
+>> +
+>>    static inline bool is_pmuv3p4(int pmuver)
+>>    {
+>>    	return pmuver >= ID_AA64DFR0_EL1_PMUVer_V3P4;
+>> diff --git a/arch/arm64/kvm/Makefile b/arch/arm64/kvm/Makefile
+>> index 3ebc0570345cc..baf0f296c0e53 100644
+>> --- a/arch/arm64/kvm/Makefile
+>> +++ b/arch/arm64/kvm/Makefile
+>> @@ -26,7 +26,7 @@ kvm-y += arm.o mmu.o mmio.o psci.o hypercalls.o  
+>> pvtime.o \
+>>    	 vgic/vgic-its.o vgic/vgic-debug.o vgic/vgic-v3-nested.o \
+>>    	 vgic/vgic-v5.o
+
+>> -kvm-$(CONFIG_HW_PERF_EVENTS)  += pmu-emul.o pmu.o
+>> +kvm-$(CONFIG_HW_PERF_EVENTS)  += pmu-emul.o pmu-direct.o pmu.o
+>>    kvm-$(CONFIG_ARM64_PTR_AUTH)  += pauth.o
+>>    kvm-$(CONFIG_PTDUMP_STAGE2_DEBUGFS) += ptdump.o
+
+>> diff --git a/arch/arm64/kvm/pmu-direct.c b/arch/arm64/kvm/pmu-direct.c
+>> new file mode 100644
+>> index 0000000000000..74e40e4915416
+>> --- /dev/null
+>> +++ b/arch/arm64/kvm/pmu-direct.c
+>> @@ -0,0 +1,22 @@
+>> +// SPDX-License-Identifier: GPL-2.0-only
+>> +/*
+>> + * Copyright (C) 2025 Google LLC
+>> + * Author: Colton Lewis <coltonlewis@google.com>
+>> + */
+>> +
+>> +#include <linux/kvm_host.h>
+>> +
+>> +#include <asm/arm_pmuv3.h>
+>> +
+>> +/**
+>> + * has_host_pmu_partition_support() - Determine if partitioning is  
+>> possible
+>> + *
+>> + * Partitioning is only supported in VHE mode with PMUv3
+>> + *
+>> + * Return: True if partitioning is possible, false otherwise
+>> + */
+>> +bool has_host_pmu_partition_support(void)
+>> +{
+>> +	return has_vhe() &&
+>> +		system_supports_pmuv3();
+>> +}
+>> diff --git a/drivers/perf/arm_pmuv3.c b/drivers/perf/arm_pmuv3.c
+>> index 8d3b832cd633a..798c93678e97c 100644
+>> --- a/drivers/perf/arm_pmuv3.c
+>> +++ b/drivers/perf/arm_pmuv3.c
+>> @@ -42,6 +42,13 @@
+>>    #define ARMV8_THUNDER_PERFCTR_L1I_CACHE_PREF_ACCESS		0xEC
+>>    #define ARMV8_THUNDER_PERFCTR_L1I_CACHE_PREF_MISS		0xED
+
+>> +static int reserved_host_counters __read_mostly = -1;
+>> +int armv8pmu_max_guest_counters = -1;
+>> +
+>> +module_param(reserved_host_counters, int, 0);
+>> +MODULE_PARM_DESC(reserved_host_counters,
+>> +		 "PMU Partition: -1 = No partition; +N = Reserve N counters for the  
+>> host");
+>> +
+>>    /*
+>>     * ARMv8 Architectural defined events, not all of these may
+>>     * be supported on any given implementation. Unsupported events will
+>> @@ -532,6 +539,11 @@ static void armv8pmu_pmcr_write(u64 val)
+>>    	write_pmcr(val);
+>>    }
+
+>> +static u64 armv8pmu_pmcr_n_read(void)
+>> +{
+>> +	return FIELD_GET(ARMV8_PMU_PMCR_N, armv8pmu_pmcr_read());
+>> +}
+>> +
+>>    static int armv8pmu_has_overflowed(u64 pmovsr)
+>>    {
+>>    	return !!(pmovsr & ARMV8_PMU_OVERFLOWED_MASK);
+>> @@ -1309,6 +1321,61 @@ struct armv8pmu_probe_info {
+>>    	bool present;
+>>    };
+
+>> +/**
+>> + * armv8pmu_reservation_is_valid() - Determine if reservation is allowed
+>> + * @host_counters: Number of host counters to reserve
+>> + *
+>> + * Determine if the number of host counters in the argument is an
+>> + * allowed reservation, 0 to NR_COUNTERS inclusive.
+>> + *
+>> + * Return: True if reservation allowed, false otherwise
+>> + */
+>> +static bool armv8pmu_reservation_is_valid(int host_counters)
+>> +{
+>> +	return host_counters >= 0 &&
+>> +		host_counters <= armv8pmu_pmcr_n_read();
+>> +}
+>> +
+>> +/**
+>> + * armv8pmu_partition() - Partition the PMU
+>> + * @pmu: Pointer to pmu being partitioned
+>> + * @host_counters: Number of host counters to reserve
+>> + *
+>> + * Partition the given PMU by taking a number of host counters to
+>> + * reserve and, if it is a valid reservation, recording the
+>> + * corresponding HPMN value in the max_guest_counters field of the PMU  
+>> and
+>> + * clearing the guest-reserved counters from the counter mask.
+>> + *
+>> + * Return: 0 on success, -ERROR otherwise
+>> + */
+>> +static int armv8pmu_partition(struct arm_pmu *pmu, int host_counters)
+>> +{
+>> +	u8 nr_counters;
+>> +	u8 hpmn;
+>> +
+>> +	if (!armv8pmu_reservation_is_valid(host_counters)) {
+>> +		pr_err("PMU partition reservation of %d host counters is not valid",  
+>> host_counters);
+>> +		return -EINVAL;
+>> +	}
+>> +
+>> +	nr_counters = armv8pmu_pmcr_n_read();
+>> +	hpmn = nr_counters - host_counters;
+>> +
+>> +	pmu->max_guest_counters = hpmn;
+>> +	armv8pmu_max_guest_counters = hpmn;
+>> +
+>> +	bitmap_clear(pmu->cntr_mask, 0, hpmn);
+>> +	bitmap_set(pmu->cntr_mask, hpmn, host_counters);
+>> +	clear_bit(ARMV8_PMU_CYCLE_IDX, pmu->cntr_mask);
+>> +
+>> +	if (pmuv3_has_icntr())
+>> +		clear_bit(ARMV8_PMU_INSTR_IDX, pmu->cntr_mask);
+
+> We take the fixed instruction counter away from the host here but then
+> guest never gets it because AA64DFR1 is RAZ. Probably doesn't need to be
+> a blocker to expose the instruction counter, but worth noting that using
+> this feature results in losing a counter completely.
+
+> There's a comment above kvm_pmu_guest_counter_mask() that suggests the
+> instruction counter is available for guests, which is why I was looking
+> here. I think "Compute the bitmask that selects the guest-reserved
+> counters ... These are the counters in 0..HPMN and the cycle and
+> instruction counters." shouldn't include "instruction counters".
+
+Good point. Early iterations intended to expose the instruction counter
+to guests but that was dropped. I will drop it here too.
