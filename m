@@ -1,129 +1,102 @@
-Received: from mail-qt1-f181.google.com (mail-qt1-f181.google.com [209.85.160.181])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from unimail.uni-dortmund.de (mx1.hrz.uni-dortmund.de [129.217.128.51])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A22363BF661
-	for <kvm@vger.kernel.org>; Thu, 12 Mar 2026 12:57:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.181
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E1B12DA759;
+	Thu, 12 Mar 2026 13:07:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=129.217.128.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773320254; cv=none; b=mi2Thg0GGRRccmGE/tBfuyFldM0RPCqA6Cm0W8mh65C7g49MuR8UrsiS3MuQNVHkNvoSbBactnR8dABKRhVeZi8KA5KJrV01y6RyxHVJaUwL2ddWHgeDKeIaU0lFQEcv30k7GWo89Z/Y88IDqCtDfOl2hTfZIOioPXMlfiDaU9c=
+	t=1773320824; cv=none; b=Po+Ng28YjlYI/SI/PDieKJdBsd9m5MxVOix+i0ALDGQPLDtB0zKMzTr5jeVrZaXZ1EOZO8Q93Bi9Ghwo3czx5LjZp+GaF6rTl2Dkhwo9CMYsarWK4XFMNMIZN580PUo/olO/n9z9xKudJkKOITK5EcJNECGIDrMJJSCOyaQcM2Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773320254; c=relaxed/simple;
-	bh=Rr1jkAP22lZkLvo3o90a9fRSWh9+kilNKtAarSScWFY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Saaewb2zUVyOAdtoims9JacBBeRTsQIqB96AjRPrL7XPLx6FQIlKmrGX+REFRf8P0c33G733IHprj4h+iwb4iE1WJABRkljSf5ln9vv6PKj+RwT22iUkU9IJZvyFbxTGyeBwexx+1uyECicAi8qHQX5tvxUQL1lLrGdRGIwcatM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca; spf=pass smtp.mailfrom=ziepe.ca; dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b=fHqxjqGD; arc=none smtp.client-ip=209.85.160.181
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ziepe.ca
+	s=arc-20240116; t=1773320824; c=relaxed/simple;
+	bh=i6EXM/dz88Cyoq8LtFGDSx5xkGpNbJe1oE+QY2KW7uQ=;
+	h=From:To:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=kIdteaW01wp483ckPHMF65skwTqUzJIvXNHUmUr0T1iHqAAQ97HfyI4i/TdGzTkWBZdKYdj+zOioGu4RsO6u7+j42EB30TnVXoASAfWNypRbFASyz9WPDcLRMf+ynKsF3whOIkKIsYpoJCkKNWrl2lXGsb0Y65g7eEMedbCVlLQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=tu-dortmund.de; spf=pass smtp.mailfrom=tu-dortmund.de; dkim=pass (1024-bit key) header.d=tu-dortmund.de header.i=@tu-dortmund.de header.b=L7Fn6Usr; arc=none smtp.client-ip=129.217.128.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=tu-dortmund.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tu-dortmund.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b="fHqxjqGD"
-Received: by mail-qt1-f181.google.com with SMTP id d75a77b69052e-506251815a3so8617381cf.0
-        for <kvm@vger.kernel.org>; Thu, 12 Mar 2026 05:57:32 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ziepe.ca; s=google; t=1773320252; x=1773925052; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=J1SF1XBHkHR0j7NZVucv0LxpGoGXl67PUefLsfwpAbo=;
-        b=fHqxjqGD7mReR8MT2yBowt9MuNKPAKQc++mWcb4ZOttX6YldICO+OnnxWIQjO0C8L5
-         wjOw0Gg7MqV4U+G9pES+s6h1NtZIjaKrBXMW81hrLyc8SxWYHtvQK3FlTjqiyroZskXE
-         jYj0kUENL7Yhu5zg+0UQ91XYlYYlozX9U8uAqBEFaih0fSnDo8kprjTDRYJ58gzKRExo
-         MSUW+Q+e0P2WpZGotx0DuVRaUqq4vGsUUSX1YbPnOxmRUKlXFY/aNRmXMXDbAEfx0Lnn
-         e41FpuPSZjTSuTkWfTMW8e1MvewVXC2p6zLd4GrSZjvSKS4Q06nDQYaSimUW3qR5RhoY
-         JV6A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1773320252; x=1773925052;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=J1SF1XBHkHR0j7NZVucv0LxpGoGXl67PUefLsfwpAbo=;
-        b=ebkpXRxLoh+QymUXeUoGWWiJPzOh5vEZLgtCp+pYaeSwXddhLVPlMgxaYXh1c5DNS8
-         3sXmC/0/IP2GStr/TKaKKKo3M7pyqGNgzn4r7uQH6G5+knLkUHEf18tRy7zE1s8XAuaM
-         6gAWO0wHOuxN2G/5Tyvq6ZfYEkdaRuEniXY1ZwF1AyB+N2q4sDcilYnwNudzGFNsxmNl
-         5omn6a2ZCMXjT0k34vE3nKKCCT41A+vU0HWda5L/qJjeVC6O9TJmBx7YOFJUOQMAtFs/
-         NH61QrbsLg9UTFUKAYsZUy/Wx3qPZ3dVnY8w7IcMWfYgPHlT84Ae7Lh3WBy5Lu8Ot+Ix
-         rTNQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXqfZSDoG/Wvgo8Dyal+0sLmFM2f81H/Kq2aaIfxo2xBNwTy0GgncRxNNvuDar9ZOJ2PgI=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzGMLo5eU5R61vMzWFFx+T4umWK89nAF9qqUsgV6v4Z7HPWO9CF
-	9/De3UO4Cn7EJaympkNj7Vb2mcPP9rgp9sfDPg/gWbatW21kfIXOdW65Rx5siVKSx6E=
-X-Gm-Gg: ATEYQzwr8E40+3AV/kOxxhuWcv8PIg7RaHgWjdiJjx21eg6kkIb2l4Y8mHjcA9uhtGF
-	jf6edDITarxRsKQEKrB1vT508y+ASH9SWOzq/PCN4SDYuUoUn8X/FVsApeh72Y4hqV8dQrC5Ehs
-	1wOEWa3U3rjS9PQ5YT707IPwtLcjjHcp9iDWXnKY/RKIdd5P8QjuEwboowpEDozCYr1Lets2H4i
-	TJzJrUUDE6IPCuWr8ZQwJeennlhN52P10Tx60KqjN0vxF0u+J6/QtnfpPvLM4WncHRSj/athLNE
-	Z15f/YHlWkMI5FX+5gyXpJh8fT8eDAwOapoEJTxMX+p2068Vn05ov7sCSJVF/MCUf0aeMeLmUcR
-	00WMrA47FMQBOhmxJSi9hyWBHw+hSn3lxjDC+l15ODoFhDiHhybQv7+rylDP25wUN5eYmu0auRe
-	rMe4l60YoW3cW9THYZUpI4JDD0y1zdhxBdJ0oDywY/8hgZKsfPIS6iXSV2IZuObGwEZGocFzpEp
-	LT0zXTa
-X-Received: by 2002:ac8:5d4d:0:b0:509:cbc:127b with SMTP id d75a77b69052e-5093a1bd58fmr77950521cf.60.1773320251710;
-        Thu, 12 Mar 2026 05:57:31 -0700 (PDT)
-Received: from ziepe.ca (hlfxns017vw-142-162-112-119.dhcp-dynamic.fibreop.ns.bellaliant.net. [142.162.112.119])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-89a65bd318fsm33341196d6.8.2026.03.12.05.57.30
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 12 Mar 2026 05:57:31 -0700 (PDT)
-Received: from jgg by wakko with local (Exim 4.97)
-	(envelope-from <jgg@ziepe.ca>)
-	id 1w0fbW-00000006fKD-1POa;
-	Thu, 12 Mar 2026 09:57:30 -0300
-Date: Thu, 12 Mar 2026 09:57:30 -0300
-From: Jason Gunthorpe <jgg@ziepe.ca>
-To: Kuan-Wei Chiu <visitorckw@gmail.com>
-Cc: Philipp Hahn <phahn-oss@avm.de>, amd-gfx@lists.freedesktop.org,
-	apparmor@lists.ubuntu.com, bpf@vger.kernel.org,
-	ceph-devel@vger.kernel.org, cocci@inria.fr,
-	dm-devel@lists.linux.dev, dri-devel@lists.freedesktop.org,
-	gfs2@lists.linux.dev, intel-gfx@lists.freedesktop.org,
-	intel-wired-lan@lists.osuosl.org, iommu@lists.linux.dev,
-	kvm@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-	linux-block@vger.kernel.org, linux-bluetooth@vger.kernel.org,
-	linux-btrfs@vger.kernel.org, linux-cifs@vger.kernel.org,
-	linux-clk@vger.kernel.org, linux-erofs@lists.ozlabs.org,
-	linux-ext4@vger.kernel.org, linux-fsdevel@vger.kernel.org,
-	linux-gpio@vger.kernel.org, linux-hyperv@vger.kernel.org,
-	linux-input@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-leds@vger.kernel.org, linux-media@vger.kernel.org,
-	linux-mips@vger.kernel.org, linux-mm@kvack.org,
-	linux-modules@vger.kernel.org, linux-mtd@lists.infradead.org,
-	linux-nfs@vger.kernel.org, linux-omap@vger.kernel.org,
-	linux-phy@lists.infradead.org, linux-pm@vger.kernel.org,
-	linux-rockchip@lists.infradead.org, linux-s390@vger.kernel.org,
-	linux-scsi@vger.kernel.org, linux-sctp@vger.kernel.org,
-	linux-security-module@vger.kernel.org, linux-sh@vger.kernel.org,
-	linux-sound@vger.kernel.org,
-	linux-stm32@st-md-mailman.stormreply.com,
-	linux-trace-kernel@vger.kernel.org, linux-usb@vger.kernel.org,
-	linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-	ntfs3@lists.linux.dev, samba-technical@lists.samba.org,
-	sched-ext@lists.linux.dev, target-devel@vger.kernel.org,
-	tipc-discussion@lists.sourceforge.net, v9fs@lists.linux.dev
-Subject: Re: [PATCH 00/61] treewide: Use IS_ERR_OR_NULL over manual NULL
- check - refactor
-Message-ID: <20260312125730.GI1469476@ziepe.ca>
-References: <20260310-b4-is_err_or_null-v1-0-bd63b656022d@avm.de>
- <abBlpGKO842B3yl9@google.com>
+	dkim=pass (1024-bit key) header.d=tu-dortmund.de header.i=@tu-dortmund.de header.b="L7Fn6Usr"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=tu-dortmund.de;
+	s=unimail; t=1773320812;
+	bh=i6EXM/dz88Cyoq8LtFGDSx5xkGpNbJe1oE+QY2KW7uQ=;
+	h=From:To:Subject:Date:In-Reply-To:References;
+	b=L7Fn6Usr6CqpQSJg+sTfOg+35BhQICdFNJsUxwLeYojj09WsbqE+QES+PyTLa3XFu
+	 FxS04Bhek6fbU8EeHr7JE5aXHsrDYgmS7DMPN3pylLsP+mmqheDPHhH+upjzAsxHlu
+	 Hu27Gl+oOCiNAmlpvvsN7rxBct8aXBLITJeT4+sg=
+Received: from simon-Latitude-5450.fritz.box ([129.217.186.105])
+	(authenticated bits=0)
+	by unimail.uni-dortmund.de (8.18.2/8.18.2) with ESMTPSA id 62CD6mql014094
+	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
+	Thu, 12 Mar 2026 14:06:51 +0100 (CET)
+From: Simon Schippers <simon.schippers@tu-dortmund.de>
+To: willemdebruijn.kernel@gmail.com, jasowang@redhat.com,
+        andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
+        kuba@kernel.org, pabeni@redhat.com, mst@redhat.com,
+        eperezma@redhat.com, leiyang@redhat.com, stephen@networkplumber.org,
+        jon@nutanix.com, tim.gebauer@tu-dortmund.de,
+        simon.schippers@tu-dortmund.de, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
+        virtualization@lists.linux.dev
+Subject: [PATCH net-next v8 3/4] ptr_ring: move free-space check into separate helper
+Date: Thu, 12 Mar 2026 14:06:38 +0100
+Message-ID: <20260312130639.138988-4-simon.schippers@tu-dortmund.de>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20260312130639.138988-1-simon.schippers@tu-dortmund.de>
+References: <20260312130639.138988-1-simon.schippers@tu-dortmund.de>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <abBlpGKO842B3yl9@google.com>
+Content-Transfer-Encoding: 8bit
 
-On Wed, Mar 11, 2026 at 02:40:36AM +0800, Kuan-Wei Chiu wrote:
+This patch moves the check for available free space for a new entry into
+a separate function. As a result, __ptr_ring_produce() remains logically
+unchanged, while the new helper allows callers to determine in advance
+whether subsequent __ptr_ring_produce() calls will succeed. This
+information can, for example, be used to temporarily stop producing until
+__ptr_ring_peek() indicates that space is available again.
 
-> IMHO, the necessity of IS_ERR_OR_NULL() often highlights a confusing or
-> flawed API design. It usually implies that the caller is unsure whether
-> a failure results in an error pointer or a NULL pointer. 
+Co-developed-by: Tim Gebauer <tim.gebauer@tu-dortmund.de>
+Signed-off-by: Tim Gebauer <tim.gebauer@tu-dortmund.de>
+Signed-off-by: Simon Schippers <simon.schippers@tu-dortmund.de>
+---
+ include/linux/ptr_ring.h | 14 ++++++++++++--
+ 1 file changed, 12 insertions(+), 2 deletions(-)
 
-+1
+diff --git a/include/linux/ptr_ring.h b/include/linux/ptr_ring.h
+index 534531807d95..a5a3fa4916d3 100644
+--- a/include/linux/ptr_ring.h
++++ b/include/linux/ptr_ring.h
+@@ -96,6 +96,14 @@ static inline bool ptr_ring_full_bh(struct ptr_ring *r)
+ 	return ret;
+ }
+ 
++static inline int __ptr_ring_produce_peek(struct ptr_ring *r)
++{
++	if (unlikely(!r->size) || r->queue[r->producer])
++		return -ENOSPC;
++
++	return 0;
++}
++
+ /* Note: callers invoking this in a loop must use a compiler barrier,
+  * for example cpu_relax(). Callers must hold producer_lock.
+  * Callers are responsible for making sure pointer that is being queued
+@@ -103,8 +111,10 @@ static inline bool ptr_ring_full_bh(struct ptr_ring *r)
+  */
+ static inline int __ptr_ring_produce(struct ptr_ring *r, void *ptr)
+ {
+-	if (unlikely(!r->size) || r->queue[r->producer])
+-		return -ENOSPC;
++	int p = __ptr_ring_produce_peek(r);
++
++	if (p)
++		return p;
+ 
+ 	/* Make sure the pointer we are storing points to a valid data. */
+ 	/* Pairs with the dependency ordering in __ptr_ring_consume. */
+-- 
+2.43.0
 
-IS_ERR_OR_NULL() should always be looked on with suspicion. Very
-little should be returning some tri-state 'ERR' 'NULL' 'SUCCESS'
-pointer. What does the middle condition even mean? IS_ERR_OR_NULL()
-implies ERR and NULL are semanticly the same, so fix the things to
-always use ERR.
-
-If you want to improve things work to get rid of the NULL checks this
-script identifies. Remove ERR or NULL because only one can ever
-happen, or fix the source to consistently return ERR.
-
-Jason
