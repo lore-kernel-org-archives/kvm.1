@@ -1,53 +1,53 @@
 Received: from mail-pj1-f73.google.com (mail-pj1-f73.google.com [209.85.216.73])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 02EAD384234
-	for <kvm@vger.kernel.org>; Fri, 13 Mar 2026 06:13:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C7AC937E306
+	for <kvm@vger.kernel.org>; Fri, 13 Mar 2026 06:13:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.73
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773382439; cv=none; b=da3PkB4iQpzYpLhS05FYXtQoRrNxgElBQsRE6jaE5kZXv1ASS/J89Vv8MOMP1jX9b77g3RF1kzfwNxRvFCHlJciTxROA1wAUSpucDy5HrFh/vQ9mwEF0hGGGj1x1JVNIluytgAku8W6yQR6QDTkqiSFcFyMWpfKh4ThEynFHZFM=
+	t=1773382444; cv=none; b=BWAHUMLtKq5i/nD/J0Qctl3ij1jhKjUlu6TegC4tCylmNx9/NwmI5GfnMBpOvdKmiV+GNWNr+1u3aL3IlK6b0cBJdSCFRF0vrujllFCkSEiqIhbpJzzX8NUD0FfQHFYSYEiragvl09GO/XvZdIMTWM95DB02pOHulqf0qqdO+T4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773382439; c=relaxed/simple;
-	bh=2KjVqTEvpnhVeQDF6oSpdJZ5plfD9T0yEmClN5nA0FM=;
+	s=arc-20240116; t=1773382444; c=relaxed/simple;
+	bh=eHYnZ4b1YfTkQYFRV/vwy19bweLPw9di8nJ0CgUFfP0=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=gzgz+RuUK1p/fkbwam1fYrqHqYHeEOlJ1ZyMLumJbaB7hY7+5EVfl4sIYEHOt1rlsnMENm9U3gK3fMoLUXmYSTfXFfrmGQXuo6Fs9Zm7/tLTi9E71ypFgYpTxxyq9ImJa0nuNgyUMsV4a1sfJBwXAHB5yF+Kw8nRw7Use2HPiR4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--ackerleytng.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=DHCHkamt; arc=none smtp.client-ip=209.85.216.73
+	 To:Cc:Content-Type; b=Xo8Zm9DQPi5obm5nApRxAWQK5pHoN4uMZkF8pfdUfgbO4bqdWXZCKoZTPfcuMBIfzp7fT5DVDS+rPrfKXHOO2CP5rrSBhqdWpcg5LxTjePezWgctCf6mmT7SRsUa+vPuHsqJgs7JkCC/NMmyLpjoYsYGOykDCDwJtBVH63qRCOw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--ackerleytng.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=DoBT7rCP; arc=none smtp.client-ip=209.85.216.73
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--ackerleytng.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="DHCHkamt"
-Received: by mail-pj1-f73.google.com with SMTP id 98e67ed59e1d1-35a02f3b8e2so7997726a91.0
-        for <kvm@vger.kernel.org>; Thu, 12 Mar 2026 23:13:51 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="DoBT7rCP"
+Received: by mail-pj1-f73.google.com with SMTP id 98e67ed59e1d1-35a0998a441so11198869a91.2
+        for <kvm@vger.kernel.org>; Thu, 12 Mar 2026 23:13:56 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1773382431; x=1773987231; darn=vger.kernel.org;
+        d=google.com; s=20251104; t=1773382436; x=1773987236; darn=vger.kernel.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=0Y9+LBtNIwUBlImIv/NS8s6X1brjmBLxK4e6zepb28A=;
-        b=DHCHkamtm+AkFQG5llBTd+O5p4u2bUYiqHONFRdA90XYZjP+W7n3CyK/FuAGoJwKfm
-         Vjzd4faIJc0lzBTpl9vTP7DDA6H2w3y2gJgSWfS0QIpWnP1jAFDezHtStAct1f2agJqM
-         aSBPPSPC6jsawndRnZWBz2/9id6TCAUcFpyi3gPoYEWLTJby7FQmbuzb2dHA+CmBE9PP
-         zbN32dNC26IDk6kNw9r0PH6lkwf7F035aYQTK6qTKzhTk59XyRryw+BsuzGY5mXkH0MO
-         XpMvamb6uoEy593JVedA5z2dgO4172yPwnlviEcx6uaRlqEkbJUlIM/hCFMAszdNnTd8
-         mHjA==
+        bh=PeX9NHGT79VIWrTrWv7REJqQFLvO/7s3sB7jc929G+A=;
+        b=DoBT7rCPM4+jejFuS3yd8PugpKZGHirZ5K18heSwJpvpzTC2CgI208KXzIDnrbjpZP
+         bBAteuMFDMVdtwtjT8EaJxIEvw/h/W4ADBKJrqZ3YzCsYLu2hFE4+vMkJC788mYQVtdN
+         XXZc5tmYtsou+61FBXDkShY06E3XBopDcpUK2hIllgW3IyzATW5s8i2nu45grarqzECY
+         tzqijmgYT1JrjGkwUuaS7iY8otj5I1tSTnamhVNWQate3X/Gho5w+5NrxpH01VdUiQPt
+         7Jk144UBZrDOqBIEcdp917myIFkmubybruFmrKVjyLAfHxcBNUA5ecaJSTRmzfo7KDZq
+         pj5g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1773382431; x=1773987231;
+        d=1e100.net; s=20251104; t=1773382436; x=1773987236;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=0Y9+LBtNIwUBlImIv/NS8s6X1brjmBLxK4e6zepb28A=;
-        b=FwqUFvpOe0etF3kdfLU+yIuyqToZnmZ4dmB/m7aBD/vzuMSz7S24Bt90ZSYThWQ4GZ
-         GfeMfujK56+OrSP4w2ztKW8W8/yX0Bpqkck6oA9CEkxgX4KRaYY10r7jZ/mmz9gEnnTj
-         ljvdUiRwK9hN2SzTRRwDIdDj2SMHH9HZb7ArMSMlrwxIjKfPJuWDmxKV7fvomYwQhuZ3
-         wp8KpTcuVAKTLiNmO/bajbdiw3ZL/2ErK9R57ftvtLI4tcIVy9DqAxK3YQthSdHWVFvA
-         cL30ZG0pPP8wx60j27sELYx+LTOkQQB21AN5E2+92WNXub38bjIZvYhhFNBAhbDWv35S
-         2wHA==
-X-Gm-Message-State: AOJu0YwGDEX03KIlvVibB/7jWYRKrrEZO1z8r9w9IFTHss/dOQkEHQb4
-	VDdRWLp+OUKTVnOFvoBJIrKPNsQUuZ5hnU0CNzJAsVUVBx1WUOvOHwYVia47OjhCmPYEK6h4cL0
-	g8r4h187aGkV5T9fj6Q7Ua41Icg==
-X-Received: from pjblw9.prod.google.com ([2002:a17:90b:1809:b0:359:9111:25a5])
+        bh=PeX9NHGT79VIWrTrWv7REJqQFLvO/7s3sB7jc929G+A=;
+        b=Ppx4nc1hPgap/qWg4Vd+MWdutZ5ztTd7YxuYUUYIXcLQEQqTOumahxKkHrZd5IxSAL
+         0eaPlSHVjNJHlstw6IZ1yVlqrdBTmiRmk9+tD0jUzXutiwVBNFrZSsQ7gwtv6UPIPnUi
+         JOFRWZ4OBbkaTx9bNASRzenwe0D0dvh/PMq1ddcATvEnnpAkMmqmjqShN8UtQ6Wfao4g
+         q7RkIBHhOKWYvTBWgyscU0IdmBEpPO+TYv2y+bGo/TZdvKCh7jJLQmpEg5DB7yAJH9wl
+         fo/Oqh0yAZjEcyVf8KQGoWj/yHf5VqL9Uc8eqCZYPo6MNrOPkHPYUBCwnBcnXAsWihlr
+         Mg1A==
+X-Gm-Message-State: AOJu0Yzdl0bcpqcWZsU+0t2CtKseb3H8ubqSrjIjTc38mda9YGMUezbF
+	Mv/kU3Gc3eJXnguzCnrU/0CnM2fPsqSfGhfnt+ff2d3ihz4xO6tzJcU6F5Tt+GbsdCrcAIL7YFZ
+	X648pya74DzwaaV9+tnvN15mnHA==
+X-Received: from pjbhg18.prod.google.com ([2002:a17:90b:3012:b0:359:8d6a:9bb7])
  (user=ackerleytng job=prod-delivery.src-stubby-dispatcher) by
- 2002:a17:90b:3888:b0:359:f7d2:a1fa with SMTP id 98e67ed59e1d1-35a21ea67bbmr1975196a91.4.1773382430962;
- Thu, 12 Mar 2026 23:13:50 -0700 (PDT)
-Date: Fri, 13 Mar 2026 06:13:17 +0000
+ 2002:a17:90b:3dcb:b0:354:9b26:cdf7 with SMTP id 98e67ed59e1d1-35a21efae3cmr2174626a91.14.1773382435767;
+ Thu, 12 Mar 2026 23:13:55 -0700 (PDT)
+Date: Fri, 13 Mar 2026 06:13:20 +0000
 In-Reply-To: <20260313-gmem-inplace-conversion-v3-0-5fc12a70ec89@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
@@ -57,14 +57,13 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 References: <20260313-gmem-inplace-conversion-v3-0-5fc12a70ec89@google.com>
 X-Developer-Key: i=ackerleytng@google.com; a=ed25519; pk=sAZDYXdm6Iz8FHitpHeFlCMXwabodTm7p8/3/8xUxuU=
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1773382364; l=2646;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1773382364; l=1210;
  i=ackerleytng@google.com; s=20260225; h=from:subject:message-id;
- bh=2KjVqTEvpnhVeQDF6oSpdJZ5plfD9T0yEmClN5nA0FM=; b=zH9GavLcekczy6HMVrDu5CSJhFpAOcSOs94lLNZHgnCgfc1Lq7t2aTehE29lTD1R4gvTZS5jc
- +YtREAD0otZCIyuxlE5tS4rPxcETFLg1RUnbDV4evD2w5rYZccM8NN4
+ bh=eHYnZ4b1YfTkQYFRV/vwy19bweLPw9di8nJ0CgUFfP0=; b=rqiNCCUj0FITl4TSW1UUj0oq7hsYbkSvZt06OqDlmcSg6UpNG7FtqMbblYVVtVwfIs39KRqkE
+ zn6/r8J1IIsB66DPTP29Y9PgGogkWFKfLEPrDDUIU4WjVn8xw4GWd+6
 X-Mailer: b4 0.14.3
-Message-ID: <20260313-gmem-inplace-conversion-v3-38-5fc12a70ec89@google.com>
-Subject: [PATCH RFC v3 38/43] KVM: guest_memfd: Introduce default handlers for
- content modes
+Message-ID: <20260313-gmem-inplace-conversion-v3-41-5fc12a70ec89@google.com>
+Subject: [PATCH RFC v3 41/43] KVM: x86: Support content mode ZERO for TDX
 From: Ackerley Tng <ackerleytng@google.com>
 To: aik@amd.com, andrew.jones@linux.dev, binbin.wu@linux.intel.com, 
 	brauner@kernel.org, chao.p.peng@linux.intel.com, david@kernel.org, 
@@ -87,88 +86,39 @@ Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org,
 	linux-kselftest@vger.kernel.org, Ackerley Tng <ackerleytng@google.com>
 Content-Type: text/plain; charset="utf-8"
 
-Currently, when setting memory attributes, KVM provides no guarantees about
-the memory contents.
-
-Introduce default handlers for applying memory content modes, which
-different architectures should override.
-
-These handlers will be used later to apply memory content modes during set
-memory attributes requests.
+Support content mode ZERO for TDX by doing nothing, since TDX firmware will
+zero for the host on private to shared conversions.
 
 Signed-off-by: Ackerley Tng <ackerleytng@google.com>
 ---
- include/linux/kvm_host.h |  9 +++++++++
- virt/kvm/guest_memfd.c   | 36 ++++++++++++++++++++++++++++++++++++
- 2 files changed, 45 insertions(+)
+ arch/x86/kvm/x86.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/include/linux/kvm_host.h b/include/linux/kvm_host.h
-index 1ea14c66fc82e..bcb81e871fd37 100644
---- a/include/linux/kvm_host.h
-+++ b/include/linux/kvm_host.h
-@@ -740,6 +740,15 @@ static inline u64 kvm_gmem_get_supported_flags(struct kvm *kvm)
- 
- 	return flags;
- }
-+
-+u64 kvm_arch_gmem_supported_content_modes(struct kvm *kvm);
-+int kvm_gmem_apply_content_mode_zero(struct folio *folio);
-+int kvm_arch_gmem_apply_content_mode_zero(struct kvm *kvm,
-+					    struct folio *folio);
-+int kvm_arch_gmem_apply_content_mode_preserve(struct kvm *kvm,
-+						struct folio *folio);
-+int kvm_arch_gmem_apply_content_mode_unspecified(struct kvm *kvm,
-+					    struct folio *folio);
- #endif
- 
- #ifndef kvm_arch_has_readonly_mem
-diff --git a/virt/kvm/guest_memfd.c b/virt/kvm/guest_memfd.c
-index c4f6bdad6289e..f23acbca28e54 100644
---- a/virt/kvm/guest_memfd.c
-+++ b/virt/kvm/guest_memfd.c
-@@ -638,6 +638,42 @@ static int kvm_gmem_mas_preallocate(struct ma_state *mas, u64 attributes,
- 	return mas_preallocate(mas, xa_mk_value(attributes), GFP_KERNEL);
- }
- 
-+u64 __weak kvm_arch_gmem_supported_content_modes(struct kvm *kvm)
-+{
-+	/* Architectures must override with supported modes. */
-+	return 0;
-+}
-+
-+static u64 kvm_gmem_supported_content_modes(struct kvm *kvm)
-+{
-+	return kvm_arch_gmem_supported_content_modes(kvm);
-+}
-+
-+int kvm_gmem_apply_content_mode_zero(struct folio *folio)
-+{
-+	folio_zero_segment(folio, 0, folio_size(folio));
-+
-+	return 0;
-+}
-+
-+int __weak kvm_arch_gmem_apply_content_mode_unspecified(struct kvm *kvm,
-+							struct folio *folio)
-+{
-+	return 0;
-+}
-+
-+int __weak kvm_arch_gmem_apply_content_mode_zero(struct kvm *kvm,
-+						 struct folio *folio)
-+{
-+	return kvm_gmem_apply_content_mode_zero(folio);
-+}
-+
-+int __weak kvm_arch_gmem_apply_content_mode_preserve(struct kvm *kvm,
-+						     struct folio *folio)
-+{
-+	return -EOPNOTSUPP;
-+}
-+
- static int __kvm_gmem_set_attributes(struct inode *inode, pgoff_t start,
- 				     size_t nr_pages, uint64_t attrs,
- 				     pgoff_t *err_index)
+diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
+index 49c19897a9c30..1354fa89edb09 100644
+--- a/arch/x86/kvm/x86.c
++++ b/arch/x86/kvm/x86.c
+@@ -14088,8 +14088,9 @@ u64 kvm_arch_gmem_supported_content_modes(struct kvm *kvm)
+ 	case KVM_X86_SEV_VM:
+ 	case KVM_X86_SEV_ES_VM:
+ 	case KVM_X86_SNP_VM:
+-	case KVM_X86_TDX_VM:
+ 		return 0;
++	case KVM_X86_TDX_VM:
++		return KVM_SET_MEMORY_ATTRIBUTES2_ZERO;
+ 	case KVM_X86_DEFAULT_VM:
+ 	default:
+ 		WARN_ONCE(1, "Unexpected conversion request for vm_type.");
+@@ -14103,6 +14104,9 @@ int kvm_arch_gmem_apply_content_mode_zero(struct kvm *kvm,
+ 	switch (kvm->arch.vm_type) {
+ 	case KVM_X86_SW_PROTECTED_VM:
+ 		return kvm_gmem_apply_content_mode_zero(folio);
++	case KVM_X86_TDX_VM:
++		/* Rely on TDX firmware to do zeroing. */
++		return 0;
+ 	default:
+ 		WARN_ONCE(1, "Unexpected request to zero for vm_type.");
+ 		return -EOPNOTSUPP;
 
 -- 
 2.53.0.851.ga537e3e6e9-goog
