@@ -1,206 +1,151 @@
-Received: from mail-pl1-f171.google.com (mail-pl1-f171.google.com [209.85.214.171])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 09A3C3B892F
-	for <kvm@vger.kernel.org>; Fri, 13 Mar 2026 15:36:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.171
+Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 978F03BA221;
+	Fri, 13 Mar 2026 15:39:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=13.77.154.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773416208; cv=none; b=DeGmaxA6gGs106h4hPOoNK13Bm4aVhxHzq5gWXSKFsETnyoTaqa5I+t5BL+TzylhYbdB2Yis8Uu2jSksC6yrMSnxDZdd9JWB+nZPS+i0xp6jm9qu8Azh6xNyezlSYMxAuLaZ9dmOI7fHu5JSRNzLuMecE5iy+sQoK64FPLMTSE0=
+	t=1773416368; cv=none; b=pC2yHCXPsjmBNTnnfJSwqVvVhOvDRJUlQgpEXzgx3ziEmPiCecI+ktCzC/UBr+ogCB17dXodS4XhMDqYY3qTbqQ2QDKEFNqsIbALJFmJ5jhw7ypHgnPjMYBdA7AbkKeV5kSrZ6Mo8FNQqjxwyUA4Ec/cI+98aeUHnp8nk/9UUIU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773416208; c=relaxed/simple;
-	bh=mVJqAoGCdzDxY6EScXWW6YPCOZawlS/f85uqEYbM+Io=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=U125buNfkScL9s3pDtBp9HKgxlQFWi5W8UvTbTk7/2gk9NFVM9StMWzKc5VRHgLd/FovouF2WoXCmk1eBEnP4TeTUWrapBk1OufkDiQXZbibxKTNBDtjdMTToQrOHaR+ybT+VBsZ6Rl5Fpt+eGAycidUxuDzuPC9DBTAbJWFFJ8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=mrPerPN8; arc=none smtp.client-ip=209.85.214.171
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	s=arc-20240116; t=1773416368; c=relaxed/simple;
+	bh=zPBLkwo3Kdwdr+lDCdfgMjvkdspNsuEcGQKpcizSRbs=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=Ivs+FT+KCnEp7EMAO4jZENFeT8DEVNFXSOtcaqRiFsi7Q4hKS+OHLHOcfEsqea540UkzQohQpJCNbcZaM+nda4RL/EolAkEU4A0N5w7RwaXtckH+s5W9oNvfGSdW7iL+21EnbhIRshCErTiIFqTMy5jBdYWt2PWvc4GCYAAVtlg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com; spf=pass smtp.mailfrom=linux.microsoft.com; dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b=bxGjZFhV; arc=none smtp.client-ip=13.77.154.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.microsoft.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="mrPerPN8"
-Received: by mail-pl1-f171.google.com with SMTP id d9443c01a7336-2ae3f822163so106495ad.0
-        for <kvm@vger.kernel.org>; Fri, 13 Mar 2026 08:36:42 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1773416202; x=1774021002; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=QnL4RthXjRr5EwbDeuhNCTPnFU8J1byxNF4coj8lpk8=;
-        b=mrPerPN8okX5d0ruZqEPfEvotCwy/Ge651w1ElNmrleLuoE4md0XpFeWfT6g2XVq1Y
-         q2sj7SkccFHRbfEbNj5Zj9du2fruXEb13SmB9L2+gR+OQTX20P6QtBRkYqXLQWGBKurg
-         WbPUT6gG9jRu3tEtqHk4UXo3oELJuXRh5K36kDTsMg+/gC59vEG8RBfFjy6g1L1HwxTa
-         PLCINWgd+uQ6FkCjq7sLYF38eeo5iMM95AJrnOXMEIpdV9S1DTRV6AEWFNNpY/pag2AI
-         bi8lwZ9quiyum4iG9RG+E7ce1tPoWL8VOgkEJ+lXfgPHf9lShTVlrOgez2l2Jb0z6Scw
-         a7YA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1773416202; x=1774021002;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=QnL4RthXjRr5EwbDeuhNCTPnFU8J1byxNF4coj8lpk8=;
-        b=qN3joK3dEMrQAUujcTyyOiOjIeuMrV0RF+PiqM4STPutCrNC8a0ZNjdIg8SiP2/xtg
-         Robig4a67ftsILsQiYLm5ObepSrbWsus5FKV1EXVVKkKjE+GAu/ekkqK4GlZrEfUAYgd
-         Uriv0gxRR2cKPHfVBcFWBY0nCLUbuPww92VI8JiiefH6dvXdJV9cLzV0ZLRfAbe7TViT
-         SSXsENsvueKPoyRFxWVzXvA0cNqlASwWaTQUvxJ23EJpVX7secybnHRQEZOjs2yB0ik9
-         Z3kmaq3PwAYXkpwtgBFu0JhaaACXbfwd/jn/ktLOc0jVj6bn2mv7vafqMUt+XLsF7S0/
-         H9WA==
-X-Forwarded-Encrypted: i=1; AJvYcCUeo+/JbxTnbhoBOExUvNIo+p7UFy5NDLFpvKyO/B43lSaeyme9VB7DvjXnOZuyVcXrVKo=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxjVmOe27nLB/AK6X37hiRjZSF2P9ipl+ENqbybE8FeHthNuDiD
-	GCgtkBVLaUrNZuhSiii2G4aJLHfOwEEuScXJGgJ7f5lYXRB2O2XrovhBvMZMa/ai/Q==
-X-Gm-Gg: ATEYQzyp4ueK5mfg43KU0Jr0yFcNDeH++qwFJZX8UM1X4b0OJD1ftfBIXGGUHgabPu6
-	VSQjmkyQ3qLcNh9p7fc7G96RPpPDMi6gACcFBVbq1CorsNKIMJu9MJQVieYjDbdXa6lJu2i/PhK
-	riGgNblqy7e62eb6jYDK7XBtr5Caps4QEap4sbzSTLk2907jIgwkjguMIgt4T/GH5tvj+dgX+s+
-	c3cxITuEl0Rb9USn65Of429PxvP4grWc55j2TpzS1KnD9HQbz4bHq1eiHtpfd372O7jQkXz/xVS
-	xlh1wBbBRaueqnzvKNddyw1Ip7S9UB9e+zXQKsmzyrWq/spv+FluW2wKkyzbwbfdA4p+wM57qWV
-	0T5R8pitQv4A9daLFRRdAai5qOoJxs+8Lwl3FGRKE3Gwq3MlQK4Ldg74mUT+gZML0HZEDQbPfAG
-	vUWvMSZnoH9+F7WTYYWLMwVhIiiR8NPw3O3fRVItegdJczJZTp0qjAUnPIZ+IqHpe0AeyO
-X-Received: by 2002:a17:902:ec82:b0:2ad:6f9b:7818 with SMTP id d9443c01a7336-2aecd67598fmr2482035ad.23.1773416201213;
-        Fri, 13 Mar 2026 08:36:41 -0700 (PDT)
-Received: from google.com (10.129.124.34.bc.googleusercontent.com. [34.124.129.10])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-c73ebb62f0esm2233230a12.17.2026.03.13.08.36.36
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 13 Mar 2026 08:36:40 -0700 (PDT)
-Date: Fri, 13 Mar 2026 15:36:33 +0000
-From: Pranjal Shrivastava <praan@google.com>
-To: Samiullah Khawaja <skhawaja@google.com>
-Cc: David Woodhouse <dwmw2@infradead.org>,
-	Lu Baolu <baolu.lu@linux.intel.com>, Joerg Roedel <joro@8bytes.org>,
-	Will Deacon <will@kernel.org>, Jason Gunthorpe <jgg@ziepe.ca>,
-	Robin Murphy <robin.murphy@arm.com>,
-	Kevin Tian <kevin.tian@intel.com>,
-	Alex Williamson <alex@shazbot.org>, Shuah Khan <shuah@kernel.org>,
-	iommu@lists.linux.dev, linux-kernel@vger.kernel.org,
-	kvm@vger.kernel.org, Saeed Mahameed <saeedm@nvidia.com>,
-	Adithya Jayachandran <ajayachandra@nvidia.com>,
-	Parav Pandit <parav@nvidia.com>,
-	Leon Romanovsky <leonro@nvidia.com>, William Tu <witu@nvidia.com>,
-	Pratyush Yadav <pratyush@kernel.org>,
-	Pasha Tatashin <pasha.tatashin@soleen.com>,
-	David Matlack <dmatlack@google.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Chris Li <chrisl@kernel.org>, Vipin Sharma <vipinsh@google.com>,
-	YiFei Zhu <zhuyifei@google.com>
-Subject: Re: [PATCH 01/14] iommu: Implement IOMMU LU FLB callbacks
-Message-ID: <abQvAY8Ao4acgmk2@google.com>
-References: <20260203220948.2176157-1-skhawaja@google.com>
- <20260203220948.2176157-2-skhawaja@google.com>
- <abHZdOKyLmmmHADz@google.com>
- <abLi5giBpi05_CLn@google.com>
+	dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b="bxGjZFhV"
+Received: from localhost (unknown [40.65.108.177])
+	by linux.microsoft.com (Postfix) with ESMTPSA id D661420B710C;
+	Fri, 13 Mar 2026 08:39:18 -0700 (PDT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com D661420B710C
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
+	s=default; t=1773416360;
+	bh=VVQdnkFvzB/gHBAeEfjDOu3ipWHlOC3d2TtGMa0Nogc=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=bxGjZFhVAxog3QqvD0UQFk4sXHeeQ5NE2qTFN5kayLXjvmuIDnMGr+7++bUo9CucU
+	 ozt1v8CCrq0QALAxMV7zkbSKkHJCrii46ijMqsaPNHRiGsN8elmzY4FJG5Ye5XbnF8
+	 qQbz/XGG8TzAcfJfbSL0GA/sFnxPqdXJNavH1QSw=
+Date: Fri, 13 Mar 2026 08:39:18 -0700
+From: Jacob Pan <jacob.pan@linux.microsoft.com>
+To: David Matlack <dmatlack@google.com>
+Cc: Alex Williamson <alex@shazbot.org>, Adithya Jayachandran
+ <ajayachandra@nvidia.com>, Alexander Graf <graf@amazon.com>, Alex Mastro
+ <amastro@fb.com>, Alistair Popple <apopple@nvidia.com>, Andrew Morton
+ <akpm@linux-foundation.org>, Ankit Agrawal <ankita@nvidia.com>, Bjorn
+ Helgaas <bhelgaas@google.com>, Chris Li <chrisl@kernel.org>, David Rientjes
+ <rientjes@google.com>, Jason Gunthorpe <jgg@nvidia.com>, Jason Gunthorpe
+ <jgg@ziepe.ca>, Jonathan Corbet <corbet@lwn.net>, Josh Hilke
+ <jrhilke@google.com>, Kevin Tian <kevin.tian@intel.com>,
+ kexec@lists.infradead.org, kvm@vger.kernel.org, Leon Romanovsky
+ <leon@kernel.org>, Leon Romanovsky <leonro@nvidia.com>,
+ linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-kselftest@vger.kernel.org, linux-mm@kvack.org,
+ linux-pci@vger.kernel.org, Lukas Wunner <lukas@wunner.de>, =?utf-8?Q?Mich?=
+ =?utf-8?Q?a=C5=82?= Winiarski <michal.winiarski@intel.com>, Mike Rapoport
+ <rppt@kernel.org>, Parav Pandit <parav@nvidia.com>, Pasha Tatashin
+ <pasha.tatashin@soleen.com>, Pranjal Shrivastava <praan@google.com>,
+ Pratyush Yadav <pratyush@kernel.org>, Raghavendra Rao Ananta
+ <rananta@google.com>, Rodrigo Vivi <rodrigo.vivi@intel.com>, Saeed Mahameed
+ <saeedm@nvidia.com>, Samiullah Khawaja <skhawaja@google.com>, Shuah Khan
+ <skhan@linuxfoundation.org>, Thomas =?utf-8?Q?Hellstr=C3=B6m?=
+ <thomas.hellstrom@linux.intel.com>, Tomita Moeko <tomitamoeko@gmail.com>,
+ Vipin Sharma <vipinsh@google.com>, Vivek Kasireddy
+ <vivek.kasireddy@intel.com>, William Tu <witu@nvidia.com>, Yi Liu
+ <yi.l.liu@intel.com>, Zhu Yanjun <yanjun.zhu@linux.dev>
+Subject: Re: [PATCH v2 10/22] vfio/pci: Skip reset of preserved device after
+ Live Update
+Message-ID: <20260313083918.00005731@linux.microsoft.com>
+In-Reply-To: <abNOwcOTXqxCxNzt@google.com>
+References: <20260129212510.967611-1-dmatlack@google.com>
+	<20260129212510.967611-11-dmatlack@google.com>
+	<20260226170030.5a938c74@shazbot.org>
+	<aaDqhjdLyf1qSTSh@google.com>
+	<20260227084658.3767d801@shazbot.org>
+	<CALzav=fHy23RAzhgkdaL+JA5T2tL9FT6aPgRfXUh7i9zvYCGPA@mail.gmail.com>
+	<20260227105720.522ca97f@shazbot.org>
+	<CALzav=fjRPa_ZbXu7iFXyemcf_8Kq_dZTWT6c-A0bc6czF_Rdw@mail.gmail.com>
+	<abNOwcOTXqxCxNzt@google.com>
+Organization: LSG
+X-Mailer: Claws Mail 3.21.0 (GTK+ 2.24.33; x86_64-w64-mingw32)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <abLi5giBpi05_CLn@google.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-On Thu, Mar 12, 2026 at 04:43:00PM +0000, Samiullah Khawaja wrote:
-> On Wed, Mar 11, 2026 at 09:07:00PM +0000, Pranjal Shrivastava wrote:
-> > On Tue, Feb 03, 2026 at 10:09:35PM +0000, Samiullah Khawaja wrote:
-> > > Add liveupdate FLB for IOMMU state preservation. Use KHO preserve memory
-> > > alloc/free helper functions to allocate memory for the IOMMU LU FLB
-> > > object and the serialization structs for device, domain and iommu.
-> > > 
-> > > During retrieve, walk through the preserved objs nodes and restore each
-> > > folio. Also recreate the FLB obj.
-> > > 
-> > > Signed-off-by: Samiullah Khawaja <skhawaja@google.com>
-> > > ---
-> > >  drivers/iommu/Kconfig         |  11 +++
-> > >  drivers/iommu/Makefile        |   1 +
-> > >  drivers/iommu/liveupdate.c    | 177 ++++++++++++++++++++++++++++++++++
-> > >  include/linux/iommu-lu.h      |  17 ++++
-> > >  include/linux/kho/abi/iommu.h | 119 +++++++++++++++++++++++
-> > >  5 files changed, 325 insertions(+)
-> > >  create mode 100644 drivers/iommu/liveupdate.c
-> > >  create mode 100644 include/linux/iommu-lu.h
-> > >  create mode 100644 include/linux/kho/abi/iommu.h
-> > > 
-> > > diff --git a/drivers/iommu/Kconfig b/drivers/iommu/Kconfig
-> > > index f86262b11416..fdcfbedee5ed 100644
-> > > --- a/drivers/iommu/Kconfig
-> > > +++ b/drivers/iommu/Kconfig
-> > > @@ -11,6 +11,17 @@ config IOMMUFD_DRIVER
-> > >  	bool
-> > >  	default n
-> > > 
+Hi David,
 
-[ snip ---- >8 -----]
+On Thu, 12 Mar 2026 23:39:45 +0000
+David Matlack <dmatlack@google.com> wrote:
 
-> > 
-> > > +enum iommu_lu_type {
-> > > +	IOMMU_INVALID,
-> > > +	IOMMU_INTEL,
-> > > +};
-> > > +
-> > > +struct iommu_obj_ser {
-> > > +	u32 idx;
-> > > +	u32 ref_count;
-> > > +	u32 deleted:1;
-> > > +	u32 incoming:1;
-> > > +} __packed;
-> > > +
-> > > +struct iommu_domain_ser {
-> > > +	struct iommu_obj_ser obj;
-> > > +	u64 top_table;
-> > > +	u64 top_level;
-> > > +	struct iommu_domain *restored_domain;
-> > > +} __packed;
-> > > +
-> > > +struct device_domain_iommu_ser {
-> > > +	u32 did;
-> > > +	u64 domain_phys;
-> > > +	u64 iommu_phys;
-> > > +} __packed;
-> > > +
-> > > +struct device_ser {
-> > > +	struct iommu_obj_ser obj;
-> > > +	u64 token;
-> > > +	u32 devid;
-> > > +	u32 pci_domain;
-> > > +	struct device_domain_iommu_ser domain_iommu_ser;
-> > > +	enum iommu_lu_type type;
-> > > +} __packed;
-> > > +
-> > > +struct iommu_intel_ser {
-> > > +	u64 phys_addr;
-> > > +	u64 root_table;
-> > > +} __packed;
-> > > +
+> On 2026-03-09 10:32 AM, David Matlack wrote:
+> > On Fri, Feb 27, 2026 at 9:57=E2=80=AFAM Alex Williamson <alex@shazbot.o=
+rg>
+> > wrote: =20
+>=20
+> > > Sorry if I don't have the whole model in my head yet, but is
+> > > exposing the restriction to the vfio user of the device
+> > > sufficient to manage the liveupdate orchestration?  For example,
+> > > a VFIO_DEVICE_INFO_CAP pushes the knowledge to QEMU... what does
+> > > QEMU do with that knowledge?  Who imposes the policy decision to
+> > > decide what support is sufficient? =20
+> >=20
+> > Hm.. good questions. I don't think we want userspace inspecting bits
+> > exposed by the kernel and trying to infer exactly what's being
+> > preserved and whether it's "good enough" to use. And such a UAPI
+> > would become tech debt once we finish development, I suspect.
+> >=20
+> > A better approach would be to hide this support from userspace until
+> > we decide it is ready for production use-cases.
+> >=20
+> > To enable development and testing, we can add an opt-in mechanism =20
+>=20
+> Here is what I am trending towards sending in v3 as the opt-in
+> mechanism:
+>=20
+> diff --git a/drivers/vfio/pci/Kconfig b/drivers/vfio/pci/Kconfig
+> index 1e82b44bda1a..770231554221 100644
+> --- a/drivers/vfio/pci/Kconfig
+> +++ b/drivers/vfio/pci/Kconfig
+> @@ -58,6 +58,27 @@ config VFIO_PCI_ZDEV_KVM
+>  config VFIO_PCI_DMABUF
+>         def_bool y if VFIO_PCI_CORE && PCI_P2PDMA && DMA_SHARED_BUFFER
+>=20
+> +config VFIO_PCI_LIVEUPDATE
+> +       bool "VFIO PCI support for Live Update (EXPERIMENTAL)"
+> +       depends on LIVEUPDATE && VFIO_PCI
+> +       help
+> +         Support for preserving devices bound to vfio-pci across a
+> Live
+> +         Update. The eventual goal is that preserved devices can run
+> +         uninterrupted during a Live Update, including DMA to
+> preserved
+> +         memory buffers and P2P. However there are many steps still
+> needed to
+> +         achieve this, including:
+> +
+> +          - Preservation of iommufd files
+> +          - Preservation of IOMMU driver state
+In the interim, what do you think about moving forward with noiommu
+mode without preserving IOMMU driver state? I=E2=80=99ve tested your
+vfio_pci_liveupdate_kexec_test with the noiommu cdev, and it works as
+expected.
 
-One more thing here, let's add the "intel" stuff with the intel patches
+> +          - Preservation of PCI state (BAR resources, device state,
+> ...)
+> +          - Preservation of vfio-pci driver state
+> +
+> +         This option should only be enabled by developers working on
+> +         implementing this support. Once enough support has landed
+> in the
+> +         kernel, this option will no longer be marked EXPERIMENTAL.
+> +
+> +         If you don't know what to do here, say N.
+> +
+>  source "drivers/vfio/pci/mlx5/Kconfig"
+>=20
+>  source "drivers/vfio/pci/hisilicon/Kconfig"
 
-Thanks,
-Praan
-
-> > > +struct iommu_ser {
-> > > +	struct iommu_obj_ser obj;
-> > > +	u64 token;
-> > > +	enum iommu_lu_type type;
-> > > +	union {
-> > > +		struct iommu_intel_ser intel;
-> > > +	};
-> > > +} __packed;
-> > > +
-> > > +struct iommu_objs_ser {
-> > > +	u64 next_objs;
-> > > +	u64 nr_objs;
-> > > +} __packed;
-> > > +
-> > > +struct iommus_ser {
-> > > +	struct iommu_objs_ser objs;
-> > > +	struct iommu_ser iommus[];
-> > > +} __packed;
-> > > +
-> > > +struct iommu_domains_ser {
-> > > +	struct iommu_objs_ser objs;
-> > > +	struct iommu_domain_ser iommu_domains[];
-> > > +} __packed;
-> > > +
-> > > +struct devices_ser {
-> > > +	struct iommu_objs_ser objs;
-> > > +	struct device_ser devices[];
-> > > +} __packed;
-> > > +
-
-Thanks,
-Praan
