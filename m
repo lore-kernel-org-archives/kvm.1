@@ -1,266 +1,170 @@
-Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2BC7237CD5D;
-	Fri, 13 Mar 2026 12:52:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.176.79.56
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 69C7B37F8B0
+	for <kvm@vger.kernel.org>; Fri, 13 Mar 2026 12:53:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773406357; cv=none; b=kmhdMNIoNTCcfjh1VVqa/TCLKqtLekEmGUoD8ehlOqgECAP7RqaK0kWPGUDkrKOnEHQo3eMOkkHG3nrn7rn+I7iocqNRnm/pq/u+M/n5v8n+VxcE/HlzKtZ4vfEGDqloRyxGZY+cicgSIWHHSTdpDHICmXfb2gf91KsrmZ8fLNg=
+	t=1773406391; cv=none; b=LvgrhypeiaPf9wSucW/KKIF41kRgJrLNC2A0UtwQKVmGEYC1lyBOmkHWtmtKxyekGzjk88x2FKxVWSD2WDszSOg2Np7ewao7+DN4ntaSvmyW0KNDNStbdLNayniQschjnoAc3p/LpCv+aIz5OHJcq+FYzksij2SQxJHa7NZzTBA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773406357; c=relaxed/simple;
-	bh=z1NrhoS2arEeU6bb58a3S87URBXgo7u1s/Lj3Ophcbw=;
-	h=Date:From:To:CC:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=TQVJe1y3MYf4/yP3ZiR5Tjvyk2CCLB+/5vVJbObi4cjoWecoz5D/KZj0VDqc010dSiJFxww7uLKFShCOSIUuVfOT9hWEylwUHkUN/Gc1+8/CTcn4MJgyutiP+4gmKEJ244ih6zf6WHgMOeJ0OCJjZCoQH4EHhrB520orDrAgSdY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=185.176.79.56
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-Received: from mail.maildlp.com (unknown [172.18.224.107])
-	by frasgout.his.huawei.com (SkyGuard) with ESMTPS id 4fXPX54xMCzHnGd9;
-	Fri, 13 Mar 2026 20:52:21 +0800 (CST)
-Received: from dubpeml500005.china.huawei.com (unknown [7.214.145.207])
-	by mail.maildlp.com (Postfix) with ESMTPS id 545B240585;
-	Fri, 13 Mar 2026 20:52:33 +0800 (CST)
-Received: from localhost (10.203.177.15) by dubpeml500005.china.huawei.com
- (7.214.145.207) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Fri, 13 Mar
- 2026 12:52:32 +0000
-Date: Fri, 13 Mar 2026 12:52:30 +0000
-From: Jonathan Cameron <jonathan.cameron@huawei.com>
-To: Dave Jiang <dave.jiang@intel.com>
-CC: <mhonap@nvidia.com>, <aniketa@nvidia.com>, <ankita@nvidia.com>,
-	<alwilliamson@nvidia.com>, <vsethi@nvidia.com>, <jgg@nvidia.com>,
-	<mochs@nvidia.com>, <skolothumtho@nvidia.com>,
-	<alejandro.lucero-palau@amd.com>, <dave@stgolabs.net>,
-	<alison.schofield@intel.com>, <vishal.l.verma@intel.com>,
-	<ira.weiny@intel.com>, <dan.j.williams@intel.com>, <jgg@ziepe.ca>,
-	<yishaih@nvidia.com>, <kevin.tian@intel.com>, <cjia@nvidia.com>,
-	<targupta@nvidia.com>, <zhiw@nvidia.com>, <kjaju@nvidia.com>,
-	<linux-kernel@vger.kernel.org>, <linux-cxl@vger.kernel.org>,
-	<kvm@vger.kernel.org>
-Subject: Re: [PATCH 10/20] vfio/cxl: CXL region management
-Message-ID: <20260313125230.000058dd@huawei.com>
-In-Reply-To: <e2eaa470-c57b-4fa5-9810-4224ed314445@intel.com>
-References: <20260311203440.752648-1-mhonap@nvidia.com>
-	<20260311203440.752648-11-mhonap@nvidia.com>
-	<e2eaa470-c57b-4fa5-9810-4224ed314445@intel.com>
-X-Mailer: Claws Mail 4.3.0 (GTK 3.24.42; x86_64-w64-mingw32)
+	s=arc-20240116; t=1773406391; c=relaxed/simple;
+	bh=AjhfEKfJnxbpx7iSwIohkMv8+SwNLShxEj3M5sjq250=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Xg2RaJTlcp6u2TxG2ppvBPV3X0fJLflBdgyxCLrj4UbpVHDIo6WSRCfMuPD8yiYsTkmNwACF+1F2w21ZowG26LwGSF/tfOv131NEkvAqrqFBFZYRbS0lFNa+fUvDqQMbFSruyD3prf8C+PhpKKtsvjWg1RI7/yib4GN7cN7goqM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=c5FapgLt; arc=none smtp.client-ip=10.30.226.201
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="c5FapgLt"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1D03DC2BC86;
+	Fri, 13 Mar 2026 12:53:09 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1773406391;
+	bh=AjhfEKfJnxbpx7iSwIohkMv8+SwNLShxEj3M5sjq250=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=c5FapgLtiay0paa9PPbTUZtDwyh9cBMsHwRLMqwsDolS9v3sB5C7Zu96DSn9olPN/
+	 VyJKI4tjy9vvTxAorETQan+ZpweP1NyOqXlvA1Bi4VwpnZmuOo2Y6MMXEfeF/xZ1CL
+	 PCNW9eo4t7fMg+tEKH8HxAjY9j5khfOyLykWyPvLivEirVU0JoCftCUGRKmOD5H0qx
+	 /vNrNbAo/pe07vXwOsw3HoXiqPa05PTtF5MowJ5v/NKKEQ/BhGG7Jjmhw4fRQIWGbb
+	 AZEje03o9E/4a4k/Uk9T1Sx28aPjYoA9pVRcLka162aT+S35j4z3DPsfmv/lYNM5BJ
+	 4VAftMQIYEv7Q==
+Date: Fri, 13 Mar 2026 12:53:06 +0000
+From: Will Deacon <will@kernel.org>
+To: hbuxiaofei <hbuxiaofei@gmail.com>
+Cc: kvm@vger.kernel.org, julien.thierry.kdev@gmail.com, mst@redhat.com
+Subject: Re: [PATCH kvmtool 1/1] linux/virtio_pci.h: Include kernel.h to
+ provide the __KERNEL_DIV_ROUND_UP define
+Message-ID: <abQIsndYnBk3VC1c@willie-the-truck>
+References: <20260227004224.269441-1-hbuxiaofei@gmail.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: lhrpeml500010.china.huawei.com (7.191.174.240) To
- dubpeml500005.china.huawei.com (7.214.145.207)
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20260227004224.269441-1-hbuxiaofei@gmail.com>
 
-On Thu, 12 Mar 2026 15:55:32 -0700
-Dave Jiang <dave.jiang@intel.com> wrote:
+[+mst]
 
-> On 3/11/26 1:34 PM, mhonap@nvidia.com wrote:
-> > From: Manish Honap <mhonap@nvidia.com>
-> > 
-> > Add CXL region management for future guest access.
-> > 
-> > Region Management makes use of APIs provided by CXL_CORE as below:
-> > 
-> > CREATE_REGION flow:
-> > 1. Validate request (size, decoder availability)
-> > 2. Allocate HPA via cxl_get_hpa_freespace()
-> > 3. Allocate DPA via cxl_request_dpa()
-> > 4. Create region via cxl_create_region() - commits HDM decoder!
-> > 5. Get HPA range via cxl_get_region_range()
-> > 
-> > DESTROY_REGION flow:
-> > 1. Detach decoder via cxl_decoder_detach()
-> > 2. Free DPA via cxl_dpa_free()
-> > 3. Release root decoder via cxl_put_root_decoder()
-> > 
-> > Signed-off-by: Manish Honap <mhonap@nvidia.com>
-A few additional comments from me.
-
-> > ---
-> >  drivers/vfio/pci/cxl/vfio_cxl_core.c | 118 ++++++++++++++++++++++++++-
-> >  drivers/vfio/pci/cxl/vfio_cxl_priv.h |   5 ++
-> >  drivers/vfio/pci/vfio_pci_priv.h     |   8 ++
-> >  3 files changed, 130 insertions(+), 1 deletion(-)
-> > 
-> > diff --git a/drivers/vfio/pci/cxl/vfio_cxl_core.c b/drivers/vfio/pci/cxl/vfio_cxl_core.c
-> > index 2da6da1c0605..9c71f592e74e 100644
-> > --- a/drivers/vfio/pci/cxl/vfio_cxl_core.c
-> > +++ b/drivers/vfio/pci/cxl/vfio_cxl_core.c
-> > @@ -126,6 +126,112 @@ static int vfio_cxl_setup_regs(struct vfio_pci_core_device *vdev)
-> >  	return 0;
-> >  }
-> >  
-> > +int vfio_cxl_create_cxl_region(struct vfio_pci_core_device *vdev, resource_size_t size)
-> > +{
-> > +	struct vfio_pci_cxl_state *cxl = vdev->cxl;
-> > +	resource_size_t max_size;
-> > +	int ret;
-> > +
-> > +	if (cxl->precommitted)
-> > +		return 0;
-> > +
-> > +	cxl->cxlrd = cxl_get_hpa_freespace(cxl->cxlmd, 1,
-> > +					   CXL_DECODER_F_RAM |
-> > +					   CXL_DECODER_F_TYPE2,
-> > +					   &max_size);  
+On Fri, Feb 27, 2026 at 08:42:24AM +0800, hbuxiaofei wrote:
+> GCC Version:
+>   gcc (GCC) 4.8.5 20150623 (Red Hat 4.8.5-44)
 > 
-> Not sure what VFIO subsystem's policy is on scoped base resource cleanup, but a __free() here can get you out of managing put() of the root decoder.
+> CC       builtin-balloon.o
+> In file included from include/kvm/pci.h:7:0,
+>                  from include/kvm/vfio.h:6,
+>                  from include/kvm/kvm-config.h:5,
+>                  from include/kvm/kvm.h:6,
+>                  from builtin-balloon.c:9:
+> include/linux/virtio_pci.h:326:2: error: implicit declaration of function ‘__KERNEL_DIV_ROUND_UP’ [-Werror=implicit-function-declaration]
+>   __le64 supported_caps[MAX_CAP_ID];
+>   ^
+> include/linux/virtio_pci.h:326:9: error: variably modified ‘supported_caps’ at file scope
+>   __le64 supported_caps[MAX_CAP_ID];
+>          ^
+> cc1: all warnings being treated as errors
+> make: *** [builtin-balloon.o] Error 1
 > 
-> > +	if (IS_ERR(cxl->cxlrd))
-> > +		return PTR_ERR(cxl->cxlrd);
-> > +
-> > +	/* Insufficient HPA space */
-> > +	if (max_size < size) {
-> > +		cxl_put_root_decoder(cxl->cxlrd);
-> > +		cxl->cxlrd = NULL;
-Similar to other cases, I'd keep assigning stuff in cxl to the point
-where there are no more error paths.  Use local variables until then.
-(that would fit with using __free() as well which I'd also favor if
- accepted in VFIO).
-
-> > +		return -ENOSPC;
-> > +	}
-> > +
-> > +	cxl->cxled = cxl_request_dpa(cxl->cxlmd, CXL_PARTMODE_RAM, size);  
+> Signed-off-by: hbuxiaofei <hbuxiaofei@gmail.com>
+> ---
+>  include/linux/virtio_pci.h | 1 +
+>  1 file changed, 1 insertion(+)
 > 
-> Same comment here about __free().
-> 
-> > +	if (IS_ERR(cxl->cxled)) {
-> > +		ret = PTR_ERR(cxl->cxled);
-> > +		goto err_free_hpa;
-> > +	}
-> > +
-> > +	cxl->region = cxl_create_region(cxl->cxlrd, &cxl->cxled, 1);
-> > +	if (IS_ERR(cxl->region)) {
-> > +		ret = PTR_ERR(cxl->region);
+> diff --git a/include/linux/virtio_pci.h b/include/linux/virtio_pci.h
+> index e732e34..fb2f66a 100644
+> --- a/include/linux/virtio_pci.h
+> +++ b/include/linux/virtio_pci.h
+> @@ -39,6 +39,7 @@
+>  #ifndef _LINUX_VIRTIO_PCI_H
+>  #define _LINUX_VIRTIO_PCI_H
+>  
+> +#include <linux/kernel.h>
+>  #include <linux/types.h>
+>  #include <linux/const.h>
 
-You carefully NULL this in vfio_cxl_destroy_region, but if you fail
-here you end up with it containing an ERR_PTR(). I'd avoid that by
-using a local variable and only assigning cxl->region after this
-suceeds.
+Hmm. This header is imported directly from the kernel sources, so it
+doesn't make sense to patch it by hand as changes will be overwritten
+next time we run util/update_headers.sh.
 
-> > +		goto err_free_dpa;
-> > +	}
-> > +
-> > +	return 0;
-> > +
-> > +err_free_dpa:
-> > +	cxl_dpa_free(cxl->cxled);
-> > +err_free_hpa:
-> > +	if (cxl->cxlrd)
-> > +		cxl_put_root_decoder(cxl->cxlrd);
-> > +
-> > +	return ret;
-> > +}
-> > +
-> > +void vfio_cxl_destroy_cxl_region(struct vfio_pci_core_device *vdev)
-> > +{
-> > +	struct vfio_pci_cxl_state *cxl = vdev->cxl;
-> > +
-> > +	if (!cxl->region)
-> > +		return;
-> > +
-> > +	cxl_unregister_region(cxl->region);
-> > +	cxl->region = NULL;
-> > +
-> > +	if (cxl->precommitted)
-> > +		return;
-> > +
-> > +	cxl_dpa_free(cxl->cxled);
-> > +	cxl_put_root_decoder(cxl->cxlrd);
-> > +}
-> > +
-> > +static int vfio_cxl_create_region_helper(struct vfio_pci_core_device *vdev,
-> > +					 resource_size_t capacity)
-> > +{
-> > +	struct vfio_pci_cxl_state *cxl = vdev->cxl;
-> > +	struct pci_dev *pdev = vdev->pdev;
-> > +	int ret;
-> > +
-> > +	if (cxl->precommitted) {
-> > +		cxl->cxled = cxl_get_committed_decoder(cxl->cxlmd,
-> > +						       &cxl->region);
-> > +		if (IS_ERR(cxl->cxled))
-> > +			return PTR_ERR(cxl->cxled);
-> > +	} else {
-> > +		ret = vfio_cxl_create_cxl_region(vdev, capacity);
-> > +		if (ret)
-> > +			return ret;
-> > +	}
-> > +
-> > +	if (cxl->region) {  
-> 
-> Maybe if you do 'if (!cxl->region)' first and just exit, then you don't need to indent the normal code path.
-> 
-> > +		struct range range;
-> > +
-> > +		ret = cxl_get_region_range(cxl->region, &range);
-> > +		if (ret)
-> > +			goto failed;
-> > +
-> > +		cxl->region_hpa = range.start;
-> > +		cxl->region_size = range_len(&range);
-> > +
-> > +		pci_dbg(pdev, "Precommitted decoder: HPA 0x%llx size %lu MB\n",
-> > +			cxl->region_hpa, cxl->region_size >> 20);
-> > +	} else {
-> > +		pci_err(pdev, "Failed to create CXL region\n");
-> > +		ret = -ENODEV;
-> > +		goto failed;
-> > +	}
-> > +
-> > +	return 0;
-> > +
-> > +failed:
-> > +	vfio_cxl_destroy_cxl_region(vdev);
+Looking at the kernel history, 205dd7a5d6ad ("virtio_pci: drop kernel.h")
+suggests that linux/const.h is sufficient for __KERNEL_DIV_ROUND_UP, so
+we probably just want to copy that header over (e.g. like the diff below).
 
-Little bit of refactoring and this could be replaced with __free() magic.
+Will
 
-> > +	return ret;
-> > +}
-> > +
-> >  /**
-> >   * vfio_pci_cxl_detect_and_init - Detect and initialize CXL Type-2 device
-> >   * @vdev: VFIO PCI device
-> > @@ -172,6 +278,12 @@ void vfio_pci_cxl_detect_and_init(struct vfio_pci_core_device *vdev)
-> >  
-> >  	pci_disable_device(pdev);
-> >  
-> > +	ret = vfio_cxl_create_region_helper(vdev, SZ_256M);  
-> 
-> Maybe a comment on why this size?
-:)  I wondered that as well.  I'm guessing your bios isn't always providing
-the decoder and this lets you test.
+--->8
 
-
-> 
-> DJ
-> 
-> > +	if (ret)
-> > +		goto failed;
-> > +
-> > +	cxl->precommitted = true;
-> > +
-> >  	return;
-> >  
-> >  failed:
-> > @@ -181,6 +293,10 @@ void vfio_pci_cxl_detect_and_init(struct vfio_pci_core_device *vdev)
-> >  
-> >  void vfio_pci_cxl_cleanup(struct vfio_pci_core_device *vdev)
-> >  {
-> > -	if (!vdev->cxl)
-> > +	struct vfio_pci_cxl_state *cxl = vdev->cxl;
-
-Do that in the earlier patch to reduce churn a tiny bit.
-
-> > +
-> > +	if (!cxl || !cxl->region)
-> >  		return;
-> > +
-> > +	vfio_cxl_destroy_cxl_region(vdev);
-> >  }
-
+diff --git a/include/linux/const.h b/include/linux/const.h
+new file mode 100644
+index 0000000..b8f629e
+--- /dev/null
++++ b/include/linux/const.h
+@@ -0,0 +1,53 @@
++/* SPDX-License-Identifier: GPL-2.0 WITH Linux-syscall-note */
++/* const.h: Macros for dealing with constants.  */
++
++#ifndef _UAPI_LINUX_CONST_H
++#define _UAPI_LINUX_CONST_H
++
++/* Some constant macros are used in both assembler and
++ * C code.  Therefore we cannot annotate them always with
++ * 'UL' and other type specifiers unilaterally.  We
++ * use the following macros to deal with this.
++ *
++ * Similarly, _AT() will cast an expression with a type in C, but
++ * leave it unchanged in asm.
++ */
++
++#ifdef __ASSEMBLY__
++#define _AC(X,Y)	X
++#define _AT(T,X)	X
++#else
++#define __AC(X,Y)	(X##Y)
++#define _AC(X,Y)	__AC(X,Y)
++#define _AT(T,X)	((T)(X))
++#endif
++
++#define _UL(x)		(_AC(x, UL))
++#define _ULL(x)		(_AC(x, ULL))
++
++#define _BITUL(x)	(_UL(1) << (x))
++#define _BITULL(x)	(_ULL(1) << (x))
++
++#if !defined(__ASSEMBLY__)
++/*
++ * Missing asm support
++ *
++ * __BIT128() would not work in the asm code, as it shifts an
++ * 'unsigned __int128' data type as direct representation of
++ * 128 bit constants is not supported in the gcc compiler, as
++ * they get silently truncated.
++ *
++ * TODO: Please revisit this implementation when gcc compiler
++ * starts representing 128 bit constants directly like long
++ * and unsigned long etc. Subsequently drop the comment for
++ * GENMASK_U128() which would then start supporting asm code.
++ */
++#define _BIT128(x)	((unsigned __int128)(1) << (x))
++#endif
++
++#define __ALIGN_KERNEL(x, a)		__ALIGN_KERNEL_MASK(x, (__typeof__(x))(a) - 1)
++#define __ALIGN_KERNEL_MASK(x, mask)	(((x) + (mask)) & ~(mask))
++
++#define __KERNEL_DIV_ROUND_UP(n, d) (((n) + (d) - 1) / (d))
++
++#endif /* _UAPI_LINUX_CONST_H */
+diff --git a/include/linux/kernel.h b/include/linux/kernel.h
+index df42d63..6c22f1c 100644
+--- a/include/linux/kernel.h
++++ b/include/linux/kernel.h
+@@ -8,9 +8,6 @@
+ #define round_down(x, y)	((x) & ~__round_mask(x, y))
+ 
+ #define DIV_ROUND_UP(n,d) (((n) + (d) - 1) / (d))
+-#ifndef __KERNEL_DIV_ROUND_UP
+-#define __KERNEL_DIV_ROUND_UP(n,d)	DIV_ROUND_UP(n,d)
+-#endif
+ 
+ #define ALIGN(x,a)		__ALIGN_MASK(x,(typeof(x))(a)-1)
+ #define __ALIGN_MASK(x,mask)	(((x)+(mask))&~(mask))
