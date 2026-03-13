@@ -1,94 +1,202 @@
-Received: from mail-pg1-f202.google.com (mail-pg1-f202.google.com [209.85.215.202])
+Received: from mail-pf1-f201.google.com (mail-pf1-f201.google.com [209.85.210.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DBD2821B191
-	for <kvm@vger.kernel.org>; Fri, 13 Mar 2026 00:38:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.202
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BBB0B19E96D
+	for <kvm@vger.kernel.org>; Fri, 13 Mar 2026 01:02:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773362327; cv=none; b=KnFkm4SB7pMcYPZUY8PRGKHgHqtQHG+Kb2epYf8erDMcrLzPIE/unc7JLUp/QR3SLmsaaTo0Wxqt5Be2ZwF5jLFza/wGGw0vogWkrj19QGKQ+7LPXvt8K6JHdhZ/I/d0mAHgd8/F1tJEe9rcAjzS42KHeltQIC92wRIqp9cWWw4=
+	t=1773363746; cv=none; b=htr3ZBu1Plsa2GtxVyiEG/tCLujZsmfGM+Q69JkNb2kELGF2Htx0FsFRTSUpV6OteglTyPOmPNtr1NksVTuMOeA/NdUeQmB3hNV6pwzCVQQXN5cqqfkE6hJIq+2mWylt0sLebYXb2Qv2u2HSHrBcUBGzReJKGOE7QHVVbnTbRp4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773362327; c=relaxed/simple;
-	bh=zCHDmUwlHgNjSHNh0xcE8X4h9oqkDg/q3tMYn+q9vXc=;
+	s=arc-20240116; t=1773363746; c=relaxed/simple;
+	bh=t7SBRthkjnSag9ZHPducZy4771fuu/95E2vZdxDD6lA=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=lNtqSla8Sx2lV5+3X+t+r0wHrCw8AfmHFLE48S+9PmByOx+Hx6RzD3t4qSKVLwph2MiyG/wOr754y16AMynYE1BOQHOWUviWzLDxWLpSOepk3zrv13eliZW6LtdCM8poSYZ2CeTkIOIKTMxhYhd7g8BgyKt4x7sADgpswjQ0SEw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=vBWdt8go; arc=none smtp.client-ip=209.85.215.202
+	 To:Cc:Content-Type; b=KglfzFKGUWRrzYlnSZn9nBa7wBoI3xq4tp5++x6JhpKLp6LQcW+ze60PaiP4/FpNlQX8eOx7rRufgLlZ9KjElqf4gIVfwLZFgxjwkENvkTIunBIG85tTubzdLs1+A3/wd1zCI8/ww/hbIZqYTNMOjbdSpo9GRmojfGqJlEDc/5k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=WtCNX1KA; arc=none smtp.client-ip=209.85.210.201
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="vBWdt8go"
-Received: by mail-pg1-f202.google.com with SMTP id 41be03b00d2f7-bce224720d8so933070a12.1
-        for <kvm@vger.kernel.org>; Thu, 12 Mar 2026 17:38:46 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="WtCNX1KA"
+Received: by mail-pf1-f201.google.com with SMTP id d2e1a72fcca58-829bf6406ecso5108355b3a.0
+        for <kvm@vger.kernel.org>; Thu, 12 Mar 2026 18:02:24 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1773362326; x=1773967126; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1773363744; x=1773968544; darn=vger.kernel.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=BrA9+DazdYkJgNz+zHsE+a3JealnAO/XZn/zqlAAy5I=;
-        b=vBWdt8goVQRPFNCtcF0+WLDiTDfCBsNkpTS+E1scf0eGU9dVdzuZ+QrN4rl6zcXKL7
-         wiyCsIbk6ohBkdhijRcplggoUhZIsQ+pS3TqLU21hMFJfwVdIVU51y2mFVRJlBfrr0tY
-         /UWGLtDHv/amDGWBBbWcvRQhnz75wxbI6RR2Kt6m1cROP5ZFBuFVIGkJgLc7/qYajtDL
-         i9YObveaeoldPZSEOwTEw+wyCjvaNnZOhJr7tkN70fUivaZgKKs/p55kDwt9TN+9a1MS
-         BNEatxyyRktVuZYOuNpgJWiwIf2T8K0znxerD/ZLBvIsIXHdeAw4ojYO5T25O5gnV80h
-         8/iQ==
+        bh=f0PMjfJj5HOggwaEl4u8ReK/X7vSOv3Nc8M3FyAZ2iI=;
+        b=WtCNX1KA30vWxDJcCt3/ZSqcQ5Q43ggf9s+c2Gf5342M542vZPyNpnNEdo1/oxLEo6
+         /6ljnG+8lvKl5Hg60VGWnKfbygaisEDjqU+gw2AL0uXpYbCVignTV4hiD8s9qlWmmnWc
+         c+nsbejuGeh/EhPUmzg5XeqLOmU8Vwr2HY6o4B5OaEqXgW1pt511zupU+1sRyLDnT5dr
+         UuLnXmA4SD/B5rrBHOWrHRoHNHD1yaEf8u5fdBy0QeKwNuh8Sbld/EiwWzdNWEqp1jYf
+         k8FBov6I3ApvlhrQABqgoUvXXMbcX9P/w2FH16bqpoqMNf6rcERssWlce/f8x6bAD2cj
+         nO3Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1773362326; x=1773967126;
+        d=1e100.net; s=20251104; t=1773363744; x=1773968544;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=BrA9+DazdYkJgNz+zHsE+a3JealnAO/XZn/zqlAAy5I=;
-        b=h13BY/FwAptuui7V/1s5vcfqOmrECQ1b8jTw21mUBEJUx0dTdKmVCKOkw1j/DTeYs0
-         Vo8Rx6cRNXj2UHlAt83LZ24xvls7t1oHhgnONKlLl4btQxGYobeorY+ZgRwMzaf3HbUQ
-         uaSFGa5u3xwn1F3cMKcdxXLWPeikDarHjNg5SmB4EbdWvTLAox6/uiNdJMC0rNm5ki60
-         dmAjqn0Dp4bHFTeUDEroNJqsbahCFtwF8zeRInusZubeNw2MX6OgAW0qOXmZjiopq0bi
-         9lQVQQm926j8dQE/YKRPsT6wWbCA9RttvjyyyEc6kfrpd6lcim0nuNLZM+7tSwGX2ZE4
-         GMGA==
-X-Forwarded-Encrypted: i=1; AJvYcCXajMbM4/4w++dQKxteEGDaYldb/O1jdhEM9yFkub0XfDMW+Y6VCMvm/X3Llssmb3ebStA=@vger.kernel.org
-X-Gm-Message-State: AOJu0Ywr3NfV/Enlhh2aDYPDaFy01sm2XJTQemiTC26KXG1WYFH3QUFb
-	p8o4bmyMfSIKGtSt9i8GYBXcJI+sAgbomp/POoPLj0FW+lIbkWIkj0Oy2zraIJE+mW1bniZOcIO
-	S7mYICQ==
-X-Received: from pgww18.prod.google.com ([2002:a05:6a02:2c92:b0:c73:7789:143c])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a21:134b:b0:398:7853:dd8b
- with SMTP id adf61e73a8af0-398eca32beemr950504637.9.1773362325740; Thu, 12
- Mar 2026 17:38:45 -0700 (PDT)
-Date: Thu, 12 Mar 2026 17:38:44 -0700
-In-Reply-To: <c117141f-61da-4572-98ea-7a8a79eb5bab@redhat.com>
+        bh=f0PMjfJj5HOggwaEl4u8ReK/X7vSOv3Nc8M3FyAZ2iI=;
+        b=qV3uMNXi7rU1DFjyzXDA5+tM37ZMXfhOY0NF5WuvSgk5Vvg5IxG48WRDHRrTvjM8mn
+         Pcq3L/d3nwZrwcU9h4JiXiyV87SSlBHDnokE7sBBYlNKVIaixuNQLrEH9TSqgADx+d/M
+         kO7NsN8nYMJwTDZhBwW/zZGZTOXcEc+rYVC8PjodbZ2loyByteiqI1Ii5KGc1WMlVAPn
+         S0uKqQ7hcbIqN3uilw+X24qvIrckZfbaFGvPuPqZvjX6OSh+fDi+5JEWouDayEVQs7h3
+         b/tTpa4r0mHEu/9fPEg3dyxaRAnAIEKje9pyLeAQb5znxBPD5C3RhXhEi9RBq2h6qbiO
+         lujw==
+X-Forwarded-Encrypted: i=1; AJvYcCUtpY5bJG9WvpTH2MaZvOVDNh6+B2Ca65xuDrKqWVLwPrXSxOiY8CSUzC9Twr2vsWVGZuw=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwXwaoFZd553M7Df/UOXNBBa/gK6l11MDmjd5T8r89VoyE9Jq3S
+	AGUkay8MHjbyYPTA28CCf74zImGmgqyxOxX03rmMiGvXLiXxIrb8UbWnCmM/+FYQ06vdd4XSud0
+	WuUiZew==
+X-Received: from pfbbr4.prod.google.com ([2002:a05:6a00:4404:b0:829:880b:b4])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:3389:b0:827:3e19:574a
+ with SMTP id d2e1a72fcca58-82a198ec7c0mr1189751b3a.42.1773363743798; Thu, 12
+ Mar 2026 18:02:23 -0700 (PDT)
+Date: Thu, 12 Mar 2026 18:02:22 -0700
+In-Reply-To: <tencent_AE2873502605DBDD4CD1E810F06C410F0105@qq.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-References: <20260311003346.2626238-1-seanjc@google.com> <20260311003346.2626238-5-seanjc@google.com>
- <CAO9r8zNBEOJrxbx8ob2KRLRKkd_aZjz8tyXGqXxs0=TJq4fU6Q@mail.gmail.com>
- <abFulxXuRziXj039@google.com> <c117141f-61da-4572-98ea-7a8a79eb5bab@redhat.com>
-Message-ID: <abNclCT09InLIP-M@google.com>
-Subject: Re: [PATCH 4/7] KVM: x86: Add wrapper APIs to reset dirty/available
- register masks
+References: <20260215140402.24659-1-76824143@qq.com> <tencent_A1CC0E76805991513AA0C982068255A6A306@qq.com>
+ <aZSMFPgRO6s_fUQO@google.com> <tencent_AE2873502605DBDD4CD1E810F06C410F0105@qq.com>
+Message-ID: <abNiHqMe0mqKIsML@google.com>
+Subject: Re: [PATCH 2/3] KVM: x86: Skip IN_GUEST_MODE vCPUs in
+ kvm_vcpu_on_spin main loop
 From: Sean Christopherson <seanjc@google.com>
-To: Paolo Bonzini <pbonzini@redhat.com>
-Cc: Yosry Ahmed <yosry@kernel.org>, Kiryl Shutsemau <kas@kernel.org>, kvm@vger.kernel.org, 
-	x86@kernel.org, linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org, 
-	"Chang S . Bae" <chang.seok.bae@intel.com>
+To: zhanghao <76824143@qq.com>
+Cc: pbonzini@redhat.com, kvm@vger.kernel.org, zhanghao <zhanghao1@kylinos.cn>
 Content-Type: text/plain; charset="us-ascii"
 
-On Wed, Mar 11, 2026, Paolo Bonzini wrote:
-> On 3/11/26 14:31, Sean Christopherson wrote:
-> > > Not closely following this series and don't know this code well, but
-> > > this API is very confusing for me tbh. Especially in comparison with
-> > > kvm_reset_dirty_registers().
-> > > 
-> > > Maybe rename this to kvm_clear_available_registers(), and pass in a
-> > > "clear_mask", then reverse the polarity:
-> > > 
-> > > vcpu->arch.regs_avail &= ~clear_mask;
-> > Oh, yeah, I can do something like that.  I originally misread the TDX code and
-> > thought it was explicitly setting regs_avail, and so came up with a roundabout
-> > name.  I didn't revisit the naming or the polarity of the param once I realized
-> > all callers could use the same scheme.
+On Thu, Mar 12, 2026, zhanghao wrote:
+> On Tue, Feb 17, 2026, Sean Christopherson wrote:
+> > On Sun, Feb 15, 2026, 76824143@qq.com wrote:
+> > > diff --git a/virt/kvm/kvm_main.c b/virt/kvm/kvm_main.c
+> > > index 476ecdb18bdd..663df3a121c8 100644
+> > > --- a/virt/kvm/kvm_main.c
+> > > +++ b/virt/kvm/kvm_main.c
+> > > @@ -4026,6 +4026,10 @@ void kvm_vcpu_on_spin(struct kvm_vcpu *me, bool yield_to_kernel_mode)
+> > >  		vcpu = xa_load(&kvm->vcpu_array, idx);
+> > >  		if (!READ_ONCE(vcpu->ready))
+> > >  			continue;
+> > > +
+> > > +		if (READ_ONCE(vcpu->mode) == IN_GUEST_MODE)
+> > > +			continue;
 > > 
-> > No small part of me is tempted to turn it into a straigh "set" though, unless I'm
-> > missing something, the whole &= business is an implementation quirk.
+> > This should generally not happen, as vcpu->ready should only be true when a vCPU
+> > is scheduled out.  Although it does look like there's a race in kvm_vcpu_wake_up()
+> > where vcpu->ready could be left %true, e.g. if the task was delyed or preempted
+> > after __kvm_vcpu_wake_up(), before the "WRITE_ONCE(vcpu->ready, true)".  Not sure
+> > how best to handle that scenario.
+> > 
+> > > +
+> > >  		if (kvm_vcpu_is_blocking(vcpu) && !vcpu_dy_runnable(vcpu))
+> > >  			continue;
+> > >  
+> > > -- 
+> > > 2.39.2
+> > >
 > 
-> I like kvm_clear_available_registers() for this + removing the second
-> argument completely for kvm_reset_dirty_registers().
+> Thank you for reviewing this patch. As pointed out in the discussion,
+> this addresses a race condition where kvm_vcpu_wake_up() can set
+> "ready=true" while kvm_sched_in() is concurrently setting the vCPU to
+> running state. Without this check, we might attempt to yield to a vCPU
+> that is already running, which is futile.
 
-Ya, me too.  I almost dropped the param for kvm_reset_dirty_registers(), but
-wanted symmetry since the names were the same.  But I like this a lot more.
+Right, but I want to solve this by eliminating the race, not by papering over
+the issue in kvm_vcpu_on_spin().  I don't see a sane way of handling the cross-vCPU
+writes without atomics, and I'd prefer to avoid the complexity that comes with
+that.
+
+What if instead of having the waker set vcpu->ready, we remove it entirely and
+instead do a best-effort detection of the "vCPU was blocking, is now awake, but
+probably hasn't been scheduled in yet".  We can use a combination of flags to
+detect that, and thanks to vcpu->scheduled_out, I'm pretty sure the false positive
+rate would be on par with the existing vcpu->ready check (for the preempted case).
+
+The idea is to identify the case where the vCPU is in the blocking sequence, but
+not actually blocking, wants to run, and is scheduled out.
+
+Compile tested only (and I don't love the name of the helper).
+
+diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
+index 0b5d48e75b65..ac849d879b73 100644
+--- a/arch/x86/kvm/x86.c
++++ b/arch/x86/kvm/x86.c
+@@ -10393,7 +10393,7 @@ static void kvm_sched_yield(struct kvm_vcpu *vcpu, unsigned long dest_id)
+ 
+        rcu_read_unlock();
+ 
+-       if (!target || !READ_ONCE(target->ready))
++       if (!target || !kvm_vcpu_is_runnable_and_scheduled_out(target))
+                goto no_yield;
+ 
+        /* Ignore requests to yield to self */
+diff --git a/include/linux/kvm_host.h b/include/linux/kvm_host.h
+index 581b217abc33..70739179af58 100644
+--- a/include/linux/kvm_host.h
++++ b/include/linux/kvm_host.h
+@@ -1746,6 +1746,15 @@ static inline bool kvm_vcpu_is_blocking(struct kvm_vcpu *vcpu)
+        return rcuwait_active(kvm_arch_vcpu_get_wait(vcpu));
+ }
+ 
++static inline bool kvm_vcpu_is_runnable_and_scheduled_out(struct kvm_vcpu *vcpu)
++{
++       return READ_ONCE(vcpu->preempted) ||
++              (READ_ONCE(vcpu->scheduled_out) &&
++               READ_ONCE(vcpu->wants_to_run) &&
++               READ_ONCE(vcpu->stat.generic.blocking) &&
++               !kvm_vcpu_is_blocking(vcpu));
++}
++
+ #ifdef __KVM_HAVE_ARCH_INTC_INITIALIZED
+ /*
+  * returns true if the virtual interrupt controller is initialized and
+diff --git a/virt/kvm/kvm_main.c b/virt/kvm/kvm_main.c
+index 9faf70ccae7a..9f71e32daac5 100644
+--- a/virt/kvm/kvm_main.c
++++ b/virt/kvm/kvm_main.c
+@@ -455,7 +455,6 @@ static void kvm_vcpu_init(struct kvm_vcpu *vcpu, struct kvm *kvm, unsigned id)
+        kvm_vcpu_set_in_spin_loop(vcpu, false);
+        kvm_vcpu_set_dy_eligible(vcpu, false);
+        vcpu->preempted = false;
+-       vcpu->ready = false;
+        preempt_notifier_init(&vcpu->preempt_notifier, &kvm_preempt_ops);
+        vcpu->last_used_slot = NULL;
+ 
+@@ -3803,7 +3802,6 @@ EXPORT_SYMBOL_FOR_KVM_INTERNAL(kvm_vcpu_halt);
+ bool kvm_vcpu_wake_up(struct kvm_vcpu *vcpu)
+ {
+        if (__kvm_vcpu_wake_up(vcpu)) {
+-               WRITE_ONCE(vcpu->ready, true);
+                ++vcpu->stat.generic.halt_wakeup;
+                return true;
+        }
+@@ -4008,7 +4006,7 @@ void kvm_vcpu_on_spin(struct kvm_vcpu *me, bool yield_to_kernel_mode)
+                        continue;
+ 
+                vcpu = xa_load(&kvm->vcpu_array, idx);
+-               if (!READ_ONCE(vcpu->ready))
++               if (!kvm_vcpu_is_runnable_and_scheduled_out(vcpu))
+                        continue;
+                if (kvm_vcpu_is_blocking(vcpu) && !vcpu_dy_runnable(vcpu))
+                        continue;
+@@ -6393,7 +6391,6 @@ static void kvm_sched_in(struct preempt_notifier *pn, int cpu)
+        struct kvm_vcpu *vcpu = preempt_notifier_to_vcpu(pn);
+ 
+        WRITE_ONCE(vcpu->preempted, false);
+-       WRITE_ONCE(vcpu->ready, false);
+ 
+        __this_cpu_write(kvm_running_vcpu, vcpu);
+        kvm_arch_vcpu_load(vcpu, cpu);
+@@ -6408,10 +6405,9 @@ static void kvm_sched_out(struct preempt_notifier *pn,
+ 
+        WRITE_ONCE(vcpu->scheduled_out, true);
+ 
+-       if (task_is_runnable(current) && vcpu->wants_to_run) {
++       if (task_is_runnable(current) && vcpu->wants_to_run)
+                WRITE_ONCE(vcpu->preempted, true);
+-               WRITE_ONCE(vcpu->ready, true);
+-       }
++
+        kvm_arch_vcpu_put(vcpu);
+        __this_cpu_write(kvm_running_vcpu, NULL);
+ }
