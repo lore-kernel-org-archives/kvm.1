@@ -1,147 +1,150 @@
-Received: from mail-pl1-f201.google.com (mail-pl1-f201.google.com [209.85.214.201])
+Received: from mail-ed1-f51.google.com (mail-ed1-f51.google.com [209.85.208.51])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38C512E541E
-	for <kvm@vger.kernel.org>; Fri, 13 Mar 2026 00:33:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773361995; cv=none; b=JteZg335jW4QcchUPsVxNfjALjWmgES9uovcxjfUmzN/6IIeAHi1EeDm6NL+/axycBFInNdAQ62rKpCvamVNSfLECIRlfRNsDGNxboJ2rudpq8QRpukG68HdMZPXVa1xeuF9mJp0GtuPK18CATaBM3Y3T2tPzZj3V1ZZS442vGs=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773361995; c=relaxed/simple;
-	bh=WpScRbMBDqAkQTX9pKjjHvsZHNQmjSLgOiqTCexwbcA=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=UJTxnN3O0d4jYTYyjFUALk7EwSPz28qYMN9Cd72M/YR+vmw97ebCYPyS9xIgO37yeuwoLZq9Y97rZuE9gc1uQorhcIjueJMqmYUkWPYPm90pE5iOJBzmC4JvubQqU4Nw8IQDy8g2lOPs2uTgUlUmmFweJW8VyQ9yRc6IVuOOhGc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=A69zCeLN; arc=none smtp.client-ip=209.85.214.201
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B7B1F20F08C
+	for <kvm@vger.kernel.org>; Fri, 13 Mar 2026 00:34:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.208.51
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1773362047; cv=pass; b=hSU+s47uxJPc/WJ7j01fBXaOQhZ07UHYA9c24DXs7CxpXfESbN93FPqQVp43JjVb+si5qKNWHuxyTpeIGPtNL+7n5g5NN+RWruT1pfHcAwD6+pFTwefS9r048hpNzRr/bo9/ca6G+meOwPHu7fJ7EXgeDaMNaVFvfb9Ln7uzfw4=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1773362047; c=relaxed/simple;
+	bh=P9DYNvw0pXgKNQlqCuTgX5BsLWxpM/GHGwCmn4gqBFQ=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=KTjqacm/ymuBgAO+BWQuszGLxjvTpW0IrzU2hpYLvzkFe0+oJfNdM48shnW64K4nhXWoEZDfRyLAxIm9SxE3xamfxwaMnx094c5WkoSps/hGtaQBNGsSLWw+RHkzU1sKXvo00SIs8L3UilKVRlF4uFGijWTP55ypxFzOrE6e/eY=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=soleen.com; spf=pass smtp.mailfrom=soleen.com; dkim=pass (2048-bit key) header.d=soleen.com header.i=@soleen.com header.b=Vo4xbcbG; arc=pass smtp.client-ip=209.85.208.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=soleen.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=soleen.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="A69zCeLN"
-Received: by mail-pl1-f201.google.com with SMTP id d9443c01a7336-2ae4e9577ceso113497565ad.1
-        for <kvm@vger.kernel.org>; Thu, 12 Mar 2026 17:33:14 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=soleen.com header.i=@soleen.com header.b="Vo4xbcbG"
+Received: by mail-ed1-f51.google.com with SMTP id 4fb4d7f45d1cf-661cfb9f3aaso2333947a12.2
+        for <kvm@vger.kernel.org>; Thu, 12 Mar 2026 17:34:05 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1773362044; cv=none;
+        d=google.com; s=arc-20240605;
+        b=bVoHIf+p2UDDior3gtOlSUVW1YcjRB26L+5e3+cKla2Y9tFGdBsKtAauX9g4Pxfoj1
+         M9m6f8vISwsIfA1LIZHKYCnBOh6CQoPSWuUPIAOxZOg7jNTDZC/UkK5aWBly+FmSy93P
+         6XZ+rJELCh8jN5Co6jTALwKqYxHcgVR3o7iYfibhtQUqvIOriroSsIHSuJFqylgpSPmf
+         85D1+uydCdpSDZkafrStb+AXn/3ucNwyYRkU1k/LyT+8TpAJFknQm2NDbmGdNucFu+S1
+         qPqHA9qL4rEDKu5c7ZMDi9ky0hehVgRt+Dfpr+fkxefNsXVQKY1ZLYd4EBBQvSIThH7a
+         4FPA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=pnJL3Iw0wwI9nfGsL4UNGadpWjx4M7Li4XWaHu9e8Ms=;
+        fh=Hw7au8Ww+4ECf5lcr7xkU5393y/I0T5TOgs2BHwdbiA=;
+        b=U/tPlmiaDHLUDnwcw37QaPcDcifKgChuirUchaDt8dE/pK0xmZtxRP64TOcJqL5Atw
+         SJO12j1NtxgpB31TIfgpSPkckCFoSAb/TL0hyaSzfXEb6xJVFP0q3IPrHjO9mHMLFlOw
+         rEJHKTpHjdxfFkLPMhInA9CKj12RqVKE1cVv1vNpHinC+YCM0A3aOw7b1wcboq9ri1DR
+         iJVHlru3G2NlUUMuGAQhs5BIPzk+qzdkcWe37j5X5SEsClS4PutESQ8rAh1+VCpv4oso
+         4Q/XEsKIxppnLWufdm0l8c5SjRWL4y4XvyNeuBhUJExA48fiWWcxRCZL/29F3D+LuTx1
+         63+Q==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1773361993; x=1773966793; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:reply-to:from:to:cc:subject:date:message-id:reply-to;
-        bh=l7XObWvGBTdVwmSkFItE9kmFO92BHNR0Spc7XRnM3nI=;
-        b=A69zCeLNadIm6F6gU2RJzsj81wAEnwHYiRJDC2YbSfL+bJ5XISVmvOO1ya6icIMQqA
-         GZA4SRruhdaqHzBqKkBFlcgX/UBzYue8vEwc09LiKLWlTfRNwkDm8204MwbXkzUxBQ/a
-         IXsI+W8rb6dgVqnPHWu03nNzwu9hufUWSR00bcJNYD3Qu2vTZ5IyixEpqmgEZscDvdN7
-         T/oBAgf0iSK1RqhndCywkzn420jwVAL6ghCRUh61Iwu+kJoGtPlev2K0NF5d2cith1pi
-         3URIsj9glE2tEbwIjF3d4hEjNsPH3ZRHFq5Z43YioLO0BoLRP5wu/S+T7+4y9aBKvQKx
-         ZjLg==
+        d=soleen.com; s=google; t=1773362044; x=1773966844; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=pnJL3Iw0wwI9nfGsL4UNGadpWjx4M7Li4XWaHu9e8Ms=;
+        b=Vo4xbcbGVbDxB47s28JvwRyPuGtfhUdWydhmCZfZFIXwIoa4Nolcq1178Ix2aIR7FB
+         r8v2I8q08uXsv6RRbkQyx/J8IkETMYbND4jJfuRMx+DOsB9K/PAnXSOpk/xGe4+FFVnY
+         NPlR4d3w/YeSU9Y8BQRRUEGhqf6rDJX+b/7EAqF0bpeIputpz3HhnhP9env9yyvlcV8M
+         6CF60BZb/c/ASGteI40pQ2Z/NPISEnB+B2jy+zyZAowFpJq3PvcpHATD/DnA6DihYKpc
+         S1c3ryc+sbCygNaePFMbd3OB4TYVGxuhDi4cyqcpW1WLnQsu9ucW9sm5xTK7TLg7cS3e
+         p8Ow==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1773361993; x=1773966793;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:reply-to:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=l7XObWvGBTdVwmSkFItE9kmFO92BHNR0Spc7XRnM3nI=;
-        b=b9IzL8fSVTwzEbZZ9v8aWLleBAvwQI6d/GIbhvi+Kx/rqs+ZdU0dR5R8v2u4qyLVSG
-         2aYRntsm+bNGQroZuIEcgm4JoeDyVbQagxZ47+468YpUWQyDfMenPK5f4tgr2v3nPowE
-         0FPsujtl+rb14/3VL4KBPrbi1S/FdUjUOcHrrUGhkCBdONpcalxWYS49pdr32GSl9CAE
-         UFBTak5BRKcui7CDK0TYuVOVfbsZ566eaxWWgRjPOEJemjYueUFWMH6OGnIclz7DpxM2
-         whTRilBDMPXeHLpOtsRmXylE1eNgfiBlkFLAv+g81EPVT8kL9LOVRTOyvRqMvD9FYZP9
-         EayA==
-X-Gm-Message-State: AOJu0Yxb4z9HAFAmIyjqGAMQKOuQ9hNDPk/41oXIDVXEsKlddb+40Oom
-	jSUez3bknTBVHvoPT/QChIJ33xI2LVUzIQpnqItZd/TOlxTho8eiPv9kgwwij0N21rPg3fyr8aa
-	W5pSKUw==
-X-Received: from plwg11.prod.google.com ([2002:a17:902:f74b:b0:2ae:c871:d739])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:903:19e3:b0:2ae:aa16:ad13
- with SMTP id d9443c01a7336-2aecab2f6c1mr11486895ad.45.1773361993347; Thu, 12
- Mar 2026 17:33:13 -0700 (PDT)
-Reply-To: Sean Christopherson <seanjc@google.com>
-Date: Thu, 12 Mar 2026 17:33:02 -0700
-In-Reply-To: <20260313003302.3136111-1-seanjc@google.com>
+        d=1e100.net; s=20251104; t=1773362044; x=1773966844;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=pnJL3Iw0wwI9nfGsL4UNGadpWjx4M7Li4XWaHu9e8Ms=;
+        b=AitYGqiOQwz5pMwDAEmNQEoDOLpWClOeu567c8ZDHuNUqeH5A/m+ZdplZHx6F2vVtz
+         UnQPaN76qQsz3VAWdJll+eS6tqwgMtx9bWaLwYxj0gsq57B4cwimdOOSaQj0QNVbC6bC
+         xVBXwogw4btZkldMy/HFYX7J5WkIq4F8RsPSsqHAsQ613obY0+k5LviOCQwY21R5j28+
+         tFCBTsMuVVF00/v8My6TBBHHl31RSPEDd5Oaw8JL7a//K5O1AlQeZVQCHoHPGniubXgd
+         xj4iX1f1QEutG9CrJbB86Nyo/W3zO5I7ZkQFkBJXZDipcgTbqqQNOo+MnpycLDheqU6y
+         M+3A==
+X-Forwarded-Encrypted: i=1; AJvYcCVNftiBtfcCzO7GzUNeHG2S5gQqiSxehFWRG7gUycAu6Xw/sZW7oDt/kYfSX8wN+rvGjN8=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx69C48A5bxoTbBcKif9gOs6r6hkwgS+w6lmg2tQ0gY1wMRygR/
+	zmArhzcumTkjNDzcLYAPnINhmJPq9zbxe6pjK16uEd2fy9yUtWuFf/5EZmtFgVBk4lXNN8uHMnH
+	Zmtp4IQevMafAF9vFJt+zVc/E5kyR3lk1aZ1N93UHkg==
+X-Gm-Gg: ATEYQzzhBqS5F5L6B3Drf5lk0AoVfSVuRbIIjL2P3HIcBQbRajCyKJAhxd6M/6SY3DK
+	/abCCCXPLd0srDBgty2RxkewvsuUK8Sn9qIFKpC7vyj9SKa0qzsRcvWv0M6OXi3AZcxTrEE7gV0
+	MtNxtrm+a4JTf149IbJsGlSYg+GnOfn7jcfu2tOUKoVk2qfb5IAexSDx4l3Q+bruQhSQqLeTGRu
+	/CRbYN8e89Lz1jF/pAMBI28/5SACHIQTfDazwihDRsbc+5pdYAkLtD9KTpk7W732STttUUtwsf3
+	l3tWyohiVTrqGB5+i2teKg5mk2BD2PWxMtUHRw==
+X-Received: by 2002:a05:6402:3486:b0:662:e094:8dcd with SMTP id
+ 4fb4d7f45d1cf-663bb3d3be3mr643429a12.27.1773362043907; Thu, 12 Mar 2026
+ 17:34:03 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20260313003302.3136111-1-seanjc@google.com>
-X-Mailer: git-send-email 2.53.0.851.ga537e3e6e9-goog
-Message-ID: <20260313003302.3136111-6-seanjc@google.com>
-Subject: [PATCH 5/5] KVM: SEV: Use kvzalloc_objs() when pinning userpages
-From: Sean Christopherson <seanjc@google.com>
-To: Sean Christopherson <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>
-Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	Liam Merwick <liam.merwick@oracle.com>
+MIME-Version: 1.0
+References: <20260129212510.967611-1-dmatlack@google.com> <20260129212510.967611-8-dmatlack@google.com>
+ <20260226160353.6f3371bc@shazbot.org> <20260303210733.GG972761@nvidia.com>
+In-Reply-To: <20260303210733.GG972761@nvidia.com>
+From: Pasha Tatashin <pasha.tatashin@soleen.com>
+Date: Thu, 12 Mar 2026 20:33:27 -0400
+X-Gm-Features: AaiRm50W9P4A7h3ayFJS5r_ZVIe8OM2EYEDEiGqBav5AUONhmByKJOVge3skGH0
+Message-ID: <CA+CK2bDADhFcMVGoJew9RoJ-DsVhYhiZJGJVwfzTBZdGX++8Ng@mail.gmail.com>
+Subject: Re: [PATCH v2 07/22] vfio/pci: Notify PCI subsystem about devices
+ preserved across Live Update
+To: Jason Gunthorpe <jgg@nvidia.com>
+Cc: Alex Williamson <alex@shazbot.org>, David Matlack <dmatlack@google.com>, 
+	Adithya Jayachandran <ajayachandra@nvidia.com>, Alexander Graf <graf@amazon.com>, Alex Mastro <amastro@fb.com>, 
+	Alistair Popple <apopple@nvidia.com>, Andrew Morton <akpm@linux-foundation.org>, 
+	Ankit Agrawal <ankita@nvidia.com>, Bjorn Helgaas <bhelgaas@google.com>, Chris Li <chrisl@kernel.org>, 
+	David Rientjes <rientjes@google.com>, Jacob Pan <jacob.pan@linux.microsoft.com>, 
+	Jonathan Corbet <corbet@lwn.net>, Josh Hilke <jrhilke@google.com>, Kevin Tian <kevin.tian@intel.com>, 
+	kexec@lists.infradead.org, kvm@vger.kernel.org, 
+	Leon Romanovsky <leon@kernel.org>, Leon Romanovsky <leonro@nvidia.com>, linux-doc@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org, 
+	linux-mm@kvack.org, linux-pci@vger.kernel.org, Lukas Wunner <lukas@wunner.de>, 
+	=?UTF-8?Q?Micha=C5=82_Winiarski?= <michal.winiarski@intel.com>, 
+	Mike Rapoport <rppt@kernel.org>, Parav Pandit <parav@nvidia.com>, 
+	Pranjal Shrivastava <praan@google.com>, Pratyush Yadav <pratyush@kernel.org>, 
+	Raghavendra Rao Ananta <rananta@google.com>, Rodrigo Vivi <rodrigo.vivi@intel.com>, 
+	Saeed Mahameed <saeedm@nvidia.com>, Samiullah Khawaja <skhawaja@google.com>, 
+	Shuah Khan <skhan@linuxfoundation.org>, 
+	=?UTF-8?Q?Thomas_Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>, 
+	Tomita Moeko <tomitamoeko@gmail.com>, Vipin Sharma <vipinsh@google.com>, 
+	Vivek Kasireddy <vivek.kasireddy@intel.com>, William Tu <witu@nvidia.com>, Yi Liu <yi.l.liu@intel.com>, 
+	Zhu Yanjun <yanjun.zhu@linux.dev>
 Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Use kvzalloc_objs() instead of sev_pin_memory()'s open coded (rough)
-equivalent to harden the code and
+On Tue, Mar 3, 2026 at 4:07=E2=80=AFPM Jason Gunthorpe <jgg@nvidia.com> wro=
+te:
+>
+> On Thu, Feb 26, 2026 at 04:03:53PM -0700, Alex Williamson wrote:
+> > > @@ -203,5 +225,6 @@ void vfio_pci_liveupdate_cleanup(void)
+> > >     if (!liveupdate_enabled())
+> > >             return;
+> > >
+> > > +   WARN_ON_ONCE(pci_liveupdate_unregister_fh(&vfio_pci_liveupdate_fh=
+));
+> >
+> > This is propagation of a poor API choice in liveupdate, the unregister
+> > should return void, it shouldn't be allowed to fail, IMO.  Thanks,
+>
+> +1
+>
+> "destroy" functions that fail are evil. :)
 
-Note!  This sanity check in __kvmalloc_node_noprof()
+Generally, I agree that unregister, free, or destroy functions
+shouldn't return errors. However, this situation is tricky because the
+state is controlled by user space. The only relavent scenario where
+this function fails is:
 
-  /* Don't even allow crazy sizes */
-  if (unlikely(size > INT_MAX)) {
-          WARN_ON_ONCE(!(flags & __GFP_NOWARN));
-          return NULL;
-  }
+"-EBUSY if the live update session is active and cannot be quiesced."
 
-will artificially limit the maximum size of any single pinned region to
-just under 1TiB.  While there do appear to be providers that support SEV
-VMs with more than 1TiB of _total_ memory, it's unlikely any KVM-based
-providers pin 1TiB in a single request.
+If there are active sessions (incoming or outgoing) with preserved
+data, how can we safely unregister while they are in-flight? It is a
+rare condition, but since the user can cause it, they need to be
+notified that unloading the module right now is not a good idea.
 
-Allocate with NOWARN so that fuzzers can't trip the WARN_ON_ONCE() when
-they inevitably run on systems with copious amounts of RAM, i.e. when they
-can get by KVM's "total_npages > totalram_pages()" restriction.
+Pasha
 
-Note #2, KVM's usage of vmalloc()+kmalloc() instead of kvmalloc() predates
-commit 7661809d493b ("mm: don't allow oversized kvmalloc() calls") by 4+
-years (see commit 89c505809052 ("KVM: SVM: Add support for
-KVM_SEV_LAUNCH_UPDATE_DATA command").  I.e. the open coded behavior wasn't
-intended to avoid the aforementioned sanity check.  The implementation
-appears to be pure oversight at the time the code was written, as it showed
-up in v3[1] of the early RFCs, whereas as v2[2] simply used kmalloc().
-
-Cc: Liam Merwick <liam.merwick@oracle.com>
-Link: https://lore.kernel.org/all/20170724200303.12197-17-brijesh.singh@amd.com [1]
-Link: https://lore.kernel.org/all/148846786714.2349.17724971671841396908.stgit__25299.4950431914$1488470940$gmane$org@brijesh-build-machine [2]
-Signed-off-by: Sean Christopherson <seanjc@google.com>
----
- arch/x86/kvm/svm/sev.c | 20 +++++++++-----------
- 1 file changed, 9 insertions(+), 11 deletions(-)
-
-diff --git a/arch/x86/kvm/svm/sev.c b/arch/x86/kvm/svm/sev.c
-index ae5b370db9ed..4e4adab8d309 100644
---- a/arch/x86/kvm/svm/sev.c
-+++ b/arch/x86/kvm/svm/sev.c
-@@ -678,11 +678,9 @@ static struct page **sev_pin_memory(struct kvm *kvm, unsigned long uaddr,
- 				    unsigned int flags)
- {
- 	struct kvm_sev_info *sev = to_kvm_sev_info(kvm);
--	unsigned long npages, size;
--	int npinned;
--	unsigned long total_npages, lock_limit;
-+	unsigned long npages, total_npages, lock_limit;
- 	struct page **pages;
--	int ret;
-+	int npinned, ret;
- 
- 	lockdep_assert_held(&kvm->lock);
- 
-@@ -709,13 +707,13 @@ static struct page **sev_pin_memory(struct kvm *kvm, unsigned long uaddr,
- 		return ERR_PTR(-ENOMEM);
- 	}
- 
--	/* Avoid using vmalloc for smaller buffers. */
--	size = npages * sizeof(struct page *);
--	if (size > PAGE_SIZE)
--		pages = __vmalloc(size, GFP_KERNEL_ACCOUNT);
--	else
--		pages = kmalloc(size, GFP_KERNEL_ACCOUNT);
--
-+	/*
-+	 * Don't WARN if the kernel (rightly) thinks the total size is absurd,
-+	 * i.e. rely on the kernel to reject outrageous range sizes.  The above
-+	 * check on the number of pages is purely to avoid truncation as
-+	 * pin_user_pages_fast() takes the number of pages as a 32-bit int.
-+	 */
-+	pages = kvzalloc_objs(*pages, npages, GFP_KERNEL_ACCOUNT | __GFP_NOWARN);
- 	if (!pages)
- 		return ERR_PTR(-ENOMEM);
- 
--- 
-2.53.0.851.ga537e3e6e9-goog
-
+>
+> Jason
