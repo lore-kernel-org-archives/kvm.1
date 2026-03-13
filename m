@@ -1,96 +1,132 @@
-Received: from mail-pl1-f201.google.com (mail-pl1-f201.google.com [209.85.214.201])
+Received: from mail-pj1-f74.google.com (mail-pj1-f74.google.com [209.85.216.74])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40E1D1B4244
-	for <kvm@vger.kernel.org>; Fri, 13 Mar 2026 00:33:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E78223EA84
+	for <kvm@vger.kernel.org>; Fri, 13 Mar 2026 00:33:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.74
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773361986; cv=none; b=bA4kteBziRxRSiJ0fedvTDHrEiTRhTMQIBOcjIjx1xdXYGntrvLimLBqzw5l+vSg1rRT9lgCoGXx9qd4sN+osD2e9hK6uNdo6d/7WdfVoG5F6xWxJ9a4QZLKZ2Z4HTlyhIwKKFvGgW8aMXUFLnU/JZrkIEmeqboRNFJOlgRPdXY=
+	t=1773361988; cv=none; b=V5BKLDNfrg0l9W1sBOKwlB4jFNpBMOlHFITKqWucVW+iqjF0leNNPbhnievRydy3SMG5RbXr5whkSbpDTNRbbVYiL48BBkD87MMsHjngnKHI20yDQgNV6ATGxDsJzQZuDBokRON1otOocxG6Ar2AevJIeh8yXegIsOrBZ0nkVoU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773361986; c=relaxed/simple;
-	bh=86jgAsKoKBstvpGQH1WPT+KB1h8IPcHXfORgTCF9h+w=;
-	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=dr2rXGMr2wcfkk4ah/wdhVIDQ04dUdxAKN1nFbkbR14GVS9QBnEyRrwrgB/ssMvYIRjN0E0yu8LQBM/aPvXplVodeVssRVcNxhxvhS73yD0ZM8owzr1wyXA+QY6DI8wA7DniG9FhgKcSn10MXo2VWLaf6Y38qWPMBiidZoEuka8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=f4QQQ/7p; arc=none smtp.client-ip=209.85.214.201
+	s=arc-20240116; t=1773361988; c=relaxed/simple;
+	bh=SNqwYxgD9MGCPwM0Dfkv+5erZ1X5wiJpDLSKV7XA9M0=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=pCqVvcfa577e6tgs1orrfM0kJoRMzJRDRVv3Am6Yl08cJg1cKK2LiOjr9ZIEg30WIPuuVDJglk1zhq/mgc7qyygtJhCxHzKXRZQDF1khyhyFzHLn+kkZnWFuwuTeyxIwzDiytyL0yNKyTS4WJkzOqNAuDoQPefQvaEvCsYXCBfE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=kh99InrD; arc=none smtp.client-ip=209.85.216.74
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="f4QQQ/7p"
-Received: by mail-pl1-f201.google.com with SMTP id d9443c01a7336-2aec6c572fbso56612285ad.1
-        for <kvm@vger.kernel.org>; Thu, 12 Mar 2026 17:33:05 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="kh99InrD"
+Received: by mail-pj1-f74.google.com with SMTP id 98e67ed59e1d1-358e95e81aeso9606109a91.0
+        for <kvm@vger.kernel.org>; Thu, 12 Mar 2026 17:33:07 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1773361984; x=1773966784; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:mime-version:date:reply-to:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=omurYY7uQAADQZr1TJWl8eTls+fJIixNwL4FOpsEdBk=;
-        b=f4QQQ/7pJ3PzmAH7Z4SHba99+wRaro4hiOiOzwetDGRkK5oVvhYH5g9LxbAMILhDcl
-         woeKirJRKIclCb50NOnJNOiudAYwhiCExxcgdDE8MgGswvND2zTSCXNbl5VVMo53n1SA
-         dVwDblg2u2cU1gyV+KsabJfOiKBVScIS1m+NlK733R01CAc+TpKDT9pwhle9/7+sCX9c
-         xQShkDzvUEZ9OGyDV1asHGMzG5jTlcS6F0wExwmW5AK+J6LpCTgrPthHFe+mikeoOeom
-         98StOBt+boupx6fhGizcQdaGyo8uwzESSLESLhEFlWauXgvPaTNn/mwgUs1ESNgNz3nO
-         L+/w==
+        d=google.com; s=20230601; t=1773361986; x=1773966786; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:reply-to:from:to:cc:subject:date:message-id:reply-to;
+        bh=mPkCvx2pnFym8JsephJmvr2CxcigT4hd7pOFhKXxM5k=;
+        b=kh99InrDZIb4hxYiMp2OnQhfLWE3/+WAa13xcqn6YeN4JPS5uIIyRR6oZvVgrhAe0M
+         3dxDe7F7jdad43gaSNV5gU79Hi6e+5E8q3iVR2Husw+8dG1IpEH4tMfdIzEJMuMWYIOI
+         swGP/5Q6R1gBTEzOkcaVcIwvIoX47ynudqeL8iuMnx+D8w7eE/ed5rQnVnQh45gplEqO
+         WBDXc51FhAZ0uMV0kVp8CAxy2JE2+aPnD61zum4oou9fKzVJrLOASnFtpQBcvr737lsD
+         tgeMcVpQ15vgaO5bktBgk4S4Gd7YzFZ95lBMpkP+KUg8c7l3stSQOhSeT8dNi9aiyTn5
+         Uxjw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1773361984; x=1773966784;
-        h=cc:to:from:subject:message-id:mime-version:date:reply-to
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=omurYY7uQAADQZr1TJWl8eTls+fJIixNwL4FOpsEdBk=;
-        b=Su9YDYzRT3aEewu+tQHHYqqf4LDt4dsv38P3plmQ9vNjhwnmjeuP35/bZe8CieUTku
-         qdXVlNYclL/afGS8/aIPExCiw4P0Y0b72pZc67bKx4lP0jI38fIK5IMVCgXeeJGvxalS
-         lkWCdHIshNVNXpY/CjP4EJo8thKh8eLe+HdhzR4OMWaqMTippL5Xz9PKMVuKe3RYVJND
-         SyU+IrvXFiA70wCRWREg3y6RGq6zzxp9e79Yfdm9fRCkmsA3RPtOaUkuUrCcRGc28nRZ
-         hGyH9pz+fv2qEOdxBwNg5dlVz+9KMpGLOaIZF5TZKtHgitaKlrToF3ahP22twpLQiRrr
-         X6qA==
-X-Gm-Message-State: AOJu0YzpSbM9ydwI5RkMIRJDzBjmer59QbydnRq9geb3Tim/eT8u5uq8
-	tcPjZSgUGeheGeEZV3+CBO1gKBaBeHGC94shhOs06d3BFfooB8xShmAa/KlTQGyx13xg5/aYDuU
-	pxcx7rA==
-X-Received: from plbks3.prod.google.com ([2002:a17:903:843:b0:2ae:c6b5:1756])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:902:f607:b0:2ae:ce8a:9dd2
- with SMTP id d9443c01a7336-2aece8a9fa8mr2390115ad.16.1773361984418; Thu, 12
- Mar 2026 17:33:04 -0700 (PDT)
+        d=1e100.net; s=20251104; t=1773361986; x=1773966786;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:reply-to:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=mPkCvx2pnFym8JsephJmvr2CxcigT4hd7pOFhKXxM5k=;
+        b=rETxdnwCk1Q1sidpbml3EagNpYjL8BuEbCOJPC7duN7yP4Z/4uxXEP/AgZhaIqsuDM
+         hxEjVpK/rnsre8W8TL3+PZyw4NtOzvgwhj+PMcJydODRXxm5OCEOJvHE+tO29VaJuQUV
+         qjqLAXZ0foV9ctvv6TEFPrsJmK9oCc9f5u7IkguxEXmHGb0FThYsEJo7OZJMqw3O6RhW
+         8CGkXHjhzaRAxkzh/9/4XqCf8KNnMz85+zrjghKV6m1VO+Sn7o4qZew+0n/3NVScPGnH
+         WhRw1A22snL4bqkTHQcgRGKqcOXjcCvrKRGXlEwHdgbITDTGOzlypJBmnUK/70x0c15y
+         1GXg==
+X-Gm-Message-State: AOJu0YzFc2e8oVoypEFGLKSmZRHXlY2Qjw26shPaRYigY2PZpO8DNzmf
+	bgWyuYQJuW196WZXLX7tjzQb320jbjzjVnldWIxZ1D8QFJsD3PikSYVxXcyjyDAKsa+NhFIVFfP
+	isXSSjw==
+X-Received: from pgac13.prod.google.com ([2002:a05:6a02:294d:b0:c70:ab5b:1dbf])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:28c4:b0:354:c600:1a1
+ with SMTP id 98e67ed59e1d1-35a21fdd4e4mr1269621a91.19.1773361986375; Thu, 12
+ Mar 2026 17:33:06 -0700 (PDT)
 Reply-To: Sean Christopherson <seanjc@google.com>
-Date: Thu, 12 Mar 2026 17:32:57 -0700
+Date: Thu, 12 Mar 2026 17:32:58 -0700
+In-Reply-To: <20260313003302.3136111-1-seanjc@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
+References: <20260313003302.3136111-1-seanjc@google.com>
 X-Mailer: git-send-email 2.53.0.851.ga537e3e6e9-goog
-Message-ID: <20260313003302.3136111-1-seanjc@google.com>
-Subject: [PATCH 0/5] KVM: SEV: Drop user-triggerable WARN clean up REG_REGION
+Message-ID: <20260313003302.3136111-2-seanjc@google.com>
+Subject: [PATCH 1/5] KVM: SEV: Drop WARN on large size for KVM_MEMORY_ENCRYPT_REG_REGION
 From: Sean Christopherson <seanjc@google.com>
 To: Sean Christopherson <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>
 Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
 	Liam Merwick <liam.merwick@oracle.com>
 Content-Type: text/plain; charset="UTF-8"
 
-Drop a WARN in sev_pin_memory() that is comically easy to trigger, and then
-clean up the code a bit.
+Drop the WARN in sev_pin_memory() on npages overflowing an int, as the
+WARN is comically trivially to trigger from userspace, e.g. by doing:
 
-*** WARNING ***
+  struct kvm_enc_region range = {
+          .addr = 0,
+          .size = -1ul,
+  };
 
-The last patch impacts KVM's ABI due to a size restriction that's applied to
-kvmalloc() but not vmalloc().  If my math is correct (definitely a big "if),
-it will only impact VMMs that attempt to do KVM_MEMORY_ENCRYPT_REG_REGION with
-a single region of ~1TiB+.
+  __vm_ioctl(vm, KVM_MEMORY_ENCRYPT_REG_REGION, &range);
 
-Liam, I Cc'd you specifically because it looks like Oracle supports SEV VMs
-with more than 1TiB of _total_ memory.  I assume that's spread across multiple
-memslots and thus multiple KVM_MEMORY_ENCRYPT_REG_REGION calls, but I wanted to
-double check before potentially breaking userspace.
+Note, the checks in sev_mem_enc_register_region() that presumably exist to
+verify the incoming address+size are completely worthless, as both "addr"
+and "size" are u64s and SEV is 64-bit only, i.e. they _can't_ be greater
+than ULONG_MAX.  That wart will be cleaned up in the near future.
 
-Sean Christopherson (5):
-  KVM: SEV: Drop WARN on large size for KVM_MEMORY_ENCRYPT_REG_REGION
-  KVM: SEV: Drop useless sanity checks in sev_mem_enc_register_region()
-  KVM: SEV: Disallow pinning more pages than exist in the system
-  KVM: SEV: Use PFN_DOWN() to simplify "number of pages" math when
-    pinning memory
-  KVM: SEV: Use kvzalloc_objs() when pinning userpages
+	if (range->addr > ULONG_MAX || range->size > ULONG_MAX)
+		return -EINVAL;
 
- arch/x86/kvm/svm/sev.c | 51 +++++++++++++++++++++---------------------
- 1 file changed, 25 insertions(+), 26 deletions(-)
+Opportunistically add a comment to explain why the code calculates the
+number of pages the "hard" way, e.g. instead of just shifting @ulen.
 
+Fixes: 78824fabc72e ("KVM: SVM: fix svn_pin_memory()'s use of get_user_pages_fast()")
+Cc: stable@vger.kernel.org
+Signed-off-by: Sean Christopherson <seanjc@google.com>
+---
+ arch/x86/kvm/svm/sev.c | 11 +++++++----
+ 1 file changed, 7 insertions(+), 4 deletions(-)
 
-base-commit: bfd7f4adc1230373c25e1b787a6f1ee407eb0656
+diff --git a/arch/x86/kvm/svm/sev.c b/arch/x86/kvm/svm/sev.c
+index b1aa85a6ca5a..23a383f2e43d 100644
+--- a/arch/x86/kvm/svm/sev.c
++++ b/arch/x86/kvm/svm/sev.c
+@@ -690,10 +690,16 @@ static struct page **sev_pin_memory(struct kvm *kvm, unsigned long uaddr,
+ 	if (ulen == 0 || uaddr + ulen < uaddr)
+ 		return ERR_PTR(-EINVAL);
+ 
+-	/* Calculate number of pages. */
++	/*
++	 * Calculate the number of pages that need to be pinned to cover the
++	 * entire range.  Note!  This isn't simply ulen >> PAGE_SHIFT, as KVM
++	 * doesn't require the incoming address+size to be page aligned!
++	 */
+ 	first = (uaddr & PAGE_MASK) >> PAGE_SHIFT;
+ 	last = ((uaddr + ulen - 1) & PAGE_MASK) >> PAGE_SHIFT;
+ 	npages = (last - first + 1);
++	if (npages > INT_MAX)
++		return ERR_PTR(-EINVAL);
+ 
+ 	locked = sev->pages_locked + npages;
+ 	lock_limit = rlimit(RLIMIT_MEMLOCK) >> PAGE_SHIFT;
+@@ -702,9 +708,6 @@ static struct page **sev_pin_memory(struct kvm *kvm, unsigned long uaddr,
+ 		return ERR_PTR(-ENOMEM);
+ 	}
+ 
+-	if (WARN_ON_ONCE(npages > INT_MAX))
+-		return ERR_PTR(-EINVAL);
+-
+ 	/* Avoid using vmalloc for smaller buffers. */
+ 	size = npages * sizeof(struct page *);
+ 	if (size > PAGE_SIZE)
 -- 
 2.53.0.851.ga537e3e6e9-goog
 
