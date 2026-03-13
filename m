@@ -1,123 +1,160 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f202.google.com (mail-pl1-f202.google.com [209.85.214.202])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C1384A3C;
-	Fri, 13 Mar 2026 20:04:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.20
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7DDF43E3C69
+	for <kvm@vger.kernel.org>; Fri, 13 Mar 2026 20:15:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.202
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773432250; cv=none; b=gyf87KWmFQmotkAJrNQTuCx5ydehBrZaJga+QHavR5cU/lVuahB2FcvMnP16yrxvOy9Feu6U8H24m1rUzv+cWnwSBPy4m05LqJDtl4FOXO8Z3zpgOydAO0AqokJIi2R7lO6yIbdiwOeWKarAISW9JEwn+nEnRGCjhG4q48XeYY8=
+	t=1773432912; cv=none; b=f54NrZVVpduWozj1GAM2Q0ZLl43qbPPnvIkKig4nwgiyqlWNwwoBZ/M9SpllPfkDosTjVhVTEXg4BLBSW4g3QUaTG+QDCGltE1uwJn8oplFBPmBPa+AlBBz3Y/mucV08b5wguEzfUpXYkc0dyD2eMPO+N+BDLk7Lljt0T3KBPfU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773432250; c=relaxed/simple;
-	bh=EnW5ZtRmX/4qsUpioqYFSwv9MQLoHHPj8GoMuaMXPTo=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=lZBNWcW7dxwYgZTo2BXBBbnvDaCHyszDuD3rICqui7Zf5qAQKT/pZmFrEJHFLDZF+NSj69bL4QNgELFIZWM1cOXr00yHTmNiM5iOx2krJg++48BdfwDICsLYp8iBO72LRZNwS5lX8UjG3c64t00Yl1/f5+KcT1AjqEYtLGmKie0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=NBTPRvwu; arc=none smtp.client-ip=198.175.65.20
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+	s=arc-20240116; t=1773432912; c=relaxed/simple;
+	bh=LkigBfXP5nrSt/NKbbp+xgEZiGCPNHPaXyp+DB1ZbzI=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=bYS2/crNIvDMTbTYPVglZiZhajTBWcqurE/n8AR1Lxmrun/Sfbdwer+/LZn2RY4zRGFhKEFJET0SvyXXDA+Yat3iNUiOjiZkTK3uzyQHNE8lxQE4I+OEanSqna2WUACkRNUkknPV3UUjzBLhSuX+UkZ38+Vu3UTq8W+A54ZnH78=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=IgE5R+qn; arc=none smtp.client-ip=209.85.214.202
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="NBTPRvwu"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1773432249; x=1804968249;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=EnW5ZtRmX/4qsUpioqYFSwv9MQLoHHPj8GoMuaMXPTo=;
-  b=NBTPRvwutTehbYy0EFGtxSTyxSlCamKwyse5E7D7DarakCfV7LBISo4v
-   YX6u6UhFBjn/Jp0QjRPCh7Q+fzdO5L+oL9xmBjCyDswpl1HGWR7mE4gWW
-   GWeuLDsoAUtbBNBhwDQnm04poU+IXDOx0xF5g1+agX+qF063Ji7kMs9f7
-   2OnGZZgL2ssuGg6HmxaLS+HuErRLUkNlYJQCsxWYB7yUY4C1OAhwJrJGE
-   CStOt9j1iTgMNjVItxpCSFl5bVY5Fuun2OaXDok3+8JqQkacjOmxS0QKE
-   kaqnNvD31d/sgmockSSin8gLukOYMrj+ol4sk2Cd/wG9h0KKi+OspdYhN
-   A==;
-X-CSE-ConnectionGUID: q0gzXPQVQQSHtZfb88gO7A==
-X-CSE-MsgGUID: b6nxPe28QRqKPF4dMYhyLw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11728"; a="74247600"
-X-IronPort-AV: E=Sophos;i="6.23,118,1770624000"; 
-   d="scan'208";a="74247600"
-Received: from orviesa005.jf.intel.com ([10.64.159.145])
-  by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Mar 2026 13:04:09 -0700
-X-CSE-ConnectionGUID: qulaRlwQTPm7Yl5+WwQ5kQ==
-X-CSE-MsgGUID: 4Oy/wIucRf+Ih28iOBrtRw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,118,1770624000"; 
-   d="scan'208";a="226258497"
-Received: from guptapa-desk.jf.intel.com (HELO desk) ([10.165.239.46])
-  by orviesa005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Mar 2026 13:04:09 -0700
-Date: Fri, 13 Mar 2026 13:04:02 -0700
-From: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
-To: Kim Phillips <kim.phillips@amd.com>
-Cc: linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
-	linux-coco@lists.linux.dev, x86@kernel.org,
-	Sean Christopherson <seanjc@google.com>,
-	Paolo Bonzini <pbonzini@redhat.com>,
-	K Prateek Nayak <kprateek.nayak@amd.com>,
-	Nikunj A Dadhania <nikunj@amd.com>,
-	Tom Lendacky <thomas.lendacky@amd.com>,
-	Michael Roth <michael.roth@amd.com>,
-	Borislav Petkov <borislav.petkov@amd.com>,
-	Borislav Petkov <bp@alien8.de>, Naveen Rao <naveen.rao@amd.com>,
-	David Kaplan <david.kaplan@amd.com>, stable@kernel.org
-Subject: Re: [PATCH v2 1/3] cpu/bugs: Allow forcing Automatic IBRS with SNP
- enabled using spectre_v2=eibrs
-Message-ID: <20260313200402.gyrk5elsbtggqh4g@desk>
-References: <20260311130611.2201214-1-kim.phillips@amd.com>
- <20260311130611.2201214-2-kim.phillips@amd.com>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="IgE5R+qn"
+Received: by mail-pl1-f202.google.com with SMTP id d9443c01a7336-2aed1beaa73so9633985ad.2
+        for <kvm@vger.kernel.org>; Fri, 13 Mar 2026 13:15:07 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1773432906; x=1774037706; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:from:subject:message-id:references
+         :mime-version:in-reply-to:date:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=OKUIDpXb1mJZD+DhKRM7mcbSyQnuN8VP7LdvA9q+E84=;
+        b=IgE5R+qnnmvEHQENt8VTtKtiVPnE0EktUcFDftTQytA2tz4yTa0DsgOQlazlVjy+dw
+         ibT4OP9DYPVZ9hmNi3td8ZNGHRXgUMYl1T/Njdm7bBB2LVGJ1HDaKom2UiOwc75BN3aU
+         cvK9Ew28kQHM9L2cH6sg2AcsiM8BJ6Aml+9kSNZ2OvHVmDmv2lbIY58JxnthXjHmq+Np
+         WLW1lJ1Rgu8e3BGJ7FeYoGelQzA04vg5AD83i+Bnf4EqH66nzqdQOKr+5NwfrIObIDKb
+         y0u/ibQdG0pA03yin7qluhPmTcCgXiSJQehwmhQ2Ml31eb8krid3pyFgSlF973bCRNBL
+         qaIw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1773432906; x=1774037706;
+        h=content-transfer-encoding:cc:to:from:subject:message-id:references
+         :mime-version:in-reply-to:date:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=OKUIDpXb1mJZD+DhKRM7mcbSyQnuN8VP7LdvA9q+E84=;
+        b=LJfwQVQ133VnGiTo5JIwTZgBvjuXjdfYIYIaig5yGdgeCMusO+aSc7j2Ni4VdSRv6K
+         Rg3gb/tgsnhzTnavn7XE8aF7YP2nbJGAzoEvzDd9w5cg/B9q9H3uGA487LkZzeZ0tzmN
+         QyrtQ/dU7Ih+XIROvbNIuPWza4/txXhFHAnHnXxBFvEzee9amIeyx+W3poD/ruQipoWi
+         bQxAuWg+YiXOtzaJbEE5pcqEtiYqCCTutznhTh0GwDyIptQaPO+lA5WzYAz75TlqT3t4
+         SVVR8bU39WqLUWjzfKK9bxm3H/I1pOh/Knxa2IpxZPsGQ1V1f7fGTJl0khRKYzdPRinD
+         dflA==
+X-Forwarded-Encrypted: i=1; AJvYcCWBiHg63Ez9bYpPqrsU4mnbz5ARgQtgTx3od08Q7R7rQvpl7s62d5HlMq5/qQl6m8YlLbM=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyrxRyVQOK5RrnnI6Y+yLkcRjNa6erAk4BhPnMbF2F+amwqNVC9
+	x79ZIpEN35J8GXW4tVf8RJUqCw0Qo2ijg1Bk/5oVoHageVCigTv0zcrvJjRcQb2WjQiEbKjIETA
+	rMthACQ==
+X-Received: from plzt6.prod.google.com ([2002:a17:902:bc46:b0:2ae:abe9:b38b])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:903:1503:b0:2af:c7c:afbc
+ with SMTP id d9443c01a7336-2af0c7cb19amr22428855ad.31.1773432906364; Fri, 13
+ Mar 2026 13:15:06 -0700 (PDT)
+Date: Fri, 13 Mar 2026 13:15:04 -0700
+In-Reply-To: <CAO9r8zOu=CzDeUi0nxukfvKXeE5m+tn-gOsoTVMJ=rHtncx5cg@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260311130611.2201214-2-kim.phillips@amd.com>
+Mime-Version: 1.0
+References: <20260310220414.2569208-1-seanjc@google.com> <CAO9r8zOu=CzDeUi0nxukfvKXeE5m+tn-gOsoTVMJ=rHtncx5cg@mail.gmail.com>
+Message-ID: <abRwSJHJ9yS4XAx7@google.com>
+Subject: Re: [PATCH] KVM: SVM: Add a helper to get LBR field pointer to dedup
+ MSR accesses
+From: Sean Christopherson <seanjc@google.com>
+To: Yosry Ahmed <yosry@kernel.org>
+Cc: Paolo Bonzini <pbonzini@redhat.com>, kvm@vger.kernel.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Wed, Mar 11, 2026 at 08:06:09AM -0500, Kim Phillips wrote:
-> To allow this, do the SNP check in spectre_v2_select_mitigation()
-> processing instead of the original commit's implementation in
-> cpu_set_bug_bits().
-> 
-> Since SPECTRE_V2_CMD_AUTO logic falls through to SPECTRE_V2_CMD_FORCE,
-> double-check if SPECTRE_V2_CMD_FORCE is used before allowing
-> SPECTRE_V2_EIBRS with SNP enabled.
-> 
-> Also mute SPECTRE_V2_IBRS_PERF_MSG if SNP is enabled on an AutoIBRS
-> capable machine, since, in that case, the message doesn't apply.
-> 
-> Fixes: acaa4b5c4c85 ("x86/speculation: Do not enable Automatic IBRS if SEV-SNP is enabled")
-> Reported-by: Tom Lendacky <thomas.lendacky@amd.com>
-> Cc: Borislav Petkov (AMD) <bp@alien8.de>
-> Cc: stable@kernel.org
-> Signed-off-by: Kim Phillips <kim.phillips@amd.com>
-> ---
-> v2:
->  - Address Dave Hansen's comment to adhere to using the IBRS_ENHANCED
->    Intel feature flag also for AutoIBRS.
-> 
-> v1:
->  https://lore.kernel.org/kvm/20260224180157.725159-2-kim.phillips@amd.com/
-> 
->  arch/x86/kernel/cpu/bugs.c   | 12 ++++++++++--
->  arch/x86/kernel/cpu/common.c |  6 +-----
->  2 files changed, 11 insertions(+), 7 deletions(-)
-> 
-> diff --git a/arch/x86/kernel/cpu/bugs.c b/arch/x86/kernel/cpu/bugs.c
-> index 83f51cab0b1e..957e0df38d90 100644
-> --- a/arch/x86/kernel/cpu/bugs.c
-> +++ b/arch/x86/kernel/cpu/bugs.c
-> @@ -2181,7 +2181,14 @@ static void __init spectre_v2_select_mitigation(void)
->  			break;
->  		fallthrough;
->  	case SPECTRE_V2_CMD_FORCE:
-> -		if (boot_cpu_has(X86_FEATURE_IBRS_ENHANCED)) {
-> +		/*
-> +		 * Unless forced, don't use AutoIBRS when SNP is enabled
-> +		 * because it degrades host userspace indirect branch performance.
-> +		 */
-> +		if (boot_cpu_has(X86_FEATURE_IBRS_ENHANCED) &&
-> +		    (!boot_cpu_has(X86_FEATURE_SEV_SNP) ||
-> +		     (boot_cpu_has(X86_FEATURE_SEV_SNP) &&
-> +		      spectre_v2_cmd == SPECTRE_V2_CMD_FORCE))) {
+On Fri, Mar 13, 2026, Yosry Ahmed wrote:
+> On Tue, Mar 10, 2026 at 3:04=E2=80=AFPM Sean Christopherson <seanjc@googl=
+e.com> wrote:
+> >
+> > Add a helper to get a pointer to the corresponding VMCB field given an =
+LBR
+> > MSR index, and use it to dedup the handling in svm_{g,s}et_msr().
+> >
+> > No functional change intended.
+> >
+> > Suggested-by: Yosry Ahmed <yosry@kernel.org>
+> > Signed-off-by: Sean Christopherson <seanjc@google.com>
+> > ---
+> >  arch/x86/kvm/svm/svm.c | 48 +++++++++++++++++-------------------------
+> >  1 file changed, 19 insertions(+), 29 deletions(-)
+> >
+> > diff --git a/arch/x86/kvm/svm/svm.c b/arch/x86/kvm/svm/svm.c
+> > index 3407deac90bd..88999b6fc8a3 100644
+> > --- a/arch/x86/kvm/svm/svm.c
+> > +++ b/arch/x86/kvm/svm/svm.c
+> > @@ -2750,6 +2750,23 @@ static int svm_get_feature_msr(u32 msr, u64 *dat=
+a)
+> >         return 0;
+> >  }
+> >
+> > +static __always_inline u64 *svm_vmcb_lbr(struct vcpu_svm *svm, u32 msr=
+)
+> > +{
+> > +       switch (msr) {
+> > +       case MSR_IA32_LASTBRANCHFROMIP:
+> > +               return &svm->vmcb->save.br_from;
+> > +       case MSR_IA32_LASTBRANCHTOIP:
+> > +               return &svm->vmcb->save.br_to;
+> > +       case MSR_IA32_LASTINTFROMIP:
+> > +               return &svm->vmcb->save.last_excp_from;
+> > +       case MSR_IA32_LASTINTTOIP:
+> > +               return &svm->vmcb->save.last_excp_to;
+> > +       default:
+> > +               break;
+> > +       }
+> > +       BUILD_BUG();
+> > +}
+>=20
+> This actually fires for me with clang (from both callsites):
+>=20
+> /usr/local/google/home/yosryahmed/dev/kernel.org/nsvm_fixups/arch/x86/kvm=
+/svm/svm.c:2766:2:
+> error: call to '__compiletime_assert_1058' declared with 'error'
+> attribute: BUILD_BUG failed
+>  2766 |         BUILD_BUG();
+>       |         ^
+> /usr/local/google/home/yosryahmed/dev/kernel.org/nsvm_fixups/include/linu=
+x/build_bug.h:59:21:
+> note: expanded from macro 'BUILD_BUG'
+>    59 | #define BUILD_BUG() BUILD_BUG_ON_MSG(1, "BUILD_BUG failed")
+>       |                     ^
+> /usr/local/google/home/yosryahmed/dev/kernel.org/nsvm_fixups/include/linu=
+x/build_bug.h:39:37:
+> note: expanded from macro 'BUILD_BUG_ON_MSG'
+>    39 | #define BUILD_BUG_ON_MSG(cond, msg) compiletime_assert(!(cond), m=
+sg)
+>       |                                     ^
+> /usr/local/google/home/yosryahmed/dev/kernel.org/nsvm_fixups/include/linu=
+x/compiler_types.h:706:2:
+> note: expanded from macro 'compiletime_assert'
+>   706 |         _compiletime_assert(condition, msg,
+> __compiletime_assert_, __COUNTER__)
+>       |         ^
+> /usr/local/google/home/yosryahmed/dev/kernel.org/nsvm_fixups/include/linu=
+x/compiler_types.h:694:2:
+> note: expanded from macro '_compiletime_assert'
+>   694 |         __compiletime_assert(condition, msg, prefix, suffix)
+>       |         ^
+> /usr/local/google/home/yosryahmed/dev/kernel.org/nsvm_fixups/include/linu=
+x/compiler_types.h:687:4:
+> note: expanded from macro '__compiletime_assert'
+>   687 |                         prefix ## suffix();
+>          \
+>       |                         ^
+> <scratch space>:102:1: note: expanded from here
+>   102 | __compiletime_assert_1058
+>       | ^
 
-This is forcing AutoIBRS when spectre_v2=on (meaning force), but the
-subject says to allow forcing with spectre_v2=eibrs, which one is it?
+Hrm, I was assuming the compiler would be smart to understand the other cas=
+es
+are unreachable.  What clang version, and are you doing anything special wi=
+th
+your config?  Even with KASAN and other sanitizers enabled, clang-19 is a-o=
+k with
+the code.  And I haven't gotten yelled at by build bots (yet).
