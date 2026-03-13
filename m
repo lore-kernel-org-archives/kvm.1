@@ -1,53 +1,53 @@
-Received: from mail-pf1-f202.google.com (mail-pf1-f202.google.com [209.85.210.202])
+Received: from mail-pg1-f201.google.com (mail-pg1-f201.google.com [209.85.215.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 93A9E36D516
-	for <kvm@vger.kernel.org>; Fri, 13 Mar 2026 07:10:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.202
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BAC49370D4D
+	for <kvm@vger.kernel.org>; Fri, 13 Mar 2026 07:10:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773385842; cv=none; b=cDOre4OrKR7GDoRteWMmUBj6iNbNpq0FZyC5FmmdjFgLZyU/2J7qp6AU5YZkWGf1ftIIcj1eiazt31h31YXCjD9Ya/QRpuMbeyDJpQK0DVd/IfydW/kotV9UeTX9hyvht8mbxsVmFOXH4/7Da3Tx6GvomOZ9swwO8Od/5Uv65Yo=
+	t=1773385844; cv=none; b=QAV+0KHyCaFDGq8ZPhg/80T6rlPfhiY98u6O9+ow3+PANtMuk/t5yWxx7LaP/norxncFjtGi0LNDAzJ8qg5f+jYPBy0Lrfq//6p6piNsF8RRWCaN4iRY1ildlm7jeTZwhfFwbA4onpm6jDS196bfIJOlx9OL+dLWeD+Ou3izLLk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773385842; c=relaxed/simple;
-	bh=zEieePgVikfqHjkpa0n5I3vuISbE49oCD0CeCAd8nWw=;
+	s=arc-20240116; t=1773385844; c=relaxed/simple;
+	bh=9LlIX91Z/ZvbbeR02bUtgeWebst4TFDOSn3cp2RnlTQ=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=rlARhuOlBAgwbrk24lLLEzMcZmVt1e2C0iTE5dUkVV/oeGkvPgzXeELJOSB9dMkoBF3hy+NFKpvf/aLNwgml1qiw4nN7A8bKLlPk8oZRDW0fJPPucLYj3iM1wdF4Pm5gN6xkXJYDVtV0H/1UBicqnDjXi7U8mL21g+h81kNm4es=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--chengkev.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=o/KF92Uh; arc=none smtp.client-ip=209.85.210.202
+	 To:Cc:Content-Type; b=koyST+ySZFEF2v46hT98QEdyobT8aGZ+xQ1nJ083SW4flR0MfyQMOT8RB8Jy+SVw6qA/NRgyNC1afkq7onDCG/Ck8ix5yJlOXpZulcauoqJPhkG0CAaPuAwFJwKOIG2Y3bzTjKj+sSHIbyjQxEtX/oBAmhOuXd8olvM4V2EEWtU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--chengkev.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=cjdnolXt; arc=none smtp.client-ip=209.85.215.201
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--chengkev.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="o/KF92Uh"
-Received: by mail-pf1-f202.google.com with SMTP id d2e1a72fcca58-82a07f4597aso752954b3a.1
-        for <kvm@vger.kernel.org>; Fri, 13 Mar 2026 00:10:40 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="cjdnolXt"
+Received: by mail-pg1-f201.google.com with SMTP id 41be03b00d2f7-c629a3276e9so7980751a12.2
+        for <kvm@vger.kernel.org>; Fri, 13 Mar 2026 00:10:42 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1773385840; x=1773990640; darn=vger.kernel.org;
+        d=google.com; s=20251104; t=1773385842; x=1773990642; darn=vger.kernel.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=aMnjMyqVdWNANGnVMI3Si7Uw5YgsWHlFIfWWP9yjF3Q=;
-        b=o/KF92UhsWxr4VPk0TlyiOLhHqipKGRVD/Wig8TQEk7naiAEabGbyLGZ/JT4hsYwXk
-         lazZs33o8I10brmqmKjyBItWGLXKsCRwDf3ms7Z293KirH/CPbyXI9KiHWsiDQ6GhQGP
-         Xo1bqxP94HwjP+Gcl9klePdXh3v8qgvgE9gwtXZYyjpwMGfEeBZxjkfGw4k24PWJ4fYn
-         IZY5JpqXK7J35kFvDXlYpxVrdipdj2jTbLnglNw4gz2qPpKo7ma8Nd1IN1XqkNOdLGU1
-         m5jzSIt5PUaDaW50gj4MNKmEP0vA+65VX2fQBKmDxDjB4xOL6Xe87Ae1e6XSe6W7FUgz
-         M8AA==
+        bh=uMnmbravmc6HAY/hwiz+iRBLWQc+dimhfGrxweAepUY=;
+        b=cjdnolXtWWmiXLLrLgVH5UsOGw7+samhtrbEMU5KJbQYnOCx4SIw/y5Uo6fXgDX1Ec
+         x9khZsdb3VtsdvNoYx6quT8DX14O6mWGOqNSFql54YsYt9FTXsJP5mtph7cKZufgJc8H
+         BIaEQBDxZ9p/XIPrJqt3M9BtSWW1wNLEa77NaDg+EbbSdtibIb1OVHh+7E30q9e6m31S
+         2/xRvQ7V88pp0nMmZfLq9iTOHfqORc/MHjeIpVWZywtwU4fTuKcRvq++syZEoQwr+JYk
+         kWpXfwDpZqsrEVgEhMQR514HxTXW08SAGgvjNhDP2TBgoNdS5ttnxqIsw3Txr7Zyj6yV
+         2hKw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1773385840; x=1773990640;
+        d=1e100.net; s=20251104; t=1773385842; x=1773990642;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=aMnjMyqVdWNANGnVMI3Si7Uw5YgsWHlFIfWWP9yjF3Q=;
-        b=TAmoM/wOd87bM1pKAF0wmk97aCays0E7lDkTZQiF8LZmW+mABwcbVlZ9SHOt+wwyJn
-         iUL6BlH9/vHLwpLw/vP51EUEJYN3kqdlS97khn+kwDiU99UfAQsgA60HKyJMfdJLeq23
-         iIDp3iyBHPAY1Yp6x9RcsLYbRPtSL8JzH9uSgY3Rzp3nKrElAz+JhtoSPcFnb+SMvnI/
-         kzPPjqGKd2JfiYfuyX3t5z9HB6gduBuhHB1gRSp39qvWCF9zSlMGjCa5ymX39SoZhtA9
-         cOfwR/EGF4oTjxzIX/GJFDYgLksxoVdu1oTomwHCykcpEZPLa1IN5ba9z4cmvfxoY30q
-         SCqA==
-X-Gm-Message-State: AOJu0Yy55oHz7DfiTvgCYliOxrltAvD5HvOkEDX0VfVblnlxsWXqMyeY
-	mXXnBLASzGMHWl8PQW8mS6kMHy7xR+rjvsrxDbNDj9IlxxbG+fMEz1eb91EYg+fihreZ6333sxU
-	LMjxZPNSVzMRb6g==
-X-Received: from pfuv11.prod.google.com ([2002:a05:6a00:148b:b0:829:84db:97d8])
+        bh=uMnmbravmc6HAY/hwiz+iRBLWQc+dimhfGrxweAepUY=;
+        b=jLQ+ot5RBabBTWq9Jqrpo2s9bE8g00NksafE7jBG/juEn1JEEUsNhnA+pMZ6Y70A9J
+         X61G9R+1yqCsHJEMk2N8QTSABh/idga8uENNBSzqKUGpqNMvmAAhnU9GLfxQalwq/GtC
+         iL/10BJaWgAbpslcjXI9hSsXzhhN95ypD1FtOROxwNPEE+dtrdT3FbU4BxUumsCYVEq/
+         NvxZekXePdLahF4wbtyIqfWBmZ+94IFvwQx/ILGQ3XkuHKO9SXQDfIcdlkLARHBRH/jp
+         ZIGo/AdZpPW0jSiLMnaE4sHaTre3Gv7sZZn07kXFkm4j/DKDgRbUIOgE/+7xRqTK5Y+w
+         uGhA==
+X-Gm-Message-State: AOJu0Yzx4r+nC+dhJgWOF0sA8AinEzEuUs/uKnKYxrT3kWoN5HhmT9oP
+	9fCeDpWHjTS0CAgwxM51+uoGsiZbuejLGRoGfMSCbca2lhMVAiWB+7jnOTZvDur/NpgBFmfY51G
+	m9DtSjCQK7fohhQ==
+X-Received: from pfbhm21.prod.google.com ([2002:a05:6a00:6715:b0:824:ad09:9215])
  (user=chengkev job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:6a00:278a:b0:81f:61d2:84a9 with SMTP id d2e1a72fcca58-82a198c4368mr1672419b3a.35.1773385839766;
- Fri, 13 Mar 2026 00:10:39 -0700 (PDT)
-Date: Fri, 13 Mar 2026 07:10:31 +0000
+ 2002:a05:6a00:4f8d:b0:81f:3f88:89ee with SMTP id d2e1a72fcca58-82a19704525mr2113077b3a.12.1773385841864;
+ Fri, 13 Mar 2026 00:10:41 -0700 (PDT)
+Date: Fri, 13 Mar 2026 07:10:32 +0000
 In-Reply-To: <20260313071033.4153209-1-chengkev@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
@@ -57,180 +57,142 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 References: <20260313071033.4153209-1-chengkev@google.com>
 X-Mailer: git-send-email 2.53.0.851.ga537e3e6e9-goog
-Message-ID: <20260313071033.4153209-3-chengkev@google.com>
-Subject: [PATCH V3 2/4] KVM: SVM: Fix nested NPF injection to set PFERR_GUEST_{PAGE,FINAL}_MASK
+Message-ID: <20260313071033.4153209-4-chengkev@google.com>
+Subject: [PATCH V3 3/4] KVM: VMX: Fix nested EPT violation injection of
+ GVA_IS_VALID/GVA_TRANSLATED bits
 From: Kevin Cheng <chengkev@google.com>
 To: seanjc@google.com, pbonzini@redhat.com
 Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org, yosry@kernel.org, 
 	Kevin Cheng <chengkev@google.com>
 Content-Type: text/plain; charset="UTF-8"
 
-Fix nested_svm_inject_npf_exit() to correctly set the fault stage bits
-(PFERR_GUEST_PAGE_MASK vs PFERR_GUEST_FINAL_MASK) in exit_info_1 when
-injecting an NPF to L1.
+Make the OR of EPT_VIOLATION_GVA_IS_VALID and
+EPT_VIOLATION_GVA_TRANSLATED from the hardware exit qualification
+conditional on the fault originating from a hardware EPT violation
+exit. The hardware exit qualification reflects the original VM exit,
+which may not be an EPT violation at all, e.g. if KVM is emulating
+an I/O instruction and the memory operand's translation through L1's
+EPT fails. In that case, bits 7-8 of the exit qualification have
+completely different semantics (or are simply zero), and OR'ing them
+into the injected EPT violation corrupts the GVA_IS_VALID/
+GVA_TRANSLATED information.
 
-There are two paths into nested_svm_inject_npf_exit(): hardware NPF
-exits (guest_mmu walker) and emulation-triggered faults (nested_mmu
-walker). For emulation, the nested_mmu walker knows whether the fault
-occurred on a page table page or the final translation, and sets the
-appropriate bit in fault->error_code via paging_tmpl.h. For hardware
-NPF exits, the guest_mmu walker cannot determine this. Only hardware
-knows, via exit_info_1 bits 32-33.
+Use the hardware_nested_page_fault flag introduced in the previous
+patch to distinguish hardware EPT violation exits from
+emulation-triggered faults. For hardware exits, take the
+GVA_IS_VALID/GVA_TRANSLATED bits from the hardware exit qualification.
+For emulation faults, take them from fault->exit_qualification, which
+is populated by the nested_mmu walker in paging_tmpl.h.
 
-The old code hardcoded (1ULL << 32) for the emulation path, always
-setting PFERR_GUEST_FINAL_MASK even for page table walk faults. For the
-hardware NPF path, it preserved exit_info_1's upper bits and replaced
-the lower 32 bits with fault->error_code, which was correct but
-convoluted.
-
-Introduce hardware_nested_page_fault in struct x86_exception to
-distinguish the two paths. For hardware NPF exits, take the fault stage
-bits from exit_info_1. For emulation faults, take them from
-fault->error_code. The lower 32 bits always come from fault->error_code,
-which reflects L1's NPT state (L0's NPT may differ since KVM only
-populates it when the full translation succeeds).
-
-Add a WARN_ON_ONCE if exactly one of PFERR_GUEST_FINAL_MASK or
-PFERR_GUEST_PAGE_MASK is not set in the final exit_info_1, as this
-would indicate a bug in the fault handling code.
+Replace the #if PTTYPE != PTTYPE_EPT preprocessor guards in
+paging_tmpl.h with a runtime kvm_nested_fault_is_ept() helper that
+checks guest_mmu to determine whether the nested fault is EPT vs NPT,
+and sets the appropriate field (exit_qualification for EPT, error_code
+for NPF) accordingly.
 
 Signed-off-by: Kevin Cheng <chengkev@google.com>
 ---
- arch/x86/include/asm/kvm_host.h |  2 ++
- arch/x86/kvm/kvm_emulate.h      |  1 +
- arch/x86/kvm/mmu/paging_tmpl.h  | 26 +++++++++++------------
- arch/x86/kvm/svm/nested.c       | 37 +++++++++++++++++++++++----------
- 4 files changed, 42 insertions(+), 24 deletions(-)
+ arch/x86/kvm/mmu/mmu.c         | 10 ++++++++++
+ arch/x86/kvm/mmu/paging_tmpl.h | 22 +++++++++++++++-------
+ arch/x86/kvm/vmx/nested.c      |  9 +++++----
+ 3 files changed, 30 insertions(+), 11 deletions(-)
 
-diff --git a/arch/x86/include/asm/kvm_host.h b/arch/x86/include/asm/kvm_host.h
-index d3bdc9828133..134394dc09e6 100644
---- a/arch/x86/include/asm/kvm_host.h
-+++ b/arch/x86/include/asm/kvm_host.h
-@@ -281,6 +281,8 @@ enum x86_intercept_stage;
- #define PFERR_GUEST_RMP_MASK	BIT_ULL(31)
- #define PFERR_GUEST_FINAL_MASK	BIT_ULL(32)
- #define PFERR_GUEST_PAGE_MASK	BIT_ULL(33)
-+#define PFERR_GUEST_FAULT_STAGE_MASK \
-+	(PFERR_GUEST_FINAL_MASK | PFERR_GUEST_PAGE_MASK)
- #define PFERR_GUEST_ENC_MASK	BIT_ULL(34)
- #define PFERR_GUEST_SIZEM_MASK	BIT_ULL(35)
- #define PFERR_GUEST_VMPL_MASK	BIT_ULL(36)
-diff --git a/arch/x86/kvm/kvm_emulate.h b/arch/x86/kvm/kvm_emulate.h
-index ff4f9b0a01ff..e67982f4da40 100644
---- a/arch/x86/kvm/kvm_emulate.h
-+++ b/arch/x86/kvm/kvm_emulate.h
-@@ -24,6 +24,7 @@ struct x86_exception {
- 	bool error_code_valid;
- 	u64 error_code;
- 	bool nested_page_fault;
-+	bool hardware_nested_page_fault;
- 	u64 address; /* cr2 or nested page fault gpa */
- 	u8 async_page_fault;
- 	unsigned long exit_qualification;
+diff --git a/arch/x86/kvm/mmu/mmu.c b/arch/x86/kvm/mmu/mmu.c
+index 3dce38ffee76..aabf4ac39c43 100644
+--- a/arch/x86/kvm/mmu/mmu.c
++++ b/arch/x86/kvm/mmu/mmu.c
+@@ -5272,6 +5272,9 @@ static bool sync_mmio_spte(struct kvm_vcpu *vcpu, u64 *sptep, gfn_t gfn,
+ 	return false;
+ }
+ 
++static bool kvm_nested_fault_is_ept(struct kvm_vcpu *vcpu,
++				    struct x86_exception *exception);
++
+ #define PTTYPE_EPT 18 /* arbitrary */
+ #define PTTYPE PTTYPE_EPT
+ #include "paging_tmpl.h"
+@@ -5285,6 +5288,13 @@ static bool sync_mmio_spte(struct kvm_vcpu *vcpu, u64 *sptep, gfn_t gfn,
+ #include "paging_tmpl.h"
+ #undef PTTYPE
+ 
++static bool kvm_nested_fault_is_ept(struct kvm_vcpu *vcpu,
++				    struct x86_exception *exception)
++{
++	WARN_ON_ONCE(!exception->nested_page_fault);
++	return vcpu->arch.guest_mmu.page_fault == ept_page_fault;
++}
++
+ static void __reset_rsvds_bits_mask(struct rsvd_bits_validate *rsvd_check,
+ 				    u64 pa_bits_rsvd, int level, bool nx,
+ 				    bool gbpages, bool pse, bool amd)
 diff --git a/arch/x86/kvm/mmu/paging_tmpl.h b/arch/x86/kvm/mmu/paging_tmpl.h
-index 37eba7dafd14..ea2b7569f8a4 100644
+index ea2b7569f8a4..15be93d735ab 100644
 --- a/arch/x86/kvm/mmu/paging_tmpl.h
 +++ b/arch/x86/kvm/mmu/paging_tmpl.h
-@@ -385,18 +385,12 @@ static int FNAME(walk_addr_generic)(struct guest_walker *walker,
- 		real_gpa = kvm_translate_gpa(vcpu, mmu, gfn_to_gpa(table_gfn),
+@@ -386,9 +386,15 @@ static int FNAME(walk_addr_generic)(struct guest_walker *walker,
  					     nested_access, &walker->fault);
  
--		/*
--		 * FIXME: This can happen if emulation (for of an INS/OUTS
--		 * instruction) triggers a nested page fault.  The exit
--		 * qualification / exit info field will incorrectly have
--		 * "guest page access" as the nested page fault's cause,
--		 * instead of "guest page structure access".  To fix this,
--		 * the x86_exception struct should be augmented with enough
--		 * information to fix the exit_qualification or exit_info_1
--		 * fields.
--		 */
--		if (unlikely(real_gpa == INVALID_GPA))
-+		if (unlikely(real_gpa == INVALID_GPA)) {
-+#if PTTYPE != PTTYPE_EPT
-+			walker->fault.error_code |= PFERR_GUEST_PAGE_MASK;
-+#endif
+ 		if (unlikely(real_gpa == INVALID_GPA)) {
+-#if PTTYPE != PTTYPE_EPT
+-			walker->fault.error_code |= PFERR_GUEST_PAGE_MASK;
+-#endif
++			/*
++			 * Set EPT Violation flags even if the fault is an
++			 * EPT Misconfig, fault.exit_qualification is ignored
++			 * for EPT Misconfigs.
++			 */
++			if (kvm_nested_fault_is_ept(vcpu, &walker->fault))
++				walker->fault.exit_qualification |= EPT_VIOLATION_GVA_IS_VALID;
++			else
++				walker->fault.error_code |= PFERR_GUEST_PAGE_MASK;
  			return 0;
-+		}
+ 		}
  
- 		slot = kvm_vcpu_gfn_to_memslot(vcpu, gpa_to_gfn(real_gpa));
- 		if (!kvm_is_visible_memslot(slot))
-@@ -452,8 +446,12 @@ static int FNAME(walk_addr_generic)(struct guest_walker *walker,
- #endif
+@@ -447,9 +453,11 @@ static int FNAME(walk_addr_generic)(struct guest_walker *walker,
  
  	real_gpa = kvm_translate_gpa(vcpu, mmu, gfn_to_gpa(gfn), access, &walker->fault);
--	if (real_gpa == INVALID_GPA)
-+	if (real_gpa == INVALID_GPA) {
-+#if PTTYPE != PTTYPE_EPT
-+		walker->fault.error_code |= PFERR_GUEST_FINAL_MASK;
-+#endif
+ 	if (real_gpa == INVALID_GPA) {
+-#if PTTYPE != PTTYPE_EPT
+-		walker->fault.error_code |= PFERR_GUEST_FINAL_MASK;
+-#endif
++		if (kvm_nested_fault_is_ept(vcpu, &walker->fault))
++			walker->fault.exit_qualification |= EPT_VIOLATION_GVA_IS_VALID |
++							    EPT_VIOLATION_GVA_TRANSLATED;
++		else
++			walker->fault.error_code |= PFERR_GUEST_FINAL_MASK;
  		return 0;
-+	}
- 
- 	walker->gfn = real_gpa >> PAGE_SHIFT;
- 
-@@ -787,8 +785,10 @@ static int FNAME(page_fault)(struct kvm_vcpu *vcpu, struct kvm_page_fault *fault
- 	 * The page is not mapped by the guest.  Let the guest handle it.
- 	 */
- 	if (!r) {
--		if (!fault->prefetch)
-+		if (!fault->prefetch) {
-+			walker.fault.hardware_nested_page_fault = walker.fault.nested_page_fault;
- 			kvm_inject_emulated_page_fault(vcpu, &walker.fault);
-+		}
- 
- 		return RET_PF_RETRY;
  	}
-diff --git a/arch/x86/kvm/svm/nested.c b/arch/x86/kvm/svm/nested.c
-index 5ff01d2ac85e..62904ec08dda 100644
---- a/arch/x86/kvm/svm/nested.c
-+++ b/arch/x86/kvm/svm/nested.c
-@@ -38,19 +38,34 @@ static void nested_svm_inject_npf_exit(struct kvm_vcpu *vcpu,
- {
- 	struct vcpu_svm *svm = to_svm(vcpu);
- 	struct vmcb *vmcb = svm->vmcb;
-+	u64 fault_stage;
  
--	if (vmcb->control.exit_code != SVM_EXIT_NPF) {
--		/*
--		 * TODO: track the cause of the nested page fault, and
--		 * correctly fill in the high bits of exit_info_1.
--		 */
--		vmcb->control.exit_code = SVM_EXIT_NPF;
--		vmcb->control.exit_info_1 = (1ULL << 32);
--		vmcb->control.exit_info_2 = fault->address;
--	}
-+	/*
-+	 * For hardware NPF exits, the GUEST_FAULT_STAGE bits are only
-+	 * available in the hardware exit_info_1, since the guest_mmu
-+	 * walker doesn't know whether the faulting GPA was a page table
-+	 * page or final page from L2's perspective.
-+	 */
-+	if (fault->hardware_nested_page_fault)
-+		fault_stage = vmcb->control.exit_info_1 &
-+			      PFERR_GUEST_FAULT_STAGE_MASK;
-+	else
-+		fault_stage = fault->error_code & PFERR_GUEST_FAULT_STAGE_MASK;
-+
-+	vmcb->control.exit_code = SVM_EXIT_NPF;
-+	vmcb->control.exit_info_1 = fault_stage | fault->error_code;
-+	vmcb->control.exit_info_2 = fault->address;
+@@ -496,7 +504,7 @@ static int FNAME(walk_addr_generic)(struct guest_walker *walker,
+ 	 * [2:0] - Derive from the access bits. The exit_qualification might be
+ 	 *         out of date if it is serving an EPT misconfiguration.
+ 	 * [5:3] - Calculated by the page walk of the guest EPT page tables
+-	 * [7:8] - Derived from [7:8] of real exit_qualification
++	 * [7:8] - Set at the kvm_translate_gpa() call sites above
+ 	 *
+ 	 * The other bits are set to 0.
+ 	 */
+diff --git a/arch/x86/kvm/vmx/nested.c b/arch/x86/kvm/vmx/nested.c
+index 937aeb474af7..39f8504f5cf2 100644
+--- a/arch/x86/kvm/vmx/nested.c
++++ b/arch/x86/kvm/vmx/nested.c
+@@ -443,11 +443,12 @@ static void nested_ept_inject_page_fault(struct kvm_vcpu *vcpu,
+ 			vm_exit_reason = EXIT_REASON_EPT_MISCONFIG;
+ 			exit_qualification = 0;
+ 		} else {
+-			exit_qualification = fault->exit_qualification;
+-			exit_qualification |= vmx_get_exit_qual(vcpu) &
+-					      (EPT_VIOLATION_GVA_IS_VALID |
+-					       EPT_VIOLATION_GVA_TRANSLATED);
+ 			vm_exit_reason = EXIT_REASON_EPT_VIOLATION;
++			exit_qualification = fault->exit_qualification;
++			if (fault->hardware_nested_page_fault)
++				exit_qualification |= vmx_get_exit_qual(vcpu) &
++						      (EPT_VIOLATION_GVA_IS_VALID |
++						       EPT_VIOLATION_GVA_TRANSLATED);
+ 		}
  
--	vmcb->control.exit_info_1 &= ~0xffffffffULL;
--	vmcb->control.exit_info_1 |= fault->error_code;
-+	/*
-+	 * All nested page faults should be annotated as occurring on the
-+	 * final translation *or* the page walk. Arbitrarily choose "final"
-+	 * if KVM is buggy and enumerated both or neither.
-+	 */
-+	if (WARN_ON_ONCE(hweight64(vmcb->control.exit_info_1 &
-+				   PFERR_GUEST_FAULT_STAGE_MASK) != 1)) {
-+		vmcb->control.exit_info_1 &= ~PFERR_GUEST_FAULT_STAGE_MASK;
-+		vmcb->control.exit_info_1 |= PFERR_GUEST_FINAL_MASK;
-+	}
- 
- 	nested_svm_vmexit(svm);
- }
+ 		/*
 -- 
 2.53.0.851.ga537e3e6e9-goog
 
