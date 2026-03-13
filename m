@@ -1,145 +1,262 @@
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D12EC39A04C
-	for <kvm@vger.kernel.org>; Fri, 13 Mar 2026 13:49:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773409798; cv=none; b=eL8V+SYi7Ge9g+WLGkAKBt9GaQKnkt692rhPlV6tSHN5am66xrttBbQPKyXyxVXYOKDnQOPaLrJVw2S9XX4wjI0pgmB1LC1kMFqTAooIbvwWexxF1mmJEggoQeZWjU0rFaU13T9Y9qPF+pkPJYBFsNwmVWF6f6HsknoVQo5ldvE=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773409798; c=relaxed/simple;
-	bh=AnC1JrbA1UMTynZ5YPu/FMu43Tob3eK136JnnQ/BVzU=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Subject:Cc:To:From:
-	 References:In-Reply-To; b=hE02uvfcGJQzv5gOf+X5z9MYJ9T2ZId+T+Oszj0Oq6PKHNAk5eTraxzmxzu9t2J5XoomyKTDOaoI2twW1fliT3dVrKiRp0SR2eGF6DieqLwHp9sZvp+HJzDaUEGUi18q01n/3h0npVq/gCA3wbm+SlW6gObReSgrgJdJ62843yk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=gwa5/QgN; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=D1W82cb0; arc=none smtp.client-ip=205.220.168.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E20253947A6;
+	Fri, 13 Mar 2026 13:54:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=192.198.163.15
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1773410078; cv=fail; b=dCOi5ftHhIC8FZ3VMIwZE9BHmr4J8kgYdsgRVUKn4JX5NpUAIVIjyIuIbtM7BeVMtyIDQlQz2pqpKQRfScX2KUgwXYZIm30Awhobr3hKS4dCeO07FNQ0+U2+XFKIFsEsFkU30/sQMAwsBWK5vl6XxyiB41e/8675s+gKtZBiQkM=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1773410078; c=relaxed/simple;
+	bh=BMzsn2dtq0zcGpKCj38V8jIqxdtSuaYtZq42agxZAEg=;
+	h=Date:From:To:CC:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=D8/rX66M9qscbO08OQ5Wc6YFYqe+yyC9eBPMFaHiBCZRUR1S8/gpfpGiZjro0J2d4vTRO356PhtFK8CpnpuKMSW9rZsvP9idA1UCeoFU6MRqTpJCpss6R8MvB0SXNIcv7YdfRYP6DG+f+qTo7WCLC55qLr15SFj+aR27tHWO5Y8=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=d8ohe2hd; arc=fail smtp.client-ip=192.198.163.15
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="gwa5/QgN";
-	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="D1W82cb0"
-Received: from pps.filterd (m0279862.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 62D7iLQq2262550
-	for <kvm@vger.kernel.org>; Fri, 13 Mar 2026 13:49:55 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	AnC1JrbA1UMTynZ5YPu/FMu43Tob3eK136JnnQ/BVzU=; b=gwa5/QgNmnjGMtis
-	1DLfyxp4IOGciKAHlnvjwVKArh/JmfSv2dzbFD9PsC9FOok6BxWUQQKm9nn3YqLF
-	sgPI3FaOqQokp45U2VsAjcbRK5D8uIR/U6TVlzsilmdYg8iUGAIqsPO0at9ZoArs
-	bFddhUpzFxBwFaDPrq2CP3ZgZBSbSyOE70pBsDW0txkXhTeFhratTt/MPA0cOLcn
-	bcmUpbe/+jPeHXYhBNP42KsGooXPmEnO5XytciLNTRSebgXIE1mD5o20t1eTz4Ys
-	Z5FGrCMokCA0rXX5wOEfIEhAUW852wp/oGmy0hBoZTTBDs0G2DTvKXxIJn+0drUI
-	ywqqeg==
-Received: from mail-qk1-f199.google.com (mail-qk1-f199.google.com [209.85.222.199])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4cvef4s7yc-1
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <kvm@vger.kernel.org>; Fri, 13 Mar 2026 13:49:55 +0000 (GMT)
-Received: by mail-qk1-f199.google.com with SMTP id af79cd13be357-8cd773dd39bso1602200485a.2
-        for <kvm@vger.kernel.org>; Fri, 13 Mar 2026 06:49:54 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=oss.qualcomm.com; s=google; t=1773409794; x=1774014594; darn=vger.kernel.org;
-        h=in-reply-to:references:from:to:cc:subject:message-id:date
-         :content-transfer-encoding:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=AnC1JrbA1UMTynZ5YPu/FMu43Tob3eK136JnnQ/BVzU=;
-        b=D1W82cb06JpmJC/poEewcnF80cNox/c1GDudgDi/PI8wfqu2zRttXJw7Sdf3DlNIi7
-         YC/pvKm3Ikd8XIgmbORqrVCn/msFfh0jkmVxusprvz1OSDyTfjipkJiSPPARZKYo+00Y
-         f+zcqbPYtmom0LyKjG23dnDDx206ZRr42zQ7igouxMMu9fkjYij1eYaoaN9gXNvjxXmL
-         qL7SSQ+8X+VI5shnMACtgOApUWPpF8jS/7RrJoziCvkraUvcNdqls46+Jji5n9n39KU6
-         +55p3/CubzsovgUg3SJ0YXlRJyFxUhTkmRGi0YFrFdUog2aLizLRIzgWQjogE/rvHbe8
-         7ueQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1773409794; x=1774014594;
-        h=in-reply-to:references:from:to:cc:subject:message-id:date
-         :content-transfer-encoding:mime-version:x-gm-gg:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=AnC1JrbA1UMTynZ5YPu/FMu43Tob3eK136JnnQ/BVzU=;
-        b=CWwB/CAw4PU7cGY3zaynzJp1lEOvLdyYpUqe9cRJ29X7TI8VoK4VoJ40ikMB+O2F/0
-         HQYNuH4NFd5wKkHnqfkAh0RPvhy5zJAVt6vbyt1UsLaJ9lLABe8nmxlOrEmuepmxnjDL
-         PrT3APlWBnwvyirw1tvBUQcc91nrk/horUFAATjb4IQVgLOkgznApcKaTGX8yE3Wsf2O
-         Kyi9wwfk3QkfaR5x17xRXGtd8rbnjATcEDsf6AENsmSJhDzP4EXmdoJm6tQUMeicH6xl
-         jnMudnIYXwQ0eYQ0pkpaW1yxA94aFTShTGZzrkgUoujORcFu4yPJYxPu4ry5iGwvD+EJ
-         a8kw==
-X-Forwarded-Encrypted: i=1; AJvYcCVA0GCDjh9HWFPRPsSE1hqgJpSxCkn77P1z/8dP5BDBjl7SOG6woxrrrJuiJfOLPNEhPsM=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yxbhga4vu9GcRPjgePZZ5Gh6Yt1kzE9hQGVRfb9tghrzrpZGyp5
-	wYEomD/+VwXV5DOZ16ZrhuBAOS80K+/b77czivSyxkVzjXnmYAa9peUnTziqJqrMYT7bGmCsXOf
-	PfMX8rTiseFtEa/BwdnqLGdZlMil6UqUbjTJr+fyv+AG5MvIlBdn/4rc=
-X-Gm-Gg: ATEYQzzGN1ikt1KqNpB5+7FOt6H225BDexm/Aqw+B9Ltl8+YIfEnqc0t4hEXtEWXdKm
-	feWFR5NE9RqEisIf/jLGfMJvw6fTFSA9JS0HYz0LEbuYsOPA4Z2q+XYPjuG/cQvSyDVRotVNBmb
-	mrkUs3A9Fg5ICFbhyW+eQXCZ1YsSoq5Vj4p2hrmeb3CmxSec4+NFV4hN8q9Lnp4SavzZK3ju8yX
-	aJCinmNGz7iF0GAfYyR+NGK0mzoORA10Va3K+r6ezbgIKYfQ8Df2P8veW+Mts2msZJkwH+CeyLH
-	BvDxuGdIzbeSqiIAtT3nN1L1g2ePf6Rh4e5kd72PPScDDXwiljzT0fqBI6Cm5HJysDRvaH/9pqm
-	oYKObiUPaXcWzygkuXvfiv8X+jhwSvNDjMD4j3/4Im0NSaBZJbTEfbYpFm7sR
-X-Received: by 2002:a05:620a:5dd9:b0:8cd:b5f2:3b4e with SMTP id af79cd13be357-8cdb5f23b8bmr310879285a.44.1773409794207;
-        Fri, 13 Mar 2026 06:49:54 -0700 (PDT)
-X-Received: by 2002:a05:620a:5dd9:b0:8cd:b5f2:3b4e with SMTP id af79cd13be357-8cdb5f23b8bmr310876185a.44.1773409793700;
-        Fri, 13 Mar 2026 06:49:53 -0700 (PDT)
-Received: from localhost (ip-86-49-249-15.bb.vodafone.cz. [86.49.249.15])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4855778d268sm29514875e9.8.2026.03.13.06.49.52
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 13 Mar 2026 06:49:52 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="d8ohe2hd"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1773410075; x=1804946075;
+  h=date:from:to:cc:subject:message-id:references:
+   content-transfer-encoding:in-reply-to:mime-version;
+  bh=BMzsn2dtq0zcGpKCj38V8jIqxdtSuaYtZq42agxZAEg=;
+  b=d8ohe2hd/9ra6aLLcFwdXe+Of5BDVVqHuUiUYs0mUAr+AlMpqzI7bw5K
+   40YHrm1//+CXn0BzCxz6UxSeUy/RdgS+0cEk2fs0TbnSXJOsJpcGldZfN
+   4ILU7T5FUCNc1VLxs70uLNc1o9vTCthtbl/igDGh1H7SX/00tH2vGn+3t
+   tPxAjKvKdrcleHC6XqWhhYm10drck00ALPz1w/goZDbIgAjKEkEiL7KKr
+   aCLNJemoXbPldOGamUBWXT5rfraE/hBGm4RzN+bI/2pqJwD9oUkxeKX+R
+   DUxWbB/2WbJJBEfjy4TGGbNCk8UWdRk0+cXQpIQ6K9qWbsw8JRw4nQjd2
+   w==;
+X-CSE-ConnectionGUID: lCtWC9Z8RJaVu/pZS151Uw==
+X-CSE-MsgGUID: qI5RNlmHSXi+3SfsCHzh1g==
+X-IronPort-AV: E=McAfee;i="6800,10657,11728"; a="74630411"
+X-IronPort-AV: E=Sophos;i="6.23,118,1770624000"; 
+   d="scan'208";a="74630411"
+Received: from orviesa010.jf.intel.com ([10.64.159.150])
+  by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Mar 2026 06:54:34 -0700
+X-CSE-ConnectionGUID: IIs1gJWARoCcrx4gvFmjsA==
+X-CSE-MsgGUID: 5m9NLNsmQ82B7oNMuGknwQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.23,118,1770624000"; 
+   d="scan'208";a="220425888"
+Received: from fmsmsx903.amr.corp.intel.com ([10.18.126.92])
+  by orviesa010.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Mar 2026 06:54:33 -0700
+Received: from FMSMSX901.amr.corp.intel.com (10.18.126.90) by
+ fmsmsx903.amr.corp.intel.com (10.18.126.92) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.37; Fri, 13 Mar 2026 06:54:32 -0700
+Received: from fmsedg901.ED.cps.intel.com (10.1.192.143) by
+ FMSMSX901.amr.corp.intel.com (10.18.126.90) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.37 via Frontend Transport; Fri, 13 Mar 2026 06:54:32 -0700
+Received: from SN4PR2101CU001.outbound.protection.outlook.com (40.93.195.26)
+ by edgegateway.intel.com (192.55.55.81) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.37; Fri, 13 Mar 2026 06:54:32 -0700
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=e7KN8lS/LNToIefLJvRlcy5TOczYka2RvNLVbQ+0m/z7wleJK8LcPdrpfeZkP0x7LLL6OZqnp8QqikQaq6sZcc78dRqvoMdCaYODciiZQKfX1In1YeLJg2zG/VQivnKY2g/EHXjQqG9+RppqoUfyRyAzoxevXYmkVQvjrl3lAnfm1Rk0wep2DMty5Snvn5Ww6tZBR4vWqj25cUGhPpjjNIQkPQCm+0cbIVujbyBfEQbO4X7HVi+SFSQ/RJL8prksaf3UjyUkcjA5i8c9YBd9T/dv3WweVZIGVZ2Ke6OKtpp7/E5Eyhdm7OiZWRlPHzmOoGrYJQJnRHv9XKWoIGlBQA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=4kEDIdfv1GGS2FoMqqRyAbd1XTiMj2hyou09hn5t2XA=;
+ b=hEnjtSHsf9pzTPbZT5iNphcIX0JWwbqz1D2U01A9Bk+MZ2pSLMfH9cQio0wiRPOU70mmcyp1Tdh3dCpCOM80I4VkR0pzFZ07xyITVojl8btV7kvqjwcqhHu3d8760NfIIUgrMzT6PFk+S/sSQX9hlQEt8UMR60Dp8LusSRZKob5iIzeCzuGYGvlYhByzuuyKMV5243w/Ga5bHbEz3pPf4s+ls64GU5LnKsiuE5g6C9/jV1LhQE2vs6LnOlQ84VyD7fJfUG9GCQWDYaYj6sTs9sIIh/CiDrvqa9zluXgFoPdTwcORgX1vo3ISeBuE6pK0GJrigTL7F2JCmOq+Y4qeCA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+Received: from CH3PR11MB8660.namprd11.prod.outlook.com (2603:10b6:610:1ce::13)
+ by CO1PR11MB4914.namprd11.prod.outlook.com (2603:10b6:303:90::24) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9723.8; Fri, 13 Mar
+ 2026 13:54:23 +0000
+Received: from CH3PR11MB8660.namprd11.prod.outlook.com
+ ([fe80::fdc2:40ba:101d:40bf]) by CH3PR11MB8660.namprd11.prod.outlook.com
+ ([fe80::fdc2:40ba:101d:40bf%6]) with mapi id 15.20.9723.008; Fri, 13 Mar 2026
+ 13:54:23 +0000
+Date: Fri, 13 Mar 2026 21:54:07 +0800
+From: Chao Gao <chao.gao@intel.com>
+To: "Edgecombe, Rick P" <rick.p.edgecombe@intel.com>
+CC: "kvm@vger.kernel.org" <kvm@vger.kernel.org>, "linux-coco@lists.linux.dev"
+	<linux-coco@lists.linux.dev>, "Huang, Kai" <kai.huang@intel.com>, "Williams,
+ Dan J" <dan.j.williams@intel.com>, "dave.hansen@linux.intel.com"
+	<dave.hansen@linux.intel.com>, "kas@kernel.org" <kas@kernel.org>, "Chatre,
+ Reinette" <reinette.chatre@intel.com>, "Weiny, Ira" <ira.weiny@intel.com>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"mingo@redhat.com" <mingo@redhat.com>, "Verma, Vishal L"
+	<vishal.l.verma@intel.com>, "nik.borisov@suse.com" <nik.borisov@suse.com>,
+	"seanjc@google.com" <seanjc@google.com>, "tony.lindgren@linux.intel.com"
+	<tony.lindgren@linux.intel.com>, "binbin.wu@linux.intel.com"
+	<binbin.wu@linux.intel.com>, "Annapurve, Vishal" <vannapurve@google.com>,
+	"Duan, Zhenzhong" <zhenzhong.duan@intel.com>, "sagis@google.com"
+	<sagis@google.com>, "paulmck@kernel.org" <paulmck@kernel.org>,
+	"hpa@zytor.com" <hpa@zytor.com>, "tglx@kernel.org" <tglx@kernel.org>,
+	"yilun.xu@linux.intel.com" <yilun.xu@linux.intel.com>, "x86@kernel.org"
+	<x86@kernel.org>, "bp@alien8.de" <bp@alien8.de>
+Subject: Re: [PATCH v4 11/24] x86/virt/seamldr: Introduce skeleton for TDX
+ Module updates
+Message-ID: <abQW/1Cfxl9TdJ8D@intel.com>
+References: <20260212143606.534586-1-chao.gao@intel.com>
+ <20260212143606.534586-12-chao.gao@intel.com>
+ <daa8080e1195f586af331dcf31ee5239c4ecbd15.camel@intel.com>
+ <abLJGel27U8xuU6q@intel.com>
+ <aa798a36216fb44969a6abedf96ecf1c7d4e95fe.camel@intel.com>
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <aa798a36216fb44969a6abedf96ecf1c7d4e95fe.camel@intel.com>
+X-ClientProxiedBy: KU0P306CA0094.MYSP306.PROD.OUTLOOK.COM
+ (2603:1096:d10:22::16) To CH3PR11MB8660.namprd11.prod.outlook.com
+ (2603:10b6:610:1ce::13)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Fri, 13 Mar 2026 14:49:51 +0100
-Message-Id: <DH1PAZDT90GE.2JU59DI89M0UD@oss.qualcomm.com>
-Subject: Re: [PATCH 07/27] RISC-V: KVM: Add hideleg to struct
- kvm_vcpu_config
-Cc: "Palmer Dabbelt" <palmer@dabbelt.com>, "Paul Walmsley" <pjw@kernel.org>,
-        "Alexandre Ghiti" <alex@ghiti.fr>, "Shuah Khan" <shuah@kernel.org>,
-        "Anup
- Patel" <anup@brainfault.org>,
-        "Andrew Jones"
- <andrew.jones@oss.qualcomm.com>,
-        <kvm-riscv@lists.infradead.org>, <kvm@vger.kernel.org>,
-        <linux-riscv@lists.infradead.org>, <linux-kernel@vger.kernel.org>,
-        <linux-kselftest@vger.kernel.org>
-To: "Anup Patel" <anup.patel@oss.qualcomm.com>,
-        "Paolo Bonzini"
- <pbonzini@redhat.com>,
-        "Atish Patra" <atish.patra@linux.dev>
-From: =?utf-8?q?Radim_Kr=C4=8Dm=C3=A1=C5=99?=
- <radim.krcmar@oss.qualcomm.com>
-References: <20260120080013.2153519-1-anup.patel@oss.qualcomm.com>
- <20260120080013.2153519-8-anup.patel@oss.qualcomm.com>
-In-Reply-To: <20260120080013.2153519-8-anup.patel@oss.qualcomm.com>
-X-Proofpoint-ORIG-GUID: wA7W5oFwskZ0DCdzOa2sYvNLx_W6nSjR
-X-Proofpoint-GUID: wA7W5oFwskZ0DCdzOa2sYvNLx_W6nSjR
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMzEzMDExMCBTYWx0ZWRfX16/Qv585euBE
- UMkM0ELcXWqB7ZPi99ZV7H/paRfyzyU4JnpYstEnO7p6S65vv976Uv2Pdwbm4apde3YgpwLLTh2
- PwlZcIo3af7lbKKsOU3Pm39490na9du5h3FLtFAwhxLIZmFZNDWaGMF73WjkMy38B7t1wW2RQf4
- Uqf+jdTl4Xp+VTch9BgoeWXagH5/E7dMs1C4+/rJRi60FTqu0NW4TuBaNBeRk8mS6nZSF1572Qv
- X4WZOHlaopmPiOviTjXUKYbDk6nmC0VCC53agorESqWfFPFGAI0R4f2ruB7tgT/Hph2/hKv4gzG
- mr1h52eusGwo04OSLLBFMg6KoJqhU7VVtKv6TS9ZzyB4tC/BVxsdx/gLCBc5tGlwS2npS4BRAY1
- YaswbQJstNRlisLEB0nhzy8sm8TTWY0OHZEamVdgBOtL0E+2OMNURU2oosevsJU6VmVTGj7hLXN
- ubbY76YR5HpCusOM7Bg==
-X-Authority-Analysis: v=2.4 cv=S9nUAYsP c=1 sm=1 tr=0 ts=69b41603 cx=c_pps
- a=HLyN3IcIa5EE8TELMZ618Q==:117 a=fuErIE+P63Icv3tqjtEZBw==:17
- a=IkcTkHD0fZMA:10 a=Yq5XynenixoA:10 a=M51BFTxLslgA:10 a=s4-Qcg_JpJYA:10
- a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22 a=_K5XuSEh1TEqbUxoQ0s3:22
- a=EUspDBNiAAAA:8 a=sIBLlZgNAvny2aHwhmQA:9 a=QEXdDO2ut3YA:10
- a=bTQJ7kPSJx9SKPbeHEYW:22
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
- definitions=2026-03-13_02,2026-03-13_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- impostorscore=0 adultscore=0 malwarescore=0 priorityscore=1501 suspectscore=0
- clxscore=1015 lowpriorityscore=0 phishscore=0 bulkscore=0 spamscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2603050001 definitions=main-2603130110
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CH3PR11MB8660:EE_|CO1PR11MB4914:EE_
+X-MS-Office365-Filtering-Correlation-Id: fb5366e0-000c-4ef5-ffbb-08de81080856
+X-LD-Processed: 46c98d88-e344-4ed4-8496-4ed7712e255d,ExtAddr
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|7416014|1800799024|366016|22082099003|56012099003|18002099003;
+X-Microsoft-Antispam-Message-Info: ppzGlrBemZ3lbElxtr6vRcNQuX6fHlUfUgiHZ5j5wVSvFR2JVILzGRxXOSaYqem1t9HxyK/yREBVjS8bkc54gOZJFIpVJ561lphbLqnOrW8uezwO776uhc9zdB56uMk0T6PJsjHwzefyhYfBV6604T70EOpjA6+NNd46BKZ4n94DJPONQeU64Lr0CJxUkNhMSZ6RW1V0PaTRMdX6RKpuB478xdaFYwX+3xAlH5WCSgj6nQKYRRosrCEb5uQIRUgJX/N22w4tIkp/4IllKYAB0dgsdodBn8iqLqsaDYHpxY/b3HVh7u7YyhCQlgqzAj8ZvVLHroHiMuYTRZsuh4V/kxn8EY29BJueKk9R7Om6812tKg1pe2LapJ8KdZEzVkILcOBaMVGPq8Sev/sjy+EaaLXyc/tTIXrDEoJ5LFv7mOJWNzQW75pUpNV/jmp/dakIS3N3Q61Hqo67fGvw80haxaJymXFqem44dLtIsOEMUOTosRNajKvliMqCXVoj9PNYEsh1+wVNRah3/yn+9m2MG73KP0TYcs3eoIRLXN14MoQHnsYP7HLKRJbcDdAOfZ+CDNZc5f0Oo72bpAU/tnMM/7WEGqN5SU3NEXGjRS0zMieGz5ms0x0HwzIGHTKdk3fjusnDZl1T70QhM+Bk26FFRK+3CEi+SNBv4p0SGCagAwUfFrIYHtelmN3d4MI15yzU
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH3PR11MB8660.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(1800799024)(366016)(22082099003)(56012099003)(18002099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?iso-8859-1?Q?wDwV6B/YmpzQKt97o5ZYfx84JX+eWmLHo525Eld7p5g3lrRFIw0OsVlldr?=
+ =?iso-8859-1?Q?amb1cURgzEI5Jg9KBPuGVPbxLzNvd6enIC9MghV8CZ4Ef0hg9W22cgiPJ6?=
+ =?iso-8859-1?Q?vbJVfM/2MYvxmthVccf4nWpRa1vfGe9e6SljfNQt6K7Hx+oJJDgYN1Nfey?=
+ =?iso-8859-1?Q?EKFA75WaIgsls/brdPNP7q7fgHR3CuGOXh+nqw1Ze2qtdT3Wbvguo7uZBx?=
+ =?iso-8859-1?Q?tgvOmJKcs6cXdLc5TNKMoDfmyCPH97jAHsqBN+HQwePhxn2oXuGP3u/r78?=
+ =?iso-8859-1?Q?RlSpKeYsLSSviKqD/kJiRoJw2EmHD9stl0Kr+3sOUGR1ikAc7wWBpMqKAz?=
+ =?iso-8859-1?Q?Ptv39upGg4Ji2nF9+/NwxeSZ5Zze9UmSBiGTJylkj7zV1oTKZWMX65pMxS?=
+ =?iso-8859-1?Q?K4IdEH7ssw1MnpMiwKfeBoSzSJs6DAx0i8b2B+jDLBMqj9OCKWro09Jbut?=
+ =?iso-8859-1?Q?pccDyvki4MOTJ+egKSF0KNM+pHxeBIyJCsRRxv2aFkXn7RYTVIsdMj2AO9?=
+ =?iso-8859-1?Q?+5YHsA60aXGCvlEG4fV8KeVFDy+vUI6xtXN3QJVJRdmoQBKPoASZ9+El+h?=
+ =?iso-8859-1?Q?mwDh53h2rbuEJi/Ut4uV+nJ/RQwOWf6cDZRLbJKBtQpg70soPCg8+iT7vO?=
+ =?iso-8859-1?Q?YhVZUINU7uP42qad0h5MStGco2qrXJVD4zbFtWBR1JZLjhUktu9LSMbqAf?=
+ =?iso-8859-1?Q?llym/4N49tYc+qF+l/+TjBm2ARbEHRDGcJoZJgVwPXG9hgDLEUTLeY9/YF?=
+ =?iso-8859-1?Q?EeU58Z0NR4kR5CtLVzp3fMFIrt5R5VGaljV1S+bWCX08XBeyyCnQy5oQZn?=
+ =?iso-8859-1?Q?1bEVd6AfspRX+4k/veOv0u8NrLKwBXvcNSakgWLf8Dp06XcxT/df8YKMDL?=
+ =?iso-8859-1?Q?zsJyIutFJSs6RyRkGQcsKb2sqINztvTw8lc/qh60oMgd3ZP9KitIV7mEE8?=
+ =?iso-8859-1?Q?iQE5up4YwG3he2qMFjSX5iezGf9ptaD3tgDV3cIodaA6iDXuMRqvcrjX9G?=
+ =?iso-8859-1?Q?ASf+JyaWe9n9J6Vcsj18HWfRDaRs+aZwsdjxxxVdeHvf0ICFhCCXLQ8VRr?=
+ =?iso-8859-1?Q?p7Z42zMMZ7Gc/ccqhbxSBE0JKbYt8t4DLQ7COO7yzoi+MsjiIMPdkNIAJq?=
+ =?iso-8859-1?Q?ziOwoehB599/KPUuuVWkpRTaukp5KiJy+hQ7vgDGnuaijdzKt89bqwjrTX?=
+ =?iso-8859-1?Q?BnVCH5GOvU+V3M4m4ML5v3YoMz7a6DNjMavC6qHgYQRVaNPHbB+PKVX0Vg?=
+ =?iso-8859-1?Q?KvmwNXc6MGOttmskZ7dS9ezXbQsWZHhiJ45J5Rb2v347hWoVpb9OlUJeSA?=
+ =?iso-8859-1?Q?UIFBmXSETE3KV6mkmTm7315NnI25kXK/M/zFQFDbJDhEbSE07pQzpyiaKs?=
+ =?iso-8859-1?Q?OI2q4AIyqXUgJoYg+OMdOZ90ez2CgEe9YzJNtvzhGa4FAxRW17WFuxKgQZ?=
+ =?iso-8859-1?Q?huUv/b2cHarDDekmM5RldE2YaGtYWkGKF/dJZKLxwmumRzPGftgk7XWEVF?=
+ =?iso-8859-1?Q?ExDmlX5tdP24bQraHMUXDxejo6iGm/cZOhg0xCk2J4TUaEvQmgKSJ+92IU?=
+ =?iso-8859-1?Q?2DLFoTWuq0HFIFiapZinOqKyB/c/gCp8bf99snxhDq8oXC9GJwbvos0X14?=
+ =?iso-8859-1?Q?3Wu7ZxFe5eMYYnajNUN2nfMh2OtbuabpUSOMHv+FBqNrqIAjr3WJDsBlPl?=
+ =?iso-8859-1?Q?UQ9+scGo24TBo3I8a/exZY9Tpdbh3+dzsbNUP8RPFEbxGmDzGrqgpnq7as?=
+ =?iso-8859-1?Q?bIWs2J3Qp1fLoUl1zk5ibRGmc9gFK5cB2txxxGqDCOcjx9ebTpq32R5KOW?=
+ =?iso-8859-1?Q?WZAP64a/vg=3D=3D?=
+X-Exchange-RoutingPolicyChecked: QWVC23iCF3EqK/3x659fkNhz7YVAGcJeoR27mMbuyWG2hNrZU0JLTj/Zl2R9AGCT5xzesCJWKeQMOx5NeDYwkIMcMIDCxFFNiFr5rGfa5bZhB2nThQSLyY1L9vEoHdzC4mbgNFLThBhfUp6ROu7M81PSsVJqY+z9MellqaIXL8wYmKm/kTeSdd7ajLCdU2bpcHTKbWN8wSF+9pvsl5yi0yRIknNI5LznAx4II5TzvCJz7M0D6ja10asgNPg1bPCGAh3M84CsK1TxRVoivWsWEgc1CXtni8MDl7mVTzWINdi4GuoXea/yRo5phLeeOQHGFv6U9sglqr7XfxNr5zQwOA==
+X-MS-Exchange-CrossTenant-Network-Message-Id: fb5366e0-000c-4ef5-ffbb-08de81080856
+X-MS-Exchange-CrossTenant-AuthSource: CH3PR11MB8660.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 13 Mar 2026 13:54:23.4679
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: GFUr+iVsWtkyFViQwEQzGhS6cV5j5d8ueiCaxkBWmYSTNEBeW/nkWiWu+NFqFEo10/hBqMuQHEU9PUE/S6Qmcw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CO1PR11MB4914
+X-OriginatorOrg: intel.com
 
-2026-01-20T13:29:53+05:30, Anup Patel <anup.patel@oss.qualcomm.com>:
-> The hideleg CSR state when VCPU is running in guest VS/VU-mode will
-> be different from when it is running in guest HS-mode. To achieve
-> this, add hideleg to struct kvm_vcpu_config and re-program hideleg
-> CSR upon every kvm_arch_vcpu_load().
+>> > > 
+>> > > The TDX Module update process consists of several steps as described in
+>> > > Intel® Trust Domain Extensions (Intel® TDX) Module Base Architecture
+>> > > Specification, Revision 348549-007, Chapter 4.5 "TD-Preserving TDX Module
+>> > > Update"
+>> > > 
+>> > >   - shut down the old module
+>> > >   - install the new module
+>> > >   - global and per-CPU initialization
+>> > >   - restore state information
+>> > > 
+>> > > Some steps must execute on a single CPU, others must run serially across
+>> > > all CPUs, and some can run concurrently on all CPUs. There are also
+>> > > ordering requirements between steps, so all CPUs must work in a step-locked
+>> > > manner.
+>> > 
+>> > Does the fact that they can run on other CPUs add any synchronization
+>> > requirements? If not I'd leave it off.
+>> 
+>> I'm not sure I understand the concern.
+>> 
+>> Lockstep synchronization is needed specifically because we have both multiple
+>> CPUs and multiple steps.
+>> 
+>> If updates only required a single CPU, stop_machine() would be sufficient.
 >
-> Signed-off-by: Anup Patel <anup.patel@oss.qualcomm.com>
-> ---
+>The last part "some can run concurrently on all CPUs", how does it affect the
+>design? They can run concurrently, but don't have to... So it's a non-
+>requirement?
+>
+>It seems the main argument here is, this thing has lots of complex ordering
+>requirements. So we do it lockstep as a simple pattern to bring sanity. It's a
+>fine fuzzy argument I think. The way you list the types of requirements all
+>specifically has me trying to find the connection between each requirement and
+>lockstep. That is where I get lost. If the reader doesn't need to do the work of
+>understanding, don't ask them. And if they do, it probably needs to be clearer.
 
-Reviewed-by: Radim Kr=C4=8Dm=C3=A1=C5=99 <radim.krcmar@oss.qualcomm.com>
+Got it. I'll keep it simple:
+
+  The TDX Module update process consists of several steps as described in
+  Intel® Trust Domain Extensions (Intel® TDX) Module Base Architecture
+  Specification, Revision 348549-007, Chapter 4.5 "TD-Preserving TDX Module
+  Update"
+  
+    - shut down the old module
+    - install the new module
+    - global and per-CPU initialization
+    - restore state information
+  
+  There are ordering requirements between steps which mandate lockstep
+  synchronization across all CPUs.
+
+Or the step details might be irrelevant. Perhaps:
+
+  TDX module update consists of several steps. Ordering requirements between
+  steps mandate lockstep synchronization across all CPUs.
+
+>> > > 1. The entire update process must use stop_machine() to synchronize with
+>> > >    other TDX workloads
+>> > > 2. Update steps must be performed in a step-locked manner
+>> > > 
+>> > > To prepare for implementing concrete TDX Module update steps, establish
+>> > > the framework by mimicking multi_cpu_stop(), which is a good example of
+>> > > performing a multi-step task in step-locked manner.
+>> > > 
+>> > 
+>> > Offline Chao pointed that Paul suggested this after considering refactoring out
+>> > the common code. I think it might still be worth mentioning why you can't use
+>> > multi_cpu_stop() directly. I guess there are some differences. what are they.
+>> 
+>> To be clear, Paul didn't actually suggest this approach. His feedback indicated
+>> he wasn't concerned about duplicating some of multi_cpu_stop()'s code, i.e., no
+>> need to refactor out some common code.
+>
+>Right, sorry for oversimplifying.
+>
+>> 
+>> https://lore.kernel.org/all/a7affba9-0cea-4493-b868-392158b59d83@paulmck-laptop/#t
+>> 
+>> We can't use multi_cpu_stop() directly because it only provides lockstep
+>> execution for its own infrastructure, not for the function it runs. If we
+>> passed a function that performs steps A, B, and C to multi_cpu_stop(), there's
+>> no guarantee that all CPUs complete step A before any CPU begins step B.
+>
+>If it could be said more concisely, it seems relevant.
+
+How about:
+
+multi_cpu_stop() executes in lockstep but doesn't synchronize steps within the
+callback function it takes. So, implement one based on its pattern.
