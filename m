@@ -1,53 +1,53 @@
-Received: from mail-pj1-f73.google.com (mail-pj1-f73.google.com [209.85.216.73])
+Received: from mail-pl1-f202.google.com (mail-pl1-f202.google.com [209.85.214.202])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EEC4F36D9F6
-	for <kvm@vger.kernel.org>; Fri, 13 Mar 2026 06:13:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.73
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8CE3836F428
+	for <kvm@vger.kernel.org>; Fri, 13 Mar 2026 06:13:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.202
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773382388; cv=none; b=bKTxl7+6E1Vi78gmGTsuKbEb7X/8k0GCteoXwSU3BxpQOGDRfaVSWz8FECb54rM1cJlEsvVTI4h8AaZMMCxj86/1DcwOJVxNPwT9QES6TTdTNHRoDlInxpuJPTPixfkGd4FOQyBXUNVy1mFm23rdFKMAjCGEOA8N1nbUlqXQbCs=
+	t=1773382390; cv=none; b=d/QzLJ8Zjo9Elt9d9Bp71g6XUBD+SFFSsjM9AVcXPxbf9czB2vKcYwcehfRvO6349k5KNo9FIvATpBIh5XCAf/3HE0nyaEGtVx+uE9IUHy52Y0+8Dc5LS5Qrkcl30zKuM/rTBrXRmM9cUSip9HC8Z9DhSvvZroym1JKnUNu/N+U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773382388; c=relaxed/simple;
-	bh=+yxvt6miDsLo0aPzGIl2cuUjXFw4HY73dvLlkFiduNY=;
+	s=arc-20240116; t=1773382390; c=relaxed/simple;
+	bh=cCfNsCI87fg6TEnfgoRKAm3vjZfM30ZKoMGU1LRZRBo=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=XD6uhXuZqQhs2QsBN/Qs7Sxt7jWsUNd8wrn/poAqTVaZduJ4G/NwVBvj3zlrXTLtwo5oIBJRYP/DeGIbbh8/n3AIhSO7LajEmX1ShQrPC9VnD6DwXON91GiyBGTyMfKGK3KMwMNzteyivDlLBvzBs07dSwpSkYkCoqw0HvrvWWA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--ackerleytng.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=L11UPzTQ; arc=none smtp.client-ip=209.85.216.73
+	 To:Cc:Content-Type; b=dzZ4UCo6xphw74NnRt9sX18vTdGM0YkGXqXTsD8oV3W4qwzRS14weRsv8lIPAVWH0Eba/JMoRjdy92bG0teQbZQrtQFe1NfQMtcsm3JGERW65dgDkcilyqYBXCvY0xI3QZA1TqsXfEtZYB9T/LLcVGlV7BDeP2O6iOJ6ukYxJGo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--ackerleytng.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=ZBgbTAhe; arc=none smtp.client-ip=209.85.214.202
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--ackerleytng.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="L11UPzTQ"
-Received: by mail-pj1-f73.google.com with SMTP id 98e67ed59e1d1-354c0234c1fso2143978a91.2
-        for <kvm@vger.kernel.org>; Thu, 12 Mar 2026 23:13:06 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="ZBgbTAhe"
+Received: by mail-pl1-f202.google.com with SMTP id d9443c01a7336-2aec6c573a1so7050505ad.0
+        for <kvm@vger.kernel.org>; Thu, 12 Mar 2026 23:13:08 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1773382386; x=1773987186; darn=vger.kernel.org;
+        d=google.com; s=20251104; t=1773382388; x=1773987188; darn=vger.kernel.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=b75o2IzoSOCf08/jbE8J7pfDBRNnIyHyOWOLbNdF1vQ=;
-        b=L11UPzTQZsjVyClKszCwVBPJIrNF+Lz8QhVKb65MhKcV6iGa29FOaTCr1GzQB7tq4y
-         EkgBAOzbT+ij3CdEbQfesgvj6AWS40x2fdqnlO9UaW2z58sIRIXvtePGKKdxFTWIO7mU
-         C5HgYPEnTl4RTxSxE2yzpgqF5CHm3Yq8ryH0r5NK2sN/X2pZGxZvOyP9FMq0+FLLWg1h
-         /2u3VIQBMwjtl9S4c1fErcSYWoXfZ4qEpSBeKz5caw0rnVthWev48VFdCemS6Gh8oXIA
-         Rl1YKQNlDdehxL9AF3xgH+D9I8B76DQ7JxIwaN2IKFuPUhTlQNgV/udksfk86pfXnK2f
-         PDQQ==
+        bh=lTunW/QNrd+D2aaY5sITtIPS8ag2VRP0yYeRUeCHtMw=;
+        b=ZBgbTAheyn74oo/DGKNYaeCqJCoOIr5Nan2IneK/Zzbx41TCYgZ0ZUE0a1MuBuXTDG
+         C/c9iBt4REGSnWHx/tqr2OVSJvqUSn7kT+HcGha87IVSD2XjNZ6G+aNFuGVShaHCcfw8
+         nbGvBowREZ8LeyGQ7XUeyFCd6+c3i/+jx7+b+XsY0MMvK4sWQND7O1pTsv5VJtlq5qsw
+         PodYvbcGRcBOQiaHSiJOE/tJ18umS0O0WDTKb4vizBK/XER0orYkpuh82YioY5cbNFEi
+         umhZrXwqB0jPzybFgEIt+NXU/8lhMpm/nGAx7LvkEkoben5JQMvMuKSLJGRxFoGZ7Ljw
+         fpgg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1773382386; x=1773987186;
+        d=1e100.net; s=20251104; t=1773382388; x=1773987188;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=b75o2IzoSOCf08/jbE8J7pfDBRNnIyHyOWOLbNdF1vQ=;
-        b=TiW6T/J546oEZSzSRmZnmNPENUWc4bEnQUSV7RKhOsF4OHZ5q5sjI55oIzXvBO2Tox
-         9t9fY9JUeOhFq9WE0GmRnuOfZxgUqYZ/fiPUkUpNo6AoZDHnV+lt0zslOgpG2vYJH0zP
-         suCZSWO/gX2TQydDcJD+gxtXGV+mWIlgFgw04w9sBLHeOfeJiozEVwIWFzBJHd6VexcT
-         fa5a/cEQjIw+Azg2nKH08Q8+LI9KMaLBu5Lbt+6dLZRcugFQQzmmbcgXFXR3v+a/lcKo
-         c9vZNQSkEZCYRaMKgXz4QjDnh9zGaFBjj51e1l/lqMLvBecL626qZzH9dX92KGNmay3q
-         pWBQ==
-X-Gm-Message-State: AOJu0Yy0FFVxqttAoYdJYyRKGgY7CpaTi5QXWjMfIrezmHuEAlRIurAs
-	Lcmf52lqS9qr3XC1a6VPkRAC24S2vzJzb9ew2oQ+mDI0E3LaX2l7/DyQtC16ANILNgbwzz8dAzW
-	wn4f3IN4fWnOUD/deVAO5EDZHmw==
-X-Received: from pjni7.prod.google.com ([2002:a17:90a:8387:b0:359:78a3:a05b])
+        bh=lTunW/QNrd+D2aaY5sITtIPS8ag2VRP0yYeRUeCHtMw=;
+        b=RJ6L4a19P5tQtLHsAfCUE1Sq57CMuDtZxH2MNm/5s0AQrE0er/tvE/HOFg7yRNFPvU
+         +YS/JqgBDw6iJ/s9bhXANHHq/HQdV2DR7pJK2AEvFA3wD43usDbqzAHrOd3uJw9zqdCG
+         /dJRpXu0G/VTx1n4g5RSNmqJVYNedFfDTGiluXUr857QzS7vhNhh0MNQiSyuA2vE/xTK
+         dBOMr+30DmcbpzOGKSpQVwEjtecvrL5FVSZRDxDDKzXNH9039ZNE1GSp8zqq8vVUptC5
+         41Iag23ULLaTLaNr5wRtw0ksWJUXY+bDFSOJkfYHI4cd/sGQf9S1tuoYUoa2yndmPA8K
+         9eaw==
+X-Gm-Message-State: AOJu0YyhmfA8nHacDbBic1PIMFSUMl9o5xQBBKwaKupRnyC8aDMrV6Dx
+	S/5+KDzZWHdFVsOr52MdtG4n+KhgJ8P2+i0T0G8ZEEx9LJzurBnpJ0eM4kPLrZaSZRbGl1KeI00
+	hDy8UBeS8rNYIvCMim1oA7EMhfQ==
+X-Received: from pgww15.prod.google.com ([2002:a05:6a02:2c8f:b0:c65:d823:cdf2])
  (user=ackerleytng job=prod-delivery.src-stubby-dispatcher) by
- 2002:a17:90b:1e45:b0:359:f2e1:5906 with SMTP id 98e67ed59e1d1-35a21e3958emr1821235a91.4.1773382386033;
- Thu, 12 Mar 2026 23:13:06 -0700 (PDT)
-Date: Fri, 13 Mar 2026 06:12:50 +0000
+ 2002:a05:6a21:2d42:b0:398:7d4a:c2c5 with SMTP id adf61e73a8af0-398eca52535mr1641278637.20.1773382387685;
+ Thu, 12 Mar 2026 23:13:07 -0700 (PDT)
+Date: Fri, 13 Mar 2026 06:12:51 +0000
 In-Reply-To: <20260313-gmem-inplace-conversion-v3-0-5fc12a70ec89@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
@@ -57,14 +57,14 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 References: <20260313-gmem-inplace-conversion-v3-0-5fc12a70ec89@google.com>
 X-Developer-Key: i=ackerleytng@google.com; a=ed25519; pk=sAZDYXdm6Iz8FHitpHeFlCMXwabodTm7p8/3/8xUxuU=
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1773382364; l=1751;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1773382364; l=2855;
  i=ackerleytng@google.com; s=20260225; h=from:subject:message-id;
- bh=9Ip75FUnko/0RMTmmR8hpogS1RIjLLZ87GSWphxWeLk=; b=TeyrKLRZr7KdaZpJOnTQ82Tnubf0KxrjYIwwgyxVitGP6OaiDEw2tA9byUcAF7CMB/WOPpYan
- mVI26pDsudzDK60E97MrrbP9QYf3ETOPcuNtgVvZGbWGXV3ovh0UE2P
+ bh=nUG7MbP2VMtZ/RqI1k3lVv6HlTa0rLwtPHHfG9+apaQ=; b=gIIAcTAoq+uh6ZLKHTYgkGSDsVcXa8Oje6UJiWgcGy3Vt15Tyj1DsgsgEZxls9Z0bpWC4urhr
+ c83+zR3qU4jB7TwLhF6aLoFZOf67MMkSywGzRdj1slybgAxZUnFmyqS
 X-Mailer: b4 0.14.3
-Message-ID: <20260313-gmem-inplace-conversion-v3-11-5fc12a70ec89@google.com>
-Subject: [PATCH RFC v3 11/43] KVM: Move KVM_VM_MEMORY_ATTRIBUTES config
- definition to x86
+Message-ID: <20260313-gmem-inplace-conversion-v3-12-5fc12a70ec89@google.com>
+Subject: [PATCH RFC v3 12/43] KVM: Let userspace disable per-VM mem
+ attributes, enable per-gmem attributes
 From: Ackerley Tng <ackerleytng@google.com>
 To: aik@amd.com, andrew.jones@linux.dev, binbin.wu@linux.intel.com, 
 	brauner@kernel.org, chao.p.peng@linux.intel.com, david@kernel.org, 
@@ -89,56 +89,78 @@ Content-Type: text/plain; charset="utf-8"
 
 From: Sean Christopherson <seanjc@google.com>
 
-Bury KVM_VM_MEMORY_ATTRIBUTES in x86 to discourage other architectures
-from adding support for per-VM memory attributes, because tracking private
-vs. shared memory on a per-VM basis is now deprecated in favor of tracking
-on a per-guest_memfd basis, and no other memory attributes are on the
-horizon.
+Make vm_memory_attributes a module parameter so that userspace can disable
+the use of memory attributes on the VM level.
 
-This will also allow modifying KVM_VM_MEMORY_ATTRIBUTES to be
-user-selectable (in x86) without creating weirdness in KVM's Kconfigs.
-Now that guest_memfd support memory attributes, it's entirely possible to
-run x86 CoCo VMs without support for KVM_VM_MEMORY_ATTRIBUTES.
+To avoid inconsistencies in the way memory attributes are tracked in KVM
+and guest_memfd, the vm_memory_attributes module_param is made
+read-only (0444).
 
-Leave the code itself in common KVM so that it's trivial to undo this
-change if new per-VM attributes do come along.
+Make CONFIG_KVM_VM_MEMORY_ATTRIBUTES selectable, only for (CoCo) VM types
+that might use vm_memory_attributes.
 
 Signed-off-by: Sean Christopherson <seanjc@google.com>
+Signed-off-by: Ackerley Tng <ackerleytng@google.com>
 ---
- arch/x86/kvm/Kconfig | 4 ++++
- virt/kvm/Kconfig     | 4 ----
- 2 files changed, 4 insertions(+), 4 deletions(-)
+ arch/x86/kvm/Kconfig | 13 +++++++++----
+ virt/kvm/kvm_main.c  |  1 +
+ 2 files changed, 10 insertions(+), 4 deletions(-)
 
 diff --git a/arch/x86/kvm/Kconfig b/arch/x86/kvm/Kconfig
-index 26f6afd51bbdc..b6d65ee664d0f 100644
+index b6d65ee664d0f..8b97d341bd33f 100644
 --- a/arch/x86/kvm/Kconfig
 +++ b/arch/x86/kvm/Kconfig
-@@ -80,6 +80,10 @@ config KVM_WERROR
+@@ -82,13 +82,20 @@ config KVM_WERROR
  
- 	  If in doubt, say "N".
- 
-+config KVM_VM_MEMORY_ATTRIBUTES
-+	select KVM_MEMORY_ATTRIBUTES
-+	bool
+ config KVM_VM_MEMORY_ATTRIBUTES
+ 	select KVM_MEMORY_ATTRIBUTES
+-	bool
++	depends on KVM_SW_PROTECTED_VM || KVM_INTEL_TDX || KVM_AMD_SEV
++	bool "Enable per-VM memory attributes (for CoCo VMs)"
++	help
++	  Enable support for per-VM memory attributes, which are deprecated in
++	  favor of tracking memory attributes in guest_memfd.  Select this if
++	  you need to run CoCo VMs using a VMM that doesn't support guest_memfd
++	  memory attributes.
 +
++	  If unsure, say N.
+ 
  config KVM_SW_PROTECTED_VM
  	bool "Enable support for KVM software-protected VMs"
  	depends on EXPERT
-diff --git a/virt/kvm/Kconfig b/virt/kvm/Kconfig
-index e371e079e2c50..663de6421eda2 100644
---- a/virt/kvm/Kconfig
-+++ b/virt/kvm/Kconfig
-@@ -103,10 +103,6 @@ config KVM_MMU_LOCKLESS_AGING
- config KVM_MEMORY_ATTRIBUTES
-        bool
- 
--config KVM_VM_MEMORY_ATTRIBUTES
--       select KVM_MEMORY_ATTRIBUTES
--       bool
--
- config KVM_GUEST_MEMFD
-        select XARRAY_MULTI
-        select KVM_MEMORY_ATTRIBUTES
+ 	depends on KVM_X86 && X86_64
+-	select KVM_VM_MEMORY_ATTRIBUTES
+ 	help
+ 	  Enable support for KVM software-protected VMs.  Currently, software-
+ 	  protected VMs are purely a development and testing vehicle for
+@@ -139,7 +146,6 @@ config KVM_INTEL_TDX
+ 	bool "Intel Trust Domain Extensions (TDX) support"
+ 	default y
+ 	depends on INTEL_TDX_HOST
+-	select KVM_VM_MEMORY_ATTRIBUTES
+ 	select HAVE_KVM_ARCH_GMEM_POPULATE
+ 	help
+ 	  Provides support for launching Intel Trust Domain Extensions (TDX)
+@@ -163,7 +169,6 @@ config KVM_AMD_SEV
+ 	depends on KVM_AMD && X86_64
+ 	depends on CRYPTO_DEV_SP_PSP && !(KVM_AMD=y && CRYPTO_DEV_CCP_DD=m)
+ 	select ARCH_HAS_CC_PLATFORM
+-	select KVM_VM_MEMORY_ATTRIBUTES
+ 	select HAVE_KVM_ARCH_GMEM_PREPARE
+ 	select HAVE_KVM_ARCH_GMEM_INVALIDATE
+ 	select HAVE_KVM_ARCH_GMEM_POPULATE
+diff --git a/virt/kvm/kvm_main.c b/virt/kvm/kvm_main.c
+index b8f5ce3a33e27..9744d3a7fd917 100644
+--- a/virt/kvm/kvm_main.c
++++ b/virt/kvm/kvm_main.c
+@@ -105,6 +105,7 @@ module_param(allow_unsafe_mappings, bool, 0444);
+ #ifdef CONFIG_KVM_MEMORY_ATTRIBUTES
+ #ifdef CONFIG_KVM_VM_MEMORY_ATTRIBUTES
+ bool vm_memory_attributes = true;
++module_param(vm_memory_attributes, bool, 0444);
+ #endif
+ DEFINE_STATIC_CALL_RET0(__kvm_get_memory_attributes, kvm_get_memory_attributes_t);
+ EXPORT_SYMBOL_FOR_KVM_INTERNAL(STATIC_CALL_KEY(__kvm_get_memory_attributes));
 
 -- 
 2.53.0.851.ga537e3e6e9-goog
