@@ -1,300 +1,151 @@
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6408031E820;
-	Fri, 13 Mar 2026 14:01:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C16AF314A86
+	for <kvm@vger.kernel.org>; Fri, 13 Mar 2026 14:14:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773410476; cv=none; b=UBl5oZ7I3q391D+xLnmiziEawerY/D/sQjLzLjJfEjAMo6UWaGxuJmpukz857VIH7ZCONWb2WAuoVcFWkK5jukthCIF+Z/ypHrkHfu0M78EZ6eowgrELaa482+EBkW8HfgZ4mlLEudsK7Pf7D4HuHWzmHwXEcBP7wnvKUuUmI7U=
+	t=1773411277; cv=none; b=LRX63zTh6C4oc17qIMi8fQSEQszMNx4WXbtqBsRtIJflTaRCn9/FYuDNvaf0KTlqNducLoNFMDCa1Ctwe/GxKaM9nKFARpdE7DT4Wwe1ao6ekjAYXut89WKkflU71DZyq57lmVifrq2fa9eVPwNso3+XFZt+xBHbIQwLfx239Ls=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773410476; c=relaxed/simple;
-	bh=X/J2wrOcaMI/yebCXJsMRvgnvRptHiwqZcTlSCpJw6g=;
-	h=Message-ID:Date:MIME-Version:Subject:To:References:From:
-	 In-Reply-To:Content-Type; b=GKXtZuZybbk5ewPgpHTBMVrOrDrzF13s6eHu4jMQYICILvQ10TlYpXmmYrz83d6lGkBC57FFBiXhAM6o+KoYu+XHqhWoX2AQ26zs+lN7r5GRYpd53JKmPfocTcdB3sdK9Vf1pPKGC0Sg7SuOhdD5vUyUM5y6YrEEUPJI2GUA6aY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=N7BsCLaQ; arc=none smtp.client-ip=148.163.158.5
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+	s=arc-20240116; t=1773411277; c=relaxed/simple;
+	bh=/OKDtZKpe4kTubZ+QPOidPenFpNONaEESyITaSAXb1U=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Subject:Cc:To:From:
+	 References:In-Reply-To; b=pHPaHrTDIYw8pYXvtW1quOeHr/GF41bjJrGqxpDYxaO7Cnl+UzBx2IhjnAZAUvAHhcJzpADcxd6aE/GSHPLZKeDQ11KVo9BrC2SDrOkwZ3GGpanKEtwu/yPtoVT3rCZg1BNL3S2E5WbGCBQBd12hRErESdZT4ic0UfSNNvNh6x4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=mIbw2Whs; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=QEmR0Bik; arc=none smtp.client-ip=205.220.168.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="N7BsCLaQ"
-Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 62D4rE7H2306385;
-	Fri, 13 Mar 2026 14:01:12 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=
-	content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=dthJ5h
-	yq2dIcnhNufEe8T9ANkUShPobDK+VjHvNuWdY=; b=N7BsCLaQdvB35ehUfwj4ng
-	S0LvCoPLrkgwIXVKfIv5ir2b2/EowIQpZz2BJM6qX46J/O+XPVDXJWfJ6QD77ABj
-	vP8KixjDiBeCC+onCTetDweOMGK9EAUezj+41+4nSHFYvquutJ19yd3u235zlb4y
-	sVIRyGj+7hUltGFcEucaxmtcfrbVOJcDsDNulZNwfYsH0SSmiGY/8SE02Lc3PwA/
-	yD0tcb58vVIKjKSAYBd3MJUT3gRHEAfYqsU2lvAIO7yRMw4dro3GetxeSzFBN2/6
-	1ck7yml88t4y+++2p5RnfnBsiQtxYDUGpPMfQqcakJgC+uA0H/czpGRXTVY9575A
-	==
-Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4cuh96fun7-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 13 Mar 2026 14:01:11 +0000 (GMT)
-Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma23.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 62DAR5HU020811;
-	Fri, 13 Mar 2026 14:01:11 GMT
-Received: from smtprelay07.wdc07v.mail.ibm.com ([172.16.1.74])
-	by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4cuha9pw2d-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 13 Mar 2026 14:01:11 +0000
-Received: from smtpav02.wdc07v.mail.ibm.com (smtpav02.wdc07v.mail.ibm.com [10.39.53.229])
-	by smtprelay07.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 62DE19Fh31654614
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Fri, 13 Mar 2026 14:01:09 GMT
-Received: from smtpav02.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 8A8E258059;
-	Fri, 13 Mar 2026 14:01:09 +0000 (GMT)
-Received: from smtpav02.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 47E9E58061;
-	Fri, 13 Mar 2026 14:01:08 +0000 (GMT)
-Received: from [9.61.247.193] (unknown [9.61.247.193])
-	by smtpav02.wdc07v.mail.ibm.com (Postfix) with ESMTP;
-	Fri, 13 Mar 2026 14:01:08 +0000 (GMT)
-Message-ID: <2116b7d0-0cbf-4337-823d-986d0521982b@linux.ibm.com>
-Date: Fri, 13 Mar 2026 10:01:07 -0400
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="mIbw2Whs";
+	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="QEmR0Bik"
+Received: from pps.filterd (m0279862.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 62D7iL5g2262547
+	for <kvm@vger.kernel.org>; Fri, 13 Mar 2026 14:14:36 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	yb8otKhnt0ZfdX0TM0MYAhAHgSLa2dwwdNl7K8IPkJY=; b=mIbw2WhsYb6OPwUq
+	6cyyk5xfsBmRsyPT+GcQe17MXyaIHACsQ7bjCNpfVFpXm9gX+79rHui8VDQdh5ZB
+	EWsRmjO4ZlbFmpJb2To3lTpeUD4rRzFrGGE5cnUvleMYzyzYS1sV0XshX3HrWlfL
+	9ylyBNwlkkO4dgrFtsC48J8UzPIhFKwfn5GUfBzD4Ea5blNXld6H7wG/OAmnGbBG
+	AK0K5nBUEPcJOYVn5eA5/vlgcpr/08GRK4iEAq83HY7/FldBiVE/Y7bK5KhukRF5
+	XtNM2zZb77HYHN/EuLYKAtY9u9w1lZk6CHxW9kLdKUKJ1cFlBt8ByeMZ2L37HoXk
+	P82DlA==
+Received: from mail-qk1-f197.google.com (mail-qk1-f197.google.com [209.85.222.197])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4cvef4sbbr-1
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
+	for <kvm@vger.kernel.org>; Fri, 13 Mar 2026 14:14:36 +0000 (GMT)
+Received: by mail-qk1-f197.google.com with SMTP id af79cd13be357-8cd7fc27cf7so1193817685a.1
+        for <kvm@vger.kernel.org>; Fri, 13 Mar 2026 07:14:36 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=oss.qualcomm.com; s=google; t=1773411275; x=1774016075; darn=vger.kernel.org;
+        h=in-reply-to:references:from:to:cc:subject:message-id:date
+         :content-transfer-encoding:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=yb8otKhnt0ZfdX0TM0MYAhAHgSLa2dwwdNl7K8IPkJY=;
+        b=QEmR0Bik9GElXutzvO8b2MSDv9Eu/Ty7Xj6WDp+GuaMaR/TpECjFMypk4JRYO5kv3Q
+         JyNCA/RwPcKnpuhZ5Vc3K3nSu3BNQgWza0AHZfR6r6926+SiJKyWEDDhGhs8+V4NcITl
+         ASED6kaFE6Ii/ulVDf8lEMSm1awPp1ZBWkC5K70mw8z2UP7wbe6JwNDgF+9W6WHhL1JQ
+         aq2thOxBf5NPuo/ox2ksTIpBKb84Q9Go2TAHePkiAzJxNvTDHsULflvQtPIU13iKpP1P
+         CtGIjIq0jFHZ+3a4qZeNtP3cheWrhsO2D5WPs5QA27TWxxBHB/nEXn8oCueA63ulXLzX
+         fLIw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1773411275; x=1774016075;
+        h=in-reply-to:references:from:to:cc:subject:message-id:date
+         :content-transfer-encoding:mime-version:x-gm-gg:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=yb8otKhnt0ZfdX0TM0MYAhAHgSLa2dwwdNl7K8IPkJY=;
+        b=cRwbO50t6cjPVZAhhi4YiD4xAnvbXPI/5QwaAo2rbwN8TFO2dngURN8fqTyk0HS2JS
+         Y2tepnktLWMrlRTB2UTVXk2Q22a9gOhyJNb+ykbxikbeZAWKzRGR/M8sAiLVLGEWXLL1
+         C55z/kX1cLQnEaClmUvYAX9zc0oGH1yYP3zoojaOukETzoAR9tzm8fBo2lA/1k6LXG6c
+         o64LX53BavrA3MTvzRI7+T7ICPY7Q3MsIaU+1IKjPdWHTOaqLgCURMXLUB4duFnGfNfm
+         dPVc3ZXD8XLXx+QNMaz0u57luVI9sgFtnKnCcdDe3fS7wzg9+h87luPanwtfEJSSD2C5
+         JVOQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVaXAjYEVlkAjJ0THDfPJbgvjha/7KTcYSt5jo+2DtiuJmo8yPk0PK+5OI2psfZjyvYLsg=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yzt34ZcPHC6RZ4MOfHIevLXE8w0ZikwS9o6SCuDtmYYH05sThrt
+	GV15XnurKWRLar2Z8nR3Ic6enAcVtOseRkWLQ80b5F3Gf4SHa05mfqDEAqxWFCz1RYbCyX2/sZA
+	xSEvd7vJd6A9+IjVwex/FuI1DuBiRSegmY7vROZaEL2hlPzG7iQ5ky+A=
+X-Gm-Gg: ATEYQzxuoOqeBiyvebwJtdFZZfcLN/26YFyogbFdLZBY7WOVkkxnwKrlMEpCnDN+zSg
+	OAGXugAqxOyO1A639IS/+yX2ICtFW8Wkf7hQQoH8Pdh0c3mJ3rX4xtc5sTeZ4eqq97+l1frGODf
+	smVgNqSsYMWzYWJpYYnqpbRYkVZAb0aFMIJR9hmLk6VptG7jO0DsRluRa9iwWL6IFZhfl8Ias0S
+	FsmF1O8dp0vmfSiWBCjk0SxibKP+XZVjefcjVmN2hLk/L216szu62uPXhwm4EkMklPEr6xJpXq4
+	BpQ+qnZoH1nsYGU1KioSdLgTDoF121FcFP1BVEDT0NSiA+SwvYio+JgOqVHAVtIT3uhPKtEAFBx
+	l1ME2FfMJqq2CQyhXEuTyHWjTj2/tBnJxizkoX2wIDjWE52vhd/6My9PP0rGx
+X-Received: by 2002:a05:620a:170f:b0:8cb:3288:6777 with SMTP id af79cd13be357-8cdb5a61b1fmr457591385a.28.1773411275266;
+        Fri, 13 Mar 2026 07:14:35 -0700 (PDT)
+X-Received: by 2002:a05:620a:170f:b0:8cb:3288:6777 with SMTP id af79cd13be357-8cdb5a61b1fmr457584385a.28.1773411274689;
+        Fri, 13 Mar 2026 07:14:34 -0700 (PDT)
+Received: from localhost (ip-86-49-249-15.bb.vodafone.cz. [86.49.249.15])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-485577835ebsm44367405e9.7.2026.03.13.07.14.33
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 13 Mar 2026 07:14:33 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v1 3/3] Introducing kvm_arch_set_irq_inatomic fast inject
-To: Matthew Rosato <mjrosato@linux.ibm.com>, borntraeger@linux.ibm.com,
-        imbrenda@linux.ibm.com, frankja@linux.ibm.com, david@kernel.org,
-        hca@linux.ibm.com, gor@linux.ibm.com, agordeev@linux.ibm.com,
-        svens@linux.ibm.com, kvm@vger.kernel.org, linux-s390@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-References: <20260308030438.88580-1-freimuth@linux.ibm.com>
- <20260308030438.88580-4-freimuth@linux.ibm.com>
- <e0f9d530-c691-4d1f-ab82-33b5456fca9f@linux.ibm.com>
-Content-Language: en-US
-From: Douglas Freimuth <freimuth@linux.ibm.com>
-In-Reply-To: <e0f9d530-c691-4d1f-ab82-33b5456fca9f@linux.ibm.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMzEzMDEwNyBTYWx0ZWRfX1zhnqoChRsj7
- vHfLOhS//KlMbB/Kh4gyYax40i4eCiao+fyjv63OZx2NnU/5NqJpG8ReLjLxl/ooGz7yB8m1oaq
- 8xTQLSEr9dcQsaeTtfjmtcuN/EjPFiwxNnYBIOG4uxohv0oCwTZTaCMcUngPk4Fn3qbMJ9doea0
- aUwMu7l+g/pMD014CdTac5KZIglSKp6ep6R80vpSvD5YwSoMzPR9l8WI8Ak4wRg6y5cKOzIyaVC
- 3I1aS2ZUZzvdJzfXX4Z822RQ4iZKSYUxODuit/d0K3IQ6r+oV4uCS3R1cWHKA7+ju7U0R1fs79I
- C7G0EL8wWHu5Bi0kmfSa1wJs87llBmNb37hyfIPRiAdPdGdJHARiYmyLONcRE83wgJlAJkBhPlp
- ecnEXfxzjJpyVrABSMjaKzXyjJpdwvlHniguH+QW4LnMtBPa+cIKSM4IBUMzZCZzp6fPjHeQcsf
- bKdLYbMZvUaZFhLTe6g==
-X-Proofpoint-ORIG-GUID: ykTQMAaC6QMgXfhjj8wdPNmvU4S9nHrm
-X-Authority-Analysis: v=2.4 cv=RLO+3oi+ c=1 sm=1 tr=0 ts=69b418a7 cx=c_pps
- a=3Bg1Hr4SwmMryq2xdFQyZA==:117 a=3Bg1Hr4SwmMryq2xdFQyZA==:17
- a=IkcTkHD0fZMA:10 a=Yq5XynenixoA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=RnoormkPH1_aCDwRdu11:22 a=RzCfie-kr_QcCd8fBx8p:22 a=VnNF1IyMAAAA:8
- a=dmKg382LtvCrSBsgsQ8A:9 a=QEXdDO2ut3YA:10
-X-Proofpoint-GUID: ykTQMAaC6QMgXfhjj8wdPNmvU4S9nHrm
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Fri, 13 Mar 2026 15:14:32 +0100
+Message-Id: <DH1PTVPUM2UR.2J53ICCVVPAFA@oss.qualcomm.com>
+Subject: Re: [PATCH 05/27] RISC-V: KVM: Factor-out ISA checks into separate
+ sources
+Cc: "Palmer Dabbelt" <palmer@dabbelt.com>, "Paul Walmsley" <pjw@kernel.org>,
+        "Alexandre Ghiti" <alex@ghiti.fr>, "Shuah Khan" <shuah@kernel.org>,
+        "Anup
+ Patel" <anup@brainfault.org>,
+        "Andrew Jones"
+ <andrew.jones@oss.qualcomm.com>,
+        <kvm-riscv@lists.infradead.org>, <kvm@vger.kernel.org>,
+        <linux-riscv@lists.infradead.org>, <linux-kernel@vger.kernel.org>,
+        <linux-kselftest@vger.kernel.org>
+To: "Anup Patel" <anup.patel@oss.qualcomm.com>,
+        "Paolo Bonzini"
+ <pbonzini@redhat.com>,
+        "Atish Patra" <atish.patra@linux.dev>
+From: =?utf-8?q?Radim_Kr=C4=8Dm=C3=A1=C5=99?=
+ <radim.krcmar@oss.qualcomm.com>
+References: <20260120080013.2153519-1-anup.patel@oss.qualcomm.com>
+ <20260120080013.2153519-6-anup.patel@oss.qualcomm.com>
+In-Reply-To: <20260120080013.2153519-6-anup.patel@oss.qualcomm.com>
+X-Proofpoint-ORIG-GUID: y1P8qCBu9BJw3DPIq6EWXJ3NInQHshWO
+X-Proofpoint-GUID: y1P8qCBu9BJw3DPIq6EWXJ3NInQHshWO
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMzEzMDExMyBTYWx0ZWRfX8EGY8zg1I9Mw
+ Lv5mtvhrEOIRm6nbDmiOz0SM1bUqZGWml+yidBQ/rjftUhWBFqIlRU7Sr42i2H7S/rkKWYM2oi2
+ aV5DzYHJVdZ20izYoXv4Nq8fFieGhLvajZejRpWCHT8o7iF9pJbHBWEKpYpE/KnxBrQ+QqCk1Iv
+ /WJ1wosR+c32+A+Hv8PdSE5YBQWYx+xLZ9KIKg/FLG9wohf2jZaX8liop8skwcSzbFGiUz5sxHo
+ YZJgcPpBpYg/a8yCbhNRfJxg3x9NI/VAECEFfUMl7jIJaA1sTjYer8aAOOAL2VtG/rpWx9/I7SU
+ otPCaA8T2vmwjn06NknkNZMdc6DMj5PC98fRxIbBvQb9sX8v29gZ3gw2Rr0NVykl1Vi+yVTwWp3
+ zeLHydjqKMrCrwnlw4NXViFxmrjpVrCjrBpWwthxwX4tcWQZHiVAUK/o871QADqGTD9PTcYygu8
+ 4OZ5Bs8k5SHVEJujDqg==
+X-Authority-Analysis: v=2.4 cv=S9nUAYsP c=1 sm=1 tr=0 ts=69b41bcc cx=c_pps
+ a=50t2pK5VMbmlHzFWWp8p/g==:117 a=fuErIE+P63Icv3tqjtEZBw==:17
+ a=IkcTkHD0fZMA:10 a=Yq5XynenixoA:10 a=M51BFTxLslgA:10 a=s4-Qcg_JpJYA:10
+ a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22 a=_K5XuSEh1TEqbUxoQ0s3:22
+ a=EUspDBNiAAAA:8 a=sIBLlZgNAvny2aHwhmQA:9 a=QEXdDO2ut3YA:10
+ a=IoWCM6iH3mJn3m4BftBB:22
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
  definitions=2026-03-13_02,2026-03-13_01,2025-10-01_01
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- spamscore=0 lowpriorityscore=0 priorityscore=1501 phishscore=0 suspectscore=0
- clxscore=1015 impostorscore=0 bulkscore=0 adultscore=0 malwarescore=0
+ impostorscore=0 adultscore=0 malwarescore=0 priorityscore=1501 suspectscore=0
+ clxscore=1015 lowpriorityscore=0 phishscore=0 bulkscore=0 spamscore=0
  classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2603050001 definitions=main-2603130107
+ reason=mlx scancount=1 engine=8.22.0-2603050001 definitions=main-2603130113
 
+2026-01-20T13:29:51+05:30, Anup Patel <anup.patel@oss.qualcomm.com>:
+> The KVM ISA extension related checks are not VCPU specific and
+> should be factored out of vcpu_onereg.c into separate sources.
+>
+> Signed-off-by: Anup Patel <anup.patel@oss.qualcomm.com>
+> ---
+> diff --git a/arch/riscv/kvm/aia_device.c b/arch/riscv/kvm/aia_device.c
+> @@ -12,6 +12,7 @@
+>  #include <linux/kvm_host.h>
+>  #include <linux/uaccess.h>
+>  #include <linux/cpufeature.h>
+> +#include <asm/kvm_isa.h>
 
+I guess <cpufeature.h> isn't needed anymore,
 
-On 3/11/26 4:24 PM, Matthew Rosato wrote:
-> On 3/7/26 10:04 PM, Douglas Freimuth wrote:
->> Patch 3: This patch introduces kvm_arch_set_irq_inatomic, a fast path
-> 
-> See comments from patch 1 of this series.
-> 
->> for irq injection. Instead of placing all interrupts on the global work
->> queue as it does today, this patch provides a fast path for irq
-> 
-> Maybe add a bit that this depends on creating a path that cannot lose control, namely by pre-pinning the associated indicator pages, conditionally attempting allocations via GFP_ATOMIC and switching a mutex to a spinlock.
-> 
-> This would also be a good point to work in the fact that this is fenced for Secure Execution guests rather than patch 1 beacuse the indicator pages will not be pre-pinned.
-> 
-> 
->> injection. Statistical counters have been added to enable analysis of irq injection on
->> the fast path and slow path including io_390_inatomic,
->> io_flic_inject_airq, io_set_adapter_int and io_390_inatomic_adapter_masked.
->>> In order to use this kernel series with virtio-pci, a QEMU that includes
->> the 's390x/pci: set kvm_msi_via_irqfd_allowed' fix is needed.
->> Additionally, the guest xml needs a thread pool and threads explicitly
->> assigned per disk device using the common way of defining threads for
->> disks.
-> 
-> This last paragraph, while relevant to testing you were doing, delves a bit too much into the specifics of when QEMU will/won't drive this code and doesn't need to be in kernel git history.  I'd suggest either removing it or moving it to the cover-letter.
-> 
->>
->>
->> Signed-off-by: Douglas Freimuth <freimuth@linux.ibm.com>
->> ---
->>   arch/s390/include/asm/kvm_host.h |   8 +-
->>   arch/s390/kvm/interrupt.c        | 169 ++++++++++++++++++++++++++-----
->>   arch/s390/kvm/kvm-s390.c         |  24 ++++-
->>   arch/s390/kvm/kvm-s390.h         |   3 +-
->>   4 files changed, 170 insertions(+), 34 deletions(-)
->>
->> diff --git a/arch/s390/include/asm/kvm_host.h b/arch/s390/include/asm/kvm_host.h
->> index 616be8ca4614..a194e9808ae3 100644
->> --- a/arch/s390/include/asm/kvm_host.h
->> +++ b/arch/s390/include/asm/kvm_host.h
->> @@ -359,7 +359,7 @@ struct kvm_s390_float_interrupt {
->>   	struct kvm_s390_mchk_info mchk;
->>   	struct kvm_s390_ext_info srv_signal;
->>   	int last_sleep_cpu;
->> -	struct mutex ais_lock;
->> +	spinlock_t ais_lock;
->>   	u8 simm;
->>   	u8 nimm;
->>   };
->> @@ -450,6 +450,10 @@ struct kvm_vm_stat {
->>   	u64 inject_io;
->>   	u64 io_390_adapter_map;
->>   	u64 io_390_adapter_unmap;
->> +	u64 io_390_inatomic;
->> +	u64 io_flic_inject_airq;
->> +	u64 io_set_adapter_int;
->> +	u64 io_390_inatomic_adapter_masked;
->>   	u64 inject_float_mchk;
->>   	u64 inject_pfault_done;
->>   	u64 inject_service_signal;
->> @@ -481,7 +485,7 @@ struct s390_io_adapter {
->>   	bool masked;
->>   	bool swap;
->>   	bool suppressible;
->> -	struct rw_semaphore maps_lock;
->> +	spinlock_t maps_lock;
-> 
-> Patch 1 (re-)introduced the maps_lock, now you are converting it to a spinlock 2 patches later.
-> 
-> I realize that you were bringing back code that was previously removed by
-> 
-> f65470661f36 KVM: s390/interrupt: do not pin adapter interrupt pages
-> 
-> but for this series wouldn't it make sense to just start by introducing maps_lock as a spinlock from patch 1 vs re-introducing the semaphore for the span of 2 commits?
-> 
-
-Matt, thank you for your input. The policy of individual patches not 
-only compiling but having individual utility and standing on their own 
-applies here. In patches 1 and 2 the maps_lock is more flexible as a 
-semaphore providing utility for the patch. While in patch 3 the 
-maps_lock has to be a spin_lock so inatomic can use it with interrupts 
-disabled.
-> 
-> 
->> @@ -2700,6 +2706,8 @@ static int flic_inject_airq(struct kvm *kvm, struct kvm_device_attr *attr)
->>   	unsigned int id = attr->attr;
->>   	struct s390_io_adapter *adapter = get_io_adapter(kvm, id);
->>   
->> +	kvm->stat.io_flic_inject_airq++;
->> +
-> 
-> This just tracks how often the function is called, and includes instances where the adapter is NULL or the call to kvm_s390_inject_airq failed.
-> 
-> Do you want to actually track the number of successful injects only vs every time we call this routine?
-> 
-
-This response applies to all of the following comments about counters 
-including this one. At this stage I do want to focus on the statistics 
-for the number of times we enter the top of the relevant functions. For 
-example, if we put the counter at the bottom of flic_inject_airq or 
-kvm_arch_set_irq_inatomic, it will be silent in cases of a failed 
-conditional. On failure of inatomic we would only see the flic counter 
-going up which could be misleading. The current counter placement 
-informs the correct path of execution is being taken, and the volume, 
-which is valuable for initial deployments so we know the system is being 
-configured correctly and provides performance insights. We expect to see 
-a performance improvement with inatomic fast inject. If the system 
-performance doesn't improve when it is deployed the first thing to check 
-is the volume of each of these counters. As we observe steady state 
-usage behavior in the field we could then consider a different focus of 
-the counters.
-
-> 
-> 
->> @@ -2919,15 +2968,15 @@ static int set_adapter_int(struct kvm_kernel_irq_routing_entry *e,
->>   	int ret;
->>   	struct s390_io_adapter *adapter;
->>   
->> +	kvm->stat.io_set_adapter_int++;
->> +
-> 
-> Same comment, would we rather track only the successful cases or only count times we enter the function including things like the 0->1 transition below?
-> 
-> Actually, the addition of this counter as well as io_flic_inject_airq seems like it should be a separate patch.
-> 
->>   	/* We're only interested in the 0->1 transition. */
->>   	if (!level)
->>   		return 0;
-> 
-> ...
-> 
->> +int kvm_arch_set_irq_inatomic(struct kvm_kernel_irq_routing_entry *e,
->> +			      struct kvm *kvm, int irq_source_id, int level,
->> +			      bool line_status)
->> +{
->> +	int ret;
->> +	struct s390_io_adapter *adapter;
->> +	struct kvm_s390_float_interrupt *fi = &kvm->arch.float_int;
->> +	struct kvm_s390_interrupt_info *inti;
->> +	struct kvm_s390_interrupt s390int = {
->> +			.type = KVM_S390_INT_IO(1, 0, 0, 0),
->> +			.parm = 0,
->> +	};
->> +
->> +	kvm->stat.io_390_inatomic++;
-> 
-> Is this the right time to increment this value?  There are plenty of reasons we could -EWOULDBLOCK after this point and fall back to scheduling it.
-> 
-> So this will only count how often we call here from irqfd_wakeup() and not how often we actually successfully make it thru the inatomic operation.
-> 
->> +
->> +	/* We're only interested in the 0->1 transition. */
->> +	if (!level)
->> +		return -EWOULDBLOCK;
->> +	if (e->type != KVM_IRQ_ROUTING_S390_ADAPTER)
->> +		return -EWOULDBLOCK;
->> +
->> +	adapter = get_io_adapter(kvm, e->adapter.adapter_id);
->> +	if (!adapter)
->> +		return -EWOULDBLOCK;
->> +
->> +	s390int.parm64 = isc_to_int_word(adapter->isc);
->> +	ret = adapter_indicators_set_fast(kvm, adapter, &e->adapter);
->> +	if (ret < 0)
->> +		return -EWOULDBLOCK;
-> 
-> We know for sure that a guest that is running in SE will always hit this because no mappings will be available.
-> Did you test if it would be more efficient to check the kvm for SE at the start of kvm_arch_set_irq_inatomic() and immediately return -EWOULDBLOCK there?
-> 
-
-It might be slightly more efficient in SE environments to immediately 
-return -EWOULDBLOCK at the start of kvm_arch_set_irq_inatomic. But the 
-change would be fairly broad since it would require changing the mutex 
-for kvm->lock to a spin_lock to allow checking if pv is present with 
-interrupts disabled. I would recommend this for a follow-on if behavior 
-in the field requires it.
-
-
->> +	if (!ret || adapter->masked) {
->> +		kvm->stat.io_390_inatomic_adapter_masked++;
->> +		return 0;
->> +	}
->> +
->> +	inti = kzalloc_obj(*inti, GFP_ATOMIC);
->> +	if (!inti)
->> +		return -EWOULDBLOCK;
->> +
->> +	if (!test_kvm_facility(kvm, 72) || !adapter->suppressible) {
->> +		ret = kvm_s390_inject_vm(kvm, &s390int, inti);
->> +			if (ret == 0)
-> 
-> This to me seems like the right spot to kvm->stat.io_390_inatomic++ unless I misunderstand the intent of the counter.
-> 
-> 
-> 
-
+Reviewed-by: Radim Kr=C4=8Dm=C3=A1=C5=99 <radim.krcmar@oss.qualcomm.com>
