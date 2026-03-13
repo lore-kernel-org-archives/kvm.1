@@ -1,197 +1,208 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f180.google.com (mail-pl1-f180.google.com [209.85.214.180])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5DD2F363C72;
-	Fri, 13 Mar 2026 16:56:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.13
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9E383CA490
+	for <kvm@vger.kernel.org>; Fri, 13 Mar 2026 16:58:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.180
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773420983; cv=none; b=Zuev/G5DnPgSSscUo6ffBDy/6sn6d428S2ZLLAp80oPFktVK+nYp7oeYo+zMqI5Zyya/HVAafvZaG7Ljl0+kw9RM2/xYTn+6BUSR+IeD6mQdvK8TDTQwa34YkHnTjfLw+KelTjsc85pwR53k+t9E/8sjjT0QzXfzWcBPa10F/14=
+	t=1773421105; cv=none; b=UxylOojF65Xk1lVqg5mORbmZVEndK7t4V1JOeYl1Typki/ugWHq609gmjfb39GXiA46drxSKUKdNthDA88PeoK6bCQsHNm87kJTei3Q5s+6EicdZ7v4c+xNLv4J9ZzTNZ1Jq5G4DonD96n5+kQlKshvNX+uEhXv32tSmq25NsDo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773420983; c=relaxed/simple;
-	bh=0uqgpIANlqfUrdaeadAKjdf+nK8dcNapPkhTFncGu6o=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Y1eSsVD9Nu+f1rc2LCWzcRxx26VUiskPXHlZrIxCT4KLsL562pExUS0B9UUfRTz8Cm2tbzjci4U0a03Bx1MpBL5N8WG1/wfdwn8GibkCK/M2clzCpAFsHkZTNnmZJnULBkjtJ6qNQRK2wpEto3YXAwChltwff8WDi3R5cS681wE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=ZweAU1l+; arc=none smtp.client-ip=198.175.65.13
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1773421105; c=relaxed/simple;
+	bh=JotDbto36hMeejAjHcf798lMGCVYXdIVc/vM24Y9foM=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=FjLNBbgQ17e92XcD2V3k06vOOsm1nkH8l2Wc8iEHOoUcBpzYbXKwq0lDcZ+FMb1e9rc/l4HpCRepSSF9eR277H/2N7HE+eY5Zt1Z6QmYWJmz+FMawf68mFcDwLFXyQir7bVjT9D76UnuTuoKXhkHAM/HbXSDtZ8kxXTeYA/CBAg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=nN+ROohp; arc=none smtp.client-ip=209.85.214.180
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="ZweAU1l+"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1773420975; x=1804956975;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=0uqgpIANlqfUrdaeadAKjdf+nK8dcNapPkhTFncGu6o=;
-  b=ZweAU1l+hkLSY07BrSTEoFv+0kM7hPCR5FztoYv8u6zNz6nPqAOpLbYh
-   PEg35dssZhEBFInBos5w5Q7t0bjQaLyukGr8ZG+OukmcJ1LL5Q2cW4+Rt
-   mXB6GzJTiGKp17IeKYgG7mL6rLO863puBHizxv3N6oINapRx8b4UWWtpT
-   Zpnlx4Ewp9RVCmcqDYC3Pres+Tm4Tz6r8CHtBNpkZsRIAjB8A9DGd21UR
-   hnC+gW4RgCtA4ZSeKX/CxLr27IQj0jz495Qjh2Cwqa0EpKkpiFELx0tLw
-   qssXX0e5ClJ4lgjVfTP9YxxojyoCRrA5976b/6KoKcn6R4Fon/N+abLHM
-   g==;
-X-CSE-ConnectionGUID: jcITCmhrSxC9Mw5qXNZuUQ==
-X-CSE-MsgGUID: 29fGa5AjQtGpNLRZAq0YxA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11728"; a="85618717"
-X-IronPort-AV: E=Sophos;i="6.23,118,1770624000"; 
-   d="scan'208";a="85618717"
-Received: from orviesa003.jf.intel.com ([10.64.159.143])
-  by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Mar 2026 09:56:13 -0700
-X-CSE-ConnectionGUID: kG43qGn4SPK9kgxWUJXIEw==
-X-CSE-MsgGUID: NMOq9FYXT8CWksTfb+ifJQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,118,1770624000"; 
-   d="scan'208";a="225328810"
-Received: from dnelso2-mobl.amr.corp.intel.com (HELO [10.125.110.233]) ([10.125.110.233])
-  by ORVIESA003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Mar 2026 09:56:11 -0700
-Message-ID: <fd232cc5-f2ab-463f-9238-44e2514d4ad1@intel.com>
-Date: Fri, 13 Mar 2026 09:56:10 -0700
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="nN+ROohp"
+Received: by mail-pl1-f180.google.com with SMTP id d9443c01a7336-2ae49120e97so2825ad.0
+        for <kvm@vger.kernel.org>; Fri, 13 Mar 2026 09:58:23 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1773421103; x=1774025903; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=vAIKhwXtibYOylihf36AZt2CKCO3X/rqMIMWFfZghRs=;
+        b=nN+ROohpXNtkLMF3dkuiJASy8Ejguhaf1SubRcq5srk67SCpdqjeuZJ8C5tn5nuLgx
+         X4PAD+IbAxK7MrGm099cLzg5yZFkymp7eWPh4eSKgrBw2POVIhvngiR2p/rbm2guXw+a
+         r4RzushMNoCV1zZdyAthbNglEJ2UeHCdiyzR5wcKzRpGICIM2WYtnxHYan8VOS1A3FmM
+         DeK/GSNyJRuB+BuItFcAuqJZWbe1mIcOARL22ylrUeQo91ZAclaJlWcZYAdlGaBjMW/L
+         G+UW+H/Xy4HkUuNDd1r2dplcYneTpMXW3sc728jR3xVK8wuMgvbhbmGVxwErF1qwOAM4
+         Wpkw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1773421103; x=1774025903;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=vAIKhwXtibYOylihf36AZt2CKCO3X/rqMIMWFfZghRs=;
+        b=Tt78NKa0ttQKqVcU+JYUFQ+cqCoQGZiDpAZcFgG9CimCbSsPmgvax6fjyzCuP5jylt
+         KUI6k4qFHehOlAINhnII019H3Iw24GGQYXKkCWKUM88WBzrCjfGepYC2QsJC4DB7voZA
+         VjYY5ZrwoMtUQujJIGu9F3yb1o2vofKY5y6Xh21Bd0FfSMh1ZO5WmzciohF/pUkAaTc5
+         34QqNq21EdZNwIojBS/2ldzavkadUAi7ZCimoH8PyUoSmaDqxutdepBG3/Y9XlsCw2h8
+         YGom/q6Si3jlAvIOz4mm1mHzxWbXC8TYRVVVtlYYZrnXKdoS7cJbp2gCCz4tAYEd6XrZ
+         Hilg==
+X-Forwarded-Encrypted: i=1; AJvYcCVvlZjUbRQ8f/1oe9y5KLzNJcDbGzQVHBFyugbc4w7Sf+C5GCRc3fCzg270S2rTGECGHNw=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyYCR9WQ9W8WLKxVYzOzT0B/7hqkA8kTqyYbvbCB3fY+N0TRkUh
+	0yl5b8zuuIDI98Y09mQW6UWRzjfABQSW6EMU1YChXYYUgB+/QJFxzd4lmYJsCSKKkA==
+X-Gm-Gg: ATEYQzzF/GLDyoXX3Opf850Cl/TBAgCpK88fJ2RivK61SulunwnC34Q4idaXgZzC50i
+	S8Chb8SaXuyeZmHRzR7nFniyP8myh0BYZW2j8Tc2NinarOBTfBl0UueJ21ZvQsuOmpA77YYto4R
+	IgBiO5Y8iIOWEKhKGwhBopTNxF/hJcViVLaBDtZ35spl/Lqd2/ya7Lw5ykQdFMP/PSGd83IoUmw
+	4j/ktLXI+UZnnYIiNEw5rDsqAISd4MkO2+oJR/zAxzBNuuO1NFmF78t05NcitX6KIlBbXbkNtKE
+	x3Yz3iVxXRIsrUGwVsKBwO3tapEKGVNfTbM3Kwlhgh559gqYjnPjqpB6hHeY1cdNy/2qmewR0Ke
+	9Aq9sGjs+P1W/UlPaf/jFSoxfA30HnMx1UB4TTjQUDDP7i4Un9YKTw6sGCH4iQIfIEsa7RfdWG+
+	afe3xnE+mammDGffszXqohs0MJWR/bGpVZG7qdYNZ0BaYDZbu433xSlJ+ygwX36Q==
+X-Received: by 2002:a17:902:d2d0:b0:2ad:ab68:f2c3 with SMTP id d9443c01a7336-2aecd606615mr2781505ad.13.1773421102229;
+        Fri, 13 Mar 2026 09:58:22 -0700 (PDT)
+Received: from google.com (168.136.83.34.bc.googleusercontent.com. [34.83.136.168])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2aece8629bbsm26159985ad.88.2026.03.13.09.58.21
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 13 Mar 2026 09:58:21 -0700 (PDT)
+Date: Fri, 13 Mar 2026 16:58:17 +0000
+From: Samiullah Khawaja <skhawaja@google.com>
+To: Pranjal Shrivastava <praan@google.com>
+Cc: David Woodhouse <dwmw2@infradead.org>, 
+	Lu Baolu <baolu.lu@linux.intel.com>, Joerg Roedel <joro@8bytes.org>, Will Deacon <will@kernel.org>, 
+	Jason Gunthorpe <jgg@ziepe.ca>, Robin Murphy <robin.murphy@arm.com>, 
+	Kevin Tian <kevin.tian@intel.com>, Alex Williamson <alex@shazbot.org>, 
+	Shuah Khan <shuah@kernel.org>, iommu@lists.linux.dev, linux-kernel@vger.kernel.org, 
+	kvm@vger.kernel.org, Saeed Mahameed <saeedm@nvidia.com>, 
+	Adithya Jayachandran <ajayachandra@nvidia.com>, Parav Pandit <parav@nvidia.com>, 
+	Leon Romanovsky <leonro@nvidia.com>, William Tu <witu@nvidia.com>, 
+	Pratyush Yadav <pratyush@kernel.org>, Pasha Tatashin <pasha.tatashin@soleen.com>, 
+	David Matlack <dmatlack@google.com>, Andrew Morton <akpm@linux-foundation.org>, 
+	Chris Li <chrisl@kernel.org>, Vipin Sharma <vipinsh@google.com>, 
+	YiFei Zhu <zhuyifei@google.com>
+Subject: Re: [PATCH 01/14] iommu: Implement IOMMU LU FLB callbacks
+Message-ID: <abRB8Vy39nWfgDFP@google.com>
+References: <20260203220948.2176157-1-skhawaja@google.com>
+ <20260203220948.2176157-2-skhawaja@google.com>
+ <abHZdOKyLmmmHADz@google.com>
+ <abLi5giBpi05_CLn@google.com>
+ <abQvAY8Ao4acgmk2@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 03/20] cxl: Move CXL spec defines to public header
-To: Jonathan Cameron <jonathan.cameron@huawei.com>, mhonap@nvidia.com
-Cc: aniketa@nvidia.com, ankita@nvidia.com, alwilliamson@nvidia.com,
- vsethi@nvidia.com, jgg@nvidia.com, mochs@nvidia.com,
- skolothumtho@nvidia.com, alejandro.lucero-palau@amd.com, dave@stgolabs.net,
- alison.schofield@intel.com, vishal.l.verma@intel.com, ira.weiny@intel.com,
- dan.j.williams@intel.com, jgg@ziepe.ca, yishaih@nvidia.com,
- kevin.tian@intel.com, cjia@nvidia.com, targupta@nvidia.com, zhiw@nvidia.com,
- kjaju@nvidia.com, linux-kernel@vger.kernel.org, linux-cxl@vger.kernel.org,
- kvm@vger.kernel.org
-References: <20260311203440.752648-1-mhonap@nvidia.com>
- <20260311203440.752648-4-mhonap@nvidia.com>
- <20260313121805.0000611e@huawei.com>
-Content-Language: en-US
-From: Dave Jiang <dave.jiang@intel.com>
-In-Reply-To: <20260313121805.0000611e@huawei.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Disposition: inline
+In-Reply-To: <abQvAY8Ao4acgmk2@google.com>
 
+On Fri, Mar 13, 2026 at 03:36:33PM +0000, Pranjal Shrivastava wrote:
+>On Thu, Mar 12, 2026 at 04:43:00PM +0000, Samiullah Khawaja wrote:
+>> On Wed, Mar 11, 2026 at 09:07:00PM +0000, Pranjal Shrivastava wrote:
+>> > On Tue, Feb 03, 2026 at 10:09:35PM +0000, Samiullah Khawaja wrote:
+>> > > Add liveupdate FLB for IOMMU state preservation. Use KHO preserve memory
+>> > > alloc/free helper functions to allocate memory for the IOMMU LU FLB
+>> > > object and the serialization structs for device, domain and iommu.
+>> > >
+>> > > During retrieve, walk through the preserved objs nodes and restore each
+>> > > folio. Also recreate the FLB obj.
+>> > >
+>> > > Signed-off-by: Samiullah Khawaja <skhawaja@google.com>
+>> > > ---
+>> > >  drivers/iommu/Kconfig         |  11 +++
+>> > >  drivers/iommu/Makefile        |   1 +
+>> > >  drivers/iommu/liveupdate.c    | 177 ++++++++++++++++++++++++++++++++++
+>> > >  include/linux/iommu-lu.h      |  17 ++++
+>> > >  include/linux/kho/abi/iommu.h | 119 +++++++++++++++++++++++
+>> > >  5 files changed, 325 insertions(+)
+>> > >  create mode 100644 drivers/iommu/liveupdate.c
+>> > >  create mode 100644 include/linux/iommu-lu.h
+>> > >  create mode 100644 include/linux/kho/abi/iommu.h
+>> > >
+>> > > diff --git a/drivers/iommu/Kconfig b/drivers/iommu/Kconfig
+>> > > index f86262b11416..fdcfbedee5ed 100644
+>> > > --- a/drivers/iommu/Kconfig
+>> > > +++ b/drivers/iommu/Kconfig
+>> > > @@ -11,6 +11,17 @@ config IOMMUFD_DRIVER
+>> > >  	bool
+>> > >  	default n
+>> > >
+>
+>[ snip ---- >8 -----]
+>
+>> >
+>> > > +enum iommu_lu_type {
+>> > > +	IOMMU_INVALID,
+>> > > +	IOMMU_INTEL,
+>> > > +};
+>> > > +
+>> > > +struct iommu_obj_ser {
+>> > > +	u32 idx;
+>> > > +	u32 ref_count;
+>> > > +	u32 deleted:1;
+>> > > +	u32 incoming:1;
+>> > > +} __packed;
+>> > > +
+>> > > +struct iommu_domain_ser {
+>> > > +	struct iommu_obj_ser obj;
+>> > > +	u64 top_table;
+>> > > +	u64 top_level;
+>> > > +	struct iommu_domain *restored_domain;
+>> > > +} __packed;
+>> > > +
+>> > > +struct device_domain_iommu_ser {
+>> > > +	u32 did;
+>> > > +	u64 domain_phys;
+>> > > +	u64 iommu_phys;
+>> > > +} __packed;
+>> > > +
+>> > > +struct device_ser {
+>> > > +	struct iommu_obj_ser obj;
+>> > > +	u64 token;
+>> > > +	u32 devid;
+>> > > +	u32 pci_domain;
+>> > > +	struct device_domain_iommu_ser domain_iommu_ser;
+>> > > +	enum iommu_lu_type type;
+>> > > +} __packed;
+>> > > +
+>> > > +struct iommu_intel_ser {
+>> > > +	u64 phys_addr;
+>> > > +	u64 root_table;
+>> > > +} __packed;
+>> > > +
+>
+>One more thing here, let's add the "intel" stuff with the intel patches
 
+Agreed. Will move these to intel specific patches.
+>
+>Thanks,
+>Praan
+>
+>> > > +struct iommu_ser {
+>> > > +	struct iommu_obj_ser obj;
+>> > > +	u64 token;
+>> > > +	enum iommu_lu_type type;
+>> > > +	union {
+>> > > +		struct iommu_intel_ser intel;
+>> > > +	};
+>> > > +} __packed;
+>> > > +
+>> > > +struct iommu_objs_ser {
+>> > > +	u64 next_objs;
+>> > > +	u64 nr_objs;
+>> > > +} __packed;
+>> > > +
+>> > > +struct iommus_ser {
+>> > > +	struct iommu_objs_ser objs;
+>> > > +	struct iommu_ser iommus[];
+>> > > +} __packed;
+>> > > +
+>> > > +struct iommu_domains_ser {
+>> > > +	struct iommu_objs_ser objs;
+>> > > +	struct iommu_domain_ser iommu_domains[];
+>> > > +} __packed;
+>> > > +
+>> > > +struct devices_ser {
+>> > > +	struct iommu_objs_ser objs;
+>> > > +	struct device_ser devices[];
+>> > > +} __packed;
+>> > > +
+>
+>Thanks,
+>Praan
 
-On 3/13/26 5:18 AM, Jonathan Cameron wrote:
-> On Thu, 12 Mar 2026 02:04:23 +0530
-> mhonap@nvidia.com wrote:
-> 
->> From: Manish Honap <mhonap@nvidia.com>
->>
->> HDM decoder capability structure and component reg block size
->> needs to be used by VFIO subsystem. Move the macros from private
->> CXL header to public one.
->>
->> Signed-off-by: Manish Honap <mhonap@nvidia.com>
-> 
-> Not really related to this patch, but...
-> 
-> Maybe this is the time to think about doing a PCI like
-> uapi/linux/cxl_regs.h header?
-
-Sounds reasonable. Maybe makes sense to be in uapi/cxl/? There's already a features.h header in there.
-
-> 
-> So far we have these duplicated in at least a couple of code
-> bases and that is less than ideal!
-> 
-> Move seems fine to me otherwise.
-> 
->> ---
->>  drivers/cxl/cxl.h | 30 ------------------------------
->>  include/cxl/cxl.h | 30 ++++++++++++++++++++++++++++++
->>  2 files changed, 30 insertions(+), 30 deletions(-)
->>
->> diff --git a/drivers/cxl/cxl.h b/drivers/cxl/cxl.h
->> index 10ddab3949ee..7146059e0dae 100644
->> --- a/drivers/cxl/cxl.h
->> +++ b/drivers/cxl/cxl.h
->> @@ -24,9 +24,6 @@ extern const struct nvdimm_security_ops *cxl_security_ops;
->>   * (port-driver, region-driver, nvdimm object-drivers... etc).
->>   */
->>  
->> -/* CXL 2.0 8.2.4 CXL Component Register Layout and Definition */
->> -#define CXL_COMPONENT_REG_BLOCK_SIZE SZ_64K
->> -
->>  /* CXL 2.0 8.2.5 CXL.cache and CXL.mem Registers*/
->>  #define CXL_CM_OFFSET 0x1000
->>  #define CXL_CM_CAP_HDR_OFFSET 0x0
->> @@ -39,33 +36,6 @@ extern const struct nvdimm_security_ops *cxl_security_ops;
->>  #define   CXL_CM_CAP_HDR_ARRAY_SIZE_MASK GENMASK(31, 24)
->>  #define CXL_CM_CAP_PTR_MASK GENMASK(31, 20)
->>  
->> -/* HDM decoders CXL 2.0 8.2.5.12 CXL HDM Decoder Capability Structure */
->> -#define CXL_HDM_DECODER_CAP_OFFSET 0x0
->> -#define   CXL_HDM_DECODER_COUNT_MASK GENMASK(3, 0)
->> -#define   CXL_HDM_DECODER_TARGET_COUNT_MASK GENMASK(7, 4)
->> -#define   CXL_HDM_DECODER_INTERLEAVE_11_8 BIT(8)
->> -#define   CXL_HDM_DECODER_INTERLEAVE_14_12 BIT(9)
->> -#define   CXL_HDM_DECODER_INTERLEAVE_3_6_12_WAY BIT(11)
->> -#define   CXL_HDM_DECODER_INTERLEAVE_16_WAY BIT(12)
->> -#define CXL_HDM_DECODER_CTRL_OFFSET 0x4
->> -#define   CXL_HDM_DECODER_ENABLE BIT(1)
->> -#define CXL_HDM_DECODER0_BASE_LOW_OFFSET(i) (0x20 * (i) + 0x10)
->> -#define CXL_HDM_DECODER0_BASE_HIGH_OFFSET(i) (0x20 * (i) + 0x14)
->> -#define CXL_HDM_DECODER0_SIZE_LOW_OFFSET(i) (0x20 * (i) + 0x18)
->> -#define CXL_HDM_DECODER0_SIZE_HIGH_OFFSET(i) (0x20 * (i) + 0x1c)
->> -#define CXL_HDM_DECODER0_CTRL_OFFSET(i) (0x20 * (i) + 0x20)
->> -#define   CXL_HDM_DECODER0_CTRL_IG_MASK GENMASK(3, 0)
->> -#define   CXL_HDM_DECODER0_CTRL_IW_MASK GENMASK(7, 4)
->> -#define   CXL_HDM_DECODER0_CTRL_LOCK BIT(8)
->> -#define   CXL_HDM_DECODER0_CTRL_COMMIT BIT(9)
->> -#define   CXL_HDM_DECODER0_CTRL_COMMITTED BIT(10)
->> -#define   CXL_HDM_DECODER0_CTRL_COMMIT_ERROR BIT(11)
->> -#define   CXL_HDM_DECODER0_CTRL_HOSTONLY BIT(12)
->> -#define CXL_HDM_DECODER0_TL_LOW(i) (0x20 * (i) + 0x24)
->> -#define CXL_HDM_DECODER0_TL_HIGH(i) (0x20 * (i) + 0x28)
->> -#define CXL_HDM_DECODER0_SKIP_LOW(i) CXL_HDM_DECODER0_TL_LOW(i)
->> -#define CXL_HDM_DECODER0_SKIP_HIGH(i) CXL_HDM_DECODER0_TL_HIGH(i)
->> -
->>  /* HDM decoder control register constants CXL 3.0 8.2.5.19.7 */
->>  #define CXL_DECODER_MIN_GRANULARITY 256
->>  #define CXL_DECODER_MAX_ENCODED_IG 6
->> diff --git a/include/cxl/cxl.h b/include/cxl/cxl.h
->> index 610711e861d4..27c006fa53c3 100644
->> --- a/include/cxl/cxl.h
->> +++ b/include/cxl/cxl.h
->> @@ -75,6 +75,36 @@ struct cxl_regs {
->>  #define   CXL_CM_CAP_CAP_ID_HDM 0x5
->>  #define   CXL_CM_CAP_CAP_HDM_VERSION 1
->>  
->> +/* CXL 2.0 8.2.4 CXL Component Register Layout and Definition */
->> +#define CXL_COMPONENT_REG_BLOCK_SIZE SZ_64K
->> +
->> +/* HDM decoders CXL 2.0 8.2.5.12 CXL HDM Decoder Capability Structure */
->> +#define CXL_HDM_DECODER_CAP_OFFSET 0x0
->> +#define   CXL_HDM_DECODER_COUNT_MASK GENMASK(3, 0)
->> +#define   CXL_HDM_DECODER_TARGET_COUNT_MASK GENMASK(7, 4)
->> +#define   CXL_HDM_DECODER_INTERLEAVE_11_8 BIT(8)
->> +#define   CXL_HDM_DECODER_INTERLEAVE_14_12 BIT(9)
->> +#define   CXL_HDM_DECODER_INTERLEAVE_3_6_12_WAY BIT(11)
->> +#define   CXL_HDM_DECODER_INTERLEAVE_16_WAY BIT(12)
->> +#define CXL_HDM_DECODER_CTRL_OFFSET 0x4
->> +#define   CXL_HDM_DECODER_ENABLE BIT(1)
->> +#define CXL_HDM_DECODER0_BASE_LOW_OFFSET(i) (0x20 * (i) + 0x10)
->> +#define CXL_HDM_DECODER0_BASE_HIGH_OFFSET(i) (0x20 * (i) + 0x14)
->> +#define CXL_HDM_DECODER0_SIZE_LOW_OFFSET(i) (0x20 * (i) + 0x18)
->> +#define CXL_HDM_DECODER0_SIZE_HIGH_OFFSET(i) (0x20 * (i) + 0x1c)
->> +#define CXL_HDM_DECODER0_CTRL_OFFSET(i) (0x20 * (i) + 0x20)
->> +#define   CXL_HDM_DECODER0_CTRL_IG_MASK GENMASK(3, 0)
->> +#define   CXL_HDM_DECODER0_CTRL_IW_MASK GENMASK(7, 4)
->> +#define   CXL_HDM_DECODER0_CTRL_LOCK BIT(8)
->> +#define   CXL_HDM_DECODER0_CTRL_COMMIT BIT(9)
->> +#define   CXL_HDM_DECODER0_CTRL_COMMITTED BIT(10)
->> +#define   CXL_HDM_DECODER0_CTRL_COMMIT_ERROR BIT(11)
->> +#define   CXL_HDM_DECODER0_CTRL_HOSTONLY BIT(12)
->> +#define CXL_HDM_DECODER0_TL_LOW(i) (0x20 * (i) + 0x24)
->> +#define CXL_HDM_DECODER0_TL_HIGH(i) (0x20 * (i) + 0x28)
->> +#define CXL_HDM_DECODER0_SKIP_LOW(i) CXL_HDM_DECODER0_TL_LOW(i)
->> +#define CXL_HDM_DECODER0_SKIP_HIGH(i) CXL_HDM_DECODER0_TL_HIGH(i)
->> +
->>  struct cxl_reg_map {
->>  	bool valid;
->>  	int id;
-> 
-> 
-
+Thanks,
+Sami
