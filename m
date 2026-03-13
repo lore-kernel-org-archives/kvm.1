@@ -1,205 +1,143 @@
-Received: from mail-pj1-f73.google.com (mail-pj1-f73.google.com [209.85.216.73])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from CO1PR03CU002.outbound.protection.outlook.com (mail-westus2azon11010006.outbound.protection.outlook.com [52.101.46.6])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC08D386555
-	for <kvm@vger.kernel.org>; Fri, 13 Mar 2026 06:13:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.73
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773382448; cv=none; b=JoS2VxnUxv3D3yDr0stQnKAZ7ZJCzWn8aU2he+vA+rTDhgL25n5Przwh+Te/Ibjn+6eQp3VTvbu1ChHQJ6e87oemHhk1KmpW91B983gtmmsJAAMvMPog1nmZHuvQYfaxKS1eokjuo7CO7A2AgWpIo+wxh1hYG6dMgjucxvOLL6Q=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773382448; c=relaxed/simple;
-	bh=9Nmx5HAs+7DRtlj9EWQELGCrvyUoFEJQW/16VzmDbeo=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=XpADNcWgERCKzFEVINGvllPrunS8Xx9KVEpJNf+d9+eemgzfJNGnxV+Azbppi70lDkT/0ZvGs7P7YXQfI95XXA3Oy2gMczI9xwGgm9fiyEhZUlwiQxDduZBLQ6maa+Mnb08BNmFyGY3pxtI7x2rIwsqbewkg1e2MnVPVWmoN1/4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--ackerleytng.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=JqQmIwwA; arc=none smtp.client-ip=209.85.216.73
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--ackerleytng.bounces.google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A07F36C9C4;
+	Fri, 13 Mar 2026 06:15:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.46.6
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1773382536; cv=fail; b=sICIQMc8yeGCE0kn1t4tfg1dLaq13eAdt/V2EbuxOzeGTNd83FweBb+C5msOi96MiuI1dql9R1m+N/hmkTJAotI7QEn1nBsP2fN7r1A6nxUu3+0oWGcxyrLGZZ4MuH2Ewew2RSjrpHnt8HL8LCYBk7Qr+O+9umTjbkeOky1j1yg=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1773382536; c=relaxed/simple;
+	bh=cbtk/6YZh1W6lbvAZwSLHtYQPzQWd8UU7dznpko991E=;
+	h=Date:From:To:CC:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=YY3WlZvERvPFf7Hq885ypcTEtpURn9D9C+90M3QZvYy3cvuYXXb3UecgnT9lFGIquipbxXTVkF/PkXMZuHh1nkZ/cC5Ug0LKssqLzSaRVIBa8f2XR6cpKZ3iXKNhzmm0SnGhlHvrR5QPLD6AMeyKFI9/2r2paNSTEu6a4rg2Zq8=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=UwqhZGd9; arc=fail smtp.client-ip=52.101.46.6
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="JqQmIwwA"
-Received: by mail-pj1-f73.google.com with SMTP id 98e67ed59e1d1-35842aa350fso11810914a91.0
-        for <kvm@vger.kernel.org>; Thu, 12 Mar 2026 23:13:59 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1773382439; x=1773987239; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=BkSCz6rjDBChxZIrEywkjbjk8auemBVpkQ44aK+RFnM=;
-        b=JqQmIwwARJAMX4oM4CkS45Q83CEQfRQAn9v/+iMrb4xFW99/DZKWMU1/6Zs4KnMCSL
-         PVATJLyRJi2lXZ5iLD+38xHTWln/gIzZvvcYOz/4E0CO4USi+Qg66F7rPhMbBZf0h47A
-         aBbGRR1/rlf1C1KPZDh8AGmwm0dBuyvxUoL4AkthMTOJJjnXgjn3hRicF8C209yE9/O+
-         nNzDvoa8AtgTrQsaXwmzKPalV0X7WzCA4BFGGMY2YLUUBsMR0/CS6ajhJx/HbeQHpqiA
-         DE2nxz0bCUqJOz+4/QfKjnUKCK+W1i/k89JqVJHQhPqz+wnAI4I/Gc/4F4a/cVhKw1MO
-         ptsw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1773382439; x=1773987239;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=BkSCz6rjDBChxZIrEywkjbjk8auemBVpkQ44aK+RFnM=;
-        b=Ytjh+B6h6VUPwLE91DQguPv7Ng5ai7nn7uqFH69/oXPU3qCxUgFms9NzKmxZLExlwX
-         0ya/BlFw3SQowZxBJA2ZzASzoDS7P2mjKGwSkjKEhI0D9Rvr5gvLtsTlrjRhSN9OD/De
-         da3sWfbHPTi+q2erRzvcbEVvyR8fm/7kc+FLdfg6rdq4c2UMAHzPYiFxFMq7zAIy4Bfs
-         4UeSAom7bhX7LgiYsLND+qzhrAY1lcMGZxlpSOmvrajzBI+KR6f6eeqKx7kymNVDs9PM
-         OrN83bKeWVYrCXiG3vkiL45tqO9H3pzsGIofxPKOzAZB035F0ci73MJJbCiP+f+Qm7DH
-         HZbA==
-X-Gm-Message-State: AOJu0YwcKyuwUfDo1ChxWAbpZmMGIxeKLwtpLy+DyZ790pzWmwcd4z82
-	W7NUQTVmT9ZVCeylxyYN96MJ7uRrVc5kZ73U9UEq8EnpxYLQklePPJPV4kpfekCRPddLIkQsLFR
-	pKWB5b4LmbOuy35li7slllK+t2w==
-X-Received: from pjbin22.prod.google.com ([2002:a17:90b:4396:b0:35a:5f:8f72])
- (user=ackerleytng job=prod-delivery.src-stubby-dispatcher) by
- 2002:a17:90b:2784:b0:352:ba0f:fb28 with SMTP id 98e67ed59e1d1-35a21e4ee53mr2119101a91.1.1773382438985;
- Thu, 12 Mar 2026 23:13:58 -0700 (PDT)
-Date: Fri, 13 Mar 2026 06:13:22 +0000
-In-Reply-To: <20260313-gmem-inplace-conversion-v3-0-5fc12a70ec89@google.com>
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="UwqhZGd9"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=YqAH4sfKh/zcJT1ftIi543pgzumZDUxs33c8CL6qzymdSXeP1rEcT13VAWe/n79lHHXHoEdP/5eUBAM5nfw2Hrq/ErQzb3jCFed1tpmdoBWI4qTAAS4XACmC9D9EpVtNoOMsK0bvzw+UZ347Jxts19r+RH/mt+YBNsPtVcpg5K13njoQ08KlJL98+Dby0gvxN7sOjiNcYG3MQ35qmr82qaFF05vDEY2NfOilitzgAJNpGaBWKWRsjKBGhl1fqzkw8IbiDbTnkyNoOdcnLpGFot1lhehuDNf0zcFyWX40wjbS5ZhTWMXtdLF9SlLIH69WZhc8GhXnQIT2pczaoRSBAw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=udzWFtsE6qTwor2FAZ2/vI1IVqlawgkVRMukh7/+c54=;
+ b=fbHv6U+X/YHme0mrcfC1jxIx0N3QDBD7IbhyJ/TpuBEvZOMD8sUoI/zoS+6bCpha9/MSpG3w2ARugnqvqNtt+clyED6jpnSwKm4uMTAAKseJ2mVvvUqNroLgiBIRSE9wXQu7lJDEPPdjojebqla+jnlO0wunRqEW23f7DEWAXX89ySIs4IxJmm0oeXfQXTtimjDYnETOj+9t5HOxZAw+zQWkZ3s+rQgC81ptbffBOknMZ+mewfyjZAcWVnASrqtB1ne5qjqjhYdtmvLoMF2QCnvC8dWxb++P8+zWY03P9Uqmu54weGFBDHYmepmTCGGTgWdp8VfXrq1mNwBYPvdMHg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 216.228.117.161) smtp.rcpttodomain=kernel.org smtp.mailfrom=nvidia.com;
+ dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=udzWFtsE6qTwor2FAZ2/vI1IVqlawgkVRMukh7/+c54=;
+ b=UwqhZGd9qRyAmv3zkn6NhqJM3ltzXpYdHYz15f7WFDTc5P18+UTbq6h8x2t8zvs/W14XgntDCAxH2l9JUyIXNq/9XBMrzB1V8oJO/T4Ux5oxVhbQJuyUApeeEVdt0ZdpLXHRTA7nskWPtCzsbquKkog5lWVwc+OK2SpO2AOVMbbqBjQRlOR9XQbrPx2K9bGzvGKevP9W8kmhmrlithPaL4ujJDIXoppa0N6oCPyLj9oyJb0iJgqPEULOWz3N1s7I2c9XaRLEOq6ykLNIvQ0NXF3zEaB0zo0SHtGuFQCihlY/2NKJpVg+D25Lcp55nRyBZnbqPVmFcamzFmQ9lFLOlg==
+Received: from SJ0PR13CA0045.namprd13.prod.outlook.com (2603:10b6:a03:2c2::20)
+ by MW4PR12MB6801.namprd12.prod.outlook.com (2603:10b6:303:1e8::8) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9723.6; Fri, 13 Mar
+ 2026 06:15:31 +0000
+Received: from SJ1PEPF000026C9.namprd04.prod.outlook.com
+ (2603:10b6:a03:2c2:cafe::86) by SJ0PR13CA0045.outlook.office365.com
+ (2603:10b6:a03:2c2::20) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.9678.22 via Frontend Transport; Fri,
+ 13 Mar 2026 06:15:30 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.117.161)
+ smtp.mailfrom=nvidia.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=nvidia.com;
+Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
+ 216.228.117.161 as permitted sender) receiver=protection.outlook.com;
+ client-ip=216.228.117.161; helo=mail.nvidia.com; pr=C
+Received: from mail.nvidia.com (216.228.117.161) by
+ SJ1PEPF000026C9.mail.protection.outlook.com (10.167.244.106) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.9678.18 via Frontend Transport; Fri, 13 Mar 2026 06:15:31 +0000
+Received: from rnnvmail204.nvidia.com (10.129.68.6) by mail.nvidia.com
+ (10.129.200.67) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20; Thu, 12 Mar
+ 2026 23:15:18 -0700
+Received: from rnnvmail201.nvidia.com (10.129.68.8) by rnnvmail204.nvidia.com
+ (10.129.68.6) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20; Thu, 12 Mar
+ 2026 23:15:18 -0700
+Received: from Asurada-Nvidia (10.127.8.14) by mail.nvidia.com (10.129.68.8)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20 via Frontend
+ Transport; Thu, 12 Mar 2026 23:15:17 -0700
+Date: Thu, 12 Mar 2026 23:15:16 -0700
+From: Nicolin Chen <nicolinc@nvidia.com>
+To: "Aneesh Kumar K.V (Arm)" <aneesh.kumar@kernel.org>
+CC: <iommu@lists.linux.dev>, <linux-kernel@vger.kernel.org>,
+	<kvm@vger.kernel.org>, Kevin Tian <kevin.tian@intel.com>, Joerg Roedel
+	<joro@8bytes.org>, Will Deacon <will@kernel.org>, Bjorn Helgaas
+	<helgaas@kernel.org>, Jonathan Cameron <Jonathan.Cameron@huawei.com>, "Dan
+ Williams" <dan.j.williams@intel.com>, Alexey Kardashevskiy <aik@amd.com>,
+	Samuel Ortiz <sameo@rivosinc.com>, Xu Yilun <yilun.xu@linux.intel.com>,
+	"Jason Gunthorpe" <jgg@ziepe.ca>, Suzuki K Poulose <Suzuki.Poulose@arm.com>,
+	"Steven Price" <steven.price@arm.com>
+Subject: Re: [PATCH v2 1/3] iommufd/viommu: Allow associating a KVM VM fd
+ with a vIOMMU
+Message-ID: <abOrdFR4L2n334MR@Asurada-Nvidia>
+References: <20260309111704.2330479-1-aneesh.kumar@kernel.org>
+ <20260309111704.2330479-2-aneesh.kumar@kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20260313-gmem-inplace-conversion-v3-0-5fc12a70ec89@google.com>
-X-Developer-Key: i=ackerleytng@google.com; a=ed25519; pk=sAZDYXdm6Iz8FHitpHeFlCMXwabodTm7p8/3/8xUxuU=
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1773382364; l=4578;
- i=ackerleytng@google.com; s=20260225; h=from:subject:message-id;
- bh=9Nmx5HAs+7DRtlj9EWQELGCrvyUoFEJQW/16VzmDbeo=; b=DC8qeXu7SmMxXtijO6A9hehP0079wJhd+/Ee0WJofb9dO8LXR93tj+fDRl0UuiAZE+leNa+Qb
- nuEvk/7QGtbD81QpOVmb7HRi0PKdPhIGZa0guKDbYWzcbQKlcpmTgdP
-X-Mailer: b4 0.14.3
-Message-ID: <20260313-gmem-inplace-conversion-v3-43-5fc12a70ec89@google.com>
-Subject: [PATCH RFC v3 43/43] KVM: selftests: Update tests to use flag-enabled
- library functions
-From: Ackerley Tng <ackerleytng@google.com>
-To: aik@amd.com, andrew.jones@linux.dev, binbin.wu@linux.intel.com, 
-	brauner@kernel.org, chao.p.peng@linux.intel.com, david@kernel.org, 
-	ira.weiny@intel.com, jmattson@google.com, jroedel@suse.de, 
-	jthoughton@google.com, michael.roth@amd.com, oupton@kernel.org, 
-	pankaj.gupta@amd.com, qperret@google.com, rick.p.edgecombe@intel.com, 
-	rientjes@google.com, shivankg@amd.com, steven.price@arm.com, tabba@google.com, 
-	willy@infradead.org, wyihan@google.com, yan.y.zhao@intel.com, 
-	forkloop@google.com, pratyush@kernel.org, suzuki.poulose@arm.com, 
-	aneesh.kumar@kernel.org, Paolo Bonzini <pbonzini@redhat.com>, 
-	Sean Christopherson <seanjc@google.com>, Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, 
-	Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
-	"H. Peter Anvin" <hpa@zytor.com>, Steven Rostedt <rostedt@goodmis.org>, 
-	Masami Hiramatsu <mhiramat@kernel.org>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, 
-	Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>, 
-	Shuah Khan <shuah@kernel.org>, Vishal Annapurve <vannapurve@google.com>, Jason Gunthorpe <jgg@ziepe.ca>, 
-	Vlastimil Babka <vbabka@kernel.org>
-Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-trace-kernel@vger.kernel.org, linux-doc@vger.kernel.org, 
-	linux-kselftest@vger.kernel.org, Ackerley Tng <ackerleytng@google.com>
-Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Disposition: inline
+In-Reply-To: <20260309111704.2330479-2-aneesh.kumar@kernel.org>
+X-NV-OnPremToCloud: ExternallySecured
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: SJ1PEPF000026C9:EE_|MW4PR12MB6801:EE_
+X-MS-Office365-Filtering-Correlation-Id: 6330ab7f-bd7d-49e4-2861-08de80c7ee1a
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|82310400026|376014|7416014|36860700016|1800799024|13003099007|56012099003|18002099003|22082099003;
+X-Microsoft-Antispam-Message-Info:
+	XtfuCB9QBzjSJFMOZ6yipvR2dMrqbhx05fh2fEha+KxHYMfnBm1/7++r63XSeyO9iFhQT3m913WCowO5lesnLSdBQuh9IFCurPqWd5gb6sjYPEmQCQmXOEbxCsbrzxQuH/7joFesqB/ffRpxhM5uBvg0boqAu2XlQJpkJk+q9bHOJtv8qQa+nOvMSiE+mfU1zV5lOrWI/vj7799p4a7GJWUE/RVAHWHLl0/guWkw/hNWTsFJQYedjW2NwoCySfLSTdqVuuUq5zBNGZSai8xJ8jSVvkHXBCbIBqEsp5OTZR5bg0mBPmST0uZmtDcVdB/DliS+sJPPbX9u6HKWEzxjEXiYuFa+GojHRCqDCAtugOROj+yEklkc+ePWr1HKeaLAzYglJdyUq02s7ikd5Lg9IucpcvscVOQ/Qjy+reL6Al15tgEH8dQI639cFv4txl6Q6kcKD/rpgmtl6WPSmYQIeRr8+com9odTSPbuuGnqlrtu9pU/6cJvv7WIj8RyDHhFcWiizrZYtP20XBQWC6FVZWs0NuMccSRa0MrC5MoxHsMaFZ7X0I+xJlXT8icZCcHzjvMZrqkZKDcYzsaSK1Teywn+ClBJExffJ5oyOpdIFAyH3jYvJcI8IfUqAxXIJH8qtKZlwzmoh8XUpoA0IOt+IlLJn6K7PSabn1fEoPvk7kVA/FqYPJMJmdxGvaBFDrta/xM8ofcFgxV9SJ/b2WpqrSfxhFz1zWxYPFGJIRVvIW11x3PY5r4Ar9MRinhUmQEn3WPi0YjPDPg95PWrTKo7Qg==
+X-Forefront-Antispam-Report:
+	CIP:216.228.117.161;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc6edge2.nvidia.com;CAT:NONE;SFS:(13230040)(82310400026)(376014)(7416014)(36860700016)(1800799024)(13003099007)(56012099003)(18002099003)(22082099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	YtAOJ3n497EgWwcWR9ULhkjeybMDv6EIYKh95h4qte+JKTKaeHg5R0J1owRNPWuUHQM5VYDNDRiWSSFkmnS//uXC7utSpjGGTwmGTFn4iFNJ8TmQ/K3oEg4zh6N/dZ/egBQRCJotGZHRgVnTGjcLWOzK8xezdyvrDwwUwdpFqxuK/9xMkNs0RiIDsz2cntX9dXBUWJS9RDX31ynIdkazYpATpjvRJ0vC65M6V9Uof2JrzQwPpONMqOZublaYTHJEPXn8HEmI7vPiFwbG2LDtv33X27iYSTcOh5Hko9o5sWoNmmRnPOCwsi1+MMfMnPjIR+Dz5NguJv/wOppEQ23t909PS89FD4wwbNKA8eUobuE2lyV3813P3KcX9z+GBrH/pq3mTFTDYa0T0HigDFS2a2DHlWs8ilxD1DqAtpgkAw3suDJX/7hVg9DZyBqrnZxW
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 13 Mar 2026 06:15:31.4301
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 6330ab7f-bd7d-49e4-2861-08de80c7ee1a
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.117.161];Helo=[mail.nvidia.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	SJ1PEPF000026C9.namprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MW4PR12MB6801
 
-Update tests to use the set_memory_attributes-related library functions
-that now allow specification of flags.
+On Mon, Mar 09, 2026 at 04:47:02PM +0530, Aneesh Kumar K.V (Arm) wrote:
+> Add optional KVM association to IOMMU_VIOMMU_ALLOC by introducing
+> IOMMU_VIOMMU_KVM_FD and iommu_viommu_alloc::kvm_vm_fd.
+> 
+> When the flag is set, iommufd validates that kvm_vm_fd refers to a KVM
+> VM file and stores a referenced struct file in the vIOMMU object, so
+> later iommufd operations can safely resolve the owning VM.
+> 
+> This is preparatory plumbing for subsequent patches that bind TDI state
+> to the associated KVM VM.
+> 
+> The patch also switch file_is_kvm from EXPORT_SYMBOL_FOR_KVM_INTERNAL to
+> EXPORT_SYMBOL_GPL so that iommu module can use that.
 
-This was manually tested by updating content_mode in main() and
-recompiling/running.
+struct vfio_device has the kvm pointer already. So, I think it
+could be forwarded from VFIO side v.s. via userspace ioctl.
 
-TODOs:
+Shammer had two patches before and Jason partially reviewed. I
+took those for a side project but haven't sent anywhere. Would
+you please check if they for you?
 
-+ If we introduce self-reporting of supported content modes, test based on
-  reported content modes. If supported content modes are relatively static,
-  accept a command line argument for this test to test different content
-  modes.
-+ Fold this patch into the earlier patches after getting through RFC.
----
- .../selftests/kvm/guest_memfd_conversions_test.c     | 20 +++++++++++++++-----
- .../selftests/kvm/x86/private_mem_conversions_test.c | 10 +++++++---
- 2 files changed, 22 insertions(+), 8 deletions(-)
+https://github.com/nicolinc/iommufd/commits/wip/viommu_kvm
 
-diff --git a/tools/testing/selftests/kvm/guest_memfd_conversions_test.c b/tools/testing/selftests/kvm/guest_memfd_conversions_test.c
-index 8727474325451..42f3ea950c192 100644
---- a/tools/testing/selftests/kvm/guest_memfd_conversions_test.c
-+++ b/tools/testing/selftests/kvm/guest_memfd_conversions_test.c
-@@ -27,6 +27,7 @@ typedef FIXTURE_DATA(gmem_conversions) test_data_t;
- FIXTURE_SETUP(gmem_conversions) { }
- 
- static uint64_t page_size;
-+static u64 content_mode;
- 
- static void guest_do_rmw(void);
- #define GUEST_MEMFD_SHARING_TEST_GVA 0x90000000ULL
-@@ -192,7 +193,9 @@ static void test_private(test_data_t *t, loff_t pgoff, char starting_val,
- static void test_convert_to_private(test_data_t *t, loff_t pgoff,
- 				    char starting_val, char write_val)
- {
--	gmem_set_private(t->gmem_fd, pgoff * page_size, page_size);
-+	gmem_set_memory_attributes(t->gmem_fd, pgoff * page_size, page_size,
-+				   KVM_MEMORY_ATTRIBUTE_PRIVATE,
-+				   content_mode);
- 	test_private(t, pgoff, starting_val, write_val);
- }
- 
-@@ -208,7 +211,8 @@ static void test_convert_to_shared(test_data_t *t, loff_t pgoff,
- 				   char starting_val, char host_write_val,
- 				   char write_val)
- {
--	gmem_set_shared(t->gmem_fd, pgoff * page_size, page_size);
-+	gmem_set_memory_attributes(t->gmem_fd, pgoff * page_size, page_size,
-+				   0, content_mode);
- 	test_shared(t, pgoff, starting_val, host_write_val, write_val);
- }
- 
-@@ -298,7 +302,9 @@ GMEM_CONVERSION_MULTIPAGE_TEST_INIT_SHARED(unallocated_folios, 8)
- 	if (test_page != second_page_to_fault)
- 		host_do_rmw(t->mem, second_page_to_fault, 0, 'A');
- 
--	gmem_set_private(t->gmem_fd, 0, nr_pages * page_size);
-+	gmem_set_memory_attributes(t->gmem_fd, 0, nr_pages * page_size,
-+				   KVM_MEMORY_ATTRIBUTE_PRIVATE,
-+				   content_mode);
- 	for (i = 0; i < nr_pages; ++i) {
- 		char expected = (i == test_page || i == second_page_to_fault) ? 'A' : 0;
- 
-@@ -429,7 +435,8 @@ static void test_convert_to_private_fails(test_data_t *t, loff_t pgoff,
- 
- 	do {
- 		ret = __gmem_set_private(t->gmem_fd, offset,
--					 nr_pages * page_size, &error_offset);
-+					 nr_pages * page_size, &error_offset,
-+					 content_mode);
- 	} while (ret == -1 && errno == EINTR);
- 	TEST_ASSERT(ret == -1 && errno == EAGAIN,
- 		    "Wanted EAGAIN on page %lu, got %d (ret = %d)", pgoff,
-@@ -465,7 +472,9 @@ GMEM_CONVERSION_MULTIPAGE_TEST_INIT_SHARED(elevated_refcount, 4)
- 
- 	unpin_pages();
- 
--	gmem_set_private(t->gmem_fd, 0, nr_pages * page_size);
-+	gmem_set_memory_attributes(t->gmem_fd, 0, nr_pages * page_size,
-+				   KVM_MEMORY_ATTRIBUTE_PRIVATE,
-+				   content_mode);
- 
- 	for (i = 0; i < nr_pages; i++) {
- 		char expected = i == test_page ? 'B' : 'C';
-@@ -481,6 +490,7 @@ int main(int argc, char *argv[])
- 		     KVM_MEMORY_ATTRIBUTE_PRIVATE);
- 
- 	page_size = getpagesize();
-+	content_mode = KVM_SET_MEMORY_ATTRIBUTES2_PRESERVE;
- 
- 	return test_harness_run(argc, argv);
- }
-diff --git a/tools/testing/selftests/kvm/x86/private_mem_conversions_test.c b/tools/testing/selftests/kvm/x86/private_mem_conversions_test.c
-index f85717662a73b..7d72c36d102c9 100644
---- a/tools/testing/selftests/kvm/x86/private_mem_conversions_test.c
-+++ b/tools/testing/selftests/kvm/x86/private_mem_conversions_test.c
-@@ -306,9 +306,13 @@ static void handle_exit_hypercall(struct kvm_vcpu *vcpu)
- 	if (do_fallocate)
- 		vm_guest_mem_fallocate(vm, gpa, size, map_shared);
- 
--	if (set_attributes)
--		vm_mem_set_memory_attributes(vm, gpa, size,
--					     map_shared ? 0 : KVM_MEMORY_ATTRIBUTE_PRIVATE);
-+	if (set_attributes) {
-+		u64 attrs = map_shared ? 0 : KVM_MEMORY_ATTRIBUTE_PRIVATE;
-+
-+		vm_mem_set_memory_attributes(vm, gpa, size, attrs,
-+					     KVM_SET_MEMORY_ATTRIBUTES2_PRESERVE);
-+	}
-+
- 	run->hypercall.ret = 0;
- }
- 
-
--- 
-2.53.0.851.ga537e3e6e9-goog
-
+Nicolin
