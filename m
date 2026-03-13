@@ -1,71 +1,72 @@
-Received: from mail-qk1-f177.google.com (mail-qk1-f177.google.com [209.85.222.177])
+Received: from mail-qv1-f44.google.com (mail-qv1-f44.google.com [209.85.219.44])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77B96337BB0
-	for <kvm@vger.kernel.org>; Fri, 13 Mar 2026 18:31:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.177
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4FDB03DE43F
+	for <kvm@vger.kernel.org>; Fri, 13 Mar 2026 18:34:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773426687; cv=none; b=cuUvvvqZ9f7YKTy4dywSMZEeWcXiYP9jUNSYR/Cavd4W0ad7m81KNWL12RnhJmBJKDJmtrGSSOVh7tgrqHC746fN7k2c7Xaqfl3COz5DL1FWA+Jgw3JddVR/Q2PzkEKjrwltaoMh8H2E7UJaMuEKwWizZ9iuDF/6GKPzEODD8PU=
+	t=1773426849; cv=none; b=NOkcIfTjRW9Dx0h9gtbI+Dc7x63+iB3EkorNe8WC5V8JaD50bwcltukygaONY3MOzbqIH8Xs7dQZYjUBptZwqz7+ZwyvVo3sBSqNmm71Yh2W/1X+B1Whb5MwUB8rJeJZxJotLPZyD86z6dA2BcCeOz+h7nT8ehcBWhkO0KmA31A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773426687; c=relaxed/simple;
-	bh=0qxNb0CImZ7Y6yg+F786kCKDYDie+t88orCSqmVuTBQ=;
+	s=arc-20240116; t=1773426849; c=relaxed/simple;
+	bh=ixTPhrH4yxjOjUAI1IZHEE8s/TP9E8YXfjx9uEw6cE8=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Q06mJj3KKGkPXwS1SdInvqSpYwwRYFKP2OtXX4f5UJahXA9imxDfPKmZxk+2XVYicDDpoDKSU60ezpIV/NGtn0g080b4jeWTOlpDEWjhewW2M05K7BYulwCZUqR0PJHP5WV0UQDiWTquGXxZtQTFuzBUtDEbN7PVbRO1r41A918=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca; spf=pass smtp.mailfrom=ziepe.ca; dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b=aEn/Dcan; arc=none smtp.client-ip=209.85.222.177
+	 Content-Type:Content-Disposition:In-Reply-To; b=hY8D5ncMuTOBoxBbeoneLluPSXdShoAXLoQRp1uypZkUWdaHF6607v8As0S6dbz6VHbGnW8IGouaMKUeEsY0nroa2XUg6rJe62V4N5sHe4v+8ORNcyqb8L2Qjyep7eFYfezFETy3fctyqnqvwn65EU6ETBP1kOIJm0Awx4LGufE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca; spf=pass smtp.mailfrom=ziepe.ca; dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b=W1BS4Y4u; arc=none smtp.client-ip=209.85.219.44
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ziepe.ca
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b="aEn/Dcan"
-Received: by mail-qk1-f177.google.com with SMTP id af79cd13be357-8cd8c6e365eso255439985a.0
-        for <kvm@vger.kernel.org>; Fri, 13 Mar 2026 11:31:26 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b="W1BS4Y4u"
+Received: by mail-qv1-f44.google.com with SMTP id 6a1803df08f44-89a1d7cc7f0so21962016d6.1
+        for <kvm@vger.kernel.org>; Fri, 13 Mar 2026 11:34:06 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ziepe.ca; s=google; t=1773426685; x=1774031485; darn=vger.kernel.org;
+        d=ziepe.ca; s=google; t=1773426845; x=1774031645; darn=vger.kernel.org;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=zQGCXWZbNaSYnb2f/K2OJx848xGu9ABhmecVVHvXBkw=;
-        b=aEn/Dcan9fbzdOpDqq8UJchJPC7LtsnN15ih5exltAYBYXiuVJ1fkBrsLUlf4GL2Z6
-         ENqdDAJ7ZI2jSEq4eWYATlImM+WU8RCjOFM9Pz+IC1MWKD3Pfp2qkmlgk++MUtVtRf5x
-         4fs9/gn0+gBqMBsgLvHjDuiKe/H5xKGkhlopTBkiZeETrAFjzzhxj8ZA8Zs75vOS+9qG
-         xwBiP7icnYblODWtVEUdp4JUatgckLHlWDkn3uGei6gQDS4UcRlv6N2scjKFyav0hh5w
-         Qrib41uAs7H3K70g8Hfwn4oerEX1D5xRz99Td27gP6HhlHRsTkSu/VegMsx1OVyYKqw3
-         QCUA==
+        bh=ETmpjYkPNXw5/q7d3Ssx+upItrwKqh5NDijfiDruMZ0=;
+        b=W1BS4Y4usm3MhXYBIdMTvkN20uyGnXFihYRk7vUYEPr39PILxWoikUnB3leV1gZ4w5
+         ELAIib1kh4za7wl3w/E73V5r7E5ktl97Dlrk3yL0u1NBCoxNjtCppezHdF0pmVIDmE5Z
+         m6qbWVH+Mxbv6wB9EtoUtcW6//nYzF8eOIvi72VjMjfasTD6Nisc+gve2x+CLALgCqmW
+         TXgFtGYpkl941962Mh5sTqWg8fZlIfxaba5RYJWKUm3hYEGh3PkHHVa5gsv12oizAmAE
+         0zy7bnIXsxykIn/nPWJop+NsVGmkkJzcanezN1g3HpewKjl92+PnyhtHuk2HH7wX51XU
+         DEhQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1773426685; x=1774031485;
+        d=1e100.net; s=20251104; t=1773426845; x=1774031645;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=zQGCXWZbNaSYnb2f/K2OJx848xGu9ABhmecVVHvXBkw=;
-        b=iTUdwFX29E3Wz5+VNv87iI5+UOrvpZBnVvof+6e6hr8w2VZhHoAiz810tjLAxKrsbG
-         nZ+pULhPMTrz7BgWpHsoZXkNP53nATtATKocp6Yl+AEUlpmzt4tQaZAW5ZN7BqUShsL+
-         i+RaaXYKEjA1AZMPVLf9OQcraRh40MmHiWlZNJbHlIYGsIRKo38B/2/eZErOj8C+iKG7
-         cqeMesJ8LYvlk9E7g4EyLhPA53T2M0UE6Ma33/rCRYLlZ1btHRWhTBnDnWrM3ECANIf3
-         Ng8oKX7XTjrRGQ/QguIN3E0Hgf5/DbLJSCXSHaaATY6NP3RRSpzMJNbe5KZk3Ggw2idA
-         q1hw==
-X-Forwarded-Encrypted: i=1; AJvYcCVrnTQ3LMvfrKPfmX4bdJQCLsvTGQoyWoYa3Sr9x9gFRxueQKgg3HJZqWxMNxdr2bfuS7k=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz37+3f0+LpPcdgDYeE6Jap+JnEbd1fBgkw5Z8i4iXdHsC7nOFT
-	cnuhWnQGd4gTV5E8jjuxBPBi3/sqvwv8oVGqfTEk1/15bgmS3iVhqeHF+yguKQGzOas=
-X-Gm-Gg: ATEYQzyTs49cTVpCMAehzVuwvbzBeQBN3HMjgEckozHcX7N8A+TYsS5GP4ycqdmmhiM
-	qfkRS6Ld6H3HpfItcUlKhY+vpv+ryq4gpaNdO9wSmEHrhtHxqaBrG5x/A2BS+AhFJP433AngKpF
-	XzoVAkWceL1ay5TK9iXptTH5Oi7dzA5rpdXeLNBF5sEdDWMEE9UBrpO2Fsxse282S5ZM2tRRtH0
-	pYR7PnFxCxDs0k/Qa7bhs9iQbMymahtGSYt1h01CYN2QOgxpn+RK6EcgXz/dAthVJKglXGJCO9O
-	XwsRge5Aydawfntn+iAq8BN3y2RP9gA/cWykzeajdgGIybRVtW7nw44E6TA/2yn6yhPnvEgUyPt
-	UaSDTgMdtKm+I1A8qHk5OJTBv5AFONP8A1iwb2rIpu98eJDpPDPslAJPiBOeMPQU4pLSwUNPR4p
-	DlHnLUc8FAdsMBevleZgB7+xV1I7O+mHKX7iM6Iy/JfprkFcUuvZvz1VmcnasTvOMJAgaxj6zf5
-	eTHpRjJ
-X-Received: by 2002:a05:620a:254f:b0:883:c768:200a with SMTP id af79cd13be357-8cdb5ab3617mr580862385a.32.1773426685412;
-        Fri, 13 Mar 2026 11:31:25 -0700 (PDT)
+        bh=ETmpjYkPNXw5/q7d3Ssx+upItrwKqh5NDijfiDruMZ0=;
+        b=EVMlcFA6Lvw1ut98t0xmVSI2Ha56EbxEwdwG+PXt+C+x8S1wzNloEHLMAnTZLyNvxs
+         x/ClHy6iteRrTG5mVdy4RBRROgNIh+klISQpLK97yQ027W1gbWX3HMcpHKpQ7OaBVLS+
+         ChPIiCQ6qMfB9yUaq6caOLx4d+LYOeGWnHxhiswGbxaE57QM3Vopr7YHpJqr4YndYJFb
+         ZXGv+KRAV/zU1Q0cpxjLeMIicAc7He+6M351hu873WOYPMnpQOeXVSVscmGv9G6HSxkA
+         NMkpekgiZmIlZE7qAZEb3NpDtfLS5zqqvI+rOEZ/rbZ5j6zANqcoqOrWVV7OsRebsgi9
+         vCQg==
+X-Forwarded-Encrypted: i=1; AJvYcCUA8OE5T9ORisfzLJcYzwgdenM1dR48mGKsf1J3i5qOlVmgsVQFj5hjO8CjbSMouWA89+k=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxcoedMZ0yAp4IALMon58POx4/jDZMqz9A72EOPr3+V9V1wUxoe
+	r8an/pIKTv7hH7KhvYu1bWrYc5XXdXnaUCDAhKOFRz3BK0zDaaeQmgdFOhSc34OjxCI=
+X-Gm-Gg: ATEYQzxrUxpIj5W5neHrIpEBHiv5+2cQDprt/r+O28Ay2k6PP5ckQoSR5UuZ6flrXH5
+	Ez7CNGzB48PCODsB4zGut/5DrwQtD9+PxvvlS1SB/ipUuP43+T5eCUwxkeaMMU8fc2AAAnqOkMY
+	2/BSBXtL9KTAUmVM/3W18k0hNQjMFdK4Zcioc7v5272213eMBmjoWaYoSh9Bcu9FVW9gWBZWnpq
+	ZpotBJfv6njg06uwiQ52SNo5rybY5mDvZNsev0LErZa1pG6YU7IU9PvPjVMc8ITFDPQhUBjTInR
+	kjsiSWkYLvDK0hOvhFcSJni65zdwwEsYTWpAPIOK2/dv9eX581862Whyd/eSOEtW45bdzpWrCa0
+	4twqxLow2+QH0aisrCahlbvURRhlY3acsd8jH/5IinQ+E6gBHljaITujbuDSkutUohPMzXJIqLZ
+	e+/Gan4e27B6aJpVYHJO+HLUOeJ+HekfsbpWinYnT1MjbymulmAwOnJGX8X69DmjvyQit3HkxcM
+	23btMeH
+X-Received: by 2002:a05:6214:5010:b0:89a:502:6060 with SMTP id 6a1803df08f44-89a81d4cb1fmr61055306d6.25.1773426844964;
+        Fri, 13 Mar 2026 11:34:04 -0700 (PDT)
 Received: from ziepe.ca (hlfxns017vw-142-162-112-119.dhcp-dynamic.fibreop.ns.bellaliant.net. [142.162.112.119])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-8cda2152a41sm611787885a.43.2026.03.13.11.31.24
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-89a65d0289dsm58661806d6.40.2026.03.13.11.34.04
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 13 Mar 2026 11:31:24 -0700 (PDT)
+        Fri, 13 Mar 2026 11:34:04 -0700 (PDT)
 Received: from jgg by wakko with local (Exim 4.97)
 	(envelope-from <jgg@ziepe.ca>)
-	id 1w17IB-00000007Lp5-3hF7;
-	Fri, 13 Mar 2026 15:31:23 -0300
-Date: Fri, 13 Mar 2026 15:31:23 -0300
+	id 1w17Kl-00000007Lsf-2UJ3;
+	Fri, 13 Mar 2026 15:34:03 -0300
+Date: Fri, 13 Mar 2026 15:34:03 -0300
 From: Jason Gunthorpe <jgg@ziepe.ca>
-To: "Aneesh Kumar K.V (Arm)" <aneesh.kumar@kernel.org>
-Cc: iommu@lists.linux.dev, linux-kernel@vger.kernel.org,
+To: Nicolin Chen <nicolinc@nvidia.com>
+Cc: "Aneesh Kumar K.V (Arm)" <aneesh.kumar@kernel.org>,
+	iommu@lists.linux.dev, linux-kernel@vger.kernel.org,
 	kvm@vger.kernel.org, Kevin Tian <kevin.tian@intel.com>,
 	Joerg Roedel <joro@8bytes.org>, Will Deacon <will@kernel.org>,
 	Bjorn Helgaas <helgaas@kernel.org>,
@@ -78,9 +79,10 @@ Cc: iommu@lists.linux.dev, linux-kernel@vger.kernel.org,
 	Steven Price <steven.price@arm.com>
 Subject: Re: [PATCH v2 1/3] iommufd/viommu: Allow associating a KVM VM fd
  with a vIOMMU
-Message-ID: <20260313183123.GK1704121@ziepe.ca>
+Message-ID: <20260313183403.GL1704121@ziepe.ca>
 References: <20260309111704.2330479-1-aneesh.kumar@kernel.org>
  <20260309111704.2330479-2-aneesh.kumar@kernel.org>
+ <abOrdFR4L2n334MR@Asurada-Nvidia>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -89,79 +91,36 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260309111704.2330479-2-aneesh.kumar@kernel.org>
+In-Reply-To: <abOrdFR4L2n334MR@Asurada-Nvidia>
 
-On Mon, Mar 09, 2026 at 04:47:02PM +0530, Aneesh Kumar K.V (Arm) wrote:
-> Add optional KVM association to IOMMU_VIOMMU_ALLOC by introducing
-> IOMMU_VIOMMU_KVM_FD and iommu_viommu_alloc::kvm_vm_fd.
+On Thu, Mar 12, 2026 at 11:15:16PM -0700, Nicolin Chen wrote:
+> On Mon, Mar 09, 2026 at 04:47:02PM +0530, Aneesh Kumar K.V (Arm) wrote:
+> > Add optional KVM association to IOMMU_VIOMMU_ALLOC by introducing
+> > IOMMU_VIOMMU_KVM_FD and iommu_viommu_alloc::kvm_vm_fd.
+> > 
+> > When the flag is set, iommufd validates that kvm_vm_fd refers to a KVM
+> > VM file and stores a referenced struct file in the vIOMMU object, so
+> > later iommufd operations can safely resolve the owning VM.
+> > 
+> > This is preparatory plumbing for subsequent patches that bind TDI state
+> > to the associated KVM VM.
+> > 
+> > The patch also switch file_is_kvm from EXPORT_SYMBOL_FOR_KVM_INTERNAL to
+> > EXPORT_SYMBOL_GPL so that iommu module can use that.
 > 
-> When the flag is set, iommufd validates that kvm_vm_fd refers to a KVM
-> VM file and stores a referenced struct file in the vIOMMU object, so
-> later iommufd operations can safely resolve the owning VM.
+> struct vfio_device has the kvm pointer already. So, I think it
+> could be forwarded from VFIO side v.s. via userspace ioctl.
 > 
-> This is preparatory plumbing for subsequent patches that bind TDI state
-> to the associated KVM VM.
+> Shammer had two patches before and Jason partially reviewed. I
+> took those for a side project but haven't sent anywhere. Would
+> you please check if they for you?
 > 
-> The patch also switch file_is_kvm from EXPORT_SYMBOL_FOR_KVM_INTERNAL to
-> EXPORT_SYMBOL_GPL so that iommu module can use that.
+> https://github.com/nicolinc/iommufd/commits/wip/viommu_kvm
 
-I'd want Sean to approve this..
+That looks pretty reasonable
 
-But given we once discussed it is better to hold on to the file * than
-the kvm as it leaks less kvm stuff I think this is the right approach.
-
->  #include <linux/types.h>
->  #include <linux/xarray.h>
-> +#include <linux/file.h>
->  #include <uapi/linux/iommufd.h>
->  
->  struct device;
-> @@ -58,6 +59,7 @@ struct iommufd_object {
->  	unsigned int id;
->  };
->  
-> +struct kvm;
-
-That is a weird place to put the forward declaration? How about at the
-top of the file with the others?
-
-> +/**
-> + * define IOMMU_VIOMMU_KVM_FD - Flag indicating a valid KVM VM file descriptor
-> + *
-> + * Set this flag when allocating a viommu instance that should be associated
-> + * with a specific KVM VM. If this flag is not provided,
-> + * @iommu_viommu_alloc::kvm_vm_fd is ignored.
-> + */
-> +#define IOMMU_VIOMMU_KVM_FD	BIT(0)
-
-BIT isn't used in this uapi header, lets not start.
-
-Other cases are using an enum to group the flags
-
->  /**
->   * struct iommu_viommu_alloc - ioctl(IOMMU_VIOMMU_ALLOC)
->   * @size: sizeof(struct iommu_viommu_alloc)
-> - * @flags: Must be 0
-> + * @flags: Supported flags (IOMMU_VIOMMU_KVM_FD)
-
-So you can say 'see enum xyz' here
-
-> @@ -1105,6 +1115,7 @@ struct iommu_viommu_alloc {
->  	__u32 data_len;
->  	__u32 __reserved;
->  	__aligned_u64 data_uptr;
-> +	__s32 kvm_vm_fd;
-
-Add padding to keep to 8 byte alignment
-
-
-> @@ -5481,7 +5481,7 @@ bool file_is_kvm(struct file *file)
->  {
->  	return file && file->f_op == &kvm_vm_fops;
->  }
-> -EXPORT_SYMBOL_FOR_KVM_INTERNAL(file_is_kvm);
-> +EXPORT_SYMBOL_GPL(file_is_kvm);
-
-Probably put this in its own patch 
+Raises the point we should not allow mixing kvm pointers, so no matter
+what the vfio, idev, viommu all need to agree, and the code should
+check that too, eg when associating an idev with a viommu
 
 Jason
