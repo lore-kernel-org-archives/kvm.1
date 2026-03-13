@@ -1,53 +1,53 @@
-Received: from mail-pg1-f201.google.com (mail-pg1-f201.google.com [209.85.215.201])
+Received: from mail-pj1-f73.google.com (mail-pj1-f73.google.com [209.85.216.73])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BAC49370D4D
-	for <kvm@vger.kernel.org>; Fri, 13 Mar 2026 07:10:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AEAD437188F
+	for <kvm@vger.kernel.org>; Fri, 13 Mar 2026 07:10:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.73
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773385844; cv=none; b=QAV+0KHyCaFDGq8ZPhg/80T6rlPfhiY98u6O9+ow3+PANtMuk/t5yWxx7LaP/norxncFjtGi0LNDAzJ8qg5f+jYPBy0Lrfq//6p6piNsF8RRWCaN4iRY1ildlm7jeTZwhfFwbA4onpm6jDS196bfIJOlx9OL+dLWeD+Ou3izLLk=
+	t=1773385846; cv=none; b=gStu5WXIXjk/+2Mq6Sr0vKArCV47plbfA2ybx3N5h+eU8rhwRDL8f8s03VMVFJIh8xK9eDD2W+kGudhTuavTASiQoarRsgwoYM2rvg7fC7s/ncDj6Wt0zy9pxJ1ebA0gDrk8H6W3+EoD6q2jAfdvxd5jN/zuK0L3vNJ/6PCds/8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773385844; c=relaxed/simple;
-	bh=9LlIX91Z/ZvbbeR02bUtgeWebst4TFDOSn3cp2RnlTQ=;
+	s=arc-20240116; t=1773385846; c=relaxed/simple;
+	bh=lzrrrbYrMggax4CQalZw0G7TvNQ22j1zNBa4hPLshKs=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=koyST+ySZFEF2v46hT98QEdyobT8aGZ+xQ1nJ083SW4flR0MfyQMOT8RB8Jy+SVw6qA/NRgyNC1afkq7onDCG/Ck8ix5yJlOXpZulcauoqJPhkG0CAaPuAwFJwKOIG2Y3bzTjKj+sSHIbyjQxEtX/oBAmhOuXd8olvM4V2EEWtU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--chengkev.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=cjdnolXt; arc=none smtp.client-ip=209.85.215.201
+	 To:Cc:Content-Type; b=ddzrpSbbpaadcw/zBBlTOvNjV5P4TETwq8SMtUhoQGZGtQVsx2nUz5IBBPFxIXARxfr9oBYrXcWjTJvX6H+yAfg/OjSLDVgtuySEl8zJgT3QTQnT7j6BVrXGT9JFfcDfktXpFdlpZPvXto3SDm8YSrasrVI9fsl5TZxyrrbhPP4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--chengkev.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Nr445hy+; arc=none smtp.client-ip=209.85.216.73
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--chengkev.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="cjdnolXt"
-Received: by mail-pg1-f201.google.com with SMTP id 41be03b00d2f7-c629a3276e9so7980751a12.2
-        for <kvm@vger.kernel.org>; Fri, 13 Mar 2026 00:10:42 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Nr445hy+"
+Received: by mail-pj1-f73.google.com with SMTP id 98e67ed59e1d1-35678f99c6eso1381853a91.1
+        for <kvm@vger.kernel.org>; Fri, 13 Mar 2026 00:10:44 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1773385842; x=1773990642; darn=vger.kernel.org;
+        d=google.com; s=20251104; t=1773385844; x=1773990644; darn=vger.kernel.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=uMnmbravmc6HAY/hwiz+iRBLWQc+dimhfGrxweAepUY=;
-        b=cjdnolXtWWmiXLLrLgVH5UsOGw7+samhtrbEMU5KJbQYnOCx4SIw/y5Uo6fXgDX1Ec
-         x9khZsdb3VtsdvNoYx6quT8DX14O6mWGOqNSFql54YsYt9FTXsJP5mtph7cKZufgJc8H
-         BIaEQBDxZ9p/XIPrJqt3M9BtSWW1wNLEa77NaDg+EbbSdtibIb1OVHh+7E30q9e6m31S
-         2/xRvQ7V88pp0nMmZfLq9iTOHfqORc/MHjeIpVWZywtwU4fTuKcRvq++syZEoQwr+JYk
-         kWpXfwDpZqsrEVgEhMQR514HxTXW08SAGgvjNhDP2TBgoNdS5ttnxqIsw3Txr7Zyj6yV
-         2hKw==
+        bh=fVi+Kj9L+S9ogpYgLsWQgKkY72ufJ8d7XTMRyRvK6kI=;
+        b=Nr445hy+Tv37RiLUjknIhNEcuVMPC/0aLbv3NRIli6cDFXVJf4HSr5MBHUdmR0S3Nt
+         1EaYr9rj7gftiKu+ny1yEjfFelgaClY6eGMQ5udejnfxjZNeP0TCkZYXZF9SVxN2XCol
+         2ufoHzI0Sy1RZhx/PFx1i60+jiIIbpRkhTYkB81awKBknMO/clHY4ZNu2OGFTjuVWdxd
+         HkZz+Wrq8NNwmtMsjoWCK6aOP4kPbFhzlbhhmMUEwcS5OjxvXYuApzBirI5hFo+SzNl3
+         Wd0IQalteP1d7/1zntHaCO2oYiYeizOo0WW0qWNiXo36lPo/MGllEqmBhjbOxLISALdd
+         eDtA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1773385842; x=1773990642;
+        d=1e100.net; s=20251104; t=1773385844; x=1773990644;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=uMnmbravmc6HAY/hwiz+iRBLWQc+dimhfGrxweAepUY=;
-        b=jLQ+ot5RBabBTWq9Jqrpo2s9bE8g00NksafE7jBG/juEn1JEEUsNhnA+pMZ6Y70A9J
-         X61G9R+1yqCsHJEMk2N8QTSABh/idga8uENNBSzqKUGpqNMvmAAhnU9GLfxQalwq/GtC
-         iL/10BJaWgAbpslcjXI9hSsXzhhN95ypD1FtOROxwNPEE+dtrdT3FbU4BxUumsCYVEq/
-         NvxZekXePdLahF4wbtyIqfWBmZ+94IFvwQx/ILGQ3XkuHKO9SXQDfIcdlkLARHBRH/jp
-         ZIGo/AdZpPW0jSiLMnaE4sHaTre3Gv7sZZn07kXFkm4j/DKDgRbUIOgE/+7xRqTK5Y+w
-         uGhA==
-X-Gm-Message-State: AOJu0Yzx4r+nC+dhJgWOF0sA8AinEzEuUs/uKnKYxrT3kWoN5HhmT9oP
-	9fCeDpWHjTS0CAgwxM51+uoGsiZbuejLGRoGfMSCbca2lhMVAiWB+7jnOTZvDur/NpgBFmfY51G
-	m9DtSjCQK7fohhQ==
-X-Received: from pfbhm21.prod.google.com ([2002:a05:6a00:6715:b0:824:ad09:9215])
+        bh=fVi+Kj9L+S9ogpYgLsWQgKkY72ufJ8d7XTMRyRvK6kI=;
+        b=J5Y+Ff77DUBTQCcS3SCODUXWXjGAipwIFpxwLe9/JF940k3a4xAuEldwQFBT5bXLTQ
+         neGCwWiX6q36J0e0js0/pqcYeNfzuAjAGz7m0n+/0bBwBDNxUa9uYmRZe2ZLlE7FHbSk
+         9ZXysGCGpYKs2sQXd7rZY6jj0sRF0HLBWimPJY0uhJ4PHPtp9qt4ofo2OidqjPh3qxgM
+         bWOwckwuPeUqBa2ld2P8P0hpol7P8UhNifOhC6JU61c/XUvXMl+EwJMVxEG2qtltho2p
+         o2/z3X+ZaWosD4kSg8TDPdqbCoVM5SDTCF3znJKgAw6Yb8VWSIatB02VWIlvDfpTN5vC
+         62pA==
+X-Gm-Message-State: AOJu0YzbPdeXaROfZ54I/BFzHkzsaGojUsAtYoQUbtkYnaqZFmq33vt8
+	ct+SDrkFjcUuFO9AxthKadmOOpsMCd+JBkSw/YtI+JuN71mKNqgqiD1zp+OVAKG2c3XLh5sQFcA
+	hFuxFBdJsbypgyw==
+X-Received: from pjbdj15.prod.google.com ([2002:a17:90a:d2cf:b0:359:fee7:eac2])
  (user=chengkev job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:6a00:4f8d:b0:81f:3f88:89ee with SMTP id d2e1a72fcca58-82a19704525mr2113077b3a.12.1773385841864;
- Fri, 13 Mar 2026 00:10:41 -0700 (PDT)
-Date: Fri, 13 Mar 2026 07:10:32 +0000
+ 2002:a17:90b:3d8a:b0:359:8312:90a2 with SMTP id 98e67ed59e1d1-35a21ebedf7mr2186963a91.11.1773385843942;
+ Fri, 13 Mar 2026 00:10:43 -0700 (PDT)
+Date: Fri, 13 Mar 2026 07:10:33 +0000
 In-Reply-To: <20260313071033.4153209-1-chengkev@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
@@ -57,142 +57,431 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 References: <20260313071033.4153209-1-chengkev@google.com>
 X-Mailer: git-send-email 2.53.0.851.ga537e3e6e9-goog
-Message-ID: <20260313071033.4153209-4-chengkev@google.com>
-Subject: [PATCH V3 3/4] KVM: VMX: Fix nested EPT violation injection of
- GVA_IS_VALID/GVA_TRANSLATED bits
+Message-ID: <20260313071033.4153209-5-chengkev@google.com>
+Subject: [PATCH V3 4/4] KVM: selftests: Add nested page fault injection test
 From: Kevin Cheng <chengkev@google.com>
 To: seanjc@google.com, pbonzini@redhat.com
 Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org, yosry@kernel.org, 
 	Kevin Cheng <chengkev@google.com>
 Content-Type: text/plain; charset="UTF-8"
 
-Make the OR of EPT_VIOLATION_GVA_IS_VALID and
-EPT_VIOLATION_GVA_TRANSLATED from the hardware exit qualification
-conditional on the fault originating from a hardware EPT violation
-exit. The hardware exit qualification reflects the original VM exit,
-which may not be an EPT violation at all, e.g. if KVM is emulating
-an I/O instruction and the memory operand's translation through L1's
-EPT fails. In that case, bits 7-8 of the exit qualification have
-completely different semantics (or are simply zero), and OR'ing them
-into the injected EPT violation corrupts the GVA_IS_VALID/
-GVA_TRANSLATED information.
+Add a test that exercises nested page fault injection during L2
+execution. L2 executes I/O string instructions (OUTSB/INSB) that access
+memory restricted in L1's nested page tables (NPT/EPT), triggering a
+nested page fault that L0 must inject to L1.
 
-Use the hardware_nested_page_fault flag introduced in the previous
-patch to distinguish hardware EPT violation exits from
-emulation-triggered faults. For hardware exits, take the
-GVA_IS_VALID/GVA_TRANSLATED bits from the hardware exit qualification.
-For emulation faults, take them from fault->exit_qualification, which
-is populated by the nested_mmu walker in paging_tmpl.h.
+The test supports both AMD SVM (NPF) and Intel VMX (EPT violation) and
+verifies that:
+  - The exit reason is an NPF/EPT violation
+  - The access type and permission bits are correct
+  - The faulting GPA is correct
 
-Replace the #if PTTYPE != PTTYPE_EPT preprocessor guards in
-paging_tmpl.h with a runtime kvm_nested_fault_is_ept() helper that
-checks guest_mmu to determine whether the nested fault is EPT vs NPT,
-and sets the appropriate field (exit_qualification for EPT, error_code
-for NPF) accordingly.
+Three test cases are implemented:
+  - Unmap the final data page (final translation fault, OUTSB read)
+  - Unmap a PT page (page walk fault, OUTSB read)
+  - Write-protect the final data page (protection violation, INSB write)
+  - Write-protect a PT page (protection violation on A/D update, OUTSB
+    read)
 
 Signed-off-by: Kevin Cheng <chengkev@google.com>
 ---
- arch/x86/kvm/mmu/mmu.c         | 10 ++++++++++
- arch/x86/kvm/mmu/paging_tmpl.h | 22 +++++++++++++++-------
- arch/x86/kvm/vmx/nested.c      |  9 +++++----
- 3 files changed, 30 insertions(+), 11 deletions(-)
+ tools/testing/selftests/kvm/Makefile.kvm      |   1 +
+ .../selftests/kvm/x86/nested_npf_test.c       | 374 ++++++++++++++++++
+ 2 files changed, 375 insertions(+)
+ create mode 100644 tools/testing/selftests/kvm/x86/nested_npf_test.c
 
-diff --git a/arch/x86/kvm/mmu/mmu.c b/arch/x86/kvm/mmu/mmu.c
-index 3dce38ffee76..aabf4ac39c43 100644
---- a/arch/x86/kvm/mmu/mmu.c
-+++ b/arch/x86/kvm/mmu/mmu.c
-@@ -5272,6 +5272,9 @@ static bool sync_mmio_spte(struct kvm_vcpu *vcpu, u64 *sptep, gfn_t gfn,
- 	return false;
- }
- 
-+static bool kvm_nested_fault_is_ept(struct kvm_vcpu *vcpu,
-+				    struct x86_exception *exception);
+diff --git a/tools/testing/selftests/kvm/Makefile.kvm b/tools/testing/selftests/kvm/Makefile.kvm
+index 3d372d78a275..9308e6100f27 100644
+--- a/tools/testing/selftests/kvm/Makefile.kvm
++++ b/tools/testing/selftests/kvm/Makefile.kvm
+@@ -94,6 +94,7 @@ TEST_GEN_PROGS_x86 += x86/nested_dirty_log_test
+ TEST_GEN_PROGS_x86 += x86/nested_emulation_test
+ TEST_GEN_PROGS_x86 += x86/nested_exceptions_test
+ TEST_GEN_PROGS_x86 += x86/nested_invalid_cr3_test
++TEST_GEN_PROGS_x86 += x86/nested_npf_test
+ TEST_GEN_PROGS_x86 += x86/nested_set_state_test
+ TEST_GEN_PROGS_x86 += x86/nested_tsc_adjust_test
+ TEST_GEN_PROGS_x86 += x86/nested_tsc_scaling_test
+diff --git a/tools/testing/selftests/kvm/x86/nested_npf_test.c b/tools/testing/selftests/kvm/x86/nested_npf_test.c
+new file mode 100644
+index 000000000000..7725e5dc3a38
+--- /dev/null
++++ b/tools/testing/selftests/kvm/x86/nested_npf_test.c
+@@ -0,0 +1,374 @@
++// SPDX-License-Identifier: GPL-2.0-only
++/*
++ * Copyright (C) 2025, Google, Inc.
++ */
 +
- #define PTTYPE_EPT 18 /* arbitrary */
- #define PTTYPE PTTYPE_EPT
- #include "paging_tmpl.h"
-@@ -5285,6 +5288,13 @@ static bool sync_mmio_spte(struct kvm_vcpu *vcpu, u64 *sptep, gfn_t gfn,
- #include "paging_tmpl.h"
- #undef PTTYPE
- 
-+static bool kvm_nested_fault_is_ept(struct kvm_vcpu *vcpu,
-+				    struct x86_exception *exception)
++#include "test_util.h"
++#include "kvm_util.h"
++#include "processor.h"
++#include "svm_util.h"
++#include "vmx.h"
++
++#define L2_GUEST_STACK_SIZE 64
++
++#define EPT_VIOLATION_ACC_READ		BIT(0)
++#define EPT_VIOLATION_ACC_WRITE		BIT(1)
++#define EPT_VIOLATION_ACC_INSTR		BIT(2)
++#define EPT_VIOLATION_PROT_READ		BIT(3)
++#define EPT_VIOLATION_PROT_WRITE	BIT(4)
++#define EPT_VIOLATION_PROT_EXEC		BIT(5)
++#define EPT_VIOLATION_GVA_IS_VALID	BIT(7)
++#define EPT_VIOLATION_GVA_TRANSLATED	BIT(8)
++
++enum test_type {
++	TEST_FINAL_PAGE_UNMAPPED,	    /* Final data page not present */
++	TEST_PT_PAGE_UNMAPPED,		    /* Page table page not present */
++	TEST_FINAL_PAGE_WRITE_PROTECTED,    /* Final data page read-only */
++	TEST_PT_PAGE_WRITE_PROTECTED,	    /* Page table page read-only */
++};
++
++static vm_vaddr_t l2_test_page;
++static void (*l2_entry)(void);
++
++#define TEST_IO_PORT 0x80
++#define TEST1_VADDR 0x8000000ULL
++#define TEST2_VADDR 0x10000000ULL
++#define TEST3_VADDR 0x18000000ULL
++#define TEST4_VADDR 0x20000000ULL
++
++/*
++ * L2 executes OUTS reading from l2_test_page, triggering a nested page
++ * fault on the read access.
++ */
++static void l2_guest_code_outs(void)
 +{
-+	WARN_ON_ONCE(!exception->nested_page_fault);
-+	return vcpu->arch.guest_mmu.page_fault == ept_page_fault;
++	asm volatile("outsb" ::"S"(l2_test_page), "d"(TEST_IO_PORT) : "memory");
++	GUEST_FAIL("L2 should not reach here");
 +}
 +
- static void __reset_rsvds_bits_mask(struct rsvd_bits_validate *rsvd_check,
- 				    u64 pa_bits_rsvd, int level, bool nx,
- 				    bool gbpages, bool pse, bool amd)
-diff --git a/arch/x86/kvm/mmu/paging_tmpl.h b/arch/x86/kvm/mmu/paging_tmpl.h
-index ea2b7569f8a4..15be93d735ab 100644
---- a/arch/x86/kvm/mmu/paging_tmpl.h
-+++ b/arch/x86/kvm/mmu/paging_tmpl.h
-@@ -386,9 +386,15 @@ static int FNAME(walk_addr_generic)(struct guest_walker *walker,
- 					     nested_access, &walker->fault);
- 
- 		if (unlikely(real_gpa == INVALID_GPA)) {
--#if PTTYPE != PTTYPE_EPT
--			walker->fault.error_code |= PFERR_GUEST_PAGE_MASK;
--#endif
-+			/*
-+			 * Set EPT Violation flags even if the fault is an
-+			 * EPT Misconfig, fault.exit_qualification is ignored
-+			 * for EPT Misconfigs.
-+			 */
-+			if (kvm_nested_fault_is_ept(vcpu, &walker->fault))
-+				walker->fault.exit_qualification |= EPT_VIOLATION_GVA_IS_VALID;
-+			else
-+				walker->fault.error_code |= PFERR_GUEST_PAGE_MASK;
- 			return 0;
- 		}
- 
-@@ -447,9 +453,11 @@ static int FNAME(walk_addr_generic)(struct guest_walker *walker,
- 
- 	real_gpa = kvm_translate_gpa(vcpu, mmu, gfn_to_gpa(gfn), access, &walker->fault);
- 	if (real_gpa == INVALID_GPA) {
--#if PTTYPE != PTTYPE_EPT
--		walker->fault.error_code |= PFERR_GUEST_FINAL_MASK;
--#endif
-+		if (kvm_nested_fault_is_ept(vcpu, &walker->fault))
-+			walker->fault.exit_qualification |= EPT_VIOLATION_GVA_IS_VALID |
-+							    EPT_VIOLATION_GVA_TRANSLATED;
-+		else
-+			walker->fault.error_code |= PFERR_GUEST_FINAL_MASK;
- 		return 0;
- 	}
- 
-@@ -496,7 +504,7 @@ static int FNAME(walk_addr_generic)(struct guest_walker *walker,
- 	 * [2:0] - Derive from the access bits. The exit_qualification might be
- 	 *         out of date if it is serving an EPT misconfiguration.
- 	 * [5:3] - Calculated by the page walk of the guest EPT page tables
--	 * [7:8] - Derived from [7:8] of real exit_qualification
-+	 * [7:8] - Set at the kvm_translate_gpa() call sites above
- 	 *
- 	 * The other bits are set to 0.
- 	 */
-diff --git a/arch/x86/kvm/vmx/nested.c b/arch/x86/kvm/vmx/nested.c
-index 937aeb474af7..39f8504f5cf2 100644
---- a/arch/x86/kvm/vmx/nested.c
-+++ b/arch/x86/kvm/vmx/nested.c
-@@ -443,11 +443,12 @@ static void nested_ept_inject_page_fault(struct kvm_vcpu *vcpu,
- 			vm_exit_reason = EXIT_REASON_EPT_MISCONFIG;
- 			exit_qualification = 0;
- 		} else {
--			exit_qualification = fault->exit_qualification;
--			exit_qualification |= vmx_get_exit_qual(vcpu) &
--					      (EPT_VIOLATION_GVA_IS_VALID |
--					       EPT_VIOLATION_GVA_TRANSLATED);
- 			vm_exit_reason = EXIT_REASON_EPT_VIOLATION;
-+			exit_qualification = fault->exit_qualification;
-+			if (fault->hardware_nested_page_fault)
-+				exit_qualification |= vmx_get_exit_qual(vcpu) &
-+						      (EPT_VIOLATION_GVA_IS_VALID |
-+						       EPT_VIOLATION_GVA_TRANSLATED);
- 		}
- 
- 		/*
++/*
++ * L2 executes INS writing to l2_test_page, triggering a nested page
++ * fault on the write access.
++ */
++static void l2_guest_code_ins(void)
++{
++	asm volatile("insb" ::"D"(l2_test_page), "d"(TEST_IO_PORT) : "memory");
++	GUEST_FAIL("L2 should not reach here");
++}
++
++static void l1_vmx_code(struct vmx_pages *vmx, uint64_t expected_fault_gpa,
++			 uint64_t test_type)
++{
++	unsigned long l2_guest_stack[L2_GUEST_STACK_SIZE];
++	uint64_t exit_qual;
++
++	GUEST_ASSERT(vmx->vmcs_gpa);
++	GUEST_ASSERT(prepare_for_vmx_operation(vmx));
++	GUEST_ASSERT(load_vmcs(vmx));
++
++	prepare_vmcs(vmx, l2_entry, &l2_guest_stack[L2_GUEST_STACK_SIZE]);
++
++	GUEST_ASSERT(!vmlaunch());
++
++	/* Verify we got an EPT violation exit */
++	__GUEST_ASSERT(vmreadz(VM_EXIT_REASON) == EXIT_REASON_EPT_VIOLATION,
++		       "Expected EPT violation (0x%x), got 0x%lx",
++		       EXIT_REASON_EPT_VIOLATION,
++		       vmreadz(VM_EXIT_REASON));
++
++	exit_qual = vmreadz(EXIT_QUALIFICATION);
++
++	switch (test_type) {
++	case TEST_FINAL_PAGE_UNMAPPED:
++		/* Read access, final translation, page not present */
++		__GUEST_ASSERT(exit_qual & EPT_VIOLATION_ACC_READ,
++			       "Expected ACC_READ set, exit_qual 0x%lx",
++			       exit_qual);
++		__GUEST_ASSERT(exit_qual & EPT_VIOLATION_GVA_IS_VALID,
++			       "Expected GVA_IS_VALID set, exit_qual 0x%lx",
++			       exit_qual);
++		__GUEST_ASSERT(exit_qual & EPT_VIOLATION_GVA_TRANSLATED,
++			       "Expected GVA_TRANSLATED set, exit_qual 0x%lx",
++			       exit_qual);
++		break;
++	case TEST_PT_PAGE_UNMAPPED:
++		/* Read access, page walk fault, page not present */
++		__GUEST_ASSERT(exit_qual & EPT_VIOLATION_ACC_READ,
++			       "Expected ACC_READ set, exit_qual 0x%lx",
++			       exit_qual);
++		__GUEST_ASSERT(exit_qual & EPT_VIOLATION_GVA_IS_VALID,
++			       "Expected GVA_IS_VALID set, exit_qual 0x%lx",
++			       exit_qual);
++		__GUEST_ASSERT(!(exit_qual & EPT_VIOLATION_GVA_TRANSLATED),
++			       "Expected GVA_TRANSLATED clear, exit_qual 0x%lx",
++			       exit_qual);
++		break;
++	case TEST_FINAL_PAGE_WRITE_PROTECTED:
++		/* Write access, final translation, page present but read-only */
++		__GUEST_ASSERT(exit_qual & EPT_VIOLATION_ACC_WRITE,
++			       "Expected ACC_WRITE set, exit_qual 0x%lx",
++			       exit_qual);
++		__GUEST_ASSERT(exit_qual & EPT_VIOLATION_PROT_READ,
++			       "Expected PROT_READ set, exit_qual 0x%lx",
++			       exit_qual);
++		__GUEST_ASSERT(!(exit_qual & EPT_VIOLATION_PROT_WRITE),
++			       "Expected PROT_WRITE clear, exit_qual 0x%lx",
++			       exit_qual);
++		__GUEST_ASSERT(exit_qual & EPT_VIOLATION_GVA_IS_VALID,
++			       "Expected GVA_IS_VALID set, exit_qual 0x%lx",
++			       exit_qual);
++		__GUEST_ASSERT(exit_qual & EPT_VIOLATION_GVA_TRANSLATED,
++			       "Expected GVA_TRANSLATED set, exit_qual 0x%lx",
++			       exit_qual);
++		break;
++	case TEST_PT_PAGE_WRITE_PROTECTED:
++		/* Write access (A/D update), page walk, page present but read-only */
++		__GUEST_ASSERT(exit_qual & EPT_VIOLATION_ACC_WRITE,
++			       "Expected ACC_WRITE set, exit_qual 0x%lx",
++			       exit_qual);
++		__GUEST_ASSERT(exit_qual & EPT_VIOLATION_PROT_READ,
++			       "Expected PROT_READ set, exit_qual 0x%lx",
++			       exit_qual);
++		__GUEST_ASSERT(!(exit_qual & EPT_VIOLATION_PROT_WRITE),
++			       "Expected PROT_WRITE clear, exit_qual 0x%lx",
++			       exit_qual);
++		__GUEST_ASSERT(exit_qual & EPT_VIOLATION_GVA_IS_VALID,
++			       "Expected GVA_IS_VALID set, exit_qual 0x%lx",
++			       exit_qual);
++		__GUEST_ASSERT(!(exit_qual & EPT_VIOLATION_GVA_TRANSLATED),
++			       "Expected GVA_TRANSLATED clear, exit_qual 0x%lx",
++			       exit_qual);
++		break;
++	}
++
++	__GUEST_ASSERT(vmreadz(GUEST_PHYSICAL_ADDRESS) == expected_fault_gpa,
++		       "Expected guest_physical_address = 0x%lx, got 0x%lx",
++		       expected_fault_gpa,
++		       vmreadz(GUEST_PHYSICAL_ADDRESS));
++
++	GUEST_DONE();
++}
++
++static void l1_svm_code(struct svm_test_data *svm, uint64_t expected_fault_gpa,
++			 uint64_t test_type)
++{
++	unsigned long l2_guest_stack[L2_GUEST_STACK_SIZE];
++	struct vmcb *vmcb = svm->vmcb;
++	uint64_t exit_info_1;
++
++	generic_svm_setup(svm, l2_entry,
++			  &l2_guest_stack[L2_GUEST_STACK_SIZE]);
++
++	run_guest(vmcb, svm->vmcb_gpa);
++
++	/* Verify we got an NPF exit */
++	__GUEST_ASSERT(vmcb->control.exit_code == SVM_EXIT_NPF,
++		       "Expected NPF exit (0x%x), got 0x%lx", SVM_EXIT_NPF,
++		       vmcb->control.exit_code);
++
++	exit_info_1 = vmcb->control.exit_info_1;
++
++	switch (test_type) {
++	case TEST_FINAL_PAGE_UNMAPPED:
++		/* Read access, final translation, page not present */
++		__GUEST_ASSERT(exit_info_1 & PFERR_GUEST_FINAL_MASK,
++			       "Expected GUEST_FINAL set, exit_info_1 0x%lx",
++			       (unsigned long)exit_info_1);
++		__GUEST_ASSERT(!(exit_info_1 & PFERR_GUEST_PAGE_MASK),
++			       "Expected GUEST_PAGE clear, exit_info_1 0x%lx",
++			       (unsigned long)exit_info_1);
++		__GUEST_ASSERT(!(exit_info_1 & PFERR_PRESENT_MASK),
++			       "Expected PRESENT clear, exit_info_1 0x%lx",
++			       (unsigned long)exit_info_1);
++		break;
++	case TEST_PT_PAGE_UNMAPPED:
++		/* Read access, page walk fault, page not present */
++		__GUEST_ASSERT(exit_info_1 & PFERR_GUEST_PAGE_MASK,
++			       "Expected GUEST_PAGE set, exit_info_1 0x%lx",
++			       (unsigned long)exit_info_1);
++		__GUEST_ASSERT(!(exit_info_1 & PFERR_GUEST_FINAL_MASK),
++			       "Expected GUEST_FINAL clear, exit_info_1 0x%lx",
++			       (unsigned long)exit_info_1);
++		__GUEST_ASSERT(!(exit_info_1 & PFERR_PRESENT_MASK),
++			       "Expected PRESENT clear, exit_info_1 0x%lx",
++			       (unsigned long)exit_info_1);
++		break;
++	case TEST_FINAL_PAGE_WRITE_PROTECTED:
++		/* Write access, final translation, page present but read-only */
++		__GUEST_ASSERT(exit_info_1 & PFERR_GUEST_FINAL_MASK,
++			       "Expected GUEST_FINAL set, exit_info_1 0x%lx",
++			       (unsigned long)exit_info_1);
++		__GUEST_ASSERT(!(exit_info_1 & PFERR_GUEST_PAGE_MASK),
++			       "Expected GUEST_PAGE clear, exit_info_1 0x%lx",
++			       (unsigned long)exit_info_1);
++		__GUEST_ASSERT(exit_info_1 & PFERR_PRESENT_MASK,
++			       "Expected PRESENT set, exit_info_1 0x%lx",
++			       (unsigned long)exit_info_1);
++		__GUEST_ASSERT(exit_info_1 & PFERR_WRITE_MASK,
++			       "Expected WRITE set, exit_info_1 0x%lx",
++			       (unsigned long)exit_info_1);
++		break;
++	case TEST_PT_PAGE_WRITE_PROTECTED:
++		/* Write access (A/D update), page walk, page present but read-only */
++		__GUEST_ASSERT(exit_info_1 & PFERR_GUEST_PAGE_MASK,
++			       "Expected GUEST_PAGE set, exit_info_1 0x%lx",
++			       (unsigned long)exit_info_1);
++		__GUEST_ASSERT(!(exit_info_1 & PFERR_GUEST_FINAL_MASK),
++			       "Expected GUEST_FINAL clear, exit_info_1 0x%lx",
++			       (unsigned long)exit_info_1);
++		__GUEST_ASSERT(exit_info_1 & PFERR_PRESENT_MASK,
++			       "Expected PRESENT set, exit_info_1 0x%lx",
++			       (unsigned long)exit_info_1);
++		__GUEST_ASSERT(exit_info_1 & PFERR_WRITE_MASK,
++			       "Expected WRITE set, exit_info_1 0x%lx",
++			       (unsigned long)exit_info_1);
++		break;
++	}
++
++	__GUEST_ASSERT(vmcb->control.exit_info_2 == expected_fault_gpa,
++		       "Expected exit_info_2 = 0x%lx, got 0x%lx",
++		       expected_fault_gpa,
++		       vmcb->control.exit_info_2);
++
++	GUEST_DONE();
++}
++
++static void l1_guest_code(void *data, uint64_t expected_fault_gpa,
++			  uint64_t test_type)
++{
++	if (this_cpu_has(X86_FEATURE_VMX))
++		l1_vmx_code(data, expected_fault_gpa, test_type);
++	else
++		l1_svm_code(data, expected_fault_gpa, test_type);
++}
++
++/* Returns the GPA of the PT page that maps @vaddr. */
++static uint64_t get_pt_gpa_for_vaddr(struct kvm_vm *vm, uint64_t vaddr)
++{
++	uint64_t *pte;
++
++	pte = vm_get_pte(vm, vaddr);
++	TEST_ASSERT(pte && (*pte & 0x1), "PTE not present for vaddr 0x%lx",
++		    (unsigned long)vaddr);
++
++	return addr_hva2gpa(vm, (void *)((uint64_t)pte & ~0xFFFULL));
++}
++
++static void run_test(enum test_type type)
++{
++	vm_paddr_t expected_fault_gpa;
++	vm_vaddr_t nested_gva;
++
++	struct kvm_vcpu *vcpu;
++	struct kvm_vm *vm;
++	struct ucall uc;
++
++	vm = vm_create_with_one_vcpu(&vcpu, l1_guest_code);
++	vm_enable_tdp(vm);
++
++	if (kvm_cpu_has(X86_FEATURE_VMX))
++		vcpu_alloc_vmx(vm, &nested_gva);
++	else
++		vcpu_alloc_svm(vm, &nested_gva);
++
++	switch (type) {
++	case TEST_FINAL_PAGE_UNMAPPED:
++		/*
++		 * Unmap the final data page from NPT/EPT. The guest page
++		 * table walk succeeds, but the final GPA->HPA translation
++		 * fails. L2 reads from the page via OUTS.
++		 */
++		l2_entry = l2_guest_code_outs;
++		l2_test_page = vm_vaddr_alloc(vm, vm->page_size, TEST1_VADDR);
++		expected_fault_gpa = addr_gva2gpa(vm, l2_test_page);
++		break;
++	case TEST_PT_PAGE_UNMAPPED:
++		/*
++		 * Unmap a page table page from NPT/EPT. The hardware page
++		 * table walk fails when translating the PT page's GPA
++		 * through NPT/EPT. L2 reads from the page via OUTS.
++		 */
++		l2_entry = l2_guest_code_outs;
++		l2_test_page = vm_vaddr_alloc(vm, vm->page_size, TEST2_VADDR);
++		expected_fault_gpa = get_pt_gpa_for_vaddr(vm, l2_test_page);
++		break;
++	case TEST_FINAL_PAGE_WRITE_PROTECTED:
++		/*
++		 * Write-protect the final data page in NPT/EPT.  The page
++		 * is present and readable, but not writable.  L2 writes to
++		 * the page via INS, triggering a protection violation.
++		 */
++		l2_entry = l2_guest_code_ins;
++		l2_test_page = vm_vaddr_alloc(vm, vm->page_size, TEST3_VADDR);
++		expected_fault_gpa = addr_gva2gpa(vm, l2_test_page);
++		break;
++	case TEST_PT_PAGE_WRITE_PROTECTED:
++		/*
++		 * Write-protect a page table page in NPT/EPT.  The page is
++		 * present and readable, but not writable.  The guest page
++		 * table walk needs write access to set A/D bits, so it
++		 * triggers a protection violation on the PT page.
++		 * L2 reads from the page via OUTS.
++		 */
++		l2_entry = l2_guest_code_outs;
++		l2_test_page = vm_vaddr_alloc(vm, vm->page_size, TEST4_VADDR);
++		expected_fault_gpa = get_pt_gpa_for_vaddr(vm, l2_test_page);
++		break;
++	}
++
++	tdp_identity_map_default_memslots(vm);
++
++	if (type == TEST_FINAL_PAGE_WRITE_PROTECTED ||
++	    type == TEST_PT_PAGE_WRITE_PROTECTED)
++		*tdp_get_pte(vm, expected_fault_gpa) &= ~PTE_WRITABLE_MASK(&vm->stage2_mmu);
++	else
++		*tdp_get_pte(vm, expected_fault_gpa) &= ~(PTE_PRESENT_MASK(&vm->stage2_mmu) |
++							   PTE_READABLE_MASK(&vm->stage2_mmu) |
++							   PTE_WRITABLE_MASK(&vm->stage2_mmu) |
++							   PTE_EXECUTABLE_MASK(&vm->stage2_mmu));
++
++	sync_global_to_guest(vm, l2_entry);
++	sync_global_to_guest(vm, l2_test_page);
++	vcpu_args_set(vcpu, 3, nested_gva, expected_fault_gpa, (uint64_t)type);
++
++	/*
++	 * For the INS-based write test, KVM emulates the instruction and
++	 * first reads from the I/O port, which exits to userspace.
++	 * Re-enter the guest so emulation can proceed to the memory
++	 * write, where the nested page fault is triggered.
++	 */
++	for (;;) {
++		vcpu_run(vcpu);
++
++		if (vcpu->run->exit_reason == KVM_EXIT_IO &&
++		    vcpu->run->io.port == TEST_IO_PORT &&
++		    vcpu->run->io.direction == KVM_EXIT_IO_IN) {
++			continue;
++		}
++		break;
++	}
++
++	switch (get_ucall(vcpu, &uc)) {
++	case UCALL_DONE:
++		break;
++	case UCALL_ABORT:
++		REPORT_GUEST_ASSERT(uc);
++	default:
++		TEST_FAIL("Unexpected exit reason: %d", vcpu->run->exit_reason);
++	}
++
++	kvm_vm_free(vm);
++}
++
++int main(int argc, char *argv[])
++{
++	TEST_REQUIRE(kvm_cpu_has(X86_FEATURE_VMX) || kvm_cpu_has(X86_FEATURE_SVM));
++	TEST_REQUIRE(kvm_cpu_has_tdp());
++
++	run_test(TEST_FINAL_PAGE_UNMAPPED);
++	run_test(TEST_PT_PAGE_UNMAPPED);
++	run_test(TEST_FINAL_PAGE_WRITE_PROTECTED);
++	run_test(TEST_PT_PAGE_WRITE_PROTECTED);
++
++	return 0;
++}
 -- 
 2.53.0.851.ga537e3e6e9-goog
 
