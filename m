@@ -1,138 +1,139 @@
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE0BE3A6B79;
-	Fri, 13 Mar 2026 14:40:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3B72B3A6B88;
+	Fri, 13 Mar 2026 14:42:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773412852; cv=none; b=XoRE+wFW1i2DT6qrqzUoL6qDc9TUINytQsWN2M3hp89OjSVnJPeSJAmstnady+bvIZ8ir6jcDyuZXPYTblqLXvd5dQJL+aiDMuXMMlcXZUwZayLIKVEHJ3mQh5NbbCi1WZnc6901CB0/O/YnAS1TdSr2ZIo85NPZJmzhLrKACWM=
+	t=1773412945; cv=none; b=AR0rp8lMPmCt+g/8SyN400w0aOTZVSpRco2MfVf2FFbt2+KVLO7s8mW1gnrJYSpivhFjKt8FxAt1UEEUpbINM9GmwphAxZhPfC5kTu2HrLdX2DB9eEcpRkKX8XmgMYy/msCaScxvLqdSPHreB6TNZaf6uHkHx4Gb1ZSz/5dMv6E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773412852; c=relaxed/simple;
-	bh=5cizI4RnQ0+sYKvc9ts3bTzV0kKuXbFeKHHv9Tr/FW8=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=lQweLyarpHTamvfZOfn1HkmrLnuFCiWUlnkqbc9DB4Tdl//bia9amYh8AaVKc4+qKGc2Ljjk5Y54bp10otoBSRDR0cbfuHMuLz03hzAMTlOX8FeSMBwEFylwQnTUJDqttO+JWaw1u6Y3LkDNRw7Rf9ttr5aTxhsbK1k0bQXOqRI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=kEX9QF8q; arc=none smtp.client-ip=148.163.158.5
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="kEX9QF8q"
-Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 62D4bdh92302591;
-	Fri, 13 Mar 2026 14:40:45 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=g8eH4A
-	UCHFQrNsfFrG8n2p5dtYByJuzeHJBKD1ogaUw=; b=kEX9QF8q6YAuHlG7t7Ngi9
-	Uhk0c1CnohsB1IFGObs2aIUUIoAh4bDXzOUHfGtIUZxUGUEQ1nsIgE0PBPs8TI7L
-	zVErKO+XsmHjmsEK7UxzW/T7lSQW4UMwYQbSVm0V8c439RIodf7CKGm0IWjUrkDs
-	4vtIkNRuHhtf5oTmSQhrjDh8EV5OIC+W3aySaxbaF9EEYHm2C+RYgagxIHaMqDfK
-	D2dA0WmjmTGzT846j6OdvOPx/ryMG0oXuSDfN+hIo0dXHTSrRwAfuWzFAHcgWka+
-	aBIWA2WvkF0//loZbeOH6+YMRrtR1cjlxjP54XsjOWpjf6jtd/4cf5kGo3Powl2g
-	==
-Received: from ppma12.dal12v.mail.ibm.com (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4cuh95yyd8-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 13 Mar 2026 14:40:45 +0000 (GMT)
-Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma12.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 62DALNgT006031;
-	Fri, 13 Mar 2026 14:40:44 GMT
-Received: from smtprelay02.fra02v.mail.ibm.com ([9.218.2.226])
-	by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 4cuha9q101-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 13 Mar 2026 14:40:44 +0000
-Received: from smtpav06.fra02v.mail.ibm.com (smtpav06.fra02v.mail.ibm.com [10.20.54.105])
-	by smtprelay02.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 62DEee1m53608786
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Fri, 13 Mar 2026 14:40:40 GMT
-Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 3DA132004D;
-	Fri, 13 Mar 2026 14:40:40 +0000 (GMT)
-Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 065532005A;
-	Fri, 13 Mar 2026 14:40:40 +0000 (GMT)
-Received: from tuxmaker.boeblingen.de.ibm.com (unknown [9.87.85.9])
-	by smtpav06.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Fri, 13 Mar 2026 14:40:39 +0000 (GMT)
-From: Julian Ruess <julianr@linux.ibm.com>
-Date: Fri, 13 Mar 2026 15:40:30 +0100
-Subject: [PATCH v4 3/3] MAINTAINERS: add VFIO ISM PCI DRIVER section
+	s=arc-20240116; t=1773412945; c=relaxed/simple;
+	bh=9amcathOnSuA9o0wdffWhIzxuO1Tcw+QsTIsAnvrXUw=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Tp8IKkIKbNjQpvY0R3b5M0Sl+dChRtjRX1Bve024XLkQ4NJZTB8YWzNATX5gE8qKDV8HgGpgGu+vD4nkWN84EMY6Z0on7z3YEa4nhyc98R982phrQFZ0KfWfp8BiwyKtpHYoR//fhJYd6mE1BGqwB/Clgbk2ygVMR4Er3pC1Ma8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 87823165C;
+	Fri, 13 Mar 2026 07:42:17 -0700 (PDT)
+Received: from arm.com (usa-sjc-mx-foss1.foss.arm.com [172.31.20.19])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 3B60C3F7BD;
+	Fri, 13 Mar 2026 07:42:21 -0700 (PDT)
+Date: Fri, 13 Mar 2026 14:42:18 +0000
+From: Catalin Marinas <catalin.marinas@arm.com>
+To: Yeoreum Yun <yeoreum.yun@arm.com>
+Cc: linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+	kvmarm@lists.linux.dev, kvm@vger.kernel.org,
+	linux-kselftest@vger.kernel.org, will@kernel.org, maz@kernel.org,
+	oupton@kernel.org, miko.lenczewski@arm.com, kevin.brodsky@arm.com,
+	broonie@kernel.org, ardb@kernel.org, suzuki.poulose@arm.com,
+	lpieralisi@kernel.org, joey.gouly@arm.com, yuzenghui@huawei.com
+Subject: Re: [PATCH v15 5/8] arm64: futex: support futex with FEAT_LSUI
+Message-ID: <abQiSiX_xxjSY96-@arm.com>
+References: <20260227151705.1275328-1-yeoreum.yun@arm.com>
+ <20260227151705.1275328-6-yeoreum.yun@arm.com>
+ <abMDOC5DYEm74And@arm.com>
+ <abPXrvl9tC+nv6q9@e129823.arm.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260313-vfio_pci_ism-v4-3-4765ae056f71@linux.ibm.com>
-References: <20260313-vfio_pci_ism-v4-0-4765ae056f71@linux.ibm.com>
-In-Reply-To: <20260313-vfio_pci_ism-v4-0-4765ae056f71@linux.ibm.com>
-To: schnelle@linux.ibm.com, wintera@linux.ibm.com, ts@linux.ibm.com,
-        oberpar@linux.ibm.com, gbayer@linux.ibm.com,
-        Alex Williamson <alex@shazbot.org>, Jason Gunthorpe <jgg@ziepe.ca>,
-        Yishai Hadas <yishaih@nvidia.com>,
-        Shameer Kolothum <skolothumtho@nvidia.com>,
-        Kevin Tian <kevin.tian@intel.com>
-Cc: mjrosato@linux.ibm.com, alifm@linux.ibm.com, raspl@linux.ibm.com,
-        hca@linux.ibm.com, agordeev@linux.ibm.com, gor@linux.ibm.com,
-        julianr@linux.ibm.com, kvm@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-s390@vger.kernel.org,
-        linux-pci@vger.kernel.org
-X-Mailer: b4 0.14.2
-X-TM-AS-GCONF: 00
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMzEzMDExNiBTYWx0ZWRfXz4s+sgYSwP/G
- dnhd6WEBJ52Ll+AKtRey+DZ1b6aA1rWs15/bZXzteREoAkjzgm2BhL871JGocQe0qklXrQwBOP3
- t3xCokO7T+2QxBeYzXFtf0Hz66V8xu5SwPsEI4F9vo/+ssChzNUZ4ZH5eEn3UhlhU15Twy9DAOB
- dO/qEVmOAL3If0HhMCzNff+tTMJU3QvyAjJCAAW8kZv+yvFO0hlKroRX4RD2jWe/3tUR3tLfTPM
- 8qhMa++UocpBqMLmJ8TXYZwBoahj0kgkJ66kJQpIiQ65riUcpzzPX79hW7Kxuc7LUg+fUFj6/+D
- QuQUDemwNeH1CjR+bo4yoP9okynkZjvAtSCgm7kZMILQRITG5CTSEfBplzltiedF6xiQY7QknCo
- WVsoGkZe/mEn5Auu7DC8Z0AQIioCRyA2C+cFnseIbtIk3iEonAedszmXOxZPHzhP4ZT5rtsFYMZ
- +DbRDhuT9ArVXQiXj4Q==
-X-Authority-Analysis: v=2.4 cv=FowIPmrq c=1 sm=1 tr=0 ts=69b421ed cx=c_pps
- a=bLidbwmWQ0KltjZqbj+ezA==:117 a=bLidbwmWQ0KltjZqbj+ezA==:17
- a=IkcTkHD0fZMA:10 a=Yq5XynenixoA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=RnoormkPH1_aCDwRdu11:22 a=Y2IxJ9c9Rs8Kov3niI8_:22 a=VnNF1IyMAAAA:8
- a=VwQbUJbxAAAA:8 a=Ikd4Dj_1AAAA:8 a=jBZh5NATpTL4zB9YInYA:9 a=QEXdDO2ut3YA:10
-X-Proofpoint-GUID: D_crtwemmBm8RXVxefYg9AtCrk9rIT9s
-X-Proofpoint-ORIG-GUID: D_crtwemmBm8RXVxefYg9AtCrk9rIT9s
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
- definitions=2026-03-13_02,2026-03-13_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- spamscore=0 clxscore=1015 suspectscore=0 bulkscore=0 impostorscore=0
- lowpriorityscore=0 adultscore=0 phishscore=0 malwarescore=0
- priorityscore=1501 classifier=typeunknown authscore=0 authtc= authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2603050001
- definitions=main-2603130116
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <abPXrvl9tC+nv6q9@e129823.arm.com>
 
-ism_vfio_pci is a new kernel component that allows
-to use the ISM device from userspace. Add myself
-as a maintainer.
+On Fri, Mar 13, 2026 at 09:23:58AM +0000, Yeoreum Yun wrote:
+> > On Fri, Feb 27, 2026 at 03:17:02PM +0000, Yeoreum Yun wrote:
+> > > +
+> > > +		if (__lsui_cmpxchg64(uaddr64, &oval64.raw, nval64.raw))
+> > > +			return -EFAULT;
+> > > +
+> > > +		oldval = oval64.futex[futex_pos];
+> > > +		other = oval64.futex[other_pos];
+> > > +		orig_other = orig64.futex[other_pos];
+> > > +
+> > > +		if (other == orig_other) {
+> > > +			ret = 0;
+> > > +			break;
+> > > +		}
+> >
+> > Is this check correct? What if the cmpxchg64 failed because futex_pos
+> > was changed but other_pos remained the same, it will just report success
+> > here. You need to compare the full 64-bit value to ensure the cmpxchg64
+> > succeeded.
+> 
+> This is not matter since "futex_cmpxchg_value_locked()" checks
+> the "curval" and "oldval" IOW, though it returns success,
+> caller of this function always checks the "curval" and "oldval"
+> and when it's different, It handles to change return as -EAGAIN.
 
-Reviewed-by: Niklas Schnelle <schnelle@linux.ibm.com>
-Signed-off-by: Julian Ruess <julianr@linux.ibm.com>
----
- MAINTAINERS | 6 ++++++
- 1 file changed, 6 insertions(+)
+Ah, ok, it makes sense (I did not check the callers).
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index bc3bcc641663343e9e49281a1b409c84d383583f..1ea2aab4a9bf1294b0f6a1a8c4cdb74188813816 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -27703,6 +27703,12 @@ L:	kvm@vger.kernel.org
- S:	Maintained
- F:	drivers/vfio/pci/hisilicon/
- 
-+VFIO ISM PCI DRIVER
-+M:	Julian Ruess <julianr@linux.ibm.com>
-+L:	kvm@vger.kernel.org
-+S:	Maintained
-+F:	drivers/vfio/pci/ism/
-+
- VFIO MEDIATED DEVICE DRIVERS
- M:	Kirti Wankhede <kwankhede@nvidia.com>
- L:	kvm@vger.kernel.org
+> > > +	}
+> > > +
+> > > +	if (!ret)
+> > > +		*oval = oldval;
+> > > +
+> > > +	return ret;
+> > > +}
+> > > +
+> > > +static __always_inline int
+> > > +__lsui_futex_atomic_and(int oparg, u32 __user *uaddr, int *oval)
+> > > +{
+> > > +	/*
+> > > +	 * Undo the bitwise negation applied to the oparg passed from
+> > > +	 * arch_futex_atomic_op_inuser() with FUTEX_OP_ANDN.
+> > > +	 */
+> > > +	return __lsui_futex_atomic_andnot(~oparg, uaddr, oval);
+> > > +}
+> > > +
+> > > +static __always_inline int
+> > > +__lsui_futex_atomic_eor(int oparg, u32 __user *uaddr, int *oval)
+> > > +{
+> > > +	u32 oldval, newval, val;
+> > > +	int ret, i;
+> > > +
+> > > +	if (get_user(oldval, uaddr))
+> > > +		return -EFAULT;
+> > > +
+> > > +	/*
+> > > +	 * there are no ldteor/stteor instructions...
+> > > +	 */
+> > > +	for (i = 0; i < FUTEX_MAX_LOOPS; i++) {
+> > > +		newval = oldval ^ oparg;
+> > > +
+> > > +		ret = __lsui_cmpxchg32(uaddr, oldval, newval, &val);
+> >
+> > Since we have a FUTEX_MAX_LOOPS here, do we need it in cmpxchg32 as
+> > well?
+> >
+> > For eor, we need a loop irrespective of whether futex_pos or other_pos
+> > have changed. For cmpxchg, we need the loop only if other_pos has
+> > changed and return -EAGAIN if futex_pos has changed since the caller
+> > needs to update oldval and call again.
+> >
+> > So try to differentiate these cases, maybe only keep the loop outside
+> > cmpxchg32 (I haven't put much though into it).
+> 
+> I think we can remove loops on __lsui_cmpxchg32() and return -EAGAIN
+> when other_pos is different. the __lsui_cmpxchg32() will be called
+> "futex_cmpxchg_value_locked()" and as I said, this always checks
+> whether curval & oldval when it successed.
+
+Yes, I think for the futex_cmpxchg_value_locked(), the bounded loop
+doesn't matter since the core would invoke it back on -EAGAIN. It's nice
+not to fail if the actual futex did not change but in practice it
+doesn't make any difference and I'd rather keep the code simple.
+
+> But in "eor" when it receive "-EAGAIN" from __lsui_cmxchg32()
+> we can simply continue the loop.
+
+Yes, for eor we need the bounded loop. Only return -EAGAIN to the user
+if we finished the loop and either __lsui_cmpxchg32() returned -EAGAIN
+or the updated on futex_pos failed.
+
+Thanks.
 
 -- 
-2.51.0
-
+Catalin
