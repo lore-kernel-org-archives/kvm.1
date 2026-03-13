@@ -1,53 +1,53 @@
-Received: from mail-pj1-f73.google.com (mail-pj1-f73.google.com [209.85.216.73])
+Received: from mail-pj1-f74.google.com (mail-pj1-f74.google.com [209.85.216.74])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2BE233815F3
-	for <kvm@vger.kernel.org>; Fri, 13 Mar 2026 06:13:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.73
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B4443822AD
+	for <kvm@vger.kernel.org>; Fri, 13 Mar 2026 06:13:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.74
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773382432; cv=none; b=n7aZCrpKCO0vZWhsmFwyoMAHRqa2ilQDxwLEEV8/vy1Hb0iUuvHqTBM9h06+Q2GyjWXZlYiznPVnIAWHk5qMa2KEfNZEWj5woKOBlHqGSeEscjlRAU/kmGKBh1UGfS+AYnho2u1j4FdkEW3BoL4YQj0nxDHHkmlvYfP6y++cakI=
+	t=1773382434; cv=none; b=irrYDWT5ljs+ic2kSfUouWyuF2MaEj6UsZSTrJ8yukPiW1CeKeT7oktlQBD2bf4FWa22Ak0ipFpqZGT2OmQMbSNnwECFVmpgEmBIidDgOsU9ZYPEMcD42Rhdvhnmef9nz6mZpFLx7lXJUEQm5jWwSaYU0Y/1SJCYkhgN4OwQbzE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773382432; c=relaxed/simple;
-	bh=eBC3jcG3ScbW3j4TjbtW1xeOPBdtG1NgqDFJ/RzbnOk=;
+	s=arc-20240116; t=1773382434; c=relaxed/simple;
+	bh=+5tIR4frwM4OWqSh/ZYr9ntMYrCrPfvZUQ7q+6ihHq0=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=Fs1Aa6eojTOiObJWwz+JcBciCzDyhafnj7XXiXBbAleBG6W23nUxzDAggeH2umkjFTO2KHNvqVY+lfWvgvYU6RZodi7ru4DzvYUAOeSSik3ZKzewQoRYlYgZz1/ZPQPx9cAN7CF4+jsBfDrXNmQ54bvtkm6Zz319LTb+hwbAIdU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--ackerleytng.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=RT/qPJ3W; arc=none smtp.client-ip=209.85.216.73
+	 To:Cc:Content-Type; b=CN9Mmn32Ev5/d6TN9jV8TXJjRI2kUxWd0Cd0TPc8yzZSz1Wl/MU2RE1eizXXL4dz9+DvjCMPs71QIbHZ2JUMRP5xLKEEyAMhoF9EAUMf6wLupY5J86ik9LKLaHUdFG4Lzg70Jf8d7ZEGlYtRayvH42nFXyFxi0F7aeKQ/cXbOo0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--ackerleytng.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=mhNNSi7C; arc=none smtp.client-ip=209.85.216.74
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--ackerleytng.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="RT/qPJ3W"
-Received: by mail-pj1-f73.google.com with SMTP id 98e67ed59e1d1-359812e4fefso1865469a91.1
-        for <kvm@vger.kernel.org>; Thu, 12 Mar 2026 23:13:43 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="mhNNSi7C"
+Received: by mail-pj1-f74.google.com with SMTP id 98e67ed59e1d1-358f058973fso2004784a91.1
+        for <kvm@vger.kernel.org>; Thu, 12 Mar 2026 23:13:47 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1773382423; x=1773987223; darn=vger.kernel.org;
+        d=google.com; s=20251104; t=1773382426; x=1773987226; darn=vger.kernel.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=fLaJoksD73aDG0T7R/zOcgKAGIjczNDrfVGYxHJRiJ4=;
-        b=RT/qPJ3WUXjIpMvoYMYCfBnLEvizy4wWPmsilK2TUX/6+Skql5gfgYtKl6QO6NLfvR
-         j413zI05X5Nt6WkrsE9xA5DbvDOh4tiHsP4rzenlE87HEdOmXJtBBbntdKePr4cqLqqu
-         q37pKT/pXGeZ4o0Xk1SuBWrihPLCPnZWuV23SghGND2sSe+DqottM9sYkTTDIr2zkcr4
-         Hxjl3L0ZfdtGb4+JQedownnJVbFW+TzQMPp1V8lf2EYe/wDWdzd429S1GkzB8tsOGVGQ
-         AX18VuRviNPUTeqJw+XAlNRSg9vSuAU3sy9xMAXnx87d+eyHhK1ePiszUiA+dhCxPGBJ
-         Mfnw==
+        bh=cRZPV0Jn99UEoemERWZsoqEdi1cZNzUoBuSgEmpyk28=;
+        b=mhNNSi7CBBIX/PQzcbWf+ZHobxPfksfV6TOAjfYd1TKQj8zg46zPzGrM9WHyFiq4F7
+         UHGOkII3cE9UbNBL3W+z2m8ZcVVevwbSmSzZiALtiAtXBNDM71K+WBC0vIVCOhWJsZSh
+         VgKiU4dWVQXRkBSnhsaWoTcVkn2a+6M5tszjlfvhfILRRRKEWyjs+Spss/cLrWb9Q7mH
+         52s+UI5YvrpIn2VK63/b0O5zFJtVo6PQJp8ECDuLdLvDGJbmqjNiDGrUlStqr5HKU/Kz
+         8TwjcZ9E/mPK4J+E9CrnUbFobBrenxB799/hbMLB9zJ9xGaFbb7H7SC03DD5l490KgiG
+         ycPg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1773382423; x=1773987223;
+        d=1e100.net; s=20251104; t=1773382426; x=1773987226;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=fLaJoksD73aDG0T7R/zOcgKAGIjczNDrfVGYxHJRiJ4=;
-        b=CtjMS2S5FRKh3C+Fg86tU6S1OLJTFgGGdurweFofw1Z1hzxyKp5WzL4eWAY9zTT3O9
-         igCX462o12EQ6i/t1Hw7P64obp5cU45NaU+E1Ns9SsE9AHr0uh+KLToba/mBX90TOebQ
-         TCqjYTqOAo9MigoMok5EecgHPgM8NpAYtSW49x79hlvRGsUQdgeI4tLMK8pk4B8tU2dx
-         q3uFL3dhaiM12mbTKWoBolim3a8GLpoljZjvh5vQU+KU0I8AMn2ZkEtXqMLJvxfIrlre
-         /4hqomh88qwbM8ZG/DPbrq66ZMoHb3/GRiKVIMaCcAUcbxptLYRg13c0v7raBHqYnVGH
-         Jspw==
-X-Gm-Message-State: AOJu0YyXJ6vr/fpg4UsLAGVGcpdwsRgYOUFdWJvB0fLP4FP/2fwHvTTH
-	t7R4hkJZmaT+UlowowEJy51U/tL9KmIa96sqcjjt0ULCLhN3yFBn97dxED+V721tqAt8ecQN5ld
-	NGOMwqg7NqyykAFJcJMRoWMqYdw==
-X-Received: from pjbfz8.prod.google.com ([2002:a17:90b:248:b0:356:3104:ed7])
+        bh=cRZPV0Jn99UEoemERWZsoqEdi1cZNzUoBuSgEmpyk28=;
+        b=Nta62dvpZlKuIfpLchaRpNzhrO1/hXXQve7TVl0gi+kH6n5pA1JvmNLRCZomJ1y48M
+         Tf36BSmM1gj9P0x5b4oiEVTn4hyHeVxYkUGSNpc8kVTijlzBBE3tOxF0QEzluTNjLcgn
+         OpYT1pk1f1+fDhmhBkcqggA2z6HNimvTvymDntPP65qAoyW/hutHX1GqcP72siTf4pp3
+         ArF2DY1bfnIV4Im2s1SnWxJOwEEAgBqXIOoS+0uiq3gbjrXGCK61NCJtBKl0Xo1I7zMi
+         zOXZTWf4NX36Rp7fdrMJBcxl8wudf1y4BRKNY0WXstPCzArhjdpO5xkx9BqL3eH4VfCE
+         yVXw==
+X-Gm-Message-State: AOJu0YxwlbQ3Y65xrSCfXTbMFgwjvqummowAi09DT02IcsqbUKovHFIk
+	mt8LiFZtivnjexhisyI4vrIPZz0KoabfWBRy2syZNzBJQvnZt6pMvGyZnCbRA50TYU+GaICz37l
+	E5M9el/pHiDt3W0jbhK5+Rg6KTA==
+X-Received: from pgbcv10.prod.google.com ([2002:a05:6a02:420a:b0:c70:ab5b:1db4])
  (user=ackerleytng job=prod-delivery.src-stubby-dispatcher) by
- 2002:a17:90b:4f42:b0:35a:26e:4522 with SMTP id 98e67ed59e1d1-35a11a6e854mr5613363a91.11.1773382422784;
- Thu, 12 Mar 2026 23:13:42 -0700 (PDT)
-Date: Fri, 13 Mar 2026 06:13:12 +0000
+ 2002:a05:6300:648f:b0:38e:95fb:3c8 with SMTP id adf61e73a8af0-398ecda3217mr1744809637.59.1773382426020;
+ Thu, 12 Mar 2026 23:13:46 -0700 (PDT)
+Date: Fri, 13 Mar 2026 06:13:14 +0000
 In-Reply-To: <20260313-gmem-inplace-conversion-v3-0-5fc12a70ec89@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
@@ -57,13 +57,13 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 References: <20260313-gmem-inplace-conversion-v3-0-5fc12a70ec89@google.com>
 X-Developer-Key: i=ackerleytng@google.com; a=ed25519; pk=sAZDYXdm6Iz8FHitpHeFlCMXwabodTm7p8/3/8xUxuU=
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1773382364; l=5246;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1773382364; l=6877;
  i=ackerleytng@google.com; s=20260225; h=from:subject:message-id;
- bh=eBC3jcG3ScbW3j4TjbtW1xeOPBdtG1NgqDFJ/RzbnOk=; b=xc5ePCN6yiNnnFknPRBFvGETXFBQmdy6FOAWKHysQD4E3pAN0eOpXDpm8UAoiqGBvjRU2afAk
- 5MQZGwgRZcGB6WLb5SkHg2k++3ucYfdMymNP17vm85Tc0TAg7xd4UtS
+ bh=+5tIR4frwM4OWqSh/ZYr9ntMYrCrPfvZUQ7q+6ihHq0=; b=VhpH9dBnF58xKb2zfft8mJo46RKUyWcv5dkJyQNNyd+6RD0jDjoe5l1rGJ1S0jPY92ogAmy3m
+ J12gExmzbI1BoGEfZ5qQc8Xww9b5V5I84lcrDJ2XdgpCRW8eyhYXL9E
 X-Mailer: b4 0.14.3
-Message-ID: <20260313-gmem-inplace-conversion-v3-33-5fc12a70ec89@google.com>
-Subject: [PATCH RFC v3 33/43] KVM: selftests: Make TEST_EXPECT_SIGBUS thread-safe
+Message-ID: <20260313-gmem-inplace-conversion-v3-35-5fc12a70ec89@google.com>
+Subject: [PATCH RFC v3 35/43] KVM: selftests: Add script to exercise private_mem_conversions_test
 From: Ackerley Tng <ackerleytng@google.com>
 To: aik@amd.com, andrew.jones@linux.dev, binbin.wu@linux.intel.com, 
 	brauner@kernel.org, chao.p.peng@linux.intel.com, david@kernel.org, 
@@ -86,149 +86,198 @@ Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org,
 	linux-kselftest@vger.kernel.org, Ackerley Tng <ackerleytng@google.com>
 Content-Type: text/plain; charset="utf-8"
 
-The TEST_EXPECT_SIGBUS macro is not thread-safe as it uses a global
-sigjmp_buf and installs a global SIGBUS signal handler. If multiple threads
-execute the macro concurrently, they will race on installing the signal
-handler and stomp on other threads' jump buffers, leading to incorrect test
-behavior.
+Add a wrapper script to simplify running the private_mem_conversions_test
+with a variety of configurations. Manually invoking the test for all
+supported memory backing source types is tedious.
 
-Make TEST_EXPECT_SIGBUS thread-safe with the following changes:
+The script automatically detects the availability of 2MB and 1GB hugepages
+and builds a list of source types to test. It then iterates through the
+list, running the test for each type with both a single memslot and
+multiple memslots.
 
-Share the KVM tests' global signal handler. sigaction() applies to all
-threads; without sharing a global signal handler, one thread may have
-removed the signal handler that another thread added, hence leading to
-unexpected signals.
+This makes it easier to get comprehensive test coverage across different
+memory configurations.
 
-The alternative of layering signal handlers was considered, but calling
-sigaction() within TEST_EXPECT_SIGBUS() necessarily creates a race. To
-avoid adding new setup and teardown routines to do sigaction() and keep
-usage of TEST_EXPECT_SIGBUS() simple, share the KVM tests' global signal
-handler.
+Use python to be able to issue an ioctl to /dev/kvm.
 
-Opportunistically rename report_unexpected_signal to
-catchall_signal_handler.
-
-To continue to only expect SIGBUS within specific regions of code, use a
-thread-specific variable, expecting_sigbus, to replace installing and
-removing signal handlers.
-
-Make the execution environment for the thread, sigjmp_buf, a
-thread-specific variable.
-
-As part of TEST_EXPECT_SIGBUS(), assert the prerequisite for this setup,
-that the current signal handler is the catchall_signal_handler.
+Update .gitignore to allowlist python scripts.
 
 Signed-off-by: Ackerley Tng <ackerleytng@google.com>
 ---
- tools/testing/selftests/kvm/include/test_util.h | 30 +++++++++++++------------
- tools/testing/selftests/kvm/lib/kvm_util.c      | 18 ++++++++++-----
- tools/testing/selftests/kvm/lib/test_util.c     |  7 ------
- 3 files changed, 29 insertions(+), 26 deletions(-)
+ tools/testing/selftests/kvm/.gitignore             |   1 +
+ .../kvm/x86/private_mem_conversions_test.py        | 152 +++++++++++++++++++++
+ 2 files changed, 153 insertions(+)
 
-diff --git a/tools/testing/selftests/kvm/include/test_util.h b/tools/testing/selftests/kvm/include/test_util.h
-index 2871a42928471..63e57d189f5fd 100644
---- a/tools/testing/selftests/kvm/include/test_util.h
-+++ b/tools/testing/selftests/kvm/include/test_util.h
-@@ -80,21 +80,23 @@ do {									\
- 	__builtin_unreachable(); \
- } while (0)
- 
--extern sigjmp_buf expect_sigbus_jmpbuf;
--void expect_sigbus_handler(int signum);
-+extern __thread sigjmp_buf expect_sigbus_jmpbuf;
-+extern __thread bool expecting_sigbus;
-+extern void catchall_signal_handler(int signum);
- 
--#define TEST_EXPECT_SIGBUS(action)						\
--do {										\
--	struct sigaction sa_old, sa_new = {					\
--		.sa_handler = expect_sigbus_handler,				\
--	};									\
--										\
--	sigaction(SIGBUS, &sa_new, &sa_old);					\
--	if (sigsetjmp(expect_sigbus_jmpbuf, 1) == 0) {				\
--		action;								\
--		TEST_FAIL("'%s' should have triggered SIGBUS", #action);	\
--	}									\
--	sigaction(SIGBUS, &sa_old, NULL);					\
-+#define TEST_EXPECT_SIGBUS(action)					\
-+do {									\
-+	struct sigaction sa = {};					\
-+									\
-+	TEST_ASSERT_EQ(sigaction(SIGBUS, NULL, &sa), 0);		\
-+	TEST_ASSERT_EQ(sa.sa_handler, &catchall_signal_handler);	\
-+									\
-+	expecting_sigbus = true;					\
-+	if (sigsetjmp(expect_sigbus_jmpbuf, 1) == 0) {			\
-+		action;							\
-+		TEST_FAIL("'%s' should have triggered SIGBUS", #action);\
-+	}								\
-+	expecting_sigbus = false;					\
- } while (0)
- 
- size_t parse_size(const char *size);
-diff --git a/tools/testing/selftests/kvm/lib/kvm_util.c b/tools/testing/selftests/kvm/lib/kvm_util.c
-index 6f7d3adb25d0a..f4aa762f050aa 100644
---- a/tools/testing/selftests/kvm/lib/kvm_util.c
-+++ b/tools/testing/selftests/kvm/lib/kvm_util.c
-@@ -2347,13 +2347,20 @@ __weak void kvm_selftest_arch_init(void)
- {
- }
- 
--static void report_unexpected_signal(int signum)
-+__thread sigjmp_buf expect_sigbus_jmpbuf;
-+__thread bool expecting_sigbus;
+diff --git a/tools/testing/selftests/kvm/.gitignore b/tools/testing/selftests/kvm/.gitignore
+index 1d41a046a7bfd..d7e9c1d97e376 100644
+--- a/tools/testing/selftests/kvm/.gitignore
++++ b/tools/testing/selftests/kvm/.gitignore
+@@ -4,6 +4,7 @@
+ !*.c
+ !*.h
+ !*.S
++!*.py
+ !*.sh
+ !.gitignore
+ !config
+diff --git a/tools/testing/selftests/kvm/x86/private_mem_conversions_test.py b/tools/testing/selftests/kvm/x86/private_mem_conversions_test.py
+new file mode 100755
+index 0000000000000..17f46c21e85e5
+--- /dev/null
++++ b/tools/testing/selftests/kvm/x86/private_mem_conversions_test.py
+@@ -0,0 +1,152 @@
++#!/usr/bin/env python3
++# SPDX-License-Identifier: GPL-2.0-only
++#
++# Wrapper script which runs different test setups of
++# private_mem_conversions_test.
++#
++# Copyright (C) 2025, Google LLC.
 +
-+void catchall_signal_handler(int signum)
- {
-+	switch (signum) {
-+	case SIGBUS: {
-+		if (expecting_sigbus)
-+			siglongjmp(expect_sigbus_jmpbuf, 1);
++import os
++import fcntl
++import sys
++import subprocess
 +
-+		TEST_FAIL("Unexpected SIGBUS (%d)\n", signum);
-+	}
- #define KVM_CASE_SIGNUM(sig)					\
- 	case sig: TEST_FAIL("Unexpected " #sig " (%d)\n", signum)
--
--	switch (signum) {
--	KVM_CASE_SIGNUM(SIGBUS);
- 	KVM_CASE_SIGNUM(SIGSEGV);
- 	KVM_CASE_SIGNUM(SIGILL);
- 	KVM_CASE_SIGNUM(SIGFPE);
-@@ -2365,12 +2372,13 @@ static void report_unexpected_signal(int signum)
- void __attribute((constructor)) kvm_selftest_init(void)
- {
- 	struct sigaction sig_sa = {
--		.sa_handler = report_unexpected_signal,
-+		.sa_handler = catchall_signal_handler,
- 	};
- 
- 	/* Tell stdout not to buffer its content. */
- 	setbuf(stdout, NULL);
- 
-+	expecting_sigbus = false;
- 	sigaction(SIGBUS, &sig_sa, NULL);
- 	sigaction(SIGSEGV, &sig_sa, NULL);
- 	sigaction(SIGILL, &sig_sa, NULL);
-diff --git a/tools/testing/selftests/kvm/lib/test_util.c b/tools/testing/selftests/kvm/lib/test_util.c
-index 8a1848586a857..03eb99af9b8de 100644
---- a/tools/testing/selftests/kvm/lib/test_util.c
-+++ b/tools/testing/selftests/kvm/lib/test_util.c
-@@ -18,13 +18,6 @@
- 
- #include "test_util.h"
- 
--sigjmp_buf expect_sigbus_jmpbuf;
--
--void __attribute__((used)) expect_sigbus_handler(int signum)
--{
--	siglongjmp(expect_sigbus_jmpbuf, 1);
--}
--
- /*
-  * Random number generator that is usable from guest code. This is the
-  * Park-Miller LCG using standard constants.
++
++NUM_VCPUS_TO_TEST = 4
++NUM_MEMSLOTS_TO_TEST = NUM_VCPUS_TO_TEST
++
++# Required pages are based on the test setup in the C code.
++# These static requirements are set to the maximum required for
++# NUM_VCPUS_TO_TEST, over all the hugetlb-related tests
++REQUIRED_NUM_2M_HUGEPAGES = 1024 * NUM_VCPUS_TO_TEST
++REQUIRED_NUM_1G_HUGEPAGES = 2 * NUM_VCPUS_TO_TEST
++
++
++def get_hugepage_count(page_size_kb: int) -> int:
++    """Reads the current number of hugepages available for a given size."""
++    try:
++        path = f"/sys/kernel/mm/hugepages/hugepages-{page_size_kb}kB/nr_hugepages"
++        with open(path, 'r') as f:
++            return int(f.read().strip())
++    except (FileNotFoundError, ValueError):
++        return 0
++
++
++def get_default_hugepage_size_in_kb():
++    """Reads the default hugepage size from /proc/meminfo."""
++    try:
++        with open("/proc/meminfo", 'r') as f:
++            for line in f:
++                if line.startswith("Hugepagesize:"):
++                    parts = line.split()
++                    if len(parts) >= 2 and parts[1].isdigit():
++                        return int(parts[1])
++    except FileNotFoundError:
++        return None
++
++
++def run_tests(executable_path: str, src_type: str, num_memslots: int, num_vcpus: int) -> None:
++    """Runs the test executable with different arguments."""
++    command = [executable_path, "-s", src_type, "-m", str(num_memslots), "-n", str(num_vcpus)]
++    print(" ".join(command))
++    _ = subprocess.run(command, check=True)
++
++
++def kvm_check_cap(capability: int) -> int:
++    KVM_CHECK_EXTENSION = 0xAE03
++    KVM_DEVICE = '/dev/kvm'
++
++    if not os.path.exists(KVM_DEVICE):
++        print(f"Error: KVM device not found at {KVM_DEVICE}. Is the 'kvm' module loaded?")
++        return -1
++
++    try:
++        fd = os.open(KVM_DEVICE, os.O_RDONLY)
++
++        result = fcntl.ioctl(fd, KVM_CHECK_EXTENSION, capability)
++
++        os.close(fd)
++        return result
++    except OSError as e:
++        print(f"Error issuing KVM ioctl on {KVM_DEVICE}: {e}", file=sys.stderr)
++        if fd > 0:
++            os.close(fd)
++        return -1
++
++
++def kvm_has_gmem_attributes() -> bool:
++    KVM_CAP_GUEST_MEMFD_MEMORY_ATTRIBUTES = 246
++
++    return kvm_check_cap(KVM_CAP_GUEST_MEMFD_MEMORY_ATTRIBUTES) > 0
++
++
++def get_backing_source_types() -> list[str]:
++    hugepage_2mb_count = get_hugepage_count(2048)
++    hugepage_2mb_enabled = hugepage_2mb_count >= REQUIRED_NUM_2M_HUGEPAGES
++    hugepage_1gb_count = get_hugepage_count(1048576)
++    hugepage_1gb_enabled = hugepage_1gb_count >= REQUIRED_NUM_1G_HUGEPAGES
++
++    default_hugepage_size_kb = get_default_hugepage_size_in_kb()
++    hugepage_default_enabled = False
++    if default_hugepage_size_kb == 2048:
++        hugepage_default_enabled = hugepage_2mb_enabled
++    elif default_hugepage_size_kb == 1048576:
++        hugepage_default_enabled = hugepage_1gb_enabled
++
++    backing_src_types: list[str] = ["anonymous", "anonymous_thp"]
++
++    if hugepage_default_enabled:
++        backing_src_types.append("anonymous_hugetlb")
++    else:
++        print("skipping anonymous_hugetlb backing source type")
++
++    if hugepage_2mb_enabled:
++        backing_src_types.append("anonymous_hugetlb_2mb")
++    else:
++        print("skipping anonymous_hugetlb_2mb backing source type")
++
++    if hugepage_1gb_enabled:
++        backing_src_types.append("anonymous_hugetlb_1gb")
++    else:
++        print("skipping anonymous_hugetlb_1gb backing source type")
++
++    backing_src_types.append("shmem")
++
++    if hugepage_default_enabled:
++        backing_src_types.append("shared_hugetlb")
++    else:
++        print("skipping shared_hugetlb backing source type")
++
++    return backing_src_types
++
++
++def main():
++    script_dir = os.path.dirname(os.path.abspath(__file__))
++    test_executable = os.path.join(script_dir, "private_mem_conversions_test")
++
++    if not os.path.exists(test_executable):
++        print(f"Error: Test executable not found at '{test_executable}'", file=sys.stderr)
++        sys.exit(1)
++
++    return_code = 0
++
++    backing_src_types = ["shmem"] if kvm_has_gmem_attributes() else get_backing_source_types()
++    try:
++        for i, src_type in enumerate(backing_src_types):
++            if i > 0:
++                print()
++            run_tests(test_executable, src_type, num_memslots=1, num_vcpus=1)
++            run_tests(test_executable, src_type, num_memslots=1, num_vcpus=NUM_VCPUS_TO_TEST)
++            run_tests(test_executable, src_type, num_memslots=NUM_MEMSLOTS_TO_TEST, num_vcpus=NUM_VCPUS_TO_TEST)
++    except subprocess.CalledProcessError as e:
++        print(f"Test failed for source type '{src_type}'. Command: {' '.join(e.cmd)}", file=sys.stderr)
++        return_code = e.returncode
++    except Exception as e:
++        print(f"An unexpected error occurred: {e}", file=sys.stderr)
++        return_code = 1
++
++    sys.exit(return_code)
++
++
++if __name__ == "__main__":
++    main()
 
 -- 
 2.53.0.851.ga537e3e6e9-goog
