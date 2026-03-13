@@ -1,132 +1,94 @@
-Received: from mail-pj1-f73.google.com (mail-pj1-f73.google.com [209.85.216.73])
+Received: from mail-pg1-f202.google.com (mail-pg1-f202.google.com [209.85.215.202])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2143C238C1B
-	for <kvm@vger.kernel.org>; Fri, 13 Mar 2026 00:36:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.73
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DBD2821B191
+	for <kvm@vger.kernel.org>; Fri, 13 Mar 2026 00:38:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.202
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773362197; cv=none; b=IcK6gI8B8V55U0+Em1aARJrTKC3FuZ1AvLC8vlBczP2Sh+KPvHRYPCeCdMnhHPaQNYq7p3mIRcX5eU8emJsoPBdO2mA37+k6E78h2IdwIUFOqHMjE5EwATWS/HcWYoTvi/iO/H2aotYHc2Efap1UrpE90HVvlWt0CIWhkhDC/sQ=
+	t=1773362327; cv=none; b=KnFkm4SB7pMcYPZUY8PRGKHgHqtQHG+Kb2epYf8erDMcrLzPIE/unc7JLUp/QR3SLmsaaTo0Wxqt5Be2ZwF5jLFza/wGGw0vogWkrj19QGKQ+7LPXvt8K6JHdhZ/I/d0mAHgd8/F1tJEe9rcAjzS42KHeltQIC92wRIqp9cWWw4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773362197; c=relaxed/simple;
-	bh=9oIvEgCdqEl+AGZYDSEAFBDA6RTB3elZif62x1BQroI=;
+	s=arc-20240116; t=1773362327; c=relaxed/simple;
+	bh=zCHDmUwlHgNjSHNh0xcE8X4h9oqkDg/q3tMYn+q9vXc=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=Noit4/C6EKC+RVoAqWrttf5mkOi1AMezLgHow6gNFpaXb1r5QmdR94WYKC0SjWmcj5El2iBkFgRJdM8kk/wC1QDkSA9TWVZq0usfJ/8i8n7HLYFD1tYsCIp6B9OTAFEQva7LqbwLhya0WS1jPBP4eoLefAwIMyy3Iyz1xlb41ng=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Tbr6d3rA; arc=none smtp.client-ip=209.85.216.73
+	 To:Cc:Content-Type; b=lNtqSla8Sx2lV5+3X+t+r0wHrCw8AfmHFLE48S+9PmByOx+Hx6RzD3t4qSKVLwph2MiyG/wOr754y16AMynYE1BOQHOWUviWzLDxWLpSOepk3zrv13eliZW6LtdCM8poSYZ2CeTkIOIKTMxhYhd7g8BgyKt4x7sADgpswjQ0SEw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=vBWdt8go; arc=none smtp.client-ip=209.85.215.202
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Tbr6d3rA"
-Received: by mail-pj1-f73.google.com with SMTP id 98e67ed59e1d1-35a0337930eso1085443a91.3
-        for <kvm@vger.kernel.org>; Thu, 12 Mar 2026 17:36:36 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="vBWdt8go"
+Received: by mail-pg1-f202.google.com with SMTP id 41be03b00d2f7-bce224720d8so933070a12.1
+        for <kvm@vger.kernel.org>; Thu, 12 Mar 2026 17:38:46 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1773362195; x=1773966995; darn=vger.kernel.org;
+        d=google.com; s=20251104; t=1773362326; x=1773967126; darn=vger.kernel.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=msDdWC7KsVzGR7+a7KYP2KJHZfc1KrX2g6o6c66TQ0I=;
-        b=Tbr6d3rA2menzviTRGUxxZ/si/4YqVxHLGAIIYU6rftjAVvS4DqBQFBP+SNle6fuGw
-         BH61TbGgpLa0hrFoPxm7W2WyN0FxrzKw5wj6dfMQ6molTQcALy10kT/SA2kdGdB487OM
-         8m7OKaFZjLA3qfFIr9iGtEhB1zTiFJOGY7lM8+lbg31xmTBOytAlDlV1uiFKnIz70yoO
-         ymOdFRtG1OnQYqpdEXjqrUdzwgSeY4IuS9YuG4qXBbv6KclUNvdx6yBQ3N65rfDmFUBL
-         xSd4h7fnjC7mYOcv61a9sHykaFyLshubWOaXp6RJ/WzVOFLy2EBwWmrMUFPW/ye2Groq
-         wY4A==
+        bh=BrA9+DazdYkJgNz+zHsE+a3JealnAO/XZn/zqlAAy5I=;
+        b=vBWdt8goVQRPFNCtcF0+WLDiTDfCBsNkpTS+E1scf0eGU9dVdzuZ+QrN4rl6zcXKL7
+         wiyCsIbk6ohBkdhijRcplggoUhZIsQ+pS3TqLU21hMFJfwVdIVU51y2mFVRJlBfrr0tY
+         /UWGLtDHv/amDGWBBbWcvRQhnz75wxbI6RR2Kt6m1cROP5ZFBuFVIGkJgLc7/qYajtDL
+         i9YObveaeoldPZSEOwTEw+wyCjvaNnZOhJr7tkN70fUivaZgKKs/p55kDwt9TN+9a1MS
+         BNEatxyyRktVuZYOuNpgJWiwIf2T8K0znxerD/ZLBvIsIXHdeAw4ojYO5T25O5gnV80h
+         8/iQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1773362195; x=1773966995;
+        d=1e100.net; s=20251104; t=1773362326; x=1773967126;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=msDdWC7KsVzGR7+a7KYP2KJHZfc1KrX2g6o6c66TQ0I=;
-        b=oOt0kkcwL/X4Os50YvbXY72RhiWwtXkJGEmbDqBgiQWCfjyHSaRivueg5kEVnltD1P
-         duEiLlZITRLHvcOwNzhGzN3MNsz/Hdq862wSqvj+KKjqzb70p6J7trJGvkXGu7wgLGw7
-         qCcnz9day8qFBkWm5glqWEz/5tf+IA/i4S9vA+fzJv7tc9HEzRZqUQFaI8hGMZc539V9
-         gYaPxTqKddeiBEklS5QRyOySv2vUXIFoopp519weHA8Lto9UDyDt2JFK7Updxs4FtnF3
-         lTpU4ntUkzUBz7hzX7WfzRao2J50UrXNmYR3vNqmBKDW2rYWQX2yO3E4mrwFKBIXbdqv
-         K2Ng==
-X-Forwarded-Encrypted: i=1; AJvYcCULPN69pyMKGhZKEv/hYQkWiIBydJ3I1+IKEaNO+YF+ic/fCEm4TBrPmrA16aNJkoj0SDs=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyTodf8mEiwOC6nM72RjnqknLlasbpTuOf9el/41EX6staIr5MP
-	tDMTEoClBqIjtvH45nK40aI5Qk2UgnokREYIRGW3rnuYd7ZEf+COIXKtIXmRciaek0eAjNvbV5P
-	AbdGx3Q==
-X-Received: from pjdd8.prod.google.com ([2002:a17:90a:2c8:b0:359:8f01:6c5a])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:28c4:b0:359:fcba:6517
- with SMTP id 98e67ed59e1d1-35a21fd7ab5mr1194105a91.19.1773362195351; Thu, 12
- Mar 2026 17:36:35 -0700 (PDT)
-Date: Thu, 12 Mar 2026 17:36:34 -0700
-In-Reply-To: <CAEvNRgFUc+9xCoN9Yo5NThHrvbccWAhPwp9nNM2fvx7QqrcJsg@mail.gmail.com>
+        bh=BrA9+DazdYkJgNz+zHsE+a3JealnAO/XZn/zqlAAy5I=;
+        b=h13BY/FwAptuui7V/1s5vcfqOmrECQ1b8jTw21mUBEJUx0dTdKmVCKOkw1j/DTeYs0
+         Vo8Rx6cRNXj2UHlAt83LZ24xvls7t1oHhgnONKlLl4btQxGYobeorY+ZgRwMzaf3HbUQ
+         uaSFGa5u3xwn1F3cMKcdxXLWPeikDarHjNg5SmB4EbdWvTLAox6/uiNdJMC0rNm5ki60
+         dmAjqn0Dp4bHFTeUDEroNJqsbahCFtwF8zeRInusZubeNw2MX6OgAW0qOXmZjiopq0bi
+         9lQVQQm926j8dQE/YKRPsT6wWbCA9RttvjyyyEc6kfrpd6lcim0nuNLZM+7tSwGX2ZE4
+         GMGA==
+X-Forwarded-Encrypted: i=1; AJvYcCXajMbM4/4w++dQKxteEGDaYldb/O1jdhEM9yFkub0XfDMW+Y6VCMvm/X3Llssmb3ebStA=@vger.kernel.org
+X-Gm-Message-State: AOJu0Ywr3NfV/Enlhh2aDYPDaFy01sm2XJTQemiTC26KXG1WYFH3QUFb
+	p8o4bmyMfSIKGtSt9i8GYBXcJI+sAgbomp/POoPLj0FW+lIbkWIkj0Oy2zraIJE+mW1bniZOcIO
+	S7mYICQ==
+X-Received: from pgww18.prod.google.com ([2002:a05:6a02:2c92:b0:c73:7789:143c])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a21:134b:b0:398:7853:dd8b
+ with SMTP id adf61e73a8af0-398eca32beemr950504637.9.1773362325740; Thu, 12
+ Mar 2026 17:38:45 -0700 (PDT)
+Date: Thu, 12 Mar 2026 17:38:44 -0700
+In-Reply-To: <c117141f-61da-4572-98ea-7a8a79eb5bab@redhat.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-References: <cover.1770071243.git.ackerleytng@google.com> <86ad28b767524e1e654b9c960e39ca8bfb24c114.1770071243.git.ackerleytng@google.com>
- <CAEvNRgFMNywpDRr+WeNsVj=MnsbhZp9H3j0QRDo_eOP+kGCNJw@mail.gmail.com>
- <CAEvNRgG-L+GBcm+u_thGvXAxV-Nqzu5VtgXy0PfND6SG0FiyVg@mail.gmail.com>
- <CA+EHjTy2urW2Tj5czQDKUHdri7FCLfw2mafTgmmtFs+-7ueoiw@mail.gmail.com>
- <abLfWHf89TxWqeGZ@google.com> <CAEvNRgFUc+9xCoN9Yo5NThHrvbccWAhPwp9nNM2fvx7QqrcJsg@mail.gmail.com>
-Message-ID: <abNcEkNseDEBIhop@google.com>
-Subject: Re: [RFC PATCH v2 09/37] KVM: guest_memfd: Add support for KVM_SET_MEMORY_ATTRIBUTES2
+References: <20260311003346.2626238-1-seanjc@google.com> <20260311003346.2626238-5-seanjc@google.com>
+ <CAO9r8zNBEOJrxbx8ob2KRLRKkd_aZjz8tyXGqXxs0=TJq4fU6Q@mail.gmail.com>
+ <abFulxXuRziXj039@google.com> <c117141f-61da-4572-98ea-7a8a79eb5bab@redhat.com>
+Message-ID: <abNclCT09InLIP-M@google.com>
+Subject: Re: [PATCH 4/7] KVM: x86: Add wrapper APIs to reset dirty/available
+ register masks
 From: Sean Christopherson <seanjc@google.com>
-To: Ackerley Tng <ackerleytng@google.com>
-Cc: Fuad Tabba <tabba@google.com>, kvm@vger.kernel.org, linux-doc@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org, 
-	linux-trace-kernel@vger.kernel.org, x86@kernel.org, aik@amd.com, 
-	andrew.jones@linux.dev, binbin.wu@linux.intel.com, bp@alien8.de, 
-	brauner@kernel.org, chao.p.peng@intel.com, chao.p.peng@linux.intel.com, 
-	chenhuacai@kernel.org, corbet@lwn.net, dave.hansen@linux.intel.com, 
-	david@kernel.org, hpa@zytor.com, ira.weiny@intel.com, jgg@nvidia.com, 
-	jmattson@google.com, jroedel@suse.de, jthoughton@google.com, 
-	maobibo@loongson.cn, mathieu.desnoyers@efficios.com, maz@kernel.org, 
-	mhiramat@kernel.org, michael.roth@amd.com, mingo@redhat.com, 
-	mlevitsk@redhat.com, oupton@kernel.org, pankaj.gupta@amd.com, 
-	pbonzini@redhat.com, prsampat@amd.com, qperret@google.com, 
-	ricarkol@google.com, rick.p.edgecombe@intel.com, rientjes@google.com, 
-	rostedt@goodmis.org, shivankg@amd.com, shuah@kernel.org, steven.price@arm.com, 
-	tglx@linutronix.de, vannapurve@google.com, vbabka@suse.cz, 
-	willy@infradead.org, wyihan@google.com, yan.y.zhao@intel.com
+To: Paolo Bonzini <pbonzini@redhat.com>
+Cc: Yosry Ahmed <yosry@kernel.org>, Kiryl Shutsemau <kas@kernel.org>, kvm@vger.kernel.org, 
+	x86@kernel.org, linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org, 
+	"Chang S . Bae" <chang.seok.bae@intel.com>
 Content-Type: text/plain; charset="us-ascii"
 
-On Thu, Mar 12, 2026, Ackerley Tng wrote:
-> Sean Christopherson <seanjc@google.com> writes:
+On Wed, Mar 11, 2026, Paolo Bonzini wrote:
+> On 3/11/26 14:31, Sean Christopherson wrote:
+> > > Not closely following this series and don't know this code well, but
+> > > this API is very confusing for me tbh. Especially in comparison with
+> > > kvm_reset_dirty_registers().
+> > > 
+> > > Maybe rename this to kvm_clear_available_registers(), and pass in a
+> > > "clear_mask", then reverse the polarity:
+> > > 
+> > > vcpu->arch.regs_avail &= ~clear_mask;
+> > Oh, yeah, I can do something like that.  I originally misread the TDX code and
+> > thought it was explicitly setting regs_avail, and so came up with a roundabout
+> > name.  I didn't revisit the naming or the polarity of the param once I realized
+> > all callers could use the same scheme.
+> > 
+> > No small part of me is tempted to turn it into a straigh "set" though, unless I'm
+> > missing something, the whole &= business is an implementation quirk.
 > 
-> > On Thu, Mar 12, 2026, Fuad Tabba wrote:
-> >> Hi Ackerley,
-> >>
-> >> Before getting into the UAPI semantics, thank you for all the heavy
-> >> lifting you've done here. Figuring out how to make it all work across
-> >> the different platforms is not easy :)
-> >>
-> >> <snip>
-> >>
-> >> > The policy definitions below provide more details:
-> >
-> > Please drop "CONTENT_POLICY" from the KVM documentation.  From KVM's perspective,
-> > these are not "policy", they are purely properties of the underlying memory.
-> > Userspace will likely use the attributes to implement policy of some kind, but
-> > KVM straight up doesn't care.
-> 
-> Policy might have been the wrong word. I think this is a property of the
-> conversion process/request, not a property of the memory like how
-> shared/private is a property of the memory?
-> 
-> I'll have to find another word to describe this enum of
+> I like kvm_clear_available_registers() for this + removing the second
+> argument completely for kvm_reset_dirty_registers().
 
-Or just don't?  I'm 100% serious, because unless we carve out a field _just_ for
-these two flags, they're eventually going to get mixed with other stuff.  At that
-point, having a precisely named enum container just gets in the way.
-
-> I see you dropped any documentation to do with testing.
-
-Yes.
-
-> I meant to document it (at least something about the unspecified case) so it
-> can be relied on in selftests, with the understanding (already specified
-> elsewhere in Documentation/virt/kvm/api.rst) that nothing about
-> KVM_X86_SW_PROTECTED_VM is to be relied on in production, and can be changed
-> anytime. What do you think?
-
-KVM_X86_SW_PROTECTED_VM should self-report like all other VM types, and shouldn't
-support anything that isn't documented as possible.  I.e. we shouldn't allow
-ZERO on shared=>private "for testing".
-
-What I do think we should do is scribble memory on conversions without ZERO or
-PRIVATE, probably guarded by a Kconfig or maybe a module param, to do a best
-effort enforcement of the ABI, i.e. to try and prevent userspace from depending
-on uarch/vendor specific behavior.
+Ya, me too.  I almost dropped the param for kvm_reset_dirty_registers(), but
+wanted symmetry since the names were the same.  But I like this a lot more.
