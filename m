@@ -1,171 +1,132 @@
-Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 10E612FD1B3;
-	Fri, 13 Mar 2026 12:18:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.176.79.56
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3CC7235AC37
+	for <kvm@vger.kernel.org>; Fri, 13 Mar 2026 12:22:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773404292; cv=none; b=FP5bmWMSX0w7L2RdT2ndL31V5CoVTFPJSdceCR7Etv75qSFQYFl6OxvVUpMTS6fzeK9d6W3Q9248j/6Nlw68Wv7rXa//fuoZ43rmU6VbWjZDsfx5p2eFVZkWMcbGl6c3S4z24i9I/S3KDq+VNSX8RKlCOrnX1KatAN8k2ADBTDU=
+	t=1773404548; cv=none; b=iwcPT3LvVeF3GSdABB9afUFSpD7oEJhwwLo90KoHldXZ4TFXaRppeLhAHvUki59tUUo+qsOY/YV8PHEtlZqPGXvENd1g4O/e5DmYdSIprH7CNRjDt+MlcL7D4c7yuq+MX3rkmuwZa23NDduJFntRQXmO+jx2fg1eIzoKDHZ7woc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773404292; c=relaxed/simple;
-	bh=QDRbhqTQiyEO35Oirmyj7FfC/SljS6/opUnObVcoVPM=;
-	h=Date:From:To:CC:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=SOhRDY4+pQWJxngtQaZAxfUOX3Qlacj22ELVwm/BRoC8IkFiFN+2ziOXq5eyc+lW8sfEBWYHtPbkK+a8ugMLBqEbYgRnofSagDlVGI7xziaLwQUGaIzrg0vLXFJuiKF2/PEtItdgeofGp5tehBAdBrlkmC+ogLNE29N7VtN50Jo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=185.176.79.56
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-Received: from mail.maildlp.com (unknown [172.18.224.150])
-	by frasgout.his.huawei.com (SkyGuard) with ESMTPS id 4fXNlf1SRCzJ46nT;
-	Fri, 13 Mar 2026 20:17:18 +0800 (CST)
-Received: from dubpeml500005.china.huawei.com (unknown [7.214.145.207])
-	by mail.maildlp.com (Postfix) with ESMTPS id A7C444056B;
-	Fri, 13 Mar 2026 20:18:07 +0800 (CST)
-Received: from localhost (10.203.177.15) by dubpeml500005.china.huawei.com
- (7.214.145.207) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Fri, 13 Mar
- 2026 12:18:06 +0000
-Date: Fri, 13 Mar 2026 12:18:05 +0000
-From: Jonathan Cameron <jonathan.cameron@huawei.com>
-To: <mhonap@nvidia.com>
-CC: <aniketa@nvidia.com>, <ankita@nvidia.com>, <alwilliamson@nvidia.com>,
-	<vsethi@nvidia.com>, <jgg@nvidia.com>, <mochs@nvidia.com>,
-	<skolothumtho@nvidia.com>, <alejandro.lucero-palau@amd.com>,
-	<dave@stgolabs.net>, <dave.jiang@intel.com>, <alison.schofield@intel.com>,
-	<vishal.l.verma@intel.com>, <ira.weiny@intel.com>,
-	<dan.j.williams@intel.com>, <jgg@ziepe.ca>, <yishaih@nvidia.com>,
-	<kevin.tian@intel.com>, <cjia@nvidia.com>, <targupta@nvidia.com>,
-	<zhiw@nvidia.com>, <kjaju@nvidia.com>, <linux-kernel@vger.kernel.org>,
-	<linux-cxl@vger.kernel.org>, <kvm@vger.kernel.org>
-Subject: Re: [PATCH 03/20] cxl: Move CXL spec defines to public header
-Message-ID: <20260313121805.0000611e@huawei.com>
-In-Reply-To: <20260311203440.752648-4-mhonap@nvidia.com>
-References: <20260311203440.752648-1-mhonap@nvidia.com>
-	<20260311203440.752648-4-mhonap@nvidia.com>
-X-Mailer: Claws Mail 4.3.0 (GTK 3.24.42; x86_64-w64-mingw32)
+	s=arc-20240116; t=1773404548; c=relaxed/simple;
+	bh=wEmkZnRugDmEPZUO8JNary4kx4U0kk1AWogTfuBYAk8=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=f9kyCMLQVExe0koaOQ2vKeQwkAqpZNqdKJjEovfnSYNQnDLVII0/GgmAWxD0GMybedCDBs3DMqMHsoG/mljMaIJtv/kZ5E/8kS2FBkWT9aGSegG3ckg6M88pPRIuXBMv9sn9pU1Ttma51f9Z/o92Ba3BkqoZc84U+MuJ1zAXOro=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=IPHnMKzu; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=kkXj5b/x; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=IPHnMKzu; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=kkXj5b/x; arc=none smtp.client-ip=195.135.223.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="IPHnMKzu";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="kkXj5b/x";
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="IPHnMKzu";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="kkXj5b/x"
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id 4C6935BDAE;
+	Fri, 13 Mar 2026 12:22:25 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1773404545; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=eu4RQxMOiV6iipRCCWw33d861NDRsOjNtVtDWOpR5Y0=;
+	b=IPHnMKzu7DH/iTxbvkoZ4j7UO4LeKd63+GnDOwR7XvUmC2Iu++2vXZs1JzuKDYKcGzhoPF
+	gjUWNiv9owm//bXTHbxsR4BsY3kPdJxFD47DzeCmvoiAGmVa32DYVU106hoOfDnrFNTO5R
+	al8/2q5gB2McAOwVQCzRadnFrkFWRco=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1773404545;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=eu4RQxMOiV6iipRCCWw33d861NDRsOjNtVtDWOpR5Y0=;
+	b=kkXj5b/x0R9r1DC+NkRUpYv1F6dM7vRBkmTVOQZuX9OoXnVujcBMFxIX2Zb9kbnQOmM67u
+	Bq5lcxS6MIxoiGCQ==
+Authentication-Results: smtp-out2.suse.de;
+	none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1773404545; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=eu4RQxMOiV6iipRCCWw33d861NDRsOjNtVtDWOpR5Y0=;
+	b=IPHnMKzu7DH/iTxbvkoZ4j7UO4LeKd63+GnDOwR7XvUmC2Iu++2vXZs1JzuKDYKcGzhoPF
+	gjUWNiv9owm//bXTHbxsR4BsY3kPdJxFD47DzeCmvoiAGmVa32DYVU106hoOfDnrFNTO5R
+	al8/2q5gB2McAOwVQCzRadnFrkFWRco=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1773404545;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=eu4RQxMOiV6iipRCCWw33d861NDRsOjNtVtDWOpR5Y0=;
+	b=kkXj5b/x0R9r1DC+NkRUpYv1F6dM7vRBkmTVOQZuX9OoXnVujcBMFxIX2Zb9kbnQOmM67u
+	Bq5lcxS6MIxoiGCQ==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id D0E6140507;
+	Fri, 13 Mar 2026 12:22:24 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id pGwXMIABtGmEPQAAD6G6ig
+	(envelope-from <clopez@suse.de>); Fri, 13 Mar 2026 12:22:24 +0000
+From: =?UTF-8?q?Carlos=20L=C3=B3pez?= <clopez@suse.de>
+To: kvm@vger.kernel.org
+Cc: alex.williamson@redhat.com,
+	pbonzini@redhat.com,
+	=?UTF-8?q?Carlos=20L=C3=B3pez?= <clopez@suse.de>
+Subject: [PATCH 0/4] KVM: VFIO: use mutex guards to simplify control flow
+Date: Fri, 13 Mar 2026 13:20:38 +0100
+Message-ID: <20260313122040.1413091-3-clopez@suse.de>
+X-Mailer: git-send-email 2.51.0
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: lhrpeml100011.china.huawei.com (7.191.174.247) To
- dubpeml500005.china.huawei.com (7.214.145.207)
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Spamd-Result: default: False [-3.30 / 50.00];
+	BAYES_HAM(-3.00)[99.99%];
+	MID_CONTAINS_FROM(1.00)[];
+	NEURAL_HAM_LONG(-1.00)[-1.000];
+	NEURAL_HAM_SHORT(-0.20)[-1.000];
+	MIME_GOOD(-0.10)[text/plain];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ARC_NA(0.00)[];
+	RCVD_TLS_ALL(0.00)[];
+	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
+	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+	TO_MATCH_ENVRCPT_ALL(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	RCPT_COUNT_THREE(0.00)[4];
+	FROM_EQ_ENVFROM(0.00)[];
+	RCVD_COUNT_TWO(0.00)[2];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:mid,imap1.dmz-prg2.suse.org:helo]
+X-Spam-Flag: NO
+X-Spam-Score: -3.30
+X-Spam-Level: 
 
-On Thu, 12 Mar 2026 02:04:23 +0530
-mhonap@nvidia.com wrote:
+Replace several uses of mutex_lock() / mutex_unlock() pairs with mutex
+guards, allowing removal of all gotos in virt/kvm/vfio.c.
 
-> From: Manish Honap <mhonap@nvidia.com>
-> 
-> HDM decoder capability structure and component reg block size
-> needs to be used by VFIO subsystem. Move the macros from private
-> CXL header to public one.
-> 
-> Signed-off-by: Manish Honap <mhonap@nvidia.com>
+In this series I also include a small refactor that allows greatly
+simplifying kvm_vfio_file_del(), and skipping an unnecessary call to
+kvm_vfio_update_coherency() if the list of files managed by the KVM
+VFIO device does not change.
 
-Not really related to this patch, but...
+Carlos López (4):
+  KVM: VFIO: clean up control flow in kvm_vfio_file_add()
+  KVM: VFIO: use mutex guard in kvm_vfio_file_set_spapr_tce()
+  KVM: VFIO: deduplicate file release logic
+  KVM: VFIO: update coherency only if file was deleted
 
-Maybe this is the time to think about doing a PCI like
-uapi/linux/cxl_regs.h header?
+ virt/kvm/vfio.c | 97 ++++++++++++++++++-------------------------------
+ 1 file changed, 35 insertions(+), 62 deletions(-)
 
-So far we have these duplicated in at least a couple of code
-bases and that is less than ideal!
 
-Move seems fine to me otherwise.
-
-> ---
->  drivers/cxl/cxl.h | 30 ------------------------------
->  include/cxl/cxl.h | 30 ++++++++++++++++++++++++++++++
->  2 files changed, 30 insertions(+), 30 deletions(-)
-> 
-> diff --git a/drivers/cxl/cxl.h b/drivers/cxl/cxl.h
-> index 10ddab3949ee..7146059e0dae 100644
-> --- a/drivers/cxl/cxl.h
-> +++ b/drivers/cxl/cxl.h
-> @@ -24,9 +24,6 @@ extern const struct nvdimm_security_ops *cxl_security_ops;
->   * (port-driver, region-driver, nvdimm object-drivers... etc).
->   */
->  
-> -/* CXL 2.0 8.2.4 CXL Component Register Layout and Definition */
-> -#define CXL_COMPONENT_REG_BLOCK_SIZE SZ_64K
-> -
->  /* CXL 2.0 8.2.5 CXL.cache and CXL.mem Registers*/
->  #define CXL_CM_OFFSET 0x1000
->  #define CXL_CM_CAP_HDR_OFFSET 0x0
-> @@ -39,33 +36,6 @@ extern const struct nvdimm_security_ops *cxl_security_ops;
->  #define   CXL_CM_CAP_HDR_ARRAY_SIZE_MASK GENMASK(31, 24)
->  #define CXL_CM_CAP_PTR_MASK GENMASK(31, 20)
->  
-> -/* HDM decoders CXL 2.0 8.2.5.12 CXL HDM Decoder Capability Structure */
-> -#define CXL_HDM_DECODER_CAP_OFFSET 0x0
-> -#define   CXL_HDM_DECODER_COUNT_MASK GENMASK(3, 0)
-> -#define   CXL_HDM_DECODER_TARGET_COUNT_MASK GENMASK(7, 4)
-> -#define   CXL_HDM_DECODER_INTERLEAVE_11_8 BIT(8)
-> -#define   CXL_HDM_DECODER_INTERLEAVE_14_12 BIT(9)
-> -#define   CXL_HDM_DECODER_INTERLEAVE_3_6_12_WAY BIT(11)
-> -#define   CXL_HDM_DECODER_INTERLEAVE_16_WAY BIT(12)
-> -#define CXL_HDM_DECODER_CTRL_OFFSET 0x4
-> -#define   CXL_HDM_DECODER_ENABLE BIT(1)
-> -#define CXL_HDM_DECODER0_BASE_LOW_OFFSET(i) (0x20 * (i) + 0x10)
-> -#define CXL_HDM_DECODER0_BASE_HIGH_OFFSET(i) (0x20 * (i) + 0x14)
-> -#define CXL_HDM_DECODER0_SIZE_LOW_OFFSET(i) (0x20 * (i) + 0x18)
-> -#define CXL_HDM_DECODER0_SIZE_HIGH_OFFSET(i) (0x20 * (i) + 0x1c)
-> -#define CXL_HDM_DECODER0_CTRL_OFFSET(i) (0x20 * (i) + 0x20)
-> -#define   CXL_HDM_DECODER0_CTRL_IG_MASK GENMASK(3, 0)
-> -#define   CXL_HDM_DECODER0_CTRL_IW_MASK GENMASK(7, 4)
-> -#define   CXL_HDM_DECODER0_CTRL_LOCK BIT(8)
-> -#define   CXL_HDM_DECODER0_CTRL_COMMIT BIT(9)
-> -#define   CXL_HDM_DECODER0_CTRL_COMMITTED BIT(10)
-> -#define   CXL_HDM_DECODER0_CTRL_COMMIT_ERROR BIT(11)
-> -#define   CXL_HDM_DECODER0_CTRL_HOSTONLY BIT(12)
-> -#define CXL_HDM_DECODER0_TL_LOW(i) (0x20 * (i) + 0x24)
-> -#define CXL_HDM_DECODER0_TL_HIGH(i) (0x20 * (i) + 0x28)
-> -#define CXL_HDM_DECODER0_SKIP_LOW(i) CXL_HDM_DECODER0_TL_LOW(i)
-> -#define CXL_HDM_DECODER0_SKIP_HIGH(i) CXL_HDM_DECODER0_TL_HIGH(i)
-> -
->  /* HDM decoder control register constants CXL 3.0 8.2.5.19.7 */
->  #define CXL_DECODER_MIN_GRANULARITY 256
->  #define CXL_DECODER_MAX_ENCODED_IG 6
-> diff --git a/include/cxl/cxl.h b/include/cxl/cxl.h
-> index 610711e861d4..27c006fa53c3 100644
-> --- a/include/cxl/cxl.h
-> +++ b/include/cxl/cxl.h
-> @@ -75,6 +75,36 @@ struct cxl_regs {
->  #define   CXL_CM_CAP_CAP_ID_HDM 0x5
->  #define   CXL_CM_CAP_CAP_HDM_VERSION 1
->  
-> +/* CXL 2.0 8.2.4 CXL Component Register Layout and Definition */
-> +#define CXL_COMPONENT_REG_BLOCK_SIZE SZ_64K
-> +
-> +/* HDM decoders CXL 2.0 8.2.5.12 CXL HDM Decoder Capability Structure */
-> +#define CXL_HDM_DECODER_CAP_OFFSET 0x0
-> +#define   CXL_HDM_DECODER_COUNT_MASK GENMASK(3, 0)
-> +#define   CXL_HDM_DECODER_TARGET_COUNT_MASK GENMASK(7, 4)
-> +#define   CXL_HDM_DECODER_INTERLEAVE_11_8 BIT(8)
-> +#define   CXL_HDM_DECODER_INTERLEAVE_14_12 BIT(9)
-> +#define   CXL_HDM_DECODER_INTERLEAVE_3_6_12_WAY BIT(11)
-> +#define   CXL_HDM_DECODER_INTERLEAVE_16_WAY BIT(12)
-> +#define CXL_HDM_DECODER_CTRL_OFFSET 0x4
-> +#define   CXL_HDM_DECODER_ENABLE BIT(1)
-> +#define CXL_HDM_DECODER0_BASE_LOW_OFFSET(i) (0x20 * (i) + 0x10)
-> +#define CXL_HDM_DECODER0_BASE_HIGH_OFFSET(i) (0x20 * (i) + 0x14)
-> +#define CXL_HDM_DECODER0_SIZE_LOW_OFFSET(i) (0x20 * (i) + 0x18)
-> +#define CXL_HDM_DECODER0_SIZE_HIGH_OFFSET(i) (0x20 * (i) + 0x1c)
-> +#define CXL_HDM_DECODER0_CTRL_OFFSET(i) (0x20 * (i) + 0x20)
-> +#define   CXL_HDM_DECODER0_CTRL_IG_MASK GENMASK(3, 0)
-> +#define   CXL_HDM_DECODER0_CTRL_IW_MASK GENMASK(7, 4)
-> +#define   CXL_HDM_DECODER0_CTRL_LOCK BIT(8)
-> +#define   CXL_HDM_DECODER0_CTRL_COMMIT BIT(9)
-> +#define   CXL_HDM_DECODER0_CTRL_COMMITTED BIT(10)
-> +#define   CXL_HDM_DECODER0_CTRL_COMMIT_ERROR BIT(11)
-> +#define   CXL_HDM_DECODER0_CTRL_HOSTONLY BIT(12)
-> +#define CXL_HDM_DECODER0_TL_LOW(i) (0x20 * (i) + 0x24)
-> +#define CXL_HDM_DECODER0_TL_HIGH(i) (0x20 * (i) + 0x28)
-> +#define CXL_HDM_DECODER0_SKIP_LOW(i) CXL_HDM_DECODER0_TL_LOW(i)
-> +#define CXL_HDM_DECODER0_SKIP_HIGH(i) CXL_HDM_DECODER0_TL_HIGH(i)
-> +
->  struct cxl_reg_map {
->  	bool valid;
->  	int id;
+base-commit: d2ea4ff1ce50787a98a3900b3fb1636f3620b7cf
+-- 
+2.51.0
 
