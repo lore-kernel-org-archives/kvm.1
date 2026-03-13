@@ -1,359 +1,369 @@
-Received: from BYAPR05CU005.outbound.protection.outlook.com (mail-westusazon11010017.outbound.protection.outlook.com [52.101.85.17])
+Received: from OSPPR02CU001.outbound.protection.outlook.com (mail-norwayeastazon11013054.outbound.protection.outlook.com [40.107.159.54])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5EF7E375F98;
-	Fri, 13 Mar 2026 09:22:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.85.17
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773393732; cv=fail; b=fFCZLuYJdjf4mamHi46iMmuJSeoLLR0DG+UHLfNQUrWR1+70alN6Bk9/8W4+o9OV2p0MDngX7WArpmMqGXtysQryD9oZ568qkKARx8wzu61PoyqwVhKEtRh+r5VouDtHuXj1S/lu3jaE0i8Q7u8TYCMGhdI5iFxZndcwyCCpqro=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773393732; c=relaxed/simple;
-	bh=ZPcKAxwWWPbLOFXxwZeAPSrC7Ull+wuxs87VpnWfWQA=;
-	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=i9bL5GSWsyQi38elnPBAeO7bKJhAxfCD49LMb5+QOJFzmKL+VXo/RzLdBQahhmPb+XCUq15jEwWtnONAMLjZkBerohzMOnBJUzuVKkqJU76dKY40vTklnj5aAu59shG96l/zpTg8IC2Zu1UeoEvna/yigj4VCzM5SX1JguN32uk=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=eEaREBnM; arc=fail smtp.client-ip=52.101.85.17
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 567F8359A90;
+	Fri, 13 Mar 2026 09:25:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.159.54
+ARC-Seal:i=3; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1773393913; cv=fail; b=ieu1MYe1YspYg6TPRjw24416XhggwDzgC9E7n+mKA17y1Zsmu780kllnmaa0NPrHdaozJwIzCbq0pnfqj+eZ5t5G+VpRYYPVn+G4/kP8g/C5JMC2NRzqxi7T0hDDKEfcuZwce2+6hRMqekIYKvw9PqH2dqXLjY5ANQ+TvTKCifo=
+ARC-Message-Signature:i=3; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1773393913; c=relaxed/simple;
+	bh=sbqLF6TYzWQdnDBvbf+4T5t+NkMtZqrRdtRLLejx/x8=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=BwpJNtsZhSR1d50eeVmZ0L4i833gVYHMtSnf7LT9Zd6FOqJYV32Y+CYWjTgdHBo6vC9blIuZJ4OVfKNqoi2zgO0rRYpeuk9/oxmJjrSOnqZcqoAK5j6vAIh7B3EzuqtCuCfVAcTbGyTkBiD90mRwn9hu55lUgiKz15/QWIMG1Zg=
+ARC-Authentication-Results:i=3; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=T+BKdRmI; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=T+BKdRmI; arc=fail smtp.client-ip=40.107.159.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="eEaREBnM"
+	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="T+BKdRmI";
+	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="T+BKdRmI"
+ARC-Seal: i=2; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=pass;
+ b=d2IqhmY3lFUB/Xr8irspiJgTxpTjgAIpFdJ88P6TsSsdqsraVsqvbD2Fo5R5ZSI88pE98Tn9JXZpDrswuIUC65ZbxYEA2sMUSn3jKvjgnc4uFPgQupNZoAE6ETyzrBxjp2pL8h5G59EMLG2n2HEhAuv0T7D/5UOHv1+hBP+X8Wz9LtAAl/GcSQ9d5peHGfPtq5kNSGvH1gXR7TKkwE1ZGy7E5NJkgQiQCl5vrSgz/QwE64oJ0QjnqH3zuPc/M6Fqekc3WONEWiu0lTz29Ew8wwUQpyP+krwl1cZcasEoKu3mXwm05A/Q6W3cYvVaVLCOEnSbPM+avqybE31U3FSw6w==
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=CEJePSUEyvyBgFeN1ueNf92eHxC4oP3TXKLRDKWNTRs=;
+ b=BvgtH1TFzVML/LOtSbtiYZYhjlhuDoX6XoUbzlNfOlZBUcAyQxYX1JyXPMmEoFoG2Y5Wbf6G8YCBscf8msW7qruyIBmUfY5045rkNjpesjVRQ+GakNPpFeVCH5DTE0tSwu/ndK+cdYmMazkQt90Z31KCLfVqHSF2ZzKpB3MkYw43hocZnuhCbgYKOvNpO6hmetZyhIELQ/gBlhCJ+JDpZ+HC3AxgEVZRLYuORnRK7i+vojs3uoUL3fS4d2Gbai/adDaJE9YtTF2Fw2yLCAcRGrMMiY4C90u+k9NUxk3xlPz4rE2yBe1g2UlncmnZPf2473Zdu3aqVpQmLOM+Ai2bOg==
+ARC-Authentication-Results: i=2; mx.microsoft.com 1; spf=pass (sender ip is
+ 4.158.2.129) smtp.rcpttodomain=lists.infradead.org smtp.mailfrom=arm.com;
+ dmarc=pass (p=none sp=none pct=100) action=none header.from=arm.com;
+ dkim=pass (signature was verified) header.d=arm.com; arc=pass (0 oda=1 ltdi=1
+ spf=[1,1,smtp.mailfrom=arm.com] dkim=[1,1,header.d=arm.com]
+ dmarc=[1,1,header.from=arm.com])
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arm.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=CEJePSUEyvyBgFeN1ueNf92eHxC4oP3TXKLRDKWNTRs=;
+ b=T+BKdRmIZAVC5PX+HaCPXp0Pr9nrRh4QZYlMn/AZ/KNV37dGcsf1LyYfz9w3lbDo3plibMIjabC4zLlt1+Uollz80FCY3PhO9hA9NMJJCN1m87kqiTVYy7rGAo7737fTlt1AocfOPMeEVVE5T495yb0f4x6aAzy9tTfmC0gpafs=
+Received: from DU7P190CA0023.EURP190.PROD.OUTLOOK.COM (2603:10a6:10:550::25)
+ by DU0PR08MB8232.eurprd08.prod.outlook.com (2603:10a6:10:3b2::21) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9700.12; Fri, 13 Mar
+ 2026 09:25:04 +0000
+Received: from DU6PEPF0000B621.eurprd02.prod.outlook.com
+ (2603:10a6:10:550:cafe::3c) by DU7P190CA0023.outlook.office365.com
+ (2603:10a6:10:550::25) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.9700.16 via Frontend Transport; Fri,
+ 13 Mar 2026 09:25:04 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 4.158.2.129)
+ smtp.mailfrom=arm.com; dkim=pass (signature was verified)
+ header.d=arm.com;dmarc=pass action=none header.from=arm.com;
+Received-SPF: Pass (protection.outlook.com: domain of arm.com designates
+ 4.158.2.129 as permitted sender) receiver=protection.outlook.com;
+ client-ip=4.158.2.129; helo=outbound-uk1.az.dlp.m.darktrace.com; pr=C
+Received: from outbound-uk1.az.dlp.m.darktrace.com (4.158.2.129) by
+ DU6PEPF0000B621.mail.protection.outlook.com (10.167.8.138) with Microsoft
+ SMTP Server (version=TLS1_3, cipher=TLS_AES_256_GCM_SHA384) id 15.20.9700.17
+ via Frontend Transport; Fri, 13 Mar 2026 09:25:04 +0000
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=K/ZX0+ZE3/w/87sf5ymPD4yLdKEN/ITuZviHlVJb3WRf6Qah+oa7ZAMdMxUMZ73AVqTxY35BZVNMsdTf61qQ8JkTYw3lCmlWa9mi0tE24F/nWjvjmMQlfvcThM2wqFV18JGyuUdnaK00NkLb0RehwH+BMqpI0547rcnT3n9TVVFqKW/Ncvo1AmU72YotD7MK6HOTTYzczCrty+AmjranjKB0+VFsrE8+D9xWNA9Gu/NW/eX14Avo/GGNGT6VZc62aXEJm0+aU2l0DZImyJleKgjz7H5Cp7rxzqlKLzDYGYztoTebCQSwB4YGZ781u2Rq1sBiTYJ18jLZqfs3auiO2A==
+ b=DHlWCv+x4zNvqV9UW29H4JBsPJUzvP2rP2kmpk7udqw3uZc6BNHEkdfHLL7IjoCIzo76Stp4dEHd6WUQLYUr1TCga3vxA/yA/Gu0GthdgoRfWqHP6ehVYjdnCAN0mNnRCsHapWASVI2qL9dbict0nW9k/3f7MYiNaH7QCxN2nytQPBiJ47fjSOXqG1tqLGnsV8VX085Q1LSLeBEub4ITu4u5Sox5UUIOOZExEYAYy67pYGFYSSzK4GeDJ1yDeep/JXIpOoqjmKbmUSfXUhhe6vjmzQPzojj8ksiegzZ/J+HPQuAIn6JglmA0OFufkYl7zcI8RZ58BEhZY4CEmmnLcQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=f89RTfJP5cCZR2sArNfVJu8Ab8L4isAAMD+WHsWsNo8=;
- b=f1x/L019beUAWQuxBySdE+ZbPCLGiSD38NQmFfj5qW6YbkJtPKVMmkOLS4X0oJOixOIUMmCNHdHUQ92v3eItUseQOJ2zepjPvSaupofYfxpkgZhaAUtmGB7y1m6qGuhDr9TKPX16P8jSmNUEliACRgHFIQvf0sQm7j+iNRx+QVjTcx5pSj3Vwk32f+CX4q5U+LgGWCxqE/qjaha0rkGfMZSDrbePqB7OetFLZE3+CnnN9KA8Nl1bDfjMYPBAnuRfCsyRGdmuGLKwZjDwi1aEuPnc/rKfH8gH8D22AdytFsptaxs8umbgJyDv+80nKDofm31XbOjFMUfePEyyC6kGdg==
+ bh=CEJePSUEyvyBgFeN1ueNf92eHxC4oP3TXKLRDKWNTRs=;
+ b=U83UDVgMVCO42FJQMaSBKcGzM4Gxh/VK6gQ9ToaJVLPyrQX9yaVWNbCmrAzIXneVEnxws88v97rfjUpWhdgRHxgN9TDN8GQ2GStIcT4yv3wQbp5csi6xRRev4VaEEH33M76hBjQqguopbs5BKh7GHfFBReVzUjYfwMRH0odPVNDa2cqdKWzpzk74obX4M1M2CSDpfLJSq40t+j3wSbwdCGMcCMJZExFiSiyvZrSLe613re/IuiohvNEqxr/+Y3wWYasCnQAg4DYEAemyhF2Qa2I1e6sTCjBTARYaeJ/0/6TmOp/QdAaGPgrsO9o6UhRpgElgaRGvsMFNvmbrPjHRNw==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
- header.d=amd.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ smtp.mailfrom=arm.com; dmarc=pass action=none header.from=arm.com; dkim=pass
+ header.d=arm.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arm.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=f89RTfJP5cCZR2sArNfVJu8Ab8L4isAAMD+WHsWsNo8=;
- b=eEaREBnM3tp3ZfT1r1Eow2h2e+JX2pY/1Y4YdTr4TFzBhjC5OAOIX7qnJUCIFCHApuqeDV5rwzw4zZ4QOblbOZLGIaWiQRYnMENJI1dT6JXyZ21jj9nRLclNYJazNf4dspkTDSuK1P/tWx/rhO97zqpQVHnMpo2K41+g8fjk9Ls=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=amd.com;
-Received: from PH7PR12MB5685.namprd12.prod.outlook.com (2603:10b6:510:13c::22)
- by LV8PR12MB9358.namprd12.prod.outlook.com (2603:10b6:408:201::12) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9723.6; Fri, 13 Mar
- 2026 09:22:07 +0000
-Received: from PH7PR12MB5685.namprd12.prod.outlook.com
- ([fe80::ce69:cfae:774d:a65c]) by PH7PR12MB5685.namprd12.prod.outlook.com
- ([fe80::ce69:cfae:774d:a65c%5]) with mapi id 15.20.9723.004; Fri, 13 Mar 2026
- 09:22:07 +0000
-Message-ID: <22eaf986-3fa5-4904-a7ad-dc7316aa1165@amd.com>
-Date: Fri, 13 Mar 2026 10:21:59 +0100
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC v2 PATCH 00/10] vfio/pci: Add mmap() for DMABUFs
-To: Matt Evans <mattev@meta.com>, Alex Williamson <alex@shazbot.org>,
- Leon Romanovsky <leon@kernel.org>, Jason Gunthorpe <jgg@nvidia.com>,
- Alex Mastro <amastro@fb.com>, Mahmoud Adam <mngyadam@amazon.de>,
- David Matlack <dmatlack@google.com>
-Cc: =?UTF-8?B?QmrDtnJuIFTDtnBlbA==?= <bjorn@kernel.org>,
- Sumit Semwal <sumit.semwal@linaro.org>, Kevin Tian <kevin.tian@intel.com>,
- Ankit Agrawal <ankita@nvidia.com>, Pranjal Shrivastava <praan@google.com>,
- Alistair Popple <apopple@nvidia.com>,
- Vivek Kasireddy <vivek.kasireddy@intel.com>, linux-kernel@vger.kernel.org,
- linux-media@vger.kernel.org, dri-devel@lists.freedesktop.org,
- linaro-mm-sig@lists.linaro.org, kvm@vger.kernel.org
-References: <20260312184613.3710705-1-mattev@meta.com>
-Content-Language: en-US
-From: =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>
-In-Reply-To: <20260312184613.3710705-1-mattev@meta.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: FR4P281CA0019.DEUP281.PROD.OUTLOOK.COM
- (2603:10a6:d10:c9::16) To PH7PR12MB5685.namprd12.prod.outlook.com
- (2603:10b6:510:13c::22)
+ bh=CEJePSUEyvyBgFeN1ueNf92eHxC4oP3TXKLRDKWNTRs=;
+ b=T+BKdRmIZAVC5PX+HaCPXp0Pr9nrRh4QZYlMn/AZ/KNV37dGcsf1LyYfz9w3lbDo3plibMIjabC4zLlt1+Uollz80FCY3PhO9hA9NMJJCN1m87kqiTVYy7rGAo7737fTlt1AocfOPMeEVVE5T495yb0f4x6aAzy9tTfmC0gpafs=
+Authentication-Results-Original: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=arm.com;
+Received: from GV1PR08MB10521.eurprd08.prod.outlook.com
+ (2603:10a6:150:163::20) by FRZPR08MB11875.eurprd08.prod.outlook.com
+ (2603:10a6:d10:1cb::18) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9700.16; Fri, 13 Mar
+ 2026 09:24:02 +0000
+Received: from GV1PR08MB10521.eurprd08.prod.outlook.com
+ ([fe80::8c9b:58d2:2080:eb98]) by GV1PR08MB10521.eurprd08.prod.outlook.com
+ ([fe80::8c9b:58d2:2080:eb98%4]) with mapi id 15.20.9700.010; Fri, 13 Mar 2026
+ 09:24:02 +0000
+Date: Fri, 13 Mar 2026 09:23:58 +0000
+From: Yeoreum Yun <yeoreum.yun@arm.com>
+To: Catalin Marinas <catalin.marinas@arm.com>
+Cc: linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+	kvmarm@lists.linux.dev, kvm@vger.kernel.org,
+	linux-kselftest@vger.kernel.org, will@kernel.org, maz@kernel.org,
+	oupton@kernel.org, miko.lenczewski@arm.com, kevin.brodsky@arm.com,
+	broonie@kernel.org, ardb@kernel.org, suzuki.poulose@arm.com,
+	lpieralisi@kernel.org, joey.gouly@arm.com, yuzenghui@huawei.com
+Subject: Re: [PATCH v15 5/8] arm64: futex: support futex with FEAT_LSUI
+Message-ID: <abPXrvl9tC+nv6q9@e129823.arm.com>
+References: <20260227151705.1275328-1-yeoreum.yun@arm.com>
+ <20260227151705.1275328-6-yeoreum.yun@arm.com>
+ <abMDOC5DYEm74And@arm.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <abMDOC5DYEm74And@arm.com>
+X-ClientProxiedBy: PR1P264CA0053.FRAP264.PROD.OUTLOOK.COM
+ (2603:10a6:102:2ca::10) To GV1PR08MB10521.eurprd08.prod.outlook.com
+ (2603:10a6:150:163::20)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PH7PR12MB5685:EE_|LV8PR12MB9358:EE_
-X-MS-Office365-Filtering-Correlation-Id: 9aa62212-6538-4048-d235-08de80e1ff5f
+X-MS-TrafficTypeDiagnostic:
+	GV1PR08MB10521:EE_|FRZPR08MB11875:EE_|DU6PEPF0000B621:EE_|DU0PR08MB8232:EE_
+X-MS-Office365-Filtering-Correlation-Id: 888eadb7-d46e-46f4-5b9c-08de80e268fc
+x-checkrecipientrouted: true
+NoDisclaimer: true
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam-Untrusted:
+ BCL:0;ARA:13230040|366016|7416014|376014|1800799024|18002099003|56012099003|22082099003;
+X-Microsoft-Antispam-Message-Info-Original:
+ xl251Pd/EKbOhX8GNX3CKtzy4DlDmkGIkXQHNsSeR8t0+zrc2m9xdusk1f6E94wI4fvR/ORq5TCux+K5/O8E4owS9OxDGrO9EY9azdcLso1NaLyIf0pLwC7piIAdH5QW+pNt/3rJHeSdIBKbDrv/H/PCMMw5vcbwk7z9e1AnOZ0fZzOdf1fPOgDWLLRBQD+KBG6NNdvLLLLI1MusmDaIEseMeQwrfj/4tXkJAQ55oGTFhrpTaXwD+HmVWehMJIb3Sf7lk/mx/5deneiSdf/8mZ408u2R8gEiRApgjR49IHcJTE71tMSrHvvM/sVJ9RJSQJ90uxdU0d03T0P5oyN9OI/ysFuPh4CvaHitA49JP8IVbWQzsc6MJcEU+WTqlHevP8botBOH0ryMcO/ceR523HBlS78gOl6ew++VtiUF8r1F+trXu9/N+tI4Wyo5mEj+pyZMm8Wasrhw2MQf7Zc6TXVZEglpCoei04s8d0k6RuM9koGlUreayz4WxbaqOA0PD4rv4U8KKC/fjGcefjnOtCsKc9DUmYhBMc37rD8RBJ/ztwlM/FWW7E5oiQG05Yr1ylgG1JyosAo6O0AoBvgFzX2ConibDlARW+CKz73noVmeSXfI7AzrHPMeTNiqTTPRMG9Pie2oo+EgMHDcBZ9N7qMhQiukbjKgoOlfqkh53z+Spn9mnjMS11SFn4RtRmCkDZ7nSZdDRZ4nvFmkzsLlVlaIxoSydZyozPk+/kHhfOQ=
+X-Forefront-Antispam-Report-Untrusted:
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:GV1PR08MB10521.eurprd08.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(7416014)(376014)(1800799024)(18002099003)(56012099003)(22082099003);DIR:OUT;SFP:1101;
+X-Exchange-RoutingPolicyChecked:
+ B5kb0jM6oEcDURXcqmP1b7DWKJmswCwtNNKiMGtBEm3NqzGjeKCp3pWYzMZyjRh6YTslsqEcTV0M5FSvJfG7kB6w8AYIMjBKD0XjbfQ4Stdyi4Nn2COeJTOVHP7ygS/80Arfn7FvK1n801umoOaT/mD9TTKROZKqdJKM7Gfe6CnHK5fwOQ7Zpx8yHv8gZrdtF2STM9hmU7I+NolictlEVuahDcLdVFzsyeAqXPfjP9u096um9uXt5nOgHTLi3KODJRmm7nf1aXaUaTZjGayI2RsyUNLmCab+VUTmx70aIRvakb4OFSFQcompFQm6JDNFSwwEJzNqCaZTQqpw39ZKyQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: FRZPR08MB11875
+X-EOPAttributedMessage: 0
+X-MS-Exchange-Transport-CrossTenantHeadersStripped:
+ DU6PEPF0000B621.eurprd02.prod.outlook.com
+X-MS-PublicTrafficType: Email
+X-MS-Office365-Filtering-Correlation-Id-Prvs:
+	9296e83a-338c-490d-7ae8-08de80e243a8
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|7416014|1800799024|366016|376014|56012099003|18002099003|22082099003|13003099007;
+	BCL:0;ARA:13230040|82310400026|14060799003|376014|1800799024|7416014|36860700016|35042699022|22082099003|56012099003|18002099003;
 X-Microsoft-Antispam-Message-Info:
-	WXapiiH0tsjh+DZJUD6yhG2OzxVI8m0DXa6boU494uh+4JWPSoqw5vKIGcOYRaMqrScYXwtAGaCvSYUons5MX0DhvtkOyk6J2AIXzgjdJdhlB3a0CmrGKlBejLv9W8oLd0WwSA0UPj15KXTRorb0F0fttpT4S0LWJ8v0iRwsVlKxY4osWKf3R13sygpjv5Yw4M49x0CsCN++QTiAd062yladVgDS8dEIoNBBeaytTIBw+ntOzX7HCvdyq2vCqGMODqXFViDxPbvCURYaa9Fs9zCRYWc9JHSWCXFsPb1QbAnyBL2uJTsT5B0hFmXiMj3M/crT7oVn+aT7+VfCXsmrJtMcipN+iGqGffmZb+cF2a+nACe2ZEWK70DxAmrkR9jQCUVJiT6FyXjVKGElhwKIYA43muqZc39wB5rT6exMjlI4Nl9E2HuMgLxiGYRjkK8W2Ezq8AxUU8NwVZbfMl0O5pE4vTvreHLnKajrATBIW3bpwCOg7JLTpqkpCc6Tk17Z4GHWdbGsMOHGiVXi/S4qrXpm9gOXSrsluoC03qDM78eRos2A5rZyiIwVmybhU4nFA8FhHQ/HP7QnlQyfHtQrDMNvIplxcT5UpLucF52F1HwA1aePP4NjzZKBUI42i/9WlZnctuTYMTAIl04Hd7wszAEFovEGLiGsRoW/vuyPv/6jjYPwzWI8tEXizMOG4DxzPCYoXc1FnlPaXjDMUNQKeg==
+	GLar6mjse2EhG6fCoyNLFrdqhJcQ6khg7aQhu165a6gszjfd0fT9GxM6FM1HUTCyn46IrXZc8wxrn16ISbr7oPIeznuk2NTUfUvvAo25JPf/YijTyYCUlx6Ao/0qCUz6DDrN3c6qnJxSI3xsewECfKtqkYodiuomG9CuZbhGmMpCwIvbwsPVbYvhlQXLizrDoQJQN+BhYAxdCJimzXW6mf6Wb/G8LAxy2o4pxIU9Io9HpwKFNnb2HSTdsnnG711ReRsFQcZSyl+iEVc2X8ltxk+7xqtWKHU4Ks7R2DW1kuztWs9n43BFpS0M//z2D/Pr17GOICwof53Yb9iaSBdeFTOax18iHjunRZjp+PcN0QX5UBk2YBXru1nqdnG/PIvblQecXjGnTUK/wPW4eauuKroE3LvkH3+w/RZzaDcDKrAnwfbNBalyxu4+IsU+bWS/sAfmh7d6WFolFTIONFhZCjDX0fBqVFoTOX3yCU+j1e/iwDK8H+Y5cw2caIe0373vAsCjap3JZGSj6MwUGKrB26wQTaI1+PWNkncYRCKfxt/9yB7GwCODlOiin6IQjKMBqCmlqAq09Gr//1TJXMLsIQc59q5v1Fl63zomtHG9EehjO22V3q+FC5wsb9qMjw3Od0ioJI/I7xSSGt1laAt0cdxnu7LAZF3r8oRRUdxEUss+cY6yfswIu7K/LmceLcoxN+bsUmkt+5D8uj0cZfbgIrO50e8c1WFyjYMYWhzFt2X6iBGvCC805x9raZxs0b/rB8v2XsOGuvxy8VRrC0CJqg==
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH7PR12MB5685.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(1800799024)(366016)(376014)(56012099003)(18002099003)(22082099003)(13003099007);DIR:OUT;SFP:1101;
+	CIP:4.158.2.129;CTRY:GB;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:outbound-uk1.az.dlp.m.darktrace.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(82310400026)(14060799003)(376014)(1800799024)(7416014)(36860700016)(35042699022)(22082099003)(56012099003)(18002099003);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?WXVtNTdTQUpLZW15dFZHYkhvNDZ1Si96UjlUaUFuRDJTY2JTUTNEQ1BiVmx0?=
- =?utf-8?B?QmdEV1dsWUNLTzRjK2hMODVOQlVTSEpnSmxveE5FOG8zQ3p5aWMxbStBa2tw?=
- =?utf-8?B?TWcvckdtWE0yRmNJUjF0TEp3RTJoVUt4a3laVUNybFlrOEMvMUNManNMVWNl?=
- =?utf-8?B?R25DZFk3UnFobjY5L01VYUpmR1RCTUc3WW9jNHJWVHEvRkgxTEI0aEJuNjhX?=
- =?utf-8?B?bFJLZ3N5ckd3bXhydmtPWjV6U2NNSmdNWUJPWkhGVjU2ZWlHQlFlcW5hT2c5?=
- =?utf-8?B?anNEN1dwRDR5bDFXYnNsKzNJUGtsQVdNQStHS2c2SkJTVG9SamcybXhHNDhN?=
- =?utf-8?B?ZHNiZ1pKQUdQNWNXZVlLY2dLczNZWHoyaGl6VEJGT01VSURoNUJyNCtyRk5L?=
- =?utf-8?B?TGlnTGxoZEswaDRiMUVWWEJHVlROSXdHODFDcUhwU1B0WWNBcThuVnhlakZa?=
- =?utf-8?B?Ymc0MzNtR0NXeE01SDJmajVsV0pXL2lDRjVSZGlxVmQwckJNNk9zVngrZmRr?=
- =?utf-8?B?L3AzRmh4dzFZTWp2Wm9LQ0hBNFpwWXo2cm94Z0ZYTFNHaDlabDJ2b3BOcVR6?=
- =?utf-8?B?TWEzYXVWVCtoU3FJWW5OM2xJOWY1L2J4RXh2VWYwY0RZaVBhK1UxSG5OdlZi?=
- =?utf-8?B?OWpNTVN3dFZlcjBrVisyT2FFSWlHRmtjK2tZbWFpS0xkU2I3aXNEeUJpaHdu?=
- =?utf-8?B?OFZ2NGo4K3lsWmNBYTZQamxqUlJnbG80MzNaODJOUEd3dWhseEpDeUFGWVR5?=
- =?utf-8?B?ckZYeVh5dkF4WGUwUW9hRy94dTQ5TTcxOVVmelBSdjN2bzZ1aEIwOXRtMytt?=
- =?utf-8?B?aXU0NTIwT2pCL0JnVlNXVldTTWpuRTZIbk5PV2pVSjJyc2c1VkNxNDFvSFIz?=
- =?utf-8?B?TXBBbXkwWGJoZHVPV2JkTkxUdDJBMjVJUFU3SGZ5bTR6N2YrSkwraWZXQWtC?=
- =?utf-8?B?OUlFRHpIT1JoNmxqVjd2UWxueVZLZTZ5UGVWc1VxcEhxeU1ZbTNPUnFZYS91?=
- =?utf-8?B?L1JUbzJJMlRFMi9HSHlJTXVZNWpyTkhObko5d09CMEk3UlNlaUFlRkRzMjFv?=
- =?utf-8?B?RUROeFAzN2JWRUJmSS9DWmx4VHJSK0xBcVVYV2pTZkhpMzZJM0czU1RMMTl0?=
- =?utf-8?B?MXprdjc3U0RSM243c2hteFFERVZwQlFhY3crQkF3RUZFTEtBS1BMK1F3amhr?=
- =?utf-8?B?WDNZVTFUWnVuWmVSeWNPNE5kT0R6dzZiUVFHK3J2YlA4UVVUT0lIVDhyYXRG?=
- =?utf-8?B?cVlsQUdTSFd1RUtRcTBuazBiSk9ha0JjMEEwNjZFYWt2SWV5RnIxSzJOMHJZ?=
- =?utf-8?B?SHNoWmNMeHlGQTRXRHRNckJqL055VlBTWEorK1dhYUx1cnpKNE9wd0RidjZu?=
- =?utf-8?B?NFhYSkFYZSs1dkIxdlkvTHB2WTBKZkZSZWtmeHArQ3ZrUjQ3Z3ErOTBMYVRh?=
- =?utf-8?B?TG0vdm9UTUpEbnV3NlVaVE50c1BNbmdzUlJqUno3cmEwWlRua0dVV1liZWl3?=
- =?utf-8?B?L0JGNzRsNHdiYzd2OTE4c2hMSmMwMEJKUEFiV093YWowQjhoT1pVOFRoTGVG?=
- =?utf-8?B?VzJueVRmYkd3RHA0RE9zcTBLRWc4RFJ5M3BpZ1NkVnpiY2RQL242THVYTk54?=
- =?utf-8?B?MElhQnl0Q2F4ak96cEg2aTV1SDdsNGtxQ09RZFZDS0hNSTBFVGhRQ1hEdWYr?=
- =?utf-8?B?VDRRczdmUkkwSmhteFZyemlsM0dmRmVpcGVYN3FmSGJreVNSSG1RSEJ3dHNO?=
- =?utf-8?B?d1BSbGpCWTFzUHBGQ1lYS1h2RkFsZ0FzaXNITzBHZ2V3NzAvRy9sOWJRaTZO?=
- =?utf-8?B?ZU01MVI0ZEkxL1VTUVdvV0IzS1JnVE1MaTA2WHpRS3R6N2NZcTZlZjZUcDdj?=
- =?utf-8?B?SXJpL25rRjNMa3JEZFNLQ0x5U3B4MGpiQ0pkVDcwandxZDg1ZHl2ZDBFY0dP?=
- =?utf-8?B?M3U5dUtzVlNtUFlzSnVtUjdXcDlQWk42K1JkdWlRODJPalNBQUxSM0IxRmYx?=
- =?utf-8?B?eWg2Q3VqdW1jZm9KLzIxMXVETjl3Tk1McmRHUE4xUEt3NHVucGU0dEgzejh0?=
- =?utf-8?B?YXRPdHBSd1lzcTR1dkhxZllqRk9pSE5TVi9rakZtSWxCdDFzZGNSV3RTNHBE?=
- =?utf-8?B?WGhkRnVPWkZUdm9wUFROZUNJWDgyRWh4Y2dobDNyTFZSeGdDUU9HcHg5UFdh?=
- =?utf-8?B?ZDg4ZG9iU3JsTzZ5QkRCNU8xY3lLT2s1N2xTdi9SMkRpZ1ZJbldzUXJ1d2dF?=
- =?utf-8?B?UnhySm5ldXMwekpzWUpLYlZVSHpOQ0pDRzFWQjNLZTI2TCtLU3lrb2hvSVFt?=
- =?utf-8?Q?3KIE5TU+Ztd7d+7m9L?=
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 9aa62212-6538-4048-d235-08de80e1ff5f
-X-MS-Exchange-CrossTenant-AuthSource: PH7PR12MB5685.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 13 Mar 2026 09:22:07.4617
+	qRCb6wQJ9oPBRUi+SeJJuWpyfLAHHmky+H90jQEPBHfCd4UQ5xhDD6Tlb7/ydOKa2F7Jwv6tvouz3BSPxGJPlgahIzupavrRnBO3PHOAjW9+Q8YD9Whdqor3ExQFSrEtb+GyXhJqDo6VYrMuf4NE2xhm61+mNYmcowDDqkNp9radMCmvq4iVvGetH0jK1NDiXs26R10V/Rzu1tS0ejzUd/WFHo0DwLliFRC5ERVNWfMgo+3geBS4Vx6XH3GfnJNmMtyQsFxyphA57DoRz2ivwoLqFJl9utN2QepNtIslYwzk44mWDdkJSL+BuP6OzVjyojga1PcttyoXx+7s3HzZa3KpyI0+MY8dkPTky8Ohu7ZWFs4uaH/0haEik4bsc0ZXuG31b1S0l1IgFhcNc6f2lzWNbKLKbkUARXXGHkw332nwsCW91kgC/nLM0ESvaEou
+X-OriginatorOrg: arm.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 13 Mar 2026 09:25:04.4396
  (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: uXo4JGRcB91/gb8TxYxYjTo2nUPFU5kAwZO+umZdc3oCG2vY4spDYCctLqSyp/qO
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: LV8PR12MB9358
+X-MS-Exchange-CrossTenant-Network-Message-Id: 888eadb7-d46e-46f4-5b9c-08de80e268fc
+X-MS-Exchange-CrossTenant-Id: f34e5979-57d9-4aaa-ad4d-b122a662184d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=f34e5979-57d9-4aaa-ad4d-b122a662184d;Ip=[4.158.2.129];Helo=[outbound-uk1.az.dlp.m.darktrace.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	DU6PEPF0000B621.eurprd02.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DU0PR08MB8232
 
-On 3/12/26 19:45, Matt Evans wrote:
-> Hi all,
-> 
-> 
-> There were various suggestions in the September 2025 thread "[TECH
-> TOPIC] vfio, iommufd: Enabling user space drivers to vend more
-> granular access to client processes" [0], and LPC discussions, around
-> improving the situation for multi-process userspace driver designs.
-> This RFC series implements some of these ideas.
-> 
-> (Thanks for feedback on v1!  Revised series, with changes noted
-> inline.)
-> 
-> Background: Multi-process USDs
-> ==============================
-> 
-> The userspace driver scenario discussed in that thread involves a
-> primary process driving a PCIe function through VFIO/iommufd, which
-> manages the function-wide ownership/lifecycle.  The function is
-> designed to provide multiple distinct programming interfaces (for
-> example, several independent MMIO register frames in one function),
-> and the primary process delegates control of these interfaces to
-> multiple independent client processes (which do the actual work).
-> This scenario clearly relies on a HW design that provides appropriate
-> isolation between the programming interfaces.
-> 
-> The two key needs are:
-> 
->  1.  Mechanisms to safely delegate a subset of the device MMIO
->      resources to a client process without over-sharing wider access
->      (or influence over whole-device activities, such as reset).
-> 
->  2.  Mechanisms to allow a client process to do its own iommufd
->      management w.r.t. its address space, in a way that's isolated
->      from DMA relating to other clients.
-> 
-> 
-> mmap() of VFIO DMABUFs
-> ======================
-> 
-> This RFC addresses #1 in "vfio/pci: Support mmap() of a VFIO DMABUF",
-> implementing the proposals in [0] to add mmap() support to the
-> existing VFIO DMABUF exporter.
-> 
-> This enables a userspace driver to define DMABUF ranges corresponding
-> to sub-ranges of a BAR, and grant a given client (via a shared fd)
-> the capability to access (only) those sub-ranges.  The VFIO device fds
-> would be kept private to the primary process.  All the client can do
-> with that fd is map (or iomap via iommufd) that specific subset of
-> resources, and the impact of bugs/malice is contained.
-> 
->  (We'll follow up on #2 separately, as a related-but-distinct problem.
->   PASIDs are one way to achieve per-client isolation of DMA; another
->   could be sharing of a single IOVA space via 'constrained' iommufds.)
-> 
-> 
-> New in v2: To achieve this, the existing VFIO BAR mmap() path is
-> converted to use DMABUFs behind the scenes, in "vfio/pci: Convert BAR
-> mmap() to use a DMABUF" plus new helper functions, as Jason/Christian
-> suggested in the v1 discussion [3].
-> 
-> This means:
-> 
->  - Both regular and new DMABUF BAR mappings share the same vm_ops,
->    i.e.  mmap()ing DMABUFs is a smaller change on top of the existing
->    mmap().
-> 
->  - The zapping of mappings occurs via vfio_pci_dma_buf_move(), and the
->    vfio_pci_zap_bars() originally paired with the _move()s can go
->    away.  Each DMABUF has a unique address_space.
-> 
->  - It's a step towards future iommufd VFIO Type1 emulation
->    implementing P2P, since iommufd can now get a DMABUF from a VA that
->    it's mapping for IO; the VMAs' vm_file is that of the backing
->    DMABUF.
-> 
-> 
-> Revocation/reclaim
-> ==================
-> 
-> Mapping a BAR subset is useful, but the lifetime of access granted to
-> a client needs to be managed well.  For example, a protocol between
-> the primary process and the client can indicate when the client is
-> done, and when it's safe to reuse the resources elsewhere, but cleanup
-> can't practically be cooperative.
-> 
-> For robustness, we enable the driver to make the resources
-> guaranteed-inaccessible when it chooses, so that it can re-assign them
-> to other uses in future.
-> 
-> "vfio/pci: Permanently revoke a DMABUF on request" adds a new VFIO
-> device fd ioctl, VFIO_DEVICE_PCI_DMABUF_REVOKE.  This takes a DMABUF
-> fd parameter previously exported (from that device!) and permanently
-> revokes the DMABUF.  This notifies/detaches importers, zaps PTEs for
-> any mappings, and guarantees no future attachment/import/map/access is
-> possible by any means.
-> 
-> A primary driver process would use this operation when the client's
-> tenure ends to reclaim "loaned-out" MMIO interfaces, at which point
-> the interfaces could be safely re-used.
-> 
-> New in v2: ioctl() on VFIO driver fd, rather than DMABUF fd.  A DMABUF
-> is revoked using code common to vfio_pci_dma_buf_move(), selectively
-> zapping mappings (after waiting for completion on the
-> dma_buf_invalidate_mappings() request).
-> 
-> 
-> BAR mapping access attributes
-> =============================
-> 
-> Inspired by Alex [Mastro] and Jason's comments in [0] and Mahmoud's
-> work in [1] with the goal of controlling CPU access attributes for
-> VFIO BAR mappings (e.g. WC), we can decorate DMABUFs with access
-> attributes that are then used by a mapping's PTEs.
-> 
-> I've proposed reserving a field in struct
-> vfio_device_feature_dma_buf's flags to specify an attribute for its
-> ranges.  Although that keeps the (UAPI) struct unchanged, it means all
-> ranges in a DMABUF share the same attribute.  I feel a single
-> attribute-to-mmap() relation is logical/reasonable.  An application
-> can also create multiple DMABUFs to describe any BAR layout and mix of
-> attributes.
-> 
-> 
-> Tests
-> =====
-> 
-> (Still sharing the [RFC ONLY] userspace test/demo program for context,
-> not for merge.)
-> 
-> It illustrates & tests various map/revoke cases, but doesn't use the
-> existing VFIO selftests and relies on a (tweaked) QEMU EDU function.
-> I'm (still) working on integrating the scenarios into the existing
-> VFIO selftests.
-> 
-> This code has been tested in mapping DMABUFs of single/multiple
-> ranges, aliasing mmap()s, aliasing ranges across DMABUFs, vm_pgoff >
-> 0, revocation, shutdown/cleanup scenarios, and hugepage mappings seem
-> to work correctly.  I've lightly tested WC mappings also (by observing
-> resulting PTEs as having the correct attributes...).
-> 
-> 
-> Fin
-> ===
-> 
-> v2 is based on next-20260310 (to build on Leon's recent series
-> "vfio: Wait for dma-buf invalidation to complete" [2]).
-> 
-> 
-> Please share your thoughts!  I'd like to de-RFC if we feel this
-> approach is now fair.
+Hi Catalin,
 
-I only skimmed over it, but at least of hand I couldn't find anything fundamentally wrong.
+Thanks for your review :D
 
-The locking order seems to change in patch #6. In general I strongly recommend to enable lockdep while testing anyway but explicitly when I see such changes.
+> On Fri, Feb 27, 2026 at 03:17:02PM +0000, Yeoreum Yun wrote:
+> > +#ifdef CONFIG_ARM64_LSUI
+> > +
+> > +/*
+> > + * FEAT_LSUI is supported since Armv9.6, where FEAT_PAN is mandatory.
+> > + * However, this assumption may not always hold:
+> > + *
+> > + *   - Some CPUs advertise FEAT_LSUI but lack FEAT_PAN.
+> > + *   - Virtualisation or ID register overrides may expose invalid
+> > + *     feature combinations.
+> > + *
+> > + * Rather than disabling FEAT_LSUI when FEAT_PAN is absent, wrap LSUI
+> > + * instructions with uaccess_ttbr0_enable()/disable() when
+> > + * ARM64_SW_TTBR0_PAN is enabled.
+> > + */
+>
+> I'd just keep this comment in the commit log. Here you could simply say
+> that user access instructions don't require (hardware) PAN toggling. It
+> should be obvious why we use ttbr0 toggling like for other uaccess
+> routines.
 
-Additional to that it might also be a good idea to have a lockdep initcall function which defines the locking order in the way all the VFIO code should follow.
+Okay. I'll move this into commit log. Thanks!
 
-See function dma_resv_lockdep() for an example on how to do that. Especially with mmap support and all the locks involved with that it has proven to be a good practice to have something like that.
+>
+> > +#define LSUI_FUTEX_ATOMIC_OP(op, asm_op)				\
+> > +static __always_inline int						\
+> > +__lsui_futex_atomic_##op(int oparg, u32 __user *uaddr, int *oval)	\
+> > +{									\
+> > +	int ret = 0;							\
+> > +	int oldval;							\
+> > +									\
+> > +	uaccess_ttbr0_enable();						\
+> > +									\
+> > +	asm volatile("// __lsui_futex_atomic_" #op "\n"			\
+> > +	__LSUI_PREAMBLE							\
+> > +"1:	" #asm_op "al	%w3, %w2, %1\n"					\
+>
+> As I mentioned on a previous patch, can we not use named operators here?
 
-Regards,
-Christian.
+I missed your message before I sent to v16, But v16 already make them
+with named operands. Thanks!
 
-> 
-> 
-> Many thanks,
-> 
-> 
-> Matt
-> 
-> 
-> 
-> References:
-> 
-> [0]: https://lore.kernel.org/linux-iommu/20250918214425.2677057-1-amastro@fb.com/
-> [1]: https://lore.kernel.org/all/20250804104012.87915-1-mngyadam@amazon.de/
-> [2]: https://lore.kernel.org/linux-iommu/20260205-nocturnal-poetic-chamois-f566ad@houat/T/#m310cd07011e3a1461b6fda45e3f9b886ba76571a
-> [3]: https://lore.kernel.org/all/20260226202211.929005-1-mattev@meta.com/
-> 
-> --------------------------------------------------------------------------------
-> Changelog:
-> 
-> v2:  Respin based on the feedback/suggestions:
-> 
-> - Transform the existing VFIO BAR mmap path to also use DMABUFs behind
->   the scenes, and then simply share that code for explicitly-mapped
->   DMABUFs.
-> 
-> - Refactors the export itself out of vfio_pci_core_feature_dma_buf,
->   and shared by a new vfio_pci_core_mmap_prep_dmabuf helper used by
->   the regular VFIO mmap to create a DMABUF.
-> 
-> - Revoke buffers using a VFIO device fd ioctl
-> 
-> v1: https://lore.kernel.org/all/20260226202211.929005-1-mattev@meta.com/
-> 
-> 
-> Matt Evans (10):
->   vfio/pci: Set up VFIO barmap before creating a DMABUF
->   vfio/pci: Clean up DMABUFs before disabling function
->   vfio/pci: Add helper to look up PFNs for DMABUFs
->   vfio/pci: Add a helper to create a DMABUF for a BAR-map VMA
->   vfio/pci: Convert BAR mmap() to use a DMABUF
->   vfio/pci: Remove vfio_pci_zap_bars()
->   vfio/pci: Support mmap() of a VFIO DMABUF
->   vfio/pci: Permanently revoke a DMABUF on request
->   vfio/pci: Add mmap() attributes to DMABUF feature
->   [RFC ONLY] selftests: vfio: Add standalone vfio_dmabuf_mmap_test
-> 
->  drivers/vfio/pci/Kconfig                      |   3 +-
->  drivers/vfio/pci/Makefile                     |   3 +-
->  drivers/vfio/pci/vfio_pci_config.c            |  18 +-
->  drivers/vfio/pci/vfio_pci_core.c              | 123 +--
->  drivers/vfio/pci/vfio_pci_dmabuf.c            | 425 +++++++--
->  drivers/vfio/pci/vfio_pci_priv.h              |  46 +-
->  include/uapi/linux/vfio.h                     |  42 +-
->  tools/testing/selftests/vfio/Makefile         |   1 +
->  .../vfio/standalone/vfio_dmabuf_mmap_test.c   | 837 ++++++++++++++++++
->  9 files changed, 1339 insertions(+), 159 deletions(-)
->  create mode 100644 tools/testing/selftests/vfio/standalone/vfio_dmabuf_mmap_test.c
-> 
+[...]
 
+> > +}
+> > +
+> > +static __always_inline int
+> > +__lsui_cmpxchg32(u32 __user *uaddr, u32 oldval, u32 newval, u32 *oval)
+> > +{
+> > +	u64 __user *uaddr64;
+> > +	bool futex_pos, other_pos;
+> > +	int ret, i;
+> > +	u32 other, orig_other;
+> > +	union {
+> > +		u32 futex[2];
+> > +		u64 raw;
+> > +	} oval64, orig64, nval64;
+> > +
+> > +	uaddr64 = (u64 __user *) PTR_ALIGN_DOWN(uaddr, sizeof(u64));
+>
+> Nit: we don't use space after the type cast.
+
+Oops. I'll remove space.
+
+>
+> > +	futex_pos = !IS_ALIGNED((unsigned long)uaddr, sizeof(u64));
+> > +	other_pos = !futex_pos;
+> > +
+> > +	oval64.futex[futex_pos] = oldval;
+> > +	ret = get_user(oval64.futex[other_pos], (u32 __user *)uaddr64 + other_pos);
+> > +	if (ret)
+> > +		return -EFAULT;
+> > +
+> > +	ret = -EAGAIN;
+> > +	for (i = 0; i < FUTEX_MAX_LOOPS; i++) {
+>
+> I was wondering if we still need the FUTEX_MAX_LOOPS bound with LSUI. I
+> guess with CAS we can have some malicious user that keeps updating the
+> futex location or the adjacent one on another CPU. However, I think we'd
+> need to differentiate between futex_atomic_cmpxchg_inatomic() use and
+> the eor case.
+
+Hmm. I'll comment below together in eor..
+
+>
+> > +		orig64.raw = nval64.raw = oval64.raw;
+> > +
+> > +		nval64.futex[futex_pos] = newval;
+>
+> I'd keep orig64.raw = oval64.raw and set the nval64 separately (I find
+> it clearer, not sure the compiler cares much):
+>
+> 		nval64.futex[futex_pos] = newval;
+> 		nval64.futex[other_pos] = oval64.futex[other_pos];
+>
+> > +
+> > +		if (__lsui_cmpxchg64(uaddr64, &oval64.raw, nval64.raw))
+> > +			return -EFAULT;
+> > +
+> > +		oldval = oval64.futex[futex_pos];
+> > +		other = oval64.futex[other_pos];
+> > +		orig_other = orig64.futex[other_pos];
+> > +
+> > +		if (other == orig_other) {
+> > +			ret = 0;
+> > +			break;
+> > +		}
+>
+> Is this check correct? What if the cmpxchg64 failed because futex_pos
+> was changed but other_pos remained the same, it will just report success
+> here. You need to compare the full 64-bit value to ensure the cmpxchg64
+> succeeded.
+
+This is not matter since "futex_cmpxchg_value_locked()" checks
+the "curval" and "oldval" IOW, though it returns success,
+caller of this function always checks the "curval" and "oldval"
+and when it's different, It handles to change return as -EAGAIN.
+
+>
+> > +	}
+> > +
+> > +	if (!ret)
+> > +		*oval = oldval;
+> > +
+> > +	return ret;
+> > +}
+> > +
+> > +static __always_inline int
+> > +__lsui_futex_atomic_and(int oparg, u32 __user *uaddr, int *oval)
+> > +{
+> > +	/*
+> > +	 * Undo the bitwise negation applied to the oparg passed from
+> > +	 * arch_futex_atomic_op_inuser() with FUTEX_OP_ANDN.
+> > +	 */
+> > +	return __lsui_futex_atomic_andnot(~oparg, uaddr, oval);
+> > +}
+> > +
+> > +static __always_inline int
+> > +__lsui_futex_atomic_eor(int oparg, u32 __user *uaddr, int *oval)
+> > +{
+> > +	u32 oldval, newval, val;
+> > +	int ret, i;
+> > +
+> > +	if (get_user(oldval, uaddr))
+> > +		return -EFAULT;
+> > +
+> > +	/*
+> > +	 * there are no ldteor/stteor instructions...
+> > +	 */
+> > +	for (i = 0; i < FUTEX_MAX_LOOPS; i++) {
+> > +		newval = oldval ^ oparg;
+> > +
+> > +		ret = __lsui_cmpxchg32(uaddr, oldval, newval, &val);
+>
+> Since we have a FUTEX_MAX_LOOPS here, do we need it in cmpxchg32 as
+> well?
+>
+> For eor, we need a loop irrespective of whether futex_pos or other_pos
+> have changed. For cmpxchg, we need the loop only if other_pos has
+> changed and return -EAGAIN if futex_pos has changed since the caller
+> needs to update oldval and call again.
+>
+> So try to differentiate these cases, maybe only keep the loop outside
+> cmpxchg32 (I haven't put much though into it).
+
+I think we can remove loops on __lsui_cmpxchg32() and return -EAGAIN
+when other_pos is different. the __lsui_cmpxchg32() will be called
+"futex_cmpxchg_value_locked()" and as I said, this always checks
+whether curval & oldval when it successed.
+
+But in "eor" when it receive "-EAGAIN" from __lsui_cmxchg32()
+we can simply continue the loop.
+
+>
+> > +		if (ret)
+> > +			return ret;
+> > +
+> > +		if (val == oldval) {
+> > +			*oval = val;
+> > +			return 0;
+> > +		}
+>
+> I can see you are adding another check here for the actual value which
+> solves the other_pos comparison earlier but that's only for eor and not
+> the __lsui_futex_cmpxchg() case.
+
+As I mention above, though it success, caller of futex who calls
+__lsui_futex_cmpxchg() via "futex_cmpxchg_value_locked()" checks
+curval and oldval is the same even on the success.
+
+So it's not a matter.
+
+>
+> > +
+> > +		oldval = val;
+> > +	}
+> > +
+> > +	return -EAGAIN;
+> > +}
+> > +
+> > +static __always_inline int
+> > +__lsui_futex_cmpxchg(u32 __user *uaddr, u32 oldval, u32 newval, u32 *oval)
+> > +{
+> > +	return __lsui_cmpxchg32(uaddr, oldval, newval, oval);
+> > +}
+> > +#endif	/* CONFIG_ARM64_LSUI */
+>
+> --
+> Catalin
+
+Thanks!
+
+--
+Sincerely,
+Yeoreum Yun
