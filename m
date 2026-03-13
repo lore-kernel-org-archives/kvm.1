@@ -1,298 +1,291 @@
-Received: from mail-qv1-f44.google.com (mail-qv1-f44.google.com [209.85.219.44])
+Received: from mail-pj1-f74.google.com (mail-pj1-f74.google.com [209.85.216.74])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 191523164BB
-	for <kvm@vger.kernel.org>; Fri, 13 Mar 2026 05:36:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.219.44
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773380198; cv=pass; b=G24AxRNlbu1DW8Lzf/Qm8G7O1cht/23y2ZiS3eYl4Qmuu929TjFlzy8buqHAHHiBwiq8k1O53W6QyvcparpZo5zGjjBngjCW1LJZJuBGp/5siSl+Y3Q6t0SZZOKuFCnPVMjbxlr+Rv3HI1ghvPJX0dC8bf0e0/wYhF1FMNVJe54=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773380198; c=relaxed/simple;
-	bh=mEt7BTLlT6ZmZ/T1Y186yJ8NgnFN2QYNlg4b2uk7RIM=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=OQ5wL4JoFFHoo7ScjAvyqU+AV7sHlBT+7NeN9FjmfuOZs94vkzs2nuo8/xcLsIOwh1Gdfew444QiJelScS5LfQlKsw5sOPZ97mUTcNN++3KRLlfwBoXWOzOyreRBFW5E5PgsV9TWq0CVBpz/U5MQXhs9Kuq2WxMRnNVrt2AKb0A=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=UBOGXIWZ; arc=pass smtp.client-ip=209.85.219.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F21B337689
+	for <kvm@vger.kernel.org>; Fri, 13 Mar 2026 06:12:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.74
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1773382368; cv=none; b=q/9HkFZS4l3gTbrxwADSyIymZgBAvRf5m20ox6BKzz6hLThP/syKg4q1W4ePWHFCGrTaCtxAVjA8JOVWZUIjlEa8GVLGJY4VvOmagdzw7wM1aiKVv8ixLYfa6xPIelzYcwb46aR0g3hhJIWLSvOVLlzq1kl4vk3ZvE79iE+4JHc=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1773382368; c=relaxed/simple;
+	bh=6jLTwJJ6La/XT5hYqS1Mn28fhE67q33wjf2y4GPKqTo=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=oac7wi5ZZAXoCetihB8QvkRgFbD/mYx38eyeo7GbZc6rC5lfDfuFjzGEdkJxWZMhOTTu40NH6IApdv7fsLmHzblOvLFXwcqvZ6Nui9KYB6cWY+okfEo4Pji9uF7HXYRbaXqSvfPClaAYRi4A6mr1UbkzjSrmKXluZAo0iof5JR0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--ackerleytng.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=CJHVc28y; arc=none smtp.client-ip=209.85.216.74
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--ackerleytng.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="UBOGXIWZ"
-Received: by mail-qv1-f44.google.com with SMTP id 6a1803df08f44-89a018cbbf8so37034076d6.0
-        for <kvm@vger.kernel.org>; Thu, 12 Mar 2026 22:36:36 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1773380196; cv=none;
-        d=google.com; s=arc-20240605;
-        b=IQXKBN2u7DQY0UV4KpjoW9YZCdYJgzSxxkVYvLhH25mfbM2rLs9uCURQQ/xj64GwB7
-         nGfYo8KP5IyqMm1hDvwBoLB/pGzKlu2eUKPH+XU/M74fHGqZzQrGeLXI0k7HHNgHv9Z9
-         e8Z/LW4PxyGHzXL/0vx3Pleekpi+gT341LKuo/aJDl/CkoVQdaC8RJlvf9LR87vhwokl
-         SyNwCp8ZDUn3mQMj6ECT4g9gkLu42AuOJ8/3SPPFOR4Vujyveo6k8iIrkIAlx1Ar32Mn
-         O5g+Y0yp/5VUEmd/MsdEGYckqE9zwqd/zpcUyhY7f0b3E5TJYU7Cco5hq6X+MVp/vwNJ
-         B6Fg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=Gj0nSDykG0Fr+XFA6s/JJt4kLIyT6T9zrksdte2qMsk=;
-        fh=bJV2jYsW2s9l6Nh0Ff2eYJaFVhXwzn5xc+jIHBiDHxk=;
-        b=Ez9rkTduKl4CoWI6NAQnxwucQyjjuDUnwwnckKHTbZbZZZseAAEynFMwiKUIZsrgEx
-         AM7CQA2z3dI0n9DR9/JRwCvDHyVsgceZtla4nhpEnA9Cz0sUA2muCP28cCcjailJqqzV
-         ypnUlUeSdM6LF6BmyLB6QipKS2/Eo3p/7bYQVqzICSpVyJ+i2/cj0r3rzC1X728Y64Bc
-         QDRIJc35L4Mrn8RthNSpy5/0gnBgolWvH3ozPmlvU04v6M1IbzplSuvAd4UKhoJXZoSc
-         6LmzRItxhLdnBP4rk0PFNTKQeOlf3m+14T3s0iEGLJne/SvENvdyPX+KmwSfEAMb39NP
-         jRxw==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="CJHVc28y"
+Received: by mail-pj1-f74.google.com with SMTP id 98e67ed59e1d1-354490889b6so7914397a91.3
+        for <kvm@vger.kernel.org>; Thu, 12 Mar 2026 23:12:47 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1773380196; x=1773984996; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Gj0nSDykG0Fr+XFA6s/JJt4kLIyT6T9zrksdte2qMsk=;
-        b=UBOGXIWZMScWKLDfcZDBzGt3wpcU2oesbhFu8toekGa5LMf2BZuLLk1ys3c7956jXp
-         /M4K9CtaT1JBgy/GX7GaSjcsuGw/ktj115d8kyNnd4zTTDRHKpTKiLHmcPeuT55DmvxB
-         wf6CL1hqogeM//i23z0alYytwZjwHBtmPbdJRm7+qfeKbDACHB/eK6qWoMquqVTIhoX0
-         0rGYApL7G2zp0uCg3l7J5BOCNmoE1aUAEejicmewpp7k0dAfdd7/T002wWs9276LOqNI
-         ElA/RJXMbYhvtaYkBQ8CEZ9R5yaMBk7Y9fLoxHHfjxb8dsg7W7Skc34VvPabEuCtr3rV
-         HAvQ==
+        d=google.com; s=20251104; t=1773382366; x=1773987166; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=9kJoH2qMBOGI1KHefVTQiaQSpz0G/4rWY3svDZEsAos=;
+        b=CJHVc28y4v95vpP75Q7Bgj0uVMh+A4lMVJQ/C8n7TJWJCNuhzAJ+73wxqJM+rgfwVV
+         GcbP1slvw6XJs+UtBXoL/rwhFE+k1ZJYIJ57Gf0wEHdXk6hdxZvExqrbZ7jwttTevbLN
+         jW1QuoUtHAz3Rk4d+yFsICeTat/XEwA2s+RiZ13qJB8GmnwJNIFvbMMXO3TyPhMcQKiA
+         q6Pq89u51SAf5SnigtJmwC/vYDRn/RwNBxNKU7PNP/zyQEVfcI4UDDQI/CrMZUier/7b
+         RX/aiAQNhVqrFLyNOipIvTNJVmuKrHxVFd3hsl68dJQvWKDhz2P6hlloDlpEFDdwE9cn
+         XVmQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1773380196; x=1773984996;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=Gj0nSDykG0Fr+XFA6s/JJt4kLIyT6T9zrksdte2qMsk=;
-        b=TotJESgtbUFfE3XHDeoUSPphuD4gk0zHsHBpdJw2kr90miVjwXf7HcbDNR0nOxXpX1
-         zKQgbSaeMOPZqmcXM2BiGLieB3d1FUZ0gTCFdydP4MwDDiWYqf4zDuuncRF8KOTEzYYy
-         j2l64k9xmKJGY8vbTu72VcVZhVOBWRCyXGCzdufNOgtFnrnrvC6Nq4+C4KhPvHl1/uYb
-         GH63/PQMZgV1V0OvN5W/QLsgWr+TYNXevjiXiiq7G1Hu62RbxUmHR5oFg03Mz542HxgW
-         upkv9+J7vqYoVkCLRPL/G5mOcSlxn6jEHX4XeboBJxlcCzYzda//qknelZx2QDTK4zNA
-         bbfA==
-X-Forwarded-Encrypted: i=1; AJvYcCXr62Lj9+gLhoD4FVgqt2kLFybzbMcp7S/G9iMV0EjtntWrikZmuHhxc0sSAU5r7AjjZ2Q=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzmzS7jmvpiNrJt/FkP/hA6Jj4bjB0CxbA9Y2kdXkZVR4AsUB4j
-	fR5f0E7A/zFJ3dw8mktxnPu5imhAaiR87zIkb/rRf+0fgNxPIhoUEGXjWM2NoM7pSq/Ncor1WwY
-	VFzS8hkLSW01bNm6kQooxcFd6YHsUPle7SbAt0bsl
-X-Gm-Gg: ATEYQzw5Q8lcBqCfKAoS3M6HwYarwN0hXpz0xhtb69mjb/2RabVHIcIKabnSi7JpwlT
-	7SgrQzahtQkdfTnNoiE2LrMrAGUPxBveFUhs1Mw9Q3szdy8u8jo75j2J5jyTB+xhHn6SdM+su58
-	7n6edv8IF34XwFLtigSmtPjdFJE7XFMSZVrMC0BFmOpEqgnXYVofEjUrU+75+rvXwnVCpi5n9lk
-	A7uDb8E/bmLIF5XzbD8t92adazEaMIOHGLWi7CSdObfdqdqgMSCwYumUapMiDp+FL/VnqfDwrdt
-	R2u0lf1vKWAK/2sP0o5oG8n6BvlyoqUQpmBHZkZ/Ng==
-X-Received: by 2002:a05:6214:2aa8:b0:895:4d9b:a436 with SMTP id
- 6a1803df08f44-89a72ac6a7bmr81371716d6.30.1773380195520; Thu, 12 Mar 2026
- 22:36:35 -0700 (PDT)
+        d=1e100.net; s=20251104; t=1773382366; x=1773987166;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=9kJoH2qMBOGI1KHefVTQiaQSpz0G/4rWY3svDZEsAos=;
+        b=ITus31NwBoE8Ijcte0eP4tURWV2RE0f4j4JYwTigjNl7qo41Vg28kCKOUhbNcr2x6Q
+         BiN0UDqi+EeFZAySpiITbv0uyKvRtvqEKk07LtFq46LAU4kwm0XG3oMGvOpUwgI5MR/p
+         8TH3iEuW9oEizi2hkxm47lrKXLGiigJGGxeZl5OMW1tGn5vkjrHZWrtNyAZOg3LoW5+/
+         MhLohon6bb71qDSpiUcQWYI2Fjn0y/Bk2Jt/NY7wzfK4c3M0OnrLvZMUFyTQiwDzWyqz
+         b16Sh9Hxq3n+sjVQxworWWkhNrgZf/q+XZLd4wa93pBEptpjJrt4pMkEeiUlliwtwp3U
+         mr4g==
+X-Gm-Message-State: AOJu0YyVe069Ebc6Dv5cmWeZxyPLX/xxIRqQ2HDfne4ihH2xuj9bE37O
+	ktB4UtMhpkQ5iSTWvHmRQdTg1ifexfUvqj0fI5N0v7OGS3ll3qFXblp2y/FaCy1+ei0nt8nvqqT
+	P3KpC6S58DATzQVm+EHzHeEdw2g==
+X-Received: from pjbsx11.prod.google.com ([2002:a17:90b:2ccb:b0:359:97db:ab44])
+ (user=ackerleytng job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a17:90b:2e45:b0:349:9d63:8511 with SMTP id 98e67ed59e1d1-35a22069e33mr1825521a91.25.1773382366345;
+ Thu, 12 Mar 2026 23:12:46 -0700 (PDT)
+Date: Fri, 13 Mar 2026 06:12:39 +0000
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <20260224071822.369326-1-chengkev@google.com> <20260224071822.369326-3-chengkev@google.com>
- <aZ3VCq4s7l9f4JTw@google.com> <CAE6NW_ZAMp68iUzv-6m05LuU7g-fUy6e3mcD_+4NbvWp3RgCeA@mail.gmail.com>
-In-Reply-To: <CAE6NW_ZAMp68iUzv-6m05LuU7g-fUy6e3mcD_+4NbvWp3RgCeA@mail.gmail.com>
-From: Kevin Cheng <chengkev@google.com>
-Date: Fri, 13 Mar 2026 01:36:24 -0400
-X-Gm-Features: AaiRm52WTXhf5zRPMFn33miV0djPOneYnNZS5bMY4Jd7XKb3QZlW98OPJqv2670
-Message-ID: <CAE6NW_Z1vRV8OzWqNAKUbDHUgX-Mci1o26SGT79564VV3YdH1Q@mail.gmail.com>
-Subject: Re: [PATCH V2 2/4] KVM: SVM: Fix nested NPF injection to set PFERR_GUEST_{PAGE,FINAL}_MASK
-To: Sean Christopherson <seanjc@google.com>
-Cc: pbonzini@redhat.com, kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	yosry.ahmed@linux.dev
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Mime-Version: 1.0
+X-B4-Tracking: v=1; b=H4sIANiqs2kC/x2MywrCMBAAf6Xs2cWQUEWvgh/Qq/SQx9oumm1JJ
+ BRK/72pxxmYWSFTYspwb1ZIVDjzJBXMqQE/WhkIOVQGrfRFad3iECkiy/y1ntBPUigdDbqgggv mdm2NhVrPid68/M8v6J4P6Kt0NhO6ZMWPx/RT4llo+cG27eBUK4aJAAAA
+X-Change-Id: 20260225-gmem-inplace-conversion-bd0dbd39753a
+X-Developer-Key: i=ackerleytng@google.com; a=ed25519; pk=sAZDYXdm6Iz8FHitpHeFlCMXwabodTm7p8/3/8xUxuU=
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1773382364; l=10749;
+ i=ackerleytng@google.com; s=20260225; h=from:subject:message-id;
+ bh=6jLTwJJ6La/XT5hYqS1Mn28fhE67q33wjf2y4GPKqTo=; b=TVC5sVfChj6/Qi4neLLDvvRGE6Wv9Rt992E8IUuFi9rGngGrAXraI2dmVoDFP5O3H1h0d/EsW
+ wWRxu0+w/hOBaK6JILUwNt7nNWAQBb5O4jKE76hTO8bRdXaMsT7oVzx
+X-Mailer: b4 0.14.3
+Message-ID: <20260313-gmem-inplace-conversion-v3-0-5fc12a70ec89@google.com>
+Subject: [PATCH RFC v3 00/43] guest_memfd: In-place conversion support
+From: Ackerley Tng <ackerleytng@google.com>
+To: aik@amd.com, andrew.jones@linux.dev, binbin.wu@linux.intel.com, 
+	brauner@kernel.org, chao.p.peng@linux.intel.com, david@kernel.org, 
+	ira.weiny@intel.com, jmattson@google.com, jroedel@suse.de, 
+	jthoughton@google.com, michael.roth@amd.com, oupton@kernel.org, 
+	pankaj.gupta@amd.com, qperret@google.com, rick.p.edgecombe@intel.com, 
+	rientjes@google.com, shivankg@amd.com, steven.price@arm.com, tabba@google.com, 
+	willy@infradead.org, wyihan@google.com, yan.y.zhao@intel.com, 
+	forkloop@google.com, pratyush@kernel.org, suzuki.poulose@arm.com, 
+	aneesh.kumar@kernel.org, Paolo Bonzini <pbonzini@redhat.com>, 
+	Sean Christopherson <seanjc@google.com>, Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, 
+	Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
+	"H. Peter Anvin" <hpa@zytor.com>, Steven Rostedt <rostedt@goodmis.org>, 
+	Masami Hiramatsu <mhiramat@kernel.org>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, 
+	Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>, 
+	Shuah Khan <shuah@kernel.org>, Vishal Annapurve <vannapurve@google.com>, Jason Gunthorpe <jgg@ziepe.ca>, 
+	Vlastimil Babka <vbabka@kernel.org>
+Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-trace-kernel@vger.kernel.org, linux-doc@vger.kernel.org, 
+	linux-kselftest@vger.kernel.org, Ackerley Tng <ackerleytng@google.com>
+Content-Type: text/plain; charset="utf-8"
 
-On Fri, Mar 13, 2026 at 12:50=E2=80=AFAM Kevin Cheng <chengkev@google.com> =
-wrote:
->
-> On Tue, Feb 24, 2026 at 11:42=E2=80=AFAM Sean Christopherson <seanjc@goog=
-le.com> wrote:
-> >
-> > On Tue, Feb 24, 2026, Kevin Cheng wrote:
-> > > When KVM emulates an instruction for L2 and encounters a nested page
-> > > fault (e.g., during string I/O emulation), nested_svm_inject_npf_exit=
-()
-> > > injects an NPF to L1. However, the code incorrectly hardcodes
-> > > (1ULL << 32) for exit_info_1's upper bits when the original exit was
-> > > not an NPF. This always sets PFERR_GUEST_FINAL_MASK even when the fau=
-lt
-> > > occurred on a page table page, preventing L1 from correctly identifyi=
-ng
-> > > the cause of the fault.
-> > >
-> > > Set PFERR_GUEST_PAGE_MASK in the error code when a nested page fault
-> > > occurs during a guest page table walk, and PFERR_GUEST_FINAL_MASK whe=
-n
-> > > the fault occurs on the final GPA-to-HPA translation.
-> > >
-> > > Widen error_code in struct x86_exception from u16 to u64 to accommoda=
-te
-> > > the PFERR_GUEST_* bits (bits 32 and 33).
-> >
-> > Stale comment as this was moved to a separate patch.
-> >
-> > > Update nested_svm_inject_npf_exit() to use fault->error_code directly
-> > > instead of hardcoding the upper bits. Also add a WARN_ON_ONCE if neit=
-her
-> > > PFERR_GUEST_FINAL_MASK nor PFERR_GUEST_PAGE_MASK is set, as this woul=
-d
-> > > indicate a bug in the page fault handling code.
-> > >
-> > > Signed-off-by: Kevin Cheng <chengkev@google.com>
-> > > ---
-> > >  arch/x86/include/asm/kvm_host.h |  2 ++
-> > >  arch/x86/kvm/mmu/paging_tmpl.h  | 22 ++++++++++------------
-> > >  arch/x86/kvm/svm/nested.c       | 19 +++++++++++++------
-> > >  3 files changed, 25 insertions(+), 18 deletions(-)
-> > >
-> > > diff --git a/arch/x86/include/asm/kvm_host.h b/arch/x86/include/asm/k=
-vm_host.h
-> > > index ff07c45e3c731..454f84660edfc 100644
-> > > --- a/arch/x86/include/asm/kvm_host.h
-> > > +++ b/arch/x86/include/asm/kvm_host.h
-> > > @@ -280,6 +280,8 @@ enum x86_intercept_stage;
-> > >  #define PFERR_GUEST_RMP_MASK BIT_ULL(31)
-> > >  #define PFERR_GUEST_FINAL_MASK       BIT_ULL(32)
-> > >  #define PFERR_GUEST_PAGE_MASK        BIT_ULL(33)
-> > > +#define PFERR_GUEST_FAULT_STAGE_MASK \
-> > > +     (PFERR_GUEST_FINAL_MASK | PFERR_GUEST_PAGE_MASK)
-> > >  #define PFERR_GUEST_ENC_MASK BIT_ULL(34)
-> > >  #define PFERR_GUEST_SIZEM_MASK       BIT_ULL(35)
-> > >  #define PFERR_GUEST_VMPL_MASK        BIT_ULL(36)
-> > > diff --git a/arch/x86/kvm/mmu/paging_tmpl.h b/arch/x86/kvm/mmu/paging=
-_tmpl.h
-> > > index 37eba7dafd14f..f148c92b606ba 100644
-> > > --- a/arch/x86/kvm/mmu/paging_tmpl.h
-> > > +++ b/arch/x86/kvm/mmu/paging_tmpl.h
-> > > @@ -385,18 +385,12 @@ static int FNAME(walk_addr_generic)(struct gues=
-t_walker *walker,
-> > >               real_gpa =3D kvm_translate_gpa(vcpu, mmu, gfn_to_gpa(ta=
-ble_gfn),
-> > >                                            nested_access, &walker->fa=
-ult);
-> > >
-> > > -             /*
-> > > -              * FIXME: This can happen if emulation (for of an INS/O=
-UTS
-> > > -              * instruction) triggers a nested page fault.  The exit
-> > > -              * qualification / exit info field will incorrectly hav=
-e
-> > > -              * "guest page access" as the nested page fault's cause=
-,
-> > > -              * instead of "guest page structure access".  To fix th=
-is,
-> > > -              * the x86_exception struct should be augmented with en=
-ough
-> > > -              * information to fix the exit_qualification or exit_in=
-fo_1
-> > > -              * fields.
-> > > -              */
-> > > -             if (unlikely(real_gpa =3D=3D INVALID_GPA))
-> > > +             if (unlikely(real_gpa =3D=3D INVALID_GPA)) {
-> > > +#if PTTYPE !=3D PTTYPE_EPT
-> >
-> > I would rather swap the order of patches two and three, so that we end =
-up with
-> > a "positive" if-statement.  I.e. add EPT first so that we get (spoiler =
-alert):
-> >
-> > #if PTTYPE =3D=3D PTTYPE_EPT
-> >                         walker->fault.exit_qualification |=3D EPT_VIOLA=
-TION_GVA_IS_VALID;
-> > #else
-> >                         walker->fault.error_code |=3D PFERR_GUEST_PAGE_=
-MASK;
-> > #endif
-> >
-> > > diff --git a/arch/x86/kvm/svm/nested.c b/arch/x86/kvm/svm/nested.c
-> > > index de90b104a0dd5..1013e814168b5 100644
-> > > --- a/arch/x86/kvm/svm/nested.c
-> > > +++ b/arch/x86/kvm/svm/nested.c
-> > > @@ -40,18 +40,25 @@ static void nested_svm_inject_npf_exit(struct kvm=
-_vcpu *vcpu,
-> > >       struct vmcb *vmcb =3D svm->vmcb;
-> > >
-> > >       if (vmcb->control.exit_code !=3D SVM_EXIT_NPF) {
-> > > -             /*
-> > > -              * TODO: track the cause of the nested page fault, and
-> > > -              * correctly fill in the high bits of exit_info_1.
-> > > -              */
-> > > -             vmcb->control.exit_code =3D SVM_EXIT_NPF;
-> > > -             vmcb->control.exit_info_1 =3D (1ULL << 32);
-> > > +             vmcb->control.exit_info_1 =3D fault->error_code;
-> > >               vmcb->control.exit_info_2 =3D fault->address;
-> > >       }
-> > >
-> > > +     vmcb->control.exit_code =3D SVM_EXIT_NPF;
-> > >       vmcb->control.exit_info_1 &=3D ~0xffffffffULL;
-> > >       vmcb->control.exit_info_1 |=3D fault->error_code;
-> > >
-> > > +     /*
-> > > +      * All nested page faults should be annotated as occurring on t=
-he
-> > > +      * final translation *or* the page walk. Arbitrarily choose "fi=
-nal"
-> > > +      * if KVM is buggy and enumerated both or neither.
-> > > +      */
-> > > +     if (WARN_ON_ONCE(hweight64(vmcb->control.exit_info_1 &
-> > > +                                PFERR_GUEST_FAULT_STAGE_MASK) !=3D 1=
-)) {
-> > > +             vmcb->control.exit_info_1 &=3D ~PFERR_GUEST_FAULT_STAGE=
-_MASK;
-> > > +             vmcb->control.exit_info_1 |=3D PFERR_GUEST_FINAL_MASK;
-> > > +     }
-> >
-> > This is all kinds of messy.  KVM _appears_ to still rely on the hardwar=
-e-reported
-> > address + error_code
-> >
-> >         if (vmcb->control.exit_code !=3D SVM_EXIT_NPF) {
-> >                 vmcb->control.exit_info_1 =3D fault->error_code;
-> >                 vmcb->control.exit_info_2 =3D fault->address;
-> >         }
-> >
-> > But then drops bits 31:0 in favor of the fault error code.  Then even m=
-ore
-> > bizarrely, bitwise-ORs bits 63:32 and WARNs if multiple bits in
-> > PFERR_GUEST_FAULT_STAGE_MASK are set.  In practice, the bitwise-OR of 6=
-3:32 is
-> > _only_ going to affect PFERR_GUEST_FAULT_STAGE_MASK, because the other =
-defined
-> > bits are all specific to SNP, and KVM doesn't support nested virtualiza=
-tion for
-> > SEV+.
-> >
-> > So I don't understand why this isn't simply:
-> >
-> >         vmcb->control.exit_code =3D SVM_EXIT_NPF;
-> >         vmcb->control.exit_info_1 =3D fault->error_code;
->
-> The issue with this is that the PFERR_GUEST_FAULT_STAGE_MASK bits are
-> not set in the walker fault error code for hardware reported NPFs
-> (non-emulator faults).
->
-> The active mmu after an NPF exit from L2 is the guest_mmu. In
-> walk_addr_generic, we only set the PFERR_GUEST_FAULT_STAGE_MASK bits
-> in the fault error code if kvm_translate_gpa returns INVALID_GPA (i.e.
-> when mmu =3D=3D &vcpu->arch.nested_mmu and the translation fails).
-> Otherwise, kvm_translate_gpa just returns the gpa and we don't set the
-> PFERR_GUEST_FAULT_STAGE_MASK bits in the fault error code.
->
-> Even when we NPF exit from L2, the hardware-reported exit_info[31:0]
-> isn't accurate which is why we drop 31:0 in favor of the fault error
-> code. I observed the hardware error code vs fault error code while
-> running the KUTs (specifically the tests that expect faults) in
-> https://lore.kernel.org/all/20260312200308.3089379-9-chengkev@google.com/
-> and they were not as expected. I believe I saw different error codes
-> because the entry existed in L1's NPT, but not yet in L0's NPT? The
-> hardware-reported error code usually did not reflect the L1 NPT page
-> permission restrictions, only the type of access/op that caused the
-> fault. Additionally, the present bit was not set.
->
-> If L2 has never accessed a GPA present in the L1 NPT with restricted
-> permissions, we could see differing error codes between hardware and
-> the fault error codes. I think that is why the code before my change
-> dropped bits 31:0 in favor of the walker fault error code. I'm not
-> entirely sure though so I could be wrong.
->
-> Since the guest_mmu walker can't know whether the GPA it's translating
-> is a page table page or a final page, I think we are stuck with
-> combining bits 63:32 from the hardware reported error code and 31:0 of
-> the fault error code for the non-emulator NPF injection case.
->
+Hi,
 
-Oops this was already pointed out in
-https://lore.kernel.org/all/aZ4J0flo0SwjAWgW@google.com/ lol
+(Here's the motivation for this series, which I realized was missing from
+the earlier revisions of this series)
+
+Up till now, guest_memfd supports the entire inode worth of memory being
+used as all-shared, or all-private. CoCo VMs may request guest memory to be
+converted between private and shared states, and the only way to support
+that currently would be to have the userspace VMM provide two sources of
+backing memory from completely different areas of physical memory.
+
+pKVM has a use case for in-place sharing: the guest and host may be
+cooperating on given data, and pKVM doesn't protect data through
+encryption, so copying that given data between different areas of physical
+memory as part of conversions would be unnecessary work.
+
+This series also serves as a foundation for guest_memfd huge page
+support. Now, guest_memfd only supports PAGE_SIZE pages, so if two sources
+of backing memory are used, the userspace VMM could maintain a steady total
+memory utilized by punching out the pages that are not used. When huge
+pages are available in guest_memfd, even if the backing memory source
+supports hole punching within a huge page, punching out pages to maintain
+the total memory utilized by a VM would be introducing lots of
+fragmentation.
+
+In-place conversion avoids fragmentation by allowing the same physical
+memory to be used for both shared and private memory, with guest_memfd
+tracks the shared/private status of all the pages at a per-page
+granularity.
+
+The central principle, which guest_memfd continues to uphold, is that any
+guest-private page will not be mappable to host userspace. All pages will
+be mmap()-able in host userspace, but accesses to guest-private pages (as
+tracked by guest_memfd) will result in a SIGBUS.
+
+This series introduces a guest_memfd ioctl (not kvm, vm or vcpu, but
+guest_memfd ioctl) that allows userspace to set memory
+attributes (shared/private) directly through the guest_memfd. This is the
+appropriate interface because shared/private-ness is a property of memory
+and hence the request should be sent directly to the memory provider -
+guest_memfd.
+
+I'm intending RFC (v3) as a basis for discussion of flags/content
+modes (name TBD) to allow userspace to request guarantees on how the memory
+contents will look like after setting memory attributes. The last 6 patches
+implement content mode support. These patches will be reordered, and some
+of them could be absorbed into earlier patches, in later revisions.
+
+Here are the discussion points I can think of (please add on):
+
+1. (Might hopefully resolve soon?) Should ZERO be supported on shared to
+   private conversions? Discussion is at [6].
+
+2. Do we need a CAP for userspace to query the flags/modes supported?
+
+   It seems like there won't be anything dynamic about the flags/modes
+   supported.
+
+   The userspace code can check what platform it is running on, and then
+   decide ZERO or PRESERVE based on the platform:
+
+   If the VM is running on TDX, it would want to specify ZERO all the
+   time. If the VM were running on pKVM it would want to specify PRESERVE
+   if it wants to enable in-place sharing, and ZERO if it wants to zero the
+   memory.
+
+   If someday TDX supports PRESERVE, then there's room for discovery of
+   which algorithm to choose when running the guest. Perhaps that's when
+   the CAP should be introduced?
+
+3. What do people think of the structure of how various content modes are
+   checked for support or applied? I used overridable weak functions for
+   architectures that haven't defined support, and defined overrides for
+   x86 to show how I think it would work. For CoCo platforms, I only
+   implemented TDX for illustration purposes and might need help with the
+   other platforms. Should I have used kvm_x86_ops? I tried and found
+   myself defining lots of boilerplate.
+
+4. enum for ZERO and PRESERVE?
+
+   Pros:
+
+   * No way to define both ZERO and PRESERVE (make impossible states
+     unrepresentable)
+       * e.g. enum kvm_device_type in __u32 type in struct
+         kvm_create_device
+       * But maybe someday some modes can be used together?
+   * Content modes is a defined axis/aspect of setting memory attributes,
+     having a separate field avoids having different axes of configuration
+     in one field. e.g. MAP_HUGETLB for mmap() is on a different axis from
+     MAP_PRIVATE for example
+       * I just used flags for this RFC since it's the most common
+         approach.
+
+TODOs:
+
++ Let architectures override content mode handlers on a per-inode basis
+  since per-folio overrides means even no-ops, like ZERO on TDX, would
+  require iterating all the folios.
+
+Also, in RFC v3, TEST_EXPECT_SIGBUS() is updated to assert that the default
+signal handler is installed, so that developers get a clear, explicit
+failure if/when something goes wrong.
+
+This series is based on kvm/next, and here's the tree for your convenience:
+
+https://github.com/googleprodkernel/linux-cc/commits/guest_memfd-inplace-conversion-v3
+
+Older series:
+
++ RFCv2 is at [5]
++ RFCv1 is at [4]
++ Previous versions of this feature, part of other series, are available at
+  [1][2][3].
+
+[1] https://lore.kernel.org/all/bd163de3118b626d1005aa88e71ef2fb72f0be0f.1726009989.git.ackerleytng@google.com/
+[2] https://lore.kernel.org/all/20250117163001.2326672-6-tabba@google.com/
+[3] https://lore.kernel.org/all/b784326e9ccae6a08388f1bf39db70a2204bdc51.1747264138.git.ackerleytng@google.com/
+[4] https://lore.kernel.org/all/cover.1760731772.git.ackerleytng@google.com/T/
+[5] https://lore.kernel.org/all/cover.1770071243.git.ackerleytng@google.com/T/
+[6] https://lore.kernel.org/all/CAEvNRgFUc+9xCoN9Yo5NThHrvbccWAhPwp9nNM2fvx7QqrcJsg@mail.gmail.com/
+
+Signed-off-by: Ackerley Tng <ackerleytng@google.com>
+---
+Ackerley Tng (25):
+      KVM: guest_memfd: Update kvm_gmem_populate() to use gmem attributes
+      KVM: Introduce KVM_SET_MEMORY_ATTRIBUTES2
+      KVM: guest_memfd: Add support for KVM_SET_MEMORY_ATTRIBUTES2
+      KVM: guest_memfd: Handle lru_add fbatch refcounts during conversion safety check
+      KVM: selftests: Update framework to use KVM_SET_MEMORY_ATTRIBUTES2
+      KVM: selftests: Test using guest_memfd for guest private memory
+      KVM: selftests: Test basic single-page conversion flow
+      KVM: selftests: Test conversion flow when INIT_SHARED
+      KVM: selftests: Test indexing in guest_memfd
+      KVM: selftests: Test conversion before allocation
+      KVM: selftests: Convert with allocated folios in different layouts
+      KVM: selftests: Test precision of conversion
+      KVM: selftests: Test that truncation does not change shared/private status
+      KVM: selftests: Test conversion with elevated page refcount
+      KVM: selftests: Reset shared memory after hole-punching
+      KVM: selftests: Provide function to look up guest_memfd details from gpa
+      KVM: selftests: Make TEST_EXPECT_SIGBUS thread-safe
+      KVM: selftests: Update private_mem_conversions_test to mmap() guest_memfd
+      KVM: selftests: Add script to exercise private_mem_conversions_test
+      KVM: guest_memfd: Introduce default handlers for content modes
+      KVM: guest_memfd: Apply content modes while setting memory attributes
+      KVM: x86: Add support for applying content modes
+      KVM: x86: Support content mode ZERO for TDX
+      KVM: selftests: Allow flags to be specified in set_memory_attributes functions
+      KVM: selftests: Update tests to use flag-enabled library functions
+
+Sean Christopherson (18):
+      KVM: guest_memfd: Introduce per-gmem attributes, use to guard user mappings
+      KVM: Rename KVM_GENERIC_MEMORY_ATTRIBUTES to KVM_VM_MEMORY_ATTRIBUTES
+      KVM: Enumerate support for PRIVATE memory iff kvm_arch_has_private_mem is defined
+      KVM: Stub in ability to disable per-VM memory attribute tracking
+      KVM: guest_memfd: Wire up kvm_get_memory_attributes() to per-gmem attributes
+      KVM: guest_memfd: Enable INIT_SHARED on guest_memfd for x86 Coco VMs
+      KVM: Move KVM_VM_MEMORY_ATTRIBUTES config definition to x86
+      KVM: Let userspace disable per-VM mem attributes, enable per-gmem attributes
+      KVM: selftests: Create gmem fd before "regular" fd when adding memslot
+      KVM: selftests: Rename guest_memfd{,_offset} to gmem_{fd,offset}
+      KVM: selftests: Add support for mmap() on guest_memfd in core library
+      KVM: selftests: Add selftests global for guest memory attributes capability
+      KVM: selftests: Add helpers for calling ioctls on guest_memfd
+      KVM: selftests: Test that shared/private status is consistent across processes
+      KVM: selftests: Provide common function to set memory attributes
+      KVM: selftests: Check fd/flags provided to mmap() when setting up memslot
+      KVM: selftests: Update pre-fault test to work with per-guest_memfd attributes
+      KVM: selftests: Update private memory exits test work with per-gmem attributes
+
+ Documentation/virt/kvm/api.rst                     | 112 ++++-
+ arch/x86/include/asm/kvm_host.h                    |   2 +-
+ arch/x86/kvm/Kconfig                               |  15 +-
+ arch/x86/kvm/mmu/mmu.c                             |   4 +-
+ arch/x86/kvm/x86.c                                 |  86 +++-
+ include/linux/kvm_host.h                           |  62 ++-
+ include/trace/events/kvm.h                         |   4 +-
+ include/uapi/linux/kvm.h                           |  21 +
+ tools/testing/selftests/kvm/.gitignore             |   1 +
+ tools/testing/selftests/kvm/Makefile.kvm           |   1 +
+ .../selftests/kvm/guest_memfd_conversions_test.c   | 496 +++++++++++++++++++++
+ tools/testing/selftests/kvm/guest_memfd_test.c     |  57 ++-
+ tools/testing/selftests/kvm/include/kvm_util.h     | 136 +++++-
+ tools/testing/selftests/kvm/include/test_util.h    |  32 +-
+ tools/testing/selftests/kvm/lib/kvm_util.c         | 130 +++---
+ tools/testing/selftests/kvm/lib/test_util.c        |   7 -
+ .../testing/selftests/kvm/pre_fault_memory_test.c  |   2 +-
+ .../kvm/x86/private_mem_conversions_test.c         |  54 ++-
+ .../kvm/x86/private_mem_conversions_test.py        | 152 +++++++
+ .../selftests/kvm/x86/private_mem_kvm_exits_test.c |  36 +-
+ virt/kvm/Kconfig                                   |   3 +-
+ virt/kvm/guest_memfd.c                             | 488 +++++++++++++++++++-
+ virt/kvm/kvm_main.c                                | 104 ++++-
+ 23 files changed, 1831 insertions(+), 174 deletions(-)
+---
+base-commit: d2ea4ff1ce50787a98a3900b3fb1636f3620b7cf
+change-id: 20260225-gmem-inplace-conversion-bd0dbd39753a
+
+Best regards,
+--
+Ackerley Tng <ackerleytng@google.com>
+
