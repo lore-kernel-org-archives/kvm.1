@@ -1,143 +1,155 @@
-Received: from CO1PR03CU002.outbound.protection.outlook.com (mail-westus2azon11010006.outbound.protection.outlook.com [52.101.46.6])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pg1-f202.google.com (mail-pg1-f202.google.com [209.85.215.202])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A07F36C9C4;
-	Fri, 13 Mar 2026 06:15:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.46.6
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773382536; cv=fail; b=sICIQMc8yeGCE0kn1t4tfg1dLaq13eAdt/V2EbuxOzeGTNd83FweBb+C5msOi96MiuI1dql9R1m+N/hmkTJAotI7QEn1nBsP2fN7r1A6nxUu3+0oWGcxyrLGZZ4MuH2Ewew2RSjrpHnt8HL8LCYBk7Qr+O+9umTjbkeOky1j1yg=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773382536; c=relaxed/simple;
-	bh=cbtk/6YZh1W6lbvAZwSLHtYQPzQWd8UU7dznpko991E=;
-	h=Date:From:To:CC:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=YY3WlZvERvPFf7Hq885ypcTEtpURn9D9C+90M3QZvYy3cvuYXXb3UecgnT9lFGIquipbxXTVkF/PkXMZuHh1nkZ/cC5Ug0LKssqLzSaRVIBa8f2XR6cpKZ3iXKNhzmm0SnGhlHvrR5QPLD6AMeyKFI9/2r2paNSTEu6a4rg2Zq8=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=UwqhZGd9; arc=fail smtp.client-ip=52.101.46.6
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 90AC036B040
+	for <kvm@vger.kernel.org>; Fri, 13 Mar 2026 07:10:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.202
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1773385839; cv=none; b=OvRtYXVBG3C3/dmAWiqvs1Y1YDzddAQ8b4NKoAtceV90HNjAfZMjyBKH7UM+Safn8++LEjtHSLvyW8RIBphnslaIwOkP8FpwtwvyOvYS7IhaVnuEhSk2DbDmjaVum1ZHcIexh0SjkbyDsth2eqfxiAVBnTPfwgkQDX9z5v0o58U=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1773385839; c=relaxed/simple;
+	bh=PjujR+DaN0kTLA2597jdvajJ2gnmxAARSFh8D0QJgnA=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=L0fIlVyp6luzochJEIQSeKCeARWJuK++OjP7Mh5qXUej7KlnbWVmI0obZH8UuxDD/CBVm/0EzV/tEM9nGjG5kg+8tpL58VxIc8oJsET7yjEA+7V9PKfo9R9yGB/xJeabH+ZuPx4THxapRfIqzEoCsiHJkgoH2WHMgK7514Prff4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--chengkev.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Uv765RDs; arc=none smtp.client-ip=209.85.215.202
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--chengkev.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="UwqhZGd9"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=YqAH4sfKh/zcJT1ftIi543pgzumZDUxs33c8CL6qzymdSXeP1rEcT13VAWe/n79lHHXHoEdP/5eUBAM5nfw2Hrq/ErQzb3jCFed1tpmdoBWI4qTAAS4XACmC9D9EpVtNoOMsK0bvzw+UZ347Jxts19r+RH/mt+YBNsPtVcpg5K13njoQ08KlJL98+Dby0gvxN7sOjiNcYG3MQ35qmr82qaFF05vDEY2NfOilitzgAJNpGaBWKWRsjKBGhl1fqzkw8IbiDbTnkyNoOdcnLpGFot1lhehuDNf0zcFyWX40wjbS5ZhTWMXtdLF9SlLIH69WZhc8GhXnQIT2pczaoRSBAw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=udzWFtsE6qTwor2FAZ2/vI1IVqlawgkVRMukh7/+c54=;
- b=fbHv6U+X/YHme0mrcfC1jxIx0N3QDBD7IbhyJ/TpuBEvZOMD8sUoI/zoS+6bCpha9/MSpG3w2ARugnqvqNtt+clyED6jpnSwKm4uMTAAKseJ2mVvvUqNroLgiBIRSE9wXQu7lJDEPPdjojebqla+jnlO0wunRqEW23f7DEWAXX89ySIs4IxJmm0oeXfQXTtimjDYnETOj+9t5HOxZAw+zQWkZ3s+rQgC81ptbffBOknMZ+mewfyjZAcWVnASrqtB1ne5qjqjhYdtmvLoMF2QCnvC8dWxb++P8+zWY03P9Uqmu54weGFBDHYmepmTCGGTgWdp8VfXrq1mNwBYPvdMHg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 216.228.117.161) smtp.rcpttodomain=kernel.org smtp.mailfrom=nvidia.com;
- dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
- dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=udzWFtsE6qTwor2FAZ2/vI1IVqlawgkVRMukh7/+c54=;
- b=UwqhZGd9qRyAmv3zkn6NhqJM3ltzXpYdHYz15f7WFDTc5P18+UTbq6h8x2t8zvs/W14XgntDCAxH2l9JUyIXNq/9XBMrzB1V8oJO/T4Ux5oxVhbQJuyUApeeEVdt0ZdpLXHRTA7nskWPtCzsbquKkog5lWVwc+OK2SpO2AOVMbbqBjQRlOR9XQbrPx2K9bGzvGKevP9W8kmhmrlithPaL4ujJDIXoppa0N6oCPyLj9oyJb0iJgqPEULOWz3N1s7I2c9XaRLEOq6ykLNIvQ0NXF3zEaB0zo0SHtGuFQCihlY/2NKJpVg+D25Lcp55nRyBZnbqPVmFcamzFmQ9lFLOlg==
-Received: from SJ0PR13CA0045.namprd13.prod.outlook.com (2603:10b6:a03:2c2::20)
- by MW4PR12MB6801.namprd12.prod.outlook.com (2603:10b6:303:1e8::8) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9723.6; Fri, 13 Mar
- 2026 06:15:31 +0000
-Received: from SJ1PEPF000026C9.namprd04.prod.outlook.com
- (2603:10b6:a03:2c2:cafe::86) by SJ0PR13CA0045.outlook.office365.com
- (2603:10b6:a03:2c2::20) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.20.9678.22 via Frontend Transport; Fri,
- 13 Mar 2026 06:15:30 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.117.161)
- smtp.mailfrom=nvidia.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=nvidia.com;
-Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
- 216.228.117.161 as permitted sender) receiver=protection.outlook.com;
- client-ip=216.228.117.161; helo=mail.nvidia.com; pr=C
-Received: from mail.nvidia.com (216.228.117.161) by
- SJ1PEPF000026C9.mail.protection.outlook.com (10.167.244.106) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.9678.18 via Frontend Transport; Fri, 13 Mar 2026 06:15:31 +0000
-Received: from rnnvmail204.nvidia.com (10.129.68.6) by mail.nvidia.com
- (10.129.200.67) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20; Thu, 12 Mar
- 2026 23:15:18 -0700
-Received: from rnnvmail201.nvidia.com (10.129.68.8) by rnnvmail204.nvidia.com
- (10.129.68.6) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20; Thu, 12 Mar
- 2026 23:15:18 -0700
-Received: from Asurada-Nvidia (10.127.8.14) by mail.nvidia.com (10.129.68.8)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20 via Frontend
- Transport; Thu, 12 Mar 2026 23:15:17 -0700
-Date: Thu, 12 Mar 2026 23:15:16 -0700
-From: Nicolin Chen <nicolinc@nvidia.com>
-To: "Aneesh Kumar K.V (Arm)" <aneesh.kumar@kernel.org>
-CC: <iommu@lists.linux.dev>, <linux-kernel@vger.kernel.org>,
-	<kvm@vger.kernel.org>, Kevin Tian <kevin.tian@intel.com>, Joerg Roedel
-	<joro@8bytes.org>, Will Deacon <will@kernel.org>, Bjorn Helgaas
-	<helgaas@kernel.org>, Jonathan Cameron <Jonathan.Cameron@huawei.com>, "Dan
- Williams" <dan.j.williams@intel.com>, Alexey Kardashevskiy <aik@amd.com>,
-	Samuel Ortiz <sameo@rivosinc.com>, Xu Yilun <yilun.xu@linux.intel.com>,
-	"Jason Gunthorpe" <jgg@ziepe.ca>, Suzuki K Poulose <Suzuki.Poulose@arm.com>,
-	"Steven Price" <steven.price@arm.com>
-Subject: Re: [PATCH v2 1/3] iommufd/viommu: Allow associating a KVM VM fd
- with a vIOMMU
-Message-ID: <abOrdFR4L2n334MR@Asurada-Nvidia>
-References: <20260309111704.2330479-1-aneesh.kumar@kernel.org>
- <20260309111704.2330479-2-aneesh.kumar@kernel.org>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Uv765RDs"
+Received: by mail-pg1-f202.google.com with SMTP id 41be03b00d2f7-c7381a9a932so1014819a12.3
+        for <kvm@vger.kernel.org>; Fri, 13 Mar 2026 00:10:36 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1773385836; x=1773990636; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=rwy1jTuY0ncWttYNxvv0qUnBD5tBQBgbJIWFU8yWqXQ=;
+        b=Uv765RDsgt8ppUYWCzMmZ/k2WLaVSnBz4I4jL/61Fao22EsCkr+TB4o1WRSjhzpeHO
+         tMyPPa+iRSNeMhoLRycjJomF2QlPIiO9dP9LeZ0WHpJq6ItIyNOQ8zZ75rAQFcgNuH1A
+         jwSLPl2IBmnujrelBDixsy5dX1XmZ3p4Exp74mzgKrOCxP/pQibqPjmelsb5prFrd27+
+         CrlapFx/fvvgdFPTKqYj4K7BV7ikk7hWkLHBPqQcTOSA2oJVA6A/f/CLods1aRVl/+rN
+         p7km/75pg12xdaZ2E6OcJoiq0ly8sAs/mCXpU47hHsZF8qmQHKJlzW+f2pnXZ8HSwGRZ
+         snwQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1773385836; x=1773990636;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=rwy1jTuY0ncWttYNxvv0qUnBD5tBQBgbJIWFU8yWqXQ=;
+        b=lvODW9Kae4lrHTFGQIPvIG+kLKsUz2QX9V/v8mETrhzjHjcrJvUY9VBFQas1iXUhGG
+         hrKBrxwHDt7p4p3TkIH8HBYIPkyCajSjjsHi24cX24y4p4BR7gyoNddtFmzJ7ZCMff9j
+         zy6DVJd7OVGf+s49VTB+ewVtsGPxPin/GAON/k9H7bjjUlD5SWL1bPv1s/lsjfucWHTg
+         5XDpWf6+f5OLe/UqZvyMPRu+gYWhbLxujh7nQkQpz7C54Xly3Mv6RLH5XOM03NDyKdBu
+         kcQLCmG9YvMwqxWHV4OfTeor14ZwDQoUnR/TZooW1+fCRid4ZfSkLEVryrpSApzF3aJO
+         LX3w==
+X-Gm-Message-State: AOJu0Yw/JlbWEQrR2pZvRF0wBtUlGEEj76OsznhHwcHiVcCekEcofuFX
+	3L8voXb3lTCtYa52ijQAsA+jNHaD3GfzehjJpxtE07udkWHpyFYAvOYKCXRjHlHuToMtpNCvj5u
+	ftCKjvNZ6ytBk0g==
+X-Received: from pgmh22.prod.google.com ([2002:a63:5756:0:b0:c73:925e:484a])
+ (user=chengkev job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:6a21:7481:b0:398:7791:fb16 with SMTP id adf61e73a8af0-398ecd9c984mr1900224637.57.1773385835701;
+ Fri, 13 Mar 2026 00:10:35 -0700 (PDT)
+Date: Fri, 13 Mar 2026 07:10:29 +0000
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Disposition: inline
-In-Reply-To: <20260309111704.2330479-2-aneesh.kumar@kernel.org>
-X-NV-OnPremToCloud: ExternallySecured
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SJ1PEPF000026C9:EE_|MW4PR12MB6801:EE_
-X-MS-Office365-Filtering-Correlation-Id: 6330ab7f-bd7d-49e4-2861-08de80c7ee1a
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|82310400026|376014|7416014|36860700016|1800799024|13003099007|56012099003|18002099003|22082099003;
-X-Microsoft-Antispam-Message-Info:
-	XtfuCB9QBzjSJFMOZ6yipvR2dMrqbhx05fh2fEha+KxHYMfnBm1/7++r63XSeyO9iFhQT3m913WCowO5lesnLSdBQuh9IFCurPqWd5gb6sjYPEmQCQmXOEbxCsbrzxQuH/7joFesqB/ffRpxhM5uBvg0boqAu2XlQJpkJk+q9bHOJtv8qQa+nOvMSiE+mfU1zV5lOrWI/vj7799p4a7GJWUE/RVAHWHLl0/guWkw/hNWTsFJQYedjW2NwoCySfLSTdqVuuUq5zBNGZSai8xJ8jSVvkHXBCbIBqEsp5OTZR5bg0mBPmST0uZmtDcVdB/DliS+sJPPbX9u6HKWEzxjEXiYuFa+GojHRCqDCAtugOROj+yEklkc+ePWr1HKeaLAzYglJdyUq02s7ikd5Lg9IucpcvscVOQ/Qjy+reL6Al15tgEH8dQI639cFv4txl6Q6kcKD/rpgmtl6WPSmYQIeRr8+com9odTSPbuuGnqlrtu9pU/6cJvv7WIj8RyDHhFcWiizrZYtP20XBQWC6FVZWs0NuMccSRa0MrC5MoxHsMaFZ7X0I+xJlXT8icZCcHzjvMZrqkZKDcYzsaSK1Teywn+ClBJExffJ5oyOpdIFAyH3jYvJcI8IfUqAxXIJH8qtKZlwzmoh8XUpoA0IOt+IlLJn6K7PSabn1fEoPvk7kVA/FqYPJMJmdxGvaBFDrta/xM8ofcFgxV9SJ/b2WpqrSfxhFz1zWxYPFGJIRVvIW11x3PY5r4Ar9MRinhUmQEn3WPi0YjPDPg95PWrTKo7Qg==
-X-Forefront-Antispam-Report:
-	CIP:216.228.117.161;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc6edge2.nvidia.com;CAT:NONE;SFS:(13230040)(82310400026)(376014)(7416014)(36860700016)(1800799024)(13003099007)(56012099003)(18002099003)(22082099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	YtAOJ3n497EgWwcWR9ULhkjeybMDv6EIYKh95h4qte+JKTKaeHg5R0J1owRNPWuUHQM5VYDNDRiWSSFkmnS//uXC7utSpjGGTwmGTFn4iFNJ8TmQ/K3oEg4zh6N/dZ/egBQRCJotGZHRgVnTGjcLWOzK8xezdyvrDwwUwdpFqxuK/9xMkNs0RiIDsz2cntX9dXBUWJS9RDX31ynIdkazYpATpjvRJ0vC65M6V9Uof2JrzQwPpONMqOZublaYTHJEPXn8HEmI7vPiFwbG2LDtv33X27iYSTcOh5Hko9o5sWoNmmRnPOCwsi1+MMfMnPjIR+Dz5NguJv/wOppEQ23t909PS89FD4wwbNKA8eUobuE2lyV3813P3KcX9z+GBrH/pq3mTFTDYa0T0HigDFS2a2DHlWs8ilxD1DqAtpgkAw3suDJX/7hVg9DZyBqrnZxW
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 13 Mar 2026 06:15:31.4301
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 6330ab7f-bd7d-49e4-2861-08de80c7ee1a
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.117.161];Helo=[mail.nvidia.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	SJ1PEPF000026C9.namprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MW4PR12MB6801
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.53.0.851.ga537e3e6e9-goog
+Message-ID: <20260313071033.4153209-1-chengkev@google.com>
+Subject: [PATCH V3 0/4] KVM: X86: Correctly populate nested page fault
+ injection error information
+From: Kevin Cheng <chengkev@google.com>
+To: seanjc@google.com, pbonzini@redhat.com
+Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org, yosry@kernel.org, 
+	Kevin Cheng <chengkev@google.com>
+Content-Type: text/plain; charset="UTF-8"
 
-On Mon, Mar 09, 2026 at 04:47:02PM +0530, Aneesh Kumar K.V (Arm) wrote:
-> Add optional KVM association to IOMMU_VIOMMU_ALLOC by introducing
-> IOMMU_VIOMMU_KVM_FD and iommu_viommu_alloc::kvm_vm_fd.
-> 
-> When the flag is set, iommufd validates that kvm_vm_fd refers to a KVM
-> VM file and stores a referenced struct file in the vIOMMU object, so
-> later iommufd operations can safely resolve the owning VM.
-> 
-> This is preparatory plumbing for subsequent patches that bind TDI state
-> to the associated KVM VM.
-> 
-> The patch also switch file_is_kvm from EXPORT_SYMBOL_FOR_KVM_INTERNAL to
-> EXPORT_SYMBOL_GPL so that iommu module can use that.
+This series fixes how KVM populates error information when injecting
+nested page faults (NPF on SVM, EPT violations on VMX) to L1 during
+instruction emulation, and adds a selftest to exercise these paths.
 
-struct vfio_device has the kvm pointer already. So, I think it
-could be forwarded from VFIO side v.s. via userspace ioctl.
+When a nested page fault occurs, L1 needs to know whether the fault
+happened during the page table walk (on a PT page) or on the final
+data page translation. Two issues exist today:
 
-Shammer had two patches before and Jason partially reviewed. I
-took those for a side project but haven't sent anywhere. Would
-you please check if they for you?
+  1. SVM: The page table walker does not set
+  PFERR_GUEST_{PAGE,FINAL}_MASK bits in the error code, and
+  nested_svm_inject_page_fault() hardcodes the PFERR_GUEST_FINAL_MASK
+  error code.
 
-https://github.com/nicolinc/iommufd/commits/wip/viommu_kvm
+  2. VMX: nested_ept_inject_page_fault() OR's bit 7-8 from the original
+  exit qualification, which has no relation to the synthesized EPT
+  violation regardless of whether it was originally an EPT violation or
+  not.
 
-Nicolin
+Patch 1 widens x86_exception.error_code from u16 to u64 so it can carry
+the PFERR_GUEST_* bits (bits 32-33).
+
+Patch 2 sets PFERR_GUEST_PAGE_MASK and PFERR_GUEST_FINAL_MASK in the
+walker at the kvm_translate_gpa() failure sites, and updates
+nested_svm_inject_npf_exit() to use the walker-provided error code.
+
+Patch 3 makes the OR with the hardware exit qualification conditional on
+whether the EPT was generated by hardware or not in
+nested_ept_inject_page_fault(), and populates EPT_VIOLATION_GVA_IS_VALID
+and EPT_VIOLATION_GVA_TRANSLATED in the walker alongside the NPF bits.
+
+Patch 4 adds a selftest covering both SVM and VMX with three scenarios:
+  - Final data page unmapped (final translation fault)
+  - Page table page unmapped (page walk fault)
+  - Final data page write-protected (protection violation)
+  - Page table page write-protected (protection violation)
+
+v2 -> v3:
+  - Introduce hardware_nested_page_fault in struct x86_exception to
+    distinguish hardware NPF/EPT exits from emulation-triggered faults
+    as per Sean
+  - For SVM, take PFERR_GUEST_FAULT_STAGE bits from hardware exit_info_1
+    on hardware NPF exits, and from fault->error_code on emulation
+    faults
+  - For VMX, conditionally OR hardware exit qualification GVA_IS_VALID/
+    GVA_TRANSLATED bits only for hardware EPT violation exits as per
+    Sean
+  - Replace #if PTTYPE != PTTYPE_EPT preprocessor guards in
+    paging_tmpl.h with runtime kvm_nested_fault_is_ept() helper that
+    checks guest_mmu as per Sean
+
+v2: https://lore.kernel.org/all/20260224071822.369326-1-chengkev@google.com/
+
+v1 -> v2:
+  - Split out the widening of the x86_exception error code into a
+    separate patch as per Sean.
+  - Added a WARN if both PFERR_GUEST_* bits are set and force the
+    exit_info_1 to PFERR_GUEST_FINAL_MASK if this occurs.
+  - Removed the selftest TDP helpers as per Sean
+  - Added a patch to populate the EPT violation bits for VMX nested page
+    faults as per Sean.
+  - Expanded the added selftest to support VMX and also added a test
+    case for write protected pages using the INS instruction.
+
+v1: https://lore.kernel.org/all/20260121004906.2373989-1-chengkev@google.com/
+
+base-commit: bfd7f4adc1230373c25e1b787a6f1ee407eb0656
+
+
+Kevin Cheng (4):
+  KVM: x86: Widen x86_exception's error_code to 64 bits
+  KVM: SVM: Fix nested NPF injection to set
+    PFERR_GUEST_{PAGE,FINAL}_MASK
+  KVM: VMX: Fix nested EPT violation injection of
+    GVA_IS_VALID/GVA_TRANSLATED bits
+  KVM: selftests: Add nested page fault injection test
+
+ arch/x86/include/asm/kvm_host.h               |   2 +
+ arch/x86/kvm/kvm_emulate.h                    |   3 +-
+ arch/x86/kvm/mmu/mmu.c                        |  10 +
+ arch/x86/kvm/mmu/paging_tmpl.h                |  42 +-
+ arch/x86/kvm/svm/nested.c                     |  37 +-
+ arch/x86/kvm/vmx/nested.c                     |   9 +-
+ tools/testing/selftests/kvm/Makefile.kvm      |   1 +
+ .../selftests/kvm/x86/nested_npf_test.c       | 374 ++++++++++++++++++
+ 8 files changed, 448 insertions(+), 30 deletions(-)
+ create mode 100644 tools/testing/selftests/kvm/x86/nested_npf_test.c
+
+--
+2.53.0.851.ga537e3e6e9-goog
+
