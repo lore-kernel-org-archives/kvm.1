@@ -1,190 +1,171 @@
-Received: from mail-pl1-f202.google.com (mail-pl1-f202.google.com [209.85.214.202])
+Received: from mail-pj1-f73.google.com (mail-pj1-f73.google.com [209.85.216.73])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F8FD386C14
-	for <kvm@vger.kernel.org>; Fri, 13 Mar 2026 22:44:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.202
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB9293D5674
+	for <kvm@vger.kernel.org>; Fri, 13 Mar 2026 22:58:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.73
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773441862; cv=none; b=LGSv41o4zvxaxXsOYz9kTIiaR0c06vv2a4lMhUEkQlTxuGg0rrDZFcaCpRjcp/bSCuYUutGoXlhXHb7sc9nQDpg+Y9i6oM5y4xo8pgw2gyYrK55VqUp3GQ98pbwQXAa44+2y3Cidu6kkOhDG7fRMsNX7PjwS/VT62v71NuOBxLU=
+	t=1773442719; cv=none; b=EZ/LuCpCAhtFWgkiKDncR7SMNx69M0omoycnDSe491pnl4XLxf5GG0EjdKvax4r0yVtaa5A2/iMwrSnF7TAjbCa7ooFuGHI6bM2yhdYMbxJCCKg7mM7xqbqLCFaug+PfVuIaseRZnLXNTdszoYzvdI9QuEImTug83Ra54iIzYlk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773441862; c=relaxed/simple;
-	bh=RObk2NFlAzoFFoAQT6+r/hBDrwrVcqFayke1/YF2S8I=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=tq9oNXmebMsdUYmRitIfRlvpfI13l2hjFnOur2civO9hGxOKLTtubmdVE8ZFOWg9htUBR8eLZSRbhJ7XUzjmzqhtM6DCEk+F9DF5Be60GAMvqjaLuZCh2vNeIjs2/ZMwp7rjdBf7MTS39LJ0myOyZtThVHRJWcTSn8WycgM6ho0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=qEdDT5TU; arc=none smtp.client-ip=209.85.214.202
+	s=arc-20240116; t=1773442719; c=relaxed/simple;
+	bh=3kZBp34QHPnWOkKsdkMOMumBAyYT2+CBGfH1b7FItMA=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=h1TFfR+eRtWx/KraBFT53wfPZSq2DAVLhWgrF3TYXUeisF2W0jjW1sARAUmn27ZAOo/Fy6VhrMhUD5SGv0RdSP624xirvCmOkcBpB+KHsBfPZifisyatAxvUgaAVO3xByTXel1xeotL16n0PskLkqaTnkA6Q01c3DIWKxH6o+gI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=FjP7ddBI; arc=none smtp.client-ip=209.85.216.73
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="qEdDT5TU"
-Received: by mail-pl1-f202.google.com with SMTP id d9443c01a7336-2ae3badc00dso31497265ad.3
-        for <kvm@vger.kernel.org>; Fri, 13 Mar 2026 15:44:21 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="FjP7ddBI"
+Received: by mail-pj1-f73.google.com with SMTP id 98e67ed59e1d1-359fdf17147so1684786a91.1
+        for <kvm@vger.kernel.org>; Fri, 13 Mar 2026 15:58:37 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1773441861; x=1774046661; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=KTfWNvyTyFDvUjwuk0h7vPzttNOXgvJQjH6JyowUq8A=;
-        b=qEdDT5TUGupspHtiFm2ngHiaIxCJ1qqwTPIzQTztiF8rpd8+OrU7rZSsrtd5rmhpzs
-         C3Do3+oCTHPX1rIg7mdbhiSpk5oLsz0HxhnvOSHBb9beNPynooavCtcHAK14XjoN53SU
-         VSgBUs7tzsW8DHfCAu7vvnghzUZT3r7YEGJKPeZb0UeClFdwpUR1r93Y0QuOk21LjUnf
-         5J6CRkx+E0Xkkp6pTCEFtQWiPn2ZyLDFqyrX3maYUcpLUHtwZ3cFK2fj2rujexQz+Ee4
-         ejyag3gueCYGuL0MGVz8NHOqO+NMXSLDYo1mtY5tzy8Ce7b9hLwunVfuUk3sCN3Pz5sk
-         Q4Pw==
+        d=google.com; s=20251104; t=1773442717; x=1774047517; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=fFWZXhlihsWtwYAozJDDCeA0FVsn3VlqEhc7IimzQf4=;
+        b=FjP7ddBIaYU+G6ResyQNRDqOtSYgEVuwoIC9fJfKYV69qD33FVvQVkIcyAgm3xwh53
+         Ms7V8JJauX6hvBD2ZpQEU4RklQ7w3x5loANKkCM6ftsAAD2aqbXbwwKXQlkmqi07c6wW
+         jkOiYUEZIeoAiQNkkDfTL3m9p5hMJqftcl+MKhE4uMuSKeAgiHF63rAxClzplaj5hh8U
+         AKapBRSV655jXUBiSQ/Zm6rYE3VrlimpRwTEWvcwtbAYDOJAjQOYa/gB3EpghabYBIOW
+         730Ygrz3h2F37ExJdhMrM9pAne25gzOhGElCJXIgFrkrHF62MkmlmMnfFC0F23nO8iEw
+         dCdw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1773441861; x=1774046661;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=KTfWNvyTyFDvUjwuk0h7vPzttNOXgvJQjH6JyowUq8A=;
-        b=mDojAup08cGGMMLcUXjpTfebgRF67H8xjA4H8rEfNNCrqsYv1nvqcS/NaKYXnr48Uc
-         qjJvkA8QHPZrgoOasUaNEXt6FE3jnJebVL7yOqsULQ1nFBcihLE/vab41tbpSCzMmmgr
-         JoW9w8GNWGKAQJPutMSY79TfLBfBi7j7rc2rauvN7n79ZV1oYxbMvTsgiMxYJrrk8u+X
-         PRrl1TGHQ47rFk4/XQ83zrzEz681MyD3IJ0t0VkyZ2Ao/ozQu0CGbMbD3f8H/0pKPqI5
-         2sGLqNxcPZlWQbRgATEEFj3+guTfhSTXhbF3RgxtX4jXcsmV2Ytj35GBfkWYq+7VSp3Q
-         ilYA==
-X-Forwarded-Encrypted: i=1; AJvYcCXPGlKmiwkp6wuMyAc3Zb0Tufbw8kPn85HSYByfYznwKCGr905VDitnduoHvLWJodTbgJw=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyZ4Fmw4m5k/nHvhnb0YO1t3EPGg3C9UOI+Ze5FRRnQ04EennNP
-	9DkNR70+tr95XTBnz/T2ej7d4nJiXHbC6JD2peu8TiHrEUDNFoIoRZjhJVEYpW+1zR4Y5V76VHK
-	Fm/YhOA==
-X-Received: from plblf8.prod.google.com ([2002:a17:902:fb48:b0:2ae:54c3:f6d])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:902:f70a:b0:2ae:5044:8dd4
- with SMTP id d9443c01a7336-2aeca960929mr47051415ad.19.1773441860493; Fri, 13
- Mar 2026 15:44:20 -0700 (PDT)
-Date: Fri, 13 Mar 2026 15:44:18 -0700
-In-Reply-To: <CAO9r8zNdmGK6EKnNHDNC9pZQh7+jxjHOsJin9Kaijk1hs0uX6Q@mail.gmail.com>
+        d=1e100.net; s=20251104; t=1773442717; x=1774047517;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=fFWZXhlihsWtwYAozJDDCeA0FVsn3VlqEhc7IimzQf4=;
+        b=X6NDR7k+Qi3SAmif5ZWNEHoCdyWR9gRR/ZZp1wRlZtc3624rbtkriINhZYk9RIg7F1
+         HDnCt3Xc4P0jH9jjGhrJGyd7blU8LWr5qbmQSCuLJmktYqOlh/z8HDfyV+/ei2bU5aHk
+         Iqf1nhklyBRBygLqLFDNQOc1JYUJiAzxXxkyhTALiH7sd/boPFoMyOhANFP8hpRPed+s
+         J3sMVVOw/cVyBSVmt/dnL41Cn59GiLw8HXVABC/SwAkEry3CRE1iF1Ph8WJ76XC5qIfE
+         cidbYktromguhDkmi57B5PgCHQPohhlxUWtttnxKxGQVIqiakERfP9l0aeeQ9SRfpYg/
+         TVHA==
+X-Forwarded-Encrypted: i=1; AJvYcCWv0Y9nZUhkCj3o1mmMf8KK0CYgRFd/vpSP8rUSICJOSaMZe/BfmBSIZQdVrBoXECaOm9M=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzfiKUxiL8Epvr0MLb9Zyr58+vN/211NzfT19GS6eVLSILMsczC
+	8dAvMhZzAjyELUWkWl4Vaw0PVGIzIh7AzohH4buGpIbqEXO0xzZfxf272KzLWVkOdoHFPFVrSUX
+	zCjxW9A==
+X-Received: from pgmp7.prod.google.com ([2002:a63:1e47:0:b0:bac:6acd:818b])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:38c1:b0:359:fecd:1cb6
+ with SMTP id 98e67ed59e1d1-35a21cb4b21mr4507609a91.0.1773442716988; Fri, 13
+ Mar 2026 15:58:36 -0700 (PDT)
+Date: Fri, 13 Mar 2026 22:58:35 +0000
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-References: <20260313001024.136619-1-yosry@kernel.org> <20260313001024.136619-4-yosry@kernel.org>
- <CAO9r8zNdmGK6EKnNHDNC9pZQh7+jxjHOsJin9Kaijk1hs0uX6Q@mail.gmail.com>
-Message-ID: <abSTQifukogF5yEF@google.com>
-Subject: Re: [PATCH v3 3/7] KVM: SVM: Move RAX legality check to SVM insn
- interception handlers
+Message-ID: <abSWm4wyY91I4zf8@google.com>
+Subject: [BUG REPORT] crypto: ccp: Interrupting INIT_EX firmware writeback
+ crashes host
 From: Sean Christopherson <seanjc@google.com>
-To: Yosry Ahmed <yosry@kernel.org>
-Cc: Paolo Bonzini <pbonzini@redhat.com>, Jim Mattson <jmattson@google.com>, kvm@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
+To: Tom Lendacky <thomas.lendacky@amd.com>, Ashish Kalra <ashish.kalra@amd.com>
+Cc: linux-crypto@vger.kernel.org, kvm@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, Peter Gonda <pgonda@google.com>, 
+	David Rientjes <rientjes@google.com>
 Content-Type: text/plain; charset="us-ascii"
 
-On Fri, Mar 13, 2026, Yosry Ahmed wrote:
-> > @@ -2306,24 +2312,18 @@ static int gp_interception(struct kvm_vcpu *vcpu)
-> >                 goto reinject;
-> >
-> >         opcode = svm_instr_opcode(vcpu);
-> > +       if (opcode != NONE_SVM_INSTR)
-> > +               return emulate_svm_instr(vcpu, opcode);
-> >
-> > -       if (opcode == NONE_SVM_INSTR) {
-> > -               if (!enable_vmware_backdoor)
-> > -                       goto reinject;
-> > -
-> > -               /*
-> > -                * VMware backdoor emulation on #GP interception only handles
-> > -                * IN{S}, OUT{S}, and RDPMC.
-> > -                */
-> > -               if (!is_guest_mode(vcpu))
-> > -                       return kvm_emulate_instruction(vcpu,
-> > -                               EMULTYPE_VMWARE_GP | EMULTYPE_NO_DECODE);
-> > -       } else {
-> > -               if (!page_address_valid(vcpu, svm->vmcb->save.rax))
-> > -                       goto reinject;
-> > +       if (!enable_vmware_backdoor)
-> > +               goto reinject;
-> >
-> > -               return emulate_svm_instr(vcpu, opcode);
-> > -       }
-> > +       /*
-> > +        * VMware backdoor emulation on #GP interception only handles
-> > +        * IN{S}, OUT{S}, and RDPMC.
-> > +        */
-> > +       if (!is_guest_mode(vcpu))
-> > +               return kvm_emulate_instruction(vcpu, EMULTYPE_VMWARE_GP | EMULTYPE_NO_DECODE);
-> 
-> AI review pointed out that we should not drop the page_address_valid()
-> from here, because if an SVM instruction is executed by L2, and KVM
-> intercepts the #GP, it should re-inject the #GP into L2 if RAX is
-> illegal instead of synthesizing a #VMEXIT to L1. 
+So... while doing stupid things I accidentally stumbled on a flaw with SEV's
+SEV_INIT_EX support.
 
-No, because the intercept has higher priority than the #GP due to bad RAX.
+If userspace CTRL-C's an SEV ioctl that triggers "auto" initialization, e.g.
+SEV_PEK_CSR, and the fatal signal causes the kernel_write() in
+sev_write_init_ex_file() to fail, I'm fairly certain the on-disk firmware data
+gets corrupted, and can lead to some wild crashes.
 
-> My initial instincth is to keep the check here as well as in the intercept
-> handlers, but no, L1's intercept should take precedence over #GP due to
-> invalid RAX anyway. In fact, if L1 has the intercept set, then it must be set
-> in vmcb02, and KVM would get a #VMEXIT on the intercept not on #GP.
+After getting the -EINTR, INIT_EX fails and SEV is completely unusable. 
 
-Except for the erratum case.
+[  166.178620] ccp 0000:24:00.1: SEV: failed to write 32768 bytes to non volatile memory area, ret -4
+[  166.187617] ccp 0000:24:00.1: SEV: INIT_EX failed 0x0, rc -5
+[  255.102921] ccp 0000:24:00.1: SEV: INIT_EX failed 0x1, rc -5
 
-> The actual problem is that the current code does not check if L1
-> actually sets the intercept in emulate_svm_instr(). 
+At this point, all sorts of things go wrong.  If the ccp driver is unloaded and
+reloaded, *without* deleting and recreating the on-disk file, the kernel will
+crash when attempting to reload the ccp driver.  E.g. see the splat at the bottom.
 
-Oh dagnabbit.  I had thought about this, multiple times, but wrote it off as a
-non-issue because if L1 wanted to intercept VMWHATEVER, KVM would set the intercept
-in vmcb02 and would get _that_ instead of a #GP.  But the erratum case means that
-hardware could have signaled #GP even when the instruction should have been
-intercepted.
+If I delete the on-disk file (prior to unloading ccp), INIT_EX continues to fail,
+and the platform chugs along, at least for a while.  I even managed to unload and
+reload ccp and got SEV usable again, but only once.
 
-And I also forgot the KVM could be intercepting #GP for the VMware crud, which
-would unintentionally grab the CPL case too.  Darn kitchen sink #GPs.
+Every other time, I've observed what appears to be widespread data corruption in
+the kernel, e.g. corrupted page tables, NULL pointer derefs in completely unrelated
+code, and so on and so forth.
 
-> So if L1 and KVM do not set the intercept, and RAX is invalid, the current
-> code could synthesize a spurious #VMEXIT to L1 instead of reinjecting #GP.
-> The existing check on RAX prevents that, but it doesn't really fix the
-> problem because if we get #GP due to CPL != 0, we'll still generate a
-> spurious #VMEXIT to L1. What we really should be doing in gp_interception()
-> is:
-> 
-> 1. if CPL != 0, re-inject #GP.
-> 2. If in guest mode and L1 intercepts the instruction, synthesize a #VMEXIT.
-> 3. Otherwise emulate the instruction, which would take care of
-> re-injecting the #GP if RAX is invalid with this patch.
-> 
-> Something like this on top (over 2 patches):
-> 
-> diff --git a/arch/x86/kvm/svm/svm.c b/arch/x86/kvm/svm/svm.c
-> index cf5ebdc4b27bf..8942272eb80b2 100644
-> --- a/arch/x86/kvm/svm/svm.c
-> +++ b/arch/x86/kvm/svm/svm.c
-> @@ -2237,10 +2237,11 @@ static int emulate_svm_instr(struct kvm_vcpu
-> *vcpu, int opcode)
->                 [SVM_INSTR_VMLOAD] = vmload_interception,
->                 [SVM_INSTR_VMSAVE] = vmsave_interception,
->         };
-> +       int exit_code = guest_mode_exit_codes[opcode];
->         struct vcpu_svm *svm = to_svm(vcpu);
-> 
-> -       if (is_guest_mode(vcpu)) {
-> -               nested_svm_simple_vmexit(svm, guest_mode_exit_codes[opcode]);
-> +       if (is_guest_mode(vcpu) &&
-> vmcb12_is_intercept(&svm->nested.ctl, exit_code))
-> +               nested_svm_simple_vmexit(svm, exit_code);
->                 return 1;
->         }
->         return svm_instr_handlers[opcode](vcpu);
-> @@ -2269,8 +2270,11 @@ static int gp_interception(struct kvm_vcpu *vcpu)
->                 goto reinject;
-> 
->         opcode = svm_instr_opcode(vcpu);
-> -       if (opcode != NONE_SVM_INSTR)
-> +       if (opcode != NONE_SVM_INSTR) {
-> +               if (svm->vmcb->save.cpl)
-> +                       goto reinject;
+FWIW, I've also seen this:
 
-Don't you need the page_address_valid() check here?  Ooooh, no, because either
-emulate_svm_instr() will synthesize #VMEXIT, or svm_instr_handlers() will take
-care of the #GP.  It's only CPL that needs to be checked early, because it has
-priority over the #VMEXIT.
+[  729.245590] ccp 0000:11:00.5: SEV: could not read 32768 bytes to non volatile memory area, ret 0
+[  729.363068] ccp 0000:11:00.5: SEV: retrying INIT command because of SECURE_DATA_INVALID error. Retrying once to reset PSP SEV state.
 
->                 return emulate_svm_instr(vcpu, opcode);
-> +       }
-> 
->         if (!enable_vmware_backdoor)
->                 goto reinject;
-> 
-> ---
-> 
-> Sean, do you prefer that I send patches separately on top of this
-> series or a new version with these patches included?
+even when SEV was "healthly".
 
-Go ahead and send an entirely new series.  The less threads I have to chase down
-after I get back, the less likely I am to screw things up :-)
+The easiest way to reproduce is to get ccp + kvm loaded on a non-SNP, but _don't_
+run any SEV VMs, so that e.g. SEV_PEK_CSR is forced to initialize and shutdown the
+PSP on every call (see commit ceac7fb89e8d ("crypto: ccp - Ensure implicit SEV/SNP
+init and shutdown in ioctls").  Then do SEV_PEK_CSR in a loop in userspace, and kill
+the process.  The initialize+shutdown behavior makes the window for getting -EINTR
+quite large, e.g. I can hit it just by manually doing CTRL-C ~25% of the time.
+
+Given that all of this requires elevated permissions, and in practice for the PSP
+to be in an uninitialized state, I'm not concerned about unprivileged userspace
+doing bad things.  But I do thing we should try to harden INIT_EX against failure
+to write to disk, because the esclating from "cancel a file write" to "system is
+on fire" isn't very pleasant.
+
+[  210.532156] ccp 0000:11:00.5: SEV: INIT_EX failed 0x1, rc -5
+[  215.351268] ccp 0000:11:00.5: SEV: INIT_EX failed 0x1, rc -5
+[  225.961467] BUG: unable to handle page fault for address: ffa00000324a97e0
+[  225.961901] #PF: supervisor read access in kernel mode
+[  225.962345] #PF: error_code(0x0000) - not-present page
+[  225.962593] PGD 100000067 P4D 101820067 PUD 60500ba067 PMD 0 
+[  225.962876] Oops: Oops: 0000 [#1] SMP KASAN
+[  225.963085] CPU: 174 UID: 0 PID: 17365 Comm: modprobe Tainted: G    BU  W           7.0.0-smp--830fa8710ad0-kasan #104 PREEMPTLAZY 
+[  225.963638] Tainted: [B]=BAD_PAGE, [U]=USER, [W]=WARN
+[  225.963883] Hardware name: Google Astoria/astoria, BIOS 0.20250817.1-0 08/25/2025
+[  225.964235] RIP: 0010:simplify_symbols+0x32f/0x650
+[  225.964479] Code: e7 e8 55 37 63 00 49 8b 04 24 c1 e3 06 48 01 c3 48 83 c3 10 48 89 d8 48 c1 e8 03 42 80 3c 28 00 74 08 48 89 df e8 31 37 63 00 <48> 8b 1b 49 83 c7 08 4c 89 f8 48 c1 e8 03 42 80 3c 28 00 74 08 4c
+[  225.965328] RSP: 0018:ff110062e0fa7b50 EFLAGS: 00010246
+[  225.965585] RAX: 1ff40000064952fc RBX: ffa00000324a97e0 RCX: ffffffffc09a0198
+[  225.965922] RDX: 0000000000001c7c RSI: ff110062e0fa7db0 RDI: ffa00000320aace0
+[  225.966259] RBP: ff110062e0fa7c70 R08: ffa0000132053498 R09: 0000000000000000
+[  225.966596] R10: dffffc0000000000 R11: fffffbfff811a05f R12: ff110062e0fa7dd0
+[  225.966938] R13: dffffc0000000000 R14: 000000000000000d R15: ffffffffc09a02d0
+[  225.967275] FS:  00007fba2c441740(0000) GS:ff1100bf3377f000(0000) knlGS:0000000000000000
+[  225.967652] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+[  225.967928] CR2: ffa00000324a97e0 CR3: 00000061f90a0002 CR4: 0000000000f71ef0
+[  225.968268] PKRU: 55555554
+[  225.968409] Call Trace:
+[  225.968540]  <TASK>
+[  225.968658]  ? setup_modinfo_srcversion+0x1c/0x50
+[  225.968889]  ? setup_modinfo+0x371/0x4d0
+[  225.969083]  ? show_modinfo_srcversion+0x80/0x80
+[  225.969324]  load_module+0x41f0/0x4fb0
+[  225.969512]  __se_sys_finit_module+0x384/0x580
+[  225.969741]  do_syscall_64+0xe8/0x890
+[  225.969925]  ? trace_irq_disable+0x60/0x1c0
+[  225.970131]  ? entry_SYSCALL_64_after_hwframe+0x4b/0x53
+[  225.970383]  entry_SYSCALL_64_after_hwframe+0x4b/0x53
+[  225.970627] RIP: 0033:0x7fba2c579099
+[  225.970810] Code: 00 c3 cc cc cc cc cc cc cc cc cc cc cc cc cc cc cc 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 8b 0d 07 f9 06 00 f7 d8 64 89 01 48
+[  225.971679] RSP: 002b:00007ffcdf8ba828 EFLAGS: 00000246 ORIG_RAX: 0000000000000139
+[  225.972035] RAX: ffffffffffffffda RBX: 000000001289de10 RCX: 00007fba2c579099
+[  225.972377] RDX: 0000000000000000 RSI: 000000001289e250 RDI: 0000000000000003
+[  225.972717] RBP: 00007ffcdf8ba870 R08: 0000000000000000 R09: 0000000000000000
+[  225.973054] R10: 0000000000000003 R11: 0000000000000246 R12: 0000000000040000
+[  225.973391] R13: 0000000000000000 R14: 000000001289e250 R15: 0000000000000000
+[  225.973730]  </TASK>
+[  225.973849] Modules linked in: irqbypass vfat fat dummy bridge stp llc k10temp i2c_piix4 cdc_ncm cdc_eem cdc_ether usbnet mii xhci_pci xhci_hcd ehci_pci ehci_hcd [last unloaded: ccp]
+[  225.974609] CR2: ffa00000324a97e0
+[  225.974778] ---[ end trace 0000000000000000 ]---
+[  225.975005] RIP: 0010:simplify_symbols+0x32f/0x650
+[  225.975245] Code: e7 e8 55 37 63 00 49 8b 04 24 c1 e3 06 48 01 c3 48 83 c3 10 48 89 d8 48 c1 e8 03 42 80 3c 28 00 74 08 48 89 df e8 31 37 63 00 <48> 8b 1b 49 83 c7 08 4c 89 f8 48 c1 e8 03 42 80 3c 28 00 74 08 4c
+[  225.976099] RSP: 0018:ff110062e0fa7b50 EFLAGS: 00010246
+[  225.976350] RAX: 1ff40000064952fc RBX: ffa00000324a97e0 RCX: ffffffffc09a0198
+[  225.976687] RDX: 0000000000001c7c RSI: ff110062e0fa7db0 RDI: ffa00000320aace0
+[  225.977024] RBP: ff110062e0fa7c70 R08: ffa0000132053498 R09: 0000000000000000
+[  225.977361] R10: dffffc0000000000 R11: fffffbfff811a05f R12: ff110062e0fa7dd0
+[  225.977702] R13: dffffc0000000000 R14: 000000000000000d R15: ffffffffc09a02d0
+[  225.978040] FS:  00007fba2c441740(0000) GS:ff1100bf3377f000(0000) knlGS:0000000000000000
+[  225.978416] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+[  225.978691] CR2: ffa00000324a97e0 CR3: 00000061f90a0002 CR4: 0000000000f71ef0
+[  225.979029] PKRU: 55555554
+[  225.979168] Kernel panic - not syncing: Fatal exception
+[  225.993094] Kernel Offset: 0xf400000 from 0xffffffff81000000 (relocation range: 0xffffffff80000000-0xffffffffbfffffff)
