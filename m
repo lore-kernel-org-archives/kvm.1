@@ -1,150 +1,168 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
+Received: from SN4PR2101CU001.outbound.protection.outlook.com (mail-southcentralusazon11012012.outbound.protection.outlook.com [40.93.195.12])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 93E391519B4
-	for <kvm@vger.kernel.org>; Mon, 16 Mar 2026 18:17:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.13
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773685064; cv=none; b=kJA9x3II84APRKEFDHhwlS7AYn7IRE6doLBOuoxJR6A/7Mb6vA+Pi1R6SsOJRH/xp6YPW7FRLs1K+narJSCqoolSLrqdD8pHbif6mtXS/MsYOrnbgGxcLxUnnJQt5PV4fZmsx0XOjkgGZIVmEDgfL0YxhpRnHpkbozCrjU0+sDs=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773685064; c=relaxed/simple;
-	bh=KyPEPqesLYTOsWwjXlMYthd6Gd2uEGN/gOmmt8vtMFA=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=UesqoXPX4ehKRtAH6rsMll9vyyLvJnl4oE6xPkhR8OA46baMo7stLCXubis9JitofLZZPlKkZM86lnn5v26qBqCAgD54ePS1gSptDsWifHi0ABpgI4SZbZI9RmlHzLfQmn8sjiFh2hgX5LGxREY8KJtLTsjkn6Vb8dIUPNoPlLI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Sy07jS90; arc=none smtp.client-ip=198.175.65.13
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 44CC33DA7E1;
+	Mon, 16 Mar 2026 18:21:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.93.195.12
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1773685281; cv=fail; b=JJloAEDbbYc38UCEmvfhMumkLizf6ubKs2DHMPmiqTGBiavyFVn3eGi55fpn5zm7Z8/yjZ8bLHfkUh9OrfR49do9TMDnt/hdKUEZhlwMGMATGqZU03rxWZx9gUJkQhhJWa7NuVKi0JwoYKdpLSGSt06enIUYYlctI6ssIALv/To=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1773685281; c=relaxed/simple;
+	bh=HG71p2B/zHaFD3EX5OxvzPtSNls14F9W13UScveAkJE=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=gtF/SjX54t6hC83/fBe7ekZReqfWTCiYGwmaQdwMYXk8sHUQOV9yVwLDFMSWX1Nz0B4rBlZzIkCaHiklkRzmOwk8ZUvAC7SpKRusvEf8U0ywd04I2aYtA5tdawov/AHb5QLicS9eDyB99JrHx+Ddv0mizZob83i5+8FfJDwjWq8=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=SkYmDUex; arc=fail smtp.client-ip=40.93.195.12
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Sy07jS90"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1773685060; x=1805221060;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=KyPEPqesLYTOsWwjXlMYthd6Gd2uEGN/gOmmt8vtMFA=;
-  b=Sy07jS903Bc9uK1sOiAmirUO2wOussUeDlG2yF6iUkS89ekf0RT9mErf
-   Dc94pblzZ9TRHAvQCXqYWy+fVtC0VjRtbPKfM8dKzhbyk8hrVVZ1X6M1Q
-   veRv60k1EJXWO+WgEZDlAlN/m/M6Leo6Eqqd02BIzNF176QG2T4DDnk+i
-   iLXqjP8G+qB2oDhgnKR2AolUEciIBIr4Nx3lwCtEaQ/QTqrv8/ZYGrmQb
-   VGCxUtjmQKsZ7b4iVGYoRR6eBjovNZJL4xf7hRThX3gRBVpahaKdpQhVk
-   aUnTZkpaOz1GeyZgPeJxhLPLCnEB9SwxzE3bI/9zHUsM/Z46CkYuL9tzP
-   w==;
-X-CSE-ConnectionGUID: WNYJS9ETSHOsxg9nTMFVeA==
-X-CSE-MsgGUID: I6xNGYqMTt206AdXn1rUog==
-X-IronPort-AV: E=McAfee;i="6800,10657,11731"; a="85793274"
-X-IronPort-AV: E=Sophos;i="6.23,124,1770624000"; 
-   d="scan'208";a="85793274"
-Received: from fmviesa009.fm.intel.com ([10.60.135.149])
-  by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Mar 2026 11:17:40 -0700
-X-CSE-ConnectionGUID: fDtS/vM9SE2zpGpgmBygew==
-X-CSE-MsgGUID: xRLGUM+ISQ+wIh4TzWD+Kg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,124,1770624000"; 
-   d="scan'208";a="216482181"
-Received: from soc-cp83kr3.clients.intel.com (HELO [10.241.241.35]) ([10.241.241.35])
-  by fmviesa009-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Mar 2026 11:17:37 -0700
-Message-ID: <0e81f486-6609-4181-9b85-161c69fbb704@intel.com>
-Date: Mon, 16 Mar 2026 11:17:35 -0700
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="SkYmDUex"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=jLxLidbuRVApcMPfU1IbByuezvqqL+uWRFUDlfv6IGDcxYjHrCh1mKsTEWNzYLRcDEVU73g76nPi8UVFdjgq+7orLyxYBFSIC3cIYS1gUZ+/4wdQWijc0Nx6wpQxuMRhhQ6tTKN7PmKZB3u+/EnkNhr1RQe88XpzLUEigpQOF7G7pu94/LVmexGJm23wYiSWeaZPWt15Q0fghCNZF0+PBvpLUMO5grtzSgYJnV2tH679Z3lxlJiwL/26V8iaj5qVMziSSUpxp9D10i9CgG/fmuFK0tFWPCIGrVhGOE4pBXfTg7lmrxakvoBZn4sJUOa9f2EcZ07BBMiNTGdfAgvFzw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=mCSACYY0ysJpzB+6G8iEyJzdjtiN7fklKKXTb636ZZ8=;
+ b=aIasLsH15Bn2o2Peqk0EEWXX0+ZaNXwQ++IIR1dwroG+9aQyg0Sr2T4yIvfvdA4Zf5PT1ZpWPztuRYss/N3G9ytvSBEOL3wXXVwz3LOZkkzD7S6ZKowJ4EZ2uRHb2lCr1UNo1PgYhfVntUJsuvmlesCUJMlPprcB4q1QkMN6YbHMKf14aDvxNe2XX9iKZGcvpq77XCw9Sct03SeIOjbJ5RwNQiExiOiDJoUhOEzDZHwEXOR5aPqYEQlKWACFzE/pEE12D7H5G2H6WsUaycAvsewmKNVpeBNz5ayWUGqtIfyAVam3wo3jfIDpfSwUnYM4ubAhnbJ9nEE+CHjUnfjeog==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 216.228.117.160) smtp.rcpttodomain=google.com smtp.mailfrom=nvidia.com;
+ dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=mCSACYY0ysJpzB+6G8iEyJzdjtiN7fklKKXTb636ZZ8=;
+ b=SkYmDUexBNEDEl+EWYws3u3g5Fa6ZeWc98UNz996uU2GVQm7Q64377ONoYZnSnYouRzDZbYCVOJaayXNoaiX2UOXW877ZEm6bJw4+7jEZuYo0AcMaowNjRE6wGH6ZfiQYEFfoVYL6P3PNnToVlTq6knwslR8KiSPyD1O8OYsqZedj4MmrHC/vG4Q07WCTHK3YA2nxnkQqY2q4txIdXimLk/pd7a5/2UJymK6sn3M1WFNQP152SA062Nz2raXtctQJvr4zSNa7Az4zXU8SbSnBlmf/98quMQKbqbhLH26oGARpuPCV+UEM2kVMrGFFMOe5SOm+IAzzF1lYXH4H1XMNQ==
+Received: from DS7P220CA0031.NAMP220.PROD.OUTLOOK.COM (2603:10b6:8:223::25) by
+ LV2PR12MB5824.namprd12.prod.outlook.com (2603:10b6:408:176::19) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9723.13; Mon, 16 Mar
+ 2026 18:21:04 +0000
+Received: from DS1PEPF00017098.namprd05.prod.outlook.com
+ (2603:10b6:8:223:cafe::eb) by DS7P220CA0031.outlook.office365.com
+ (2603:10b6:8:223::25) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.9700.25 via Frontend Transport; Mon,
+ 16 Mar 2026 18:21:00 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.117.160)
+ smtp.mailfrom=nvidia.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=nvidia.com;
+Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
+ 216.228.117.160 as permitted sender) receiver=protection.outlook.com;
+ client-ip=216.228.117.160; helo=mail.nvidia.com; pr=C
+Received: from mail.nvidia.com (216.228.117.160) by
+ DS1PEPF00017098.mail.protection.outlook.com (10.167.18.102) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.9700.17 via Frontend Transport; Mon, 16 Mar 2026 18:21:02 +0000
+Received: from rnnvmail204.nvidia.com (10.129.68.6) by mail.nvidia.com
+ (10.129.200.66) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20; Mon, 16 Mar
+ 2026 11:20:40 -0700
+Received: from rnnvmail204.nvidia.com (10.129.68.6) by rnnvmail204.nvidia.com
+ (10.129.68.6) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20; Mon, 16 Mar
+ 2026 11:20:39 -0700
+Received: from nvidia-4028GR-scsim.nvidia.com (10.127.8.11) by mail.nvidia.com
+ (10.129.68.6) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20 via Frontend
+ Transport; Mon, 16 Mar 2026 11:20:36 -0700
+From: <mhonap@nvidia.com>
+To: <dmatlack@google.com>, <alwilliamson@nvidia.com>, <dave.jiang@intel.com>,
+	<ankita@nvidia.com>
+CC: <kjaju@nvidia.com>, <kvm@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+	<linux-kselftest@vger.kernel.org>, <mhonap@nvidia.com>,
+	<stable@vger.kernel.org>
+Subject: [PATCH] selftests/vfio: Fix VLA initialisation in vfio_pci_irq_set()
+Date: Mon, 16 Mar 2026 23:50:25 +0530
+Message-ID: <20260316182025.3383443-1-mhonap@nvidia.com>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH V3 12/13] target/i386: Clean up Intel Debug Store feature
- dependencies
-To: Chenyi Qiang <chenyi.qiang@intel.com>, qemu-devel@nongnu.org,
- kvm@vger.kernel.org, Paolo Bonzini <pbonzini@redhat.com>,
- Zhao Liu <zhao1.liu@intel.com>, Peter Xu <peterx@redhat.com>,
- Fabiano Rosas <farosas@suse.de>, Sandipan Das <sandipan.das@amd.com>,
- Xiaoyao Li <xiaoyao.li@intel.com>
-Cc: Dongli Zhang <dongli.zhang@oracle.com>,
- Dapeng Mi <dapeng1.mi@linux.intel.com>, Hector Cao <hector.cao@canonical.com>
-References: <20260304180713.360471-1-zide.chen@intel.com>
- <20260304180713.360471-13-zide.chen@intel.com>
- <9122d003-1e96-4790-ab32-3e06b0aa1148@intel.com>
-Content-Language: en-US
-From: "Chen, Zide" <zide.chen@intel.com>
-In-Reply-To: <9122d003-1e96-4790-ab32-3e06b0aa1148@intel.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-NV-OnPremToCloud: ExternallySecured
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DS1PEPF00017098:EE_|LV2PR12MB5824:EE_
+X-MS-Office365-Filtering-Correlation-Id: b25c3b34-51b8-4f55-e612-08de8388c7f7
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|1800799024|36860700016|82310400026|376014|56012099003|18002099003|13003099007;
+X-Microsoft-Antispam-Message-Info:
+	ZbTRMX1pvOtb4LSy3/MN+tXgVow5SoQGUn0jGeFmxbvE4pRkkDbyeL9A6Flhq69766azl+J+6hUtPnTEzqgZXy0VdYH6Zn2M0qos/RjbuxavO1++owhNZmnewOAavbcJMnA46dj34kVRSrUNNnd4RqaltyKmdPGqqCUNT6K5xvFwqtTnRr+dkXycRz8eN9ZRftJeTZlQDX/J3uYQ9gk87YNYGKFfTjzfynbBL5f8igHbLufqRaDK9iAH5/qC4j5drWredllNxsI1sK9/5DluQORhLhAaHZ7PkTrHl1L1VRYPtzvlL9UyFLU30y2xGS4v/78HZ5rlN51A7MuhVnrNkibBjL+SM4/Fz6U7OtLWrtGpAGwSqll8NmQy98l2f/gqy8vtIPXPpn8z8Cn/YT6sfncWNLVEUP4YXEV4Ik1+C8HVC63uSG7rLN5tkG4trkPVoAarF02CXgUAU4j5P9FlXCEYWZVAS1sf32Z4so+rMaD94levHTm637/60rVCViqgir0CvIjcDZ0MBOxcarauJLMY1pSM8EQwo0/Qo1rudB5OXN+kI7uhvBcVf2nrVzVNs0V9H9Y11qGsms+dNEl9TMJA1oiOtlmRtkFxKRW4bjeNXsKqay9qb9EjjVHXq0x6I5Ut/zsw/yL1ggB+L7tVQWYNm0vh3JxQRksOOMSgWN9LhP92yNTI0B9qmFPpPocs9lKsGCfMCZgai/PkRa1WxbiQWeQbRlNQJold2MUB1DYNX1HA0F7iOiGzdoMjv/FdRjZunuAvKDgAP2HQ0KVWHg==
+X-Forefront-Antispam-Report:
+	CIP:216.228.117.160;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc6edge1.nvidia.com;CAT:NONE;SFS:(13230040)(1800799024)(36860700016)(82310400026)(376014)(56012099003)(18002099003)(13003099007);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	mICpesmhsM8DzuVyddZSo5uyy06COJJ53B1tj4QwQo3w/xX7eNj0Keg+47ZltlQfIMOqox79I1pv4DRseBf8DHG83MQqDhtaQfhvKexHZWv6Pd2ZotY6vkaOWTZXGlLKGhas9O7DVYFgBGQxim+W6pZHI9EbIqANzEIbJRDzhGJqrWHNvv+80r36rjC3KDEu3WXMAOYgibI4ti1JMZOL9vj9nF3YRoq9nEdjUa6H6NPVDLq6vB1YOgGfEiFDAkAULIsncWvFqwfBIYi7DesmO6QMS5flIUNzDcWgSUJRy3NmMvFNz4uGZQRbh5qSTnDPHat9aDUDLaet9PgrgqDp96P9oeJr7O9JwR4B+aizQiVd065sUe0zJt3mV8CGHmu/RCb5IAomLJUmtjU2svJx4ZMCk6jnfhnYCGftJPWSRbzfvUqy2/YyacOXpmhC6wDi
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 16 Mar 2026 18:21:02.5320
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: b25c3b34-51b8-4f55-e612-08de8388c7f7
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.117.160];Helo=[mail.nvidia.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	DS1PEPF00017098.namprd05.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: LV2PR12MB5824
 
+From: Manish Honap <mhonap@nvidia.com>
 
+C does not permit an initialiser expression on a variable-length array
+(C99 Section 6.7.9 constraint: "The type of the entity to be initialized
+shall not be a variable length array type").
 
-On 3/15/2026 8:21 PM, Chenyi Qiang wrote:
-> 
-> 
-> On 3/5/2026 2:07 AM, Zide Chen wrote:
->> - 64-bit DS Area (CPUID.01H:ECX[2]) depends on DS (CPUID.01H:EDX[21]).
->> - When PMU is disabled, Debug Store must not be exposed to the guest,
->>   which implicitly disables legacy DS-based PEBS.
->>
->> Signed-off-by: Zide Chen <zide.chen@intel.com>
->> ---
->> V3:
->> - Update title to be more accurate.
->> - Make DTES64 depend on DS.
->> - Mark MSR_IA32_MISC_ENABLE_PEBS_UNAVAIL in previous patch.
->> - Clean up the commit message.
->>
->> V2: New patch.
->> ---
->>  target/i386/cpu.c | 5 +++++
->>  1 file changed, 5 insertions(+)
->>
->> diff --git a/target/i386/cpu.c b/target/i386/cpu.c
->> index 2e1dea65d708..3ff9f76cf7da 100644
->> --- a/target/i386/cpu.c
->> +++ b/target/i386/cpu.c
->> @@ -1899,6 +1899,10 @@ static FeatureDep feature_dependencies[] = {
->>          .from = { FEAT_1_ECX,             CPUID_EXT_PDCM },
->>          .to = { FEAT_PERF_CAPABILITIES,       ~0ull },
->>      },
->> +    {
->> +        .from = { FEAT_1_EDX,               CPUID_DTS},
->> +        .to = { FEAT_1_ECX,                 CPUID_EXT_DTES64},
->> +    },
->>      {
->>          .from = { FEAT_1_ECX,               CPUID_EXT_VMX },
->>          .to = { FEAT_VMX_PROCBASED_CTLS,    ~0ull },
->> @@ -9471,6 +9475,7 @@ void x86_cpu_expand_features(X86CPU *cpu, Error **errp)
->>              env->features[FEAT_1_ECX] &= ~CPUID_EXT_PDCM;
->>          }
->>  
->> +        env->features[FEAT_1_EDX] &= ~CPUID_DTS;
->>          env->features[FEAT_7_0_EDX] &= ~CPUID_7_0_EDX_ARCH_LBR;
-> 
-> This change, along with the original CPUID_7_0_EDX_ARCH_LBR clear, will also affect the configuration for TD VMs. 
-> For a TD VM, enable_pmu controls TDX_TD_ATTRIBUTES_PERFMON, CPUID_DTS is fixed to 1, and arch_lbr is controlled by XFAM[15].
+vfio_pci_irq_set() declared:
 
-Yes, I agree. In the TDX case, neither the DTS nor the arch_lbr bit
-should be cleared.
+      u8 buf[sizeof(struct vfio_irq_set) + sizeof(int) * count] = {};
 
+where `count` is a runtime function parameter, making `buf` a VLA.
 
-> These features' configuration do not have dependencies on each other. So how about skipping the TD VM case like:
-> 
-> diff --git a/target/i386/cpu.c b/target/i386/cpu.c
-> index 98e95d0842..458bfb07b9 100644
-> --- a/target/i386/cpu.c
-> +++ b/target/i386/cpu.c
-> @@ -9736,8 +9736,10 @@ void x86_cpu_expand_features(X86CPU *cpu, Error **errp)
->              env->features[FEAT_1_ECX] &= ~CPUID_EXT_PDCM;
->          }
-> 
-> -        env->features[FEAT_1_EDX] &= ~CPUID_DTS;
-> -        env->features[FEAT_7_0_EDX] &= ~CPUID_7_0_EDX_ARCH_LBR;
-> +        if (!is_tdx_vm()) {
-> +            env->features[FEAT_1_EDX] &= ~CPUID_DTS;
-> +            env->features[FEAT_7_0_EDX] &= ~CPUID_7_0_EDX_ARCH_LBR;
-> +        }
->      }
-> 
->      for (i = 0; i < ARRAY_SIZE(feature_dependencies); i++) {
-> 
-> 
-> 
->>      }
->>  
-> 
+GCC rejects this with (tried with GCC-9.4.0):
+
+      error: variable-sized object may not be initialized
+
+Fix by removing the `= {}` initialiser and inserting an explicit
+memset() immediately after the declaration.  memset() on a VLA is
+perfectly legal and achieves the same zero-initialisation on all
+conforming C implementations.
+
+This fix is self-contained: it touches only the existing vfio selftest
+helper library and carries no dependency on any other patch.  It was
+originally included as PATCH 20/20 in the CXL Type-2 VFIO passthrough
+RFC series [1] but belongs on the vfio list independently, as noted by
+Dave Jiang.
+
+[1] https://lore.kernel.org/all/20260311203440.752648-1-mhonap@nvidia.com/
+
+Fixes: 19faf6fd969c ("vfio: selftests: Add a helper library for VFIO selftests")
+Cc: stable@vger.kernel.org
+Suggested-by: Dave Jiang <dave.jiang@intel.com>
+Signed-off-by: Manish Honap <mhonap@nvidia.com>
+
+---
+ tools/testing/selftests/vfio/lib/vfio_pci_device.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
+
+diff --git a/tools/testing/selftests/vfio/lib/vfio_pci_device.c b/tools/testing/selftests/vfio/lib/vfio_pci_device.c
+index fac4c0ecadef..3258e814f450 100644
+--- a/tools/testing/selftests/vfio/lib/vfio_pci_device.c
++++ b/tools/testing/selftests/vfio/lib/vfio_pci_device.c
+@@ -26,8 +26,10 @@
+ static void vfio_pci_irq_set(struct vfio_pci_device *device,
+ 			     u32 index, u32 vector, u32 count, int *fds)
+ {
+-	u8 buf[sizeof(struct vfio_irq_set) + sizeof(int) * count] = {};
++	u8 buf[sizeof(struct vfio_irq_set) + sizeof(int) * count];
+ 	struct vfio_irq_set *irq = (void *)&buf;
++
++	memset(buf, 0, sizeof(buf));
+ 	int *irq_fds = (void *)&irq->data;
+
+ 	irq->argsz = sizeof(buf);
+--
+2.25.1
 
