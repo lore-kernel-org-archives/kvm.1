@@ -1,147 +1,111 @@
-Received: from mail-lf1-f49.google.com (mail-lf1-f49.google.com [209.85.167.49])
+Received: from mail-pf1-f202.google.com (mail-pf1-f202.google.com [209.85.210.202])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 805F1377003
-	for <kvm@vger.kernel.org>; Mon, 16 Mar 2026 22:30:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.167.49
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773700236; cv=pass; b=Y7ARo2XaG4HmJqJqfF53uePssiTHvPYfL8IDFZLnRjNjxfotu+TSs5SHos2xm4F/FigcRyRxUhPjE/Fe8mMMUCB3hta8ZBrWP3RR5uWx55mLLR3QAR8OC0KgZDg4+eEh61Bn+0S5HM272g5on9pPmJZ2gUNvrFqG1J2FOc1ROa0=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773700236; c=relaxed/simple;
-	bh=zOX//qQWt0hksu4DcPXbpgchK0aDuV0IDH++kKVCMlc=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=sIF7P39aSI3WxTQFslT2d05hbIWRZUIwEwENg0pSySfvwBlGPv+EdPGxbcZgQ799DxCexrEQsnKQ7ZHEfkmdyNbInJTUSKpXCLggNbegE73c0Nkl9c5hFd/KpiRSeHxtT+MxJY17dhxRBjO7UlDwGyk6xfGLdXToozDYs7Hltnk=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=WMfuqqTD; arc=pass smtp.client-ip=209.85.167.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E8E5837703B
+	for <kvm@vger.kernel.org>; Mon, 16 Mar 2026 22:44:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.202
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1773701048; cv=none; b=qU+xA5+37Jx9X2gkaluceMXc1IuGUlce7vkbEXHXrbQSthMDDbt6Dyu6WMWeef+dK0D43i6hiwmqASgHhFxH3z/E0FUOS6e03EUpeUeugTwqBxWgikYJXSV3hu77EpvRvZtDp81ibnRH5mIrVfa7Z9o+c1cpHdnXj+Jpfldw394=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1773701048; c=relaxed/simple;
+	bh=T02mPnop+VlOHthIvn/hMI0Uo2ghqBUATVUzggRzrNo=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=V31/v6V1T9N1d7fAsmHDVdL1XI9qWWmchWzZNwrK4LUe/AhiCU0W9NGQ+ZvjuEYSx0pNCO8HkAcxltR83HdcwQ5Tt4mcMitm3PEloDqU9G3fXSK9b8/y1cDdVL2wQTZqTFx9TS19QdKYRwK4U8Hqw+vOSTqvmJR0ut4tg9ZJ3Bw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--jingzhangos.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=G0m3l7hg; arc=none smtp.client-ip=209.85.210.202
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--jingzhangos.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="WMfuqqTD"
-Received: by mail-lf1-f49.google.com with SMTP id 2adb3069b0e04-5a1307438ddso5068502e87.1
-        for <kvm@vger.kernel.org>; Mon, 16 Mar 2026 15:30:34 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1773700233; cv=none;
-        d=google.com; s=arc-20240605;
-        b=OP51XpSxjOMUE3qo9RxfTwwO3UMBefp+lKXUXJNsCcEPCMSPGekbCUp0TvcCl7DOxS
-         PjFHu874GoRb1/nBN/fhuq673oNVPZawbOF25Xk/GpPClJ8y96pKoznWQGxO81EzVkCI
-         LaafQAV1f9XODul7mXFe2IUPk4zHg9PKYEROCyElnJRIq2eRbTWUewuMP97uzZ2lIKEy
-         9JJWbwnV9eU3XFFyGPrhar9zqrjEVFvOfBLHEjVYZXWTzQwjhRN2OP+NX1RxiqQF3ZZr
-         IGBXeEpeux91Yt1bOBzVjZ7g7paR/J/WWK8TxsJMWCUPsaR00xfAhBn975eqQ2yVb14G
-         sk6A==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=NHBApg3dIEw9R1t5Yh73owWQt2Uh584izEOKgKc7ZzQ=;
-        fh=t5xrcSplfoQsNb2W6WrxziBfOqc9YNiMbHYFxC6GL6k=;
-        b=ajTsKM3EAUTHeETvZ9oglZzm8xwP4BkShjUJSjVF0a1CGmBhELpdv5JRgqyXPesnzj
-         7Hkz9udJfiV2RzhZyIChqH2ICZsuiYhAoGApvXuGzMxstvb2gph2d+miZFWM8XGVxWrt
-         1O5z9Cb91diD/ljsnJGkHdE9/THVoPT5N8o4Uiuht5xCTpamcpy6l+CCAMxb+huI54+8
-         Onkd/Ii6sAqQOU/Nvc2Z7JJnRJgdW7n1LYqncy/4oN67XkjU6+bgnRHMY2KQ1DZPV/W9
-         CwplvgdCTrQxUh9gUM2sD+tnhL2CytHJ8Tb/sY8Ug0SgDI+ZVEJMUB4lEoQdI15bUZDR
-         VHlA==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="G0m3l7hg"
+Received: by mail-pf1-f202.google.com with SMTP id d2e1a72fcca58-82a106b687cso1894650b3a.1
+        for <kvm@vger.kernel.org>; Mon, 16 Mar 2026 15:44:06 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1773700233; x=1774305033; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=NHBApg3dIEw9R1t5Yh73owWQt2Uh584izEOKgKc7ZzQ=;
-        b=WMfuqqTDLL/yLcZuYeXDe8rqLTF/n9QO0SN2cRWtdKn9roMyUx7mQpwKKOc9BmqOHE
-         e33hGIYh9KYRbFpNjVgL4CF+bc885lSaNLcl9upTY1th6/ksa7bnko8bH4pG950uz26j
-         2OfQhJwp6wLMP5dAthhyvJ3qlGuPGWn32xMGKkCOoiSdu2oNA3D8V+Ovrv/zUy42by2l
-         2CYutEqxXE1VSYu10FEapN12CRPttYgbLzDB5p3w1X2obKZlV9j4C9iBD7dHQF4cqrqP
-         gsJRgsEAPxld9ck8Ex8TQmuSUkyKoIXncGGKTTir2EYv7eEeh68o/hX60wWFcCwk9Tuw
-         vtFA==
+        d=google.com; s=20251104; t=1773701046; x=1774305846; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=A6pTrTiGUfN/I2rSuI/vU8zcoVY/NvupDuQnP/ABsAw=;
+        b=G0m3l7hgZ5ZHWSGuPomxr+6HBmybPUb+dHMSZ3KhqQfxjE8OcOL4r3E0W54wHFe4v8
+         J2zrHZqiEXIUVwil43Io2V+CMQeDjdVmv6J3IkUQxJCennzUassPuQzI1jzVKVOwTOH3
+         QzIBEPHew8GveESfwpulCX30+vQkuLxdsgajme12q7YOkCk0dZNtTw07tHs+mqJxPY7M
+         jCUh3XjBtXStd4iFY7J3SPXlw9IsELKc7oYcpeUa6f95wo18VfPDLpZ6XFpECY+cMVco
+         CaO80bUQFTLa+XKiUCxheuJTwNL+3gAYdDTdnUz+sVWoIWvsBq2Q3kYmoCgrt7qG8dfk
+         dQow==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1773700233; x=1774305033;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=NHBApg3dIEw9R1t5Yh73owWQt2Uh584izEOKgKc7ZzQ=;
-        b=F3QCem0rCAthCqIdGkY/YEJTREeVKPmS/E48kUDbe+KxkuBlwUrja71jjBkK0jtcgL
-         v2k+EDjJwxDma2zz/J8uSevnlDkJGV2hfO9sIWpmz+dhyoX3gWzaOYASvuB4fA4Z7H0O
-         nnYcsxRiTrlrrWTvbuDBCFhEdF27q4BSl6D4dZ9B9AtBUM+CFGUvQafNXyVgj4vZNHCl
-         290wUzF+cpl4S0bFA3aPcYT5mV7/pA8Nc64BX/pazv32DR21HY5xuiof8byQ9DoKS6gU
-         Q9Fp/IMSoini6lKa9lz541a07vq6BurR9EPlJdHfmS3ZojRiwwoR08RxhLbWX9Kb8S/X
-         OnCg==
-X-Forwarded-Encrypted: i=1; AJvYcCUYfA2eGyJQoJxcIGEqvKL9A2HgwMfv0n+wvGn24DWL7mzfY0Cf7jjcusohUaOHVJgarG8=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyH/133ni25QVAth1N6MSU/mqeMm57JATY28NuI/UQ7xiBvk0jp
-	ztKFDwoQbpLP4x6WiVBwLJ1e/QAVaEQGBU2xBTqrDnVFUCjkOl4irrMatM5YkYsNg3FmOkj9QoJ
-	FLfbqYYO3IW3YQutMZ982weOpiL5b409Rcn7/U5BE
-X-Gm-Gg: ATEYQzwB28oMZG8hCS/5f/TtWo2h1a9wWVsyQ2B7ah5r+3uu8QwSg0sweLpENT2C7jD
-	7hGeewtlevc/zm7Ek959JIZyjKmmB/FTEK4rF61Qe9TccVcAEeIS4mKEHNDpTOLW1uDi2AdjZzY
-	Kbe5pfojq/m2iqYrkvJqrLenOWsBTrF2zuTkP8Vj7L+yFGC6oEgZqrDb6MmlqRabmaR124+Nyp1
-	PIVkpp8cBvU2IpjxK4KlLw1UIv30Hx1h91otsFUw+OpnucrAh/A+fhwvQUcyIFlAJOTM4/quN0y
-	9mRvYohtjlutrvsc8vQ=
-X-Received: by 2002:a05:6512:38a4:b0:5a1:2a64:202a with SMTP id
- 2adb3069b0e04-5a162706bf5mr4418611e87.18.1773700231818; Mon, 16 Mar 2026
- 15:30:31 -0700 (PDT)
+        d=1e100.net; s=20251104; t=1773701046; x=1774305846;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=A6pTrTiGUfN/I2rSuI/vU8zcoVY/NvupDuQnP/ABsAw=;
+        b=VZVVAHrfo412UTkqIM0otYhUlRPNjAt/yJY24lyCvdAsZlAY2spuLUoZ5+NLjU16dS
+         nnnP13NJpdf7g6vEm8mOcG6fixBRkKDlWTreUMh7JOuU+VZEsPJ9m6MRV/0IYijNchWO
+         N9aVsRrXAX4CCC8YB/I3fXAjCx5Gln7mRHqf3/W+2iHuflct6MDyGSUjelrTuuc+VhNC
+         s25RYdJQB+KONiGceMf8k2CnA/gXyrIFRnY+OfD+ftzZBIrWP69lmGvtOyFDLT2kfjVJ
+         AXodyAOLMX+Jc8Kwm5+L3neRDgvKs2ObnHnpjl75Z2MEhRvVGI+jZA8DprcUjje+auPR
+         KcBQ==
+X-Gm-Message-State: AOJu0Yw43WFhPJnlrBk8ZHimR2mr9ROPNIoXXR7FTZphTNguCZPv/c0P
+	9P1J1o9AMsezP7aJCFpksBEp4yvJd9gFfJtQgr55zILvbKx/WSq3qZtsyl6qPuFwRRc5bnl2gpq
+	sttnK5ir5gK/HRFhpUCmIFd5DZlsrg2UyCsW4n067Rx2vbAFSZ7wUG7IYUWs7BnCMTC5l3QuS8+
+	podmHNyON9I8lZnzagWCbd4cyFh7jPpK48qECRfc6rXga/6oKlisJhf8JpETk=
+X-Received: from pfbgc11.prod.google.com ([2002:a05:6a00:62cb:b0:82a:128b:1da0])
+ (user=jingzhangos job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:6a00:1143:b0:829:809e:8978 with SMTP id d2e1a72fcca58-82a198ac2eamr13166611b3a.31.1773701045869;
+ Mon, 16 Mar 2026 15:44:05 -0700 (PDT)
+Date: Mon, 16 Mar 2026 15:43:46 -0700
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <20260129212510.967611-1-dmatlack@google.com> <20260129212510.967611-12-dmatlack@google.com>
- <20260316215056.GC1846904.vipinsh@google.com>
-In-Reply-To: <20260316215056.GC1846904.vipinsh@google.com>
-From: David Matlack <dmatlack@google.com>
-Date: Mon, 16 Mar 2026 15:30:04 -0700
-X-Gm-Features: AaiRm51TsPFqmaxXeg5vtHycDWCNAMtrDhfsa1Ts3dgQ-gFDNbzitmE0jWYnMy4
-Message-ID: <CALzav=eKbTiJYz4mCWTmVghnwFLHZOY096Pf=1GYpO_UBixozA@mail.gmail.com>
-Subject: Re: [PATCH v2 11/22] docs: liveupdate: Document VFIO device file preservation
-To: Vipin Sharma <vipinsh@google.com>
-Cc: Alex Williamson <alex@shazbot.org>, Adithya Jayachandran <ajayachandra@nvidia.com>, 
-	Alexander Graf <graf@amazon.com>, Alex Mastro <amastro@fb.com>, Alistair Popple <apopple@nvidia.com>, 
-	Andrew Morton <akpm@linux-foundation.org>, Ankit Agrawal <ankita@nvidia.com>, 
-	Bjorn Helgaas <bhelgaas@google.com>, Chris Li <chrisl@kernel.org>, 
-	David Rientjes <rientjes@google.com>, Jacob Pan <jacob.pan@linux.microsoft.com>, 
-	Jason Gunthorpe <jgg@nvidia.com>, Jason Gunthorpe <jgg@ziepe.ca>, Jonathan Corbet <corbet@lwn.net>, 
-	Josh Hilke <jrhilke@google.com>, Kevin Tian <kevin.tian@intel.com>, kexec@lists.infradead.org, 
-	kvm@vger.kernel.org, Leon Romanovsky <leon@kernel.org>, Leon Romanovsky <leonro@nvidia.com>, 
-	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-kselftest@vger.kernel.org, linux-mm@kvack.org, 
-	linux-pci@vger.kernel.org, Lukas Wunner <lukas@wunner.de>, 
-	=?UTF-8?Q?Micha=C5=82_Winiarski?= <michal.winiarski@intel.com>, 
-	Mike Rapoport <rppt@kernel.org>, Parav Pandit <parav@nvidia.com>, 
-	Pasha Tatashin <pasha.tatashin@soleen.com>, Pranjal Shrivastava <praan@google.com>, 
-	Pratyush Yadav <pratyush@kernel.org>, Raghavendra Rao Ananta <rananta@google.com>, 
-	Rodrigo Vivi <rodrigo.vivi@intel.com>, Saeed Mahameed <saeedm@nvidia.com>, 
-	Samiullah Khawaja <skhawaja@google.com>, Shuah Khan <skhan@linuxfoundation.org>, 
-	=?UTF-8?Q?Thomas_Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>, 
-	Tomita Moeko <tomitamoeko@gmail.com>, Vivek Kasireddy <vivek.kasireddy@intel.com>, 
-	William Tu <witu@nvidia.com>, Yi Liu <yi.l.liu@intel.com>, Zhu Yanjun <yanjun.zhu@linux.dev>
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.53.0.851.ga537e3e6e9-goog
+Message-ID: <20260316224349.2360482-1-jingzhangos@google.com>
+Subject: [kvm-unit-tests PATCH v1 0/3] arm64: Add Stage-2 MMU and Nested Guest Framework
+From: Jing Zhang <jingzhangos@google.com>
+To: KVM <kvm@vger.kernel.org>, KVMARM <kvmarm@lists.linux.dev>
+Cc: Marc Zyngier <maz@kernel.org>, Joey Gouly <joey.gouly@arm.com>, 
+	Andrew Jones <andrew.jones@linux.dev>, Alexandru Elisei <alexandru.elisei@arm.com>, 
+	Oliver Upton <oliver.upton@linux.dev>, Jing Zhang <jingzhangos@google.com>
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 
-On Mon, Mar 16, 2026 at 2:55=E2=80=AFPM Vipin Sharma <vipinsh@google.com> w=
-rote:
->
-> On Thu, Jan 29, 2026 at 09:24:58PM +0000, David Matlack wrote:
-> > Add documentation for preserving VFIO device files across a Live Update=
-,
-> > as well as some generic file preservation documentation. This
-> > documentation will be extended in the future as new types of files are
-> > supported and new dependency/ordering requirements are added.
-> >
-> > Signed-off-by: David Matlack <dmatlack@google.com>
-> > ---
-> >  Documentation/userspace-api/liveupdate.rst | 144 +++++++++++++++++++++
-> >  1 file changed, 144 insertions(+)
-> >
-> > diff --git a/Documentation/userspace-api/liveupdate.rst b/Documentation=
-/userspace-api/liveupdate.rst
-> > index 41c0473e4f16..dbf1e4aeddd7 100644
-> > --- a/Documentation/userspace-api/liveupdate.rst
-> > +++ b/Documentation/userspace-api/liveupdate.rst
-> > @@ -14,6 +14,150 @@ ioctl uAPI
-> >  =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
-> >  .. kernel-doc:: include/uapi/linux/liveupdate.h
-> >
-> > +File Preservation
-> > +=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
->
-> Should we use the existing way where documentation is written in code
-> files and referenced here? Maybe luo_file.c for this?
+This patch series introduces a lightweight infrastructure for managing ARM64
+Stage-2 translation tables and executing nested guests. These components are
+essential for testing advanced virtualization features such as nested
+virtualization (NV) and GICv4 direct interrupt injection.
 
-Good idea. I will look into that. It would be nice to also have this
-documentation in the code.
+The series provides a generic Stage-2 MMU library supporting multiple
+translation granules (4K, 16K, 64K) and dynamic page table management.
+Building on this, it adds a guest execution framework that handles guest
+lifecycle management, context switching and guest exit routing. A new test
+case for Stage-2 MMU demand paging to verify fault handling.
+
+Please note that this is a very preliminary implementation intended as a
+startup baseline for future work in virtualization testing. Users should be
+aware that because this is an early-stage baseline, some portions of the code
+may just happen to work in its current state. There might be critical
+architectural elements or edge-case handling missing that will need to be
+addressed as the framework matures.
+
+---
+
+Jing Zhang (3):
+  lib: arm64: Add stage2 page table management library
+  lib: arm64: Add bare-metal guest execution framework
+  arm64: Add Stage-2 MMU demand paging test
+
+ arm/Makefile.arm64         |   4 +
+ arm/stage2-mmu-test.c      | 100 +++++++++
+ lib/arm64/asm/guest.h      | 156 ++++++++++++++
+ lib/arm64/asm/stage2_mmu.h |  74 +++++++
+ lib/arm64/guest.c          | 197 ++++++++++++++++++
+ lib/arm64/guest_arch.S     | 263 ++++++++++++++++++++++++
+ lib/arm64/stage2_mmu.c     | 402 +++++++++++++++++++++++++++++++++++++
+ 7 files changed, 1196 insertions(+)
+ create mode 100644 arm/stage2-mmu-test.c
+ create mode 100644 lib/arm64/asm/guest.h
+ create mode 100644 lib/arm64/asm/stage2_mmu.h
+ create mode 100644 lib/arm64/guest.c
+ create mode 100644 lib/arm64/guest_arch.S
+ create mode 100644 lib/arm64/stage2_mmu.c
+
+
+base-commit: 86e53277ac80dabb04f4fa5fa6a6cc7649392bdc
+-- 
+2.53.0.851.ga537e3e6e9-goog
+
