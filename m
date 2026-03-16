@@ -1,226 +1,153 @@
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lf1-f44.google.com (mail-lf1-f44.google.com [209.85.167.44])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A54233E373;
-	Mon, 16 Mar 2026 18:04:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773684276; cv=none; b=M+zQiqxo4CS1K39IqD6rQbHdgRkRLMjgS+MiIf84idLo9FprUIsSNskKkMnCVV+g4vxv0DQaYKOU7qaFkp9V46G/lRL/KgCYYwMLKcExZNLIOSDzXI5dVoyz2nxEPknk+nuSuV4vsXoe+B+hiTE3tMNSgpx3qgdo7AxtUhJJJwY=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773684276; c=relaxed/simple;
-	bh=4RcjO76RJhLxVACQXXLgrJZUY8y65zw/UJhUSy6L5E8=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pClEiAC2HjCtC4svf514WgEl083BE//bYCkpqtGGlQHKUzorP9bd6DvSnQ/B0gpp1Ac4aM7bK06StDHgNbNDXzx1tE8zSLqHm6uXvAMi0oPhoG6Rss3nWk75MKtzTl5FDo2aTezhnbzu9Q1jrap0H05G3VaR4P1Y4AO0kU3ModY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=dRZH9FrG; arc=none smtp.client-ip=148.163.158.5
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 687B63D16F4
+	for <kvm@vger.kernel.org>; Mon, 16 Mar 2026 18:11:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.167.44
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1773684714; cv=pass; b=OrZtF4WbuiO5iJHsWrDdjgpjfUdICmNP31hRNJrXyPYCIA4/4R3BFjZgZySGcigLesMsgPYJKMnCjOE2TT/EI6UKNe/rW6dIX0/NelOVlJu1wWwEaPW0FJRb0IbtK3/jSTtlTbub4F5o0rD1e8ssZe8Ihbw51s/7lJL7RPchLd4=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1773684714; c=relaxed/simple;
+	bh=m7+JQVttlm8dL3EZ1N+mfhiI+GNnG3dsJzvTlqZYD9k=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=DqlqqWf6pRBVnzOjMF6gparylbfh8CmmoRW+40MdAbXT6WnSp/wdXO8v0IMzxLDN2+WfXJIsxzkdm4J3i6kFYHaHB5HY73p+LJO+1lgVVzfRuY74s7z7Xb6DUddTgKUEAud5vfXDQyHUHZdlRj5bxwjoiui2lDKwROAtIEr/bO4=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=cQt6+eQD; arc=pass smtp.client-ip=209.85.167.44
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="dRZH9FrG"
-Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 62GDr68n384426;
-	Mon, 16 Mar 2026 18:04:26 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:date:from:in-reply-to:message-id
-	:mime-version:references:subject:to; s=pp1; bh=2RS1MI6PpN4Fs5GN7
-	ptXcWzsDtrgUHMYA6IHF4xonp4=; b=dRZH9FrG7ogRcH6v7mnuzhYlPxnWHcYtH
-	5VOrNu2bOchL2fUNzzQwvepnyqYjwQ1LsI7EualMO4VzBiQTPCPUR0xIdKkwBSXG
-	1h0HHGz7Y6ZnyeNUWLojUmWTj+FF6oZozd5rnR6i9ynxzdbyYxd+I+kMfDXkYzro
-	ZHY2538xDw5vf3jQ0n6MjVxmcjD0qfKbeIn1qOCaMmy2Yl8dFFLT4Q9GuxhRRdUw
-	gbJdAkvt4prvGlaZvN/V7bdp3tNtLAZxz1DiVekqiD1Tu7Jb2SePG25ODBsk/dL6
-	m+iL6OVt/Gt3sWTxSSwfkiUmtFfxvkIR/cdQv3BxvSOO8SntlSyoQ==
-Received: from ppma21.wdc07v.mail.ibm.com (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4cvx3cru57-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 16 Mar 2026 18:04:25 +0000 (GMT)
-Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma21.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 62GFaSjV015601;
-	Mon, 16 Mar 2026 18:04:25 GMT
-Received: from smtprelay07.fra02v.mail.ibm.com ([9.218.2.229])
-	by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4cwk0n5tsr-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 16 Mar 2026 18:04:25 +0000
-Received: from smtpav07.fra02v.mail.ibm.com (smtpav07.fra02v.mail.ibm.com [10.20.54.106])
-	by smtprelay07.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 62GI4LTt28705220
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 16 Mar 2026 18:04:21 GMT
-Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 93EA520043;
-	Mon, 16 Mar 2026 18:04:21 +0000 (GMT)
-Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 748162004E;
-	Mon, 16 Mar 2026 18:04:21 +0000 (GMT)
-Received: from b46lp25.lnxne.boe (unknown [9.87.84.240])
-	by smtpav07.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Mon, 16 Mar 2026 18:04:21 +0000 (GMT)
-From: Janosch Frank <frankja@linux.ibm.com>
-To: kvm@vger.kernel.org
-Cc: linux-s390@vger.kernel.org, imbrenda@linux.ibm.com,
-        borntraeger@linux.ibm.com, akrowiak@linux.ibm.com
-Subject: [RFC 08/10] KVM: s390: Use gpa_t in priv.c
-Date: Mon, 16 Mar 2026 16:23:55 +0000
-Message-ID: <20260316180310.17765-9-frankja@linux.ibm.com>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20260316180310.17765-1-frankja@linux.ibm.com>
-References: <20260316180310.17765-1-frankja@linux.ibm.com>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="cQt6+eQD"
+Received: by mail-lf1-f44.google.com with SMTP id 2adb3069b0e04-5a1273de95aso7330589e87.0
+        for <kvm@vger.kernel.org>; Mon, 16 Mar 2026 11:11:53 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1773684712; cv=none;
+        d=google.com; s=arc-20240605;
+        b=X9T3+aFxXNm+EBd3IjT6luUaQc4Lz/VtwmLfP0x8Gb42en9wO1vvyPmHqZ3rmj5jaO
+         WD7iHIskgAKeE6KpDqR8VmA5Ezkw5o5MlHMh9Vq6cKotmr7wHZ3ICypZ8rbviUOcZb3d
+         UiIE+exKyd303TSO4Nt1b8dI5/YeF2UkVbN+OA3KySzMbyloO7s0e0TAOXvN1URPtd5l
+         7YDZz1bXrPVqqSW4F7d7XijfVRdJ5yEvbcLnW5HsEi/vg/z0V2Ce49w19kNf56tsMgUV
+         03B84wrhzDaRsoMkcuY8Gdf+qF2CVnrnDyHSuL/lACWQpBs/h4yycnKdm0zaAiOFcTN0
+         4SuQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=hacBXTanIx+HGRz6G551slI/wF3dk8INyCTw5fzLvmE=;
+        fh=9SKcYKPf4lwE0EmcCvgYK0VhcOvjOCt3I2OiCUbY/24=;
+        b=hbqSlo8UGl2/3e8F1ammZfS9PIUVIhJXZ/t6hSamVaNQNkdHqJWlAl/EDJricWRQq5
+         pYuky0depb33I26jwKQZEUnpsp8IBZ9oc9Zye97461+f69/tvyi2q/HCbFUVZJSmW5Zw
+         xq4zT5dilPc/bJDLk2WYSmSKFOQdkh5M8E3DGF3WpHxEAYsf6UVh+5esGd1Mx2+n/uOI
+         tAg5pnSXAm/NeaPgMCRm/FLzCw/WJBZrC+Bb2fJmq1EdN44i0UjtYSullNVjplxxtGPU
+         NqPcUuyULCGlQp3K7O6sp8U2ZH6Xk5U3u7kI9r01rVhP1fknwwiui9BzB1BgHZr6N91B
+         RMeA==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1773684712; x=1774289512; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=hacBXTanIx+HGRz6G551slI/wF3dk8INyCTw5fzLvmE=;
+        b=cQt6+eQDwIR5b9b3BeE4rk0iv0uO+8kW3YJcjm5smuBNn0vwCgH83jbHVCDHaqhNJV
+         OAMuZ8UI1lg+tA2ikB5mrby965zWgqovf85fv3gSu2bTyIBz2l042Jj1oHo+07t7BlPl
+         YEnWEV1HnDGVfPgQ+Q+u43YxUjzmXI0UMglnc7NK3wrMxKckSoKBSVUw4kVJ6u7zU/Dt
+         5Zarv3V4FjAu4PNHtWYuChR8bGGhFjT00Ns8UZZbHmGF6GArw/mlUtLe+rwIJ1UvtgcC
+         Q7qbVPuC4HK9paJLudrtB3Eqm4XwyNfOxtl3HjrhRU0iLXg6Fcvq0oa+c1ljtAgQnwc8
+         U4oA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1773684712; x=1774289512;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=hacBXTanIx+HGRz6G551slI/wF3dk8INyCTw5fzLvmE=;
+        b=pIDfY+FLLu/bvgTigOXExC04eOjEjQRC+H3rBnm4uDORpVuArewq/TYTqtWgMiXT5Z
+         07JHfGMi8XaODikWVQsfqXBf/becduBH8CkY1jfVrZkOGJzyYnLmtBJR1Yu3nx1xdYvn
+         rohOnkN76BMiKaF7XW4YWtJBxK0T+y2ayfIOTwBVQ+nUJ/SoE3IJq3plZXaamHDUVPk1
+         i2Uazhuh7UExUEeF5zfG2kwcE83kft5ziF4hlPWJ5HGas/mKKnhJllvIN7nlOJigP5Py
+         CgX9r5TghSqCQGfhM14okaHIb6a3e9/9KsjgUgKKhTN54PBnKVO5opNrZ8shQPWT0ZVP
+         6V7A==
+X-Forwarded-Encrypted: i=1; AJvYcCW6CC2xdzj3V8EWnFxr8kMnGMjy+sKQ+AReUWxfw6mAPWQYQUzjoJkhyXvkocJowq/Xv4Y=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwX1CTSSuvOStqopjb24aRurE1/dWOxHGbIN6iERb9zMfFZePpP
+	diKKc5IMmFnrcXqZ59gOnWlhkdufERuHL+kxLbRSnT3ckEP930LpF91ZJoD/FLIegH0z8TMwEbZ
+	YQI0vjcUI7F5OLjCEeBmpWTx3AmnjUW8Wplju7Z7w
+X-Gm-Gg: ATEYQzyl268pFhNb+6fQMjmOd2Be+ErAbg9ZS8HZNtIsKFoVp3EVevHOHdP96/T2Y8N
+	IIfiyYYAnTT0wN+aXxficydOKpI2FirvwyqFqFvQYhylGdKWRZeBwejngZhmrsDlz9+94tbDLFf
+	kODFOHfb11/Mn0ux/VbV2197fuommw7EkZ+4AK33X+5P3sVxQsdKHsMR5xaPz7F/ayMi4uFKZ2y
+	zuigiZS35OiYlzvAqhaWsaEU8GMFlLfdAJXsxO2NUPNh9QiNZiRzZnjrnblCYEkfhVsF4ZokxIM
+	qdv4Yj6M
+X-Received: by 2002:a05:6512:24db:b0:5a1:44d3:7601 with SMTP id
+ 2adb3069b0e04-5a162afb717mr3098120e87.20.1773684710999; Mon, 16 Mar 2026
+ 11:11:50 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Authority-Analysis: v=2.4 cv=arO/yCZV c=1 sm=1 tr=0 ts=69b8462a cx=c_pps
- a=GFwsV6G8L6GxiO2Y/PsHdQ==:117 a=GFwsV6G8L6GxiO2Y/PsHdQ==:17
- a=Yq5XynenixoA:10 a=VkNPw1HP01LnGYTKEx00:22 a=RnoormkPH1_aCDwRdu11:22
- a=V8glGbnc2Ofi9Qvn3v5h:22 a=VnNF1IyMAAAA:8 a=7VvbTqNW6zJRGpI7ogIA:9
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMzE2MDEzOSBTYWx0ZWRfXyS3TqJDHHlxR
- uSmV9URSe7kBYDLNxXkQEV+wlCsZVu0163wtIXrxfroupl98YTcdSaY3pJt6EYRO0UCwYWTdJsR
- 7OlLvfSLwx9/doIoVhjcOX04uJFNEYngDkDYgrxQGw2H3XvoSI0N8xmss8KwcqoUZJjbTYWacqr
- LOShkapWuG8yuwa6rfJaw4Xnq4ulbydO2+oj3tvPYY2Wvt5lWISPBO5jsLGqWJeytnHVAlBy5zt
- K8t/J51s/got1PnIp8c6Z0KQ8wzKxqhV4jtQhduZtSKCm/ySkbGiegOHWEFR0ljnUO+3+JbkxTt
- YzYtZhtvSoehycoXN7B2r9lrtNHpSjDP5X5F+0EoQxbj6V6TlapNHLreYg2Xfvmmcl2OXZKG7BN
- +6tFlDR2Lv4kvK4ba25qTim/W/DJrHYlTS47iituCdjHm6ariY1QfjwqWBUKLP4IjwcegUAbpHS
- d+1vN9pvv23Q+yTT14A==
-X-Proofpoint-GUID: UCYgr9DEn_Gj9mUvM5IX6PhK359oYepd
-X-Proofpoint-ORIG-GUID: UCYgr9DEn_Gj9mUvM5IX6PhK359oYepd
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
- definitions=2026-03-16_04,2026-03-16_05,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501 spamscore=0 lowpriorityscore=0 impostorscore=0
- adultscore=0 bulkscore=0 suspectscore=0 malwarescore=0 clxscore=1015
- phishscore=0 classifier=typeunknown authscore=0 authtc= authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2603050001
- definitions=main-2603160139
+References: <20260129212510.967611-1-dmatlack@google.com> <20260129212510.967611-11-dmatlack@google.com>
+ <20260226170030.5a938c74@shazbot.org> <aaDqhjdLyf1qSTSh@google.com>
+ <20260227084658.3767d801@shazbot.org> <CALzav=fHy23RAzhgkdaL+JA5T2tL9FT6aPgRfXUh7i9zvYCGPA@mail.gmail.com>
+ <20260227105720.522ca97f@shazbot.org> <CALzav=fjRPa_ZbXu7iFXyemcf_8Kq_dZTWT6c-A0bc6czF_Rdw@mail.gmail.com>
+ <abNOwcOTXqxCxNzt@google.com> <20260313083918.00005731@linux.microsoft.com>
+In-Reply-To: <20260313083918.00005731@linux.microsoft.com>
+From: David Matlack <dmatlack@google.com>
+Date: Mon, 16 Mar 2026 11:11:20 -0700
+X-Gm-Features: AaiRm52c977M5CVgCJmgqL9NIwQ1v_KtuafdRnOMJexlLUpZndu_UH9phsJ7tcA
+Message-ID: <CALzav=eGLpo5nrsHq5L8bUTC=FWZ-SgrTE1FoScrWB4p+NDgnA@mail.gmail.com>
+Subject: Re: [PATCH v2 10/22] vfio/pci: Skip reset of preserved device after
+ Live Update
+To: Jacob Pan <jacob.pan@linux.microsoft.com>
+Cc: Alex Williamson <alex@shazbot.org>, Adithya Jayachandran <ajayachandra@nvidia.com>, 
+	Alexander Graf <graf@amazon.com>, Alex Mastro <amastro@fb.com>, Alistair Popple <apopple@nvidia.com>, 
+	Andrew Morton <akpm@linux-foundation.org>, Ankit Agrawal <ankita@nvidia.com>, 
+	Bjorn Helgaas <bhelgaas@google.com>, Chris Li <chrisl@kernel.org>, 
+	David Rientjes <rientjes@google.com>, Jason Gunthorpe <jgg@nvidia.com>, Jason Gunthorpe <jgg@ziepe.ca>, 
+	Jonathan Corbet <corbet@lwn.net>, Josh Hilke <jrhilke@google.com>, Kevin Tian <kevin.tian@intel.com>, 
+	kexec@lists.infradead.org, kvm@vger.kernel.org, 
+	Leon Romanovsky <leon@kernel.org>, Leon Romanovsky <leonro@nvidia.com>, linux-doc@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org, 
+	linux-mm@kvack.org, linux-pci@vger.kernel.org, Lukas Wunner <lukas@wunner.de>, 
+	=?UTF-8?Q?Micha=C5=82_Winiarski?= <michal.winiarski@intel.com>, 
+	Mike Rapoport <rppt@kernel.org>, Parav Pandit <parav@nvidia.com>, 
+	Pasha Tatashin <pasha.tatashin@soleen.com>, Pranjal Shrivastava <praan@google.com>, 
+	Pratyush Yadav <pratyush@kernel.org>, Raghavendra Rao Ananta <rananta@google.com>, 
+	Rodrigo Vivi <rodrigo.vivi@intel.com>, Saeed Mahameed <saeedm@nvidia.com>, 
+	Samiullah Khawaja <skhawaja@google.com>, Shuah Khan <skhan@linuxfoundation.org>, 
+	=?UTF-8?Q?Thomas_Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>, 
+	Tomita Moeko <tomitamoeko@gmail.com>, Vipin Sharma <vipinsh@google.com>, 
+	Vivek Kasireddy <vivek.kasireddy@intel.com>, William Tu <witu@nvidia.com>, Yi Liu <yi.l.liu@intel.com>, 
+	Zhu Yanjun <yanjun.zhu@linux.dev>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-More unsigned long to gpa_t conversions.
+On Fri, Mar 13, 2026 at 8:39=E2=80=AFAM Jacob Pan <jacob.pan@linux.microsof=
+t.com> wrote:
+> On Thu, 12 Mar 2026 23:39:45 +0000
+> David Matlack <dmatlack@google.com> wrote:
 
-Signed-off-by: Janosch Frank <frankja@linux.ibm.com>
----
- arch/s390/kvm/gaccess.h |  8 ++++++++
- arch/s390/kvm/priv.c    | 27 ++++++++++++---------------
- 2 files changed, 20 insertions(+), 15 deletions(-)
+> > +config VFIO_PCI_LIVEUPDATE
+> > +       bool "VFIO PCI support for Live Update (EXPERIMENTAL)"
+> > +       depends on LIVEUPDATE && VFIO_PCI
+> > +       help
+> > +         Support for preserving devices bound to vfio-pci across a
+> > Live
+> > +         Update. The eventual goal is that preserved devices can run
+> > +         uninterrupted during a Live Update, including DMA to
+> > preserved
+> > +         memory buffers and P2P. However there are many steps still
+> > needed to
+> > +         achieve this, including:
+> > +
+> > +          - Preservation of iommufd files
+> > +          - Preservation of IOMMU driver state
+> In the interim, what do you think about moving forward with noiommu
+> mode without preserving IOMMU driver state?
 
-diff --git a/arch/s390/kvm/gaccess.h b/arch/s390/kvm/gaccess.h
-index f23dc0729649..970d9020dc14 100644
---- a/arch/s390/kvm/gaccess.h
-+++ b/arch/s390/kvm/gaccess.h
-@@ -89,6 +89,14 @@ static inline unsigned long kvm_s390_logical_to_effective(struct kvm_vcpu *vcpu,
- 	return _kvm_s390_logical_to_effective(&vcpu->arch.sie_block->gpsw, ga);
- }
- 
-+static inline gpa_t kvm_s390_real_to_abs_effective(struct kvm_vcpu *vcpu,
-+						   unsigned long gra)
-+{
-+	gra = kvm_s390_logical_to_effective(vcpu, gra);
-+
-+	return kvm_s390_real_to_abs(vcpu, gra);
-+}
-+
- static inline gpa_t lc_addr_from_offset(struct kvm_vcpu *vcpu, unsigned int off)
- {
- 	gpa_t addr = kvm_s390_get_prefix(vcpu);
-diff --git a/arch/s390/kvm/priv.c b/arch/s390/kvm/priv.c
-index 780186eb6037..78d3338afdb2 100644
---- a/arch/s390/kvm/priv.c
-+++ b/arch/s390/kvm/priv.c
-@@ -256,9 +256,9 @@ static int try_handle_skey(struct kvm_vcpu *vcpu)
- 
- static int handle_iske(struct kvm_vcpu *vcpu)
- {
--	unsigned long gaddr;
- 	int reg1, reg2;
- 	union skey key;
-+	gpa_t gpa;
- 	int rc;
- 
- 	vcpu->stat.instruction_iske++;
-@@ -271,12 +271,10 @@ static int handle_iske(struct kvm_vcpu *vcpu)
- 		return rc != -EAGAIN ? rc : 0;
- 
- 	kvm_s390_get_regs_rre(vcpu, &reg1, &reg2);
-+	gpa = kvm_s390_real_to_abs_effective(vcpu, vcpu->run->s.regs.gprs[reg2] & PAGE_MASK);
- 
--	gaddr = vcpu->run->s.regs.gprs[reg2] & PAGE_MASK;
--	gaddr = kvm_s390_logical_to_effective(vcpu, gaddr);
--	gaddr = kvm_s390_real_to_abs(vcpu, gaddr);
- 	scoped_guard(read_lock, &vcpu->kvm->mmu_lock)
--		rc = dat_get_storage_key(vcpu->arch.gmap->asce, gpa_to_gfn(gaddr), &key);
-+		rc = dat_get_storage_key(vcpu->arch.gmap->asce, gpa_to_gfn(gpa), &key);
- 	if (rc > 0)
- 		return kvm_s390_inject_program_int(vcpu, rc);
- 	if (rc < 0)
-@@ -288,8 +286,8 @@ static int handle_iske(struct kvm_vcpu *vcpu)
- 
- static int handle_rrbe(struct kvm_vcpu *vcpu)
- {
--	unsigned long gaddr;
- 	int reg1, reg2;
-+	gpa_t gpa;
- 	int rc;
- 
- 	vcpu->stat.instruction_rrbe++;
-@@ -302,12 +300,10 @@ static int handle_rrbe(struct kvm_vcpu *vcpu)
- 		return rc != -EAGAIN ? rc : 0;
- 
- 	kvm_s390_get_regs_rre(vcpu, &reg1, &reg2);
-+	gpa = kvm_s390_real_to_abs_effective(vcpu, vcpu->run->s.regs.gprs[reg2] & PAGE_MASK);
- 
--	gaddr = vcpu->run->s.regs.gprs[reg2] & PAGE_MASK;
--	gaddr = kvm_s390_logical_to_effective(vcpu, gaddr);
--	gaddr = kvm_s390_real_to_abs(vcpu, gaddr);
- 	scoped_guard(read_lock, &vcpu->kvm->mmu_lock)
--		rc = dat_reset_reference_bit(vcpu->arch.gmap->asce, gpa_to_gfn(gaddr));
-+		rc = dat_reset_reference_bit(vcpu->arch.gmap->asce, gpa_to_gfn(gpa));
- 	if (rc > 0)
- 		return kvm_s390_inject_program_int(vcpu, rc);
- 	if (rc < 0)
-@@ -1142,8 +1138,8 @@ static inline int __do_essa(struct kvm_vcpu *vcpu, const int orc)
- 	int r1, r2, nappended, entries;
- 	union essa_state state;
- 	unsigned long *cbrlo;
--	unsigned long gfn;
- 	bool dirtied;
-+	gpa_t gpa;
- 
- 	/*
- 	 * We don't need to set SD.FPF.SK to 1 here, because if we have a
-@@ -1151,10 +1147,11 @@ static inline int __do_essa(struct kvm_vcpu *vcpu, const int orc)
- 	 */
- 
- 	kvm_s390_get_regs_rre(vcpu, &r1, &r2);
--	gfn = gpa_to_gfn(vcpu->run->s.regs.gprs[r2]);
-+	gpa = vcpu->run->s.regs.gprs[r2];
- 	entries = (vcpu->arch.sie_block->cbrlo & ~PAGE_MASK) >> 3;
- 
--	nappended = dat_perform_essa(vcpu->arch.gmap->asce, gfn, orc, &state, &dirtied);
-+	nappended = dat_perform_essa(vcpu->arch.gmap->asce, gpa_to_gfn(gpa),
-+				     orc, &state, &dirtied);
- 	vcpu->run->s.regs.gprs[r1] = state.val;
- 	if (nappended < 0)
- 		return 0;
-@@ -1166,7 +1163,7 @@ static inline int __do_essa(struct kvm_vcpu *vcpu, const int orc)
- 	 */
- 	if (nappended > 0) {
- 		cbrlo = phys_to_virt(vcpu->arch.sie_block->cbrlo & PAGE_MASK);
--		cbrlo[entries] = gfn << PAGE_SHIFT;
-+		cbrlo[entries] = gpa;
- 	}
- 
- 	if (dirtied)
-@@ -1447,10 +1444,10 @@ int kvm_s390_handle_eb(struct kvm_vcpu *vcpu)
- static int handle_tprot(struct kvm_vcpu *vcpu)
- {
- 	u64 address, operand2;
--	unsigned long gpa;
- 	u8 access_key;
- 	bool writable;
- 	int ret, cc;
-+	gpa_t gpa;
- 	u8 ar;
- 
- 	vcpu->stat.instruction_tprot++;
--- 
-2.51.0
+I haven't gotten a chance to look at your noiommu patches yet, but I
+do think noiommu will probably be a good way to develop the VFIO and
+PCI support for Live Update without blocking on IOMMU driver support.
 
+> I=E2=80=99ve tested your
+> vfio_pci_liveupdate_kexec_test with the noiommu cdev, and it works as
+> expected.
+
+Would you be able to send patches to add noiommu support to VFIO
+selftests? That would be very helpful toward allowing us to develop
+and test Live Update support with noiommu.
