@@ -1,188 +1,113 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40B7DA55;
-	Mon, 16 Mar 2026 13:05:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2BE1CA55;
+	Mon, 16 Mar 2026 13:06:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773666339; cv=none; b=rWXPFeePr52ZPJymiNfblAY1iFLhiO60CNnwmQXuWWlWv+7Me/ebtLJMAx6DxAlvMcuW0GIbL4U3vhgst6P7mPODush7gTX3DvlUDvULjr9coZao3tzt8hNil3eclgloChwkIk2uYf8/Gs79jPn4vKWwUDDddRix0fa58Jc5rGQ=
+	t=1773666375; cv=none; b=UKR/wmT4FOx6WcWbKTPU8Wfo1y/DWWThD9hFbdZQtbMIWsqlJj9GihnPG4mUubLNgbOYh883SA6Lw8R6mvYyelZJ/oSgmtXJvkXcojN9FuO84AjGpKCPucPZapxkO8CAlWuYi7yvnIDeT6CrXxPGM5ZVj0KDNikuvBi/oyj4y+M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773666339; c=relaxed/simple;
-	bh=g5kZmA0yw/DQF+KEhs3w8BmQ1L3CG3z1AwFKMk3kBG8=;
+	s=arc-20240116; t=1773666375; c=relaxed/simple;
+	bh=waJBSkFenb+V1D/INNqxu4uG6vZdlGnaGTP0hoDh2aA=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=U+NdkU6uaeV2hc0Q/8Ek2PIfT5Lk2XJAsjo/wsfj+xHG/4Zm3yDgahhr1m6StmIIkd1vfTfTFDC814STyfAPJ5qRDpjVlR3M1SnNETjCMr2GJvYnMp8El8Q5QE8/dLK6y6qDSI9SqQzAinMn5WTJTLuFf3SnjPupPW0K8RyKkxc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=B6IZ/uuP; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=lLV6VCbJXpT9RNeBCPdFwV7UROROc/+SmMc2JRVZO2mg8oeEjZQTQSWJ+O5r6ekEpQpj/npaqkrGaaaaXxAJBSyAMOoW9E9oWhFt8L7au8B1pn4rhQArnyRRbqr+qJtC/1ACaB9TspznSEwAsZEU8r+cQ3vMP7P62uIp9NKr/kY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=eDddw3K2; arc=none smtp.client-ip=148.163.156.1
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="B6IZ/uuP"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 147A4C19424;
-	Mon, 16 Mar 2026 13:05:38 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773666338;
-	bh=g5kZmA0yw/DQF+KEhs3w8BmQ1L3CG3z1AwFKMk3kBG8=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=B6IZ/uuPYeW7c2/H5K7xRSNM/hYpzRUlmiz0MCVcu/fA12VOlBmLOHxzLD21/RtCy
-	 j8/9EsakS0klSL/K5ewcs62wYBe/0GMl6YOL55OsbcDfxmpS7evc7welhlulnx8AQP
-	 RdT7nSqq+qaosHcmSX7F2gAT1SNMbI2HLfiCgAZGPIacHEDWtOs3WG224/EWjvaRUQ
-	 L/y1+pSZ96Px0Uj3Ie7Qqxsjk3Ycoe4NVuvv/iEkLFM8giyd45/mfLFBlRfUr/exlK
-	 tRp44jTNInIhTAqVxetUAwdr+lRDqg43ZKB1P9PLhNx9xuET+9TzSsdbe5bUn6eI1U
-	 DMnRGP5SW0NTg==
-Received: from phl-compute-09.internal (phl-compute-09.internal [10.202.2.49])
-	by mailfauth.phl.internal (Postfix) with ESMTP id 321E2F40070;
-	Mon, 16 Mar 2026 09:05:37 -0400 (EDT)
-Received: from phl-frontend-03 ([10.202.2.162])
-  by phl-compute-09.internal (MEProxy); Mon, 16 Mar 2026 09:05:37 -0400
-X-ME-Sender: <xms:IQC4aWKTsRuGC-EUFnmc5x-kGpXz6GZPxB9qd93RmiEv6aHMp4oETg>
-    <xme:IQC4adDzzTJi3pgIu17LLuWGkQVghHbIy4FHlmGE0MxCktoCF2AlbuusjNN9rRsSp
-    aUQPWQLSl7izFmSyAhHs9p0X681Ruc-M3jDZexA_HQVqihGu4-uSN0>
-X-ME-Received: <xmr:IQC4aXE79LMsuNqehTOR921-sk44G-wzRaSDRVnlsHwd7_LS3sV47VJ3SeWIdw>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgddvleekgeehucetufdoteggodetrf
-    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
-    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
-    gurhepfffhvfevuffkfhggtggugfgjsehtkeertddttddunecuhfhrohhmpefmihhrhihl
-    ucfuhhhuthhsvghmrghuuceokhgrsheskhgvrhhnvghlrdhorhhgqeenucggtffrrghtth
-    gvrhhnpeevhffgudeuleelueehfedtveduudehieefudehvdduheeivdeijeejledvgeeg
-    feenucffohhmrghinhepihhnthgvlhdrtghomhenucevlhhushhtvghrufhiiigvpedtne
-    curfgrrhgrmhepmhgrihhlfhhrohhmpehkihhrihhllhdomhgvshhmthhprghuthhhphgv
-    rhhsohhnrghlihhthidqudeiudduiedvieehhedqvdekgeeggeejvdekqdhkrghspeepkh
-    gvrhhnvghlrdhorhhgsehshhhuthgvmhhovhdrnhgrmhgvpdhnsggprhgtphhtthhopeeh
-    vddpmhhouggvpehsmhhtphhouhhtpdhrtghpthhtoheptghhrghordhgrghosehinhhtvg
-    hlrdgtohhmpdhrtghpthhtoheplhhinhhugidqkhgvrhhnvghlsehvghgvrhdrkhgvrhhn
-    vghlrdhorhhgpdhrtghpthhtoheplhhinhhugidqtghotghosehlihhsthhsrdhlihhnuh
-    igrdguvghvpdhrtghpthhtohepkhhvmhesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgt
-    phhtthhopegsihhnsghinhdrfihusehlihhnuhigrdhinhhtvghlrdgtohhmpdhrtghpth
-    htohepuggrnhdrjhdrfihilhhlihgrmhhssehinhhtvghlrdgtohhmpdhrtghpthhtohep
-    uggrvhgvrdhhrghnshgvnheslhhinhhugidrihhnthgvlhdrtghomhdprhgtphhtthhope
-    hirhgrrdifvghinhihsehinhhtvghlrdgtohhmpdhrtghpthhtohepkhgrihdrhhhurghn
-    ghesihhnthgvlhdrtghomh
-X-ME-Proxy: <xmx:IQC4aQbe1QEQy_hMtzVNlE-_9JgAfBJrykOH8aijcJ6dHrjXHYNdXg>
-    <xmx:IQC4afGmr2XPdg0rS1Et6EZDjmohugkeNtw4TPXfnteBDIpl-3mCdw>
-    <xmx:IQC4aWCoRPad65ZbDpVcFDu_2Fb8D0ZYqMSR-we2B8bVW7rkWTb9Nw>
-    <xmx:IQC4aYHQer6IRgkJ88p_2hg1VFrFirJ8IMIAVlcbpA7C3mD-8sflfA>
-    <xmx:IQC4aRLKwioCZQAbLDfs-rezdUh8ZIq0DjqrWQtduXyqkUeMC4IxDzJb>
-Feedback-ID: i10464835:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
- 16 Mar 2026 09:05:34 -0400 (EDT)
-Date: Mon, 16 Mar 2026 13:05:28 +0000
-From: Kiryl Shutsemau <kas@kernel.org>
-To: Chao Gao <chao.gao@intel.com>
-Cc: linux-kernel@vger.kernel.org, linux-coco@lists.linux.dev, 
-	kvm@vger.kernel.org, binbin.wu@linux.intel.com, dan.j.williams@intel.com, 
-	dave.hansen@linux.intel.com, ira.weiny@intel.com, kai.huang@intel.com, nik.borisov@suse.com, 
-	paulmck@kernel.org, pbonzini@redhat.com, reinette.chatre@intel.com, 
-	rick.p.edgecombe@intel.com, sagis@google.com, seanjc@google.com, 
-	tony.lindgren@linux.intel.com, vannapurve@google.com, vishal.l.verma@intel.com, 
-	yilun.xu@linux.intel.com, Farrah Chen <farrah.chen@intel.com>, 
-	Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
-	x86@kernel.org, "H. Peter Anvin" <hpa@zytor.com>
-Subject: Re: [PATCH v5 04/22] x86/virt/seamldr: Introduce a wrapper for
- P-SEAMLDR SEAMCALLs
-Message-ID: <abf-3xRg7ouZw-F4@thinkstation>
-References: <20260315135920.354657-1-chao.gao@intel.com>
- <20260315135920.354657-5-chao.gao@intel.com>
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="eDddw3K2"
+Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 62G14Cqu1188734;
+	Mon, 16 Mar 2026 13:06:05 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-type:date:from:in-reply-to:message-id:mime-version
+	:references:subject:to; s=pp1; bh=GxmzrlIjprK69T1v2Rr/o9Vou33tII
+	VEXuRKZkkhtyg=; b=eDddw3K2Fz1jZptqxONzZnN8cscN609oE9Irjit2+q5ZRm
+	BLkt3qQbAm/+QHA8G2ga3Sdsw/nUSHxK9hYw/MrN8u6nx5dKovogniKmsFEDIAaS
+	UJWRsgbWxMvx/MOaEl2ks6n56E4eMpuPWRF1/KzcLIDQAt6CwZGsri7kpDePQz+E
+	YGZ2x1Ks2qRBRSEyqo1DUdn8EGIJiwJGioGEwr8oajhEUEGKrHIMS7XR6u7qYPkV
+	8fV44yI6CDJRsJIjvOHR5OO6YcISK9fc5fFee7W2r5izR0F4TkLlBjOEsGH/eBqz
+	bhdBGl6Bdb5Phj5DLGqvQkerHhwfRVRyQpceWy/Q==
+Received: from ppma12.dal12v.mail.ibm.com (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4cx7vfa7bk-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 16 Mar 2026 13:06:05 +0000 (GMT)
+Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma12.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 62G9Z8Mg005412;
+	Mon, 16 Mar 2026 13:06:04 GMT
+Received: from smtprelay07.fra02v.mail.ibm.com ([9.218.2.229])
+	by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 4cwj0s50y8-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 16 Mar 2026 13:06:04 +0000
+Received: from smtpav04.fra02v.mail.ibm.com (smtpav04.fra02v.mail.ibm.com [10.20.54.103])
+	by smtprelay07.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 62GD600T50135390
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Mon, 16 Mar 2026 13:06:00 GMT
+Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 458AF2004D;
+	Mon, 16 Mar 2026 13:06:00 +0000 (GMT)
+Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id B097B20040;
+	Mon, 16 Mar 2026 13:05:59 +0000 (GMT)
+Received: from osiris (unknown [9.87.141.39])
+	by smtpav04.fra02v.mail.ibm.com (Postfix) with ESMTPS;
+	Mon, 16 Mar 2026 13:05:59 +0000 (GMT)
+Date: Mon, 16 Mar 2026 14:05:58 +0100
+From: Heiko Carstens <hca@linux.ibm.com>
+To: Christian Borntraeger <borntraeger@linux.ibm.com>
+Cc: KVM <kvm@vger.kernel.org>, Janosch Frank <frankja@linux.ibm.com>,
+        David Hildenbrand <david@kernel.org>,
+        linux-s390 <linux-s390@vger.kernel.org>,
+        Thomas Huth <thuth@redhat.com>,
+        Claudio Imbrenda <imbrenda@linux.ibm.com>,
+        Vasily Gorbik <gor@linux.ibm.com>,
+        Alexander Gordeev <agordeev@linux.ibm.com>
+Subject: Re: [PATCH v2] KVM: s390: vsie: Avoid injecting machine check on
+ signal
+Message-ID: <20260316130558.17080Ca6-hca@linux.ibm.com>
+References: <20260316122546.11573-1-borntraeger@linux.ibm.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20260315135920.354657-5-chao.gao@intel.com>
+In-Reply-To: <20260316122546.11573-1-borntraeger@linux.ibm.com>
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: lmtd_AOoHAG9pbRMpUZGJFm4aNW5g3Yh
+X-Authority-Analysis: v=2.4 cv=KajfcAYD c=1 sm=1 tr=0 ts=69b8003d cx=c_pps
+ a=bLidbwmWQ0KltjZqbj+ezA==:117 a=bLidbwmWQ0KltjZqbj+ezA==:17
+ a=kj9zAlcOel0A:10 a=Yq5XynenixoA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=RnoormkPH1_aCDwRdu11:22 a=U7nrCbtTmkRpXpFmAIza:22 a=4FKylwy8VPKmDCnMVIoA:9
+ a=CjuIK1q_8ugA:10
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMzE2MDA5NyBTYWx0ZWRfX1dcLDr1K4gzo
+ UObEwSJJ0Iy5B0P4YQw/OLN5BNysiNxAHCL++84TGXhKz31Y9GwC3Lg61tAbytCShcnzf/smwwe
+ ZJAkAwywaaSqoT2+a5inivVn+BFZ+e8FTxGib8og1z6Vli8DyyiXRCRFk9TQ2eTlxAvBR1M365+
+ FXmH1tiXz6Y2igGHO+KNe+glGh6ZnsCxVyhfh3A87/GoRojTH9e904owQZETWiMVO58sDu4e06W
+ 3u4vyEzFql7VbMJhqiMTSP+U4/vxR6VgDrVY/sVvZVFhhaxwK1Q7nY/zYqvjoCS0f+Woox0b8bZ
+ mGbxw9eqWBTFAeIx5+ZEvVzD/8GevlpdQN7otSb7rgXf1B3a9HA6Tp7KKDkJRhgWru3GtINRy36
+ 1cPecYxRXDf2MR33aGX4X+PxmI+PvhMiHFCjwYPaPM86tycZLVxHXyZ9h2EJI8I/OaIMm6xubJ0
+ FPR656L4lMNLkRt3DLw==
+X-Proofpoint-GUID: lmtd_AOoHAG9pbRMpUZGJFm4aNW5g3Yh
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
+ definitions=2026-03-16_04,2026-03-16_03,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ suspectscore=0 adultscore=0 spamscore=0 malwarescore=0 clxscore=1015
+ impostorscore=0 bulkscore=0 lowpriorityscore=0 priorityscore=1501
+ phishscore=0 classifier=typeunknown authscore=0 authtc= authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2603050001
+ definitions=main-2603160097
 
-On Sun, Mar 15, 2026 at 06:58:24AM -0700, Chao Gao wrote:
-> The TDX architecture uses the "SEAMCALL" instruction to communicate with
-> SEAM mode software. Right now, the only SEAM mode software that the kernel
-> communicates with is the TDX module. But, there is actually another
-> component that runs in SEAM mode but it is separate from the TDX module:
-> the persistent SEAM loader or "P-SEAMLDR". Right now, the only component
-> that communicates with it is the BIOS which loads the TDX module itself at
-> boot. But, to support updating the TDX module, the kernel now needs to be
-> able to talk to it.
-> 
-> P-SEAMLDR SEAMCALLs differ from TDX module SEAMCALLs in areas such as
-> concurrency requirements. Add a P-SEAMLDR wrapper to handle these
-> differences and prepare for implementing concrete functions.
-> 
-> Note that unlike P-SEAMLDR, there is also a non-persistent SEAM loader
-> ("NP-SEAMLDR"). This is an authenticated code module (ACM) that is not
-> callable at runtime. Only BIOS launches it to load P-SEAMLDR at boot;
-> the kernel does not need to interact with it for runtime update.
-> 
-> For details of P-SEAMLDR SEAMCALLs, see Intel® Trust Domain CPU
-> Architectural Extensions, Revision 343754-002, Chapter 2.3 "INSTRUCTION
-> SET REFERENCE".
-> 
-> Signed-off-by: Chao Gao <chao.gao@intel.com>
-> Reviewed-by: Binbin Wu <binbin.wu@linux.intel.com>
-> Tested-by: Farrah Chen <farrah.chen@intel.com>
-> Link: https://cdrdv2.intel.com/v1/dl/getContent/733582 # [1]
-> ---
-> v5:
->  - Don't save/restore irq flags as P-SEAMLDR calls are made only in process
->    context
->  - clarify why raw_spinlock is used [Dave]
-> v4:
->  - Give more background about P-SEAMLDR in changelog [Dave]
->  - Don't handle P-SEAMLDR's "no_entropy" error [Dave]
->  - Assume current VMCS is preserved across P-SEAMLDR calls [Dave]
->  - I'm not adding Reviewed-by tags as the code has changed significantly.
-> v2:
->  - don't create a new, inferior framework to save/restore VMCS
->  - use human-friendly language, just "current VMCS" rather than
->    SDM term "current-VMCS pointer"
->  - don't mix guard() with goto
-> ---
->  arch/x86/virt/vmx/tdx/Makefile  |  2 +-
->  arch/x86/virt/vmx/tdx/seamldr.c | 24 ++++++++++++++++++++++++
->  2 files changed, 25 insertions(+), 1 deletion(-)
->  create mode 100644 arch/x86/virt/vmx/tdx/seamldr.c
-> 
-> diff --git a/arch/x86/virt/vmx/tdx/Makefile b/arch/x86/virt/vmx/tdx/Makefile
-> index 90da47eb85ee..d1dbc5cc5697 100644
-> --- a/arch/x86/virt/vmx/tdx/Makefile
-> +++ b/arch/x86/virt/vmx/tdx/Makefile
-> @@ -1,2 +1,2 @@
->  # SPDX-License-Identifier: GPL-2.0-only
-> -obj-y += seamcall.o tdx.o
-> +obj-y += seamcall.o seamldr.o tdx.o
-> diff --git a/arch/x86/virt/vmx/tdx/seamldr.c b/arch/x86/virt/vmx/tdx/seamldr.c
-> new file mode 100644
-> index 000000000000..7ed9be89017c
-> --- /dev/null
-> +++ b/arch/x86/virt/vmx/tdx/seamldr.c
-> @@ -0,0 +1,24 @@
-> +// SPDX-License-Identifier: GPL-2.0
-> +/*
-> + * P-SEAMLDR support for TDX module management features like runtime updates
-> + *
-> + * Copyright (C) 2025 Intel Corporation
-> + */
-> +#define pr_fmt(fmt)	"seamldr: " fmt
-> +
-> +#include <linux/spinlock.h>
-> +
-> +#include "seamcall_internal.h"
-> +
-> +/*
-> + * Serialize P-SEAMLDR calls since the hardware only allows a single CPU to
-> + * interact with P-SEAMLDR simultaneously. Use raw version as the calls can
-> + * be made with interrupts disabled.
+On Mon, Mar 16, 2026 at 01:25:46PM +0100, Christian Borntraeger wrote:
+>  	}
+> +	WARN_ON(sie_return != SIE64_RETURN_NORMAL);
 
-Hm. I am not sure how it explains use of raw_spinlock. What's wrong with
-using plain spinlock with interrupts disabled?
+WARN_ON_ONCE() instead?
 
-> + */
-> +static DEFINE_RAW_SPINLOCK(seamldr_lock);
+> +	WARN_ON(rc != SIE64_RETURN_NORMAL);
 > +
-> +static __maybe_unused int seamldr_call(u64 fn, struct tdx_module_args *args)
-> +{
-> +	guard(raw_spinlock)(&seamldr_lock);
-> +	return seamcall_prerr(fn, args);
-> +}
-> -- 
-> 2.47.3
-> 
 
--- 
-  Kiryl Shutsemau / Kirill A. Shutemov
+Same here. Besides that looks good to me.
