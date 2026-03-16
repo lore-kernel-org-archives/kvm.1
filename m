@@ -1,89 +1,86 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mxhk.zte.com.cn (mxhk.zte.com.cn [160.30.148.35])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6350B223708;
-	Mon, 16 Mar 2026 05:49:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B58D7347FD7;
+	Mon, 16 Mar 2026 06:12:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=160.30.148.35
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773640177; cv=none; b=eRxyA133TYEvwyv02Swm3nAhxlmwCHiZesyA204cxV/TrU0Bg/mWcBPpfMCx5fSbRXtxSi3LGOly0N7Qj2ES657LuJRBs2gSkNq+GigVOSFi/qcbFTQoRmg+fUMBmU4qZZv9DzI3mghaq2vY+iRJq4lo9HMA095WdyVSF00iHlQ=
+	t=1773641567; cv=none; b=qNUYHOtLuUVgY0dgiKMI/B93Pf2E0Qm8w9GuublYR6nZCY2Ud/YzdcI59dSqsx9RK/J+4it7sUgUVlASSHbbYzaR0qvfk6bl+xtUPFJpEfxra1ygutx+LKjmeVEgRox78cZcvt3FepoQu5IBAe4I1UX3NwixF1oUOJzCBIEt7yc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773640177; c=relaxed/simple;
-	bh=pZiSm+008sCbaEsRnc7ZhunJgxcEmN5bsNlaJsNR6IQ=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=h5Z5Xl0G8Pffq3zr223sPYer59lBAS/2yW2clYW6pEuNsxyLivTiYoF9WdW6AEuQ3M9VcYU1JDMdFVaCv0SRYImeCF4EOAe483/2dO8JfQs4uV/k67UGmD7EypgHj2dNj8PmxTOgozpcyU/dUGXe7ad0930lzhoyaVLQUJoFZYs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SIUW6NGC; arc=none smtp.client-ip=10.30.226.201
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SIUW6NGC"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 836A5C19425;
-	Mon, 16 Mar 2026 05:49:31 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773640177;
-	bh=pZiSm+008sCbaEsRnc7ZhunJgxcEmN5bsNlaJsNR6IQ=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=SIUW6NGCDj7drWksNlvLLOgEGhgBMLx63Kkt9AQYyu/REgCYx8tIaLlwEP+ITCybA
-	 TRXAAjDfeMryGzmiNu3a47BP2AbC1U31uKttcX37YIbNyDzCwwlOp/CuFpVFVrKHhb
-	 uTBoYDw8vJ4oG28UAALkMmtk1IAMyge25KiNdLey49OPwtkO9rzukStLcwtmtHWsHb
-	 V5MpS5W0xyqYTgqrzXLO0/xf1hvHuTtG+o7kC5BGLMqa+vhYjiWSCG33vQtFp2DtvS
-	 l1+ZEUqfspDQH+zZdH1+CFid6Z5pz4fZbs5lpZleQ6mJzt+1AmrBSCK+6s9uPjgRBB
-	 PeT3MOvjSaPJA==
-X-Mailer: emacs 30.2 (via feedmail 11-beta-1 I)
-From: Aneesh Kumar K.V <aneesh.kumar@kernel.org>
-To: Nicolin Chen <nicolinc@nvidia.com>
-Cc: iommu@lists.linux.dev, linux-kernel@vger.kernel.org,
-	kvm@vger.kernel.org, Kevin Tian <kevin.tian@intel.com>,
-	Joerg Roedel <joro@8bytes.org>,
-	Will Deacon <will@kernel.org>,
-	Bjorn Helgaas <helgaas@kernel.org>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-	Dan Williams <dan.j.williams@intel.com>,
-	Alexey Kardashevskiy <aik@amd.com>,
-	Samuel Ortiz <sameo@rivosinc.com>,
-	Xu Yilun <yilun.xu@linux.intel.com>,
-	Jason Gunthorpe <jgg@ziepe.ca>,
-	Suzuki K Poulose <Suzuki.Poulose@arm.com>,
-	Steven Price <steven.price@arm.com>
-Subject: Re: [PATCH v2 1/3] iommufd/viommu: Allow associating a KVM VM fd
- with a vIOMMU
-In-Reply-To: <abOrdFR4L2n334MR@Asurada-Nvidia>
-References: <20260309111704.2330479-1-aneesh.kumar@kernel.org>
- <20260309111704.2330479-2-aneesh.kumar@kernel.org>
- <abOrdFR4L2n334MR@Asurada-Nvidia>
-Date: Mon, 16 Mar 2026 11:19:28 +0530
-Message-ID: <yq5a1phk8gt3.fsf@kernel.org>
+	s=arc-20240116; t=1773641567; c=relaxed/simple;
+	bh=uoYReohZezfj0dLXEaUrN7joz+A8+cNltK5fkF27Wjg=;
+	h=Message-ID:Date:Mime-Version:From:To:Cc:Subject:Content-Type; b=FBQqUVgF+K6g6+WeTedhDbJ4F7CBiqjzr4dFhN8yVKkdQsr9YHZhyeU8siXYSSwkCjt3xK437ZxNM//x46w8350jnCu0Pu+eKSVTGoIpLMnGLtmyTynmQHMjfxuW/GJZJr1xAQOt4A0PlUWR+GXyQyDmg0AWlNjJ4enNFu1we4w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zte.com.cn; spf=pass smtp.mailfrom=zte.com.cn; arc=none smtp.client-ip=160.30.148.35
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zte.com.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=zte.com.cn
+Received: from mse-fl2.zte.com.cn (unknown [10.5.228.133])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mxhk.zte.com.cn (FangMail) with ESMTPS id 4fZ4WT0f3Sz8Xs6v;
+	Mon, 16 Mar 2026 14:12:37 +0800 (CST)
+Received: from szxlzmapp02.zte.com.cn ([10.5.231.79])
+	by mse-fl2.zte.com.cn with SMTP id 62G6CWaV081774;
+	Mon, 16 Mar 2026 14:12:32 +0800 (+08)
+	(envelope-from wang.yechao255@zte.com.cn)
+Received: from mapi (szxl2zmapp05[null])
+	by mapi (Zmail) with MAPI id mid12;
+	Mon, 16 Mar 2026 14:12:34 +0800 (CST)
+X-Zmail-TransId: 2b0769b79f52168-0b36a
+X-Mailer: Zmail v1.0
+Message-ID: <20260316141234007qSAOsesu2cSQsj-LA-qq3@zte.com.cn>
+Date: Mon, 16 Mar 2026 14:12:34 +0800 (CST)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain
+Mime-Version: 1.0
+From: <wang.yechao255@zte.com.cn>
+To: <anup@brainfault.org>, <atish.patra@linux.dev>, <pjw@kernel.org>,
+        <palmer@dabbelt.com>, <aou@eecs.berkeley.edu>, <alex@ghiti.fr>
+Cc: <kvm@vger.kernel.org>, <kvm-riscv@lists.infradead.org>,
+        <linux-riscv@lists.infradead.org>, <linux-kernel@vger.kernel.org>,
+        <wang.yechao255@zte.com.cn>
+Subject: =?UTF-8?B?W1BBVENIIHYzIDAvM10gUklTQy1WOiBLVk06IEZpeCBodWdlcGFnZSBtYXBwaW5nIGhhbmRsaW5nIGR1cmluZyBkaXJ0eSBsb2dnaW5n?=
+Content-Type: text/plain;
+	charset="UTF-8"
+X-MAIL:mse-fl2.zte.com.cn 62G6CWaV081774
+X-TLS: YES
+X-SPF-DOMAIN: zte.com.cn
+X-ENVELOPE-SENDER: wang.yechao255@zte.com.cn
+X-SPF: None
+X-SOURCE-IP: 10.5.228.133 unknown Mon, 16 Mar 2026 14:12:37 +0800
+X-Fangmail-Anti-Spam-Filtered: true
+X-Fangmail-MID-QID: 69B79F55.000/4fZ4WT0f3Sz8Xs6v
 
-Nicolin Chen <nicolinc@nvidia.com> writes:
+From: Wang Yechao <wang.yechao255@zte.com.cn>
 
-> On Mon, Mar 09, 2026 at 04:47:02PM +0530, Aneesh Kumar K.V (Arm) wrote:
->> Add optional KVM association to IOMMU_VIOMMU_ALLOC by introducing
->> IOMMU_VIOMMU_KVM_FD and iommu_viommu_alloc::kvm_vm_fd.
->> 
->> When the flag is set, iommufd validates that kvm_vm_fd refers to a KVM
->> VM file and stores a referenced struct file in the vIOMMU object, so
->> later iommufd operations can safely resolve the owning VM.
->> 
->> This is preparatory plumbing for subsequent patches that bind TDI state
->> to the associated KVM VM.
->> 
->> The patch also switch file_is_kvm from EXPORT_SYMBOL_FOR_KVM_INTERNAL to
->> EXPORT_SYMBOL_GPL so that iommu module can use that.
->
-> struct vfio_device has the kvm pointer already. So, I think it
-> could be forwarded from VFIO side v.s. via userspace ioctl.
->
-> Shammer had two patches before and Jason partially reviewed. I
-> took those for a side project but haven't sent anywhere. Would
-> you please check if they for you?
->
-> https://github.com/nicolinc/iommufd/commits/wip/viommu_kvm
->
+This series fixes an issue where dirty logging fails to work correctly
+with huge pages.
 
-I will use these patches and add additional patches on top of it.
+v2 -> v3:
+  - patch01: Add reference to the specific commit being fixed
+  - patch02: Fill the page table entry before replacing the ptep value
+  - patch03: Add handling for dirty logging disable to avoid memory leak
+  - Link to v2:
+  https://lore.kernel.org/linux-riscv/20260304172139131ChDubMSpGDUB03lY4UCbK@zte.com.cn/T/#t
 
--aneesh
+v1 -> v2:
+  - fix the lost write protection on huge pages
+  - split huge pages before handling the write protection fault.
+
+  - Link to v1:
+  https://lore.kernel.org/linux-riscv/20260226172245358qVZavIykLL2QC0KoqTO-I@zte.com.cn/T/#u
+
+Wang Yechao (3):
+  RISC-V: KVM: Fix lost write protection on huge pages during dirty logging
+  RISC-V: KVM: Allow splitting huge pages to arbitrary level
+  RISC-V: KVM: Split huge pages during fault handling for dirty logging
+
+ arch/riscv/include/asm/kvm_gstage.h |   4 +
+ arch/riscv/kvm/gstage.c             | 132 +++++++++++++++++++++++++++-
+ 2 files changed, 132 insertions(+), 4 deletions(-)
+
+-- 
+2.27.0
