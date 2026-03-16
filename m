@@ -1,79 +1,71 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 248EB3932F4
-	for <kvm@vger.kernel.org>; Mon, 16 Mar 2026 11:51:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A96B239282F;
+	Mon, 16 Mar 2026 11:56:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773661875; cv=none; b=YmIqpvEeOPRxYYAoPgGqbx4OmLqiWmHHgWjH3629HJ9gP2NNVEzFB7eyqyxI14j61de+3EZW1DvqOJ8nnTbtX0YGqG7F13NdsJhwlgdV1dq2ntI3t5vj2mkW7s6i+iLZyuj3c2+eFbgRAl1QLaBgZbaojknFQM6Sv90G/Sn3tyM=
+	t=1773662191; cv=none; b=GKeFm3CPKGkA9nz0MVvHPhTj4YNCeooeWcA/ANu1HTTj7s7imzKHHkVvYnwcFzfipW2BKGU5rx4SGe4+CgJKMbqGNwdr5/AzXHOIzBnQMlcCtaQq/kLo9MuGfkA88/nrcrpL+t7h0MhXNMTRPOB/wRHHkJQA75IjC3+r4d/1t2c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773661875; c=relaxed/simple;
-	bh=T0JYGOr6ugZU2jMvsc9HFYY1EYF/qs9KP14VMrqzgE8=;
+	s=arc-20240116; t=1773662191; c=relaxed/simple;
+	bh=v+FGNGnOXfL/yITFl97Q2NXUmtPRWDiqgeNkakkFsvs=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=V2wW02xHM2J4gUxiEsiamaqZ8B/rhZLf4Nt+6uGnF06tVvrC+9EgOWnRL5Qha3MUcRwaMSKZllMahD/NFY0dZB16g83NRem11qzw2K5zZYA+tMAV0JKVWoMej36ViAJbcu+0b9ilJvefCcjEXe2SnfU1doKYRF4gGgUt3V6WPbY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=eBO+8Led; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=pIYgJEHT8vdGsMqId++VwtYOwHsMa1cxGoE8XWAKPL2++yVF/Wtvhp6b2JXjMlLcYeebHrmErYIk3U2MO3zpN50MbWTEXqgmOl+sILmWxSsTqghzaiLga/ePDQWJd+aKVpixrtvYXJg2E26+zLNDsYjHKBCkLxKfCLowqsL+nro=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=Gy/qGID+; arc=none smtp.client-ip=148.163.158.5
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="eBO+8Led"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5C973C19421;
-	Mon, 16 Mar 2026 11:51:14 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773661874;
-	bh=T0JYGOr6ugZU2jMvsc9HFYY1EYF/qs9KP14VMrqzgE8=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=eBO+8Led9woWAONG8gUtaXPJa+McQVCCkO8guYoIMxgIZFPOEWYLHx5XG8TN8oDIY
-	 BaFWsN+7Vf8Wv5hbkPYN7WFKID/5qylTpFBgIkjZfnq+LICoWF1QgPT9TixhTqPmIA
-	 +D5e5LCcyvNmUbz69g/35AQWwthmxml+QNNOgL+0L1319JIDymYlDuPeM8+2D/9E8n
-	 BGBIF9moELPae94hROyApkztc/am8n3ceXQJCB1j2jmu+A3ORALZ/TmhWkx9zHaU7+
-	 uR+1HRSsvWiGK+e0EZ0WpZz2xoCK0H/1EQZ+mvbPEA05mwxlvojFoXCFvJE+WaEA0o
-	 IfITlxe9xqFiA==
-Received: from phl-compute-02.internal (phl-compute-02.internal [10.202.2.42])
-	by mailfauth.phl.internal (Postfix) with ESMTP id 6278EF40069;
-	Mon, 16 Mar 2026 07:51:13 -0400 (EDT)
-Received: from phl-frontend-03 ([10.202.2.162])
-  by phl-compute-02.internal (MEProxy); Mon, 16 Mar 2026 07:51:13 -0400
-X-ME-Sender: <xms:se63adRfw8h56GxTOsa2Nfp5EZWnrJDqUp6HFt5VGFjq4dWSiLX11g>
-    <xme:se63aZHpsc9lAVSNZ0qiOXcw7p1naHyHoDNYZ_4yIRxBAxQFE0QK7qbs1CF1IEESp
-    BQfuQ4YRh55U5AaeK3FuJ8KLsBkp6z3PfswRrsXXuRHmVCRu4Oxhw>
-X-ME-Received: <xmr:se63aRgWGHMZLnpGiUJqagSb9JZ8WknvT-dDnBviP4rjVXQ_o4-t06-CMhH-_Q>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgddvleekfedtucetufdoteggodetrf
-    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
-    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
-    gurhepfffhvfevuffkfhggtggujgesthdtredttddtvdenucfhrhhomhepmfhirhihlhcu
-    ufhhuhhtshgvmhgruhcuoehkrghssehkvghrnhgvlhdrohhrgheqnecuggftrfgrthhtvg
-    hrnhepueeijeeiffekheeffffftdekleefleehhfefhfduheejhedvffeluedvudefgfek
-    necuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepkhhirh
-    hilhhlodhmvghsmhhtphgruhhthhhpvghrshhonhgrlhhithihqdduieduudeivdeiheeh
-    qddvkeeggeegjedvkedqkhgrsheppehkvghrnhgvlhdrohhrghesshhhuhhtvghmohhvrd
-    hnrghmvgdpnhgspghrtghpthhtohepfedvpdhmohguvgepshhmthhpohhuthdprhgtphht
-    thhopehrihgtkhdrphdrvggughgvtghomhgsvgesihhnthgvlhdrtghomhdprhgtphhtth
-    hopegsphesrghlihgvnhekrdguvgdprhgtphhtthhopegurghvvgdrhhgrnhhsvghnsehi
-    nhhtvghlrdgtohhmpdhrtghpthhtohephhhprgesiiihthhorhdrtghomhdprhgtphhtth
-    hopehkvhhmsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtoheplhhinhhugidq
-    tghotghosehlihhsthhsrdhlihhnuhigrdguvghvpdhrtghpthhtoheplhhinhhugidqkh
-    gvrhhnvghlsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtohepmhhinhhgohes
-    rhgvughhrghtrdgtohhmpdhrtghpthhtohepphgsohhniihinhhisehrvgguhhgrthdrtg
-    homh
-X-ME-Proxy: <xmx:se63aR8OaExk9SsirPQYh_jH4J_6z9g_IqQN7nQjOEUOVxfekJjJvA>
-    <xmx:se63aUL6IolEf2bAAb4N-kYsl27U_XMh7tM_jn0dmioUnnoJBIdc9w>
-    <xmx:se63aRqKY_E8eMggAP7TyMHdxKEdqAhSWuypYfJX3-kOQ2p5HNdPAA>
-    <xmx:se63aQw_4hs3SffuX69NLifqthW1nwpjP7dN-UfMzCZQvmrfYyL4vA>
-    <xmx:se63aeqHeklOzbJvlnukp5WjFkM7_aAi4rpKUy59p_dTnDMPonEV80HX>
-Feedback-ID: i10464835:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
- 16 Mar 2026 07:51:11 -0400 (EDT)
-Date: Mon, 16 Mar 2026 11:51:06 +0000
-From: Kiryl Shutsemau <kas@kernel.org>
-To: Rick Edgecombe <rick.p.edgecombe@intel.com>
-Cc: bp@alien8.de, dave.hansen@intel.com, hpa@zytor.com, 
-	kvm@vger.kernel.org, linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org, 
-	mingo@redhat.com, pbonzini@redhat.com, seanjc@google.com, tglx@kernel.org, 
-	x86@kernel.org, chao.gao@intel.com, kai.huang@intel.com, ackerleytng@google.com, 
-	vishal.l.verma@intel.com
-Subject: Re: [PATCH 3/4] x86/virt/tdx: Add SEAMCALL wrapper for
- TDH.SYS.DISABLE
-Message-ID: <abftAJkiU3Q24wYQ@thinkstation>
-References: <20260307010358.819645-1-rick.p.edgecombe@intel.com>
- <20260307010358.819645-4-rick.p.edgecombe@intel.com>
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="Gy/qGID+"
+Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 62GABFwT3402882;
+	Mon, 16 Mar 2026 11:56:25 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-type:date:from:in-reply-to:message-id:mime-version
+	:references:subject:to; s=pp1; bh=J3afw7jbhCThzn3i/LjsCSqTnEVwDB
+	sC8JbjGT1lEts=; b=Gy/qGID+oPk45U63InJma0V5LFH8rXZjIJLeylz9TVnQlT
+	gh6WREHvNm1v5evHIs3V04q/oo7PXXEJ+vVKGOs4C3MvNU3QAxb5d8Uht3rVYJb5
+	8vABVNKEanFjIA84WnQJK5FoJHU/7Vvfpa6XhTbA1YIzYpdtzxDtImUHh5NDRX1L
+	y8YOeVBxcdKkwNXLFckRuHKd894o9RG/Bjg1FgeGgcThBkbZPzYrFbSleIev7m/i
+	JH1YvfS4beH0Kt1EOsS1nRXY5VF5u1Z72+KsFON9yjtNBgmraZn3H0AOjQ4o2178
+	myN9Aclh38fyok6seNF15PSf3waEtukArU2/AYTA==
+Received: from ppma13.dal12v.mail.ibm.com (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4cvyau7986-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 16 Mar 2026 11:56:24 +0000 (GMT)
+Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma13.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 62GBO9nA032404;
+	Mon, 16 Mar 2026 11:56:24 GMT
+Received: from smtprelay06.fra02v.mail.ibm.com ([9.218.2.230])
+	by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 4cwm7jmh44-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 16 Mar 2026 11:56:24 +0000
+Received: from smtpav06.fra02v.mail.ibm.com (smtpav06.fra02v.mail.ibm.com [10.20.54.105])
+	by smtprelay06.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 62GBuKxD30212538
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Mon, 16 Mar 2026 11:56:20 GMT
+Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 5D90C2004D;
+	Mon, 16 Mar 2026 11:56:20 +0000 (GMT)
+Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id C77C720049;
+	Mon, 16 Mar 2026 11:56:19 +0000 (GMT)
+Received: from osiris (unknown [9.87.141.39])
+	by smtpav06.fra02v.mail.ibm.com (Postfix) with ESMTPS;
+	Mon, 16 Mar 2026 11:56:19 +0000 (GMT)
+Date: Mon, 16 Mar 2026 12:56:18 +0100
+From: Heiko Carstens <hca@linux.ibm.com>
+To: Christian Borntraeger <borntraeger@linux.ibm.com>
+Cc: KVM <kvm@vger.kernel.org>, Janosch Frank <frankja@linux.ibm.com>,
+        David Hildenbrand <david@kernel.org>,
+        linux-s390 <linux-s390@vger.kernel.org>,
+        Thomas Huth <thuth@redhat.com>,
+        Claudio Imbrenda <imbrenda@linux.ibm.com>,
+        Vasily Gorbik <gor@linux.ibm.com>,
+        Alexander Gordeev <agordeev@linux.ibm.com>
+Subject: Re: [PATCH/RFC] KVM: s390: vsie: Avoid injecting machine check on
+ signal
+Message-ID: <20260316115618.17080B45-hca@linux.ibm.com>
+References: <20260316103934.13368-1-borntraeger@linux.ibm.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -82,126 +74,65 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260307010358.819645-4-rick.p.edgecombe@intel.com>
+In-Reply-To: <20260316103934.13368-1-borntraeger@linux.ibm.com>
+X-TM-AS-GCONF: 00
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMzE2MDA4OSBTYWx0ZWRfX1M1Xw+wlKZww
+ 1CniPRBXLds4GYmwAxyCLiegN1f7XiKiXFpSVMMAoMZ6z5IUELVlnu53no/GIida1cFkWf1vQxB
+ Sl4NWc0MIu4vwJJTYwz3a03aiOiXR0ikghaKvA+4KCrQdzGLo0s8dVTSfN91DLc/jveKgaUu4oH
+ SLiv43vgrDTJoN6kP+BR+MniuuO2ek4A21LvuVoeXX0fjaJyRblpDZT7GcvPArM8xjkUCTeScak
+ qC7WSCICGOC34v06beDo1FTTnpb6n+OZABxdrT05v9qzzvqDKwEX9KZIOQ3Ax/pbwf3hTRSPruh
+ NV5tb+W6VKXdih0iKx3obYASlVcW8m3hoKnTZGO1qff0fF+fwXLH6iz3Slpi9zYxvXgCirYSt4G
+ hgPk99XDC5a8Oma9lS76OVJxV/c8wZh89CqE5Js/SWeD5xFuVif4XwZNHSOeZeYryM6WKPoBKwM
+ ZKNv/H+lUOx0PPdZOKA==
+X-Authority-Analysis: v=2.4 cv=GIQF0+NK c=1 sm=1 tr=0 ts=69b7efe9 cx=c_pps
+ a=AfN7/Ok6k8XGzOShvHwTGQ==:117 a=AfN7/Ok6k8XGzOShvHwTGQ==:17
+ a=kj9zAlcOel0A:10 a=Yq5XynenixoA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=RnoormkPH1_aCDwRdu11:22 a=RzCfie-kr_QcCd8fBx8p:22 a=VnNF1IyMAAAA:8
+ a=v_eQMfJJpqUdI5PqWLMA:9 a=CjuIK1q_8ugA:10
+X-Proofpoint-ORIG-GUID: UxzKBkraGr6uDmCj981DFaQ8RI0g8PwR
+X-Proofpoint-GUID: UxzKBkraGr6uDmCj981DFaQ8RI0g8PwR
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
+ definitions=2026-03-16_04,2026-03-16_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ spamscore=0 priorityscore=1501 bulkscore=0 lowpriorityscore=0 malwarescore=0
+ phishscore=0 impostorscore=0 suspectscore=0 adultscore=0 clxscore=1015
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2603050001 definitions=main-2603160089
 
-On Fri, Mar 06, 2026 at 05:03:57PM -0800, Rick Edgecombe wrote:
-> From: Vishal Verma <vishal.l.verma@intel.com>
+On Mon, Mar 16, 2026 at 11:39:34AM +0100, Christian Borntraeger wrote:
+> The recent XFER_TO_GUEST_WORK change resulted in a situation, where the
+> vsie code would interpret a signal during work as a machine check during
+> SIE as both use the EINTR return code.
 > 
-> Some early TDX-capable platforms have an erratum where a partial write
-> to TDX private memory can cause a machine check on a subsequent read.
-> On these platforms, kexec and kdump have been disabled in these cases,
-> because the old kernel cannot safely hand off TDX state to the new
-> kernel. Later TDX modules support the TDH.SYS.DISABLE SEAMCALL, which
-> provides a way to cleanly disable TDX and allow kexec to proceed.
-
-Does it need to be enumerated?
-
-I don't see this SEAMCALL be covered in the public documentation.
-</me looking around>
-Ah! Found it the the draft. So the feature is not yet finalized.
-
-"Support of TDH.SYS.DISABLE is enumerated by TDX_FEATURES0. SYS_DISABLE
-(bit 53)"
-
-I am seeing the next patch calling it unconditionally. Is it okay?
-
-> This can be a long running operation, and the time needed largely
-> depends on the amount of memory that has been allocated to TDs. If all
-> TDs have been destroyed prior to the sys_disable call, then it is fast,
-> with only needing to override the TDX module memory.
-> 
-> After the SEAMCALL completes, the TDX module is disabled and all memory
-> resources allocated to TDX are freed and reset. The next kernel can then
-> re-initialize the TDX module from scratch via the normal TDX bring-up
-> sequence.
-> 
-> The SEAMCALL may be interrupted by an interrupt. In this case, it
-> returns TDX_INTERRUPTED_RESUMABLE, and it must be retried in a loop
-> until the operation completes successfully.
-> 
-> Add a tdx_sys_disable() helper, which implements the retry loop around
-> the SEAMCALL to provide this functionality.
-> 
-> Signed-off-by: Vishal Verma <vishal.l.verma@intel.com>
-> Signed-off-by: Rick Edgecombe <rick.p.edgecombe@intel.com>
+> Fixes: 2bd1337a1295e ("KVM: s390: Use generic VIRT_XFER_TO_GUEST_WORK functions")
+> Signed-off-by: Christian Borntraeger <borntraeger@linux.ibm.com>
 > ---
->  arch/x86/include/asm/tdx.h  |  3 +++
->  arch/x86/virt/vmx/tdx/tdx.c | 18 ++++++++++++++++++
->  arch/x86/virt/vmx/tdx/tdx.h |  1 +
->  3 files changed, 22 insertions(+)
-> 
-> diff --git a/arch/x86/include/asm/tdx.h b/arch/x86/include/asm/tdx.h
-> index f0826b0a512a..baaf43a09e99 100644
-> --- a/arch/x86/include/asm/tdx.h
-> +++ b/arch/x86/include/asm/tdx.h
-> @@ -173,6 +173,8 @@ static inline int pg_level_to_tdx_sept_level(enum pg_level level)
->          return level - 1;
->  }
->  
-> +void tdx_sys_disable(void);
-> +
->  u64 tdh_vp_enter(struct tdx_vp *vp, struct tdx_module_args *args);
->  u64 tdh_mng_addcx(struct tdx_td *td, struct page *tdcs_page);
->  u64 tdh_mem_page_add(struct tdx_td *td, u64 gpa, struct page *page, struct page *source, u64 *ext_err1, u64 *ext_err2);
-> @@ -204,6 +206,7 @@ static inline void tdx_init(void) { }
->  static inline u32 tdx_get_nr_guest_keyids(void) { return 0; }
->  static inline const char *tdx_dump_mce_info(struct mce *m) { return NULL; }
->  static inline const struct tdx_sys_info *tdx_get_sysinfo(void) { return NULL; }
-> +static inline void tdx_sys_disable(void) { }
->  #endif	/* CONFIG_INTEL_TDX_HOST */
->  
->  #endif /* !__ASSEMBLER__ */
-> diff --git a/arch/x86/virt/vmx/tdx/tdx.c b/arch/x86/virt/vmx/tdx/tdx.c
-> index 0802d0fd18a4..68bd2618dde4 100644
-> --- a/arch/x86/virt/vmx/tdx/tdx.c
-> +++ b/arch/x86/virt/vmx/tdx/tdx.c
-> @@ -37,6 +37,7 @@
->  #include <asm/msr.h>
->  #include <asm/cpufeature.h>
->  #include <asm/tdx.h>
-> +#include <asm/shared/tdx_errno.h>
->  #include <asm/cpu_device_id.h>
->  #include <asm/processor.h>
->  #include <asm/mce.h>
-> @@ -1940,3 +1941,20 @@ u64 tdh_phymem_page_wbinvd_hkid(u64 hkid, struct page *page)
->  	return seamcall(TDH_PHYMEM_PAGE_WBINVD, &args);
->  }
->  EXPORT_SYMBOL_FOR_KVM(tdh_phymem_page_wbinvd_hkid);
-> +
-> +void tdx_sys_disable(void)
-> +{
-> +	struct tdx_module_args args = {};
-> +
-> +	/*
-> +	 * SEAMCALLs that can return TDX_INTERRUPTED_RESUMABLE are guaranteed
-> +	 * to make forward progress between interrupts, so it is safe to loop
-> +	 * unconditionally here.
-> +	 *
-> +	 * This is a 'destructive' SEAMCALL, in that no other SEAMCALL can be
-> +	 * run after this until a full reinitialization is done.
-> +	 */
-> +	while (seamcall(TDH_SYS_DISABLE, &args) == TDX_INTERRUPTED_RESUMABLE)
-> +		;
+>  arch/s390/kvm/vsie.c | 4 +++-
+>  1 file changed, 3 insertions(+), 1 deletion(-)
 
-Silently ignore any other errors?
+...
 
-> +}
-> +
-> diff --git a/arch/x86/virt/vmx/tdx/tdx.h b/arch/x86/virt/vmx/tdx/tdx.h
-> index dde219c823b4..e2cf2dd48755 100644
-> --- a/arch/x86/virt/vmx/tdx/tdx.h
-> +++ b/arch/x86/virt/vmx/tdx/tdx.h
-> @@ -46,6 +46,7 @@
->  #define TDH_PHYMEM_PAGE_WBINVD		41
->  #define TDH_VP_WR			43
->  #define TDH_SYS_CONFIG			45
-> +#define TDH_SYS_DISABLE			69
->  
->  /*
->   * SEAMCALL leaf:
-> -- 
-> 2.53.0
-> 
+> -	if (rc == -EINTR) {
+> +	if (!skipped && rc == -EINTR) {
+>  		kvm_s390_reinject_machine_check(vcpu, &vsie_page->mcck_info);
+>  		return 0;
 
--- 
-  Kiryl Shutsemau / Kirill A. Shutemov
+As far as I can tell __SF_SIE_REASON is only used for passing -EINTR in case
+of a machine check, otherwise it is unused (== zero)?
+
+So the KVM_EXIT* codes don't work instead of -EINTR, since those are uapi, and
+there is nothing that would match a machine check anyway. However I would
+still propose to pass some unique positive number back via the stackframe
+instead of some random negative error number which means nothing.
+
+That is: change the machine check handler to pass e.g.
+
+#define KVM_S390_SIE_EXIT_MCCK 1
+
+		*((long *)(regs->gprs[15] + __SF_SIE_REASON)) = KVM_S390_SIE_EXIT_MCCK;
+
+Which would make it much more obvious what happens, and which would also avoid
+such strange bugs.
+
+Just my 0.02.
