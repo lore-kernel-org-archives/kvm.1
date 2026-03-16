@@ -1,160 +1,205 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f174.google.com (mail-pl1-f174.google.com [209.85.214.174])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 751663624CF;
-	Mon, 16 Mar 2026 21:43:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.14
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E35536921D
+	for <kvm@vger.kernel.org>; Mon, 16 Mar 2026 21:49:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773697404; cv=none; b=JnoIfSofYIeVTwVYsUVK6O3+L/RHA4r2jIMfRaVOQHp8mfGuJZJOkzm17rRFv0Xhfs1arbkBZPH1861RceE7g9Z2hZsrjormOFlESQKQLtU74Lv/4GDk9Ao4ZHqisEPrkFDL/K4rjPp3OmJn45f2cUohmzYI9xVt3c9HyLpNY4s=
+	t=1773697782; cv=none; b=CHIhvPF3uf/ZqVQBCNcUMlTF22LBFuTIDmrcKe10tmUu14w4WiO6fLMLkBttk5BL6Db9QB7nQdeMHgWW/hnFj0rl9sw42f8q8wMLvsMzBCNu3ojN+J9w1JNA8PG5OQuOQ55SLnoEswEPaTOrzADF6fukuOketT/TYsDmsS5FB0o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773697404; c=relaxed/simple;
-	bh=IXRzC2qq25KyRICiNSxORa4kJJyjyJppjODsYI46Rs4=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=REdPEnKlKOHhRPlMQb5TMvNQbrgud9pFMXWy1mRMNHJ36xSRW0RVn6o/aHAtlBsfrZxNN8PnGc8fKuZnOQA3jkep9vUmdFRrJY4ONKF6LupMa2BaXc5dzJzuCoR1xRK4c1x675v8RnqH9852xpV+AYrDwjlBDxYFFxhgGzn/06c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=MoMtOXP2; arc=none smtp.client-ip=192.198.163.14
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1773697782; c=relaxed/simple;
+	bh=wQ/TGkC56TEVU9edxRoDW8klAaLsoZRqlEjOzTkcHtQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Ht304k2C5/2od0dGUr+UuSXUCU5ooCB+LDgSJddB7nj/UsAk4MoGy1dFXKEhYVJcfRAhynqP086bTw05dFdMmA5CWGFHe/9yUZHcfZibEbI8ZzZ/sOboeV8c9baKnCyOeX+YMs+GbaQ42vSrn2vNyAbjE48lCJLNoZlAr/V20vQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Sz9aLFQ5; arc=none smtp.client-ip=209.85.214.174
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="MoMtOXP2"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1773697402; x=1805233402;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=IXRzC2qq25KyRICiNSxORa4kJJyjyJppjODsYI46Rs4=;
-  b=MoMtOXP2fn4XdTXyZJDbt/mykM0go4NsQdp26bONx/Gvq47peHLR/My/
-   EH8IVKv1Sd9EidfhmA+BtmrF5mgZbSyFunfJa1WRnJ+4xe1D9B4aZ4eXZ
-   pAlDh7nA8eqb613WdAEZimBmP99EKZC1WqQCZFfQi2mVM7FhW/4MsHUW4
-   HnQshY/QO3TcrDBeq0TbWKFJiYigo2dbjTdO8AoLs9tVLZMMx/vGWl4hz
-   u5lgGnIl73c/vBqVq1rn8F0oRZaCRgJ2QgtlC6+HNBBWrGQYR2dxgdxjO
-   PtlqNLq/9Kksotjphs7GqjTRIw+ZImoiZOLiJfz52wl7Q2zMWvcWvimda
-   g==;
-X-CSE-ConnectionGUID: JuMglIJ6R3KgcdYiMQwS2g==
-X-CSE-MsgGUID: N8KqlYFWTlK5uKGjVddSzA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11731"; a="74801420"
-X-IronPort-AV: E=Sophos;i="6.23,124,1770624000"; 
-   d="scan'208";a="74801420"
-Received: from orviesa006.jf.intel.com ([10.64.159.146])
-  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Mar 2026 14:43:21 -0700
-X-CSE-ConnectionGUID: sOIoA4fiRWu9x5YjGtl9iw==
-X-CSE-MsgGUID: Z69Qa2S5QK6yBtfG6u3XWA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,124,1770624000"; 
-   d="scan'208";a="221084692"
-Received: from ssimmeri-mobl2.amr.corp.intel.com (HELO [10.125.108.105]) ([10.125.108.105])
-  by orviesa006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Mar 2026 14:43:22 -0700
-Message-ID: <541cddbb-22b3-4865-a374-49ba3ba48a5e@intel.com>
-Date: Mon, 16 Mar 2026 14:43:20 -0700
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Sz9aLFQ5"
+Received: by mail-pl1-f174.google.com with SMTP id d9443c01a7336-2aeab6ff148so13495ad.1
+        for <kvm@vger.kernel.org>; Mon, 16 Mar 2026 14:49:40 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1773697780; x=1774302580; darn=vger.kernel.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=/8z1/dIhYqxHzj3/umwHNkEcO1PtVcvAJP18LcAQq1Y=;
+        b=Sz9aLFQ5ZpzjCMQbhP0GaJlUqctaX3L9daYdMHHAWK69ofV+JdrQQNZqqHNfyhJHWT
+         enhHiksoJUu1HFOS7H5sV/6mmQvX287gMHDXX5CQnSr3xv5I/ftgY3RMZpoqGhum6QYn
+         z4R+1BiLxyabC86ANdO18xTJk7zbt2Z3SrDV8yGup3msBjRNI2SYLUdBjwZUnwAGSVn6
+         LMhCIwfYfZWZXxrJCyIpIuAKBOekqIsZhuhPIywVxn1rrlOMsD6YZI8HwEDuT/lydBNT
+         3Zpgfy+IOr6GTSSADS1sYM5OjTSeSAkISsKbU/j27ic2WwLzAmamilpN7CSDCTcFAxux
+         9+Vg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1773697780; x=1774302580;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=/8z1/dIhYqxHzj3/umwHNkEcO1PtVcvAJP18LcAQq1Y=;
+        b=EPgfxNWE/BU0k8q3RwHoOtoR29k+aUIwqh7rE0xUooOO5y3TiHQHqo8ymZrOmC2eAF
+         RFuGLz4B8ep6GCtnTRDha07XNGdzg7uCmQV9jimRxweBnc29YNpbNTWGDSD5LrpcHMjc
+         J3AD9MZZncpg3n7DvGQ1xq8YFnd8YqKtMfG4JxlKhamN6HTQbATJBmxAsQ03jx86z526
+         ii3h1OVkgTv3dCkraI0rys6JmF7GuEHYqI6oX2T6Isb/xKNnH6/seQpjqg5JzaZRC9SD
+         7fKIeLcoU/BppQXk9mXTxNVXTqyCrWc403HDdLKLBmhKrNS+gpNL0vW/gdwis9adVGDS
+         MoXQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWxQ3wm8a8i9CeNgpao5NbGcIVzBW3CR5FvnBZweC6psGo0EvVhRSOOVhhVfBOVC9/7/YA=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxdRaAfiVjFk5xKV2Sd5C6xtxhEySkBVdcC/m409yceT4FXOxkN
+	5PcryaqflxBqtXESgFuqYSv006HAuHbL6WN4bYsQGmzZxXGUnmXtDo/6dPnQsEMUsg==
+X-Gm-Gg: ATEYQzxUanEfwUSDEGIwBUEF5cTSo/1LDTDfzrh8nZ2JPwNxzsQSoPl/nYEUJQhNTsZ
+	N1NYRvg0yMlRzsuEdQaNSDU+bhjPtys8HpjwjmR+z150stwITb58it7NYBF5qDmeysJyc8rhWhA
+	QRqJO3RmZymSu3O9jfkWZlI0BSjbsbzSixLwZ9P+usDqzf/z5p42c4jc0QaF7yMmW6e7L1kjRJK
+	40KcTvpWZ+o24VVBB8R9oNk7UE7s9nz36vDTlN1a4LS7GNn9sRsNxkJI/31plk0MmwKKmT41nLJ
+	cvEoUFSJ99bSesPNsSMZecYPDDkkZGsNTbKh1E7aiuJidmKO9OshHWpVBjIuFlApwf3f0xcyoXx
+	nkKHeitv9K2NqrnQpTyyAHtjHiGk1DpRsXfLN+Rkh14oTgQ2vXn+ozztsEdUgMjG8wp+sb68d4O
+	AeeiL+M5uXZLeVjTs+XJhst+oMbjJZYt/brQwqttKlKP0fGVGhfsH1YAvBecKW
+X-Received: by 2002:a17:903:98b:b0:2a8:ffed:4663 with SMTP id d9443c01a7336-2b06402f49emr1238925ad.12.1773697779367;
+        Mon, 16 Mar 2026 14:49:39 -0700 (PDT)
+Received: from google.com (176.13.105.34.bc.googleusercontent.com. [34.105.13.176])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-82a07365b22sm14359627b3a.45.2026.03.16.14.49.38
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 16 Mar 2026 14:49:38 -0700 (PDT)
+Date: Mon, 16 Mar 2026 14:49:34 -0700
+From: Vipin Sharma <vipinsh@google.com>
+To: David Matlack <dmatlack@google.com>
+Cc: Alex Williamson <alex@shazbot.org>, 
+	Adithya Jayachandran <ajayachandra@nvidia.com>, Alexander Graf <graf@amazon.com>, Alex Mastro <amastro@fb.com>, 
+	Alistair Popple <apopple@nvidia.com>, Andrew Morton <akpm@linux-foundation.org>, 
+	Ankit Agrawal <ankita@nvidia.com>, Bjorn Helgaas <bhelgaas@google.com>, 
+	Chris Li <chrisl@kernel.org>, David Rientjes <rientjes@google.com>, 
+	Jacob Pan <jacob.pan@linux.microsoft.com>, Jason Gunthorpe <jgg@nvidia.com>, Jason Gunthorpe <jgg@ziepe.ca>, 
+	Jonathan Corbet <corbet@lwn.net>, Josh Hilke <jrhilke@google.com>, 
+	Kevin Tian <kevin.tian@intel.com>, kexec@lists.infradead.org, kvm@vger.kernel.org, 
+	Leon Romanovsky <leon@kernel.org>, Leon Romanovsky <leonro@nvidia.com>, linux-doc@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org, linux-mm@kvack.org, 
+	linux-pci@vger.kernel.org, Lukas Wunner <lukas@wunner.de>, 
+	=?utf-8?Q?Micha=C5=82?= Winiarski <michal.winiarski@intel.com>, Mike Rapoport <rppt@kernel.org>, Parav Pandit <parav@nvidia.com>, 
+	Pasha Tatashin <pasha.tatashin@soleen.com>, Pranjal Shrivastava <praan@google.com>, 
+	Pratyush Yadav <pratyush@kernel.org>, Raghavendra Rao Ananta <rananta@google.com>, 
+	Rodrigo Vivi <rodrigo.vivi@intel.com>, Saeed Mahameed <saeedm@nvidia.com>, 
+	Samiullah Khawaja <skhawaja@google.com>, Shuah Khan <skhan@linuxfoundation.org>, 
+	Thomas =?utf-8?Q?Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>, Tomita Moeko <tomitamoeko@gmail.com>, 
+	Vivek Kasireddy <vivek.kasireddy@intel.com>, William Tu <witu@nvidia.com>, Yi Liu <yi.l.liu@intel.com>, 
+	Zhu Yanjun <yanjun.zhu@linux.dev>
+Subject: Re: [PATCH v2 10/22] vfio/pci: Skip reset of preserved device after
+ Live Update
+Message-ID: <20260316214055.GB1846904.vipinsh@google.com>
+References: <20260129212510.967611-11-dmatlack@google.com>
+ <20260226170030.5a938c74@shazbot.org>
+ <aaDqhjdLyf1qSTSh@google.com>
+ <20260227084658.3767d801@shazbot.org>
+ <CALzav=fHy23RAzhgkdaL+JA5T2tL9FT6aPgRfXUh7i9zvYCGPA@mail.gmail.com>
+ <20260227105720.522ca97f@shazbot.org>
+ <CALzav=fjRPa_ZbXu7iFXyemcf_8Kq_dZTWT6c-A0bc6czF_Rdw@mail.gmail.com>
+ <abNOwcOTXqxCxNzt@google.com>
+ <20260316160759.GA1767448.vipinsh@google.com>
+ <CALzav=cskxLZtZ5-uRa0+aV+1Kb3fwQQJ5dS=Yes4GAHrS6GpQ@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 1/2] x86/cpu: Disable CR pinning during CPU bringup
-To: "Chang S. Bae" <chang.seok.bae@intel.com>,
- "Nikunj A. Dadhania" <nikunj@amd.com>, Tom Lendacky
- <thomas.lendacky@amd.com>, Borislav Petkov <bp@alien8.de>
-Cc: linux-kernel@vger.kernel.org, kvm@vger.kernel.org, tglx@kernel.org,
- mingo@redhat.com, dave.hansen@linux.intel.com, hpa@zytor.com, xin@zytor.com,
- seanjc@google.com, pbonzini@redhat.com, x86@kernel.org,
- sohil.mehta@intel.com, jon.grimm@amd.com
-References: <20260226092349.803491-1-nikunj@amd.com>
- <20260226092349.803491-2-nikunj@amd.com>
- <20260309134640.GOaa7PQJli_C9QATGB@fat_crate.local>
- <cde957ba-3579-4063-9d17-3630e79ea388@intel.com>
- <20260309161516.GAaa7yFMulhdzNQ-pt@fat_crate.local>
- <70644e1d-dd0e-4f0f-81c0-fd095e46e50b@intel.com>
- <7ca205d6-b01b-4ed3-959d-db31a6496d79@amd.com>
- <505a6bbd-3ecf-4de9-8fb9-0b21c3435a96@intel.com>
- <9fa61b80-0e16-4a87-a0e7-3c3dfcda8f7e@amd.com>
- <55a98b6d-e831-47a6-aa5a-8fe357334f67@intel.com>
- <d0eba3fe-2938-4856-bd9b-0e13972e8313@amd.com>
- <cb492a37-3517-4738-b435-73311402e820@intel.com>
- <ddf407e9-359d-4d4e-827d-98f212589e9f@amd.com>
- <ab5bf7bb-6511-49dc-a65d-86911e0f7091@intel.com>
- <c13736a1-3151-476b-a91c-035383d2a29e@intel.com>
-From: Dave Hansen <dave.hansen@intel.com>
-Content-Language: en-US
-Autocrypt: addr=dave.hansen@intel.com; keydata=
- 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
-In-Reply-To: <c13736a1-3151-476b-a91c-035383d2a29e@intel.com>
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
+In-Reply-To: <CALzav=cskxLZtZ5-uRa0+aV+1Kb3fwQQJ5dS=Yes4GAHrS6GpQ@mail.gmail.com>
 
-On 3/16/26 13:27, Chang S. Bae wrote:
-> On 3/12/2026 7:20 AM, Dave Hansen wrote:
->> On 3/12/26 07:08, Nikunj A. Dadhania wrote:
->>> 1) Back-porting complexity: The current issue affects kernels (6.9+)
->>>     where SEV-SNP guests fail to boot with FRED enabled. A simpler
->>> fix would
->>>     be easier to backport and verify across stable branches.
->>
->> The simplest fix is to disable FRED on those kernels, fwiw.
+On Mon, Mar 16, 2026 at 10:18:22AM -0700, David Matlack wrote:
+> On Mon, Mar 16, 2026 at 9:22 AM Vipin Sharma <vipinsh@google.com> wrote:
+> >
+> > On Thu, Mar 12, 2026 at 11:39:45PM +0000, David Matlack wrote:
+> > > On 2026-03-09 10:32 AM, David Matlack wrote:
+> > > > On Fri, Feb 27, 2026 at 9:57 AM Alex Williamson <alex@shazbot.org> wrote:
+> > >
+> > > > > Sorry if I don't have the whole model in my head yet, but is exposing
+> > > > > the restriction to the vfio user of the device sufficient to manage the
+> > > > > liveupdate orchestration?  For example, a VFIO_DEVICE_INFO_CAP pushes
+> > > > > the knowledge to QEMU... what does QEMU do with that knowledge?  Who
+> > > > > imposes the policy decision to decide what support is sufficient?
+> > > >
+> > > > Hm.. good questions. I don't think we want userspace inspecting bits
+> > > > exposed by the kernel and trying to infer exactly what's being
+> > > > preserved and whether it's "good enough" to use. And such a UAPI would
+> > > > become tech debt once we finish development, I suspect.
+> > > >
+> > > > A better approach would be to hide this support from userspace until
+> > > > we decide it is ready for production use-cases.
+> > > >
+> > > > To enable development and testing, we can add an opt-in mechanism
+> > >
+> > > Here is what I am trending towards sending in v3 as the opt-in mechanism:
+> > >
+> > > diff --git a/drivers/vfio/pci/Kconfig b/drivers/vfio/pci/Kconfig
+> > > index 1e82b44bda1a..770231554221 100644
+> > > --- a/drivers/vfio/pci/Kconfig
+> > > +++ b/drivers/vfio/pci/Kconfig
+> > > @@ -58,6 +58,27 @@ config VFIO_PCI_ZDEV_KVM
+> > >  config VFIO_PCI_DMABUF
+> > >         def_bool y if VFIO_PCI_CORE && PCI_P2PDMA && DMA_SHARED_BUFFER
+> > >
+> > > +config VFIO_PCI_LIVEUPDATE
+> > > +       bool "VFIO PCI support for Live Update (EXPERIMENTAL)"
+> > > +       depends on LIVEUPDATE && VFIO_PCI
+> > > +       help
+> > > +         Support for preserving devices bound to vfio-pci across a Live
+> > > +         Update. The eventual goal is that preserved devices can run
+> > > +         uninterrupted during a Live Update, including DMA to preserved
+> > > +         memory buffers and P2P. However there are many steps still needed to
+> > > +         achieve this, including:
+> > > +
+> > > +          - Preservation of iommufd files
+> > > +          - Preservation of IOMMU driver state
+> > > +          - Preservation of PCI state (BAR resources, device state, ...)
+> > > +          - Preservation of vfio-pci driver state
+> > > +
+> > > +         This option should only be enabled by developers working on
+> > > +         implementing this support. Once enough support has landed in the
+> > > +         kernel, this option will no longer be marked EXPERIMENTAL.
+> > > +
+> > > +         If you don't know what to do here, say N.
+> > > +
+> >
+> > To use VFIO liveupdate, user has to do at least two things:
+> > 1. Enable CONFIG_LIVEUPDATE
+> > 2. Pass VFIO FD to a live update session.
+> >
+> > This means someone using it has to know what live update is and
+> > intentionally pass the VFIO FDs. Isn't act of doing this itself an
+> > opt-in mechanism?
 > 
-> In addition to this,
+> If it is, then I can leave this out. Alex?
 > 
-> On SEV systems, early exceptions appear to be expected in practice while
-> CR4.FSGSBASE=0. So, at the moment, it also looks safe and simple to
-> disable the feature until when those entry paths are adjusted to
-> tolerate that case.
+> My thinking was: Distros are free to enable LIVEUPDATE and use it. The
+> support it enables today is all fully functional (albeit new).
+> vfio-cdev, OTOH, is not. A separate Kconfig can help express that
+> difference.
+> 
+> Consider that LIVEUPDATE could be enabled by default in a future
+> release, but vfio-cdev support might not be ready yet at that point.
 
-Sure. FSGSBASE at entry is _purely_ a performance optimization. It seems
-reasonable to say for simplicity that the early exception code should
-not use FSGSBASE instructions.
+But that also requires point 2 above i.e. userspace explicitly passing
+VFIO FD to liveupdate. Unless there is a capability mechanism like KVM
+then userspace cannot know what is exactly supported. Also, users who
+are using these APIs will already be advanced users and have to know
+many details about what liveupdate supports or not.
 
-> Currently, those entry paths are patched to use FSGSBASE instructions
-> regardless of the CR4 setting. That inflexibility appears to make it
-> broken in the first place. I’d take a look and come back with something
-> reviewable.
+> 
+> > I am not sure providing VFIO_PCI_LIVEUPDATE alleviate Alex's concern
+> > about how userspace will know that sufficient VFIO support exists.
+> 
+> I was thinking we can flip VFIO_PCI_LIVEUPDATE to be enabled by
+> default (if LIVEUPDATE and VFIO_PCI are enabled), and drop
+> "(EXPERIMENTAL)" from the option title. That would be how distros and
+> downstream users of the kernel know that sufficient support exists to
+> enable VFIO_PCI_LIVEUPDATE.
+> 
+> > May be write in liveupdate documentation (PATCH 11 of this series) that
+> > support is experimental?
+> 
+> The documentation in patch 11 includes largely the same text that I
+> put under VFIO_PCI_LIVEU"PDATE. But I can explicitly mention
+> "experimental" as well if that's what you're asking.
 
-Yup. But, just to be clear, the patching is done by the boot CPU before
-the secondaries even come up. So the "late" exception handlers are
-incompatible with the secondary CPU from the moment it comes up until
-the moment it enables CR4.FSGSBASE.
+Yeah, even though documentation do get stale but I think there is no
+better way in this scenario.
 
-Either we change how alternatives patching works, we use some other
-exception code, or we try and get CR4.FSGSBASE established as early as
-possible on the secondaries.
