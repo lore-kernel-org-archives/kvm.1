@@ -1,60 +1,50 @@
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 733B53DA7DF;
-	Mon, 16 Mar 2026 18:49:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 246E43E6DD6;
+	Mon, 16 Mar 2026 18:52:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.10
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773686972; cv=none; b=so5N7Fa6zrGQBP3QemBxGk11RlymhP89i7Fj4Sdi5S4egD93Mu6utts9jQq73Uafs00xD1OENz+r0ef3kSMxcG5pZL2Dt5ET1PR4Tq58Y/5hWxBBBOhgzFOjSqFbeivAW68A4onfWY/VnIXPEVMq+5yLAptqz6Fab9vrs/S/qic=
+	t=1773687167; cv=none; b=Fw5VCgTnf2rvgSa+JSqMgu1o9xn/k0eIco1cPyXghKH0fF6HnYfl7QQR3A373vJBn5nLGFPoHHRnqU3+NjGUftpsb6RyiX60VDLJlYzcEGziSha8CEz7/LIsVRZ4XWi6YHnYOJm18EDPnjBpOmsiA6MjAHCrTFs9gEr4FTNF21M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773686972; c=relaxed/simple;
-	bh=zJce4PuNdDkBUyInsA4DhVyn85zuHEZqhrIcb8o7zuE=;
+	s=arc-20240116; t=1773687167; c=relaxed/simple;
+	bh=X2WRgow73IXJgxoQWmrjEMGdBEIYvdEfm5UJNxPJNZQ=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=pxDDJWCc8DKP4DuCyrKMdEBp2Os7uBoaWhDeJ7wb/ate2p4BJ5qdG/tZNMUHBFBgZpSK+2nV8IIjjw797vDvSkvdXDnCiE5Hkv8Z6ez6rpR5j97M2iyGW9Aay1jSSQQ48JjMfsRnZp90bMXAzQ15yPuYpu+6MvXVHqpmFnmMx98=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=UJR3wPiy; arc=none smtp.client-ip=148.163.158.5
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+	 In-Reply-To:Content-Type; b=iNpTlQ/Gfn8aJIdyQYgBTq7o/7rLrBZrsewYC7EnDE9FEOxh8rz7wqxV2E/Ht1gYn7n3YW/V76uuHiQdbrTXAujMWqHIgsDtG38Z5Fx1UFy27aBC5wV7KReyAZdIIZCXY2yAp7pSNcfzHAqC7sOFaPELz44QkmdsnaEdSsfBaHE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=h7Tqo6HE; arc=none smtp.client-ip=192.198.163.10
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="UJR3wPiy"
-Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 62GHHH1H1474421;
-	Mon, 16 Mar 2026 18:49:30 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=D/Vi80
-	p2nnOXwIuPZ8PriqddcgMy208romrWS6Yk1UA=; b=UJR3wPiy+IvPKsFmUlS1AO
-	XZ8t/20xwfXoDLZ408nmNXD5Sld+QCLHOWCyuWjJrXs4QB39b6xXQDivwl8zaG4i
-	ouGRjLkEgORhUxv2utlXFBViPgNKWU4GJLYNdi4OdyPa+XPd8zig6fv8wswu1p2f
-	4n/lLA8ZHOoeVX/5+Z6wYfiMIjNaGeJ3trIZtCn1uP1jtoOesvV9EEqcCgEXEwXA
-	hpOOb+KhUZs82p50GZ7irNS5K/0RrqjHjQFbVGm1W6UiaIiqDdvMjL6AiM4FSKJD
-	SWD7gybhlbOCGou6NrHv7vz6xNEjlZ+vos5yi5KHIeHxYRE2CTvNIrPYAuYERnBA
-	==
-Received: from ppma11.dal12v.mail.ibm.com (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4cvw3hs4jk-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 16 Mar 2026 18:49:30 +0000 (GMT)
-Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma11.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 62GGOcC7028465;
-	Mon, 16 Mar 2026 18:49:29 GMT
-Received: from smtprelay04.fra02v.mail.ibm.com ([9.218.2.228])
-	by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 4cwmq15r1a-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 16 Mar 2026 18:49:29 +0000
-Received: from smtpav02.fra02v.mail.ibm.com (smtpav02.fra02v.mail.ibm.com [10.20.54.101])
-	by smtprelay04.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 62GInPXY22020622
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 16 Mar 2026 18:49:26 GMT
-Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id D9A6A20043;
-	Mon, 16 Mar 2026 18:49:25 +0000 (GMT)
-Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 9236220040;
-	Mon, 16 Mar 2026 18:49:25 +0000 (GMT)
-Received: from [9.87.135.243] (unknown [9.87.135.243])
-	by smtpav02.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Mon, 16 Mar 2026 18:49:25 +0000 (GMT)
-Message-ID: <b80c31da-293c-429b-8828-4c72f4aafe77@linux.ibm.com>
-Date: Mon, 16 Mar 2026 19:49:25 +0100
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="h7Tqo6HE"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1773687166; x=1805223166;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=X2WRgow73IXJgxoQWmrjEMGdBEIYvdEfm5UJNxPJNZQ=;
+  b=h7Tqo6HEejjUqdVshbpQFqcSvs1UH46CMTvJCiJCv5hF2c5JaVyfbGi9
+   byKBpaLz0hsblFRuU1MNv84r8pexUw0PdfnG0eVJaPibdG9eCS5kW9aUm
+   CQodwV5RDgUpT1Zj9VL+ntFyxoO+U/UXIoYaUGy+w6Fe8o/2LvhMBPRJa
+   X81D6oHYmY5mMUrjOg15gn1E9SSmOPi/T1DtCALM8HUsWoF6msbZcpSkr
+   galDOHCLt8z025nbDoN2F7Ubb0OB61qaa+ohycPiP8caJImFYFWTH4ue7
+   Lir19gD9oxlS4ScYEIUd2xaqZ/ce1CtgQbSuv9XrPTojM2mpxZ2tiwbN5
+   Q==;
+X-CSE-ConnectionGUID: QF5hZy2nTe2k2jWfbts4jw==
+X-CSE-MsgGUID: EfejeFGZQACKND65gewAeQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11731"; a="86068646"
+X-IronPort-AV: E=Sophos;i="6.23,124,1770624000"; 
+   d="scan'208";a="86068646"
+Received: from orviesa002.jf.intel.com ([10.64.159.142])
+  by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Mar 2026 11:52:45 -0700
+X-CSE-ConnectionGUID: MEVmIqu5RwawiTzdLyaIQQ==
+X-CSE-MsgGUID: 5oi9YWQaS/uORmMZVA7DMQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.23,124,1770624000"; 
+   d="scan'208";a="252522056"
+Received: from lstrano-mobl6.amr.corp.intel.com (HELO [10.124.223.96]) ([10.124.223.96])
+  by orviesa002-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Mar 2026 11:52:43 -0700
+Message-ID: <378be028-fb82-4208-85e8-f47dfd424515@intel.com>
+Date: Mon, 16 Mar 2026 11:52:43 -0700
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -62,48 +52,84 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC 03/10] KVM: s390: Convert shifts to gpa_to_gfn()
-To: Janosch Frank <frankja@linux.ibm.com>, kvm@vger.kernel.org
-Cc: linux-s390@vger.kernel.org, imbrenda@linux.ibm.com, akrowiak@linux.ibm.com
-References: <20260316180310.17765-1-frankja@linux.ibm.com>
- <20260316180310.17765-4-frankja@linux.ibm.com>
+Subject: Re: [PATCH] selftests/vfio: Fix VLA initialisation in
+ vfio_pci_irq_set()
+To: mhonap@nvidia.com, dmatlack@google.com, alwilliamson@nvidia.com,
+ ankita@nvidia.com
+Cc: kjaju@nvidia.com, kvm@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-kselftest@vger.kernel.org, stable@vger.kernel.org
+References: <20260316182025.3383443-1-mhonap@nvidia.com>
 Content-Language: en-US
-From: Christian Borntraeger <borntraeger@linux.ibm.com>
-In-Reply-To: <20260316180310.17765-4-frankja@linux.ibm.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+From: Dave Jiang <dave.jiang@intel.com>
+In-Reply-To: <20260316182025.3383443-1-mhonap@nvidia.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: AitscEMC-dL_ljyxocTb23wKHX-D2uic
-X-Proofpoint-ORIG-GUID: AitscEMC-dL_ljyxocTb23wKHX-D2uic
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMzE2MDE0OCBTYWx0ZWRfXy8XQyWGlb7Hk
- WL1f350lVVihRsMElszvsHMCjHj/8MvoyOHjESiZEQrdfDomTMZUb36+CMgwHIYs7D8Wss0QblW
- G4edEJWnv+5+iHNvCQI5QD6cWr3bROAwX/WlIxzK2ew5J0CoYlvgtFYnhDBoTGqB6c/55+c3eWB
- nAxAtYKFoPSsZ+uggx5hM+nLqFFwjLAozoscC7oFNAFNBq665cNHkh1PfTAiSfEP2Cczdt4+7Rz
- aq98QdFfs3N2UjxukAId9F11TI4xvjWaZgNq7H0JTRmviaNI6NaA6BvisxccQdgpwbo+jdHuRBm
- xIaSdBynb1Oju46HYa4Ge8EHmkpZsp1mFdLQ2/mkii3cQSRvhyXndcmv0o/HTw0iUKII0h8NjVG
- 4ZtWua/E71ja7A1Sj76oQZEi5fIAuteQA3peBZQyuyS6vmlO8LfTInGyxJpehaVvlA393MX458t
- 9O26oMf57NMC/4fKwtQ==
-X-Authority-Analysis: v=2.4 cv=Hf8ZjyE8 c=1 sm=1 tr=0 ts=69b850ba cx=c_pps
- a=aDMHemPKRhS1OARIsFnwRA==:117 a=aDMHemPKRhS1OARIsFnwRA==:17
- a=IkcTkHD0fZMA:10 a=Yq5XynenixoA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=RnoormkPH1_aCDwRdu11:22 a=Y2IxJ9c9Rs8Kov3niI8_:22 a=VnNF1IyMAAAA:8
- a=-yrtnzFoinabFxpHE94A:9 a=QEXdDO2ut3YA:10 a=zgiPjhLxNE0A:10
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
- definitions=2026-03-16_05,2026-03-16_06,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- phishscore=0 malwarescore=0 lowpriorityscore=0 impostorscore=0 bulkscore=0
- suspectscore=0 priorityscore=1501 spamscore=0 adultscore=0 clxscore=1015
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2603050001 definitions=main-2603160148
 
 
 
-Am 16.03.26 um 17:23 schrieb Janosch Frank:
-> Not only do we get rid of the ugly shift but we have more chances to
-> do static analysis type checking since gpa_to_gfn() returns gfn_t.
+On 3/16/26 11:20 AM, mhonap@nvidia.com wrote:
+> From: Manish Honap <mhonap@nvidia.com>
 > 
-> Signed-off-by: Janosch Frank <frankja@linux.ibm.com>
+> C does not permit an initialiser expression on a variable-length array
+> (C99 Section 6.7.9 constraint: "The type of the entity to be initialized
+> shall not be a variable length array type").
+> 
+> vfio_pci_irq_set() declared:
+> 
+>       u8 buf[sizeof(struct vfio_irq_set) + sizeof(int) * count] = {};
+> 
+> where `count` is a runtime function parameter, making `buf` a VLA.
+> 
+> GCC rejects this with (tried with GCC-9.4.0):
+> 
+>       error: variable-sized object may not be initialized
+> 
+> Fix by removing the `= {}` initialiser and inserting an explicit
+> memset() immediately after the declaration.  memset() on a VLA is
+> perfectly legal and achieves the same zero-initialisation on all
+> conforming C implementations.
+> 
+> This fix is self-contained: it touches only the existing vfio selftest
+> helper library and carries no dependency on any other patch.  It was
+> originally included as PATCH 20/20 in the CXL Type-2 VFIO passthrough
+> RFC series [1] but belongs on the vfio list independently, as noted by
+> Dave Jiang.
+> 
+> [1] https://lore.kernel.org/all/20260311203440.752648-1-mhonap@nvidia.com/
+> 
+> Fixes: 19faf6fd969c ("vfio: selftests: Add a helper library for VFIO selftests")
+> Cc: stable@vger.kernel.org
+> Suggested-by: Dave Jiang <dave.jiang@intel.com>
 
-Acked-by: Christian Borntraeger <borntraeger@linux.ibm.com>
+You can drop this tag. I didn't suggest the changes. It's your patch. :)
+ 
+> Signed-off-by: Manish Honap <mhonap@nvidia.com>
+
+Reviewed-by: Dave Jiang <dave.jiang@intel.com>
+
+
+> 
+> ---
+>  tools/testing/selftests/vfio/lib/vfio_pci_device.c | 4 +++-
+>  1 file changed, 3 insertions(+), 1 deletion(-)
+> 
+> diff --git a/tools/testing/selftests/vfio/lib/vfio_pci_device.c b/tools/testing/selftests/vfio/lib/vfio_pci_device.c
+> index fac4c0ecadef..3258e814f450 100644
+> --- a/tools/testing/selftests/vfio/lib/vfio_pci_device.c
+> +++ b/tools/testing/selftests/vfio/lib/vfio_pci_device.c
+> @@ -26,8 +26,10 @@
+>  static void vfio_pci_irq_set(struct vfio_pci_device *device,
+>  			     u32 index, u32 vector, u32 count, int *fds)
+>  {
+> -	u8 buf[sizeof(struct vfio_irq_set) + sizeof(int) * count] = {};
+> +	u8 buf[sizeof(struct vfio_irq_set) + sizeof(int) * count];
+>  	struct vfio_irq_set *irq = (void *)&buf;
+> +
+> +	memset(buf, 0, sizeof(buf));
+>  	int *irq_fds = (void *)&irq->data;
+> 
+>  	irq->argsz = sizeof(buf);
+> --
+> 2.25.1
+> 
 
