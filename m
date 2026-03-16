@@ -1,31 +1,31 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 447D63EE1F5;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C99173EF0CB;
 	Mon, 16 Mar 2026 20:27:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773692863; cv=none; b=K0cejDm2SKg2jaaBvczOibyMCsEonDieJTYRtEWHxJinIonkrXEpCLVgBADqQ0ABOGuvBbE+vQqLobdvg6xAW4TiyhabOV0RTJvrhLymgiJvOt7zSWGJbeA+i+wWxylLRHrLllBIIRO2cMzr8ztpLmS5gRaX/XZ+f6vn3r+kQh0=
+	t=1773692863; cv=none; b=pyKs/R1dVppTPZGa9g2OiDhEo53S9WuU6UHQEUNbvXi31tZcBaFBZe0F8QFiYc+eoM3r9KZrsfqXrhqm+HzWX2iaFfn0UZny5PpfFhuZ/laHny0Tt4mKOGFrKB8MxHVcrj8BzLWcSYFtsFggzUD/PQ4qV5qv7UIoeS4iHuUbldU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1773692863; c=relaxed/simple;
-	bh=EIrszS15i5/Uxlq5DyhfxznOK8FC3CIpI/Io3HTrbhU=;
+	bh=Z67genllzMsvnrjDnIBJ0sRjYbzzmleUqV1m1Ta0yVI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=B9hTbZMgcAVgoyldi8wZ2gkCXZFJ7N1yxetq3+ypxfFmFCYLwlSlCXzjSzJeuMSXwSLBOIIuje07TN8jWhbFw1cd4NCh43QYadJQpbOTOiddPiVkgA04DMZgkd1KiwYZ2wSiwH8NoGyIH4LGIKsUe9ofPQh2O8jHhBgpjicKn+k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=G58GA1f8; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version; b=QAVvX2rfLUowIavLZs+TERq2KpuWyfMol86OKblK+J3bK0DvGDwba6c0v0hugn3zpkSp/t9AmRpmB7n+7xYb3ZYJ8GVBCaMlIEx0vdc5b+tAFrUyNLKioiK2WYgJs0Z1pjCmhSCXIZvidXbWfuxEFM5TjHBe5yD+jAY5c06mrlc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=aV1XDkG5; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="G58GA1f8"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E36E8C2BCAF;
-	Mon, 16 Mar 2026 20:27:42 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="aV1XDkG5"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 50132C19424;
+	Mon, 16 Mar 2026 20:27:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1773692863;
-	bh=EIrszS15i5/Uxlq5DyhfxznOK8FC3CIpI/Io3HTrbhU=;
+	bh=Z67genllzMsvnrjDnIBJ0sRjYbzzmleUqV1m1Ta0yVI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=G58GA1f8CpFciPwkZNh22CITpx+9cKf0oOj+spvsHb484i/AvtsTSsGX01p/3iQKe
-	 A+0rHCssWJQEwYt9xFOHaIafpZR4kP7ZYZc2ClkbqzW9+nPqNDUrHBU/kOfhNaOBrX
-	 8ryXphf4cduA1Ow+wqh1xA7M2Y8zFnXUiZWY/pCw1zMShZ0bMhqR4NPwCpt+Uu5JG7
-	 AipPvJNlks5F3ISX+lBv3glhej0kDkWRJIoolUJAKevbNrdyJQXHT13CIiBV69WbEG
-	 WoSxsEEmzi+VtKveMoo2/FkF9ka8HbdTYTurFkaFgIA9h9+mKnOHaJiDdWRw0wOSIs
-	 3jxG2NuEDwgFA==
+	b=aV1XDkG539KTonHXvxad+8xI8hwor1AdCL1RXP8+ItuMh/aPvt8vg6zWpYU3A4p8f
+	 jhpizvJogNCjzGTaFp0QxzCNTGGamtqdtRtCbC3hJ3I4JZjz6GOlWC30kfNXS0TI+4
+	 HwLSNDjQMVraaoiaqnqA1au+68ML+C3Ds5lWyVY9SInad1rBP+JrZkXayxroKznX6Q
+	 LIyZpkEuGG8vomdPobmAnrsYNNYg7tzdsOKYOraIQljAgQkxD6OEzrhEugi/sagnMC
+	 C2JqDSTdl2FR5YVyI31qyVUo8z2T8BQSM3cXnBu013kt6hqJ93qvdRVw235dF5j/L6
+	 GWfGn1dfo/sBw==
 From: Yosry Ahmed <yosry@kernel.org>
 To: Sean Christopherson <seanjc@google.com>
 Cc: Paolo Bonzini <pbonzini@redhat.com>,
@@ -33,9 +33,9 @@ Cc: Paolo Bonzini <pbonzini@redhat.com>,
 	kvm@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	Yosry Ahmed <yosry@kernel.org>
-Subject: [PATCH v4 1/9] KVM: SVM: Properly check RAX in the emulator for SVM instructions
-Date: Mon, 16 Mar 2026 20:27:24 +0000
-Message-ID: <20260316202732.3164936-2-yosry@kernel.org>
+Subject: [PATCH v4 2/9] KVM: SVM: Refactor SVM instruction handling on #GP intercept
+Date: Mon, 16 Mar 2026 20:27:25 +0000
+Message-ID: <20260316202732.3164936-3-yosry@kernel.org>
 X-Mailer: git-send-email 2.53.0.851.ga537e3e6e9-goog
 In-Reply-To: <20260316202732.3164936-1-yosry@kernel.org>
 References: <20260316202732.3164936-1-yosry@kernel.org>
@@ -47,78 +47,149 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Architecturally, VMRUN/VMLOAD/VMSAVE should generate a #GP if the
-physical address in RAX is not supported. check_svme_pa() hardcodes this
-to checking that bits 63-48 are not set. This is incorrect on HW
-supporting 52 bits of physical address space. Additionally, the emulator
-does not check if the address is not aligned, which should also result
-in #GP.
+Instead of returning an opcode from svm_instr_opcode() and then passing
+it to emulate_svm_instr(), which uses it to find the corresponding exit
+code and intercept handler, return the exit code directly from
+svm_instr_opcode(), and rename it to svm_instr_exit_code().
 
-Use page_address_valid() which properly checks alignment and the address
-legality based on the guest's MAXPHYADDR. Plumb it through
-x86_emulate_ops, similar to is_canonical_addr(), to avoid directly
-accessing the vCPU object in emulator code.
+emulate_svm_instr() boils down to synthesizing a #VMEXIT or calling the
+intercept handler, so open-code it in gp_interception(), and use
+svm_invoke_exit_handler() to call the intercept handler based on
+the exit code. This allows for dropping the SVM_INSTR_* enum, and the
+const array mapping its values to exit codes and intercept handlers.
 
-Fixes: 01de8b09e606 ("KVM: SVM: Add intercept checks for SVM instructions")
-Suggested-by: Sean Christopherson <seanjc@google.com>
+In gp_intercept(), handle SVM instructions first with an early return,
+un-indenting the rest of the code.
+
+No functional change intended.
+
 Signed-off-by: Yosry Ahmed <yosry@kernel.org>
 ---
- arch/x86/kvm/emulate.c     | 3 +--
- arch/x86/kvm/kvm_emulate.h | 2 ++
- arch/x86/kvm/x86.c         | 6 ++++++
- 3 files changed, 9 insertions(+), 2 deletions(-)
+ arch/x86/kvm/svm/svm.c | 78 +++++++++++++++---------------------------
+ 1 file changed, 27 insertions(+), 51 deletions(-)
 
-diff --git a/arch/x86/kvm/emulate.c b/arch/x86/kvm/emulate.c
-index 6145dac4a605a..c8c6cc0406d6d 100644
---- a/arch/x86/kvm/emulate.c
-+++ b/arch/x86/kvm/emulate.c
-@@ -3887,8 +3887,7 @@ static int check_svme_pa(struct x86_emulate_ctxt *ctxt)
- {
- 	u64 rax = reg_read(ctxt, VCPU_REGS_RAX);
- 
--	/* Valid physical address? */
--	if (rax & 0xffff000000000000ULL)
-+	if (!ctxt->ops->page_address_valid(ctxt, rax))
- 		return emulate_gp(ctxt, 0);
- 
- 	return check_svme(ctxt);
-diff --git a/arch/x86/kvm/kvm_emulate.h b/arch/x86/kvm/kvm_emulate.h
-index fb3dab4b5a53e..0abff36d09942 100644
---- a/arch/x86/kvm/kvm_emulate.h
-+++ b/arch/x86/kvm/kvm_emulate.h
-@@ -245,6 +245,8 @@ struct x86_emulate_ops {
- 
- 	bool (*is_canonical_addr)(struct x86_emulate_ctxt *ctxt, gva_t addr,
- 				  unsigned int flags);
-+
-+	bool (*page_address_valid)(struct x86_emulate_ctxt *ctxt, gpa_t gpa);
- };
- 
- /* Type, address-of, and value of an instruction's operand. */
-diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
-index 0b5d48e75b657..11d5bd84e323d 100644
---- a/arch/x86/kvm/x86.c
-+++ b/arch/x86/kvm/x86.c
-@@ -8916,6 +8916,11 @@ static bool emulator_is_canonical_addr(struct x86_emulate_ctxt *ctxt,
- 	return !is_noncanonical_address(addr, emul_to_vcpu(ctxt), flags);
+diff --git a/arch/x86/kvm/svm/svm.c b/arch/x86/kvm/svm/svm.c
+index d2ca226871c2f..392a5088f20bf 100644
+--- a/arch/x86/kvm/svm/svm.c
++++ b/arch/x86/kvm/svm/svm.c
+@@ -2233,54 +2233,26 @@ static int vmrun_interception(struct kvm_vcpu *vcpu)
+ 	return nested_svm_vmrun(vcpu);
  }
  
-+static bool emulator_page_address_valid(struct x86_emulate_ctxt *ctxt, gpa_t gpa)
-+{
-+	return page_address_valid(emul_to_vcpu(ctxt), gpa);
-+}
-+
- static const struct x86_emulate_ops emulate_ops = {
- 	.vm_bugged           = emulator_vm_bugged,
- 	.read_gpr            = emulator_read_gpr,
-@@ -8963,6 +8968,7 @@ static const struct x86_emulate_ops emulate_ops = {
- 	.set_xcr             = emulator_set_xcr,
- 	.get_untagged_addr   = emulator_get_untagged_addr,
- 	.is_canonical_addr   = emulator_is_canonical_addr,
-+	.page_address_valid  = emulator_page_address_valid,
- };
+-enum {
+-	NONE_SVM_INSTR,
+-	SVM_INSTR_VMRUN,
+-	SVM_INSTR_VMLOAD,
+-	SVM_INSTR_VMSAVE,
+-};
+-
+-/* Return NONE_SVM_INSTR if not SVM instrs, otherwise return decode result */
+-static int svm_instr_opcode(struct kvm_vcpu *vcpu)
++/* Return 0 if not SVM instr, otherwise return associated exit_code */
++static u64 svm_instr_exit_code(struct kvm_vcpu *vcpu)
+ {
+ 	struct x86_emulate_ctxt *ctxt = vcpu->arch.emulate_ctxt;
  
- static void toggle_interruptibility(struct kvm_vcpu *vcpu, u32 mask)
+ 	if (ctxt->b != 0x1 || ctxt->opcode_len != 2)
+-		return NONE_SVM_INSTR;
++		return 0;
+ 
+ 	switch (ctxt->modrm) {
+ 	case 0xd8: /* VMRUN */
+-		return SVM_INSTR_VMRUN;
++		return SVM_EXIT_VMRUN;
+ 	case 0xda: /* VMLOAD */
+-		return SVM_INSTR_VMLOAD;
++		return SVM_EXIT_VMLOAD;
+ 	case 0xdb: /* VMSAVE */
+-		return SVM_INSTR_VMSAVE;
++		return SVM_EXIT_VMSAVE;
+ 	default:
+ 		break;
+ 	}
+ 
+-	return NONE_SVM_INSTR;
+-}
+-
+-static int emulate_svm_instr(struct kvm_vcpu *vcpu, int opcode)
+-{
+-	const int guest_mode_exit_codes[] = {
+-		[SVM_INSTR_VMRUN] = SVM_EXIT_VMRUN,
+-		[SVM_INSTR_VMLOAD] = SVM_EXIT_VMLOAD,
+-		[SVM_INSTR_VMSAVE] = SVM_EXIT_VMSAVE,
+-	};
+-	int (*const svm_instr_handlers[])(struct kvm_vcpu *vcpu) = {
+-		[SVM_INSTR_VMRUN] = vmrun_interception,
+-		[SVM_INSTR_VMLOAD] = vmload_interception,
+-		[SVM_INSTR_VMSAVE] = vmsave_interception,
+-	};
+-	struct vcpu_svm *svm = to_svm(vcpu);
+-
+-	if (is_guest_mode(vcpu)) {
+-		nested_svm_simple_vmexit(svm, guest_mode_exit_codes[opcode]);
+-		return 1;
+-	}
+-	return svm_instr_handlers[opcode](vcpu);
++	return 0;
+ }
+ 
+ /*
+@@ -2295,7 +2267,7 @@ static int gp_interception(struct kvm_vcpu *vcpu)
+ {
+ 	struct vcpu_svm *svm = to_svm(vcpu);
+ 	u32 error_code = svm->vmcb->control.exit_info_1;
+-	int opcode;
++	u64 svm_exit_code;
+ 
+ 	/* Both #GP cases have zero error_code */
+ 	if (error_code)
+@@ -2305,27 +2277,31 @@ static int gp_interception(struct kvm_vcpu *vcpu)
+ 	if (x86_decode_emulated_instruction(vcpu, 0, NULL, 0) != EMULATION_OK)
+ 		goto reinject;
+ 
+-	opcode = svm_instr_opcode(vcpu);
+-
+-	if (opcode == NONE_SVM_INSTR) {
+-		if (!enable_vmware_backdoor)
+-			goto reinject;
+-
+-		/*
+-		 * VMware backdoor emulation on #GP interception only handles
+-		 * IN{S}, OUT{S}, and RDPMC.
+-		 */
+-		if (!is_guest_mode(vcpu))
+-			return kvm_emulate_instruction(vcpu,
+-				EMULTYPE_VMWARE_GP | EMULTYPE_NO_DECODE);
+-	} else {
++	svm_exit_code = svm_instr_exit_code(vcpu);
++	if (svm_exit_code) {
+ 		/* All SVM instructions expect page aligned RAX */
+ 		if (svm->vmcb->save.rax & ~PAGE_MASK)
+ 			goto reinject;
+ 
+-		return emulate_svm_instr(vcpu, opcode);
++		if (is_guest_mode(vcpu)) {
++			nested_svm_simple_vmexit(svm, svm_exit_code);
++			return 1;
++		}
++
++		return svm_invoke_exit_handler(vcpu, svm_exit_code);
+ 	}
+ 
++	if (!enable_vmware_backdoor)
++		goto reinject;
++
++	/*
++	 * VMware backdoor emulation on #GP interception only handles
++	 * IN{S}, OUT{S}, and RDPMC.
++	 */
++	if (!is_guest_mode(vcpu))
++		return kvm_emulate_instruction(vcpu,
++				EMULTYPE_VMWARE_GP | EMULTYPE_NO_DECODE);
++
+ reinject:
+ 	kvm_queue_exception_e(vcpu, GP_VECTOR, error_code);
+ 	return 1;
 -- 
 2.53.0.851.ga537e3e6e9-goog
 
