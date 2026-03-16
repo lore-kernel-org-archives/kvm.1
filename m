@@ -1,171 +1,158 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C18AB233721
-	for <kvm@vger.kernel.org>; Mon, 16 Mar 2026 06:57:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.12
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A39DE3254AF;
+	Mon, 16 Mar 2026 07:11:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.10
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773644245; cv=none; b=GTJMrLwKVES0cjrmVoOIA1RSJaJlbZvY07zoaQK+K0IA61F0SsCUO95Y5efDtxOehKIyAcAlrnktvrzhpWzUZQ2KgpsHs/6Mo6DTCpmVrwAkQxSiU8UpaHs6v6RRorovXepVael/XHDDmYOL6D7QsPh6pPvA078fbJaeVlQ9lCU=
+	t=1773645089; cv=none; b=Bex3dfkQmKlXS5OuNwnKyxK6Fz4Xw9EK1ehQ4gHPy+r6w1pTj+InLbR1vQvRmR/4az8eh0O8F9w//l9vC9D3au3DTCJtvrXrB/X6lyAelfF1eCcMR22Y1d/GTPlFIcs0Owqz/7IWH5eGGXXXYn9uix2obUY0ZH/b89AkjdT+RTs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773644245; c=relaxed/simple;
-	bh=ikjjQFWIO9CXQ3I3SabG0ENTuv5ofEzCswItIvFSxdE=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=shO8sRRxgvbZr6Cits1iiHAFbHX0oYZ4EG9XIOwREPXAN4Ij5nqEUC8DjTKv2AcpLTIGbqsXA4xmJNr+s5U+QjKX4kXFwObhDmtdrhANF7rj1rI1jMAJkoLyXpM2HhA4zx6JFHuMdBZsDRpmJieO0mPTpj637xOTfva2iD3ujnk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=JSS1YwnW; arc=none smtp.client-ip=192.198.163.12
+	s=arc-20240116; t=1773645089; c=relaxed/simple;
+	bh=dNGtOUMHKQ1GDqYsIMk7L+Q2IIaKpFWQY20WqydYZRM=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=YZcpKgnTaMLgukmFddOR9+6v2j3cs5s6CLqbz9n9OUlT9AC5cmFTl5xeRDbk9am/Exf91BHhTtXzjYKDinnvBwLJ5rIu7TTYfwC7daH23R68Nbg7m4FBMJx00lZ1G/vZuc47N/XTlRJ1M7pG2gRajRDHtryYMf98gS5fo2z0sHc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=PzdBpibf; arc=none smtp.client-ip=192.198.163.10
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="JSS1YwnW"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="PzdBpibf"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1773644243; x=1805180243;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=ikjjQFWIO9CXQ3I3SabG0ENTuv5ofEzCswItIvFSxdE=;
-  b=JSS1YwnWOHVRZSQnaSgFUH3lJm9bRs6M1Ve9KG3dRpPsDzNb6abGHllP
-   T+THI8RyRmuqZp8Hrpg+KdaT2aZzVLKLFALNkb8cAkUEtL6hC6f0uqAKH
-   ChclEfQJKvXZmsjn1gorSXFBeh+kG11xGMncThlZGSyK4e799euljwBIQ
-   u5jFBUQEu2vSjCwbZntdcJxQmAO+45MLq/DAtr77QaAdF/V2SN0HGYyy8
-   BmHgdmKAI2gb4ftPdms38DdY3mtVERFtRIwWb7dM2aUNMYZAEyCAzJ/qp
-   mNsPQub4diCy+Q8JOaXJ9RXVHWb2RxjPWdSqS+X8cv8QeBqtRaAMxQ2bk
-   g==;
-X-CSE-ConnectionGUID: XlLdDTuQSEuHbCKNeiIJQQ==
-X-CSE-MsgGUID: KYrIj5LeRfuISLB7hQdaZA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11730"; a="78546559"
+  t=1773645087; x=1805181087;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=dNGtOUMHKQ1GDqYsIMk7L+Q2IIaKpFWQY20WqydYZRM=;
+  b=PzdBpibfLP8+klSdNO+tcaExou/TnJP47TXO57Q29GNtoQi8ox1MnCcn
+   CM8IObSb0ImEnOhgEuZqWemaGjiAeaLhBMf+55ysMmkejBExN1M6jZX5u
+   4SjLOCh3ULM6v0Bqx0PAmoCfwagG2uFqE9hJfAob/3cgATgWhL6ij/q0d
+   oqVOV8iKcGC1A7x3q5cRhQkyi/1ci0/gbQ3S7B2DE4TkgQdQnJ/1TG/H/
+   otxA23lWdT6iLiCt3MmzhSC4OTkrCeFAGpambgv4slFC5EFxxArzmklEu
+   Jv5mAc94N5DP8QwS3fBOFcldlg65Pa7baMuegRj14mp8edSS6GRxmLwvy
+   w==;
+X-CSE-ConnectionGUID: STzMKc3nTYCDmO38QryU8w==
+X-CSE-MsgGUID: U3QBKe4UQ32cwErOku0rNQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11730"; a="86009292"
 X-IronPort-AV: E=Sophos;i="6.23,123,1770624000"; 
-   d="scan'208";a="78546559"
-Received: from fmviesa009.fm.intel.com ([10.60.135.149])
-  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Mar 2026 23:57:22 -0700
-X-CSE-ConnectionGUID: gmVwYDiKTZO8spHn2Ci5jA==
-X-CSE-MsgGUID: kmXb2FXAQfaKu2yu6UKCPQ==
+   d="scan'208";a="86009292"
+Received: from orviesa004.jf.intel.com ([10.64.159.144])
+  by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Mar 2026 00:11:27 -0700
+X-CSE-ConnectionGUID: SVCCzh7LTjKW/sgYzYqTUg==
+X-CSE-MsgGUID: 4SEiWgZSRrGclVE+zaYhJQ==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.23,123,1770624000"; 
-   d="scan'208";a="216381476"
-Received: from unknown (HELO [10.238.1.107]) ([10.238.1.107])
-  by fmviesa009-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Mar 2026 23:57:20 -0700
-Message-ID: <73e47641-d3ca-4b4e-b403-20cf786adf4d@intel.com>
-Date: Mon, 16 Mar 2026 14:57:18 +0800
+   d="scan'208";a="226290496"
+Received: from intel-fishhawkfalls.iind.intel.com ([10.99.116.107])
+  by orviesa004-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Mar 2026 00:11:25 -0700
+From: Sonam Sanju <sonam.sanju@intel.com>
+To: pbonzini@redhat.com
+Cc: kvm@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Sonam Sanju <ssanju@intel.com>
+Subject: [PATCH] KVM: irqfd: fix shutdown deadlock by moving SRCU sync outside resampler_lock
+Date: Mon, 16 Mar 2026 12:38:02 +0530
+Message-Id: <20260316070802.903908-1-sonam.sanju@intel.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH V3 12/13] target/i386: Clean up Intel Debug Store feature
- dependencies
-To: Chenyi Qiang <chenyi.qiang@intel.com>, Zide Chen <zide.chen@intel.com>,
- qemu-devel@nongnu.org, kvm@vger.kernel.org,
- Paolo Bonzini <pbonzini@redhat.com>, Zhao Liu <zhao1.liu@intel.com>,
- Peter Xu <peterx@redhat.com>, Fabiano Rosas <farosas@suse.de>,
- Sandipan Das <sandipan.das@amd.com>
-Cc: Dongli Zhang <dongli.zhang@oracle.com>,
- Dapeng Mi <dapeng1.mi@linux.intel.com>
-References: <20260304180713.360471-1-zide.chen@intel.com>
- <20260304180713.360471-13-zide.chen@intel.com>
- <9122d003-1e96-4790-ab32-3e06b0aa1148@intel.com>
-Content-Language: en-US
-From: Xiaoyao Li <xiaoyao.li@intel.com>
-In-Reply-To: <9122d003-1e96-4790-ab32-3e06b0aa1148@intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-On 3/16/2026 11:21 AM, Chenyi Qiang wrote:
-> 
-> 
-> On 3/5/2026 2:07 AM, Zide Chen wrote:
->> - 64-bit DS Area (CPUID.01H:ECX[2]) depends on DS (CPUID.01H:EDX[21]).
->> - When PMU is disabled, Debug Store must not be exposed to the guest,
->>    which implicitly disables legacy DS-based PEBS.
->>
->> Signed-off-by: Zide Chen <zide.chen@intel.com>
->> ---
->> V3:
->> - Update title to be more accurate.
->> - Make DTES64 depend on DS.
->> - Mark MSR_IA32_MISC_ENABLE_PEBS_UNAVAIL in previous patch.
->> - Clean up the commit message.
->>
->> V2: New patch.
->> ---
->>   target/i386/cpu.c | 5 +++++
->>   1 file changed, 5 insertions(+)
->>
->> diff --git a/target/i386/cpu.c b/target/i386/cpu.c
->> index 2e1dea65d708..3ff9f76cf7da 100644
->> --- a/target/i386/cpu.c
->> +++ b/target/i386/cpu.c
->> @@ -1899,6 +1899,10 @@ static FeatureDep feature_dependencies[] = {
->>           .from = { FEAT_1_ECX,             CPUID_EXT_PDCM },
->>           .to = { FEAT_PERF_CAPABILITIES,       ~0ull },
->>       },
->> +    {
->> +        .from = { FEAT_1_EDX,               CPUID_DTS},
->> +        .to = { FEAT_1_ECX,                 CPUID_EXT_DTES64},
->> +    },
->>       {
->>           .from = { FEAT_1_ECX,               CPUID_EXT_VMX },
->>           .to = { FEAT_VMX_PROCBASED_CTLS,    ~0ull },
->> @@ -9471,6 +9475,7 @@ void x86_cpu_expand_features(X86CPU *cpu, Error **errp)
->>               env->features[FEAT_1_ECX] &= ~CPUID_EXT_PDCM;
->>           }
->>   
->> +        env->features[FEAT_1_EDX] &= ~CPUID_DTS;
->>           env->features[FEAT_7_0_EDX] &= ~CPUID_7_0_EDX_ARCH_LBR;
-> 
-> This change, along with the original CPUID_7_0_EDX_ARCH_LBR clear, will also affect the configuration for TD VMs.
-> For a TD VM, enable_pmu controls TDX_TD_ATTRIBUTES_PERFMON, CPUID_DTS is fixed to 1, and arch_lbr is controlled by XFAM[15].
-> These features' configuration do not have dependencies on each other. So how about skipping the TD VM case like:
+From: Sonam Sanju <ssanju@intel.com>
 
-I think the dependency between enable_pmu and ARCH_LBR still applies to 
-TDX. This dependency is defined by QEMU that enable_pmu controls all the 
-PMU features, including ARCH_LBR. So we can enforce the rule of 
-"XFAM[15] cannot be 1 when enable_pmu == 0"
+irqfd_resampler_shutdown() calls synchronize_srcu_expedited() while
+holding kvm->irqfds.resampler_lock.  This can deadlock when multiple
+irqfd_shutdown workers run concurrently on the kvm-irqfd-cleanup
+workqueue during VM teardown (e.g. crosvm shutdown on Android):
 
-For CPUID_DTS, it seems OK to expose it even when PMU is disabled?
-I sort of disagree with the statement in the changelog:
+  CPU A (mutex holder)               CPU B/C/D (mutex waiters)
+  irqfd_shutdown()                   irqfd_shutdown()
+   irqfd_resampler_shutdown()         irqfd_resampler_shutdown()
+    mutex_lock(resampler_lock)  <---- mutex_lock(resampler_lock)  // BLOCKED
+    list_del_rcu(...)                     ...blocked...
+    synchronize_srcu_expedited()      // Waiters block workqueue,
+      // waits for SRCU grace            preventing SRCU grace
+      // period which requires            period from completing
+      // workqueue progress          --- DEADLOCK ---
 
-   - When PMU is disabled, Debug Store must not be exposed to the guest,
-     which implicitly disables legacy DS-based PEBS
+The synchronize_srcu_expedited() in the else branch is called directly
+within the mutex.  In the if-last branch, kvm_unregister_irq_ack_notifier()
+also calls synchronize_srcu_expedited() internally.  Both paths can
+block indefinitely because:
 
-If I read SDM correctly, the availability of legacy PEBS can be 
-enumerated by MSR_IA32_MISC_ENABLE.PEBS_UNAVAILABLE bit. And from the 
-linux code, it also proves that DTS can be 1 while PEBS is 0:
+  1. synchronize_srcu_expedited() waits for an SRCU grace period
+  2. SRCU grace period completion needs workqueue workers to run
+  3. The blocked mutex waiters occupy workqueue slots, preventing
+     progress
+  4. The mutex holder never releases the lock -> deadlock
 
-	if (boot_cpu_has(X86_FEATURE_DS)) {
-		unsigned int l1, l2;
+Fix by performing all list manipulations and the last-entry check under
+the mutex, then releasing the mutex before the SRCU synchronization.
+This is safe because:
 
-		rdmsr(MSR_IA32_MISC_ENABLE, l1, l2);
-		if (!(l1 & MSR_IA32_MISC_ENABLE_BTS_UNAVAIL))
-			set_cpu_cap(c, X86_FEATURE_BTS);
-		if (!(l1 & MSR_IA32_MISC_ENABLE_PEBS_UNAVAIL))
-			set_cpu_cap(c, X86_FEATURE_PEBS);
-	}
+  - list_del_rcu() removes the irqfd from resampler->list under the
+    mutex, so no concurrent reader or writer can access it.
+  - When last==true, list_del_rcu(&resampler->link) has already removed
+    the resampler from kvm->irqfds.resampler_list under the mutex, so
+    no other worker can find or operate on this resampler.
+  - kvm_unregister_irq_ack_notifier() uses its own locking
+    (kvm->irq_lock) and is safe to call without resampler_lock.
+  - synchronize_srcu_expedited() does not require any KVM mutex.
+  - kfree(resampler) is safe after SRCU sync guarantees all readers
+    have finished.
 
-Since it will need nasty handling for TDX case, I would vote not 
-clearing CPUID_DTS here when !PMU, unless a strong reason is provided.
+Signed-off-by: Sonam Sanju <ssanju@intel.com>
+---
+ virt/kvm/eventfd.c | 21 +++++++++++++++------
+ 1 file changed, 15 insertions(+), 6 deletions(-)
 
-> diff --git a/target/i386/cpu.c b/target/i386/cpu.c
-> index 98e95d0842..458bfb07b9 100644
-> --- a/target/i386/cpu.c
-> +++ b/target/i386/cpu.c
-> @@ -9736,8 +9736,10 @@ void x86_cpu_expand_features(X86CPU *cpu, Error **errp)
->               env->features[FEAT_1_ECX] &= ~CPUID_EXT_PDCM;
->           }
-> 
-> -        env->features[FEAT_1_EDX] &= ~CPUID_DTS;
-> -        env->features[FEAT_7_0_EDX] &= ~CPUID_7_0_EDX_ARCH_LBR;
-> +        if (!is_tdx_vm()) {
-> +            env->features[FEAT_1_EDX] &= ~CPUID_DTS;
-> +            env->features[FEAT_7_0_EDX] &= ~CPUID_7_0_EDX_ARCH_LBR;
-> +        }
->       }
-> 
->       for (i = 0; i < ARRAY_SIZE(feature_dependencies); i++) {
-> 
-> 
-> 
->>       }
->>   
-> 
+diff --git a/virt/kvm/eventfd.c b/virt/kvm/eventfd.c
+index 0e8b8a2c5b79..27bcf2b1a81d 100644
+--- a/virt/kvm/eventfd.c
++++ b/virt/kvm/eventfd.c
+@@ -93,6 +93,7 @@ irqfd_resampler_shutdown(struct kvm_kernel_irqfd *irqfd)
+ {
+ 	struct kvm_kernel_irqfd_resampler *resampler = irqfd->resampler;
+ 	struct kvm *kvm = resampler->kvm;
++	bool last = false;
+ 
+ 	mutex_lock(&kvm->irqfds.resampler_lock);
+ 
+@@ -100,19 +101,27 @@ irqfd_resampler_shutdown(struct kvm_kernel_irqfd *irqfd)
+ 
+ 	if (list_empty(&resampler->list)) {
+ 		list_del_rcu(&resampler->link);
++		last = true;
++	}
++
++	mutex_unlock(&kvm->irqfds.resampler_lock);
++
++	/*
++	 * synchronize_srcu_expedited() (called explicitly below, or internally
++	 * by kvm_unregister_irq_ack_notifier()) must not be invoked under
++	 * resampler_lock.  Holding the mutex while waiting for an SRCU grace
++	 * period creates a deadlock: the blocked mutex waiters occupy workqueue
++	 * slots that the SRCU grace period machinery needs to make forward
++	 * progress.
++	 */
++	if (last) {
+ 		kvm_unregister_irq_ack_notifier(kvm, &resampler->notifier);
+-		/*
+-		 * synchronize_srcu_expedited(&kvm->irq_srcu) already called
+-		 * in kvm_unregister_irq_ack_notifier().
+-		 */
+ 		kvm_set_irq(kvm, KVM_IRQFD_RESAMPLE_IRQ_SOURCE_ID,
+ 			    resampler->notifier.gsi, 0, false);
+ 		kfree(resampler);
+ 	} else {
+ 		synchronize_srcu_expedited(&kvm->irq_srcu);
+ 	}
+-
+-	mutex_unlock(&kvm->irqfds.resampler_lock);
+ }
+ 
+ /*
+-- 
+2.34.1
 
