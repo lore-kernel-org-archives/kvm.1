@@ -1,235 +1,152 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4676C382362;
-	Mon, 16 Mar 2026 13:12:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 242BE25228D;
+	Mon, 16 Mar 2026 13:14:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773666734; cv=none; b=XOeCTEYHOT4ayeqrWcVQVLlTg04xFoDB2uhdEjsK9FDaMUdhRnjE06W4Pcs+0DwlFWBvuaTt2VN63GwRCSfJ6STkL7jH9w6Qt9amIMkTuZlJilu6RYDQpZi/gIXMBZzw6Xm7Sd8uKKT037pj2broM9Tb5aiLwJ2kcm9gQzvJrig=
+	t=1773666853; cv=none; b=RcvOsnr/X3V9AJdgYGNVyBw0YDmc30B1riv4EXwkdo3YEj1Kiavorh08l90AAkX2Cguii3shYwvAsC5tqpIyMxtfY3SjyBq/8VUSZN1gePSh05QpKBiey8U9XdmSX+3OisPabYCA6R1mXRPDHcOCDq527gJUHmGR25a9teEBGag=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773666734; c=relaxed/simple;
-	bh=X3364DyV9+qQmR1c70C3WBPf+wo2HbpBx91Oa7wP6FI=;
+	s=arc-20240116; t=1773666853; c=relaxed/simple;
+	bh=fIB8XAt8cqUxaDdboNgvwaFWkZcGjjC04G6TXhphBcQ=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=CrjZ9TTH5ROswyuomXk/VMarCVZopRTdSNFvkzEsmxab/ypPu/t8AN+C16ckCewOREKGfxWFAZ/YvULvwUngi9wE77o2BMdaEPJEZQ9SGMv3w3cU3BI+nxdoDSDUI74+Fh7PyFJQcLMhvJA8FHI8xRO3ZGE1EA5x58u8Zv6m64Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nc39I1Nr; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=rkkhXQm8TrV7txacv+mlUTRcvm8n49i+wvcZ7CzrFt+ip7KYWt4YLjWXj3+fTO3jlt8I8WrDARr73tXXeZw8iiShwjhLsvVyJnAsfBDaJiwS5YaFqnoS9AcdStpkhJlL/FkpVOF8VOs/IKk8pH4oiP5mKZIg+jjWU7+x7CeRNlE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=T+9fXE+y; arc=none smtp.client-ip=148.163.156.1
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nc39I1Nr"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 137A7C19421;
-	Mon, 16 Mar 2026 13:12:12 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773666733;
-	bh=X3364DyV9+qQmR1c70C3WBPf+wo2HbpBx91Oa7wP6FI=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=nc39I1NrmvOmWfTmfTq3bRQ/XNiZVrid91WoQ69sNdF1IJPlXO/LGKxfxZAtonZkX
-	 8VMSgHwJgUxzC0V2Suzo/4ryDnsFK03YmOa6ruDwZ9J8dfj8yaAO9CMCeS34+t5cUN
-	 97nx54vn5VHU9hl3QoyTcnEq2/nPXaSVH+a9AlOnMe0PYjgSf8SLBh8MRs6l2yD53U
-	 PVNz4ASrcp5QVSE+X0SLPjEG6apVSNd33P9Rrt8cbPFE2wcD7SBI5WtsEUjcHgv3/3
-	 N94sSPHncpW5/pmWx28JX4p8gy4P4M23OheD4FUET/iqwTt5rWJbSM3tHyBcGlH41D
-	 Zw2pTn9v0cwsQ==
-Received: from phl-compute-02.internal (phl-compute-02.internal [10.202.2.42])
-	by mailfauth.phl.internal (Postfix) with ESMTP id 2FF56F40075;
-	Mon, 16 Mar 2026 09:12:12 -0400 (EDT)
-Received: from phl-frontend-04 ([10.202.2.163])
-  by phl-compute-02.internal (MEProxy); Mon, 16 Mar 2026 09:12:12 -0400
-X-ME-Sender: <xms:rAG4abo58vO0SWsllMuo5vQ3lNAyBeRgNLOkIih9LDD38F8g2JdN9A>
-    <xme:rAG4aUjX5wSWJcqZC_UFsJEz2HsjZBu2Egje-h9qNJ9L1sglK9xsa2FHVbTiIGgNF
-    ps670rpqCFuRi-yJg8mrF1wd5F_N2LNVo4IUVk7cLhzYGNMOmx7gA>
-X-ME-Received: <xmr:rAG4aYnl9y3Y7xKekxr9YEXzQJuZdrJQ41Gn8gbgH-dWZjmhGHorqHoLn0tehA>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgddvleekgeeiucetufdoteggodetrf
-    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
-    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
-    gurhepfffhvfevuffkfhggtggugfgjsehtkeertddttddunecuhfhrohhmpefmihhrhihl
-    ucfuhhhuthhsvghmrghuuceokhgrsheskhgvrhhnvghlrdhorhhgqeenucggtffrrghtth
-    gvrhhnpeeludettdeigfefhffhhfelveeludeuleduvefhgefgueeitedtleffudegfffg
-    gfenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpehkih
-    hrihhllhdomhgvshhmthhprghuthhhphgvrhhsohhnrghlihhthidqudeiudduiedvieeh
-    hedqvdekgeeggeejvdekqdhkrghspeepkhgvrhhnvghlrdhorhhgsehshhhuthgvmhhovh
-    drnhgrmhgvpdhnsggprhgtphhtthhopeehvddpmhhouggvpehsmhhtphhouhhtpdhrtghp
-    thhtoheptghhrghordhgrghosehinhhtvghlrdgtohhmpdhrtghpthhtoheplhhinhhugi
-    dqkhgvrhhnvghlsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtoheplhhinhhu
-    gidqtghotghosehlihhsthhsrdhlihhnuhigrdguvghvpdhrtghpthhtohepkhhvmhesvh
-    hgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopegsihhnsghinhdrfihusehlihhn
-    uhigrdhinhhtvghlrdgtohhmpdhrtghpthhtohepuggrnhdrjhdrfihilhhlihgrmhhsse
-    hinhhtvghlrdgtohhmpdhrtghpthhtohepuggrvhgvrdhhrghnshgvnheslhhinhhugidr
-    ihhnthgvlhdrtghomhdprhgtphhtthhopehirhgrrdifvghinhihsehinhhtvghlrdgtoh
-    hmpdhrtghpthhtohepkhgrihdrhhhurghnghesihhnthgvlhdrtghomh
-X-ME-Proxy: <xmx:rAG4aT7aVt6K6FdLZSasXL1aTp-HzOcTxfuPYl5NWUrBlNh3D1Z23g>
-    <xmx:rAG4acla1T5U09X6ZvaaHFRm15NZWheNk0dRb8qCQIAV9MPjxASG7Q>
-    <xmx:rAG4aVhLBmb6Gx0lv_hhsgQQwlsLb7XNdMi2OMZDYm4rsqMG0lmHYg>
-    <xmx:rAG4aRkE-Jhf-0sgCBMsVkkMVVDpw3Fgg6n7W6ufz6mNRX0fLOQDbw>
-    <xmx:rAG4acpRjA7qLoBErlMhlPL8wfwH7thjWe93LWSQ0bMOFYobs0CJol4K>
-Feedback-ID: i10464835:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
- 16 Mar 2026 09:12:10 -0400 (EDT)
-Date: Mon, 16 Mar 2026 13:12:05 +0000
-From: Kiryl Shutsemau <kas@kernel.org>
-To: Chao Gao <chao.gao@intel.com>
-Cc: linux-kernel@vger.kernel.org, linux-coco@lists.linux.dev, 
-	kvm@vger.kernel.org, binbin.wu@linux.intel.com, dan.j.williams@intel.com, 
-	dave.hansen@linux.intel.com, ira.weiny@intel.com, kai.huang@intel.com, nik.borisov@suse.com, 
-	paulmck@kernel.org, pbonzini@redhat.com, reinette.chatre@intel.com, 
-	rick.p.edgecombe@intel.com, sagis@google.com, seanjc@google.com, 
-	tony.lindgren@linux.intel.com, vannapurve@google.com, vishal.l.verma@intel.com, 
-	yilun.xu@linux.intel.com, Farrah Chen <farrah.chen@intel.com>, 
-	Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
-	x86@kernel.org, "H. Peter Anvin" <hpa@zytor.com>
-Subject: Re: [PATCH v5 05/22] x86/virt/seamldr: Retrieve P-SEAMLDR information
-Message-ID: <abgBFmEhlsdmxa1k@thinkstation>
-References: <20260315135920.354657-1-chao.gao@intel.com>
- <20260315135920.354657-6-chao.gao@intel.com>
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="T+9fXE+y"
+Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 62FKFJC1972322;
+	Mon, 16 Mar 2026 13:14:06 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-type:date:from:in-reply-to:message-id:mime-version
+	:references:subject:to; s=pp1; bh=uZQtFgNltjjBzHk5pdFEbiarahR2zt
+	tjNZh3MOB8Sug=; b=T+9fXE+y93w00ook31cuIHtqDPdkZP/2lBPwD9GtJXR9vy
+	dqcFUHK5ZytWB+1HJnG6xYRDHIlsaQQR9FphjERqThoOerpgqBix1Pil6M7kJt5a
+	1IJIddC0X2DJfU95uclR9CqEUKHY2wZTOLPW2tmOnAbJipiQ5++2qQimFQkp/Uib
+	B/6zKdfZQYl/Md0Ar0/LVoPbHOxOMaBTuhJgV9qkGo9v2rsT0/0XRNRskIRqrXoJ
+	oT1KhExnrDvEdZMVyZBUWLmDDCzZygXr2KdU3l06igl4uhU2yQrSyaW7uM3bHO4G
+	njSIFUb7IZcFRS8PXjH6FzKJBLBkxOWSeDrXhSpg==
+Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4cvy64g19n-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 16 Mar 2026 13:14:05 +0000 (GMT)
+Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma23.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 62GAkfUS029194;
+	Mon, 16 Mar 2026 13:14:04 GMT
+Received: from smtprelay03.fra02v.mail.ibm.com ([9.218.2.224])
+	by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4cwkgk4vv1-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 16 Mar 2026 13:14:04 +0000
+Received: from smtpav03.fra02v.mail.ibm.com (smtpav03.fra02v.mail.ibm.com [10.20.54.102])
+	by smtprelay03.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 62GDE09W53477774
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Mon, 16 Mar 2026 13:14:00 GMT
+Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 5F4ED2004B;
+	Mon, 16 Mar 2026 13:14:00 +0000 (GMT)
+Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id D25F520040;
+	Mon, 16 Mar 2026 13:13:59 +0000 (GMT)
+Received: from osiris (unknown [9.87.141.39])
+	by smtpav03.fra02v.mail.ibm.com (Postfix) with ESMTPS;
+	Mon, 16 Mar 2026 13:13:59 +0000 (GMT)
+Date: Mon, 16 Mar 2026 14:13:58 +0100
+From: Heiko Carstens <hca@linux.ibm.com>
+To: Christian Borntraeger <borntraeger@linux.ibm.com>
+Cc: KVM <kvm@vger.kernel.org>, Janosch Frank <frankja@linux.ibm.com>,
+        David Hildenbrand <david@kernel.org>,
+        linux-s390 <linux-s390@vger.kernel.org>,
+        Thomas Huth <thuth@redhat.com>,
+        Claudio Imbrenda <imbrenda@linux.ibm.com>,
+        Vasily Gorbik <gor@linux.ibm.com>,
+        Alexander Gordeev <agordeev@linux.ibm.com>
+Subject: Re: [PATCH v3] KVM: s390: vsie: Avoid injecting machine check on
+ signal
+Message-ID: <20260316131358.17080E1f-hca@linux.ibm.com>
+References: <20260316130947.40466-1-borntraeger@linux.ibm.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20260315135920.354657-6-chao.gao@intel.com>
+In-Reply-To: <20260316130947.40466-1-borntraeger@linux.ibm.com>
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: T2-hzR1Oq_5_0VUvsQK9bORGmWmBCiOH
+X-Proofpoint-GUID: T2-hzR1Oq_5_0VUvsQK9bORGmWmBCiOH
+X-Authority-Analysis: v=2.4 cv=KYnfcAYD c=1 sm=1 tr=0 ts=69b8021d cx=c_pps
+ a=3Bg1Hr4SwmMryq2xdFQyZA==:117 a=3Bg1Hr4SwmMryq2xdFQyZA==:17
+ a=kj9zAlcOel0A:10 a=Yq5XynenixoA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=RnoormkPH1_aCDwRdu11:22 a=iQ6ETzBq9ecOQQE5vZCe:22 a=VnNF1IyMAAAA:8
+ a=qbISLwkX9i_CiVSkf0IA:9 a=CjuIK1q_8ugA:10
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMzE2MDEwMSBTYWx0ZWRfXwxoTuUh9EIJK
+ SshW2t/Gu5s3mLy/8MPGU+UjTtTGS7NfQU/65wMykB7zvJuQx9vaOv1o03pb+vZNxj8+JoDTCMt
+ ANXuZhT0fcxLwZWsDPF7zPoMdi1K0/z1gUKkyHRUEtudZ18AyIS4ZsPMULpYarNpl8/igyzs2kn
+ xi3ItIed3PGHboLtd4qy6Q0AqXtzY0w8Msy3seZhTkzV0qaYNLOOvDH9tsFpb3RObz7VHtHB5QR
+ 5m/mWXlRHGZVP7l4deSAvMiMCzN/3fA+CHfaihg0sElbibETIY9htzWIKNtJgZCJLNTJDcvMe3z
+ xuB54w0GZ+9prVsAvhK0QMFY7HVfheIi68vg3yUjJZqQhBrpA4oabAPwgOpthX3vciIGMoSZ506
+ 6IDIQQlgVHICm23+hm13YkecEJtU177ZAXwrqxIp1YCo4aC+p/8O4xeFQLjEubE4nnKsG4NYQoo
+ QABGeja4uv+9JPAnrjA==
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
+ definitions=2026-03-16_04,2026-03-16_03,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ phishscore=0 lowpriorityscore=0 priorityscore=1501 suspectscore=0 bulkscore=0
+ spamscore=0 impostorscore=0 malwarescore=0 adultscore=0 clxscore=1015
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2603050001 definitions=main-2603160101
 
-On Sun, Mar 15, 2026 at 06:58:25AM -0700, Chao Gao wrote:
-> P-SEAMLDR returns its information such as version number, in response to
-> the SEAMLDR.INFO SEAMCALL.
+On Mon, Mar 16, 2026 at 02:09:47PM +0100, Christian Borntraeger wrote:
+> The recent XFER_TO_GUEST_WORK change resulted in a situation, where the
+> vsie code would interpret a signal during work as a machine check during
+> SIE as both use the EINTR return code.
+> The exit_reason of the sie64a function has nothing to do with the
+> kvm_run exit_reason. Rename it and define a specific code for machine
+> checks instead of abusing -EINTR.
+> rename exit_reason into sie_return to avoid the naming conflict
+> and change the code flow in vsie.c to have a separate variable for rc
+> and sie_return.
 > 
-> This information is useful for userspace. For example, the admin can decide
-> which TDX module versions are compatible with the P-SEAMLDR according to
-> the P-SEAMLDR version.
-> 
-> Retrieve P-SEAMLDR information in preparation for exposing P-SEAMLDR
-> version and other necessary information to userspace. Export the new kAPI
-> for use by tdx-host.ko.
-> 
-> Note that there are two distinct P-SEAMLDR APIs with similar names:
-> 
->   SEAMLDR.INFO: Returns a SEAMLDR_INFO structure containing SEAMLDR
->                 information such as version and remaining updates.
-> 
->   SEAMLDR.SEAMINFO: Returns a SEAMLDR_SEAMINFO structure containing SEAM
->                     and system information such as Convertible Memory
-> 		    Regions (CMRs) and number of CPUs and sockets.
-> 
-> The former is used here.
-> 
-> For details, see "Intel® Trust Domain Extensions - SEAM Loader (SEAMLDR)
-> Interface Specification" revision 343755-003.
-> 
-> Signed-off-by: Chao Gao <chao.gao@intel.com>
-> Tested-by: Farrah Chen <farrah.chen@intel.com>
+> Fixes: 2bd1337a1295e ("KVM: s390: Use generic VIRT_XFER_TO_GUEST_WORK functions")
+> Signed-off-by: Christian Borntraeger <borntraeger@linux.ibm.com>
 > ---
-> Kai also suggested merging this patch with the first use of the new
-> kAPI, so we don't need to add a comment for slow_virt_to_phys() (as the
-> reason can be seen from the call site). I am fine with it, but the
-> changelog may be a bit lengthy.
+> v1->v2:
+> instead of a band-aid, make the machine check more direct
+> v2->v3:
+> avoid overloading the rc variable in vsie.c
 > 
-> v5:
->  - add a comment for slow_virt_to_phys() [Kai]
-> v4:
->  - put seamldr_info on stack [Dave]
->  - improve changelogs to explain SEAMLDR.INFO and SEAMLDR.SEAMINFO [Dave]
->  - add P-SEAMLDR spec information in the changelog [Dave]
->  - add proper comments above ABI structure definition [Dave]
->  - add unused ABI structure fields rather than marking them as reserved
->    to better align with the specc [Dave] (I omitted "not used by kernel"
->    tags since there are 5-6 such fields and maintaining these tags would
->    be tedious.)
-> ---
->  arch/x86/include/asm/seamldr.h  | 36 +++++++++++++++++++++++++++++++++
->  arch/x86/virt/vmx/tdx/seamldr.c | 19 ++++++++++++++++-
->  2 files changed, 54 insertions(+), 1 deletion(-)
->  create mode 100644 arch/x86/include/asm/seamldr.h
-> 
-> diff --git a/arch/x86/include/asm/seamldr.h b/arch/x86/include/asm/seamldr.h
-> new file mode 100644
-> index 000000000000..c67e5bc910a9
-> --- /dev/null
-> +++ b/arch/x86/include/asm/seamldr.h
-> @@ -0,0 +1,36 @@
-> +/* SPDX-License-Identifier: GPL-2.0 */
-> +#ifndef _ASM_X86_SEAMLDR_H
-> +#define _ASM_X86_SEAMLDR_H
-> +
-> +#include <linux/types.h>
-> +
-> +/*
-> + * This is called the "SEAMLDR_INFO" data structure and is defined
-> + * in "SEAM Loader (SEAMLDR) Interface Specification".
-> + *
-> + * The SEAMLDR.INFO documentation requires this to be aligned to a
-> + * 256-byte boundary.
-> + */
-> +struct seamldr_info {
-> +	u32	version;
-> +	u32	attributes;
-> +	u32	vendor_id;
-> +	u32	build_date;
-> +	u16	build_num;
-> +	u16	minor_version;
-> +	u16	major_version;
-> +	u16	update_version;
-> +	u32	acm_x2apicid;
-> +	u32	num_remaining_updates;
-> +	u8	seam_info[128];
-> +	u8	seam_ready;
-> +	u8	seam_debug;
-> +	u8	p_seam_ready;
-> +	u8	reserved[93];
-> +} __packed __aligned(256);
-> +
-> +static_assert(sizeof(struct seamldr_info) == 256);
-> +
-> +int seamldr_get_info(struct seamldr_info *seamldr_info);
-> +
-> +#endif /* _ASM_X86_SEAMLDR_H */
-> diff --git a/arch/x86/virt/vmx/tdx/seamldr.c b/arch/x86/virt/vmx/tdx/seamldr.c
-> index 7ed9be89017c..7c0cbab2c4c0 100644
-> --- a/arch/x86/virt/vmx/tdx/seamldr.c
-> +++ b/arch/x86/virt/vmx/tdx/seamldr.c
-> @@ -8,8 +8,13 @@
->  
->  #include <linux/spinlock.h>
->  
-> +#include <asm/seamldr.h>
-> +
->  #include "seamcall_internal.h"
->  
-> +/* P-SEAMLDR SEAMCALL leaf function */
-> +#define P_SEAMLDR_INFO			0x8000000000000000
-> +
->  /*
->   * Serialize P-SEAMLDR calls since the hardware only allows a single CPU to
->   * interact with P-SEAMLDR simultaneously. Use raw version as the calls can
-> @@ -17,8 +22,20 @@
->   */
->  static DEFINE_RAW_SPINLOCK(seamldr_lock);
->  
-> -static __maybe_unused int seamldr_call(u64 fn, struct tdx_module_args *args)
-> +static int seamldr_call(u64 fn, struct tdx_module_args *args)
->  {
->  	guard(raw_spinlock)(&seamldr_lock);
->  	return seamcall_prerr(fn, args);
->  }
-> +
-> +int seamldr_get_info(struct seamldr_info *seamldr_info)
-> +{
-> +	/*
-> +	 * Use slow_virt_to_phys() since @seamldr_info may be allocated on
-> +	 * the stack.
-> +	 */
-> +	struct tdx_module_args args = { .rcx = slow_virt_to_phys(seamldr_info) };
-> +
-> +	return seamldr_call(P_SEAMLDR_INFO, &args);
+>  arch/s390/include/asm/kvm_host.h   |  3 +++
+>  arch/s390/include/asm/stacktrace.h |  2 +-
+>  arch/s390/kernel/asm-offsets.c     |  2 +-
+>  arch/s390/kernel/entry.S           |  4 ++--
+>  arch/s390/kernel/nmi.c             |  4 ++--
+>  arch/s390/kvm/kvm-s390.c           | 15 ++++++++-------
+>  arch/s390/kvm/vsie.c               |  7 +++++--
+>  7 files changed, 22 insertions(+), 15 deletions(-)
 
-On what condition this information can change?
+...
 
-I see the next patch calls this on every _show operation. Would we
-benefit from caching the response?
+> diff --git a/arch/s390/kvm/vsie.c b/arch/s390/kvm/vsie.c
+> index c0d36afd4023..42c53134e0b8 100644
+> --- a/arch/s390/kvm/vsie.c
+> +++ b/arch/s390/kvm/vsie.c
+> @@ -1123,6 +1123,7 @@ static int do_vsie_run(struct kvm_vcpu *vcpu, struct vsie_page *vsie_page, struc
+>  	struct kvm_s390_sie_block *scb_s = &vsie_page->scb_s;
+>  	struct kvm_s390_sie_block *scb_o = vsie_page->scb_o;
+>  	int guest_bp_isolation;
+> +	int sie_return = SIE64_RETURN_NORMAL;
+>  	int rc = 0;
 
-> +}
-> +EXPORT_SYMBOL_FOR_MODULES(seamldr_get_info, "tdx-host");
-> -- 
-> 2.47.3
-> 
+Move that one line up to keep the reverse x-mas style?
 
--- 
-  Kiryl Shutsemau / Kirill A. Shutemov
+> +	WARN_ON(sie_return != SIE64_RETURN_NORMAL);
+
+And as written in the previous version: both should be WARN_ON_ONCE() I guess.
+
+Anyway:
+
+Reviewed-by: Heiko Carstens <hca@linux.ibm.com>
