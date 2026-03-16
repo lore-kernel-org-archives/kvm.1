@@ -1,30 +1,31 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 303EF3EE1EE;
-	Mon, 16 Mar 2026 20:27:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 447D63EE1F5;
+	Mon, 16 Mar 2026 20:27:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773692863; cv=none; b=NpWN5c7eIKKpU62NYF8Ddpa4oDeJJnA7ZIGW8B1kL+aFtiYESAmOhPHYfa+zPH7+C/wT3erSASX2r2Egumtm8nrHcmuL9xIfLVWNNpHbgjJpIMW1sFwMe0vYTQr8xCYGXoPh8UUyP7p71IeCI+MKfYSVjyu4o3Q1ZyrpMNDi3MQ=
+	t=1773692863; cv=none; b=K0cejDm2SKg2jaaBvczOibyMCsEonDieJTYRtEWHxJinIonkrXEpCLVgBADqQ0ABOGuvBbE+vQqLobdvg6xAW4TiyhabOV0RTJvrhLymgiJvOt7zSWGJbeA+i+wWxylLRHrLllBIIRO2cMzr8ztpLmS5gRaX/XZ+f6vn3r+kQh0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1773692863; c=relaxed/simple;
-	bh=v5HACp+Ry2GA6wpD8TrxF2OmhE28GueMrvUuJaK3wWQ=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=LybJCNAHsxXQhWN3d4gBr8Sf49l/rv6Qmv70eDVobp/57stDeogbty31maAaGlaygzjSB9yGgShVSWEyRmMqo5Iy+OI1fllEul9XPfmnI+gxS8xEwtZOnxdtjFXr4t2HVtwYyJ2cplk840RFMN9byh0wWAbfw04WVh6urSxhS3c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=H9VPWAK7; arc=none smtp.client-ip=10.30.226.201
+	bh=EIrszS15i5/Uxlq5DyhfxznOK8FC3CIpI/Io3HTrbhU=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=B9hTbZMgcAVgoyldi8wZ2gkCXZFJ7N1yxetq3+ypxfFmFCYLwlSlCXzjSzJeuMSXwSLBOIIuje07TN8jWhbFw1cd4NCh43QYadJQpbOTOiddPiVkgA04DMZgkd1KiwYZ2wSiwH8NoGyIH4LGIKsUe9ofPQh2O8jHhBgpjicKn+k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=G58GA1f8; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="H9VPWAK7"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7BF8CC19421;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="G58GA1f8"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E36E8C2BCAF;
 	Mon, 16 Mar 2026 20:27:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773692862;
-	bh=v5HACp+Ry2GA6wpD8TrxF2OmhE28GueMrvUuJaK3wWQ=;
-	h=From:To:Cc:Subject:Date:From;
-	b=H9VPWAK7pVp+Bv/XoHFCtT4VkyP05et7R13Hr7Z4BSxiz1hdSNhuT3ZN0l9q2C0XO
-	 oIY7Ec1FOrboeHbWeQ8VGjzXse/PQxsRoz1y0repyTafmzcUkrN/gqq+1qYrnreGKB
-	 +eitFlOYY2D/qxWSM8sAXGqsXl9x0uMaGDEQyWmiA+BHBA5dQzobHdebZXOCuuOBfI
-	 97bJrPpOt8V5BF9wtyOQxuLVTt2c0nk1bipIcIKU21VhHeEa6TkDvBN8uKkQrLo9k2
-	 9fLcC6sTdzqUqob1x0Hr9gUuQTwK3Rnj76EmsviuHNu/DE6etYhhXTtvlHp1M+cNBz
-	 EIklVbqK5u6Jg==
+	s=k20201202; t=1773692863;
+	bh=EIrszS15i5/Uxlq5DyhfxznOK8FC3CIpI/Io3HTrbhU=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=G58GA1f8CpFciPwkZNh22CITpx+9cKf0oOj+spvsHb484i/AvtsTSsGX01p/3iQKe
+	 A+0rHCssWJQEwYt9xFOHaIafpZR4kP7ZYZc2ClkbqzW9+nPqNDUrHBU/kOfhNaOBrX
+	 8ryXphf4cduA1Ow+wqh1xA7M2Y8zFnXUiZWY/pCw1zMShZ0bMhqR4NPwCpt+Uu5JG7
+	 AipPvJNlks5F3ISX+lBv3glhej0kDkWRJIoolUJAKevbNrdyJQXHT13CIiBV69WbEG
+	 WoSxsEEmzi+VtKveMoo2/FkF9ka8HbdTYTurFkaFgIA9h9+mKnOHaJiDdWRw0wOSIs
+	 3jxG2NuEDwgFA==
 From: Yosry Ahmed <yosry@kernel.org>
 To: Sean Christopherson <seanjc@google.com>
 Cc: Paolo Bonzini <pbonzini@redhat.com>,
@@ -32,10 +33,12 @@ Cc: Paolo Bonzini <pbonzini@redhat.com>,
 	kvm@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	Yosry Ahmed <yosry@kernel.org>
-Subject: [PATCH v4 0/9] KVM: SVM: Fixes for VMCB12 checks and mapping
-Date: Mon, 16 Mar 2026 20:27:23 +0000
-Message-ID: <20260316202732.3164936-1-yosry@kernel.org>
+Subject: [PATCH v4 1/9] KVM: SVM: Properly check RAX in the emulator for SVM instructions
+Date: Mon, 16 Mar 2026 20:27:24 +0000
+Message-ID: <20260316202732.3164936-2-yosry@kernel.org>
 X-Mailer: git-send-email 2.53.0.851.ga537e3e6e9-goog
+In-Reply-To: <20260316202732.3164936-1-yosry@kernel.org>
+References: <20260316202732.3164936-1-yosry@kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -44,64 +47,78 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Jim pointed out that VMRUN/VMLOAD/VMSAVE injecting a #GP when the vmcb12
-GPA is valid but not mappable is not architectural [1]. The series
-handles them as emulation failures and (mostly) exits to userspace
-instead. It also fixes the checks performed on the vmcb12 GPA (i.e. RAX)
-in a few places.
+Architecturally, VMRUN/VMLOAD/VMSAVE should generate a #GP if the
+physical address in RAX is not supported. check_svme_pa() hardcodes this
+to checking that bits 63-48 are not set. This is incorrect on HW
+supporting 52 bits of physical address space. Additionally, the emulator
+does not check if the address is not aligned, which should also result
+in #GP.
 
-Note that there's a few other bugs that this series leaves alone, mostly
-to keep it focused on fixing the non-architectrual #GPs, this includes:
-- KVM synthesizing #VMEXIT(VMLOAD/VMSAVE) to L1 when intercepting #GP
-  from L2 on VMLOAD/VMSAVE, even if L1 does not intercept VMLOAD/VMSAVE
-  (e.g. VLS enabled).
-- KVM not respecting priority of #GP vs. #UD when EFER.SVME is disabled
-  by the guest.
+Use page_address_valid() which properly checks alignment and the address
+legality based on the guest's MAXPHYADDR. Plumb it through
+x86_emulate_ops, similar to is_canonical_addr(), to avoid directly
+accessing the vCPU object in emulator code.
 
-However, the series documents these bugs with FIXMEs so that they can
-hopefully be fixed up later.
+Fixes: 01de8b09e606 ("KVM: SVM: Add intercept checks for SVM instructions")
+Suggested-by: Sean Christopherson <seanjc@google.com>
+Signed-off-by: Yosry Ahmed <yosry@kernel.org>
+---
+ arch/x86/kvm/emulate.c     | 3 +--
+ arch/x86/kvm/kvm_emulate.h | 2 ++
+ arch/x86/kvm/x86.c         | 6 ++++++
+ 3 files changed, 9 insertions(+), 2 deletions(-)
 
-v3 -> v4:
-- Fix the RAX check in the emulator instead of dropping it [Paolo].
-- Add refactoring of SVM instructions on #GP intercept to facilitate
-  following fixes.
-- Use kvm_register_read() to handle 32-bit correctly and avoid false
-  negatives.
-- Do #UD and #GP checks before synthesizing #VMEXIT to L1 when KVM
-  intercepts #GP on SVM instruction in L2.
-- Update changelogs.
-
-v3: https://lore.kernel.org/kvm/20260306210900.1933788-1-yosry@kernel.org/
-
-[1]https://lore.kernel.org/kvm/CALMp9eSMtzDJn7tGtbj=zLYpcU7Tc7XjcWBRZH7Aa5YihSmN7g@mail.gmail.com/
-
-Yosry Ahmed (9):
-  KVM: SVM: Properly check RAX in the emulator for SVM instructions
-  KVM: SVM: Refactor SVM instruction handling on #GP intercept
-  KVM: SVM: Properly check RAX on #GP intercept of SVM instructions
-  KVM: SVM: Move RAX legality check to SVM insn interception handlers
-  KVM: SVM: Check EFER.SVME and CPL on #GP intercept of SVM instructions
-  KVM: SVM: Treat mapping failures equally in VMLOAD/VMSAVE emulation
-  KVM: nSVM: Fail emulation of VMRUN/VMLOAD/VMSAVE if mapping vmcb12
-    fails
-  KVM: selftests: Rework svm_nested_invalid_vmcb12_gpa
-  KVM: selftests: Drop 'invalid' from svm_nested_invalid_vmcb12_gpa's
-    name
-
- arch/x86/kvm/emulate.c                        |   3 +-
- arch/x86/kvm/kvm_emulate.h                    |   2 +
- arch/x86/kvm/svm/nested.c                     |  12 +-
- arch/x86/kvm/svm/svm.c                        | 107 +++++------
- arch/x86/kvm/x86.c                            |   6 +
- tools/testing/selftests/kvm/Makefile.kvm      |   2 +-
- .../kvm/x86/svm_nested_invalid_vmcb12_gpa.c   |  98 ----------
- .../selftests/kvm/x86/svm_nested_vmcb12_gpa.c | 176 ++++++++++++++++++
- 8 files changed, 244 insertions(+), 162 deletions(-)
- delete mode 100644 tools/testing/selftests/kvm/x86/svm_nested_invalid_vmcb12_gpa.c
- create mode 100644 tools/testing/selftests/kvm/x86/svm_nested_vmcb12_gpa.c
-
-
-base-commit: 3d6cdcc8883b5726513d245eef0e91cabfc397f7
+diff --git a/arch/x86/kvm/emulate.c b/arch/x86/kvm/emulate.c
+index 6145dac4a605a..c8c6cc0406d6d 100644
+--- a/arch/x86/kvm/emulate.c
++++ b/arch/x86/kvm/emulate.c
+@@ -3887,8 +3887,7 @@ static int check_svme_pa(struct x86_emulate_ctxt *ctxt)
+ {
+ 	u64 rax = reg_read(ctxt, VCPU_REGS_RAX);
+ 
+-	/* Valid physical address? */
+-	if (rax & 0xffff000000000000ULL)
++	if (!ctxt->ops->page_address_valid(ctxt, rax))
+ 		return emulate_gp(ctxt, 0);
+ 
+ 	return check_svme(ctxt);
+diff --git a/arch/x86/kvm/kvm_emulate.h b/arch/x86/kvm/kvm_emulate.h
+index fb3dab4b5a53e..0abff36d09942 100644
+--- a/arch/x86/kvm/kvm_emulate.h
++++ b/arch/x86/kvm/kvm_emulate.h
+@@ -245,6 +245,8 @@ struct x86_emulate_ops {
+ 
+ 	bool (*is_canonical_addr)(struct x86_emulate_ctxt *ctxt, gva_t addr,
+ 				  unsigned int flags);
++
++	bool (*page_address_valid)(struct x86_emulate_ctxt *ctxt, gpa_t gpa);
+ };
+ 
+ /* Type, address-of, and value of an instruction's operand. */
+diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
+index 0b5d48e75b657..11d5bd84e323d 100644
+--- a/arch/x86/kvm/x86.c
++++ b/arch/x86/kvm/x86.c
+@@ -8916,6 +8916,11 @@ static bool emulator_is_canonical_addr(struct x86_emulate_ctxt *ctxt,
+ 	return !is_noncanonical_address(addr, emul_to_vcpu(ctxt), flags);
+ }
+ 
++static bool emulator_page_address_valid(struct x86_emulate_ctxt *ctxt, gpa_t gpa)
++{
++	return page_address_valid(emul_to_vcpu(ctxt), gpa);
++}
++
+ static const struct x86_emulate_ops emulate_ops = {
+ 	.vm_bugged           = emulator_vm_bugged,
+ 	.read_gpr            = emulator_read_gpr,
+@@ -8963,6 +8968,7 @@ static const struct x86_emulate_ops emulate_ops = {
+ 	.set_xcr             = emulator_set_xcr,
+ 	.get_untagged_addr   = emulator_get_untagged_addr,
+ 	.is_canonical_addr   = emulator_is_canonical_addr,
++	.page_address_valid  = emulator_page_address_valid,
+ };
+ 
+ static void toggle_interruptibility(struct kvm_vcpu *vcpu, u32 mask)
 -- 
 2.53.0.851.ga537e3e6e9-goog
 
