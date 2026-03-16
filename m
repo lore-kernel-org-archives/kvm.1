@@ -1,210 +1,320 @@
-Received: from mail-pf1-f202.google.com (mail-pf1-f202.google.com [209.85.210.202])
+Received: from mail-pl1-f181.google.com (mail-pl1-f181.google.com [209.85.214.181])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 383C93783A4
-	for <kvm@vger.kernel.org>; Mon, 16 Mar 2026 22:44:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.202
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 72D79371D0D
+	for <kvm@vger.kernel.org>; Mon, 16 Mar 2026 22:54:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.181
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773701054; cv=none; b=djA41b71AaSfX4YpMonSadPNiahE49CpatuzKBfX4kqfvaxaxwUw2MsAFEPGpd76Ty3w8xRaK8N9JmC7mkd+OocxkRxR2jB2qzID7PRx5BVS0UpPmYQ4ZBSn2NvCCgMo/bM43y0PCfqfluvzOIvxKIybnexg/HvEbUSOCA2r/ro=
+	t=1773701696; cv=none; b=rJxbxkuzEaRRwrYnyZzaxya1cyTKwE4aCfemtg0RGhyxq3K5U4Ca6ntxXce6RHP8WFhOKirQnw1d57PqX3ZGpf+reWU9pYMhvcI8szdZAJcARoeYnEFqlESBOIaEHueKY9rHBa7nwW6rqMyWuvQuM9CdlixtkYyGBks3oLBERMQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773701054; c=relaxed/simple;
-	bh=CRZaBcVT4Nccd9wr2yksdpHezTrKvIKkYwQqtZlwzaU=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=Lm9QPwm3AQ6xccG8BpgCn0YGrm0e8K60Vh6j5oqcg5dhfWhwcm7Ch7AnKB/3Ey6CWdK59UojJ2R4JWtYr3C7cSyuPwwVALgVI2pSxIBXUWdZsTZar8cMNeOskTZNin61pi1+qXAwQmClxkzvZcrdPeNAyOpqp99c5ChOxRGPH3w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--jingzhangos.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Oz0uYsW7; arc=none smtp.client-ip=209.85.210.202
+	s=arc-20240116; t=1773701696; c=relaxed/simple;
+	bh=nibhYwiPdt++G6J9J7ria/uZagWKJzcUfGV8vktD+b4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=H6mrGPw0u5+kv47xITRkpw+7OA6QSARencPPvmGbdej8In+vYsnC+8daPCcAjxve13SStvWSS1KtROvq5yejg6R+JITvWHSderfMxHkG8+WuOI92HHnhI5I64+ewt/24O01xW8Ji9zSA0WFGtuY0ae752X3f/2WykPxdvlT/xYQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=d8TqCYQO; arc=none smtp.client-ip=209.85.214.181
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--jingzhangos.bounces.google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Oz0uYsW7"
-Received: by mail-pf1-f202.google.com with SMTP id d2e1a72fcca58-829a72475a1so19871905b3a.3
-        for <kvm@vger.kernel.org>; Mon, 16 Mar 2026 15:44:12 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="d8TqCYQO"
+Received: by mail-pl1-f181.google.com with SMTP id d9443c01a7336-2b052562254so36475ad.0
+        for <kvm@vger.kernel.org>; Mon, 16 Mar 2026 15:54:55 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1773701052; x=1774305852; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=Ft9HYj5yB7NMR4Js2O0wNzazbO+Nfd7jWsn5KEAvFFc=;
-        b=Oz0uYsW7zY3Rckr9oNg+B2GnNuY+t5BJpSiid94/U8WTROALM4TZtyW+U6423JTqPX
-         Kn57S0fjJzVPzef7y3G4tSeybIfyOWHLNGyufabxCYK/CRfl/u/fBHOROXylgM8oWXWm
-         ORImpEtx3d64n9WCDU9kpq21GYP1lp4DB6J/acsjCUwwfuN6xrx9oSJkGKJ2NAJEueiS
-         IeFw1RmIBR7qM23Pm0OR6C4Arq/wk3BjLS6fMZon5RQecphQLGWJiVQODDVbOin8JOhQ
-         SA+xFwqWdElWeTi9AV8eEM55NXjEwzI+VSk5RhTO9U2mxHCfnfxKCpqL00KjK+KEAGRZ
-         KgrQ==
+        d=google.com; s=20251104; t=1773701695; x=1774306495; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=aESMhDv9gp0zMf1EBnN9PJRbyf0p6BUGu73DNh1Qjzg=;
+        b=d8TqCYQOgySd+7KKvCutrZZXShXblglqT7okalpX/R6jdCOitMmWk0AZLWZSOwZlXG
+         nMzxA2IcMEOscCq7TCC14jO8E5CZuRce0dc1W1AYIGUffS90XYBu3qi7t1bz6cBrJeqv
+         CKQg+IkqM7NdeKOM//BFE2KYoZj4GKziLYO3mDGHKyIyu3+UWmPFbE72+gxx9UelTdBU
+         JKO75NSvP2QL/OkzZRQuXPfdUucc69/YU0ly4yKxbB+hb5swfY1O3/q05+2NcN4I6vLk
+         72BDhPYPKu6DLK6QCh930elQuxlS+Zpb6yXrh/JB114ITJwqf3f284OFrGaZBLkdjcsb
+         OVxg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1773701052; x=1774305852;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=Ft9HYj5yB7NMR4Js2O0wNzazbO+Nfd7jWsn5KEAvFFc=;
-        b=E5PsR4Z32VZqB5hDFAWYQTez3MZ6XwSyHjtod0Sgh6eTmHQoB7nU6+X20fFxFQL2an
-         iFUbXXVpsripJEaVsKDujagkCvp2B8QbIwax919r5NDEQtQlMgT6/QapgO7rhWAc8Og3
-         3TjrWsAg+k0SsCyJWR/8EwElqFSGF8L7C+2rkgXsXQvj8CTB/3IxvT6Xsf/iXSXsNc0K
-         8EiVYeXwf1hKH2G00L+1YhA9TudX35Rx5BB61Cp1gN76lOjsV3ch41ubD/iTo/34HB6Z
-         MMccEMS3k+AsBnu4rs04mZoCrLcEVR+HpT6tvqbqTT4eQxbSzWXtV5ZQJhyBhsNGyUD3
-         Do3w==
-X-Gm-Message-State: AOJu0Yyeompmf9obz4WBu5CmwYq+qRZiISoEHRlXJAgHomJNqmSJXl9A
-	uWu1P68VXIm4NC9Y1jdaRkM8OPf85JRH4qmMcUdTlroKoShtQHn5QhxZaHzvmkVhkBRP93PXqV6
-	ppzY2kktA1SV/+VHzR7sBcNr1KgjsAB0UHVIDkeEXgenGaAPlM8KfYJ94Rcjw0qJIrUrl9tPkK3
-	O/NxZ9rg/mL5L8aOP3NPc6PkNLYfGRIuzMWKXFK1mm/NU7fRcOKP0kkNVAMz0=
-X-Received: from pfbho21.prod.google.com ([2002:a05:6a00:8815:b0:824:b235:888c])
- (user=jingzhangos job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:6a00:130f:b0:824:a182:1dd4 with SMTP id d2e1a72fcca58-82a19928c35mr13559051b3a.54.1773701051395;
- Mon, 16 Mar 2026 15:44:11 -0700 (PDT)
-Date: Mon, 16 Mar 2026 15:43:49 -0700
-In-Reply-To: <20260316224349.2360482-1-jingzhangos@google.com>
+        d=1e100.net; s=20251104; t=1773701695; x=1774306495;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=aESMhDv9gp0zMf1EBnN9PJRbyf0p6BUGu73DNh1Qjzg=;
+        b=UbbLN2e+L8BQi3t4s5/VeC0KohaqWXHfNvUOX0maIN+sFDt5ADpvNYa+ggJIvFJbb0
+         ikgTsU+F8OVeCRzwrvXv5f94jcxl4RP94cpyp1q0cmOoafXRWakZ6WxCIY1ghR7246UL
+         GeqeVJPsyzHwWCXfgg2FfzMljgCTuUerHd9YYaLdgzJhE9YjLGJ+UM6KugqWs2jpK29Y
+         Thf1zOe2Q0kCuZ8Zo8IJEhc223+dJnxPw+ouKwkprM9m55q8Yf8sU1dzGBdlJ7bjF3ZG
+         t3CC89HM/Pd8LokxrR5kXljsCFyMSpBrN9wRayukaZKUzstLb//KrCPvaau4gL7rwlHa
+         d61Q==
+X-Forwarded-Encrypted: i=1; AJvYcCUexHIj9IL2wTULO+RbQO5JQ0v0xoqbPNGTMzbG9y0tSjIoiOZrL/y7+40WHHPdkHvrySU=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyV4vjpBGFUZtwSF6Oc2xwYxfe+kcpRGrRdiPAV2TjYgvrVozXr
+	vbDQu89MxR+5QJQkm4e430m2yJKhuQfmPcOTsFCZNf9sotQvxOsgZeDGNYardG8B/g==
+X-Gm-Gg: ATEYQzzTodzURKA/6Lf0QgQq7uPufzu/ri9yBlbLIzNBFM1riuogvoUQu4D2QY7CX15
+	Dk2TCECboZy/mam7Tdgks7s6C3+AF2ASsalYZ9nv4QyTr2jR23ebDhiE5T2uVGK8ury4gJvnLa2
+	Xg/OFb8KJB8XodjEvu5cjulGpHe+//MX+eoPla1wYi8NdlGw8WNIE2pg/lsJn6XKWbVYByXYR8g
+	5xqLOqchE8IzwDH83Y8yYTqngaIrLvBi27B3MQXpQqHcZ5r0GBPbHimlEN/M2q7u01h0374dH7Z
+	TtHNBnoIVHSEy0vBAZk/rR0cr/5SkNdT3SLjHgbDs0d1RIRGM+e/GbiWJc51YRPrPgENG4G/wbP
+	W3/hFU94+mJO9dOqKaxb4rNY4wS4wNrvnP105q/TnNzbebG4CAU+ISakCrM2Caa7gw+flC1hbIe
+	+2FHaK+UX7qtTEYoToPsiIZMlqPLQFBzSVZ8yYSHE7W8+Izoc9T09xMJdmVA==
+X-Received: by 2002:a17:902:e54d:b0:2a9:5bfa:54ef with SMTP id d9443c01a7336-2b063ee45a7mr1438565ad.10.1773701694173;
+        Mon, 16 Mar 2026 15:54:54 -0700 (PDT)
+Received: from google.com (60.89.247.35.bc.googleusercontent.com. [35.247.89.60])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-82a0725ca0asm17538461b3a.17.2026.03.16.15.54.53
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 16 Mar 2026 15:54:53 -0700 (PDT)
+Date: Mon, 16 Mar 2026 15:54:50 -0700
+From: Vipin Sharma <vipinsh@google.com>
+To: Samiullah Khawaja <skhawaja@google.com>
+Cc: David Woodhouse <dwmw2@infradead.org>, 
+	Lu Baolu <baolu.lu@linux.intel.com>, Joerg Roedel <joro@8bytes.org>, Will Deacon <will@kernel.org>, 
+	Jason Gunthorpe <jgg@ziepe.ca>, Robin Murphy <robin.murphy@arm.com>, 
+	Kevin Tian <kevin.tian@intel.com>, Alex Williamson <alex@shazbot.org>, 
+	Shuah Khan <shuah@kernel.org>, iommu@lists.linux.dev, linux-kernel@vger.kernel.org, 
+	kvm@vger.kernel.org, Saeed Mahameed <saeedm@nvidia.com>, 
+	Adithya Jayachandran <ajayachandra@nvidia.com>, Parav Pandit <parav@nvidia.com>, 
+	Leon Romanovsky <leonro@nvidia.com>, William Tu <witu@nvidia.com>, 
+	Pratyush Yadav <pratyush@kernel.org>, Pasha Tatashin <pasha.tatashin@soleen.com>, 
+	David Matlack <dmatlack@google.com>, Andrew Morton <akpm@linux-foundation.org>, 
+	Chris Li <chrisl@kernel.org>, Pranjal Shrivastava <praan@google.com>, 
+	YiFei Zhu <zhuyifei@google.com>
+Subject: Re: [PATCH 01/14] iommu: Implement IOMMU LU FLB callbacks
+Message-ID: <20260316165018.GA1768676.vipinsh@google.com>
+References: <20260203220948.2176157-1-skhawaja@google.com>
+ <20260203220948.2176157-2-skhawaja@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20260316224349.2360482-1-jingzhangos@google.com>
-X-Mailer: git-send-email 2.53.0.851.ga537e3e6e9-goog
-Message-ID: <20260316224349.2360482-4-jingzhangos@google.com>
-Subject: [kvm-unit-tests PATCH v1 3/3] arm64: Add Stage-2 MMU demand paging test
-From: Jing Zhang <jingzhangos@google.com>
-To: KVM <kvm@vger.kernel.org>, KVMARM <kvmarm@lists.linux.dev>
-Cc: Marc Zyngier <maz@kernel.org>, Joey Gouly <joey.gouly@arm.com>, 
-	Andrew Jones <andrew.jones@linux.dev>, Alexandru Elisei <alexandru.elisei@arm.com>, 
-	Oliver Upton <oliver.upton@linux.dev>, Jing Zhang <jingzhangos@google.com>
-Content-Type: text/plain; charset="UTF-8"
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260203220948.2176157-2-skhawaja@google.com>
 
-Introduce a new test case to validate Stage-2 MMU fault handling. The
-test verifies that the hypervisor correctly identifies and handles
-Stage-2 data aborts triggered by a guest accessing unmapped memory.
+On Tue, Feb 03, 2026 at 10:09:35PM +0000, Samiullah Khawaja wrote:
+> +config IOMMU_LIVEUPDATE
+> +	bool "IOMMU live update state preservation support"
+> +	depends on LIVEUPDATE && IOMMUFD
+> +	help
+> +	  Enable support for preserving IOMMU state across a kexec live update.
+> +
+> +	  This allows devices managed by iommufd to maintain their DMA mappings
+> +	  during kexec base kernel update.
+> +
+> +	  If unsure, say N.
+> +
 
-The test performs the following:
-- Sets up a guest with Stage-1 disabled, using identity-mapped host
-   code and shared data in the Stage-2 page tables.
-- Triggers a Stage-2 data abort by accessing a specific unmapped IPA.
-- Catches the exception in the host, verifies the fault address,
-   and dynamically maps a new page to resolve the fault.
-- Resumes the guest to confirm the memory access completes successfully
-   and the fault handler functioned as expected.
+Do we need a separate config? Can't we just use CONFIG_LIVEUPDATE?
 
-Signed-off-by: Jing Zhang <jingzhangos@google.com>
----
- arm/Makefile.arm64    |   1 +
- arm/stage2-mmu-test.c | 100 ++++++++++++++++++++++++++++++++++++++++++
- 2 files changed, 101 insertions(+)
- create mode 100644 arm/stage2-mmu-test.c
+>  menuconfig IOMMU_SUPPORT
+>  	bool "IOMMU Hardware Support"
+>  	depends on MMU
+> diff --git a/drivers/iommu/Makefile b/drivers/iommu/Makefile
+> index 0275821f4ef9..b3715c5a6b97 100644
+> --- a/drivers/iommu/Makefile
+> +++ b/drivers/iommu/Makefile
+> @@ -15,6 +15,7 @@ obj-$(CONFIG_IOMMU_IO_PGTABLE_ARMV7S) += io-pgtable-arm-v7s.o
+>  obj-$(CONFIG_IOMMU_IO_PGTABLE_LPAE) += io-pgtable-arm.o
+>  obj-$(CONFIG_IOMMU_IO_PGTABLE_LPAE_KUNIT_TEST) += io-pgtable-arm-selftests.o
+>  obj-$(CONFIG_IOMMU_IO_PGTABLE_DART) += io-pgtable-dart.o
+> +obj-$(CONFIG_IOMMU_LIVEUPDATE) += liveupdate.o
 
-diff --git a/arm/Makefile.arm64 b/arm/Makefile.arm64
-index 9026fd71..e547f92d 100644
---- a/arm/Makefile.arm64
-+++ b/arm/Makefile.arm64
-@@ -67,6 +67,7 @@ tests += $(TEST_DIR)/cache.$(exe)
- tests += $(TEST_DIR)/debug.$(exe)
- tests += $(TEST_DIR)/fpu.$(exe)
- tests += $(TEST_DIR)/mte.$(exe)
-+tests += $(TEST_DIR)/stage2-mmu-test.$(exe)
- 
- include $(SRCDIR)/$(TEST_DIR)/Makefile.common
- 
-diff --git a/arm/stage2-mmu-test.c b/arm/stage2-mmu-test.c
-new file mode 100644
-index 00000000..391c28f0
---- /dev/null
-+++ b/arm/stage2-mmu-test.c
-@@ -0,0 +1,100 @@
-+/*
-+ * ARM64 Stage-2 MMU Demand Paging Test
-+ *
-+ * This test validates stage-2 data abort handling by purposefully
-+ * accessing unmapped memory in the guest and verifying that the
-+ * host correctly handles the fault by mapping the page.
-+ *
-+ * Copyright (C) 2026 Google LLC.
-+ * Author: Jing Zhang <jingzhangos@google.com>
-+ *
-+ * SPDX-License-Identifier: LGPL-2.0-or-later
-+ */
-+#include <libcflat.h>
-+#include <alloc_page.h>
-+#include <asm/io.h>
-+#include <asm/smp.h>
-+#include <asm/guest.h>
-+#include <asm/stage2_mmu.h>
-+
-+#define TEST_PAGE_IPA		0x40000000UL
-+#define FAULT_ADDR_IPA		0x50000000UL
-+#define TEST_DATA		0xBEEFCAFEUL
-+
-+static volatile bool handled = false;
-+
-+static void guest_code(void)
-+{
-+	volatile unsigned long *test_va = (void *)TEST_PAGE_IPA;
-+	volatile unsigned long *fault_va = (void *)FAULT_ADDR_IPA;
-+
-+	*fault_va = *test_va;
-+
-+	if (*fault_va == *test_va)
-+		handled = true;
-+
-+	asm("hvc #0");
-+}
-+
-+int main(int argc, char **argv)
-+{
-+	struct guest *guest;
-+	unsigned long *test_page, *fixup_page;
-+	unsigned long code_va_base, code_pa_base, data_base, far, ec;
-+
-+	report_prefix_push("stage2-mmu");
-+
-+	guest = guest_create(smp_processor_id(), guest_code, S2_PAGE_4K);
-+
-+	/* Map host code: IPA(VA) -> PA */
-+	/* We use the host VA as the Guest IPA because guest stage 1 is disabled. */
-+	code_va_base = (unsigned long)guest_code;
-+	code_pa_base = virt_to_phys((void *)guest_code);
-+
-+	/* Align to 2MB to use block descriptors where possible */
-+	code_va_base = code_va_base & ~(SZ_2M - 1);
-+	code_pa_base = code_pa_base & ~(SZ_2M - 1);
-+	s2mmu_map(guest->s2mmu, code_va_base, code_pa_base, SZ_2M, S2_MAP_RW);
-+
-+	/* Identity map the shared variable */
-+	data_base = virt_to_phys((void *)&handled) & PAGE_MASK;
-+	s2mmu_map(guest->s2mmu, data_base, data_base, PAGE_SIZE, S2_MAP_RW);
-+
-+	/* Map test data page */
-+	test_page = alloc_page();
-+	*test_page = TEST_DATA;
-+	s2mmu_map(guest->s2mmu, TEST_PAGE_IPA, virt_to_phys(test_page), PAGE_SIZE, S2_MAP_RW);
-+
-+	report_info("CPU%d: entering guest...", smp_processor_id());
-+
-+	while (1) {
-+		guest_run(guest);
-+
-+		if (guest->exit_code == GUEST_VECTOR_SYNC) {
-+			ec = guest->esr_el2 >> ESR_ELx_EC_SHIFT;
-+			if (ec == ESR_ELx_EC_HVC64) {
-+				report_info("CPU%d: Guest exited via HVC.", smp_processor_id());
-+				break;
-+			} else if (ec == ESR_ELx_EC_DABT_LOW) {
-+				far = guest->far_el2;
-+				if (far == FAULT_ADDR_IPA) {
-+					fixup_page = alloc_page();
-+					s2mmu_map(guest->s2mmu, FAULT_ADDR_IPA,
-+						  virt_to_phys(fixup_page), PAGE_SIZE, S2_MAP_RW);
-+					report(true, "Caught stage-2 fault at 0x%lx", far);
-+				} else {
-+					report(false, "Unexpected fault address: 0x%lx", far);
-+					break;
-+				}
-+			} else {
-+				report(false, "Unexpected exception class: 0x%lx", ec);
-+				break;
-+			}
-+		}
-+	}
-+
-+	report(handled, "Stage-2 fault handling test completed");
-+	guest_destroy(guest);
-+
-+	return report_summary();
-+}
--- 
-2.53.0.851.ga537e3e6e9-goog
+It seems like there is a sorted order for CONFIG_IOMMU_* in the
+Makefile, lets keep it same if possible.
+
+> +static void iommu_liveupdate_free_objs(u64 next, bool incoming)
+> +{
+> +	struct iommu_objs_ser *objs;
+> +
+> +	while (next) {
+> +		objs = __va(next);
+
+There is also call to phys_to_virt() in other functions in this patch.
+Should we use the same here to be consistent?
+
+> +		next = objs->next_objs;
+> +
+> +		if (!incoming)
+> +			kho_unpreserve_free(objs);
+> +		else
+> +			folio_put(virt_to_folio(objs));
+> +	}
+> +}
+
+Instead of passing boolean, and calling with different arguments, I
+think it will be simpler to just have two functions
+
+- iommu_liveupdate_unpreserve()
+- iommu_liveupdate_folio_put()
+
+> +
+> +static void iommu_liveupdate_flb_free(struct iommu_lu_flb_obj *obj)
+> +{
+> +	if (obj->iommu_domains)
+> +		iommu_liveupdate_free_objs(obj->ser->iommu_domains_phys, false);
+> +
+> +	if (obj->devices)
+> +		iommu_liveupdate_free_objs(obj->ser->devices_phys, false);
+> +
+> +	if (obj->iommus)
+> +		iommu_liveupdate_free_objs(obj->ser->iommus_phys, false);
+> +
+> +	kho_unpreserve_free(obj->ser);
+> +	kfree(obj);
+> +}
+> +
+> +static int iommu_liveupdate_flb_preserve(struct liveupdate_flb_op_args *argp)
+> +{
+> +	struct iommu_lu_flb_obj *obj;
+> +	struct iommu_lu_flb_ser *ser;
+> +	void *mem;
+> +
+> +	obj = kzalloc(sizeof(*obj), GFP_KERNEL);
+> +	if (!obj)
+> +		return -ENOMEM;
+> +
+> +	mutex_init(&obj->lock);
+> +	mem = kho_alloc_preserve(sizeof(*ser));
+> +	if (IS_ERR(mem))
+> +		goto err_free;
+> +
+> +	ser = mem;
+> +	obj->ser = ser;
+> +
+> +	mem = kho_alloc_preserve(PAGE_SIZE);
+> +	if (IS_ERR(mem))
+> +		goto err_free;
+> +
+> +	obj->iommu_domains = mem;
+> +	ser->iommu_domains_phys = virt_to_phys(obj->iommu_domains);
+> +
+> +	mem = kho_alloc_preserve(PAGE_SIZE);
+> +	if (IS_ERR(mem))
+> +		goto err_free;
+> +
+> +	obj->devices = mem;
+> +	ser->devices_phys = virt_to_phys(obj->devices);
+> +
+> +	mem = kho_alloc_preserve(PAGE_SIZE);
+> +	if (IS_ERR(mem))
+> +		goto err_free;
+> +
+> +	obj->iommus = mem;
+> +	ser->iommus_phys = virt_to_phys(obj->iommus);
+> +
+> +	argp->obj = obj;
+> +	argp->data = virt_to_phys(ser);
+> +	return 0;
+> +
+> +err_free:
+> +	iommu_liveupdate_flb_free(obj);
+
+Generally, I have seen in the function goto will call corresponding
+error tags, and free corresponding allocations and all the one which
+happend before. It is easier to read code that way. I know you are
+combining the free call from iommu_liveupdate_flb_unpreserve() also.
+IMHO, code readability will be better this way.
+
+> +	return PTR_ERR(mem);
+> +}
+> +
+> +static void iommu_liveupdate_flb_unpreserve(struct liveupdate_flb_op_args *argp)
+> +{
+> +	iommu_liveupdate_flb_free(argp->obj);
+> +}
+> +
+> +static void iommu_liveupdate_flb_finish(struct liveupdate_flb_op_args *argp)
+> +{
+> +	struct iommu_lu_flb_obj *obj = argp->obj;
+> +
+> +	if (obj->iommu_domains)
+> +		iommu_liveupdate_free_objs(obj->ser->iommu_domains_phys, true);
+
+Can there be the case where obj->iommu_domains is NULL but
+obj->ser->iommu_domains_phys is not? If that is not possible, I will
+just simplify the patch and unconditionally call
+iommu_liveupdate_free_objs()?
+
+> +
+> +static int iommu_liveupdate_flb_retrieve(struct liveupdate_flb_op_args *argp)
+> +{
+> +	struct iommu_lu_flb_obj *obj;
+> +	struct iommu_lu_flb_ser *ser;
+> +
+> +	obj = kzalloc(sizeof(*obj), GFP_ATOMIC);
+> +	if (!obj)
+> +		return -ENOMEM;
+
+Is kzalloc() failure here recoverable whereas iommu_liveupdate_restore_objs()
+below is not? If it is not recoverable should there be a BUG_ON here?
+
+> +
+> +	mutex_init(&obj->lock);
+> +	BUG_ON(!kho_restore_folio(argp->data));
+> +	ser = phys_to_virt(argp->data);
+> +	obj->ser = ser;
+> +
+> +	iommu_liveupdate_restore_objs(ser->iommu_domains_phys);
+> +	obj->iommu_domains = phys_to_virt(ser->iommu_domains_phys);
+
+Can iommu_liveupdate_restore_obj() just return virtual address and we
+can simplify code to:
+
+	obj->iommu_domains = iommu_liveupdate_restore_objs(ser->iommu_domains_phys);
+
+> +
+> +	iommu_liveupdate_restore_objs(ser->devices_phys);
+> +	obj->devices = phys_to_virt(ser->devices_phys);
+> +
+> +	iommu_liveupdate_restore_objs(ser->iommus_phys);
+> +	obj->iommus = phys_to_virt(ser->iommus_phys);
+> +
+> +	argp->obj = obj;
+> +
+> +	return 0;
+> +}
+> +
+> diff --git a/include/linux/iommu-lu.h b/include/linux/iommu-lu.h
+
+I will recommend to use full name and not short "lu". iommu-liveupdate.h
+seems more readable and not too long.
+
+> +#define MAX_IOMMU_SERS ((PAGE_SIZE - sizeof(struct iommus_ser)) / sizeof(struct iommu_ser))
+> +#define MAX_IOMMU_DOMAIN_SERS \
+> +		((PAGE_SIZE - sizeof(struct iommu_domains_ser)) / sizeof(struct iommu_domain_ser))
+> +#define MAX_DEVICE_SERS ((PAGE_SIZE - sizeof(struct devices_ser)) / sizeof(struct device_ser))
+
+This is per page limit, not whole serialization limit. May be we can
+name something like:
+
+- MAX_IOMMU_SERS_PER_PAGE, or
+- MAX_IOMMU_SERS_PAGE_CAPACITY
+
+> +
+> +struct iommu_lu_flb_obj {
+> +	struct mutex lock;
+> +	struct iommu_lu_flb_ser *ser;
+> +
+> +	struct iommu_domains_ser *iommu_domains;
+> +	struct iommus_ser *iommus;
+> +	struct devices_ser *devices;
+> +} __packed;
+> +
+
+I think naming scheme used here is little hard to absorb when we have so
+many individual structs in this header file. Specifically, struct names like:
+
+- iommu_domains_ser vs iommu_domain_ser
+- iommus_ser vs iommu_ser
+- devices_ser vs device_ser
+- iommu_objs_ser vs iommu_obj_ser
+
+First three are showing container and its elements relation, however,
+last one doesn't have that relation but naming is same there.
+
+I will recommend to change the naming scheme of containers to something like:
+
+	struct iommu_domain_ser_[hdr|header|table|arr] {};
+	struct iommu_ser_hdr {}
+	struct device_ser_hdr {}
+
+Individual element of container can be same.
+
+For objs, something like: 
+	iommu_objs_ser -> iommu_hdr_meta
 
