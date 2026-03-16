@@ -1,350 +1,188 @@
-Received: from DM5PR21CU001.outbound.protection.outlook.com (mail-centralusazon11011042.outbound.protection.outlook.com [52.101.62.42])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 42129EADC
-	for <kvm@vger.kernel.org>; Mon, 16 Mar 2026 13:00:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.62.42
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773666021; cv=fail; b=SWIz0leiMcs8Mpw9QfB6iBXC+i3XAO43mZOwBWMhVrXgLc3BMcXopjXQaWK/UWJ4boIj3luXvETouN8v5VIJ1NFBRZGrMJwBNWzy06DouNoxvFYDww99jIGIqcv0NAlaJYkuBgqPxhHHaWZLjIuYlUeqNXJb934vOJ3B+WvXR8o=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773666021; c=relaxed/simple;
-	bh=2syXbdxx21cczJ4XtCaK/iznAvYJscrhL8UcS5ovrJc=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=A0YVHf6JjhXeFCDeNqmMuHmx6wdoSkS9AUhcxycEJOQuYwumPejd9erCLSWOze83d94Tj65riLgtYBRqXPZB7OK00lWnJVMtwd/XT9jKm+rQyrTMQRATaZpzhAuLS+kyHuoe2F/pqLbRDhY85GNvlmcrJsBrbd6yhlrGvf0Fkh8=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=3GiKaEcQ; arc=fail smtp.client-ip=52.101.62.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40B7DA55;
+	Mon, 16 Mar 2026 13:05:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1773666339; cv=none; b=rWXPFeePr52ZPJymiNfblAY1iFLhiO60CNnwmQXuWWlWv+7Me/ebtLJMAx6DxAlvMcuW0GIbL4U3vhgst6P7mPODush7gTX3DvlUDvULjr9coZao3tzt8hNil3eclgloChwkIk2uYf8/Gs79jPn4vKWwUDDddRix0fa58Jc5rGQ=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1773666339; c=relaxed/simple;
+	bh=g5kZmA0yw/DQF+KEhs3w8BmQ1L3CG3z1AwFKMk3kBG8=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=U+NdkU6uaeV2hc0Q/8Ek2PIfT5Lk2XJAsjo/wsfj+xHG/4Zm3yDgahhr1m6StmIIkd1vfTfTFDC814STyfAPJ5qRDpjVlR3M1SnNETjCMr2GJvYnMp8El8Q5QE8/dLK6y6qDSI9SqQzAinMn5WTJTLuFf3SnjPupPW0K8RyKkxc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=B6IZ/uuP; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="3GiKaEcQ"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=Uhy+BKh0qgHViglhWNsKWpeGnHjVblYkV8YPRYsnRxRd0T+QXx7rWqdiBKGqhv+/YBa2XB5xR2j6rwdcBBHJc/mtcCtujvGtx2Wn2mlPK4uz5q3uWn1WcCv6XsJh5P8V9JJSfsKQ/xXki1nfkBN/icmyZQwWYLqpZ/VBGyveGoYJJ6BigVS7PfFZdM6aJiUGlRHlFMue2rnNPYsBgPaLLSXxYQ+KYQli19myNzK/DysHBXhQZmfn6ZU+WKKrUmIQ3ne/VANJEy4nnZOVtLR0U4vwJpoWmekO5RxPsoCiEifK5zbq0ia0OxLlfKfY6cW7MgMrJnn7H5NU7yRuCdyK5w==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=GKlh5NL4N6f2HdSZ/HAfIx0ecxzstOmhWUFfZiqo3bg=;
- b=dQ0oaL2U3177DTH3KYGrS/vIpi9Ni+n9nGIU+cx6YxowAhTH66wKMQQWKD0t0r7Q/lyaSXAuTTykx3buFg4ngdUnP4/V2jjtbRA9HBizcD1bCMbxgC/F61AAw2EHlh7YGikZMys58qWgfs5iAOrJhc177PTDw4Bv0D6y8ZUi093UZ701bZyp20xPVQG32++2sopV+1XSj7pX6AV7yp6efB2g/lFEmsLBbCrm5ouN5Y2seU/IGAGO79GozynPDg/rQ+0a7YnBP51vpKMCm/2INqhUEZ2B31vhJ5Nhg31uOwNjwYGG7+TpVgv52q8IvZN1h0aFm6A7MyG8Gg0C1v4E2Q==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 165.204.84.17) smtp.rcpttodomain=google.com smtp.mailfrom=amd.com; dmarc=pass
- (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
- dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=GKlh5NL4N6f2HdSZ/HAfIx0ecxzstOmhWUFfZiqo3bg=;
- b=3GiKaEcQQN6c1+ObDkl2TVONXef9TNPp6428+LSSU1punmHL8SM7lJnPO0U6LqG3ZSKtnT9Rj85i3eHVgtJfW57PH2gcRFETMzbBwSUTJoNx7dGmJk6grSO/hQlIHlJABz0PdDXM+9gk4eGwMxCUcZpPku/UOFkrjtP0lPuLXm4=
-Received: from BY1P220CA0011.NAMP220.PROD.OUTLOOK.COM (2603:10b6:a03:59d::11)
- by DS7PR12MB6189.namprd12.prod.outlook.com (2603:10b6:8:9a::17) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9723.16; Mon, 16 Mar
- 2026 13:00:10 +0000
-Received: from SJ5PEPF000001D3.namprd05.prod.outlook.com
- (2603:10b6:a03:59d:cafe::9d) by BY1P220CA0011.outlook.office365.com
- (2603:10b6:a03:59d::11) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.20.9700.25 via Frontend Transport; Mon,
- 16 Mar 2026 13:00:18 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
- smtp.mailfrom=amd.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=amd.com;
-Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
- 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=satlexmb08.amd.com; pr=C
-Received: from satlexmb08.amd.com (165.204.84.17) by
- SJ5PEPF000001D3.mail.protection.outlook.com (10.167.242.55) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.9700.17 via Frontend Transport; Mon, 16 Mar 2026 13:00:10 +0000
-Received: from satlexmb07.amd.com (10.181.42.216) by satlexmb08.amd.com
- (10.181.42.217) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.17; Mon, 16 Mar
- 2026 08:00:09 -0500
-Received: from [10.252.210.85] (10.180.168.240) by satlexmb07.amd.com
- (10.181.42.216) with Microsoft SMTP Server id 15.2.2562.17 via Frontend
- Transport; Mon, 16 Mar 2026 08:00:05 -0500
-Message-ID: <4f0d5601-9580-4a11-9ca8-7f242d3f0c6c@amd.com>
-Date: Mon, 16 Mar 2026 18:30:03 +0530
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="B6IZ/uuP"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 147A4C19424;
+	Mon, 16 Mar 2026 13:05:38 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1773666338;
+	bh=g5kZmA0yw/DQF+KEhs3w8BmQ1L3CG3z1AwFKMk3kBG8=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=B6IZ/uuPYeW7c2/H5K7xRSNM/hYpzRUlmiz0MCVcu/fA12VOlBmLOHxzLD21/RtCy
+	 j8/9EsakS0klSL/K5ewcs62wYBe/0GMl6YOL55OsbcDfxmpS7evc7welhlulnx8AQP
+	 RdT7nSqq+qaosHcmSX7F2gAT1SNMbI2HLfiCgAZGPIacHEDWtOs3WG224/EWjvaRUQ
+	 L/y1+pSZ96Px0Uj3Ie7Qqxsjk3Ycoe4NVuvv/iEkLFM8giyd45/mfLFBlRfUr/exlK
+	 tRp44jTNInIhTAqVxetUAwdr+lRDqg43ZKB1P9PLhNx9xuET+9TzSsdbe5bUn6eI1U
+	 DMnRGP5SW0NTg==
+Received: from phl-compute-09.internal (phl-compute-09.internal [10.202.2.49])
+	by mailfauth.phl.internal (Postfix) with ESMTP id 321E2F40070;
+	Mon, 16 Mar 2026 09:05:37 -0400 (EDT)
+Received: from phl-frontend-03 ([10.202.2.162])
+  by phl-compute-09.internal (MEProxy); Mon, 16 Mar 2026 09:05:37 -0400
+X-ME-Sender: <xms:IQC4aWKTsRuGC-EUFnmc5x-kGpXz6GZPxB9qd93RmiEv6aHMp4oETg>
+    <xme:IQC4adDzzTJi3pgIu17LLuWGkQVghHbIy4FHlmGE0MxCktoCF2AlbuusjNN9rRsSp
+    aUQPWQLSl7izFmSyAhHs9p0X681Ruc-M3jDZexA_HQVqihGu4-uSN0>
+X-ME-Received: <xmr:IQC4aXE79LMsuNqehTOR921-sk44G-wzRaSDRVnlsHwd7_LS3sV47VJ3SeWIdw>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgddvleekgeehucetufdoteggodetrf
+    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
+    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
+    gurhepfffhvfevuffkfhggtggugfgjsehtkeertddttddunecuhfhrohhmpefmihhrhihl
+    ucfuhhhuthhsvghmrghuuceokhgrsheskhgvrhhnvghlrdhorhhgqeenucggtffrrghtth
+    gvrhhnpeevhffgudeuleelueehfedtveduudehieefudehvdduheeivdeijeejledvgeeg
+    feenucffohhmrghinhepihhnthgvlhdrtghomhenucevlhhushhtvghrufhiiigvpedtne
+    curfgrrhgrmhepmhgrihhlfhhrohhmpehkihhrihhllhdomhgvshhmthhprghuthhhphgv
+    rhhsohhnrghlihhthidqudeiudduiedvieehhedqvdekgeeggeejvdekqdhkrghspeepkh
+    gvrhhnvghlrdhorhhgsehshhhuthgvmhhovhdrnhgrmhgvpdhnsggprhgtphhtthhopeeh
+    vddpmhhouggvpehsmhhtphhouhhtpdhrtghpthhtoheptghhrghordhgrghosehinhhtvg
+    hlrdgtohhmpdhrtghpthhtoheplhhinhhugidqkhgvrhhnvghlsehvghgvrhdrkhgvrhhn
+    vghlrdhorhhgpdhrtghpthhtoheplhhinhhugidqtghotghosehlihhsthhsrdhlihhnuh
+    igrdguvghvpdhrtghpthhtohepkhhvmhesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgt
+    phhtthhopegsihhnsghinhdrfihusehlihhnuhigrdhinhhtvghlrdgtohhmpdhrtghpth
+    htohepuggrnhdrjhdrfihilhhlihgrmhhssehinhhtvghlrdgtohhmpdhrtghpthhtohep
+    uggrvhgvrdhhrghnshgvnheslhhinhhugidrihhnthgvlhdrtghomhdprhgtphhtthhope
+    hirhgrrdifvghinhihsehinhhtvghlrdgtohhmpdhrtghpthhtohepkhgrihdrhhhurghn
+    ghesihhnthgvlhdrtghomh
+X-ME-Proxy: <xmx:IQC4aQbe1QEQy_hMtzVNlE-_9JgAfBJrykOH8aijcJ6dHrjXHYNdXg>
+    <xmx:IQC4afGmr2XPdg0rS1Et6EZDjmohugkeNtw4TPXfnteBDIpl-3mCdw>
+    <xmx:IQC4aWCoRPad65ZbDpVcFDu_2Fb8D0ZYqMSR-we2B8bVW7rkWTb9Nw>
+    <xmx:IQC4aYHQer6IRgkJ88p_2hg1VFrFirJ8IMIAVlcbpA7C3mD-8sflfA>
+    <xmx:IQC4aRLKwioCZQAbLDfs-rezdUh8ZIq0DjqrWQtduXyqkUeMC4IxDzJb>
+Feedback-ID: i10464835:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
+ 16 Mar 2026 09:05:34 -0400 (EDT)
+Date: Mon, 16 Mar 2026 13:05:28 +0000
+From: Kiryl Shutsemau <kas@kernel.org>
+To: Chao Gao <chao.gao@intel.com>
+Cc: linux-kernel@vger.kernel.org, linux-coco@lists.linux.dev, 
+	kvm@vger.kernel.org, binbin.wu@linux.intel.com, dan.j.williams@intel.com, 
+	dave.hansen@linux.intel.com, ira.weiny@intel.com, kai.huang@intel.com, nik.borisov@suse.com, 
+	paulmck@kernel.org, pbonzini@redhat.com, reinette.chatre@intel.com, 
+	rick.p.edgecombe@intel.com, sagis@google.com, seanjc@google.com, 
+	tony.lindgren@linux.intel.com, vannapurve@google.com, vishal.l.verma@intel.com, 
+	yilun.xu@linux.intel.com, Farrah Chen <farrah.chen@intel.com>, 
+	Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
+	x86@kernel.org, "H. Peter Anvin" <hpa@zytor.com>
+Subject: Re: [PATCH v5 04/22] x86/virt/seamldr: Introduce a wrapper for
+ P-SEAMLDR SEAMCALLs
+Message-ID: <abf-3xRg7ouZw-F4@thinkstation>
+References: <20260315135920.354657-1-chao.gao@intel.com>
+ <20260315135920.354657-5-chao.gao@intel.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v1 6/9] KVM: Add KVM_GET_LAPIC2 and KVM_SET_LAPIC2 for
- extended APIC
-To: Manali Shukla <manali.shukla@amd.com>, <seanjc@google.com>,
-	<pbonzini@redhat.com>
-CC: <mingo@redhat.com>, <bp@alien8.de>, <dave.hansen@linux.intel.com>,
-	<kvm@vger.kernel.org>, <x86@kernel.org>, <santosh.shukla@amd.com>,
-	<nikunj.dadhania@amd.com>, <Naveen.Rao@amd.com>, <dapeng1.mi@linux.intel.com>
-References: <20260204074452.55453-1-manali.shukla@amd.com>
- <20260204074452.55453-7-manali.shukla@amd.com>
-Content-Language: en-US
-From: "Nikunj A. Dadhania" <nikunj@amd.com>
-In-Reply-To: <20260204074452.55453-7-manali.shukla@amd.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 7bit
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SJ5PEPF000001D3:EE_|DS7PR12MB6189:EE_
-X-MS-Office365-Filtering-Correlation-Id: 9f5b1a24-61b0-40b5-094e-08de835bf4d7
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|82310400026|1800799024|376014|36860700016|7053199007|18002099003|22082099003|56012099003;
-X-Microsoft-Antispam-Message-Info:
-	nTKQt0fdVudZAldcW/qnqSeTBGe5RpH+1jJwTyTvf6ixBfBwYU9Y7QOWaaD7KjnEDu3CPkiZ6eryQRzY0IVY2jS+QOIsYHbOU8KWncV26/aOSugB4A3ecivSUVKJFdmPaR1UIX1zo0Tx152u79mEMdqxEI8DhbH0i/OCTh7EoOlxcmcMAuM6ikeIdjvAQ+0g3O7cfLQonPOukC+NiL6J/DshZlw9Dgp1v1oNEnulpwg8KaTyKAMSnuCSnMCOzih03uHUmw78oR4XznhNiRqoyokufnHcK24BKD2k0dn44/iH+RYUC5KnXFMr3tV3IKQQtyh+s/jPJEWQwUnICPoSWs1/g87wDjGR5R+kgI/1xZbwKZHzOHs6Y8nnT3biSy0sBkVLfKZ5H3nQnYTc8AjaDYd7iUb+SfAw6p1gbM4N9EPT/8fkTTRuk/O+mHJZ1bP7GeZswBxPBz/cldVBK8jtz7+Kw4FLxSSIEZgJtariWSb2W+u8l8iwZVySBgFNcXUWGcUr4tazOVS0hZqEJ/pzf846lbz5wHO8c8bNgdTrxDl+PBGYsCCZYsSMqBUcaNUOI+mIvJldYBMubaqB42FN0y1Fi0fgYEeo1lEQkxSMe9tMNKLKR13JUQG5qbwAaEh34FExSVY2F5eOXLpkqWiA9qyoX2vxSjvhV/7UjhZLqgvVV6YphzBYwY6sydMQjbAoXm9RY/gzetdDDKMzN+BeWxN4ERFhyc7aJ6l9vRO4qJY1oybirTOdqR+mCmPPTMp+pDip4JJ0whxacWH+AFz4cw==
-X-Forefront-Antispam-Report:
-	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb08.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(82310400026)(1800799024)(376014)(36860700016)(7053199007)(18002099003)(22082099003)(56012099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	ov/Py8UP4D9wFh5eGePnH67R4lVILIGZhlOLQkx0SGq36+VR1oY2eI//pLhmDZM88YvjitFrEWp477nAoEMvwHfb0+4H5KDr6d3DfkGjsdRLugD6H5ZMP+eDNlSVBHlNiUu/bNS3fgRZqOsLmdpHgObI6E1yRH6otHUX+pArpaVIa0Wy4yXbn2r4Ke5wQwDODzb/as36SrePNE+tTPSptI/ewK3+5EjTZy/NUlsc7Gln5wa/lJkMp5ah398D5T91OgVuQJsEuWiLGN1DupCdVVXLqT3W1pXcQXI+dDVwxwZWRvvYAQdygjLUiwi7pCRM5dUiLWzPM76GFcRqMWgJ3OvPl1CsCg1qPHUIwvFsecf5DPhXeQm0bB3v7iCRh7B/D41+ebzRQbGOnTJDUQn54e1mEfoYCXAR7hvspeXJ+haPh2JOivBTuXtq+69F8GWm
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 16 Mar 2026 13:00:10.5070
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 9f5b1a24-61b0-40b5-094e-08de835bf4d7
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[satlexmb08.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	SJ5PEPF000001D3.namprd05.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS7PR12MB6189
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20260315135920.354657-5-chao.gao@intel.com>
 
-
-
-On 2/4/2026 1:14 PM, Manali Shukla wrote:
-> Add KVM_GET_LAPIC2 and KVM_SET_LAPIC2 ioctls to save and restore APIC
-> state using a 4KB buffer (kvm_lapic_state2).  The larger buffer allows
-> saving additional APIC registers beyond the standard APIC registers
-> supported by the existing 1KB KVM_GET/SET_LAPIC ioctls.
+On Sun, Mar 15, 2026 at 06:58:24AM -0700, Chao Gao wrote:
+> The TDX architecture uses the "SEAMCALL" instruction to communicate with
+> SEAM mode software. Right now, the only SEAM mode software that the kernel
+> communicates with is the TDX module. But, there is actually another
+> component that runs in SEAM mode but it is separate from the TDX module:
+> the persistent SEAM loader or "P-SEAMLDR". Right now, the only component
+> that communicates with it is the BIOS which loads the TDX module itself at
+> boot. But, to support updating the TDX module, the kernel now needs to be
+> able to talk to it.
 > 
-> The 4KB buffer size matches the LAPIC2 capability, which enables the
-> full APIC register page including extended APIC registers for AMD
-> processors.
+> P-SEAMLDR SEAMCALLs differ from TDX module SEAMCALLs in areas such as
+> concurrency requirements. Add a P-SEAMLDR wrapper to handle these
+> differences and prepare for implementing concrete functions.
 > 
-> KVM_GET/SET_LAPIC continue to work as before for backward compatibility.
-> Document the new ioctls in Documentation/virt/kvm/api.rst.
+> Note that unlike P-SEAMLDR, there is also a non-persistent SEAM loader
+> ("NP-SEAMLDR"). This is an authenticated code module (ACM) that is not
+> callable at runtime. Only BIOS launches it to load P-SEAMLDR at boot;
+> the kernel does not need to interact with it for runtime update.
 > 
-> Suggested-by: Sean Christopherson <seanjc@google.com>
-> Signed-off-by: Manali Shukla <manali.shukla@amd.com>
+> For details of P-SEAMLDR SEAMCALLs, see Intel® Trust Domain CPU
+> Architectural Extensions, Revision 343754-002, Chapter 2.3 "INSTRUCTION
+> SET REFERENCE".
+> 
+> Signed-off-by: Chao Gao <chao.gao@intel.com>
+> Reviewed-by: Binbin Wu <binbin.wu@linux.intel.com>
+> Tested-by: Farrah Chen <farrah.chen@intel.com>
+> Link: https://cdrdv2.intel.com/v1/dl/getContent/733582 # [1]
 > ---
->  Documentation/virt/kvm/api.rst  | 45 +++++++++++++++++++++++++
->  arch/x86/include/uapi/asm/kvm.h |  5 +++
->  arch/x86/kvm/x86.c              | 59 +++++++++++++++++++++++++++++++++
->  include/uapi/linux/kvm.h        |  2 ++
->  4 files changed, 111 insertions(+)
+> v5:
+>  - Don't save/restore irq flags as P-SEAMLDR calls are made only in process
+>    context
+>  - clarify why raw_spinlock is used [Dave]
+> v4:
+>  - Give more background about P-SEAMLDR in changelog [Dave]
+>  - Don't handle P-SEAMLDR's "no_entropy" error [Dave]
+>  - Assume current VMCS is preserved across P-SEAMLDR calls [Dave]
+>  - I'm not adding Reviewed-by tags as the code has changed significantly.
+> v2:
+>  - don't create a new, inferior framework to save/restore VMCS
+>  - use human-friendly language, just "current VMCS" rather than
+>    SDM term "current-VMCS pointer"
+>  - don't mix guard() with goto
+> ---
+>  arch/x86/virt/vmx/tdx/Makefile  |  2 +-
+>  arch/x86/virt/vmx/tdx/seamldr.c | 24 ++++++++++++++++++++++++
+>  2 files changed, 25 insertions(+), 1 deletion(-)
+>  create mode 100644 arch/x86/virt/vmx/tdx/seamldr.c
 > 
-> diff --git a/Documentation/virt/kvm/api.rst b/Documentation/virt/kvm/api.rst
-> index 71b4d24f009a..c49cf3104b2c 100644
-> --- a/Documentation/virt/kvm/api.rst
-> +++ b/Documentation/virt/kvm/api.rst
-> @@ -6517,6 +6517,51 @@ the capability to be present.
->  
->  `flags` must currently be zero.
->  
-> +4.144 KVM_GET_LAPIC2
-> +----------------------
+> diff --git a/arch/x86/virt/vmx/tdx/Makefile b/arch/x86/virt/vmx/tdx/Makefile
+> index 90da47eb85ee..d1dbc5cc5697 100644
+> --- a/arch/x86/virt/vmx/tdx/Makefile
+> +++ b/arch/x86/virt/vmx/tdx/Makefile
+> @@ -1,2 +1,2 @@
+>  # SPDX-License-Identifier: GPL-2.0-only
+> -obj-y += seamcall.o tdx.o
+> +obj-y += seamcall.o seamldr.o tdx.o
+> diff --git a/arch/x86/virt/vmx/tdx/seamldr.c b/arch/x86/virt/vmx/tdx/seamldr.c
+> new file mode 100644
+> index 000000000000..7ed9be89017c
+> --- /dev/null
+> +++ b/arch/x86/virt/vmx/tdx/seamldr.c
+> @@ -0,0 +1,24 @@
+> +// SPDX-License-Identifier: GPL-2.0
+> +/*
+> + * P-SEAMLDR support for TDX module management features like runtime updates
+> + *
+> + * Copyright (C) 2025 Intel Corporation
+> + */
+> +#define pr_fmt(fmt)	"seamldr: " fmt
 > +
-> +:Capability: KVM_CAP_LAPIC2
-> +:Architectures: x86
-> +:Type: vcpu ioctl
-> +:Parameters: struct kvm_lapic_state2 (out)
-> +:Returns: 0 on success, negative on failure
+> +#include <linux/spinlock.h>
 > +
-> +Reads the extended Local APIC registers, including both the standard APIC
-> +register space (offsets 0h-3FFh) and the extended APIC register space (offsets
-> +400h-500h and beyond).
+> +#include "seamcall_internal.h"
 > +
-> +This ioctl is similar to KVM_GET_LAPIC but operates on a 4KB APIC
-> +register space that includes extended LVT registers available on AMD processors
-> +with the ExtApicSpace feature.
+> +/*
+> + * Serialize P-SEAMLDR calls since the hardware only allows a single CPU to
+> + * interact with P-SEAMLDR simultaneously. Use raw version as the calls can
+> + * be made with interrupts disabled.
+
+Hm. I am not sure how it explains use of raw_spinlock. What's wrong with
+using plain spinlock with interrupts disabled?
+
+> + */
+> +static DEFINE_RAW_SPINLOCK(seamldr_lock);
 > +
-> +::
-> +
-> +  #define KVM_APIC_EXT_REG_SIZE 0x1000
-> +  struct kvm_lapic_state2 {
-> +      char regs[KVM_APIC_EXT_REG_SIZE];
-> +  };
-> +
-> +4.145 KVM_SET_LAPIC2
-> +----------------------
-> +
-> +:Capability: KVM_CAP_LAPIC2
-> +:Architectures: x86
-> +:Type: vcpu ioctl
-> +:Parameters: struct kvm_lapic_state2 (in)
-> +:Returns: 0 on success, negative on failure
-> +
-> +Sets the extended Local APIC registers, including both the standard APIC
-> +register space and the extended APIC register space.
-> +
-> +This ioctl is similar to KVM_SET_LAPIC but operates on a 4KB APIC register space
-> +that includes extended LVT registers for AMD processors.
-> +
-> +::
-> +
-> +  #define KVM_APIC_EXT_REG_SIZE 0x1000
-> +  struct kvm_lapic_stat2 {
-> +      char regs[KVM_APIC_EXT_REG_SIZE];
-> +  };
->  
->  .. _kvm_run:
->  
-> diff --git a/arch/x86/include/uapi/asm/kvm.h b/arch/x86/include/uapi/asm/kvm.h
-> index 7ceff6583652..516d4a0be25a 100644
-> --- a/arch/x86/include/uapi/asm/kvm.h
-> +++ b/arch/x86/include/uapi/asm/kvm.h
-> @@ -129,6 +129,11 @@ struct kvm_lapic_state {
->  	char regs[KVM_APIC_REG_SIZE];
->  };
->  
-> +#define KVM_APIC_EXT_REG_SIZE 0x1000
-> +struct kvm_lapic_state2 {
-> +	char regs[KVM_APIC_EXT_REG_SIZE];
-> +};
-> +
->  struct kvm_segment {
->  	__u64 base;
->  	__u32 limit;
-> diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
-> index 669c894f1061..ccd16bdff56a 100644
-> --- a/arch/x86/kvm/x86.c
-> +++ b/arch/x86/kvm/x86.c
-> @@ -5331,6 +5331,17 @@ static int kvm_vcpu_ioctl_get_lapic(struct kvm_vcpu *vcpu,
->  	return kvm_apic_get_state(vcpu, s->regs, sizeof(*s));
->  }
->  
-> +static int kvm_vcpu_ioctl_get_lapic2(struct kvm_vcpu *vcpu,
-> +				    struct kvm_lapic_state2 *s)
+> +static __maybe_unused int seamldr_call(u64 fn, struct tdx_module_args *args)
 > +{
-> +	if (vcpu->arch.apic->guest_apic_protected)
-> +		return -EINVAL;
-> +
-> +	kvm_x86_call(sync_pir_to_irr)(vcpu);
-> +
-> +	return kvm_apic_get_state(vcpu, s->regs, sizeof(*s));
+> +	guard(raw_spinlock)(&seamldr_lock);
+> +	return seamcall_prerr(fn, args);
 > +}
+> -- 
+> 2.47.3
+> 
 
-Should this function verify that KVM_CAP_LAPIC2 was enabled for the VM?
-The KVM_CAP_LAPIC2 documentation states "This must be called before
-creating any VCPUs" which implies userspace must explicitly enable the
-capability. However, this ioctl doesn't check kvm->arch.nr_extlvt or any
-flag indicating the capability was enabled.
-
-Looking at how this interacts with kvm_apic_get_state() in
-arch/x86/kvm/lapic.c:
-
-    int kvm_apic_get_state(struct kvm_vcpu *vcpu, void *regs, unsigned int size)
-    {
-        memcpy(regs, vcpu->arch.apic->regs, size);
-        ...
-    }
-
-The function copies 'size' bytes from vcpu->arch.apic->regs. Since
-sizeof(struct kvm_lapic_state2) is 4096 bytes and apic->regs is allocated
-as a single page (also 4096 bytes), this works. But if the extended APIC
-capability wasn't enabled via KVM_ENABLE_CAP, should userspace be allowed
-to read the extended register space?
-
-> +
->  static int kvm_vcpu_ioctl_set_lapic(struct kvm_vcpu *vcpu,
->  				    struct kvm_lapic_state *s)
->  {
-> @@ -5347,6 +5358,22 @@ static int kvm_vcpu_ioctl_set_lapic(struct kvm_vcpu *vcpu,
->  	return 0;
->  }
->  
-> +static int kvm_vcpu_ioctl_set_lapic2(struct kvm_vcpu *vcpu,
-> +				    struct kvm_lapic_state2 *s)
-> +{
-> +	int r;
-> +
-> +	if (vcpu->arch.apic->guest_apic_protected)
-> +		return -EINVAL;
-> +
-> +	r = kvm_apic_set_state(vcpu, s->regs, sizeof(*s));
-> +	if (r)
-> +		return r;
-> +	update_cr8_intercept(vcpu);
-> +
-> +	return 0;
-> +}
-> +
-
-Ditto, shouldn't it verify the capability was enabled before allowing writes
-to the extended APIC space?
-
->  static int kvm_cpu_accept_dm_intr(struct kvm_vcpu *vcpu)
->  {
->  	/*
-> @@ -6203,6 +6230,7 @@ long kvm_arch_vcpu_ioctl(struct file *filp,
->  	union {
->  		struct kvm_sregs2 *sregs2;
->  		struct kvm_lapic_state *lapic;
-> +		struct kvm_lapic_state2 *lapic2;
->  		struct kvm_xsave *xsave;
->  		struct kvm_xcrs *xcrs;
->  		void *buffer;
-> @@ -6243,6 +6271,37 @@ long kvm_arch_vcpu_ioctl(struct file *filp,
->  		r = kvm_vcpu_ioctl_set_lapic(vcpu, u.lapic);
->  		break;
->  	}
-> +	case KVM_GET_LAPIC2: {
-> +		r = -EINVAL;
-> +		if (!lapic_in_kernel(vcpu))
-> +			goto out;
-> +		u.lapic2 = kzalloc(sizeof(struct kvm_lapic_state2), GFP_KERNEL);
-> +
-> +		r = -ENOMEM;
-> +		if (!u.lapic2)
-> +			goto out;
-> +		r = kvm_vcpu_ioctl_get_lapic2(vcpu, u.lapic2);
-> +		if (r)
-> +			goto out;
-> +		r = -EFAULT;
-> +		if (copy_to_user(argp, u.lapic2, sizeof(struct kvm_lapic_state2)))
-> +			goto out;
-> +		r = 0;
-> +		break;
-> +	}
-> +	case KVM_SET_LAPIC2: {
-> +		r = -EINVAL;
-> +		if (!lapic_in_kernel(vcpu))
-> +			goto out;
-> +		u.lapic2 = memdup_user(argp, sizeof(*u.lapic2));
-> +		if (IS_ERR(u.lapic2)) {
-> +			r = PTR_ERR(u.lapic2);
-> +			goto out_nofree;
-> +		}
-> +
-> +		r = kvm_vcpu_ioctl_set_lapic2(vcpu, u.lapic2);
-> +		break;
-> +	}
->  	case KVM_INTERRUPT: {
->  		struct kvm_interrupt irq;
->  
-> diff --git a/include/uapi/linux/kvm.h b/include/uapi/linux/kvm.h
-> index cb27eeb09bdb..f45d313e30ae 100644
-> --- a/include/uapi/linux/kvm.h
-> +++ b/include/uapi/linux/kvm.h
-> @@ -1339,6 +1339,8 @@ struct kvm_vfio_spapr_tce {
->  #define KVM_SET_FPU               _IOW(KVMIO,  0x8d, struct kvm_fpu)
->  #define KVM_GET_LAPIC             _IOR(KVMIO,  0x8e, struct kvm_lapic_state)
->  #define KVM_SET_LAPIC             _IOW(KVMIO,  0x8f, struct kvm_lapic_state)
-> +#define KVM_GET_LAPIC2            _IOR(KVMIO,  0x8e, struct kvm_lapic_state2)
-> +#define KVM_SET_LAPIC2            _IOW(KVMIO,  0x8f, struct kvm_lapic_state2)
-
-KVM_GET_LAPIC2 and KVM_SET_LAPIC2 reuse command numbers 0x8e and 0x8f.
-While the _IOR/_IOW macros encode the structure size into the ioctl
-number, this still seems unconventional compared to other KVM ioctls
-that use unique command numbers: for e.g. SET_CPUID / SET_CPUID2
-
-#define KVM_SET_CPUID             _IOW(KVMIO,  0x8a, struct kvm_cpuid)
-#define KVM_SET_CPUID2            _IOW(KVMIO,  0x90, struct kvm_cpuid2)
-
-It would be clearer to use unique command numbers like 0x92 and 0x93.
-
->  #define KVM_SET_CPUID2            _IOW(KVMIO,  0x90, struct kvm_cpuid2)
->  #define KVM_GET_CPUID2            _IOWR(KVMIO, 0x91, struct kvm_cpuid2)
->  /* Available with KVM_CAP_VAPIC */
-
-Regards,
-Nikunj
+-- 
+  Kiryl Shutsemau / Kirill A. Shutemov
