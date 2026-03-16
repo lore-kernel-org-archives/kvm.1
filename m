@@ -1,81 +1,78 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8AB2A3F0AB9;
-	Mon, 16 Mar 2026 20:27:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C073359A61
+	for <kvm@vger.kernel.org>; Mon, 16 Mar 2026 20:57:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773692866; cv=none; b=PRd7F4xpDQ5kF1UYvR7zed7UdKLg/z1i/QXyWAchvmZFd0LDG7E3+4YDnTk4X/9ujEmA0ltqV9UVnIx2UteAlhsmJgEAqTxii7QypYQqxGEGumx6hF3ojwTxVL9fBz4Wod7LMB+uKSgy5ZL2GaRL4aqaSarVWqZJ+v6229woT9I=
+	t=1773694629; cv=none; b=iGJBbtZQTq7un9Khm8Uhjv/TT9jYDcrpA5qcCB6f8lnRsLhJGsrESNkZZag/MQzzgj4EDPgkETmPkMIT5I8uhMLroi7lLrp740ECnp61dsakmh4r2f19kQYCOp+8DtP55QA2SeFfqexaqoVuOnTpK6eYm2UEYGZckyw2pZ8HLrg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773692866; c=relaxed/simple;
-	bh=1GBVDpxhiKQR9Qr5dCENGk8SY6ddmFWjDrNwoXXxb+I=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Pdrmz9fMjozEBxXi0hcsPdx0MHwUzqc5IUrSEIlKFjWxNPoi0PsTE92RTA2JOu4E2jBuMU7xBoUeY//N8z6HKczat/c+ZSNoHU2ilhk0QA0dEJwgY7bBs/54WfLW2qkxJQ/9AzAbUt5pmYSJnsqaiuGRn/Wqn21DIg4YCMCEQKU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CgSnad3d; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1773694629; c=relaxed/simple;
+	bh=VEZmo3AoOSdv4lUpS+OG7Tg3j07xay4d+XQpULYfdtc=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=TkOwiejTOQzuv6n82huCBe09UhvNHTlui4APZFX4z6Pdz88tKaBEtUmwutJcmb9clruzerf3OGXiddNPqoqMZFkIA/tlrad35TCT5/2jxRq/8inx/mPgprDGNtAnDKr2I7jek+NfFBAHVXkO4Da/Jrrpa1Ny7P1bm0Gg3BGCeFc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JYSBUsUl; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CgSnad3d"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2DFB2C2BCB8;
-	Mon, 16 Mar 2026 20:27:46 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JYSBUsUl"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC668C4AF09
+	for <kvm@vger.kernel.org>; Mon, 16 Mar 2026 20:57:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773692866;
-	bh=1GBVDpxhiKQR9Qr5dCENGk8SY6ddmFWjDrNwoXXxb+I=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CgSnad3dxLABuxEqOk7qttxHkmUkmiwT+4N0y0Y/P5jFKPxxQofVV3DeK/l1mfsxy
-	 IpUSoyMuih6QkMz9adEtvxth3PfSNBVqCO4+G/Dsbxq16V4klTsSKBXnvNnVDTQ4dQ
-	 Rj3AG4CtYqp7osreb9nihLc1iRvHz+q2+tequl1+9AQMcGFXBwhEqVN4jdreyOHU+g
-	 Ia0xPIYTjKrdBSD5uQoW+L0J7Gq8oU35xB9+aUBZpfBJTOdKsFNXac0OoS1vyeHIrK
-	 fzT5Stqs7FtuaPYs/IBGylQmAtlnvrcWt3TWwsJm/trGHDn6L/YbPSr8LVlGiHVeV0
-	 UWttLwPd8idBQ==
-From: Yosry Ahmed <yosry@kernel.org>
-To: Sean Christopherson <seanjc@google.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>,
-	Jim Mattson <jmattson@google.com>,
-	kvm@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Yosry Ahmed <yosry@kernel.org>
-Subject: [PATCH v4 9/9] KVM: selftests: Drop 'invalid' from svm_nested_invalid_vmcb12_gpa's name
-Date: Mon, 16 Mar 2026 20:27:32 +0000
-Message-ID: <20260316202732.3164936-10-yosry@kernel.org>
-X-Mailer: git-send-email 2.53.0.851.ga537e3e6e9-goog
-In-Reply-To: <20260316202732.3164936-1-yosry@kernel.org>
-References: <20260316202732.3164936-1-yosry@kernel.org>
+	s=k20201202; t=1773694628;
+	bh=VEZmo3AoOSdv4lUpS+OG7Tg3j07xay4d+XQpULYfdtc=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=JYSBUsUlDqvDSy5ewsDrVTgLuksA6BsmFxZLq9gGHG5hXkkj4JICVndiE7JLggV5+
+	 6Zs8FTdy4z6EGaHDJ8BSqZoOAkFIHVhwzOakUT6g2RvV4wAbmr1HsTrCdOjmrAOEKu
+	 NqWORlUR8XtveH/u0FqjOPVtn1lfejMEzSYxHZX4ewzklk4C5ltkKML6P6GK0s4amn
+	 eT9A5CN93N4T2TIIaIio3KCRDn8TS4gygpIgEYIPZKkyGxy1PifWQMdTwQhlKASFmI
+	 KcyMAWK+uL9wWziisQXRx/rAcdKfiqANaBTAuX2IMoKI2kAjvwAHD7rTtF4eAkbgS3
+	 hWV4IQZ3IUdyg==
+Received: by mail-ed1-f49.google.com with SMTP id 4fb4d7f45d1cf-6653b589a78so2656501a12.3
+        for <kvm@vger.kernel.org>; Mon, 16 Mar 2026 13:57:08 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCXEMNvkt6quHH+seLhRt8isrteUdVT88NMvD1K9jkMSv2vHt+jrW47feDxjj9msRg7Y8WU=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yyft3z3csSXdju+oUB0vdReqnWTFXyN7NXnMFEh3zPo9nO4O96N
+	dGXT5Z8U3qr/iCxWCNQ2J89d2FXhZezE5koPjRoaBnGeopoZhoTjOGUFB2XtCI94YNlHY9LrW9j
+	BesqeijObsB0rqp3nG9cVosZvAHYthvA=
+X-Received: by 2002:a17:906:f92:b0:b96:ed21:f46f with SMTP id
+ a640c23a62f3a-b9765052cddmr648449966b.14.1773694627519; Mon, 16 Mar 2026
+ 13:57:07 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20260316202732.3164936-1-yosry@kernel.org> <20260316202732.3164936-2-yosry@kernel.org>
+In-Reply-To: <20260316202732.3164936-2-yosry@kernel.org>
+From: Yosry Ahmed <yosry@kernel.org>
+Date: Mon, 16 Mar 2026 13:56:56 -0700
+X-Gmail-Original-Message-ID: <CAO9r8zNuF-0ObcrvWnmR8ed+mn-tuNWmK5BYnVZb=8ySdqkSMw@mail.gmail.com>
+X-Gm-Features: AaiRm52SJ3vOSPSbVlUVonlxwWsTTouK9NL-Mw3SrNdGznqK1cQhjSue8cXjeKE
+Message-ID: <CAO9r8zNuF-0ObcrvWnmR8ed+mn-tuNWmK5BYnVZb=8ySdqkSMw@mail.gmail.com>
+Subject: Re: [PATCH v4 1/9] KVM: SVM: Properly check RAX in the emulator for
+ SVM instructions
+To: Sean Christopherson <seanjc@google.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>, Jim Mattson <jmattson@google.com>, kvm@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-The test checks both invalid GPAs as well as unmappable GPAs, so drop
-'invalid' from its name.
+On Mon, Mar 16, 2026 at 1:27=E2=80=AFPM Yosry Ahmed <yosry@kernel.org> wrot=
+e:
+>
+> Architecturally, VMRUN/VMLOAD/VMSAVE should generate a #GP if the
+> physical address in RAX is not supported. check_svme_pa() hardcodes this
+> to checking that bits 63-48 are not set. This is incorrect on HW
+> supporting 52 bits of physical address space. Additionally, the emulator
+> does not check if the address is not aligned, which should also result
+> in #GP.
+>
+> Use page_address_valid() which properly checks alignment and the address
+> legality based on the guest's MAXPHYADDR. Plumb it through
+> x86_emulate_ops, similar to is_canonical_addr(), to avoid directly
+> accessing the vCPU object in emulator code.
+>
+> Fixes: 01de8b09e606 ("KVM: SVM: Add intercept checks for SVM instructions=
+")
+> Suggested-by: Sean Christopherson <seanjc@google.com>
 
-Signed-off-by: Yosry Ahmed <yosry@kernel.org>
----
- tools/testing/selftests/kvm/Makefile.kvm                        | 2 +-
- ...{svm_nested_invalid_vmcb12_gpa.c => svm_nested_vmcb12_gpa.c} | 0
- 2 files changed, 1 insertion(+), 1 deletion(-)
- rename tools/testing/selftests/kvm/x86/{svm_nested_invalid_vmcb12_gpa.c => svm_nested_vmcb12_gpa.c} (100%)
-
-diff --git a/tools/testing/selftests/kvm/Makefile.kvm b/tools/testing/selftests/kvm/Makefile.kvm
-index 3d372d78a2756..02fa13d4ad4f1 100644
---- a/tools/testing/selftests/kvm/Makefile.kvm
-+++ b/tools/testing/selftests/kvm/Makefile.kvm
-@@ -112,9 +112,9 @@ TEST_GEN_PROGS_x86 += x86/vmx_preemption_timer_test
- TEST_GEN_PROGS_x86 += x86/svm_vmcall_test
- TEST_GEN_PROGS_x86 += x86/svm_int_ctl_test
- TEST_GEN_PROGS_x86 += x86/svm_nested_clear_efer_svme
--TEST_GEN_PROGS_x86 += x86/svm_nested_invalid_vmcb12_gpa
- TEST_GEN_PROGS_x86 += x86/svm_nested_shutdown_test
- TEST_GEN_PROGS_x86 += x86/svm_nested_soft_inject_test
-+TEST_GEN_PROGS_x86 += x86/svm_nested_vmcb12_gpa
- TEST_GEN_PROGS_x86 += x86/svm_lbr_nested_state
- TEST_GEN_PROGS_x86 += x86/tsc_scaling_sync
- TEST_GEN_PROGS_x86 += x86/sync_regs_test
-diff --git a/tools/testing/selftests/kvm/x86/svm_nested_invalid_vmcb12_gpa.c b/tools/testing/selftests/kvm/x86/svm_nested_vmcb12_gpa.c
-similarity index 100%
-rename from tools/testing/selftests/kvm/x86/svm_nested_invalid_vmcb12_gpa.c
-rename to tools/testing/selftests/kvm/x86/svm_nested_vmcb12_gpa.c
--- 
-2.53.0.851.ga537e3e6e9-goog
-
+I should have dropped this Suggested-by tag.
