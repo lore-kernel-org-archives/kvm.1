@@ -1,60 +1,66 @@
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qk1-f172.google.com (mail-qk1-f172.google.com [209.85.222.172])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 702F62EA16A;
-	Mon, 16 Mar 2026 14:47:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B0352989B0
+	for <kvm@vger.kernel.org>; Mon, 16 Mar 2026 14:59:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773672438; cv=none; b=cdMkAKrzB2XsEYOp7Cuec6EaLnEPNpVSms/EtLZX973kBuSGBYwjdGS85+BFKl0ZgT6nnaDYgLrq0bVBAoUguh5k5+klBi3XYpoup5ZZ5F+oq41bmcvm469wTkyZCnM58r7YEXie7L4D4+lzYtHmZFn+uHNIs8/RGwvK6VcHRjI=
+	t=1773673143; cv=none; b=szhORbgYbu5TxDnPY2Ik8YJbc0rT3vbdBvvcICwjWqGmrA6NooNQSZyHxX02wytgNdTKCnsyf5Y86r8aIyvpTKRQAORa2/YVitMoDnKJVxIMACZ4TLelwLjl+NgfIz1BvS8Pf9oyyFSzuISHey8bGfe6f1IbiOx4kfstrom7ED0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773672438; c=relaxed/simple;
-	bh=+Z/h/54tyvQ2WYBNBXUJdP1NqYgE/hvXLmQNrCExWJw=;
+	s=arc-20240116; t=1773673143; c=relaxed/simple;
+	bh=wJYyqcB6Eyw+/EhnPhvbw/Bj0ziOpl+uCsmKsvGSW0Y=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=kkI5N/LGyBteh2Vo0SIj0hdwtVIEdIz9H8XysdqzP9b9g5rko8hO1OOp5eeo2litUnFLBX/ntZPsDt3EZFVei8hHr8Wcq/1fdVdZ3/tCyCmTzpbTkzHSu1LY1BTIGgG7S91j8Z/drD1yysVhXZN2D9Bae8MQ21fBFhNX9ITJwnY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=F/PD+nIp; arc=none smtp.client-ip=148.163.158.5
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+	 In-Reply-To:Content-Type; b=L1vTepa3+hNb5awcsoexqREisg4KOrxVs+02yBWB4clGSFi2t93X03f7flCir/if5I5OJ5U8lR/DWWZ2qHJti+UI5aWthKmZogzV7vBjxc1IJqiB5nHzz2fuZ9/XksTUR6rRjiobEpzXBn03ADtZdDZL+2gUBlnQ799ezM9bPqQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=UWhGNddg; arc=none smtp.client-ip=209.85.222.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="F/PD+nIp"
-Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 62GEfEL7646456;
-	Mon, 16 Mar 2026 14:47:13 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=auZQzz
-	E/e3aNA/WH2lEiBhSu2bZXn4wbGHRE3G0MDYo=; b=F/PD+nIpX8djrLybECOrOH
-	sJnciFQ+TFt9PG2nCwEXEdPk1xc+JwMWt5f2XO7PZ/tCOs0GqF9OxZbMD5x9qskc
-	M1XjFQBRG2fwRurOKiyTesR6Pa0X1iop1BiSknucyHqBHQ3wp8LWBMRAYGieAN/t
-	m0zGkxJVLcfn4F8ubxnq0C92TQ6V9ADeIInCdMqdN84UvuRxLN1BXsR0bA/kJlev
-	SNV/rd1oCcq3W1bsnUiYPv+Vf/fP8eZleMi57E5o9cD054kTg+OrYkkbZoVDDgwE
-	b59r6UEswsb+Qv/TLC7Dnrj3H6HXuiXHLjETGS4b++mpiXCOO7rsM8k9R4cE6OcA
-	==
-Received: from ppma13.dal12v.mail.ibm.com (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4cvw3hr6jp-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 16 Mar 2026 14:47:13 +0000 (GMT)
-Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma13.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 62GB2c7h032320;
-	Mon, 16 Mar 2026 14:47:12 GMT
-Received: from smtprelay06.fra02v.mail.ibm.com ([9.218.2.230])
-	by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 4cwm7jn1ug-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 16 Mar 2026 14:47:12 +0000
-Received: from smtpav05.fra02v.mail.ibm.com (smtpav05.fra02v.mail.ibm.com [10.20.54.104])
-	by smtprelay06.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 62GEl8sO27328894
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 16 Mar 2026 14:47:08 GMT
-Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 6C57020043;
-	Mon, 16 Mar 2026 14:47:08 +0000 (GMT)
-Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 3F3EC20040;
-	Mon, 16 Mar 2026 14:47:08 +0000 (GMT)
-Received: from [9.52.200.39] (unknown [9.52.200.39])
-	by smtpav05.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Mon, 16 Mar 2026 14:47:08 +0000 (GMT)
-Message-ID: <46e5720f-bd08-4076-bc10-e6834d58af73@linux.ibm.com>
-Date: Mon, 16 Mar 2026 15:47:07 +0100
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="UWhGNddg"
+Received: by mail-qk1-f172.google.com with SMTP id af79cd13be357-8cd7a75c680so553744285a.1
+        for <kvm@vger.kernel.org>; Mon, 16 Mar 2026 07:59:02 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1773673141; x=1774277941; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=TlEzqxK2YEl3SXEgkPbUbfs0P9bQP+Yj8HFphhFYGSg=;
+        b=UWhGNddgvoXFtbdV1LHjvfm18s9HgsK51c1SvP3dInAtOLKV/8dxuvGYEAsSD4+e1I
+         xRt+hRWh+tXuOtrMacx5seiHzIeSitJbatMevfG/guN9VqMVvnfjrcEGk318HCOhtyLP
+         9eeDMCQWF3diB9l45QFuE7C08MPLm3nwFpyrUgvrhAHhNmdr13DmuBDm0rBG9rHofMwz
+         dkAP9wrV5DsjkC0mPrylffcSDu+qtZ6cGJi22XRtkCQNQZmg8acAHWmiiorqKDWsEYZR
+         Sm+R0k3kHYjNzzTqO0ixPvdkJvfCWRTkdn+yL/gRgDcEilTBdbuuBSiJqe1iWWBjsHLT
+         kJMA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1773673141; x=1774277941;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=TlEzqxK2YEl3SXEgkPbUbfs0P9bQP+Yj8HFphhFYGSg=;
+        b=DV0bWR1VvDBrCqJLqrZTpM5qsp5EVHCfDMuE1L9nNtAFZJAyvBgej6AtJpeZQDgn3O
+         SeFZ1CpHGIx+OFz8dECQPQIBgLLsPmJmVCqseOm3pNgafwxEdwZws7OZgvyrKjkD+HTc
+         2Uvg/WhQwo3GWCDqgIerPigFM2w2WljcxFUPDP+KeQ07olakGCqeBTmD5BGAh1f8v8UO
+         2TKpdoP1S46sx6GQO14lcJfOFZ/w3WY1P/S2s82oHESyu/5ks3F+mALZTeqHwD6Cw/Q3
+         9kEGmkk+PJT7kC8U9uHP5H1ZVG7smXNao6Wwl3mXlrHPxf75BAxsyXmip1fubzQZhbqX
+         +wnA==
+X-Forwarded-Encrypted: i=1; AJvYcCXWOU5Aw4jHyngH5b7EHN5YQjSZk7S2mUe0+gznRZlP6vV+uP1BOYweQGo9XiyYLlXrH74=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxACrLfaTKy7tzZFIIog2erFCf1RDXMJuKTpJA8OvZPASQd9B/Q
+	PKlR7j4Jo45sgc4wwZ+3AqBwk4tOgeS3KWDBsowwAGItTznU9U8/aC5x
+X-Gm-Gg: ATEYQzwVvi5OzUy4H5qTR+hUQV4GGkBcM33K43RArIlykAWTSuhlSBRKWBwRsInpPPC
+	PRuwrH+haLylQCd3cahQzSN+f5pDBScPC9W1uWgjGOPdJ3lwkFlirPlbiU48oASkgtUHeaMGC67
+	ahIhAcVCQEdSr+NsGwKBbYAmxWUu4W+sRRGjAthfQlZTqy8Z+gxwubRjYM2UMDwnAOPe2hUIfsW
+	2nB8wPumuqLQPPTvDlJg30U6cTRy1MsagmLb/cDRblS7k/9Wlt8O4bde6WLMyW+CufLiUEIavPJ
+	WkOuhPWwGPO6RkHi4mCdc8EKV0KtuwDgIf0fGX3y5riEQrHQmuZjoWNWc6L2fmQWqAVdbT1LzDj
+	UQUrZu2b0HRP/KX5Ir98neBTZSOsCdNB4ov5L9Ca2+QvU1xtkqFsvHvlyODjqhr4I5E753MHD9l
+	jxFjSfFoWFUzWlFc/++nfW8pXyMjA6RuJE4wyfFKW2QDlkv9wPFLGCVcUQHg==
+X-Received: by 2002:a05:620a:2913:b0:8cd:94f9:1bbb with SMTP id af79cd13be357-8cdaa870dcamr2022355085a.29.1773673141041;
+        Mon, 16 Mar 2026 07:59:01 -0700 (PDT)
+Received: from [10.100.120.215] ([152.193.78.90])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-8cda21100b8sm1232308185a.29.2026.03.16.07.58.57
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 16 Mar 2026 07:58:59 -0700 (PDT)
+Message-ID: <fb53b8fd-5d36-4df3-a9e6-fba7c0457e55@gmail.com>
+Date: Mon, 16 Mar 2026 07:58:56 -0700
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -62,162 +68,94 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3] KVM: s390: vsie: Avoid injecting machine check on
- signal
-To: Janosch Frank <frankja@linux.ibm.com>, KVM <kvm@vger.kernel.org>
-Cc: David Hildenbrand <david@kernel.org>,
-        linux-s390 <linux-s390@vger.kernel.org>,
-        Thomas Huth <thuth@redhat.com>,
-        Claudio Imbrenda <imbrenda@linux.ibm.com>,
-        Heiko Carstens
- <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>,
-        Alexander Gordeev <agordeev@linux.ibm.com>
-References: <20260316130947.40466-1-borntraeger@linux.ibm.com>
- <cf8b6d86-0919-4644-aaa3-de3241df2684@linux.ibm.com>
+Subject: Re: [PATCH RFC/RFT] vfio/pci-quirks: Quirk for ath wireless
+To: Jason Gunthorpe <jgg@ziepe.ca>,
+ Alex Williamson <alex.williamson@redhat.com>
+Cc: qemu-devel@nongnu.org, kvm@vger.kernel.org, quic_bqiang@quicinc.com,
+ kvalo@kernel.org, linux-wireless@vger.kernel.org,
+ ath11k@lists.infradead.org, dwmw2@infradead.org, iommu@lists.linux.dev,
+ kernel@quicinc.com, johannes@sipsolutions.net, jtornosm@redhat.com
+References: <adcb785e-4dc7-4c4a-b341-d53b72e13467@gmail.com>
+ <20240812170045.1584000-1-alex.williamson@redhat.com>
+ <20240813164341.GL1985367@ziepe.ca>
+ <20240813150320.73df43d7.alex.williamson@redhat.com>
+ <20240813233724.GS1985367@ziepe.ca>
+ <20240815105905.19d69576.alex.williamson@redhat.com>
+ <20240815171935.GO3468552@ziepe.ca>
 Content-Language: en-US
-From: Christian Borntraeger <borntraeger@linux.ibm.com>
-In-Reply-To: <cf8b6d86-0919-4644-aaa3-de3241df2684@linux.ibm.com>
+From: James Prestwood <prestwoj@gmail.com>
+In-Reply-To: <20240815171935.GO3468552@ziepe.ca>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: OBNhQniGnC2o51lKWpS-uAjnCc-NPXDv
-X-Proofpoint-ORIG-GUID: OBNhQniGnC2o51lKWpS-uAjnCc-NPXDv
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMzE2MDExMSBTYWx0ZWRfX6A1N3hlmNKmW
- oP0IPtRjFwrjdBrTo5VlEHcC0Omcu8W6z1RVND0ZquqEN+zqn+Dns//d30PvStg0o9SSQxVy3jG
- DLPxq7HpzYNqVvVgsjqpXCth5O8TgXo2JBsNi6B/lavVX07DGa+tp7pFAl1nt9VFntKfijzZn8K
- Tk0tyrUKFxgz7byCjdQZkS5lIZ4WFnEAn19yIAZRuPUqQ5Cnzf1MK362KtExKcOAGpho04HSNc+
- c5St3KHgyABlNnZ5OsBfvwcE5vBf3fBMS6v0AuPnXbxaTH5ixHWS1T337Dah3aepohRySu4Gaj4
- kAt71VqRRA1nsKPyeBGOHVOuVnMQE2I0ODgXnchF4TkhnIYGtSAKGK5eWDXzvP5yh3B2/Y5LNSx
- w0Je9v5VJZmCWOO4l7SWILcH+3u4+EPTHijULwrWEjz+GEsm5JY3dX45nGgX+DY8EXoba6+sX7I
- yyXd6AVggdXkZ3grgVQ==
-X-Authority-Analysis: v=2.4 cv=Hf8ZjyE8 c=1 sm=1 tr=0 ts=69b817f1 cx=c_pps
- a=AfN7/Ok6k8XGzOShvHwTGQ==:117 a=AfN7/Ok6k8XGzOShvHwTGQ==:17
- a=IkcTkHD0fZMA:10 a=Yq5XynenixoA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=RnoormkPH1_aCDwRdu11:22 a=Y2IxJ9c9Rs8Kov3niI8_:22 a=VnNF1IyMAAAA:8
- a=55WJwGWxtmJmBke_E0sA:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
- definitions=2026-03-16_04,2026-03-16_03,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- phishscore=0 malwarescore=0 lowpriorityscore=0 impostorscore=0 bulkscore=0
- suspectscore=0 priorityscore=1501 spamscore=0 adultscore=0 clxscore=1015
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2603050001 definitions=main-2603160111
+Content-Transfer-Encoding: 7bit
 
+On 8/15/24 10:19 AM, Jason Gunthorpe wrote:
+> On Thu, Aug 15, 2024 at 10:59:05AM -0600, Alex Williamson wrote:
+>
+>>> This is probably the only way to approach this, trap and emulate the
+>>> places in the device that program additional interrupt sources and do
+>>> a full MSI-like flow to set them up in the kernel.
+>> Your last sentence here seems to agree with this approach, but
+>> everything else suggests disapproval, so I don't know where you're
+>> going here.
+> Trapping and emulating is fine.
+>
+> My concern is really only about skipping SET_IRQ.
+>
+> That works because of the assumption that the IMS sources are going to
+> re-use addr/data pairs setup in the MSI CAP.
+>
+> That assumption is frail, and won't work at all under the proper IMS
+> support Linux now has.
+>
+> I really don't want to go down the road and have someone tell Thomas
+> he can't convert the Linux driver to use irq_domain IMS because it
+> will break this stuff here.
+>
+>> I have no specs for this device, nor any involvement from the device
+>> vendor, so the idea of creating a vfio-pci variant driver to setup an
+>> irq_domain and augment a device specific SET_IRQs ioctls not only sounds
+>> tremendously more complicated (host and VMM), it's simply not possible
+>> with the knowledge we have at hand.
+> It seems like you have reverse engineered alot of the necessary
+> information though??
+>
+> Maybe there is a more generic approach than a variant driver. If you
+> wanted to use IMS from userspace generically you could imagine some
+> kind of IMS focused "SET_IRQ" in generic VFIO. Where we'd create the
+> needed irq_domains and pass the addr/data pair back to userspace?
+>
+>> I observe that the device configures MSI vectors and then writes that
+>> same vector address/data elsewhere into the device.  Whether the device
+>> can trigger those vectors based only on the MSI capability programming
+>> and a secondary source piggybacks on those vectors or if this is just a
+>> hack by Qualcomm to use an MSI capability to acquire some vectors which
+>> are exclusively used by the secondary hardware, I have no idea.
+> Well at least that should be testable - but it seems crazy if the
+> device has registers for an addr/data pair and then somehow doesn't
+> use the values that get put in them??
+>
+> Copying from the MSI is almost certainly a SW hack because IMS support
+> has never really existed in an OS until now. I think your guess for
+> why it is like this is pretty good.
+>
+>> I do not believe that introducing a vfio device feature that disables
+>> virtualization of the MSI address/data _only_ at the vfio interface
+>> (not to a QEMU VM) provides some implicit support of this device
+>> behavior.  These values are already available to a privileged user in
+>> the host and the same is available for an MSI-X use case by directly
+>> reading the MSI-X vector table.
+> To be clear, I'm not really worried about showing the data to
+> userspace.
+>
+> Userspace just shouldn't be using it to implement an IMS technique!
+>
+> Jason
 
+I see this thread went stale. Wondering if there was ever a final 
+conclusion if this could get fixed for ath11k or not. I tried again on a 
+recent kernel, 6.17, and see the same behavior.
 
-Am 16.03.26 um 14:57 schrieb Janosch Frank:
-> On 3/16/26 14:09, Christian Borntraeger wrote:
->> The recent XFER_TO_GUEST_WORK change resulted in a situation, where the
->> vsie code would interpret a signal during work as a machine check during
->> SIE as both use the EINTR return code.
->> The exit_reason of the sie64a function has nothing to do with the
->> kvm_run exit_reason. Rename it and define a specific code for machine
->> checks instead of abusing -EINTR.
->> rename exit_reason into sie_return to avoid the naming conflict
->> and change the code flow in vsie.c to have a separate variable for rc
->> and sie_return.
->>
->> Fixes: 2bd1337a1295e ("KVM: s390: Use generic VIRT_XFER_TO_GUEST_WORK functions")
->> Signed-off-by: Christian Borntraeger <borntraeger@linux.ibm.com>
->> ---
->> v1->v2:
->> instead of a band-aid, make the machine check more direct
->> v2->v3:
->> avoid overloading the rc variable in vsie.c
->>
->>   arch/s390/include/asm/kvm_host.h   |  3 +++
->>   arch/s390/include/asm/stacktrace.h |  2 +-
->>   arch/s390/kernel/asm-offsets.c     |  2 +-
->>   arch/s390/kernel/entry.S           |  4 ++--
->>   arch/s390/kernel/nmi.c             |  4 ++--
->>   arch/s390/kvm/kvm-s390.c           | 15 ++++++++-------
->>   arch/s390/kvm/vsie.c               |  7 +++++--
->>   7 files changed, 22 insertions(+), 15 deletions(-)
->>
->> diff --git a/arch/s390/include/asm/kvm_host.h b/arch/s390/include/asm/kvm_host.h
->> index 64a50f0862aa..3039c88daa63 100644
->> --- a/arch/s390/include/asm/kvm_host.h
->> +++ b/arch/s390/include/asm/kvm_host.h
->> @@ -710,6 +710,9 @@ void kvm_arch_crypto_clear_masks(struct kvm *kvm);
->>   void kvm_arch_crypto_set_masks(struct kvm *kvm, unsigned long *apm,
->>                      unsigned long *aqm, unsigned long *adm);
->> +#define SIE64_RETURN_NORMAL    0
->> +#define SIE64_RETURN_MCCK    1
->> +
->>   int __sie64a(phys_addr_t sie_block_phys, struct kvm_s390_sie_block *sie_block, u64 *rsa,
->>            unsigned long gasce);
->> diff --git a/arch/s390/include/asm/stacktrace.h b/arch/s390/include/asm/stacktrace.h
->> index c9ae680a28af..ac3606c3babe 100644
->> --- a/arch/s390/include/asm/stacktrace.h
->> +++ b/arch/s390/include/asm/stacktrace.h
->> @@ -62,7 +62,7 @@ struct stack_frame {
->>           struct {
->>               unsigned long sie_control_block;
->>               unsigned long sie_savearea;
->> -            unsigned long sie_reason;
->> +            unsigned long sie_return;
->>               unsigned long sie_flags;
->>               unsigned long sie_control_block_phys;
->>               unsigned long sie_guest_asce;
->> diff --git a/arch/s390/kernel/asm-offsets.c b/arch/s390/kernel/asm-offsets.c
->> index e1a5b5b54e4f..fbd26f3e9f96 100644
->> --- a/arch/s390/kernel/asm-offsets.c
->> +++ b/arch/s390/kernel/asm-offsets.c
->> @@ -63,7 +63,7 @@ int main(void)
->>       OFFSET(__SF_EMPTY, stack_frame, empty[0]);
->>       OFFSET(__SF_SIE_CONTROL, stack_frame, sie_control_block);
->>       OFFSET(__SF_SIE_SAVEAREA, stack_frame, sie_savearea);
->> -    OFFSET(__SF_SIE_REASON, stack_frame, sie_reason);
->> +    OFFSET(__SF_SIE_RETURN, stack_frame, sie_return);
->>       OFFSET(__SF_SIE_FLAGS, stack_frame, sie_flags);
->>       OFFSET(__SF_SIE_CONTROL_PHYS, stack_frame, sie_control_block_phys);
->>       OFFSET(__SF_SIE_GUEST_ASCE, stack_frame, sie_guest_asce);
->> diff --git a/arch/s390/kernel/entry.S b/arch/s390/kernel/entry.S
->> index 4873fe9d891b..5817cb47b2d0 100644
->> --- a/arch/s390/kernel/entry.S
->> +++ b/arch/s390/kernel/entry.S
->> @@ -200,7 +200,7 @@ SYM_FUNC_START(__sie64a)
->>       stg    %r3,__SF_SIE_CONTROL(%r15)    # ...and virtual addresses
->>       stg    %r4,__SF_SIE_SAVEAREA(%r15)    # save guest register save area
->>       stg    %r5,__SF_SIE_GUEST_ASCE(%r15)    # save guest asce
->> -    xc    __SF_SIE_REASON(8,%r15),__SF_SIE_REASON(%r15) # reason code = 0
->> +    xc    __SF_SIE_RETURN(8,%r15),__SF_SIE_RETURN(%r15) # return code = 0
->>       mvc    __SF_SIE_FLAGS(8,%r15),__TI_flags(%r14) # copy thread flags
->>       lmg    %r0,%r13,0(%r4)            # load guest gprs 0-13
->>       mvi    __TI_sie(%r14),1
->> @@ -237,7 +237,7 @@ SYM_INNER_LABEL(sie_exit, SYM_L_GLOBAL)
->>       xgr    %r4,%r4
->>       xgr    %r5,%r5
->>       lmg    %r6,%r14,__SF_GPRS(%r15)    # restore kernel registers
->> -    lg    %r2,__SF_SIE_REASON(%r15)    # return exit reason code
->> +    lg    %r2,__SF_SIE_RETURN(%r15)    # return sie return code
->>       BR_EX    %r14
->>   SYM_FUNC_END(__sie64a)
->>   EXPORT_SYMBOL(__sie64a)
->> diff --git a/arch/s390/kernel/nmi.c b/arch/s390/kernel/nmi.c
->> index a55abbf65333..fc1f775e4517 100644
->> --- a/arch/s390/kernel/nmi.c
->> +++ b/arch/s390/kernel/nmi.c
->> @@ -487,8 +487,8 @@ void notrace s390_do_machine_check(struct pt_regs *regs)
->>       mcck_dam_code = (mci.val & MCIC_SUBCLASS_MASK);
->>       if (test_cpu_flag(CIF_MCCK_GUEST) &&
->>       (mcck_dam_code & MCCK_CODE_NO_GUEST) != mcck_dam_code) {
->> -        /* Set exit reason code for host's later handling */
->> -        *((long *)(regs->gprs[15] + __SF_SIE_REASON)) = -EINTR;
->> +        /* Set sie return code for host's later handling */
->> +        *((long *)(regs->gprs[15] + __SF_SIE_RETURN)) = SIE64_RETURN_MCCK;
-> 
-> We don't need to cast this to long anymore, do we?
-> Since sie_return is ulong, and we if we stay with positive numbers ulong would make the most sense.
-> 
-> Although I'd prefer a cast to stack_frame but I'm unsure if that would make it more readable if we stay with a one line change.
-something like
--               *((long *)(regs->gprs[15] + __SF_SIE_RETURN)) = SIE64_RETURN_MCCK;
-+               ((struct stack_frame *) regs->gprs[15])->sie_return = SIE64_RETURN_MCCK;
+Thanks,
 
-What do you think?
-
-This reminds me that I should probably also make the local variable in vsie.c unsigned long instead of int.
-
+James
 
