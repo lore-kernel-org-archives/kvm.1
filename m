@@ -1,189 +1,142 @@
-Received: from cstnet.cn (smtp21.cstnet.cn [159.226.251.21])
+Received: from cstnet.cn (smtp17.cstnet.cn [159.226.251.17])
 	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED48A5CDF1;
-	Mon, 16 Mar 2026 01:46:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.21
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2121A270EDF;
+	Mon, 16 Mar 2026 01:47:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.17
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773625567; cv=none; b=mfnT8qN/eOIxwwyc7V6awWuCwt4w2L/NuuURoWZHLfxOs3bC1wLv0wOXf48DDMtNsT+IthdQdqg6+EPYbNT/hQ+s6YrPhnUUKMALRs1vohxRFkFkkxXhGY6KexeWGSSnxFvhyGiPRRcLejpeUPGIJyNVI0EsyY+Mkf/lcDdwnQk=
+	t=1773625626; cv=none; b=nCTWe5VbqD4X0X2esXl2PHhPD5ac7REmVvcPTcoCZRrYVofgS6LgHKIopOtGviRRAa9Y8tnZf0L/ptQcc+Egl/1igvPfG9EpFq4F8mcG2GI6zPTlPgQLfiX6IZNRpLahDRGKvW531L32b69Amr2q2Y8/GvnBoqyteA+YRRNnHyY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773625567; c=relaxed/simple;
-	bh=nh6GZhHYYdkesS9Wzkv1OE5SuICdD1chqsQfvUsN3dE=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=tC+5dRXgLcvnNDDdhXHk5lWjBQhiC5kBKZN7cOjlA0MVRPcS/FMPmLpFJW/jwo4vXxOX5heJ3KLYjC6Dmhm/Wm4Kquo6LYeZpeDKJlwvX8XX9wthOTsHxA77VtNJ9hlTnyh4aSUaraJkO1AbzXD4V7f7wKo+TjYjuD+sVQkoGH8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.21
+	s=arc-20240116; t=1773625626; c=relaxed/simple;
+	bh=cyOvHVaUEkAwJlKwtIJjQWL2UnbUU4S+R3EFHq2vObA=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:Content-Type:
+	 MIME-Version:Message-ID; b=kSnjCEY4kRaztsJLvcQV/3XPEk94wqe/5j2huV3vjtoA+k6pcldZHC8btfOhfwetrcR7tDkFfSoQohKMjXcgLpwB6a3IrRZWKigChjEKMs1fcnuwUxdIEYtLX1x88JaDjg6P8By9xV3140dHk3mpC05HUr1Sj/I2j5ylJ13u90Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.17
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iscas.ac.cn
-Received: from fric.. (unknown [210.73.43.101])
-	by APP-01 (Coremail) with SMTP id qwCowAC3XWm+YLdpa+wzCg--.590S4;
-	Mon, 16 Mar 2026 09:45:35 +0800 (CST)
-From: Jiakai Xu <xujiakai2025@iscas.ac.cn>
-To: kvm-riscv@lists.infradead.org,
-	kvm@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-kselftest@vger.kernel.org,
-	linux-riscv@lists.infradead.org
-Cc: Albert Ou <aou@eecs.berkeley.edu>,
-	Alexandre Ghiti <alex@ghiti.fr>,
-	Andrew Jones <ajones@ventanamicro.com>,
-	Anup Patel <anup@brainfault.org>,
-	Atish Patra <atish.patra@linux.dev>,
-	Palmer Dabbelt <palmer@dabbelt.com>,
-	Paolo Bonzini <pbonzini@redhat.com>,
-	Paul Walmsley <pjw@kernel.org>,
-	Shuah Khan <shuah@kernel.org>,
-	Jiakai Xu <xujiakai2025@iscas.ac.cn>,
-	Jiakai Xu <jiakaiPeanut@gmail.com>,
-	Andrew Jones <andrew.jones@oss.qualcomm.com>,
-	Nutty Liu <nutty.liu@hotmail.com>
-Subject: [PATCH v5 2/2] RISC-V: KVM: selftests: Fix firmware counter read in sbi_pmu_test
-Date: Mon, 16 Mar 2026 01:45:33 +0000
-Message-Id: <20260316014533.2312254-3-xujiakai2025@iscas.ac.cn>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20260316014533.2312254-1-xujiakai2025@iscas.ac.cn>
-References: <20260316014533.2312254-1-xujiakai2025@iscas.ac.cn>
+Received: from xujiakai2025$iscas.ac.cn ( [210.73.43.101] ) by
+ ajax-webmail-APP-09 (Coremail) ; Mon, 16 Mar 2026 09:39:34 +0800
+ (GMT+08:00)
+Date: Mon, 16 Mar 2026 09:39:34 +0800 (GMT+08:00)
+X-CM-HeaderCharset: UTF-8
+From: "Jiakai Xu" <xujiakai2025@iscas.ac.cn>
+To: "Nutty.Liu" <nutty.liu@hotmail.com>
+Cc: kvm-riscv@lists.infradead.org, kvm@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org, 
+	linux-riscv@lists.infradead.org, "Albert Ou" <aou@eecs.berkeley.edu>, 
+	"Alexandre Ghiti" <alex@ghiti.fr>, 
+	"Andrew Jones" <ajones@ventanamicro.com>, 
+	"Anup Patel" <anup@brainfault.org>, 
+	"Atish Patra" <atish.patra@linux.dev>, 
+	"Palmer Dabbelt" <palmer@dabbelt.com>, 
+	"Paolo Bonzini" <pbonzini@redhat.com>, 
+	"Paul Walmsley" <pjw@kernel.org>, "Shuah Khan" <shuah@kernel.org>, 
+	"Jiakai Xu" <jiakaiPeanut@gmail.com>
+Subject: Re: Re: [PATCH v3 2/2] RISC-V: KVM: selftests: Fix firmware counter
+ read in sbi_pmu_test
+X-Priority: 3
+X-Mailer: Coremail Webmail Server Version 2024.1-cmXT5 build
+ 20240627(e6c6db66) Copyright (c) 2002-2026 www.mailtech.cn cnic.cn
+In-Reply-To: <SE3PR04MB892267C1A570CF03E870BAADF345A@SE3PR04MB8922.apcprd04.prod.outlook.com>
+References: <20260310055557.835531-1-xujiakai2025@iscas.ac.cn>
+ <20260310055557.835531-3-xujiakai2025@iscas.ac.cn>
+ <SE3PR04MB892267C1A570CF03E870BAADF345A@SE3PR04MB8922.apcprd04.prod.outlook.com>
+Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset=UTF-8
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:qwCowAC3XWm+YLdpa+wzCg--.590S4
-X-Coremail-Antispam: 1UD129KBjvJXoWxGw4ftFW7ZFWkXFWDZF1DWrg_yoWrCry7pF
-	WkGFWYkrWrtrnFyFy3A3ZFgr1UXan3ZasrKrW7Wry2yr4UXryfXrsIgF9Fyan8CFZYg343
-	Aw1Iga1rCFsxJF7anT9S1TB71UUUUUJqnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDU0xBIdaVrnRJUUUHE14x267AKxVWrJVCq3wAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
-	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2048vs2IY020E87I2jVAFwI0_Jryl82xGYIkIc2
-	x26xkF7I0E14v26ryj6s0DM28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48ve4kI8wA2z4x0
-	Y4vE2Ix0cI8IcVAFwI0_tr0E3s1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI0_Gr1j6F4UJw
-	A2z4x0Y4vEx4A2jsIE14v26F4UJVW0owA2z4x0Y4vEx4A2jsIEc7CjxVAFwI0_Cr1j6rxd
-	M2kKe7AKxVWUXVWUAwAac4AC62xK8xCEY4vEwIxC4wAS0I0E0xvYzxvE52x082IY62kv04
-	87Mc02F40EFcxC0VAKzVAqx4xG6I80ewAv7VC0I7IYx2IY67AKxVWUAVWUtwAv7VC2z280
-	aVAFwI0_Gr0_Cr1lOx8S6xCaFVCjc4AY6r1j6r4UM4x0Y48IcxkI7VAKI48JM4x0x7Aq67
-	IIx4CEVc8vx2IErcIFxwACI402YVCY1x02628vn2kIc2xKxwCY1x0262kKe7AKxVW8ZVWr
-	XwCY02Avz4vE14v_KwCF04k20xvY0x0EwIxGrwCFx2IqxVCFs4IE7xkEbVWUJVW8JwC20s
-	026c02F40E14v26r1j6r18MI8I3I0E7480Y4vE14v26r106r1rMI8E67AF67kF1VAFwI0_
-	GFv_WrylIxkGc2Ij64vIr41lIxAIcVC0I7IYx2IY67AKxVWUCVW8JwCI42IY6xIIjxv20x
-	vEc7CjxVAFwI0_Cr0_Gr1UMIIF0xvE42xK8VAvwI8IcIk0rVWUJVWUCwCI42IY6I8E87Iv
-	67AKxVWUJVW8JwCI42IY6I8E87Iv6xkF7I0E14v26r4j6r4UJbIYCTnIWIevJa73UjIFyT
-	uYvjTRJZ2-DUUUU
-X-CM-SenderInfo: 50xmxthndljiysv6x2xfdvhtffof0/1tbiBwwICWm3WbMoEgAAsE
+Message-ID: <19053540.4b36.19cf44c69f9.Coremail.xujiakai2025@iscas.ac.cn>
+X-Coremail-Locale: en_US
+X-CM-TRANSID:swCowAAX7AtWX7dpjsoWAA--.63261W
+X-CM-SenderInfo: 50xmxthndljiysv6x2xfdvhtffof0/1tbiCQ4FCWmzulfEYwADsY
+X-Coremail-Antispam: 1Ur529EdanIXcx71UUUUU7IcSsGvfJ3iIAIbVAYjsxI4VWxJw
+	CS07vEb4IE77IF4wCS07vE1I0E4x80FVAKz4kxMIAIbVAFxVCaYxvI4VCIwcAKzIAtYxBI
+	daVFxhVjvjDU=
 
-The current sbi_pmu_test attempts to read firmware counters without
-configuring them first with SBI_EXT_PMU_COUNTER_CFG_MATCH.
-
-Previously this did not fail because KVM incorrectly allowed the read
-and accessed fw_event[] with an out-of-bounds index when the counter
-was unconfigured. After fixing that bug, the read now correctly returns
-SBI_ERR_INVALID_PARAM, causing the selftest to fail.
-
-Update the test to configure a firmware event before reading the
-counter. Also add a negative test to ensure that attempting to read an
-unconfigured firmware counter fails gracefully.
-
-Signed-off-by: Jiakai Xu <xujiakai2025@iscas.ac.cn>
-Signed-off-by: Jiakai Xu <jiakaiPeanut@gmail.com>
-Reviewed-by: Andrew Jones <andrew.jones@oss.qualcomm.com>
-Reviewed-by: Nutty Liu <nutty.liu@hotmail.com>
----
-V4 -> V5:
-- Fixed alignment of fw_eidx assignment.
-V2 -> V3:
-- Removed unnecessary BIT(ret.value) & counter_mask_available check.
-- Asserted ret.value == i after successful CFG_MATCH.
-- Fixed eidx construction in SBI_EXT_PMU_COUNTER_CFG_MATCH.
----
- .../testing/selftests/kvm/include/riscv/sbi.h | 37 +++++++++++++++++++
- .../selftests/kvm/riscv/sbi_pmu_test.c        | 20 +++++++++-
- 2 files changed, 56 insertions(+), 1 deletion(-)
-
-diff --git a/tools/testing/selftests/kvm/include/riscv/sbi.h b/tools/testing/selftests/kvm/include/riscv/sbi.h
-index 046b432ae896..16f1815ac48f 100644
---- a/tools/testing/selftests/kvm/include/riscv/sbi.h
-+++ b/tools/testing/selftests/kvm/include/riscv/sbi.h
-@@ -97,6 +97,43 @@ enum sbi_pmu_hw_generic_events_t {
- 	SBI_PMU_HW_GENERAL_MAX,
- };
- 
-+enum sbi_pmu_fw_generic_events_t {
-+	SBI_PMU_FW_MISALIGNED_LOAD	= 0,
-+	SBI_PMU_FW_MISALIGNED_STORE	= 1,
-+	SBI_PMU_FW_ACCESS_LOAD		= 2,
-+	SBI_PMU_FW_ACCESS_STORE		= 3,
-+	SBI_PMU_FW_ILLEGAL_INSN		= 4,
-+	SBI_PMU_FW_SET_TIMER		= 5,
-+	SBI_PMU_FW_IPI_SENT		= 6,
-+	SBI_PMU_FW_IPI_RCVD		= 7,
-+	SBI_PMU_FW_FENCE_I_SENT		= 8,
-+	SBI_PMU_FW_FENCE_I_RCVD		= 9,
-+	SBI_PMU_FW_SFENCE_VMA_SENT	= 10,
-+	SBI_PMU_FW_SFENCE_VMA_RCVD	= 11,
-+	SBI_PMU_FW_SFENCE_VMA_ASID_SENT	= 12,
-+	SBI_PMU_FW_SFENCE_VMA_ASID_RCVD	= 13,
-+
-+	SBI_PMU_FW_HFENCE_GVMA_SENT	= 14,
-+	SBI_PMU_FW_HFENCE_GVMA_RCVD	= 15,
-+	SBI_PMU_FW_HFENCE_GVMA_VMID_SENT = 16,
-+	SBI_PMU_FW_HFENCE_GVMA_VMID_RCVD = 17,
-+
-+	SBI_PMU_FW_HFENCE_VVMA_SENT	= 18,
-+	SBI_PMU_FW_HFENCE_VVMA_RCVD	= 19,
-+	SBI_PMU_FW_HFENCE_VVMA_ASID_SENT = 20,
-+	SBI_PMU_FW_HFENCE_VVMA_ASID_RCVD = 21,
-+	SBI_PMU_FW_MAX,
-+};
-+
-+/* SBI PMU event types */
-+enum sbi_pmu_event_type {
-+	SBI_PMU_EVENT_TYPE_HW = 0x0,
-+	SBI_PMU_EVENT_TYPE_CACHE = 0x1,
-+	SBI_PMU_EVENT_TYPE_RAW = 0x2,
-+	SBI_PMU_EVENT_TYPE_RAW_V2 = 0x3,
-+	SBI_PMU_EVENT_TYPE_FW = 0xf,
-+};
-+
- /* SBI PMU counter types */
- enum sbi_pmu_ctr_type {
- 	SBI_PMU_CTR_TYPE_HW = 0x0,
-diff --git a/tools/testing/selftests/kvm/riscv/sbi_pmu_test.c b/tools/testing/selftests/kvm/riscv/sbi_pmu_test.c
-index 924a335d2262..cec1621ace23 100644
---- a/tools/testing/selftests/kvm/riscv/sbi_pmu_test.c
-+++ b/tools/testing/selftests/kvm/riscv/sbi_pmu_test.c
-@@ -436,6 +436,7 @@ static void test_pmu_basic_sanity(void)
- 	struct sbiret ret;
- 	int num_counters = 0, i;
- 	union sbi_pmu_ctr_info ctrinfo;
-+	unsigned long fw_eidx;
- 
- 	probe = guest_sbi_probe_extension(SBI_EXT_PMU, &out_val);
- 	GUEST_ASSERT(probe && out_val == 1);
-@@ -461,7 +462,24 @@ static void test_pmu_basic_sanity(void)
- 			pmu_csr_read_num(ctrinfo.csr);
- 			GUEST_ASSERT(illegal_handler_invoked);
- 		} else if (ctrinfo.type == SBI_PMU_CTR_TYPE_FW) {
--			read_fw_counter(i, ctrinfo);
-+			/* Read without configure should fail */
-+			ret = sbi_ecall(SBI_EXT_PMU, SBI_EXT_PMU_COUNTER_FW_READ,
-+					i, 0, 0, 0, 0, 0);
-+			GUEST_ASSERT(ret.error == SBI_ERR_INVALID_PARAM);
-+
-+			/*
-+			 * Try to configure with a common firmware event.
-+			 * If configuration succeeds, verify we can read it.
-+			 */
-+			fw_eidx = ((unsigned long)SBI_PMU_EVENT_TYPE_FW << 16) |
-+				  SBI_PMU_FW_ACCESS_LOAD;
-+
-+			ret = sbi_ecall(SBI_EXT_PMU, SBI_EXT_PMU_COUNTER_CFG_MATCH,
-+					i, 1, 0, fw_eidx, 0, 0);
-+			if (ret.error == 0) {
-+				GUEST_ASSERT(ret.value == i);
-+				read_fw_counter(i, ctrinfo);
-+			}
- 		}
- 	}
- 
--- 
-2.34.1
-
+SGkgTnV0dHksIAoKVGhhbmtzIGZvciB0aGUgcmV2aWV3IQpJJ2xsIGZpeCB0aGUgaW5kZW50YXRp
+b24gYW5kIHNlbmQgYSB2NS4KCkJlc3QgUmVnYXJkcywKSmlha2FpCgomcXVvdDtOdXR0eS5MaXUm
+cXVvdDsgJmx0O251dHR5LmxpdUBob3RtYWlsLmNvbSZndDt3cm90ZToKPiAKPiBPbiAzLzEwLzIw
+MjYgMTo1NSBQTSwgSmlha2FpIFh1IHdyb3RlOgo+ID4gVGhlIGN1cnJlbnQgc2JpX3BtdV90ZXN0
+IGF0dGVtcHRzIHRvIHJlYWQgZmlybXdhcmUgY291bnRlcnMgd2l0aG91dAo+ID4gY29uZmlndXJp
+bmcgdGhlbSBmaXJzdCB3aXRoIFNCSV9FWFRfUE1VX0NPVU5URVJfQ0ZHX01BVENILgo+ID4KPiA+
+IFByZXZpb3VzbHkgdGhpcyBkaWQgbm90IGZhaWwgYmVjYXVzZSBLVk0gaW5jb3JyZWN0bHkgYWxs
+b3dlZCB0aGUgcmVhZAo+ID4gYW5kIGFjY2Vzc2VkIGZ3X2V2ZW50W10gd2l0aCBhbiBvdXQtb2Yt
+Ym91bmRzIGluZGV4IHdoZW4gdGhlIGNvdW50ZXIKPiA+IHdhcyB1bmNvbmZpZ3VyZWQuIEFmdGVy
+IGZpeGluZyB0aGF0IGJ1ZywgdGhlIHJlYWQgbm93IGNvcnJlY3RseSByZXR1cm5zCj4gPiBTQklf
+RVJSX0lOVkFMSURfUEFSQU0sIGNhdXNpbmcgdGhlIHNlbGZ0ZXN0IHRvIGZhaWwuCj4gPgo+ID4g
+VXBkYXRlIHRoZSB0ZXN0IHRvIGNvbmZpZ3VyZSBhIGZpcm13YXJlIGV2ZW50IGJlZm9yZSByZWFk
+aW5nIHRoZQo+ID4gY291bnRlci4gQWxzbyBhZGQgYSBuZWdhdGl2ZSB0ZXN0IHRvIGVuc3VyZSB0
+aGF0IGF0dGVtcHRpbmcgdG8gcmVhZCBhbgo+ID4gdW5jb25maWd1cmVkIGZpcm13YXJlIGNvdW50
+ZXIgZmFpbHMgZ3JhY2VmdWxseS4KPiA+Cj4gPiBTaWduZWQtb2ZmLWJ5OiBKaWFrYWkgWHUgPHh1
+amlha2FpMjAyNUBpc2Nhcy5hYy5jbj4KPiA+IFNpZ25lZC1vZmYtYnk6IEppYWthaSBYdSA8amlh
+a2FpUGVhbnV0QGdtYWlsLmNvbT4KPiA+IC0tLQo+ID4gVjIgLT4gVjM6Cj4gPiAtIFJlbW92ZWQg
+dW5uZWNlc3NhcnkgQklUKHJldC52YWx1ZSkgJiBjb3VudGVyX21hc2tfYXZhaWxhYmxlIGNoZWNr
+Lgo+ID4gLSBBc3NlcnRlZCByZXQudmFsdWUgPT0gaSBhZnRlciBzdWNjZXNzZnVsIENGR19NQVRD
+SC4KPiA+IC0gRml4ZWQgZWlkeCBjb25zdHJ1Y3Rpb24gaW4gU0JJX0VYVF9QTVVfQ09VTlRFUl9D
+RkdfTUFUQ0guCj4gPiAtLS0KPiA+ICAgLi4uL3Rlc3Rpbmcvc2VsZnRlc3RzL2t2bS9pbmNsdWRl
+L3Jpc2N2L3NiaS5oIHwgMzcgKysrKysrKysrKysrKysrKysrKwo+ID4gICAuLi4vc2VsZnRlc3Rz
+L2t2bS9yaXNjdi9zYmlfcG11X3Rlc3QuYyAgICAgICAgfCAyMCArKysrKysrKystCj4gPiAgIDIg
+ZmlsZXMgY2hhbmdlZCwgNTYgaW5zZXJ0aW9ucygrKSwgMSBkZWxldGlvbigtKQo+ID4KPiA+IGRp
+ZmYgLS1naXQgYS90b29scy90ZXN0aW5nL3NlbGZ0ZXN0cy9rdm0vaW5jbHVkZS9yaXNjdi9zYmku
+aCBiL3Rvb2xzL3Rlc3Rpbmcvc2VsZnRlc3RzL2t2bS9pbmNsdWRlL3Jpc2N2L3NiaS5oCj4gPiBp
+bmRleCAwNDZiNDMyYWU4OTYuLjE2ZjE4MTVhYzQ4ZiAxMDA2NDQKPiA+IC0tLSBhL3Rvb2xzL3Rl
+c3Rpbmcvc2VsZnRlc3RzL2t2bS9pbmNsdWRlL3Jpc2N2L3NiaS5oCj4gPiArKysgYi90b29scy90
+ZXN0aW5nL3NlbGZ0ZXN0cy9rdm0vaW5jbHVkZS9yaXNjdi9zYmkuaAo+ID4gQEAgLTk3LDYgKzk3
+LDQzIEBAIGVudW0gc2JpX3BtdV9od19nZW5lcmljX2V2ZW50c190IHsKPiA+ICAgCVNCSV9QTVVf
+SFdfR0VORVJBTF9NQVgsCj4gPiAgIH07Cj4gPiAgIAo+ID4gK2VudW0gc2JpX3BtdV9md19nZW5l
+cmljX2V2ZW50c190IHsKPiA+ICsJU0JJX1BNVV9GV19NSVNBTElHTkVEX0xPQUQJPSAwLAo+ID4g
+KwlTQklfUE1VX0ZXX01JU0FMSUdORURfU1RPUkUJPSAxLAo+ID4gKwlTQklfUE1VX0ZXX0FDQ0VT
+U19MT0FECQk9IDIsCj4gPiArCVNCSV9QTVVfRldfQUNDRVNTX1NUT1JFCQk9IDMsCj4gPiArCVNC
+SV9QTVVfRldfSUxMRUdBTF9JTlNOCQk9IDQsCj4gPiArCVNCSV9QTVVfRldfU0VUX1RJTUVSCQk9
+IDUsCj4gPiArCVNCSV9QTVVfRldfSVBJX1NFTlQJCT0gNiwKPiA+ICsJU0JJX1BNVV9GV19JUElf
+UkNWRAkJPSA3LAo+ID4gKwlTQklfUE1VX0ZXX0ZFTkNFX0lfU0VOVAkJPSA4LAo+ID4gKwlTQklf
+UE1VX0ZXX0ZFTkNFX0lfUkNWRAkJPSA5LAo+ID4gKwlTQklfUE1VX0ZXX1NGRU5DRV9WTUFfU0VO
+VAk9IDEwLAo+ID4gKwlTQklfUE1VX0ZXX1NGRU5DRV9WTUFfUkNWRAk9IDExLAo+ID4gKwlTQklf
+UE1VX0ZXX1NGRU5DRV9WTUFfQVNJRF9TRU5UCT0gMTIsCj4gPiArCVNCSV9QTVVfRldfU0ZFTkNF
+X1ZNQV9BU0lEX1JDVkQJPSAxMywKPiA+ICsKPiA+ICsJU0JJX1BNVV9GV19IRkVOQ0VfR1ZNQV9T
+RU5UCT0gMTQsCj4gPiArCVNCSV9QTVVfRldfSEZFTkNFX0dWTUFfUkNWRAk9IDE1LAo+ID4gKwlT
+QklfUE1VX0ZXX0hGRU5DRV9HVk1BX1ZNSURfU0VOVCA9IDE2LAo+ID4gKwlTQklfUE1VX0ZXX0hG
+RU5DRV9HVk1BX1ZNSURfUkNWRCA9IDE3LAo+ID4gKwo+ID4gKwlTQklfUE1VX0ZXX0hGRU5DRV9W
+Vk1BX1NFTlQJPSAxOCwKPiA+ICsJU0JJX1BNVV9GV19IRkVOQ0VfVlZNQV9SQ1ZECT0gMTksCj4g
+PiArCVNCSV9QTVVfRldfSEZFTkNFX1ZWTUFfQVNJRF9TRU5UID0gMjAsCj4gPiArCVNCSV9QTVVf
+RldfSEZFTkNFX1ZWTUFfQVNJRF9SQ1ZEID0gMjEsCj4gPiArCVNCSV9QTVVfRldfTUFYLAo+ID4g
+K307Cj4gPiArCj4gPiArLyogU0JJIFBNVSBldmVudCB0eXBlcyAqLwo+ID4gK2VudW0gc2JpX3Bt
+dV9ldmVudF90eXBlIHsKPiA+ICsJU0JJX1BNVV9FVkVOVF9UWVBFX0hXID0gMHgwLAo+ID4gKwlT
+QklfUE1VX0VWRU5UX1RZUEVfQ0FDSEUgPSAweDEsCj4gPiArCVNCSV9QTVVfRVZFTlRfVFlQRV9S
+QVcgPSAweDIsCj4gPiArCVNCSV9QTVVfRVZFTlRfVFlQRV9SQVdfVjIgPSAweDMsCj4gPiArCVNC
+SV9QTVVfRVZFTlRfVFlQRV9GVyA9IDB4ZiwKPiA+ICt9Owo+ID4gKwo+ID4gICAvKiBTQkkgUE1V
+IGNvdW50ZXIgdHlwZXMgKi8KPiA+ICAgZW51bSBzYmlfcG11X2N0cl90eXBlIHsKPiA+ICAgCVNC
+SV9QTVVfQ1RSX1RZUEVfSFcgPSAweDAsCj4gPiBkaWZmIC0tZ2l0IGEvdG9vbHMvdGVzdGluZy9z
+ZWxmdGVzdHMva3ZtL3Jpc2N2L3NiaV9wbXVfdGVzdC5jIGIvdG9vbHMvdGVzdGluZy9zZWxmdGVz
+dHMva3ZtL3Jpc2N2L3NiaV9wbXVfdGVzdC5jCj4gPiBpbmRleCA5MjRhMzM1ZDIyNjIuLjk0MDQ1
+NzdlNGFkNSAxMDA2NDQKPiA+IC0tLSBhL3Rvb2xzL3Rlc3Rpbmcvc2VsZnRlc3RzL2t2bS9yaXNj
+di9zYmlfcG11X3Rlc3QuYwo+ID4gKysrIGIvdG9vbHMvdGVzdGluZy9zZWxmdGVzdHMva3ZtL3Jp
+c2N2L3NiaV9wbXVfdGVzdC5jCj4gPiBAQCAtNDM2LDYgKzQzNiw3IEBAIHN0YXRpYyB2b2lkIHRl
+c3RfcG11X2Jhc2ljX3Nhbml0eSh2b2lkKQo+ID4gICAJc3RydWN0IHNiaXJldCByZXQ7Cj4gPiAg
+IAlpbnQgbnVtX2NvdW50ZXJzID0gMCwgaTsKPiA+ICAgCXVuaW9uIHNiaV9wbXVfY3RyX2luZm8g
+Y3RyaW5mbzsKPiA+ICsJdW5zaWduZWQgbG9uZyBmd19laWR4Owo+ID4gICAKPiA+ICAgCXByb2Jl
+ID0gZ3Vlc3Rfc2JpX3Byb2JlX2V4dGVuc2lvbihTQklfRVhUX1BNVSwgJm91dF92YWwpOwo+ID4g
+ICAJR1VFU1RfQVNTRVJUKHByb2JlICYmIG91dF92YWwgPT0gMSk7Cj4gPiBAQCAtNDYxLDcgKzQ2
+MiwyNCBAQCBzdGF0aWMgdm9pZCB0ZXN0X3BtdV9iYXNpY19zYW5pdHkodm9pZCkKPiA+ICAgCQkJ
+cG11X2Nzcl9yZWFkX251bShjdHJpbmZvLmNzcik7Cj4gPiAgIAkJCUdVRVNUX0FTU0VSVChpbGxl
+Z2FsX2hhbmRsZXJfaW52b2tlZCk7Cj4gPiAgIAkJfSBlbHNlIGlmIChjdHJpbmZvLnR5cGUgPT0g
+U0JJX1BNVV9DVFJfVFlQRV9GVykgewo+ID4gLQkJCXJlYWRfZndfY291bnRlcihpLCBjdHJpbmZv
+KTsKPiA+ICsJCQkvKiBSZWFkIHdpdGhvdXQgY29uZmlndXJlIHNob3VsZCBmYWlsICovCj4gPiAr
+CQkJcmV0ID0gc2JpX2VjYWxsKFNCSV9FWFRfUE1VLCBTQklfRVhUX1BNVV9DT1VOVEVSX0ZXX1JF
+QUQsCj4gPiArCQkJCQlpLCAwLCAwLCAwLCAwLCAwKTsKPiA+ICsJCQlHVUVTVF9BU1NFUlQocmV0
+LmVycm9yID09IFNCSV9FUlJfSU5WQUxJRF9QQVJBTSk7Cj4gPiArCj4gPiArCQkJLyoKPiA+ICsJ
+CQkgKiBUcnkgdG8gY29uZmlndXJlIHdpdGggYSBjb21tb24gZmlybXdhcmUgZXZlbnQuCj4gPiAr
+CQkJICogSWYgY29uZmlndXJhdGlvbiBzdWNjZWVkcywgdmVyaWZ5IHdlIGNhbiByZWFkIGl0Lgo+
+ID4gKwkJCSAqLwo+ID4gKwkJCWZ3X2VpZHggPSAoKHVuc2lnbmVkIGxvbmcpU0JJX1BNVV9FVkVO
+VF9UWVBFX0ZXIDw8IDE2KSB8Cj4gPiArCQkJCQkgIFNCSV9QTVVfRldfQUNDRVNTX0xPQUQ7Cj4g
+Tml0OiBBbHNvIG5lZWQgdG8gYWxpZ24gd2l0aCBwcmV2aW91cyBsaW5lID8KPiAKPiBPdGhlcndp
+c2UsCj4gUmV2aWV3ZWQtYnk6IE51dHR5IExpdSA8bnV0dHkubGl1QGhvdG1haWwuY29tPgo+IAo+
+IFRoYW5rcywKPiBOdXR0eQo+ID4gKwo+ID4gKwkJCXJldCA9IHNiaV9lY2FsbChTQklfRVhUX1BN
+VSwgU0JJX0VYVF9QTVVfQ09VTlRFUl9DRkdfTUFUQ0gsCj4gPiArCQkJCQlpLCAxLCAwLCBmd19l
+aWR4LCAwLCAwKTsKPiA+ICsJCQlpZiAocmV0LmVycm9yID09IDApIHsKPiA+ICsJCQkJR1VFU1Rf
+QVNTRVJUKHJldC52YWx1ZSA9PSBpKTsKPiA+ICsJCQkJcmVhZF9md19jb3VudGVyKGksIGN0cmlu
+Zm8pOwo+ID4gKwkJCX0KPiA+ICAgCQl9Cj4gPiAgIAl9Cj4gPiAgIAo=
