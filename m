@@ -1,223 +1,457 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from BL2PR02CU003.outbound.protection.outlook.com (mail-eastusazon11011029.outbound.protection.outlook.com [52.101.52.29])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA910375F82;
-	Tue, 17 Mar 2026 09:47:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773740876; cv=none; b=NpTtLU1hTAnXecZd0Mf8HczxhK94eNQZpmka0quKe3Tjq/sh6EquSDdYYRY7sSB4ltjqKgksSuQXyiHxq8fr0D7150TrSMKPjNxMNOsI2NhtHNzJSyUiM6hlSJU73fYWZVvA980Nc5T9OTkBpVfLO/pgZ8olQnJl1Sw2+G4SYuQ=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773740876; c=relaxed/simple;
-	bh=ENV4IiBEinpafj1cuTSE243f5d7APa/mGbcOZw2N3Tk=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Bfa74steUe5HaooqRuHqW6nibIMukqON1D99DuNiluyEXoCwnUqbxzae+DhqHCka5lo2UcL1rWIc7Dm/kdG8CnvYVOHzu2VkZBiyfkaMzHyU0Jsv45mg+jNB9R4UjpV/pu2YX1OOdfgecoaI+qex2yuPawF8EUuP3EHg3H3Xt6o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JBG2KKA3; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5DEB43A3E78
+	for <kvm@vger.kernel.org>; Tue, 17 Mar 2026 09:58:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.52.29
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1773741523; cv=fail; b=NKQtg67LNrjKPPEikdsZQSobGSVYJsea7i/L66CHerDDlIwAFBv9Me4sfIAT2SPKLgZ2VbB3KwxtQEcf9upnqTtpaBVfiM2xX/r7ex+D9BkfUnT3AC5MV8IZtfwn2YZSLnAkoEBV4rma/t+sbLrvrr7yvK2QpONna3UtY++cmHI=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1773741523; c=relaxed/simple;
+	bh=YK72wCwn8dByPhg9rk/sVyRWBBtmQBfgA6RIG/RANaw=;
+	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=gnkBD+z/fAjA0+9O/4JJZ+AJOyBjrVXJLMkBiqs68nflBHGRWDBuD20ooqR0cwCcDvGr3dYF3P+Xv7BO1WXnNFgPPTm8i7h8SRliwPmRZcTNfXlWEIORXW87uBVNiC0VaK+3GuSlvUxTSHDqGWnLErrGdfeJxaoPZptFpoy8Zd8=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=VnTkKQFa; arc=fail smtp.client-ip=52.101.52.29
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JBG2KKA3"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF263C4CEF7;
-	Tue, 17 Mar 2026 09:47:55 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773740876;
-	bh=ENV4IiBEinpafj1cuTSE243f5d7APa/mGbcOZw2N3Tk=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=JBG2KKA3gFT8Fv9RA0u2OcGyNPGR11JYNv/BQ6Lz9lftHxK8G7038BA280neS3JH4
-	 fYmJGsUAg0X/0N7XP42ZywxFcH9ofHeRlI1zxSQKPBtSLR10pYUzQ05wfBGmm3kqhs
-	 Tglch8F2boGBvuvVxXR6nOFX5kQ+8spP/0EwZ6rF1ZGd68dA4R5XtJ8wRNM2qjGLh2
-	 srBFbp7sGENMwOhjznMxJCg5wj2YiQ1DGbRnuRFIk72XJ+79zTLGPFagpsg7m65s5P
-	 ZWvEjhRjY/T3xRgn44vvLdkXD32G2pV7Mxle5F0b3Wn2IsOn9JoXOWuHTO72yjzRCA
-	 zPXytZ8Wek9Ig==
-Received: from phl-compute-01.internal (phl-compute-01.internal [10.202.2.41])
-	by mailfauth.phl.internal (Postfix) with ESMTP id D2C19F40071;
-	Tue, 17 Mar 2026 05:47:54 -0400 (EDT)
-Received: from phl-frontend-03 ([10.202.2.162])
-  by phl-compute-01.internal (MEProxy); Tue, 17 Mar 2026 05:47:54 -0400
-X-ME-Sender: <xms:SiO5abBx4sbGK9rQ1afGQb3gkWWNaE5fZI-FCPsBXuUXwRBeuts9Og>
-    <xme:SiO5aT0syCuLarb5a78BiqmXC5tDrAAMmyAYWGE8z1JFxNyeQgHQFzCVS2SxIUE9s
-    Q_B9vkgnDce9rMRaVfmqAyNoUJpxy8dykELBa78KncniyTim0hkqYw>
-X-ME-Received: <xmr:SiO5aVQBCUeyrfve4eYt-CyrxJ99lj0cOeKiPNHrc_Nfk_wIaIK264U-FWiINQ>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgdeftddtleefucetufdoteggodetrf
-    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
-    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
-    gurhepfffhvfevuffkfhggtggugfgjsehtkeortddttddunecuhfhrohhmpefmihhrhihl
-    ucfuhhhuthhsvghmrghuuceokhgrsheskhgvrhhnvghlrdhorhhgqeenucggtffrrghtth
-    gvrhhnpeefheegleevkeeghedvieduvddtjeeujedvveevhfehteehheeuteefkeekueel
-    leenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpehkih
-    hrihhllhdomhgvshhmthhprghuthhhphgvrhhsohhnrghlihhthidqudeiudduiedvieeh
-    hedqvdekgeeggeejvdekqdhkrghspeepkhgvrhhnvghlrdhorhhgsehshhhuthgvmhhovh
-    drnhgrmhgvpdhnsggprhgtphhtthhopeefvddpmhhouggvpehsmhhtphhouhhtpdhrtghp
-    thhtoheprhhitghkrdhprdgvughgvggtohhmsggvsehinhhtvghlrdgtohhmpdhrtghpth
-    htohepthhglhigsehkvghrnhgvlhdrohhrghdprhgtphhtthhopegurghvvgdrhhgrnhhs
-    vghnsehinhhtvghlrdgtohhmpdhrtghpthhtohepshgvrghnjhgtsehgohhoghhlvgdrtg
-    homhdprhgtphhtthhopegsphesrghlihgvnhekrdguvgdprhgtphhtthhopeigkeeisehk
-    vghrnhgvlhdrohhrghdprhgtphhtthhopegrtghkvghrlhgvhihtnhhgsehgohhoghhlvg
-    drtghomhdprhgtphhtthhopehhphgrseiihihtohhrrdgtohhmpdhrtghpthhtoheplhhi
-    nhhugidqkhgvrhhnvghlsehvghgvrhdrkhgvrhhnvghlrdhorhhg
-X-ME-Proxy: <xmx:SiO5aasepOB4D8JLlvMGHtqf-eBSptKMe_Y3-p26BBMjmSDBgYW-_g>
-    <xmx:SiO5ad7No0aHFAmQx91FKslDAHyFlEmuytZwKbDTvl2GvvCzQKDn4Q>
-    <xmx:SiO5aYbLK7uOzJIXua8WYkr10Xi5n-eCQ1jJ9eOOBju2kX6a_f0Kyw>
-    <xmx:SiO5aQgifegbxvPjYJmfCmdpPfZIK9yPGEXkzWLLsmx6lLJuyJ6hCA>
-    <xmx:SiO5aTaVq1dVv_kS77sdAA3bfiHmIQ0rAnsgMxKgi7XatQ32PmKLptJi>
-Feedback-ID: i10464835:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
- 17 Mar 2026 05:47:52 -0400 (EDT)
-Date: Tue, 17 Mar 2026 09:47:46 +0000
-From: Kiryl Shutsemau <kas@kernel.org>
-To: "Edgecombe, Rick P" <rick.p.edgecombe@intel.com>
-Cc: "tglx@kernel.org" <tglx@kernel.org>, 
-	"Hansen, Dave" <dave.hansen@intel.com>, "seanjc@google.com" <seanjc@google.com>, 
-	"bp@alien8.de" <bp@alien8.de>, "x86@kernel.org" <x86@kernel.org>, 
-	"ackerleytng@google.com" <ackerleytng@google.com>, "hpa@zytor.com" <hpa@zytor.com>, 
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, "mingo@redhat.com" <mingo@redhat.com>, 
-	"Huang, Kai" <kai.huang@intel.com>, "kvm@vger.kernel.org" <kvm@vger.kernel.org>, 
-	"linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>, "pbonzini@redhat.com" <pbonzini@redhat.com>, 
-	"Verma, Vishal L" <vishal.l.verma@intel.com>, "Gao, Chao" <chao.gao@intel.com>
-Subject: Re: [PATCH 3/4] x86/virt/tdx: Add SEAMCALL wrapper for
- TDH.SYS.DISABLE
-Message-ID: <abkdNQnvgJWmaKWk@thinkstation>
-References: <20260307010358.819645-1-rick.p.edgecombe@intel.com>
- <20260307010358.819645-4-rick.p.edgecombe@intel.com>
- <abftAJkiU3Q24wYQ@thinkstation>
- <ac341cedf0e387f2ba5cf3fc9d2ad5fcaa2ec3c8.camel@intel.com>
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="VnTkKQFa"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=hNsOhPxssZYT/WxnwmlmOQMm2xQa2KZnYwLZkIzMpvELiqbH8RpS4GW3elmQgkhYoo9CNTASMN1k52vwK5KqX4zW8BOPjJeLUTG2/GPgPutBloHfKXIgRo+kECUJbtv+Lkma2GCK2XnM+S2IiaGAxralAS9h5ptMj/wV9ebLXUQrFZ710mdcIM75FPc9jdzv5fHcZdBisPcaLOh+VGMHwGHr0rr0ws4YsJWRnNuopAzRaDMZlFMFLqyrJ3c0CS2MiV0u0MfWFxCJTtwAM9GfG8JSLXfWAglHN8ORz0xNtQwSp74H/SWAdTl71HIwk7GNRph9Y6pr/dcU7zp1tVSRXw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=NGLJXnOjDckrx9LjuVJe2jt6G90gQHTMUn4njxMcMpc=;
+ b=vTMr62xDXNeV5Tu7iSPEESBHs/lS1Sn6CLaPJF/s8l1SwQFilY5vL8zlfBnt5mrXWpBTDdksBMV6NFi4i8JI6a/cTaOija+cKk8fZfCQkBocWoDThwXw+W96wVhUdyZ+rkbKHnTt35HrtyBqw1SQJ+AyqFVnNMrgi7xvtoGwTfP1a55m9bmLG13eYBClT1sVYzkcRN8EiMnMNFd2WX3gc0say9JQYVdqjHnlD4Xt2nbc1XDVfKuTx3txrqH2r80yvqjZK0/HwChmToOQt2Iw35J1gM2qFGpgWbizt/8xoKfFN+vvqruAYGdKY5gSdG8fFW/9+OV8E3hYZY/GXyymFQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=NGLJXnOjDckrx9LjuVJe2jt6G90gQHTMUn4njxMcMpc=;
+ b=VnTkKQFa7X98BsHWKFlb+KKtlFrLi5DJmxb6NPPcLj9t78iK/7WNyhmLAo3A/KUfHOUwgInu/664xR2mQroEF7Jw99E6ZZeSVV7KUg+r1WQRAVSOJXUyMTS4aIRSj0XYoI+pmZE6bBAU3PvipuGLCCh31x0JGsI2PjqeDuPC7Ljj+1cp843tfo1o8hFQIHMtcg40t8IL9+X5GnRoFesfb56ybrWdZt/7sPK8zB7sEneOZxXy0B593Q0v71z9y/mR7RM/j6OA1xZixNf0XSRAlrvv1+sOgFbsGDGFahIPEcwphl6ZOyFpWIodDmreuCeWzEhQKUdHoVsBdDmF0TO3yQ==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from BL1PR12MB5063.namprd12.prod.outlook.com (2603:10b6:208:31a::11)
+ by DS7PR12MB8322.namprd12.prod.outlook.com (2603:10b6:8:ed::13) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9723.16; Tue, 17 Mar
+ 2026 09:58:34 +0000
+Received: from BL1PR12MB5063.namprd12.prod.outlook.com
+ ([fe80::a0c2:5681:4aca:90da]) by BL1PR12MB5063.namprd12.prod.outlook.com
+ ([fe80::a0c2:5681:4aca:90da%5]) with mapi id 15.20.9723.016; Tue, 17 Mar 2026
+ 09:58:34 +0000
+Message-ID: <accc2aeb-6ae1-4aec-867c-c9927e98f903@nvidia.com>
+Date: Tue, 17 Mar 2026 11:58:28 +0200
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH V1 vfio 6/6] vfio/mlx5: Add REINIT support to
+ VFIO_MIG_GET_PRECOPY_INFO
+To: Peter Xu <peterx@redhat.com>, Yishai Hadas <yishaih@nvidia.com>
+Cc: Alex Williamson <alex@shazbot.org>, jgg@nvidia.com, kvm@vger.kernel.org,
+ kevin.tian@intel.com, joao.m.martins@oracle.com, leonro@nvidia.com,
+ maorg@nvidia.com, clg@redhat.com, liulongfang@huawei.com,
+ giovanni.cabiddu@intel.com, kwankhede@nvidia.com
+References: <20260310164006.4020-1-yishaih@nvidia.com>
+ <20260310164006.4020-7-yishaih@nvidia.com> <abL5wKfPGzi88iBy@x1.local>
+ <20260312130817.69ff3e60@shazbot.org> <abMfLQPzVFK388q_@x1.local>
+ <fb6cb519-25d0-4cba-b13f-513349fb49db@nvidia.com> <abhZBIe-vR-GX3TT@x1.local>
+Content-Language: en-US
+From: Avihai Horon <avihaih@nvidia.com>
+In-Reply-To: <abhZBIe-vR-GX3TT@x1.local>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: FR4P281CA0287.DEUP281.PROD.OUTLOOK.COM
+ (2603:10a6:d10:e7::12) To BL1PR12MB5063.namprd12.prod.outlook.com
+ (2603:10b6:208:31a::11)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <ac341cedf0e387f2ba5cf3fc9d2ad5fcaa2ec3c8.camel@intel.com>
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: BL1PR12MB5063:EE_|DS7PR12MB8322:EE_
+X-MS-Office365-Filtering-Correlation-Id: 8019516f-cd87-4b37-983c-08de840bc09a
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|366016|1800799024|376014|18002099003|22082099003|56012099003|7053199007;
+X-Microsoft-Antispam-Message-Info:
+	LJhsmRFBkIIlWCdmrc/oukpMbJfnLZ8dtTOJTVilE3G743gFAF0gB1metYcyOwmAVr8UwdFsfucBIvEqRg71PLzC0ZkM54Ng/S/nE1hcttvprQy/Y4Y1JNLQl+TSQfrEtKWRQwXC4KFgMic/BRvVPwBrcFYqr/asoIMHfa4wzhrJf58cldn+cHVnr1f1V5j/DHUkKruLcpFmMbqMLxN5RYRznUDnRblwlNaM+uDj4iuhKJq8p98zrlFAdyIdUo2zNjR/8ikoEiOcu12NkGeFRgkf0Jfngh1LbSzphAJiYH58BGbPyRg/byB1GWpmtblYGrt8vedXK6E5JT5JGRrJ8sYJNI1HcXblbn8zigoZ0eA5ewOMaySEBKr2OW0iuOBk6jZcWD9JxbaZxAchLvpCzadkxZpiXIGQM/qgpvcxrezO6gRmkm42gNUzFEDbh1v0xC+p1wFnMkqFVtD2NlNHMvd868HJ2qguprLPi76vDHAjl1Zp1Io1sw8D3dckg1B6wITHkiCItqB7SFP1EBYgupjfqDevftzk+ne/y69bWQsMujWE2hWeK15PQGG8IAJ3uq+++yHhxTnOSAp7sXkIotJ4kbgt5KzZerkB1t2eMEppq0DvN4JXli9++B4Co0/gwul/BdoxH1u1LRBGgRwD0n2ObbrUsfBdcm8RsocnXyObDM7Ryur0xvjpjuiOoX/qs0XEve7km4Q2Ijk/yQN8Iq680hOeNZKfuPhJPIVqqhU=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BL1PR12MB5063.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(376014)(18002099003)(22082099003)(56012099003)(7053199007);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?NVdHVGcrRzB0OFJPbm5WV0FzYkRncDloY0tIZnhTUThCaHlQN01jQ1VVWjBw?=
+ =?utf-8?B?dlhCdHd3NlBmK1hVck9lRWw5bjRNc1NHN2R4QmFnWk5xTDdIUjZTd1NPWFFj?=
+ =?utf-8?B?OVRiUFgrMmFzWkxmU1BaUDVVRngrY2VOREtNY2NOU1Z6SGg1Yk5wazdzbHcz?=
+ =?utf-8?B?endIaFVjMGk3aWkrV0diWmppU09ITDFMOVRHd1ppZnhWY1hCcTFVSFRyVkUv?=
+ =?utf-8?B?Yk5LZldZeWF6R2ljaldaSkdRY0xOYmhLY1JPYVRHRkJYbEw0cXo3UnNTeVNW?=
+ =?utf-8?B?aUR4SWY3VCt5ZW0zYnlMdHZqVS9ncGZtbFpoL3hWU3hBdlpKUDJDSEhkSVRR?=
+ =?utf-8?B?N1ZEM3MyaVNLZHJ4WlBEcUZWbjBCbmdsNVpjeGM1RGk3a1BUWUJFY0FtT2JB?=
+ =?utf-8?B?YmJGN3Y1SGQ0S1lPTXJrWFlyd21WMGZYMmJHY2ZSUjhUd2VOcDJ4Z3paaFZ4?=
+ =?utf-8?B?Mjk1Y05hVVJWRTBoQ2lQeUU3MktVNmQ0czVPZTNkdk8rOFhpTTh5NjB0UGxp?=
+ =?utf-8?B?bHRLa1dBdld3NGYvRG9YcFcwM2RWYmt4Yk5zV1B4cFFRT2hTNVZOZUZYTlFj?=
+ =?utf-8?B?UDdZTnlFakZmZHlMcTJuNm5LN2hrQzhnY3lzNVI5dy9oNVRrUSthU2JQbDBC?=
+ =?utf-8?B?ZlZ6cjF1c0RRbkVtRklsS0RxSUF1aW8wbDFBQld6TVVwRWpCNHRPVU5jNzNR?=
+ =?utf-8?B?VGpHaWRCbXVyR3dabWZGdU0xVmZNQUxUSHFwdlhacjNVOU5STjZvQVhTOU1E?=
+ =?utf-8?B?eVRRUzBIUnVNaVk3VkpDNnhCOWM5cVl3THk3R2VMZ0M3cFp6U1JhYVY1UDZk?=
+ =?utf-8?B?YTdMUnhZTGFyRFJHQ1ZFc1lJVlpKR0pISjA0RGNmWG5pbWlJSzJ6SVRWZnFL?=
+ =?utf-8?B?U2tReEl0SU02WVdLZVJMKzVqcmxTY21YZU9MSTE5QUVTemJxR09Ib2VDdkxo?=
+ =?utf-8?B?Z25JM0FwVmlpUkRoeFEyelczdEplNGtVRHFEWDVOaHZQNUtJdGZ1Q05zTXcy?=
+ =?utf-8?B?R0pJRXE1QTMvbytkN0NmVGxUN2xRUUs5NExMaWFZM1VXZE1jK0hBWFhjZmtQ?=
+ =?utf-8?B?U3hPWmYxMFRvdFp3dEttaTBMT1BuTk9EVlFIRi9DZkgwV2pjd25nNFlNTjVD?=
+ =?utf-8?B?NnNpM3k1SVZRYndhMFIyZ3Y5ejNPWmIvMVExYW5xeXQ3emtqdDZHRG1Fdlpi?=
+ =?utf-8?B?QTljU0VBa3pQWjFQQWNYeTZEVFRaaHR4bkZBaG5FZGhCbHZnRlg0RjQxeGUy?=
+ =?utf-8?B?WkJZL1lpVlhuZDVCaUs1VUF6NE5YRFpvY1AwcXdPbGNTK1hGYmd0UTJvMzhm?=
+ =?utf-8?B?azlYbmZ3UVhyYjhrc3RqdGxYTjE0TGQvSlFMclJtc2VBRTJCaGZKaXREMkxs?=
+ =?utf-8?B?RkpwTjViKzgveW0wZENRTUdpcktlVVNxTEtGemVkdDR3bWtWQkRXcGV1SzUx?=
+ =?utf-8?B?dGowRkVoSEpsODB4eDFtSURMVFVsaXowZ05zMnY5UEptMTNQY01iWlNTQWdT?=
+ =?utf-8?B?WjhEL2ZHMUhMV1V0dThvUzFVdDBqNitvY2d2Q2c0bkVtanJkTnFJSEUydEwy?=
+ =?utf-8?B?N3hQdFJsOHJndXdqRzRtSU9LZW1TYy9CQ2JydFlWa2tZM3VwVkJDdDJPeEVk?=
+ =?utf-8?B?M1hNdlRXSENFVG9heHRtbEZUbkl3STJ0U2VJaDFkZStPQUtTaE9Pb0tIY0Ry?=
+ =?utf-8?B?TVBHVVFpU3JSYldDMjVNVlYwTGlvbkpIbjhUQ1R0cFBsNzVNaUc1OXZqb3Zt?=
+ =?utf-8?B?d1pta0ZiUW5yVVNQSXYrVEd2YWpwaDl4SjUxTndpdWwrTnNINkxVd3V1cnA3?=
+ =?utf-8?B?L1pieVF6dHU4b3ZQcmpqKzhneHAzdEhmUmprUkx2d0VXVDYvMm9ObXRUb0Mv?=
+ =?utf-8?B?SXZ2a1hCYjRYREpwbXVZS3M2MzM3Zlp3UFZXdi9zWXg0dk0zR0o0YkpWOVBK?=
+ =?utf-8?B?enMrTXNLVGpFY1pHQXRBcWR3cGU1aXliaVJDYnR5TXoyVDJnWlhQaUNFLzJL?=
+ =?utf-8?B?Zzl6eHpLK2VMYTk4UVd4eFVsL1d3OWV3SmtDclQzQXB6cVNMT0VwN0pla2NL?=
+ =?utf-8?B?SHZYREdaMS9UaXBWRGpYU3hVUFZ3STF2bjJ4UC9tQ0w2SFJ2cHFnVnoySURx?=
+ =?utf-8?B?QUYzYmErb3BTN3lFUktnbzJzWS8rNWNyQU5oVWxRZW05dHdtaFMxYkxNV3hJ?=
+ =?utf-8?B?ajFhNm5kMzRiZ09xY3pOVWp3aURjUW1UTG13SDQ0VlpqTE5jQWhGT3FlTTFn?=
+ =?utf-8?B?ZVdQa1RrNmovbzc5U054anJvd1F3UWtpYmRjaTU1UE5MaXpJaGxNSVdDbHgr?=
+ =?utf-8?B?bXRFUmRVT1VXTFNySEtzSGNzUGJ0Y0pEa2F2TEx3YjZKaFBvWFVpUT09?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 8019516f-cd87-4b37-983c-08de840bc09a
+X-MS-Exchange-CrossTenant-AuthSource: BL1PR12MB5063.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 17 Mar 2026 09:58:34.6043
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: iyOpMcE6qLGhLwiQL4v46i+SWJqI3ygejFoOX999iuFAjpGLPNv1ZxPNkgy/ad3x3tdPtHZXjMWWJPDf1+j0nA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS7PR12MB8322
 
-On Mon, Mar 16, 2026 at 09:15:13PM +0000, Edgecombe, Rick P wrote:
-> On Mon, 2026-03-16 at 11:51 +0000, Kiryl Shutsemau wrote:
-> > On Fri, Mar 06, 2026 at 05:03:57PM -0800, Rick Edgecombe wrote:
-> > > From: Vishal Verma <vishal.l.verma@intel.com>
-> > > 
-> > > Some early TDX-capable platforms have an erratum where a partial write
-> > > to TDX private memory can cause a machine check on a subsequent read.
-> > > On these platforms, kexec and kdump have been disabled in these cases,
-> > > because the old kernel cannot safely hand off TDX state to the new
-> > > kernel. Later TDX modules support the TDH.SYS.DISABLE SEAMCALL, which
-> > > provides a way to cleanly disable TDX and allow kexec to proceed.
-> > 
-> > Does it need to be enumerated?
-> > 
-> > I don't see this SEAMCALL be covered in the public documentation.
-> > </me looking around>
-> > Ah! Found it the the draft. So the feature is not yet finalized.
-> > 
-> > "Support of TDH.SYS.DISABLE is enumerated by TDX_FEATURES0. SYS_DISABLE
-> > (bit 53)"
-> > 
-> > I am seeing the next patch calling it unconditionally. Is it okay?
-> 
-> We debated checking the feature bit before allowing kexec, but decided it was
-> simpler to just blindly call and ignore the errors. The reasoning was that this
-> is already a somewhat exotic scenario being addressed, and future modules will
-> have the feature. So maintaining a check for the feature bit only helps a little
-> bit, for a short time. And then only if the user would rather have kexec blocked
-> than attempt it. Do you think it is worth it?
+Hi Peter,
 
-No, I see very limited reason to support stale TDX modules. Users are
-expected to keep the module up-to-date, so skipping enumeration should
-be okay. But it deserves explanation in the commit message or a comment.
+On 3/16/2026 9:24 PM, Peter Xu wrote:
+> External email: Use caution opening links or attachments
+>
+>
+> On Sun, Mar 15, 2026 at 04:19:18PM +0200, Yishai Hadas wrote:
+>> On 12/03/2026 22:16, Peter Xu wrote:
+>>> On Thu, Mar 12, 2026 at 01:08:17PM -0600, Alex Williamson wrote:
+>>>> Hey Peter,
+>>> Hey, Alex,
+>>>
+>>>> On Thu, 12 Mar 2026 13:37:04 -0400
+>>>> Peter Xu <peterx@redhat.com> wrote:
+>>>>
+>>>>> Hi, Yishai,
+>>>>>
+>>>>> Please feel free to treat my comments as pure questions only.
+>>>>>
+>>>>> On Tue, Mar 10, 2026 at 06:40:06PM +0200, Yishai Hadas wrote:
+>>>>>> When userspace opts into VFIO_DEVICE_FEATURE_MIG_PRECOPY_INFOv2, the
+>>>>>> driver may report the VFIO_PRECOPY_INFO_REINIT output flag in response
+>>>>>> to the VFIO_MIG_GET_PRECOPY_INFO ioctl, along with a new initial_bytes
+>>>>>> value.
+>>>>> Does it also mean that VFIO_PRECOPY_INFO_REINIT is almost only a hint that
+>>>>> can be deduced by the userspace too, if it remembers the last time fetch of
+>>>>> initial_bytes?
+>>>> I'll try to answer some of these.  PRECOPY_INFO is already just a hint.
+>>>> We essentially define initial_bytes as the "please copy this before
+>>>> migration to avoid high latency setup" and dirty_bytes is "I also have
+>>>> this much dirty state I could give to you now".  We've defined
+>>>> initial_bytes as monotonically decreasing, so a user could deduce that
+>>>> they've passed the intended high latency setup threshold, while
+>>>> dirty_bytes is purely volatile.
+>>> I see..  That might be another problem though to switchover decisions.
+>>>
+>>> Currently, QEMU relies on dirty reporting to decide when to switchover.
+>>>
+>>> What it does is asking all the modules for how many dirty data left, then
+>>> src QEMU do a sum, divide that sum with the estimated bandwidth to guess
+>>> the downtime.
+>>>
+>>> When the estimated downtime is small enough so as to satisfy the user
+>>> specified downtime, QEMU src will switchover.  This didn't take
+>>> switchover_ack for VFIO into account, but it's a separate concept.
+>>>
+>>> Above was based on the fact that the reported values are "total data", not
+>>> "what you can collect"..
+>>>
+>>> Is there possible way to provide a total amount?  It can even be a maximum
+>>> total amount just to cap the downtime.
+>> The total amount is already reported today via the
+>> VFIO_DEVICE_FEATURE_MIG_DATA_SIZE ioctl and QEMU accounts that in the
+>> switchover decision.
+> Ok, I somehow got the impression that initial+dirty should be the total
+> previously.  It's likely because I was referring to this piece of code in
+> QEMU:
+>
+> static void vfio_state_pending_estimate(void *opaque, uint64_t *must_precopy,
+>                                          uint64_t *can_postcopy)
+> {
+>      VFIODevice *vbasedev = opaque;
+>      VFIOMigration *migration = vbasedev->migration;
+>
+>      if (!vfio_device_state_is_precopy(vbasedev)) {
+>          return;
+>      }
+>
+>      *must_precopy +=
+>          migration->precopy_init_size + migration->precopy_dirty_size;
+>
+>      trace_vfio_state_pending_estimate(vbasedev->name, *must_precopy,
+>                                        *can_postcopy,
+>                                        migration->precopy_init_size,
+>                                        migration->precopy_dirty_size);
+> }
+>
+> After you said so, I found indeed the exact() version is fetching the
+> stop-size:
+>
+> static void vfio_state_pending_exact(void *opaque, uint64_t *must_precopy,
+>                                       uint64_t *can_postcopy)
+> {
+>      VFIODevice *vbasedev = opaque;
+>      VFIOMigration *migration = vbasedev->migration;
+>      uint64_t stop_copy_size = VFIO_MIG_STOP_COPY_SIZE;
+>
+>      /*
+>       * If getting pending migration size fails, VFIO_MIG_STOP_COPY_SIZE is
+>       * reported so downtime limit won't be violated.
+>       */
+>      vfio_query_stop_copy_size(vbasedev, &stop_copy_size);
+>      *must_precopy += stop_copy_size;
+>
+>      if (vfio_device_state_is_precopy(vbasedev)) {
+>          vfio_query_precopy_size(migration);
+>      }
+>
+>      trace_vfio_state_pending_exact(vbasedev->name, *must_precopy, *can_postcopy,
+>                                     stop_copy_size, migration->precopy_init_size,
+>                                     migration->precopy_dirty_size);
+> }
+>
+> Do you know why the estimate version doesn't report a cached stop_size
+> instead?
+>
+> Reporting different things will also confuse QEMU in its estimate() and
+> exact() hooks.  They should report the same thing except that the
+> estimate() can use a fast path for cached value.
 
-> > > This can be a long running operation, and the time needed largely
-> > > depends on the amount of memory that has been allocated to TDs. If all
-> > > TDs have been destroyed prior to the sys_disable call, then it is fast,
-> > > with only needing to override the TDX module memory.
-> > > 
-> > > After the SEAMCALL completes, the TDX module is disabled and all memory
-> > > resources allocated to TDX are freed and reset. The next kernel can then
-> > > re-initialize the TDX module from scratch via the normal TDX bring-up
-> > > sequence.
-> > > 
-> > > The SEAMCALL may be interrupted by an interrupt. In this case, it
-> > > returns TDX_INTERRUPTED_RESUMABLE, and it must be retried in a loop
-> > > until the operation completes successfully.
-> > > 
-> > > Add a tdx_sys_disable() helper, which implements the retry loop around
-> > > the SEAMCALL to provide this functionality.
-> > > 
-> > > Signed-off-by: Vishal Verma <vishal.l.verma@intel.com>
-> > > Signed-off-by: Rick Edgecombe <rick.p.edgecombe@intel.com>
-> > > ---
-> > >   arch/x86/include/asm/tdx.h  |  3 +++
-> > >   arch/x86/virt/vmx/tdx/tdx.c | 18 ++++++++++++++++++
-> > >   arch/x86/virt/vmx/tdx/tdx.h |  1 +
-> > >   3 files changed, 22 insertions(+)
-> > > 
-> > > diff --git a/arch/x86/include/asm/tdx.h b/arch/x86/include/asm/tdx.h
-> > > index f0826b0a512a..baaf43a09e99 100644
-> > > --- a/arch/x86/include/asm/tdx.h
-> > > +++ b/arch/x86/include/asm/tdx.h
-> > > @@ -173,6 +173,8 @@ static inline int pg_level_to_tdx_sept_level(enum pg_level level)
-> > >           return level - 1;
-> > >   }
-> > >   
-> > > +void tdx_sys_disable(void);
-> > > +
-> > >   u64 tdh_vp_enter(struct tdx_vp *vp, struct tdx_module_args *args);
-> > >   u64 tdh_mng_addcx(struct tdx_td *td, struct page *tdcs_page);
-> > >   u64 tdh_mem_page_add(struct tdx_td *td, u64 gpa, struct page *page, struct page *source, u64 *ext_err1, u64 *ext_err2);
-> > > @@ -204,6 +206,7 @@ static inline void tdx_init(void) { }
-> > >   static inline u32 tdx_get_nr_guest_keyids(void) { return 0; }
-> > >   static inline const char *tdx_dump_mce_info(struct mce *m) { return NULL; }
-> > >   static inline const struct tdx_sys_info *tdx_get_sysinfo(void) { return NULL; }
-> > > +static inline void tdx_sys_disable(void) { }
-> > >   #endif	/* CONFIG_INTEL_TDX_HOST */
-> > >   
-> > >   #endif /* !__ASSEMBLER__ */
-> > > diff --git a/arch/x86/virt/vmx/tdx/tdx.c b/arch/x86/virt/vmx/tdx/tdx.c
-> > > index 0802d0fd18a4..68bd2618dde4 100644
-> > > --- a/arch/x86/virt/vmx/tdx/tdx.c
-> > > +++ b/arch/x86/virt/vmx/tdx/tdx.c
-> > > @@ -37,6 +37,7 @@
-> > >   #include <asm/msr.h>
-> > >   #include <asm/cpufeature.h>
-> > >   #include <asm/tdx.h>
-> > > +#include <asm/shared/tdx_errno.h>
-> > >   #include <asm/cpu_device_id.h>
-> > >   #include <asm/processor.h>
-> > >   #include <asm/mce.h>
-> > > @@ -1940,3 +1941,20 @@ u64 tdh_phymem_page_wbinvd_hkid(u64 hkid, struct page *page)
-> > >   	return seamcall(TDH_PHYMEM_PAGE_WBINVD, &args);
-> > >   }
-> > >   EXPORT_SYMBOL_FOR_KVM(tdh_phymem_page_wbinvd_hkid);
-> > > +
-> > > +void tdx_sys_disable(void)
-> > > +{
-> > > +	struct tdx_module_args args = {};
-> > > +
-> > > +	/*
-> > > +	 * SEAMCALLs that can return TDX_INTERRUPTED_RESUMABLE are guaranteed
-> > > +	 * to make forward progress between interrupts, so it is safe to loop
-> > > +	 * unconditionally here.
-> > > +	 *
-> > > +	 * This is a 'destructive' SEAMCALL, in that no other SEAMCALL can be
-> > > +	 * run after this until a full reinitialization is done.
-> > > +	 */
-> > > +	while (seamcall(TDH_SYS_DISABLE, &args) == TDX_INTERRUPTED_RESUMABLE)
-> > > +		;
-> > 
-> > Silently ignore any other errors?
-> 
-> Do you think it's worth a warn? There are a couple other considerations.
->   - Kai brought up offline that we should handle TDX_SYS_BUSY here too.
->   - Previous kexec patches had trouble solving races around tdx enabling. So we
-> have to handle the seamcall failures.
-> 
-> So we have to exclude a few different errors in different ways. And then the
-> warn worthy error codes either don't impact anything, or the new kernel will
-> fail to initialize the TDX module and give notice there.
+Yes, this is because the VFIO device stop_copy_size may hold data that 
+can be transferred only when the device is stopped, i.e., during 
+switchover (as opposed to RAM which is fully precopy-able).
+Reporting it as part of estimate() didn't seem right, as precopy 
+iterations will not reduce it -- if it's big enough (above the 
+threshold), it may block future exact() calls as we can't migrate this 
+data during pre-copy and reach below threshold again.
 
-The delayed error is harder to debug. It can be useful to leave a
-breadcrumbs.
+>
+>>   If with the current reporting
+>>> definition, VM is destined to have unpredictable live migration downtime
+>>> when relevant VFIO devices are involved.
+>>>
+>>> The larger the diff between the current reported dirty value v.s. "total
+>>> data", the larger the downtime mistake can happen.
+>>>
+>>>> The trouble comes, for example, if the device has undergone a
+>>>> reconfiguration during migration, which may effectively negate the
+>>>> initial_bytes and switchover-ack.
+>>> Ah so it's about that, thanks.  IMHO it might be great if Yishai could
+>>> mention the source of growing initial_bytes somewhere in the commit log, or
+>>> even when documenting the new feature bit.
+>> Sure, we can add as part of V2 the below chunk when documenting the new
+>> feature.
+>>
+>> diff --git a/include/uapi/linux/vfio.h b/include/uapi/linux/vfio.h
+>> index 90e51e84539d..bb4a2df0550d 100644
+>> --- a/include/uapi/linux/vfio.h
+>> +++ b/include/uapi/linux/vfio.h
+>> @@ -1268,6 +1268,8 @@ enum vfio_device_mig_state {
+>>    * value and decrease as migration data is read from the device.
+>>    * The presence of the VFIO_PRECOPY_INFO_REINIT output flag indicates
+>>    * that new initial data is present on the stream.
+>> + * The new initial data may result, for example, from device
+>> reconfiguration
+>> + * during migration that requires additional initialization data.
+> This is helpful at least to me, thanks.
+>
+>>
+>>>> A user deducing they've sent enough device data to cover initial_bytes
+>>>> is essentially what we have now because our protocol doesn't allow the
+>>>> driver to reset initial_bytes.  The driver may choose to send that
+>>>> reconfiguration information in dirty_bytes bytes, but we don't
+>>>> currently have any way to indicate to the user that data remaining
+>>>> there is of higher importance for startup on the target than any other
+>>>> dirtying of device state.
+>>>>
+>>>> Hopefully the user/VMM is already polling the interface for dirty
+>>>> bytes, where with the opt-in for the protocol change here, allows the
+>>>> driver to split out the priority bytes versus the background dirtying.
+>>>>> It definitely sounds a bit weird when some initial_* data can actually
+>>>>> change, because it's not "initial_" anymore.
+>>>> It's just a priority scheme.  In the case I've outlined above it might
+>>>> be more aptly named setup_bytes or critical_bytes as you've used, but
+>>>> another driver might just use it for detecting migration compatibility.
+>>>> Naming is hard.
+>>> Yep. :) initial_bytes is still fine at least to me.  I wonder if we could
+>>> still update the document of this field, then it'll be good enough.
+>> As Alex mentioned, initial_bytes can be used for various purposes.
+>>
+>> So, I would keep the existing description in the uAPI.
+>>
+>> In the context of the new feature, the uAPI commit message refers to
+>> initial_bytes as 'critical data', to explain the motivation behind the
+>> feature. Together with the extra chunk in the uAPI suggested above, I
+>> believe this clarifies the intended usage.
+>>
+>> Makes sense ?
+> As long as Alex is happy with it, I'm OK either way.
+>
+>>>>> Another question is, if initial_bytes reached zero, could it be boosted
+>>>>> again to be non-zero?
+>>>> Under the new protocol, yes, and the REINIT flag would be set indicate
+>>>> it had been reset.  Under the old protocol, no.
+>>>>> I don't see what stops it from happening, if the "we get some fresh new
+>>>>> critical data" seem to be able to happen anytime..  but if so, I wonder if
+>>>>> it's a problem to QEMU: when initial_bytes reported to 0 at least _once_ it
+>>>>> means it's possible src QEMU decides to switchover.  Then looks like it
+>>>>> beats the purpose of "don't switchover until we flush the critical data"
+>>>>> whole idea.
+>>>> The definition of the protocol in the header stop it from happening.
+>>>> We can't know that there isn't some userspace that follows the
+>>>> deduction protocol rather than polling.  We don't know there isn't some
+>>>> userspace that segfaults if initial_bytes doesn't follow the published
+>>>> protocol.  Therefore opt-in where we have a mechanism to expose a new
+>>>> initial_bytes session without it becoming a purely volatile value.
+>>> Here, IMHO the problem is QEMU still needs to know when a switchover can
+>>> happen.
+>>>
+>>> After a new QEMU probing this new driver feature bit and enable it, now
+>>> initial_bytes can be incremented when REINIT flag set.  This is fine on its
+>>> own.  But then, src QEMU still needs to decide when it can switch over.
+>>>
+>>> It seems to me the only way to do it (with/without the new feature bit
+>>> enabled), is to relying on initial_bytes being zero.  When it's zero, it
+>>> means all possible "critical data" has been moved, then src QEMU can
+>>> kickoff that "switchover" message.
+>>>
+>>> After that, IIUC we need to be prepared to trigger switchover anytime.
+>>>
+>>> With the new REINIT, it means we can still observe REINIT event after src
+>>> QEMU making that decision.  Would that be a problem?
+>>>
+>>> Nowadays, when looking at vfio code, what happens is src QEMU after seeing
+>>> initial_bytes==0 send one VFIO_MIG_FLAG_DEV_INIT_DATA_SENT to dest QEMU,
+>>> later dst QEMU will ack that by sending back MIG_RP_MSG_SWITCHOVER_ACK.
+>>> Then switchover can happen anytime by the downtime calculation above.
+>>>
+>>> Maybe there should be solution in the userspace to fix it, but we'll need
+>>> to figure it out.  Likely, we need one way or another to revoke the
+>>> switchover message, so ultimately we need to stop VM, query the last time,
+>>> seeing initial_bytes==0, then it can proceed with switchover.  If it sees
+>>> initial_bytes nonzero again, it will need to restart the VM and revoke the
+>>> previous message somehow.
+>> The counterpart QEMU series that we pointed to, handles that in similar way
+>> to what you described.
+>>
+>> The switchover-ack mechanism is modified to be revoke-able and a final query
+>> to check initial_bytes == 0 is added after vCPUs are stopped.
+> I only roughly skimmed the series and overlooked the QEMU branch link.  I
+> read it, indeed it should do most of above, except one possible issue I
+> found, that QEMU shouldn't fail the migration when REINIT happened after
+> exact() but before vm_stop(); instead IIUC it should fallback to iterations
+> and try to move over the initial_bytes and retry a switchover.
 
-Also, do we want to make try_init_module_global() return failure after
-tdx_sys_disable()? I guess, TDH_SYS_LP_INIT will fail anyway, so it
-shouldn't matter.
+Yes, I agree, but it's a delicate flow in QEMU and need to get to the 
+details.
+Anyway, this case should be rare and we can further discuss these 
+details when I send the QEMU series.
 
--- 
-  Kiryl Shutsemau / Kirill A. Shutemov
+Thanks.
+
+>
+> Thanks,
+>
+>> Thanks,
+>> Yishai
+>>
+>>>>> Is there a way the HW can report and confidentally say no further critical
+>>>>> data will be generated?
+>>>> So long as there's a guest userspace running that can reconfigure the
+>>>> device, no.  But if you stop the vCPUs and test PRECOPY_INFO, it should
+>>>> be reliable.
+>>> This is definitely an important piece of info.  I recall Zhiyi used to tell
+>>> me there's no way to really stop a VFIO device from generating dirty data.
+>>> Happy to know it seems there seems to still be a way.  And now I suspect
+>>> what Zhiyi observed was exactly seeing dirty_bytes growing even after VM
+>>> stopped.  If that counter means "how much you can read" it all makes more
+>>> sense (even though it may suffer from the issue I mentioned above).
+>>>
+>>>>>> The presence of the VFIO_PRECOPY_INFO_REINIT flag indicates to the
+>>>>>> caller that new initial data is available in the migration stream.
+>>>>>>
+>>>>>> If the firmware reports a new initial-data chunk, any previously dirty
+>>>>>> bytes in memory are treated as initial bytes, since the caller must read
+>>>>>> both sets before reaching the end of the initial-data region.
+>>>>> This is unfortunate.  I believe it's a limtation because of the current
+>>>>> single fd streaming protocol, so HW can only append things because it's
+>>>>> kind of a pipeline.
+>>>>>
+>>>>> One thing to mention is, I recall VFIO migration suffers from a major
+>>>>> bottleneck on read() of the VFIO FD, it means this streaming whole design
+>>>>> is also causing other perf issues.
+>>>>>
+>>>>> Have you or anyone thought about making it not a stream anymore?  Take
+>>>>> example of RAM blocks: it is pagesize accessible, with that we can do a lot
+>>>>> more, e.g. we don't need to streamline pages, we can send pages in whatever
+>>>>> order.  Meanwhile, we can send pages concurrently because they're not
+>>>>> streamlined too.
+>>>>>
+>>>>> I wonder if VFIO FDs can provide something like that too, as a start it
+>>>>> doesn't need to be as fine granule, maybe at least instead of using one
+>>>>> stream it can provide two streams, one for initial_bytes (or, I really
+>>>>> think this should be called "critical data" or something similar, if it
+>>>>> represents that rather than "some initial states", not anymore), another
+>>>>> one for dirty.  Then at least when you attach new critical data you don't
+>>>>> need to flush dirty queue too.
+>>>>>
+>>>>> If to extend it a bit more, then we can also make e.g. dirty queue to be
+>>>>> multiple FDs, so that userspace can read() in multiple threads, speeding up
+>>>>> the switchover phase.
+>>>>>
+>>>>> I had a vague memory that there's sometimes kernel big locks to block it,
+>>>>> but from interfacing POV it sounds always better to avoid using one fd to
+>>>>> stream everything.
+>>>> I'll leave it to others to brainstorm improvements, but I'll note that
+>>>> flushing dirty_bytes is a driver policy, another driver could consider
+>>>> unread dirty bytes as invalidated by new initial_bytes and reset
+>>>> counters.
+>>>>
+>>>> It's not clear to me that there's generic algorithm to use for handling
+>>>> device state as addressable blocks rather than serialized into a data
+>>>> stream.  Multiple streams of different priorities seems feasible, but
+>>>> now we're talking about a v3 migration protocol.  Thanks,
+>>> Yep, definitely not a request to invent v3 yet, but just to brainstorm it.
+>>> It doesn't need to be all-things addressable, index-able (e.g. via >1
+>>> objects) would be also nice even through one fd, then it can also be
+>>> threadified somehow.
+>>>
+>>> It seems the HW designer needs to understand how hypervisor works on
+>>> collecting these HW data, so it does look like a hard problem when it's all
+>>> across the stack from silicon layer..
+>>>
+>>> I just had a feeling that v3 (or more) will come at some point when we want
+>>> to finally resolve the VFIO downtime problems..
+>>>
+>>> Thanks,
+>>>
+> --
+> Peter Xu
+>
