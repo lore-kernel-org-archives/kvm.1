@@ -1,157 +1,208 @@
-Received: from mail-ed1-f51.google.com (mail-ed1-f51.google.com [209.85.208.51])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from CH1PR05CU001.outbound.protection.outlook.com (mail-northcentralusazon11010065.outbound.protection.outlook.com [52.101.193.65])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5BAB22D1936
-	for <kvm@vger.kernel.org>; Tue, 17 Mar 2026 16:02:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.208.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD24D30E0C0
+	for <kvm@vger.kernel.org>; Tue, 17 Mar 2026 16:18:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.193.65
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773763339; cv=pass; b=PtgRiEnBF1KWAyu+v5+B3/VdeLr1EvV2+V1nix8dnnPu0GOGca3Y/825ljb8T0qJdNSIKbsk9IXWS1K4fOLHFBJOIw/9l+qqqpcINt76Tg+Py9Rs0zg0VEeOvFMBWDUR0vpDSdCQ/eUKyMxz122TfIIqOnX4MFIDYMSnAnrAgBI=
+	t=1773764320; cv=fail; b=PZRX1qMhkdATmNH0Kx5XXxv+zo9y4c/ADVlUk5xULglJ5fNhJaaVi7DLHlCcwkmn8PD6IK7lDHmsuSF15d/6OSI9OFXxXZXS7TpYF2sR+/CCF0Abl7X0FRNl5s6t13kY6PiqXaQLeVmbutMN5pbi5YWz6xrusuP5otQSM7Y1O1w=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773763339; c=relaxed/simple;
-	bh=CqqW22RO3ZRqLUDSRy8f7yh1EqvrK6CgpS2J8cVHpqU=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=MnF21UBtpZAeMhpVvmhcZ0Gxv5lgYUoP2P1UxsXDbauxmDu7pmcEmIfoEmdrm8E2wNob48COJzgkY0SiH8i0gllSGIl+1rNcF+SEg+sKWTQ1La1gfpaYNUuHSI33MTtSrdiqnDZ2QtXMFXLqvo5DJyfwfdQ/8fLXpqUBw9uU24Q=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=MsnKQETc; arc=pass smtp.client-ip=209.85.208.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	s=arc-20240116; t=1773764320; c=relaxed/simple;
+	bh=JBP+d64DbzRX9NKSsyduxQojC78hnwud7hhIqdrIJvE=;
+	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=gXjIfB8ZJGozH6pQx8upvw9OkjThBo08EVffnOk1yVnwIFcuJRygolf7IdqUFuxL4A97vGbUCdTEQYnjSTH8dRH2DL8DdC8+hfIFItMOLHQHHiVgyTzZkOZv0t+VecA8sYI0hkeFKPML1m2629BRWbfvkhUczfeD4I6h3vS71Vg=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=pKK9yMhF; arc=fail smtp.client-ip=52.101.193.65
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="MsnKQETc"
-Received: by mail-ed1-f51.google.com with SMTP id 4fb4d7f45d1cf-661ce258878so13112a12.0
-        for <kvm@vger.kernel.org>; Tue, 17 Mar 2026 09:02:16 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1773763335; cv=none;
-        d=google.com; s=arc-20240605;
-        b=E5haCb8V839jTvBtDZGgmQyxviMTiCqMFbZpMxcxSJ8nz4Ct4pEm/ga3/fn3HanEXe
-         Z74wvzPDbWaX1WZAdXi7F3gnG3zguvpTpBuszEq8JISwZIvImTSlOTa6MUqAE7Azusup
-         Da+VY9Yas2h/gcJuPu1mUjRoxqq9bdQDbCo+Pa6Vq8kQSER7VvyH8PniKaqdYGHsJQFV
-         lR8Y4y+EzHxvB8OmE4jxQJiK1phfrVBOaTn5whzTdffzuMEY8g64kaB573O1JqcZdbBS
-         KuzP2JnYM6KSWEHnGheIVw8g5ltRTsYCxcvMITQx5CuRXkGuH7Nfz8SnNX1uX4xkJhs1
-         3gPA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=SY4/5vAWWcaV9x0jV4cO7baDxpJaaDgGr6iFNkqEvuQ=;
-        fh=iOpYfUfc+lQsLjfDp5qH5/QKPaakF47qpraLdu1WO50=;
-        b=iGekvzBxDbbH/fLODaxJuLYqZRby/bO4XdTBnXn2A1ZmJpVFbuBz2vgNeEiRiNRqE0
-         TxAY2t1fqNuimV+zNIfaHjgVr/w+KJmZxHqiUWrsaqKb3o+IAvjWq4SXKHqy9IVbwxS/
-         qhtvUOR8sJ0RYHailtRxkZriDtK6QIyybML3trqknmwGszwaVGz+XS+UpNBBVHZxOosF
-         oo0xdlbSGkQjxObSFhvz0NAhMqUxcYVzICvxT0R7ysMbOaCZ1Cl8Rzk3gmwbWX5k9ksI
-         /DoTboNtA8wYyR6eSKhNU0H5mi9y5nEOJXp01+A37GkpHBURrYLMbfm6RcRHm/AiN3S2
-         QLRQ==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1773763335; x=1774368135; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=SY4/5vAWWcaV9x0jV4cO7baDxpJaaDgGr6iFNkqEvuQ=;
-        b=MsnKQETcw3qKro5hwCDhoywmoAkFKeqa6Ir0NxILtQoh3sEe6M1IDctTtxvrzn9RbA
-         VnIBeNtfj7rMVSafhLU60CmGjcMJrp0bSpMoo6JDDtZMnd6i86Gj5cKU7eeuJ6hwNGLV
-         6CiI442hnbmbJVYt0g3KzJY37QenvPYGUcv87moJTBZx+mA8WENJTmQcSq34Ze9xoUIR
-         PwbKR3l1umlCmsU6B5n16/2n0l0GGEAxH4/Cvb5P8tPuq9lzp3z/Z1JoPWWTraAfiZ78
-         819B9K3dxiHh7ce6yKbcxo7sp26n6xAU9Wt2fSTaK2JEjRXr54Zp+HEUa7M+TcmQis5+
-         k1aA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1773763335; x=1774368135;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=SY4/5vAWWcaV9x0jV4cO7baDxpJaaDgGr6iFNkqEvuQ=;
-        b=HkODKh1S+U6KwiLKHtCoCnuIn6MOTD44HhXG1hSYaWpABpYUtzCUIvwnkYB8whvfu9
-         fBCJOzf7aNTKcjb2QPbunKtJy5Sa+zm3x3zfVyDzI4EEa6J7HAWvMw8WPpwNOLkS791r
-         r73RXFh71/yr8wOvnRldsterlQQl2rJwES58U2DgBTy4tFNauvFM8kcVZjqlvLLRYr5P
-         pnoQYDgpxUF96Vp55Vvj0vb6gD8W6Oj4t6WUojtvfmczMAzpltvJ8rHyTom4Azh/779I
-         +ktYmzIiX0oIksmwZodPWydhQyCyls/6z/8AOuKaEkOrXANlEI/lcxrQ0X42X4Af/21G
-         uBGA==
-X-Forwarded-Encrypted: i=1; AJvYcCX5JZ+oXYKSHu/uoggvuJwyccOcTDK6gpeTC4FOdtAg6CRaY7HUaO+VRuB44GyhEEX9Hmo=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzXQWCAbd8XPFVBd7EoOprtH9o/6ZO9AJTenDadQh2ZBbJC2SEv
-	VFq3FOC7Ez5o3NopToFGYsUJU+QVc+BtGipQcMYUwSDRaPqt6W8rPLAwRij6rC7TKaYZYPFbj7T
-	U0A1Wri3/bH/y3Zz2RF86PZ8shgYx04hFHl6fsKry
-X-Gm-Gg: ATEYQzyZA8hM/MAD3ZZhoEMXtrx5mlNKYpFNBCEhKVCYAn6YHi4vGCTmJppNiYUFATR
-	I1IBLCQi4lLkPKhstpkhr22G9yyYKc7KCiC9cipq2nnrbxNWUk7bQuxZoavCBqjKKXyiEWTVG+g
-	INk0GJ6pgOuSvIEHr0zhrJpU/rOv/1wxD568igOd3Fqss5k6/3rZEtsztkjGb/AE5YhvDh3VPKn
-	juhzzql1TbRT1LEhOwbckK4xsVQgpL++IezJ+GbAmdI8Kz4NksNhXWO7SLFI3aXWqNT9lmbeDns
-	7i1fDGEUaTuiDvM7bQ==
-X-Received: by 2002:aa7:d691:0:b0:660:b029:3d4c with SMTP id
- 4fb4d7f45d1cf-66713bea8f6mr51265a12.2.1773763334159; Tue, 17 Mar 2026
- 09:02:14 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="pKK9yMhF"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=KsWgYFnNkTvaybRfTA67DqV49SgRIPV4AOV+x1ux3v7GB9Cna+sf2dCLwmzLHRxKMusJfv8zIxgK65sKWtdQ7nkFYu5VMUlfWxtabQGqCio9UMgwsGXwdAEGntQGCSnQeqAwQsELVLz/mxwnkU3WU1St72amsUCpvLtY3fbKfG/KNn9G3nppWRD+LEvspdXGwL8dZKEsOb/s738lgXmOkOZxgjjNKTk7Hg+OkFIlGyo9OTCT9YuxEa9jAEFxPWSzQe1fD3+7D/a1/3dtswyUxbg6Um1c/JAi2sXx7DwJSbV9Y7XTll6lIvGHM47jJhygH48m2PTSf9k2lc0xuAbUqA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=/ifna/X2YIA8r2w6tqjmeBGeFEE7HZ1Dc5amqvGry4M=;
+ b=paLI9oHKVkuTzYqV8T9y+srZ4P9LrlPOs/qtU58+aXv+qowPSeQ3SG6xeNlaD59ve1Q2YpGWu1+7muSzLJ8DwFutsPisxJUpl0BR5L9wL7VlIQYSVlxvYG9sni+Te1MWRB6obkpAKF2RebrwBm6H7L4fHQIVU64atgzQAZ0cv83jfwxMjYQfuTrEBE4F9ZnM6b48RW/wSBAtV/3X+DGFzC3xT3++dEIIT6LjqAGHueUz4Qk7DZod7q4amzKbu4YYI0z8Mq3Vgl7uVaP7RurkUWWzUrfIQuYSdj8TkBjQVBDXOTtUAi76CKtRADExvdQE4Sv7ULm3+v7wDS6mYcrtrQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 216.228.118.232) smtp.rcpttodomain=shazbot.org smtp.mailfrom=nvidia.com;
+ dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=/ifna/X2YIA8r2w6tqjmeBGeFEE7HZ1Dc5amqvGry4M=;
+ b=pKK9yMhFNgNAmv+yOfZHLnTPPD5cEilnhsrB6mf9ul9eWMssbk1sXwVhcVxGgmwUWL3ELOHH0uYwVYFA6KJj+vRHuxV7MhH83gMStBhW6+uYe0rTX8g9P2Oc9oqc3vrM/LSk8rvd75A7GO3vjTXqi1Y/RwU+stvRMKEydEMYcgslw1UFlYl0ll2IJCJ7rBeR8wsyzI+noPcZXHj4g3koPvuVv4Umd1bY10+0dFtzrcW03nnqq3geqtCSsyp/x6z6aqHUr2lskd5/X6jTVdatzcuDwEpcfk8B/B64SzBr/DOXcqrEwhpduVWgrcSrplM+8jkyZ5Pap/n3N560Uwi+HA==
+Received: from SA1P222CA0024.NAMP222.PROD.OUTLOOK.COM (2603:10b6:806:22c::26)
+ by MN2PR12MB4094.namprd12.prod.outlook.com (2603:10b6:208:15f::23) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9723.19; Tue, 17 Mar
+ 2026 16:18:33 +0000
+Received: from SA2PEPF00001507.namprd04.prod.outlook.com
+ (2603:10b6:806:22c:cafe::45) by SA1P222CA0024.outlook.office365.com
+ (2603:10b6:806:22c::26) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.9700.25 via Frontend Transport; Tue,
+ 17 Mar 2026 16:18:30 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.118.232)
+ smtp.mailfrom=nvidia.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=nvidia.com;
+Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
+ 216.228.118.232 as permitted sender) receiver=protection.outlook.com;
+ client-ip=216.228.118.232; helo=mail.nvidia.com; pr=C
+Received: from mail.nvidia.com (216.228.118.232) by
+ SA2PEPF00001507.mail.protection.outlook.com (10.167.242.39) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.9700.17 via Frontend Transport; Tue, 17 Mar 2026 16:18:33 +0000
+Received: from drhqmail203.nvidia.com (10.126.190.182) by mail.nvidia.com
+ (10.127.129.5) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20; Tue, 17 Mar
+ 2026 09:18:17 -0700
+Received: from drhqmail203.nvidia.com (10.126.190.182) by
+ drhqmail203.nvidia.com (10.126.190.182) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.20; Tue, 17 Mar 2026 09:18:16 -0700
+Received: from vdi.nvidia.com (10.127.8.10) by mail.nvidia.com
+ (10.126.190.182) with Microsoft SMTP Server id 15.2.2562.20 via Frontend
+ Transport; Tue, 17 Mar 2026 09:18:13 -0700
+From: Yishai Hadas <yishaih@nvidia.com>
+To: <alex@shazbot.org>, <jgg@nvidia.com>
+CC: <kvm@vger.kernel.org>, <kevin.tian@intel.com>,
+	<joao.m.martins@oracle.com>, <leonro@nvidia.com>, <yishaih@nvidia.com>,
+	<maorg@nvidia.com>, <avihaih@nvidia.com>, <clg@redhat.com>,
+	<peterx@redhat.com>, <liulongfang@huawei.com>, <giovanni.cabiddu@intel.com>,
+	<kwankhede@nvidia.com>
+Subject: [PATCH V2 vfio 1/6] vfio: Define uAPI for re-init initial bytes during the PRE_COPY phase
+Date: Tue, 17 Mar 2026 18:17:48 +0200
+Message-ID: <20260317161753.18964-2-yishaih@nvidia.com>
+X-Mailer: git-send-email 2.21.0
+In-Reply-To: <20260317161753.18964-1-yishaih@nvidia.com>
+References: <20260317161753.18964-1-yishaih@nvidia.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <Z_VUswFkWiTYI0eD@do-x1carbon> <Z_aovIbwdKIIBMuq@google.com>
-In-Reply-To: <Z_aovIbwdKIIBMuq@google.com>
-From: Jim Mattson <jmattson@google.com>
-Date: Tue, 17 Mar 2026 09:02:02 -0700
-X-Gm-Features: AaiRm52Qe_TIMFzvhlPR8tJPzof84bHGndhqcQdcQocpyA2EGQ2Rrcs0dQ9C98I
-Message-ID: <CALMp9eRvB5Jqbs6aKMsPzKDJE7Pb0iUTsO9Ot1CB698px1GHcA@mail.gmail.com>
-Subject: Re: kvm guests crash when running "perf kvm top"
-To: Sean Christopherson <seanjc@google.com>
-Cc: Seth Forshee <sforshee@kernel.org>, Peter Zijlstra <peterz@infradead.org>, 
-	Ingo Molnar <mingo@redhat.com>, Arnaldo Carvalho de Melo <acme@kernel.org>, Namhyung Kim <namhyung@kernel.org>, 
-	Thomas Gleixner <tglx@linutronix.de>, Borislav Petkov <bp@alien8.de>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, Paolo Bonzini <pbonzini@redhat.com>, x86@kernel.org, 
-	linux-perf-users@vger.kernel.org, kvm@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, Stephane Eranian <eranian@google.com>, 
-	Mingwei Zhang <mizhang@google.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-NV-OnPremToCloud: ExternallySecured
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: SA2PEPF00001507:EE_|MN2PR12MB4094:EE_
+X-MS-Office365-Filtering-Correlation-Id: 2c767d16-7863-4c77-f5ac-08de8440d5ec
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|82310400026|376014|1800799024|36860700016|22082099003|18002099003|56012099003;
+X-Microsoft-Antispam-Message-Info:
+	yly6zasVfShlAWiirzdcCszuDlygAUNvNaM6EcNr22uw2zeIDx30UosAz0dZEx23aF/aYb3DApXbgSAdBgtK9f2aqon4TZKrj3eZcQP5XIc/nTh/9I1z4RadspnSnUUS3B0uXFeL/6lqseFB3RxSnJXT3SXRNZ8NzwDY+kEAuJ2c9vC+veyE95LmTHB9w7DfzxDh33F6pMosTRPKH+sbI6rIbjMM5qvEAwYzFtzPA1TbVjatvelNVoqoymDVM/gLH6V1+bWs+rGz43shrKBhP0sma6Z71SeBwkQt2dEaP+cbneJqnCLp0+YpZREiv4e2FKx4Tx4L2cCtcgYO4frXM40IPeQhYA0olACz3P3QssEIH9DZ7W+EjAvT/pS6S9X3124vwyO6vuqlsqYoqffsUC16t7Uzicat60/XbpTGjnyOc6eZyArYRmiffbnnyIwl9wJozT3M/LQZ3D9sPhny5taIx3NEbV0ybxtm7ugpPYeNYsyjpa2qFKZolf1UuLOhSS7aV/SkhVXTARchPW6NZjbp22y9RfG+zJNgUL1t8rFM4tSGX18y4aQTkfm+h0ecnmUpGeK/ZjX7KmNfp/E0yFQzGNSz1E+YKOgXNgfyUfWiCYM7362+/OCtateRn7kZ1qTpVweASDF4SD3zu2SIyG8jMw+ly+XCTMoc97cgWnEp5zzaF/k9Io6jMgD78SMCP7iAGRYXbxDVOnm6E8rmEpSb6JkuZaIOvKp25XGoSPwKYOiv5ea+pOlvM8AtClSV7TYFAeyLphPsI80A9BZ+NA==
+X-Forefront-Antispam-Report:
+	CIP:216.228.118.232;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc7edge1.nvidia.com;CAT:NONE;SFS:(13230040)(82310400026)(376014)(1800799024)(36860700016)(22082099003)(18002099003)(56012099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	nZ8fkegzFcBW2uCpvyczTVGQNtBtBJ2kX4Z7B1mn1qvEY83hSfwFVvsLsvTNBZC8e2k1j8hBsb+suSG8j6geVNuLdg1n+gabas+uM7BDeDbPy8ueWqLqyFBg0K2YSanI2t/gzxdy4MIaz997Y7A48uDoFnSC4E7Oc8YibbnDCbTlYpAFlXJRDo4JvhDpirSIlXPD/aBJ4ShKJSP7pVbjy/OjcToHw4gUJF6E/uQeK7Wkyydcf2+PG81CXlplq0AW3T4Pabst7dygMtZxGdFrRec5ZU9N7/J+3+FxaolMNGuwqmqqNZV3IDhz03R+xZ3MF2GuROOEqkMbtr3my7QztMRlq7+a9rYkcpaiVGj+KzaeYY+muhZYAksHUsUYfz+2IbdNFlrwSLv7+LDyYLASUhQ74fM3rhxsbhhdx1+8BBWmo8j2P5AdNExz7sbmZ26r
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 17 Mar 2026 16:18:33.4237
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 2c767d16-7863-4c77-f5ac-08de8440d5ec
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.118.232];Helo=[mail.nvidia.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	SA2PEPF00001507.namprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MN2PR12MB4094
 
-On Wed, Apr 9, 2025 at 10:05=E2=80=AFAM Sean Christopherson <seanjc@google.=
-com> wrote:
+As currently defined, initial_bytes is monotonically decreasing and
+precedes dirty_bytes when reading from the saving file descriptor.
+The transition from initial_bytes to dirty_bytes is unidirectional and
+irreversible.
 
-> Long story short, masking PEBS_ENABLE with the guest's value (in addition=
- to
-> what perf allows) fixes the issue on my end.  Assuming testing goes well,=
- I'll
-> post this as a proper patch.
->
-> --
-> diff --git a/arch/x86/events/intel/core.c b/arch/x86/events/intel/core.c
-> index cdb19e3ba3aa..1d01fb43a337 100644
-> --- a/arch/x86/events/intel/core.c
-> +++ b/arch/x86/events/intel/core.c
-> @@ -4336,7 +4336,7 @@ static struct perf_guest_switch_msr *intel_guest_ge=
-t_msrs(int *nr, void *data)
->         arr[pebs_enable] =3D (struct perf_guest_switch_msr){
->                 .msr =3D MSR_IA32_PEBS_ENABLE,
->                 .host =3D cpuc->pebs_enabled & ~cpuc->intel_ctrl_guest_ma=
-sk,
-> -               .guest =3D pebs_mask & ~cpuc->intel_ctrl_host_mask,
-> +               .guest =3D pebs_mask & ~cpuc->intel_ctrl_host_mask & kvm_=
-pmu->pebs_enable,
->         };
->
->         if (arr[pebs_enable].host) {
+The initial_bytes are considered as critical data that is highly
+recommended to be transferred to the target as part of PRE_COPY, without
+this data, the PRE_COPY phase would be ineffective.
 
-Because kvm_pmu->pebs_enable is optimistic, I think we also need to
-swap these two modifications to guest PGC in the code below:
+We come to solve the case when a new chunk of critical data is
+introduced during the PRE_COPY phase and the driver would like to report
+an entirely new value for the initial_bytes.
 
-arr[global_ctrl].guest &=3D ~kvm_pmu->host_cross_mapped_mask;
-/* Set hw GLOBAL_CTRL bits for PEBS counter when it runs for guest */
-arr[global_ctrl].guest |=3D arr[pebs_enable].guest;
+For that, we extend the VFIO_MIG_GET_PRECOPY_INFO ioctl with an output
+flag named VFIO_PRECOPY_INFO_REINIT to allow drivers reporting a new
+initial_bytes value during the PRE_COPY phase.
 
+Currently, existing VFIO_MIG_GET_PRECOPY_INFO implementations don't
+assign info.flags before copy_to_user(), this effectively echoes
+userspace-provided flags back as output, preventing the field from being
+used to report new reliable data from the drivers.
 
-By the way, IA32_PEBS_ENABLE can be modified in NMI context by
-handle_pmi_common(), so the host value returned from this function may
-already be stale. We have seen cases where handle_pmi_common() clears
-a bit in IA32_PEBS_ENABLE between here and the next VM-entry. VM-exit
-restores the stale value with the bit set, and that bit persists
-indefinitely. If the next perf event assigned to that PMC is not a
-PEBS event, it magically becomes one. When an NMI arrives for PEBS
-buffer overflow, perf refuses to claim it, because it doesn't think
-any PEBS events are active. So, we get an "Uhhuh. NMI received for
-unknown reason" message on the console. A flood of these is enough to
-trigger the NMI watchdog and cause a panic.
+Reliable use of the new VFIO_PRECOPY_INFO_REINIT flag requires userspace
+to explicitly opt in by enabling the
+VFIO_DEVICE_FEATURE_MIG_PRECOPY_INFOv2 device feature.
 
-I think we need a fixup after VM-exit to clear any IA32_PEBS_ENABLE
-bits that were cleared by handle_pmi_common() between
-intel_guest_get_msrs() and VM-entry, but I'm not sure what the best
-API might be. Calling intel_guest_get_msrs() again seems too
-heavyweight. Maybe KVM could ask perf nicely to just rewrite the MSR
-with cpuc->pebs_enabled? Note that any erroneous IA32_PEBS_ENABLE bits
-are dormant post VM-exit, since any PMCs throttled by
-handle_pmi_common() will have their enable bits cleared in the
-corresponding event selector.
+When the caller opts in, the driver may report an entirely new
+value for initial_bytes. It may be larger, it may be smaller, it may
+include the previous unread initial_bytes, it may discard the previous
+unread initial_bytes, up to the driver logic and state.
+The presence of the VFIO_PRECOPY_INFO_REINIT output flag set by the
+driver indicates that new initial data is present on the stream.
+
+Once the caller sees this flag, the initial_bytes value should be
+re-evaluated relative to the readiness state for transition to
+STOP_COPY.
+
+Signed-off-by: Yishai Hadas <yishaih@nvidia.com>
+---
+ include/uapi/linux/vfio.h | 24 ++++++++++++++++++++++++
+ 1 file changed, 24 insertions(+)
+
+diff --git a/include/uapi/linux/vfio.h b/include/uapi/linux/vfio.h
+index bb7b89330d35..bb4a2df0550d 100644
+--- a/include/uapi/linux/vfio.h
++++ b/include/uapi/linux/vfio.h
+@@ -1266,6 +1266,19 @@ enum vfio_device_mig_state {
+  * The initial_bytes field indicates the amount of initial precopy
+  * data available from the device. This field should have a non-zero initial
+  * value and decrease as migration data is read from the device.
++ * The presence of the VFIO_PRECOPY_INFO_REINIT output flag indicates
++ * that new initial data is present on the stream.
++ * The new initial data may result, for example, from device reconfiguration
++ * during migration that requires additional initialization data.
++ * In that case initial_bytes may report a non-zero value irrespective of
++ * any previously reported values, which progresses towards zero as precopy
++ * data is read from the data stream. dirty_bytes is also reset
++ * to zero and represents the state change of the device relative to the new
++ * initial_bytes.
++ * VFIO_PRECOPY_INFO_REINIT can be reported only after userspace opts in to
++ * VFIO_DEVICE_FEATURE_MIG_PRECOPY_INFOv2. Without this opt-in, the flags field
++ * of struct vfio_precopy_info is reserved for bug-compatibility reasons.
++ *
+  * It is recommended to leave PRE_COPY for STOP_COPY only after this field
+  * reaches zero. Leaving PRE_COPY earlier might make things slower.
+  *
+@@ -1301,6 +1314,7 @@ enum vfio_device_mig_state {
+ struct vfio_precopy_info {
+ 	__u32 argsz;
+ 	__u32 flags;
++#define VFIO_PRECOPY_INFO_REINIT (1 << 0) /* output - new initial data is present */
+ 	__aligned_u64 initial_bytes;
+ 	__aligned_u64 dirty_bytes;
+ };
+@@ -1510,6 +1524,16 @@ struct vfio_device_feature_dma_buf {
+ 	struct vfio_region_dma_range dma_ranges[] __counted_by(nr_ranges);
+ };
+ 
++/*
++ * Enables the migration precopy_info_v2 behaviour.
++ *
++ * VFIO_DEVICE_FEATURE_MIG_PRECOPY_INFOv2.
++ *
++ * On SET, enables the v2 pre_copy_info behaviour, where the
++ * vfio_precopy_info.flags is a valid output field.
++ */
++#define VFIO_DEVICE_FEATURE_MIG_PRECOPY_INFOv2  12
++
+ /* -------- API for Type1 VFIO IOMMU -------- */
+ 
+ /**
+-- 
+2.18.1
+
