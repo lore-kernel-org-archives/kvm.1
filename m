@@ -1,111 +1,333 @@
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D7906388E65;
-	Tue, 17 Mar 2026 10:38:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2262D3A6F1D
+	for <kvm@vger.kernel.org>; Tue, 17 Mar 2026 10:59:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773743893; cv=none; b=D5BmGgimLiv8Qh5uI2PzYgZuJLWWnjQ+NNTWqMuYlRePIUL/2XTy2RaPZQpz8gh6n/NlFiRhivtB67LFRNRM6SLCT7JSH9ir7V5tdbBS1Ur3uvRzaaGFSBNwgHNTVQjansjX4D+biK6Wvn2wU1E7vYszFDYvxu7NBBlrPB1d89E=
+	t=1773745192; cv=none; b=DBtyvch88XMsEpvC4f8C/0iUy5h+H3/AgL06nCmhGpK//FU4Dnox2tzgoho2TzIARkbjjHdGBl/pb/j7wKBqGZtoujPb5M4wftevLNMsd5/P8Q32vOQJTJi806kxwmA94hWUYGTScbdxt8mrp7IsX29jLLCOEb8/2e0M8C6/lkU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773743893; c=relaxed/simple;
-	bh=9RQ0Tvco2BwCrno5HAySN/PgXfW3wX22o+3PPwc2mmU=;
-	h=Mime-Version:Content-Type:Date:Message-Id:From:Cc:To:Subject:
-	 References:In-Reply-To; b=a3ZlMFsCoBmxldvQgEz38xE2ulsPaBqiOnYbtoB6kOe2bM4IW2pjlJZMu7cai4epcFKU8G+Q3U5xgM46iKNhke34DusJHxiMGEs5G9i/xJN1mhfmN1N4h8VLWRT2js/GRZ6gp0eoVN9qOimxCaTbxqiZW0zsUhOKDJATLw0Wj90=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=PwhV24xI; arc=none smtp.client-ip=148.163.156.1
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+	s=arc-20240116; t=1773745192; c=relaxed/simple;
+	bh=CkLy7E2wYGWOj6hu6Quvug0D3Llkzm3zvXS2nuzZHnE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=dbrW1Dh3lQRug450YehGgoqcsnO9n79zY7cC7yxwwZXx6RAgwFy6aqIYn3g/6QPv8yY3518WPI/W7FQgl69zR05zoddgKcuxuaWpQfo9Jq8RZCt1++Qu/EqBivRqjyrvuAKVvL04spduE5lGKVOckMqEACr/OpiPWx8hQyZF1yc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CX3Z2glG; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="PwhV24xI"
-Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 62H8NjR61093922;
-	Tue, 17 Mar 2026 10:38:12 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=6n4QT0
-	OrpXydZ1M1Xoqb1LF4gLQ/ZCRinRqoY1RW+fA=; b=PwhV24xITjQ4mQ7ximH2N1
-	D1kYv1kPpluEhTH9U01M1dxw3Dz1iVqACibnHFXb7eW0c2Q3NnbyBQ75KPDNta90
-	zbx+T+3W3chKXL5Ry5PbzkjGTzB0Vtictr2g6nz1vu4d/nmF8kGBBkFfxz6PFg6j
-	V2oQz2mewjyezmsipfKPe9IMofTa0k7c0IbpIjOy63HQc11SEqZ/NFM6FWGPpmwr
-	0lAJqyFx8Bfj30BJIWj/6eO9bbNYaVHJtIm7+Cr6syPm5hMov3ety5Df9QwJVEXU
-	olrQylM0+sLzo0MW+Mq2A0bpPHONsWezOqvfS95xGG4OxJIAw/GvmykYGsfXE6xQ
-	==
-Received: from ppma11.dal12v.mail.ibm.com (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4cvy64m8x2-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 17 Mar 2026 10:38:11 +0000 (GMT)
-Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma11.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 62H8F5UT028496;
-	Tue, 17 Mar 2026 10:38:11 GMT
-Received: from smtprelay07.fra02v.mail.ibm.com ([9.218.2.229])
-	by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 4cwmq18f7y-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 17 Mar 2026 10:38:11 +0000
-Received: from smtpav03.fra02v.mail.ibm.com (smtpav03.fra02v.mail.ibm.com [10.20.54.102])
-	by smtprelay07.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 62HAc7pU49283498
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 17 Mar 2026 10:38:07 GMT
-Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 2C12D2004D;
-	Tue, 17 Mar 2026 10:38:07 +0000 (GMT)
-Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 05FDD2004B;
-	Tue, 17 Mar 2026 10:38:07 +0000 (GMT)
-Received: from darkmoore (unknown [9.87.132.213])
-	by smtpav03.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Tue, 17 Mar 2026 10:38:06 +0000 (GMT)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CX3Z2glG"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 05457C19425;
+	Tue, 17 Mar 2026 10:59:50 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1773745191;
+	bh=CkLy7E2wYGWOj6hu6Quvug0D3Llkzm3zvXS2nuzZHnE=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=CX3Z2glGBp4SUrkrCpvizeUhil9ibWlm2vL3ju8TbMwygQsPVP6ZwvIYCLGx4+Uwf
+	 oiCMAgIwvWZFj2eqF7xz7mqoPeabnC5qXU51V2APiZI8B/XHNw84MTtU2HYzn9Pfvk
+	 CfJ5yTECq7QLDfoQlmksIrQxhLgpbRQ9OiTIMkT69DfcIHxaxYtXb18qjCVzyn1mtz
+	 mr6EnDIy15B0m10co05IHUwkkle2xwUTyWYlQjXoLQj1FqGLxbrRQ9PpoguVdLDL8N
+	 RZaXjmoiCel8MMXuehlGKvMgDIH2ISTJKJGhDyz2C8j+NnPBE7TrD/d0ZMbD4O5V5H
+	 xEQ+UtyY8thpw==
+Received: from phl-compute-10.internal (phl-compute-10.internal [10.202.2.50])
+	by mailfauth.phl.internal (Postfix) with ESMTP id 17DE6F4007C;
+	Tue, 17 Mar 2026 06:59:50 -0400 (EDT)
+Received: from phl-frontend-03 ([10.202.2.162])
+  by phl-compute-10.internal (MEProxy); Tue, 17 Mar 2026 06:59:50 -0400
+X-ME-Sender: <xms:JTS5acdaxD5NBIO7OZwHXKqVkVEs6XP7rq3yfun9SgCWeWpFkByZ7g>
+    <xme:JTS5ae585Ungdlw8UNOtoKvcLt7QX9bMY_UfdDErgmXfX_fn8a4Nld5u2kfO-zoxC
+    Dx0H2_h8S0sN_t9R1I4EzEPuJGAB0igH26sYdK8wKeve7atSiTzrcM>
+X-ME-Received: <xmr:JTS5aYlsU2PsHne658wQ9qWSQQnGRTCPIXkRWEki70hxiY-mAHzAQZWDeciBkQ>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgdeftddutdejucetufdoteggodetrf
+    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
+    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
+    gurhepfffhvfevuffkfhggtggujgesthdtredttddtvdenucfhrhhomhepmfhirhihlhcu
+    ufhhuhhtshgvmhgruhcuoehkrghssehkvghrnhgvlhdrohhrgheqnecuggftrfgrthhtvg
+    hrnhepffdthfekffejjeeuieevjeeluddvvdffieffkeeluedvgedtjeefuddvkeelfeel
+    necuffhomhgrihhnpehgihhthhhusgdrtghomhenucevlhhushhtvghrufhiiigvpedtne
+    curfgrrhgrmhepmhgrihhlfhhrohhmpehkihhrihhllhdomhgvshhmthhprghuthhhphgv
+    rhhsohhnrghlihhthidqudeiudduiedvieehhedqvdekgeeggeejvdekqdhkrghspeepkh
+    gvrhhnvghlrdhorhhgsehshhhuthgvmhhovhdrnhgrmhgvpdhnsggprhgtphhtthhopeeh
+    tddpmhhouggvpehsmhhtphhouhhtpdhrtghpthhtoheptghhrghordhgrghosehinhhtvg
+    hlrdgtohhmpdhrtghpthhtoheplhhinhhugidqkhgvrhhnvghlsehvghgvrhdrkhgvrhhn
+    vghlrdhorhhgpdhrtghpthhtoheplhhinhhugidqtghotghosehlihhsthhsrdhlihhnuh
+    igrdguvghvpdhrtghpthhtohepkhhvmhesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgt
+    phhtthhopegsihhnsghinhdrfihusehlihhnuhigrdhinhhtvghlrdgtohhmpdhrtghpth
+    htohepuggrnhdrjhdrfihilhhlihgrmhhssehinhhtvghlrdgtohhmpdhrtghpthhtohep
+    uggrvhgvrdhhrghnshgvnheslhhinhhugidrihhnthgvlhdrtghomhdprhgtphhtthhope
+    hirhgrrdifvghinhihsehinhhtvghlrdgtohhmpdhrtghpthhtohepkhgrihdrhhhurghn
+    ghesihhnthgvlhdrtghomh
+X-ME-Proxy: <xmx:JjS5aR8eJX0UBI4az9ZBcrRoJ845jBdqRUEG-1NMGPXR__tuz5tR6Q>
+    <xmx:JjS5abo2xFr9ZNEPnXhkloh0rHl-m_jGrA3cv4ANyI3FJzpyTwLdoQ>
+    <xmx:JjS5aYt0c7VL1qqIYssWIRPJFbU1po9fCpNHMywv6hDBKfp4R0YFNg>
+    <xmx:JjS5aWSlHerHGkJ3olk1bayuRJhYL_gQKXpS-HdVgXrm6DUnQvmLig>
+    <xmx:JjS5aSWErycQUZXhReRNrTJQkYuUlZCeoDdvugsinzwc9L_kx7yzeeyr>
+Feedback-ID: i10464835:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
+ 17 Mar 2026 06:59:48 -0400 (EDT)
+Date: Tue, 17 Mar 2026 10:59:43 +0000
+From: Kiryl Shutsemau <kas@kernel.org>
+To: Chao Gao <chao.gao@intel.com>
+Cc: linux-kernel@vger.kernel.org, linux-coco@lists.linux.dev, 
+	kvm@vger.kernel.org, binbin.wu@linux.intel.com, dan.j.williams@intel.com, 
+	dave.hansen@linux.intel.com, ira.weiny@intel.com, kai.huang@intel.com, nik.borisov@suse.com, 
+	paulmck@kernel.org, pbonzini@redhat.com, reinette.chatre@intel.com, 
+	rick.p.edgecombe@intel.com, sagis@google.com, seanjc@google.com, 
+	tony.lindgren@linux.intel.com, vannapurve@google.com, vishal.l.verma@intel.com, 
+	yilun.xu@linux.intel.com, Thomas Gleixner <tglx@kernel.org>, 
+	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, x86@kernel.org, 
+	"H. Peter Anvin" <hpa@zytor.com>
+Subject: Re: [PATCH v5 08/22] x86/virt/seamldr: Allocate and populate a
+ module update request
+Message-ID: <abkvOYQIi2RvEYh8@thinkstation>
+References: <20260315135920.354657-1-chao.gao@intel.com>
+ <20260315135920.354657-9-chao.gao@intel.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Tue, 17 Mar 2026 11:38:01 +0100
-Message-Id: <DH4ZQA5VYDE0.1SW16U6AQ6HCX@linux.ibm.com>
-From: "Christoph Schlameuss" <schlameuss@linux.ibm.com>
-Cc: <linux-s390@vger.kernel.org>, <imbrenda@linux.ibm.com>,
-        <borntraeger@linux.ibm.com>, <akrowiak@linux.ibm.com>
-To: "Janosch Frank" <frankja@linux.ibm.com>, <kvm@vger.kernel.org>
-Subject: Re: [RFC 03/10] KVM: s390: Convert shifts to gpa_to_gfn()
-X-Mailer: aerc 0.21.0
-References: <20260316180310.17765-1-frankja@linux.ibm.com>
- <20260316180310.17765-4-frankja@linux.ibm.com>
-In-Reply-To: <20260316180310.17765-4-frankja@linux.ibm.com>
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: zTTNjaKhjZcHcUFJo8qE8ARgClkaSsFu
-X-Proofpoint-GUID: zTTNjaKhjZcHcUFJo8qE8ARgClkaSsFu
-X-Authority-Analysis: v=2.4 cv=KYnfcAYD c=1 sm=1 tr=0 ts=69b92f14 cx=c_pps
- a=aDMHemPKRhS1OARIsFnwRA==:117 a=aDMHemPKRhS1OARIsFnwRA==:17
- a=IkcTkHD0fZMA:10 a=Yq5XynenixoA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=RnoormkPH1_aCDwRdu11:22 a=iQ6ETzBq9ecOQQE5vZCe:22 a=VnNF1IyMAAAA:8
- a=-yrtnzFoinabFxpHE94A:9 a=QEXdDO2ut3YA:10 a=zgiPjhLxNE0A:10
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMzE3MDA5MCBTYWx0ZWRfXwPmF990i2iCP
- i3aDng4YX07QnKc5G0lGNjc/bTc6OmAWg+uYvIxqrgsA3gZ2dIapJ0KDWrAYcMZca6uoGUo6o0F
- gG5lf47k4D9FQvk11NHb7w/qLS/VK1yDb0GwfTk0x30M+t0+kMXUPWt36eYXzP+8OuopoJawZfe
- 67sYuh7gf2s4zafA5oUxbCfurnqLU+BPoFXb7RvUVopzRtv4NW4c81zmaMjqa8ABaHAwtE2Bd+5
- i4meYC4OcnaQ7wwOUZzBH68mG+l0RdKVD/GUNs4I6TKj9sCfYMwklX3qG16yb5i1bMi2myF1Vc9
- og83th5NJ9jRfbpsc6heVvunYc2UlvNKpD2NwJyBIOLtaOPgdqRw75TH/IpFq5c0pgqTTQNPaUG
- TzLigyBbmnA3hl8ORQ+ySba7yryq5Wd76BcqAVejime56OtRJxHNhMjTHWd70GBVZn8NJAFuci0
- N3PCHzABzDEeMy05zxg==
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
- definitions=2026-03-17_01,2026-03-16_06,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- phishscore=0 lowpriorityscore=0 priorityscore=1501 suspectscore=0 bulkscore=0
- spamscore=0 impostorscore=0 malwarescore=0 adultscore=0 clxscore=1015
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2603050001 definitions=main-2603170090
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260315135920.354657-9-chao.gao@intel.com>
 
-On Mon Mar 16, 2026 at 5:23 PM CET, Janosch Frank wrote:
-> Not only do we get rid of the ugly shift but we have more chances to
-> do static analysis type checking since gpa_to_gfn() returns gfn_t.
->
-> Signed-off-by: Janosch Frank <frankja@linux.ibm.com>
-
-Reviewed-by: Christoph Schlameuss <schlameuss@linux.ibm.com>
-
+On Sun, Mar 15, 2026 at 06:58:28AM -0700, Chao Gao wrote:
+> P-SEAMLDR uses the SEAMLDR_PARAMS structure to describe TDX module
+> update requests. This structure contains physical addresses pointing to
+> the module binary and its signature file (or sigstruct), along with an
+> update scenario field.
+> 
+> TDX modules are distributed in the tdx_blob format defined in
+> blob_structure.txt from the "Intel TDX module Binaries Repository". A
+> tdx_blob contains a header, sigstruct, and module binary. This is also the
+> format supplied by the userspace to the kernel.
+> 
+> Parse the tdx_blob format and populate a SEAMLDR_PARAMS structure
+> accordingly. This structure will be passed to P-SEAMLDR to initiate the
+> update.
+> 
+> Note that the sigstruct_pa field in SEAMLDR_PARAMS has been extended to
+> a 4-element array. The updated "SEAM Loader (SEAMLDR) Interface
+> Specification" will be published separately. P-SEAMLDR compatibility
+> validation (such as 4KB vs 16KB sigstruct support) is left to userspace,
+> which must verify the P-SEAMLDR version meets the TDX module's minimum
+> requirements.
+> 
+> Signed-off-by: Chao Gao <chao.gao@intel.com>
+> Reviewed-by: Tony Lindgren <tony.lindgren@linux.intel.com>
+> Reviewed-by: Xu Yilun <yilun.xu@linux.intel.com>
 > ---
->  arch/s390/kvm/interrupt.c | 4 ++--
->  arch/s390/kvm/priv.c      | 2 +-
->  2 files changed, 3 insertions(+), 3 deletions(-)
+> v5:
+>  - use a macro for tdx_blob version (0x100) [Yan]
+>  - don't do alignment checking for the binary/sigstruct [Rick]
+>  - drop blob's sigstruct and validation checking
+>  - set seamldr_params.version to 1 when necessary
+>  - drop the link to blob_structure.txt which might be unstable [Kai]
+> 
+> v4:
+>  - Remove checksum verification as it is optional
+>  - Convert comments to is_vmalloc_addr() checks [Kai]
+>  - Explain size/alignment checks in alloc_seamldr_params() [Kai]
+> 
+> v3:
+>  - Print tdx_blob version in hex [Binbin]
+>  - Drop redundant sigstruct alignment check [Yilun]
+>  - Note buffers passed from firmware upload infrastructure are
+>    vmalloc()'d above alloc_seamldr_params()
+> ---
+>  arch/x86/virt/vmx/tdx/seamldr.c | 141 ++++++++++++++++++++++++++++++++
+>  1 file changed, 141 insertions(+)
+> 
+> diff --git a/arch/x86/virt/vmx/tdx/seamldr.c b/arch/x86/virt/vmx/tdx/seamldr.c
+> index 7114326d7569..20cb6c797ce5 100644
+> --- a/arch/x86/virt/vmx/tdx/seamldr.c
+> +++ b/arch/x86/virt/vmx/tdx/seamldr.c
+> @@ -7,6 +7,7 @@
+>  #define pr_fmt(fmt)	"seamldr: " fmt
+>  
+>  #include <linux/mm.h>
+> +#include <linux/slab.h>
+>  #include <linux/spinlock.h>
+>  
+>  #include <asm/seamldr.h>
+> @@ -16,6 +17,33 @@
+>  /* P-SEAMLDR SEAMCALL leaf function */
+>  #define P_SEAMLDR_INFO			0x8000000000000000
+>  
+> +#define SEAMLDR_MAX_NR_MODULE_4KB_PAGES	496
+> +#define SEAMLDR_MAX_NR_SIG_4KB_PAGES	4
+> +
+> +/*
+> + * The seamldr_params "scenario" field specifies the operation mode:
+> + * 0: Install TDX module from scratch (not used by kernel)
+> + * 1: Update existing TDX module to a compatible version
+> + */
+> +#define SEAMLDR_SCENARIO_UPDATE		1
+> +
+> +/*
+> + * This is called the "SEAMLDR_PARAMS" data structure and is defined
+> + * in "SEAM Loader (SEAMLDR) Interface Specification".
+> + *
+> + * It describes the TDX module that will be installed.
+> + */
+> +struct seamldr_params {
+> +	u32	version;
+> +	u32	scenario;
+> +	u64	sigstruct_pa[SEAMLDR_MAX_NR_SIG_4KB_PAGES];
+> +	u8	reserved[80];
+> +	u64	num_module_pages;
+> +	u64	mod_pages_pa_list[SEAMLDR_MAX_NR_MODULE_4KB_PAGES];
+> +} __packed;
+> +
+> +static_assert(sizeof(struct seamldr_params) == 4096);
+> +
+>  /*
+>   * Serialize P-SEAMLDR calls since the hardware only allows a single CPU to
+>   * interact with P-SEAMLDR simultaneously. Use raw version as the calls can
+> @@ -41,6 +69,114 @@ int seamldr_get_info(struct seamldr_info *seamldr_info)
+>  }
+>  EXPORT_SYMBOL_FOR_MODULES(seamldr_get_info, "tdx-host");
+>  
+> +static void free_seamldr_params(struct seamldr_params *params)
+> +{
+> +	free_page((unsigned long)params);
+> +}
+> +
+> +static struct seamldr_params *alloc_seamldr_params(const void *module, unsigned int module_size,
+> +						   const void *sig, unsigned int sig_size)
+> +{
+> +	struct seamldr_params *params;
+> +	const u8 *ptr;
+> +	int i;
+> +
+> +	if (module_size > SEAMLDR_MAX_NR_MODULE_4KB_PAGES * SZ_4K)
+> +		return ERR_PTR(-EINVAL);
+> +
+> +	if (sig_size > SEAMLDR_MAX_NR_SIG_4KB_PAGES * SZ_4K)
+> +		return ERR_PTR(-EINVAL);
+> +
+> +	params = (struct seamldr_params *)get_zeroed_page(GFP_KERNEL);
+> +	if (!params)
+> +		return ERR_PTR(-ENOMEM);
+> +
+> +	/*
+> +	 * Only use version 1 when required (sigstruct > 4KB) for backward
+> +	 * compatibility with P-SEAMLDR that lacks version 1 support.
+> +	 */
+> +	if (sig_size > SZ_4K)
+> +		params->version = 1;
+> +	else
+> +		params->version = 0;
+> +
+> +	params->scenario = SEAMLDR_SCENARIO_UPDATE;
+> +
+> +	ptr = sig;
+> +	for (i = 0; i < sig_size / SZ_4K; i++) {
+> +		/*
+> +		 * Don't assume @sig is page-aligned although it is 4KB-aligned.
+> +		 * Always add the in-page offset to get the physical address.
+> +		 */
+
+I don't follow this. If @sig is 4k aligned in VA, it is page aligned.
+
+If you want to handle case when @sig is not 4k aligned, than this is
+broken. You need to bump ptr to the next 4k boundary, not by 4k.
+
+> +		params->sigstruct_pa[i] = (vmalloc_to_pfn(ptr) << PAGE_SHIFT) +
+> +					  ((unsigned long)ptr & ~PAGE_MASK);
+> +		ptr += SZ_4K;
+> +	}
+> +
+> +	params->num_module_pages = module_size / SZ_4K;
+> +
+> +	ptr = module;
+> +	for (i = 0; i < params->num_module_pages; i++) {
+> +		params->mod_pages_pa_list[i] = (vmalloc_to_pfn(ptr) << PAGE_SHIFT) +
+> +					       ((unsigned long)ptr & ~PAGE_MASK);
+> +		ptr += SZ_4K;
+
+Same here.
+
+> +	}
+> +
+> +	return params;
+> +}
+> +
+> +/*
+> + * Intel TDX module blob. Its format is defined at:
+> + * https://github.com/intel/tdx-module-binaries/blob/main/blob_structure.txt
+> + *
+> + * Note this structure differs from the reference above: the two variable-length
+> + * fields "@sigstruct" and "@module" are represented as a single "@data" field
+> + * here and split programmatically using the offset_of_module value.
+> + */
+> +struct tdx_blob {
+> +	u16	version;
+> +	u16	checksum;
+> +	u32	offset_of_module;
+> +	u8	signature[8];
+> +	u32	length;
+> +	u32	reserved0;
+> +	u64	reserved1[509];
+> +	u8	data[];
+> +} __packed;
+> +
+> +/* Supported versions of the tdx_blob */
+> +#define TDX_BLOB_VERSION_1	0x100
+> +
+> +static struct seamldr_params *init_seamldr_params(const u8 *data, u32 size)
+> +{
+> +	const struct tdx_blob *blob = (const void *)data;
+> +	int module_size, sig_size;
+> +	const void *sig, *module;
+> +
+> +	/* Ensure the size is valid otherwise reading any field from the blob may overflow. */
+> +	if (size <= sizeof(struct tdx_blob) || size <= blob->offset_of_module)
+> +		return ERR_PTR(-EINVAL);
+> +
+> +	if (blob->version != TDX_BLOB_VERSION_1) {
+> +		pr_err("unsupported blob version: %x\n", blob->version);
+> +		return ERR_PTR(-EINVAL);
+> +	}
+> +
+> +	/* Split the blob into a sigstruct and a module. */
+> +	sig		= blob->data;
+> +	sig_size	= blob->offset_of_module - sizeof(struct tdx_blob);
+> +	module		= data + blob->offset_of_module;
+> +	module_size	= size - blob->offset_of_module;
+> +
+> +	if (sig_size <= 0 || module_size <= 0 || blob->length != size)
+> +		return ERR_PTR(-EINVAL);
+
+Maybe add a comment somewhere that block->offset_of_module is relative
+to start of struct tdx_blob, not blob->data and blob->length includes
+length of struct tdx_blob.
+
+It can be either way and it is better to give a reader a hint.
+
+> +
+> +	return alloc_seamldr_params(module, module_size, sig, sig_size);
+> +}
+> +
+> +DEFINE_FREE(free_seamldr_params, struct seamldr_params *,
+> +	    if (!IS_ERR_OR_NULL(_T)) free_seamldr_params(_T))
+> +
+>  /**
+>   * seamldr_install_module - Install a new TDX module.
+>   * @data: Pointer to the TDX module update blob.
+> @@ -50,6 +186,11 @@ EXPORT_SYMBOL_FOR_MODULES(seamldr_get_info, "tdx-host");
+>   */
+>  int seamldr_install_module(const u8 *data, u32 size)
+>  {
+> +	struct seamldr_params *params __free(free_seamldr_params) =
+> +						init_seamldr_params(data, size);
+> +	if (IS_ERR(params))
+> +		return PTR_ERR(params);
+> +
+>  	/* TODO: Update TDX module here */
+>  	return 0;
+>  }
+> -- 
+> 2.47.3
+> 
+
+-- 
+  Kiryl Shutsemau / Kirill A. Shutemov
