@@ -1,126 +1,130 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A09132863D;
-	Tue, 17 Mar 2026 10:00:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 417CB3A5450;
+	Tue, 17 Mar 2026 10:01:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773741659; cv=none; b=oJSoQ0uaQOEt30VoADURc14lD5d63XG1tSSb85ow0n+5uEU9RYFYU5EqEmq8pRdiJbOnxqcsaOTO2cPW7XsZP/rsRHOBZoi59fXuO5vO8xpkABsVMfb2uIxYZY1kwmmeJ2Nat0tEp5lxweTIZSopFd5223LhRfKpxXBX4+sbOY8=
+	t=1773741704; cv=none; b=HhDbVHc37cpwLt3nKsDhTJWG6pRuHv7bTCldAB/C5QjBgQrYDmTg3w04hUHD7VU9Rxwk9+QEJe1oao++irecv4V5BCMWiq31v205sG1MwIB0bMZy70tU7WulCD43wVZV8IDIqpDOLgfFjNAQ7mdImFgYAHgTyLacO+SbbpDy+CM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773741659; c=relaxed/simple;
-	bh=wfJDeOBNqSIBVdroE1ACBaT6MMTCWr4FCBOztOPinnA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=avBrYHQIvud9Wxk20x+HY/mV7Egm1Nc0Ew+MpwCX8czaIlr3s7PrzhVMGSzt2oXBcsXcfTWKF/cfhrgYQTKlLDCccLAmJ53+bRlp0C4QzMGcD5/zOXYddFas2jx7xQXwsWJhr4KGnzkJ25f55/9/Z7gMABHIRWaV03xKB29oriA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ot4XZnNw; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1773741704; c=relaxed/simple;
+	bh=hm8Ln8Nc4yaWiI1OnzDKfFx6vYsqc+wqhWJsnRjOTt0=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Cc:To:Subject:From:
+	 References:In-Reply-To; b=kdK+W0SZ+3Q2WGngNbdjwaMQCr2TfqK1xJvaXOx9BDL0bLWTZgFWqGneO2e+N9NHQxQI5w105ntKY5QRH8xAslIi0IsmTHC75DGLYRquCEvKbx5/ZCMtt8V0R/23gYnHBNtBdKpElpoTimT4Fj4W5jZueqNYW4jO+MG3dl163b0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=ckSkf+qG; arc=none smtp.client-ip=148.163.158.5
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ot4XZnNw"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B3828C4AF0B;
-	Tue, 17 Mar 2026 10:00:57 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773741658;
-	bh=wfJDeOBNqSIBVdroE1ACBaT6MMTCWr4FCBOztOPinnA=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=ot4XZnNwQA2b7wxwLmpDNluPhRsdiGVTw38q+yuV9KfdPqK/Yo/yriMzqfyKFWnrC
-	 KeCcXWtDFo4W5bbRu0tc50uaAvn5o4GupI/0wZlbpKUuTs9V5uDyUjjqRIwafFD7qF
-	 AnReFhaYyySwxqyx+AamWZFmL1eAiXIJ/MzPT5F/8kzfvgceSO/IRMRr1zLWD5Bgic
-	 Tf+BnzWhH2fzJ18L2paP62S05VwJUTSYvQN8f736P2vao48+NqHOFInf1hPN1iziVV
-	 oOOdRZu4SFd056En8PMUAkCoN46PIqFSMSFD4Bw9GsR5+jOHDD6xPJcy+6hJX8qD0x
-	 nL8dROsVSfAVg==
-Received: from phl-compute-01.internal (phl-compute-01.internal [10.202.2.41])
-	by mailfauth.phl.internal (Postfix) with ESMTP id D9222F40069;
-	Tue, 17 Mar 2026 06:00:56 -0400 (EDT)
-Received: from phl-frontend-04 ([10.202.2.163])
-  by phl-compute-01.internal (MEProxy); Tue, 17 Mar 2026 06:00:56 -0400
-X-ME-Sender: <xms:WCa5aZo7fpleX6ll2NXFuGYcKIYDPVuZIr4dBIeXcAdkUCxHrrBzuw>
-    <xme:WCa5aaLm2M9V2byka0ra_1_2nEUyAI-FXrURpoqYZ9fgnzb0X9ESQJlNJjm6GOdHP
-    1JNhs1lm0cC45tYWvqU27Fuq6XCFBDaAWdMgi5L6w_CaHGGj87_2v_X>
-X-ME-Received: <xmr:WCa5aRDmV3vTssteeQ396Ao4bz2xGfuucESQsHNl6iw6Hj7D8aOfpMjmzvZqQQ>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgdeftddtleehucetufdoteggodetrf
-    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
-    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
-    gurhepfffhvfevuffkfhggtggujgesthdtredttddtvdenucfhrhhomhepmfhirhihlhcu
-    ufhhuhhtshgvmhgruhcuoehkrghssehkvghrnhgvlhdrohhrgheqnecuggftrfgrthhtvg
-    hrnhepueeijeeiffekheeffffftdekleefleehhfefhfduheejhedvffeluedvudefgfek
-    necuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepkhhirh
-    hilhhlodhmvghsmhhtphgruhhthhhpvghrshhonhgrlhhithihqdduieduudeivdeiheeh
-    qddvkeeggeegjedvkedqkhgrsheppehkvghrnhgvlhdrohhrghesshhhuhhtvghmohhvrd
-    hnrghmvgdpnhgspghrtghpthhtohephedvpdhmohguvgepshhmthhpohhuthdprhgtphht
-    thhopegthhgrohdrghgrohesihhnthgvlhdrtghomhdprhgtphhtthhopehlihhnuhigqd
-    hkvghrnhgvlhesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehlihhnuhig
-    qdgtohgtoheslhhishhtshdrlhhinhhugidruggvvhdprhgtphhtthhopehkvhhmsehvgh
-    gvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtohepsghinhgsihhnrdifuheslhhinhhu
-    gidrihhnthgvlhdrtghomhdprhgtphhtthhopegurghnrdhjrdifihhllhhirghmshesih
-    hnthgvlhdrtghomhdprhgtphhtthhopegurghvvgdrhhgrnhhsvghnsehlihhnuhigrdhi
-    nhhtvghlrdgtohhmpdhrtghpthhtohepihhrrgdrfigvihhnhiesihhnthgvlhdrtghomh
-    dprhgtphhtthhopehkrghirdhhuhgrnhhgsehinhhtvghlrdgtohhm
-X-ME-Proxy: <xmx:WCa5abHgVVnhHX2E4Ewxx0kL1zgkIesskWgjlWmE38bcxuKFZLI34Q>
-    <xmx:WCa5aUa64P36p7_kPoREEPfX928F78654En1ZOlYP6u6fProchPc7w>
-    <xmx:WCa5aTHuMAPcP-A0VLe7UH8uZVc8gtDMWaY02zYm9P6q1bjehnS4Ug>
-    <xmx:WCa5aaB-U1utjyTqi2PEzeVrKm9RLSlcBz0dhBhBsAbpwzOBQNtpWw>
-    <xmx:WCa5acGJSR1KwtG8YCb34SeSFeFhM4G3QfjCNExXdL4ztR7YpA03gjsg>
-Feedback-ID: i10464835:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
- 17 Mar 2026 06:00:54 -0400 (EDT)
-Date: Tue, 17 Mar 2026 10:00:49 +0000
-From: Kiryl Shutsemau <kas@kernel.org>
-To: Chao Gao <chao.gao@intel.com>
-Cc: linux-kernel@vger.kernel.org, linux-coco@lists.linux.dev, 
-	kvm@vger.kernel.org, binbin.wu@linux.intel.com, dan.j.williams@intel.com, 
-	dave.hansen@linux.intel.com, ira.weiny@intel.com, kai.huang@intel.com, nik.borisov@suse.com, 
-	paulmck@kernel.org, pbonzini@redhat.com, reinette.chatre@intel.com, 
-	rick.p.edgecombe@intel.com, sagis@google.com, seanjc@google.com, 
-	tony.lindgren@linux.intel.com, vannapurve@google.com, vishal.l.verma@intel.com, 
-	yilun.xu@linux.intel.com, Farrah Chen <farrah.chen@intel.com>, 
-	Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
-	x86@kernel.org, "H. Peter Anvin" <hpa@zytor.com>
-Subject: Re: [PATCH v5 05/22] x86/virt/seamldr: Retrieve P-SEAMLDR information
-Message-ID: <abkmNs188y0HHuj5@thinkstation>
-References: <20260315135920.354657-1-chao.gao@intel.com>
- <20260315135920.354657-6-chao.gao@intel.com>
- <abgBFmEhlsdmxa1k@thinkstation>
- <abio7iAJhGdeEEcE@intel.com>
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="ckSkf+qG"
+Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 62H6cAdn651426;
+	Tue, 17 Mar 2026 10:01:38 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=ih/EPn
+	QuPMH6GBpvqz4s2EQyqs6EAj1y4pOizniWkoY=; b=ckSkf+qGhyxBrozF2mCryR
+	bPcOblmkyYSyy6trK4z7r+UlZ1r6MRktEItB09g1AIXG7ZTkSmWWV6k+kb4eFyD5
+	KgXjmb2lgh6djVYSB/4D7CmVceJySF6r1V/K78OUuu6jHu2Ddxh/PfWc0GXBg9Jz
+	bTxOticfOBXbV8R18aRznsjo9bobWe9LlqZDgf7ULwq21oHx611ZQ8IroPweepL2
+	VfiIl4MyGS0QWrn7c1ACUUe6CsPStiR0n6oC970+0cw2Q+RJUz9bXbnkjD9R/37C
+	GK2UZfDHvgkXUtzMnjLIk84AYw69jxNRZ8F9eE2kI+rHP1u0nAXrb2hgGktA6ZrA
+	==
+Received: from ppma11.dal12v.mail.ibm.com (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4cvx3cun78-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 17 Mar 2026 10:01:38 +0000 (GMT)
+Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma11.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 62H8CeE7028455;
+	Tue, 17 Mar 2026 10:01:37 GMT
+Received: from smtprelay02.fra02v.mail.ibm.com ([9.218.2.226])
+	by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 4cwmq18bp6-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 17 Mar 2026 10:01:37 +0000
+Received: from smtpav06.fra02v.mail.ibm.com (smtpav06.fra02v.mail.ibm.com [10.20.54.105])
+	by smtprelay02.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 62HA1XnV52691328
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Tue, 17 Mar 2026 10:01:33 GMT
+Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id A1B4F20067;
+	Tue, 17 Mar 2026 10:01:33 +0000 (GMT)
+Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 7807A20065;
+	Tue, 17 Mar 2026 10:01:33 +0000 (GMT)
+Received: from darkmoore (unknown [9.87.132.213])
+	by smtpav06.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Tue, 17 Mar 2026 10:01:33 +0000 (GMT)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <abio7iAJhGdeEEcE@intel.com>
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Tue, 17 Mar 2026 11:01:28 +0100
+Message-Id: <DH4YYAGNRJWN.31F7DA634KSPA@linux.ibm.com>
+Cc: <linux-s390@vger.kernel.org>, <imbrenda@linux.ibm.com>,
+        <borntraeger@linux.ibm.com>, <akrowiak@linux.ibm.com>
+To: "Janosch Frank" <frankja@linux.ibm.com>, <kvm@vger.kernel.org>
+Subject: Re: [RFC 01/10] KVM: s390: diag258: Pass absolute address to
+ kvm_is_gpa_in_memslot()
+From: "Christoph Schlameuss" <schlameuss@linux.ibm.com>
+X-Mailer: aerc 0.21.0
+References: <20260316180310.17765-1-frankja@linux.ibm.com>
+ <20260316180310.17765-2-frankja@linux.ibm.com>
+In-Reply-To: <20260316180310.17765-2-frankja@linux.ibm.com>
+X-TM-AS-GCONF: 00
+X-Authority-Analysis: v=2.4 cv=arO/yCZV c=1 sm=1 tr=0 ts=69b92682 cx=c_pps
+ a=aDMHemPKRhS1OARIsFnwRA==:117 a=aDMHemPKRhS1OARIsFnwRA==:17
+ a=IkcTkHD0fZMA:10 a=Yq5XynenixoA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=RnoormkPH1_aCDwRdu11:22 a=V8glGbnc2Ofi9Qvn3v5h:22 a=VnNF1IyMAAAA:8
+ a=hmbiDVwH1lKaQpimJPgA:9 a=QEXdDO2ut3YA:10
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMzE3MDA4NSBTYWx0ZWRfX8aWf0crwaKQ3
+ xY+lokRdIQ/GDUbjiLem8qwXwwDFbSdDRgwm28TTd0g1NkLvZAFrenRy+u9eUOZOqF9Zt40qRrD
+ FVTYr9IMc/g1bQxR/lQQ/cSD9x8146F3JsYUj39lxNIxGobHIO/ISqyjQVz4+MC4avzDN9a/r1B
+ 4e3AxlWCOvD2OQ0LnFYx8R6dMdCNhouFXtj97UdduJty6rjbiR1op4/8Z9LHNCBC0xet6bWKlHW
+ kqjKu4gyil59W0LLo7lfHmuUnEN40Ln7GBlxIrvZpMBAGQvDD0WeM++ovd7GCI/+/3c5DK8wiiW
+ M438kRdTTAA4IraOUA8zAwOgGarxq/CzkKHfOBW8VybjzDuiNlc36WjI3N0catNxgQJV2+OTVz2
+ +l2DOTOFVmZaK8VZmI+vVkCv8cHp59HG5sIC+pHG701oX1vLP7QmAR6zx+Yo3GOrhcAp9f+W0IA
+ sXvTeM2HjaOOOJRjnRA==
+X-Proofpoint-GUID: MskDmt1F45ODaLWeN3m1uzEiYvTCBYdk
+X-Proofpoint-ORIG-GUID: MskDmt1F45ODaLWeN3m1uzEiYvTCBYdk
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
+ definitions=2026-03-17_01,2026-03-16_06,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ priorityscore=1501 spamscore=0 lowpriorityscore=0 impostorscore=0
+ adultscore=0 bulkscore=0 suspectscore=0 malwarescore=0 clxscore=1015
+ phishscore=0 classifier=typeunknown authscore=0 authtc= authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2603050001
+ definitions=main-2603170085
 
-On Tue, Mar 17, 2026 at 09:05:50AM +0800, Chao Gao wrote:
-> >> +
-> >> +int seamldr_get_info(struct seamldr_info *seamldr_info)
-> >> +{
-> >> +	/*
-> >> +	 * Use slow_virt_to_phys() since @seamldr_info may be allocated on
-> >> +	 * the stack.
-> >> +	 */
-> >> +	struct tdx_module_args args = { .rcx = slow_virt_to_phys(seamldr_info) };
-> >> +
-> >> +	return seamldr_call(P_SEAMLDR_INFO, &args);
-> >
-> >On what condition this information can change?
-> 
-> After each update, the num_remaining_updates field will change.
-> 
-> >
-> >I see the next patch calls this on every _show operation. Would we
-> >benefit from caching the response?
-> 
-> Yes, caching would save a few cycles, but adds complexity. we'd need to keep
-> the cache synchronized and invalidate it when values change, likely requiring
-> additional state tracking.
-> 
-> Dave recommended allocating the structure on the stack [*] when I raised the
-> caching idea.
-> 
-> This isn't a hot path, so I prefer keeping it "simple and stupid".
+On Mon Mar 16, 2026 at 5:23 PM CET, Janosch Frank wrote:
+> The token address is a real address and as such we need to translate
+> it before it's a true gpa.
+>
+> Signed-off-by: Janosch Frank <frankja@linux.ibm.com>
+> Fixes: 3c038e6be0e29 ("KVM: async_pf: Async page fault support on s390")
 
-Fair enough.
+Reviewed-by: Christoph Schlameuss <schlameuss@linux.ibm.com>
 
-Reviewed-by: Kiryl Shutsemau (Meta) <kas@kernel.org>
+> ---
+>  arch/s390/kvm/diag.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+>
+> diff --git a/arch/s390/kvm/diag.c b/arch/s390/kvm/diag.c
+> index d89d1c381522..51ba4dcc3905 100644
+> --- a/arch/s390/kvm/diag.c
+> +++ b/arch/s390/kvm/diag.c
+> @@ -122,7 +122,7 @@ static int __diag_page_ref_service(struct kvm_vcpu *v=
+cpu)
+>  		    parm.token_addr & 7 || parm.zarch !=3D 0x8000000000000000ULL)
+>  			return kvm_s390_inject_program_int(vcpu, PGM_SPECIFICATION);
+> =20
+> -		if (!kvm_is_gpa_in_memslot(vcpu->kvm, parm.token_addr))
+> +		if (!kvm_is_gpa_in_memslot(vcpu->kvm, kvm_s390_real_to_abs(vcpu, parm.=
+token_addr)))
+>  			return kvm_s390_inject_program_int(vcpu, PGM_ADDRESSING);
+> =20
+>  		vcpu->arch.pfault_token =3D parm.token_addr;
 
--- 
-  Kiryl Shutsemau / Kirill A. Shutemov
