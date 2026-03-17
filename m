@@ -1,256 +1,118 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF0D4396589;
-	Tue, 17 Mar 2026 08:27:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=192.198.163.14
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773736053; cv=fail; b=jlvlwENH3LnMvKd0piraAmcjVpUkmVHqBHRLzvyTjuOGzjVTOlngKiioteimm2mtaHU5RWtaMGl3LYpjqpz1rf3RrPo3QWrfTUifztBUB4VrJPUc+IB/wmmMufYF8tW5usfj99fT4/5PQZ1Zr7es74KtBXQxBevc29gDNU8029A=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773736053; c=relaxed/simple;
-	bh=Cazx21QFtX6hpKvDTjv9ZGDVhPkPqvd7mOTWJCYzgA8=;
-	h=Date:From:To:CC:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=qulAFzq6FMd6UZwPwE/Cfjc+glk7QkzJHn6pnHZLaj2hLcbqnXizpfQSL/CaUGlf/UcLbZa11Ff19D0Li4QWG4mUeWFO+ZELw0Dp9ENBcw2+f4hzQqUBPAwZA3IoHbKng6n0mtFsZ1AEPR9CpxVc8uYB4xwghpNtu5Fz0a3gUd4=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=JQxWMhGt; arc=fail smtp.client-ip=192.198.163.14
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EDACD39B94E;
+	Tue, 17 Mar 2026 08:29:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1773736156; cv=none; b=O9tVQoI6tar5fZ9uDIrQAKenXu4KMh8tXXPf6SxlVqZ8Gx9MH+e0TkHjLU9Vv9plvEOwFljq2i/1NCxZh6CCjFoT9l7hC7ZeScrZtXOacGXg2bSnnCdz1C2wCzpXWWu+DG39l7FLh3ip82f6qe36MJPmzpvpOKVWoB7+iURDpw8=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1773736156; c=relaxed/simple;
+	bh=1ieHWsMaIxD4b+EktW0b0BipghRH1ORgUZZieR7RsDA=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=ndT0/t2hBYoUGc1TgYIEU3B51B9lPevGwBs7PipOWJxBno8TmQYrXJBm/Ov6XXevky5enhpeltCcHESjGcblcCeDaDsUdo+LuztIMVvnooKE4V75WfLVroT2xnTwevS1hAs6XOg7OeyjNsahyM/T0R4i33Z5rRedhWY+VhD/6MQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=X9/1uTAx; arc=none smtp.client-ip=148.163.156.1
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="JQxWMhGt"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1773736050; x=1805272050;
-  h=date:from:to:cc:subject:message-id:references:
-   in-reply-to:mime-version;
-  bh=Cazx21QFtX6hpKvDTjv9ZGDVhPkPqvd7mOTWJCYzgA8=;
-  b=JQxWMhGteojbCceUTIcG5EqnEUq7CavzhCVXTvtXJavye3tIXSpI6RM/
-   0gyqgIyoo7jY3hjFbaaXG6E9vEujYn0BqHV2cHal1wxEugW4p63S7vwME
-   yG4kS1hocwTJncie/b8g9Gi1MY3kTF1SiiA6Hw0inWssi1gmOGVk99OmP
-   xcykOsWuF7Z9ryPDCpbCX98OOKv+DY6uw8UT7zGgkuIPy+XNozCc20QB2
-   GGC/VPVAZoFVtwKZO6DmTjXNzKQB2GkbUkrojYWBohmoIYv7Ni1YjEINA
-   bR2U4CKsYG+P6mIt4wQ1lrcnFlUwuByTX3xw1We4BoUk8t6Nm9Euy3ghD
-   g==;
-X-CSE-ConnectionGUID: AT1N3e43TLSWqkxINbzeUQ==
-X-CSE-MsgGUID: VyH3FAZTRsW/DmevWNmCSw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11731"; a="74840771"
-X-IronPort-AV: E=Sophos;i="6.23,124,1770624000"; 
-   d="scan'208";a="74840771"
-Received: from orviesa001.jf.intel.com ([10.64.159.141])
-  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Mar 2026 01:27:30 -0700
-X-CSE-ConnectionGUID: PvCUqNh1SH2AM73FYwyNPA==
-X-CSE-MsgGUID: uPUr7tJBQXO2lZvtZPD99A==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,124,1770624000"; 
-   d="scan'208";a="260100494"
-Received: from fmsmsx901.amr.corp.intel.com ([10.18.126.90])
-  by orviesa001.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Mar 2026 01:27:30 -0700
-Received: from FMSMSX901.amr.corp.intel.com (10.18.126.90) by
- fmsmsx901.amr.corp.intel.com (10.18.126.90) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.37; Tue, 17 Mar 2026 01:27:29 -0700
-Received: from fmsedg901.ED.cps.intel.com (10.1.192.143) by
- FMSMSX901.amr.corp.intel.com (10.18.126.90) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.37 via Frontend Transport; Tue, 17 Mar 2026 01:27:28 -0700
-Received: from BN8PR05CU002.outbound.protection.outlook.com (52.101.57.23) by
- edgegateway.intel.com (192.55.55.81) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.37; Tue, 17 Mar 2026 01:27:28 -0700
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=Ct9saHFt9E2qBCWz23v/uYIYkPekm8mJxEITx41gDUIcV7+9NOWnOQpqHrWDcndhzJSH09/9iOiabbqU/9LEq9/bETCFGBphc/+1e3ZUz+3KOk2g/BuhmT4GL3/BC1lqQceZBODkPNQfvR+iyqQek2jhXfsC6Gm59e/SVCUNqr6HdpGwr8Ndys/HZYlrcJ2hqwaOC9wW4GO3xe0d3ZB6JLJYvvWaP4RWj4MbRS6hzp+kZGTLati8OxyOwKPYG8aTE20FiGkRG2VTDRNc9wUuqVCQItumgflVxJWG9T5W34vEI96eBD/H2utFC31cdkud/SzvyZ2WVo9ydJYhbwi4/g==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=d8VDKZaspW6WVObrAqIG7D1ytUKzbpI6XmuOYXLdNJ0=;
- b=BJIzOKwDykrhN2+NwUAoQ3QWXSFJKRetplApdZnHls3qcKMDETM0gJrUrEQPdMbH1sJQC/3oE5vuabIRqkC2vtHpI2o9xj5bDJ3xdA8ZLpZAo/FKtQCe7lrOhnQb2205b8STmH7fE9qbFKZeUrzZZxBNs8+EIhq5AgBP1wQAZKR/kHI1i5TzBzZpTpqbEOueJaxWQsnOk6NDw0Dt1orLqGveB47wuIVGu9cYsww9OkzpWVbsow38hJigOJisOtuYm8JJfp8OZRV88uzRsOlMUJtQclbQ4/UG0X8BOuvHA62vSI+y1j6HTIxOGBj7j38VvFfuKSHYXEV5HLFjluTvuw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-Received: from CH3PR11MB8660.namprd11.prod.outlook.com (2603:10b6:610:1ce::13)
- by PH7PR11MB5817.namprd11.prod.outlook.com (2603:10b6:510:13a::14) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9723.6; Tue, 17 Mar
- 2026 08:27:19 +0000
-Received: from CH3PR11MB8660.namprd11.prod.outlook.com
- ([fe80::fdc2:40ba:101d:40bf]) by CH3PR11MB8660.namprd11.prod.outlook.com
- ([fe80::fdc2:40ba:101d:40bf%6]) with mapi id 15.20.9723.018; Tue, 17 Mar 2026
- 08:27:18 +0000
-Date: Tue, 17 Mar 2026 16:27:06 +0800
-From: Chao Gao <chao.gao@intel.com>
-To: "Huang, Kai" <kai.huang@intel.com>
-CC: "kvm@vger.kernel.org" <kvm@vger.kernel.org>, "linux-coco@lists.linux.dev"
-	<linux-coco@lists.linux.dev>, "linux-kernel@vger.kernel.org"
-	<linux-kernel@vger.kernel.org>, "x86@kernel.org" <x86@kernel.org>,
-	"dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>, "kas@kernel.org"
-	<kas@kernel.org>, "seanjc@google.com" <seanjc@google.com>, "Chatre, Reinette"
-	<reinette.chatre@intel.com>, "Weiny, Ira" <ira.weiny@intel.com>,
-	"binbin.wu@linux.intel.com" <binbin.wu@linux.intel.com>, "Verma, Vishal L"
-	<vishal.l.verma@intel.com>, "nik.borisov@suse.com" <nik.borisov@suse.com>,
-	"mingo@redhat.com" <mingo@redhat.com>, "pbonzini@redhat.com"
-	<pbonzini@redhat.com>, "tony.lindgren@linux.intel.com"
-	<tony.lindgren@linux.intel.com>, "sagis@google.com" <sagis@google.com>,
-	"Annapurve, Vishal" <vannapurve@google.com>, "hpa@zytor.com" <hpa@zytor.com>,
-	"Edgecombe, Rick P" <rick.p.edgecombe@intel.com>, "paulmck@kernel.org"
-	<paulmck@kernel.org>, "tglx@kernel.org" <tglx@kernel.org>,
-	"yilun.xu@linux.intel.com" <yilun.xu@linux.intel.com>, "Williams, Dan J"
-	<dan.j.williams@intel.com>, "bp@alien8.de" <bp@alien8.de>
-Subject: Re: [PATCH v5 12/22] x86/virt/tdx: Reset software states during TDX
- module shutdown
-Message-ID: <abkQWsqR7BURMZxc@intel.com>
-References: <20260315135920.354657-1-chao.gao@intel.com>
- <20260315135920.354657-13-chao.gao@intel.com>
- <996e42a31101bb90575e7b2b6f33b3bd607b5e6e.camel@intel.com>
-Content-Type: text/plain; charset="us-ascii"
-Content-Disposition: inline
-In-Reply-To: <996e42a31101bb90575e7b2b6f33b3bd607b5e6e.camel@intel.com>
-X-ClientProxiedBy: TP0P295CA0042.TWNP295.PROD.OUTLOOK.COM
- (2603:1096:910:4::10) To CH3PR11MB8660.namprd11.prod.outlook.com
- (2603:10b6:610:1ce::13)
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="X9/1uTAx"
+Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 62GHfdZV1346844;
+	Tue, 17 Mar 2026 08:29:09 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=RONOb9
+	VRHkNo5D1SuBUO+VKAg03UMxKkLpwFI8vdyt4=; b=X9/1uTAx1Z4K7JhN52YwEZ
+	DdQiWv0WVlpmTeiAu7m6QvC/Lr3GZeuDDNudQEo7o6wGFM/3LxWd2JLzpLQK4LWH
+	SnJgNGis3PONik/xvB8Y65UcCvo+uZtV/QuR84CYkwtIp6WP1WHUOJBuRcSn08Ub
+	WhbgFax0hWBV0vnga8h1kScenDFFukgqZbRXRPF9s1xB6EH+URqpqV/ddDk+9NzB
+	VFt7zoh+m3DQzlXeri3MY/22j7O10celf5lqPMAiCKD7lEYtuPZmnGIjgVydlIs0
+	BNMnQSFZzrBPRyCOCvle346marmmKDCljOWpwI6MhcJ90/UhqTGSQuI+kpUwVT8w
+	==
+Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4cx7vfe0pe-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 17 Mar 2026 08:29:09 +0000 (GMT)
+Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma22.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 62H6dCdn014011;
+	Tue, 17 Mar 2026 08:29:08 GMT
+Received: from smtprelay01.fra02v.mail.ibm.com ([9.218.2.227])
+	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4cwjcy0bd6-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 17 Mar 2026 08:29:08 +0000
+Received: from smtpav02.fra02v.mail.ibm.com (smtpav02.fra02v.mail.ibm.com [10.20.54.101])
+	by smtprelay01.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 62H8T49a58327298
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Tue, 17 Mar 2026 08:29:04 GMT
+Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 0A5BE2004E;
+	Tue, 17 Mar 2026 08:29:04 +0000 (GMT)
+Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id C6ED72004B;
+	Tue, 17 Mar 2026 08:29:03 +0000 (GMT)
+Received: from [9.52.200.39] (unknown [9.52.200.39])
+	by smtpav02.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Tue, 17 Mar 2026 08:29:03 +0000 (GMT)
+Message-ID: <ac352953-c618-40e9-9102-f7158ae6a60f@linux.ibm.com>
+Date: Tue, 17 Mar 2026 09:29:03 +0100
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CH3PR11MB8660:EE_|PH7PR11MB5817:EE_
-X-MS-Office365-Filtering-Correlation-Id: 841a2758-1cb5-4d1a-b55c-08de83ff0079
-X-LD-Processed: 46c98d88-e344-4ed4-8496-4ed7712e255d,ExtAddr
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|1800799024|366016|7416014|18002099003|22082099003|56012099003;
-X-Microsoft-Antispam-Message-Info: PmsivU4Mcat8wz3/Lbk6cr7/lulv9eqn1iyLCqlN4bXHLf/b6gTbtHYteDoUmDPeP2VSMxVQbpsJKeSikskUW4ydSKZ89nZlKq1YhBMRQ3c4OO4Uk5m1VOgL6RjEwEGDdwk1BRz4Kc1rP2O5OLzRTjecxHDpNnCXQaQ4jNxabjaWssZ0Vj+Ds5tiR3D1jCV6nFB38xQ2K1LDzSdlanWjSZmZ4o8jdXwGUlvoqYzmc+mKfZ58wuVT/T3vNyowpBcZ8xrgbRKyGjaNsGuqP5cY4wi8nGCnaGErsl+f2qYPPTEbbnSPrdAfTWAwFEt9kAAHuW39pBRjlCMtgNCAyyboB8bN8fSV+vrd6ttqtH9cMyZKjN4nlrjdlkzXam5cxYwDylIG6NVyYN2RFF9eGMU6pjyl9eGuKG87prqCeuNeF2wzi3uGXPeALey2klQ9uOS/xyqtiOLh+7VNF/w68g23eq/TWQyZLO0bhfAEQ/wXnTLrcBPQR4lKiaKP0Zia89RLrVNenK1kchYyK1lMQX3Q+YME8eHdoN6243ZnM27oNEdSnOW9mPvYrpiNzto9ougLjMWhIoWyH7rvYmg3ODQcJK59eUChVwJR7OMOvUC0b1q9Wfggcv2WN6aJ6hXTAO5P7tHX9JmZzyb54/j89uwwiE5GIOJKKl84qjiCWNgxvwWOwXOYjdJCBq36l0g9ZpjWlC+rqKOT9YMj7TTABrEfiFioBncKrzIfGRHkjf8B32E=
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH3PR11MB8660.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(1800799024)(366016)(7416014)(18002099003)(22082099003)(56012099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?PB0JiSQhy1oe8k4C0/gcRfxUAJuC0PpfLfq7mD3MDu/TjY00/XBxJa57kn1r?=
- =?us-ascii?Q?X4eAB4rTNI3LkSqJz/1Q6qfBjQCufxUCJG2/UtyP+sFt5jZY3ahOwQzNzdsx?=
- =?us-ascii?Q?GIdAW5aGwb32ba08owE/6yLiwX80QK8w3GraYxSIXr8aN5VePoEy1YlVHeNx?=
- =?us-ascii?Q?VIHyuc0v1njUQbWRhnEBWSmuac3m4LOUIsnA1CzczEsHTWjXyxOJOw6JaBh5?=
- =?us-ascii?Q?QoXDun+/BEHP0LFOyIAFfBPmE5hrenkiBe1bjDiSdDG0/M6ajHGpz+YYse6h?=
- =?us-ascii?Q?gVwKOG5FmhsY2Ac1ZZwoQN9gAlXEH8XndJIe1b6gwN8up5BUDn9feWs6Fc86?=
- =?us-ascii?Q?XOJxfH2qb0vQSMDWYo2lfKoqUPlg2gfoPrbc+CfgNEpxApRKlURaESITEIFX?=
- =?us-ascii?Q?nLlgQ26i7+DCyidoFmD+aMA/YNJ/NNtuiVvaVA8f+D4KgJCdU+Be48QfS5tF?=
- =?us-ascii?Q?aruNLD+yhks9NMJTkl0RFLJi5WN0iSeIpLXK01xeJErzS9c0E+KbN6gY6Quv?=
- =?us-ascii?Q?CcxYn1tXaKxcV7XVHJU/U3tydQF6yHEPDSb7CY0C1Eqy9bZWL++Se06F84EA?=
- =?us-ascii?Q?bZwj8e11frbrjPF0ebRiSQ+VxBY1jiN8PntZr107cfq7R68a12xckhvn/pAY?=
- =?us-ascii?Q?Xkvouqz5RsEK7u0ig8rPINYXV8lPZ/9mtN8rS9PlVdgAKjWgv6Y0MZzVq9dW?=
- =?us-ascii?Q?ohgnGMk7i8sMEIjqjb09sLHlB3A7ZCVJwlHfRbI7KmA2lzzBFVilOIkNHsuN?=
- =?us-ascii?Q?4BLSK456c0q6QgnqnvFghbNSb/++i8hhR2g+pSoKC75B7A/8CKC1hMUI4jL/?=
- =?us-ascii?Q?2TlOrzMElx13Xu3iKxPZDJlv0Ce3dWIF2XrNOoVfxjCH4nsm8J/WgZFkb7X5?=
- =?us-ascii?Q?abBOKbChULcmzKY+hn66NCO6GMfXT/nax5utoVNnjUj1ahUzu3oox/GkWx+L?=
- =?us-ascii?Q?SftP7UpcXTV4BIkP3CwuHTvnwQT7WbII1KxKLHJPBxf8CiXEtyZiImcpxCah?=
- =?us-ascii?Q?QEgzTbKnSdx6zvEqIvyYxuVIPMgh1770+y4/FsyrXhan3RBOmHq1/NZp0CTe?=
- =?us-ascii?Q?LzJvRy4Hcay62Dpf46Wcjk59NxJAo9o/49V9gSLnTmaBSQiVg5eDf/opZymc?=
- =?us-ascii?Q?L+0i1l7B+YKj06i3SVMpJH0UhE5s+ZsOtFAkHpy3CnV0ZA20XeMzTy26LNVh?=
- =?us-ascii?Q?/UD7KZPRMiOOOcB2L/9jPWZwaklkxD3HZCdvk1rILHpyXTsHm62EtR44HX1h?=
- =?us-ascii?Q?Z3aP/rrjWDSCeS/XinfGHATqrZyPJAXyoI+6QKG0eqPjv9xAq3kUzJM54i/M?=
- =?us-ascii?Q?tPynWW/yBdo56MyD1rvbgLH4JbrfNB0NAJmtp/WSjX5xynnqf06krtJSw0NY?=
- =?us-ascii?Q?PkMmE7wx+U89QGumXIoERAHGGJrNvzwupNhPkskbRrLkv6UTcbhSqGOVgb9r?=
- =?us-ascii?Q?2DA5q38L+qcHksuKIuCH7r2GvNeyzxi0nXKaovrvbnWqvonUclaldHUChmfs?=
- =?us-ascii?Q?m/qh9v4tHbpLLKQnjed8VTn8rkt5KGx8extgmAVHq+PI2Ju5TjtgIyYDIdPk?=
- =?us-ascii?Q?EztcBxFPyMiY+nfq9wHfNpKwqAaklzADfp+Yh953Izc/nzkYNgG8OB/ZvbsR?=
- =?us-ascii?Q?NpgVsYw+nvdBWnAGSsw83J6/AyiZT2Hhfz59y8JgF4Bi3Rj6X8Eyw30K0/26?=
- =?us-ascii?Q?uRtS3xPZm1Hmh6qLiFa4/oRbV4AWtfQYpaJ33rblnBtjpzzwz0Y2dikFMGxR?=
- =?us-ascii?Q?dEVDi4liew=3D=3D?=
-X-Exchange-RoutingPolicyChecked: gmkBsefcjNDHhx7N88J/ilPw4nm/dcFw3lGuvrDlBmRgM4WqhKsIZQlpheNnSKvaRx6RLTPdChynSrLm8HTuEB0ne2lBJY3bhgYpwTUSPAxE1azELagHrqaGnFI9QbFuoaWYoeBTYm4CLvBN1T+am1c+uhCiG8yNIl0jApkzDy/KxyCZzOlxD8F04KVWM4gwOitEtCyjCsV/0zmV/AOl17haPtFYshGOHYayCkSpH2wvhP8WCiIemQ2DkJBQlOIwYkSYi5gYm1PE8XLjZS64kuSttPb6/7IcBprDhQxO99C1DzhdGGzGVmAHf12O34FIX4iaiqMxx5n0y+kd7gXptA==
-X-MS-Exchange-CrossTenant-Network-Message-Id: 841a2758-1cb5-4d1a-b55c-08de83ff0079
-X-MS-Exchange-CrossTenant-AuthSource: CH3PR11MB8660.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 17 Mar 2026 08:27:18.4881
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: AMKPB4ySphn7xArYEWYAGaiWChqoe4efrwQj/XoXMV1Pgi4UJ7v5GMyKzeVX4f+HPHnRtJZgmhM4bwGMG6ECmA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH7PR11MB5817
-X-OriginatorOrg: intel.com
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] KVM: s390: only deliver service interrupt with payload
+To: Eric Farman <farman@linux.ibm.com>, Janosch Frank
+ <frankja@linux.ibm.com>,
+        Claudio Imbrenda <imbrenda@linux.ibm.com>,
+        David Hildenbrand <david@kernel.org>
+Cc: kvm@vger.kernel.org, linux-s390@vger.kernel.org
+References: <20260225152013.1108842-1-farman@linux.ibm.com>
+Content-Language: en-US
+From: Christian Borntraeger <borntraeger@linux.ibm.com>
+In-Reply-To: <20260225152013.1108842-1-farman@linux.ibm.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: Pr2qlyRd6YJ7Epz5uYdRtAzjxje-VQkT
+X-Authority-Analysis: v=2.4 cv=KajfcAYD c=1 sm=1 tr=0 ts=69b910d5 cx=c_pps
+ a=5BHTudwdYE3Te8bg5FgnPg==:117 a=5BHTudwdYE3Te8bg5FgnPg==:17
+ a=IkcTkHD0fZMA:10 a=Yq5XynenixoA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=RnoormkPH1_aCDwRdu11:22 a=U7nrCbtTmkRpXpFmAIza:22 a=VnNF1IyMAAAA:8
+ a=2bCnhEZlU0XF9r1STAIA:9 a=QEXdDO2ut3YA:10 a=zZCYzV9kfG8A:10
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMzE3MDA3MSBTYWx0ZWRfX1KiFjpzAJijN
+ KmCRjM+NFPa126Q8P+5Kkkdfxng15v32oiRyM8PrRK6tgIlnqNIAFTRlgLdd2/7GX2fqplaDxAu
+ 781L87kiEBEUD3FStRffytDcQ3i2qRLcwN792RjQ0nHqZoU7/6hCoet6xPcWSUJE6Aa4KiRCweS
+ jeHp7f4w4Au7M2/qfu375mBhAyE0r+fHYq4nQjCq6dwzCdSz7DVq0ahP3SkzGNC8OSX0szvWaoB
+ x+DGsHv0/aUIxwvZ132Dx3Oc17OBy+EhtQ6IrU9c5dg/0uAY5TO7UH87La766PHba0MSm0GfG7f
+ kWRbKlJMAo7K8KanKmzMoXwYLKZ6RZ2Drdswnfcri0x60R2cVA94qwb9Ax6rtX8+rax/mBem4a9
+ D17QR+noRz4TXdzgp+zKpo58qzVG5l9t4YbpOpNd+BCIwlYn+apRCRTR0uqhU6Rt8H4gUhzbsuF
+ t/C/QQy+ASPJy4V8y9g==
+X-Proofpoint-GUID: Pr2qlyRd6YJ7Epz5uYdRtAzjxje-VQkT
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
+ definitions=2026-03-17_01,2026-03-16_06,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ suspectscore=0 adultscore=0 spamscore=0 malwarescore=0 clxscore=1015
+ impostorscore=0 bulkscore=0 lowpriorityscore=0 priorityscore=1501
+ phishscore=0 classifier=typeunknown authscore=0 authtc= authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2603050001
+ definitions=main-2603170071
 
-On Mon, Mar 16, 2026 at 05:06:49PM +0800, Huang, Kai wrote:
->
->> @@ -1179,6 +1179,7 @@ EXPORT_SYMBOL_FOR_KVM(tdx_enable);
->>  int tdx_module_shutdown(void)
->>  {
->>  	struct tdx_module_args args = {};
->> +	int ret, cpu;
->>  
->>  	/*
->>  	 * Shut down the TDX module and prepare handoff data for the next
->> @@ -1188,7 +1189,22 @@ int tdx_module_shutdown(void)
->>  	 * modules as new modules likely have higher handoff version.
->>  	 */
->>  	args.rcx = tdx_sysinfo.handoff.module_hv;
->> -	return seamcall_prerr(TDH_SYS_SHUTDOWN, &args);
->> +	ret = seamcall_prerr(TDH_SYS_SHUTDOWN, &args);
->> +	if (ret)
->> +		return ret;
->> +
->> +	tdx_module_status = TDX_MODULE_UNINITIALIZED;
->> +	sysinit_done = false;
->> +	sysinit_ret = 0;
->> +
->> +	/*
->> +	 * By reaching here CPUHP is disabled and all present CPUs
->> +	 * are online. It's safe to just loop all online CPUs and
->> +	 * reset the per-cpu flag.
->> +	 */
->> +	for_each_online_cpu(cpu)
->> +		per_cpu(tdx_lp_initialized, cpu) = false;
->
->Since you have removed the requirement that P-SEAMLDR.INSTALL must be done
->on all CPUs, and removed the relevant patch, the "all present CPUs are
->online" part isn't correct anymore.
->
->And using for_each_online_cpu() isn't enough since this doesn't reset the
->tdx_lp_initialized for offline CPUs.
->
->One way is to just use for_each_possible_cpu() here so tdx_lp_initialized
->for all CPUs are reset.  Since the "CPUHP is disabled" part is still correct
->AFAICT (since stop_machine() disables CPUHP internally during the
->operation), resetting tdx_lp_initialized for offline CPUs won't race with
->CPUHP.
->
->And assuming this series will be applied after Sean's VMXON series, we will
+Am 25.02.26 um 16:20 schrieb Eric Farman:
+> Routine __inject_service() may set both the SERVICE and SERVICE_EV
+> pending bits, and in the case of a pure service event the corresponding
+> trip through __deliver_service_ev() will clear the SERVICE_EV bit only.
+> This necessitates an additional trip through __deliver_service() for
+> the other pending interrupt bit, however it is possible that the
+> external interrupt parameters are zero and there is nothing to be
+> delivered to the guest.
+> 
+> To avoid sending empty data to the guest, let's only write out the SCLP
+> data when there is something for the guest to do, otherwise bail out.
+> 
+> Signed-off-by: Eric Farman <farman@linux.ibm.com>
 
-Yes.
+applied.
 
->have a TDX-specific CPUHP callback tdx_online_cpu() in TDX x86 core to do
->tdx_cpu_enable(), which will then enable TDX again on the new-online CPU.
-
-Good point.
-
-Clearing tdx_lp_initialized for offlined CPUs makes sense, but I'd rather not
-justify this through "enabling TDX on new-online CPUs" since many details
-remain unclear. For example, there will be a SEAMCALL to disable TDX per-CPU.
-It should be called when CPUs go offline so that those CPUs can be exempting
-from doing SEAMLDR.INSTALL during module updates. tdx_lp_initialized should
-have been cleared along with that "disable TDX per-CPU" SEAMCALL for offlined
-CPUs.
-
-I'm not arguing against for_each_present_cpu(). I just think discussing how
-to support TDX module update with offlined CPUs in the comment would be a bit
-premature. How about keeping it simple:
-
-/*
- * Since the TDX module is shut down and gone, mark all CPUs (including
- * offlined ones) as uninitialied. This is called in stop_machine() (where
- * CPU hotplug is disabled), preventing races with other tdx_lp_initialized
- * accesses.
- */
-
->
->Btw, w/o Sean's VMXON series, currently only KVM provides the TDX-specific
->CPUHP callback.  So it seems if module update is done when KVM is not
->loaded,
-
-w/o VMXON series, module update isn't possible if KVM isn't loaded.
-
->there will be no TDX-specific CPUHP callback to re-enable TDX for
->the new-online CPU.  This means any SEAMCALL on that CPU will fail before
->KVM module is loaded again (which will then re-register the TDX-specific
->CPUHP and run tdx_cpu_enable() for all online CPUs). 
->
->But I don't think we should consider this case.
->
->
-Agreed.
