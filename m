@@ -1,65 +1,65 @@
-Received: from mail-pl1-f175.google.com (mail-pl1-f175.google.com [209.85.214.175])
+Received: from mail-pl1-f177.google.com (mail-pl1-f177.google.com [209.85.214.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C21E38947A
-	for <kvm@vger.kernel.org>; Tue, 17 Mar 2026 20:33:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.175
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6441E37CD51
+	for <kvm@vger.kernel.org>; Tue, 17 Mar 2026 20:59:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.177
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773779627; cv=none; b=aqRK31Suaje9gONr1wfyQCkNbymZypB1Z2KhQv4nXWbbM0I4UgVXNZW/11OA2Hvu8iRGAYJe0vurOizqoy8dsdLTrFgm3wvj9aI+/QEc1GEGo7gXf9fKeqIr46vvDQT0bmcpSRnAoj9t7abmlDH6CIwQKKADPlUZciLayy1vTlM=
+	t=1773781150; cv=none; b=OP4s9+3BUQT4T+a584F/v3QkvS2WIIP006rvQjIjOihvfod1K61YXpLlZq7dJtKT+VyvqOh1xJFsY4JsMocuzAhqFKm92JMd4RbHxvNn53y0zELu1VmAUZ5FEprj6l/7gqzCbqdEMnS35PY021ORcvU5kZf/8XxH10Io9zeBU88=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773779627; c=relaxed/simple;
-	bh=cr4yzAJsARkLeImvnfyc3Q3IOB7M5gnE+dn1jy/zn6g=;
+	s=arc-20240116; t=1773781150; c=relaxed/simple;
+	bh=Gg0x70YeYeS/hvsK6d03WDxTrHh/HV8HIwkK82kwBL0=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=e9nxPcC2HAuKfA/ZsqbN656KA7U9TAUwSvPMTXJIa6kI9mocwXNmyXNnemTf47sGSo62Q2HmtARSG5GqXeTAFisRWtulWxGjL8hrKICD/JNWnEhUkllJR8h1v1KUc71DamLgZhnutGm8vvkZnRR9XzApldl9cgRCPNt+RMTTGWo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=szds0ffT; arc=none smtp.client-ip=209.85.214.175
+	 Content-Type:Content-Disposition:In-Reply-To; b=uv0yJ5Li5XCEh6jGIYSRnlDGD1WwZWqhhx884OQrGsa3jak8m42QXRuUt6dGpdl5CmADlCWpRa5wlnWsz5Oi4Cj6RPnHt3Btq9rKjR6AAcWFae7QTyVTgfmj3z8IfpsOQ8SAXMZZrRAB4SVpbiWdjgugzzXQ9OpEm1COh8A6MK4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=qpgAX0bW; arc=none smtp.client-ip=209.85.214.177
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="szds0ffT"
-Received: by mail-pl1-f175.google.com with SMTP id d9443c01a7336-2b052562254so28855ad.0
-        for <kvm@vger.kernel.org>; Tue, 17 Mar 2026 13:33:45 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="qpgAX0bW"
+Received: by mail-pl1-f177.google.com with SMTP id d9443c01a7336-2b052ec7176so9005ad.1
+        for <kvm@vger.kernel.org>; Tue, 17 Mar 2026 13:59:09 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1773779625; x=1774384425; darn=vger.kernel.org;
+        d=google.com; s=20251104; t=1773781149; x=1774385949; darn=vger.kernel.org;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=b87t95PtnrWHMeticjx588uzi6UDZqsEP1PMzieU4Pc=;
-        b=szds0ffT/J9UkXqn+8mEYdpA3SPCIEMh37UIWpUarwL74k2q5/vcIj6h1FCS+m2BGA
-         W7PhdcREfhBbKyTnJhxtJEHCsq63seL1/29HdzqL82TTBNrc61UtfSsE737eYQlhIhZ5
-         KredVNwcexqfQDjKTW1LG9K8VcugZXRlF3IA8dg7Zn5EKSxrJfjRW8c6lgS3ht9sQkf0
-         YnzgI8tjhCKvK3vt+u03K6PIvqehu8O904Dcr0/DM9UiQszg3g5K6eia6vBJ0DpXEEd1
-         6JT01+zanfc+rvQW3AZgDTUz1f8T5sxQagNudCFXxGY9m3XXb6HWHD8SnyE3GR2pfeGw
-         7jGw==
+        bh=XXz7CkkQTRz+WIdQ5aQKBGXyXXsdoAFd36PRskCjU8s=;
+        b=qpgAX0bW+78vn6WG8gxjW+m62QbE19IOPzAYzGZYix1vLaGMTzxYE61M+zGuYA3Q5k
+         pRVs3EvuKYGKuPEENYM32MVH9/4w5hN4AnX+dm/eTfpR2wPxDt2NfDxfA+P7bWEhVu6Q
+         DM3uFLh5OhoiONjyf5wk7Ds5MrUuKgOCCtdlk96H5ZsruLXSLiuSB2gr35ibJhcA1y/S
+         biok2x8+tgrAifazjDWXnZJ3kMR1YJq+WITKOokIXcKIFPhOzRgpunRMI5Lk7RXQzMm9
+         QzVwO0svBALsj8V4GRS61Ub40b38Snn6bRvESfq1OmB3l0oE96aAEtPOHB4uTmIuQ4pA
+         oAwQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1773779625; x=1774384425;
+        d=1e100.net; s=20251104; t=1773781149; x=1774385949;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=b87t95PtnrWHMeticjx588uzi6UDZqsEP1PMzieU4Pc=;
-        b=RBGPlcRCT0GmhC6+h0G/eqzc6XEoBcPFP28ZmYsZHiBDdxOly8F6KhnAvzSeDbeTR5
-         XThAX0UabFABHeS41dmgPoAdPvFf8kXAmLk5ILhtFAKM3QnAA9XWJgCiOaH6bRVU8BW7
-         UN19jbSJ/y01WO2rhpCu4qHsgrOKa7LuK3a/mFG/3q5Ft+g+mrE6Z9riUteNZKr3QpTV
-         Fkn6ZwUMzSQRkpY3yy8XSCqqhf9PgEk9wotGN/z2oJu2rXQd8kZYYsTB5vBZ4c2vjcZh
-         IhIdwMurcoTnGBLQy7sdUh8KQSpD5+jcXZaat8izIy77OqfPdqHuv9rrQ5uthKIrKHTY
-         lAQg==
-X-Forwarded-Encrypted: i=1; AJvYcCURhmKn1STiqlYDwRUF991Y5yVQTGIKHLYZmtP9Qr+PGAoHYR93hbv6VZhK7stnik9qGTU=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy5qaJ2bXiGkobC76ItfG1scdYVtsmEqN2Fqd+8U9roorLA6SIw
-	J4voxaw7d9iZ84OdaQfGZIUaruJgGmaM1Ly48qA8N2isXLm+Qo2MLD9KVSEw2i32Qg==
-X-Gm-Gg: ATEYQzzyvcK6UkOv8r2rYjeT9yx6B80E9C9H/wdAChNdJs0A9K6H+GeUGxTp8uwdMFI
-	C5vCuG7JNdmZxmd5Zi86mnOawXU71fUBK5JRuxlTdt1GHOzGwB3W2+iFF7qf0zb2ZHqe7Uf5/6U
-	GvtZT7hLrY+tWfkrkefJ0jwjoDV3bAZiwNEKL2fejZW4IViPm2Asxt6iqs45WY6e7Kq8l97kOPY
-	WCFrqIokYQFjqMrbZGQdzJ0/QwnxxoXa9K80rFJZnAXn8juWPxb5Xygl1IxjMMCc+ch81p+HpWz
-	m7Los7EG+q6wG3CtJ7GDr/R4EAWeLHN8HUf8LA6QC2vyTxDjfF97viVRDI+dZ1HkDsCO55qj+qi
-	5Gh/jdJ69vCibFFnP92xXfWnTrstjXecoWEKLv83XmHwZ3bVZx2MxsXHgI7n9mF776DtHircasG
-	6yZVofGqV7x0Y3/aDTT22kEMZwW5mXsiSynIBEKjtssenrLRO8BL6C8m4jD77ZTg==
-X-Received: by 2002:a17:902:f54d:b0:2b0:5b4c:a439 with SMTP id d9443c01a7336-2b06e7d8216mr967155ad.2.1773779624373;
-        Tue, 17 Mar 2026 13:33:44 -0700 (PDT)
-Received: from google.com (168.136.83.34.bc.googleusercontent.com. [34.83.136.168])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2b06e629da3sm3734835ad.76.2026.03.17.13.33.43
+        bh=XXz7CkkQTRz+WIdQ5aQKBGXyXXsdoAFd36PRskCjU8s=;
+        b=ZngKJ6wA5LftwlV2BIHywK9vXmY2LrSjcuH7cdFsFCNsxckoNVNfzQxHG5exTMMsik
+         ZwCgM0jrRL9stX3Hu9He/ftvRPpLY/X5gTTMXHPueR7dTDePUxgniZCLPQTzrdc5L47X
+         BPKUiApmkvQupthXYfW8v6l71KYoEq9KoNjiPdmz+m7UYv9hrFi9B1ZApoCqkpBXMZhQ
+         bD9K9wuZusWnGw/hrAXrN/5hOn22fDeBF1WHy/HZvkqdjN0+9p7wxBj5ZCNRtIlUupze
+         nn29NC1EWNF3oQTXYllZzdYeZCUkhQ2zxzl9OQMNlqwLbYHD37cHo6FZQ9/a75WP2AOG
+         egUg==
+X-Forwarded-Encrypted: i=1; AJvYcCUSdk1qiYRH1t1rsKpXdjIzpkzOoHuWukznIEEbUex3Z2bQTVNd5V0g3YmmSq7bHyMu5pM=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwqK6h2w9J60vaEbNR2TYcCI2jybIcExb3vzCnBFArNZZ/BaW9U
+	4M192zRw4bAzyBQXTCU/GCeU7FLr8hCbEs3SLJK2MJPCVtLqjaymWnS6eE+D6OyO1g==
+X-Gm-Gg: ATEYQzyF+23CTSzDpa4D4wRilm+gIU7fshaIyz0PVSnTyYWTR3nitFO/QRCcSHoyKUm
+	ldVJukdUZByaCdzngoT11XgXpLb+L55DfpsPENdrhyAAa8ayYBnGfwz7ypPxIdSrcZXTzT6qF6Q
+	ptq5Gzje4tfPCiDBMtxn9iiCJ72Stdoq+oI1sOIyJjQzFIDoYgmHZ/wcSHdHbdMCRA5B9sg9SMF
+	Im4/JUPz7EJX7obEjl6B3ShoxlcAqWsFGK5oH2rdWLmopZBNQH/Ufoc+tmJl0KzXwDVi27TXDG0
+	ORn33kQVBbc8GoSV3qIKYVA39aQ2LMOBTD3T3RYHwAg8zSWElGX9uZY3oNroYf/SJqr+mcCEpLL
+	0rF3UVL1rMegvPK8yZNI/I4zfPGvq61q7h5ozKRFEAOIT/xRdzm3JWqKEqy40eTj9m0hpq+vO3V
+	3UuHz8enc99QI+pQQb0PnvHwwCENhJrAnpa2uZJau78z/a7WIDtOyYcFfFAA==
+X-Received: by 2002:a17:903:184:b0:2ad:6f9b:3b2e with SMTP id d9443c01a7336-2b06f8b55c8mr253645ad.23.1773781148322;
+        Tue, 17 Mar 2026 13:59:08 -0700 (PDT)
+Received: from google.com (60.89.247.35.bc.googleusercontent.com. [35.247.89.60])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-82a6bee9a14sm357119b3a.53.2026.03.17.13.59.07
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 17 Mar 2026 13:33:43 -0700 (PDT)
-Date: Tue, 17 Mar 2026 20:33:39 +0000
-From: Samiullah Khawaja <skhawaja@google.com>
-To: Vipin Sharma <vipinsh@google.com>
+        Tue, 17 Mar 2026 13:59:07 -0700 (PDT)
+Date: Tue, 17 Mar 2026 13:59:03 -0700
+From: Vipin Sharma <vipinsh@google.com>
+To: Samiullah Khawaja <skhawaja@google.com>
 Cc: David Woodhouse <dwmw2@infradead.org>, 
 	Lu Baolu <baolu.lu@linux.intel.com>, Joerg Roedel <joro@8bytes.org>, Will Deacon <will@kernel.org>, 
 	Jason Gunthorpe <jgg@ziepe.ca>, Robin Murphy <robin.murphy@arm.com>, 
@@ -72,403 +72,77 @@ Cc: David Woodhouse <dwmw2@infradead.org>,
 	David Matlack <dmatlack@google.com>, Andrew Morton <akpm@linux-foundation.org>, 
 	Chris Li <chrisl@kernel.org>, Pranjal Shrivastava <praan@google.com>, 
 	YiFei Zhu <zhuyifei@google.com>
-Subject: Re: [PATCH 02/14] iommu: Implement IOMMU core liveupdate skeleton
-Message-ID: <abm2C-8xRstbuzIe@google.com>
+Subject: Re: [PATCH 04/14] iommu/pages: Add APIs to
+ preserve/unpreserve/restore iommu pages
+Message-ID: <20260317202925.GA2582517.vipinsh@google.com>
 References: <20260203220948.2176157-1-skhawaja@google.com>
- <20260203220948.2176157-3-skhawaja@google.com>
- <20260316221854.GC1768676.vipinsh@google.com>
+ <20260203220948.2176157-5-skhawaja@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260316221854.GC1768676.vipinsh@google.com>
+In-Reply-To: <20260203220948.2176157-5-skhawaja@google.com>
 
-On Tue, Mar 17, 2026 at 12:58:27PM -0700, Vipin Sharma wrote:
->On Tue, Feb 03, 2026 at 10:09:36PM +0000, Samiullah Khawaja wrote:
->> diff --git a/drivers/iommu/iommu.c b/drivers/iommu/iommu.c
->> index 4926a43118e6..c0632cb5b570 100644
->> --- a/drivers/iommu/iommu.c
->> +++ b/drivers/iommu/iommu.c
->> @@ -389,6 +389,9 @@ static struct dev_iommu *dev_iommu_get(struct device *dev)
->>
->>  	mutex_init(&param->lock);
->>  	dev->iommu = param;
->> +#ifdef CONFIG_IOMMU_LIVEUPDATE
->> +	dev->iommu->device_ser = NULL;
->> +#endif
->
->This should already be NULL due to kzalloc() above.
+On Tue, Feb 03, 2026 at 10:09:38PM +0000, Samiullah Khawaja wrote:
+> +
+> +void iommu_unpreserve_pages(struct iommu_pages_list *list, int count)
+> +{
+> +	struct ioptdesc *iopt;
+> +
+> +	if (!count)
+> +		return;
+> +
+> +	/* If less than zero then unpreserve all pages. */
+> +	if (count < 0)
+> +		count = 0;
+> +
+> +	list_for_each_entry(iopt, &list->pages, iopt_freelist_elm) {
+> +		kho_unpreserve_folio(ioptdesc_folio(iopt));
+> +		if (count > 0 && --count ==  0)
+> +			break;
+> +	}
+> +}
 
-Will remove.
->
->>  	return param;
->>  }
->>
->> diff --git a/drivers/iommu/liveupdate.c b/drivers/iommu/liveupdate.c
->> index 6189ba32ff2c..83eb609b3fd7 100644
->> --- a/drivers/iommu/liveupdate.c
->> +++ b/drivers/iommu/liveupdate.c
->> @@ -11,6 +11,7 @@
->>  #include <linux/liveupdate.h>
->>  #include <linux/iommu-lu.h>
->>  #include <linux/iommu.h>
->> +#include <linux/pci.h>
->>  #include <linux/errno.h>
->>
->>  static void iommu_liveupdate_restore_objs(u64 next)
->> @@ -175,3 +176,328 @@ int iommu_liveupdate_unregister_flb(struct liveupdate_file_handler *handler)
->>  	return liveupdate_unregister_flb(handler, &iommu_flb);
->>  }
->>  EXPORT_SYMBOL(iommu_liveupdate_unregister_flb);
->> +
->> +int iommu_for_each_preserved_device(iommu_preserved_device_iter_fn fn,
->> +				    void *arg)
->> +{
->> +	struct iommu_lu_flb_obj *obj;
->> +	struct devices_ser *devices;
->> +	int ret, i, idx;
->> +
->> +	ret = liveupdate_flb_get_incoming(&iommu_flb, (void **)&obj);
->> +	if (ret)
->> +		return -ENOENT;
->> +
->> +	devices = __va(obj->ser->devices_phys);
->> +	for (i = 0, idx = 0; i < obj->ser->nr_devices; ++i, ++idx) {
->> +		if (idx >= MAX_DEVICE_SERS) {
->> +			devices = __va(devices->objs.next_objs);
->> +			idx = 0;
->> +		}
->> +
->> +		if (devices->devices[idx].obj.deleted)
->> +			continue;
->> +
->> +		ret = fn(&devices->devices[idx], arg);
->> +		if (ret)
->> +			return ret;
->> +	}
->> +
->> +	return 0;
->> +}
->> +EXPORT_SYMBOL(iommu_for_each_preserved_device);
->
->IMHO, with all the obj, ser, devices->devices[..], it is little harder
->to follow the code. I will recommend to reconsider naming.
+I see you are trying to have common function for error handling in
+iommu_preserve_pages() down and unpreserving in the next patch with
+overloaded meaning of count. 
 
-Agreed. I will update this based on the feedback on the previous patch.
->
->Also, should this function be introduced in the patch where it is
->getting used? Other changes in this patch are already big and complex.
->Same for iommu_get_device_preserved_data() and
->iommu_get_preserved_data().
+ < 0 means unpreserve all of the pages
+ = 0 means do nothing
+ > 0 unpreserve these many pages.
 
-These are used by the drivers, but part of core. So need to be in
-this patch :(.
+It seems non-intuitive to me and code also end up having multiple ifs. I
+will recommend to just have this function go through all of the pages
+without passing count argument. In iommu_preserve_pages() function down,
+handle the error case with a "goto err" statement. If this is the way
+things happen in iommu codebase feel free to ignore this suggestion.
 
-Note that this patch is adding core skeleton only, focusing on helpers
-for the serialized state. This patch is not preserving any real state of
-iommu, domain or devices. For example, the domains are saved through
-generic page table in a separate patch, and the drivers preserve the
-state of devices and associated iommu in separate patches.
+> +EXPORT_SYMBOL_GPL(iommu_unpreserve_pages);
+> +
+> +void iommu_restore_page(u64 phys)
+> +{
+> +	struct ioptdesc *iopt;
+> +	struct folio *folio;
+> +	unsigned long pgcnt;
+> +	unsigned int order;
+> +
+> +	folio = kho_restore_folio(phys);
+> +	BUG_ON(!folio);
+> +
+> +	iopt = folio_ioptdesc(folio);
+> +
+> +	order = folio_order(folio);
+> +	pgcnt = 1UL << order;
+> +	mod_node_page_state(folio_pgdat(folio), NR_IOMMU_PAGES, pgcnt);
+> +	lruvec_stat_mod_folio(folio, NR_SECONDARY_PAGETABLE, pgcnt);
 
-I will add this text in the commit message to clarify the purpose of
-this patch.
->
->I think this patch can be split in three.
->Patch 1: Preserve iommu_domain
->Patch 2: Preserve pci device and iommu device
->Patch 3: The helper functions I mentioned above.
->
->
->> +
->> +static inline bool device_ser_match(struct device_ser *match,
->> +				    struct pci_dev *pdev)
->> +{
->> +	return match->devid == pci_dev_id(pdev) && match->pci_domain == pci_domain_nr(pdev->bus);
->
->Nit: s/match/device_ser for readability or something similar.
+Above two functions are also used in other two places in this file, lets
+create a common function for these two operations.
 
-Agreed. Will do.
->
->> +}
->> +
->> +struct device_ser *iommu_get_device_preserved_data(struct device *dev)
->> +{
->> +	struct iommu_lu_flb_obj *obj;
->> +	struct devices_ser *devices;
->> +	int ret, i, idx;
->> +
->> +	if (!dev_is_pci(dev))
->> +		return NULL;
->> +
->> +	ret = liveupdate_flb_get_incoming(&iommu_flb, (void **)&obj);
->> +	if (ret)
->> +		return NULL;
->> +
->> +	devices = __va(obj->ser->devices_phys);
->> +	for (i = 0, idx = 0; i < obj->ser->nr_devices; ++i, ++idx) {
->> +		if (idx >= MAX_DEVICE_SERS) {
->> +			devices = __va(devices->objs.next_objs);
->> +			idx = 0;
->> +		}
->> +
->> +		if (devices->devices[idx].obj.deleted)
->> +			continue;
->> +
->> +		if (device_ser_match(&devices->devices[idx], to_pci_dev(dev))) {
->> +			devices->devices[idx].obj.incoming = true;
->> +			return &devices->devices[idx];
->> +		}
->> +	}
->> +
->> +	return NULL;
->> +}
->> +EXPORT_SYMBOL(iommu_get_device_preserved_data);
->> +
->> +struct iommu_ser *iommu_get_preserved_data(u64 token, enum iommu_lu_type type)
->> +{
->> +	struct iommu_lu_flb_obj *obj;
->> +	struct iommus_ser *iommus;
->> +	int ret, i, idx;
->> +
->> +	ret = liveupdate_flb_get_incoming(&iommu_flb, (void **)&obj);
->> +	if (ret)
->> +		return NULL;
->> +
->> +	iommus = __va(obj->ser->iommus_phys);
->> +	for (i = 0, idx = 0; i < obj->ser->nr_iommus; ++i, ++idx) {
->> +		if (idx >= MAX_IOMMU_SERS) {
->> +			iommus = __va(iommus->objs.next_objs);
->> +			idx = 0;
->> +		}
->> +
->> +		if (iommus->iommus[idx].obj.deleted)
->> +			continue;
->> +
->> +		if (iommus->iommus[idx].token == token &&
->> +		    iommus->iommus[idx].type == type)
->> +			return &iommus->iommus[idx];
->> +	}
->> +
->> +	return NULL;
->> +}
->> +EXPORT_SYMBOL(iommu_get_preserved_data);
->> +
->> +static int reserve_obj_ser(struct iommu_objs_ser **objs_ptr, u64 max_objs)
->> +{
->> +	struct iommu_objs_ser *next_objs, *objs = *objs_ptr;
->> +	int idx;
->> +
->> +	if (objs->nr_objs == max_objs) {
->> +		next_objs = kho_alloc_preserve(PAGE_SIZE);
->> +		if (IS_ERR(next_objs))
->> +			return PTR_ERR(next_objs);
->> +
->> +		objs->next_objs = virt_to_phys(next_objs);
->> +		objs = next_objs;
->> +		*objs_ptr = objs;
->> +		objs->nr_objs = 0;
->> +		objs->next_objs = 0;
->> +	}
->> +
->> +	idx = objs->nr_objs++;
->> +	return idx;
->
->I think we should rename these variables, it is difficult to comprehend
->the code.
-
-Will do.
->
->> +}
->> +
->> +int iommu_domain_preserve(struct iommu_domain *domain, struct iommu_domain_ser **ser)
->> +{
->> +	struct iommu_domain_ser *domain_ser;
->> +	struct iommu_lu_flb_obj *flb_obj;
->> +	int idx, ret;
->> +
->> +	if (!domain->ops->preserve)
->> +		return -EOPNOTSUPP;
->> +
->> +	ret = liveupdate_flb_get_outgoing(&iommu_flb, (void **)&flb_obj);
->> +	if (ret)
->> +		return ret;
->> +
->> +	guard(mutex)(&flb_obj->lock);
->> +	idx = reserve_obj_ser((struct iommu_objs_ser **)&flb_obj->iommu_domains,
->> +			      MAX_IOMMU_DOMAIN_SERS);
->> +	if (idx < 0)
->> +		return idx;
->> +
->> +	domain_ser = &flb_obj->iommu_domains->iommu_domains[idx];
->> +	idx = flb_obj->ser->nr_domains++;
->
->In for loops above, nr_domains are compared with 'i', and idx is for
->index inside a page. Lets not reuse idx here for nr_domains, keep it
->consistent for easier understanding. May be use something more
->descriptive than 'i' like global_idx and local_idx?
-
-Agreed. Will change it.
->
->> +	domain_ser->obj.idx = idx;
->> +	domain_ser->obj.ref_count = 1;
->> +
->> +	ret = domain->ops->preserve(domain, domain_ser);
->> +	if (ret) {
->> +		domain_ser->obj.deleted = true;
->> +		return ret;
->> +	}
->> +
->> +	domain->preserved_state = domain_ser;
->> +	*ser = domain_ser;
->> +	return 0;
->> +}
->> +EXPORT_SYMBOL_GPL(iommu_domain_preserve);
->> +
->> +static int iommu_preserve_locked(struct iommu_device *iommu)
->> +{
->> +	struct iommu_lu_flb_obj *flb_obj;
->> +	struct iommu_ser *iommu_ser;
->> +	int idx, ret;
->
->Should there be lockdep asserts in these locked version APIs?
-
-Will add it here.
->
->> +
->> +}
->> +
->> +static void iommu_unpreserve_locked(struct iommu_device *iommu)
->> +{
->> +	struct iommu_ser *iommu_ser = iommu->outgoing_preserved_state;
->> +
->> +	iommu_ser->obj.ref_count--;
->
->Should there be a null check?
-
-Hmm.. There is a dependency of unpreservation of iommus with devices, so
-this should never be NULL unless used independently.
-
-But I think I will add it here to protect against that.
->
->> +	if (iommu_ser->obj.ref_count)
->> +		return;
->> +
->> +	iommu->outgoing_preserved_state = NULL;
->> +	iommu->ops->unpreserve(iommu, iommu_ser);
->> +	iommu_ser->obj.deleted = true;
->> +}
->> +
->> +int iommu_preserve_device(struct iommu_domain *domain,
->> +			  struct device *dev, u64 token)
->> +{
->> +	struct iommu_lu_flb_obj *flb_obj;
->> +	struct device_ser *device_ser;
->> +	struct dev_iommu *iommu;
->> +	struct pci_dev *pdev;
->> +	int ret, idx;
->> +
->> +	if (!dev_is_pci(dev))
->> +		return -EOPNOTSUPP;
->> +
->> +	if (!domain->preserved_state)
->> +		return -EINVAL;
->> +
->> +	pdev = to_pci_dev(dev);
->> +	iommu = dev->iommu;
->> +	if (!iommu->iommu_dev->ops->preserve_device ||
->> +	    !iommu->iommu_dev->ops->preserve)
->
->iommu_preserve_locked() is already checking for preserve(), we can just
->check preserve_device here.
-
-iommu_preserve_locked() is called after reserving the serialization
-state in FLB and taking the FLB lock, so this is an early check that
-returns early.
->
->> +		return -EOPNOTSUPP;
->> +
->> +	ret = liveupdate_flb_get_outgoing(&iommu_flb, (void **)&flb_obj);
->> +	if (ret)
->> +		return ret;
->> +
->> +	guard(mutex)(&flb_obj->lock);
->> +	idx = reserve_obj_ser((struct iommu_objs_ser **)&flb_obj->devices,
->> +			      MAX_DEVICE_SERS);
->> +	if (idx < 0)
->> +		return idx;
->> +
->> +	device_ser = &flb_obj->devices->devices[idx];
->> +	idx = flb_obj->ser->nr_devices++;
->> +	device_ser->obj.idx = idx;
->> +	device_ser->obj.ref_count = 1;
->> +
->> +	ret = iommu_preserve_locked(iommu->iommu_dev);
->> +	if (ret) {
->> +		device_ser->obj.deleted = true;
->> +		return ret;
->> +	}
->> +
->> +	device_ser->domain_iommu_ser.domain_phys = __pa(domain->preserved_state);
->> +	device_ser->domain_iommu_ser.iommu_phys = __pa(iommu->iommu_dev->outgoing_preserved_state);
->> +	device_ser->devid = pci_dev_id(pdev);
->> +	device_ser->pci_domain = pci_domain_nr(pdev->bus);
->> +	device_ser->token = token;
->> +
->> +	ret = iommu->iommu_dev->ops->preserve_device(dev, device_ser);
->> +	if (ret) {
->> +		device_ser->obj.deleted = true;
->> +		iommu_unpreserve_locked(iommu->iommu_dev);
->> +		return ret;
->> +	}
->> +
->> +	dev->iommu->device_ser = device_ser;
->> +	return 0;
->> +}
->> +
->> +void iommu_unpreserve_device(struct iommu_domain *domain, struct device *dev)
->> +{
->> +	struct iommu_lu_flb_obj *flb_obj;
->> +	struct device_ser *device_ser;
->> +	struct dev_iommu *iommu;
->> +	struct pci_dev *pdev;
->> +	int ret;
->> +
->> +	if (!dev_is_pci(dev))
->> +		return;
->> +
->> +	pdev = to_pci_dev(dev);
->> +	iommu = dev->iommu;
->> +	if (!iommu->iommu_dev->ops->unpreserve_device ||
->> +	    !iommu->iommu_dev->ops->unpreserve)
->> +		return;
->> +
->> +	ret = liveupdate_flb_get_outgoing(&iommu_flb, (void **)&flb_obj);
->> +	if (WARN_ON(ret))
->
->Why WARN_ON here and not other places? Do we need it?
-
-Basically this means that the upper layer (iommufd/vfio) is asking to
-unpreserve a device, but there is no FLB found. This should not happen
-and should generate a warning.
->
->> +		return;
->> +
->> +	guard(mutex)(&flb_obj->lock);
->> +	device_ser = dev_iommu_preserved_state(dev);
->> +	if (WARN_ON(!device_ser))
->
->Can't we just silently ignore this?
-
-See answer above for the previous WARN. Same applies here.
->
->> +		return;
->> +
->> +	iommu->iommu_dev->ops->unpreserve_device(dev, device_ser);
->> +	dev->iommu->device_ser = NULL;
->> +
->> +	iommu_unpreserve_locked(iommu->iommu_dev);
->> +}
+> +}
+> +EXPORT_SYMBOL_GPL(iommu_restore_page);
+> +
