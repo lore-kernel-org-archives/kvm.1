@@ -1,138 +1,179 @@
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE2743C73C0;
-	Tue, 17 Mar 2026 12:59:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D84EB21018A
+	for <kvm@vger.kernel.org>; Tue, 17 Mar 2026 13:02:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773752356; cv=none; b=X6H30JMOcdtI9keP5DoYmpP31JrLKinKCxRZbDvyZYnoQgGpN9B+L/RjxbveDI93ABLokcwgCeE/zfPH/HNUpuZ0OY6i7nP5PmeKdUZbzS+nLmeeCbT0GAOjV06ThXpvxUZesEiSZW6k1Hf8oJgJs6EqSvcaeD12HmISvcTp6ms=
+	t=1773752529; cv=none; b=PpjtF/um/316UxA+XosM6xm25V9AyTRVQZBTKjjLJEl5p0TxUqCThTu1+h5uUD5xfMeJR8I7vYjCa5Q4a/xnvzj637KHDUtnzInYWm+3xdItWqCyaZ1iKVoBNljj88+rF7EwvNTWK2BToFUu5gMjI6xlPMFMaeBuuYFqJnfNrw4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773752356; c=relaxed/simple;
-	bh=jTHy7bZk/lBcDrCNabXe1lccncbLd7AFrROwYxPImAE=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=pA0ty2iGmtJWp51SgBEKrbvwlmLgpAReNNdKT197SHf3ARuTOeYbi+mjqppNaObs7qjpojuWI5ssLcPB8d+Y0a48/RtdTpPSh8a3Q3Jew7Zm1I3p3bR2Or25F73GAMjEJ1ulEwiCsXDDx+X1kZ/lNBwkKZ5Sfd8TfmkN0AsW2pk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=ec0otFMf; arc=none smtp.client-ip=148.163.156.1
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+	s=arc-20240116; t=1773752529; c=relaxed/simple;
+	bh=l0IEa/Ygo4J7PUgMIQJEOxD6/ezBStUya6b5EqHG7wU=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=hx3Rk6WIRLFN2Q2YdX8tKVui7iQvHXxgfhhS3CTi2KLDq0I2fO3LLwUSr42pitbGnnJo+BrvodVpa5a4YFb+fMyy4eu3f3Fr2kuabbBOAMgJbt9YXe+Ul86/3b56VrrwVLCL+WMe610/NXdwlN6zieLvb6gEmRw10ahRwZDMNZg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=jBc5Yvky; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=XTvJbOKO; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="ec0otFMf"
-Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 62H6dO8W231841;
-	Tue, 17 Mar 2026 12:59:09 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=FkvWgc
-	hnxowkB0BQQ4EmGr14eFi/swA/WlNLu1QTrYs=; b=ec0otFMfe2CTKoFX5h1CVW
-	9C1x9HcKX1ao/YNpjjzxjQzVJ9eAaKOX7Zs26xWCoeclFP2Lw4x+UgzQRTqfPnxU
-	zixbxqm1EqbSnh0syG06BDG0MDWQx4VpkzqETORsnaztHaXSDwLrp90/CABX50Dv
-	JWPkX0UqdZpXQUTFO4cJJwi30hZc7wcddkUYNo2fKRMLp3OdXwJnm5A3nFbrYAFh
-	TQLvXiUz7knEgbt+JXf/pXn2z3k2Q1kdxCU1RxaelJAkIYYoEhrTtSiB5q7Rp7kt
-	vw3O4OBWOp0YNw+QJbZvnJ/HWaYA3clUZdcOx3u0qDGBrf2p5qcD3vB8/gdLikWg
-	==
-Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4cvybs4sku-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 17 Mar 2026 12:59:09 +0000 (GMT)
-Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma23.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 62HAxjMG028708;
-	Tue, 17 Mar 2026 12:59:08 GMT
-Received: from smtprelay05.fra02v.mail.ibm.com ([9.218.2.225])
-	by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4cwkgk963d-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 17 Mar 2026 12:59:08 +0000
-Received: from smtpav04.fra02v.mail.ibm.com (smtpav04.fra02v.mail.ibm.com [10.20.54.103])
-	by smtprelay05.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 62HCx4nH45678952
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 17 Mar 2026 12:59:04 GMT
-Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 2416D20043;
-	Tue, 17 Mar 2026 12:59:04 +0000 (GMT)
-Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id C9B512005A;
-	Tue, 17 Mar 2026 12:59:03 +0000 (GMT)
-Received: from tuxmaker.boeblingen.de.ibm.com (unknown [9.87.85.9])
-	by smtpav04.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Tue, 17 Mar 2026 12:59:03 +0000 (GMT)
-From: Julian Ruess <julianr@linux.ibm.com>
-Date: Tue, 17 Mar 2026 13:58:51 +0100
-Subject: [PATCH v5 3/3] MAINTAINERS: add VFIO ISM PCI DRIVER section
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="jBc5Yvky";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="XTvJbOKO"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1773752526;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=X84dwyjbZoJMU1tLYMgVdKe9XEn4KqkiGjeoDFKXh0U=;
+	b=jBc5Yvkyu/+Z2Vygjmww6fV+4jcT7AT0WJa0N6ovSqYh6LWy6pWB0/AhZ/UW+mW6oYF3FU
+	Dq0fiTlhiCbbi+Wlv2GQdzJJtFnw8FkU/lsRfdrWTTnjGozdrwBHRqFst10qmlyuv8Ta6B
+	niYwHU0oeWl03G5CA+2v5RYtEstHu9o=
+Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
+ [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-479-obbIPXmrMrahFhPSNWTeXw-1; Tue, 17 Mar 2026 09:02:05 -0400
+X-MC-Unique: obbIPXmrMrahFhPSNWTeXw-1
+X-Mimecast-MFC-AGG-ID: obbIPXmrMrahFhPSNWTeXw_1773752524
+Received: by mail-wm1-f70.google.com with SMTP id 5b1f17b1804b1-48539bda3dcso61558975e9.2
+        for <kvm@vger.kernel.org>; Tue, 17 Mar 2026 06:02:05 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=redhat.com; s=google; t=1773752524; x=1774357324; darn=vger.kernel.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=X84dwyjbZoJMU1tLYMgVdKe9XEn4KqkiGjeoDFKXh0U=;
+        b=XTvJbOKOqEt5QDjkq6jHGAoRKEPNNgwIly2DGkvMFxNYC7JPSsw/Ui8I6OEvL5PKvZ
+         HMgKsoBnQMmtI7bO5OaHSBHfuZ5llYXRLySdAcRmu+fDHGbcReP/l93Q7J8ceVAqTHuS
+         be0nsHX7N71so2LOXb58c/5fuzl9HIa+2Nlqb/cRsau2an0U0rQqIhk59fjgCnE9SCfl
+         KpsnC2iuPsfrQ9VG2iBJHUgXpz79P7HT6TsMJU1EGr3UvwCNmsZKpzgIPt1yuRVrnoc2
+         KPte/L8tr7Bmh4lP4StxV9MIKu7TvS0niFdE9kkYaNXOK7KWu9RbiQLY/ol8lWlIvrQM
+         hANQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1773752524; x=1774357324;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=X84dwyjbZoJMU1tLYMgVdKe9XEn4KqkiGjeoDFKXh0U=;
+        b=GV1k2xqFEyyMUIKL7YvgEtazmJLzNAjsGD8p0+0g2VxUM/kjy9Zj7IzS8B4wusoUXn
+         QvBIDIvTdpFeDhVwhXv/Q1S0wzHEeEweej67tfyNrwmfE2qkPdp2BstL5caEFcX38Z/f
+         ouPv7P0aPPwbOkmbUcyHn/TatFH0C+NPwrn9OVZp6hSoDrBvfD7ATB4cwJgSeiZObpGY
+         6+8+V9ESnPl4w1Zv2OheEQmb4DUWAjP1tOFp6Cp9FN0N18VE4TSY1AqFsUMCeZrzLSnX
+         NjQI1ruPfJcv/NRy5fKp9Pv+WZJgnzA480Z8XqIn+daOp9sxcY8Eg1jNvGcp0AP5TNGE
+         bqTw==
+X-Forwarded-Encrypted: i=1; AJvYcCXs8SrY8GzWrTvms/2cvQhYXs1ZkDDjjGu/Bd0BINp0Zz3pM725mdbz8St74lm0cL3XpKU=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxSEBwiMGzerr9XSVd1zOUkpWp8M7OMZrK3zlg5i3qMJsVAjOiP
+	AQt5gnp40lcqHxkH509oKzouvtxUw38mCG8SGqczeOUXoPON8GuQ3tfc00EVV4kAASTueBKrSWx
+	3RpJQjGapcwGa/i/7wcJXSMaLNjREFYsxSftPYvYB0Ko1/KlOHJTjlg==
+X-Gm-Gg: ATEYQzwotaw23uEXG30OvYiP+5xdTCrZF1Ui1nX+xQ4XpIj3lruqiXzpnvzg5vnd85d
+	WhbKxRN4Ime76DFxK6Mdp5rRlOCdm0bT3IP3vZkv/PK2blqalZ3+fh7OzbdkTC29rLocRkhm6ok
+	32M9shfb26Z/A4FYQmlcs5Uw+gGkeJqntXATvdQzWlUjW1mrzE82dfL//Ok7DyDPP+jyQov2S/p
+	gMqdnQt39W+AlqG9U40EVgrrIeLyTXwAxEKQBCWOItbSl2fAO/Jex9D/fvMDBiUv+myHNrwVFWq
+	TIweYt5Ac+V1TjibDL5jBVJygWWTYSMtubewoJYZyidleUP2emV5gWqjEilqos22e4thS74by15
+	8lYBNI4p8bUVb9on8eg3EHSYzVdk=
+X-Received: by 2002:a05:600c:190d:b0:485:6e40:5584 with SMTP id 5b1f17b1804b1-4856e40559amr64189065e9.6.1773752524053;
+        Tue, 17 Mar 2026 06:02:04 -0700 (PDT)
+X-Received: by 2002:a05:600c:190d:b0:485:6e40:5584 with SMTP id 5b1f17b1804b1-4856e40559amr64188235e9.6.1773752523414;
+        Tue, 17 Mar 2026 06:02:03 -0700 (PDT)
+Received: from leonardi-redhat ([176.206.19.176])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4856eaee04fsm67125555e9.13.2026.03.17.06.02.01
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 17 Mar 2026 06:02:02 -0700 (PDT)
+Date: Tue, 17 Mar 2026 14:01:59 +0100
+From: Luigi Leonardi <leonardi@redhat.com>
+To: Tommaso Califano <califano.tommaso@gmail.com>
+Cc: qemu-devel@nongnu.org, kvm@vger.kernel.org, 
+	Eduardo Habkost <eduardo@habkost.net>, Markus Armbruster <armbru@redhat.com>, 
+	Zhao Liu <zhao1.liu@intel.com>, Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>, 
+	Marcelo Tosatti <mtosatti@redhat.com>, Eric Blake <eblake@redhat.com>, 
+	Oliver Steffen <osteffen@redhat.com>, Stefano Garzarella <sgarzare@redhat.com>, 
+	Giuseppe Lettieri <giuseppe.lettieri@unipi.it>, Paolo Bonzini <pbonzini@redhat.com>, 
+	Richard Henderson <richard.henderson@linaro.org>
+Subject: Re: [PATCH 0/5] i386/sev: Add TCG-emulated AMD SEV guest support
+Message-ID: <ablPsAJl1k1raW7v@leonardi-redhat>
+References: <20260317113840.33017-1-califano.tommaso@gmail.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260317-vfio_pci_ism-v5-3-b73248b4e576@linux.ibm.com>
-References: <20260317-vfio_pci_ism-v5-0-b73248b4e576@linux.ibm.com>
-In-Reply-To: <20260317-vfio_pci_ism-v5-0-b73248b4e576@linux.ibm.com>
-To: schnelle@linux.ibm.com, wintera@linux.ibm.com, ts@linux.ibm.com,
-        oberpar@linux.ibm.com, gbayer@linux.ibm.com,
-        Alex Williamson <alex@shazbot.org>, Jason Gunthorpe <jgg@ziepe.ca>,
-        Yishai Hadas <yishaih@nvidia.com>,
-        Shameer Kolothum <skolothumtho@nvidia.com>,
-        Kevin Tian <kevin.tian@intel.com>
-Cc: mjrosato@linux.ibm.com, alifm@linux.ibm.com, raspl@linux.ibm.com,
-        hca@linux.ibm.com, agordeev@linux.ibm.com, gor@linux.ibm.com,
-        julianr@linux.ibm.com, kvm@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-s390@vger.kernel.org,
-        linux-pci@vger.kernel.org
-X-Mailer: b4 0.14.2
-X-TM-AS-GCONF: 00
-X-Authority-Analysis: v=2.4 cv=MMttWcZl c=1 sm=1 tr=0 ts=69b9501d cx=c_pps
- a=3Bg1Hr4SwmMryq2xdFQyZA==:117 a=3Bg1Hr4SwmMryq2xdFQyZA==:17
- a=IkcTkHD0fZMA:10 a=Yq5XynenixoA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=RnoormkPH1_aCDwRdu11:22 a=uAbxVGIbfxUO_5tXvNgY:22 a=VnNF1IyMAAAA:8
- a=VwQbUJbxAAAA:8 a=Ikd4Dj_1AAAA:8 a=jBZh5NATpTL4zB9YInYA:9 a=QEXdDO2ut3YA:10
-X-Proofpoint-ORIG-GUID: TjRW62KM84P2KMPldasju9rnrjSIv3q6
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMzE3MDExMiBTYWx0ZWRfX9LEBqxaboi1H
- 5VzVpsxIERQAd8jQ3NPrF0nAQDiLiLb9QDC9RUJuBDlTyURMloby00JHWAV3ugOOCeU5BAhgt4/
- VVNS8zdCoPffAYlMiVXB2018kO93Ov6Cr0uZMSMeg9uvZ9S8aoJ1KzSHASmzBfCL+JLOCaodBCz
- bcDuSFtIMOFzPYIS9+IYL/cabPy1uoFbjDmrc9oF3VHwGUpB/a8K7IJCfjpApyMWG/kMjs4D2tD
- +6nkG1tF2GQjRV1Tlb020DAbjGmlgLLNzCWSLef3fCt7U/vS7PARhvFs48bZQb11HYqKkA3G6tI
- mKF/epFRNoDxfR+EjahINT0+vGb5kAeZxQR1qYXK5+4naKjMYY65pbnxvAgL4PXznKTaGMRQ7fv
- soQvVHdXbTqj3G4XDCw2YdnfgkTQqTAaGz13k7xEjOFcUarV/yc7TCiL2PUXJ8P/JRS8CRvGgrA
- DSmbQ+APFojKtW86MBw==
-X-Proofpoint-GUID: TjRW62KM84P2KMPldasju9rnrjSIv3q6
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
- definitions=2026-03-17_01,2026-03-17_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- suspectscore=0 lowpriorityscore=0 malwarescore=0 spamscore=0
- priorityscore=1501 impostorscore=0 adultscore=0 phishscore=0 clxscore=1015
- bulkscore=0 classifier=typeunknown authscore=0 authtc= authcc= route=outbound
- adjust=0 reason=mlx scancount=1 engine=8.22.0-2603050001
- definitions=main-2603170112
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20260317113840.33017-1-califano.tommaso@gmail.com>
 
-ism_vfio_pci is a new kernel component that allows
-to use the ISM device from userspace. Add myself
-as a maintainer.
+On Tue, Mar 17, 2026 at 12:38:35PM +0100, Tommaso Califano wrote:
+>From: Tommaso Califano <califano.tommaso@gmail.com>
+>
+>QEMU's AMD SEV support currently requires KVM on expensive AMD EPYC
+>hardware, limiting development and testing of SEV-aware guest software to
+>users with server-grade machines.
+>
+>This series introduces a TCG-emulated SEV guest mode that enables SEV
+>validation without hardware dependencies, focusing on functional testing
+>rather than reproducing the hardware’s cryptographic context.
+>
+>The emulation exposes SEV from the guest's perspective:
+> - Exposed CPUID leaf 0x8000001F to indicate active support.
+> - Active bit 0 in MSR 0xc0010131 to enable SEV on the guest.
+> - C-bit manipulation in PTEs/CR3 for paging consistency with the host.
+> - Complete SEV attestation workflow for injecting secrets into guest
+>   memory (including direct kernel boot support).
+>
+>The emulation uses a new QOM object "sev-emulated", derived from
+>"sev-guest", to maximize reuse of the existing SEV infrastructure while
+>maintaining a compiling dependency with KVM.
+>Below are the pros and cons of this choice.
+>
+>In addition to inherited guest properties, two new ones are added (binary
+>files; default all-zero):
+> - tik: 16-byte Transport Integrity Key (TIK) for measurement HMAC.
+> - tek: 16-byte Transport Encryption Key (TEK) for secret payload
+>   decryption.
+>
+>Code reuse benefits:
+> - SEV detection via sev_enabled() and TYPE_SEV_COMMON object cast enables
+>   the required checks for emulation without adding new conditions to the
+>   codebase.
+> - QAPI fields for query-sev/launch-measure inherited from SevCommonState
+>   and SevGuestState.
+> - Identical QMP interface (query-sev, query-sev-launch-measure,
+>   sev-inject-launch-secret) as real SEV.
+> - Shared state machine (sev_set_guest_state()); override backend vtable
+>   only (kvm_init → sev_emulated_init, launch_update_data, launch_finish,
+>   sev_launch_get_measure).
+>
+>Trade-offs:
+> - KVM linkage: sev-guest is KVM-centric; even if KVM is not used at
+>   runtime, its code is required for compilation, so it is not possible to
+>   use emulation with --disable-kvm.
+>
+>Example usage:
+>
+>	-cpu "EPYC-Milan" \
+>	-accel tcg \
+>	-object sev-emulated,id=sev0,cbitpos=47,reduced-phys-bits=1,\
+>		tik=/path/to/tik.bin,tek=/path/to/tek.bin \
+>	-machine memory-encryption=sev0
+>
+>Build requirements:
+>
+>	../qemu/configure --enable-gcrypt --enable-crypto-afalg
+>
+>These provide libgcrypt support for crypto/hmac.h, crypto/cipher.h, and
+>crypto/random.h, used for:
+> - HMAC-SHA256 launch measurement (TIK key).
+> - Secret payload decryption (TEK key).
+>Note: --disable-kvm unsupported due to sev-guest inheritance (KVM code
+>linked, no runtime dependency).
+>
+>
 
-Reviewed-by: Niklas Schnelle <schnelle@linux.ibm.com>
-Signed-off-by: Julian Ruess <julianr@linux.ibm.com>
----
- MAINTAINERS | 6 ++++++
- 1 file changed, 6 insertions(+)
+To give maintainers some more context: this is part of an ongoing work to
+enable SNP emulation in QEMU, which would be very useful for development
+purposes (eg coconut-SVSM). However, it should not be used in a production
+environment as it provides no security guarantees.
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 96ea84948d76aff5e07579911d0f370ae13f481b..bae18582e71f7a17a949b1ed3d5e9689775e98ac 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -27702,6 +27702,12 @@ L:	kvm@vger.kernel.org
- S:	Maintained
- F:	drivers/vfio/pci/hisilicon/
- 
-+VFIO ISM PCI DRIVER
-+M:	Julian Ruess <julianr@linux.ibm.com>
-+L:	kvm@vger.kernel.org
-+S:	Maintained
-+F:	drivers/vfio/pci/ism/
-+
- VFIO MEDIATED DEVICE DRIVERS
- M:	Kirti Wankhede <kwankhede@nvidia.com>
- L:	kvm@vger.kernel.org
+Please consider this as an RFC.
 
--- 
-2.51.0
+Luigi
 
