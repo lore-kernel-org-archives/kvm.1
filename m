@@ -1,246 +1,138 @@
-Received: from fra-out-011.esa.eu-central-1.outbound.mail-perimeter.amazon.com (fra-out-011.esa.eu-central-1.outbound.mail-perimeter.amazon.com [52.28.197.132])
+Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0FB1C3E638F;
-	Tue, 17 Mar 2026 14:13:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=52.28.197.132
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 53CF03DCD9B;
+	Tue, 17 Mar 2026 14:26:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.109.113.108
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773756831; cv=none; b=dNmpOE0+0CIpjUG6stWq0ONQtTZrXLRD3n1cvtcuzGdylJDLEj0wiYwXY2Q5/Yr9+5kkbg0MeMW0L4D6V0oCQv7Mp63RbuzACFisqDCfxcwhbsi+jQRQkmSKGpaEclhx+IWzV4fIf+3d2fwTkobCTP5T4eYu8WhdmfeC9iTms+M=
+	t=1773757611; cv=none; b=u80VyUnfN72AabzccX1I5Nnby0+c6/3eK7VcxIBwzTX26UNerhrGgvkj/iF/GXjlMdSXYjhvXa5/tYoquX9oynqBEpe0V2ZuFfPizQ1/VwoPFeCec+P6lxQxnt9xbNSYIBhjkgHj73AJjXHzdhaZAOIgyOVdI738nE6Wnbb8lPM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773756831; c=relaxed/simple;
-	bh=RkewADzNkvxBUOT/4I8rSFHV1tsgWKOM5Wj6NnQFCvk=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=hw4K+Jc08fKSeEJJtU0Ftg0+vnV7BYL6IsYZFTPA9kIjsgbg+92V1xrN84wE5aEWj1i1EZhE/jK6XaeM8P5M0HH2xqe53U/1d+guFQVcLZJpdymrfn1WWZoQfYrOY51Ra7vUD33af6yZl+nTcYjDK+5rdA65kndEcBw5s0OXWis=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.co.uk; spf=pass smtp.mailfrom=amazon.co.uk; dkim=pass (2048-bit key) header.d=amazon.co.uk header.i=@amazon.co.uk header.b=H9YOPO+N; arc=none smtp.client-ip=52.28.197.132
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.co.uk
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amazon.co.uk
+	s=arc-20240116; t=1773757611; c=relaxed/simple;
+	bh=UjydKJlj34kUol4ppfDG3TiHRRFoAGPYagH63svj1Og=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=sCq2WWolmSz8t3pGbZgt5+gc3aTLByI49zIBfog7qlYzLKg6hn/nm5ui9aqtpf45QePcSCCN1sf5LcAombL63XZw32snsgmL7pygXuJlZd0RCtn8M5pP2vtHZxD2mjb9JY38xPmEeQQB48vRi75PANsijZcRJxLB0GLBBZlbIh4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de; spf=pass smtp.mailfrom=alien8.de; dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b=c+7kqts/; arc=none smtp.client-ip=65.109.113.108
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=amazon.co.uk header.i=@amazon.co.uk header.b="H9YOPO+N"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=amazon.co.uk; i=@amazon.co.uk; q=dns/txt;
-  s=amazoncorp2; t=1773756830; x=1805292830;
-  h=from:to:cc:subject:date:message-id:references:
-   in-reply-to:content-transfer-encoding:mime-version;
-  bh=pnj38ZEunZJJVUWYRSPy2Hkqiw4TfDVhbTQYfcLSb24=;
-  b=H9YOPO+NYyWKDaeYejRrzD2Hp4V2ZuSjJXNehcXB6AlxC4zE2XdVlvWK
-   vDZSN6lAQwkbWmu8Jq7gpfsHP+/qIe7u4xMu7GkuGOPMQbMMLaSq3G9Re
-   Soe0bhGNWhvwss57XCCNcUnkqcLS4Mi2tuT7iXvPZ9FAc7pjLfGd5wbU5
-   /YkfmGWCY0/keSpJy+fHVB4gK2fL0CWtX9eVaBsjiDe1rR3HHZAZhsLWo
-   9H7CK4K2rwqT5VrNhutnCLu/a5VzeTmcQKdRCRGFFT3D01nV3p5yEneVt
-   Y5vr+ipjfYGhIQLX2t3HIlU7qilPOL0LvnWB/SHN+xYxCdZOrQds0yenU
-   Q==;
-X-CSE-ConnectionGUID: 6tEFsmMKRiKCju09h+6xXg==
-X-CSE-MsgGUID: Nb9k9SOhTdC17ygw1ts0mw==
-X-IronPort-AV: E=Sophos;i="6.23,124,1770595200"; 
-   d="scan'208";a="10887386"
-Received: from ip-10-6-6-97.eu-central-1.compute.internal (HELO smtpout.naws.eu-central-1.prod.farcaster.email.amazon.dev) ([10.6.6.97])
-  by internal-fra-out-011.esa.eu-central-1.outbound.mail-perimeter.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Mar 2026 14:13:45 +0000
-Received: from EX19MTAEUA002.ant.amazon.com [54.240.197.232:9034]
- by smtpin.naws.eu-central-1.prod.farcaster.email.amazon.dev [10.0.29.244:2525] with esmtp (Farcaster)
- id 46addb52-27dc-449b-b609-08b4010fe2c8; Tue, 17 Mar 2026 14:13:45 +0000 (UTC)
-X-Farcaster-Flow-ID: 46addb52-27dc-449b-b609-08b4010fe2c8
-Received: from EX19D005EUB003.ant.amazon.com (10.252.51.31) by
- EX19MTAEUA002.ant.amazon.com (10.252.50.124) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.37;
- Tue, 17 Mar 2026 14:13:38 +0000
-Received: from EX19D005EUB003.ant.amazon.com (10.252.51.31) by
- EX19D005EUB003.ant.amazon.com (10.252.51.31) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.37;
- Tue, 17 Mar 2026 14:13:38 +0000
-Received: from EX19D005EUB003.ant.amazon.com ([fe80::b825:becb:4b38:da0c]) by
- EX19D005EUB003.ant.amazon.com ([fe80::b825:becb:4b38:da0c%3]) with mapi id
- 15.02.2562.037; Tue, 17 Mar 2026 14:13:38 +0000
-From: "Kalyazin, Nikita" <kalyazin@amazon.co.uk>
-To: "kvm@vger.kernel.org" <kvm@vger.kernel.org>, "linux-doc@vger.kernel.org"
-	<linux-doc@vger.kernel.org>, "linux-kernel@vger.kernel.org"
-	<linux-kernel@vger.kernel.org>, "linux-arm-kernel@lists.infradead.org"
-	<linux-arm-kernel@lists.infradead.org>, "kvmarm@lists.linux.dev"
-	<kvmarm@lists.linux.dev>, "linux-fsdevel@vger.kernel.org"
-	<linux-fsdevel@vger.kernel.org>, "linux-mm@kvack.org" <linux-mm@kvack.org>,
-	"bpf@vger.kernel.org" <bpf@vger.kernel.org>,
-	"linux-kselftest@vger.kernel.org" <linux-kselftest@vger.kernel.org>,
-	"kernel@xen0n.name" <kernel@xen0n.name>, "linux-riscv@lists.infradead.org"
-	<linux-riscv@lists.infradead.org>, "linux-s390@vger.kernel.org"
-	<linux-s390@vger.kernel.org>, "loongarch@lists.linux.dev"
-	<loongarch@lists.linux.dev>, "linux-pm@vger.kernel.org"
-	<linux-pm@vger.kernel.org>
-CC: "pbonzini@redhat.com" <pbonzini@redhat.com>, "corbet@lwn.net"
-	<corbet@lwn.net>, "maz@kernel.org" <maz@kernel.org>, "oupton@kernel.org"
-	<oupton@kernel.org>, "joey.gouly@arm.com" <joey.gouly@arm.com>,
-	"suzuki.poulose@arm.com" <suzuki.poulose@arm.com>, "yuzenghui@huawei.com"
-	<yuzenghui@huawei.com>, "catalin.marinas@arm.com" <catalin.marinas@arm.com>,
-	"will@kernel.org" <will@kernel.org>, "seanjc@google.com" <seanjc@google.com>,
-	"tglx@kernel.org" <tglx@kernel.org>, "mingo@redhat.com" <mingo@redhat.com>,
-	"bp@alien8.de" <bp@alien8.de>, "dave.hansen@linux.intel.com"
-	<dave.hansen@linux.intel.com>, "x86@kernel.org" <x86@kernel.org>,
-	"hpa@zytor.com" <hpa@zytor.com>, "luto@kernel.org" <luto@kernel.org>,
-	"peterz@infradead.org" <peterz@infradead.org>, "willy@infradead.org"
-	<willy@infradead.org>, "akpm@linux-foundation.org"
-	<akpm@linux-foundation.org>, "david@kernel.org" <david@kernel.org>,
-	"lorenzo.stoakes@oracle.com" <lorenzo.stoakes@oracle.com>,
-	"vbabka@kernel.org" <vbabka@kernel.org>, "rppt@kernel.org" <rppt@kernel.org>,
-	"surenb@google.com" <surenb@google.com>, "mhocko@suse.com" <mhocko@suse.com>,
-	"ast@kernel.org" <ast@kernel.org>, "daniel@iogearbox.net"
-	<daniel@iogearbox.net>, "andrii@kernel.org" <andrii@kernel.org>,
-	"martin.lau@linux.dev" <martin.lau@linux.dev>, "eddyz87@gmail.com"
-	<eddyz87@gmail.com>, "song@kernel.org" <song@kernel.org>,
-	"yonghong.song@linux.dev" <yonghong.song@linux.dev>,
-	"john.fastabend@gmail.com" <john.fastabend@gmail.com>, "kpsingh@kernel.org"
-	<kpsingh@kernel.org>, "sdf@fomichev.me" <sdf@fomichev.me>,
-	"haoluo@google.com" <haoluo@google.com>, "jolsa@kernel.org"
-	<jolsa@kernel.org>, "jgg@ziepe.ca" <jgg@ziepe.ca>, "jhubbard@nvidia.com"
-	<jhubbard@nvidia.com>, "peterx@redhat.com" <peterx@redhat.com>,
-	"jannh@google.com" <jannh@google.com>, "pfalcato@suse.de" <pfalcato@suse.de>,
-	"skhan@linuxfoundation.org" <skhan@linuxfoundation.org>, "riel@surriel.com"
-	<riel@surriel.com>, "ryan.roberts@arm.com" <ryan.roberts@arm.com>,
-	"jgross@suse.com" <jgross@suse.com>, "yu-cheng.yu@intel.com"
-	<yu-cheng.yu@intel.com>, "kas@kernel.org" <kas@kernel.org>, "coxu@redhat.com"
-	<coxu@redhat.com>, "kevin.brodsky@arm.com" <kevin.brodsky@arm.com>,
-	"ackerleytng@google.com" <ackerleytng@google.com>, "yosry@kernel.org"
-	<yosry@kernel.org>, "ajones@ventanamicro.com" <ajones@ventanamicro.com>,
-	"maobibo@loongson.cn" <maobibo@loongson.cn>, "tabba@google.com"
-	<tabba@google.com>, "prsampat@amd.com" <prsampat@amd.com>,
-	"wu.fei9@sanechips.com.cn" <wu.fei9@sanechips.com.cn>, "mlevitsk@redhat.com"
-	<mlevitsk@redhat.com>, "jmattson@google.com" <jmattson@google.com>,
-	"jthoughton@google.com" <jthoughton@google.com>, "agordeev@linux.ibm.com"
-	<agordeev@linux.ibm.com>, "alex@ghiti.fr" <alex@ghiti.fr>,
-	"aou@eecs.berkeley.edu" <aou@eecs.berkeley.edu>, "borntraeger@linux.ibm.com"
-	<borntraeger@linux.ibm.com>, "chenhuacai@kernel.org" <chenhuacai@kernel.org>,
-	"dev.jain@arm.com" <dev.jain@arm.com>, "gor@linux.ibm.com"
-	<gor@linux.ibm.com>, "hca@linux.ibm.com" <hca@linux.ibm.com>,
-	"palmer@dabbelt.com" <palmer@dabbelt.com>, "pjw@kernel.org" <pjw@kernel.org>,
-	"shijie@os.amperecomputing.com" <shijie@os.amperecomputing.com>,
-	"svens@linux.ibm.com" <svens@linux.ibm.com>, "thuth@redhat.com"
-	<thuth@redhat.com>, "wyihan@google.com" <wyihan@google.com>,
-	"yang@os.amperecomputing.com" <yang@os.amperecomputing.com>,
-	"Jonathan.Cameron@huawei.com" <Jonathan.Cameron@huawei.com>,
-	"Liam.Howlett@oracle.com" <Liam.Howlett@oracle.com>, "urezki@gmail.com"
-	<urezki@gmail.com>, "zhengqi.arch@bytedance.com"
-	<zhengqi.arch@bytedance.com>, "gerald.schaefer@linux.ibm.com"
-	<gerald.schaefer@linux.ibm.com>, "jiayuan.chen@shopee.com"
-	<jiayuan.chen@shopee.com>, "lenb@kernel.org" <lenb@kernel.org>,
-	"osalvador@suse.de" <osalvador@suse.de>, "pavel@kernel.org"
-	<pavel@kernel.org>, "rafael@kernel.org" <rafael@kernel.org>,
-	"vannapurve@google.com" <vannapurve@google.com>, "jackmanb@google.com"
-	<jackmanb@google.com>, "aneesh.kumar@kernel.org" <aneesh.kumar@kernel.org>,
-	"patrick.roy@linux.dev" <patrick.roy@linux.dev>, "Thomson, Jack"
-	<jackabt@amazon.co.uk>, "Itazuri, Takahiro" <itazur@amazon.co.uk>,
-	"Manwaring, Derek" <derekmn@amazon.com>, "Kalyazin, Nikita"
-	<kalyazin@amazon.co.uk>
-Subject: [PATCH v11 16/16] KVM: selftests: Test guest execution from direct
- map removed gmem
-Thread-Topic: [PATCH v11 16/16] KVM: selftests: Test guest execution from
- direct map removed gmem
-Thread-Index: AQHcthg/KCzYvBJTJ0yQSSHK2da0LQ==
-Date: Tue, 17 Mar 2026 14:13:37 +0000
-Message-ID: <20260317141031.514-17-kalyazin@amazon.com>
-References: <20260317141031.514-1-kalyazin@amazon.com>
-In-Reply-To: <20260317141031.514-1-kalyazin@amazon.com>
-Accept-Language: en-GB, en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+	dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="c+7kqts/"
+Received: from localhost (localhost.localdomain [127.0.0.1])
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id 7BF7740E0223;
+	Tue, 17 Mar 2026 14:26:41 +0000 (UTC)
+X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
+Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
+	header.d=alien8.de
+Received: from mail.alien8.de ([127.0.0.1])
+	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
+	with ESMTP id vraSQyI_RtED; Tue, 17 Mar 2026 14:26:37 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
+	t=1773757596; bh=+7TqwGaUPI0mDCNsaN/lVPSsy28cxzljEg0Em52BW84=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=c+7kqts/tbSrI166TbhJ2XzXL+JhUTxxzQC1RUD4bwJKhqJo/8wMqGlvD0AgVFDNq
+	 OzrMzSyzJFsW+0quEChItc5iopWvgMXyfIPVH9ZrvJc9f2ZG+YnGvakFu2hspWUr1K
+	 EMdjHOp5NgKxNEsaB/a13xmdCxeN3uQUhXiJyot5fUP0cbpyjJbjflxrP42MPPgRuV
+	 0pM5P1VNJPkCjBtIkB/Ah47iXO0m2zLZkXW/YOJmWc/MfIwhmTvYVpOydqi36yptNy
+	 dwl/r4qYmhU6LW0ESE6wOSPdE0XhSQ27r6QU+AAI3N524Lj+60IKCKn3tp+UyLbXMA
+	 vkk3LxOuJKXLXRmuZtlDBsLn2/IbYsJn7iE4xbJZLCYn8ESJPHXB19sxW7yPaMGAZR
+	 MWrlo6I49DneJxk1D0jbackxSZ+jvd8Lb5VT5odgHCY4XRqiHsy5/lqCxykqHd5rEy
+	 MF4w9PyNUOeJTyiC+5rIaSOkDP7FmkdCabyGG2bVoPyUZEG7nX1n3m+RLkqyIo6wt1
+	 KdotFrAqJ+csTIp93xE//xjFpADl/VA7AOGMWIqds88O/irrsvD6CGg0NG1RUqSyAa
+	 VoXgGr5u7lPlDXHYLeOHA7jm4ymo9M9l4x66/emwftZJ7Vbsu0wXO0CvXjH0Sm1WAh
+	 EppfQ0NUPlICW0arVEvKdCiQ=
+Received: from zn.tnic (p5de8e020.dip0.t-ipconnect.de [93.232.224.32])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
+	(No client certificate requested)
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with UTF8SMTPSA id 7777840E0222;
+	Tue, 17 Mar 2026 14:26:20 +0000 (UTC)
+Date: Tue, 17 Mar 2026 15:26:14 +0100
+From: Borislav Petkov <bp@alien8.de>
+To: "Nikunj A. Dadhania" <nikunj@amd.com>
+Cc: Dave Hansen <dave.hansen@intel.com>,
+	"Chang S. Bae" <chang.seok.bae@intel.com>,
+	Tom Lendacky <thomas.lendacky@amd.com>,
+	linux-kernel@vger.kernel.org, kvm@vger.kernel.org, tglx@kernel.org,
+	mingo@redhat.com, dave.hansen@linux.intel.com, hpa@zytor.com,
+	xin@zytor.com, seanjc@google.com, pbonzini@redhat.com,
+	x86@kernel.org, sohil.mehta@intel.com, jon.grimm@amd.com
+Subject: Re: [PATCH v2 1/2] x86/cpu: Disable CR pinning during CPU bringup
+Message-ID: <20260317142614.GBablkhuOGxFY7BRF5@fat_crate.local>
+References: <505a6bbd-3ecf-4de9-8fb9-0b21c3435a96@intel.com>
+ <9fa61b80-0e16-4a87-a0e7-3c3dfcda8f7e@amd.com>
+ <55a98b6d-e831-47a6-aa5a-8fe357334f67@intel.com>
+ <d0eba3fe-2938-4856-bd9b-0e13972e8313@amd.com>
+ <cb492a37-3517-4738-b435-73311402e820@intel.com>
+ <ddf407e9-359d-4d4e-827d-98f212589e9f@amd.com>
+ <ab5bf7bb-6511-49dc-a65d-86911e0f7091@intel.com>
+ <c13736a1-3151-476b-a91c-035383d2a29e@intel.com>
+ <541cddbb-22b3-4865-a374-49ba3ba48a5e@intel.com>
+ <2b33bf8e-5f19-46c7-b1eb-89fcf74d74f8@amd.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <2b33bf8e-5f19-46c7-b1eb-89fcf74d74f8@amd.com>
 
-From: Patrick Roy <patrick.roy@linux.dev>=0A=
-=0A=
-Add a selftest that loads itself into guest_memfd (via=0A=
-GUEST_MEMFD_FLAG_MMAP) and triggers an MMIO exit when executed. This=0A=
-exercises x86 MMIO emulation code inside KVM for guest_memfd-backed=0A=
-memslots where the guest_memfd folios are direct map removed.=0A=
-Particularly, it validates that x86 MMIO emulation code (guest page=0A=
-table walks + instruction fetch) correctly accesses gmem through the VMA=0A=
-that's been reflected into the memslot's userspace_addr field (instead=0A=
-of trying to do direct map accesses).=0A=
-=0A=
-Signed-off-by: Patrick Roy <patrick.roy@linux.dev>=0A=
-Signed-off-by: Nikita Kalyazin <kalyazin@amazon.com>=0A=
----=0A=
- .../selftests/kvm/set_memory_region_test.c    | 52 +++++++++++++++++--=0A=
- 1 file changed, 48 insertions(+), 4 deletions(-)=0A=
-=0A=
-diff --git a/tools/testing/selftests/kvm/set_memory_region_test.c b/tools/t=
-esting/selftests/kvm/set_memory_region_test.c=0A=
-index 7fe427ff9b38..cb445d420e8c 100644=0A=
---- a/tools/testing/selftests/kvm/set_memory_region_test.c=0A=
-+++ b/tools/testing/selftests/kvm/set_memory_region_test.c=0A=
-@@ -602,6 +602,41 @@ static void test_mmio_during_vectoring(void)=0A=
- =0A=
- 	kvm_vm_free(vm);=0A=
- }=0A=
-+=0A=
-+static void guest_code_trigger_mmio(void)=0A=
-+{=0A=
-+	/*=0A=
-+	 * Read some GPA that is not backed by a memslot. KVM consider this=0A=
-+	 * as MMIO and tell userspace to emulate the read.=0A=
-+	 */=0A=
-+	READ_ONCE(*((uint64_t *)MEM_REGION_GPA));=0A=
-+=0A=
-+	GUEST_DONE();=0A=
-+}=0A=
-+=0A=
-+static void test_guest_memfd_mmio(void)=0A=
-+{=0A=
-+	struct kvm_vm *vm;=0A=
-+	struct kvm_vcpu *vcpu;=0A=
-+	struct vm_shape shape =3D {=0A=
-+		.mode =3D VM_MODE_DEFAULT,=0A=
-+		.src_type =3D VM_MEM_SRC_GUEST_MEMFD_NO_DIRECT_MAP,=0A=
-+	};=0A=
-+	pthread_t vcpu_thread;=0A=
-+=0A=
-+	pr_info("Testing MMIO emulation for instructions in gmem\n");=0A=
-+=0A=
-+	vm =3D __vm_create_shape_with_one_vcpu(shape, &vcpu, 0, guest_code_trigge=
-r_mmio);=0A=
-+=0A=
-+	virt_map(vm, MEM_REGION_GPA, MEM_REGION_GPA, 1);=0A=
-+=0A=
-+	pthread_create(&vcpu_thread, NULL, vcpu_worker, vcpu);=0A=
-+=0A=
-+	/* If the MMIO read was successfully emulated, the vcpu thread will exit =
-*/=0A=
-+	pthread_join(vcpu_thread, NULL);=0A=
-+=0A=
-+	kvm_vm_free(vm);=0A=
-+}=0A=
- #endif=0A=
- =0A=
- int main(int argc, char *argv[])=0A=
-@@ -625,10 +660,19 @@ int main(int argc, char *argv[])=0A=
- 	test_add_max_memory_regions();=0A=
- =0A=
- #ifdef __x86_64__=0A=
--	if (kvm_has_cap(KVM_CAP_GUEST_MEMFD) &&=0A=
--	    (kvm_check_cap(KVM_CAP_VM_TYPES) & BIT(KVM_X86_SW_PROTECTED_VM))) {=
-=0A=
--		test_add_private_memory_region();=0A=
--		test_add_overlapping_private_memory_regions();=0A=
-+	if (kvm_has_cap(KVM_CAP_GUEST_MEMFD)) {=0A=
-+		uint64_t valid_flags =3D kvm_check_cap(KVM_CAP_GUEST_MEMFD_FLAGS);=0A=
-+=0A=
-+		if (kvm_check_cap(KVM_CAP_VM_TYPES) & BIT(KVM_X86_SW_PROTECTED_VM)) {=0A=
-+			test_add_private_memory_region();=0A=
-+			test_add_overlapping_private_memory_regions();=0A=
-+		}=0A=
-+=0A=
-+		if ((valid_flags & GUEST_MEMFD_FLAG_MMAP) &&=0A=
-+		    (valid_flags & GUEST_MEMFD_FLAG_NO_DIRECT_MAP))=0A=
-+			test_guest_memfd_mmio();=0A=
-+		else=0A=
-+			pr_info("Skipping tests requiring GUEST_MEMFD_FLAG_MMAP | GUEST_MEMFD_F=
-LAG_NO_DIRECT_MAP");=0A=
- 	} else {=0A=
- 		pr_info("Skipping tests for KVM_MEM_GUEST_MEMFD memory regions\n");=0A=
- 	}=0A=
--- =0A=
-2.50.1=0A=
-=0A=
+On Tue, Mar 17, 2026 at 09:42:58AM +0530, Nikunj A. Dadhania wrote:
+> 
+> 
+> On 3/17/2026 3:13 AM, Dave Hansen wrote: 
+> > Either we change how alternatives patching works, we use some other
+> > exception code, or we try and get CR4.FSGSBASE established as early as
+> > possible on the secondaries.
+> 
+> Right, I moved FSGSBASE enablement to cpu_init_exception_handling() to 
+> establish it early:
+> 
+> https://lore.kernel.org/all/1439b4f4-ff0c-4b6a-ac86-5c0da2d26cf5@amd.com
+
+So this thing does the following here.
+
+CPU0 goes first, the APs follow.
+
+I think that should be good as a stable fix, unless I'm missing something.
+
+We can then do our rework ontop of unifying the CR4 init and pinning but that
+will be future work which doesn't need stable anyway...
+
+[    0.132839] cpu_init_exception_handling: CPU0: Set X86_CR4_FSGSBASE
+[    0.240204] cr4_init: CPU2, CR4: 0x3100f0
+[    0.240204] cpu_init_exception_handling: CPU2: Set X86_CR4_FSGSBASE
+[    0.240204] cr4_init: CPU4, CR4: 0x3100f0
+[    0.240204] cpu_init_exception_handling: CPU4: Set X86_CR4_FSGSBASE
+[    0.240204] cr4_init: CPU6, CR4: 0x3100f0
+[    0.240204] cr4_init: CPU8, CR4: 0x3100f0
+[    0.240204] cpu_init_exception_handling: CPU8: Set X86_CR4_FSGSBASE
+[    0.240204] cr4_init: CPU10, CR4: 0x3100f0
+[    0.240204] cpu_init_exception_handling: CPU10: Set X86_CR4_FSGSBASE
+[    0.240204] cr4_init: CPU12, CR4: 0x3100f0
+[    0.240204] cpu_init_exception_handling: CPU12: Set X86_CR4_FSGSBASE
+[    0.240204] cr4_init: CPU14, CR4: 0x3100f0
+[    0.240204] cpu_init_exception_handling: CPU14: Set X86_CR4_FSGSBASE
+[    0.240204] cpu_init_exception_handling: CPU6: Set X86_CR4_FSGSBASE
+[    0.240204] cr4_init: CPU1, CR4: 0x3100f0
+[    0.240204] cpu_init_exception_handling: CPU1: Set X86_CR4_FSGSBASE
+[    0.240204] cr4_init: CPU3, CR4: 0x3100f0
+[    0.240204] cpu_init_exception_handling: CPU3: Set X86_CR4_FSGSBASE
+[    0.240204] cr4_init: CPU5, CR4: 0x3100f0
+[    0.240204] cr4_init: CPU7, CR4: 0x3100f0
+[    0.240204] cpu_init_exception_handling: CPU7: Set X86_CR4_FSGSBASE
+[    0.240204] cr4_init: CPU9, CR4: 0x3100f0
+[    0.240204] cpu_init_exception_handling: CPU9: Set X86_CR4_FSGSBASE
+[    0.240204] cr4_init: CPU11, CR4: 0x3100f0
+[    0.240204] cpu_init_exception_handling: CPU11: Set X86_CR4_FSGSBASE
+[    0.240204] cr4_init: CPU13, CR4: 0x3100f0
+[    0.240204] cpu_init_exception_handling: CPU13: Set X86_CR4_FSGSBASE
+[    0.240204] cr4_init: CPU15, CR4: 0x3100f0
+[    0.240204] cpu_init_exception_handling: CPU5: Set X86_CR4_FSGSBASE
+[    0.240204] cpu_init_exception_handling: CPU15: Set X86_CR4_FSGSBASE
+
+-- 
+Regards/Gruss,
+    Boris.
+
+https://people.kernel.org/tglx/notes-about-netiquette
