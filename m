@@ -1,251 +1,169 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 802B537EFE9;
-	Tue, 17 Mar 2026 18:05:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8CEB63AB273;
+	Tue, 17 Mar 2026 18:44:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773770744; cv=none; b=Bb1FCKFJU25qFIM7baz4K0sIvTnvPloL4eSRIMRajmgNXG1pREiNOGpk6TDIeG9BYysh9yKX4sC0e/gdTOht9FrZueiRRoHeioVa4IAUvG4RxmkQ2uXQHg8bOXb5jGDUqsrb58GZgY5IB8zlTa88tpRY6DgMlldzWDV4SsPNSQc=
+	t=1773773050; cv=none; b=HwwspDQaCvctgSusR8rr6oVYZTgASFcopaWLSh9X7HcOx1AZDjDbW58+ueAUfA1lmCsRT3W9JbHRMxhBJL88NtPE98015s02ZNXZyT6sdMc4iYij6DWdlh2BI8wlDn94XFG91goo1R3GpyCfy3WmTk3GIdY8hz6kgynhs5v5qcI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773770744; c=relaxed/simple;
-	bh=ESmVPCa9igCBCv1hcJ5QEA7fejdWLwcrCD3qXAO15o8=;
-	h=Date:Message-ID:From:To:Cc:Subject:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=D24CPp0XIGw09l2ehwRbt1Ie5H8QY5b72okUuabhIvFqOIII3TMSadigU226mbBjqZ+XVJdCketn8MAXJbOP3y9fNSMPq1/JySSzyntn5GviDFF5pWv/5kp2CYF9snFoCY+7sVDrxbpMxLO3mzGGiEzDpmkgJEseBoOVjb7nQeU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QJCgPO37; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1773773050; c=relaxed/simple;
+	bh=yDYSTByf7Z1g7UFORat5zgI3Mb31ixncksNPyoVYJzM=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=UAKSRAStXr/gOKZtis/Qap03cStXMPRRqIA2J7G+pPQmauijdPBoFkezNlMuMLATtKjW/x3WxVO9N4u1/IZlGvTbBZIg+XLhBgkhnXFIbQBWdluwKFJ+ujCc1Se1hyCW/xkND4SFVp/DyycXToCSmm3NddKjXgYajgtGDaubC58=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=tXtemIJ1; arc=none smtp.client-ip=148.163.158.5
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QJCgPO37"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0921EC4CEF7;
-	Tue, 17 Mar 2026 18:05:44 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773770744;
-	bh=ESmVPCa9igCBCv1hcJ5QEA7fejdWLwcrCD3qXAO15o8=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=QJCgPO37xtZtU0y3XW18rX/Cmsmwx4/gto75ctS4CHkACMaj6lGUG6OJHCe6k/542
-	 DLVq1TnOwg6bGZyAVOndcwHrocPF3bdlSNNaaKXivwDVaJTGFIA9My8OjaHnc9D9mo
-	 b6MA/vxH65raRpZccY4KiN3Nd1D4IHF2bjugmW4Kyw9hpHrLmOSOgq8J/BBP6VzqUu
-	 xHN6lAuMRmO6c1yK5s0pNxDXQ8peEeRrU+iL5J0xW8l1TYqB5XhyFEhO1D8qxZaXdg
-	 XE+zX+P1trck0GEpEcpjchOCwfZxp2g8O98ZNhMmnCpGI9kkV6BB7vCmav7pbzxZC+
-	 S8xuoncNvQYLw==
-Received: from sofa.misterjones.org ([185.219.108.64] helo=goblin-girl.misterjones.org)
-	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.98.2)
-	(envelope-from <maz@kernel.org>)
-	id 1w2YnT-00000002xnV-3WJV;
-	Tue, 17 Mar 2026 18:05:39 +0000
-Date: Tue, 17 Mar 2026 18:05:39 +0000
-Message-ID: <86ecli5o24.wl-maz@kernel.org>
-From: Marc Zyngier <maz@kernel.org>
-To: Sascha Bischoff <Sascha.Bischoff@arm.com>
-Cc: "linux-arm-kernel@lists.infradead.org"
-	<linux-arm-kernel@lists.infradead.org>,
-	"kvmarm@lists.linux.dev"
-	<kvmarm@lists.linux.dev>,
-	"kvm@vger.kernel.org" <kvm@vger.kernel.org>,
-	nd <nd@arm.com>,
-	"oliver.upton@linux.dev" <oliver.upton@linux.dev>,
-	Joey Gouly
-	<Joey.Gouly@arm.com>,
-	Suzuki Poulose <Suzuki.Poulose@arm.com>,
-	"yuzenghui@huawei.com" <yuzenghui@huawei.com>,
-	"peter.maydell@linaro.org"
-	<peter.maydell@linaro.org>,
-	"lpieralisi@kernel.org" <lpieralisi@kernel.org>,
-	Timothy Hayes <Timothy.Hayes@arm.com>,
-	"jonathan.cameron@huawei.com"
-	<jonathan.cameron@huawei.com>
-Subject: Re: [PATCH v6 29/39] KVM: arm64: gic-v5: Enlighten arch timer for GICv5
-In-Reply-To: <20260317113949.2548118-30-sascha.bischoff@arm.com>
-References: <20260317113949.2548118-1-sascha.bischoff@arm.com>
-	<20260317113949.2548118-30-sascha.bischoff@arm.com>
-User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
- FLIM-LB/1.14.9 (=?UTF-8?B?R29qxY0=?=) APEL-LB/10.8 EasyPG/1.0.0 Emacs/30.1
- (aarch64-unknown-linux-gnu) MULE/6.0 (HANACHIRUSATO)
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="tXtemIJ1"
+Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 62H8GYUJ967663;
+	Tue, 17 Mar 2026 18:44:04 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=xkyBIE
+	bZBT5QNshO/7aW8Q8QYRH5BFpUDVMWdTScJsE=; b=tXtemIJ1ssN9Ayp0JRZaYR
+	WKf+om84xZ+9+IaW9bfDo0XGRDIVaYJKTp1ZCSpxTjV9El66YKPX94N4d6q7k5y8
+	nAKsqcbGDND+y8yAOjGf/cJlbaik/GHP1a3JrWTl8t88F+l0E8BPSZYu6DWJBuX+
+	E3+xOtI1/W9LlMoUf1tMU5ZeraRRxj+baLtxYoLESZx01VYOFifriSg/agWpWLGi
+	KB7LSH7WGmuVrhamIZLifjAA7dBMM/N72jmjkpo5v4Mk2+GQnYk1pbeoZX4yixBT
+	jb20tZrqslKWZepESCqHrQvEJQ18qSRUmBCBk408IwbbQ2PiLwEpM1YgOrjjI0qA
+	==
+Received: from ppma21.wdc07v.mail.ibm.com (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4cvx3cwubu-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 17 Mar 2026 18:44:04 +0000 (GMT)
+Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma21.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 62HF7jgQ015746;
+	Tue, 17 Mar 2026 18:44:03 GMT
+Received: from smtprelay01.wdc07v.mail.ibm.com ([172.16.1.68])
+	by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4cwk0nah3r-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 17 Mar 2026 18:44:03 +0000
+Received: from smtpav04.wdc07v.mail.ibm.com (smtpav04.wdc07v.mail.ibm.com [10.39.53.231])
+	by smtprelay01.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 62HIi2Lt3539884
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Tue, 17 Mar 2026 18:44:02 GMT
+Received: from smtpav04.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 271FE58054;
+	Tue, 17 Mar 2026 18:44:02 +0000 (GMT)
+Received: from smtpav04.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 2814058045;
+	Tue, 17 Mar 2026 18:44:00 +0000 (GMT)
+Received: from [9.61.251.215] (unknown [9.61.251.215])
+	by smtpav04.wdc07v.mail.ibm.com (Postfix) with ESMTP;
+	Tue, 17 Mar 2026 18:44:00 +0000 (GMT)
+Message-ID: <de08911a-8bcc-4983-9ad2-b20467ebbb7f@linux.ibm.com>
+Date: Tue, 17 Mar 2026 11:43:59 -0700
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
-Content-Type: text/plain; charset=US-ASCII
-X-SA-Exim-Connect-IP: 185.219.108.64
-X-SA-Exim-Rcpt-To: Sascha.Bischoff@arm.com, linux-arm-kernel@lists.infradead.org, kvmarm@lists.linux.dev, kvm@vger.kernel.org, nd@arm.com, oliver.upton@linux.dev, Joey.Gouly@arm.com, Suzuki.Poulose@arm.com, yuzenghui@huawei.com, peter.maydell@linaro.org, lpieralisi@kernel.org, Timothy.Hayes@arm.com, jonathan.cameron@huawei.com
-X-SA-Exim-Mail-From: maz@kernel.org
-X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v5 2/3] vfio/ism: Implement vfio_pci driver for ISM
+ devices
+To: Julian Ruess <julianr@linux.ibm.com>, schnelle@linux.ibm.com,
+        wintera@linux.ibm.com, ts@linux.ibm.com, oberpar@linux.ibm.com,
+        gbayer@linux.ibm.com, Alex Williamson <alex@shazbot.org>,
+        Jason Gunthorpe <jgg@ziepe.ca>, Yishai Hadas <yishaih@nvidia.com>,
+        Shameer Kolothum <skolothumtho@nvidia.com>,
+        Kevin Tian <kevin.tian@intel.com>
+Cc: mjrosato@linux.ibm.com, raspl@linux.ibm.com, hca@linux.ibm.com,
+        agordeev@linux.ibm.com, gor@linux.ibm.com, kvm@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-s390@vger.kernel.org,
+        linux-pci@vger.kernel.org
+References: <20260317-vfio_pci_ism-v5-0-b73248b4e576@linux.ibm.com>
+ <20260317-vfio_pci_ism-v5-2-b73248b4e576@linux.ibm.com>
+Content-Language: en-US
+From: Farhan Ali <alifm@linux.ibm.com>
+In-Reply-To: <20260317-vfio_pci_ism-v5-2-b73248b4e576@linux.ibm.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Authority-Analysis: v=2.4 cv=arO/yCZV c=1 sm=1 tr=0 ts=69b9a0f4 cx=c_pps
+ a=GFwsV6G8L6GxiO2Y/PsHdQ==:117 a=GFwsV6G8L6GxiO2Y/PsHdQ==:17
+ a=IkcTkHD0fZMA:10 a=Yq5XynenixoA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=RnoormkPH1_aCDwRdu11:22 a=V8glGbnc2Ofi9Qvn3v5h:22 a=rwOevmhlYjJUsVWJuvMA:9
+ a=QEXdDO2ut3YA:10
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMzE3MDE2NSBTYWx0ZWRfX3w4qjyw3UAG+
+ VW/lewhlLSOeGXyZ6/WrJmzMOWj5WxS0+Np3/LwNsfm8rLL4u96saEil8a4iB4kO/e5uK35lmkY
+ 6q4E6QDjav3mtTtIzDWUH4duNfbd+duU4HBWKyMGd9E0qETv4lCw5TGFnyNNl5eKq9YJE9ypquy
+ XrMFQRsg3CjEoZy3Ibh1bqYbQW/n8D2fwX/1vhslZJzV1RQ7CTmW9dZp/xiEeEywO4scl2cKN/G
+ /UUiCtPU5mWfmD/8W1Ntg3xu4FzRpMtKcDKAvz7rCGFsVw6aVki22nd9lH+nvbJaxwA9EtkmbV1
+ khU3W0UvU07rWpHCBeHsrWfUcY5NueRnpWrZwCVx2nfH2TxufZ8vX1tfQ2HHNzFb2Gv6rLrHqiS
+ YTXIniBseHTy3clpc5vECBuTY5kmAIRPxVtNf1z7UgCtC+VU1/LbsKnTCG4uNUF5HOs6wMhtkJW
+ TFpsXsswvt+Njn9KE4w==
+X-Proofpoint-GUID: WzQZGFPoUx8-RknGgY_659nyqAenE0tV
+X-Proofpoint-ORIG-GUID: WzQZGFPoUx8-RknGgY_659nyqAenE0tV
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
+ definitions=2026-03-17_04,2026-03-17_02,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ priorityscore=1501 spamscore=0 lowpriorityscore=0 impostorscore=0
+ adultscore=0 bulkscore=0 suspectscore=0 malwarescore=0 clxscore=1015
+ phishscore=0 classifier=typeunknown authscore=0 authtc= authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2603050001
+ definitions=main-2603170165
 
-On Tue, 17 Mar 2026 11:47:29 +0000,
-Sascha Bischoff <Sascha.Bischoff@arm.com> wrote:
-> 
-> Now that GICv5 has arrived, the arch timer requires some TLC to
-> address some of the key differences introduced with GICv5.
-> 
-> For PPIs on GICv5, the queue_irq_unlock irq_op is used as AP lists are
-> not required at all for GICv5. The arch timer also introduces an
-> irq_op - get_input_level. Extend the arch-timer-provided irq_ops to
-> include the PPI op for vgic_v5 guests.
-> 
-> When possible, DVI (Direct Virtual Interrupt) is set for PPIs when
-> using a vgic_v5, which directly inject the pending state into the
-> guest. This means that the host never sees the interrupt for the guest
-> for these interrupts. This has three impacts.
-> 
-> * First of all, the kvm_cpu_has_pending_timer check is updated to
->   explicitly check if the timers are expected to fire.
-> 
-> * Secondly, for mapped timers (which use DVI) they must be masked on
->   the host prior to entering a GICv5 guest, and unmasked on the return
->   path. This is handled in set_timer_irq_phys_masked.
-> 
-> * Thirdly, it makes zero sense to attempt to inject state for a DVI'd
->   interrupt. Track which timers are direct, and skip the call to
->   kvm_vgic_inject_irq() for these.
-> 
-> The final, but rather important, change is that the architected PPIs
-> for the timers are made mandatory for a GICv5 guest. Attempts to set
-> them to anything else are actively rejected. Once a vgic_v5 is
-> initialised, the arch timer PPIs are also explicitly reinitialised to
-> ensure the correct GICv5-compatible PPIs are used - this also adds in
-> the GICv5 PPI type to the intid.
-> 
-> Signed-off-by: Sascha Bischoff <sascha.bischoff@arm.com>
-> Reviewed-by: Jonathan Cameron <jonathan.cameron@huawei.com>
-> ---
->  arch/arm64/kvm/arch_timer.c     | 110 ++++++++++++++++++++++++++------
->  arch/arm64/kvm/vgic/vgic-init.c |   9 +++
->  arch/arm64/kvm/vgic/vgic-v5.c   |   7 +-
->  include/kvm/arm_arch_timer.h    |  11 +++-
->  include/kvm/arm_vgic.h          |   3 +
->  5 files changed, 115 insertions(+), 25 deletions(-)
-> 
-> diff --git a/arch/arm64/kvm/arch_timer.c b/arch/arm64/kvm/arch_timer.c
-> index 53312b88c342d..4575c36cae537 100644
-> --- a/arch/arm64/kvm/arch_timer.c
-> +++ b/arch/arm64/kvm/arch_timer.c
-> @@ -56,6 +56,12 @@ static struct irq_ops arch_timer_irq_ops = {
->  	.get_input_level = kvm_arch_timer_get_input_level,
->  };
->  
-> +static struct irq_ops arch_timer_irq_ops_vgic_v5 = {
-> +	.get_input_level = kvm_arch_timer_get_input_level,
-> +	.queue_irq_unlock = vgic_v5_ppi_queue_irq_unlock,
-> +	.set_direct_injection = vgic_v5_set_ppi_dvi,
-> +};
-> +
->  static int nr_timers(struct kvm_vcpu *vcpu)
->  {
->  	if (!vcpu_has_nv(vcpu))
-> @@ -177,6 +183,10 @@ void get_timer_map(struct kvm_vcpu *vcpu, struct timer_map *map)
->  		map->emul_ptimer = vcpu_ptimer(vcpu);
->  	}
->  
-> +	map->direct_vtimer->direct = true;
-> +	if (map->direct_ptimer)
-> +		map->direct_ptimer->direct = true;
-> +
->  	trace_kvm_get_timer_map(vcpu->vcpu_id, map);
->  }
->  
-> @@ -396,7 +406,11 @@ static bool kvm_timer_should_fire(struct arch_timer_context *timer_ctx)
->  
->  int kvm_cpu_has_pending_timer(struct kvm_vcpu *vcpu)
->  {
-> -	return vcpu_has_wfit_active(vcpu) && wfit_delay_ns(vcpu) == 0;
-> +	struct arch_timer_context *vtimer = vcpu_vtimer(vcpu);
-> +	struct arch_timer_context *ptimer = vcpu_ptimer(vcpu);
-> +
-> +	return kvm_timer_should_fire(vtimer) || kvm_timer_should_fire(ptimer) ||
-> +	       (vcpu_has_wfit_active(vcpu) && wfit_delay_ns(vcpu) == 0);
->  }
->  
->  /*
-> @@ -447,6 +461,10 @@ static void kvm_timer_update_irq(struct kvm_vcpu *vcpu, bool new_level,
->  	if (userspace_irqchip(vcpu->kvm))
->  		return;
->  
-> +	/* Skip injecting on GICv5 for directly injected (DVI'd) timers */
-> +	if (vgic_is_v5(vcpu->kvm) && timer_ctx->direct)
-> +		return;
-> +
->  	kvm_vgic_inject_irq(vcpu->kvm, vcpu,
->  			    timer_irq(timer_ctx),
->  			    timer_ctx->irq.level,
-> @@ -657,6 +675,24 @@ static inline void set_timer_irq_phys_active(struct arch_timer_context *ctx, boo
->  	WARN_ON(r);
->  }
->  
-> +/*
-> + * On GICv5 we use DVI for the arch timer PPIs. This is restored later
-> + * on as part of vgic_load. Therefore, in order to avoid the guest's
-> + * interrupt making it to the host we mask it before entering the
-> + * guest and unmask it again when we return.
-> + */
-> +static inline void set_timer_irq_phys_masked(struct arch_timer_context *ctx, bool masked)
+<..snip..>
+
+On 3/17/2026 5:58 AM, Julian Ruess wrote:
+> static int ism_vfio_pci_probe(struct pci_dev *pdev,
+> +			      const struct pci_device_id *id)
 > +{
-> +	if (masked) {
-> +		disable_percpu_irq(ctx->host_timer_irq);
-> +	} else {
-> +		if (ctx->host_timer_irq == host_vtimer_irq)
-> +			enable_percpu_irq(ctx->host_timer_irq, host_vtimer_irq_flags);
-> +		else
-> +			enable_percpu_irq(ctx->host_timer_irq, host_ptimer_irq_flags);
+> +	struct ism_vfio_pci_core_device *ivpcd;
+> +	struct zpci_dev *zdev = to_zpci(pdev);
+> +	char cache_name[20];
+> +	int ret;
+> +
+> +	ivpcd = vfio_alloc_device(ism_vfio_pci_core_device, core_device.vdev,
+> +				  &pdev->dev, &ism_pci_ops);
+> +	if (IS_ERR(ivpcd))
+> +		return PTR_ERR(ivpcd);
+> +
+> +	snprintf(cache_name, sizeof(cache_name), "ism_sb_fid_%08x", zdev->fid);
+> +	ivpcd->store_block_cache =
+> +		kmem_cache_create(cache_name, zdev->maxstbl, 0, 0, NULL);
+> +	if (!ivpcd->store_block_cache) {
+> +		vfio_put_device(&ivpcd->core_device.vdev);
+> +		return -ENOMEM;
 > +	}
+> +
+> +	dev_set_drvdata(&pdev->dev, &ivpcd->core_device);
+> +	ret = vfio_pci_core_register_device(&ivpcd->core_device);
+> +	if (ret) {
+> +		kmem_cache_destroy(ivpcd->store_block_cache);
+> +		vfio_put_device(&ivpcd->core_device.vdev);
+> +	}
+> +
+> +	return ret;
 > +}
+> +
+> +static void ism_vfio_pci_remove(struct pci_dev *pdev)
+> +{
+> +	struct vfio_pci_core_device *core_device;
+> +	struct ism_vfio_pci_core_device *ivpcd;
+> +
+> +	core_device = dev_get_drvdata(&pdev->dev);
+> +	ivpcd = container_of(core_device, struct ism_vfio_pci_core_device,
+> +			     core_device);
+> +
+> +	vfio_pci_core_unregister_device(&ivpcd->core_device);
+> +	vfio_put_device(&ivpcd->core_device.vdev);
+> +
+> +	kmem_cache_destroy(ivpcd->store_block_cache);
 
-I think this is missing a trick, which is to reuse the mask/unmask
-infrastructure we use for the fruity crap. How about this following
-untested hack?
+I think the kmem_cache_destroy() should be done before we do 
+vfio_put_device() (or maybe even before 
+vfio_pci_core_unregister_device()) to avoid use after free similar to 
+ism_vfio_pci_probe(). Sorry I missed this earlier.
 
-diff --git a/arch/arm64/kvm/arch_timer.c b/arch/arm64/kvm/arch_timer.c
-index 600f250753b45..b29bea800e2ab 100644
---- a/arch/arm64/kvm/arch_timer.c
-+++ b/arch/arm64/kvm/arch_timer.c
-@@ -660,7 +660,7 @@ static inline void set_timer_irq_phys_active(struct arch_timer_context *ctx, boo
- static void kvm_timer_vcpu_load_gic(struct arch_timer_context *ctx)
- {
- 	struct kvm_vcpu *vcpu = timer_context_to_vcpu(ctx);
--	bool phys_active = false;
-+	bool phys_active = vgic_is_v5(vcpu->kvm);
- 
- 	/*
- 	 * Update the timer output so that it is likely to match the
-@@ -934,6 +934,12 @@ void kvm_timer_vcpu_put(struct kvm_vcpu *vcpu)
- 
- 	if (kvm_vcpu_is_blocking(vcpu))
- 		kvm_timer_blocking(vcpu);
-+
-+	if (vgic_is_v5(vcpu)) {
-+		set_timer_irq_phys_active(map.direct_vtimer, false);
-+		if (map.direct_ptimer)
-+			set_timer_irq_phys_active(map.direct_ptimer, false);
-+	}
- }
- 
- void kvm_timer_sync_nested(struct kvm_vcpu *vcpu)
-@@ -1333,7 +1339,8 @@ static int kvm_irq_init(struct arch_timer_kvm_info *info)
- 	host_vtimer_irq = info->virtual_irq;
- 	kvm_irq_fixup_flags(host_vtimer_irq, &host_vtimer_irq_flags);
- 
--	if (kvm_vgic_global_state.no_hw_deactivation) {
-+	if (kvm_vgic_global_state.no_hw_deactivation ||
-+	    kvm_vgic_global_state.type == VGIC_V5) {
- 		struct fwnode_handle *fwnode;
- 		struct irq_data *data;
- 
-@@ -1351,7 +1358,8 @@ static int kvm_irq_init(struct arch_timer_kvm_info *info)
- 			return -ENOMEM;
- 		}
- 
--		arch_timer_irq_ops.flags |= VGIC_IRQ_SW_RESAMPLE;
-+		if (kvm_vgic_global_state.no_hw_deactivation)
-+			arch_timer_irq_ops.flags |= VGIC_IRQ_SW_RESAMPLE;
- 		WARN_ON(irq_domain_push_irq(domain, host_vtimer_irq,
- 					    (void *)TIMER_VTIMER));
- 	}
+Thanks
 
-which should avoid adding some new masking stuff.
+Farhan
 
-Thanks,
 
-	M.
 
--- 
-Without deviation from the norm, progress is not possible.
+> +}
