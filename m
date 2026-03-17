@@ -1,64 +1,163 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4671A313E15;
-	Tue, 17 Mar 2026 16:32:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73DDE3E6DEE;
+	Tue, 17 Mar 2026 16:42:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773765177; cv=none; b=etH6y4f7pL0MxUOynn31wH+usUzul92Ow/SwH1BZMEDkoxHI23IMdgNeT4cvse1kBSh9tU9FIzcaRKZQZ82mvuG8QlWLPxNIkOdxCM+O82tw6G1WFzqAI3f8SIxyVdMRlKzQcXxgkq6N0JwNvME2XSjHwQmIPn21bH1AqEbbSdE=
+	t=1773765755; cv=none; b=qU3mME67iaR9Uxf2gjAjez1+FQ3XWQL19A/VQhuKC4ZqfVZ4FezDpPh6s/tNLbAnvoNGF56lRTM2vQtwgafnX9iAz3mCP62h3M83IXTpFWCBLEeNSCr53HjQMugtrlmY3FcaUZHsM7F2WlZFFWZgBw4/ZuKpfsOLGMRbjUXXCqk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773765177; c=relaxed/simple;
-	bh=KBHCdlMIeOd3erUPbLY1mDzjr09dpwVfTy8zQ1wa38o=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=kX0tBVltYtWRo8eKgRL3Nl6Ls6AyiKB5P6WxPaDREl8NtehROTYPzj9ls8iEqnFs0ntL4sW2F5WyCj/gAyqix92aSn0xWLPHsbJj34llG7F1BQdGDd+2EgULRWpDvW1QWgNpzK1aLNKtsoXbToZYKILOMsXofjufeykzcuHdHYc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=reject dis=none) header.from=intel.corp-partner.google.com; spf=fail smtp.mailfrom=intel.corp-partner.google.com; arc=none smtp.client-ip=192.198.163.18
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=reject dis=none) header.from=intel.corp-partner.google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=intel.corp-partner.google.com
-X-CSE-ConnectionGUID: QxwCwJH8SFWahRTTllCcLw==
-X-CSE-MsgGUID: 1p3Q/dR7RtuZGmq08/Niaw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11732"; a="73981801"
-X-IronPort-AV: E=Sophos;i="6.23,126,1770624000"; 
-   d="scan'208";a="73981801"
-Received: from orviesa010.jf.intel.com ([10.64.159.150])
-  by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Mar 2026 09:32:55 -0700
-X-CSE-ConnectionGUID: d/KcW0f8RuewJwX2r2XDyA==
-X-CSE-MsgGUID: vOWywuMdTiyzaDVdvgnUZQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,126,1770624000"; 
-   d="scan'208";a="221549933"
-Received: from intel-fishhawkfalls.iind.intel.com ([10.99.116.107])
-  by orviesa010-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Mar 2026 09:32:54 -0700
-From: Sonam Sanju <sonam.sanju@intel.corp-partner.google.com>
-To: sonam.sanju@intel.com
-Cc: seanjc@google.com,
-	pbonzini@redhat.com,
-	linux-kernel@vger.kernel.org,
-	kvm@vger.kernel.org
-Subject: Re: [PATCH] KVM: irqfd: fix shutdown deadlock by moving SRCU sync outside resampler_lock
-Date: Tue, 17 Mar 2026 21:57:54 +0530
-Message-Id: <20260317162754.3231300-1-sonam.sanju@intel.corp-partner.google.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20260316072026.908893-1-sonam.sanju@intel.com>
-References: <20260316072026.908893-1-sonam.sanju@intel.com>
+	s=arc-20240116; t=1773765755; c=relaxed/simple;
+	bh=4x+SUB7RnGfi/LSfJmoWTDH7Eoq0uMpUCleOwVf4ExU=;
+	h=Date:Message-ID:From:To:Cc:Subject:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=LqzXl/lr3ymqFNhrRl/NOKYZn2hplMfiw0LXOjHAHDewG8d2tHLT75dvx0CKkIAms63PcH/11xMYA9egO2LTyUHbcNe5y/NyDqiKOIDtKbzI8nmm6ejQXp9nx1oJ51DiIUW9+UpiyXD3Ff21iClHIBvxS64pfujXupsawVVhjK0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=OfwIua9Q; arc=none smtp.client-ip=10.30.226.201
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OfwIua9Q"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3BEAEC2BC86;
+	Tue, 17 Mar 2026 16:42:35 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1773765755;
+	bh=4x+SUB7RnGfi/LSfJmoWTDH7Eoq0uMpUCleOwVf4ExU=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=OfwIua9QstMlgDUMV8+XypkhDNNX48tVir7FIyfdUMeU23jSrFEEEJ6KezQothxip
+	 HcVyLUcIUGSzYToEALLvdeLp7T1yMIhjEzaUlDX1zYgpriAV+KJM7/wwbOdYwOfrjd
+	 8NYeGd/hy15GQs0qwaYy+ocfxrXFK9LdiDJ+Q7Wr7JFdq6NVfBjK668PabhGbxh8Az
+	 tnKGfHwRmh7QKwIj4qBrkOqfEBtA+hnkIu+FVcCQV1IjdhU7RLv8zF3+NzecTxG6vT
+	 CGs36hi3T7PsvhAmwYBDKrp/X/hk7os6mKOybBXyU0v3K6LV1QMp/JR5To93yLv4vD
+	 Vf1bPtEPm0a1w==
+Received: from sofa.misterjones.org ([185.219.108.64] helo=goblin-girl.misterjones.org)
+	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.98.2)
+	(envelope-from <maz@kernel.org>)
+	id 1w2XV3-00000002vtQ-01ZR;
+	Tue, 17 Mar 2026 16:42:33 +0000
+Date: Tue, 17 Mar 2026 16:42:32 +0000
+Message-ID: <86h5qe5rwn.wl-maz@kernel.org>
+From: Marc Zyngier <maz@kernel.org>
+To: Sascha Bischoff <Sascha.Bischoff@arm.com>
+Cc: "linux-arm-kernel@lists.infradead.org"
+	<linux-arm-kernel@lists.infradead.org>,
+	"kvmarm@lists.linux.dev"
+	<kvmarm@lists.linux.dev>,
+	"kvm@vger.kernel.org" <kvm@vger.kernel.org>,
+	nd <nd@arm.com>,
+	"oliver.upton@linux.dev" <oliver.upton@linux.dev>,
+	Joey Gouly
+	<Joey.Gouly@arm.com>,
+	Suzuki Poulose <Suzuki.Poulose@arm.com>,
+	"yuzenghui@huawei.com" <yuzenghui@huawei.com>,
+	"peter.maydell@linaro.org"
+	<peter.maydell@linaro.org>,
+	"lpieralisi@kernel.org" <lpieralisi@kernel.org>,
+	Timothy Hayes <Timothy.Hayes@arm.com>,
+	"jonathan.cameron@huawei.com"
+	<jonathan.cameron@huawei.com>
+Subject: Re: [PATCH v6 20/39] KVM: arm64: gic-v5: Init Private IRQs (PPIs) for GICv5
+In-Reply-To: <20260317113949.2548118-21-sascha.bischoff@arm.com>
+References: <20260317113949.2548118-1-sascha.bischoff@arm.com>
+	<20260317113949.2548118-21-sascha.bischoff@arm.com>
+User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
+ FLIM-LB/1.14.9 (=?UTF-8?B?R29qxY0=?=) APEL-LB/10.8 EasyPG/1.0.0 Emacs/30.1
+ (aarch64-unknown-linux-gnu) MULE/6.0 (HANACHIRUSATO)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
+Content-Type: text/plain; charset=US-ASCII
+X-SA-Exim-Connect-IP: 185.219.108.64
+X-SA-Exim-Rcpt-To: Sascha.Bischoff@arm.com, linux-arm-kernel@lists.infradead.org, kvmarm@lists.linux.dev, kvm@vger.kernel.org, nd@arm.com, oliver.upton@linux.dev, Joey.Gouly@arm.com, Suzuki.Poulose@arm.com, yuzenghui@huawei.com, peter.maydell@linaro.org, lpieralisi@kernel.org, Timothy.Hayes@arm.com, jonathan.cameron@huawei.com
+X-SA-Exim-Mail-From: maz@kernel.org
+X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
 
-From: Sonam Sanju <sonam.sanju@intel.com>=0D
+On Tue, 17 Mar 2026 11:45:10 +0000,
+Sascha Bischoff <Sascha.Bischoff@arm.com> wrote:
+> 
+> Initialise the private interrupts (PPIs, only) for GICv5. This means
+> that a GICv5-style intid is generated (which encodes the PPI type in
+> the top bits) instead of the 0-based index that is used for older
+> GICs.
+> 
+> Additionally, set all of the GICv5 PPIs to use Level for the handling
+> mode, with the exception of the SW_PPI which uses Edge. This matches
+> the architecturally-defined set in the GICv5 specification (the CTIIRQ
+> handling mode is IMPDEF, so Level has been picked for that).
+> 
+> Signed-off-by: Sascha Bischoff <sascha.bischoff@arm.com>
+> Reviewed-by: Jonathan Cameron <jonathan.cameron@huawei.com>
+> ---
+>  arch/arm64/kvm/vgic/vgic-init.c | 95 +++++++++++++++++++++++----------
+>  1 file changed, 66 insertions(+), 29 deletions(-)
+> 
+> diff --git a/arch/arm64/kvm/vgic/vgic-init.c b/arch/arm64/kvm/vgic/vgic-init.c
+> index e1be9c5ada7b3..f8d7d5a895e79 100644
+> --- a/arch/arm64/kvm/vgic/vgic-init.c
+> +++ b/arch/arm64/kvm/vgic/vgic-init.c
+> @@ -250,9 +250,64 @@ int kvm_vgic_vcpu_nv_init(struct kvm_vcpu *vcpu)
+>  	return ret;
+>  }
+>  
+> +static void vgic_allocate_private_irq(struct kvm_vcpu *vcpu, int i, u32 type)
+> +{
+> +	struct vgic_irq *irq = &vcpu->arch.vgic_cpu.private_irqs[i];
+> +
+> +	INIT_LIST_HEAD(&irq->ap_list);
+> +	raw_spin_lock_init(&irq->irq_lock);
+> +	irq->vcpu = NULL;
+> +	irq->target_vcpu = vcpu;
+> +	refcount_set(&irq->refcount, 0);
+> +
+> +	irq->intid = i;
+> +	if (vgic_irq_is_sgi(i)) {
+> +		/* SGIs */
+> +		irq->enabled = 1;
+> +		irq->config = VGIC_CONFIG_EDGE;
+> +	} else {
+> +		/* PPIs */
+> +		irq->config = VGIC_CONFIG_LEVEL;
+> +	}
+> +
+> +	switch (type) {
+> +	case KVM_DEV_TYPE_ARM_VGIC_V3:
+> +		irq->group = 1;
+> +		irq->mpidr = kvm_vcpu_get_mpidr_aff(vcpu);
+> +		break;
+> +	case KVM_DEV_TYPE_ARM_VGIC_V2:
+> +		irq->group = 0;
+> +		irq->targets = BIT(vcpu->vcpu_id);
+> +		break;
+> +	}
+> +}
+> +
+> +static void vgic_v5_allocate_private_irq(struct kvm_vcpu *vcpu, int i, u32 type)
+> +{
+> +	struct vgic_irq *irq = &vcpu->arch.vgic_cpu.private_irqs[i];
+> +
+> +	INIT_LIST_HEAD(&irq->ap_list);
+> +	raw_spin_lock_init(&irq->irq_lock);
+> +	irq->vcpu = NULL;
+> +	irq->target_vcpu = vcpu;
+> +	refcount_set(&irq->refcount, 0);
+> +
+> +	irq->intid = vgic_v5_make_ppi(i);
+> +
+> +	/* The only Edge architected PPI is the SW_PPI */
+> +	if (i == GICV5_ARCH_PPI_SW_PPI)
+> +		irq->config = VGIC_CONFIG_EDGE;
+> +	else
+> +		irq->config = VGIC_CONFIG_LEVEL;
+> +
+> +	/* Register the GICv5-specific PPI ops */
+> +	vgic_v5_set_ppi_ops(irq);
 
-On Mon, Mar 16, 2026 at 12:50:26PM +0530, Sonam Sanju wrote:=0D
-> From: Sonam Sanju <sonam.sanju@intel.com>=0D
-> =0D
-> irqfd_resampler_shutdown() calls synchronize_srcu_expedited() while=0D
-> holding kvm->irqfds.resampler_lock.  This can deadlock when multiple=0D
-=0D
-Adding Sean Christopherson to CC (apologies for the omission in the origina=
-l =0D
-submission).=0D
-=0D
---=0D
-Sonam=0D
+I'd definitely expect this to use the generic accessor instead of
+something v5-specific.
+
+Thanks,
+
+	M.
+
+-- 
+Without deviation from the norm, progress is not possible.
