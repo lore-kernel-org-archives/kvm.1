@@ -1,105 +1,111 @@
-Received: from mail-qt1-f169.google.com (mail-qt1-f169.google.com [209.85.160.169])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C3FA4372B2D
-	for <kvm@vger.kernel.org>; Tue, 17 Mar 2026 10:34:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.160.169
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773743679; cv=pass; b=rMtKoVSSR54LW2OuFdobqHU55wAk2uS2XWPGW4cfw7+otZsX0QAKchJbyEBQehKbl3VtTHiWoIHI2hQ3IXuuo7G0wCd7g90iEHyBGASiG9tOtzTJcf5JQMW7PILwISFogW7JCrKv529u838ZXKB5Lv9n2ImebpmdciVYBnnEOBg=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773743679; c=relaxed/simple;
-	bh=Ct1tVEpEh4ae+UzwFCfZDfYvJiNypQeG6UnAogEym0k=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=qxR+XPDqEUAOP451iynxu1YMI4BuHrudRQEIaeYJS24K/HFp523Vd0PcVnVfHVyHACxGSaRewRnY123R0GdZ7CTDwHVqt53Hym5AvFXLuRh0N83/31mOlP/f2KyrffNqhfSEpuHBZFCakBptao51PUHr7qECIBNmp+Cb2KmN47s=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=jCvHN7V9; arc=pass smtp.client-ip=209.85.160.169
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D7906388E65;
+	Tue, 17 Mar 2026 10:38:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1773743893; cv=none; b=D5BmGgimLiv8Qh5uI2PzYgZuJLWWnjQ+NNTWqMuYlRePIUL/2XTy2RaPZQpz8gh6n/NlFiRhivtB67LFRNRM6SLCT7JSH9ir7V5tdbBS1Ur3uvRzaaGFSBNwgHNTVQjansjX4D+biK6Wvn2wU1E7vYszFDYvxu7NBBlrPB1d89E=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1773743893; c=relaxed/simple;
+	bh=9RQ0Tvco2BwCrno5HAySN/PgXfW3wX22o+3PPwc2mmU=;
+	h=Mime-Version:Content-Type:Date:Message-Id:From:Cc:To:Subject:
+	 References:In-Reply-To; b=a3ZlMFsCoBmxldvQgEz38xE2ulsPaBqiOnYbtoB6kOe2bM4IW2pjlJZMu7cai4epcFKU8G+Q3U5xgM46iKNhke34DusJHxiMGEs5G9i/xJN1mhfmN1N4h8VLWRT2js/GRZ6gp0eoVN9qOimxCaTbxqiZW0zsUhOKDJATLw0Wj90=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=PwhV24xI; arc=none smtp.client-ip=148.163.156.1
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="jCvHN7V9"
-Received: by mail-qt1-f169.google.com with SMTP id d75a77b69052e-50917e02532so68648571cf.3
-        for <kvm@vger.kernel.org>; Tue, 17 Mar 2026 03:34:37 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1773743677; cv=none;
-        d=google.com; s=arc-20240605;
-        b=YGvkjOnil4EjXlxwoKCSdmNbPZk62oUDo04nP//LVsDdShqET71soEu/l8cUols7VA
-         la34pr+wUbn8bfyIrfotJpcSKqsHf78jTFGbx0uJagEVj4v7ay3bTFllyiAgqn2Km+Sr
-         3TkpGlV8yBLIOieEXOMpkkHgcYXX+1oQ5ULxVUBHh27qCtVvQz8DtqPWqhg28suIr+th
-         JpzKtnsLmtm2cwr/8SpJPogrWkwM+YB1XOydlSF7uRW0FS5YRBIwCGIokSZfsHz9tBbd
-         0vCO3N2r9/pjXCrjDExe7npBnCg8+sTvOgT4H7sEzKAMghFlqHsMg/MauE0DqEGSdcsj
-         ti8A==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:dkim-signature;
-        bh=YEALIkjEd7E2l9VZKv/d474jTdI1vW57SKSoYPDM85Q=;
-        fh=oG8vZNECx89DIzGedX+A5uvzfp6zQI6uJ58qhSQu888=;
-        b=EIFSgAip141kWlZQz0p53yGdeCgNIiCW2zVToRTZOZSXKDoqKvKh9aIWUbcQV4Fo10
-         6nHhBYprYIoMiUBMzNzGvsM5SWr/oHB7OaZQBtd6tHzaFHqKMbTfZb92K3eqm85f9iXb
-         ks29u4PsbbVxGG3FYD9FzOZuCVUWuxrnBq5Ty1YQQjw/QAR4pZSbqfrLnCjKKpyC4e+W
-         4cAxOxUWGAWv06/KB+uMruYGeXW1WwbAs5fJ5xnlDz2bMUWUJSPX2fFxxt2if/orG5h6
-         mHsaP0qqkyP7a8SbmNTN4OIr+ZDK/4Csxzb1w0teAhM1if3LLmEmuLB7Kz46S8/xuh/F
-         q8Ug==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1773743677; x=1774348477; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=YEALIkjEd7E2l9VZKv/d474jTdI1vW57SKSoYPDM85Q=;
-        b=jCvHN7V9TEXZ+BsRSzXoPdQsl4QqPi1f9NN5J3wgM+Mk+Fa0Kst5/FEpAadiV0q5QX
-         KDVMkz1mqf5Ray2VJJs+oA4RsYv8e5d/HQO4TO54+8MrTZLSQllAX3i0v4X8l7pqUz/A
-         9dbhFkW9jMcXxtdDCGSIlwoS5c+M3yj9b0Gp9PgZCWlcF4L6Ip/+d2YtqEfyNH2Oydwa
-         zUK6yZvD7q0GwftXdPZtyxSkHW23S41RiAcu+DPCHRssLXbVSSNTuV2Hp+vDskGnwJah
-         Qx1hgLQup9jHa5vR1h7KkWdhE7Aex2wNfmuT71DAdoHK10kj+2DMXyifWitSkS6qKoEs
-         zukw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1773743677; x=1774348477;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=YEALIkjEd7E2l9VZKv/d474jTdI1vW57SKSoYPDM85Q=;
-        b=rwOAXI/qtvvf+7owESHKYVPqK0fH1HT3w5MtVgDO3JACD+6oRhJhgzzB659Y722bHT
-         5dbmRySBSO1CccOARvXIUGM0O1fdGTmEIBMWbhZwWH47HwxQ2LK5OU3dqH1buINdYOEG
-         J/S5rayaSQuISRt0lhY57no6Fzsbr3r60mQP95XUSkcfZMrPISnqs9F1Zkg8ouYDN/ue
-         XMxf3HrYygvypmJtSCHR0zORnpJvQhfY/MOY/FMZS63TqwQwyiGO2je+hEfbIBz57yYa
-         I0wXshGhxl4m0DRFrPod115gUtDfiNOwhLw7+z1LJjIX4aJBUaKphP7TnyzZgEJGOXgc
-         fHvw==
-X-Forwarded-Encrypted: i=1; AJvYcCWL2C9RdMlEqk7/jnwXapfj5W7vKVoKv5yxCXozXv9PbSbzbjyzpm9bUGyazyu71c2+Mx8=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz7Go5AtF0XWMhoc8oZDu3Thfr69h/vqZi8i6gy2bKUSXK197xF
-	cjAXtmpf8Fg5ItFZMHctmp0ZBr/q5SjK2p5A6QtAc1HVjHAhY7clBj0zF+uQ7sGQOTWM2xx2/ao
-	kCGNHh1Fo54MBdePv3dIq37we9H1GnHltTZKTpUn8
-X-Gm-Gg: ATEYQzx8ZPbFRfNlO8AwybFU/f8mpCidiX/0EI3xk75eapE5E92DszfUG+I00c2maU0
-	BNr8X32eyxt/G5/d+nkEA6lg7Tc7/3z0ccizpiKKAimxoxDSyKs7oQrQh5fQ9EUoCLjbpmIYbmG
-	ezWO07xEgcw/VUwahDc3SUrcw2u8Uc8KQjUbpxDi5BNngQELatcUcR/GBwpq2sAi6bTRZ73O/B4
-	SH7/b1rXAZPJ7Plk3C0yK0/oWQT8c/rV6s9kKd3Ka5SV4PgKJ9Lp4D2NRXUe26PW3tMmUk904Gd
-	qb/3E5MlCxqc8OqOkXdfUhbjANhB9WWXO5CB
-X-Received: by 2002:a05:622a:178b:b0:509:33b:ed6 with SMTP id
- d75a77b69052e-50957db5711mr240125391cf.23.1773743676160; Tue, 17 Mar 2026
- 03:34:36 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="PwhV24xI"
+Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 62H8NjR61093922;
+	Tue, 17 Mar 2026 10:38:12 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=6n4QT0
+	OrpXydZ1M1Xoqb1LF4gLQ/ZCRinRqoY1RW+fA=; b=PwhV24xITjQ4mQ7ximH2N1
+	D1kYv1kPpluEhTH9U01M1dxw3Dz1iVqACibnHFXb7eW0c2Q3NnbyBQ75KPDNta90
+	zbx+T+3W3chKXL5Ry5PbzkjGTzB0Vtictr2g6nz1vu4d/nmF8kGBBkFfxz6PFg6j
+	V2oQz2mewjyezmsipfKPe9IMofTa0k7c0IbpIjOy63HQc11SEqZ/NFM6FWGPpmwr
+	0lAJqyFx8Bfj30BJIWj/6eO9bbNYaVHJtIm7+Cr6syPm5hMov3ety5Df9QwJVEXU
+	olrQylM0+sLzo0MW+Mq2A0bpPHONsWezOqvfS95xGG4OxJIAw/GvmykYGsfXE6xQ
+	==
+Received: from ppma11.dal12v.mail.ibm.com (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4cvy64m8x2-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 17 Mar 2026 10:38:11 +0000 (GMT)
+Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma11.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 62H8F5UT028496;
+	Tue, 17 Mar 2026 10:38:11 GMT
+Received: from smtprelay07.fra02v.mail.ibm.com ([9.218.2.229])
+	by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 4cwmq18f7y-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 17 Mar 2026 10:38:11 +0000
+Received: from smtpav03.fra02v.mail.ibm.com (smtpav03.fra02v.mail.ibm.com [10.20.54.102])
+	by smtprelay07.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 62HAc7pU49283498
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Tue, 17 Mar 2026 10:38:07 GMT
+Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 2C12D2004D;
+	Tue, 17 Mar 2026 10:38:07 +0000 (GMT)
+Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 05FDD2004B;
+	Tue, 17 Mar 2026 10:38:07 +0000 (GMT)
+Received: from darkmoore (unknown [9.87.132.213])
+	by smtpav03.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Tue, 17 Mar 2026 10:38:06 +0000 (GMT)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <20260310234829.2608037-1-seanjc@google.com> <20260310234829.2608037-11-seanjc@google.com>
-In-Reply-To: <20260310234829.2608037-11-seanjc@google.com>
-From: Alexander Potapenko <glider@google.com>
-Date: Tue, 17 Mar 2026 11:33:59 +0100
-X-Gm-Features: AaiRm526Pn3X5wuLRL8qMU0-mhFYGEdnHj8tGSNVulkPb22nA62_AaDAQFwnXDw
-Message-ID: <CAG_fn=V4ZD8x40sXx2Ctd=LGzQEaeRMJF_yiA8Ekw2ZzuYcSMQ@mail.gmail.com>
-Subject: Re: [PATCH 10/21] KVM: SEV: Move standard VM-scoped helpers to detect
- SEV+ guests to sev.c
-To: Sean Christopherson <seanjc@google.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>, kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	Jethro Beekman <jethro@fortanix.com>, =?UTF-8?Q?Carlos_L=C3=B3pez?= <clopez@suse.de>
-Content-Type: text/plain; charset="UTF-8"
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Tue, 17 Mar 2026 11:38:01 +0100
+Message-Id: <DH4ZQA5VYDE0.1SW16U6AQ6HCX@linux.ibm.com>
+From: "Christoph Schlameuss" <schlameuss@linux.ibm.com>
+Cc: <linux-s390@vger.kernel.org>, <imbrenda@linux.ibm.com>,
+        <borntraeger@linux.ibm.com>, <akrowiak@linux.ibm.com>
+To: "Janosch Frank" <frankja@linux.ibm.com>, <kvm@vger.kernel.org>
+Subject: Re: [RFC 03/10] KVM: s390: Convert shifts to gpa_to_gfn()
+X-Mailer: aerc 0.21.0
+References: <20260316180310.17765-1-frankja@linux.ibm.com>
+ <20260316180310.17765-4-frankja@linux.ibm.com>
+In-Reply-To: <20260316180310.17765-4-frankja@linux.ibm.com>
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: zTTNjaKhjZcHcUFJo8qE8ARgClkaSsFu
+X-Proofpoint-GUID: zTTNjaKhjZcHcUFJo8qE8ARgClkaSsFu
+X-Authority-Analysis: v=2.4 cv=KYnfcAYD c=1 sm=1 tr=0 ts=69b92f14 cx=c_pps
+ a=aDMHemPKRhS1OARIsFnwRA==:117 a=aDMHemPKRhS1OARIsFnwRA==:17
+ a=IkcTkHD0fZMA:10 a=Yq5XynenixoA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=RnoormkPH1_aCDwRdu11:22 a=iQ6ETzBq9ecOQQE5vZCe:22 a=VnNF1IyMAAAA:8
+ a=-yrtnzFoinabFxpHE94A:9 a=QEXdDO2ut3YA:10 a=zgiPjhLxNE0A:10
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMzE3MDA5MCBTYWx0ZWRfXwPmF990i2iCP
+ i3aDng4YX07QnKc5G0lGNjc/bTc6OmAWg+uYvIxqrgsA3gZ2dIapJ0KDWrAYcMZca6uoGUo6o0F
+ gG5lf47k4D9FQvk11NHb7w/qLS/VK1yDb0GwfTk0x30M+t0+kMXUPWt36eYXzP+8OuopoJawZfe
+ 67sYuh7gf2s4zafA5oUxbCfurnqLU+BPoFXb7RvUVopzRtv4NW4c81zmaMjqa8ABaHAwtE2Bd+5
+ i4meYC4OcnaQ7wwOUZzBH68mG+l0RdKVD/GUNs4I6TKj9sCfYMwklX3qG16yb5i1bMi2myF1Vc9
+ og83th5NJ9jRfbpsc6heVvunYc2UlvNKpD2NwJyBIOLtaOPgdqRw75TH/IpFq5c0pgqTTQNPaUG
+ TzLigyBbmnA3hl8ORQ+ySba7yryq5Wd76BcqAVejime56OtRJxHNhMjTHWd70GBVZn8NJAFuci0
+ N3PCHzABzDEeMy05zxg==
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
+ definitions=2026-03-17_01,2026-03-16_06,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ phishscore=0 lowpriorityscore=0 priorityscore=1501 suspectscore=0 bulkscore=0
+ spamscore=0 impostorscore=0 malwarescore=0 adultscore=0 clxscore=1015
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2603050001 definitions=main-2603170090
 
-> -static __always_inline bool sev_guest(struct kvm *kvm)
-> -{
-> -       return ____sev_guest(kvm);
-> -}
-> -static __always_inline bool sev_es_guest(struct kvm *kvm)
-> -{
-> -       return ____sev_es_guest(kvm);
-> -}
+On Mon Mar 16, 2026 at 5:23 PM CET, Janosch Frank wrote:
+> Not only do we get rid of the ugly shift but we have more chances to
+> do static analysis type checking since gpa_to_gfn() returns gfn_t.
+>
+> Signed-off-by: Janosch Frank <frankja@linux.ibm.com>
 
-arch/x86/kvm/svm/avic.c is still using sev_es_guest(), isn't it?
+Reviewed-by: Christoph Schlameuss <schlameuss@linux.ibm.com>
+
+> ---
+>  arch/s390/kvm/interrupt.c | 4 ++--
+>  arch/s390/kvm/priv.c      | 2 +-
+>  2 files changed, 3 insertions(+), 3 deletions(-)
