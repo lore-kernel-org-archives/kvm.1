@@ -1,369 +1,105 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qt1-f169.google.com (mail-qt1-f169.google.com [209.85.160.169])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9DCA1139D
-	for <kvm@vger.kernel.org>; Tue, 17 Mar 2026 10:20:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773742848; cv=none; b=CbbPdV1oEGHxjFS4V5A63zF/tpryfRxE/DqxJwFRmn+tMzhAWSe8uwihTAiAhPL2OCHzlVXILyIw3a0GpzWawsQ1j8RxNjSjffoler99JGwHst/ad2OR9NdcWXmgIfONj+LPdWit7CQgas5LgufHMFD9qQoJYsN6QbNCXQcaRLk=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773742848; c=relaxed/simple;
-	bh=t9GAqyFmZVxKjxhA0thWU8YQM1b3keTE12rd7boA2NU=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=oDSAu/oVMhPsnCwwiYcOnH8w0zdrtY87/8i139+9TOgyNRb4+EzjXa+tlQjBLqzw1KzELZeXyG4N6pfbpkWpdxFrM7RAyK9sWzla2y9tpzzwl3hI19ntlGsVaWQUnRUQleP0JpFwl/jhApZStlDQVV4ElZ22a39jsnY1hyugJdI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Bae9+jnI; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C3FA4372B2D
+	for <kvm@vger.kernel.org>; Tue, 17 Mar 2026 10:34:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.160.169
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1773743679; cv=pass; b=rMtKoVSSR54LW2OuFdobqHU55wAk2uS2XWPGW4cfw7+otZsX0QAKchJbyEBQehKbl3VtTHiWoIHI2hQ3IXuuo7G0wCd7g90iEHyBGASiG9tOtzTJcf5JQMW7PILwISFogW7JCrKv529u838ZXKB5Lv9n2ImebpmdciVYBnnEOBg=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1773743679; c=relaxed/simple;
+	bh=Ct1tVEpEh4ae+UzwFCfZDfYvJiNypQeG6UnAogEym0k=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=qxR+XPDqEUAOP451iynxu1YMI4BuHrudRQEIaeYJS24K/HFp523Vd0PcVnVfHVyHACxGSaRewRnY123R0GdZ7CTDwHVqt53Hym5AvFXLuRh0N83/31mOlP/f2KyrffNqhfSEpuHBZFCakBptao51PUHr7qECIBNmp+Cb2KmN47s=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=jCvHN7V9; arc=pass smtp.client-ip=209.85.160.169
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Bae9+jnI"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B8520C2BCAF;
-	Tue, 17 Mar 2026 10:20:47 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773742848;
-	bh=t9GAqyFmZVxKjxhA0thWU8YQM1b3keTE12rd7boA2NU=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=Bae9+jnIBe3lwvTJiJG3sW/8NUEXx36+y+M9834rO6YU4b1lgUfUNtB6dNTQvj4eQ
-	 2ff3okn79AT2jueiWaqzV25Iw/BgL5ECBJsy8H64xwF3HnkWUjHuz+rQ+QWOjMx0B0
-	 BRHNDxjBE94EpQNeDNzMunJlJWrDXgyPIZ9JWopsJxwcmWXYQE3teHDOAF1/n423mD
-	 99bVlQFvBPrmsuuTIJhyflLzckI+08J0D1uLorlCOLAciQkIaObREOhl/gRK9ctubt
-	 8IO9DYKW05NHnuu0YjY65cz3ZtBntLYMRkOPGT62zX+OZQfp7HJB0qmZOEwUpnPxwl
-	 UKqEfu9JWzliA==
-Received: from phl-compute-04.internal (phl-compute-04.internal [10.202.2.44])
-	by mailfauth.phl.internal (Postfix) with ESMTP id CF035F40068;
-	Tue, 17 Mar 2026 06:20:46 -0400 (EDT)
-Received: from phl-frontend-03 ([10.202.2.162])
-  by phl-compute-04.internal (MEProxy); Tue, 17 Mar 2026 06:20:46 -0400
-X-ME-Sender: <xms:_iq5aYRvubzczvb8Ilc98PZ4VHwMGX-WQBzF37KXxiETIQWVyNL9Bw>
-    <xme:_iq5aWd6zGlan-oUY18ijIbuPA-WdbV6U8dcKQYKuQpcXREgJl9xdKtoO6-SY044Q
-    0kuWnSe6dDT_qeeGi7bI035iX7L35amg7xi2I7OsPPFI3nSP-gF-wg>
-X-ME-Received: <xmr:_iq5aaV5zU3MLDRrcYuQb4Cza3aneaFInMzXUE6F-xBH4z0DA5ivZPhpF5jplQ>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgdeftddtleelucetufdoteggodetrf
-    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
-    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
-    gurhepfffhvfevuffkfhggtggujgesthdtredttddtvdenucfhrhhomhepmfhirhihlhcu
-    ufhhuhhtshgvmhgruhcuoehkrghssehkvghrnhgvlhdrohhrgheqnecuggftrfgrthhtvg
-    hrnhepueeijeeiffekheeffffftdekleefleehhfefhfduheejhedvffeluedvudefgfek
-    necuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepkhhirh
-    hilhhlodhmvghsmhhtphgruhhthhhpvghrshhonhgrlhhithihqdduieduudeivdeiheeh
-    qddvkeeggeegjedvkedqkhgrsheppehkvghrnhgvlhdrohhrghesshhhuhhtvghmohhvrd
-    hnrghmvgdpnhgspghrtghpthhtohephedtpdhmohguvgepshhmthhpohhuthdprhgtphht
-    thhopegthhgrohdrghgrohesihhnthgvlhdrtghomhdprhgtphhtthhopehlihhnuhigqd
-    hkvghrnhgvlhesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehlihhnuhig
-    qdgtohgtoheslhhishhtshdrlhhinhhugidruggvvhdprhgtphhtthhopehkvhhmsehvgh
-    gvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtohepsghinhgsihhnrdifuheslhhinhhu
-    gidrihhnthgvlhdrtghomhdprhgtphhtthhopegurghnrdhjrdifihhllhhirghmshesih
-    hnthgvlhdrtghomhdprhgtphhtthhopegurghvvgdrhhgrnhhsvghnsehlihhnuhigrdhi
-    nhhtvghlrdgtohhmpdhrtghpthhtohepihhrrgdrfigvihhnhiesihhnthgvlhdrtghomh
-    dprhgtphhtthhopehkrghirdhhuhgrnhhgsehinhhtvghlrdgtohhm
-X-ME-Proxy: <xmx:_iq5aciSNQgMCRe5CiQP1kodnjJHxwMFpbgt55u2ZscVVgLgVMXTSA>
-    <xmx:_iq5aYE6VGgbgbV7t3XvBs6LJkFNSyfFN3ZflzT38jXtLUvJ1Jh0xw>
-    <xmx:_iq5aSLzdNj1GfJi_1Wj-zBZoFqHcUIZ6B4fXzHISMehiJLgm5DT9g>
-    <xmx:_iq5aQtS3IFuq41twUfJNg-aiH7mIawC_zqxn6k50IRS3xYmHinxAw>
-    <xmx:_iq5af78Mdrjs7TcYGSC1Uap_0f_4qO3hEiAaG7ro5roQFxPQubkGIVf>
-Feedback-ID: i10464835:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
- 17 Mar 2026 06:20:44 -0400 (EDT)
-Date: Tue, 17 Mar 2026 10:20:38 +0000
-From: Kiryl Shutsemau <kas@kernel.org>
-To: Chao Gao <chao.gao@intel.com>
-Cc: linux-kernel@vger.kernel.org, linux-coco@lists.linux.dev, 
-	kvm@vger.kernel.org, binbin.wu@linux.intel.com, dan.j.williams@intel.com, 
-	dave.hansen@linux.intel.com, ira.weiny@intel.com, kai.huang@intel.com, nik.borisov@suse.com, 
-	paulmck@kernel.org, pbonzini@redhat.com, reinette.chatre@intel.com, 
-	rick.p.edgecombe@intel.com, sagis@google.com, seanjc@google.com, 
-	tony.lindgren@linux.intel.com, vannapurve@google.com, vishal.l.verma@intel.com, 
-	yilun.xu@linux.intel.com, Thomas Gleixner <tglx@kernel.org>, 
-	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, x86@kernel.org, 
-	"H. Peter Anvin" <hpa@zytor.com>
-Subject: Re: [PATCH v5 07/22] coco/tdx-host: Implement firmware upload sysfs
- ABI for TDX module updates
-Message-ID: <abko0v2bYxNJtegT@thinkstation>
-References: <20260315135920.354657-1-chao.gao@intel.com>
- <20260315135920.354657-8-chao.gao@intel.com>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="jCvHN7V9"
+Received: by mail-qt1-f169.google.com with SMTP id d75a77b69052e-50917e02532so68648571cf.3
+        for <kvm@vger.kernel.org>; Tue, 17 Mar 2026 03:34:37 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1773743677; cv=none;
+        d=google.com; s=arc-20240605;
+        b=YGvkjOnil4EjXlxwoKCSdmNbPZk62oUDo04nP//LVsDdShqET71soEu/l8cUols7VA
+         la34pr+wUbn8bfyIrfotJpcSKqsHf78jTFGbx0uJagEVj4v7ay3bTFllyiAgqn2Km+Sr
+         3TkpGlV8yBLIOieEXOMpkkHgcYXX+1oQ5ULxVUBHh27qCtVvQz8DtqPWqhg28suIr+th
+         JpzKtnsLmtm2cwr/8SpJPogrWkwM+YB1XOydlSF7uRW0FS5YRBIwCGIokSZfsHz9tBbd
+         0vCO3N2r9/pjXCrjDExe7npBnCg8+sTvOgT4H7sEzKAMghFlqHsMg/MauE0DqEGSdcsj
+         ti8A==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:dkim-signature;
+        bh=YEALIkjEd7E2l9VZKv/d474jTdI1vW57SKSoYPDM85Q=;
+        fh=oG8vZNECx89DIzGedX+A5uvzfp6zQI6uJ58qhSQu888=;
+        b=EIFSgAip141kWlZQz0p53yGdeCgNIiCW2zVToRTZOZSXKDoqKvKh9aIWUbcQV4Fo10
+         6nHhBYprYIoMiUBMzNzGvsM5SWr/oHB7OaZQBtd6tHzaFHqKMbTfZb92K3eqm85f9iXb
+         ks29u4PsbbVxGG3FYD9FzOZuCVUWuxrnBq5Ty1YQQjw/QAR4pZSbqfrLnCjKKpyC4e+W
+         4cAxOxUWGAWv06/KB+uMruYGeXW1WwbAs5fJ5xnlDz2bMUWUJSPX2fFxxt2if/orG5h6
+         mHsaP0qqkyP7a8SbmNTN4OIr+ZDK/4Csxzb1w0teAhM1if3LLmEmuLB7Kz46S8/xuh/F
+         q8Ug==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1773743677; x=1774348477; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=YEALIkjEd7E2l9VZKv/d474jTdI1vW57SKSoYPDM85Q=;
+        b=jCvHN7V9TEXZ+BsRSzXoPdQsl4QqPi1f9NN5J3wgM+Mk+Fa0Kst5/FEpAadiV0q5QX
+         KDVMkz1mqf5Ray2VJJs+oA4RsYv8e5d/HQO4TO54+8MrTZLSQllAX3i0v4X8l7pqUz/A
+         9dbhFkW9jMcXxtdDCGSIlwoS5c+M3yj9b0Gp9PgZCWlcF4L6Ip/+d2YtqEfyNH2Oydwa
+         zUK6yZvD7q0GwftXdPZtyxSkHW23S41RiAcu+DPCHRssLXbVSSNTuV2Hp+vDskGnwJah
+         Qx1hgLQup9jHa5vR1h7KkWdhE7Aex2wNfmuT71DAdoHK10kj+2DMXyifWitSkS6qKoEs
+         zukw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1773743677; x=1774348477;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=YEALIkjEd7E2l9VZKv/d474jTdI1vW57SKSoYPDM85Q=;
+        b=rwOAXI/qtvvf+7owESHKYVPqK0fH1HT3w5MtVgDO3JACD+6oRhJhgzzB659Y722bHT
+         5dbmRySBSO1CccOARvXIUGM0O1fdGTmEIBMWbhZwWH47HwxQ2LK5OU3dqH1buINdYOEG
+         J/S5rayaSQuISRt0lhY57no6Fzsbr3r60mQP95XUSkcfZMrPISnqs9F1Zkg8ouYDN/ue
+         XMxf3HrYygvypmJtSCHR0zORnpJvQhfY/MOY/FMZS63TqwQwyiGO2je+hEfbIBz57yYa
+         I0wXshGhxl4m0DRFrPod115gUtDfiNOwhLw7+z1LJjIX4aJBUaKphP7TnyzZgEJGOXgc
+         fHvw==
+X-Forwarded-Encrypted: i=1; AJvYcCWL2C9RdMlEqk7/jnwXapfj5W7vKVoKv5yxCXozXv9PbSbzbjyzpm9bUGyazyu71c2+Mx8=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz7Go5AtF0XWMhoc8oZDu3Thfr69h/vqZi8i6gy2bKUSXK197xF
+	cjAXtmpf8Fg5ItFZMHctmp0ZBr/q5SjK2p5A6QtAc1HVjHAhY7clBj0zF+uQ7sGQOTWM2xx2/ao
+	kCGNHh1Fo54MBdePv3dIq37we9H1GnHltTZKTpUn8
+X-Gm-Gg: ATEYQzx8ZPbFRfNlO8AwybFU/f8mpCidiX/0EI3xk75eapE5E92DszfUG+I00c2maU0
+	BNr8X32eyxt/G5/d+nkEA6lg7Tc7/3z0ccizpiKKAimxoxDSyKs7oQrQh5fQ9EUoCLjbpmIYbmG
+	ezWO07xEgcw/VUwahDc3SUrcw2u8Uc8KQjUbpxDi5BNngQELatcUcR/GBwpq2sAi6bTRZ73O/B4
+	SH7/b1rXAZPJ7Plk3C0yK0/oWQT8c/rV6s9kKd3Ka5SV4PgKJ9Lp4D2NRXUe26PW3tMmUk904Gd
+	qb/3E5MlCxqc8OqOkXdfUhbjANhB9WWXO5CB
+X-Received: by 2002:a05:622a:178b:b0:509:33b:ed6 with SMTP id
+ d75a77b69052e-50957db5711mr240125391cf.23.1773743676160; Tue, 17 Mar 2026
+ 03:34:36 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260315135920.354657-8-chao.gao@intel.com>
+References: <20260310234829.2608037-1-seanjc@google.com> <20260310234829.2608037-11-seanjc@google.com>
+In-Reply-To: <20260310234829.2608037-11-seanjc@google.com>
+From: Alexander Potapenko <glider@google.com>
+Date: Tue, 17 Mar 2026 11:33:59 +0100
+X-Gm-Features: AaiRm526Pn3X5wuLRL8qMU0-mhFYGEdnHj8tGSNVulkPb22nA62_AaDAQFwnXDw
+Message-ID: <CAG_fn=V4ZD8x40sXx2Ctd=LGzQEaeRMJF_yiA8Ekw2ZzuYcSMQ@mail.gmail.com>
+Subject: Re: [PATCH 10/21] KVM: SEV: Move standard VM-scoped helpers to detect
+ SEV+ guests to sev.c
+To: Sean Christopherson <seanjc@google.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>, kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	Jethro Beekman <jethro@fortanix.com>, =?UTF-8?Q?Carlos_L=C3=B3pez?= <clopez@suse.de>
+Content-Type: text/plain; charset="UTF-8"
 
-On Sun, Mar 15, 2026 at 06:58:27AM -0700, Chao Gao wrote:
-> Linux kernel supports two primary firmware update mechanisms:
->   - request_firmware()
->   - firmware upload (or fw_upload)
-> 
-> The former is used by microcode updates, SEV firmware updates, etc. The
-> latter is used by CXL and FPGA firmware updates.
-> 
-> One key difference between them is: request_firmware() loads a named
-> file from the filesystem where the filename is kernel-controlled, while
-> fw_upload accepts firmware data directly from userspace.
-> 
-> Use fw_upload for TDX module updates as loading a named file isn't
-> suitable for TDX (see below for more reasons). Specifically, register
-> TDX faux device with fw_upload framework to expose sysfs interfaces
-> and implement operations to process data blobs supplied by userspace.
-> 
-> Implementation notes:
-> 1. P-SEAMLDR processes the entire update at once rather than
->    chunk-by-chunk, so .write() is called only once per update; so the
->    offset should be always 0.
-> 2. An update completes synchronously within .write(), meaning
->    .poll_complete() is only called after the update succeeds and so always
->    returns success
-> 
-> Why fw_upload instead of request_firmware()?
-> ============================================
-> The explicit file selection capabilities of fw_upload is preferred over
-> the implicit file selection of request_firmware() for the following
-> reasons:
-> 
-> a. Intel distributes all versions of the TDX module, allowing admins to
-> load any version rather than always defaulting to the latest. This
-> flexibility is necessary because future extensions may require reverting to
-> a previous version to clear fatal errors.
-> 
-> b. Some module version series are platform-specific. For example, the 1.5.x
-> series is for certain platform generations, while the 2.0.x series is
-> intended for others.
-> 
-> c. The update policy for TDX module updates is non-linear at times. The
-> latest TDX module may not be compatible. For example, TDX module 1.5.x
-> may be updated to 1.5.y but not to 1.5.y+1. This policy is documented
-> separately in a file released along with each TDX module release.
-> 
-> So, the default policy of "request_firmware()" of "always load latest", is
-> not suitable for TDX. Userspace needs to deploy a more sophisticated policy
-> check (e.g., latest may not be compatible), and there is potential
-> operator choice to consider.
-> 
-> Just have userspace pick rather than add kernel mechanism to change the
-> default policy of request_firmware().
-> 
-> Signed-off-by: Chao Gao <chao.gao@intel.com>
-> Reviewed-by: Tony Lindgren <tony.lindgren@linux.intel.com>
+> -static __always_inline bool sev_guest(struct kvm *kvm)
+> -{
+> -       return ____sev_guest(kvm);
+> -}
+> -static __always_inline bool sev_es_guest(struct kvm *kvm)
+> -{
+> -       return ____sev_es_guest(kvm);
+> -}
 
-Reviewed-by: Kiryl Shutsemau (Meta) <kas@kernel.org>
-
-One minor thing below.
-
-> ---
-> v5:
->  - remove a tail comment [Yan]
->  - remove is_vmalloc_addr() check [Dave]
->  - use devm_add_action_or_reset() for deinit [Yilun]
->  - remove global tdx_fwl [Yilun]
->  - clarify request_firmware() doesn't take filename from userspace
->    [Rick]
-> 
-> v4:
->  - make tdx_fwl static [Kai]
->  - don't support update canceling [Yilun]
->  - explain why seamldr_init() doesn't return an error [Kai]
->  - bail out if TDX module updates are not supported [Kai]
->  - name the firmware "tdx_module" instead of "seamldr_upload" [Cedric]
-> 
-> v3:
->  - clear "cancel_request" in the "prepare" phase [Binbin]
->  - Don't fail the whole tdx-host device if seamldr_init() met an error
->  [Yilun]
->  - Add kdoc for seamldr_install_module() and verify that the input
->    buffer is vmalloc'd. [Yilun]
-> ---
->  arch/x86/include/asm/seamldr.h        |  1 +
->  arch/x86/include/asm/tdx.h            |  6 ++
->  arch/x86/virt/vmx/tdx/seamldr.c       | 15 +++++
->  drivers/virt/coco/tdx-host/Kconfig    |  2 +
->  drivers/virt/coco/tdx-host/tdx-host.c | 87 +++++++++++++++++++++++++++
->  5 files changed, 111 insertions(+)
-> 
-> diff --git a/arch/x86/include/asm/seamldr.h b/arch/x86/include/asm/seamldr.h
-> index c67e5bc910a9..ac6f80f7208b 100644
-> --- a/arch/x86/include/asm/seamldr.h
-> +++ b/arch/x86/include/asm/seamldr.h
-> @@ -32,5 +32,6 @@ struct seamldr_info {
->  static_assert(sizeof(struct seamldr_info) == 256);
->  
->  int seamldr_get_info(struct seamldr_info *seamldr_info);
-> +int seamldr_install_module(const u8 *data, u32 size);
->  
->  #endif /* _ASM_X86_SEAMLDR_H */
-> diff --git a/arch/x86/include/asm/tdx.h b/arch/x86/include/asm/tdx.h
-> index cb2219302dfc..b3a7301e77c6 100644
-> --- a/arch/x86/include/asm/tdx.h
-> +++ b/arch/x86/include/asm/tdx.h
-> @@ -103,6 +103,12 @@ int tdx_enable(void);
->  const char *tdx_dump_mce_info(struct mce *m);
->  const struct tdx_sys_info *tdx_get_sysinfo(void);
->  
-> +static inline bool tdx_supports_runtime_update(const struct tdx_sys_info *sysinfo)
-> +{
-> +	 /* To be enabled when kernel is ready. */
-> +	return false;
-> +}
-> +
->  int tdx_guest_keyid_alloc(void);
->  u32 tdx_get_nr_guest_keyids(void);
->  void tdx_guest_keyid_free(unsigned int keyid);
-> diff --git a/arch/x86/virt/vmx/tdx/seamldr.c b/arch/x86/virt/vmx/tdx/seamldr.c
-> index 7c0cbab2c4c0..7114326d7569 100644
-> --- a/arch/x86/virt/vmx/tdx/seamldr.c
-> +++ b/arch/x86/virt/vmx/tdx/seamldr.c
-> @@ -6,6 +6,7 @@
->   */
->  #define pr_fmt(fmt)	"seamldr: " fmt
->  
-> +#include <linux/mm.h>
->  #include <linux/spinlock.h>
->  
->  #include <asm/seamldr.h>
-> @@ -39,3 +40,17 @@ int seamldr_get_info(struct seamldr_info *seamldr_info)
->  	return seamldr_call(P_SEAMLDR_INFO, &args);
->  }
->  EXPORT_SYMBOL_FOR_MODULES(seamldr_get_info, "tdx-host");
-> +
-> +/**
-> + * seamldr_install_module - Install a new TDX module.
-> + * @data: Pointer to the TDX module update blob.
-> + * @size: Size of the TDX module update blob.
-> + *
-> + * Returns 0 on success, negative error code on failure.
-> + */
-> +int seamldr_install_module(const u8 *data, u32 size)
-> +{
-> +	/* TODO: Update TDX module here */
-> +	return 0;
-> +}
-> +EXPORT_SYMBOL_FOR_MODULES(seamldr_install_module, "tdx-host");
-> diff --git a/drivers/virt/coco/tdx-host/Kconfig b/drivers/virt/coco/tdx-host/Kconfig
-> index d35d85ef91c0..ca600a39d97b 100644
-> --- a/drivers/virt/coco/tdx-host/Kconfig
-> +++ b/drivers/virt/coco/tdx-host/Kconfig
-> @@ -1,6 +1,8 @@
->  config TDX_HOST_SERVICES
->  	tristate "TDX Host Services Driver"
->  	depends on INTEL_TDX_HOST
-> +	select FW_LOADER
-> +	select FW_UPLOAD
->  	default m
->  	help
->  	  Enable access to TDX host services like module update and
-> diff --git a/drivers/virt/coco/tdx-host/tdx-host.c b/drivers/virt/coco/tdx-host/tdx-host.c
-> index 8d46e3c039ba..1b93d20406c1 100644
-> --- a/drivers/virt/coco/tdx-host/tdx-host.c
-> +++ b/drivers/virt/coco/tdx-host/tdx-host.c
-> @@ -6,6 +6,7 @@
->   */
->  
->  #include <linux/device/faux.h>
-> +#include <linux/firmware.h>
->  #include <linux/module.h>
->  #include <linux/mod_devicetable.h>
->  #include <linux/sysfs.h>
-> @@ -94,8 +95,94 @@ static const struct attribute_group seamldr_group = {
->  	.attrs = seamldr_attrs,
->  };
->  
-> +static enum fw_upload_err tdx_fw_prepare(struct fw_upload *fwl,
-> +					 const u8 *data, u32 size)
-> +{
-> +	return FW_UPLOAD_ERR_NONE;
-> +}
-> +
-> +static enum fw_upload_err tdx_fw_write(struct fw_upload *fwl, const u8 *data,
-> +				       u32 offset, u32 size, u32 *written)
-> +{
-> +	int ret;
-> +
-> +	/*
-> +	 * tdx_fw_write() always processes all data on the first call with
-> +	 * offset == 0. Since it never returns partial success (it either
-> +	 * succeeds completely or fails), there is no subsequent call with
-> +	 * non-zero offsets.
-> +	 */
-> +	WARN_ON_ONCE(offset);
-> +	ret = seamldr_install_module(data, size);
-> +	switch (ret) {
-> +	case 0:
-> +		*written = size;
-> +		return FW_UPLOAD_ERR_NONE;
-> +	case -EBUSY:
-> +		return FW_UPLOAD_ERR_BUSY;
-> +	case -EIO:
-> +		return FW_UPLOAD_ERR_HW_ERROR;
-> +	case -ENOSPC:
-> +		return FW_UPLOAD_ERR_WEAROUT;
-> +	case -ENOMEM:
-> +		return FW_UPLOAD_ERR_RW_ERROR;
-> +	default:
-> +		return FW_UPLOAD_ERR_FW_INVALID;
-> +	}
-> +}
-> +
-> +static enum fw_upload_err tdx_fw_poll_complete(struct fw_upload *fwl)
-> +{
-> +	/*
-> +	 * TDX module updates are completed in the previous phase
-> +	 * (tdx_fw_write()). If any error occurred, the previous phase
-> +	 * would return an error code to abort the update process. In
-> +	 * other words, reaching this point means the update succeeded.
-> +	 */
-> +	return FW_UPLOAD_ERR_NONE;
-> +}
-> +
-> +/*
-> + * TDX module updates cannot be cancelled. Provide a stub function since
-> + * the firmware upload framework requires a .cancel operation.
-> + */
-> +static void tdx_fw_cancel(struct fw_upload *fwl)
-> +{
-> +}
-> +
-> +static const struct fw_upload_ops tdx_fw_ops = {
-> +	.prepare	= tdx_fw_prepare,
-> +	.write		= tdx_fw_write,
-> +	.poll_complete	= tdx_fw_poll_complete,
-> +	.cancel		= tdx_fw_cancel,
-> +};
-> +
-> +static void seamldr_deinit(void *tdx_fwl)
-> +{
-> +	firmware_upload_unregister(tdx_fwl);
-> +}
-> +
->  static int seamldr_init(struct device *dev)
->  {
-> +	const struct tdx_sys_info *tdx_sysinfo = tdx_get_sysinfo();
-> +	struct fw_upload *tdx_fwl;
-> +	int ret;
-> +
-> +	if (WARN_ON_ONCE(!tdx_sysinfo))
-> +		return -EIO;
-> +
-> +	if (!tdx_supports_runtime_update(tdx_sysinfo))
-> +		return 0;
-
-Hm. Do we still want to register seamldr_group for this case?
-
-Maybe move it up before the check?
-
-> +
-> +	tdx_fwl = firmware_upload_register(THIS_MODULE, dev, "tdx_module",
-> +					   &tdx_fw_ops, NULL);
-> +	if (IS_ERR(tdx_fwl))
-> +		return PTR_ERR(tdx_fwl);
-> +
-> +	ret = devm_add_action_or_reset(dev, seamldr_deinit, tdx_fwl);
-> +	if (ret)
-> +		return ret;
-> +
->  	return devm_device_add_group(dev, &seamldr_group);
->  }
->  
-> -- 
-> 2.47.3
-> 
-
--- 
-  Kiryl Shutsemau / Kirill A. Shutemov
+arch/x86/kvm/svm/avic.c is still using sev_es_guest(), isn't it?
