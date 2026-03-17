@@ -1,376 +1,739 @@
-Received: from mail-pl1-f182.google.com (mail-pl1-f182.google.com [209.85.214.182])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from out30-124.freemail.mail.aliyun.com (out30-124.freemail.mail.aliyun.com [115.124.30.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B8D41E3DE5
-	for <kvm@vger.kernel.org>; Tue, 17 Mar 2026 01:06:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.182
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3BD5C4964F
+	for <kvm@vger.kernel.org>; Tue, 17 Mar 2026 01:47:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.30.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773709601; cv=none; b=iIzwilFaNaE05FgWZ7Ca3VV1JfXd9LWWlMIMzT4OwR/mGIF+xMTm9dL5YyPTk34rHbQgiI0idaigDUKIL3F09PEVapuQ5AViKRCUCkQVRJ0VrmX1bV6ehAn2F5KntSaJMXt9163xbb9KSzBYptiiZ9BgEvuGBrKHGfXatRwSvic=
+	t=1773712028; cv=none; b=SuCncaLHqRUpNNxUld9lzzf6oQ7gvEfPtJksVUylbaZJbCcY8KSyTDgF38BxrJSQH1wtvTZmU4BY0vXcwEQXKjA6iKMb5Pe7Emr40LD15FAAeTjAh1vEK/ICDlMqmzh4O4mfkD+KIze81kri0SG3lpLS68ALiMHuRzIBsYymU+o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773709601; c=relaxed/simple;
-	bh=q2Hzxwc5lB6wUMulp9dp5c3gNXXM3DNB28y8fCE9vpw=;
+	s=arc-20240116; t=1773712028; c=relaxed/simple;
+	bh=qBVyS1vOO0wWKl9Z1I313iVDD0+Sn/eDhVQzO/pz4C8=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=FkGtlOCfBKWP3FzZXh5RB5NZgX+R2ZY1cQwTuEQvcx46dcyfYkFl66UdxG1obSapJN2nuq1XgNwjIVEB0hWb2NsLdvo3yjx9Hqsh5XKyP3HYKeD6CWztOl3M5c2Z3TFqJqWZ0Z5GoR/Fbs707ShxgzxorfaHEaiyrtuOY5dQsk0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=t6p2slWd; arc=none smtp.client-ip=209.85.214.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	 Content-Type:Content-Disposition:In-Reply-To; b=THsnJzRFK49C0fCS/n/+KERPOwyRHrhg+KkKwiMg59fspF9vxf/+vVxvfB8FfUlVDQu+j5DXAv97rS/mAucSBadd9c1ZJZ0Uy0gCTil6kg5ORvRoOy0mLgtjAnXa1pwClo++efyBp1HNrliMUdmUbXjOaheKsOUxbjpdiuIPLXc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; spf=pass smtp.mailfrom=linux.alibaba.com; dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b=SwzfUH2s; arc=none smtp.client-ip=115.124.30.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.alibaba.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="t6p2slWd"
-Received: by mail-pl1-f182.google.com with SMTP id d9443c01a7336-2aeab6ff148so24675ad.1
-        for <kvm@vger.kernel.org>; Mon, 16 Mar 2026 18:06:40 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1773709600; x=1774314400; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=oGZgtOm1Cce1gJW6SeSO5QkxuAynrOG8SKM5SJxHzmE=;
-        b=t6p2slWdH3Vcl3BxhbAcvl5x6q2MJ82YBaRsPwIK/ch6pKEgRCFnZXMKUji4My3rWL
-         Z1dboXqAlrSzLtkm1Q16hdME3DG96YYwJ9R4KzKyVEqEs/4B8gf5gEfOUDSaoaG+BxP7
-         wtYCSFwFM2VOzr3D4ukVBfYXgaHmBACe1t44XlBA9kSjRlHLDPuHS4jSSG0VTBaIvJgR
-         J1DfkSp7QzDV5QW1w/irupgWXiQKQxp9xR+BiFUzubCYeU8IvxsIcGwI1OAVbTEHiFjc
-         rWt8A9anAbR8N99J1sH4+FogArN4JFLYRMWvh8YoGaCFjuSEKZ1fZxjjcIeBQ5k5OPN/
-         FhIw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1773709600; x=1774314400;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=oGZgtOm1Cce1gJW6SeSO5QkxuAynrOG8SKM5SJxHzmE=;
-        b=PB7NGIDuNjNxESagD86E9OA92k6o05FjGKX0scEgWVMwl5FY8F3sKkq6Y3IRCaAdmA
-         vkaqIIy+dVT51Jx3QGUB7jB30KIuWQBsHbGImYyZ6uVObc9moJtVgqq19Z+to9VFqGwI
-         MnsjPAf/4Q6QHCZcp5fHl3GawWEzBNG2qyXb5Uy8zdvRhoDoT4V3HC4/ejAszDwAY6DU
-         +xUNqZW54a9VoEJUkgPnBbOiCUI7GfC7CQlGdGuQzL7wgJF+NJ2iDiv2GscVQBQqBVW+
-         pUv4sf4SWw5nhd5UfcgFH4p5yZIQrO398+MXIjCL5Yqq5wl+IhUhjkqfbW7hvmQpOixl
-         tT/Q==
-X-Forwarded-Encrypted: i=1; AJvYcCXn1awuAGPejnlrl406sScBU/7QIvRROjRyBqbpH+OXuQyWSMVm5X2RrLUto2MnVtqHHzs=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwQFidTpVCfSLkThk4s21y6s7xRr0dvzeOOXNqTKdgZiqjCEtaH
-	nlzvfCqEelHLPeECnBFcm3WPZIa4AeuH1nVZd0IG9I18lwWjrtkK3n+W3Wt9Emabxw==
-X-Gm-Gg: ATEYQzw4e6IgtWQvj34DMywPKzJ9HDS72xCQLEcmK0VIhx5dTUPB79CnUtEONMBveTH
-	5a4NrEUZn1p/6isb4yPd/8resYBiZafxEwO5VKMSVfIIc564v21Vl0xA/c/lUB6Cn9YY/i2M4ZZ
-	MMB/erjafXPS5q4aIbT55KKAYdzKFqcuHNPxlZe0QbKq1/5lp7lXMX9armW2FG9ELqulgoaTc/Q
-	r2ETDzRZoBxCXMEsGxyLXDDopyNFLV/U8hLR2X/XVl398J/2aNo7ce2/R+OrHwbOpoh78nReXqi
-	H9v06cWq5QLBYm1PCJOJ7ZeeU92LkCjljMyZDjWE9Y2XqijIkwsc6X8SljhY3FAppaom7oc/Mz1
-	zM45RcmjAhm9zRYPCJ4N5tTvhE8zZvr2Mu/6fAF2YgMYXsjYnFE1de0bIqwQdBSqQrxlaJvmDUW
-	lN9SjLvrO1PRXyLy/BsJBwM2LAwHInuElZi4mZlNvyQMYXFE3sHOrCq9RXKP3t4g==
-X-Received: by 2002:a17:902:d2ce:b0:2ad:6f9b:7817 with SMTP id d9443c01a7336-2b06404f4d7mr1768365ad.22.1773709599273;
-        Mon, 16 Mar 2026 18:06:39 -0700 (PDT)
-Received: from google.com (168.136.83.34.bc.googleusercontent.com. [34.83.136.168])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-c73ebb6336bsm11427073a12.21.2026.03.16.18.06.38
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 16 Mar 2026 18:06:38 -0700 (PDT)
-Date: Tue, 17 Mar 2026 01:06:34 +0000
-From: Samiullah Khawaja <skhawaja@google.com>
-To: Vipin Sharma <vipinsh@google.com>
-Cc: David Woodhouse <dwmw2@infradead.org>, 
-	Lu Baolu <baolu.lu@linux.intel.com>, Joerg Roedel <joro@8bytes.org>, Will Deacon <will@kernel.org>, 
-	Jason Gunthorpe <jgg@ziepe.ca>, Robin Murphy <robin.murphy@arm.com>, 
-	Kevin Tian <kevin.tian@intel.com>, Alex Williamson <alex@shazbot.org>, 
-	Shuah Khan <shuah@kernel.org>, iommu@lists.linux.dev, linux-kernel@vger.kernel.org, 
-	kvm@vger.kernel.org, Saeed Mahameed <saeedm@nvidia.com>, 
-	Adithya Jayachandran <ajayachandra@nvidia.com>, Parav Pandit <parav@nvidia.com>, 
-	Leon Romanovsky <leonro@nvidia.com>, William Tu <witu@nvidia.com>, 
-	Pratyush Yadav <pratyush@kernel.org>, Pasha Tatashin <pasha.tatashin@soleen.com>, 
-	David Matlack <dmatlack@google.com>, Andrew Morton <akpm@linux-foundation.org>, 
-	Chris Li <chrisl@kernel.org>, Pranjal Shrivastava <praan@google.com>, 
-	YiFei Zhu <zhuyifei@google.com>
-Subject: Re: [PATCH 01/14] iommu: Implement IOMMU LU FLB callbacks
-Message-ID: <abidn8EGmi88wpCr@google.com>
-References: <20260203220948.2176157-1-skhawaja@google.com>
- <20260203220948.2176157-2-skhawaja@google.com>
- <20260316165018.GA1768676.vipinsh@google.com>
+	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b="SwzfUH2s"
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux.alibaba.com; s=default;
+	t=1773712015; h=Date:From:To:Subject:Message-ID:MIME-Version:Content-Type;
+	bh=550e9k27HxTDN2Y3kauPQtSDI42xPhmGgNHyghg0pF4=;
+	b=SwzfUH2swh2ugqiWy6/hjNJj1gaT4i/Y9DEJnuxsqni5JxLdgIp7Hg4ymLnP0gx/eepMSQZ9v3KQ8+rpSSY6X98oz4WoAWfIDEGHct6VbdFz/VK+BlbpRYMn2wGgdWISpzlJ23l997L5boQ8MI9RvSGSy8y/MIBaDPmbZ996Jrc=
+X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R141e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam011083073210;MF=yaoyuan@linux.alibaba.com;NM=1;PH=DS;RN=8;SR=0;TI=SMTPD_---0X.92FWg_1773712014;
+Received: from localhost(mailfrom:yaoyuan@linux.alibaba.com fp:SMTPD_---0X.92FWg_1773712014 cluster:ay36)
+          by smtp.aliyun-inc.com;
+          Tue, 17 Mar 2026 09:46:55 +0800
+Date: Tue, 17 Mar 2026 09:46:54 +0800
+From: Yao Yuan <yaoyuan@linux.alibaba.com>
+To: Jing Zhang <jingzhangos@google.com>
+Cc: KVM <kvm@vger.kernel.org>, KVMARM <kvmarm@lists.linux.dev>, 
+	Marc Zyngier <maz@kernel.org>, Joey Gouly <joey.gouly@arm.com>, 
+	Andrew Jones <andrew.jones@linux.dev>, Alexandru Elisei <alexandru.elisei@arm.com>, 
+	Oliver Upton <oliver.upton@linux.dev>
+Subject: Re: [kvm-unit-tests PATCH v1 2/3] lib: arm64: Add bare-metal guest
+ execution framework
+Message-ID: <3tnpopbcpcpzr5lls4x5htbvvcaziyxealwb2u2ermlqjqimqc@ppwniolkahtj>
+References: <20260316224349.2360482-1-jingzhangos@google.com>
+ <20260316224349.2360482-3-jingzhangos@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260316165018.GA1768676.vipinsh@google.com>
+In-Reply-To: <20260316224349.2360482-3-jingzhangos@google.com>
 
-On Mon, Mar 16, 2026 at 03:54:50PM -0700, Vipin Sharma wrote:
->On Tue, Feb 03, 2026 at 10:09:35PM +0000, Samiullah Khawaja wrote:
->> +config IOMMU_LIVEUPDATE
->> +	bool "IOMMU live update state preservation support"
->> +	depends on LIVEUPDATE && IOMMUFD
->> +	help
->> +	  Enable support for preserving IOMMU state across a kexec live update.
->> +
->> +	  This allows devices managed by iommufd to maintain their DMA mappings
->> +	  during kexec base kernel update.
->> +
->> +	  If unsure, say N.
->> +
+On Mon, Mar 16, 2026 at 03:43:48PM +0800, Jing Zhang wrote:
+> To test advanced KVM features such as nested virtualization (NV) and
+> GICv4 direct interrupt injection, kvm-unit-tests needs the ability to
+> act as an L1 hypervisor running at EL2 and manage its own L2 guests.
 >
->Do we need a separate config? Can't we just use CONFIG_LIVEUPDATE?
+> Introduce a lightweight guest management library that provides the
+> infrastructure to create, configure, and execute nested guests.
+>
+> This framework includes:
+> - Guest lifecycle management: `guest_create()` and `guest_destroy()`
+>   APIs to allocate guest context and setup Stage-2 identity mappings
+>   for code and stack using the s2mmu library.
+> - Context switching: The `guest_run()` assembly routine handles
+>   saving the host (L1) callee-saved registers and loading the guest
+>   (L2) GPRs and EL1 system registers.
+> - VM-Exit handling: Installs an EL2 trap handler (`guest_hyp_vectors`)
+>   to intercept guest exits and route them to `guest_c_exception_handler`
+>   to determine whether to return to the host test logic or resume.
+> - Guest-internal exceptions: Provides `guest_el1_vectors` to catch
+>   Sync, IRQ, FIQ, and SError exceptions occurring entirely within the
+>   guest (EL1) without trapping to the host.
+>
+> Signed-off-by: Jing Zhang <jingzhangos@google.com>
+> ---
+>  arm/Makefile.arm64     |   2 +
+>  lib/arm64/asm/guest.h  | 156 ++++++++++++++++++++++++
+>  lib/arm64/guest.c      | 197 ++++++++++++++++++++++++++++++
+>  lib/arm64/guest_arch.S | 263 +++++++++++++++++++++++++++++++++++++++++
+>  4 files changed, 618 insertions(+)
+>  create mode 100644 lib/arm64/asm/guest.h
+>  create mode 100644 lib/arm64/guest.c
+>  create mode 100644 lib/arm64/guest_arch.S
+>
+> diff --git a/arm/Makefile.arm64 b/arm/Makefile.arm64
+> index 5e50f5ba..9026fd71 100644
+> --- a/arm/Makefile.arm64
+> +++ b/arm/Makefile.arm64
+> @@ -41,6 +41,8 @@ cflatobjs += lib/arm64/processor.o
+>  cflatobjs += lib/arm64/spinlock.o
+>  cflatobjs += lib/arm64/gic-v3-its.o lib/arm64/gic-v3-its-cmd.o
+>  cflatobjs += lib/arm64/stage2_mmu.o
+> +cflatobjs += lib/arm64/guest.o
+> +cflatobjs += lib/arm64/guest_arch.o
+>
+>  ifeq ($(CONFIG_EFI),y)
+>  cflatobjs += lib/acpi.o
+> diff --git a/lib/arm64/asm/guest.h b/lib/arm64/asm/guest.h
+> new file mode 100644
+> index 00000000..1d70873d
+> --- /dev/null
+> +++ b/lib/arm64/asm/guest.h
+> @@ -0,0 +1,156 @@
+> +/*
+> + * Copyright (C) 2026, Google LLC.
+> + * Author: Jing Zhang <jingzhangos@google.com>
+> + *
+> + * SPDX-License-Identifier: LGPL-2.0-or-later
+> + */
+> +#ifndef _ASMARM64_GUEST_H_
+> +#define _ASMARM64_GUEST_H_
+> +
+> +/* Offsets for assembly (Must match struct guest) */
+> +#define GUEST_X_OFFSET			0
+> +#define GUEST_ELR_OFFSET		248
+> +#define GUEST_SPSR_OFFSET		256
+> +#define GUEST_HCR_OFFSET		264
+> +#define GUEST_VTTBR_OFFSET		272
+> +#define GUEST_SCTLR_OFFSET		280
+> +#define GUEST_VBAR_OFFSET		288
+> +#define GUEST_SP_EL1_OFFSET		296
+> +#define GUEST_ESR_OFFSET		304
+> +#define GUEST_FAR_OFFSET		312
+> +#define GUEST_HPFAR_OFFSET		320
+> +#define GUEST_EXIT_CODE_OFFSET		328
+> +#define GUEST_TPIDR_EL1_OFFSET		336
+> +#define GUEST_ICH_VMCR_EL2_OFFSET	344
+> +
+> +#ifndef __ASSEMBLY__
+> +
+> +#include <libcflat.h>
+> +#include <asm/stage2_mmu.h>
+> +
+> +/* HCR_EL2 Definitions */
+> +#define HCR_VM		(1UL << 0)	/* Virtualization Enable */
+> +#define HCR_FMO		(1UL << 3)	/* Physical FIQ Routing */
+> +#define HCR_IMO		(1UL << 4)	/* Physical IRQ Routing */
+> +#define HCR_AMO		(1UL << 5)	/* Physical SError Interrupt Routing */
+> +#define HCR_RW		(1UL << 31)	/* Execution State: AArch64 */
+> +#define HCR_DC		(1UL << 12)	/* Default Cacheable */
+> +#define HCR_E2H		(1UL << 34)	/* EL2 Host */
+> +
+> +#define HCR_GUEST_FLAGS (HCR_VM | HCR_FMO | HCR_IMO | HCR_AMO | HCR_RW | \
+> +			 HCR_DC | HCR_E2H)
 
-We have a separate CONFIG here so that the phase 1/2 split for iommu
-preservation doesn't break the vfio preservation. See following
-discussion in the RFCv2:
+Set HCR_DC works for the testing in patch 03, for more
+possible testing in L2 I guess the L2 guest's own paging is
+necessary, this can be done by mapping L1 VA to L1 PA in
+L2's page table (like kselftesting), then do IPA->PA with
+Identity mapping in L1's Stage 2 mapping.
 
-https://lore.kernel.org/all/aYEpHBYxlQxhXrwl@google.com/
+> +
+> +/* ICH_VMCR_EL2 bit definition */
+> +#define ICH_VMCR_PMR_SHIFT	24
+> +#define ICH_VMCR_PMR_MASK	(0xffUL << ICH_VMCR_PMR_SHIFT)
+> +#define ICH_VMCR_ENG0_SHIFT	0
+> +#define ICH_VMCR_ENG0_MASK	(1 << ICH_VMCR_ENG0_SHIFT)
+> +#define ICH_VMCR_ENG1_SHIFT	1
+> +#define ICH_VMCR_ENG1_MASK	(1 << ICH_VMCR_ENG1_SHIFT)
+> +
+> +/* Guest stack size */
+> +#define GUEST_STACK_SIZE		SZ_64K
+> +
+> +/*
+> + * Result from Handler:
+> + * RESUME: Keep guest running (ERET immediately)
+> + * EXIT:   Return to Host C caller
+> + */
+> +enum guest_handler_result {
+> +	GUEST_ACTION_RESUME,
+> +	GUEST_ACTION_EXIT
+> +};
+> +
+> +struct guest;
+> +typedef enum guest_handler_result (*guest_handler_t)(struct guest *guest);
+> +
+> +/* EL1 (Guest-internal) Exception Vector */
+> +enum guest_el1_vector {
+> +	GUEST_EL1_SYNC,
+> +	GUEST_EL1_IRQ,
+> +	GUEST_EL1_FIQ,
+> +	GUEST_EL1_SERROR,
+> +	GUEST_EL1_MAX
+> +};
+> +
+> +/*
+> + * Guest EL1 Exception Frame (pushed to guest stack by asm stub)
+> + * We use a simplified frame: x0-x30, elr, spsr. size = 33*8
+> + */
+> +struct guest_el1_regs {
+> +	unsigned long regs[31];
+> +	unsigned long elr;
+> +	unsigned long spsr;
+> +};
+> +
+> +typedef void (*guest_el1_handler_t)(struct guest_el1_regs *regs, unsigned int esr);
+> +
+> +/* Exceptions from the Guest (Lower EL using AArch64) */
+> +enum guest_vector {
+> +	GUEST_VECTOR_SYNC,
+> +	GUEST_VECTOR_IRQ,
+> +	GUEST_VECTOR_FIQ,
+> +	GUEST_VECTOR_SERROR,
+> +	GUEST_VECTOR_MAX
+> +};
+> +
+> +/*
+> + * Guest Context Structure
+> + * This will be pointed to by TPIDR_EL1 while the guest is running.
+> + */
+> +struct guest_context {
+> +	guest_el1_handler_t handlers[GUEST_EL1_MAX];
+> +};
+> +
+> +struct guest {
+> +	/* 0x000: General Purpose Registers */
+> +	unsigned long x[31]; /* x0..x30 */
+> +
+> +	/* 0x0F8: Execution State */
+> +	unsigned long elr_el2;
+> +	unsigned long spsr_el2;
+> +
+> +	/* 0x108: Control Registers */
+> +	unsigned long hcr_el2;
+> +	unsigned long vttbr_el2;
+> +	unsigned long sctlr_el1;
+> +	unsigned long vbar_el1;
+> +	unsigned long sp_el1;
+> +
+> +	/* 0x130: Exit Information */
+> +	unsigned long esr_el2;
+> +	unsigned long far_el2;
+> +	unsigned long hpfar_el2;
+> +	unsigned long exit_code; /* enum guest_vector */
+> +	unsigned long tpidr_el1;
+> +
+> +	/* 0x158: GIC Registers */
+> +	unsigned long ich_vmcr_el2;
+> +
+> +	/* 0x160: Exception Handlers */
+> +	guest_handler_t handlers[GUEST_VECTOR_MAX];
+> +	struct guest_context *guest_context;
+> +
+> +	struct s2_mmu *s2mmu;
+> +};
+> +
+> +/* API */
+> +struct guest *guest_create(int vmid, void (*guest_func)(void), enum s2_granule granule);
+> +void guest_destroy(struct guest *guest);
+> +
+> +/* Configuration */
+> +void guest_set_vector(struct guest *guest, void *vector_table);
+> +void guest_set_stack(struct guest *guest, void *stack_top);
+> +void guest_install_handler(struct guest *guest, enum guest_vector v, guest_handler_t handler);
+> +
+> +/* Install handler for exceptions INSIDE EL1 */
+> +void guest_install_el1_handler(struct guest *guest, enum guest_el1_vector v, guest_el1_handler_t handler);
+> +
+> +unsigned long guest_c_exception_handler(struct guest *guest, unsigned long vector_offset);
+> +void guest_el1_c_handler(struct guest_el1_regs *regs, unsigned int vector);
+> +
+> +/* Core Run Loop */
+> +void guest_run(struct guest *guest);
+> +
+> +#endif /* __ASSEMBLY__ */
+> +#endif /* _ASMARM64_GUEST_H_ */
+> diff --git a/lib/arm64/guest.c b/lib/arm64/guest.c
+> new file mode 100644
+> index 00000000..6c256c11
+> --- /dev/null
+> +++ b/lib/arm64/guest.c
+> @@ -0,0 +1,197 @@
+> +/*
+> + * Copyright (C) 2026, Google LLC.
+> + * Author: Jing Zhang <jingzhangos@google.com>
+> + *
+> + * SPDX-License-Identifier: LGPL-2.0-or-later
+> + */
+> +#include <libcflat.h>
+> +#include <asm/guest.h>
+> +#include <asm/io.h>
+> +#include <asm/sysreg.h>
+> +#include <asm/barrier.h>
+> +#include <alloc_page.h>
+> +#include <alloc.h>
+> +
+> +/* Compile-time checks to ensure Assembly macros match C Struct */
+> +_Static_assert(offsetof(struct guest, x) == GUEST_X_OFFSET,
+> +	       "GUEST_X_OFFSET mismatch");
+> +_Static_assert(offsetof(struct guest, elr_el2) == GUEST_ELR_OFFSET,
+> +	       "GUEST_ELR_OFFSET mismatch");
+> +_Static_assert(offsetof(struct guest, spsr_el2) == GUEST_SPSR_OFFSET,
+> +	       "GUEST_SPSR_OFFSET mismatch");
+> +_Static_assert(offsetof(struct guest, hcr_el2) == GUEST_HCR_OFFSET,
+> +	       "GUEST_HCR_OFFSET mismatch");
+> +_Static_assert(offsetof(struct guest, vttbr_el2) == GUEST_VTTBR_OFFSET,
+> +	       "GUEST_VTTBR_OFFSET mismatch");
+> +_Static_assert(offsetof(struct guest, sctlr_el1) == GUEST_SCTLR_OFFSET,
+> +	       "GUEST_SCTLR_OFFSET mismatch");
+> +_Static_assert(offsetof(struct guest, vbar_el1) == GUEST_VBAR_OFFSET,
+> +	       "GUEST_VBAR_OFFSET mismatch");
+> +_Static_assert(offsetof(struct guest, sp_el1) == GUEST_SP_EL1_OFFSET,
+> +	       "GUEST_SP_EL1_OFFSET mismatch");
+> +_Static_assert(offsetof(struct guest, esr_el2) == GUEST_ESR_OFFSET,
+> +	       "GUEST_ESR_OFFSET mismatch");
+> +_Static_assert(offsetof(struct guest, far_el2) == GUEST_FAR_OFFSET,
+> +	       "GUEST_FAR_OFFSET mismatch");
+> +_Static_assert(offsetof(struct guest, hpfar_el2) == GUEST_HPFAR_OFFSET,
+> +	       "GUEST_HPFAR_OFFSET mismatch");
+> +_Static_assert(offsetof(struct guest, exit_code) == GUEST_EXIT_CODE_OFFSET,
+> +	       "GUEST_EXIT_CODE_OFFSET mismatch");
+> +_Static_assert(offsetof(struct guest, tpidr_el1) == GUEST_TPIDR_EL1_OFFSET,
+> +		"GUEST_TPIDR_EL1_OFFSET mismatch");
+> +_Static_assert(offsetof(struct guest, ich_vmcr_el2) == GUEST_ICH_VMCR_EL2_OFFSET,
+> +		"GUEST_ICH_VMCR_EL2_OFFSET mismatch");
+> +
+> +/*
+> + * C-Entry for Exception Handling
+> + * Returns 0 to Resume Guest, 1 to Exit to Host Caller
+> + */
+> +unsigned long guest_c_exception_handler(struct guest *guest, unsigned long vector_offset)
+> +{
+> +	enum guest_vector vector = (enum guest_vector)guest->exit_code;
+> +
+> +	/* Save Trap Info */
+> +	guest->esr_el2 = read_sysreg(esr_el2);
+> +	guest->far_el2 = read_sysreg(far_el2);
+> +	guest->hpfar_el2 = read_sysreg(hpfar_el2);
+> +
+> +	/* Invoke Handler if registered */
+> +	if (guest->handlers[vector]) {
+> +		if (guest->handlers[vector](guest) == GUEST_ACTION_RESUME) {
+> +			return 0; /* ASM stub will restore and ERET */
+> +		}
+> +	}
+> +
+> +	/* Default: Exit to caller */
+> +	return 1;
+> +}
+> +
+> +/* --- EL1 (Guest-Internal) Vector Handling --- */
+> +
+> +void guest_install_el1_handler(struct guest *guest, enum guest_el1_vector v, guest_el1_handler_t handler)
+> +{
+> +	if (guest && guest->guest_context && v < GUEST_EL1_MAX)
+> +		guest->guest_context->handlers[v] = handler;
+> +}
+> +
+> +void guest_el1_c_handler(struct guest_el1_regs *regs, unsigned int vector)
+> +{
+> +	struct guest_context *ctx = (struct guest_context *)read_sysreg(tpidr_el1);
+> +	unsigned int esr = read_sysreg(esr_el1);
+> +
+> +	if (ctx && vector < GUEST_EL1_MAX && ctx->handlers[vector]) {
+> +		ctx->handlers[vector](regs, esr);
+> +	} else {
+> +		printf("Guest: Unhandled Exception Vector %d, ESR=0x%x\n", vector, esr);
+> +		asm volatile("hvc #0xFFFF");
+> +	}
+> +}
+> +
+> +extern void guest_el1_vectors(void);
+> +
+> +static struct guest *__guest_create(struct s2_mmu *s2_ctx, void *entry_point)
+> +{
+> +	struct guest *guest = calloc(1, sizeof(struct guest));
+> +	struct guest_context *guest_ctx;
+> +	unsigned long guest_ctx_pa;
+> +
+> +	/* Allocate the internal context table */
+> +	guest_ctx = (void *)alloc_page();
+> +	memset(guest_ctx, 0, PAGE_SIZE);
+> +	guest->guest_context = guest_ctx;
+> +
+> +	guest_ctx_pa = virt_to_phys(guest_ctx);
+> +	if (s2_ctx)
+> +		s2mmu_map(s2_ctx, guest_ctx_pa, guest_ctx_pa, PAGE_SIZE, S2_MAP_RW);
+> +
+> +	guest->tpidr_el1 = guest_ctx_pa;;
+> +
+> +	guest->elr_el2 = (unsigned long)entry_point;
+> +	guest->spsr_el2 = 0x3C5; /* M=EL1h, DAIF=Masked */
+> +	guest->hcr_el2 = HCR_GUEST_FLAGS;
+> +
+> +	if (s2_ctx) {
+> +		guest->vttbr_el2 = virt_to_phys(s2_ctx->pgd);
+> +		guest->vttbr_el2 |= ((unsigned long)s2_ctx->vmid << 48);
+> +	}
+> +
+> +	guest->sctlr_el1 = read_sysreg(sctlr_el1);
+> +	guest->sctlr_el1 |= SCTLR_EL1_C | SCTLR_EL1_I | SCTLR_EL1_M;
+> +
+> +	guest->ich_vmcr_el2 = read_sysreg(ich_vmcr_el2);
+> +	guest->ich_vmcr_el2 |= (0xFFUL << ICH_VMCR_PMR_SHIFT) | (1UL << ICH_VMCR_ENG1_SHIFT);
+> +
+> +	guest->vbar_el1 = (unsigned long)guest_el1_vectors;
+> +	guest->s2mmu = s2_ctx;
+> +
+> +	return guest;
+> +}
+> +
+> +struct guest *guest_create(int vmid, void (*guest_func)(void), enum s2_granule granule)
+> +{
+> +	unsigned long guest_pa, code_base, stack_pa;
+> +	unsigned long *stack_page;
+> +	struct guest *guest;
+> +	struct s2_mmu *ctx;
+> +
+> +	ctx = s2mmu_init(vmid, granule, true);
+> +	/*
+> +	 * Map the Host's code segment Identity Mapped (IPA=PA).
+> +	 * To be safe, we map a large chunk (e.g., 2MB) around the function
+> +	 * to capture any helper functions the compiler might generate calls to.
+> +	 */
+> +	guest_pa = virt_to_phys((void *)guest_func);
+> +	code_base = guest_pa & ~(SZ_2M - 1);
+> +	s2mmu_map(ctx, code_base, code_base, SZ_2M, S2_MAP_RW);
+> +
+> +	/*
+> +	 * Map Stack
+> +	 * Allocate 16 pages (64K) in Host, get its PA, and map it for Guest.
+> +	 */
+> +	stack_page = alloc_pages(get_order(GUEST_STACK_SIZE >> PAGE_SHIFT));
+> +	stack_pa = virt_to_phys(stack_page);
+> +	/* Identity Map it (IPA = PA) */
+> +	s2mmu_map(ctx, stack_pa, stack_pa, GUEST_STACK_SIZE, S2_MAP_RW);
+> +
+> +	s2mmu_enable(ctx);
+> +
+> +	/* Create Guest */
+> +	/* Entry point is the PA of the function (Identity Mapped) */
+> +	guest = __guest_create(ctx, (void *)guest_pa);
+> +
+> +	/*
+> +	 * Setup Guest Stack Pointer
+> +	 * Must match where we mapped the stack + Offset
+> +	 */
+> +	guest_set_stack(guest, (void *)(stack_pa + GUEST_STACK_SIZE));
+> +
+> +	/* Map UART identity mapped, printf() available to guest */
+> +	s2mmu_map(ctx, 0x09000000, 0x09000000, PAGE_SIZE, S2_MAP_DEVICE);
+> +
+> +	return guest;
+> +}
+> +
+> +void guest_destroy(struct guest *guest)
+> +{
+> +	s2mmu_disable(guest->s2mmu);
+> +	s2mmu_destroy(guest->s2mmu);
+> +	if (guest->guest_context)
+> +		free_page(guest->guest_context);
+> +	free(guest);
+> +}
+> +
+> +void guest_set_vector(struct guest *guest, void *vector_table)
+> +{
+> +	guest->vbar_el1 = (unsigned long)vector_table;
+> +}
+> +
+> +void guest_set_stack(struct guest *guest, void *stack_top)
+> +{
+> +	guest->sp_el1 = (unsigned long)stack_top;
+> +}
+> +
+> +void guest_install_handler(struct guest *guest, enum guest_vector v, guest_handler_t handler)
+> +{
+> +	if (v < GUEST_VECTOR_MAX)
+> +		guest->handlers[v] = handler;
+> +}
+> diff --git a/lib/arm64/guest_arch.S b/lib/arm64/guest_arch.S
+> new file mode 100644
+> index 00000000..cb7074d7
+> --- /dev/null
+> +++ b/lib/arm64/guest_arch.S
+> @@ -0,0 +1,263 @@
+> +/*
+> + * Copyright (C) 2026, Google LLC.
+> + * Author: Jing Zhang <jingzhangos@google.com>
+> + *
+> + * SPDX-License-Identifier: LGPL-2.0-or-later
+> + */
+> +#define __ASSEMBLY__
+> +#include <asm/guest.h>
+> +
+> +.global guest_run
+> +guest_run:
+> +	/* x0 = struct guest pointer */
+> +
+> +	/* Save Host Callee-Saved Regs */
+> +	stp	x29, x30, [sp, #-16]!
+> +	stp	x27, x28, [sp, #-16]!
+> +	stp	x25, x26, [sp, #-16]!
+> +	stp	x23, x24, [sp, #-16]!
+> +	stp	x21, x22, [sp, #-16]!
+> +	stp	x19, x20, [sp, #-16]!
+> +
+> +	/* Cache Guest Pointer in TPIDR_EL2 */
+> +	msr	tpidr_el2, x0
+> +
+> +	/* Configure ICC_SRE_EL2 to allow EL1 access to SysRegs */
+> +	/* Bit 3 (Enable) = 1, Bit 0 (SRE) = 1 */
+> +	mrs	x1, icc_sre_el2
+> +	orr	x1, x1, #1
+> +	orr	x1, x1, #(1 << 3)
+> +	msr	icc_sre_el2, x1
+> +	isb
+> +
+> +	/* Enable virtual CPU interface */
+> +	mrs	x1, ich_hcr_el2
+> +	orr	x1, x1, #1
+> +	msr	ich_hcr_el2, x1
+> +
+> +	/* Load Guest System Registers */
+> +	ldr	x1, [x0, #GUEST_ELR_OFFSET]
+> +	msr	elr_el2, x1
+> +	ldr	x1, [x0, #GUEST_SPSR_OFFSET]
+> +	msr	spsr_el2, x1
+> +	ldr	x1, [x0, #GUEST_HCR_OFFSET]
+> +	msr	hcr_el2, x1
+> +	ldr	x1, [x0, #GUEST_VTTBR_OFFSET]
+> +	msr	vttbr_el2, x1
+> +	ldr	x1, [x0, #GUEST_SCTLR_OFFSET]
+> +	msr	S3_5_c1_c0_0, x1
+> +	ldr	x1, [x0, #GUEST_VBAR_OFFSET]
+> +	msr	S3_5_c12_c0_0, x1
+> +	ldr	x1, [x0, #GUEST_SP_EL1_OFFSET]
+> +	msr	sp_el1, x1
+> +	ldr	x1, [x0, #GUEST_TPIDR_EL1_OFFSET]
+> +	msr	tpidr_el1, x1
+> +	ldr	x1, [x0, #GUEST_ICH_VMCR_EL2_OFFSET]
+> +	msr	ich_vmcr_el2, x1
+> +
+> +	/* Load Guest GPRs */
+> +	ldp	x1, x2, [x0, #8]
+> +	ldp	x3, x4, [x0, #24]
+> +	ldp	x5, x6, [x0, #40]
+> +	ldp	x7, x8, [x0, #56]
+> +	ldp	x9, x10, [x0, #72]
+> +	ldp	x11, x12, [x0, #88]
+> +	ldp	x13, x14, [x0, #104]
+> +	ldp	x15, x16, [x0, #120]
+> +	ldp	x17, x18, [x0, #136]
+> +	ldp	x19, x20, [x0, #152]
+> +	ldp	x21, x22, [x0, #168]
+> +	ldp	x23, x24, [x0, #184]
+> +	ldp	x25, x26, [x0, #200]
+> +	ldp	x27, x28, [x0, #216]
+> +	ldp	x29, x30, [x0, #232]
+> +	ldr	x0, [x0, #0]
+> +
+> +	/* Install Trap Handler */
+> +	adrp	x29, guest_hyp_vectors
+> +	add	x29, x29, :lo12:guest_hyp_vectors
+> +	msr	vbar_el2, x29
+> +
+> +	/* Restore x29 from struct (via tpidr_el2) */
+> +	mrs	x29, tpidr_el2
+> +	ldr	x29, [x29, #232]
+> +
+> +	isb
+> +	eret
+> +
+> +	.align 11
+> +guest_hyp_vectors:
+> +	.skip 0x400
+> +
+> +guest_exit_sync:
+> +	stp	x0, x1, [sp, #-16]!
+> +	mrs	x0, tpidr_el2
+> +	mov	x1, #0
+> +	str	x1, [x0, #GUEST_EXIT_CODE_OFFSET]
+> +	b	guest_common_exit
+> +
+> +	.balign 0x80
+> +
+> +guest_exit_irq:
+> +	stp	x0, x1, [sp, #-16]!
+> +	mrs	x0, tpidr_el2
+> +	mov	x1, #1
+> +	str	x1, [x0, #GUEST_EXIT_CODE_OFFSET]
+> +	b	guest_common_exit
+> +
+> +guest_common_exit:
+> +	stp	x2, x3, [x0, #16]
+> +	stp	x4, x5, [x0, #32]
+> +	stp	x6, x7, [x0, #48]
+> +	stp	x8, x9, [x0, #64]
+> +	stp	x10, x11, [x0, #80]
+> +	stp	x12, x13, [x0, #96]
+> +	stp	x14, x15, [x0, #112]
+> +	stp	x16, x17, [x0, #128]
+> +	stp	x18, x19, [x0, #144]
+> +	stp	x20, x21, [x0, #160]
+> +	stp	x22, x23, [x0, #176]
+> +	stp	x24, x25, [x0, #192]
+> +	stp	x26, x27, [x0, #208]
+> +	stp	x28, x29, [x0, #224]
+> +	str	x30, [x0, #240]
+> +
+> +	ldp	x2, x3, [sp], #16
+> +	stp	x2, x3, [x0, #0]
+> +
+> +	mrs	x1, elr_el2
+> +	str	x1, [x0, #GUEST_ELR_OFFSET]
+> +	mrs	x1, spsr_el2
+> +	str	x1, [x0, #GUEST_SPSR_OFFSET]
+> +	mrs	x1, esr_el2
+> +	str	x1, [x0, #GUEST_ESR_OFFSET]
+> +	mrs	x1, far_el2
+> +	str	x1, [x0, #GUEST_FAR_OFFSET]
+> +	mrs	x1, hpfar_el2
+> +	str	x1, [x0, #GUEST_HPFAR_OFFSET]
+> +	mrs	x1, sp_el1
+> +	str	x1, [x0, #GUEST_SP_EL1_OFFSET]
+> +	mrs	x1, ich_vmcr_el2
+> +	str	x1, [x0, #GUEST_ICH_VMCR_EL2_OFFSET]
+> +
+> +	/* x29 contains vector offset from entry */
+> +	mov	x1, x29
+> +	bl	guest_c_exception_handler
+> +	cbz	x0, guest_resume_guest
+> +
+> +	/* EXIT */
+> +	/* Restore Host Callee-Saved Regs */
+> +	ldp	x19, x20, [sp], #16
+> +	ldp	x21, x22, [sp], #16
+> +	ldp	x23, x24, [sp], #16
+> +	ldp	x25, x26, [sp], #16
+> +	ldp	x27, x28, [sp], #16
+> +	ldp	x29, x30, [sp], #16
+> +	ret
+> +
+> +	/* RESUME */
+> +guest_resume_guest:
+> +	mrs	x0, tpidr_el2
+> +	ldr	x1, [x0, #GUEST_ELR_OFFSET]
+> +	msr	elr_el2, x1
+> +	ldr	x1, [x0, #GUEST_SPSR_OFFSET]
+> +	msr	spsr_el2, x1
+> +	ldr	x1, [x0, #GUEST_SP_EL1_OFFSET]
+> +	msr	sp_el1, x1
+> +
+> +	ldp	x1, x2, [x0, #8]
+> +	ldp	x3, x4, [x0, #24]
+> +	ldp	x5, x6, [x0, #40]
+> +	ldp	x7, x8, [x0, #56]
+> +	ldp	x9, x10, [x0, #72]
+> +	ldp	x11, x12, [x0, #88]
+> +	ldp	x13, x14, [x0, #104]
+> +	ldp	x15, x16, [x0, #120]
+> +	ldp	x17, x18, [x0, #136]
+> +	ldp	x19, x20, [x0, #152]
+> +	ldp	x21, x22, [x0, #168]
+> +	ldp	x23, x24, [x0, #184]
+> +	ldp	x25, x26, [x0, #200]
+> +	ldp	x27, x28, [x0, #216]
+> +	ldp	x29, x30, [x0, #232]
+> +	ldr	x0, [x0, #0]
+> +	eret
+> +
+> +/* EL1 Vector Table */
+> +.align 11
+> +.global guest_el1_vectors
+> +guest_el1_vectors:
+> +	/* Sync (0x000) */
+> +	.skip 0x200
+> +	/* Sync (0x200) */
+> +	stp	x29, x30, [sp, #-16]!
+> +	mov	x29, #0
+> +	b	guest_el1_common
+> +	.skip 0x80 - 12
+> +	/* IRQ (0x280) */
+> +	stp	x29, x30, [sp, #-16]!
+> +	mov	x29, #1
+> +	b	guest_el1_common
+> +	.skip 0x80 - 12
+> +	/* FIQ (0x300) */
+> +	stp	x29, x30, [sp, #-16]!
+> +	mov	x29, #2
+> +	b	guest_el1_common
+> +	.skip 0x80 - 12
+> +	/* SError (0x380) */
+> +	stp	x29, x30, [sp, #-16]!
+> +	mov	x29, #3
+> +	b	guest_el1_common
+> +	.skip 0x400
+> +
+> +guest_el1_common:
+> +	sub	sp, sp, #264
+> +	stp	x0, x1, [sp, #0]
+> +	stp	x2, x3, [sp, #16]
+> +	stp	x4, x5, [sp, #32]
+> +	stp	x6, x7, [sp, #48]
+> +	stp	x8, x9, [sp, #64]
+> +	stp	x10, x11, [sp, #80]
+> +	stp	x12, x13, [sp, #96]
+> +	stp	x14, x15, [sp, #112]
+> +	stp	x16, x17, [sp, #128]
+> +	stp	x18, x19, [sp, #144]
+> +	stp	x20, x21, [sp, #160]
+> +	stp	x22, x23, [sp, #176]
+> +	stp	x24, x25, [sp, #192]
+> +	stp	x26, x27, [sp, #208]
+> +	stp	x28, x30, [sp, #224]
+> +
+> +	mrs	x0, elr_el1
+> +	str	x0, [sp, #248]
+> +	mrs	x0, spsr_el1
+> +	str	x0, [sp, #256]
+> +
+> +	mov	x0, sp
+> +	mov	x1, x29
+> +	bl	guest_el1_c_handler
+> +
+> +	ldr	x0, [sp, #248]
+> +	msr	elr_el1, x0
+> +	ldr	x0, [sp, #256]
+> +	msr	spsr_el1, x0
+> +
+> +	ldp	x0, x1, [sp, #0]
+> +	ldp	x2, x3, [sp, #16]
+> +	ldp	x4, x5, [sp, #32]
+> +	ldp	x6, x7, [sp, #48]
+> +	ldp	x8, x9, [sp, #64]
+> +	ldp	x10, x11, [sp, #80]
+> +	ldp	x12, x13, [sp, #96]
+> +	ldp	x14, x15, [sp, #112]
+> +	ldp	x16, x17, [sp, #128]
+> +	ldp	x18, x19, [sp, #144]
+> +	ldp	x20, x21, [sp, #160]
+> +	ldp	x22, x23, [sp, #176]
+> +	ldp	x24, x25, [sp, #192]
+> +	ldp	x26, x27, [sp, #208]
+> +	ldp	x28, x30, [sp, #224]
+> +
+> +	add	sp, sp, #264
+> +	ldp	x29, x30, [sp], #16
+> +	eret
+> --
+> 2.53.0.851.ga537e3e6e9-goog
 >
->>  menuconfig IOMMU_SUPPORT
->>  	bool "IOMMU Hardware Support"
->>  	depends on MMU
->> diff --git a/drivers/iommu/Makefile b/drivers/iommu/Makefile
->> index 0275821f4ef9..b3715c5a6b97 100644
->> --- a/drivers/iommu/Makefile
->> +++ b/drivers/iommu/Makefile
->> @@ -15,6 +15,7 @@ obj-$(CONFIG_IOMMU_IO_PGTABLE_ARMV7S) += io-pgtable-arm-v7s.o
->>  obj-$(CONFIG_IOMMU_IO_PGTABLE_LPAE) += io-pgtable-arm.o
->>  obj-$(CONFIG_IOMMU_IO_PGTABLE_LPAE_KUNIT_TEST) += io-pgtable-arm-selftests.o
->>  obj-$(CONFIG_IOMMU_IO_PGTABLE_DART) += io-pgtable-dart.o
->> +obj-$(CONFIG_IOMMU_LIVEUPDATE) += liveupdate.o
->
->It seems like there is a sorted order for CONFIG_IOMMU_* in the
->Makefile, lets keep it same if possible.
-
-Will fix in the next revision.
->
->> +static void iommu_liveupdate_free_objs(u64 next, bool incoming)
->> +{
->> +	struct iommu_objs_ser *objs;
->> +
->> +	while (next) {
->> +		objs = __va(next);
->
->There is also call to phys_to_virt() in other functions in this patch.
->Should we use the same here to be consistent?
-
-Agreed. I will fix this.
->
->> +		next = objs->next_objs;
->> +
->> +		if (!incoming)
->> +			kho_unpreserve_free(objs);
->> +		else
->> +			folio_put(virt_to_folio(objs));
->> +	}
->> +}
->
->Instead of passing boolean, and calling with different arguments, I
->think it will be simpler to just have two functions
->
->- iommu_liveupdate_unpreserve()
->- iommu_liveupdate_folio_put()
-
-This is a helper function to free the serialized state without
-duplicating multiple checks for various type of state (iommu,
-iommu_domain and devices).
-
-Do you think maybe I should add these two functions and make it call the
-helper?
->
->> +
->> +static void iommu_liveupdate_flb_free(struct iommu_lu_flb_obj *obj)
->> +{
->> +	if (obj->iommu_domains)
->> +		iommu_liveupdate_free_objs(obj->ser->iommu_domains_phys, false);
->> +
->> +	if (obj->devices)
->> +		iommu_liveupdate_free_objs(obj->ser->devices_phys, false);
->> +
->> +	if (obj->iommus)
->> +		iommu_liveupdate_free_objs(obj->ser->iommus_phys, false);
->> +
->> +	kho_unpreserve_free(obj->ser);
->> +	kfree(obj);
->> +}
->> +
->> +static int iommu_liveupdate_flb_preserve(struct liveupdate_flb_op_args *argp)
->> +{
->> +	struct iommu_lu_flb_obj *obj;
->> +	struct iommu_lu_flb_ser *ser;
->> +	void *mem;
->> +
->> +	obj = kzalloc(sizeof(*obj), GFP_KERNEL);
->> +	if (!obj)
->> +		return -ENOMEM;
->> +
->> +	mutex_init(&obj->lock);
->> +	mem = kho_alloc_preserve(sizeof(*ser));
->> +	if (IS_ERR(mem))
->> +		goto err_free;
->> +
->> +	ser = mem;
->> +	obj->ser = ser;
->> +
->> +	mem = kho_alloc_preserve(PAGE_SIZE);
->> +	if (IS_ERR(mem))
->> +		goto err_free;
->> +
->> +	obj->iommu_domains = mem;
->> +	ser->iommu_domains_phys = virt_to_phys(obj->iommu_domains);
->> +
->> +	mem = kho_alloc_preserve(PAGE_SIZE);
->> +	if (IS_ERR(mem))
->> +		goto err_free;
->> +
->> +	obj->devices = mem;
->> +	ser->devices_phys = virt_to_phys(obj->devices);
->> +
->> +	mem = kho_alloc_preserve(PAGE_SIZE);
->> +	if (IS_ERR(mem))
->> +		goto err_free;
->> +
->> +	obj->iommus = mem;
->> +	ser->iommus_phys = virt_to_phys(obj->iommus);
->> +
->> +	argp->obj = obj;
->> +	argp->data = virt_to_phys(ser);
->> +	return 0;
->> +
->> +err_free:
->> +	iommu_liveupdate_flb_free(obj);
->
->Generally, I have seen in the function goto will call corresponding
->error tags, and free corresponding allocations and all the one which
->happend before. It is easier to read code that way. I know you are
->combining the free call from iommu_liveupdate_flb_unpreserve() also.
->IMHO, code readability will be better this way.
-
-I had that originally when I was writing this function, but it gets
-really cluttered :(. Instead it is more clean without code duplication
-using this one cleanup function here to free the state on error and also
-when doing unpreserve. Please consider this a "destroy" function of obj
-and it can be called from 2 places,
-
-- Error during allocation of internal state.
-- During unpreserve.
->
->> +	return PTR_ERR(mem);
->> +}
->> +
->> +static void iommu_liveupdate_flb_unpreserve(struct liveupdate_flb_op_args *argp)
->> +{
->> +	iommu_liveupdate_flb_free(argp->obj);
->> +}
->> +
->> +static void iommu_liveupdate_flb_finish(struct liveupdate_flb_op_args *argp)
->> +{
->> +	struct iommu_lu_flb_obj *obj = argp->obj;
->> +
->> +	if (obj->iommu_domains)
->> +		iommu_liveupdate_free_objs(obj->ser->iommu_domains_phys, true);
->
->Can there be the case where obj->iommu_domains is NULL but
->obj->ser->iommu_domains_phys is not? If that is not possible, I will
->just simplify the patch and unconditionally call
->iommu_liveupdate_free_objs()?
-
-Are you suggesting that on flb_finish() the obj->iommu_domains should be
-non-NULL as flb_retrieve() succeeded? If yes, then that is correct. I
-will update this to call the free_objs() without checking
-obj->iommu_domains. I will do same for other types.
->
->> +
->> +static int iommu_liveupdate_flb_retrieve(struct liveupdate_flb_op_args *argp)
->> +{
->> +	struct iommu_lu_flb_obj *obj;
->> +	struct iommu_lu_flb_ser *ser;
->> +
->> +	obj = kzalloc(sizeof(*obj), GFP_ATOMIC);
->> +	if (!obj)
->> +		return -ENOMEM;
->
->Is kzalloc() failure here recoverable whereas iommu_liveupdate_restore_objs()
->below is not? If it is not recoverable should there be a BUG_ON here?
-
-Interesting... This should be recoverable as there is no corruption or
-bad state. LUO will propagate this to caller and it should be handle
-properly. I will make sure that this is handled in init.
->
->> +
->> +	mutex_init(&obj->lock);
->> +	BUG_ON(!kho_restore_folio(argp->data));
->> +	ser = phys_to_virt(argp->data);
->> +	obj->ser = ser;
->> +
->> +	iommu_liveupdate_restore_objs(ser->iommu_domains_phys);
->> +	obj->iommu_domains = phys_to_virt(ser->iommu_domains_phys);
->
->Can iommu_liveupdate_restore_obj() just return virtual address and we
->can simplify code to:
->
->	obj->iommu_domains = iommu_liveupdate_restore_objs(ser->iommu_domains_phys);
-
-Yes that is a good idea. I will change this.
->
->> +
->> +	iommu_liveupdate_restore_objs(ser->devices_phys);
->> +	obj->devices = phys_to_virt(ser->devices_phys);
->> +
->> +	iommu_liveupdate_restore_objs(ser->iommus_phys);
->> +	obj->iommus = phys_to_virt(ser->iommus_phys);
->> +
->> +	argp->obj = obj;
->> +
->> +	return 0;
->> +}
->> +
->> diff --git a/include/linux/iommu-lu.h b/include/linux/iommu-lu.h
->
->I will recommend to use full name and not short "lu". iommu-liveupdate.h
->seems more readable and not too long.
-
-Agreed. I will change this.
->
->> +#define MAX_IOMMU_SERS ((PAGE_SIZE - sizeof(struct iommus_ser)) / sizeof(struct iommu_ser))
->> +#define MAX_IOMMU_DOMAIN_SERS \
->> +		((PAGE_SIZE - sizeof(struct iommu_domains_ser)) / sizeof(struct iommu_domain_ser))
->> +#define MAX_DEVICE_SERS ((PAGE_SIZE - sizeof(struct devices_ser)) / sizeof(struct device_ser))
->
->This is per page limit, not whole serialization limit. May be we can
->name something like:
->
->- MAX_IOMMU_SERS_PER_PAGE, or
->- MAX_IOMMU_SERS_PAGE_CAPACITY
-
-Agreed.
->
->> +
->> +struct iommu_lu_flb_obj {
->> +	struct mutex lock;
->> +	struct iommu_lu_flb_ser *ser;
->> +
->> +	struct iommu_domains_ser *iommu_domains;
->> +	struct iommus_ser *iommus;
->> +	struct devices_ser *devices;
->> +} __packed;
->> +
->
->I think naming scheme used here is little hard to absorb when we have so
->many individual structs in this header file. Specifically, struct names like:
->
->- iommu_domains_ser vs iommu_domain_ser
->- iommus_ser vs iommu_ser
->- devices_ser vs device_ser
->- iommu_objs_ser vs iommu_obj_ser
->
->First three are showing container and its elements relation, however,
->last one doesn't have that relation but naming is same there.
->
->I will recommend to change the naming scheme of containers to something like:
->
->	struct iommu_domain_ser_[hdr|header|table|arr] {};
->	struct iommu_ser_hdr {}
->	struct device_ser_hdr {}
->
->Individual element of container can be same.
->
->For objs, something like:
->	iommu_objs_ser -> iommu_hdr_meta
->
->
-
-Agreed. The singular vs plural for object vs aggregate is tricky. I will
-rework these names. I am thinking something like following based on the
-feedback on this patch,
-
-struct iommu_ser_hdr; <= object hdr.
-struct iommu_ser_arr_hdr <= array of objects hdr.
-struct iommu_domain_ser <= contains a preserved domain.
-struct iommu_domain_ser_arr <= array of domains.
-
-Thanks,
-Sami
