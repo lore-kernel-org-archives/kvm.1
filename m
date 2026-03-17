@@ -1,50 +1,50 @@
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C45D7220F38;
-	Tue, 17 Mar 2026 15:31:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 268CF20C038;
+	Tue, 17 Mar 2026 15:34:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.12
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773761470; cv=none; b=M6r53/IAGDfghqPZP+uT5kovkCTJE4+v8BANf7YTrYl0CZArnmd+yYqr/CnK2FAGi8XjmTfEeEeLnvPkzWIdH2VZpuMLUOQZXCR+TUioAZf78V99iB1OOpnDNNJ33NsdTdglO4g4fMuk9VWPhFFc4p3eLuf3dhA+4hiuAmPXWvk=
+	t=1773761662; cv=none; b=NvkGPFUv7/n1thAZRh050NX4o1QzKySMCKbrmk5WZ37IyKFQeJjX//SH0I0ZBWo1yTL52ltCs1ULVfFYJb8zcpJByODb0sU8RT/d2/y289W/ckC1uzB2CmtjkpRSn+Fm8CVa+X7S0a/EGzYVXV1+sYVKc1wxGWnNJjOJ6+TE8VA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773761470; c=relaxed/simple;
-	bh=xHOOmP38/6o9O2sRvdhnSCB5oWqIkX0rEPsWfUiw2YU=;
+	s=arc-20240116; t=1773761662; c=relaxed/simple;
+	bh=tM7MPS2JCkk7DuNXpuY1WgEjcjH9UxOCDa7a/4ge/Po=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=eHHUSJMASa1gSJW2Y80iuVU1S2KzH5ikKIleIhvla9XVbewEh9kxv663p4fY1abjpgAdtBwU4yRelpxqgnebCRsOzXuSmSi0mL6ADwyf3XLSRxw19n+YHFi4Tdese5vy7DBwCYxUAk0ild1nAmjgfuMkQW1y/Yr+EhURtQ+usBA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=k9o9QhJh; arc=none smtp.client-ip=192.198.163.12
+	 In-Reply-To:Content-Type; b=vBs1/9FXoXn6D/58+cKWwDtN/icUe5TEvmQSAqkQ0zDDZHL3xyU4SNr19VWhn0rchUMrJdNjc1yz0w4eDXR2kKuKxCprwWVHUj6sdqmdEzLS+iRFJcjPcNPqdMnADG+OSXzJbbIyGHbe91aUTgEGWdWU66rTjDRh52FWGtz40+Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=RKbT0JoL; arc=none smtp.client-ip=192.198.163.12
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="k9o9QhJh"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="RKbT0JoL"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1773761469; x=1805297469;
+  t=1773761658; x=1805297658;
   h=message-id:date:mime-version:subject:to:cc:references:
    from:in-reply-to:content-transfer-encoding;
-  bh=xHOOmP38/6o9O2sRvdhnSCB5oWqIkX0rEPsWfUiw2YU=;
-  b=k9o9QhJh8tbQgRkCq6UHmdzde605FbrFdNIjsf/JQ/Te+oAdlKJT5T27
-   WtyX4T1dlnhelsHIT9NasS2xL6nT/LA0t4JCQvefgR2oBVryUOPufAQHH
-   RH4DfXuPUMNMXKxrygBN9CeZhkKnyezobdI4rvxaMvAkxKBL1jSrSfSTe
-   PZBKfIHICb9yFrCuMLFn993E/jPGg+QIhR4dTPRYBwBQZ2me5GYh+NMEz
-   +cGBq7ACmpCi56a/DF6UIsA2X7roikkM+oAEMgsmwL4TPGZUO6L9zCLJZ
-   KnzqF3/6jDfZr5d+/GFc/uCL8Ms7q9QyzewQL7qkUmG3XkOjhVxBCdJhZ
-   g==;
-X-CSE-ConnectionGUID: IHvIrWu7TPmMTSikYrQ7Cg==
-X-CSE-MsgGUID: jZqzAptARfK+bZRhQTo4iQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11732"; a="78691728"
+  bh=tM7MPS2JCkk7DuNXpuY1WgEjcjH9UxOCDa7a/4ge/Po=;
+  b=RKbT0JoLIwxRPeIQR1+VwvAQglYO6yXP+0vRLCCVbulEfW2hio7bQFoZ
+   3SSJenNQ7A+zM97wGqDhlqUy7L9OpRQEuDbCFW5Ptvnktls17MRvlEVc3
+   lRxD1znQBlL++PkTAbQbgahZ3f0GaOQ77ZO0uPmYmuvpU+TusjAcRI0f7
+   9MBjNyMuoxZcqAV2NgjhMUl5ZimTGSfcYzog3S6XB0wHUujs/A+nkY+y5
+   VTWPZyhbcHVxPyzW/iZ3W/kQHaGAKAl7GxeJL041byT0JgNpBAlOP/ocq
+   W550CpV/JKXKvmQoMccdX1+DuJxhIiQpftPtvCQQwrX5gZcUXBhtEBQoW
+   Q==;
+X-CSE-ConnectionGUID: PtaE7MKsSrK8ppeXH6fBIw==
+X-CSE-MsgGUID: jRlVocNoR+6N/CGnH0fP0Q==
+X-IronPort-AV: E=McAfee;i="6800,10657,11732"; a="78692084"
 X-IronPort-AV: E=Sophos;i="6.23,126,1770624000"; 
-   d="scan'208";a="78691728"
-Received: from fmviesa009.fm.intel.com ([10.60.135.149])
-  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Mar 2026 08:31:08 -0700
-X-CSE-ConnectionGUID: Rhu1lhzLQg2ed3nfQqbtAg==
-X-CSE-MsgGUID: lz2iM65BQ4yqXnXc0BXQJA==
+   d="scan'208";a="78692084"
+Received: from orviesa003.jf.intel.com ([10.64.159.143])
+  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Mar 2026 08:34:18 -0700
+X-CSE-ConnectionGUID: IstXKUjCQwWZ3G4wp7DHwg==
+X-CSE-MsgGUID: qjA+1VptQ7Gam35ZYi6dsw==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.23,126,1770624000"; 
-   d="scan'208";a="216645948"
+   d="scan'208";a="226440744"
 Received: from rchatre-mobl4.amr.corp.intel.com (HELO [10.125.108.160]) ([10.125.108.160])
-  by fmviesa009-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Mar 2026 08:31:07 -0700
-Message-ID: <515d2fbc-f771-4aed-8706-e8ed20d3dbc6@intel.com>
-Date: Tue, 17 Mar 2026 08:31:06 -0700
+  by ORVIESA003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Mar 2026 08:34:17 -0700
+Message-ID: <7f7b609c-f351-486e-94c3-d408adc5ffe0@intel.com>
+Date: Tue, 17 Mar 2026 08:34:16 -0700
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -52,31 +52,18 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 1/2] x86/cpu: Disable CR pinning during CPU bringup
-To: "Nikunj A. Dadhania" <nikunj@amd.com>,
- "Chang S. Bae" <chang.seok.bae@intel.com>,
- Tom Lendacky <thomas.lendacky@amd.com>, Borislav Petkov <bp@alien8.de>
-Cc: linux-kernel@vger.kernel.org, kvm@vger.kernel.org, tglx@kernel.org,
- mingo@redhat.com, dave.hansen@linux.intel.com, hpa@zytor.com, xin@zytor.com,
- seanjc@google.com, pbonzini@redhat.com, x86@kernel.org,
- sohil.mehta@intel.com, jon.grimm@amd.com
-References: <20260226092349.803491-1-nikunj@amd.com>
- <20260226092349.803491-2-nikunj@amd.com>
- <20260309134640.GOaa7PQJli_C9QATGB@fat_crate.local>
- <cde957ba-3579-4063-9d17-3630e79ea388@intel.com>
- <20260309161516.GAaa7yFMulhdzNQ-pt@fat_crate.local>
- <70644e1d-dd0e-4f0f-81c0-fd095e46e50b@intel.com>
- <7ca205d6-b01b-4ed3-959d-db31a6496d79@amd.com>
- <505a6bbd-3ecf-4de9-8fb9-0b21c3435a96@intel.com>
- <9fa61b80-0e16-4a87-a0e7-3c3dfcda8f7e@amd.com>
- <55a98b6d-e831-47a6-aa5a-8fe357334f67@intel.com>
- <d0eba3fe-2938-4856-bd9b-0e13972e8313@amd.com>
- <cb492a37-3517-4738-b435-73311402e820@intel.com>
- <ddf407e9-359d-4d4e-827d-98f212589e9f@amd.com>
- <ab5bf7bb-6511-49dc-a65d-86911e0f7091@intel.com>
- <c13736a1-3151-476b-a91c-035383d2a29e@intel.com>
- <541cddbb-22b3-4865-a374-49ba3ba48a5e@intel.com>
- <2b33bf8e-5f19-46c7-b1eb-89fcf74d74f8@amd.com>
+Subject: Re: [PATCH v5 06/22] coco/tdx-host: Expose P-SEAMLDR information via
+ sysfs
+To: Kiryl Shutsemau <kas@kernel.org>, Chao Gao <chao.gao@intel.com>
+Cc: x86@kernel.org, linux-coco@lists.linux.dev, kvm@vger.kernel.org,
+ linux-kernel@vger.kernel.org, binbin.wu@linux.intel.com,
+ dan.j.williams@intel.com, dave.hansen@linux.intel.com, ira.weiny@intel.com,
+ kai.huang@intel.com, nik.borisov@suse.com, paulmck@kernel.org,
+ pbonzini@redhat.com, reinette.chatre@intel.com, rick.p.edgecombe@intel.com,
+ sagis@google.com, seanjc@google.com, tony.lindgren@linux.intel.com,
+ vannapurve@google.com, vishal.l.verma@intel.com, yilun.xu@linux.intel.com
+References: <20260315135920.354657-1-chao.gao@intel.com>
+ <20260315135920.354657-7-chao.gao@intel.com> <abkmceqUtMTnLI0V@thinkstation>
 From: Dave Hansen <dave.hansen@intel.com>
 Content-Language: en-US
 Autocrypt: addr=dave.hansen@intel.com; keydata=
@@ -122,28 +109,24 @@ Autocrypt: addr=dave.hansen@intel.com; keydata=
  MTsCeQDdjpgHsj+P2ZDeEKCbma4m6Ez/YWs4+zDm1X8uZDkZcfQlD9NldbKDJEXLIjYWo1PH
  hYepSffIWPyvBMBTW2W5FRjJ4vLRrJSUoEfJuPQ3vW9Y73foyo/qFoURHO48AinGPZ7PC7TF
  vUaNOTjKedrqHkaOcqB185ahG2had0xnFsDPlx5y
-In-Reply-To: <2b33bf8e-5f19-46c7-b1eb-89fcf74d74f8@amd.com>
+In-Reply-To: <abkmceqUtMTnLI0V@thinkstation>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-On 3/16/26 21:12, Nikunj A. Dadhania wrote:
-> On 3/17/2026 3:13 AM, Dave Hansen wrote: 
->> Either we change how alternatives patching works, we use some other
->> exception code, or we try and get CR4.FSGSBASE established as early as
->> possible on the secondaries.
-> Right, I moved FSGSBASE enablement to cpu_init_exception_handling() to 
-> establish it early:
-> 
-> https://lore.kernel.org/all/1439b4f4-ff0c-4b6a-ac86-5c0da2d26cf5@amd.com
-> 
-> This:
-> 1) Enables FSGSBASE early for secondary CPUs before any exceptions occur
-> 2) Consolidates initialization for both boot and secondary CPUs in one place
-> 3) Eliminates the double-enable issue as in cr4_init()/identify_cpu()
-> 
-> Does this approach look good to you?
+On 3/17/26 03:06, Kiryl Shutsemau wrote:
+>> +	return sysfs_emit(buf, "%u.%u.%02u\n", info.major_version,
+>> +					       info.minor_version,
+>> +					       info.update_version);
+> Maybe a comment why %02u used for update_version?
 
-After sleeping on it, yes, this looks good to me.
+Could we just stick this in a:
 
-Please resend this with a full changelog and so forth, and I think we
-can move forward with it.
+#define TDX_VERSION_FMT	"%u.%u.%02u"
+
+and document it there, once and for all?
+
+Users can do:
+
+	return sysfs_emit(buf, TDX_VERSION_FMT "\n", ...
+
+There are going to be a couple of these, I expect.
