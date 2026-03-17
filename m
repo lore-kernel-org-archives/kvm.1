@@ -1,149 +1,134 @@
-Received: from fhigh-a7-smtp.messagingengine.com (fhigh-a7-smtp.messagingengine.com [103.168.172.158])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f52.google.com (mail-ed1-f52.google.com [209.85.208.52])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1734E3E8683
-	for <kvm@vger.kernel.org>; Tue, 17 Mar 2026 14:43:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.158
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773758627; cv=none; b=mvYwx49sPthzCZK67RYhqC3ixKaTtIbh9S0MvzC9LRSCX9zhmJThT5huciehZwKAknPoNb4InII0OvSMBt6BTariJeacUlUw1hziflBOHJI+uYcUfYDZFYQvyaLhsdEM+XjZZ02bfhgNVD+ItITmKWKTO4ZeXJFsQifO0iO51Y8=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773758627; c=relaxed/simple;
-	bh=CQ+SRpPHH36exOR6dp5WjwMv0N1m/j4DEqcugvMEyG0=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=NWAJhz43LUpvKW0+7pSTBo1IlDNuzatbEPcufPajmiwSohhRd6yI0WKT9ZYNaA1CgmoAIegI9HLZsqA6Dk+0cHjBxk+fTzWC2/0B17fbCb1fWcWt4hZtmNVu1u5FtZbysHSnfGJb+9PK1PdS2p2KlRtcD3QWdbkwYQ4Jr+CRVCw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=shazbot.org; spf=pass smtp.mailfrom=shazbot.org; dkim=pass (2048-bit key) header.d=shazbot.org header.i=@shazbot.org header.b=rMILFVqr; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=W0gy8EiR; arc=none smtp.client-ip=103.168.172.158
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=shazbot.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=shazbot.org
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 688F327FB0E
+	for <kvm@vger.kernel.org>; Tue, 17 Mar 2026 14:58:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.208.52
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1773759524; cv=pass; b=bh0GUPqCKB7Q2hYVJCwuKYLJKUVMnT0V+JUU5sRvLJ+a1QDdRj/lTy4RjM4TgxovIc+CbbH1wVELHbyFJRPTqe4y0SvdTurax4cdPEe0YDLKTEgifLr8LYiJnh9InuUCIsANnk03Ubroo018avN71RDagWmbvgdZp1GkW+GAj3Q=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1773759524; c=relaxed/simple;
+	bh=0WgxWtB75A8+hitu+9AJoHCS75zaOAWuYOY7N2DSaQM=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=qDgCcRuXKuA+ZGyXKwJ/anjlrujcABp7hrvM9o6teLFjWpsd/iINdGtrMcok9lbazt28mCbQAVaSZxYjf+CGTb34nrmqU8RceGn92sfLN8K2cXVNVdspaf9HpX66UjcMtjm0TFo3aeYNygjVYCpEhK1nKCAfbcUNKHVwr4G8hzc=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=pkDr9WRO; arc=pass smtp.client-ip=209.85.208.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=shazbot.org header.i=@shazbot.org header.b="rMILFVqr";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="W0gy8EiR"
-Received: from phl-compute-11.internal (phl-compute-11.internal [10.202.2.51])
-	by mailfhigh.phl.internal (Postfix) with ESMTP id 3DA8A140003C;
-	Tue, 17 Mar 2026 10:43:43 -0400 (EDT)
-Received: from phl-frontend-03 ([10.202.2.162])
-  by phl-compute-11.internal (MEProxy); Tue, 17 Mar 2026 10:43:43 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shazbot.org; h=
-	cc:cc:content-transfer-encoding:content-type:content-type:date
-	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to; s=fm3; t=1773758623;
-	 x=1773845023; bh=U9M+HkVQBEYKrxCJ9TstEQmfV+0p5tozuQ5lwFDFX1M=; b=
-	rMILFVqr1IpYmMQ1rQAMzOMN2QYPYf6LtDM3AeD1/yC8cEXCIxG/Z5Q6zPNckHT5
-	Tkxhz65Fi0GXREx9URvc+1b3aXe+2HX6isUOhYXGnbrJ8dx2pmnYGZE0cuv6CgMX
-	NbU4rDAng1lVv/T3le210RmNJrd8RzACAsqABbvekC2d4CSmPO+n8L6xm9DFOFLf
-	iYJ+5nePmhBSs/KwFR421mxt7uMg/uohHJ0itkC+Nwd3ZudlavLIgllE7vELeuwd
-	hQU2wJRfECKdSJ9Hfj4wL9iiYLv3fvIDIcYe+bAfQgj+sYOQutX/4RGjBoR+xuSu
-	rI8oD8kFFaUIJYli4iyg9w==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=1773758623; x=
-	1773845023; bh=U9M+HkVQBEYKrxCJ9TstEQmfV+0p5tozuQ5lwFDFX1M=; b=W
-	0gy8EiR8pDQLseBb825jsb/L6yuG/Bi0/eZuGcEzSr/7W15rxrzwlYRiVlL1oG6G
-	B45rwMGdiiI6e3BdC0J511jkNal2ZVaH1GxWGyBzA626prK+2tloBYmdrRq+Rlr4
-	2as3afSoYR2vKdYJsK0mdudKoEG9UELqvvYQoCXidEHubjyQ4c7dtHrC4ZbO6YB8
-	QuVj47+CWoZHam8Ce6HKlYndTGhmQF4xXeWDhXJybnzlhwwyiBwVFU7tIWlgDLrC
-	egMl02HS3UYH0nL3k2ylWrRvv1NszfwPZT/jrGNIzrTxWlTPMrS2SfPTAUdCDVtF
-	UlO+1aeQXkj3aLA1ERlLQ==
-X-ME-Sender: <xms:n2i5aTxlSGXBWVHHBXoi8Pq8Xt0uifqv55qL_vvXQB9lqlt0cl2qCQ>
-    <xme:n2i5acwsuAtdZDwXefslUYw90K72WWRKkkbZ1NieUxE2buvI__CAiEKeZ0B0yNQDY
-    kJ4XndZYLeqGN2wcxRPPaSqYAd3YsTePnOMEneMbtrtHyYPXlG1C-s>
-X-ME-Received: <xmr:n2i5adYX0N6o3-K4D_bXgdgP8UExV-MsfRd7KNufJqYB0UvQjDnrf4nJfvc>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgdeftdduhedvucetufdoteggodetrf
-    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
-    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
-    gurhepfffhvfevuffkjghfofggtgfgsehtqhertdertdejnecuhfhrohhmpeetlhgvgicu
-    hghilhhlihgrmhhsohhnuceorghlvgigsehshhgriigsohhtrdhorhhgqeenucggtffrrg
-    htthgvrhhnpeegudevhfejueefveduieeuueeifeettdekveekhffgvdetfeelueehgfdt
-    heffhfenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpe
-    grlhgvgiesshhhrgiisghothdrohhrghdpnhgspghrtghpthhtohephedpmhhouggvpehs
-    mhhtphhouhhtpdhrtghpthhtohepphhiohhtrhdrphhiohhrkhhofihskhhisehinhhtvg
-    hlrdgtohhmpdhrtghpthhtohepihhnthgvlhdqgigvsehlihhsthhsrdhfrhgvvgguvghs
-    khhtohhprdhorhhgpdhrtghpthhtohepkhhvmhesvhhgvghrrdhkvghrnhgvlhdrohhrgh
-    dprhgtphhtthhopehmihgthhgrlhdrfihinhhirghrshhkihesihhnthgvlhdrtghomhdp
-    rhgtphhtthhopegrlhgvgiesshhhrgiisghothdrohhrgh
-X-ME-Proxy: <xmx:n2i5adXDSGX71jpIY9TDgFc6mkLD8DLBCmDCklscduk_aFhqmJvxew>
-    <xmx:n2i5abgHghRB2apanOzQY7E62kGRA3xvKIhjQyMGd_gU2BBkV0d6sw>
-    <xmx:n2i5abvaXTNaZNhZQrQiw8iwHmh2w97lkpcuS1CsQ1Oha8oEWzxamQ>
-    <xmx:n2i5aU5-oUii-H627S6_sWdppWrVHzdP76kJgWweNC0a2a7jkJzOkw>
-    <xmx:n2i5abBcU4A0ZAEjaHbIy9oQddOsM32Y8wgvALg8gnvZi8KDqPoGFrRa>
-Feedback-ID: i03f14258:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
- 17 Mar 2026 10:43:42 -0400 (EDT)
-Date: Tue, 17 Mar 2026 08:43:40 -0600
-From: Alex Williamson <alex@shazbot.org>
-To: "=?UTF-8?B?UGnDs3Jrb3dza2ks?= Piotr" <piotr.piorkowski@intel.com>
-Cc: <intel-xe@lists.freedesktop.org>, <kvm@vger.kernel.org>,
- =?UTF-8?B?TWljaGHFgg==?= Winiarski <michal.winiarski@intel.com>,
- alex@shazbot.org
-Subject: Re: [PATCH v2 2/2] vfio/xe: Notify PF about VF FLR in reset_prepare
-Message-ID: <20260317084340.619c5fad@shazbot.org>
-In-Reply-To: <20260309152449.910636-3-piotr.piorkowski@intel.com>
-References: <20260309152449.910636-1-piotr.piorkowski@intel.com>
-	<20260309152449.910636-3-piotr.piorkowski@intel.com>
-X-Mailer: Claws Mail 4.3.1 (GTK 3.24.51; x86_64-pc-linux-gnu)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="pkDr9WRO"
+Received: by mail-ed1-f52.google.com with SMTP id 4fb4d7f45d1cf-661ce258878so12097a12.0
+        for <kvm@vger.kernel.org>; Tue, 17 Mar 2026 07:58:43 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1773759522; cv=none;
+        d=google.com; s=arc-20240605;
+        b=jPkNtj5bA6za1AxfhbgvL2pu2vEhc7JQfSPEdAyc5fEMSD6x43PBoVU4AHdHclk/FI
+         ETLQadesdDUKW4vxX5KQLHH42RbB7Y+RQIp8XCOWEZs74CeGgrVeFSSvphduVHnvD2un
+         Ujp/iKuMF4KyxFEA3mEajarNy5rCUcq3ES8v0HRNrT3gZgQSXY0brMzuqBTSCwNFjetv
+         oR1Cf0rmkFAEjSlA3mwAWN6ZvKGcgsxqAkRW/6YUtjHlLKTXXiUrGa1BWmLOfkM2uaJ2
+         oVJR5qbx8NrcEyg5KeMque7SlDYN/7GAqldrwAF48NDxkYK5sLueLZ5YS3Br3cphiTnS
+         cmRg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=0WgxWtB75A8+hitu+9AJoHCS75zaOAWuYOY7N2DSaQM=;
+        fh=cSMbC63YHch+2DscszQMXTs99z9YxQeWPDxe7uhrX0g=;
+        b=ArSCAlujT9Uu+VU/EbMDbjO1SjgfkuAikByVBsxazMMgybC2hQjwWpXsmAdMGzzr/n
+         Ma2F4vo26oqSz2sAnQgpqXWtkc0jB4JT6xPwBPot+ln9GA1zjSV/9h0f0d5Kwpn4hEwu
+         EXszMt1PP/kBPHhoLvEtBIwrvPy6f+wHqJdizh+qoVqUNNoQECTs38f5H2e9c2fDsTcf
+         ErbeAVTohXQFDeUpxtvfYis0yDZfOSnejL79j/gvZulr2Eo3lBwuONu/+tInCUCL5XaE
+         KHcOHPRIVo7Of8W4z1fpPhSYeay3gz3AHkeo79mDeTHTW31wG540Wmmf7KrIsqUHqzpe
+         fvQw==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1773759522; x=1774364322; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=0WgxWtB75A8+hitu+9AJoHCS75zaOAWuYOY7N2DSaQM=;
+        b=pkDr9WRO7zs2da3YNl+5H0gEz5NjaKkm7G905ZPWDw9CGU9kByIfGDIoyZ/Tny/hKv
+         oy5At6E7BYarw0OcDKscjAf0BzyD6Y4KAeMBBX4f0hDJYI/yhZqR81ab1nwyuXr5sgiL
+         qohUGjtPRISXqkR88umW2jAKg2WSePtWl75sZy9rPQes9d7eiICL9atyi0i4WSXiP3E6
+         A7ou4BOMyQ+4Xc7wtEvrkGZRzJr7atk2CFItomCMRz9eVExSEzzN1oM7xS3gf5zA6Qx7
+         F+F0sdJ0pJaQUoj4Vs+FSt631XsiRbk9tXDqp/7AQkhKqS9F9npSeYwFWzRqhIQn8Jbr
+         23DA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1773759522; x=1774364322;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=0WgxWtB75A8+hitu+9AJoHCS75zaOAWuYOY7N2DSaQM=;
+        b=FCP0FbiAUjN7roNwwWU5iXs9fPG00Tswgycmy7fXJyzrzCU1y52zE/63XAUWrWeA6Y
+         EvNzUx/M+smXsXYljqWt73m4NGvvtb0kJ2iCyTl8LtseDgW4IYyaO2ajT/Y0OckJJukp
+         9sbk2A22D4zzwfiByBED8qRI5+rq9HHmEFHfzym4iejMf/r/tE//IN/bEBnCREeGPmvN
+         anBy10ryECN0lnh/5IxRLeOoW+OAK9UXtgKrTdHfPuTsE+n1+ZNotepwoJd+Q8WrHwyE
+         t02wKEU5l//M4XEGhDAObUNQF4c7adrxb/bzW34hUrq1juFblMl0Ui8MTwKhMVuNA/CY
+         6lvQ==
+X-Forwarded-Encrypted: i=1; AJvYcCU4Dwo6eI+W9l8BH2CzXukjuFmYw8Ii/LkJLFjU0LsmPCeZ422rxmsQj1vwJPn1o6r1/SI=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwZ8DlK6/dWgKPV0Y1BaxmzquwScPXwyWvSUM6KXs8i1BekwnUA
+	+xOX4AFlD+JgGb20dYw4xyeFoe5B5nfgZ05DJ2GsLs6Q02G2zG9W4iPMJWblhLP1GFBFUP0Cxnx
+	ud41qW1F0SMz2jf0z4t49N7hfQaf8b16D3U9DMpeQ
+X-Gm-Gg: ATEYQzwqTN6yi2/FHXtmQU1hXaShn/OtJm+9KH+8m5JvL7ax0PEH+R1glxQjzYejV5v
+	ZhIFi1BcKdiuKnobx3kYj8VW/XrzJ3k5iADrG0mzszqPfXbj24ye8nlPBZM6cgB6OL3BGCpjeox
+	qe+3oI9PRCtWEqLrQSF824LIA4f/P3wO3sxX2u/1VM1l6paEuN4pv4Cfr7WUJAAPBjmO6m49TUT
+	AYHZWJhMApWKN0oG7QPe6ZRqHXBE+A9KK7mj0QWgiG8e5gqT9aQI0YoxyungI6PTReU6go3hPBD
+	0Owkz9c=
+X-Received: by 2002:aa7:c745:0:b0:661:f987:357b with SMTP id
+ 4fb4d7f45d1cf-66714cc391fmr46438a12.14.1773759521286; Tue, 17 Mar 2026
+ 07:58:41 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+References: <20260313001024.136619-1-yosry@kernel.org> <20260313001024.136619-2-yosry@kernel.org>
+ <181d8563-14a2-4429-9e18-ede7a6aeb030@redhat.com> <CAO9r8zMxLx7fGGp1JPWatGNauY8fZvSECNGzC+o-p41BZrRGFg@mail.gmail.com>
+ <CABgObfY__euhy8YRpWbkVW8V2q10HS0nXmRQrfPOkt5iENbCGA@mail.gmail.com>
+In-Reply-To: <CABgObfY__euhy8YRpWbkVW8V2q10HS0nXmRQrfPOkt5iENbCGA@mail.gmail.com>
+From: Jim Mattson <jmattson@google.com>
+Date: Tue, 17 Mar 2026 07:58:28 -0700
+X-Gm-Features: AaiRm535zsRDeMjsC5nsnYfeEReGD4FgoPcdrIp2lHv4FbXQWFm0Bp3FfnD6X0g
+Message-ID: <CALMp9eR2rAcr6OnmaHfiDFzSdDsGpWEPqNV0xf6OfSFPnEYU7g@mail.gmail.com>
+Subject: Re: [PATCH v3 1/7] KVM: SVM: Drop RAX check for SVM instructions from
+ the emulator
+To: Paolo Bonzini <pbonzini@redhat.com>
+Cc: Yosry Ahmed <yosry@kernel.org>, Sean Christopherson <seanjc@google.com>, kvm <kvm@vger.kernel.org>, 
+	"Kernel Mailing List, Linux" <linux-kernel@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Mon, 9 Mar 2026 16:24:49 +0100
-"Pi=C3=B3rkowski, Piotr" <piotr.piorkowski@intel.com> wrote:
+On Tue, Mar 17, 2026 at 6:15=E2=80=AFAM Paolo Bonzini <pbonzini@redhat.com>=
+ wrote:
+>
+> Il lun 16 mar 2026, 14:49 Yosry Ahmed <yosry@kernel.org> ha scritto:
+> >
+> > TL;DR is that the emulator support for VMRUN/VMLOAD/VMSAVE is
+> > broken/unsupported anyway, beyond checking for intercepts and
+> > pre-intercept exceptions (well, even that is broken), and the RAX
+> > check should be after that architecturally.
+>
+> Agreed about that, just ripping it out completely would be fine. It's
+> only if the emulation happens that it has to be complete.
+>
+> > Given that the goal of this series is actually to stop injecting a
+> > non-architectural #GP when KVM fails to read vmcb12, I didn't really
+> > want to derail it anymore by making it emulator-focused. We can
+> > probably do a follow-up on just improving the emulator support for
+> > these instructions as I mentioned above, as that would take its own
+> > series AFAICT.
+>
+> Agreed.
+>
+> > The only reason this patch exists here is because the buggy RAX check
+> > in the emulator results in injecting a non-architectural #GP on 52-bit
+> > MAXPHYADDR platforms (the #NPF scenario described in the changelog).
+>
+> Yeah, that part was clearly broken when physical address bits broke
+> AMD's 48-bit limit (and I don't think the details of what is
+> considered an invalid physical address are part of the architectural
+> description, for example some SMM ranges are carved out by the
+> VMRUN/VMLOAD/VMSAVE microcode).
 
-> From: Piotr Pi=C3=B3rkowski <piotr.piorkowski@intel.com>
->=20
-> Hook into the PCI error handler reset_prepare() callback to notify
-> the PF about an upcoming VF FLR before reset_done() is executed.
-> This enables early FLR_PREPARE signaling and ensures that the PF is
-> aware of the reset before the completion wait begins.
->=20
-> Signed-off-by: Piotr Pi=C3=B3rkowski <piotr.piorkowski@intel.com>
-> Cc: Micha=C5=82 Winiarski <michal.winiarski@intel.com>
-> ---
->  drivers/vfio/pci/xe/main.c | 14 ++++++++++++++
->  1 file changed, 14 insertions(+)
->=20
-> diff --git a/drivers/vfio/pci/xe/main.c b/drivers/vfio/pci/xe/main.c
-> index fff95b2d5dde..88acfcf840fc 100644
-> --- a/drivers/vfio/pci/xe/main.c
-> +++ b/drivers/vfio/pci/xe/main.c
-> @@ -85,6 +85,19 @@ static void xe_vfio_pci_state_mutex_unlock(struct xe_v=
-fio_pci_core_device *xe_vd
->  	spin_unlock(&xe_vdev->reset_lock);
->  }
-> =20
-> +static void xe_vfio_pci_reset_prepare(struct pci_dev *pdev)
-> +{
-> +	struct xe_vfio_pci_core_device *xe_vdev =3D pci_get_drvdata(pdev);
-> +	int ret;
-> +
-> +	if (!pdev->is_virtfn)
-> +		return;
-> +
-> +	ret =3D xe_sriov_vfio_flr_prepare(xe_vdev->xe, xe_vdev->vfid);
-> +	if (ret)
-> +		dev_err(&pdev->dev, "Failed to prepare FLR: %d\n", ret);
-> +}
-> +
->  static void xe_vfio_pci_reset_done(struct pci_dev *pdev)
->  {
->  	struct xe_vfio_pci_core_device *xe_vdev =3D pci_get_drvdata(pdev);
-> @@ -127,6 +140,7 @@ static void xe_vfio_pci_reset_done(struct pci_dev *pd=
-ev)
->  }
-> =20
->  static const struct pci_error_handlers xe_vfio_pci_err_handlers =3D {
-> +	.reset_prepare =3D xe_vfio_pci_reset_prepare,
->  	.reset_done =3D xe_vfio_pci_reset_done,
->  	.error_detected =3D vfio_pci_core_aer_err_detected,
->  };
-
-Looks ok to me, should really have Micha=C5=82's ack as well.  Will this go
-in through drm?
-
-Reviewed-by: Alex Williamson <alex@shazbot.org>
+IIUC, VLS is broken because it applies the host's microarchitectural
+physical address restrictions to untranslated *guest* physical
+addresses. Is that right?
