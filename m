@@ -1,184 +1,143 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB3613ACA43;
-	Tue, 17 Mar 2026 14:05:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3260B3E1223
+	for <kvm@vger.kernel.org>; Tue, 17 Mar 2026 14:06:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773756343; cv=none; b=eRATIjCjt2YNsInA2L8jxQJX1ECYOam53IN8c40fzpYLJgdDwUFsPTYVBzsOdaLLZPrvPuVVdOtbhC8+GGZYiTXdOttkiG4IBJpX9LthX7BGKJQQKR/ObKSDu6FLr0dXl3Qw36+bMvGt3S5PKTU9jE30y00Nn3hV/ZGXI/i4PKA=
+	t=1773756420; cv=none; b=I/bdFyS2Rgka40pZfKzdh76+KZ3i0MDtJndl8u6LLGbHGspsG02JyfE7cvuRkKhvZ6O0DmvrwZzm5Z3f+NA4vRfkNoZxL9dcUXaAJTFLoG6Yr4KebCvQCVAv6tOJckE77j80NRSFoNgDZrex+jBFFIEZAgP9UzKZECLRTTT5608=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773756343; c=relaxed/simple;
-	bh=1sbqgNXyu2WMmYk8by5cABtxizG2nxoEyafVwjmfq10=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=q9beUt66C4yBc2705rgx4HWLfkFWzxOQo5GazOWUQkQ10fJF/fH2i+fdNNwXcNL38QP7fNP6O7HIKUoiB0ArUwtZNQAb99QY7L9ogpCG09wVecrifQZEX+V/vVtS2XR/zYTCUoWts5fvUy4W1W/ibCKn3AhRxO7g2IIxJI+8Gp8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Ri6T6pi1; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1773756420; c=relaxed/simple;
+	bh=LtZ1bq1gVGIgYyrHcxJSzToFhL4N9a110AW2KpClHR4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=jBbvXVFvmQV+SmCBREwBbcePoMNRevgf6sOSpgSb0vEEBLX5Jw+8ineL6a7Auuuk1f/2h25h/PRlTy/GrXvCryeqWgMvOhkvBfhqCkLG8r5kDd+6SOyB5Sj+kWRyQrkA2WZpr6hw6HUE6Cgjp6DIw4QRUMadGOdegGNjId7NWmU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=EwAcDK+3; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=IQV5uVCX; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Ri6T6pi1"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CCB0EC4CEF7;
-	Tue, 17 Mar 2026 14:05:39 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773756342;
-	bh=1sbqgNXyu2WMmYk8by5cABtxizG2nxoEyafVwjmfq10=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=Ri6T6pi1H13WvM/4/umOiNgP5i/JgzzB82JRb0t1zzGpdQMvyBN80YkgubPATmTO7
-	 HP5xNuWKCERKeDfphiZH+/rsG31IKv3mM8+EuDxCJRXt4mKCw4faRzLtQwSyeAoeB0
-	 JydOwImqSO4RryEZZIv8Homrp+uyrw6wFmvJn+bZ/tg2fmBi0APzds3464luEPdgJS
-	 FsZXK0XaJCDsU/YtwJ8wIeuLAlrNqIoFaIssiAcAWO/YR0Dgwf5Ge1W6+keCzILx7D
-	 idnwYlgz/mh7uCW1HreKv+tQHviGDo+jm/vcO+vRUcmYeXNwtM9OtNYTWj/yDB7odv
-	 1pYtoIwTuf75A==
-Message-ID: <12804801-d4f9-42c9-8580-e3897efd15ef@kernel.org>
-Date: Tue, 17 Mar 2026 15:05:37 +0100
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="EwAcDK+3";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="IQV5uVCX"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1773756418;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=FYCriDWPGTLULEfwAIJ2oqQfVTihZkCcI5obnKPCotc=;
+	b=EwAcDK+3fNu4+aGgf5B9P8ZNdk+EZ0H6bkJdLhwrY4KKOrB1Uv9MIo5DhkzFHLyssyVNLJ
+	9gFbs2cNxXwZd8nTMYXd1mtBrKe5pNPOCq++hW2XfRBWPaerJSxQqhXGVnOtPM9s0nH+Jc
+	i09E8MALs4SnS5/zjXwzoyhsfvuF8eA=
+Received: from mail-qt1-f200.google.com (mail-qt1-f200.google.com
+ [209.85.160.200]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-678-iRz4qMuZMkmD5C8WOWrRRQ-1; Tue, 17 Mar 2026 10:06:56 -0400
+X-MC-Unique: iRz4qMuZMkmD5C8WOWrRRQ-1
+X-Mimecast-MFC-AGG-ID: iRz4qMuZMkmD5C8WOWrRRQ_1773756416
+Received: by mail-qt1-f200.google.com with SMTP id d75a77b69052e-5094741c1c1so67061761cf.1
+        for <kvm@vger.kernel.org>; Tue, 17 Mar 2026 07:06:56 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=redhat.com; s=google; t=1773756416; x=1774361216; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=FYCriDWPGTLULEfwAIJ2oqQfVTihZkCcI5obnKPCotc=;
+        b=IQV5uVCXx4m4tJZBF8PNDFRAfTcxyJfRcjHHQ/7TgBW/2Gk6jc5Q1lA/Zw2//qb3yw
+         LovQYMcN/0QOivYR0QyhgaXA6hWDAoJIt3Ab20Y52jhOD1vnUqgO7pwJHKUNaLEyqeOv
+         5+KoS7N+T+H++ButJPrK7dvfVGS5Sg2K4hkg07w68BDkYFZqtTBXxskaXslHmrZYnt0s
+         ja9UyyIgJdwg6p+1PrZBzgJc/HIlaT1V9aAOu5x6mLv8M4xHITKeg7fvT0LAmxDRriuW
+         O2P/mSJb1rAEREiwcWIQ3nTL5nrS8v10A+I+AirEpBovNzqhZGpn/75+XpP8x2vOas6Z
+         wVcg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1773756416; x=1774361216;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=FYCriDWPGTLULEfwAIJ2oqQfVTihZkCcI5obnKPCotc=;
+        b=FgIJKPw/Lweb7yL4GP0/8FalFvIO+JruIvmDfvEPYnalm6OqZtJF7QQJEGUMwOKWpW
+         d6OBS115eThqAWeicadMMKO7nFRtay+0xvQAfFZNS5LeOOXPVVl4tG4isjH3hTzVLJ0E
+         Wtd+ZkfK/BolxXYGVVKbnqkeSkhCc0rFQV4dXWpD6uk/4wUKbkooP7gGetxuzAk0+YzV
+         Q8VsP6ODvq8CWGsm7ki/IJhcLh+1rUsLJissLUQ2JyRwOkFO6gg4Mv8bKIZAy7yy5TC/
+         rFb0xWIk/JUmpv9ld3zGbYoFrJaHqKrBwyPwEYNMN2Bj+70wly8iUqlID9/BV8BwuFRY
+         pQPQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXvSX0O+e6bq9TFdyKiGEfXvZTo7zGuBuSL7tghAruGwVW0uqT6XxmG+RB06bWwLC3HDas=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx5ZuY9G/hnqqibAae6gdtudZ6h3x1sWpQ2V1+S8ut03Y9s87v8
+	T0YaP68quYaAsvreUxWoTZDBNKpm2eY2xJdWsF8sgvSlpdErTvVgBgHjhLUnQ5q2UXgyl07xQxE
+	6C2Vd4uomETHLGrx/xFvkkcoxWowypEtceRHAyzyGAaY0ftXfMpLbgg==
+X-Gm-Gg: ATEYQzxr68rNcS+dOb53AFGZ6VG/qI8QtS8Osq8s2JHa3N/ikNJONSKioUWIxB9GFzS
+	0gXOQ6ys0AZJwTTJQ5op34JO1NbAm7Ti56mQPYhXyVfxjQyxbBcBcJOxLMdkaw/RhUlWDj3fgbZ
+	mnW4adPGTn63MuleGch2sbrgESURnYGI4Pq9CkoWlhdijzwUl5R1TQ1l1GrDm9HNc552hxAcW3w
+	1ga2sq+96AK53Xocxzdra8cld0oOKKfvOWgpMvERZF2GjSZktbvgQcRnFi5Xn83r2AMKWIUc2os
+	5SywLhCnOPBmZn61vi8XVNzNo8fD7roarqrpmWCwIvTCc+8CFQQaDUe1qwTaCJJoVmXh3WKv8NN
+	G6ASpVhOSbMzMVg==
+X-Received: by 2002:ac8:5f8d:0:b0:503:2c16:c1f5 with SMTP id d75a77b69052e-50957e119fdmr216570351cf.48.1773756416059;
+        Tue, 17 Mar 2026 07:06:56 -0700 (PDT)
+X-Received: by 2002:ac8:5f8d:0:b0:503:2c16:c1f5 with SMTP id d75a77b69052e-50957e119fdmr216569631cf.48.1773756415455;
+        Tue, 17 Mar 2026 07:06:55 -0700 (PDT)
+Received: from x1.local ([142.189.10.167])
+        by smtp.gmail.com with ESMTPSA id d75a77b69052e-50939ecead9sm144115251cf.14.2026.03.17.07.06.53
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 17 Mar 2026 07:06:54 -0700 (PDT)
+Date: Tue, 17 Mar 2026 10:06:53 -0400
+From: Peter Xu <peterx@redhat.com>
+To: Avihai Horon <avihaih@nvidia.com>
+Cc: Yishai Hadas <yishaih@nvidia.com>, Alex Williamson <alex@shazbot.org>,
+	jgg@nvidia.com, kvm@vger.kernel.org, kevin.tian@intel.com,
+	joao.m.martins@oracle.com, leonro@nvidia.com, maorg@nvidia.com,
+	clg@redhat.com, liulongfang@huawei.com, giovanni.cabiddu@intel.com,
+	kwankhede@nvidia.com
+Subject: Re: [PATCH V1 vfio 6/6] vfio/mlx5: Add REINIT support to
+ VFIO_MIG_GET_PRECOPY_INFO
+Message-ID: <ablf_dVtYlZOoIcp@x1.local>
+References: <20260310164006.4020-1-yishaih@nvidia.com>
+ <20260310164006.4020-7-yishaih@nvidia.com>
+ <abL5wKfPGzi88iBy@x1.local>
+ <20260312130817.69ff3e60@shazbot.org>
+ <abMfLQPzVFK388q_@x1.local>
+ <fb6cb519-25d0-4cba-b13f-513349fb49db@nvidia.com>
+ <abhZBIe-vR-GX3TT@x1.local>
+ <accc2aeb-6ae1-4aec-867c-c9927e98f903@nvidia.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] mm/pagewalk: fix race between concurrent split and
- refault
-To: mboone@akamai.com, Andrew Morton <akpm@linux-foundation.org>,
- Lorenzo Stoakes <ljs@kernel.org>, "Liam R. Howlett"
- <Liam.Howlett@oracle.com>, Vlastimil Babka <vbabka@kernel.org>,
- Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
- Michal Hocko <mhocko@suse.com>
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
- stable@vger.kernel.org
-References: <20260317-pagewalk-check-pmd-refault-v1-1-f699a010f2b3@akamai.com>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-In-Reply-To: <20260317-pagewalk-check-pmd-refault-v1-1-f699a010f2b3@akamai.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <accc2aeb-6ae1-4aec-867c-c9927e98f903@nvidia.com>
 
-On 3/17/26 15:03, Max Boone via B4 Relay wrote:
-> From: Max Boone <mboone@akamai.com>
-> 
-> The splitting of a PUD entry in walk_pud_range() can race with
-> a concurrent thread refaulting the PUD leaf entry causing it to
-> try walking a PMD range that has disappeared.
-> 
-> An example and reproduction of this is to try reading numa_maps of
-> a process while VFIO-PCI is setting up DMA (specifically the
-> vfio_pin_pages_remote call) on a large BAR for that process.
-> 
-> This will trigger a kernel BUG:
-> vfio-pci 0000:03:00.0: enabling device (0000 -> 0002)
-> BUG: unable to handle page fault for address: ffffa23980000000
-> PGD 0 P4D 0
-> Oops: Oops: 0000 [#1] SMP NOPTI
-> ...
-> RIP: 0010:walk_pgd_range+0x3b5/0x7a0
-> Code: 8d 43 ff 48 89 44 24 28 4d 89 ce 4d 8d a7 00 00 20 00 48 8b 4c 24
-> 28 49 81 e4 00 00 e0 ff 49 8d 44 24 ff 48 39 c8 4c 0f 43 e3 <49> f7 06
->    9f ff ff ff 75 3b 48 8b 44 24 20 48 8b 40 28 48 85 c0 74
-> RSP: 0018:ffffac23e1ecf808 EFLAGS: 00010287
-> RAX: 00007f44c01fffff RBX: 00007f4500000000 RCX: 00007f44ffffffff
-> RDX: 0000000000000000 RSI: 000ffffffffff000 RDI: ffffffff93378fe0
-> RBP: ffffac23e1ecf918 R08: 0000000000000004 R09: ffffa23980000000
-> R10: 0000000000000020 R11: 0000000000000004 R12: 00007f44c0200000
-> R13: 00007f44c0000000 R14: ffffa23980000000 R15: 00007f44c0000000
-> FS:  00007fe884739580(0000) GS:ffff9b7d7a9c0000(0000)
-> knlGS:0000000000000000
-> CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-> CR2: ffffa23980000000 CR3: 000000c0650e2005 CR4: 0000000000770ef0
-> PKRU: 55555554
-> Call Trace:
->  <TASK>
->  __walk_page_range+0x195/0x1b0
->  walk_page_vma+0x62/0xc0
->  show_numa_map+0x12b/0x3b0
->  seq_read_iter+0x297/0x440
->  seq_read+0x11d/0x140
->  vfs_read+0xc2/0x340
->  ksys_read+0x5f/0xe0
->  do_syscall_64+0x68/0x130
->  ? get_page_from_freelist+0x5c2/0x17e0
->  ? mas_store_prealloc+0x17e/0x360
->  ? vma_set_page_prot+0x4c/0xa0
->  ? __alloc_pages_noprof+0x14e/0x2d0
->  ? __mod_memcg_lruvec_state+0x8d/0x140
->  ? __lruvec_stat_mod_folio+0x76/0xb0
->  ? __folio_mod_stat+0x26/0x80
->  ? do_anonymous_page+0x705/0x900
->  ? __handle_mm_fault+0xa8d/0x1000
->  ? __count_memcg_events+0x53/0xf0
->  ? handle_mm_fault+0xa5/0x360
->  ? do_user_addr_fault+0x342/0x640
->  ? arch_exit_to_user_mode_prepare.constprop.0+0x16/0xa0
->  ? irqentry_exit_to_user_mode+0x24/0x100
->  entry_SYSCALL_64_after_hwframe+0x76/0x7e
-> RIP: 0033:0x7fe88464f47e
-> Code: c0 e9 b6 fe ff ff 50 48 8d 3d be 07 0b 00 e8 69 01 02 00 66 0f 1f
-> 84 00 00 00 00 00 64 8b 04 25 18 00 00 00 85 c0 75 14 0f 05 <48> 3d 00
->    f0 ff ff 77 5a c3 66 0f 1f 84 00 00 00 00 00 48 83 ec 28
-> RSP: 002b:00007ffe6cd9a9b8 EFLAGS: 00000246 ORIG_RAX: 0000000000000000
-> RAX: ffffffffffffffda RBX: 0000000000020000 RCX: 00007fe88464f47e
-> RDX: 0000000000020000 RSI: 00007fe884543000 RDI: 0000000000000003
-> RBP: 00007fe884543000 R08: 00007fe884542010 R09: 0000000000000000
-> R10: fffffffffffffbc5 R11: 0000000000000246 R12: 0000000000000000
-> R13: 0000000000000003 R14: 0000000000020000 R15: 0000000000020000
->  </TASK>
-> 
-> Fix this by validating the PUD entry in walk_pmd_range() using a stable
-> snapshot (pudp_get()). If the PUD is not present or is a leaf, retry the
-> walk via ACTION_AGAIN instead of descending further. This mirrors the
-> retry logic in walk_pmd_range().
-> 
-> Fixes: a00cc7d9dd93 ("mm, x86: add support for PUD-sized transparent hugepages")
-> Cc: stable@vger.kernel.org
-> Co-developed-by: David Hildenbrand (Arm) <david@kernel.org>
-> Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
-> Signed-off-by: Max Boone <mboone@akamai.com>
-> ---
+Hi, Avihai,
 
-Acked-by: David Hildenbrand (Arm) <david@kernel.org>
+On Tue, Mar 17, 2026 at 11:58:28AM +0200, Avihai Horon wrote:
+> Yes, this is because the VFIO device stop_copy_size may hold data that can
+> be transferred only when the device is stopped, i.e., during switchover (as
+> opposed to RAM which is fully precopy-able).
+> Reporting it as part of estimate() didn't seem right, as precopy iterations
+> will not reduce it -- if it's big enough (above the threshold), it may block
+> future exact() calls as we can't migrate this data during pre-copy and reach
+> below threshold again.
+
+This doesn't look right either. I think we should stick with the exact()
+being only the accurate version of estimate() only.  The problem might be
+that the current interfacing for both may not suite well enough with VFIO,
+because VFIO is so far the only module that may contain stop-only data.
+
+The other known issue (not directly relevant here, but we will need to look
+into it very soon) is when VFIO is involved the query-migrate results are
+sometimes not containing VFIO data, at least "total" and "remaining" fields.
+
+I'll see if I can prepare some quick patch this week to address them, or at
+least raise these problem explicitly so you can have a closer look if possible.
+
+[...]
+
+> Yes, I agree, but it's a delicate flow in QEMU and need to get to the
+> details.
+> Anyway, this case should be rare and we can further discuss these details
+> when I send the QEMU series.
+
+Yep, that's fine.
+
+Thanks,
 
 -- 
-Cheers,
+Peter Xu
 
-David
