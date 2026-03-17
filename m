@@ -1,211 +1,226 @@
-Received: from fhigh-a2-smtp.messagingengine.com (fhigh-a2-smtp.messagingengine.com [103.168.172.153])
+Received: from PH7PR06CU001.outbound.protection.outlook.com (mail-westus3azon11010010.outbound.protection.outlook.com [52.101.201.10])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D31273081A2;
-	Tue, 17 Mar 2026 21:24:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.153
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773782693; cv=none; b=mCPCMcV+U7OKZd7X6kqZmvQgP79bgByD4vHqf3ofnr5m0vi7KldYH9vWQR5JW4LOWB4Dz1Mr9EaDTr7CgJidsaya2Ad3Fjgux0tCicx3QlXhoxbbcdcPzZC1pqqui8ftnbQT1gdI2RkI3+snQ9WWsJOOwSvrVvQnPPI2TZ/FQBg=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773782693; c=relaxed/simple;
-	bh=fyjW+SjlG0dtP6UuyaAG54lfNmKF8VYWoUaYk51k2SU=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=GJwYBJqAoEbr2hPhodSv2MMU78hdTyZJWt8escYbZ1RBFPTrlz9OmdxUByI0lnhdwFSl5CPvUmEk105xoCFn5fjyOPiCycwHs38ptO+idBlj2AbXqXPN4276y6e5fZJrog+AP3EVusWUs344Pw/McQ5hqLMBsIeDuIAdFYWeygQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=shazbot.org; spf=pass smtp.mailfrom=shazbot.org; dkim=pass (2048-bit key) header.d=shazbot.org header.i=@shazbot.org header.b=UsUdJKxY; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=UbP5U1Aw; arc=none smtp.client-ip=103.168.172.153
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=shazbot.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=shazbot.org
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 075FF5CDF1;
+	Tue, 17 Mar 2026 21:42:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.201.10
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1773783766; cv=fail; b=pfeahXKFj9BY7F7MkCNk0sR3rQI8wY0IbuB0S/AplPjHCfCNhY/ZYHXtnpA3HaZkYOHH34f6huX/A6IbsOKuaQSjWxOsSY9yaLEC6TpcFSvC2SgqNrrYGEq96Zoksqx8dfHhEjkgCkW9urB9fN5QC3ct80Dsxe83MFbfYmW5xjU=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1773783766; c=relaxed/simple;
+	bh=CGsRvUutEUODvAV9WORmpXR2q3pc6uupz+phzlTOo2Y=;
+	h=From:To:Cc:Subject:Date:Message-ID:Content-Type:MIME-Version; b=p+IOu9dSUJhBwtMfivufrJiTxtb8K4vo+HINsU01F/GDDWaFNW2RfmXG87XU68NIFziZ8gzqJX5TcmTFXF2UDNimIUEOmwiirWaZz/il9s7IxDrbeBDY4RwziMGR74skqvE1DzzJg2n3/oNxNqe9JX7FuTiqht6n3ulBgYgd4BY=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=Z/9gA5kM; arc=fail smtp.client-ip=52.101.201.10
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=shazbot.org header.i=@shazbot.org header.b="UsUdJKxY";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="UbP5U1Aw"
-Received: from phl-compute-12.internal (phl-compute-12.internal [10.202.2.52])
-	by mailfhigh.phl.internal (Postfix) with ESMTP id 0042B1400103;
-	Tue, 17 Mar 2026 17:24:48 -0400 (EDT)
-Received: from phl-frontend-03 ([10.202.2.162])
-  by phl-compute-12.internal (MEProxy); Tue, 17 Mar 2026 17:24:49 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shazbot.org; h=
-	cc:cc:content-transfer-encoding:content-type:content-type:date
-	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to; s=fm3; t=1773782688;
-	 x=1773869088; bh=3MZOnnp2V/38CG7PZGVwO0DWeBD5hMT+NJkU2Hm0nH4=; b=
-	UsUdJKxY8ZFg+9ahVspXKEbW2QeMkScw1YdLM6G2zmZ33m0VgCCwoBWDKn74/qyS
-	vJo/p+A5YbgsOprgc3q2a+MgTUATOmvZ/PCNfkHOQ6EDdIAiGAX09mtC49hg4M2W
-	7hZYxfZLjybSX+cTNmnDUwTEPpSxRtE1WrJ8tFxNJB8eS2Fa2smwD8YrgFqCzKsG
-	YqQCDto96RTwT1XeYZaC3PLSyfano9c6NptBi+1whxBZ/W/Mz5DGDH7h6Gb6v1Hh
-	45VVuHgoTXq0VRWPeKPIvIQF7RApUMP7fjRGaFurc2qgBW1SvydfWSYywgbnKrJA
-	pjU7qEoJvRK2vH40sEPGbA==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=1773782688; x=
-	1773869088; bh=3MZOnnp2V/38CG7PZGVwO0DWeBD5hMT+NJkU2Hm0nH4=; b=U
-	bP5U1AwoiZ6evdT4XmR2VsjwPTh09DQHRjqO4p+Yh1iCLYRDOUELwl5czV9ZHAd2
-	Pgfx9D/9gbCvfUUVW1n4WMDg+YuctkitXTpZaxcfIGX8CQ6vWTgfx/lsLWBxH/7l
-	LHBVq1AjhJidQey4kvqbNjZVTr41EH9fECUDLaLe6laebw42olnW6zxsQ9WDRMq9
-	K2/OaEhflg79ZhFMBJbPUOXlLgx4MSFlDBs1kEa+BjEYo5FHSkeU/odKjJWXTMkN
-	SXHs5Vg7yO5gsfZBmYSTFSCZ2IL2jiVU8e2pGdGs1sCXQ2dEkMMgcEX/kJZrsTiu
-	NY83p6EtVv1DWcJRYoZHA==
-X-ME-Sender: <xms:oMa5aWA6kq-bOhv_n7eln2DKThkR39B08JLNbBwxSA8Rzk1CJShpEg>
-    <xme:oMa5aZkQpIs6AVqIGpFghy3HJTFnjaZk131gkGQWlT7Z9a2tNtH-2yoIwR3XVIsff
-    isvCd5FnKsr6gdTq6IHAwgg8ToW_uCrh1do_iJNgFN78G5VtJHy>
-X-ME-Received: <xmr:oMa5aSrkPNsAOimO7auv_2Y5Fc-uiQid4ODGby6HWb9GWwVx-6lq_Too2a0>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgdeftddvfedvucetufdoteggodetrf
-    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
-    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
-    gurhepfffhvfevuffkjghfofggtgfgsehtjeertdertddvnecuhfhrohhmpeetlhgvgicu
-    hghilhhlihgrmhhsohhnuceorghlvgigsehshhgriigsohhtrdhorhhgqeenucggtffrrg
-    htthgvrhhnpedvkeefjeekvdduhfduhfetkedugfduieettedvueekvdehtedvkefgudeg
-    veeuueenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpe
-    grlhgvgiesshhhrgiisghothdrohhrghdpnhgspghrtghpthhtohepvdeipdhmohguvgep
-    shhmthhpohhuthdprhgtphhtthhopegrlhgvgiesshhhrgiisghothdrohhrghdprhgtph
-    htthhopehjohhnrghthhgrnhdrtggrmhgvrhhonheshhhurgifvghirdgtohhmpdhrtghp
-    thhtohepmhhhohhnrghpsehnvhhiughirgdrtghomhdprhgtphhtthhopegrnhhikhgvth
-    grsehnvhhiughirgdrtghomhdprhgtphhtthhopegrnhhkihhtrgesnhhvihguihgrrdgt
-    ohhmpdhrtghpthhtohepvhhsvghthhhisehnvhhiughirgdrtghomhdprhgtphhtthhope
-    hjghhgsehnvhhiughirgdrtghomhdprhgtphhtthhopehmohgthhhssehnvhhiughirgdr
-    tghomhdprhgtphhtthhopehskhholhhothhhuhhmthhhohesnhhvihguihgrrdgtohhm
-X-ME-Proxy: <xmx:oMa5aQhhhfG9aUhZo77VHyeheHz3DP03XWOw0HsavGfeixfLYjb6Qg>
-    <xmx:oMa5aUiHL2XOHzXqPyomLJaODK32CBKPux60D3O3THywga_bwSTOTA>
-    <xmx:oMa5aeEA2NZ1D0_rlQpdtd46qSKWluxJTjHWwAMWYrx_5GoAGi8buw>
-    <xmx:oMa5afBatq4xsoNCmS4Bw3l6PlqscDfjyqxNeuDXOjqsLPfCEy728A>
-    <xmx:oMa5aRDcU-FvkadiB5VMaRO7jM_dsY0jj5bwCDBu8vJIDvjFnWlvY5Pt>
-Feedback-ID: i03f14258:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
- 17 Mar 2026 17:24:46 -0400 (EDT)
-Date: Tue, 17 Mar 2026 15:24:45 -0600
-From: Alex Williamson <alex@shazbot.org>
-To: Jonathan Cameron <jonathan.cameron@huawei.com>
-Cc: alex@shazbot.org, <mhonap@nvidia.com>, <aniketa@nvidia.com>,
- <ankita@nvidia.com>, <vsethi@nvidia.com>, <jgg@nvidia.com>,
- <mochs@nvidia.com>, <skolothumtho@nvidia.com>,
- <alejandro.lucero-palau@amd.com>, <dave@stgolabs.net>,
- <dave.jiang@intel.com>, <alison.schofield@intel.com>,
- <vishal.l.verma@intel.com>, <ira.weiny@intel.com>,
- <dan.j.williams@intel.com>, <jgg@ziepe.ca>, <yishaih@nvidia.com>,
- <kevin.tian@intel.com>, <cjia@nvidia.com>, <targupta@nvidia.com>,
- <zhiw@nvidia.com>, <kjaju@nvidia.com>, <linux-kernel@vger.kernel.org>,
- <linux-cxl@vger.kernel.org>, <kvm@vger.kernel.org>
-Subject: Re: [PATCH 18/20] docs: vfio-pci: Document CXL Type-2 device
- passthrough
-Message-ID: <20260317152445.67a93881@shazbot.org>
-In-Reply-To: <20260313121341.00001bfa@huawei.com>
-References: <20260311203440.752648-1-mhonap@nvidia.com>
-	<20260311203440.752648-19-mhonap@nvidia.com>
-	<20260313121341.00001bfa@huawei.com>
-X-Mailer: Claws Mail 4.3.1 (GTK 3.24.51; x86_64-pc-linux-gnu)
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="Z/9gA5kM"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=XfxJV9i+o+lvY7x5eWmREMiHD+zmhNmmjWp0yFV4gSMq/9Vcyq1HjdWwJxbIpJZcosblEqOYGbmhrqAY6eitUhiIQAZ8GvILyN87jt+VUCmhsOTICmsOXoX1UnUF6hfAC2pNr3SZqy4ByvC9T0CHAFuKxxhcIRhv6izb1Gl6qtd6hYP12wPLEigr6mbblQQ06BngdY+IsaQsVNb3nhmwP4cwaak22WHJSkv4k7a4CLc5wAJpI+G81WgkeKFEJFsAK0ShkxwF4dPyYB/jwA0gOLrhOIvBrr0Ti7IyO7751ug6KleeSdpsMAo+lGpTYL0KyQPCuAI8vaqda5NCe5ACow==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=cEsuY82jJJbm4Rm1QVpZez6sTQqFh6S8wJWxeAdEtdg=;
+ b=kFmu9JQyllUucvpqzvz6atvsUzdC2avpmsP3z99u9uRNMwjg++qY7BdOZDJs5YcvEBctC3RSrtBTqBsNeG0vbG1VQaHW+Bd8X5zIAThr89icrhoobYPiaMRnhO0YhzFxXZLW3RZNHroeeGiFbeO3NHPOaMoByKPyEr4SGDOpWsc7kqIqmFgkwwv97fGm2U+eo6PxB81DQYJbJVR38+6UP6lar8YVpvTpjf8jH5N8W0UvAPDmRIp2xJDeAC2QIpXtRPXYlxWm1YRsvL7XNIdIhvsYKIZuTZLzKeE8KA71mgR9Gz4yu2joMxx3+uss3XPno4AOS1LsFHErTDIqIKdQLw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=cEsuY82jJJbm4Rm1QVpZez6sTQqFh6S8wJWxeAdEtdg=;
+ b=Z/9gA5kMNZPfy3Xvn7EOwnAQTo3IIo+blYW/Jc9Tb48atXQTYgyDHkXhoYiInMGHsC7MkigcAGLlXdknLy4lo+lcF1bDflLayRoSET3n6vcqUeIccYm2MucySuXT+E+p6MF21sU5Y4M30X0d7tnNcq1jFg5g+nlQ0+K4GuQcDVEzG/xxl9wxyCafQ5IAVl3Cbnxrefzyd/sp4F1fRmv/2bulHbU4J+MUJ4uZkxBx9/DxSwIBFL/+E6A84V9IGg+lNuFYfb0r/jChTEd1w6i7UKiIuECchLrdDkmJgDuBaVWx/1LT88Z+BmZfogfwofhPoGGjMP+MivVn0tlN6saxcw==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from SA5PPF80B25317E.namprd12.prod.outlook.com
+ (2603:10b6:80f:fc04::8d2) by CH2PR12MB4070.namprd12.prod.outlook.com
+ (2603:10b6:610:ae::22) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9723.19; Tue, 17 Mar
+ 2026 21:42:41 +0000
+Received: from SA5PPF80B25317E.namprd12.prod.outlook.com
+ ([fe80::e30:d7d3:95f0:78e7]) by SA5PPF80B25317E.namprd12.prod.outlook.com
+ ([fe80::e30:d7d3:95f0:78e7%6]) with mapi id 15.20.9723.014; Tue, 17 Mar 2026
+ 21:42:41 +0000
+From: Rubin Du <rubind@nvidia.com>
+To: Alex Williamson <alex@shazbot.org>,
+	David Matlack <dmatlack@google.com>,
+	Shuah Khan <shuah@kernel.org>
+Cc: kvm@vger.kernel.org,
+	linux-kselftest@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	rubind@nvidia.com
+Subject: [PATCH v9 0/2] selftests/vfio: Add NVIDIA GPU Falcon DMA test driver
+Date: Tue, 17 Mar 2026 14:42:37 -0700
+Message-ID: <20260317214239.124857-1-rubind@nvidia.com>
+X-Mailer: git-send-email 2.43.0
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: SJ0PR13CA0080.namprd13.prod.outlook.com
+ (2603:10b6:a03:2c4::25) To SA5PPF80B25317E.namprd12.prod.outlook.com
+ (2603:10b6:80f:fc04::8d2)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: SA5PPF80B25317E:EE_|CH2PR12MB4070:EE_
+X-MS-Office365-Filtering-Correlation-Id: 0a439148-70e2-4321-bcd9-08de846e1d85
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|376014|366016|1800799024|18002099003|56012099003;
+X-Microsoft-Antispam-Message-Info:
+	5GYl9xdjoR3WCNKa3VkJ4IUe9K3rOTsKLDU/FdWc1M86E6luJeDKJpOCHfsSFWLpvzY+jcxtDciasK0OS+GRWbhilcglnDs/GZ0FCj2xdz2OiQB1DYMBSxe3b55p+M4k7i3VSPh0WUDew3YpfU48Q6Z2DaGYCUGsbxW6u9tVaAhF/RhDgUpA90cWbmBdFODzsJt0IT3U96AkNya4MVQKWPgNtxOQDTzt07QDKfWofD+EDoQ8YQGESi6UlTemojk3ze4svbISKc4OdL8ORDkLCcaAta9NtsETbg7sxY56ACbltbP9epbTvyNy5WoNLwlfMamZzU+j5SHF6yEt/0EmnxU8YyN+jHStpV7lzWBLYrxx94ftrVQDBiRauGfefs3IYn3cc3ZV//C04diPkFrD4r/H2XaXNmM6mbOORh8sBF09IAbC60WAMVdkCQGn/453k45N+7O4TMIIkLLHsHaI2WB3bHDMWbb0RZNxkhvAekimHMeWOEWygf+Cos6jPYasxT/xOBwzvi3y+7MgVkmJfin0T5UnftlIPjTB153/8tEGeGwpaDUQ/DIW4zSjA3wzE0NIWXh9Lq8jEtP+t5Cj2nykY6FK7rZfGNbc8HcjF5XAbj5ImLTp3wZMdcSfb2/yVdPqL8Y8Jv4Dj5nx5fD1EPq1Zy9TMhS0XVgITH6gVvcR92LycsdB/TzamVeEWDBKwYx2g1eLTUyjAdcf52XJxjLnlDaiS/TPjOkcbcYC6OI=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SA5PPF80B25317E.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(366016)(1800799024)(18002099003)(56012099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?dD84tJtwrioS3+V0g6IoDZHKvXGFZhbHryGPWz9dpw5N8K65mDgr9fBXmLyV?=
+ =?us-ascii?Q?AqaOJhWbZhDTjR4xec0PM0TWzbpqJ7h06OeTjrb2ILiWbBQTQ2T0fflJd/Nx?=
+ =?us-ascii?Q?0hKUPnEvrtFRCmbnOYC4deO89Pb2ha5g5E6npCvCFNnFMuMhLcHlOBis2FaU?=
+ =?us-ascii?Q?cZGrUhDZB6zJOyeedRaTMyOh7MaR9cs8+K6ul/4sdYN6LzdvFofHB/q8bYy3?=
+ =?us-ascii?Q?yskMhzd3aghIpUTMBn14H/HIZ+VkKTCNHjZEzwuSkS7lN8UfEP/jzLb6ocvj?=
+ =?us-ascii?Q?TJ0xoa4LfzwNf12iN/5wnwpnIFKQjeFVd4OfXSpKTZVYlTMP4KvtAa4/fAcE?=
+ =?us-ascii?Q?OM4APXkjLyR36jrqbG4iFAr5YopmFbxDJXy43e7QdyL1jZ24gv6SWCyy1Y4C?=
+ =?us-ascii?Q?bXjm58CdEyCke6NAxNjOaXQSNjd3PLhPeTmy1SjKLfC65mzbBgHzZQ0BctO2?=
+ =?us-ascii?Q?ZUqE9YFsk0KAp8h6r22zkZ883bWZV3bZs/i3Juh6JtLiVOHl/3d/VxBCb5Ow?=
+ =?us-ascii?Q?h+EhGJXB4knT/wxWL27sOmCicPGYNHnwkMvrLwCQlpM7GWdSzdTfal3fCGh8?=
+ =?us-ascii?Q?+3GD6Dn1XQsMsgKLKlx+rwcphICet0SXeDJnD6VgYZd5NPT90Yu9YrPhI7Ut?=
+ =?us-ascii?Q?D0VgyowIPBEbQLk3raqXgrIAoxKsXmQRFHX/jz5udeGVJwrxXpC/3RrBM4y3?=
+ =?us-ascii?Q?c3doXHro6vWtEE5zJPSb2i/lfLANjDLP4N0xd3hA2AsqTlGOgrFnQrGzqtDn?=
+ =?us-ascii?Q?G2cnbeu67qaeki8Be84Oywt2XunZkkU3BcjC/G8+l2ooWy8YatbVONVmAd6p?=
+ =?us-ascii?Q?vbTxL/iL4L6TgjaWbEZNhT4hOVH2xxhkViZLoVlmplkRpss9tM2YNnqtSRyd?=
+ =?us-ascii?Q?t1PbSGi/+ZxIPtcOz3hUluJ4ZSB487P7zhGhKmn81Cd03/cxMynZcNwH5Ou/?=
+ =?us-ascii?Q?/9+ecVNNUfXvXg+NYPJizv+mjqhBBiSi1y9V1C6yiafKqCv0Fh1GERCuy450?=
+ =?us-ascii?Q?dftIusteoiw+SNRMbCsu0PXhMLLXP9rajFeXQ0cYkl+1Pi9ClGcxifj80QSz?=
+ =?us-ascii?Q?9GEfHMCFN1ePPJo6oUGTH/9fx5cM57gb5b0AGFY2ClG+XLi9XKcIGQf61nNB?=
+ =?us-ascii?Q?dfdlKnImxfwrZZsAADWHtAwVGJBN3Vdwi3m+SgqCGU4Nkc+PdCKbCo7G2u2b?=
+ =?us-ascii?Q?YyQQnELfHQ93a1YBd7wnKjgw80ocfmKcYXwFLSzkj614iHI6KtwLkWO8iHyV?=
+ =?us-ascii?Q?JZh2Y3rLKGy/BbqyLkUT52vyY7JM5SMJFJuxx0G4JMQjEluK9MglVxyNLJzi?=
+ =?us-ascii?Q?ThN0F3h9dsOnvn/4oNnDDDZtuFjnwzQHdaCbA3DePiAnDDmzBDrKul3jlu+6?=
+ =?us-ascii?Q?ZL6AxH7Id430QT33oz9RxszOq0qLCTPs3xTfKn1ayBrFZfOpBO7ZZe6fEkcu?=
+ =?us-ascii?Q?QrFGLfo05rgmHal9JYu6NEZfQ/EhiK/k5zC2NcEG8+79Rp+Nv8dVbg7MZQvl?=
+ =?us-ascii?Q?HCdP4DsJytqkmFMrND73KGZ2307fK1pT/B4JhrLT6n40pUhPgnAbSCnudF3s?=
+ =?us-ascii?Q?paKLjqAceFDOjff6c52ViGtMIa8hkCiFJhQzRHtOPk5ycpKwJWeP8lNLPr8H?=
+ =?us-ascii?Q?GazjvPVJbXPzIPQduPw4uz7+0iPsDbdYJeaDWXwXpsE0NXLqiJy3Aa0WP/Up?=
+ =?us-ascii?Q?Z2xoDNkBMgMfmGXMC1z8keA+xshn1OT0UNV3D6g60BP9bBVRlexql5zVQj9U?=
+ =?us-ascii?Q?mGWZWQByxA=3D=3D?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 0a439148-70e2-4321-bcd9-08de846e1d85
+X-MS-Exchange-CrossTenant-AuthSource: SA5PPF80B25317E.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 17 Mar 2026 21:42:41.1359
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: l7IfjZb+c8ykzaR1LN8zvdAwMaNFtOx1S5x5urYJVTOjojjt7U/+D4KNhmhid01BKnsDk1r99QZwyEI4ZSONaw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH2PR12MB4070
 
-On Fri, 13 Mar 2026 12:13:41 +0000
-Jonathan Cameron <jonathan.cameron@huawei.com> wrote:
+This patch series adds a new VFIO selftest plugin driver for NVIDIA 
+GPUs that enables DMA testing via the Falcon microcontrollers.
 
-> On Thu, 12 Mar 2026 02:04:38 +0530
-> mhonap@nvidia.com wrote:
-> 
-> > From: Manish Honap <mhonap@nvidia.com>
-> > ---
-> >  Documentation/driver-api/index.rst        |   1 +
-> >  Documentation/driver-api/vfio-pci-cxl.rst | 216 ++++++++++++++++++++++
-> >  2 files changed, 217 insertions(+)
-> >  create mode 100644 Documentation/driver-api/vfio-pci-cxl.rst
-> > 
-> > diff --git a/Documentation/driver-api/index.rst b/Documentation/driver-api/index.rst
-> > index 1833e6a0687e..7ec661846f6b 100644
-> > --- a/Documentation/driver-api/index.rst
-> > +++ b/Documentation/driver-api/index.rst  
-> 
-> >  
-> >  Bus-level documentation
-> >  =======================
-> > diff --git a/Documentation/driver-api/vfio-pci-cxl.rst b/Documentation/driver-api/vfio-pci-cxl.rst
-> > new file mode 100644
-> > index 000000000000..f2cbe2fdb036
-> > --- /dev/null
-> > +++ b/Documentation/driver-api/vfio-pci-cxl.rst  
-> 
-> > +Device Detection
-> > +----------------
-> > +
-> > +CXL Type-2 detection happens automatically when ``vfio-pci`` registers a
-> > +device that has:
-> > +
-> > +1. A CXL Device DVSEC capability (PCIe DVSEC Vendor ID 0x1E98, ID 0x0000).
-> > +2. Bit 2 (Mem_Capable) set in the CXL Capability register within that DVSEC.  
-> 
-> FWIW to be type 2 as opposed to a type 3 non class code device (e.g. the
-> compressed memory devices Gregory Price and others are using) you need
-> Cache_capable as well.  Might be worth making this all about
-> CXL Type-2 and non class code Type-3.
-> 
-> > +3. A PCI class code that is **not** ``0x050210`` (CXL Type-3 memory device).
-> > +4. An HDM Decoder block discoverable via the Register Locator DVSEC.
-> > +5. A pre-committed HDM decoder (BIOS/firmware programmed) with non-zero size.  
-> 
-> This is the bit that we need to make more general. Otherwise you'll have
-> to have a bios upgrade for every type 2 device (and no native hotplug).
-> Note native hotplug is quite likely if anyone is switch based device
-> pooling.
-> 
-> I assume that you are doing this today to get something upstream
-> and presume it works for the type 2 device you have on the host you
-> care about.  I'm not sure there are 'general' solutions but maybe
-> there are some heuristics or sufficient conditions for establishing the
-> size.
-> 
-> Type 2 might have any of:
-> - Conveniently preprogrammed HDM decoders (the case you use)
-> - Maximum of 2 HDM decoders + the same number of Range registers.
->   In general the problem with range registers is they are a legacy feature
->   and there are only 2 of them whereas a real device may have many more
->   DPA ranges. In this corner case though, is it enough to give us the
->   necessary sizes?  I think it might be but would like others familiar
->   with the spec to confirm. (If needed I'll take this to the consortium
->   for an 'official' view).
-> - A DOE and table access protocol.  CDAT should give us enough info to
->   be fairly sure what is needed.
-> - A CXL mailbox (maybe the version in the PCI spec now) and the spec defined
->   commands to query what is there.  Reading the intro to 8.2.10.9 Memory
->   Device Command Sets, it's a little unclear on whether these are valid on
->   non class code devices but I believe having the appropriate Mailbox
->   type identifier is enough to say we expect to get them.
-> 
-> None of this is required though and the mailboxes are non trivial.
-> So personally I think we should propose a new DVSEC that provides any
-> info we need for generic passthrough.  Starting with what we need
-> to get the regions right.  Until something like that is in place we
-> will have to store this info somewhere.
-> 
-> There is (maybe) an alternative of doing the region allocation on demand.
-> That is emulate the HDM decoders in QEMU (on top of the emulation
-> here) and when settings corresponding to a region setup occur,
-> go request one from the CXL core. The problem is we can't guarantee
-> it will be available at that time. So we can 'guess' what to provide
-> to the VM in terms of CXL fixed memory windows, but short of heuristics
-> (either whole of the host offer, or divide it up based on devices present
->  vs what is in the VM) that is going to be prone to it not being available
-> later.
-> 
-> Where do people think this should be?  We are going to end up with
-> a device list somewhere. Could be in kernel, or in QEMU or make it an
-> orchestrator problem (applying the 'someone else's problem' solution).
+Patch 1: 
 
-That's the typical approach.  That's what we did with resizable BARs.
-If we cannot guarantee allocation on demand, we need to push the policy
-to the device, via something that indicates the size to use, or to the
-orchestration, via something that allows the size to be committed
-out-of-band.  As with REBAR, we then need to be able to restrict the
-guest behavior to select only the configured option.
+Kernel selftests are a collection of test programs that live within the
+Linux kernel source tree (tools/testing/selftests/) and are designed to
+test various kernel subsystems from userspace. The VFIO selftest 
+framework have a pluggable driver architecture that allows different 
+hardware drivers to implement various test capabilities. However, not 
+all drivers can trigger MSI/MSI-X interrupts from software.
 
-I imagine this means for the non-pre-allocated case, we need to develop
-some sysfs attributes that allows that out-of-band sizing, which would
-then appear as a fixed, pre-allocated configuration to the guest.
-Thanks,
+This patch adds checks to gracefully skip MSI-related tests when the
+driver's send_msi callback is NULL, allowing drivers without MSI
+support to still run the DMA functionality tests. It also makes MSI
+truly optional by checking msi_fd validity before operations.
 
-Alex
+Patch 2:
+
+This patch introduces the core implementation of the plugin driver. It 
+extracts and adapts relevant functionality from NVIDIA's gpu-admin-tools 
+project [1], integrating it into the VFIO selftest framework. As a 
+result, any system equipped with a PCIe slot and a supported NVIDIA GPU 
+can now run VFIO DMA selftests using commonly available hardware.
+
+The Falcon is a general-purpose microcontroller present on NVIDIA GPUs
+that can perform DMA operations between system memory and device memory.
+
+The core VFIO selftest infrastructure handles:
+
+- VFIO container/group management
+- IOMMU domain setup
+- DMA buffer allocation and mapping
+- Test orchestration and reporting
+
+The plugin drivers provide device-specific implementations for:
+
+- Probing and initializing device
+- Triggering DMA operations
+- Verifying DMA completion
+- Device cleanup
+
+[1] https://github.com/NVIDIA/gpu-admin-tools
+
+Changes in v9:
+- Squashed patch 3 (PMU falcon support for Kepler and Maxwell Gen1)
+  into patch 2, as the registers and fields required have been approved
+  for open source disclosure
+
+Changes in v8:
+- Corrected Makefile to also build nv_falcons driver on other
+  architectures than x86_64
+
+Changes in v7:
+- Added Hopper (H100) support
+- Made MSI optional by checking msi_fd != -1 in ASSERT_NO_MSI
+  macro and guarding fcntl_set_nonblock() calls
+- Refactored to use gpu_properties_map[] array indexed by enum gpu_arch
+- Added falcon_map[] array indexed by enum falcon_type for cleaner
+  initialization
+- Coding style fixes
+
+Changes in v6:
+- Added GPU architecture detection
+- Refactored GPU detection to use per-architecture property structs
+
+Changes in v5:
+- Reorganized as a 3-patch series
+- Added patch to skip MSI tests for drivers without MSI support
+- Removed stub MSI function from Falcon driver
+- Added support to Maxwell Gen1 GPUs and Kepler GPUs
+
+Changes in v4:
+- Removed redundant PCI_VENDOR_ID_NVIDIA macro
+- Macro cleanup and style fixes
+
+Changes in v3:
+- Updated cover letter to clarify purpose and scope
+
+Changes in v2:
+- Fixed NV_PMC_ENABLE_PWR macro value (0x2000, was incorrectly 0x1000)
+- Added gpu_disable_bus_master and falcon_disable calls in remove path
+  for proper cleanup
+- Added error handling for unknown GPU pmc_boot_0 values
+- General code cleanup and style fixes
+- Note: Kepler cards may not work, pending further testing
+
+Rubin Du (2):
+  selftests/vfio: Skip MSI tests for drivers that cannot raise
+    interrupts
+  selftests/vfio: Add NVIDIA Falcon driver for DMA testing
+
+ .../vfio/lib/drivers/nv_falcons/hw.h          | 345 ++++++++
+ .../vfio/lib/drivers/nv_falcons/nv_falcons.c  | 757 ++++++++++++++++++
+ .../lib/include/libvfio/vfio_pci_device.h     |   3 +
+ tools/testing/selftests/vfio/lib/libvfio.mk   |   2 +
+ .../selftests/vfio/lib/vfio_pci_driver.c      |   4 +-
+ .../selftests/vfio/vfio_pci_driver_test.c     |   8 +
+ 6 files changed, 1118 insertions(+), 1 deletion(-)
+ create mode 100644 tools/testing/selftests/vfio/lib/drivers/nv_falcons/hw.h
+ create mode 100644 tools/testing/selftests/vfio/lib/drivers/nv_falcons/nv_falcons.c
+
+-- 
+2.43.0
+
