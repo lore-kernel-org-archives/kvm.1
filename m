@@ -1,197 +1,64 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3A1A357A4A;
-	Tue, 17 Mar 2026 16:31:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4671A313E15;
+	Tue, 17 Mar 2026 16:32:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773765086; cv=none; b=HwF9+sj6TvEvWfhIodlR8lVIQfnXPU0cI9m8Pw7mYaBDP3MZ5s1mzdkWYCZ5Du5Cll/K7x1ZanLyzZwZYSFEJvzPNm6Gtzj7MxZREeTnj+yMOi/vtqVn8MXRlZnNevhWhFPxilLfkg5zo+OGdPD2ZsflvhiUxzNi0Wwvh12Fc90=
+	t=1773765177; cv=none; b=etH6y4f7pL0MxUOynn31wH+usUzul92Ow/SwH1BZMEDkoxHI23IMdgNeT4cvse1kBSh9tU9FIzcaRKZQZ82mvuG8QlWLPxNIkOdxCM+O82tw6G1WFzqAI3f8SIxyVdMRlKzQcXxgkq6N0JwNvME2XSjHwQmIPn21bH1AqEbbSdE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773765086; c=relaxed/simple;
-	bh=Ch1L6z1Gn5uPEJltO7XnLKXIzBRWjl1jEv6JHJnsz1k=;
-	h=Date:Message-ID:From:To:Cc:Subject:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=JysxFDqP9+ejOiq0Oz7XRpqACanVdBp5dIlQbeRaTIB4PzpSe4gTZlNGjPJP9QfS5RufLOxZLZ1M5Lc9zD+sdwmFUlcbqtk29ZcoLPGJZdtZwJfLQnJZj8H67CS/rMU4ltaUX2Gfg5zVKFyGILvXmOQwdT5BM7P9c5aLqM+Ocps=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FfaQCmLq; arc=none smtp.client-ip=10.30.226.201
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FfaQCmLq"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7A10EC4CEF7;
-	Tue, 17 Mar 2026 16:31:26 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773765086;
-	bh=Ch1L6z1Gn5uPEJltO7XnLKXIzBRWjl1jEv6JHJnsz1k=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=FfaQCmLq5oKhKGC/NNf7Tqv7RM7TsVq+6STfX2BsFDXJpF0w7u1WWWPEByCEL4zpa
-	 rk9tHskJIjawU0Mf1O3qw/wh6t5X1B0A1RqbTf1wrSssIP4c2MDiwpBf85g/vfG2aB
-	 p6pHMc4bmwA6hV/ovOnTaqTV0/rcuCDMf9spF/oSO6H6xkcDUp2GAi8b5cPn8h7dfd
-	 J/qaX1eYLy4EcJX+bPhZsCJdphexECp/s11ffkjidy9ncgV3++okLYegmfiOnboLTh
-	 wU8hiPJR4WkNa8GBAwKjwQfdyBd5t48rjtw6GRhpM+EKtCWRvbQoEzCqGOULzxyyfJ
-	 Iy/DXgQfy7v2g==
-Received: from sofa.misterjones.org ([185.219.108.64] helo=goblin-girl.misterjones.org)
-	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.98.2)
-	(envelope-from <maz@kernel.org>)
-	id 1w2XKG-00000002vfd-0des;
-	Tue, 17 Mar 2026 16:31:24 +0000
-Date: Tue, 17 Mar 2026 16:31:23 +0000
-Message-ID: <86ikau5sf8.wl-maz@kernel.org>
-From: Marc Zyngier <maz@kernel.org>
-To: Sascha Bischoff <Sascha.Bischoff@arm.com>
-Cc: "linux-arm-kernel@lists.infradead.org"
-	<linux-arm-kernel@lists.infradead.org>,
-	"kvmarm@lists.linux.dev"
-	<kvmarm@lists.linux.dev>,
-	"kvm@vger.kernel.org" <kvm@vger.kernel.org>,
-	nd <nd@arm.com>,
-	"oliver.upton@linux.dev" <oliver.upton@linux.dev>,
-	Joey Gouly
-	<Joey.Gouly@arm.com>,
-	Suzuki Poulose <Suzuki.Poulose@arm.com>,
-	"yuzenghui@huawei.com" <yuzenghui@huawei.com>,
-	"peter.maydell@linaro.org"
-	<peter.maydell@linaro.org>,
-	"lpieralisi@kernel.org" <lpieralisi@kernel.org>,
-	Timothy Hayes <Timothy.Hayes@arm.com>,
-	"jonathan.cameron@huawei.com"
-	<jonathan.cameron@huawei.com>
-Subject: Re: [PATCH v6 19/39] KVM: arm64: gic-v5: Implement PPI interrupt injection
-In-Reply-To: <20260317113949.2548118-20-sascha.bischoff@arm.com>
-References: <20260317113949.2548118-1-sascha.bischoff@arm.com>
-	<20260317113949.2548118-20-sascha.bischoff@arm.com>
-User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
- FLIM-LB/1.14.9 (=?UTF-8?B?R29qxY0=?=) APEL-LB/10.8 EasyPG/1.0.0 Emacs/30.1
- (aarch64-unknown-linux-gnu) MULE/6.0 (HANACHIRUSATO)
+	s=arc-20240116; t=1773765177; c=relaxed/simple;
+	bh=KBHCdlMIeOd3erUPbLY1mDzjr09dpwVfTy8zQ1wa38o=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=kX0tBVltYtWRo8eKgRL3Nl6Ls6AyiKB5P6WxPaDREl8NtehROTYPzj9ls8iEqnFs0ntL4sW2F5WyCj/gAyqix92aSn0xWLPHsbJj34llG7F1BQdGDd+2EgULRWpDvW1QWgNpzK1aLNKtsoXbToZYKILOMsXofjufeykzcuHdHYc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=reject dis=none) header.from=intel.corp-partner.google.com; spf=fail smtp.mailfrom=intel.corp-partner.google.com; arc=none smtp.client-ip=192.198.163.18
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=reject dis=none) header.from=intel.corp-partner.google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=intel.corp-partner.google.com
+X-CSE-ConnectionGUID: QxwCwJH8SFWahRTTllCcLw==
+X-CSE-MsgGUID: 1p3Q/dR7RtuZGmq08/Niaw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11732"; a="73981801"
+X-IronPort-AV: E=Sophos;i="6.23,126,1770624000"; 
+   d="scan'208";a="73981801"
+Received: from orviesa010.jf.intel.com ([10.64.159.150])
+  by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Mar 2026 09:32:55 -0700
+X-CSE-ConnectionGUID: d/KcW0f8RuewJwX2r2XDyA==
+X-CSE-MsgGUID: vOWywuMdTiyzaDVdvgnUZQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.23,126,1770624000"; 
+   d="scan'208";a="221549933"
+Received: from intel-fishhawkfalls.iind.intel.com ([10.99.116.107])
+  by orviesa010-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Mar 2026 09:32:54 -0700
+From: Sonam Sanju <sonam.sanju@intel.corp-partner.google.com>
+To: sonam.sanju@intel.com
+Cc: seanjc@google.com,
+	pbonzini@redhat.com,
+	linux-kernel@vger.kernel.org,
+	kvm@vger.kernel.org
+Subject: Re: [PATCH] KVM: irqfd: fix shutdown deadlock by moving SRCU sync outside resampler_lock
+Date: Tue, 17 Mar 2026 21:57:54 +0530
+Message-Id: <20260317162754.3231300-1-sonam.sanju@intel.corp-partner.google.com>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20260316072026.908893-1-sonam.sanju@intel.com>
+References: <20260316072026.908893-1-sonam.sanju@intel.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
-Content-Type: text/plain; charset=US-ASCII
-X-SA-Exim-Connect-IP: 185.219.108.64
-X-SA-Exim-Rcpt-To: Sascha.Bischoff@arm.com, linux-arm-kernel@lists.infradead.org, kvmarm@lists.linux.dev, kvm@vger.kernel.org, nd@arm.com, oliver.upton@linux.dev, Joey.Gouly@arm.com, Suzuki.Poulose@arm.com, yuzenghui@huawei.com, peter.maydell@linaro.org, lpieralisi@kernel.org, Timothy.Hayes@arm.com, jonathan.cameron@huawei.com
-X-SA-Exim-Mail-From: maz@kernel.org
-X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
+MIME-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
 
-On Tue, 17 Mar 2026 11:44:55 +0000,
-Sascha Bischoff <Sascha.Bischoff@arm.com> wrote:
-> 
-> This change introduces interrupt injection for PPIs for GICv5-based
-> guests.
-> 
-> The lifecycle of PPIs is largely managed by the hardware for a GICv5
-> system. The hypervisor injects pending state into the guest by using
-> the ICH_PPI_PENDRx_EL2 registers. These are used by the hardware to
-> pick a Highest Priority Pending Interrupt (HPPI) for the guest based
-> on the enable state of each individual interrupt. The enable state and
-> priority for each interrupt are provided by the guest itself (through
-> writes to the PPI registers).
-> 
-> When Direct Virtual Interrupt (DVI) is set for a particular PPI, the
-> hypervisor is even able to skip the injection of the pending state
-> altogether - it all happens in hardware.
-> 
-> The result of the above is that no AP lists are required for GICv5,
-> unlike for older GICs. Instead, for PPIs the ICH_PPI_* registers
-> fulfil the same purpose for all 128 PPIs. Hence, as long as the
-> ICH_PPI_* registers are populated prior to guest entry, and merged
-> back into the KVM shadow state on exit, the PPI state is preserved,
-> and interrupts can be injected.
-> 
-> When injecting the state of a PPI the state is merged into the
-> PPI-specific vgic_irq structure. The PPIs are made pending via the
-> ICH_PPI_PENDRx_EL2 registers, the value of which is generated from the
-> vgic_irq structures for each PPI exposed on guest entry. The
-> queue_irq_unlock() irq_op is required to kick the vCPU to ensure that
-> it seems the new state. The result is that no AP lists are used for
-> private interrupts on GICv5.
-> 
-> Prior to entering the guest, vgic_v5_flush_ppi_state() is called from
-> kvm_vgic_flush_hwstate(). This generates the pending state to inject
-> into the guest, and snapshots it (twice - an entry and an exit copy)
-> in order to track any changes. These changes can come from a guest
-> consuming an interrupt or from a guest making an Edge-triggered
-> interrupt pending.
-> 
-> When returning from running a guest, the guest's PPI state is merged
-> back into KVM's vgic_irq state in vgic_v5_merge_ppi_state() from
-> kvm_vgic_sync_hwstate(). The Enable and Active state is synced back for
-> all PPIs, and the pending state is synced back for Edge PPIs (Level is
-> driven directly by the devices generating said levels). The incoming
-> pending state from the guest is merged with KVM's shadow state to
-> avoid losing any incoming interrupts.
-> 
-> Signed-off-by: Sascha Bischoff <sascha.bischoff@arm.com>
-> Reviewed-by: Jonathan Cameron <jonathan.cameron@huawei.com>
-> ---
->  arch/arm64/kvm/vgic/vgic-v5.c | 143 ++++++++++++++++++++++++++++++++++
->  arch/arm64/kvm/vgic/vgic.c    |  41 ++++++++--
->  arch/arm64/kvm/vgic/vgic.h    |  25 +++---
->  3 files changed, 194 insertions(+), 15 deletions(-)
-> 
-> diff --git a/arch/arm64/kvm/vgic/vgic-v5.c b/arch/arm64/kvm/vgic/vgic-v5.c
-> index 07f416fbc4bc8..e080fce61dc35 100644
-> --- a/arch/arm64/kvm/vgic/vgic-v5.c
-> +++ b/arch/arm64/kvm/vgic/vgic-v5.c
-> @@ -122,6 +122,149 @@ int vgic_v5_finalize_ppi_state(struct kvm *kvm)
->  	return 0;
->  }
->  
-> +/*
-> + * For GICv5, the PPIs are mostly directly managed by the hardware. We (the
-> + * hypervisor) handle the pending, active, enable state save/restore, but don't
-> + * need the PPIs to be queued on a per-VCPU AP list. Therefore, sanity check the
-> + * state, unlock, and return.
-> + */
-> +static bool vgic_v5_ppi_queue_irq_unlock(struct kvm *kvm, struct vgic_irq *irq,
-> +					 unsigned long flags)
-> +	__releases(&irq->irq_lock)
-> +{
-> +	struct kvm_vcpu *vcpu;
-> +
-> +	lockdep_assert_held(&irq->irq_lock);
-> +
-> +	if (WARN_ON_ONCE(!__irq_is_ppi(KVM_DEV_TYPE_ARM_VGIC_V5, irq->intid)))
-> +		goto out_unlock_fail;
-> +
-> +	vcpu = irq->target_vcpu;
-> +	if (WARN_ON_ONCE(!vcpu))
-> +		goto out_unlock_fail;
-> +
-> +	raw_spin_unlock_irqrestore(&irq->irq_lock, flags);
-> +
-> +	/* Directly kick the target VCPU to make sure it sees the IRQ */
-> +	kvm_make_request(KVM_REQ_IRQ_PENDING, vcpu);
-> +	kvm_vcpu_kick(vcpu);
-> +
-> +	return true;
-> +
-> +out_unlock_fail:
-> +	raw_spin_unlock_irqrestore(&irq->irq_lock, flags);
-> +
-> +	return false;
-> +}
-> +
-> +static struct irq_ops vgic_v5_ppi_irq_ops = {
-> +	.queue_irq_unlock = vgic_v5_ppi_queue_irq_unlock,
-> +};
-> +
-> +void vgic_v5_set_ppi_ops(struct vgic_irq *irq)
-> +{
-> +	if (WARN_ON(!irq))
-> +		return;
-> +
-> +	guard(raw_spinlock_irqsave)(&irq->irq_lock);
-> +
-> +	if (!WARN_ON(irq->ops))
-> +		irq->ops = &vgic_v5_ppi_irq_ops;
-> +}
+From: Sonam Sanju <sonam.sanju@intel.com>=0D
 
-Why isn't this a call to kvm_vgic_set_irq_ops()? It feels very odd to
-have two ways to do the same thing.
-
-Thanks,
-
-	M.
-
--- 
-Without deviation from the norm, progress is not possible.
+On Mon, Mar 16, 2026 at 12:50:26PM +0530, Sonam Sanju wrote:=0D
+> From: Sonam Sanju <sonam.sanju@intel.com>=0D
+> =0D
+> irqfd_resampler_shutdown() calls synchronize_srcu_expedited() while=0D
+> holding kvm->irqfds.resampler_lock.  This can deadlock when multiple=0D
+=0D
+Adding Sean Christopherson to CC (apologies for the omission in the origina=
+l =0D
+submission).=0D
+=0D
+--=0D
+Sonam=0D
