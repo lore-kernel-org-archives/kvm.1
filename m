@@ -1,189 +1,149 @@
-Received: from SA9PR02CU001.outbound.protection.outlook.com (mail-southcentralusazon11013062.outbound.protection.outlook.com [40.93.196.62])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 819773EBF00
-	for <kvm@vger.kernel.org>; Tue, 17 Mar 2026 15:22:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.93.196.62
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773760964; cv=fail; b=P79OsOeAvUrd8xYyrNclcI6iq56NZbdnR07GybZ1rnCERbJ4ymjUw8Xb4VsjlDsO1RHRz+kl/F17TITdvFrnkifgv/+uC2yZTHa1okP+zwHKRr3MyhWToswIcXL5P1SB3k2iwpYfq+hwV7zJCGQJDA5gs9PpOW/VxzBAcTqFSmM=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773760964; c=relaxed/simple;
-	bh=OSkTdpATPc9/qD6cm60drqveMfig9pN113nGGqA+7y8=;
-	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=rKrQZAZvaj04ZWpj7WA4rj3RWOdHD8D3Id3tzK23jtPXcoW3hhnv6RdAW2O7jzYncT1QYSBGa3iyPM+YSoXH33+SKO0cCA+Hj01m5Gon+56pfDP41zzs+5NVLGJSSpnKMuT5YZU1SCJMWQsliF5jSLT6WEMk6SNb3M66cJ5ObbM=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=jg+C2qgB; arc=fail smtp.client-ip=40.93.196.62
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C45D7220F38;
+	Tue, 17 Mar 2026 15:31:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.12
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1773761470; cv=none; b=M6r53/IAGDfghqPZP+uT5kovkCTJE4+v8BANf7YTrYl0CZArnmd+yYqr/CnK2FAGi8XjmTfEeEeLnvPkzWIdH2VZpuMLUOQZXCR+TUioAZf78V99iB1OOpnDNNJ33NsdTdglO4g4fMuk9VWPhFFc4p3eLuf3dhA+4hiuAmPXWvk=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1773761470; c=relaxed/simple;
+	bh=xHOOmP38/6o9O2sRvdhnSCB5oWqIkX0rEPsWfUiw2YU=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=eHHUSJMASa1gSJW2Y80iuVU1S2KzH5ikKIleIhvla9XVbewEh9kxv663p4fY1abjpgAdtBwU4yRelpxqgnebCRsOzXuSmSi0mL6ADwyf3XLSRxw19n+YHFi4Tdese5vy7DBwCYxUAk0ild1nAmjgfuMkQW1y/Yr+EhURtQ+usBA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=k9o9QhJh; arc=none smtp.client-ip=192.198.163.12
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="jg+C2qgB"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=q/fsSbL8N+SOosDnHnHmlRxSjh3DqVVbKHP1VGG6xbAFoAsJu0umWInc8wBvSpMxBaIRoGUw2cib6OQYIXZCMOmxwsE0QSfjWv23cjrLWwgFMCel9pIO4zEVVm4Az9a83q+Ztbfnet/3jjspQ5j2IyqgMBpklLnWUuN+jdBit3YCKpfqyygf5Fi3T2jkIf7JoHOGQ1N3Z3pba3Y5cKLK99E1R8BPdsi/dJRU/HVDWPfC/CZqLhAJE8qqPZlq/QxNs5EeWJT1C9iMcpc98D5gM0xVJKgfW0Gcgjnn9MqOPtZI7khikaCDyVWemp61vjAwkEZJVSsxWxLItN9zbiC1cA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=KiD8J8UaOZtriVo8q/QTFeuwCxgWj6QCppWPBIXG/ao=;
- b=BGXNaG3lGjpLOjGck4e8QiGa5Tn4NzpiINzOp6SzFnnhtyFt0bKI/IB+UYJLwntSpiehTzoJRbcq2Vyxy14LeKp22rb03iYjow169i8im5re4d9Lwg/yQQAwXDQyo1rnbglDzdVx/HspPcOCKcpLFjMLN3puHcp1k/qTrwV2mVXT6dYs5crXQP0PR35t1ShnSQJFdTFft2TcF9TwAnIVrTV3ne3uHr3lHnG3dtI+hErH8MTWrGp5v8RTjtpphD7nT2hkM/lwBfWvPILI30yRJhv/JXzBF3Lt4NEoVm9CY8gPnBpqP1O+bJKPWcqlsAaVekHbbzIw9th36l+rB9XKiQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=KiD8J8UaOZtriVo8q/QTFeuwCxgWj6QCppWPBIXG/ao=;
- b=jg+C2qgBNOeiEOoi+Pwp4MQeX+Nd9IcDIoUBMqa6UmNEF2IYXhxJeXXtiM0qjAU16wJjM6XqkYIcvlu8JLwDq6bJsuh4DHFBlKqbug9kCfbof+OU5DwkMcawoHGARyZXHnavG45QLqoC28ieps+eRcQS202oivXuIByLsT3+zT4r/+A5C8IwtraoRLQeYuwxpU76Qn2o1iAljTInG7f4Y41wY+DoHNZN+Ax0iHIrCLf9QMSkjFxxRzSgfdAnTLX2vClJULUUkqTj5dUOguwVhiS9VEUoY4O+kdBkysP9AOWrN0Dodumov10e3EX3P43DnIAVGOHMWx/6EMeSUfk6nQ==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from BL1PR12MB5063.namprd12.prod.outlook.com (2603:10b6:208:31a::11)
- by MN2PR12MB4360.namprd12.prod.outlook.com (2603:10b6:208:266::21) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9723.16; Tue, 17 Mar
- 2026 15:22:37 +0000
-Received: from BL1PR12MB5063.namprd12.prod.outlook.com
- ([fe80::a0c2:5681:4aca:90da]) by BL1PR12MB5063.namprd12.prod.outlook.com
- ([fe80::a0c2:5681:4aca:90da%5]) with mapi id 15.20.9723.016; Tue, 17 Mar 2026
- 15:22:35 +0000
-Message-ID: <a1ff85c3-2021-4c22-b74d-cafd490221dc@nvidia.com>
-Date: Tue, 17 Mar 2026 17:22:22 +0200
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH V1 vfio 6/6] vfio/mlx5: Add REINIT support to
- VFIO_MIG_GET_PRECOPY_INFO
-To: Peter Xu <peterx@redhat.com>
-Cc: Yishai Hadas <yishaih@nvidia.com>, Alex Williamson <alex@shazbot.org>,
- jgg@nvidia.com, kvm@vger.kernel.org, kevin.tian@intel.com,
- joao.m.martins@oracle.com, leonro@nvidia.com, maorg@nvidia.com,
- clg@redhat.com, liulongfang@huawei.com, giovanni.cabiddu@intel.com,
- kwankhede@nvidia.com
-References: <20260310164006.4020-1-yishaih@nvidia.com>
- <20260310164006.4020-7-yishaih@nvidia.com> <abL5wKfPGzi88iBy@x1.local>
- <20260312130817.69ff3e60@shazbot.org> <abMfLQPzVFK388q_@x1.local>
- <fb6cb519-25d0-4cba-b13f-513349fb49db@nvidia.com> <abhZBIe-vR-GX3TT@x1.local>
- <accc2aeb-6ae1-4aec-867c-c9927e98f903@nvidia.com> <ablf_dVtYlZOoIcp@x1.local>
-Content-Language: en-US
-From: Avihai Horon <avihaih@nvidia.com>
-In-Reply-To: <ablf_dVtYlZOoIcp@x1.local>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: TLZP290CA0001.ISRP290.PROD.OUTLOOK.COM
- (2603:1096:950:9::14) To CH0PR12MB5059.namprd12.prod.outlook.com
- (2603:10b6:610:e2::6)
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="k9o9QhJh"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1773761469; x=1805297469;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=xHOOmP38/6o9O2sRvdhnSCB5oWqIkX0rEPsWfUiw2YU=;
+  b=k9o9QhJh8tbQgRkCq6UHmdzde605FbrFdNIjsf/JQ/Te+oAdlKJT5T27
+   WtyX4T1dlnhelsHIT9NasS2xL6nT/LA0t4JCQvefgR2oBVryUOPufAQHH
+   RH4DfXuPUMNMXKxrygBN9CeZhkKnyezobdI4rvxaMvAkxKBL1jSrSfSTe
+   PZBKfIHICb9yFrCuMLFn993E/jPGg+QIhR4dTPRYBwBQZ2me5GYh+NMEz
+   +cGBq7ACmpCi56a/DF6UIsA2X7roikkM+oAEMgsmwL4TPGZUO6L9zCLJZ
+   KnzqF3/6jDfZr5d+/GFc/uCL8Ms7q9QyzewQL7qkUmG3XkOjhVxBCdJhZ
+   g==;
+X-CSE-ConnectionGUID: IHvIrWu7TPmMTSikYrQ7Cg==
+X-CSE-MsgGUID: jZqzAptARfK+bZRhQTo4iQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11732"; a="78691728"
+X-IronPort-AV: E=Sophos;i="6.23,126,1770624000"; 
+   d="scan'208";a="78691728"
+Received: from fmviesa009.fm.intel.com ([10.60.135.149])
+  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Mar 2026 08:31:08 -0700
+X-CSE-ConnectionGUID: Rhu1lhzLQg2ed3nfQqbtAg==
+X-CSE-MsgGUID: lz2iM65BQ4yqXnXc0BXQJA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.23,126,1770624000"; 
+   d="scan'208";a="216645948"
+Received: from rchatre-mobl4.amr.corp.intel.com (HELO [10.125.108.160]) ([10.125.108.160])
+  by fmviesa009-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Mar 2026 08:31:07 -0700
+Message-ID: <515d2fbc-f771-4aed-8706-e8ed20d3dbc6@intel.com>
+Date: Tue, 17 Mar 2026 08:31:06 -0700
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BL1PR12MB5063:EE_|MN2PR12MB4360:EE_
-X-MS-Office365-Filtering-Correlation-Id: 37a7043f-8436-42b1-7eaf-08de84390398
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|376014|366016|1800799024|18002099003|56012099003|22082099003;
-X-Microsoft-Antispam-Message-Info:
-	UNJZ2d+0noYNmFihanVORN4zYivYwpCphP3AT1QRy+R5G56jV0VdKOkl2sI+2dpXNO7eEGyRW+XsPeRqsXirMYU2MY2X0JjFhTDcosYYIwCNAtXdSkaWNjL1tGYppTAs2NQ9SJVUjpvAa9ktjaAwukTOslLJ5cSW0/0mRAizc1lMhCSPp9JQXLaJaMieS7gOFyB7YR/jWct2Q2q9VE6UaDuQzXa1XYawL4uN2suBLY3i3b+J4D36zCC+LraOQy5RhuGpY5bQHVbxeoYt/kEjGfd5f5tr4Wh55Z9ZTZV3529npTgA2lpjfY+rjISXSvg54oMbjm4Kl6UoJ9FF4k835BMgRM6oxJKJejMjm/lm3gbbFLbaVdZrBPp0OCztRP1cKQiGOjMmHM1zQ3lIk7+nxz7B3OEZlJZE9s4OVrLRuVoceM3j9ldVFxgL6nQCHBux5zbSySrzCY2/rdEoIhZsGPECw9UEmw4Al01hcfCyewtyM7H7PUu8elsCSX7QledN8ZeUw+fCJYigj6kdgoUFUh9DfQ7YSEDGNWy1V4wwLH5m5ZK8xpobBPu0uL+WUg7Z6Ibw4UDfwr1N0NI+64zsxjSCTZorKwC2wBuwBGQUtL/QNwYEl48KHuGxCEkiKJr2/dQeaXfZK6Dasp7LMTN3vKE3rku8w7R4Am8SOEMPYUjMEE7FyFvTrOiZillHfScixNKfJjg5ZDLK+ONhSshzwKKzCFK0MmXNYJuI2j214mo=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BL1PR12MB5063.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(366016)(1800799024)(18002099003)(56012099003)(22082099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?cVFyWE4xc2c1VXIvL3JrVjZraGRTTFlvWVI5QkpUZmUwRk5wajkrMzFLZngy?=
- =?utf-8?B?M2JTQUErYW5EaDMzTVB1Yk1ibjlmY2RTY2x4SVR0dVZlN1BGQ09tODZSd21D?=
- =?utf-8?B?dDdtY0VNNGk3YnE4MVZkRHdvSmJjMUhBMUpnOTdrWVJaSHNZQmJvVHZhODBT?=
- =?utf-8?B?WjZUWGxFbVdRZjlINDZkYzBaeFl5YmxXSngveGpuTm84b3FLWnMrZ0EwUFN4?=
- =?utf-8?B?K3lYdnRLcExqUlhuVTVCWE80MisyVlBSUGsrSEdWQXBsZTZ5MFVEdy9TY1p5?=
- =?utf-8?B?V2xCOEg2bmcvSU5rZDgrbnh6UVpOM2d0ck1lTFRFVzl5NFZLWURkMjB5UFJL?=
- =?utf-8?B?ckw3NENxWkpiRmpYbDR2emZsSG93Zk9yQ0JnM1pnSEllZHZYUDhjSVBLcE1Y?=
- =?utf-8?B?NVk1eE9UZ1FGNmhGOSt1QlBpQklBSmd4QTk0Ry8zaHMrWVM2elB0MTFWemFo?=
- =?utf-8?B?QzZnajBGZGxNNExkb05PaTNDZ3pjNUJwV2FhSDQ1cUVuNFZ6UytCajdQKy9K?=
- =?utf-8?B?d3diRmF2ZzU0ZUdDQ1RNcS9JVy9vQjhMOFkzUU5HWktnVjJWREZ3UWM5bTlN?=
- =?utf-8?B?ZzB6TG11Z0wzejJ0ZU5tcHI5QW5EYjluK0FpM0RKSllWNmxRUnhxTXJwS01K?=
- =?utf-8?B?b1RZWEMwZDNkZDN0RGQ2TFplanBFbTBrUkw0ZzlPMmh0K0tkRE9hNVJ0dkRw?=
- =?utf-8?B?YWpMNGFKVUUyRzNlWDIyY2hZRFgxVFJEYm81bHd5Rk1Db2lzdHJiU3g4R3Iv?=
- =?utf-8?B?TzU3TGtjMnJGbDZsSmhXMG5GNnJJZnhFUU5xc0FranZaNnNVdDVjcUtKNzFV?=
- =?utf-8?B?dGdnM2VGNkpFRXduZ0xkOUVCWDNyQ0xsRWVGMm05WkFjNGJxbFF0Yy9IU3Bz?=
- =?utf-8?B?S1ZsUGtUMUx3WHRVVDVZbFFYL3pML01ibVUyc3FENTBJR1BNc25XL0JsR2ZW?=
- =?utf-8?B?Zi9VYlVrTlRFRHVtVXEyQmpxRjB0b0NwanFKYVFYejhhOEs1VFF0M3E1L3JR?=
- =?utf-8?B?TFZ6WkRaNlhyUG1CemcxMTUyRGtoRkZjYkV4YmE1ZkVXWUNvVUZKbE1sTnZU?=
- =?utf-8?B?V0Zhd3FUWDBUcGwzZHZmbW0veWVFMGxocFZZMWU4bTRmWFpua2Vja2MyaTY5?=
- =?utf-8?B?VkFHemp5Z1E3WXVpZEZ5MnVhWkVyYWVldkowZWhVUEhSRnFrYkNtRjRHQW5a?=
- =?utf-8?B?S3drRHoyT2wxS0NHdnVjMVAvWjVKV2hQMmhVRk1CY0NnU3dadmlyci9IL2tF?=
- =?utf-8?B?MDVjUWFNb0JmcHoySnNEVjJEMUxqVGQvNnpOTm5SMnNRZkxhdHpvaHEweTZj?=
- =?utf-8?B?S0oyZXNDdFpHbU5La05GRDlNNmdVb2Yyb0xVVlVwbktZRHN6NktVaHR2QWRw?=
- =?utf-8?B?Y0JyRE54RFo2TVBlRW1sN0l2a25KTTg1eGY5M2FUNGJxUlFrL0NhRnVZZlEr?=
- =?utf-8?B?YkZEd0J6cXVSMDJ0VFlTdmtsbldpQWZWVjNHc0Y3cU9mMGJneCtETytGWFJI?=
- =?utf-8?B?UWhubzMxYVFUTVY1aWpLNE53bG1VSUlicG50QWRBV3pXQUkxTW1CT21xODVn?=
- =?utf-8?B?ZzEweUhMbGc3TzdYN0ZOd1VBUklFUmo2aDZ6K1FRcCsyNXRIeXM3amhuaUk1?=
- =?utf-8?B?RDhoZDlpVWVlNExpeWY1VExmZHNNTVhlWm5Fa0FyUTFtbmRPd2JUcnFBa2J1?=
- =?utf-8?B?SW56eW85VUhsa0s2RExRTzluOFF3a0NyZ3VQUmRmeElySUMwOHBqZGJjTGd3?=
- =?utf-8?B?aVZzelZqL2FQTmdybVljTUtHdzhmUGwwWk1pMXA0bXc4UWxFcHFKa253Znls?=
- =?utf-8?B?QmlzY3E2QUo4UDBORUtVWk42UzFDdWs0T0JKN0NPb1hSRFJZaUNQd2ExejVJ?=
- =?utf-8?B?dnNycVZUNzdyeTcyRU44MDVGc3RUQkl5T2YzTVlhZGI0UXVlLzJjdVNtV3FX?=
- =?utf-8?B?TDkweW1kN0ZHTWFtcmlqNWF2Ty9tRGE1WDNnREhSc3J3SVFERFVKNjlHMyt2?=
- =?utf-8?B?akJpbEhadEppcytONlRkRmR3RW1ucXRhTUUxZGNobHcxODdUK1Y1aVBaWHZU?=
- =?utf-8?B?cEE5Ti9vd25ZMW9VQlNZeW1ueXdVK0lBajR0V2FqNmI5RzdQU3UzTkovUnNh?=
- =?utf-8?B?YjgrbzFPcGkrOCtCZElFUm1hby9SankxOEpSNi8zSys1dmc5U0lCb21Gam1X?=
- =?utf-8?B?RHRmaXNGVDQraTF0dkJDVzVjM25VZmMybEpqOWJJZnJ1MCt3WUdQcTVvSHNt?=
- =?utf-8?B?a3pzSHRjKzdQTlB5bmpuclFaRGxNcFdjN0w5Q09SMXhGSnpCV2RDRWoyaEV3?=
- =?utf-8?B?SlZFOCtZUkJIblVxdmo0T3p6aTJMVkRnN2xpSjN1YzZYenF0RTdOQT09?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 37a7043f-8436-42b1-7eaf-08de84390398
-X-MS-Exchange-CrossTenant-AuthSource: CH0PR12MB5059.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 17 Mar 2026 15:22:35.0848
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: jyRUW6p5iyFcAo68Q+xhx1wIWoaFzEEc4bAsByOTqzVXHAJuUywLT5BClCcSCwWJYBqOti6N/HVxfglDHpxuQA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MN2PR12MB4360
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 1/2] x86/cpu: Disable CR pinning during CPU bringup
+To: "Nikunj A. Dadhania" <nikunj@amd.com>,
+ "Chang S. Bae" <chang.seok.bae@intel.com>,
+ Tom Lendacky <thomas.lendacky@amd.com>, Borislav Petkov <bp@alien8.de>
+Cc: linux-kernel@vger.kernel.org, kvm@vger.kernel.org, tglx@kernel.org,
+ mingo@redhat.com, dave.hansen@linux.intel.com, hpa@zytor.com, xin@zytor.com,
+ seanjc@google.com, pbonzini@redhat.com, x86@kernel.org,
+ sohil.mehta@intel.com, jon.grimm@amd.com
+References: <20260226092349.803491-1-nikunj@amd.com>
+ <20260226092349.803491-2-nikunj@amd.com>
+ <20260309134640.GOaa7PQJli_C9QATGB@fat_crate.local>
+ <cde957ba-3579-4063-9d17-3630e79ea388@intel.com>
+ <20260309161516.GAaa7yFMulhdzNQ-pt@fat_crate.local>
+ <70644e1d-dd0e-4f0f-81c0-fd095e46e50b@intel.com>
+ <7ca205d6-b01b-4ed3-959d-db31a6496d79@amd.com>
+ <505a6bbd-3ecf-4de9-8fb9-0b21c3435a96@intel.com>
+ <9fa61b80-0e16-4a87-a0e7-3c3dfcda8f7e@amd.com>
+ <55a98b6d-e831-47a6-aa5a-8fe357334f67@intel.com>
+ <d0eba3fe-2938-4856-bd9b-0e13972e8313@amd.com>
+ <cb492a37-3517-4738-b435-73311402e820@intel.com>
+ <ddf407e9-359d-4d4e-827d-98f212589e9f@amd.com>
+ <ab5bf7bb-6511-49dc-a65d-86911e0f7091@intel.com>
+ <c13736a1-3151-476b-a91c-035383d2a29e@intel.com>
+ <541cddbb-22b3-4865-a374-49ba3ba48a5e@intel.com>
+ <2b33bf8e-5f19-46c7-b1eb-89fcf74d74f8@amd.com>
+From: Dave Hansen <dave.hansen@intel.com>
+Content-Language: en-US
+Autocrypt: addr=dave.hansen@intel.com; keydata=
+ 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
+In-Reply-To: <2b33bf8e-5f19-46c7-b1eb-89fcf74d74f8@amd.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
+On 3/16/26 21:12, Nikunj A. Dadhania wrote:
+> On 3/17/2026 3:13 AM, Dave Hansen wrote: 
+>> Either we change how alternatives patching works, we use some other
+>> exception code, or we try and get CR4.FSGSBASE established as early as
+>> possible on the secondaries.
+> Right, I moved FSGSBASE enablement to cpu_init_exception_handling() to 
+> establish it early:
+> 
+> https://lore.kernel.org/all/1439b4f4-ff0c-4b6a-ac86-5c0da2d26cf5@amd.com
+> 
+> This:
+> 1) Enables FSGSBASE early for secondary CPUs before any exceptions occur
+> 2) Consolidates initialization for both boot and secondary CPUs in one place
+> 3) Eliminates the double-enable issue as in cr4_init()/identify_cpu()
+> 
+> Does this approach look good to you?
 
-On 3/17/2026 4:06 PM, Peter Xu wrote:
-> External email: Use caution opening links or attachments
->
->
-> Hi, Avihai,
->
-> On Tue, Mar 17, 2026 at 11:58:28AM +0200, Avihai Horon wrote:
->> Yes, this is because the VFIO device stop_copy_size may hold data that can
->> be transferred only when the device is stopped, i.e., during switchover (as
->> opposed to RAM which is fully precopy-able).
->> Reporting it as part of estimate() didn't seem right, as precopy iterations
->> will not reduce it -- if it's big enough (above the threshold), it may block
->> future exact() calls as we can't migrate this data during pre-copy and reach
->> below threshold again.
-> This doesn't look right either. I think we should stick with the exact()
-> being only the accurate version of estimate() only.  The problem might be
-> that the current interfacing for both may not suite well enough with VFIO,
-> because VFIO is so far the only module that may contain stop-only data.
+After sleeping on it, yes, this looks good to me.
 
-Yes, I don't think either approach fits perfectly. We can discuss this 
-in detail as part of my QEMU series or as a separate topic.
-However, I don't think this is directly related or poses any problem to 
-the precopy REINIT feature.
-
->
-> The other known issue (not directly relevant here, but we will need to look
-> into it very soon) is when VFIO is involved the query-migrate results are
-> sometimes not containing VFIO data, at least "total" and "remaining" fields.
->
-> I'll see if I can prepare some quick patch this week to address them, or at
-> least raise these problem explicitly so you can have a closer look if possible.
-
-Sure.
-
-Thanks.
-
->
-> [...]
->
->> Yes, I agree, but it's a delicate flow in QEMU and need to get to the
->> details.
->> Anyway, this case should be rare and we can further discuss these details
->> when I send the QEMU series.
-> Yep, that's fine.
->
-> Thanks,
->
-> --
-> Peter Xu
->
+Please resend this with a full changelog and so forth, and I think we
+can move forward with it.
