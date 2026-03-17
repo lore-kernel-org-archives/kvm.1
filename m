@@ -1,158 +1,256 @@
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C68A39446D;
-	Tue, 17 Mar 2026 08:13:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773735231; cv=none; b=QSPqtloaD7lcv5KEPwd+Ko+wLnciYjU+4JYoqa8q+WqzZq8aOqsAOkiQihOdePjquY54PyLGvX4HJtgLWfJIyzPqrt+4NJrkQ/BkN1fIN50PasRP9Q+toCSq/zbmYNMNcE14fQqSt3wge0MlFiJ1bGSQiXW4cH9jem5uNhjStrg=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773735231; c=relaxed/simple;
-	bh=tPAXOlysi9fY3rE2mwGJOy6pwWFi1dNgs1btvJeEDgQ=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=uVWQCwJwN2FDV+teo/JrQ5LgKz9VvOlTI6nhAAV/WxoT+vB3LzmGbOPE22WsJWvccyk231sDBYFBAmWNrhSr/NDXsbx5ruBNOPyJ9SX3TNEmHWkdecspRq9pon24HAFrL+QqwiNcoYACAm/ZX2VrKeeRmIZGnN6WFgVWmlkrhKs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=mFl/UM/u; arc=none smtp.client-ip=148.163.156.1
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF0D4396589;
+	Tue, 17 Mar 2026 08:27:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=192.198.163.14
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1773736053; cv=fail; b=jlvlwENH3LnMvKd0piraAmcjVpUkmVHqBHRLzvyTjuOGzjVTOlngKiioteimm2mtaHU5RWtaMGl3LYpjqpz1rf3RrPo3QWrfTUifztBUB4VrJPUc+IB/wmmMufYF8tW5usfj99fT4/5PQZ1Zr7es74KtBXQxBevc29gDNU8029A=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1773736053; c=relaxed/simple;
+	bh=Cazx21QFtX6hpKvDTjv9ZGDVhPkPqvd7mOTWJCYzgA8=;
+	h=Date:From:To:CC:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=qulAFzq6FMd6UZwPwE/Cfjc+glk7QkzJHn6pnHZLaj2hLcbqnXizpfQSL/CaUGlf/UcLbZa11Ff19D0Li4QWG4mUeWFO+ZELw0Dp9ENBcw2+f4hzQqUBPAwZA3IoHbKng6n0mtFsZ1AEPR9CpxVc8uYB4xwghpNtu5Fz0a3gUd4=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=JQxWMhGt; arc=fail smtp.client-ip=192.198.163.14
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="mFl/UM/u"
-Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 62H1TTSi3905720;
-	Tue, 17 Mar 2026 08:13:50 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=sEugI9
-	ZwB/dJsMWBTtuScK1ROnJ5NaYy94+nF2ALNVE=; b=mFl/UM/u48Mb0hRaW6vxJi
-	Uh9d0sH8BT7YcQUbZBVCkSuufNcoCxS6DgJbCvcmVpdJaf8KsPIchpGoB/iJ1DIc
-	safNLeYMNiR01yxj0TSrwRTy3rpc1ocVf1r8eDMLH7xUecX/67w/aVz9LUJx4Cer
-	5P8AfcwAiIO5F0KVLn4W/5aIc30O3xj95Sv4+QWqD8eyZgyqn4nZPri2d7LU0acN
-	1D1n2nGJBd1bE4QoG3sLD3hoCCYu6xVgKukizWqWsNqiC4aQJf5sfPyj1uMR89yU
-	GViXOPY3PTDvpXalvIAOZ9zIz9lz71ja4O8bCm0luR6bQYLalZAVf0I67Jv7K+OQ
-	==
-Received: from ppma12.dal12v.mail.ibm.com (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4cvybs3p47-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 17 Mar 2026 08:13:49 +0000 (GMT)
-Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma12.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 62H5jJaB004563;
-	Tue, 17 Mar 2026 08:13:48 GMT
-Received: from smtprelay07.fra02v.mail.ibm.com ([9.218.2.229])
-	by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 4cwj0s8bgx-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 17 Mar 2026 08:13:48 +0000
-Received: from smtpav04.fra02v.mail.ibm.com (smtpav04.fra02v.mail.ibm.com [10.20.54.103])
-	by smtprelay07.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 62H8Dio534800114
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 17 Mar 2026 08:13:45 GMT
-Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id E1C592004B;
-	Tue, 17 Mar 2026 08:13:44 +0000 (GMT)
-Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id A429B20043;
-	Tue, 17 Mar 2026 08:13:44 +0000 (GMT)
-Received: from [9.111.66.161] (unknown [9.111.66.161])
-	by smtpav04.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Tue, 17 Mar 2026 08:13:44 +0000 (GMT)
-Message-ID: <2026346f-b04d-4d3c-8f8c-7f91fc02f3a5@linux.ibm.com>
-Date: Tue, 17 Mar 2026 09:13:44 +0100
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="JQxWMhGt"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1773736050; x=1805272050;
+  h=date:from:to:cc:subject:message-id:references:
+   in-reply-to:mime-version;
+  bh=Cazx21QFtX6hpKvDTjv9ZGDVhPkPqvd7mOTWJCYzgA8=;
+  b=JQxWMhGteojbCceUTIcG5EqnEUq7CavzhCVXTvtXJavye3tIXSpI6RM/
+   0gyqgIyoo7jY3hjFbaaXG6E9vEujYn0BqHV2cHal1wxEugW4p63S7vwME
+   yG4kS1hocwTJncie/b8g9Gi1MY3kTF1SiiA6Hw0inWssi1gmOGVk99OmP
+   xcykOsWuF7Z9ryPDCpbCX98OOKv+DY6uw8UT7zGgkuIPy+XNozCc20QB2
+   GGC/VPVAZoFVtwKZO6DmTjXNzKQB2GkbUkrojYWBohmoIYv7Ni1YjEINA
+   bR2U4CKsYG+P6mIt4wQ1lrcnFlUwuByTX3xw1We4BoUk8t6Nm9Euy3ghD
+   g==;
+X-CSE-ConnectionGUID: AT1N3e43TLSWqkxINbzeUQ==
+X-CSE-MsgGUID: VyH3FAZTRsW/DmevWNmCSw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11731"; a="74840771"
+X-IronPort-AV: E=Sophos;i="6.23,124,1770624000"; 
+   d="scan'208";a="74840771"
+Received: from orviesa001.jf.intel.com ([10.64.159.141])
+  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Mar 2026 01:27:30 -0700
+X-CSE-ConnectionGUID: PvCUqNh1SH2AM73FYwyNPA==
+X-CSE-MsgGUID: uPUr7tJBQXO2lZvtZPD99A==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.23,124,1770624000"; 
+   d="scan'208";a="260100494"
+Received: from fmsmsx901.amr.corp.intel.com ([10.18.126.90])
+  by orviesa001.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Mar 2026 01:27:30 -0700
+Received: from FMSMSX901.amr.corp.intel.com (10.18.126.90) by
+ fmsmsx901.amr.corp.intel.com (10.18.126.90) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.37; Tue, 17 Mar 2026 01:27:29 -0700
+Received: from fmsedg901.ED.cps.intel.com (10.1.192.143) by
+ FMSMSX901.amr.corp.intel.com (10.18.126.90) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.37 via Frontend Transport; Tue, 17 Mar 2026 01:27:28 -0700
+Received: from BN8PR05CU002.outbound.protection.outlook.com (52.101.57.23) by
+ edgegateway.intel.com (192.55.55.81) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.37; Tue, 17 Mar 2026 01:27:28 -0700
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=Ct9saHFt9E2qBCWz23v/uYIYkPekm8mJxEITx41gDUIcV7+9NOWnOQpqHrWDcndhzJSH09/9iOiabbqU/9LEq9/bETCFGBphc/+1e3ZUz+3KOk2g/BuhmT4GL3/BC1lqQceZBODkPNQfvR+iyqQek2jhXfsC6Gm59e/SVCUNqr6HdpGwr8Ndys/HZYlrcJ2hqwaOC9wW4GO3xe0d3ZB6JLJYvvWaP4RWj4MbRS6hzp+kZGTLati8OxyOwKPYG8aTE20FiGkRG2VTDRNc9wUuqVCQItumgflVxJWG9T5W34vEI96eBD/H2utFC31cdkud/SzvyZ2WVo9ydJYhbwi4/g==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=d8VDKZaspW6WVObrAqIG7D1ytUKzbpI6XmuOYXLdNJ0=;
+ b=BJIzOKwDykrhN2+NwUAoQ3QWXSFJKRetplApdZnHls3qcKMDETM0gJrUrEQPdMbH1sJQC/3oE5vuabIRqkC2vtHpI2o9xj5bDJ3xdA8ZLpZAo/FKtQCe7lrOhnQb2205b8STmH7fE9qbFKZeUrzZZxBNs8+EIhq5AgBP1wQAZKR/kHI1i5TzBzZpTpqbEOueJaxWQsnOk6NDw0Dt1orLqGveB47wuIVGu9cYsww9OkzpWVbsow38hJigOJisOtuYm8JJfp8OZRV88uzRsOlMUJtQclbQ4/UG0X8BOuvHA62vSI+y1j6HTIxOGBj7j38VvFfuKSHYXEV5HLFjluTvuw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+Received: from CH3PR11MB8660.namprd11.prod.outlook.com (2603:10b6:610:1ce::13)
+ by PH7PR11MB5817.namprd11.prod.outlook.com (2603:10b6:510:13a::14) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9723.6; Tue, 17 Mar
+ 2026 08:27:19 +0000
+Received: from CH3PR11MB8660.namprd11.prod.outlook.com
+ ([fe80::fdc2:40ba:101d:40bf]) by CH3PR11MB8660.namprd11.prod.outlook.com
+ ([fe80::fdc2:40ba:101d:40bf%6]) with mapi id 15.20.9723.018; Tue, 17 Mar 2026
+ 08:27:18 +0000
+Date: Tue, 17 Mar 2026 16:27:06 +0800
+From: Chao Gao <chao.gao@intel.com>
+To: "Huang, Kai" <kai.huang@intel.com>
+CC: "kvm@vger.kernel.org" <kvm@vger.kernel.org>, "linux-coco@lists.linux.dev"
+	<linux-coco@lists.linux.dev>, "linux-kernel@vger.kernel.org"
+	<linux-kernel@vger.kernel.org>, "x86@kernel.org" <x86@kernel.org>,
+	"dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>, "kas@kernel.org"
+	<kas@kernel.org>, "seanjc@google.com" <seanjc@google.com>, "Chatre, Reinette"
+	<reinette.chatre@intel.com>, "Weiny, Ira" <ira.weiny@intel.com>,
+	"binbin.wu@linux.intel.com" <binbin.wu@linux.intel.com>, "Verma, Vishal L"
+	<vishal.l.verma@intel.com>, "nik.borisov@suse.com" <nik.borisov@suse.com>,
+	"mingo@redhat.com" <mingo@redhat.com>, "pbonzini@redhat.com"
+	<pbonzini@redhat.com>, "tony.lindgren@linux.intel.com"
+	<tony.lindgren@linux.intel.com>, "sagis@google.com" <sagis@google.com>,
+	"Annapurve, Vishal" <vannapurve@google.com>, "hpa@zytor.com" <hpa@zytor.com>,
+	"Edgecombe, Rick P" <rick.p.edgecombe@intel.com>, "paulmck@kernel.org"
+	<paulmck@kernel.org>, "tglx@kernel.org" <tglx@kernel.org>,
+	"yilun.xu@linux.intel.com" <yilun.xu@linux.intel.com>, "Williams, Dan J"
+	<dan.j.williams@intel.com>, "bp@alien8.de" <bp@alien8.de>
+Subject: Re: [PATCH v5 12/22] x86/virt/tdx: Reset software states during TDX
+ module shutdown
+Message-ID: <abkQWsqR7BURMZxc@intel.com>
+References: <20260315135920.354657-1-chao.gao@intel.com>
+ <20260315135920.354657-13-chao.gao@intel.com>
+ <996e42a31101bb90575e7b2b6f33b3bd607b5e6e.camel@intel.com>
+Content-Type: text/plain; charset="us-ascii"
+Content-Disposition: inline
+In-Reply-To: <996e42a31101bb90575e7b2b6f33b3bd607b5e6e.camel@intel.com>
+X-ClientProxiedBy: TP0P295CA0042.TWNP295.PROD.OUTLOOK.COM
+ (2603:1096:910:4::10) To CH3PR11MB8660.namprd11.prod.outlook.com
+ (2603:10b6:610:1ce::13)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC 02/10] KVM: s390: Consolidate lpswe variants
-To: Christian Borntraeger <borntraeger@linux.ibm.com>, kvm@vger.kernel.org
-Cc: linux-s390@vger.kernel.org, imbrenda@linux.ibm.com, akrowiak@linux.ibm.com
-References: <20260316180310.17765-1-frankja@linux.ibm.com>
- <20260316180310.17765-3-frankja@linux.ibm.com>
- <bc995033-1850-43f8-b04d-66f78ede157d@linux.ibm.com>
-Content-Language: en-US
-From: Janosch Frank <frankja@linux.ibm.com>
-Autocrypt: addr=frankja@linux.ibm.com; keydata=
- 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
-In-Reply-To: <bc995033-1850-43f8-b04d-66f78ede157d@linux.ibm.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Authority-Analysis: v=2.4 cv=MMttWcZl c=1 sm=1 tr=0 ts=69b90d3d cx=c_pps
- a=bLidbwmWQ0KltjZqbj+ezA==:117 a=bLidbwmWQ0KltjZqbj+ezA==:17
- a=IkcTkHD0fZMA:10 a=Yq5XynenixoA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=RnoormkPH1_aCDwRdu11:22 a=uAbxVGIbfxUO_5tXvNgY:22 a=j3P8sYcwygIa9r38gJMA:9
- a=QEXdDO2ut3YA:10 a=zgiPjhLxNE0A:10
-X-Proofpoint-ORIG-GUID: aWKVxsNNFUekXEt_kEbEbyHO-Wk_wR4v
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMzE3MDA3MSBTYWx0ZWRfXzRK0eLjJ9Itx
- 30KG16DNvUQ2ua+u9p0tz5X4aKUJJbrBhspmhZb4KfnB845scGGnUtAZDsgh4YiDuzWnNeLfSOQ
- mus32DZAjgQbXjI/7pGMNMxglxrBfgFCsBoIRZisX9IHMLE5W4EaV4nmsjzZP6pZhlx5q7SMbFb
- thoqrCXkNeskcEWnXP5juQRn+TrLOqV9HBS/fYZF/D7Ra4SUTryw0hV0bE6UtJji3HqcOruqAsQ
- 2HRLOf9KL1qrQkBwoRAOok1yzoSr8we5W4NSU7vTuQgQVZE5m9QrmBIMHiWOZ3tV8amyY8+oX7P
- kXzYRWxYL382d3eNgoxgcYv70610HZUEHaZjZmr8++c8VIC8PTbZtmJ2lZ5FhYS58OsHX/efPAw
- OEcvXwxOuwPGcXBo9Rocoh4ZsZPSIjFsGJXm1Pe1VTTrt4F0/Mi6HY1HkL+R1//ctnZ7TW9r0tP
- rooLiDrrwnuebgplK/A==
-X-Proofpoint-GUID: aWKVxsNNFUekXEt_kEbEbyHO-Wk_wR4v
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
- definitions=2026-03-17_01,2026-03-16_06,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- suspectscore=0 lowpriorityscore=0 malwarescore=0 spamscore=0
- priorityscore=1501 impostorscore=0 adultscore=0 phishscore=0 clxscore=1015
- bulkscore=0 classifier=typeunknown authscore=0 authtc= authcc= route=outbound
- adjust=0 reason=mlx scancount=1 engine=8.22.0-2603050001
- definitions=main-2603170071
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CH3PR11MB8660:EE_|PH7PR11MB5817:EE_
+X-MS-Office365-Filtering-Correlation-Id: 841a2758-1cb5-4d1a-b55c-08de83ff0079
+X-LD-Processed: 46c98d88-e344-4ed4-8496-4ed7712e255d,ExtAddr
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|1800799024|366016|7416014|18002099003|22082099003|56012099003;
+X-Microsoft-Antispam-Message-Info: PmsivU4Mcat8wz3/Lbk6cr7/lulv9eqn1iyLCqlN4bXHLf/b6gTbtHYteDoUmDPeP2VSMxVQbpsJKeSikskUW4ydSKZ89nZlKq1YhBMRQ3c4OO4Uk5m1VOgL6RjEwEGDdwk1BRz4Kc1rP2O5OLzRTjecxHDpNnCXQaQ4jNxabjaWssZ0Vj+Ds5tiR3D1jCV6nFB38xQ2K1LDzSdlanWjSZmZ4o8jdXwGUlvoqYzmc+mKfZ58wuVT/T3vNyowpBcZ8xrgbRKyGjaNsGuqP5cY4wi8nGCnaGErsl+f2qYPPTEbbnSPrdAfTWAwFEt9kAAHuW39pBRjlCMtgNCAyyboB8bN8fSV+vrd6ttqtH9cMyZKjN4nlrjdlkzXam5cxYwDylIG6NVyYN2RFF9eGMU6pjyl9eGuKG87prqCeuNeF2wzi3uGXPeALey2klQ9uOS/xyqtiOLh+7VNF/w68g23eq/TWQyZLO0bhfAEQ/wXnTLrcBPQR4lKiaKP0Zia89RLrVNenK1kchYyK1lMQX3Q+YME8eHdoN6243ZnM27oNEdSnOW9mPvYrpiNzto9ougLjMWhIoWyH7rvYmg3ODQcJK59eUChVwJR7OMOvUC0b1q9Wfggcv2WN6aJ6hXTAO5P7tHX9JmZzyb54/j89uwwiE5GIOJKKl84qjiCWNgxvwWOwXOYjdJCBq36l0g9ZpjWlC+rqKOT9YMj7TTABrEfiFioBncKrzIfGRHkjf8B32E=
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH3PR11MB8660.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(1800799024)(366016)(7416014)(18002099003)(22082099003)(56012099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?PB0JiSQhy1oe8k4C0/gcRfxUAJuC0PpfLfq7mD3MDu/TjY00/XBxJa57kn1r?=
+ =?us-ascii?Q?X4eAB4rTNI3LkSqJz/1Q6qfBjQCufxUCJG2/UtyP+sFt5jZY3ahOwQzNzdsx?=
+ =?us-ascii?Q?GIdAW5aGwb32ba08owE/6yLiwX80QK8w3GraYxSIXr8aN5VePoEy1YlVHeNx?=
+ =?us-ascii?Q?VIHyuc0v1njUQbWRhnEBWSmuac3m4LOUIsnA1CzczEsHTWjXyxOJOw6JaBh5?=
+ =?us-ascii?Q?QoXDun+/BEHP0LFOyIAFfBPmE5hrenkiBe1bjDiSdDG0/M6ajHGpz+YYse6h?=
+ =?us-ascii?Q?gVwKOG5FmhsY2Ac1ZZwoQN9gAlXEH8XndJIe1b6gwN8up5BUDn9feWs6Fc86?=
+ =?us-ascii?Q?XOJxfH2qb0vQSMDWYo2lfKoqUPlg2gfoPrbc+CfgNEpxApRKlURaESITEIFX?=
+ =?us-ascii?Q?nLlgQ26i7+DCyidoFmD+aMA/YNJ/NNtuiVvaVA8f+D4KgJCdU+Be48QfS5tF?=
+ =?us-ascii?Q?aruNLD+yhks9NMJTkl0RFLJi5WN0iSeIpLXK01xeJErzS9c0E+KbN6gY6Quv?=
+ =?us-ascii?Q?CcxYn1tXaKxcV7XVHJU/U3tydQF6yHEPDSb7CY0C1Eqy9bZWL++Se06F84EA?=
+ =?us-ascii?Q?bZwj8e11frbrjPF0ebRiSQ+VxBY1jiN8PntZr107cfq7R68a12xckhvn/pAY?=
+ =?us-ascii?Q?Xkvouqz5RsEK7u0ig8rPINYXV8lPZ/9mtN8rS9PlVdgAKjWgv6Y0MZzVq9dW?=
+ =?us-ascii?Q?ohgnGMk7i8sMEIjqjb09sLHlB3A7ZCVJwlHfRbI7KmA2lzzBFVilOIkNHsuN?=
+ =?us-ascii?Q?4BLSK456c0q6QgnqnvFghbNSb/++i8hhR2g+pSoKC75B7A/8CKC1hMUI4jL/?=
+ =?us-ascii?Q?2TlOrzMElx13Xu3iKxPZDJlv0Ce3dWIF2XrNOoVfxjCH4nsm8J/WgZFkb7X5?=
+ =?us-ascii?Q?abBOKbChULcmzKY+hn66NCO6GMfXT/nax5utoVNnjUj1ahUzu3oox/GkWx+L?=
+ =?us-ascii?Q?SftP7UpcXTV4BIkP3CwuHTvnwQT7WbII1KxKLHJPBxf8CiXEtyZiImcpxCah?=
+ =?us-ascii?Q?QEgzTbKnSdx6zvEqIvyYxuVIPMgh1770+y4/FsyrXhan3RBOmHq1/NZp0CTe?=
+ =?us-ascii?Q?LzJvRy4Hcay62Dpf46Wcjk59NxJAo9o/49V9gSLnTmaBSQiVg5eDf/opZymc?=
+ =?us-ascii?Q?L+0i1l7B+YKj06i3SVMpJH0UhE5s+ZsOtFAkHpy3CnV0ZA20XeMzTy26LNVh?=
+ =?us-ascii?Q?/UD7KZPRMiOOOcB2L/9jPWZwaklkxD3HZCdvk1rILHpyXTsHm62EtR44HX1h?=
+ =?us-ascii?Q?Z3aP/rrjWDSCeS/XinfGHATqrZyPJAXyoI+6QKG0eqPjv9xAq3kUzJM54i/M?=
+ =?us-ascii?Q?tPynWW/yBdo56MyD1rvbgLH4JbrfNB0NAJmtp/WSjX5xynnqf06krtJSw0NY?=
+ =?us-ascii?Q?PkMmE7wx+U89QGumXIoERAHGGJrNvzwupNhPkskbRrLkv6UTcbhSqGOVgb9r?=
+ =?us-ascii?Q?2DA5q38L+qcHksuKIuCH7r2GvNeyzxi0nXKaovrvbnWqvonUclaldHUChmfs?=
+ =?us-ascii?Q?m/qh9v4tHbpLLKQnjed8VTn8rkt5KGx8extgmAVHq+PI2Ju5TjtgIyYDIdPk?=
+ =?us-ascii?Q?EztcBxFPyMiY+nfq9wHfNpKwqAaklzADfp+Yh953Izc/nzkYNgG8OB/ZvbsR?=
+ =?us-ascii?Q?NpgVsYw+nvdBWnAGSsw83J6/AyiZT2Hhfz59y8JgF4Bi3Rj6X8Eyw30K0/26?=
+ =?us-ascii?Q?uRtS3xPZm1Hmh6qLiFa4/oRbV4AWtfQYpaJ33rblnBtjpzzwz0Y2dikFMGxR?=
+ =?us-ascii?Q?dEVDi4liew=3D=3D?=
+X-Exchange-RoutingPolicyChecked: gmkBsefcjNDHhx7N88J/ilPw4nm/dcFw3lGuvrDlBmRgM4WqhKsIZQlpheNnSKvaRx6RLTPdChynSrLm8HTuEB0ne2lBJY3bhgYpwTUSPAxE1azELagHrqaGnFI9QbFuoaWYoeBTYm4CLvBN1T+am1c+uhCiG8yNIl0jApkzDy/KxyCZzOlxD8F04KVWM4gwOitEtCyjCsV/0zmV/AOl17haPtFYshGOHYayCkSpH2wvhP8WCiIemQ2DkJBQlOIwYkSYi5gYm1PE8XLjZS64kuSttPb6/7IcBprDhQxO99C1DzhdGGzGVmAHf12O34FIX4iaiqMxx5n0y+kd7gXptA==
+X-MS-Exchange-CrossTenant-Network-Message-Id: 841a2758-1cb5-4d1a-b55c-08de83ff0079
+X-MS-Exchange-CrossTenant-AuthSource: CH3PR11MB8660.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 17 Mar 2026 08:27:18.4881
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: AMKPB4ySphn7xArYEWYAGaiWChqoe4efrwQj/XoXMV1Pgi4UJ7v5GMyKzeVX4f+HPHnRtJZgmhM4bwGMG6ECmA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH7PR11MB5817
+X-OriginatorOrg: intel.com
 
-On 3/16/26 19:47, Christian Borntraeger wrote:
-> 
-> Am 16.03.26 um 17:23 schrieb Janosch Frank:
->> LPSWE and LPSWEY currently only differ in instruction format but not
->> in functionality.
-> 
-> I think this is actually a bug in KVM. LPSWEY does not set the breaking
-> event address register, LPSWE does. Maybe that would be the better fix
-> to actually set gbea when emulating LPSWE. This must happen after all
-> checks, so I guess combining both would make this harder, so better
-> not do this.
-> 
+On Mon, Mar 16, 2026 at 05:06:49PM +0800, Huang, Kai wrote:
+>
+>> @@ -1179,6 +1179,7 @@ EXPORT_SYMBOL_FOR_KVM(tdx_enable);
+>>  int tdx_module_shutdown(void)
+>>  {
+>>  	struct tdx_module_args args = {};
+>> +	int ret, cpu;
+>>  
+>>  	/*
+>>  	 * Shut down the TDX module and prepare handoff data for the next
+>> @@ -1188,7 +1189,22 @@ int tdx_module_shutdown(void)
+>>  	 * modules as new modules likely have higher handoff version.
+>>  	 */
+>>  	args.rcx = tdx_sysinfo.handoff.module_hv;
+>> -	return seamcall_prerr(TDH_SYS_SHUTDOWN, &args);
+>> +	ret = seamcall_prerr(TDH_SYS_SHUTDOWN, &args);
+>> +	if (ret)
+>> +		return ret;
+>> +
+>> +	tdx_module_status = TDX_MODULE_UNINITIALIZED;
+>> +	sysinit_done = false;
+>> +	sysinit_ret = 0;
+>> +
+>> +	/*
+>> +	 * By reaching here CPUHP is disabled and all present CPUs
+>> +	 * are online. It's safe to just loop all online CPUs and
+>> +	 * reset the per-cpu flag.
+>> +	 */
+>> +	for_each_online_cpu(cpu)
+>> +		per_cpu(tdx_lp_initialized, cpu) = false;
+>
+>Since you have removed the requirement that P-SEAMLDR.INSTALL must be done
+>on all CPUs, and removed the relevant patch, the "all present CPUs are
+>online" part isn't correct anymore.
+>
+>And using for_each_online_cpu() isn't enough since this doesn't reset the
+>tdx_lp_initialized for offline CPUs.
+>
+>One way is to just use for_each_possible_cpu() here so tdx_lp_initialized
+>for all CPUs are reset.  Since the "CPUHP is disabled" part is still correct
+>AFAICT (since stop_machine() disables CPUHP internally during the
+>operation), resetting tdx_lp_initialized for offline CPUs won't race with
+>CPUHP.
+>
+>And assuming this series will be applied after Sean's VMXON series, we will
 
-Interesting, seems like I glanced over that when checking the 
-architecture. I'll have a look.
+Yes.
+
+>have a TDX-specific CPUHP callback tdx_online_cpu() in TDX x86 core to do
+>tdx_cpu_enable(), which will then enable TDX again on the new-online CPU.
+
+Good point.
+
+Clearing tdx_lp_initialized for offlined CPUs makes sense, but I'd rather not
+justify this through "enabling TDX on new-online CPUs" since many details
+remain unclear. For example, there will be a SEAMCALL to disable TDX per-CPU.
+It should be called when CPUs go offline so that those CPUs can be exempting
+from doing SEAMLDR.INSTALL during module updates. tdx_lp_initialized should
+have been cleared along with that "disable TDX per-CPU" SEAMCALL for offlined
+CPUs.
+
+I'm not arguing against for_each_present_cpu(). I just think discussing how
+to support TDX module update with offlined CPUs in the comment would be a bit
+premature. How about keeping it simple:
+
+/*
+ * Since the TDX module is shut down and gone, mark all CPUs (including
+ * offlined ones) as uninitialied. This is called in stop_machine() (where
+ * CPU hotplug is disabled), preventing races with other tdx_lp_initialized
+ * accesses.
+ */
+
+>
+>Btw, w/o Sean's VMXON series, currently only KVM provides the TDX-specific
+>CPUHP callback.  So it seems if module update is done when KVM is not
+>loaded,
+
+w/o VMXON series, module update isn't possible if KVM isn't loaded.
+
+>there will be no TDX-specific CPUHP callback to re-enable TDX for
+>the new-online CPU.  This means any SEAMCALL on that CPU will fail before
+>KVM module is loaded again (which will then re-register the TDX-specific
+>CPUHP and run tdx_cpu_enable() for all online CPUs). 
+>
+>But I don't think we should consider this case.
+>
+>
+Agreed.
