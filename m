@@ -1,739 +1,150 @@
-Received: from out30-124.freemail.mail.aliyun.com (out30-124.freemail.mail.aliyun.com [115.124.30.124])
+Received: from BYAPR05CU005.outbound.protection.outlook.com (mail-westusazon11010061.outbound.protection.outlook.com [52.101.85.61])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3BD5C4964F
-	for <kvm@vger.kernel.org>; Tue, 17 Mar 2026 01:47:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.30.124
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773712028; cv=none; b=SuCncaLHqRUpNNxUld9lzzf6oQ7gvEfPtJksVUylbaZJbCcY8KSyTDgF38BxrJSQH1wtvTZmU4BY0vXcwEQXKjA6iKMb5Pe7Emr40LD15FAAeTjAh1vEK/ICDlMqmzh4O4mfkD+KIze81kri0SG3lpLS68ALiMHuRzIBsYymU+o=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773712028; c=relaxed/simple;
-	bh=qBVyS1vOO0wWKl9Z1I313iVDD0+Sn/eDhVQzO/pz4C8=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=THsnJzRFK49C0fCS/n/+KERPOwyRHrhg+KkKwiMg59fspF9vxf/+vVxvfB8FfUlVDQu+j5DXAv97rS/mAucSBadd9c1ZJZ0Uy0gCTil6kg5ORvRoOy0mLgtjAnXa1pwClo++efyBp1HNrliMUdmUbXjOaheKsOUxbjpdiuIPLXc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; spf=pass smtp.mailfrom=linux.alibaba.com; dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b=SwzfUH2s; arc=none smtp.client-ip=115.124.30.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.alibaba.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A53F37B018;
+	Tue, 17 Mar 2026 04:13:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.85.61
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1773720792; cv=fail; b=EczILjlcgWggzBevxaCGFMpwKpyjiua9gTJ43qZ8ee5Pho8IaYli/2nl9sa4oLGaFxJ9d5iRFYFNScMk21PEm0OBlEeaxGkoLVr0v7zf4rL6hQTQCSTl9c9p8GDlsZiMaBIFW4LmgZkkObj4tKXe3/PA6BMGN9jwjGZB7FFgSzU=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1773720792; c=relaxed/simple;
+	bh=HsDtuQpVtzV40w6oi/7LC9zGEcvrlMoW3qSujwB3eak=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=cFAA1XVzK3te5zK9rJfD6m4pNy7t/8F2JxzPL/fyB+amXWEVKeNKRAOa3W3M3+Rc5ehR1lOtOLmi/7JMxZ7qC4nNcPwOPX7wDn8CJ2PzjYroDHcpqwE4Cz/i8aLktKKOTdo3m49RkHK+yOtW/JC5OdazetlkXuTVsZXzTeMU4FI=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=c9aPx6Zc; arc=fail smtp.client-ip=52.101.85.61
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b="SwzfUH2s"
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux.alibaba.com; s=default;
-	t=1773712015; h=Date:From:To:Subject:Message-ID:MIME-Version:Content-Type;
-	bh=550e9k27HxTDN2Y3kauPQtSDI42xPhmGgNHyghg0pF4=;
-	b=SwzfUH2swh2ugqiWy6/hjNJj1gaT4i/Y9DEJnuxsqni5JxLdgIp7Hg4ymLnP0gx/eepMSQZ9v3KQ8+rpSSY6X98oz4WoAWfIDEGHct6VbdFz/VK+BlbpRYMn2wGgdWISpzlJ23l997L5boQ8MI9RvSGSy8y/MIBaDPmbZ996Jrc=
-X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R141e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam011083073210;MF=yaoyuan@linux.alibaba.com;NM=1;PH=DS;RN=8;SR=0;TI=SMTPD_---0X.92FWg_1773712014;
-Received: from localhost(mailfrom:yaoyuan@linux.alibaba.com fp:SMTPD_---0X.92FWg_1773712014 cluster:ay36)
-          by smtp.aliyun-inc.com;
-          Tue, 17 Mar 2026 09:46:55 +0800
-Date: Tue, 17 Mar 2026 09:46:54 +0800
-From: Yao Yuan <yaoyuan@linux.alibaba.com>
-To: Jing Zhang <jingzhangos@google.com>
-Cc: KVM <kvm@vger.kernel.org>, KVMARM <kvmarm@lists.linux.dev>, 
-	Marc Zyngier <maz@kernel.org>, Joey Gouly <joey.gouly@arm.com>, 
-	Andrew Jones <andrew.jones@linux.dev>, Alexandru Elisei <alexandru.elisei@arm.com>, 
-	Oliver Upton <oliver.upton@linux.dev>
-Subject: Re: [kvm-unit-tests PATCH v1 2/3] lib: arm64: Add bare-metal guest
- execution framework
-Message-ID: <3tnpopbcpcpzr5lls4x5htbvvcaziyxealwb2u2ermlqjqimqc@ppwniolkahtj>
-References: <20260316224349.2360482-1-jingzhangos@google.com>
- <20260316224349.2360482-3-jingzhangos@google.com>
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="c9aPx6Zc"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=C4kGjYiRv6J1PAmpfRbFfhtaM2+T7e2CzJ5D2HwXdoFZdvRTt+WW6oR9Rju5kxgcgyw8Nss3JBkuz1f2CZF/nFdRkkg2BnaGBPrJAWPJ8LP26UmN44FEiL+xu0AX0k1lmktm8+ztlGfL4l0/wbb+PJP9+jwqeLimUPa3UHQ4ynszAA/SBR/nvxYVdxZizHDPSDd4qcRLh+EN6lliVnqLQPs+eCglV84x7kN1PEiIV/CkefhfwywXq3J8rffilJ9flK/W4XvfXgzF3TTeeGyMXYYNSbi4q6pGSQib62/0gX8FZviYWSlhSXpue3OpgNXmbk+YIuosqBMrurMX+PaRmA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=/lWoDdabWpAcCxwa1uM+V7Cl+SZyC/QM0mDZC/lM2uA=;
+ b=rRWT0V35Bl3uLOgzuFp7wihevY71/h5CV6JgLeL2LNPRxJpqAlkSPydSmrxCKmRy+0MjqUU4KZEKWCZD1FGEf2x8wKX3vnoChyZNVHwgSd7lu4ZhY2Spgo0th7co0Wh8zpt2ls6FAOV8Wk0tVkhzPsA/qKCKyisiBcBtQgEA/JAbzl+RE5L0refeGHkVIJWAxuwbiAa1eQAbLmU5j2DwKUsMm0K+d5wJ8L0ZHzXUUIn3vOwXEdZZjTP43OA9mJwGAOSxzDNHt60blEkycn0GWjdxawUuWv51VDpoe4obwLLqzpO01xYlnxwLHm30FxJYj1lRw9F85nj22408Sri3SA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=intel.com smtp.mailfrom=amd.com; dmarc=pass
+ (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=/lWoDdabWpAcCxwa1uM+V7Cl+SZyC/QM0mDZC/lM2uA=;
+ b=c9aPx6ZcM4c/QO9F4UjYRlde5AZErWyYZXhysYD5BLM69rni5QSJ+WHU19k9UlpW2OV2e05odx+JuygI+rC6l4xSEO0nNKixEYCJCIayraDAIfHgSkcvRiamzM6jbE64PFHcJr+nl0sTSTylFpI/zQFUALdWBHFXMIV+U6SmvA0=
+Received: from SN7PR04CA0009.namprd04.prod.outlook.com (2603:10b6:806:f2::14)
+ by SA3PR12MB9090.namprd12.prod.outlook.com (2603:10b6:806:397::11) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9723.16; Tue, 17 Mar
+ 2026 04:13:05 +0000
+Received: from SA2PEPF00003AE8.namprd02.prod.outlook.com
+ (2603:10b6:806:f2:cafe::7c) by SN7PR04CA0009.outlook.office365.com
+ (2603:10b6:806:f2::14) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.9700.24 via Frontend Transport; Tue,
+ 17 Mar 2026 04:12:51 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
+ smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=satlexmb08.amd.com; pr=C
+Received: from satlexmb08.amd.com (165.204.84.17) by
+ SA2PEPF00003AE8.mail.protection.outlook.com (10.167.248.8) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.9700.17 via Frontend Transport; Tue, 17 Mar 2026 04:13:05 +0000
+Received: from Satlexmb09.amd.com (10.181.42.218) by satlexmb08.amd.com
+ (10.181.42.217) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.17; Mon, 16 Mar
+ 2026 23:13:03 -0500
+Received: from satlexmb08.amd.com (10.181.42.217) by satlexmb09.amd.com
+ (10.181.42.218) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.17; Mon, 16 Mar
+ 2026 21:13:03 -0700
+Received: from [10.136.46.44] (10.180.168.240) by satlexmb08.amd.com
+ (10.181.42.217) with Microsoft SMTP Server id 15.2.2562.17 via Frontend
+ Transport; Mon, 16 Mar 2026 23:12:59 -0500
+Message-ID: <2b33bf8e-5f19-46c7-b1eb-89fcf74d74f8@amd.com>
+Date: Tue, 17 Mar 2026 09:42:58 +0530
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260316224349.2360482-3-jingzhangos@google.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 1/2] x86/cpu: Disable CR pinning during CPU bringup
+To: Dave Hansen <dave.hansen@intel.com>, "Chang S. Bae"
+	<chang.seok.bae@intel.com>, Tom Lendacky <thomas.lendacky@amd.com>, "Borislav
+ Petkov" <bp@alien8.de>
+CC: <linux-kernel@vger.kernel.org>, <kvm@vger.kernel.org>, <tglx@kernel.org>,
+	<mingo@redhat.com>, <dave.hansen@linux.intel.com>, <hpa@zytor.com>,
+	<xin@zytor.com>, <seanjc@google.com>, <pbonzini@redhat.com>,
+	<x86@kernel.org>, <sohil.mehta@intel.com>, <jon.grimm@amd.com>
+References: <20260226092349.803491-1-nikunj@amd.com>
+ <20260226092349.803491-2-nikunj@amd.com>
+ <20260309134640.GOaa7PQJli_C9QATGB@fat_crate.local>
+ <cde957ba-3579-4063-9d17-3630e79ea388@intel.com>
+ <20260309161516.GAaa7yFMulhdzNQ-pt@fat_crate.local>
+ <70644e1d-dd0e-4f0f-81c0-fd095e46e50b@intel.com>
+ <7ca205d6-b01b-4ed3-959d-db31a6496d79@amd.com>
+ <505a6bbd-3ecf-4de9-8fb9-0b21c3435a96@intel.com>
+ <9fa61b80-0e16-4a87-a0e7-3c3dfcda8f7e@amd.com>
+ <55a98b6d-e831-47a6-aa5a-8fe357334f67@intel.com>
+ <d0eba3fe-2938-4856-bd9b-0e13972e8313@amd.com>
+ <cb492a37-3517-4738-b435-73311402e820@intel.com>
+ <ddf407e9-359d-4d4e-827d-98f212589e9f@amd.com>
+ <ab5bf7bb-6511-49dc-a65d-86911e0f7091@intel.com>
+ <c13736a1-3151-476b-a91c-035383d2a29e@intel.com>
+ <541cddbb-22b3-4865-a374-49ba3ba48a5e@intel.com>
+Content-Language: en-US
+From: "Nikunj A. Dadhania" <nikunj@amd.com>
+In-Reply-To: <541cddbb-22b3-4865-a374-49ba3ba48a5e@intel.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 7bit
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: SA2PEPF00003AE8:EE_|SA3PR12MB9090:EE_
+X-MS-Office365-Filtering-Correlation-Id: f3f875bf-0df5-4725-5547-08de83db7d40
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|82310400026|1800799024|376014|7416014|36860700016|56012099003|22082099003|18002099003|13003099007;
+X-Microsoft-Antispam-Message-Info:
+	3h6h40klIFZE80s/oUkE/kcz08B0bjGxk8w5kDkXO7nqZBU/bkAncvdrPHsp8qIv0yfbW97xItvwqI93pvCwXYt9o/qhWQEv+LbgkARFaqTO/FKLFz7JCmiX4ZxurA72z7KAU2pegNQHcjsmCgsfpzl9IUucTewgOVRsE4vEv3jBAtDK7omEietTLRi/NtyzKKYET7BWq9AmC/8wLhoS1XidPCyvTj3BeGPBvIMGUnq9ijgAwX+i2k5UgLcT1iuX9x88ZJ2S3g33Zw2vPJzEF3MtwgrF+vUj71svZLNdeZ3lBj5coXtm9YncNysl/lVRxTXAMD3Bihh2q5XiMRPthq0JX0m1cQjLGjIAcBTwoAjXTMZGsMIdAD9tsoNBaMbEaE4DWwXOHCQCUadw8HQTyzzcqUaVlOb0uyHzUyJQQXMN5h655WhlOyiHG7wZ4FRA3jkCWy/MpbGzCS9TqVb6EDjVv8cmt9+xZseRgbA7fPqwZIj89u4Ri/hHJBzxCiC6UazMiyV/a1QoeFQO9Lg61RUFYoHJcj1AgXb/tAGr7YKtyuSW1FR+kiRbm2We81ty9x6nKlhXN+cksnkLsI1se9XsJHhskWO6Fc95fGmI52kgz1HFteb8hVFtNWp3lXc/YNhMaClpvmKTxRShSpDXiIJ1Xyb94FNTok0cqu9N+qyDabNdsKyY37opDhIta0mPWaVMFjm/jHMevieEKhrK5dAnaCvcB1KuY0rPZ855LuG/DiTGZpn4HdMwoko4DX3GWzxSXsHJqG7lNykutsUfXg==
+X-Forefront-Antispam-Report:
+	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb08.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(82310400026)(1800799024)(376014)(7416014)(36860700016)(56012099003)(22082099003)(18002099003)(13003099007);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	aa9vWhc3bzdYF27rA2bgUJffpOEAejUQurUfqCdyWvRiKCUdjGfgnviHJvHhVPm4VXlWCaelwl0yso+iUyI79b8VCnhftaUgN0o+ZsctukEZipFb/EzE9yBmP+K835beXDFttcCQSLut+O+/mItUBGarf6X0a/mJEKq7jBeKFay/D5KJtiUaEVDPoVAuM+fgO3juDf9pCETqC1mNhSkqj8x7T0+xrpCwQ3vg8/1Tbz9898/yHg+wyn0mAWag4v62ZEdZLiXLx2Nbw2Mim5gX4IVbrAhtBBfjyojModQVhc8q9ntVZhuAGyiynHHCatZF0Zkv7zp+iUs0ivFVNVTFZ7YDGDLPWpVgHXb2aGeJsChzKoo5o/WRkxzrLz3oAaUtq8PzwuT3IcxQBCmWopwiNOb14Cz/IhQ/1joJvjnNeHI4zFQVD0bR7OUqTgDBEerL
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 17 Mar 2026 04:13:05.5002
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: f3f875bf-0df5-4725-5547-08de83db7d40
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[satlexmb08.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	SA2PEPF00003AE8.namprd02.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA3PR12MB9090
 
-On Mon, Mar 16, 2026 at 03:43:48PM +0800, Jing Zhang wrote:
-> To test advanced KVM features such as nested virtualization (NV) and
-> GICv4 direct interrupt injection, kvm-unit-tests needs the ability to
-> act as an L1 hypervisor running at EL2 and manage its own L2 guests.
->
-> Introduce a lightweight guest management library that provides the
-> infrastructure to create, configure, and execute nested guests.
->
-> This framework includes:
-> - Guest lifecycle management: `guest_create()` and `guest_destroy()`
->   APIs to allocate guest context and setup Stage-2 identity mappings
->   for code and stack using the s2mmu library.
-> - Context switching: The `guest_run()` assembly routine handles
->   saving the host (L1) callee-saved registers and loading the guest
->   (L2) GPRs and EL1 system registers.
-> - VM-Exit handling: Installs an EL2 trap handler (`guest_hyp_vectors`)
->   to intercept guest exits and route them to `guest_c_exception_handler`
->   to determine whether to return to the host test logic or resume.
-> - Guest-internal exceptions: Provides `guest_el1_vectors` to catch
->   Sync, IRQ, FIQ, and SError exceptions occurring entirely within the
->   guest (EL1) without trapping to the host.
->
-> Signed-off-by: Jing Zhang <jingzhangos@google.com>
-> ---
->  arm/Makefile.arm64     |   2 +
->  lib/arm64/asm/guest.h  | 156 ++++++++++++++++++++++++
->  lib/arm64/guest.c      | 197 ++++++++++++++++++++++++++++++
->  lib/arm64/guest_arch.S | 263 +++++++++++++++++++++++++++++++++++++++++
->  4 files changed, 618 insertions(+)
->  create mode 100644 lib/arm64/asm/guest.h
->  create mode 100644 lib/arm64/guest.c
->  create mode 100644 lib/arm64/guest_arch.S
->
-> diff --git a/arm/Makefile.arm64 b/arm/Makefile.arm64
-> index 5e50f5ba..9026fd71 100644
-> --- a/arm/Makefile.arm64
-> +++ b/arm/Makefile.arm64
-> @@ -41,6 +41,8 @@ cflatobjs += lib/arm64/processor.o
->  cflatobjs += lib/arm64/spinlock.o
->  cflatobjs += lib/arm64/gic-v3-its.o lib/arm64/gic-v3-its-cmd.o
->  cflatobjs += lib/arm64/stage2_mmu.o
-> +cflatobjs += lib/arm64/guest.o
-> +cflatobjs += lib/arm64/guest_arch.o
->
->  ifeq ($(CONFIG_EFI),y)
->  cflatobjs += lib/acpi.o
-> diff --git a/lib/arm64/asm/guest.h b/lib/arm64/asm/guest.h
-> new file mode 100644
-> index 00000000..1d70873d
-> --- /dev/null
-> +++ b/lib/arm64/asm/guest.h
-> @@ -0,0 +1,156 @@
-> +/*
-> + * Copyright (C) 2026, Google LLC.
-> + * Author: Jing Zhang <jingzhangos@google.com>
-> + *
-> + * SPDX-License-Identifier: LGPL-2.0-or-later
-> + */
-> +#ifndef _ASMARM64_GUEST_H_
-> +#define _ASMARM64_GUEST_H_
-> +
-> +/* Offsets for assembly (Must match struct guest) */
-> +#define GUEST_X_OFFSET			0
-> +#define GUEST_ELR_OFFSET		248
-> +#define GUEST_SPSR_OFFSET		256
-> +#define GUEST_HCR_OFFSET		264
-> +#define GUEST_VTTBR_OFFSET		272
-> +#define GUEST_SCTLR_OFFSET		280
-> +#define GUEST_VBAR_OFFSET		288
-> +#define GUEST_SP_EL1_OFFSET		296
-> +#define GUEST_ESR_OFFSET		304
-> +#define GUEST_FAR_OFFSET		312
-> +#define GUEST_HPFAR_OFFSET		320
-> +#define GUEST_EXIT_CODE_OFFSET		328
-> +#define GUEST_TPIDR_EL1_OFFSET		336
-> +#define GUEST_ICH_VMCR_EL2_OFFSET	344
-> +
-> +#ifndef __ASSEMBLY__
-> +
-> +#include <libcflat.h>
-> +#include <asm/stage2_mmu.h>
-> +
-> +/* HCR_EL2 Definitions */
-> +#define HCR_VM		(1UL << 0)	/* Virtualization Enable */
-> +#define HCR_FMO		(1UL << 3)	/* Physical FIQ Routing */
-> +#define HCR_IMO		(1UL << 4)	/* Physical IRQ Routing */
-> +#define HCR_AMO		(1UL << 5)	/* Physical SError Interrupt Routing */
-> +#define HCR_RW		(1UL << 31)	/* Execution State: AArch64 */
-> +#define HCR_DC		(1UL << 12)	/* Default Cacheable */
-> +#define HCR_E2H		(1UL << 34)	/* EL2 Host */
-> +
-> +#define HCR_GUEST_FLAGS (HCR_VM | HCR_FMO | HCR_IMO | HCR_AMO | HCR_RW | \
-> +			 HCR_DC | HCR_E2H)
 
-Set HCR_DC works for the testing in patch 03, for more
-possible testing in L2 I guess the L2 guest's own paging is
-necessary, this can be done by mapping L1 VA to L1 PA in
-L2's page table (like kselftesting), then do IPA->PA with
-Identity mapping in L1's Stage 2 mapping.
 
-> +
-> +/* ICH_VMCR_EL2 bit definition */
-> +#define ICH_VMCR_PMR_SHIFT	24
-> +#define ICH_VMCR_PMR_MASK	(0xffUL << ICH_VMCR_PMR_SHIFT)
-> +#define ICH_VMCR_ENG0_SHIFT	0
-> +#define ICH_VMCR_ENG0_MASK	(1 << ICH_VMCR_ENG0_SHIFT)
-> +#define ICH_VMCR_ENG1_SHIFT	1
-> +#define ICH_VMCR_ENG1_MASK	(1 << ICH_VMCR_ENG1_SHIFT)
-> +
-> +/* Guest stack size */
-> +#define GUEST_STACK_SIZE		SZ_64K
-> +
-> +/*
-> + * Result from Handler:
-> + * RESUME: Keep guest running (ERET immediately)
-> + * EXIT:   Return to Host C caller
-> + */
-> +enum guest_handler_result {
-> +	GUEST_ACTION_RESUME,
-> +	GUEST_ACTION_EXIT
-> +};
-> +
-> +struct guest;
-> +typedef enum guest_handler_result (*guest_handler_t)(struct guest *guest);
-> +
-> +/* EL1 (Guest-internal) Exception Vector */
-> +enum guest_el1_vector {
-> +	GUEST_EL1_SYNC,
-> +	GUEST_EL1_IRQ,
-> +	GUEST_EL1_FIQ,
-> +	GUEST_EL1_SERROR,
-> +	GUEST_EL1_MAX
-> +};
-> +
-> +/*
-> + * Guest EL1 Exception Frame (pushed to guest stack by asm stub)
-> + * We use a simplified frame: x0-x30, elr, spsr. size = 33*8
-> + */
-> +struct guest_el1_regs {
-> +	unsigned long regs[31];
-> +	unsigned long elr;
-> +	unsigned long spsr;
-> +};
-> +
-> +typedef void (*guest_el1_handler_t)(struct guest_el1_regs *regs, unsigned int esr);
-> +
-> +/* Exceptions from the Guest (Lower EL using AArch64) */
-> +enum guest_vector {
-> +	GUEST_VECTOR_SYNC,
-> +	GUEST_VECTOR_IRQ,
-> +	GUEST_VECTOR_FIQ,
-> +	GUEST_VECTOR_SERROR,
-> +	GUEST_VECTOR_MAX
-> +};
-> +
-> +/*
-> + * Guest Context Structure
-> + * This will be pointed to by TPIDR_EL1 while the guest is running.
-> + */
-> +struct guest_context {
-> +	guest_el1_handler_t handlers[GUEST_EL1_MAX];
-> +};
-> +
-> +struct guest {
-> +	/* 0x000: General Purpose Registers */
-> +	unsigned long x[31]; /* x0..x30 */
-> +
-> +	/* 0x0F8: Execution State */
-> +	unsigned long elr_el2;
-> +	unsigned long spsr_el2;
-> +
-> +	/* 0x108: Control Registers */
-> +	unsigned long hcr_el2;
-> +	unsigned long vttbr_el2;
-> +	unsigned long sctlr_el1;
-> +	unsigned long vbar_el1;
-> +	unsigned long sp_el1;
-> +
-> +	/* 0x130: Exit Information */
-> +	unsigned long esr_el2;
-> +	unsigned long far_el2;
-> +	unsigned long hpfar_el2;
-> +	unsigned long exit_code; /* enum guest_vector */
-> +	unsigned long tpidr_el1;
-> +
-> +	/* 0x158: GIC Registers */
-> +	unsigned long ich_vmcr_el2;
-> +
-> +	/* 0x160: Exception Handlers */
-> +	guest_handler_t handlers[GUEST_VECTOR_MAX];
-> +	struct guest_context *guest_context;
-> +
-> +	struct s2_mmu *s2mmu;
-> +};
-> +
-> +/* API */
-> +struct guest *guest_create(int vmid, void (*guest_func)(void), enum s2_granule granule);
-> +void guest_destroy(struct guest *guest);
-> +
-> +/* Configuration */
-> +void guest_set_vector(struct guest *guest, void *vector_table);
-> +void guest_set_stack(struct guest *guest, void *stack_top);
-> +void guest_install_handler(struct guest *guest, enum guest_vector v, guest_handler_t handler);
-> +
-> +/* Install handler for exceptions INSIDE EL1 */
-> +void guest_install_el1_handler(struct guest *guest, enum guest_el1_vector v, guest_el1_handler_t handler);
-> +
-> +unsigned long guest_c_exception_handler(struct guest *guest, unsigned long vector_offset);
-> +void guest_el1_c_handler(struct guest_el1_regs *regs, unsigned int vector);
-> +
-> +/* Core Run Loop */
-> +void guest_run(struct guest *guest);
-> +
-> +#endif /* __ASSEMBLY__ */
-> +#endif /* _ASMARM64_GUEST_H_ */
-> diff --git a/lib/arm64/guest.c b/lib/arm64/guest.c
-> new file mode 100644
-> index 00000000..6c256c11
-> --- /dev/null
-> +++ b/lib/arm64/guest.c
-> @@ -0,0 +1,197 @@
-> +/*
-> + * Copyright (C) 2026, Google LLC.
-> + * Author: Jing Zhang <jingzhangos@google.com>
-> + *
-> + * SPDX-License-Identifier: LGPL-2.0-or-later
-> + */
-> +#include <libcflat.h>
-> +#include <asm/guest.h>
-> +#include <asm/io.h>
-> +#include <asm/sysreg.h>
-> +#include <asm/barrier.h>
-> +#include <alloc_page.h>
-> +#include <alloc.h>
-> +
-> +/* Compile-time checks to ensure Assembly macros match C Struct */
-> +_Static_assert(offsetof(struct guest, x) == GUEST_X_OFFSET,
-> +	       "GUEST_X_OFFSET mismatch");
-> +_Static_assert(offsetof(struct guest, elr_el2) == GUEST_ELR_OFFSET,
-> +	       "GUEST_ELR_OFFSET mismatch");
-> +_Static_assert(offsetof(struct guest, spsr_el2) == GUEST_SPSR_OFFSET,
-> +	       "GUEST_SPSR_OFFSET mismatch");
-> +_Static_assert(offsetof(struct guest, hcr_el2) == GUEST_HCR_OFFSET,
-> +	       "GUEST_HCR_OFFSET mismatch");
-> +_Static_assert(offsetof(struct guest, vttbr_el2) == GUEST_VTTBR_OFFSET,
-> +	       "GUEST_VTTBR_OFFSET mismatch");
-> +_Static_assert(offsetof(struct guest, sctlr_el1) == GUEST_SCTLR_OFFSET,
-> +	       "GUEST_SCTLR_OFFSET mismatch");
-> +_Static_assert(offsetof(struct guest, vbar_el1) == GUEST_VBAR_OFFSET,
-> +	       "GUEST_VBAR_OFFSET mismatch");
-> +_Static_assert(offsetof(struct guest, sp_el1) == GUEST_SP_EL1_OFFSET,
-> +	       "GUEST_SP_EL1_OFFSET mismatch");
-> +_Static_assert(offsetof(struct guest, esr_el2) == GUEST_ESR_OFFSET,
-> +	       "GUEST_ESR_OFFSET mismatch");
-> +_Static_assert(offsetof(struct guest, far_el2) == GUEST_FAR_OFFSET,
-> +	       "GUEST_FAR_OFFSET mismatch");
-> +_Static_assert(offsetof(struct guest, hpfar_el2) == GUEST_HPFAR_OFFSET,
-> +	       "GUEST_HPFAR_OFFSET mismatch");
-> +_Static_assert(offsetof(struct guest, exit_code) == GUEST_EXIT_CODE_OFFSET,
-> +	       "GUEST_EXIT_CODE_OFFSET mismatch");
-> +_Static_assert(offsetof(struct guest, tpidr_el1) == GUEST_TPIDR_EL1_OFFSET,
-> +		"GUEST_TPIDR_EL1_OFFSET mismatch");
-> +_Static_assert(offsetof(struct guest, ich_vmcr_el2) == GUEST_ICH_VMCR_EL2_OFFSET,
-> +		"GUEST_ICH_VMCR_EL2_OFFSET mismatch");
-> +
-> +/*
-> + * C-Entry for Exception Handling
-> + * Returns 0 to Resume Guest, 1 to Exit to Host Caller
-> + */
-> +unsigned long guest_c_exception_handler(struct guest *guest, unsigned long vector_offset)
-> +{
-> +	enum guest_vector vector = (enum guest_vector)guest->exit_code;
-> +
-> +	/* Save Trap Info */
-> +	guest->esr_el2 = read_sysreg(esr_el2);
-> +	guest->far_el2 = read_sysreg(far_el2);
-> +	guest->hpfar_el2 = read_sysreg(hpfar_el2);
-> +
-> +	/* Invoke Handler if registered */
-> +	if (guest->handlers[vector]) {
-> +		if (guest->handlers[vector](guest) == GUEST_ACTION_RESUME) {
-> +			return 0; /* ASM stub will restore and ERET */
-> +		}
-> +	}
-> +
-> +	/* Default: Exit to caller */
-> +	return 1;
-> +}
-> +
-> +/* --- EL1 (Guest-Internal) Vector Handling --- */
-> +
-> +void guest_install_el1_handler(struct guest *guest, enum guest_el1_vector v, guest_el1_handler_t handler)
-> +{
-> +	if (guest && guest->guest_context && v < GUEST_EL1_MAX)
-> +		guest->guest_context->handlers[v] = handler;
-> +}
-> +
-> +void guest_el1_c_handler(struct guest_el1_regs *regs, unsigned int vector)
-> +{
-> +	struct guest_context *ctx = (struct guest_context *)read_sysreg(tpidr_el1);
-> +	unsigned int esr = read_sysreg(esr_el1);
-> +
-> +	if (ctx && vector < GUEST_EL1_MAX && ctx->handlers[vector]) {
-> +		ctx->handlers[vector](regs, esr);
-> +	} else {
-> +		printf("Guest: Unhandled Exception Vector %d, ESR=0x%x\n", vector, esr);
-> +		asm volatile("hvc #0xFFFF");
-> +	}
-> +}
-> +
-> +extern void guest_el1_vectors(void);
-> +
-> +static struct guest *__guest_create(struct s2_mmu *s2_ctx, void *entry_point)
-> +{
-> +	struct guest *guest = calloc(1, sizeof(struct guest));
-> +	struct guest_context *guest_ctx;
-> +	unsigned long guest_ctx_pa;
-> +
-> +	/* Allocate the internal context table */
-> +	guest_ctx = (void *)alloc_page();
-> +	memset(guest_ctx, 0, PAGE_SIZE);
-> +	guest->guest_context = guest_ctx;
-> +
-> +	guest_ctx_pa = virt_to_phys(guest_ctx);
-> +	if (s2_ctx)
-> +		s2mmu_map(s2_ctx, guest_ctx_pa, guest_ctx_pa, PAGE_SIZE, S2_MAP_RW);
-> +
-> +	guest->tpidr_el1 = guest_ctx_pa;;
-> +
-> +	guest->elr_el2 = (unsigned long)entry_point;
-> +	guest->spsr_el2 = 0x3C5; /* M=EL1h, DAIF=Masked */
-> +	guest->hcr_el2 = HCR_GUEST_FLAGS;
-> +
-> +	if (s2_ctx) {
-> +		guest->vttbr_el2 = virt_to_phys(s2_ctx->pgd);
-> +		guest->vttbr_el2 |= ((unsigned long)s2_ctx->vmid << 48);
-> +	}
-> +
-> +	guest->sctlr_el1 = read_sysreg(sctlr_el1);
-> +	guest->sctlr_el1 |= SCTLR_EL1_C | SCTLR_EL1_I | SCTLR_EL1_M;
-> +
-> +	guest->ich_vmcr_el2 = read_sysreg(ich_vmcr_el2);
-> +	guest->ich_vmcr_el2 |= (0xFFUL << ICH_VMCR_PMR_SHIFT) | (1UL << ICH_VMCR_ENG1_SHIFT);
-> +
-> +	guest->vbar_el1 = (unsigned long)guest_el1_vectors;
-> +	guest->s2mmu = s2_ctx;
-> +
-> +	return guest;
-> +}
-> +
-> +struct guest *guest_create(int vmid, void (*guest_func)(void), enum s2_granule granule)
-> +{
-> +	unsigned long guest_pa, code_base, stack_pa;
-> +	unsigned long *stack_page;
-> +	struct guest *guest;
-> +	struct s2_mmu *ctx;
-> +
-> +	ctx = s2mmu_init(vmid, granule, true);
-> +	/*
-> +	 * Map the Host's code segment Identity Mapped (IPA=PA).
-> +	 * To be safe, we map a large chunk (e.g., 2MB) around the function
-> +	 * to capture any helper functions the compiler might generate calls to.
-> +	 */
-> +	guest_pa = virt_to_phys((void *)guest_func);
-> +	code_base = guest_pa & ~(SZ_2M - 1);
-> +	s2mmu_map(ctx, code_base, code_base, SZ_2M, S2_MAP_RW);
-> +
-> +	/*
-> +	 * Map Stack
-> +	 * Allocate 16 pages (64K) in Host, get its PA, and map it for Guest.
-> +	 */
-> +	stack_page = alloc_pages(get_order(GUEST_STACK_SIZE >> PAGE_SHIFT));
-> +	stack_pa = virt_to_phys(stack_page);
-> +	/* Identity Map it (IPA = PA) */
-> +	s2mmu_map(ctx, stack_pa, stack_pa, GUEST_STACK_SIZE, S2_MAP_RW);
-> +
-> +	s2mmu_enable(ctx);
-> +
-> +	/* Create Guest */
-> +	/* Entry point is the PA of the function (Identity Mapped) */
-> +	guest = __guest_create(ctx, (void *)guest_pa);
-> +
-> +	/*
-> +	 * Setup Guest Stack Pointer
-> +	 * Must match where we mapped the stack + Offset
-> +	 */
-> +	guest_set_stack(guest, (void *)(stack_pa + GUEST_STACK_SIZE));
-> +
-> +	/* Map UART identity mapped, printf() available to guest */
-> +	s2mmu_map(ctx, 0x09000000, 0x09000000, PAGE_SIZE, S2_MAP_DEVICE);
-> +
-> +	return guest;
-> +}
-> +
-> +void guest_destroy(struct guest *guest)
-> +{
-> +	s2mmu_disable(guest->s2mmu);
-> +	s2mmu_destroy(guest->s2mmu);
-> +	if (guest->guest_context)
-> +		free_page(guest->guest_context);
-> +	free(guest);
-> +}
-> +
-> +void guest_set_vector(struct guest *guest, void *vector_table)
-> +{
-> +	guest->vbar_el1 = (unsigned long)vector_table;
-> +}
-> +
-> +void guest_set_stack(struct guest *guest, void *stack_top)
-> +{
-> +	guest->sp_el1 = (unsigned long)stack_top;
-> +}
-> +
-> +void guest_install_handler(struct guest *guest, enum guest_vector v, guest_handler_t handler)
-> +{
-> +	if (v < GUEST_VECTOR_MAX)
-> +		guest->handlers[v] = handler;
-> +}
-> diff --git a/lib/arm64/guest_arch.S b/lib/arm64/guest_arch.S
-> new file mode 100644
-> index 00000000..cb7074d7
-> --- /dev/null
-> +++ b/lib/arm64/guest_arch.S
-> @@ -0,0 +1,263 @@
-> +/*
-> + * Copyright (C) 2026, Google LLC.
-> + * Author: Jing Zhang <jingzhangos@google.com>
-> + *
-> + * SPDX-License-Identifier: LGPL-2.0-or-later
-> + */
-> +#define __ASSEMBLY__
-> +#include <asm/guest.h>
-> +
-> +.global guest_run
-> +guest_run:
-> +	/* x0 = struct guest pointer */
-> +
-> +	/* Save Host Callee-Saved Regs */
-> +	stp	x29, x30, [sp, #-16]!
-> +	stp	x27, x28, [sp, #-16]!
-> +	stp	x25, x26, [sp, #-16]!
-> +	stp	x23, x24, [sp, #-16]!
-> +	stp	x21, x22, [sp, #-16]!
-> +	stp	x19, x20, [sp, #-16]!
-> +
-> +	/* Cache Guest Pointer in TPIDR_EL2 */
-> +	msr	tpidr_el2, x0
-> +
-> +	/* Configure ICC_SRE_EL2 to allow EL1 access to SysRegs */
-> +	/* Bit 3 (Enable) = 1, Bit 0 (SRE) = 1 */
-> +	mrs	x1, icc_sre_el2
-> +	orr	x1, x1, #1
-> +	orr	x1, x1, #(1 << 3)
-> +	msr	icc_sre_el2, x1
-> +	isb
-> +
-> +	/* Enable virtual CPU interface */
-> +	mrs	x1, ich_hcr_el2
-> +	orr	x1, x1, #1
-> +	msr	ich_hcr_el2, x1
-> +
-> +	/* Load Guest System Registers */
-> +	ldr	x1, [x0, #GUEST_ELR_OFFSET]
-> +	msr	elr_el2, x1
-> +	ldr	x1, [x0, #GUEST_SPSR_OFFSET]
-> +	msr	spsr_el2, x1
-> +	ldr	x1, [x0, #GUEST_HCR_OFFSET]
-> +	msr	hcr_el2, x1
-> +	ldr	x1, [x0, #GUEST_VTTBR_OFFSET]
-> +	msr	vttbr_el2, x1
-> +	ldr	x1, [x0, #GUEST_SCTLR_OFFSET]
-> +	msr	S3_5_c1_c0_0, x1
-> +	ldr	x1, [x0, #GUEST_VBAR_OFFSET]
-> +	msr	S3_5_c12_c0_0, x1
-> +	ldr	x1, [x0, #GUEST_SP_EL1_OFFSET]
-> +	msr	sp_el1, x1
-> +	ldr	x1, [x0, #GUEST_TPIDR_EL1_OFFSET]
-> +	msr	tpidr_el1, x1
-> +	ldr	x1, [x0, #GUEST_ICH_VMCR_EL2_OFFSET]
-> +	msr	ich_vmcr_el2, x1
-> +
-> +	/* Load Guest GPRs */
-> +	ldp	x1, x2, [x0, #8]
-> +	ldp	x3, x4, [x0, #24]
-> +	ldp	x5, x6, [x0, #40]
-> +	ldp	x7, x8, [x0, #56]
-> +	ldp	x9, x10, [x0, #72]
-> +	ldp	x11, x12, [x0, #88]
-> +	ldp	x13, x14, [x0, #104]
-> +	ldp	x15, x16, [x0, #120]
-> +	ldp	x17, x18, [x0, #136]
-> +	ldp	x19, x20, [x0, #152]
-> +	ldp	x21, x22, [x0, #168]
-> +	ldp	x23, x24, [x0, #184]
-> +	ldp	x25, x26, [x0, #200]
-> +	ldp	x27, x28, [x0, #216]
-> +	ldp	x29, x30, [x0, #232]
-> +	ldr	x0, [x0, #0]
-> +
-> +	/* Install Trap Handler */
-> +	adrp	x29, guest_hyp_vectors
-> +	add	x29, x29, :lo12:guest_hyp_vectors
-> +	msr	vbar_el2, x29
-> +
-> +	/* Restore x29 from struct (via tpidr_el2) */
-> +	mrs	x29, tpidr_el2
-> +	ldr	x29, [x29, #232]
-> +
-> +	isb
-> +	eret
-> +
-> +	.align 11
-> +guest_hyp_vectors:
-> +	.skip 0x400
-> +
-> +guest_exit_sync:
-> +	stp	x0, x1, [sp, #-16]!
-> +	mrs	x0, tpidr_el2
-> +	mov	x1, #0
-> +	str	x1, [x0, #GUEST_EXIT_CODE_OFFSET]
-> +	b	guest_common_exit
-> +
-> +	.balign 0x80
-> +
-> +guest_exit_irq:
-> +	stp	x0, x1, [sp, #-16]!
-> +	mrs	x0, tpidr_el2
-> +	mov	x1, #1
-> +	str	x1, [x0, #GUEST_EXIT_CODE_OFFSET]
-> +	b	guest_common_exit
-> +
-> +guest_common_exit:
-> +	stp	x2, x3, [x0, #16]
-> +	stp	x4, x5, [x0, #32]
-> +	stp	x6, x7, [x0, #48]
-> +	stp	x8, x9, [x0, #64]
-> +	stp	x10, x11, [x0, #80]
-> +	stp	x12, x13, [x0, #96]
-> +	stp	x14, x15, [x0, #112]
-> +	stp	x16, x17, [x0, #128]
-> +	stp	x18, x19, [x0, #144]
-> +	stp	x20, x21, [x0, #160]
-> +	stp	x22, x23, [x0, #176]
-> +	stp	x24, x25, [x0, #192]
-> +	stp	x26, x27, [x0, #208]
-> +	stp	x28, x29, [x0, #224]
-> +	str	x30, [x0, #240]
-> +
-> +	ldp	x2, x3, [sp], #16
-> +	stp	x2, x3, [x0, #0]
-> +
-> +	mrs	x1, elr_el2
-> +	str	x1, [x0, #GUEST_ELR_OFFSET]
-> +	mrs	x1, spsr_el2
-> +	str	x1, [x0, #GUEST_SPSR_OFFSET]
-> +	mrs	x1, esr_el2
-> +	str	x1, [x0, #GUEST_ESR_OFFSET]
-> +	mrs	x1, far_el2
-> +	str	x1, [x0, #GUEST_FAR_OFFSET]
-> +	mrs	x1, hpfar_el2
-> +	str	x1, [x0, #GUEST_HPFAR_OFFSET]
-> +	mrs	x1, sp_el1
-> +	str	x1, [x0, #GUEST_SP_EL1_OFFSET]
-> +	mrs	x1, ich_vmcr_el2
-> +	str	x1, [x0, #GUEST_ICH_VMCR_EL2_OFFSET]
-> +
-> +	/* x29 contains vector offset from entry */
-> +	mov	x1, x29
-> +	bl	guest_c_exception_handler
-> +	cbz	x0, guest_resume_guest
-> +
-> +	/* EXIT */
-> +	/* Restore Host Callee-Saved Regs */
-> +	ldp	x19, x20, [sp], #16
-> +	ldp	x21, x22, [sp], #16
-> +	ldp	x23, x24, [sp], #16
-> +	ldp	x25, x26, [sp], #16
-> +	ldp	x27, x28, [sp], #16
-> +	ldp	x29, x30, [sp], #16
-> +	ret
-> +
-> +	/* RESUME */
-> +guest_resume_guest:
-> +	mrs	x0, tpidr_el2
-> +	ldr	x1, [x0, #GUEST_ELR_OFFSET]
-> +	msr	elr_el2, x1
-> +	ldr	x1, [x0, #GUEST_SPSR_OFFSET]
-> +	msr	spsr_el2, x1
-> +	ldr	x1, [x0, #GUEST_SP_EL1_OFFSET]
-> +	msr	sp_el1, x1
-> +
-> +	ldp	x1, x2, [x0, #8]
-> +	ldp	x3, x4, [x0, #24]
-> +	ldp	x5, x6, [x0, #40]
-> +	ldp	x7, x8, [x0, #56]
-> +	ldp	x9, x10, [x0, #72]
-> +	ldp	x11, x12, [x0, #88]
-> +	ldp	x13, x14, [x0, #104]
-> +	ldp	x15, x16, [x0, #120]
-> +	ldp	x17, x18, [x0, #136]
-> +	ldp	x19, x20, [x0, #152]
-> +	ldp	x21, x22, [x0, #168]
-> +	ldp	x23, x24, [x0, #184]
-> +	ldp	x25, x26, [x0, #200]
-> +	ldp	x27, x28, [x0, #216]
-> +	ldp	x29, x30, [x0, #232]
-> +	ldr	x0, [x0, #0]
-> +	eret
-> +
-> +/* EL1 Vector Table */
-> +.align 11
-> +.global guest_el1_vectors
-> +guest_el1_vectors:
-> +	/* Sync (0x000) */
-> +	.skip 0x200
-> +	/* Sync (0x200) */
-> +	stp	x29, x30, [sp, #-16]!
-> +	mov	x29, #0
-> +	b	guest_el1_common
-> +	.skip 0x80 - 12
-> +	/* IRQ (0x280) */
-> +	stp	x29, x30, [sp, #-16]!
-> +	mov	x29, #1
-> +	b	guest_el1_common
-> +	.skip 0x80 - 12
-> +	/* FIQ (0x300) */
-> +	stp	x29, x30, [sp, #-16]!
-> +	mov	x29, #2
-> +	b	guest_el1_common
-> +	.skip 0x80 - 12
-> +	/* SError (0x380) */
-> +	stp	x29, x30, [sp, #-16]!
-> +	mov	x29, #3
-> +	b	guest_el1_common
-> +	.skip 0x400
-> +
-> +guest_el1_common:
-> +	sub	sp, sp, #264
-> +	stp	x0, x1, [sp, #0]
-> +	stp	x2, x3, [sp, #16]
-> +	stp	x4, x5, [sp, #32]
-> +	stp	x6, x7, [sp, #48]
-> +	stp	x8, x9, [sp, #64]
-> +	stp	x10, x11, [sp, #80]
-> +	stp	x12, x13, [sp, #96]
-> +	stp	x14, x15, [sp, #112]
-> +	stp	x16, x17, [sp, #128]
-> +	stp	x18, x19, [sp, #144]
-> +	stp	x20, x21, [sp, #160]
-> +	stp	x22, x23, [sp, #176]
-> +	stp	x24, x25, [sp, #192]
-> +	stp	x26, x27, [sp, #208]
-> +	stp	x28, x30, [sp, #224]
-> +
-> +	mrs	x0, elr_el1
-> +	str	x0, [sp, #248]
-> +	mrs	x0, spsr_el1
-> +	str	x0, [sp, #256]
-> +
-> +	mov	x0, sp
-> +	mov	x1, x29
-> +	bl	guest_el1_c_handler
-> +
-> +	ldr	x0, [sp, #248]
-> +	msr	elr_el1, x0
-> +	ldr	x0, [sp, #256]
-> +	msr	spsr_el1, x0
-> +
-> +	ldp	x0, x1, [sp, #0]
-> +	ldp	x2, x3, [sp, #16]
-> +	ldp	x4, x5, [sp, #32]
-> +	ldp	x6, x7, [sp, #48]
-> +	ldp	x8, x9, [sp, #64]
-> +	ldp	x10, x11, [sp, #80]
-> +	ldp	x12, x13, [sp, #96]
-> +	ldp	x14, x15, [sp, #112]
-> +	ldp	x16, x17, [sp, #128]
-> +	ldp	x18, x19, [sp, #144]
-> +	ldp	x20, x21, [sp, #160]
-> +	ldp	x22, x23, [sp, #176]
-> +	ldp	x24, x25, [sp, #192]
-> +	ldp	x26, x27, [sp, #208]
-> +	ldp	x28, x30, [sp, #224]
-> +
-> +	add	sp, sp, #264
-> +	ldp	x29, x30, [sp], #16
-> +	eret
-> --
-> 2.53.0.851.ga537e3e6e9-goog
->
+On 3/17/2026 3:13 AM, Dave Hansen wrote: 
+> Either we change how alternatives patching works, we use some other
+> exception code, or we try and get CR4.FSGSBASE established as early as
+> possible on the secondaries.
+
+Right, I moved FSGSBASE enablement to cpu_init_exception_handling() to 
+establish it early:
+
+https://lore.kernel.org/all/1439b4f4-ff0c-4b6a-ac86-5c0da2d26cf5@amd.com
+
+This:
+1) Enables FSGSBASE early for secondary CPUs before any exceptions occur
+2) Consolidates initialization for both boot and secondary CPUs in one place
+3) Eliminates the double-enable issue as in cr4_init()/identify_cpu()
+
+Does this approach look good to you?
+
+Regards,
+Nikunj
