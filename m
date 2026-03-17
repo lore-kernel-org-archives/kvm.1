@@ -1,210 +1,123 @@
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A66073EB7ED
-	for <kvm@vger.kernel.org>; Tue, 17 Mar 2026 15:07:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C1FEC3AB273;
+	Tue, 17 Mar 2026 15:07:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773760045; cv=none; b=A86o3pUKd1V37RI/B3xUNowEflrXO/NDK5MGMCfyce/Hsnj5x6nN/M5qv6tzG9u+AmYP2XQM3XlCLTwcmchQfXvsj+XLkSPulHSVzdkbLpjDP0ODAkAobpnYo2mG5/6wXnzxXbQOfbNaeOb5u0DDKm142Zix14rUsE4d1RFx9iQ=
+	t=1773760068; cv=none; b=RH4cCoItKWW027BuLMhowZHPjkGx17OjLe5s1hrIS0jb3BKBroD4lw2wJWu4SaZtgaczA57WpErHago+6QqysrkoFsySHH4zfxh2Px/TZyfoodfc3p4edXbslDmeYW1GpIoPgW03Gckp7l/aMefZXaBMS6CkeVT9vQWi+Qzd0/s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773760045; c=relaxed/simple;
-	bh=X86NAYcSKjoY3jgQwc3wqUxd4UAWPN0ewDHMBpqG4dA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=YLnLc3ts5bsd3zUeCuwwxwNBQWSydBmO55kr1bp8ru2Frci4JqxQCGjHP1PfxFe3WJxcjR8bWyWq+42gB0KBSrZye0TBo8NR0maAAo4DeCGKgVGgoLNkVXMSYqX+qbdaGjAto9I7CKhBZkhAq7d5TPuLaC4GsdWtKuDR3EkIQ3Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id F34A91477;
-	Tue, 17 Mar 2026 08:07:16 -0700 (PDT)
-Received: from e124191.cambridge.arm.com (e124191.cambridge.arm.com [10.1.197.45])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 9CAC43F778;
-	Tue, 17 Mar 2026 08:07:21 -0700 (PDT)
-Date: Tue, 17 Mar 2026 15:07:16 +0000
-From: Joey Gouly <joey.gouly@arm.com>
-To: Fuad Tabba <tabba@google.com>
-Cc: kvm@vger.kernel.org, kvmarm@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org, maz@kernel.org,
-	oliver.upton@linux.dev, suzuki.poulose@arm.com,
-	yuzenghui@huawei.com, catalin.marinas@arm.com, will@kernel.org,
-	qperret@google.com, vdonnefort@google.com
-Subject: Re: [PATCH v1 01/13] KVM: arm64: Extract VMA size resolution in
- user_mem_abort()
-Message-ID: <20260317150716.GA3808327@e124191.cambridge.arm.com>
-References: <20260306140232.2193802-1-tabba@google.com>
- <20260306140232.2193802-2-tabba@google.com>
+	s=arc-20240116; t=1773760068; c=relaxed/simple;
+	bh=AAkLl6I8DEWD0DH3jFQPg+HmOR+tfYeIuPntrROUHX0=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=I+guvtAf3UCEChCVKLKhPQS1lxnZE2FIFEh28OTPcGkNmani7mRYvc1gqxWGxmom11rAMpAUspRjNLrujFLd7yf3AKSc1nFoEfoZHcWciZQpJosTguIKkBiXXM5OcDnIs2VAaLkr8f7WyOjUD+MS2bNfeQ/NAwnTCnlfOSxBGW0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CJkiIDO4; arc=none smtp.client-ip=10.30.226.201
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CJkiIDO4"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 2EB0FC2BCB3;
+	Tue, 17 Mar 2026 15:07:48 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1773760068;
+	bh=AAkLl6I8DEWD0DH3jFQPg+HmOR+tfYeIuPntrROUHX0=;
+	h=From:Date:Subject:To:Cc:Reply-To:From;
+	b=CJkiIDO4+q3revlyLViqNBCHkB/zglhH9iZF+KJap2fLvMkWzLxZeq/XuwC5TqL3Y
+	 g3c8rNhhwNQD1FHScpHpi5zD2n2yKN3Y1/CKPC9JyygzZcaMBfrOk7kXcyDUTeEDuD
+	 1swlZiNsmJIKv+9HJ48VRYX8erFPqBjkMCVRPr6tQTo4/ya1ICkDkivBww6p4UCetw
+	 m+rz29rngqqZw4AESbYyxoHBYoptfHTwNt3vcDyw+W0QTW94DMgm980KL0FiLECLHE
+	 vNMxpwNk9NKLC77dHRD8gE/faAqJ1qdmaYvArtjYfR1rLV0894mPDjF0Y5xq4QkHj3
+	 bByHAQm4+vNoQ==
+Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 04D4AFED9E4;
+	Tue, 17 Mar 2026 15:07:48 +0000 (UTC)
+From: Max Boone via B4 Relay <devnull+mboone.akamai.com@kernel.org>
+Date: Tue, 17 Mar 2026 16:07:45 +0100
+Subject: [PATCH] vfio/type1: Retry follow_pfnmap_start() when PFNMAP is
+ zapped
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260306140232.2193802-2-tabba@google.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260317-retry-pin-on-reclaimed-pud-v1-1-1f0d0a23f78d@akamai.com>
+X-B4-Tracking: v=1; b=H4sIAEBuuWkC/x3MQQqDMBAF0KvIrB3QCLZ6FXGhyU87UGOY2KKId
+ zd0+TbvpAQVJOqLkxQ/SbKGjLosyL6n8AKLyyZTmbZq6gcrNj04SuA1ZNjPJAscx69j5+cOpsX
+ 8tJ5yEBVe9n8+jNd1A2Wt4g5sAAAA
+X-Change-ID: 20260317-retry-pin-on-reclaimed-pud-dfb9e26eb8cf
+To: Alex Williamson <alex@shazbot.org>
+Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ stable@vger.kernel.org, Max Boone <mboone@akamai.com>
+X-Mailer: b4 0.14.3
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1773760067; l=2028;
+ i=mboone@akamai.com; s=20260317; h=from:subject:message-id;
+ bh=b2j73waNF0S5HuzVon7vQ+MYHgI3mNVa+AVmFCvIi3w=;
+ b=7xTZNEDX40oqQAxYCRx209sugRRIcmmUHTQXOgPlFSP+GvJ/znoV8z5HCrd3iwy17TATbR+ZE
+ Scmbbbu2iNSAQegKpxl0SkrHLBDsmcOHOjVj1zVDbbLDnYUY6mHcsFZ
+X-Developer-Key: i=mboone@akamai.com; a=ed25519;
+ pk=jWdC/h5H2KWQCiC2kpr/puMVX0mJmP9W5sM8YTGBXA4=
+X-Endpoint-Received: by B4 Relay for mboone@akamai.com/20260317 with
+ auth_id=685
+X-Original-From: Max Boone <mboone@akamai.com>
+Reply-To: mboone@akamai.com
 
-On Fri, Mar 06, 2026 at 02:02:20PM +0000, Fuad Tabba wrote:
-> As part of an effort to refactor user_mem_abort() into smaller, more
-> focused helper functions, extract the logic responsible for determining
-> the VMA shift and page size into a new static helper,
-> kvm_s2_resolve_vma_size().
-> 
-> Signed-off-by: Fuad Tabba <tabba@google.com>
+From: Max Boone <mboone@akamai.com>
 
-Reviewed-by: Joey Gouly <joey.gouly@arm.com>
+A race between page table walking (e.g. via procfs numa_maps) and VFIO DMA
+pinning can lead to temporary failures in follow_pfnmap_start(). When a
+PUD entry is split and concurrently refaulted, the PFNMAP mapping may be
+temporarily zapped, causing follow_pfnmap_start() to return an error.
 
-> ---
->  arch/arm64/kvm/mmu.c | 130 ++++++++++++++++++++++++-------------------
->  1 file changed, 73 insertions(+), 57 deletions(-)
-> 
-> diff --git a/arch/arm64/kvm/mmu.c b/arch/arm64/kvm/mmu.c
-> index 17d64a1e11e5..f8064b2d3204 100644
-> --- a/arch/arm64/kvm/mmu.c
-> +++ b/arch/arm64/kvm/mmu.c
-> @@ -1639,6 +1639,77 @@ static int gmem_abort(struct kvm_vcpu *vcpu, phys_addr_t fault_ipa,
->  	return ret != -EAGAIN ? ret : 0;
->  }
->  
-> +static short kvm_s2_resolve_vma_size(struct vm_area_struct *vma,
-> +				     unsigned long hva,
-> +				     struct kvm_memory_slot *memslot,
-> +				     struct kvm_s2_trans *nested,
-> +				     bool *force_pte, phys_addr_t *ipa)
-> +{
-> +	short vma_shift;
-> +	long vma_pagesize;
-> +
-> +	if (*force_pte)
-> +		vma_shift = PAGE_SHIFT;
-> +	else
-> +		vma_shift = get_vma_page_shift(vma, hva);
-> +
-> +	switch (vma_shift) {
-> +#ifndef __PAGETABLE_PMD_FOLDED
-> +	case PUD_SHIFT:
-> +		if (fault_supports_stage2_huge_mapping(memslot, hva, PUD_SIZE))
-> +			break;
-> +		fallthrough;
-> +#endif
-> +	case CONT_PMD_SHIFT:
-> +		vma_shift = PMD_SHIFT;
-> +		fallthrough;
-> +	case PMD_SHIFT:
-> +		if (fault_supports_stage2_huge_mapping(memslot, hva, PMD_SIZE))
-> +			break;
-> +		fallthrough;
-> +	case CONT_PTE_SHIFT:
-> +		vma_shift = PAGE_SHIFT;
-> +		*force_pte = true;
-> +		fallthrough;
-> +	case PAGE_SHIFT:
-> +		break;
-> +	default:
-> +		WARN_ONCE(1, "Unknown vma_shift %d", vma_shift);
-> +	}
-> +
-> +	vma_pagesize = 1UL << vma_shift;
-> +
-> +	if (nested) {
-> +		unsigned long max_map_size;
-> +
-> +		max_map_size = *force_pte ? PAGE_SIZE : PUD_SIZE;
-> +
-> +		*ipa = kvm_s2_trans_output(nested);
-> +
-> +		/*
-> +		 * If we're about to create a shadow stage 2 entry, then we
-> +		 * can only create a block mapping if the guest stage 2 page
-> +		 * table uses at least as big a mapping.
-> +		 */
-> +		max_map_size = min(kvm_s2_trans_size(nested), max_map_size);
-> +
-> +		/*
-> +		 * Be careful that if the mapping size falls between
-> +		 * two host sizes, take the smallest of the two.
-> +		 */
-> +		if (max_map_size >= PMD_SIZE && max_map_size < PUD_SIZE)
-> +			max_map_size = PMD_SIZE;
-> +		else if (max_map_size >= PAGE_SIZE && max_map_size < PMD_SIZE)
-> +			max_map_size = PAGE_SIZE;
-> +
-> +		*force_pte = (max_map_size == PAGE_SIZE);
-> +		vma_pagesize = min_t(long, vma_pagesize, max_map_size);
-> +		vma_shift = __ffs(vma_pagesize);
-> +	}
-> +
-> +	return vma_shift;
-> +}
-> +
->  static int user_mem_abort(struct kvm_vcpu *vcpu, phys_addr_t fault_ipa,
->  			  struct kvm_s2_trans *nested,
->  			  struct kvm_memory_slot *memslot, unsigned long hva,
-> @@ -1695,65 +1766,10 @@ static int user_mem_abort(struct kvm_vcpu *vcpu, phys_addr_t fault_ipa,
->  		return -EFAULT;
->  	}
->  
-> -	if (force_pte)
-> -		vma_shift = PAGE_SHIFT;
-> -	else
-> -		vma_shift = get_vma_page_shift(vma, hva);
-> -
-> -	switch (vma_shift) {
-> -#ifndef __PAGETABLE_PMD_FOLDED
-> -	case PUD_SHIFT:
-> -		if (fault_supports_stage2_huge_mapping(memslot, hva, PUD_SIZE))
-> -			break;
-> -		fallthrough;
-> -#endif
-> -	case CONT_PMD_SHIFT:
-> -		vma_shift = PMD_SHIFT;
-> -		fallthrough;
-> -	case PMD_SHIFT:
-> -		if (fault_supports_stage2_huge_mapping(memslot, hva, PMD_SIZE))
-> -			break;
-> -		fallthrough;
-> -	case CONT_PTE_SHIFT:
-> -		vma_shift = PAGE_SHIFT;
-> -		force_pte = true;
-> -		fallthrough;
-> -	case PAGE_SHIFT:
-> -		break;
-> -	default:
-> -		WARN_ONCE(1, "Unknown vma_shift %d", vma_shift);
-> -	}
-> -
-> +	vma_shift = kvm_s2_resolve_vma_size(vma, hva, memslot, nested,
-> +					    &force_pte, &ipa);
->  	vma_pagesize = 1UL << vma_shift;
->  
-> -	if (nested) {
-> -		unsigned long max_map_size;
-> -
-> -		max_map_size = force_pte ? PAGE_SIZE : PUD_SIZE;
-> -
-> -		ipa = kvm_s2_trans_output(nested);
-> -
-> -		/*
-> -		 * If we're about to create a shadow stage 2 entry, then we
-> -		 * can only create a block mapping if the guest stage 2 page
-> -		 * table uses at least as big a mapping.
-> -		 */
-> -		max_map_size = min(kvm_s2_trans_size(nested), max_map_size);
-> -
-> -		/*
-> -		 * Be careful that if the mapping size falls between
-> -		 * two host sizes, take the smallest of the two.
-> -		 */
-> -		if (max_map_size >= PMD_SIZE && max_map_size < PUD_SIZE)
-> -			max_map_size = PMD_SIZE;
-> -		else if (max_map_size >= PAGE_SIZE && max_map_size < PMD_SIZE)
-> -			max_map_size = PAGE_SIZE;
-> -
-> -		force_pte = (max_map_size == PAGE_SIZE);
-> -		vma_pagesize = min_t(long, vma_pagesize, max_map_size);
-> -		vma_shift = __ffs(vma_pagesize);
-> -	}
-> -
->  	/*
->  	 * Both the canonical IPA and fault IPA must be aligned to the
->  	 * mapping size to ensure we find the right PFN and lay down the
-> -- 
-> 2.53.0.473.g4a7958ca14-goog
-> 
+Although follow_pfnmap_start() returns an -EINVAL this is not due to
+invalid parameters, but rather because of the pfnmap being non-present.
+Treat it as such, and retry by returning -EAGAIN, similar to how GUP
+handles such races.
+
+This avoids propagating an unexpected -EINVAL to userspace, like follows:
+[dma_map]
+dma_map iova=0x000000000000 size=0x000004000000 vaddr=0x00007f7800000000
+dma_map FAILED iova=0x020000000000: [Errno 22] Invalid argument
+dma_map iova=0x040000000000 size=0x000002000000 vaddr=0x00007f5780000000
+
+Which would've succeeded on a retry.
+
+Cc: stable@vger.kernel.org
+Fixes: a77f9489f1d7 ("vfio: use the new follow_pfnmap API")
+Signed-off-by: Max Boone <mboone@akamai.com>
+---
+ drivers/vfio/vfio_iommu_type1.c | 10 +++++++++-
+ 1 file changed, 9 insertions(+), 1 deletion(-)
+
+diff --git a/drivers/vfio/vfio_iommu_type1.c b/drivers/vfio/vfio_iommu_type1.c
+index 5167bec14..3a0d0bbb9 100644
+--- a/drivers/vfio/vfio_iommu_type1.c
++++ b/drivers/vfio/vfio_iommu_type1.c
+@@ -559,9 +559,17 @@ static int follow_fault_pfn(struct vm_area_struct *vma, struct mm_struct *mm,
+ 		if (ret)
+ 			return ret;
+ 
++		/*
++		 * follow_pfnmap_start() returns -EINVAL for
++		 * invalid parameters and non-present entries.
++		 * If that happens here after a successful
++		 * fixup_user_fault(), it is likely that the
++		 * pfnmap has been zapped. Retry instead of
++		 * failing.
++		 */
+ 		ret = follow_pfnmap_start(&args);
+ 		if (ret)
+-			return ret;
++			return -EAGAIN;
+ 	}
+ 
+ 	if (write_fault && !args.writable) {
+
+---
+base-commit: 96ca4caf9066f5ebd35b561a521af588a8eb0215
+change-id: 20260317-retry-pin-on-reclaimed-pud-dfb9e26eb8cf
+
+Best regards,
+-- 
+Max Boone <mboone@akamai.com>
+
+
