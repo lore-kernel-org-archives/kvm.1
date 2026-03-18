@@ -1,383 +1,240 @@
-Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.5])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E9DD62D781E;
-	Wed, 18 Mar 2026 12:37:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.31.5
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 94B843D6CBF;
+	Wed, 18 Mar 2026 12:55:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773837441; cv=none; b=H7XBCvz6a0CpuGlubMTLgwC2kqcv0Eidg2cQlNJ9XiGO9o5AN7Zz7VIV8W+dbrlO/otK71ixx+lI0DLx8b/Cfko3iFNBnSh4OQp/5mKbrfpYrVvKU3fUqE+GgcN6P36JCDTyb6x8OkQiiPez0doR5dtaLrDHzj+zFDRrsM06qjk=
+	t=1773838539; cv=none; b=hEQmgYi5ulx1QlnOl7y7Xx1KhhYwZ2tiqUdKRuSDgOmt6ePhRIF+mSv6lVMYqI6YhGl06aCBjtC1IsIqgy44e9N7vJLOXp44YKAufdfQnIBYmiHhIprW3Gv+F64vlBEyh5cs032ONSmciuV6u4Q4E/HRyE61XJRFPc+2I1TXjZU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773837441; c=relaxed/simple;
-	bh=NpDcdiFRisgdamaHRhVIIITzTmcs+x0X+eANrBZylrQ=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=RKRsvSjZL+26qtk2R4XkUy4ySTJQYwYsBEgD7WHKEJ2MC9SQM63mhX+ySPYxEUHIafX7z6SoqIToQhRpauXW4YT046MAcgNwMCHtThZWc9Ycmea/6JoHyyvAQhxAUoL2enJEbNTUSJm0qZ9gkoTUooctSPiXjrgXYYpGZaDp/iI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=nPmqn+xZ; arc=none smtp.client-ip=220.197.31.5
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
+	s=arc-20240116; t=1773838539; c=relaxed/simple;
+	bh=sDIDsqJ3eFVM7qqeJp3W+MpwzFRTxygdOnQHhQnvPOA=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=bT5h8EG62n/XNEay0ch53e3Tggrw8Ixz2u1bCfPbuatghLZ28YErPJ0B4/pYp7fmA8ql7otscjh9HK/rnQ25h9IwM/uA3p1mZpvoK4vN02SYssa9Oi6cRH30eEcPm/nT1caInOfrLgK2Hy2dcS2vO2jLwEkakvkKmKKfSIOxhcw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bqkm3fOL; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="nPmqn+xZ"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-	s=s110527; h=From:To:Subject:Date:Message-ID:MIME-Version; bh=8F
-	dH4WSxnaNsrxY+HYRVMygusEpKn03CJlFj28CLWrg=; b=nPmqn+xZb9/6kIWpKt
-	PBafquFmonCwZZApNE6ze4EcISCtOlG3EaEuZvaseAY368KiGr7yNx+oUsle6ZWe
-	1pVFWs7pbZRbqxp2HC+558w8Ce0OQjGDP4kYQ5lGnGkZLUh7K50eADVrjO/UC6/G
-	CIAReeXcijx33mIasr3g8MrOI=
-Received: from localhost.localdomain (unknown [])
-	by gzga-smtp-mtada-g0-1 (Coremail) with SMTP id _____wAXfZkinLpp4Se1Bg--.34780S2;
-	Wed, 18 Mar 2026 20:35:47 +0800 (CST)
-From: Jinyu Tang <tjytimi@163.com>
-To: Anup Patel <anup@brainfault.org>,
-	Atish Patra <atish.patra@linux.dev>,
-	Paul Walmsley <pjw@kernel.org>,
-	Paul Walmsley <paul.walmsley@sifive.com>,
-	Palmer Dabbelt <palmer@dabbelt.com>,
-	Albert Ou <aou@eecs.berkeley.edu>,
-	Alexandre Ghiti <alex@ghiti.fr>,
-	=?UTF-8?q?Radim=20Kr=C4=8Dm=C3=A1=C5=99?= <radim.krcmar@oss.qualcomm.com>,
-	Andrew Jones <andrew.jones@oss.qualcomm.com>,
-	Conor Dooley <conor.dooley@microchip.com>,
-	Yong-Xuan Wang <yongxuan.wang@sifive.com>,
-	Nutty Liu <nutty.liu@hotmail.com>
-Cc: kvm@vger.kernel.org,
-	kvm-riscv@lists.infradead.org,
-	linux-riscv@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	Jinyu Tang <tjytimi@163.com>
-Subject: [PATCH v2] RISC-V: KVM: Batch stage-2 remote TLB flushes
-Date: Wed, 18 Mar 2026 20:35:33 +0800
-Message-ID: <20260318123534.2166919-1-tjytimi@163.com>
-X-Mailer: git-send-email 2.43.0
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bqkm3fOL"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 73747C19421;
+	Wed, 18 Mar 2026 12:55:36 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1773838539;
+	bh=sDIDsqJ3eFVM7qqeJp3W+MpwzFRTxygdOnQHhQnvPOA=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=bqkm3fOL9EWdZD6ReasTxze7QbXM+wy4+Qr9g0Aj3EAt2ZFHcM1/1knI4ha73coaH
+	 z9w/zpJxLcRkihlNBInHtjD898Bgsq9+XUCiNdFgvexSH7FuJm3SyOPl2JUEI0Zl/R
+	 sNH/ncL2EclkWmKkfzTEmWeyIwRsRVqr+JFiZsGS95SaOngLCgQ+ZtDZ0+vZqSCZW3
+	 GszKMej59qmnvao6fBY4viUINIXynTvaLsMBloLxYbE5kf+BikQem9g0thkLPABi4P
+	 LJeLdt72C+B7iyMBZJdkEg0DI+gUvYkdtoaeikhKPLlWCFirx32VveXQJVeGrFtVQz
+	 cRiUBJYPaETNg==
+Date: Wed, 18 Mar 2026 12:55:33 +0000
+From: "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>
+To: mboone@akamai.com
+Cc: Andrew Morton <akpm@linux-foundation.org>, 
+	David Hildenbrand <david@kernel.org>, "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
+	Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
+	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, kvm@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH] mm/pagewalk: fix race between concurrent split and
+ refault
+Message-ID: <7ded426a-0cb5-437b-9634-8d806b704db6@lucifer.local>
+References: <20260317-pagewalk-check-pmd-refault-v1-1-f699a010f2b3@akamai.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:_____wAXfZkinLpp4Se1Bg--.34780S2
-X-Coremail-Antispam: 1Uf129KBjvJXoW3Zry5AF1DtrW7tF43JF13Jwb_yoWkXw45pr
-	4DCryfur4fXrs7XF13tFWDZrn8uws7W3WrAr98CF90yrn8trWfXr1vg34vvr15Jr1rXFW3
-	ZFyDGF1UAr4IyFUanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x0piUGYdUUUUU=
-X-CM-SenderInfo: xwm13xlpl6il2tof0z/xtbC8gM4sGm6nCMLxgAA3Y
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260317-pagewalk-check-pmd-refault-v1-1-f699a010f2b3@akamai.com>
 
-KVM RISC-V triggers a TLB flush for every single stage-2 PTE
-modification (unmap or write-protect) now. Although KVM coalesces the
-hardware IPIs, the software overhead of executing the flush work
-for every 4K page is large, especially during dirty page tracking.
+On Tue, Mar 17, 2026 at 03:03:04PM +0100, Max Boone via B4 Relay wrote:
+> From: Max Boone <mboone@akamai.com>
+>
+> The splitting of a PUD entry in walk_pud_range() can race with
+> a concurrent thread refaulting the PUD leaf entry causing it to
+> try walking a PMD range that has disappeared.
 
-Following the approach used in x86 and arm64, this patch optimizes
-the MMU logic by making the PTE manipulation functions return a boolean
-indicating if a leaf PTE was actually changed. The outer MMU functions
-bubble up this flag to batch the remote TLB flushes. This change makes
-the generic KVM MMU callbacks (e.g., `kvm_unmap_gfn_range()`) actually
-effective by returning the true flush requirement rather than `false`.
+So IOW, the PUD entry is split, then refaulted back to a PUD leaf entry
+again?
 
-Consequently, the flush operation is executed only once per batch.
-Moving it outside of the `mmu_lock` also reduces lock contention.
-For directory pages, we keep the synchronous flush to ensure safety.
+>
+> An example and reproduction of this is to try reading numa_maps of
+> a process while VFIO-PCI is setting up DMA (specifically the
+> vfio_pin_pages_remote call) on a large BAR for that process.
+>
+> This will trigger a kernel BUG:
+> vfio-pci 0000:03:00.0: enabling device (0000 -> 0002)
+> BUG: unable to handle page fault for address: ffffa23980000000
+> PGD 0 P4D 0
+> Oops: Oops: 0000 [#1] SMP NOPTI
+> ...
+> RIP: 0010:walk_pgd_range+0x3b5/0x7a0
+> Code: 8d 43 ff 48 89 44 24 28 4d 89 ce 4d 8d a7 00 00 20 00 48 8b 4c 24
+> 28 49 81 e4 00 00 e0 ff 49 8d 44 24 ff 48 39 c8 4c 0f 43 e3 <49> f7 06
+>    9f ff ff ff 75 3b 48 8b 44 24 20 48 8b 40 28 48 85 c0 74
+> RSP: 0018:ffffac23e1ecf808 EFLAGS: 00010287
+> RAX: 00007f44c01fffff RBX: 00007f4500000000 RCX: 00007f44ffffffff
+> RDX: 0000000000000000 RSI: 000ffffffffff000 RDI: ffffffff93378fe0
+> RBP: ffffac23e1ecf918 R08: 0000000000000004 R09: ffffa23980000000
+> R10: 0000000000000020 R11: 0000000000000004 R12: 00007f44c0200000
+> R13: 00007f44c0000000 R14: ffffa23980000000 R15: 00007f44c0000000
+> FS:  00007fe884739580(0000) GS:ffff9b7d7a9c0000(0000)
+> knlGS:0000000000000000
+> CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+> CR2: ffffa23980000000 CR3: 000000c0650e2005 CR4: 0000000000770ef0
+> PKRU: 55555554
+> Call Trace:
+>  <TASK>
+>  __walk_page_range+0x195/0x1b0
+>  walk_page_vma+0x62/0xc0
+>  show_numa_map+0x12b/0x3b0
+>  seq_read_iter+0x297/0x440
+>  seq_read+0x11d/0x140
+>  vfs_read+0xc2/0x340
+>  ksys_read+0x5f/0xe0
+>  do_syscall_64+0x68/0x130
+>  ? get_page_from_freelist+0x5c2/0x17e0
+>  ? mas_store_prealloc+0x17e/0x360
+>  ? vma_set_page_prot+0x4c/0xa0
+>  ? __alloc_pages_noprof+0x14e/0x2d0
+>  ? __mod_memcg_lruvec_state+0x8d/0x140
+>  ? __lruvec_stat_mod_folio+0x76/0xb0
+>  ? __folio_mod_stat+0x26/0x80
+>  ? do_anonymous_page+0x705/0x900
+>  ? __handle_mm_fault+0xa8d/0x1000
+>  ? __count_memcg_events+0x53/0xf0
+>  ? handle_mm_fault+0xa5/0x360
+>  ? do_user_addr_fault+0x342/0x640
+>  ? arch_exit_to_user_mode_prepare.constprop.0+0x16/0xa0
+>  ? irqentry_exit_to_user_mode+0x24/0x100
+>  entry_SYSCALL_64_after_hwframe+0x76/0x7e
+> RIP: 0033:0x7fe88464f47e
+> Code: c0 e9 b6 fe ff ff 50 48 8d 3d be 07 0b 00 e8 69 01 02 00 66 0f 1f
+> 84 00 00 00 00 00 64 8b 04 25 18 00 00 00 85 c0 75 14 0f 05 <48> 3d 00
+>    f0 ff ff 77 5a c3 66 0f 1f 84 00 00 00 00 00 48 83 ec 28
+> RSP: 002b:00007ffe6cd9a9b8 EFLAGS: 00000246 ORIG_RAX: 0000000000000000
+> RAX: ffffffffffffffda RBX: 0000000000020000 RCX: 00007fe88464f47e
+> RDX: 0000000000020000 RSI: 00007fe884543000 RDI: 0000000000000003
+> RBP: 00007fe884543000 R08: 00007fe884542010 R09: 0000000000000000
+> R10: fffffffffffffbc5 R11: 0000000000000246 R12: 0000000000000000
+> R13: 0000000000000003 R14: 0000000000020000 R15: 0000000000020000
+>  </TASK>
+>
+> Fix this by validating the PUD entry in walk_pmd_range() using a stable
+> snapshot (pudp_get()). If the PUD is not present or is a leaf, retry the
+> walk via ACTION_AGAIN instead of descending further. This mirrors the
+> retry logic in walk_pmd_range().
 
-Tested with tools/testing/selftests/kvm on a 4-vCPU guest (Host
-environment: QEMU 10.2.1 RISC-V)
-1. demand_paging_test (1GB memory)
-	# time ./demand_paging_test -b 1G -v 4
-   - Total execution time reduced from ~2m33s to ~2m25s
-2. dirty_log_perf_test (1GB memory)
-   	# ./dirty_log_perf_test -b 1G -v 4
-	- "Clear dirty log time" per iteration dropped significantly from
-     ~3.02s to ~0.20s
+I think it mirrors the retry logic in walk_pte_range() more closely right?
+Because there it's:
 
-Reviewed-by: Nutty Liu <nutty.liu@hotmail.com>
-Signed-off-by: Jinyu Tang <tjytimi@163.com>
----
-v1 -> v2:
-Changes in v2:
-- Fixed alignment issues in multi-line function calls supported by
-  Nutty Liu.
+	if (!pte)
+		walk->action = ACTION_AGAIN;
+	return err;
 
- arch/riscv/include/asm/kvm_gstage.h |  6 ++--
- arch/riscv/kvm/gstage.c             | 46 +++++++++++++++++++----------
- arch/riscv/kvm/mmu.c                | 38 +++++++++++++++++-------
- 3 files changed, 62 insertions(+), 28 deletions(-)
+I.e. let the parent handle the PTE not being got by pte_offset_map_lock(),
+and you draw a comparison to this in the comment in walk_pmd_range().
 
-diff --git a/arch/riscv/include/asm/kvm_gstage.h b/arch/riscv/include/asm/kvm_gstage.h
-index 595e21831..b003a07f1 100644
---- a/arch/riscv/include/asm/kvm_gstage.h
-+++ b/arch/riscv/include/asm/kvm_gstage.h
-@@ -59,13 +59,13 @@ enum kvm_riscv_gstage_op {
- 	GSTAGE_OP_WP,		/* Write-protect */
- };
- 
--void kvm_riscv_gstage_op_pte(struct kvm_gstage *gstage, gpa_t addr,
-+bool kvm_riscv_gstage_op_pte(struct kvm_gstage *gstage, gpa_t addr,
- 			     pte_t *ptep, u32 ptep_level, enum kvm_riscv_gstage_op op);
- 
--void kvm_riscv_gstage_unmap_range(struct kvm_gstage *gstage,
-+bool kvm_riscv_gstage_unmap_range(struct kvm_gstage *gstage,
- 				  gpa_t start, gpa_t size, bool may_block);
- 
--void kvm_riscv_gstage_wp_range(struct kvm_gstage *gstage, gpa_t start, gpa_t end);
-+bool kvm_riscv_gstage_wp_range(struct kvm_gstage *gstage, gpa_t start, gpa_t end);
- 
- void kvm_riscv_gstage_mode_detect(void);
- 
-diff --git a/arch/riscv/kvm/gstage.c b/arch/riscv/kvm/gstage.c
-index b67d60d72..798719ac1 100644
---- a/arch/riscv/kvm/gstage.c
-+++ b/arch/riscv/kvm/gstage.c
-@@ -209,49 +209,59 @@ int kvm_riscv_gstage_map_page(struct kvm_gstage *gstage,
- 	return kvm_riscv_gstage_set_pte(gstage, pcache, out_map);
- }
- 
--void kvm_riscv_gstage_op_pte(struct kvm_gstage *gstage, gpa_t addr,
-+bool kvm_riscv_gstage_op_pte(struct kvm_gstage *gstage, gpa_t addr,
- 			     pte_t *ptep, u32 ptep_level, enum kvm_riscv_gstage_op op)
- {
- 	int i, ret;
- 	pte_t old_pte, *next_ptep;
- 	u32 next_ptep_level;
- 	unsigned long next_page_size, page_size;
-+	bool flush = false;
- 
- 	ret = gstage_level_to_page_size(ptep_level, &page_size);
- 	if (ret)
--		return;
-+		return false;
- 
- 	WARN_ON(addr & (page_size - 1));
- 
- 	if (!pte_val(ptep_get(ptep)))
--		return;
-+		return false;
- 
- 	if (ptep_level && !gstage_pte_leaf(ptep)) {
- 		next_ptep = (pte_t *)gstage_pte_page_vaddr(ptep_get(ptep));
- 		next_ptep_level = ptep_level - 1;
- 		ret = gstage_level_to_page_size(next_ptep_level, &next_page_size);
- 		if (ret)
--			return;
-+			return false;
- 
- 		if (op == GSTAGE_OP_CLEAR)
- 			set_pte(ptep, __pte(0));
- 		for (i = 0; i < PTRS_PER_PTE; i++)
--			kvm_riscv_gstage_op_pte(gstage, addr + i * next_page_size,
--						&next_ptep[i], next_ptep_level, op);
--		if (op == GSTAGE_OP_CLEAR)
-+			flush |= kvm_riscv_gstage_op_pte(gstage, addr + i * next_page_size,
-+							 &next_ptep[i], next_ptep_level, op);
-+		if (op == GSTAGE_OP_CLEAR) {
-+			gstage_tlb_flush(gstage, ptep_level, addr);
-+			flush = false;
- 			put_page(virt_to_page(next_ptep));
-+		}
- 	} else {
- 		old_pte = *ptep;
- 		if (op == GSTAGE_OP_CLEAR)
- 			set_pte(ptep, __pte(0));
- 		else if (op == GSTAGE_OP_WP)
- 			set_pte(ptep, __pte(pte_val(ptep_get(ptep)) & ~_PAGE_WRITE));
--		if (pte_val(*ptep) != pte_val(old_pte))
--			gstage_tlb_flush(gstage, ptep_level, addr);
-+		if (pte_val(*ptep) != pte_val(old_pte)) {
-+			if (gstage->flags & KVM_GSTAGE_FLAGS_LOCAL)
-+				gstage_tlb_flush(gstage, ptep_level, addr);
-+			else
-+				flush = true;
-+		}
- 	}
-+
-+	return flush;
- }
- 
--void kvm_riscv_gstage_unmap_range(struct kvm_gstage *gstage,
-+bool kvm_riscv_gstage_unmap_range(struct kvm_gstage *gstage,
- 				  gpa_t start, gpa_t size, bool may_block)
- {
- 	int ret;
-@@ -260,6 +270,7 @@ void kvm_riscv_gstage_unmap_range(struct kvm_gstage *gstage,
- 	bool found_leaf;
- 	unsigned long page_size;
- 	gpa_t addr = start, end = start + size;
-+	bool flush = false;
- 
- 	while (addr < end) {
- 		found_leaf = kvm_riscv_gstage_get_leaf(gstage, addr, &ptep, &ptep_level);
-@@ -271,8 +282,8 @@ void kvm_riscv_gstage_unmap_range(struct kvm_gstage *gstage,
- 			goto next;
- 
- 		if (!(addr & (page_size - 1)) && ((end - addr) >= page_size))
--			kvm_riscv_gstage_op_pte(gstage, addr, ptep,
--						ptep_level, GSTAGE_OP_CLEAR);
-+			flush |= kvm_riscv_gstage_op_pte(gstage, addr, ptep,
-+							 ptep_level, GSTAGE_OP_CLEAR);
- 
- next:
- 		addr += page_size;
-@@ -284,9 +295,11 @@ void kvm_riscv_gstage_unmap_range(struct kvm_gstage *gstage,
- 		if (!(gstage->flags & KVM_GSTAGE_FLAGS_LOCAL) && may_block && addr < end)
- 			cond_resched_lock(&gstage->kvm->mmu_lock);
- 	}
-+
-+	return flush;
- }
- 
--void kvm_riscv_gstage_wp_range(struct kvm_gstage *gstage, gpa_t start, gpa_t end)
-+bool kvm_riscv_gstage_wp_range(struct kvm_gstage *gstage, gpa_t start, gpa_t end)
- {
- 	int ret;
- 	pte_t *ptep;
-@@ -294,6 +307,7 @@ void kvm_riscv_gstage_wp_range(struct kvm_gstage *gstage, gpa_t start, gpa_t end
- 	bool found_leaf;
- 	gpa_t addr = start;
- 	unsigned long page_size;
-+	bool flush = false;
- 
- 	while (addr < end) {
- 		found_leaf = kvm_riscv_gstage_get_leaf(gstage, addr, &ptep, &ptep_level);
-@@ -305,12 +319,14 @@ void kvm_riscv_gstage_wp_range(struct kvm_gstage *gstage, gpa_t start, gpa_t end
- 			goto next;
- 
- 		if (!(addr & (page_size - 1)) && ((end - addr) >= page_size))
--			kvm_riscv_gstage_op_pte(gstage, addr, ptep,
--						ptep_level, GSTAGE_OP_WP);
-+			flush |= kvm_riscv_gstage_op_pte(gstage, addr, ptep,
-+							 ptep_level, GSTAGE_OP_WP);
- 
- next:
- 		addr += page_size;
- 	}
-+
-+	return flush;
- }
- 
- void __init kvm_riscv_gstage_mode_detect(void)
-diff --git a/arch/riscv/kvm/mmu.c b/arch/riscv/kvm/mmu.c
-index 0b75eb2a1..dde5afe57 100644
---- a/arch/riscv/kvm/mmu.c
-+++ b/arch/riscv/kvm/mmu.c
-@@ -23,6 +23,7 @@ static void mmu_wp_memory_region(struct kvm *kvm, int slot)
- 	phys_addr_t start = memslot->base_gfn << PAGE_SHIFT;
- 	phys_addr_t end = (memslot->base_gfn + memslot->npages) << PAGE_SHIFT;
- 	struct kvm_gstage gstage;
-+	bool flush;
- 
- 	gstage.kvm = kvm;
- 	gstage.flags = 0;
-@@ -30,9 +31,10 @@ static void mmu_wp_memory_region(struct kvm *kvm, int slot)
- 	gstage.pgd = kvm->arch.pgd;
- 
- 	spin_lock(&kvm->mmu_lock);
--	kvm_riscv_gstage_wp_range(&gstage, start, end);
-+	flush = kvm_riscv_gstage_wp_range(&gstage, start, end);
- 	spin_unlock(&kvm->mmu_lock);
--	kvm_flush_remote_tlbs_memslot(kvm, memslot);
-+	if (flush)
-+		kvm_flush_remote_tlbs_memslot(kvm, memslot);
- }
- 
- int kvm_riscv_mmu_ioremap(struct kvm *kvm, gpa_t gpa, phys_addr_t hpa,
-@@ -88,6 +90,7 @@ int kvm_riscv_mmu_ioremap(struct kvm *kvm, gpa_t gpa, phys_addr_t hpa,
- void kvm_riscv_mmu_iounmap(struct kvm *kvm, gpa_t gpa, unsigned long size)
- {
- 	struct kvm_gstage gstage;
-+	bool flush;
- 
- 	gstage.kvm = kvm;
- 	gstage.flags = 0;
-@@ -95,8 +98,12 @@ void kvm_riscv_mmu_iounmap(struct kvm *kvm, gpa_t gpa, unsigned long size)
- 	gstage.pgd = kvm->arch.pgd;
- 
- 	spin_lock(&kvm->mmu_lock);
--	kvm_riscv_gstage_unmap_range(&gstage, gpa, size, false);
-+	flush = kvm_riscv_gstage_unmap_range(&gstage, gpa, size, false);
- 	spin_unlock(&kvm->mmu_lock);
-+
-+	if (flush)
-+		kvm_flush_remote_tlbs_range(kvm, gpa >> PAGE_SHIFT,
-+					    size >> PAGE_SHIFT);
- }
- 
- void kvm_arch_mmu_enable_log_dirty_pt_masked(struct kvm *kvm,
-@@ -108,13 +115,17 @@ void kvm_arch_mmu_enable_log_dirty_pt_masked(struct kvm *kvm,
- 	phys_addr_t start = (base_gfn +  __ffs(mask)) << PAGE_SHIFT;
- 	phys_addr_t end = (base_gfn + __fls(mask) + 1) << PAGE_SHIFT;
- 	struct kvm_gstage gstage;
-+	bool flush;
- 
- 	gstage.kvm = kvm;
- 	gstage.flags = 0;
- 	gstage.vmid = READ_ONCE(kvm->arch.vmid.vmid);
- 	gstage.pgd = kvm->arch.pgd;
- 
--	kvm_riscv_gstage_wp_range(&gstage, start, end);
-+	flush = kvm_riscv_gstage_wp_range(&gstage, start, end);
-+	if (flush)
-+		kvm_flush_remote_tlbs_range(kvm, start >> PAGE_SHIFT,
-+					    (end - start) >> PAGE_SHIFT);
- }
- 
- void kvm_arch_sync_dirty_log(struct kvm *kvm, struct kvm_memory_slot *memslot)
-@@ -140,6 +151,7 @@ void kvm_arch_flush_shadow_memslot(struct kvm *kvm,
- 	gpa_t gpa = slot->base_gfn << PAGE_SHIFT;
- 	phys_addr_t size = slot->npages << PAGE_SHIFT;
- 	struct kvm_gstage gstage;
-+	bool flush;
- 
- 	gstage.kvm = kvm;
- 	gstage.flags = 0;
-@@ -147,8 +159,10 @@ void kvm_arch_flush_shadow_memslot(struct kvm *kvm,
- 	gstage.pgd = kvm->arch.pgd;
- 
- 	spin_lock(&kvm->mmu_lock);
--	kvm_riscv_gstage_unmap_range(&gstage, gpa, size, false);
-+	flush = kvm_riscv_gstage_unmap_range(&gstage, gpa, size, false);
- 	spin_unlock(&kvm->mmu_lock);
-+	if (flush)
-+		kvm_flush_remote_tlbs(kvm);
- }
- 
- void kvm_arch_commit_memory_region(struct kvm *kvm,
-@@ -253,10 +267,9 @@ bool kvm_unmap_gfn_range(struct kvm *kvm, struct kvm_gfn_range *range)
- 	gstage.flags = 0;
- 	gstage.vmid = READ_ONCE(kvm->arch.vmid.vmid);
- 	gstage.pgd = kvm->arch.pgd;
--	kvm_riscv_gstage_unmap_range(&gstage, range->start << PAGE_SHIFT,
--				     (range->end - range->start) << PAGE_SHIFT,
--				     range->may_block);
--	return false;
-+	return kvm_riscv_gstage_unmap_range(&gstage, range->start << PAGE_SHIFT,
-+					    (range->end - range->start) << PAGE_SHIFT,
-+					    range->may_block);
- }
- 
- bool kvm_age_gfn(struct kvm *kvm, struct kvm_gfn_range *range)
-@@ -579,6 +592,7 @@ void kvm_riscv_mmu_free_pgd(struct kvm *kvm)
- {
- 	struct kvm_gstage gstage;
- 	void *pgd = NULL;
-+	bool flush = false;
- 
- 	spin_lock(&kvm->mmu_lock);
- 	if (kvm->arch.pgd) {
-@@ -586,13 +600,17 @@ void kvm_riscv_mmu_free_pgd(struct kvm *kvm)
- 		gstage.flags = 0;
- 		gstage.vmid = READ_ONCE(kvm->arch.vmid.vmid);
- 		gstage.pgd = kvm->arch.pgd;
--		kvm_riscv_gstage_unmap_range(&gstage, 0UL, kvm_riscv_gstage_gpa_size, false);
-+		flush = kvm_riscv_gstage_unmap_range(&gstage, 0UL,
-+						     kvm_riscv_gstage_gpa_size, false);
- 		pgd = READ_ONCE(kvm->arch.pgd);
- 		kvm->arch.pgd = NULL;
- 		kvm->arch.pgd_phys = 0;
- 	}
- 	spin_unlock(&kvm->mmu_lock);
- 
-+	if (flush)
-+		kvm_flush_remote_tlbs(kvm);
-+
- 	if (pgd)
- 		free_pages((unsigned long)pgd, get_order(kvm_riscv_gstage_pgd_size));
- }
--- 
-2.43.0
+>
+> Fixes: a00cc7d9dd93 ("mm, x86: add support for PUD-sized transparent hugepages")
 
+Yikes, really? :) This is from 2017, I'm a little surprised we didn't hit
+this bug until now.
+
+Has something changed more recently that made it more likely to hit? Or is
+it one of those 'needed people to have more RAM first' or bigger PCI BAR's?
+
+> Cc: stable@vger.kernel.org
+> Co-developed-by: David Hildenbrand (Arm) <david@kernel.org>
+> Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
+> Signed-off-by: Max Boone <mboone@akamai.com>
+
+Only nits here, the logic LGTM, so:
+
+Reviewed-by: Lorenzo Stoakes (Oracle) <ljs@kernel.org>
+
+> ---
+>  mm/pagewalk.c | 20 +++++++++++++++++---
+>  1 file changed, 17 insertions(+), 3 deletions(-)
+>
+> diff --git a/mm/pagewalk.c b/mm/pagewalk.c
+> index a94c401ab..c74b4d800 100644
+> --- a/mm/pagewalk.c
+> +++ b/mm/pagewalk.c
+> @@ -97,6 +97,7 @@ static int walk_pte_range(pmd_t *pmd, unsigned long addr, unsigned long end,
+>  static int walk_pmd_range(pud_t *pud, unsigned long addr, unsigned long end,
+>  			  struct mm_walk *walk)
+>  {
+> +	pud_t pudval = pudp_get(pud);
+>  	pmd_t *pmd;
+>  	unsigned long next;
+>  	const struct mm_walk_ops *ops = walk->ops;
+> @@ -105,6 +106,18 @@ static int walk_pmd_range(pud_t *pud, unsigned long addr, unsigned long end,
+>  	int err = 0;
+>  	int depth = real_depth(3);
+>
+> +	/*
+> +	 * For PTE handling, pte_offset_map_lock() takes care of checking
+> +	 * whether there actually is a page table. But it also has to be
+> +	 * very careful about concurrent page table reclaim. If we spot a PMD
+> +	 * table, it cannot go away, so we can just walk it. However, if we find
+> +	 * something else, we have to retry.
+
+Nitty but I think we can be clearer here something like:
+
+	/*
+	 * For PTE handling, pte_offset_map_lock() takes care of checking
+	 * whether there actually is a page table. But it also has to be
+	 * very careful about concurrent page table reclaim.
+	 *
+	 * Similarly, we have to be careful here - a PUD entry that points
+         * to a PMD table cannot go away, so we can just walk it. But if
+         * it's something else, we need to ensure we didn't race something,
+         * so need to retry.
+	 *
+	 * A pertinent example of this is a PUD refault after PUD split -
+         * we will need to split again or risk accessing invalid memory.
+	 */
+
+> +	 */
+> +	if (!pud_present(pudval) || pud_leaf(pudval)) {
+> +		walk->action = ACTION_AGAIN;
+> +		return 0;
+> +	}
+> +
+>  	pmd = pmd_offset(pud, addr);
+>  	do {
+>  again:
+> @@ -218,12 +231,13 @@ static int walk_pud_range(p4d_t *p4d, unsigned long addr, unsigned long end,
+>  		else if (pud_leaf(*pud) || !pud_present(*pud))
+>  			continue; /* Nothing to do. */
+>
+> -		if (pud_none(*pud))
+> -			goto again;
+> -
+>  		err = walk_pmd_range(pud, addr, next, walk);
+>  		if (err)
+>  			break;
+> +
+> +		if (walk->action == ACTION_AGAIN)
+> +			goto again;
+> +
+
+NIT: trailing newline.
+
+>  	} while (pud++, addr = next, addr != end);
+>
+>  	return err;
+>
+> ---
+> base-commit: b4f0dd314b39ea154f62f3bd3115ed0470f9f71e
+> change-id: 20260317-pagewalk-check-pmd-refault-de8f14fbe6a5
+>
+> Best regards,
+> --
+> Max Boone <mboone@akamai.com>
+>
+>
+
+Cheers, Lorenzo
