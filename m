@@ -1,743 +1,238 @@
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D82D82D7DE4;
-	Wed, 18 Mar 2026 15:57:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 95D2733343B;
+	Wed, 18 Mar 2026 16:03:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773849447; cv=none; b=giBMFkz3vv1FdSljrz+Rg02QNKG1DHSmss8s4uNgH4b1DNK3ITCpkjR2AO/AUvtKETkk6JkQgG6SkuAQkA8+AlvbAbce+QXUXeRngUE7pqrcWd74zlM/fOA1ggxEm7q2MgfwJL8u4eAy4xhvtPJx5RgFJfaO8yQ3Qx1ZnVd3o5Q=
+	t=1773849800; cv=none; b=N3UBx3Uj+BFlWX4GDWG4lzDNLFS8Bct//da5ZkxXG9nDslwPcgA39ahsDT9/bKNkGALKUYOGA0pFGFs9BJM4Me1BTJaNceFxasLc5O9yxTfvKfrZ8vZ78J1khpi2d4JvLB4YdOSWW6Awt7Sg71HSaIncl1Qm/HQ8NoC6uYWDq7M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773849447; c=relaxed/simple;
-	bh=fZtPYshS4jt9m5V6dNmRy6ebCHivCSGGwPHPUhVpHh8=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rk1lyAqXMvlIgl5Obms7Gi901r5sLNOAxb52Yu64Q2dlxcBo+ldOXJUPGOcRJxoV45sL1ojECckZsO6wNBdK7f9IhRy+hm9h2s3Hd/IPxPbN2MhdniAkQn1BCWIt+zLPKCEceGnyUC/mgVYY45vZvH5AwreUh4yrVf9xwJvXBMQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 2A38922BE;
-	Wed, 18 Mar 2026 08:57:12 -0700 (PDT)
-Received: from e122027.arm.com (unknown [10.57.61.122])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 3E6043F73B;
-	Wed, 18 Mar 2026 08:57:15 -0700 (PDT)
-From: Steven Price <steven.price@arm.com>
-To: kvm@vger.kernel.org,
-	kvmarm@lists.linux.dev
-Cc: Steven Price <steven.price@arm.com>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Marc Zyngier <maz@kernel.org>,
-	Will Deacon <will@kernel.org>,
-	James Morse <james.morse@arm.com>,
-	Oliver Upton <oliver.upton@linux.dev>,
-	Suzuki K Poulose <suzuki.poulose@arm.com>,
-	Zenghui Yu <yuzenghui@huawei.com>,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	Joey Gouly <joey.gouly@arm.com>,
-	Alexandru Elisei <alexandru.elisei@arm.com>,
-	Christoffer Dall <christoffer.dall@arm.com>,
-	Fuad Tabba <tabba@google.com>,
-	linux-coco@lists.linux.dev,
-	Ganapatrao Kulkarni <gankulkarni@os.amperecomputing.com>,
-	Gavin Shan <gshan@redhat.com>,
-	Shanker Donthineni <sdonthineni@nvidia.com>,
-	Alper Gun <alpergun@google.com>,
-	"Aneesh Kumar K . V" <aneesh.kumar@kernel.org>,
-	Emi Kisanuki <fj0570is@fujitsu.com>,
-	Vishal Annapurve <vannapurve@google.com>
-Subject: [PATCH v13 48/48] [WIP] arm64: RMI: Add support for SRO
-Date: Wed, 18 Mar 2026 15:54:12 +0000
-Message-ID: <20260318155413.793430-49-steven.price@arm.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20260318155413.793430-1-steven.price@arm.com>
-References: <20260318155413.793430-1-steven.price@arm.com>
+	s=arc-20240116; t=1773849800; c=relaxed/simple;
+	bh=lUHiTAKblWNnfQbNwTNI3iUjog2g8JiAHuC9HCtIub8=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=E7qGLux7M7YyDE9WTvK1sa6DdFxh6BtP2FbMO8YS/YoDXbxbWFSS90Bzo5KQHXPBJUZsbJDnaTMbI+ksgsfcCPFnzdLZpw8QMe5aH6jaCvFYAbz0Zmd5AdDpH8To+mdH9MsWwUqCq32UAryTdUNBwL3AitayUCMIdmoOtsw3HpU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=AJYARrG1; arc=none smtp.client-ip=148.163.156.1
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="AJYARrG1"
+Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 62IE3VHq1394708;
+	Wed, 18 Mar 2026 16:03:07 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=XClIqW
+	LXEtwwyhWPHxmg0un6jwf9COJ3cbdaLNv8B9E=; b=AJYARrG1FCLZnJKS6wWIX4
+	vfSIX2n8CkbnI1VhA/4ri4QxnWItOj3umap5emR4eOcBfTYY+DB7TsID55dEiLu7
+	yjRfrZKfZwOecExq0ly9+TVcYjuSuBeURoqO8CgAKDepEKH4y0PJTCCMTEqPVV4/
+	QmGF3+dkb0WLPOtrr/rlsLECxHIm56uBdwOOo7AJB9rxmIlBtXlJn4XsBKXe7EaS
+	oW7kxNjia6khj5qSmzaj5HgOrebSwnxiz+LioUiTmsF9Oes03i3lsFq3jTeDmC+X
+	+AQ1opz/0uBx5jdGVP6Qmz0XGfJu+rvs9HBUdrF5z3FVFPdJB6Vyl66aKKcCwSDQ
+	==
+Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4cx7vfn3r6-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 18 Mar 2026 16:03:07 +0000 (GMT)
+Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma23.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 62IDxVed028765;
+	Wed, 18 Mar 2026 16:03:06 GMT
+Received: from smtprelay02.fra02v.mail.ibm.com ([9.218.2.226])
+	by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4cwkgkenrg-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 18 Mar 2026 16:03:06 +0000
+Received: from smtpav02.fra02v.mail.ibm.com (smtpav02.fra02v.mail.ibm.com [10.20.54.101])
+	by smtprelay02.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 62IG32cT30146840
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Wed, 18 Mar 2026 16:03:02 GMT
+Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 1FE9C20043;
+	Wed, 18 Mar 2026 16:03:02 +0000 (GMT)
+Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id ED42B20040;
+	Wed, 18 Mar 2026 16:03:01 +0000 (GMT)
+Received: from p-imbrenda (unknown [9.52.223.175])
+	by smtpav02.fra02v.mail.ibm.com (Postfix) with SMTP;
+	Wed, 18 Mar 2026 16:03:01 +0000 (GMT)
+Date: Wed, 18 Mar 2026 17:02:59 +0100
+From: Claudio Imbrenda <imbrenda@linux.ibm.com>
+To: Janosch Frank <frankja@linux.ibm.com>
+Cc: kvm@vger.kernel.org, linux-s390@vger.kernel.org, borntraeger@linux.ibm.com,
+        akrowiak@linux.ibm.com
+Subject: Re: [RFC 08/10] KVM: s390: Use gpa_t in priv.c
+Message-ID: <20260318170259.2cb92001@p-imbrenda>
+In-Reply-To: <20260316180310.17765-9-frankja@linux.ibm.com>
+References: <20260316180310.17765-1-frankja@linux.ibm.com>
+	<20260316180310.17765-9-frankja@linux.ibm.com>
+Organization: IBM
+X-Mailer: Claws Mail 4.3.1 (GTK 3.24.49; x86_64-redhat-linux-gnu)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: E4_K8DLyAqdutV8hyNY1FNz6Dy-dFNVx
+X-Authority-Analysis: v=2.4 cv=KajfcAYD c=1 sm=1 tr=0 ts=69baccbb cx=c_pps
+ a=3Bg1Hr4SwmMryq2xdFQyZA==:117 a=3Bg1Hr4SwmMryq2xdFQyZA==:17
+ a=kj9zAlcOel0A:10 a=Yq5XynenixoA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=RnoormkPH1_aCDwRdu11:22 a=U7nrCbtTmkRpXpFmAIza:22 a=VnNF1IyMAAAA:8
+ a=YwzkiLcPDEtg9eQ2-J8A:9 a=CjuIK1q_8ugA:10
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMzE4MDEzNCBTYWx0ZWRfXxQ8hACkxUCja
+ 4sYYsHwaj7O+xfFxAmCQdA50nX8nJ3f4qo4vdYQnAI7KgT5pbqWjBehgHXJNzuc4WqLJBbofF9v
+ 5spYasp+IrIKxgS8C+e5g8/HBlKcUdhCWbxMWsJH/nYwNZDaG8LXoT8/c7RS+3ClfFE33kqC+sO
+ 5aW1cN75DGby3C1X3b+30XdThqOOjEEjbZmxbgI7iEQot1m1Yld4AkO11r+DpE8f0so8kT7U5P0
+ ZA0x9/6NSRnyj8KekXP/pPbvs22vVaMJkQCH6r2CcaXsPbk4kp8claEqI8WuQlb0k8a1w6Du1Yp
+ Kam7QivoJZtaQ+ldBbufvLp39SRPswGX+6oVomNM6mwtIb0zIc8o/6H58n1soDHHdCdaYjBmFzv
+ bLPenS3IkBZZwL3Zvv98Kx3LqmbqGWlGRoRkSTwQvpjATiSLAREUtAGpaEs9CIJziGk8+ZCw8Cm
+ m8y0cjtrrjUm8a3IEiQ==
+X-Proofpoint-GUID: E4_K8DLyAqdutV8hyNY1FNz6Dy-dFNVx
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
+ definitions=2026-03-18_01,2026-03-17_02,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ suspectscore=0 adultscore=0 spamscore=0 malwarescore=0 clxscore=1015
+ impostorscore=0 bulkscore=0 lowpriorityscore=0 priorityscore=1501
+ phishscore=0 classifier=typeunknown authscore=0 authtc= authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2603050001
+ definitions=main-2603180134
 
-RMM v2.0 introduces the concept of "Stateful RMI Operations" (SRO).
-This means that an SMC can return with an operation still in progress.
-The host is expected to continue the operation until it reaches a
-conclusion (either success or failure). During this process the RMM can
-request addition memory ('donate') or hand memory back to the host
-('reclaim'). The host can request an operation is cancelled, but must
-still continue the operation until it has completed (otherwise the
-incomplete operation may cause future RMM operations to fail).
+On Mon, 16 Mar 2026 16:23:55 +0000
+Janosch Frank <frankja@linux.ibm.com> wrote:
 
-SROs may request memory and these operations sometimes have to be
-performed in places where memory allocation may not be possible. To deal
-with this a SRO may be started, but then cancelled when the memory
-allocation cannot be completed. The reclaimed memory will then be stored
-in a struct rmi_sro_state object with the intention that once Linux has
-returned to a state where memory allocation is possible, the failed
-allocation can be reattempted (with GFP flags enabling sleeping and/or
-direct reclaim) and the SRO operation reattempted (after acquiring the
-necessary locks). In the worst case this may require several attempts
-(if the RMM makes several memory requests) but should always make
-forward progress.
+> More unsigned long to gpa_t conversions.
+> 
+> Signed-off-by: Janosch Frank <frankja@linux.ibm.com>
+> ---
+>  arch/s390/kvm/gaccess.h |  8 ++++++++
+>  arch/s390/kvm/priv.c    | 27 ++++++++++++---------------
+>  2 files changed, 20 insertions(+), 15 deletions(-)
+> 
+> diff --git a/arch/s390/kvm/gaccess.h b/arch/s390/kvm/gaccess.h
+> index f23dc0729649..970d9020dc14 100644
+> --- a/arch/s390/kvm/gaccess.h
+> +++ b/arch/s390/kvm/gaccess.h
+> @@ -89,6 +89,14 @@ static inline unsigned long kvm_s390_logical_to_effective(struct kvm_vcpu *vcpu,
+>  	return _kvm_s390_logical_to_effective(&vcpu->arch.sie_block->gpsw, ga);
+>  }
+>  
+> +static inline gpa_t kvm_s390_real_to_abs_effective(struct kvm_vcpu *vcpu,
+> +						   unsigned long gra)
 
-This patch is currently a work-in-progress showing the general structure
-of how this should work and implementing SROs for two operations
-(RMI_REC_CREATE and RMI_REC_DESTROY). I'm aware there is missing
-error-checking and there are some details in the specification that need
-clarifying. These operations are also 'easy' in that we don't have
-restrictions on memory allocation in these contexts.
+the name is confusing, it should be something more like
+kvm_logical_to_abs, or kvm_logical_effective_to_abs
 
-Signed-off-by: Steven Price <steven.price@arm.com>
----
- arch/arm64/include/asm/kvm_rmi.h  |   8 -
- arch/arm64/include/asm/rmi_cmds.h |  71 +++---
- arch/arm64/include/asm/rmi_smc.h  |  27 +--
- arch/arm64/kvm/rmi.c              | 385 +++++++++++++++++++++++-------
- 4 files changed, 347 insertions(+), 144 deletions(-)
+the rest of the patch is good
 
-diff --git a/arch/arm64/include/asm/kvm_rmi.h b/arch/arm64/include/asm/kvm_rmi.h
-index b914b9a84bd8..e1f5523c2dfa 100644
---- a/arch/arm64/include/asm/kvm_rmi.h
-+++ b/arch/arm64/include/asm/kvm_rmi.h
-@@ -51,7 +51,6 @@ enum realm_state {
-  * @state: The lifetime state machine for the realm
-  * @rd: Kernel mapping of the Realm Descriptor (RD)
-  * @params: Parameters for the RMI_REALM_CREATE command
-- * @num_aux: The number of auxiliary pages required by the RMM
-  * @ia_bits: Number of valid Input Address bits in the IPA
-  */
- struct realm {
-@@ -60,7 +59,6 @@ struct realm {
- 	void *rd;
- 	struct realm_params *params;
- 
--	unsigned long num_aux;
- 	unsigned int ia_bits;
- };
- 
-@@ -75,12 +73,6 @@ struct realm {
- struct realm_rec {
- 	unsigned long mpidr;
- 	void *rec_page;
--	/*
--	 * REC_PARAMS_AUX_GRANULES is the maximum number of 4K granules that
--	 * the RMM can require. The array is sized to be large enough for the
--	 * maximum number of host sized pages that could be required.
--	 */
--	struct page *aux_pages[(REC_PARAMS_AUX_GRANULES * SZ_4K) >> PAGE_SHIFT];
- 	struct rec_run *run;
- };
- 
-diff --git a/arch/arm64/include/asm/rmi_cmds.h b/arch/arm64/include/asm/rmi_cmds.h
-index 9c4f83644a61..b761d74e1273 100644
---- a/arch/arm64/include/asm/rmi_cmds.h
-+++ b/arch/arm64/include/asm/rmi_cmds.h
-@@ -17,6 +17,27 @@ struct rtt_entry {
- 	int ripas;
- };
- 
-+#define RMI_MAX_ADDR_LIST 256
-+
-+struct rmi_sro_state {
-+	struct arm_smccc_1_2_regs regs;
-+
-+	unsigned long addr_count;
-+	unsigned long addr_list[RMI_MAX_ADDR_LIST];
-+};
-+
-+#define rmi_init_sro(...) ({						\
-+	struct rmi_sro_state *sro = kmalloc_obj(*sro);			\
-+	if (sro)							\
-+		*sro = (struct rmi_sro_state){.regs = {__VA_ARGS__}};	\
-+	sro;								\
-+})
-+
-+#define rmi_smccc(...) do { \
-+	arm_smccc_1_1_invoke(__VA_ARGS__); \
-+} while (RMI_RETURN_STATUS(res.a0) == RMI_BUSY || \
-+	 RMI_RETURN_STATUS(res.a0) == RMI_BLOCKED)
-+
- /**
-  * rmi_rmm_config_get() - Get the system configuration
-  * @cfg_ptr: PA of a struct rmm_config
-@@ -410,29 +431,7 @@ static inline int rmi_realm_destroy(unsigned long rd)
- }
- 
- /**
-- * rmi_rec_aux_count() - Get number of auxiliary granules required
-- * @rd: PA of the RD
-- * @aux_count: Number of granules written to this pointer
-- *
-- * A REC may require extra auxiliary granules to be delegated for the RMM to
-- * store metadata (not visible to the normal world) in. This function provides
-- * the number of granules that are required.
-- *
-- * Return: RMI return code
-- */
--static inline int rmi_rec_aux_count(unsigned long rd, unsigned long *aux_count)
--{
--	struct arm_smccc_res res;
--
--	arm_smccc_1_1_invoke(SMC_RMI_REC_AUX_COUNT, rd, &res);
--
--	if (aux_count)
--		*aux_count = res.a1;
--	return res.a0;
--}
--
--/**
-- * rmi_rec_create() - Create a REC
-+ * rmi_rec_create_sro_init() - Init an SRO to create a REC
-  * @rd: PA of the RD
-  * @rec: PA of the target REC
-  * @params: PA of REC parameters
-@@ -440,33 +439,27 @@ static inline int rmi_rec_aux_count(unsigned long rd, unsigned long *aux_count)
-  * Create a REC using the parameters specified in the struct rec_params pointed
-  * to by @params.
-  *
-- * Return: RMI return code
-+ * Returns: Allocated SRO object
-  */
--static inline int rmi_rec_create(unsigned long rd, unsigned long rec,
--				 unsigned long params)
-+static inline struct rmi_sro_state *
-+rmi_rec_create_sro_init(unsigned long rd,
-+			unsigned long rec,
-+			unsigned long params)
- {
--	struct arm_smccc_res res;
--
--	arm_smccc_1_1_invoke(SMC_RMI_REC_CREATE, rd, rec, params, &res);
--
--	return res.a0;
-+	return rmi_init_sro(SMC_RMI_REC_CREATE, rd, rec, params);
- }
- 
- /**
-- * rmi_rec_destroy() - Destroy a REC
-+ * rmi_rec_destroy_sro_init() - Init an SRO to destroy a REC
-  * @rec: PA of the target REC
-  *
-  * Destroys a REC. The REC must not be running.
-  *
-- * Return: RMI return code
-+ * Return: Allocated SRO object
-  */
--static inline int rmi_rec_destroy(unsigned long rec)
-+static inline struct rmi_sro_state *rmi_rec_destroy_sro_init(unsigned long rec)
- {
--	struct arm_smccc_res res;
--
--	arm_smccc_1_1_invoke(SMC_RMI_REC_DESTROY, rec, &res);
--
--	return res.a0;
-+	return rmi_init_sro(SMC_RMI_REC_DESTROY, rec);
- }
- 
- /**
-diff --git a/arch/arm64/include/asm/rmi_smc.h b/arch/arm64/include/asm/rmi_smc.h
-index 049d71470486..fa23818e1b4c 100644
---- a/arch/arm64/include/asm/rmi_smc.h
-+++ b/arch/arm64/include/asm/rmi_smc.h
-@@ -38,7 +38,6 @@
- #define SMC_RMI_PSCI_COMPLETE			SMC_RMI_CALL(0x0164)
- #define SMC_RMI_FEATURES			SMC_RMI_CALL(0x0165)
- #define SMC_RMI_RTT_FOLD			SMC_RMI_CALL(0x0166)
--#define SMC_RMI_REC_AUX_COUNT			SMC_RMI_CALL(0x0167) //
- #define SMC_RMI_RTT_INIT_RIPAS			SMC_RMI_CALL(0x0168)
- #define SMC_RMI_RTT_SET_RIPAS			SMC_RMI_CALL(0x0169)
- #define SMC_RMI_VSMMU_CREATE			SMC_RMI_CALL(0x016a)
-@@ -180,11 +179,18 @@
- #define RMI_ADDR_TYPE_SINGLE		1
- #define RMI_ADDR_TYPE_LIST		2
- 
--#define RMI_ADDR_RANGE_SIZE(ar)		(FIELD_GET(GENMASK(1, 0), (ar)))
--#define RMI_ADDR_RANGE_COUNT(ar)	(FIELD_GET(GENMASK(PAGE_SHIFT - 1, 2), \
-+#define RMI_ADDR_RANGE_SIZE_MASK	GENMASK(1, 0)
-+#define RMI_ADDR_RANGE_COUNT_MASK	GENMASK(PAGE_SHIFT - 1, 2)
-+#define RMI_ADDR_RANGE_ADDR_MASK	(PAGE_MASK & GENMASK(51, 0))
-+#define RMI_ADDR_RANGE_STATE_MASK	BIT(63)
-+
-+#define RMI_ADDR_RANGE_SIZE(ar)		(FIELD_GET(RMI_ADDR_RANGE_SIZE_MASK, \
-+						   (ar)))
-+#define RMI_ADDR_RANGE_COUNT(ar)	(FIELD_GET(RMI_ADDR_RANGE_COUNT_MASK, \
-+						   (ar)))
-+#define RMI_ADDR_RANGE_ADDR(ar)		((ar) & RMI_ADDR_RANGE_ADDR_MASK)
-+#define RMI_ADDR_RANGE_STATE(ar)	(FIELD_GET(RMI_ADDR_RANGE_STATE_MASK, \
- 						   (ar)))
--#define RMI_ADDR_RANGE_ADDR(ar)		((ar) & PAGE_MASK & GENMASK(51, 0))
--#define RMI_ADDR_RANGE_STATE(ar)	(FIELD_GET(BIT(63), (ar)))
- 
- enum rmi_ripas {
- 	RMI_EMPTY = 0,
-@@ -295,8 +301,6 @@ struct realm_params {
- 
- #define REC_PARAMS_FLAG_RUNNABLE	BIT_ULL(0)
- 
--#define REC_PARAMS_AUX_GRANULES		16
--
- struct rec_params {
- 	union { /* 0x0 */
- 		u64 flags;
-@@ -312,14 +316,7 @@ struct rec_params {
- 	};
- 	union { /* 0x300 */
- 		u64 gprs[REC_CREATE_NR_GPRS];
--		u8 padding3[0x500];
--	};
--	union { /* 0x800 */
--		struct {
--			u64 num_rec_aux;
--			u64 aux[REC_PARAMS_AUX_GRANULES];
--		};
--		u8 padding4[0x800];
-+		u8 padding3[0xd00];
- 	};
- };
- 
-diff --git a/arch/arm64/kvm/rmi.c b/arch/arm64/kvm/rmi.c
-index e76e58762f55..10ff1c3bddaf 100644
---- a/arch/arm64/kvm/rmi.c
-+++ b/arch/arm64/kvm/rmi.c
-@@ -20,6 +20,295 @@ static unsigned long rmm_feat_reg1;
- 
- #define RMM_L2_BLOCK_SIZE	PMD_SIZE
- 
-+static int delegate_range(phys_addr_t phys, unsigned long size);
-+static int undelegate_range(phys_addr_t phys, unsigned long size);
-+
-+static unsigned long donate_req_to_size(unsigned long donatereq)
-+{
-+	unsigned long unit_size = RMI_DONATE_SIZE(donatereq);
-+
-+	switch (unit_size) {
-+	case 0:
-+		return PAGE_SIZE;
-+	case 1:
-+		return PMD_SIZE;
-+	case 2:
-+		return PUD_SIZE;
-+	case 3:
-+		return P4D_SIZE;
-+	}
-+	unreachable();
-+}
-+
-+static void rmi_smccc_invoke(struct arm_smccc_1_2_regs *regs_in,
-+			     struct arm_smccc_1_2_regs *regs_out)
-+{
-+	struct arm_smccc_1_2_regs regs = *regs_in;
-+	unsigned long status;
-+
-+	do {
-+		arm_smccc_1_2_invoke(&regs, regs_out);
-+		status = RMI_RETURN_STATUS(regs_out->a0);
-+	} while (status == RMI_BUSY || status == RMI_BLOCKED);
-+}
-+
-+static int rmi_sro_donate_contig(struct rmi_sro_state *sro,
-+				 unsigned long sro_handle,
-+				 unsigned long donatereq,
-+				 struct arm_smccc_1_2_regs *out_regs,
-+				 gfp_t gfp)
-+{
-+	unsigned long unit_size = RMI_DONATE_SIZE(donatereq);
-+	unsigned long count = RMI_DONATE_COUNT(donatereq);
-+	unsigned long state = RMI_DONATE_STATE(donatereq);
-+	unsigned long size;
-+	unsigned long addr_range;
-+	struct page *pages;
-+	phys_addr_t phys;
-+	struct arm_smccc_1_2_regs regs = {
-+		SMC_RMI_OP_MEM_DONATE,
-+		sro_handle
-+	};
-+
-+	for (int i = 0; i < sro->addr_count; i++) {
-+		unsigned long entry = sro->addr_list[i];
-+
-+		if (RMI_ADDR_RANGE_SIZE(entry) == unit_size &&
-+		    RMI_ADDR_RANGE_COUNT(entry) == count &&
-+		    RMI_ADDR_RANGE_STATE(entry) == state) {
-+			sro->addr_count--;
-+			swap(sro->addr_list[sro->addr_count],
-+			     sro->addr_list[i]);
-+
-+			goto out;
-+		}
-+	}
-+
-+	size = donate_req_to_size(donatereq) * count;
-+
-+	pages = alloc_pages(gfp, get_order(size));
-+	if (!pages)
-+		return -ENOMEM;
-+	phys = page_to_phys(pages);
-+
-+	if (state == RMI_OP_MEM_DELEGATED) {
-+		if (delegate_range(phys, size)) {
-+			__free_pages(pages, get_order(size));
-+			return -ENXIO;
-+		}
-+	}
-+
-+	addr_range = phys & RMI_ADDR_RANGE_ADDR_MASK;
-+	FIELD_MODIFY(RMI_ADDR_RANGE_SIZE_MASK, &addr_range, unit_size);
-+	FIELD_MODIFY(RMI_ADDR_RANGE_COUNT_MASK, &addr_range, count);
-+	FIELD_MODIFY(RMI_ADDR_RANGE_STATE_MASK, &addr_range, state);
-+
-+	sro->addr_list[sro->addr_count] = addr_range;
-+
-+out:
-+	regs.a2 = virt_to_phys(&sro->addr_list[sro->addr_count]);
-+	regs.a3 = 1;
-+	rmi_smccc_invoke(&regs, out_regs);
-+
-+	unsigned long donated_granules = out_regs->a1;
-+
-+	WARN_ON(donated_granules > 1);
-+	if (WARN_ON(donated_granules == 0)) {
-+		sro->addr_count++;
-+		return 0;
-+	}
-+
-+	return 0;
-+}
-+
-+static int rmi_sro_donate_noncontig(struct rmi_sro_state *sro,
-+				    unsigned long sro_handle,
-+				    unsigned long donatereq,
-+				    struct arm_smccc_1_2_regs *out_regs,
-+				    gfp_t gfp)
-+{
-+	unsigned long unit_size = RMI_DONATE_SIZE(donatereq);
-+	unsigned long count = RMI_DONATE_COUNT(donatereq);
-+	unsigned long state = RMI_DONATE_STATE(donatereq);
-+	unsigned long found = 0;
-+	unsigned long addr_list_start = sro->addr_count;
-+	struct arm_smccc_1_2_regs regs = {
-+		SMC_RMI_OP_MEM_DONATE,
-+		sro_handle
-+	};
-+
-+	for (int i = 0; i < addr_list_start && found < count; i++) {
-+		unsigned long entry = sro->addr_list[i];
-+
-+		if (RMI_ADDR_RANGE_SIZE(entry) == unit_size &&
-+		    RMI_ADDR_RANGE_COUNT(entry) == 1 &&
-+		    RMI_ADDR_RANGE_STATE(entry) == state) {
-+			addr_list_start--;
-+			swap(sro->addr_list[addr_list_start],
-+			     sro->addr_list[i]);
-+			found++;
-+			i--;
-+		}
-+	}
-+
-+	while (found < count) {
-+		unsigned long addr_range;
-+		unsigned long size = donate_req_to_size(donatereq);
-+
-+		struct page *pages = alloc_pages(gfp, get_order(size));
-+		phys_addr_t phys;
-+
-+		if (!pages)
-+			return -ENOMEM;
-+
-+		phys = page_to_phys(pages);
-+
-+		if (state == RMI_OP_MEM_DELEGATED) {
-+			if (delegate_range(phys, size)) {
-+				__free_pages(pages, get_order(size));
-+				return -ENXIO;
-+			}
-+		}
-+
-+		addr_range = phys & RMI_ADDR_RANGE_ADDR_MASK;
-+		FIELD_MODIFY(RMI_ADDR_RANGE_SIZE_MASK, &addr_range, unit_size);
-+		FIELD_MODIFY(RMI_ADDR_RANGE_COUNT_MASK, &addr_range, 1);
-+		FIELD_MODIFY(RMI_ADDR_RANGE_STATE_MASK, &addr_range, state);
-+
-+		sro->addr_list[sro->addr_count++] = addr_range;
-+		found++;
-+	}
-+
-+	regs.a2 = virt_to_phys(&sro->addr_list[addr_list_start]);
-+	regs.a3 = found;
-+	rmi_smccc_invoke(&regs, out_regs);
-+
-+	unsigned long donated_granules = out_regs->a1;
-+
-+	while (donated_granules < found) {
-+		swap(sro->addr_list[addr_list_start++],
-+		     sro->addr_list[--sro->addr_count]);
-+		found--;
-+	}
-+	sro->addr_count -= donated_granules;
-+
-+	return 0;
-+}
-+
-+static int rmi_sro_donate(struct rmi_sro_state *sro,
-+			  unsigned long sro_handle,
-+			  unsigned long donatereq,
-+			  struct arm_smccc_1_2_regs *regs,
-+			  gfp_t gfp)
-+{
-+	unsigned long count = RMI_DONATE_COUNT(donatereq);
-+
-+	if (WARN_ON(!count))
-+		return 0;
-+
-+	if (RMI_DONATE_CONTIG(donatereq)) {
-+		return rmi_sro_donate_contig(sro, sro_handle, donatereq,
-+					     regs, gfp);
-+	} else {
-+		return rmi_sro_donate_noncontig(sro, sro_handle, donatereq,
-+						regs, gfp);
-+	}
-+}
-+
-+static int rmi_sro_reclaim(struct rmi_sro_state *sro,
-+			   unsigned long sro_handle,
-+			   struct arm_smccc_1_2_regs *out_regs)
-+{
-+	struct arm_smccc_1_2_regs regs = {
-+		SMC_RMI_OP_MEM_RECLAIM,
-+		sro_handle,
-+		virt_to_phys(&sro->addr_list[sro->addr_count]),
-+		RMI_MAX_ADDR_LIST - sro->addr_count
-+	};
-+	rmi_smccc_invoke(&regs, out_regs);
-+	sro->addr_count += out_regs->a1;
-+
-+	return 0;
-+}
-+
-+static void rmi_sro_free(struct rmi_sro_state *sro)
-+{
-+	for (int i = 0; i < sro->addr_count; i++) {
-+		unsigned long entry = sro->addr_list[i];
-+		unsigned long addr = RMI_ADDR_RANGE_ADDR(entry);
-+		unsigned long unit_size = RMI_ADDR_RANGE_SIZE(entry);
-+		unsigned long count = RMI_ADDR_RANGE_COUNT(entry);
-+		unsigned long state = RMI_ADDR_RANGE_STATE(entry);
-+		unsigned long size = donate_req_to_size(unit_size) * count;
-+
-+		if (state == RMI_OP_MEM_DELEGATED) {
-+			if (WARN_ON(undelegate_range(addr, size))) {
-+				/* Leak the pages */
-+				continue;
-+			}
-+		}
-+		__free_pages(phys_to_page(addr), get_order(size));
-+	}
-+
-+	sro->addr_count = 0;
-+}
-+
-+DEFINE_FREE(sro, struct rmi_sro_state *, if (_T) rmi_sro_free(_T))
-+
-+static unsigned long rmi_sro_execute(struct rmi_sro_state *sro)
-+{
-+	unsigned long sro_handle;
-+	struct arm_smccc_1_2_regs regs;
-+	struct arm_smccc_1_2_regs *regs_in = &sro->regs;
-+
-+	rmi_smccc_invoke(regs_in, &regs);
-+
-+	sro_handle = regs.a1;
-+
-+	while (RMI_RETURN_STATUS(regs.a0) == RMI_INCOMPLETE) {
-+		bool can_cancel = RMI_RETURN_CANCANCEL(regs.a0);
-+		int ret;
-+
-+		switch (RMI_RETURN_MEMREQ(regs.a0)) {
-+		case RMI_OP_MEM_REQ_NONE:
-+			regs = (struct arm_smccc_1_2_regs){
-+				SMC_RMI_OP_CONTINUE, sro_handle, 0
-+			};
-+			rmi_smccc_invoke(&regs, &regs);
-+			break;
-+		case RMI_OP_MEM_REQ_DONATE:
-+			ret = rmi_sro_donate(sro, sro_handle, regs.a2, &regs,
-+					     GFP_KERNEL);
-+			break;
-+		case RMI_OP_MEM_REQ_RECLAIM:
-+			ret = rmi_sro_reclaim(sro, sro_handle, &regs);
-+			break;
-+		default:
-+			ret = WARN_ON(1);
-+			break;
-+		}
-+
-+		if (ret) {
-+			if (can_cancel) {
-+				/*
-+				 * FIXME: Handle cancelling properly!
-+				 *
-+				 * If the operation has failed due to memory
-+				 * allocation failure then the information on
-+				 * the memory allocation should be saved, so
-+				 * that the allocation can be repeated outside
-+				 * of any context which prevented the
-+				 * allocation.
-+				 */
-+			}
-+			if (WARN_ON(ret))
-+				return ret;
-+		}
-+	}
-+
-+	return regs.a0;
-+}
-+
- static inline unsigned long rmi_rtt_level_mapsize(int level)
- {
- 	if (WARN_ON(level > RMM_RTT_MAX_LEVEL))
-@@ -795,12 +1084,6 @@ static int realm_create_rd(struct kvm *kvm)
- 		goto out_undelegate_tables;
- 	}
- 
--	if (WARN_ON(rmi_rec_aux_count(rd_phys, &realm->num_aux))) {
--		WARN_ON(rmi_realm_destroy(rd_phys));
--		r = -ENXIO;
--		goto out_undelegate_tables;
--	}
--
- 	realm->rd = rd;
- 	WRITE_ONCE(realm->state, REALM_STATE_NEW);
- 	/* The realm is up, free the parameters.  */
-@@ -1432,65 +1715,9 @@ int noinstr kvm_rec_enter(struct kvm_vcpu *vcpu)
- 	return ret;
- }
- 
--static void free_rec_aux(struct page **aux_pages,
--			 unsigned int num_aux)
--{
--	unsigned int i;
--	unsigned int page_count = 0;
--
--	for (i = 0; i < num_aux; i++) {
--		struct page *aux_page = aux_pages[page_count++];
--		phys_addr_t aux_page_phys = page_to_phys(aux_page);
--
--		if (!WARN_ON(undelegate_page(aux_page_phys)))
--			__free_page(aux_page);
--		aux_page_phys += PAGE_SIZE;
--	}
--}
--
--static int alloc_rec_aux(struct page **aux_pages,
--			 u64 *aux_phys_pages,
--			 unsigned int num_aux)
--{
--	struct page *aux_page;
--	unsigned int i;
--	int ret;
--
--	for (i = 0; i < num_aux; i++) {
--		phys_addr_t aux_page_phys;
--
--		aux_page = alloc_page(GFP_KERNEL);
--		if (!aux_page) {
--			ret = -ENOMEM;
--			goto out_err;
--		}
--
--		aux_page_phys = page_to_phys(aux_page);
--		if (delegate_page(aux_page_phys)) {
--			ret = -ENXIO;
--			goto err_undelegate;
--		}
--		aux_phys_pages[i] = aux_page_phys;
--		aux_pages[i] = aux_page;
--	}
--
--	return 0;
--err_undelegate:
--	while (i > 0) {
--		i--;
--		if (WARN_ON(undelegate_page(aux_phys_pages[i]))) {
--			/* Leak the page if the undelegate fails */
--			goto out_err;
--		}
--	}
--	__free_page(aux_page);
--out_err:
--	free_rec_aux(aux_pages, i);
--	return ret;
--}
--
- static int kvm_create_rec(struct kvm_vcpu *vcpu)
- {
-+	struct rmi_sro_state *sro __free(sro) = NULL;
- 	struct user_pt_regs *vcpu_regs = vcpu_gp_regs(vcpu);
- 	unsigned long mpidr = kvm_vcpu_get_mpidr_aff(vcpu);
- 	struct realm *realm = &vcpu->kvm->arch.realm;
-@@ -1538,18 +1765,17 @@ static int kvm_create_rec(struct kvm_vcpu *vcpu)
- 		goto out_free_pages;
- 	}
- 
--	r = alloc_rec_aux(rec->aux_pages, params->aux, realm->num_aux);
--	if (r)
--		goto out_undelegate_rmm_rec;
--
--	params->num_rec_aux = realm->num_aux;
- 	params->mpidr = mpidr;
- 
--	if (rmi_rec_create(virt_to_phys(realm->rd),
--			   rec_page_phys,
--			   virt_to_phys(params))) {
-+	sro = rmi_rec_create_sro_init(virt_to_phys(realm->rd),
-+				      rec_page_phys, virt_to_phys(params));
-+	if (!sro) {
-+		r = -ENOMEM;
-+		goto out_undelegate_rmm_rec;
-+	}
-+	if (rmi_sro_execute(sro)) {
- 		r = -ENXIO;
--		goto out_free_rec_aux;
-+		goto out_undelegate_rmm_rec;
- 	}
- 
- 	rec->mpidr = mpidr;
-@@ -1557,8 +1783,6 @@ static int kvm_create_rec(struct kvm_vcpu *vcpu)
- 	free_page((unsigned long)params);
- 	return 0;
- 
--out_free_rec_aux:
--	free_rec_aux(rec->aux_pages, realm->num_aux);
- out_undelegate_rmm_rec:
- 	if (WARN_ON(undelegate_page(rec_page_phys)))
- 		rec->rec_page = NULL;
-@@ -1572,7 +1796,7 @@ static int kvm_create_rec(struct kvm_vcpu *vcpu)
- 
- void kvm_destroy_rec(struct kvm_vcpu *vcpu)
- {
--	struct realm *realm = &vcpu->kvm->arch.realm;
-+	struct rmi_sro_state *sro __free(sro) = NULL;
- 	struct realm_rec *rec = &vcpu->arch.rec;
- 	unsigned long rec_page_phys;
- 
-@@ -1588,15 +1812,12 @@ void kvm_destroy_rec(struct kvm_vcpu *vcpu)
- 
- 	rec_page_phys = virt_to_phys(rec->rec_page);
- 
--	/*
--	 * The REC and any AUX pages cannot be reclaimed until the REC is
--	 * destroyed. So if the REC destroy fails then the REC page and any AUX
--	 * pages will be leaked.
--	 */
--	if (WARN_ON(rmi_rec_destroy(rec_page_phys)))
-+	sro = rmi_rec_destroy_sro_init(rec_page_phys);
-+	if (WARN_ON(!sro))
- 		return;
- 
--	free_rec_aux(rec->aux_pages, realm->num_aux);
-+	if (WARN_ON(rmi_sro_execute(sro)))
-+		return;
- 
- 	free_delegated_page(rec_page_phys);
- }
--- 
-2.43.0
+> +{
+> +	gra = kvm_s390_logical_to_effective(vcpu, gra);
+> +
+> +	return kvm_s390_real_to_abs(vcpu, gra);
+> +}
+> +
+>  static inline gpa_t lc_addr_from_offset(struct kvm_vcpu *vcpu, unsigned int off)
+>  {
+>  	gpa_t addr = kvm_s390_get_prefix(vcpu);
+> diff --git a/arch/s390/kvm/priv.c b/arch/s390/kvm/priv.c
+> index 780186eb6037..78d3338afdb2 100644
+> --- a/arch/s390/kvm/priv.c
+> +++ b/arch/s390/kvm/priv.c
+> @@ -256,9 +256,9 @@ static int try_handle_skey(struct kvm_vcpu *vcpu)
+>  
+>  static int handle_iske(struct kvm_vcpu *vcpu)
+>  {
+> -	unsigned long gaddr;
+>  	int reg1, reg2;
+>  	union skey key;
+> +	gpa_t gpa;
+>  	int rc;
+>  
+>  	vcpu->stat.instruction_iske++;
+> @@ -271,12 +271,10 @@ static int handle_iske(struct kvm_vcpu *vcpu)
+>  		return rc != -EAGAIN ? rc : 0;
+>  
+>  	kvm_s390_get_regs_rre(vcpu, &reg1, &reg2);
+> +	gpa = kvm_s390_real_to_abs_effective(vcpu, vcpu->run->s.regs.gprs[reg2] & PAGE_MASK);
+>  
+> -	gaddr = vcpu->run->s.regs.gprs[reg2] & PAGE_MASK;
+> -	gaddr = kvm_s390_logical_to_effective(vcpu, gaddr);
+> -	gaddr = kvm_s390_real_to_abs(vcpu, gaddr);
+>  	scoped_guard(read_lock, &vcpu->kvm->mmu_lock)
+> -		rc = dat_get_storage_key(vcpu->arch.gmap->asce, gpa_to_gfn(gaddr), &key);
+> +		rc = dat_get_storage_key(vcpu->arch.gmap->asce, gpa_to_gfn(gpa), &key);
+>  	if (rc > 0)
+>  		return kvm_s390_inject_program_int(vcpu, rc);
+>  	if (rc < 0)
+> @@ -288,8 +286,8 @@ static int handle_iske(struct kvm_vcpu *vcpu)
+>  
+>  static int handle_rrbe(struct kvm_vcpu *vcpu)
+>  {
+> -	unsigned long gaddr;
+>  	int reg1, reg2;
+> +	gpa_t gpa;
+>  	int rc;
+>  
+>  	vcpu->stat.instruction_rrbe++;
+> @@ -302,12 +300,10 @@ static int handle_rrbe(struct kvm_vcpu *vcpu)
+>  		return rc != -EAGAIN ? rc : 0;
+>  
+>  	kvm_s390_get_regs_rre(vcpu, &reg1, &reg2);
+> +	gpa = kvm_s390_real_to_abs_effective(vcpu, vcpu->run->s.regs.gprs[reg2] & PAGE_MASK);
+>  
+> -	gaddr = vcpu->run->s.regs.gprs[reg2] & PAGE_MASK;
+> -	gaddr = kvm_s390_logical_to_effective(vcpu, gaddr);
+> -	gaddr = kvm_s390_real_to_abs(vcpu, gaddr);
+>  	scoped_guard(read_lock, &vcpu->kvm->mmu_lock)
+> -		rc = dat_reset_reference_bit(vcpu->arch.gmap->asce, gpa_to_gfn(gaddr));
+> +		rc = dat_reset_reference_bit(vcpu->arch.gmap->asce, gpa_to_gfn(gpa));
+>  	if (rc > 0)
+>  		return kvm_s390_inject_program_int(vcpu, rc);
+>  	if (rc < 0)
+> @@ -1142,8 +1138,8 @@ static inline int __do_essa(struct kvm_vcpu *vcpu, const int orc)
+>  	int r1, r2, nappended, entries;
+>  	union essa_state state;
+>  	unsigned long *cbrlo;
+> -	unsigned long gfn;
+>  	bool dirtied;
+> +	gpa_t gpa;
+>  
+>  	/*
+>  	 * We don't need to set SD.FPF.SK to 1 here, because if we have a
+> @@ -1151,10 +1147,11 @@ static inline int __do_essa(struct kvm_vcpu *vcpu, const int orc)
+>  	 */
+>  
+>  	kvm_s390_get_regs_rre(vcpu, &r1, &r2);
+> -	gfn = gpa_to_gfn(vcpu->run->s.regs.gprs[r2]);
+> +	gpa = vcpu->run->s.regs.gprs[r2];
+>  	entries = (vcpu->arch.sie_block->cbrlo & ~PAGE_MASK) >> 3;
+>  
+> -	nappended = dat_perform_essa(vcpu->arch.gmap->asce, gfn, orc, &state, &dirtied);
+> +	nappended = dat_perform_essa(vcpu->arch.gmap->asce, gpa_to_gfn(gpa),
+> +				     orc, &state, &dirtied);
+>  	vcpu->run->s.regs.gprs[r1] = state.val;
+>  	if (nappended < 0)
+>  		return 0;
+> @@ -1166,7 +1163,7 @@ static inline int __do_essa(struct kvm_vcpu *vcpu, const int orc)
+>  	 */
+>  	if (nappended > 0) {
+>  		cbrlo = phys_to_virt(vcpu->arch.sie_block->cbrlo & PAGE_MASK);
+> -		cbrlo[entries] = gfn << PAGE_SHIFT;
+> +		cbrlo[entries] = gpa;
+>  	}
+>  
+>  	if (dirtied)
+> @@ -1447,10 +1444,10 @@ int kvm_s390_handle_eb(struct kvm_vcpu *vcpu)
+>  static int handle_tprot(struct kvm_vcpu *vcpu)
+>  {
+>  	u64 address, operand2;
+> -	unsigned long gpa;
+>  	u8 access_key;
+>  	bool writable;
+>  	int ret, cc;
+> +	gpa_t gpa;
+>  	u8 ar;
+>  
+>  	vcpu->stat.instruction_tprot++;
 
