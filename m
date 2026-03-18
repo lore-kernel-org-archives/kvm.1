@@ -1,73 +1,69 @@
-Received: from MW6PR02CU001.outbound.protection.outlook.com (mail-westus2azon11012031.outbound.protection.outlook.com [52.101.48.31])
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67588373BE8;
-	Wed, 18 Mar 2026 07:57:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.48.31
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773820650; cv=fail; b=Rx8lE0J+ZJfDEK+LGG9mw+KR9XYW2M0AlMu9Qzm8JEnVM7D8gbPOFxBysvBTI0JDqHaZGfE9/PigMPUXnePQ7Qx3PuQl1iihIeRluU/3wJFlJGmdPaoHcX6q7P1exBnb1B+zZKcqu+pCgj+7FBgCVp/IoNiWqOyExZ4kzF+akWY=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773820650; c=relaxed/simple;
-	bh=k8/fnfsPOQrpvtRN/ejHEIQBN6H2XUd92jT9lByTjs4=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=WIfCsMjXSwZoveWTxeaiMMgukwvMalfpcxwRFbbGebGQU4XJZl/63LmJbXab2DqMQNFkOFPyfTrrplpRw5zGoInz1z7hDcJZOO/njpFgBkHxOXTJDKm+4wRluKanIKtN/CBrPWttujqEYWdvAfC2eF0aeGosdRctwtwIBIxbOhs=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=L5j+cFqw; arc=fail smtp.client-ip=52.101.48.31
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77FAB363C73;
+	Wed, 18 Mar 2026 08:06:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1773821177; cv=none; b=D0S96GILU91Fmti3bukSVAMT65qBPyZRO4R5xxOhvEw4DbOadbRivaBPNgcNkAxd7lxcr1Hhf4rmx/eUDZMGck3Ov1tAIINrEK7VmDw2NiLi6IyVghAnG6uLdgBINlmMTqSsrGxDBuU/l5NtnTv0pJud/BWeYyHPLzGoDPu3ZMY=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1773821177; c=relaxed/simple;
+	bh=PV/TBstO0wNsJNSuksdDnOmm8n6LY3KuTcp5tRvkMt8=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=R6rxO8bc85qvVfpggtqCjaTC3+b7zcFTMgPKn5hmtWR/JbBSN/7hfEoIDmVLjO0mk4F3UHUTHSpyVE8YwtvegrmDtkiLegy08fEwMNKfhIKAPz0agrCr+PbLq2wrDxp5wQ2ICmCX5YVKQ5xOwBwV2kAiIajw4iiOaotMVpC27Ag=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=de.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=tZUfMJXW; arc=none smtp.client-ip=148.163.156.1
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=de.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="L5j+cFqw"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=oLwcbpBq6AZNhwdImUhVICZKoVV7Ry+bW8yeBZ+pc0ZEnZ4c1PmHgPBIfODRaf800v4FSqNSo05ICcm2sinLCCViUbV0OizcKQ9rBIQy9s5ZljvxVGdFQHImj0xmUjdYMlERiVFzirEf+C5FUB+P0C04afjpqmYND90DCa6qk5FEYcP6IasW6oBFlTwJqCjDlQOR5GE/K6+wEUx+7xpy6AGE+afMIVT1nMtFcO+3DLNPKolGV+O5OlNG2ZxWVaRMMhSB/qCJfxYlBSrgYKCG05TmICB3POIy36r/DIegIkrsH3WnXkn9lUYvbTIdGJPzqDSCAArIupmBnCnbh0q8YA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=TT9QikTnYIvR+XcZ8kcfNGe+F9AvATPk1bqKa/4yioQ=;
- b=A6gOVMtCao1dV7ETQXdbGHs27O84LKbL9hZzjejmIdSGidOluj4WxSa0MO2Ud/vP2EUTbndSugiQ8LrSR2djRt01y+00NDuPMliU10fW+Lam1MF+Ty3wZW863363qIlPMkMK7gmj7uv1Q6mHQYDzFjA2SNTMI2GIi+Oet7OrNLt3Eb01Jb/Ya4h9UzPZWpbhitzMU//KMYWSonmUOoG/3taH5noTp6Rd0eEa1+91l71cwAFmgV9A03Ws9FGZAUEK7vT3NBnoCU9wk7G4QCsAxKmLoWfk4ECJ1RcmvExgaPkaCgCE5vn4X9Hhc8gFkgz/g60h3Fi1FRAuQ/hmvER8Mw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 165.204.84.17) smtp.rcpttodomain=vger.kernel.org smtp.mailfrom=amd.com;
- dmarc=pass (p=quarantine sp=quarantine pct=100) action=none
- header.from=amd.com; dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=TT9QikTnYIvR+XcZ8kcfNGe+F9AvATPk1bqKa/4yioQ=;
- b=L5j+cFqw8hqmvO9Sab66UHNdEOGnHRljfH1UXPHcI9ZBOK+nF4rqbtUNEw/MveNiRGjtnVyeCXRg7NdVRl3gtK5xs+cYPDXAF8SOhN8ZrL0NI2zmd6WPhzG6bj7B0we2mF06e6yntLuPSTG9ZLHX21LBReutmxPy507sR/ovhUY=
-Received: from CH5PR04CA0003.namprd04.prod.outlook.com (2603:10b6:610:1f4::12)
- by MN0PR12MB6296.namprd12.prod.outlook.com (2603:10b6:208:3d3::9) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9723.19; Wed, 18 Mar
- 2026 07:57:24 +0000
-Received: from DS3PEPF0000C37A.namprd04.prod.outlook.com
- (2603:10b6:610:1f4:cafe::2b) by CH5PR04CA0003.outlook.office365.com
- (2603:10b6:610:1f4::12) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.20.9700.27 via Frontend Transport; Wed,
- 18 Mar 2026 07:57:18 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
- smtp.mailfrom=amd.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=amd.com;
-Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
- 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=satlexmb07.amd.com; pr=C
-Received: from satlexmb07.amd.com (165.204.84.17) by
- DS3PEPF0000C37A.mail.protection.outlook.com (10.167.23.4) with Microsoft SMTP
- Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.9700.17 via Frontend Transport; Wed, 18 Mar 2026 07:57:24 +0000
-Received: from gomati.amd.com (10.180.168.240) by satlexmb07.amd.com
- (10.181.42.216) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.17; Wed, 18 Mar
- 2026 02:57:19 -0500
-From: Nikunj A Dadhania <nikunj@amd.com>
-To: <linux-kernel@vger.kernel.org>, <kvm@vger.kernel.org>, <bp@alien8.de>,
-	<thomas.lendacky@amd.com>, <dave.hansen@linux.intel.com>
-CC: <tglx@kernel.org>, <mingo@redhat.com>, <hpa@zytor.com>, <xin@zytor.com>,
-	<seanjc@google.com>, <pbonzini@redhat.com>, <x86@kernel.org>,
-	<sohil.mehta@intel.com>, <chang.seok.bae@intel.com>, <jon.grimm@amd.com>,
-	<nikunj@amd.com>
-Subject: [PATCH v3 3/3] x86/fred: Fix early boot failures on SEV-ES/SNP guests
-Date: Wed, 18 Mar 2026 07:56:54 +0000
-Message-ID: <20260318075654.1792916-4-nikunj@amd.com>
-X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20260318075654.1792916-1-nikunj@amd.com>
-References: <20260318075654.1792916-1-nikunj@amd.com>
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="tZUfMJXW"
+Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 62HKEnO31466854;
+	Wed, 18 Mar 2026 08:06:12 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:date:from:message-id:mime-version
+	:subject:to; s=pp1; bh=vr60p70BipR+G7lwRSHUso98AQBcebpTsNC+VwbKK
+	TI=; b=tZUfMJXWeZqUYdXE6qpCHe7gbPPNpkVSt4HdoYT/mn9BJC6BwNFxIVHn8
+	FhjStByf0eNNmnJOUxOv3WP0uYJmAX50shZ8nDknJAFh3/8irJFxoaI0Kn4Su8hS
+	tEqJkYhxzoHdd5VuiUVu7HhWcb58J5JckbEvw3ErVaZCgLax7IcTDiO+rkYcY356
+	1GbB1ixCYjErE0r/+e6kI45es8379jjQgedDyr2FAmEWjFpMll84cMrlUbZMoXxI
+	fOCfSHyl4hR9S4eSvIb+YTs89pA5q9xBKAfeL641PQACf3xgurAa+5CYCOsPAAtc
+	BYO1b1fxRRsXl1rK/sTDgH03wbhRw==
+Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4cx7vfk4d7-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 18 Mar 2026 08:06:12 +0000 (GMT)
+Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma22.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 62I4cmFT013997;
+	Wed, 18 Mar 2026 08:06:11 GMT
+Received: from smtprelay01.wdc07v.mail.ibm.com ([172.16.1.68])
+	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4cwjcy5400-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 18 Mar 2026 08:06:11 +0000
+Received: from smtpav01.dal12v.mail.ibm.com (smtpav01.dal12v.mail.ibm.com [10.241.53.100])
+	by smtprelay01.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 62I869Kh4784906
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Wed, 18 Mar 2026 08:06:09 GMT
+Received: from smtpav01.dal12v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 7550458064;
+	Wed, 18 Mar 2026 08:06:09 +0000 (GMT)
+Received: from smtpav01.dal12v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 3F09C58061;
+	Wed, 18 Mar 2026 08:06:07 +0000 (GMT)
+Received: from li-d98989cc-2c66-11b2-a85c-93ab83b7dd53.ibm.com.com (unknown [9.111.93.190])
+	by smtpav01.dal12v.mail.ibm.com (Postfix) with ESMTP;
+	Wed, 18 Mar 2026 08:06:06 +0000 (GMT)
+From: Christian Borntraeger <borntraeger@de.ibm.com>
+To: Paolo Bonzini <pbonzini@redhat.com>
+Cc: KVM <kvm@vger.kernel.org>, Christian Borntraeger <borntraeger@de.ibm.com>,
+        linux-s390 <linux-s390@vger.kernel.org>,
+        Janosch Frank <frankja@linux.vnet.ibm.com>,
+        David Hildenbrand <david@kernel.org>,
+        Claudio Imbrenda <imbrenda@linux.ibm.com>,
+        Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>,
+        Alexander Gordeev <agordeev@linux.ibm.com>
+Subject: [GIT PULL 0/6] KVM: s390: Fixes for 7.0
+Date: Wed, 18 Mar 2026 09:06:00 +0100
+Message-ID: <20260318080606.2450514-1-borntraeger@de.ibm.com>
+X-Mailer: git-send-email 2.53.0
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -75,117 +71,84 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: satlexmb07.amd.com (10.181.42.216) To satlexmb07.amd.com
- (10.181.42.216)
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DS3PEPF0000C37A:EE_|MN0PR12MB6296:EE_
-X-MS-Office365-Filtering-Correlation-Id: 198638c1-8325-4277-a880-08de84c3fda6
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|82310400026|36860700016|376014|7416014|56012099003|18002099003|22082099003;
-X-Microsoft-Antispam-Message-Info:
-	0ms56MTYFmvqpZHNHzRIzNXcfDdrlfvbSam/p/v7QilN3HA2q5GmJ9L/IC9yk1Q24LCQlZD2STLYllns3CVOzeCda+TUo9aFZCqx+qwZdypeOyg8Pnn4SxKvZZ+9mh94F/4qpY1JG8I0d3pv3g25e2vaucOrll0YDkgXdqUM4yWWgaVO7NsXdY5GdoZte7F8kcOn7Mt9rOyYl1dsF+i11jTHfTCIeF4aEffXZ3MtCgTkn7QMPL1DhtNej6CvVtY8X14XyxD7/4lcbRnrU6i9YoNtOEuUAWaeMA4wftjCu0vX/nbWJIOtyu6n+YzCUmHYlk82nexCY6rVVIy960aIBIqL8/7kxb7+gkLZlqP2vDT63GmMtcnw6sGrasr7kg821QP5/7aJ2vMZ6BYWWLwksQrhRHT3sxbtLJQzOqxyWqC3cACbkC+pIRw0NfIvwkNlBGC5XFrNidE5jNBQ/6jkL5n8t5PGMSg7dNmMuBe+HGljf4lu5K2TLRr0xjufwsLKRiXQ5nRBK7sqlqunRG822J5o+7mhTzSMNN9Q+SFvDX6hkRnoM2XaQo0n9cn9ZKsB3hm7aiJv+5P/y+rJ4JpseuS7A7kzBL1UgZPUCgjgTPhdACNuUqcY7qx45xTSyZnDuLpsJV26FhkI6kaxZykSIW+7HBONqfxX6uWTxESGt+7s5nT5luZVNRoDBxzUglLT6oHhvCWMTaq+M4JBTXeVfkPE8528pgEI3C1OXUUDRsEdPiPefDlC1e6MiGWEXxY6VD28L4F1DiS+BXeAm1W8ZQ==
-X-Forefront-Antispam-Report:
-	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb07.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(1800799024)(82310400026)(36860700016)(376014)(7416014)(56012099003)(18002099003)(22082099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	gNQKt5naXne//7uLLQPNWKm50F85cHlYVRBCI6khEaG/1Z/i7px6ERHjFAUn+4CbCZJHl/Zw+LE3snjDaPNTo7bB2YPHnwZJ6iPQlbwW22B7uKQZfqu27kby1lQw/5LwKdcuLHH15rLFMYQ+oNG6zpPwSpotsZ+t7mH05HyHkLO6dFaTTnmEtTYFhbVSaZvaPmDYReqzQHlHDwsWtUkTWe9D8j23DGwGGsyQLjly+xrSrHs88ieKbhGCvxO9KIHZy0I14Ja1jgfdFDYrPSymKJxDsw9FYbVq/B8dSLOBrNZxp8mi26+Cqae1LVW2HMLLdaZAYO+r/5LEIPRopGnx368C+OF/WBU3L0tO9u+Y5z1lKHjSIhaSHz7QwPQHposPyPF6WUl/GPlNifdp05Rt4UkXqO3er7ySuYqJ2w3XF5aAxifJcr+3Vv//88db1FLN
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 18 Mar 2026 07:57:24.1502
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 198638c1-8325-4277-a880-08de84c3fda6
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[satlexmb07.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	DS3PEPF0000C37A.namprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MN0PR12MB6296
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: zL11FZ9VXFmuxtBZEMkLs6svMftpDjrs
+X-Authority-Analysis: v=2.4 cv=KajfcAYD c=1 sm=1 tr=0 ts=69ba5cf4 cx=c_pps
+ a=5BHTudwdYE3Te8bg5FgnPg==:117 a=5BHTudwdYE3Te8bg5FgnPg==:17
+ a=Yq5XynenixoA:10 a=VkNPw1HP01LnGYTKEx00:22 a=RnoormkPH1_aCDwRdu11:22
+ a=U7nrCbtTmkRpXpFmAIza:22 a=VnNF1IyMAAAA:8 a=VwQbUJbxAAAA:8
+ a=iiqISpq-karmuahrZ-0A:9
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMzE4MDA2NCBTYWx0ZWRfX0HZqSO6rmx34
+ u7FzByyLy45SxkrvsjIvuVT+MFS1sSmqBJ7TRpsHPTrTIcekGrDmuaQGuWUGicjcE+pJzAorjWg
+ FPPypPXe378PeatodXH1ND4CnTlOqiu1vfseqS9+O5IrVrPmqS3LYDFWIXQ5tJWl2eDOz4trQOM
+ gptWhpm8jHg0zOC2eUa9F59kr8fSA5NU7adkzJDxf7Nu3u0Bxkb/UrwI+w+7Fo7zK4ZVyW8++Fo
+ dTHVubil0K4l0VM49YJqVA/9U8rGtYXGvx0nNwb0xVd6CkBp8pIocTsn3AZ+X7L+sJOOXR7zMSZ
+ DXahe/IRJgNhkuIXE6vFS1PQJq0Thl2rPkZ/jQYZ4nwfhtmEXq/MMOat/xUnQXIn6aRfRqWEQJu
+ xsgP/WKnK8TIAlKWcGStHWlHa10BR9q/x9jAyRIS3P50r9ITPIozfwaj9vCH0DCb6VX0IIOK0dy
+ mu873MJc2KBdl705PWA==
+X-Proofpoint-GUID: zL11FZ9VXFmuxtBZEMkLs6svMftpDjrs
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
+ definitions=2026-03-17_05,2026-03-17_02,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ suspectscore=0 adultscore=0 spamscore=0 malwarescore=0 clxscore=1015
+ impostorscore=0 bulkscore=0 lowpriorityscore=0 priorityscore=1501
+ phishscore=0 classifier=typeunknown authscore=0 authtc= authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2603050001
+ definitions=main-2603180064
 
-FRED-enabled SEV-ES and SNP guests fail to boot due to the following issues
-in the early boot sequence:
+From: Christian Borntraeger <borntraeger@linux.ibm.com>
 
-* FRED does not have a #VC exception handler in the dispatch logic
+Paolo,
 
-* Early FRED #VC exceptions attempt to use uninitialized per-CPU GHCBs
-  instead of boot_ghcb
+here are some fixes for kvm/master. Also with a first fix for the memory
+rework, but we know there will be some more before the 7.0 release. Stay
+tuned.
 
-Add X86_TRAP_VC case to fred_hwexc() with a new exc_vmm_communication()
-function that provides the unified entry point FRED requires, dispatching
-to existing user/kernel handlers based on privilege level. The function is
-already declared via DECLARE_IDTENTRY_VC().
+The following changes since commit 5ee8dbf54602dc340d6235b1d6aa17c0f283f48c:
 
-Fix early GHCB access by falling back to boot_ghcb in
-__sev_{get,put}_ghcb() when per-CPU GHCBs are not yet initialized.
+  Merge tag 'fsverity-for-linus' of git://git.kernel.org/pub/scm/fs/fsverity/linux (2026-03-05 11:52:03 -0800)
 
-Fixes: 14619d912b65 ("x86/fred: FRED entry/exit and dispatch code")
-Cc: stable@vger.kernel.org # 6.9+
-Reviewed-by: Tom Lendacky <thomas.lendacky@amd.com>
-Signed-off-by: Nikunj A Dadhania <nikunj@amd.com>
----
- arch/x86/coco/sev/noinstr.c |  6 ++++++
- arch/x86/entry/entry_fred.c | 14 ++++++++++++++
- 2 files changed, 20 insertions(+)
+are available in the Git repository at:
 
-diff --git a/arch/x86/coco/sev/noinstr.c b/arch/x86/coco/sev/noinstr.c
-index 9d94aca4a698..5afd663a1c21 100644
---- a/arch/x86/coco/sev/noinstr.c
-+++ b/arch/x86/coco/sev/noinstr.c
-@@ -121,6 +121,9 @@ noinstr struct ghcb *__sev_get_ghcb(struct ghcb_state *state)
- 
- 	WARN_ON(!irqs_disabled());
- 
-+	if (!sev_cfg.ghcbs_initialized)
-+		return boot_ghcb;
-+
- 	data = this_cpu_read(runtime_data);
- 	ghcb = &data->ghcb_page;
- 
-@@ -164,6 +167,9 @@ noinstr void __sev_put_ghcb(struct ghcb_state *state)
- 
- 	WARN_ON(!irqs_disabled());
- 
-+	if (!sev_cfg.ghcbs_initialized)
-+		return;
-+
- 	data = this_cpu_read(runtime_data);
- 	ghcb = &data->ghcb_page;
- 
-diff --git a/arch/x86/entry/entry_fred.c b/arch/x86/entry/entry_fred.c
-index 88c757ac8ccd..fbe2d10dd737 100644
---- a/arch/x86/entry/entry_fred.c
-+++ b/arch/x86/entry/entry_fred.c
-@@ -177,6 +177,16 @@ static noinstr void fred_extint(struct pt_regs *regs)
- 	}
- }
- 
-+#ifdef CONFIG_AMD_MEM_ENCRYPT
-+noinstr void exc_vmm_communication(struct pt_regs *regs, unsigned long error_code)
-+{
-+	if (user_mode(regs))
-+		return user_exc_vmm_communication(regs, error_code);
-+	else
-+		return kernel_exc_vmm_communication(regs, error_code);
-+}
-+#endif
-+
- static noinstr void fred_hwexc(struct pt_regs *regs, unsigned long error_code)
- {
- 	/* Optimize for #PF. That's the only exception which matters performance wise */
-@@ -207,6 +217,10 @@ static noinstr void fred_hwexc(struct pt_regs *regs, unsigned long error_code)
- #ifdef CONFIG_X86_CET
- 	case X86_TRAP_CP: return exc_control_protection(regs, error_code);
- #endif
-+#ifdef CONFIG_AMD_MEM_ENCRYPT
-+	case X86_TRAP_VC: return exc_vmm_communication(regs, error_code);
-+#endif
-+
- 	default: return fred_bad_type(regs, error_code);
- 	}
- 
--- 
-2.48.1
+  git://git.kernel.org/pub/scm/linux/kernel/git/kvms390/linux.git  tags/kvm-s390-master-7.0-1
 
+for you to fetch changes up to ab5119735e984f6b724ef1b699c01479949ed1de:
+
+  KVM: s390: vsie: Avoid injecting machine check on signal (2026-03-16 16:56:39 +0100)
+
+----------------------------------------------------------------
+KVM: s390: Fixes for 7.0
+
+- fix deadlock in new memory management
+- handle kernel faults on donated memory properly
+- fix bounds checking for irq routing + selftest
+- fix invalid machine checks + logging
+
+----------------------------------------------------------------
+Christian Borntraeger (2):
+      KVM: s390: log machine checks more aggressively
+      KVM: s390: vsie: Avoid injecting machine check on signal
+
+Claudio Imbrenda (1):
+      KVM: s390: Fix a deadlock
+
+Janosch Frank (3):
+      s390/mm: Add missing secure storage access fixups for donated memory
+      KVM: s390: Limit adapter indicator access to mapped page
+      KVM: s390: selftests: Add IRQ routing address offset tests
+
+ arch/s390/include/asm/kvm_host.h               |  3 ++
+ arch/s390/include/asm/stacktrace.h             |  2 +-
+ arch/s390/kernel/asm-offsets.c                 |  2 +-
+ arch/s390/kernel/entry.S                       |  4 +-
+ arch/s390/kernel/nmi.c                         |  4 +-
+ arch/s390/kvm/gaccess.c                        |  6 ++-
+ arch/s390/kvm/interrupt.c                      | 18 +++++++
+ arch/s390/kvm/kvm-s390.c                       | 16 +++---
+ arch/s390/kvm/vsie.c                           |  8 +--
+ arch/s390/mm/fault.c                           | 11 +++-
+ tools/testing/selftests/kvm/Makefile.kvm       |  1 +
+ tools/testing/selftests/kvm/s390/irq_routing.c | 75 ++++++++++++++++++++++++++
+ 12 files changed, 129 insertions(+), 21 deletions(-)
+ create mode 100644 tools/testing/selftests/kvm/s390/irq_routing.c
