@@ -1,371 +1,555 @@
-Received: from mail-pl1-f180.google.com (mail-pl1-f180.google.com [209.85.214.180])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 439D7218821
-	for <kvm@vger.kernel.org>; Wed, 18 Mar 2026 16:54:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.180
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CF009B640;
+	Wed, 18 Mar 2026 17:08:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773852866; cv=none; b=KBKTgpIUImpE7BOtVTq7eEtMyr22Y3KXa4JqGS5ThXKKbQPPazzfjnXvp7c00WlPBDAPfwCre4GCnDfJymZBWO1lNdU637HiWWGbzCUDSLW/sG3v1IcPPmdbpcL+L0nIZ3kyLjPPrBdcZYzx/jqO3IlayfbyGoqdVvdG6OxZrGw=
+	t=1773853689; cv=none; b=aopCZwLplxrsRoYcCXtK7RXkH8rd49V6nZerepAcKjot8l6s5aP7CNqBcv1Ldl7dl/APmqVDIbLi4e7fnl5UbtzxtxIvL+celEfulDzNdtIoqBx4fRhTBPqwvBauE6WHRobSiZZbESG422mC6r9AetySpjfzZCk5JKgKZJgl+h4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773852866; c=relaxed/simple;
-	bh=5VBV/A5uYC0jGc3viP6Xi9yTNYCk7D9ZKDvsyPHOlcI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ZG0UpVhBCuRRfZC+bZzgL5If62vTK3/+6On03SbHscMiMNj9JXwKoXh5wLIxELcH6TUyV3oVcK+qZh8swtArqNiBLvndXKojRB8I/lP6jD+pUWy3a3YvwzNrkNmjeOZQDG7FrlUMRqu/cn6YliiKLKnXELFdL3TKdw2Ah9iEzhg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=bTjb9qBu; arc=none smtp.client-ip=209.85.214.180
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="bTjb9qBu"
-Received: by mail-pl1-f180.google.com with SMTP id d9443c01a7336-2b04c9e3eb7so1265ad.0
-        for <kvm@vger.kernel.org>; Wed, 18 Mar 2026 09:54:25 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1773852864; x=1774457664; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=3JEhMqYUt8uX7RNOVC4nIPLjZyTL3AlX18iCN9fMlH8=;
-        b=bTjb9qBuaZ9tBDmVAkTrAY1gakC8Qf8fy6XHYtp6uDdSDbps+mD6xBO+oi6Zm8UI/7
-         YkjPlBDhw024PR1TXTMMshjbAFkSQcTz+yCmQ8mQG0qFvPjBUXsTPe1P2h9UT1x70O/2
-         M6nM70yTLDco6yOwK++XW9F43XYDAj+DApHNk/L+/m3nb6SHTMrhPtmAPWpgXJDjHm8p
-         vAF1knUMsIIjr3kQ8TqmJrB/ZrgPFW1WBKo/kBQRydioNruiufK+tOtmp7jcVKKb5B1/
-         wjB7wJuuN46mVeCHqV3YcRpOs//LEcrcn9+yCpb7ICM7+r/N1bKI6fEXiuaQ1DIHX/61
-         WTGg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1773852864; x=1774457664;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=3JEhMqYUt8uX7RNOVC4nIPLjZyTL3AlX18iCN9fMlH8=;
-        b=HMRReDoBj5tqTZqi79ujzLW0Pmbw2jk9hiPJZoeQSYyBI3KRsoUSJHJT6gHcYHV4Zq
-         r+Z6OwyW3fpMukDjb7NAcKmBo7YJGudVEXgftY6fDnvK/RE4w1E6ghvq58LNDT8f7GFG
-         /tiDOypPJd/PU+reCM1W39PVmSwjwbsOiIFv42A7EkhHBo6W5K/R1H1VxFfqUQ5xqcTc
-         rSPU0MlnRGNKYU5jUY/pVVInrQRSmHmpl6jfHzZTrMDIqUoU6ag/zgh6oUoj1rpPAjiS
-         LIICl9soecB0gS95IPD97DJKMxyEM8NbQEtbF4FVTCGxnC+SVvB/4s8KOGlOhXEx7Zmc
-         WQ+g==
-X-Forwarded-Encrypted: i=1; AJvYcCW65Iqsa+gsbmm83tgIUIXLrtjFACnDCa6maB1e9v/v9dZXQYQ5PSyBR7aKadgom1hlT/M=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyspnYPzWEN/0OEnPBcjkQ6jzG6RTZvriPRmsZvroh6HR1qFIR2
-	OX3inJlPI0jvX46Hcvt1wDXVRXcC0TwGAj5SgtFr95viJSmXV7iCSD1qheAbvrEaZg==
-X-Gm-Gg: ATEYQzzXkv7JExffPnxE51aLkWGCc++rQg8WQYaF24HkSVNRJgJNFhvB19qIlGeKoLA
-	Eq3GbJi71JYlxZqq8Wubiq8oENZo/roqY8V0iQJ8PsHsZYYBuASG6DU/g25c1uKTjWXOR0xoprr
-	D8abSCB+qFXTV+OC7HBCkoiZw1BNPH5xYD0rOY7LzmkpQGlsmGSocsjl1FNx+868U91cvetq00U
-	8VG6eZ9Uugo8POz/5SCXxqiynhySLfAsClRZ3u/S7Os3I5U7nlFs92DmPeV8KjlO0CdrV2n6MW9
-	UHx8vaP3+lqeCh0Tafn+7yHv0XjsRiyfyh8HpncCTslW5WOFfayb26k2wIqo4UVJNewk51bZfHq
-	pWGmGbx/0nXnrzIk6ZDPPifWwpw2Rfl5uEL80C05x4xukrfL395qmY6QK8RHe7KC7Srb4kV3reX
-	uaYo2qLfDKJnWrgPIfcWgVPAFiIiMRa3ynAhY/Rqc/65pq0t+bqWYBVMjYUC579g==
-X-Received: by 2002:a17:903:1a06:b0:2a8:ffed:4663 with SMTP id d9443c01a7336-2b06e871446mr3657205ad.12.1773852863842;
-        Wed, 18 Mar 2026 09:54:23 -0700 (PDT)
-Received: from google.com (168.136.83.34.bc.googleusercontent.com. [34.83.136.168])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2b06e603937sm33038865ad.57.2026.03.18.09.54.23
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 18 Mar 2026 09:54:23 -0700 (PDT)
-Date: Wed, 18 Mar 2026 16:54:19 +0000
-From: Samiullah Khawaja <skhawaja@google.com>
-To: Pranjal Shrivastava <praan@google.com>
-Cc: David Woodhouse <dwmw2@infradead.org>, 
-	Lu Baolu <baolu.lu@linux.intel.com>, Joerg Roedel <joro@8bytes.org>, Will Deacon <will@kernel.org>, 
-	Jason Gunthorpe <jgg@ziepe.ca>, Pasha Tatashin <pasha.tatashin@soleen.com>, 
-	Robin Murphy <robin.murphy@arm.com>, Kevin Tian <kevin.tian@intel.com>, 
-	Alex Williamson <alex@shazbot.org>, Shuah Khan <shuah@kernel.org>, iommu@lists.linux.dev, 
-	linux-kernel@vger.kernel.org, kvm@vger.kernel.org, Saeed Mahameed <saeedm@nvidia.com>, 
-	Adithya Jayachandran <ajayachandra@nvidia.com>, Parav Pandit <parav@nvidia.com>, 
-	Leon Romanovsky <leonro@nvidia.com>, William Tu <witu@nvidia.com>, 
-	Pratyush Yadav <pratyush@kernel.org>, David Matlack <dmatlack@google.com>, 
-	Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>, Vipin Sharma <vipinsh@google.com>, 
-	YiFei Zhu <zhuyifei@google.com>
-Subject: Re: [PATCH 03/14] liveupdate: luo_file: Add internal APIs for file
- preservation
-Message-ID: <abrUcJ__lv0N_fvp@google.com>
-References: <20260203220948.2176157-1-skhawaja@google.com>
- <20260203220948.2176157-4-skhawaja@google.com>
- <abp32cJgCUEWK6u-@google.com>
+	s=arc-20240116; t=1773853689; c=relaxed/simple;
+	bh=EpQQb/RQa6xnQqU0gW0y8XT2wBwIgqyqmS0X0W42yuQ=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=W/X5MxvK2HDjChbCtLYwwRJ3gqBS7mcI8a+cvOYn6nYiiUbcsATNWXI8s8K+rqnd7hhzjhnupaAYf4aQ2/qMXZDK+KTre0YnyfN0YYeXuyQSeTuLjxNrmBBIr5CgRZYhBo020FRYXyhWsBZYdbhdfPDRL1Tu0dASJ6FtoFdzwv0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 17C731BF7;
+	Wed, 18 Mar 2026 10:08:00 -0700 (PDT)
+Received: from [10.57.61.122] (unknown [10.57.61.122])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 38E203F73B;
+	Wed, 18 Mar 2026 10:08:01 -0700 (PDT)
+Message-ID: <4a0131c0-7a43-4794-8e19-f89c69f52b22@arm.com>
+Date: Wed, 18 Mar 2026 17:07:59 +0000
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii; format=flowed
-Content-Disposition: inline
-In-Reply-To: <abp32cJgCUEWK6u-@google.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v13 04/48] arm64: RMI: Add SMC definitions for calling the
+ RMM
+To: Joey Gouly <joey.gouly@arm.com>
+Cc: kvm@vger.kernel.org, kvmarm@lists.linux.dev,
+ Catalin Marinas <catalin.marinas@arm.com>, Marc Zyngier <maz@kernel.org>,
+ Will Deacon <will@kernel.org>, James Morse <james.morse@arm.com>,
+ Oliver Upton <oliver.upton@linux.dev>,
+ Suzuki K Poulose <suzuki.poulose@arm.com>, Zenghui Yu
+ <yuzenghui@huawei.com>, linux-arm-kernel@lists.infradead.org,
+ linux-kernel@vger.kernel.org, Alexandru Elisei <alexandru.elisei@arm.com>,
+ Christoffer Dall <christoffer.dall@arm.com>, Fuad Tabba <tabba@google.com>,
+ linux-coco@lists.linux.dev,
+ Ganapatrao Kulkarni <gankulkarni@os.amperecomputing.com>,
+ Gavin Shan <gshan@redhat.com>, Shanker Donthineni <sdonthineni@nvidia.com>,
+ Alper Gun <alpergun@google.com>, "Aneesh Kumar K . V"
+ <aneesh.kumar@kernel.org>, Emi Kisanuki <fj0570is@fujitsu.com>,
+ Vishal Annapurve <vannapurve@google.com>
+References: <20260318155413.793430-1-steven.price@arm.com>
+ <20260318155413.793430-5-steven.price@arm.com>
+ <20260318160744.GA3942350@e124191.cambridge.arm.com>
+From: Steven Price <steven.price@arm.com>
+Content-Language: en-GB
+In-Reply-To: <20260318160744.GA3942350@e124191.cambridge.arm.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Wed, Mar 18, 2026 at 10:00:57AM +0000, Pranjal Shrivastava wrote:
->On Tue, Feb 03, 2026 at 10:09:37PM +0000, Samiullah Khawaja wrote:
->> From: Pasha Tatashin <pasha.tatashin@soleen.com>
+On 18/03/2026 16:07, Joey Gouly wrote:
+> On Wed, Mar 18, 2026 at 03:53:28PM +0000, Steven Price wrote:
+>> The RMM (Realm Management Monitor) provides functionality that can be
+>> accessed by SMC calls from the host.
 >>
->> The core liveupdate mechanism allows userspace to preserve file
->> descriptors. However, kernel subsystems often manage struct file
->> objects directly and need to participate in the preservation process
->> programmatically without relying solely on userspace interaction.
+>> The SMC definitions are based on DEN0137[1] version 2.0-bet0
 >>
->> Signed-off-by: Pasha Tatashin <pasha.tatashin@soleen.com>
+>> [1] https://developer.arm.com/documentation/den0137/2-0bet0/
+>>
+>> Signed-off-by: Steven Price <steven.price@arm.com>
 >> ---
->>  include/linux/liveupdate.h       | 21 ++++++++++
->>  kernel/liveupdate/luo_file.c     | 71 ++++++++++++++++++++++++++++++++
->>  kernel/liveupdate/luo_internal.h | 16 +++++++
->>  3 files changed, 108 insertions(+)
+>> Changes since v12:
+>>  * Updated to RMM spec v2.0-bet0
+>> Changes since v9:
+>>  * Corrected size of 'ripas_value' in struct rec_exit. The spec states
+>>    this is an 8-bit type with padding afterwards (rather than a u64).
+>> Changes since v8:
+>>  * Added RMI_PERMITTED_GICV3_HCR_BITS to define which bits the RMM
+>>    permits to be modified.
+>> Changes since v6:
+>>  * Renamed REC_ENTER_xxx defines to include 'FLAG' to make it obvious
+>>    these are flag values.
+>> Changes since v5:
+>>  * Sorted the SMC #defines by value.
+>>  * Renamed SMI_RxI_CALL to SMI_RMI_CALL since the macro is only used for
+>>    RMI calls.
+>>  * Renamed REC_GIC_NUM_LRS to REC_MAX_GIC_NUM_LRS since the actual
+>>    number of available list registers could be lower.
+>>  * Provided a define for the reserved fields of FeatureRegister0.
+>>  * Fix inconsistent names for padding fields.
+>> Changes since v4:
+>>  * Update to point to final released RMM spec.
+>>  * Minor rearrangements.
+>> Changes since v3:
+>>  * Update to match RMM spec v1.0-rel0-rc1.
+>> Changes since v2:
+>>  * Fix specification link.
+>>  * Rename rec_entry->rec_enter to match spec.
+>>  * Fix size of pmu_ovf_status to match spec.
+>> ---
+>>  arch/arm64/include/asm/rmi_smc.h | 432 +++++++++++++++++++++++++++++++
+>>  1 file changed, 432 insertions(+)
+>>  create mode 100644 arch/arm64/include/asm/rmi_smc.h
 >>
->> diff --git a/include/linux/liveupdate.h b/include/linux/liveupdate.h
->> index fe82a6c3005f..8e47504ba01e 100644
->> --- a/include/linux/liveupdate.h
->> +++ b/include/linux/liveupdate.h
->> @@ -23,6 +23,7 @@ struct file;
->>  /**
->>   * struct liveupdate_file_op_args - Arguments for file operation callbacks.
->>   * @handler:          The file handler being called.
->> + * @session:          The session this file belongs to.
->>   * @retrieved:        The retrieve status for the 'can_finish / finish'
->>   *                    operation.
->>   * @file:             The file object. For retrieve: [OUT] The callback sets
->> @@ -40,6 +41,7 @@ struct file;
->>   */
->>  struct liveupdate_file_op_args {
->>  	struct liveupdate_file_handler *handler;
->> +	struct liveupdate_session *session;
->>  	bool retrieved;
->
->Nit: I don't think this is on the latest tree. I see `int retrieved` [1]
->in the latest tree. I guess we'd need to rebase it on the latest?
-
-Will rebase this.
->
->https://git.kernel.org/pub/scm/linux/kernel/git/next/linux-next.git/tree/include/linux/liveupdate.h#n46
->
->>  	struct file *file;
->>  	u64 serialized_data;
->> @@ -234,6 +236,13 @@ int liveupdate_unregister_flb(struct liveupdate_file_handler *fh,
->>
->>  int liveupdate_flb_get_incoming(struct liveupdate_flb *flb, void **objp);
->>  int liveupdate_flb_get_outgoing(struct liveupdate_flb *flb, void **objp);
->> +/* kernel can internally retrieve files */
->> +int liveupdate_get_file_incoming(struct liveupdate_session *s, u64 token,
->> +				 struct file **filep);
->> +
->> +/* Get a token for an outgoing file, or -ENOENT if file is not preserved */
->> +int liveupdate_get_token_outgoing(struct liveupdate_session *s,
->> +				  struct file *file, u64 *tokenp);
->>
->>  #else /* CONFIG_LIVEUPDATE */
->>
->> @@ -281,5 +290,17 @@ static inline int liveupdate_flb_get_outgoing(struct liveupdate_flb *flb,
->>  	return -EOPNOTSUPP;
->>  }
->>
->> +static inline int liveupdate_get_file_incoming(struct liveupdate_session *s,
->> +					       u64 token, struct file **filep)
->> +{
->> +	return -EOPNOTSUPP;
->> +}
->> +
->> +static inline int liveupdate_get_token_outgoing(struct liveupdate_session *s,
->> +						struct file *file, u64 *tokenp)
->> +{
->> +	return -EOPNOTSUPP;
->> +}
->> +
->>  #endif /* CONFIG_LIVEUPDATE */
->>  #endif /* _LINUX_LIVEUPDATE_H */
->> diff --git a/kernel/liveupdate/luo_file.c b/kernel/liveupdate/luo_file.c
->> index 32759e846bc9..7ac591542059 100644
->> --- a/kernel/liveupdate/luo_file.c
->> +++ b/kernel/liveupdate/luo_file.c
->> @@ -302,6 +302,7 @@ int luo_preserve_file(struct luo_file_set *file_set, u64 token, int fd)
->>  	mutex_init(&luo_file->mutex);
->>
->>  	args.handler = fh;
->> +	args.session = luo_session_from_file_set(file_set);
->>  	args.file = file;
->>  	err = fh->ops->preserve(&args);
->>  	if (err)
->> @@ -355,6 +356,7 @@ void luo_file_unpreserve_files(struct luo_file_set *file_set)
->>  					   struct luo_file, list);
->>
->>  		args.handler = luo_file->fh;
->> +		args.session = luo_session_from_file_set(file_set);
->>  		args.file = luo_file->file;
->>  		args.serialized_data = luo_file->serialized_data;
->>  		args.private_data = luo_file->private_data;
->> @@ -383,6 +385,7 @@ static int luo_file_freeze_one(struct luo_file_set *file_set,
->>  		struct liveupdate_file_op_args args = {0};
->>
->>  		args.handler = luo_file->fh;
->> +		args.session = luo_session_from_file_set(file_set);
->>  		args.file = luo_file->file;
->>  		args.serialized_data = luo_file->serialized_data;
->>  		args.private_data = luo_file->private_data;
->> @@ -404,6 +407,7 @@ static void luo_file_unfreeze_one(struct luo_file_set *file_set,
->>  		struct liveupdate_file_op_args args = {0};
->>
->>  		args.handler = luo_file->fh;
->> +		args.session = luo_session_from_file_set(file_set);
->>  		args.file = luo_file->file;
->>  		args.serialized_data = luo_file->serialized_data;
->>  		args.private_data = luo_file->private_data;
->> @@ -590,6 +594,7 @@ int luo_retrieve_file(struct luo_file_set *file_set, u64 token,
->>  	}
->>
->>  	args.handler = luo_file->fh;
->> +	args.session = luo_session_from_file_set(file_set);
->>  	args.serialized_data = luo_file->serialized_data;
->>  	err = luo_file->fh->ops->retrieve(&args);
->>  	if (!err) {
->> @@ -615,6 +620,7 @@ static int luo_file_can_finish_one(struct luo_file_set *file_set,
->>  		struct liveupdate_file_op_args args = {0};
->>
->>  		args.handler = luo_file->fh;
->> +		args.session = luo_session_from_file_set(file_set);
->>  		args.file = luo_file->file;
->>  		args.serialized_data = luo_file->serialized_data;
->>  		args.retrieved = luo_file->retrieved;
->> @@ -632,6 +638,7 @@ static void luo_file_finish_one(struct luo_file_set *file_set,
->>  	guard(mutex)(&luo_file->mutex);
->>
->>  	args.handler = luo_file->fh;
->> +	args.session = luo_session_from_file_set(file_set);
->>  	args.file = luo_file->file;
->>  	args.serialized_data = luo_file->serialized_data;
->>  	args.retrieved = luo_file->retrieved;
->> @@ -919,3 +926,67 @@ int liveupdate_unregister_file_handler(struct liveupdate_file_handler *fh)
->>  	return err;
->>  }
->>  EXPORT_SYMBOL_GPL(liveupdate_unregister_file_handler);
->> +
->> +/**
->> + * liveupdate_get_token_outgoing - Get the token for a preserved file.
->> + * @s:      The outgoing liveupdate session.
->> + * @file:   The file object to search for.
->> + * @tokenp: Output parameter for the found token.
+>> diff --git a/arch/arm64/include/asm/rmi_smc.h b/arch/arm64/include/asm/rmi_smc.h
+>> new file mode 100644
+>> index 000000000000..8a42b83218f8
+>> --- /dev/null
+>> +++ b/arch/arm64/include/asm/rmi_smc.h
+>> @@ -0,0 +1,432 @@
+>> +/* SPDX-License-Identifier: GPL-2.0 */
+>> +/*
+>> + * Copyright (C) 2023-2024 ARM Ltd.
 >> + *
->> + * Searches the list of preserved files in an outgoing session for a matching
->> + * file object. If found, the corresponding user-provided token is returned.
->> + *
->> + * This function is intended for in-kernel callers that need to correlate a
->> + * file with its liveupdate token.
->> + *
->> + * Context: Can be called from any context that can acquire the session mutex.
-
-I will reword this to convey that the session mutex should be acquired.
->> + * Return: 0 on success, -ENOENT if the file is not preserved in this session.
+>> + * The values and structures in this file are from the Realm Management Monitor
+>> + * specification (DEN0137) version 1.0-rel0:
+>> + * https://developer.arm.com/documentation/den0137/1-0rel0/
 >> + */
->> +int liveupdate_get_token_outgoing(struct liveupdate_session *s,
->> +				  struct file *file, u64 *tokenp)
->> +{
->> +	struct luo_file_set *file_set = luo_file_set_from_session(s);
->> +	struct luo_file *luo_file;
->> +	int err = -ENOENT;
+> 
+> Both copyright and version (2.0 now) need updating.
+
+Indeed they do! I didn't think anyone read these comments, but
+apparently some people do (I obviously don't otherwise I might have
+spotted this!) ;)
+
+Thanks,
+Steve
+
+> Thanks,
+> Joey
+> 
 >> +
->> +	list_for_each_entry(luo_file, &file_set->files_list, list) {
->
->Shouldn't we hold a lock while traversing the file_set? Couldn't this
->race with an unpreserve? If a concurrent unpreserve (writer) calls
->list_del while this reader is mid-iteration, we'll likely follow a stale
->pointer..
-
-The session mutex is supposed to be acquired when this function is
-called. I will add a lockdep in this function to enforce that.
-
-Also, we call this in preserve() of vfio-cdev and the session mutex is
-already acquired by luo in that context.
->
->I noticed that luo_preserve_file / upreserve and retrieve also don't
->take locks while manipulating / iterating  over file_set->files_list..
->
->Shouldn't we protect these with a lock? Otherwise, how do we avoid
->races in situations like:
->
->1. CPU 0 (reader) is iterating the list A->B->C ..
->2. CPU 1 (writer) is handling an unpreserve which remove file B
->
->Am I missing something? If we're expecting the callers to hold a lock,
->we should have a lockdep_assert in these functions..
-
-The LUO acquires session mutex before calling preserve/unpreserve to
-protect agains race conditions. See luo_session.c for details.
->
->> +		if (luo_file->file == file) {
->> +			if (tokenp)
->> +				*tokenp = luo_file->token;
->> +			err = 0;
->> +			break;
->> +		}
->> +	}
+>> +#ifndef __ASM_RMI_SMC_H
+>> +#define __ASM_RMI_SMC_H
 >> +
->> +	return err;
->> +}
+>> +#include <linux/arm-smccc.h>
 >> +
->> +/**
->> + * liveupdate_get_file_incoming - Retrieves a preserved file for in-kernel use.
->> + * @s:      The incoming liveupdate session (restored from the previous kernel).
->> + * @token:  The unique token identifying the file to retrieve.
->> + * @filep:  On success, this will be populated with a pointer to the retrieved
->> + *          'struct file'.
->> + *
->> + * Provides a kernel-internal API for other subsystems to retrieve their
->> + * preserved files after a live update. This function is a simple wrapper
->> + * around luo_retrieve_file(), allowing callers to find a file by its token.
->> + *
->> + * The operation is idempotent; subsequent calls for the same token will return
->> + * a pointer to the same 'struct file' object.
->> + *
->> + * The caller receives a new reference to the file and must call fput() when it
->> + * is no longer needed. The file's lifetime is managed by LUO and any userspace
->> + * file descriptors. If the caller needs to hold a reference to the file beyond
->> + * the immediate scope, it must call get_file() itself.
->> + *
->
->I'm little confused here, we say the op is idempotent, but also mention
->that the caller receives a new reference. I'm wondering of a situation
->where a driver calls this multiple times, incrementing the refcount with
->each call. Do we rely on flb_file_finish to drop all the refcounts?
->
->We should clarify the lifecycle requirements here: is the driver
->expected to call fput() for every single call to
->liveupdate_get_file_incoming(), or is the flb_finish callback intended
->to be a 'catch-all' that reaps these?
-
-The user is supposed to call fput to release the reference as mentioned
-in the kernel-doc above.
-
-But I agree it is a little confusing with the idempotent. I will reword
-the text.
->
->> + * Context: Can be called from any context in the new kernel that has a handle
->> + *          to a restored session.
->> + * Return: 0 on success. Returns -ENOENT if no file with the matching token is
->> + *         found, or any other negative errno on failure.
+>> +#define SMC_RMI_CALL(func)				\
+>> +	ARM_SMCCC_CALL_VAL(ARM_SMCCC_FAST_CALL,		\
+>> +			   ARM_SMCCC_SMC_64,		\
+>> +			   ARM_SMCCC_OWNER_STANDARD,	\
+>> +			   (func))
+>> +
+>> +#define SMC_RMI_VERSION				SMC_RMI_CALL(0x0150)
+>> +
+>> +#define SMC_RMI_RTT_DATA_MAP_INIT		SMC_RMI_CALL(0x0153)
+>> +
+>> +#define SMC_RMI_REALM_ACTIVATE			SMC_RMI_CALL(0x0157)
+>> +#define SMC_RMI_REALM_CREATE			SMC_RMI_CALL(0x0158)
+>> +#define SMC_RMI_REALM_DESTROY			SMC_RMI_CALL(0x0159)
+>> +#define SMC_RMI_REC_CREATE			SMC_RMI_CALL(0x015a)
+>> +#define SMC_RMI_REC_DESTROY			SMC_RMI_CALL(0x015b)
+>> +#define SMC_RMI_REC_ENTER			SMC_RMI_CALL(0x015c)
+>> +#define SMC_RMI_RTT_CREATE			SMC_RMI_CALL(0x015d)
+>> +#define SMC_RMI_RTT_DESTROY			SMC_RMI_CALL(0x015e)
+>> +
+>> +#define SMC_RMI_RTT_READ_ENTRY			SMC_RMI_CALL(0x0161)
+>> +
+>> +#define SMC_RMI_RTT_DEV_VALIDATE		SMC_RMI_CALL(0x0163)
+>> +#define SMC_RMI_PSCI_COMPLETE			SMC_RMI_CALL(0x0164)
+>> +#define SMC_RMI_FEATURES			SMC_RMI_CALL(0x0165)
+>> +#define SMC_RMI_RTT_FOLD			SMC_RMI_CALL(0x0166)
+>> +
+>> +#define SMC_RMI_RTT_INIT_RIPAS			SMC_RMI_CALL(0x0168)
+>> +#define SMC_RMI_RTT_SET_RIPAS			SMC_RMI_CALL(0x0169)
+>> +#define SMC_RMI_VSMMU_CREATE			SMC_RMI_CALL(0x016a)
+>> +#define SMC_RMI_VSMMU_DESTROY			SMC_RMI_CALL(0x016b)
+>> +#define SMC_RMI_RMM_CONFIG_SET			SMC_RMI_CALL(0x016e)
+>> +#define SMC_RMI_PSMMU_IRQ_NOTIFY		SMC_RMI_CALL(0x016f)
+>> +#define SMC_RMI_ATTEST_PLAT_TOKEN_REFRESH	SMC_RMI_CALL(0x0170)
+>> +
+>> +#define SMC_RMI_PDEV_ABORT			SMC_RMI_CALL(0x0174)
+>> +#define SMC_RMI_PDEV_COMMUNICATE		SMC_RMI_CALL(0x0175)
+>> +#define SMC_RMI_PDEV_CREATE			SMC_RMI_CALL(0x0176)
+>> +#define SMC_RMI_PDEV_DESTROY			SMC_RMI_CALL(0x0177)
+>> +#define SMC_RMI_PDEV_GET_STATE			SMC_RMI_CALL(0x0178)
+>> +
+>> +#define SMC_RMI_PDEV_STREAM_KEY_REFRESH		SMC_RMI_CALL(0x017a)
+>> +#define SMC_RMI_PDEV_SET_PUBKEY			SMC_RMI_CALL(0x017b)
+>> +#define SMC_RMI_PDEV_STOP			SMC_RMI_CALL(0x017c)
+>> +#define SMC_RMI_RTT_AUX_CREATE			SMC_RMI_CALL(0x017d)
+>> +#define SMC_RMI_RTT_AUX_DESTROY			SMC_RMI_CALL(0x017e)
+>> +#define SMC_RMI_RTT_AUX_FOLD			SMC_RMI_CALL(0x017f)
+>> +
+>> +#define SMC_RMI_VDEV_ABORT			SMC_RMI_CALL(0x0185)
+>> +#define SMC_RMI_VDEV_COMMUNICATE		SMC_RMI_CALL(0x0186)
+>> +#define SMC_RMI_VDEV_CREATE			SMC_RMI_CALL(0x0187)
+>> +#define SMC_RMI_VDEV_DESTROY			SMC_RMI_CALL(0x0188)
+>> +#define SMC_RMI_VDEV_GET_STATE			SMC_RMI_CALL(0x0189)
+>> +#define SMC_RMI_VDEV_UNLOCK			SMC_RMI_CALL(0x018a)
+>> +#define SMC_RMI_RTT_SET_S2AP			SMC_RMI_CALL(0x018b)
+>> +#define SMC_RMI_VDEV_COMPLETE			SMC_RMI_CALL(0x018e)
+>> +
+>> +#define SMC_RMI_VDEV_GET_INTERFACE_REPORT	SMC_RMI_CALL(0x01d0)
+>> +#define SMC_RMI_VDEV_GET_MEASUREMENTS		SMC_RMI_CALL(0x01d1)
+>> +#define SMC_RMI_VDEV_LOCK			SMC_RMI_CALL(0x01d2)
+>> +#define SMC_RMI_VDEV_START			SMC_RMI_CALL(0x01d3)
+>> +#define SMC_RMI_VDEV_P2P_BIND			SMC_RMI_CALL(0x01d4)
+>> +#define SMC_RMI_VDEV_P2P_UNBIND			SMC_RMI_CALL(0x01d5)
+>> +#define SMC_RMI_VSMMU_EVENT_NOTIFY		SMC_RMI_CALL(0x01d6)
+>> +#define SMC_RMI_PSMMU_ACTIVATE			SMC_RMI_CALL(0x01d7)
+>> +#define SMC_RMI_PSMMU_DEACTIVATE		SMC_RMI_CALL(0x01d8)
+>> +
+>> +#define SMC_RMI_PSMMU_ST_L2_CREATE		SMC_RMI_CALL(0x01db)
+>> +#define SMC_RMI_PSMMU_ST_L2_DESTROY		SMC_RMI_CALL(0x01dc)
+>> +#define SMC_RMI_DPT_L0_CREATE			SMC_RMI_CALL(0x01dd)
+>> +#define SMC_RMI_DPT_L0_DESTROY			SMC_RMI_CALL(0x01de)
+>> +#define SMC_RMI_DPT_L1_CREATE			SMC_RMI_CALL(0x01df)
+>> +#define SMC_RMI_DPT_L1_DESTROY			SMC_RMI_CALL(0x01e0)
+>> +#define SMC_RMI_GRANULE_TRACKING_GET		SMC_RMI_CALL(0x01e1)
+>> +
+>> +#define SMC_RMI_GRANULE_TRACKING_SET		SMC_RMI_CALL(0x01e3)
+>> +#define SMC_RMI_CMEM_ADD_PDEV			SMC_RMI_CALL(0x01e4)
+>> +#define SMC_RMI_CMEM_CREATE			SMC_RMI_CALL(0x01e5)
+>> +#define SMC_RMI_CMEM_DESTROY			SMC_RMI_CALL(0x01e6)
+>> +#define SMC_RMI_CMEM_POPULATE			SMC_RMI_CALL(0x01e7)
+>> +#define SMC_RMI_CMEM_REMOTE_PDEV		SMC_RMI_CALL(0x01e8)
+>> +#define SMC_RMI_CMEM_START			SMC_RMI_CALL(0x01e9)
+>> +#define SMC_RMI_CMEM_STOP			SMC_RMI_CALL(0x01ea)
+>> +#define SMC_RMI_CMEM_UNPOPULATE			SMC_RMI_CALL(0x01eb)
+>> +#define SMC_RMI_RMM_CONFIG_GET			SMC_RMI_CALL(0x01ec)
+>> +#define SMC_RMI_PDEV_MEC_UPDATE			SMC_RMI_CALL(0x01ed)
+>> +#define SMC_RMI_VSMMU_EVENT_COMPLETE		SMC_RMI_CALL(0x01ee)
+>> +
+>> +#define SMC_RMI_PSMMU_EVENT_DISCARD		SMC_RMI_CALL(0x01f0)
+>> +#define SMC_RMI_GRANULE_RANGE_DELEGATE		SMC_RMI_CALL(0x01f1)
+>> +#define SMC_RMI_GRANULE_RANGE_UNDELEGATE	SMC_RMI_CALL(0x01f2)
+>> +#define SMC_RMI_GPT_L1_CREATE			SMC_RMI_CALL(0x01f3)
+>> +#define SMC_RMI_GPT_L1_DESTROY			SMC_RMI_CALL(0x01f4)
+>> +#define SMC_RMI_RTT_DATA_MAP			SMC_RMI_CALL(0x01f5)
+>> +#define SMC_RMI_RTT_DATA_UNMAP			SMC_RMI_CALL(0x01f6)
+>> +#define SMC_RMI_RTT_DEV_MAP			SMC_RMI_CALL(0x01f7)
+>> +#define SMC_RMI_RTT_DEV_UNMAP			SMC_RMI_CALL(0x01f8)
+>> +#define SMC_RMI_RTT_ARCH_DEV_MAP		SMC_RMI_CALL(0x01f9)
+>> +#define SMC_RMI_RTT_ARCH_DEV_UNMAP		SMC_RMI_CALL(0x01fa)
+>> +#define SMC_RMI_RTT_UNPROT_MAP			SMC_RMI_CALL(0x01fb)
+>> +#define SMC_RMI_RTT_UNPROT_UNMAP		SMC_RMI_CALL(0x01fc)
+>> +#define SMC_RMI_RTT_AUX_PROT_MAP		SMC_RMI_CALL(0x01fd)
+>> +#define SMC_RMI_RTT_AUX_PROT_UNMAP		SMC_RMI_CALL(0x01fe)
+>> +#define SMC_RMI_RTT_AUX_UNPROT_MAP		SMC_RMI_CALL(0x01ff)
+>> +#define SMC_RMI_RTT_AUX_UNMAP_UNMAP		SMC_RMI_CALL(0x0200)
+>> +#define SMC_RMI_REALM_TERMINATE			SMC_RMI_CALL(0x0201)
+>> +#define SMC_RMI_RMM_ACTIVATE			SMC_RMI_CALL(0x0202)
+>> +#define SMC_RMI_OP_CONTINUE			SMC_RMI_CALL(0x0203)
+>> +#define SMC_RMI_PDEV_STREAM_CONNECT		SMC_RMI_CALL(0x0204)
+>> +#define SMC_RMI_PDEV_STREAM_DISCONNECT		SMC_RMI_CALL(0x0205)
+>> +#define SMC_RMI_PDEV_STREAM_COMPLETE		SMC_RMI_CALL(0x0206)
+>> +#define SMC_RMI_PDEV_STREAM_KEY_PURGE		SMC_RMI_CALL(0x0207)
+>> +#define SMC_RMI_OP_MEM_DONATE			SMC_RMI_CALL(0x0208)
+>> +#define SMC_RMI_OP_MEM_RECLAIM			SMC_RMI_CALL(0x0209)
+>> +#define SMC_RMI_OP_CANCEL			SMC_RMI_CALL(0x020a)
+>> +#define SMC_RMI_PDEV_SET_PROT			SMC_RMI_CALL(0x020b)
+>> +
+>> +#define RMI_ABI_MAJOR_VERSION	2
+>> +#define RMI_ABI_MINOR_VERSION	0
+>> +
+>> +#define RMI_ABI_VERSION_GET_MAJOR(version) ((version) >> 16)
+>> +#define RMI_ABI_VERSION_GET_MINOR(version) ((version) & 0xFFFF)
+>> +#define RMI_ABI_VERSION(major, minor)      (((major) << 16) | (minor))
+>> +
+>> +#define RMI_UNASSIGNED			0
+>> +#define RMI_ASSIGNED			1
+>> +#define RMI_TABLE			2
+>> +
+>> +#define RMI_RETURN_STATUS(ret)		((ret) & 0xFF)
+>> +#define RMI_RETURN_INDEX(ret)		(((ret) >> 8) & 0xFF)
+>> +#define RMI_RETURN_MEMREQ(ret)		(((ret) >> 8) & 0x3)
+>> +#define RMI_RETURN_CANCANCEL(ret)	(((ret) >> 10) & 0x1)
+>> +
+>> +#define RMI_SUCCESS			0
+>> +#define RMI_ERROR_INPUT			1
+>> +#define RMI_ERROR_REALM			2
+>> +#define RMI_ERROR_REC			3
+>> +#define RMI_ERROR_RTT			4
+>> +#define RMI_ERROR_NOT_SUPPORTED		5
+>> +#define RMI_ERROR_DEVICE		6
+>> +#define RMI_ERROR_RTT_AUX		7
+>> +#define RMI_ERROR_PSMMU_ST		8
+>> +#define RMI_ERROR_DPT			9
+>> +#define RMI_BUSY			10
+>> +#define RMI_ERROR_GLOBAL		11
+>> +#define RMI_ERROR_TRACKING		12
+>> +#define RMI_INCOMPLETE			13
+>> +#define RMI_BLOCKED			14
+>> +#define RMI_ERROR_GPT			15
+>> +#define RMI_ERROR_GRANULE		16
+>> +
+>> +#define RMI_OP_MEM_REQ_NONE		0
+>> +#define RMI_OP_MEM_REQ_DONATE		1
+>> +#define RMI_OP_MEM_REQ_RECLAIM		2
+>> +
+>> +#define RMI_DONATE_SIZE(req)		((req) & 0x3)
+>> +#define RMI_DONATE_COUNT_MASK		GENMASK(15, 2)
+>> +#define RMI_DONATE_COUNT(req)		(((req) & RMI_DONATE_COUNT_MASK) >> 2)
+>> +#define RMI_DONATE_CONTIG(req)		(!!((req) & BIT(16)))
+>> +#define RMI_DONATE_STATE(req)		(!!((req) & BIT(17)))
+>> +
+>> +#define RMI_OP_MEM_DELEGATED		0
+>> +#define RMI_OP_MEM_UNDELEGATED		1
+>> +
+>> +#define RMI_ADDR_TYPE_NONE		0
+>> +#define RMI_ADDR_TYPE_SINGLE		1
+>> +#define RMI_ADDR_TYPE_LIST		2
+>> +
+>> +#define RMI_ADDR_RANGE_SIZE(ar)		(FIELD_GET(GENMASK(1, 0), (ar)))
+>> +#define RMI_ADDR_RANGE_COUNT(ar)	(FIELD_GET(GENMASK(PAGE_SHIFT - 1, 2), \
+>> +						   (ar)))
+>> +#define RMI_ADDR_RANGE_ADDR(ar)		((ar) & PAGE_MASK & GENMASK(51, 0))
+>> +#define RMI_ADDR_RANGE_STATE(ar)	(FIELD_GET(BIT(63), (ar)))
+>> +
+>> +enum rmi_ripas {
+>> +	RMI_EMPTY = 0,
+>> +	RMI_RAM = 1,
+>> +	RMI_DESTROYED = 2,
+>> +};
+>> +
+>> +#define RMI_NO_MEASURE_CONTENT	0
+>> +#define RMI_MEASURE_CONTENT	1
+>> +
+>> +#define RMI_FEATURE_REGISTER_0_S2SZ		GENMASK(7, 0)
+>> +#define RMI_FEATURE_REGISTER_0_LPA2		BIT(8)
+>> +#define RMI_FEATURE_REGISTER_0_SVE		BIT(9)
+>> +#define RMI_FEATURE_REGISTER_0_SVE_VL		GENMASK(13, 10)
+>> +#define RMI_FEATURE_REGISTER_0_NUM_BPS		GENMASK(19, 14)
+>> +#define RMI_FEATURE_REGISTER_0_NUM_WPS		GENMASK(25, 20)
+>> +#define RMI_FEATURE_REGISTER_0_PMU		BIT(26)
+>> +#define RMI_FEATURE_REGISTER_0_PMU_NUM_CTRS	GENMASK(31, 27)
+>> +
+>> +#define RMI_FEATURE_REGISTER_1_RMI_GRAN_SZ_4KB	BIT(0)
+>> +#define RMI_FEATURE_REGISTER_1_RMI_GRAN_SZ_16KB	BIT(1)
+>> +#define RMI_FEATURE_REGISTER_1_RMI_GRAN_SZ_64KB	BIT(2)
+>> +#define RMI_FEATURE_REGISTER_1_HASH_SHA_256	BIT(3)
+>> +#define RMI_FEATURE_REGISTER_1_HASH_SHA_384	BIT(4)
+>> +#define RMI_FEATURE_REGISTER_1_HASH_SHA_512	BIT(5)
+>> +#define RMI_FEATURE_REGISTER_1_MAX_RECS_ORDER	GENMASK(9, 6)
+>> +#define RMI_FEATURE_REGISTER_1_L0GPTSZ		GENMASK(13, 10)
+>> +#define RMI_FEATURE_REGISTER_1_PPS		GENMASK(16, 14)
+>> +
+>> +#define RMI_FEATURE_REGISTER_2_DA		BIT(0)
+>> +#define RMI_FEATURE_REGISTER_2_DA_COH		BIT(1)
+>> +#define RMI_FEATURE_REGISTER_2_VSMMU		BIT(2)
+>> +#define RMI_FEATURE_REGISTER_2_ATS		BIT(3)
+>> +#define RMI_FEATURE_REGISTER_2_MAX_VDEVS_ORDER	GEN_MASK(7, 4)
+>> +#define RMI_FEATURE_REGISTER_2_VDEV_KROU	BIT(8)
+>> +#define RMI_FEATURE_REGISTER_2_NON_TEE_STREAM	BIT(9)
+>> +
+>> +#define RMI_FEATURE_REGISTER_3_MAX_NUM_AUX_PLANES	GENMASK(3, 0)
+>> +#define RMI_FEATURE_REGISTER_3_RTT_PLAN			GENMASK(5, 4)
+>> +#define RMI_FEATURE_REGISTER_3_RTT_S2AP_INDIRECT	BIT(6)
+>> +
+>> +#define RMI_FEATURE_REGISTER_4_MEC_COUNT		GENMASK(63, 0)
+>> +
+>> +#define RMI_MEM_CATEGORY_CONVENTIONAL		0
+>> +#define RMI_MEM_CATEGORY_DEV_NCOH		1
+>> +#define RMI_MEM_CATEGORY_DEV_COH		2
+>> +
+>> +#define RMI_TRACKING_RESERVED			0
+>> +#define RMI_TRACKING_NONE			1
+>> +#define RMI_TRACKING_FINE			2
+>> +#define RMI_TRACKING_COARSE			3
+>> +
+>> +#define RMI_GRANULE_SIZE_4KB	0
+>> +#define RMI_GRANULE_SIZE_16KB	1
+>> +#define RMI_GRANULE_SIZE_64KB	2
+>> +
+>> +/*
+>> + * Note many of these fields are smaller than u64 but all fields have u64
+>> + * alignment, so use u64 to ensure correct alignment.
 >> + */
->> +int liveupdate_get_file_incoming(struct liveupdate_session *s, u64 token,
->> +				 struct file **filep)
->> +{
->> +	return luo_retrieve_file(luo_file_set_from_session(s), token, filep);
->> +}
->> diff --git a/kernel/liveupdate/luo_internal.h b/kernel/liveupdate/luo_internal.h
->> index 8083d8739b09..a24933d24fd9 100644
->> --- a/kernel/liveupdate/luo_internal.h
->> +++ b/kernel/liveupdate/luo_internal.h
->> @@ -77,6 +77,22 @@ struct luo_session {
->>  	struct mutex mutex;
->>  };
+>> +struct rmm_config {
+>> +	union { /* 0x0 */
+>> +		struct {
+>> +			u64 tracking_region_size;
+>> +			u64 rmi_granule_size;
+>> +		};
+>> +		u8 sizer[0x1000];
+>> +	};
+>> +};
+>> +
+>> +#define RMI_REALM_PARAM_FLAG_LPA2		BIT(0)
+>> +#define RMI_REALM_PARAM_FLAG_SVE		BIT(1)
+>> +#define RMI_REALM_PARAM_FLAG_PMU		BIT(2)
+>> +
+>> +struct realm_params {
+>> +	union { /* 0x0 */
+>> +		struct {
+>> +			u64 flags;
+>> +			u64 s2sz;
+>> +			u64 sve_vl;
+>> +			u64 num_bps;
+>> +			u64 num_wps;
+>> +			u64 pmu_num_ctrs;
+>> +			u64 hash_algo;
+>> +		};
+>> +		u8 padding0[0x400];
+>> +	};
+>> +	union { /* 0x400 */
+>> +		u8 rpv[64];
+>> +		u8 padding1[0x400];
+>> +	};
+>> +	union { /* 0x800 */
+>> +		struct {
+>> +			u64 padding;
+>> +			u64 rtt_base;
+>> +			s64 rtt_level_start;
+>> +			u64 rtt_num_start;
+>> +		};
+>> +		u8 padding2[0x800];
+>> +	};
+>> +};
+>> +
+>> +/*
+>> + * The number of GPRs (starting from X0) that are
+>> + * configured by the host when a REC is created.
+>> + */
+>> +#define REC_CREATE_NR_GPRS		8
+>> +
+>> +#define REC_PARAMS_FLAG_RUNNABLE	BIT_ULL(0)
+>> +
+>> +#define REC_PARAMS_AUX_GRANULES		16
+>> +
+>> +struct rec_params {
+>> +	union { /* 0x0 */
+>> +		u64 flags;
+>> +		u8 padding0[0x100];
+>> +	};
+>> +	union { /* 0x100 */
+>> +		u64 mpidr;
+>> +		u8 padding1[0x100];
+>> +	};
+>> +	union { /* 0x200 */
+>> +		u64 pc;
+>> +		u8 padding2[0x100];
+>> +	};
+>> +	union { /* 0x300 */
+>> +		u64 gprs[REC_CREATE_NR_GPRS];
+>> +		u8 padding3[0x500];
+>> +	};
+>> +	union { /* 0x800 */
+>> +		struct {
+>> +			u64 num_rec_aux;
+>> +			u64 aux[REC_PARAMS_AUX_GRANULES];
+>> +		};
+>> +		u8 padding4[0x800];
+>> +	};
+>> +};
+>> +
+>> +#define REC_ENTER_FLAG_EMULATED_MMIO	BIT(0)
+>> +#define REC_ENTER_FLAG_INJECT_SEA	BIT(1)
+>> +#define REC_ENTER_FLAG_TRAP_WFI		BIT(2)
+>> +#define REC_ENTER_FLAG_TRAP_WFE		BIT(3)
+>> +#define REC_ENTER_FLAG_RIPAS_RESPONSE	BIT(4)
+>> +
+>> +#define REC_RUN_GPRS			31
+>> +#define REC_MAX_GIC_NUM_LRS		16
+>> +
+>> +#define RMI_PERMITTED_GICV3_HCR_BITS	(ICH_HCR_EL2_UIE |		\
+>> +					 ICH_HCR_EL2_LRENPIE |		\
+>> +					 ICH_HCR_EL2_NPIE |		\
+>> +					 ICH_HCR_EL2_VGrp0EIE |		\
+>> +					 ICH_HCR_EL2_VGrp0DIE |		\
+>> +					 ICH_HCR_EL2_VGrp1EIE |		\
+>> +					 ICH_HCR_EL2_VGrp1DIE |		\
+>> +					 ICH_HCR_EL2_TDIR)
+>> +
+>> +struct rec_enter {
+>> +	union { /* 0x000 */
+>> +		u64 flags;
+>> +		u8 padding0[0x200];
+>> +	};
+>> +	union { /* 0x200 */
+>> +		u64 gprs[REC_RUN_GPRS];
+>> +		u8 padding1[0x100];
+>> +	};
+>> +	u8 padding3[0x500];
+>> +};
+>> +
+>> +#define RMI_EXIT_SYNC			0x00
+>> +#define RMI_EXIT_IRQ			0x01
+>> +#define RMI_EXIT_FIQ			0x02
+>> +#define RMI_EXIT_PSCI			0x03
+>> +#define RMI_EXIT_RIPAS_CHANGE		0x04
+>> +#define RMI_EXIT_HOST_CALL		0x05
+>> +#define RMI_EXIT_SERROR			0x06
+>> +
+>> +struct rec_exit {
+>> +	union { /* 0x000 */
+>> +		u8 exit_reason;
+>> +		u8 padding0[0x100];
+>> +	};
+>> +	union { /* 0x100 */
+>> +		struct {
+>> +			u64 esr;
+>> +			u64 far;
+>> +			u64 hpfar;
+>> +			u64 rtt_tree;
+>> +		};
+>> +		u8 padding1[0x100];
+>> +	};
+>> +	union { /* 0x200 */
+>> +		u64 gprs[REC_RUN_GPRS];
+>> +		u8 padding2[0x100];
+>> +	};
+>> +	union { /* 0x300 */
+>> +		u8 padding3[0x100];
+>> +	};
+>> +	union { /* 0x400 */
+>> +		struct {
+>> +			u64 cntp_ctl;
+>> +			u64 cntp_cval;
+>> +			u64 cntv_ctl;
+>> +			u64 cntv_cval;
+>> +		};
+>> +		u8 padding4[0x100];
+>> +	};
+>> +	union { /* 0x500 */
+>> +		struct {
+>> +			u64 ripas_base;
+>> +			u64 ripas_top;
+>> +			u8 ripas_value;
+>> +			u8 padding8[15];
+>> +			u64 s2ap_base;
+>> +			u64 s2ap_top;
+>> +			u64 vdev_id_1;
+>> +			u64 vdev_id_2;
+>> +			u64 dev_mem_base;
+>> +			u64 dev_mem_top;
+>> +			u64 dev_mem_pa;
+>> +		};
+>> +		u8 padding5[0x100];
+>> +	};
+>> +	union { /* 0x600 */
+>> +		struct {
+>> +			u16 imm;
+>> +			u16 padding9;
+>> +			u64 plane;
+>> +		};
+>> +		u8 padding6[0x100];
+>> +	};
+>> +	union { /* 0x700 */
+>> +		struct {
+>> +			u8 pmu_ovf_status;
+>> +			u8 padding10[15];
+>> +			u64 vsmmu;
+>> +		};
+>> +		u8 padding7[0x100];
+>> +	};
+>> +};
+>> +
+>> +struct rec_run {
+>> +	struct rec_enter enter;
+>> +	struct rec_exit exit;
+>> +};
+>> +
+>> +#endif /* __ASM_RMI_SMC_H */
+>> -- 
+>> 2.43.0
 >>
->> +static inline struct liveupdate_session *luo_session_from_file_set(struct luo_file_set *file_set)
->> +{
->> +	struct luo_session *session;
->> +
->> +	session = container_of(file_set, struct luo_session, file_set);
->> +
->> +	return (struct liveupdate_session *)session;
->> +}
->> +
->> +static inline struct luo_file_set *luo_file_set_from_session(struct liveupdate_session *s)
->> +{
->> +	struct luo_session *session = (struct luo_session *)s;
->> +
->> +	return &session->file_set;
->> +}
->> +
->>  int luo_session_create(const char *name, struct file **filep);
->>  int luo_session_retrieve(const char *name, struct file **filep);
->>  int __init luo_session_setup_outgoing(void *fdt);
->> --
 >>
->
->Thanks,
->Praan
+
