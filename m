@@ -1,189 +1,131 @@
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE4403090D7;
-	Wed, 18 Mar 2026 15:51:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 643513DDDB9;
+	Wed, 18 Mar 2026 15:53:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.13
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773849123; cv=none; b=IK7che5oxH5puPL0+QVYfxj7hnccpUQIvnc1+s3ZLlMRax7qErot25mXCRfMto/wtMTbzLO9XcNV3G8fN8lo+5NBp4kZYxOx6AkQ3AgwPAN0NH0dA3EKD6TvT5POURpW56zroaJ2+1VyWxJqUUM1vBo5SJKpFE0eRpizg1TdfEM=
+	t=1773849188; cv=none; b=DTGG+sujipgXFkJXShbGjOtqCh1POt8+gr7l/l0QlAbgw4FS8yu4Wc3Kf8uE/KFF0paeXBJrEJuDNdpP723sOdDkS8t3Np27t73aHxX2Ni7kB70+dI7wub5Ph1tVMxq30fEShFHogUsrMe/Xj6Lg9lvL4fCvB9QRgrolUTHX7+s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773849123; c=relaxed/simple;
-	bh=owI70S1LGUsfBUDQ6MfwNmdqUFCKIzOdqqU5HCKkzxg=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=eX3ijhN1uEgYPbs7u0seVqHTU1iIqIGSczY2tI5K366wXpFA71azB2an3sUhRJ/0oQVpzY4/WLtpuOk2B0Lac90+RRTtAG43CFh1RO0vLWenNT0FNCOcLsfcWWw5QlxoGxR/2Y0+Gexm9sDFSgh6Hf6yVbkolT8vAh+gIcIeTE4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=B+en836W; arc=none smtp.client-ip=148.163.156.1
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+	s=arc-20240116; t=1773849188; c=relaxed/simple;
+	bh=pFnUgbC4BAP6kbjt7A6edto+AvRT245g79S5V7i8cxg=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=KiakGMHjWYhn6xDJou3gBf240TVc0wsBs+SyHbjv2MlSr4QsAKPY4nxYqPDMRfBBuf26nS8vmnfgszdDfHJsl7jfFUnnRa6m9KYceSBG4ZBs+bnrhPrddxpi4y6CAv+8tIJ6FzPKU5MZG4HL+GS/3/GJ/SBn5Beqb+0mQPH8T+A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=kM+u71oK; arc=none smtp.client-ip=198.175.65.13
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="B+en836W"
-Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 62IBxsit1711869;
-	Wed, 18 Mar 2026 15:51:59 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=t/i2rM
-	rtwYM8VRwV0oACeJBuipfZSagOj23FBgyTFlA=; b=B+en836WJnbPIZOL2opjUi
-	oYbk1f8NKpNjSYxNyIgb7FQgC+bMSUoIAVfAIQUG5/PymhzwjzJ1/pSueUk5qWM2
-	3RqTMbW3OdG13WaqgzS8h9q2WfpnPw6GGnUxb2NGz0DV0VU/ZF/vDbSW6p0TFZ5R
-	h2LoU5MaRAUUbJFQ3Z+QeAY4gjKaxjKZtXpnrXbPGmJSOICNML+eJ0EtpRvVnh3W
-	pJJ86TszlTHjyg2ySUnHUkX0lz2pul0i64GCtPFr/qXJHjDPoYquMRtuHTUb7fh7
-	I8GoL0i+YkewZJLnGW+O+u/tfTFwdTW/y1IVsS2Lv8Cbgj4oMqqkd/4HSuX9F89A
-	==
-Received: from ppma13.dal12v.mail.ibm.com (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4cvy64tvve-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 18 Mar 2026 15:51:58 +0000 (GMT)
-Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma13.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 62IEjvxI032448;
-	Wed, 18 Mar 2026 15:51:57 GMT
-Received: from smtprelay07.fra02v.mail.ibm.com ([9.218.2.229])
-	by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 4cwm7jxfmb-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 18 Mar 2026 15:51:57 +0000
-Received: from smtpav04.fra02v.mail.ibm.com (smtpav04.fra02v.mail.ibm.com [10.20.54.103])
-	by smtprelay07.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 62IFpsDU42729768
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Wed, 18 Mar 2026 15:51:54 GMT
-Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 2C24B20043;
-	Wed, 18 Mar 2026 15:51:54 +0000 (GMT)
-Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 0A65520040;
-	Wed, 18 Mar 2026 15:51:54 +0000 (GMT)
-Received: from p-imbrenda (unknown [9.52.223.175])
-	by smtpav04.fra02v.mail.ibm.com (Postfix) with SMTP;
-	Wed, 18 Mar 2026 15:51:53 +0000 (GMT)
-Date: Wed, 18 Mar 2026 16:51:51 +0100
-From: Claudio Imbrenda <imbrenda@linux.ibm.com>
-To: Janosch Frank <frankja@linux.ibm.com>
-Cc: kvm@vger.kernel.org, linux-s390@vger.kernel.org, borntraeger@linux.ibm.com,
-        akrowiak@linux.ibm.com
-Subject: Re: [RFC 10/10] KVM: s390: Cleanup kvm_s390_store_status_unloaded
-Message-ID: <20260318165151.19e0aff8@p-imbrenda>
-In-Reply-To: <20260316180310.17765-11-frankja@linux.ibm.com>
-References: <20260316180310.17765-1-frankja@linux.ibm.com>
-	<20260316180310.17765-11-frankja@linux.ibm.com>
-Organization: IBM
-X-Mailer: Claws Mail 4.3.1 (GTK 3.24.49; x86_64-redhat-linux-gnu)
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="kM+u71oK"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1773849186; x=1805385186;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=pFnUgbC4BAP6kbjt7A6edto+AvRT245g79S5V7i8cxg=;
+  b=kM+u71oKaHCoK5eM0Op5aiveBDAeqbqhSxQip/p8wjRSGQCLeNZzOPO7
+   DtAgU1yetCMn0lsWTmo7MSXdMCedqzrJnOqpujfoCGs37Ftxdj+n3GT0I
+   joS5DelCVf6A9ZZwaKZ3JtjNuYg4Nzq/BXMMgqgl80ki3rBAlxDIw9nFn
+   eYKUVeV4FHWm9NxkN8CfhQ8mn6ykkkq35vJJTwaI/2U+f74ILThUh3vvL
+   5duHXslk68JPkgxQ4bEHjiJeeXzXM5WqKk3eKejimC0e7yHbo0ZiqHUj2
+   KbXUJTzVTuRqgIVVLKXHIb9P/XIjT+ZVdtp5V+FSTZBzqU4WDe3K97y3S
+   w==;
+X-CSE-ConnectionGUID: 6uhce+THR3CIt9liUMhU0A==
+X-CSE-MsgGUID: ybyvYaxXT4yKBkw/bxLD0A==
+X-IronPort-AV: E=McAfee;i="6800,10657,11733"; a="85984100"
+X-IronPort-AV: E=Sophos;i="6.23,127,1770624000"; 
+   d="scan'208";a="85984100"
+Received: from orviesa010.jf.intel.com ([10.64.159.150])
+  by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Mar 2026 08:53:05 -0700
+X-CSE-ConnectionGUID: UVMSaBj6SxWk6/WjXvukqA==
+X-CSE-MsgGUID: ndXYUsg5QOuBkvp0PHLfGQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.23,127,1770624000"; 
+   d="scan'208";a="221891711"
+Received: from rchatre-mobl4.amr.corp.intel.com (HELO [10.125.108.223]) ([10.125.108.223])
+  by orviesa010-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Mar 2026 08:53:04 -0700
+Message-ID: <09fd1a56-71bc-4fd0-8d07-724ca1c830f6@intel.com>
+Date: Wed, 18 Mar 2026 08:53:03 -0700
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 1/3] x86/cpu: Enable FSGSBASE early in
+ cpu_init_exception_handling()
+To: Borislav Petkov <bp@alien8.de>, Sohil Mehta <sohil.mehta@intel.com>
+Cc: Nikunj A Dadhania <nikunj@amd.com>, linux-kernel@vger.kernel.org,
+ kvm@vger.kernel.org, thomas.lendacky@amd.com, dave.hansen@linux.intel.com,
+ tglx@kernel.org, mingo@redhat.com, hpa@zytor.com, xin@zytor.com,
+ seanjc@google.com, pbonzini@redhat.com, x86@kernel.org,
+ chang.seok.bae@intel.com, jon.grimm@amd.com
+References: <20260318075654.1792916-1-nikunj@amd.com>
+ <20260318075654.1792916-2-nikunj@amd.com>
+ <d3140cf6-e61a-40a5-8153-300d5fe07954@intel.com>
+ <20260318153918.GBabrHJjRA6T2crJbK@fat_crate.local>
+Content-Language: en-US
+From: Dave Hansen <dave.hansen@intel.com>
+Autocrypt: addr=dave.hansen@intel.com; keydata=
+ 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
+In-Reply-To: <20260318153918.GBabrHJjRA6T2crJbK@fat_crate.local>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: 0bXRT_g3BStRudUkf-EfGv22H_AnRUwg
-X-Proofpoint-GUID: 0bXRT_g3BStRudUkf-EfGv22H_AnRUwg
-X-Authority-Analysis: v=2.4 cv=KYnfcAYD c=1 sm=1 tr=0 ts=69baca1e cx=c_pps
- a=AfN7/Ok6k8XGzOShvHwTGQ==:117 a=AfN7/Ok6k8XGzOShvHwTGQ==:17
- a=kj9zAlcOel0A:10 a=Yq5XynenixoA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=RnoormkPH1_aCDwRdu11:22 a=iQ6ETzBq9ecOQQE5vZCe:22 a=VnNF1IyMAAAA:8
- a=DqrMr1mMpynh7L77FOMA:9 a=CjuIK1q_8ugA:10
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMzE4MDEzNCBTYWx0ZWRfX7+uUbrAeOmKy
- Qb4eXhE8NpH4x195DgdmMWyBXj0R1DpmGfrf93DHZPSII9V4hOIcTP0r4+P1LLRIgVsKG28J4Bs
- AITcAKv9CIe9WcVl1/em4A0I3jKIwLbcmyowgCp1CnVnJipHF6/DsBjlb/g52b2yv8e+oJqIcqA
- CtASyDYCKETpEM5XhYE1kgHOUQtFh1runzkBSf7XXx89Vfssrzmb+z/jGZsnl0LBlb0y9S7PQQ2
- sfMOxThA+ZZ1uOf2qMah6+3ahCT/3BiXOzOCWHGjqzX1YTgHQzT/c508mwCG/r50aW2iRxFmBes
- boqk1QEyuXNmTWVf9fcDdkEE6+9sl8qrjB97lPiW9FRUccMj2W+a+wDF5ToOEbWvEe9Cl3I9UO1
- HTd7Q5R4vFnzGw40yRIQcaDcNgnJqXd/ooz9FkqO8HLUDPow2KMPw+KHHd2mWXjI5JeBNND+gF0
- kFsHfMSOwhfQmnQsv/Q==
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
- definitions=2026-03-18_01,2026-03-17_02,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- phishscore=0 lowpriorityscore=0 priorityscore=1501 suspectscore=0 bulkscore=0
- spamscore=0 impostorscore=0 malwarescore=0 adultscore=0 clxscore=1015
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2603050001 definitions=main-2603180134
 
-On Mon, 16 Mar 2026 16:23:57 +0000
-Janosch Frank <frankja@linux.ibm.com> wrote:
-
-> Fixup comments, use gpa_t and replace magic constants.
+On 3/18/26 08:39, Borislav Petkov wrote:
+> On Wed, Mar 18, 2026 at 06:54:46AM -0700, Sohil Mehta wrote:
+>> It would be more accurate to say ".. before any exceptions that uses
+>> paranoid_entry() can occur.."
+>>
+>> I think early exceptions such #VC can still occur and the
+>> bringup_idt_table is set up to handle those.
+> I really don't understand what the splitting of hairs is supposed to bring
+> here?!
 > 
-> Signed-off-by: Janosch Frank <frankja@linux.ibm.com>
-> ---
->  arch/s390/kvm/kvm-s390.c | 24 ++++++++++++++++--------
->  arch/s390/kvm/kvm-s390.h |  4 ++--
->  2 files changed, 18 insertions(+), 10 deletions(-)
-> 
-> diff --git a/arch/s390/kvm/kvm-s390.c b/arch/s390/kvm/kvm-s390.c
-> index 1668580008c6..c76f83b38d27 100644
-> --- a/arch/s390/kvm/kvm-s390.c
-> +++ b/arch/s390/kvm/kvm-s390.c
-> @@ -4993,11 +4993,12 @@ int kvm_arch_vcpu_ioctl_run(struct kvm_vcpu *vcpu)
->  
->  /*
->   * store status at address
-> - * we use have two special cases:
-> - * KVM_S390_STORE_STATUS_NOADDR: -> 0x1200 on 64 bit
-> - * KVM_S390_STORE_STATUS_PREFIXED: -> prefix
-> + *
-> + * We have two special cases:
-> + * - KVM_S390_STORE_STATUS_NOADDR: -> 0x1200 on 64 bit
-> + * - KVM_S390_STORE_STATUS_PREFIXED: -> prefix
->   */
+> The commit message is more than clear and overly detailed - I even thought of
+> shortening it because it went too long...
 
-since you're touching this comment block, make it proper kerneldoc,
-describing parameters, return value, etc
-
-the rest of the patch is good
-
-> -int kvm_s390_store_status_unloaded(struct kvm_vcpu *vcpu, unsigned long gpa)
-> +int kvm_s390_store_status_unloaded(struct kvm_vcpu *vcpu, gpa_t gpa)
->  {
->  	unsigned char archmode = 1;
->  	freg_t fprs[NUM_FPRS];
-> @@ -5007,15 +5008,22 @@ int kvm_s390_store_status_unloaded(struct kvm_vcpu *vcpu, unsigned long gpa)
->  
->  	px = kvm_s390_get_prefix(vcpu);
->  	if (gpa == KVM_S390_STORE_STATUS_NOADDR) {
-> -		if (write_guest_abs(vcpu, 163, &archmode, 1))
-> +		if (write_guest_abs(vcpu, __LC_AR_MODE_ID, &archmode, 1))
->  			return -EFAULT;
->  		gpa = 0;
->  	} else if (gpa == KVM_S390_STORE_STATUS_PREFIXED) {
-> -		if (write_guest_real(vcpu, 163, &archmode, 1))
-> +		if (write_guest_real(vcpu, __LC_AR_MODE_ID, &archmode, 1))
->  			return -EFAULT;
->  		gpa = px;
-> -	} else
-> +	} else {
-> +		/*
-> +		 * Store status at address does NOT store vrs and arch
-> +		 * indication. Since we add __LC_FPREGS_SAVE_AREA to
-> +		 * the address when writing, we need to subtract it
-> +		 * here.
-> +		 */
->  		gpa -= __LC_FPREGS_SAVE_AREA;
-> +	}
->  
->  	/* manually convert vector registers if necessary */
->  	if (cpu_has_vx()) {
-> @@ -5049,7 +5057,7 @@ int kvm_s390_store_status_unloaded(struct kvm_vcpu *vcpu, unsigned long gpa)
->  	return rc ? -EFAULT : 0;
->  }
->  
-> -int kvm_s390_vcpu_store_status(struct kvm_vcpu *vcpu, unsigned long addr)
-> +int kvm_s390_vcpu_store_status(struct kvm_vcpu *vcpu, gpa_t addr)
->  {
->  	/*
->  	 * The guest FPRS and ACRS are in the host FPRS/ACRS due to the lazy
-> diff --git a/arch/s390/kvm/kvm-s390.h b/arch/s390/kvm/kvm-s390.h
-> index 1ffaec723a30..9cfc3caee334 100644
-> --- a/arch/s390/kvm/kvm-s390.h
-> +++ b/arch/s390/kvm/kvm-s390.h
-> @@ -450,8 +450,8 @@ int kvm_s390_handle_sigp_pei(struct kvm_vcpu *vcpu);
->  
->  /* implemented in kvm-s390.c */
->  int kvm_s390_try_set_tod_clock(struct kvm *kvm, const struct kvm_s390_vm_tod_clock *gtod);
-> -int kvm_s390_store_status_unloaded(struct kvm_vcpu *vcpu, unsigned long addr);
-> -int kvm_s390_vcpu_store_status(struct kvm_vcpu *vcpu, unsigned long addr);
-> +int kvm_s390_store_status_unloaded(struct kvm_vcpu *vcpu, gpa_t addr);
-> +int kvm_s390_vcpu_store_status(struct kvm_vcpu *vcpu, gpa_t addr);
->  int kvm_s390_vcpu_start(struct kvm_vcpu *vcpu);
->  int kvm_s390_vcpu_stop(struct kvm_vcpu *vcpu);
->  void kvm_s390_vcpu_block(struct kvm_vcpu *vcpu);
-
+Yeah, while Sohil's suggested addition is technically correct, the
+suggestion is a _bit_ too detailed for my taste. I'm OK leaving it like
+Nikunj's original version.
