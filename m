@@ -1,141 +1,121 @@
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E7B5B3CE494;
-	Wed, 18 Mar 2026 14:29:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C8E0D25EFBE;
+	Wed, 18 Mar 2026 14:30:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773844168; cv=none; b=NboYCwG0Pr2S+yKRqlYeCX79Fd+ZC5T0JfHkRgcoW3i+NtDFBbbc0w4r1Gu01ORQtcyYJdFbAJTt38ickhFXG5mEMM31+7709RslNGUErAwpW63e7tBonsMuEuCEzNEU1CqNhXWfCIjanZvukSF1Gesk9S2Vl7coYikJp31vfZs=
+	t=1773844241; cv=none; b=bIFoHvkZBXWjVGhcBnFtUlCI9cH+Xv2yr8vos+826D64Wln3mFfsHrDs2vRfU2mvLOiDwUzEds8sTxtSYbzZrmVZhX9toDWRf/p7wl/yrEkuocw1ZOYkncy38zK60ZnZluwmjN/3tRQnZs2m3dTlbxFSSHTJM+tE/TfDOpynguI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773844168; c=relaxed/simple;
-	bh=pkOWRcIRtEOpYUTb8nMg66OkPFOLlPmOV6W1TLeQTRs=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=CAkyXMCdnDF3fNe1q6rn3se742abT1mTo81Pdref35pyzOfCO/APvEf62PGIBa4p3dNPAbmMG4NjorDTWjGv/DHE3u44J/yid6Ypfa/vnS4WvqKjvvjJ5nDoqjCPgKnwPWLVvWINdxgxrM+aOLGsTYJK0uo+O8zPL5mPDwbQA0Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=L+sKwSW+; arc=none smtp.client-ip=148.163.158.5
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+	s=arc-20240116; t=1773844241; c=relaxed/simple;
+	bh=Ln6LT7iFsbHfiIGSe26VOTUzsYHtrwok3OHHecWCI6U=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=jGgfm4Lnx3jBiw9wh2mjjshuKf5aFSCTsyIAB3BP4V66qDXsPfeMkVKspzlUwBWWPXx6dLCy7Z0pCr3AvCqEQf1EBWIBEhxo5oLVTYZ1IiP79r3SQ95W8Aj2nzovxV4dh75SNlo81HOX9aFjOZxcmRMWeQr7IWMabG1CuP4WkGA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=m8fwNDjF; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="L+sKwSW+"
-Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 62IC2FQd924584;
-	Wed, 18 Mar 2026 14:29:25 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=qZtOl5
-	qa1PVqu9S9AwPIbLQEBN1u92LHtlnKxRb8Y1M=; b=L+sKwSW+gEqWeQ7iEKeYFA
-	G+QWEKmh4sdWwQFCNKdRF/BvFx5Ir3htU+jIRsr+RDMabDeLnSOfzauV5FPNs8PS
-	mrLHCcpi+6NZCVwEUtLlw4uY5xgvVzeVwjZQda29Z0J0jxa2keXSjRmmaw8doVJQ
-	7/1RW+HZ+6VT7o6HdT8FTKhNWlh6tGyNTYSFwgxsciQtd4ORbdwSiKN35Ykc3vZe
-	mYhHdGDrQVg1AppZE0/P2DM3CMstRbJ9+sbB/4HHrx+w31hpN2DZbwxQzJioSNT4
-	g+J5zTVvZyk9tKeL0tF1GVOnY8y5GPSC75Qnte9gn+Wki+yuteqbvM4LeRU72s3A
-	==
-Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4cvw3j1x2q-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 18 Mar 2026 14:29:25 +0000 (GMT)
-Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma22.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 62IDQ9hD014024;
-	Wed, 18 Mar 2026 14:29:25 GMT
-Received: from smtprelay06.fra02v.mail.ibm.com ([9.218.2.230])
-	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4cwjcy6e8d-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 18 Mar 2026 14:29:25 +0000
-Received: from smtpav03.fra02v.mail.ibm.com (smtpav03.fra02v.mail.ibm.com [10.20.54.102])
-	by smtprelay06.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 62IETK1M25821618
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Wed, 18 Mar 2026 14:29:20 GMT
-Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 8D30A2004D;
-	Wed, 18 Mar 2026 14:29:20 +0000 (GMT)
-Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 65AE02004B;
-	Wed, 18 Mar 2026 14:29:20 +0000 (GMT)
-Received: from p-imbrenda (unknown [9.52.223.175])
-	by smtpav03.fra02v.mail.ibm.com (Postfix) with SMTP;
-	Wed, 18 Mar 2026 14:29:20 +0000 (GMT)
-Date: Wed, 18 Mar 2026 15:29:18 +0100
-From: Claudio Imbrenda <imbrenda@linux.ibm.com>
-To: Janosch Frank <frankja@linux.ibm.com>
-Cc: kvm@vger.kernel.org, linux-s390@vger.kernel.org, borntraeger@linux.ibm.com,
-        akrowiak@linux.ibm.com
-Subject: Re: [RFC 04/10] KVM: s390: kvm_s390_real_to_abs() should return
- gpa_t
-Message-ID: <20260318152918.5231a61c@p-imbrenda>
-In-Reply-To: <20260316180310.17765-5-frankja@linux.ibm.com>
-References: <20260316180310.17765-1-frankja@linux.ibm.com>
-	<20260316180310.17765-5-frankja@linux.ibm.com>
-Organization: IBM
-X-Mailer: Claws Mail 4.3.1 (GTK 3.24.49; x86_64-redhat-linux-gnu)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="m8fwNDjF"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 52293C19421;
+	Wed, 18 Mar 2026 14:30:38 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1773844241;
+	bh=Ln6LT7iFsbHfiIGSe26VOTUzsYHtrwok3OHHecWCI6U=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=m8fwNDjFt5Q32cP0ZpC20xuraNT5i3GesrdVH3EhZcR70UzJXuxfLoxaaUUWOJ77/
+	 Q/biyjU+dJIfdsDTbN7Ktb+sIeUQliA4lKM/YLG8Do2vVeEHoJfzYnfBVImGHuUIDE
+	 WI+52JNbFmGuFqLehWCmP7U+b3dfkAQ/32brMrNYuV7Jhmn0pFa6nwb6XWmM49sMig
+	 o7Nr7xr7Aw9Kt1EjIw/pm76UAC9Pf2kYbvRSqm4vKPx8JvWLCdQPkBqKg079yyq05N
+	 M6vtlNdccukKeHCrQ8uHPq/T9T93tyj971CWSOL/VHOZh5/47rrHsEdql0uzzqAohV
+	 +wO/45aCvS0Ow==
+Message-ID: <70848e13-b272-4a46-84b7-d5f217f82be9@kernel.org>
+Date: Wed, 18 Mar 2026 15:30:36 +0100
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] mm/pagewalk: fix race between concurrent split and
+ refault
+To: "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>,
+ "Boone, Max" <mboone@akamai.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+ "Liam R. Howlett" <Liam.Howlett@oracle.com>,
+ Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>,
+ Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
+ "linux-mm@kvack.org" <linux-mm@kvack.org>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ "kvm@vger.kernel.org" <kvm@vger.kernel.org>,
+ "stable@vger.kernel.org" <stable@vger.kernel.org>
+References: <20260317-pagewalk-check-pmd-refault-v1-1-f699a010f2b3@akamai.com>
+ <7ded426a-0cb5-437b-9634-8d806b704db6@lucifer.local>
+ <719CB417-F511-402A-91E3-8A696ABCE0D5@akamai.com>
+ <789b4585-7542-412a-b9ab-3f7de8d8dc89@lucifer.local>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <789b4585-7542-412a-b9ab-3f7de8d8dc89@lucifer.local>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: rQJGjdnIy-uX-JEJlDt0gP2gLM9zTJKL
-X-Proofpoint-ORIG-GUID: rQJGjdnIy-uX-JEJlDt0gP2gLM9zTJKL
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMzE4MDEyMSBTYWx0ZWRfX9Hg0CY3k/bhE
- VI25Cg57J27eVYdkrMonGY3yxcYnT8+efVVJIZzwF+7E2y+4uwrzuPGceZe2+w/3vl77frETtb1
- u6yXZBwgX+Pv+GP49NCK4iuCld3E16CgaYQ4VU27kzWz3wnFYFQquYx4CK1To9XF5bSKf/Q23YD
- WMv4w53vrDJwJrdVFkIAbAfUPcwNTdnWmpb6kvT+jq7j5HvnDNpB2GsXl7SILFk6p7QGGPmYG5h
- 3YdVarUxGe4Yz0WOQRUrj/Jg/OW7hsvWoLxkket4dut2h8/6ytJWg6UtV0Qlg3jqM/GfttAInAl
- TuHvhs0/qxypt4dUNKi5KZi4bRorbGYBBGAcv1rW+fm1gB1j4eREuQ6OIBnBIy5ly2JcRdDDTz/
- dujYmTIouzIqRMKEhwOwo9AIFWaRNvwowtVSLyfou/Xg3xVixtyGS0t0MvNItBrbGP+waX21GrU
- 0dOjrneTe/ktMNxdO/g==
-X-Authority-Analysis: v=2.4 cv=Hf8ZjyE8 c=1 sm=1 tr=0 ts=69bab6c5 cx=c_pps
- a=5BHTudwdYE3Te8bg5FgnPg==:117 a=5BHTudwdYE3Te8bg5FgnPg==:17
- a=kj9zAlcOel0A:10 a=Yq5XynenixoA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=RnoormkPH1_aCDwRdu11:22 a=Y2IxJ9c9Rs8Kov3niI8_:22 a=VnNF1IyMAAAA:8
- a=5VlVqv3a4dB1-NjogH0A:9 a=CjuIK1q_8ugA:10
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
- definitions=2026-03-18_01,2026-03-17_02,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- phishscore=0 malwarescore=0 lowpriorityscore=0 impostorscore=0 bulkscore=0
- suspectscore=0 priorityscore=1501 spamscore=0 adultscore=0 clxscore=1015
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2603050001 definitions=main-2603180121
 
-On Mon, 16 Mar 2026 16:23:51 +0000
-Janosch Frank <frankja@linux.ibm.com> wrote:
-
-> An absolute address is definitely guest physical.
+>>>
+>>> Yikes, really? :) This is from 2017, I'm a little surprised we didn't hit
+>>> this bug until now.
+>>>
+>>> Has something changed more recently that made it more likely to hit? Or is
+>>> it one of those 'needed people to have more RAM first' or bigger PCI BAR's?
+>>
+>> Yeah, frankly, this is the first patch where I could find the splitting being introduced. It might
+>> be more correct to refer to the introduction of 1G huge_pfnmaps?
 > 
-> Signed-off-by: Janosch Frank <frankja@linux.ibm.com>
-> ---
->  arch/s390/kvm/gaccess.h | 6 +++---
->  1 file changed, 3 insertions(+), 3 deletions(-)
-> 
-> diff --git a/arch/s390/kvm/gaccess.h b/arch/s390/kvm/gaccess.h
-> index b5385cec60f4..ee346b607a07 100644
-> --- a/arch/s390/kvm/gaccess.h
-> +++ b/arch/s390/kvm/gaccess.h
-> @@ -24,7 +24,7 @@
->   * Returns the guest absolute address that corresponds to the passed guest real
->   * address @gra of by applying the given prefix.
->   */
-> -static inline unsigned long _kvm_s390_real_to_abs(u32 prefix, unsigned long gra)
-> +static inline gpa_t _kvm_s390_real_to_abs(u32 prefix, unsigned long gra)
->  {
->  	if (gra < 2 * PAGE_SIZE)
->  		gra += prefix;
-> @@ -41,8 +41,8 @@ static inline unsigned long _kvm_s390_real_to_abs(u32 prefix, unsigned long gra)
->   * Returns the guest absolute address that corresponds to the passed guest real
->   * address @gra of a virtual guest cpu by applying its prefix.
->   */
-> -static inline unsigned long kvm_s390_real_to_abs(struct kvm_vcpu *vcpu,
-> -						 unsigned long gra)
-> +static inline gpa_t kvm_s390_real_to_abs(struct kvm_vcpu *vcpu,
-> +					 unsigned long gra)
+> Yeah maybe that makes more sense? David - what do you think?
 
-as Christoph suggested, please put it on one line; with that fixed:
+I'm not sure whether DAX with PUDs could trigger something similar?
 
-Reviewed-by: Claudio Imbrenda <imbrenda@linux.ibm.com>
+-- 
+Cheers,
 
->  {
->  	return _kvm_s390_real_to_abs(kvm_s390_get_prefix(vcpu), gra);
->  }
-
+David
