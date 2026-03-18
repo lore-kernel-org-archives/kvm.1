@@ -1,118 +1,116 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B33E634DB66;
-	Wed, 18 Mar 2026 10:50:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D3A2C3A5E8D;
+	Wed, 18 Mar 2026 10:58:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773831031; cv=none; b=GWP0VWyT8g3KMpPdtjRgCYR7Co6I+t7oBdKVDYljvZhTt1oyc79TwO2Ca/D78RxMdi47WmY8xOqr8fWC/OV2ZvPN8EV82oOTyBbyrvjUTuLPGTfW3Ym62Jd8x4NoscWtWf7BAZxT1dhRh0F85KqrG4AvGaqA8nRCTbFX1Y8Rqkc=
+	t=1773831532; cv=none; b=S6qCivfnwRhYW8RANSfBrJ6ycI3FqUXFTsuVYoLGmF7DQGpgjp8a0cBmok9d/YRgHJ8Tk+0+QdwS0GxKuxdcqTh+6WF97E0NJedkeci8B+iOEm4ACnMK5mRCGQhqH7MTUMoSlr4xhHzuPbiL9IUB0WL/kuS5xIMFzzdZinjEz5M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773831031; c=relaxed/simple;
-	bh=okXOWphObIXIAlBWIeZzQv6uCPpw5hPKczJAOq3IjHY=;
-	h=Message-ID:Date:MIME-Version:From:To:Subject:Content-Type; b=iI9EmBcG3gG/1pwV+TpTKAV3/IpW2rBRPmxK9Y5iJ4MGYzoJ7ZcpsxHHBebjbjYe0J83iv9U1uuJ/TVaJlC8xkQ9Vn3QPrZnYyTDTrjKNvHokxctCDwZn+B3x3qco6hsLXjXmmUb75NOGo1ma7xE+IPte5dHWCtvu8aRzTbmoko=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hAN4uUE1; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1773831532; c=relaxed/simple;
+	bh=p2jBKMiGYkYgEeNXsJreklTsyyl9Kb+6pJjVfF66qec=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=nDZRvv8l4R5iC8nS6jFT+dPcpoSiW+wlYlRn+BUx/N5Vd0rRCB/kGK2ufXN+BOZEEGdkLkbQQYeEY5sPZ6XExZjsmQeY0Fu/J052SivAEPQklAlD3+S75m1EQ2zUKb3yb/zEzrR27g+vAlyvN8lbfcW1O8Dnqe1479Nz50CGwP8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=V3qsFYK8; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hAN4uUE1"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B979BC2BCAF;
-	Wed, 18 Mar 2026 10:50:23 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="V3qsFYK8"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E0D4BC2BC87;
+	Wed, 18 Mar 2026 10:58:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773831031;
-	bh=okXOWphObIXIAlBWIeZzQv6uCPpw5hPKczJAOq3IjHY=;
-	h=Date:From:To:Subject:From;
-	b=hAN4uUE1gGNmN7j+iUAkSBQChFbatzDAOCblBsGPrfxuCNa3ThJwlQy41HXXC2Njc
-	 66I/epeuhWTKKads/gv9CM5mRpOph+ztIftofHCf/MdML51Ep6bRFQjuN8GbfudYR+
-	 Xu2JJ3tjGPn85u9t1C19SnO1Ydt26/z593eM0v+D+2MjsBAKpYJ3dZBcBnwtk+Fo68
-	 6LGnabQrJsNOZtk3urfRuhGfHh8ppGQepeEw65oLT/kezPgcbvKJfq6Dq9A1QneC8R
-	 c9NA4E1lUwKpfdeznlekxn+zfmb4nV3Uy9pKFlP5Vrh3c4QXTbYCizItcUUftquObf
-	 JEJIy8oH62IzQ==
-Message-ID: <22d1bdf9-4d21-4252-8558-e9618a409bc5@kernel.org>
-Date: Wed, 18 Mar 2026 11:50:21 +0100
+	s=k20201202; t=1773831532;
+	bh=p2jBKMiGYkYgEeNXsJreklTsyyl9Kb+6pJjVfF66qec=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=V3qsFYK85Bm0VBFDgGZsxdnyAykRaNm2g2uRZfJTcZDi6ZC1Y5aIGdR3GAbgDTmNH
+	 Hgy+PJ85NT8PcReeLyRJHqWgv0OUz2acbit2xTse6RD4ck7WtVAFxaAadq+F6EWw+e
+	 b4SG2Nq3BDx8bZJIDg6jnhIu1ac6Wj9NK15m/DJ/NzcT/ZCUkVv3NLucBkWIgLfT7P
+	 zyuc6bBL6mGkxgF3yuKQ34HHObLBrwYSAnNARYk4apG+z24COdDvxHt5/S205X4/3n
+	 b7u52QCfB73lZbg1ucllp8nW6/XA4/nesYAHpfFEzrIbKQ+BmcPj6E9wSGLpEzjcYV
+	 IxEIKdNxcnmkQ==
+Received: from phl-compute-11.internal (phl-compute-11.internal [10.202.2.51])
+	by mailfauth.phl.internal (Postfix) with ESMTP id DBCDDF40085;
+	Wed, 18 Mar 2026 06:58:50 -0400 (EDT)
+Received: from phl-frontend-04 ([10.202.2.163])
+  by phl-compute-11.internal (MEProxy); Wed, 18 Mar 2026 06:58:50 -0400
+X-ME-Sender: <xms:aoW6ab7SUFEhqM9NWURgvZ_sHtUOCtxfu4t5FlTTBtPVStP6pDJVeg>
+    <xme:aoW6aRnW33YsbVaYoGKPcZCr6Rk5ZrEXdOV6PzZMKhz2B6fENYzQZ0GKfRrGR8nJq
+    hsCo_75dUx3Wa3HO1wWiqQwJ9I8NNJRwsyWdOTWmdcIF2xDsHy4JqCg>
+X-ME-Received: <xmr:aoW6aW9whSe42eWgDeJl5Kq6p4oGR7chSGt2jZ4VbM8o3lH2L8TKNYjxSz_95w>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgdeftdefleehucetufdoteggodetrf
+    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
+    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
+    gurhepfffhvfevuffkfhggtggujgesthdtredttddtvdenucfhrhhomhepmfhirhihlhcu
+    ufhhuhhtshgvmhgruhcuoehkrghssehkvghrnhgvlhdrohhrgheqnecuggftrfgrthhtvg
+    hrnhepueeijeeiffekheeffffftdekleefleehhfefhfduheejhedvffeluedvudefgfek
+    necuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepkhhirh
+    hilhhlodhmvghsmhhtphgruhhthhhpvghrshhonhgrlhhithihqdduieduudeivdeiheeh
+    qddvkeeggeegjedvkedqkhgrsheppehkvghrnhgvlhdrohhrghesshhhuhhtvghmohhvrd
+    hnrghmvgdpnhgspghrtghpthhtohephedtpdhmohguvgepshhmthhpohhuthdprhgtphht
+    thhopegthhgrohdrghgrohesihhnthgvlhdrtghomhdprhgtphhtthhopehlihhnuhigqd
+    hkvghrnhgvlhesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehlihhnuhig
+    qdgtohgtoheslhhishhtshdrlhhinhhugidruggvvhdprhgtphhtthhopehkvhhmsehvgh
+    gvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtohepsghinhgsihhnrdifuheslhhinhhu
+    gidrihhnthgvlhdrtghomhdprhgtphhtthhopegurghnrdhjrdifihhllhhirghmshesih
+    hnthgvlhdrtghomhdprhgtphhtthhopegurghvvgdrhhgrnhhsvghnsehlihhnuhigrdhi
+    nhhtvghlrdgtohhmpdhrtghpthhtohepihhrrgdrfigvihhnhiesihhnthgvlhdrtghomh
+    dprhgtphhtthhopehkrghirdhhuhgrnhhgsehinhhtvghlrdgtohhm
+X-ME-Proxy: <xmx:aoW6acoie7GL4I_S2Z4BAPAf5cs0LJ92lUWUtbo5becHFMcu3jq5bQ>
+    <xmx:aoW6aVtXLHiF8t-LCYVJiK0TJSZTPagK-z-qdBnJiL7RYKi34j2eLw>
+    <xmx:aoW6afQXXWYNlg27MLIoGYhvtVxR6tlm-ePlyh4LcVheCgE1RqmNsA>
+    <xmx:aoW6aXWrYIxygT6QSHpcFUH_-TY-51wUDzza_z4Mrxk_eHtXswgoWw>
+    <xmx:aoW6aSBLmZZebujhUFKDFJS01f0auFT4TUKDqn31PRBihM13_oa4NzCG>
+Feedback-ID: i10464835:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
+ 18 Mar 2026 06:58:48 -0400 (EDT)
+Date: Wed, 18 Mar 2026 10:58:44 +0000
+From: Kiryl Shutsemau <kas@kernel.org>
+To: Chao Gao <chao.gao@intel.com>
+Cc: linux-kernel@vger.kernel.org, linux-coco@lists.linux.dev, 
+	kvm@vger.kernel.org, binbin.wu@linux.intel.com, dan.j.williams@intel.com, 
+	dave.hansen@linux.intel.com, ira.weiny@intel.com, kai.huang@intel.com, nik.borisov@suse.com, 
+	paulmck@kernel.org, pbonzini@redhat.com, reinette.chatre@intel.com, 
+	rick.p.edgecombe@intel.com, sagis@google.com, seanjc@google.com, 
+	tony.lindgren@linux.intel.com, vannapurve@google.com, vishal.l.verma@intel.com, 
+	yilun.xu@linux.intel.com, Thomas Gleixner <tglx@kernel.org>, 
+	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, x86@kernel.org, 
+	"H. Peter Anvin" <hpa@zytor.com>
+Subject: Re: [PATCH v5 08/22] x86/virt/seamldr: Allocate and populate a
+ module update request
+Message-ID: <abqFJZo632DAFsl_@thinkstation>
+References: <20260315135920.354657-1-chao.gao@intel.com>
+ <20260315135920.354657-9-chao.gao@intel.com>
+ <abkvOYQIi2RvEYh8@thinkstation>
+ <abpnWkENgaWoofZV@intel.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Content-Language: en-US
-To: "linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>,
- "linux-mm@kvack.org" <linux-mm@kvack.org>, KVM <kvm@vger.kernel.org>
-Subject: [Invitation] bi-weekly guest_memfd upstream call on 2026-03-19
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <abpnWkENgaWoofZV@intel.com>
 
-Hi,
+On Wed, Mar 18, 2026 at 04:50:34PM +0800, Chao Gao wrote:
+> >> +	ptr = sig;
+> >> +	for (i = 0; i < sig_size / SZ_4K; i++) {
+> >> +		/*
+> >> +		 * Don't assume @sig is page-aligned although it is 4KB-aligned.
+> >> +		 * Always add the in-page offset to get the physical address.
+> >> +		 */
+> >
+> >I don't follow this. If @sig is 4k aligned in VA, it is page aligned.
+> 
+> Dan's concern was that PAGE_SIZE is not guaranteed to be 4096.
+> 
+> I agree that PAGE_SIZE is 4K on x86 today. But to address that concern, I saw
+> two options:
+> 
+>   1. Add WARN_ON_ONCE(PAGE_SIZE != SZ_4K), or
+>   2. Handle it as in the code above.
+> 
+> I didn't find existing code using option 1 in x86, so I chose option 2.
 
-Our next guest_memfd upstream call is scheduled for tomorrow, Thursday,
-2026-03-19 at 8:00 - 9:00am (GMT-07:00) Pacific Time - Vancouver.
-
-!!! Note the GMT-08:00 -> GMT-07:00 change due to DST in the US :) !!!
-
-We'll be using the following Google meet:
-http://meet.google.com/wxp-wtju-jzw
-
-The meeting notes can be found at [1], where we also link recordings and
-collect current guest_memfd upstream proposals. If you want an google
-calendar invitation that also covers all future meetings, just write me
-or Ackerley a mail.
-
-In this meeting, we'll talk about the in-place conversion series and ABI
-implications ... and I'm sure other things will come up (pKVM update? :) ).
-
-To put something to discuss onto the agenda, reply to this mail or add
-them to the "Topics/questions for next meeting(s)" section in the
-meeting notes as a comment.
-
-[1]
-https://docs.google.com/document/d/1M6766BzdY1Lhk7LiR5IqVR8B8mG3cr-cxTxOrAosPOk/edit?usp=sharing
+Please, make it clear in the comment that you are talking about PAGE_SIZE != SZ_4K.
 
 -- 
-Cheers,
-
-David
-
+  Kiryl Shutsemau / Kirill A. Shutemov
