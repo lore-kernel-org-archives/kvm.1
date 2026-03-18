@@ -1,121 +1,225 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C8E0D25EFBE;
-	Wed, 18 Mar 2026 14:30:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67EEA3DA5A2;
+	Wed, 18 Mar 2026 14:53:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773844241; cv=none; b=bIFoHvkZBXWjVGhcBnFtUlCI9cH+Xv2yr8vos+826D64Wln3mFfsHrDs2vRfU2mvLOiDwUzEds8sTxtSYbzZrmVZhX9toDWRf/p7wl/yrEkuocw1ZOYkncy38zK60ZnZluwmjN/3tRQnZs2m3dTlbxFSSHTJM+tE/TfDOpynguI=
+	t=1773845599; cv=none; b=XIn1MLuC1MeCFUAZQA57D0SUZlv3iNomuL+9lcaW2Ww534GP/uEBSjRv5YfbwTJfxNS8dqBIodzTB+tnMT3FJ5nV+O53PFKUq5umf9mMSqOekSJDlStiOmWxHEPzyGYAZ5h7DubMm1Uszw1790Sq+zozDkkPK7Xp+Vbb3XOsADo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773844241; c=relaxed/simple;
-	bh=Ln6LT7iFsbHfiIGSe26VOTUzsYHtrwok3OHHecWCI6U=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=jGgfm4Lnx3jBiw9wh2mjjshuKf5aFSCTsyIAB3BP4V66qDXsPfeMkVKspzlUwBWWPXx6dLCy7Z0pCr3AvCqEQf1EBWIBEhxo5oLVTYZ1IiP79r3SQ95W8Aj2nzovxV4dh75SNlo81HOX9aFjOZxcmRMWeQr7IWMabG1CuP4WkGA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=m8fwNDjF; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1773845599; c=relaxed/simple;
+	bh=2r5LZkgEek2+Ix1aegf3xQ17H+CTfpsoU6zPIlRZTO4=;
+	h=Message-ID:Subject:From:To:Cc:In-Reply-To:References:Content-Type:
+	 Date:MIME-Version; b=cF0DuXjjqhFdN3O9sQeDH6cWtezaSb/nICtorcYqb1t+kjsmUVgYiS+8MzHaU/nGkDMlZpTYjV3Xy3ZpolCOfjlGS2Gn6vJsbrxX4SKRRIZLbAM2yJjeezZYAH8fact0ACgfWiilYguBeCJgLnhd8SMpgOqCd67Pw2MNsLVmgjI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=cPhQ+5yl; arc=none smtp.client-ip=148.163.156.1
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="m8fwNDjF"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 52293C19421;
-	Wed, 18 Mar 2026 14:30:38 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773844241;
-	bh=Ln6LT7iFsbHfiIGSe26VOTUzsYHtrwok3OHHecWCI6U=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=m8fwNDjFt5Q32cP0ZpC20xuraNT5i3GesrdVH3EhZcR70UzJXuxfLoxaaUUWOJ77/
-	 Q/biyjU+dJIfdsDTbN7Ktb+sIeUQliA4lKM/YLG8Do2vVeEHoJfzYnfBVImGHuUIDE
-	 WI+52JNbFmGuFqLehWCmP7U+b3dfkAQ/32brMrNYuV7Jhmn0pFa6nwb6XWmM49sMig
-	 o7Nr7xr7Aw9Kt1EjIw/pm76UAC9Pf2kYbvRSqm4vKPx8JvWLCdQPkBqKg079yyq05N
-	 M6vtlNdccukKeHCrQ8uHPq/T9T93tyj971CWSOL/VHOZh5/47rrHsEdql0uzzqAohV
-	 +wO/45aCvS0Ow==
-Message-ID: <70848e13-b272-4a46-84b7-d5f217f82be9@kernel.org>
-Date: Wed, 18 Mar 2026 15:30:36 +0100
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="cPhQ+5yl"
+Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 62I7TlA71047738;
+	Wed, 18 Mar 2026 14:53:12 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=fpcHp7
+	PBDl7AZ5k4URlEH+Ku22qJacWGVZHnUBjt494=; b=cPhQ+5ylEpvUUvFfs4XBFH
+	q/g9MnTmReiGwei5hkAPz8w6WfsMwWdmFH6RBwOXJE6YkLYN/4tQkf0iBg9UXzcV
+	YMNtmt6pUCVsfQePsJv1LbsOrEv88ubw4mzIkOXhUX7LMDXM1ZFW5WWWrOtE7WoO
+	aSw32qxTw/0uMTW7+BgCOnY2ILM7giUxspCqbQ5wqANU9W4Wdhgu1PO41hTe7XU8
+	waieMfR9xxtN8wNGt4ORdDNv2arHU476r9ViltBaz3sOE/bpm7mITl3WUXTuDz8P
+	3XSIdL2zx1fwbiyrJPcUMQ1dL4D/roeZlubIsXKQZogfQmlmqAQCouCf5gGBycKw
+	==
+Received: from ppma21.wdc07v.mail.ibm.com (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4cvy64tktt-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 18 Mar 2026 14:53:11 +0000 (GMT)
+Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma21.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 62IE20X0015644;
+	Wed, 18 Mar 2026 14:53:10 GMT
+Received: from smtprelay06.dal12v.mail.ibm.com ([172.16.1.8])
+	by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4cwk0nedmx-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 18 Mar 2026 14:53:10 +0000
+Received: from smtpav03.dal12v.mail.ibm.com (smtpav03.dal12v.mail.ibm.com [10.241.53.102])
+	by smtprelay06.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 62IEr9NF7340790
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Wed, 18 Mar 2026 14:53:09 GMT
+Received: from smtpav03.dal12v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 1E7E158056;
+	Wed, 18 Mar 2026 14:53:09 +0000 (GMT)
+Received: from smtpav03.dal12v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 1AF6F5803F;
+	Wed, 18 Mar 2026 14:53:06 +0000 (GMT)
+Received: from [9.87.158.112] (unknown [9.87.158.112])
+	by smtpav03.dal12v.mail.ibm.com (Postfix) with ESMTP;
+	Wed, 18 Mar 2026 14:53:05 +0000 (GMT)
+Message-ID: <303354146cb96d229d4ee0c148be56caf317dee2.camel@linux.ibm.com>
+Subject: Re: [PATCH v5 2/3] vfio/ism: Implement vfio_pci driver for ISM
+ devices
+From: Niklas Schnelle <schnelle@linux.ibm.com>
+To: Julian Ruess <julianr@linux.ibm.com>, wintera@linux.ibm.com,
+        ts@linux.ibm.com, oberpar@linux.ibm.com, gbayer@linux.ibm.com,
+        Alex
+ Williamson	 <alex@shazbot.org>, Jason Gunthorpe <jgg@ziepe.ca>,
+        Yishai
+ Hadas	 <yishaih@nvidia.com>,
+        Shameer Kolothum <skolothumtho@nvidia.com>,
+        Kevin Tian	 <kevin.tian@intel.com>
+Cc: mjrosato@linux.ibm.com, alifm@linux.ibm.com, raspl@linux.ibm.com,
+        hca@linux.ibm.com, agordeev@linux.ibm.com, gor@linux.ibm.com,
+        kvm@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-s390@vger.kernel.org, linux-pci@vger.kernel.org
+In-Reply-To: <20260317-vfio_pci_ism-v5-2-b73248b4e576@linux.ibm.com>
+References: <20260317-vfio_pci_ism-v5-0-b73248b4e576@linux.ibm.com>
+	 <20260317-vfio_pci_ism-v5-2-b73248b4e576@linux.ibm.com>
+Autocrypt: addr=schnelle@linux.ibm.com; prefer-encrypt=mutual;
+ keydata=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
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Date: Wed, 18 Mar 2026 15:52:05 +0100
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] mm/pagewalk: fix race between concurrent split and
- refault
-To: "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>,
- "Boone, Max" <mboone@akamai.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
- "Liam R. Howlett" <Liam.Howlett@oracle.com>,
- Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>,
- Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
- "linux-mm@kvack.org" <linux-mm@kvack.org>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- "kvm@vger.kernel.org" <kvm@vger.kernel.org>,
- "stable@vger.kernel.org" <stable@vger.kernel.org>
-References: <20260317-pagewalk-check-pmd-refault-v1-1-f699a010f2b3@akamai.com>
- <7ded426a-0cb5-437b-9634-8d806b704db6@lucifer.local>
- <719CB417-F511-402A-91E3-8A696ABCE0D5@akamai.com>
- <789b4585-7542-412a-b9ab-3f7de8d8dc89@lucifer.local>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- xsFNBFXLn5EBEAC+zYvAFJxCBY9Tr1xZgcESmxVNI/0ffzE/ZQOiHJl6mGkmA1R7/uUpiCjJ
- dBrn+lhhOYjjNefFQou6478faXE6o2AhmebqT4KiQoUQFV4R7y1KMEKoSyy8hQaK1umALTdL
- QZLQMzNE74ap+GDK0wnacPQFpcG1AE9RMq3aeErY5tujekBS32jfC/7AnH7I0v1v1TbbK3Gp
- XNeiN4QroO+5qaSr0ID2sz5jtBLRb15RMre27E1ImpaIv2Jw8NJgW0k/D1RyKCwaTsgRdwuK
- Kx/Y91XuSBdz0uOyU/S8kM1+ag0wvsGlpBVxRR/xw/E8M7TEwuCZQArqqTCmkG6HGcXFT0V9
- PXFNNgV5jXMQRwU0O/ztJIQqsE5LsUomE//bLwzj9IVsaQpKDqW6TAPjcdBDPLHvriq7kGjt
- WhVhdl0qEYB8lkBEU7V2Yb+SYhmhpDrti9Fq1EsmhiHSkxJcGREoMK/63r9WLZYI3+4W2rAc
- UucZa4OT27U5ZISjNg3Ev0rxU5UH2/pT4wJCfxwocmqaRr6UYmrtZmND89X0KigoFD/XSeVv
- jwBRNjPAubK9/k5NoRrYqztM9W6sJqrH8+UWZ1Idd/DdmogJh0gNC0+N42Za9yBRURfIdKSb
- B3JfpUqcWwE7vUaYrHG1nw54pLUoPG6sAA7Mehl3nd4pZUALHwARAQABzS5EYXZpZCBIaWxk
- ZW5icmFuZCAoQ3VycmVudCkgPGRhdmlkQGtlcm5lbC5vcmc+wsGQBBMBCAA6AhsDBQkmWAik
- AgsJBBUKCQgCFgICHgUCF4AWIQQb2cqtc1xMOkYN/MpN3hD3AP+DWgUCaYJt/AIZAQAKCRBN
- 3hD3AP+DWriiD/9BLGEKG+N8L2AXhikJg6YmXom9ytRwPqDgpHpVg2xdhopoWdMRXjzOrIKD
- g4LSnFaKneQD0hZhoArEeamG5tyo32xoRsPwkbpIzL0OKSZ8G6mVbFGpjmyDLQCAxteXCLXz
- ZI0VbsuJKelYnKcXWOIndOrNRvE5eoOfTt2XfBnAapxMYY2IsV+qaUXlO63GgfIOg8RBaj7x
- 3NxkI3rV0SHhI4GU9K6jCvGghxeS1QX6L/XI9mfAYaIwGy5B68kF26piAVYv/QZDEVIpo3t7
- /fjSpxKT8plJH6rhhR0epy8dWRHk3qT5tk2P85twasdloWtkMZ7FsCJRKWscm1BLpsDn6EQ4
- jeMHECiY9kGKKi8dQpv3FRyo2QApZ49NNDbwcR0ZndK0XFo15iH708H5Qja/8TuXCwnPWAcJ
- DQoNIDFyaxe26Rx3ZwUkRALa3iPcVjE0//TrQ4KnFf+lMBSrS33xDDBfevW9+Dk6IISmDH1R
- HFq2jpkN+FX/PE8eVhV68B2DsAPZ5rUwyCKUXPTJ/irrCCmAAb5Jpv11S7hUSpqtM/6oVESC
- 3z/7CzrVtRODzLtNgV4r5EI+wAv/3PgJLlMwgJM90Fb3CB2IgbxhjvmB1WNdvXACVydx55V7
- LPPKodSTF29rlnQAf9HLgCphuuSrrPn5VQDaYZl4N/7zc2wcWM7BTQRVy5+RARAA59fefSDR
- 9nMGCb9LbMX+TFAoIQo/wgP5XPyzLYakO+94GrgfZjfhdaxPXMsl2+o8jhp/hlIzG56taNdt
- VZtPp3ih1AgbR8rHgXw1xwOpuAd5lE1qNd54ndHuADO9a9A0vPimIes78Hi1/yy+ZEEvRkHk
- /kDa6F3AtTc1m4rbbOk2fiKzzsE9YXweFjQvl9p+AMw6qd/iC4lUk9g0+FQXNdRs+o4o6Qvy
- iOQJfGQ4UcBuOy1IrkJrd8qq5jet1fcM2j4QvsW8CLDWZS1L7kZ5gT5EycMKxUWb8LuRjxzZ
- 3QY1aQH2kkzn6acigU3HLtgFyV1gBNV44ehjgvJpRY2cC8VhanTx0dZ9mj1YKIky5N+C0f21
- zvntBqcxV0+3p8MrxRRcgEtDZNav+xAoT3G0W4SahAaUTWXpsZoOecwtxi74CyneQNPTDjNg
- azHmvpdBVEfj7k3p4dmJp5i0U66Onmf6mMFpArvBRSMOKU9DlAzMi4IvhiNWjKVaIE2Se9BY
- FdKVAJaZq85P2y20ZBd08ILnKcj7XKZkLU5FkoA0udEBvQ0f9QLNyyy3DZMCQWcwRuj1m73D
- sq8DEFBdZ5eEkj1dCyx+t/ga6x2rHyc8Sl86oK1tvAkwBNsfKou3v+jP/l14a7DGBvrmlYjO
- 59o3t6inu6H7pt7OL6u6BQj7DoMAEQEAAcLBfAQYAQgAJgIbDBYhBBvZyq1zXEw6Rg38yk3e
- EPcA/4NaBQJonNqrBQkmWAihAAoJEE3eEPcA/4NaKtMQALAJ8PzprBEXbXcEXwDKQu+P/vts
- IfUb1UNMfMV76BicGa5NCZnJNQASDP/+bFg6O3gx5NbhHHPeaWz/VxlOmYHokHodOvtL0WCC
- 8A5PEP8tOk6029Z+J+xUcMrJClNVFpzVvOpb1lCbhjwAV465Hy+NUSbbUiRxdzNQtLtgZzOV
- Zw7jxUCs4UUZLQTCuBpFgb15bBxYZ/BL9MbzxPxvfUQIPbnzQMcqtpUs21CMK2PdfCh5c4gS
- sDci6D5/ZIBw94UQWmGpM/O1ilGXde2ZzzGYl64glmccD8e87OnEgKnH3FbnJnT4iJchtSvx
- yJNi1+t0+qDti4m88+/9IuPqCKb6Stl+s2dnLtJNrjXBGJtsQG/sRpqsJz5x1/2nPJSRMsx9
- 5YfqbdrJSOFXDzZ8/r82HgQEtUvlSXNaXCa95ez0UkOG7+bDm2b3s0XahBQeLVCH0mw3RAQg
- r7xDAYKIrAwfHHmMTnBQDPJwVqxJjVNr7yBic4yfzVWGCGNE4DnOW0vcIeoyhy9vnIa3w1uZ
- 3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
- CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
- qIws/H2t
-In-Reply-To: <789b4585-7542-412a-b9ab-3f7de8d8dc89@lucifer.local>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+User-Agent: Evolution 3.58.3 (3.58.3-1.fc43) 
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: gOSe7nPsEoc4zFpkLfrWbv9GE5WE_1XM
+X-Proofpoint-GUID: gOSe7nPsEoc4zFpkLfrWbv9GE5WE_1XM
+X-Authority-Analysis: v=2.4 cv=KYnfcAYD c=1 sm=1 tr=0 ts=69babc57 cx=c_pps
+ a=GFwsV6G8L6GxiO2Y/PsHdQ==:117 a=GFwsV6G8L6GxiO2Y/PsHdQ==:17
+ a=IkcTkHD0fZMA:10 a=Yq5XynenixoA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=RnoormkPH1_aCDwRdu11:22 a=iQ6ETzBq9ecOQQE5vZCe:22 a=VnNF1IyMAAAA:8
+ a=BtHQ3rn8FEEjlfXL7dsA:9 a=QEXdDO2ut3YA:10
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMzE4MDEyNSBTYWx0ZWRfXxfOL7Rt4zbJr
+ lvylaOQJQtXmEkgCWNdfnCxHHR6hirLxxqQcP7f1KQFjiavXkNOzCIgvIScmgOHDYvRGOK2svmj
+ kWpScgGdVJNwkJ+hMs2F5DQMqgdbaA9mPiq2x4UTTmPU1Idk2xyNWMPJhc7Kdj17+Gr6159ngur
+ lhDA6KnijwT2gV7oGatq/sgjSy40eNjGe1rLyPMufK9/ecuRqvmCeg+FG8hJcFoRXQVbwpKCYMU
+ 5JqA5FFjcWQ7MGMibw5BypsDFSXIfCB8kQX5cWqMC4NfJ6n2oop8IoF/fzxXea7ZugXn7vCtpZc
+ Xzk5pIalEkxkhGes9NYooLk0SzWW5NqfkOZwGOu68MTMtuY2G2sBJ8sZtifrNbZZrdCC4KzbwLK
+ eYkQ33tSpARHPiI66AY8dNxDURwNQxc6RjSyZJKeGRUKFfge1xpmC4x3LM/teLsb/xcq4sWAid8
+ tohCAgIpF1wMlN7+xjQ==
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
+ definitions=2026-03-18_01,2026-03-17_02,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ phishscore=0 lowpriorityscore=0 priorityscore=1501 suspectscore=0 bulkscore=0
+ spamscore=0 impostorscore=0 malwarescore=0 adultscore=0 clxscore=1015
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2603050001 definitions=main-2603180125
 
->>>
->>> Yikes, really? :) This is from 2017, I'm a little surprised we didn't hit
->>> this bug until now.
->>>
->>> Has something changed more recently that made it more likely to hit? Or is
->>> it one of those 'needed people to have more RAM first' or bigger PCI BAR's?
->>
->> Yeah, frankly, this is the first patch where I could find the splitting being introduced. It might
->> be more correct to refer to the introduction of 1G huge_pfnmaps?
-> 
-> Yeah maybe that makes more sense? David - what do you think?
+On Tue, 2026-03-17 at 13:58 +0100, Julian Ruess wrote:
+> Add a vfio_pci variant driver for the s390-specific Internal Shared
+> Memory (ISM) devices used for inter-VM communication.
+>=20
+> This enables the development of vfio-pci-based user space drivers for
+> ISM devices.
+>=20
+> On s390, kernel primitives such as ioread() and iowrite() are switched
+> over from function handle based PCI load/stores instructions to PCI
+> memory-I/O (MIO) loads/stores when these are available and not
+> explicitly disabled. Since these instructions cannot be used with ISM
+> devices, ensure that classic function handle-based PCI instructions are
+> used instead.
+>=20
+> The driver is still required even when MIO instructions are disabled, as
+> the ISM device relies on the PCI store block (PCISTB) instruction to
+> perform write operations.
+>=20
+> Stores are not fragmented, therefore one ioctl corresponds to exactly
+> one PCISTB instruction. User space must ensure to not write more than
+> 4096 bytes at once to an ISM BAR which is the maximum payload of the
+> PCISTB instruction.
+>=20
+> Signed-off-by: Julian Ruess <julianr@linux.ibm.com>
+> ---
+--- snip ---
+> +/*
+> + * Use __zpci_load() to bypass automatic use of
+> + * PCI MIO instructions which are not supported on ISM devices
+> + */
+> +#define ISM_READ(size)                                                  =
+      \
+> +	static int ism_read##size(struct zpci_dev *zdev, int bar,             \
+> +				  ssize_t *filled, char __user *buf,          \
+> +				  loff_t off)                                 \
+> +	{                                                                     \
+> +		u64 req, tmp;                                                 \
+> +		u##size val;                                                  \
+> +		int ret;                                                      \
+> +									      \
+> +		req =3D ZPCI_CREATE_REQ(READ_ONCE(zdev->fh), bar, sizeof(val)); \
+> +		ret =3D __zpci_load(&tmp, req, off);                            \
+> +		val =3D (u##size)tmp;                                           \
+> +		if (copy_to_user(buf, &val, sizeof(val)))                     \
+> +			return -EFAULT;                                       \
 
-I'm not sure whether DAX with PUDs could trigger something similar?
+This was actually noticed by sashiko.dev but since not everyone knows
+that tool yet and it still needs filtering, I'm repeating it here. This
+leaks kernel stack memory when __zpci_load() fails since the
+copy_to_user() still happens. In v4 on the other hand you had a proper
+early return.
 
--- 
-Cheers,
-
-David
+> +		*filled =3D sizeof(val);                                        \
+> +		return ret;                                                   \
+> +	}
+> +
+> +ISM_READ(64);
+> +ISM_READ(32);
+> +ISM_READ(16);
+> +ISM_READ(8);
+--- snip ---
