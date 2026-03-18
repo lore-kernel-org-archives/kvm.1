@@ -1,279 +1,197 @@
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 72A8D3E1204;
-	Wed, 18 Mar 2026 16:48:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773852504; cv=none; b=ZMBwv/s9fU3z3Hk6kAR89fwoy2QuZuwbxsTVlnDZbhWAWhKFv9MChK8IVyvgkAmY4flDFpk+x8AZRQr+743OLYgf4BFC84h7rumz5CmaIFLJFwCbZcDH+lp9je+5RzxwpNAYDjXybYz7KRXm5nI5ZKQPFeQyXxch49I0coNwr0Y=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773852504; c=relaxed/simple;
-	bh=vCUA+cOSJ3XWV3ShPCIE8U2hevDFJz7mNzHtWXortJU=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=IoLPWAF/sia/+lOmxkGhiJjQSd+gf+4VPW2TyEa1zL5ZWYpo1U44HqfCBMfexJL5v1PZ9GTAYI7c13m7WnKAvMHto+tGSyNYdfXl6v9xffufhBYg00xljaUyF7REiH84zvx0nGBWqR8I5wHRE87OG4bCDW4X7f0R8qYNKAMOygM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=pObL+YF6; arc=none smtp.client-ip=148.163.156.1
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 635162E0938;
+	Wed, 18 Mar 2026 16:49:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=198.175.65.9
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1773852573; cv=fail; b=hahpsIgqrwtgrejFGMzFQ9rL4LeO6eGqmfkYFAleeRTMPhEjTwNWPoW6IoC3M0dvymD7y+hAX9N4d0t1jpzYsRzXMRARDC+o7VpW5Ucr/plKN7adckpo/1BNCUvvHWDkp/8p3gY2ZdbYLtZwO9iGZtxx/Ri6ZtqebLL2tqnAEu8=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1773852573; c=relaxed/simple;
+	bh=aNepxhbTS0Ph31jtV1i2XsvfHmW59iH3pog7M7l6yE0=;
+	h=Message-ID:Date:Subject:To:CC:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=tnilG8XaI7e/0w5FDHwfHnZzceCQRNnmkPULfoPmrvCxxfnV2wUXCCWJp3rOq1vcbgsPHb1XGQh1FA3pbO/Pn8eQ4YakGyL4eYs83uV3IbEWFgk6Rk2sYiWalaGyXnqrtxhKOw1ezxBd3xxw1LbiZuAYohYwgCyI1BP+/RvNspE=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=fkjb66p7; arc=fail smtp.client-ip=198.175.65.9
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="pObL+YF6"
-Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 62IG0Sgk3794944;
-	Wed, 18 Mar 2026 16:48:22 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=U8+C5J
-	sEKI5Hx2NZdT05/uD0xP6LScDFhcO+pyRZFZ8=; b=pObL+YF6Sh6DZPC4mCoIux
-	uSboeYtN/9omollNbfsPXy3yKNW05/ybfA2CO+YLOW8++iSlLj6Kjg9s4+w/18KY
-	XaxqZuFf+XQsGniN1NxvzRT56h/AWOp9MBLTbPjo0D/obhxQ2VBlEkX7B5ZNFBXh
-	SnM3vDGbQmiHdcuauOOUsfXBh4AWIHUQk1Nw03FcLWKNGHWJz91DDTbKakO6S0sE
-	sSsi7RUEEs3HAOQytOc2GZjD4hxehpjPvt2ry0TYUA9lptfUcLIsbN+9huucleF1
-	HM5+swfqsscLi2rHSclKoG57xZ7L/bmllgwLuasGRs/ocdYAk1ggbwAXZZrwx1fA
-	==
-Received: from ppma12.dal12v.mail.ibm.com (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4cvybsb1ay-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 18 Mar 2026 16:48:22 +0000 (GMT)
-Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma12.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 62ID2IZC005412;
-	Wed, 18 Mar 2026 16:48:21 GMT
-Received: from smtprelay01.fra02v.mail.ibm.com ([9.218.2.227])
-	by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 4cwj0sey8g-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 18 Mar 2026 16:48:21 +0000
-Received: from smtpav04.fra02v.mail.ibm.com (smtpav04.fra02v.mail.ibm.com [10.20.54.103])
-	by smtprelay01.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 62IGmHqW59965894
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Wed, 18 Mar 2026 16:48:17 GMT
-Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id C7A832004E;
-	Wed, 18 Mar 2026 16:48:17 +0000 (GMT)
-Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id A8E572004B;
-	Wed, 18 Mar 2026 16:48:17 +0000 (GMT)
-Received: from p-imbrenda (unknown [9.52.223.175])
-	by smtpav04.fra02v.mail.ibm.com (Postfix) with SMTP;
-	Wed, 18 Mar 2026 16:48:17 +0000 (GMT)
-Date: Wed, 18 Mar 2026 17:48:15 +0100
-From: Claudio Imbrenda <imbrenda@linux.ibm.com>
-To: Janosch Frank <frankja@linux.ibm.com>
-Cc: kvm@vger.kernel.org, linux-s390@vger.kernel.org, borntraeger@linux.ibm.com,
-        akrowiak@linux.ibm.com
-Subject: Re: [RFC 05/10] KVM: s390: vsie: Cleanup and fixup of crycb
- handling
-Message-ID: <20260318174815.66b3326e@p-imbrenda>
-In-Reply-To: <20260316180310.17765-6-frankja@linux.ibm.com>
-References: <20260316180310.17765-1-frankja@linux.ibm.com>
-	<20260316180310.17765-6-frankja@linux.ibm.com>
-Organization: IBM
-X-Mailer: Claws Mail 4.3.1 (GTK 3.24.49; x86_64-redhat-linux-gnu)
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="fkjb66p7"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1773852573; x=1805388573;
+  h=message-id:date:subject:to:cc:references:from:
+   in-reply-to:content-transfer-encoding:mime-version;
+  bh=aNepxhbTS0Ph31jtV1i2XsvfHmW59iH3pog7M7l6yE0=;
+  b=fkjb66p74d3MQnNBVPuKfTzQ48G9jGU4KFvOgprDl8IzcFM35rFpC4LH
+   MZVLHF9XouVNSVo6srGJ4wWiJLekmV99T4ITyXfveURTPGevIDNn2bfqS
+   xl93eWscaQ1sfmhWfAcrBRvjsaUlaDVMzLIRKCCn6mMo/Hb4lO38QkFYq
+   OIKQT/ANcbTP9o7PmwZnfNka2qc+vjbTvw8euMZg+hlcJhlwI2AmreL57
+   Wuc1Dvv9ef9rYa/y1nj8Sqxf0hdDHKnVwQ9bhH2IxTIzy3PA11LdMQHRs
+   a0+fGNKh6ByZ989+ZAvYwJUqSQbhMQqKt7LFdtHfUSxWaTZ5eGHW2F+wW
+   g==;
+X-CSE-ConnectionGUID: laLpve9SRVyvVRM2r+sBig==
+X-CSE-MsgGUID: 0hi+KVuRQBuATR/l+JUj+Q==
+X-IronPort-AV: E=McAfee;i="6800,10657,11733"; a="97523108"
+X-IronPort-AV: E=Sophos;i="6.23,127,1770624000"; 
+   d="scan'208";a="97523108"
+Received: from orviesa005.jf.intel.com ([10.64.159.145])
+  by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Mar 2026 09:49:32 -0700
+X-CSE-ConnectionGUID: 3LA99dH2T/KmU7KetXRfqw==
+X-CSE-MsgGUID: TSvfppNOTT2R3nES9Y3I4g==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.23,127,1770624000"; 
+   d="scan'208";a="227634096"
+Received: from fmsmsx901.amr.corp.intel.com ([10.18.126.90])
+  by orviesa005.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Mar 2026 09:49:32 -0700
+Received: from FMSMSX903.amr.corp.intel.com (10.18.126.92) by
+ fmsmsx901.amr.corp.intel.com (10.18.126.90) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.37; Wed, 18 Mar 2026 09:49:30 -0700
+Received: from fmsedg903.ED.cps.intel.com (10.1.192.145) by
+ FMSMSX903.amr.corp.intel.com (10.18.126.92) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.37 via Frontend Transport; Wed, 18 Mar 2026 09:49:30 -0700
+Received: from DM5PR21CU001.outbound.protection.outlook.com (52.101.62.62) by
+ edgegateway.intel.com (192.55.55.83) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.37; Wed, 18 Mar 2026 09:49:30 -0700
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=RQc+qVG/iUMDhw88mSoIJ+L73SLXxYtO7VMVELNOKhZ/cC/FJyLq9QkSJG4wsA/qW1HZqH0LOU2wycjuylkSd/+fl1fpq/DDF905riTHZz5lxSAebcxpFGqNOwQZtDa4JVSZXdrhUgEIDFX7+kBi/vcFfvU42tn0ind7eqFUKnSm/fOoSlb26BKf/igz0FBwbSrP9wj/DZRJjO4Iq8Tv084TUMiQtazLviiyPMYItt5ROis6iGXpX2x1xaTrydS60zr5hlC575VHQNU2GH26926qxfxd5+c113kGDqLFPO4wUCpqJRTwyHr9q27VJcL+PbnvkTJtT5q8sAf64FiXVw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=s02gZRrbMlukIi8w9QopOmfaTe85Tw1WJ/wkr+eeh4w=;
+ b=SXfyvbNK+FwzHRo3OUvTC6YmNeEdB+hyDpVygz0wsGoz4bMKRqiqH754WsSBfO9mCbI/FmAiz1G2VIEzEspwuUNQ71UkV+dv8MTuQgzpQR0N1Tqn/CyxWWVj5QtabKVj8OwBhy9Hb/vSYv9BDP60HDuTVKr41WAVu9Pqui+T7G/sq+OZ0KXc+dETCtzYOCdg6i1Wn41lF1NghbHdJZ2z8X64czP4SgHCkh1NaSuT3JLePzQe8nu4xlwZBv2X+YoROaSXnZVaguEYb2fs+U52vuIEunv3r6oD+68nnnQqCh7iejue4ThgBekJU7wYFCGAB2KQZHaqRyidyL9ZwpqYDg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+Received: from DS0PR11MB7997.namprd11.prod.outlook.com (2603:10b6:8:125::14)
+ by SJ2PR11MB8452.namprd11.prod.outlook.com (2603:10b6:a03:574::22) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9723.19; Wed, 18 Mar
+ 2026 16:49:27 +0000
+Received: from DS0PR11MB7997.namprd11.prod.outlook.com
+ ([fe80::24fa:827f:6c5b:6246]) by DS0PR11MB7997.namprd11.prod.outlook.com
+ ([fe80::24fa:827f:6c5b:6246%4]) with mapi id 15.20.9723.014; Wed, 18 Mar 2026
+ 16:49:27 +0000
+Message-ID: <1ecd023d-2bd4-4a94-b315-65b9d140030f@intel.com>
+Date: Wed, 18 Mar 2026 09:49:25 -0700
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 1/3] x86/cpu: Enable FSGSBASE early in
+ cpu_init_exception_handling()
+Content-Language: en-US
+To: Dave Hansen <dave.hansen@intel.com>, Borislav Petkov <bp@alien8.de>
+CC: Nikunj A Dadhania <nikunj@amd.com>, <linux-kernel@vger.kernel.org>,
+	<kvm@vger.kernel.org>, <thomas.lendacky@amd.com>,
+	<dave.hansen@linux.intel.com>, <tglx@kernel.org>, <mingo@redhat.com>,
+	<hpa@zytor.com>, <xin@zytor.com>, <seanjc@google.com>, <pbonzini@redhat.com>,
+	<x86@kernel.org>, <chang.seok.bae@intel.com>, <jon.grimm@amd.com>
+References: <20260318075654.1792916-1-nikunj@amd.com>
+ <20260318075654.1792916-2-nikunj@amd.com>
+ <d3140cf6-e61a-40a5-8153-300d5fe07954@intel.com>
+ <20260318153918.GBabrHJjRA6T2crJbK@fat_crate.local>
+ <09fd1a56-71bc-4fd0-8d07-724ca1c830f6@intel.com>
+From: Sohil Mehta <sohil.mehta@intel.com>
+In-Reply-To: <09fd1a56-71bc-4fd0-8d07-724ca1c830f6@intel.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: SJ0PR03CA0344.namprd03.prod.outlook.com
+ (2603:10b6:a03:39c::19) To DS0PR11MB7997.namprd11.prod.outlook.com
+ (2603:10b6:8:125::14)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Authority-Analysis: v=2.4 cv=MMttWcZl c=1 sm=1 tr=0 ts=69bad756 cx=c_pps
- a=bLidbwmWQ0KltjZqbj+ezA==:117 a=bLidbwmWQ0KltjZqbj+ezA==:17
- a=kj9zAlcOel0A:10 a=Yq5XynenixoA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=RnoormkPH1_aCDwRdu11:22 a=uAbxVGIbfxUO_5tXvNgY:22 a=VnNF1IyMAAAA:8
- a=7qAVLcqjNKgLvm1FKecA:9 a=CjuIK1q_8ugA:10
-X-Proofpoint-ORIG-GUID: oebLeD_hkfqf6-bZVX8xkHsVaGyQwB4f
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMzE4MDE0MyBTYWx0ZWRfX6DOG1ikJLvv6
- bfecNMIqFhgS469ypjobSdGv+hev82KpIu/Jg7VU56dWbmC51t8VnNGN5Su4Mub0ZGO6eGYRGUy
- 7xWCBuVKnU+0Ndj4uHX+skZMBONCp9oT0b0LcpxdBZjO3nhHwyk/pnZoqD7PIzKiOOg+nIGFWrY
- ZmKIcTi1sER+faGTlp5U4kZs48cS8EqmOFnfiiwLLR13ezV+fbbuqa9UrvugLEj+NextGsdFchp
- vzTSWd+30pUcgSW5EHt975kl/e/lfK03L3XMPBChLIETZ5/pNl2n1ZW55vASUBGQLmEf6eIawg3
- RXwXmJ+nrn0B9imzyBZyz2rDjaK3jvoCXNuaTN4s1mxTvIH3mqqzwDqdU+IC7YOrsB4NDwFvhVM
- JFxcHJ7RLJ4c1PeJqnT/46QSyH1sYa08PYytJ+kWX66xlOldIp6LmNdMvYu/Pe5mU97r8dLVNM/
- F4P2YjR32H+O7IBQ3mA==
-X-Proofpoint-GUID: oebLeD_hkfqf6-bZVX8xkHsVaGyQwB4f
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
- definitions=2026-03-18_01,2026-03-17_02,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- suspectscore=0 lowpriorityscore=0 malwarescore=0 spamscore=0
- priorityscore=1501 impostorscore=0 adultscore=0 phishscore=0 clxscore=1015
- bulkscore=0 classifier=typeunknown authscore=0 authtc= authcc= route=outbound
- adjust=0 reason=mlx scancount=1 engine=8.22.0-2603050001
- definitions=main-2603180143
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DS0PR11MB7997:EE_|SJ2PR11MB8452:EE_
+X-MS-Office365-Filtering-Correlation-Id: 04d7f6fb-5ced-4028-f4c1-08de850e514d
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|7416014|366016|1800799024|22082099003|18002099003|56012099003;
+X-Microsoft-Antispam-Message-Info: Dq8Qhv7b7FcQkwp1ud/k2HGXqDw8y/8b9glo1WXBwlzudJu///K3mlN7zzYiDRu4GRE7UD+CU0I4zVexuD6EC/W5vSzYvWKXAq1KLWM7RQoQvgShFj/AVJ9wMZOEpq0Hx3u+0YUdZgM/O5SCBboQZv+NbP2uqZoaeuFzhiLFnwnA/ckfBcaX84hmyaNRPsTo5/P6xZIPD7OXQcLyiFGqzv7cJulHnj7yXmHHA6y91MS6Gui9jL2JYkQzdlAafz2uZGGeGn4PX/hE6z6vN4/sQZNQbFRpuAxn6jYJ4r+Coimxfs4nCCUWm/MEEV1+LftItgmQwws/aQK32NlmvCGMaXweRkGWLwuqYi5lCGaXDT14P5TJ15k5325khYc2+HXyIbXh3kkE8bAWtdL5g+eDNEhBVQIVIm/zAw/qYjIq6R5rapMRUn5ZwezbwOaMQeSsHkmCOxZ8nycL7vJFtEa2ucMtPQK2Kc0aJe9syCulnGmuF97oN5r6nAFoQKceqWXd2AVOlUKyd0o8FKfHj7e0ZzaYHSa/Ya7cE280jkLTPm52MbOwsnTQspJCpZr+d7SRQZ4e2cVQDRtsRIBp+caztlGelSYeqZN7XdoB/3SXTUWiqh8Akip+xg8xKpk7hqyjwRLeMnv6vUToBZ1TERTCQNR/3eVReI57/s2ukg/0V3mx5u3aHWRtrVaC+2XnMVSYe4LTj5urheEW7qiyIn8mafGyoJvfN18WAtbXNuoYY2U=
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS0PR11MB7997.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(366016)(1800799024)(22082099003)(18002099003)(56012099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?WlplZUFwdVd2TE5GYkV6Z1FXMEd5Sm5Wd1VCVDRscCtwVFNoZVUyM1loWkYx?=
+ =?utf-8?B?N0h0Uk9JRFR2MVBXMXhHZTBveUFkRGtSZkRBTWhKU2owYVRTNjZsZWF6OExx?=
+ =?utf-8?B?VkcvL1hIZnFnYXVOYjZWRFVVcmt1RzZFMEZlbGVZS0padHJPcDVsb3dCcFRJ?=
+ =?utf-8?B?S3daUWEzajZWYk1DOUt5TmEvMGlrNVo3YzM1ZHRzMlYza1dmSWNMTkRJTEVH?=
+ =?utf-8?B?Q1lOMlplSUljbnkxYjN2SG56SFA2NEx3RTRBbm5PdzJEMFlyb1cwMDJZaFA0?=
+ =?utf-8?B?NSt3eXFVcUJRNTBOdGVJNTZzWkk0SlBSMCtDb012aitSSTMwck9jREYyR2dM?=
+ =?utf-8?B?ZlkxUDc5M2IxSTlxWnRFdzc5Q3NMVFRqcWNjTlFkUUtGNHloMlNwbmxKamg1?=
+ =?utf-8?B?OGRVNjA3bmFSdm5SbmljOU1CQTBLdWhLODNESy93aDhoc2pnd1FJTnh2VDd5?=
+ =?utf-8?B?NVl0V2MyU2UzVUFBU1FGS3AwbXlWMndTQ0tGblA5S1FoRVROSlp1RzZoUWRh?=
+ =?utf-8?B?NVkrT211UXl5RTJGOTRZMXpXV0JRWGx5TTlQa2lINzZILzI4bktzb21Bblp1?=
+ =?utf-8?B?eWZCZjZhWXVGS3NYeDNDWTZPNWpZelVoQlJTVVFZT3hkYTFldHVQNDZhQkIr?=
+ =?utf-8?B?WlpzRStqeUxBWHhUU3dKK1pYdUJMRHFGN0w4TEVpekk0c3liczZhZVZaZDJI?=
+ =?utf-8?B?YjFXVTJKZlZ2QnMvZkl3WGJkRmtydXYrUmt4bzVtcG0rZ0ZQaGNmSVZrUEY5?=
+ =?utf-8?B?cXVzbDFVeGJMbUVRbWc3TGpQWTBVWU01MlhUbEJsSDhxREU2dzYvcVVpSFRW?=
+ =?utf-8?B?a2ltNHRWUlUvanMrZURKZkM5YkZYcjJhQk5XR2NsQmhRVmJ5SFlPRmRqamJQ?=
+ =?utf-8?B?N283aTdTSGg2ZElDVVF1STJDa0dheHlUL3J0L1Y5MjlSSWI4UzFxdHl3aHJj?=
+ =?utf-8?B?T1ExV2xrUmFya2hpMERLR1NlZXVxc3YxUUt6eFErdHc1dTV2L2t2TjYyNkEw?=
+ =?utf-8?B?L1AwR3U5ODRvWmJqK0JONm9UWHI1K1N3b2V5ZFBRa2ZuNmp3VC83OG1SWlJO?=
+ =?utf-8?B?S1dVTmU3Z1g4S2IrNXEwbkN5djh5c2RLbCswdUxpT2ZiUmhWN1kyK0FqaEpx?=
+ =?utf-8?B?end1K0tucDZFNXppdEpmanA4Q3dOSS9TVkNMWktXSkw0dXphL1lmdGorQWpi?=
+ =?utf-8?B?dWhsODRQTW5vaHlhc1RKNmtkNVZlMWR3d3Zlb3hzUTd2R3JzTy9PaUg4VWxh?=
+ =?utf-8?B?OHlhaFF0MzdZamcvblNlM0FMcmJpeW5icVA5M3RxWFFwbnFDSTUrb1IrRmhH?=
+ =?utf-8?B?TkVnVHAxWElvTHlIQm1vUU53L0p4RlNUd29QaGZNNTJXazJNamZtWDBsU01R?=
+ =?utf-8?B?SjNYYUdVaWRrbDRrTXBpQlFDUEZmNVdDMUdzeHp6ek50WWVMOFkwaTRleWJU?=
+ =?utf-8?B?Rkx3RlYrQXpEUWFVSWZFVWZMNjJ6YTFsRnA3K3l6WDRmVUxLUkszbU5kWUVY?=
+ =?utf-8?B?eXBYWjFsUEFWRGVVbE1reXNRaXZnS0RLcmxNWG5LMHBURUtVbU4zS3hnR2Ew?=
+ =?utf-8?B?U1lSTkZaVEVlQ25JK21qWThRMmFLZ2IybGlLOXowQTIveE94dWpxYnZWQll6?=
+ =?utf-8?B?ZkJ6cmNVMm9KVkV0WHZlMFlybWhEb2YvaU1vUklzMzZZZnp6Q251UmdoVXhV?=
+ =?utf-8?B?RE15VU5hRlVLWjdwWWlEYjdSUlJwSDJROGxCNWJ2VEJOcjdpcDR3YUVBRW9r?=
+ =?utf-8?B?UUllMW5WWUFkaFdVeFF5cmI5ZnF1S29kZ2p2T3FQc3ErY3N4Yy9TYjliV1NM?=
+ =?utf-8?B?VEpKUjdpWkNqSUdKZGFxWlRwU0dld25FZHNRanRJSWsza1FCbFJWR1c5Z29B?=
+ =?utf-8?B?bytVQlVGRDZzNGt0WUk5WGtweitkTk56Zk9yaWJzRlVKK1EwVEFjd0lIbjhu?=
+ =?utf-8?B?V1VVN1UvMW5nRWw1NEw3ejlPLzhXM2djQkE1aDBQeVgyd0Z3T1N3aEJPMXkr?=
+ =?utf-8?B?TGdUZlFLV3oyWGZoRGQ2d0R5MngveHh6TEhLcTE4U09EWjczQ1lvbm42T2pR?=
+ =?utf-8?B?SzI1aXdrRFY1bGFUZDl0cmF3Y2hWZ0M4bEViT21Fc0FWYzhlUVNHMzVEV2I5?=
+ =?utf-8?B?WWFjT2R4YmN5Qm1KTHF6aGIxa3EvNzAyWjJlSitwZ0s3VnNyVHVLRC9oTGxt?=
+ =?utf-8?B?Q29VTFFyaDZQeUtxR2VJSkNmZlVFWjZCZG0wM0dPUk8vb3FSNnF5aDRhQXpJ?=
+ =?utf-8?B?dmV6SlhNR0tlN3BxZGtJVG1yRGpjWFpiNVkyd2g2ZzdZNmJuR3lWZWhKWWZI?=
+ =?utf-8?B?aWhDRUp0Y1plL21pRGhRWFBmTUVmL1lQc0ZVaGNranZtWC9UUWVkdz09?=
+X-Exchange-RoutingPolicyChecked: aVc3Pqffl87i92wCusY8XrFYTU3CTmem2JHb7rkdPZ4pUGTTkD6lUaz9DRqkExIuPWyl1yuCDdBLMYZv41Yitvnvd1JF5/zpiwOGLxDsCf8clUwwtRREgVog1gGx1l8UE4VavjIjsf4P0iq8qVilOCD67oKEURCgwUNjp3i8yP8HSI3lFBwlu9lRFCgY+vgM0v5iYgPzKfAO4M5H871zPv9q8KYT3oPa3nzktDvjMgN/CxC0gYKfUirfFTPaOPWVTJrW4cbPJDBO4HvBNrQVO92OliiMfDiGKHaCCfRZ0R/T+CssPUsayFp8RfmeAA0QYVs90fFGlVLGleWXDZHaEg==
+X-MS-Exchange-CrossTenant-Network-Message-Id: 04d7f6fb-5ced-4028-f4c1-08de850e514d
+X-MS-Exchange-CrossTenant-AuthSource: DS0PR11MB7997.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 18 Mar 2026 16:49:27.5078
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: VmVMyJUKhMNXuwhlwEFKGDy9d8QDSBc1blnI5UhljhCzJ6J09FwNW9shUwEAfS+4BGFi9Ax0XkYjAnz0zq6ziw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ2PR11MB8452
+X-OriginatorOrg: intel.com
 
-On Mon, 16 Mar 2026 16:23:52 +0000
-Janosch Frank <frankja@linux.ibm.com> wrote:
-
-> The crycbd denotes an absolute address and as such we need to use
-> gpa_t and read_guest_abs() instead of read_guest_real().
+On 3/18/2026 8:53 AM, Dave Hansen wrote:
+> On 3/18/26 08:39, Borislav Petkov wrote:
+>> On Wed, Mar 18, 2026 at 06:54:46AM -0700, Sohil Mehta wrote:
+>>> It would be more accurate to say ".. before any exceptions that uses
+>>> paranoid_entry() can occur.."
+>>>
+>>> I think early exceptions such #VC can still occur and the
+>>> bringup_idt_table is set up to handle those.
+>> I really don't understand what the splitting of hairs is supposed to bring
+>> here?!
+>>
+>> The commit message is more than clear and overly detailed - I even thought of
+>> shortening it because it went too long...
 > 
-> We don't want to copy the reserved fields into the host, so let's
-> define size constants that only include the masks and ignore the
-> reserved fields.
-> 
-> While we're at it, remove magic constants with compiler backed
-> constants.
-> 
-> Signed-off-by: Janosch Frank <frankja@linux.ibm.com>
+> Yeah, while Sohil's suggested addition is technically correct, the
+> suggestion is a _bit_ too detailed for my taste. I'm OK leaving it like
+> Nikunj's original version.
 
-Reviewed-by: Claudio Imbrenda <imbrenda@linux.ibm.com>
 
-> ---
->  arch/s390/include/asm/kvm_host.h |  6 ++++
->  arch/s390/kvm/vsie.c             | 50 +++++++++++++++-----------------
->  2 files changed, 30 insertions(+), 26 deletions(-)
-> 
-> diff --git a/arch/s390/include/asm/kvm_host.h b/arch/s390/include/asm/kvm_host.h
-> index 64a50f0862aa..52827db2fa97 100644
-> --- a/arch/s390/include/asm/kvm_host.h
-> +++ b/arch/s390/include/asm/kvm_host.h
-> @@ -516,6 +516,8 @@ struct kvm_s390_crypto {
->  	__u8 apie;
->  };
->  
-> +#define APCB_NUM_MASKS 3
-> +
->  #define APCB0_MASK_SIZE 1
->  struct kvm_s390_apcb0 {
->  	__u64 apm[APCB0_MASK_SIZE];		/* 0x0000 */
-> @@ -540,6 +542,10 @@ struct kvm_s390_crypto_cb {
->  	struct kvm_s390_apcb1 apcb1;		/* 0x0080 */
->  };
->  
-> +#define APCB_KEY_MASK_SIZE \
-> +	(sizeof_field(struct kvm_s390_crypto_cb, dea_wrapping_key_mask) + \
-> +	 sizeof_field(struct kvm_s390_crypto_cb, aes_wrapping_key_mask))
-> +
->  struct kvm_s390_gisa {
->  	union {
->  		struct { /* common to all formats */
-> diff --git a/arch/s390/kvm/vsie.c b/arch/s390/kvm/vsie.c
-> index c0d36afd4023..13480d65c59d 100644
-> --- a/arch/s390/kvm/vsie.c
-> +++ b/arch/s390/kvm/vsie.c
-> @@ -155,17 +155,17 @@ static int prepare_cpuflags(struct kvm_vcpu *vcpu, struct vsie_page *vsie_page)
->  	atomic_set(&scb_s->cpuflags, newflags);
->  	return 0;
->  }
-> +
->  /* Copy to APCB FORMAT1 from APCB FORMAT0 */
->  static int setup_apcb10(struct kvm_vcpu *vcpu, struct kvm_s390_apcb1 *apcb_s,
-> -			unsigned long crycb_gpa, struct kvm_s390_apcb1 *apcb_h)
-> +			gpa_t crycb_gpa, struct kvm_s390_apcb1 *apcb_h)
->  {
->  	struct kvm_s390_apcb0 tmp;
-> -	unsigned long apcb_gpa;
-> +	gpa_t apcb_gpa;
->  
->  	apcb_gpa = crycb_gpa + offsetof(struct kvm_s390_crypto_cb, apcb0);
->  
-> -	if (read_guest_real(vcpu, apcb_gpa, &tmp,
-> -			    sizeof(struct kvm_s390_apcb0)))
-> +	if (read_guest_abs(vcpu, apcb_gpa, &tmp, sizeof(tmp)))
->  		return -EFAULT;
->  
->  	apcb_s->apm[0] = apcb_h->apm[0] & tmp.apm[0];
-> @@ -173,7 +173,6 @@ static int setup_apcb10(struct kvm_vcpu *vcpu, struct kvm_s390_apcb1 *apcb_s,
->  	apcb_s->adm[0] = apcb_h->adm[0] & tmp.adm[0] & 0xffff000000000000UL;
->  
->  	return 0;
-> -
->  }
->  
->  /**
-> @@ -186,18 +185,18 @@ static int setup_apcb10(struct kvm_vcpu *vcpu, struct kvm_s390_apcb1 *apcb_s,
->   * Returns 0 and -EFAULT on error reading guest apcb
->   */
->  static int setup_apcb00(struct kvm_vcpu *vcpu, unsigned long *apcb_s,
-> -			unsigned long crycb_gpa, unsigned long *apcb_h)
-> +			gpa_t crycb_gpa, unsigned long *apcb_h)
->  {
-> -	unsigned long apcb_gpa;
-> +	/* sizeof() would include reserved fields which we do not need/want */
-> +	unsigned long len = APCB_NUM_MASKS * APCB0_MASK_SIZE * sizeof(u64);
-> +	gpa_t apcb_gpa;
->  
->  	apcb_gpa = crycb_gpa + offsetof(struct kvm_s390_crypto_cb, apcb0);
->  
-> -	if (read_guest_real(vcpu, apcb_gpa, apcb_s,
-> -			    sizeof(struct kvm_s390_apcb0)))
-> +	if (read_guest_abs(vcpu, apcb_gpa, apcb_s, len))
->  		return -EFAULT;
->  
-> -	bitmap_and(apcb_s, apcb_s, apcb_h,
-> -		   BITS_PER_BYTE * sizeof(struct kvm_s390_apcb0));
-> +	bitmap_and(apcb_s, apcb_s, apcb_h, BITS_PER_BYTE * len);
->  
->  	return 0;
->  }
-> @@ -212,19 +211,18 @@ static int setup_apcb00(struct kvm_vcpu *vcpu, unsigned long *apcb_s,
->   * Returns 0 and -EFAULT on error reading guest apcb
->   */
->  static int setup_apcb11(struct kvm_vcpu *vcpu, unsigned long *apcb_s,
-> -			unsigned long crycb_gpa,
-> -			unsigned long *apcb_h)
-> +			gpa_t crycb_gpa, unsigned long *apcb_h)
->  {
-> -	unsigned long apcb_gpa;
-> +	/* sizeof() would include reserved fields which we do not need/want */
-> +	unsigned long len = APCB_NUM_MASKS * APCB1_MASK_SIZE * sizeof(u64);
-> +	gpa_t apcb_gpa;
->  
->  	apcb_gpa = crycb_gpa + offsetof(struct kvm_s390_crypto_cb, apcb1);
->  
-> -	if (read_guest_real(vcpu, apcb_gpa, apcb_s,
-> -			    sizeof(struct kvm_s390_apcb1)))
-> +	if (read_guest_abs(vcpu, apcb_gpa, apcb_s, len))
->  		return -EFAULT;
->  
-> -	bitmap_and(apcb_s, apcb_s, apcb_h,
-> -		   BITS_PER_BYTE * sizeof(struct kvm_s390_apcb1));
-> +	bitmap_and(apcb_s, apcb_s, apcb_h, BITS_PER_BYTE * len);
->  
->  	return 0;
->  }
-> @@ -244,8 +242,7 @@ static int setup_apcb11(struct kvm_vcpu *vcpu, unsigned long *apcb_s,
->   * Return 0 or an error number if the guest and host crycb are incompatible.
->   */
->  static int setup_apcb(struct kvm_vcpu *vcpu, struct kvm_s390_crypto_cb *crycb_s,
-> -	       const u32 crycb_gpa,
-> -	       struct kvm_s390_crypto_cb *crycb_h,
-> +	       const gpa_t crycb_gpa, struct kvm_s390_crypto_cb *crycb_h,
->  	       int fmt_o, int fmt_h)
->  {
->  	switch (fmt_o) {
-> @@ -315,7 +312,8 @@ static int shadow_crycb(struct kvm_vcpu *vcpu, struct vsie_page *vsie_page)
->  	struct kvm_s390_sie_block *scb_s = &vsie_page->scb_s;
->  	struct kvm_s390_sie_block *scb_o = vsie_page->scb_o;
->  	const uint32_t crycbd_o = READ_ONCE(scb_o->crycbd);
-> -	const u32 crycb_addr = crycbd_o & 0x7ffffff8U;
-> +	/* CRYCB origin is a 31 bit absolute address with a bit of masking */
-> +	const gpa_t crycb_addr = crycbd_o & 0x7ffffff8U;
->  	unsigned long *b1, *b2;
->  	u8 ecb3_flags;
->  	u32 ecd_flags;
-> @@ -359,8 +357,9 @@ static int shadow_crycb(struct kvm_vcpu *vcpu, struct vsie_page *vsie_page)
->  		goto end;
->  
->  	/* copy only the wrapping keys */
-> -	if (read_guest_real(vcpu, crycb_addr + 72,
-> -			    vsie_page->crycb.dea_wrapping_key_mask, 56))
-> +	if (read_guest_abs(vcpu,
-> +			   crycb_addr + offsetof(struct kvm_s390_crypto_cb, dea_wrapping_key_mask),
-> +			   vsie_page->crycb.dea_wrapping_key_mask, APCB_KEY_MASK_SIZE))
->  		return set_validity_icpt(scb_s, 0x0035U);
->  
->  	scb_s->ecb3 |= ecb3_flags;
-> @@ -368,10 +367,9 @@ static int shadow_crycb(struct kvm_vcpu *vcpu, struct vsie_page *vsie_page)
->  
->  	/* xor both blocks in one run */
->  	b1 = (unsigned long *) vsie_page->crycb.dea_wrapping_key_mask;
-> -	b2 = (unsigned long *)
-> -			    vcpu->kvm->arch.crypto.crycb->dea_wrapping_key_mask;
-> +	b2 = (unsigned long *) vcpu->kvm->arch.crypto.crycb->dea_wrapping_key_mask;
->  	/* as 56%8 == 0, bitmap_xor won't overwrite any data */
-> -	bitmap_xor(b1, b1, b2, BITS_PER_BYTE * 56);
-> +	bitmap_xor(b1, b1, b2, BITS_PER_BYTE * APCB_KEY_MASK_SIZE);
->  end:
->  	switch (ret) {
->  	case -EINVAL:
+Sorry about the churn.
 
+While reviewing the patch, I was trying to understand the difference
+between the early exception handlers and the one setup by
+cpu_init_exception_handling() on BSP and APs. It caught my attention
+that the code comment said, "Enable the feature (FSGSBASE) before any
+exceptions occur."
+
+I got a bit carried away with the technicalities!
