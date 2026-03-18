@@ -1,117 +1,217 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f53.google.com (mail-wm1-f53.google.com [209.85.128.53])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77E65368279;
-	Wed, 18 Mar 2026 07:39:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773819543; cv=none; b=CaV/jXEtYK+GfZvEpa58hGtCT8I0W9yI1CpEfdoBg/jXUTPzWVWoSPuQAKJoQrkehAh3ntEZ8TljQzlXliXJ2EvPWDSCrvz5QNqSPrkR6ai5d7bliItKm+RjAKaFe9a92vhIrOXshg/ikuxo/apzG7BiHwnf+4tbQjzk5eN16vk=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773819543; c=relaxed/simple;
-	bh=zAzMUNn/kPLxwCHXe0I/zwTQQojBCM3qQBBRcS01Yi4=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=ItPjNXTfkNlHjYhck6rsgwjB5RRpZgCbyickr99X3OWYPbeYaGx11XssEzrk37tGhLbgU8pqJrj0LkpY4HKZEwAGvQupjum1Zy14e3sXq+9FaZu4hcVwZ7ZhZ7ZHsmTTd1fVFIgXurYcxUOPto9zIJR8XpqYzQDCODRGd7kldNM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=t6iBdeFX; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 762A736AB50
+	for <kvm@vger.kernel.org>; Wed, 18 Mar 2026 07:51:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.128.53
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1773820263; cv=pass; b=NkxaO6yYzO8cX81XUgzQ9Uz+YXczTEk3AwAOJRkIDLMr6ZSGyO9O5cf1q7jkJpEl/T/aQSkThXtx0IaEpVD8Pxez6RB004rCdEs75lkz6ayCl7cFqHdb020d/iKjC8gwEXTOLMp+Pqir+frFM2VRV8TSZGwZ0aL6dlxIpZRCyKw=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1773820263; c=relaxed/simple;
+	bh=MNEz/X85loWkzSvdeSo1EvIq0bBQvnEfbZRngw629Xw=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=oF4xLV/2NGrxc88CqLox8G9MhsrPWGJqnEldkK6RK+svFJkpG9LAKCdjUySzLtSAM9DjFTu7qzWXOTy88nA3kPpwyAgoAUSonCESJdnxy9/R8Vn0VVMPVZSbx+y+XSgmaVVPSeu5TQ5JqTYPrlRFXLpY8ojHnHj6tM7O2LbAswM=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=theori.io; spf=pass smtp.mailfrom=theori.io; dkim=pass (1024-bit key) header.d=theori.io header.i=@theori.io header.b=fbdezFUW; arc=pass smtp.client-ip=209.85.128.53
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=theori.io
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=theori.io
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="t6iBdeFX"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 16B12C19421;
-	Wed, 18 Mar 2026 07:38:59 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773819543;
-	bh=zAzMUNn/kPLxwCHXe0I/zwTQQojBCM3qQBBRcS01Yi4=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=t6iBdeFXKEMsoCQ85CIhXZVeL3QEMhTiEWy82sD9FBsTjxV+jPEgdxqlfrxK7HeFP
-	 +LJOJzR+xrHPphxVclFmGJruJnqnUMN2CA2frfTCbiNKJhKThV5X++tcio8ErMs2fu
-	 SPGEauRzmkyJH6lLSbkoF0lKYJwmUEmJA6Sqv76cd97mIF5HiiNlM+IRCiRTSF7HrR
-	 q98S1YidFUmflFlstLTnVZ/KHduB3PvJga0N6CJhO11ZZAbjSlJ11nceirWEXKyQHH
-	 k0RGwUfskdyrmzQZVKv344W5yGcGcZYy4nonpUdUgTxkD9CbOj1ksqQdiAl3veab2X
-	 8tG8zgNl3mktw==
-Message-ID: <13624f64-a624-48ac-94b9-f43689441316@kernel.org>
-Date: Wed, 18 Mar 2026 08:38:57 +0100
+	dkim=pass (1024-bit key) header.d=theori.io header.i=@theori.io header.b="fbdezFUW"
+Received: by mail-wm1-f53.google.com with SMTP id 5b1f17b1804b1-4852a9c6309so54014765e9.0
+        for <kvm@vger.kernel.org>; Wed, 18 Mar 2026 00:51:02 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1773820261; cv=none;
+        d=google.com; s=arc-20240605;
+        b=TXiSsPD2A8/VfEoVg8usor0aBSUEyBdBx4XR2G9kU+PAaSPbmeZyM7oT0O99GjGuWk
+         xvQBdnSZSRz3oSmVn4VNIrT1bWF4sJBey4EJjsX3unmqTP9RdcgqMCF+qMmw1IHnpYVo
+         T2z75pXFrBTWwQlu7MhB7pEh4RBvN8vqaPf/rCs+iOgDMeiWKuPJcUYu/kQCXV6gPyis
+         ifjhICmMdBg7BE1lzEnRwkMFvSMPWABQde29ZR1eoh8jD3+9JrslxtSJmv84/A3WXLYr
+         7K5/bn0OpxsaT8mj2rztyW0HgwO70FGYJvTNqxVd5KpCJZ1X2TvNdoiL6B3TqSsADf+o
+         uVSQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=fMQRUHLyKxTqxNpKo/ip+ZuLi6vlM1ojm4NscfYg0vo=;
+        fh=/goRtTuOe2Gq6c9MWiTHR/PMEOkFwDJC0nx2l6yUx98=;
+        b=YmSs6XibsdPRLMBUrxQYUMjU6smAdt6ktv1j9pEh3aRDdlg1UT+kQkW19SvYpNGnHK
+         NWMOqw7rcNwMY1JOmmnJo2QtskKE93eYAWgBsXqrmSyhMldxcuwRx3uQezNPR8YZpo34
+         xNj1BveSoHyMotEs+kEk0aDdP5nkzImkvp//SLbRr7OGdVfzJnP6eRZH24zMn4lRosDz
+         M9TNdxobfsv2ucVwWLLsUFstqAZKfFFPrxbHHWT9sfNyzw2O9oAZsl3dN38gjsEpBdHN
+         kE8w5c6zu6WNi4HROc1XPEGtjmlQssYVKVETQEjz51ubgcFGdsIU3XJLQtAda3VFU5aY
+         3cJw==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=theori.io; s=google; t=1773820261; x=1774425061; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=fMQRUHLyKxTqxNpKo/ip+ZuLi6vlM1ojm4NscfYg0vo=;
+        b=fbdezFUWGWfgzX1qB0wiu6X4VfJf4fHgK2GCbzArvHTKBqAMEkNYMbTVCjTIvaP00I
+         +zSeQZvy91VIolnxHYRIHa4pBaKlQLkY8ikVRMjqwnmf4eR3zsX+Sz7o8BMg+WJwEJ+A
+         BOzSw66ckIZAYLDymMSUtINbqJ30zziuiKiWk=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1773820261; x=1774425061;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=fMQRUHLyKxTqxNpKo/ip+ZuLi6vlM1ojm4NscfYg0vo=;
+        b=SQWEW5Xn4uoUKagqOQEBJXYuaKIfKPJj8JSg01oktiVLLCLjmxRPwJMUxVf+6QCCQJ
+         xdt9hb0DZozWXwwPnrJXjVsQmKORib0V/jhqh2msW1R/dgacrMgWhy6W/gr9oMDDZPG4
+         bX8U8FuD20g5QxwvlHsVymAhuJ9iE8Y2zZSOzbu/jpKhOLG2n0fS2QgdRqRyHIo3HZXp
+         3sapfRTsazjPtleTfAxYonG8Fqyqe8kMeCNvR9iIOWk1NprhRbqRLxo5xtRrdr/nBnL9
+         5OoxO1f0AJknefqBTcI4agiQhtqZdMXyShF0QvG2T33YFyOzqmBI+3L1ZYvJxS81dCtg
+         kI3g==
+X-Gm-Message-State: AOJu0Yxhp7DMLTF88Lm/634KMJK7AtWVRJ6g4XFihLsoV0GDeoBb7IXc
+	X0sQJzG1xbtKjsjxZudNoqdN942DsBzTWkpr8xNX670+S1qccyCAXaB8/Z7TqnhEopNn6u8X8XH
+	dYbGbK0lo1iQIEvsDlJ2c0pzZZuR9BTFlC0t1wAUpRw==
+X-Gm-Gg: ATEYQzxjdoRXn3sdZ+k4mCXKKD5qwaCNNXxy2CMqkj939xLnoF71lMMYOigz66eoAw5
+	UC1YKmjrORhD+G0CZB/rKT2GFpLvBZp99Z8OXxq8R+N1TjuE4evCRzWTVRouApQufoFNSnsWw4n
+	/0wmPtOVBsqojmzLnTx2awTaCW/qswrgDelvZRrRd4rW1360xwd+NNvKE00lyOYN2A4ob9lefoF
+	ZFm0N8hVSs2aDLhUALquWKNGTOFzIda4sPjMSqw+sKv68fX4i4zSjBE7gYsCTSD6uPSLEtQ5yjO
+	aOFbwN4=
+X-Received: by 2002:a05:600c:4c24:b0:485:3a93:3a9e with SMTP id
+ 5b1f17b1804b1-486f4422015mr20802805e9.10.1773820260804; Wed, 18 Mar 2026
+ 00:51:00 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] mm/pagewalk: fix race between concurrent split and
- refault
-To: Qi Zheng <qi.zheng@linux.dev>, mboone@akamai.com,
- Andrew Morton <akpm@linux-foundation.org>, Lorenzo Stoakes <ljs@kernel.org>,
- "Liam R. Howlett" <Liam.Howlett@oracle.com>,
- Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>,
- Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
- stable@vger.kernel.org
-References: <20260317-pagewalk-check-pmd-refault-v1-1-f699a010f2b3@akamai.com>
- <268abf39-9cd6-412e-b3ec-32fb8fea1684@linux.dev>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-In-Reply-To: <268abf39-9cd6-412e-b3ec-32fb8fea1684@linux.dev>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+References: <20260311105047.18517-1-0wn@theori.io> <abFzwjGJm1j02L36@google.com>
+ <CAH-2XvJo_JiyAnb21_LYxSz8xZ96oUVF25eTnDyALF+wnZw8ww@mail.gmail.com>
+In-Reply-To: <CAH-2XvJo_JiyAnb21_LYxSz8xZ96oUVF25eTnDyALF+wnZw8ww@mail.gmail.com>
+From: Taeyang Lee <0wn@theori.io>
+Date: Wed, 18 Mar 2026 16:50:24 +0900
+X-Gm-Features: AaiRm51arlXQZeLuVomAxuvpszB6jxH0L9MqB5r-AcQ0b2yCwRP4hi6U-cDb5Fg
+Message-ID: <CAH-2XvLboDdyeyHoLpnzm6e2++ksehDfosy_uKRH+emCrcWx0Q@mail.gmail.com>
+Subject: Re: [PATCH] KVM: clear map->gfn in kvm_vcpu_unmap() to prevent stale
+ validity checks
+To: Sean Christopherson <seanjc@google.com>
+Cc: kvm@vger.kernel.org, Konrad Rzeszutek Wilk <konrad.wilk@oracle.com>, 
+	Paolo Bonzini <pbonzini@redhat.com>, KarimAllah Ahmed <karahmed@amazon.de>, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
->> +
->>       pmd = pmd_offset(pud, addr);
->>       do {
->>   again:
->> @@ -218,12 +231,13 @@ static int walk_pud_range(p4d_t *p4d, unsigned
->> long addr, unsigned long end,
->>           else if (pud_leaf(*pud) || !pud_present(*pud))
->>               continue; /* Nothing to do. */
-> 
-> Why not check pudval directly here? Like the following:
-> 
+Hello,
 
-As the patch description states: "This mirrors the
-retry logic in walk_pmd_range()."
+Gentle ping on this. Based on your suggestion, it sounds like the right
+approach is to backport the 321ef62b0c5f series to the affected LTS
+branches.
 
--- 
-Cheers,
+However, looking at the lore link you shared, it seems like the backport
+didn't apply cleanly due to SEV-SNP dependencies. Do you have any
+thoughts on how best to handle this for the LTS branches?
 
-David
+Thanks
+
+
+On Thu, Mar 12, 2026 at 4:00=E2=80=AFPM Taeyang Lee <0wn@theori.io> wrote:
+>
+> Hi Sean,
+>
+> Thanks for the detailed review.
+>
+> On Wed, Mar 11, 2026 at 10:53=E2=80=AFPM Sean Christopherson <seanjc@goog=
+le.com> wrote:
+> >
+> > On Wed, Mar 11, 2026, Taeyang Lee wrote:
+> > > kvm_vcpu_unmap() clears map->hva and map->page but leaves map->gfn wi=
+th
+> > > its previous value. This creates an inconsistent state: callers that
+> > > check gfn !=3D 0 as a proxy for map validity will believe the map is =
+still
+> >
+> > But that was and still is flat out wrong, '0' is a perfectly legal gfn.
+>
+> You're right, I hadn't considered that. Setting gfn =3D 0 as a sentinel
+> is fundamentally incorrect.
+>
+> >
+> > > valid when hva is already NULL.
+> > >
+> > > This pattern caused a null pointer dereference in the 6.1.x LTS branc=
+h,
+> > > where vmx_guest_apic_has_interrupt() checked virtual_apic_map.gfn but
+> > > dereferenced virtual_apic_map.hva unconditionally. That specific call
+> > > site no longer exists in mainline due to the gfn_to_pfn_cache
+> > > refactoring, but the inconsistency in kvm_vcpu_unmap() remains and co=
+uld
+> > > affect future kvm_host_map users that rely on gfn for validity.
+> > >
+> > > Similarly, kvm_vcpu_map() does not modify the map struct on failure, =
+so
+> > > stale gfn values from a previous successful mapping survive a failed
+> > > remap attempt. Clearing gfn in kvm_vcpu_unmap() ensures that after an
+> > > unmap-then-failed-remap sequence, gfn correctly reflects that no vali=
+d
+> > > mapping exists.
+> > >
+> > > Clear map->gfn in kvm_vcpu_unmap().
+> > >
+> > > Reported-by: Taeyang Lee <0wn@theori.io>
+> > > Fixes: e45adf665a53 ("KVM: Introduce a new guest mapping API")
+> >
+> > This is not the correct fixes, the blame lies squarely on 96c66e87deee =
+("KVM/nVMX:
+> > Use kvm_vcpu_map when mapping the virtual APIC page").  The API even pr=
+ovided
+> > kvm_vcpu_mapped() from the get-go; why commit e45adf665a53 checked the =
+gfn, I have
+> > no idea.
+> >
+>
+> Agreed =E2=80=94 the bug is in the caller misusing gfn instead of
+> kvm_vcpu_mapped(), not in the unmap API itself.
+>
+> > > Signed-off-by: Taeyang Lee <0wn@theori.io>
+> > > ---
+> > >  virt/kvm/kvm_main.c | 1 +
+> > >  1 file changed, 1 insertion(+)
+> > >
+> > > diff --git a/virt/kvm/kvm_main.c b/virt/kvm/kvm_main.c
+> > > index 7a4fd1dbe0d7..88fc8b20aa8f 100644
+> > > --- a/virt/kvm/kvm_main.c
+> > > +++ b/virt/kvm/kvm_main.c
+> > > @@ -2887,6 +2887,7 @@ void kvm_vcpu_unmap(struct kvm_vcpu *vcpu, stru=
+ct kvm_host_map *map, bool dirty)
+> > >
+> > >       map->hva =3D NULL;
+> > >       map->page =3D NULL;
+> > > +     map->gfn =3D 0;
+> >
+> > As above, this is at best misleading.  If we wanted to harden this, we =
+should do
+> >
+> >         map->gfn =3D INVALID_GPA;
+> >
+> > but I honestly don't see the point.  Yes, we had terrible code in the p=
+ast, but
+> > the above doesn't prevent terrible code.  E.g. the correct invalidation=
+ wouldn't
+> > actually do anything to make the terrible code less broken.
+> >
+> > We even (somewhat unintentionally) removed that terrible code in commit=
+ 321ef62b0c5f
+> > ("KVM: nVMX: Fold requested virtual interrupt check into has_nested_eve=
+nts()").
+> > And that commit was tagged for stable@, it just didn't apply.  If we wa=
+nt to do
+> > anything for 6.1.y (and 6.6.y?), we should backport that entire series:
+> >
+> >   https://lore.kernel.org/all/2024072925-straw-mashing-54f6@gregkh
+>
+> I see =E2=80=94 so the proper LTS fix would be to backport that series ra=
+ther
+> than adding band-aid patches. That makes sense.
+>
+> For context, I sent the patch because the NULL dereference appears
+> to be guest-triggerable on 6.1.y, and I wanted to suggest something
+> minimal for the LTS branches. But based on your feedback, backporting
+> the series that includes 321ef62b0c5f sounds like the correct fix.
+>
+> I also sent a minimal NULL check patch for vmx_guest_apic_has_interrupt()
+> to stable@vger.kernel.org. Would that still be reasonable as an interim
+> fix until the full series is backported, or would you prefer to just
+> backport the series directly?
+>
+> Thanks
