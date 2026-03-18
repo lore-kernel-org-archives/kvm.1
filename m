@@ -1,190 +1,199 @@
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+Received: from out-183.mta0.migadu.com (out-183.mta0.migadu.com [91.218.175.183])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BDA2B8462;
-	Wed, 18 Mar 2026 06:16:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD0A127456
+	for <kvm@vger.kernel.org>; Wed, 18 Mar 2026 06:16:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.183
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773814591; cv=none; b=IcwP1cQPlU6Fr2JeXdfrmpfV1QNOqxglz7L8E0QNycHvoMG3wXZKqqYu2IROQeozgds8o02KAIIPEUgrdtjt2HraJfMBCUXHtLGp7KbNSO9Q4axgUbAG3ABYhU52g49yDzSse+4lrUIpA89flIN1mT8sDaTNKkS4lIvdY36pDqA=
+	t=1773814615; cv=none; b=keOr5FgLgAg4HUvIpIeTogvWYl8bs41F2ZOBwHUXetuS7IiwyAeGOFg+P1s3ro9ebkqvmKBh5vtFin6MQ2bbI8j+pzO39PLv1elqhPz1scwBASutTTaAi3NPZBxAWInEfAVL2OnLqrqQ3+whFZlbcauff8AKS7ab/rPzPNonGsI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773814591; c=relaxed/simple;
-	bh=oDnlMW+yrl3kxEDV1Uxuwpsrw8lOvDpiu3LAZZ2bpIg=;
-	h=Mime-Version:Content-Type:Date:Message-Id:From:To:Cc:Subject:
-	 References:In-Reply-To; b=i7H2eSQGZPLPk/VFgLN0W67viuvlwjgU7vLJy//fJBJpZrZckXAhc2hxUJMc0N+ThXV0/Ap524yGJr5k3WxLayl4ARZvAo28tHBqFdU1y9RZUi/E3FdW3GveEukXtjxQ1ATI0eRieECYxLmd7XRJUGHSSj4CXUUmW971z3IgA4I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=iS1zN2AE; arc=none smtp.client-ip=148.163.158.5
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+	s=arc-20240116; t=1773814615; c=relaxed/simple;
+	bh=0P/HhXaIZHVp9qjmL/0dO1b2rfXAZHkCTBXE0PKnwuk=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=bjpCk1/q39LsDg3v5Lw8twdJyUimElinjZoL6ui0e4IgaE8+yfakZq0xJg2AYW7TLzN2dspy7v61kpBQVkyLj7BgzjQdqZuQBH/7SG/pqHKmO4AfcsytkqqgRxa/1nYjmfu+q79sLmPKcG5TvKM095IfUBNuWBRTjnh/GHUj5qA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=MNhhNDAi; arc=none smtp.client-ip=91.218.175.183
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="iS1zN2AE"
-Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 62I601hr3176840;
-	Wed, 18 Mar 2026 06:16:18 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=DifgUe
-	WpE4npuUkNsLjMpFr/mxGVgkbz/vAv+BrXPtg=; b=iS1zN2AE2pgOS9fEDNhy03
-	MhmglpDq6czo7tzl6o+xaoyqJfkk3EXeG/+jfnfHt1qMx1N5nswNWv2rxzKGoHNs
-	bC94db4scXeHUX63WB6pxxyfvQMe/oeaF4QSF865CELrGVMoQKzrnejYuBjORiMw
-	JoYf+W1kR4TJ3T5SqF5AZes5maI5la8nqpKJ+YB89KCuf0JDuexCE4/6+eV57QWe
-	1wVaCq8+qUGL3S5T2yr6lq6yEOaSnLTw4B81yBzPnX9CBXm0nAU3wNouNWMxoNmb
-	w9e3+TUKr7kSstQcxmGe7RCG0RomX6/iFHJnSjOow/Lk+CMPexGHhiD612pAoBTA
-	==
-Received: from ppma13.dal12v.mail.ibm.com (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4cvx3cyw3y-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 18 Mar 2026 06:16:18 +0000 (GMT)
-Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma13.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 62I5jBUb032327;
-	Wed, 18 Mar 2026 06:16:17 GMT
-Received: from smtprelay07.fra02v.mail.ibm.com ([9.218.2.229])
-	by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 4cwm7jvgw4-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 18 Mar 2026 06:16:17 +0000
-Received: from smtpav01.fra02v.mail.ibm.com (smtpav01.fra02v.mail.ibm.com [10.20.54.100])
-	by smtprelay07.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 62I6GDLZ39059714
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Wed, 18 Mar 2026 06:16:13 GMT
-Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 61BC72004B;
-	Wed, 18 Mar 2026 06:16:13 +0000 (GMT)
-Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 2963B20043;
-	Wed, 18 Mar 2026 06:16:12 +0000 (GMT)
-Received: from localhost (unknown [9.111.43.66])
-	by smtpav01.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Wed, 18 Mar 2026 06:16:12 +0000 (GMT)
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="MNhhNDAi"
+Message-ID: <268abf39-9cd6-412e-b3ec-32fb8fea1684@linux.dev>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1773814602;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=d0RHFhfIi8eQ/zhOmgjp0C3T+zZS/NNRXu1jd6CQgfE=;
+	b=MNhhNDAiders9o4vuBDcAzvePbJoit8K5gvmIIoWdlrp50PwJUf+0ccBSLX2+cpGB8NFP4
+	q1IE+M08MhKV/wICLwdON7tPKo7DOZuhgUdxjertAyMvibX1pkaVxZJD6ZB0/U/tNF1tC/
+	S6nRQOHgMwvohBfj+W6iF4mBoPPNYjg=
+Date: Wed, 18 Mar 2026 14:16:33 +0800
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Wed, 18 Mar 2026 07:16:11 +0100
-Message-Id: <DH5OSCR30K6L.3SIBYOZ6166AC@linux.ibm.com>
-From: "Julian Ruess" <julianr@linux.ibm.com>
-To: "Niklas Schnelle" <schnelle@linux.ibm.com>,
-        "Farhan Ali"
- <alifm@linux.ibm.com>,
-        "Julian Ruess" <julianr@linux.ibm.com>, <wintera@linux.ibm.com>,
-        <ts@linux.ibm.com>, <oberpar@linux.ibm.com>, <gbayer@linux.ibm.com>,
-        "Alex Williamson" <alex@shazbot.org>,
-        "Jason
- Gunthorpe" <jgg@ziepe.ca>, "Yishai Hadas" <yishaih@nvidia.com>,
-        "Shameer
- Kolothum" <skolothumtho@nvidia.com>,
-        "Kevin Tian" <kevin.tian@intel.com>
-Cc: <mjrosato@linux.ibm.com>, <raspl@linux.ibm.com>, <hca@linux.ibm.com>,
-        <agordeev@linux.ibm.com>, <gor@linux.ibm.com>, <kvm@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>, <linux-s390@vger.kernel.org>,
-        <linux-pci@vger.kernel.org>
-Subject: Re: [PATCH v5 2/3] vfio/ism: Implement vfio_pci driver for ISM
- devices
-X-Mailer: aerc 0.21.0-0-g5549850facc2
-References: <20260317-vfio_pci_ism-v5-0-b73248b4e576@linux.ibm.com>
- <20260317-vfio_pci_ism-v5-2-b73248b4e576@linux.ibm.com>
- <de08911a-8bcc-4983-9ad2-b20467ebbb7f@linux.ibm.com>
- <ef044e7fa28e33cf865882e374957c0cd10124d1.camel@linux.ibm.com>
-In-Reply-To: <ef044e7fa28e33cf865882e374957c0cd10124d1.camel@linux.ibm.com>
-X-TM-AS-GCONF: 00
-X-Authority-Analysis: v=2.4 cv=arO/yCZV c=1 sm=1 tr=0 ts=69ba4332 cx=c_pps
- a=AfN7/Ok6k8XGzOShvHwTGQ==:117 a=AfN7/Ok6k8XGzOShvHwTGQ==:17
- a=IkcTkHD0fZMA:10 a=Yq5XynenixoA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=RnoormkPH1_aCDwRdu11:22 a=V8glGbnc2Ofi9Qvn3v5h:22 a=yDXdNYyLDAtsUWoxkjsA:9
- a=QEXdDO2ut3YA:10
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMzE4MDA1MSBTYWx0ZWRfX0KT5g6jHbLCN
- JS79k+9K0j2YW2GmxHMyXw6jPBJR9dGI3D+4PbIxS+N1q6PpY/JQeSzEyAFCBl27K7kCtBzwJIS
- 4tVxIf97jF+JVqysFpV6qIhkYgEIoA4ni/qiWqAenxElysjTqMMkITzGDKkc+jpBDkVz3wEsIH+
- n9wYhbj5U8IE1YZrUoa3TsKEqCQJihe2kDZVw7Aux0dkPS+Q33aWHAw42iwcWBAUuYbgpUVTJT6
- Yb6F9WxsJ/8XfgedfrqP23FHXNbnfrBIsfYqYNu1kJHrKW13yQmtPHrRdG4Duw+Mp9zkUypo7pg
- N3rEev0/p/BNbpy7JYrVi+C6QS1GPbqWTdpNr8UBC1+kIwCZPyd35nALrLtY+PQ1TbKey31p1hK
- Wsfsxadrv3vg53Pq0ZmYQ11Qd/gcE8FzdosMLxbYlJ/EL94jd4kel/fMFHDzefr5hOde6U5qPcF
- y0nMy21Viw8IvdPe9ag==
-X-Proofpoint-GUID: U5dQJsKgC-FeaBSVolbyzLf-1CQIDqbz
-X-Proofpoint-ORIG-GUID: U5dQJsKgC-FeaBSVolbyzLf-1CQIDqbz
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
- definitions=2026-03-17_05,2026-03-17_02,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501 spamscore=0 lowpriorityscore=0 impostorscore=0
- adultscore=0 bulkscore=0 suspectscore=0 malwarescore=0 clxscore=1015
- phishscore=0 classifier=typeunknown authscore=0 authtc= authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2603050001
- definitions=main-2603180051
+MIME-Version: 1.0
+Subject: Re: [PATCH] mm/pagewalk: fix race between concurrent split and
+ refault
+To: mboone@akamai.com, Andrew Morton <akpm@linux-foundation.org>,
+ David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>,
+ "Liam R. Howlett" <Liam.Howlett@oracle.com>,
+ Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>,
+ Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
+ stable@vger.kernel.org
+References: <20260317-pagewalk-check-pmd-refault-v1-1-f699a010f2b3@akamai.com>
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Qi Zheng <qi.zheng@linux.dev>
+In-Reply-To: <20260317-pagewalk-check-pmd-refault-v1-1-f699a010f2b3@akamai.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Migadu-Flow: FLOW_OUT
 
-On Tue Mar 17, 2026 at 10:16 PM CET, Niklas Schnelle wrote:
-> On Tue, 2026-03-17 at 11:43 -0700, Farhan Ali wrote:
->> <..snip..>
->>=20
->> On 3/17/2026 5:58 AM, Julian Ruess wrote:
->> > static int ism_vfio_pci_probe(struct pci_dev *pdev,
->> > +			      const struct pci_device_id *id)
->> > +{
->> > +	struct ism_vfio_pci_core_device *ivpcd;
->> > +	struct zpci_dev *zdev =3D to_zpci(pdev);
->> > +	char cache_name[20];
->> > +	int ret;
->> > +
->> > +	ivpcd =3D vfio_alloc_device(ism_vfio_pci_core_device, core_device.vd=
-ev,
->> > +				  &pdev->dev, &ism_pci_ops);
->> > +	if (IS_ERR(ivpcd))
->> > +		return PTR_ERR(ivpcd);
->> > +
->> > +	snprintf(cache_name, sizeof(cache_name), "ism_sb_fid_%08x", zdev->fi=
-d);
->> > +	ivpcd->store_block_cache =3D
->> > +		kmem_cache_create(cache_name, zdev->maxstbl, 0, 0, NULL);
->> > +	if (!ivpcd->store_block_cache) {
->> > +		vfio_put_device(&ivpcd->core_device.vdev);
->> > +		return -ENOMEM;
->> > +	}
->> > +
->> > +	dev_set_drvdata(&pdev->dev, &ivpcd->core_device);
->> > +	ret =3D vfio_pci_core_register_device(&ivpcd->core_device);
->> > +	if (ret) {
->> > +		kmem_cache_destroy(ivpcd->store_block_cache);
->> > +		vfio_put_device(&ivpcd->core_device.vdev);
->> > +	}
->> > +
->> > +	return ret;
->> > +}
->> > +
->> > +static void ism_vfio_pci_remove(struct pci_dev *pdev)
->> > +{
->> > +	struct vfio_pci_core_device *core_device;
->> > +	struct ism_vfio_pci_core_device *ivpcd;
->> > +
->> > +	core_device =3D dev_get_drvdata(&pdev->dev);
->> > +	ivpcd =3D container_of(core_device, struct ism_vfio_pci_core_device,
->> > +			     core_device);
->> > +
->> > +	vfio_pci_core_unregister_device(&ivpcd->core_device);
->> > +	vfio_put_device(&ivpcd->core_device.vdev);
->> > +
->> > +	kmem_cache_destroy(ivpcd->store_block_cache);
->>=20
->> I think the kmem_cache_destroy() should be done before we do=20
->> vfio_put_device() (or maybe even before=20
->> vfio_pci_core_unregister_device()) to avoid use after free similar to=20
->> ism_vfio_pci_probe(). Sorry I missed this earlier.
->>=20
->> Thanks
->>=20
->> Farhan
->>=20
->
-> Good find! Wouldn't it be even cleaner to provide vfio/ism specific
-> .init and .release functions in ism_pci_ops that do the
-> kmem_cache_create() / kmem_cache_destroy() as part of init / release?
-> It seems this is done for e.g. Xe with xe_vfio_pci_init_dev()
-> and xe_vfio_pci_release_dev(). In fact wouldn't that be even necessary
-> to correctly handle the case where the above vfio_put_device() isn't
-> the last reference?
->
-> Thanks,
-> Niklas
+Hi Max,
 
-Thanks guys! Yes, I think we should introduce custom .init and .release fun=
-ctions. Will change that in the next version.
+On 3/17/26 10:03 PM, Max Boone via B4 Relay wrote:
+> From: Max Boone <mboone@akamai.com>
+> 
+> The splitting of a PUD entry in walk_pud_range() can race with
+> a concurrent thread refaulting the PUD leaf entry causing it to
+> try walking a PMD range that has disappeared.
+> 
+> An example and reproduction of this is to try reading numa_maps of
+> a process while VFIO-PCI is setting up DMA (specifically the
+> vfio_pin_pages_remote call) on a large BAR for that process.
+> 
+> This will trigger a kernel BUG:
+> vfio-pci 0000:03:00.0: enabling device (0000 -> 0002)
+> BUG: unable to handle page fault for address: ffffa23980000000
+> PGD 0 P4D 0
+> Oops: Oops: 0000 [#1] SMP NOPTI
+> ...
+> RIP: 0010:walk_pgd_range+0x3b5/0x7a0
+> Code: 8d 43 ff 48 89 44 24 28 4d 89 ce 4d 8d a7 00 00 20 00 48 8b 4c 24
+> 28 49 81 e4 00 00 e0 ff 49 8d 44 24 ff 48 39 c8 4c 0f 43 e3 <49> f7 06
+>     9f ff ff ff 75 3b 48 8b 44 24 20 48 8b 40 28 48 85 c0 74
+> RSP: 0018:ffffac23e1ecf808 EFLAGS: 00010287
+> RAX: 00007f44c01fffff RBX: 00007f4500000000 RCX: 00007f44ffffffff
+> RDX: 0000000000000000 RSI: 000ffffffffff000 RDI: ffffffff93378fe0
+> RBP: ffffac23e1ecf918 R08: 0000000000000004 R09: ffffa23980000000
+> R10: 0000000000000020 R11: 0000000000000004 R12: 00007f44c0200000
+> R13: 00007f44c0000000 R14: ffffa23980000000 R15: 00007f44c0000000
+> FS:  00007fe884739580(0000) GS:ffff9b7d7a9c0000(0000)
+> knlGS:0000000000000000
+> CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+> CR2: ffffa23980000000 CR3: 000000c0650e2005 CR4: 0000000000770ef0
+> PKRU: 55555554
+> Call Trace:
+>   <TASK>
+>   __walk_page_range+0x195/0x1b0
+>   walk_page_vma+0x62/0xc0
+>   show_numa_map+0x12b/0x3b0
+>   seq_read_iter+0x297/0x440
+>   seq_read+0x11d/0x140
+>   vfs_read+0xc2/0x340
+>   ksys_read+0x5f/0xe0
+>   do_syscall_64+0x68/0x130
+>   ? get_page_from_freelist+0x5c2/0x17e0
+>   ? mas_store_prealloc+0x17e/0x360
+>   ? vma_set_page_prot+0x4c/0xa0
+>   ? __alloc_pages_noprof+0x14e/0x2d0
+>   ? __mod_memcg_lruvec_state+0x8d/0x140
+>   ? __lruvec_stat_mod_folio+0x76/0xb0
+>   ? __folio_mod_stat+0x26/0x80
+>   ? do_anonymous_page+0x705/0x900
+>   ? __handle_mm_fault+0xa8d/0x1000
+>   ? __count_memcg_events+0x53/0xf0
+>   ? handle_mm_fault+0xa5/0x360
+>   ? do_user_addr_fault+0x342/0x640
+>   ? arch_exit_to_user_mode_prepare.constprop.0+0x16/0xa0
+>   ? irqentry_exit_to_user_mode+0x24/0x100
+>   entry_SYSCALL_64_after_hwframe+0x76/0x7e
+> RIP: 0033:0x7fe88464f47e
+> Code: c0 e9 b6 fe ff ff 50 48 8d 3d be 07 0b 00 e8 69 01 02 00 66 0f 1f
+> 84 00 00 00 00 00 64 8b 04 25 18 00 00 00 85 c0 75 14 0f 05 <48> 3d 00
+>     f0 ff ff 77 5a c3 66 0f 1f 84 00 00 00 00 00 48 83 ec 28
+> RSP: 002b:00007ffe6cd9a9b8 EFLAGS: 00000246 ORIG_RAX: 0000000000000000
+> RAX: ffffffffffffffda RBX: 0000000000020000 RCX: 00007fe88464f47e
+> RDX: 0000000000020000 RSI: 00007fe884543000 RDI: 0000000000000003
+> RBP: 00007fe884543000 R08: 00007fe884542010 R09: 0000000000000000
+> R10: fffffffffffffbc5 R11: 0000000000000246 R12: 0000000000000000
+> R13: 0000000000000003 R14: 0000000000020000 R15: 0000000000020000
+>   </TASK>
+> 
+> Fix this by validating the PUD entry in walk_pmd_range() using a stable
+> snapshot (pudp_get()). If the PUD is not present or is a leaf, retry the
+> walk via ACTION_AGAIN instead of descending further. This mirrors the
+> retry logic in walk_pmd_range().
+> 
+> Fixes: a00cc7d9dd93 ("mm, x86: add support for PUD-sized transparent hugepages")
+> Cc: stable@vger.kernel.org
+> Co-developed-by: David Hildenbrand (Arm) <david@kernel.org>
+> Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
+> Signed-off-by: Max Boone <mboone@akamai.com>
+> ---
+>   mm/pagewalk.c | 20 +++++++++++++++++---
+>   1 file changed, 17 insertions(+), 3 deletions(-)
+> 
+> diff --git a/mm/pagewalk.c b/mm/pagewalk.c
+> index a94c401ab..c74b4d800 100644
+> --- a/mm/pagewalk.c
+> +++ b/mm/pagewalk.c
+> @@ -97,6 +97,7 @@ static int walk_pte_range(pmd_t *pmd, unsigned long addr, unsigned long end,
+>   static int walk_pmd_range(pud_t *pud, unsigned long addr, unsigned long end,
+>   			  struct mm_walk *walk)
+>   {
+> +	pud_t pudval = pudp_get(pud);
+>   	pmd_t *pmd;
+>   	unsigned long next;
+>   	const struct mm_walk_ops *ops = walk->ops;
+> @@ -105,6 +106,18 @@ static int walk_pmd_range(pud_t *pud, unsigned long addr, unsigned long end,
+>   	int err = 0;
+>   	int depth = real_depth(3);
+>   
+> +	/*
+> +	 * For PTE handling, pte_offset_map_lock() takes care of checking
+> +	 * whether there actually is a page table. But it also has to be
+> +	 * very careful about concurrent page table reclaim. If we spot a PMD
+> +	 * table, it cannot go away, so we can just walk it. However, if we find
+> +	 * something else, we have to retry.
+> +	 */
+> +	if (!pud_present(pudval) || pud_leaf(pudval)) {
+> +		walk->action = ACTION_AGAIN;
+> +		return 0;
+> +	}
+> +
+>   	pmd = pmd_offset(pud, addr);
+>   	do {
+>   again:
+> @@ -218,12 +231,13 @@ static int walk_pud_range(p4d_t *p4d, unsigned long addr, unsigned long end,
+>   		else if (pud_leaf(*pud) || !pud_present(*pud))
+>   			continue; /* Nothing to do. */
+
+Why not check pudval directly here? Like the following:
+
+		if (pud_leaf(*pud) || !pud_present(*pud))
+			goto again;
+
+>   
+> -		if (pud_none(*pud))
+> -			goto again;
+> -
+>   		err = walk_pmd_range(pud, addr, next, walk);
+>   		if (err)
+>   			break;
+> +
+> +		if (walk->action == ACTION_AGAIN)
+> +			goto again;
+> +
+>   	} while (pud++, addr = next, addr != end);
+>   
+>   	return err;
+> 
+> ---
+> base-commit: b4f0dd314b39ea154f62f3bd3115ed0470f9f71e
+> change-id: 20260317-pagewalk-check-pmd-refault-de8f14fbe6a5
+> 
+> Best regards,
+
