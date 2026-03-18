@@ -1,104 +1,123 @@
-Received: from mail-pl1-f176.google.com (mail-pl1-f176.google.com [209.85.214.176])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from fout-a5-smtp.messagingengine.com (fout-a5-smtp.messagingengine.com [103.168.172.148])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3278C34AB1F
-	for <kvm@vger.kernel.org>; Wed, 18 Mar 2026 20:30:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.176
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C7E691F192E
+	for <kvm@vger.kernel.org>; Wed, 18 Mar 2026 20:31:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.148
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773865839; cv=none; b=KX4E0+rruq4PcdJQFA3oY299nYBz0bmUiOjq5QzJVBCjnvOVY3Y+ShH2U3YbIv/WyFVpqoBvugQpOi4cp0IcmI62GbYvntsE+IPl34+2PAq7vtphz1S/QKVdceS4oT9Or/h8JRMZMGbrBkHhY2jalu4pEpB4cJsGmnTNmY2YRTw=
+	t=1773865877; cv=none; b=XG4c5/6ejWVrVY3DVPmXgA0vH/3/x38EPnRd7N9BIVGya7/AbOfRhsFa5sMzjPPlBjFenBwdtR+tRNaT1bwaH2x8x4WMURst9Zu0BnXlFn18u2XJYOUYT4ngr8yryO4mt6B9vsY01fDFVSKPwvtT2HrQdmkyjAkDm3Exi3d9JCc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773865839; c=relaxed/simple;
-	bh=0Jvlq/8XR0iEgXTWN8DAOYkXN9axIafX6Am6mw6mKXs=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Kuc1X2VEESweLvFmnexqhMdib61CcHk6fL5WP8Sa8rbIKim+lZTnsCVkIObWteJ439EiqDAi/C/ylSH1YumOynIn+pt0G94cZddRSCZjc0Z/aosBNCCHRCQ6FbiSU5SnZCU0fmFwVL7XADTEM3zabFyK0S4rd/xVcGVIP+LBIF8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=cGOBygZl; arc=none smtp.client-ip=209.85.214.176
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
+	s=arc-20240116; t=1773865877; c=relaxed/simple;
+	bh=ZuO7VbukMShAkiWXmqPxfd8HTQhtzlVdzxxmtGfL5BQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=FcXku5etu+3JGX0OSHnlg5VfWCHVV0UzIaHlqHhcZ11YiON3WJS9D39s9ZqOzsZqmgLjnUbfdvIbihVKy//cJoSKycuCxgsWiUobEj40N07t4ASnMyqtVk+MhlhoBdjGFUfIPeNeLiBujX3cIk0jlCPo72IekLybW2URV5P7Gro=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=shazbot.org; spf=pass smtp.mailfrom=shazbot.org; dkim=pass (2048-bit key) header.d=shazbot.org header.i=@shazbot.org header.b=rzQ2+bI/; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=DVmTfJC9; arc=none smtp.client-ip=103.168.172.148
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=shazbot.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=shazbot.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="cGOBygZl"
-Received: by mail-pl1-f176.google.com with SMTP id d9443c01a7336-2ad617d5b80so1375945ad.1
-        for <kvm@vger.kernel.org>; Wed, 18 Mar 2026 13:30:38 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1773865837; x=1774470637; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=7ChN7tMYzceoBm3vKkl8w+3T0ks+P2wQ4DzqmsgtL3s=;
-        b=cGOBygZl/dzNzWZVgdxNWSJvVYsQnUbokia7V/AtGR91gn91RtrbfR8SjI1ub98L5N
-         CGgqE2WyKUafcGkD0pwVjbe8wxemVXCeVjSAEEKY4y/4CYACuFs3/Ldgb1BpOjDHq5PK
-         VMwXXtexLMcmRsS13WzS3M9P2S3EB2WZEC91o=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1773865837; x=1774470637;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=7ChN7tMYzceoBm3vKkl8w+3T0ks+P2wQ4DzqmsgtL3s=;
-        b=MXMa8b9bPwy1+Q/RfI8StCjAXfP4ljwROfN4X/rB6YpnILDQAf8qikxpp7tGJg0yll
-         A9ua3Maklf1+bt573WkoGBDkaY634uIZLCPOre9sSpZ3y0bNzcVYCKtidlpSpk2ARY9m
-         gAgL3Da9MaLptDF4+cd78yCgxcmswRivhXerEYHhe8OGMBmZyL6Mfpgl3AgLZjfL8MaE
-         oNjyubR2p5IX6EvsZ5fQVd4bwcl6qbJpK6uY67wL5kSUOgUbs3GzeimPY2aaRjKFigVX
-         J6W7j9u5lLV0+f1nZbBOxqb25xXG0Mum9RiUKiO+O9zZlo2oi/zPxDaRv1OeVa8pQ/x9
-         +JPQ==
-X-Gm-Message-State: AOJu0YwpqzKzpgHUP39Fsp1hSmY25ie0hDkOr8rZBuWhZn4i/hgIKYle
-	FpeXZzhphNMD1C/7MrEswWF55w/fRhnNNVhH37xvVns5+46jLsP9qQkPcxFODgZg8w==
-X-Gm-Gg: ATEYQzxWZAGwTnXAE3AdMKnaj59i8NspOFZaJebP+5OPCssBA/uekvhUwQft7Vy2X7G
-	/KXyjqH+BgxxA1CvWI2yr2Hxmm0F7h9bOXDmacN40T99uzhI6y9O3g7zQWSHzK0nI/ISU8OBnKy
-	l82twXH5AbK8G9aMZFn3I7U/gOBBmh9c9K1Apx1ClDGWBwnGpmjmMeUFp5CpJrEOmgI4m63nDMX
-	hc2QG2yNSw5ZsRFR9dE8oUeggS4HOph0vA4GPUH+fMDbCl6IF/QbMBjTNGE7Ejy0W0yhKiqj9sP
-	UaIN8C8BzA10bHr4PL/U1Hg3EHsxzgj927DSWseWXc3kCPIDJBnm80Gg2/e56XJSM2klH8LcwVz
-	kqf3She30TvkS2lGnSA+xYFKqtsDLjhCLlRSlUAp20Ycgd1e5qK1wWtUpghw90u1bIDse6cIcga
-	4GjkJrg8NGRE50P7hD
-X-Received: by 2002:a17:902:d50e:b0:2b0:6df2:8cdb with SMTP id d9443c01a7336-2b06e21de42mr52463325ad.0.1773865837591;
-        Wed, 18 Mar 2026 13:30:37 -0700 (PDT)
-Received: from google.com ([2a00:79e0:a:200:21ee:a76b:b098:63fe])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2b06e419b22sm39224235ad.11.2026.03.18.13.30.33
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 18 Mar 2026 13:30:37 -0700 (PDT)
-Date: Wed, 18 Mar 2026 21:30:26 +0100
-From: Dmytro Maluka <dmaluka@chromium.org>
-To: Dave Hansen <dave.hansen@intel.com>
-Cc: kvm@vger.kernel.org, Sean Christopherson <seanjc@google.com>,
-	Paolo Bonzini <pbonzini@redhat.com>,
-	Isaku Yamahata <isaku.yamahata@intel.com>,
-	Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>,
-	Borislav Petkov <bp@alien8.de>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	"maintainer:X86 ARCHITECTURE (32-BIT AND 64-BIT)" <x86@kernel.org>,
-	"H. Peter Anvin" <hpa@zytor.com>, Kiryl Shutsemau <kas@kernel.org>,
-	Rick Edgecombe <rick.p.edgecombe@intel.com>,
-	Binbin Wu <binbin.wu@linux.intel.com>,
-	"open list:X86 ARCHITECTURE (32-BIT AND 64-BIT)" <linux-kernel@vger.kernel.org>,
-	"open list:X86 TRUST DOMAIN EXTENSIONS (TDX)" <linux-coco@lists.linux.dev>,
-	Chuanxiao Dong <chuanxiao.dong@intel.com>
-Subject: Re: [PATCH] KVM: TDX: Fix APIC MSR ranges in tdx_has_emulated_msr()
-Message-ID: <absLYnREVR9ZNzxc@google.com>
-References: <20260318190111.1041924-1-dmaluka@chromium.org>
- <94b06319-2be8-4f01-87d1-8989ae1ca85d@intel.com>
+	dkim=pass (2048-bit key) header.d=shazbot.org header.i=@shazbot.org header.b="rzQ2+bI/";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="DVmTfJC9"
+Received: from phl-compute-11.internal (phl-compute-11.internal [10.202.2.51])
+	by mailfout.phl.internal (Postfix) with ESMTP id D3CF9EC01B3;
+	Wed, 18 Mar 2026 16:31:13 -0400 (EDT)
+Received: from phl-frontend-03 ([10.202.2.162])
+  by phl-compute-11.internal (MEProxy); Wed, 18 Mar 2026 16:31:13 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shazbot.org; h=
+	cc:cc:content-transfer-encoding:content-type:content-type:date
+	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to; s=fm3; t=1773865873;
+	 x=1773952273; bh=dLkggwkzahWHNR67Lhp0vDzf1WAGYfDxXYXJT93DX4U=; b=
+	rzQ2+bI/ArGPEfwUAiJgFuXx7Lse0ALPiylsa155EQT2duHmj6qrLuOl2vMNkeqQ
+	DEJ9JiW3WvyrnAB2cj9UfiiNhxenfKKK5L8tg665Peb2x+tz6yzFDHIfD8wln/aS
+	x1f/+JHNVwWxNU+sG8uHqQS6QrW/MYNTGIMPNYDIvJzkCMAvMukyOCxwwlC/sGE9
+	a4H9aRN8mzi0eoULd0fBeW1XoSJXBxccFW8k01znvA+YHrjy2nu5gayf06ULMWzZ
+	pZKEfr5ttkUmGXdf5pCZW7lwZGfIgU6QGaESNy28YnGt7CtwWjw3HG3Nk0bXxI4c
+	BWMeZ2X6uL0yBq3dWkpHYw==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=1773865873; x=
+	1773952273; bh=dLkggwkzahWHNR67Lhp0vDzf1WAGYfDxXYXJT93DX4U=; b=D
+	VmTfJC9JLGKZiMBCVmDBEjh3WWLqi/TNL0por3CdYtCasU4qXJaHqDB74S6P6Xid
+	MGotmpMKI2ODcA3ZP5MarFGTiAwLLN1ScvYXMEIIRNRQMsbkMbPm+l9+GiY1IC8n
+	qGRkbfl9j+C+ekIq1Sc/HvZn+FHDtcrkpQss7LSzwFB3T9gD3skezc8LuB0lU/lR
+	7G+UD2Jz/tHjXrh6pGkG893dQQBLY1IT3TWOHIbAuvprXsDuKnv2sXLOxuwmJB8q
+	6OIiKmFO4wxVaeh9O8pdBu5SdogS7DBRVpX65wSkNY79jXYOnoMHXhT9O++qHivg
+	SCj6G2V5IMqBuNtX0IBBw==
+X-ME-Sender: <xms:kQu7acWDy51F7_BJp2uGBanK9yWfbvTJVidqwqeoRKSmpKmywtJTHg>
+    <xme:kQu7aXf_0nJYIA0fnwAbMpI9IvtVc0-8t9pLgwBVqtWbQdQFDPkLm8hry9nc3fBTR
+    5DycqM3S_YxXLANmjViFvn17ffoNQRkqNHRquNoxCFzao-ECqhyABQ>
+X-ME-Received: <xmr:kQu7aYtCIsxnpeHDPDMcfY7TpvxDfecuqvkPe2MHSd1TpjmMEIo7Y6V1RGY>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgdeftdehuddtucetufdoteggodetrf
+    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
+    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
+    gurhepfffhvfevuffkjghfofggtgfgsehtqhertdertdejnecuhfhrohhmpeetlhgvgicu
+    hghilhhlihgrmhhsohhnuceorghlvgigsehshhgriigsohhtrdhorhhgqeenucggtffrrg
+    htthgvrhhnpeegudevhfejueefveduieeuueeifeettdekveekhffgvdetfeelueehgfdt
+    heffhfenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpe
+    grlhgvgiesshhhrgiisghothdrohhrghdpnhgspghrtghpthhtohephedpmhhouggvpehs
+    mhhtphhouhhtpdhrtghpthhtoheptghlohhpvgiisehsuhhsvgdruggvpdhrtghpthhtoh
+    epkhhvmhesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopegrlhgvgidrfihi
+    lhhlihgrmhhsohhnsehrvgguhhgrthdrtghomhdprhgtphhtthhopehpsghonhiiihhnih
+    esrhgvughhrghtrdgtohhmpdhrtghpthhtoheprghlvgigsehshhgriigsohhtrdhorhhg
+X-ME-Proxy: <xmx:kQu7aW9hJBqw6w09AazAiAJdRaU44VFSB9BbRGG5KiayPJ3WaBHc-A>
+    <xmx:kQu7aT3zcBogOkLriSKDP28mEg2GvbtIhQ4UvF_XRNn1CcGT2aU35w>
+    <xmx:kQu7abC42OLpqiTQx8SI42MjKCkswEAgnRLyq7dEirbrmfCh8UPAzA>
+    <xmx:kQu7afcKroTyrlvK__1ycp8lZ5iTVqK8KyzHeKKGQRWcfbSXCTknHQ>
+    <xmx:kQu7ae5D61c_QYqGgga_vix89SO3bebJZncZ8x4Zzzy91Vl7CH8nyq2a>
+Feedback-ID: i03f14258:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
+ 18 Mar 2026 16:31:13 -0400 (EDT)
+Date: Wed, 18 Mar 2026 14:31:12 -0600
+From: Alex Williamson <alex@shazbot.org>
+To: Carlos =?UTF-8?B?TMOzcGV6?= <clopez@suse.de>
+Cc: kvm@vger.kernel.org, alex.williamson@redhat.com, pbonzini@redhat.com,
+ alex@shazbot.org
+Subject: Re: [PATCH 0/4] KVM: VFIO: use mutex guards to simplify control
+ flow
+Message-ID: <20260318143112.4ac13424@shazbot.org>
+In-Reply-To: <20260313122040.1413091-3-clopez@suse.de>
+References: <20260313122040.1413091-3-clopez@suse.de>
+X-Mailer: Claws Mail 4.3.1 (GTK 3.24.51; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <94b06319-2be8-4f01-87d1-8989ae1ca85d@intel.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 
-On Wed, Mar 18, 2026 at 12:42:59PM -0700, Dave Hansen wrote:
-> It might also be handy to have a:
-> 
-> #define X2APIC_LAST_MSR(r)	(X2APIC_MSR(x)+APIC_ISR_NR-1)
-> 
-> so that the resulting code is a bit more readable:
-> 
-> 	case X2APIC_MSR(APIC_IRR) ... X2APIC_LAST_MSR(APIC_IRR):
-> 
-> Dmytro, if you feel a burning need to respin this, don't let me stop
-> you. I can probably just fix this up when it gets applied, or Isaku can
-> make those changes and resend it too.
+On Fri, 13 Mar 2026 13:20:38 +0100
+Carlos L=C3=B3pez <clopez@suse.de> wrote:
 
-Sure, please feel free to take over this. I even have no way to test it
-anyway. :)
+> Replace several uses of mutex_lock() / mutex_unlock() pairs with mutex
+> guards, allowing removal of all gotos in virt/kvm/vfio.c.
+>=20
+> In this series I also include a small refactor that allows greatly
+> simplifying kvm_vfio_file_del(), and skipping an unnecessary call to
+> kvm_vfio_update_coherency() if the list of files managed by the KVM
+> VFIO device does not change.
+>=20
+> Carlos L=C3=B3pez (4):
+>   KVM: VFIO: clean up control flow in kvm_vfio_file_add()
+>   KVM: VFIO: use mutex guard in kvm_vfio_file_set_spapr_tce()
+>   KVM: VFIO: deduplicate file release logic
+>   KVM: VFIO: update coherency only if file was deleted
+>=20
+>  virt/kvm/vfio.c | 97 ++++++++++++++++++-------------------------------
+>  1 file changed, 35 insertions(+), 62 deletions(-)
+>=20
+>=20
+> base-commit: d2ea4ff1ce50787a98a3900b3fb1636f3620b7cf
 
-I'm hesitating whether X2APIC_LAST_MSR would be the best name for it,
-given that it is for ISR/IRR/TMR only and is using APIC_ISR_NR (so
-maybe, don't know, X2APIC_LAST_ISR_MSR?).
+Series looks good to me.  This is nicely isolated, so I assume Paolo
+will take it through the KVM tree, but I can also take it through vfio
+if preferred.
+
+Reviewed-by: Alex Williamson <alex@shazbot.org>
+
+Thanks,
+Alex
