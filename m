@@ -1,23 +1,23 @@
 Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C9387405AB8;
-	Wed, 18 Mar 2026 15:56:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BEA2B40626B;
+	Wed, 18 Mar 2026 15:56:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773849390; cv=none; b=EX3P4sURV62axKZ1mncryAUggzVA5YJicrwfpy9vPAvaW4yPGu9kmY7oL95MK7dWTPdN3lknb3yZeXAkGmSr3adNCZMZt8gcbj/bX76ABsyya/qfaJ7dACkgRgfyYf1xXvWPTGcKaoBik48ak5V/M+l4su7Glj7dhRFKuIeMXfo=
+	t=1773849393; cv=none; b=HEas/moL7Z4Pc2pm8Tx6y2Mtfe+TZWwIKQCvY5rcSwGVsJhVBJdKPOwQcayhQTQUcYMAA0P4J8M1I/RfA6qc7qvhbcYg3MQ4IBJvTxpxdw5fLB2bgKO9gcJefSF529a+bji4746kwMUJ3O/zmd0yjAGp9Oc6q9T44XzIu/85HCM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773849390; c=relaxed/simple;
-	bh=jWtzfoha93PsX6GGBj9H/8if3jpy19jkdVh7zFS4n+4=;
+	s=arc-20240116; t=1773849393; c=relaxed/simple;
+	bh=XdMhdL5+HSw7jPMzdY9ChFWc/FA1kfirxCDN9/AkECE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tfWag536T37XQ8Z98Q7qIVLNwPPmpX3dl9NAlPycgaLBxZvbz4T2EXGt9e2sSSGibj8YIFMoZrBmjYov7bzES2n6yl5FWXFAlb1/IYk2+dmpEIgTC46ET6RiYuRS0CFxFV+VS6Eeyhn/VySJmTfOA4mEqxHb4r0j+93w54muC0c=
+	 MIME-Version; b=ZyUS4tRXSty87XyiqFTV7c89OE7OLDi5LapXN8CZKlXe8IyZq0JDTGsNTbq26bd/h6w/euUKW8jFExKlKrCXY+SYKLBz+bQYpwcx6qfDl8egeZZlkQ9N7WQG5uDFSRkIwShooV5owU9Esil3juksIFs2jNaA2HdNzHW+wPDVXzA=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
 Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 1E50E2008;
-	Wed, 18 Mar 2026 08:56:19 -0700 (PDT)
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id CF7592050;
+	Wed, 18 Mar 2026 08:56:22 -0700 (PDT)
 Received: from e122027.arm.com (unknown [10.57.61.122])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id E68A93F73B;
-	Wed, 18 Mar 2026 08:56:21 -0700 (PDT)
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 7A8053F73B;
+	Wed, 18 Mar 2026 08:56:25 -0700 (PDT)
 From: Steven Price <steven.price@arm.com>
 To: kvm@vger.kernel.org,
 	kvmarm@lists.linux.dev
@@ -43,9 +43,9 @@ Cc: Joey Gouly <joey.gouly@arm.com>,
 	Emi Kisanuki <fj0570is@fujitsu.com>,
 	Vishal Annapurve <vannapurve@google.com>,
 	Steven Price <steven.price@arm.com>
-Subject: [PATCH v13 33/48] arm64: RMI: allow userspace to inject aborts
-Date: Wed, 18 Mar 2026 15:53:57 +0000
-Message-ID: <20260318155413.793430-34-steven.price@arm.com>
+Subject: [PATCH v13 34/48] arm64: RMI: support RSI_HOST_CALL
+Date: Wed, 18 Mar 2026 15:53:58 +0000
+Message-ID: <20260318155413.793430-35-steven.price@arm.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20260318155413.793430-1-steven.price@arm.com>
 References: <20260318155413.793430-1-steven.price@arm.com>
@@ -59,65 +59,58 @@ Content-Transfer-Encoding: 8bit
 
 From: Joey Gouly <joey.gouly@arm.com>
 
-Extend KVM_SET_VCPU_EVENTS to support realms, where KVM cannot set the
-system registers, and the RMM must perform it on next REC entry.
+Forward RSI_HOST_CALLS to KVM's HVC handler.
 
 Signed-off-by: Joey Gouly <joey.gouly@arm.com>
 Signed-off-by: Steven Price <steven.price@arm.com>
 Reviewed-by: Gavin Shan <gshan@redhat.com>
 ---
- Documentation/virt/kvm/api.rst |  2 ++
- arch/arm64/kvm/guest.c         | 24 ++++++++++++++++++++++++
- 2 files changed, 26 insertions(+)
+Changes since v7:
+ * Avoid turning a negative return from kvm_smccc_call_handler() into a
+   error response to the guest. Instead propogate the error back to user
+   space.
+Changes since v4:
+ * Setting GPRS is now done by kvm_rec_enter() rather than
+   rec_exit_host_call() (see previous patch - arm64: RME: Handle realm
+   enter/exit). This fixes a bug where the registers set by user space
+   were being ignored.
+---
+ arch/arm64/kvm/rmi-exit.c | 15 +++++++++++++++
+ 1 file changed, 15 insertions(+)
 
-diff --git a/Documentation/virt/kvm/api.rst b/Documentation/virt/kvm/api.rst
-index 70911fe6d435..eabe20d3ae76 100644
---- a/Documentation/virt/kvm/api.rst
-+++ b/Documentation/virt/kvm/api.rst
-@@ -1310,6 +1310,8 @@ User space may need to inject several types of events to the guest.
- Set the pending SError exception state for this VCPU. It is not possible to
- 'cancel' an Serror that has been made pending.
+diff --git a/arch/arm64/kvm/rmi-exit.c b/arch/arm64/kvm/rmi-exit.c
+index b4843f094615..7eff6967530c 100644
+--- a/arch/arm64/kvm/rmi-exit.c
++++ b/arch/arm64/kvm/rmi-exit.c
+@@ -116,6 +116,19 @@ static int rec_exit_ripas_change(struct kvm_vcpu *vcpu)
+ 	return -EFAULT;
+ }
  
-+User space cannot inject SErrors into Realms.
++static int rec_exit_host_call(struct kvm_vcpu *vcpu)
++{
++	int i;
++	struct realm_rec *rec = &vcpu->arch.rec;
 +
- If the guest performed an access to I/O memory which could not be handled by
- userspace, for example because of missing instruction syndrome decode
- information or because there is no device mapped at the accessed IPA, then
-diff --git a/arch/arm64/kvm/guest.c b/arch/arm64/kvm/guest.c
-index e62a4feddff3..d9f392cb2759 100644
---- a/arch/arm64/kvm/guest.c
-+++ b/arch/arm64/kvm/guest.c
-@@ -827,6 +827,30 @@ int __kvm_arm_vcpu_set_events(struct kvm_vcpu *vcpu,
- 	u64 esr = events->exception.serror_esr;
- 	int ret = 0;
++	vcpu->stat.hvc_exit_stat++;
++
++	for (i = 0; i < REC_RUN_GPRS; i++)
++		vcpu_set_reg(vcpu, i, rec->run->exit.gprs[i]);
++
++	return kvm_smccc_call_handler(vcpu);
++}
++
+ static void update_arch_timer_irq_lines(struct kvm_vcpu *vcpu)
+ {
+ 	struct realm_rec *rec = &vcpu->arch.rec;
+@@ -183,6 +196,8 @@ int handle_rec_exit(struct kvm_vcpu *vcpu, int rec_run_ret)
+ 		return rec_exit_psci(vcpu);
+ 	case RMI_EXIT_RIPAS_CHANGE:
+ 		return rec_exit_ripas_change(vcpu);
++	case RMI_EXIT_HOST_CALL:
++		return rec_exit_host_call(vcpu);
+ 	}
  
-+	if (vcpu_is_rec(vcpu)) {
-+		/* Cannot inject SError into a Realm. */
-+		if (serror_pending)
-+			return -EINVAL;
-+
-+		/*
-+		 * If a data abort is pending, set the flag and let the RMM
-+		 * inject an SEA when the REC is scheduled to be run.
-+		 */
-+		if (ext_dabt_pending) {
-+			/*
-+			 * Can only inject SEA into a Realm if the previous exit
-+			 * was due to a data abort of an Unprotected IPA.
-+			 */
-+			if (!(vcpu->arch.rec.run->enter.flags & REC_ENTER_FLAG_EMULATED_MMIO))
-+				return -EINVAL;
-+
-+			vcpu->arch.rec.run->enter.flags &= ~REC_ENTER_FLAG_EMULATED_MMIO;
-+			vcpu->arch.rec.run->enter.flags |= REC_ENTER_FLAG_INJECT_SEA;
-+		}
-+
-+		return 0;
-+	}
-+
- 	/*
- 	 * Immediately commit the pending SEA to the vCPU's architectural
- 	 * state which is necessary since we do not return a pending SEA
+ 	kvm_pr_unimpl("Unsupported exit reason: %u\n",
 -- 
 2.43.0
 
