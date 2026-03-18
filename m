@@ -1,100 +1,130 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f178.google.com (mail-pl1-f178.google.com [209.85.214.178])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 04F4E356A08;
-	Wed, 18 Mar 2026 17:48:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E1864291C10
+	for <kvm@vger.kernel.org>; Wed, 18 Mar 2026 17:49:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.178
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773856126; cv=none; b=Vo0llAQTmfbXgNJSIswES2wqoqJoKSY+Kh/tel0Gp7D0GS3akvVbtu8y1Vwsaqg1VLkGP/C5yweUfyRFwuknvaa9vx5DLB5ZyE7t1m4598n3PRCqxCiGbZVqLWK2qrTG/CmASyL/q8XsPc4+/tG79K2shTznzWlJM1q6AOrBTSo=
+	t=1773856167; cv=none; b=kOGhxsuVS/1dEXRRtHdz+QL64Qh9ruKiiSLPC0sLFetVYNZkne7BwOPSqODqRj1l2Sd6dyC38QulAUMDPzY/FYSKvlHFrParQCfz4sF0iz0GCY5EVcbnpCouSDsDNXy3NEXpwfrdevsHtl/wUB9ZIgFptY7xT+ZtjZkipHVkark=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773856126; c=relaxed/simple;
-	bh=n0MnqJl2TOeHEpAg4OVfr0lxtUkQnytUwf9VSMN6vPY=;
+	s=arc-20240116; t=1773856167; c=relaxed/simple;
+	bh=Y2/o/ebxsdPQbPCrZDWTV82JL/XtU45w5Gvly4ZT4qk=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Gf9FKAwuslq5rydqOpETjBmeXHLqbcFjV9EKdUFV5XfofysopRZNJ9F6MXBmjPWEGuIlm73/aDfJWQV3Q6JZ+k+kmDvMJJppk+bHnLEcMyikUdxLAY2vYifda/JBLnq9E0FZN+AWa6E3riS9IBtTH9h3C22RhZgET+JDApVV5Os=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LOgv1+2m; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=fyAiSC2xWLqaGKbm2pC7cRs/K3jZ9v9A/pYKXTKMT+9/kQxdTpNwFe06HjunCIjmOo/Vs0x6ztDBeV8YD8uG4tdXy2gJUZvz/NIeD9yMQMCXTcjaW72gKWA2FTPxPcE/sh+0tagGCF9CNP6MWsh8axbsJM156jShY4PDi2kiIqE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Xnz98Nui; arc=none smtp.client-ip=209.85.214.178
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LOgv1+2m"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2EAB6C19421;
-	Wed, 18 Mar 2026 17:48:40 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773856125;
-	bh=n0MnqJl2TOeHEpAg4OVfr0lxtUkQnytUwf9VSMN6vPY=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=LOgv1+2mwpavGPO2QlnbCxclonKXFB+AxWUsJ01xE2+V1JtCkdsmGshS45GkRQh9u
-	 2onntOOl8y4ZGEgr8OWwunDZjjHOQCYviLUb8rxV+ku/0xxTlsZKwIlxeyJ7px12Mu
-	 86Xx/KDpcj4jMK0Ad+eAad6UyNB+GGaJyzn2FDDJxMd6jVUgIlYZTtM270S7PSSGYi
-	 kWXd4e5jqIWXmza/mPZOj5lKKU7KimXD2JFJVD/NXdWvgbpko28vf/s+QdyuTnkIiR
-	 G+gN0Zi9dVfhR/megVQkY4HRAtwPvz4Zw3IGRBL1tEeiAb0yOC/YQZj021qQ4eYBbF
-	 N4HApQJcXAZ2g==
-Date: Wed, 18 Mar 2026 17:48:57 +0000
-From: Jean-Philippe Brucker <jpb@kernel.org>
-To: Mark Brown <broonie@kernel.org>
-Cc: Marc Zyngier <maz@kernel.org>, Joey Gouly <joey.gouly@arm.com>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Suzuki K Poulose <suzuki.poulose@arm.com>,
-	Will Deacon <will@kernel.org>, Paolo Bonzini <pbonzini@redhat.com>,
-	Jonathan Corbet <corbet@lwn.net>, Shuah Khan <shuah@kernel.org>,
-	Oliver Upton <oupton@kernel.org>, Dave Martin <Dave.Martin@arm.com>,
-	Fuad Tabba <tabba@google.com>, Mark Rutland <mark.rutland@arm.com>,
-	Ben Horgan <ben.horgan@arm.com>,
-	linux-arm-kernel@lists.infradead.org, kvmarm@lists.linux.dev,
-	linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
-	linux-doc@vger.kernel.org, linux-kselftest@vger.kernel.org,
-	Peter Maydell <peter.maydell@linaro.org>,
-	Eric Auger <eric.auger@redhat.com>
-Subject: Re: [PATCH v10 11/30] KVM: arm64: Store vector lengths in an array
-Message-ID: <20260318174857.GI2390801@myrica>
-References: <20260306-kvm-arm64-sme-v10-0-43f7683a0fb7@kernel.org>
- <20260306-kvm-arm64-sme-v10-11-43f7683a0fb7@kernel.org>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Xnz98Nui"
+Received: by mail-pl1-f178.google.com with SMTP id d9443c01a7336-2b052562254so7975ad.0
+        for <kvm@vger.kernel.org>; Wed, 18 Mar 2026 10:49:25 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1773856165; x=1774460965; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=Y2/o/ebxsdPQbPCrZDWTV82JL/XtU45w5Gvly4ZT4qk=;
+        b=Xnz98NuiMHg/pmlDDcEM8Bw+P6M2Wb1pTyk2leV7ytvTOE/hd4kac2zJGA5TM2NTLo
+         QAYzaS4hhwo3WUr30EERqA9U7W7AVimarqr66EThps6b7cvkXTvi6o2uKwYPNo4fQdPc
+         2ovdtQSzO/jPciiIhDzO/rmUFbQBMWrfwF3JOuhCuXx/VB4IvA+NnDWXsDqgbXIi4YJB
+         Nup6lyK1cJpoWFAh0odagm+D8Abvg8DyEMwfausFDGkF8CzNmwYsmFxG+YMZ81Hv44xS
+         dMR7/wAmEBHbfFI8rlLRWNucwJoG8T/QjkZkImK3dZt9XncdL5lBZMhv8rtlHrezqBm2
+         nrfw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1773856165; x=1774460965;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=Y2/o/ebxsdPQbPCrZDWTV82JL/XtU45w5Gvly4ZT4qk=;
+        b=ixCJrlrJg8STBUW0KHR+7/Jm1CtLup0v9n9pZF7sotD57/cRyYgcFXmeZsYjUqdNIe
+         qx6UD/JQAmHLxXLWoHOQuuZxY4ZvSwcu9040JdUJRHLEO1k/9KZ98Ve9OFo9UZD4IaWp
+         +m6vT56fzHav5LZwTaCUgUWPH8S674m1IFf7BBiMfR/wdBZxpUnem+HpQvT9h2t5puzS
+         BjO0ljc/4UqpX8QIxuo8s4MhtE58rbhfmi9/rXZIndtpg7z77QJ6gzmQuYwCISF8xIhk
+         zoTAeE8gQ5POQwyfbmINm6H9Yc7GQmaY96XFJnKb7f0wjwiV10V22kKM2i7K3xUhs/Q7
+         5KKQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUTCALLdjrHp28zsfBdknvzpikZXxYBtRkKOQjaLGpMPCIxninzrDv3Fj6JacmzlPZ1G9I=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy1ONnHEQ3B5sNUqTB0jk3oCyTWpIMP8FUj8NFtimG8v6VT6IPI
+	Hju8IBSRTsTBEPGgNC1g6FHbInj0L1hFFIMGj4e0wsoEmZJxt1WiZhTNVHns/9+naQ==
+X-Gm-Gg: ATEYQzwTfYfL3otM85uB+lvqWRZ1oC21PAWFT9sIw//tMvrnN/fMm83ySSYgR4YZ7nE
+	ykrY/zj9ejzus9Yqai47lmMm9YyggXLHuVMne1wWuRkhlaNfUptBWg5x+ACp4tr7NoAiaMOSyuj
+	2gmVVf8BpxVHYixHyQR//M/c5DVF7WasJwMEbQkiVB97MCRqowIRS0i1EZlJh9r7qOFvWKC78rE
+	6v+hjVify8MNKmMBUYxBQlRxkRXDEa8srLo5YmWrzVeGbFeOye0os0Ff5R7P2c789oUVW9AmhXY
+	o6QM8xhS6HCJ2ZvZ/rIf3b6LozcxUDmXUWEtVHFuRE6s0+rHAaQNbgcMDdhBVyVQRWvikbsV7K1
+	W6EJ1ZF624Lkfy8mmnZGmh3cq4yd7tEnlMjHoWygIabs5FKuhL1xhaeNoX66gZGyh5lzFPG4m7U
+	AEr8Y/qxmVXACw/mwsLPTyMgWem9/+oY/kUzr6KHufcl4KusxKfE9vaQrdn+MknA==
+X-Received: by 2002:a17:902:f544:b0:2ae:575f:3755 with SMTP id d9443c01a7336-2b077df8c89mr179905ad.20.1773856164572;
+        Wed, 18 Mar 2026 10:49:24 -0700 (PDT)
+Received: from google.com (168.136.83.34.bc.googleusercontent.com. [34.83.136.168])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-82a6bbe6162sm3180791b3a.42.2026.03.18.10.49.23
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 18 Mar 2026 10:49:23 -0700 (PDT)
+Date: Wed, 18 Mar 2026 17:49:20 +0000
+From: Samiullah Khawaja <skhawaja@google.com>
+To: Pranjal Shrivastava <praan@google.com>
+Cc: David Woodhouse <dwmw2@infradead.org>, 
+	Lu Baolu <baolu.lu@linux.intel.com>, Joerg Roedel <joro@8bytes.org>, Will Deacon <will@kernel.org>, 
+	Jason Gunthorpe <jgg@ziepe.ca>, Robin Murphy <robin.murphy@arm.com>, 
+	Kevin Tian <kevin.tian@intel.com>, Alex Williamson <alex@shazbot.org>, 
+	Shuah Khan <shuah@kernel.org>, iommu@lists.linux.dev, linux-kernel@vger.kernel.org, 
+	kvm@vger.kernel.org, Saeed Mahameed <saeedm@nvidia.com>, 
+	Adithya Jayachandran <ajayachandra@nvidia.com>, Parav Pandit <parav@nvidia.com>, 
+	Leon Romanovsky <leonro@nvidia.com>, William Tu <witu@nvidia.com>, 
+	Pratyush Yadav <pratyush@kernel.org>, Pasha Tatashin <pasha.tatashin@soleen.com>, 
+	David Matlack <dmatlack@google.com>, Andrew Morton <akpm@linux-foundation.org>, 
+	Chris Li <chrisl@kernel.org>, Vipin Sharma <vipinsh@google.com>, 
+	YiFei Zhu <zhuyifei@google.com>
+Subject: Re: [PATCH 02/14] iommu: Implement IOMMU core liveupdate skeleton
+Message-ID: <abrk39_M8k45myXJ@google.com>
+References: <20260203220948.2176157-1-skhawaja@google.com>
+ <20260203220948.2176157-3-skhawaja@google.com>
+ <abNH7LAj9thuGOoG@google.com>
+ <abROLLfSUK8pXM5J@google.com>
+ <abm09vCaAMtiQPVs@google.com>
+ <abm1esL1dzN7NTC7@google.com>
+ <abm4ShqPTxIujDlt@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=us-ascii; format=flowed
 Content-Disposition: inline
-In-Reply-To: <20260306-kvm-arm64-sme-v10-11-43f7683a0fb7@kernel.org>
+In-Reply-To: <abm4ShqPTxIujDlt@google.com>
 
-On Fri, Mar 06, 2026 at 05:01:03PM +0000, Mark Brown wrote:
-> SME adds a second vector length configured in a very similar way to the
-> SVE vector length, in order to facilitate future code sharing for SME
-> refactor our storage of vector lengths to use an array like the host does.
-> We do not yet take much advantage of this so the intermediate code is not
-> as clean as might be.
-> 
-> No functional change.
-> 
-> Reviewed-by: Fuad Tabba <tabba@google.com>
-> Signed-off-by: Mark Brown <broonie@kernel.org>
-> ---
->  arch/arm64/include/asm/kvm_host.h       | 17 +++++++++++------
->  arch/arm64/include/asm/kvm_hyp.h        |  2 +-
->  arch/arm64/include/asm/kvm_pkvm.h       |  2 +-
->  arch/arm64/kvm/fpsimd.c                 |  2 +-
->  arch/arm64/kvm/guest.c                  |  6 +++---
->  arch/arm64/kvm/hyp/include/hyp/switch.h |  6 +++---
->  arch/arm64/kvm/hyp/nvhe/hyp-main.c      |  6 +++---
->  arch/arm64/kvm/hyp/nvhe/pkvm.c          |  7 ++++---
->  arch/arm64/kvm/reset.c                  | 22 +++++++++++-----------
->  9 files changed, 38 insertions(+), 32 deletions(-)
-> 
-> diff --git a/arch/arm64/include/asm/kvm_host.h b/arch/arm64/include/asm/kvm_host.h
-> index 906dbefc5b33..3c30c1a70429 100644
-> --- a/arch/arm64/include/asm/kvm_host.h
-> +++ b/arch/arm64/include/asm/kvm_host.h
-> @@ -77,8 +77,10 @@ enum kvm_mode kvm_get_mode(void);
->  static inline enum kvm_mode kvm_get_mode(void) { return KVM_MODE_NONE; };
->  #endif
->  
-> -extern unsigned int __ro_after_init kvm_sve_max_vl;
-> -extern unsigned int __ro_after_init kvm_host_sve_max_vl;
-> +extern unsigned int __ro_after_init kvm_max_vl[ARM64_VEC_MAX];
-> +extern unsigned int __ro_after_init kvm_host_max_vl[ARM64_VEC_MAX];
-> +DECLARE_STATIC_KEY_FALSE(userspace_irqchip_in_use);
+On Tue, Mar 17, 2026 at 08:23:38PM +0000, Pranjal Shrivastava wrote:
+>On Tue, Mar 17, 2026 at 08:13:47PM +0000, Samiullah Khawaja wrote:
+>> On Tue, Mar 17, 2026 at 08:09:26PM +0000, Pranjal Shrivastava wrote:
+>> > On Fri, Mar 13, 2026 at 06:42:05PM +0000, Samiullah Khawaja wrote:
+>> > > On Thu, Mar 12, 2026 at 11:10:36PM +0000, Pranjal Shrivastava wrote:
+>> > > > On Tue, Feb 03, 2026 at 10:09:36PM +0000, Samiullah Khawaja wrote:
+>> > > > > +EXPORT_SYMBOL(iommu_get_preserved_data);
+>> > > > > +
+>> >
+>> > Also, I don't see these helpers being used anywhere in this series yet?
+>> > Should we add them with the phase-2 series? When we actually "Restore"
+>> > the domain?
+>>
+>> Phase 1 does restore the iommu and domains during boot. But the
+>> iommufd/hwpt state is not restored or re-associated with the restored
+>> domains.
+>>
+>> These helpers are used to fetch the preserved state during boot.
+>>
+>> Thanks,
+>> Sami
+>
+>I see these are used in PATCH 8, should we introduce these helpers in
+>PATCH 8 where we actually use them? As we introduce iommu_restore_domain
+>in PATCH 8?
 
-A rebase issue here, rest looks good
+Agreed. I will move the helper for getting the device state into PATCH
+8. But the one that is used to fetch the iommu state is used by the vt-d
+driver in the PATCH 7. I will add a new patch before PATCH 7 to add that
+helper.
 
 Thanks,
-Jean
-
+Sami
+>
+>Thanks,
+>Praan
+>
