@@ -1,159 +1,218 @@
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA4C42877D8
-	for <kvm@vger.kernel.org>; Wed, 18 Mar 2026 15:34:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 363E83090E2;
+	Wed, 18 Mar 2026 15:36:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773848083; cv=none; b=vDSHpB6E8zjYuwAJHFsZieYaJKptyKPST/jPCr6WWyV4TtF37edm66TiERx+bLGEWhJRiXY57yKxGoP3TI8bK+z+nV2CL9daSH40rNk5vFEPMI6MJxu/WEmSx3Kq8wGC4us9AJ9riHLcOaBeKk9wzSvl3DrXW9eJngYPdcgFb7M=
+	t=1773848212; cv=none; b=OqRb2oaZjmg+1fsLHqrNLw5f5TY1h3q30vlfcM2dQb2uM9FqDJEG9xMpz6/IkLZWghi2lr0nbSJ7atK4EdI1b+g5BOnlbKDVoYDeIWJJKVmkNibRVCLno+CfdttAAy1B20vP96KvyzHCCHjrSCc+ekDDA8ClDHd+zxLYshR0zQY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773848083; c=relaxed/simple;
-	bh=zVN6DmfGq2PVx/FN4NmSFbZfsg7n/HbRD8oYuZuGHIo=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=s0FqbmQKTSg9NmPwRld5dRemeOn8AXPLiDAJ7fcWjojGxuslVzHavGQD3Qxrd6rmNr1cUTHlCLhcUsheaN1jDQgfIbxHGohAZAOobs/qOmLR6gF3fiBnPioVXECJ/2miKPQPzo0R5E1fqNMkdH/lFXPXYMfvDl7FQLiTE4K79vk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 444D71C2B;
-	Wed, 18 Mar 2026 08:34:35 -0700 (PDT)
-Received: from e124191.cambridge.arm.com (e124191.cambridge.arm.com [10.1.197.45])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id C4D0F3F73B;
-	Wed, 18 Mar 2026 08:34:39 -0700 (PDT)
-Date: Wed, 18 Mar 2026 15:34:32 +0000
-From: Joey Gouly <joey.gouly@arm.com>
-To: Sascha Bischoff <Sascha.Bischoff@arm.com>
-Cc: "linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>,
-	"kvmarm@lists.linux.dev" <kvmarm@lists.linux.dev>,
-	"kvm@vger.kernel.org" <kvm@vger.kernel.org>, nd <nd@arm.com>,
-	"maz@kernel.org" <maz@kernel.org>,
-	"oliver.upton@linux.dev" <oliver.upton@linux.dev>,
-	Suzuki Poulose <Suzuki.Poulose@arm.com>,
-	"yuzenghui@huawei.com" <yuzenghui@huawei.com>,
-	"peter.maydell@linaro.org" <peter.maydell@linaro.org>,
-	"lpieralisi@kernel.org" <lpieralisi@kernel.org>,
-	Timothy Hayes <Timothy.Hayes@arm.com>,
-	"jonathan.cameron@huawei.com" <jonathan.cameron@huawei.com>
-Subject: Re: [PATCH v6 35/39] KVM: arm64: gic-v5: Probe for GICv5 device
-Message-ID: <20260318153432.GA3939846@e124191.cambridge.arm.com>
-References: <20260317113949.2548118-1-sascha.bischoff@arm.com>
- <20260317113949.2548118-36-sascha.bischoff@arm.com>
+	s=arc-20240116; t=1773848212; c=relaxed/simple;
+	bh=Gq2WftE+uYWeojN2fexm2NcmTQX0ylyQbZFz2kfHEOM=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=IfcZO6NKNY55VKUwZJYoYt9Bv0y01q51tK75kI7nWPS64A5MJUyHEwbyEf6ndh/KpblGZkdsw3ACAf2BmHYms3AxojG0WJqNd/sbo2n9brZWiTBYFnIY5mExRaqTgoSOELegXxoCAXbNhkttrEjQyFc3NhVjm4mAaOcXqnF9Nlg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=dZ4O9h3h; arc=none smtp.client-ip=148.163.156.1
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="dZ4O9h3h"
+Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 62IAi0SI1484495;
+	Wed, 18 Mar 2026 15:36:46 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=1kOnpL
+	Sq0iUyDNvFt1QOIwHIcc+YRsOqF1OqZ1s3vCE=; b=dZ4O9h3hhMUW93Zw7+YS6M
+	9VkGsc/Lotq8Qbu3R39Qcq3FD4x1NgBIU+QHkKYJ7ATrx+Gv5bTaNkK4R72G25BB
+	vHWpMRUZ8NpGHPiBd165eZupfY/GBnjn8iI4EBYBvZrhvtsBSTM+gWRSbEy1gOpn
+	1RlkNF4+lVFVpf3L7T61Mhx0ZpRfikJW8VsDIBPqpx1v5JcEXS2oUQXjL0bXYV+W
+	nr3JzgcEzo/EkhnLITawbIJSPvnZElcTQUu/CVh0NUfIGI4Vn4AQyBIHlFVIzi1d
+	1bimSxo4xWuI7XfvveWse/gDpqPe+GkAabi7TMxuQJkuPrFNLgWtbBMmAq5tXXmA
+	==
+Received: from ppma21.wdc07v.mail.ibm.com (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4cx7vfn08v-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 18 Mar 2026 15:36:46 +0000 (GMT)
+Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma21.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 62IDUWGX015648;
+	Wed, 18 Mar 2026 15:36:45 GMT
+Received: from smtprelay01.fra02v.mail.ibm.com ([9.218.2.227])
+	by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4cwk0nejt3-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 18 Mar 2026 15:36:45 +0000
+Received: from smtpav05.fra02v.mail.ibm.com (smtpav05.fra02v.mail.ibm.com [10.20.54.104])
+	by smtprelay01.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 62IFafSs58393042
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Wed, 18 Mar 2026 15:36:41 GMT
+Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 358F02004E;
+	Wed, 18 Mar 2026 15:36:41 +0000 (GMT)
+Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 1460F2004B;
+	Wed, 18 Mar 2026 15:36:41 +0000 (GMT)
+Received: from p-imbrenda (unknown [9.52.223.175])
+	by smtpav05.fra02v.mail.ibm.com (Postfix) with SMTP;
+	Wed, 18 Mar 2026 15:36:41 +0000 (GMT)
+Date: Wed, 18 Mar 2026 16:36:37 +0100
+From: Claudio Imbrenda <imbrenda@linux.ibm.com>
+To: Janosch Frank <frankja@linux.ibm.com>
+Cc: kvm@vger.kernel.org, linux-s390@vger.kernel.org, borntraeger@linux.ibm.com,
+        akrowiak@linux.ibm.com
+Subject: Re: [RFC 07/10] KVM: s390: Use gpa_t and gva_t in gaccess files
+Message-ID: <20260318163637.17ed4314@p-imbrenda>
+In-Reply-To: <20260316180310.17765-8-frankja@linux.ibm.com>
+References: <20260316180310.17765-1-frankja@linux.ibm.com>
+	<20260316180310.17765-8-frankja@linux.ibm.com>
+Organization: IBM
+X-Mailer: Claws Mail 4.3.1 (GTK 3.24.49; x86_64-redhat-linux-gnu)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260317113949.2548118-36-sascha.bischoff@arm.com>
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: Yqy4FEuPOWellUlfHcDs1GNlOPaGznK6
+X-Authority-Analysis: v=2.4 cv=KajfcAYD c=1 sm=1 tr=0 ts=69bac68e cx=c_pps
+ a=GFwsV6G8L6GxiO2Y/PsHdQ==:117 a=GFwsV6G8L6GxiO2Y/PsHdQ==:17
+ a=kj9zAlcOel0A:10 a=Yq5XynenixoA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=RnoormkPH1_aCDwRdu11:22 a=U7nrCbtTmkRpXpFmAIza:22 a=VnNF1IyMAAAA:8
+ a=v0MfZn9Cwve4zM3rKLcA:9 a=CjuIK1q_8ugA:10
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMzE4MDEyOSBTYWx0ZWRfXxdBdpYOCfvhH
+ UcxTrp2XuCr4kDClxOv+7q7BOhfbuKzt2rdk8ZHqRpAuD0AewHhqx0ltBjfn06uySP0lZMOVoYW
+ 56OLFjQTDlf5EfQGIZxIGJ/VDhXPzrCmwPuoXlDm0khDOceo5gBd5ulltogGdI9I02tFbzzX6G7
+ 4X2RZ+FbnXOZZWzZmCbe1GiOOgS1EZCkaFlcTUx8VqD4S3wb0McDKTG+Cippa6i6+D2EXwSvKVX
+ 5myPfkCFsuxUOnsBdzbePQoIca21m3Q8ODWWt9m//T2JVY/P88ksRozMS3e7jUHyVdZfUwg2Ufn
+ upHhP5VSEKCjkCJQo81U3CEakQVidY5nqMkUHIpAugcI5qPXYeKCLkGb9POlTnCuDEpwBQK/I5T
+ a4SJt4Rz6gVY2S7asRjosjWPjxLRl+F8EfSfxO2yoKu/Y2R4fOAzTL7PVcQabBh9qzpeMXL1kyP
+ BVMo5WeQb65H7ufJIkA==
+X-Proofpoint-GUID: Yqy4FEuPOWellUlfHcDs1GNlOPaGznK6
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
+ definitions=2026-03-18_01,2026-03-17_02,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ suspectscore=0 adultscore=0 spamscore=0 malwarescore=0 clxscore=1015
+ impostorscore=0 bulkscore=0 lowpriorityscore=0 priorityscore=1501
+ phishscore=0 classifier=typeunknown authscore=0 authtc= authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2603050001
+ definitions=main-2603180129
 
-On Tue, Mar 17, 2026 at 11:49:02AM +0000, Sascha Bischoff wrote:
-> The basic GICv5 PPI support is now complete. Allow probing for a
-> native GICv5 rather than just the legacy support.
+On Mon, 16 Mar 2026 16:23:54 +0000
+Janosch Frank <frankja@linux.ibm.com> wrote:
+
+> A lot of addresses are being passed around as u64 or unsigned long
+> instead of gpa_t and gva_t. Some of the variables are already called
+> gva or gpa anyway.
 > 
-> The implementation doesn't support protected VMs with GICv5 at this
-> time. Therefore, if KVM has protected mode enabled the native GICv5
-> init is skipped, but legacy VMs are allowed if the hardware supports
-> it.
-> 
-> At this stage the GICv5 KVM implementation only supports PPIs, and
-> doesn't interact with the host IRS at all. This means that there is no
-> need to check how many concurrent VMs or vCPUs per VM are supported by
-> the IRS - the PPI support only requires the CPUIF. The support is
-> artificially limited to VGIC_V5_MAX_CPUS, i.e. 512, vCPUs per VM.
-> 
-> With this change it becomes possible to run basic GICv5-based VMs,
-> provided that they only use PPIs.
-> 
-> Co-authored-by: Timothy Hayes <timothy.hayes@arm.com>
-> Signed-off-by: Timothy Hayes <timothy.hayes@arm.com>
-> Signed-off-by: Sascha Bischoff <sascha.bischoff@arm.com>
-> Reviewed-by: Jonathan Cameron <jonathan.cameron@huawei.com>
-> Reviewed-by: Joey Gouly <joey.gouly@arm.com>
+> Signed-off-by: Janosch Frank <frankja@linux.ibm.com>
+
+Reviewed-by: Claudio Imbrenda <imbrenda@linux.ibm.com>
+
 > ---
->  arch/arm64/kvm/vgic/vgic-v5.c | 43 ++++++++++++++++++++++++++---------
->  1 file changed, 32 insertions(+), 11 deletions(-)
+>  arch/s390/kvm/gaccess.c | 20 ++++++++++----------
+>  arch/s390/kvm/gaccess.h |  3 +--
+>  2 files changed, 11 insertions(+), 12 deletions(-)
 > 
-> diff --git a/arch/arm64/kvm/vgic/vgic-v5.c b/arch/arm64/kvm/vgic/vgic-v5.c
-> index 32565bfbd1051..e491ae0e4f56e 100644
-> --- a/arch/arm64/kvm/vgic/vgic-v5.c
-> +++ b/arch/arm64/kvm/vgic/vgic-v5.c
-> @@ -39,24 +39,13 @@ static void vgic_v5_get_implemented_ppis(void)
+> diff --git a/arch/s390/kvm/gaccess.c b/arch/s390/kvm/gaccess.c
+> index 7275854ee68e..b2e83f6e16ab 100644
+> --- a/arch/s390/kvm/gaccess.c
+> +++ b/arch/s390/kvm/gaccess.c
+> @@ -441,7 +441,7 @@ static int get_vcpu_asce(struct kvm_vcpu *vcpu, union asce *asce,
+>  	return 0;
+>  }
 >  
->  /*
->   * Probe for a vGICv5 compatible interrupt controller, returning 0 on success.
-> - * Currently only supports GICv3-based VMs on a GICv5 host, and hence only
-> - * registers a VGIC_V3 device.
->   */
->  int vgic_v5_probe(const struct gic_kvm_info *info)
+> -static int deref_table(struct kvm *kvm, unsigned long gpa, unsigned long *val)
+> +static int deref_table(struct kvm *kvm, gpa_t gpa, unsigned long *val)
 >  {
->  	u64 ich_vtr_el2;
->  	int ret;
+>  	return kvm_read_guest(kvm, gpa, val, sizeof(*val));
+>  }
+> @@ -467,8 +467,8 @@ static int deref_table(struct kvm *kvm, unsigned long gpa, unsigned long *val)
+>   *	      the returned value is the program interruption code as defined
+>   *	      by the architecture
+>   */
+> -static unsigned long guest_translate_gva(struct kvm_vcpu *vcpu, unsigned long gva,
+> -					 unsigned long *gpa, const union asce asce,
+> +static unsigned long guest_translate_gva(struct kvm_vcpu *vcpu, gva_t gva,
+> +					 gpa_t *gpa, const union asce asce,
+>  					 enum gacc_mode mode, enum prot_type *prot)
+>  {
+>  	union vaddress vaddr = {.addr = gva};
+> @@ -477,8 +477,8 @@ static unsigned long guest_translate_gva(struct kvm_vcpu *vcpu, unsigned long gv
+>  	int dat_protection = 0;
+>  	int iep_protection = 0;
+>  	union ctlreg0 ctlreg0;
+> -	unsigned long ptr;
+>  	int edat1, edat2, iep;
+> +	gpa_t ptr;
 >  
-> -	vgic_v5_get_implemented_ppis();
-> -
-> -	if (!cpus_have_final_cap(ARM64_HAS_GICV5_LEGACY))
-> -		return -ENODEV;
-> -
->  	kvm_vgic_global_state.type = VGIC_V5;
-> -	kvm_vgic_global_state.has_gcie_v3_compat = true;
-> -
-> -	/* We only support v3 compat mode - use vGICv3 limits */
-> -	kvm_vgic_global_state.max_gic_vcpus = VGIC_V3_MAX_CPUS;
+>  	ctlreg0.val = vcpu->arch.sie_block->gcr[0];
+>  	edat1 = ctlreg0.edat && test_kvm_facility(vcpu->kvm, 8);
+> @@ -772,7 +772,7 @@ static int vcpu_check_access_key_gpa(struct kvm_vcpu *vcpu, u8 access_key,
+>   *		  be used to inject an exception into the guest.
+>   */
+>  static int guest_range_to_gpas(struct kvm_vcpu *vcpu, unsigned long ga, u8 ar,
+> -			       unsigned long *gpas, unsigned long len,
+> +			       gpa_t *gpas, unsigned long len,
+>  			       const union asce asce, enum gacc_mode mode,
+>  			       u8 access_key)
+>  {
+> @@ -781,7 +781,7 @@ static int guest_range_to_gpas(struct kvm_vcpu *vcpu, unsigned long ga, u8 ar,
+>  	unsigned int fragment_len;
+>  	int lap_enabled, rc = 0;
+>  	enum prot_type prot;
+> -	unsigned long gpa;
+> +	gpa_t gpa;
 >  
->  	kvm_vgic_global_state.vcpu_base = 0;
->  	kvm_vgic_global_state.vctrl_base = NULL;
-> @@ -64,6 +53,34 @@ int vgic_v5_probe(const struct gic_kvm_info *info)
->  	kvm_vgic_global_state.has_gicv4 = false;
->  	kvm_vgic_global_state.has_gicv4_1 = false;
+>  	lap_enabled = low_address_protection_enabled(vcpu, asce);
+>  	while (min(PAGE_SIZE - offset, len) > 0) {
+> @@ -932,11 +932,11 @@ int access_guest_with_key(struct kvm_vcpu *vcpu, unsigned long ga, u8 ar,
+>  {
+>  	psw_t *psw = &vcpu->arch.sie_block->gpsw;
+>  	unsigned long nr_pages, idx;
+> -	unsigned long gpa_array[2];
+>  	unsigned int fragment_len;
+> -	unsigned long *gpas;
+>  	enum prot_type prot;
+> +	gpa_t gpa_array[2];
+>  	int need_ipte_lock;
+> +	gpa_t *gpas;
+>  	union asce asce;
+>  	bool try_storage_prot_override;
+>  	bool try_fetch_prot_override;
+> @@ -1182,7 +1182,7 @@ int cmpxchg_guest_abs_with_key(struct kvm *kvm, gpa_t gpa, int len, union kvm_s3
+>   * has to take care of this.
+>   */
+>  int guest_translate_address_with_key(struct kvm_vcpu *vcpu, unsigned long gva, u8 ar,
+> -				     unsigned long *gpa, enum gacc_mode mode,
+> +				     gpa_t *gpa, enum gacc_mode mode,
+>  				     u8 access_key)
+>  {
+>  	union asce asce;
+> @@ -1282,9 +1282,9 @@ static int walk_guest_tables(struct gmap *sg, unsigned long saddr, struct pgtwal
+>  	struct guest_fault *entries;
+>  	union dat_table_entry table;
+>  	union vaddress vaddr;
+> -	unsigned long ptr;
+>  	struct kvm *kvm;
+>  	union asce asce;
+> +	gpa_t ptr;
+>  	int rc;
 >  
-> +	/*
-> +	 * GICv5 is currently not supported in Protected mode. Skip the
-> +	 * registration of GICv5 completely to make sure no guests can create a
-> +	 * GICv5-based guest.
-> +	 */
-> +	if (is_protected_kvm_enabled()) {
-> +		kvm_info("GICv5-based guests are not supported with pKVM\n");
-> +		goto skip_v5;
-> +	}
-> +
-> +	kvm_vgic_global_state.max_gic_vcpus = VGIC_V5_MAX_CPUS;
-> +
-> +	vgic_v5_get_implemented_ppis();
-> +
-> +	ret = kvm_register_vgic_device(KVM_DEV_TYPE_ARM_VGIC_V5);
-> +	if (ret) {
-> +		kvm_err("Cannot register GICv5 KVM device.\n");
-> +		goto skip_v5;
-> +	}
-> +
-> +	kvm_info("GCIE system register CPU interface\n");
-> +
-> +skip_v5:
-> +	/* If we don't support the GICv3 compat mode we're done. */
-> +	if (!cpus_have_final_cap(ARM64_HAS_GICV5_LEGACY))
+>  	if (!parent)
+> diff --git a/arch/s390/kvm/gaccess.h b/arch/s390/kvm/gaccess.h
+> index 086da7b040b5..f23dc0729649 100644
+> --- a/arch/s390/kvm/gaccess.h
+> +++ b/arch/s390/kvm/gaccess.h
+> @@ -199,8 +199,7 @@ enum gacc_mode {
+>  };
+>  
+>  int guest_translate_address_with_key(struct kvm_vcpu *vcpu, unsigned long gva, u8 ar,
+> -				     unsigned long *gpa, enum gacc_mode mode,
+> -				     u8 access_key);
+> +				     gpa_t *gpa, enum gacc_mode mode, u8 access_key);
+>  
+>  int check_gva_range(struct kvm_vcpu *vcpu, unsigned long gva, u8 ar,
+>  		    unsigned long length, enum gacc_mode mode, u8 access_key);
 
-If we jump to skip_v5 because we're in pKVM, but don't have
-ARM64_HAS_GICV5_LEGACY, this returns 0 but should probably be -ENODEV?
-
-Thanks,
-Joey
-
-> +		return 0;
-> +
-> +	kvm_vgic_global_state.has_gcie_v3_compat = true;
->  	ich_vtr_el2 =  kvm_call_hyp_ret(__vgic_v3_get_gic_config);
->  	kvm_vgic_global_state.ich_vtr_el2 = (u32)ich_vtr_el2;
->  
-> @@ -79,6 +96,10 @@ int vgic_v5_probe(const struct gic_kvm_info *info)
->  		return ret;
->  	}
->  
-> +	/* We potentially limit the max VCPUs further than we need to here */
-> +	kvm_vgic_global_state.max_gic_vcpus = min(VGIC_V3_MAX_CPUS,
-> +						  VGIC_V5_MAX_CPUS);
-> +
->  	static_branch_enable(&kvm_vgic_global_state.gicv3_cpuif);
->  	kvm_info("GCIE legacy system register CPU interface\n");
->  
-> -- 
-> 2.34.1
