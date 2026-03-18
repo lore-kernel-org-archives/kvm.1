@@ -1,341 +1,194 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from SN4PR0501CU005.outbound.protection.outlook.com (mail-southcentralusazon11011031.outbound.protection.outlook.com [40.93.194.31])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 96802359A92;
-	Wed, 18 Mar 2026 17:51:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773856292; cv=none; b=T/wW36Oum0HC78oFsJGoMFAG+5lqGrVEw6WgsQ8Tn0SQMEFy7qjdNhudbUL3DMisdRHejuywG+GpgD9Suz36raFKgyMAeF9ZRlVSHcl/fuZorX8Sa4PZQ/4cTNkqF/XbCgk/szBm02bVrQVhfvLc9P/QgUjaZre87+wkaoFEphM=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773856292; c=relaxed/simple;
-	bh=jR6UAQE1rmPTMa+yLm9Udyn/rofdALh/OSDl/gaiXxU=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ClTYEBTmYRj1HBmt8pv0GNtWMh8LEM7cEBaHhM4cr4qAQX4Cr9tUU29qFZbUes+oy2raOYhhE1Il7mfA8hBLMIAlPpt0LYbSvBKO8m92O4gvrtbKuMrp85GDMqR+REZhbI35F4Fzkhl8/z/2aqG7tpC1M/cgAT3fHpPuzhQLs7I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bWqS8qA/; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 04756277CB8;
+	Wed, 18 Mar 2026 17:51:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.93.194.31
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1773856319; cv=fail; b=foIdMIA7qRM9n0UDtwSeujzE/hcxZsJ1/OEAtoMLsxZE6Y6BhZaUt8Z6z/G/RVHyREUQUkZtd3I3WlQv27SmuCQ6gglF7Gg7tCbzbM6M4eyrt1RIOoansNsJPbGrSnqf2yDNaHWm4yDk2jq18OVYY82tc7mNf9A5V6gj31ffVKE=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1773856319; c=relaxed/simple;
+	bh=fvm4/VIS/rImLdAI8NTQE0HRakVuru9+5T5fSr/Jka0=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=fc8Uixs8/xzeY0aWFf0JkyPkEzf+AnCcmcJB1FAjuTrIfYtaa8LR5vLqyJfO0q1QNUqNfo5AVwcRZXp6nU/5hTiem1ShX81Ux5LgPU0MpAZR3sPyH5gnbBzJJgSL4IFQoY2l4A0Sj23N54mgVyZWLWhpaMU24WJnqLd1GZcCH8Y=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=fGMwnWuQ; arc=fail smtp.client-ip=40.93.194.31
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bWqS8qA/"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A9A02C19421;
-	Wed, 18 Mar 2026 17:51:26 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773856292;
-	bh=jR6UAQE1rmPTMa+yLm9Udyn/rofdALh/OSDl/gaiXxU=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=bWqS8qA/BJzzXj158sUMh2t6ZWuxLoUgwX9HjToS/kEB+zCEAGNmwpyXjOLid7psC
-	 cKer4cZzXmjuutC0bks7GH8oMDeG3woVuNP9GCZbiVKfULVOOONE9vv1VXc3YQxoY8
-	 +UIxIQim6guoqkSHDUEfcoW/N7TzExCuXeq4nTgQq5dEuUhTw6ayH2ENJcNjxn6FgV
-	 oWueN/fgYS8YCB2+BzYRXg/lsZoCCgWwb5fPWiw0A7Png8g52TqXqMMb1TIM8e4D8k
-	 oqLBORVUO1NWQfz97V//+SD3+kvgVfJ25CVaN9wD4GTOhh/zbFBGQ+8qiif7oZ03W0
-	 lagnibk37e74g==
-Date: Wed, 18 Mar 2026 17:51:43 +0000
-From: Jean-Philippe Brucker <jpb@kernel.org>
-To: Mark Brown <broonie@kernel.org>
-Cc: Marc Zyngier <maz@kernel.org>, Joey Gouly <joey.gouly@arm.com>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Suzuki K Poulose <suzuki.poulose@arm.com>,
-	Will Deacon <will@kernel.org>, Paolo Bonzini <pbonzini@redhat.com>,
-	Jonathan Corbet <corbet@lwn.net>, Shuah Khan <shuah@kernel.org>,
-	Oliver Upton <oupton@kernel.org>, Dave Martin <Dave.Martin@arm.com>,
-	Fuad Tabba <tabba@google.com>, Mark Rutland <mark.rutland@arm.com>,
-	Ben Horgan <ben.horgan@arm.com>,
-	linux-arm-kernel@lists.infradead.org, kvmarm@lists.linux.dev,
-	linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
-	linux-doc@vger.kernel.org, linux-kselftest@vger.kernel.org,
-	Peter Maydell <peter.maydell@linaro.org>,
-	Eric Auger <eric.auger@redhat.com>
-Subject: Re: [PATCH v10 13/30] KVM: arm64: Document the KVM ABI for SME
-Message-ID: <20260318175143.GK2390801@myrica>
-References: <20260306-kvm-arm64-sme-v10-0-43f7683a0fb7@kernel.org>
- <20260306-kvm-arm64-sme-v10-13-43f7683a0fb7@kernel.org>
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="fGMwnWuQ"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=RezPyoGu2Zm+nY+1csZQ8gr+em7gnnDqfQ90HaT5y1DTJM6v3Y6Lv5gh3BBWSBVvNJRrtKOq0S3Q2us+t0/jXPpSHeA/NkZjWthRbZ+4ROlgZwzNpAkOiuIlKm7ymqwsEuFWhPVI54W7NsfKX5hmYdj1HmIP2I5CVoboyILpuOAKGKAMD3wI+PSVxCZHgX/F1sUATtPJc77wLZuSvq5I/fct80Hg9bdiWKWTEHmzeJBtzhu67s8DddPkW8D6ptuQ3nUOrCLl+PPiHKXaXIDtcvGiwgYDm2W1eLQB6aeHWHvVtjm6vmEUVjfKTTrfLEwf4DjB2fBhS7ucBzvd8VzDLA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=fvm4/VIS/rImLdAI8NTQE0HRakVuru9+5T5fSr/Jka0=;
+ b=EWQhwhNnTXGMlRsnnXsZCIqXLltsnbw5FSsuMPvATznxITKonuaaVABfEvjgyR+LGpn85qq1AMh+zKpS6uMMh72lLfYOcCA2p3Crjv7n9nYTE7Bs/webGxrQ+g2J6QR7VdLCPClZ6yu3kL0pTSskn5wEXNFwwmIXAdoNHIXh04S2uxRIbfybF+clMXDnD1Ci9RftcpAfDahMNoYrkWjCFJ2joVOga4HaSCnEuVP5aHrFm71YNRj5dhGzKlZwI13BI0UKz/2RO44hVnKWuN2zAJKSCNANe/72FscLzhWosj6CmLINQ34+zqxPIK9eTNiPuxcC5+GIYzVhh+V3bQrzIA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=fvm4/VIS/rImLdAI8NTQE0HRakVuru9+5T5fSr/Jka0=;
+ b=fGMwnWuQFzB+bxx5XihqWvxqMr0l/FRmFTZH4wOvHU327X+sb3Xi0wVV48svNedRxVAdVKWQBXkRUNg5JNWn8DO85QXnaCgPMp4KDJpufdHxMtlUFvTpmNIUaNisP+uDjdjMREvS7qeeTXBcBDO8eK22QO9YUNfE1yEwxD4BF18eANHBc/GSLV9DK4W9Y4JWz0B9qr3HmTiw8GI2e8oFcYaWvefqv5yiyMvbRE29vUWmMY5eqi8eZ7HDQH2z0QIqQK0lOCQYer6v7FadOjM7v1/RCcr6Rn+juT18L7bkYKUJlXFQH/XPhXry20AvJOVsyjaQthjcGKYgH4egUfP8ng==
+Received: from IA1PR12MB9030.namprd12.prod.outlook.com (2603:10b6:208:3f2::22)
+ by SA1PR12MB999110.namprd12.prod.outlook.com (2603:10b6:806:4a1::12) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9723.19; Wed, 18 Mar
+ 2026 17:51:54 +0000
+Received: from IA1PR12MB9030.namprd12.prod.outlook.com
+ ([fe80::2c1d:ed27:b53a:97d2]) by IA1PR12MB9030.namprd12.prod.outlook.com
+ ([fe80::2c1d:ed27:b53a:97d2%6]) with mapi id 15.20.9723.018; Wed, 18 Mar 2026
+ 17:51:54 +0000
+From: Manish Honap <mhonap@nvidia.com>
+To: Jonathan Cameron <jonathan.cameron@huawei.com>, Dave Jiang
+	<dave.jiang@intel.com>
+CC: Aniket Agashe <aniketa@nvidia.com>, Ankit Agrawal <ankita@nvidia.com>,
+	Alex Williamson <alwilliamson@nvidia.com>, Vikram Sethi <vsethi@nvidia.com>,
+	Jason Gunthorpe <jgg@nvidia.com>, Matt Ochs <mochs@nvidia.com>, Shameer
+ Kolothum Thodi <skolothumtho@nvidia.com>, "alejandro.lucero-palau@amd.com"
+	<alejandro.lucero-palau@amd.com>, "dave@stgolabs.net" <dave@stgolabs.net>,
+	"alison.schofield@intel.com" <alison.schofield@intel.com>,
+	"vishal.l.verma@intel.com" <vishal.l.verma@intel.com>, "ira.weiny@intel.com"
+	<ira.weiny@intel.com>, "dan.j.williams@intel.com" <dan.j.williams@intel.com>,
+	"jgg@ziepe.ca" <jgg@ziepe.ca>, Yishai Hadas <yishaih@nvidia.com>,
+	"kevin.tian@intel.com" <kevin.tian@intel.com>, Neo Jia <cjia@nvidia.com>,
+	"Tarun Gupta (SW-GPU)" <targupta@nvidia.com>, Zhi Wang <zhiw@nvidia.com>,
+	Krishnakant Jaju <kjaju@nvidia.com>, "linux-kernel@vger.kernel.org"
+	<linux-kernel@vger.kernel.org>, "linux-cxl@vger.kernel.org"
+	<linux-cxl@vger.kernel.org>, "kvm@vger.kernel.org" <kvm@vger.kernel.org>,
+	Manish Honap <mhonap@nvidia.com>
+Subject: RE: [PATCH 03/20] cxl: Move CXL spec defines to public header
+Thread-Topic: [PATCH 03/20] cxl: Move CXL spec defines to public header
+Thread-Index: AQHcsZaoXaXiS49oSEGXVBKnfr1oT7WsY7aAgABNsgCAB7o8gIAAMFFQ
+Date: Wed, 18 Mar 2026 17:51:54 +0000
+Message-ID:
+ <IA1PR12MB9030A4828EE4C3E2B5A7DC21BD4EA@IA1PR12MB9030.namprd12.prod.outlook.com>
+References: <20260311203440.752648-1-mhonap@nvidia.com>
+	<20260311203440.752648-4-mhonap@nvidia.com>
+	<20260313121805.0000611e@huawei.com>
+	<fd232cc5-f2ab-463f-9238-44e2514d4ad1@intel.com>
+ <20260318145633.0000392c@huawei.com>
+In-Reply-To: <20260318145633.0000392c@huawei.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: IA1PR12MB9030:EE_|SA1PR12MB999110:EE_
+x-ms-office365-filtering-correlation-id: fe08928b-ee43-48fa-4d98-08de85170ae4
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam:
+ BCL:0;ARA:13230040|1800799024|376014|7416014|366016|38070700021|22082099003|56012099003|18002099003;
+x-microsoft-antispam-message-info:
+ 3KEREAg08Gv+qU26m3G5t3fmyJk07c1ZI7x4ty+ykLVG7l/GPafbteHbPLAT+ZQ1TXOrArQp2dwsmtiCweBIyxOF35quUyEZ0wjulqsdRNs/P5kG0pc6g/TDDtV+26L+Ny5wMtip3oinUkTInoghSeuaHAy5i0lkqMB2IC6js3H9Wcqs1GeFRkJE8Pqh54Q5qKciAcn7XPnYzD54jYYrEliE2lyaF822LpkCmz5h8LmyP+lKguQMyNmPiPt9ojN3Y1D+0TstJF1WjCrQ2JXp5ClXNLYQDDYt5DuBIxmuFbSqP+/5QYKW5wFU1p76yVCnHmMB7MN4H26OYl98BPN/Ld3ZFI0WjCn4kmbNPSgOOEX3PH1XiLlp8gdTVf2syK/e+j3zouBVirG1XKM2x00hshhvUH9kPW8+QLpc7ho5XOnjvGatAChmuhZFcv4f/U9ibw65gEtdE8HGsPNtErUJyCmHRbg9JhDIRU2CrStJs/ZJrdngBMmdt8TvUjInGPqezRFYXmFXUVEmmOxetaki3pYet0YCwlqwdz7HidrNLorYGqjuJIxwLx4k7wsLEx2NWFv1Fx4tsiovwtFY6lIj028nOzPu6/RUu2RbAZSJACOsV9M9XqlqJLjxvT/M5N1RQ8MW2cePEMcPMpy74iV44fdOgQeK5OV4y7CHFbgvAw/9cp6BHbvhApvA81UVoRN5uAXI/t5LzzEEPuNb/nunBRPcJtx0BztnIza9duASFHJtiVS5JIFjk3U/6vynjpRFAqT4keOnpJD+INrbQmXNXoZQNWK/JPB8q5kj6th1wOE=
+x-forefront-antispam-report:
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:IA1PR12MB9030.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(376014)(7416014)(366016)(38070700021)(22082099003)(56012099003)(18002099003);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0:
+ =?us-ascii?Q?eRQKgaYmE2edfX1v0LFLS+FHn6qUFYpnTySvxU9ZJE5EgL0ToPRbUnH8ZQK1?=
+ =?us-ascii?Q?6WQR3JtL3AFxONdwCGm/E84GhXjE4eDxDcVk02pxtRn8WfA+i860bGAc4Hrl?=
+ =?us-ascii?Q?qTtuiDEGX8xbTLRI3b+OXrNUiLgUyn6Elj8Pw8oelAkvrlEPaZ9WpWXuZMQk?=
+ =?us-ascii?Q?l254iHzVuzIxX1ApRp54akPFM7DSbaZ30gktb1gmP8Bpn3IV99uawNq1mMCu?=
+ =?us-ascii?Q?gabVy2fJs+TCKrYn8eKphwAUAwy2NXaPiumxq8BjGM6SE2bAjke411jO/Dua?=
+ =?us-ascii?Q?Yd5WPXQsrlu5XWsZVRVbieMRxSS6neiPnbBNNk57DjTM5+ne2IZ4N53TNWEo?=
+ =?us-ascii?Q?lkpi9GZ0AvdDxqQksRMur5w+iC9BmJa1iJAq1mF/jU2xhcj3dK/8ALYLKi/w?=
+ =?us-ascii?Q?w8rXnQ1w35UhpKy0CD7rQhl5Eetz29cqwiH0rQ1F3oKsF2+jOpmdDeXTzMNr?=
+ =?us-ascii?Q?VNzwxwiec3klU86fKxD+kF3r5Nf5VKGhIpHIPCfd1+B166NTERX9dfE7lGae?=
+ =?us-ascii?Q?gGE29HtqtX9HvO8zhK+z/i6Nl0iQRYDp1OxFECCoSkjr1Ihq5CcMcn3dZlvZ?=
+ =?us-ascii?Q?MEi4u6Iw6drEl9SeCjWoph/QHY7kVFZeme30sSRYGq72DrBZRkWNez0p9UCc?=
+ =?us-ascii?Q?hd+azCYfg3z7n4xQztrEu4I9di6NzW/tZo1nDYbMQjb4co8CAvQV+Kd9acHi?=
+ =?us-ascii?Q?3DDvBNXi8qrDBVZfiUhW606igL0WsB890OGxlLz4mt1MbyAW8UwcTNG8MPAk?=
+ =?us-ascii?Q?MzLVTTd1joYu9IAKZgmI1Qgmm1qPkxblUSWtno0cvkSdZQlb0yoY+rhoe6Ww?=
+ =?us-ascii?Q?Wt0Y+6e+AEBMEgrxFcgOLhUz3pMLQHr0Kxa663L8E3+x2ZLWPScqdhqeA20G?=
+ =?us-ascii?Q?26JpNLsOxvyDaDDdea043OmKGXkogeHodi++4S0vuvWKTTzRLzpxYvZqYPX1?=
+ =?us-ascii?Q?nVfAHdJa1/Kc3uGT22H9X5MDxNgYGKKLiub3LWBevbdbBmvFmzjij4bbYSvh?=
+ =?us-ascii?Q?FN0JI8WWw7Ny1lJ6sQuMWbqj8JWr8g7mn3Srlf+JBcxLuwsKXXpJOBMgI9yw?=
+ =?us-ascii?Q?AMzHZC9tCemzlAuWEvec87M8EIrqdys9jx5DfMO3COhranCd6SOkvJu3vrLo?=
+ =?us-ascii?Q?++JhoXjrECM4FyauRVWdx7QJZwTYQWjKV5ZBQOw8okg9C37sOW81XdNwlEfO?=
+ =?us-ascii?Q?mKIY4Nwk+8FIye3H3OpxP7UXlMdrrm9nJOA43KJ53jlqdhxqCdrA6h/Zzcng?=
+ =?us-ascii?Q?ZCg7I9zryvZRsx2gQPUmP5SZK3nkm1rBjeaxNVFe0TVsWXo69WpxsHLHmOp8?=
+ =?us-ascii?Q?LtkZq59+xltxZkWT3tE5Q1BIsBrq2wIaySyD2R0o0Mu+xhhRz4DENXpVBcf4?=
+ =?us-ascii?Q?31lSrvHz2OImhLzZJWIl5Np4IbjhgBrcCefcEsvX3TiCOr6om+o2VmM7bqiZ?=
+ =?us-ascii?Q?Zt2BKR4p5fi447Ye84kcrVFAt0qyr6tzN+iwe2NaZ6Jrz61LJ2AqPELXqCbg?=
+ =?us-ascii?Q?qV6B9o5dCsH9I87X2HulzrxFMjY7CxLuVhk4JjQAqsfHbjQFt23xJcvkK/+g?=
+ =?us-ascii?Q?imxl85umT3fAUG2pnrom86azGSOHcVZyU2EZrDsb8s0kIrZbuV0Jfadu4IH2?=
+ =?us-ascii?Q?5Z52vUSYjP5FX2p3oj6z2daKxUV5tC4UMyk3yvw8N4LqdLwASNfeLYsp5wMp?=
+ =?us-ascii?Q?ALNVMrQRL7BnBoMJOnE6SlS59XbBUaxJawbq2E7jQ0WIallM?=
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260306-kvm-arm64-sme-v10-13-43f7683a0fb7@kernel.org>
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: IA1PR12MB9030.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: fe08928b-ee43-48fa-4d98-08de85170ae4
+X-MS-Exchange-CrossTenant-originalarrivaltime: 18 Mar 2026 17:51:54.5465
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: MDN3x88SXCFZ1klKj1qmUBV18ECmtLW+fG53y3YSORPw1XiTpAgvOSshwVSCDTSR4tqSjLoT2LB4UZnWgDsGcw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA1PR12MB999110
 
-On Fri, Mar 06, 2026 at 05:01:05PM +0000, Mark Brown wrote:
-> SME, the Scalable Matrix Extension, is an arm64 extension which adds
-> support for matrix operations, with core concepts patterned after SVE.
-> 
-> SVE introduced some complication in the ABI since it adds new vector
-> floating point registers with runtime configurable size, the size being
-> controlled by a parameter called the vector length (VL). To provide control
-> of this to VMMs we offer two phase configuration of SVE, SVE must first be
-> enabled for the vCPU with KVM_ARM_VCPU_INIT(KVM_ARM_VCPU_SVE), after which
-> vector length may then be configured but the configurably sized floating
-> point registers are inaccessible until finalized with a call to
-> KVM_ARM_VCPU_FINALIZE(KVM_ARM_VCPU_SVE) after which the configurably sized
-> registers can be accessed.
-> 
-> SME introduces an additional independent configurable vector length
-> which as well as controlling the size of the new ZA register also
-> provides an alternative view of the configurably sized SVE registers
-> (known as streaming mode) with the guest able to switch between the two
-> modes as it pleases.  There is also a fixed sized register ZT0
-> introduced in SME2. As well as streaming mode the guest may enable and
-> disable ZA and (where SME2 is available) ZT0 dynamically independently
-> of streaming mode. These modes are controlled via the system register
-> SVCR.
-> 
-> We handle the configuration of the vector length for SME in a similar
-> manner to SVE, requiring initialization and finalization of the feature
-> with a pseudo register controlling the available SME vector lengths as for
-> SVE. Further, if the guest has both SVE and SME then finalizing one
-> prevents further configuration of the vector length for the other.
-> 
-> Where both SVE and SME are configured for the guest we present the SVE
-> registers to userspace as having the maximum vector length of the
-> currently active vector type as configured via SVCR.SM, imposing an
-> ordering requirement on userspace.
-> 
-> Userspace access to ZA and (if configured) ZT0 is only available when
-> SVCR.ZA is 1.
-> 
-> Reviewed-by: Fuad Tabba <tabba@google.com>
-> Signed-off-by: Mark Brown <broonie@kernel.org>
-> ---
->  Documentation/virt/kvm/api.rst | 124 +++++++++++++++++++++++++++++------------
->  1 file changed, 89 insertions(+), 35 deletions(-)
-> 
-> diff --git a/Documentation/virt/kvm/api.rst b/Documentation/virt/kvm/api.rst
-> index 6f85e1b321dd..2ed08bd03a34 100644
-> --- a/Documentation/virt/kvm/api.rst
-> +++ b/Documentation/virt/kvm/api.rst
-> @@ -406,7 +406,7 @@ Errors:
->               instructions from device memory (arm64)
->    ENOSYS     data abort outside memslots with no syndrome info and
->               KVM_CAP_ARM_NISV_TO_USER not enabled (arm64)
-> -  EPERM      SVE feature set but not finalized (arm64)
-> +  EPERM      SVE or SME feature set but not finalized (arm64)
->    =======    ==============================================================
->  
->  This ioctl is used to run a guest virtual cpu.  While there are no
-> @@ -2605,11 +2605,11 @@ Specifically:
->  ======================= ========= ===== =======================================
->  
->  .. [1] These encodings are not accepted for SVE-enabled vcpus.  See
-> -       :ref:`KVM_ARM_VCPU_INIT`.
-> +       :ref:`KVM_ARM_VCPU_INIT`.  They are also not accepted when SME is
-> +       enabled without SVE and the vcpu is in streaming mode.
->  
->         The equivalent register content can be accessed via bits [127:0] of
-> -       the corresponding SVE Zn registers instead for vcpus that have SVE
-> -       enabled (see below).
-> +       the corresponding SVE Zn registers in these cases (see below).
->  
->  arm64 CCSIDR registers are demultiplexed by CSSELR value::
->  
-> @@ -2640,24 +2640,40 @@ arm64 SVE registers have the following bit patterns::
->    0x6050 0000 0015 060 <slice:5>        FFR bits[256*slice + 255 : 256*slice]
->    0x6060 0000 0015 ffff                 KVM_REG_ARM64_SVE_VLS pseudo-register
->  
-> -Access to register IDs where 2048 * slice >= 128 * max_vq will fail with
-> -ENOENT.  max_vq is the vcpu's maximum supported vector length in 128-bit
-> -quadwords: see [2]_ below.
-> +arm64 SME registers have the following bit patterns:
->  
-> -These registers are only accessible on vcpus for which SVE is enabled.
-> +  0x6080 0000 0017 00 <n:5> <slice:5>   ZA.H[n] bits[2048*slice + 2047 : 2048*slice]
 
-ZA[n]?
 
-> +  0x6060 0000 0017 0100                 ZT0
-> +  0x6060 0000 0017 fffe                 KVM_REG_ARM64_SME_VLS pseudo-register
-> +
-> +Access to Z, P, FFR or ZA register IDs where 2048 * slice >= 128 *
-> +max_vq will fail with ENOENT.  max_vq is the vcpu's current maximum
-> +supported vector length in 128-bit quadwords: see [2]_ below.
-> +
-> +Changing the value of SVCR.SM will result in the contents of
-> +the Z, P and FFR registers being reset to 0.  When restoring the
-> +values of these registers for a VM with SME support it is
-> +important that SVCR.SM be configured first.
-> +
-> +Access to the ZA and ZT0 registers is only available if SVCR.ZA is set
-> +to 1.
-> +
-> +These registers are only accessible on vcpus for which SME is enabled.
+> -----Original Message-----
+> From: Jonathan Cameron <jonathan.cameron@huawei.com>
+> Sent: 18 March 2026 20:27
+> To: Dave Jiang <dave.jiang@intel.com>
+> Cc: Manish Honap <mhonap@nvidia.com>; Aniket Agashe <aniketa@nvidia.com>;
+> Ankit Agrawal <ankita@nvidia.com>; Alex Williamson
+> <alwilliamson@nvidia.com>; Vikram Sethi <vsethi@nvidia.com>; Jason
+> Gunthorpe <jgg@nvidia.com>; Matt Ochs <mochs@nvidia.com>; Shameer Kolothu=
+m
+> Thodi <skolothumtho@nvidia.com>; alejandro.lucero-palau@amd.com;
+> dave@stgolabs.net; alison.schofield@intel.com; vishal.l.verma@intel.com;
+> ira.weiny@intel.com; dan.j.williams@intel.com; jgg@ziepe.ca; Yishai Hadas
+> <yishaih@nvidia.com>; kevin.tian@intel.com; Neo Jia <cjia@nvidia.com>;
+> Tarun Gupta (SW-GPU) <targupta@nvidia.com>; Zhi Wang <zhiw@nvidia.com>;
+> Krishnakant Jaju <kjaju@nvidia.com>; linux-kernel@vger.kernel.org; linux-
+> cxl@vger.kernel.org; kvm@vger.kernel.org
+> Subject: Re: [PATCH 03/20] cxl: Move CXL spec defines to public header
+>=20
+> External email: Use caution opening links or attachments
+>=20
+>=20
+> On Fri, 13 Mar 2026 09:56:10 -0700
+> Dave Jiang <dave.jiang@intel.com> wrote:
+>=20
+> > On 3/13/26 5:18 AM, Jonathan Cameron wrote:
+> > > On Thu, 12 Mar 2026 02:04:23 +0530
+> > > mhonap@nvidia.com wrote:
+> > >
+> > >> From: Manish Honap <mhonap@nvidia.com>
+> > >>
+> > >> HDM decoder capability structure and component reg block size needs
+> > >> to be used by VFIO subsystem. Move the macros from private CXL
+> > >> header to public one.
+> > >>
+> > >> Signed-off-by: Manish Honap <mhonap@nvidia.com>
+> > >
+> > > Not really related to this patch, but...
+> > >
+> > > Maybe this is the time to think about doing a PCI like
+> > > uapi/linux/cxl_regs.h header?
+> >
+> > Sounds reasonable. Maybe makes sense to be in uapi/cxl/? There's alread=
+y
+> a features.h header in there.
+>=20
+> Sure. I'd forgotten about that directory.
+> Jonathan
 
-The text about SVE registers is gone so this looks like SVE regs are only
-available with SME
+Okay, I have moved the CXL r4.0 spec defined register bits and flags in
+include/uapi/cxl/cxl_regs.h but for the bits/flags which are required
+for emulation handling, I have kept in vfio_cxl_priv.h.
 
->  See KVM_ARM_VCPU_INIT for details.
->  
-> -In addition, except for KVM_REG_ARM64_SVE_VLS, these registers are not
-> -accessible until the vcpu's SVE configuration has been finalized
-> -using KVM_ARM_VCPU_FINALIZE(KVM_ARM_VCPU_SVE).  See KVM_ARM_VCPU_INIT
-> -and KVM_ARM_VCPU_FINALIZE for more information about this procedure.
-> +In addition, except for KVM_REG_ARM64_SVE_VLS and
-> +KVM_REG_ARM64_SME_VLS, these registers are not accessible until the
-> +vcpu's SVE and SME configuration has been finalized using
-> +KVM_ARM_VCPU_FINALIZE(KVM_ARM_VCPU_VEC).  See KVM_ARM_VCPU_INIT and
-> +KVM_ARM_VCPU_FINALIZE for more information about this procedure.
->  
-> -KVM_REG_ARM64_SVE_VLS is a pseudo-register that allows the set of vector
-> -lengths supported by the vcpu to be discovered and configured by
-> -userspace.  When transferred to or from user memory via KVM_GET_ONE_REG
-> -or KVM_SET_ONE_REG, the value of this register is of type
-> -__u64[KVM_ARM64_SVE_VLS_WORDS], and encodes the set of vector lengths as
-> -follows::
-> +KVM_REG_ARM64_SVE_VLS and KVM_REG_ARM64_SME_VLS are
-> +pseudo-registers that allows the set of vector lengths supported by
-> +the vcpu to be discovered and configured by userspace.  When
-> +transferred to or from user memory via KVM_GET_ONE_REG or
-> +KVM_SET_ONE_REG, the value of this register is of type
-> +__u64[KVM_ARM64_SVE_VLS_WORDS], and encodes the set of vector lengths
-> +as follows::
->  
->    __u64 vector_lengths[KVM_ARM64_SVE_VLS_WORDS];
->  
-> @@ -2669,19 +2685,25 @@ follows::
->  	/* Vector length vq * 16 bytes not supported */
->  
->  .. [2] The maximum value vq for which the above condition is true is
-> -       max_vq.  This is the maximum vector length available to the guest on
-> -       this vcpu, and determines which register slices are visible through
-> -       this ioctl interface.
-> +       max_vq.  This is the maximum vector length currently available to
-> +       the guest on this vcpu, and determines which register slices are
-> +       visible through this ioctl interface.
-
-Should we add a note that this "slice" is specific to KVM and has nothing
-to do with the architectural "ZA tile slice"
-
-> +
-> +       If SME is supported then the max_vq used for the Z and P registers
-> +       while SVCR.SM is 1 this vector length will be the maximum SME
-> +       vector length max_vq_sme available for the guest, otherwise it
-> +       will be the maximum SVE vector length max_vq_sve available.
-
-How about:
-
-       If SME is supported and SVCR.SM is 1, then the max_vq used for the
-       Z and P registers is the maximum SME vector length. Otherwise
-       it is the maximum SVE vector length.
-
-Thanks,
-Jean
-
->  (See Documentation/arch/arm64/sve.rst for an explanation of the "vq"
->  nomenclature.)
->  
-> -KVM_REG_ARM64_SVE_VLS is only accessible after KVM_ARM_VCPU_INIT.
-> -KVM_ARM_VCPU_INIT initialises it to the best set of vector lengths that
-> -the host supports.
-> +KVM_REG_ARM64_SVE_VLS and KVM_REG_ARM64_SME_VLS are only accessible
-> +after KVM_ARM_VCPU_INIT.  KVM_ARM_VCPU_INIT initialises them to the
-> +best set of vector lengths that the host supports.
->  
-> -Userspace may subsequently modify it if desired until the vcpu's SVE
-> -configuration is finalized using KVM_ARM_VCPU_FINALIZE(KVM_ARM_VCPU_SVE).
-> +Userspace may subsequently modify these registers if desired until the
-> +vcpu's SVE and SME configuration is finalized using
-> +KVM_ARM_VCPU_FINALIZE(KVM_ARM_VCPU_VEC).
->  
->  Apart from simply removing all vector lengths from the host set that
->  exceed some value, support for arbitrarily chosen sets of vector lengths
-> @@ -2689,8 +2711,8 @@ is hardware-dependent and may not be available.  Attempting to configure
->  an invalid set of vector lengths via KVM_SET_ONE_REG will fail with
->  EINVAL.
->  
-> -After the vcpu's SVE configuration is finalized, further attempts to
-> -write this register will fail with EPERM.
-> +After the vcpu's SVE or SME configuration is finalized, further
-> +attempts to write these registers will fail with EPERM.
->  
->  arm64 bitmap feature firmware pseudo-registers have the following bit pattern::
->  
-> @@ -3489,6 +3511,7 @@ The initial values are defined as:
->  	- General Purpose registers, including PC and SP: set to 0
->  	- FPSIMD/NEON registers: set to 0
->  	- SVE registers: set to 0
-> +	- SME registers: set to 0
->  	- System registers: Reset to their architecturally defined
->  	  values as for a warm reset to EL1 (resp. SVC) or EL2 (in the
->  	  case of EL2 being enabled).
-> @@ -3532,7 +3555,7 @@ Possible features:
->  
->  	- KVM_ARM_VCPU_SVE: Enables SVE for the CPU (arm64 only).
->  	  Depends on KVM_CAP_ARM_SVE.
-> -	  Requires KVM_ARM_VCPU_FINALIZE(KVM_ARM_VCPU_SVE):
-> +	  Requires KVM_ARM_VCPU_FINALIZE(KVM_ARM_VCPU_VEC):
->  
->  	   * After KVM_ARM_VCPU_INIT:
->  
-> @@ -3540,7 +3563,7 @@ Possible features:
->  	        initial value of this pseudo-register indicates the best set of
->  	        vector lengths possible for a vcpu on this host.
->  
-> -	   * Before KVM_ARM_VCPU_FINALIZE(KVM_ARM_VCPU_SVE):
-> +	   * Before KVM_ARM_VCPU_FINALIZE(KVM_ARM_VCPU_VEC):
->  
->  	      - KVM_RUN and KVM_GET_REG_LIST are not available;
->  
-> @@ -3553,11 +3576,41 @@ Possible features:
->  	        KVM_SET_ONE_REG, to modify the set of vector lengths available
->  	        for the vcpu.
->  
-> -	   * After KVM_ARM_VCPU_FINALIZE(KVM_ARM_VCPU_SVE):
-> +	   * After KVM_ARM_VCPU_FINALIZE(KVM_ARM_VCPU_VEC):
->  
->  	      - the KVM_REG_ARM64_SVE_VLS pseudo-register is immutable, and can
->  	        no longer be written using KVM_SET_ONE_REG.
->  
-> +	- KVM_ARM_VCPU_SME: Enables SME for the CPU (arm64 only).
-> +	  Depends on KVM_CAP_ARM_SME.
-> +	  Requires KVM_ARM_VCPU_FINALIZE(KVM_ARM_VCPU_VEC):
-> +
-> +	   * After KVM_ARM_VCPU_INIT:
-> +
-> +	      - KVM_REG_ARM64_SME_VLS may be read using KVM_GET_ONE_REG: the
-> +	        initial value of this pseudo-register indicates the best set of
-> +	        vector lengths possible for a vcpu on this host.
-> +
-> +	   * Before KVM_ARM_VCPU_FINALIZE(KVM_ARM_VCPU_VEC):
-> +
-> +	      - KVM_RUN and KVM_GET_REG_LIST are not available;
-> +
-> +	      - KVM_GET_ONE_REG and KVM_SET_ONE_REG cannot be used to access
-> +	        the scalable architectural SVE registers
-> +	        KVM_REG_ARM64_SVE_ZREG(), KVM_REG_ARM64_SVE_PREG() or
-> +	        KVM_REG_ARM64_SVE_FFR, the matrix register
-> +		KVM_REG_ARM64_SME_ZAHREG() or the LUT register
-> +		KVM_REG_ARM64_SME_ZTREG();
-> +
-> +	      - KVM_REG_ARM64_SME_VLS may optionally be written using
-> +	        KVM_SET_ONE_REG, to modify the set of vector lengths available
-> +	        for the vcpu.
-> +
-> +	   * After KVM_ARM_VCPU_FINALIZE(KVM_ARM_VCPU_VEC):
-> +
-> +	      - the KVM_REG_ARM64_SME_VLS pseudo-register is immutable, and can
-> +	        no longer be written using KVM_SET_ONE_REG.
-> +
->  	- KVM_ARM_VCPU_HAS_EL2: Enable Nested Virtualisation support,
->  	  booting the guest from EL2 instead of EL1.
->  	  Depends on KVM_CAP_ARM_EL2.
-> @@ -5142,11 +5195,12 @@ Errors:
->  
->  Recognised values for feature:
->  
-> -  =====      ===========================================
-> -  arm64      KVM_ARM_VCPU_SVE (requires KVM_CAP_ARM_SVE)
-> -  =====      ===========================================
-> +  =====      ==============================================================
-> +  arm64      KVM_ARM_VCPU_VEC (requires KVM_CAP_ARM_SVE or KVM_CAP_ARM_SME)
-> +  arm64      KVM_ARM_VCPU_SVE (alias for KVM_ARM_VCPU_VEC)
-> +  =====      ==============================================================
->  
-> -Finalizes the configuration of the specified vcpu feature.
-> +Finalizes the configuration of the specified vcpu features.
->  
->  The vcpu must already have been initialised, enabling the affected feature, by
->  means of a successful :ref:`KVM_ARM_VCPU_INIT <KVM_ARM_VCPU_INIT>` call with the
-> 
-> -- 
-> 2.47.3
-> 
-> 
