@@ -1,91 +1,44 @@
-Received: from fout-a7-smtp.messagingengine.com (fout-a7-smtp.messagingengine.com [103.168.172.150])
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C8D0241CB7;
-	Wed, 18 Mar 2026 22:55:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.150
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BBCB2345753;
+	Wed, 18 Mar 2026 23:12:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=216.40.44.17
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773874519; cv=none; b=gSFnP5Aso8cdkU5xIjut8V2q2DwWe7hh4dO8Gb8YdRasSgVU52nOlwGBzIQY/ylCGSlBrJmXflGBGN9xY0sxfKVFSdfc8HFm3pY2yuArNwvZdWPm1yAL+mKkzbKERCLtfYPi4guTmK/pKa1iSHZpwaHfylEUa8nuPEPJAklAKwU=
+	t=1773875551; cv=none; b=rIkKLv+mglAiFYArbeOUvZfJ0j2595Ek/r4y8fNJakjJCrYVMHWU3uk17pyuD3XjfpZ7A3tBrjhccGFmdlRBqYqi+qkEhPS6J5p2x+nhNgKGClp9a5Eqepza2d6MrcoA5v7hl8cJO6uBQyA/rGlAEGKm9863AOQTzEFbFijsm3A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773874519; c=relaxed/simple;
-	bh=m49UWEim2RSLrDXwf17yEXG0je2aSXpyWxW5bWpRCYU=;
+	s=arc-20240116; t=1773875551; c=relaxed/simple;
+	bh=JCh4IeE/Cn60D/pNAmjztbTuiNBWjjTZpNihj1Tve9Y=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=TMR/Fk5jTbVcAne5+Zcv+/TTH01uVQHwac84SRLquPLMiuD6Irp06teKs7rhqmiKGbX1+HmupjOV73gAHYAb3WJAsTI72lQFLF27UzK2I83FZmR3o/XDxWztwWopC2rg3vLKphR8A45ZxwRmmorWgfyEAtgiH0GB4+VozmxIYkQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=shazbot.org; spf=pass smtp.mailfrom=shazbot.org; dkim=pass (2048-bit key) header.d=shazbot.org header.i=@shazbot.org header.b=sxhfXUtV; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=kbOr+UkD; arc=none smtp.client-ip=103.168.172.150
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=shazbot.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=shazbot.org
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=shazbot.org header.i=@shazbot.org header.b="sxhfXUtV";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="kbOr+UkD"
-Received: from phl-compute-03.internal (phl-compute-03.internal [10.202.2.43])
-	by mailfout.phl.internal (Postfix) with ESMTP id 89A1CEC0113;
-	Wed, 18 Mar 2026 18:55:15 -0400 (EDT)
-Received: from phl-frontend-04 ([10.202.2.163])
-  by phl-compute-03.internal (MEProxy); Wed, 18 Mar 2026 18:55:15 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shazbot.org; h=
-	cc:cc:content-transfer-encoding:content-type:content-type:date
-	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to; s=fm3; t=1773874515;
-	 x=1773960915; bh=f7/EJSeIqZSMvL2vCp7MAbeNnvAF9CxjB7jDB48hDcw=; b=
-	sxhfXUtVGjnt2kDZPWG6EKqisA69FMI9944QmIJ/7kFHvgQYMQM952jgujhz0ed9
-	sGwqQZO03Uz6EDFJKG1m0jG3IqqFq2BrNWi+ksy6ycZi9PZbmR01Gkrh/uBHEmMG
-	KT85iu46npOlFc0vGb5uuXsGkzI4YMUZ9nb1ytySiGFnXOysrhVra9eZA0nQ2boZ
-	8NReTTxrD/vOkvsAvUhqmWr5wQ7BrQkiSW58NXPLOSaLVdcPIJTPdmgye+KRlxbP
-	m6LdRP1aDbe8SI4yaFgCQ9LhWpqsP39lFKnDTkBXvfHgq61rpBfqp+ApACewC5ZH
-	Z9U/SO3vx29nIMio3BVpVg==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=1773874515; x=
-	1773960915; bh=f7/EJSeIqZSMvL2vCp7MAbeNnvAF9CxjB7jDB48hDcw=; b=k
-	bOr+UkDMGozMlz1mz8sb8G7aOAg79oK0nYLUnOaacM8WunBYMwWWCoMhCs2XK7VB
-	aROIY3mAnaeiQnLisYsY059OvS0sL8eV2+tcn81ersnIwtXjZc1Q32Pjt2ly06z7
-	qiMQmZpNMOJO1ik6qJOjpq1iA0grVLFE3JGjRqhdqV9krwEHzoW+qAO01BZXrKKU
-	rttSo1XYCYkZUhJp+5EhA0g8H+rCixeyu2tUUibCcDSE9aKic9zQNMM+YB0Wm5Un
-	saE3CKR86iqHGmM7LPBE5sB7kZvOqD4VWaCwYQ6g6xa4zAyjlIN2Sue5WmkoVF7i
-	Cz3gjGqDOXJVd3gc1H75Q==
-X-ME-Sender: <xms:Ui27acjVQUe_hqotpz853aVLypr1AXxYUOwHbLM1weMRM6ZSoquS_A>
-    <xme:Ui27aRC0MeKyYzzm9IAu-CaeTkijeTD53ZUMNePuT32YPIyd0LjpsJHzOmY21qQBn
-    b7tKe_wUmp8ACdethmgUHBcISCNRnitn9wbZCINY8Zw-XRqOjw-zg>
-X-ME-Received: <xmr:Ui27aWRbc1haoc8j5zilbT1AMfxsBnUAaNsZ_iOzwRdBLCsEa9crZU9dXTQ>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgdeftdehfeekucetufdoteggodetrf
-    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
-    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
-    gurhepfffhvfevuffkjghfofggtgfgsehtjeertdertddvnecuhfhrohhmpeetlhgvgicu
-    hghilhhlihgrmhhsohhnuceorghlvgigsehshhgriigsohhtrdhorhhgqeenucggtffrrg
-    htthgvrhhnpeekheejieetffefueeiteejtdejffdvleelvdeuvdffvdefteeghfevkeeu
-    vdefvdenucffohhmrghinhepkhgvrhhnvghlrdhorhhgnecuvehluhhsthgvrhfuihiivg
-    eptdenucfrrghrrghmpehmrghilhhfrhhomheprghlvgigsehshhgriigsohhtrdhorhhg
-    pdhnsggprhgtphhtthhopeekpdhmohguvgepshhmthhpohhuthdprhgtphhtthhopehtvg
-    gulhhoghgrnhesfhgsrdgtohhmpdhrtghpthhtohepughmrghtlhgrtghksehgohhoghhl
-    vgdrtghomhdprhgtphhtthhopehshhhurghhsehkvghrnhgvlhdrohhrghdprhgtphhtth
-    hopehkvhhmsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtoheplhhinhhugidq
-    khhsvghlfhhtvghsthesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehlih
-    hnuhigqdhkvghrnhgvlhesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehm
-    rghtthgvvhesmhgvthgrrdgtohhmpdhrtghpthhtoheprghlvgigsehshhgriigsohhtrd
-    horhhg
-X-ME-Proxy: <xmx:Ui27aeWhHXg7bCl1XS9AsdsDI10b-RRCqXro8ppZkX3oWGJEVtPRgQ>
-    <xmx:Ui27aXeBSyCYZSYu0h0ecmOgI6h_GegBzUdpf01A11lMPDE6Je_gjA>
-    <xmx:Ui27aSK_ty8f99GquUZcVvpJz14fvgoHvE46qoFXfkaWL7dbzhPvHA>
-    <xmx:Ui27aUwdzZdJHxIKMVfb3Gqhp8e9Vyjk5gQTEHCZU8AYtUIqCkuwSg>
-    <xmx:Uy27aZOAAwAVwfvAoiZTNyG3IojoVRpblUeE6d4SxexZocuC2wmh20av>
-Feedback-ID: i03f14258:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
- 18 Mar 2026 18:55:14 -0400 (EDT)
-Date: Wed, 18 Mar 2026 16:55:13 -0600
-From: Alex Williamson <alex@shazbot.org>
-To: Ted Logan <tedlogan@fb.com>
-Cc: David Matlack <dmatlack@google.com>, Shuah Khan <shuah@kernel.org>,
- <kvm@vger.kernel.org>, <linux-kselftest@vger.kernel.org>,
- <linux-kernel@vger.kernel.org>, Matt Evans <mattev@meta.com>,
- alex@shazbot.org
-Subject: Re: [PATCH] vfio: selftests: Build tests on aarch64
-Message-ID: <20260318165513.49c3830d@shazbot.org>
-In-Reply-To: <20260317-vfio-selftests-aarch64-v1-1-2266077563e7@fb.com>
-References: <20260317-vfio-selftests-aarch64-v1-1-2266077563e7@fb.com>
-X-Mailer: Claws Mail 4.3.1 (GTK 3.24.51; x86_64-pc-linux-gnu)
+	 MIME-Version:Content-Type; b=JCOffRpAytYhlGLwfkI40vvEG4iUXtUnpHJgkQoL5pmEPwghKbGvMoknLhkTGI5s6Ta3ZpugBMjZZJAeIbbujlmudptXkkjeQfyNcJN4rYms+bjHeOvV01LnL8trD2+hTutLEILizZQ+gAVE6rz2RF4y98sJs7vlbB3BPcLOzGA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=goodmis.org; spf=pass smtp.mailfrom=goodmis.org; arc=none smtp.client-ip=216.40.44.17
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=goodmis.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=goodmis.org
+Received: from omf14.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 9F2241A01AB;
+	Wed, 18 Mar 2026 23:12:21 +0000 (UTC)
+Received: from [HIDDEN] (Authenticated sender: rostedt@goodmis.org) by omf14.hostedemail.com (Postfix) with ESMTPA id 729DB2D;
+	Wed, 18 Mar 2026 23:12:17 +0000 (UTC)
+Date: Wed, 18 Mar 2026 19:12:46 -0400
+From: Steven Rostedt <rostedt@goodmis.org>
+To: David Laight <david.laight.linux@gmail.com>
+Cc: Christian Brauner <brauner@kernel.org>, Linus Torvalds
+ <torvalds@linux-foundation.org>, linux-kernel@vger.kernel.org,
+ linux-modules@vger.kernel.org, linux-nfs@vger.kernel.org,
+ bpf@vger.kernel.org, kunit-dev@googlegroups.com, linux-doc@vger.kernel.org,
+ linux-trace-kernel@vger.kernel.org, netfs@lists.linux.dev,
+ io-uring@vger.kernel.org, audit@vger.kernel.org, rcu@vger.kernel.org,
+ kvm@vger.kernel.org, virtualization@lists.linux.dev,
+ netdev@vger.kernel.org, linux-mm@kvack.org,
+ linux-security-module@vger.kernel.org, Christian Loehle
+ <christian.loehle@arm.com>, linux-fsdevel@vger.kernel.org
+Subject: Re: [PATCH v2 1/2] kthread: remove kthread_exit()
+Message-ID: <20260318191246.21f5cae8@gandalf.local.home>
+In-Reply-To: <20260311104736.51b53405@pumpkin>
+References: <20260310-work-kernel-exit-v2-0-30711759d87b@kernel.org>
+	<20260310-work-kernel-exit-v2-1-30711759d87b@kernel.org>
+	<20260311104736.51b53405@pumpkin>
+X-Mailer: Claws Mail 3.20.0git84 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -94,49 +47,25 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
+X-Rspamd-Queue-Id: 729DB2D
+X-Rspamd-Server: rspamout06
+X-Stat-Signature: k3okmar3gqwa3bym6uatb3yctgtgf59r
+X-Session-Marker: 726F737465647440676F6F646D69732E6F7267
+X-Session-ID: U2FsdGVkX18ZAlHD7zRdqyhWTgVQ561leKpKdrlCUw4=
+X-HE-Tag: 1773875537-654795
+X-HE-Meta: U2FsdGVkX1+7MRZYfjkh8tY3o0PNQxfTCp9CNyhqYR5NFfoxVPCM5iPNukWLzQIvK353tkgDvhZEdUedgHQ5QAkLbovGV5fvwkWyav20iib+DYA0dDHoYUnOxRBuEyIUuWk0DzuG1lL8+oddkej4s1MPcpQDwUN5GqInEA4qcRZLkJpWWxd7t1PfzHXZfqpOcF7WAx+PlcQksO8TPjRtlBOpPJasveRV7LExQmrExj38ijzYTXM4IkABls4ZOZgZxz6jQwh3Jnl0QSJRHa6iPYc7cT5zoaTdKKIxa3A6zx0cZRoh9me2qihdhYWm4g9GrHKVoLJDzQiYMqh11BNCWgZQJ5CMSezB
 
-On Tue, 17 Mar 2026 16:25:18 -0700
-Ted Logan <tedlogan@fb.com> wrote:
+On Wed, 11 Mar 2026 10:47:36 +0000
+David Laight <david.laight.linux@gmail.com> wrote:
 
-> Also build vfio self-tests on aarch64 variants, in addition to arm64 and
-> x86_64.
+> > -#define module_put_and_kthread_exit(code) kthread_exit(code)
+> > +#define module_put_and_kthread_exit(code) do_exit(code)  
 > 
-> Reported-by: Matt Evans <mattev@meta.com>
-> Closes: https://lore.kernel.org/all/e51b4ff2-13c4-47d4-b781-3dcbd740d274@meta.com/
-> ---
-> Signed-off-by: Ted Logan <tedlogan@fb.com>
+> I'm intrigued...
+> How does that actually know to do the module_put()?
+> (I know it does one - otherwise my driver wouldn't unload.)
 
-Careful, this is a good way to get your Sign-off lost in the tooling.
+It's in the !CONFIG_MODULES section. No module_put() necessary. Only the
+kthread_exit (do_exit) is needed.
 
-> ---
->  tools/testing/selftests/vfio/Makefile | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/tools/testing/selftests/vfio/Makefile b/tools/testing/selftests/vfio/Makefile
-> index 8e90e409e91d..98bc8d6271a4 100644
-> --- a/tools/testing/selftests/vfio/Makefile
-> +++ b/tools/testing/selftests/vfio/Makefile
-> @@ -1,4 +1,4 @@
-> -ARCH ?= $(shell uname -m)
-> +ARCH ?= $(shell uname -m | sed -e 's/aarch64.*/arm64/')
-
-Are we intentionally enabling aarch64_be with this glob or is that just
-carry-over from similar in the mm selftest Makefile?
-
-Big endian ARM64 support is really not on my radar for vfio, but it
-wouldn't be our first foray into big endian systems.
-
-If it wasn't intentional, maybe just add "aarch64" to the below filter
-list directly.  Thanks,
-
-Alex
- 
->  ifeq (,$(filter $(ARCH),arm64 x86_64))
->  # Do nothing on unsupported architectures
-> 
-> ---
-> base-commit: 96ca4caf9066f5ebd35b561a521af588a8eb0215
-> change-id: 20260317-vfio-selftests-aarch64-636abf0f7674
-> 
-> Best regards,
-
+-- Steve
