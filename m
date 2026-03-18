@@ -1,105 +1,163 @@
-Received: from mail-yw1-f169.google.com (mail-yw1-f169.google.com [209.85.128.169])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from fout-a5-smtp.messagingengine.com (fout-a5-smtp.messagingengine.com [103.168.172.148])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C1BF2DF12E
-	for <kvm@vger.kernel.org>; Wed, 18 Mar 2026 21:19:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.169
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C57C2D879E;
+	Wed, 18 Mar 2026 21:22:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.148
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773868766; cv=none; b=NnWyZkZlL9Q/DAGZ7P+V+qVePO0CeSift0EJCFgXEgHFJD3mGpM8frrmtTddBMlKWYj6+cEkgxaE6fhLMq0xfE/a77rPQLHw6YBhX8gmTObuIbfz420V3mImrffBqAkE5v1eTT1bNolXEZgB12+NqPHiLR/B7yc8g/SbznotR0M=
+	t=1773868976; cv=none; b=c2GK/dyrRkud+ilaMtoKYvSmGh8S7BN20zzuLTDGjBEWdeYMep1vN36AEq9c6CYF8Mh86SzH0FJQAJAkgw+VtI6UWeLVaRU6AYOX5OMTcXfn/KIMs0XSWFKmbMF4HkiqjttX8JTpPLlGlaphBJ6So89M+TnJUBHVgkdzmcN5Ojo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773868766; c=relaxed/simple;
-	bh=s1Qp9lS9mJbsbw6BdqhHIoqJG66lBxCc3NYAKkS9f8Q=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
-	 References:In-Reply-To; b=GXSiV0L3bk22V1ZdFpaJQFEWKA6NxkgMBlv0iLJ2GbKphvWY3nbWdtE9kSJEbCn/l1MQK6Ydm8nWjO1xlxdsmDL/gQJGGqq77V1ZDF6lj7/OKU1HPOMJGzMhgC8HPp9FGNdVn72JevHYWJRUaoYouRmm+jlQAUqN9nSbCbhRQeQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=FkMo/X2R; arc=none smtp.client-ip=209.85.128.169
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1773868976; c=relaxed/simple;
+	bh=Lr8WJ1pbf2MMvZ07npOpxTu5vDyPtHiDSzMNSJrmTg0=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=JOpi/k8gVVlZH7/MR7rwlCysD2bq5m56htH66oPgFqQ3hiH3VXvHCJBtwGsOLhFq+gK9mbakm16x5OCWRqAZJVozRZdoXEHswg+AtJHC5omVxYJQW1/LDFG6FvYnfCgHQ4EOPG0mzLeaxPhqZgkjkhBg2Nf26X9px8fdI+KitE8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=shazbot.org; spf=pass smtp.mailfrom=shazbot.org; dkim=pass (2048-bit key) header.d=shazbot.org header.i=@shazbot.org header.b=HYFu+fGk; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=DwHfwK0Q; arc=none smtp.client-ip=103.168.172.148
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=shazbot.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=shazbot.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="FkMo/X2R"
-Received: by mail-yw1-f169.google.com with SMTP id 00721157ae682-79a5ad7cc52so4172597b3.2
-        for <kvm@vger.kernel.org>; Wed, 18 Mar 2026 14:19:25 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1773868764; x=1774473564; darn=vger.kernel.org;
-        h=in-reply-to:references:to:from:subject:cc:message-id:date
-         :content-transfer-encoding:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=s1Qp9lS9mJbsbw6BdqhHIoqJG66lBxCc3NYAKkS9f8Q=;
-        b=FkMo/X2RL5HwAxJFx62+IqwDiAbwfajbTlZ7deTXl4tr5SXhbRNf5wpuoRItwFEyqi
-         PjNVZWFlv9d/iz3i3ptkzyhdHT42BM2QDYrDJIzfY7PZa96zkFnlazvvQR/NfXIfWt1I
-         iggfM0Bj536s/mMM8vR1QaZ2C0LqLI3/C3HtOlQQmm908miFicE+t0bB88OgRu4Zvnmh
-         SwdNGI2Nma+6C6Z2O8MuwP+dW66x2Uylm1JcTX1EffC1td0fjKXt9c/zIT3mo00E3pWy
-         dSodlh7CWlwOXCcauJc3L/c1YqF6h3Ahnn0gDjZ2Nyo99pWxJ+YvB12zIT9o0iVrtOfB
-         L6Xw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1773868764; x=1774473564;
-        h=in-reply-to:references:to:from:subject:cc:message-id:date
-         :content-transfer-encoding:mime-version:x-gm-gg:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=s1Qp9lS9mJbsbw6BdqhHIoqJG66lBxCc3NYAKkS9f8Q=;
-        b=DiXr0MUwqtE2JZ2ZEZwLYp/vfAD7ouTiQGr6b5vCRuPFyZgF8Pzy23jL5A81cOXpM2
-         nnQMb3+Vy1pEQl3Rli2UvSRpS6jpg79pT/Bc58xaytYqd0KG7qNp+C5TzkexLjDl9xza
-         6YvkYI/OHP8vvydUNf2B+1kYHuZwr8rewgx5oe7DrK0tNFXLPWorzpKivhQh0UxY8wmr
-         vTivxvl31vM2ur6ZMWqjW0VD4uU+vXABGb2hxlvl9/u0jLbpnJ4z60kGOICO2O29uhEI
-         cffPP1ILrmu2qnNQDIzsHd/UXqr1vuxMRENI9ef0grlBibYTar3abwLRKQgc63WeVfVz
-         wcqw==
-X-Forwarded-Encrypted: i=1; AJvYcCV3NtzDUCTcWw2b572YpptXeBaY+UIUoA/B37Jp7OJLYi4651Kh3WRxrbuYVlfh8vXwwEM=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyHiEp6oS7bwjWeI2822/zYufM/5pOBjtAQGutIuZkgwORO3bmb
-	4eVIDk4Md9lTxOkXLu3uTl/mmp0EmrCaC5ilCBg4t2PfWwiT/O2OVi20
-X-Gm-Gg: ATEYQzzw6ji9HHCVI6BUbyXUzYkg+oZkkhYi/vwreWwHU9xypBexL4CHLb7rguQcdB9
-	nTYp0ZB0cy1h7h2n/drDtVsxi7LF4V452jh5hYNaDq9Fa+nqbRYiORJa5aOeUfQCS+aEJ7+KqMC
-	eBaXZeMmbwF1Pmpr7sFVDF27osz1tpu4sLLhxMfIvwp31u/YgNvhnj96a00ykXyfqDpReWNVEoz
-	91NrOjnUh8NImFjfnvwMXZhFJTmx3Vi6Sc2IgKQksd1azupMTogv7UT/18EPJeTmzU3hM8PvZpG
-	sqcbCZQopJvOUeJ5spyf7fFuN09Rii0gqJhdcq2J29cay8Kdf80ZurV56l7TDJY1f+tyNfhARfB
-	zG+BxQeJ0daanDA03v2MClQap11rGDmNuDpI3wVTrGEYM9/eDQ+D4Sn9rDWVrCuqgvl9aVQBqUV
-	vChAPyctNBm0gbK3hR/ohZdnjjadKMxDrV28Pl9ppsQ/4SoCYPAeJx5/CldOZkcqQkPZ8SKGv6a
-	j3BxNIFa3V8oKREXVE/lIvAfSbFHK0u
-X-Received: by 2002:a05:690c:dc4:b0:79a:2ef2:82a with SMTP id 00721157ae682-79a718c82b6mr50873677b3.20.1773868764218;
-        Wed, 18 Mar 2026 14:19:24 -0700 (PDT)
-Received: from localhost ([2601:7c0:c37e:2360::f769])
-        by smtp.gmail.com with ESMTPSA id 00721157ae682-79a7136de7bsm24223777b3.2.2026.03.18.14.19.23
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 18 Mar 2026 14:19:23 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=shazbot.org header.i=@shazbot.org header.b="HYFu+fGk";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="DwHfwK0Q"
+Received: from phl-compute-11.internal (phl-compute-11.internal [10.202.2.51])
+	by mailfout.phl.internal (Postfix) with ESMTP id C8A5FEC01CE;
+	Wed, 18 Mar 2026 17:22:51 -0400 (EDT)
+Received: from phl-frontend-04 ([10.202.2.163])
+  by phl-compute-11.internal (MEProxy); Wed, 18 Mar 2026 17:22:51 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shazbot.org; h=
+	cc:cc:content-transfer-encoding:content-type:content-type:date
+	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to; s=fm3; t=1773868971;
+	 x=1773955371; bh=i3rzu56iHOdiPo0h0sV4fs0AbEWpwwHMYjaaBOspznI=; b=
+	HYFu+fGkclc5+ktjuFY4t8iUbi1ynQSICLqP63EBuw1wZycs3e1KDB1zvBclaEaF
+	cm6aJUe5QZcsXcl5a26zOKIzS9UY6hG/WV1WUHCaL5yzrdkk0G4mpBYnEbLchxXq
+	dyUH3Z7lR7+5s7bLaqzjPuc1ADQJkBQj702S5FMnWlIsrmjXdUECRPY67UjBYCvE
+	1UWH0yfdeVybuQdnOp5I+FvQamF1KMOCS0xumvxRy1ivVqUC6Or2fNXbL29QqGmN
+	k32QonyO1OZKLYbwSEg7eoCPrJvNv+UXgAWRw+czTloAdUuqn5MjaDzQ8PV9mffG
+	7CsJmViK8tfdsCSSDukN/g==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=1773868971; x=
+	1773955371; bh=i3rzu56iHOdiPo0h0sV4fs0AbEWpwwHMYjaaBOspznI=; b=D
+	wHfwK0Q2b1ZbU+p7r5DalmHP/6dRh4TmlnAcW0Cgq6bwvuAI31Ef0Vm1zsXArNsn
+	xTijdL/MdouuNalhdA4J8IEnA0p0HfVqv1o3YaEV2+s1z7XYJgOqP9/1ckdpH4Cu
+	9tyd00Tyh7O5TzE1v2kAIv64pGO2HUKonEry5Hn4q0wRWDtpzll7h1J9yZN4r+LX
+	D7vNh5lvQOl0tJdADyXvb0QEM2sokxxlw60vgT2eY3YYNPjEwf1IBLxywM2tybwZ
+	HI8DmxmWq/SoCNEYYQWKpILgIZxbV6vcljo+ci2j2Cnts273ikQwA/uSZLfNxhUN
+	5LWqmmDqfsZZ7LsVtqeJg==
+X-ME-Sender: <xms:qxe7aVnkS09inuxw5F4KX0jhLvbT1cn7LVjk1_vq7ba-ZxqcRk6bhQ>
+    <xme:qxe7abxOtDHRNd4l2CL7RiIydUIX3WiH_ETAcuoWLFrSn6tj1xdYS302vObHbYl_m
+    zz2lITzZ7sSNfdpeBDZFIaSjMWfjv7tXAcam8JQKkcfr9R1Z13RWA>
+X-ME-Received: <xmr:qxe7aark2tPqGfU2UiYIhNkF8ChS5XdUd6p4rhO6eFO7j_dHDZsd-hLEFQQ>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgdeftdehvddtucetufdoteggodetrf
+    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
+    rghilhhouhhtmecufedttdenucenucfjughrpeffhffvvefukfgjfhfogggtgfesthejre
+    dtredtvdenucfhrhhomheptehlvgigucghihhllhhirghmshhonhcuoegrlhgvgiesshhh
+    rgiisghothdrohhrgheqnecuggftrfgrthhtvghrnhepvdekfeejkedvudfhudfhteekud
+    fgudeiteetvdeukedvheetvdekgfdugeevueeunecuvehluhhsthgvrhfuihiivgeptden
+    ucfrrghrrghmpehmrghilhhfrhhomheprghlvgigsehshhgriigsohhtrdhorhhgpdhnsg
+    gprhgtphhtthhopeeipdhmohguvgepshhmthhpohhuthdprhgtphhtthhopeguvghvnhhu
+    lhhlodhmsghoohhnvgdrrghkrghmrghirdgtohhmsehkvghrnhgvlhdrohhrghdprhgtph
+    htthhopehmsghoohhnvgesrghkrghmrghirdgtohhmpdhrtghpthhtohepkhhvmhesvhhg
+    vghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehlihhnuhigqdhkvghrnhgvlhesvh
+    hgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehsthgrsghlvgesvhhgvghrrdhk
+    vghrnhgvlhdrohhrghdprhgtphhtthhopegrlhgvgiesshhhrgiisghothdrohhrgh
+X-ME-Proxy: <xmx:qxe7aa4cKhW8n6YPfr3U7bchl07lveBc-mhr9--iUhgJH2uoeWJW9w>
+    <xmx:qxe7aRdmXhivPcQnA-Qb7E2OPlqOnV45u9DYJhthUJVQpBFNsMl_ng>
+    <xmx:qxe7af6Pzc11m2bzvM0-0QL66WakQeb_EQyU0jpsnCYJvG58BX1o9Q>
+    <xmx:qxe7aYtXwZmL5rbsn-v2as4IIukpZ1F183hOBgl_JqKWQr45Z8pH3g>
+    <xmx:qxe7aUuXuJKEfo-JvCrX6F7EtmpPWXZzXit5rfuYHqw9YBLuJNnKBsRB>
+Feedback-ID: i03f14258:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
+ 18 Mar 2026 17:22:50 -0400 (EDT)
+Date: Wed, 18 Mar 2026 15:22:49 -0600
+From: Alex Williamson <alex@shazbot.org>
+To: Max Boone via B4 Relay <devnull+mboone.akamai.com@kernel.org>
+Cc: mboone@akamai.com, kvm@vger.kernel.org, linux-kernel@vger.kernel.org,
+ stable@vger.kernel.org, alex@shazbot.org
+Subject: Re: [PATCH] vfio/type1: Retry follow_pfnmap_start() when PFNMAP is
+ zapped
+Message-ID: <20260318152249.43eb81f6@shazbot.org>
+In-Reply-To: <20260317-retry-pin-on-reclaimed-pud-v1-1-1f0d0a23f78d@akamai.com>
+References: <20260317-retry-pin-on-reclaimed-pud-v1-1-1f0d0a23f78d@akamai.com>
+X-Mailer: Claws Mail 4.3.1 (GTK 3.24.51; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Wed, 18 Mar 2026 16:19:22 -0500
-Message-Id: <DH67ZVO5UL9G.3SP1BFT4TQOI5@gmail.com>
-Cc: <atish.patra@linux.dev>, <pjw@kernel.org>, <palmer@dabbelt.com>,
- <aou@eecs.berkeley.edu>, <alex@ghiti.fr>, <ajones@ventanamicro.com>,
- <kvm@vger.kernel.org>, <kvm-riscv@lists.infradead.org>,
- <linux-riscv@lists.infradead.org>, <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH] RISC-V: KVM: Fix out-of-bounds by 1
-From: "Ethan Tidmore" <ethantidmore06@gmail.com>
-To: "Ethan Tidmore" <ethantidmore06@gmail.com>, <anup@brainfault.org>
-X-Mailer: aerc 0.21.0-0-g5549850facc2
-References: <20260228152226.2116895-1-ethantidmore06@gmail.com>
-In-Reply-To: <20260228152226.2116895-1-ethantidmore06@gmail.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-On Sat Feb 28, 2026 at 9:22 AM CST, Ethan Tidmore wrote:
-> The array kvpmu->pmc is defined as:
->
-> struct kvm_pmc pmc[RISCV_KVM_MAX_COUNTERS];
->
-> So, accessing it with index RISCV_KVM_MAX_COUNTERS would be
-> out-of-bounds by 1.
->
-> Change index check from > to >=3D.
->
-> Detected by Smatch:
-> arch/riscv/kvm/vcpu_pmu.c:528 kvm_riscv_vcpu_pmu_ctr_info() error:
-> buffer overflow 'kvpmu->pmc' 64 <=3D 64
->
-> Fixes: 8f0153ecd3bf1 ("RISC-V: KVM: Add skeleton support for perf")
-> Signed-off-by: Ethan Tidmore <ethantidmore06@gmail.com>
+On Tue, 17 Mar 2026 16:07:45 +0100
+Max Boone via B4 Relay <devnull+mboone.akamai.com@kernel.org> wrote:
+
+> From: Max Boone <mboone@akamai.com>
+> 
+> A race between page table walking (e.g. via procfs numa_maps) and VFIO DMA
+> pinning can lead to temporary failures in follow_pfnmap_start(). When a
+> PUD entry is split and concurrently refaulted, the PFNMAP mapping may be
+> temporarily zapped, causing follow_pfnmap_start() to return an error.
+> 
+> Although follow_pfnmap_start() returns an -EINVAL this is not due to
+> invalid parameters, but rather because of the pfnmap being non-present.
+> Treat it as such, and retry by returning -EAGAIN, similar to how GUP
+> handles such races.
+> 
+> This avoids propagating an unexpected -EINVAL to userspace, like follows:
+> [dma_map]
+> dma_map iova=0x000000000000 size=0x000004000000 vaddr=0x00007f7800000000
+> dma_map FAILED iova=0x020000000000: [Errno 22] Invalid argument
+> dma_map iova=0x040000000000 size=0x000002000000 vaddr=0x00007f5780000000
+> 
+> Which would've succeeded on a retry.
+> 
+> Cc: stable@vger.kernel.org
+> Fixes: a77f9489f1d7 ("vfio: use the new follow_pfnmap API")
+> Signed-off-by: Max Boone <mboone@akamai.com>
 > ---
+>  drivers/vfio/vfio_iommu_type1.c | 10 +++++++++-
+>  1 file changed, 9 insertions(+), 1 deletion(-)
+> 
+> diff --git a/drivers/vfio/vfio_iommu_type1.c b/drivers/vfio/vfio_iommu_type1.c
+> index 5167bec14..3a0d0bbb9 100644
+> --- a/drivers/vfio/vfio_iommu_type1.c
+> +++ b/drivers/vfio/vfio_iommu_type1.c
+> @@ -559,9 +559,17 @@ static int follow_fault_pfn(struct vm_area_struct *vma, struct mm_struct *mm,
+>  		if (ret)
+>  			return ret;
+>  
+> +		/*
+> +		 * follow_pfnmap_start() returns -EINVAL for
+> +		 * invalid parameters and non-present entries.
+> +		 * If that happens here after a successful
+> +		 * fixup_user_fault(), it is likely that the
+> +		 * pfnmap has been zapped. Retry instead of
+> +		 * failing.
+> +		 */
 
-Friendly ping.
+It's a little stronger than that, right?  We're betting that the only
+remaining non-zero return is due to a race and we can introduce what
+appears to be potential for an infinite loop here because -EAGAIN will
+get kicked out to redo the vma_lookup() and fixup_user_fault() should
+return a genuine error if we're completely in the weeds.  Should we
+make this a little stronger and more specific?  Thanks,
 
-Thanks,
+Alex
 
-ET
+>  		ret = follow_pfnmap_start(&args);
+>  		if (ret)
+> -			return ret;
+> +			return -EAGAIN;
+>  	}
+>  
+>  	if (write_fault && !args.writable) {
+> 
+> ---
+> base-commit: 96ca4caf9066f5ebd35b561a521af588a8eb0215
+> change-id: 20260317-retry-pin-on-reclaimed-pud-dfb9e26eb8cf
+> 
+> Best regards,
+
