@@ -1,199 +1,190 @@
-Received: from out-183.mta0.migadu.com (out-183.mta0.migadu.com [91.218.175.183])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD0A127456
-	for <kvm@vger.kernel.org>; Wed, 18 Mar 2026 06:16:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.183
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773814615; cv=none; b=keOr5FgLgAg4HUvIpIeTogvWYl8bs41F2ZOBwHUXetuS7IiwyAeGOFg+P1s3ro9ebkqvmKBh5vtFin6MQ2bbI8j+pzO39PLv1elqhPz1scwBASutTTaAi3NPZBxAWInEfAVL2OnLqrqQ3+whFZlbcauff8AKS7ab/rPzPNonGsI=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773814615; c=relaxed/simple;
-	bh=0P/HhXaIZHVp9qjmL/0dO1b2rfXAZHkCTBXE0PKnwuk=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=bjpCk1/q39LsDg3v5Lw8twdJyUimElinjZoL6ui0e4IgaE8+yfakZq0xJg2AYW7TLzN2dspy7v61kpBQVkyLj7BgzjQdqZuQBH/7SG/pqHKmO4AfcsytkqqgRxa/1nYjmfu+q79sLmPKcG5TvKM095IfUBNuWBRTjnh/GHUj5qA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=MNhhNDAi; arc=none smtp.client-ip=91.218.175.183
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 01DAA322B88;
+	Wed, 18 Mar 2026 06:54:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=192.198.163.12
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1773816890; cv=fail; b=JMwOF3X6xqGc43dvLTz8a61OX7vLZOwekiOmYYFhowGUAjUDfvh5v/HepDlYVzydhJu+5v3XXDtd0lnImTMp3UKLO5FwhP2BiE2wX6arX0pLrtsQZ6l7UTlR3W5VP2QJRS4IkDFhXbQLwzwjDW078UGZXnXPZGqZlLllZIScQbA=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1773816890; c=relaxed/simple;
+	bh=sjSKBlqv2Up96g1OO70LMXkkyV7daNEM0gywhFl+4fU=;
+	h=Date:From:To:CC:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=G61+b59scB7z6ekx3RFB1svXAlrUxlpA4yVof1olfhF/ufTDhoaVD90KZRw0M3XCwmwuy3zzAmqugoEI+FMkvJwPdhaDCwpafJ0Kix9g/hG0HagTZy9TGQMoirf+JU/ip5moVzbIYBL1xHtAUHVFX3Qq1Ti8Iw9IWjDsBPR6uwk=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=bFsfXIiv; arc=fail smtp.client-ip=192.198.163.12
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="MNhhNDAi"
-Message-ID: <268abf39-9cd6-412e-b3ec-32fb8fea1684@linux.dev>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1773814602;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=d0RHFhfIi8eQ/zhOmgjp0C3T+zZS/NNRXu1jd6CQgfE=;
-	b=MNhhNDAiders9o4vuBDcAzvePbJoit8K5gvmIIoWdlrp50PwJUf+0ccBSLX2+cpGB8NFP4
-	q1IE+M08MhKV/wICLwdON7tPKo7DOZuhgUdxjertAyMvibX1pkaVxZJD6ZB0/U/tNF1tC/
-	S6nRQOHgMwvohBfj+W6iF4mBoPPNYjg=
-Date: Wed, 18 Mar 2026 14:16:33 +0800
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="bFsfXIiv"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1773816889; x=1805352889;
+  h=date:from:to:cc:subject:message-id:references:
+   content-transfer-encoding:in-reply-to:mime-version;
+  bh=sjSKBlqv2Up96g1OO70LMXkkyV7daNEM0gywhFl+4fU=;
+  b=bFsfXIivQLkMhP5w8z676+WEewISNo1Qfgk1icg0RAxpG7uF3z5hizXW
+   hF+oqnpJVHD+5FzDvpz2YWSCynIhC/8r4+bCv1u/11GSsoYsiAUTsH8Tx
+   ve0x/KJ/za5bmyrf+ZXhoOASgji/iTP812S6Z+SmE9zB4AoQsyeuTgutO
+   Gfy9pMLZgaUojwJ1fz0mB4X8ObUdIOxGXeT3eDfhWf63Dq5F3Ym8wbxot
+   nsM+GyozJvKXNY3mtjhuwF1WPR9iCoa4jZlYbA3DczNoPCr5AHG6YhRHM
+   tqfcugqBmW05zQCgGbA0hvCxoZdCsC2yDpM2nlBeDST7roXimxRBaP8jj
+   g==;
+X-CSE-ConnectionGUID: 1T/uq0rTSQ++8gja3ULX3w==
+X-CSE-MsgGUID: G4kSJXJqT8SReXX1iWtyHg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11732"; a="78763151"
+X-IronPort-AV: E=Sophos;i="6.23,127,1770624000"; 
+   d="scan'208";a="78763151"
+Received: from orviesa001.jf.intel.com ([10.64.159.141])
+  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Mar 2026 23:54:49 -0700
+X-CSE-ConnectionGUID: P+kAEjw1TuO7iwCIjggWJQ==
+X-CSE-MsgGUID: A7EimthETSeUhnJJ4yXJFg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.23,127,1770624000"; 
+   d="scan'208";a="260419278"
+Received: from fmsmsx902.amr.corp.intel.com ([10.18.126.91])
+  by orviesa001.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Mar 2026 23:54:47 -0700
+Received: from FMSMSX903.amr.corp.intel.com (10.18.126.92) by
+ fmsmsx902.amr.corp.intel.com (10.18.126.91) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.37; Tue, 17 Mar 2026 23:54:46 -0700
+Received: from fmsedg902.ED.cps.intel.com (10.1.192.144) by
+ FMSMSX903.amr.corp.intel.com (10.18.126.92) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.37 via Frontend Transport; Tue, 17 Mar 2026 23:54:46 -0700
+Received: from SJ2PR03CU001.outbound.protection.outlook.com (52.101.43.32) by
+ edgegateway.intel.com (192.55.55.82) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.37; Tue, 17 Mar 2026 23:54:46 -0700
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=B4h51VyfG5C4NLHk82Irdmmsz1BVE1CHpet2K8yzijIlW1jRkZpgLX/6YUve0o6Yp1bXaG9xYwPuLWxeHEu5X2eBWKycp5d5OhlBCmcMYoU8cE85CifAatbVZz4wAh+XdDY+6smuhbGd8gz+qcD6xUbLxR7O7fd7g4uKMEAExytPyWEWl+8CeMaWXK7aPHw6zq1epYj4SfzF14yl64sOfwyT0flItoWWY5FsBlHUU2EaqG/hWiCvt+aoDGxM1YowE0QF4CGjfqBNUpe2xs2uL7kVwYw4zB5D40EmExenEqPD1jSuvznjCTA/Vj6iZH2xUJfp6f+hA/rOelU5K/5zAw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=dRW4OmuTvWdkiOzJibFE+rnsE0aBoEziLnknqkUOL5E=;
+ b=A4Od9SjatdWBZF825h8P6aYSvJaLYeOdHm5hXuSg/vdv6cFdSXgHDg/HmyZTPth/mk+/O7cmPjzS5To6xWMV9ICxr6RGnQ/j/d2mvlKt8wHmCNbHvDYUWMtRZ7KGCaKq0UHP4Dm09uBrmfyC7zuTh4PqGkaUdsjXxUS002jpqQvNvyyy81ydqCql0wcBhSUIY8yqk+rTs32LDVv5wfuGFxe7OYLAIN4Ns+8kFfLmAJHN7/znT/L6qej0jkrvJr4EtIAk4Lh6fLyGurD8K2u+fwjlRtsOUsqa5nI/I+L46GnjiVQogmXWq5pFzmhGP3y4klzfVbjCLwI8fQmAGx627w==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+Received: from CH3PR11MB8660.namprd11.prod.outlook.com (2603:10b6:610:1ce::13)
+ by PH0PR11MB7585.namprd11.prod.outlook.com (2603:10b6:510:28f::10) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9723.19; Wed, 18 Mar
+ 2026 06:54:38 +0000
+Received: from CH3PR11MB8660.namprd11.prod.outlook.com
+ ([fe80::fdc2:40ba:101d:40bf]) by CH3PR11MB8660.namprd11.prod.outlook.com
+ ([fe80::fdc2:40ba:101d:40bf%6]) with mapi id 15.20.9723.018; Wed, 18 Mar 2026
+ 06:54:37 +0000
+Date: Wed, 18 Mar 2026 14:54:23 +0800
+From: Chao Gao <chao.gao@intel.com>
+To: Kiryl Shutsemau <kas@kernel.org>
+CC: <x86@kernel.org>, <linux-coco@lists.linux.dev>, <kvm@vger.kernel.org>,
+	<linux-kernel@vger.kernel.org>, <binbin.wu@linux.intel.com>,
+	<dan.j.williams@intel.com>, <dave.hansen@linux.intel.com>,
+	<ira.weiny@intel.com>, <kai.huang@intel.com>, <nik.borisov@suse.com>,
+	<paulmck@kernel.org>, <pbonzini@redhat.com>, <reinette.chatre@intel.com>,
+	<rick.p.edgecombe@intel.com>, <sagis@google.com>, <seanjc@google.com>,
+	<tony.lindgren@linux.intel.com>, <vannapurve@google.com>,
+	<vishal.l.verma@intel.com>, <yilun.xu@linux.intel.com>
+Subject: Re: [PATCH v5 06/22] coco/tdx-host: Expose P-SEAMLDR information via
+ sysfs
+Message-ID: <abpMHxwhYqbmrX8s@intel.com>
+References: <20260315135920.354657-1-chao.gao@intel.com>
+ <20260315135920.354657-7-chao.gao@intel.com>
+ <abkmceqUtMTnLI0V@thinkstation>
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <abkmceqUtMTnLI0V@thinkstation>
+X-ClientProxiedBy: SI2PR02CA0028.apcprd02.prod.outlook.com
+ (2603:1096:4:195::8) To CH3PR11MB8660.namprd11.prod.outlook.com
+ (2603:10b6:610:1ce::13)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Subject: Re: [PATCH] mm/pagewalk: fix race between concurrent split and
- refault
-To: mboone@akamai.com, Andrew Morton <akpm@linux-foundation.org>,
- David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>,
- "Liam R. Howlett" <Liam.Howlett@oracle.com>,
- Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>,
- Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
- stable@vger.kernel.org
-References: <20260317-pagewalk-check-pmd-refault-v1-1-f699a010f2b3@akamai.com>
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Qi Zheng <qi.zheng@linux.dev>
-In-Reply-To: <20260317-pagewalk-check-pmd-refault-v1-1-f699a010f2b3@akamai.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Migadu-Flow: FLOW_OUT
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CH3PR11MB8660:EE_|PH0PR11MB7585:EE_
+X-MS-Office365-Filtering-Correlation-Id: b008b45a-ae76-4dbe-ea64-08de84bb381f
+X-LD-Processed: 46c98d88-e344-4ed4-8496-4ed7712e255d,ExtAddr
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|7416014|376014|366016|1800799024|18002099003|56012099003|22082099003;
+X-Microsoft-Antispam-Message-Info: 4qBn+blDbuUmJYOeFE8cIxjJhR7lQrvyENhq3T14IX3a/aVK9nX45fnk4Iwx4Be9F0wZqyv5vcl11a1Ag+CuQ1LUOCw9bp2dgENz4YmsDTCZ04ZGXzzPho+vhHF6EmR9ctA4rd1sb/T//yg2ZiU7q5914Qw72rZSLAuul32kPLpgyQ9l+zll6RrLBOAThNT6GmbzBS9dFN5woQBfhmdyyWjM8EtSf2ACIQYqBucCV0PihiJZGWIVlmk8z6Yg/4/OkxCJ4Ng83AJjQP7oSyH6NeiGdvRlUg2JJXkvxSEClpJemjn2wEM9oJSmB2NvGJ8FmDPdeWzp8uTsoDdun9KZpf0GqYfk35w5au+wqkeRIM0BxDr0A/OVvcpUt8bCMnxS5zI51Uov9O33SteGFNzTAgZMKsw6fgOz2UuysiDVKC3v+LbmGmuQvNymfKNz5rM/kTWSv82fgMJkXqNRb3jbwi3SXNHY85sQ1UchtWMY70gYtLacUN4O1QACoF7A6c8VVTHxJVNBBb+iBkSC4xD1CRHwvaKjihby0xM/fJv36xIvMB4EAo9+YbDNUCkGlEgiwhrHkSu80gyCBX/LYLG/pBFS6PhJIVNkUF7ST37q+Vkidmz/6KBmO+i83kLZKCFW9fAAffz81gcAi64qjf3kfORVRs/Jp3mC0Vnk5go7VbpD+kAaS82+l2yGUwEdT+nadkil3VWmf1kcziZ7DA8kdz3Jln0SuaPmDGAvF45Z0UQ=
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH3PR11MB8660.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(366016)(1800799024)(18002099003)(56012099003)(22082099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?iso-8859-1?Q?t/pvtCCL7TrGjeiBaCNz0Jwyz0UqofT38RxVRGqt5AZ0sJ4CeAwx9jt5VU?=
+ =?iso-8859-1?Q?qc1hhGPJBEoLCKAU48T+bKJ0rh0hl75IOa6jaj6TuqcIF1dUqifymhp/R+?=
+ =?iso-8859-1?Q?en4zNWcuT+wA0GB1wvYnQgzEHTV3M98haSnbJIi47gsTXHXfyQoxoJnPuA?=
+ =?iso-8859-1?Q?wCJNCl8XZKlBqr6wfoxFRRxH3OZdcRxZPF7jB1fzJ1o9qy7cOcXnq6zi0d?=
+ =?iso-8859-1?Q?fvILmJ8s/nIczeZGfX9gXcZ08PjyPvpSyeWulAJPBCeLXjqZPKPlAPa88u?=
+ =?iso-8859-1?Q?RlPd10bCPqbaW9P2iFzZebUiJ/+flNkFknpENUayncZkAxdkm/oFknHys+?=
+ =?iso-8859-1?Q?/fnzXJTBTfN7VZt6l1Tyk6hgKn6MfleZuzzH/WYfEfrQaz6oO+A35Pr1Wz?=
+ =?iso-8859-1?Q?Ccwsm9eQclgWxiLOsfY30Eb46LxyelqOFmsnstlUMe0h2Rzrp5XOUXWA8N?=
+ =?iso-8859-1?Q?/HlVuYQtf1hN+lC5D7sT4mYR1dhbFjvX9lDG8gmjIrSUVEcVrg8/S5BAaQ?=
+ =?iso-8859-1?Q?RG+D4xcdz1DBFZJEQXdyuBOLK/qBQo01hroE6XY9sXche7NCz/FO2roamn?=
+ =?iso-8859-1?Q?ZoqQTv7d1+4ZvBgkT2t8w4Gv0GAWSq418WgkiK6GgcGh0RoTDOHcxwNrX2?=
+ =?iso-8859-1?Q?GLfTscSXMUxEuIbwM5ihiVSINCGhrUcjlc9lDrzteZS5kLO4B+FSwuFnvU?=
+ =?iso-8859-1?Q?B2TfpfoNRsaX/UKEsSISPNvq0V/fZgD6qApDGhtkHAAIGcVvqynRYfKA5W?=
+ =?iso-8859-1?Q?NBfHwudfziUz5fEkd4P2LlIWJsGiqmjDcTrF4Up07wEGhs/VafVSI027pi?=
+ =?iso-8859-1?Q?u8jQzeMoDJi7ScL9nZps1pPIHKeZx4s94y09nA/jTPoWADn7rt818EFg5v?=
+ =?iso-8859-1?Q?jDXOhMx2ijxWBXyBn/jZ2+gDAXI3KRxqyI3Pc5MmTNVDZAaZMueWW33sQe?=
+ =?iso-8859-1?Q?XAIcylmXgmHblScKZlbNYJ3F/ZgZi8v+igx9jhKgKHZe63hoY64SYoOoDY?=
+ =?iso-8859-1?Q?5zclh7VmK+9TOp1mRaThkGPgzCqNgfFFGMxEZeaXPOSA++XEGVFXw06733?=
+ =?iso-8859-1?Q?okrt6kSWdixhTb4NxrP7IpzFTCIxYevFXE7lrmF2OgHvQoE8qiHp446JxW?=
+ =?iso-8859-1?Q?tTXf1ZHaVgZXXwSSbkCjSHYKme6uQcFhxztgfo4xnqkJ8BseClmC4di5rH?=
+ =?iso-8859-1?Q?P5Ug+azVzlMUUD+OIQ6CWtr7hVgzwoh6NDhlNFZZxk8KtW1a3v6CXje8CR?=
+ =?iso-8859-1?Q?z92odjxm2x24JB8rWIffAZ1xk5Uwc8g6SP2qgAknd09jYfKei5D/NkdJ9c?=
+ =?iso-8859-1?Q?p507jPe9pdr1IkQmKUQuXrehKCzrOaOrqGumEeBzCE9hAg8qwElLnhPs2+?=
+ =?iso-8859-1?Q?uELPWC7XhWxQETbzVIs9NIXn8Ls1XzhCM4hqTBOeHVoX7mgmoJNiN3C8SR?=
+ =?iso-8859-1?Q?BMkUQuwr2ZUwUMR4CWPLTCAl1mrsZlIbO8BWDQ4qunY9xdF5VipQOTvl6r?=
+ =?iso-8859-1?Q?BppVwE0xWejfOp7vsy1sz4PP+yGJFXDcuTki36SISvsnNNESGSityXLI9+?=
+ =?iso-8859-1?Q?GWAxDftaqfdJOmzFx5kqMp3sa1gzN0JFRPyTp+mCmCmmHRU7wf2fqlOjjh?=
+ =?iso-8859-1?Q?SQKSRbQsr4vj7WqmXybmRLT7Y5pkN4XT55eENH3sZjvNCMn8FiP7fwgSfg?=
+ =?iso-8859-1?Q?CkuOvOYcEt6eZOLt276wRjBHefZ4HnSX9vVkYoCFl6Tnw2uUdHZUlwpYvq?=
+ =?iso-8859-1?Q?JOmg7Afay3plflHt53WawQcuk9Hz2DEZDdBXdsWqXILTaqTpCahUiBXvU2?=
+ =?iso-8859-1?Q?bwrE3VmXSw=3D=3D?=
+X-Exchange-RoutingPolicyChecked: wSQUyVesyfZ8n9SbTIjvLhupE6DrKc3w2jY6OjaQ22krBSaYVuL2DltFFZdFeJQqQTvMCKXr7Ye/A7S6x7cQ6SPmOS9mMVqrXGVpDi/+NVtTAYpMTJfUHjYm5jitFshlL9tgJz1fh7qVSgWiaq78TOzVFQISENZAYejvog8+5BxYwMXxaLEsfJc8fg92Xi8x3ZzlpOtODmCYSMwZi2YL2OX+MaVV2aWDYa0ASK3lmFAD7ChPY5hqPeSgNZ6jovUbVN6mvRKsYIVzqxOL4Vn4TJTzfb7OFB609v+AcU2JmcHh5WWKGx+aQb44Q/NKYkNbcdOeR57TuzxBNDaTnRyd4w==
+X-MS-Exchange-CrossTenant-Network-Message-Id: b008b45a-ae76-4dbe-ea64-08de84bb381f
+X-MS-Exchange-CrossTenant-AuthSource: CH3PR11MB8660.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 18 Mar 2026 06:54:37.2278
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: tgOIeJX/XV3qTGN8zOgkVLH/btM1WHZUYyNlA+U7WuErGF2g3UwROchpOISX0Csm/pX9gXHO/QLXXc8TUWixFQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH0PR11MB7585
+X-OriginatorOrg: intel.com
 
-Hi Max,
+>> +
+>> +What:		/sys/devices/faux/tdx_host/seamldr/version
+>> +Contact:	linux-coco@lists.linux.dev
+>> +Description:	(RO) Report the version of the loaded SEAM loader. The SEAM
+>> +		loader version is formatted as x.y.z, where "x" is the major
+>> +		version, "y" is the minor version and "z" is the update version.
+>> +		Versions are used for bug reporting and compatibility checks.
+>> +
+>> +What:		/sys/devices/faux/tdx_host/seamldr/num_remaining_updates
+>> +Contact:	linux-coco@lists.linux.dev
+>> +Description:	(RO) Report the number of remaining updates. TDX maintains a
+>> +		log about each TDX module that has been loaded. This log has
+>> +		a finite size, which limits the number of TDX module updates
+>> +		that can be performed.
+>> +
+>> +		After each successful update, the number reduces by one. Once it
+>> +		reaches zero, further updates will fail until next reboot. The
+>> +		number is always zero if the P-SEAMLDR doesn't support updates.
+>> +
+>> +		See Intel® Trust Domain Extensions - SEAM Loader (SEAMLDR)
+>> +		Interface Specification, Revision 343755-003, Chapter 3.3
+>> +		"SEAMLDR_INFO" and Chapter 4.2 "SEAMLDR.INSTALL" for more
+>> +		information.
+>
+>Do you think revision and chapter numbers useful here?
 
-On 3/17/26 10:03 PM, Max Boone via B4 Relay wrote:
-> From: Max Boone <mboone@akamai.com>
-> 
-> The splitting of a PUD entry in walk_pud_range() can race with
-> a concurrent thread refaulting the PUD leaf entry causing it to
-> try walking a PMD range that has disappeared.
-> 
-> An example and reproduction of this is to try reading numa_maps of
-> a process while VFIO-PCI is setting up DMA (specifically the
-> vfio_pin_pages_remote call) on a large BAR for that process.
-> 
-> This will trigger a kernel BUG:
-> vfio-pci 0000:03:00.0: enabling device (0000 -> 0002)
-> BUG: unable to handle page fault for address: ffffa23980000000
-> PGD 0 P4D 0
-> Oops: Oops: 0000 [#1] SMP NOPTI
-> ...
-> RIP: 0010:walk_pgd_range+0x3b5/0x7a0
-> Code: 8d 43 ff 48 89 44 24 28 4d 89 ce 4d 8d a7 00 00 20 00 48 8b 4c 24
-> 28 49 81 e4 00 00 e0 ff 49 8d 44 24 ff 48 39 c8 4c 0f 43 e3 <49> f7 06
->     9f ff ff ff 75 3b 48 8b 44 24 20 48 8b 40 28 48 85 c0 74
-> RSP: 0018:ffffac23e1ecf808 EFLAGS: 00010287
-> RAX: 00007f44c01fffff RBX: 00007f4500000000 RCX: 00007f44ffffffff
-> RDX: 0000000000000000 RSI: 000ffffffffff000 RDI: ffffffff93378fe0
-> RBP: ffffac23e1ecf918 R08: 0000000000000004 R09: ffffa23980000000
-> R10: 0000000000000020 R11: 0000000000000004 R12: 00007f44c0200000
-> R13: 00007f44c0000000 R14: ffffa23980000000 R15: 00007f44c0000000
-> FS:  00007fe884739580(0000) GS:ffff9b7d7a9c0000(0000)
-> knlGS:0000000000000000
-> CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-> CR2: ffffa23980000000 CR3: 000000c0650e2005 CR4: 0000000000770ef0
-> PKRU: 55555554
-> Call Trace:
->   <TASK>
->   __walk_page_range+0x195/0x1b0
->   walk_page_vma+0x62/0xc0
->   show_numa_map+0x12b/0x3b0
->   seq_read_iter+0x297/0x440
->   seq_read+0x11d/0x140
->   vfs_read+0xc2/0x340
->   ksys_read+0x5f/0xe0
->   do_syscall_64+0x68/0x130
->   ? get_page_from_freelist+0x5c2/0x17e0
->   ? mas_store_prealloc+0x17e/0x360
->   ? vma_set_page_prot+0x4c/0xa0
->   ? __alloc_pages_noprof+0x14e/0x2d0
->   ? __mod_memcg_lruvec_state+0x8d/0x140
->   ? __lruvec_stat_mod_folio+0x76/0xb0
->   ? __folio_mod_stat+0x26/0x80
->   ? do_anonymous_page+0x705/0x900
->   ? __handle_mm_fault+0xa8d/0x1000
->   ? __count_memcg_events+0x53/0xf0
->   ? handle_mm_fault+0xa5/0x360
->   ? do_user_addr_fault+0x342/0x640
->   ? arch_exit_to_user_mode_prepare.constprop.0+0x16/0xa0
->   ? irqentry_exit_to_user_mode+0x24/0x100
->   entry_SYSCALL_64_after_hwframe+0x76/0x7e
-> RIP: 0033:0x7fe88464f47e
-> Code: c0 e9 b6 fe ff ff 50 48 8d 3d be 07 0b 00 e8 69 01 02 00 66 0f 1f
-> 84 00 00 00 00 00 64 8b 04 25 18 00 00 00 85 c0 75 14 0f 05 <48> 3d 00
->     f0 ff ff 77 5a c3 66 0f 1f 84 00 00 00 00 00 48 83 ec 28
-> RSP: 002b:00007ffe6cd9a9b8 EFLAGS: 00000246 ORIG_RAX: 0000000000000000
-> RAX: ffffffffffffffda RBX: 0000000000020000 RCX: 00007fe88464f47e
-> RDX: 0000000000020000 RSI: 00007fe884543000 RDI: 0000000000000003
-> RBP: 00007fe884543000 R08: 00007fe884542010 R09: 0000000000000000
-> R10: fffffffffffffbc5 R11: 0000000000000246 R12: 0000000000000000
-> R13: 0000000000000003 R14: 0000000000020000 R15: 0000000000020000
->   </TASK>
-> 
-> Fix this by validating the PUD entry in walk_pmd_range() using a stable
-> snapshot (pudp_get()). If the PUD is not present or is a leaf, retry the
-> walk via ACTION_AGAIN instead of descending further. This mirrors the
-> retry logic in walk_pmd_range().
-> 
-> Fixes: a00cc7d9dd93 ("mm, x86: add support for PUD-sized transparent hugepages")
-> Cc: stable@vger.kernel.org
-> Co-developed-by: David Hildenbrand (Arm) <david@kernel.org>
-> Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
-> Signed-off-by: Max Boone <mboone@akamai.com>
-> ---
->   mm/pagewalk.c | 20 +++++++++++++++++---
->   1 file changed, 17 insertions(+), 3 deletions(-)
-> 
-> diff --git a/mm/pagewalk.c b/mm/pagewalk.c
-> index a94c401ab..c74b4d800 100644
-> --- a/mm/pagewalk.c
-> +++ b/mm/pagewalk.c
-> @@ -97,6 +97,7 @@ static int walk_pte_range(pmd_t *pmd, unsigned long addr, unsigned long end,
->   static int walk_pmd_range(pud_t *pud, unsigned long addr, unsigned long end,
->   			  struct mm_walk *walk)
->   {
-> +	pud_t pudval = pudp_get(pud);
->   	pmd_t *pmd;
->   	unsigned long next;
->   	const struct mm_walk_ops *ops = walk->ops;
-> @@ -105,6 +106,18 @@ static int walk_pmd_range(pud_t *pud, unsigned long addr, unsigned long end,
->   	int err = 0;
->   	int depth = real_depth(3);
->   
-> +	/*
-> +	 * For PTE handling, pte_offset_map_lock() takes care of checking
-> +	 * whether there actually is a page table. But it also has to be
-> +	 * very careful about concurrent page table reclaim. If we spot a PMD
-> +	 * table, it cannot go away, so we can just walk it. However, if we find
-> +	 * something else, we have to retry.
-> +	 */
-> +	if (!pud_present(pudval) || pud_leaf(pudval)) {
-> +		walk->action = ACTION_AGAIN;
-> +		return 0;
-> +	}
-> +
->   	pmd = pmd_offset(pud, addr);
->   	do {
->   again:
-> @@ -218,12 +231,13 @@ static int walk_pud_range(p4d_t *p4d, unsigned long addr, unsigned long end,
->   		else if (pud_leaf(*pud) || !pud_present(*pud))
->   			continue; /* Nothing to do. */
-
-Why not check pudval directly here? Like the following:
-
-		if (pud_leaf(*pud) || !pud_present(*pud))
-			goto again;
-
->   
-> -		if (pud_none(*pud))
-> -			goto again;
-> -
->   		err = walk_pmd_range(pud, addr, next, walk);
->   		if (err)
->   			break;
-> +
-> +		if (walk->action == ACTION_AGAIN)
-> +			goto again;
-> +
->   	} while (pud++, addr = next, addr != end);
->   
->   	return err;
-> 
-> ---
-> base-commit: b4f0dd314b39ea154f62f3bd3115ed0470f9f71e
-> change-id: 20260317-pagewalk-check-pmd-refault-de8f14fbe6a5
-> 
-> Best regards,
-
+I think it's nice-to-have. Without specific references, people would need to
+read the entire 26-page spec. But I can drop them if they make it too verbose.
