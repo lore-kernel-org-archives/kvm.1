@@ -1,23 +1,23 @@
 Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 577693F8811;
-	Wed, 18 Mar 2026 15:54:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9C06F2D23A5;
+	Wed, 18 Mar 2026 15:54:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773849300; cv=none; b=Mj0YIDRxSPRr22/ovhh6l464zccDoSCKAKuTdIwd8/4f8PTtt47bcv6x4ldtv00Wi2oNIL7HGkkfukpMb1uv3PPJsBdQxV4qKDx8sq7vDBwn4RmKs2rv0KefVdYe6WsSVpOKfePNMSrS7xrjEmfsf/uKr26iFZhZrbXf1nD8r+A=
+	t=1773849302; cv=none; b=eQDUH5nInDn6hwuGabdsmoXvDwCQ9fsVXSrxR0m86WdcWiX0vlH190XhyoNTwpt2fwWHzYw6CY3OOuKe5+jSW66XkixX7SJmYNfCY7r6K/a+vPpGLQYPlTHlGYHtJiO/L7qLvMoTJwZopx/l0A8FJ63XIlEkuPU8zihdvpsgbro=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773849300; c=relaxed/simple;
-	bh=+sM2kvR5f3HmncvxqprTrE/uxvQ+IBfjuxiHGqCVUNs=;
+	s=arc-20240116; t=1773849302; c=relaxed/simple;
+	bh=/ioKEmdEMjgsjCaeDYeWkBQVD3DtELc+u+if79p20oU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QFwmZNiBG4NZtRd1HBb8z5VwvRPjZWdB3v2VZTnyXiVoKjsBUot5J/eVBYBcH1ukaqoXRcq/dDv3AhnPEvflfC7ZZev7BpjO4lrICTPjKYYcyeX01ftr8UIEkXjeyhjRB2ivFqIc3pRVG1e7AUrNJAVyuuNTKMyoMxgLRrJgeZw=
+	 MIME-Version; b=rsvsCCPDuvDGL/SV+cCXdWXGqlEn+utLPqoBp8ix8+prsDl64raffJb8QU/4a075k+bZAaWZXmuV70Ks9Rl1En2gqPGojBAlXr3B1mQI468LCSmnUtelYjGV3wdgVu+lugvSmRW/GZf+WF4zUXEggZEDEGAkrLO0oW+p5ZosJUQ=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
 Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 7FE311FCD;
-	Wed, 18 Mar 2026 08:54:48 -0700 (PDT)
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 4514F201B;
+	Wed, 18 Mar 2026 08:54:52 -0700 (PDT)
 Received: from e122027.arm.com (unknown [10.57.61.122])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 727FB3F73B;
-	Wed, 18 Mar 2026 08:54:51 -0700 (PDT)
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id DB9CF3F73B;
+	Wed, 18 Mar 2026 08:54:54 -0700 (PDT)
 From: Steven Price <steven.price@arm.com>
 To: kvm@vger.kernel.org,
 	kvmarm@lists.linux.dev
@@ -43,9 +43,9 @@ Cc: Steven Price <steven.price@arm.com>,
 	"Aneesh Kumar K . V" <aneesh.kumar@kernel.org>,
 	Emi Kisanuki <fj0570is@fujitsu.com>,
 	Vishal Annapurve <vannapurve@google.com>
-Subject: [PATCH v13 08/48] arm64: RMI: Configure the RMM with the host's page size
-Date: Wed, 18 Mar 2026 15:53:32 +0000
-Message-ID: <20260318155413.793430-9-steven.price@arm.com>
+Subject: [PATCH v13 09/48] arm64: RMI: Check for LPA2 support
+Date: Wed, 18 Mar 2026 15:53:33 +0000
+Message-ID: <20260318155413.793430-10-steven.price@arm.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20260318155413.793430-1-steven.price@arm.com>
 References: <20260318155413.793430-1-steven.price@arm.com>
@@ -57,69 +57,48 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-RMM v2.0 brings the ability to set the RMM's granule size. Read the
-feature registers and configure the RMM so that it matches the host's
-page size. This means that operations can be done with a granulatity
-equal to PAGE_SIZE.
+If KVM has enabled LPA2 support then check that the RMM also supports
+it. If there is a mismatch then disable support for realm guests as the
+VMM may attempt to create a guest which is incompatible with the RMM.
 
 Signed-off-by: Steven Price <steven.price@arm.com>
 ---
 New patch for v13
 ---
- arch/arm64/kvm/rmi.c | 50 ++++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 50 insertions(+)
+ arch/arm64/kvm/rmi.c | 18 ++++++++++++++++++
+ 1 file changed, 18 insertions(+)
 
 diff --git a/arch/arm64/kvm/rmi.c b/arch/arm64/kvm/rmi.c
-index fac151580c01..482dc542451a 100644
+index 482dc542451a..9590dff9a2c1 100644
 --- a/arch/arm64/kvm/rmi.c
 +++ b/arch/arm64/kvm/rmi.c
-@@ -8,6 +8,9 @@
+@@ -5,12 +5,18 @@
+ 
+ #include <linux/kvm_host.h>
+ 
++#include <asm/kvm_pgtable.h>
  #include <asm/rmi_cmds.h>
  #include <asm/virt.h>
  
-+static unsigned long rmm_feat_reg0;
-+static unsigned long rmm_feat_reg1;
+ static unsigned long rmm_feat_reg0;
+ static unsigned long rmm_feat_reg1;
+ 
++static bool rmi_has_feature(unsigned long feature)
++{
++	return !!u64_get_bits(rmm_feat_reg0, feature);
++}
 +
  static int rmi_check_version(void)
  {
  	struct arm_smccc_res res;
-@@ -47,11 +50,58 @@ static int rmi_check_version(void)
+@@ -89,6 +95,16 @@ static int rmi_configure(void)
  	return 0;
  }
  
-+static int rmi_configure(void)
++static int rmm_check_features(void)
 +{
-+	struct rmm_config *config __free(free_page) = NULL;
-+	unsigned long ret;
-+
-+	config = (struct rmm_config *)get_zeroed_page(GFP_KERNEL);
-+	if (!config)
-+		return -ENOMEM;
-+
-+	switch (PAGE_SIZE) {
-+	case SZ_4K:
-+		config->rmi_granule_size = RMI_GRANULE_SIZE_4KB;
-+		break;
-+	case SZ_16K:
-+		config->rmi_granule_size = RMI_GRANULE_SIZE_16KB;
-+		break;
-+	case SZ_64K:
-+		config->rmi_granule_size = RMI_GRANULE_SIZE_64KB;
-+		break;
-+	default:
-+		kvm_err("Unsupported PAGE_SIZE for RMM\n");
-+		return -EINVAL;
-+	}
-+
-+	ret = rmi_rmm_config_set(virt_to_phys(config));
-+	if (ret) {
-+		kvm_err("RMM config set failed\n");
-+		return -EINVAL;
-+	}
-+
-+	ret = rmi_rmm_activate();
-+	if (ret) {
-+		kvm_err("RMM activate failed\n");
++	if (kvm_lpa2_is_enabled() && !rmi_has_feature(RMI_FEATURE_REGISTER_0_LPA2)) {
++		kvm_err("RMM doesn't support LPA2");
 +		return -ENXIO;
 +	}
 +
@@ -129,19 +108,15 @@ index fac151580c01..482dc542451a 100644
  void kvm_init_rmi(void)
  {
  	/* Continue without realm support if we can't agree on a version */
- 	if (rmi_check_version())
+@@ -100,6 +116,8 @@ void kvm_init_rmi(void)
+ 	if (WARN_ON(rmi_features(1, &rmm_feat_reg1)))
  		return;
  
-+	if (WARN_ON(rmi_features(0, &rmm_feat_reg0)))
++	if (rmm_check_features())
 +		return;
-+	if (WARN_ON(rmi_features(1, &rmm_feat_reg1)))
-+		return;
-+
-+	if (rmi_configure())
-+		return;
-+
- 	/* Future patch will enable static branch kvm_rmi_is_available */
- }
+ 	if (rmi_configure())
+ 		return;
+ 
 -- 
 2.43.0
 
