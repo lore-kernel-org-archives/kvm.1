@@ -1,116 +1,91 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D3A2C3A5E8D;
-	Wed, 18 Mar 2026 10:58:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1AB2C3BED2E;
+	Wed, 18 Mar 2026 11:43:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.109.113.108
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773831532; cv=none; b=S6qCivfnwRhYW8RANSfBrJ6ycI3FqUXFTsuVYoLGmF7DQGpgjp8a0cBmok9d/YRgHJ8Tk+0+QdwS0GxKuxdcqTh+6WF97E0NJedkeci8B+iOEm4ACnMK5mRCGQhqH7MTUMoSlr4xhHzuPbiL9IUB0WL/kuS5xIMFzzdZinjEz5M=
+	t=1773834238; cv=none; b=GpYa5w1xaOEj2kqGLG+VUfrEab/9pnq1JmSRGfE6KfDY//JoEer+n8AyWrfAxSRAogST1l4dim4uUrd7vqcOooNMZvJf13rPAPkF2WGxvMvqIpeayt6PV9aKkf3TOyOmxYTeEmi7BEfFBSXddc101fKeesZ09UjbC0sPXLaZnNM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773831532; c=relaxed/simple;
-	bh=p2jBKMiGYkYgEeNXsJreklTsyyl9Kb+6pJjVfF66qec=;
+	s=arc-20240116; t=1773834238; c=relaxed/simple;
+	bh=PpcBch2bG46XeLREajv7IES6EqpC+cXWYQD0oYxZlo8=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=nDZRvv8l4R5iC8nS6jFT+dPcpoSiW+wlYlRn+BUx/N5Vd0rRCB/kGK2ufXN+BOZEEGdkLkbQQYeEY5sPZ6XExZjsmQeY0Fu/J052SivAEPQklAlD3+S75m1EQ2zUKb3yb/zEzrR27g+vAlyvN8lbfcW1O8Dnqe1479Nz50CGwP8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=V3qsFYK8; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=OytXcwJhhgirTulAkz4zs0nUr1aSwb60QXjcKKLHFhonzEJ81yGjnG4SB4/k9S2vDPPuu5hhxyzmolUo+BEdSFSYrXnhqt4HJYe36PUgTCczDth0il+8zpaXZ4AqM1+WwPM8foTmBhuWoHkipzbucd4/xRQ3Q/dxoqzdi515U6Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de; spf=pass smtp.mailfrom=alien8.de; dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b=galcGDVE; arc=none smtp.client-ip=65.109.113.108
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="V3qsFYK8"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E0D4BC2BC87;
-	Wed, 18 Mar 2026 10:58:51 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773831532;
-	bh=p2jBKMiGYkYgEeNXsJreklTsyyl9Kb+6pJjVfF66qec=;
+	dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="galcGDVE"
+Received: from localhost (localhost.localdomain [127.0.0.1])
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id 319E840E0220;
+	Wed, 18 Mar 2026 11:43:51 +0000 (UTC)
+X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
+Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
+	header.d=alien8.de
+Received: from mail.alien8.de ([127.0.0.1])
+	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
+	with ESMTP id TCJ4xmBq4fz3; Wed, 18 Mar 2026 11:43:48 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
+	t=1773834227; bh=g13qycu62PRbfxd6vUnJhc1IrpBmsGFIN1Tf1MYBtw4=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=V3qsFYK85Bm0VBFDgGZsxdnyAykRaNm2g2uRZfJTcZDi6ZC1Y5aIGdR3GAbgDTmNH
-	 Hgy+PJ85NT8PcReeLyRJHqWgv0OUz2acbit2xTse6RD4ck7WtVAFxaAadq+F6EWw+e
-	 b4SG2Nq3BDx8bZJIDg6jnhIu1ac6Wj9NK15m/DJ/NzcT/ZCUkVv3NLucBkWIgLfT7P
-	 zyuc6bBL6mGkxgF3yuKQ34HHObLBrwYSAnNARYk4apG+z24COdDvxHt5/S205X4/3n
-	 b7u52QCfB73lZbg1ucllp8nW6/XA4/nesYAHpfFEzrIbKQ+BmcPj6E9wSGLpEzjcYV
-	 IxEIKdNxcnmkQ==
-Received: from phl-compute-11.internal (phl-compute-11.internal [10.202.2.51])
-	by mailfauth.phl.internal (Postfix) with ESMTP id DBCDDF40085;
-	Wed, 18 Mar 2026 06:58:50 -0400 (EDT)
-Received: from phl-frontend-04 ([10.202.2.163])
-  by phl-compute-11.internal (MEProxy); Wed, 18 Mar 2026 06:58:50 -0400
-X-ME-Sender: <xms:aoW6ab7SUFEhqM9NWURgvZ_sHtUOCtxfu4t5FlTTBtPVStP6pDJVeg>
-    <xme:aoW6aRnW33YsbVaYoGKPcZCr6Rk5ZrEXdOV6PzZMKhz2B6fENYzQZ0GKfRrGR8nJq
-    hsCo_75dUx3Wa3HO1wWiqQwJ9I8NNJRwsyWdOTWmdcIF2xDsHy4JqCg>
-X-ME-Received: <xmr:aoW6aW9whSe42eWgDeJl5Kq6p4oGR7chSGt2jZ4VbM8o3lH2L8TKNYjxSz_95w>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgdeftdefleehucetufdoteggodetrf
-    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
-    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
-    gurhepfffhvfevuffkfhggtggujgesthdtredttddtvdenucfhrhhomhepmfhirhihlhcu
-    ufhhuhhtshgvmhgruhcuoehkrghssehkvghrnhgvlhdrohhrgheqnecuggftrfgrthhtvg
-    hrnhepueeijeeiffekheeffffftdekleefleehhfefhfduheejhedvffeluedvudefgfek
-    necuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepkhhirh
-    hilhhlodhmvghsmhhtphgruhhthhhpvghrshhonhgrlhhithihqdduieduudeivdeiheeh
-    qddvkeeggeegjedvkedqkhgrsheppehkvghrnhgvlhdrohhrghesshhhuhhtvghmohhvrd
-    hnrghmvgdpnhgspghrtghpthhtohephedtpdhmohguvgepshhmthhpohhuthdprhgtphht
-    thhopegthhgrohdrghgrohesihhnthgvlhdrtghomhdprhgtphhtthhopehlihhnuhigqd
-    hkvghrnhgvlhesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehlihhnuhig
-    qdgtohgtoheslhhishhtshdrlhhinhhugidruggvvhdprhgtphhtthhopehkvhhmsehvgh
-    gvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtohepsghinhgsihhnrdifuheslhhinhhu
-    gidrihhnthgvlhdrtghomhdprhgtphhtthhopegurghnrdhjrdifihhllhhirghmshesih
-    hnthgvlhdrtghomhdprhgtphhtthhopegurghvvgdrhhgrnhhsvghnsehlihhnuhigrdhi
-    nhhtvghlrdgtohhmpdhrtghpthhtohepihhrrgdrfigvihhnhiesihhnthgvlhdrtghomh
-    dprhgtphhtthhopehkrghirdhhuhgrnhhgsehinhhtvghlrdgtohhm
-X-ME-Proxy: <xmx:aoW6acoie7GL4I_S2Z4BAPAf5cs0LJ92lUWUtbo5becHFMcu3jq5bQ>
-    <xmx:aoW6aVtXLHiF8t-LCYVJiK0TJSZTPagK-z-qdBnJiL7RYKi34j2eLw>
-    <xmx:aoW6afQXXWYNlg27MLIoGYhvtVxR6tlm-ePlyh4LcVheCgE1RqmNsA>
-    <xmx:aoW6aXWrYIxygT6QSHpcFUH_-TY-51wUDzza_z4Mrxk_eHtXswgoWw>
-    <xmx:aoW6aSBLmZZebujhUFKDFJS01f0auFT4TUKDqn31PRBihM13_oa4NzCG>
-Feedback-ID: i10464835:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
- 18 Mar 2026 06:58:48 -0400 (EDT)
-Date: Wed, 18 Mar 2026 10:58:44 +0000
-From: Kiryl Shutsemau <kas@kernel.org>
-To: Chao Gao <chao.gao@intel.com>
-Cc: linux-kernel@vger.kernel.org, linux-coco@lists.linux.dev, 
-	kvm@vger.kernel.org, binbin.wu@linux.intel.com, dan.j.williams@intel.com, 
-	dave.hansen@linux.intel.com, ira.weiny@intel.com, kai.huang@intel.com, nik.borisov@suse.com, 
-	paulmck@kernel.org, pbonzini@redhat.com, reinette.chatre@intel.com, 
-	rick.p.edgecombe@intel.com, sagis@google.com, seanjc@google.com, 
-	tony.lindgren@linux.intel.com, vannapurve@google.com, vishal.l.verma@intel.com, 
-	yilun.xu@linux.intel.com, Thomas Gleixner <tglx@kernel.org>, 
-	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, x86@kernel.org, 
-	"H. Peter Anvin" <hpa@zytor.com>
-Subject: Re: [PATCH v5 08/22] x86/virt/seamldr: Allocate and populate a
- module update request
-Message-ID: <abqFJZo632DAFsl_@thinkstation>
-References: <20260315135920.354657-1-chao.gao@intel.com>
- <20260315135920.354657-9-chao.gao@intel.com>
- <abkvOYQIi2RvEYh8@thinkstation>
- <abpnWkENgaWoofZV@intel.com>
+	b=galcGDVET6ZnSonSAkyRN6tSQe3oM4vdlMB/fAxqsELjQK6HChqE4CHQG9ykv+wlq
+	 p/qEhOy26o/1xFRhOk+FKb5D3XUcjpAjatOrhb+EkmX9Z0cvbHL3SUq3pgEr/51s1o
+	 WGIUo5aC2XKNqI5TcH+G3hUfzJ1qdAUrd9IeNhoPOejipDfNN6rWvztSAfblYH01FU
+	 9FPEncTXl/QayQkhi0mW3nrk0tXCJ7khCYr1UqCTZhYYfJ7dWpbL5kFfWtrP2PISr9
+	 w6P1B23vM9cZfeBvE5TravK4N+Pin5ePSFjYbe07bebHazMyMsOG5RcaoFH7XFcq2A
+	 vFU+plPMgCkHQWUbNkzOdneorJ/Nxh4iErRlnHk7tAB/ksn4t5gZsGWjsoln2OcT7B
+	 QVZm27V0y+e0C/ra54r7Eqg+YseYOEXbn5h4cX/M9L0rHoQIqzDoau8IurI2ZwvHH5
+	 p+GfcfHgUcPsfWaKmDXhoPFQWuNfH6lNDXBdEf0ijbCf7teEMfGj6SrYoLgnw1x6Vg
+	 zVl/tkh8pnQwcQ6jeB6UdcpGBl+yXhqJ6jTdjtX6/iiobL22h3suD/iWLclwsXB4TX
+	 56cj0l4zPXxjTd3mw1hDwfJf9UYfEf4HNNu+LGVPaSyfIjm9yLqEf3ZqTLd0JxlrF5
+	 cZ4cRNGLcO9fXFutDrFXFO2g=
+Received: from zn.tnic (p5de8e020.dip0.t-ipconnect.de [93.232.224.32])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
+	(No client certificate requested)
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with UTF8SMTPSA id 9D80640E01B5;
+	Wed, 18 Mar 2026 11:43:32 +0000 (UTC)
+Date: Wed, 18 Mar 2026 12:43:26 +0100
+From: Borislav Petkov <bp@alien8.de>
+To: Nikunj A Dadhania <nikunj@amd.com>
+Cc: linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
+	thomas.lendacky@amd.com, dave.hansen@linux.intel.com,
+	tglx@kernel.org, mingo@redhat.com, hpa@zytor.com, xin@zytor.com,
+	seanjc@google.com, pbonzini@redhat.com, x86@kernel.org,
+	sohil.mehta@intel.com, chang.seok.bae@intel.com, jon.grimm@amd.com
+Subject: Re: [PATCH v3 0/3] x86/fred: Fix SEV-ES/SNP guest boot failures
+Message-ID: <20260318114326.GAabqP3gXCmlfpwfou@fat_crate.local>
+References: <20260318075654.1792916-1-nikunj@amd.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <abpnWkENgaWoofZV@intel.com>
+In-Reply-To: <20260318075654.1792916-1-nikunj@amd.com>
 
-On Wed, Mar 18, 2026 at 04:50:34PM +0800, Chao Gao wrote:
-> >> +	ptr = sig;
-> >> +	for (i = 0; i < sig_size / SZ_4K; i++) {
-> >> +		/*
-> >> +		 * Don't assume @sig is page-aligned although it is 4KB-aligned.
-> >> +		 * Always add the in-page offset to get the physical address.
-> >> +		 */
-> >
-> >I don't follow this. If @sig is 4k aligned in VA, it is page aligned.
+On Wed, Mar 18, 2026 at 07:56:51AM +0000, Nikunj A Dadhania wrote:
+> Dave Hansen (1):
+>   x86/cpu: Disable CR pinning during CPU bringup
 > 
-> Dan's concern was that PAGE_SIZE is not guaranteed to be 4096.
+> Nikunj A Dadhania (2):
+>   x86/cpu: Enable FSGSBASE early in cpu_init_exception_handling()
+>   x86/fred: Fix early boot failures on SEV-ES/SNP guests
 > 
-> I agree that PAGE_SIZE is 4K on x86 today. But to address that concern, I saw
-> two options:
-> 
->   1. Add WARN_ON_ONCE(PAGE_SIZE != SZ_4K), or
->   2. Handle it as in the code above.
-> 
-> I didn't find existing code using option 1 in x86, so I chose option 2.
+>  arch/x86/coco/sev/noinstr.c  |  6 ++++++
+>  arch/x86/entry/entry_fred.c  | 14 ++++++++++++
+>  arch/x86/kernel/cpu/common.c | 41 +++++++++++++++++++++++++++---------
+>  3 files changed, 51 insertions(+), 10 deletions(-)
 
-Please, make it clear in the comment that you are talking about PAGE_SIZE != SZ_4K.
+Looks good so far in testing, I'll hammer on it some more and then queue it
+later.
+
+Thx.
 
 -- 
-  Kiryl Shutsemau / Kirill A. Shutemov
+Regards/Gruss,
+    Boris.
+
+https://people.kernel.org/tglx/notes-about-netiquette
