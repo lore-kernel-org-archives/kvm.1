@@ -1,147 +1,116 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from cstnet.cn (smtp81.cstnet.cn [159.226.251.81])
+	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B29A53AE709;
-	Wed, 18 Mar 2026 09:28:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D2783B8D42;
+	Wed, 18 Mar 2026 09:30:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.81
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773826135; cv=none; b=sTRmfZS3laCce63vv+Re7Dc6IJYxUkbm9FZcBD643tk1BPken0J5CYII2Yrw7thOdz5m6jVGwpmcuzVX4ILLtk4LcYmh/gi1TwYRxcZNZ3q2V9iTngZEx1Y2vXIxjOWAh6pmf4vavnJgugLL9sfCZv1tSRkbtnob7YCIyvHF36E=
+	t=1773826234; cv=none; b=GndeLOhelqnQkD3IqHupsR8Dbg3sFLREVoi/mGoOK5CEp9rnjaNRSGwdWAqXj/IvLJJR1KOqyxOZe03qCF/ThRGwYFdat0p0tnkYYTAUPFT4pTF5wKO1umJ0Qz2RY8lXIehzqcUyI/PWFNeM1L30O/keinwpK6uSj/pZDaIGCng=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773826135; c=relaxed/simple;
-	bh=H2J75zryQKZ5oHureFc0ZmBX1CX1bE1w3vXmsKolP3M=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ps5sBOzbYBJOk24vQu9Og8TR1nR2aChYyhoG7Xqr8Ku+tn13YNu8Q8NEcXZuo9YF4d1ILLsG2y1Ke6GItXb3r9GE7SVk7Ci0quTTDytpTad0I5ZXpXUfFhxXwUn3izj2deAanbBvaV+D5z2+1jZMplW0CuP5bdio3xLTRGPpL8Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=iRmF6qaQ; arc=none smtp.client-ip=10.30.226.201
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="iRmF6qaQ"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 82B2FC19421;
-	Wed, 18 Mar 2026 09:28:54 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773826135;
-	bh=H2J75zryQKZ5oHureFc0ZmBX1CX1bE1w3vXmsKolP3M=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=iRmF6qaQ/rVgWABg4laKAjaSj6W7pmZORY6DVFh7GlSq9gb3W5nrCmGNrhBBuuv6e
-	 goRnwkricUcmcGukjlyfsCSBOGKxuXzPx3AwaHa5qIGIArNrGr7fWxJZAxsSdQ1UUq
-	 Gwgx8alAeMI/HBLPwzsYYBBO9tsvI9/+na7XLytKt79rYfxPprHdqcw7vwHRwQ40Cz
-	 SMHFMn3LMX9Z0hw3pk6PGPN3nV3SyXJaMkxrhcFsXe9ZN7mv2qtReoqGhpNW1tAvwy
-	 yivztMbMmbrSzT3IUYJHr0DxCUEt/7TN37qCBoIL66fEdUMr7RxGP9szHVxxoVjaxY
-	 EaeImEmnpJnwQ==
-Received: from phl-compute-02.internal (phl-compute-02.internal [10.202.2.42])
-	by mailfauth.phl.internal (Postfix) with ESMTP id 94F95F4007B;
-	Wed, 18 Mar 2026 05:28:53 -0400 (EDT)
-Received: from phl-frontend-04 ([10.202.2.163])
-  by phl-compute-02.internal (MEProxy); Wed, 18 Mar 2026 05:28:53 -0400
-X-ME-Sender: <xms:VXC6aSMmLShxTAUAtxaJH8nS23808P78iSOe4kkvlOpCYu9ksKB0fw>
-    <xme:VXC6aZ90N4Vws1HvZyzXZMiQWNxChMF4uzq7m_9I-k-2dyFCjQ-wJiBkKJ0473GEc
-    Svs792Rz6YvnMcwxNFin-XvghnzJOKI_g3sIkmOh8i7bmsfD1lHYng>
-X-ME-Received: <xmr:VXC6aS-V1KYQPH6cULjmHUPjmWddPo2gspcnU58nPgDZBrJGuUUmiL42bxrBzA>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgdeftdefjeejucetufdoteggodetrf
-    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
-    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
-    gurhepfffhvfevuffkfhggtggugfgjsehtkeertddttddunecuhfhrohhmpefmihhrhihl
-    ucfuhhhuthhsvghmrghuuceokhgrsheskhgvrhhnvghlrdhorhhgqeenucggtffrrghtth
-    gvrhhnpeeludettdeigfefhffhhfelveeludeuleduvefhgefgueeitedtleffudegfffg
-    gfenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpehkih
-    hrihhllhdomhgvshhmthhprghuthhhphgvrhhsohhnrghlihhthidqudeiudduiedvieeh
-    hedqvdekgeeggeejvdekqdhkrghspeepkhgvrhhnvghlrdhorhhgsehshhhuthgvmhhovh
-    drnhgrmhgvpdhnsggprhgtphhtthhopeeggedpmhhouggvpehsmhhtphhouhhtpdhrtghp
-    thhtoheptghhrghordhgrghosehinhhtvghlrdgtohhmpdhrtghpthhtohepgihirghohi
-    grohdrlhhisehinhhtvghlrdgtohhmpdhrtghpthhtohepgiekieeskhgvrhhnvghlrdho
-    rhhgpdhrtghpthhtoheplhhinhhugidqtghotghosehlihhsthhsrdhlihhnuhigrdguvg
-    hvpdhrtghpthhtohepkhhvmhesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthho
-    pehlihhnuhigqdhkvghrnhgvlhesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtth
-    hopegsihhnsghinhdrfihusehlihhnuhigrdhinhhtvghlrdgtohhmpdhrtghpthhtohep
-    uggrnhdrjhdrfihilhhlihgrmhhssehinhhtvghlrdgtohhmpdhrtghpthhtohepuggrvh
-    gvrdhhrghnshgvnheslhhinhhugidrihhnthgvlhdrtghomh
-X-ME-Proxy: <xmx:VXC6aZoOLHTMqGeHk8kEpFdkTaDpuGN7qBfCdXTIZq6oXDLt9AgMPA>
-    <xmx:VXC6adKvn89bFVPfPS1eOk4JDVNcMhYZlsXclNzDtxiEQ_1PnHcd0A>
-    <xmx:VXC6ae0WpcXkTrQ1Ex9qQZSROD_d6SAFOYmY3F7m9DJbXqQ-D158sQ>
-    <xmx:VXC6aW7DuGeALEmYe8s23KwyIXj6pDr-9TEwiF5quz46sLW-oljmnA>
-    <xmx:VXC6acNDKP40-ZDfWrNphlFWnTJj5aVNFSxYqfWoCUz_JKu7GPl4b6zL>
-Feedback-ID: i10464835:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
- 18 Mar 2026 05:28:52 -0400 (EDT)
-Date: Wed, 18 Mar 2026 09:28:51 +0000
-From: Kiryl Shutsemau <kas@kernel.org>
-To: Chao Gao <chao.gao@intel.com>
-Cc: Xiaoyao Li <xiaoyao.li@intel.com>, x86@kernel.org, 
-	linux-coco@lists.linux.dev, kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	binbin.wu@linux.intel.com, dan.j.williams@intel.com, dave.hansen@linux.intel.com, 
-	ira.weiny@intel.com, kai.huang@intel.com, nik.borisov@suse.com, paulmck@kernel.org, 
-	pbonzini@redhat.com, reinette.chatre@intel.com, rick.p.edgecombe@intel.com, 
-	sagis@google.com, seanjc@google.com, tony.lindgren@linux.intel.com, 
-	vannapurve@google.com, vishal.l.verma@intel.com, yilun.xu@linux.intel.com
-Subject: Re: [PATCH v5 06/22] coco/tdx-host: Expose P-SEAMLDR information via
- sysfs
-Message-ID: <abpwQwlFB_C28ckJ@thinkstation>
-References: <20260315135920.354657-1-chao.gao@intel.com>
- <20260315135920.354657-7-chao.gao@intel.com>
- <abkmceqUtMTnLI0V@thinkstation>
- <abpMHxwhYqbmrX8s@intel.com>
- <3614e6fb-bdad-4e59-9769-5dc9869e03bf@intel.com>
- <abpr/Sg3QXfDd1Q+@intel.com>
+	s=arc-20240116; t=1773826234; c=relaxed/simple;
+	bh=gP20Z4l9iYvIO1L5sxgpJoHbOuJCnKY0e1Xl2+YPMtY=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=nKLxLHuXJK6sHqUQds8CI+l857KNtpCa6Xy+yBjkEO96NMeSQBegKImGTkIQNx80zhqNtV8AXijHrVTh2cscKWUApWlZ32rX2zgX1AaDSXMZIplfzNZ+PYRRvOxMgV44tqNR5Igc7XKg16U/kYuy/BfoKLZXKXCg1kUcPu2MxAg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.81
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iscas.ac.cn
+Received: from fric.. (unknown [210.73.43.101])
+	by APP-03 (Coremail) with SMTP id rQCowABnieCVcLppXb4CCw--.589S2;
+	Wed, 18 Mar 2026 17:29:57 +0800 (CST)
+From: Jiakai Xu <xujiakai2025@iscas.ac.cn>
+To: kvm-riscv@lists.infradead.org,
+	kvm@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-riscv@lists.infradead.org
+Cc: Albert Ou <aou@eecs.berkeley.edu>,
+	Alexandre Ghiti <alex@ghiti.fr>,
+	Andrew Jones <ajones@ventanamicro.com>,
+	Anup Patel <anup@brainfault.org>,
+	Atish Patra <atish.patra@linux.dev>,
+	Palmer Dabbelt <palmer@dabbelt.com>,
+	Paul Walmsley <pjw@kernel.org>,
+	Jiakai Xu <xujiakai2025@iscas.ac.cn>,
+	Jiakai Xu <jiakaiPeanut@gmail.com>
+Subject: [PATCH] RISC-V: KVM: Fix double-free of sdata in kvm_pmu_clear_snapshot_area()
+Date: Wed, 18 Mar 2026 09:29:56 +0000
+Message-Id: <20260318092956.708246-1-xujiakai2025@iscas.ac.cn>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <abpr/Sg3QXfDd1Q+@intel.com>
+X-CM-TRANSID:rQCowABnieCVcLppXb4CCw--.589S2
+X-Coremail-Antispam: 1UD129KBjvJXoW7AF43Wr1DArWfCw1xZr4fKrg_yoW5JFy5pr
+	WDC3WkWrWFyFn7K342yanY9ry8trWYgrn3Kr1DWFy5Gr13KFZ5Zw4v9ryUWry3Z3yvqF9a
+	yr40kFy8uFn0q3JanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDU0xBIdaVrnRJUUUP014x267AKxVW8JVW5JwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
+	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
+	1l84ACjcxK6xIIjxv20xvE14v26ryj6F1UM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26F4j
+	6r4UJwA2z4x0Y4vEx4A2jsIE14v26rxl6s0DM28EF7xvwVC2z280aVCY1x0267AKxVW0oV
+	Cq3wAac4AC62xK8xCEY4vEwIxC4wAS0I0E0xvYzxvE52x082IY62kv0487Mc02F40EFcxC
+	0VAKzVAqx4xG6I80ewAv7VC0I7IYx2IY67AKxVWUAVWUtwAv7VC2z280aVAFwI0_Cr0_Gr
+	1UMcvjeVCFs4IE7xkEbVWUJVW8JwACjcxG0xvY0x0EwIxGrwACjI8F5VA0II8E6IAqYI8I
+	648v4I1lFIxGxcIEc7CjxVA2Y2ka0xkIwI1lc7CjxVAaw2AFwI0_Jw0_GFylc2xSY4AK67
+	AK6r4fMxAIw28IcxkI7VAKI48JMxC20s026xCaFVCjc4AY6r1j6r4UMI8I3I0E5I8CrVAF
+	wI0_Jr0_Jr4lx2IqxVCjr7xvwVAFwI0_JrI_JrWlx4CE17CEb7AF67AKxVWUtVW8ZwCIc4
+	0Y0x0EwIxGrwCI42IY6xIIjxv20xvE14v26r1j6r1xMIIF0xvE2Ix0cI8IcVCY1x0267AK
+	xVW8JVWxJwCI42IY6xAIw20EY4v20xvaj40_Jr0_JF4lIxAIcVC2z280aVAFwI0_Jr0_Gr
+	1lIxAIcVC2z280aVCY1x0267AKxVW8JVW8JrUvcSsGvfC2KfnxnUUI43ZEXa7VUbyCJPUU
+	UUU==
+X-CM-SenderInfo: 50xmxthndljiysv6x2xfdvhtffof0/1tbiCQ4KCWm6Z5gnFwAAsY
 
-On Wed, Mar 18, 2026 at 05:10:21PM +0800, Chao Gao wrote:
-> On Wed, Mar 18, 2026 at 04:20:54PM +0800, Xiaoyao Li wrote:
-> >On 3/18/2026 2:54 PM, Chao Gao wrote:
-> >> > > +
-> >> > > +What:		/sys/devices/faux/tdx_host/seamldr/version
-> >> > > +Contact:	linux-coco@lists.linux.dev
-> >> > > +Description:	(RO) Report the version of the loaded SEAM loader. The SEAM
-> >> > > +		loader version is formatted as x.y.z, where "x" is the major
-> >> > > +		version, "y" is the minor version and "z" is the update version.
-> >> > > +		Versions are used for bug reporting and compatibility checks.
-> >> > > +
-> >> > > +What:		/sys/devices/faux/tdx_host/seamldr/num_remaining_updates
-> >> > > +Contact:	linux-coco@lists.linux.dev
-> >> > > +Description:	(RO) Report the number of remaining updates. TDX maintains a
-> >> > > +		log about each TDX module that has been loaded. This log has
-> >> > > +		a finite size, which limits the number of TDX module updates
-> >> > > +		that can be performed.
-> >> > > +
-> >> > > +		After each successful update, the number reduces by one. Once it
-> >> > > +		reaches zero, further updates will fail until next reboot. The
-> >> > > +		number is always zero if the P-SEAMLDR doesn't support updates.
-> >> > > +
-> >> > > +		See Intel® Trust Domain Extensions - SEAM Loader (SEAMLDR)
-> >> > > +		Interface Specification, Revision 343755-003, Chapter 3.3
-> >> > > +		"SEAMLDR_INFO" and Chapter 4.2 "SEAMLDR.INSTALL" for more
-> >> > > +		information.
-> >> > 
-> >> > Do you think revision and chapter numbers useful here?
-> >> 
-> >> I think it's nice-to-have. Without specific references, people would need to
-> >> read the entire 26-page spec. But I can drop them if they make it too verbose.
-> >
-> >I have some concerns about the "revision". The good thing is that it can tell
-> >what the attribute was built against while the bad thing is that it might not
-> >be easy for people to find an old revision years later.
-> 
-> I'm okay with dropping the revision number.
-> 
-> The intent is not to require readers to find the exact same revision. If they
-> can find that exact revision, great. If not, the chapter numbers may differ
-> in newer revisions.
-> 
-> Kirill, do you mean dropping the numbers but keeping the chapter titles:
-> 
-> 		See Intel® Trust Domain Extensions - SEAM Loader (SEAMLDR)
-> 		Interface Specification, Chapter "SEAMLDR_INFO" and Chapter
-> 		"SEAMLDR.INSTALL" for more information.
-> 
-> This keeps a targeted reference so readers do not need to scan the entire spec.
+In kvm_riscv_vcpu_pmu_snapshot_set_shmem(), when kvm_vcpu_write_guest()
+fails, kvpmu->sdata is freed but not set to NULL. This leaves a dangling
+pointer that will be freed again when kvm_pmu_clear_snapshot_area() is
+called during vcpu teardown, triggering a KASAN double-free report.
 
-Yeah, looks good to me.
+First free occurs in kvm_riscv_vcpu_pmu_snapshot_set_shmem():
+ kvm_riscv_vcpu_pmu_snapshot_set_shmem arch/riscv/kvm/vcpu_pmu.c:443
+ kvm_sbi_ext_pmu_handler arch/riscv/kvm/vcpu_sbi_pmu.c:74
+ kvm_riscv_vcpu_sbi_ecall arch/riscv/kvm/vcpu_sbi.c:608
+ kvm_riscv_vcpu_exit arch/riscv/kvm/vcpu_exit.c:240
+ kvm_arch_vcpu_ioctl_run arch/riscv/kvm/vcpu.c:1008
+ kvm_vcpu_ioctl virt/kvm/kvm_main.c:4476
 
+Second free (double-free) occurs in kvm_pmu_clear_snapshot_area():
+ kvm_pmu_clear_snapshot_area arch/riscv/kvm/vcpu_pmu.c:403 [inline]
+ kvm_riscv_vcpu_pmu_deinit.part arch/riscv/kvm/vcpu_pmu.c:905
+ kvm_riscv_vcpu_pmu_deinit arch/riscv/kvm/vcpu_pmu.c:893
+ kvm_arch_vcpu_destroy arch/riscv/kvm/vcpu.c:199
+ kvm_vcpu_destroy virt/kvm/kvm_main.c:469 [inline]
+ kvm_destroy_vcpus virt/kvm/kvm_main.c:489
+ kvm_arch_destroy_vm arch/riscv/kvm/vm.c:54
+ kvm_destroy_vm virt/kvm/kvm_main.c:1301 [inline]
+ kvm_put_kvm virt/kvm/kvm_main.c:1338
+ kvm_vm_release virt/kvm/kvm_main.c:1361
+
+Fix it by setting kvpmu->sdata to NULL after kfree() in
+kvm_riscv_vcpu_pmu_snapshot_set_shmem(), so that the subsequent
+kfree(NULL) in kvm_pmu_clear_snapshot_area() becomes a safe no-op.
+
+This bug was found by fuzzing the KVM RISC-V PMU interface.
+
+Fixes: c2f41ddbcdd756 ("RISC-V: KVM: Implement SBI PMU Snapshot feature")
+Signed-off-by: Jiakai Xu <jiakaiPeanut@gmail.com>
+Signed-off-by: Jiakai Xu <xujiakai2025@iscas.ac.cn>
+---
+ arch/riscv/kvm/vcpu_pmu.c | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/arch/riscv/kvm/vcpu_pmu.c b/arch/riscv/kvm/vcpu_pmu.c
+index e873430e596b2..ac1b9a91a19db 100644
+--- a/arch/riscv/kvm/vcpu_pmu.c
++++ b/arch/riscv/kvm/vcpu_pmu.c
+@@ -441,6 +441,7 @@ int kvm_riscv_vcpu_pmu_snapshot_set_shmem(struct kvm_vcpu *vcpu, unsigned long s
+ 	/* No need to check writable slot explicitly as kvm_vcpu_write_guest does it internally */
+ 	if (kvm_vcpu_write_guest(vcpu, saddr, kvpmu->sdata, snapshot_area_size)) {
+ 		kfree(kvpmu->sdata);
++		kvpmu->sdata = NULL;
+ 		sbiret = SBI_ERR_INVALID_ADDRESS;
+ 		goto out;
+ 	}
 -- 
-  Kiryl Shutsemau / Kirill A. Shutemov
+2.34.1
+
