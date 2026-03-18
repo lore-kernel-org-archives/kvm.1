@@ -1,215 +1,190 @@
-Received: from mail-pl1-f182.google.com (mail-pl1-f182.google.com [209.85.214.182])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A136B3644D7
-	for <kvm@vger.kernel.org>; Tue, 17 Mar 2026 23:36:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.182
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BDA2B8462;
+	Wed, 18 Mar 2026 06:16:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773790585; cv=none; b=ZKJwomua4MBBfQeuIQSMAgl1U/EQFpLZ6zXSixtPAwByUxPMMlYmMwY92XarTtOAEvPbjbePjZoYmSOXVYO4qwyyWqYo1hL9wZ5mwyootwElbwv1QSnCiGUjd7OG+vJFTJ1h4Lt332EVTknVOmrcZO2gh1T+hukcJYMHdQBPl1Q=
+	t=1773814591; cv=none; b=IcwP1cQPlU6Fr2JeXdfrmpfV1QNOqxglz7L8E0QNycHvoMG3wXZKqqYu2IROQeozgds8o02KAIIPEUgrdtjt2HraJfMBCUXHtLGp7KbNSO9Q4axgUbAG3ABYhU52g49yDzSse+4lrUIpA89flIN1mT8sDaTNKkS4lIvdY36pDqA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773790585; c=relaxed/simple;
-	bh=MkP4whV4n0WRvTN87uMxy06HdXRu3qnfT38+QSsgLP4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Q0/hH7lqUNK906dcc3n5bI33wmu2jqPDNM8P4SjOVtfHTbMZVamJPoIgPTkSKZwcaks7Ir0RuNmNRAJRPsC6wC5SaegLPfSfFPfOyfCjeXHfiDI0ocQ/mbNNz0wBOtK3rQtwc+CFUb/wnKzF6k63ioaXqdVlW2b2lH/f/hlW2hI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=lvc7e/Wu; arc=none smtp.client-ip=209.85.214.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	s=arc-20240116; t=1773814591; c=relaxed/simple;
+	bh=oDnlMW+yrl3kxEDV1Uxuwpsrw8lOvDpiu3LAZZ2bpIg=;
+	h=Mime-Version:Content-Type:Date:Message-Id:From:To:Cc:Subject:
+	 References:In-Reply-To; b=i7H2eSQGZPLPk/VFgLN0W67viuvlwjgU7vLJy//fJBJpZrZckXAhc2hxUJMc0N+ThXV0/Ap524yGJr5k3WxLayl4ARZvAo28tHBqFdU1y9RZUi/E3FdW3GveEukXtjxQ1ATI0eRieECYxLmd7XRJUGHSSj4CXUUmW971z3IgA4I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=iS1zN2AE; arc=none smtp.client-ip=148.163.158.5
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="lvc7e/Wu"
-Received: by mail-pl1-f182.google.com with SMTP id d9443c01a7336-2b052ec7176so21005ad.1
-        for <kvm@vger.kernel.org>; Tue, 17 Mar 2026 16:36:23 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1773790583; x=1774395383; darn=vger.kernel.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=8R08fAS2L/TqkBdbNFXhbiB2wc1JFGzUh5S9wXtuww4=;
-        b=lvc7e/WuKaGBC03E3qC2dsAWlhQQpNr8aWFiEsG7aHARC+Xw/DRettyaan/HA3Iwot
-         ZykKbbjta3+VyoGA0/5ls9gopbEAL3fSVUfl0FPU+PBoesA/W8bSjfA/Ryw6+J9E5tTG
-         zcAkMgTEBzIyK61T9xKUkvIDJCsww0ilfUpjqLhR4q2y+LB2CWQcZXeZX3k6v4w4WZKc
-         y/P/FPpIKqmRmcsOFM+qSHOU29vGGxurwrFrIHtGlzgjtkdx0cEUGz+WQ/GEkFg/7/X8
-         Jxak6dT8SQU1IqyKNIaJFdswN2cC6/WsN6B5kuQbl6PYuw+AtBOxCr3uWtpydlFgJJ4e
-         jhig==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1773790583; x=1774395383;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=8R08fAS2L/TqkBdbNFXhbiB2wc1JFGzUh5S9wXtuww4=;
-        b=F6VTyeKm2Z6GPjUp57Wslo7MRZnCCykUxcJgv2EnOgytzI1naJvqswNmkn3od6Z9f7
-         3VpW6m7Yu2EDLKArQ9f1N42x02Rpv1lpDssb5CMteke4wQzwJ4qIHglBBvuXG/Idpw8M
-         RkHcU2vNoXwgk4sJC76UA0PVJM0R94dp8VWaWXT7XVKuUfdSx4PMlTE0lyAfRpejAHhg
-         XIwAx/s7fKecRbT76jGKxUBDiObrqPamq4MXAMT5AR/PiuI71tJ7NIY3oD4tyFtZJs+I
-         dnVR/A7Kl+sgHQrSMaSehkF4NVsbFReoVX6CX3Ea3tCpY3L5BhmLCwfiivZwcrjOToAD
-         50iA==
-X-Forwarded-Encrypted: i=1; AJvYcCVEOcyfVrnE0GdeMiZOqI9Oqgu2Wl8nRV/zWbc+psnrDPLPaN2GTeMjkbZlLHdDjE+W5vs=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy6gJtf9rbPw4AdV69VQOXJpV86Et9By46SXi7heMtDuRk/lLxG
-	BBruHpiN8P1XO/u3YaXPjpoMvPDl1Po7xAUppnnK00Vs7zWa1Rvq88ozzMw0ip0rGA==
-X-Gm-Gg: ATEYQzyihvLm3YLQWqWSt52XSL5uPbok0vsmhaw0VWhS5mH2HSq+kLcJU3MghXiweZG
-	hpLvURtsw/n7N/0UtRVOJdh4M24PS8RrUtE0QoQFyprq17njzYDgt1FBovzO8oK2XmRHY3V18Yk
-	MeCZ6Z2XuP/JsNsZYH+cCAo2bCCXs3AovM5k6ALr21o8w9hUXsI1MQ+I1PT2ipYhR4JBo3N8bwk
-	mRW/PtOw3ZNw4bh15iQ8ax+x7CfnucorcvM3M0LT9+x5Kt9hniI6eDmjH1smsQsruKcGdwGMTXi
-	I/tZdPl6NAVltNdFP2y95kJH7+MXmJ7lXPIqET34nx9EdPPNLzh/xd1HWVv0ZKCfgxLAKcrB636
-	tfEXLlHshlTn4DLXUdaileYsniA3X2z1s58cHAXEGeI92pgxGpR7oPIJz36vwYSpaNN0MNLaGHL
-	emImOFF+QdeS8j/oDv+gllDNdsstRKwzY0XPw8EihLP1RsWYnyTQAjOmeROQ==
-X-Received: by 2002:a17:903:22c7:b0:2ae:c566:bd99 with SMTP id d9443c01a7336-2b06e88a5f7mr1634235ad.22.1773790582361;
-        Tue, 17 Mar 2026 16:36:22 -0700 (PDT)
-Received: from google.com (60.89.247.35.bc.googleusercontent.com. [35.247.89.60])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2b06e629da3sm6015715ad.76.2026.03.17.16.36.21
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 17 Mar 2026 16:36:21 -0700 (PDT)
-Date: Tue, 17 Mar 2026 16:36:17 -0700
-From: Vipin Sharma <vipinsh@google.com>
-To: David Matlack <dmatlack@google.com>
-Cc: Alex Williamson <alex@shazbot.org>, 
-	Adithya Jayachandran <ajayachandra@nvidia.com>, Alexander Graf <graf@amazon.com>, Alex Mastro <amastro@fb.com>, 
-	Alistair Popple <apopple@nvidia.com>, Andrew Morton <akpm@linux-foundation.org>, 
-	Ankit Agrawal <ankita@nvidia.com>, Bjorn Helgaas <bhelgaas@google.com>, 
-	Chris Li <chrisl@kernel.org>, David Rientjes <rientjes@google.com>, 
-	Jacob Pan <jacob.pan@linux.microsoft.com>, Jason Gunthorpe <jgg@nvidia.com>, Jason Gunthorpe <jgg@ziepe.ca>, 
-	Jonathan Corbet <corbet@lwn.net>, Josh Hilke <jrhilke@google.com>, 
-	Kevin Tian <kevin.tian@intel.com>, kexec@lists.infradead.org, kvm@vger.kernel.org, 
-	Leon Romanovsky <leon@kernel.org>, Leon Romanovsky <leonro@nvidia.com>, linux-doc@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org, linux-mm@kvack.org, 
-	linux-pci@vger.kernel.org, Lukas Wunner <lukas@wunner.de>, 
-	=?utf-8?Q?Micha=C5=82?= Winiarski <michal.winiarski@intel.com>, Mike Rapoport <rppt@kernel.org>, Parav Pandit <parav@nvidia.com>, 
-	Pasha Tatashin <pasha.tatashin@soleen.com>, Pranjal Shrivastava <praan@google.com>, 
-	Pratyush Yadav <pratyush@kernel.org>, Raghavendra Rao Ananta <rananta@google.com>, 
-	Rodrigo Vivi <rodrigo.vivi@intel.com>, Saeed Mahameed <saeedm@nvidia.com>, 
-	Samiullah Khawaja <skhawaja@google.com>, Shuah Khan <skhan@linuxfoundation.org>, 
-	Thomas =?utf-8?Q?Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>, Tomita Moeko <tomitamoeko@gmail.com>, 
-	Vivek Kasireddy <vivek.kasireddy@intel.com>, William Tu <witu@nvidia.com>, Yi Liu <yi.l.liu@intel.com>, 
-	Zhu Yanjun <yanjun.zhu@linux.dev>
-Subject: Re: [PATCH v2 10/22] vfio/pci: Skip reset of preserved device after
- Live Update
-Message-ID: <20260317232431.GA2795773.vipinsh@google.com>
-References: <aaDqhjdLyf1qSTSh@google.com>
- <20260227084658.3767d801@shazbot.org>
- <CALzav=fHy23RAzhgkdaL+JA5T2tL9FT6aPgRfXUh7i9zvYCGPA@mail.gmail.com>
- <20260227105720.522ca97f@shazbot.org>
- <CALzav=fjRPa_ZbXu7iFXyemcf_8Kq_dZTWT6c-A0bc6czF_Rdw@mail.gmail.com>
- <abNOwcOTXqxCxNzt@google.com>
- <20260316160759.GA1767448.vipinsh@google.com>
- <CALzav=cskxLZtZ5-uRa0+aV+1Kb3fwQQJ5dS=Yes4GAHrS6GpQ@mail.gmail.com>
- <20260316214055.GB1846904.vipinsh@google.com>
- <CALzav=df8K0R0gJyQ=ifoznp_CMRRtyrWchbNvcw2-wpkdaBaQ@mail.gmail.com>
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="iS1zN2AE"
+Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 62I601hr3176840;
+	Wed, 18 Mar 2026 06:16:18 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=DifgUe
+	WpE4npuUkNsLjMpFr/mxGVgkbz/vAv+BrXPtg=; b=iS1zN2AE2pgOS9fEDNhy03
+	MhmglpDq6czo7tzl6o+xaoyqJfkk3EXeG/+jfnfHt1qMx1N5nswNWv2rxzKGoHNs
+	bC94db4scXeHUX63WB6pxxyfvQMe/oeaF4QSF865CELrGVMoQKzrnejYuBjORiMw
+	JoYf+W1kR4TJ3T5SqF5AZes5maI5la8nqpKJ+YB89KCuf0JDuexCE4/6+eV57QWe
+	1wVaCq8+qUGL3S5T2yr6lq6yEOaSnLTw4B81yBzPnX9CBXm0nAU3wNouNWMxoNmb
+	w9e3+TUKr7kSstQcxmGe7RCG0RomX6/iFHJnSjOow/Lk+CMPexGHhiD612pAoBTA
+	==
+Received: from ppma13.dal12v.mail.ibm.com (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4cvx3cyw3y-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 18 Mar 2026 06:16:18 +0000 (GMT)
+Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma13.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 62I5jBUb032327;
+	Wed, 18 Mar 2026 06:16:17 GMT
+Received: from smtprelay07.fra02v.mail.ibm.com ([9.218.2.229])
+	by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 4cwm7jvgw4-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 18 Mar 2026 06:16:17 +0000
+Received: from smtpav01.fra02v.mail.ibm.com (smtpav01.fra02v.mail.ibm.com [10.20.54.100])
+	by smtprelay07.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 62I6GDLZ39059714
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Wed, 18 Mar 2026 06:16:13 GMT
+Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 61BC72004B;
+	Wed, 18 Mar 2026 06:16:13 +0000 (GMT)
+Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 2963B20043;
+	Wed, 18 Mar 2026 06:16:12 +0000 (GMT)
+Received: from localhost (unknown [9.111.43.66])
+	by smtpav01.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Wed, 18 Mar 2026 06:16:12 +0000 (GMT)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CALzav=df8K0R0gJyQ=ifoznp_CMRRtyrWchbNvcw2-wpkdaBaQ@mail.gmail.com>
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Wed, 18 Mar 2026 07:16:11 +0100
+Message-Id: <DH5OSCR30K6L.3SIBYOZ6166AC@linux.ibm.com>
+From: "Julian Ruess" <julianr@linux.ibm.com>
+To: "Niklas Schnelle" <schnelle@linux.ibm.com>,
+        "Farhan Ali"
+ <alifm@linux.ibm.com>,
+        "Julian Ruess" <julianr@linux.ibm.com>, <wintera@linux.ibm.com>,
+        <ts@linux.ibm.com>, <oberpar@linux.ibm.com>, <gbayer@linux.ibm.com>,
+        "Alex Williamson" <alex@shazbot.org>,
+        "Jason
+ Gunthorpe" <jgg@ziepe.ca>, "Yishai Hadas" <yishaih@nvidia.com>,
+        "Shameer
+ Kolothum" <skolothumtho@nvidia.com>,
+        "Kevin Tian" <kevin.tian@intel.com>
+Cc: <mjrosato@linux.ibm.com>, <raspl@linux.ibm.com>, <hca@linux.ibm.com>,
+        <agordeev@linux.ibm.com>, <gor@linux.ibm.com>, <kvm@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>, <linux-s390@vger.kernel.org>,
+        <linux-pci@vger.kernel.org>
+Subject: Re: [PATCH v5 2/3] vfio/ism: Implement vfio_pci driver for ISM
+ devices
+X-Mailer: aerc 0.21.0-0-g5549850facc2
+References: <20260317-vfio_pci_ism-v5-0-b73248b4e576@linux.ibm.com>
+ <20260317-vfio_pci_ism-v5-2-b73248b4e576@linux.ibm.com>
+ <de08911a-8bcc-4983-9ad2-b20467ebbb7f@linux.ibm.com>
+ <ef044e7fa28e33cf865882e374957c0cd10124d1.camel@linux.ibm.com>
+In-Reply-To: <ef044e7fa28e33cf865882e374957c0cd10124d1.camel@linux.ibm.com>
+X-TM-AS-GCONF: 00
+X-Authority-Analysis: v=2.4 cv=arO/yCZV c=1 sm=1 tr=0 ts=69ba4332 cx=c_pps
+ a=AfN7/Ok6k8XGzOShvHwTGQ==:117 a=AfN7/Ok6k8XGzOShvHwTGQ==:17
+ a=IkcTkHD0fZMA:10 a=Yq5XynenixoA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=RnoormkPH1_aCDwRdu11:22 a=V8glGbnc2Ofi9Qvn3v5h:22 a=yDXdNYyLDAtsUWoxkjsA:9
+ a=QEXdDO2ut3YA:10
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMzE4MDA1MSBTYWx0ZWRfX0KT5g6jHbLCN
+ JS79k+9K0j2YW2GmxHMyXw6jPBJR9dGI3D+4PbIxS+N1q6PpY/JQeSzEyAFCBl27K7kCtBzwJIS
+ 4tVxIf97jF+JVqysFpV6qIhkYgEIoA4ni/qiWqAenxElysjTqMMkITzGDKkc+jpBDkVz3wEsIH+
+ n9wYhbj5U8IE1YZrUoa3TsKEqCQJihe2kDZVw7Aux0dkPS+Q33aWHAw42iwcWBAUuYbgpUVTJT6
+ Yb6F9WxsJ/8XfgedfrqP23FHXNbnfrBIsfYqYNu1kJHrKW13yQmtPHrRdG4Duw+Mp9zkUypo7pg
+ N3rEev0/p/BNbpy7JYrVi+C6QS1GPbqWTdpNr8UBC1+kIwCZPyd35nALrLtY+PQ1TbKey31p1hK
+ Wsfsxadrv3vg53Pq0ZmYQ11Qd/gcE8FzdosMLxbYlJ/EL94jd4kel/fMFHDzefr5hOde6U5qPcF
+ y0nMy21Viw8IvdPe9ag==
+X-Proofpoint-GUID: U5dQJsKgC-FeaBSVolbyzLf-1CQIDqbz
+X-Proofpoint-ORIG-GUID: U5dQJsKgC-FeaBSVolbyzLf-1CQIDqbz
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
+ definitions=2026-03-17_05,2026-03-17_02,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ priorityscore=1501 spamscore=0 lowpriorityscore=0 impostorscore=0
+ adultscore=0 bulkscore=0 suspectscore=0 malwarescore=0 clxscore=1015
+ phishscore=0 classifier=typeunknown authscore=0 authtc= authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2603050001
+ definitions=main-2603180051
 
-On Mon, Mar 16, 2026 at 03:14:18PM -0700, David Matlack wrote:
-> On Mon, Mar 16, 2026 at 2:49 PM Vipin Sharma <vipinsh@google.com> wrote:
-> >
-> > On Mon, Mar 16, 2026 at 10:18:22AM -0700, David Matlack wrote:
-> > > On Mon, Mar 16, 2026 at 9:22 AM Vipin Sharma <vipinsh@google.com> wrote:
-> > > >
-> > > > On Thu, Mar 12, 2026 at 11:39:45PM +0000, David Matlack wrote:
-> > > > > On 2026-03-09 10:32 AM, David Matlack wrote:
-> > > > > > On Fri, Feb 27, 2026 at 9:57 AM Alex Williamson <alex@shazbot.org> wrote:
-> > > > >
-> > > > > > > Sorry if I don't have the whole model in my head yet, but is exposing
-> > > > > > > the restriction to the vfio user of the device sufficient to manage the
-> > > > > > > liveupdate orchestration?  For example, a VFIO_DEVICE_INFO_CAP pushes
-> > > > > > > the knowledge to QEMU... what does QEMU do with that knowledge?  Who
-> > > > > > > imposes the policy decision to decide what support is sufficient?
-> > > > > >
-> > > > > > Hm.. good questions. I don't think we want userspace inspecting bits
-> > > > > > exposed by the kernel and trying to infer exactly what's being
-> > > > > > preserved and whether it's "good enough" to use. And such a UAPI would
-> > > > > > become tech debt once we finish development, I suspect.
-> > > > > >
-> > > > > > A better approach would be to hide this support from userspace until
-> > > > > > we decide it is ready for production use-cases.
-> > > > > >
-> > > > > > To enable development and testing, we can add an opt-in mechanism
-> > > > >
-> > > > > Here is what I am trending towards sending in v3 as the opt-in mechanism:
-> > > > >
-> > > > > diff --git a/drivers/vfio/pci/Kconfig b/drivers/vfio/pci/Kconfig
-> > > > > index 1e82b44bda1a..770231554221 100644
-> > > > > --- a/drivers/vfio/pci/Kconfig
-> > > > > +++ b/drivers/vfio/pci/Kconfig
-> > > > > @@ -58,6 +58,27 @@ config VFIO_PCI_ZDEV_KVM
-> > > > >  config VFIO_PCI_DMABUF
-> > > > >         def_bool y if VFIO_PCI_CORE && PCI_P2PDMA && DMA_SHARED_BUFFER
-> > > > >
-> > > > > +config VFIO_PCI_LIVEUPDATE
-> > > > > +       bool "VFIO PCI support for Live Update (EXPERIMENTAL)"
-> > > > > +       depends on LIVEUPDATE && VFIO_PCI
-> > > > > +       help
-> > > > > +         Support for preserving devices bound to vfio-pci across a Live
-> > > > > +         Update. The eventual goal is that preserved devices can run
-> > > > > +         uninterrupted during a Live Update, including DMA to preserved
-> > > > > +         memory buffers and P2P. However there are many steps still needed to
-> > > > > +         achieve this, including:
-> > > > > +
-> > > > > +          - Preservation of iommufd files
-> > > > > +          - Preservation of IOMMU driver state
-> > > > > +          - Preservation of PCI state (BAR resources, device state, ...)
-> > > > > +          - Preservation of vfio-pci driver state
-> > > > > +
-> > > > > +         This option should only be enabled by developers working on
-> > > > > +         implementing this support. Once enough support has landed in the
-> > > > > +         kernel, this option will no longer be marked EXPERIMENTAL.
-> > > > > +
-> > > > > +         If you don't know what to do here, say N.
-> > > > > +
-> > > >
-> > > > To use VFIO liveupdate, user has to do at least two things:
-> > > > 1. Enable CONFIG_LIVEUPDATE
-> > > > 2. Pass VFIO FD to a live update session.
-> > > >
-> > > > This means someone using it has to know what live update is and
-> > > > intentionally pass the VFIO FDs. Isn't act of doing this itself an
-> > > > opt-in mechanism?
-> > >
-> > > If it is, then I can leave this out. Alex?
-> > >
-> > > My thinking was: Distros are free to enable LIVEUPDATE and use it. The
-> > > support it enables today is all fully functional (albeit new).
-> > > vfio-cdev, OTOH, is not. A separate Kconfig can help express that
-> > > difference.
-> > >
-> > > Consider that LIVEUPDATE could be enabled by default in a future
-> > > release, but vfio-cdev support might not be ready yet at that point.
-> >
-> > But that also requires point 2 above i.e. userspace explicitly passing
-> > VFIO FD to liveupdate. Unless there is a capability mechanism like KVM
-> > then userspace cannot know what is exactly supported.
-> 
-> Yes that is why I propose not exposing the support to userspace at all
-> until it is ready, by compiling it out of kernel via new Kconfig. This
-> way it does not get accidentally enabled in distros or downstream
-> kernels before it is ready.
-> 
-> > Also, users who
-> > are using these APIs will already be advanced users and have to know
-> > many details about what liveupdate supports or not.
-> 
-> VMMs will be the ones preserving VFIO cdev files. I think you are
-> suggesting they should know what versions of Linux support what kind
-> of preservation? Like QEMU would know that Linux 7.1-7.4 supports
-> partial VFIO preservation and 7.5+ supports fully? That does not sound
-> like a good situation to be in.
+On Tue Mar 17, 2026 at 10:16 PM CET, Niklas Schnelle wrote:
+> On Tue, 2026-03-17 at 11:43 -0700, Farhan Ali wrote:
+>> <..snip..>
+>>=20
+>> On 3/17/2026 5:58 AM, Julian Ruess wrote:
+>> > static int ism_vfio_pci_probe(struct pci_dev *pdev,
+>> > +			      const struct pci_device_id *id)
+>> > +{
+>> > +	struct ism_vfio_pci_core_device *ivpcd;
+>> > +	struct zpci_dev *zdev =3D to_zpci(pdev);
+>> > +	char cache_name[20];
+>> > +	int ret;
+>> > +
+>> > +	ivpcd =3D vfio_alloc_device(ism_vfio_pci_core_device, core_device.vd=
+ev,
+>> > +				  &pdev->dev, &ism_pci_ops);
+>> > +	if (IS_ERR(ivpcd))
+>> > +		return PTR_ERR(ivpcd);
+>> > +
+>> > +	snprintf(cache_name, sizeof(cache_name), "ism_sb_fid_%08x", zdev->fi=
+d);
+>> > +	ivpcd->store_block_cache =3D
+>> > +		kmem_cache_create(cache_name, zdev->maxstbl, 0, 0, NULL);
+>> > +	if (!ivpcd->store_block_cache) {
+>> > +		vfio_put_device(&ivpcd->core_device.vdev);
+>> > +		return -ENOMEM;
+>> > +	}
+>> > +
+>> > +	dev_set_drvdata(&pdev->dev, &ivpcd->core_device);
+>> > +	ret =3D vfio_pci_core_register_device(&ivpcd->core_device);
+>> > +	if (ret) {
+>> > +		kmem_cache_destroy(ivpcd->store_block_cache);
+>> > +		vfio_put_device(&ivpcd->core_device.vdev);
+>> > +	}
+>> > +
+>> > +	return ret;
+>> > +}
+>> > +
+>> > +static void ism_vfio_pci_remove(struct pci_dev *pdev)
+>> > +{
+>> > +	struct vfio_pci_core_device *core_device;
+>> > +	struct ism_vfio_pci_core_device *ivpcd;
+>> > +
+>> > +	core_device =3D dev_get_drvdata(&pdev->dev);
+>> > +	ivpcd =3D container_of(core_device, struct ism_vfio_pci_core_device,
+>> > +			     core_device);
+>> > +
+>> > +	vfio_pci_core_unregister_device(&ivpcd->core_device);
+>> > +	vfio_put_device(&ivpcd->core_device.vdev);
+>> > +
+>> > +	kmem_cache_destroy(ivpcd->store_block_cache);
+>>=20
+>> I think the kmem_cache_destroy() should be done before we do=20
+>> vfio_put_device() (or maybe even before=20
+>> vfio_pci_core_unregister_device()) to avoid use after free similar to=20
+>> ism_vfio_pci_probe(). Sorry I missed this earlier.
+>>=20
+>> Thanks
+>>=20
+>> Farhan
+>>=20
+>
+> Good find! Wouldn't it be even cleaner to provide vfio/ism specific
+> .init and .release functions in ism_pci_ops that do the
+> kmem_cache_create() / kmem_cache_destroy() as part of init / release?
+> It seems this is done for e.g. Xe with xe_vfio_pci_init_dev()
+> and xe_vfio_pci_release_dev(). In fact wouldn't that be even necessary
+> to correctly handle the case where the above vfio_put_device() isn't
+> the last reference?
+>
+> Thanks,
+> Niklas
 
-I agree, for VMM its better to just assume it is a complete preservation
-feature but it is an experimental code in kernel.
-
-> 
-> I think it's much better to hide the support behind Kconfig until its
-> ready. That way the PRESERVE_FD ioctl just fails on kernels that do
-> not fully support (because VFIO_PCI_LIVEUPDATE is not enabled), and
-> succeeds on kernels that do fully support.
-> 
-> If someone wants to enable and use VFIO_PCI_LIVEUPDATE while it is
-> still marked experimental, they're on their own.
-> 
-
-Sounds good. Thanks!
+Thanks guys! Yes, I think we should introduce custom .init and .release fun=
+ctions. Will change that in the next version.
