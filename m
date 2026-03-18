@@ -1,136 +1,121 @@
-Received: from mail-pl1-f174.google.com (mail-pl1-f174.google.com [209.85.214.174])
+Received: from mail-wm1-f52.google.com (mail-wm1-f52.google.com [209.85.128.52])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 222212E03EA
-	for <kvm@vger.kernel.org>; Wed, 18 Mar 2026 18:52:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B36F368940
+	for <kvm@vger.kernel.org>; Wed, 18 Mar 2026 19:02:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773859926; cv=none; b=Rhl1n12HfzOy5rI84FVrly9WaRYUktCIycfG7B8wdBTBaU6bhG6ujk4ymVYhEP5/keqt1siLxjczwudS+ul5apTEQuCPv5dzjvuaGEEA6iLUX9Ww6caI/aUxSXTb5Hcim91fSiw0U/sdkZCCXpjiFF6CPvzphMpKxMHa7NTAe8I=
+	t=1773860533; cv=none; b=uJYmSDo8wg9FKsbw3elqvllPO9ZZj5R/ym3f1GiCSw3UAwbwHmtPjMNc1ru4kDVZ+2gLtcrUiPYi+sKZEEBGyN9FB0m5Gp7RB5qafzm4I6Je3UCQPc9WJyYPDv13Y7vO7IsGxa9uFRx2yaCj99tBoWDo6Y9RA7JjxGiCv1LESbE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773859926; c=relaxed/simple;
-	bh=+PoZebPl9eGyY2P4Hx8BwJJ0lFxSGwfNTcpB1F9sp9M=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=cLSTOD1yxcw9nVpgHmMXYDdvDOyDRiXN8dEopjGpRgXvw+r5mW0GjTfx4rC/KnXGgn6eiNB8sSoBVKarRO+OAByWqfma96pVhAhSTKz2y+PTK2CyhYU6Of9hkwGFgaFwRU+n38lk9qt3p1CtPdXzFykEAd4tg1vqtQoWIMSbsHs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=OonU1ItK; arc=none smtp.client-ip=209.85.214.174
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	s=arc-20240116; t=1773860533; c=relaxed/simple;
+	bh=z+2sf/5km6HTWQdHuHjaRmn83kq0xn9ypsPl2UqNUbg=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=uvqsGOxQSWvsxHKvn4iwEt5LIun+fhqLdRf2jZdBje3IqPihRvmKxRwAeCDHf8f/WfLZiwnrJnqPD9TKU1bJfaR3KPgq9tsUb/OfF3g842caukYUw2HB1LmMwBmQe9VEl2QD6DXNdr8SM0DThiM8NqPIVCKRwR+HXhggqSMYVDU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=gIPaBGBj; arc=none smtp.client-ip=209.85.128.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="OonU1ItK"
-Received: by mail-pl1-f174.google.com with SMTP id d9443c01a7336-2aeab6ff148so12045ad.1
-        for <kvm@vger.kernel.org>; Wed, 18 Mar 2026 11:52:04 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="gIPaBGBj"
+Received: by mail-wm1-f52.google.com with SMTP id 5b1f17b1804b1-4852a9c6309so1798375e9.0
+        for <kvm@vger.kernel.org>; Wed, 18 Mar 2026 12:02:12 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1773859924; x=1774464724; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=rAVPuf1WmWbM7fHe7kDi/38r85UrwFo+QUAvxHpFr94=;
-        b=OonU1ItKjR0j6OxpifFnwdILmpODM8UPuNa4Cc/Am+9D0qAaO946yX3Qv/5e9asa4+
-         yHKYlSUbXMeRyOzFCp9Yhr+zUlaoMOgYkz3gPHngfE9dGQWXaJXYQK2nAviSp6hTRMf6
-         2021zrNNeYWi3bM2n7xvjZEIjWGtLERiEqvcFNdLmlq/0uVwzELLqDK84Wchl6yynIjw
-         sxeTY49kBtYzH5OfqqEIP+JNRg0BZf2NLWTmWrLyECUMOqzV3sd0zrIA0yAh3PrGIaHD
-         fXwHFpOln4HMal0G8SgzPRh6OARLhCHqAUoa6aHaYgpCAKtgIiakoSTfajQRzXXIEjzr
-         C6Eg==
+        d=chromium.org; s=google; t=1773860531; x=1774465331; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=4pIf+VLPRohGstCaliNQzf45fwV/wxcML8JuOKn3Xfg=;
+        b=gIPaBGBjiuOmg8wjnpikbLqaU9OSDaMr9/0YUGjUIBjMuKSeu4Znzx03u9EVBRxTgx
+         bP45HH7H9/FC8ZkYDVoO+jKggPig2G2BP4+uJ3IMKOFLo7sryMk1LAS310ZxokWn/l57
+         p3MlmhO+OqYTvFqy0vXTcvW1aIjpzvsM+zeTE=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1773859924; x=1774464724;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=rAVPuf1WmWbM7fHe7kDi/38r85UrwFo+QUAvxHpFr94=;
-        b=BV5ff2m32x5FLUBzJbW6c2fTHehQD1LcHMuKFSGBi/7uttckOGeS6Crmibz8WQENZS
-         BdtTNaSTBDD5O9k1bFN3pnmsJLaoFhzohLHERMu2SmozCLhvKD3qDLeGyP0g1m8f/otD
-         CvcdQ1dgDGWY2OydOUh1nkm7TFcfAXuceY3nJzNY3S2e8HGEQmrA1nbvnRA/lWIGc/vy
-         LQH0/9TDBCwny0ckZ9hnKRG5B8EvXWvPQE09mo6NvzhtrJbB2XS4WZAZFHWRDZuMl5jI
-         MGx/nRHntBoM9k2EDP/HhDTTrFqG1Xk6Ph5TFvHsyskIQmMF5wkX53WhNs0P9uaHhjUn
-         elYQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUyhRdws/O4rC1XrvylGDrwWNgXEMiY2ZeMipnTpmvdYsRAmEavPbqJqT47K9uAHylA4vM=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzRQgRpb5PO5kE6e/JZP4aQfxxd0bNt4goJK9G1+8NNfWMHAnLu
-	XyMBbE19UElUvBqyeWjbC0sX8VQrttoKfT8uU1yOQceINb3vRW4pkA6N94hMcNyMjw==
-X-Gm-Gg: ATEYQzwuLE+GwQ5Ot7INpBUhfS+0Rwc1m0dPY5VEkVyR4lyjMY5hHMRbo+167P6q5AG
-	eXtMrGYQ3vtXHV30JlvVXd3YnczzcRV70E7oRDf/IHFj/neEWc8M9EdW557+Kwosr3SaS8bid2B
-	Ax2tJ19lXvD/G+PZvwKwKuv4xOohePem2tUXjkscNcZcFL2OwhBvvx0eXs9Edly/rtHSTZK6i0i
-	W+VIgaGZW8ONHk/AKFI4WximAYEik+z7Xcs+k7fkxvDCp0bDWKMA/HbIZmrgGuD/RZvsjSnGsFW
-	r2TQ7WnapJogMTjU6X5GuepQ8k4iZOtlvatyyYL+yWDgb8JJZNM+IjlukjL83BHTF2A/Vy08LkM
-	9lKVy8bK+C2OOavXJ7qWa3HpJU8R85cAnegQHt3zp/NvbfZkZQRRyaXY7YHlUvES6hKCY9up9Kn
-	IaeKLwE6wuPxB4hJ5USVgHxIdcn1HhfudtR2inFiH8+3EL5VOeQDpjWQP2MA==
-X-Received: by 2002:a17:902:fb10:b0:2ae:575b:2345 with SMTP id d9443c01a7336-2b077f15bd2mr285995ad.9.1773859923960;
-        Wed, 18 Mar 2026 11:52:03 -0700 (PDT)
-Received: from google.com (10.129.124.34.bc.googleusercontent.com. [34.124.129.10])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-35bbabc03ecsm1760144a91.2.2026.03.18.11.51.57
+        d=1e100.net; s=20251104; t=1773860531; x=1774465331;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=4pIf+VLPRohGstCaliNQzf45fwV/wxcML8JuOKn3Xfg=;
+        b=GWrQucNjtaL8CGJv4KNFqK0capDHsjH9YwUXNsoQ6G4QuP86SU5c8HzQnvR40Fd6RB
+         nUI7OgQ6ykWea39rRYSErqFMAEBFklC1GBJfuJuH003QXrFZCeZT/1sKGHmUq9HyG63r
+         TGvfKzEMVexzNKaeYbSDQ9xiOQLOPknLuKgF2Upi1H5n7noubuGX1QPCKAGcfQeWjcdM
+         kqmk9QM5gEY0MsQAodOiTVnZLUTV/tiVR9Mdu9AzYujPzf7UdFInBmuNalo8LHrrdWiA
+         PblbnLu5Cnmt3+F73CfrUZIaUTqLzKMd91EYNzUObGOoM41VIqTpq+TSPXDL7CDQhj8i
+         HGMQ==
+X-Gm-Message-State: AOJu0Yxt8EkI9UA+SPi4nAfUx1e853zG2luI2xuXhxFs1Xb7cfnDI7Wr
+	q4FoTQVJ7m7k9V6fZasT/25lCYvW+9vBwqI7Z+bNd1bYBuZTHITrBQZdzemEvBDdAkyhoUvcVVB
+	/K8c=
+X-Gm-Gg: ATEYQzz1hTheW1kvGLIjTy88tELr6YhTIqEBpl6VeYGKesMUJyT/4pYAtTXP/kCZyqa
+	CpgD9qTUJKP5Xp7+lAG3zWlL+QS0FHdE/iEuuMAYNogkBGaZjhukGte7IdTx2TcXT17jAWQMVQd
+	1vzL4/XRbN63ATxmCsfP0m86Icfr10In/v/JpBeXwSSSGKkpg4u3SLPTaYoYhOjA0XXvKpNwUQl
+	mGLhidFIdMnJ6KE7EPtf7VUoAs2VSy21vejeaq7ODUT4C+hYMN+7espoNaqfO720O+j0NxBcQoR
+	xixXvRopiMTOG+WndecbK5GaKYtnLkG6JQh5iusGdrB14DUegiWbv8OGRtF0w2+trWHwHGHjnx5
+	QlB73lBjnpbw24wFeuXTMZ80e5fArZ9D4ReHLCn4IPpv5MMXc+yLU0r1Cz+I8W6vbvZrMce4usH
+	ZW4l/I9nufdHxobn6BI32WHVX96Gql8y/3hRklBvAGAVK8dLjsA+MmJW7rDBGen3Vd0aEU4vTAU
+	aXyUINAlcbN
+X-Received: by 2002:a05:600c:8b65:b0:485:34a2:919e with SMTP id 5b1f17b1804b1-486f44607e8mr76256695e9.33.1773860530585;
+        Wed, 18 Mar 2026 12:02:10 -0700 (PDT)
+Received: from dmaluka.c.googlers.com.com (202.88.205.35.bc.googleusercontent.com. [35.205.88.202])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-486f8c35057sm8461275e9.5.2026.03.18.12.02.10
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 18 Mar 2026 11:52:03 -0700 (PDT)
-Date: Wed, 18 Mar 2026 18:51:54 +0000
-From: Pranjal Shrivastava <praan@google.com>
-To: Vipin Sharma <vipinsh@google.com>
-Cc: Samiullah Khawaja <skhawaja@google.com>,
-	David Woodhouse <dwmw2@infradead.org>,
-	Lu Baolu <baolu.lu@linux.intel.com>, Joerg Roedel <joro@8bytes.org>,
-	Will Deacon <will@kernel.org>, Jason Gunthorpe <jgg@ziepe.ca>,
-	Robin Murphy <robin.murphy@arm.com>,
-	Kevin Tian <kevin.tian@intel.com>,
-	Alex Williamson <alex@shazbot.org>, Shuah Khan <shuah@kernel.org>,
-	iommu@lists.linux.dev, linux-kernel@vger.kernel.org,
-	kvm@vger.kernel.org, Saeed Mahameed <saeedm@nvidia.com>,
-	Adithya Jayachandran <ajayachandra@nvidia.com>,
-	Parav Pandit <parav@nvidia.com>,
-	Leon Romanovsky <leonro@nvidia.com>, William Tu <witu@nvidia.com>,
-	Pratyush Yadav <pratyush@kernel.org>,
-	Pasha Tatashin <pasha.tatashin@soleen.com>,
-	David Matlack <dmatlack@google.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Chris Li <chrisl@kernel.org>, YiFei Zhu <zhuyifei@google.com>
-Subject: Re: [PATCH 02/14] iommu: Implement IOMMU core liveupdate skeleton
-Message-ID: <abr0SoSoy1tSQqcR@google.com>
-References: <20260203220948.2176157-1-skhawaja@google.com>
- <20260203220948.2176157-3-skhawaja@google.com>
- <abNH7LAj9thuGOoG@google.com>
- <abROLLfSUK8pXM5J@google.com>
- <abm09vCaAMtiQPVs@google.com>
- <abm1esL1dzN7NTC7@google.com>
- <abm4ShqPTxIujDlt@google.com>
- <20260317210209.GC2582517.vipinsh@google.com>
+        Wed, 18 Mar 2026 12:02:10 -0700 (PDT)
+From: Dmytro Maluka <dmaluka@chromium.org>
+To: kvm@vger.kernel.org,
+	Sean Christopherson <seanjc@google.com>,
+	Paolo Bonzini <pbonzini@redhat.com>,
+	Isaku Yamahata <isaku.yamahata@intel.com>
+Cc: Dmytro Maluka <dmaluka@chromium.org>,
+	Thomas Gleixner <tglx@kernel.org>,
+	Ingo Molnar <mingo@redhat.com>,
+	Borislav Petkov <bp@alien8.de>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	x86@kernel.org (maintainer:X86 ARCHITECTURE (32-BIT AND 64-BIT)),
+	"H. Peter Anvin" <hpa@zytor.com>,
+	Kiryl Shutsemau <kas@kernel.org>,
+	Rick Edgecombe <rick.p.edgecombe@intel.com>,
+	Binbin Wu <binbin.wu@linux.intel.com>,
+	linux-kernel@vger.kernel.org (open list:X86 ARCHITECTURE (32-BIT AND 64-BIT)),
+	linux-coco@lists.linux.dev (open list:X86 TRUST DOMAIN EXTENSIONS (TDX))
+Subject: [PATCH] KVM: TDX: Fix APIC MSR ranges in tdx_has_emulated_msr()
+Date: Wed, 18 Mar 2026 19:01:03 +0000
+Message-ID: <20260318190111.1041924-1-dmaluka@chromium.org>
+X-Mailer: git-send-email 2.53.0.851.ga537e3e6e9-goog
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260317210209.GC2582517.vipinsh@google.com>
+Content-Transfer-Encoding: 8bit
 
-On Tue, Mar 17, 2026 at 02:03:16PM -0700, Vipin Sharma wrote:
-> On Tue, Mar 17, 2026 at 08:23:38PM +0000, Pranjal Shrivastava wrote:
-> > On Tue, Mar 17, 2026 at 08:13:47PM +0000, Samiullah Khawaja wrote:
-> > > On Tue, Mar 17, 2026 at 08:09:26PM +0000, Pranjal Shrivastava wrote:
-> > > > On Fri, Mar 13, 2026 at 06:42:05PM +0000, Samiullah Khawaja wrote:
-> > > > > On Thu, Mar 12, 2026 at 11:10:36PM +0000, Pranjal Shrivastava wrote:
-> > > > > > On Tue, Feb 03, 2026 at 10:09:36PM +0000, Samiullah Khawaja wrote:
-> > > > > > > +EXPORT_SYMBOL(iommu_get_preserved_data);
-> > > > > > > +
-> > > > 
-> > > > Also, I don't see these helpers being used anywhere in this series yet?
-> > > > Should we add them with the phase-2 series? When we actually "Restore"
-> > > > the domain?
-> > > 
-> > > Phase 1 does restore the iommu and domains during boot. But the
-> > > iommufd/hwpt state is not restored or re-associated with the restored
-> > > domains.
-> > > 
-> > > These helpers are used to fetch the preserved state during boot.
-> > > 
-> > > Thanks,
-> > > Sami
-> > 
-> > I see these are used in PATCH 8, should we introduce these helpers in
-> > PATCH 8 where we actually use them? As we introduce iommu_restore_domain
-> > in PATCH 8?
-> > 
-> > Thanks,
-> > Praan
-> > 
-> 
-> Please trim your responses.
+Note: compile-tested only. Bug found by code inspection.
 
-Ack, sorry for missing that in this thread.
+X2APIC_MSR(APIC_xxx + APIC_ISR_NR) is incorrect, since APIC_ISR_NR is
+0x8, not 0x80, so shifting it in X2APIC_MSR() results in losing those
+lower bits, making it simply equal to X2APIC_MSR(APIC_xxx), i.e. making
+the entire range consist of APIC_xxx only. So adding APIC_ISR_NR needs
+to be outside X2APIC_MSR().
 
-Thanks,
-Praan
+Additionally, since "..." ranges are inclusive, need to subtract 1.
+
+Fixes: dd50294f3e3c ("KVM: TDX: Implement callbacks for MSR operations")
+Signed-off-by: Dmytro Maluka <dmaluka@chromium.org>
+---
+ arch/x86/kvm/vmx/tdx.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
+
+diff --git a/arch/x86/kvm/vmx/tdx.c b/arch/x86/kvm/vmx/tdx.c
+index c5065f84b78b..466a7de660c2 100644
+--- a/arch/x86/kvm/vmx/tdx.c
++++ b/arch/x86/kvm/vmx/tdx.c
+@@ -2136,9 +2136,9 @@ bool tdx_has_emulated_msr(u32 index)
+ 		case X2APIC_MSR(APIC_TASKPRI):
+ 		case X2APIC_MSR(APIC_PROCPRI):
+ 		case X2APIC_MSR(APIC_EOI):
+-		case X2APIC_MSR(APIC_ISR) ... X2APIC_MSR(APIC_ISR + APIC_ISR_NR):
+-		case X2APIC_MSR(APIC_TMR) ... X2APIC_MSR(APIC_TMR + APIC_ISR_NR):
+-		case X2APIC_MSR(APIC_IRR) ... X2APIC_MSR(APIC_IRR + APIC_ISR_NR):
++		case X2APIC_MSR(APIC_ISR) ... X2APIC_MSR(APIC_ISR) + APIC_ISR_NR - 1:
++		case X2APIC_MSR(APIC_TMR) ... X2APIC_MSR(APIC_TMR) + APIC_ISR_NR - 1:
++		case X2APIC_MSR(APIC_IRR) ... X2APIC_MSR(APIC_IRR) + APIC_ISR_NR - 1:
+ 			return false;
+ 		default:
+ 			return true;
+-- 
+2.53.0.851.ga537e3e6e9-goog
+
