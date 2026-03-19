@@ -1,77 +1,159 @@
-Received: from zero.eik.bme.hu (zero.eik.bme.hu [152.66.115.2])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E0563BED10
-	for <kvm@vger.kernel.org>; Thu, 19 Mar 2026 13:07:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=152.66.115.2
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 540AF3D4134;
+	Thu, 19 Mar 2026 13:15:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773925643; cv=none; b=W4ehNkiL5LqTGPJ9EKbCMVHkdKYwU1+wDHafDkekwBcpGkbXJno/Q3GO+oxLnwtkenv6X59N5mroWvBKCnkawG3M5vhdyJRv/2ild1EQorzDzyFeF/i+Ma+HodVKFmE2mRmS8h8o5pqKYKyS6xRDE7xk0aMSbC3tOy3W8h7u9+A=
+	t=1773926107; cv=none; b=Fv221N1OnZdE8vmaV4VRD7XULC5gScMmlOWzEabA0i/JmA1K+SKs/pgJRmr+PviVmdyTJH6XuYqF6N4M9di3Og4kKVs1VpdR2JNVTZudUyG8WMXhNaXNlU/hB93H7UhNH5UKagA4tQb+uCMLDvDKCqmvm2luYSUY8YBDsKz5Vws=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773925643; c=relaxed/simple;
-	bh=vWfORfC5pnzHHdLg7zf15ijAdvvuDhn4lhYbqh+tmWc=;
-	h=Date:From:To:cc:Subject:In-Reply-To:Message-ID:References:
-	 MIME-Version:Content-Type; b=u9FZkpzR4BVPyjPpQ/hbeRyazTdwsLwSj9MGQtShrfukPZzdE47K+TcmyAkwiGbd/s+GkIxfCyo5z3kYgO1Shn0o1Rp1SEgy9hakMgmo9gsPq2/NH12ka8+/i4KAWMv+Mo6MoG7U6jyZrp0MG+B83AL+qtt98AQz7Yin2iCeClo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=eik.bme.hu; spf=pass smtp.mailfrom=eik.bme.hu; arc=none smtp.client-ip=152.66.115.2
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=eik.bme.hu
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=eik.bme.hu
-Received: from localhost (localhost [127.0.0.1])
-	by zero.eik.bme.hu (Postfix) with ESMTP id DB6615969E4;
-	Thu, 19 Mar 2026 13:59:45 +0100 (CET)
-X-Virus-Scanned: amavis at eik.bme.hu
-Received: from zero.eik.bme.hu ([127.0.0.1])
- by localhost (zero.eik.bme.hu [127.0.0.1]) (amavis, port 10028) with ESMTP
- id PW58vAPzBILG; Thu, 19 Mar 2026 13:59:43 +0100 (CET)
-Received: by zero.eik.bme.hu (Postfix, from userid 432)
-	id BCFDB596DF7; Thu, 19 Mar 2026 13:59:43 +0100 (CET)
-Received: from localhost (localhost [127.0.0.1])
-	by zero.eik.bme.hu (Postfix) with ESMTP id BB33C596D90;
-	Thu, 19 Mar 2026 13:59:43 +0100 (CET)
-Date: Thu, 19 Mar 2026 13:59:43 +0100 (CET)
-From: BALATON Zoltan <balaton@eik.bme.hu>
-To: =?ISO-8859-15?Q?Philippe_Mathieu-Daud=E9?= <philmd@linaro.org>
-cc: qemu-devel@nongnu.org, Anton Johansson <anjo@rev.ng>, 
-    Paolo Bonzini <pbonzini@redhat.com>, 
-    Harsh Prateek Bora <harshpb@linux.ibm.com>, 
-    Nicholas Piggin <npiggin@gmail.com>, Glenn Miles <milesg@linux.ibm.com>, 
-    kvm@vger.kernel.org, qemu-ppc@nongnu.org, 
-    Pierrick Bouvier <pierrick.bouvier@linaro.org>, 
-    Chinmay Rath <rathc@linux.ibm.com>
-Subject: Re: [PATCH 5/8] target/ppc/mmu: Replace legacy ld/st_phys() ->
- address_space_ld/st()
-In-Reply-To: <20260319111936.68041-6-philmd@linaro.org>
-Message-ID: <0749ae60-f6df-3cb8-bc5d-b46f4c20995c@eik.bme.hu>
-References: <20260319111936.68041-1-philmd@linaro.org> <20260319111936.68041-6-philmd@linaro.org>
+	s=arc-20240116; t=1773926107; c=relaxed/simple;
+	bh=5if652ifix7m4r6JjLyYoN8p4oc9k9AQF9kES9+XFR0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=cidBMaNOUfHLkF5EHBG9ZTRd43aXbCJeuZdvXvlU1IpF5Uz+samRJyWrv5YJ7yPM6cRex29xYqy0cepVcpLhHovxWp3oD0MuQ0vM/21V684DKGDzepFpG1F7XMHqDfDQUXoBEgfK6WG5E05tV6SsOoP70iSFgs6b/qj2quK4roU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XouKpJly; arc=none smtp.client-ip=10.30.226.201
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XouKpJly"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 85AE2C19424;
+	Thu, 19 Mar 2026 13:15:06 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1773926107;
+	bh=5if652ifix7m4r6JjLyYoN8p4oc9k9AQF9kES9+XFR0=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=XouKpJlybgb2gbfvsKBMNz48jiY71rjYPAdlCf/iIG/o3x4077m5y5TDQCKjyKSV/
+	 YF/XehWNtd0y5Qvtj67tOZP9o2VLiVFl+W23rIEL8DyQ19n5Q9rJdqw/PImf0eBJ7j
+	 9qE2fRbJl35rOQGTP3c3rnGYlMrIsTBw+aVC04sDeo6eXSTKRCtttAnGtfWZYG6TPl
+	 dHrDTRKzGObGDbIW0DVfV1aOTt/6x7z3vfmfr5x3J97mxqWR3dTWJQFLcuFamO0J6u
+	 lR0HsKtj4oB+WuDhDnZumI0Y6oRk/4CFHvsw0MN/5W9w2KtVTwo8FRqPjEc259tDQ8
+	 8okOe1MqWqyoA==
+Received: from phl-compute-11.internal (phl-compute-11.internal [10.202.2.51])
+	by mailfauth.phl.internal (Postfix) with ESMTP id 533C7F4006E;
+	Thu, 19 Mar 2026 09:15:05 -0400 (EDT)
+Received: from phl-frontend-03 ([10.202.2.162])
+  by phl-compute-11.internal (MEProxy); Thu, 19 Mar 2026 09:15:05 -0400
+X-ME-Sender: <xms:2fa7aQA-chx6RUCCqQkdPPYpElEWWRla5DDu8MKs9NuY3b2-JzU7tw>
+    <xme:2fa7aTNyoM0E2RvXHeEah9QfjJJjuLWAJjRf9UxcM78N9vK4omM243RQjl_502F9p
+    ceC1MvwTiPDLxvdpXekfZLkU17ZAP8qmUMMshX6ikf6OSEm0Tft-XkC>
+X-ME-Received: <xmr:2fa7aerY5WMjGVKCFa8uBlouzicluByyZ7xpo1tmudfZ3_StWdVipl8kz8uoLQ>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgdeftdejuddtucetufdoteggodetrf
+    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
+    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
+    gurhepfffhvfevuffkfhggtggugfgjsehtkeertddttddunecuhfhrohhmpefmihhrhihl
+    ucfuhhhuthhsvghmrghuuceokhgrsheskhgvrhhnvghlrdhorhhgqeenucggtffrrghtth
+    gvrhhnpeeludettdeigfefhffhhfelveeludeuleduvefhgefgueeitedtleffudegfffg
+    gfenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpehkih
+    hrihhllhdomhgvshhmthhprghuthhhphgvrhhsohhnrghlihhthidqudeiudduiedvieeh
+    hedqvdekgeeggeejvdekqdhkrghspeepkhgvrhhnvghlrdhorhhgsehshhhuthgvmhhovh
+    drnhgrmhgvpdhnsggprhgtphhtthhopeehtddpmhhouggvpehsmhhtphhouhhtpdhrtghp
+    thhtoheptghhrghordhgrghosehinhhtvghlrdgtohhmpdhrtghpthhtoheplhhinhhugi
+    dqkhgvrhhnvghlsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtoheplhhinhhu
+    gidqtghotghosehlihhsthhsrdhlihhnuhigrdguvghvpdhrtghpthhtohepkhhvmhesvh
+    hgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopegsihhnsghinhdrfihusehlihhn
+    uhigrdhinhhtvghlrdgtohhmpdhrtghpthhtohepuggrnhdrjhdrfihilhhlihgrmhhsse
+    hinhhtvghlrdgtohhmpdhrtghpthhtohepuggrvhgvrdhhrghnshgvnheslhhinhhugidr
+    ihhnthgvlhdrtghomhdprhgtphhtthhopehirhgrrdifvghinhihsehinhhtvghlrdgtoh
+    hmpdhrtghpthhtohepkhgrihdrhhhurghnghesihhnthgvlhdrtghomh
+X-ME-Proxy: <xmx:2fa7aWxpSFCPc1VeySjcvd1EynLLdptXynQkfxZa_iDBx9SsGLmHKQ>
+    <xmx:2fa7aYN0bie4tBPAaYUGtZuknA0_E-Ol4f_jMdX4Td2DM8cSM2eLZw>
+    <xmx:2fa7aSBZvhAxu-U2gfkLwqkBCdIURwMGdRFEjFp-16zEVSHd-gqMew>
+    <xmx:2fa7adXWugHh-mAvqFo9EPxJeAKN50WoNI6qpCcFhbv0ZOlcNoG_SA>
+    <xmx:2fa7aUIXNQKLiwHE1h_VDD02o4sl8sJOATeEjDdkSLbH8WNuaaNES-fG>
+Feedback-ID: i10464835:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
+ 19 Mar 2026 09:15:04 -0400 (EDT)
+Date: Thu, 19 Mar 2026 13:15:02 +0000
+From: Kiryl Shutsemau <kas@kernel.org>
+To: Chao Gao <chao.gao@intel.com>
+Cc: linux-kernel@vger.kernel.org, linux-coco@lists.linux.dev, 
+	kvm@vger.kernel.org, binbin.wu@linux.intel.com, dan.j.williams@intel.com, 
+	dave.hansen@linux.intel.com, ira.weiny@intel.com, kai.huang@intel.com, nik.borisov@suse.com, 
+	paulmck@kernel.org, pbonzini@redhat.com, reinette.chatre@intel.com, 
+	rick.p.edgecombe@intel.com, sagis@google.com, seanjc@google.com, 
+	tony.lindgren@linux.intel.com, vannapurve@google.com, vishal.l.verma@intel.com, 
+	yilun.xu@linux.intel.com, Thomas Gleixner <tglx@kernel.org>, 
+	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, x86@kernel.org, 
+	"H. Peter Anvin" <hpa@zytor.com>
+Subject: Re: [PATCH v5 09/22] x86/virt/seamldr: Introduce skeleton for TDX
+ module updates
+Message-ID: <abv2PWj4jBwm6zKO@thinkstation>
+References: <20260315135920.354657-1-chao.gao@intel.com>
+ <20260315135920.354657-10-chao.gao@intel.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/mixed; boundary="3866299591-2069518506-1773925183=:40587"
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20260315135920.354657-10-chao.gao@intel.com>
 
-  This message is in MIME format.  The first part should be readable text,
-  while the remaining parts are likely unreadable without MIME-aware tools.
+On Sun, Mar 15, 2026 at 06:58:29AM -0700, Chao Gao wrote:
+> TDX module updates require careful synchronization with other TDX
+> operations. The requirements are (#1/#2 reflect current behavior that
+> must be preserved):
+> 
+> 1. SEAMCALLs need to be callable from both process and IRQ contexts.
+> 2. SEAMCALLs need to be able to run concurrently across CPUs
+> 3. During updates, only update-related SEAMCALLs are permitted; all
+>    other SEAMCALLs shouldn't be called.
+> 4. During updates, all online CPUs must participate in the update work.
+> 
+> No single lock primitive satisfies all requirements. For instance,
+> rwlock_t handles #1/#2 but fails #4: CPUs spinning with IRQs disabled
+> cannot be directed to perform update work.
+> 
+> Use stop_machine() as it is the only well-understood mechanism that can
+> meet all requirements.
+> 
+> And TDX module updates consist of several steps (See Intel® Trust Domain
+> Extensions (Intel® TDX) Module Base Architecture Specification, Revision
+> 348549-007, Chapter 4.5 "TD-Preserving TDX module Update"). Ordering
+> requirements between steps mandate lockstep synchronization across all
+> CPUs.
+> 
+> multi_cpu_stop() is a good example of performing a multi-step task in
+> lockstep. But it doesn't synchronize steps within the callback function
+> it takes. So, implement one based on its pattern to establish the
+> skeleton for TDX module updates. Specifically, add a global state
+> machine where each state represents a step in the update flow. The state
+> advances only after all CPUs acknowledge completing their work in the
+> current state. This acknowledgment mechanism is what ensures lockstep
+> execution.
+> 
+> Potential alternative to stop_machine()
+> =======================================
+> An alternative approach is to lock all KVM entry points and kick all
+> vCPUs. Here, KVM entry points refer to KVM VM/vCPU ioctl entry points,
+> implemented in KVM common code (virt/kvm). Adding a locking mechanism
+> there would affect all architectures KVM supports. And to lock only TDX
+> vCPUs, new logic would be needed to identify TDX vCPUs, which the KVM
+> common code currently lacks. This would add significant complexity and
+> maintenance overhead to KVM for this TDX-specific use case.
+> 
+> Signed-off-by: Chao Gao <chao.gao@intel.com>
+> Reviewed-by: Xu Yilun <yilun.xu@linux.intel.com>
+> Reviewed-by: Tony Lindgren <tony.lindgren@linux.intel.com>
 
---3866299591-2069518506-1773925183=:40587
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8BIT
+Reviewed-by: Kiryl Shutsemau (Meta) <kas@kernel.org>
 
-On Thu, 19 Mar 2026, Philippe Mathieu-DaudÃ© wrote:
-> Prefer the address_space_ld/st API over the legacy ld_phys()
-> because it allow checking for bus access fault.
->
-> This code however doesn't check for fault, so we simply inline
-> the calls (not specifying any memory transaction attribute nor
-> expecting transation result) per the definition in
-> "system/memory_ldst_phys_endian.h.inc":
+One question below.
 
-Recently when trying to remove _nomigrate memory region functions I was 
-told if some convenience function has more than 1 use it's probably worth 
-to keep it. This looks like similar case even more so as the replacement 
-is unnecessarily more complicated. So what's the problem with ld_phys in 
-the first place and why do you want to replace it with a less convenient 
-function? If there's a reason maybe say that in the commit message.
+> +static struct {
+> +	enum module_update_state state;
+> +	int thread_ack;
+> +	/*
+> +	 * Protect update_data. Raw spinlock as it will be acquired from
+> +	 * interrupt-disabled contexts.
+> +	 */
+> +	raw_spinlock_t lock;
+> +} update_data = {
+> +	.lock = __RAW_SPIN_LOCK_UNLOCKED(update_data.lock)
+> +};
 
-Regards,
-BALATON Zoltan
---3866299591-2069518506-1773925183=:40587--
+multi_stop_cpu() used atomic_t for thread_ack insead of spinlock.
+Any particular reason you took different direction?
+
+-- 
+  Kiryl Shutsemau / Kirill A. Shutemov
