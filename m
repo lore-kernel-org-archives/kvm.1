@@ -1,109 +1,148 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5DFE32FE04E;
-	Thu, 19 Mar 2026 18:05:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.13
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EDD3A309DD2;
+	Thu, 19 Mar 2026 18:05:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.9
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773943523; cv=none; b=M/ZL7/UVW2lqWtlD+OAxRGw0LVw2PX0qekiuor5a2lzh0eOLVSIWsxy4uodeXuhaA44NHYsvkQGrQPy/c0QePXN2wNzs2fp3j0efqgLrMuy85MDoTA2PeodnVNer+Y6TgkzY4UoJGEx8eya1fuF1jcO3HX9LZy9M23gdRBmM54g=
+	t=1773943529; cv=none; b=MXLy6hN6fanLSDieRnQRF+AdHSPG7u3Vjq6gCnkX7KkJMIy4gDaI+bPWsj0whjx3ixVdMQfOOaG/KfX7hWjGBLQ3vKWfhUjdjsKg6xFIqAToL5DonHc5XIc9htwQ+aUs/sXgKvUVsR29fb5zyYNCZ19su5MCZNn1oRwlThKBNbI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773943523; c=relaxed/simple;
-	bh=A7v99qTn7n6Y+7D4/+hynEK3V5D/D2HZPsLo4XAffAw=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=QksGXEH+/EeU6J/H4L57wDWsKIbLLBQ4VYH3VktOa1N5/eYJ8yz0phWEyw6so9tt2wYmCbW7r/1L28eS1zedYSBantvSHkcKb053dpZf95kg0Fz0oyVToVMfbtcQgWhoBZlx/tpw2tUHt+1pCHxFpAH4RjFRXf9F5tCeBo0L7CI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=X4RQnt2N; arc=none smtp.client-ip=192.198.163.13
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+	s=arc-20240116; t=1773943529; c=relaxed/simple;
+	bh=pG9swsHyCeOF/FzyvbdsKRN6T1YZef0BfYfaqQS+Ncs=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=GCShcT1F0FAoY2NWEgdREcKBMu98Q5vfntb+eeNfXQ5RN1hjt+C/8dz6Zvo7XAo2KA0ZgmHFAN+PQ12KdbqBl6gaAdatdVoJo0x3kf0wKe2375dl6qX380XCJHebqScKhsF3wESzUZnYa302VNwT+21aY2Xr1PGcXPqhemER4yY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=RbDTtNN4; arc=none smtp.client-ip=198.175.65.9
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="X4RQnt2N"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="RbDTtNN4"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1773943522; x=1805479522;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=A7v99qTn7n6Y+7D4/+hynEK3V5D/D2HZPsLo4XAffAw=;
-  b=X4RQnt2NjA7suOUepMPdqN1LKZc+gSJ81Z1I9UqP/BtcXCOXOKBpNf4i
-   V/XT+aoH4RLEg0TchKrcA/yqV29Udpht2A7si83z3Dhebtl92VdmrNQeR
-   2VFq+vHRF8UytF3iKkJVDioRSDPvrvIsSXDF5PgyoTSW4RIfzXLtrgFb+
-   r9oQbW3ObFEJF4vOAvy/JSfkA6C+sCNHX7uvgCEvqQH5iLzJsYRnBrY3i
-   fkAzaAfiUnn+2JDWJApXuyYO2wkib61Oewy9B0hd2CWc6IxKRY1U4mFz/
-   rZoLZvRF5t49ClJDG2K7JEoH1OZiA1EF9l6pRyD1DCU/aRYZBORYlvA3m
+  t=1773943528; x=1805479528;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=pG9swsHyCeOF/FzyvbdsKRN6T1YZef0BfYfaqQS+Ncs=;
+  b=RbDTtNN4x9ofu52S7WV7epfKFEBB+Xwj8m8F7D5rFRs54am/lVQ0asBn
+   xEJVpVCRbu1IRXDKnTtSlOpiOizH3BBEb0jDx4zJegrKUpew27yLOstox
+   xzxi/V8ZM9bOU+1o8aJalamF80YYKtp+QYf2DqfYyw6e/7xIJ855faYKX
+   EZkhoGX2K6sJfJ72/1YfCJPJcZ0WSL1afZfZk0uCt0s+3ZD/JJpmKOvvr
+   mKTAtBIeQQBZbhY656e/kzzeuE4XRqaaZoefW0xtsyQ9GaMZJTbdwowBc
+   r0Qupa655EPmZgq75/lW+tqiuO8qUUkEY8hF8DfQ/tvjG0an1EupZ23iu
    g==;
-X-CSE-ConnectionGUID: /qIP/sxRSb6LEENN/VBWCw==
-X-CSE-MsgGUID: ViZWq+A7SA6WWS1zerUwAw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11734"; a="77630713"
+X-CSE-ConnectionGUID: gmusnI42ROu6TT/yoLYXBw==
+X-CSE-MsgGUID: i+V8XOF9QWyKcLxdQ9goGw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11734"; a="97639548"
 X-IronPort-AV: E=Sophos;i="6.23,129,1770624000"; 
-   d="scan'208";a="77630713"
-Received: from orviesa002.jf.intel.com ([10.64.159.142])
-  by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Mar 2026 11:05:20 -0700
-X-CSE-ConnectionGUID: MVNrfnRkSEKpbU0POLjG2Q==
-X-CSE-MsgGUID: 2DFpyhNsRCKdPC9TBD/Tug==
+   d="scan'208";a="97639548"
+Received: from orviesa001.jf.intel.com ([10.64.159.141])
+  by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Mar 2026 11:05:11 -0700
+X-CSE-ConnectionGUID: gCl07N77SLaewbHiOIkBUQ==
+X-CSE-MsgGUID: JFQsitlaSrWLlGYEH7y3tA==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.23,129,1770624000"; 
-   d="scan'208";a="253517197"
-Received: from guptapa-desk.jf.intel.com (HELO desk) ([10.165.239.46])
-  by orviesa002-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Mar 2026 11:05:20 -0700
-Date: Thu, 19 Mar 2026 11:05:14 -0700
-From: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
-To: bot+bpf-ci@kernel.org
-Cc: x86@kernel.org, nik.borisov@suse.com, hpa@zytor.com,
-	jpoimboe@kernel.org, david.kaplan@amd.com, seanjc@google.com,
-	bp@alien8.de, dave.hansen@linux.intel.com, peterz@infradead.org,
-	ast@kernel.org, daniel@iogearbox.net, andrii@kernel.org,
-	kpsingh@kernel.org, jolsa@kernel.org, davem@davemloft.net,
-	david.laight.linux@gmail.com, luto@kernel.org, tglx@kernel.org,
-	mingo@redhat.com, dsahern@kernel.org, martin.lau@linux.dev,
-	eddyz87@gmail.com, song@kernel.org, yonghong.song@linux.dev,
-	john.fastabend@gmail.com, sdf@fomichev.me, haoluo@google.com,
-	pbonzini@redhat.com, corbet@lwn.net, linux-kernel@vger.kernel.org,
-	kvm@vger.kernel.org, asit.k.mallick@intel.com, tao1.zhang@intel.com,
-	bpf@vger.kernel.org, netdev@vger.kernel.org,
-	linux-doc@vger.kernel.org, martin.lau@kernel.org, clm@meta.com,
-	ihor.solodrai@linux.dev
-Subject: Re: [PATCH v7 07/10] x86/vmscape: Use static_call() for predictor
- flush
-Message-ID: <20260319180514.63l74goaku3nx6dg@desk>
-References: <20260319-vmscape-bhb-v7-7-b76a777a98af@linux.intel.com>
- <dfba37ee6cd5de8954bbc57d18af3e4865e35cdda8535d890ae6380e4a1cc0af@mail.kernel.org>
+   d="scan'208";a="260935524"
+Received: from ssimmeri-mobl2.amr.corp.intel.com (HELO [10.125.109.61]) ([10.125.109.61])
+  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Mar 2026 11:05:10 -0700
+Message-ID: <a14531ab-f069-41f9-8c5c-9fe6f28a9454@intel.com>
+Date: Thu, 19 Mar 2026 11:05:09 -0700
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <dfba37ee6cd5de8954bbc57d18af3e4865e35cdda8535d890ae6380e4a1cc0af@mail.kernel.org>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/2] x86/virt/tdx: Use PFN directly for mapping guest
+ private memory
+To: Yan Zhao <yan.y.zhao@intel.com>, seanjc@google.com, pbonzini@redhat.com,
+ dave.hansen@linux.intel.com
+Cc: tglx@kernel.org, mingo@redhat.com, bp@alien8.de, kas@kernel.org,
+ x86@kernel.org, linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
+ linux-coco@lists.linux.dev, kai.huang@intel.com, rick.p.edgecombe@intel.com,
+ yilun.xu@linux.intel.com, vannapurve@google.com, ackerleytng@google.com,
+ sagis@google.com, binbin.wu@linux.intel.com, xiaoyao.li@intel.com,
+ isaku.yamahata@intel.com
+References: <20260319005605.8965-1-yan.y.zhao@intel.com>
+ <20260319005703.8983-1-yan.y.zhao@intel.com>
+From: Dave Hansen <dave.hansen@intel.com>
+Content-Language: en-US
+Autocrypt: addr=dave.hansen@intel.com; keydata=
+ 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
+In-Reply-To: <20260319005703.8983-1-yan.y.zhao@intel.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Thu, Mar 19, 2026 at 04:56:52PM +0000, bot+bpf-ci@kernel.org wrote:
-> > diff --git a/arch/x86/kernel/cpu/bugs.c b/arch/x86/kernel/cpu/bugs.c
-> > index 68e2df3e3bf58..b75eda114503a 100644
-> > --- a/arch/x86/kernel/cpu/bugs.c
-> > +++ b/arch/x86/kernel/cpu/bugs.c
-> > @@ -144,6 +144,17 @@ EXPORT_SYMBOL_GPL(cpu_buf_idle_clear);
-> >   */
-> >  DEFINE_STATIC_KEY_FALSE(switch_mm_cond_l1d_flush);
-> >
-> > +/*
-> > + * Controls CPU Fill buffer clear before VMenter. This is a subset of
-> > + * X86_FEATURE_CLEAR_CPU_BUF, and should only be enabled when KVM-only
-> > + * mitigation is required.
-> > + */
-> > +DEFINE_STATIC_KEY_FALSE(cpu_buf_vm_clear);
-> > +EXPORT_SYMBOL_GPL(cpu_buf_vm_clear);
-> 
-> cpu_buf_vm_clear is defined and exported here but appears to have no
-> users. There is no declaration in any header, and nothing in this
-> patch series references it.
-> 
-> The comment describes CPU fill buffer clearing before VMenter, which
-> seems unrelated to the predictor flush static_call conversion that
-> this patch is doing. Was this included by mistake, or is it intended
-> for a follow-up series?
+On 3/18/26 17:57, Yan Zhao wrote:
+> Remove the completely unnecessary assumption that memory mapped into a TDX
+> guest is backed by refcounted struct page memory. From KVM's point of view,
+> TDH_MEM_PAGE_ADD and TDH_MEM_PAGE_AUG are glorified writes to PTEs, so they
+> have no business placing requirements on how KVM and guest_memfd manage
+> memory.
 
-Agh, that is introduced by a wrong conflict resolution during rebase,
-removed now.
+I think this goes a bit too far.
 
-> > +
-> > +DEFINE_STATIC_CALL_NULL(vmscape_predictor_flush, write_ibpb);
-> > +EXPORT_STATIC_CALL_GPL(vmscape_predictor_flush);
+It's one thing to say that it's more convenient for KVM to stick with
+pfns because it's what KVM uses now. Or, that the goals of using 'struct
+page' can be accomplished other ways. It's quite another to say what
+other bits of the codebase have "business" doing.
+
+Sean, can we tone this down a _bit_ to help guide folks in the future?
+
+> Rip out the misguided struct page assumptions/constraints and instead have
+
+Could we maybe tone down the editorializing a bit, please? Folks can
+have honest disagreements about this stuff while not being "misguided".
+
+> the two SEAMCALL wrapper APIs take PFN directly. This ensures that for
+> future huge page support in S-EPT, the kernel doesn't pick up even worse
+> assumptions like "a hugepage must be contained in a single folio".
+
+I don't really understand what this is saying.
+
+Is the concern that KVM might want to set up page tables for memory that
+differ from how it was allocated? I'm a bit worried that this assumes
+something about folios that doesn't always hold.
+
+I think the hugetlbfs gigantic support uses folios in at least a few
+spots today.
