@@ -1,305 +1,133 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E1B0C3F0A8F
-	for <kvm@vger.kernel.org>; Thu, 19 Mar 2026 17:49:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78EE837DEA7;
+	Thu, 19 Mar 2026 17:58:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773942583; cv=none; b=kX42OqDl2jXXXi13ZN5ggKixj4f+gYevHtPth/X2B/xx2u6WL7jzRG51xppShvCGW1Ze+d8Srm3UPl427QgPodUXSr5l9rkS+fTELSptwKTZIXefs2waXYqk+CjgzZ0D1tRGnKh0EJt+PjM2pP5DVNet4xJsJ5tW2UIudCodRXY=
+	t=1773943082; cv=none; b=H//nJGtc+i3KAfHk6SGQqNn5Hj647To91oTAoWtoGzQnLd8jy0Xl1pJM9CF9441hYEzhmVEKnrBbQ2b35Gq6+SKu8Q3ucAcvnzgGTKBzLX8qIb55kQ4630shD8py+7lxWxOTMv9Q0PJyGIOYfHnZFB+D3KegQQvkhUQhcHG0Ppk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773942583; c=relaxed/simple;
-	bh=15OwDpjPVEqvbaWjkk4er4AKZ2ReAaLl9VDhcSdaeFc=;
+	s=arc-20240116; t=1773943082; c=relaxed/simple;
+	bh=eZVsFu41f7EW+5iofFUYVXXLm/z15SzfvV5PinY5nWM=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ZiGAk/KvrctmF2CUx9bVeS7JlEalXlrSIXBSU15CL6eObR+obk9/TJzIS85K4aglvixU6cudZq4Vx3yDfw7slAH9YLb6J6bAjjmdw/DTxba1tZDr9BltPyYNikYaePFreBcBZYBYFgvBtKik8o1YL4DRT9a+FYVl1uIoc3cQH2I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=BB+aBK/i; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	 Content-Type:Content-Disposition:In-Reply-To; b=ptXtApeuBwt4SmkggwXEIUjig0Dewy9CUVXcR+7jcY/OE1JunUceP7GvpVAkEJoIuIbbq+pB+XCyLYIlgMaM9RcJxVjO5lKoWOP3xPu6Xj7blUcafMcFqmfEmRRM4rhe0Ds0eeKeE65ThL2pZZiBNDBQ+4kjf+cLJrjjSuuLeog=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=OWMB0MWv; arc=none smtp.client-ip=192.198.163.18
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="BB+aBK/i"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1773942573;
-	h=from:from:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:in-reply-to:in-reply-to:  references:references;
-	bh=uQyBZzCwXDXdpUeXAxqBqXapSeTVDkRFWVG1TMgWj/o=;
-	b=BB+aBK/iIZ4k3bm+TTjLCFd/CznTGDRMFR7VkaXFXTCQTxA5V2l3th8JysD64lgq+eq0uM
-	M4USDuF5CBd2u/7SWA5wbDK1HlbWQL55IF7H2ynXtYUwWc34XazYlIJAi8Tk27/XWKCr1U
-	eEuLxCpuxwGVSy3byQ8+mthLNVvEUTo=
-Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-505-MVPMckdeN5al8DVc57SLcQ-1; Thu,
- 19 Mar 2026 13:49:29 -0400
-X-MC-Unique: MVPMckdeN5al8DVc57SLcQ-1
-X-Mimecast-MFC-AGG-ID: MVPMckdeN5al8DVc57SLcQ_1773942568
-Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 7BA1E19560B9;
-	Thu, 19 Mar 2026 17:49:27 +0000 (UTC)
-Received: from redhat.com (unknown [10.44.33.194])
-	by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 840861955F21;
-	Thu, 19 Mar 2026 17:49:22 +0000 (UTC)
-Date: Thu, 19 Mar 2026 17:49:18 +0000
-From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
-To: Tommaso Califano <califano.tommaso@gmail.com>
-Cc: qemu-devel@nongnu.org, kvm@vger.kernel.org,
-	Eduardo Habkost <eduardo@habkost.net>,
-	Markus Armbruster <armbru@redhat.com>,
-	Zhao Liu <zhao1.liu@intel.com>,
-	Marcelo Tosatti <mtosatti@redhat.com>,
-	Eric Blake <eblake@redhat.com>,
-	Oliver Steffen <osteffen@redhat.com>,
-	Stefano Garzarella <sgarzare@redhat.com>,
-	Giuseppe Lettieri <giuseppe.lettieri@unipi.it>,
-	Paolo Bonzini <pbonzini@redhat.com>,
-	Luigi Leonardi <leonardi@redhat.com>,
-	Richard Henderson <richard.henderson@linaro.org>
-Subject: Re: [PATCH 1/5] i386/sev: Add sev-emulated QOM object with TCG
- support
-Message-ID: <abw3HqBJqEWiY7GP@redhat.com>
-Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
-References: <20260317113840.33017-1-califano.tommaso@gmail.com>
- <20260317113840.33017-2-califano.tommaso@gmail.com>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="OWMB0MWv"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1773943081; x=1805479081;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=eZVsFu41f7EW+5iofFUYVXXLm/z15SzfvV5PinY5nWM=;
+  b=OWMB0MWvTYyr8l6aU/0eWytqf3MlZNR+51VDDW2bsQxo7eL9qgIqMNXh
+   grcVWhzBSdTFpR8NrjQ204PTNf4cawtTOzXVIfeHd35wi/DcicuwToP8O
+   TNYME8X9YpnWMFWsz5W2hskMLQ/yt7SSmMJ6gT2O8HRRLpVAUFRiT6fPT
+   GAeQE//qxPjBaYMl7FLMpUvukI9sf6x7j8DP2+7RzK4NAAczor4/j6cef
+   axGFbK9nSjCklHnZEJ5TcF8xCZtZ8WUOqfQ0z9PR4fdTFKxH/kdzyC3ng
+   NCs7++Z+Fko8nvIGkRN4qJIQN/z2MASEK/sTPqyU4Yl+1vbueIdgrhtRZ
+   Q==;
+X-CSE-ConnectionGUID: 9fYvC+QETy6uwFOlmUsUbg==
+X-CSE-MsgGUID: +0XYh0y+RZuAgz0XwbPB0g==
+X-IronPort-AV: E=McAfee;i="6800,10657,11734"; a="74202504"
+X-IronPort-AV: E=Sophos;i="6.23,129,1770624000"; 
+   d="scan'208";a="74202504"
+Received: from orviesa008.jf.intel.com ([10.64.159.148])
+  by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Mar 2026 10:58:00 -0700
+X-CSE-ConnectionGUID: sYHF8pOnQBuZgqulXcEjsQ==
+X-CSE-MsgGUID: zbDeFkTUT5idDvwlfyMmZQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.23,129,1770624000"; 
+   d="scan'208";a="223062364"
+Received: from guptapa-desk.jf.intel.com (HELO desk) ([10.165.239.46])
+  by orviesa008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Mar 2026 10:57:59 -0700
+Date: Thu, 19 Mar 2026 10:57:53 -0700
+From: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
+To: bot+bpf-ci@kernel.org
+Cc: x86@kernel.org, nik.borisov@suse.com, hpa@zytor.com,
+	jpoimboe@kernel.org, david.kaplan@amd.com, seanjc@google.com,
+	bp@alien8.de, dave.hansen@linux.intel.com, peterz@infradead.org,
+	ast@kernel.org, daniel@iogearbox.net, andrii@kernel.org,
+	kpsingh@kernel.org, jolsa@kernel.org, davem@davemloft.net,
+	david.laight.linux@gmail.com, luto@kernel.org, tglx@kernel.org,
+	mingo@redhat.com, dsahern@kernel.org, martin.lau@linux.dev,
+	eddyz87@gmail.com, song@kernel.org, yonghong.song@linux.dev,
+	john.fastabend@gmail.com, sdf@fomichev.me, haoluo@google.com,
+	pbonzini@redhat.com, corbet@lwn.net, linux-kernel@vger.kernel.org,
+	kvm@vger.kernel.org, asit.k.mallick@intel.com, tao1.zhang@intel.com,
+	bpf@vger.kernel.org, netdev@vger.kernel.org,
+	linux-doc@vger.kernel.org, martin.lau@kernel.org, clm@meta.com,
+	ihor.solodrai@linux.dev
+Subject: Re: [PATCH v7 10/10] x86/vmscape: Add cmdline vmscape=on to override
+ attack vector controls
+Message-ID: <20260319175753.ocv7mv5hogscptvk@desk>
+References: <20260319-vmscape-bhb-v7-10-b76a777a98af@linux.intel.com>
+ <a0134d85926936821c00147b9602b4f977519556e163ebd59dee2307c7618fb1@mail.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260317113840.33017-2-califano.tommaso@gmail.com>
-User-Agent: Mutt/2.2.14 (2025-02-20)
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
+In-Reply-To: <a0134d85926936821c00147b9602b4f977519556e163ebd59dee2307c7618fb1@mail.kernel.org>
 
-On Tue, Mar 17, 2026 at 12:38:36PM +0100, Tommaso Califano wrote:
-> With this change it is possible to run a VM with the SEV CPUID active
-> adding:
+On Thu, Mar 19, 2026 at 04:40:21PM +0000, bot+bpf-ci@kernel.org wrote:
+> > diff --git a/Documentation/admin-guide/kernel-parameters.txt b/Documentation/admin-guide/kernel-parameters.txt
+> > --- a/Documentation/admin-guide/kernel-parameters.txt
+> > +++ b/Documentation/admin-guide/kernel-parameters.txt
+> > @@ -8375,9 +8375,11 @@
+> >
+> >  			off		- disable the mitigation
+> >  			ibpb		- use Indirect Branch Prediction Barrier
+> > -					  (IBPB) mitigation (default)
+> > +					  (IBPB) mitigation
+> >  			force		- force vulnerability detection even on
+> >  					  unaffected processors
+> > +			on		- (default) selects IBPB or BHB clear
+> > +					  mitigation based on CPU
 > 
->     -accel tcg \
->     -object sev-emulated,id=sev0,cbitpos=47,reduced-phys-bits=1 \
->     -machine memory-encryption=sev0
-
-snip
-
-> diff --git a/qapi/qom.json b/qapi/qom.json
-> index c653248f85..35cda819ec 100644
-> --- a/qapi/qom.json
-> +++ b/qapi/qom.json
-> @@ -1057,6 +1057,19 @@
->              '*handle': 'uint32',
->              '*legacy-vm-type': 'OnOffAuto' } }
->  
-> +##
-> +# @SevEmulatedProperties:
-> +#
-> +# Properties for sev-emulated objects.
-> +# This object functionally emulates AMD SEV hardware via TCG, so
-> +# it does not require real hardware to run.
-> +#
-> +# Since: 10.1.0
-> +##
-> +{ 'struct': 'SevEmulatedProperties',
-> +  'base': 'SevGuestProperties',
-> +  'data': {}}
-
-This is deriving 'sev-emulated' from 'sev-guest' which means it
-supports all the properties that 'sev-guest' does, which for
-the record is:
-
- sev-guest options:
-  dh-cert-file=<string>  - guest owners DH certificate (encoded with base64)
-  kernel-hashes=<bool>   - add kernel hashes to guest firmware for measured Linux boot
-  legacy-vm-type=<OnOffAuto> - use legacy VM type to maintain measurement compatibility with older QEMU or kernel versions.
-  session-file=<string>  - guest owners session parameters (encoded with base64)
-  sev-device=<string>    - SEV device to use
-
-
-Of those properties
-
- * dh-cert-file + session-file are traditionally used
-   as a means to transfer the TIK+TEK to the SEV firmware,
-   with wrapping to protect them from the hypervisor.
-
-   These can't be used with sev-emulated, as implemented,
-   since they require a key derivation  from the PDH, a
-   concept which IIUC is not implemented in this series.
-
-   Instead, in a later patch 'tik' and 'tek' properties
-   are added to 'sev-emulated', and to pass the TIK+TEK
-   in clear text.
-
- * sev-device + legacy-vm-type - these are only relevant
-   to the KVM integration, so not applicable for emulation
-
- * kernel-hashes - would be relevant if formally emulating
-   LAUNCH_UPDATE_DATA for attestation, but IIUC, this is
-   not done/used by this series
-  
-
-IOW, we're deriving from 'sev-guest' but AFAICT none of
-its properties are relevant to the emulation. The
-dh-cert-file and session-file could potentially be
-relevant if implementing the PDH concept and key
-derivation, but that's not done, instead the tik/tek
-are passed explicitly.
-
-What is the value we get from this sev-guest -> sev-emulated
-inheritance ?  My gut feeling is that this perhaps isn't
-the right way to be modelling things unless there's a plan
-for future work that would benefit from them.
-
-Another question related to modelling is whether there is
-an intention to support SEV-SNP at a later date, would that
-imply a sev-snp-emulated object type too ? If so, would it
-inherit from sev-emulated or from sev-snp-guest ?
-
-> +
->  ##
->  # @SevSnpGuestProperties:
->  #
-> @@ -1241,6 +1254,7 @@
->      { 'name': 'secret_keyring',
->        'if': 'CONFIG_SECRET_KEYRING' },
->      'sev-guest',
-> +    'sev-emulated',
->      'sev-snp-guest',
->      'thread-context',
->      's390-pv-guest',
-> @@ -1318,6 +1332,7 @@
->        'secret_keyring':             { 'type': 'SecretKeyringProperties',
->                                        'if': 'CONFIG_SECRET_KEYRING' },
->        'sev-guest':                  'SevGuestProperties',
-> +      'sev-emulated':               'SevEmulatedProperties',
->        'sev-snp-guest':              'SevSnpGuestProperties',
->        'tdx-guest':                  'TdxGuestProperties',
->        'thread-context':             'ThreadContextProperties',
-> diff --git a/target/i386/sev.c b/target/i386/sev.c
-> index 9dde972c11..2502e860e2 100644
-> --- a/target/i386/sev.c
-> +++ b/target/i386/sev.c
-> @@ -51,6 +51,7 @@
->  
->  OBJECT_DECLARE_TYPE(SevCommonState, SevCommonStateClass, SEV_COMMON)
->  OBJECT_DECLARE_TYPE(SevGuestState, SevCommonStateClass, SEV_GUEST)
-> +OBJECT_DECLARE_TYPE(SevEmulatedState, SevCommonStateClass, SEV_EMULATED)
->  OBJECT_DECLARE_TYPE(SevSnpGuestState, SevCommonStateClass, SEV_SNP_GUEST)
->  
->  /* hard code sha256 digest size */
-> @@ -177,6 +178,21 @@ struct SevGuestState {
->      OnOffAuto legacy_vm_type;
->  };
->  
-> +/**
-> + * SevEmulatedState:
-> + *
-> + * The SevEmulatedState object is used for creating and managing a SEV emulated
-> + * guest.
-> + *
-> + * # $QEMU \
-> + *         -object sev-emulated,id=sev0 \
-> + *         -machine ...,memory-encryption=sev0
-> + */
-> +
-> +typedef struct SevEmulatedState {
-> +    SevGuestState parent_obj;
-> +} SevEmulatedState;
-> +
->  struct SevSnpGuestState {
->      SevCommonState parent_obj;
->  
-> @@ -2936,6 +2952,46 @@ sev_guest_instance_init(Object *obj)
->      sev_guest->legacy_vm_type = ON_OFF_AUTO_AUTO;
->  }
->  
-> +static int sev_emulated_init(ConfidentialGuestSupport *cgs, Error **errp)
-> +{
-> +    SevCommonState *sev_common = SEV_COMMON(cgs);
-> +
-> +    /*
-> +     * The cbitpos value will be placed in bit positions 5:0 of the EBX
-> +     * register of CPUID 0x8000001F. We need to verify the range as the
-> +     * comparison with the host cbitpos is missing.
-> +     */
-> +    if (sev_common->cbitpos < 32 ||
-> +        sev_common->cbitpos > 63) {
-> +        error_setg(errp, "%s: cbitpos check failed, requested '%d',"
-> +                   "the firmware requires >=32",
-> +                   __func__, sev_common->cbitpos);
-> +        return -1;
-> +    }
-> +
-> +    /*
-> +     * The reduced-phys-bits value will be placed in bit positions 11:6 of
-> +     * the EBX register of CPUID 0x8000001F, so verify the supplied value
-> +     * is in the range of 1 to 63.
-> +     */
-> +    if (sev_common->reduced_phys_bits < 1 ||
-> +        sev_common->reduced_phys_bits > 63) {
-> +        error_setg(errp, "%s: reduced_phys_bits check failed,"
-> +                   " it should be in the range of 1 to 63, requested '%d'",
-> +                   __func__, sev_common->reduced_phys_bits);
-> +        return -1;
-> +    }
-> +    cgs->ready = true;
-> +    return 0;
-> +}
-> +
-> +static void sev_emulated_class_init(ObjectClass *oc, const void *data)
-> +{
-> +    ConfidentialGuestSupportClass *klass = CONFIDENTIAL_GUEST_SUPPORT_CLASS(oc);
-> +    /* Override the sev-common method that uses kvm */
-> +    klass->kvm_init = sev_emulated_init;
-> +}
-> +
->  /* guest info specific sev/sev-es */
->  static const TypeInfo sev_guest_info = {
->      .parent = TYPE_SEV_COMMON,
-> @@ -2945,6 +3001,14 @@ static const TypeInfo sev_guest_info = {
->      .class_init = sev_guest_class_init,
->  };
->  
-> +/* emulated sev */
-> +static const TypeInfo sev_emulated_info = {
-> +    .parent = TYPE_SEV_GUEST,
-> +    .name = TYPE_SEV_EMULATED,
-> +    .instance_size = sizeof(SevEmulatedState),
-> +    .class_init = sev_emulated_class_init
-> +};
-> +
->  static void
->  sev_snp_guest_get_policy(Object *obj, Visitor *v, const char *name,
->                           void *opaque, Error **errp)
-> @@ -3207,6 +3271,7 @@ static void
->  sev_register_types(void)
->  {
->      type_register_static(&sev_common_info);
-> +    type_register_static(&sev_emulated_info);
->      type_register_static(&sev_guest_info);
->      type_register_static(&sev_snp_guest_info);
->  }
-> diff --git a/target/i386/sev.h b/target/i386/sev.h
-> index 4358df40e4..839656e2be 100644
-> --- a/target/i386/sev.h
-> +++ b/target/i386/sev.h
-> @@ -33,6 +33,7 @@ bool sev_snp_enabled(void);
->  #if !defined(CONFIG_USER_ONLY)
->  
->  #define TYPE_SEV_COMMON "sev-common"
-> +#define TYPE_SEV_EMULATED "sev-emulated"
->  #define TYPE_SEV_GUEST "sev-guest"
->  #define TYPE_SEV_SNP_GUEST "sev-snp-guest"
->  
-> -- 
-> 2.53.0
+> Is the "(default)" label accurate here?  The code default is
+> VMSCAPE_MITIGATION_AUTO, not VMSCAPE_MITIGATION_ON:
 > 
+>     static enum vmscape_mitigations vmscape_mitigation __ro_after_init =
+>         IS_ENABLED(CONFIG_MITIGATION_VMSCAPE) ?
+>             VMSCAPE_MITIGATION_AUTO : VMSCAPE_MITIGATION_NONE;
+> 
+> In vmscape_select_mitigation(), AUTO and ON take the same switch
+> path for selecting between BHB clear and IBPB.  But AUTO goes
+> through this check first:
+> 
+>     if ((vmscape_mitigation == VMSCAPE_MITIGATION_AUTO) &&
+>         !should_mitigate_vuln(X86_BUG_VMSCAPE))
+>         vmscape_mitigation = VMSCAPE_MITIGATION_NONE;
+> 
+> ON skips that check, which is the whole point of this commit per
+> the subject line ("override attack vector controls").
+> 
+> A sysadmin reading "on (default)" would conclude that not passing
+> any option gives the same behavior as vmscape=on, but the actual
+> default respects attack vector controls while vmscape=on overrides
+> them.
 
-With regards,
-Daniel
--- 
-|: https://berrange.com       ~~        https://hachyderm.io/@berrange :|
-|: https://libvirt.org          ~~          https://entangle-photo.org :|
-|: https://pixelfed.art/berrange   ~~    https://fstop138.berrange.com :|
+Thats a valid point. Updating the documentation as below:
 
+diff --git a/Documentation/admin-guide/kernel-parameters.txt b/Documentation/admin-guide/kernel-parameters.txt
+index 1068569be5cf..98204d464477 100644
+--- a/Documentation/admin-guide/kernel-parameters.txt
++++ b/Documentation/admin-guide/kernel-parameters.txt
+@@ -8381,8 +8381,10 @@ Kernel parameters
+ 					  (IBPB) mitigation
+ 			force		- force vulnerability detection even on
+ 					  unaffected processors
+-			on		- (default) selects IBPB or BHB clear
++			auto		- (default) use IBPB or BHB clear
+ 					  mitigation based on CPU
++			on		- same as "auto", but override attack
++					  vector control
+ 
+ 	vsyscall=	[X86-64,EARLY]
+ 			Controls the behavior of vsyscalls (i.e. calls to
