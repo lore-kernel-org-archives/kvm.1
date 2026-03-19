@@ -1,210 +1,186 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A689337BE96;
-	Thu, 19 Mar 2026 09:35:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=198.175.65.16
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773912960; cv=fail; b=aY9vbK6HzNmTgt3727IbRgq9z79c79iYa6mJl8ZbJ18hm4tjfqEVH1R8c5LtuuPidSbzkSoKGv9nJ0NiMJ5FOn2Jtoz8KO/GeWo/ijjORtdDTbMxX7C3cbVAHYjokrYodQHKNHL+otEzfykC24/WeYRFohq6eVQHPW3DRaqzqH4=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773912960; c=relaxed/simple;
-	bh=/l4QsMaWqBNxo9QnQYsnTKCWl0P8PbokUvG/Bfo+sIs=;
-	h=Date:From:To:CC:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=I1Ixo2zdgw8WbQAVBLAOrCcOHOldPhbkbqQugEizGcDfXyIO05Aqlk8mKFz5nW20w9+GOtK54TvVDy5KpnyMzxYU4YnOWSws85f6kQo90dAu4U6HpUpRjwJpAI6uVFbTA9UgKqgkTjtpC2U/1y3Vq1cVGbxVuWP4AY9bYKsiekI=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=e/+oMa6n; arc=fail smtp.client-ip=198.175.65.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A53F377EC6
+	for <kvm@vger.kernel.org>; Thu, 19 Mar 2026 10:11:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1773915116; cv=none; b=DNCZxwgplIjSDdP4JCLFTyQoyYQyO/oXy56uj4TdkowJFZTAWtJisn8r3SMmyrLh60rMCjKerzzmANNdiJBv2qEvVw3RTMIQXhcuiKzkRnnauVbCsdQfO6HdMAJmhQrmPt6MMOhLbOcpSzeXsF7tXP3BDbe8SZFMs0SbY4TcFqY=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1773915116; c=relaxed/simple;
+	bh=zaMaApMen/YK6q9xt4304b2ty5iJPBYTgPPykaOFfpY=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=hs6Sl3o5QzMpDh3H2FMqqJ/B7eh8v+8+P4HpV72zVg8832mvPwiaRSFEzWW54BUtVr0B9oDq3WW9/WZYjmWV0EKL3XxDsgXNl191fBxmixd9iudWXJAPjqmmKe4CrC46tAogbgrBUwQ/z7e9dCmfi5hRckzt2yMYyiTCUPyH+DY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=OYKVBsvr; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=WJQ+E9n0; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="e/+oMa6n"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1773912958; x=1805448958;
-  h=date:from:to:cc:subject:message-id:reply-to:references:
-   in-reply-to:mime-version;
-  bh=/l4QsMaWqBNxo9QnQYsnTKCWl0P8PbokUvG/Bfo+sIs=;
-  b=e/+oMa6nTcFLbPqS55NpBL9KtCA13A+esKj6Md+BKO4hECIr6A+YyTkI
-   Ct5zKQ+FbuGtlIjImO+Xw1LKso92vIUNCj4EfjT5GfMagEgrcXj+yOto8
-   0WZCouRuvfciY76ckRpjsWEiEX3qaFhkkTY1LeUXfM66ghD8GPvftG/3L
-   eXO+499MuhzRjOo0VZOKbngds/ZgT43YTstpdcWI0gHvYCy1SHwBiMIEg
-   KJb9FrHDuxAHkjssCNNFOEA3DoWJMjV0Z2Awz2C+I+0Esj0XveJa0K9bL
-   s5jioltidGxu9VVG+tKYhAzPCodML6j48D93a3YX8xjlBtJkJoHb5nqki
-   Q==;
-X-CSE-ConnectionGUID: E94R8pQgSBu41GN5ta7Z0w==
-X-CSE-MsgGUID: CifdqAvTQ3ut3u6Y5zsqqg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11733"; a="75164435"
-X-IronPort-AV: E=Sophos;i="6.23,129,1770624000"; 
-   d="scan'208";a="75164435"
-Received: from orviesa002.jf.intel.com ([10.64.159.142])
-  by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Mar 2026 02:35:58 -0700
-X-CSE-ConnectionGUID: +bayd/EFSCy2f8b+kJpNWQ==
-X-CSE-MsgGUID: gouaWUOgRJ61ze/VajqaHg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,129,1770624000"; 
-   d="scan'208";a="253388042"
-Received: from fmsmsx901.amr.corp.intel.com ([10.18.126.90])
-  by orviesa002.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Mar 2026 02:35:57 -0700
-Received: from FMSMSX901.amr.corp.intel.com (10.18.126.90) by
- fmsmsx901.amr.corp.intel.com (10.18.126.90) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.37; Thu, 19 Mar 2026 02:35:56 -0700
-Received: from fmsedg902.ED.cps.intel.com (10.1.192.144) by
- FMSMSX901.amr.corp.intel.com (10.18.126.90) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.37 via Frontend Transport; Thu, 19 Mar 2026 02:35:56 -0700
-Received: from CH5PR02CU005.outbound.protection.outlook.com (40.107.200.63) by
- edgegateway.intel.com (192.55.55.82) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.37; Thu, 19 Mar 2026 02:35:55 -0700
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=TH0oZvc3jYRmnulH6HmXkXZD+xOVJvgOYmp4thJ5xI/dLXJpccE8zP1Q+8H07Aaiuy/U8YHaRMCuzcTRP/EQZ3Qm0K8C+SG+VQJgeeAEuHRhNk8U9rgzxdIYMw1aHX/vi83xfpJjA3gKJLr26KqdIdW+1SrrzQVJIEXsFm5wFVLp+aSQayF+GU8IRWXseZfAq9vH2cZpyssmXIgTzDVuqvEvAY9nT/AKkxWgFPDB5AbuJFx5z67WaAcc/9Z99FpU4zdLqWg146kAXZY4hXZ35I23vb+w5tYr96tHXyH/dVVuoqGRr5bSMt5BOjD7xRBDJD0ZAZzu+EMjZQEQW5oe1w==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=P1gpQZP/Lb67qqY4LxgAtoxIgazHR1GRJGvsb6K92TA=;
- b=FfLC5AUPFJP0PpKaNn//6ov/1kluUtGILpXOziTpn9vUznTPeECBvwB2VK9aVd6a1wQhyH5gaBVdrPrB7Q/R3+F5Wp/N9suzbpYDwevu3c7tBNF5ayzLfLhNEl7OCS1BjGbF/tvRIq2ZmertVKgow/H1ErtYzh1OTt4yUSBVvnOOWl/DbQHkfxzYHrDq8VJLjnAwrHyALYqMtnkVrnJli2Otrea8KnrVopSfHxL6ewTvuZlBOm4bOvo3pN7GC/DEvJ6vWlEl7IcWmsKbK0zVNQ4bcAj3MCETEqbWfXHn/5KgOWt4J5QOheTkx0XkL4WOaDjlP00MVzt7SunwgFsv/Q==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-Received: from PH0PR11MB7472.namprd11.prod.outlook.com (2603:10b6:510:28c::12)
- by SJ1PR11MB6179.namprd11.prod.outlook.com (2603:10b6:a03:45a::17) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9745.9; Thu, 19 Mar
- 2026 09:35:46 +0000
-Received: from PH0PR11MB7472.namprd11.prod.outlook.com
- ([fe80::1bad:44dd:4e60:6475]) by PH0PR11MB7472.namprd11.prod.outlook.com
- ([fe80::1bad:44dd:4e60:6475%5]) with mapi id 15.20.9745.007; Thu, 19 Mar 2026
- 09:35:46 +0000
-Date: Thu, 19 Mar 2026 16:56:17 +0800
-From: Yan Zhao <yan.y.zhao@intel.com>
-To: Xiaoyao Li <xiaoyao.li@intel.com>
-CC: <seanjc@google.com>, <pbonzini@redhat.com>, <dave.hansen@linux.intel.com>,
-	<tglx@kernel.org>, <mingo@redhat.com>, <bp@alien8.de>, <kas@kernel.org>,
-	<x86@kernel.org>, <linux-kernel@vger.kernel.org>, <kvm@vger.kernel.org>,
-	<linux-coco@lists.linux.dev>, <kai.huang@intel.com>,
-	<rick.p.edgecombe@intel.com>, <yilun.xu@linux.intel.com>,
-	<vannapurve@google.com>, <ackerleytng@google.com>, <sagis@google.com>,
-	<binbin.wu@linux.intel.com>, <isaku.yamahata@intel.com>
-Subject: Re: [PATCH 2/2] x86/virt/tdx: Use PFN directly for unmapping guest
- private memory
-Message-ID: <abu6MVdXar3MmTdF@yzhao56-desk.sh.intel.com>
-Reply-To: Yan Zhao <yan.y.zhao@intel.com>
-References: <20260319005605.8965-1-yan.y.zhao@intel.com>
- <20260319005808.9013-1-yan.y.zhao@intel.com>
- <623ac08e-07a7-4823-bd0a-777d8df5c128@intel.com>
- <abubmi7BjMwgnrvC@yzhao56-desk.sh.intel.com>
- <b74acb4b-4658-4113-9fce-9faf972975c4@intel.com>
-Content-Type: text/plain; charset="us-ascii"
-Content-Disposition: inline
-In-Reply-To: <b74acb4b-4658-4113-9fce-9faf972975c4@intel.com>
-X-ClientProxiedBy: TPYP295CA0026.TWNP295.PROD.OUTLOOK.COM
- (2603:1096:7d0:a::20) To DS0PR11MB7457.namprd11.prod.outlook.com
- (2603:10b6:8:140::18)
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="OYKVBsvr";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="WJQ+E9n0"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1773915113;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=8k2dL6NiY1MZVbnAT4dWt1HFJQUIJsjtqhbLDfxcAs8=;
+	b=OYKVBsvruhd0vjCkMASjZwh3TDoz0AE2FZodX91Wa9b9Z7+uCnqOEl7tCuECKSnAw3O1ZH
+	YDHAokqKo3lpih7kwRyCvv2wrUXFZWCeRO2RUW6n94ehP2XVkilwC2UO0wNkYW7HaevhX7
+	2pPCGs2USI5SY/1HNojmObrkObsyRpk=
+Received: from mail-pf1-f199.google.com (mail-pf1-f199.google.com
+ [209.85.210.199]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-260-xwyStnWwN363T-HwRHZdKw-1; Thu, 19 Mar 2026 06:11:50 -0400
+X-MC-Unique: xwyStnWwN363T-HwRHZdKw-1
+X-Mimecast-MFC-AGG-ID: xwyStnWwN363T-HwRHZdKw_1773915110
+Received: by mail-pf1-f199.google.com with SMTP id d2e1a72fcca58-829a9d3073bso744901b3a.2
+        for <kvm@vger.kernel.org>; Thu, 19 Mar 2026 03:11:50 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=redhat.com; s=google; t=1773915109; x=1774519909; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=8k2dL6NiY1MZVbnAT4dWt1HFJQUIJsjtqhbLDfxcAs8=;
+        b=WJQ+E9n08Yb7d6VSXTK4xjDv9J2TkV0H8cLlbjNOaI9422wWJKzmZRw0SqNEDJtPpz
+         mXmkqFHGuym+m2H/0pkBQ3SnMrJyEUPMWHrv7vGQVi0lhu5HmsAvIYS3ogClZ6Dmh39o
+         SnuHdAsIuW6C0rUgKtEXwZZD5QzFMKS4Pgvxwsj7xxJL1LMBibScZEC2nmGy7aVgxWUk
+         +IhdEW/imLkuVs8Tjn54jZm0N+ocpobjkOonp/nJ5iSR/bnJ0Xk+jIhFa/MqXo99pEKN
+         dGTOab5i4LDhZuP2vf/RXMv5jy+JkA7vt2kdwECV8urGztMBFOrEmrNgpmWxw4EVsyuD
+         ttsw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1773915109; x=1774519909;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=8k2dL6NiY1MZVbnAT4dWt1HFJQUIJsjtqhbLDfxcAs8=;
+        b=ZqxRiRS2biDPZoHeJeuSjjcstHq5ZgbhQe+ABLp/TmaZUuZF1ju4DAmiABkYiZWqby
+         RifOIObRaJ7sdgxn6kk0rDtWENuxwWm+TGd7YKEpejh1iWjUrBWCIarDJeEiLeQ+q3J1
+         Tqy2RXoOWlrH57uGsgw80OlZgR5es2aeZmklf5luAGFuQgCsMAO9dHjLa3GPza28a8yF
+         wgW+vqLaivLkJseTFHwJ4MFbu3Ug4p8mXqb3XEov6jNBW7ukguunm0NPs60CMTyguHB3
+         895OmAhs61WhqBscphOtprcbBynpB2oHonen+Cu8cFEGhREOQgCGkvf4LOr9VvczC7XJ
+         9rmw==
+X-Forwarded-Encrypted: i=1; AJvYcCXC1fwVO/+gQhGZw7696XbgX9X+j6Jy65gToUdvhr4jyFM52w7TvXgn3hWM8Y9UeLimyZ8=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzaKS68r9FSS28WZBCciM+5ievfP15sa8I/LwAP2Hi7Ym+opoDx
+	0lNssxhi8oZ0VJgy6HV+ABi9GXU1dD3Cxx4zbsFtjhrQqfW45uK1m2ncCIFEmpXeuOF1wYXtO6o
+	gZeqSiMW+tDjdUwDEhpHxDZ+ZRigG4DpZ6WFpKpAKgEjpigWCYSGDJQ==
+X-Gm-Gg: ATEYQzygOHXlSloYDzAIQAHrEB88ppOzsKp7kxeffVRaJWDKZyGUvAIaglw1419Och1
+	IZQJ0hqWuMjaYQhrxou8r2bW5F49FhBKkEERCoSlMbvGpJNFjC9WILX2i7tewkJ9jnAopMxpQ0g
+	u1wc5cgm/R3eJelKphLfOu9DbIErXmCnAYjtss4zCiJqAr+RY3QpaxfW+gPNGhQSaYceQVNF8mR
+	LsxOZVBHFhQBjgjxyFRjJPokYvW7Jkj+uFbFW/I3Uuvj1mUz+NP+qgqeHl4LBLBath2KJuGdQzZ
+	lTTbTZNkVajuOFM1GJDJxZkaZvjyzyW1UU0J/a0QeC25VZU1J5TXlPymAu/uIIlbmK7R0UPoUPe
+	ld94ujlCMxSHug3n0GngDRZ1ASFNYWV+duHO3mO+KBvSotdhhtxdykV0=
+X-Received: by 2002:a05:6a00:a85:b0:82a:17b8:1474 with SMTP id d2e1a72fcca58-82a6ac3a360mr6470392b3a.1.1773915109491;
+        Thu, 19 Mar 2026 03:11:49 -0700 (PDT)
+X-Received: by 2002:a05:6a00:a85:b0:82a:17b8:1474 with SMTP id d2e1a72fcca58-82a6ac3a360mr6470368b3a.1.1773915109099;
+        Thu, 19 Mar 2026 03:11:49 -0700 (PDT)
+Received: from rhel9-box.lan ([122.163.114.34])
+        by smtp.googlemail.com with ESMTPSA id d2e1a72fcca58-82a6bbb2f34sm5594319b3a.30.2026.03.19.03.11.46
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 19 Mar 2026 03:11:48 -0700 (PDT)
+From: Ani Sinha <anisinha@redhat.com>
+To: Paolo Bonzini <pbonzini@redhat.com>,
+	Marcelo Tosatti <mtosatti@redhat.com>
+Cc: Ani Sinha <anisinha@redhat.com>,
+	philmd@linaro.org,
+	Michale Tokarev <mjt@tls.msk.ru>,
+	kvm@vger.kernel.org,
+	qemu-devel@nongnu.org
+Subject: [PATCH for-11.0 2/2] i386/hyperv: add stubs for synic enablement
+Date: Thu, 19 Mar 2026 15:41:28 +0530
+Message-ID: <20260319101128.116301-3-anisinha@redhat.com>
+X-Mailer: git-send-email 2.42.0
+In-Reply-To: <20260319101128.116301-1-anisinha@redhat.com>
+References: <20260319101128.116301-1-anisinha@redhat.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PH0PR11MB7472:EE_|SJ1PR11MB6179:EE_
-X-MS-Office365-Filtering-Correlation-Id: 38c5a792-d2c9-4a20-8d41-08de859ae4f9
-X-LD-Processed: 46c98d88-e344-4ed4-8496-4ed7712e255d,ExtAddr
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|376014|7416014|1800799024|7053199007|56012099003|18002099003|22082099003;
-X-Microsoft-Antispam-Message-Info: j5Pvrkw3Zg5D7lrE4B9BggDA4ugTOIiyqv/AhsS98XcWQ2XZzGrQeJqeGv0B9NdOjr5mtgiOKwhwi92E3Mg4FwjphThp7YebN7CTcia81SSfYnV2I58KFuGNoAxwXHDRQzRcCuOG7j+7/lxBgOhVEQUsWPGM2gmX/R3Kfihe3HLwGRU1hr/FAD3IL/YE+yujAIaII1x89YSR8uJWX9rgrLtyto9cRICgtodGA7c3JH6fUBFHIXNiwNWI3NUzk5GkUdOSeZNzZi9oqac3VBWKcjqLfrVpTwc9hmAEXh+dJ3wLOegAAD8w/HeGUb8D7v5EtGlotuws4cqwqufJTGLKzbwfzY9NQ7l8Qw1sGf2Porco+emT5///IiZeTFMm5IU7vLEwmL5SBXcM6hDw36pOoypz5r9e3zAU5BfzMLakpDcXzd9DAoAqBS5t08Es41ua7akKLOvNkRVHAyIJPGjXW5yGmLRARub0JQCUCSCcH8MFm27ZN97Og/D1Mkk9EVmCW5VJf9gCQ6NS8rTsBFxGFzaw8TT5PRNgxS45p7SmMECjtvIlnovI4BomtU5TNdPXL4itFOlvBdrUZO7AVQYOQl4hgHPk6DFsIxBh9FFUy+dX8xvoXFKsWb4/tiETT7MLHedVA2y9f7pX+aD+ZlQ8/tYfrWxpAWzSQnmuj0OBNOtS5RIjgnSlWgDeO1SxNWo5igkb8RPpmnSCdnYt3CNsyep5atkEiwp4uve2lQDMGTE=
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH0PR11MB7472.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(376014)(7416014)(1800799024)(7053199007)(56012099003)(18002099003)(22082099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?K8iB2aRpg4xpnMcPfI1aX0/LklT0BiJjEXFvY0d6d0G02QKGSrw+FyDy5S9Z?=
- =?us-ascii?Q?Gf3R8+sBtFGEhucMsSn3cXDc136gn4R/Zm81NwgfVc75e7MKlXs369ud03tP?=
- =?us-ascii?Q?LKbzPFGEMVZUbn7ATeCHGT5NE+JHBf5E8g+DuQ73q7uLAl1BPGga8r9HDN8e?=
- =?us-ascii?Q?ufpHUv6oeq3eUj/qsyUv4yK+vL8Qd6KaLnOyM0qvGVhiV4DUlHzKTEXLEE5d?=
- =?us-ascii?Q?IEM/0UChn7aci2vsHR+Mi21GI1WsLEoLxYsZYbvOnnSBFRCzo9qCh/7+F6Iy?=
- =?us-ascii?Q?9famYKYFxojMCBU5I1rkVsMzVDOgIq+bgcaCMJOJo0OXYmZZIdSn9FD3TUr1?=
- =?us-ascii?Q?U+X28agKNHPdjekpFNngTp0FlvI1WHwzOCulrUsOyiv9qX9uBgkaUc5MJmto?=
- =?us-ascii?Q?fCRb5Q1XzILfwrzPWS/ETnepfBQT67YTWicldARubJnR/b7UIvcQHbjYYpvY?=
- =?us-ascii?Q?RVmAAlxnW+c5OpXv04lPUJ/+xlI0VRQ7xitqMuZc3/TB29PLW0B62MINvprS?=
- =?us-ascii?Q?ErvvZOTlJZe2UaXXys8FAMk/CqYN/FloUWGK2hw3YYJG5XPB2hAcRN9Y0V8i?=
- =?us-ascii?Q?4NdMkrZPpan9r437hHB88rkUdpsI/KhTeapNljPtbjh6dza06h7aemCLuRck?=
- =?us-ascii?Q?OfKH37OXFtMGZ9ldN7C3oae22WHx5wpHs5nFAkv7jTbFJZlH08RoSK+wmoiE?=
- =?us-ascii?Q?hzQoOzNK3ax+5mpXFfT3OGTaV0UF1pCh3Z/N7bgUeMF7BRqUcjEt0Nxjk1Ap?=
- =?us-ascii?Q?7mWkhCSljwCc6tnbLXOQ3WSys61wSiw2JyJAUSF+kbfhA1+KdxK5/oyLMPOp?=
- =?us-ascii?Q?UDF3MLMBDx8fDOoPNQLpkkbFO7muq/VqrE5g+bpXiWoSTRWO2XPLlvGr0ECS?=
- =?us-ascii?Q?R1A9A13txMj0Ev46lsDcBATmWmV7uA+Rnxq3nYHePQsKQXMb4fCD+ZWDNZM1?=
- =?us-ascii?Q?uHs4kwE50GA4NUsgjflQ9ekM8n3Iu/djfVx20zs9nlce9ObMm47TRQTtVhRy?=
- =?us-ascii?Q?NxST6ehtplIh00FqJRqVpGWKm2HL3v7iMac6D9ihOrUkgDxhBwKs9cKXs+3W?=
- =?us-ascii?Q?tVQSaSaJray96zcIaXbK2MR3qZqsO7a2Z7P1OHuuCXR+HgqYlK3TKelrTmHr?=
- =?us-ascii?Q?IgeincAgBcvaqF3kFadR7sQBE/k6dP8s/iBaJQ0Cu/jZjz2OPAUNn+D+psaI?=
- =?us-ascii?Q?k+mRZXb19NYzCtUOsChwbKcp3Dm7PHnW21dNAj6iwZMHho8vTBKlzY14wgt3?=
- =?us-ascii?Q?CAiKqSGJ7rLlbLbDRy6U7TNx1KVIyKGAY4s4Jg7iR0TTAaQqGG8FMTtFxHhi?=
- =?us-ascii?Q?gdj3lSaFHjgPC4e6igzSt5mTbjGexYElf/KeWX6769OkUS2/1xuMuvEZrCUY?=
- =?us-ascii?Q?BY8sMEs4CXf5pJC/IcnHx0Xb1/pxqLsnDszTPIaiSBWFdn8nv7tAfruWpGQH?=
- =?us-ascii?Q?q/rG4dD4IjSsnoZIgZdj6UoWi2GFrwqV1H0ILMpumrJX+Ra1ynwLur6LvWh5?=
- =?us-ascii?Q?CxosMvhbAvnnoA0R4RmgwPfFOKjTGKBJ2pL+GzHlwOFmgw2JtxctbCh+pIMY?=
- =?us-ascii?Q?C5CUNzuduwOT7oV5rdI42XC49i0qD9IwQ2BFOz/W4+rrVymzCDASn3mBErRL?=
- =?us-ascii?Q?6TN2wtubDMYmKG9i8fJLVHsubH5mrzOICeuj5TKG0tpb0tHctVkZcpfOEah/?=
- =?us-ascii?Q?+hJB8cZ0/FauPn919eKEyeYjj88WmQRYu0sSRmyOvAHXpHasVlEX+/64HtHy?=
- =?us-ascii?Q?n2Tv2QIN+A=3D=3D?=
-X-Exchange-RoutingPolicyChecked: PxaLv0/wg3Eitrlog8iPvKfsoQkgPWFEZQesJ1QWP9Y+F8eWaXugsMDOOGMJhkVgHPJIira3zgeP7VLisZ2LkCTe48+ZiRfR9wb9yA0AX6pPydJ/135Gcb4PB7p28UXBnQEW3hjtsExofcugRFZ9tCf4b611KykQ1GeajJzhWrOQnoqbuXwjCm9BZ9w9AfAS+/Wo/1B+uvlTzCSheY1V/VN6OyFQtXhIjwPlR//4DpwGmUI4L1F3NW3N2lc6nL8bEiCm6KWtxXcQH2xOCPp04ux59qdRdnscKjm1ZlDVRRf6fycvGvTkP5mBsbt1Cwv4npf8Jm+FA3Dao8ncNB+1wQ==
-X-MS-Exchange-CrossTenant-Network-Message-Id: 38c5a792-d2c9-4a20-8d41-08de859ae4f9
-X-MS-Exchange-CrossTenant-AuthSource: DS0PR11MB7457.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 19 Mar 2026 09:35:45.6852
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: sBrdy7PG9AkgjP+8h0GLcg0GHXvk8agM17K44h/s4CcOJZ/vPdbEakcLcR97J5YwVr/NIX9YTDa8Rmv26vtiIw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ1PR11MB6179
-X-OriginatorOrg: intel.com
+Content-Transfer-Encoding: 8bit
 
-On Thu, Mar 19, 2026 at 04:56:10PM +0800, Xiaoyao Li wrote:
-> On 3/19/2026 2:45 PM, Yan Zhao wrote:
-> > On Thu, Mar 19, 2026 at 11:20:48AM +0800, Xiaoyao Li wrote:
-> > > On 3/19/2026 8:58 AM, Yan Zhao wrote:
-> > > > From: Sean Christopherson <seanjc@google.com>
-> [...]
-> > > > diff --git a/arch/x86/virt/vmx/tdx/tdx.c b/arch/x86/virt/vmx/tdx/tdx.c
-> > > > index a9dd75190c67..2f9d07ad1a9a 100644
-> > > > --- a/arch/x86/virt/vmx/tdx/tdx.c
-> > > > +++ b/arch/x86/virt/vmx/tdx/tdx.c
-> > > > @@ -730,9 +730,9 @@ static void tdx_quirk_reset_paddr(unsigned long base, unsigned long size)
-> > > >    	mb();
-> > > >    }
-> > > > -void tdx_quirk_reset_page(struct page *page)
-> > > > +void tdx_quirk_reset_page(kvm_pfn_t pfn)
-> > > 
-> > > So why keep the function tdx_quirk_reset_page() but expect passing in the
-> > > kvm_pfn_t? It looks werid that the name indicates to reset a page but what
-> > > gets passed in is a pfn.
-> > I thought about introducing tdx_quirk_reset_pfn(). But considering
-> > tdx_quirk_reset_pfn() has to be an exported API, I'm reluctant to do that.
-> > 
-> > Given that even with tdx_quirk_reset_pfn(), it still expects TDX convertible
-> > RAM, I think having tdx_quirk_reset_page() to take pfn is still acceptable.
-> > 
-> > We just don't want KVM to do pfn --> struct page --> pfn conversions.
-> 
-> Only tdx_sept_remove_private_spte() is doing such conversions. While
-> tdx_reclaim_page() and tdx_reclaim_td_control_pages() already have the
-> struct page natively.
-Unlike requiring KVM to call pfn_to_page() before invoking guest private memory
-related APIs, Having tdx_reclaim_page() and tdx_reclaim_td_control_pages() to
-call page_to_pfn() does not impose unnecessary assumptions of how KVM allocates
-memory. So, I think it's fine for them to invoke tdx_quirk_reset_page() which
-takes PFN as input.
+Add a new call hyperv_enable_synic() that can be called whether or not
+CONFIG_HYPERV is enabled. This way genetic code in i396/kvm.c can call this
+function to enable synic for hyperv. For non-hyperv cases, the stub will
+be a noop.
 
-> So why not considering option 2?
-> 
->   2. keep tdx_quirk_reset_page() as-is for the cases of
->      tdx_reclaim_page() and tdx_reclaim_td_control_pages() that have the
->      struct page. But only change tdx_sept_remove_private_spte() to use
->      tdx_quirk_reset_paddr() directly.
-> 
-> It will need export tdx_quirk_reset_paddr() for KVM. I think it will be OK?
-I don't think it's necessary. But if we have to export an extra API, IMHO,
-tdx_quirk_reset_pfn() is better than tdx_quirk_reset_paddr(). Otherwise,
-why not only expose tdx_quirk_reset_paddr()?
+Reported-by: Michale Tokarev <mjt@tls.msk.ru>
+Signed-off-by: Ani Sinha <anisinha@redhat.com>
+---
+ target/i386/kvm/hyperv-stub.c |  5 +++++
+ target/i386/kvm/hyperv.c      |  9 +++++++++
+ target/i386/kvm/hyperv.h      |  1 +
+ target/i386/kvm/kvm.c         | 12 +++++-------
+ 4 files changed, 20 insertions(+), 7 deletions(-)
+
+diff --git a/target/i386/kvm/hyperv-stub.c b/target/i386/kvm/hyperv-stub.c
+index 5836f53c23..767a4c7e1a 100644
+--- a/target/i386/kvm/hyperv-stub.c
++++ b/target/i386/kvm/hyperv-stub.c
+@@ -61,3 +61,8 @@ uint64_t hyperv_syndbg_query_options(void)
+ {
+     return 0;
+ }
++
++int hyperv_enable_synic(X86CPU *cpu)
++{
++    return 0;
++}
+diff --git a/target/i386/kvm/hyperv.c b/target/i386/kvm/hyperv.c
+index f7a81bd270..bd3c26d02b 100644
+--- a/target/i386/kvm/hyperv.c
++++ b/target/i386/kvm/hyperv.c
+@@ -24,6 +24,15 @@ int hyperv_x86_synic_add(X86CPU *cpu)
+     return 0;
+ }
+ 
++int hyperv_enable_synic(X86CPU *cpu)
++{
++    int ret = 0;
++    if (!hyperv_is_synic_enabled()) {
++        ret = hyperv_x86_synic_add(cpu);
++    }
++    return ret;
++}
++
+ /*
+  * All devices possibly using SynIC have to be reset before calling this to let
+  * them remove their SINT routes first.
+diff --git a/target/i386/kvm/hyperv.h b/target/i386/kvm/hyperv.h
+index e45a4512fe..a393a5d428 100644
+--- a/target/i386/kvm/hyperv.h
++++ b/target/i386/kvm/hyperv.h
+@@ -23,6 +23,7 @@ int kvm_hv_handle_exit(X86CPU *cpu, struct kvm_hyperv_exit *exit);
+ #endif
+ 
+ int hyperv_x86_synic_add(X86CPU *cpu);
++int hyperv_enable_synic(X86CPU *cpu);
+ void hyperv_x86_synic_reset(X86CPU *cpu);
+ void hyperv_x86_synic_update(X86CPU *cpu);
+ 
+diff --git a/target/i386/kvm/kvm.c b/target/i386/kvm/kvm.c
+index a29f757c16..9e352882c8 100644
+--- a/target/i386/kvm/kvm.c
++++ b/target/i386/kvm/kvm.c
+@@ -1754,13 +1754,11 @@ static int hyperv_init_vcpu(X86CPU *cpu)
+             return ret;
+         }
+ 
+-        if (!hyperv_is_synic_enabled()) {
+-            ret = hyperv_x86_synic_add(cpu);
+-            if (ret < 0) {
+-                error_report("failed to create HyperV SynIC: %s",
+-                             strerror(-ret));
+-                return ret;
+-            }
++        ret = hyperv_enable_synic(cpu);
++        if (ret < 0) {
++            error_report("failed to create HyperV SynIC: %s",
++                         strerror(-ret));
++            return ret;
+         }
+     }
+ 
+-- 
+2.42.0
 
