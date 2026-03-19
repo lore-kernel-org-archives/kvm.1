@@ -1,82 +1,71 @@
-Received: from mail-pl1-f176.google.com (mail-pl1-f176.google.com [209.85.214.176])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9C9B359A8E
-	for <kvm@vger.kernel.org>; Thu, 19 Mar 2026 20:54:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.176
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6ABAF347BC9;
+	Thu, 19 Mar 2026 20:58:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.50.34
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773953674; cv=none; b=HJY1wPXpx3rh6u7JYgE4ROJtsQD8EO/4ryWSZWjoauiBOOvy9ANiSAbdnBWu4LKiQsbCbw+4szPQZvEgiYFDH4GP63eK7y7o3xvAiEghLpDpw8t++vgj9DSQEwjUhB8RbVGKWCmCiz/TniB4t4A2P4s7/UgAQFOvELMPP6dAuuo=
+	t=1773953912; cv=none; b=mOweINr9/EbQzOjZs37IPoXI28S/Nz99kITK3Q4SLQyQupnx2853vOXYYR0n5svfyInuqNPBQqXps+if1+L6ca3KcDRaIHILBg3dxMpRa0EZHTiwZln4wdZRgvp5CFTxUhU6z0+PtvkDbt8lsiXm5LwqtBdJGWwgLdCdAnvew1E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773953674; c=relaxed/simple;
-	bh=rQ8jOPX8ZyyiaUDP/Ws9FcBOSexPt2uadqrTujPU5ME=;
+	s=arc-20240116; t=1773953912; c=relaxed/simple;
+	bh=iqBXral7BgXV4bBHSPIa7H+kMBPsRpoDN2FgeDnqQcQ=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=jP8yoBkhDlt8qU02OXgXTklCqd0ePGd6JF9gLZAQTi8zSmZbGHzd1UqzZuUqV6Uq1pDQbkKWf+5gyWP1eIzyCNPhKHYJeWrSAWBCaU/bqcDY0QU6JdhKJjIdErNFg53zZro3aqUXMgnLsY6X1my+LGB11PQPcMYKXTxOK2vtt4o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=nGVufPQ0; arc=none smtp.client-ip=209.85.214.176
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	 Content-Type:Content-Disposition:In-Reply-To; b=hd0PLhrV0EYW8AZLCqAtqixGa2EwtLOZsJHFpn+8clYpwnzYqavtmIYk1yJ10NlMMrwM/xmjHXLcNQmPVkpl9QGLSIG+CkUn14QO84h+weg/sQ7Gz+zQEnJODGeiBkdjkYJ1of568QA0wnZqSWb4oCgpacnzgBP2m9a8ULWJ0QM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=cFf520aw; arc=none smtp.client-ip=90.155.50.34
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=infradead.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="nGVufPQ0"
-Received: by mail-pl1-f176.google.com with SMTP id d9443c01a7336-2b04c9e3eb7so24805ad.0
-        for <kvm@vger.kernel.org>; Thu, 19 Mar 2026 13:54:33 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1773953673; x=1774558473; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=19Xw5f9a4xpkhlTeHR9HScsDJ7KIvG2RWfmSuFdiufE=;
-        b=nGVufPQ0OUWMz8kMpK1/LYUHkOIi8C2h6eoDiB4yigQF0TpgCiG16BIznSwp5YXxGQ
-         mfOAUUQ2F0TAJUBjA7WoXkdtKcgzzUQc9pFd243m08ixvfT8aTW80a+0lwDlixlNEXAU
-         h6lOuogJQfc1EISM6hJ2lWa1m6C+fODNz3EWxSVArbsBXzeAeJfhyCZ9dfvehHR0acTT
-         PzhQHZcf6pODwtBrfaFbfzQidaxaocz1iWrE5v9I3J9KN4a3cHFzYDLBLjGFkiByLzb0
-         D/ct5IFE7TXb4zABokkmaad3NsGOIQxzYkxCJw4WLV7lDBTviuglnhy4qBs59qoSn9ez
-         Kj7Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1773953673; x=1774558473;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=19Xw5f9a4xpkhlTeHR9HScsDJ7KIvG2RWfmSuFdiufE=;
-        b=fDebBIsIMQhuw+86IHmWtU0dnREoIewJPrN3BiDTzh5ErVkkMrRUf2pREirH6qJeup
-         rk+qTx92Bw9XIP8Ledpt2JBCNh8kgaudQE9CGFr+WZo0Fuq8mtiS+XnnEvS45VG8F6zM
-         w1gi5cQkDjWL3/Cy2C+HmkdGr+fXm4htyx2+tKLuYcH0z4TRfYZWEo3RSMMDlXd0hLk/
-         R/PATWI2y+5sT3tRtcmXoKhFuk5FKuVNcQVQ+FAiG/wwFHK//XVmRnc2La5upziQmD7I
-         65K2gT6aaoP1hgmhcRzOhWDjFheLipE5xXn9COT1coIN5ymWUXuDxl2RSNmpPoVbe+IC
-         qvPw==
-X-Forwarded-Encrypted: i=1; AJvYcCXfPS+bJbIt+FTkk+roRAz+1DDw+Q81IsAYkyoKEZDbj0vrSp6BrEi//uJYQe3ZRo/DdE0=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwTCKY2RxWipOcuB2kPucTaa9CaLcWtneQSO2dV8UFSNVoIoy5o
-	R2muspzOMttOgSjGUW4tuuMx1i6eOoF7xJQfl3lF8nkiq2fiSs3E9VAoF1jJpUK/hg==
-X-Gm-Gg: ATEYQzygnpgAp7+pwAiZKqyFQ4zFVPcE+HVEk2E4totrjBHuhC5ONhizmr74XcHqnhq
-	AccTWitjIN7DlRARvnZRtACAALyvxCsC/kEU2zZt3qjp3y/4qXlwPEw/gp61P+fn807fzO2dJ+i
-	vMn7VGzWEBtquibgeZYTg1dD8yGb7JetqA2QC94tcQtGCPxkh6KBDVaWM8Vo3OkL8TRP4VcCWkr
-	b9mDxuDeMWPFr1r87JV8c5/Tjj+3uVdisXmIQhVwPHF0KlkYXv+24M1srIMok6ireSRI+7fuCXm
-	GSO/I3GFG2BMmVxrZ/UR8ns2kV6ajK4S856GVZkZehJopH0N/x1kR7a2rjAPdBP7RNZT4SFz2cA
-	5ff1SNnTWiPOckhwZuFxVm9YTNKkyTDlsaCb8KK4rc0+5isz9xY8uvQRmqaLEtjX9D1nZf3zh/1
-	GJKK2CHn3AvF0IWpwOOaS6aUqB3fTOW1sLwbTMazLsJMULmxMczMJefc9qRw==
-X-Received: by 2002:a17:902:cecc:b0:2ae:c358:bb9f with SMTP id d9443c01a7336-2b082855f56mr897565ad.10.1773953672329;
-        Thu, 19 Mar 2026 13:54:32 -0700 (PDT)
-Received: from google.com (60.89.247.35.bc.googleusercontent.com. [35.247.89.60])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2b083516a8dsm1241785ad.3.2026.03.19.13.54.31
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 19 Mar 2026 13:54:31 -0700 (PDT)
-Date: Thu, 19 Mar 2026 13:54:27 -0700
-From: Vipin Sharma <vipinsh@google.com>
-To: Samiullah Khawaja <skhawaja@google.com>
-Cc: David Woodhouse <dwmw2@infradead.org>, 
-	Lu Baolu <baolu.lu@linux.intel.com>, Joerg Roedel <joro@8bytes.org>, Will Deacon <will@kernel.org>, 
-	Jason Gunthorpe <jgg@ziepe.ca>, Robin Murphy <robin.murphy@arm.com>, 
-	Kevin Tian <kevin.tian@intel.com>, Alex Williamson <alex@shazbot.org>, 
-	Shuah Khan <shuah@kernel.org>, iommu@lists.linux.dev, linux-kernel@vger.kernel.org, 
-	kvm@vger.kernel.org, Saeed Mahameed <saeedm@nvidia.com>, 
-	Adithya Jayachandran <ajayachandra@nvidia.com>, Parav Pandit <parav@nvidia.com>, 
-	Leon Romanovsky <leonro@nvidia.com>, William Tu <witu@nvidia.com>, 
-	Pratyush Yadav <pratyush@kernel.org>, Pasha Tatashin <pasha.tatashin@soleen.com>, 
-	David Matlack <dmatlack@google.com>, Andrew Morton <akpm@linux-foundation.org>, 
-	Chris Li <chrisl@kernel.org>, Pranjal Shrivastava <praan@google.com>, 
-	YiFei Zhu <zhuyifei@google.com>
-Subject: Re: [PATCH 07/14] iommu/vt-d: Restore IOMMU state and reclaimed
- domain ids
-Message-ID: <20260319190137.GA3983821.vipinsh@google.com>
-References: <20260203220948.2176157-1-skhawaja@google.com>
- <20260203220948.2176157-8-skhawaja@google.com>
+	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="cFf520aw"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=NGmSOgNeB1FXvQIqQTKt2rVV6pmaYTvcJ3vAUAdSCiE=; b=cFf520awxaoPx1Q5SlxcIAq7xt
+	zMFTIJKJa8EAX3CoWJ55y8kCHtyWYNYfA4fcs/m375os/ifexTPOHUV59O39qRiTr3aYCXdeIu3gS
+	M+lf0jguGwg2klBH04X5aa8PqwhLqWcKZF+lDHFHASDZkWNLF+0YkIWKLSlIhYGWzf121jQj8G4P0
+	K5WvInIwfHuQTF3+1/LbA5BUadpbHo4H0xCYWuiUdSMwiew0CR6nIBzIXT7QUb+R6pFRB1KWmRdF2
+	uHmMd8WhZsc0mWpLf4o+b1cL9VxoYGG5wfy34SwIS3bPuCkxYlvJ2a1uKc5zkgfz3J+OkzOA/SZXQ
+	GLk6Cd1w==;
+Received: from 2001-1c00-8d85-5700-266e-96ff-fe07-7dcc.cable.dynamic.v6.ziggo.nl ([2001:1c00:8d85:5700:266e:96ff:fe07:7dcc] helo=noisy.programming.kicks-ass.net)
+	by casper.infradead.org with esmtpsa (Exim 4.98.2 #2 (Red Hat Linux))
+	id 1w3KRQ-00000006hEr-37ql;
+	Thu, 19 Mar 2026 20:58:04 +0000
+Received: by noisy.programming.kicks-ass.net (Postfix, from userid 1000)
+	id D39FD3004F8; Thu, 19 Mar 2026 21:58:02 +0100 (CET)
+Date: Thu, 19 Mar 2026 21:58:02 +0100
+From: Peter Zijlstra <peterz@infradead.org>
+To: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
+Cc: x86@kernel.org, Nikolay Borisov <nik.borisov@suse.com>,
+	"H. Peter Anvin" <hpa@zytor.com>,
+	Josh Poimboeuf <jpoimboe@kernel.org>,
+	David Kaplan <david.kaplan@amd.com>,
+	Sean Christopherson <seanjc@google.com>,
+	Borislav Petkov <bp@alien8.de>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	Alexei Starovoitov <ast@kernel.org>,
+	Daniel Borkmann <daniel@iogearbox.net>,
+	Andrii Nakryiko <andrii@kernel.org>, KP Singh <kpsingh@kernel.org>,
+	Jiri Olsa <jolsa@kernel.org>,
+	"David S. Miller" <davem@davemloft.net>,
+	David Laight <david.laight.linux@gmail.com>,
+	Andy Lutomirski <luto@kernel.org>,
+	Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>,
+	David Ahern <dsahern@kernel.org>,
+	Martin KaFai Lau <martin.lau@linux.dev>,
+	Eduard Zingerman <eddyz87@gmail.com>, Song Liu <song@kernel.org>,
+	Yonghong Song <yonghong.song@linux.dev>,
+	John Fastabend <john.fastabend@gmail.com>,
+	Stanislav Fomichev <sdf@fomichev.me>, Hao Luo <haoluo@google.com>,
+	Paolo Bonzini <pbonzini@redhat.com>,
+	Jonathan Corbet <corbet@lwn.net>, linux-kernel@vger.kernel.org,
+	kvm@vger.kernel.org, Asit Mallick <asit.k.mallick@intel.com>,
+	Tao Zhang <tao1.zhang@intel.com>, bpf@vger.kernel.org,
+	netdev@vger.kernel.org, linux-doc@vger.kernel.org
+Subject: Re: [PATCH v7 07/10] x86/vmscape: Use static_call() for predictor
+ flush
+Message-ID: <20260319205802.GJ3738786@noisy.programming.kicks-ass.net>
+References: <20260319-vmscape-bhb-v7-0-b76a777a98af@linux.intel.com>
+ <20260319-vmscape-bhb-v7-7-b76a777a98af@linux.intel.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -85,82 +74,31 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260203220948.2176157-8-skhawaja@google.com>
+In-Reply-To: <20260319-vmscape-bhb-v7-7-b76a777a98af@linux.intel.com>
 
-On Tue, Feb 03, 2026 at 10:09:41PM +0000, Samiullah Khawaja wrote:
-> During boot fetch the preserved state of IOMMU unit and if found then
-> restore the state.
-> 
-> - Reuse the root_table that was preserved in the previous kernel.
-> - Reclaim the domain ids of the preserved domains for each preserved
->   devices so these are not acquired by another domain.
-
-Can this be two patches? One just restoring root table and second one to
-reclaim device ids.
-
-> -static void init_translation_status(struct intel_iommu *iommu)
-> +static void init_translation_status(struct intel_iommu *iommu, bool restoring)
->  {
->  	u32 gsts;
+On Thu, Mar 19, 2026 at 08:41:54AM -0700, Pawan Gupta wrote:
+> diff --git a/arch/x86/kernel/cpu/bugs.c b/arch/x86/kernel/cpu/bugs.c
+> index 68e2df3e3bf5..b75eda114503 100644
+> --- a/arch/x86/kernel/cpu/bugs.c
+> +++ b/arch/x86/kernel/cpu/bugs.c
+> @@ -144,6 +144,17 @@ EXPORT_SYMBOL_GPL(cpu_buf_idle_clear);
+>   */
+>  DEFINE_STATIC_KEY_FALSE(switch_mm_cond_l1d_flush);
 >  
->  	gsts = readl(iommu->reg + DMAR_GSTS_REG);
-> -	if (gsts & DMA_GSTS_TES)
-> +	if (!restoring && (gsts & DMA_GSTS_TES))
->  		iommu->flags |= VTD_FLAG_TRANS_PRE_ENABLED;
->  }
-
-I think we can just check in the caller, init_dmars(), and not call this
-function. We are already modifying that function, so no need to make
-changes here as well. WDYT?
-
->  
-> @@ -670,10 +670,16 @@ void dmar_fault_dump_ptes(struct intel_iommu *iommu, u16 source_id,
->  #endif
->  
->  /* iommu handling */
-> -static int iommu_alloc_root_entry(struct intel_iommu *iommu)
-> +static int iommu_alloc_root_entry(struct intel_iommu *iommu, struct iommu_ser *restored_state)
-
-Nit: Since we are using iommu_ser at other places, I will recommend to
-keep it same variable name here as well.
-
-> @@ -1636,8 +1643,10 @@ static int __init init_dmars(void)
->  						   intel_pasid_max_id);
->  		}
->  
-> +		iommu_ser = iommu_get_preserved_data(iommu->reg_phys, IOMMU_INTEL);
+> +/*
+> + * Controls CPU Fill buffer clear before VMenter. This is a subset of
+> + * X86_FEATURE_CLEAR_CPU_BUF, and should only be enabled when KVM-only
+> + * mitigation is required.
+> + */
+> +DEFINE_STATIC_KEY_FALSE(cpu_buf_vm_clear);
+> +EXPORT_SYMBOL_GPL(cpu_buf_vm_clear);
 > +
->  		intel_iommu_init_qi(iommu);
-> -		init_translation_status(iommu);
-> +		init_translation_status(iommu, !!iommu_ser);
+> +DEFINE_STATIC_CALL_NULL(vmscape_predictor_flush, write_ibpb);
+> +EXPORT_STATIC_CALL_GPL(vmscape_predictor_flush);
 
-Just put 'if' here to avoid changes in init_translation_status().
+Does that want to be:
 
-> +static int __restore_used_domain_ids(struct device_ser *ser, void *arg)
+EXPORT_STATIC_CALL_TRAMP_GPL(vmscape_predictor_flush);
 
-Nit: Just curious, why two __?
-
-> +{
-> +	int id = ser->domain_iommu_ser.did;
-> +	struct intel_iommu *iommu = arg;
-> +
-> +	ida_alloc_range(&iommu->domain_ida, id, id, GFP_ATOMIC);
-
-Should we check if allocation succeeded or not?
-
-> +	return 0;
-> +}
-> +
-> +void intel_iommu_liveupdate_restore_root_table(struct intel_iommu *iommu,
-> +					       struct iommu_ser *iommu_ser)
-> +{
-> +	BUG_ON(!kho_restore_folio(iommu_ser->intel.root_table));
-> +	iommu->root_entry = __va(iommu_ser->intel.root_table);
-> +
-> +	restore_iommu_context(iommu);
-> +	iommu_for_each_preserved_device(__restore_used_domain_ids, iommu);
-> +	pr_info("Restored IOMMU[0x%llx] Root Table at: 0x%llx\n",
-> +		iommu->reg_phys, iommu_ser->intel.root_table);
-
-Should raw pointer values be printed like this?
-
+The distinction being that if you only export the trampoline, modules
+can do the static_call() thing, but cannot do static_call_update().
