@@ -1,181 +1,115 @@
-Received: from mail-pl1-f202.google.com (mail-pl1-f202.google.com [209.85.214.202])
+Received: from mail-pl1-f174.google.com (mail-pl1-f174.google.com [209.85.214.174])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 17E3D407113
-	for <kvm@vger.kernel.org>; Thu, 19 Mar 2026 23:31:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.202
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8163A35C1AD
+	for <kvm@vger.kernel.org>; Thu, 19 Mar 2026 23:35:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773963068; cv=none; b=tSIKfIHBz6r9+tN95qZ9ZqjBkOWKCR9IS1/LstiKY5cVpyaj9xIgFoMy3hu5U+Zh4xcan4O3nGLpejkDdvH9LnSEAzRBgZUAF/fHoTUiH2iPD7zZmle22QbpvJtO2umfgxSeptMQXA2LjJEWY1FrHbE91OF4BZsUyZjCoAyVnww=
+	t=1773963339; cv=none; b=pyCtONaBgtZC488M7T89YnojdJUAicyjpl67Gn9Uq5cQwME3/CicTE/BtI4eil4sShL0bOe3BVzmefEUiRVNmt+1ThsxV3ZsTvfIhQ3Yh7LhauszervOAm9NkqbJHQZXEaZ1oWpFwKdn4mfaixI2E479KIZhMX4UtDwzmG/YEr0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773963068; c=relaxed/simple;
-	bh=wltySrG4vozgVjDjb43L2B3dD6dgSygZ1tpNGMuiOvU=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=XV7h2DVHr3w1jZ4nrQ3mT1vleuxxRRePNIS0KKPY4RbZ+4j4kwtELCmaP4kx2CIkuWuOTZN22UdLcEhs8J0AwGz7cnuXNQkHlkAk4z9tndB988VU9vdYVQCQbRDw0CRBL6mzZdQcIdh/oOihFyqQRlYG3bS4MkoxR6KhyeWL+yE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--wyihan.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=iYucmjAS; arc=none smtp.client-ip=209.85.214.202
+	s=arc-20240116; t=1773963339; c=relaxed/simple;
+	bh=UanQDetlCjF/6zxJJeIw+AMEstzQ4BQpkXRP4oloNs0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=TEygis06QwWkHda0sZBwW9XUGRanrk3J8x2tVYJoUpVKvevjNK82OjJXh8ev2EPqEl5YDMYS+MV2spYWo9zlM5eFmEkeWNRsdg+2pGVYuIETSJrpc3toeI7Xvmr62gM1W0mDeG8G9OVDVi9Xsdlvbr1RMo08jigyb1bVHUdKTs8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=BtS+JnTJ; arc=none smtp.client-ip=209.85.214.174
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--wyihan.bounces.google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="iYucmjAS"
-Received: by mail-pl1-f202.google.com with SMTP id d9443c01a7336-2b069bfa817so20637395ad.3
-        for <kvm@vger.kernel.org>; Thu, 19 Mar 2026 16:31:06 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="BtS+JnTJ"
+Received: by mail-pl1-f174.google.com with SMTP id d9443c01a7336-2aeab6ff148so20715ad.1
+        for <kvm@vger.kernel.org>; Thu, 19 Mar 2026 16:35:38 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1773963066; x=1774567866; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=Zfyz6j+K0eCUgYIAireZB6wFZ/MNqUoA9mP0eBvWMq8=;
-        b=iYucmjASYPBw8+929cUl1yJm3d6Esry5KMVnxg252ptKGZWlr3zsjeVrOlIP3qeziV
-         9iPe5EeWHQmpLHcF5lz8HAMUGD+8mo4v0QhMnCaAu1ld5+VW6T9sjgLEKS+NL5JEq3y+
-         VlpKcruLFos2R+STo+3uFGn6KTTbZDjcxhr8jAM3Hwrim/CoKvA6vXrfMx/hoLp2Qbhn
-         toqKhyoHj3HJgNVgRtzOJQ83tGWUXQzX0cV/pi+WPxgRP+qwij5WrTPBcsvKNr/Wf8DW
-         craCZdUNcJJ1JvW2Cwgevx65buGiwdJCzcT7i97d+AuFlVfrp2ADuOiUbIh/9rkIcs3Q
-         fFGQ==
+        d=google.com; s=20251104; t=1773963338; x=1774568138; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=4QYZkwutITM3hY/BTKkAjdxJTuUr3dbbtbIB0hAX8jE=;
+        b=BtS+JnTJu7dMFjgb0XmaqiRBy56iDqYrI6PlMNrDgpVHoMtlrH2aMKhcWQy92Z4ewi
+         n5puP9+InkLigbVY1yOBCf1lYx2vbAP4oob3ieygn1WID7vdRAM/QiUbGWtXGD46+dw0
+         qguHZpFQqLjbpadSPaYm3cVAy2vyib1WImuqRs47GHKkAklMeQXau9mJB2Doaa/ZVT6y
+         l+UR96sDp/MdA6+tCC75u54BIBroKg3qZS9tbckaK1tl19Ke4twCYu9BBYpN9IA2H3xK
+         ojLG7eFQC4zXd6sw1M6R1o5RwxJoui+G89kHLEqXBf8lHZkd3zRSamIWtFgWO8XiKwdE
+         8Yzw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1773963066; x=1774567866;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=Zfyz6j+K0eCUgYIAireZB6wFZ/MNqUoA9mP0eBvWMq8=;
-        b=NnmTR7xw3Lz8hJaryow5xHG7eU1Fj/P2LcO9BqYfC7DIuvvQVrFbRL4ZGElOb3LoS/
-         SX7Fkz0sA4c4vwDJG0hlBnCsJbXJp60bNPJEp8u12hZmXzyUoHtF3nTM2AFqzRXy2DqR
-         sG3qwc6jDjzuEIG7uuQgcPC/uxSpOpxjfdvvqUZ+h6A2YjFJ0oGKAeFQz8r3vmXrPuVF
-         tsMQzP/HUKbQPYh9FIvbDT55g9P670I0J8wVkKdNlyieahKRoglesqvwMMFRpkC9IJRa
-         kmmdSQJKzWZnsp5+eZZ+B9o0wVsrWivTsu5A+CSW1AKt+sshDd2tVMTtTK+JOLXUDHiJ
-         y5ZA==
-X-Forwarded-Encrypted: i=1; AJvYcCWu/dNR4vkT6Nx3WpNQUws6QV9uASlaoEwnVWn0c/VZHvqq4eMYCmCyah9BXmElXf7GWRY=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyXalZ2LDc911Is06J6+/0aTfsMeXCinoTn02kInMpGrMRycUqi
-	QyfLi4Wn/rHpj2rD3N0ied8gZrQSpQFgs18ySANVRN+xQK+ilbgKjRBb/Xy5AVjDFm+7dT2kecn
-	0r1hnjg==
-X-Received: from plbks8.prod.google.com ([2002:a17:903:848:b0:2b0:52e8:584])
- (user=wyihan job=prod-delivery.src-stubby-dispatcher) by 2002:a17:903:2f84:b0:2b0:4b3a:9b4b
- with SMTP id d9443c01a7336-2b0826e3368mr7472585ad.16.1773963066002; Thu, 19
- Mar 2026 16:31:06 -0700 (PDT)
-Date: Thu, 19 Mar 2026 23:30:34 +0000
-In-Reply-To: <20260319-memory-failure-mf-delayed-fix-rfc-v2-v2-0-92c596402a7a@google.com>
+        d=1e100.net; s=20251104; t=1773963338; x=1774568138;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=4QYZkwutITM3hY/BTKkAjdxJTuUr3dbbtbIB0hAX8jE=;
+        b=a3rPlvl348n+Xy0lgnULULQ7SF5cBYa5Nt4KjG9m7VIPyRlWXX5ApKZ2dyZ200oKab
+         0Ba83pi6M9zjWhzHEI/7ue9sioHKDMjls7YKfxd1vkXKVMWfuAc9iFAU77dQAHCP7ve9
+         DpjnIlUtUZR5+pG78S2++DHdEjUkXJ+zLOpX/BZb1/2XLPNYqLdc0c+ZEd6kqU1h8sSX
+         nN8i3jLDBSqh4IRkLrr4EnzsO4ncv5F+QrBSxSSGTktkDDpb378XY0yLHTZ9UMMlCk1o
+         T1Vaaebsdye1twWBCr6U3TlZe6krwgephALywSsQEehiNNvpCn6yAced8Z/axADYxVO8
+         ma8A==
+X-Forwarded-Encrypted: i=1; AJvYcCXJtHNkL+OqRhS9c2l/FbP2Taq9x/juxoAsUwXkeHbekDKZcVO6mNnQs/jdCwUlrO4Cqok=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yzi6zddVep4d8p1BxxuPC3PTxRlh3ET0unulZBQD6fO0IH3O6by
+	P0e2pPABPNQIlwTSgf2QnlyKonpVu5XdUldlsvCJuz2wEEFOjxz5C8bampeMglY1zg==
+X-Gm-Gg: ATEYQzyaXo2oUQNhNFlEURYQXx//bp02k0kfo45E9xjrNZ864zJqJvFGgKjrMnGzWgJ
+	Ha3zAUjyp2sNcJLwUUpMpeUBZEWqMqWlR9MyPQeuTgBRobAM+GlpjvUiDSLvrgJOXR9BhDiFoZ+
+	3cMC53mX6qzC1CotxgzbhmqitFH3fP2RfDcFWMnc4XyPPns2ujWfVW0hnEb7OhwPbgVz7QQg2Dy
+	oHFTsmAQUePg1Ys2iuqKk8RK80gF/JEvnmzktEoWBODfTHxnpDZ0GOYXLL6xdEEYlfMYeTxC+qk
+	2+FPBiuM6RDwnEox6FrpBRHmsH7OsVLAhHeroxl5cEzQBXsz6YW+TgeGGIjEwQNDfxZTr1eb7Fk
+	PfPnag6gjkbCk7tKVaugqvhuU6XfwtYyg4AzXCkT8rcLG18PJmQUwY1DCRK7GWqug9IWiYvDhzl
+	QrshXQuDlGAl0y1ji4ukOXUdAK/yB+905PTBSm+n2TsobYSWGH8IFgMszNP1sh
+X-Received: by 2002:a17:902:e805:b0:2ae:4808:bd99 with SMTP id d9443c01a7336-2b08285639amr1447705ad.2.1773963337286;
+        Thu, 19 Mar 2026 16:35:37 -0700 (PDT)
+Received: from google.com (176.13.105.34.bc.googleusercontent.com. [34.105.13.176])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-35bc5ff6789sm3845458a91.1.2026.03.19.16.35.36
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 19 Mar 2026 16:35:36 -0700 (PDT)
+Date: Thu, 19 Mar 2026 16:35:32 -0700
+From: Vipin Sharma <vipinsh@google.com>
+To: Samiullah Khawaja <skhawaja@google.com>
+Cc: David Woodhouse <dwmw2@infradead.org>, 
+	Lu Baolu <baolu.lu@linux.intel.com>, Joerg Roedel <joro@8bytes.org>, Will Deacon <will@kernel.org>, 
+	Jason Gunthorpe <jgg@ziepe.ca>, YiFei Zhu <zhuyifei@google.com>, 
+	Robin Murphy <robin.murphy@arm.com>, Kevin Tian <kevin.tian@intel.com>, 
+	Alex Williamson <alex@shazbot.org>, Shuah Khan <shuah@kernel.org>, iommu@lists.linux.dev, 
+	linux-kernel@vger.kernel.org, kvm@vger.kernel.org, Saeed Mahameed <saeedm@nvidia.com>, 
+	Adithya Jayachandran <ajayachandra@nvidia.com>, Parav Pandit <parav@nvidia.com>, 
+	Leon Romanovsky <leonro@nvidia.com>, William Tu <witu@nvidia.com>, 
+	Pratyush Yadav <pratyush@kernel.org>, Pasha Tatashin <pasha.tatashin@soleen.com>, 
+	David Matlack <dmatlack@google.com>, Andrew Morton <akpm@linux-foundation.org>, 
+	Chris Li <chrisl@kernel.org>, Pranjal Shrivastava <praan@google.com>
+Subject: Re: [PATCH 10/14] iommufd-lu: Implement ioctl to let userspace mark
+ an HWPT to be preserved
+Message-ID: <20260319231331.GB3983821.vipinsh@google.com>
+References: <20260203220948.2176157-1-skhawaja@google.com>
+ <20260203220948.2176157-11-skhawaja@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20260319-memory-failure-mf-delayed-fix-rfc-v2-v2-0-92c596402a7a@google.com>
-X-Developer-Key: i=wyihan@google.com; a=ed25519; pk=cRi0fKzS5BMxlHyHY2pJv3w/1zcgfYKr6EYGYppdMYc=
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1773963053; l=2809;
- i=wyihan@google.com; s=20260319; h=from:subject:message-id;
- bh=wltySrG4vozgVjDjb43L2B3dD6dgSygZ1tpNGMuiOvU=; b=MzayBc1lrUG8AtictP2UDRMFjSP2+93iY+nziVK024vQNTr5SivQhuoSDPM9eVFFuI+tPuw4N
- h7fKV+BGoAJDypYm6vtelBw4anbbG1sxuJC+lRnOm/wX8wAEripkYXw
-X-Mailer: b4 0.14.3
-Message-ID: <20260319-memory-failure-mf-delayed-fix-rfc-v2-v2-7-92c596402a7a@google.com>
-Subject: [PATCH RFC v2 7/7] KVM: selftests: Test guest_memfd behavior with
- respect to stage 2 page tables
-From: Lisa Wang <wyihan@google.com>
-To: Miaohe Lin <linmiaohe@huawei.com>, Naoya Horiguchi <nao.horiguchi@gmail.com>, 
-	Andrew Morton <akpm@linux-foundation.org>, Paolo Bonzini <pbonzini@redhat.com>, 
-	Shuah Khan <shuah@kernel.org>, Hugh Dickins <hughd@google.com>, 
-	Baolin Wang <baolin.wang@linux.alibaba.com>, David Hildenbrand <david@kernel.org>, 
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
-	Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
-	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, kvm@vger.kernel.org, 
-	linux-kselftest@vger.kernel.org
-Cc: rientjes@google.com, seanjc@google.com, ackerleytng@google.com, 
-	vannapurve@google.com, michael.roth@amd.com, jiaqiyan@google.com, 
-	tabba@google.com, dave.hansen@linux.intel.com, Lisa Wang <wyihan@google.com>
-Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260203220948.2176157-11-skhawaja@google.com>
 
-Test that
-+ memory failure handling results in unmapping of bad memory from stage
-  2 page tables, hence requiring faulting on next guest access
-+ when the guest tries to fault a poisoned page from guest_memfd, the
-  userspace VMM informed with EHWPOISON
+On Tue, Feb 03, 2026 at 10:09:44PM +0000, Samiullah Khawaja wrote:
+> From: YiFei Zhu <zhuyifei@google.com>
+> @@ -374,6 +374,10 @@ struct iommufd_hwpt_paging {
+>  	bool auto_domain : 1;
+>  	bool enforce_cache_coherency : 1;
+>  	bool nest_parent : 1;
+> +#ifdef CONFIG_IOMMU_LIVEUPDATE
+> +	bool lu_preserve : 1;
+> +	u32 lu_token;
 
-Co-developed-by: Ackerley Tng <ackerleytng@google.com>
-Signed-off-by: Ackerley Tng <ackerleytng@google.com>
-Signed-off-by: Lisa Wang <wyihan@google.com>
----
- tools/testing/selftests/kvm/guest_memfd_test.c | 65 ++++++++++++++++++++++++++
- 1 file changed, 65 insertions(+)
+Should we use full name i.e. liveupdate here and other places in this
+series?
 
-diff --git a/tools/testing/selftests/kvm/guest_memfd_test.c b/tools/testing/selftests/kvm/guest_memfd_test.c
-index 445e8155ee1e..50907875dc43 100644
---- a/tools/testing/selftests/kvm/guest_memfd_test.c
-+++ b/tools/testing/selftests/kvm/guest_memfd_test.c
-@@ -637,6 +637,70 @@ static void test_guest_memfd_guest(void)
- 	kvm_vm_free(vm);
- }
- 
-+static void __guest_code_read(uint8_t *mem)
-+{
-+	READ_ONCE(*mem);
-+	GUEST_SYNC(0);
-+	READ_ONCE(*mem);
-+	GUEST_DONE();
-+}
-+
-+static void guest_read(struct kvm_vcpu *vcpu, uint64_t gpa, int expected_errno)
-+{
-+	vcpu_args_set(vcpu, 1, gpa);
-+
-+	if (expected_errno) {
-+		TEST_ASSERT_EQ(_vcpu_run(vcpu), -1);
-+		TEST_ASSERT_EQ(errno, expected_errno);
-+	} else {
-+		vcpu_run(vcpu);
-+		TEST_ASSERT_EQ(get_ucall(vcpu, NULL), UCALL_SYNC);
-+	}
-+}
-+
-+static void test_memory_failure_guest(void)
-+{
-+	const uint64_t gpa = SZ_4G;
-+	const int slot = 1;
-+
-+	unsigned long memory_failure_pfn;
-+	struct kvm_vcpu *vcpu;
-+	struct kvm_vm *vm;
-+	uint8_t *mem;
-+	size_t size;
-+	int fd;
-+
-+	if (!kvm_has_cap(KVM_CAP_GUEST_MEMFD_FLAGS))
-+		return;
-+
-+	vm = __vm_create_shape_with_one_vcpu(VM_SHAPE_DEFAULT, &vcpu, 1, __guest_code_read);
-+
-+	size = vm->page_size;
-+	fd = vm_create_guest_memfd(vm, size, GUEST_MEMFD_FLAG_MMAP | GUEST_MEMFD_FLAG_INIT_SHARED);
-+	vm_set_user_memory_region2(vm, slot, KVM_MEM_GUEST_MEMFD, gpa, size, NULL, fd, 0);
-+
-+	mem = mmap(NULL, size, PROT_READ | PROT_WRITE, MAP_SHARED, fd, 0);
-+	TEST_ASSERT(mem != MAP_FAILED, "mmap() for guest_memfd should succeed.");
-+	virt_pg_map(vm, gpa, gpa);
-+
-+	/* Fault in page to read pfn, then unmap page for testing. */
-+	READ_ONCE(*mem);
-+	memory_failure_pfn = addr_to_pfn(mem);
-+	munmap(mem, size);
-+
-+	/* Fault page into stage2 page tables. */
-+	guest_read(vcpu, gpa, 0);
-+
-+	mark_memory_failure(memory_failure_pfn, 0);
-+
-+	guest_read(vcpu, gpa, EHWPOISON);
-+
-+	close(fd);
-+	kvm_vm_free(vm);
-+
-+	unmark_memory_failure(memory_failure_pfn, 0);
-+}
-+
- int main(int argc, char *argv[])
- {
- 	unsigned long vm_types, vm_type;
-@@ -657,4 +721,5 @@ int main(int argc, char *argv[])
- 		test_guest_memfd(vm_type);
- 
- 	test_guest_memfd_guest();
-+	test_memory_failure_guest();
- }
+> diff --git a/drivers/iommu/iommufd/main.c b/drivers/iommu/iommufd/main.c
+> index 5cc4b08c25f5..e1a9b3051f65 100644
+> --- a/drivers/iommu/iommufd/main.c
+> +++ b/drivers/iommu/iommufd/main.c
+> @@ -493,6 +493,8 @@ static const struct iommufd_ioctl_op iommufd_ioctl_ops[] = {
+>  		 __reserved),
+>  	IOCTL_OP(IOMMU_VIOMMU_ALLOC, iommufd_viommu_alloc_ioctl,
+>  		 struct iommu_viommu_alloc, out_viommu_id),
+> +	IOCTL_OP(IOMMU_HWPT_LU_SET_PRESERVE, iommufd_hwpt_lu_set_preserve,
+> +		 struct iommu_hwpt_lu_set_preserve, hwpt_token),
 
--- 
-2.53.0.959.g497ff81fa9-goog
+Shouldn't struct iommu_hwpt_lu_set_preserve{} be added to union ucmd_buffer{}
+above in this file?
 
