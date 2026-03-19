@@ -1,191 +1,336 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD9923CF678
-	for <kvm@vger.kernel.org>; Thu, 19 Mar 2026 12:48:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 178FB1386C9
+	for <kvm@vger.kernel.org>; Thu, 19 Mar 2026 12:48:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773924490; cv=none; b=h+Ra2n1nYTAXgr37jbMEvhC7tj3ZI4teZZtR0AjX1arKW5njL4uUfFY+Aj08guytw8fnSl5N2iW8sI1U4MWexV01UFEElTnaDDK+d+HoZPvEtuwB/KYrZM7+fKHe/6gS4mXzMMuGV6VlWud5zaoin3NlTGPs30i2V1J+wEcqv7I=
+	t=1773924522; cv=none; b=qjJU7gCHNEyJ05xOzg+ZYyq+muCIuInkW7+CdQI/xg3uS4mda3p1f3nD2L29uj1DD+qNCCWcbiiqkOjeRaaKBP64sVo0xKa6h4LFp0QtmFgFmeZ+nbRPlVxJ+NJ6SL+Id2M5NmHN3IJ6CbmGxw6VxVJNXz3k71PHzSd8Fjk/V3M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773924490; c=relaxed/simple;
-	bh=SbqkXRq0ja7cuWUf0xeeaWfYZjGP/+SIq83A5PorvrI=;
+	s=arc-20240116; t=1773924522; c=relaxed/simple;
+	bh=PJU7t96fLEVBcYDoF/dUaar4KRDA/VGraZKP/igQX78=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=qDBW0gl/O5GROdGnpwqOTNjEPGfa7PTcdjVCQK/8MNuifA7BwZHA0BrHBgspkJz5L4FvoaDovSDlNmY07+MdJij5pe6JXwu/OVKQX9xa/JB3Re3HpvUKw0opeStxitI7F0j/zYnX0a/Rz4UZvd1gZHqD/rQ2ej/XjU+lLFRP4Bg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=uFaGZW4m; arc=none smtp.client-ip=10.30.226.201
+	 To:Cc:Content-Type; b=dr56UloPZEclvI/j77yf0bRwVcSdtN8ATfJZNTXyfCIKExgZmaojK2QCXMTR1fj7PDTrYBQ4saHirNGec9Zfrtm8uw3zI/mlpYi5qCcRrvcN4VKcdomiF3cpwPNKn5KG+E4PCvJQoQVDmVYvAV2BJT05n4Ve1zDJ7hR5FzH9o5o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZLbcCE3g; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="uFaGZW4m"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9A64CC2BCB4
-	for <kvm@vger.kernel.org>; Thu, 19 Mar 2026 12:48:10 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZLbcCE3g"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EFE31C2BCB1
+	for <kvm@vger.kernel.org>; Thu, 19 Mar 2026 12:48:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773924490;
-	bh=SbqkXRq0ja7cuWUf0xeeaWfYZjGP/+SIq83A5PorvrI=;
+	s=k20201202; t=1773924522;
+	bh=PJU7t96fLEVBcYDoF/dUaar4KRDA/VGraZKP/igQX78=;
 	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=uFaGZW4mTxE9PZP/AWRdmxnMQKqR/DSAEjuqBt+NSOgYTOiyDBLEirwsSl6SM5oBp
-	 L6afgm2ktQasjOnpAO41M7KBVwzYxEdoabeKmY+BudmqYdTorKUrg1DL3IRprsm/Lf
-	 iJGWBS4Iht0zYuI5V6cRSx7T8wC7Nr9Yv4KDVaeFdNMVHv36e4+VFJPjdfRQC1DcT7
-	 em3fi/LmvTZXQqexKST2GwrrZ0R/WCmHIh8GenskLSd58t3Kdk5SlyJMNOQiyABHi2
-	 pFHNDxJjuNeaIMKEByu4sPXSVZ+GH0xZC8906ppVAebN2ZX1oMvuEpr+NZVLoKFrhn
-	 EE9SFATzB272Q==
-Received: by mail-ed1-f52.google.com with SMTP id 4fb4d7f45d1cf-664f8bef4e7so1307983a12.3
-        for <kvm@vger.kernel.org>; Thu, 19 Mar 2026 05:48:10 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCUDhYoLznoDBWO6hYeaBVNwiuJefdie2lNuWDhNCrQGjzBTk62PcdR+cpL/L6HdvtWk/V4=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwXVoPyv3zcZ4RhuGbB/UaGQeQ+utiHpPqVYzDHnYxb6TBJH7pb
-	pYQbRsQi/fpDuAa3zFGGLK2YBh2J/YOmOy3GcaBEdI+c+gWlXw0329OhV2zbyi51e/TNbgs3ELh
-	DivDDiFjD9/RHiIf4z+/gJyPGSeIqJIo=
-X-Received: by 2002:a17:907:84d:b0:b88:4e52:bfb6 with SMTP id
- a640c23a62f3a-b97f4a32186mr445503566b.56.1773924488971; Thu, 19 Mar 2026
- 05:48:08 -0700 (PDT)
+	b=ZLbcCE3gICe1hM4VKVs6h2fMX2k4W6YCDxBKDExnyYPiQ7kD12oDMksBuyp8P+K/V
+	 x9dP/qAdG/F751nY1KFqgKxLuLEuLoayGVTkFTbQKnCdqz2WwjqF7cqDtAKUCn/W8P
+	 kJHVApHl8ebg9zPQV0mi/9hmS08qiQWcR0eKMWDYoUXrlCY+bS7rziUYJuUqbsJSjy
+	 qi3FzyYk3SgoKR4L4VANbOf8FKFdDZX6LS7WFWRtHL8l4DkHxTFMl8xpdZAHlnm4Uk
+	 v1Vmr6vBWHZeKYub3zrzSNmpfomzoOgeIuCrjDNCI93zIg5PvGRCsITDYr+CEEclTp
+	 yrAwRTeHjuxiw==
+Received: by mail-ej1-f48.google.com with SMTP id a640c23a62f3a-b97e6e48b24so146223366b.2
+        for <kvm@vger.kernel.org>; Thu, 19 Mar 2026 05:48:41 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCWJjuk3RplD8ViI6qSEvBMuH07Pu/JFpyVaICp59wZaLwsMhJyaK11Kthk8oltTAxJ48gA=@vger.kernel.org
+X-Gm-Message-State: AOJu0YybxtFmeTVMSSOAIK9j9hiIKCrvZJuDjxMsEiRwGiGTo7ybw+tM
+	GlAAf/PEmRI5aYPGfLclKdaWH54gm8z257B1Q2SEqtu7e3Vtn9PCSaZQ+2nx+I6RZGfPanlOAmQ
+	9246yhLtl/Y6sgnEvhd0iLkGWC2o61PM=
+X-Received: by 2002:a17:907:9348:b0:b97:b2dc:91d7 with SMTP id
+ a640c23a62f3a-b97f480e6e1mr481987666b.16.1773924520443; Thu, 19 Mar 2026
+ 05:48:40 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260317092911.1400248-1-maobibo@loongson.cn> <20260317092911.1400248-4-maobibo@loongson.cn>
-In-Reply-To: <20260317092911.1400248-4-maobibo@loongson.cn>
+References: <20260311085059.1040263-1-gaosong@loongson.cn> <20260311085059.1040263-2-gaosong@loongson.cn>
+In-Reply-To: <20260311085059.1040263-2-gaosong@loongson.cn>
 From: Huacai Chen <chenhuacai@kernel.org>
-Date: Thu, 19 Mar 2026 20:48:03 +0800
-X-Gmail-Original-Message-ID: <CAAhV-H5aKoTTdjwzco6Yv84SJgtt0Eq9xXNp6PkcDaxM+H9gZw@mail.gmail.com>
-X-Gm-Features: AaiRm52d-uldn0ip33KfjiXps4IIs4qKy6WU0XqqA5mEV-xxXTSUXsRS0e_xaOA
-Message-ID: <CAAhV-H5aKoTTdjwzco6Yv84SJgtt0Eq9xXNp6PkcDaxM+H9gZw@mail.gmail.com>
-Subject: Re: [PATCH v2 3/3] LoongArch: KVM: Set vcpu_is_preempted() macro
- rather than function
-To: Bibo Mao <maobibo@loongson.cn>
-Cc: Tianrui Zhao <zhaotianrui@loongson.cn>, kernel@xen0n.name, kvm@vger.kernel.org, 
-	loongarch@lists.linux.dev, linux-kernel@vger.kernel.org, 
-	Juergen Gross <jgross@suse.com>
+Date: Thu, 19 Mar 2026 20:48:32 +0800
+X-Gmail-Original-Message-ID: <CAAhV-H4WZj3LmghXxXY1hNUjEmihx1fjggOZLNRRDS5PN2s0kg@mail.gmail.com>
+X-Gm-Features: AaiRm52XP76qHmwQYsJQMtONd2Xx1f_jwLbGH3XZD6N8WkBfD3ip5XK0tiyzCwo
+Message-ID: <CAAhV-H4WZj3LmghXxXY1hNUjEmihx1fjggOZLNRRDS5PN2s0kg@mail.gmail.com>
+Subject: Re: [PATCH v7 1/2] LoongArch: KVM: Add DMSINTC device support
+To: Song Gao <gaosong@loongson.cn>
+Cc: maobibo@loongson.cn, lixianglai@loongson.cn, loongarch@lists.linux.dev, 
+	kernel@xen0n.name, kvm@vger.kernel.org, linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-Hi, Bibo,
+Hi, Song,
 
-On Tue, Mar 17, 2026 at 5:29=E2=80=AFPM Bibo Mao <maobibo@loongson.cn> wrot=
+On Wed, Mar 11, 2026 at 5:16=E2=80=AFPM Song Gao <gaosong@loongson.cn> wrot=
 e:
 >
-> vcpu_is_preempted() is performance sensitive called in function
-> osq_lock(), here set it as macro. So that parameter is not parsed
-> at most time, it can avoid cache line thrashing across numa node.
+> Add device model for DMSINTC interrupt controller, implement basic
+> create/destroy/set_attr interfaces, and register device model to kvm
+> device table.
 >
-> Here is part of unixbench result on 3C5000 DualWay machine with 32
-> Cores and 2 Numa node.
->           origin    with patch    CONFIG_PARAVIRT disabled
-> execl     6871.9    7134.2        7190.8
-> fstime    425.5     959.9         956.1
->
-> From the test result, with macro method it is almost the same with
-> CONFIG_PARAVIRT disabled, and there is some improvment compared with
-> function method.
->
-> Signed-off-by: Bibo Mao <maobibo@loongson.cn>
+> Reviewed-by: Bibo Mao <maobibo@loongson.cn>
+> Signed-off-by: Song Gao <gaosong@loongson.cn>
 > ---
->  arch/loongarch/include/asm/qspinlock.h | 27 +++++++++++++++++++++-----
->  arch/loongarch/kernel/paravirt.c       | 15 ++------------
->  2 files changed, 24 insertions(+), 18 deletions(-)
+>  arch/loongarch/include/asm/kvm_dmsintc.h |  21 ++++
+>  arch/loongarch/include/asm/kvm_host.h    |   3 +
+>  arch/loongarch/include/uapi/asm/kvm.h    |   4 +
+>  arch/loongarch/kvm/Makefile              |   1 +
+>  arch/loongarch/kvm/intc/dmsintc.c        | 117 +++++++++++++++++++++++
+>  arch/loongarch/kvm/main.c                |   6 ++
+>  include/uapi/linux/kvm.h                 |   2 +
+>  7 files changed, 154 insertions(+)
+>  create mode 100644 arch/loongarch/include/asm/kvm_dmsintc.h
+>  create mode 100644 arch/loongarch/kvm/intc/dmsintc.c
 >
-> diff --git a/arch/loongarch/include/asm/qspinlock.h b/arch/loongarch/incl=
-ude/asm/qspinlock.h
-> index 66244801db67..b5d7a038faf1 100644
-> --- a/arch/loongarch/include/asm/qspinlock.h
-> +++ b/arch/loongarch/include/asm/qspinlock.h
-> @@ -5,8 +5,10 @@
->  #include <linux/jump_label.h>
->
->  #ifdef CONFIG_PARAVIRT
-> -
-> +#include <asm/kvm_para.h>
->  DECLARE_STATIC_KEY_FALSE(virt_spin_lock_key);
-> +DECLARE_STATIC_KEY_FALSE(virt_preempt_key);
-> +DECLARE_PER_CPU(struct kvm_steal_time, steal_time);
->
->  #define virt_spin_lock virt_spin_lock
->
-> @@ -34,10 +36,25 @@ static inline bool virt_spin_lock(struct qspinlock *l=
-ock)
->         return true;
->  }
->
-> -#define vcpu_is_preempted vcpu_is_preempted
-> -
-> -bool vcpu_is_preempted(int cpu);
-> -
+> diff --git a/arch/loongarch/include/asm/kvm_dmsintc.h b/arch/loongarch/in=
+clude/asm/kvm_dmsintc.h
+> new file mode 100644
+> index 000000000000..b04b89dd2a35
+> --- /dev/null
+> +++ b/arch/loongarch/include/asm/kvm_dmsintc.h
+> @@ -0,0 +1,21 @@
+> +/* SPDX-License-Identifier: GPL-2.0 */
 > +/*
-> + * Macro is better than inline function here
-> + * With inline function, parameter cpu is parsed even though it is not u=
-sed.
-> + * This may cause cache line thrashing across NUMA node.
-> + * With macro method, parameter cpu is parsed only when it is used.
-What is the test result with inline function? If it isn't
-significantly worse than with macro, we usually prefer inline
-functions.
-
+> + * Copyright (C) 2025 Loongson Technology Corporation Limited
+> + */
+> +
+> +#ifndef __ASM_KVM_DMSINTC_H
+> +#define __ASM_KVM_DMSINTC_H
+> +
+> +
+> +struct loongarch_dmsintc {
+> +       struct kvm *kvm;
+> +       uint64_t msg_addr_base;
+> +       uint64_t msg_addr_size;
+> +};
+> +
+> +struct dmsintc_state {
+> +       atomic64_t  vector_map[4];
+> +};
+> +
+> +int kvm_loongarch_register_dmsintc_device(void);
+> +#endif
+> diff --git a/arch/loongarch/include/asm/kvm_host.h b/arch/loongarch/inclu=
+de/asm/kvm_host.h
+> index 19eb5e5c3984..6a8d72cf8e4e 100644
+> --- a/arch/loongarch/include/asm/kvm_host.h
+> +++ b/arch/loongarch/include/asm/kvm_host.h
+> @@ -22,6 +22,7 @@
+>  #include <asm/kvm_ipi.h>
+>  #include <asm/kvm_eiointc.h>
+>  #include <asm/kvm_pch_pic.h>
+> +#include <asm/kvm_dmsintc.h>
+>  #include <asm/loongarch.h>
+>
+>  #define __KVM_HAVE_ARCH_INTC_INITIALIZED
+> @@ -135,6 +136,7 @@ struct kvm_arch {
+>         struct loongarch_ipi *ipi;
+>         struct loongarch_eiointc *eiointc;
+>         struct loongarch_pch_pic *pch_pic;
+> +       struct loongarch_dmsintc *dmsintc;
+>  };
+>
+>  #define CSR_MAX_NUMS           0x800
+> @@ -247,6 +249,7 @@ struct kvm_vcpu_arch {
+>         struct kvm_mp_state mp_state;
+>         /* ipi state */
+>         struct ipi_state ipi_state;
+> +       struct dmsintc_state dmsintc_state;
+>         /* cpucfg */
+>         u32 cpucfg[KVM_MAX_CPUCFG_REGS];
+>
+> diff --git a/arch/loongarch/include/uapi/asm/kvm.h b/arch/loongarch/inclu=
+de/uapi/asm/kvm.h
+> index 419647aacdf3..c39b8ac7a90a 100644
+> --- a/arch/loongarch/include/uapi/asm/kvm.h
+> +++ b/arch/loongarch/include/uapi/asm/kvm.h
+> @@ -155,4 +155,8 @@ struct kvm_iocsr_entry {
+>  #define KVM_DEV_LOONGARCH_PCH_PIC_GRP_CTRL             0x40000006
+>  #define KVM_DEV_LOONGARCH_PCH_PIC_CTRL_INIT            0
+>
+> +#define KVM_DEV_LOONGARCH_DMSINTC_CTRL                 0x40000007
+> +#define KVM_DEV_LOONGARCH_DMSINTC_MSG_ADDR_BASE                0x0
+> +#define KVM_DEV_LOONGARCH_DMSINTC_MSG_ADDR_SIZE                0x1
+> +
+>  #endif /* __UAPI_ASM_LOONGARCH_KVM_H */
+> diff --git a/arch/loongarch/kvm/Makefile b/arch/loongarch/kvm/Makefile
+> index cb41d9265662..6e184e24443c 100644
+> --- a/arch/loongarch/kvm/Makefile
+> +++ b/arch/loongarch/kvm/Makefile
+> @@ -19,6 +19,7 @@ kvm-y +=3D vm.o
+>  kvm-y +=3D intc/ipi.o
+>  kvm-y +=3D intc/eiointc.o
+>  kvm-y +=3D intc/pch_pic.o
+> +kvm-y +=3D intc/dmsintc.o
+>  kvm-y +=3D irqfd.o
+>
+>  CFLAGS_exit.o  +=3D $(call cc-disable-warning, override-init)
+> diff --git a/arch/loongarch/kvm/intc/dmsintc.c b/arch/loongarch/kvm/intc/=
+dmsintc.c
+> new file mode 100644
+> index 000000000000..1bb61e55d061
+> --- /dev/null
+> +++ b/arch/loongarch/kvm/intc/dmsintc.c
+> @@ -0,0 +1,117 @@
+> +// SPDX-License-Identifier: GPL-2.0
+> +/*
+> + * Copyright (C) 2025 Loongson Technology Corporation Limited
+> + */
+> +
+> +#include <linux/kvm_host.h>
+> +#include <asm/kvm_dmsintc.h>
+> +#include <asm/kvm_vcpu.h>
+> +
+> +static int kvm_dmsintc_ctrl_access(struct kvm_device *dev,
+> +                               struct kvm_device_attr *attr,
+> +                               bool is_write)
+> +{
+> +       int addr =3D attr->attr;
+> +       void __user *data;
+> +       struct loongarch_dmsintc *s =3D dev->kvm->arch.dmsintc;
+> +       u64 tmp;
+> +       u32 cpu_bit;
+> +
+> +       data =3D (void __user *)attr->addr;
+> +       switch (addr) {
+> +       case KVM_DEV_LOONGARCH_DMSINTC_MSG_ADDR_BASE:
+> +               if (is_write) {
+> +                       if (copy_from_user(&tmp, data, sizeof(s->msg_addr=
+_base)))
+> +                               return -EFAULT;
+> +                       if (s->msg_addr_base) {
+> +                               /* Duplicate setting are not allowed. */
+> +                               return -EFAULT;
+> +                       }
+> +                       if ((tmp & (BIT(AVEC_CPU_SHIFT) - 1)) =3D=3D 0)
+> +                               s->msg_addr_base =3D tmp;
+> +                       else
+> +                               return  -EFAULT;
+> +                       s->msg_addr_base =3D tmp;
+> +                       cpu_bit =3D find_first_bit((unsigned long *)&(s->=
+msg_addr_base), 64)
+> +                                               - AVEC_CPU_SHIFT;
+> +                       cpu_bit =3D min(cpu_bit, AVEC_CPU_BIT);
+> +                       s->cpu_mask =3D GENMASK(cpu_bit - 1, 0) & AVEC_CP=
+U_MASK;
+> +               }
+> +               break;
+> +       case KVM_DEV_LOONGARCH_DMSINTC_MSG_ADDR_SIZE:
+> +               if (is_write) {
+> +                       if (copy_from_user(&tmp, data, sizeof(s->msg_addr=
+_size)))
+> +                               return -EFAULT;
+> +                       if (s->msg_addr_size) {
+> +                               /*Duplicate setting are not allowed. */
+> +                               return -EFAULT;
+> +                       }
+> +                       s->msg_addr_size =3D tmp;
+> +               }
+> +               break;
+> +       default:
+> +               kvm_err("%s: unknown dmsintc register, addr =3D %d\n", __=
+func__, addr);
+> +               return -ENXIO;
+> +       }
+> +
+> +       return 0;
+> +}
+> +
+> +static int kvm_dmsintc_set_attr(struct kvm_device *dev,
+> +                       struct kvm_device_attr *attr)
+> +{
+> +       switch (attr->group) {
+> +       case KVM_DEV_LOONGARCH_DMSINTC_CTRL:
+> +               return kvm_dmsintc_ctrl_access(dev, attr, true);
+> +       default:
+> +               kvm_err("%s: unknown group (%d)\n", __func__, attr->group=
+);
+> +               return -EINVAL;
+> +       }
+> +}
+> +
+> +static int kvm_dmsintc_create(struct kvm_device *dev, u32 type)
+> +{
+> +       struct kvm *kvm;
+> +       struct loongarch_dmsintc *s;
+> +
+> +       if (!dev) {
+> +               kvm_err("%s: kvm_device ptr is invalid!\n", __func__);
+> +               return -EINVAL;
+> +       }
+> +
+> +       kvm =3D dev->kvm;
+> +       if (kvm->arch.dmsintc) {
+> +               kvm_err("%s: LoongArch DMSINTC has already been created!\=
+n", __func__);
+> +               return -EINVAL;
+> +       }
+> +
+> +       s =3D kzalloc(sizeof(struct loongarch_dmsintc), GFP_KERNEL);
+> +       if (!s)
+> +               return -ENOMEM;
+> +
+> +       s->kvm =3D kvm;
+> +       kvm->arch.dmsintc =3D s;
+> +       return 0;
+> +}
+> +
+> +static void kvm_dmsintc_destroy(struct kvm_device *dev)
+> +{
+> +
+> +       if (!dev || !dev->kvm || !dev->kvm->arch.dmsintc)
+> +               return;
+> +
+> +       kfree(dev->kvm->arch.dmsintc);
+> +       kfree(dev);
+> +}
+> +
+> +static struct kvm_device_ops kvm_dmsintc_dev_ops =3D {
+> +       .name =3D "kvm-loongarch-dmsintc",
+> +       .create =3D kvm_dmsintc_create,
+> +       .destroy =3D kvm_dmsintc_destroy,
+> +       .set_attr =3D kvm_dmsintc_set_attr,
+> +};
+> +
+> +int kvm_loongarch_register_dmsintc_device(void)
+> +{
+> +       return kvm_register_device_ops(&kvm_dmsintc_dev_ops, KVM_DEV_TYPE=
+_LOONGARCH_DMSINTC);
+> +}
+> diff --git a/arch/loongarch/kvm/main.c b/arch/loongarch/kvm/main.c
+> index 2c593ac7892f..713771a93d90 100644
+> --- a/arch/loongarch/kvm/main.c
+> +++ b/arch/loongarch/kvm/main.c
+> @@ -416,6 +416,12 @@ static int kvm_loongarch_env_init(void)
+>
+>         /* Register LoongArch PCH-PIC interrupt controller interface. */
+>         ret =3D kvm_loongarch_register_pch_pic_device();
+> +       if (ret)
+> +               return ret;
+> +
+> +       /* Register LoongArch DMSINTC interrupt contrroller interface */
+> +       if (cpu_has_msgint)
+I still have some questions here. If we always create dmsintc when
+cpu_has_msgint, then kvm_guest_has_msgint() is completely useless.
+Because there will be no guest without dmsintc while the host has
+dmsintc.
 
 
 Huacai
 
-> + */
-> +#define vcpu_is_preempted(cpu)                                          =
-       \
-> +({                                                                      =
-       \
-> +       bool __val;                                                      =
-       \
-> +                                                                        =
-       \
-> +       if (!static_branch_unlikely(&virt_preempt_key))                  =
-       \
-> +               __val =3D false;                                         =
-         \
-> +       else {                                                           =
-       \
-> +               struct kvm_steal_time *src;                              =
-       \
-> +               src =3D &per_cpu(steal_time, cpu);                       =
-         \
-> +               __val =3D !!(READ_ONCE(src->preempted) & KVM_VCPU_PREEMPT=
-ED);     \
-> +       }                                                                =
-       \
-> +       __val;                                                           =
-       \
-> +})
->  #endif /* CONFIG_PARAVIRT */
+> +               ret =3D kvm_loongarch_register_dmsintc_device();
 >
->  #include <asm-generic/qspinlock.h>
-> diff --git a/arch/loongarch/kernel/paravirt.c b/arch/loongarch/kernel/par=
-avirt.c
-> index b74fe6db49ab..2d1206e486e2 100644
-> --- a/arch/loongarch/kernel/paravirt.c
-> +++ b/arch/loongarch/kernel/paravirt.c
-> @@ -10,8 +10,8 @@
->  #include <asm/paravirt.h>
->
->  static int has_steal_clock;
-> -static DEFINE_PER_CPU(struct kvm_steal_time, steal_time) __aligned(64);
-> -static DEFINE_STATIC_KEY_FALSE(virt_preempt_key);
-> +DEFINE_PER_CPU(struct kvm_steal_time, steal_time) __aligned(64);
-> +DEFINE_STATIC_KEY_FALSE(virt_preempt_key);
->  DEFINE_STATIC_KEY_FALSE(virt_spin_lock_key);
->
->  static bool steal_acc =3D true;
-> @@ -261,17 +261,6 @@ static int pv_time_cpu_down_prepare(unsigned int cpu=
-)
->         return 0;
+>         return ret;
 >  }
+> diff --git a/include/uapi/linux/kvm.h b/include/uapi/linux/kvm.h
+> index 65500f5db379..f2aa9d6ad7d3 100644
+> --- a/include/uapi/linux/kvm.h
+> +++ b/include/uapi/linux/kvm.h
+> @@ -1220,6 +1220,8 @@ enum kvm_device_type {
+>  #define KVM_DEV_TYPE_LOONGARCH_EIOINTC KVM_DEV_TYPE_LOONGARCH_EIOINTC
+>         KVM_DEV_TYPE_LOONGARCH_PCHPIC,
+>  #define KVM_DEV_TYPE_LOONGARCH_PCHPIC  KVM_DEV_TYPE_LOONGARCH_PCHPIC
+> +       KVM_DEV_TYPE_LOONGARCH_DMSINTC,
+> +#define KVM_DEV_TYPE_LOONGARCH_DMSINTC   KVM_DEV_TYPE_LOONGARCH_DMSINTC
 >
-> -bool vcpu_is_preempted(int cpu)
-> -{
-> -       struct kvm_steal_time *src;
-> -
-> -       if (!static_branch_unlikely(&virt_preempt_key))
-> -               return false;
-> -
-> -       src =3D &per_cpu(steal_time, cpu);
-> -       return !!(src->preempted & KVM_VCPU_PREEMPTED);
-> -}
-> -EXPORT_SYMBOL(vcpu_is_preempted);
->  #endif
+>         KVM_DEV_TYPE_MAX,
 >
->  static void pv_cpu_reboot(void *unused)
 > --
 > 2.39.3
 >
