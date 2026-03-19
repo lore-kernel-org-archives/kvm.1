@@ -1,228 +1,173 @@
-Received: from PA4PR04CU001.outbound.protection.outlook.com (mail-francecentralazon11013004.outbound.protection.outlook.com [40.107.162.4])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 23B883033D1;
-	Thu, 19 Mar 2026 14:10:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.162.4
-ARC-Seal:i=3; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773929446; cv=fail; b=svj7n2xNkfAFPBnnDHBqqzuS04sS5+Nkp46Xg0+gUqOx6qG1EF5YHqvkqtIPsRN4YmS4hr+LTipBZHJnh6hVWW8GaJCqHWdX6G/cozS6dhX7cImeVYYizMihBSRGzBheGaNWbfVhJo9gLV6zXpqcuV7Rp5IL89jnNm/D5AVOfgw=
-ARC-Message-Signature:i=3; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773929446; c=relaxed/simple;
-	bh=XR+KrZdrOOrR8x0HWJQ7Z7mV2MtZdfqWFLqN8TYEyDs=;
-	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=KV9XeOXvo/aoiG8vN/MLLDWeUY6R4GQQTLE2U4hd0G9o+OCfqn+9RIRYeAZU6xltz5tKLjn7T8ISR98hDNvOXLVEnf0rcDP5mIZlDAEZprcIK5QU5tcUyOVcrHWoNJzh0rXXi7k+NbcnkL4zBqHNNf92SKholLb1Bn0iOMpYHFI=
-ARC-Authentication-Results:i=3; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=hC/rpOGm; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=hC/rpOGm; arc=fail smtp.client-ip=40.107.162.4
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D529C311950
+	for <kvm@vger.kernel.org>; Thu, 19 Mar 2026 14:13:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1773929637; cv=none; b=j3A59BMqfr7stXvquk5R2Izp5dj2p7YSh6ggwNVcDB7ewfuKaG6TJke3XlHZ32fl0aT0RX6keBUzsEzdmTopNbIawZ9xOKP5qNRc5/tA+DWcm5LSBYMSt6uJj45zSF4Rz0vpGNnur/1MPti0QstwlCOT9jXT+5tmuwyaxFm1gmY=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1773929637; c=relaxed/simple;
+	bh=4zAon2/wL1xkF183JwLxXVvEK05OvlwLI29zwOFhq2E=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=rzTwE6LyBzmA6JQ1f06So+hoMrdkt48sNg6riCh6W+6KzBufQYD0xJjTgTsJ8hSZYg/MbJdXOXmU50ugi2orATp/TR5wkjj+p7GrIYdV83Lcp9PjRjRmoAKu/J1eVZyxJcVso9xTv8y/z43hDuA1wrTa/Y83jgFg43ENMwX7/W4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz; spf=pass smtp.mailfrom=suse.cz; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=qJFdgiFw; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=4jpB79yc; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=OrcSAEzL; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=HXVk5/yP; arc=none smtp.client-ip=195.135.223.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.cz
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="hC/rpOGm";
-	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="hC/rpOGm"
-ARC-Seal: i=2; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=pass;
- b=PVpc+lS5BJc6/qrdbl5XfLEY4GJn7cpz33Y2sRWxiN4UVJbxsz4SEpY7hD+BqkQZm1GLjCiZeBTaekFFxnVd23nYPEKtUXeTnyyE+WVxAJxvLOkEp0YXskhszcKXvKluGfeMQL1/7uNwfoUz+nDa504cdNZLGnSHUGKgTNpfSnQK5cFgEorQUUnBaZeS6lmHFUB0z+7yQA1Evj7scbY5sA8wXYcCUgTEu/l/FE45+YQpJxo6Emo/dS9sdDZrnPEtWF5ku6u6P3XdXs7PdX3UghnM7RyHicDhlmRpb0X6/SQcRHnWVrdrfC7zacRlidovsQHslSFZv1hPzkOmmx5gvw==
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=jMXO9IUALQXVPohXev52/OP4HC1X8vNQDRQvOKVLAMY=;
- b=pl9GChCb7pWiJo/NJxnDPP6M1d/1v3OQ22P6XvEnDkJ3eEOmrzRXq23ZNw1uP/KmZB5eLzsRAwB+GdCZsr/QK32JFRRj+TxeOPGEW/Yg8S+w3ZdbCUtStxyewc8D2GoFkfNkQlMwC+kduon58Hzl6vNBgfNz7tkk98mZImKy8oYL+Cp9asxXHBMjDkWUvKK8z9S2WO5TMIVHxQL7PT6ikDyMGGPQtQoyLdJ3mIIjPo7pTrZnauac9sBPhBn7cKzHK1CTg5c3MJxNI4ZHZf7XhiybvbM7/vX3xb/IpTZV5/hhXAptHdG1VvnF1I1uLBpF64sDfmCN19H71iPKiIwCkA==
-ARC-Authentication-Results: i=2; mx.microsoft.com 1; spf=pass (sender ip is
- 4.158.2.129) smtp.rcpttodomain=vger.kernel.org smtp.mailfrom=arm.com;
- dmarc=pass (p=none sp=none pct=100) action=none header.from=arm.com;
- dkim=pass (signature was verified) header.d=arm.com; arc=pass (0 oda=1 ltdi=1
- spf=[1,1,smtp.mailfrom=arm.com] dkim=[1,1,header.d=arm.com]
- dmarc=[1,1,header.from=arm.com])
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arm.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=jMXO9IUALQXVPohXev52/OP4HC1X8vNQDRQvOKVLAMY=;
- b=hC/rpOGmkpJ4y6gjlzs7CANouRDDvufPUmQLunbiZSGMoUpgRTjTlgQIjCYT/Yir3D9maH+wxanstw9OY9mnq6ynBOfB9z2TkdIkIdSjTyV+fH/AtgJAA33S8vnOFgHnz4r+l9Iz+3sYzQjhE7OPabjZFjG7voggwI6VenysmG4=
-Received: from DUZPR01CA0084.eurprd01.prod.exchangelabs.com
- (2603:10a6:10:46a::11) by VI0PR08MB11711.eurprd08.prod.outlook.com
- (2603:10a6:800:312::6) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9723.19; Thu, 19 Mar
- 2026 14:10:40 +0000
-Received: from DU6PEPF00009525.eurprd02.prod.outlook.com
- (2603:10a6:10:46a:cafe::75) by DUZPR01CA0084.outlook.office365.com
- (2603:10a6:10:46a::11) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.20.9723.19 via Frontend Transport; Thu,
- 19 Mar 2026 14:10:39 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 4.158.2.129)
- smtp.mailfrom=arm.com; dkim=pass (signature was verified)
- header.d=arm.com;dmarc=pass action=none header.from=arm.com;
-Received-SPF: Pass (protection.outlook.com: domain of arm.com designates
- 4.158.2.129 as permitted sender) receiver=protection.outlook.com;
- client-ip=4.158.2.129; helo=outbound-uk1.az.dlp.m.darktrace.com; pr=C
-Received: from outbound-uk1.az.dlp.m.darktrace.com (4.158.2.129) by
- DU6PEPF00009525.mail.protection.outlook.com (10.167.8.6) with Microsoft SMTP
- Server (version=TLS1_3, cipher=TLS_AES_256_GCM_SHA384) id 15.20.9723.19 via
- Frontend Transport; Thu, 19 Mar 2026 14:10:39 +0000
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=bhmtTIQF8QJW9GYg14GPTabTOh9og82nFTn5s/bbMD2T304IJRadcDxePflyo+2H0Ikn4G9f/K6FhHWswo/VrgVuAuk4Za3Pry7nesHm59EtkPdrCYE/LoGiHdnK7X+785bBJuywKSjL8tgNTIkL+7DhuaePUmzgYGoEGnHIS9FnSndG6AP4iQVR3eNeuLz2zA5yEUq9yPsD9VPOudFtvjVs185JxPSjX7uQA7ImgZ5s3v71rsUxFX/HQFZfX2ZnRu28MeMA+0dmh3EmZ4ks1qnShGY3jgqMieo42xZR54wRlRXJy1VqoCU68rBImYZ5S1h/ls0Tzg/TAliwDu3Mpw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=jMXO9IUALQXVPohXev52/OP4HC1X8vNQDRQvOKVLAMY=;
- b=xmP3KqoN5eC/nAGYVvP+E1+gLi4Wg3fB/YzmIEqgXmrOsI4fxUPuIq8gfxhUXIgXvEkIxA0RlVxmWd8+6x7QaNbNOTaqGJ9eKRipzRpulMNV3IF5HeiLnLeOrvekDNULrTuPgoSJiunG1HZch4hXedVTJMypo94+kV7SvFGTTjIfajxLfoplNj4YhLzOTgzCxrI6f5+B05eBRRO5IRkIIovuGWqIWdIU2sdJvA6ZCsgV9qRnC/5GO9TDB6WVFiEh+vgcSl7SWQz5bDmEPyw75x1LN+P0/HqISXw4VO+koOAkCdeoIXz36ETgNwM6arV1Qu6t8x3UnImz/cO7rFhhQA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=arm.com; dmarc=pass action=none header.from=arm.com; dkim=pass
- header.d=arm.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arm.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=jMXO9IUALQXVPohXev52/OP4HC1X8vNQDRQvOKVLAMY=;
- b=hC/rpOGmkpJ4y6gjlzs7CANouRDDvufPUmQLunbiZSGMoUpgRTjTlgQIjCYT/Yir3D9maH+wxanstw9OY9mnq6ynBOfB9z2TkdIkIdSjTyV+fH/AtgJAA33S8vnOFgHnz4r+l9Iz+3sYzQjhE7OPabjZFjG7voggwI6VenysmG4=
-Authentication-Results-Original: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=arm.com;
-Received: from DU4PR08MB11769.eurprd08.prod.outlook.com (2603:10a6:10:644::21)
- by AS8PR08MB6326.eurprd08.prod.outlook.com (2603:10a6:20b:335::19) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9723.19; Thu, 19 Mar
- 2026 14:09:37 +0000
-Received: from DU4PR08MB11769.eurprd08.prod.outlook.com
- ([fe80::d424:cd62:81a8:490f]) by DU4PR08MB11769.eurprd08.prod.outlook.com
- ([fe80::d424:cd62:81a8:490f%5]) with mapi id 15.20.9723.018; Thu, 19 Mar 2026
- 14:09:37 +0000
-Message-ID: <56fb42ad-eada-40df-8c81-53cb7c0c310e@arm.com>
-Date: Thu, 19 Mar 2026 14:09:35 +0000
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v13 13/48] kvm: arm64: Don't expose unsupported
- capabilities for realm guests
-To: Steven Price <steven.price@arm.com>, kvm@vger.kernel.org,
- kvmarm@lists.linux.dev
-Cc: Catalin Marinas <catalin.marinas@arm.com>, Marc Zyngier <maz@kernel.org>,
- Will Deacon <will@kernel.org>, James Morse <james.morse@arm.com>,
- Oliver Upton <oliver.upton@linux.dev>, Zenghui Yu <yuzenghui@huawei.com>,
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
- Joey Gouly <joey.gouly@arm.com>, Alexandru Elisei
- <alexandru.elisei@arm.com>, Christoffer Dall <christoffer.dall@arm.com>,
- Fuad Tabba <tabba@google.com>, linux-coco@lists.linux.dev,
- Ganapatrao Kulkarni <gankulkarni@os.amperecomputing.com>,
- Gavin Shan <gshan@redhat.com>, Shanker Donthineni <sdonthineni@nvidia.com>,
- Alper Gun <alpergun@google.com>, "Aneesh Kumar K . V"
- <aneesh.kumar@kernel.org>, Emi Kisanuki <fj0570is@fujitsu.com>,
- Vishal Annapurve <vannapurve@google.com>
-References: <20260318155413.793430-1-steven.price@arm.com>
- <20260318155413.793430-14-steven.price@arm.com>
-Content-Language: en-US
-From: Suzuki K Poulose <suzuki.poulose@arm.com>
-In-Reply-To: <20260318155413.793430-14-steven.price@arm.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: PR1P264CA0176.FRAP264.PROD.OUTLOOK.COM
- (2603:10a6:102:344::17) To DU4PR08MB11769.eurprd08.prod.outlook.com
- (2603:10a6:10:644::21)
+	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="qJFdgiFw";
+	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="4jpB79yc";
+	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="OrcSAEzL";
+	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="HXVk5/yP"
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id 233AB5BD4B;
+	Thu, 19 Mar 2026 14:13:51 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1773929632; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=4fUFXPph0d+U/6GDmGbgLZ/FXBjYuxpYsgD69WTKZEc=;
+	b=qJFdgiFwZof840urwELAyJUPmqr5R5KSb1T4rwYuc7bb8XNbCm/kv+M5FkrKSBEOM1bZiu
+	/MGyuwm/OFnFKmJm/t/Uz/+GbEcAEAQCMtEWioCbgwKOh4DWZ0qNVZOg9g66xDY+m4U+fD
+	w9Xqoe30eNI+goFz62hSwZMzWorThdA=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1773929632;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=4fUFXPph0d+U/6GDmGbgLZ/FXBjYuxpYsgD69WTKZEc=;
+	b=4jpB79ycXSQsxOkgtV3HKUa6Dm/vQ/wRir8pmFsiYnB6qgK3LbPe12RtulXb4tol7/E3ij
+	faYPra8B4GTfZjDQ==
+Authentication-Results: smtp-out2.suse.de;
+	none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1773929631; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=4fUFXPph0d+U/6GDmGbgLZ/FXBjYuxpYsgD69WTKZEc=;
+	b=OrcSAEzL/6c4UDB40dZmtUkHL2UKN/t418W/3/WLfRE3VUYtttdOTA1LBRs2LexriSZBXr
+	IUCLAcO9QxQoLCNXA0PSitgNb7BC5cuH9t+EXroQLbXGhfbC1mTChSWj64vc6V41FfYy8R
+	mio6pb/J12e+5TPnOnmBoDRex83ce1A=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1773929631;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=4fUFXPph0d+U/6GDmGbgLZ/FXBjYuxpYsgD69WTKZEc=;
+	b=HXVk5/yPJtxIjyky0dtujMNvVHE9KONXRU8D1O6wb4LBxoqwDaKPYOnkGEkCrYDJmYyVOA
+	klxEA++oJw6AsaAw==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 14B714273B;
+	Thu, 19 Mar 2026 14:13:51 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id TmUEBZ8EvGlPZwAAD6G6ig
+	(envelope-from <jack@suse.cz>); Thu, 19 Mar 2026 14:13:51 +0000
+Received: by quack3.suse.cz (Postfix, from userid 1000)
+	id C850FA0B32; Thu, 19 Mar 2026 15:13:46 +0100 (CET)
+Date: Thu, 19 Mar 2026 15:13:46 +0100
+From: Jan Kara <jack@suse.cz>
+To: Philipp Hahn <phahn-oss@avm.de>
+Cc: amd-gfx@lists.freedesktop.org, apparmor@lists.ubuntu.com, 
+	bpf@vger.kernel.org, ceph-devel@vger.kernel.org, cocci@inria.fr, 
+	dm-devel@lists.linux.dev, dri-devel@lists.freedesktop.org, gfs2@lists.linux.dev, 
+	intel-gfx@lists.freedesktop.org, intel-wired-lan@lists.osuosl.org, iommu@lists.linux.dev, 
+	kvm@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
+	linux-block@vger.kernel.org, linux-bluetooth@vger.kernel.org, linux-btrfs@vger.kernel.org, 
+	linux-cifs@vger.kernel.org, linux-clk@vger.kernel.org, linux-erofs@lists.ozlabs.org, 
+	linux-ext4@vger.kernel.org, linux-fsdevel@vger.kernel.org, linux-gpio@vger.kernel.org, 
+	linux-hyperv@vger.kernel.org, linux-input@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-leds@vger.kernel.org, linux-media@vger.kernel.org, linux-mips@vger.kernel.org, 
+	linux-mm@kvack.org, linux-modules@vger.kernel.org, linux-mtd@lists.infradead.org, 
+	linux-nfs@vger.kernel.org, linux-omap@vger.kernel.org, linux-phy@lists.infradead.org, 
+	linux-pm@vger.kernel.org, linux-rockchip@lists.infradead.org, linux-s390@vger.kernel.org, 
+	linux-scsi@vger.kernel.org, linux-sctp@vger.kernel.org, 
+	linux-security-module@vger.kernel.org, linux-sh@vger.kernel.org, linux-sound@vger.kernel.org, 
+	linux-stm32@st-md-mailman.stormreply.com, linux-trace-kernel@vger.kernel.org, linux-usb@vger.kernel.org, 
+	linux-wireless@vger.kernel.org, netdev@vger.kernel.org, ntfs3@lists.linux.dev, 
+	samba-technical@lists.samba.org, sched-ext@lists.linux.dev, target-devel@vger.kernel.org, 
+	tipc-discussion@lists.sourceforge.net, v9fs@lists.linux.dev, Jan Kara <jack@suse.com>
+Subject: Re: [PATCH 12/61] quota: Prefer IS_ERR_OR_NULL over manual NULL check
+Message-ID: <ol2d7c5z7yfyuwo5tyfxurgqedruhr6bzmuv37bx5phhrmmoyh@4zjspbtexid3>
+References: <20260310-b4-is_err_or_null-v1-0-bd63b656022d@avm.de>
+ <20260310-b4-is_err_or_null-v1-12-bd63b656022d@avm.de>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-TrafficTypeDiagnostic:
-	DU4PR08MB11769:EE_|AS8PR08MB6326:EE_|DU6PEPF00009525:EE_|VI0PR08MB11711:EE_
-X-MS-Office365-Filtering-Correlation-Id: 23d59353-65ab-48fc-03d3-08de85c14cc2
-x-checkrecipientrouted: true
-NoDisclaimer: true
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam-Untrusted:
- BCL:0;ARA:13230040|366016|1800799024|7416014|376014|22082099003|56012099003|18002099003;
-X-Microsoft-Antispam-Message-Info-Original:
- xfuf6JxXrILbkqUZ2ryuIKs4mZy35Kgkd5NLQtOdDm6Uk8iwog6J2X+QovfF0jSBWDdm3ygbovPFMCWG6IPXrhABpAXKX0KnDbQ3Ru9slMjSeO9HFjzK1ckE/gvnz3rRFLs3T+ebqAAn6RU5JMLPnm86Sn/t7SiyApwlzWNxW9cefXFaSclB9xN77sWSc22apC6K8VyZt9BNB7tlSWBFO+86qjf03pTMUQ+kskeGRpbIFEziw2FkbMFazgpsug70rPcEz1dHs1m+2T9Yww/xwXQrlmB1nqHoESSMTG3XeSbYpasj34v9RfdAnqobKmjT1sxq8rr0fUTlwbK/tKa2FKwfEca7KE+09lDRBO64ped8vxuvwujuTPx2B2YS15vj+s91L3NPOHnq1XTiLXwSn0IBFqkl5kaLdTAQAySCPiknvgK4HomJfBaeNujqlj7o/3eK/teZTfNknalUrbU4fWgEjvjrN5Wn3qxqeDQNq5DnowXwclvwWCzDzoR9M2M0pQQnnUU74AufCr02TMTg1pY0b3zgzXG+kYxbGun0TtsDH1S4y6lmR06H+UlhFXjbYFiRdj5IaPU7FD6TeCTjkfqpyEjhy/KIfC6rtICSURFSKyeHTUYNwPNlq06Geq+urfj1/ihfh/KD0QUEbmDp8AOIameCUmZqoxSLRSV+3rCrO7pCr+2hZSa/LSVJZb28N4f0gskLig+UlU9FyUnvRstIBEg6hyH2Ydt6ZQ8VQ2Y=
-X-Forefront-Antispam-Report-Untrusted:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DU4PR08MB11769.eurprd08.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(7416014)(376014)(22082099003)(56012099003)(18002099003);DIR:OUT;SFP:1101;
-X-Exchange-RoutingPolicyChecked:
- Uzc7qji2i4qev87EsuCTHP2iBYhDzZoeLd9KLAhTl2wmogqee5mxHmts7jSSPhd4ZXVPRjXBcXiaa9qNwIS88fAI7psCLcEK0HLEUXJtnJbJw+AWxCrfc6mAfXeV7jqe0uCwVNEWnPUFlebGtBSn4h7LFucBv4jjc3XQFgciucb0L8i+bw9xv155EQYr2JLJCGL03cMHMc+yM8Q8nYo7w5C1TA22LVbxVN0QILk5Tk+yJfBxG0WdtNnJdW9QtfYN7lpWX2tzEdWqdGXAoHsRom+bjqb+GQQ/yqvPXMiJSHM1o4U458sXOsf+E5hilQrbaO9mqeeuvoSVpCdfExUhHA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS8PR08MB6326
-X-EOPAttributedMessage: 0
-X-MS-Exchange-Transport-CrossTenantHeadersStripped:
- DU6PEPF00009525.eurprd02.prod.outlook.com
-X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id-Prvs:
-	e8edd642-92cf-4763-e7c9-08de85c12764
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|376014|7416014|82310400026|35042699022|36860700016|14060799003|18002099003|22082099003|56012099003;
-X-Microsoft-Antispam-Message-Info:
-	fMglCFAeJrNGiLUjNwrcdUPJbKldyZeneYukE+aKdVmMLpdjls2RMk6F3Ws1dgAOfeSTos8CBBm/Lc76FpRV7zbMBFFFWh7YhODb+3kQNxFiLU3gs1Mlw7M+WPi716pUnpnVCIAPQqopG/ncM+AfSCMpE216UW8KWxnAzXMAxNVRxVlea5M1ttT/5Yw6ST//L+9bz7dzD+JLO6UwHyD/VdLD1CM8JgIcRjVrzi51u4+2mXDpncSgZp2p5yf8yAWZuvCY+khaC6pA6aQj9dToWT1/B7ec+BcaK1w9TD75X995E4D7v3Pdj2dHNSaN5lld/hqnpMk9KJfXNn6Hjrse8YkcYKgsX5lyVvH7XLgYziApjry2W95LmTY/PjU4ULBVudGAnJBg3ePZtQ5ayzvTMoLNL6QG9TnoHGr9ciu4j0QWy24BCWGFPZD6B1Hp2vftNGZOtDgIFaQKTE72CnWeeAow9j0CKz4DLYVX/vg/1ByT/EVUyM6A9NSF0JniTRsAHfEDFzzRvAaAIULLy561swrIXZM07ZQqzcXF6FX70bse/bJaxz94F+8FsnPEinEW2gN1gUe9NJkqEany0gwnJlrFdgBdpFWVhI+H1beSO8Kk0xCnJYeY5qWjancxzfUAah2yh8Dlp51PKkjgYlzgLwKmrrcC9+ZX9JCKtjfzXVyFzXerKguGh9/0PEbbgaPfSK1fdoucdIuj0Bo81egYpWF+Id6afs+Ns0ziRTF7DfQus1T1c/d81R5aZB9G+II5TncQbOlbFTYs3JZNdU90cQ==
-X-Forefront-Antispam-Report:
-	CIP:4.158.2.129;CTRY:GB;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:outbound-uk1.az.dlp.m.darktrace.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(1800799024)(376014)(7416014)(82310400026)(35042699022)(36860700016)(14060799003)(18002099003)(22082099003)(56012099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	wzLJVTN6ZUnFp2Ha6dcbPhjDmWr3yWFvubvU/DDRf9am/VmZ9hxCH3WPjxxpoxoDCRdjIIlp3bnCqt176RbT8RQPyRFFcMC8nyvcJurU70NG90piEX0dyqc8ZXpslZtsxSBzAyoSKV3aDg0joKvyYiW3ljFRensc8+7TCbbUhxSN+zWzc/xg1R10th1OngaIsN6FrI3aYp+h9GL058G+8hHcQYiN6HjQP+B/pbfQeazGHBTv50n5m2D+nIrFY+h1a64uC3WYOsqnYQhysk5wcgVSTuD8thhwIXBIttkE0yJuLj0vmCrN5e+IAPcmodeczLVo50FpdQoe4EcTRIPlRqA5ddVmkDruXovMqXiGcHsG46woYD+e1rxJHQnYHIV2sH0qu0LjCUcyT4m364VphcovsCE9AZrr08odMh1CUqDAiEfAX2zO0S7D1ccBJf/7
-X-OriginatorOrg: arm.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 19 Mar 2026 14:10:39.5164
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 23d59353-65ab-48fc-03d3-08de85c14cc2
-X-MS-Exchange-CrossTenant-Id: f34e5979-57d9-4aaa-ad4d-b122a662184d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=f34e5979-57d9-4aaa-ad4d-b122a662184d;Ip=[4.158.2.129];Helo=[outbound-uk1.az.dlp.m.darktrace.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	DU6PEPF00009525.eurprd02.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: VI0PR08MB11711
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260310-b4-is_err_or_null-v1-12-bd63b656022d@avm.de>
+X-Spam-Score: -2.30
+X-Spam-Level: 
+X-Spamd-Result: default: False [-2.30 / 50.00];
+	BAYES_HAM(-3.00)[99.99%];
+	SUSPICIOUS_RECIPS(1.50)[];
+	NEURAL_HAM_LONG(-1.00)[-1.000];
+	MID_RHS_NOT_FQDN(0.50)[];
+	NEURAL_HAM_SHORT(-0.20)[-0.999];
+	MIME_GOOD(-0.10)[text/plain];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TO_DN_SOME(0.00)[];
+	ARC_NA(0.00)[];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
+	MISSING_XM_UA(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FROM_HAS_DN(0.00)[];
+	RCVD_COUNT_THREE(0.00)[3];
+	TO_MATCH_ENVRCPT_SOME(0.00)[];
+	FROM_EQ_ENVFROM(0.00)[];
+	R_RATELIMIT(0.00)[to_ip_from(RLck44p98ib5bmd95s13xxw3gp)];
+	RCVD_TLS_LAST(0.00)[];
+	DKIM_SIGNED(0.00)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
+	RCPT_COUNT_GT_50(0.00)[55];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.com:email]
+X-Spam-Flag: NO
 
-On 18/03/2026 15:53, Steven Price wrote:
-> From: Suzuki K Poulose <suzuki.poulose@arm.com>
+On Tue 10-03-26 12:48:38, Philipp Hahn wrote:
+> Prefer using IS_ERR_OR_NULL() over using IS_ERR() and a manual NULL
+> check.
 > 
-> RMM v1.0 provides no mechanism for the host to perform debug operations
-> on the guest. So limit the extensions that are visible to an allowlist
-> so that only those capabilities we can support are advertised.
+> Change generated with coccinelle.
 > 
-> Signed-off-by: Suzuki K Poulose <suzuki.poulose@arm.com>
-> Signed-off-by: Steven Price <steven.price@arm.com>
+> To: Jan Kara <jack@suse.com>
+> Cc: linux-kernel@vger.kernel.org
+> Signed-off-by: Philipp Hahn <phahn-oss@avm.de>
+
+Thanks for the patch but frankly I find the original variant clearer wrt
+what is going on. So I prefer to keep the code as is.
+
+								Honza
+
 > ---
-> Changes since v10:
->   * Add a kvm_realm_ext_allowed() function which limits which extensions
->     are exposed to an allowlist. This removes the need for special casing
->     various extensions.
-> Changes since v7:
->   * Remove the helper functions and inline the kvm_is_realm() check with
->     a ternary operator.
->   * Rewrite the commit message to explain this patch.
-> ---
->   arch/arm64/kvm/arm.c | 22 ++++++++++++++++++++++
->   1 file changed, 22 insertions(+)
+>  fs/quota/quota.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
 > 
-> diff --git a/arch/arm64/kvm/arm.c b/arch/arm64/kvm/arm.c
-> index 9b17bdfaf0c2..ddbf080e4f55 100644
-> --- a/arch/arm64/kvm/arm.c
-> +++ b/arch/arm64/kvm/arm.c
-> @@ -357,6 +357,25 @@ static bool kvm_has_full_ptr_auth(void)
->   		(apa + api + apa3) == 1);
->   }
->   
-> +static bool kvm_realm_ext_allowed(long ext)
-> +{
-> +	switch (ext) {
-> +	case KVM_CAP_IRQCHIP:
-> +	case KVM_CAP_ARM_PSCI:
-> +	case KVM_CAP_ARM_PSCI_0_2:
-> +	case KVM_CAP_NR_VCPUS:
-> +	case KVM_CAP_MAX_VCPUS:
-> +	case KVM_CAP_MAX_VCPU_ID:
-> +	case KVM_CAP_MSI_DEVID:
-> +	case KVM_CAP_ARM_VM_IPA_SIZE:
-> +	case KVM_CAP_ARM_PTRAUTH_ADDRESS:
-> +	case KVM_CAP_ARM_PTRAUTH_GENERIC:
-> +	case KVM_CAP_ARM_RMI:
-> +		return true;
-> +	}
-> +	return false;
-> +}
-> +
->   int kvm_vm_ioctl_check_extension(struct kvm *kvm, long ext)
->   {
->   	int r;
-> @@ -364,6 +383,9 @@ int kvm_vm_ioctl_check_extension(struct kvm *kvm, long ext)
->   	if (is_protected_kvm_enabled() && !kvm_pkvm_ext_allowed(kvm, ext))
->   		return 0;
->   
-> +	if (kvm && kvm_is_realm(kvm) && !kvm_realm_ext_allowed(ext))
-> +		return 0;
-> +
-
-We need a similar check in in kvm_vm_ioctl_enable_cap() to prevent 
-enabling the filtered caps ? Otherwise looks good to me.
-
-Suzuki
-
->   	switch (ext) {
->   	case KVM_CAP_IRQCHIP:
->   		r = vgic_present;
-
+> diff --git a/fs/quota/quota.c b/fs/quota/quota.c
+> index 33bacd70758007129e0375bab44d7431195ec441..2e09fc247d0cf45b9e83a4f8a0be7ea694c8c2a1 100644
+> --- a/fs/quota/quota.c
+> +++ b/fs/quota/quota.c
+> @@ -965,7 +965,7 @@ SYSCALL_DEFINE4(quotactl, unsigned int, cmd, const char __user *, special,
+>  	else
+>  		drop_super_exclusive(sb);
+>  out:
+> -	if (pathp && !IS_ERR(pathp))
+> +	if (!IS_ERR_OR_NULL(pathp))
+>  		path_put(pathp);
+>  	return ret;
+>  }
+> 
+> -- 
+> 2.43.0
+> 
+-- 
+Jan Kara <jack@suse.com>
+SUSE Labs, CR
