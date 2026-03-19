@@ -1,72 +1,42 @@
-Received: from mail-pg1-f173.google.com (mail-pg1-f173.google.com [209.85.215.173])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 361EE39903C
-	for <kvm@vger.kernel.org>; Thu, 19 Mar 2026 18:18:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.173
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 91BBC3F7AB4;
+	Thu, 19 Mar 2026 18:25:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773944300; cv=none; b=obUUzV9tTia9WxxTfLIhpEIiwh7V8f7LVU0T5CqwzPOK0fWeUEZbf4hAK5RNQH8miSXnZ2ENFZWHDO/84JdmcrlI+5KmJHUsWIcvLFTlGxce13veWTYEFTz6A5DeNYvz6iyROBTACsBkCExVLqIXT2W3wWp+gOlvzD0tJW/ZT2Q=
+	t=1773944716; cv=none; b=LpziAVrhNzv7uLITraAorSojVg6H0CPEnnjEwYeImiwwxmSyyALfvoah4dru300Eqn4jn5Mdo+IUeAC1QkuKQQA3d+6u+X/JWzEcT9pmAaPufvImWWAjIblmPhq2wm5iUsCqPauq0SEPC3LRIQeDdZ/fPKOmYSgDNHxWc3ItZxk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773944300; c=relaxed/simple;
-	bh=ks0M/klZENCM5dZMeKF033TXPM1stqWEgRH+1plE3FQ=;
+	s=arc-20240116; t=1773944716; c=relaxed/simple;
+	bh=RchZDguRGOh3IAzbXIq7kuQwhInrsct2EVW80aEey/g=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=h/shx6Y/4oQLDy5gXY6eD83I+xe+9UTRB3fK9rNWIl/e8KVlyivJ0M8BQ+aLrsS6QoS5wDgnmrujxxMAm1ufEFGPalD5HtNutBKhJabDICLQq1GqsmKkfO2BFLsipHwtjkZbtu9iev+p3Q0Q1EucffXxf+sdX/zbjoVpKmrTxlw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=NE1QxMU7; arc=none smtp.client-ip=209.85.215.173
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="NE1QxMU7"
-Received: by mail-pg1-f173.google.com with SMTP id 41be03b00d2f7-c648bc907ebso751539a12.3
-        for <kvm@vger.kernel.org>; Thu, 19 Mar 2026 11:18:19 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1773944298; x=1774549098; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=+aMRchp8AKKMlv02F6neHZa+UurEBvVp2lJmGUVOIYQ=;
-        b=NE1QxMU7LlmjNMpsIopylaPm56FU0I+TpunRKrWMw/PQE+E59SU35XwT/3SZBHmwnI
-         LZztziSBYjnehnfajUTEVc2epOW3GRDBsq8YHuU+HYIjRfVX0LHO2Zz5ZBZ002EcbhZT
-         ZgW2oMxUiIpxTf+mRyeLfMBTJarZiYdUu9QfPOtr8e9+wxms4DD2FgOH1hxXfHBc1j1+
-         EiJqMAgtNQCSOGIJSgJhlMqVUA6Mw2Pe/rjSS52ueEGb53J1GPVHLH9rTeKcQigQdtvI
-         iHzDnMOZB/0SCO6FLPj4Lq6WRymIFZ+xxbpr+koBQATHqOSxqrXW8w1yZ6KAM5KeAoGs
-         uG/w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1773944298; x=1774549098;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=+aMRchp8AKKMlv02F6neHZa+UurEBvVp2lJmGUVOIYQ=;
-        b=Ce79jZyrygcRZkbMmNAiJBb//2XVAv2AMXZyJOCaZnxPFWQ5m6QFDR7/2VSi/1gDFh
-         N/Om6HVkFLqPgElzF8roqOkvXVlLeruZsFjLjcEEpTP8zzWunChAX0w5DUhjqHvJV0EZ
-         Vql9RLr/Iy7UxKAk7Ej+cU213TCdsS/IuyVr3ifBSd+uLZRehw1u2GNXkvik72Tr4u7N
-         eesxDR/q3ZR9rAx4TECXzPnWdFx9uhJQos3TAWKddfTAW6ZCKx43Lrq+ApbFJb37546m
-         tye/OSpU2GFPw4SvEkO66pJwscYmwD25wuVQfH7hlPnRzd2c3evAQTx4tCGpfLUYJ3PW
-         RmtA==
-X-Forwarded-Encrypted: i=1; AJvYcCX0zWbz68BPZgM5kqXcWxsOEVO/GeaaTHuc7lAfoiJIngY2GvbALsUYM6jvKYw6VvraiIw=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzHvcmVzrEto5HD/1m7/+xGk9wfAN8jNpNHbuaA/8vxxjtS58wb
-	TU9QpiCgm7leLumRELCqG+ct4Q/p7bisUzU1Non2+UQ/yhcZXZtfj6KC9s6UDslj8g==
-X-Gm-Gg: ATEYQzxpn6gSXZerAh+yKPoFCE+QV4IiwFvTFUiCKY0v8EpefeIeF8kY+whLGs0Q6D7
-	ctkFmqbFu1TyRbctX1fOhmEVohVBlzsFEeHtN5VeWfrsH4ZTeq1Fbsjzvg08K3muvrm4SeXGg/l
-	qZDABoEtzIw1sUqTvBdJzJyLHZULVyH/K4fN2yZgtrCPIbTRitYo8oakMD3BD0txtd4qoc9LnZt
-	ifXsJ9kZRfHZWr6hJ8EPeiuzYZT9mF65QePk3q0Lwqf5iLxwxC17IsjmXR44+YFqcQVbqOudNeW
-	2Kc5/Ma9d6fI32hLVANCPm2vN9i4BuaDTPklYiLY0ZaT8OTgMrM2xNjALGk1BTPtfO+w+JGvSuZ
-	umgzf+5Jvms3X71fiOWbwBUnagVZvexTNyYKPXn8XArrzGbxHY3MGNtrWZngToi6g2+FMGDBTj1
-	rduDU2L2E34/KmNGcJbDyXEh3EjutUClwNY21C9Z3e4iGPXYvkDZOU8tQsJalKCZ9eyMEPz0ra
-X-Received: by 2002:a05:6a20:6b9d:b0:39b:83cf:ebb0 with SMTP id adf61e73a8af0-39bcec0675cmr234015637.66.1773944298146;
-        Thu, 19 Mar 2026 11:18:18 -0700 (PDT)
-Received: from google.com (239.23.105.34.bc.googleusercontent.com. [34.105.23.239])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-c74443cc2ddsm64311a12.24.2026.03.19.11.18.17
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 19 Mar 2026 11:18:17 -0700 (PDT)
-Date: Thu, 19 Mar 2026 18:18:13 +0000
-From: David Matlack <dmatlack@google.com>
-To: Yi Lai <yi1.lai@intel.com>
-Cc: Shuah Khan <shuah@kernel.org>,
-	Raghavendra Rao Ananta <rananta@google.com>,
-	Alex Mastro <amastro@fb.com>, kvm@vger.kernel.org,
-	linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] vfio: selftests: Support DMR and GNR-D DSA devices
-Message-ID: <abw95W9pCyLF_5n8@google.com>
-References: <20260319072719.472216-1-yi1.lai@intel.com>
+	 Content-Type:Content-Disposition:In-Reply-To; b=D7pl248jZ4jT4Vm1770/PVPFTvOy01KVoN/IMWn27CA7ZrngsDtquKlZpqlbz3iJt8F/BZFcTrXFOvuGRfEUmCE4EoVw3s/NrymTSt2whator1XtCPoQXbTiEoe5ARN0Q9HWbsDTZvVfNCE//4FDFjpu7hAPH7mrPnvuWP6TJNA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 9E08E2247;
+	Thu, 19 Mar 2026 11:25:07 -0700 (PDT)
+Received: from thinkpad-e142931.arm.com (usa-sjc-imap-foss1.foss.arm.com [10.121.207.14])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 1AD523F7BD;
+	Thu, 19 Mar 2026 11:25:08 -0700 (PDT)
+Date: Thu, 19 Mar 2026 18:25:02 +0000
+From: Wei-Lin Chang <weilin.chang@arm.com>
+To: Steven Price <steven.price@arm.com>, kvm@vger.kernel.org, 
+	kvmarm@lists.linux.dev
+Cc: Catalin Marinas <catalin.marinas@arm.com>, 
+	Marc Zyngier <maz@kernel.org>, Will Deacon <will@kernel.org>, James Morse <james.morse@arm.com>, 
+	Oliver Upton <oliver.upton@linux.dev>, Suzuki K Poulose <suzuki.poulose@arm.com>, 
+	Zenghui Yu <yuzenghui@huawei.com>, linux-arm-kernel@lists.infradead.org, 
+	linux-kernel@vger.kernel.org, Joey Gouly <joey.gouly@arm.com>, 
+	Alexandru Elisei <alexandru.elisei@arm.com>, Christoffer Dall <christoffer.dall@arm.com>, 
+	Fuad Tabba <tabba@google.com>, linux-coco@lists.linux.dev, 
+	Ganapatrao Kulkarni <gankulkarni@os.amperecomputing.com>, Gavin Shan <gshan@redhat.com>, 
+	Shanker Donthineni <sdonthineni@nvidia.com>, Alper Gun <alpergun@google.com>, 
+	"Aneesh Kumar K . V" <aneesh.kumar@kernel.org>, Emi Kisanuki <fj0570is@fujitsu.com>, 
+	Vishal Annapurve <vannapurve@google.com>
+Subject: Re: [PATCH v13 26/48] arm64: RMI: Create the realm descriptor
+Message-ID: <oukw53xfroe32rb26jy365nqsuttlakkjgpmh6sszdprx6nqfc@qfmwsob2ewa4>
+References: <20260318155413.793430-1-steven.price@arm.com>
+ <20260318155413.793430-27-steven.price@arm.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -75,96 +45,148 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260319072719.472216-1-yi1.lai@intel.com>
+In-Reply-To: <20260318155413.793430-27-steven.price@arm.com>
 
-On 2026-03-19 03:27 PM, Yi Lai wrote:
-> Currently, the VFIO DSA driver test only supports the SPR DSA device ID.
-> Attempting to run the test on newer platforms like DMR or GNR-D results
-> in a "No driver found" error, causing the test to be skipped.
+On Wed, Mar 18, 2026 at 03:53:50PM +0000, Steven Price wrote:
+> Creating a realm involves first creating a realm descriptor (RD). This
+> involves passing the configuration information to the RMM. Do this as
+> part of realm_ensure_created() so that the realm is created when it is
+> first needed.
 > 
-> Refactor the 'dsa_probe' function to use a switch statement for
-
-nit: s/Refactor the 'dsa_probe' function/Refactor dsa_probe()/
-
-If you append () to the end of function names in commit messages and
-comments it makes it clear you are referring to a function.
-
-> checking device IDs. This improves maintainability and makes it easier
-> to add new device IDs in the future.
-> 
-> Add the following DSA device IDs to the supported list:
-> PCI_DEVICE_ID_INTEL_DSA_DMR  (0x1212)
-> PCI_DEVICE_ID_INTEL_DSA_GNRD (0x11fb)
-> 
-> Signed-off-by: Yi Lai <yi1.lai@intel.com>
-
-Thanks for the patch. Looks good aside from some small nits.
-
-Were you able to test that vfio_pci_driver_test passes with both of the new
-devices?
-
+> Signed-off-by: Steven Price <steven.price@arm.com>
 > ---
->  .../selftests/vfio/lib/drivers/dsa/dsa.c        | 17 +++++++++++++++--
->  1 file changed, 15 insertions(+), 2 deletions(-)
+> Changes since v12:
+>  * Since RMM page size is now equal to the host's page size various
+>    calculations are simplified.
+>  * Switch to using range based APIs to delegate/undelegate.
+>  * VMID handling is now handled entirely by the RMM.
+> ---
+>  arch/arm64/kvm/rmi.c | 94 +++++++++++++++++++++++++++++++++++++++++++-
+>  1 file changed, 92 insertions(+), 2 deletions(-)
 > 
-> diff --git a/tools/testing/selftests/vfio/lib/drivers/dsa/dsa.c b/tools/testing/selftests/vfio/lib/drivers/dsa/dsa.c
-> index c75045bcab79..0cbc7606d904 100644
-> --- a/tools/testing/selftests/vfio/lib/drivers/dsa/dsa.c
-> +++ b/tools/testing/selftests/vfio/lib/drivers/dsa/dsa.c
-> @@ -65,10 +65,23 @@ static bool dsa_int_handle_request_required(struct vfio_pci_device *device)
+> diff --git a/arch/arm64/kvm/rmi.c b/arch/arm64/kvm/rmi.c
+> index 38349c7b34f4..d5fee203824b 100644
+> --- a/arch/arm64/kvm/rmi.c
+> +++ b/arch/arm64/kvm/rmi.c
+> @@ -649,6 +649,83 @@ static void realm_unmap_shared_range(struct kvm *kvm,
+>  			     start, end);
+>  }
 >  
->  static int dsa_probe(struct vfio_pci_device *device)
->  {
-> -	if (!vfio_pci_device_match(device, PCI_VENDOR_ID_INTEL,
-> -				   PCI_DEVICE_ID_INTEL_DSA_SPR0))
-> +	u16 vendor, device_id;
+> +static int realm_create_rd(struct kvm *kvm)
+> +{
+> +	struct realm *realm = &kvm->arch.realm;
+> +	struct realm_params *params = realm->params;
+> +	void *rd = NULL;
+> +	phys_addr_t rd_phys, params_phys;
+> +	size_t pgd_size = kvm_pgtable_stage2_pgd_size(kvm->arch.mmu.vtcr);
+> +	int i, r;
 > +
-> +	vendor = vfio_pci_config_readw(device, PCI_VENDOR_ID);
-> +	device_id = vfio_pci_config_readw(device, PCI_DEVICE_ID);
+> +	realm->ia_bits = VTCR_EL2_IPA(kvm->arch.mmu.vtcr);
 > +
-> +	if (vendor != PCI_VENDOR_ID_INTEL)
->  		return -EINVAL;
+> +	if (WARN_ON(realm->rd || !realm->params))
+> +		return -EEXIST;
+> +
+> +	rd = (void *)__get_free_page(GFP_KERNEL);
 
-nit: s/vendor/vendor_id/ to be consistent with device_id and
-vfio_pci_device_match().
+Hi,
 
-Also you can initialized these variables when they are declared to
-simplify the code a bit. e.g.
+Should this be GFP_KERNEL_ACCOUNT?
 
-diff --git a/tools/testing/selftests/vfio/lib/drivers/dsa/dsa.c b/tools/testing/selftests/vfio/lib/drivers/dsa/dsa.c
-index 0cbc7606d904..19d9630b24c2 100644
---- a/tools/testing/selftests/vfio/lib/drivers/dsa/dsa.c
-+++ b/tools/testing/selftests/vfio/lib/drivers/dsa/dsa.c
-@@ -65,12 +65,10 @@ static bool dsa_int_handle_request_required(struct vfio_pci_device *device)
-
- static int dsa_probe(struct vfio_pci_device *device)
- {
--       u16 vendor, device_id;
-+       const u16 vendor_id = vfio_pci_config_readw(device, PCI_VENDOR_ID);
-+       const u16 device_id = vfio_pci_config_readw(device, PCI_DEVICE_ID);
-
--       vendor = vfio_pci_config_readw(device, PCI_VENDOR_ID);
--       device_id = vfio_pci_config_readw(device, PCI_DEVICE_ID);
--
--       if (vendor != PCI_VENDOR_ID_INTEL)
-+       if (vendor_id != PCI_VENDOR_ID_INTEL)
-                return -EINVAL;
-
-        switch (device_id) {
-
->  
-> +	switch (device_id) {
-> +	case PCI_DEVICE_ID_INTEL_DSA_SPR0:
-> +	case PCI_DEVICE_ID_INTEL_DSA_DMR:
-> +	case PCI_DEVICE_ID_INTEL_DSA_GNRD:
-> +		break;
-> +	default:
-> +		return -EINVAL;
+> +	if (!rd)
+> +		return -ENOMEM;
+> +
+> +	rd_phys = virt_to_phys(rd);
+> +	if (delegate_page(rd_phys)) {
+> +		r = -ENXIO;
+> +		goto free_rd;
 > +	}
 > +
->  	if (dsa_int_handle_request_required(device)) {
->  		dev_err(device, "Device requires requesting interrupt handles\n");
->  		return -EINVAL;
+> +	if (delegate_range(kvm->arch.mmu.pgd_phys, pgd_size)) {
+> +		r = -ENXIO;
+> +		goto out_undelegate_tables;
+> +	}
+> +
+> +	params->s2sz = VTCR_EL2_IPA(kvm->arch.mmu.vtcr);
+> +	params->rtt_level_start = get_start_level(realm);
+> +	params->rtt_num_start = pgd_size / PAGE_SIZE;
+> +	params->rtt_base = kvm->arch.mmu.pgd_phys;
+> +
+> +	if (kvm->arch.arm_pmu) {
+> +		params->pmu_num_ctrs = kvm->arch.nr_pmu_counters;
+> +		params->flags |= RMI_REALM_PARAM_FLAG_PMU;
+> +	}
+> +
+> +	if (kvm_lpa2_is_enabled())
+> +		params->flags |= RMI_REALM_PARAM_FLAG_LPA2;
+> +
+> +	params_phys = virt_to_phys(params);
+> +
+> +	if (rmi_realm_create(rd_phys, params_phys)) {
+> +		r = -ENXIO;
+> +		goto out_undelegate_tables;
+> +	}
+> +
+> +	if (WARN_ON(rmi_rec_aux_count(rd_phys, &realm->num_aux))) {
+> +		WARN_ON(rmi_realm_destroy(rd_phys));
+> +		r = -ENXIO;
+> +		goto out_undelegate_tables;
+> +	}
+> +
+> +	realm->rd = rd;
+> +	WRITE_ONCE(realm->state, REALM_STATE_NEW);
+> +	/* The realm is up, free the parameters.  */
+> +	free_page((unsigned long)realm->params);
+> +	realm->params = NULL;
+> +
+> +	return 0;
+> +
+> +out_undelegate_tables:
+> +	if (WARN_ON(undelegate_range(kvm->arch.mmu.pgd_phys, i))) {
+> +		/* Leak the pages if they cannot be returned */
+> +		kvm->arch.mmu.pgt = NULL;
+
+Did you mean kvm->arch.mmu.pgd_phys = NULL; ?
+
+Thanks,
+Wei-Lin Chang
+
+> +	}
+> +	if (WARN_ON(undelegate_page(rd_phys))) {
+> +		/* Leak the page if it isn't returned */
+> +		return r;
+> +	}
+> +free_rd:
+> +	free_page((unsigned long)rd);
+> +	return r;
+> +}
+> +
+>  static void realm_unmap_private_range(struct kvm *kvm,
+>  				      unsigned long start,
+>  				      unsigned long end,
+> @@ -893,8 +970,21 @@ static int realm_init_ipa_state(struct kvm *kvm,
+>  
+>  static int realm_ensure_created(struct kvm *kvm)
+>  {
+> -	/* Provided in later patch */
+> -	return -ENXIO;
+> +	int ret;
+> +
+> +	switch (kvm_realm_state(kvm)) {
+> +	case REALM_STATE_NONE:
+> +		break;
+> +	case REALM_STATE_NEW:
+> +		return 0;
+> +	case REALM_STATE_DEAD:
+> +		return -ENXIO;
+> +	default:
+> +		return -EBUSY;
+> +	}
+> +
+> +	ret = realm_create_rd(kvm);
+> +	return ret;
+>  }
+>  
+>  static int set_ripas_of_protected_regions(struct kvm *kvm)
 > -- 
 > 2.43.0
 > 
