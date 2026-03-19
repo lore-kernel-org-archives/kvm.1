@@ -1,47 +1,48 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EFAE8329361;
-	Thu, 19 Mar 2026 01:35:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.8
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC6A631195B;
+	Thu, 19 Mar 2026 01:36:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.9
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773884153; cv=none; b=p7lPrgIptMIs3JftWMGQjBlMuTo8EOZ+MvrhhgMxhUA++wyHLi9NKkEWUrgOPDwMyeLKna1BHn9ENUwZ9JYFfEGmELvSA/AhPbdY+8R3FNxMPAIUvyah75NCYgKU+G5kynMbqkLGicE2CD7kNaUReLkxNoSCx5IYGs+Gu9zYibk=
+	t=1773884199; cv=none; b=rvINZvlTzA/uWafr9dbAz9BMypwHbkU9sBm0LLoiZQkRAVwSq5HNq34htfYkkLLPET8PN6rx6kdNtoo0J8ajDiPXVTldxqTe0IHA2Q4PCUm2McQJ2ICptSAowfSAENmO4Bs5F/qmCQLrV6u2LWGJWIM752H8epwYrHQvUihAJhA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773884153; c=relaxed/simple;
-	bh=yKqrcSiF0T/o2eNSZnD8zrr1iTgy55Kam7OJIgVL6yM=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=ISdbafRLOc4Cfp0CyKPOkyfvbpZRa9GugfYFIJWm6YEXR/TEuM+cOmUXta9VCnZ8yXn8iwSPwxSUsi58tx59/PY8FPu0c/Erxu/3L0MIIPf1dl9AjKoNtmkxeQYMF313naE3CZ/2bLYV7GOLREOY6Zw4b23cZ0muc3gubi90218=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=SaOH3VJP; arc=none smtp.client-ip=192.198.163.8
+	s=arc-20240116; t=1773884199; c=relaxed/simple;
+	bh=haZ0Kg7/SN1L0eQyMS8aG15Leypc29fv/ZzmH4/AZbQ=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=VYletouyKxaEQbeTxarqZAA3xh3gxNMVTI3wO4LcFvEi5bqYrF9DqaHerHvya6D1rHqk5CpkbEiqspC9hPaY4edivanzZKdZi1ZT2n2PY0cOF+Zxyv1GEmD1W/Od9EULg0KtZrKS6Nm1oHMYAvhBP6dYcZ4ResdrdnXk+IAiv2M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=i2g+AU39; arc=none smtp.client-ip=198.175.65.9
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="SaOH3VJP"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="i2g+AU39"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1773884145; x=1805420145;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=yKqrcSiF0T/o2eNSZnD8zrr1iTgy55Kam7OJIgVL6yM=;
-  b=SaOH3VJPlrHa36UMsB7L6g5TETfJI95SUAD2DP8PZf6+gc9ValU5cro7
-   ZcP0+htRgdVhdPxx/yLKfm8PNQz1ORjFB1Jf5q/D0fCWMqLsc4RvZCXoO
-   j10u2Flrq5CkHuVdwAm+bJzoxbLDxSECQD9HcuwzPsxXzQ6Onh96pwSot
-   lCGe/iXdlvhlznv4P5HACOHAStxwZjN832RN0lkcOVkD2w5okIR9zEF0M
-   Gbgt/h36fGPg3asIxDBIRLZUTs5Lg6/JR6FlV4c4N6fSaD7ONLpahmDV+
-   7HNZbRz9NGKqUQOmNREcvtih+VfpCcwi/Dktbm7tXmiDuZV52KBQa60m4
-   Q==;
-X-CSE-ConnectionGUID: srCnhQJwRgqWuaN/+J/2Vw==
-X-CSE-MsgGUID: sJZ5L41/S+eu/zC74gEMgw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11733"; a="92524971"
+  t=1773884192; x=1805420192;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=haZ0Kg7/SN1L0eQyMS8aG15Leypc29fv/ZzmH4/AZbQ=;
+  b=i2g+AU392aSsgJY5Aoebrn4biusR174F7U76Oh2uld7ImNuO94x64dW/
+   ltDnvLJJL+eqN+0lcnnquSxoJwjAxiFmpGmRJh2B8sBkDS9I+BPBihEgt
+   IrmTFDlxFGoHwa3te6L87LlMqQtD4DKe7cbC1yEKLNE0neieFiSXCgI8r
+   JzzDd08D5qJ60z7hXlRx3c5VAY3nauaj+5lEv7HbQjWgQgR0Khxe7ZinW
+   cpi7z8WJPly1ZcS5O4vqDegr9CVTEFprZ5kpeveOi1qOyFfio1gGr2PQp
+   YKhhNDOevAcmI72YXT9GG0P1eV4J5aFGyKil+CYN+SEn5SQxeVSmOpKy3
+   A==;
+X-CSE-ConnectionGUID: r2tvcMMVRvi1uJlGvINKLg==
+X-CSE-MsgGUID: zbZ2m2TvQmaGfl2lVLuqEA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11733"; a="97563729"
 X-IronPort-AV: E=Sophos;i="6.23,128,1770624000"; 
-   d="scan'208";a="92524971"
-Received: from orviesa008.jf.intel.com ([10.64.159.148])
-  by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Mar 2026 18:35:44 -0700
-X-CSE-ConnectionGUID: 1GB3h4GnR7q/SXkcR5mseg==
-X-CSE-MsgGUID: RL6VbZfhQraHjGwfwMsTJw==
+   d="scan'208";a="97563729"
+Received: from orviesa004.jf.intel.com ([10.64.159.144])
+  by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Mar 2026 18:36:31 -0700
+X-CSE-ConnectionGUID: b6cASDauSHWAnagsMSo00w==
+X-CSE-MsgGUID: FOwraE6UT86wfhAxrMCF+g==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.23,128,1770624000"; 
-   d="scan'208";a="222855512"
+   d="scan'208";a="227292102"
 Received: from yzhao56-desk.sh.intel.com ([10.239.47.19])
-  by orviesa008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Mar 2026 18:35:38 -0700
+  by orviesa004-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Mar 2026 18:36:26 -0700
 From: Yan Zhao <yan.y.zhao@intel.com>
 To: seanjc@google.com,
 	pbonzini@redhat.com,
@@ -64,10 +65,12 @@ Cc: tglx@kernel.org,
 	binbin.wu@linux.intel.com,
 	xiaoyao.li@intel.com,
 	isaku.yamahata@intel.com
-Subject: [PATCH 0/2] struct page to PFN conversion for TDX guest private memory
-Date: Thu, 19 Mar 2026 08:56:05 +0800
-Message-ID: <20260319005605.8965-1-yan.y.zhao@intel.com>
+Subject: [PATCH 1/2] x86/virt/tdx: Use PFN directly for mapping guest private memory
+Date: Thu, 19 Mar 2026 08:57:03 +0800
+Message-ID: <20260319005703.8983-1-yan.y.zhao@intel.com>
 X-Mailer: git-send-email 2.43.2
+In-Reply-To: <20260319005605.8965-1-yan.y.zhao@intel.com>
+References: <20260319005605.8965-1-yan.y.zhao@intel.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -76,84 +79,154 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-This series converts TDX SEAMCALL APIs for mapping/unmapping guest private
-memory from taking struct page to PFN as input.
+From: Sean Christopherson <seanjc@google.com>
 
-Background
-----------
-TDX SEAMCALL wrappers take struct page as input, which provides:
-1. Type safety
-2. Make it harder to misuse and make it obvious that physical pages in RAM
-   are expected from just looking at the API declaration [2][3][4][5].
+Remove the completely unnecessary assumption that memory mapped into a TDX
+guest is backed by refcounted struct page memory. From KVM's point of view,
+TDH_MEM_PAGE_ADD and TDH_MEM_PAGE_AUG are glorified writes to PTEs, so they
+have no business placing requirements on how KVM and guest_memfd manage
+memory.
 
-This is appropriate for SEAMCALL wrappers for TDX control pages (e.g., TDR
-page, TDCS pages, TDX SEPT pages), since KVM manages and allocates those
-pages explicitly from core MM.
+Rip out the misguided struct page assumptions/constraints and instead have
+the two SEAMCALL wrapper APIs take PFN directly. This ensures that for
+future huge page support in S-EPT, the kernel doesn't pick up even worse
+assumptions like "a hugepage must be contained in a single folio".
 
-However, unlike TDX control pages, KVM guest memory is not necessarily
-backed by refcounted struct page or even struct page (e.g., VM_PFNMAP
-memory [6]). Taking struct page as input for SEAMCALL wrappers for
-mapping/unmapping guest private memory imposes unnecessary assumptions on
-how KVM and guest_memfd manage memory, even though today all TD private
-memory is allocated from guest_memfd, which only allocates memory backed by
-struct page.
+Use "kvm_pfn_t pfn" for type safety. Using this KVM type is appropriate
+since APIs tdh_mem_page_add() and tdh_mem_page_aug() are exported to KVM
+only.
 
-To avoid baking in assumptions throughout KVM about guest memory being
-backed by page (or further folio for future TDX private huge pages [7]),
-Sean suggested converting from using struct page to PFN for SEAMCALL
-wrappers operating on guest private memory [8].
+[ Yan: Replace "u64 pfn" with "kvm_pfn_t pfn" ]
 
-This series therefore converts struct page to PFN for guest private memory
-while keeping struct page for TDX control pages, and uses kvm_pfn_t for
-type safety.
+Signed-off-by: Sean Christopherson <seanjc@google.com>
+Signed-off-by: Yan Zhao <yan.y.zhao@intel.com>
+---
+ arch/x86/include/asm/tdx.h  |  5 +++--
+ arch/x86/kvm/vmx/tdx.c      |  7 +++----
+ arch/x86/virt/vmx/tdx/tdx.c | 20 +++++++++++++-------
+ 3 files changed, 19 insertions(+), 13 deletions(-)
 
-Sanity check
-------------
-Reasonable PFN sanity checks in SEAMCALL wrapper APIs (such as checking TDX
-convertibility to avoid SEAMCALL failure) are still agreed upon [9][10].
-
-However, as those failures are supposed to only occur when there're kernel
-bugs, we decided not to provide any in-kernel sanity checks to keep the
-code simple. i.e., when non-TDX-convertible PFNs are passed in, we let
-SEAMCALLs fail. Though non-TDX-convertible PFNs may also produce MCEs or
-page fault exceptions, this is a separate issue than struct page to PFN
-conversion, and such exceptions are obvious enough in themselves.
-
-
-Changes from Sean's original patch [1]:
----------------------------------------
-1. Rebased to latest kvm-x86 next
-2. Split to 2 patches for easy review.  (Rick)
-3. Replaced "u64 pfn" with "kvm_pfn_t pfn"  (Rick)
-4. Dropped using PFN as input to tdx_reclaim_page(). (Rick)
-5. Move mk_keyed_paddr() from tdx.h to tdx.c. 
-
-Thanks
-Yan
-
-[1] https://lore.kernel.org/kvm/20260129011517.3545883-26-seanjc@google.com
-[2] https://lore.kernel.org/all/30d0cef5-82d5-4325-b149-0e99833b8785@intel.com
-[3] https://lore.kernel.org/kvm/f4240495-120b-4124-b91a-b365e45bf50a@intel.com
-[4] https://lore.kernel.org/kvm/435b8d81-b4de-4933-b0ae-357dea311488@intel.com
-[5] https://lore.kernel.org/kvm/1b236a64-d511-49a2-9962-55f4b1eb08e3@intel.com
-[6] https://lore.kernel.org/all/20241010182427.1434605-1-seanjc@google.com
-[7] https://lore.kernel.org/all/aW3G6yZuvclYABzP@yzhao56-desk.sh.intel.com/
-[8] https://lore.kernel.org/all/aWe1tKpFw-As6VKg@google.com
-[9] https://lore.kernel.org/all/aWkVLViKBgiVGgaI@google.com
-[10] https://lore.kernel.org/all/d119c824-4770-41d2-a926-4ab5268ea3a6@intel.com/
-
-
-Sean Christopherson (2):
-  x86/virt/tdx: Use PFN directly for mapping guest private memory
-  x86/virt/tdx: Use PFN directly for unmapping guest private memory
-
- arch/x86/include/asm/tdx.h  | 20 +++++---------------
- arch/x86/kvm/vmx/tdx.c      | 17 ++++++++---------
- arch/x86/virt/vmx/tdx/tdx.c | 36 ++++++++++++++++++++++++------------
- 3 files changed, 37 insertions(+), 36 deletions(-)
-
-
-base-commit: 3d6cdcc8883b5726513d245eef0e91cabfc397f7
+diff --git a/arch/x86/include/asm/tdx.h b/arch/x86/include/asm/tdx.h
+index a149740b24e8..f3f0b1872176 100644
+--- a/arch/x86/include/asm/tdx.h
++++ b/arch/x86/include/asm/tdx.h
+@@ -6,6 +6,7 @@
+ #include <linux/init.h>
+ #include <linux/bits.h>
+ #include <linux/mmzone.h>
++#include <linux/kvm_types.h>
+ 
+ #include <asm/errno.h>
+ #include <asm/ptrace.h>
+@@ -195,10 +196,10 @@ static inline int pg_level_to_tdx_sept_level(enum pg_level level)
+ 
+ u64 tdh_vp_enter(struct tdx_vp *vp, struct tdx_module_args *args);
+ u64 tdh_mng_addcx(struct tdx_td *td, struct page *tdcs_page);
+-u64 tdh_mem_page_add(struct tdx_td *td, u64 gpa, struct page *page, struct page *source, u64 *ext_err1, u64 *ext_err2);
++u64 tdh_mem_page_add(struct tdx_td *td, u64 gpa, kvm_pfn_t pfn, struct page *source, u64 *ext_err1, u64 *ext_err2);
+ u64 tdh_mem_sept_add(struct tdx_td *td, u64 gpa, int level, struct page *page, u64 *ext_err1, u64 *ext_err2);
+ u64 tdh_vp_addcx(struct tdx_vp *vp, struct page *tdcx_page);
+-u64 tdh_mem_page_aug(struct tdx_td *td, u64 gpa, int level, struct page *page, u64 *ext_err1, u64 *ext_err2);
++u64 tdh_mem_page_aug(struct tdx_td *td, u64 gpa, int level, kvm_pfn_t pfn, u64 *ext_err1, u64 *ext_err2);
+ u64 tdh_mem_range_block(struct tdx_td *td, u64 gpa, int level, u64 *ext_err1, u64 *ext_err2);
+ u64 tdh_mng_key_config(struct tdx_td *td);
+ u64 tdh_mng_create(struct tdx_td *td, u16 hkid);
+diff --git a/arch/x86/kvm/vmx/tdx.c b/arch/x86/kvm/vmx/tdx.c
+index 1e47c194af53..1f1abc5b5655 100644
+--- a/arch/x86/kvm/vmx/tdx.c
++++ b/arch/x86/kvm/vmx/tdx.c
+@@ -1624,8 +1624,8 @@ static int tdx_mem_page_add(struct kvm *kvm, gfn_t gfn, enum pg_level level,
+ 	    KVM_BUG_ON(!kvm_tdx->page_add_src, kvm))
+ 		return -EIO;
+ 
+-	err = tdh_mem_page_add(&kvm_tdx->td, gpa, pfn_to_page(pfn),
+-			       kvm_tdx->page_add_src, &entry, &level_state);
++	err = tdh_mem_page_add(&kvm_tdx->td, gpa, pfn, kvm_tdx->page_add_src,
++			       &entry, &level_state);
+ 	if (unlikely(tdx_operand_busy(err)))
+ 		return -EBUSY;
+ 
+@@ -1640,12 +1640,11 @@ static int tdx_mem_page_aug(struct kvm *kvm, gfn_t gfn,
+ {
+ 	int tdx_level = pg_level_to_tdx_sept_level(level);
+ 	struct kvm_tdx *kvm_tdx = to_kvm_tdx(kvm);
+-	struct page *page = pfn_to_page(pfn);
+ 	gpa_t gpa = gfn_to_gpa(gfn);
+ 	u64 entry, level_state;
+ 	u64 err;
+ 
+-	err = tdh_mem_page_aug(&kvm_tdx->td, gpa, tdx_level, page, &entry, &level_state);
++	err = tdh_mem_page_aug(&kvm_tdx->td, gpa, tdx_level, pfn, &entry, &level_state);
+ 	if (unlikely(tdx_operand_busy(err)))
+ 		return -EBUSY;
+ 
+diff --git a/arch/x86/virt/vmx/tdx/tdx.c b/arch/x86/virt/vmx/tdx/tdx.c
+index cb9b3210ab71..a9dd75190c67 100644
+--- a/arch/x86/virt/vmx/tdx/tdx.c
++++ b/arch/x86/virt/vmx/tdx/tdx.c
+@@ -30,7 +30,6 @@
+ #include <linux/suspend.h>
+ #include <linux/syscore_ops.h>
+ #include <linux/idr.h>
+-#include <linux/kvm_types.h>
+ #include <asm/page.h>
+ #include <asm/special_insns.h>
+ #include <asm/msr-index.h>
+@@ -1568,6 +1567,11 @@ static void tdx_clflush_page(struct page *page)
+ 	clflush_cache_range(page_to_virt(page), PAGE_SIZE);
+ }
+ 
++static void tdx_clflush_pfn(kvm_pfn_t pfn)
++{
++	clflush_cache_range(__va(PFN_PHYS(pfn)), PAGE_SIZE);
++}
++
+ noinstr u64 tdh_vp_enter(struct tdx_vp *td, struct tdx_module_args *args)
+ {
+ 	args->rcx = td->tdvpr_pa;
+@@ -1588,17 +1592,18 @@ u64 tdh_mng_addcx(struct tdx_td *td, struct page *tdcs_page)
+ }
+ EXPORT_SYMBOL_FOR_KVM(tdh_mng_addcx);
+ 
+-u64 tdh_mem_page_add(struct tdx_td *td, u64 gpa, struct page *page, struct page *source, u64 *ext_err1, u64 *ext_err2)
++u64 tdh_mem_page_add(struct tdx_td *td, u64 gpa, kvm_pfn_t pfn, struct page *source,
++		     u64 *ext_err1, u64 *ext_err2)
+ {
+ 	struct tdx_module_args args = {
+ 		.rcx = gpa,
+ 		.rdx = tdx_tdr_pa(td),
+-		.r8 = page_to_phys(page),
++		.r8 = PFN_PHYS(pfn),
+ 		.r9 = page_to_phys(source),
+ 	};
+ 	u64 ret;
+ 
+-	tdx_clflush_page(page);
++	tdx_clflush_pfn(pfn);
+ 	ret = seamcall_ret(TDH_MEM_PAGE_ADD, &args);
+ 
+ 	*ext_err1 = args.rcx;
+@@ -1639,16 +1644,17 @@ u64 tdh_vp_addcx(struct tdx_vp *vp, struct page *tdcx_page)
+ }
+ EXPORT_SYMBOL_FOR_KVM(tdh_vp_addcx);
+ 
+-u64 tdh_mem_page_aug(struct tdx_td *td, u64 gpa, int level, struct page *page, u64 *ext_err1, u64 *ext_err2)
++u64 tdh_mem_page_aug(struct tdx_td *td, u64 gpa, int level, kvm_pfn_t pfn,
++		     u64 *ext_err1, u64 *ext_err2)
+ {
+ 	struct tdx_module_args args = {
+ 		.rcx = gpa | level,
+ 		.rdx = tdx_tdr_pa(td),
+-		.r8 = page_to_phys(page),
++		.r8 = PFN_PHYS(pfn),
+ 	};
+ 	u64 ret;
+ 
+-	tdx_clflush_page(page);
++	tdx_clflush_pfn(pfn);
+ 	ret = seamcall_ret(TDH_MEM_PAGE_AUG, &args);
+ 
+ 	*ext_err1 = args.rcx;
 -- 
 2.43.2
 
