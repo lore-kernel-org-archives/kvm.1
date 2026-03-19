@@ -1,120 +1,162 @@
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+Received: from fhigh-a4-smtp.messagingengine.com (fhigh-a4-smtp.messagingengine.com [103.168.172.155])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A630F3D47C6
-	for <kvm@vger.kernel.org>; Thu, 19 Mar 2026 14:36:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B56833D3CF6;
+	Thu, 19 Mar 2026 14:37:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.155
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773930985; cv=none; b=aOL4Uz6nA5BW+AWK8JyD+NI9zRQPeGc5uBSfZ4s/XppvXCFkR6SlQzH5oDUjqcPcM7xx90kcePBw04yWt9dLwEafOCf+49Fz94SXSMzCX86hjQokEgsD9rdgrRWut4rFsc1nAGvqm0egjV30JXGps2o6MKvJ2F4eiQ5W72hU86k=
+	t=1773931081; cv=none; b=rAX3tGlqpYTM3v1WbMDoDykawJPMsRdSFGInB4i+jWevUJMFLiFFi+T56KlPs6QcpnrzjpDvsEMyvT+PA27zMUto3mkMkS+nD1E/1Eib2BNkb5hyjnQ7lcrzptq68/TJO147Ji4fYt8ZlwepK9viVbC0kYFb2cfhtSAp/YacEPo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773930985; c=relaxed/simple;
-	bh=yKISgtqgCnn23aZKrKWXCezhMFDRcxuion72DWFiN/M=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=tmmdJ78gJ55oAmuoT8ydbZyRXM22qPk3MPSYvrbQNCZh87+yPIAcict2ttSTM4wPoYylpzIbjN7lsO+D0LVb25PCNmypCgWRMGtEsBjvrdFuaS10BUjxKao/qZPC0wxb/AO1FykZt0Xmhkc7RqB8BK8/vt/Xi5ETWSPUDeVwNSo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=F8LCX7lk; arc=none smtp.client-ip=148.163.158.5
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+	s=arc-20240116; t=1773931081; c=relaxed/simple;
+	bh=dLL4T4AsWeRRcTT8C8DlpHTVVAA4pAr3Ee/mY1wd3og=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=qvwCAsQ9wnFee0gCmgytEB3IimLEPtg/ZbNwGL9kuOJd4NwbHemlUF6M2MUADBSsjXuhpj6bD1hEzlt6p4MP4y7xbP657KmY8UygIZNATm2XIrdfKEw1qW5ZECQv/RoQPYwUimTqSjAq68b+TSIw8HmunVNGDmgmsr4XsVFpDVE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=shazbot.org; spf=pass smtp.mailfrom=shazbot.org; dkim=pass (2048-bit key) header.d=shazbot.org header.i=@shazbot.org header.b=Qs/73dgF; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=adc+zojt; arc=none smtp.client-ip=103.168.172.155
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=shazbot.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=shazbot.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="F8LCX7lk"
-Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 62J9AJNk3931551;
-	Thu, 19 Mar 2026 14:35:59 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:date:from:message-id:mime-version
-	:subject:to; s=pp1; bh=P6SMvsdtbxDSgBIL+5HKPUJbxr6pWKHI7NFECpu5k
-	7o=; b=F8LCX7lkH0rIS8eXkWasDD4lOUieL/pqWLCD54/mL5Xc4WkYk4vP4G2n2
-	9bKbWUWWh8sPOsyHNpFJTiJdhjazL0K+EpxTez0hq84i0vZ6M3BgLLOqYRxOgbS2
-	HkOvhn0DnNxHWrbWCFDVesLWNSu5ePb/FpW4/Y0tGYKxephssxWC1dfxSje2hVl5
-	IvQ8zkfCbei+5wdLD9k5pWN55i+RxqpK2UjDa3UgzIIcAnp6Tt3a2BY6+atG6LJb
-	GqOWeQjNKDZPyTpYtybIcuVkWPr0eMwCujhO3tjxEQ3ex7buVUgRbD6mKVnEBrP2
-	UOC0aksRWA8xL1Oy9P5UcDfSTLSjg==
-Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4cvyaupkw7-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 19 Mar 2026 14:35:59 +0000 (GMT)
-Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma22.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 62JDUsVn014011;
-	Thu, 19 Mar 2026 14:35:59 GMT
-Received: from smtprelay07.fra02v.mail.ibm.com ([9.218.2.229])
-	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4cwjcyaw98-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 19 Mar 2026 14:35:58 +0000
-Received: from smtpav03.fra02v.mail.ibm.com (smtpav03.fra02v.mail.ibm.com [10.20.54.102])
-	by smtprelay07.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 62JEZs9w28639732
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 19 Mar 2026 14:35:55 GMT
-Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id D81D22004B;
-	Thu, 19 Mar 2026 14:35:54 +0000 (GMT)
-Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id AF25E20043;
-	Thu, 19 Mar 2026 14:35:54 +0000 (GMT)
-Received: from tuxmaker.boeblingen.de.ibm.com (unknown [9.87.85.9])
-	by smtpav03.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Thu, 19 Mar 2026 14:35:54 +0000 (GMT)
-From: Nina Schoetterl-Glausch <nsg@linux.ibm.com>
-To: Christian Borntraeger <borntraeger@linux.ibm.com>,
-        Janosch Frank <frankja@linux.ibm.com>,
-        Claudio Imbrenda <imbrenda@linux.ibm.com>
-Cc: Nina Schoetterl-Glausch <nsg@linux.ibm.com>, kvm@vger.kernel.org,
-        Nina Schoetterl-Glausch <oss@nina.schoetterlglausch.eu>
-Subject: [PATCH] mailmap: Update email for Nina Schoetterl-Glausch
-Date: Thu, 19 Mar 2026 15:35:37 +0100
-Message-ID: <20260319143545.1395319-1-nsg@linux.ibm.com>
-X-Mailer: git-send-email 2.51.0
+	dkim=pass (2048-bit key) header.d=shazbot.org header.i=@shazbot.org header.b="Qs/73dgF";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="adc+zojt"
+Received: from phl-compute-02.internal (phl-compute-02.internal [10.202.2.42])
+	by mailfhigh.phl.internal (Postfix) with ESMTP id AB65D1400143;
+	Thu, 19 Mar 2026 10:37:58 -0400 (EDT)
+Received: from phl-frontend-03 ([10.202.2.162])
+  by phl-compute-02.internal (MEProxy); Thu, 19 Mar 2026 10:37:58 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shazbot.org; h=
+	cc:cc:content-transfer-encoding:content-type:content-type:date
+	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to; s=fm3; t=1773931078;
+	 x=1774017478; bh=BIIQ4TBdnqXq3eiGG2xVsD6/52sHGx009ooGi07Zwn4=; b=
+	Qs/73dgF+FI35+9otjAo8hbMBIh0u6diQ6x5Uffltn7p/uW9m8G1m9JhHP2ycy0q
+	LNV4Sj3iukh7fUYeyeiENNcx+zI8bXuThoI8fORKRQsazN+3i0aJmRYZcpeJ2JFk
+	bXUqt++nXW9+2xRZKDoanjGNdqe0MMkAELnPDMemQGqsBqq2hY56eppkMJJv6nfR
+	I0F0AL8uixBwGfLbn0A26f9sbpEZHDqrwiEXb/mi7kOzczjDRf0Nbqm70Jj1oK85
+	ePYaykXzisuO7Z9cJ4ch6OvVFYLBLzeLaMWTN3SSHEUE42EaPoIlg1ofMCfQ0x4w
+	8b8jaxhncuACwHFySPmTCw==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=1773931078; x=
+	1774017478; bh=BIIQ4TBdnqXq3eiGG2xVsD6/52sHGx009ooGi07Zwn4=; b=a
+	dc+zojtJHxZ2PmNz7m0D4qaQO3UkTI4aVx2CIsgCWkfnSixHsRsIglw9B5MOq4Bm
+	pDSSf4gtMMTBvwIHvdklY13Djw9OhZMvyHH4wAR/nwc1vgY6iowLI37PbhKdbet+
+	yJLkDPVJ44ICyt2OxE2prnKwOP2G+0Hjua8tf73MusEZVK6q6giEWtzIoX2wNE96
+	ObtHGfOrPJgSo64rKE54kUQjg133aTlrtGAVI0yXnoM6poiSIiLlekVi7Sio7Hmf
+	ViSc2lYsRfKny/9EzXJeV3NoswV2nzItOSsKiGNElKzZOVxdZglfd1xkgtikCZTL
+	F5o9qe8SRda1yrzbJ4zCA==
+X-ME-Sender: <xms:Rgq8aRVGlAOICkMHo5JD78mWhUgJ5p0NaPOTD1h916jB5_hzYpWz3w>
+    <xme:Rgq8admyLG8G0Pwy0mgv9hTEe2z3uQ5erUj3MpJ3yNSGjOC4rgY31TvXuucSqO4d_
+    MwyXmQiw8FN8frdgviq-YONpco3S_QK-sYmjmiAxgN9zfvqj36VEQ>
+X-ME-Received: <xmr:Rgq8aflshg_eG-mAiyvWlSmsMPAYCEsCGnhJ6ZtDF1nBFu81RRV7YoPftuw>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgdeftdejvdejucetufdoteggodetrf
+    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
+    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
+    gurhepfffhvfevuffkjghfofggtgfgsehtjeertdertddvnecuhfhrohhmpeetlhgvgicu
+    hghilhhlihgrmhhsohhnuceorghlvgigsehshhgriigsohhtrdhorhhgqeenucggtffrrg
+    htthgvrhhnpeekheejieetffefueeiteejtdejffdvleelvdeuvdffvdefteeghfevkeeu
+    vdefvdenucffohhmrghinhepkhgvrhhnvghlrdhorhhgnecuvehluhhsthgvrhfuihiivg
+    eptdenucfrrghrrghmpehmrghilhhfrhhomheprghlvgigsehshhgriigsohhtrdhorhhg
+    pdhnsggprhgtphhtthhopeekpdhmohguvgepshhmthhpohhuthdprhgtphhtthhopehmrg
+    htthgvvhesmhgvthgrrdgtohhmpdhrtghpthhtohepthgvughlohhgrghnsehfsgdrtgho
+    mhdprhgtphhtthhopegumhgrthhlrggtkhesghhoohhglhgvrdgtohhmpdhrtghpthhtoh
+    epshhhuhgrhheskhgvrhhnvghlrdhorhhgpdhrtghpthhtohepkhhvmhesvhhgvghrrdhk
+    vghrnhgvlhdrohhrghdprhgtphhtthhopehlihhnuhigqdhkshgvlhhfthgvshhtsehvgh
+    gvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtoheplhhinhhugidqkhgvrhhnvghlsehv
+    ghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtoheprghlvgigsehshhgriigsohhtrd
+    horhhg
+X-ME-Proxy: <xmx:Rgq8aVb8Y_j-6dST6HU47aalPOsPj7WDzLhVXDSFOA_9aUq54sxbNA>
+    <xmx:Rgq8aZSJrVEOBVpbqMNvEl5WIlrt-ahscMi8MX5jdYdfSBYDv-maPw>
+    <xmx:Rgq8aXtBe-rmEZXg8PZWauLhOW52padUbY_6YhovkWsA78Td-aRJBw>
+    <xmx:Rgq8aTGTMxxSOK8-aDRRUu8LzGrjBG_pjCYpdmjAfLCWL7NYQK2mdg>
+    <xmx:Rgq8aTSp5QTLm6s8HUZ17l2ixwxY5UDqU_Bk1BCBazs6mnzJZ9YFhepK>
+Feedback-ID: i03f14258:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
+ 19 Mar 2026 10:37:57 -0400 (EDT)
+Date: Thu, 19 Mar 2026 08:37:56 -0600
+From: Alex Williamson <alex@shazbot.org>
+To: Matt Evans <mattev@meta.com>
+Cc: Ted Logan <tedlogan@fb.com>, David Matlack <dmatlack@google.com>, Shuah
+ Khan <shuah@kernel.org>, kvm@vger.kernel.org,
+ linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org,
+ alex@shazbot.org
+Subject: Re: [PATCH] vfio: selftests: Build tests on aarch64
+Message-ID: <20260319083756.34d02e1e@shazbot.org>
+In-Reply-To: <0cb46c4d-90aa-4ef3-9098-9c5554714982@meta.com>
+References: <20260317-vfio-selftests-aarch64-v1-1-2266077563e7@fb.com>
+	<20260318165513.49c3830d@shazbot.org>
+	<0cb46c4d-90aa-4ef3-9098-9c5554714982@meta.com>
+X-Mailer: Claws Mail 4.3.1 (GTK 3.24.51; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMzE5MDExMiBTYWx0ZWRfX79/51KE39lqb
- dzOPKWiFDyuJA7S7OmXrdet3sXDvElnWFMA+AVuLWATcbAdn7zCXZgX9YI6IzM050yL7aAVgMpZ
- HmV5LoNNZo1MMttQVpdGMrGJE0GAB9unXeyT7wspVR/MlAe2L+LYsXYhlXZH5UyI2BxtXfvdL6C
- dfC7ettwL+iVbY/KZ/gLiJKpcXo74ZB3ZOnFVC1p8ng/2UZjG/hFCx8NdZqWNJchZseY9MpHbDu
- MtGxCRdvrtFuZfWCGIopunt5UI+ZTTuJLUd3IZvw/5rsH0Wmn8yKWmGE1DbZvBY8zoXKGBP119p
- WX+Sw5qP+gYh7NaFe15+9Ik5T1bvzFJB29phUYzkZuqvh5DxWPsA982ySGqwPlWqaI4U1ahhmk6
- wBSg9TqhnoTKpu3F3I1gMm2nCdR7nCxLxUW0vXFWFe0wcAd4DIrnVACqL3ZFOcDPg5MmzbAOMFA
- 3vuOs0DLrgvyw+f2pyA==
-X-Authority-Analysis: v=2.4 cv=GIQF0+NK c=1 sm=1 tr=0 ts=69bc09cf cx=c_pps
- a=5BHTudwdYE3Te8bg5FgnPg==:117 a=5BHTudwdYE3Te8bg5FgnPg==:17
- a=Yq5XynenixoA:10 a=VkNPw1HP01LnGYTKEx00:22 a=RnoormkPH1_aCDwRdu11:22
- a=RzCfie-kr_QcCd8fBx8p:22 a=VnNF1IyMAAAA:8 a=vr0dFHqqAAAA:8 a=20KFwNOVAAAA:8
- a=CDq0vqnqAAAA:8 a=Ikd4Dj_1AAAA:8 a=p8Hr7QA-AAAA:8 a=FS0upHgUAAAA:8
- a=COk6AnOGAAAA:8 a=LpQP-O61AAAA:8 a=Qd_Mjy50DDh5Pwjd5P8A:9
- a=P4ufCv4SAa-DfooDzxyN:22 a=Xn7iXEen_xUG9zZOO_Hb:22 a=Nk6gH44JAh1yPMgKJKsv:22
- a=BQgJtduX4OmZBxSA4osX:22 a=TjNXssC_j7lpFel5tvFf:22 a=pioyyrs4ZptJ924tMmac:22
-X-Proofpoint-ORIG-GUID: DEni3dGU4TMHXsd4McTJQ-kasC7uOYQ9
-X-Proofpoint-GUID: DEni3dGU4TMHXsd4McTJQ-kasC7uOYQ9
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
- definitions=2026-03-19_01,2026-03-19_05,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- spamscore=0 priorityscore=1501 bulkscore=0 lowpriorityscore=0 malwarescore=0
- phishscore=0 impostorscore=0 suspectscore=0 adultscore=0 clxscore=1015
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2603050001 definitions=main-2603190112
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-Switch to my personal email.
+On Thu, 19 Mar 2026 13:51:29 +0000
+Matt Evans <mattev@meta.com> wrote:
 
-Signed-off-by: Nina Schoetterl-Glausch <nsg@linux.ibm.com>
----
- .mailmap | 1 +
- 1 file changed, 1 insertion(+)
+> Hi Alex,
+> 
+> On 18/03/2026 22:55, Alex Williamson wrote:
+> > On Tue, 17 Mar 2026 16:25:18 -0700
+> > Ted Logan <tedlogan@fb.com> wrote:
+> >   
+> >> Also build vfio self-tests on aarch64 variants, in addition to arm64 and
+> >> x86_64.
+> >>
+> >> Reported-by: Matt Evans <mattev@meta.com>
+> >> Closes: https://lore.kernel.org/all/e51b4ff2-13c4-47d4-b781-3dcbd740d274@meta.com/ 
+> >> ---
+> >> Signed-off-by: Ted Logan <tedlogan@fb.com>  
+> > 
+> > Careful, this is a good way to get your Sign-off lost in the tooling.
+> >   
+> >> ---
+> >>  tools/testing/selftests/vfio/Makefile | 2 +-
+> >>  1 file changed, 1 insertion(+), 1 deletion(-)
+> >>
+> >> diff --git a/tools/testing/selftests/vfio/Makefile b/tools/testing/selftests/vfio/Makefile
+> >> index 8e90e409e91d..98bc8d6271a4 100644
+> >> --- a/tools/testing/selftests/vfio/Makefile
+> >> +++ b/tools/testing/selftests/vfio/Makefile
+> >> @@ -1,4 +1,4 @@
+> >> -ARCH ?= $(shell uname -m)
+> >> +ARCH ?= $(shell uname -m | sed -e 's/aarch64.*/arm64/')  
+> > 
+> > Are we intentionally enabling aarch64_be with this glob or is that just
+> > carry-over from similar in the mm selftest Makefile?
+> > 
+> > Big endian ARM64 support is really not on my radar for vfio, but it
+> > wouldn't be our first foray into big endian systems.
+> > 
+> > If it wasn't intentional, maybe just add "aarch64" to the below filter
+> > list directly.  Thanks,  
+> 
+> I think that won't work for cross-builds passing in ARCH=arm64 "from
+> above".  We can just drop the `.*` part of the sed regexp, giving
+> ARCH=arm64 or arm64_be (the latter would fail to match in the filter below).
+  
+> >>  ifeq (,$(filter $(ARCH),arm64 x86_64))
 
-diff --git a/.mailmap b/.mailmap
-index 40b4db2b2d60..08065a3fb37e 100644
---- a/.mailmap
-+++ b/.mailmap
-@@ -625,6 +625,7 @@ Nikolay Aleksandrov <razor@blackwall.org> <nikolay@redhat.com>
- Nikolay Aleksandrov <razor@blackwall.org> <nikolay@cumulusnetworks.com>
- Nikolay Aleksandrov <razor@blackwall.org> <nikolay@nvidia.com>
- Nikolay Aleksandrov <razor@blackwall.org> <nikolay@isovalent.com>
-+Nina Schoetterl-Glausch <oss@nina.schoetterlglausch.eu> <nsg@linux.ibm.com>
- Nobuhiro Iwamatsu <nobuhiro.iwamatsu.x90@mail.toshiba> <nobuhiro1.iwamatsu@toshiba.co.jp>
- Odelu Kukatla <quic_okukatla@quicinc.com> <okukatla@codeaurora.org>
- Oleksandr Natalenko <oleksandr@natalenko.name> <oleksandr@redhat.com>
--- 
-2.51.0
+Sorry, I don't fully follow.  If we expand the above "arm64 x86_64" to
+include "aarch64" rather than distill the latter into "arm64", how does
+that break the cross-builds?  Thanks,
+
+Alex
+
+> >>  # Do nothing on unsupported architectures
+> >>
+> >> ---
+> >> base-commit: 96ca4caf9066f5ebd35b561a521af588a8eb0215
+> >> change-id: 20260317-vfio-selftests-aarch64-636abf0f7674
+> >>
+> >> Best regards,  
+> >   
+> 
+> 
 
