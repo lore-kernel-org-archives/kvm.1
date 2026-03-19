@@ -1,115 +1,109 @@
-Received: from mail-pl1-f174.google.com (mail-pl1-f174.google.com [209.85.214.174])
+Received: from mail-lf1-f54.google.com (mail-lf1-f54.google.com [209.85.167.54])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8163A35C1AD
-	for <kvm@vger.kernel.org>; Thu, 19 Mar 2026 23:35:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.174
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773963339; cv=none; b=pyCtONaBgtZC488M7T89YnojdJUAicyjpl67Gn9Uq5cQwME3/CicTE/BtI4eil4sShL0bOe3BVzmefEUiRVNmt+1ThsxV3ZsTvfIhQ3Yh7LhauszervOAm9NkqbJHQZXEaZ1oWpFwKdn4mfaixI2E479KIZhMX4UtDwzmG/YEr0=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773963339; c=relaxed/simple;
-	bh=UanQDetlCjF/6zxJJeIw+AMEstzQ4BQpkXRP4oloNs0=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=TEygis06QwWkHda0sZBwW9XUGRanrk3J8x2tVYJoUpVKvevjNK82OjJXh8ev2EPqEl5YDMYS+MV2spYWo9zlM5eFmEkeWNRsdg+2pGVYuIETSJrpc3toeI7Xvmr62gM1W0mDeG8G9OVDVi9Xsdlvbr1RMo08jigyb1bVHUdKTs8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=BtS+JnTJ; arc=none smtp.client-ip=209.85.214.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5BA4E3E716D
+	for <kvm@vger.kernel.org>; Thu, 19 Mar 2026 23:43:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.167.54
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1773963818; cv=pass; b=BTohUt5/eRjuhEtyqHVDhja5na5TR62R49LbIVBKjiInN+raINpmfq9i9VY6YD2dGPCjg23wiV94Kaqy4tyafWklqW7UNcdOvhjKzdJaCeLGzMV4HvAo47DUkufcBqJKr+88Hkj/41GlKxJBpgds+fnkg04xyfvzdpt1Dl1nBBY=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1773963818; c=relaxed/simple;
+	bh=VTxRX+AGKykbXJwtykp/HSXepAAcrtHUIjosixpxHhE=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=cP+2AcfG/CgCgA2onW27HQ3oKZCd5ryFD53hFRUqVEn8LLhmmIo65z7rNCG67ziCPLGzf0l4dVgnVOHSOfSn2+HXFMWo+4hkhsWqvPsUuVECkr36D24U6fACQqqe7gvx2cOfpCN5ceOAnpFDUmZkcgzP2ktOpb8J+2rZCPSOhCw=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=dtJNmnmH; arc=pass smtp.client-ip=209.85.167.54
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="BtS+JnTJ"
-Received: by mail-pl1-f174.google.com with SMTP id d9443c01a7336-2aeab6ff148so20715ad.1
-        for <kvm@vger.kernel.org>; Thu, 19 Mar 2026 16:35:38 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="dtJNmnmH"
+Received: by mail-lf1-f54.google.com with SMTP id 2adb3069b0e04-5a12c19affeso941061e87.1
+        for <kvm@vger.kernel.org>; Thu, 19 Mar 2026 16:43:35 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1773963813; cv=none;
+        d=google.com; s=arc-20240605;
+        b=lnygr77+SF2XRCq/9WDtlJFehy8zW2s/QTgcdAKpKjJhzhmdQCTT3R2LQb8G/BOXRr
+         mNfNWLt5gknm2jpbxVIpa5wrNXElTU2M48ZOYAQfSSqpMUhmwf1rr9e8chQ33syizq4L
+         47uHG9h5W7MkRJVIryBESv1A6ThZ66vsxRdTghXCQecrL4Vf2Ese2gRnlPzWc6/oiIai
+         NYO+o5jJJzKLkNs6G1jXR78iv4dzq83HMal6JFYQaG50cmXaX9BsMjuVor7CxM0dGusR
+         jG0wQXTTsY6lUIXhzVWIe2mR3haqcvOHwExtLmVkd5JOsCvitvibAhB1PXtnh1nzCdFF
+         9UwA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=VTxRX+AGKykbXJwtykp/HSXepAAcrtHUIjosixpxHhE=;
+        fh=AH8bwfOowInxAlCcS51bZV3duH5RuDol8zCns0gnv90=;
+        b=Jc1k6E4glKO535980A0c90AmyFyX5Xb1zvNf7cytpeAX+j8N4AhbXVXViKDj+bXo4g
+         kQ+AZawP8+fqDuqFRWV3FGRVzzFR31chRDb327fRPRFdlw9Ee6gezny3nwWhhEbASYX1
+         Nh6NW6oo86+L6L92LCiAPzg6WHWqiOaLiQmIyMdgqizLR7us2NIMZp14vwaIn539tx7U
+         lXyMjhwHqPh6G1JpvgEhQPd9A38d6q2vP6Aw9LB6VHrNcmThRQLLeQnENv3lnazLM2Li
+         j+QojzF6mu9R8pvVMTzRImAfnvEwrRPowG/jwbOa1kOZUH5WFUZf78olbR1Iq5xazRXN
+         zS/Q==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1773963338; x=1774568138; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=4QYZkwutITM3hY/BTKkAjdxJTuUr3dbbtbIB0hAX8jE=;
-        b=BtS+JnTJu7dMFjgb0XmaqiRBy56iDqYrI6PlMNrDgpVHoMtlrH2aMKhcWQy92Z4ewi
-         n5puP9+InkLigbVY1yOBCf1lYx2vbAP4oob3ieygn1WID7vdRAM/QiUbGWtXGD46+dw0
-         qguHZpFQqLjbpadSPaYm3cVAy2vyib1WImuqRs47GHKkAklMeQXau9mJB2Doaa/ZVT6y
-         l+UR96sDp/MdA6+tCC75u54BIBroKg3qZS9tbckaK1tl19Ke4twCYu9BBYpN9IA2H3xK
-         ojLG7eFQC4zXd6sw1M6R1o5RwxJoui+G89kHLEqXBf8lHZkd3zRSamIWtFgWO8XiKwdE
-         8Yzw==
+        d=google.com; s=20251104; t=1773963813; x=1774568613; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=VTxRX+AGKykbXJwtykp/HSXepAAcrtHUIjosixpxHhE=;
+        b=dtJNmnmHdJSxi0MXxOM6idGO5cPE5KFRQgi8YrMddyJO9PosNcOokqOEU6fphPzEkv
+         h+uHSSsl/Oj6KkuuHRz3K+g7uEK3I/Dbw8aQsUEstbSh3rSN4Xx/aj5t+DnFcV4CiJPl
+         OSCI/H884V4CrzRv8FMiDDSLXOvhXbE017FMt+7HBjKTZIS7dJZmJyB7DAOcf67w7TSu
+         vODaY2t0pNxoWMqgAb479neQLfdX+Mw8Ot6kSe2mpAFhLG5I9RRd5C5KY+4czGjpJX9b
+         kASzkM/jJT33EnRJEWLCIWE4LlO3m9GNDy3ukoo6UU+ACdKgB4o96xlhX5WVf0dLftYd
+         IrPA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1773963338; x=1774568138;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=4QYZkwutITM3hY/BTKkAjdxJTuUr3dbbtbIB0hAX8jE=;
-        b=a3rPlvl348n+Xy0lgnULULQ7SF5cBYa5Nt4KjG9m7VIPyRlWXX5ApKZ2dyZ200oKab
-         0Ba83pi6M9zjWhzHEI/7ue9sioHKDMjls7YKfxd1vkXKVMWfuAc9iFAU77dQAHCP7ve9
-         DpjnIlUtUZR5+pG78S2++DHdEjUkXJ+zLOpX/BZb1/2XLPNYqLdc0c+ZEd6kqU1h8sSX
-         nN8i3jLDBSqh4IRkLrr4EnzsO4ncv5F+QrBSxSSGTktkDDpb378XY0yLHTZ9UMMlCk1o
-         T1Vaaebsdye1twWBCr6U3TlZe6krwgephALywSsQEehiNNvpCn6yAced8Z/axADYxVO8
-         ma8A==
-X-Forwarded-Encrypted: i=1; AJvYcCXJtHNkL+OqRhS9c2l/FbP2Taq9x/juxoAsUwXkeHbekDKZcVO6mNnQs/jdCwUlrO4Cqok=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yzi6zddVep4d8p1BxxuPC3PTxRlh3ET0unulZBQD6fO0IH3O6by
-	P0e2pPABPNQIlwTSgf2QnlyKonpVu5XdUldlsvCJuz2wEEFOjxz5C8bampeMglY1zg==
-X-Gm-Gg: ATEYQzyaXo2oUQNhNFlEURYQXx//bp02k0kfo45E9xjrNZ864zJqJvFGgKjrMnGzWgJ
-	Ha3zAUjyp2sNcJLwUUpMpeUBZEWqMqWlR9MyPQeuTgBRobAM+GlpjvUiDSLvrgJOXR9BhDiFoZ+
-	3cMC53mX6qzC1CotxgzbhmqitFH3fP2RfDcFWMnc4XyPPns2ujWfVW0hnEb7OhwPbgVz7QQg2Dy
-	oHFTsmAQUePg1Ys2iuqKk8RK80gF/JEvnmzktEoWBODfTHxnpDZ0GOYXLL6xdEEYlfMYeTxC+qk
-	2+FPBiuM6RDwnEox6FrpBRHmsH7OsVLAhHeroxl5cEzQBXsz6YW+TgeGGIjEwQNDfxZTr1eb7Fk
-	PfPnag6gjkbCk7tKVaugqvhuU6XfwtYyg4AzXCkT8rcLG18PJmQUwY1DCRK7GWqug9IWiYvDhzl
-	QrshXQuDlGAl0y1ji4ukOXUdAK/yB+905PTBSm+n2TsobYSWGH8IFgMszNP1sh
-X-Received: by 2002:a17:902:e805:b0:2ae:4808:bd99 with SMTP id d9443c01a7336-2b08285639amr1447705ad.2.1773963337286;
-        Thu, 19 Mar 2026 16:35:37 -0700 (PDT)
-Received: from google.com (176.13.105.34.bc.googleusercontent.com. [34.105.13.176])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-35bc5ff6789sm3845458a91.1.2026.03.19.16.35.36
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 19 Mar 2026 16:35:36 -0700 (PDT)
-Date: Thu, 19 Mar 2026 16:35:32 -0700
-From: Vipin Sharma <vipinsh@google.com>
-To: Samiullah Khawaja <skhawaja@google.com>
-Cc: David Woodhouse <dwmw2@infradead.org>, 
-	Lu Baolu <baolu.lu@linux.intel.com>, Joerg Roedel <joro@8bytes.org>, Will Deacon <will@kernel.org>, 
-	Jason Gunthorpe <jgg@ziepe.ca>, YiFei Zhu <zhuyifei@google.com>, 
-	Robin Murphy <robin.murphy@arm.com>, Kevin Tian <kevin.tian@intel.com>, 
-	Alex Williamson <alex@shazbot.org>, Shuah Khan <shuah@kernel.org>, iommu@lists.linux.dev, 
-	linux-kernel@vger.kernel.org, kvm@vger.kernel.org, Saeed Mahameed <saeedm@nvidia.com>, 
-	Adithya Jayachandran <ajayachandra@nvidia.com>, Parav Pandit <parav@nvidia.com>, 
-	Leon Romanovsky <leonro@nvidia.com>, William Tu <witu@nvidia.com>, 
-	Pratyush Yadav <pratyush@kernel.org>, Pasha Tatashin <pasha.tatashin@soleen.com>, 
-	David Matlack <dmatlack@google.com>, Andrew Morton <akpm@linux-foundation.org>, 
-	Chris Li <chrisl@kernel.org>, Pranjal Shrivastava <praan@google.com>
-Subject: Re: [PATCH 10/14] iommufd-lu: Implement ioctl to let userspace mark
- an HWPT to be preserved
-Message-ID: <20260319231331.GB3983821.vipinsh@google.com>
-References: <20260203220948.2176157-1-skhawaja@google.com>
- <20260203220948.2176157-11-skhawaja@google.com>
+        d=1e100.net; s=20251104; t=1773963813; x=1774568613;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=VTxRX+AGKykbXJwtykp/HSXepAAcrtHUIjosixpxHhE=;
+        b=ARSvxE2d6zcv5J6oP05sXlmZdwqo3GdbJ0iDRAS3X9BUqlFNoeE6xRjjyO9jbkvNhW
+         TfqBKrA2FNySTnSjLryCWfZYDbRSaVpLx1vIAa67RYGiXg+myJQyAAyIO5KEcgV5toUO
+         P0htUtLVQvFrIbCwSaP6aIwHKLZiCc9KrFew4RVMVzkcSvuaE6oDo8a5RIHnd5deJoCf
+         FaIh+18aoNPvS5UqfjyUQYrnLO4AA4VSfzvM6NRjPCwhsnQi0ihamXkVV+oS11P0isG/
+         1HD046gu62O+MDw2vCNuALg8emXCDhqx83qJ7Eag9rNfy96r803bMS9sRQqlLu52f9h9
+         UaGw==
+X-Forwarded-Encrypted: i=1; AJvYcCXZCEJdGaWYUIZU7CdRcdP4LOTM2hbxLN8DWrI0oDiEGi5939Eayv2mp+PgGmJWclCU954=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzNZtdq7yMiIaKZZA49D4LIqaHYDwKpW0SrnwSOmSi0R1IuPEWq
+	qPpFdTNnhrR2B9FBCdZ88tTpYWM5SFNeNRI66uwScFzJsjFl76ihL7D90c9rky8Cx8PbtQ8UAdR
+	GdkazJNeUY6jAfo0Pakyg1E8+I03lYR4JxNY6vxLw
+X-Gm-Gg: ATEYQzxQ1gQzPxbvccjRSSGQR2ohUydDVa2ySslKCfr9Q8pKbS8A8LTIX6Ph9Yjt2vi
+	VYiXgbzm9NwsHOqJAspI3e9D0ieg3H7n0kfD3ZSwoYy+mbsFrSy9y1lHinKmQ25tirtpCMx+1wq
+	oykQYqyac0XM5HsW0qekHV5cxFKGVbGpHIgg1JPSzBALLJFqKidqtVUPXuizvcxXJn1wNzeZAWt
+	mm5WOn3LFOMUxsdbA1DfTe0z0XOjBEJArUFKc1fZbhl1COm/YosecZ8osVFjnwV3Ds8xGI3edgz
+	WU30ROebOWaYGKBr5fs=
+X-Received: by 2002:a05:6512:460e:b0:5a1:2e7b:d885 with SMTP id
+ 2adb3069b0e04-5a27de5dc98mr1324588e87.25.1773963813029; Thu, 19 Mar 2026
+ 16:43:33 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260203220948.2176157-11-skhawaja@google.com>
+References: <20260319-vfio-selftests-aarch64-v2-1-bb2621c24dc4@fb.com>
+In-Reply-To: <20260319-vfio-selftests-aarch64-v2-1-bb2621c24dc4@fb.com>
+From: David Matlack <dmatlack@google.com>
+Date: Thu, 19 Mar 2026 16:43:05 -0700
+X-Gm-Features: AaiRm534MfCLjFwMGGENHbU_DKBjVumsiYOQM8YxxMK1Pas88mVouCmO-lmvCvE
+Message-ID: <CALzav=dUWartDcyoS09_mr-vziBeEDhKa4_Lfb8R_2wFcw9ULA@mail.gmail.com>
+Subject: Re: [PATCH v2] vfio: selftests: Build tests on aarch64
+To: Ted Logan <tedlogan@fb.com>
+Cc: Alex Williamson <alex@shazbot.org>, Shuah Khan <shuah@kernel.org>, kvm@vger.kernel.org, 
+	linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	Matt Evans <mattev@meta.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Tue, Feb 03, 2026 at 10:09:44PM +0000, Samiullah Khawaja wrote:
-> From: YiFei Zhu <zhuyifei@google.com>
-> @@ -374,6 +374,10 @@ struct iommufd_hwpt_paging {
->  	bool auto_domain : 1;
->  	bool enforce_cache_coherency : 1;
->  	bool nest_parent : 1;
-> +#ifdef CONFIG_IOMMU_LIVEUPDATE
-> +	bool lu_preserve : 1;
-> +	u32 lu_token;
+On Thu, Mar 19, 2026 at 3:59=E2=80=AFPM Ted Logan <tedlogan@fb.com> wrote:
+>
+> Fix vfio selftests on aarch64, allowing native builds on aarch64 hosts.
+>
+> Reported-by: Matt Evans <mattev@meta.com>
+> Closes: https://lore.kernel.org/all/e51b4ff2-13c4-47d4-b781-3dcbd740d274@=
+meta.com/
+> Fixes: a55d4bbbe644 ("vfio: selftests: only build tests on arm64 and x86_=
+64")
+> Signed-off-by: Ted Logan <tedlogan@fb.com>
 
-Should we use full name i.e. liveupdate here and other places in this
-series?
-
-> diff --git a/drivers/iommu/iommufd/main.c b/drivers/iommu/iommufd/main.c
-> index 5cc4b08c25f5..e1a9b3051f65 100644
-> --- a/drivers/iommu/iommufd/main.c
-> +++ b/drivers/iommu/iommufd/main.c
-> @@ -493,6 +493,8 @@ static const struct iommufd_ioctl_op iommufd_ioctl_ops[] = {
->  		 __reserved),
->  	IOCTL_OP(IOMMU_VIOMMU_ALLOC, iommufd_viommu_alloc_ioctl,
->  		 struct iommu_viommu_alloc, out_viommu_id),
-> +	IOCTL_OP(IOMMU_HWPT_LU_SET_PRESERVE, iommufd_hwpt_lu_set_preserve,
-> +		 struct iommu_hwpt_lu_set_preserve, hwpt_token),
-
-Shouldn't struct iommu_hwpt_lu_set_preserve{} be added to union ucmd_buffer{}
-above in this file?
-
+Reviewed-by: David Matlack <dmatlack@google.com>
