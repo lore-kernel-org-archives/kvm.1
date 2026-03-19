@@ -1,154 +1,203 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F342F3DEAE2;
-	Thu, 19 Mar 2026 15:42:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8CEEE3033DC;
+	Thu, 19 Mar 2026 15:43:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773934972; cv=none; b=uhrf0NDW7iEDHw6PwUoqCxb4ITT05USuq7lL/OkbEcNMPN/t69ptuuGgU8r4C8xqofLmiSJaedx2GEmvPZ9zFuF2F8nBNHPKJm6Gjq9cuYnMwE9SRUS46sLTnVtZr+9szKqSawiec4IBvHhMd+s7Y0tEuld4Mesz3tedfpyzakY=
+	t=1773935001; cv=none; b=e6XUv4LSJzE4Gyp+YH53LNbI8rg576DV5ZbmUSSQsTEMa6nM9mgteIrsqbOO0Kk21/NSXFf5wIez4aM25xTBWGwTwcmhVH18ZtjDSRDD/6U7BGRLL69lF5stw2fpKEVywmP1jNkT9wm60pgKqGs1Br02zV0fODcUdLo53it4O/c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773934972; c=relaxed/simple;
-	bh=SMhEQ+pZHcmr0+HxLxjJHHt06QQIe9V8bFK9AAaiKxk=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=mCwPxigR9vB0i+YjYgyPx78GhJ8DdK6UHBAzoZ0fdQpPexHV48MbFJlTkoFr3w1y5ny8QIeZkkWNYRsRAIZXebT7AgmOs2tDujkHavGM7wwrCQjrPyLFaICg/yARtQMCpruO2ZOf1eKgqxc30Tcv/PsclNIAIbDRa84/mKtb64A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=TPaHdqO0; arc=none smtp.client-ip=198.175.65.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+	s=arc-20240116; t=1773935001; c=relaxed/simple;
+	bh=eUX+g//z4+mBb2sP9NcqOiJ3WfGyp8TpL9dLuFMLq/Q=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=kc26Gn/X2OOSiHaG7RYXIULYZmBWtcXs0866xhQmDf9oBB43k8Ay1O8B45qPZYkEEKyXcY7mo38mdnBfOqr95EvwjzgnN1mY/ievCVJbUgst2AgIdvx/y4c2p169nhVeVEbly/YqEogtpNCtHhM2DTecqK+pV0KIYT7xULoAf/k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=L6rJRlTN; arc=none smtp.client-ip=148.163.156.1
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="TPaHdqO0"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1773934971; x=1805470971;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=SMhEQ+pZHcmr0+HxLxjJHHt06QQIe9V8bFK9AAaiKxk=;
-  b=TPaHdqO0Gf9p9YnAp40lWQ789XWmxXjJMH1laKme+1E211fOvoTy96qQ
-   r1oJEDYM5i5zniloi38YJX8PvwJQoJT3pCb2220YV7yoBfSQNHk2lalsT
-   74wNnEjc7PByUmPHy1sh/Aflph2mpYX7MC3zLE+C5l8m9bFUXZe1MrpEH
-   1mMuXceCxQUXkeqad//Kw/yEtkgbrMExK0+QXxnpAlexx5ohtFNj2s+W/
-   MXpGr8X2RtaV/Y21hmqO5FH1yxaVFsGC/1xw4pR/wbNdvnvJVkjxQsTfJ
-   I9RqUan/UOMxWhXvOOXeeTgInyrlMrbeyDw4BtVtiab6QQ5aOTjzKwaHn
-   g==;
-X-CSE-ConnectionGUID: dsjUUAdxSrO1Uq4hfF3bvg==
-X-CSE-MsgGUID: e2d/7psMQtCp7r4XLTwy1w==
-X-IronPort-AV: E=McAfee;i="6800,10657,11734"; a="75195895"
-X-IronPort-AV: E=Sophos;i="6.23,129,1770624000"; 
-   d="scan'208";a="75195895"
-Received: from fmviesa010.fm.intel.com ([10.60.135.150])
-  by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Mar 2026 08:42:50 -0700
-X-CSE-ConnectionGUID: xE5PzlJkRwGmNCmx6XZqWw==
-X-CSE-MsgGUID: e6DY7hSCT96D1Nlxu5fiCg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,129,1770624000"; 
-   d="scan'208";a="218891770"
-Received: from guptapa-desk.jf.intel.com (HELO desk) ([10.165.239.46])
-  by fmviesa010-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Mar 2026 08:42:49 -0700
-Date: Thu, 19 Mar 2026 08:42:48 -0700
-From: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
-To: x86@kernel.org, Nikolay Borisov <nik.borisov@suse.com>,
-	"H. Peter Anvin" <hpa@zytor.com>,
-	Josh Poimboeuf <jpoimboe@kernel.org>,
-	David Kaplan <david.kaplan@amd.com>,
-	Sean Christopherson <seanjc@google.com>,
-	Borislav Petkov <bp@alien8.de>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Alexei Starovoitov <ast@kernel.org>,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	Andrii Nakryiko <andrii@kernel.org>, KP Singh <kpsingh@kernel.org>,
-	Jiri Olsa <jolsa@kernel.org>,
-	"David S. Miller" <davem@davemloft.net>,
-	David Laight <david.laight.linux@gmail.com>,
-	Andy Lutomirski <luto@kernel.org>,
-	Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>,
-	David Ahern <dsahern@kernel.org>,
-	Martin KaFai Lau <martin.lau@linux.dev>,
-	Eduard Zingerman <eddyz87@gmail.com>, Song Liu <song@kernel.org>,
-	Yonghong Song <yonghong.song@linux.dev>,
-	John Fastabend <john.fastabend@gmail.com>,
-	Stanislav Fomichev <sdf@fomichev.me>, Hao Luo <haoluo@google.com>,
-	Paolo Bonzini <pbonzini@redhat.com>,
-	Jonathan Corbet <corbet@lwn.net>
-Cc: linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
-	Asit Mallick <asit.k.mallick@intel.com>,
-	Tao Zhang <tao1.zhang@intel.com>, bpf@vger.kernel.org,
-	netdev@vger.kernel.org, linux-doc@vger.kernel.org
-Subject: [PATCH v7 10/10] x86/vmscape: Add cmdline vmscape=on to override
- attack vector controls
-Message-ID: <20260319-vmscape-bhb-v7-10-b76a777a98af@linux.intel.com>
-X-Mailer: b4 0.15-dev
-References: <20260319-vmscape-bhb-v7-0-b76a777a98af@linux.intel.com>
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="L6rJRlTN"
+Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 62JFCx3K1368595;
+	Thu, 19 Mar 2026 15:43:16 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:message-id
+	:mime-version:subject:to; s=pp1; bh=gBheh7gJgH51OHrfZofeLhJS68RP
+	2VKWwltJQK+2Sn8=; b=L6rJRlTN9uzxMDHMuX2VZjCSIV8kZTngh6/P4n6V3CEv
+	2z10zUTflDLmOhE8jkjFetQPXDjxvHA0ce0ttnHOIA9ciYcta+3xJ2+GLRAtnYIr
+	QKythY3XkMFcyci1FkATVpXutGfQAeZWq5mXjyEuwMfzjbCQmfuLu8yUkjKrqUTL
+	95Vivl1fQm0y3NKmIxKdJstx325dwN5/u5AYt4W0dWp9RQkv5vzk78Axxc/H763W
+	F2EOyYDX3DsVcQsBEMkUnBpmlfdqQ6nZctX8kiVh2Zf7KmllDqxgHHHn8Jt60Mv3
+	hIWj0Mtt5Np1BMtgylTSiKz1FyEq/LDa7OfzMiHdGQ==
+Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4cvy64ysu6-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 19 Mar 2026 15:43:15 +0000 (GMT)
+Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma22.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 62JDQfG3013987;
+	Thu, 19 Mar 2026 15:43:14 GMT
+Received: from smtprelay01.fra02v.mail.ibm.com ([9.218.2.227])
+	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4cwjcyb48q-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 19 Mar 2026 15:43:14 +0000
+Received: from smtpav04.fra02v.mail.ibm.com (smtpav04.fra02v.mail.ibm.com [10.20.54.103])
+	by smtprelay01.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 62JFhAdV62259576
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Thu, 19 Mar 2026 15:43:10 GMT
+Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 5A4E02004B;
+	Thu, 19 Mar 2026 15:43:10 +0000 (GMT)
+Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 0B14220040;
+	Thu, 19 Mar 2026 15:43:10 +0000 (GMT)
+Received: from tuxmaker.boeblingen.de.ibm.com (unknown [9.87.85.9])
+	by smtpav04.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Thu, 19 Mar 2026 15:43:09 +0000 (GMT)
+From: Julian Ruess <julianr@linux.ibm.com>
+Subject: [PATCH v6 0/3] vfio/pci: Introduce vfio_pci driver for ISM devices
+Date: Thu, 19 Mar 2026 16:42:53 +0100
+Message-Id: <20260319-vfio_pci_ism-v6-0-c6bab675bc0a@linux.ibm.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260319-vmscape-bhb-v7-0-b76a777a98af@linux.intel.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+X-B4-Tracking: v=1; b=H4sIAH4ZvGkC/33STU7DMBAF4KugrEnlGdszMSvugVDlX2qJNlUCU
+ VHVu+NkQwguy7H0vudJfG3GOOQ4Nk8P12aIUx5zfyoDPT40/mBPb7HNocwNCtQCkdsp5X5/9nm
+ fx2MrvPcYFSMqbkrkPMSULwv38lrmQx4/+uFr0SecT2eIBID+DU3YitaTlYk06QDy+T2fPi+77
+ I473x9newmWokowCRBGacky2U1wvsUk181mA8gCgA8AwUbBItxplkLXgggsmHwHwdSa1aoZ5QZ
+ Q886uS5ItGnTdvWaoBRWTLhfWlBhqzXrdvN1ZF4ATGbZSOWXhbjNXgo4lqs6pqJlqzfTTjII2A
+ BUgBMNSCUORqx+N/wN43p1cp0KyZCDWgG4FAGyArgBaK2G9cdj9+d8LAGsANwAUQEqJhDaUF6O
+ 2wO12+wZV7UAUVwMAAA==
+X-Change-ID: 20250227-vfio_pci_ism-0ccc2e472247
+To: schnelle@linux.ibm.com, wintera@linux.ibm.com, ts@linux.ibm.com,
+        oberpar@linux.ibm.com, gbayer@linux.ibm.com,
+        Alex Williamson <alex@shazbot.org>, Jason Gunthorpe <jgg@ziepe.ca>,
+        Yishai Hadas <yishaih@nvidia.com>,
+        Shameer Kolothum <skolothumtho@nvidia.com>,
+        Kevin Tian <kevin.tian@intel.com>
+Cc: mjrosato@linux.ibm.com, alifm@linux.ibm.com, raspl@linux.ibm.com,
+        hca@linux.ibm.com, agordeev@linux.ibm.com, gor@linux.ibm.com,
+        julianr@linux.ibm.com, kvm@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-s390@vger.kernel.org,
+        linux-pci@vger.kernel.org
+X-Mailer: b4 0.14.2
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: ClGk1Ws_e3NCrLznLuLidB4XcuZQBRTm
+X-Proofpoint-GUID: ClGk1Ws_e3NCrLznLuLidB4XcuZQBRTm
+X-Authority-Analysis: v=2.4 cv=KYnfcAYD c=1 sm=1 tr=0 ts=69bc1994 cx=c_pps
+ a=5BHTudwdYE3Te8bg5FgnPg==:117 a=5BHTudwdYE3Te8bg5FgnPg==:17
+ a=IkcTkHD0fZMA:10 a=Yq5XynenixoA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=RnoormkPH1_aCDwRdu11:22 a=iQ6ETzBq9ecOQQE5vZCe:22 a=VwQbUJbxAAAA:8
+ a=VnNF1IyMAAAA:8 a=QCNViZDDaoB_9I-yeyYA:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMzE5MDEyMCBTYWx0ZWRfXzVJoD8Bxk0mH
+ PpCbcB4KSukvrhyCZxWUch4ArgjGPRAM/nYdwqcKnMKtOwEFz5rehcHOSspMsRYVSMMZNOXGxIo
+ HCfR8SjtCCZe1Uz6InJDRQKFJbYPAd7YejSQCrtcuyr7MIpNKAtqi8qoY16emQN1yzx87O4XZ0E
+ cc4JQ/mkBmjUzpWQRohjrH/1w+iQJApAUNtgO4JucMtVzzpOC357/dPZh9N75AeXEVh0U88SkOp
+ Hj3FkG6d+JWPwbaZQv6hQfrMd7DdUlXfpalx+wRAWtq1dRVb2S/9k4U1APPDFMPB49cizpXvj36
+ XFPYX4sy83tu/aANDwAEC9yYKDplEP8Vmtx+OBjvBif5dpEwO4vQQeJq2QkWh9GMwKxwoME6KPm
+ LsTWe854OBf/1wJOCYFRMV+v9yNap9we87oyjmzwZ+8MeVarGHdVAk2AnX1YG27rJmu8IEWlUIY
+ AXcNJh01EzTKaFkXMRQ==
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
+ definitions=2026-03-19_01,2026-03-19_05,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ phishscore=0 lowpriorityscore=0 priorityscore=1501 suspectscore=0 bulkscore=0
+ spamscore=0 impostorscore=0 malwarescore=0 adultscore=0 clxscore=1015
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2603050001 definitions=main-2603190120
 
-In general, individual mitigation controls can be used to override the
-attack vector controls. But, nothing exists to select BHB clearing
-mitigation for VMSCAPE. The =force option comes close, but with a
-side-effect of also forcibly setting the bug, hence deploying the
-mitigation on unaffected parts too.
+Hi all,
 
-Add a new cmdline option vmscape=on to enable the mitigation based on the
-VMSCAPE variant the CPU is affected by.
+This series adds a vfio_pci variant driver for the s390-specific
+Internal Shared Memory (ISM) devices used for inter-VM communication
+including SMC-D.
 
-Reviewed-by: Nikolay Borisov <nik.borisov@suse.com>
-Signed-off-by: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
+This is a prerequisite for an in-development open-source user space
+driver stack that will allow to use ISM devices to provide remote
+console and block device functionality. This stack will be part of
+s390-tools.
+
+This driver would also allow QEMU to mediate access to an ISM device,
+enabling a form of PCI pass-through even for guests whose hardware
+cannot directly execute PCI accesses, such as nested guests.
+
+On s390, kernel primitives such as ioread() and iowrite() are switched
+over from function handle based PCI load/stores instructions to PCI
+memory-I/O (MIO) loads/stores when these are available and not
+explicitly disabled. Since these instructions cannot be used with ISM
+devices, ensure that classic function handle-based PCI instructions are
+used instead.
+
+The driver is still required even when MIO instructions are disabled, as
+the ISM device relies on the PCI store‑block (PCISTB) instruction to
+perform write operations.
+
+Thank you,
+Julian
+
+Signed-off-by: Julian Ruess <julianr@linux.ibm.com>
 ---
- Documentation/admin-guide/hw-vuln/vmscape.rst   | 4 ++++
- Documentation/admin-guide/kernel-parameters.txt | 4 +++-
- arch/x86/kernel/cpu/bugs.c                      | 2 ++
- 3 files changed, 9 insertions(+), 1 deletion(-)
+Changes in v6:
+- Introduce ism_vfio_pci_init_dev() and ism_vfio_pci_release_dev().
+- Add early return for __zpci_load().
+- Use kmem_cache_alloc() instead of kmem_cache_zalloc().
+- Rename ivdev to ivpcd for consistency.
+- Rename ism_pci_open_device() to ism_vfio_pci_open_device().
+- Link to v5: https://lore.kernel.org/r/20260317-vfio_pci_ism-v5-0-b73248b4e576@linux.ibm.com
 
-diff --git a/Documentation/admin-guide/hw-vuln/vmscape.rst b/Documentation/admin-guide/hw-vuln/vmscape.rst
-index dc63a0bac03d..580f288ae8bf 100644
---- a/Documentation/admin-guide/hw-vuln/vmscape.rst
-+++ b/Documentation/admin-guide/hw-vuln/vmscape.rst
-@@ -112,3 +112,7 @@ The mitigation can be controlled via the ``vmscape=`` command line parameter:
- 
-    Force vulnerability detection and mitigation even on processors that are
-    not known to be affected.
-+
-+ * ``vmscape=on``:
-+
-+   Choose the mitigation based on the VMSCAPE variant the CPU is affected by.
-diff --git a/Documentation/admin-guide/kernel-parameters.txt b/Documentation/admin-guide/kernel-parameters.txt
-index 03a550630644..1068569be5cf 100644
---- a/Documentation/admin-guide/kernel-parameters.txt
-+++ b/Documentation/admin-guide/kernel-parameters.txt
-@@ -8378,9 +8378,11 @@ Kernel parameters
- 
- 			off		- disable the mitigation
- 			ibpb		- use Indirect Branch Prediction Barrier
--					  (IBPB) mitigation (default)
-+					  (IBPB) mitigation
- 			force		- force vulnerability detection even on
- 					  unaffected processors
-+			on		- (default) selects IBPB or BHB clear
-+					  mitigation based on CPU
- 
- 	vsyscall=	[X86-64,EARLY]
- 			Controls the behavior of vsyscalls (i.e. calls to
-diff --git a/arch/x86/kernel/cpu/bugs.c b/arch/x86/kernel/cpu/bugs.c
-index aa4a727f0abf..d3fa6c2ad341 100644
---- a/arch/x86/kernel/cpu/bugs.c
-+++ b/arch/x86/kernel/cpu/bugs.c
-@@ -3088,6 +3088,8 @@ static int __init vmscape_parse_cmdline(char *str)
- 	} else if (!strcmp(str, "force")) {
- 		setup_force_cpu_bug(X86_BUG_VMSCAPE);
- 		vmscape_mitigation = VMSCAPE_MITIGATION_ON;
-+	} else if (!strcmp(str, "on")) {
-+		vmscape_mitigation = VMSCAPE_MITIGATION_ON;
- 	} else {
- 		pr_err("Ignoring unknown vmscape=%s option.\n", str);
- 	}
+Changes in v5:
+- Support reads < 8 bytes.
+- Link to v4: https://lore.kernel.org/r/20260313-vfio_pci_ism-v4-0-4765ae056f71@linux.ibm.com
 
+Changes in v4:
+- Fix bug with < 8 byte reads. For code simplicity, only support 8 byte reads.
+- Fix leak of ivpcd.
+- Fix cache replacement by implementing a per-device kmem_cache.
+- Link to v3: https://lore.kernel.org/r/20260305-vfio_pci_ism-v3-0-1217076c81d9@linux.ibm.com
+
+Changes in v3:
+- Add comments to ism_vfio_pci_do_io_r() and ism_vfio_pci_do_io_w().
+- Format Kconfig.
+- Add 4k boundary check to ism_vfio_pci_do_io_w().
+- Use kmem_cache instead of kzalloc in ism_vfio_pci_do_io_w().
+- Add error handler to struct ism_vfio_pci_driver.
+- Link to v2: https://lore.kernel.org/r/20260224-vfio_pci_ism-v2-0-f010945373fa@linux.ibm.com
+
+Changes in v2:
+- Remove common code patch that sets VFIO_PCI_OFFSET_SHIFT to 48.
+- Implement ism_vfio_pci_ioctl_get_region_info() to have own region
+  offsets.
+- For config space accesses, rename vfio_config_do_rw() to
+  vfio_pci_config_rw_single() and export it.
+- Use zdev->maxstbl instead of ZPCI_BOUNDARY_SIZE.
+- Add comment that zPCI must not use MIO instructions for config space
+  access.
+- Rework patch descriptions.
+- Update license info.
+- Link to v1: https://lore.kernel.org/r/20260212-vfio_pci_ism-v1-0-333262ade074@linux.ibm.com
+
+---
+Julian Ruess (3):
+      vfio/pci: Rename vfio_config_do_rw() to vfio_pci_config_rw_single() and export it
+      vfio/ism: Implement vfio_pci driver for ISM devices
+      MAINTAINERS: add VFIO ISM PCI DRIVER section
+
+ MAINTAINERS                        |   6 +
+ drivers/vfio/pci/Kconfig           |   2 +
+ drivers/vfio/pci/Makefile          |   2 +
+ drivers/vfio/pci/ism/Kconfig       |  10 +
+ drivers/vfio/pci/ism/Makefile      |   3 +
+ drivers/vfio/pci/ism/main.c        | 400 +++++++++++++++++++++++++++++++++++++
+ drivers/vfio/pci/vfio_pci_config.c |   8 +-
+ drivers/vfio/pci/vfio_pci_priv.h   |   4 +
+ 8 files changed, 432 insertions(+), 3 deletions(-)
+---
+base-commit: 8a30aeb0d1b4e4aaf7f7bae72f20f2ae75385ccb
+change-id: 20250227-vfio_pci_ism-0ccc2e472247
+
+Best regards,
 -- 
-2.34.1
-
+Julian Ruess <julianr@linux.ibm.com>
 
