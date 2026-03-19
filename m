@@ -1,163 +1,142 @@
-Received: from mail-lf1-f53.google.com (mail-lf1-f53.google.com [209.85.167.53])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0b-00082601.pphosted.com (mx0b-00082601.pphosted.com [67.231.153.30])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A80F03101B4
-	for <kvm@vger.kernel.org>; Thu, 19 Mar 2026 22:09:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.167.53
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773958190; cv=pass; b=eQHcYmKE+isITQsJEHvZxZothFTGsVTp8LW/k6Q5F/pjdzAYJZ3QLonTrJ+P/npRhWyeEbDFlilPRXyGvSJWC3+vVU5qP5nEXBNdgXMzWHSHUgpQ/iZmzXlxq87/vhbV7UHikytODm/sejGtXwXNa587NqfhLW6Dd53xDgfZjOI=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773958190; c=relaxed/simple;
-	bh=7oOcuw602t0Hs62ASwAporxmUlW6f0Mxodgh2CLwYtM=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=o2SPAqbmWvcPYzvc1t+1aconxlST8ELCI6cdv/Xa8EBV9F3K21IORQzlotRjocj6crcgFvn9IF/VxdY7bGDfO5Ub4BZh/6VjVRD5/lCXS58nerK5O3pujvwLVbddZKF+rIc5hKV0QA6Y4cRkZtuP+0yUbj7rfKL/pJ3J79gTanY=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=F64ZwUsg; arc=pass smtp.client-ip=209.85.167.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C703638BF9B
+	for <kvm@vger.kernel.org>; Thu, 19 Mar 2026 22:55:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=67.231.153.30
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1773960959; cv=none; b=Jo7SdZkxMfGZ6dFi6yxbMkn/QgBY/Y3DMp1ooPTXEv3ZIWUi9drGAK+OnJwvlul82Vz8Y2HYpwdod8acBt1sJ0LKk31mYhMNAjnWt4/sjBpwss+AaTJhytr49n5ltIkK4aHtvRlBJVnztV8vbKk9xkUbnz61KedXD0xlS8QUsWw=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1773960959; c=relaxed/simple;
+	bh=i7MipWj9sHBdfSHGjRKSPIm5ZRjwYZfYp01SnJS/juM=;
+	h=Date:From:To:CC:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=UnWa/IpPaueQnZ43b2Kjo4kBPGse2guAHlN4ZqguCldmeRV3vWnxbhJF8NZy78qrK0ngqjpuotBC0VJydzihJgdXGWEoShbncTyaK0oUEZpre7bLdei3xvh26zl/JkIuGxPjr4oJJg/mGOLl54+9KIeKcs2jtdXFQ3t21w7KIr4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=fb.com; spf=pass smtp.mailfrom=meta.com; dkim=pass (2048-bit key) header.d=fb.com header.i=@fb.com header.b=jSniGa++; arc=none smtp.client-ip=67.231.153.30
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=fb.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=meta.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="F64ZwUsg"
-Received: by mail-lf1-f53.google.com with SMTP id 2adb3069b0e04-5a12c19affeso847101e87.1
-        for <kvm@vger.kernel.org>; Thu, 19 Mar 2026 15:09:48 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1773958187; cv=none;
-        d=google.com; s=arc-20240605;
-        b=JFzuBCXhT+VcOojdcyUbb55u7QLZaXZfBiQSuV1j1kE7xzgqENhGwZOeZc3c5LYIV+
-         bIsAhrtPn727zV6d8/1cFusc+9pqK3qH8gZZSVyqxKVOZRg71ZNqRFzFFoTeRXWWcKcX
-         NEPp3kBXCgKxdlEei1XNT2+90uc+sLOwj7kIM68Xggut57Yn4Ym2e53xWQMpo62rG2hs
-         PliqP9HmMOjS1p2wvQ8/TCyj7GtGtzh5wWYAZSRAUuub7mIo1qd3/o8efSAaDWtxpKcE
-         UfxN1hJiE971UIk4oAp1TSOkwNXPmOLAdMGo1PIAozAEMpMLDG6hLsjIT9zdVXrsNCaR
-         pOjw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=svD4wMks8gwyXRL5XOV+qF8B6FaNKoBJNHk7PXgg3Q0=;
-        fh=DUnsanBhIKclAxVaE+8TCRJNUN/RmyO9Mr0zZlf0KsA=;
-        b=blVjwDZu0L2iEYtTYMKbsBu9dhc8RT6x4naj7IfUsWX4h9u8WZZZsPgA29OQE0owkb
-         eHw3eTrffZpj/DwRs4o/2ET/8cLJdiC9mt3EzXTsHzFp2ojYPrRbll6WPAl5D5UmDc/7
-         LN6E2qtzuWv41AP5XlxlQHmExK63L/Za0d0LIWWI+ZfVtuRS8uzJXgHCDSERGh4HsKx2
-         3hicAlHQ1VDcBm7U0Hgd6ef6IkBskzbuU2BYxAEnXJ6FdWezBFtD0xkH3sHQMIpuw/5M
-         K6czGadjfrG88rzqMLaVokLBAFajYlJ5cM1RSyZ/pc5B+oMtjUk0LCBOiTFXU4+jFajg
-         8EfQ==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1773958187; x=1774562987; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=svD4wMks8gwyXRL5XOV+qF8B6FaNKoBJNHk7PXgg3Q0=;
-        b=F64ZwUsggRvGf4oIJg5Pnpz/U5EPeC1NcxDs7F+x5V2FIoW4NMVVGcs/24x7SP8/1k
-         v7dCerCmDCdDZcyzC6wkbd5LkmSGdwGtqCA35r25QrgjSIv2kivWsxb0wg+cwYffsvWF
-         Pw50IEZPO7PQqP3m4bpQ17TvTqH3YlZgrD1z8pbMiPziV+6tP2lswRGU1QyXLt3U3Jpm
-         fE5XjdNMNEpFPGnrMzsvzqLTNT+IqAF5j5wVBPPkH4EbTVqzigsAZMh1h/++MBvDYY5F
-         01C5u3beOCIA5iMplFYqw495/j09gBcboHxHJNC1TSklD+udxxTBnWchD2geS7e2JAM8
-         GRoQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1773958187; x=1774562987;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=svD4wMks8gwyXRL5XOV+qF8B6FaNKoBJNHk7PXgg3Q0=;
-        b=OMscoc7YO6UDdKGac5vFwUfSjsE8CoI4a0w8m3oRVNaAfx2SKo008A7tTxJMvuDnBJ
-         NytzcsrJindl+N140rtnn+SKTOsTodFZqwQ2gJq2XDHp4hZNXW1mwMiwqzE10aHbh+6p
-         AtiZ5LfISLv+gQO9m3kLu/RvWPdgP60saPVOJUGf0xRAPikIKLXwNr2p3GuBxuH8KNul
-         DiYcARJ0bodfky6Eaus73U+uio5ZmWWPV8dcUhA86vASpxhCw2E8wRJhntLh4vI11Jjy
-         O8edxjAlgXocjDAY05iv/gctMSXvLyw6sEeyaxLERTcs7mDtmLqj7KK5sPQtGhIAZppi
-         rXLQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWqZK4hXFZPYdKyAo1biWD/ns3OHkcOvxSm7KYeRkS/VqbbeWPSg9IeHYJko+IQYV/G0Jw=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyRdM0S85vMM0v+dFncrFJV/ydDz/Cmv8+j0Dw3jnP2Df30GU/e
-	r9Bem+WntxryqtZMQnQZqM7K0vWq/CDPtfMed+sjmdBzqALq6A7WMxhFyVLivVUXAG26kpnic64
-	/3L+gJnWbGIViKphXbquwmOCElhuF607uR56wEiey
-X-Gm-Gg: ATEYQzy6ZTDmkLMAexUmZDrXeMfOMr1YvozOo5GefHQbPTXNadaVKdFzjLxnyvcMXXI
-	qIBD/8rk+M0jQ6tgs+H4nKgDXmqXjpngOXA30kD7I50WN/f0O8IkkSdBxCHNBL3zQ603hBCEav+
-	xyR5sJMnvgPQ1/IzWWdjnNshjtoUL54MeHXb/CYUfLyYKP3mKINEKfilWJnbZDfq0OV1bOQcyIo
-	dY8QumbPQdng/HLUQ5MiRpqG+WWm0W3rsZj0BOHNe868G16sxu+Aw3MCZf3t9REg5npIFjiEGp9
-	Y3OCJ8wp
-X-Received: by 2002:a05:6512:3b22:b0:5a1:742d:277f with SMTP id
- 2adb3069b0e04-5a27de01545mr1986403e87.11.1773958186394; Thu, 19 Mar 2026
- 15:09:46 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=fb.com header.i=@fb.com header.b="jSniGa++"
+Received: from pps.filterd (m0109332.ppops.net [127.0.0.1])
+	by mx0a-00082601.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 62JKHs7l725168
+	for <kvm@vger.kernel.org>; Thu, 19 Mar 2026 15:55:56 -0700
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=fb.com; h=cc
+	:content-type:date:from:in-reply-to:message-id:mime-version
+	:references:subject:to; s=s2048-2025-q2; bh=9IPS5TmzCBkUYq50HKth
+	yh6opnGe6lVtdHPipIOQpTs=; b=jSniGa++7ZCOOdJEGsdbkAbxz1ILM17NcXhm
+	4rCFj2H+AA2f/rLU3ouY3Py/0jE8zPlPzmEAPON1SaAmxEMNphue3xlqenYJDTbe
+	6AVqm/xNbHPpydL5PMK4mAoxxoVS8lGapuCqU7L0ZUMR0z1DxqzIihldHw2txLk6
+	MxZbyNCyZTKCq4/2ijJPsU20BGjXdZ5HQ0Tv5osInVeiU02bfiLnhrg89kqKLsen
+	3TGa+Irgd29Yvf3AuB7Yx1B6A9MtoIikcxsJjmo1B3dErfnuzJUQfTYRI2VwOW8C
+	QnBPmrKR/kmLnfYgAQi3HOqR4AktqYEzGNQldn/YUn7B8tyKbQ==
+Received: from maileast.thefacebook.com ([163.114.135.16])
+	by mx0a-00082601.pphosted.com (PPS) with ESMTPS id 4d0j682ks1-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT)
+	for <kvm@vger.kernel.org>; Thu, 19 Mar 2026 15:55:56 -0700 (PDT)
+Received: from twshared6524.02.snb2.facebook.com (2620:10d:c0a8:1b::30) by
+ mail.thefacebook.com (2620:10d:c0a9:6f::237c) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.2.2562.35; Thu, 19 Mar 2026 22:55:43 +0000
+Received: by devvm6375.cco0.facebook.com (Postfix, from userid 721855)
+	id BAB72718EE5A; Thu, 19 Mar 2026 15:55:38 -0700 (PDT)
+Date: Thu, 19 Mar 2026 15:55:38 -0700
+From: Ted Logan <tedlogan@fb.com>
+To: David Matlack <dmatlack@google.com>
+CC: Alex Williamson <alex@shazbot.org>, Shuah Khan <shuah@kernel.org>,
+        <kvm@vger.kernel.org>, <linux-kselftest@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>, Matt Evans <mattev@meta.com>
+Subject: Re: [PATCH] vfio: selftests: Build tests on aarch64
+Message-ID: <abx+6mcpGwt0MzrG@devvm6375.cco0.facebook.com>
+References: <20260317-vfio-selftests-aarch64-v1-1-2266077563e7@fb.com>
+ <abw5ng4M14Je2OfU@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260129212510.967611-1-dmatlack@google.com> <20260129212510.967611-5-dmatlack@google.com>
- <20260225143328.35be89f6@shazbot.org> <aZ-CnywNgMnr6f1k@google.com> <CAAywjhR4Azqx8hXRap0eLUrwetYRiX8TALEM=b+1BorPc3eJdQ@mail.gmail.com>
-In-Reply-To: <CAAywjhR4Azqx8hXRap0eLUrwetYRiX8TALEM=b+1BorPc3eJdQ@mail.gmail.com>
-From: David Matlack <dmatlack@google.com>
-Date: Thu, 19 Mar 2026 15:09:18 -0700
-X-Gm-Features: AaiRm51momKlFVcCV9Yk7taG4PZCOSiNfgaYNzeVE1MwV2qirg6S-TkURRRSfl8
-Message-ID: <CALzav=cMEkenGKYvA=rNmTmVjpf_DW_92MCFx-2gxqKbrdG0Kg@mail.gmail.com>
-Subject: Re: [PATCH v2 04/22] vfio/pci: Register a file handler with Live
- Update Orchestrator
-To: Samiullah Khawaja <skhawaja@google.com>
-Cc: Alex Williamson <alex@shazbot.org>, Adithya Jayachandran <ajayachandra@nvidia.com>, 
-	Alexander Graf <graf@amazon.com>, Alex Mastro <amastro@fb.com>, Alistair Popple <apopple@nvidia.com>, 
-	Andrew Morton <akpm@linux-foundation.org>, Ankit Agrawal <ankita@nvidia.com>, 
-	Bjorn Helgaas <bhelgaas@google.com>, Chris Li <chrisl@kernel.org>, 
-	David Rientjes <rientjes@google.com>, Jacob Pan <jacob.pan@linux.microsoft.com>, 
-	Jason Gunthorpe <jgg@nvidia.com>, Jason Gunthorpe <jgg@ziepe.ca>, Jonathan Corbet <corbet@lwn.net>, 
-	Josh Hilke <jrhilke@google.com>, Kevin Tian <kevin.tian@intel.com>, kexec@lists.infradead.org, 
-	kvm@vger.kernel.org, Leon Romanovsky <leon@kernel.org>, Leon Romanovsky <leonro@nvidia.com>, 
-	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-kselftest@vger.kernel.org, linux-mm@kvack.org, 
-	linux-pci@vger.kernel.org, Lukas Wunner <lukas@wunner.de>, 
-	=?UTF-8?Q?Micha=C5=82_Winiarski?= <michal.winiarski@intel.com>, 
-	Mike Rapoport <rppt@kernel.org>, Parav Pandit <parav@nvidia.com>, 
-	Pasha Tatashin <pasha.tatashin@soleen.com>, Pranjal Shrivastava <praan@google.com>, 
-	Pratyush Yadav <pratyush@kernel.org>, Raghavendra Rao Ananta <rananta@google.com>, 
-	Rodrigo Vivi <rodrigo.vivi@intel.com>, Saeed Mahameed <saeedm@nvidia.com>, 
-	Shuah Khan <skhan@linuxfoundation.org>, 
-	=?UTF-8?Q?Thomas_Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>, 
-	Tomita Moeko <tomitamoeko@gmail.com>, Vipin Sharma <vipinsh@google.com>, 
-	Vivek Kasireddy <vivek.kasireddy@intel.com>, William Tu <witu@nvidia.com>, Yi Liu <yi.l.liu@intel.com>, 
-	Zhu Yanjun <yanjun.zhu@linux.dev>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="us-ascii"
+Content-Disposition: inline
+In-Reply-To: <abw5ng4M14Je2OfU@google.com>
+X-FB-Internal: Safe
+X-Proofpoint-GUID: Ri_oSa6JMOyzfht28USh1GuiQ8BHnZF-
+X-Proofpoint-ORIG-GUID: Ri_oSa6JMOyzfht28USh1GuiQ8BHnZF-
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMzE5MDE4NCBTYWx0ZWRfXylW2IoniLtkW
+ gg3QFxa/Pxoz5MzLKbejtNy9q9DGjb0xAzb3GdI+wjsbNSKvyHG51V2ZQ9nH4hNkp6g6vbdFMNe
+ Z3vdT2lxLVTPmShGx+jy/DAP8oBv3UpeqG4o6P/nahRmhph95CBaoO02H7/0t2Ywo4i7o8T4ikq
+ 62gP+xgyyN9lfN7fDVkFO+EPWt5B7OpJxR8pc24xYrDJwNf0zA5bUKdb0ZM/s6gnHtTMhL8UA3s
+ R7qKnil7++M8oMQxOgfJa8hthYgU/F0L5pZfTc76/te0oZblgmL5uG2xUJVbXwicBQeUvY5ukFa
+ uqd9nmjedLfAKsA+oinSfry2ZQSNXJF7SuAhkZ6UhKSlbUgkbmcwUmhlPT3riVMOJYCuBO8sIOP
+ UISMgGCuP6ndFRD9Kzy3d+EJkFi7xqTJcFCHCARPxDJVJ2MYXmmAkCydfmrl6dKdltpDQ9le5X8
+ 3LjlM7A4PND3H/8kkkQ==
+X-Authority-Analysis: v=2.4 cv=HNzO14tv c=1 sm=1 tr=0 ts=69bc7efc cx=c_pps
+ a=MfjaFnPeirRr97d5FC5oHw==:117 a=MfjaFnPeirRr97d5FC5oHw==:17
+ a=kj9zAlcOel0A:10 a=Yq5XynenixoA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=7x6HtfJdh03M6CCDgxCd:22 a=xtH7KyWI9dI7BmFOsl-x:22 a=VwQbUJbxAAAA:8
+ a=VabnemYjAAAA:8 a=FOH2dFAWAAAA:8 a=4HMHHBYQn7QH22SDB_8A:9 a=CjuIK1q_8ugA:10
+ a=gKebqoRLp9LExxC7YDUY:22
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
+ definitions=2026-03-19_04,2026-03-19_05,2025-10-01_01
 
-On Wed, Feb 25, 2026 at 3:55=E2=80=AFPM Samiullah Khawaja <skhawaja@google.=
-com> wrote:
->
-> On Wed, Feb 25, 2026 at 3:15=E2=80=AFPM David Matlack <dmatlack@google.co=
-m> wrote:
-> >
-> > On 2026-02-25 02:33 PM, Alex Williamson wrote:
-> > > On Thu, 29 Jan 2026 21:24:51 +0000
-> > > David Matlack <dmatlack@google.com> wrote:
-> >
-> > > > +int __init vfio_pci_liveupdate_init(void)
-> > > > +{
-> > > > +   if (!liveupdate_enabled())
-> > > > +           return 0;
-> > > > +
-> > > > +   return liveupdate_register_file_handler(&vfio_pci_liveupdate_fh=
-);
-> > > > +}
-> > >
-> > > liveupdate_register_file_handler() "pins" vfio-pci with a
-> > > try_module_get().  Since this is done in our module_init function and
-> > > unregister occurs in our module_exit function, rather than relative
-> > > to any actual device binding or usage, this means vfio-pci CANNOT be
-> > > unloaded.  That seems bad.  Thanks,
-> >
-> > Good point. So a better approach that would allow vfio-pci to be
-> > unloaded would be to register the file handler when the number of
-> > devices bound to vfio-pci goes from 0->1 and then unregister on 1->0.
->
-> Yeah maybe a kref that gets inc/dec in probe/remove. I have a similar
-> problem with iommufd preservation, but I think I can handle it based
-> on the number of iommufd open.
->
-> I am wondering whether this file handler registration kref stuff can
-> be moved into LUO by adding it to LUO file_handler and the modules
-> only call get/put?
+Hi David,
 
-Circling back here, the new plan is for LUO to not take a module
-reference in liveupdate_register_file_handler():
+On Thu, Mar 19, 2026 at 05:59:58PM +0000, David Matlack wrote:
+> On 2026-03-17 04:25 PM, Ted Logan wrote:
+> > Also build vfio self-tests on aarch64 variants, in addition to arm64 and
+> 
+> s/self-tests/selftests/
+> 
+> > x86_64.
+> 
+> This could be worded better to clarify that this is about fixing the
+> VFIO selftests to allow native builds on arm64 host platforms.
+> 
+> > 
+> > Reported-by: Matt Evans <mattev@meta.com>
+> > Closes: https://lore.kernel.org/all/e51b4ff2-13c4-47d4-b781-3dcbd740d274@meta.com/
+> 
+> Please also add a fixes tag, since it was not the intent of the original
+> commit was to disallow native arm64 builds.
+> 
+>   Fixes: a55d4bbbe644 ("vfio: selftests: only build tests on arm64 and x86_64")
 
-  https://lore.kernel.org/lkml/20260318141637.1870220-13-pasha.tatashin@sol=
-een.com/
+Thanks for the feedback, I'll add that to the next version.
 
-In the next version of this series I am going to rebase on top of
-Pasha's changes and keep the call to
-liveupdate_register_file_handler() where it is.
+> > ---
+> > Signed-off-by: Ted Logan <tedlogan@fb.com>
+> > ---
+> >  tools/testing/selftests/vfio/Makefile | 2 +-
+> >  1 file changed, 1 insertion(+), 1 deletion(-)
+> > 
+> > diff --git a/tools/testing/selftests/vfio/Makefile b/tools/testing/selftests/vfio/Makefile
+> > index 8e90e409e91d..98bc8d6271a4 100644
+> > --- a/tools/testing/selftests/vfio/Makefile
+> > +++ b/tools/testing/selftests/vfio/Makefile
+> > @@ -1,4 +1,4 @@
+> > -ARCH ?= $(shell uname -m)
+> > +ARCH ?= $(shell uname -m | sed -e 's/aarch64.*/arm64/')
+> 
+> Perhaps we can just include tools/scripts/Makefile.arch to avoid having
+> to maintain yet another "uname -m" translation?
+
+I took a look at tools/scripts/Makefile.arch and it includes a
+translation from x85_64 to x86, so it doesn't look like we can use it to
+distinguish architectures here. It sounds like the simplest thing to do
+is add aarch64 to the list of allowed architectures so I'll do that in
+the next patch.
+
+> This would make it harder to prevent aarch64_be though, which Alex
+> indicated we might want to do.
+> 
+> >  
+> >  ifeq (,$(filter $(ARCH),arm64 x86_64))
+> >  # Do nothing on unsupported architectures
+> > 
+> > ---
+> > base-commit: 96ca4caf9066f5ebd35b561a521af588a8eb0215
+> > change-id: 20260317-vfio-selftests-aarch64-636abf0f7674
+> > 
+> > Best regards,
+> > -- 
+> > Ted Logan <tedlogan@fb.com>
+> > 
