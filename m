@@ -1,63 +1,64 @@
-Received: from mail-wm1-f49.google.com (mail-wm1-f49.google.com [209.85.128.49])
+Received: from mail-wm1-f43.google.com (mail-wm1-f43.google.com [209.85.128.43])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CDF193C73C1
-	for <kvm@vger.kernel.org>; Thu, 19 Mar 2026 11:19:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C7D4B3C9445
+	for <kvm@vger.kernel.org>; Thu, 19 Mar 2026 11:20:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773919198; cv=none; b=bK6RmJJIPzz2zY/kuuuNP6tbThoJZzn5BiI7RQYDAZ+6AbdQTZcjYG2P0HgCRFcm01X9dc/TxYKo2wvk2m6Xs35QGlBlO+Lw3y/x4M8FxAyJtK1nHDmLJBQm/CGF+/e9+hjXbPFPmIhYeJ/2cnK1/m4ypMGTLesz6vzOhm1PskQ=
+	t=1773919205; cv=none; b=oF4i/R1icneT4yc3vJO0z8tPqUlOpquTu4A0/BVAHcj2L65qdFnAEPSeoSNYKrcLyHM4HAKXvJbWcp/wsG0aSPI0B74s5KXYrqohZaWPYUtk+DQRT+q7ftR92D1TMBXPCc/acRQqDXec4Jp8spCG6PiKR01OOlC8OEG7PWEOh5c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773919198; c=relaxed/simple;
-	bh=O1kJSzW56xtGVuhE6LABiXBSB7EnryZ6wSKNghsi110=;
+	s=arc-20240116; t=1773919205; c=relaxed/simple;
+	bh=gDsnsepuovOET4ezqWG6ikRseEUeORN0anJ+kPf3XM4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=IWNGtCLMwIEGvHX/tPmgyw94RS1ZEg+k6bsxESFa8XYfyIbrxv65UtczanqBbHs01Nq0QeUKNqfKg5o2sDHI7Z/9h15/ydvkq2mCVUEnX/xrBln717WI8FdPSOOIq/X2DwmZTAxWxmLvzHonqRHyX2pHRXFtzZGf4cnhi7oD4yw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=jkLl1yzP; arc=none smtp.client-ip=209.85.128.49
+	 MIME-Version:Content-Type; b=J/gyTz2R/FrHBllsFJRDOfdrh05zZtMj/hNfocIiaok/hKTHwBnewDrLyGk/dGyaNTXBZMbKqkPUfTTCwd9HTfX8t4kVM2obohFDp7mMgPaAC5+Ff0mMvFHTTTHx8Uqe5/NeZVb2KDs/enNDqISAe18CdUXqa3KTJ11dcJm2/lo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=ZPYiQAAd; arc=none smtp.client-ip=209.85.128.43
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="jkLl1yzP"
-Received: by mail-wm1-f49.google.com with SMTP id 5b1f17b1804b1-485345e1013so13939145e9.1
-        for <kvm@vger.kernel.org>; Thu, 19 Mar 2026 04:19:56 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="ZPYiQAAd"
+Received: by mail-wm1-f43.google.com with SMTP id 5b1f17b1804b1-48538c5956bso7112085e9.0
+        for <kvm@vger.kernel.org>; Thu, 19 Mar 2026 04:20:03 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1773919195; x=1774523995; darn=vger.kernel.org;
+        d=linaro.org; s=google; t=1773919202; x=1774524002; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=1EF35YN3CJ8u12H8BkNu2tiJ6lwUGD01EvYz7GmtlEg=;
-        b=jkLl1yzPjaIkJOtdZDcewJEXggwXwfgYUlpkPh/u+Blj29XBsFTmBqu1+TYFruim8c
-         SojV3CGvQ16/Q5pWt+FUpTIg/f80T8xxVu6fA9FxnzESF5U0fe+TDnPTQ3g7bEvty1P7
-         a4NBL+JsBpIyLjkRFWtGD58qRRYWxLyHSKbF2T2gd5bKh8J4vOJ0KwBAfML58B4bCA4s
-         1a6YgOkCRjUnGX1h3WPVLUmLsrEpoMkRDXxDrWpRterYUeUy3QFlzRHNoGsGGyjxCp5A
-         6+hKDOzayt+3FDft29kEIWT2PiQrhxz0Y2UNsFYTCXOXwy6BxLL5ZwMBokb9hKS/FBRX
-         u2GA==
+        bh=f8yqnxF8hGCxxNwG0QPtk4/HBFqHIOCwK8FAKwORZgo=;
+        b=ZPYiQAAdBJENt1c/OB+yE4ThxCs+W1e/BHHRX1JvBvmCS8tvld2bRUIC5o659a1EFB
+         Sm9iMX7vDs8/3ijQawu2eDWWRzhER0czNoMpokjlUQ9AQkUw1UgsaKDoHZ8A58OscuD5
+         ohH41nTwMIclrC6aBRmLxqieMH7gaaYhHQPfdmXjdU1UYeRthZtl+/Mh/wqpQqbpQ00a
+         NF0YXCPtOusll5W9QnkrdK98gSZSAk0CciOTxX42GX+nl958DfuHlIc3YwWXCKcjiIJx
+         yjg7ltoI/qbGsz4BEwxAzSWuPz5RRC8Py2yveIu6uGiuvGJ5KIopNeAx5gVSvq0nVwZq
+         mhjQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1773919195; x=1774523995;
+        d=1e100.net; s=20251104; t=1773919202; x=1774524002;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=1EF35YN3CJ8u12H8BkNu2tiJ6lwUGD01EvYz7GmtlEg=;
-        b=RLViR5Q3pIVYpetSJl75YolE5XkBJ6FGHb46CeHLaSTm8IjWaM5q31nYDGAVX9KIT+
-         k99xvXtHTAeq+x+qVP9tqvu3RG0T5Ms0KAb7u6AR3wne+0Et3UBWITeOsZkx7UdqR17K
-         iGX4FzvhTo9+FopBUQIQHgNp+ElVq5KpjEZE3zDNFMxgxYUl9nXhy4EMzv75a+RjG024
-         p4ywkt8xzghBfgqlUo/ridUwTXrQ3VqoxFs5X+0UVrKPLJ1lMqFbONaLpGigAHAvpi9M
-         Jnl1vWCFc7xY/Ju9+LhO5hOOyIQQcl8wMJM/K+Y4NzpEyjKrmVJavbJHhNI6xj8LWxB5
-         gI5A==
-X-Forwarded-Encrypted: i=1; AJvYcCXjGyIVppMLod1OxUqGMvhh3RLGX87U76r/LVFlEsiwn+/E8+kK8SRGUARq+s88sP+9CEk=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxZmtCJUvkEPn+cjSeh+tq/GndAcJCs6e5Qwo7kk0j214F7t3cH
-	BKw+Z/Tqqzug8C0UPZtj6z3/WP15cXoyJFAxlk7llvvp8Sx+Vo3GXIiwIXgD4RsK4jM=
-X-Gm-Gg: ATEYQzzwJDq58f0rqIRXDzL9xbQzFDry9IPBSLlG03c28/+OKpSxg2zyeBeNmsn9jps
-	03NRN5oII+eguCDTrfU2DeUDiDaX2j+0F4Wn19BNC4H4eG8qGBZnJ+Q/zhZ77UYAsOTxuVn8uIr
-	ENjEOP25cHhxc9AkeOaPyNF5mkf9zutlYZu2+KW6fwakGy2fBXCPsQqxs+dJ3bSDONl56WC1eUE
-	DRothG/FEUBoclK2Kbu+lzNxMPCjyPG6p57NvkU0ZTOWYWloy95cQgu9ehIQEimmZJU401vBZJW
-	fLetrwoLZZD154vgnGmzoyjqhGCCG9wGsLBMRxDrfsAin61IO1/NpqsShQh91P/Ew72/lZNfTfX
-	p3v2FpUDF022BRP24yR/a+C2wslky4oAoK27njdA7T4HIlROALH89mT+TKDoLf1vijVvBvXAYE/
-	DjWiWvocNL1Y388wzmWniXLuc9oNOJlFCZmI0L7dMcQ3ONBnfcrpzQDU//4E2Xff/xkn9k8FYE
-X-Received: by 2002:a05:600c:8b10:b0:486:f893:56c6 with SMTP id 5b1f17b1804b1-486f8b46651mr48087815e9.10.1773919195014;
-        Thu, 19 Mar 2026 04:19:55 -0700 (PDT)
+        bh=f8yqnxF8hGCxxNwG0QPtk4/HBFqHIOCwK8FAKwORZgo=;
+        b=JiYwjXHK1/XEMb/iRlLfLFuDvjSxFShqXs7wPr60kXTSYHT/G6lRL0eOomkZrCnMEl
+         d7EIorIwidqubuKQnuJjktDMtIoH/jaZTdf/s0s1JNmto1D40loN1eVsWSH5+LyWH/y/
+         3wzHBxZ/jmJkH1dA4Nbgytj1RXLIPRqSZGYJZ0JKYFBKAiiPnA8hFv4kkfTcQaQKUqGF
+         ENU1i7dd2ICyuc2yq+Dm/j1jyYMzsL23SQJnwpthtn0DV3iPTd3bqnCwr1JWm1xylO13
+         Pg6zpPwY2im5O8UGTfWfdj8oOKOV09LLqz0wNUofvlyXuE7sEecM/ZYkRrSvlPbhGKFR
+         e40Q==
+X-Forwarded-Encrypted: i=1; AJvYcCXeLxn8aVT20RShNmZVA+ltrRzOV17yBwvdmEpoRfZ0hnAUbO2ljJ9a3sNClrzOGuz/bMc=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxBMB236WajXUpIozrfqV4Jw+rxRynWTizapDJtHRQXpxASX1GK
+	aBe35iW4iS1Lw7dh/zTVz8O/Rj0/7O0XpmHmwRgmPYjASaFM1IGyOyi71l9TJ8vD32s=
+X-Gm-Gg: ATEYQzzTlWlZ0k1WNNznc25NyM1lSBum6STwYUw5zkMQ34swbFNBNGcm8MdOGO82Gry
+	WIqwE/47riSc0qFJ1ojaIatREtaZiFuWeCDxnKPk4wuUEvnpStw/IrMFb11qwa8ZXb5ioyhFKtS
+	4Hf+NeAIq1jR5cSHA579qN6zbUJBY7Xp9FaOoCsBgQ4+aRdEEQngh4qEQLxhlZzSbAMkRsUA34d
+	HYtZeJyH7z2+IUIM0EAB19aaTb3X5gV1+aa/um8vROscj4Opq7sKyAqMSyykh82S7C95egEYxq7
+	fDf4eK0E7KJkYMIEHKT6y/WXEVnQ/7ysMSgTW137DHVtRi7zyVa9gTzLzaZX3rozAtL49HmaSxI
+	97BWC+YSnOztbFB6k3K5TbNIytRGxS/BplfwTFxaMbv/swxvyP1mcaxpXhW0zRj6bMXBaIFC6gs
+	VcovVBitu1qCJkrj1PYus/+4SzmCaWTfUiCgcKwZGrstM8dT695Il7aHwjBCqt/UXUBP1TTrp1D
+	+zMaRjFvD0=
+X-Received: by 2002:a05:600c:6612:b0:46e:59bd:f7e2 with SMTP id 5b1f17b1804b1-486f8b47e70mr46838835e9.11.1773919202026;
+        Thu, 19 Mar 2026 04:20:02 -0700 (PDT)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net. [88.187.86.199])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-486f8bd9d78sm19811235e9.5.2026.03.19.04.19.52
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-486f8b949a5sm56925475e9.11.2026.03.19.04.20.00
         (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Thu, 19 Mar 2026 04:19:53 -0700 (PDT)
+        Thu, 19 Mar 2026 04:20:01 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Anton Johansson <anjo@rev.ng>,
@@ -71,9 +72,9 @@ Cc: Anton Johansson <anjo@rev.ng>,
 	Pierrick Bouvier <pierrick.bouvier@linaro.org>,
 	Chinmay Rath <rathc@linux.ibm.com>,
 	=?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH 2/8] target/ppc: Factor common ppc_load_epr() helper out
-Date: Thu, 19 Mar 2026 12:19:30 +0100
-Message-ID: <20260319111936.68041-3-philmd@linaro.org>
+Subject: [PATCH 3/8] target/ppc/mmu: Remove unused hash32_store_hpte() helpers
+Date: Thu, 19 Mar 2026 12:19:31 +0100
+Message-ID: <20260319111936.68041-4-philmd@linaro.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260319111936.68041-1-philmd@linaro.org>
 References: <20260319111936.68041-1-philmd@linaro.org>
@@ -86,81 +87,42 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
+The hash32_store_hpte() helpers are unused since commit
+6e8a65abbbd ("ppc/hash32: Rework R and C bit updates"),
+7 years ago. Remove them.
+
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- target/ppc/cpu.h         | 2 ++
- target/ppc/cpu.c         | 8 ++++++++
- target/ppc/excp_helper.c | 3 +--
- target/ppc/kvm.c         | 2 +-
- 4 files changed, 12 insertions(+), 3 deletions(-)
+ target/ppc/mmu-hash32.h | 16 ----------------
+ 1 file changed, 16 deletions(-)
 
-diff --git a/target/ppc/cpu.h b/target/ppc/cpu.h
-index d637a50798f..e3e4bce91b7 100644
---- a/target/ppc/cpu.h
-+++ b/target/ppc/cpu.h
-@@ -2822,6 +2822,8 @@ enum {
- target_ulong cpu_read_xer(const CPUPPCState *env);
- void cpu_write_xer(CPUPPCState *env, target_ulong xer);
- 
-+uint64_t ppc_load_epr(CPUPPCState *env);
-+
- /*
-  * All 64-bit server processors compliant with arch 2.x, ie. 970 and newer,
-  * have PPC_SEGMENT_64B.
-diff --git a/target/ppc/cpu.c b/target/ppc/cpu.c
-index 4d8faaddee2..f24801a9731 100644
---- a/target/ppc/cpu.c
-+++ b/target/ppc/cpu.c
-@@ -26,6 +26,7 @@
- #include "fpu/softfloat-helpers.h"
- #include "mmu-hash64.h"
- #include "helper_regs.h"
-+#include "system/memory.h"
- #include "system/tcg.h"
- 
- target_ulong cpu_read_xer(const CPUPPCState *env)
-@@ -105,6 +106,13 @@ void ppc_store_lpcr(PowerPCCPU *cpu, target_ulong val)
-     ppc_maybe_interrupt(env);
+diff --git a/target/ppc/mmu-hash32.h b/target/ppc/mmu-hash32.h
+index 04c23ea75ed..5705f57935b 100644
+--- a/target/ppc/mmu-hash32.h
++++ b/target/ppc/mmu-hash32.h
+@@ -87,22 +87,6 @@ static inline target_ulong ppc_hash32_load_hpte1(PowerPCCPU *cpu,
+     return ldl_phys(CPU(cpu)->as, base + pte_offset + HASH_PTE_SIZE_32 / 2);
  }
  
-+uint64_t ppc_load_epr(CPUPPCState *env)
-+{
-+    CPUState *cs = env_cpu(env);
-+
-+    return ldl_phys(cs->as, env->mpic_iack);
-+}
-+
- #if defined(TARGET_PPC64)
- void ppc_update_ciabr(CPUPPCState *env)
+-static inline void ppc_hash32_store_hpte0(PowerPCCPU *cpu,
+-                                          hwaddr pte_offset, target_ulong pte0)
+-{
+-    target_ulong base = ppc_hash32_hpt_base(cpu);
+-
+-    stl_phys(CPU(cpu)->as, base + pte_offset, pte0);
+-}
+-
+-static inline void ppc_hash32_store_hpte1(PowerPCCPU *cpu,
+-                                          hwaddr pte_offset, target_ulong pte1)
+-{
+-    target_ulong base = ppc_hash32_hpt_base(cpu);
+-
+-    stl_phys(CPU(cpu)->as, base + pte_offset + HASH_PTE_SIZE_32 / 2, pte1);
+-}
+-
+ static inline hwaddr get_pteg_offset32(PowerPCCPU *cpu, hwaddr hash)
  {
-diff --git a/target/ppc/excp_helper.c b/target/ppc/excp_helper.c
-index 6d05b865058..3b476c145ab 100644
---- a/target/ppc/excp_helper.c
-+++ b/target/ppc/excp_helper.c
-@@ -1166,9 +1166,8 @@ static void powerpc_excp_booke(PowerPCCPU *cpu, int excp)
-         break;
-     case POWERPC_EXCP_EXTERNAL:  /* External input                           */
-         if (env->mpic_proxy) {
--            CPUState *cs = env_cpu(env);
-             /* IACK the IRQ on delivery */
--            env->spr[SPR_BOOKE_EPR] = ldl_phys(cs->as, env->mpic_iack);
-+            env->spr[SPR_BOOKE_EPR] = ppc_load_epr(env);
-         }
-         break;
-     case POWERPC_EXCP_ALIGN:     /* Alignment exception                      */
-diff --git a/target/ppc/kvm.c b/target/ppc/kvm.c
-index 41bd03ec2a2..3bff75b7f54 100644
---- a/target/ppc/kvm.c
-+++ b/target/ppc/kvm.c
-@@ -1692,7 +1692,7 @@ int kvm_arch_handle_exit(CPUState *cs, struct kvm_run *run)
- #endif
-     case KVM_EXIT_EPR:
-         trace_kvm_handle_epr();
--        run->epr.epr = ldl_phys(cs->as, env->mpic_iack);
-+        run->epr.epr = ppc_load_epr(env);
-         ret = 0;
-         break;
-     case KVM_EXIT_WATCHDOG:
+     return (hash * HASH_PTEG_SIZE_32) & ppc_hash32_hpt_mask(cpu);
 -- 
 2.53.0
 
