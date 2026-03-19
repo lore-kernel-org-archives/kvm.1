@@ -1,189 +1,241 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from fhigh-b3-smtp.messagingengine.com (fhigh-b3-smtp.messagingengine.com [202.12.124.154])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5AF173F787B;
-	Thu, 19 Mar 2026 18:26:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 532402F28FC
+	for <kvm@vger.kernel.org>; Thu, 19 Mar 2026 18:29:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.154
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773944780; cv=none; b=vGEpGo8D86h+TVbI1Z7T/tKFB38pR05synUQjk6grkXoDRaafHncCR6L2kiED8NrRV+scDubXUZ2w7FaL1fiNCPVf8Q7cMz9dD9RIcpkLcAtxxh+LmgRctWnb79DfD+2tB/PnpXciXgete7NybJbufeosJNi8t6JPOM4Mzbqvv4=
+	t=1773944944; cv=none; b=Wx9nq15L2BmtcESES+GXlaTNfhq2zzQIakPgA8Rgeuu6SDUpXpeSanENaTDIIUHEJgGbKWZx0AprF6SxSraCr79QDHpCplSotnRZvXEiKYKpbcjuEcPcJTXt8/7tSjyi112MbxgVKvkKCDcbDKI4iQyyJOccbM40ftqKlT4R0wc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773944780; c=relaxed/simple;
-	bh=GBQQbLO2a4zuF3uSSSHniBNg4oXiGd3KKh0MkAh+ZLI=;
-	h=Date:Message-ID:From:To:Cc:Subject:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=GRU69P6mi7ltT2XK9CISH1qfsHXKaHoY24h6WELj85U6GdgsgSWbS4xnnM2sx1cRfU/5kDvWr1d/M1fSfuk24ezxYjytwXLVzmBQ1e4iDV6l8Y4DCJ//iAJfRdP3F1oAYUWLT4vSKRuPbbqvQFQhkhaPPSSm+jf401QtZ4XT1Iw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=f+90WUPO; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1773944944; c=relaxed/simple;
+	bh=CGKzb9Gh4AW7zglTzC5/qjXVnSJq3P0/ZPjPnqbkjEc=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=pEFbVxipofmz2fEcDZZaptNs7MXRlxwUQXlP3FgG84fqcocujZZFvLnmCO9uPPYIGMzi9zcVqvPh4MWV4XXeMJTD57tBQkZb3ICvcL11whPXNJMREiBFAtnvcnFHPeqh9RHEesKJo84fZ+cGR4bJ+jKz1I3oZG0+v1KU/AGdAs4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=shazbot.org; spf=pass smtp.mailfrom=shazbot.org; dkim=pass (2048-bit key) header.d=shazbot.org header.i=@shazbot.org header.b=u2gucpTY; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=OpOMa7dh; arc=none smtp.client-ip=202.12.124.154
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=shazbot.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=shazbot.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="f+90WUPO"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2EB2DC19424;
-	Thu, 19 Mar 2026 18:26:20 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773944780;
-	bh=GBQQbLO2a4zuF3uSSSHniBNg4oXiGd3KKh0MkAh+ZLI=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=f+90WUPOSqYqST8rwA0x76yqe7boMwbsDN7P3SAgdK6wvuKz8G0R/nS/vx9mCEVMJ
-	 HQ+5KfrAjjtBHBGgV7hCS3OFBJJyO2GrcZAff70lc/01Y44GHeFgR/95eqcCbBh32f
-	 MFQsQ7/EZstr0l8AWY2uiJ3c/7vBQFejqBGzlrb4sWpQcv5j6O0yAeokdQsq97XRFc
-	 TFcTHEn/2tzeABskVo5j1INGQ8p9GcRaIeGsD36BT/QBZul/xN3U/QrqWIDj69Ja+r
-	 uipBwdbAoOMBkapNIQYCpH6jWi6HFuqh1lwChiXfGN307VF7cBw2EB+2NcIT6lZigh
-	 KsKTZWy6XthNA==
-Received: from sofa.misterjones.org ([185.219.108.64] helo=goblin-girl.misterjones.org)
-	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.98.2)
-	(envelope-from <maz@kernel.org>)
-	id 1w3I4X-00000003lWw-3Nvm;
-	Thu, 19 Mar 2026 18:26:17 +0000
-Date: Thu, 19 Mar 2026 18:26:17 +0000
-Message-ID: <868qbn65h2.wl-maz@kernel.org>
-From: Marc Zyngier <maz@kernel.org>
-To: Sascha Bischoff <Sascha.Bischoff@arm.com>
-Cc: "linux-arm-kernel@lists.infradead.org"
-	<linux-arm-kernel@lists.infradead.org>,
-	"kvmarm@lists.linux.dev"
-	<kvmarm@lists.linux.dev>,
-	"kvm@vger.kernel.org" <kvm@vger.kernel.org>,
-	nd <nd@arm.com>,
-	"oliver.upton@linux.dev" <oliver.upton@linux.dev>,
-	Joey Gouly
-	<Joey.Gouly@arm.com>,
-	Suzuki Poulose <Suzuki.Poulose@arm.com>,
-	"yuzenghui@huawei.com" <yuzenghui@huawei.com>,
-	"peter.maydell@linaro.org"
-	<peter.maydell@linaro.org>,
-	"lpieralisi@kernel.org" <lpieralisi@kernel.org>,
-	Timothy Hayes <Timothy.Hayes@arm.com>,
-	"jonathan.cameron@huawei.com"
-	<jonathan.cameron@huawei.com>
-Subject: Re: [PATCH v7 00/41] KVM: arm64: Introduce vGIC-v5 with PPI support
-In-Reply-To: <20260319154937.3619520-1-sascha.bischoff@arm.com>
-References: <20260319154937.3619520-1-sascha.bischoff@arm.com>
-User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
- FLIM-LB/1.14.9 (=?UTF-8?B?R29qxY0=?=) APEL-LB/10.8 EasyPG/1.0.0 Emacs/30.1
- (aarch64-unknown-linux-gnu) MULE/6.0 (HANACHIRUSATO)
+	dkim=pass (2048-bit key) header.d=shazbot.org header.i=@shazbot.org header.b="u2gucpTY";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="OpOMa7dh"
+Received: from phl-compute-06.internal (phl-compute-06.internal [10.202.2.46])
+	by mailfhigh.stl.internal (Postfix) with ESMTP id 158197A0049;
+	Thu, 19 Mar 2026 14:29:00 -0400 (EDT)
+Received: from phl-frontend-03 ([10.202.2.162])
+  by phl-compute-06.internal (MEProxy); Thu, 19 Mar 2026 14:29:00 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shazbot.org; h=
+	cc:cc:content-transfer-encoding:content-type:content-type:date
+	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to; s=fm3; t=1773944939;
+	 x=1774031339; bh=rQn898NdKeyvPzy5cBb82rMWyAFOYMyM8Ok82awi2LE=; b=
+	u2gucpTY3K8U6Y93lRqHrqoBIs+xZRu8E6Cia8xqwIczLrBA8HBL10XkgLbko2AT
+	Cbj8a13h75uYrie8Gl71e4UVWutRYkYwotnOKYVxSIQ6DRjI5RnM/ho80s8dprAS
+	BdJtnfn9QThCVAUSVAasbNc2noVyRyLwhVH103Rj3Ly5eOO3kIMfoxtNwfYQDw+S
+	K41G2LhCxNUI0mG+U0PfjI8yzT16Hcxd3kGxn3lik2tGB1eo79N0zthCZH+4Ky18
+	M94MQbOb+eJ/2KKP8gaftMgM9+/yK78Pq/gqev+FDh/+ylvCd4e4yUvXGf6FfnhF
+	Q2Z5KqkSpdkIsVbg4noe/Q==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=1773944939; x=
+	1774031339; bh=rQn898NdKeyvPzy5cBb82rMWyAFOYMyM8Ok82awi2LE=; b=O
+	pOMa7dhS/w60PBgsNI4t9JEES2izPPZ+8WnnTrPECpV+TICK8SuwEBkJvmCCHXaa
+	44lVjcy0R5UUJhABJT9/K3ugp6hSZFMP0kPye0f212vsneEt9U2fUffWan0ELAuJ
+	ent/T/9+bwvd83mjS4KuyDs+3XwrdXcsgPyO15SLNZk27JfTrTgxCiZ0fpP0KX0R
+	e7n4Iu4c3+x8GZ3Izv4i8HqC0U6AXCXjNfj1ATLErV0ADRb6RKcqGFCP1roOezMk
+	aPyXB8QvmNLt3pPxeOBXYaLgNxAzdUbv+wooEuHGEqfeO9UM1YJQPTkobaPaHNlz
+	HSkw3Rq4wMGP+PmOku2lw==
+X-ME-Sender: <xms:a0C8aTYd-8kibk3jcK63Ae0srfwgLWajuYOY9qM_sRR0Ll-2GA1dBw>
+    <xme:a0C8aWHnt_sHmtrrcr2V4YoLAQL_TYCOGd-C6Df1f3w3he8OHPfWD3HIZX5fZqwrU
+    gYh0GPIXhg4xrU5o4SSwU7cZTaKLDvFkoKS2n4IPGJdO2iVaAenqu4>
+X-ME-Received: <xmr:a0C8aen3EZoigxawnfxhSyBIk0hk0MvTuU05mQX0jJgdd21A0mkpZX6bS-o>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgdeftdejjeefucetufdoteggodetrf
+    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
+    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
+    gurhepfffhvfevuffkjghfofggtgfgsehtjeertdertddvnecuhfhrohhmpeetlhgvgicu
+    hghilhhlihgrmhhsohhnuceorghlvgigsehshhgriigsohhtrdhorhhgqeenucggtffrrg
+    htthgvrhhnpedvkeefjeekvdduhfduhfetkedugfduieettedvueekvdehtedvkefgudeg
+    veeuueenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpe
+    grlhgvgiesshhhrgiisghothdrohhrghdpnhgspghrtghpthhtohepudegpdhmohguvgep
+    shhmthhpohhuthdprhgtphhtthhopeihihhshhgrihhhsehnvhhiughirgdrtghomhdprh
+    gtphhtthhopehjghhgsehnvhhiughirgdrtghomhdprhgtphhtthhopehkvhhmsehvghgv
+    rhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtohepkhgvvhhinhdrthhirghnsehinhhtvg
+    hlrdgtohhmpdhrtghpthhtohepjhhorghordhmrdhmrghrthhinhhssehorhgrtghlvgdr
+    tghomhdprhgtphhtthhopehlvghonhhrohesnhhvihguihgrrdgtohhmpdhrtghpthhtoh
+    epmhgrohhrghesnhhvihguihgrrdgtohhmpdhrtghpthhtoheprghvihhhrghihhesnhhv
+    ihguihgrrdgtohhmpdhrtghpthhtoheptghlghesrhgvughhrghtrdgtohhm
+X-ME-Proxy: <xmx:a0C8abArroc_XtyvM9nZ3hl32CSlA8lARF3z2ZYlI3lZLCy6XGofbA>
+    <xmx:a0C8aQBCE0ZXCJIkIY_EtplLv4oKv5diDGNH-v2kH5KFZeZUHaWAyw>
+    <xmx:a0C8aSFZnZmQCXk2dmj7x5GHf_yS-fpepieyAf2DdOfoOppmaAsEmA>
+    <xmx:a0C8aX4s-nAe86gvS4uj1_OOuOZ7o3UlATaWzIxykF9ZJQlwjok_aw>
+    <xmx:a0C8aVDxzniIwDixt1ugOp4qyqBtwB_vG3b9YVDBj9d-JstyolEI9gOg>
+Feedback-ID: i03f14258:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
+ 19 Mar 2026 14:28:58 -0400 (EDT)
+Date: Thu, 19 Mar 2026 12:28:56 -0600
+From: Alex Williamson <alex@shazbot.org>
+To: Yishai Hadas <yishaih@nvidia.com>
+Cc: <jgg@nvidia.com>, <kvm@vger.kernel.org>, <kevin.tian@intel.com>,
+ <joao.m.martins@oracle.com>, <leonro@nvidia.com>, <maorg@nvidia.com>,
+ <avihaih@nvidia.com>, <clg@redhat.com>, <peterx@redhat.com>,
+ <liulongfang@huawei.com>, <giovanni.cabiddu@intel.com>,
+ <kwankhede@nvidia.com>, alex@shazbot.org
+Subject: Re: [PATCH V2 vfio 2/6] vfio: Add support for
+ VFIO_DEVICE_FEATURE_MIG_PRECOPY_INFOv2
+Message-ID: <20260319122856.59c001e0@shazbot.org>
+In-Reply-To: <f5188d47-b787-4382-b0cf-1fdf38781a30@nvidia.com>
+References: <20260317161753.18964-1-yishaih@nvidia.com>
+	<20260317161753.18964-3-yishaih@nvidia.com>
+	<20260318160337.1fa2b3d8@shazbot.org>
+	<f5188d47-b787-4382-b0cf-1fdf38781a30@nvidia.com>
+X-Mailer: Claws Mail 4.3.1 (GTK 3.24.51; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
+MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
-X-SA-Exim-Connect-IP: 185.219.108.64
-X-SA-Exim-Rcpt-To: Sascha.Bischoff@arm.com, linux-arm-kernel@lists.infradead.org, kvmarm@lists.linux.dev, kvm@vger.kernel.org, nd@arm.com, oliver.upton@linux.dev, Joey.Gouly@arm.com, Suzuki.Poulose@arm.com, yuzenghui@huawei.com, peter.maydell@linaro.org, lpieralisi@kernel.org, Timothy.Hayes@arm.com, jonathan.cameron@huawei.com
-X-SA-Exim-Mail-From: maz@kernel.org
-X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
+Content-Transfer-Encoding: 7bit
 
-On Thu, 19 Mar 2026 15:49:42 +0000,
-Sascha Bischoff <Sascha.Bischoff@arm.com> wrote:
+On Thu, 19 Mar 2026 17:26:46 +0200
+Yishai Hadas <yishaih@nvidia.com> wrote:
+
+> On 19/03/2026 0:03, Alex Williamson wrote:
+> > On Tue, 17 Mar 2026 18:17:49 +0200
+> > Yishai Hadas <yishaih@nvidia.com> wrote:
+> >   
+> >> Currently, existing VFIO_MIG_GET_PRECOPY_INFO implementations don't
+> >> assign info.flags before copy_to_user().
+> >>
+> >> Because they copy the struct in from userspace first, this effectively
+> >> echoes userspace-provided flags back as output, preventing the field
+> >> from being used to report new reliable data from the drivers.
+> >>
+> >> Add support for a new device feature named
+> >> VFIO_DEVICE_FEATURE_MIG_PRECOPY_INFOv2.
+> >>
+> >> On SET, enables the v2 pre_copy_info behaviour, where the
+> >> vfio_precopy_info.flags is a valid output field.
+> >>
+> >> Signed-off-by: Yishai Hadas <yishaih@nvidia.com>
+> >> ---
+> >>   drivers/vfio/pci/vfio_pci_core.c |  1 +
+> >>   drivers/vfio/vfio_main.c         | 20 ++++++++++++++++++++
+> >>   include/linux/vfio.h             |  1 +
+> >>   3 files changed, 22 insertions(+)
+> >>
+> >> diff --git a/drivers/vfio/pci/vfio_pci_core.c b/drivers/vfio/pci/vfio_pci_core.c
+> >> index d43745fe4c84..1daaceb5b2c8 100644
+> >> --- a/drivers/vfio/pci/vfio_pci_core.c
+> >> +++ b/drivers/vfio/pci/vfio_pci_core.c
+> >> @@ -736,6 +736,7 @@ void vfio_pci_core_close_device(struct vfio_device *core_vdev)
+> >>   #endif
+> >>   	vfio_pci_core_disable(vdev);
+> >>   
+> >> +	core_vdev->precopy_info_v2 = 0;
+> >>   	vfio_pci_dma_buf_cleanup(vdev);  
+> > 
+> > There's a minor discrepancy here, enabling precopy_info_v2 is a core
+> > vfio feature, but clearing the previous user's opt-in is only
+> > implemented in the core helper for vfio-pci and associated variant
+> > drivers.  This should be moved to vfio_df_device_last_close() to be
+> > common.  A follow-up fix rather than a v3 is fine if you agree.  Thanks,
+> >   
 > 
-> This is v7 of the patch series to add the virtual GICv5 [1] device
-> (vgic_v5). Only PPIs are supported by this initial series, and the
-> vgic_v5 implementation is restricted to the CPU interface,
-> only. Further patch series are to follow in due course, and will add
-> support for SPIs, LPIs, the GICv5 IRS, and the GICv5 ITS.
+> Sure, up to you.
+> 
+> We can consider also using the below fix-up chunk as part of merging V2.
 
-[...]
+I'll fold it in.  Thanks,
 
-I have queued this, but it didn't go as planned. QEMU guests end-up
-with a NULL pointer dereference, because we are now setting ops pretty
-early in the game, while QEMU creates an irqchip very late.
+Alex
+ 
+> diff --git a/drivers/vfio/pci/vfio_pci_core.c 
+> b/drivers/vfio/pci/vfio_pci_core.c
+> index 1daaceb5b2c8..d43745fe4c84 100644
+> --- a/drivers/vfio/pci/vfio_pci_core.c
+> +++ b/drivers/vfio/pci/vfio_pci_core.c
+> @@ -736,7 +736,6 @@ void vfio_pci_core_close_device(struct vfio_device 
+> *core_vdev)
+>   #endif
+>          vfio_pci_core_disable(vdev);
+> 
+> -       core_vdev->precopy_info_v2 = 0;
+>          vfio_pci_dma_buf_cleanup(vdev);
+> 
+>          mutex_lock(&vdev->igate);
+> diff --git a/drivers/vfio/vfio_main.c b/drivers/vfio/vfio_main.c
+> index dcb879018f27..8666f35fb3f0 100644
+> --- a/drivers/vfio/vfio_main.c
+> +++ b/drivers/vfio/vfio_main.c
+> @@ -553,6 +553,7 @@ static void vfio_df_device_last_close(struct 
+> vfio_device_file *df)
+>                  vfio_df_iommufd_unbind(df);
+>          else
+>                  vfio_device_group_unuse_iommu(device);
+> +       device->precopy_info_v2 = 0;
+>          module_put(device->dev->driver->owner);
+>   }
+> 
+> Yishai
+> 
+> 
+> > Alex
+> >   
+> >>   
+> >>   	mutex_lock(&vdev->igate);
+> >> diff --git a/drivers/vfio/vfio_main.c b/drivers/vfio/vfio_main.c
+> >> index 742477546b15..dcb879018f27 100644
+> >> --- a/drivers/vfio/vfio_main.c
+> >> +++ b/drivers/vfio/vfio_main.c
+> >> @@ -964,6 +964,23 @@ vfio_ioctl_device_feature_migration_data_size(struct vfio_device *device,
+> >>   	return 0;
+> >>   }
+> >>   
+> >> +static int
+> >> +vfio_ioctl_device_feature_migration_precopy_info_v2(struct vfio_device *device,
+> >> +						    u32 flags, size_t argsz)
+> >> +{
+> >> +	int ret;
+> >> +
+> >> +	if (!(device->migration_flags & VFIO_MIGRATION_PRE_COPY))
+> >> +		return -EINVAL;
+> >> +
+> >> +	ret = vfio_check_feature(flags, argsz, VFIO_DEVICE_FEATURE_SET, 0);
+> >> +	if (ret != 1)
+> >> +		return ret;
+> >> +
+> >> +	device->precopy_info_v2 = 1;
+> >> +	return 0;
+> >> +}
+> >> +
+> >>   static int vfio_ioctl_device_feature_migration(struct vfio_device *device,
+> >>   					       u32 flags, void __user *arg,
+> >>   					       size_t argsz)
+> >> @@ -1251,6 +1268,9 @@ static int vfio_ioctl_device_feature(struct vfio_device *device,
+> >>   		return vfio_ioctl_device_feature_migration_data_size(
+> >>   			device, feature.flags, arg->data,
+> >>   			feature.argsz - minsz);
+> >> +	case VFIO_DEVICE_FEATURE_MIG_PRECOPY_INFOv2:
+> >> +		return vfio_ioctl_device_feature_migration_precopy_info_v2(
+> >> +			device, feature.flags, feature.argsz - minsz);
+> >>   	default:
+> >>   		if (unlikely(!device->ops->device_feature))
+> >>   			return -ENOTTY;
+> >> diff --git a/include/linux/vfio.h b/include/linux/vfio.h
+> >> index e90859956514..7c1d33283e04 100644
+> >> --- a/include/linux/vfio.h
+> >> +++ b/include/linux/vfio.h
+> >> @@ -52,6 +52,7 @@ struct vfio_device {
+> >>   	struct vfio_device_set *dev_set;
+> >>   	struct list_head dev_set_list;
+> >>   	unsigned int migration_flags;
+> >> +	u8 precopy_info_v2;
+> >>   	struct kvm *kvm;
+> >>   
+> >>   	/* Members below here are private, not for driver use */  
+> >   
+> 
 
-The obvious solution is what you originally had in your v6, which is
-to set the ops in kvm_timer_enable(), but to do it over *all* the
-timer interrupts in order not to break NV is a fairly subtle way(we
-still want to use the .get_input_level() callback on all timers.
-
-I ended up with the following diff, which I folded in the respective
-patches, meaning that patch 4 can be dropped altogether.
-
-Thanks,
-
-	M.
-
-diff --git a/arch/arm64/kvm/arch_timer.c b/arch/arm64/kvm/arch_timer.c
-index f6d2f0246d057..67b989671b410 100644
---- a/arch/arm64/kvm/arch_timer.c
-+++ b/arch/arm64/kvm/arch_timer.c
-@@ -1106,8 +1106,6 @@ static void timer_context_init(struct kvm_vcpu *vcpu, int timerid)
- void kvm_timer_vcpu_init(struct kvm_vcpu *vcpu)
- {
- 	struct arch_timer_cpu *timer = vcpu_timer(vcpu);
--	struct timer_map map;
--	struct irq_ops *ops;
- 
- 	for (int i = 0; i < NR_KVM_TIMERS; i++)
- 		timer_context_init(vcpu, i);
-@@ -1121,15 +1119,6 @@ void kvm_timer_vcpu_init(struct kvm_vcpu *vcpu)
- 
- 	hrtimer_setup(&timer->bg_timer, kvm_bg_timer_expire, CLOCK_MONOTONIC,
- 		      HRTIMER_MODE_ABS_HARD);
--
--	get_timer_map(vcpu, &map);
--
--	ops = vgic_is_v5(vcpu->kvm) ? &arch_timer_irq_ops_vgic_v5 :
--				      &arch_timer_irq_ops;
--
--	kvm_vgic_set_irq_ops(vcpu, timer_irq(map.direct_vtimer), ops);
--	if (map.direct_ptimer)
--		kvm_vgic_set_irq_ops(vcpu, timer_irq(map.direct_ptimer), ops);
- }
- 
- /*
-@@ -1600,6 +1589,7 @@ int kvm_timer_enable(struct kvm_vcpu *vcpu)
- {
- 	struct arch_timer_cpu *timer = vcpu_timer(vcpu);
- 	struct timer_map map;
-+	struct irq_ops *ops;
- 	int ret;
- 
- 	if (timer->enabled)
-@@ -1620,6 +1610,12 @@ int kvm_timer_enable(struct kvm_vcpu *vcpu)
- 
- 	get_timer_map(vcpu, &map);
- 
-+	ops = vgic_is_v5(vcpu->kvm) ? &arch_timer_irq_ops_vgic_v5 :
-+				      &arch_timer_irq_ops;
-+
-+	for (int i = 0; i < nr_timers(vcpu); i++)
-+		kvm_vgic_set_irq_ops(vcpu, timer_irq(vcpu_get_timer(vcpu, i)), ops);
-+
- 	ret = kvm_vgic_map_phys_irq(vcpu,
- 				    map.direct_vtimer->host_timer_irq,
- 				    timer_irq(map.direct_vtimer));
-diff --git a/arch/arm64/kvm/arm.c b/arch/arm64/kvm/arm.c
-index e7d07752143be..36410f7cd2ad3 100644
---- a/arch/arm64/kvm/arm.c
-+++ b/arch/arm64/kvm/arm.c
-@@ -526,6 +526,15 @@ int kvm_arch_vcpu_create(struct kvm_vcpu *vcpu)
- 
- 	vcpu->arch.mmu_page_cache.gfp_zero = __GFP_ZERO;
- 
-+	/* Set up the timer */
-+	kvm_timer_vcpu_init(vcpu);
-+
-+	kvm_pmu_vcpu_init(vcpu);
-+
-+	kvm_arm_pvtime_vcpu_init(&vcpu->arch);
-+
-+	vcpu->arch.hw_mmu = &vcpu->kvm->arch.mmu;
-+
- 	/*
- 	 * This vCPU may have been created after mpidr_data was initialized.
- 	 * Throw out the pre-computed mappings if that is the case which forces
-@@ -537,15 +546,6 @@ int kvm_arch_vcpu_create(struct kvm_vcpu *vcpu)
- 	if (err)
- 		return err;
- 
--	/* Set up the timer */
--	kvm_timer_vcpu_init(vcpu);
--
--	kvm_pmu_vcpu_init(vcpu);
--
--	kvm_arm_pvtime_vcpu_init(&vcpu->arch);
--
--	vcpu->arch.hw_mmu = &vcpu->kvm->arch.mmu;
--
- 	err = kvm_share_hyp(vcpu, vcpu + 1);
- 	if (err)
- 		kvm_vgic_vcpu_destroy(vcpu);
-
--- 
-Without deviation from the norm, progress is not possible.
