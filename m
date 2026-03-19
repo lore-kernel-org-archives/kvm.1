@@ -1,135 +1,234 @@
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7FB6A2C3251
-	for <kvm@vger.kernel.org>; Thu, 19 Mar 2026 15:34:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A61A93E3173;
+	Thu, 19 Mar 2026 15:40:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.14
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773934475; cv=none; b=t665VxGxIi/aTAM+GCirCy25YP7go9lUMA+8/BCXLGK5l06A/HRRlnJCGVvMspuhaPi9DDEv5LebwLIMazKmhsKhc5dxlMJ2mZraodPgHrH41ZDYSS8laI5od2Fq0cb1W9laOAGU5LGLk6U6O40QKmgc9AtpgI5UGhnlOJrpEhc=
+	t=1773934805; cv=none; b=MGc/TVnYL2bvhgsJc3qnpuBNsi8/OYGeIt17BsyGaIdWMSX488TTzgEd+7RsUJVHCzLtnl0rZAe7mVrP2+7p5bGf4WJu8dJVJ5jNcwwaGxFScSGCNhoCwmqKAxpQu63JpFNHTXcmNRgZvVBhB5XQuzSrZpjuaIuYPCWgNgghJ0Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773934475; c=relaxed/simple;
-	bh=T9yoaW0ky9iK5m3sVlExTTkxZeT9lJKIpx8fZw+OucQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Rpod+7VEEspky3psxrQLHVmuSmg9O6xzFHP8gCj9GlH+u6IgbkrQoZ4q3RFcjkPUsCeQPm0e5HCNFFcMWlj+4gVZ714t625ghnz825d4Ith3Qm6zjbPWDFsLSPO6HxzUgZgefevMP5uPchVNr271HngKOVpQtcP+zwMTvvtIcwY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=lBzqGmUd; arc=none smtp.client-ip=148.163.158.5
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+	s=arc-20240116; t=1773934805; c=relaxed/simple;
+	bh=8emaTLPxEgafUtAPvR+F0T/ynGTrAJNTFy/hqEOWGzE=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition; b=kwLpqRGwBYBMpI48TivVcuCSBwPHkY6PLrlTTLEA3j1SvXclCqF3DdN6hYtabMmOZzBDqqwR3LGBCyd0JZZHTU+8RcwO2wLyjAOLjPBC36NWwdYMC6eYF9q4yKJ8C+6RVPWicd0pCphCqG/vtfTjCPaKcvCjjZO0CHL6ZRD2dMM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=D8uYBtaF; arc=none smtp.client-ip=198.175.65.14
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="lBzqGmUd"
-Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 62JEkM1t969073;
-	Thu, 19 Mar 2026 15:34:13 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=ZWRf5M
-	bhVMlsDSn3PbS5fz/0/HG88cZvaAE7lv40Z+0=; b=lBzqGmUdmGFZhj/nCdeNV8
-	+77voJoR2O/TdY8KWi/1zNYGOEMLwz6UnGNcz/MaNPyQVARcWlx6xfg7KWDwSwOG
-	Nx0oMOoRrJJM7ncFYbvq/3Gr0pRKxEKWCwIuTcpKYKRDLBDZbnY5V4OwgChgAK/h
-	Cy8eZdsVTnQWwlGqafWQDq7PpaD+tag7OY4xVz9qbxfTkaYz2UiS5mXd9Zpedj7u
-	zX5zcPUR9B11V3Rk8W2O1j40JR52ZATXcm3d2AyxzbAJb8Ea1InQET3niWssHRgI
-	9dR+TXY+/ENAhTYQtZrkPYJzi64dyxqMYRiIl6Utg1zvLzNF/sZrCe5i9bAoPS3w
-	==
-Received: from ppma11.dal12v.mail.ibm.com (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4cvw3j70qa-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 19 Mar 2026 15:34:13 +0000 (GMT)
-Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma11.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 62JFP1O3028501;
-	Thu, 19 Mar 2026 15:34:12 GMT
-Received: from smtprelay02.fra02v.mail.ibm.com ([9.218.2.226])
-	by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 4cwmq1jsvu-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 19 Mar 2026 15:34:12 +0000
-Received: from smtpav05.fra02v.mail.ibm.com (smtpav05.fra02v.mail.ibm.com [10.20.54.104])
-	by smtprelay02.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 62JFY81T52429092
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 19 Mar 2026 15:34:09 GMT
-Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id E5E1C20043;
-	Thu, 19 Mar 2026 15:34:08 +0000 (GMT)
-Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id C9E7920040;
-	Thu, 19 Mar 2026 15:34:08 +0000 (GMT)
-Received: from p-imbrenda (unknown [9.52.223.175])
-	by smtpav05.fra02v.mail.ibm.com (Postfix) with SMTP;
-	Thu, 19 Mar 2026 15:34:08 +0000 (GMT)
-Date: Thu, 19 Mar 2026 16:34:05 +0100
-From: Claudio Imbrenda <imbrenda@linux.ibm.com>
-To: Nina Schoetterl-Glausch <nsg@linux.ibm.com>
-Cc: Christian Borntraeger <borntraeger@linux.ibm.com>,
-        Janosch Frank
- <frankja@linux.ibm.com>, kvm@vger.kernel.org,
-        Nina Schoetterl-Glausch
- <oss@nina.schoetterlglausch.eu>
-Subject: Re: [PATCH] mailmap: Update email for Nina Schoetterl-Glausch
-Message-ID: <20260319163405.2f230467@p-imbrenda>
-In-Reply-To: <20260319143545.1395319-1-nsg@linux.ibm.com>
-References: <20260319143545.1395319-1-nsg@linux.ibm.com>
-Organization: IBM
-X-Mailer: Claws Mail 4.3.1 (GTK 3.24.49; x86_64-redhat-linux-gnu)
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="D8uYBtaF"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1773934804; x=1805470804;
+  h=date:from:to:cc:subject:message-id:mime-version;
+  bh=8emaTLPxEgafUtAPvR+F0T/ynGTrAJNTFy/hqEOWGzE=;
+  b=D8uYBtaFbn7rim+05cRTc6eGs0w1/YGk0Z6r0NVbWHgYoSTuJ/QnlRoP
+   FN38T/eD89wthabO1W0eDqrw4vGCMmdsVL7u8jwlaFEE7rLg8W0j/9bR7
+   TldIfmCkuIdpUrVG1cX7uJ74bgKS6S9SunS9oBEldL8QWZYNhCldM5t/r
+   3w5IiSCLBSb7zOuv/UW+ruRemXj1ojNzl9jww428xiG3SaalbTBNdvFxz
+   yFRpVq0eAcH9Yr9nyI7OACfcgYCL6ml0vCzJkQ8I/MQtf3pu/CX6CzzCZ
+   jVEKImGP92h34mbZgwQdQCDFvs7NfknbLKNNYZGsc88eJLlc6Toa4C5Ed
+   Q==;
+X-CSE-ConnectionGUID: lWOSUTtOShq4QQ9gCCmA9Q==
+X-CSE-MsgGUID: f1dSQysaT1mRHNS77NF8oQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11734"; a="78868755"
+X-IronPort-AV: E=Sophos;i="6.23,129,1770624000"; 
+   d="scan'208";a="78868755"
+Received: from orviesa010.jf.intel.com ([10.64.159.150])
+  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Mar 2026 08:40:03 -0700
+X-CSE-ConnectionGUID: 4ioP+Kv7SFCqtVD3EB9QBA==
+X-CSE-MsgGUID: LlK2adJCRn2gb9b203t3RQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.23,129,1770624000"; 
+   d="scan'208";a="222241348"
+Received: from guptapa-desk.jf.intel.com (HELO desk) ([10.165.239.46])
+  by orviesa010-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Mar 2026 08:40:03 -0700
+Date: Thu, 19 Mar 2026 08:40:01 -0700
+From: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
+To: x86@kernel.org, Nikolay Borisov <nik.borisov@suse.com>,
+	"H. Peter Anvin" <hpa@zytor.com>,
+	Josh Poimboeuf <jpoimboe@kernel.org>,
+	David Kaplan <david.kaplan@amd.com>,
+	Sean Christopherson <seanjc@google.com>,
+	Borislav Petkov <bp@alien8.de>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Alexei Starovoitov <ast@kernel.org>,
+	Daniel Borkmann <daniel@iogearbox.net>,
+	Andrii Nakryiko <andrii@kernel.org>, KP Singh <kpsingh@kernel.org>,
+	Jiri Olsa <jolsa@kernel.org>,
+	"David S. Miller" <davem@davemloft.net>,
+	David Laight <david.laight.linux@gmail.com>,
+	Andy Lutomirski <luto@kernel.org>,
+	Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>,
+	David Ahern <dsahern@kernel.org>,
+	Martin KaFai Lau <martin.lau@linux.dev>,
+	Eduard Zingerman <eddyz87@gmail.com>, Song Liu <song@kernel.org>,
+	Yonghong Song <yonghong.song@linux.dev>,
+	John Fastabend <john.fastabend@gmail.com>,
+	Stanislav Fomichev <sdf@fomichev.me>, Hao Luo <haoluo@google.com>,
+	Paolo Bonzini <pbonzini@redhat.com>,
+	Jonathan Corbet <corbet@lwn.net>
+Cc: linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
+	Asit Mallick <asit.k.mallick@intel.com>,
+	Tao Zhang <tao1.zhang@intel.com>, bpf@vger.kernel.org,
+	netdev@vger.kernel.org, linux-doc@vger.kernel.org
+Subject: [PATCH v7 00/10] VMSCAPE optimization for BHI variant
+Message-ID: <20260319-vmscape-bhb-v7-0-b76a777a98af@linux.intel.com>
+X-B4-Tracking: v=1; b=H4sIAIEXvGkC/23QTWrDMBAF4KsEraugGf0xXfUepQtZI9eCxAl2K
+ lKC7145lCaiXr6B+eC9m5jTlNMsXnc3MaWS53waa/AvOxGHMH4mmblmgQqtInCyHOcYzkl2Qyf
+ Zs3FE3vfYi/pxnlKfr3ft/aPmIc+X0/R9xwus118HTeMUkEpysNCrBKQNvx3y+HXd5/GSDvt4O
+ opVK/gngALbClgFgtgxU9SB3LagnwT0raCrYD3piFabRHpbMA8BgFrBVAECBzbJEXPcFuyTgO2
+ excraA9m5ZFB3Sm0L7iGgglZw65IOFLMF68H8F5Zl+QHfXtB89gEAAA==
+X-Change-ID: 20250916-vmscape-bhb-d7d469977f2f
+X-Mailer: b4 0.15-dev
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: uV4-jaHqiETTUOrR-XrXNFTZBTWvG2GZ
-X-Proofpoint-ORIG-GUID: uV4-jaHqiETTUOrR-XrXNFTZBTWvG2GZ
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMzE5MDEyMCBTYWx0ZWRfX4K+eISwP/bTs
- JpkNyplDBx7g/Mw1xESG5SqJZrnCJVF6c2KXtXm5GEQpxcTZzRyVboKbYsbGhVUBO/4z/tHZigT
- y5tUloRMIfrV3rKGK49mnrv3uPv0VZCvXtdLB6UTNliI0eDra8TLyto14UkqSJjpQ9QOfHku2kN
- uzh2moWtWQFHLF5hezpB5YSNenPldyIoUCb4zx1i1JTNXmBppm4ZmmYL2oVMwREuIQQdOes+ufL
- BNv1E7El7+7voum805gobsSqFKzpcF3qEKo4UXQI5GmbXI5h+yYxKfTyAsvCjch5gRi+xz6U7z5
- +JTNOeknVv5juAz+feQOA5xaQZ/J2/Zonenu63ouvD5mt4nOU0VMEfuFUjVVmYyXZ2WjRNyN8OZ
- 6bqJiffhct/ZQqyN7gaLrhRgi/2QwbAHs3tBlfTW+N39Yb2ufCO/SAuo2Lg6vi9/Ru/5+dp0sbC
- 2D2UuPdoFZPD/wQB5aw==
-X-Authority-Analysis: v=2.4 cv=Hf8ZjyE8 c=1 sm=1 tr=0 ts=69bc1775 cx=c_pps
- a=aDMHemPKRhS1OARIsFnwRA==:117 a=aDMHemPKRhS1OARIsFnwRA==:17
- a=kj9zAlcOel0A:10 a=Yq5XynenixoA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=RnoormkPH1_aCDwRdu11:22 a=Y2IxJ9c9Rs8Kov3niI8_:22 a=VnNF1IyMAAAA:8
- a=vr0dFHqqAAAA:8 a=20KFwNOVAAAA:8 a=CDq0vqnqAAAA:8 a=Ikd4Dj_1AAAA:8
- a=p8Hr7QA-AAAA:8 a=FS0upHgUAAAA:8 a=COk6AnOGAAAA:8 a=LpQP-O61AAAA:8
- a=ZvO8mmm2CNpZY4jmVKUA:9 a=CjuIK1q_8ugA:10 a=P4ufCv4SAa-DfooDzxyN:22
- a=Xn7iXEen_xUG9zZOO_Hb:22 a=Nk6gH44JAh1yPMgKJKsv:22 a=BQgJtduX4OmZBxSA4osX:22
- a=TjNXssC_j7lpFel5tvFf:22 a=pioyyrs4ZptJ924tMmac:22
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
- definitions=2026-03-19_01,2026-03-19_05,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- phishscore=0 malwarescore=0 lowpriorityscore=0 impostorscore=0 bulkscore=0
- suspectscore=0 priorityscore=1501 spamscore=0 adultscore=0 clxscore=1011
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2603050001 definitions=main-2603190120
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-On Thu, 19 Mar 2026 15:35:37 +0100
-Nina Schoetterl-Glausch <nsg@linux.ibm.com> wrote:
+v7:
+- s/This allows/Allow/ and s/This does adds/This adds/ in patch 1/10 commit
+  message (Borislav).
+- Minimize register usage in BHB clearing seq. (David Laight)
+  - Instead of separate ecx/eax counters, use al/ah.
+  - Adjust the alignment of RET due to register size change.
+  - save/restore rax in the seq itself.
+  - Remove the save/restore of rax/rcx for BPF callers.
+- Rename clear_bhb_loop() to clear_bhb_loop_nofence() to make it
+  obvious that the LFENCE is not part of the sequence (Borislav).
+- Fix Kconfig: s/select/depends on/ HAVE_STATIC_CALL (PeterZ).
+- Rebased to v7.0-rc4.
 
-> Switch to my personal email.
+v6: https://lore.kernel.org/r/20251201-vmscape-bhb-v6-0-d610dd515714@linux.intel.com
+- Remove semicolon at the end of asm in ALTERNATIVE (Uros).
+- Fix build warning in vmscape_select_mitigation() (LKP).
+- Rebased to v6.18.
 
-Sad that you are leaving :(
+v5: https://lore.kernel.org/r/20251126-vmscape-bhb-v5-2-02d66e423b00@linux.intel.com
+- For BHI seq, limit runtime-patching to loop counts only (Dave).
+  Dropped 2 patches that moved the BHB seq to a macro.
+- Remove redundant switch cases in vmscape_select_mitigation() (Nikolay).
+- Improve commit message (Nikolay).
+- Collected tags.
 
-> 
-> Signed-off-by: Nina Schoetterl-Glausch <nsg@linux.ibm.com>
+v4: https://lore.kernel.org/r/20251119-vmscape-bhb-v4-0-1adad4e69ddc@linux.intel.com
+- Move LFENCE to the callsite, out of clear_bhb_loop(). (Dave)
+- Make clear_bhb_loop() work for larger BHB. (Dave)
+  This now uses hardware enumeration to determine the BHB size to clear.
+- Use write_ibpb() instead of indirect_branch_prediction_barrier() when
+  IBPB is known to be available. (Dave)
+- Use static_call() to simplify mitigation at exit-to-userspace. (Dave)
+- Refactor vmscape_select_mitigation(). (Dave)
+- Fix vmscape=on which was wrongly behaving as AUTO. (Dave)
+- Split the patches. (Dave)
+  - Patch 1-4 prepares for making the sequence flexible for VMSCAPE use.
+  - Patch 5 trivial rename of variable.
+  - Patch 6-8 prepares for deploying BHB mitigation for VMSCAPE.
+  - Patch 9 deploys the mitigation.
+  - Patch 10-11 fixes ON Vs AUTO mode.
 
-Acked-by: Claudio Imbrenda <imbrenda@linux.ibm.com>
+v3: https://lore.kernel.org/r/20251027-vmscape-bhb-v3-0-5793c2534e93@linux.intel.com
+- s/x86_pred_flush_pending/x86_predictor_flush_exit_to_user/ (Sean).
+- Removed IBPB & BHB-clear mutual exclusion at exit-to-userspace.
+- Collected tags.
 
-> ---
->  .mailmap | 1 +
->  1 file changed, 1 insertion(+)
-> 
-> diff --git a/.mailmap b/.mailmap
-> index 40b4db2b2d60..08065a3fb37e 100644
-> --- a/.mailmap
-> +++ b/.mailmap
-> @@ -625,6 +625,7 @@ Nikolay Aleksandrov <razor@blackwall.org> <nikolay@redhat.com>
->  Nikolay Aleksandrov <razor@blackwall.org> <nikolay@cumulusnetworks.com>
->  Nikolay Aleksandrov <razor@blackwall.org> <nikolay@nvidia.com>
->  Nikolay Aleksandrov <razor@blackwall.org> <nikolay@isovalent.com>
-> +Nina Schoetterl-Glausch <oss@nina.schoetterlglausch.eu> <nsg@linux.ibm.com>
->  Nobuhiro Iwamatsu <nobuhiro.iwamatsu.x90@mail.toshiba> <nobuhiro1.iwamatsu@toshiba.co.jp>
->  Odelu Kukatla <quic_okukatla@quicinc.com> <okukatla@codeaurora.org>
->  Oleksandr Natalenko <oleksandr@natalenko.name> <oleksandr@redhat.com>
+v2: https://lore.kernel.org/r/20251015-vmscape-bhb-v2-0-91cbdd9c3a96@linux.intel.com
+- Added check for IBPB feature in vmscape_select_mitigation(). (David)
+- s/vmscape=auto/vmscape=on/ (David)
+- Added patch to remove LFENCE from VMSCAPE BHB-clear sequence.
+- Rebased to v6.18-rc1.
+
+v1: https://lore.kernel.org/r/20250924-vmscape-bhb-v1-0-da51f0e1934d@linux.intel.com
+
+Hi All,
+
+These patches aim to improve the performance of a recent mitigation for
+VMSCAPE[1] vulnerability. This improvement is relevant for BHI variant of
+VMSCAPE that affect Alder Lake and newer processors.
+
+The current mitigation approach uses IBPB on kvm-exit-to-userspace for all
+affected range of CPUs. This is an overkill for CPUs that are only affected
+by the BHI variant. On such CPUs clearing the branch history is sufficient
+for VMSCAPE, and also more apt as the underlying issue is due to poisoned
+branch history.
+
+Below is the iPerf data for transfer between guest and host, comparing IBPB
+and BHB-clear mitigation. BHB-clear shows performance improvement over IBPB
+in most cases.
+
+Platform: Emerald Rapids
+Baseline: vmscape=off
+Target: IBPB at VMexit-to-userspace Vs the new BHB-clear at
+	VMexit-to-userspace mitigation (both compared against baseline).
+
+(pN = N parallel connections)
+
+| iPerf user-net | IBPB    | BHB Clear |
+|----------------|---------|-----------|
+| UDP 1-vCPU_p1  | -12.5%  |   1.3%    |
+| TCP 1-vCPU_p1  | -10.4%  |  -1.5%    |
+| TCP 1-vCPU_p1  | -7.5%   |  -3.0%    |
+| UDP 4-vCPU_p16 | -3.7%   |  -3.7%    |
+| TCP 4-vCPU_p4  | -2.9%   |  -1.4%    |
+| UDP 4-vCPU_p4  | -0.6%   |   0.0%    |
+| TCP 4-vCPU_p4  |  3.5%   |   0.0%    |
+
+| iPerf bridge-net | IBPB    | BHB Clear |
+|------------------|---------|-----------|
+| UDP 1-vCPU_p1    | -9.4%   |  -0.4%    |
+| TCP 1-vCPU_p1    | -3.9%   |  -0.5%    |
+| UDP 4-vCPU_p16   | -2.2%   |  -3.8%    |
+| TCP 4-vCPU_p4    | -1.0%   |  -1.0%    |
+| TCP 4-vCPU_p4    |  0.5%   |   0.5%    |
+| UDP 4-vCPU_p4    |  0.0%   |   0.9%    |
+| TCP 1-vCPU_p1    |  0.0%   |   0.9%    |
+
+| iPerf vhost-net | IBPB    | BHB Clear |
+|-----------------|---------|-----------|
+| UDP 1-vCPU_p1   | -4.3%   |   1.0%    |
+| TCP 1-vCPU_p1   | -3.8%   |  -0.5%    |
+| TCP 1-vCPU_p1   | -2.7%   |  -0.7%    |
+| UDP 4-vCPU_p16  | -0.7%   |  -2.2%    |
+| TCP 4-vCPU_p4   | -0.4%   |   0.8%    |
+| UDP 4-vCPU_p4   |  0.4%   |  -0.7%    |
+| TCP 4-vCPU_p4   |  0.0%   |   0.6%    |
+
+[1] https://comsec.ethz.ch/research/microarch/vmscape-exposing-and-exploiting-incomplete-branch-predictor-isolation-in-cloud-environments/
+
+---
+Pawan Gupta (10):
+      x86/bhi: x86/vmscape: Move LFENCE out of clear_bhb_loop()
+      x86/bhi: Make clear_bhb_loop() effective on newer CPUs
+      x86/bhi: Rename clear_bhb_loop() to clear_bhb_loop_nofence()
+      x86/vmscape: Rename x86_ibpb_exit_to_user to x86_predictor_flush_exit_to_user
+      x86/vmscape: Move mitigation selection to a switch()
+      x86/vmscape: Use write_ibpb() instead of indirect_branch_prediction_barrier()
+      x86/vmscape: Use static_call() for predictor flush
+      x86/vmscape: Deploy BHB clearing mitigation
+      x86/vmscape: Fix conflicting attack-vector controls with =force
+      x86/vmscape: Add cmdline vmscape=on to override attack vector controls
+
+ Documentation/admin-guide/hw-vuln/vmscape.rst   |  8 +++
+ Documentation/admin-guide/kernel-parameters.txt |  4 +-
+ arch/x86/Kconfig                                |  1 +
+ arch/x86/entry/entry_64.S                       | 34 +++++++----
+ arch/x86/include/asm/cpufeatures.h              |  2 +-
+ arch/x86/include/asm/entry-common.h             |  9 ++-
+ arch/x86/include/asm/nospec-branch.h            | 13 +++--
+ arch/x86/kernel/cpu/bugs.c                      | 75 ++++++++++++++++++++-----
+ arch/x86/kvm/x86.c                              |  4 +-
+ arch/x86/net/bpf_jit_comp.c                     | 11 +---
+ 10 files changed, 116 insertions(+), 45 deletions(-)
+---
+base-commit: f338e77383789c0cae23ca3d48adcc5e9e137e3c
+change-id: 20250916-vmscape-bhb-d7d469977f2f
+
+Best regards,
+--  
+Pawan
+
 
