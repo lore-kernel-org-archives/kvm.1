@@ -1,190 +1,120 @@
-Received: from fhigh-a4-smtp.messagingengine.com (fhigh-a4-smtp.messagingengine.com [103.168.172.155])
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B2B335DA67;
-	Thu, 19 Mar 2026 14:30:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.155
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A630F3D47C6
+	for <kvm@vger.kernel.org>; Thu, 19 Mar 2026 14:36:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773930645; cv=none; b=bLekP9pZy3cUKP0Oq71qX+lKoKgRzfBwc+fDOkADQpOaY6vBj7uGtyCVBazE4ElD76dwzwurUR0DvMvpwG8Z+GfljKl5e45+8VDB2f9m6vUXgBq1+nqU4hbRC7fq5k6klWo0tkLs1U7oitOM+Y97dLd5pf/ujoaCkN4sfHMRGMU=
+	t=1773930985; cv=none; b=aOL4Uz6nA5BW+AWK8JyD+NI9zRQPeGc5uBSfZ4s/XppvXCFkR6SlQzH5oDUjqcPcM7xx90kcePBw04yWt9dLwEafOCf+49Fz94SXSMzCX86hjQokEgsD9rdgrRWut4rFsc1nAGvqm0egjV30JXGps2o6MKvJ2F4eiQ5W72hU86k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773930645; c=relaxed/simple;
-	bh=Tc1rDkH3+UiS6QBT1k2JXzUFq1OvHy6pwiSd1/PUFxg=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=koPa0vzgitRGfjBXNAfNO5c+D9eS0G2oZJYEkXQ95zIk5gF+hasnn0U+9Wc/kANdP/ri0iB/N/PyEqVENXh68ueF+mjMduoJxWoBFgGlDxZOeB2MS69RW0aR5M9WgJGB/2tgtmIfKbK9ZEmMJdHwXXcqwLDTNB23STqJKF1fd5w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=shazbot.org; spf=pass smtp.mailfrom=shazbot.org; dkim=pass (2048-bit key) header.d=shazbot.org header.i=@shazbot.org header.b=JCbdqHdE; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=yyJkujny; arc=none smtp.client-ip=103.168.172.155
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=shazbot.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=shazbot.org
+	s=arc-20240116; t=1773930985; c=relaxed/simple;
+	bh=yKISgtqgCnn23aZKrKWXCezhMFDRcxuion72DWFiN/M=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=tmmdJ78gJ55oAmuoT8ydbZyRXM22qPk3MPSYvrbQNCZh87+yPIAcict2ttSTM4wPoYylpzIbjN7lsO+D0LVb25PCNmypCgWRMGtEsBjvrdFuaS10BUjxKao/qZPC0wxb/AO1FykZt0Xmhkc7RqB8BK8/vt/Xi5ETWSPUDeVwNSo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=F8LCX7lk; arc=none smtp.client-ip=148.163.158.5
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=shazbot.org header.i=@shazbot.org header.b="JCbdqHdE";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="yyJkujny"
-Received: from phl-compute-05.internal (phl-compute-05.internal [10.202.2.45])
-	by mailfhigh.phl.internal (Postfix) with ESMTP id 4A8151400204;
-	Thu, 19 Mar 2026 10:30:41 -0400 (EDT)
-Received: from phl-frontend-03 ([10.202.2.162])
-  by phl-compute-05.internal (MEProxy); Thu, 19 Mar 2026 10:30:41 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shazbot.org; h=
-	cc:cc:content-transfer-encoding:content-type:content-type:date
-	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to; s=fm3; t=1773930641;
-	 x=1774017041; bh=d8H4MdzzItKEf3ZYCkEG3VbvnFnz+wY00IZL+Df1u5Q=; b=
-	JCbdqHdEm5582iLKjH4zLt7GL3O6rxvYSTEUXBLo6xbMLHF5NJitkG/UiaedfD4k
-	9xOWSf9twNxfNFrLy6tMKizYfnGiJLHbtiadarQifbEZPMPU7uMtbTkd2HsJHwOS
-	m0l/WqEuWaa6DaMMVz5kJnfZVELz1JEucjUbvtatTXBX8YN3xHl4XBhSPJ8SX1w0
-	7DyAoeHqTCmmgDq4Kymw4A+BCqQbRe7pljJORShbLcVyKm5ImEe4igIL+MqD0izS
-	6ZPFxZM3UUUWuohOb2EcuxyYbKuZCLuVzhllrdzHva9QnnpQ06U0RhftF2Q7eKyF
-	x51STR3QyfDSpy9fI4ZCLQ==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=1773930641; x=
-	1774017041; bh=d8H4MdzzItKEf3ZYCkEG3VbvnFnz+wY00IZL+Df1u5Q=; b=y
-	yJkujnyo+GYnZY5NyPW0k/KebDotyHYON4PnY7dsIs+8F2enWMC1cWh/bcnvdcBf
-	K3iv3qraxQXUr0E6BvSpznWE/hVxHe+KlgCyeqWC+GExpdwaDcQrMrhdZSrjQ3MG
-	sQzKpHuwDPB/q4np5JNH9KxZNeyVTUqsKc1jmGYsR+fUY1VkNDl+FHzr6coJSemJ
-	pU3oe0uAB62wX0EsLFGe86SAvu0m1RFGLiqrsgPHOOKuowplOK2vCG2ZB2y0XIqo
-	mNntX0vLdgibLoqzx6DjRTT4GX9uQU4N+I7A/OO2j+tApeKFZOX7kZXNyxJudbkw
-	svUsQA0zKYX6Gbr3Q2IBQ==
-X-ME-Sender: <xms:kAi8aWxCzB4oj9qvhU3esZdMp8zqtenTVFmX8Pf2bpg1pcvi6l4mXQ>
-    <xme:kAi8acWvgtYDs6MM_33Y6CgoMuRXbYEkG3lEL7YoJVnyduLQQ5JWXsF9nRjSe5A1R
-    -hf9TAINyzcqcSW6LUfs_ZiShP-Io5Mw7gwPbcsRMEoqBpFtWe9ug>
-X-ME-Received: <xmr:kAi8aYMwBhMQEu6bteUrMu-cgLEZcTunq9wvDh6fo9Uz4Z_YW084Clq5Zuw>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgdeftdejvdeiucetufdoteggodetrf
-    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
-    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
-    gurhepfffhvfevuffkjghfofggtgfgsehtqheftdertdejnecuhfhrohhmpeetlhgvgicu
-    hghilhhlihgrmhhsohhnuceorghlvgigsehshhgriigsohhtrdhorhhgqeenucggtffrrg
-    htthgvrhhnpeeihfduieffvefhffehffejjeetveetgeeugeevtddvieehveduteetfeei
-    tefgffenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpe
-    grlhgvgiesshhhrgiisghothdrohhrghdpnhgspghrtghpthhtohepjedpmhhouggvpehs
-    mhhtphhouhhtpdhrtghpthhtohepuggrvhhiugeskhgvrhhnvghlrdhorhhgpdhrtghpth
-    htohepmhgsohhonhgvsegrkhgrmhgrihdrtghomhdprhgtphhtthhopeguvghvnhhulhhl
-    odhmsghoohhnvgdrrghkrghmrghirdgtohhmsehkvghrnhgvlhdrohhrghdprhgtphhtth
-    hopehkvhhmsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtoheplhhinhhugidq
-    khgvrhhnvghlsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtohepshhtrggslh
-    gvsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtoheprghlvgigsehshhgriigs
-    ohhtrdhorhhg
-X-ME-Proxy: <xmx:kQi8aeBUZYqrs6MiJOjRP04GfrpfTANFxnlA2ivHcsjTr_K-aP1tIw>
-    <xmx:kQi8aVchcwnBxEToddbJQO9QXxO5AngaID_YWOc-PgKs-lEfgi6-tg>
-    <xmx:kQi8adN5FhmIxz--rfi7TEvn_030ExP8wiZDuPjU5e2Fu7d89Fb8Zg>
-    <xmx:kQi8aVL_x1A5JY2IyMGGSm_fXwAj4ErOix2ZJE-xcf-jVEJ2NemoAg>
-    <xmx:kQi8aZPNSyDMAgjsh1Srr_zbittOJigSTya-OEhDIT8-Htd7nHECpRvc>
-Feedback-ID: i03f14258:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
- 19 Mar 2026 10:30:40 -0400 (EDT)
-Date: Thu, 19 Mar 2026 08:30:39 -0600
-From: Alex Williamson <alex@shazbot.org>
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: "Boone, Max" <mboone@akamai.com>, Max Boone via B4 Relay
- <devnull+mboone.akamai.com@kernel.org>, "kvm@vger.kernel.org"
- <kvm@vger.kernel.org>, "linux-kernel@vger.kernel.org"
- <linux-kernel@vger.kernel.org>, "stable@vger.kernel.org"
- <stable@vger.kernel.org>, alex@shazbot.org
-Subject: Re: [PATCH] vfio/type1: Retry follow_pfnmap_start() when PFNMAP is
- zapped
-Message-ID: <20260319083039.03865989@shazbot.org>
-In-Reply-To: <45e50068-751c-4e8c-a6b0-62cf8d1e58e6@kernel.org>
-References: <20260317-retry-pin-on-reclaimed-pud-v1-1-1f0d0a23f78d@akamai.com>
-	<20260318152249.43eb81f6@shazbot.org>
-	<3C8F924E-CA2D-4368-83DF-3CCCD4BA49FF@akamai.com>
-	<45e50068-751c-4e8c-a6b0-62cf8d1e58e6@kernel.org>
-X-Mailer: Claws Mail 4.3.1 (GTK 3.24.51; x86_64-pc-linux-gnu)
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="F8LCX7lk"
+Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 62J9AJNk3931551;
+	Thu, 19 Mar 2026 14:35:59 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:date:from:message-id:mime-version
+	:subject:to; s=pp1; bh=P6SMvsdtbxDSgBIL+5HKPUJbxr6pWKHI7NFECpu5k
+	7o=; b=F8LCX7lkH0rIS8eXkWasDD4lOUieL/pqWLCD54/mL5Xc4WkYk4vP4G2n2
+	9bKbWUWWh8sPOsyHNpFJTiJdhjazL0K+EpxTez0hq84i0vZ6M3BgLLOqYRxOgbS2
+	HkOvhn0DnNxHWrbWCFDVesLWNSu5ePb/FpW4/Y0tGYKxephssxWC1dfxSje2hVl5
+	IvQ8zkfCbei+5wdLD9k5pWN55i+RxqpK2UjDa3UgzIIcAnp6Tt3a2BY6+atG6LJb
+	GqOWeQjNKDZPyTpYtybIcuVkWPr0eMwCujhO3tjxEQ3ex7buVUgRbD6mKVnEBrP2
+	UOC0aksRWA8xL1Oy9P5UcDfSTLSjg==
+Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4cvyaupkw7-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 19 Mar 2026 14:35:59 +0000 (GMT)
+Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma22.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 62JDUsVn014011;
+	Thu, 19 Mar 2026 14:35:59 GMT
+Received: from smtprelay07.fra02v.mail.ibm.com ([9.218.2.229])
+	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4cwjcyaw98-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 19 Mar 2026 14:35:58 +0000
+Received: from smtpav03.fra02v.mail.ibm.com (smtpav03.fra02v.mail.ibm.com [10.20.54.102])
+	by smtprelay07.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 62JEZs9w28639732
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Thu, 19 Mar 2026 14:35:55 GMT
+Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id D81D22004B;
+	Thu, 19 Mar 2026 14:35:54 +0000 (GMT)
+Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id AF25E20043;
+	Thu, 19 Mar 2026 14:35:54 +0000 (GMT)
+Received: from tuxmaker.boeblingen.de.ibm.com (unknown [9.87.85.9])
+	by smtpav03.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Thu, 19 Mar 2026 14:35:54 +0000 (GMT)
+From: Nina Schoetterl-Glausch <nsg@linux.ibm.com>
+To: Christian Borntraeger <borntraeger@linux.ibm.com>,
+        Janosch Frank <frankja@linux.ibm.com>,
+        Claudio Imbrenda <imbrenda@linux.ibm.com>
+Cc: Nina Schoetterl-Glausch <nsg@linux.ibm.com>, kvm@vger.kernel.org,
+        Nina Schoetterl-Glausch <oss@nina.schoetterlglausch.eu>
+Subject: [PATCH] mailmap: Update email for Nina Schoetterl-Glausch
+Date: Thu, 19 Mar 2026 15:35:37 +0100
+Message-ID: <20260319143545.1395319-1-nsg@linux.ibm.com>
+X-Mailer: git-send-email 2.51.0
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMzE5MDExMiBTYWx0ZWRfX79/51KE39lqb
+ dzOPKWiFDyuJA7S7OmXrdet3sXDvElnWFMA+AVuLWATcbAdn7zCXZgX9YI6IzM050yL7aAVgMpZ
+ HmV5LoNNZo1MMttQVpdGMrGJE0GAB9unXeyT7wspVR/MlAe2L+LYsXYhlXZH5UyI2BxtXfvdL6C
+ dfC7ettwL+iVbY/KZ/gLiJKpcXo74ZB3ZOnFVC1p8ng/2UZjG/hFCx8NdZqWNJchZseY9MpHbDu
+ MtGxCRdvrtFuZfWCGIopunt5UI+ZTTuJLUd3IZvw/5rsH0Wmn8yKWmGE1DbZvBY8zoXKGBP119p
+ WX+Sw5qP+gYh7NaFe15+9Ik5T1bvzFJB29phUYzkZuqvh5DxWPsA982ySGqwPlWqaI4U1ahhmk6
+ wBSg9TqhnoTKpu3F3I1gMm2nCdR7nCxLxUW0vXFWFe0wcAd4DIrnVACqL3ZFOcDPg5MmzbAOMFA
+ 3vuOs0DLrgvyw+f2pyA==
+X-Authority-Analysis: v=2.4 cv=GIQF0+NK c=1 sm=1 tr=0 ts=69bc09cf cx=c_pps
+ a=5BHTudwdYE3Te8bg5FgnPg==:117 a=5BHTudwdYE3Te8bg5FgnPg==:17
+ a=Yq5XynenixoA:10 a=VkNPw1HP01LnGYTKEx00:22 a=RnoormkPH1_aCDwRdu11:22
+ a=RzCfie-kr_QcCd8fBx8p:22 a=VnNF1IyMAAAA:8 a=vr0dFHqqAAAA:8 a=20KFwNOVAAAA:8
+ a=CDq0vqnqAAAA:8 a=Ikd4Dj_1AAAA:8 a=p8Hr7QA-AAAA:8 a=FS0upHgUAAAA:8
+ a=COk6AnOGAAAA:8 a=LpQP-O61AAAA:8 a=Qd_Mjy50DDh5Pwjd5P8A:9
+ a=P4ufCv4SAa-DfooDzxyN:22 a=Xn7iXEen_xUG9zZOO_Hb:22 a=Nk6gH44JAh1yPMgKJKsv:22
+ a=BQgJtduX4OmZBxSA4osX:22 a=TjNXssC_j7lpFel5tvFf:22 a=pioyyrs4ZptJ924tMmac:22
+X-Proofpoint-ORIG-GUID: DEni3dGU4TMHXsd4McTJQ-kasC7uOYQ9
+X-Proofpoint-GUID: DEni3dGU4TMHXsd4McTJQ-kasC7uOYQ9
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
+ definitions=2026-03-19_01,2026-03-19_05,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ spamscore=0 priorityscore=1501 bulkscore=0 lowpriorityscore=0 malwarescore=0
+ phishscore=0 impostorscore=0 suspectscore=0 adultscore=0 clxscore=1015
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2603050001 definitions=main-2603190112
 
-On Thu, 19 Mar 2026 14:18:49 +0100
-"David Hildenbrand (Arm)" <david@kernel.org> wrote:
+Switch to my personal email.
 
-> On 3/19/26 09:36, Boone, Max wrote:
-> >=20
-> >  =20
-> >> On Mar 18, 2026, at 10:22=E2=80=AFPM, Alex Williamson <alex@shazbot.or=
-g> wrote:
-> >>
-> >> [=E2=80=A6]
-> >> =20
-> >>> + /*
-> >>> + * follow_pfnmap_start() returns -EINVAL for
-> >>> + * invalid parameters and non-present entries.
-> >>> + * If that happens here after a successful
-> >>> + * fixup_user_fault(), it is likely that the
-> >>> + * pfnmap has been zapped. Retry instead of
-> >>> + * failing.
-> >>> + */ =20
-> >>
-> >> It's a little stronger than that, right?  We're betting that the only
-> >> remaining non-zero return is due to a race and we can introduce what
-> >> appears to be potential for an infinite loop here because -EAGAIN will
-> >> get kicked out to redo the vma_lookup() and fixup_user_fault() should
-> >> return a genuine error if we're completely in the weeds.  Should we
-> >> make this a little stronger and more specific?  Thanks, =20
-> >=20
-> > I=E2=80=99d say that the best case would be to have follow_pfnmap_start=
-() return
-> > -EINVAL or -ENOENT w.r.t. which of the two return values it is. But then
-> > again, we could theoretically run into an infinite loop I guess - as th=
-e zap
-> > and faulting could run in lockstep (the race window is extremely small
-> > though). =20
->=20
-> Well, in theory :) To hit that race repeatedly, you'd really have to be
-> quite lucky I guess.
->=20
-> But the real question is: if user space triggered the pinning, and user
-> space keeps hurting itself to make progress, is that a real problem?
+Signed-off-by: Nina Schoetterl-Glausch <nsg@linux.ibm.com>
+---
+ .mailmap | 1 +
+ 1 file changed, 1 insertion(+)
 
-I'd say no, that's not a problem.  It's really just that masking all
-non-zero returns as -EAGAIN makes some assumptions about the other
-error conditions that could change over time, so minimally those
-dependencies should be clearly stated.  Even better would be if we
-didn't need to make those assumptions.  Thanks,
-
-Alex
-
-> I guess the crucial part would be to
->=20
-> a) Have some cond_resched(() in there?
-> b) Checking for fatal signals somewhere?
-> c) Possibly drop locks (mmap lock?) every now and then?
->=20
-> For GUP, a) and b) are in place in __get_user_pages().
->=20
-> c) might be done, but I think it's less deterministic.
->=20
-> >=20
-> > We could make the retry above bounded, and bubble up a -EBUSY such
-> > that users of the ioctl can decide to retry instead of fail? =20
->=20
-> Would that be a possible ABI break? You'd really have to only do that in
-> a case where user space does stupid things, I guess.
->=20
-> >=20
-> > David, you mentioned that gup already has retry logic that we don=E2=80=
-=99t have
-> > with follow_fault_pfn() -> follow_pfnmap_start(). Would we potentially =
-run
-> > into an infinite loop with this change? =20
->=20
-> GUP triggers page faults through faultin_page(). If handle_mm_fault()
-> returns
->=20
-> * VM_FAULT_COMPLETED we return -EAGAIN
-> * VM_FAULT_ERROR we return the error
-> * VM_FAULT_RETRY we return -EBUSY
-> * Otherwise 0
->=20
-> In the caller __get_user_pages(), we
-> * Retry immediately with ret =3D=3D 0
-> * Return to the GUP caller (letting it retry) with -EBUSY/-EAGAIN
->=20
-> Having at least a) and b) sounds reasonable. Not sure about having c),
-> might be tricky if we are not allowed to drop the lock.
->=20
+diff --git a/.mailmap b/.mailmap
+index 40b4db2b2d60..08065a3fb37e 100644
+--- a/.mailmap
++++ b/.mailmap
+@@ -625,6 +625,7 @@ Nikolay Aleksandrov <razor@blackwall.org> <nikolay@redhat.com>
+ Nikolay Aleksandrov <razor@blackwall.org> <nikolay@cumulusnetworks.com>
+ Nikolay Aleksandrov <razor@blackwall.org> <nikolay@nvidia.com>
+ Nikolay Aleksandrov <razor@blackwall.org> <nikolay@isovalent.com>
++Nina Schoetterl-Glausch <oss@nina.schoetterlglausch.eu> <nsg@linux.ibm.com>
+ Nobuhiro Iwamatsu <nobuhiro.iwamatsu.x90@mail.toshiba> <nobuhiro1.iwamatsu@toshiba.co.jp>
+ Odelu Kukatla <quic_okukatla@quicinc.com> <okukatla@codeaurora.org>
+ Oleksandr Natalenko <oleksandr@natalenko.name> <oleksandr@redhat.com>
+-- 
+2.51.0
 
