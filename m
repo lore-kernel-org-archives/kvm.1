@@ -1,174 +1,166 @@
-Received: from mail-lf1-f53.google.com (mail-lf1-f53.google.com [209.85.167.53])
+Received: from mail-pl1-f176.google.com (mail-pl1-f176.google.com [209.85.214.176])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 685793EB816
-	for <kvm@vger.kernel.org>; Thu, 19 Mar 2026 20:21:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.167.53
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773951713; cv=pass; b=sbWtXgY/7UKbPBmcRSeia8HfccuInyAipFDgGrMwqPtpg1EPtV++4BJriQQlyob5xCulXZnCLtMx6RwjH+nSJ+SkFKRd+SvWuhbKxU2zVIuNo2lf7Gmj/R5e1QOloPQDtkwWoh2yP2cl61IsQPDgrcsEQapE5x9WJdlGRdxZ+tQ=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773951713; c=relaxed/simple;
-	bh=gJZ/ykI70v2d5+uiVZh0tHoPfumRLIsDtM1+w8MD0d4=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=VM+J4FE3a+Q4zyFaTdvsPqMweBNPkw6bHuSudC5Z7z4gEyRd7Fs78cOKFuOJHDbYjugK9mX6MjqSeIv1wAg7BDFtnArCaXpVGLo1dUHyHB9zS0/LrdCsn2YilrtKXAVp/42pe9+1ddd3mqOgzE2ULSy9qoCgqJWlfCTAeXXBcvE=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=DsPHk6VE; arc=pass smtp.client-ip=209.85.167.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9C9B359A8E
+	for <kvm@vger.kernel.org>; Thu, 19 Mar 2026 20:54:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.176
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1773953674; cv=none; b=HJY1wPXpx3rh6u7JYgE4ROJtsQD8EO/4ryWSZWjoauiBOOvy9ANiSAbdnBWu4LKiQsbCbw+4szPQZvEgiYFDH4GP63eK7y7o3xvAiEghLpDpw8t++vgj9DSQEwjUhB8RbVGKWCmCiz/TniB4t4A2P4s7/UgAQFOvELMPP6dAuuo=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1773953674; c=relaxed/simple;
+	bh=rQ8jOPX8ZyyiaUDP/Ws9FcBOSexPt2uadqrTujPU5ME=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=jP8yoBkhDlt8qU02OXgXTklCqd0ePGd6JF9gLZAQTi8zSmZbGHzd1UqzZuUqV6Uq1pDQbkKWf+5gyWP1eIzyCNPhKHYJeWrSAWBCaU/bqcDY0QU6JdhKJjIdErNFg53zZro3aqUXMgnLsY6X1my+LGB11PQPcMYKXTxOK2vtt4o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=nGVufPQ0; arc=none smtp.client-ip=209.85.214.176
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="DsPHk6VE"
-Received: by mail-lf1-f53.google.com with SMTP id 2adb3069b0e04-5a10d130b37so458455e87.0
-        for <kvm@vger.kernel.org>; Thu, 19 Mar 2026 13:21:50 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1773951708; cv=none;
-        d=google.com; s=arc-20240605;
-        b=h+ibTIFLT6W/uhWsNAG6js2Ww92Oj4oO7IJccRy8Qc0WoYVcMiX3rsXaAqaaz4EkQy
-         +BOsHXzqbdJLS+DPtW467j63+kF0MUX0lawaqHxs9ljvT4Hfk0CcC2zSAnT710OU8pt9
-         fv0bvDuogUJxUaERjj6MAZI9Io0Paz5FhCn2tj0wIMroZqLgTbcYlR2NXJzl2AIIYdDM
-         jbPeCNxSztMffpb87GTMLHxksFn2Zj3YJpHrqQohtL9zWJQJjyDbdllRDgl4xTD0K56H
-         WsP82wBXul1bbTkMrYoSRn8AtjK4Adh/Omd1Lmxy0e98zSTQRteZON1wNMl7bkTyRZVX
-         zy3w==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=ljrMEbLtSu+dBU/7p9GqjBQQtzMNMj2KKmPXYNYtywg=;
-        fh=lu17ImqnQ4SZ8J4fyTIxHY5twcywqiAFrjmhHCRqLAI=;
-        b=Z0l/83XLJ95DWuumKwV8oV+QmftTgFEdNd9sp1xM2sQP9BQ7+Z19kbZsrntBDPGi4o
-         IQDT/0ejGFgSK2jQXcemHi9CZqzpQzCvnrz/RO+Dzl6pUHryIj4RAy31w8acCmDu+fnX
-         0U8a/59TgPXNGvyfKOz/8YxNlJpEtslyNK+3FiET5DPREYBHESdFIG0YdFL7k0dLEfFO
-         BEuoF1zz77Xun3uKcE3RWCd8ixFPzbPKeSUnGaxFfL2FozkwQGEIjudzSckSZm+c5Umr
-         /ujSnucUT9I2X7S1G59SrDYvI9CH36gdaKAEgiNGqfwPy6hdwcpHweZ/uVzLX3oWAGD7
-         ythw==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="nGVufPQ0"
+Received: by mail-pl1-f176.google.com with SMTP id d9443c01a7336-2b04c9e3eb7so24805ad.0
+        for <kvm@vger.kernel.org>; Thu, 19 Mar 2026 13:54:33 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1773951708; x=1774556508; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=ljrMEbLtSu+dBU/7p9GqjBQQtzMNMj2KKmPXYNYtywg=;
-        b=DsPHk6VE/Nh3Kvkbu6PXbyoJ3vQMpw6dk/PlwrpnJVdVnDrjljLzPBu/kIpvyh9UpN
-         GMncxmpmWfr8eKg5W1yjUOka6ks9xHbl+XPaLeseYFIiBSGtDa5+OsbYUZRw/Vm4TCzc
-         Rd9L33kWREcuon/WRU98P9/AO/EYEFH5t+VWCxwy6tXZp6obDeP50Gu52wuEUUVePnLk
-         OkAT1Rhe47B0Is/5z1pLnHbg2wCMBjRw+2Xbpxz5zu05naTko/jv+QY+OkiHKgHFF901
-         stB/8fI9sPcJanJoXFeBLjUjtJ94cwtrxT5DyPbU06Qj8vg33HM4Aa7id60gVYjpEBRV
-         VBdw==
+        d=google.com; s=20251104; t=1773953673; x=1774558473; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=19Xw5f9a4xpkhlTeHR9HScsDJ7KIvG2RWfmSuFdiufE=;
+        b=nGVufPQ0OUWMz8kMpK1/LYUHkOIi8C2h6eoDiB4yigQF0TpgCiG16BIznSwp5YXxGQ
+         mfOAUUQ2F0TAJUBjA7WoXkdtKcgzzUQc9pFd243m08ixvfT8aTW80a+0lwDlixlNEXAU
+         h6lOuogJQfc1EISM6hJ2lWa1m6C+fODNz3EWxSVArbsBXzeAeJfhyCZ9dfvehHR0acTT
+         PzhQHZcf6pODwtBrfaFbfzQidaxaocz1iWrE5v9I3J9KN4a3cHFzYDLBLjGFkiByLzb0
+         D/ct5IFE7TXb4zABokkmaad3NsGOIQxzYkxCJw4WLV7lDBTviuglnhy4qBs59qoSn9ez
+         Kj7Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1773951708; x=1774556508;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=ljrMEbLtSu+dBU/7p9GqjBQQtzMNMj2KKmPXYNYtywg=;
-        b=oKEH9ANSXvykGnqp2hbxpBab8xW4NSaOeLyxTKQQoiFGMKMjaXEwFyQ+OgHJwzn08z
-         hst6YAjniZCIaprDAs7qUg3Fh7w6w57UD03pFNPyy77Ai4HCDykaLtDEk1avhyPW24yu
-         r6/c/bfz/Qq6MAsf6HQqsh5lMTJokbpXo5jyNCqguYy407hydFrOyqc0wQesKLFOFr9j
-         JxPEOKyg4ABv48cI0IfbHL4lDoDcQ7XseBMWssn/4smBOCCP5+WNcl/gfmoypyDFapyB
-         OBlAiUWPoV7unMchYmbH9shaQnxcStQiaohjrYw/n95QKpSoKWiNYNHL6wvpD5IYjDmw
-         Q45g==
-X-Forwarded-Encrypted: i=1; AJvYcCVHxzKW0tY0/WF9IGVu+dXe61rPNH6gu0U2hSe2reXLDXeowyN0+pv/mXX2d3xFC6Q0lFo=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyKB4fbwNEPa8oxqcPLhxw1ptUoib3MdKj0oYk0zpUqMg1Gh4XR
-	hyMJIuO9iKaPhDupBeQ8O0P6N9OUB1FtiTPbX27lXHZbB5qlyyemR4vA8lZBlQbD9wYtliGQpyq
-	Bwo/w2+25FuQpEEyCyQwssbKtfFsgOJ10xA9xO1Ik
-X-Gm-Gg: ATEYQzxylMq+hCpSAHPYR7zFtclGtrQe2Qp0UpDma1vOMs7hiot5ZFN/VrGyWPee0Ll
-	zzR4BxUlmphxzxcaQcVSKTM5ftYlNHilMRGvNsEXMER/Y5l6PimzumGRtZvY2R2Ev10oOeSnev7
-	BKaAqjMxY7ARJOvNYycXfE1aEqv/vdrnr/9OVhQAy2L6UZY8CsK6I6pCTcPx9INTm+5DNJKWI2T
-	1Q2DJ4ZD9NmR5qeUgl0mP+7EF0JfapoaTFZYZoP9KBXektfpV+3TW0GL9BBWLb4yGovHctgrWNm
-	KgHYnFncqwj/TP0Rt9E=
-X-Received: by 2002:a05:6512:39ce:b0:5a1:56e4:1c80 with SMTP id
- 2adb3069b0e04-5a27dde29e6mr1741712e87.4.1773951708019; Thu, 19 Mar 2026
- 13:21:48 -0700 (PDT)
+        d=1e100.net; s=20251104; t=1773953673; x=1774558473;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=19Xw5f9a4xpkhlTeHR9HScsDJ7KIvG2RWfmSuFdiufE=;
+        b=fDebBIsIMQhuw+86IHmWtU0dnREoIewJPrN3BiDTzh5ErVkkMrRUf2pREirH6qJeup
+         rk+qTx92Bw9XIP8Ledpt2JBCNh8kgaudQE9CGFr+WZo0Fuq8mtiS+XnnEvS45VG8F6zM
+         w1gi5cQkDjWL3/Cy2C+HmkdGr+fXm4htyx2+tKLuYcH0z4TRfYZWEo3RSMMDlXd0hLk/
+         R/PATWI2y+5sT3tRtcmXoKhFuk5FKuVNcQVQ+FAiG/wwFHK//XVmRnc2La5upziQmD7I
+         65K2gT6aaoP1hgmhcRzOhWDjFheLipE5xXn9COT1coIN5ymWUXuDxl2RSNmpPoVbe+IC
+         qvPw==
+X-Forwarded-Encrypted: i=1; AJvYcCXfPS+bJbIt+FTkk+roRAz+1DDw+Q81IsAYkyoKEZDbj0vrSp6BrEi//uJYQe3ZRo/DdE0=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwTCKY2RxWipOcuB2kPucTaa9CaLcWtneQSO2dV8UFSNVoIoy5o
+	R2muspzOMttOgSjGUW4tuuMx1i6eOoF7xJQfl3lF8nkiq2fiSs3E9VAoF1jJpUK/hg==
+X-Gm-Gg: ATEYQzygnpgAp7+pwAiZKqyFQ4zFVPcE+HVEk2E4totrjBHuhC5ONhizmr74XcHqnhq
+	AccTWitjIN7DlRARvnZRtACAALyvxCsC/kEU2zZt3qjp3y/4qXlwPEw/gp61P+fn807fzO2dJ+i
+	vMn7VGzWEBtquibgeZYTg1dD8yGb7JetqA2QC94tcQtGCPxkh6KBDVaWM8Vo3OkL8TRP4VcCWkr
+	b9mDxuDeMWPFr1r87JV8c5/Tjj+3uVdisXmIQhVwPHF0KlkYXv+24M1srIMok6ireSRI+7fuCXm
+	GSO/I3GFG2BMmVxrZ/UR8ns2kV6ajK4S856GVZkZehJopH0N/x1kR7a2rjAPdBP7RNZT4SFz2cA
+	5ff1SNnTWiPOckhwZuFxVm9YTNKkyTDlsaCb8KK4rc0+5isz9xY8uvQRmqaLEtjX9D1nZf3zh/1
+	GJKK2CHn3AvF0IWpwOOaS6aUqB3fTOW1sLwbTMazLsJMULmxMczMJefc9qRw==
+X-Received: by 2002:a17:902:cecc:b0:2ae:c358:bb9f with SMTP id d9443c01a7336-2b082855f56mr897565ad.10.1773953672329;
+        Thu, 19 Mar 2026 13:54:32 -0700 (PDT)
+Received: from google.com (60.89.247.35.bc.googleusercontent.com. [35.247.89.60])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2b083516a8dsm1241785ad.3.2026.03.19.13.54.31
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 19 Mar 2026 13:54:31 -0700 (PDT)
+Date: Thu, 19 Mar 2026 13:54:27 -0700
+From: Vipin Sharma <vipinsh@google.com>
+To: Samiullah Khawaja <skhawaja@google.com>
+Cc: David Woodhouse <dwmw2@infradead.org>, 
+	Lu Baolu <baolu.lu@linux.intel.com>, Joerg Roedel <joro@8bytes.org>, Will Deacon <will@kernel.org>, 
+	Jason Gunthorpe <jgg@ziepe.ca>, Robin Murphy <robin.murphy@arm.com>, 
+	Kevin Tian <kevin.tian@intel.com>, Alex Williamson <alex@shazbot.org>, 
+	Shuah Khan <shuah@kernel.org>, iommu@lists.linux.dev, linux-kernel@vger.kernel.org, 
+	kvm@vger.kernel.org, Saeed Mahameed <saeedm@nvidia.com>, 
+	Adithya Jayachandran <ajayachandra@nvidia.com>, Parav Pandit <parav@nvidia.com>, 
+	Leon Romanovsky <leonro@nvidia.com>, William Tu <witu@nvidia.com>, 
+	Pratyush Yadav <pratyush@kernel.org>, Pasha Tatashin <pasha.tatashin@soleen.com>, 
+	David Matlack <dmatlack@google.com>, Andrew Morton <akpm@linux-foundation.org>, 
+	Chris Li <chrisl@kernel.org>, Pranjal Shrivastava <praan@google.com>, 
+	YiFei Zhu <zhuyifei@google.com>
+Subject: Re: [PATCH 07/14] iommu/vt-d: Restore IOMMU state and reclaimed
+ domain ids
+Message-ID: <20260319190137.GA3983821.vipinsh@google.com>
+References: <20260203220948.2176157-1-skhawaja@google.com>
+ <20260203220948.2176157-8-skhawaja@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260317214239.124857-1-rubind@nvidia.com> <20260317214239.124857-3-rubind@nvidia.com>
- <abxIxa910ddkAiLm@google.com> <20260319132908.662a32bb@shazbot.org>
-In-Reply-To: <20260319132908.662a32bb@shazbot.org>
-From: David Matlack <dmatlack@google.com>
-Date: Thu, 19 Mar 2026 13:21:20 -0700
-X-Gm-Features: AaiRm50XphyzZlWIKq0VnNILJa_taP6o7rQJ_djT2NWt4kKV2KYEChexfqC_QNw
-Message-ID: <CALzav=fhKgqv76pPQum2qr_6TmiSx3jX54SaFx51nJx0h=7Chg@mail.gmail.com>
-Subject: Re: [PATCH v9 2/2] selftests/vfio: Add NVIDIA Falcon driver for DMA testing
-To: Alex Williamson <alex@shazbot.org>
-Cc: Rubin Du <rubind@nvidia.com>, Shuah Khan <shuah@kernel.org>, kvm@vger.kernel.org, 
-	linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260203220948.2176157-8-skhawaja@google.com>
 
-On Thu, Mar 19, 2026 at 12:29=E2=80=AFPM Alex Williamson <alex@shazbot.org>=
- wrote:
->
-> On Thu, 19 Mar 2026 19:04:37 +0000
-> David Matlack <dmatlack@google.com> wrote:
->
-> > On 2026-03-17 02:42 PM, Rubin Du wrote:
-> > > Add a new VFIO PCI driver for NVIDIA GPUs that enables DMA testing
-> > > via the Falcon (Fast Logic Controller) microcontrollers. This driver
-> > > extracts and adapts the DMA test functionality from the NVIDIA
-> > > gpu-admin-tools project and integrates it into the existing VFIO
-> > > selftest framework.
-> > >
-> > > The Falcon is a general-purpose microcontroller present on NVIDIA GPU=
-s
-> > > that can perform DMA operations between system memory and device memo=
-ry.
-> > > By leveraging Falcon DMA, this driver allows NVIDIA GPUs to be tested
-> > > alongside Intel IOAT and DSA devices using the same selftest infrastr=
-ucture.
-> > >
-> > > Supported GPUs:
-> > > - Kepler: K520, GTX660, K4000, K80, GT635
-> > > - Maxwell Gen1: GTX750, GTX745
-> > > - Maxwell Gen2: M60
-> > > - Pascal: P100, P4, P40
-> > > - Volta: V100
-> > > - Turing: T4
-> > > - Ampere: A16, A100, A10
-> > > - Ada: L4, L40S
-> > > - Hopper: H100
-> > >
-> > > The PMU falcon on Kepler and Maxwell Gen1 GPUs uses legacy FBIF regis=
-ter
-> > > offsets and requires enabling via PMC_ENABLE with the HUB bit set.
-> > >
-> > > Limitations and tradeoffs:
-> > >
-> > > 1. Architecture support:
-> > >    Blackwell and newer architectures may require additional work
-> > >    due to firmware.
-> > >
-> > > 2. Synchronous DMA operations:
-> > >    Each transfer blocks until completion because the reference
-> > >    implementation does not expose command queuing - only one
-> > >    DMA operation can be in flight at a time.
-> >
-> > Asynchronous DMA will be important for testing Live Update:
-> >
-> >   https://lore.kernel.org/kvm/20260129212510.967611-23-dmatlack@google.=
-com/
-> >
-> > That is why I split memcpy_start() and memcpy_wait() from the beginning=
-.
-> >
-> > Would it be possible to add support for it here even though it is not i=
-n
-> > the reference implementation?
->
-> I'll leave the can-we questions to Rubin, but do you see either the MSI
-> or asynchronous issues as blockers?
+On Tue, Feb 03, 2026 at 10:09:41PM +0000, Samiullah Khawaja wrote:
+> During boot fetch the preserved state of IOMMU unit and if found then
+> restore the state.
+> 
+> - Reuse the root_table that was preserved in the previous kernel.
+> - Reclaim the domain ids of the preserved domains for each preserved
+>   devices so these are not acquired by another domain.
 
-No, I don't consider either to be hard blockers.
+Can this be two patches? One just restoring root table and second one to
+reclaim device ids.
 
-> Currently our driver tests are
-> limited to a very narrow range of Intel server platforms, whereas this
-> is a plug'able endpoint we can install anywhere.  I'd think that's
-> sufficiently valuable in expanding the test base to make some
-> compromises.  Thanks,
+> -static void init_translation_status(struct intel_iommu *iommu)
+> +static void init_translation_status(struct intel_iommu *iommu, bool restoring)
+>  {
+>  	u32 gsts;
+>  
+>  	gsts = readl(iommu->reg + DMAR_GSTS_REG);
+> -	if (gsts & DMA_GSTS_TES)
+> +	if (!restoring && (gsts & DMA_GSTS_TES))
+>  		iommu->flags |= VTD_FLAG_TRANS_PRE_ENABLED;
+>  }
 
-Yeah we can compromise if both issues cannot be resolved.
+I think we can just check in the caller, init_dmars(), and not call this
+function. We are already modifying that function, so no need to make
+changes here as well. WDYT?
 
-I hope to limit differences between the selftests drivers as much as
-possible, so that tests don't have to care. But I also recognize some
-divergence will be inevitable if we want to support a broad set of
-devices while also supporting more advanced features like asyncronous
-memcpy.
+>  
+> @@ -670,10 +670,16 @@ void dmar_fault_dump_ptes(struct intel_iommu *iommu, u16 source_id,
+>  #endif
+>  
+>  /* iommu handling */
+> -static int iommu_alloc_root_entry(struct intel_iommu *iommu)
+> +static int iommu_alloc_root_entry(struct intel_iommu *iommu, struct iommu_ser *restored_state)
+
+Nit: Since we are using iommu_ser at other places, I will recommend to
+keep it same variable name here as well.
+
+> @@ -1636,8 +1643,10 @@ static int __init init_dmars(void)
+>  						   intel_pasid_max_id);
+>  		}
+>  
+> +		iommu_ser = iommu_get_preserved_data(iommu->reg_phys, IOMMU_INTEL);
+> +
+>  		intel_iommu_init_qi(iommu);
+> -		init_translation_status(iommu);
+> +		init_translation_status(iommu, !!iommu_ser);
+
+Just put 'if' here to avoid changes in init_translation_status().
+
+> +static int __restore_used_domain_ids(struct device_ser *ser, void *arg)
+
+Nit: Just curious, why two __?
+
+> +{
+> +	int id = ser->domain_iommu_ser.did;
+> +	struct intel_iommu *iommu = arg;
+> +
+> +	ida_alloc_range(&iommu->domain_ida, id, id, GFP_ATOMIC);
+
+Should we check if allocation succeeded or not?
+
+> +	return 0;
+> +}
+> +
+> +void intel_iommu_liveupdate_restore_root_table(struct intel_iommu *iommu,
+> +					       struct iommu_ser *iommu_ser)
+> +{
+> +	BUG_ON(!kho_restore_folio(iommu_ser->intel.root_table));
+> +	iommu->root_entry = __va(iommu_ser->intel.root_table);
+> +
+> +	restore_iommu_context(iommu);
+> +	iommu_for_each_preserved_device(__restore_used_domain_ids, iommu);
+> +	pr_info("Restored IOMMU[0x%llx] Root Table at: 0x%llx\n",
+> +		iommu->reg_phys, iommu_ser->intel.root_table);
+
+Should raw pointer values be printed like this?
+
