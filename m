@@ -1,55 +1,39 @@
-Received: from out30-131.freemail.mail.aliyun.com (out30-131.freemail.mail.aliyun.com [115.124.30.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from cstnet.cn (smtp25.cstnet.cn [159.226.251.25])
+	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC72238B7A3;
-	Thu, 19 Mar 2026 03:24:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.30.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD6A93242D9;
+	Thu, 19 Mar 2026 03:59:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.25
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773890672; cv=none; b=sQMpEkpvWAvf3MR5sTkgmZGpZ70Uvcts5OVuHMb7t4kAmXVwb2nkWz5QunUZlErDXngC9ArZu2DTgYjIMMCPD1P4EcOK5gl93AMVC2C/Ev0ulT9EihmLZm5kZgbg1cR5IE0aOJAFtBnqfTJ1J97rnsSS2IqOYMRZGs891npNzOg=
+	t=1773892768; cv=none; b=DA3SnktoPPQuXcxIir9Y4kk3RJG2zJfzTBIbzGNAEq5g+sG/uvp1lKr0Hc5XFMxqWkEgIY1kMKFlxOGtdSVyqHLZdMWllXOJ4Mf2MWO6fJUoUnBFJapsoiZtx9LZtqijQK10jU7tgEoQkE003pyV78XLQP7bgTOACggHCNLx4WQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773890672; c=relaxed/simple;
-	bh=2zbDulrXptxAaHATU7/zV609JGrtc7d0bjHFuxwUZr4=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cVu8U8PPj3sL/4gU+Dj3QqeRZg8I8Tjh4RbYHChJozpXcDk0bnk8sB0lRLYvdiyvmJNOZXPj2gPUOS2vmzB+a+doDwPmVcc1cL6FI4kcwcXHZLFhHpdGh8ynWcUNIKa8Pm5bqOjaJuIXyJ0Aam3VgaZMcpXA0VUv+6aNeBJzyAM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; spf=pass smtp.mailfrom=linux.alibaba.com; dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b=S8OKPe67; arc=none smtp.client-ip=115.124.30.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.alibaba.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b="S8OKPe67"
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux.alibaba.com; s=default;
-	t=1773890662; h=From:To:Subject:Date:Message-ID:MIME-Version;
-	bh=wZ0qad0Pm6XxHYmd2R3Uz8rTNICSFBFKR16MZOCoaNo=;
-	b=S8OKPe671q5R+yYGNFR0OwkVu91rrm6KrZTI8bT8yh9lWdsm4P8BdOMafCzzL9JOzPM08F4LzkG+kIMEQjf39ZgBicBM+b/fyrO0a3O8WrHp4qVj/eD2UMg2jd9rPn0fEVqW8i16NVWOZaVLn4q2ThoB65quH67rhwT+htNEC5E=
-X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R111e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033032089153;MF=baolin.wang@linux.alibaba.com;NM=1;PH=DS;RN=18;SR=0;TI=SMTPD_---0X.Gt-CL_1773890660;
-Received: from localhost(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0X.Gt-CL_1773890660 cluster:ay36)
-          by smtp.aliyun-inc.com;
-          Thu, 19 Mar 2026 11:24:21 +0800
-From: Baolin Wang <baolin.wang@linux.alibaba.com>
-To: akpm@linux-foundation.org,
-	david@kernel.org
-Cc: ljs@kernel.org,
-	Liam.Howlett@oracle.com,
-	vbabka@kernel.org,
-	rppt@kernel.org,
-	surenb@google.com,
-	mhocko@suse.com,
-	baolin.wang@linux.alibaba.com,
-	linux-arm-kernel@lists.infradead.org,
-	x86@kernel.org,
-	linux-parisc@vger.kernel.org,
-	linuxppc-dev@lists.ozlabs.org,
-	linux-riscv@lists.infradead.org,
-	linux-s390@vger.kernel.org,
+	s=arc-20240116; t=1773892768; c=relaxed/simple;
+	bh=NhsDBbc8SLaLB4rr/KX51cjwDkWLmSFppwxfoL+6kHU=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=BYbvTRdcovzv8NLIJiOuGfl+pfdY5ALcqeTBx6cjysa/k0PKtQkdouvYvYTllxgKJFKI1JJ8ANorM1rv00AoekuLOwLglsGmyAZ4T0DNcK9KtxnXikXPLtyt9/XSNh8HzsiohFqGqZBe3qdc0mo/kfe4z/dxzjy7Uw1/2hvZVgE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.25
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iscas.ac.cn
+Received: from fric.. (unknown [210.73.43.101])
+	by APP-05 (Coremail) with SMTP id zQCowAAHmQyKdLtpTTrUCg--.61883S2;
+	Thu, 19 Mar 2026 11:59:07 +0800 (CST)
+From: Jiakai Xu <xujiakai2025@iscas.ac.cn>
+To: kvm-riscv@lists.infradead.org,
 	kvm@vger.kernel.org,
-	linux-mm@kvack.org (open),
-	linux-kernel@vger.kernel.org
-Subject: [PATCH 3/6] mm: change to return bool for pmdp_test_and_clear_young()
-Date: Thu, 19 Mar 2026 11:24:02 +0800
-Message-ID: <8025b898d0841a4bcbd766998959b4e2ae4d4abc.1773890510.git.baolin.wang@linux.alibaba.com>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <cover.1773890510.git.baolin.wang@linux.alibaba.com>
-References: <cover.1773890510.git.baolin.wang@linux.alibaba.com>
+	linux-kernel@vger.kernel.org,
+	linux-riscv@lists.infradead.org
+Cc: Albert Ou <aou@eecs.berkeley.edu>,
+	Alexandre Ghiti <alex@ghiti.fr>,
+	Andrew Jones <ajones@ventanamicro.com>,
+	Anup Patel <anup@brainfault.org>,
+	Atish Patra <atish.patra@linux.dev>,
+	Palmer Dabbelt <palmer@dabbelt.com>,
+	Paul Walmsley <pjw@kernel.org>,
+	Jiakai Xu <xujiakai2025@iscas.ac.cn>,
+	Jiakai Xu <jiakaiPeanut@gmail.com>
+Subject: [PATCH] RISC-V: KVM: Fix integer overflow in kvm_pmu_validate_counter_mask()
+Date: Thu, 19 Mar 2026 03:59:02 +0000
+Message-Id: <20260319035902.924661-1-xujiakai2025@iscas.ac.cn>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -57,187 +41,86 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:zQCowAAHmQyKdLtpTTrUCg--.61883S2
+X-Coremail-Antispam: 1UD129KBjvJXoWxZr1xZw1furW7Cw4Uuw43trb_yoW5AF4UpF
+	WDGry5Grs5JF1kGa4UAws8Xr15Kr4kKanxCrs0k3yUtr90ga48Zrn5Kry2yrnrJFWkZFya
+	yryDuayDuFW5Xa7anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDU0xBIdaVrnRJUUUPj14x267AKxVW8JVW5JwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
+	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
+	1l84ACjcxK6xIIjxv20xvE14v26ryj6F1UM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26r4j
+	6F4UM28EF7xvwVC2z280aVAFwI0_Cr1j6rxdM28EF7xvwVC2z280aVCY1x0267AKxVW0oV
+	Cq3wAac4AC62xK8xCEY4vEwIxC4wAS0I0E0xvYzxvE52x082IY62kv0487Mc02F40EFcxC
+	0VAKzVAqx4xG6I80ewAv7VC0I7IYx2IY67AKxVWUJVWUGwAv7VC2z280aVAFwI0_Gr0_Cr
+	1lOx8S6xCaFVCjc4AY6r1j6r4UM4x0Y48IcxkI7VAKI48JM4x0x7Aq67IIx4CEVc8vx2IE
+	rcIFxwACI402YVCY1x02628vn2kIc2xKxwCY1x0262kKe7AKxVWUtVW8ZwCY02Avz4vE14
+	v_Gr4l42xK82IYc2Ij64vIr41l4I8I3I0E4IkC6x0Yz7v_Jr0_Gr1lx2IqxVAqx4xG67AK
+	xVWUJVWUGwC20s026x8GjcxK67AKxVWUGVWUWwC2zVAF1VAY17CE14v26r1q6r43MIIYrx
+	kI7VAKI48JMIIF0xvE2Ix0cI8IcVAFwI0_Jr0_JF4lIxAIcVC0I7IYx2IY6xkF7I0E14v2
+	6r4j6F4UMIIF0xvE42xK8VAvwI8IcIk0rVWUJVWUCwCI42IY6I8E87Iv67AKxVWUJVW8Jw
+	CI42IY6I8E87Iv6xkF7I0E14v26r4j6r4UJbIYCTnIWIevJa73UjIFyTuYvjfU1xhlDUUU
+	U
+X-CM-SenderInfo: 50xmxthndljiysv6x2xfdvhtffof0/1tbiBwsLCWm7a4Mi3AAAsK
 
-Callers use pmdp_test_and_clear_young() to clear the young flag and check
-whether it was set for this PMD entry. Change the return type to bool to
-make the intention clearer.
+When a guest initiates an SBI_EXT_PMU_COUNTER_CFG_MATCH call with
+ctr_base=0xfffffffffffffffe, ctr_mask=0xeb5f and flags=0x1
+(SBI_PMU_CFG_FLAG_SKIP_MATCH), kvm_riscv_vcpu_pmu_ctr_cfg_match()
+first invokes kvm_pmu_validate_counter_mask() to verify whether
+ctr_base and ctr_mask are valid, by evaluating:
+ !ctr_mask || (ctr_base + __fls(ctr_mask) >= kvm_pmu_num_counters(kvpmu))
 
-Signed-off-by: Baolin Wang <baolin.wang@linux.alibaba.com>
+With the above inputs, __fls(0xeb5f) equals 15, and adding 15 to
+0xfffffffffffffffe causes an integer overflow, wrapping around to 13.
+Since 13 is less than kvm_pmu_num_counters(), the validation wrongly
+succeeds.
+
+Thereafter, since flags & SBI_PMU_CFG_FLAG_SKIP_MATCH is satisfied,
+the code evaluates:
+ !test_bit(ctr_base + __ffs(ctr_mask), kvpmu->pmc_in_use)
+
+Here __ffs(0xeb5f) equals 0, so test_bit() receives 0xfffffffffffffffe
+as the bit index and attempts to access the corresponding element of
+the kvpmu->pmc_in_use, which results in an invalid memory access. This
+triggers the following Oops:
+ Unable to handle kernel paging request at virtual address e3ebffff12abba89
+  generic_test_bit include/asm-generic/bitops/generic-non-atomic.h:128
+  kvm_riscv_vcpu_pmu_ctr_cfg_match arch/riscv/kvm/vcpu_pmu.c:758
+  kvm_sbi_ext_pmu_handler arch/riscv/kvm/vcpu_sbi_pmu.c:49
+  kvm_riscv_vcpu_sbi_ecall arch/riscv/kvm/vcpu_sbi.c:608
+  kvm_riscv_vcpu_exit arch/riscv/kvm/vcpu_exit.c:240
+
+The root cause is that kvm_pmu_validate_counter_mask() does not account
+for the case where ctr_base itself is out of range, allowing the
+subsequent addition to silently overflow and bypass the check.
+
+Fix this by explicitly validating ctr_base against kvm_pmu_num_counters()
+before performing the addition.
+
+This bug was found by fuzzing the KVM RISC-V PMU interface.
+
+Fixes: 0cb74b65d2e5e6 ("RISC-V: KVM: Implement perf support without sampling")
+Signed-off-by: Jiakai Xu <jiakaiPeanut@gmail.com>
+Signed-off-by: Jiakai Xu <xujiakai2025@iscas.ac.cn>
 ---
- arch/arm64/include/asm/pgtable.h             |  6 +++---
- arch/powerpc/include/asm/book3s/64/pgtable.h | 10 +++++-----
- arch/powerpc/mm/book3s64/pgtable.c           |  4 ++--
- arch/riscv/include/asm/pgtable.h             |  2 +-
- arch/s390/include/asm/pgtable.h              |  4 ++--
- arch/x86/include/asm/pgtable.h               |  4 ++--
- arch/x86/mm/pgtable.c                        |  6 +++---
- include/linux/pgtable.h                      | 19 +++++++++----------
- 8 files changed, 27 insertions(+), 28 deletions(-)
+ arch/riscv/kvm/vcpu_pmu.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/arch/arm64/include/asm/pgtable.h b/arch/arm64/include/asm/pgtable.h
-index 393a9d1873f6..7ea16f6ad564 100644
---- a/arch/arm64/include/asm/pgtable.h
-+++ b/arch/arm64/include/asm/pgtable.h
-@@ -1321,9 +1321,9 @@ static inline bool __ptep_clear_flush_young(struct vm_area_struct *vma,
- 
- #if defined(CONFIG_TRANSPARENT_HUGEPAGE) || defined(CONFIG_ARCH_HAS_NONLEAF_PMD_YOUNG)
- #define __HAVE_ARCH_PMDP_TEST_AND_CLEAR_YOUNG
--static inline int pmdp_test_and_clear_young(struct vm_area_struct *vma,
--					    unsigned long address,
--					    pmd_t *pmdp)
-+static inline bool pmdp_test_and_clear_young(struct vm_area_struct *vma,
-+					     unsigned long address,
-+					     pmd_t *pmdp)
+diff --git a/arch/riscv/kvm/vcpu_pmu.c b/arch/riscv/kvm/vcpu_pmu.c
+index e873430e596b2..a098a9b417ad8 100644
+--- a/arch/riscv/kvm/vcpu_pmu.c
++++ b/arch/riscv/kvm/vcpu_pmu.c
+@@ -266,8 +266,10 @@ static int pmu_ctr_read(struct kvm_vcpu *vcpu, unsigned long cidx,
+ static int kvm_pmu_validate_counter_mask(struct kvm_pmu *kvpmu, unsigned long ctr_base,
+ 					 unsigned long ctr_mask)
  {
- 	/* Operation applies to PMD table entry only if FEAT_HAFT is enabled */
- 	VM_WARN_ON(pmd_table(READ_ONCE(*pmdp)) && !system_supports_haft());
-diff --git a/arch/powerpc/include/asm/book3s/64/pgtable.h b/arch/powerpc/include/asm/book3s/64/pgtable.h
-index 25e3a86943e2..0f34011665a6 100644
---- a/arch/powerpc/include/asm/book3s/64/pgtable.h
-+++ b/arch/powerpc/include/asm/book3s/64/pgtable.h
-@@ -1161,13 +1161,13 @@ pud_hugepage_update(struct mm_struct *mm, unsigned long addr, pud_t *pudp,
-  * For radix we should always find H_PAGE_HASHPTE zero. Hence
-  * the below will work for radix too
-  */
--static inline int __pmdp_test_and_clear_young(struct mm_struct *mm,
--					      unsigned long addr, pmd_t *pmdp)
-+static inline bool __pmdp_test_and_clear_young(struct mm_struct *mm,
-+					       unsigned long addr, pmd_t *pmdp)
- {
- 	unsigned long old;
- 
- 	if ((pmd_raw(*pmdp) & cpu_to_be64(_PAGE_ACCESSED | H_PAGE_HASHPTE)) == 0)
--		return 0;
-+		return false;
- 	old = pmd_hugepage_update(mm, addr, pmdp, _PAGE_ACCESSED, 0);
- 	return ((old & _PAGE_ACCESSED) != 0);
- }
-@@ -1300,8 +1300,8 @@ extern int pudp_set_access_flags(struct vm_area_struct *vma,
- 				 pud_t entry, int dirty);
- 
- #define __HAVE_ARCH_PMDP_TEST_AND_CLEAR_YOUNG
--extern int pmdp_test_and_clear_young(struct vm_area_struct *vma,
--				     unsigned long address, pmd_t *pmdp);
-+extern bool pmdp_test_and_clear_young(struct vm_area_struct *vma,
-+				      unsigned long address, pmd_t *pmdp);
- #define __HAVE_ARCH_PUDP_TEST_AND_CLEAR_YOUNG
- extern int pudp_test_and_clear_young(struct vm_area_struct *vma,
- 				     unsigned long address, pud_t *pudp);
-diff --git a/arch/powerpc/mm/book3s64/pgtable.c b/arch/powerpc/mm/book3s64/pgtable.c
-index 4b09c04654a8..aed39bba891e 100644
---- a/arch/powerpc/mm/book3s64/pgtable.c
-+++ b/arch/powerpc/mm/book3s64/pgtable.c
-@@ -98,8 +98,8 @@ int pudp_set_access_flags(struct vm_area_struct *vma, unsigned long address,
- }
- 
- 
--int pmdp_test_and_clear_young(struct vm_area_struct *vma,
--			      unsigned long address, pmd_t *pmdp)
-+bool pmdp_test_and_clear_young(struct vm_area_struct *vma,
-+			       unsigned long address, pmd_t *pmdp)
- {
- 	return __pmdp_test_and_clear_young(vma->vm_mm, address, pmdp);
- }
-diff --git a/arch/riscv/include/asm/pgtable.h b/arch/riscv/include/asm/pgtable.h
-index 11f57ccf6dc9..bac559d29036 100644
---- a/arch/riscv/include/asm/pgtable.h
-+++ b/arch/riscv/include/asm/pgtable.h
-@@ -1015,7 +1015,7 @@ static inline int pmdp_set_access_flags(struct vm_area_struct *vma,
- }
- 
- #define __HAVE_ARCH_PMDP_TEST_AND_CLEAR_YOUNG
--static inline int pmdp_test_and_clear_young(struct vm_area_struct *vma,
-+static inline bool pmdp_test_and_clear_young(struct vm_area_struct *vma,
- 					unsigned long address, pmd_t *pmdp)
- {
- 	return ptep_test_and_clear_young(vma, address, (pte_t *)pmdp);
-diff --git a/arch/s390/include/asm/pgtable.h b/arch/s390/include/asm/pgtable.h
-index c9ab81caaf75..1f5efb7be71d 100644
---- a/arch/s390/include/asm/pgtable.h
-+++ b/arch/s390/include/asm/pgtable.h
-@@ -1683,8 +1683,8 @@ static inline int pmdp_set_access_flags(struct vm_area_struct *vma,
- }
- 
- #define __HAVE_ARCH_PMDP_TEST_AND_CLEAR_YOUNG
--static inline int pmdp_test_and_clear_young(struct vm_area_struct *vma,
--					    unsigned long addr, pmd_t *pmdp)
-+static inline bool pmdp_test_and_clear_young(struct vm_area_struct *vma,
-+					     unsigned long addr, pmd_t *pmdp)
- {
- 	pmd_t pmd = *pmdp;
- 
-diff --git a/arch/x86/include/asm/pgtable.h b/arch/x86/include/asm/pgtable.h
-index 554dea93eb99..bd02ee730a23 100644
---- a/arch/x86/include/asm/pgtable.h
-+++ b/arch/x86/include/asm/pgtable.h
-@@ -1295,8 +1295,8 @@ extern int pudp_set_access_flags(struct vm_area_struct *vma,
- 				 pud_t entry, int dirty);
- 
- #define __HAVE_ARCH_PMDP_TEST_AND_CLEAR_YOUNG
--extern int pmdp_test_and_clear_young(struct vm_area_struct *vma,
--				     unsigned long addr, pmd_t *pmdp);
-+extern bool pmdp_test_and_clear_young(struct vm_area_struct *vma,
-+				      unsigned long addr, pmd_t *pmdp);
- extern int pudp_test_and_clear_young(struct vm_area_struct *vma,
- 				     unsigned long addr, pud_t *pudp);
- 
-diff --git a/arch/x86/mm/pgtable.c b/arch/x86/mm/pgtable.c
-index 0007dc3d739e..10a5e0b2be36 100644
---- a/arch/x86/mm/pgtable.c
-+++ b/arch/x86/mm/pgtable.c
-@@ -456,10 +456,10 @@ bool ptep_test_and_clear_young(struct vm_area_struct *vma,
- }
- 
- #if defined(CONFIG_TRANSPARENT_HUGEPAGE) || defined(CONFIG_ARCH_HAS_NONLEAF_PMD_YOUNG)
--int pmdp_test_and_clear_young(struct vm_area_struct *vma,
--			      unsigned long addr, pmd_t *pmdp)
-+bool pmdp_test_and_clear_young(struct vm_area_struct *vma,
-+			       unsigned long addr, pmd_t *pmdp)
- {
--	int ret = 0;
-+	bool ret = false;
- 
- 	if (pmd_young(*pmdp))
- 		ret = test_and_clear_bit(_PAGE_BIT_ACCESSED,
-diff --git a/include/linux/pgtable.h b/include/linux/pgtable.h
-index 1198e216fde3..e53220b0a9a3 100644
---- a/include/linux/pgtable.h
-+++ b/include/linux/pgtable.h
-@@ -507,25 +507,24 @@ static inline bool ptep_test_and_clear_young(struct vm_area_struct *vma,
- 
- #ifndef __HAVE_ARCH_PMDP_TEST_AND_CLEAR_YOUNG
- #if defined(CONFIG_TRANSPARENT_HUGEPAGE) || defined(CONFIG_ARCH_HAS_NONLEAF_PMD_YOUNG)
--static inline int pmdp_test_and_clear_young(struct vm_area_struct *vma,
--					    unsigned long address,
--					    pmd_t *pmdp)
-+static inline bool pmdp_test_and_clear_young(struct vm_area_struct *vma,
-+		unsigned long address, pmd_t *pmdp)
- {
- 	pmd_t pmd = *pmdp;
--	int r = 1;
-+	bool young = true;
+-	/* Make sure the we have a valid counter mask requested from the caller */
+-	if (!ctr_mask || (ctr_base + __fls(ctr_mask) >= kvm_pmu_num_counters(kvpmu)))
++	unsigned long num_ctrs = kvm_pmu_num_counters(kvpmu);
 +
- 	if (!pmd_young(pmd))
--		r = 0;
-+		young = false;
- 	else
- 		set_pmd_at(vma->vm_mm, address, pmdp, pmd_mkold(pmd));
--	return r;
-+	return young;
- }
- #else
--static inline int pmdp_test_and_clear_young(struct vm_area_struct *vma,
--					    unsigned long address,
--					    pmd_t *pmdp)
-+static inline bool pmdp_test_and_clear_young(struct vm_area_struct *vma,
-+		unsigned long address, pmd_t *pmdp)
- {
- 	BUILD_BUG();
--	return 0;
-+	return false;
- }
- #endif /* CONFIG_TRANSPARENT_HUGEPAGE || CONFIG_ARCH_HAS_NONLEAF_PMD_YOUNG */
- #endif
++	/* Make sure we have a valid counter mask requested from the caller */
++	if (!ctr_mask || ctr_base >= num_ctrs || (ctr_base + __fls(ctr_mask) >= num_ctrs))
+ 		return -EINVAL;
+ 
+ 	return 0;
 -- 
-2.47.3
+2.34.1
 
