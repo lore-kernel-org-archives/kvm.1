@@ -1,106 +1,171 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f46.google.com (mail-wm1-f46.google.com [209.85.128.46])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 25D033C3C1A
-	for <kvm@vger.kernel.org>; Thu, 19 Mar 2026 10:48:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9ABEB3C198A
+	for <kvm@vger.kernel.org>; Thu, 19 Mar 2026 10:53:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773917299; cv=none; b=p9oRsM3LOxmrPCAn5zKFItg9cTw09qwM0iji1yfp34Iw6LrieHWbfbU2FqBaVLc8zZvjN/bNQSROdSOnTsMzAUXMZlOGOcdU7997fbxkwiY0AzrqBtHjPdj0qszFSb+9Am5wr9Ki9tAxivFfoiIaUDmhSx8d1MRbmvPgse2PtCc=
+	t=1773917617; cv=none; b=eQl65dovhO3zsAVXh4jKLE6W2OwZ1Et31jQaton+TudD9lBgIll52jFTYhqjOEeO7g9FZuQLyryT8RHL7WaikUJ3xPIikMgCCRgEZW57691M2BDKFZV5dUHJagHGAHgFKr7obzMYMOe9ZwJ9NRHWB+ibZWj8ifd66B5UQtj/+C4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773917299; c=relaxed/simple;
-	bh=3T7ngCyy4wCxxBz5I9U8xAC3Y2tmHvn48suxEKq2kzw=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=CCpRKIjtcYUQKCM2pPcA/FrGaKjDecVmY/RFXZwvqaP0GTrh8HV7+Muq9nx9dCoZy1OsAdEpvegaqyWGKHSTZLL5mmAIuxzssGhZ5+KhjNme+HLS45LitC70jhq3bZ3Vmm9A1V5qtwC13mCJPw0xDLJxgk3sJWjc/0BFHsvbSuw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=AMSscrnt; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1773917617; c=relaxed/simple;
+	bh=wZdcKtseF4v5/aje/4Jl1GdjqDwZtEcyiGnhwepIysw=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=FjhOXdf/3DPUqHIV3YqZwysuoqqdLXu4+OsUNe3x3cbTijhbJHGl3wuHD2XuVuQJTXwPDmlMLnYVqK9KNDXQ/JH0QYGexxd5ujw9GusD1HPPw+s4ViKjtma4vLlXZHM0zUkW4YMvU0HJO1edOy+T3PsWgADG2+5aXqco8DCrIPY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=znNz60Wo; arc=none smtp.client-ip=209.85.128.46
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="AMSscrnt"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E9373C2BCAF;
-	Thu, 19 Mar 2026 10:48:17 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773917298;
-	bh=3T7ngCyy4wCxxBz5I9U8xAC3Y2tmHvn48suxEKq2kzw=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=AMSscrntBBFWIVK/Gtkep7GS1UrNBoIG/0T9C0o1HE/frMnlErTu64YKdeftCmL2G
-	 eex7iLoh58GfGiyG9NwOEw+rh8B0aPwSuxeWUXdqNmiIyQqlRCWUS/QnA1O1UYon54
-	 JLJADQJqdzV+O4qDtWNptp0uk/Mippu58POlK8WIZQkWw8zEp5n8Qc3M3qElZWfx3A
-	 5rODoKfrUlK4eX8sMxwIN8GXz8c8xu6OmFcZj8svsRrwSCzsHs/ARwOQA6vspv8g7L
-	 WPMpczk4fPu18tBO52yqrbaRcXpdSfGvf16ZUxc2oQXaQJy6qpfie55Y6QSfYtAZa/
-	 DrsPplXNkgcgg==
-Received: from phl-compute-09.internal (phl-compute-09.internal [10.202.2.49])
-	by mailfauth.phl.internal (Postfix) with ESMTP id AA72CF4006B;
-	Thu, 19 Mar 2026 06:48:16 -0400 (EDT)
-Received: from phl-frontend-03 ([10.202.2.162])
-  by phl-compute-09.internal (MEProxy); Thu, 19 Mar 2026 06:48:16 -0400
-X-ME-Sender: <xms:cNS7acvd16ZuYp-apANAFglPKZkdRnSTWJ5EGJXyHKfXkYjTcp69Pw>
-    <xme:cNS7aTtvjTbjPfAnyTkeeb5bYnUSuGPN4EyJmnzVh326vpW-zsD8-OX03BtXVyk2-
-    HDR60Dr74l3i0Gr-rAYSaDbr0SXPCbL4f4_Qr0Dak22vlG12nsJwN8>
-X-ME-Received: <xmr:cNS7aZgsje2DXlRDJm7jg1PItCjgXg8Xn50Ay_QiTozNDKMOclwW7V7sz6un2A>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgdeftdeikeduucetufdoteggodetrf
-    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
-    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
-    gurhepfffhvfevuffkfhggtggujgesthdtredttddtvdenucfhrhhomhepmfhirhihlhcu
-    ufhhuhhtshgvmhgruhcuoehkrghssehkvghrnhgvlhdrohhrgheqnecuggftrfgrthhtvg
-    hrnhepueeijeeiffekheeffffftdekleefleehhfefhfduheejhedvffeluedvudefgfek
-    necuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepkhhirh
-    hilhhlodhmvghsmhhtphgruhhthhhpvghrshhonhgrlhhithihqdduieduudeivdeiheeh
-    qddvkeeggeegjedvkedqkhgrsheppehkvghrnhgvlhdrohhrghesshhhuhhtvghmohhvrd
-    hnrghmvgdpnhgspghrtghpthhtohepgedtpdhmohguvgepshhmthhpohhuthdprhgtphht
-    thhopeihrghnrdihrdiihhgrohesihhnthgvlhdrtghomhdprhgtphhtthhopehsvggrnh
-    hjtgesghhoohhglhgvrdgtohhmpdhrtghpthhtohepphgsohhniihinhhisehrvgguhhgr
-    thdrtghomhdprhgtphhtthhopegurghvvgdrhhgrnhhsvghnsehlihhnuhigrdhinhhtvg
-    hlrdgtohhmpdhrtghpthhtohepthhglhigsehkvghrnhgvlhdrohhrghdprhgtphhtthho
-    pehmihhnghhosehrvgguhhgrthdrtghomhdprhgtphhtthhopegsphesrghlihgvnhekrd
-    guvgdprhgtphhtthhopeigkeeisehkvghrnhgvlhdrohhrghdprhgtphhtthhopehlihhn
-    uhigqdhkvghrnhgvlhesvhhgvghrrdhkvghrnhgvlhdrohhrgh
-X-ME-Proxy: <xmx:cNS7aTzSctL5RGzFD0EWPLQnAphqAoEYcGtR29GsFsR_SiKMHSxbUw>
-    <xmx:cNS7af4MRBDL_3DLZ_HVVhxN7LqnU_AIZmsSPrpcDVl7RFZoBIAUnQ>
-    <xmx:cNS7aVdTXgqRjzW2yZKHVo3o4nYNsGnJpy2OVLwhN7LrMHZN-prqbg>
-    <xmx:cNS7aXq0GsNTg0Vydu7u4iiICmyIbJWWyVsXMMsIRSz7Xo1ljFpFrg>
-    <xmx:cNS7aZ2INRnJbG_sgtSD8yak5d-j8pzJB3wa26Y6bmpXW2qzmimUG_6V>
-Feedback-ID: i10464835:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
- 19 Mar 2026 06:48:15 -0400 (EDT)
-Date: Thu, 19 Mar 2026 10:48:08 +0000
-From: Kiryl Shutsemau <kas@kernel.org>
-To: Yan Zhao <yan.y.zhao@intel.com>
-Cc: seanjc@google.com, pbonzini@redhat.com, dave.hansen@linux.intel.com, 
-	tglx@kernel.org, mingo@redhat.com, bp@alien8.de, x86@kernel.org, 
-	linux-kernel@vger.kernel.org, kvm@vger.kernel.org, linux-coco@lists.linux.dev, 
-	kai.huang@intel.com, rick.p.edgecombe@intel.com, yilun.xu@linux.intel.com, 
-	vannapurve@google.com, ackerleytng@google.com, sagis@google.com, 
-	binbin.wu@linux.intel.com, xiaoyao.li@intel.com, isaku.yamahata@intel.com
-Subject: Re: [PATCH 2/2] x86/virt/tdx: Use PFN directly for unmapping guest
- private memory
-Message-ID: <abvTJq0Ks22WnLSA@thinkstation>
-References: <20260319005605.8965-1-yan.y.zhao@intel.com>
- <20260319005808.9013-1-yan.y.zhao@intel.com>
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="znNz60Wo"
+Received: by mail-wm1-f46.google.com with SMTP id 5b1f17b1804b1-48628ce9ab5so10534735e9.2
+        for <kvm@vger.kernel.org>; Thu, 19 Mar 2026 03:53:35 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1773917614; x=1774522414; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=EgVWOMJC7tDyrxkwGCDBHNk5vLVLJUqeljIhIXgn3Yw=;
+        b=znNz60WooebW9QklH7azqRuvPgCX7jZ1zTw5TCyPctSyJYuG8wXdpQAc54DKN8wXgI
+         7+5Qr2t6z3ptYW2d3Q1Ew5IykWMwK70xGVQSu6LIn58KVTf9JMV+K8Xq83JQCWMYq85J
+         K3lp5CRQr+LI10ObZeTVGgN6/KNyjD10Nwovi5Krn0nix8XQcmO6UwVj3G5EO7HpgiH+
+         T0T9NnNSd5AtZ3R1gMp0/NU49yTuftC/kJHhfoDGzrZgI8z0dqKCRb1upk6nA0ulDbFn
+         GjxjpD/mRJr00HLaomawfRj7dYUNP4hXvceE5YAfUsfz5++Nxr7DnEH1cJxQofzB10j0
+         sUwA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1773917614; x=1774522414;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=EgVWOMJC7tDyrxkwGCDBHNk5vLVLJUqeljIhIXgn3Yw=;
+        b=NIRcshiOzLGOAtZpE2LpBW3DR81cHYfM7ckzWiYpY5WnVYkG3n7kYMqObrsLsRKMHS
+         0x17lLL0dm3KZGC3Qj+3wzUTdDFJwfVk7ur3YUuh51hO7K4GpOQrMGBRuV37T7SDu+a1
+         t6o5vHgWwcIv/NtryCTOa4zRt910LGAxVrdn4VM0leoudjkpcSIh15EnWBwXyCcFN2QD
+         nzK5sct10mMbUPSPCI/u3SHfK3KZCB53ddQHkBrUAjQrYiO9FMm/Ez4T5Q0yDhMiLfkq
+         iaRUhprj5WTwHUGRosqV7085bzaIFpz+6l5mWSAgMiCLl81VZZD2r1v6m/kB3KsZxeXF
+         Kpgw==
+X-Forwarded-Encrypted: i=1; AJvYcCUw8rW//rD50R9KWXdYvi4PZXd0AIqkNxU6TX9x8nBXOewwm77zPrCaAsqbrry/DlTUiIQ=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx7pBmGInKjpBHmP56m016ZTXeaYSoMTJqAKKdllDgdPLkg0iBK
+	4H5Sa5IQ49u+Op63H18e3ew4HkaokEkWw9crYTH23OYR1WrSIjC7z54JmSx0neG79uXOeeU2/Xi
+	1XL0dsE4=
+X-Gm-Gg: ATEYQzyA1CHnwPwuFMfejdQmxpGmoz8G5Kus2OR7kyOmtjdeVYRxNPLYML/42YKebBi
+	8uNxdL4La+Uen5wX4LHM+NsNcZK1oC/pQ084ZO3uEw8kAvHH1e42O+dJOQEIEQFAbmRUs/90YXJ
+	HZtp3DhDYi9el8v9tl6MGF+dsBcdFob1iRgq3JXuU2vsHq7XL3uGJXvoE67gk9Bf+IMKAjZh8r+
+	L/+12TlqiM/Y+fLQlOUmSyzkRSLD7ltiwRj3cBm0SBF5+gxyAkBboZ65Rq3653j9FQvIa7QSEwD
+	tJsV9lY5U8EGg1/T++gBuxOV0akUcREmzW5sQvRQoJkuSCl2Nm7dU/2LK5VUK5BH0IN2lRXLZAf
+	sdsLs5DSw5agNmFzU7AR3YYNFrttQNSjzZYqSRIjF8If2G/2Xx5YG6xpgEmlJ+shXKUL61IoDd9
+	GFGR79FpVqcpLq4dH7AGsCSonzNgI+C9L4Xd3OfzYNuUguLsHPdPyZ04MQOY+WOk+k5Q==
+X-Received: by 2002:a05:600c:5742:b0:483:703e:4ad9 with SMTP id 5b1f17b1804b1-486f446d066mr81640605e9.19.1773917613894;
+        Thu, 19 Mar 2026 03:53:33 -0700 (PDT)
+Received: from [192.168.69.206] (88-187-86-199.subs.proxad.net. [88.187.86.199])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-486f8c40ccbsm100353605e9.9.2026.03.19.03.53.32
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 19 Mar 2026 03:53:33 -0700 (PDT)
+Message-ID: <d616ab91-3cfc-4a77-83db-23ef16a00d49@linaro.org>
+Date: Thu, 19 Mar 2026 11:53:32 +0100
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260319005808.9013-1-yan.y.zhao@intel.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH for-11.0 2/2] i386/hyperv: add stubs for synic enablement
+Content-Language: en-US
+To: Ani Sinha <anisinha@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
+ Marcelo Tosatti <mtosatti@redhat.com>
+Cc: Michale Tokarev <mjt@tls.msk.ru>, kvm@vger.kernel.org,
+ qemu-devel@nongnu.org
+References: <20260319101128.116301-1-anisinha@redhat.com>
+ <20260319101128.116301-3-anisinha@redhat.com>
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+In-Reply-To: <20260319101128.116301-3-anisinha@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On Thu, Mar 19, 2026 at 08:58:08AM +0800, Yan Zhao wrote:
-> @@ -1817,11 +1817,11 @@ static void tdx_sept_remove_private_spte(struct kvm *kvm, gfn_t gfn,
->  	if (TDX_BUG_ON_2(err, TDH_MEM_PAGE_REMOVE, entry, level_state, kvm))
->  		return;
->  
-> -	err = tdh_phymem_page_wbinvd_hkid((u16)kvm_tdx->hkid, page);
-> +	err = tdh_phymem_page_wbinvd_hkid((u16)kvm_tdx->hkid, pfn);
->  	if (TDX_BUG_ON(err, TDH_PHYMEM_PAGE_WBINVD, kvm))
->  		return;
->  
-> -	tdx_quirk_reset_page(page);
-> +	tdx_quirk_reset_page(pfn);
->  }
->  
->  void tdx_deliver_interrupt(struct kvm_lapic *apic, int delivery_mode,
+Hi Ani,
 
-The same problem. @level is ignored.
+On 19/3/26 11:11, Ani Sinha wrote:
+> Add a new call hyperv_enable_synic() that can be called whether or not
+> CONFIG_HYPERV is enabled. This way genetic code in i396/kvm.c can call this
+> function to enable synic for hyperv. For non-hyperv cases, the stub will
+> be a noop.
+> 
+> Reported-by: Michale Tokarev <mjt@tls.msk.ru>
+> Signed-off-by: Ani Sinha <anisinha@redhat.com>
+> ---
+>   target/i386/kvm/hyperv-stub.c |  5 +++++
+>   target/i386/kvm/hyperv.c      |  9 +++++++++
+>   target/i386/kvm/hyperv.h      |  1 +
+>   target/i386/kvm/kvm.c         | 12 +++++-------
+>   4 files changed, 20 insertions(+), 7 deletions(-)
+> 
+> diff --git a/target/i386/kvm/hyperv-stub.c b/target/i386/kvm/hyperv-stub.c
+> index 5836f53c23..767a4c7e1a 100644
+> --- a/target/i386/kvm/hyperv-stub.c
+> +++ b/target/i386/kvm/hyperv-stub.c
+> @@ -61,3 +61,8 @@ uint64_t hyperv_syndbg_query_options(void)
+>   {
+>       return 0;
+>   }
+> +
+> +int hyperv_enable_synic(X86CPU *cpu)
+> +{
+> +    return 0;
+> +}
+> diff --git a/target/i386/kvm/hyperv.c b/target/i386/kvm/hyperv.c
+> index f7a81bd270..bd3c26d02b 100644
+> --- a/target/i386/kvm/hyperv.c
+> +++ b/target/i386/kvm/hyperv.c
+> @@ -24,6 +24,15 @@ int hyperv_x86_synic_add(X86CPU *cpu)
+>       return 0;
+>   }
+>   
+> +int hyperv_enable_synic(X86CPU *cpu)
+> +{
+> +    int ret = 0;
+> +    if (!hyperv_is_synic_enabled()) {
+> +        ret = hyperv_x86_synic_add(cpu);
+> +    }
+> +    return ret;
+> +}
+> +
+>   /*
+>    * All devices possibly using SynIC have to be reset before calling this to let
+>    * them remove their SINT routes first.
+> diff --git a/target/i386/kvm/hyperv.h b/target/i386/kvm/hyperv.h
+> index e45a4512fe..a393a5d428 100644
+> --- a/target/i386/kvm/hyperv.h
+> +++ b/target/i386/kvm/hyperv.h
+> @@ -23,6 +23,7 @@ int kvm_hv_handle_exit(X86CPU *cpu, struct kvm_hyperv_exit *exit);
+>   #endif
+>   
+>   int hyperv_x86_synic_add(X86CPU *cpu);
+> +int hyperv_enable_synic(X86CPU *cpu);
+>   void hyperv_x86_synic_reset(X86CPU *cpu);
+>   void hyperv_x86_synic_update(X86CPU *cpu);
+>   
+> diff --git a/target/i386/kvm/kvm.c b/target/i386/kvm/kvm.c
+> index a29f757c16..9e352882c8 100644
+> --- a/target/i386/kvm/kvm.c
+> +++ b/target/i386/kvm/kvm.c
+> @@ -1754,13 +1754,11 @@ static int hyperv_init_vcpu(X86CPU *cpu)
+>               return ret;
+>           }
+>   
+> -        if (!hyperv_is_synic_enabled()) {
+> -            ret = hyperv_x86_synic_add(cpu);
+> -            if (ret < 0) {
+> -                error_report("failed to create HyperV SynIC: %s",
+> -                             strerror(-ret));
+> -                return ret;
+> -            }
+> +        ret = hyperv_enable_synic(cpu);
+> +        if (ret < 0) {
+> +            error_report("failed to create HyperV SynIC: %s",
+> +                         strerror(-ret));
+> +            return ret;
+>           }
+>       }
+>   
 
--- 
-  Kiryl Shutsemau / Kirill A. Shutemov
+Why not simply add a hyperv_is_synic_enabled() stub?
