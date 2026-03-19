@@ -1,159 +1,173 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 540AF3D4134;
-	Thu, 19 Mar 2026 13:15:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4570B3A1E70;
+	Thu, 19 Mar 2026 13:18:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773926107; cv=none; b=Fv221N1OnZdE8vmaV4VRD7XULC5gScMmlOWzEabA0i/JmA1K+SKs/pgJRmr+PviVmdyTJH6XuYqF6N4M9di3Og4kKVs1VpdR2JNVTZudUyG8WMXhNaXNlU/hB93H7UhNH5UKagA4tQb+uCMLDvDKCqmvm2luYSUY8YBDsKz5Vws=
+	t=1773926333; cv=none; b=L2oA71FQ9wW0pIbJ6mjkq1Ee7L1DBQKPP//CoAK3RMrIO0M8RJB35g0Zg2DWkv/XAdYsPmyG7/tXQJw+lA0KSpYK9uN6d/gQSsPa0NV0azEctKyFUZtoyvse9Sqp9h3tgWNbapf3Gz/3lxw/wzpj32KQbODB+GXbg2EjlWNhXzA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773926107; c=relaxed/simple;
-	bh=5if652ifix7m4r6JjLyYoN8p4oc9k9AQF9kES9+XFR0=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=cidBMaNOUfHLkF5EHBG9ZTRd43aXbCJeuZdvXvlU1IpF5Uz+samRJyWrv5YJ7yPM6cRex29xYqy0cepVcpLhHovxWp3oD0MuQ0vM/21V684DKGDzepFpG1F7XMHqDfDQUXoBEgfK6WG5E05tV6SsOoP70iSFgs6b/qj2quK4roU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XouKpJly; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1773926333; c=relaxed/simple;
+	bh=DBeq6ynyMBT7SGVxMF7nNxXLpd+5i5Ws71dP8HR4daE=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=IVz6fBQULGO9diqb96sUJllNJ3XnA39Yrf/pBAMhPOfgiMhPFoOJFDXAMEuyJnY6qG/WrZsQCCDhXsHKbQL/3RNTmQA01eXWYV48wHnpRpv4u7OcJpCy7YOiezNg+l27YttYj85aIxgZ8Oudj64l9xd46KVNA9mHde1V2qiu7vw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZKlmN21x; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XouKpJly"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 85AE2C19424;
-	Thu, 19 Mar 2026 13:15:06 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZKlmN21x"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5FE4DC19424;
+	Thu, 19 Mar 2026 13:18:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773926107;
-	bh=5if652ifix7m4r6JjLyYoN8p4oc9k9AQF9kES9+XFR0=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=XouKpJlybgb2gbfvsKBMNz48jiY71rjYPAdlCf/iIG/o3x4077m5y5TDQCKjyKSV/
-	 YF/XehWNtd0y5Qvtj67tOZP9o2VLiVFl+W23rIEL8DyQ19n5Q9rJdqw/PImf0eBJ7j
-	 9qE2fRbJl35rOQGTP3c3rnGYlMrIsTBw+aVC04sDeo6eXSTKRCtttAnGtfWZYG6TPl
-	 dHrDTRKzGObGDbIW0DVfV1aOTt/6x7z3vfmfr5x3J97mxqWR3dTWJQFLcuFamO0J6u
-	 lR0HsKtj4oB+WuDhDnZumI0Y6oRk/4CFHvsw0MN/5W9w2KtVTwo8FRqPjEc259tDQ8
-	 8okOe1MqWqyoA==
-Received: from phl-compute-11.internal (phl-compute-11.internal [10.202.2.51])
-	by mailfauth.phl.internal (Postfix) with ESMTP id 533C7F4006E;
-	Thu, 19 Mar 2026 09:15:05 -0400 (EDT)
-Received: from phl-frontend-03 ([10.202.2.162])
-  by phl-compute-11.internal (MEProxy); Thu, 19 Mar 2026 09:15:05 -0400
-X-ME-Sender: <xms:2fa7aQA-chx6RUCCqQkdPPYpElEWWRla5DDu8MKs9NuY3b2-JzU7tw>
-    <xme:2fa7aTNyoM0E2RvXHeEah9QfjJJjuLWAJjRf9UxcM78N9vK4omM243RQjl_502F9p
-    ceC1MvwTiPDLxvdpXekfZLkU17ZAP8qmUMMshX6ikf6OSEm0Tft-XkC>
-X-ME-Received: <xmr:2fa7aerY5WMjGVKCFa8uBlouzicluByyZ7xpo1tmudfZ3_StWdVipl8kz8uoLQ>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgdeftdejuddtucetufdoteggodetrf
-    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
-    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
-    gurhepfffhvfevuffkfhggtggugfgjsehtkeertddttddunecuhfhrohhmpefmihhrhihl
-    ucfuhhhuthhsvghmrghuuceokhgrsheskhgvrhhnvghlrdhorhhgqeenucggtffrrghtth
-    gvrhhnpeeludettdeigfefhffhhfelveeludeuleduvefhgefgueeitedtleffudegfffg
-    gfenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpehkih
-    hrihhllhdomhgvshhmthhprghuthhhphgvrhhsohhnrghlihhthidqudeiudduiedvieeh
-    hedqvdekgeeggeejvdekqdhkrghspeepkhgvrhhnvghlrdhorhhgsehshhhuthgvmhhovh
-    drnhgrmhgvpdhnsggprhgtphhtthhopeehtddpmhhouggvpehsmhhtphhouhhtpdhrtghp
-    thhtoheptghhrghordhgrghosehinhhtvghlrdgtohhmpdhrtghpthhtoheplhhinhhugi
-    dqkhgvrhhnvghlsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtoheplhhinhhu
-    gidqtghotghosehlihhsthhsrdhlihhnuhigrdguvghvpdhrtghpthhtohepkhhvmhesvh
-    hgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopegsihhnsghinhdrfihusehlihhn
-    uhigrdhinhhtvghlrdgtohhmpdhrtghpthhtohepuggrnhdrjhdrfihilhhlihgrmhhsse
-    hinhhtvghlrdgtohhmpdhrtghpthhtohepuggrvhgvrdhhrghnshgvnheslhhinhhugidr
-    ihhnthgvlhdrtghomhdprhgtphhtthhopehirhgrrdifvghinhihsehinhhtvghlrdgtoh
-    hmpdhrtghpthhtohepkhgrihdrhhhurghnghesihhnthgvlhdrtghomh
-X-ME-Proxy: <xmx:2fa7aWxpSFCPc1VeySjcvd1EynLLdptXynQkfxZa_iDBx9SsGLmHKQ>
-    <xmx:2fa7aYN0bie4tBPAaYUGtZuknA0_E-Ol4f_jMdX4Td2DM8cSM2eLZw>
-    <xmx:2fa7aSBZvhAxu-U2gfkLwqkBCdIURwMGdRFEjFp-16zEVSHd-gqMew>
-    <xmx:2fa7adXWugHh-mAvqFo9EPxJeAKN50WoNI6qpCcFhbv0ZOlcNoG_SA>
-    <xmx:2fa7aUIXNQKLiwHE1h_VDD02o4sl8sJOATeEjDdkSLbH8WNuaaNES-fG>
-Feedback-ID: i10464835:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
- 19 Mar 2026 09:15:04 -0400 (EDT)
-Date: Thu, 19 Mar 2026 13:15:02 +0000
-From: Kiryl Shutsemau <kas@kernel.org>
-To: Chao Gao <chao.gao@intel.com>
-Cc: linux-kernel@vger.kernel.org, linux-coco@lists.linux.dev, 
-	kvm@vger.kernel.org, binbin.wu@linux.intel.com, dan.j.williams@intel.com, 
-	dave.hansen@linux.intel.com, ira.weiny@intel.com, kai.huang@intel.com, nik.borisov@suse.com, 
-	paulmck@kernel.org, pbonzini@redhat.com, reinette.chatre@intel.com, 
-	rick.p.edgecombe@intel.com, sagis@google.com, seanjc@google.com, 
-	tony.lindgren@linux.intel.com, vannapurve@google.com, vishal.l.verma@intel.com, 
-	yilun.xu@linux.intel.com, Thomas Gleixner <tglx@kernel.org>, 
-	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, x86@kernel.org, 
-	"H. Peter Anvin" <hpa@zytor.com>
-Subject: Re: [PATCH v5 09/22] x86/virt/seamldr: Introduce skeleton for TDX
- module updates
-Message-ID: <abv2PWj4jBwm6zKO@thinkstation>
-References: <20260315135920.354657-1-chao.gao@intel.com>
- <20260315135920.354657-10-chao.gao@intel.com>
+	s=k20201202; t=1773926332;
+	bh=DBeq6ynyMBT7SGVxMF7nNxXLpd+5i5Ws71dP8HR4daE=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=ZKlmN21xzTYbuxpDehDoEyHf4slhheV6fzre8D17e+zmj+nbm6dXD9//rN+rOTWG2
+	 9T7UHBnqj7YnFqSeFYXxIeDR7Qyq/hHWZl/RbQVrLWHlZzX3XUa1ie1azTEIHc5GtO
+	 6B9SxCO1V2B0ODFWnt/27jJZAH8jdL9i2UViBnnKx99Ul0V/cWBU5l8IJgaL2WFEU0
+	 ISYAGNcqJmLc8nCPHG0baUMxvFqi++YOznl/oWtbYSeY8xco3Spwb5UZwIcfjijgBi
+	 QezSdk3a4jzBNqAGmjyUWddC2BtuYJLlmr81MRyLix+9oNqrtnhL3aVxNgiMTj1Tvo
+	 d7vbbuX9c0OEw==
+Message-ID: <45e50068-751c-4e8c-a6b0-62cf8d1e58e6@kernel.org>
+Date: Thu, 19 Mar 2026 14:18:49 +0100
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] vfio/type1: Retry follow_pfnmap_start() when PFNMAP is
+ zapped
+To: "Boone, Max" <mboone@akamai.com>, Alex Williamson <alex@shazbot.org>
+Cc: Max Boone via B4 Relay <devnull+mboone.akamai.com@kernel.org>,
+ "kvm@vger.kernel.org" <kvm@vger.kernel.org>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ "stable@vger.kernel.org" <stable@vger.kernel.org>
+References: <20260317-retry-pin-on-reclaimed-pud-v1-1-1f0d0a23f78d@akamai.com>
+ <20260318152249.43eb81f6@shazbot.org>
+ <3C8F924E-CA2D-4368-83DF-3CCCD4BA49FF@akamai.com>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ xsFNBFXLn5EBEAC+zYvAFJxCBY9Tr1xZgcESmxVNI/0ffzE/ZQOiHJl6mGkmA1R7/uUpiCjJ
+ dBrn+lhhOYjjNefFQou6478faXE6o2AhmebqT4KiQoUQFV4R7y1KMEKoSyy8hQaK1umALTdL
+ QZLQMzNE74ap+GDK0wnacPQFpcG1AE9RMq3aeErY5tujekBS32jfC/7AnH7I0v1v1TbbK3Gp
+ XNeiN4QroO+5qaSr0ID2sz5jtBLRb15RMre27E1ImpaIv2Jw8NJgW0k/D1RyKCwaTsgRdwuK
+ Kx/Y91XuSBdz0uOyU/S8kM1+ag0wvsGlpBVxRR/xw/E8M7TEwuCZQArqqTCmkG6HGcXFT0V9
+ PXFNNgV5jXMQRwU0O/ztJIQqsE5LsUomE//bLwzj9IVsaQpKDqW6TAPjcdBDPLHvriq7kGjt
+ WhVhdl0qEYB8lkBEU7V2Yb+SYhmhpDrti9Fq1EsmhiHSkxJcGREoMK/63r9WLZYI3+4W2rAc
+ UucZa4OT27U5ZISjNg3Ev0rxU5UH2/pT4wJCfxwocmqaRr6UYmrtZmND89X0KigoFD/XSeVv
+ jwBRNjPAubK9/k5NoRrYqztM9W6sJqrH8+UWZ1Idd/DdmogJh0gNC0+N42Za9yBRURfIdKSb
+ B3JfpUqcWwE7vUaYrHG1nw54pLUoPG6sAA7Mehl3nd4pZUALHwARAQABzS5EYXZpZCBIaWxk
+ ZW5icmFuZCAoQ3VycmVudCkgPGRhdmlkQGtlcm5lbC5vcmc+wsGQBBMBCAA6AhsDBQkmWAik
+ AgsJBBUKCQgCFgICHgUCF4AWIQQb2cqtc1xMOkYN/MpN3hD3AP+DWgUCaYJt/AIZAQAKCRBN
+ 3hD3AP+DWriiD/9BLGEKG+N8L2AXhikJg6YmXom9ytRwPqDgpHpVg2xdhopoWdMRXjzOrIKD
+ g4LSnFaKneQD0hZhoArEeamG5tyo32xoRsPwkbpIzL0OKSZ8G6mVbFGpjmyDLQCAxteXCLXz
+ ZI0VbsuJKelYnKcXWOIndOrNRvE5eoOfTt2XfBnAapxMYY2IsV+qaUXlO63GgfIOg8RBaj7x
+ 3NxkI3rV0SHhI4GU9K6jCvGghxeS1QX6L/XI9mfAYaIwGy5B68kF26piAVYv/QZDEVIpo3t7
+ /fjSpxKT8plJH6rhhR0epy8dWRHk3qT5tk2P85twasdloWtkMZ7FsCJRKWscm1BLpsDn6EQ4
+ jeMHECiY9kGKKi8dQpv3FRyo2QApZ49NNDbwcR0ZndK0XFo15iH708H5Qja/8TuXCwnPWAcJ
+ DQoNIDFyaxe26Rx3ZwUkRALa3iPcVjE0//TrQ4KnFf+lMBSrS33xDDBfevW9+Dk6IISmDH1R
+ HFq2jpkN+FX/PE8eVhV68B2DsAPZ5rUwyCKUXPTJ/irrCCmAAb5Jpv11S7hUSpqtM/6oVESC
+ 3z/7CzrVtRODzLtNgV4r5EI+wAv/3PgJLlMwgJM90Fb3CB2IgbxhjvmB1WNdvXACVydx55V7
+ LPPKodSTF29rlnQAf9HLgCphuuSrrPn5VQDaYZl4N/7zc2wcWM7BTQRVy5+RARAA59fefSDR
+ 9nMGCb9LbMX+TFAoIQo/wgP5XPyzLYakO+94GrgfZjfhdaxPXMsl2+o8jhp/hlIzG56taNdt
+ VZtPp3ih1AgbR8rHgXw1xwOpuAd5lE1qNd54ndHuADO9a9A0vPimIes78Hi1/yy+ZEEvRkHk
+ /kDa6F3AtTc1m4rbbOk2fiKzzsE9YXweFjQvl9p+AMw6qd/iC4lUk9g0+FQXNdRs+o4o6Qvy
+ iOQJfGQ4UcBuOy1IrkJrd8qq5jet1fcM2j4QvsW8CLDWZS1L7kZ5gT5EycMKxUWb8LuRjxzZ
+ 3QY1aQH2kkzn6acigU3HLtgFyV1gBNV44ehjgvJpRY2cC8VhanTx0dZ9mj1YKIky5N+C0f21
+ zvntBqcxV0+3p8MrxRRcgEtDZNav+xAoT3G0W4SahAaUTWXpsZoOecwtxi74CyneQNPTDjNg
+ azHmvpdBVEfj7k3p4dmJp5i0U66Onmf6mMFpArvBRSMOKU9DlAzMi4IvhiNWjKVaIE2Se9BY
+ FdKVAJaZq85P2y20ZBd08ILnKcj7XKZkLU5FkoA0udEBvQ0f9QLNyyy3DZMCQWcwRuj1m73D
+ sq8DEFBdZ5eEkj1dCyx+t/ga6x2rHyc8Sl86oK1tvAkwBNsfKou3v+jP/l14a7DGBvrmlYjO
+ 59o3t6inu6H7pt7OL6u6BQj7DoMAEQEAAcLBfAQYAQgAJgIbDBYhBBvZyq1zXEw6Rg38yk3e
+ EPcA/4NaBQJonNqrBQkmWAihAAoJEE3eEPcA/4NaKtMQALAJ8PzprBEXbXcEXwDKQu+P/vts
+ IfUb1UNMfMV76BicGa5NCZnJNQASDP/+bFg6O3gx5NbhHHPeaWz/VxlOmYHokHodOvtL0WCC
+ 8A5PEP8tOk6029Z+J+xUcMrJClNVFpzVvOpb1lCbhjwAV465Hy+NUSbbUiRxdzNQtLtgZzOV
+ Zw7jxUCs4UUZLQTCuBpFgb15bBxYZ/BL9MbzxPxvfUQIPbnzQMcqtpUs21CMK2PdfCh5c4gS
+ sDci6D5/ZIBw94UQWmGpM/O1ilGXde2ZzzGYl64glmccD8e87OnEgKnH3FbnJnT4iJchtSvx
+ yJNi1+t0+qDti4m88+/9IuPqCKb6Stl+s2dnLtJNrjXBGJtsQG/sRpqsJz5x1/2nPJSRMsx9
+ 5YfqbdrJSOFXDzZ8/r82HgQEtUvlSXNaXCa95ez0UkOG7+bDm2b3s0XahBQeLVCH0mw3RAQg
+ r7xDAYKIrAwfHHmMTnBQDPJwVqxJjVNr7yBic4yfzVWGCGNE4DnOW0vcIeoyhy9vnIa3w1uZ
+ 3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
+ CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
+ qIws/H2t
+In-Reply-To: <3C8F924E-CA2D-4368-83DF-3CCCD4BA49FF@akamai.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20260315135920.354657-10-chao.gao@intel.com>
 
-On Sun, Mar 15, 2026 at 06:58:29AM -0700, Chao Gao wrote:
-> TDX module updates require careful synchronization with other TDX
-> operations. The requirements are (#1/#2 reflect current behavior that
-> must be preserved):
+On 3/19/26 09:36, Boone, Max wrote:
 > 
-> 1. SEAMCALLs need to be callable from both process and IRQ contexts.
-> 2. SEAMCALLs need to be able to run concurrently across CPUs
-> 3. During updates, only update-related SEAMCALLs are permitted; all
->    other SEAMCALLs shouldn't be called.
-> 4. During updates, all online CPUs must participate in the update work.
 > 
-> No single lock primitive satisfies all requirements. For instance,
-> rwlock_t handles #1/#2 but fails #4: CPUs spinning with IRQs disabled
-> cannot be directed to perform update work.
+>> On Mar 18, 2026, at 10:22 PM, Alex Williamson <alex@shazbot.org> wrote:
+>>
+>> […]
+>>
+>>> + /*
+>>> + * follow_pfnmap_start() returns -EINVAL for
+>>> + * invalid parameters and non-present entries.
+>>> + * If that happens here after a successful
+>>> + * fixup_user_fault(), it is likely that the
+>>> + * pfnmap has been zapped. Retry instead of
+>>> + * failing.
+>>> + */
+>>
+>> It's a little stronger than that, right?  We're betting that the only
+>> remaining non-zero return is due to a race and we can introduce what
+>> appears to be potential for an infinite loop here because -EAGAIN will
+>> get kicked out to redo the vma_lookup() and fixup_user_fault() should
+>> return a genuine error if we're completely in the weeds.  Should we
+>> make this a little stronger and more specific?  Thanks,
 > 
-> Use stop_machine() as it is the only well-understood mechanism that can
-> meet all requirements.
-> 
-> And TDX module updates consist of several steps (See Intel� Trust Domain
-> Extensions (Intel� TDX) Module Base Architecture Specification, Revision
-> 348549-007, Chapter 4.5 "TD-Preserving TDX module Update"). Ordering
-> requirements between steps mandate lockstep synchronization across all
-> CPUs.
-> 
-> multi_cpu_stop() is a good example of performing a multi-step task in
-> lockstep. But it doesn't synchronize steps within the callback function
-> it takes. So, implement one based on its pattern to establish the
-> skeleton for TDX module updates. Specifically, add a global state
-> machine where each state represents a step in the update flow. The state
-> advances only after all CPUs acknowledge completing their work in the
-> current state. This acknowledgment mechanism is what ensures lockstep
-> execution.
-> 
-> Potential alternative to stop_machine()
-> =======================================
-> An alternative approach is to lock all KVM entry points and kick all
-> vCPUs. Here, KVM entry points refer to KVM VM/vCPU ioctl entry points,
-> implemented in KVM common code (virt/kvm). Adding a locking mechanism
-> there would affect all architectures KVM supports. And to lock only TDX
-> vCPUs, new logic would be needed to identify TDX vCPUs, which the KVM
-> common code currently lacks. This would add significant complexity and
-> maintenance overhead to KVM for this TDX-specific use case.
-> 
-> Signed-off-by: Chao Gao <chao.gao@intel.com>
-> Reviewed-by: Xu Yilun <yilun.xu@linux.intel.com>
-> Reviewed-by: Tony Lindgren <tony.lindgren@linux.intel.com>
+> I’d say that the best case would be to have follow_pfnmap_start() return
+> -EINVAL or -ENOENT w.r.t. which of the two return values it is. But then
+> again, we could theoretically run into an infinite loop I guess - as the zap
+> and faulting could run in lockstep (the race window is extremely small
+> though).
 
-Reviewed-by: Kiryl Shutsemau (Meta) <kas@kernel.org>
+Well, in theory :) To hit that race repeatedly, you'd really have to be
+quite lucky I guess.
 
-One question below.
+But the real question is: if user space triggered the pinning, and user
+space keeps hurting itself to make progress, is that a real problem?
 
-> +static struct {
-> +	enum module_update_state state;
-> +	int thread_ack;
-> +	/*
-> +	 * Protect update_data. Raw spinlock as it will be acquired from
-> +	 * interrupt-disabled contexts.
-> +	 */
-> +	raw_spinlock_t lock;
-> +} update_data = {
-> +	.lock = __RAW_SPIN_LOCK_UNLOCKED(update_data.lock)
-> +};
+I guess the crucial part would be to
 
-multi_stop_cpu() used atomic_t for thread_ack insead of spinlock.
-Any particular reason you took different direction?
+a) Have some cond_resched(() in there?
+b) Checking for fatal signals somewhere?
+c) Possibly drop locks (mmap lock?) every now and then?
+
+For GUP, a) and b) are in place in __get_user_pages().
+
+c) might be done, but I think it's less deterministic.
+
+> 
+> We could make the retry above bounded, and bubble up a -EBUSY such
+> that users of the ioctl can decide to retry instead of fail?
+
+Would that be a possible ABI break? You'd really have to only do that in
+a case where user space does stupid things, I guess.
+
+> 
+> David, you mentioned that gup already has retry logic that we don’t have
+> with follow_fault_pfn() -> follow_pfnmap_start(). Would we potentially run
+> into an infinite loop with this change?
+
+GUP triggers page faults through faultin_page(). If handle_mm_fault()
+returns
+
+* VM_FAULT_COMPLETED we return -EAGAIN
+* VM_FAULT_ERROR we return the error
+* VM_FAULT_RETRY we return -EBUSY
+* Otherwise 0
+
+In the caller __get_user_pages(), we
+* Retry immediately with ret == 0
+* Return to the GUP caller (letting it retry) with -EBUSY/-EAGAIN
+
+Having at least a) and b) sounds reasonable. Not sure about having c),
+might be tricky if we are not allowed to drop the lock.
 
 -- 
-  Kiryl Shutsemau / Kirill A. Shutemov
+Cheers,
+
+David
