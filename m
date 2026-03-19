@@ -1,183 +1,106 @@
-Received: from sinmsgout03.his.huawei.com (sinmsgout03.his.huawei.com [119.8.177.38])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B6E9B3C5526
-	for <kvm@vger.kernel.org>; Thu, 19 Mar 2026 10:47:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=119.8.177.38
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 25D033C3C1A
+	for <kvm@vger.kernel.org>; Thu, 19 Mar 2026 10:48:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773917263; cv=none; b=ZSlCQMpYwy4O7T6cGywao7ZEwhBAnjsDNCtzmb3xyXKsL/2SK2gO9qG/FpFeX7AQgS4wv25b3Cg2ANWp+ZD09zY/hmY0OIBcLofHxU2JXRZrhvntHlcfCavBd4OV/21vLtDdwIjumBJpk1cla6lbBTMMfAlQVGMo2JmdPq10ax4=
+	t=1773917299; cv=none; b=p9oRsM3LOxmrPCAn5zKFItg9cTw09qwM0iji1yfp34Iw6LrieHWbfbU2FqBaVLc8zZvjN/bNQSROdSOnTsMzAUXMZlOGOcdU7997fbxkwiY0AzrqBtHjPdj0qszFSb+9Am5wr9Ki9tAxivFfoiIaUDmhSx8d1MRbmvPgse2PtCc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773917263; c=relaxed/simple;
-	bh=vlGsVEfb1BZC/fFjE5qS7pd5kGBqDCI9Z4+x/lp+AWU=;
-	h=Date:From:To:CC:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=a15HfYFFFN6oq51CAZPi2+qIhFKfUZumEjYO0fiDVOBI1fqObbMrGS+SSSIQY57xW7S/cwF9AvUeq5l9cmi+Js3Jn/8HUTkEeaRmTqiGmv4JUPJATx4dt5Cx6DMdJ6QyRedkcciwPmeL+CR4wM9nokgoPcYwhpVRXG4r/jy5KoQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b=X2HmGysc; arc=none smtp.client-ip=119.8.177.38
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+	s=arc-20240116; t=1773917299; c=relaxed/simple;
+	bh=3T7ngCyy4wCxxBz5I9U8xAC3Y2tmHvn48suxEKq2kzw=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=CCpRKIjtcYUQKCM2pPcA/FrGaKjDecVmY/RFXZwvqaP0GTrh8HV7+Muq9nx9dCoZy1OsAdEpvegaqyWGKHSTZLL5mmAIuxzssGhZ5+KhjNme+HLS45LitC70jhq3bZ3Vmm9A1V5qtwC13mCJPw0xDLJxgk3sJWjc/0BFHsvbSuw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=AMSscrnt; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b="X2HmGysc"
-dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
-	c=relaxed/relaxed; q=dns/txt;
-	h=From;
-	bh=UPMVsuI4kmuItDKYtVFIWjVtpoIuKTSxXF3JdWi00Wc=;
-	b=X2HmGyscATvKqLvfjO2yF3Do855ux3dK2+g56l6gGCwwXKKS3dOugtLbLLJ4P6i7VKWO3Aeyk
-	O/gFYwAyYyEsgqaczjzofwSb/J56rAG6CxM1a6f3UudiMlBWvyGhHDPGF3MP4/ke5NbFOFKVpTX
-	Xl1cCYXxQRMFFDZtECPht5M=
-Received: from frasgout.his.huawei.com (unknown [172.18.146.33])
-	by sinmsgout03.his.huawei.com (SkyGuard) with ESMTPS id 4fc2201zfszN13J;
-	Thu, 19 Mar 2026 18:27:20 +0800 (CST)
-Received: from mail.maildlp.com (unknown [172.18.224.107])
-	by frasgout.his.huawei.com (SkyGuard) with ESMTPS id 4fc2665XcMzJ46tn;
-	Thu, 19 Mar 2026 18:30:54 +0800 (CST)
-Received: from dubpeml500005.china.huawei.com (unknown [7.214.145.207])
-	by mail.maildlp.com (Postfix) with ESMTPS id CE26740589;
-	Thu, 19 Mar 2026 18:31:53 +0800 (CST)
-Received: from localhost (10.203.177.15) by dubpeml500005.china.huawei.com
- (7.214.145.207) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Thu, 19 Mar
- 2026 10:31:53 +0000
-Date: Thu, 19 Mar 2026 10:31:51 +0000
-From: Jonathan Cameron <jonathan.cameron@huawei.com>
-To: Sascha Bischoff <Sascha.Bischoff@arm.com>
-CC: "linux-arm-kernel@lists.infradead.org"
-	<linux-arm-kernel@lists.infradead.org>, "kvmarm@lists.linux.dev"
-	<kvmarm@lists.linux.dev>, "kvm@vger.kernel.org" <kvm@vger.kernel.org>, nd
-	<nd@arm.com>, "maz@kernel.org" <maz@kernel.org>, "oliver.upton@linux.dev"
-	<oliver.upton@linux.dev>, Joey Gouly <Joey.Gouly@arm.com>, Suzuki Poulose
-	<Suzuki.Poulose@arm.com>, "yuzenghui@huawei.com" <yuzenghui@huawei.com>,
-	"peter.maydell@linaro.org" <peter.maydell@linaro.org>,
-	"lpieralisi@kernel.org" <lpieralisi@kernel.org>, Timothy Hayes
-	<Timothy.Hayes@arm.com>
-Subject: Re: [PATCH v6 11/39] KVM: arm64: gic-v5: Sanitize
- ID_AA64PFR2_EL1.GCIE
-Message-ID: <20260319103151.00006b7e@huawei.com>
-In-Reply-To: <20260317113949.2548118-12-sascha.bischoff@arm.com>
-References: <20260317113949.2548118-1-sascha.bischoff@arm.com>
-	<20260317113949.2548118-12-sascha.bischoff@arm.com>
-X-Mailer: Claws Mail 4.3.0 (GTK 3.24.42; x86_64-w64-mingw32)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="AMSscrnt"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E9373C2BCAF;
+	Thu, 19 Mar 2026 10:48:17 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1773917298;
+	bh=3T7ngCyy4wCxxBz5I9U8xAC3Y2tmHvn48suxEKq2kzw=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=AMSscrntBBFWIVK/Gtkep7GS1UrNBoIG/0T9C0o1HE/frMnlErTu64YKdeftCmL2G
+	 eex7iLoh58GfGiyG9NwOEw+rh8B0aPwSuxeWUXdqNmiIyQqlRCWUS/QnA1O1UYon54
+	 JLJADQJqdzV+O4qDtWNptp0uk/Mippu58POlK8WIZQkWw8zEp5n8Qc3M3qElZWfx3A
+	 5rODoKfrUlK4eX8sMxwIN8GXz8c8xu6OmFcZj8svsRrwSCzsHs/ARwOQA6vspv8g7L
+	 WPMpczk4fPu18tBO52yqrbaRcXpdSfGvf16ZUxc2oQXaQJy6qpfie55Y6QSfYtAZa/
+	 DrsPplXNkgcgg==
+Received: from phl-compute-09.internal (phl-compute-09.internal [10.202.2.49])
+	by mailfauth.phl.internal (Postfix) with ESMTP id AA72CF4006B;
+	Thu, 19 Mar 2026 06:48:16 -0400 (EDT)
+Received: from phl-frontend-03 ([10.202.2.162])
+  by phl-compute-09.internal (MEProxy); Thu, 19 Mar 2026 06:48:16 -0400
+X-ME-Sender: <xms:cNS7acvd16ZuYp-apANAFglPKZkdRnSTWJ5EGJXyHKfXkYjTcp69Pw>
+    <xme:cNS7aTtvjTbjPfAnyTkeeb5bYnUSuGPN4EyJmnzVh326vpW-zsD8-OX03BtXVyk2-
+    HDR60Dr74l3i0Gr-rAYSaDbr0SXPCbL4f4_Qr0Dak22vlG12nsJwN8>
+X-ME-Received: <xmr:cNS7aZgsje2DXlRDJm7jg1PItCjgXg8Xn50Ay_QiTozNDKMOclwW7V7sz6un2A>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgdeftdeikeduucetufdoteggodetrf
+    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
+    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
+    gurhepfffhvfevuffkfhggtggujgesthdtredttddtvdenucfhrhhomhepmfhirhihlhcu
+    ufhhuhhtshgvmhgruhcuoehkrghssehkvghrnhgvlhdrohhrgheqnecuggftrfgrthhtvg
+    hrnhepueeijeeiffekheeffffftdekleefleehhfefhfduheejhedvffeluedvudefgfek
+    necuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepkhhirh
+    hilhhlodhmvghsmhhtphgruhhthhhpvghrshhonhgrlhhithihqdduieduudeivdeiheeh
+    qddvkeeggeegjedvkedqkhgrsheppehkvghrnhgvlhdrohhrghesshhhuhhtvghmohhvrd
+    hnrghmvgdpnhgspghrtghpthhtohepgedtpdhmohguvgepshhmthhpohhuthdprhgtphht
+    thhopeihrghnrdihrdiihhgrohesihhnthgvlhdrtghomhdprhgtphhtthhopehsvggrnh
+    hjtgesghhoohhglhgvrdgtohhmpdhrtghpthhtohepphgsohhniihinhhisehrvgguhhgr
+    thdrtghomhdprhgtphhtthhopegurghvvgdrhhgrnhhsvghnsehlihhnuhigrdhinhhtvg
+    hlrdgtohhmpdhrtghpthhtohepthhglhigsehkvghrnhgvlhdrohhrghdprhgtphhtthho
+    pehmihhnghhosehrvgguhhgrthdrtghomhdprhgtphhtthhopegsphesrghlihgvnhekrd
+    guvgdprhgtphhtthhopeigkeeisehkvghrnhgvlhdrohhrghdprhgtphhtthhopehlihhn
+    uhigqdhkvghrnhgvlhesvhhgvghrrdhkvghrnhgvlhdrohhrgh
+X-ME-Proxy: <xmx:cNS7aTzSctL5RGzFD0EWPLQnAphqAoEYcGtR29GsFsR_SiKMHSxbUw>
+    <xmx:cNS7af4MRBDL_3DLZ_HVVhxN7LqnU_AIZmsSPrpcDVl7RFZoBIAUnQ>
+    <xmx:cNS7aVdTXgqRjzW2yZKHVo3o4nYNsGnJpy2OVLwhN7LrMHZN-prqbg>
+    <xmx:cNS7aXq0GsNTg0Vydu7u4iiICmyIbJWWyVsXMMsIRSz7Xo1ljFpFrg>
+    <xmx:cNS7aZ2INRnJbG_sgtSD8yak5d-j8pzJB3wa26Y6bmpXW2qzmimUG_6V>
+Feedback-ID: i10464835:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
+ 19 Mar 2026 06:48:15 -0400 (EDT)
+Date: Thu, 19 Mar 2026 10:48:08 +0000
+From: Kiryl Shutsemau <kas@kernel.org>
+To: Yan Zhao <yan.y.zhao@intel.com>
+Cc: seanjc@google.com, pbonzini@redhat.com, dave.hansen@linux.intel.com, 
+	tglx@kernel.org, mingo@redhat.com, bp@alien8.de, x86@kernel.org, 
+	linux-kernel@vger.kernel.org, kvm@vger.kernel.org, linux-coco@lists.linux.dev, 
+	kai.huang@intel.com, rick.p.edgecombe@intel.com, yilun.xu@linux.intel.com, 
+	vannapurve@google.com, ackerleytng@google.com, sagis@google.com, 
+	binbin.wu@linux.intel.com, xiaoyao.li@intel.com, isaku.yamahata@intel.com
+Subject: Re: [PATCH 2/2] x86/virt/tdx: Use PFN directly for unmapping guest
+ private memory
+Message-ID: <abvTJq0Ks22WnLSA@thinkstation>
+References: <20260319005605.8965-1-yan.y.zhao@intel.com>
+ <20260319005808.9013-1-yan.y.zhao@intel.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: lhrpeml100011.china.huawei.com (7.191.174.247) To
- dubpeml500005.china.huawei.com (7.214.145.207)
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260319005808.9013-1-yan.y.zhao@intel.com>
 
-On Tue, 17 Mar 2026 11:42:47 +0000
-Sascha Bischoff <Sascha.Bischoff@arm.com> wrote:
-
-> Add in a sanitization function for ID_AA64PFR2_EL1, preserving the
-> already-present behaviour for the FPMR, MTEFAR, and MTESTOREONLY
-> fields. Add sanitisation for the GCIE field, which is set to IMP if
-> the host supports a GICv5 guest and NI, otherwise.
-> 
-> Extend the sanitisation that takes place in kvm_vgic_create() to zero
-> the ID_AA64PFR2.GCIE field when a non-GICv5 GIC is created. More
-> importantly, move this sanitisation to a separate function,
-> kvm_vgic_finalize_sysregs(), and call it from kvm_finalize_sys_regs().
-> 
-> We are required to finalize the GIC and GCIE fields a second time in
-> kvm_finalize_sys_regs() due to how QEMU blindly reads out then
-> verbatim restores the system register state. This avoids the issue
-> where both the GCIE and GIC features are marked as present (an
-> architecturally invalid combination), and hence guests fall over. See
-> the comment in kvm_finalize_sys_regs() for more details.
-> 
-> Overall, the following happens:
-> 
-> * Before an irqchip is created, FEAT_GCIE is presented if the host
->   supports GICv5-based guests.
-> * Once an irqchip is created, all other supported irqchips are hidden
->   from the guest; system register state reflects the guest's irqchip.
-> * Userspace is allowed to set invalid irqchip feature combinations in
->   the system registers, but...
-> * ...invalid combinations are removed a second time prior to the first
->   run of the guest, and things hopefully just work.
-> 
-> All of this extra work is required to make sure that "legacy" GICv3
-> guests based on QEMU transparently work on compatible GICv5 hosts
-> without modification.
-> 
-> Signed-off-by: Sascha Bischoff <sascha.bischoff@arm.com>
-
-Kind of trivial but I'd have split this into a factor out of the helper
-(no functional changes) then the additional stuff.
-Meh, it's simple enough to perhaps not be worth the effort.
-
-Anyhow, one comment on what to me looks like a slightly inconsistent approach
-to sanitization. Anyhow, not that important as code is easy enough to read
-and if anything over restricts (which could be relaxed if that ever becomes
-relevant).
-
-Reviewed-by: Jonathan Cameron <jonathan.cameron@huawei.com>
-
-
-> ---
->  arch/arm64/kvm/sys_regs.c       | 70 +++++++++++++++++++++++++++++----
->  arch/arm64/kvm/vgic/vgic-init.c | 49 ++++++++++++++++-------
->  include/kvm/arm_vgic.h          |  1 +
->  3 files changed, 98 insertions(+), 22 deletions(-)
-> 
-> diff --git a/arch/arm64/kvm/sys_regs.c b/arch/arm64/kvm/sys_regs.c
-> index 42c84b7900ff5..140cf35f4eeb4 100644
-> --- a/arch/arm64/kvm/sys_regs.c
-> +++ b/arch/arm64/kvm/sys_regs.c
-> @@ -1758,6 +1758,7 @@ static u8 pmuver_to_perfmon(u8 pmuver)
+On Thu, Mar 19, 2026 at 08:58:08AM +0800, Yan Zhao wrote:
+> @@ -1817,11 +1817,11 @@ static void tdx_sept_remove_private_spte(struct kvm *kvm, gfn_t gfn,
+>  	if (TDX_BUG_ON_2(err, TDH_MEM_PAGE_REMOVE, entry, level_state, kvm))
+>  		return;
 >  
->  static u64 sanitise_id_aa64pfr0_el1(const struct kvm_vcpu *vcpu, u64 val);
->  static u64 sanitise_id_aa64pfr1_el1(const struct kvm_vcpu *vcpu, u64 val);
-> +static u64 sanitise_id_aa64pfr2_el1(const struct kvm_vcpu *vcpu, u64 val);
->  static u64 sanitise_id_aa64dfr0_el1(const struct kvm_vcpu *vcpu, u64 val);
+> -	err = tdh_phymem_page_wbinvd_hkid((u16)kvm_tdx->hkid, page);
+> +	err = tdh_phymem_page_wbinvd_hkid((u16)kvm_tdx->hkid, pfn);
+>  	if (TDX_BUG_ON(err, TDH_PHYMEM_PAGE_WBINVD, kvm))
+>  		return;
 >  
->  /* Read a sanitised cpufeature ID register by sys_reg_desc */
-> @@ -1783,10 +1784,7 @@ static u64 __kvm_read_sanitised_id_reg(const struct kvm_vcpu *vcpu,
->  		val = sanitise_id_aa64pfr1_el1(vcpu, val);
->  		break;
->  	case SYS_ID_AA64PFR2_EL1:
-> -		val &= ID_AA64PFR2_EL1_FPMR |
-> -			(kvm_has_mte(vcpu->kvm) ?
-> -			 ID_AA64PFR2_EL1_MTEFAR | ID_AA64PFR2_EL1_MTESTOREONLY :
-> -			 0);
-> +		val = sanitise_id_aa64pfr2_el1(vcpu, val);
->  		break;
->  	case SYS_ID_AA64ISAR1_EL1:
->  		if (!vcpu_has_ptrauth(vcpu))
-> @@ -2027,6 +2025,23 @@ static u64 sanitise_id_aa64pfr1_el1(const struct kvm_vcpu *vcpu, u64 val)
->  	return val;
+> -	tdx_quirk_reset_page(page);
+> +	tdx_quirk_reset_page(pfn);
 >  }
 >  
-> +static u64 sanitise_id_aa64pfr2_el1(const struct kvm_vcpu *vcpu, u64 val)
-> +{
-> +	val &= ID_AA64PFR2_EL1_FPMR |
-> +	       ID_AA64PFR2_EL1_MTEFAR |
-> +	       ID_AA64PFR2_EL1_MTESTOREONLY;
+>  void tdx_deliver_interrupt(struct kvm_lapic *apic, int delivery_mode,
 
-Style wise this feels inconsistent.  For these 3 registers the sanitise simply
-clears them if not supported, it doesn't enforce particular values despite
-for example MTESTOREONLY only taking values 0 and 1..
+The same problem. @level is ignored.
 
-
-> +
-> +	if (!kvm_has_mte(vcpu->kvm)) {
-> +		val &= ~ID_AA64PFR2_EL1_MTEFAR;
-> +		val &= ~ID_AA64PFR2_EL1_MTESTOREONLY;
-> +	}
-> +
-> +	if (vgic_host_has_gicv5())
-
-..but for this one you are forcing a specific value rather than clearing whatever
-was there if !vgic_host_has_gicv5()
-
-I don't mind that much though as still obvious what is going on and perhaps
-we do need to be careful this takes only a 1 or 0.
-
-
-> +		val |= SYS_FIELD_PREP_ENUM(ID_AA64PFR2_EL1, GCIE, IMP);
-> +
-> +	return val;
-> +}
-
-
+-- 
+  Kiryl Shutsemau / Kirill A. Shutemov
