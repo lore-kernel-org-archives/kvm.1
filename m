@@ -1,88 +1,111 @@
-Received: from sinmsgout01.his.huawei.com (sinmsgout01.his.huawei.com [119.8.177.36])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9E2937C0F0
-	for <kvm@vger.kernel.org>; Thu, 19 Mar 2026 10:38:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=119.8.177.36
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A50713C2780;
+	Thu, 19 Mar 2026 10:39:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773916715; cv=none; b=CBnN95xRnJjcLpyHQkcPEWHAHGj8lQXibILvf6d+Jr6h1oVT+Jv1x0CVKVPa7jRgkrbXkT/fEszQw4zfkVZBVMqPnSnpv9NHN8lF5UpUmbFXziojDt88REb3R2JJGmT09CTXuRBtfQ+PQCIAyjIMHmtnYsvqTlGvbbzwVBKXI0o=
+	t=1773916765; cv=none; b=ZB50fp+w5Y5QkF5QZ/MnXVSYQq7aETWFHQIiw4xuOlkcbDDqRPakvYJNzsRenG9WdUmuO2loyZEuNIzwDCXJzqM3+vaxzVHmBNCchAmCyD9FzigdZusEvFiY2xndWg537cvuZvaqFRql+Nik1Lh23DmxV0ErlV3EJsSWp66LkPg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773916715; c=relaxed/simple;
-	bh=ffuXN//p5iDx8+jkaR2Jg1K5deBAldvp45ErxUHueIE=;
-	h=Date:From:To:CC:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Qc+jbTlefvvankeVafzpefxJsQ0DvZ8X6e1L8nKyjXJdyPnrymZLAlKLnqOulfjJBWUK8qdwbSqo6PDJSbaVS0F5spsVMzlWy0nPjbRhJtyPohDizHwweCassVzT6FRjOMCXjbppNpTyXt6oePrp57vKbIdTVFFN5yZ1NP7/AdY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b=uY8Tu/+Q; arc=none smtp.client-ip=119.8.177.36
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+	s=arc-20240116; t=1773916765; c=relaxed/simple;
+	bh=EXlhCA8ORn+TPIkI96YytnyyM0OnEJc7yVdSlOGO7sU=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=jnEw3yH87fQN9FI1dsAI7FXwh9vzpCIw7NDdA65F7eVyOEgrkxIzMEE3hrWzKiuOA23O7CsOZDFn2g95U9FZHa251g/GxrzVrVC5R6gxbaAay37u4bRM0Hx/ZTlLE+B/ZEarsfBMr+mJDIXgxqagCCzOAYTDx/mbFuAGQeYRHog=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=uufV8lk5; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b="uY8Tu/+Q"
-dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
-	c=relaxed/relaxed; q=dns/txt;
-	h=From;
-	bh=G/yWvs+u+2ox5r2RC2KJBHK3Mv2sQaP76wNy2i2+g+k=;
-	b=uY8Tu/+QmqJx89Fu6/4iVzerjZ3SA/lL2P6iA/PuYikQcxBBeLzHAIqhAMhEjNnlm1Pb8XU6F
-	/cPLkPqSi8oMF3fwYxG/tvlc/e8EhrbsTGH6L87Wk9k8LlYEHhZsrtSJYOcefmMYK1o4GmKCt+J
-	xc1w3GFBFN+p1lXGaE6uncE=
-Received: from frasgout.his.huawei.com (unknown [172.18.146.32])
-	by sinmsgout01.his.huawei.com (SkyGuard) with ESMTPS id 4fc2Bd5VDGz1P7Fp;
-	Thu, 19 Mar 2026 18:34:49 +0800 (CST)
-Received: from mail.maildlp.com (unknown [172.18.224.150])
-	by frasgout.his.huawei.com (SkyGuard) with ESMTPS id 4fc2GN5cxDzHnH8Z;
-	Thu, 19 Mar 2026 18:38:04 +0800 (CST)
-Received: from dubpeml500005.china.huawei.com (unknown [7.214.145.207])
-	by mail.maildlp.com (Postfix) with ESMTPS id 1CD524056A;
-	Thu, 19 Mar 2026 18:38:28 +0800 (CST)
-Received: from localhost (10.203.177.15) by dubpeml500005.china.huawei.com
- (7.214.145.207) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Thu, 19 Mar
- 2026 10:38:27 +0000
-Date: Thu, 19 Mar 2026 10:38:26 +0000
-From: Jonathan Cameron <jonathan.cameron@huawei.com>
-To: Sascha Bischoff <Sascha.Bischoff@arm.com>
-CC: "linux-arm-kernel@lists.infradead.org"
-	<linux-arm-kernel@lists.infradead.org>, "kvmarm@lists.linux.dev"
-	<kvmarm@lists.linux.dev>, "kvm@vger.kernel.org" <kvm@vger.kernel.org>, nd
-	<nd@arm.com>, "maz@kernel.org" <maz@kernel.org>, "oliver.upton@linux.dev"
-	<oliver.upton@linux.dev>, Joey Gouly <Joey.Gouly@arm.com>, Suzuki Poulose
-	<Suzuki.Poulose@arm.com>, "yuzenghui@huawei.com" <yuzenghui@huawei.com>,
-	"peter.maydell@linaro.org" <peter.maydell@linaro.org>,
-	"lpieralisi@kernel.org" <lpieralisi@kernel.org>, Timothy Hayes
-	<Timothy.Hayes@arm.com>
-Subject: Re: [PATCH v6 14/39] KVM: arm64: gic-v5: Trap and emulate
- ICC_IDR0_EL1 accesses
-Message-ID: <20260319103826.00004be1@huawei.com>
-In-Reply-To: <20260317113949.2548118-15-sascha.bischoff@arm.com>
-References: <20260317113949.2548118-1-sascha.bischoff@arm.com>
-	<20260317113949.2548118-15-sascha.bischoff@arm.com>
-X-Mailer: Claws Mail 4.3.0 (GTK 3.24.42; x86_64-w64-mingw32)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="uufV8lk5"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 68667C2BC87;
+	Thu, 19 Mar 2026 10:39:24 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1773916765;
+	bh=EXlhCA8ORn+TPIkI96YytnyyM0OnEJc7yVdSlOGO7sU=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=uufV8lk5RZ0SIUTMjji2v6Q7tJIMTkwzPhStfc5gvJ71wxzE8TCDVnT9NhumARaOX
+	 7WuXYAE+eck7gI931UubnLT2DP+iOCDdbvMyzGIuelIIGSK1cviNUME5bKgOqSNQox
+	 HhV0C3HWaIvYivTwyVxyENpFtAoqJXKsXUV3cBKRcnhbDWFgi6KNV3jCziDG1tscWD
+	 Aik6I+RKBf73MBj+CqphHySxxCdsEqpbwHvjLdZK0Ezl3iSJFfjOEv0jEeRyjkn4so
+	 q+mSSajKz0SLUDSJAKNMcpIzMwOfWxDt2/2+qlt0q5fUP6//DBKu0Y7raSNxaYLYNI
+	 snrVCtpLrEMBA==
+Received: from phl-compute-06.internal (phl-compute-06.internal [10.202.2.46])
+	by mailfauth.phl.internal (Postfix) with ESMTP id 07971F4006C;
+	Thu, 19 Mar 2026 06:39:22 -0400 (EDT)
+Received: from phl-frontend-03 ([10.202.2.162])
+  by phl-compute-06.internal (MEProxy); Thu, 19 Mar 2026 06:39:23 -0400
+X-ME-Sender: <xms:WtK7aRTxFoDfcTvTtFefjUK85WmImSsEDMp-Su-IySezt5iFfrHAKQ>
+    <xme:WtK7aWfrz1FtrzPQMCk501gryRHCGCCNcIcPwXwEnkmcCgErrucO2_tYweHrfQpmb
+    kYMxhPyj8RnXAIfdpIizgUWcivN_5pFxNIM6_F_NoVXg_vjRh5KLwk>
+X-ME-Received: <xmr:WtK7aadiNbL5f4Tqqphz2YQRcSRyF2_DBCxnyOQXg6yqq38YMPcGYa4ouDg-qw>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgdeftdeijeelucetufdoteggodetrf
+    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
+    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
+    gurhepfffhvfevuffkfhggtggujgesthdtredttddtvdenucfhrhhomhepmfhirhihlhcu
+    ufhhuhhtshgvmhgruhcuoehkrghssehkvghrnhgvlhdrohhrgheqnecuggftrfgrthhtvg
+    hrnhepueeijeeiffekheeffffftdekleefleehhfefhfduheejhedvffeluedvudefgfek
+    necuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepkhhirh
+    hilhhlodhmvghsmhhtphgruhhthhhpvghrshhonhgrlhhithihqdduieduudeivdeiheeh
+    qddvkeeggeegjedvkedqkhgrsheppehkvghrnhgvlhdrohhrghesshhhuhhtvghmohhvrd
+    hnrghmvgdpnhgspghrtghpthhtohepgedtpdhmohguvgepshhmthhpohhuthdprhgtphht
+    thhopeihrghnrdihrdiihhgrohesihhnthgvlhdrtghomhdprhgtphhtthhopehsvggrnh
+    hjtgesghhoohhglhgvrdgtohhmpdhrtghpthhtohepphgsohhniihinhhisehrvgguhhgr
+    thdrtghomhdprhgtphhtthhopegurghvvgdrhhgrnhhsvghnsehlihhnuhigrdhinhhtvg
+    hlrdgtohhmpdhrtghpthhtohepthhglhigsehkvghrnhgvlhdrohhrghdprhgtphhtthho
+    pehmihhnghhosehrvgguhhgrthdrtghomhdprhgtphhtthhopegsphesrghlihgvnhekrd
+    guvgdprhgtphhtthhopeigkeeisehkvghrnhgvlhdrohhrghdprhgtphhtthhopehlihhn
+    uhigqdhkvghrnhgvlhesvhhgvghrrdhkvghrnhgvlhdrohhrgh
+X-ME-Proxy: <xmx:WtK7aZTZUoi3-eX4G4spzKN2f4Ozb8ymVOax80d78t1FfG-GsTXfJQ>
+    <xmx:WtK7aYjhV1LEQRxmYmapGjxwt_YpQa-a9Fwd60Hv9KgkHgiyMq8_xw>
+    <xmx:WtK7aVrYmVI80VdDtMF-OmccSqUAe6nthbWEeVVHWbyTQbczISzNrQ>
+    <xmx:WtK7aYORap6jM2QDIn0HYAm2wzTLKj1piHFTsIWtFOZqGZ7O1Yc2Dw>
+    <xmx:WtK7aTa1vERZfZ7FWR9ShF5RZWbjpgXaS_i0p62kAORFTUv1PpeT0De3>
+Feedback-ID: i10464835:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
+ 19 Mar 2026 06:39:20 -0400 (EDT)
+Date: Thu, 19 Mar 2026 10:39:14 +0000
+From: Kiryl Shutsemau <kas@kernel.org>
+To: Yan Zhao <yan.y.zhao@intel.com>
+Cc: seanjc@google.com, pbonzini@redhat.com, dave.hansen@linux.intel.com, 
+	tglx@kernel.org, mingo@redhat.com, bp@alien8.de, x86@kernel.org, 
+	linux-kernel@vger.kernel.org, kvm@vger.kernel.org, linux-coco@lists.linux.dev, 
+	kai.huang@intel.com, rick.p.edgecombe@intel.com, yilun.xu@linux.intel.com, 
+	vannapurve@google.com, ackerleytng@google.com, sagis@google.com, 
+	binbin.wu@linux.intel.com, xiaoyao.li@intel.com, isaku.yamahata@intel.com
+Subject: Re: [PATCH 1/2] x86/virt/tdx: Use PFN directly for mapping guest
+ private memory
+Message-ID: <abvR2A19S4ZtpAli@thinkstation>
+References: <20260319005605.8965-1-yan.y.zhao@intel.com>
+ <20260319005703.8983-1-yan.y.zhao@intel.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: lhrpeml100011.china.huawei.com (7.191.174.247) To
- dubpeml500005.china.huawei.com (7.214.145.207)
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260319005703.8983-1-yan.y.zhao@intel.com>
 
-On Tue, 17 Mar 2026 11:43:34 +0000
-Sascha Bischoff <Sascha.Bischoff@arm.com> wrote:
+On Thu, Mar 19, 2026 at 08:57:03AM +0800, Yan Zhao wrote:
+> @@ -1639,16 +1644,17 @@ u64 tdh_vp_addcx(struct tdx_vp *vp, struct page *tdcx_page)
+>  }
+>  EXPORT_SYMBOL_FOR_KVM(tdh_vp_addcx);
+>  
+> -u64 tdh_mem_page_aug(struct tdx_td *td, u64 gpa, int level, struct page *page, u64 *ext_err1, u64 *ext_err2)
+> +u64 tdh_mem_page_aug(struct tdx_td *td, u64 gpa, int level, kvm_pfn_t pfn,
+> +		     u64 *ext_err1, u64 *ext_err2)
+>  {
+>  	struct tdx_module_args args = {
+>  		.rcx = gpa | level,
+>  		.rdx = tdx_tdr_pa(td),
+> -		.r8 = page_to_phys(page),
+> +		.r8 = PFN_PHYS(pfn),
+>  	};
+>  	u64 ret;
+>  
+> -	tdx_clflush_page(page);
+> +	tdx_clflush_pfn(pfn);
 
-> Unless accesses to the ICC_IDR0_EL1 are trapped by KVM, the guest
-> reads the same state as the host. This isn't desirable as it limits
-> the migratability of VMs and means that KVM can't hide hardware
-> features such as FEAT_GCIE_LEGACY.
-> 
-> Trap and emulate accesses to the register, and present KVM's chosen ID
-> bits and Priority bits (which is 5, as GICv5 only supports 5 bits of
-> priority in the CPU interface). FEAT_GCIE_LEGACY is never presented to
-> the guest as it is only relevant for nested guests doing mixed GICv5
-> and GICv3 support.
-> 
-> Signed-off-by: Sascha Bischoff <sascha.bischoff@arm.com>
-Does what I'd expect.
+This is pre-existing problem, but shouldn't we respect @level here?
+Flush size need to take page size into account.
 
-Reviewed-by: Jonathan Cameron <jonathan.cameron@huawei.com>
-
-
+-- 
+  Kiryl Shutsemau / Kirill A. Shutemov
