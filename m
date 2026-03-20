@@ -1,65 +1,84 @@
-Received: from out30-113.freemail.mail.aliyun.com (out30-113.freemail.mail.aliyun.com [115.124.30.113])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C41D023EAB3;
-	Fri, 20 Mar 2026 03:21:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.30.113
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 215A01C84A0;
+	Fri, 20 Mar 2026 04:03:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.11
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773976906; cv=none; b=inG8fnQ3xVHKEgIWyhH8VP1sdivMZf6KolillqDcAxudNYcxY2u8SZAEh3Ea/7dje4Vegv1O0Acp6iH//h4XjI8uaUi/8geBc49iZq4hxPv7E5H/z7XCdJEnwFd3s/wDAtf+Cq3DZWu+MeFmZIRIIreCTU8MiiD4Fux/DPb7u3c=
+	t=1773979417; cv=none; b=uWlC2nFF1YmMQTX5PWWd/5MOWSO0zE2IaMvCaKs2H57erA/kjdSapQrVLsobOFlZbwzwsNAsz5VcawPOf1LuvOs2dKihgyaywSdDcW+n9nTYsO3zewKPpA2EZCiSsJm2AXeqzgeCWBlPEx2Q/EtdW6hzjP8Cg2kWRKgYCH98nQs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773976906; c=relaxed/simple;
-	bh=gGbK1hlJNkFH+m2wLyf1yKsOfsiUVTktl0gahGS/72s=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=K4S6VyPj0JSDtX/fqYeacahgNwAAD0N8uR9YJshoK1XbGW/PgKPD1V6hf/t+D5IwR2zTMpGtizwLrqnNhNRa6j+u7I1XLDzOvkDtDWtaExRPC+xorI/3X4YflC19L7ANIvKkW1cbeuFnGCZph4LxMzkMypuYv0PKU5FiFdZe8s0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; spf=pass smtp.mailfrom=linux.alibaba.com; dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b=WNeekJYP; arc=none smtp.client-ip=115.124.30.113
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.alibaba.com
+	s=arc-20240116; t=1773979417; c=relaxed/simple;
+	bh=snaY+fSjBgR5sNLxgOSVbO2EQXnQ4xYoV9VyZu4budU=;
+	h=From:To:Subject:Date:Message-ID:MIME-Version; b=SWr66uXIVroHD3tj2jH5gnz/AAWH7xOrAHqzkXEB8Je1cd5o7NCHPx8VtijHqLZbQAvI+wOzltgHx0ILMepEY+FrmVgwx+g11qch9uy9OI3XVTfHyOi01vQQcfeEGnAF0YlpF1hQGBfNYV+N632MOThx1TwXK49ZMl0AMrSB3no=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=egIcLoxr; arc=none smtp.client-ip=192.198.163.11
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b="WNeekJYP"
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux.alibaba.com; s=default;
-	t=1773976900; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
-	bh=euot9GX9Psoi1WN6TxY1zgk1VpiBJA8QKwf2sKbBPeo=;
-	b=WNeekJYPe0LKc7+v9ue9xJzoy/1iNkg2xnRG8rycFRmOAcDCvEQsAQ0CQzS/6+oaUiTxpExgwKSfnvwdGZZ7Zujav7KNpIgreUqDVFsK83f+cN6ibGRGv0kroILGiMJ3Rlf+IWeJEPdTXoW5vdep2pM2PeNuTGNN2LbbZGrkbxs=
-X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R471e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033037009110;MF=baolin.wang@linux.alibaba.com;NM=1;PH=DS;RN=17;SR=0;TI=SMTPD_---0X.K7P-S_1773976899;
-Received: from 30.74.144.136(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0X.K7P-S_1773976899 cluster:ay36)
-          by smtp.aliyun-inc.com;
-          Fri, 20 Mar 2026 11:21:40 +0800
-Message-ID: <ab7ea070-47c8-447a-8e9e-ac471063cf8d@linux.alibaba.com>
-Date: Fri, 20 Mar 2026 11:21:39 +0800
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="egIcLoxr"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1773979415; x=1805515415;
+  h=from:to:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=snaY+fSjBgR5sNLxgOSVbO2EQXnQ4xYoV9VyZu4budU=;
+  b=egIcLoxr/OlegDrsYtG2EuyCBsXerJicfj7MST09qbsQ+RS6M8hLkL0B
+   PajFSgLv2a1zO6urwSJJ7w/Cxx9ktrFYCzY/xuKrAfu2RmrpXFTiYtQBl
+   zJLSyiH/q5Dkxr/Gyl+Qy/OYnGk5Yy86kjLU0VMc/5djIOb62GSW0gQSq
+   knzRcEfHa7hg7kAVkVPMlWcgiBAJdcHJkWvou8jJsjZyEVkdD8IottwZH
+   96PjyTtG2+/hZX1YeXTUsYTaz1lGB1wordLe4io77cmMZVSL7wvkJ3cci
+   jG0IAOMFSNd3thFwfuEx6268kh4f2YKkl06M0WWoGridr2wbv6UtJcw/c
+   w==;
+X-CSE-ConnectionGUID: xGo/XbsoRFSd1x8sxen1Zg==
+X-CSE-MsgGUID: V54i1iKeT+OFZrZuM+JyeA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11734"; a="85688471"
+X-IronPort-AV: E=Sophos;i="6.23,130,1770624000"; 
+   d="scan'208";a="85688471"
+Received: from fmviesa005.fm.intel.com ([10.60.135.145])
+  by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Mar 2026 21:03:34 -0700
+X-CSE-ConnectionGUID: TRzDkONRTwSQvxyk9j2xYA==
+X-CSE-MsgGUID: IGCmYFdgQeG7FOvst1fZmQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.23,130,1770624000"; 
+   d="scan'208";a="227885150"
+Received: from ly-workstation.sh.intel.com ([10.239.182.64])
+  by fmviesa005.fm.intel.com with ESMTP; 19 Mar 2026 21:03:31 -0700
+From: Yi Lai <yi1.lai@intel.com>
+To: yi1.lai@intel.com,
+	Alex Williamson <alex@shazbot.org>,
+	David Matlack <dmatlack@google.com>,
+	Shuah Khan <shuah@kernel.org>,
+	Baolu Lu <baolu.lu@linux.intel.com>,
+	kvm@vger.kernel.org,
+	linux-kselftest@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH 0/2] vfio: selftests: Fix MMIO test failures in iommufd compat mode
+Date: Fri, 20 Mar 2026 12:03:20 +0800
+Message-ID: <20260320040322.487429-1-yi1.lai@intel.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 0/6] change young flag check functions to return bool
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: david@kernel.org, ljs@kernel.org, Liam.Howlett@oracle.com,
- vbabka@kernel.org, rppt@kernel.org, surenb@google.com, mhocko@suse.com,
- linux-arm-kernel@lists.infradead.org, x86@kernel.org,
- linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
- linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org,
- kvm@vger.kernel.org, open <linux-mm@kvack.org>, linux-kernel@vger.kernel.org
-References: <cover.1773890510.git.baolin.wang@linux.alibaba.com>
- <20260319201839.2dfa704041b8f13d8dbbfd3b@linux-foundation.org>
-From: Baolin Wang <baolin.wang@linux.alibaba.com>
-In-Reply-To: <20260319201839.2dfa704041b8f13d8dbbfd3b@linux-foundation.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
+This series fixes two issues in the vfio_dma_mapping_mmio_test selftest when
+running in iommufd compat mode.
 
+The first patch fixes a segmentation fault caused by an uninitialized list head
+when __iommu_map() fails (as expected for MMIO regions in iommufd).
 
-On 3/20/26 11:18 AM, Andrew Morton wrote:
-> On Thu, 19 Mar 2026 11:23:59 +0800 Baolin Wang <baolin.wang@linux.alibaba.com> wrote:
-> 
->> This is a cleanup patchset to change all young flag check functions to
->> return bool, as discussed with David in the previous thread[1]. Since
->> callers only care about whether the young flag was set, returning bool
->> makes the intention clearer. No functional changes intended.
-> 
-> One observation from Sashiko.  Minorish, worth addressing:
-> 	https://sashiko.dev/#/patchset/cover.1773890510.git.baolin.wang%40linux.alibaba.com
+The second patch fixes a test assertion failure by aligning the check for the
+__iommu_unmap() return value based on the iommufd mode (native vs. compat).
 
-Yes, good catch. Will fix in next version. Thanks.
+Yi Lai (2):
+  vfio: selftests: Fix iommufd compat mode __iommu_unmap() crash
+  vfio: selftests: Align __iommu_unmap() check with iommufd compat mode
+
+ .../selftests/vfio/vfio_dma_mapping_mmio_test.c        | 10 +++++++++-
+ 1 file changed, 9 insertions(+), 1 deletion(-)
+
+-- 
+2.43.0
+
