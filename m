@@ -1,114 +1,162 @@
-Received: from mail-lf1-f52.google.com (mail-lf1-f52.google.com [209.85.167.52])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3566831D362
-	for <kvm@vger.kernel.org>; Fri, 20 Mar 2026 15:39:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.167.52
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774021170; cv=pass; b=IEcJLXqJFIv8XqrQUwAvjL5sH14BYLpUpIHu/RJt2xQ7EFV8zH0TdKk/v498gzw1OjKH06GZRB/8OuPqBBGxyP8sUYo4SSbKDbXo6LJniCKWwH7dIt3HSuhnUCN2vvyGyd+bWPywIlgg0C507Xp+dsGlnXVp2pT2uxiqkxpt1kw=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774021170; c=relaxed/simple;
-	bh=chgcSRYsj8N0hiOmzDKpGUiSVwJE625pHCuXPV8ofCc=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=YFIqF1VC+tndV2pU0uzo0wemqFKQ08VBhqQPl+gLQ6wYDEOifLdLJa1yHeQwmZi1lL6L2pBwHcZCw0mky9chFgPANtWAvlVwofKeYr2+QcQpcW26XNxKzbsGhRKuQaUQJ9J3o3LGj1NCEdeHNsPTidrKan6FRuJDHPIupwz/5Lk=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=KT17nNjN; arc=pass smtp.client-ip=209.85.167.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4BC2129AB02
+	for <kvm@vger.kernel.org>; Fri, 20 Mar 2026 15:48:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1774021707; cv=none; b=JOInp22KQrTVdk1eAR76avaPbmx+tCpPjDO9j0H+NDfkAM/6nqEYPOYhfOfQz5QqyZDtucMvpMoAb4tKJ3J2PH4PU3QeLaySLI+DznhCT2Mwam+6c9mXjK6sdMi0UwMLSHkpp4O+Y/UsFYOsmFAKuJOdhBGXWESsaBRz5vJg9NM=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1774021707; c=relaxed/simple;
+	bh=qbR0drwYvkhrW20NKtZ/Kq2rxcgGlM0hgr9+sYWvSpk=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Y4dm7ph93fOxPxSHhGVeAypLby7GbPKADZNQOOo7FIo8AbWgOq1R5uW4r33ddkzwc46O68qCTqUR9hM6ndG3k6OhUDFmfmesEy65cfPvdrlJIZ92xLfBn27uL4soTfv0xXhSYKEzv4xCX9fxDdj5CH+MRwzA7Erdg64FRJ1mMOI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=f6FrQNXE; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=Y0Z2STLU; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="KT17nNjN"
-Received: by mail-lf1-f52.google.com with SMTP id 2adb3069b0e04-5a1443780c4so2718493e87.0
-        for <kvm@vger.kernel.org>; Fri, 20 Mar 2026 08:39:25 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1774021164; cv=none;
-        d=google.com; s=arc-20240605;
-        b=KP5TZ8I66ii8NCwbMsX9lP/zqVEdvw83zIABZgtqEDRQEa8WuT5ngLH6H1v51ozyzu
-         IYqIQhpaFDc5tJbe/+5GDr937B/RuQUmOnfo/1g8az3F6HTUMrRQ4Xk2nTlARiMY69+E
-         6d7O53cmsVxgz0l37V+PQKGb7iybGZFyO8J3m1+xlNObRB8vzqHO9nZS9H3q/DzdYZM0
-         uGd9Ze3c75nfhT9t1HcwGcL9DBljK8Km0ZUMJOcD0kuj+Sce6Fsz3yOO2p3YxmH/NUCz
-         628IK2GQohHnF6ysMRJURMGu01IaezLhIJPNQV3jEbzqAs6CBOiZUKOOsUeXCZEeBY8G
-         R4Jg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=6tEASViCDgGpPWmKGrjem3hVHYFcIgQS0LV4EwIiBtQ=;
-        fh=UobIoI5qf2tWVyo+dMgZd/iXGOjHDpHNBO++FCExWX4=;
-        b=DONswU1O7qr/wv/vvDh0Gza+lQqpzovaO5gNuPjVbFGHXy5t1NDrBpIbOiLAClmAYk
-         82clSTOgyhdxUKQdFXbATZ+f3/RwDg8FuWlStHkrsXU4kRhhDy+3hM3MQ7bZDy6lw5Vr
-         ZeU3y5LtGP6CrcUA+xnPbnLNSoYB1eHgoVjQClKKsVibfeVZfIinNa+9+FR5LrH0oXFe
-         TBlfE0/WnUN1uFayXU1kUnSPxuXw1MjBUClLRwrL43qa2QYHk2GKjXgq0/t26YMhnmiO
-         q0hJFZZUiJzzyyVaZzzc98vobxBcGsZGX8OF9FJS2eujUy9bEtboTYxgewQBWvBrvYkV
-         onmw==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="f6FrQNXE";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="Y0Z2STLU"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1774021705;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=DKuhkeFeXS7Jd0XeIWPiXn4LbHD4gy847cS4YxDczJU=;
+	b=f6FrQNXEezRGVMgTNBmfy9jIuP71iJbsArMEzz99c36DIcUfM1anFiM780vaD5Y2c53rdM
+	szdt02Nash6kapybir2hFWVHim6Yt6x/rK7nZPA0fmSMEpLRbibQj/EVk1c5QWP5H6X+hl
+	vuNHqm4UcH7hPMN6o26aPon4bmpqvXk=
+Received: from mail-pf1-f200.google.com (mail-pf1-f200.google.com
+ [209.85.210.200]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-226-JQfGUWMrOX22jxEZIOaaTw-1; Fri, 20 Mar 2026 11:48:24 -0400
+X-MC-Unique: JQfGUWMrOX22jxEZIOaaTw-1
+X-Mimecast-MFC-AGG-ID: JQfGUWMrOX22jxEZIOaaTw_1774021703
+Received: by mail-pf1-f200.google.com with SMTP id d2e1a72fcca58-82a6906e35fso3462636b3a.0
+        for <kvm@vger.kernel.org>; Fri, 20 Mar 2026 08:48:24 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1774021164; x=1774625964; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=6tEASViCDgGpPWmKGrjem3hVHYFcIgQS0LV4EwIiBtQ=;
-        b=KT17nNjNbQH9As/b1rcGZU0hvGHHPJ4zAJU7YYSPUNa0RlDI14t4ZqxzU8zewx7AOX
-         EgDIarBi4mgzsDmUEelnbVj3ZeBdo452r4fzuDu3jvdyyncFSHGDv8DhDAqemTONu4pY
-         Hxmsiu1Vmc9C132zvK1aQGUeS7SF4xCDc44aBSs2/CggZNj0wSCjklBk+Swy2UovHtBp
-         Vf3kkgSddcpEykwLyi8T3bcxT6XRHgSYp280sveDep6Rc1Y8Q+Rtp/YsMqetv9dXXg2r
-         rBshjwefDZCbg3ISKoO0unXyPLDykWp+6e0HBvgWszwsNfCD9A4CisznFP7ZtMvVmQL/
-         6/Qw==
+        d=redhat.com; s=google; t=1774021703; x=1774626503; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=DKuhkeFeXS7Jd0XeIWPiXn4LbHD4gy847cS4YxDczJU=;
+        b=Y0Z2STLUCWQmgFbkt61zhCFOjzZLSJZaymVNZKzg/CW9UUyuM5dU73EWSHvb1TAkto
+         iuvKYx21e5Z4jd4Hy/tezXlem7rHW4a59QDdBFtrj7fNvgQnZ0hhl3MQCo9xe9CXPPB1
+         KBQ35q9HcxBk6VqqdY4+9YTyQChCs+2gCK2qrHdZ0KCvWIectAi/kdaUcuADs1vtN7fQ
+         /0mFfrpmbQj/Sf90p8TgOZB9cXqCKpdxoTlNx0umai+cNTWJZ0Sa1HcHfPqbX1aVmsLh
+         8sfwlo90Ce60mljhZXvovsaIDOgIOvSrhN/3/4k0RutYRgEkdDzfO9B5cUShHIrGIiJY
+         asjg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774021164; x=1774625964;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=6tEASViCDgGpPWmKGrjem3hVHYFcIgQS0LV4EwIiBtQ=;
-        b=occtfvXPEnaM6BRiPJ0O7GYeGpeGKti8nmcLXKdFfKsnJ/yRK93beIqPgG6i3JcQan
-         rBhHtePRT4ja9mdBklkJ6oNLngMl6xuPs/hxH5M/A/HvsnpJeZoiTmfhLWt7VTtVTosw
-         UQU7yIQHi74BTpjcwtIIinhL1UD7NbzPidyaGzUdpBYjK+XOLbMZ7gKHeNFy4bwvMhzx
-         x2JLS/aRMVq8DdpPHoHrjuQas+ryiCFCgKB5Rp2hE71+X/tlkbtDOnxc9zmoDkACeXAC
-         MJJ7c6xWx82LlNgyv9q07nad3uaWy48xnAzJCL+PR9RMY8RO1L+D/N/JhzLpz9z3Idxe
-         fpFg==
-X-Forwarded-Encrypted: i=1; AJvYcCWd+GE6NLWdbeyo8hVVFw/73wDu9BWwI8ETA5FIhjS+WRtfw3sb+z20K6RlNQaITmQoogE=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxWCIKZqndy1CZUBusCsaVCtteu1dLnN5P3cDZHEzJjOqWP6klX
-	hPHzIhMpPIunYlnkq8N8vgPPIsJWpSZRFWjDDMUKA1JY8Kk0OpDda/yenXt758AL2r15/dKX0+r
-	f2b9w3uCwDB91BzKhqsYVUDwDJXcNTnz+pb+sUU7U
-X-Gm-Gg: ATEYQzzaPMEAAYfNQTDYlXQAidwusT2xFI0W5BQ4s1/iAH70gNCwrVXPM0kJw5rtA8F
-	c38QlIkwxsAX2rEPdzVAhpuG1d4yw7GhnM8vkyzM4GqFPZwAWgHRN1aod/aytb0/3kyYaeQKs7+
-	EVBYGNL8wKa3YrbuK5BZbgScBAO55FZ20Ys8zB0NGgZboGiSwkjZ5awo0bvvgm9NXR+9gPuE7aC
-	cLl8Hl1wt3iMa8tByqGaZ/X04qZcFpNj+RcvDfShPhgSsTYxZE4JXeywcNntVZXV+feFgQ78cjo
-	LD2K36GZ
-X-Received: by 2002:ac2:4c52:0:b0:5a1:42ae:88b6 with SMTP id
- 2adb3069b0e04-5a27de4f200mr2823773e87.18.1774021163672; Fri, 20 Mar 2026
- 08:39:23 -0700 (PDT)
+        d=1e100.net; s=20251104; t=1774021703; x=1774626503;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=DKuhkeFeXS7Jd0XeIWPiXn4LbHD4gy847cS4YxDczJU=;
+        b=Q9DxWEOUjg7NfJVOEeJvECKzOr1K/dZ5onnpGLUAuLpE+UxQHeGhPgsBaEsrWUgv2b
+         QdYiuJ/VJzOdatmcGEqrGMzVLPIZD8GD95xRE/WXvJmEsoSFYRGtHDwMuhc95hqm9q7y
+         EplIuWLeEQLe018hNsUlFvxLJXn0rbLl3tLKi7T6RxuX39l1WuBUFVjht86hS1twOiJ/
+         MAz84P+BQaO34IwnXe5J0a/Tp/om/ShmSvOmgl4FGy/fQcVJOLlTy4bTlD8ms8njRyIt
+         x2fe4sB5e3jsUmCuN+KP7iuKXrBoSpBExEfHDb97Gh54tpeWWEjxcNLQHmjygQ9ZnSm0
+         3t4Q==
+X-Forwarded-Encrypted: i=1; AJvYcCWyirBsHn4SryHe4JI0COF/nIoiguH0kz/xebSG+ZRKlVe6cW0WqBSfN06CGooVCYunsM0=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy8qVCzOqPMBAb9LgkdxRp8r8yDu58I87LuNmvYvAlAiFxpo7ws
+	5NGe0tNTuU57ejV4iiQBPhb6HNAAjugBeaqmNNqqNMW+d7iJfsbRIhlVwmwAWAaZrcdyZAujMQs
+	KQHljmlGMkikFavWkvvCOaW9GK6NfUxe8Omn1aBe0Bl3Mo+rv8fFCR1uSjoZMpA==
+X-Gm-Gg: ATEYQzznqNLznT/XeEHRvPUfFU4vahmIGEkDSyQtW9O9HKJZNLSrSphPn7DCFtvruKP
+	xlIHpyfCV3E0b2AsBVsf/YLdISAY4cQKFKGXPvlXHNptYqi7pZQv7k0D1WakgHX/vIxQhVtHtDw
+	XHEUEhsEe6f7FsgPVRUIjcrtgtclWnc3WwWWlNusLs66sq9+YW9Dv/sDeVeN/0DN/cqcZb9bERd
+	XduDbW27U8UiSkOgPbazoBK6cGthyZzhLIPkHAZ2tL+fbktnKyo1z7906qcFXbxL0p9ApjKFvjR
+	4eVk4BZQU/XajSzOtQG+BW9C3/kKP5xvLrQrpz6N4jB7lkKsQ0X9i/4sYtz1nJJOXrlpOSUkkY6
+	4WSRqa57IHNiYyeFfWmLC+H7cd5yDAQbHogE2eUD23hFrgb4OYLvGeqIn1A==
+X-Received: by 2002:a05:6a00:3e12:b0:81f:ac1c:709e with SMTP id d2e1a72fcca58-82a8c45c006mr2610775b3a.31.1774021702829;
+        Fri, 20 Mar 2026 08:48:22 -0700 (PDT)
+X-Received: by 2002:a05:6a00:3e12:b0:81f:ac1c:709e with SMTP id d2e1a72fcca58-82a8c45c006mr2610756b3a.31.1774021702368;
+        Fri, 20 Mar 2026 08:48:22 -0700 (PDT)
+Received: from ani-lenovo.lan ([122.163.114.34])
+        by smtp.googlemail.com with ESMTPSA id d2e1a72fcca58-82b0409b448sm2267092b3a.39.2026.03.20.08.48.16
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 20 Mar 2026 08:48:22 -0700 (PDT)
+From: Ani Sinha <anisinha@redhat.com>
+To: Paolo Bonzini <pbonzini@redhat.com>,
+	Marcelo Tosatti <mtosatti@redhat.com>
+Cc: Sourav Poddar <souravpoddar93042@gmail.com>,
+	Xudong Hao <xudong.hao@intel.com>,
+	Ani Sinha <anisinha@redhat.com>,
+	qemu-devel@nongnu.org,
+	kvm@vger.kernel.org
+Subject: [PATCH for-11.0 v2] hw/hyperv: fix SynIC not initialized for CPUs after the first
+Date: Fri, 20 Mar 2026 21:17:52 +0530
+Message-ID: <20260320154752.204725-1-anisinha@redhat.com>
+X-Mailer: git-send-email 2.52.0
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260320010930.481380-1-yi1.lai@intel.com>
-In-Reply-To: <20260320010930.481380-1-yi1.lai@intel.com>
-From: David Matlack <dmatlack@google.com>
-Date: Fri, 20 Mar 2026 08:38:54 -0700
-X-Gm-Features: AaiRm53xAk-g3r9wQepDcgKbYKM9wGMEW73jp11NhHmcueWyQ_iS-zO8WHJC7NU
-Message-ID: <CALzav=fb8Tgv92FMv-yi5q9xesbBy4_tEq+Vyyypm4MVJ6YfHA@mail.gmail.com>
-Subject: Re: [PATCH v2] vfio: selftests: Support DMR and GNR-D DSA devices
-To: Yi Lai <yi1.lai@intel.com>
-Cc: Shuah Khan <shuah@kernel.org>, Raghavendra Rao Ananta <rananta@google.com>, Alex Mastro <amastro@fb.com>, 
-	kvm@vger.kernel.org, linux-kselftest@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-On Thu, Mar 19, 2026 at 6:09=E2=80=AFPM Yi Lai <yi1.lai@intel.com> wrote:
->
-> Currently, the VFIO DSA driver test only supports the SPR DSA device ID.
-> Attempting to run the test on newer platforms like DMR or GNR-D results
-> in a "No driver found" error, causing the test to be skipped.
->
-> Refactor dsa_probe() to use a switch statement for checking device IDs.
-> This improves maintainability and makes it easier to add new device IDs
-> in the future.
->
-> Add the following DSA device IDs to the supported list:
-> PCI_DEVICE_ID_INTEL_DSA_DMR  (0x1212)
-> PCI_DEVICE_ID_INTEL_DSA_GNRD (0x11fb)
->
-> Signed-off-by: Yi Lai <yi1.lai@intel.com>
+From: Sourav Poddar <souravpoddar93042@gmail.com>
 
-Reviewed-by: David Matlack <dmatlack@google.com>
+hyperv_is_synic_enabled() is a global flag that returns true after the
+first CPU initializes SynIC. With -smp N, all subsequent CPUs skip
+hyperv_x86_synic_add(), leaving them without a synic object. This causes
+get_synic() to return NULL, making hyperv_sint_route_new() fail and
+triggering an assertion crash in hyperv_testdev.
+
+Fix by introducing hyperv_is_synic_present() which checks per-CPU
+whether a synic object is already attached instead of using the global
+flag.
+
+Fixes: c4cf32fc63f1 ("kvm/hyperv: add synic feature to CPU only if its not enabled")
+Reported-by: Xudong Hao <xudong.hao@intel.com>
+Co-authored-by: Ani Sinha <anisinha@redhat.com>
+Signed-off-by: Sourav Poddar <souravpoddar93042@gmail.com>
+---
+ hw/hyperv/hyperv.c         | 5 +++++
+ include/hw/hyperv/hyperv.h | 1 +
+ target/i386/kvm/hyperv.c   | 2 +-
+ 3 files changed, 7 insertions(+), 1 deletion(-)
+
+diff --git a/hw/hyperv/hyperv.c b/hw/hyperv/hyperv.c
+index 27e323a819..3d6212613e 100644
+--- a/hw/hyperv/hyperv.c
++++ b/hw/hyperv/hyperv.c
+@@ -60,6 +60,11 @@ static SynICState *get_synic(CPUState *cs)
+     return SYNIC(object_resolve_path_component(OBJECT(cs), "synic"));
+ }
+ 
++bool hyperv_is_synic_present(CPUState *cs)
++{
++    return get_synic(cs);
++}
++
+ static void synic_update(SynICState *synic, bool sctl_enable,
+                          hwaddr msg_page_addr, hwaddr event_page_addr)
+ {
+diff --git a/include/hw/hyperv/hyperv.h b/include/hw/hyperv/hyperv.h
+index 63a8b65278..23091301d0 100644
+--- a/include/hw/hyperv/hyperv.h
++++ b/include/hw/hyperv/hyperv.h
+@@ -81,6 +81,7 @@ void hyperv_synic_reset(CPUState *cs);
+ void hyperv_synic_update(CPUState *cs, bool enable,
+                          hwaddr msg_page_addr, hwaddr event_page_addr);
+ bool hyperv_is_synic_enabled(void);
++bool hyperv_is_synic_present(CPUState *cs);
+ 
+ /*
+  * Process HVCALL_RESET_DEBUG_SESSION hypercall.
+diff --git a/target/i386/kvm/hyperv.c b/target/i386/kvm/hyperv.c
+index bd3c26d02b..420c76b5ff 100644
+--- a/target/i386/kvm/hyperv.c
++++ b/target/i386/kvm/hyperv.c
+@@ -27,7 +27,7 @@ int hyperv_x86_synic_add(X86CPU *cpu)
+ int hyperv_enable_synic(X86CPU *cpu)
+ {
+     int ret = 0;
+-    if (!hyperv_is_synic_enabled()) {
++    if (!hyperv_is_synic_present(CPU(cpu))) {
+         ret = hyperv_x86_synic_add(cpu);
+     }
+     return ret;
+-- 
+2.52.0
+
