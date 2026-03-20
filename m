@@ -1,112 +1,75 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A138E1A6809;
-	Fri, 20 Mar 2026 01:09:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.8
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A52B3247280;
+	Fri, 20 Mar 2026 02:39:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773968977; cv=none; b=AmLlbAwb8aXEzgIcBAGszYmp86oHq3z/VpVlgeQoZBEXGtVUCTEsw94kEAmUY0N2nNAOf6q3ewzHsLY8MrZPHWYgivJKivWBzb/Kl8cMAdwR2v2c3CNdeBnDUsD3VXc85hm1Wbx+7lCut69uMG+tlqwdQPsTPBPqf8iYSNOemGU=
+	t=1773974355; cv=none; b=DFg2QX9FkPQb77Gj9Fnnz+UKXewJB/z/Nt6KjN35IqmT3s6xiP+2ftxAZkkEgLkR0NexypnTkjM4Hm7xJsh1p7Dmzg7rk5gs0is7y/eEn1fO6oSITOVy6quoNJtiJJfemFFogQyHjiqoqxUf3zYEdDrtgpipt4S7pPYe8YiDWgY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773968977; c=relaxed/simple;
-	bh=Eh8u5fRl2jl7IiJCj/aoUOgKAuSG6seXnhZbnDfFHWw=;
-	h=From:To:Subject:Date:Message-ID:MIME-Version; b=f6TOD404qGvLkj3Uyd4cqXc73VkA2wUVuSk/WWf2GvphOB/1JD4KUgRC7Vp89zJlNZUefbIca7BjeX4VgdG/oe+3lDMiHa7qto6Y34/Yms1iKdJ1br9IDKai5kcLprmI1QwjkZApGpLkKPT9kzUh0gLtsiouh8zANAPI3qoz5rY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=lHU/j16E; arc=none smtp.client-ip=192.198.163.8
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1773974355; c=relaxed/simple;
+	bh=DI9Kcp+U8vLohFD58fGlbWJnlUtiSZ9bu+o5I9WX6hc=;
+	h=Date:From:To:Cc:Subject:Message-Id:In-Reply-To:References:
+	 Mime-Version:Content-Type; b=E41aj68vkrwC72/DMPbhZ+XWA17TU1jptZotdUWg0aGYX2/BndcLLePtycjsexkzM6LB5oSzey9ohBWLmI8+/avVxeyqLwcZeFNRmSzdgbias8CWr0/+V01xMMhzp2kdJJSEltnPQrQpF036sGDY+qkuR+RnE4qFKU5fyuEJi68=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=ypH57gKq; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="lHU/j16E"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1773968975; x=1805504975;
-  h=from:to:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=Eh8u5fRl2jl7IiJCj/aoUOgKAuSG6seXnhZbnDfFHWw=;
-  b=lHU/j16E/a8xqOtD768FLm6cxlnLk62Kb8ic1X36I6YGgty/SR21BleS
-   EFc8Eu1XXp4TjJUgV/Mc9TQ+G1ZfFQxtKPHUfpuelyyMryLQUmowbVpw5
-   c2S3nbZq3gze9WyWmthT75yTyJ1AgvnWPAXsJ5FJZFl9L7zOY0gNMeMbu
-   U/yy3nbom1JZ5RXQ6Tcm4j8u/CA/IEkuUvft7gbyKY14xuTkjbHp5LH3W
-   uxKkS4+DTJTMgfkDAvjL6oWgT1Fy5ntE83Z5ED1VUP2ezDvVaPyDEfkwu
-   tb4xAvmvYGzv8j2MGAYFsG5IIYoV3qWchR1xlG6/LBa8L/lIu2yVg5fSU
-   Q==;
-X-CSE-ConnectionGUID: w3yVY2o0T++pI8/eTnPayA==
-X-CSE-MsgGUID: jM1XH83hR7uDYsS4egSAGQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11734"; a="92626658"
-X-IronPort-AV: E=Sophos;i="6.23,130,1770624000"; 
-   d="scan'208";a="92626658"
-Received: from fmviesa007.fm.intel.com ([10.60.135.147])
-  by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Mar 2026 18:09:34 -0700
-X-CSE-ConnectionGUID: JkoDgQHeTmKyhIfb22RIHw==
-X-CSE-MsgGUID: PzwUfweWQtiSxLPIf4sCJQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,130,1770624000"; 
-   d="scan'208";a="220072732"
-Received: from ly-workstation.sh.intel.com ([10.239.182.64])
-  by fmviesa007.fm.intel.com with ESMTP; 19 Mar 2026 18:09:32 -0700
-From: Yi Lai <yi1.lai@intel.com>
-To: Shuah Khan <shuah@kernel.org>,
-	David Matlack <dmatlack@google.com>,
-	Raghavendra Rao Ananta <rananta@google.com>,
-	Alex Mastro <amastro@fb.com>,
-	kvm@vger.kernel.org,
-	linux-kselftest@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	yi1.lai@intel.com
-Subject: [PATCH v2] vfio: selftests: Support DMR and GNR-D DSA devices
-Date: Fri, 20 Mar 2026 09:09:29 +0800
-Message-ID: <20260320010930.481380-1-yi1.lai@intel.com>
-X-Mailer: git-send-email 2.43.0
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="ypH57gKq"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2AD69C19424;
+	Fri, 20 Mar 2026 02:39:14 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1773974355;
+	bh=DI9Kcp+U8vLohFD58fGlbWJnlUtiSZ9bu+o5I9WX6hc=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=ypH57gKqZ0OwuS4fW8MKdbyIUFOBAIY62ge8wCa29QezHhC9yDlXbHSuDTqAqiRit
+	 0nrRhN4kKvLaF3Cot165iP6LM4ifmdtzdwdQ9o+THs1G+Ia4c8j6RKJsXvBl0+a2l3
+	 Bk+Jg3XbtZrDAMkhXknHaU2pjg6/iA+FxqrmW+yE=
+Date: Thu, 19 Mar 2026 19:39:13 -0700
+From: Andrew Morton <akpm@linux-foundation.org>
+To: Lisa Wang <wyihan@google.com>
+Cc: Miaohe Lin <linmiaohe@huawei.com>, Naoya Horiguchi
+ <nao.horiguchi@gmail.com>, Paolo Bonzini <pbonzini@redhat.com>, Shuah Khan
+ <shuah@kernel.org>, Hugh Dickins <hughd@google.com>, Baolin Wang
+ <baolin.wang@linux.alibaba.com>, David Hildenbrand <david@kernel.org>,
+ Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, "Liam R. Howlett"
+ <Liam.Howlett@oracle.com>, Vlastimil Babka <vbabka@kernel.org>, Mike
+ Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, Michal
+ Hocko <mhocko@suse.com>, linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ kvm@vger.kernel.org, linux-kselftest@vger.kernel.org, rientjes@google.com,
+ seanjc@google.com, ackerleytng@google.com, vannapurve@google.com,
+ michael.roth@amd.com, jiaqiyan@google.com, tabba@google.com,
+ dave.hansen@linux.intel.com
+Subject: Re: [PATCH RFC v2 0/7] mm: Fix MF_DELAYED handling on memory
+ failure
+Message-Id: <20260319193913.eac97eee63f451ca325dd775@linux-foundation.org>
+In-Reply-To: <20260319-memory-failure-mf-delayed-fix-rfc-v2-v2-0-92c596402a7a@google.com>
+References: <20260319-memory-failure-mf-delayed-fix-rfc-v2-v2-0-92c596402a7a@google.com>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
+Mime-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-Currently, the VFIO DSA driver test only supports the SPR DSA device ID.
-Attempting to run the test on newer platforms like DMR or GNR-D results
-in a "No driver found" error, causing the test to be skipped.
+On Thu, 19 Mar 2026 23:30:27 +0000 Lisa Wang <wyihan@google.com> wrote:
 
-Refactor dsa_probe() to use a switch statement for checking device IDs.
-This improves maintainability and makes it easier to add new device IDs
-in the future.
+> Here's a second revision to fix MF_DELAYED handling on memory failure.
+> 
+> This patch series addresses an issue in the memory failure handling path
+> where MF_DELAYED is incorrectly treated as an error. This issue was
+> discovered while testing memory failure handling for guest_memfd.
+> 
+> The proposed solution involves -
+> 1. Clarifying the definition of MF_DELAYED to mean that memory failure
+>    handling is only partially completed, and that the metadata for the
+>    memory that failed (as in struct page/folio) is still referenced.
+> 2. Updating shmem’s handling to align with the clarified definition.
+> 3. Updating how the result of .error_remove_folio() is interpreted.
+> 
+> RFC v2 is a more complete solution that includes parts 1 and 2 above to
+> address David’s comment [1]. Selftests are included for all the above.
 
-Add the following DSA device IDs to the supported list:
-PCI_DEVICE_ID_INTEL_DSA_DMR  (0x1212)
-PCI_DEVICE_ID_INTEL_DSA_GNRD (0x11fb)
-
-Signed-off-by: Yi Lai <yi1.lai@intel.com>
----
- .../testing/selftests/vfio/lib/drivers/dsa/dsa.c  | 15 +++++++++++++--
- 1 file changed, 13 insertions(+), 2 deletions(-)
-
-diff --git a/tools/testing/selftests/vfio/lib/drivers/dsa/dsa.c b/tools/testing/selftests/vfio/lib/drivers/dsa/dsa.c
-index c75045bcab79..19d9630b24c2 100644
---- a/tools/testing/selftests/vfio/lib/drivers/dsa/dsa.c
-+++ b/tools/testing/selftests/vfio/lib/drivers/dsa/dsa.c
-@@ -65,9 +65,20 @@ static bool dsa_int_handle_request_required(struct vfio_pci_device *device)
- 
- static int dsa_probe(struct vfio_pci_device *device)
- {
--	if (!vfio_pci_device_match(device, PCI_VENDOR_ID_INTEL,
--				   PCI_DEVICE_ID_INTEL_DSA_SPR0))
-+	const u16 vendor_id = vfio_pci_config_readw(device, PCI_VENDOR_ID);
-+	const u16 device_id = vfio_pci_config_readw(device, PCI_DEVICE_ID);
-+
-+	if (vendor_id != PCI_VENDOR_ID_INTEL)
-+		return -EINVAL;
-+
-+	switch (device_id) {
-+	case PCI_DEVICE_ID_INTEL_DSA_SPR0:
-+	case PCI_DEVICE_ID_INTEL_DSA_DMR:
-+	case PCI_DEVICE_ID_INTEL_DSA_GNRD:
-+		break;
-+	default:
- 		return -EINVAL;
-+	}
- 
- 	if (dsa_int_handle_request_required(device)) {
- 		dev_err(device, "Device requires requesting interrupt handles\n");
--- 
-2.43.0
-
+A few questions from Sashiko:
+	https://sashiko.dev/#/patchset/20260319-memory-failure-mf-delayed-fix-rfc-v2-v2-0-92c596402a7a%40google.com
