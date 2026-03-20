@@ -1,150 +1,122 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lj1-f180.google.com (mail-lj1-f180.google.com [209.85.208.180])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 762133D47AE;
-	Fri, 20 Mar 2026 17:38:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.12
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774028303; cv=none; b=hyxStgJd0Wf2lK2t2krti4WpKm7FCyZBhjBtP40EOHqjYFexkNlJO5McPlJngcdBKe+Jc88I29D9TIcubygE+PMctqroPpCjBPi0Pt6KI1jqkGT9g2U7MdWfK8//Tck25TvUjGwSBLwc19+NwZn+LefIoDvrb32lRKibJ3zQT/8=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774028303; c=relaxed/simple;
-	bh=ppN1pcijQS5lCkx1/zvJhvMeWfiX6dzR3kQZB5HVrvw=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=OC5AV3Qaex2hjZXam0SvJXoWHz2ZUptZ5PkIEaBKzaN6O/7ovO5svd9O4PZUF+RS5ftzHPE4D0XPC4Oyami+iet8TYjSqYJu8YSXJTnkDK5ZI4sGF/VSOZgY7msFsE0INtwGvanZFfLlo4Q1ojIdPSIM1UqA6xEhcKuG8ZsJGl8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=UX1dFMNg; arc=none smtp.client-ip=192.198.163.12
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 809F73D34BD
+	for <kvm@vger.kernel.org>; Fri, 20 Mar 2026 17:44:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.208.180
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1774028665; cv=pass; b=XfVsDiExQyGz/RnayykNrKKemdvjAht1agwFGzVPlSAJasm8yYzSyrFL+HeLQL/tw715jf+790EnR3IBGu039xwRF8uJJx8vfxTFAqs8dkL1QhvdH5J/jYQlN5//FcTLFx1p/GKwdDTKpMx2y6Kjtn3OZBmeJUF05Koh2vj9R34=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1774028665; c=relaxed/simple;
+	bh=4aVwgVCNXTCuRGImU93RODTQQdSZ5JBkI1KVTbDzd2Q=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=rXGM6rmsPU4b6mEx5soJ8rWRkdKLoc/fDMgKx6NabfbZ6CBmnFeIa8n5wNP3QwhnAcpBe+E7zMSaeZU9A9jJtW4Q3xm/tGGdNY321RfCH0EpgsLIzXSylvqN1Sd3YDGq6714cuEulTFE3K92b9p1ab8/yUa2WbHkxAzCnbJRgug=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=tZHIkbsy; arc=pass smtp.client-ip=209.85.208.180
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="UX1dFMNg"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1774028300; x=1805564300;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=ppN1pcijQS5lCkx1/zvJhvMeWfiX6dzR3kQZB5HVrvw=;
-  b=UX1dFMNg6OcWhHtRcusBexa36QAfeBX1F0PQdRetQVAN1dGKkJRu3jxN
-   MLvqSYHu9UZWIxTyeC7Wgcd4MiSw2NiA81RUb9L2YKxgIM/a8+OT0LDVm
-   GIpow+3zNPT3cI+brs6dbaDz9igZnAG95/tR2vP22TmLTgXABzpDU7Pbr
-   KKBDeZPM0pEJXxvP71DMX7trN1MaLbmRPyTbkQsEHjHudcMN4mgMjhmcH
-   UaWmoCwoVMsgvlYw4rSJ4FHlAP7Sb/c3Ur3fApfYgGZFAdkQDZ4oMc2cl
-   Kib52t3TSLZFo2KOewnrKcvqLU76MaLQWsapynaWt9aVNBMYwDR2fOjok
-   A==;
-X-CSE-ConnectionGUID: Mwtef2lzT0GOYaP6GRXP7g==
-X-CSE-MsgGUID: xcRYcVRLQHSTEcq4zShXHw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11735"; a="79024068"
-X-IronPort-AV: E=Sophos;i="6.23,130,1770624000"; 
-   d="scan'208";a="79024068"
-Received: from orviesa005.jf.intel.com ([10.64.159.145])
-  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Mar 2026 10:38:19 -0700
-X-CSE-ConnectionGUID: hgi0J7GmReqfDbRWOQfZWg==
-X-CSE-MsgGUID: qo1T3zduR3WkSNP86jYu6g==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,130,1770624000"; 
-   d="scan'208";a="228286340"
-Received: from dnelso2-mobl.amr.corp.intel.com (HELO [10.125.109.109]) ([10.125.109.109])
-  by orviesa005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Mar 2026 10:38:18 -0700
-Message-ID: <c8c15f0c-6fd4-4a1f-98c3-58467b46afe2@intel.com>
-Date: Fri, 20 Mar 2026 10:38:16 -0700
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="tZHIkbsy"
+Received: by mail-lj1-f180.google.com with SMTP id 38308e7fff4ca-38a76ba6a78so14187191fa.0
+        for <kvm@vger.kernel.org>; Fri, 20 Mar 2026 10:44:24 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1774028663; cv=none;
+        d=google.com; s=arc-20240605;
+        b=hvIp4h4JtaoYoD9LXyY6Ngf6D7PDcRghuPBaoFEw0VM2Vqq6xfxOJ1UGvdXX2gTn6o
+         svLajhjZS+4NcnUEAJ8MUSk31qZty8opa2Er/6y3QOzC0fPvCvYYd9ljxXE3fP0h9XGp
+         mj08xO0vrZ8fYFzAgiZUnFGC8a6iKT6PLNSXaZs8jHR1I7uI17DPRIki/x6sbutLH+oR
+         p/K331hApSzf9uyln46Uof6gfyOvQHgSe6nwi2rEFgyxxKoWyxxuicJv4rV2LYT++hxZ
+         vsX3rc69d0ZfeL8rKC3BNJqYdqA2tImMp+cA2ZmpgbDh8+vN9C0Ocd+1v6XK05ajk2q8
+         98Jg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=fEawU7hhiPlaWvDkkT1b3BQA0KPPuetCfnOfC5jcang=;
+        fh=9VMFm/nIFBwg7X4v7EjCXzsRqERA0jHgAjhX0DDuzI4=;
+        b=aHM9ZzRAgR8COsHaPqlCrFn0tGI4feCGysOu0YtE8T6Xns4fND7LBMjfuz4YzuwBqw
+         SyGNeNGkuAbdVI7JUWv/zpVksGeyVIRERIMJMhM7q6YVGcHhsri+MCZL/1tMNYbm69rf
+         S8FwjdzOvGPOO82ptWlCGkCdoS0C6HIeVexMZSTPzmCYWEEqCt7ntuRjt00XP3FWMtPX
+         D0oWC/cqFzQUA/HnVoozGIMiXfOJwOdWIuJdPvqZOFqvoYf+GMirE3+MIyk4OhLMZ1Xx
+         dXDkjR8wkgqzsM/yM2zPnf4dXjb8CzL11EMCkpLinxc1M4geE2PcYJ0fOuP21k0u/L3k
+         gQsw==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1774028663; x=1774633463; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=fEawU7hhiPlaWvDkkT1b3BQA0KPPuetCfnOfC5jcang=;
+        b=tZHIkbsyOEj4WYk0TRnB+mHDvoul3/eRjgOmSTHOdifeHVM6SLHekc5aX5rzf9NO/j
+         p+8wnYZrhChwoOgvOHAl8mgENT0dMNR84bhJnBl+1wkDUPvgIrGkaDqL63IHqKqcveZA
+         gW+a4ZKp4A7q7aDmn4kf+wJX3lNpzcX8fxEAe3mcHvb6LzuXbxKWoAix/bgAKapy6AWr
+         qnvyiT3zteSu0d94xpGxD4Jcs+n5Eq/CZAlK/n59W292AOAjOxDoaTiocwducWImxaIy
+         egr7JBl26UpVpz9oiLYGivf9cC+wXHujDoS/OAPLKmGRrl/tCcdLGhqFlX1oyEP4smz/
+         Dq0g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1774028663; x=1774633463;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=fEawU7hhiPlaWvDkkT1b3BQA0KPPuetCfnOfC5jcang=;
+        b=N1Hhs4eKReXeS2ZWNX1Ndmac+6anvwsJCUfJeXjqdmQNNWjsEiDrZc7BMRfT+FLAqp
+         /7PGJ/Sa2H3ryR0+k2uBF4NHb6JTR49Duzt9YCS7/THI6yXsl42hd6JzOVb+Zx+Flnbl
+         YFjC7NUKWtOELdM+M0unIEDmzBJ89bVQ5eTlyxzgn7cX4gb2fpjpmc/OG2d6MMQ6soHx
+         a4mPACdb4+ZELvtNTW0WMqty0wKlinHAv/crzMnHW8o5q8vxj+AQeDvrJ+Au2TI2QX82
+         og6kf9nANNh5xI5iLjIJ5W52sDvirXkPlxJb3knJecZBCXNk4kPT609SJw+DO29sR3Uh
+         7OFw==
+X-Forwarded-Encrypted: i=1; AJvYcCV6MJXAftwNz50yZQM9yfXrSNVJBPvO+VYp22BZy3dyQeu6rKuzdw4ydgNrBIU1tlG9Hqs=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz/BqbYVOx6cSJSgSpuTHLmPoQA9Y1v/OZkUKsEBHtCwAJhUekU
+	9D6pVCTaGlDZU6zC0c8aw4hsS7KhViWcnIiexQDshCwiqNs9+hAPzd5O3RhDV3Z0rYJJt/lqsiR
+	Bak2USm6VRzihmCEeCMg97AWFHjkwoiMlTMHUaZc/WB2lbxofSQXKTsMB4mE=
+X-Gm-Gg: ATEYQzyspfimIdEu/OU8+OYC7Guy1pHwbh4tTgn8yQ8oWbHVMWrYcLzrNZIXcepPeq7
+	2wqKkjUMC0A1Kjg2kzX6tjkE+jPiq4mcJ2yZcw5uBwreLBvc2CiakzLYKKWwrel6LnAwFxp5iaw
+	T0ujVttktvz5ZNeAoz8nhXA7qcsLp/YFwKszxJ1h3WReTxf5jGUI2ObTtJR/fg+7Pcv6vxm8pJ8
+	5K2nR3KVOj7vkxI1KZsLtO0vU2lmgahV1QZ2o7rNUvAOLdVxGVd4UaquydOIpOAP/5WH+Ys1h0+
+	oZ4LDxoO
+X-Received: by 2002:a05:6512:239d:b0:5a1:2fa5:b98f with SMTP id
+ 2adb3069b0e04-5a285b440d2mr1713791e87.26.1774028662081; Fri, 20 Mar 2026
+ 10:44:22 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/2] x86/virt/tdx: Use PFN directly for mapping guest
- private memory
-To: "Edgecombe, Rick P" <rick.p.edgecombe@intel.com>,
- "kas@kernel.org" <kas@kernel.org>
-Cc: "kvm@vger.kernel.org" <kvm@vger.kernel.org>,
- "Li, Xiaoyao" <xiaoyao.li@intel.com>, "Huang, Kai" <kai.huang@intel.com>,
- "linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>,
- "Zhao, Yan Y" <yan.y.zhao@intel.com>,
- "dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- "mingo@redhat.com" <mingo@redhat.com>, "seanjc@google.com"
- <seanjc@google.com>, "pbonzini@redhat.com" <pbonzini@redhat.com>,
- "binbin.wu@linux.intel.com" <binbin.wu@linux.intel.com>,
- "Yamahata, Isaku" <isaku.yamahata@intel.com>,
- "ackerleytng@google.com" <ackerleytng@google.com>,
- "Annapurve, Vishal" <vannapurve@google.com>,
- "sagis@google.com" <sagis@google.com>, "bp@alien8.de" <bp@alien8.de>,
- "tglx@kernel.org" <tglx@kernel.org>,
- "yilun.xu@linux.intel.com" <yilun.xu@linux.intel.com>,
- "x86@kernel.org" <x86@kernel.org>
-References: <20260319005605.8965-1-yan.y.zhao@intel.com>
- <20260319005703.8983-1-yan.y.zhao@intel.com> <abvR2A19S4ZtpAli@thinkstation>
- <abvlOcnY4assk8DW@yzhao56-desk.sh.intel.com> <abvxiuJfK2eM_1UX@thinkstation>
- <e3acc801e4e939a0a4794ba777e72f26b27af0d2.camel@intel.com>
- <ab1EcZ3G_Nc-929X@thinkstation>
- <d614658f2d1f3213b0d8ed404c51b3c4bfbe5d7d.camel@intel.com>
-From: Dave Hansen <dave.hansen@intel.com>
-Content-Language: en-US
-Autocrypt: addr=dave.hansen@intel.com; keydata=
- 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
-In-Reply-To: <d614658f2d1f3213b0d8ed404c51b3c4bfbe5d7d.camel@intel.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+References: <20260320040322.487429-1-yi1.lai@intel.com>
+In-Reply-To: <20260320040322.487429-1-yi1.lai@intel.com>
+From: David Matlack <dmatlack@google.com>
+Date: Fri, 20 Mar 2026 10:43:54 -0700
+X-Gm-Features: AaiRm53F1tOQ6brRQbfGyAbZmEh9eqOkPoonj4Uhxb1nqTWcmiu1s8LPUZQ3KBQ
+Message-ID: <CALzav=c5Sgv-x4LoCbJGdwuuQBr_4DQyZV=0vvnzG_16T3HtzA@mail.gmail.com>
+Subject: Re: [PATCH 0/2] vfio: selftests: Fix MMIO test failures in iommufd
+ compat mode
+To: Yi Lai <yi1.lai@intel.com>
+Cc: Alex Williamson <alex@shazbot.org>, Shuah Khan <shuah@kernel.org>, 
+	Baolu Lu <baolu.lu@linux.intel.com>, kvm@vger.kernel.org, 
+	linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	Alex Mastro <amastro@fb.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On 3/20/26 10:31, Edgecombe, Rick P wrote:
-> On Fri, 2026-03-20 at 12:59 +0000, Kiryl Shutsemau wrote:
->>> I feel like we argued about this before. But it would be more correct to
->>> just drop level and make it 4k only until huge pages? Otherwise we are
->>> tweaking dead behavior.
->> I guess. But you add one more thing on the list to remember when adding
->> huge page support. This kind of stuff is easy to miss.
-> I guess I'm fine either way. I'm not sure Dave will like adding dead branches
-> though. I suppose huge pages is close enough that we are looking to merge prep
-> work anyway.
+On Thu, Mar 19, 2026 at 9:03=E2=80=AFPM Yi Lai <yi1.lai@intel.com> wrote:
+>
+> This series fixes two issues in the vfio_dma_mapping_mmio_test selftest w=
+hen
+> running in iommufd compat mode.
+>
+> The first patch fixes a segmentation fault caused by an uninitialized lis=
+t head
+> when __iommu_map() fails (as expected for MMIO regions in iommufd).
+>
+> The second patch fixes a test assertion failure by aligning the check for=
+ the
+> __iommu_unmap() return value based on the iommufd mode (native vs. compat=
+).
 
-Can we add something that will BUG_ON() or fail to compile when the huge
-page support comes around?
+Alex Mastro also sent a fix for these issues here:
 
-I'd much rather have:
+  https://lore.kernel.org/kvm/20260303-fix-mmio-test-v1-1-78b4a9e46a4e@fb.c=
+om/
 
-	BUG_ON(level != PG_LEVEL_4K);
-	tdx_clflush_pfn(pfn);
-
-That go implementing a level argument to tdx_clflush_pfn() now. Then
-nobody has to remember. The list to remember is in the code.
+Can you take a look and see if it looks ok to you? I think I prefer
+Alex's fix. We shouldn't even be calling __iommu_unmap() after
+__iommu_map() fails.
