@@ -1,86 +1,147 @@
-Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0FB8238E103;
-	Fri, 20 Mar 2026 10:19:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=13.77.154.182
+Received: from sinmsgout03.his.huawei.com (sinmsgout03.his.huawei.com [119.8.177.38])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC048224B1E
+	for <kvm@vger.kernel.org>; Fri, 20 Mar 2026 10:27:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=119.8.177.38
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774001979; cv=none; b=D5wZnNkiOb3EBxtyCDQhG1c2x1BMb4eYS+t+eScrBAUhrLmL6IYmGyapsYsVpZff95uZ8Ni4QtdSuyTmO1aTatv7tPsHD8y880BO8IoBHzyF+6LnBv/rAWwwp3lvOiux6ZHqgTV4jsMhUv0gJgV0xfzzeSFqovy9PhwU7PdORDM=
+	t=1774002463; cv=none; b=utbNe+Gj3ck0xgfhP3iZ8AgkMLQov+TsfbTXqt3WYmXXIYr8WCB9vq7MoZ9Kn5FjX5a2Gn3HQSH/F8vhC5i12s0td1RMsi0SrKiV98lfh8kGxuTc86W8hZ3KiFST5N0nqZfJUpiAJwoduyCKPfElow3RdGcH+8l5DTPJSfQCl+U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774001979; c=relaxed/simple;
-	bh=QRUfFyJwT6qOrnEazRDbPg1WDHxi2v472i7GoX8JcKo=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=FS1xBkmzrO1vQ/+hyB2qPBlTrSNnxAV1JKVD4afe/LIBzwVZjzRXewv12xIPka+IiOHeMbO+mDU0cMm1t3KIHTtSvP5JHnK3VrhVHRy+VWZBN/wkklcA6VG1JwOds/WoLndWBkGsFKDxvUu2EYUE2RY0Ajqy9Vga/AKEjh4hV1c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com; spf=pass smtp.mailfrom=linux.microsoft.com; dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b=cXLrhpme; arc=none smtp.client-ip=13.77.154.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.microsoft.com
+	s=arc-20240116; t=1774002463; c=relaxed/simple;
+	bh=muaYL7889rOqt5BCy4lvNcMWdqCnxsgxxgGpjJAV1+c=;
+	h=Date:From:To:CC:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=bGpiN6N3bic1Hz6o9ihJlAO7XCPqu1KBa1bPw+g/PH26X1jC93zg2PSZ/y9v4rb2qfp8PXYvGipDXdiLIQ8Wer7ud4l1gq354zpRak4VH/nfRdQuagg/cDEE4MePIkvmf4CqIwXjPf2ECtV63ukLolyv3aujoCq/mFLBnXK4Thc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b=l1qkdEPs; arc=none smtp.client-ip=119.8.177.38
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b="cXLrhpme"
-Received: from linuxonhyperv3.guj3yctzbm1etfxqx2vob5hsef.xx.internal.cloudapp.net (linux.microsoft.com [13.77.154.182])
-	by linux.microsoft.com (Postfix) with ESMTPSA id 436BE20B710C;
-	Fri, 20 Mar 2026 03:19:33 -0700 (PDT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 436BE20B710C
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
-	s=default; t=1774001973;
-	bh=czjA+JLMJXAAj1eEQCrDT4VQOWKl8Iw1uQvMc0heQjo=;
-	h=From:To:Cc:Subject:Date:From;
-	b=cXLrhpmeFY9VRC1qv6cLXgYTQHhR/6ByOQ/e13dMhC5m79WmY1sCcoCpe0Yry9fBz
-	 OPYgfoVcOQm9vWLHdeJNg10ucaNWlSkSofoEj+GS51mcsfFfaFUU6k71rRRp/JldRI
-	 0/Voum0Ev2tKRoQ78IEgOEjJToQvqPtDxkB4yT4c=
-From: Prasanna Kumar T S M <ptsm@linux.microsoft.com>
-To: ptsm@linux.microsoft.com,
-	nipun.gupta@amd.com,
-	nikhil.agarwal@amd.com,
-	alex@shazbot.org,
-	pieter.jansen-van-vuuren@amd.com,
-	kvm@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Cc: stable@vger.kernel.org
-Subject: [PATCH 1/2] vfio/cdx: Fix NULL pointer dereference in interrupt trigger path
-Date: Fri, 20 Mar 2026 03:19:33 -0700
-Message-ID: <20260320101933.1554416-1-ptsm@linux.microsoft.com>
-X-Mailer: git-send-email 2.43.7
+	dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b="l1qkdEPs"
+dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
+	c=relaxed/relaxed; q=dns/txt;
+	h=From;
+	bh=lmN3Nn5+/2+wlJPdb9UE+9BhxULvNRbP8Duc4E3NT8w=;
+	b=l1qkdEPsha5VnNg/yiR/r0yZnfB6EtFX1UfDqnJBi7o45zR7Vs5LnRd5Lhz2KMksWEvlsxBgg
+	JhyGcZRro6H0711oMRtBYj8NeK4WVZ+C/UwA3JvTC2ANEyy8ebk4wQnuvFI5ox14hSd0OB/7yNc
+	Pg4/E2BDq5KN81n27MzIJBA=
+Received: from frasgout.his.huawei.com (unknown [172.18.146.33])
+	by sinmsgout03.his.huawei.com (SkyGuard) with ESMTPS id 4fcdtW4886zMpPn;
+	Fri, 20 Mar 2026 18:22:59 +0800 (CST)
+Received: from mail.maildlp.com (unknown [172.18.224.150])
+	by frasgout.his.huawei.com (SkyGuard) with ESMTPS id 4fcdyd5MdkzJ46f6;
+	Fri, 20 Mar 2026 18:26:33 +0800 (CST)
+Received: from dubpeml500005.china.huawei.com (unknown [7.214.145.207])
+	by mail.maildlp.com (Postfix) with ESMTPS id 98A594056F;
+	Fri, 20 Mar 2026 18:27:34 +0800 (CST)
+Received: from localhost (10.203.177.15) by dubpeml500005.china.huawei.com
+ (7.214.145.207) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Fri, 20 Mar
+ 2026 10:27:33 +0000
+Date: Fri, 20 Mar 2026 10:27:32 +0000
+From: Jonathan Cameron <jonathan.cameron@huawei.com>
+To: Sascha Bischoff <Sascha.Bischoff@arm.com>
+CC: "yuzenghui@huawei.com" <yuzenghui@huawei.com>, "lpieralisi@kernel.org"
+	<lpieralisi@kernel.org>, Timothy Hayes <Timothy.Hayes@arm.com>, "Suzuki
+ Poulose" <Suzuki.Poulose@arm.com>, nd <nd@arm.com>,
+	"peter.maydell@linaro.org" <peter.maydell@linaro.org>,
+	"kvmarm@lists.linux.dev" <kvmarm@lists.linux.dev>,
+	"linux-arm-kernel@lists.infradead.org"
+	<linux-arm-kernel@lists.infradead.org>, "kvm@vger.kernel.org"
+	<kvm@vger.kernel.org>, Joey Gouly <Joey.Gouly@arm.com>, "maz@kernel.org"
+	<maz@kernel.org>, "oliver.upton@linux.dev" <oliver.upton@linux.dev>
+Subject: Re: [PATCH v6 01/39] KVM: arm64: vgic-v3: Drop userspace write
+ sanitization for ID_AA64PFR0.GIC on GICv5
+Message-ID: <20260320102732.000062da@huawei.com>
+In-Reply-To: <88437fc1251f775d51e42d4b5e8318cd7031fa81.camel@arm.com>
+References: <20260317113949.2548118-1-sascha.bischoff@arm.com>
+	<20260317113949.2548118-2-sascha.bischoff@arm.com>
+	<20260319100256.00004de2@huawei.com>
+	<88437fc1251f775d51e42d4b5e8318cd7031fa81.camel@arm.com>
+X-Mailer: Claws Mail 4.3.0 (GTK 3.24.42; x86_64-w64-mingw32)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="ISO-8859-1"
+Content-Transfer-Encoding: quoted-printable
+X-ClientProxiedBy: lhrpeml500009.china.huawei.com (7.191.174.84) To
+ dubpeml500005.china.huawei.com (7.214.145.207)
 
-Add validation to ensure MSI is configured before accessing cdx_irqs
-array in vfio_cdx_set_msi_trigger(). Without this check, userspace
-can trigger a NULL pointer dereference by calling VFIO_DEVICE_SET_IRQS
-with VFIO_IRQ_SET_DATA_BOOL or VFIO_IRQ_SET_DATA_NONE flags before
-ever setting up interrupts via VFIO_IRQ_SET_DATA_EVENTFD.
+On Thu, 19 Mar 2026 11:35:32 +0000
+Sascha Bischoff <Sascha.Bischoff@arm.com> wrote:
 
-The vfio_cdx_msi_enable() function allocates the cdx_irqs array and
-sets config_msi to 1 only when called through the EVENTFD path. The
-trigger loop (for DATA_BOOL/DATA_NONE) assumed this had already been
-done, but there was no enforcement of this call ordering.
+> On Thu, 2026-03-19 at 10:02 +0000, Jonathan Cameron wrote:
+> > On Tue, 17 Mar 2026 11:40:13 +0000
+> > Sascha Bischoff <Sascha.Bischoff@arm.com> wrote:
+> >  =20
+> > > Drop a check that blocked userspace writes to ID_AA64PFR0_EL1 for
+> > > writes that set the GIC field to 0 (NI) on GICv5 hosts. There is no
+> > > such check for GICv3 native systems, and having inconsistent
+> > > behaviour
+> > > both complicates the logic and risks breaking existing userspace
+> > > software that expects to be able to write the register.
+> > >=20
+> > > This means that userspace is now able to create a GICv3 guest on
+> > > GICv5
+> > > hosts, and disable the guest from seeing that it has a GICv3. This =20
+> >=20
+> > Just to clarify this is removing a check on a nonsensical setup?
+> > I'm not against it if that simplifies things but I couldn't quite
+> > parse the description. =20
+>=20
+> Effectively, we were being more strict when running with GICv3 on a
+> GICv5 host than when running natively on a GICv3 host. This by itself
+> wasn't too big an issue, but it can cause existing software break if it
+> relies on being able to hide GICv3 this way (for whatever reason...),
+> and somewhat breaks the portability story.
+>=20
+> Moreover, we test these sorts of things in the selftests. If a virtual
+> GICv3 is created but then userspace comes along and zeros the feature
+> bits (so, hides the feature), we expect the FGU infrastructure to take
+> over to undef registers/instructions related to that feature. So, in
+> this case, rather than letting userspace hide the virtual GICv3 from
+> the guest, we instead stopped it from hiding it.
+>=20
+You have me at self tests of the infrastructure.  That bit I get :)
 
-This matches the protection used in the PCI VFIO driver where
-vfio_pci_set_msi_trigger() checks irq_is() before the trigger loop.
-
-Fixes: 848e447e000c ("vfio/cdx: add interrupt support")
-Cc: stable@vger.kernel.org
-Signed-off-by: Prasanna Kumar T S M <ptsm@linux.microsoft.com>
----
- drivers/vfio/cdx/intr.c | 4 ++++
- 1 file changed, 4 insertions(+)
-
-diff --git a/drivers/vfio/cdx/intr.c b/drivers/vfio/cdx/intr.c
-index 8f4402cec9c5..c0eed065e8ef 100644
---- a/drivers/vfio/cdx/intr.c
-+++ b/drivers/vfio/cdx/intr.c
-@@ -175,6 +175,10 @@ static int vfio_cdx_set_msi_trigger(struct vfio_cdx_device *vdev,
- 		return ret;
- 	}
- 
-+	/* Ensure MSI is configured before accessing cdx_irqs */
-+	if (!vdev->config_msi)
-+		return -EINVAL;
-+
- 	for (i = start; i < start + count; i++) {
- 		if (!vdev->cdx_irqs[i].trigger)
- 			continue;
--- 
-2.49.0
+> Does that make some sort of sense?
+>=20
+> Thanks,
+> Sascha
+>=20
+> >  =20
+> > > matches the already existing behaviour for GICv3-native VMs.
+> > >=20
+> > > Signed-off-by: Sascha Bischoff <sascha.bischoff@arm.com>
+> > > ---
+> > > =A0arch/arm64/kvm/sys_regs.c | 8 --------
+> > > =A01 file changed, 8 deletions(-)
+> > >=20
+> > > diff --git a/arch/arm64/kvm/sys_regs.c b/arch/arm64/kvm/sys_regs.c
+> > > index 1b4cacb6e918a..4b9f4e5d946b1 100644
+> > > --- a/arch/arm64/kvm/sys_regs.c
+> > > +++ b/arch/arm64/kvm/sys_regs.c
+> > > @@ -2177,14 +2177,6 @@ static int set_id_aa64pfr0_el1(struct
+> > > kvm_vcpu *vcpu,
+> > > =A0	=A0=A0=A0 (vcpu_has_nv(vcpu) && !FIELD_GET(ID_AA64PFR0_EL1_EL2,
+> > > user_val)))
+> > > =A0		return -EINVAL;
+> > > =A0
+> > > -	/*
+> > > -	 * If we are running on a GICv5 host and support
+> > > FEAT_GCIE_LEGACY, then
+> > > -	 * we support GICv3. Fail attempts to do anything but set
+> > > that to IMP.
+> > > -	 */
+> > > -	if (vgic_is_v3_compat(vcpu->kvm) &&
+> > > -	=A0=A0=A0 FIELD_GET(ID_AA64PFR0_EL1_GIC_MASK, user_val) !=3D
+> > > ID_AA64PFR0_EL1_GIC_IMP)
+> > > -		return -EINVAL;
+> > > -
+> > > =A0	return set_id_reg(vcpu, rd, user_val);
+> > > =A0}
+> > > =A0 =20
+> >  =20
+>=20
 
