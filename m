@@ -1,92 +1,90 @@
 Received: from fhigh-a7-smtp.messagingengine.com (fhigh-a7-smtp.messagingengine.com [103.168.172.158])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1646036896E
-	for <kvm@vger.kernel.org>; Fri, 20 Mar 2026 21:19:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 37C3336C9C2;
+	Fri, 20 Mar 2026 21:19:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.158
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774041557; cv=none; b=aYN+fsdd3M3pvhqw0wZY+TbFD8FIdUBl5WH5NjIqVohfMgFxiPJGoXZHvWNQM5P730cPHQsASGk9Xa+Rk1AiJGZ6iuL7vLA9r1OiZwu+iwBct1RJOcxw6FSjeTbSpsIyep+pjiAl33ie9ManAy5NgqdPHV04gUhqZPO7dTGJJi0=
+	t=1774041561; cv=none; b=UKwrwFDauG4AnFhiiu32RQq81eAA5se6BgimIMN1qAXtJGCPzWu1QGD42FV1YeCEGQxTHBKwAtPivDXUMK+AGaV4giHDdZZQRqj1HnM+sMzcGXitDPeXLk//X3dUBigJ27+t2W7az0MzZiKPTbEB3FyBn2k24sP57gemkjKsPxY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774041557; c=relaxed/simple;
-	bh=7GJAJ0s61jRHU9EivYG157w09xIZmaIBNWGBD1ajLsI=;
+	s=arc-20240116; t=1774041561; c=relaxed/simple;
+	bh=9cnC3SeeLwuW3KRpkyoV6iArsF3iHDDV9pCYBgu9shY=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ek+QzixR+QAIBs/KdmcpeckCSqi+PBsjWWS+FYdyZSJVNQPHPSJbDzUp291RXv0tB2BkzCcsQ6OybJpFH6zS6nEjkwwNh/0q7b0xL7CXFzKv2vEBAX2ICznGga+plLd/YIAeQ3+KVbbY1wUY44orkW59H6fNVvkW1z2huItBCSk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=shazbot.org; spf=pass smtp.mailfrom=shazbot.org; dkim=pass (2048-bit key) header.d=shazbot.org header.i=@shazbot.org header.b=ilWx4DvB; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=3SZlNmsH; arc=none smtp.client-ip=103.168.172.158
+	 MIME-Version:Content-Type; b=Vd6ELUVGVqxUaS2YSeQ2oEv6lJsG0zsXnrxqWIpcq9j6hAkd/3OnkhcPp9e5GSbGZIT2LGquQoCleYMJipjr5UzUlm3+mf2p7oIFYCFBxGARVCryMWVng4vJtLzRMSximacwYU5C6GVrUXtgZY9cN1IDGKEsDk+foe+0DzZ8kvc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=shazbot.org; spf=pass smtp.mailfrom=shazbot.org; dkim=pass (2048-bit key) header.d=shazbot.org header.i=@shazbot.org header.b=hXxu9hMq; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=dVCJw+Ts; arc=none smtp.client-ip=103.168.172.158
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=shazbot.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=shazbot.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=shazbot.org header.i=@shazbot.org header.b="ilWx4DvB";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="3SZlNmsH"
-Received: from phl-compute-06.internal (phl-compute-06.internal [10.202.2.46])
-	by mailfhigh.phl.internal (Postfix) with ESMTP id C62481400258;
-	Fri, 20 Mar 2026 17:19:11 -0400 (EDT)
+	dkim=pass (2048-bit key) header.d=shazbot.org header.i=@shazbot.org header.b="hXxu9hMq";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="dVCJw+Ts"
+Received: from phl-compute-04.internal (phl-compute-04.internal [10.202.2.44])
+	by mailfhigh.phl.internal (Postfix) with ESMTP id 2F0431400274;
+	Fri, 20 Mar 2026 17:19:16 -0400 (EDT)
 Received: from phl-frontend-03 ([10.202.2.162])
-  by phl-compute-06.internal (MEProxy); Fri, 20 Mar 2026 17:19:11 -0400
+  by phl-compute-04.internal (MEProxy); Fri, 20 Mar 2026 17:19:16 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shazbot.org; h=
 	cc:cc:content-transfer-encoding:content-type:content-type:date
 	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to; s=fm3; t=1774041551;
-	 x=1774127951; bh=myXbYyE2Cn9OsuYG4urOIftEYgRcRyrIOtEJJetownA=; b=
-	ilWx4DvBsu1+y68Dfshq1a2nO3R7g5IcQfGYM3eQFRp4V4f2/6NrTjiJiLvzU45w
-	QiTCITbYxRTpCrFcl0Q+vwyn+N857IGBjx+5/qRLDcHUqdvUDjCoWoQL4uYAMGwA
-	PLUnza3EcTNMb4vf6g4N+0Ex8+08zBubfAelDDlRc1hELsoBES3mNkIhkHJaAgkK
-	34I87QqpAZit7CUVNYFEWRiFBhCqDhvwcPFxJmXPTXgXIJ5m0OKqwQiK03+25upS
-	6FGmwHBh89gsuPePJFhA5bWLFBEkuz31aMd97Y8zKaOIqo97pqe4/yNWB3oWa2F2
-	uZKdCDLyElQQrd9THVXTTQ==
+	:references:reply-to:subject:subject:to:to; s=fm3; t=1774041556;
+	 x=1774127956; bh=pJNIBLgIdbJWCrylIElQAGqPfeSAMI8p6teUIynux0E=; b=
+	hXxu9hMq4G7PEei3YV1xn+cJe/o2ddNwxMpC8Ypz6zIeUc0Y4ZAunzp62YqMBfCw
+	qpQGpPr8vs0PjQk1FJRRhD/s4uqURdEfPvVMlrquy/aIFxzFYADEFLOr9UvDVkn8
+	zgqx1h/6Y3b9OD3I6rlBljBTxoFgOZGKbKnx0QZzvTIxpobZ22WUOg7Jub/hrp2r
+	46Lw2kddPzvaRL5+Z5vkt88vI/eW7C8CAyKXysh1YJauKH0Tr5Vd9JsuRf77CGkP
+	JbE9RVGPeEMTGj9LSzFV8XI6AK3uHkJbzgr12gDt48VueQ0a6mP4qMC/YKS+gehv
+	tddgWDa1qBYXNRAzzhywfw==
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
 	messagingengine.com; h=cc:cc:content-transfer-encoding
 	:content-type:content-type:date:date:feedback-id:feedback-id
 	:from:from:in-reply-to:in-reply-to:message-id:mime-version
 	:references:reply-to:subject:subject:to:to:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=1774041551; x=
-	1774127951; bh=myXbYyE2Cn9OsuYG4urOIftEYgRcRyrIOtEJJetownA=; b=3
-	SZlNmsHA4Fmbr9byjes2VJO8+zXfD2U+CJbrp11HH5me8Zi/2z4r4QtepM7u1Nvr
-	if5vWlpAyz9OJWFZArACxQwAaCWh3UmI/Nw2fspTy4n7ZY2i3bZTLSB02xYW1bnq
-	tnEUg0ZRFE6PaZgHKwLuoio/Id03Qoxd0m5ER0Z7c7Bv+81w7d8FZLei7LVR59HF
-	b+LRNIVzWDzt1sAObZx23583PEyp+1FVhVknDWmu9S4/LP2ey2qM5XliqZ95VBD+
-	I7tPPcCaQ4cODTnqn33nHCthvPStoazFw5DoGsaCCqLjYcBLux0WK5RtnmSKmkj8
-	MZ1uAhtKnCUxgww4nxFuA==
-X-ME-Sender: <xms:z7m9aVHA0HBVqGsnkKCjyS2mHanCQG0TuflT2PZ_ULoTXx8JTSDW_A>
-    <xme:z7m9aeCbHLxWQcm9PcAVSHFbjBdDQ-H76vk4rctT__mUHWPk9-QGV7wn0Lh2SmxaC
-    v-9HnrNpW_r5UX_zDecTeztV7gvCycWoAFArHu1dIMLUq5Tn2yl2HM>
-X-ME-Received: <xmr:z7m9afzrMIbOPRvi9TuDVlIX0gwWoOj31GQK_flD5F-yBG1Re9YEmqjizFg>
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=1774041556; x=
+	1774127956; bh=pJNIBLgIdbJWCrylIElQAGqPfeSAMI8p6teUIynux0E=; b=d
+	VCJw+TsM8Jq3asuc6H/vvsVlgvYnKnBELMiTxj5fRpO+r3TgmTD8rCL87zHpzY1D
+	avuLEPAKBHgGd16zV2A/K5WVyxetFML6df6aApC2AQfq+mW3u8RPcc1P6aAOnn+I
+	1uKO0bLLKse6DoHd0DXurZKDLc2fStHlKfeC8AfXeAmhY5EnvMLv1fXLnNuG+bzW
+	S86PWycGFx78r1ENpoNNw6WSMS7qEY21LTF33DacmuTvxdx/3/nFq3C4mQOBUE93
+	xXQeAHbFqw6U5DUpg+LfJXGeSaJv9adLJVUykEv8/j6Vf//AYsM1tzsqoUF3juh/
+	krN4oDjRwYGyxsyNlgtHA==
+X-ME-Sender: <xms:07m9acV7dpa3KLUJqeMdQZlyGyfYa6G5a_JIujsZWqhrDCL-fvFhFg>
+    <xme:07m9aRBn44TkMRM3P6iPJusAOuJJkhrt0yz_iwNOsvo9bKfzVyaAKjE5ssGQpodHe
+    f-6lCUBjWlTqXz5ycQDHjKXdQ7BppYgml3EP8wkN5oTqqKD2Wk5jQ>
+X-ME-Received: <xmr:07m9aRE-Mo9zaH-6dV-UjgCjB-mdq_Dcc-ELKYlFkpqwnYR5ZlWJLOlhdF0>
 X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgdefuddtleejucetufdoteggodetrf
     dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
     rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
     gurhepfffhvfevuffkjghfofggtgfgsehtjeertdertddvnecuhfhrohhmpeetlhgvgicu
     hghilhhlihgrmhhsohhnuceorghlvgigsehshhgriigsohhtrdhorhhgqeenucggtffrrg
-    htthgvrhhnpeekheejieetffefueeiteejtdejffdvleelvdeuvdffvdefteeghfevkeeu
-    vdefvdenucffohhmrghinhepkhgvrhhnvghlrdhorhhgnecuvehluhhsthgvrhfuihiivg
-    eptdenucfrrghrrghmpehmrghilhhfrhhomheprghlvgigsehshhgriigsohhtrdhorhhg
-    pdhnsggprhgtphhtthhopedugedpmhhouggvpehsmhhtphhouhhtpdhrtghpthhtohephi
-    hishhhrghihhesnhhvihguihgrrdgtohhmpdhrtghpthhtohepjhhgghesnhhvihguihgr
-    rdgtohhmpdhrtghpthhtohepkhhvmhesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtph
-    htthhopehkvghvihhnrdhtihgrnhesihhnthgvlhdrtghomhdprhgtphhtthhopehjohgr
-    ohdrmhdrmhgrrhhtihhnshesohhrrggtlhgvrdgtohhmpdhrtghpthhtoheplhgvohhnrh
-    hosehnvhhiughirgdrtghomhdprhgtphhtthhopehmrghorhhgsehnvhhiughirgdrtgho
-    mhdprhgtphhtthhopegrvhhihhgrihhhsehnvhhiughirgdrtghomhdprhgtphhtthhope
-    gtlhhgsehrvgguhhgrthdrtghomh
-X-ME-Proxy: <xmx:z7m9accpqVsGG9FU6hQN7lIT2q1d53PdWqZPvcuhKXtckMm_OKiOdw>
-    <xmx:z7m9acsbbje0hjDa16jl4BERescWsFPZKSadCyzdb-ztNwHlLkceUw>
-    <xmx:z7m9aZB2HM6GK5L7j2fB0dRj7_bjvYl2LlLhKKZcYW_XGlUr6QfiTA>
-    <xmx:z7m9acFu32MAT9Wfn35Xo5eHysHOcO7fW7LAwoj_3DUhwjGcFugQCQ>
-    <xmx:z7m9aRfYXn7Ww0x494eHaBEfrRes19nhpGdhJPUN7NBQMJClCSIeU7kZ>
+    htthgvrhhnpedvkeefjeekvdduhfduhfetkedugfduieettedvueekvdehtedvkefgudeg
+    veeuueenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpe
+    grlhgvgiesshhhrgiisghothdrohhrghdpnhgspghrtghpthhtohepledpmhhouggvpehs
+    mhhtphhouhhtpdhrtghpthhtohephihiuddrlhgrihesihhnthgvlhdrtghomhdprhgtph
+    htthhopehshhhurghhsehkvghrnhgvlhdrohhrghdprhgtphhtthhopegumhgrthhlrggt
+    khesghhoohhglhgvrdgtohhmpdhrtghpthhtoheprhgrnhgrnhhtrgesghhoohhglhgvrd
+    gtohhmpdhrtghpthhtoheprghmrghsthhrohesfhgsrdgtohhmpdhrtghpthhtohepkhhv
+    mhesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehlihhnuhigqdhkshgvlh
+    hfthgvshhtsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtoheplhhinhhugidq
+    khgvrhhnvghlsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtoheprghlvgigse
+    hshhgriigsohhtrdhorhhg
+X-ME-Proxy: <xmx:07m9aS6an4kkdNn10wlb-hhGcuFFGHTGRx54J5b7YWn-Sq3gBDJIuQ>
+    <xmx:1Lm9aXkyiHc20I_gG6mw2PtV-bdvO9PDBtrSM4lewVk74Oxv0GI5IA>
+    <xmx:1Lm9ad40V-iOnuSebRIJViG0LTQa4kFPJEW8xm3EYmQtDjorOch6vg>
+    <xmx:1Lm9aYTOZuO0tpoZ80WO3LM94x4fmXoqu48yLevMHgXZjCG-NvTQmg>
+    <xmx:1Lm9afGKyY2l7ayhSz3PaDbw5didjqO7P1k2sMNgTL7gAZvx2JBxk0iR>
 Feedback-ID: i03f14258:Fastmail
 Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
- 20 Mar 2026 17:19:10 -0400 (EDT)
-Date: Fri, 20 Mar 2026 15:17:14 -0600
+ 20 Mar 2026 17:19:15 -0400 (EDT)
+Date: Fri, 20 Mar 2026 15:16:54 -0600
 From: Alex Williamson <alex@shazbot.org>
-To: Yishai Hadas <yishaih@nvidia.com>
-Cc: <jgg@nvidia.com>, <kvm@vger.kernel.org>, <kevin.tian@intel.com>,
- <joao.m.martins@oracle.com>, <leonro@nvidia.com>, <maorg@nvidia.com>,
- <avihaih@nvidia.com>, <clg@redhat.com>, <peterx@redhat.com>,
- <liulongfang@huawei.com>, <giovanni.cabiddu@intel.com>,
- <kwankhede@nvidia.com>, alex@shazbot.org
-Subject: Re: [PATCH V2 vfio 0/6] Add support for PRE_COPY initial bytes
- re-initialization
-Message-ID: <20260320151714.7642ed1e@shazbot.org>
-In-Reply-To: <20260317161753.18964-1-yishaih@nvidia.com>
-References: <20260317161753.18964-1-yishaih@nvidia.com>
+To: Yi Lai <yi1.lai@intel.com>
+Cc: Shuah Khan <shuah@kernel.org>, David Matlack <dmatlack@google.com>,
+ Raghavendra Rao Ananta <rananta@google.com>, Alex Mastro <amastro@fb.com>,
+ kvm@vger.kernel.org, linux-kselftest@vger.kernel.org,
+ linux-kernel@vger.kernel.org, alex@shazbot.org
+Subject: Re: [PATCH v2] vfio: selftests: Support DMR and GNR-D DSA devices
+Message-ID: <20260320151654.60f0cf65@shazbot.org>
+In-Reply-To: <20260320010930.481380-1-yi1.lai@intel.com>
+References: <20260320010930.481380-1-yi1.lai@intel.com>
 X-Mailer: Claws Mail 4.3.1 (GTK 3.24.51; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
@@ -97,71 +95,54 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Tue, 17 Mar 2026 18:17:47 +0200
-Yishai Hadas <yishaih@nvidia.com> wrote:
+On Fri, 20 Mar 2026 09:09:29 +0800
+Yi Lai <yi1.lai@intel.com> wrote:
 
-> This series introduces support for re-initializing the initial_bytes
-> value during the VFIO PRE_COPY migration phase.
+> Currently, the VFIO DSA driver test only supports the SPR DSA device ID.
+> Attempting to run the test on newer platforms like DMR or GNR-D results
+> in a "No driver found" error, causing the test to be skipped.
 > 
-> Background
-> ==========
-> As currently defined, initial_bytes is monotonically decreasing and
-> precedes dirty_bytes when reading from the saving file descriptor.
-> The transition from initial_bytes to dirty_bytes is unidirectional and
-> irreversible.
+> Refactor dsa_probe() to use a switch statement for checking device IDs.
+> This improves maintainability and makes it easier to add new device IDs
+> in the future.
 > 
-> The initial_bytes are considered critical data that is highly
-> recommended to be transferred to the target as part of PRE_COPY.
-> Without this data, the PRE_COPY phase would be ineffective.
+> Add the following DSA device IDs to the supported list:
+> PCI_DEVICE_ID_INTEL_DSA_DMR  (0x1212)
+> PCI_DEVICE_ID_INTEL_DSA_GNRD (0x11fb)
 > 
-> Problem Statement
-> =================
-> In some cases, a new chunk of critical data may appear during the
-> PRE_COPY phase. The current API does not provide a mechanism for the
-> driver to report an updated initial_bytes value when this occurs.
+> Signed-off-by: Yi Lai <yi1.lai@intel.com>
+> ---
+>  .../testing/selftests/vfio/lib/drivers/dsa/dsa.c  | 15 +++++++++++++--
+>  1 file changed, 13 insertions(+), 2 deletions(-)
 > 
-> Solution
-> ========
-> For that, we extend the VFIO_MIG_GET_PRECOPY_INFO ioctl with an output
-> flag named VFIO_PRECOPY_INFO_REINIT to allow drivers reporting a new
-> initial_bytes value during the PRE_COPY phase.
-> 
-> However, Currently, existing VFIO_MIG_GET_PRECOPY_INFO implementations
-> don't assign info.flags before copy_to_user(), this effectively echoes
-> userspace-provided flags back as output, preventing the field from being
-> used to report new reliable data from the drivers.
-> 
-> Reliable use of the new VFIO_PRECOPY_INFO_REINIT flag requires userspace
-> to explicitly opt in. For that we introduce a new feature named
-> VFIO_DEVICE_FEATURE_MIG_PRECOPY_INFOv2.
-> 
-> User should opt-in to the above feature with a SET operation, no data is
-> required and any supplied data is ignored.
-> 
-> When the caller opts in:
-> - We set info.flags to zero, otherwise we keep v1 behaviour as is for
->   compatibility reasons.
-> - The new output flag VFIO_PRECOPY_INFO_REINIT can be used reliably.
-> - The VFIO_PRECOPY_INFO_REINIT output flag indicates that new initial
->   data is present on the stream. The initial_bytes value should be
->   re-evaluated relative to the readiness state for transition to
->   STOP_COPY.
-> 
-> The mlx5 VFIO driver is extended to support this case when the
-> underlying firmware also supports the REINIT migration state.
-> 
-> As part of this series, a core helper function is introduced to provide
-> shared functionality for implementing the VFIO_MIG_GET_PRECOPY_INFO
-> ioctl, and all drivers have been updated to use it.
-> 
-> Changes from V1:
-> https://patchwork.kernel.org/project/kvm/cover/20260310164006.4020-1-yishaih@nvidia.com/
-> 
-> Patch #1:
-> - Extend the uAPI documentation to refer to the source of new
->   initial_bytes data.
+> diff --git a/tools/testing/selftests/vfio/lib/drivers/dsa/dsa.c b/tools/testing/selftests/vfio/lib/drivers/dsa/dsa.c
+> index c75045bcab79..19d9630b24c2 100644
+> --- a/tools/testing/selftests/vfio/lib/drivers/dsa/dsa.c
+> +++ b/tools/testing/selftests/vfio/lib/drivers/dsa/dsa.c
+> @@ -65,9 +65,20 @@ static bool dsa_int_handle_request_required(struct vfio_pci_device *device)
+>  
+>  static int dsa_probe(struct vfio_pci_device *device)
+>  {
+> -	if (!vfio_pci_device_match(device, PCI_VENDOR_ID_INTEL,
+> -				   PCI_DEVICE_ID_INTEL_DSA_SPR0))
+> +	const u16 vendor_id = vfio_pci_config_readw(device, PCI_VENDOR_ID);
+> +	const u16 device_id = vfio_pci_config_readw(device, PCI_DEVICE_ID);
+> +
+> +	if (vendor_id != PCI_VENDOR_ID_INTEL)
+> +		return -EINVAL;
+> +
+> +	switch (device_id) {
+> +	case PCI_DEVICE_ID_INTEL_DSA_SPR0:
+> +	case PCI_DEVICE_ID_INTEL_DSA_DMR:
+> +	case PCI_DEVICE_ID_INTEL_DSA_GNRD:
+> +		break;
+> +	default:
+>  		return -EINVAL;
+> +	}
+>  
+>  	if (dsa_int_handle_request_required(device)) {
+>  		dev_err(device, "Device requires requesting interrupt handles\n");
 
-Applied with the fix discussed in 2/ to vfio next branch for v7.1.
-Thanks,
+Applied to vfio next branch for v7.1.  Thanks,
 
 Alex
