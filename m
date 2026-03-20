@@ -1,83 +1,88 @@
-Received: from fout-a8-smtp.messagingengine.com (fout-a8-smtp.messagingengine.com [103.168.172.151])
+Received: from fhigh-a7-smtp.messagingengine.com (fhigh-a7-smtp.messagingengine.com [103.168.172.158])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C98EF36B06F;
-	Fri, 20 Mar 2026 21:19:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.151
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3877236AB72;
+	Fri, 20 Mar 2026 21:19:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.158
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774041562; cv=none; b=bssHkw0J+rOF+SxEp5Fi2jIik5LehVOe0Uu/26ta+LQR1di1VuUdCXh8lRdBqCfWrx6q4ZSDI1QVgh8xsLm8CPA1BFiXlvaNTmKMAnXvyo1EwSzkLL8HhlqcXbz46E1txkn8/C+ufIM9+ZoELL6um1jvV0iWcbTvVp5IwsGmcQw=
+	t=1774041562; cv=none; b=m5mMi+FGFo3sM6pi/YiCLy3yPRfuMSeFmn7Fy42Fca9Gv7gLFwnHSsfwxFNx9XmT0EYgj2FgszTtEx212lIHlIUpIJu6rT3UrH+Yel4ktv5d0ouSdCLflw3rVd1+O4Fi5d4L3tJuASNEGEm7FCmf5rmTAwhoB7UDyb1mHGtWV9s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1774041562; c=relaxed/simple;
-	bh=u+suUuhJGarhIVeSGJaTHhDRhf+0URnWnUGs976uT7M=;
+	bh=lYmA3aehpdlr/dJ/XXy/GnLs/QUs7bwzS5vFofn9WMQ=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=QQrbdSzBI7FmkQU2zWDh88970BRJbSolpRDHh8l8Q+SFoNWpbM7GvBkcsITppUj6kCbZxd+7DxxB8/RptKuhKL8e8IpGfaCheIwbfK7eBdyeMTvI0bTllzsgnadK24myQrZvzjxCTxVkmykQdeBBQNNpk1z7QeVuqQf3u7JC2I4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=shazbot.org; spf=pass smtp.mailfrom=shazbot.org; dkim=pass (2048-bit key) header.d=shazbot.org header.i=@shazbot.org header.b=rX/BucoV; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=vKC9h/lY; arc=none smtp.client-ip=103.168.172.151
+	 MIME-Version:Content-Type; b=fYuG/XCbf6Vf7F82uilDYF2xpNnY4/KZwzjLSX41/7OCoAZH/C2+mzZ5U0MJwrKgj190D3AEzo6hVlrBkkHYVkhHi4M2vMRPe6Mm5lxE60kyB37XgJBL6WQOW4XYLjrMgE+mg+4g0n4Fh2ga4XkQ90WzlElhNFmUYk906N2bb2o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=shazbot.org; spf=pass smtp.mailfrom=shazbot.org; dkim=pass (2048-bit key) header.d=shazbot.org header.i=@shazbot.org header.b=FvTqEiLz; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=1zKbXxeX; arc=none smtp.client-ip=103.168.172.158
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=shazbot.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=shazbot.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=shazbot.org header.i=@shazbot.org header.b="rX/BucoV";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="vKC9h/lY"
-Received: from phl-compute-12.internal (phl-compute-12.internal [10.202.2.52])
-	by mailfout.phl.internal (Postfix) with ESMTP id C0529EC01E8;
-	Fri, 20 Mar 2026 17:19:18 -0400 (EDT)
+	dkim=pass (2048-bit key) header.d=shazbot.org header.i=@shazbot.org header.b="FvTqEiLz";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="1zKbXxeX"
+Received: from phl-compute-04.internal (phl-compute-04.internal [10.202.2.44])
+	by mailfhigh.phl.internal (Postfix) with ESMTP id F3608140027A;
+	Fri, 20 Mar 2026 17:19:17 -0400 (EDT)
 Received: from phl-frontend-03 ([10.202.2.162])
-  by phl-compute-12.internal (MEProxy); Fri, 20 Mar 2026 17:19:18 -0400
+  by phl-compute-04.internal (MEProxy); Fri, 20 Mar 2026 17:19:17 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shazbot.org; h=
 	cc:cc:content-transfer-encoding:content-type:content-type:date
 	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to; s=fm3; t=1774041558;
-	 x=1774127958; bh=Ri4XPs0JGCyhvjyIoVLgG3RHHgzVlvd49BtPql1BEW0=; b=
-	rX/BucoV4QpeccXHaRg0i2T5lV8dZw5HxvL/4J9Ph6Pp0CtIQnrYFeI3hsCrkQ1B
-	yOTEh323RfQapLNP/IJb/v2IQYxxhQuWMmlVYX2E8vO9gf2oIyo0sVWdwovHYK/Q
-	7WOE9Y3zSGpHNIRv1OOL7LV9uurcpqBME0Qzr4EfahHf6L78/yFkZkFb/9MVLoYz
-	TtKGeh5EMmMYsmx/pZOLpz+PJVCPsi4xPytl0Qw3iwlLaczUntlEbLH7ZnFvqwXu
-	lIKkxYAKgTm7+g0+orUXsTIGFxmLGCr2cS52KcWwScCwL4CJ6m544nWgMCb96ioV
-	PJUGiPcVzKFhaXF/ETnA2Q==
+	:references:reply-to:subject:subject:to:to; s=fm3; t=1774041557;
+	 x=1774127957; bh=pMPvogdXHAoC/iYQFn8VpG3axK/CiiZqbJ+W+lYLr4k=; b=
+	FvTqEiLzTBF88HG0bJQTvGomO5sUaXgeFQYH1cARR3Z6oZy+jjrlb+o6EXA7SGYB
+	hNhkhMNebr6kzIZf56oZFx1fVY0Y5PnXt7sYOPwogUerhvRU95H52eA2rz57ONDM
+	xoi4aQE/+RpJgr0n0Tc8Y9cjogzN21551xl5dGNdYYQJKbqYgjRwyLdTBVyXtfBk
+	OUq3CovyhKAL9uDopgo8sFcPIlpo9UglSvRQLTJlfA0PkfbNJME+x5WYvquYuNmJ
+	QFJKnHSFeLL+23yQnQP+9P0JVgq8fbnCZcT5Gg7maG+lOtnI6Ge/4I8ZiLSV4mpK
+	YsPP6f4+cfDOOUsiyTHiXw==
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
 	messagingengine.com; h=cc:cc:content-transfer-encoding
 	:content-type:content-type:date:date:feedback-id:feedback-id
 	:from:from:in-reply-to:in-reply-to:message-id:mime-version
 	:references:reply-to:subject:subject:to:to:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=1774041558; x=
-	1774127958; bh=Ri4XPs0JGCyhvjyIoVLgG3RHHgzVlvd49BtPql1BEW0=; b=v
-	KC9h/lY/HIeERSP0pRvopcpW873csVEMTderTMUUlQ4Y79FhFjeBkkwaD1RU5Hkh
-	X8D6TkCj+s4iOB0fB0YlFmDsnkAHsDIt2O/PR6SPOfMOEGXzc9pWNlV9G8UCbYas
-	uqGSeE0fIb9/PUB0HLjV+PPJc0W3t0SaNoxcSFA7fqGePdBMDiyehDPStRcY/cVV
-	XQol2jDxpUB1Le5qVcTsl9fyALxIjDSS7M1ij3Sr1++IzETRDw/7Rv69V7Z0ofOb
-	w/ZrUNZ7pcF1NkBpaz7oUYsjT1bmJxyA3u3j3LQvadg0sEv/yKPDTeJUeZKebxF+
-	Lb7wRvf1URScmtb/t+sxw==
-X-ME-Sender: <xms:1rm9aXrLYQXQ1Xiy-P4Q8EiXhp2ODP2wy2K1y9ISPIFzn3OuStadTw>
-    <xme:1rm9afdMC2FGg4kf8wuLn5yp5bCLOvhLVJoGsOx3b8NmewsBszXxOAyjdRHwj5gYj
-    bRN8A2-qlC6e36NATIwBBT7s_0z_m9kUaxedsfwto6ruJOdHdl8lUM>
-X-ME-Received: <xmr:1rm9aerk6kt_Ma3OJlO-90o9cpDN8Eyzr8AwqBxNFfNbbyApUmBBtsKpA7s>
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=1774041557; x=
+	1774127957; bh=pMPvogdXHAoC/iYQFn8VpG3axK/CiiZqbJ+W+lYLr4k=; b=1
+	zKbXxeX7iJf8bC4OqKV2FIl6/NIC63BpWnViRplEs0+ajDvXu0wY4LasPVfLugaJ
+	bQUO/JCiYrl7N2ylp+gvY4ixGvqjvdMtuxf0eDQO8gjxtEb4egaHfg7dZdY8/wZ3
+	d9BIJkto7nHR/PAA7S+wJZIU650qVdqQ9i0mLgdeh9rtAWZiLZ4FSpS53Wt9B/Xx
+	6sI+cIWpQX2w9Y+WUem/x+FzOdeA8nDyluph9cA+zuTLRqD+UxRcqWdJs9Padvs3
+	pk8ehhNw8+g+09xTEW5OZ7wVsO3RwzrYUrF27Tr+6Apac68VfD3JpdIV5PT8R+Df
+	3rJACzdARf/WABZEoaibw==
+X-ME-Sender: <xms:1bm9ac4bpwzwEb5tJJBys1lx1D7EywaLJqFnpn6GWCjiuRy9cDOmHg>
+    <xme:1bm9aXNa969NcRYDew5vJf685o_Y63euNtvwmBUJEn3mZqpmil_DR03LaIPsHJfV2
+    ipLdFwP0zECYu2Q6pfaM4kN2jeHItzsjUDoj8fJ4ZAr6gpSS1zIfkQ>
+X-ME-Received: <xmr:1bm9aSukDqrTJGedIVThIDTZZcCL5Ry-mikisTruw8quGAV4-mHWcvh96fY>
 X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgdefuddtleejucetufdoteggodetrf
     dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
     rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
     gurhepfffhvfevuffkjghfofggtgfgsehtjeertdertddvnecuhfhrohhmpeetlhgvgicu
     hghilhhlihgrmhhsohhnuceorghlvgigsehshhgriigsohhtrdhorhhgqeenucggtffrrg
-    htthgvrhhnpedvkeefjeekvdduhfduhfetkedugfduieettedvueekvdehtedvkefgudeg
-    veeuueenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpe
-    grlhgvgiesshhhrgiisghothdrohhrghdpnhgspghrtghpthhtohepgedpmhhouggvpehs
-    mhhtphhouhhtpdhrtghpthhtohepjhhoshgvphhhrdhsrghlihhssghurhihsehorhgrtg
-    hlvgdrtghomhdprhgtphhtthhopehkvhhmsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhr
-    tghpthhtoheplhhinhhugidqkhgvrhhnvghlsehvghgvrhdrkhgvrhhnvghlrdhorhhgpd
-    hrtghpthhtoheprghlvgigsehshhgriigsohhtrdhorhhg
-X-ME-Proxy: <xmx:1rm9aYEB_J5hTezVvdlBWlj2ALSFv3G0Ccx4O-Bs-cZPfFZD38yKaQ>
-    <xmx:1rm9aWudfePPSiWwWLiG3CSSJsBoGdBKwIQAxwDlz9hDYRyE9eu8tA>
-    <xmx:1rm9aSUPu7vkkkPQJWt-y8FnYd8IyIn5Cy0TixDbc_PL1aP8cScuHQ>
-    <xmx:1rm9aaFDb61vbY5a17lCm6TmRsNQdD5b7SH3IrfpU7SVj-fFVuQHLQ>
-    <xmx:1rm9aUCD5_LYOxlJcUCER_2Y0jnBneOL2qrnGPp6np9bBTnZwh6gdb_D>
+    htthgvrhhnpeekheejieetffefueeiteejtdejffdvleelvdeuvdffvdefteeghfevkeeu
+    vdefvdenucffohhmrghinhepkhgvrhhnvghlrdhorhhgnecuvehluhhsthgvrhfuihiivg
+    epudenucfrrghrrghmpehmrghilhhfrhhomheprghlvgigsehshhgriigsohhtrdhorhhg
+    pdhnsggprhgtphhtthhopeeipdhmohguvgepshhmthhpohhuthdprhgtphhtthhopehjkh
+    hoohhlshhtrhgrseigshegrghllhdrnhhlpdhrtghpthhtohepghhrvghgkhhhsehlihhn
+    uhigfhhouhhnuggrthhiohhnrdhorhhgpdhrtghpthhtohepkhifrghnkhhhvgguvgesnh
+    hvihguihgrrdgtohhmpdhrtghpthhtohepkhhvmhesvhhgvghrrdhkvghrnhgvlhdrohhr
+    ghdprhgtphhtthhopehlihhnuhigqdhkvghrnhgvlhesvhhgvghrrdhkvghrnhgvlhdroh
+    hrghdprhgtphhtthhopegrlhgvgiesshhhrgiisghothdrohhrgh
+X-ME-Proxy: <xmx:1bm9aSanjsB4WLtzcctTaN7xBgpCKOq8uFIXEwhxDllfSPxNmNmQSw>
+    <xmx:1bm9aczF-T8BaSfYbSZoR3BROLjz8NdqM5KLTX2tKZHoOH2ldu6ZJA>
+    <xmx:1bm9aSiE7OMUh7uQOpb7-jIbULyNga-hq6SQ8gx7jLOucq0lCdWjgQ>
+    <xmx:1bm9aQkRlPpfjc1M2Sd07M7GSse1CYxIrXNcH0uOzi0Y7KHTDjO2Pg>
+    <xmx:1bm9aUtUuYulCbhmJnea5jS7XCt_i0DFzwa8KRVVWx2z5UQQ12_qGH63>
 Feedback-ID: i03f14258:Fastmail
 Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
- 20 Mar 2026 17:19:18 -0400 (EDT)
-Date: Fri, 20 Mar 2026 15:17:48 -0600
+ 20 Mar 2026 17:19:17 -0400 (EDT)
+Date: Fri, 20 Mar 2026 15:17:54 -0600
 From: Alex Williamson <alex@shazbot.org>
-To: Joseph Salisbury <joseph.salisbury@oracle.com>
-Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org, alex@shazbot.org
-Subject: Re: [PATCH] vfio: uapi: fix comment typo
-Message-ID: <20260320151748.299fd9ce@shazbot.org>
-In-Reply-To: <20260316185617.166414-1-joseph.salisbury@oracle.com>
-References: <20260316185617.166414-1-joseph.salisbury@oracle.com>
+To: Jori Koolstra <jkoolstra@xs4all.nl>
+Cc: gregkh@linuxfoundation.org, Kirti Wankhede <kwankhede@nvidia.com>,
+ kvm@vger.kernel.org (open list:VFIO MEDIATED DEVICE DRIVERS),
+ linux-kernel@vger.kernel.org (open list), alex@shazbot.org
+Subject: Re: [PATCH v2] vfio: mdev: replace mtty_dev->vd_class with a const
+ struct class
+Message-ID: <20260320151754.3cefebec@shazbot.org>
+In-Reply-To: <20260308214939.1215682-1-jkoolstra@xs4all.nl>
+References: <20260308214939.1215682-1-jkoolstra@xs4all.nl>
 X-Mailer: Claws Mail 4.3.1 (GTK 3.24.51; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
@@ -88,39 +93,27 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Mon, 16 Mar 2026 14:56:17 -0400
-Joseph Salisbury <joseph.salisbury@oracle.com> wrote:
+On Sun,  8 Mar 2026 22:49:39 +0100
+Jori Koolstra <jkoolstra@xs4all.nl> wrote:
 
-> The file contains a spelling error in a source comment (succes).
+> The class_create() call has been deprecated in favor of class_register()
+> as the driver core now allows for a struct class to be in read-only
+> memory. Replace mtty_dev->vd_class with a const struct class and drop the
+> class_create() call.
 > 
-> Typos in comments reduce readability and make text searches less reliable
-> for developers and maintainers.
+> Compile tested and found no errors/warns in dmesg after enabling
+> CONFIG_VFIO and CONFIG_SAMPLE_VFIO_MDEV_MTTY.
 > 
-> Replace 'succes' with 'success' in the affected comment. This is a
-> comment-only cleanup and does not change behavior.
+> Link: https://lore.kernel.org/all/2023040244-duffel-pushpin-f738@gregkh/
 > 
-> Fixes: 607ca46e97a1 ("UAPI: (Scripted) Disintegrate include/linux")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Joseph Salisbury <joseph.salisbury@oracle.com>
+> Suggested-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+> Signed-off-by: Jori Koolstra <jkoolstra@xs4all.nl>
 > ---
->  include/uapi/linux/vfio.h | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
+> v2: undo whitespace reformating of struct mtty_dev
 > 
-> diff --git a/include/uapi/linux/vfio.h b/include/uapi/linux/vfio.h
-> index bb7b89330d35..63d56c1fbf6f 100644
-> --- a/include/uapi/linux/vfio.h
-> +++ b/include/uapi/linux/vfio.h
-> @@ -141,7 +141,7 @@ struct vfio_info_cap_header {
->   *
->   * Retrieve information about the group.  Fills in provided
->   * struct vfio_group_info.  Caller sets argsz.
-> - * Return: 0 on succes, -errno on failure.
-> + * Return: 0 on success, -errno on failure.
->   * Availability: Always
->   */
->  struct vfio_group_status {
+>  samples/vfio-mdev/mtty.c | 17 +++++++++--------
+>  1 file changed, 9 insertions(+), 8 deletions(-)
 
-Applied to vfio next branch for v7.1.  Fixes and stable tags dropped.
-Thanks,
+Applied to vfio next branch for v7.1.  Thanks,
 
 Alex
