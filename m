@@ -1,50 +1,42 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2BA0938237C;
-	Fri, 20 Mar 2026 09:41:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0FB8238E103;
+	Fri, 20 Mar 2026 10:19:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=13.77.154.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773999717; cv=none; b=Ttjcds0kIOq+q06egTZzlQbVVu1kiw/Dg/dUsWPuRQaRdMDaGPi2iomg7+NY1IgxSt03u7sVAavCsNFJkIIvst4H5LuLU80RTWa2ynAFabimog+IGNJdPruRrtUYOorUjHKvP5o+NAaZFLHYMY9ebMWZrAQEOI5Wb1KypJTDOM4=
+	t=1774001979; cv=none; b=D5wZnNkiOb3EBxtyCDQhG1c2x1BMb4eYS+t+eScrBAUhrLmL6IYmGyapsYsVpZff95uZ8Ni4QtdSuyTmO1aTatv7tPsHD8y880BO8IoBHzyF+6LnBv/rAWwwp3lvOiux6ZHqgTV4jsMhUv0gJgV0xfzzeSFqovy9PhwU7PdORDM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773999717; c=relaxed/simple;
-	bh=soIqa4dzdt6xuh4ZUR/8xPfEZyQ1j13Pr9d2gnaHB40=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=TQjUj3sUVqRNiUiO9jSbOyAHhRkvluE5BeUEYiDPjZgZwRBODuYNx0EIAWwR7F0JCAlTMJK1Uxp5NTIkxYQav1WNMtT1F6YWnL38mTHPoes2GxddcdAFJ4VTPKn4DRDBRT31YW+b5ha49sgY7ik6p4NjPHjJQU2lF9/eXZteCOw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=sj6ciDui; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1774001979; c=relaxed/simple;
+	bh=QRUfFyJwT6qOrnEazRDbPg1WDHxi2v472i7GoX8JcKo=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=FS1xBkmzrO1vQ/+hyB2qPBlTrSNnxAV1JKVD4afe/LIBzwVZjzRXewv12xIPka+IiOHeMbO+mDU0cMm1t3KIHTtSvP5JHnK3VrhVHRy+VWZBN/wkklcA6VG1JwOds/WoLndWBkGsFKDxvUu2EYUE2RY0Ajqy9Vga/AKEjh4hV1c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com; spf=pass smtp.mailfrom=linux.microsoft.com; dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b=cXLrhpme; arc=none smtp.client-ip=13.77.154.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.microsoft.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="sj6ciDui"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A9F8CC2BC9E;
-	Fri, 20 Mar 2026 09:41:56 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773999716;
-	bh=soIqa4dzdt6xuh4ZUR/8xPfEZyQ1j13Pr9d2gnaHB40=;
+	dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b="cXLrhpme"
+Received: from linuxonhyperv3.guj3yctzbm1etfxqx2vob5hsef.xx.internal.cloudapp.net (linux.microsoft.com [13.77.154.182])
+	by linux.microsoft.com (Postfix) with ESMTPSA id 436BE20B710C;
+	Fri, 20 Mar 2026 03:19:33 -0700 (PDT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 436BE20B710C
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
+	s=default; t=1774001973;
+	bh=czjA+JLMJXAAj1eEQCrDT4VQOWKl8Iw1uQvMc0heQjo=;
 	h=From:To:Cc:Subject:Date:From;
-	b=sj6ciDui8CjDNSMD0/3hKM++txW1In4032U7a9Gzn/bDGyOjNKMCgRU3D+5g05h39
-	 Wfymiq4JtDGYnblfss7lcCAlHbeYj3CQ2Cm/LtqjX3Os73oQj3a/V9SJwaRqWPRD2U
-	 o4mWtVUONEKgc0MWCiPcV0sGPy9G1CkmcV6MNQ6nlDbEEd7ZsD/YV7qcefAC91Zn/8
-	 WndxrHnvWRMPhAvRJr7+6qn7cdrDPAo8EoxCqEfSVpQWrtY+kX2Kk9R3Hb/dLVXtQl
-	 Y8/TTr8eiaokutz4dJxgbOi4IrcPbmaLCcCSdq3x+zh4J6tng3pCtu7lf6pfrWqzIj
-	 eWZ9H5XLp3reQ==
-Received: from sofa.misterjones.org ([185.219.108.64] helo=valley-girl.lan)
-	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.98.2)
-	(envelope-from <maz@kernel.org>)
-	id 1w3WMc-00000003xdR-1ILK;
-	Fri, 20 Mar 2026 09:41:54 +0000
-From: Marc Zyngier <maz@kernel.org>
-To: Paolo Bonzini <pbonzini@redhat.com>
-Cc: Joey Gouly <joey.gouly@arm.com>,
-	Suzuki K Poulose <suzuki.poulose@arm.com>,
-	Zenghui Yu <zenghui.yu@linux.dev>,
-	Oliver Upton <oupton@kernel.org>,
-	Zenghui Yu <yuzenghui@huawei.com>,
-	linux-arm-kernel@lists.infradead.org,
-	kvmarm@lists.linux.dev,
-	kvm@vger.kernel.org
-Subject: [GIT PULL] KVM/arm64 fixes for 7.0, take #4
-Date: Fri, 20 Mar 2026 09:41:51 +0000
-Message-ID: <20260320094151.2541661-1-maz@kernel.org>
-X-Mailer: git-send-email 2.47.3
+	b=cXLrhpmeFY9VRC1qv6cLXgYTQHhR/6ByOQ/e13dMhC5m79WmY1sCcoCpe0Yry9fBz
+	 OPYgfoVcOQm9vWLHdeJNg10ucaNWlSkSofoEj+GS51mcsfFfaFUU6k71rRRp/JldRI
+	 0/Voum0Ev2tKRoQ78IEgOEjJToQvqPtDxkB4yT4c=
+From: Prasanna Kumar T S M <ptsm@linux.microsoft.com>
+To: ptsm@linux.microsoft.com,
+	nipun.gupta@amd.com,
+	nikhil.agarwal@amd.com,
+	alex@shazbot.org,
+	pieter.jansen-van-vuuren@amd.com,
+	kvm@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Cc: stable@vger.kernel.org
+Subject: [PATCH 1/2] vfio/cdx: Fix NULL pointer dereference in interrupt trigger path
+Date: Fri, 20 Mar 2026 03:19:33 -0700
+Message-ID: <20260320101933.1554416-1-ptsm@linux.microsoft.com>
+X-Mailer: git-send-email 2.43.7
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -52,53 +44,43 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-SA-Exim-Connect-IP: 185.219.108.64
-X-SA-Exim-Rcpt-To: pbonzini@redhat.com, joey.gouly@arm.com, suzuki.poulose@arm.com, zenghui.yu@linux.dev, oupton@kernel.org, yuzenghui@huawei.com, linux-arm-kernel@lists.infradead.org, kvmarm@lists.linux.dev, kvm@vger.kernel.org
-X-SA-Exim-Mail-From: maz@kernel.org
-X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
 
-Paolo,
+Add validation to ensure MSI is configured before accessing cdx_irqs
+array in vfio_cdx_set_msi_trigger(). Without this check, userspace
+can trigger a NULL pointer dereference by calling VFIO_DEVICE_SET_IRQS
+with VFIO_IRQ_SET_DATA_BOOL or VFIO_IRQ_SET_DATA_NONE flags before
+ever setting up interrupts via VFIO_IRQ_SET_DATA_EVENTFD.
 
-Another week, another set of fixes. This time, another two fixes,
-mostly observable with nested virt. The first one results in a vcpu
-coming out of reset potentially skipping the first instruction at its
-initial PC. The second one is a classic example of pointer arithmetic
-going wrong in our address translation emulation, setting the access
-bit in semi-random places. Both are stable candidates.
+The vfio_cdx_msi_enable() function allocates the cdx_irqs array and
+sets config_msi to 1 only when called through the EVENTFD path. The
+trigger loop (for DATA_BOOL/DATA_NONE) assumed this had already been
+done, but there was no enforcement of this call ordering.
 
-Please pull,
+This matches the protection used in the PCI VFIO driver where
+vfio_pci_set_msi_trigger() checks irq_is() before the trigger loop.
 
-	M.
+Fixes: 848e447e000c ("vfio/cdx: add interrupt support")
+Cc: stable@vger.kernel.org
+Signed-off-by: Prasanna Kumar T S M <ptsm@linux.microsoft.com>
+---
+ drivers/vfio/cdx/intr.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-The following changes since commit a79f7b4aeb8e7562cd6dbf9c223e2c2a04b1a85f:
+diff --git a/drivers/vfio/cdx/intr.c b/drivers/vfio/cdx/intr.c
+index 8f4402cec9c5..c0eed065e8ef 100644
+--- a/drivers/vfio/cdx/intr.c
++++ b/drivers/vfio/cdx/intr.c
+@@ -175,6 +175,10 @@ static int vfio_cdx_set_msi_trigger(struct vfio_cdx_device *vdev,
+ 		return ret;
+ 	}
+ 
++	/* Ensure MSI is configured before accessing cdx_irqs */
++	if (!vdev->config_msi)
++		return -EINVAL;
++
+ 	for (i = start; i < start + count; i++) {
+ 		if (!vdev->cdx_irqs[i].trigger)
+ 			continue;
+-- 
+2.49.0
 
-  KVM: arm64: pkvm: Don't reprobe for ICH_VTR_EL2.TDS on CPU hotplug (2026-03-10 09:48:45 +0000)
-
-are available in the Git repository at:
-
-  git://git.kernel.org/pub/scm/linux/kernel/git/kvmarm/kvmarm.git tags/kvmarm-fixes-7.0-4
-
-for you to fetch changes up to 0496acc42fb51eee040b5170cec05cec41385540:
-
-  KVM: arm64: Fix the descriptor address in __kvm_at_swap_desc() (2026-03-17 13:40:00 +0000)
-
-----------------------------------------------------------------
-KVM/arm64 fixes for 7.0, take #4
-
-- Clear the pending exception state from a vcpu coming out of
-  reset, as it could otherwise affect the first instruction
-  executed in the guest.
-
-- Fix the address translation emulation icode to set the Hardware
-  Access bit on the correct PTE instead of some other location.
-
-----------------------------------------------------------------
-Marc Zyngier (1):
-      KVM: arm64: Discard PC update state on vcpu reset
-
-Zenghui Yu (Huawei) (1):
-      KVM: arm64: Fix the descriptor address in __kvm_at_swap_desc()
-
- arch/arm64/kvm/at.c    |  2 +-
- arch/arm64/kvm/reset.c | 14 ++++++++++++++
- 2 files changed, 15 insertions(+), 1 deletion(-)
