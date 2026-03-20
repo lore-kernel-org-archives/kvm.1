@@ -1,67 +1,66 @@
-Received: from mail-wm1-f54.google.com (mail-wm1-f54.google.com [209.85.128.54])
+Received: from mail-wm1-f52.google.com (mail-wm1-f52.google.com [209.85.128.52])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E64D93B895A
-	for <kvm@vger.kernel.org>; Fri, 20 Mar 2026 14:24:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 26D8032572D
+	for <kvm@vger.kernel.org>; Fri, 20 Mar 2026 14:30:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774016676; cv=none; b=jc21wRF22yVGbZ1/zg9/ScOMzjbuhbVWbspDohfkSNUxe1wlM6QzxFVkAUEOxT8+pojHkV7DypCz9r6dLnpCeWKNkXhmgtTrrQO+Zn90aSHR5LuonzdaaesHC9W38xycqKIZWyMqFW9Kt8QWIZhrI37aAXKj2W4DLz7HnGL0VzI=
+	t=1774017056; cv=none; b=EVPF5Sa+ZrELlMXG6Q1+QBxST5V6iv3gZS8jEMyCFKDdp8a7+vcb3lRNDLfUWMht7uRoia3s69f6ChAYSlOVQO18the0u6ohntgUj7Y8BK01NjkczUgBrPGKjoKEpoRc3OAAQDG3rbfrbdcT5zmpdl+u2NFhDwPreIzwD/CPfFw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774016676; c=relaxed/simple;
-	bh=9MkiEZt6iiIjhQOga6zrNGcvzf8fiBJyYXSvErkmSSg=;
+	s=arc-20240116; t=1774017056; c=relaxed/simple;
+	bh=RDsST/BktNabPpVzmXB7CIyrnMznJWjBL2tp4XSThHk=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=mycpmnzIf/aVbk3EuKTyg6RQNuBCl9SUdo9Zv2ZM07GaouyGr/8Y9wOH5rbxoD5FYeNnoAx/qI9ezCIvadhLdE4dwgdihiERqMaLZzEIvODix8pUXRcTia34D6ndDfZSO1PN16fKiH75HDRVNp4jTljGEeH3yk1TuZif9SxONHU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=bTHRPW/7; arc=none smtp.client-ip=209.85.128.54
+	 In-Reply-To:Content-Type; b=Ps2nbT56tQ5E9AJOOmUVzv9m3G3bI3cpPkZ8gr7neiDqbVL5bYMxQFoBK+tFATGmH6uTltAA71+jGroHGATmiftHUPr7bRh4SOX5CgkRlybORmKogNL7B9MpR9GuvpAQfZfzgOOBXtfKyQywt/r601sAvCXiPyBM+1zqh2vNgLA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=EzICxxY0; arc=none smtp.client-ip=209.85.128.52
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="bTHRPW/7"
-Received: by mail-wm1-f54.google.com with SMTP id 5b1f17b1804b1-48538c5956bso18372845e9.0
-        for <kvm@vger.kernel.org>; Fri, 20 Mar 2026 07:24:34 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="EzICxxY0"
+Received: by mail-wm1-f52.google.com with SMTP id 5b1f17b1804b1-48540d21f7dso8018835e9.0
+        for <kvm@vger.kernel.org>; Fri, 20 Mar 2026 07:30:53 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1774016673; x=1774621473; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1774017052; x=1774621852; darn=vger.kernel.org;
         h=content-transfer-encoding:in-reply-to:from:content-language
          :references:cc:to:subject:user-agent:mime-version:date:message-id
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=fthiLTuf+I5jeGebor5z+DXDHTxh9yqgwY89zBw9Yfg=;
-        b=bTHRPW/7JDytMXVPRw41o8/oLl1DyIRnDuxd3KCsX91CGPIH2/id2e0MAzlA+cfYEG
-         XeopWfSxcS4q20QDnfHxx+2BOCFb84emfUVSDFvD8Hm0bkn+RwhRI9KqSWYJMiJFigE2
-         +BKTmlApJPQ3OkJTzkSO1CJXNjqIKkt4lpFzOmn25d2qN3TfCJmp/LPLOu5z7RscI0tP
-         qC9W1knGiOzHMqTwT05ZwHMUr7LwLqKXL+IhV6Bf+Xs1Iq+49eyp5dIn8ylAlY4ESxBu
-         +ykF8v27o3Vjv6A1HyV4N3+7o0ADkixq3wbsFGrzbC3fpdNgtDLARB02Q2yns0r0rWCs
-         P3uw==
+        bh=rwkmTF/CS0VyDJVC1u/aIvu2tt3/nzhHfvzUfjsv28s=;
+        b=EzICxxY0PKN2Vi1yjmfDObeeCtZRJfrgAxGPpmZ1b2pad9rfeO03tbQtyNoC3vvpVt
+         tWXydSEzIhS4Ai2e7FcNpnuh2VvWiR1GMOEfzd/NS/rBWTEC+4XRteDb/bgKWqK+/Ruh
+         AN1Tz2x/+WtZXRHwQZMsfoPUe08oImuipkAFmL3fKdgrGZb9EoXPzp4MdcsUnyx93NGB
+         JadsnRykpW9wtBJN0+iKYVa/FFgz5Zx3cgyPqwERCOdQ9LqAso7dcgCK4CAAQjx5Cft2
+         QjrHTcRwwIhRegl1SjugHD6FMFrZfaN17HI7GA0h/oqEUYQmYZgRn1B5BvrvU90YcY2m
+         OuPg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774016673; x=1774621473;
+        d=1e100.net; s=20251104; t=1774017052; x=1774621852;
         h=content-transfer-encoding:in-reply-to:from:content-language
          :references:cc:to:subject:user-agent:mime-version:date:message-id
          :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=fthiLTuf+I5jeGebor5z+DXDHTxh9yqgwY89zBw9Yfg=;
-        b=lpaRCtg1qD9UBG/KPC8rdbzudCdkjJG7CJ4b7UA7YOlrP4HJgNmTN7Oreyw7nLz10g
-         1nZaXIfP6N/FyPO2Bb7kurw4GJL/LNNJmzqVAKVkt55SSLyi2rEz+Uu+wpsIBFOtu4BK
-         avmSfm/DhNYVchboYAuvWp5qHHi1G/sAw4jQexFBd6j5K+olzfe+bazQIwgPCE8Q4xha
-         w7vQ+pAhWPEd27YAHNSBikv5bkwU+Cc3ykIRHALv3AqkcT2MyDpCxOfWRCmllPyLYdDd
-         mdNEHbInCXuW2TLK0fYS+VK9ses5PIHd82zyQ3KcLPFJBFrysQXJexyvmXtB9PNgQrEj
-         NnVA==
-X-Forwarded-Encrypted: i=1; AJvYcCUNFJcSBld8hdIZe6Xkz9SCuzoAEvhqEAUtymxq7Ktv2BAKBCIqBXZri3Oxp1o8+YXkP/k=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxirbPKijvqZB75+Dg1Waa2n0JL4fkHPyQrPknZ5s6I8ir5PXJI
-	wPEILVCyAod9aHSP4+nGDAAlcyMVWd7Lsvahd/jgkhb6sBWkmGcn1Kun
-X-Gm-Gg: ATEYQzzXjqn0xUy3KtPQisf44GRFdwvQ0cmnncHGuL5of6mQgqAswJeXVra/kQVXw06
-	y4uCzyRP9Tv/9AH7Aw2a7Znh5LrtmQDrWpS8iYd/TrEkc+zYAJnEFOEsVGEYtvlUrdBA9wCwli0
-	xFRoaTMb04J7X/3dc906V3JBXui3luIyXClij2RvAJ+kG/p5cYmEf7GiDdIBVl9DN6Ec8uadnQk
-	C65fpUC4q1DEGnTMI5iC+fTDkOIc8My2ckpJt9Rt6kLy3li0wFUmU7QJvPTKneZJwkpS089nolV
-	fY7IGqL6ZXVBLRFeG3G5UPugRbS78Komo+aDBz7yBdT2o5oZWiXFboVSJFF4Vqwzr6V2XU3/OXw
-	hP3wHbgU2tioIjBKOb0w14/wWVyP6oenF79uGpjN0MLuQbyAX0aT1xloJDH3A4tL2e+SmpKzLta
-	byfeQ6ZmS+B3mSVYPRVM8j6dJxmni62a+Sid1najDbKUzjuO9xLp5mfU/8trat8x8jYX/5I3Phc
-	j30ZHrl5iqM
-X-Received: by 2002:a05:600c:3b94:b0:486:faa8:9e4 with SMTP id 5b1f17b1804b1-486fe8ef087mr56191865e9.12.1774016672928;
-        Fri, 20 Mar 2026 07:24:32 -0700 (PDT)
-Received: from [192.168.10.55] (host-87-27-45-215.business.telecomitalia.it. [87.27.45.215])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-486ff1dd9f1sm24913205e9.8.2026.03.20.07.24.31
+        bh=rwkmTF/CS0VyDJVC1u/aIvu2tt3/nzhHfvzUfjsv28s=;
+        b=pzhmeGexnaRskk9TJE14+sBXW0RfgN/Zfkkh2SBZo7sv9p1OFS+cfiyv6BY6cFd1Os
+         dWRAHq2JrYzThiIRzoKQF5WJpKD4nksBr/60pICzPLZAJ/jdnh2JX3R93RaOFMkz4W/C
+         6dkTqtyYQ0egBLGPKWOrM1g6+1V8gvHQ8RMPOQBDdC8mJV3ElHjW9ItKyE2tEWmh5oEF
+         4yMGjxXhd2HegnQ+LmEz0n5Y8QOqOle3hDy5CROxBj1HB7EjnPxHyY0Me8hCCB/2Kb+o
+         tocr9DDe7++g5IlQddnNfEtsb4GNE8kyN1T+BPMrC+W7IJJCpDJbde4iEFVUeaWdye5a
+         DgSQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXaTrw4QYE2hMyyyECaCRBXAWS81Jo8ggiVWaEbtG8VTaKeTPjD6uJgxYPYsk5hjMeG/lk=@vger.kernel.org
+X-Gm-Message-State: AOJu0Ywtum+KI2vBDrKR+jJWQKaOsSyvl7TEDrltFphkK5qtgLw9vDKg
+	EurTr4X9JUmznqG2kHFwoU6TMq5zj5U4JUJkaBScba4wNqSmVuoDJi3j
+X-Gm-Gg: ATEYQzx3nOLY8FMTecRV3FVxokDG4KDfAoBfsDlvJWdgo/LUhkS4FvwTO/nT8H+iV/a
+	hlrr+OnqYoF3wJVhmoB9cWmnsRz+hx6fkfPrqnYrgOssbqZ8pQXReukQLMBRkwzJj30voYiB7jc
+	/6PyPBX/8sBTemx3kBxYOZzLG6sS/DIWH4uPUp71AlcjqjVlfl1VZX0RLP936w1wUJsiMxWKqb6
+	uf+rfqo4nwMIrsGI0eXottjCpbwMfkBOb1n+9GGnzmMI77ZiQsGlyFu9EmOm/L6E08yGsme6HMM
+	mqS8bhkR0QO/gDfNXeRcHCKbQQU6be9yaHzdqpw/sygA3UDouruzJID8n9s1X262kSy79620nCf
+	+NL9VPvJ7pLUtrrLRJFRO/0DJPR83S91BZT5ayMwV5HJa/o/SZZw+9gkfvK8XReaZtHTT4dCOZ1
+	4Dh6e8kwVYqh3nLd4P9oGCyrT9tre75XCT/Y1bLOwwafwIEqHgU5fJgOQj
+X-Received: by 2002:a05:6000:2010:b0:43b:4ec7:f924 with SMTP id ffacd0b85a97d-43b64264073mr5799774f8f.34.1774017052225;
+        Fri, 20 Mar 2026 07:30:52 -0700 (PDT)
+Received: from [192.168.10.55] (77-32-38-61.dyn.eolo.it. [77.32.38.61])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-43b64703c35sm7227678f8f.22.2026.03.20.07.30.51
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 20 Mar 2026 07:24:32 -0700 (PDT)
-Message-ID: <1694998d-ea3d-4707-bf95-726ba9aee6c4@gmail.com>
-Date: Fri, 20 Mar 2026 15:25:01 +0100
+        Fri, 20 Mar 2026 07:30:51 -0700 (PDT)
+Message-ID: <71a496c8-9fbc-467e-bd5c-a82142ba558b@gmail.com>
+Date: Fri, 20 Mar 2026 15:31:21 +0100
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -69,8 +68,8 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/5] i386/sev: Add sev-emulated QOM object with TCG
- support
+Subject: Re: [PATCH 4/5] i386/sev: Add launch measurement emulation and TIK
+ property
 To: Markus Armbruster <armbru@redhat.com>
 Cc: qemu-devel@nongnu.org, kvm@vger.kernel.org,
  Eduardo Habkost <eduardo@habkost.net>, Zhao Liu <zhao1.liu@intel.com>,
@@ -82,132 +81,79 @@ Cc: qemu-devel@nongnu.org, kvm@vger.kernel.org,
  Paolo Bonzini <pbonzini@redhat.com>, Luigi Leonardi <leonardi@redhat.com>,
  Richard Henderson <richard.henderson@linaro.org>
 References: <20260317113840.33017-1-califano.tommaso@gmail.com>
- <20260317113840.33017-2-califano.tommaso@gmail.com>
- <87tsucvw3k.fsf@pond.sub.org>
+ <20260317113840.33017-5-califano.tommaso@gmail.com>
+ <87pl50vw14.fsf@pond.sub.org>
 Content-Language: en-US, it
 From: Tommaso Califano <califano.tommaso@gmail.com>
-In-Reply-To: <87tsucvw3k.fsf@pond.sub.org>
+In-Reply-To: <87pl50vw14.fsf@pond.sub.org>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
 
 
-Il 19/03/26 13:31, Markus Armbruster ha scritto:
+Il 19/03/26 13:33, Markus Armbruster ha scritto:
 > Tommaso Califano <califano.tommaso@gmail.com> writes:
 > 
->> QEMU's AMD SEV support requires KVM on costly AMD EPYC processors,
->> limiting development and testing to users with specialized server
->> hardware. This makes it hard to validate SEV guest behavior, like
->> OVMF boots or SEV-aware software, on common dev machines.
->> A solution to this is the emulation of SEV from the guest's
->> perspective using TCG.
+>> The next step for completing the SEV launch emulation is to implement the
+>> "query-sev-launch-measure" feature, responsible for returning the
+>> measurement. In this case the measurement will be computed in QEMU.
 >>
->> This change begins this process with the exposure of the SEV CPUID leaf.
->> In target/i386/cpu.c:cpu_x86_cpuid() case 0x8000001F:
+>> Implement sev_emulated_launch_get_measure() to emulate the LAUNCH_MEASURE
+>> command per AMD SEV API spec section 6.5.1. It generates a random 16-byte
+>> mnonce, computes the launch digest as SHA-256 over ld_data, then derives
+>> the measurement via HMAC-SHA256
+>> (TIK;0x04|| API version || build ID || policy || launch digest || mnonce).
+>> The base64-encoded result (32-byte HMAC + 16-byte mnonce) populates
+>> "query-sev-launch-measure" data, advancing state to LAUNCH_SECRET for
+>> secret injection.
 >>
->> case 0x8000001F:
->>     *eax = *ebx = *ecx = *edx = 0;
->>     if (sev_enabled()) {
->>         *eax = 0x2;
->>         *eax |= sev_es_enabled() ? 0x8 : 0;
->>         *eax |= sev_snp_enabled() ? 0x10 : 0;
->>         *ebx = sev_get_cbit_position() & 0x3f; /* EBX[5:0] */
->>         *ebx |= (sev_get_reduced_phys_bits() & 0x3f) << 6; /* EBX[11:6] */
->>     }
->>     break;
+>> The TIK is supplied via 16-byte binary file specified in new
+>> SevEmulatedProperty "tik" path; absent this, keys default to zeroed.
+>> Example QEMU arguments with the key passed:
 >>
->> sev_enabled() verifies if the QOM object is TYPE_SEV_GUEST;
->> TYPE_SEV_EMULATED is derived from TYPE_SEV_GUEST with SevEmulatedState
->> to satisfy this check with minimal changes. In particular this allows
->> to bypass all the sev_enabled() checks for future features.
->>
->> Since KVM hardware isn't available, override the QOM's kvm_init() and add
->> a conditional confidential_guest_kvm_init() call during machine_init() to
->> set up emulated confidential support using the ConfidentialGuestSupport
->> structure.
->>
->> With this change it is possible to run a VM with the SEV CPUID active
->> adding:
->>
->>     -accel tcg \
->>     -object sev-emulated,id=sev0,cbitpos=47,reduced-phys-bits=1 \
->>     -machine memory-encryption=sev0
->>
->> To the QEMU start arguments.
+>> 	-cpu "EPYC-Milan" \
+>> 	-accel tcg \
+>> 	-object sev-emulated,id=sev0,cbitpos=47,reduced-phys-bits=1,\
+>> 					tik=/path/to/tik.bin \
+>> 	-machine memory-encryption=sev0
 >>
 >> Signed-off-by: Tommaso Califano <califano.tommaso@gmail.com>
-> 
-> [...]
-> 
+>> ---
+>>  qapi/qom.json     |   3 +-
+>>  target/i386/sev.c | 155 ++++++++++++++++++++++++++++++++++++++++++++++
+>>  2 files changed, 157 insertions(+), 1 deletion(-)
+>>
 >> diff --git a/qapi/qom.json b/qapi/qom.json
->> index c653248f85..35cda819ec 100644
+>> index 35cda819ec..affb5024b5 100644
 >> --- a/qapi/qom.json
 >> +++ b/qapi/qom.json
->> @@ -1057,6 +1057,19 @@
->>              '*handle': 'uint32',
->>              '*legacy-vm-type': 'OnOffAuto' } }
+>> @@ -1064,11 +1064,12 @@
+>>  # This object functionally emulates AMD SEV hardware via TCG, so
+>>  # it does not require real hardware to run.
+>>  #
+>> +# @tik: binary file of the SEV TIK (default: all 0).
+> 
+> Is this a file name?
+> 
+
+Yes, I'll specify it better writing "Path to the binary file..."
+
+> Blank line here, please.
+> 
+
+I'll add it.
+
+>>  # Since: 10.1.0
+>>  ##
+>>  { 'struct': 'SevEmulatedProperties',
+>>    'base': 'SevGuestProperties',
+>> -  'data': {}}
+>> +  'data': {'*tik': 'str'}}
 >>  
->> +##
->> +# @SevEmulatedProperties:
->> +#
->> +# Properties for sev-emulated objects.
->> +# This object functionally emulates AMD SEV hardware via TCG, so
->> +# it does not require real hardware to run.
-> 
-> Wrap the paragraph, please:
-> 
->    # Properties for sev-emulated objects.  This object functionally
->    # emulates AMD SEV hardware via TCG, so it does not require real
->    # hardware to run.
-> 
-
-I'll do it.
-
->> +#
->> +# Since: 10.1.0
-> 
-> 11.0 right now, but realistically 11.1.
-> 
-
-I'll update it to 11.1.
-
->> +##
->> +{ 'struct': 'SevEmulatedProperties',
->> +  'base': 'SevGuestProperties',
->> +  'data': {}}
->> +
 >>  ##
 >>  # @SevSnpGuestProperties:
->>  #
->> @@ -1241,6 +1254,7 @@
->>      { 'name': 'secret_keyring',
->>        'if': 'CONFIG_SECRET_KEYRING' },
->>      'sev-guest',
->> +    'sev-emulated',
->>      'sev-snp-guest',
->>      'thread-context',
->>      's390-pv-guest',
 > 
-> Please insert before sev-guest to keep things more or less sorted.
-> 
-
-I'll do it, but I don't understand the convention. I'd organized them
-by object derivation hierarchy, so what is the expected sorting order?
-
->> @@ -1318,6 +1332,7 @@
->>        'secret_keyring':             { 'type': 'SecretKeyringProperties',
->>                                        'if': 'CONFIG_SECRET_KEYRING' },
->>        'sev-guest':                  'SevGuestProperties',
->> +      'sev-emulated':               'SevEmulatedProperties',
-> 
-> Likewise.
-> 
-
-Yes.
-
->>        'sev-snp-guest':              'SevSnpGuestProperties',
->>        'tdx-guest':                  'TdxGuestProperties',
->>        'thread-context':             'ThreadContextProperties',
+> [...]
 > 
 
 Best regards,
