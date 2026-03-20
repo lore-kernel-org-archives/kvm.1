@@ -1,282 +1,328 @@
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C489264612;
-	Fri, 20 Mar 2026 12:01:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B5BA4374160
+	for <kvm@vger.kernel.org>; Fri, 20 Mar 2026 12:39:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774008102; cv=none; b=KabPhLwDYKqdRP1BiZ6SaX0RLyRN+r8r8GQxUHFb/TQLfjnlG4VImIQvY3LQayTdBdoxgrjd9/dKAESJAaZ2iYs89NiOFtjlIx1IFTb5COuCC2+gH41np+4908Tm98eRoCVHTEU//SRhQej8Kbfxev1fNFMNoPFp2na/JnCPMgs=
+	t=1774010394; cv=none; b=OMuNc0blFot+KH1uWK3BciCVBnp9UVKqtlYqhswthP/m2HST68RDcYcBtcRrLgIKBiOGcddIEJUQ/iKw8WyQcTOS5u0AWkrOIeERYHVTRRsBKtBm105aqnIXuHCERH+WluloG/W0lqYfdCZOFdyXu8aaHNLZTHaH3DUxmj5/opY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774008102; c=relaxed/simple;
-	bh=gz18zbCVm0sr6y2h/CVfQv69oVWgUovG4pMT8i+56ik=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=j2oXNNNKIfU+FPfKfXPmfCw/N7yN2q/zlbswZ9J0A3R8GYnMQDewVspaideT5IREWZunQgq42iOUNOosnqCIBUDwWXj4xomhVyv7HTQL9TYSZ+gN+aO/uHQ972JZywML2EqJT3DJUz8b7iUyAIEqDQvPqogjoVuBpLGfRECeXCI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=bICvUfPK; arc=none smtp.client-ip=148.163.158.5
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+	s=arc-20240116; t=1774010394; c=relaxed/simple;
+	bh=ENYxOj6N7l7dQtnMpnOYPAunFUGPECnXAayXQx6kqW0=;
+	h=Date:From:To:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=K5ftgLbOjogsRdTtsa+n8J8dnernQyZ7+j8l/UFvrTVQNw2BJppWiW1DreQCWHCJyKwPv7K2kB7iWDDCzOqal8hZTt9b7/J07mCyQn71x4gY9p9Py9dPX6u5s3EwsRT4jjtzHe5iVjod8Mav9+tUi8pn3HhD0ad9Tlu9/03UaQs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=BPsrXiVk; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="bICvUfPK"
-Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 62K3U8Jq532485;
-	Fri, 20 Mar 2026 12:01:40 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=snwT/c
-	MthzktX0q1U9GbWRK2f2AGp4W9m/ORi/D7gOM=; b=bICvUfPKzLUDsZANdfN0nj
-	5Od+xOYMXtamegNo3i9UwZxCXHYddOKvWvsRxZjjIQNHugTLuX7JdjMioUDuZNuQ
-	d6nV2Y1ICWcef908QmsIpd+uhqjDHBRFdcMcn2d65g8aZeK/wvHf2ex2m0b+7Nqn
-	EXL/nRb3vm7Zyo9KFTHH7gAN+hiG4K99I6kKaUvMQxiKyx0gYxvjSODP8u/uLbtl
-	C4JZz8cNLI/S8X3I0Wpo+K2b0/zr7YwXWINXXqkqcsuOfpDzMGHVYgEkQ/wMyxp1
-	d+heZHKOQFwNjFa1vRo9sG3JEqGLIKcrTNRuCR79yZVP/VtR0fGYFv2xGFYDtz+Q
-	==
-Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4cvx3dagw7-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 20 Mar 2026 12:01:39 +0000 (GMT)
-Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma22.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 62KBqPJA014011;
-	Fri, 20 Mar 2026 12:01:39 GMT
-Received: from smtprelay06.dal12v.mail.ibm.com ([172.16.1.8])
-	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4cwjcyf3x3-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 20 Mar 2026 12:01:39 +0000
-Received: from smtpav04.wdc07v.mail.ibm.com (smtpav04.wdc07v.mail.ibm.com [10.39.53.231])
-	by smtprelay06.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 62KC1bGU53805430
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Fri, 20 Mar 2026 12:01:37 GMT
-Received: from smtpav04.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 806B858045;
-	Fri, 20 Mar 2026 12:01:37 +0000 (GMT)
-Received: from smtpav04.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id ECDB658050;
-	Fri, 20 Mar 2026 12:01:36 +0000 (GMT)
-Received: from [9.61.93.103] (unknown [9.61.93.103])
-	by smtpav04.wdc07v.mail.ibm.com (Postfix) with ESMTP;
-	Fri, 20 Mar 2026 12:01:36 +0000 (GMT)
-Message-ID: <28fafe1d-3b4d-42cf-b503-ca4e5782429c@linux.ibm.com>
-Date: Fri, 20 Mar 2026 08:01:36 -0400
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="BPsrXiVk"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1774010386;
+	h=from:from:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=ZBB5vm/1XcC107sWhupG4It1ndTaYPAgfGYZjS+9vfg=;
+	b=BPsrXiVkQeFndM/15da3YW8Wur0IHJDrCX9Y3lyeRo3hc92Znz0TFCJT4aJWysUbie0BjJ
+	0o5boqrmmGHTEl7MKjS13WdB9jepdw2BRtZ48sAtfzGUzLvKTlLXtGzezr8qINRjuMSrlS
+	BrTHctWlHv/U5xLypRTJ48eEkdz694k=
+Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-183-WrGKrPSwN6CB-YyJN06gfA-1; Fri,
+ 20 Mar 2026 08:39:43 -0400
+X-MC-Unique: WrGKrPSwN6CB-YyJN06gfA-1
+X-Mimecast-MFC-AGG-ID: WrGKrPSwN6CB-YyJN06gfA_1774010382
+Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id E0D0618005B2;
+	Fri, 20 Mar 2026 12:39:41 +0000 (UTC)
+Received: from redhat.com (unknown [10.44.33.255])
+	by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 03A0F180075B;
+	Fri, 20 Mar 2026 12:39:35 +0000 (UTC)
+Date: Fri, 20 Mar 2026 12:39:32 +0000
+From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
+To: Tommaso Califano <califano.tommaso@gmail.com>, qemu-devel@nongnu.org,
+	kvm@vger.kernel.org, Eduardo Habkost <eduardo@habkost.net>,
+	Markus Armbruster <armbru@redhat.com>,
+	Zhao Liu <zhao1.liu@intel.com>,
+	Marcelo Tosatti <mtosatti@redhat.com>,
+	Eric Blake <eblake@redhat.com>,
+	Oliver Steffen <osteffen@redhat.com>,
+	Stefano Garzarella <sgarzare@redhat.com>,
+	Giuseppe Lettieri <giuseppe.lettieri@unipi.it>,
+	Paolo Bonzini <pbonzini@redhat.com>,
+	Luigi Leonardi <leonardi@redhat.com>,
+	Richard Henderson <richard.henderson@linaro.org>
+Subject: Re: [PATCH 1/5] i386/sev: Add sev-emulated QOM object with TCG
+ support
+Message-ID: <ab1ABNvEOlIc2WCU@redhat.com>
+Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
+References: <20260317113840.33017-1-califano.tommaso@gmail.com>
+ <20260317113840.33017-2-califano.tommaso@gmail.com>
+ <abw3HqBJqEWiY7GP@redhat.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC 05/10] KVM: s390: vsie: Cleanup and fixup of crycb handling
-To: Janosch Frank <frankja@linux.ibm.com>, kvm@vger.kernel.org
-Cc: linux-s390@vger.kernel.org, imbrenda@linux.ibm.com,
-        borntraeger@linux.ibm.com
-References: <20260316180310.17765-1-frankja@linux.ibm.com>
- <20260316180310.17765-6-frankja@linux.ibm.com>
-Content-Language: en-US
-From: Anthony Krowiak <akrowiak@linux.ibm.com>
-In-Reply-To: <20260316180310.17765-6-frankja@linux.ibm.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Authority-Analysis: v=2.4 cv=arO/yCZV c=1 sm=1 tr=0 ts=69bd3723 cx=c_pps
- a=5BHTudwdYE3Te8bg5FgnPg==:117 a=5BHTudwdYE3Te8bg5FgnPg==:17
- a=IkcTkHD0fZMA:10 a=Yq5XynenixoA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=RnoormkPH1_aCDwRdu11:22 a=V8glGbnc2Ofi9Qvn3v5h:22 a=VnNF1IyMAAAA:8
- a=7qAVLcqjNKgLvm1FKecA:9 a=QEXdDO2ut3YA:10
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMzIwMDA5MiBTYWx0ZWRfXwbQPnt9KdaBb
- 6Mm0B0X3Qh0INCo9EALNNcKbFVXVWf7tOHm0TtD0proQPdFEq3IzXFc6TgxOQLhjrLoA10kAcV9
- y/xlV0k1VjS3VhOzR1A2Q94oFpl+5AIHK+3Q4hfpn4pJ2vbQxmztuGVpS/p1+w9yE4x1fm8DKXF
- ivlEzOHGfUIbB90p0ow9Mngqpei4qotBLCn3h33aR6n2DhVWE7aF6iox88X7UwOGhuEPRVlvMfF
- Vw6zIEacyxI/hJbsKN/u0QF8dqjTwCj81UcNtAbBL75OO9Iq8eHfYXQ55sncwy7kWvfYcAF97dM
- qqJhAn2z8GF2qda3at2pT2fbg/6HDf1iMq6i1YEQqgFMilbUjAFyoiyxj3Blg1ERWT+5/n2kUI1
- BRjkYc/omNo7coQFkETIhV+EfIm7b8sXTHhcx80FFllZ6bOOHXvZPRXeYPsBxWbgmBNKnNyNOJE
- et7OHxqrr5Mq3GSTXpg==
-X-Proofpoint-GUID: vI7gJxaIkViExF6RFnTU3CGZ7Mx1rGw_
-X-Proofpoint-ORIG-GUID: vI7gJxaIkViExF6RFnTU3CGZ7Mx1rGw_
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
- definitions=2026-03-20_02,2026-03-19_05,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501 spamscore=0 lowpriorityscore=0 impostorscore=0
- adultscore=0 bulkscore=0 suspectscore=0 malwarescore=0 clxscore=1011
- phishscore=0 classifier=typeunknown authscore=0 authtc= authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2603050001
- definitions=main-2603200092
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <abw3HqBJqEWiY7GP@redhat.com>
+User-Agent: Mutt/2.2.14 (2025-02-20)
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
 
+On Thu, Mar 19, 2026 at 05:49:18PM +0000, Daniel P. Berrangé wrote:
+> On Tue, Mar 17, 2026 at 12:38:36PM +0100, Tommaso Califano wrote:
+> > With this change it is possible to run a VM with the SEV CPUID active
+> > adding:
+> > 
+> >     -accel tcg \
+> >     -object sev-emulated,id=sev0,cbitpos=47,reduced-phys-bits=1 \
+> >     -machine memory-encryption=sev0
+> 
+> snip
+> 
+> > diff --git a/qapi/qom.json b/qapi/qom.json
+> > index c653248f85..35cda819ec 100644
+> > --- a/qapi/qom.json
+> > +++ b/qapi/qom.json
+> > @@ -1057,6 +1057,19 @@
+> >              '*handle': 'uint32',
+> >              '*legacy-vm-type': 'OnOffAuto' } }
+> >  
+> > +##
+> > +# @SevEmulatedProperties:
+> > +#
+> > +# Properties for sev-emulated objects.
+> > +# This object functionally emulates AMD SEV hardware via TCG, so
+> > +# it does not require real hardware to run.
+> > +#
+> > +# Since: 10.1.0
+> > +##
+> > +{ 'struct': 'SevEmulatedProperties',
+> > +  'base': 'SevGuestProperties',
+> > +  'data': {}}
+> 
+> This is deriving 'sev-emulated' from 'sev-guest' which means it
+> supports all the properties that 'sev-guest' does, which for
+> the record is:
+> 
+>  sev-guest options:
+>   dh-cert-file=<string>  - guest owners DH certificate (encoded with base64)
+>   kernel-hashes=<bool>   - add kernel hashes to guest firmware for measured Linux boot
+>   legacy-vm-type=<OnOffAuto> - use legacy VM type to maintain measurement compatibility with older QEMU or kernel versions.
+>   session-file=<string>  - guest owners session parameters (encoded with base64)
+>   sev-device=<string>    - SEV device to use
 
+Sigh, I was mislead by  '-object sev-guest,help' omitting
+information about anything that is not a class property.
+So there is also
 
-On 3/16/26 12:23 PM, Janosch Frank wrote:
-> The crycbd denotes an absolute address and as such we need to use
-> gpa_t and read_guest_abs() instead of read_guest_real().
->
-> We don't want to copy the reserved fields into the host, so let's
-> define size constants that only include the masks and ignore the
-> reserved fields.
->
-> While we're at it, remove magic constants with compiler backed
-> constants.
->
-> Signed-off-by: Janosch Frank <frankja@linux.ibm.com>
-> ---
->   arch/s390/include/asm/kvm_host.h |  6 ++++
->   arch/s390/kvm/vsie.c             | 50 +++++++++++++++-----------------
->   2 files changed, 30 insertions(+), 26 deletions(-)
->
-> diff --git a/arch/s390/include/asm/kvm_host.h b/arch/s390/include/asm/kvm_host.h
-> index 64a50f0862aa..52827db2fa97 100644
-> --- a/arch/s390/include/asm/kvm_host.h
-> +++ b/arch/s390/include/asm/kvm_host.h
-> @@ -516,6 +516,8 @@ struct kvm_s390_crypto {
->   	__u8 apie;
->   };
->   
-> +#define APCB_NUM_MASKS 3
-> +
->   #define APCB0_MASK_SIZE 1
->   struct kvm_s390_apcb0 {
->   	__u64 apm[APCB0_MASK_SIZE];		/* 0x0000 */
-> @@ -540,6 +542,10 @@ struct kvm_s390_crypto_cb {
->   	struct kvm_s390_apcb1 apcb1;		/* 0x0080 */
->   };
->   
-> +#define APCB_KEY_MASK_SIZE \
+  - cbitpos=<int>
+  - reduced-phys-bits=<int>
+  - handle=<int>
+  - policy=<int>
 
-Not critical, but should this maybe be APCB_KEY_MASKS_SIZE
-or APCB_WRAPPING_KEY_MASKS_SIZE since
-it encompasses both key masks? That notwithstanding:
+> 
+> 
+> Of those properties
+> 
+>  * dh-cert-file + session-file are traditionally used
+>    as a means to transfer the TIK+TEK to the SEV firmware,
+>    with wrapping to protect them from the hypervisor.
+> 
+>    These can't be used with sev-emulated, as implemented,
+>    since they require a key derivation  from the PDH, a
+>    concept which IIUC is not implemented in this series.
+> 
+>    Instead, in a later patch 'tik' and 'tek' properties
+>    are added to 'sev-emulated', and to pass the TIK+TEK
+>    in clear text.
+> 
+>  * sev-device + legacy-vm-type - these are only relevant
+>    to the KVM integration, so not applicable for emulation
+> 
+>  * kernel-hashes - would be relevant if formally emulating
+>    LAUNCH_UPDATE_DATA for attestation, but IIUC, this is
+>    not done/used by this series
+>   
+> 
+> IOW, we're deriving from 'sev-guest' but AFAICT none of
+> its properties are relevant to the emulation. The
+> dh-cert-file and session-file could potentially be
+> relevant if implementing the PDH concept and key
+> derivation, but that's not done, instead the tik/tek
+> are passed explicitly.
+> 
+> What is the value we get from this sev-guest -> sev-emulated
+> inheritance ?  My gut feeling is that this perhaps isn't
+> the right way to be modelling things unless there's a plan
+> for future work that would benefit from them.
+> 
+> Another question related to modelling is whether there is
+> an intention to support SEV-SNP at a later date, would that
+> imply a sev-snp-emulated object type too ? If so, would it
+> inherit from sev-emulated or from sev-snp-guest ?
+> 
+> > +
+> >  ##
+> >  # @SevSnpGuestProperties:
+> >  #
+> > @@ -1241,6 +1254,7 @@
+> >      { 'name': 'secret_keyring',
+> >        'if': 'CONFIG_SECRET_KEYRING' },
+> >      'sev-guest',
+> > +    'sev-emulated',
+> >      'sev-snp-guest',
+> >      'thread-context',
+> >      's390-pv-guest',
+> > @@ -1318,6 +1332,7 @@
+> >        'secret_keyring':             { 'type': 'SecretKeyringProperties',
+> >                                        'if': 'CONFIG_SECRET_KEYRING' },
+> >        'sev-guest':                  'SevGuestProperties',
+> > +      'sev-emulated':               'SevEmulatedProperties',
+> >        'sev-snp-guest':              'SevSnpGuestProperties',
+> >        'tdx-guest':                  'TdxGuestProperties',
+> >        'thread-context':             'ThreadContextProperties',
+> > diff --git a/target/i386/sev.c b/target/i386/sev.c
+> > index 9dde972c11..2502e860e2 100644
+> > --- a/target/i386/sev.c
+> > +++ b/target/i386/sev.c
+> > @@ -51,6 +51,7 @@
+> >  
+> >  OBJECT_DECLARE_TYPE(SevCommonState, SevCommonStateClass, SEV_COMMON)
+> >  OBJECT_DECLARE_TYPE(SevGuestState, SevCommonStateClass, SEV_GUEST)
+> > +OBJECT_DECLARE_TYPE(SevEmulatedState, SevCommonStateClass, SEV_EMULATED)
+> >  OBJECT_DECLARE_TYPE(SevSnpGuestState, SevCommonStateClass, SEV_SNP_GUEST)
+> >  
+> >  /* hard code sha256 digest size */
+> > @@ -177,6 +178,21 @@ struct SevGuestState {
+> >      OnOffAuto legacy_vm_type;
+> >  };
+> >  
+> > +/**
+> > + * SevEmulatedState:
+> > + *
+> > + * The SevEmulatedState object is used for creating and managing a SEV emulated
+> > + * guest.
+> > + *
+> > + * # $QEMU \
+> > + *         -object sev-emulated,id=sev0 \
+> > + *         -machine ...,memory-encryption=sev0
+> > + */
+> > +
+> > +typedef struct SevEmulatedState {
+> > +    SevGuestState parent_obj;
+> > +} SevEmulatedState;
+> > +
+> >  struct SevSnpGuestState {
+> >      SevCommonState parent_obj;
+> >  
+> > @@ -2936,6 +2952,46 @@ sev_guest_instance_init(Object *obj)
+> >      sev_guest->legacy_vm_type = ON_OFF_AUTO_AUTO;
+> >  }
+> >  
+> > +static int sev_emulated_init(ConfidentialGuestSupport *cgs, Error **errp)
+> > +{
+> > +    SevCommonState *sev_common = SEV_COMMON(cgs);
+> > +
+> > +    /*
+> > +     * The cbitpos value will be placed in bit positions 5:0 of the EBX
+> > +     * register of CPUID 0x8000001F. We need to verify the range as the
+> > +     * comparison with the host cbitpos is missing.
+> > +     */
+> > +    if (sev_common->cbitpos < 32 ||
+> > +        sev_common->cbitpos > 63) {
+> > +        error_setg(errp, "%s: cbitpos check failed, requested '%d',"
+> > +                   "the firmware requires >=32",
+> > +                   __func__, sev_common->cbitpos);
+> > +        return -1;
+> > +    }
+> > +
+> > +    /*
+> > +     * The reduced-phys-bits value will be placed in bit positions 11:6 of
+> > +     * the EBX register of CPUID 0x8000001F, so verify the supplied value
+> > +     * is in the range of 1 to 63.
+> > +     */
+> > +    if (sev_common->reduced_phys_bits < 1 ||
+> > +        sev_common->reduced_phys_bits > 63) {
+> > +        error_setg(errp, "%s: reduced_phys_bits check failed,"
+> > +                   " it should be in the range of 1 to 63, requested '%d'",
+> > +                   __func__, sev_common->reduced_phys_bits);
+> > +        return -1;
+> > +    }
+> > +    cgs->ready = true;
+> > +    return 0;
+> > +}
+> > +
+> > +static void sev_emulated_class_init(ObjectClass *oc, const void *data)
+> > +{
+> > +    ConfidentialGuestSupportClass *klass = CONFIDENTIAL_GUEST_SUPPORT_CLASS(oc);
+> > +    /* Override the sev-common method that uses kvm */
+> > +    klass->kvm_init = sev_emulated_init;
+> > +}
+> > +
+> >  /* guest info specific sev/sev-es */
+> >  static const TypeInfo sev_guest_info = {
+> >      .parent = TYPE_SEV_COMMON,
+> > @@ -2945,6 +3001,14 @@ static const TypeInfo sev_guest_info = {
+> >      .class_init = sev_guest_class_init,
+> >  };
+> >  
+> > +/* emulated sev */
+> > +static const TypeInfo sev_emulated_info = {
+> > +    .parent = TYPE_SEV_GUEST,
+> > +    .name = TYPE_SEV_EMULATED,
+> > +    .instance_size = sizeof(SevEmulatedState),
+> > +    .class_init = sev_emulated_class_init
+> > +};
+> > +
+> >  static void
+> >  sev_snp_guest_get_policy(Object *obj, Visitor *v, const char *name,
+> >                           void *opaque, Error **errp)
+> > @@ -3207,6 +3271,7 @@ static void
+> >  sev_register_types(void)
+> >  {
+> >      type_register_static(&sev_common_info);
+> > +    type_register_static(&sev_emulated_info);
+> >      type_register_static(&sev_guest_info);
+> >      type_register_static(&sev_snp_guest_info);
+> >  }
+> > diff --git a/target/i386/sev.h b/target/i386/sev.h
+> > index 4358df40e4..839656e2be 100644
+> > --- a/target/i386/sev.h
+> > +++ b/target/i386/sev.h
+> > @@ -33,6 +33,7 @@ bool sev_snp_enabled(void);
+> >  #if !defined(CONFIG_USER_ONLY)
+> >  
+> >  #define TYPE_SEV_COMMON "sev-common"
+> > +#define TYPE_SEV_EMULATED "sev-emulated"
+> >  #define TYPE_SEV_GUEST "sev-guest"
+> >  #define TYPE_SEV_SNP_GUEST "sev-snp-guest"
+> >  
+> > -- 
+> > 2.53.0
+> > 
+> 
+> With regards,
+> Daniel
+> -- 
+> |: https://berrange.com       ~~        https://hachyderm.io/@berrange :|
+> |: https://libvirt.org          ~~          https://entangle-photo.org :|
+> |: https://pixelfed.art/berrange   ~~    https://fstop138.berrange.com :|
+> 
+> 
 
-Reviewed-by: Anthony Krowiak <akrowiak@linux.ibm.com>
-
-> +	(sizeof_field(struct kvm_s390_crypto_cb, dea_wrapping_key_mask) + \
-> +	 sizeof_field(struct kvm_s390_crypto_cb, aes_wrapping_key_mask))
-> +
->   struct kvm_s390_gisa {
->   	union {
->   		struct { /* common to all formats */
-> diff --git a/arch/s390/kvm/vsie.c b/arch/s390/kvm/vsie.c
-> index c0d36afd4023..13480d65c59d 100644
-> --- a/arch/s390/kvm/vsie.c
-> +++ b/arch/s390/kvm/vsie.c
-> @@ -155,17 +155,17 @@ static int prepare_cpuflags(struct kvm_vcpu *vcpu, struct vsie_page *vsie_page)
->   	atomic_set(&scb_s->cpuflags, newflags);
->   	return 0;
->   }
-> +
->   /* Copy to APCB FORMAT1 from APCB FORMAT0 */
->   static int setup_apcb10(struct kvm_vcpu *vcpu, struct kvm_s390_apcb1 *apcb_s,
-> -			unsigned long crycb_gpa, struct kvm_s390_apcb1 *apcb_h)
-> +			gpa_t crycb_gpa, struct kvm_s390_apcb1 *apcb_h)
->   {
->   	struct kvm_s390_apcb0 tmp;
-> -	unsigned long apcb_gpa;
-> +	gpa_t apcb_gpa;
->   
->   	apcb_gpa = crycb_gpa + offsetof(struct kvm_s390_crypto_cb, apcb0);
->   
-> -	if (read_guest_real(vcpu, apcb_gpa, &tmp,
-> -			    sizeof(struct kvm_s390_apcb0)))
-> +	if (read_guest_abs(vcpu, apcb_gpa, &tmp, sizeof(tmp)))
->   		return -EFAULT;
->   
->   	apcb_s->apm[0] = apcb_h->apm[0] & tmp.apm[0];
-> @@ -173,7 +173,6 @@ static int setup_apcb10(struct kvm_vcpu *vcpu, struct kvm_s390_apcb1 *apcb_s,
->   	apcb_s->adm[0] = apcb_h->adm[0] & tmp.adm[0] & 0xffff000000000000UL;
->   
->   	return 0;
-> -
->   }
->   
->   /**
-> @@ -186,18 +185,18 @@ static int setup_apcb10(struct kvm_vcpu *vcpu, struct kvm_s390_apcb1 *apcb_s,
->    * Returns 0 and -EFAULT on error reading guest apcb
->    */
->   static int setup_apcb00(struct kvm_vcpu *vcpu, unsigned long *apcb_s,
-> -			unsigned long crycb_gpa, unsigned long *apcb_h)
-> +			gpa_t crycb_gpa, unsigned long *apcb_h)
->   {
-> -	unsigned long apcb_gpa;
-> +	/* sizeof() would include reserved fields which we do not need/want */
-> +	unsigned long len = APCB_NUM_MASKS * APCB0_MASK_SIZE * sizeof(u64);
-> +	gpa_t apcb_gpa;
->   
->   	apcb_gpa = crycb_gpa + offsetof(struct kvm_s390_crypto_cb, apcb0);
->   
-> -	if (read_guest_real(vcpu, apcb_gpa, apcb_s,
-> -			    sizeof(struct kvm_s390_apcb0)))
-> +	if (read_guest_abs(vcpu, apcb_gpa, apcb_s, len))
->   		return -EFAULT;
->   
-> -	bitmap_and(apcb_s, apcb_s, apcb_h,
-> -		   BITS_PER_BYTE * sizeof(struct kvm_s390_apcb0));
-> +	bitmap_and(apcb_s, apcb_s, apcb_h, BITS_PER_BYTE * len);
->   
->   	return 0;
->   }
-> @@ -212,19 +211,18 @@ static int setup_apcb00(struct kvm_vcpu *vcpu, unsigned long *apcb_s,
->    * Returns 0 and -EFAULT on error reading guest apcb
->    */
->   static int setup_apcb11(struct kvm_vcpu *vcpu, unsigned long *apcb_s,
-> -			unsigned long crycb_gpa,
-> -			unsigned long *apcb_h)
-> +			gpa_t crycb_gpa, unsigned long *apcb_h)
->   {
-> -	unsigned long apcb_gpa;
-> +	/* sizeof() would include reserved fields which we do not need/want */
-> +	unsigned long len = APCB_NUM_MASKS * APCB1_MASK_SIZE * sizeof(u64);
-> +	gpa_t apcb_gpa;
->   
->   	apcb_gpa = crycb_gpa + offsetof(struct kvm_s390_crypto_cb, apcb1);
->   
-> -	if (read_guest_real(vcpu, apcb_gpa, apcb_s,
-> -			    sizeof(struct kvm_s390_apcb1)))
-> +	if (read_guest_abs(vcpu, apcb_gpa, apcb_s, len))
->   		return -EFAULT;
->   
-> -	bitmap_and(apcb_s, apcb_s, apcb_h,
-> -		   BITS_PER_BYTE * sizeof(struct kvm_s390_apcb1));
-> +	bitmap_and(apcb_s, apcb_s, apcb_h, BITS_PER_BYTE * len);
->   
->   	return 0;
->   }
-> @@ -244,8 +242,7 @@ static int setup_apcb11(struct kvm_vcpu *vcpu, unsigned long *apcb_s,
->    * Return 0 or an error number if the guest and host crycb are incompatible.
->    */
->   static int setup_apcb(struct kvm_vcpu *vcpu, struct kvm_s390_crypto_cb *crycb_s,
-> -	       const u32 crycb_gpa,
-> -	       struct kvm_s390_crypto_cb *crycb_h,
-> +	       const gpa_t crycb_gpa, struct kvm_s390_crypto_cb *crycb_h,
->   	       int fmt_o, int fmt_h)
->   {
->   	switch (fmt_o) {
-> @@ -315,7 +312,8 @@ static int shadow_crycb(struct kvm_vcpu *vcpu, struct vsie_page *vsie_page)
->   	struct kvm_s390_sie_block *scb_s = &vsie_page->scb_s;
->   	struct kvm_s390_sie_block *scb_o = vsie_page->scb_o;
->   	const uint32_t crycbd_o = READ_ONCE(scb_o->crycbd);
-> -	const u32 crycb_addr = crycbd_o & 0x7ffffff8U;
-> +	/* CRYCB origin is a 31 bit absolute address with a bit of masking */
-> +	const gpa_t crycb_addr = crycbd_o & 0x7ffffff8U;
->   	unsigned long *b1, *b2;
->   	u8 ecb3_flags;
->   	u32 ecd_flags;
-> @@ -359,8 +357,9 @@ static int shadow_crycb(struct kvm_vcpu *vcpu, struct vsie_page *vsie_page)
->   		goto end;
->   
->   	/* copy only the wrapping keys */
-> -	if (read_guest_real(vcpu, crycb_addr + 72,
-> -			    vsie_page->crycb.dea_wrapping_key_mask, 56))
-> +	if (read_guest_abs(vcpu,
-> +			   crycb_addr + offsetof(struct kvm_s390_crypto_cb, dea_wrapping_key_mask),
-> +			   vsie_page->crycb.dea_wrapping_key_mask, APCB_KEY_MASK_SIZE))
->   		return set_validity_icpt(scb_s, 0x0035U);
->   
->   	scb_s->ecb3 |= ecb3_flags;
-> @@ -368,10 +367,9 @@ static int shadow_crycb(struct kvm_vcpu *vcpu, struct vsie_page *vsie_page)
->   
->   	/* xor both blocks in one run */
->   	b1 = (unsigned long *) vsie_page->crycb.dea_wrapping_key_mask;
-> -	b2 = (unsigned long *)
-> -			    vcpu->kvm->arch.crypto.crycb->dea_wrapping_key_mask;
-> +	b2 = (unsigned long *) vcpu->kvm->arch.crypto.crycb->dea_wrapping_key_mask;
->   	/* as 56%8 == 0, bitmap_xor won't overwrite any data */
-> -	bitmap_xor(b1, b1, b2, BITS_PER_BYTE * 56);
-> +	bitmap_xor(b1, b1, b2, BITS_PER_BYTE * APCB_KEY_MASK_SIZE);
->   end:
->   	switch (ret) {
->   	case -EINVAL:
+With regards,
+Daniel
+-- 
+|: https://berrange.com       ~~        https://hachyderm.io/@berrange :|
+|: https://libvirt.org          ~~          https://entangle-photo.org :|
+|: https://pixelfed.art/berrange   ~~    https://fstop138.berrange.com :|
 
