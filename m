@@ -1,108 +1,194 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E5E1A1C84A0;
-	Fri, 20 Mar 2026 04:04:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.11
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 28E8C28468E;
+	Fri, 20 Mar 2026 06:22:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.13
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773979444; cv=none; b=LpB2WNubPE6dhGExsYAuSX8vyQcmYRRZyJmV/z+8o6AGd30oBT7P2itO1OFxK12OR4AQ0UrI9XylZ80C/w4VrM9WuCpgPtSzcbSSiEax4eEQ7ocYCz+dzYammI495+K9wKZAiNKhEDnUJmeiDtRaIh70baZOtCJHu4Z655+WkOU=
+	t=1773987743; cv=none; b=Ltrfd4mLLWR1HiPufPZqeAv2FAMeDr/MMg4xfLS3bKCPXu72MbhIe0lh3nwo/c/5hkeXcNGM2BMWWoIas8N9+YqtSwXalQP53zucFElMVYvzQ5okr8/vCEspGIVOeuOikQGkH0n0vDzTR4txgV6D8HGv9hU3PCXuC89iGhQzI/g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773979444; c=relaxed/simple;
-	bh=v4TVmYNjh8hgyB2oT0oMALAa/nPVWHCpkQkwTtRx8MM=;
-	h=From:To:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=C8x90ICSbFu5nn9v8w3xAYAkP0vo45ky1STg7pXb5vTZ7Z35JYc6lNELQoWT2epEdgSrS6dj1sp2RQJhSPLZrbTKAX8eA/OelBq+4WTGtZtdsd8AmhGTmIGQ2h2UulvUH5Ln1A6l+3DqDW8JmYmdhWMQeASGFpgaaJbg7MF/Z/s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=hgSJ+I+R; arc=none smtp.client-ip=192.198.163.11
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1773987743; c=relaxed/simple;
+	bh=Y8KK2D24mfTh3VP389qPc6aHnaY65d5tmzYY9bbkot0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=oeK1XEF/YOkH23I9LPEOcLFzqOjP0ipmaqg1Vw1WYaly89Xuz0Q51UX/593HXVju6ac8kMlvZrkPabux8+STUcJzqT4H1aPCA1FeSO2qmKOnuVromqxvlLamLOfrx3l2RsLwQnS+ABm460pBkO1a99jOlYIod6DEkW0/7Otqjbw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=h4EfhusW; arc=none smtp.client-ip=192.198.163.13
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="hgSJ+I+R"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="h4EfhusW"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1773979443; x=1805515443;
-  h=from:to:subject:date:message-id:in-reply-to:references:
-   mime-version:content-transfer-encoding;
-  bh=v4TVmYNjh8hgyB2oT0oMALAa/nPVWHCpkQkwTtRx8MM=;
-  b=hgSJ+I+RZ1lf/RQpE5d/Wy5Aw0vYuLBjBxmXMlNjtoKt12RwQkNTg6m1
-   oZAgpsFe0dDKRjV4y2NLHzysqeP3KHxtpdUNWq1fcooUt8b83QqikqasT
-   MBu0rrSFitLrbRDps/87I4+9yguWnyfMBkdjc3rN9mGgnvbki1xtV686A
-   aDskTQFFYSRrWHNC5iKjVcdYPAeuB/5nRTa43VobBMQLS3VUDTDFINjUz
-   1c6BiXbsMGjEMQgF+2buAd10CYeBLFbMoN6kE/hJF+NOrvtUEIFe+PnoK
-   CipjOFCyDNZZ5GBXtyU69dhxm2vlqdB73KqhsDIWPFvKg2bKpxnTVIMNb
-   w==;
-X-CSE-ConnectionGUID: lOJ3TLwgTMafj3bZkQjQqQ==
-X-CSE-MsgGUID: pJ0xIAkyReeyJyDd+gOOKw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11734"; a="85688513"
+  t=1773987741; x=1805523741;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=Y8KK2D24mfTh3VP389qPc6aHnaY65d5tmzYY9bbkot0=;
+  b=h4EfhusWG7Xv5n5jNGAfLkHsFTHf2c7uDvDcZxTt9ny9wd/0F7vwXL3e
+   DYS5nGUaVsov7XYXMmbCw1cX9xblmbqQ5kCWhbgLcqTS5WOOfU3uMVYye
+   So2n28/S9yafKo0lpurjuDV33zF+zRpp2x2D07r7FB91g37VmBRpB55/p
+   FoaywztCp98Jwo+JEDC4zDlrl0rHPxlKwPIxurI1R6xuj0gWZJe7ZVyp1
+   h4Bnk+VSe2niCekwubKP50VwtpBOBUaOEM4acEHh50AjZnLxRcSjsczSV
+   rnpMi5XxhW2oiDDQdbt/rHtEPgSFq+vqkFQhe4TPWBijWtDfRlmDRd4Fk
+   Q==;
+X-CSE-ConnectionGUID: 6usCPMfqTsmFWAotCy6zPg==
+X-CSE-MsgGUID: 1q2oHitgQgqjwXnQ5VmalA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11734"; a="77676620"
 X-IronPort-AV: E=Sophos;i="6.23,130,1770624000"; 
-   d="scan'208";a="85688513"
-Received: from fmviesa005.fm.intel.com ([10.60.135.145])
-  by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Mar 2026 21:04:02 -0700
-X-CSE-ConnectionGUID: S/3gUPFRQaC96aL6d+iarw==
-X-CSE-MsgGUID: zVlsBHFCT/6HiKj3ED45/g==
+   d="scan'208";a="77676620"
+Received: from fmviesa006.fm.intel.com ([10.60.135.146])
+  by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Mar 2026 23:22:20 -0700
+X-CSE-ConnectionGUID: 3ZKtYmxhQTCMSaPmGSYtPw==
+X-CSE-MsgGUID: UvuJIwaHSy2DE3wUa67I/Q==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.23,130,1770624000"; 
-   d="scan'208";a="227885221"
-Received: from ly-workstation.sh.intel.com ([10.239.182.64])
-  by fmviesa005.fm.intel.com with ESMTP; 19 Mar 2026 21:03:55 -0700
-From: Yi Lai <yi1.lai@intel.com>
-To: yi1.lai@intel.com,
-	Alex Williamson <alex@shazbot.org>,
-	David Matlack <dmatlack@google.com>,
-	Shuah Khan <shuah@kernel.org>,
-	Baolu Lu <baolu.lu@linux.intel.com>,
-	kvm@vger.kernel.org,
-	linux-kselftest@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH 2/2] vfio: selftests: Align __iommu_unmap() check with iommufd compat mode
-Date: Fri, 20 Mar 2026 12:03:22 +0800
-Message-ID: <20260320040322.487429-3-yi1.lai@intel.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20260320040322.487429-1-yi1.lai@intel.com>
-References: <20260320040322.487429-1-yi1.lai@intel.com>
+   d="scan'208";a="218576883"
+Received: from guptapa-desk.jf.intel.com (HELO desk) ([10.165.239.46])
+  by fmviesa006-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Mar 2026 23:22:19 -0700
+Date: Thu, 19 Mar 2026 23:22:06 -0700
+From: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
+To: Peter Zijlstra <peterz@infradead.org>
+Cc: x86@kernel.org, Nikolay Borisov <nik.borisov@suse.com>,
+	"H. Peter Anvin" <hpa@zytor.com>,
+	Josh Poimboeuf <jpoimboe@kernel.org>,
+	David Kaplan <david.kaplan@amd.com>,
+	Sean Christopherson <seanjc@google.com>,
+	Borislav Petkov <bp@alien8.de>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	Alexei Starovoitov <ast@kernel.org>,
+	Daniel Borkmann <daniel@iogearbox.net>,
+	Andrii Nakryiko <andrii@kernel.org>, KP Singh <kpsingh@kernel.org>,
+	Jiri Olsa <jolsa@kernel.org>,
+	"David S. Miller" <davem@davemloft.net>,
+	David Laight <david.laight.linux@gmail.com>,
+	Andy Lutomirski <luto@kernel.org>,
+	Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>,
+	David Ahern <dsahern@kernel.org>,
+	Martin KaFai Lau <martin.lau@linux.dev>,
+	Eduard Zingerman <eddyz87@gmail.com>, Song Liu <song@kernel.org>,
+	Yonghong Song <yonghong.song@linux.dev>,
+	John Fastabend <john.fastabend@gmail.com>,
+	Stanislav Fomichev <sdf@fomichev.me>, Hao Luo <haoluo@google.com>,
+	Paolo Bonzini <pbonzini@redhat.com>,
+	Jonathan Corbet <corbet@lwn.net>, linux-kernel@vger.kernel.org,
+	kvm@vger.kernel.org, Asit Mallick <asit.k.mallick@intel.com>,
+	Tao Zhang <tao1.zhang@intel.com>, bpf@vger.kernel.org,
+	netdev@vger.kernel.org, linux-doc@vger.kernel.org
+Subject: Re: [PATCH v7 07/10] x86/vmscape: Use static_call() for predictor
+ flush
+Message-ID: <20260320062206.bdrnmnvho6lhmejw@desk>
+References: <20260319-vmscape-bhb-v7-0-b76a777a98af@linux.intel.com>
+ <20260319-vmscape-bhb-v7-7-b76a777a98af@linux.intel.com>
+ <20260319205802.GJ3738786@noisy.programming.kicks-ass.net>
+ <20260319213421.br6na4dulrjm6eke@desk>
+ <20260319214409.GL3738786@noisy.programming.kicks-ass.net>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260319214409.GL3738786@noisy.programming.kicks-ass.net>
 
-When __iommu_map() fails (as expected for MMIO in iommufd modes), the
-test proceeds to call __iommu_unmap() for cleanup.
+On Thu, Mar 19, 2026 at 10:44:09PM +0100, Peter Zijlstra wrote:
+...
+> > With _TRAMP, KVM complains:
+> > 
+> >  ERROR: modpost: "__SCK__vmscape_predictor_flush" [arch/x86/kvm/kvm.ko] undefined!
+> 
+> Ah, tricky. Yeah, this would need to be solved differenlty. Perhaps wrap
+> this in a helper and export that?
 
-The behavior of unmapping a non-existent range differs between iommufd
-native and compat modes:
-- Native iommufd returns -ENOENT (failure).
-- Compat iommufd returns 0 (success), mimicking legacy VFIO behavior.
+bool vmscape_mitigation_enabled(void)
+{
+       return unlikely(static_call_query(vmscape_predictor_flush));
+}
+EXPORT_SYMBOL_FOR_KVM(vmscape_mitigation_enabled);
 
-The previous code asserted that __iommu_unmap() always fails, which
-caused test failures in compat mode. Fix this by checking the return
-value based on the iommufd mode.
+This is definitely simpler option, but adds an exported function and an
+unnecessary call to it.
 
-Signed-off-by: Yi Lai <yi1.lai@intel.com>
----
- .../testing/selftests/vfio/vfio_dma_mapping_mmio_test.c  | 9 ++++++++-
- 1 file changed, 8 insertions(+), 1 deletion(-)
+> Or use the below little thing and change it to
+> EXPORT_STATIC_CALL_FOR_MODULES(foo, "kvm"); or whatnot.
+> 
+> > Probably one option is to somehow make sure that the key can be set to
+> > __ro_after_init? I don't see a use case for modifying the static_call() after
+> > boot.
+> 
+> So we have __ro_after_init for static_branch, but we'd not done
+> it for static_call yet. It shouldn't be terribly difficult, just hasn't
+> been done. Not sure this is the moment to do so.
+> 
+> 
+> ---
+> diff --git a/include/linux/static_call.h b/include/linux/static_call.h
+> index 78a77a4ae0ea..b610afd1ed55 100644
+> --- a/include/linux/static_call.h
+> +++ b/include/linux/static_call.h
+> @@ -216,6 +216,9 @@ extern long __static_call_return0(void);
+>  #define EXPORT_STATIC_CALL_GPL(name)					\
+>  	EXPORT_SYMBOL_GPL(STATIC_CALL_KEY(name));			\
+>  	EXPORT_SYMBOL_GPL(STATIC_CALL_TRAMP(name))
+> +#define EXPORT_STATIC_CALL_FOR_MODULES(name, mods)			\
+> +	EXPORT_SYMBOL_FOR_MODULES(STATIC_CALL_KEY(name), mods);		\
+> +	EXPORT_SYMBOL_FOR_MODULES(STATIC_CALL_TRAMP(name), mods)
+>  
+>  /* Leave the key unexported, so modules can't change static call targets: */
+>  #define EXPORT_STATIC_CALL_TRAMP(name)					\
+> @@ -276,6 +279,9 @@ extern long __static_call_return0(void);
+>  #define EXPORT_STATIC_CALL_GPL(name)					\
+>  	EXPORT_SYMBOL_GPL(STATIC_CALL_KEY(name));			\
+>  	EXPORT_SYMBOL_GPL(STATIC_CALL_TRAMP(name))
+> +#define EXPORT_STATIC_CALL_FOR_MODULES(name, mods)			\
+> +	EXPORT_SYMBOL_FOR_MODULES(STATIC_CALL_KEY(name), mods);		\
+> +	EXPORT_SYMBOL_FOR_MODULES(STATIC_CALL_TRAMP(name), mods)
+>  
+>  /* Leave the key unexported, so modules can't change static call targets: */
+>  #define EXPORT_STATIC_CALL_TRAMP(name)					\
+> @@ -346,6 +352,8 @@ static inline int static_call_text_reserved(void *start, void *end)
+>  
+>  #define EXPORT_STATIC_CALL(name)	EXPORT_SYMBOL(STATIC_CALL_KEY(name))
+>  #define EXPORT_STATIC_CALL_GPL(name)	EXPORT_SYMBOL_GPL(STATIC_CALL_KEY(name))
+> +#define EXPORT_STATIC_CALL_FOR_MODULES(name, mods)			\
+> +	EXPORT_SYMBOL_FOR_MODULES(STATIC_CALL_KEY(name), mods)
+>  
+>  #endif /* CONFIG_HAVE_STATIC_CALL */
 
-diff --git a/tools/testing/selftests/vfio/vfio_dma_mapping_mmio_test.c b/tools/testing/selftests/vfio/vfio_dma_mapping_mmio_test.c
-index 4f7ecdca0215..e6a2b2ff91f0 100644
---- a/tools/testing/selftests/vfio/vfio_dma_mapping_mmio_test.c
-+++ b/tools/testing/selftests/vfio/vfio_dma_mapping_mmio_test.c
-@@ -101,7 +101,14 @@ static void do_mmio_map_test(struct iommu *iommu,
- 		iommu_unmap(iommu, &region);
- 	} else {
- 		VFIO_ASSERT_NE(__iommu_map(iommu, &region), 0);
--		VFIO_ASSERT_NE(__iommu_unmap(iommu, &region, NULL), 0);
-+		/*
-+		 * Native IOMMUFD returns -ENOENT and Compat IOMMUFD returns 0
-+		 * for unmapping a non-existent range.
-+		 */
-+		if (!strcmp(iommu->mode->name, MODE_IOMMUFD))
-+			VFIO_ASSERT_NE(__iommu_unmap(iommu, &region, NULL), 0);
-+		else
-+			VFIO_ASSERT_EQ(__iommu_unmap(iommu, &region, NULL), 0);
- 	}
- }
+This plus extending it to support EXPORT_STATIC_CALL_FOR_KVM() is probably
+a better solution. Please let me know which one you prefer.
+
+diff --git a/include/linux/kvm_types.h b/include/linux/kvm_types.h
+index a568d8e6f4e8..89c4964c8560 100644
+--- a/include/linux/kvm_types.h
++++ b/include/linux/kvm_types.h
+@@ -13,6 +13,9 @@
+ 	EXPORT_SYMBOL_FOR_MODULES(symbol, __stringify(KVM_SUB_MODULES))
+ #define EXPORT_SYMBOL_FOR_KVM(symbol) \
+ 	EXPORT_SYMBOL_FOR_MODULES(symbol, "kvm," __stringify(KVM_SUB_MODULES))
++#define EXPORT_STATIC_CALL_FOR_KVM(symbol) \
++	EXPORT_STATIC_CALL_FOR_MODULES(symbol ,"kvm," __stringify(KVM_SUB_MODULES))
++
+ #else
+ #define EXPORT_SYMBOL_FOR_KVM_INTERNAL(symbol)
+ /*
+@@ -23,6 +26,7 @@
+ #ifndef EXPORT_SYMBOL_FOR_KVM
+ #if IS_MODULE(CONFIG_KVM)
+ #define EXPORT_SYMBOL_FOR_KVM(symbol) EXPORT_SYMBOL_FOR_MODULES(symbol, "kvm")
++#define EXPORT_STATIC_CALL_FOR_KVM(symbol) EXPORT_STATIC_CALL_FOR_MODULES(symbol ,"kvm")
+ #else
+ #define EXPORT_SYMBOL_FOR_KVM(symbol)
+ #endif /* IS_MODULE(CONFIG_KVM) */
+diff --git a/arch/x86/kernel/cpu/bugs.c b/arch/x86/kernel/cpu/bugs.c
+index 5f102af4921f..0abdb54f7510 100644
+--- a/arch/x86/kernel/cpu/bugs.c
++++ b/arch/x86/kernel/cpu/bugs.c
+@@ -145,7 +145,7 @@ EXPORT_SYMBOL_GPL(cpu_buf_idle_clear);
+ DEFINE_STATIC_KEY_FALSE(switch_mm_cond_l1d_flush);
  
--- 
-2.43.0
-
+ DEFINE_STATIC_CALL_NULL(vmscape_predictor_flush, write_ibpb);
+-EXPORT_STATIC_CALL_GPL(vmscape_predictor_flush);
++EXPORT_STATIC_CALL_FOR_KVM(vmscape_predictor_flush);
+ 
+ #undef pr_fmt
+ #define pr_fmt(fmt)	"mitigations: " fmt
