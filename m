@@ -1,195 +1,106 @@
-Received: from mail.loongson.cn (mail.loongson.cn [114.242.206.163])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6322218DB37;
-	Fri, 20 Mar 2026 03:01:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=114.242.206.163
+Received: from out30-98.freemail.mail.aliyun.com (out30-98.freemail.mail.aliyun.com [115.124.30.98])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6A6F279DCC;
+	Fri, 20 Mar 2026 03:05:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.30.98
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773975690; cv=none; b=MAqXgcV4WgKx7r6AozwysADRxpeh+jIbGdeMsP1cRF8c3oSVSWrBCfWXTUVgbWoWXhZOX9AfY1rib7Xh6yaT9cBBeYM5l9tRC0BukmUquzCXS9v8CG2xZNLGklg74m/XgAxwvaK/v6iZSf/q7ic6YTUepqD1NmA2U7heOxDY/qc=
+	t=1773975935; cv=none; b=Mj5+hI+NlAWbm1WTk9hqfJ6Oof3pxKfI8phBvU/F+VOWMf+b1ZlmCUImZweWU+OUv6Ien/MBcE+xfV8q6RVw/JtjE1R/zR43+EthJXbw9lmTI0k14ycofU1efeRoJMTu8gL2KFkakMoo0/wy1bIbyynFwWaHXCTnfaSRSMWpPTw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773975690; c=relaxed/simple;
-	bh=mKfhNpE6jU7cB40T0n/mgleQ4I5cG+GPuLuZLNrXGPI=;
-	h=Subject:To:Cc:References:From:Message-ID:Date:MIME-Version:
-	 In-Reply-To:Content-Type; b=tsFjkOABCEVEiRQQ0xH/bp619CLRV+NTgzR7Gbkq00t4vSkEvMFzy0C5TLwCJawzgROea7Gb6FMLvXzGM5UStRNiiI/mcA0YcjOyMNqH/ppzMNGFkXYgZKviqvdBsoL0BjvHumfL0EcYw1OwrA9DMu4o6B2YsVZTBLfgtPuITXA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn; spf=pass smtp.mailfrom=loongson.cn; arc=none smtp.client-ip=114.242.206.163
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=loongson.cn
-Received: from loongson.cn (unknown [10.20.42.62])
-	by gateway (Coremail) with SMTP id _____8Ax_6mFuLxp6ewcAA--.24298S3;
-	Fri, 20 Mar 2026 11:01:25 +0800 (CST)
-Received: from [10.20.42.62] (unknown [10.20.42.62])
-	by front1 (Coremail) with SMTP id qMiowJCx+8GEuLxp6BhZAA--.38652S3;
-	Fri, 20 Mar 2026 11:01:24 +0800 (CST)
-Subject: Re: [PATCH v2 3/3] LoongArch: KVM: Set vcpu_is_preempted() macro
- rather than function
-To: Huacai Chen <chenhuacai@kernel.org>
-Cc: Tianrui Zhao <zhaotianrui@loongson.cn>, kernel@xen0n.name,
- kvm@vger.kernel.org, loongarch@lists.linux.dev,
- linux-kernel@vger.kernel.org, Juergen Gross <jgross@suse.com>
-References: <20260317092911.1400248-1-maobibo@loongson.cn>
- <20260317092911.1400248-4-maobibo@loongson.cn>
- <CAAhV-H5aKoTTdjwzco6Yv84SJgtt0Eq9xXNp6PkcDaxM+H9gZw@mail.gmail.com>
-From: Bibo Mao <maobibo@loongson.cn>
-Message-ID: <6118cbb5-f895-e04d-7b76-91f9e9ad3b05@loongson.cn>
-Date: Fri, 20 Mar 2026 10:58:41 +0800
-User-Agent: Mozilla/5.0 (X11; Linux loongarch64; rv:68.0) Gecko/20100101
- Thunderbird/68.7.0
+	s=arc-20240116; t=1773975935; c=relaxed/simple;
+	bh=REQQnxXpsFhrNV0XxA255iDp5J0reo8ZClM1tnR/xVw=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=NpisCwLVKp/47K7iy01+GJ64NN6jZe+fXb/xKYJ0lHaa3drX/vvLKRV0CO+y8XtnySgUDJdliwOdUFR5FWeG5JJMBUcKx1mbbxT98qE3Tq2ozipQnPOkOyrE8Cony9Vbzxq80pc2zkA3YBdGlyuT9I1MYPTi5lkSC3Mpc0CoXNc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; spf=pass smtp.mailfrom=linux.alibaba.com; dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b=Tl9JWpKM; arc=none smtp.client-ip=115.124.30.98
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.alibaba.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b="Tl9JWpKM"
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux.alibaba.com; s=default;
+	t=1773975929; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
+	bh=VGXqSdrjifGxcMcDlLu7ZKp792LHAscB7o5xF4jfDt0=;
+	b=Tl9JWpKMuvMUj6dbpUf9LDoxR0iAIYwxdiZs8/USGg1SSggRidXogN1u3Khj0pcbEIIsyeJcfKPbonewgGEm2e0wZqMRSNbehsXS8M/6tc/OWzK34lZVwLad1na9a5stBbFpf++X6vbJxEkspasdAoJYxD8w6fOkIVh2rZnEsyI=
+X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R271e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033037026112;MF=baolin.wang@linux.alibaba.com;NM=1;PH=DS;RN=17;SR=0;TI=SMTPD_---0X.KE0mj_1773975927;
+Received: from 30.74.144.136(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0X.KE0mj_1773975927 cluster:ay36)
+          by smtp.aliyun-inc.com;
+          Fri, 20 Mar 2026 11:05:28 +0800
+Message-ID: <f7831736-f48f-4b5f-908d-4acda5829403@linux.alibaba.com>
+Date: Fri, 20 Mar 2026 11:05:27 +0800
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-In-Reply-To: <CAAhV-H5aKoTTdjwzco6Yv84SJgtt0Eq9xXNp6PkcDaxM+H9gZw@mail.gmail.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:qMiowJCx+8GEuLxp6BhZAA--.38652S3
-X-CM-SenderInfo: xpdruxter6z05rqj20fqof0/
-X-Coremail-Antispam: 1Uk129KBj93XoWxWw1rtFy5tw18GF4UWFWDJrc_yoWrCry8pF
-	9rCFnYva18Wa4xua9Ivw4Dur1Yqws7W3Z29a43Ga4rAa1qqr1ktr1vgrWj9FW2q34v9a1I
-	qF95Xr4xu3ZIy3gCm3ZEXasCq-sJn29KB7ZKAUJUUUU5529EdanIXcx71UUUUU7KY7ZEXa
-	sCq-sGcSsGvfJ3Ic02F40EFcxC0VAKzVAqx4xG6I80ebIjqfuFe4nvWSU5nxnvy29KBjDU
-	0xBIdaVrnRJUUUvYb4IE77IF4wAFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2
-	IYs7xG6rWj6s0DM7CIcVAFz4kK6r1Y6r17M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48v
-	e4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_JFI_Gr1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI
-	0_Jr0_Gr1l84ACjcxK6I8E87Iv67AKxVWxJVW8Jr1l84ACjcxK6I8E87Iv6xkF7I0E14v2
-	6r4j6r4UJwAS0I0E0xvYzxvE52x082IY62kv0487Mc804VCY07AIYIkI8VC2zVCFFI0UMc
-	02F40EFcxC0VAKzVAqx4xG6I80ewAv7VC0I7IYx2IY67AKxVWUXVWUAwAv7VC2z280aVAF
-	wI0_Jr0_Gr1lOx8S6xCaFVCjc4AY6r1j6r4UM4x0Y48IcVAKI48JMxk0xIA0c2IEe2xFo4
-	CEbIxvr21l42xK82IYc2Ij64vIr41l4I8I3I0E4IkC6x0Yz7v_Jr0_Gr1lx2IqxVAqx4xG
-	67AKxVWUJVWUGwC20s026x8GjcxK67AKxVWUGVWUWwC2zVAF1VAY17CE14v26r126r1DMI
-	IYrxkI7VAKI48JMIIF0xvE2Ix0cI8IcVAFwI0_Jr0_JF4lIxAIcVC0I7IYx2IY6xkF7I0E
-	14v26r1j6r4UMIIF0xvE42xK8VAvwI8IcIk0rVWUJVWUCwCI42IY6I8E87Iv67AKxVWUJV
-	W8JwCI42IY6I8E87Iv6xkF7I0E14v26r1j6r4UYxBIdaVFxhVjvjDU0xZFpf9x07j1WlkU
-	UUUU=
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 2/6] mm: change to return bool for
+ ptep_clear_flush_young()/clear_flush_young_ptes()
+To: "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>
+Cc: akpm@linux-foundation.org, david@kernel.org, Liam.Howlett@oracle.com,
+ vbabka@kernel.org, rppt@kernel.org, surenb@google.com, mhocko@suse.com,
+ linux-arm-kernel@lists.infradead.org, x86@kernel.org,
+ linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+ linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org,
+ kvm@vger.kernel.org, open <linux-mm@kvack.org>, linux-kernel@vger.kernel.org
+References: <cover.1773890510.git.baolin.wang@linux.alibaba.com>
+ <5d24b34d8b7860dc2188408b3fa530193bcc5caa.1773890510.git.baolin.wang@linux.alibaba.com>
+ <46390a7c-164c-4ffb-a1b2-fad21e3829df@lucifer.local>
+From: Baolin Wang <baolin.wang@linux.alibaba.com>
+In-Reply-To: <46390a7c-164c-4ffb-a1b2-fad21e3829df@lucifer.local>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
 
 
-On 2026/3/19 下午8:48, Huacai Chen wrote:
-> Hi, Bibo,
+On 3/19/26 7:30 PM, Lorenzo Stoakes (Oracle) wrote:
+> On Thu, Mar 19, 2026 at 11:24:01AM +0800, Baolin Wang wrote:
+>> The ptep_clear_flush_young() and clear_flush_young_ptes() are used to clear
+>> the young flag and flush the TLB, returning whether the young flag was set.
+>> Change the return type to bool to make the intention clearer.
+>>
+>> Signed-off-by: Baolin Wang <baolin.wang@linux.alibaba.com>
 > 
-> On Tue, Mar 17, 2026 at 5:29 PM Bibo Mao <maobibo@loongson.cn> wrote:
->>
->> vcpu_is_preempted() is performance sensitive called in function
->> osq_lock(), here set it as macro. So that parameter is not parsed
->> at most time, it can avoid cache line thrashing across numa node.
->>
->> Here is part of unixbench result on 3C5000 DualWay machine with 32
->> Cores and 2 Numa node.
->>            origin    with patch    CONFIG_PARAVIRT disabled
->> execl     6871.9    7134.2        7190.8
->> fstime    425.5     959.9         956.1
->>
->>  From the test result, with macro method it is almost the same with
->> CONFIG_PARAVIRT disabled, and there is some improvment compared with
->> function method.
->>
->> Signed-off-by: Bibo Mao <maobibo@loongson.cn>
+> Couple nits but LGTM, so:
+> 
+> Reviewed-by: Lorenzo Stoakes (Oracle) <ljs@kernel.org>
+
+Thanks.
+
 >> ---
->>   arch/loongarch/include/asm/qspinlock.h | 27 +++++++++++++++++++++-----
->>   arch/loongarch/kernel/paravirt.c       | 15 ++------------
->>   2 files changed, 24 insertions(+), 18 deletions(-)
+>>   arch/arm64/include/asm/pgtable.h             | 15 +++++++--------
+>>   arch/arm64/mm/contpte.c                      |  4 ++--
+>>   arch/parisc/include/asm/pgtable.h            |  2 +-
+>>   arch/parisc/kernel/cache.c                   |  8 ++++----
+>>   arch/powerpc/include/asm/nohash/64/pgtable.h |  2 +-
+>>   arch/riscv/include/asm/pgtable.h             |  4 ++--
+>>   arch/s390/include/asm/pgtable.h              |  4 ++--
+>>   arch/x86/include/asm/pgtable.h               |  4 ++--
+>>   arch/x86/mm/pgtable.c                        |  4 ++--
+>>   include/linux/pgtable.h                      |  8 ++++----
+>>   mm/pgtable-generic.c                         |  7 ++++---
+>>   11 files changed, 31 insertions(+), 31 deletions(-)
 >>
->> diff --git a/arch/loongarch/include/asm/qspinlock.h b/arch/loongarch/include/asm/qspinlock.h
->> index 66244801db67..b5d7a038faf1 100644
->> --- a/arch/loongarch/include/asm/qspinlock.h
->> +++ b/arch/loongarch/include/asm/qspinlock.h
->> @@ -5,8 +5,10 @@
->>   #include <linux/jump_label.h>
->>
->>   #ifdef CONFIG_PARAVIRT
->> -
->> +#include <asm/kvm_para.h>
->>   DECLARE_STATIC_KEY_FALSE(virt_spin_lock_key);
->> +DECLARE_STATIC_KEY_FALSE(virt_preempt_key);
->> +DECLARE_PER_CPU(struct kvm_steal_time, steal_time);
->>
->>   #define virt_spin_lock virt_spin_lock
->>
->> @@ -34,10 +36,25 @@ static inline bool virt_spin_lock(struct qspinlock *lock)
->>          return true;
+>> diff --git a/arch/arm64/include/asm/pgtable.h b/arch/arm64/include/asm/pgtable.h
+>> index 8c651695204c..393a9d1873f6 100644
+>> --- a/arch/arm64/include/asm/pgtable.h
+>> +++ b/arch/arm64/include/asm/pgtable.h
+>> @@ -1299,10 +1299,10 @@ static inline bool __ptep_test_and_clear_young(struct vm_area_struct *vma,
+>>   	return pte_young(pte);
 >>   }
 >>
->> -#define vcpu_is_preempted vcpu_is_preempted
->> -
->> -bool vcpu_is_preempted(int cpu);
->> -
->> +/*
->> + * Macro is better than inline function here
->> + * With inline function, parameter cpu is parsed even though it is not used.
->> + * This may cause cache line thrashing across NUMA node.
->> + * With macro method, parameter cpu is parsed only when it is used.
-> What is the test result with inline function? If it isn't
-> significantly worse than with macro, we usually prefer inline
-> functions.
-In the beginning, I had the similar thoughts. And inline function is 
-better to maintain, however here is obvious performance gap between 
-inline and macro method.
+>> -static inline int __ptep_clear_flush_young(struct vm_area_struct *vma,
+>> -					 unsigned long address, pte_t *ptep)
+>> +static inline bool __ptep_clear_flush_young(struct vm_area_struct *vma,
+>> +					    unsigned long address, pte_t *ptep)
+> 
+> I mean this is subjective stuff but can we just put 2nd line 2 tabs indented
+> underneath? Makes it easier for changes like this to not propagate.
+> 
+> Same comment for all of these!
 
-Here is part of unixbench result on 3C5000 DualWay machine with 32
-Cores and 2 Numa node, based on 7.0.0-rc4 kernel version. 
-vcpu_is_preempted() is implemented with different methods.
-          origin (function)   inline        macro
-execl     7025.7             6991.2        7242.3
-fstime    474.6              703.1         1071.1
+I usually use 2 tabs for indentation in the mm subsystem, but for other 
+subsystems, I try to follow the existing style since I'm unsure of other 
+maintainers' preferences:)
 
-Regards
-Bibo Mao
-> 
-> 
-> 
-> Huacai
-> 
->> + */
->> +#define vcpu_is_preempted(cpu)                                                 \
->> +({                                                                             \
->> +       bool __val;                                                             \
->> +                                                                               \
->> +       if (!static_branch_unlikely(&virt_preempt_key))                         \
->> +               __val = false;                                                  \
->> +       else {                                                                  \
->> +               struct kvm_steal_time *src;                                     \
->> +               src = &per_cpu(steal_time, cpu);                                \
->> +               __val = !!(READ_ONCE(src->preempted) & KVM_VCPU_PREEMPTED);     \
->> +       }                                                                       \
->> +       __val;                                                                  \
->> +})
->>   #endif /* CONFIG_PARAVIRT */
->>
->>   #include <asm-generic/qspinlock.h>
->> diff --git a/arch/loongarch/kernel/paravirt.c b/arch/loongarch/kernel/paravirt.c
->> index b74fe6db49ab..2d1206e486e2 100644
->> --- a/arch/loongarch/kernel/paravirt.c
->> +++ b/arch/loongarch/kernel/paravirt.c
->> @@ -10,8 +10,8 @@
->>   #include <asm/paravirt.h>
->>
->>   static int has_steal_clock;
->> -static DEFINE_PER_CPU(struct kvm_steal_time, steal_time) __aligned(64);
->> -static DEFINE_STATIC_KEY_FALSE(virt_preempt_key);
->> +DEFINE_PER_CPU(struct kvm_steal_time, steal_time) __aligned(64);
->> +DEFINE_STATIC_KEY_FALSE(virt_preempt_key);
->>   DEFINE_STATIC_KEY_FALSE(virt_spin_lock_key);
->>
->>   static bool steal_acc = true;
->> @@ -261,17 +261,6 @@ static int pv_time_cpu_down_prepare(unsigned int cpu)
->>          return 0;
->>   }
->>
->> -bool vcpu_is_preempted(int cpu)
->> -{
->> -       struct kvm_steal_time *src;
->> -
->> -       if (!static_branch_unlikely(&virt_preempt_key))
->> -               return false;
->> -
->> -       src = &per_cpu(steal_time, cpu);
->> -       return !!(src->preempted & KVM_VCPU_PREEMPTED);
->> -}
->> -EXPORT_SYMBOL(vcpu_is_preempted);
->>   #endif
->>
->>   static void pv_cpu_reboot(void *unused)
->> --
->> 2.39.3
->>
-
+Anyway, I can do this if no other objections.
