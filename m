@@ -1,413 +1,167 @@
-Received: from mail-wm1-f50.google.com (mail-wm1-f50.google.com [209.85.128.50])
+Received: from mail-pl1-f175.google.com (mail-pl1-f175.google.com [209.85.214.175])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 898C12D3A93
-	for <kvm@vger.kernel.org>; Fri, 20 Mar 2026 09:11:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BDB35372B4B
+	for <kvm@vger.kernel.org>; Fri, 20 Mar 2026 09:28:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.175
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773997872; cv=none; b=oNUXo85sALZ//o162PkKuZL0Dd0gLz1Tu/FcmHRGYkzLNVejbGYIIXMKNbYn/HmgBvAvbYZBuO1eZyz3yrUhWHAfU1JCGsB6eefkANs9bCoe0YnyOh3I5aSaqIA6KmFvny8HzDPycTrIEN+b63PO1t7EcnYG6RbNoKrF+CBcdJA=
+	t=1773998920; cv=none; b=E9So4yBNYj15/sW7vsmYXAH8KiQpDLfAAPnAm4tA618+oJRfN2rDewvvsHUQlkNY89dQ8qMYKvl2l/Z9R1O8ELQxdsOulzP6PcoIDqoLHFA69TRGXnW4KqkT9PhohirlEN7zpBsp9bsvBRA7A/tlJ8Wf0vlWPetWfyqUJOmWORw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773997872; c=relaxed/simple;
-	bh=58r+oDHaLHvsvp696rZg1aDZSrY/4CMV7X9HwVz/dKw=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=TinWt2EZPC8LM0+w8LcCy+hBXoEBaK7ilF+pNiPf3eK+yUowQpcfDPpHlbpp3bOwWBtB8ICmThobjkuk3cHrGGISjqAYkDx4i+gNuAtB4wftfsB4D4wvHlk1LDmxAExmUfwEDY/+nxJafLzzW5WEMCQJ2G8acrNVUL53ryeftkI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=EnazI4l6; arc=none smtp.client-ip=209.85.128.50
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+	s=arc-20240116; t=1773998920; c=relaxed/simple;
+	bh=DpDCTJXegbg2cBFxSiSI814EG9RKRIOvAWoZV93niFU=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=WBCpPOEV7fxLZZKJ8xAoSsqk7GqOTdeN8pAU/vK8awJWHyCHAFBhqg86RPSNH36OG/DQUR+Iqrl6dvLFxHw93DwkNXK1FL2KSkO6EiuiUed+GZq1WCS38tdLb07Hwwat21rOC0pSr5oD14LPWVKlhHzHabLXFCySPxBins1Bd5Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=stKCl6rt; arc=none smtp.client-ip=209.85.214.175
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="EnazI4l6"
-Received: by mail-wm1-f50.google.com with SMTP id 5b1f17b1804b1-486fc4725f0so12019855e9.1
-        for <kvm@vger.kernel.org>; Fri, 20 Mar 2026 02:11:06 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="stKCl6rt"
+Received: by mail-pl1-f175.google.com with SMTP id d9443c01a7336-2b052562254so73045ad.0
+        for <kvm@vger.kernel.org>; Fri, 20 Mar 2026 02:28:38 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1773997865; x=1774602665; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=OSjJLHf6QZ6otlVl4S28eFxoMW617Z3itEErL+k5Pp0=;
-        b=EnazI4l6PV6CWOL1OtTrbtOMA6PWogkU7zmINLcYlT0S4YTblgc6sgwBGeIVtt2PKK
-         B4y5IVN3j0EFem24EJYk3r0OBYXiW8FXxcL4snOgISn0gcAVLvnTGbdUjXJ/We1scziS
-         I15xZCqcTGDNCmx7Tt7hmfc5/s/7n32VCPwYqVVQnioKekJnA2PmGsx0sFjmlsVUCmwA
-         3HQbdWXUypp5AZKBx8xYnESkIU4PHfZVCcyUuO/TyCebHHsFcUOKP5Ti2UConAXNw59W
-         xmFmLIBl4jDG3wWpOxbfq4j8VdTdighLIytmyHp3MIhmcaZ7eDPinRJryqkNvtJ/6pYN
-         Swqg==
+        d=google.com; s=20251104; t=1773998918; x=1774603718; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=lfFJWDO2bwhUd92Uo4pePPcCXizTvYm07yIGqhjNLlw=;
+        b=stKCl6rtLlvskQXpExVM++DwkyN1PvWuVL+1kxBaAtGR5yJYxUTaAYUbYQJWgRRGVa
+         IskKI+w7AP3bNzrTHp+k0sYX8Uou+/XoW/mB/tL+tjA4MPVJJ7ItexeeBWekFqvNWS8p
+         QGv+t6OwWzLkkwPelu7RHnCGdrG1LCJpEHTr2kHHttOtwkbTm0GlFv9z1t/bBwNapp+Z
+         yCveOvSFCHHJ83/+NtMtl9F2MgFJM81uKn8iREx7200iTFzXfYFxAw/VaLDwDtLE8l+k
+         xg6c0Yx0U5Q4E9OFRcFZasrGkccowkJ949FCFVTA7AYB6TfOY9e/JZpjxrYZs4XEaOMM
+         YWZg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1773997865; x=1774602665;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=OSjJLHf6QZ6otlVl4S28eFxoMW617Z3itEErL+k5Pp0=;
-        b=pW2vNisVbLD9A2YTGvioB5R5hyKFCvXZxDRBxWD6kQ1EVmCHwqovASS4ldk+ZRkt+V
-         oCGTMUswF3PhdqVWLlJydZ1bsCJXSwG4+Pg4J3OFFcEFWgBhFBHgrYQBXxXW4ea61lGs
-         ZNnS8+eT5nxkh+I1UjsKDNVbM4YXBIOYEO/WAYM3TLpoB6ANt+/vjD5Ybxm9b9b6O9jN
-         t323nANPQUyw2/r9I4/Ezitt70uEUh79a8MnO1Dj2WGYM/ay6fvLdLhC7SXQk8gZITDF
-         gyKwJmjOHyKqn5ZwsL/Wdkxli50q1fGFzbrOIWo8FEGhCPiSh9r1DKNTMHRNAArW8TS6
-         6+pw==
-X-Forwarded-Encrypted: i=1; AJvYcCWGs9ntUMOA7diUESWGxv9ghBWcrE6PiWBhHYH/3noyEyUWTZ9uETSnn9FuVZeyYk7q+NY=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzjbWg9gX9XNVBUFe6N64zwYJk4efXYBD9G/qV6dsa8VLjTzf/D
-	MIRl3buKOw7zFP9VpGuxB7gvdgh87IggRpNaCMjq7Zm0ZYZTk8stF5NmFG9x3kvA82M=
-X-Gm-Gg: ATEYQzwR/uTzrCuJbmAqdScwibYVCPgQx8uW70VXglnm9IkX8uK/SgBOH74u6UlgW7B
-	lG0AMPrrO140g7VVF+Zf/eyJ/EWTRuFxBHdNEJZytin9vaM+lTXCjt80unGO9b0jY6bxiffNKq8
-	+TfiT/1Sc1CncA9qDEShOm3hpHPU77CUjQM5SfzPLHYdQLu2y+0VFS0VAYMAoS10Jk6FogQ8u+3
-	QhxzxrYg03836aQyKomoXKQKJBaxoY0I3rQISgkRc7Q7Iq1UTmY4ScV37ZTJsstKiBjZKEeyLnh
-	2SX0+KVNLevBcXqbt7nv+LIK6fIKLLrFHeRl7rIPe8qRWVBhi0XDbKbcIsFMr+PiyECbQHt/JfK
-	hQOlxoEa9QnJ2CcDvFWQrMFgwBOse6n5iVi1V7ah/HH8u/oRCmUFls4BawAkiRWGLnDQQoUJpSM
-	6REWf+HDeVq4oIq/1p0BVY62Zsbj0ANrpcjVzGtrRPT3VpMmIJw9YSkrGfhA9z+L2BZnD2M9Fn9
-	4l+zLVvE84=
-X-Received: by 2002:a05:600c:350b:b0:485:3f58:da2 with SMTP id 5b1f17b1804b1-486fe8fcf64mr36117125e9.16.1773997864476;
-        Fri, 20 Mar 2026 02:11:04 -0700 (PDT)
-Received: from localhost.localdomain (88-187-86-199.subs.proxad.net. [88.187.86.199])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-486fe6d9896sm57523785e9.2.2026.03.20.02.11.02
-        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Fri, 20 Mar 2026 02:11:03 -0700 (PDT)
-From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-To: qemu-devel@nongnu.org
-Cc: Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
-	Paolo Bonzini <pbonzini@redhat.com>,
-	Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
-	Pierrick Bouvier <pierrick.bouvier@linaro.org>,
-	Artyom Tarasenko <atar4qemu@gmail.com>,
-	"Dr. David Alan Gilbert" <dave@treblig.org>,
-	Richard Henderson <richard.henderson@linaro.org>,
-	Markus Armbruster <armbru@redhat.com>,
-	=?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
-	"Michael S. Tsirkin" <mst@redhat.com>,
-	Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
-	Zhao Liu <zhao1.liu@intel.com>,
-	Marcelo Tosatti <mtosatti@redhat.com>,
-	Laurent Vivier <laurent@vivier.eu>,
-	Nicholas Piggin <npiggin@gmail.com>,
-	Chinmay Rath <rathc@linux.ibm.com>,
-	Glenn Miles <milesg@linux.ibm.com>,
-	Palmer Dabbelt <palmer@dabbelt.com>,
-	Alistair Francis <alistair.francis@wdc.com>,
-	Weiwei Li <liwei1518@gmail.com>,
-	Liu Zhiwei <zhiwei_liu@linux.alibaba.com>,
-	Yoshinori Sato <yoshinori.sato@nifty.com>,
-	Max Filippov <jcmvbkbc@gmail.com>,
-	kvm@vger.kernel.org,
-	qemu-ppc@nongnu.org,
-	qemu-riscv@nongnu.org
-Subject: [PATCH-for-11.1 v6 6/6] monitor: Remove 'monitor/hmp-target.h' header
-Date: Fri, 20 Mar 2026 10:10:18 +0100
-Message-ID: <20260320091019.59902-7-philmd@linaro.org>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260320091019.59902-1-philmd@linaro.org>
-References: <20260320091019.59902-1-philmd@linaro.org>
+        d=1e100.net; s=20251104; t=1773998918; x=1774603718;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=lfFJWDO2bwhUd92Uo4pePPcCXizTvYm07yIGqhjNLlw=;
+        b=cTAvGsYQi+HibXZsVlWAXOe8oOiaDBFFz27AjErZKzbQ4/vlIMiNZIEcc/9nRNbbH8
+         ri5vuw4TfUn+XMZzfQMLwCT/ZoDfUgyLARQJL8jhhke4uqVVo+sZ80zbhL3uPL7z70v3
+         gO6zrVYjDtjd1ybmTSdza3zkNX9hk7TL4LjP8+3v0PGOr2cL3C44LvD4pLbNo09J3kTX
+         +j/rHtt0KwLFeLcUDJ3R7m6QNCpKR8XUae4WbtWHc3fY8JeMQ6RIx0ibDUtCqtqwBlz5
+         kyskOgSmIFo7UqSFh5D4AuB4uQLI8G5MiJaWuHrPfc26uXUyxO6ufoxl9TL2SOdVzHWo
+         W+Rw==
+X-Forwarded-Encrypted: i=1; AJvYcCWJ+igOhLhkWZYjzOM0FF3m/qLTqOU4Tdv5SXYo3xJ0okvW1sCEf21obt3xju8HACg/9qA=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxAXUeoTgBrZy75Ijn0RH/gI6yJPktH1B0mcFhtKbSpEBeGoYtF
+	dBJeW56UaaKrXiaVUOpbyVguzIK5NwHVnFYcxN9V8flGJAJvvbNOUtA1FXpbT+qhrg==
+X-Gm-Gg: ATEYQzw8lLJs/XOVxBYzL0uQUOc6v7bk9jEc+euPvj8TWozfMIaZK82jdii7lXpog23
+	MgPb33iYz6+XlM9G5Qoq+Wo3ntLblnc8T0WEaHSDmENWjPa2zRW3iny9MMB/GH1mKi2I7f97iMm
+	umZDfGFqNb7gnjZOKYg0obxUMUWI/7QOZ5xld1qjzpY7XLzdbYyxkl+ifkNJXGiXpH9Xmc3UafV
+	MBF0XApI0XfRC88oCeOgyjn/5ww8ed1fQwjeMiiPYojNPIjQLantiqx9NSKmIdQ+CsT4mv4etb0
+	cW5CTCWMKaxGBs9CpVw0UPR/Zbfe7O7RQOYxA/Q88Erjhe1+ydsM6VmeIovM9Ca3I8pWh9CUKeb
+	htLPXEXpOTPVIB8aKydSE8SnM0F1py+Fkwlisen/8kSpFcu89Be3NbnYvAJ4YLTpt3QESw5Uf6R
+	+k8p3ETGQGBRa1d8+HX4l2fcKSxCpylD7Gtr/3pAJU95YWKajDvTYFFbzlng==
+X-Received: by 2002:a17:902:e750:b0:2ae:44db:570c with SMTP id d9443c01a7336-2b0828a93e1mr2454385ad.12.1773998917324;
+        Fri, 20 Mar 2026 02:28:37 -0700 (PDT)
+Received: from google.com (10.129.124.34.bc.googleusercontent.com. [34.124.129.10])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-82b0409c0f1sm1652552b3a.38.2026.03.20.02.28.31
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 20 Mar 2026 02:28:36 -0700 (PDT)
+Date: Fri, 20 Mar 2026 09:28:28 +0000
+From: Pranjal Shrivastava <praan@google.com>
+To: Vipin Sharma <vipinsh@google.com>
+Cc: Samiullah Khawaja <skhawaja@google.com>,
+	David Woodhouse <dwmw2@infradead.org>,
+	Lu Baolu <baolu.lu@linux.intel.com>, Joerg Roedel <joro@8bytes.org>,
+	Will Deacon <will@kernel.org>, Jason Gunthorpe <jgg@ziepe.ca>,
+	Robin Murphy <robin.murphy@arm.com>,
+	Kevin Tian <kevin.tian@intel.com>,
+	Alex Williamson <alex@shazbot.org>, Shuah Khan <shuah@kernel.org>,
+	iommu@lists.linux.dev, linux-kernel@vger.kernel.org,
+	kvm@vger.kernel.org, Saeed Mahameed <saeedm@nvidia.com>,
+	Adithya Jayachandran <ajayachandra@nvidia.com>,
+	Parav Pandit <parav@nvidia.com>,
+	Leon Romanovsky <leonro@nvidia.com>, William Tu <witu@nvidia.com>,
+	Pratyush Yadav <pratyush@kernel.org>,
+	Pasha Tatashin <pasha.tatashin@soleen.com>,
+	David Matlack <dmatlack@google.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Chris Li <chrisl@kernel.org>, YiFei Zhu <zhuyifei@google.com>
+Subject: Re: [PATCH 04/14] iommu/pages: Add APIs to
+ preserve/unpreserve/restore iommu pages
+Message-ID: <ab0TPFo2esHZ6RIb@google.com>
+References: <20260203220948.2176157-1-skhawaja@google.com>
+ <20260203220948.2176157-5-skhawaja@google.com>
+ <20260317202925.GA2582517.vipinsh@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260317202925.GA2582517.vipinsh@google.com>
 
-The "monitor/hmp-target.h" header doesn't contain any
-target-specific declarations anymore. Merge it with
-"monitor/hmp.h", its target-agnostic counterpart.
+On Tue, Mar 17, 2026 at 01:59:03PM -0700, Vipin Sharma wrote:
+> On Tue, Feb 03, 2026 at 10:09:38PM +0000, Samiullah Khawaja wrote:
+> > +
+> > +void iommu_unpreserve_pages(struct iommu_pages_list *list, int count)
+> > +{
+> > +	struct ioptdesc *iopt;
+> > +
+> > +	if (!count)
+> > +		return;
+> > +
+> > +	/* If less than zero then unpreserve all pages. */
+> > +	if (count < 0)
+> > +		count = 0;
+> > +
+> > +	list_for_each_entry(iopt, &list->pages, iopt_freelist_elm) {
+> > +		kho_unpreserve_folio(ioptdesc_folio(iopt));
+> > +		if (count > 0 && --count ==  0)
+> > +			break;
+> > +	}
+> > +}
+> 
+> I see you are trying to have common function for error handling in
+> iommu_preserve_pages() down and unpreserving in the next patch with
+> overloaded meaning of count. 
+> 
+>  < 0 means unpreserve all of the pages
+>  = 0 means do nothing
+>  > 0 unpreserve these many pages.
+> 
+> It seems non-intuitive to me and code also end up having multiple ifs. I
+> will recommend to just have this function go through all of the pages
+> without passing count argument. In iommu_preserve_pages() function down,
+> handle the error case with a "goto err" statement. If this is the way
+> things happen in iommu codebase feel free to ignore this suggestion.
+> 
 
-Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Reviewed-by: Dr. David Alan Gilbert <dave@treblig.org>
----
- MAINTAINERS                   |  2 +-
- include/monitor/hmp-target.h  | 42 -----------------------------------
- include/monitor/hmp.h         | 12 ++++++++++
- hw/i386/sgx-stub.c            |  1 -
- hw/i386/sgx.c                 |  1 -
- monitor/hmp-cmds.c            |  1 -
- monitor/hmp-target.c          |  1 -
- monitor/hmp.c                 |  1 -
- stubs/target-monitor-defs.c   |  2 +-
- target/i386/cpu-apic.c        |  1 -
- target/i386/monitor.c         |  1 -
- target/i386/sev-system-stub.c |  1 -
- target/i386/sev.c             |  1 -
- target/m68k/monitor.c         |  1 -
- target/ppc/monitor.c          |  2 --
- target/riscv/monitor.c        |  1 -
- target/sh4/monitor.c          |  1 -
- target/sparc/monitor.c        |  1 -
- target/xtensa/monitor.c       |  1 -
- 19 files changed, 14 insertions(+), 60 deletions(-)
- delete mode 100644 include/monitor/hmp-target.h
++1 to this. The current version of overloaded count is counter-intuitive
+as it expects a back-handed API contract. Since we're using lists here,
+I'd recommend using the list_for_each_entry_continue_reverse() helper:
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 97f2759138d..d4b4aca60a7 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -3407,7 +3407,7 @@ F: monitor/monitor.c
- F: monitor/hmp*
- F: hmp.h
- F: hmp-commands*.hx
--F: include/monitor/hmp-target.h
-+F: include/monitor/hmp.h
- F: tests/qtest/test-hmp.c
- F: include/qemu/qemu-print.h
- F: util/qemu-print.c
-diff --git a/include/monitor/hmp-target.h b/include/monitor/hmp-target.h
-deleted file mode 100644
-index 6364c94edf8..00000000000
---- a/include/monitor/hmp-target.h
-+++ /dev/null
-@@ -1,42 +0,0 @@
--/*
-- * QEMU monitor
-- *
-- * Copyright (c) 2003-2004 Fabrice Bellard
-- *
-- * Permission is hereby granted, free of charge, to any person obtaining a copy
-- * of this software and associated documentation files (the "Software"), to deal
-- * in the Software without restriction, including without limitation the rights
-- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-- * copies of the Software, and to permit persons to whom the Software is
-- * furnished to do so, subject to the following conditions:
-- *
-- * The above copyright notice and this permission notice shall be included in
-- * all copies or substantial portions of the Software.
-- *
-- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
-- * THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
-- * THE SOFTWARE.
-- */
--
--#ifndef MONITOR_HMP_TARGET_H
--#define MONITOR_HMP_TARGET_H
--
--typedef struct MonitorDef MonitorDef;
--
--struct MonitorDef {
--    const char *name;
--    int offset;
--    int64_t (*get_value)(Monitor *mon, const struct MonitorDef *md, int offset);
--};
--
--const MonitorDef *target_monitor_defs(void);
--int target_get_monitor_def(CPUState *cs, const char *name, uint64_t *pval);
--
--CPUArchState *mon_get_cpu_env(Monitor *mon);
--CPUState *mon_get_cpu(Monitor *mon);
--
--#endif /* MONITOR_HMP_TARGET_H */
-diff --git a/include/monitor/hmp.h b/include/monitor/hmp.h
-index e222bea60cd..26571d35e84 100644
---- a/include/monitor/hmp.h
-+++ b/include/monitor/hmp.h
-@@ -17,6 +17,18 @@
- #include "qemu/readline.h"
- #include "qapi/qapi-types-common.h"
- 
-+typedef struct MonitorDef {
-+    const char *name;
-+    int offset;
-+    int64_t (*get_value)(Monitor *mon, const struct MonitorDef *md, int offset);
-+} MonitorDef;
++void iommu_unpreserve_pages(struct iommu_pages_list *list)
++{
++	struct ioptdesc *iopt;
 +
-+const MonitorDef *target_monitor_defs(void);
-+int target_get_monitor_def(CPUState *cs, const char *name, uint64_t *pval);
++	list_for_each_entry(iopt, &list->pages, iopt_freelist_elm)
++		kho_unpreserve_folio(ioptdesc_folio(iopt));
++}
++EXPORT_SYMBOL_GPL(iommu_unpreserve_pages);
 +
-+CPUArchState *mon_get_cpu_env(Monitor *mon);
-+CPUState *mon_get_cpu(Monitor *mon);
++int iommu_preserve_pages(struct iommu_pages_list *list)
++{
++	struct ioptdesc *iopt;
++	int ret;
 +
- bool hmp_handle_error(Monitor *mon, Error *err);
- void hmp_help_cmd(Monitor *mon, const char *name);
- strList *hmp_split_at_comma(const char *str);
-diff --git a/hw/i386/sgx-stub.c b/hw/i386/sgx-stub.c
-index 1dd8d9afbfa..6e82773a86d 100644
---- a/hw/i386/sgx-stub.c
-+++ b/hw/i386/sgx-stub.c
-@@ -1,7 +1,6 @@
- #include "qemu/osdep.h"
- #include "monitor/monitor.h"
- #include "monitor/hmp.h"
--#include "monitor/hmp-target.h"
- #include "hw/i386/pc.h"
- #include "hw/i386/sgx-epc.h"
- #include "qapi/qapi-commands-misc-i386.h"
-diff --git a/hw/i386/sgx.c b/hw/i386/sgx.c
-index 5e792e8e6e9..7e4c509f5a4 100644
---- a/hw/i386/sgx.c
-+++ b/hw/i386/sgx.c
-@@ -17,7 +17,6 @@
- #include "monitor/qdev.h"
- #include "monitor/monitor.h"
- #include "monitor/hmp.h"
--#include "monitor/hmp-target.h"
- #include "qapi/error.h"
- #include "qemu/error-report.h"
- #include "qapi/qapi-commands-misc-i386.h"
-diff --git a/monitor/hmp-cmds.c b/monitor/hmp-cmds.c
-index bad034937a9..a85c5243a40 100644
---- a/monitor/hmp-cmds.c
-+++ b/monitor/hmp-cmds.c
-@@ -22,7 +22,6 @@
- #include "monitor/hmp.h"
- #include "qemu/help_option.h"
- #include "monitor/hmp.h"
--#include "monitor/hmp-target.h"
- #include "monitor/monitor-internal.h"
- #include "qapi/error.h"
- #include "qapi/qapi-commands-control.h"
-diff --git a/monitor/hmp-target.c b/monitor/hmp-target.c
-index a3306b69c93..2574c5d8b4b 100644
---- a/monitor/hmp-target.c
-+++ b/monitor/hmp-target.c
-@@ -27,7 +27,6 @@
- #include "monitor/qdev.h"
- #include "net/slirp.h"
- #include "system/device_tree.h"
--#include "monitor/hmp-target.h"
- #include "monitor/hmp.h"
- #include "block/block-hmp-cmds.h"
- #include "qapi/qapi-commands-control.h"
-diff --git a/monitor/hmp.c b/monitor/hmp.c
-index 1d645090667..c63da13e310 100644
---- a/monitor/hmp.c
-+++ b/monitor/hmp.c
-@@ -27,7 +27,6 @@
- #include "hw/core/qdev.h"
- #include "monitor-internal.h"
- #include "monitor/hmp.h"
--#include "monitor/hmp-target.h"
- #include "qobject/qdict.h"
- #include "qobject/qnum.h"
- #include "qemu/bswap.h"
-diff --git a/stubs/target-monitor-defs.c b/stubs/target-monitor-defs.c
-index 35a0a342772..0dd4cdb34f6 100644
---- a/stubs/target-monitor-defs.c
-+++ b/stubs/target-monitor-defs.c
-@@ -1,5 +1,5 @@
- #include "qemu/osdep.h"
--#include "monitor/hmp-target.h"
-+#include "monitor/hmp.h"
- 
- const MonitorDef *target_monitor_defs(void)
- {
-diff --git a/target/i386/cpu-apic.c b/target/i386/cpu-apic.c
-index eaa10ad2a3d..5599a4675c5 100644
---- a/target/i386/cpu-apic.c
-+++ b/target/i386/cpu-apic.c
-@@ -11,7 +11,6 @@
- #include "qapi/error.h"
- #include "monitor/monitor.h"
- #include "monitor/hmp.h"
--#include "monitor/hmp-target.h"
- #include "system/hw_accel.h"
- #include "system/kvm.h"
- #include "system/xen.h"
-diff --git a/target/i386/monitor.c b/target/i386/monitor.c
-index b128334e571..ddc666d3451 100644
---- a/target/i386/monitor.c
-+++ b/target/i386/monitor.c
-@@ -25,7 +25,6 @@
- #include "qemu/osdep.h"
- #include "cpu.h"
- #include "monitor/monitor.h"
--#include "monitor/hmp-target.h"
- #include "monitor/hmp.h"
- #include "qobject/qdict.h"
- #include "qapi/error.h"
-diff --git a/target/i386/sev-system-stub.c b/target/i386/sev-system-stub.c
-index fb84aee94d2..f799a338d60 100644
---- a/target/i386/sev-system-stub.c
-+++ b/target/i386/sev-system-stub.c
-@@ -14,7 +14,6 @@
- #include "qemu/osdep.h"
- #include "monitor/monitor.h"
- #include "monitor/hmp.h"
--#include "monitor/hmp-target.h"
- #include "qapi/error.h"
- #include "sev.h"
- 
-diff --git a/target/i386/sev.c b/target/i386/sev.c
-index 9dde972c118..97e745f27c4 100644
---- a/target/i386/sev.c
-+++ b/target/i386/sev.c
-@@ -39,7 +39,6 @@
- #include "qom/object.h"
- #include "monitor/monitor.h"
- #include "monitor/hmp.h"
--#include "monitor/hmp-target.h"
- #include "qapi/qapi-commands-misc-i386.h"
- #include "confidential-guest.h"
- #include "hw/i386/pc.h"
-diff --git a/target/m68k/monitor.c b/target/m68k/monitor.c
-index 94bb12833af..be7411edca6 100644
---- a/target/m68k/monitor.c
-+++ b/target/m68k/monitor.c
-@@ -8,7 +8,6 @@
- #include "qemu/osdep.h"
- #include "cpu.h"
- #include "monitor/hmp.h"
--#include "monitor/hmp-target.h"
- #include "monitor/monitor.h"
- 
- void hmp_info_tlb(Monitor *mon, const QDict *qdict)
-diff --git a/target/ppc/monitor.c b/target/ppc/monitor.c
-index 776a76602ea..7c88e0e2bda 100644
---- a/target/ppc/monitor.c
-+++ b/target/ppc/monitor.c
-@@ -7,9 +7,7 @@
-  */
- 
- #include "qemu/osdep.h"
--#include "qemu/ctype.h"
- #include "monitor/monitor.h"
--#include "monitor/hmp-target.h"
- #include "monitor/hmp.h"
- #include "cpu.h"
- 
-diff --git a/target/riscv/monitor.c b/target/riscv/monitor.c
-index a9d31114442..3f206b9fca5 100644
---- a/target/riscv/monitor.c
-+++ b/target/riscv/monitor.c
-@@ -25,7 +25,6 @@
- #include "cpu_bits.h"
- #include "monitor/monitor.h"
- #include "monitor/hmp.h"
--#include "monitor/hmp-target.h"
- #include "system/memory.h"
- 
- #ifdef TARGET_RISCV64
-diff --git a/target/sh4/monitor.c b/target/sh4/monitor.c
-index 2da6a5426eb..50324d3600c 100644
---- a/target/sh4/monitor.c
-+++ b/target/sh4/monitor.c
-@@ -24,7 +24,6 @@
- #include "qemu/osdep.h"
- #include "cpu.h"
- #include "monitor/monitor.h"
--#include "monitor/hmp-target.h"
- #include "monitor/hmp.h"
- 
- static void print_tlb(Monitor *mon, int idx, tlb_t *tlb)
-diff --git a/target/sparc/monitor.c b/target/sparc/monitor.c
-index a60671a60a4..99abddbf1e0 100644
---- a/target/sparc/monitor.c
-+++ b/target/sparc/monitor.c
-@@ -24,7 +24,6 @@
- #include "qemu/osdep.h"
- #include "cpu.h"
- #include "monitor/monitor.h"
--#include "monitor/hmp-target.h"
- #include "monitor/hmp.h"
- 
- 
-diff --git a/target/xtensa/monitor.c b/target/xtensa/monitor.c
-index fbf60d55530..2af84934f83 100644
---- a/target/xtensa/monitor.c
-+++ b/target/xtensa/monitor.c
-@@ -24,7 +24,6 @@
- #include "qemu/osdep.h"
- #include "cpu.h"
- #include "monitor/monitor.h"
--#include "monitor/hmp-target.h"
- #include "monitor/hmp.h"
- 
- void hmp_info_tlb(Monitor *mon, const QDict *qdict)
--- 
-2.53.0
++	list_for_each_entry(iopt, &list->pages, iopt_freelist_elm) {
++		ret = kho_preserve_folio(ioptdesc_folio(iopt));
++		if (ret)
++			goto err_rollback;
++	}
++	return 0;
++
++err_rollback:
++	/* Rollback only the successfully preserved pages */
++	list_for_each_entry_continue_reverse(iopt, &list->pages, iopt_freelist_elm)
++		kho_unpreserve_folio(ioptdesc_folio(iopt));
++	return ret;
++}
 
+[ ---- snip >8---- ]
+
+Thanks,
+Praan
