@@ -1,87 +1,83 @@
-Received: from mail-pl1-f182.google.com (mail-pl1-f182.google.com [209.85.214.182])
+Received: from mail-pl1-f169.google.com (mail-pl1-f169.google.com [209.85.214.169])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E8A5346E5F
-	for <kvm@vger.kernel.org>; Fri, 20 Mar 2026 23:02:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.182
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 55E7034BA2E
+	for <kvm@vger.kernel.org>; Fri, 20 Mar 2026 23:34:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.169
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774047731; cv=none; b=qZi2KcyjU0X7+oKk2xGlISfpAfZdXcHNVIwZHwLdLR9zfqOfk3vT2LL+P3RJkTgzdbExcUNwx3AYKkwQWatqohXJAj+L5QpPKXHpHsVq/bHuGQ+Kr785MGHe2gr0Fxng5KqPShSMDb5gA80ej7pccBrIUM6cUfb/OsFw9siERFs=
+	t=1774049689; cv=none; b=CPjhoayuuwcV99PAjMTMx2667gpj5hGqRrNr4bMlu/dwaWznpjk0lVKvJb6fqn8UbVSn0iBEdzBP18Z95TN0WQATXsh5Sjp+hwiqtkW+UhjWbubqQaURqy1Fu3IUFrP3Dynavp7NH/4So1mwMvyNirQnJtfxwmNJ1XjIUfWP06Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774047731; c=relaxed/simple;
-	bh=Nn0ALrdXYnzXye+eQmzrx53e5T7Ey86s5EVAM2zENXE=;
+	s=arc-20240116; t=1774049689; c=relaxed/simple;
+	bh=eGjR1Vr7sZJkjuTItiI4aUSbYLNlDKVsWSLdbGJh5Cw=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=eaGo0a7D9nJB7EeQezZyUwCDsoW2Xa10mSnu/NXbuTjIjRntq/dMgN0J66fzUOGsk8qUm4w3k7HzhNgCxtWYNrILbT0YzZjvy+/lVxQPTTZ5Du2XSliLx02aMUZ9/wAG6RObvoE0Wf8j+LHxVYAFgZuTEvSwtchBdoqcYsVKytc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=VM3FY/au; arc=none smtp.client-ip=209.85.214.182
+	 Content-Type:Content-Disposition:In-Reply-To; b=TZ6/HXyV12946sfkMRUa/aEWlTejeCdcGtIHJ3zSPX5vlxqs7F9E7Bj730iWym/ojB87RehLlx/ktpWdfdd0RUIKa4iIAFm3qlj6Ntgi6fAixwC1OI0iyRz3L01Q28mXlnOd8YVxgF7fquR9vfOkB8Pt7cQPcEINYIjcrueBUCw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=BhkIg+vS; arc=none smtp.client-ip=209.85.214.169
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="VM3FY/au"
-Received: by mail-pl1-f182.google.com with SMTP id d9443c01a7336-2b04c9e3eb7so34645ad.0
-        for <kvm@vger.kernel.org>; Fri, 20 Mar 2026 16:02:09 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="BhkIg+vS"
+Received: by mail-pl1-f169.google.com with SMTP id d9443c01a7336-2b04c9e3eb7so36465ad.0
+        for <kvm@vger.kernel.org>; Fri, 20 Mar 2026 16:34:48 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1774047729; x=1774652529; darn=vger.kernel.org;
+        d=google.com; s=20251104; t=1774049688; x=1774654488; darn=vger.kernel.org;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=rRn8bETX30Lb2Xb+2jweq88kWDnEQZ7Z1tWRbRz5s4s=;
-        b=VM3FY/auT2DMh+Ju0fetaDIq/gi/E0/bLq/EUXl59pLDtms+r30EvqBzBbBRm31GKd
-         29TOJY4EorBSXUvvTdje/rMuegjXk6IgVn8I5+GVh5n/8z92ncMEYKZO/1Z8cPiROYEB
-         iJV8stXbNRTXR1lfdXwcVoDGXZcbQLmNn4MU8UdaQt/rvqSFFSA8t20HWVVesyVS/ELU
-         rnHtuY2OSfrUeMv2wLA2J6gBHzE0kYj3DADmiJvOcxHAbJs4UUBP3O2rIq7Os/XG9uyT
-         3SC/wMqWgjOdrCTjry7cFp9Q4z2obDFe34jSAIlvziDk09AXTzAWiJofaY7g+NIiLxky
-         mIDA==
+        bh=G3DUb8XK/BNGAY47qp0W+ue0rjJS+iXyrE96peyM214=;
+        b=BhkIg+vSZjpHBFYSnvYiVj8bDFbHuBW3dUhVcDrAxcLzAJXpNZCRaBji0gpqB9idgb
+         a1eZuVYDM1jRxj9MiT1DeSqS5zgXkZTEO2vcqGhKHLpaHQxdKvFu5DT6cJaKBYA1Hboc
+         WBbUP3fYHFQigdio180f9XflFYYBJdg2dh+z29L0b2zEL7rthlPFrG1S+5D5Mco0DK88
+         hY1Vl0XHqWWIa4/qbzfxnyCmQfVuNFfxUmSO1QBHH1uhWXfUk70jy9eBbGZWWmQlKtyL
+         HB9P+fiCzmmAIatkumbqbLKYER3D7B1Sj6uv7U+Nr8l7rflSL74kzsVE/QQKR8ZutsJ1
+         jmSA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774047729; x=1774652529;
+        d=1e100.net; s=20251104; t=1774049688; x=1774654488;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=rRn8bETX30Lb2Xb+2jweq88kWDnEQZ7Z1tWRbRz5s4s=;
-        b=SZ8Y9ETqR3Oa4mSxmI3Ty4RRnY/0c/h2WsiICvFmG7JGJQNG3BJHXjT/G/VVMxPVAo
-         /mKrQEBOAS2m4ucwhl8sXXy4WC5kOZDbAgSoddME9IwTUWVZTJm800k1t6HPdy47TZQr
-         B31tXx3j8ERKUROcM33Hgt1GQsR1EFsughMT6Ob0OkV1QfeobEgyuWDYVVafHFEU1x0z
-         OjEmJY5hPkFT+gVp3VEsf1DG2LKeV/4kr059ES7Q82CagEXvB/5d0webB/mhjO0LeDJn
-         d9GzcMT4JUzhFHyGN012gSM5JuQDWToUQ296sGXNcH8ReTLUCRbgt92PNrKzqQvzYByc
-         Qp6w==
-X-Forwarded-Encrypted: i=1; AJvYcCXEheQVhdGB4O7sXS+EX8GljWKdTuQvAde6qmn8DF4rWgEPplb0g8BZ/uabnEngxHQNCf0=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxyGO4Xvj2wTUsEjIIxK6wdo6bXQyHLhMRjdyF8zqSM/9t01Nzo
-	hXRZriqGvUECbrraZE35AP/YrCYvcAoJ9KEakvt4a6/so6c147t9jg6bbBtp0LRlSQ==
-X-Gm-Gg: ATEYQzzAYK8S74JaBThJpRwd/+Oi6J3XKrjHEc9ANYWp1lH4FuJKUXJqy+jXlvY3Hkc
-	aieMTyx0M5oyCdo7lIeInWMvSP5tKnBkAdKUeyKwOP1gccn8La2sPJ533Trsr7fNRkKPzVcr8uT
-	0tUzEeoFl5TDeUPsR+EliCbml6wtahxr3MA6JPYw1NLWGQbxUtoa7IgQ7P1GCph4DoJycH7NVZL
-	/w0iUusyT3fMeTZqgK8I8NKNmG1ZcuQcVx56UZkklVC4QJV3/j4AsVnrcXOcYXJLGooE/MFLA4+
-	L0i/RWabs4bYxTOD9rXbKLUxIaJL+PVM27pq82kMlm+3xMbcyx4J9I8iEkLHDr3Vv82zDZ496xw
-	8gGKparcdnx27GjAZxBmo25YVnr/Ccpu8BHPFzkJAQiVA1pHPs9vwcxB74ounE0zk1mrjCQpKla
-	weazoGjxyMJ80Dg/8Hr8/+Cq4D8jalZZQyjQux1ifljwn5Z0SKg/y3qPoF1A==
-X-Received: by 2002:a17:902:f707:b0:2b0:5e19:1862 with SMTP id d9443c01a7336-2b08c4a14c0mr598585ad.5.1774047728180;
-        Fri, 20 Mar 2026 16:02:08 -0700 (PDT)
-Received: from google.com (10.129.124.34.bc.googleusercontent.com. [34.124.129.10])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-c743a7ffafdsm2476969a12.7.2026.03.20.16.02.02
+        bh=G3DUb8XK/BNGAY47qp0W+ue0rjJS+iXyrE96peyM214=;
+        b=rCzFNUG9epERyLUaHUl9GR/4YlrVQEg7lBDY7TbJB0eIANWoO1HMmv3u1/VEGB5as9
+         demIuNb6lnDyhEvT+70LL82XFyGebwvCNXeQaswLGScU0AMp+022FncrKPN4uGivFe5x
+         TjKKChy4Ffw8lymAozJj6GtxqMMuB1T4z/n72h4JwaaRc/eyZOCHIVVbzjZkr465EgjY
+         2YYrNpaPPugcF3FhvrCYk4DfrXU4UFVQbl0YvL6eETCLM5zDCEMcGQifUW+HGPfl0IWA
+         qUqQELCI05YXUXJKnV8kqeN1gwpWQ7wKsgkrN+Di0o4fJiu73gK9rJGRxKoXKK5AL4EL
+         evNw==
+X-Forwarded-Encrypted: i=1; AJvYcCXy0SvaoJ/odrtV+6RbXKoYdcemgzteexC7EWl7v8y//svpI2ET9S7uS5gFHQUYgEZ3uMo=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxF6lXRmzGmT4vb0Pphi9gw3z7s841f+sj5gYw4uktfQ2sjOV2Z
+	99nwgd7nuDsBUll/o5PTwR8q3OIVKXY07Inaw6J2xKMgx59mHfKu4pl2KP1OT4UVWg==
+X-Gm-Gg: ATEYQzwnIJUpDcPf3rcokJ9eC7nWmtAVTUA3wgTeq0rpKLoJygeBmxvyRQe3Uu6jsMR
+	hbnOnTWjVCppZR3Y6elzWGYxuzsRokuWTkP3F6qN/tgQQbHECbpBJOIszb5qX9pGwR9fksV/3bP
+	dPOLCW3tPd4LLBThMv9O7F8L8arS8CHkkp8FQXzEJ6a5kXKdXQ7J4ENloJ7Ed2xIoNDN58AvO6s
+	RHilGWAgW/NRF23U4LMuXthO1l0XAVc7zTVhe8Gp1ELgl2ouV/ve+zzZZzpPNx2bIQulfUF8d25
+	ptYvNPOpIsT/rhRJ8f4aSnkw2hzJfif7Pf+0Tbvesc7FlLKZecIR3BMkPa7JWjOanfcqlz1xyCF
+	201zVH3E21nOf5DlQozrCFgtPVEpHscqfji30BUEOnc5W+DLcS5AeuAT849DgX0Mg56MwP0g8j3
+	en6wowSx4/vM3zjjvAjmFBCKeyRfPz69dcfvbH9Bu74ZV7zu/CdDYOOtwLlR3ij9/M/680Dk4=
+X-Received: by 2002:a17:902:e84c:b0:2ae:4453:3674 with SMTP id d9443c01a7336-2b08b29f391mr1276665ad.4.1774049687124;
+        Fri, 20 Mar 2026 16:34:47 -0700 (PDT)
+Received: from google.com (176.13.105.34.bc.googleusercontent.com. [34.105.13.176])
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-c74443ccbe4sm2570680a12.22.2026.03.20.16.34.46
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 20 Mar 2026 16:02:07 -0700 (PDT)
-Date: Fri, 20 Mar 2026 23:01:59 +0000
-From: Pranjal Shrivastava <praan@google.com>
+        Fri, 20 Mar 2026 16:34:46 -0700 (PDT)
+Date: Fri, 20 Mar 2026 16:34:41 -0700
+From: Vipin Sharma <vipinsh@google.com>
 To: Samiullah Khawaja <skhawaja@google.com>
-Cc: David Woodhouse <dwmw2@infradead.org>,
-	Lu Baolu <baolu.lu@linux.intel.com>, Joerg Roedel <joro@8bytes.org>,
-	Will Deacon <will@kernel.org>, Jason Gunthorpe <jgg@ziepe.ca>,
-	Robin Murphy <robin.murphy@arm.com>,
-	Kevin Tian <kevin.tian@intel.com>,
-	Alex Williamson <alex@shazbot.org>, Shuah Khan <shuah@kernel.org>,
-	iommu@lists.linux.dev, linux-kernel@vger.kernel.org,
-	kvm@vger.kernel.org, Saeed Mahameed <saeedm@nvidia.com>,
-	Adithya Jayachandran <ajayachandra@nvidia.com>,
-	Parav Pandit <parav@nvidia.com>,
-	Leon Romanovsky <leonro@nvidia.com>, William Tu <witu@nvidia.com>,
-	Pratyush Yadav <pratyush@kernel.org>,
-	Pasha Tatashin <pasha.tatashin@soleen.com>,
-	David Matlack <dmatlack@google.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Chris Li <chrisl@kernel.org>, Vipin Sharma <vipinsh@google.com>,
-	YiFei Zhu <zhuyifei@google.com>
-Subject: Re: [PATCH 06/14] iommu/vt-d: Implement device and iommu
- preserve/unpreserve ops
-Message-ID: <ab3R54-kyHGDEW9L@google.com>
+Cc: David Woodhouse <dwmw2@infradead.org>, 
+	Lu Baolu <baolu.lu@linux.intel.com>, Joerg Roedel <joro@8bytes.org>, Will Deacon <will@kernel.org>, 
+	Jason Gunthorpe <jgg@ziepe.ca>, YiFei Zhu <zhuyifei@google.com>, 
+	Robin Murphy <robin.murphy@arm.com>, Kevin Tian <kevin.tian@intel.com>, 
+	Alex Williamson <alex@shazbot.org>, Shuah Khan <shuah@kernel.org>, iommu@lists.linux.dev, 
+	linux-kernel@vger.kernel.org, kvm@vger.kernel.org, Saeed Mahameed <saeedm@nvidia.com>, 
+	Adithya Jayachandran <ajayachandra@nvidia.com>, Parav Pandit <parav@nvidia.com>, 
+	Leon Romanovsky <leonro@nvidia.com>, William Tu <witu@nvidia.com>, 
+	Pratyush Yadav <pratyush@kernel.org>, Pasha Tatashin <pasha.tatashin@soleen.com>, 
+	David Matlack <dmatlack@google.com>, Andrew Morton <akpm@linux-foundation.org>, 
+	Chris Li <chrisl@kernel.org>, Pranjal Shrivastava <praan@google.com>
+Subject: Re: [PATCH 10/14] iommufd-lu: Implement ioctl to let userspace mark
+ an HWPT to be preserved
+Message-ID: <20260320232634.GC659132.vipinsh@google.com>
 References: <20260203220948.2176157-1-skhawaja@google.com>
- <20260203220948.2176157-7-skhawaja@google.com>
+ <20260203220948.2176157-11-skhawaja@google.com>
+ <20260319231331.GB3983821.vipinsh@google.com>
+ <abyU3g-ta6Gg6kEx@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -90,353 +86,40 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260203220948.2176157-7-skhawaja@google.com>
+In-Reply-To: <abyU3g-ta6Gg6kEx@google.com>
 
-On Tue, Feb 03, 2026 at 10:09:40PM +0000, Samiullah Khawaja wrote:
-> Add implementation of the device and iommu presevation in a separate
-> file. Also set the device and iommu preserve/unpreserve ops in the
-> struct iommu_ops.
+On Fri, Mar 20, 2026 at 12:40:44AM +0000, Samiullah Khawaja wrote:
+> On Thu, Mar 19, 2026 at 04:35:32PM -0700, Vipin Sharma wrote:
+> > On Tue, Feb 03, 2026 at 10:09:44PM +0000, Samiullah Khawaja wrote:
+> > > From: YiFei Zhu <zhuyifei@google.com>
+> > > @@ -374,6 +374,10 @@ struct iommufd_hwpt_paging {
+> > >  	bool auto_domain : 1;
+> > >  	bool enforce_cache_coherency : 1;
+> > >  	bool nest_parent : 1;
+> > > +#ifdef CONFIG_IOMMU_LIVEUPDATE
+> > > +	bool lu_preserve : 1;
+> > > +	u32 lu_token;
+> > 
+> > Should we use full name i.e. liveupdate here and other places in this
+> > series?
 > 
-> During normal shutdown the iommu translation is disabled. Since the root
-> table is preserved during live update, it needs to be cleaned up and the
-> context entries of the unpreserved devices need to be cleared.
+> I think using full name liveupdate would be too long in other places in
+> this series. And also there are other examples of "luo" being used as a
+> short form. Please see:
 > 
-> Signed-off-by: Samiullah Khawaja <skhawaja@google.com>
-> ---
->  drivers/iommu/intel/Makefile     |   1 +
->  drivers/iommu/intel/iommu.c      |  47 ++++++++++-
->  drivers/iommu/intel/iommu.h      |  27 +++++++
->  drivers/iommu/intel/liveupdate.c | 134 +++++++++++++++++++++++++++++++
->  4 files changed, 205 insertions(+), 4 deletions(-)
->  create mode 100644 drivers/iommu/intel/liveupdate.c
-> 
-> diff --git a/drivers/iommu/intel/Makefile b/drivers/iommu/intel/Makefile
-> index ada651c4a01b..d38fc101bc35 100644
-> --- a/drivers/iommu/intel/Makefile
-> +++ b/drivers/iommu/intel/Makefile
-> @@ -6,3 +6,4 @@ obj-$(CONFIG_INTEL_IOMMU_DEBUGFS) += debugfs.o
->  obj-$(CONFIG_INTEL_IOMMU_SVM) += svm.o
->  obj-$(CONFIG_IRQ_REMAP) += irq_remapping.o
->  obj-$(CONFIG_INTEL_IOMMU_PERF_EVENTS) += perfmon.o
-> +obj-$(CONFIG_IOMMU_LIVEUPDATE) += liveupdate.o
-> diff --git a/drivers/iommu/intel/iommu.c b/drivers/iommu/intel/iommu.c
-> index 134302fbcd92..c95de93fb72f 100644
-> --- a/drivers/iommu/intel/iommu.c
-> +++ b/drivers/iommu/intel/iommu.c
-> @@ -16,6 +16,7 @@
->  #include <linux/crash_dump.h>
->  #include <linux/dma-direct.h>
->  #include <linux/dmi.h>
-> +#include <linux/iommu-lu.h>
->  #include <linux/memory.h>
->  #include <linux/pci.h>
->  #include <linux/pci-ats.h>
-> @@ -52,6 +53,8 @@ static int rwbf_quirk;
->  
->  #define rwbf_required(iommu)	(rwbf_quirk || cap_rwbf((iommu)->cap))
->  
-> +static bool __maybe_clean_unpreserved_context_entries(struct intel_iommu *iommu);
-> +
->  /*
->   * set to 1 to panic kernel if can't successfully enable VT-d
->   * (used when kernel is launched w/ TXT)
-> @@ -60,8 +63,6 @@ static int force_on = 0;
->  static int intel_iommu_tboot_noforce;
->  static int no_platform_optin;
->  
-> -#define ROOT_ENTRY_NR (VTD_PAGE_SIZE/sizeof(struct root_entry))
-> -
->  /*
->   * Take a root_entry and return the Lower Context Table Pointer (LCTP)
->   * if marked present.
-> @@ -2378,8 +2379,10 @@ void intel_iommu_shutdown(void)
->  		/* Disable PMRs explicitly here. */
->  		iommu_disable_protect_mem_regions(iommu);
->  
-> -		/* Make sure the IOMMUs are switched off */
-> -		iommu_disable_translation(iommu);
-> +		if (!__maybe_clean_unpreserved_context_entries(iommu)) {
-> +			/* Make sure the IOMMUs are switched off */
-> +			iommu_disable_translation(iommu);
-> +		}
->  	}
->  }
->  
-> @@ -2902,6 +2905,38 @@ static const struct iommu_dirty_ops intel_second_stage_dirty_ops = {
->  	.set_dirty_tracking = intel_iommu_set_dirty_tracking,
->  };
->  
-> +#ifdef CONFIG_IOMMU_LIVEUPDATE
-> +static bool __maybe_clean_unpreserved_context_entries(struct intel_iommu *iommu)
-> +{
-> +	struct device_domain_info *info;
-> +	struct pci_dev *pdev = NULL;
-> +
-> +	if (!iommu->iommu.outgoing_preserved_state)
-> +		return false;
-> +
-> +	for_each_pci_dev(pdev) {
+> https://lore.kernel.org/all/20251125165850.3389713-15-pasha.tatashin@soleen.com/
 
-Shouldn't we *also* clean context entries for non-pci devices?
+That patch is using "luo" short, which I think is also wrong in saying
+memfd_luo, as there is nothing related to orchestrator (O of LUO) in
+that patch. It is saving memfd state for liveupdate. But that ship has
+sailed.
 
-AFAICT, in the current code, we simply turn off translation during
-shutdowm. However, with this change, because this cleanup loop only runs
-for_each_pci_dev(), it completely ignores any non-PCI devices (like 
-platform devices) that might be attached to this IOMMU?
+In the current patch, I don't think it will be too long, and it also
+easier to read code without someone to know what "lu" is. We have worked
+on it so we know what "lu" stands for and kind of accepted it but I
+agree what Greg k-h was also suggesting.
 
-Since the IOMMU is left powered on during the handover, skipping non-PCI
-devices in this cleanup loop means their context entries are left
-perfectly intact and active in the hardware root table. There could be a
-chance that the new kernel doesn't reclaim/overwrite these entries in
-which case it could result in zombie DMAs surviving the KHO.
+https://lore.kernel.org/all/2025093023-frantic-sediment-9849@gregkh/
+ - "You have more letters, please use them.  "lu" is too short."
 
-> +		info = dev_iommu_priv_get(&pdev->dev);
-> +		if (!info)
-> +			continue;
-> +
-> +		if (info->iommu != iommu)
-> +			continue;
-> +
-> +		if (dev_iommu_preserved_state(&pdev->dev))
-> +			continue;
-> +
-> +		domain_context_clear(info);
-> +	}
-> +
-> +	return true;
-> +}
-> +#else
-> +static bool __maybe_clean_unpreserved_context_entries(struct intel_iommu *iommu)
-> +{
-> +	return false;
-> +}
-> +#endif
-> +
->  static struct iommu_domain *
->  intel_iommu_domain_alloc_second_stage(struct device *dev,
->  				      struct intel_iommu *iommu, u32 flags)
-> @@ -3925,6 +3960,10 @@ const struct iommu_ops intel_iommu_ops = {
->  	.is_attach_deferred	= intel_iommu_is_attach_deferred,
->  	.def_domain_type	= device_def_domain_type,
->  	.page_response		= intel_iommu_page_response,
-> +	.preserve_device	= intel_iommu_preserve_device,
-> +	.unpreserve_device	= intel_iommu_unpreserve_device,
-> +	.preserve		= intel_iommu_preserve,
-> +	.unpreserve		= intel_iommu_unpreserve,
->  };
->  
->  static void quirk_iommu_igfx(struct pci_dev *dev)
-> diff --git a/drivers/iommu/intel/iommu.h b/drivers/iommu/intel/iommu.h
-> index 25c5e22096d4..70032e86437d 100644
-> --- a/drivers/iommu/intel/iommu.h
-> +++ b/drivers/iommu/intel/iommu.h
-> @@ -557,6 +557,8 @@ struct root_entry {
->  	u64     hi;
->  };
->  
-> +#define ROOT_ENTRY_NR (VTD_PAGE_SIZE / sizeof(struct root_entry))
-> +
->  /*
->   * low 64 bits:
->   * 0: present
-> @@ -1276,6 +1278,31 @@ static inline int iopf_for_domain_replace(struct iommu_domain *new,
->  	return 0;
->  }
->  
-> +#ifdef CONFIG_IOMMU_LIVEUPDATE
-> +int intel_iommu_preserve_device(struct device *dev, struct device_ser *device_ser);
-> +void intel_iommu_unpreserve_device(struct device *dev, struct device_ser *device_ser);
-> +int intel_iommu_preserve(struct iommu_device *iommu, struct iommu_ser *iommu_ser);
-> +void intel_iommu_unpreserve(struct iommu_device *iommu, struct iommu_ser *iommu_ser);
-> +#else
-> +static inline int intel_iommu_preserve_device(struct device *dev, struct device_ser *device_ser)
-> +{
-> +	return -EOPNOTSUPP;
-> +}
-> +
-> +static inline void intel_iommu_unpreserve_device(struct device *dev, struct device_ser *device_ser)
-> +{
-> +}
-> +
-> +static inline int intel_iommu_preserve(struct iommu_device *iommu, struct iommu_ser *iommu_ser)
-> +{
-> +	return -EOPNOTSUPP;
-> +}
-> +
-> +static inline void intel_iommu_unpreserve(struct iommu_device *iommu, struct iommu_ser *iommu_ser)
-> +{
-> +}
-> +#endif
-> +
->  #ifdef CONFIG_INTEL_IOMMU_SVM
->  void intel_svm_check(struct intel_iommu *iommu);
->  struct iommu_domain *intel_svm_domain_alloc(struct device *dev,
-> diff --git a/drivers/iommu/intel/liveupdate.c b/drivers/iommu/intel/liveupdate.c
-> new file mode 100644
-> index 000000000000..82ba1daf1711
-> --- /dev/null
-> +++ b/drivers/iommu/intel/liveupdate.c
-> @@ -0,0 +1,134 @@
-> +// SPDX-License-Identifier: GPL-2.0-only
-> +
-> +/*
-> + * Copyright (C) 2025, Google LLC
-> + * Author: Samiullah Khawaja <skhawaja@google.com>
-> + */
-> +
-> +#define pr_fmt(fmt)    "iommu: liveupdate: " fmt
-> +
-> +#include <linux/kexec_handover.h>
-> +#include <linux/liveupdate.h>
-> +#include <linux/iommu-lu.h>
-> +#include <linux/module.h>
-> +#include <linux/pci.h>
-> +
-> +#include "iommu.h"
-> +#include "../iommu-pages.h"
-> +
-> +static void unpreserve_iommu_context(struct intel_iommu *iommu, int end)
-> +{
-> +	struct context_entry *context;
-> +	int i;
-> +
-> +	if (end < 0)
-> +		end = ROOT_ENTRY_NR;
-> +
-> +	for (i = 0; i < end; i++) {
-> +		context = iommu_context_addr(iommu, i, 0, 0);
-> +		if (context)
-> +			iommu_unpreserve_page(context);
-> +
-> +		if (!sm_supported(iommu))
-> +			continue;
-> +
-> +		context = iommu_context_addr(iommu, i, 0x80, 0);
-> +		if (context)
-> +			iommu_unpreserve_page(context);
-> +	}
-> +}
-> +
-> +static int preserve_iommu_context(struct intel_iommu *iommu)
-> +{
-> +	struct context_entry *context;
-> +	int ret;
-> +	int i;
-> +
-> +	for (i = 0; i < ROOT_ENTRY_NR; i++) {
-> +		context = iommu_context_addr(iommu, i, 0, 0);
-> +		if (context) {
-> +			ret = iommu_preserve_page(context);
-> +			if (ret)
-> +				goto error;
-> +		}
-> +
-> +		if (!sm_supported(iommu))
-> +			continue;
-> +
-> +		context = iommu_context_addr(iommu, i, 0x80, 0);
-> +		if (context) {
-> +			ret = iommu_preserve_page(context);
-> +			if (ret)
-> +				goto error_sm;
-> +		}
-> +	}
-> +
-> +	return 0;
-> +
-> +error_sm:
-> +	context = iommu_context_addr(iommu, i, 0, 0);
-> +	iommu_unpreserve_page(context);
-> +error:
-> +	unpreserve_iommu_context(iommu, i);
-> +	return ret;
-> +}
-> +
-> +int intel_iommu_preserve_device(struct device *dev, struct device_ser *device_ser)
-> +{
-> +	struct device_domain_info *info = dev_iommu_priv_get(dev);
-> +
-> +	if (!dev_is_pci(dev))
-> +		return -EOPNOTSUPP;
-
-Maybe also WARN_ON_ONCE ?
-
-> +
-> +	if (!info)
-> +		return -EINVAL;
-> +
-> +	device_ser->domain_iommu_ser.did = domain_id_iommu(info->domain, info->iommu);
-> +	return 0;
-> +}
-> +
-> +void intel_iommu_unpreserve_device(struct device *dev, struct device_ser *device_ser)
-> +{
-> +}
-
-Nit: We can just not populate the unpreserve_device op here, we don't
-need an empty function
-
-> +
-> +int intel_iommu_preserve(struct iommu_device *iommu_dev, struct iommu_ser *ser)
-> +{
-> +	struct intel_iommu *iommu;
-> +	int ret;
-> +
-> +	iommu = container_of(iommu_dev, struct intel_iommu, iommu);
-> +
-> +	spin_lock(&iommu->lock);
-
-Minor note: We call this with the session->mutex acquired which is a
-sleepable/preemptable context whereas spin_lock disables preemption and
-puts us in an atomic context. 
-
-While iommu_context_addr() happens to be safe here because it uses
-GFP_ATOMIC & we pass alloc=0, we are heavily relying on the assumption
-that iommu_context_addr() or other helpers will never sleep or attempt
-a GFP_KERNEL allocation under the hood.
-
-Given how easy it would be for a future refactor to accidentally
-introduce a sleeping lock inside any of the other helpers, I'd recommend
-adding an explicit comment here warning that this runs in an atomic
-context (same for unpreserve below).
-
->r +	ret = preserve_iommu_context(iommu);
-> +	if (ret)
-> +		goto err;
-> +
-> +	ret = iommu_preserve_page(iommu->root_entry);
-> +	if (ret) {
-> +		unpreserve_iommu_context(iommu, -1);
-
-Nit: The same overloading discussion as Vipin pointed out in the other
-patch.
-
-> +		goto err;
-> +	}
-> +
-> +	ser->intel.phys_addr = iommu->reg_phys;
-> +	ser->intel.root_table = __pa(iommu->root_entry);
-> +	ser->type = IOMMU_INTEL;
-> +	ser->token = ser->intel.phys_addr;
-> +	spin_unlock(&iommu->lock);
-> +
-> +	return 0;
-> +err:
-> +	spin_unlock(&iommu->lock);
-> +	return ret;
-> +}
-> +
-> +void intel_iommu_unpreserve(struct iommu_device *iommu_dev, struct iommu_ser *iommu_ser)
-> +{
-> +	struct intel_iommu *iommu;
-> +
-> +	iommu = container_of(iommu_dev, struct intel_iommu, iommu);
-> +
-> +	spin_lock(&iommu->lock);
-> +	unpreserve_iommu_context(iommu, -1);
-> +	iommu_unpreserve_page(iommu->root_entry);
-> +	spin_unlock(&iommu->lock);
-> +}
-
-Thanks,
-Praan
+Not a hard no from me, just a suggestion.
