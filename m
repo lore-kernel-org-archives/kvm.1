@@ -1,160 +1,150 @@
-Received: from mail-wm1-f52.google.com (mail-wm1-f52.google.com [209.85.128.52])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 26D8032572D
-	for <kvm@vger.kernel.org>; Fri, 20 Mar 2026 14:30:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 97BB32FF669
+	for <kvm@vger.kernel.org>; Fri, 20 Mar 2026 14:48:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774017056; cv=none; b=EVPF5Sa+ZrELlMXG6Q1+QBxST5V6iv3gZS8jEMyCFKDdp8a7+vcb3lRNDLfUWMht7uRoia3s69f6ChAYSlOVQO18the0u6ohntgUj7Y8BK01NjkczUgBrPGKjoKEpoRc3OAAQDG3rbfrbdcT5zmpdl+u2NFhDwPreIzwD/CPfFw=
+	t=1774018112; cv=none; b=aLPZLaueLjpWlukcO/WMyFKdG5hmFXZL0MnGZ/xq+lcdM+zXF36j610nseyY3Lupzar64JI1lN4vHsnQ5tjQ0SoXvXZmbtxHb79dF2MumdzmwBb/mbGquN2dSbl40XAUA4ftuXzCskSKyGLqxI5Z/jpFI+LX3vYnlnxEoej8vec=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774017056; c=relaxed/simple;
-	bh=RDsST/BktNabPpVzmXB7CIyrnMznJWjBL2tp4XSThHk=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Ps2nbT56tQ5E9AJOOmUVzv9m3G3bI3cpPkZ8gr7neiDqbVL5bYMxQFoBK+tFATGmH6uTltAA71+jGroHGATmiftHUPr7bRh4SOX5CgkRlybORmKogNL7B9MpR9GuvpAQfZfzgOOBXtfKyQywt/r601sAvCXiPyBM+1zqh2vNgLA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=EzICxxY0; arc=none smtp.client-ip=209.85.128.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1774018112; c=relaxed/simple;
+	bh=FxA7X8TzM9u3TbjaNsaXnRlkCWHhw+tYNCkUvft4kC4=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=QZFDyms0xbrxDgpFpM0LZ35iRIy6ILWMDjCNIFOxJtz5evQuSX9pTXoNSwnXYwqg+2yFladeNRNHinzdXt0d/9n/xG9MxbJING6VAgrdbNr70mdJRbj7RA4tHVWbGguMLOkNfx8VKscfMCycsWyhUPIEEaVrinvHd/M8ymXBUYQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=IJxPlQ6c; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="EzICxxY0"
-Received: by mail-wm1-f52.google.com with SMTP id 5b1f17b1804b1-48540d21f7dso8018835e9.0
-        for <kvm@vger.kernel.org>; Fri, 20 Mar 2026 07:30:53 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1774017052; x=1774621852; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=rwkmTF/CS0VyDJVC1u/aIvu2tt3/nzhHfvzUfjsv28s=;
-        b=EzICxxY0PKN2Vi1yjmfDObeeCtZRJfrgAxGPpmZ1b2pad9rfeO03tbQtyNoC3vvpVt
-         tWXydSEzIhS4Ai2e7FcNpnuh2VvWiR1GMOEfzd/NS/rBWTEC+4XRteDb/bgKWqK+/Ruh
-         AN1Tz2x/+WtZXRHwQZMsfoPUe08oImuipkAFmL3fKdgrGZb9EoXPzp4MdcsUnyx93NGB
-         JadsnRykpW9wtBJN0+iKYVa/FFgz5Zx3cgyPqwERCOdQ9LqAso7dcgCK4CAAQjx5Cft2
-         QjrHTcRwwIhRegl1SjugHD6FMFrZfaN17HI7GA0h/oqEUYQmYZgRn1B5BvrvU90YcY2m
-         OuPg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774017052; x=1774621852;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=rwkmTF/CS0VyDJVC1u/aIvu2tt3/nzhHfvzUfjsv28s=;
-        b=pzhmeGexnaRskk9TJE14+sBXW0RfgN/Zfkkh2SBZo7sv9p1OFS+cfiyv6BY6cFd1Os
-         dWRAHq2JrYzThiIRzoKQF5WJpKD4nksBr/60pICzPLZAJ/jdnh2JX3R93RaOFMkz4W/C
-         6dkTqtyYQ0egBLGPKWOrM1g6+1V8gvHQ8RMPOQBDdC8mJV3ElHjW9ItKyE2tEWmh5oEF
-         4yMGjxXhd2HegnQ+LmEz0n5Y8QOqOle3hDy5CROxBj1HB7EjnPxHyY0Me8hCCB/2Kb+o
-         tocr9DDe7++g5IlQddnNfEtsb4GNE8kyN1T+BPMrC+W7IJJCpDJbde4iEFVUeaWdye5a
-         DgSQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXaTrw4QYE2hMyyyECaCRBXAWS81Jo8ggiVWaEbtG8VTaKeTPjD6uJgxYPYsk5hjMeG/lk=@vger.kernel.org
-X-Gm-Message-State: AOJu0Ywtum+KI2vBDrKR+jJWQKaOsSyvl7TEDrltFphkK5qtgLw9vDKg
-	EurTr4X9JUmznqG2kHFwoU6TMq5zj5U4JUJkaBScba4wNqSmVuoDJi3j
-X-Gm-Gg: ATEYQzx3nOLY8FMTecRV3FVxokDG4KDfAoBfsDlvJWdgo/LUhkS4FvwTO/nT8H+iV/a
-	hlrr+OnqYoF3wJVhmoB9cWmnsRz+hx6fkfPrqnYrgOssbqZ8pQXReukQLMBRkwzJj30voYiB7jc
-	/6PyPBX/8sBTemx3kBxYOZzLG6sS/DIWH4uPUp71AlcjqjVlfl1VZX0RLP936w1wUJsiMxWKqb6
-	uf+rfqo4nwMIrsGI0eXottjCpbwMfkBOb1n+9GGnzmMI77ZiQsGlyFu9EmOm/L6E08yGsme6HMM
-	mqS8bhkR0QO/gDfNXeRcHCKbQQU6be9yaHzdqpw/sygA3UDouruzJID8n9s1X262kSy79620nCf
-	+NL9VPvJ7pLUtrrLRJFRO/0DJPR83S91BZT5ayMwV5HJa/o/SZZw+9gkfvK8XReaZtHTT4dCOZ1
-	4Dh6e8kwVYqh3nLd4P9oGCyrT9tre75XCT/Y1bLOwwafwIEqHgU5fJgOQj
-X-Received: by 2002:a05:6000:2010:b0:43b:4ec7:f924 with SMTP id ffacd0b85a97d-43b64264073mr5799774f8f.34.1774017052225;
-        Fri, 20 Mar 2026 07:30:52 -0700 (PDT)
-Received: from [192.168.10.55] (77-32-38-61.dyn.eolo.it. [77.32.38.61])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-43b64703c35sm7227678f8f.22.2026.03.20.07.30.51
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 20 Mar 2026 07:30:51 -0700 (PDT)
-Message-ID: <71a496c8-9fbc-467e-bd5c-a82142ba558b@gmail.com>
-Date: Fri, 20 Mar 2026 15:31:21 +0100
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="IJxPlQ6c"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1774018110;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=Zd0Dq6GFNiubdSSXsQKDRMdABfAtqb+M1HviNvlCQGw=;
+	b=IJxPlQ6ccvLao6KJnODpvAQ+RZhLIZxAaX3M1Q1TcY6PXrsEY9WFDYIhdw10yffbuTSn+n
+	uGBEN183nvlRl5UWP1go1ij+4nEkTrxRybsIWy4lODAOoEGNEx5cct4iIOarpAokZpPh3k
+	7eQI+mpDcr6AosetTSiEvXv03q4m+P8=
+Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-679-8nEsee1HPVidgZ0gMIZtJA-1; Fri,
+ 20 Mar 2026 10:48:27 -0400
+X-MC-Unique: 8nEsee1HPVidgZ0gMIZtJA-1
+X-Mimecast-MFC-AGG-ID: 8nEsee1HPVidgZ0gMIZtJA_1774018106
+Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id A04EC18005B8;
+	Fri, 20 Mar 2026 14:48:25 +0000 (UTC)
+Received: from blackfin.pond.sub.org (unknown [10.45.242.6])
+	by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id C622330001A1;
+	Fri, 20 Mar 2026 14:48:24 +0000 (UTC)
+Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
+	id 7D5A621E6937; Fri, 20 Mar 2026 15:48:22 +0100 (CET)
+From: Markus Armbruster <armbru@redhat.com>
+To: Tommaso Califano <califano.tommaso@gmail.com>
+Cc: qemu-devel@nongnu.org,  kvm@vger.kernel.org,  Eduardo Habkost
+ <eduardo@habkost.net>,  Zhao Liu <zhao1.liu@intel.com>,  Daniel P.
+ =?utf-8?Q?Berrang=C3=A9?= <berrange@redhat.com>,  Marcelo Tosatti
+ <mtosatti@redhat.com>,
+  Eric Blake <eblake@redhat.com>,  Oliver Steffen <osteffen@redhat.com>,
+  Stefano Garzarella <sgarzare@redhat.com>,  Giuseppe Lettieri
+ <giuseppe.lettieri@unipi.it>,  Paolo Bonzini <pbonzini@redhat.com>,  Luigi
+ Leonardi <leonardi@redhat.com>,  Richard Henderson
+ <richard.henderson@linaro.org>
+Subject: Re: [PATCH 1/5] i386/sev: Add sev-emulated QOM object with TCG support
+In-Reply-To: <1694998d-ea3d-4707-bf95-726ba9aee6c4@gmail.com> (Tommaso
+	Califano's message of "Fri, 20 Mar 2026 15:25:01 +0100")
+References: <20260317113840.33017-1-califano.tommaso@gmail.com>
+	<20260317113840.33017-2-califano.tommaso@gmail.com>
+	<87tsucvw3k.fsf@pond.sub.org>
+	<1694998d-ea3d-4707-bf95-726ba9aee6c4@gmail.com>
+Date: Fri, 20 Mar 2026 15:48:22 +0100
+Message-ID: <878qbm4kw9.fsf@pond.sub.org>
+User-Agent: Gnus/5.13 (Gnus v5.13)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 4/5] i386/sev: Add launch measurement emulation and TIK
- property
-To: Markus Armbruster <armbru@redhat.com>
-Cc: qemu-devel@nongnu.org, kvm@vger.kernel.org,
- Eduardo Habkost <eduardo@habkost.net>, Zhao Liu <zhao1.liu@intel.com>,
- =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>,
- Marcelo Tosatti <mtosatti@redhat.com>, Eric Blake <eblake@redhat.com>,
- Oliver Steffen <osteffen@redhat.com>,
- Stefano Garzarella <sgarzare@redhat.com>,
- Giuseppe Lettieri <giuseppe.lettieri@unipi.it>,
- Paolo Bonzini <pbonzini@redhat.com>, Luigi Leonardi <leonardi@redhat.com>,
- Richard Henderson <richard.henderson@linaro.org>
-References: <20260317113840.33017-1-califano.tommaso@gmail.com>
- <20260317113840.33017-5-califano.tommaso@gmail.com>
- <87pl50vw14.fsf@pond.sub.org>
-Content-Language: en-US, it
-From: Tommaso Califano <califano.tommaso@gmail.com>
-In-Reply-To: <87pl50vw14.fsf@pond.sub.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
 
+Tommaso Califano <califano.tommaso@gmail.com> writes:
 
+> Il 19/03/26 13:31, Markus Armbruster ha scritto:
+>> Tommaso Califano <califano.tommaso@gmail.com> writes:
+>> 
+>>> QEMU's AMD SEV support requires KVM on costly AMD EPYC processors,
+>>> limiting development and testing to users with specialized server
+>>> hardware. This makes it hard to validate SEV guest behavior, like
+>>> OVMF boots or SEV-aware software, on common dev machines.
+>>> A solution to this is the emulation of SEV from the guest's
+>>> perspective using TCG.
+>>>
+>>> This change begins this process with the exposure of the SEV CPUID leaf.
+>>> In target/i386/cpu.c:cpu_x86_cpuid() case 0x8000001F:
+>>>
+>>> case 0x8000001F:
+>>>     *eax = *ebx = *ecx = *edx = 0;
+>>>     if (sev_enabled()) {
+>>>         *eax = 0x2;
+>>>         *eax |= sev_es_enabled() ? 0x8 : 0;
+>>>         *eax |= sev_snp_enabled() ? 0x10 : 0;
+>>>         *ebx = sev_get_cbit_position() & 0x3f; /* EBX[5:0] */
+>>>         *ebx |= (sev_get_reduced_phys_bits() & 0x3f) << 6; /* EBX[11:6] */
+>>>     }
+>>>     break;
+>>>
+>>> sev_enabled() verifies if the QOM object is TYPE_SEV_GUEST;
+>>> TYPE_SEV_EMULATED is derived from TYPE_SEV_GUEST with SevEmulatedState
+>>> to satisfy this check with minimal changes. In particular this allows
+>>> to bypass all the sev_enabled() checks for future features.
+>>>
+>>> Since KVM hardware isn't available, override the QOM's kvm_init() and add
+>>> a conditional confidential_guest_kvm_init() call during machine_init() to
+>>> set up emulated confidential support using the ConfidentialGuestSupport
+>>> structure.
+>>>
+>>> With this change it is possible to run a VM with the SEV CPUID active
+>>> adding:
+>>>
+>>>     -accel tcg \
+>>>     -object sev-emulated,id=sev0,cbitpos=47,reduced-phys-bits=1 \
+>>>     -machine memory-encryption=sev0
+>>>
+>>> To the QEMU start arguments.
+>>>
+>>> Signed-off-by: Tommaso Califano <califano.tommaso@gmail.com>
+>> 
+>> [...]
+>> 
+>>> diff --git a/qapi/qom.json b/qapi/qom.json
+>>> index c653248f85..35cda819ec 100644
+>>> --- a/qapi/qom.json
+>>> +++ b/qapi/qom.json
 
-Il 19/03/26 13:33, Markus Armbruster ha scritto:
-> Tommaso Califano <califano.tommaso@gmail.com> writes:
-> 
->> The next step for completing the SEV launch emulation is to implement the
->> "query-sev-launch-measure" feature, responsible for returning the
->> measurement. In this case the measurement will be computed in QEMU.
->>
->> Implement sev_emulated_launch_get_measure() to emulate the LAUNCH_MEASURE
->> command per AMD SEV API spec section 6.5.1. It generates a random 16-byte
->> mnonce, computes the launch digest as SHA-256 over ld_data, then derives
->> the measurement via HMAC-SHA256
->> (TIK;0x04|| API version || build ID || policy || launch digest || mnonce).
->> The base64-encoded result (32-byte HMAC + 16-byte mnonce) populates
->> "query-sev-launch-measure" data, advancing state to LAUNCH_SECRET for
->> secret injection.
->>
->> The TIK is supplied via 16-byte binary file specified in new
->> SevEmulatedProperty "tik" path; absent this, keys default to zeroed.
->> Example QEMU arguments with the key passed:
->>
->> 	-cpu "EPYC-Milan" \
->> 	-accel tcg \
->> 	-object sev-emulated,id=sev0,cbitpos=47,reduced-phys-bits=1,\
->> 					tik=/path/to/tik.bin \
->> 	-machine memory-encryption=sev0
->>
->> Signed-off-by: Tommaso Califano <califano.tommaso@gmail.com>
->> ---
->>  qapi/qom.json     |   3 +-
->>  target/i386/sev.c | 155 ++++++++++++++++++++++++++++++++++++++++++++++
->>  2 files changed, 157 insertions(+), 1 deletion(-)
->>
->> diff --git a/qapi/qom.json b/qapi/qom.json
->> index 35cda819ec..affb5024b5 100644
->> --- a/qapi/qom.json
->> +++ b/qapi/qom.json
->> @@ -1064,11 +1064,12 @@
->>  # This object functionally emulates AMD SEV hardware via TCG, so
->>  # it does not require real hardware to run.
->>  #
->> +# @tik: binary file of the SEV TIK (default: all 0).
-> 
-> Is this a file name?
-> 
+[...]
 
-Yes, I'll specify it better writing "Path to the binary file..."
+>>> @@ -1241,6 +1254,7 @@
+>>>      { 'name': 'secret_keyring',
+>>>        'if': 'CONFIG_SECRET_KEYRING' },
+>>>      'sev-guest',
+>>> +    'sev-emulated',
+>>>      'sev-snp-guest',
+>>>      'thread-context',
+>>>      's390-pv-guest',
+>> 
+>> Please insert before sev-guest to keep things more or less sorted.
+>> 
+>
+> I'll do it, but I don't understand the convention. I'd organized them
+> by object derivation hierarchy, so what is the expected sorting order?
 
-> Blank line here, please.
-> 
+It looks alphabetical modulo lazy mistakes to me.
 
-I'll add it.
+[...]
 
->>  # Since: 10.1.0
->>  ##
->>  { 'struct': 'SevEmulatedProperties',
->>    'base': 'SevGuestProperties',
->> -  'data': {}}
->> +  'data': {'*tik': 'str'}}
->>  
->>  ##
->>  # @SevSnpGuestProperties:
-> 
-> [...]
-> 
-
-Best regards,
-Tommaso Califano
