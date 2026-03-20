@@ -1,268 +1,468 @@
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 58F383D0914;
-	Fri, 20 Mar 2026 16:15:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 90F13374747;
+	Fri, 20 Mar 2026 16:27:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774023360; cv=none; b=BbaV3CCsm6fzPnI9pe3chFgKrhckHd0izJEgyZ83a5qfj8/AjRZVvJpE/pdZUi2XAzUkUax1RHm8mNOPx+3OIGXd2n5lcMZ1sFdEXlsHifHH4UhCxPfkwumFbd8FsTQOxZcdEiF4H6aidTbWZi1RlBsXLwYa6jb9+H3aYl/2Xng=
+	t=1774024022; cv=none; b=JZ6R6TrVG1DrRbbGwoLmYq4Rk2NYdN+AGmLRbe0SIotolQzJDnI/Ym/RleaOASqWTPRIlNDJHJJyS5x/yr1/RMKKzaTqkuxOhkdjOvENvbXPPmX1CpaFUJMFs8KiHAd0aoEjWIcSH3XtJeZIzodrmESefvU61rqk1QKP41ppq/Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774023360; c=relaxed/simple;
-	bh=EVWmb6LiCuPUDzG+eTM8dHj0mZFDO0wnLSwBoZHuklA=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=M60Zi7OPPEfoXiNaYumo/Sg17eK8vcHg8C3xNirQwa4iXDpdn6rqw/13cxBHBOKrU3uPx8EHno8cO9CA07CtDTYE58owi40uiHsrVRW78aDHNCVGng3u7S/9b0/4zhpdiUs5ZFhFBHbKci2Lqh2VtS8ro0xnPYNNmqnXrngyFHc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=qhgax1yU; arc=none smtp.client-ip=148.163.158.5
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="qhgax1yU"
-Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 62K6kCC8753346;
-	Fri, 20 Mar 2026 16:15:48 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:date:from:in-reply-to:message-id
-	:mime-version:references:subject:to; s=pp1; bh=Q2GIe7nMtFanca65T
-	PShGNCRdcguyfXxTm2P4Eabwx0=; b=qhgax1yUmrGdfyjS/tlh2LOoMPkU/rfmt
-	hX8RX0YeUmGCLDEbCnRYRUx0NnWsqgaTNk2gE2X8HWVza/ws67nd/1seItybhNZz
-	xF+nLVQqm4qQmWjS8u3wdHtLRVu07OBlL0wmkovQMrhu6FTzG33mU3xg4r6sBCdN
-	Fa4GS5gToD657Wj30udeo/hZZB99X9TgykwFy7D208p5x+Z9sw6b096OXKQErU0D
-	0CNjzo0ZPWlO19oFGKqHFSqjDPtcmF7P3NQyFzWY1mWjIpRJNHoH+R1SXIjfe2j5
-	+RcIv8gBFBISLNhunYFcjf9lE+PHk/zVoaAxhk7Hz0Peohncy9hWw==
-Received: from ppma21.wdc07v.mail.ibm.com (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4cvw3jbk8a-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 20 Mar 2026 16:15:47 +0000 (GMT)
-Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma21.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 62KBdVgV015648;
-	Fri, 20 Mar 2026 16:15:47 GMT
-Received: from smtprelay06.fra02v.mail.ibm.com ([9.218.2.230])
-	by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4cwk0nqupr-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 20 Mar 2026 16:15:47 +0000
-Received: from smtpav04.fra02v.mail.ibm.com (smtpav04.fra02v.mail.ibm.com [10.20.54.103])
-	by smtprelay06.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 62KGFhcg25821638
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Fri, 20 Mar 2026 16:15:43 GMT
-Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 2C26020040;
-	Fri, 20 Mar 2026 16:15:43 +0000 (GMT)
-Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 06E6320043;
-	Fri, 20 Mar 2026 16:15:43 +0000 (GMT)
-Received: from p-imbrenda.aag-de.ibm.com (unknown [9.52.223.175])
-	by smtpav04.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Fri, 20 Mar 2026 16:15:42 +0000 (GMT)
-From: Claudio Imbrenda <imbrenda@linux.ibm.com>
-To: kvm@vger.kernel.org
-Cc: linux-kernel@vger.kernel.org, linux-s390@vger.kernel.org,
-        borntraeger@de.ibm.com, frankja@linux.ibm.com, nrb@linux.ibm.com,
-        seiden@linux.ibm.com, gra@linux.ibm.com, schlameuss@linux.ibm.com,
-        hca@linux.ibm.com, david@kernel.org
-Subject: [PATCH v2 4/8] KVM: s390: Fix gmap_link()
-Date: Fri, 20 Mar 2026 17:15:38 +0100
-Message-ID: <20260320161542.202913-5-imbrenda@linux.ibm.com>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260320161542.202913-1-imbrenda@linux.ibm.com>
-References: <20260320161542.202913-1-imbrenda@linux.ibm.com>
+	s=arc-20240116; t=1774024022; c=relaxed/simple;
+	bh=cUVUlD0po50ksROYAoalesH9/VAgd7Ja8uNYoCkgOnk=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=dyhHCzZ72TJKZYlyWOpv7ovBuor1vu7s1edpVeafUdZ5jTi93hSqOdBm9yBFNEZgU1AnXHh2VnIkbfqd2fZV0j0xgpMWTjlwxAgM4kB8+1IEM4FQlPhWWLbo2mLFYhSM6jHw49PzMGSoPWGpZKhm87lPbIg1l3R7UzSwyyQHjTQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 1089C165C;
+	Fri, 20 Mar 2026 09:26:54 -0700 (PDT)
+Received: from [10.1.29.20] (e122027.cambridge.arm.com [10.1.29.20])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 5D4B43F7BD;
+	Fri, 20 Mar 2026 09:26:55 -0700 (PDT)
+Message-ID: <11294a4a-f6db-4c63-a8eb-f8d56d9b8a85@arm.com>
+Date: Fri, 20 Mar 2026 16:26:53 +0000
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: q1H_sMzNhSLNU2TvGVfzsIHOXE0OeguQ
-X-Proofpoint-ORIG-GUID: q1H_sMzNhSLNU2TvGVfzsIHOXE0OeguQ
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMzIwMDEzMCBTYWx0ZWRfX5UE45gNIIdvb
- O504H0OM3tSuGnDWGtdz4PugsGtXPSc/oShE8fjThB8BHHAsiNe9sJfVjE1vE6etSOXmlRlTL+M
- cSazoQAzMvPgASOB8FAZGWjPQOk3wV0eFGRjv6y0x/nJykz01mHfXvV1a6mGdGkx8i4n5h33/t+
- tQ3N4CE0Li0nP9JRQrSaY3mQWBp4g9b8oJ40WLNousexbYxWcHjNmOiN9NWKdUCMeo5I1ivkuF2
- SLz2FTAmTqO52Ryw4+F2iTIrW0zK5I7hdeLO5URi287EUbtDPUcrwozR3UJfap4jmfJ5M25dmLI
- rKE1DqEhyKaMAqY4e6G6y8j6RAEnMML/Oyzl6Qfv3adNB74FzhRBLrH2dho4SVLjaz2ioi3jUUQ
- LMI+bu3mJaV2Cmt3DwLpINH9D6HeMv62a+9mIRboJ/7JL3dzsaRzJZ+krwTqP3TShjHHifS+5Jz
- jlDoPgG9wkBy4lC+uPg==
-X-Authority-Analysis: v=2.4 cv=Hf8ZjyE8 c=1 sm=1 tr=0 ts=69bd72b3 cx=c_pps
- a=GFwsV6G8L6GxiO2Y/PsHdQ==:117 a=GFwsV6G8L6GxiO2Y/PsHdQ==:17
- a=Yq5XynenixoA:10 a=VkNPw1HP01LnGYTKEx00:22 a=RnoormkPH1_aCDwRdu11:22
- a=Y2IxJ9c9Rs8Kov3niI8_:22 a=VnNF1IyMAAAA:8 a=jDauOpCy_z-6rDg_B6MA:9
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
- definitions=2026-03-20_02,2026-03-20_02,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- phishscore=0 malwarescore=0 lowpriorityscore=0 impostorscore=0 bulkscore=0
- suspectscore=0 priorityscore=1501 spamscore=0 adultscore=0 clxscore=1015
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2603050001 definitions=main-2603200130
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v13 17/48] arm64: RMI: Allocate/free RECs to match vCPUs
+To: Wei-Lin Chang <weilin.chang@arm.com>, kvm@vger.kernel.org,
+ kvmarm@lists.linux.dev
+Cc: Catalin Marinas <catalin.marinas@arm.com>, Marc Zyngier <maz@kernel.org>,
+ Will Deacon <will@kernel.org>, James Morse <james.morse@arm.com>,
+ Oliver Upton <oliver.upton@linux.dev>,
+ Suzuki K Poulose <suzuki.poulose@arm.com>, Zenghui Yu
+ <yuzenghui@huawei.com>, linux-arm-kernel@lists.infradead.org,
+ linux-kernel@vger.kernel.org, Joey Gouly <joey.gouly@arm.com>,
+ Alexandru Elisei <alexandru.elisei@arm.com>,
+ Christoffer Dall <christoffer.dall@arm.com>, Fuad Tabba <tabba@google.com>,
+ linux-coco@lists.linux.dev,
+ Ganapatrao Kulkarni <gankulkarni@os.amperecomputing.com>,
+ Gavin Shan <gshan@redhat.com>, Shanker Donthineni <sdonthineni@nvidia.com>,
+ Alper Gun <alpergun@google.com>, "Aneesh Kumar K . V"
+ <aneesh.kumar@kernel.org>, Emi Kisanuki <fj0570is@fujitsu.com>,
+ Vishal Annapurve <vannapurve@google.com>
+References: <20260318155413.793430-1-steven.price@arm.com>
+ <20260318155413.793430-18-steven.price@arm.com>
+ <c4u3bivkm2a4w6jtjt6uuas2nfyeisgpir4ati3irbs5oboo2u@belozcancqh5>
+From: Steven Price <steven.price@arm.com>
+Content-Language: en-GB
+In-Reply-To: <c4u3bivkm2a4w6jtjt6uuas2nfyeisgpir4ati3irbs5oboo2u@belozcancqh5>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-The slow path of the fault handler ultimately called gmap_link(), which
-assumed the fault was a major fault, and blindly called dat_link().
+On 19/03/2026 18:10, Wei-Lin Chang wrote:
+> On Wed, Mar 18, 2026 at 03:53:41PM +0000, Steven Price wrote:
+>> The RMM maintains a data structure known as the Realm Execution Context
+>> (or REC). It is similar to struct kvm_vcpu and tracks the state of the
+>> virtual CPUs. KVM must delegate memory and request the structures are
+>> created when vCPUs are created, and suitably tear down on destruction.
+>>
+>> RECs must also be supplied with addition pages - auxiliary (or AUX)
+>> granules - for storing the larger registers state (e.g. for SVE). The
+>> number of AUX granules for a REC depends on the parameters with which
+>> the Realm was created - the RMM makes this information available via the
+>> RMI_REC_AUX_COUNT call performed after creating the Realm Descriptor (RD).
+>>
+>> Note that only some of register state for the REC can be set by KVM, the
+>> rest is defined by the RMM (zeroed). The register state then cannot be
+>> changed by KVM after the REC is created (except when the guest
+>> explicitly requests this e.g. by performing a PSCI call).
+>>
+>> Signed-off-by: Steven Price <steven.price@arm.com>
+>> ---
+>> Changes since v12:
+>>  * Use the new range-based delegation RMI.
+>> Changes since v11:
+>>  * Remove the KVM_ARM_VCPU_REC feature. User space no longer needs to
+>>    configure each VCPU separately, RECs are created on the first VCPU
+>>    run of the guest.
+>> Changes since v9:
+>>  * Size the aux_pages array according to the PAGE_SIZE of the host.
+>> Changes since v7:
+>>  * Add comment explaining the aux_pages array.
+>>  * Rename "undeleted_failed" variable to "should_free" to avoid a
+>>    confusing double negative.
+>> Changes since v6:
+>>  * Avoid reporting the KVM_ARM_VCPU_REC feature if the guest isn't a
+>>    realm guest.
+>>  * Support host page size being larger than RMM's granule size when
+>>    allocating/freeing aux granules.
+>> Changes since v5:
+>>  * Separate the concept of vcpu_is_rec() and
+>>    kvm_arm_vcpu_rec_finalized() by using the KVM_ARM_VCPU_REC feature as
+>>    the indication that the VCPU is a REC.
+>> Changes since v2:
+>>  * Free rec->run earlier in kvm_destroy_realm() and adapt to previous patches.
+>> ---
+>>  arch/arm64/include/asm/kvm_emulate.h |   2 +-
+>>  arch/arm64/include/asm/kvm_host.h    |   3 +
+>>  arch/arm64/include/asm/kvm_rmi.h     |  21 +++
+>>  arch/arm64/kvm/arm.c                 |  10 +-
+>>  arch/arm64/kvm/reset.c               |   1 +
+>>  arch/arm64/kvm/rmi.c                 | 196 +++++++++++++++++++++++++++
+>>  6 files changed, 230 insertions(+), 3 deletions(-)
+>>
+>> diff --git a/arch/arm64/include/asm/kvm_emulate.h b/arch/arm64/include/asm/kvm_emulate.h
+>> index 39310d9b4e16..d194d91fbc2a 100644
+>> --- a/arch/arm64/include/asm/kvm_emulate.h
+>> +++ b/arch/arm64/include/asm/kvm_emulate.h
+>> @@ -708,7 +708,7 @@ static inline bool kvm_realm_is_created(struct kvm *kvm)
+>>  
+>>  static inline bool vcpu_is_rec(struct kvm_vcpu *vcpu)
+>>  {
+>> -	return false;
+>> +	return kvm_is_realm(vcpu->kvm);
+>>  }
+>>  
+>>  #endif /* __ARM64_KVM_EMULATE_H__ */
+>> diff --git a/arch/arm64/include/asm/kvm_host.h b/arch/arm64/include/asm/kvm_host.h
+>> index 9267a2f2d65b..64304848aad4 100644
+>> --- a/arch/arm64/include/asm/kvm_host.h
+>> +++ b/arch/arm64/include/asm/kvm_host.h
+>> @@ -924,6 +924,9 @@ struct kvm_vcpu_arch {
+>>  
+>>  	/* Per-vcpu TLB for VNCR_EL2 -- NULL when !NV */
+>>  	struct vncr_tlb	*vncr_tlb;
+>> +
+>> +	/* Realm meta data */
+>> +	struct realm_rec rec;
+>>  };
+>>  
+>>  /*
+>> diff --git a/arch/arm64/include/asm/kvm_rmi.h b/arch/arm64/include/asm/kvm_rmi.h
+>> index 6c13847480f7..4e2c61e71a38 100644
+>> --- a/arch/arm64/include/asm/kvm_rmi.h
+>> +++ b/arch/arm64/include/asm/kvm_rmi.h
+>> @@ -63,6 +63,26 @@ struct realm {
+>>  	unsigned int ia_bits;
+>>  };
+>>  
+>> +/**
+>> + * struct realm_rec - Additional per VCPU data for a Realm
+>> + *
+>> + * @mpidr: MPIDR (Multiprocessor Affinity Register) value to identify this VCPU
+>> + * @rec_page: Kernel VA of the RMM's private page for this REC
+>> + * @aux_pages: Additional pages private to the RMM for this REC
+>> + * @run: Kernel VA of the RmiRecRun structure shared with the RMM
+>> + */
+>> +struct realm_rec {
+>> +	unsigned long mpidr;
+>> +	void *rec_page;
+>> +	/*
+>> +	 * REC_PARAMS_AUX_GRANULES is the maximum number of 4K granules that
+>> +	 * the RMM can require. The array is sized to be large enough for the
+>> +	 * maximum number of host sized pages that could be required.
+>> +	 */
+>> +	struct page *aux_pages[(REC_PARAMS_AUX_GRANULES * SZ_4K) >> PAGE_SHIFT];
+>> +	struct rec_run *run;
+>> +};
+>> +
+>>  void kvm_init_rmi(void);
+>>  u32 kvm_realm_ipa_limit(void);
+>>  
+>> @@ -70,6 +90,7 @@ int kvm_init_realm_vm(struct kvm *kvm);
+>>  int kvm_activate_realm(struct kvm *kvm);
+>>  void kvm_destroy_realm(struct kvm *kvm);
+>>  void kvm_realm_destroy_rtts(struct kvm *kvm);
+>> +void kvm_destroy_rec(struct kvm_vcpu *vcpu);
+>>  
+>>  static inline bool kvm_realm_is_private_address(struct realm *realm,
+>>  						unsigned long addr)
+>> diff --git a/arch/arm64/kvm/arm.c b/arch/arm64/kvm/arm.c
+>> index c8e51ed009c0..8c50ebd9fba0 100644
+>> --- a/arch/arm64/kvm/arm.c
+>> +++ b/arch/arm64/kvm/arm.c
+>> @@ -575,6 +575,8 @@ int kvm_arch_vcpu_create(struct kvm_vcpu *vcpu)
+>>  	/* Force users to call KVM_ARM_VCPU_INIT */
+>>  	vcpu_clear_flag(vcpu, VCPU_INITIALIZED);
+>>  
+>> +	vcpu->arch.rec.mpidr = INVALID_HWID;
+>> +
+>>  	vcpu->arch.mmu_page_cache.gfp_zero = __GFP_ZERO;
+>>  
+>>  	/* Set up the timer */
+>> @@ -1549,7 +1551,7 @@ int kvm_vm_ioctl_irq_line(struct kvm *kvm, struct kvm_irq_level *irq_level,
+>>  	return -EINVAL;
+>>  }
+>>  
+>> -static unsigned long system_supported_vcpu_features(void)
+>> +static unsigned long system_supported_vcpu_features(struct kvm *kvm)
+>>  {
+>>  	unsigned long features = KVM_VCPU_VALID_FEATURES;
+>>  
+>> @@ -1587,7 +1589,7 @@ static int kvm_vcpu_init_check_features(struct kvm_vcpu *vcpu,
+>>  			return -ENOENT;
+>>  	}
+>>  
+>> -	if (features & ~system_supported_vcpu_features())
+>> +	if (features & ~system_supported_vcpu_features(vcpu->kvm))
+> 
+> Hi,
+> 
+> Are these two hunks superfluous?
 
-In case of minor faults, things were not always handled properly; in
-particular the prefix and vsie marker bits were ignored.
+Ah, yes that's left over from a previous version - thanks for spotting.
 
-Move dat_link() into gmap.c, renaming it accordingly. Once moved, the
-new _gmap_link() function will be able to correctly honour the prefix
-and vsie markers.
+Thanks,
+Steve
 
-Signed-off-by: Claudio Imbrenda <imbrenda@linux.ibm.com>
-Fixes: 94fd9b16cc67 ("KVM: s390: KVM page table management functions: lifecycle management")
-Fixes: a2c17f9270cc ("KVM: s390: New gmap code")
----
- arch/s390/kvm/dat.c  | 48 -------------------------------------
- arch/s390/kvm/dat.h  |  2 --
- arch/s390/kvm/gmap.c | 56 ++++++++++++++++++++++++++++++++++++++++----
- 3 files changed, 52 insertions(+), 54 deletions(-)
-
-diff --git a/arch/s390/kvm/dat.c b/arch/s390/kvm/dat.c
-index 8ba80b0b4698..a4f482bd3077 100644
---- a/arch/s390/kvm/dat.c
-+++ b/arch/s390/kvm/dat.c
-@@ -997,54 +997,6 @@ bool dat_test_age_gfn(union asce asce, gfn_t start, gfn_t end)
- 	return _dat_walk_gfn_range(start, end, asce, &test_age_ops, 0, NULL) > 0;
- }
- 
--int dat_link(struct kvm_s390_mmu_cache *mc, union asce asce, int level,
--	     bool uses_skeys, struct guest_fault *f)
--{
--	union crste oldval, newval;
--	union pte newpte, oldpte;
--	union pgste pgste;
--	int rc = 0;
--
--	rc = dat_entry_walk(mc, f->gfn, asce, DAT_WALK_ALLOC_CONTINUE, level, &f->crstep, &f->ptep);
--	if (rc == -EINVAL || rc == -ENOMEM)
--		return rc;
--	if (rc)
--		return -EAGAIN;
--
--	if (WARN_ON_ONCE(unlikely(get_level(f->crstep, f->ptep) > level)))
--		return -EINVAL;
--
--	if (f->ptep) {
--		pgste = pgste_get_lock(f->ptep);
--		oldpte = *f->ptep;
--		newpte = _pte(f->pfn, f->writable, f->write_attempt | oldpte.s.d, !f->page);
--		newpte.s.sd = oldpte.s.sd;
--		oldpte.s.sd = 0;
--		if (oldpte.val == _PTE_EMPTY.val || oldpte.h.pfra == f->pfn) {
--			pgste = __dat_ptep_xchg(f->ptep, pgste, newpte, f->gfn, asce, uses_skeys);
--			if (f->callback)
--				f->callback(f);
--		} else {
--			rc = -EAGAIN;
--		}
--		pgste_set_unlock(f->ptep, pgste);
--	} else {
--		oldval = READ_ONCE(*f->crstep);
--		newval = _crste_fc1(f->pfn, oldval.h.tt, f->writable,
--				    f->write_attempt | oldval.s.fc1.d);
--		newval.s.fc1.sd = oldval.s.fc1.sd;
--		if (oldval.val != _CRSTE_EMPTY(oldval.h.tt).val &&
--		    crste_origin_large(oldval) != crste_origin_large(newval))
--			return -EAGAIN;
--		if (!dat_crstep_xchg_atomic(f->crstep, oldval, newval, f->gfn, asce))
--			return -EAGAIN;
--		if (f->callback)
--			f->callback(f);
--	}
--
--	return rc;
--}
--
- static long dat_set_pn_crste(union crste *crstep, gfn_t gfn, gfn_t next, struct dat_walk *walk)
- {
- 	union crste newcrste, oldcrste;
-diff --git a/arch/s390/kvm/dat.h b/arch/s390/kvm/dat.h
-index 22dafc775335..efedcf96110c 100644
---- a/arch/s390/kvm/dat.h
-+++ b/arch/s390/kvm/dat.h
-@@ -540,8 +540,6 @@ int dat_set_slot(struct kvm_s390_mmu_cache *mc, union asce asce, gfn_t start, gf
- 		 u16 type, u16 param);
- int dat_set_prefix_notif_bit(union asce asce, gfn_t gfn);
- bool dat_test_age_gfn(union asce asce, gfn_t start, gfn_t end);
--int dat_link(struct kvm_s390_mmu_cache *mc, union asce asce, int level,
--	     bool uses_skeys, struct guest_fault *f);
- 
- int dat_perform_essa(union asce asce, gfn_t gfn, int orc, union essa_state *state, bool *dirty);
- long dat_reset_cmma(union asce asce, gfn_t start_gfn);
-diff --git a/arch/s390/kvm/gmap.c b/arch/s390/kvm/gmap.c
-index d974cdac1cce..e9cac6dce48b 100644
---- a/arch/s390/kvm/gmap.c
-+++ b/arch/s390/kvm/gmap.c
-@@ -631,10 +631,60 @@ static inline bool gmap_1m_allowed(struct gmap *gmap, gfn_t gfn)
- 	return test_bit(GMAP_FLAG_ALLOW_HPAGE_1M, &gmap->flags);
- }
- 
-+static int _gmap_link(struct kvm_s390_mmu_cache *mc, struct gmap *gmap, int level,
-+		      struct guest_fault *f)
-+{
-+	union crste oldval, newval;
-+	union pte newpte, oldpte;
-+	union pgste pgste;
-+	int rc = 0;
-+
-+	rc = dat_entry_walk(mc, f->gfn, gmap->asce, DAT_WALK_ALLOC_CONTINUE, level,
-+			    &f->crstep, &f->ptep);
-+	if (rc == -ENOMEM)
-+		return rc;
-+	if (KVM_BUG_ON(rc == -EINVAL, gmap->kvm))
-+		return rc;
-+	if (rc)
-+		return -EAGAIN;
-+	if (KVM_BUG_ON(get_level(f->crstep, f->ptep) > level, gmap->kvm))
-+		return -EINVAL;
-+
-+	if (f->ptep) {
-+		pgste = pgste_get_lock(f->ptep);
-+		oldpte = *f->ptep;
-+		newpte = _pte(f->pfn, f->writable, f->write_attempt | oldpte.s.d, !f->page);
-+		newpte.s.sd = oldpte.s.sd;
-+		oldpte.s.sd = 0;
-+		if (oldpte.val == _PTE_EMPTY.val || oldpte.h.pfra == f->pfn) {
-+			pgste = gmap_ptep_xchg(gmap, f->ptep, newpte, pgste, f->gfn);
-+			if (f->callback)
-+				f->callback(f);
-+		} else {
-+			rc = -EAGAIN;
-+		}
-+		pgste_set_unlock(f->ptep, pgste);
-+	} else {
-+		do {
-+			oldval = READ_ONCE(*f->crstep);
-+			newval = _crste_fc1(f->pfn, oldval.h.tt, f->writable,
-+					    f->write_attempt | oldval.s.fc1.d);
-+			newval.s.fc1.sd = oldval.s.fc1.sd;
-+			if (oldval.val != _CRSTE_EMPTY(oldval.h.tt).val &&
-+			    crste_origin_large(oldval) != crste_origin_large(newval))
-+				return -EAGAIN;
-+		} while (!gmap_crstep_xchg_atomic(gmap, f->crstep, oldval, newval, f->gfn));
-+		if (f->callback)
-+			f->callback(f);
-+	}
-+
-+	return rc;
-+}
-+
- int gmap_link(struct kvm_s390_mmu_cache *mc, struct gmap *gmap, struct guest_fault *f)
- {
- 	unsigned int order;
--	int rc, level;
-+	int level;
- 
- 	lockdep_assert_held(&gmap->kvm->mmu_lock);
- 
-@@ -646,9 +696,7 @@ int gmap_link(struct kvm_s390_mmu_cache *mc, struct gmap *gmap, struct guest_fau
- 		else if (order >= get_order(_SEGMENT_SIZE) && gmap_1m_allowed(gmap, f->gfn))
- 			level = TABLE_TYPE_SEGMENT;
- 	}
--	rc = dat_link(mc, gmap->asce, level, uses_skeys(gmap), f);
--	KVM_BUG_ON(rc == -EINVAL, gmap->kvm);
--	return rc;
-+	return _gmap_link(mc, gmap, level, f);
- }
- 
- static int gmap_ucas_map_one(struct kvm_s390_mmu_cache *mc, struct gmap *gmap,
--- 
-2.53.0
+> Thanks,
+> Wei-Lin Chang
+> 
+>>  		return -EINVAL;
+>>  
+>>  	/*
+>> @@ -1609,6 +1611,10 @@ static int kvm_vcpu_init_check_features(struct kvm_vcpu *vcpu,
+>>  	if (test_bit(KVM_ARM_VCPU_HAS_EL2, &features))
+>>  		return -EINVAL;
+>>  
+>> +	/* Realms are incompatible with AArch32 */
+>> +	if (vcpu_is_rec(vcpu))
+>> +		return -EINVAL;
+>> +
+>>  	return 0;
+>>  }
+>>  
+>> diff --git a/arch/arm64/kvm/reset.c b/arch/arm64/kvm/reset.c
+>> index 959532422d3a..4bbf58892928 100644
+>> --- a/arch/arm64/kvm/reset.c
+>> +++ b/arch/arm64/kvm/reset.c
+>> @@ -161,6 +161,7 @@ void kvm_arm_vcpu_destroy(struct kvm_vcpu *vcpu)
+>>  	free_page((unsigned long)vcpu->arch.ctxt.vncr_array);
+>>  	kfree(vcpu->arch.vncr_tlb);
+>>  	kfree(vcpu->arch.ccsidr);
+>> +	kvm_destroy_rec(vcpu);
+>>  }
+>>  
+>>  static void kvm_vcpu_reset_sve(struct kvm_vcpu *vcpu)
+>> diff --git a/arch/arm64/kvm/rmi.c b/arch/arm64/kvm/rmi.c
+>> index 937fababf960..6daf14c4b413 100644
+>> --- a/arch/arm64/kvm/rmi.c
+>> +++ b/arch/arm64/kvm/rmi.c
+>> @@ -207,6 +207,28 @@ static int get_start_level(struct realm *realm)
+>>  	return 4 - stage2_pgtable_levels(realm->ia_bits);
+>>  }
+>>  
+>> +static int delegate_range(phys_addr_t phys, unsigned long size)
+>> +{
+>> +	unsigned long ret;
+>> +	unsigned long top = phys + size;
+>> +	unsigned long out_top;
+>> +
+>> +	while (phys < top) {
+>> +		ret = rmi_granule_range_delegate(phys, top, &out_top);
+>> +		if (ret == RMI_SUCCESS)
+>> +			phys = out_top;
+>> +		else if (ret != RMI_BUSY && ret != RMI_BLOCKED)
+>> +			return ret;
+>> +	}
+>> +
+>> +	return ret;
+>> +}
+>> +
+>> +static int delegate_page(phys_addr_t phys)
+>> +{
+>> +	return delegate_range(phys, PAGE_SIZE);
+>> +}
+>> +
+>>  static int undelegate_range(phys_addr_t phys, unsigned long size)
+>>  {
+>>  	unsigned long ret;
+>> @@ -372,9 +394,177 @@ static int realm_ensure_created(struct kvm *kvm)
+>>  	return -ENXIO;
+>>  }
+>>  
+>> +static void free_rec_aux(struct page **aux_pages,
+>> +			 unsigned int num_aux)
+>> +{
+>> +	unsigned int i;
+>> +	unsigned int page_count = 0;
+>> +
+>> +	for (i = 0; i < num_aux; i++) {
+>> +		struct page *aux_page = aux_pages[page_count++];
+>> +		phys_addr_t aux_page_phys = page_to_phys(aux_page);
+>> +
+>> +		if (!WARN_ON(undelegate_page(aux_page_phys)))
+>> +			__free_page(aux_page);
+>> +		aux_page_phys += PAGE_SIZE;
+>> +	}
+>> +}
+>> +
+>> +static int alloc_rec_aux(struct page **aux_pages,
+>> +			 u64 *aux_phys_pages,
+>> +			 unsigned int num_aux)
+>> +{
+>> +	struct page *aux_page;
+>> +	unsigned int i;
+>> +	int ret;
+>> +
+>> +	for (i = 0; i < num_aux; i++) {
+>> +		phys_addr_t aux_page_phys;
+>> +
+>> +		aux_page = alloc_page(GFP_KERNEL);
+>> +		if (!aux_page) {
+>> +			ret = -ENOMEM;
+>> +			goto out_err;
+>> +		}
+>> +
+>> +		aux_page_phys = page_to_phys(aux_page);
+>> +		if (delegate_page(aux_page_phys)) {
+>> +			ret = -ENXIO;
+>> +			goto err_undelegate;
+>> +		}
+>> +		aux_phys_pages[i] = aux_page_phys;
+>> +		aux_pages[i] = aux_page;
+>> +	}
+>> +
+>> +	return 0;
+>> +err_undelegate:
+>> +	while (i > 0) {
+>> +		i--;
+>> +		if (WARN_ON(undelegate_page(aux_phys_pages[i]))) {
+>> +			/* Leak the page if the undelegate fails */
+>> +			goto out_err;
+>> +		}
+>> +	}
+>> +	__free_page(aux_page);
+>> +out_err:
+>> +	free_rec_aux(aux_pages, i);
+>> +	return ret;
+>> +}
+>> +
+>> +static int kvm_create_rec(struct kvm_vcpu *vcpu)
+>> +{
+>> +	struct user_pt_regs *vcpu_regs = vcpu_gp_regs(vcpu);
+>> +	unsigned long mpidr = kvm_vcpu_get_mpidr_aff(vcpu);
+>> +	struct realm *realm = &vcpu->kvm->arch.realm;
+>> +	struct realm_rec *rec = &vcpu->arch.rec;
+>> +	unsigned long rec_page_phys;
+>> +	struct rec_params *params;
+>> +	int r, i;
+>> +
+>> +	if (rec->run)
+>> +		return -EBUSY;
+>> +
+>> +	/*
+>> +	 * The RMM will report PSCI v1.0 to Realms and the KVM_ARM_VCPU_PSCI_0_2
+>> +	 * flag covers v0.2 and onwards.
+>> +	 */
+>> +	if (!vcpu_has_feature(vcpu, KVM_ARM_VCPU_PSCI_0_2))
+>> +		return -EINVAL;
+>> +
+>> +	BUILD_BUG_ON(sizeof(*params) > PAGE_SIZE);
+>> +	BUILD_BUG_ON(sizeof(*rec->run) > PAGE_SIZE);
+>> +
+>> +	params = (struct rec_params *)get_zeroed_page(GFP_KERNEL);
+>> +	rec->rec_page = (void *)__get_free_page(GFP_KERNEL);
+>> +	rec->run = (void *)get_zeroed_page(GFP_KERNEL);
+>> +	if (!params || !rec->rec_page || !rec->run) {
+>> +		r = -ENOMEM;
+>> +		goto out_free_pages;
+>> +	}
+>> +
+>> +	for (i = 0; i < ARRAY_SIZE(params->gprs); i++)
+>> +		params->gprs[i] = vcpu_regs->regs[i];
+>> +
+>> +	params->pc = vcpu_regs->pc;
+>> +
+>> +	if (vcpu->vcpu_id == 0)
+>> +		params->flags |= REC_PARAMS_FLAG_RUNNABLE;
+>> +
+>> +	rec_page_phys = virt_to_phys(rec->rec_page);
+>> +
+>> +	if (delegate_page(rec_page_phys)) {
+>> +		r = -ENXIO;
+>> +		goto out_free_pages;
+>> +	}
+>> +
+>> +	r = alloc_rec_aux(rec->aux_pages, params->aux, realm->num_aux);
+>> +	if (r)
+>> +		goto out_undelegate_rmm_rec;
+>> +
+>> +	params->num_rec_aux = realm->num_aux;
+>> +	params->mpidr = mpidr;
+>> +
+>> +	if (rmi_rec_create(virt_to_phys(realm->rd),
+>> +			   rec_page_phys,
+>> +			   virt_to_phys(params))) {
+>> +		r = -ENXIO;
+>> +		goto out_free_rec_aux;
+>> +	}
+>> +
+>> +	rec->mpidr = mpidr;
+>> +
+>> +	free_page((unsigned long)params);
+>> +	return 0;
+>> +
+>> +out_free_rec_aux:
+>> +	free_rec_aux(rec->aux_pages, realm->num_aux);
+>> +out_undelegate_rmm_rec:
+>> +	if (WARN_ON(undelegate_page(rec_page_phys)))
+>> +		rec->rec_page = NULL;
+>> +out_free_pages:
+>> +	free_page((unsigned long)rec->run);
+>> +	free_page((unsigned long)rec->rec_page);
+>> +	free_page((unsigned long)params);
+>> +	rec->run = NULL;
+>> +	return r;
+>> +}
+>> +
+>> +void kvm_destroy_rec(struct kvm_vcpu *vcpu)
+>> +{
+>> +	struct realm *realm = &vcpu->kvm->arch.realm;
+>> +	struct realm_rec *rec = &vcpu->arch.rec;
+>> +	unsigned long rec_page_phys;
+>> +
+>> +	if (!vcpu_is_rec(vcpu))
+>> +		return;
+>> +
+>> +	if (!rec->run) {
+>> +		/* Nothing to do if the VCPU hasn't been finalized */
+>> +		return;
+>> +	}
+>> +
+>> +	free_page((unsigned long)rec->run);
+>> +
+>> +	rec_page_phys = virt_to_phys(rec->rec_page);
+>> +
+>> +	/*
+>> +	 * The REC and any AUX pages cannot be reclaimed until the REC is
+>> +	 * destroyed. So if the REC destroy fails then the REC page and any AUX
+>> +	 * pages will be leaked.
+>> +	 */
+>> +	if (WARN_ON(rmi_rec_destroy(rec_page_phys)))
+>> +		return;
+>> +
+>> +	free_rec_aux(rec->aux_pages, realm->num_aux);
+>> +
+>> +	free_delegated_page(rec_page_phys);
+>> +}
+>> +
+>>  int kvm_activate_realm(struct kvm *kvm)
+>>  {
+>>  	struct realm *realm = &kvm->arch.realm;
+>> +	struct kvm_vcpu *vcpu;
+>> +	unsigned long i;
+>>  	int ret;
+>>  
+>>  	if (kvm_realm_state(kvm) >= REALM_STATE_ACTIVE)
+>> @@ -397,6 +587,12 @@ int kvm_activate_realm(struct kvm *kvm)
+>>  	/* Mark state as dead in case we fail */
+>>  	WRITE_ONCE(realm->state, REALM_STATE_DEAD);
+>>  
+>> +	kvm_for_each_vcpu(i, vcpu, kvm) {
+>> +		ret = kvm_create_rec(vcpu);
+>> +		if (ret)
+>> +			return ret;
+>> +	}
+>> +
+>>  	ret = rmi_realm_activate(virt_to_phys(realm->rd));
+>>  	if (ret)
+>>  		return -ENXIO;
+>> -- 
+>> 2.43.0
+>>
 
