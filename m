@@ -1,136 +1,94 @@
-Received: from fhigh-a7-smtp.messagingengine.com (fhigh-a7-smtp.messagingengine.com [103.168.172.158])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78C82352C58;
-	Fri, 20 Mar 2026 21:19:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.158
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 093F1364944
+	for <kvm@vger.kernel.org>; Fri, 20 Mar 2026 21:36:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.9
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774041561; cv=none; b=mv/4vzQ3yB7xl8lteW2CrG3wAb6jo3uubFQsL4ej/GDHGoVWbuVnL6MB/+ALzj7C+gHSM+b9Af/PQ5aZhGv5VerG3MmIBCf6A953Tg/2EQgP9TWcH/3kCo1GGJfgBca/f3Kaci6vgE4oQSb4WBMrDrSxj47uebwLk7n7/XcyWjU=
+	t=1774042612; cv=none; b=R1NJSlItem+yhMegZAJJSuGQmnmqJLYn4nZhBblyQRpk9gIc6cGfTKakWt+owo2mMKkiUQH4nMfqSsmNTM8Trh+P5MRNEat+p4lIxC32dZvsTCrzSecUuasPsUfC+xk1DJaL7EhtvKJSgzGdu20pnfyJ13AUF9JAwYkDlKD6Sl4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774041561; c=relaxed/simple;
-	bh=cHPxWmUQCW0OGjONm+0ATWYFHtiKrwFaP74Jw2QvcUk=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=uJNlsoRRXGO0W6MdchzAO+lrskFbfz/063SMG78TmSvrehLFfY5Km6tnxItFrTXS4napSZM1sf2rYytotsvpoxw4v6avwVoW63HJ5B4tpJOsneB1jwAse5hqLF/c8g7WT9eLLb9k4BL0hND41ZvzrrFrRxYYShqCNwbQ6q1TswE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=shazbot.org; spf=pass smtp.mailfrom=shazbot.org; dkim=pass (2048-bit key) header.d=shazbot.org header.i=@shazbot.org header.b=ThMDAt8p; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=217cv47C; arc=none smtp.client-ip=103.168.172.158
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=shazbot.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=shazbot.org
+	s=arc-20240116; t=1774042612; c=relaxed/simple;
+	bh=ch1RwpBuJsRnK1AM3W34sfabfx+/SQ4H5f2dJXcuC68=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=K3eaI87ZNAXsbszhV70AnLBNQSHB3rBbH6qg6VKazX0io0/PJdDoffriGa01qwgTLRZDNOL0T8+yBGj9oZjMRwSYSQWH9FrJqg0u7dFReqWIcenwYnw6mQ8iB9kEYp14p597ZX9RXdsL/Iiegp6n4YyuATadVabx8wRMb9KgkwA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=XXiUGe7D; arc=none smtp.client-ip=192.198.163.9
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=shazbot.org header.i=@shazbot.org header.b="ThMDAt8p";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="217cv47C"
-Received: from phl-compute-09.internal (phl-compute-09.internal [10.202.2.49])
-	by mailfhigh.phl.internal (Postfix) with ESMTP id 02FF51400275;
-	Fri, 20 Mar 2026 17:19:14 -0400 (EDT)
-Received: from phl-frontend-03 ([10.202.2.162])
-  by phl-compute-09.internal (MEProxy); Fri, 20 Mar 2026 17:19:14 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shazbot.org; h=
-	cc:cc:content-transfer-encoding:content-type:content-type:date
-	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to; s=fm3; t=1774041553;
-	 x=1774127953; bh=7OkcGIC7RuGIkDJJhjm7ZPFlO126MQ8vzH/zf/jBsS4=; b=
-	ThMDAt8pIWL0Ccyj8Yug95ofcvtR+lXloze2l+HX5NEbDV7g0wIk/S3TdRovKnwp
-	kTR78qpS6D795xCo43yWJEwiAPnl1cjwgs/PPGxdeXtwv2mJ2vo6YvdNSbTx/d+2
-	N8ErCgVC0TkAnheqzcBeWZ9eQGEotAxXvDiAssqeCbKjJs86ouBBYwZ4TY2xgcde
-	xGU23Wf2LQC0I6HIxKh2sVGLz49UxpaPZVCj5QTtUCnjwvZuh7kcknkbhPLqN5Z3
-	MreE1dtthcjEAdJ2Um1Sl1TVJbGbd09Iws9k1YjL4n9IJSmpMlH1sVjiqqV3Juh9
-	OccGCM0Aj6lY2hNDh0cPRQ==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=1774041553; x=
-	1774127953; bh=7OkcGIC7RuGIkDJJhjm7ZPFlO126MQ8vzH/zf/jBsS4=; b=2
-	17cv47CMxWHPzE4oWrWhuDFse0IJtbq8ZsAPkSTkYqNgqgZ4q3aC+X1DRa7aPpUa
-	27w4YuOQpJZrrcc8gp4ur7e+PCDVEM8dEpRJOTvLmVOr0PyCG0vq7w4DCjVrKr0s
-	2onJGITU9VsvYPveW2r5DhI3oWXvm4gF7FqSv4qVZJmwoU3vPdAGZPH4r034O6Uy
-	EX61Px/KediXmtGgsPPq9930eFwWt0FbFAC2f1oDUb+blU3UqmAWNI/yH3CNRvHb
-	nBpam32sQOPLoZBZETmXM02M+QlTdiOPyeSbnfdtTUGrinHlJSPNogenvIhDYGNb
-	7fr9eoEPC210k0sIlNesQ==
-X-ME-Sender: <xms:0bm9aREm-SKE6oS_yYz57Lmgq9t6oKoUZkfpBLii0xTJTgiKy6VuxQ>
-    <xme:0bm9aSV5rHLIUNZQrf6IxtjE5UnBp4wBBwuEbpAhQtxYiZ_c5owvXvh5bJi6PUG0t
-    9IuI5UfALKBNDl2rb57_bVwNPn7TeL80o9wJ9CEPPyhgtDBG5mf>
-X-ME-Received: <xmr:0bm9aVUjJg_fFwz3PB7vFLBXCvc_tMOOEPTiRkM2aICYu3I4xkqH2CCVL2c>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgdefuddtleejucetufdoteggodetrf
-    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
-    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
-    gurhepfffhvfevuffkjghfofggtgfgsehtjeertdertddvnecuhfhrohhmpeetlhgvgicu
-    hghilhhlihgrmhhsohhnuceorghlvgigsehshhgriigsohhtrdhorhhgqeenucggtffrrg
-    htthgvrhhnpeekheejieetffefueeiteejtdejffdvleelvdeuvdffvdefteeghfevkeeu
-    vdefvdenucffohhmrghinhepkhgvrhhnvghlrdhorhhgnecuvehluhhsthgvrhfuihiivg
-    eptdenucfrrghrrghmpehmrghilhhfrhhomheprghlvgigsehshhgriigsohhtrdhorhhg
-    pdhnsggprhgtphhtthhopeekpdhmohguvgepshhmthhpohhuthdprhgtphhtthhopehtvg
-    gulhhoghgrnhesfhgsrdgtohhmpdhrtghpthhtohepughmrghtlhgrtghksehgohhoghhl
-    vgdrtghomhdprhgtphhtthhopehshhhurghhsehkvghrnhgvlhdrohhrghdprhgtphhtth
-    hopehkvhhmsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtoheplhhinhhugidq
-    khhsvghlfhhtvghsthesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehlih
-    hnuhigqdhkvghrnhgvlhesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehm
-    rghtthgvvhesmhgvthgrrdgtohhmpdhrtghpthhtoheprghlvgigsehshhgriigsohhtrd
-    horhhg
-X-ME-Proxy: <xmx:0bm9aYJJCzJ8UXM1ngmQ4qCad5k5R0doEvt_Qs9JL58o0vixDjcsmQ>
-    <xmx:0bm9aVDtznl4DN1HWuakQLrLgyuPUMqT_hkRAkv8yq6eYUBWveSYmw>
-    <xmx:0bm9aYegnfnnTGE_tYthak5_HnLjnhQhunKW1Lg91XQEZEC_sif5xg>
-    <xmx:0bm9aU3TSnZhtbYpP70hIYTOVyPyAWIqu53trwSXJR9hxqLD4iq8Qg>
-    <xmx:0bm9abEDNihA-VLp__ukacEHsFRWmZtlxuOIZsqZjTd0MbDU9EtDDudv>
-Feedback-ID: i03f14258:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
- 20 Mar 2026 17:19:13 -0400 (EDT)
-Date: Fri, 20 Mar 2026 15:17:04 -0600
-From: Alex Williamson <alex@shazbot.org>
-To: Ted Logan <tedlogan@fb.com>
-Cc: David Matlack <dmatlack@google.com>, Shuah Khan <shuah@kernel.org>,
- <kvm@vger.kernel.org>, <linux-kselftest@vger.kernel.org>,
- <linux-kernel@vger.kernel.org>, Matt Evans <mattev@meta.com>,
- alex@shazbot.org
-Subject: Re: [PATCH v2] vfio: selftests: Build tests on aarch64
-Message-ID: <20260320151704.4cff8a83@shazbot.org>
-In-Reply-To: <20260319-vfio-selftests-aarch64-v2-1-bb2621c24dc4@fb.com>
-References: <20260319-vfio-selftests-aarch64-v2-1-bb2621c24dc4@fb.com>
-X-Mailer: Claws Mail 4.3.1 (GTK 3.24.51; x86_64-pc-linux-gnu)
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="XXiUGe7D"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1774042611; x=1805578611;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=ch1RwpBuJsRnK1AM3W34sfabfx+/SQ4H5f2dJXcuC68=;
+  b=XXiUGe7Dy3s8qZK03uinjOcL/Lo6SPS6/PMIK3xWm58xUa5xi93/SXRb
+   /ibWPYzLjDlXdLRzjbp8LCGuPJC2zT/hfGKVjDyhD0z3BO+2tPZNYEbXM
+   z7/u6EiDRTycC2UaowD6MeSCyC1scgaCEAnTdgXfFBGeGB0pNhxLf/xVW
+   za7qCHz5pSJkg1TypCnVo6dqlTT8LEmCc3DSaTI1yROTi52Yi4sDrSIQl
+   +QX6cR0T31fKQgpqwEeUWpeXVgFaUs0LU2ma4nDiIHSakKJkfTo98Bz5f
+   VhoqmdId3a5EWwoUV8tmtcQT1FciwstJ+t7wxmN2kyu1CXrfDfGgCG2bL
+   Q==;
+X-CSE-ConnectionGUID: OXiYYor+R52QyXGVkORHyA==
+X-CSE-MsgGUID: MogvbKfEQs+EHbdno5ku5Q==
+X-IronPort-AV: E=McAfee;i="6800,10657,11735"; a="85837799"
+X-IronPort-AV: E=Sophos;i="6.23,132,1770624000"; 
+   d="scan'208";a="85837799"
+Received: from fmviesa007.fm.intel.com ([10.60.135.147])
+  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Mar 2026 14:36:50 -0700
+X-CSE-ConnectionGUID: 3kE374RKSLuL4r555qmreA==
+X-CSE-MsgGUID: +euvSSK0RXORFVZTJzZayw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.23,132,1770624000"; 
+   d="scan'208";a="220291359"
+Received: from silpixa00401971.ir.intel.com ([10.20.226.106])
+  by fmviesa007.fm.intel.com with ESMTP; 20 Mar 2026 14:36:48 -0700
+From: Giovanni Cabiddu <giovanni.cabiddu@intel.com>
+To: alex@shazbot.org,
+	jgg@ziepe.ca,
+	yishaih@nvidia.com,
+	skolothumtho@nvidia.com,
+	kevin.tian@intel.com
+Cc: kvm@vger.kernel.org,
+	qat-linux@intel.com,
+	Giovanni Cabiddu <giovanni.cabiddu@intel.com>
+Subject: [PATCH] vfio/qat: add support for Intel QAT 420xx VFs
+Date: Fri, 20 Mar 2026 21:35:39 +0000
+Message-ID: <20260320213622.88549-2-giovanni.cabiddu@intel.com>
+X-Mailer: git-send-email 2.53.0
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Organization: Intel Research and Development Ireland Ltd - Co. Reg. #308263 - Collinstown Industrial Park, Leixlip, County Kildare - Ireland
+Content-Transfer-Encoding: 8bit
 
-On Thu, 19 Mar 2026 15:58:47 -0700
-Ted Logan <tedlogan@fb.com> wrote:
+Extend the qat_vfio_pci variant driver to support QAT 420xx (GEN 5)
+Virtual Functions (VFs).
 
-> Fix vfio selftests on aarch64, allowing native builds on aarch64 hosts.
-> 
-> Reported-by: Matt Evans <mattev@meta.com>
-> Closes: https://lore.kernel.org/all/e51b4ff2-13c4-47d4-b781-3dcbd740d274@meta.com/
-> Fixes: a55d4bbbe644 ("vfio: selftests: only build tests on arm64 and x86_64")
-> Signed-off-by: Ted Logan <tedlogan@fb.com>
-> ---
-> Changes in v2:
-> - Add aarch64 to the list of allowed architectures, rather than trying
->   to maintain a new architecture substitution.
-> - Update wording of commit message.
-> - Link to v1: https://lore.kernel.org/r/20260317-vfio-selftests-aarch64-v1-1-2266077563e7@fb.com
-> ---
->  tools/testing/selftests/vfio/Makefile | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/tools/testing/selftests/vfio/Makefile b/tools/testing/selftests/vfio/Makefile
-> index 8e90e409e91d..0684932d91bf 100644
-> --- a/tools/testing/selftests/vfio/Makefile
-> +++ b/tools/testing/selftests/vfio/Makefile
-> @@ -1,6 +1,6 @@
->  ARCH ?= $(shell uname -m)
->  
-> -ifeq (,$(filter $(ARCH),arm64 x86_64))
-> +ifeq (,$(filter $(ARCH),aarch64 arm64 x86_64))
->  # Do nothing on unsupported architectures
->  include ../lib.mk
->  else
-> 
-> ---
-> base-commit: 96ca4caf9066f5ebd35b561a521af588a8eb0215
-> change-id: 20260317-vfio-selftests-aarch64-636abf0f7674
+Add the relevant VF device ID to the probe table.
 
-Applied to vfio next branch for v7.1.  Thanks,
+Signed-off-by: Giovanni Cabiddu <giovanni.cabiddu@intel.com>
+---
+ drivers/vfio/pci/qat/main.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-Alex
+diff --git a/drivers/vfio/pci/qat/main.c b/drivers/vfio/pci/qat/main.c
+index b982d4ae666c..7b4d8bb9bed8 100644
+--- a/drivers/vfio/pci/qat/main.c
++++ b/drivers/vfio/pci/qat/main.c
+@@ -677,6 +677,8 @@ static const struct pci_device_id qat_vf_vfio_pci_table[] = {
+ 	{ PCI_DRIVER_OVERRIDE_DEVICE_VFIO(PCI_VENDOR_ID_INTEL, 0x4941) },
+ 	{ PCI_DRIVER_OVERRIDE_DEVICE_VFIO(PCI_VENDOR_ID_INTEL, 0x4943) },
+ 	{ PCI_DRIVER_OVERRIDE_DEVICE_VFIO(PCI_VENDOR_ID_INTEL, 0x4945) },
++	/* Intel QAT GEN5 420xx VF device */
++	{ PCI_DRIVER_OVERRIDE_DEVICE_VFIO(PCI_VENDOR_ID_INTEL, 0x4947) },
+ 	/* Intel QAT GEN6 6xxx VF device */
+ 	{ PCI_DRIVER_OVERRIDE_DEVICE_VFIO(PCI_VENDOR_ID_INTEL, 0x4949) },
+ 	{}
+
+base-commit: f338e77383789c0cae23ca3d48adcc5e9e137e3c
+-- 
+2.53.0
+
