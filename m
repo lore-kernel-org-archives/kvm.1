@@ -1,92 +1,90 @@
 Received: from fhigh-a7-smtp.messagingengine.com (fhigh-a7-smtp.messagingengine.com [103.168.172.158])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA40036C0CE;
-	Fri, 20 Mar 2026 21:19:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78C82352C58;
+	Fri, 20 Mar 2026 21:19:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.158
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774041563; cv=none; b=qo7Cw2vgQgEj57yPs3vJxlT5flgkmMQcY7Jy92fjkQTVpOgz59mAOa++UfNfvzsYuzaFqgZ6eGrIZ09pQQ3wsPV5MA4CE7q5CaI8z8HvdE6gXS3d8u1zw8WPshg+WMrAOObZOeczn0DskKAPpHMyPuUDOH/xuq8NG9qu5OpS4u4=
+	t=1774041561; cv=none; b=mv/4vzQ3yB7xl8lteW2CrG3wAb6jo3uubFQsL4ej/GDHGoVWbuVnL6MB/+ALzj7C+gHSM+b9Af/PQ5aZhGv5VerG3MmIBCf6A953Tg/2EQgP9TWcH/3kCo1GGJfgBca/f3Kaci6vgE4oQSb4WBMrDrSxj47uebwLk7n7/XcyWjU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774041563; c=relaxed/simple;
-	bh=YOZ7lW6FGfjPqmt3uLpu00QggYh1d/djUSJ/Hhani9k=;
+	s=arc-20240116; t=1774041561; c=relaxed/simple;
+	bh=cHPxWmUQCW0OGjONm+0ATWYFHtiKrwFaP74Jw2QvcUk=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=lCVI85r2jUK0kobsuYH1lT2tujv3eaMNcs5N01TJjrSgA2jhe1HvRDamC2da0be85WX9tYWTib/1PrZv9822UiYqG5ff3zRX4460NBJgyWxenNR2qsbSNYd1oSqQ/vKHgmEcLLmmWVK5wj8w/tMZFRajbhlE3atwiTGi7nbXZFQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=shazbot.org; spf=pass smtp.mailfrom=shazbot.org; dkim=pass (2048-bit key) header.d=shazbot.org header.i=@shazbot.org header.b=BMdmAAIU; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=zsW6E9iE; arc=none smtp.client-ip=103.168.172.158
+	 MIME-Version:Content-Type; b=uJNlsoRRXGO0W6MdchzAO+lrskFbfz/063SMG78TmSvrehLFfY5Km6tnxItFrTXS4napSZM1sf2rYytotsvpoxw4v6avwVoW63HJ5B4tpJOsneB1jwAse5hqLF/c8g7WT9eLLb9k4BL0hND41ZvzrrFrRxYYShqCNwbQ6q1TswE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=shazbot.org; spf=pass smtp.mailfrom=shazbot.org; dkim=pass (2048-bit key) header.d=shazbot.org header.i=@shazbot.org header.b=ThMDAt8p; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=217cv47C; arc=none smtp.client-ip=103.168.172.158
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=shazbot.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=shazbot.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=shazbot.org header.i=@shazbot.org header.b="BMdmAAIU";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="zsW6E9iE"
-Received: from phl-compute-02.internal (phl-compute-02.internal [10.202.2.42])
-	by mailfhigh.phl.internal (Postfix) with ESMTP id F10C1140027C;
-	Fri, 20 Mar 2026 17:19:19 -0400 (EDT)
+	dkim=pass (2048-bit key) header.d=shazbot.org header.i=@shazbot.org header.b="ThMDAt8p";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="217cv47C"
+Received: from phl-compute-09.internal (phl-compute-09.internal [10.202.2.49])
+	by mailfhigh.phl.internal (Postfix) with ESMTP id 02FF51400275;
+	Fri, 20 Mar 2026 17:19:14 -0400 (EDT)
 Received: from phl-frontend-03 ([10.202.2.162])
-  by phl-compute-02.internal (MEProxy); Fri, 20 Mar 2026 17:19:19 -0400
+  by phl-compute-09.internal (MEProxy); Fri, 20 Mar 2026 17:19:14 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shazbot.org; h=
 	cc:cc:content-transfer-encoding:content-type:content-type:date
 	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to; s=fm3; t=1774041559;
-	 x=1774127959; bh=v9MzbXrGKE8UmNQPl3m+i5rAwLb7V8D8qRDvLPMVmLQ=; b=
-	BMdmAAIUT6HBPUdNm2SBHaNBv4wzPXudHc/EPeG3wMzX/tWwB7lwmRHu8W91AJzr
-	rq0UaX7D75ft7x6FYiqPRT8THA9D78EmNVo6niYHpJb06naNAqdKDr++P8yLRjEr
-	NgPUAtWb2GlMt1j5eEL8BxMVi8uLH+exnFQgfAl5KJ9a3SwhkJC5ez2F5//2Mnxp
-	MmS2ofiNkLx0tTp5U7Ms90kM6G4vtC7Rg3kW58o1UuZ6M9r9bU44p2QAbgewdYrL
-	WLInJKjh2Okbs95NFSkXHE9kPX1uPnBS2LTVjYZjaq7ie5Nip/TFuK5QutfWLWlD
-	9r7lOTVjMg+CyrxXBRZtMA==
+	:references:reply-to:subject:subject:to:to; s=fm3; t=1774041553;
+	 x=1774127953; bh=7OkcGIC7RuGIkDJJhjm7ZPFlO126MQ8vzH/zf/jBsS4=; b=
+	ThMDAt8pIWL0Ccyj8Yug95ofcvtR+lXloze2l+HX5NEbDV7g0wIk/S3TdRovKnwp
+	kTR78qpS6D795xCo43yWJEwiAPnl1cjwgs/PPGxdeXtwv2mJ2vo6YvdNSbTx/d+2
+	N8ErCgVC0TkAnheqzcBeWZ9eQGEotAxXvDiAssqeCbKjJs86ouBBYwZ4TY2xgcde
+	xGU23Wf2LQC0I6HIxKh2sVGLz49UxpaPZVCj5QTtUCnjwvZuh7kcknkbhPLqN5Z3
+	MreE1dtthcjEAdJ2Um1Sl1TVJbGbd09Iws9k1YjL4n9IJSmpMlH1sVjiqqV3Juh9
+	OccGCM0Aj6lY2hNDh0cPRQ==
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
 	messagingengine.com; h=cc:cc:content-transfer-encoding
 	:content-type:content-type:date:date:feedback-id:feedback-id
 	:from:from:in-reply-to:in-reply-to:message-id:mime-version
 	:references:reply-to:subject:subject:to:to:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=1774041559; x=
-	1774127959; bh=v9MzbXrGKE8UmNQPl3m+i5rAwLb7V8D8qRDvLPMVmLQ=; b=z
-	sW6E9iEE8812j6bw1SGEeAc47GmyG3S/m7ckHL3MW7B4m8bUMA+Spnccx0oprBaJ
-	VInaI94byVjRoYJ+aXpbijJYyFpCa9XtEBexlNc8F2sVWev2wB+zcZejtmveLZTb
-	rnkOUyr9rnNqjxnIUmrIU9ba+tUpCs9jOEpwAlJTPp7ZppYZtPOe9g6LAW8WgpEK
-	tXqHlpkBRQ/FJYf0iuZoV5HmVUNcGwHbAgAH/UnUDyIth7qeK986d84NsnlTuJd0
-	p+afx9O+9fpL/RYh+2YzLzl2Ji7ZfIyZiQTjDIXoDQ2SiNT2xc+Iw2dy5jwnGi95
-	BgQ/t2N4d6NfkAZVV2B+Q==
-X-ME-Sender: <xms:17m9aUMsd0xJ74SZfxATv-kYOtZ2EcoFfJs5iM6l7mpsPDzBBeub0A>
-    <xme:17m9aTIbuEoqghhC_s60yJrNe4_wAQ_bZ6mmI5sHI1u8qyFVq8mNQbBHP9TBvimFD
-    lhDetLYafrqiQOF45fuvUGvzRdDn2oAVoWOKOv2iOfdhpSOz3gLRw>
-X-ME-Received: <xmr:17m9aW1CZTA2dmqUOG9tFORzkluiPePu5JNTwufXTs9w9hTdoEnp6AZGOD8>
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=1774041553; x=
+	1774127953; bh=7OkcGIC7RuGIkDJJhjm7ZPFlO126MQ8vzH/zf/jBsS4=; b=2
+	17cv47CMxWHPzE4oWrWhuDFse0IJtbq8ZsAPkSTkYqNgqgZ4q3aC+X1DRa7aPpUa
+	27w4YuOQpJZrrcc8gp4ur7e+PCDVEM8dEpRJOTvLmVOr0PyCG0vq7w4DCjVrKr0s
+	2onJGITU9VsvYPveW2r5DhI3oWXvm4gF7FqSv4qVZJmwoU3vPdAGZPH4r034O6Uy
+	EX61Px/KediXmtGgsPPq9930eFwWt0FbFAC2f1oDUb+blU3UqmAWNI/yH3CNRvHb
+	nBpam32sQOPLoZBZETmXM02M+QlTdiOPyeSbnfdtTUGrinHlJSPNogenvIhDYGNb
+	7fr9eoEPC210k0sIlNesQ==
+X-ME-Sender: <xms:0bm9aREm-SKE6oS_yYz57Lmgq9t6oKoUZkfpBLii0xTJTgiKy6VuxQ>
+    <xme:0bm9aSV5rHLIUNZQrf6IxtjE5UnBp4wBBwuEbpAhQtxYiZ_c5owvXvh5bJi6PUG0t
+    9IuI5UfALKBNDl2rb57_bVwNPn7TeL80o9wJ9CEPPyhgtDBG5mf>
+X-ME-Received: <xmr:0bm9aVUjJg_fFwz3PB7vFLBXCvc_tMOOEPTiRkM2aICYu3I4xkqH2CCVL2c>
 X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgdefuddtleejucetufdoteggodetrf
     dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
-    rghilhhouhhtmecufedttdenucenucfjughrpeffhffvvefukfgjfhfogggtgfesthejre
-    dtredtvdenucfhrhhomheptehlvgigucghihhllhhirghmshhonhcuoegrlhgvgiesshhh
-    rgiisghothdrohhrgheqnecuggftrfgrthhtvghrnhepkeehjeeitefffeeuieetjedtje
-    ffvdelledvuedvffdvfeetgefhveekuedvfedvnecuffhomhgrihhnpehkvghrnhgvlhdr
-    ohhrghenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpe
-    grlhgvgiesshhhrgiisghothdrohhrghdpnhgspghrtghpthhtohepuddtpdhmohguvgep
-    shhmthhpohhuthdprhgtphhtthhopehmhhhonhgrphesnhhvihguihgrrdgtohhmpdhrtg
-    hpthhtohepughmrghtlhgrtghksehgohhoghhlvgdrtghomhdprhgtphhtthhopegurghv
-    vgdrjhhirghnghesihhnthgvlhdrtghomhdprhgtphhtthhopegrnhhkihhtrgesnhhvih
-    guihgrrdgtohhmpdhrtghpthhtohepkhhjrghjuhesnhhvihguihgrrdgtohhmpdhrtghp
-    thhtohepkhhvmhesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehlihhnuh
-    igqdhkvghrnhgvlhesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehlihhn
-    uhigqdhkshgvlhhfthgvshhtsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtoh
-    epshhtrggslhgvsehvghgvrhdrkhgvrhhnvghlrdhorhhg
-X-ME-Proxy: <xmx:17m9aXW8v7nAZZIfyg1ESiskYXY6qIzQ7JKinpvXVJpx_ldXKKYKxw>
-    <xmx:17m9aYOfHoM1_ocwPVGRrQe3Q8ob8I--BDq_5gGmGHxT0RSV8I4aDA>
-    <xmx:17m9aa1vAvXPtKEc8zBs4r50JUJOvTK1Mi-MgWqNnlE63qgbobiE2w>
-    <xmx:17m9acQVpks6OLMednN5DKpqwMMDc-Tk652fiFOlzelAuRp-_lzgmw>
-    <xmx:17m9af0tRABYkk6gXKD5RMRdPcU_60RRB2WNp7Gepfzs_xz5LnKsktyU>
+    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
+    gurhepfffhvfevuffkjghfofggtgfgsehtjeertdertddvnecuhfhrohhmpeetlhgvgicu
+    hghilhhlihgrmhhsohhnuceorghlvgigsehshhgriigsohhtrdhorhhgqeenucggtffrrg
+    htthgvrhhnpeekheejieetffefueeiteejtdejffdvleelvdeuvdffvdefteeghfevkeeu
+    vdefvdenucffohhmrghinhepkhgvrhhnvghlrdhorhhgnecuvehluhhsthgvrhfuihiivg
+    eptdenucfrrghrrghmpehmrghilhhfrhhomheprghlvgigsehshhgriigsohhtrdhorhhg
+    pdhnsggprhgtphhtthhopeekpdhmohguvgepshhmthhpohhuthdprhgtphhtthhopehtvg
+    gulhhoghgrnhesfhgsrdgtohhmpdhrtghpthhtohepughmrghtlhgrtghksehgohhoghhl
+    vgdrtghomhdprhgtphhtthhopehshhhurghhsehkvghrnhgvlhdrohhrghdprhgtphhtth
+    hopehkvhhmsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtoheplhhinhhugidq
+    khhsvghlfhhtvghsthesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehlih
+    hnuhigqdhkvghrnhgvlhesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehm
+    rghtthgvvhesmhgvthgrrdgtohhmpdhrtghpthhtoheprghlvgigsehshhgriigsohhtrd
+    horhhg
+X-ME-Proxy: <xmx:0bm9aYJJCzJ8UXM1ngmQ4qCad5k5R0doEvt_Qs9JL58o0vixDjcsmQ>
+    <xmx:0bm9aVDtznl4DN1HWuakQLrLgyuPUMqT_hkRAkv8yq6eYUBWveSYmw>
+    <xmx:0bm9aYegnfnnTGE_tYthak5_HnLjnhQhunKW1Lg91XQEZEC_sif5xg>
+    <xmx:0bm9aU3TSnZhtbYpP70hIYTOVyPyAWIqu53trwSXJR9hxqLD4iq8Qg>
+    <xmx:0bm9abEDNihA-VLp__ukacEHsFRWmZtlxuOIZsqZjTd0MbDU9EtDDudv>
 Feedback-ID: i03f14258:Fastmail
 Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
- 20 Mar 2026 17:19:18 -0400 (EDT)
-Date: Fri, 20 Mar 2026 15:17:26 -0600
+ 20 Mar 2026 17:19:13 -0400 (EDT)
+Date: Fri, 20 Mar 2026 15:17:04 -0600
 From: Alex Williamson <alex@shazbot.org>
-To: <mhonap@nvidia.com>
-Cc: <dmatlack@google.com>, <dave.jiang@intel.com>, <ankita@nvidia.com>,
- <kjaju@nvidia.com>, <kvm@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
- <linux-kselftest@vger.kernel.org>, <stable@vger.kernel.org>,
+To: Ted Logan <tedlogan@fb.com>
+Cc: David Matlack <dmatlack@google.com>, Shuah Khan <shuah@kernel.org>,
+ <kvm@vger.kernel.org>, <linux-kselftest@vger.kernel.org>,
+ <linux-kernel@vger.kernel.org>, Matt Evans <mattev@meta.com>,
  alex@shazbot.org
-Subject: Re: [PATCH] vfio: selftests: Fix VLA initialisation in
- vfio_pci_irq_set()
-Message-ID: <20260320151726.4db61e9f@shazbot.org>
-In-Reply-To: <20260318145323.7e9831a4@nvidia.com>
-References: <20260317051402.3725670-1-mhonap@nvidia.com>
-	<20260318145323.7e9831a4@nvidia.com>
+Subject: Re: [PATCH v2] vfio: selftests: Build tests on aarch64
+Message-ID: <20260320151704.4cff8a83@shazbot.org>
+In-Reply-To: <20260319-vfio-selftests-aarch64-v2-1-bb2621c24dc4@fb.com>
+References: <20260319-vfio-selftests-aarch64-v2-1-bb2621c24dc4@fb.com>
 X-Mailer: Claws Mail 4.3.1 (GTK 3.24.51; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
@@ -97,92 +95,42 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Wed, 18 Mar 2026 14:53:23 -0600
-Alex Williamson <alwilliamson@nvidia.com> wrote:
+On Thu, 19 Mar 2026 15:58:47 -0700
+Ted Logan <tedlogan@fb.com> wrote:
 
-> On Tue, 17 Mar 2026 10:44:02 +0530
-> <mhonap@nvidia.com> wrote:
+> Fix vfio selftests on aarch64, allowing native builds on aarch64 hosts.
 > 
-> > From: Manish Honap <mhonap@nvidia.com>
-> > 
-> > C does not permit an initialiser expression on a variable-length array
-> > (C99 Section 6.7.9 constraint: "The type of the entity to be initialized
-> > shall not be a variable length array type").
-> > 
-> > vfio_pci_irq_set() declared:
-> > 
-> >       u8 buf[sizeof(struct vfio_irq_set) + sizeof(int) * count] = {};
-> > 
-> > where `count` is a runtime function parameter, making `buf` a VLA.
-> > 
-> > GCC rejects this with (tried with GCC-9.4.0):
-> > 
-> >       error: variable-sized object may not be initialized
-> > 
-> > Fix by removing the `= {}` initialiser and inserting an explicit
-> > memset() immediately after the declaration.  memset() on a VLA is
-> > perfectly legal and achieves the same zero-initialisation on all
-> > conforming C implementations.
-> > 
-> > Fixes: 19faf6fd969c ("vfio: selftests: Add a helper library for VFIO selftests")
-> > Cc: stable@vger.kernel.org
-> > Reviewed-by: Dave Jiang <dave.jiang@intel.com>
-> > Reviewed-by: David Matlack <dmatlack@google.com>
-> > Signed-off-by: Manish Honap <mhonap@nvidia.com>
-> > ---
-> > 
-> > This fix is self-contained: it touches only the existing vfio selftest
-> > helper library and carries no dependency on any other patch.  It was
-> > originally included as PATCH 20/20 in the CXL Type-2 VFIO passthrough
-> > RFC series [1] but belongs on the vfio list independently, as noted by
-> > Dave Jiang.
-> > 
-> > [1] https://lore.kernel.org/all/20260311203440.752648-1-mhonap@nvidia.com/
-> > 
-> >  tools/testing/selftests/vfio/lib/vfio_pci_device.c | 4 +++-
-> >  1 file changed, 3 insertions(+), 1 deletion(-)
-> > 
-> > diff --git a/tools/testing/selftests/vfio/lib/vfio_pci_device.c b/tools/testing/selftests/vfio/lib/vfio_pci_device.c
-> > index fac4c0ecadef..3258e814f450 100644
-> > --- a/tools/testing/selftests/vfio/lib/vfio_pci_device.c
-> > +++ b/tools/testing/selftests/vfio/lib/vfio_pci_device.c
-> > @@ -26,8 +26,10 @@
-> >  static void vfio_pci_irq_set(struct vfio_pci_device *device,
-> >  			     u32 index, u32 vector, u32 count, int *fds)
-> >  {
-> > -	u8 buf[sizeof(struct vfio_irq_set) + sizeof(int) * count] = {};
-> > +	u8 buf[sizeof(struct vfio_irq_set) + sizeof(int) * count];
-> >  	struct vfio_irq_set *irq = (void *)&buf;
-> > +
-> > +	memset(buf, 0, sizeof(buf));
-> >  	int *irq_fds = (void *)&irq->data;
-> > 
-> >  	irq->argsz = sizeof(buf);
-> > --
-> > 2.25.1
-> >   
+> Reported-by: Matt Evans <mattev@meta.com>
+> Closes: https://lore.kernel.org/all/e51b4ff2-13c4-47d4-b781-3dcbd740d274@meta.com/
+> Fixes: a55d4bbbe644 ("vfio: selftests: only build tests on arm64 and x86_64")
+> Signed-off-by: Ted Logan <tedlogan@fb.com>
+> ---
+> Changes in v2:
+> - Add aarch64 to the list of allowed architectures, rather than trying
+>   to maintain a new architecture substitution.
+> - Update wording of commit message.
+> - Link to v1: https://lore.kernel.org/r/20260317-vfio-selftests-aarch64-v1-1-2266077563e7@fb.com
+> ---
+>  tools/testing/selftests/vfio/Makefile | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
 > 
-> This unnecessarily split the declaration block.  Without objection,
-> I'll commit this with the following change:
-> 
-> diff --git a/tools/testing/selftests/vfio/lib/vfio_pci_device.c b/tools/testing/selftests/vfio/lib/vfio_pci_device.c
-> index d306ab81123a..fc75e04ef010 100644
-> --- a/tools/testing/selftests/vfio/lib/vfio_pci_device.c
-> +++ b/tools/testing/selftests/vfio/lib/vfio_pci_device.c
-> @@ -32,9 +32,9 @@ static void vfio_pci_irq_set(struct vfio_pci_device *device,
->  {
->         u8 buf[sizeof(struct vfio_irq_set) + sizeof(int) * count];
->         struct vfio_irq_set *irq = (void *)&buf;
-> +       int *irq_fds = (void *)&irq->data;
+> diff --git a/tools/testing/selftests/vfio/Makefile b/tools/testing/selftests/vfio/Makefile
+> index 8e90e409e91d..0684932d91bf 100644
+> --- a/tools/testing/selftests/vfio/Makefile
+> +++ b/tools/testing/selftests/vfio/Makefile
+> @@ -1,6 +1,6 @@
+>  ARCH ?= $(shell uname -m)
 >  
->         memset(buf, 0, sizeof(buf));
-> -       int *irq_fds = (void *)&irq->data;
->  
->         irq->argsz = sizeof(buf);
->         irq->flags = VFIO_IRQ_SET_ACTION_TRIGGER;
+> -ifeq (,$(filter $(ARCH),arm64 x86_64))
+> +ifeq (,$(filter $(ARCH),aarch64 arm64 x86_64))
+>  # Do nothing on unsupported architectures
+>  include ../lib.mk
+>  else
+> 
+> ---
+> base-commit: 96ca4caf9066f5ebd35b561a521af588a8eb0215
+> change-id: 20260317-vfio-selftests-aarch64-636abf0f7674
 
-Applied with this fix to vfio next branch for v7.1.  Thanks,
+Applied to vfio next branch for v7.1.  Thanks,
 
 Alex
-
-
