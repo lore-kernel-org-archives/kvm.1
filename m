@@ -1,118 +1,128 @@
-Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 47B6337B3F0;
-	Fri, 20 Mar 2026 11:32:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.109.113.108
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C4D4138F658;
+	Fri, 20 Mar 2026 11:58:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774006348; cv=none; b=PEepSSH6w7jLf9SFgNAaNh01am5ZpxLz3fV8LXTjhwBxl9Bw+1LzDNgQcMv9jq1Puh+5+Lcw1P5RXXVF0YIAIRSVS4v8T+wl11d90ME10TXD5PIWpk7KpF1q3mc7YMz4QW4TkrwVNN5e2KaqII5IAV1toIVBQPjudAMPST4q5SI=
+	t=1774007914; cv=none; b=C7Z+oAbIykyrxbppk7299rN8/w7NkaynaH+tQei4FkbJj+TbQRkhF8rTOPL7YxoeNwTVvEs5dvITfXaLkeV6FlvqrnWqYkPEqoG0Ieja8kyZ8tjJl4IsY177K6QiS1yEj/3ZYjNYyw0l6ELb22lRh+jGY72RnhmdgA81YuLebsU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774006348; c=relaxed/simple;
-	bh=SD0zMPdbCHRSu5dynsAxjF/5Yo4hGkU6mOhwbKNqSvI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=mfDe+R0qwaepobVyHu3/z0GMeRD6XjswnLMBryWaULUPUYgHKQZ0TLTDbIvVNL1G/9MQGvPjP+O/L0VgTjBLOCkZ0ii5MIRBRSm0KgRYANRQqOpXKBmLxfkK+4g0SuJcnGF/BuVHvYAN33MG1Viv1EwiFALrXq+4Ow9ssCsFHTA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de; spf=pass smtp.mailfrom=alien8.de; dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b=FIC+zJsa; arc=none smtp.client-ip=65.109.113.108
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
+	s=arc-20240116; t=1774007914; c=relaxed/simple;
+	bh=Ryo1Qk3L6fhEy2jkfzXaQ5d40PDZj2eheNRbmld+wIc=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=YXvn+8tc0lr/QOzC2DlZ/vaP2bacRM3X6CQHAn35yX0OH12HQrEkdtIYxf8gtzmWAtCQ66OUzAbIWt8xVIV3TKQMxXZc6t+FXefuT6dGsF+pq/xYxkv8una9DKaX6lvfhM55KlkMj4JaNJgsRvziyNMTUcyBJ8U3sTefrWxTdQE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UZj1TehD; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="FIC+zJsa"
-Received: from localhost (localhost.localdomain [127.0.0.1])
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id EFE2A40E01A9;
-	Fri, 20 Mar 2026 11:32:20 +0000 (UTC)
-X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
-Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
-	header.d=alien8.de
-Received: from mail.alien8.de ([127.0.0.1])
-	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
-	with ESMTP id jib5ah3yJCN8; Fri, 20 Mar 2026 11:32:17 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
-	t=1774006337; bh=eb8KDcq4gOieV0k+tw7u1jt0dzz7d5ZLktWlrQda5Ls=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=FIC+zJsaEKChIBUTH8ESbHex4TyDU7HjjrqlwK9kDv0z2XWJfl+evZvc6UQBLCqxt
-	 CSlfupCZQdvW3d1U4IMFre0axZyZMxjlyRF30O9ZddhHl1HP8WaT6Vfhp6d1KhBuHQ
-	 pVRWJ0K45TIT8W7HnessO38xZDYclgu4YydseZTNsLxM7YWIZKojkDHdiCc+fmxy2L
-	 s34qYYktPJfCVQ5vtPsuop19XV2znWZF9+n13T4XsRdgs9CtV9EAi5kSDmcc88jkDV
-	 ibyJp14nKRY1gQxMEuTAet8GvFMfx1Vf5OEVRbmcMcxfz81MfFLquqWUogx5OKqgno
-	 lhny/8eN2t455j05/Rr272/mrWZx6MOHRcis1rDdiKvY5JsMTaDcrToxR7xCv+lWe4
-	 6YqyUBdWnRkEmMzyNHtW9pSufc/sXGAmyG+3s//Nj7+V76zcofh55Ehco01SUCoE4H
-	 vfDiqoEkLQUPeYrHtqf+sZ54zonRSOE7IsdTYV8uVGOP5huBGDSDriqHhgcflrPmAZ
-	 B9oM9GOQe7n+a2Ufp+EyFyLauVJl5GIRRZ43qxKIs/4yKkW1Kj9YHnzZd4iK2b4S7R
-	 EAxsCcQcghkPgAeFS8n58Q/SazUhfrAtej5SLgrHXzQCX9rXVc0vkDHm4ZJsyPR3ux
-	 fSsYCeOQOsa8qYUCYzb72lHw=
-Received: from zn.tnic (p5de8e020.dip0.t-ipconnect.de [93.232.224.32])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
-	(No client certificate requested)
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with UTF8SMTPSA id EC93C40E021E;
-	Fri, 20 Mar 2026 11:31:40 +0000 (UTC)
-Date: Fri, 20 Mar 2026 12:31:34 +0100
-From: Borislav Petkov <bp@alien8.de>
-To: Peter Zijlstra <peterz@infradead.org>
-Cc: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>, x86@kernel.org,
-	Nikolay Borisov <nik.borisov@suse.com>,
-	"H. Peter Anvin" <hpa@zytor.com>,
-	Josh Poimboeuf <jpoimboe@kernel.org>,
-	David Kaplan <david.kaplan@amd.com>,
-	Sean Christopherson <seanjc@google.com>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	Alexei Starovoitov <ast@kernel.org>,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	Andrii Nakryiko <andrii@kernel.org>, KP Singh <kpsingh@kernel.org>,
-	Jiri Olsa <jolsa@kernel.org>,
-	"David S. Miller" <davem@davemloft.net>,
-	David Laight <david.laight.linux@gmail.com>,
-	Andy Lutomirski <luto@kernel.org>,
-	Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>,
-	David Ahern <dsahern@kernel.org>,
-	Martin KaFai Lau <martin.lau@linux.dev>,
-	Eduard Zingerman <eddyz87@gmail.com>, Song Liu <song@kernel.org>,
-	Yonghong Song <yonghong.song@linux.dev>,
-	John Fastabend <john.fastabend@gmail.com>,
-	Stanislav Fomichev <sdf@fomichev.me>, Hao Luo <haoluo@google.com>,
-	Paolo Bonzini <pbonzini@redhat.com>,
-	Jonathan Corbet <corbet@lwn.net>, linux-kernel@vger.kernel.org,
-	kvm@vger.kernel.org, Asit Mallick <asit.k.mallick@intel.com>,
-	Tao Zhang <tao1.zhang@intel.com>, bpf@vger.kernel.org,
-	netdev@vger.kernel.org, linux-doc@vger.kernel.org
-Subject: Re: [PATCH v7 07/10] x86/vmscape: Use static_call() for predictor
- flush
-Message-ID: <20260320113134.GAab0wFqe-hewZc175@fat_crate.local>
-References: <20260319-vmscape-bhb-v7-0-b76a777a98af@linux.intel.com>
- <20260319-vmscape-bhb-v7-7-b76a777a98af@linux.intel.com>
- <20260319205802.GJ3738786@noisy.programming.kicks-ass.net>
- <20260319213421.br6na4dulrjm6eke@desk>
- <20260319214409.GL3738786@noisy.programming.kicks-ass.net>
- <20260320062206.bdrnmnvho6lhmejw@desk>
- <20260320090340.GN3738786@noisy.programming.kicks-ass.net>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UZj1TehD"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4C356C4CEF7;
+	Fri, 20 Mar 2026 11:58:29 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1774007914;
+	bh=Ryo1Qk3L6fhEy2jkfzXaQ5d40PDZj2eheNRbmld+wIc=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=UZj1TehDLwaJJfofAcz9/qeUE9czNEiAtXFAu65TdU3+3yPMd6v7XpRwGbj1afsQR
+	 XNPJMfCfwHlXEtTY+0WJqstX9r2SfqQZaxxdG0jXtrl9bK5NsD/spqw5yq8tbOYPF4
+	 wifxJj4R7hvAsH/bxI9LTuH7wNEXOqpnR//PYH8xe5czt73pGE2B1lQPqI2c9hzMgP
+	 52e+opofUym8AxByKc+/d7Jh56E9gAIv0peRbAR8WJpgZOpK49ogawWfn4bpBaz1JB
+	 dRHvp4tKCgw218V8vWAckR0HlgsZc8EeXq7t2dB2MgvORpfzCIXItBG5K+L7etRlW6
+	 AQilL/An/hVZw==
+Message-ID: <3beda8ac-4611-4908-a90e-8c91e3df7f2c@kernel.org>
+Date: Fri, 20 Mar 2026 12:58:27 +0100
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20260320090340.GN3738786@noisy.programming.kicks-ass.net>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 01/15] userfaultfd: introduce mfill_copy_folio_locked()
+ helper
+To: Mike Rapoport <rppt@kernel.org>, Andrew Morton <akpm@linux-foundation.org>
+Cc: Andrea Arcangeli <aarcange@redhat.com>,
+ Axel Rasmussen <axelrasmussen@google.com>,
+ Baolin Wang <baolin.wang@linux.alibaba.com>, Hugh Dickins
+ <hughd@google.com>, James Houghton <jthoughton@google.com>,
+ "Liam R. Howlett" <Liam.Howlett@oracle.com>,
+ Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+ "Matthew Wilcox (Oracle)" <willy@infradead.org>,
+ Michal Hocko <mhocko@suse.com>, Muchun Song <muchun.song@linux.dev>,
+ Nikita Kalyazin <kalyazin@amazon.com>, Oscar Salvador <osalvador@suse.de>,
+ Paolo Bonzini <pbonzini@redhat.com>, Peter Xu <peterx@redhat.com>,
+ Sean Christopherson <seanjc@google.com>, Shuah Khan <shuah@kernel.org>,
+ Suren Baghdasaryan <surenb@google.com>, Vlastimil Babka <vbabka@suse.cz>,
+ kvm@vger.kernel.org, linux-fsdevel@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org,
+ linux-mm@kvack.org
+References: <20260306171815.3160826-1-rppt@kernel.org>
+ <20260306171815.3160826-2-rppt@kernel.org>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <20260306171815.3160826-2-rppt@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Fri, Mar 20, 2026 at 10:03:40AM +0100, Peter Zijlstra wrote:
-> On Thu, Mar 19, 2026 at 11:22:06PM -0700, Pawan Gupta wrote:
+On 3/6/26 18:18, Mike Rapoport wrote:
+> From: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
 > 
-> > This plus extending it to support EXPORT_STATIC_CALL_FOR_KVM() is probably
-> > a better solution. Please let me know which one you prefer.
+> Split copying of data when locks held from mfill_atomic_pte_copy() into
+> a helper function mfill_copy_folio_locked().
 > 
-> The EXPORT twiddling will do I suppose. I'll try and not forget looking
-> at doing the RO static_call thing some time.
+> This makes improves code readability and makes complex
+> mfill_atomic_pte_copy() function easier to comprehend.
+> 
+> No functional change.
+> 
+> Acked-by: Peter Xu <peterx@redhat.com>
+> Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+> ---
 
-Dunno, but exporting a static_call sounds really really wrong to me. No matter
-where. As in: we're exporting the underlying inner workings of it and that
-should be a big fat no-no.
-
-So definitely +1 on exporting the helper instead.
-
-I'd say...
+Reviewed-by: David Hildenbrand (Arm) <david@kernel.org>
 
 -- 
-Regards/Gruss,
-    Boris.
+Cheers,
 
-https://people.kernel.org/tglx/notes-about-netiquette
+David
