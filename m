@@ -1,74 +1,74 @@
-Received: from mail-dl1-f47.google.com (mail-dl1-f47.google.com [74.125.82.47])
+Received: from mail-dl1-f53.google.com (mail-dl1-f53.google.com [74.125.82.53])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 72DC6846F
-	for <kvm@vger.kernel.org>; Sat, 21 Mar 2026 14:33:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.82.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B68B222370A
+	for <kvm@vger.kernel.org>; Sat, 21 Mar 2026 15:00:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.82.53
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774103608; cv=pass; b=pAWcXRzhifZT8w63sP11tfjLsyUVCWehROSSiGfGDZ9ntwMovPlDYPUQmSRqrBPsgTCGhf9AksnG3ifdiUL6TVuUq2aCtzt7LERAytCNWi9UdO927gv0UrVixEyXsZWUardMdOSqgl9jTawheoS44Pp13lZxklql084RX6eL2tw=
+	t=1774105213; cv=pass; b=N0ye8bzHFruHFoI14/fq8L3zXJzUSWH1ivqMFem8VRSsV3hnmvW5NKJk9SOD1O8CtFA73taqXIfg8s59MctIUEfJj2ZpAfyFxXdZ6Ut33s74RzQRfdUR+7EW4CTmu8BfkZJRSzmLX7eC/yLRNS1uVZfVAuS4XjNM2r8WrXn6mR0=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774103608; c=relaxed/simple;
-	bh=F7MwGert12x9G206yLLAO/tP/xXu47T7HnKN8gb0STs=;
-	h=MIME-Version:From:Date:Message-ID:Subject:To:Cc:Content-Type; b=ThbL27R0xMrGvYCLboYhJfI5Da4eyahsznVb3EcmFLj7yXJG8wurjH49jDxL2SE0qJgmzRBozOM453U/KrBUzUPYnFNk3kBFypI3QeDBtthweem3cL2LEUeE5GhGDYP0ABwwfR0aTF/TRaAE+D4zyHF2nipVF8F/drQhsPnWjwI=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gooddata.com; spf=pass smtp.mailfrom=gooddata.com; dkim=pass (1024-bit key) header.d=gooddata.com header.i=@gooddata.com header.b=Yar203Ow; arc=pass smtp.client-ip=74.125.82.47
+	s=arc-20240116; t=1774105213; c=relaxed/simple;
+	bh=lJA3zVnptFmujgyzahO2FU56UifVFVHzw6lDxAUADcs=;
+	h=MIME-Version:From:Date:Message-ID:Subject:To:Cc:Content-Type; b=lPQNAQE06TVBWm8/LhppBhhodKIPWqs5PzvR4N+DHzbBkDsfwNuiUXr7f/tw4qrdGSqIw0VFDkvYCFRP76lS0nXRmvB69gH7LeZJGdLcTmYl64258NCX05Vsx1xVJkmnUUtUKKAQBNicNPEJVIkYQ1oBxuJqvhAEKvYluCdkQgk=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gooddata.com; spf=pass smtp.mailfrom=gooddata.com; dkim=pass (1024-bit key) header.d=gooddata.com header.i=@gooddata.com header.b=nOhqbn9/; arc=pass smtp.client-ip=74.125.82.53
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gooddata.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gooddata.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=gooddata.com header.i=@gooddata.com header.b="Yar203Ow"
-Received: by mail-dl1-f47.google.com with SMTP id a92af1059eb24-1271195d2a7so3071525c88.0
-        for <kvm@vger.kernel.org>; Sat, 21 Mar 2026 07:33:27 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1774103606; cv=none;
+	dkim=pass (1024-bit key) header.d=gooddata.com header.i=@gooddata.com header.b="nOhqbn9/"
+Received: by mail-dl1-f53.google.com with SMTP id a92af1059eb24-12732165d1eso3719230c88.1
+        for <kvm@vger.kernel.org>; Sat, 21 Mar 2026 08:00:11 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1774105210; cv=none;
         d=google.com; s=arc-20240605;
-        b=ZK+/Zsd2RlJS3eHopRiZ1P90lP36gfuHg4Ep/2fMt9W8KUnYLyUzNXAPy7KTbMPPUL
-         hqqYdpqFBU/aIktVs5um6/MxF2zXCcIlrCEEVQFtGy7QqtiMFvecR47xbYzI3JNco506
-         ysQV0twPbrLnWo0o18CEf0mS/3LsSgUDvvD9MLu5fFaBpZICipkphKUDUT6ptYUCHE1z
-         ikZrzy0Kwy8lTrkmQVNxNBS3zUgSnLvsKspntwkEzhSlMOsAMgnP0Yp9kkVQjePioy+H
-         9O1D2N2bDLen13xXXMdDwJBKh6AjsY+v6kFfd/ueL0GnBVEHFOREexxQS+QAdr3wt9L5
-         JTgg==
+        b=eUYKvRRMclZXknOMaMryvLabBTaMTvT3R90bwkuHROxOJxoChCe9kWjWR66ROeeVEo
+         LYXC3/9+dJlErni1smT9gTUdhnaJxHbDmNMGov4Sr2yTK3YWTr0gcsiujqGS5sEFZo5S
+         bI1fUe0EvUQDs9nOP4yO9P0Mxsbza14ZtFPrtzrZKDb0NZvaj0vDiOUZmz6GrvB+KARt
+         O61OGZDiDs7HbRAnJxMxy/Uk/q3FxbHohCZtDv3Bibz8BbbCElcLf5MYDYMkQbC/KgUU
+         wfYKAOTHUJZyUx+lr72+VfBbG5QOEPnkVy61p4IjFc2SleBWE7Q5Nnw+eca0Ri6aUhyP
+         Oh8A==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :mime-version:dkim-signature;
-        bh=t6QzDZsrAt5FnuqyqbOX3MCEeiHQMmacgMlaJvv7TD0=;
+        bh=fZuVY16DukHmQOQcv1OssEFVm50dsJzgS8VxJwB80UQ=;
         fh=x8NTJ6vNWvVKosfTKs6M2kCZ88nXtY12kvIQXU0QJbc=;
-        b=EoP3HzpuT3nwhSVnEzoYCvwpYOV/FKVyuEb9EBQa2NeBTf0JkaNDjmYZb5Q1uKxt29
-         gQTtpAO9IyrJdES4ShujC3T7rQrK7yy25Qx9+ikNMS5H3ZLFcMRheBowmOexR8oMlO9x
-         QivovzRRwGD7FPg3nKF1IQgAkMEQd5es9QdGC+HQ4ON3JCHjdMhVshcxsbQlu1CKt4zN
-         Js/h4He/wDMXMgjbNtrEIHGb+7QpDXPekLkaRMDNGK8wd/uuXWiP5yToJIb4G2VyasAN
-         xSujaSa+CIrspS/VE1MJUKWRgGdmPcKnvE/gYiliUMRR6B03DViKBJJMXHEXb2F4Bm7e
-         tQPw==;
+        b=O+nGgYX+mLGJOlLGU4P7RIvmBQHNAPsB+ZOarefkjD+x03KUbKvAzVtiftSLLYGUKT
+         sD3mLfgiP4165RJCSWUgmndMLrsixkdpoKazmSUF/3I3lU1wwSRkXfvuO/XGCnylkqKS
+         6c6O0xIkOMB5rvc7jU4YlXc6NotGTxuufA63WgGQkdPK3XNQrLeg+FlSy1x04xYe4OXk
+         wt52s9+0gVUO+wXouRf+siHAxRFAxSikQugLj3rSbq3MqTOfkOvaTpP6SlqKTy+Gi2kP
+         xdsRexWgMiDpIsPkHKWwfOV2K/zRR8ErbX+WyEqW3JpSqAoojlIBbioJX9vWSrIaE28B
+         PPYQ==;
         darn=vger.kernel.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gooddata.com; s=google; t=1774103606; x=1774708406; darn=vger.kernel.org;
+        d=gooddata.com; s=google; t=1774105210; x=1774710010; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=t6QzDZsrAt5FnuqyqbOX3MCEeiHQMmacgMlaJvv7TD0=;
-        b=Yar203OwAjCJUKCCOIssdm07Mlp2rkVszWgsFBN9VSBJub6CNYHqesgEnPeSvrir3a
-         raLBIIgDaCS34dZe5scH2hTFJPbIvLXTQdNoqQ1rkXDR2fgJB6pKQqvrTGotBHlAaBTj
-         EWAJ3Jy3X63wKUdm/49/YH5Rbe4LlCMvNa27w=
+        bh=fZuVY16DukHmQOQcv1OssEFVm50dsJzgS8VxJwB80UQ=;
+        b=nOhqbn9/ObKrwxWgurE2A1Ma68UxMf3uGIcTovvvGFyvLAyP8lHJHQ7ZqrUcznLpyT
+         KWdP0KbvhvyuzQ6LQTmKE6BmSR99SxV9AbId8OsgaBgAP+xc8+Xw8QWUMu3pccAg94A1
+         HPyAAGjLugMHi1baTt9OHKAvXnq4iTCxAtLKs=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774103606; x=1774708406;
+        d=1e100.net; s=20251104; t=1774105210; x=1774710010;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=t6QzDZsrAt5FnuqyqbOX3MCEeiHQMmacgMlaJvv7TD0=;
-        b=mYpZEWbFmHl/9f+vjE6owBMEEi+QRda2/td6MbArB65PtnqCBwjNOc4pgTIOgxTIWQ
-         8JX/V4gya5bZfVyOUbp5Dk9K6lMinAp58irWxvsw08eT/KuR8+qrVY194yaslYCzEQfi
-         fZvKDnojfP8menJNaYp6Al1XObDqJNTDKqhpOE0S91LEpTA1Zi/foiLziD11y87rC/FC
-         15OxdcbMzBNKq4MgZy/PiJlGB/p4UyOHaa8WqN1EoR8b1KDp4CwUOWFe0ueKxaH2bLUN
-         9/QcgO46lccTpZ1gxZghGQqAB9ZbjV+dtTJZq0UZwnGuEdDO1xq2C/GakRaFd4nM7UOb
-         +GCg==
-X-Gm-Message-State: AOJu0Yw7yespaipucHpM8UG3Fsrmv49dyJp5c1fSLI49OWxob+3AMWRa
-	d6Ly+wIIM6xlFqwvlvAsM3KLCQT8RAOMX89yDDqGu+uHxQECm1Imz86+VolI+cytP34BGtXftAy
-	GqEMZodj7MEgL0d1y0AxKpP4UH3RxiAF9+OejCv5/molskEuWI3vj5Q==
-X-Gm-Gg: ATEYQzxPwsgtxPMH9yzYjpRgfFdzx3sSo746oTWXb3plnZAxY5ZiF7G0AuUivgHmFNJ
-	NAlc8SPvLTEqOSg0G7Ln4mgowWZo0C2xquvT8A7bR3Z4ctkWyv7wub6pFLAEGSGiMWBBM1VJrFS
-	hmv0tuaMBTPYSO77KW21+V+03uLxati9rqbVdTK7dUl+4x19GCjmlLBjQxYwQFkD5Lcw0Id/5Ji
-	AOqRT1AXXENq0MEiuFymhw6ZUUMK9is6Z/tqCPEfaqq/Gz9I1S363R754lsO3RBYI7ELG/NgIn/
-	SuJTShlM
-X-Received: by 2002:a05:7022:ea33:b0:12a:6a64:81fe with SMTP id
- a92af1059eb24-12a72647245mr3211448c88.8.1774103606235; Sat, 21 Mar 2026
- 07:33:26 -0700 (PDT)
+        bh=fZuVY16DukHmQOQcv1OssEFVm50dsJzgS8VxJwB80UQ=;
+        b=O8BW1qaUR74mrHbz7xbLWJyLBjxM6tq+4lJtujf59KX4gmVDprWpRFMBnze/79yiJh
+         bsdMKSG0CpuemXZkuD01Wmwx/gG+M+t2Y4EQPbKC/YJ9W3mTSRdNInuyDDnbYi8u2ybm
+         6a1uVOkjKxg4WT3yzxx9hT0mKi/B37EkJmLbmabfRH014Vpo8DQ+6gcjA3ba6fZyF+Dx
+         lzp3rfS0jY/rSLQqi3yBanKUgCjJHg62KDwFQqe/OlHK0WJocFTX8Y5VsGSAZC3i9IDn
+         c275AG/f0ZjDg+ZgxuFNmT1CFUB2q8qGQFseEXbmxYkjQLUN7GlAvOiZnkE3gSJZz66z
+         74yQ==
+X-Gm-Message-State: AOJu0YyfBlAgrSDsTHqPzA4zBqtdMExSnzEW36zcG17QVibE1VW3H8Iu
+	tQlbKP6JSPkR3or4JMX4HbyBdw9U6iEuaZTzgA/mmernu56jOvQtMWVvpbX7OrbVuJg6AkMee0S
+	8k/XDHSNGSzMcQNjkidJC+0/LZ2ZO8GjcJh7npSn22omz1R1G9pEV+Q==
+X-Gm-Gg: ATEYQzyQzTyiK+SKkgf0jUcct+1VRczCtwqnU6NSuBIdcH8yOF5AaLk24eaU4m6ExpA
+	/qFHfewuMcv5tvh8SQkYiVz/ZciemBx1tOSkn8kJkvlXGj4hWT//nukDPw9KK3h4pu7CMvieksU
+	tSsFlw1dCS9ftZkAx2N2D9H3x4Ri+WAmn183e0zgNrZpo+V4H3gVmSDLg8Txd3WdFbTp2YVjBVe
+	AZiR+2Jr05nLz2H+oUVqJcyxx9oOMF6ReMuee53xvgXjsZpW4L6edmqgkzn77Kqy6GvQRmfhTlQ
+	ab81jFBw
+X-Received: by 2002:a05:7022:ef09:b0:129:fe5:117e with SMTP id
+ a92af1059eb24-12a726a2f31mr2780652c88.26.1774105209923; Sat, 21 Mar 2026
+ 08:00:09 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -76,9 +76,9 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 From: Jaroslav Pulchart <jaroslav.pulchart@gooddata.com>
-Date: Sat, 21 Mar 2026 15:32:59 +0100
-X-Gm-Features: AaiRm53Q_yBx55C4eKc6HsAa25NQDi4z13AsxgT8870JqvcFdksAYcPpAkoxv-Y
-Message-ID: <CAK8fFZ5gY8_Mw2A=iZVFNVKQNrXQzVsn-HTd+Me9K6ZfmdgA+Q@mail.gmail.com>
+Date: Sat, 21 Mar 2026 15:59:43 +0100
+X-Gm-Features: AaiRm529UE_G1M8HYwMaEwnJUTFL4R9WDhv1PM9VZ4NM5QLUW3ss_2QFuZEdcYU
+Message-ID: <CAK8fFZ5qLeA3b9P+_N3QejwGLAmeAA0XJyQnCXROu-0a5gzH2Q@mail.gmail.com>
 Subject: [REGRESSION 6.19, BISECTED] KVM: x86: kvmclock rate-limit removal
  causes IPI storm and high guest steal time
 To: kvm@vger.kernel.org
@@ -92,7 +92,7 @@ Hi,
 I am reporting a performance regression in Linux 6.19 that severely
 impacts KVM hosts running many Firecracker microVMs.
 
-=3D=3D Bisect result =3D=3D
+=3D=3D=3D=3D Bisect result =3D=3D=3D=3D
 
 446fcce2a52b533c543dabba26777813c347577c is the first bad commit
 commit 446fcce2a52b533c543dabba26777813c347577c
@@ -120,7 +120,7 @@ Date:   Tue Aug 19 23:20:26 2025 +0800
  arch/x86/kvm/x86.c              | 29 ++++-------------------------
  2 files changed, 4 insertions(+), 26 deletions(-)
 
-=3D=3D=3D=3D Symptoms =3D=3D=3D=3D
+=3D=3D Symptoms =3D=3D
 
 Measured on a KVM micro VM host running many Firecracker microVMs
 (node_exporter metrics, 2026-03-20):
@@ -135,7 +135,7 @@ Measured on a KVM micro VM host running many Firecracker microVMs
     host system CPU (kernel mode):  2=E2=80=933 CPUs
     host steal:                     0.3=E2=80=930.5%
 
-=3D=3D=3D=3D Root cause (by AI analyze) =3D=3D=3D=3D
+=3D=3D=3D=3D Root cause analyze by AI =3D=3D=3D=3D
 
 The regressing commit removes the rate-limiting from
 kvm_gen_kvmclock_update(). Previously this function deferred the
@@ -237,5 +237,6 @@ git bisect good 43ddbf16edf5c1790684b32d5eb920a1b0eea285
 # first bad commit: [446fcce2a52b533c543dabba26777813c347577c] Revert
 "x86: kvm: rate-limit global clock updates"
 
-Best regards,
+Best regards
+--=20
 Jaroslav Pulchart
