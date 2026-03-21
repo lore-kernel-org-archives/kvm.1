@@ -1,83 +1,83 @@
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 763C325A2A2
-	for <kvm@vger.kernel.org>; Sat, 21 Mar 2026 00:10:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C94CC29BD9A
+	for <kvm@vger.kernel.org>; Sat, 21 Mar 2026 00:10:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774051816; cv=none; b=i8ixX3h3ZHTI1Oj27ja1NobAOGc5Q0bcZ3haEI2anmj0gKFHojz3Ma6Ma5+0N9fnWCovbWmwV8Gywi2yT4yiQ7PH5yuF3qczJSvF8CXqq1X4x+w22c3yuTvW9XkYKgm237XuKyfgRKQLQnFd/Z86Up6b9mrYFAQLCWoG/dDQDrA=
+	t=1774051819; cv=none; b=hSqk5K5GNelrjiK+Wrh9BKKvCbYPa4TFRcXAP3jl4V5kP3f/G5jXwFyA04x7ekUQP8dAUxroorlsZlXf4UalTPUvkj7UqF59yWc9OsHBDFINyVpMGsjhOyTsNPYKLGGrREfQubL+sdt+m36Di7Ic0SOc0IS3vkAR9hUjL3OX0rE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774051816; c=relaxed/simple;
-	bh=m150tyPF0qz+Yniy1uibRcAotrXLeoPzs7/NaMKpPOU=;
+	s=arc-20240116; t=1774051819; c=relaxed/simple;
+	bh=EXWGQ3d2DsRzy9C4MjG+80OCusc9j4AMdbCgJYgwkPM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Sity00UpprXQCoFoI0OV/lPm1M4UJnXjK3noTCUgG4KeFaE+3ML3jfIaHLG9116jtyKnF6Uab21aQ/y2OQpBEhwOcWde66p8+r0rsR38ux+s5kNR1U9SGkFGnayshOe3SWzk7pemtjVWLjm1RXIZqUVw81nzCUzce+guoBQba+A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=E5YdpAYB; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=XWwZJ9zF; arc=none smtp.client-ip=170.10.129.124
+	 MIME-Version:Content-Type; b=BOIFIUFEEQr3ehVYooNd9HuWdaE8FdV4fn6/f7YYupitA6JlYDxhUPlfTpRJPedlgQ2dVPCQhnhqY7jIcfetIu1wWyDFFbdevQBOFEPw21aN1Y+eXa/jW6VFOJUHFOq9yfIyOk+zEqdhzGhD8icAEypt9xmuKKQW3FmzuZ5ifFE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=XryKwCPT; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=PzvNER1D; arc=none smtp.client-ip=170.10.129.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="E5YdpAYB";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="XWwZJ9zF"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="XryKwCPT";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="PzvNER1D"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1774051813;
+	s=mimecast20190719; t=1774051817;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=73seKWR51q+TIpru2UraHv6BQGSCJ+KST2GFL+f5EOY=;
-	b=E5YdpAYBKSMgUJD33GHM3wQ1/dtW85zuyyo9GjACtFNlHG8eD4COIm7jlnuaN5g40R47Lb
-	fdz1srxB21hxuCHSSbXBn4lesdxjCSUAO8Q3p27S5OLdrbDh3tE15H3hGtQsmpSlN6FQ+L
-	j6GzSVSu9P26WzAMQdSyn05lYxzdqbk=
-Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
- [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=bfxOU2dVxeep+fVV39XDWC9/aTob8vYFwfwCGLL4Ttk=;
+	b=XryKwCPTJuM/fUbAINycBw8pRv9TQ5yPiZbaQxzoHUItcX+ElEwBHx9mUfH7qFqQBKHxB9
+	6+HX9wg/Avl+K4kXSY0kbpblCkV0N6HXd9ZEODv6TpdjjG8E0rC3068uQVjDmZ4Tr01RCn
+	gXwBb59A5ZgvxnXAi6zBVnamLdjeRzc=
+Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
+ [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-645-X4sGMgLTMwqjo6v5i_WviQ-1; Fri, 20 Mar 2026 20:10:11 -0400
-X-MC-Unique: X4sGMgLTMwqjo6v5i_WviQ-1
-X-Mimecast-MFC-AGG-ID: X4sGMgLTMwqjo6v5i_WviQ_1774051811
-Received: by mail-wr1-f69.google.com with SMTP id ffacd0b85a97d-43b4a9a3bf6so490399f8f.0
-        for <kvm@vger.kernel.org>; Fri, 20 Mar 2026 17:10:11 -0700 (PDT)
+ us-mta-17-sCZ1KDDDNOepeMJ1h3O8mg-1; Fri, 20 Mar 2026 20:10:15 -0400
+X-MC-Unique: sCZ1KDDDNOepeMJ1h3O8mg-1
+X-Mimecast-MFC-AGG-ID: sCZ1KDDDNOepeMJ1h3O8mg_1774051815
+Received: by mail-wm1-f72.google.com with SMTP id 5b1f17b1804b1-4853b5b0fafso21984255e9.3
+        for <kvm@vger.kernel.org>; Fri, 20 Mar 2026 17:10:15 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1774051810; x=1774656610; darn=vger.kernel.org;
+        d=redhat.com; s=google; t=1774051813; x=1774656613; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=73seKWR51q+TIpru2UraHv6BQGSCJ+KST2GFL+f5EOY=;
-        b=XWwZJ9zFh9f6TKLxwTRRSL2rnKInjOOCaA32w0hJvilFaQ0SMZj3bl6IBWFB7tmuga
-         a08UlrZPdVzUShGZx+uAWtMwjMaWcqa2Umk/MNlRjjckmCSrhQwpiXspEG8BUQgEyI7A
-         aJz/n4DLSMF52S11vQUmMqM4UKuP8ZNG9UGo7Z4JIT+zCHXmkJX7SplEiHFWJUxcFOjA
-         jMOE6DSE/3z3iHsP+9jD+fBnnKbF/y8JCnzOsfIlbotUBCfAKTGJp6Oh+mOrYw0fYyaj
-         OYm7jgQvAOB1I14t0Qf4+m0z2az8xwy5+PKf+d4hnK80TahtDHi03kF19sIaajz8Ymes
-         VKMw==
+        bh=bfxOU2dVxeep+fVV39XDWC9/aTob8vYFwfwCGLL4Ttk=;
+        b=PzvNER1DqGsyZ0B3VVTOA7aChP8xTzYDnsNeoZ6Z+16Fa+knQh0kUe90fg13rXnyLG
+         8T8hI7sG/FD0ya7DlvO4YwAkrrE6uydi2dJvvC/uqQgjgL4+NbmXBOgU7gOSHBYuU9Za
+         eaFUDWM8E7g/PCWukM0GXgag82eNgzgvzsF709C0Oi7uSg5L/Hbyo76E8K/dRU9Fgw/E
+         VGl+6mBkVwxjrL9RWUa6i8TTiCfUT7USZmgI+TU/eO479ooTlpqbRWCx2zzoLaMh93TG
+         /RXRnX+w33kg1gVpW6ym0jDSstuPbHYl0qZfJzQxS8QCOlIufSA5IYusuU7e4wDYcEO5
+         PpsA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774051810; x=1774656610;
+        d=1e100.net; s=20251104; t=1774051813; x=1774656613;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=73seKWR51q+TIpru2UraHv6BQGSCJ+KST2GFL+f5EOY=;
-        b=UKEfkuhSW/O0nwQi0hTKdeDnR8n9uJF1Xa+aKFlSZ7I4mWziQRcBjpMsCYjCcGImG4
-         tawMMwcwwhLCS7E3ccR2mKvehxLghUrZkCRPeUrY7lR/0fIPH2c0OV4wuZlW1Qf7i2yE
-         SVottndeqqA6lqnouAhYy5m4nBcCA2TL+o5GzLmglFJ0yg9KvrKHxAGmnbmlrSvRiAwf
-         0GFPo5985iy/FO6b+kGWj3TOQzRrP6CPI4plW40+JRdD2/0YFuGGshRrGe7Szt6ENQku
-         U+bTvjYLegwK9HWvikgLA3ObnygRKUgBWS2gXWs7CPMZkilS0m7z9ILtgpKJrKEGIXI9
-         Bk5A==
-X-Forwarded-Encrypted: i=1; AJvYcCUv0mdwabw06BRvqL8sves/TmW4uaKwqSxF0i8SOSzjB8EScQ7NoKAZnWrgmyssbeWhuqY=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzBx/tL+HLrd6ydopHdmWcNGrliKFk8BJ0bI55sUrIFcET87J8U
-	GJjKVe6+sXUaoK5jtnC/zc4YCrcNxhZjreN5bKCrh3OGZirywJBgqfvExayJVcpcec+hKzRihmE
-	aA1FTEka2OXoMciTuFOnavjRxG3upMCRlMJ84rWq+Q9o4MaZj6aOveg==
-X-Gm-Gg: ATEYQzx1yAVjvVegiMgODVqaptxsn75lBw7PdmWepuRhwLYKJ3x8v0A34xGoPgRGRsx
-	WBLQNWfDbdl++jr+JhDIeHLmlM72qPKY1xoQ/WJ/01xmKHaBJXPyaR95jkGezI+XSKwjo0YTBiG
-	k80GY7de3FKx3nwGbra9aAfqJmUUpT7nEy/ggmzphdxsUN5eTOGf+kZT4aD5ZIYNW6Emssv8ISS
-	kD1VCPl+eXsI5zHG121VcHCkLCPEsptHq+vLLhrSzP+2+YA9gKxoNhjZezLBYQ907yIhVNDMrbJ
-	khVULQVQQuhTtv0Fny+IxHPVgd8qAhPbSC5hVkD5Sk6udaMULxLYMXLAaL48ksF4ZPxy3c3SS9+
-	YRXcki3chXT6igJcx7qYPr1CNfsWjUb6C3s9Ct5YXKh/NJLYluHF3g92Q7LWmIJ4OoJYUFUA13f
-	ODp1svAImtMW9hpo981B8t0GPz
-X-Received: by 2002:a05:6000:2dc2:b0:43b:4aba:8f44 with SMTP id ffacd0b85a97d-43b64287241mr8001819f8f.45.1774051810534;
-        Fri, 20 Mar 2026 17:10:10 -0700 (PDT)
-X-Received: by 2002:a05:6000:2dc2:b0:43b:4aba:8f44 with SMTP id ffacd0b85a97d-43b64287241mr8001798f8f.45.1774051810116;
-        Fri, 20 Mar 2026 17:10:10 -0700 (PDT)
+        bh=bfxOU2dVxeep+fVV39XDWC9/aTob8vYFwfwCGLL4Ttk=;
+        b=AWPNAZaTA414QsUR+IJUUpT7o/ae11fTOJ4RBkWKoYpsRJqAfb2Pd8nK5H+VAmm7YG
+         iw1nZIv6BhxdrzLF2miu80q04hF8N1h00zXuSVnZPHS4n+D/8QfV6mXV/ARyxfvd32X0
+         kEKGimTZ45WzhZEEbSnN7YYslaMthk5HpU1jDK1JQFWb2LZcPmLzAORUuuw16Iy1LUFf
+         PtZAbqTRyhRLIJ5AGoS8XZ/wS7yfGL+n9ZLpSX/Lvd+c7z05Xpu238FwLoO5WMSaik9Q
+         zJ0ZSopGSJu0t4Ay4qCZQHa/kXl1kk4nMaKZ0lQbcpo/88sk9XVI63NvMa/qN+m9JX6J
+         SwsA==
+X-Forwarded-Encrypted: i=1; AJvYcCXh4XCvfiGsEx46gWKAH0QMzRofkoPQ91zM4LH+aSKDcy0F/9HHr4lID6lUSZgx263LpEg=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxygiVD1dn/RRHr2/amH85Mi+BgBIG1+Ni2PPQfn2ojRYcKTudK
+	DmwCFDmSRbTzzYWM5HbApc2bEwN/KMfGUd5gmmGqGZHVK0NXG9YBdChCOUAaHadp+0S9HbY7rCc
+	DX9ItdfP25gfSAylZJJQhy2SSQIxOuCwHXLYdWTvPkzwlkHQUOcxn0KpD3smm2A==
+X-Gm-Gg: ATEYQzzUMtjTE1RDoYornhgA14jxfq5d+kmUYE8wd3mTPSiQ+c9Y/eqbm+0owzz3+Jm
+	EyKm0wS9bkKqPPQPo58mUspikExoe6DzneioYUPGitZcaV59SFZwvr8/RPkByl9apq8ZESRyBFS
+	b9RXrYpQJJF5psCMtEkCK81LUyduC8tUepEb5wFAhWVhFpTr8UzXi6WIdnCoj43zDh80TDvu8AQ
+	pBou7pa5Dt8Kh8LNf0LYzlo3tmauDvuDlRGnaUX6XRlLhO3AKUy4vay75uu7Rjd8ijbRP9KaF9S
+	0/WEdDriNceKNqV3ycMHbqpizrbZNcDwexduC9CvrLk4ftep80clXzlnyNIzLWoTSJ0cDWDf5li
+	NottoNWTLfZIBoQp3MfOvIZ3iL9eq4u2eVckZ5gmad/KHBWzpdzF75xC6XE7MY1fbL97V9OPHtr
+	uO5YI7I5cCL8sPhVQjmMSr7rRx
+X-Received: by 2002:a05:600c:35c1:b0:485:3b50:fe54 with SMTP id 5b1f17b1804b1-486fedb2545mr81295375e9.11.1774051813422;
+        Fri, 20 Mar 2026 17:10:13 -0700 (PDT)
+X-Received: by 2002:a05:600c:35c1:b0:485:3b50:fe54 with SMTP id 5b1f17b1804b1-486fedb2545mr81295075e9.11.1774051813024;
+        Fri, 20 Mar 2026 17:10:13 -0700 (PDT)
 Received: from [192.168.10.48] ([151.49.85.67])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-43b644ae132sm10122385f8f.6.2026.03.20.17.10.07
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-486fe967c64sm94008335e9.2.2026.03.20.17.10.10
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 20 Mar 2026 17:10:07 -0700 (PDT)
+        Fri, 20 Mar 2026 17:10:11 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: linux-kernel@vger.kernel.org,
 	kvm@vger.kernel.org
@@ -86,9 +86,9 @@ Cc: Jon Kohler <jon@nutanix.com>,
 	Nikunj A Dadhania <nikunj@amd.com>,
 	Amit Shah <amit.shah@amd.com>,
 	Sean Christopherson <seanjc@google.com>
-Subject: [PATCH 14/22] KVM: nVMX: advertise MBEC to nested guests
-Date: Sat, 21 Mar 2026 01:09:23 +0100
-Message-ID: <20260321000931.1947084-15-pbonzini@redhat.com>
+Subject: [PATCH 15/22] KVM: nVMX: allow MBEC with EVMCS
+Date: Sat, 21 Mar 2026 01:09:24 +0100
+Message-ID: <20260321000931.1947084-16-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260321000931.1947084-1-pbonzini@redhat.com>
 References: <20260321000931.1947084-1-pbonzini@redhat.com>
@@ -103,106 +103,37 @@ Content-Transfer-Encoding: 8bit
 
 From: Jon Kohler <jon@nutanix.com>
 
-Advertise SECONDARY_EXEC_MODE_BASED_EPT_EXEC (MBEC) to userspace, which
-allows userspace to expose and advertise the feature to the guest.
-When MBEC is enabled by the guest, it is passed to the MMU via cr4_smep
-and to the processor by the merging of vmcs12->secondary_vm_exec_control
-into the VMCS02's secondary VM execution controls.
+Extend EVMCS1_SUPPORTED_2NDEXEC to allow MBEC and EVMCS to coexist.
+Presenting both EVMCS and MBEC simultaneously causes KVM to filter out
+MBEC and not present it as a supported control to the guest, preventing
+performance gains from MBEC when Windows HVCI is enabled.
+
+The guest may choose not to use MBEC (e.g., if the admin does not enable
+Windows HVCI / Memory Integrity), but if they use traditional nested
+virt (Hyper-V, WSL2, etc.), having EVMCS exposed is important for
+improving nested guest performance. IOW allowing MBEC and EVMCS to
+coexist provides maximum optionality to Windows users without
+overcomplicating VM administration.
 
 Signed-off-by: Jon Kohler <jon@nutanix.com>
-Message-ID: <20251223054806.1611168-9-jon@nutanix.com>
+Message-ID: <20251223054806.1611168-8-jon@nutanix.com>
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- arch/x86/kvm/mmu.h        |  2 +-
- arch/x86/kvm/mmu/mmu.c    |  7 ++++---
- arch/x86/kvm/vmx/nested.c | 10 ++++++++++
- 3 files changed, 15 insertions(+), 4 deletions(-)
+ arch/x86/kvm/vmx/hyperv_evmcs.h | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/arch/x86/kvm/mmu.h b/arch/x86/kvm/mmu.h
-index 2a6caac39d40..035244ccbb5e 100644
---- a/arch/x86/kvm/mmu.h
-+++ b/arch/x86/kvm/mmu.h
-@@ -93,7 +93,7 @@ void kvm_init_shadow_npt_mmu(struct kvm_vcpu *vcpu, unsigned long cr0,
- 			     unsigned long cr4, u64 efer, gpa_t nested_cr3);
- void kvm_init_shadow_ept_mmu(struct kvm_vcpu *vcpu, bool execonly,
- 			     int huge_page_level, bool accessed_dirty,
--			     gpa_t new_eptp);
-+			     bool mbec, gpa_t new_eptp);
- bool kvm_can_do_async_pf(struct kvm_vcpu *vcpu);
- int kvm_handle_page_fault(struct kvm_vcpu *vcpu, u64 error_code,
- 				u64 fault_address, char *insn, int insn_len);
-diff --git a/arch/x86/kvm/mmu/mmu.c b/arch/x86/kvm/mmu/mmu.c
-index a0b4774e405a..647dffb69d85 100644
---- a/arch/x86/kvm/mmu/mmu.c
-+++ b/arch/x86/kvm/mmu/mmu.c
-@@ -5839,7 +5839,7 @@ EXPORT_SYMBOL_GPL(kvm_init_shadow_npt_mmu);
+diff --git a/arch/x86/kvm/vmx/hyperv_evmcs.h b/arch/x86/kvm/vmx/hyperv_evmcs.h
+index 6536290f4274..0568f76aafc1 100644
+--- a/arch/x86/kvm/vmx/hyperv_evmcs.h
++++ b/arch/x86/kvm/vmx/hyperv_evmcs.h
+@@ -87,6 +87,7 @@
+ 	 SECONDARY_EXEC_PT_CONCEAL_VMX |				\
+ 	 SECONDARY_EXEC_BUS_LOCK_DETECTION |				\
+ 	 SECONDARY_EXEC_NOTIFY_VM_EXITING |				\
++	 SECONDARY_EXEC_MODE_BASED_EPT_EXEC |				\
+ 	 SECONDARY_EXEC_ENCLS_EXITING)
  
- static union kvm_cpu_role
- kvm_calc_shadow_ept_root_page_role(struct kvm_vcpu *vcpu, bool accessed_dirty,
--				   bool execonly, u8 level)
-+				   bool execonly, u8 level, bool mbec)
- {
- 	union kvm_cpu_role role = {0};
- 
-@@ -5849,6 +5849,7 @@ kvm_calc_shadow_ept_root_page_role(struct kvm_vcpu *vcpu, bool accessed_dirty,
- 	 */
- 	WARN_ON_ONCE(is_smm(vcpu));
- 	role.base.level = level;
-+	role.base.cr4_smep = mbec;
- 	role.base.has_4_byte_gpte = false;
- 	role.base.direct = false;
- 	role.base.ad_disabled = !accessed_dirty;
-@@ -5864,13 +5865,13 @@ kvm_calc_shadow_ept_root_page_role(struct kvm_vcpu *vcpu, bool accessed_dirty,
- 
- void kvm_init_shadow_ept_mmu(struct kvm_vcpu *vcpu, bool execonly,
- 			     int huge_page_level, bool accessed_dirty,
--			     gpa_t new_eptp)
-+			     bool mbec, gpa_t new_eptp)
- {
- 	struct kvm_mmu *context = &vcpu->arch.guest_mmu;
- 	u8 level = vmx_eptp_page_walk_level(new_eptp);
- 	union kvm_cpu_role new_mode =
- 		kvm_calc_shadow_ept_root_page_role(vcpu, accessed_dirty,
--						   execonly, level);
-+						   execonly, level, mbec);
- 
- 	if (new_mode.as_u64 != context->cpu_role.as_u64) {
- 		/* EPT, and thus nested EPT, does not consume CR0, CR4, nor EFER. */
-diff --git a/arch/x86/kvm/vmx/nested.c b/arch/x86/kvm/vmx/nested.c
-index 7c55551a2680..7b0861d02166 100644
---- a/arch/x86/kvm/vmx/nested.c
-+++ b/arch/x86/kvm/vmx/nested.c
-@@ -460,6 +460,12 @@ static void nested_ept_inject_page_fault(struct kvm_vcpu *vcpu,
- 	vmcs12->guest_physical_address = fault->address;
- }
- 
-+static inline bool nested_ept_mbec_enabled(struct kvm_vcpu *vcpu)
-+{
-+	struct vmcs12 *vmcs12 = get_vmcs12(vcpu);
-+	return nested_cpu_has2(vmcs12, SECONDARY_EXEC_MODE_BASED_EPT_EXEC);
-+}
-+
- static void nested_ept_new_eptp(struct kvm_vcpu *vcpu)
- {
- 	struct vcpu_vmx *vmx = to_vmx(vcpu);
-@@ -468,6 +474,7 @@ static void nested_ept_new_eptp(struct kvm_vcpu *vcpu)
- 
- 	kvm_init_shadow_ept_mmu(vcpu, execonly, ept_lpage_level,
- 				nested_ept_ad_enabled(vcpu),
-+				nested_ept_mbec_enabled(vcpu),
- 				nested_ept_get_eptp(vcpu));
- }
- 
-@@ -7145,6 +7152,9 @@ static void nested_vmx_setup_secondary_ctls(u32 ept_caps,
- 			msrs->ept_caps |= VMX_EPT_AD_BIT;
- 		}
- 
-+		if (cpu_has_ept_mbec())
-+			msrs->secondary_ctls_high |=
-+				SECONDARY_EXEC_MODE_BASED_EPT_EXEC;
- 		/*
- 		 * Advertise EPTP switching irrespective of hardware support,
- 		 * KVM emulates it in software so long as VMFUNC is supported.
+ #define EVMCS1_SUPPORTED_3RDEXEC (0ULL)
 -- 
 2.52.0
 
