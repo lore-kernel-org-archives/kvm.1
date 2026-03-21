@@ -1,82 +1,214 @@
-Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2325391847;
-	Sat, 21 Mar 2026 15:42:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.109.113.108
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D8FB6309DDB;
+	Sat, 21 Mar 2026 16:20:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774107762; cv=none; b=PoNUKO0YMjESPRpj8vjQzr/svuPZcYTMRzv6HvbossA+iigaSjatTuwlIrpKuOtnMeMVQ8U9dP6mpmmbh4bLI/O+DZioxjmngfbotbs6pObcGjtFngA8nwfUEWUKeK74EPoL/rUnO+hMAeGOFLsDeYBOyW3PWAA38BDO/AAcEQQ=
+	t=1774110043; cv=none; b=ScXcn8MAhYFdhgzYfgn985GRT0YkqYibXgrShOFa9eFGlzQUu2jZd90Ff3dJMgBxszrhA0SMF12zw4EHqko5UAgi4/4+GQxtuBQAORoYBDRZ6gK6ma4Rr8PcNJSK9A0sG++nAV1vMpb5Zyfx/voG/k76chjiG45/kxpiEw7X684=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774107762; c=relaxed/simple;
-	bh=qTpKfeN5FoYRfGDiyq0+egDm9wZakQ443ww4cFVtLUk=;
+	s=arc-20240116; t=1774110043; c=relaxed/simple;
+	bh=cLZQ5GbOxC5VbxosB5KmRGqiGqtfIxol76TYpOveYrg=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ILDAZ6rz+eb3ZbpCW6mhIJmh7OprZpAOkPMDXyViusAYd4MqGGzwy3J0J4EmJvlzozot/zUlaGuJkzkAy6lDDDdmNRLcwySWsgP20XATWfcw352+UkdsPyvDznFpXJ2JZbKykRN6qTcqYTd3d1TyFRFATOhNHB+BX8Y3rGcuKIs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de; spf=pass smtp.mailfrom=alien8.de; dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b=etlv104c; arc=none smtp.client-ip=65.109.113.108
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="etlv104c"
-Received: from localhost (localhost.localdomain [127.0.0.1])
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id B550540E0294;
-	Sat, 21 Mar 2026 15:42:38 +0000 (UTC)
-X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
-Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
-	header.d=alien8.de
-Received: from mail.alien8.de ([127.0.0.1])
-	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
-	with ESMTP id PNDOXsMLGCtO; Sat, 21 Mar 2026 15:42:33 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
-	t=1774107753; bh=xCz79W6yBDYuB3yAfYjv6+yE163LgjeUZFJjvnSRFe4=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=etlv104c9qfYUj2MWtT3v6v8/C15roIA9SDpqar9I7ON9RTtIV0/FszlT0umswrxk
-	 8aWL4hVPvaom29gKYaTIKR1YBM9drE60JlrsqgO4ZhZn/8KpKg+Q2EbNB/ge9eyjhx
-	 KyAhcV3tiffPa+7nc23GojQUK4E+9sFNu4Gnl1/mbNFhClgj3PrKxCGD/OQe32cnne
-	 zTA0vODAWi58xpQ+U5VJfOLZ8kT/A4urVfqNM1eh8T98ge3gasSwws+LoHtt8KbR8o
-	 /qfFuxlXXk/3EJpFhwxUIz8C3ZL0zIBlXfRT4AHzvG0LW8Zl3XjoDlmYHfC9DYEqG+
-	 9dVn1t6V59e7b3Y9EGBWxb1xNbkb92qrDWdSLqYTc6VOYZek7PmzQZtcTIon/u0zQP
-	 gQbJO6npSexLIVz7A9HyS4l53fr3+Rg4YXKGKBow2Diz5CKhbgwA+rBi091gsLaxy3
-	 EqFmF05j03xvTfvI1KwzBBvHvijqEFy0MKn+Pfjxivou51tUPNLpSuuJy/C3BGnVKm
-	 EpnlQerdUJ5PRVNour9eJDw6Pj8iNO0A9C+hw8MoKkCng0Ma90GcMqnUSHVZdiIjap
-	 vdullciujZB5XKb2X24VDtmS2xQQuKAaIpphoXn1U74HUNIsa9BKMMHdotDHVMWkHZ
-	 RdqCGhe6cVg1cagCngTOFmsU=
-Received: from zn.tnic (p5de8e020.dip0.t-ipconnect.de [93.232.224.32])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
-	(No client certificate requested)
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with UTF8SMTPSA id 9E8EA40E019D;
-	Sat, 21 Mar 2026 15:42:25 +0000 (UTC)
-Date: Sat, 21 Mar 2026 16:42:19 +0100
-From: Borislav Petkov <bp@alien8.de>
-To: Paolo Bonzini <pbonzini@redhat.com>
-Cc: linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
-	Jon Kohler <jon@nutanix.com>, Marcelo Tosatti <mtosatti@redhat.com>,
-	Nikunj A Dadhania <nikunj@amd.com>, Amit Shah <amit.shah@amd.com>,
-	Sean Christopherson <seanjc@google.com>
-Subject: Re: [PATCH 18/22] KVM: SVM: add GMET bit definitions
-Message-ID: <20260321154219.GEab68W-ln67dqTB5x@fat_crate.local>
-References: <20260321000931.1947084-1-pbonzini@redhat.com>
- <20260321000931.1947084-19-pbonzini@redhat.com>
- <20260321115826.GCab6H4lNYIih_g0B0@fat_crate.local>
- <CABgObfbGxJYO0iXvkduFR=q=gyoF819pwkgJSke7SLr+6zCVZg@mail.gmail.com>
+	 Content-Type:Content-Disposition:In-Reply-To; b=CzUI4Bypph+4jOQE0VUp7dxih6wwFvlg5/TGTWZs2yQG0piLMgSRgOswxhQvj09tHofeEws+Lfk4X5qDpDuRPiHtKplOHA/KXd5eaHOlUWuCCPnJXQqLgVGCGJWpm/huPLjcBJ4FF4t4mKpVcfNhoODya+wLI3brdoYnXTcu1ro=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 0FAF61595;
+	Sat, 21 Mar 2026 09:20:34 -0700 (PDT)
+Received: from thinkpad-e142931.arm.com (usa-sjc-imap-foss1.foss.arm.com [10.121.207.14])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 43A9D3F73B;
+	Sat, 21 Mar 2026 09:20:35 -0700 (PDT)
+Date: Sat, 21 Mar 2026 16:20:27 +0000
+From: Wei-Lin Chang <weilin.chang@arm.com>
+To: Steven Price <steven.price@arm.com>, kvm@vger.kernel.org, 
+	kvmarm@lists.linux.dev
+Cc: Catalin Marinas <catalin.marinas@arm.com>, 
+	Marc Zyngier <maz@kernel.org>, Will Deacon <will@kernel.org>, James Morse <james.morse@arm.com>, 
+	Oliver Upton <oliver.upton@linux.dev>, Suzuki K Poulose <suzuki.poulose@arm.com>, 
+	Zenghui Yu <yuzenghui@huawei.com>, linux-arm-kernel@lists.infradead.org, 
+	linux-kernel@vger.kernel.org, Joey Gouly <joey.gouly@arm.com>, 
+	Alexandru Elisei <alexandru.elisei@arm.com>, Christoffer Dall <christoffer.dall@arm.com>, 
+	Fuad Tabba <tabba@google.com>, linux-coco@lists.linux.dev, 
+	Ganapatrao Kulkarni <gankulkarni@os.amperecomputing.com>, Gavin Shan <gshan@redhat.com>, 
+	Shanker Donthineni <sdonthineni@nvidia.com>, Alper Gun <alpergun@google.com>, 
+	"Aneesh Kumar K . V" <aneesh.kumar@kernel.org>, Emi Kisanuki <fj0570is@fujitsu.com>, 
+	Vishal Annapurve <vannapurve@google.com>
+Subject: Re: [PATCH v13 26/48] arm64: RMI: Create the realm descriptor
+Message-ID: <6lw7hpf7ctgvm56js2zwsbu2k73bsyrany6pp7g4qjruhu6m5v@2gs2rvaxizvj>
+References: <20260318155413.793430-1-steven.price@arm.com>
+ <20260318155413.793430-27-steven.price@arm.com>
+ <oukw53xfroe32rb26jy365nqsuttlakkjgpmh6sszdprx6nqfc@qfmwsob2ewa4>
+ <a8ae70c5-b225-4c35-bf37-c5b1c91c473e@arm.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <CABgObfbGxJYO0iXvkduFR=q=gyoF819pwkgJSke7SLr+6zCVZg@mail.gmail.com>
+In-Reply-To: <a8ae70c5-b225-4c35-bf37-c5b1c91c473e@arm.com>
 
-On Sat, Mar 21, 2026 at 02:51:47PM +0100, Paolo Bonzini wrote:
-> I prefer to be consistent with all the other ones in word 15.
+On Fri, Mar 20, 2026 at 04:41:12PM +0000, Steven Price wrote:
+> On 19/03/2026 18:25, Wei-Lin Chang wrote:
+> > On Wed, Mar 18, 2026 at 03:53:50PM +0000, Steven Price wrote:
+> >> Creating a realm involves first creating a realm descriptor (RD). This
+> >> involves passing the configuration information to the RMM. Do this as
+> >> part of realm_ensure_created() so that the realm is created when it is
+> >> first needed.
+> >>
+> >> Signed-off-by: Steven Price <steven.price@arm.com>
+> >> ---
+> >> Changes since v12:
+> >>  * Since RMM page size is now equal to the host's page size various
+> >>    calculations are simplified.
+> >>  * Switch to using range based APIs to delegate/undelegate.
+> >>  * VMID handling is now handled entirely by the RMM.
+> >> ---
+> >>  arch/arm64/kvm/rmi.c | 94 +++++++++++++++++++++++++++++++++++++++++++-
+> >>  1 file changed, 92 insertions(+), 2 deletions(-)
+> >>
+> >> diff --git a/arch/arm64/kvm/rmi.c b/arch/arm64/kvm/rmi.c
+> >> index 38349c7b34f4..d5fee203824b 100644
+> >> --- a/arch/arm64/kvm/rmi.c
+> >> +++ b/arch/arm64/kvm/rmi.c
+> >> @@ -649,6 +649,83 @@ static void realm_unmap_shared_range(struct kvm *kvm,
+> >>  			     start, end);
+> >>  }
+> >>  
+> >> +static int realm_create_rd(struct kvm *kvm)
+> >> +{
+> >> +	struct realm *realm = &kvm->arch.realm;
+> >> +	struct realm_params *params = realm->params;
+> >> +	void *rd = NULL;
+> >> +	phys_addr_t rd_phys, params_phys;
+> >> +	size_t pgd_size = kvm_pgtable_stage2_pgd_size(kvm->arch.mmu.vtcr);
+> >> +	int i, r;
+> >> +
+> >> +	realm->ia_bits = VTCR_EL2_IPA(kvm->arch.mmu.vtcr);
+> >> +
+> >> +	if (WARN_ON(realm->rd || !realm->params))
+> >> +		return -EEXIST;
+> >> +
+> >> +	rd = (void *)__get_free_page(GFP_KERNEL);
+> > 
+> > Hi,
+> > 
+> > Should this be GFP_KERNEL_ACCOUNT?
+> 
+> Yes that would be better.
+> 
+> >> +	if (!rd)
+> >> +		return -ENOMEM;
+> >> +
+> >> +	rd_phys = virt_to_phys(rd);
+> >> +	if (delegate_page(rd_phys)) {
+> >> +		r = -ENXIO;
+> >> +		goto free_rd;
+> >> +	}
+> >> +
+> >> +	if (delegate_range(kvm->arch.mmu.pgd_phys, pgd_size)) {
+> >> +		r = -ENXIO;
+> >> +		goto out_undelegate_tables;
+> >> +	}
+> >> +
+> >> +	params->s2sz = VTCR_EL2_IPA(kvm->arch.mmu.vtcr);
+> >> +	params->rtt_level_start = get_start_level(realm);
+> >> +	params->rtt_num_start = pgd_size / PAGE_SIZE;
+> >> +	params->rtt_base = kvm->arch.mmu.pgd_phys;
+> >> +
+> >> +	if (kvm->arch.arm_pmu) {
+> >> +		params->pmu_num_ctrs = kvm->arch.nr_pmu_counters;
+> >> +		params->flags |= RMI_REALM_PARAM_FLAG_PMU;
+> >> +	}
+> >> +
+> >> +	if (kvm_lpa2_is_enabled())
+> >> +		params->flags |= RMI_REALM_PARAM_FLAG_LPA2;
+> >> +
+> >> +	params_phys = virt_to_phys(params);
+> >> +
+> >> +	if (rmi_realm_create(rd_phys, params_phys)) {
+> >> +		r = -ENXIO;
+> >> +		goto out_undelegate_tables;
+> >> +	}
+> >> +
+> >> +	if (WARN_ON(rmi_rec_aux_count(rd_phys, &realm->num_aux))) {
+> >> +		WARN_ON(rmi_realm_destroy(rd_phys));
+> >> +		r = -ENXIO;
+> >> +		goto out_undelegate_tables;
+> >> +	}
+> >> +
+> >> +	realm->rd = rd;
+> >> +	WRITE_ONCE(realm->state, REALM_STATE_NEW);
+> >> +	/* The realm is up, free the parameters.  */
+> >> +	free_page((unsigned long)realm->params);
+> >> +	realm->params = NULL;
+> >> +
+> >> +	return 0;
+> >> +
+> >> +out_undelegate_tables:
+> >> +	if (WARN_ON(undelegate_range(kvm->arch.mmu.pgd_phys, i))) {
+> >> +		/* Leak the pages if they cannot be returned */
+> >> +		kvm->arch.mmu.pgt = NULL;
+> > 
+> > Did you mean kvm->arch.mmu.pgd_phys = NULL; ?
+> 
+> No, although I agree this isn't exactly ideal. kvm_free_stage2_pgd()
+> uses mmu->pgt to decide whether to free the memory - pgd_phys isn't used
+> in that path. Technically here we end up leaking more than just the PGD
+> pages in this case, but as it's a "should never happen" case I didn't
+> see the need to worry about the leak being a bit larger than necessary.
 
-Sorry, no, /proc/cpuinfo is an ABI.
+Thank you for the clarification.
 
-See Documentation/arch/x86/cpuinfo.rst
+Thanks,
+Wei-Lin Chang
 
--- 
-Regards/Gruss,
-    Boris.
-
-https://people.kernel.org/tglx/notes-about-netiquette
+> 
+> Thanks,
+> Steve
+> 
+> > Thanks,
+> > Wei-Lin Chang
+> > 
+> >> +	}
+> >> +	if (WARN_ON(undelegate_page(rd_phys))) {
+> >> +		/* Leak the page if it isn't returned */
+> >> +		return r;
+> >> +	}
+> >> +free_rd:
+> >> +	free_page((unsigned long)rd);
+> >> +	return r;
+> >> +}
+> >> +
+> >>  static void realm_unmap_private_range(struct kvm *kvm,
+> >>  				      unsigned long start,
+> >>  				      unsigned long end,
+> >> @@ -893,8 +970,21 @@ static int realm_init_ipa_state(struct kvm *kvm,
+> >>  
+> >>  static int realm_ensure_created(struct kvm *kvm)
+> >>  {
+> >> -	/* Provided in later patch */
+> >> -	return -ENXIO;
+> >> +	int ret;
+> >> +
+> >> +	switch (kvm_realm_state(kvm)) {
+> >> +	case REALM_STATE_NONE:
+> >> +		break;
+> >> +	case REALM_STATE_NEW:
+> >> +		return 0;
+> >> +	case REALM_STATE_DEAD:
+> >> +		return -ENXIO;
+> >> +	default:
+> >> +		return -EBUSY;
+> >> +	}
+> >> +
+> >> +	ret = realm_create_rd(kvm);
+> >> +	return ret;
+> >>  }
+> >>  
+> >>  static int set_ripas_of_protected_regions(struct kvm *kvm)
+> >> -- 
+> >> 2.43.0
+> >>
+> 
