@@ -1,173 +1,145 @@
-Received: from mail-pl1-f171.google.com (mail-pl1-f171.google.com [209.85.214.171])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 45544313295
-	for <kvm@vger.kernel.org>; Sat, 21 Mar 2026 13:27:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.171
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774099633; cv=none; b=KlK+dggSB/QNKQ6V8ZYTYD0nC56HIfRmeOj7y6E7hSS2lzUuC1hEzMRoLffd6CZe/oODrKpqjtN59coa37ZzhWN1RmX2uMtOREXy3bZ0EDstK2uOPOI+pEh+cJruuOPqfhIcY0LDIYaOCuMLuULWs7+QHL/UCd2nNFGWLSEZ82c=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774099633; c=relaxed/simple;
-	bh=pi5Cr+wPz3p8f6WVyTUc6OTVwoqra6jg8txqrOsu920=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=As2SkKiKantbm/4S/2zV9iw3tvh3gdYP7Qct5jcqBgaepvgZ+cOsjrvxmTn34L64GM083Zgwp5cXRAcw7L7wn/OMphn91TfvSgsOrMDWBx6UA9vJ1Mna/eJ5AE3yvBBgko1Fgv+XWxKHnNAKswNRoIkUBc7dYGkCzttpiuZnuS0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Kj710Goa; arc=none smtp.client-ip=209.85.214.171
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2CD202D97B7
+	for <kvm@vger.kernel.org>; Sat, 21 Mar 2026 13:52:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=170.10.133.124
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1774101126; cv=pass; b=Wx5wRNgb9hYhflF5wzmSPPBhRlkEOI2ngDasLZG/Iw1qZIsYsK4cbZF2T64Pz95WkgtZjirZr5AhRwZXMoxbtbmwiToMjJ4/4ZJul3pSZaKykQ4naydqXmRHZsdaV85krmhT4OPABFPHk7PcCUEDSTYTb4MZnBruwbwnMnOJE2k=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1774101126; c=relaxed/simple;
+	bh=Y4nwWfYp4xucEIMntwd3X11Ly5WLglecgL4wpFeqsW4=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=Vzm+SCzU/QtTn1M7Oi8kRpQ1VkOhzzmvXGvog2TFztsc0w5VHTp9PTOYXjTJytiA8z4CmLr2374huSD6T2cz1QaDUOlxgY2eC95v4hAvV8bU31Kr1uSRM+kJP7rVgoBC1A7hgvc+XCvhqAlKFdV+vMh6kHvJirOAZxflqBxJvDI=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=XeJ3faFw; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=nM6wNRg6; arc=pass smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Kj710Goa"
-Received: by mail-pl1-f171.google.com with SMTP id d9443c01a7336-2b04c9e3eb7so70005ad.0
-        for <kvm@vger.kernel.org>; Sat, 21 Mar 2026 06:27:12 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="XeJ3faFw";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="nM6wNRg6"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1774101123;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=bObhxZ2N+nOxpIIMSTF5HcjmnI3wtPS5QgJEe3YvW7o=;
+	b=XeJ3faFwGWvrXT3TaVTsP26ht7lcqqa3n9JmuytF9gRPvr90DZxQgb4D6mx0wCIl4ukJ8T
+	PgAyX++z2ZIq1uwyy37nz6RtQvSP4mckGpLHKY++MlvGkDWd6sZ5M4bRI6ezFdKNQ2MTya
+	JdUBhtcgF1izSjleSdJIwVCKNXOafqo=
+Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
+ [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-520-FBTgVPVxOg6sNT5_9jqwmA-1; Sat, 21 Mar 2026 09:52:01 -0400
+X-MC-Unique: FBTgVPVxOg6sNT5_9jqwmA-1
+X-Mimecast-MFC-AGG-ID: FBTgVPVxOg6sNT5_9jqwmA_1774101120
+Received: by mail-wr1-f69.google.com with SMTP id ffacd0b85a97d-43b4e102d77so1752695f8f.1
+        for <kvm@vger.kernel.org>; Sat, 21 Mar 2026 06:52:01 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1774101120; cv=none;
+        d=google.com; s=arc-20240605;
+        b=KF9KS05ZNtS3DLkT1ukI6g8jCU9XoDcLBtlUL5JemSUJdYQj7fjSJfHtCUJWHivQCg
+         5fWp7DxmJQqkURMP/j5Zv5SaMd3UlezBlO0fLyiURFJ7UMZs3STIAk6wH5MuxcPhdlIq
+         6DvtAmMzcBKICqwrzr+MF/0vkgDO52N9men5utCQ0QbT/rKnxMQsDLp4Aw93wXMa+zFm
+         cPKIChWnsnQi0Fnw7W/vTTOoIeJFedMil+EzWegvuaVkAS8RXbLfKd/IMFlVfk67K6Ye
+         Quxd4wNWperQJWjXu2Jbonu0Q7kNF6+VYxn4CwDJABvalo0Xj460+5CC4Gxdp3+RyZyB
+         RsaA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=bObhxZ2N+nOxpIIMSTF5HcjmnI3wtPS5QgJEe3YvW7o=;
+        fh=mt4z7cxmg7xLHjTJLSvLoCNSWuxX8D1HJGngR0rqq2I=;
+        b=kOconcpRyGUau0RpqWuKQVnICm0POkMPVrjUwOu/GQFFHZOvMd1QAUAeQLn3EEVAsF
+         rf0zbhJXpcEUNHl+VHf91XChBy/svtzRmL8WovV/5Cggqbn/gRtAiF8pj6W4M0flZn4a
+         EcyWkqeaMnCFGZsKErVUGVDOuJYjmhN0Ndb6qO/R6qzyXc2sus/gJazyad177ldIYYPK
+         YlNacJzsF3PNITj3NeLxQmoryS4Es/YiM9wThcPVBlEIviJQuKcu/cgO0Mz6FmHX7jBW
+         t1RLHwe9k2GYknWS4AJMZhhVyhBdqAxYksv5ZACHhDe4Z+Iij+zUESrFobxiguZF/J4h
+         Q1ww==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1774099632; x=1774704432; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=H1Fj4N/UpgbJKkAFov6kcwTbNCL5sZLLzanhyYdr1VI=;
-        b=Kj710GoaixP/N3wv+fANH+sV5Q3JoH3FJweP30Isn9sd77wRItL2THOcHQwLRVtJqd
-         yOCqKJzldP03fqZ3kByeLEBdFpTKrkD9fCCYsfK7QnuQLmP6BFQNY/IPCT2Go5u0Eac1
-         XCudTdsPVyw/5Z3Suo2Nx/QWM5tC0Rzy98dUSVVvxHzjwPUxRh/ziGKGKD5AalvrcDCz
-         k8rozwoMDZ8TSfCAbCy7KVfBopWHPjzX3U1zZmqYCf6ZlLt7l+MMb91uexn3eQLnXWNL
-         z4OroX+/TfzY3p9ppQ1pUKgGsCrij12WyPhGtBvyaF4dKUbYyb/FniaPFQOVi552neTM
-         sc1g==
+        d=redhat.com; s=google; t=1774101120; x=1774705920; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=bObhxZ2N+nOxpIIMSTF5HcjmnI3wtPS5QgJEe3YvW7o=;
+        b=nM6wNRg6dtEA2P1I0Xz29hZrCdXurZmNR+trvSDqrmR9cVfTItEm9gtFDNVSq6dzHc
+         EtKqU/r4BaieWfN1SLdkUNiKubuelJrTIkUFpqvtCm0hcXUS8E3qJxf5Z9F+BbQ/Orbg
+         wuJF6nvBtpT+PLS/1MfcfU9wHcYtrrKi4RBqxUfg8C5MaTxnCT15oEI1YaKZovpt3hFV
+         LjKnfMxm40K7T8NVtmOvl/xM1VgZVlnzPvc3vK7UgDPCB1wF0X5AwF6ACSYAbpFkn3Go
+         T/K7oTKtjZAcZ0RTbfGCSYsxJTywqZcFgzzOKLtBjT5Q2RiXOhNK7dOEnVmWFeI4L7Ni
+         15vQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774099632; x=1774704432;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=H1Fj4N/UpgbJKkAFov6kcwTbNCL5sZLLzanhyYdr1VI=;
-        b=npYRsEvf0WzhDRWsrlr/S6BaSj05vV4i9mmq9frUdVu9X/GK73hqBah/CNBN5/ZQO8
-         tCw5BlzgO5+jUQtJEC22odeK+jE4qma+8GDbNYS9hcTunJC/RRWoUJHaDatqb3UlAIDg
-         UdxclreULetcKthLqGe1c94zPVYOZNdRm8FbKK9aWS3hJlFGAIrs66tqcY0BlYnBiV4O
-         UftGESt3AWWM7mwwPxwMhg4QuusXFC5mvlbwKXguE6UM9z1igGAuwLRUScaFNnIT20bt
-         wuWIoLtlwHtwY97NwNFu/am2Q6LABjkM/gnspI5ITR7cvZLbsBfqiR3qtNaC4/k8HSCD
-         I1LA==
-X-Forwarded-Encrypted: i=1; AJvYcCW+3eY+Uxmwz5cnuT4O9qhO9L8Q7TAZl7ie3UTQLFV5jKS1QN82JWfVsxqSWtDKuB0ibRo=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxpGOYPjS+PQb94RENfsS0w1GwLts5s4lRyaoT/crq0qOczRGaC
-	ngJCfIejP3nNRYOLdS9zodWBR8uoNGZARE2/tlsh4eoWrAIy395YT4ElDZredYbnKg==
-X-Gm-Gg: ATEYQzwVNFn65q/XkAtX25RELnw6M7K/js20Sqmine5QRfSyP5Gf1wJWunjPVzDzZQN
-	XqtJ6yNFkXdNnQwcQH24IuGwjTK6q++ELX25qynoRkLTBKayv2jZrivPRaSpNHa1DudPPJ++t2g
-	hnkWvESpFvykskKy3jjzsh5fzeJFsB/UZyGrKACnAsdNaNPnucMFywUO3WWCkcxgdW9q04TQrht
-	bVjyN1eNQmLV6MAdiN1yBbDPaoS7yhJeEGd+RbcaLvcSJ3lG1xfspJS0QN1F6hCJRGUiZ8rbAac
-	SfKfq3PqKRKuOG1EcaTMXxqgSZk3xXE9OfDqguvmo93WGq5r2YsEKKrlpaMbl4sg3n12/FQWlf+
-	2GwlQSnxBSjR7iDPjkh2/ivzV6QSfEhFHNbDhmAS5L7uNshYfsztgreulzV4LyqxV7MHfW83RNA
-	4JmIAhjGy3J3lgycO0kl1mC1cm4F7jtkABYuDqUXT1TU56hDYNcU1dm5glquVXJ0r+YD6Z
-X-Received: by 2002:a17:902:db0d:b0:2ae:d10c:6382 with SMTP id d9443c01a7336-2b08b4432c2mr2182545ad.20.1774099630892;
-        Sat, 21 Mar 2026 06:27:10 -0700 (PDT)
-Received: from google.com (10.129.124.34.bc.googleusercontent.com. [34.124.129.10])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-35bd26cde44sm1729954a91.4.2026.03.21.06.27.04
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 21 Mar 2026 06:27:09 -0700 (PDT)
-Date: Sat, 21 Mar 2026 13:27:00 +0000
-From: Pranjal Shrivastava <praan@google.com>
-To: Samiullah Khawaja <skhawaja@google.com>
-Cc: David Woodhouse <dwmw2@infradead.org>,
-	Lu Baolu <baolu.lu@linux.intel.com>, Joerg Roedel <joro@8bytes.org>,
-	Will Deacon <will@kernel.org>, Jason Gunthorpe <jgg@ziepe.ca>,
-	Robin Murphy <robin.murphy@arm.com>,
-	Kevin Tian <kevin.tian@intel.com>,
-	Alex Williamson <alex@shazbot.org>, Shuah Khan <shuah@kernel.org>,
-	iommu@lists.linux.dev, linux-kernel@vger.kernel.org,
-	kvm@vger.kernel.org, Saeed Mahameed <saeedm@nvidia.com>,
-	Adithya Jayachandran <ajayachandra@nvidia.com>,
-	Parav Pandit <parav@nvidia.com>,
-	Leon Romanovsky <leonro@nvidia.com>, William Tu <witu@nvidia.com>,
-	Pratyush Yadav <pratyush@kernel.org>,
-	Pasha Tatashin <pasha.tatashin@soleen.com>,
-	David Matlack <dmatlack@google.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Chris Li <chrisl@kernel.org>, Vipin Sharma <vipinsh@google.com>,
-	YiFei Zhu <zhuyifei@google.com>
-Subject: Re: [PATCH 06/14] iommu/vt-d: Implement device and iommu
- preserve/unpreserve ops
-Message-ID: <ab6cpNWZetBokbG8@google.com>
-References: <20260203220948.2176157-1-skhawaja@google.com>
- <20260203220948.2176157-7-skhawaja@google.com>
- <ab3R54-kyHGDEW9L@google.com>
+        d=1e100.net; s=20251104; t=1774101120; x=1774705920;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=bObhxZ2N+nOxpIIMSTF5HcjmnI3wtPS5QgJEe3YvW7o=;
+        b=byI8xLo8+3yGr+5SyFK69rzRnoQnCmsMmzRp8QYDve2D7JgPPuevgokZeyrXnToyaH
+         F6TnhPFPjlIdB5xwswm9FnMcPMtvCDZK4/dJgUEVJO0X6s0L3ig0vzbYVjRPEBsDpCzC
+         fO8pUvTUvMbpRM6f4WI1LQMxBcwLWrzDwmS6bztigp8zqUgWVOccR7I0VkNOxq5n9k65
+         /AHGc7uQdGthG0/IDIOxflutjGkcDQU5stZCdQHibqjWrvBCNGK0a+C1StKCqiYOUGlH
+         njmiKvPuc4LGIzeIoDb23DrcPqxWjizm7W9y2qs+8qULRY2gy5feexKU25V8VGY0SfcV
+         N7cg==
+X-Forwarded-Encrypted: i=1; AJvYcCXKb2X8okCIUUafHh5Fpkc3FQcdXfgbdXGppsOR1RU1ukOCKZPiAV5t4G/GfgQpcVvoAXE=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy9qS9fK6PS59O3TNsAFxCF/CPbA9ysAU4e9Drb15/e0E6SYu5Y
+	GqeNR/H/IZCcW7NOxpH3bPDQiA6jRFdK2vcHMtwDskSSGAMThzmUhS8rp0uZFNVY4rBaLP1BnhP
+	Et0Ml/9iS4dIjizi4myFzt+wyR7M7HoLl62PPptdCw0LXrK5j5/7O8+xxXEmPdHZY+7gj63zRX5
+	ivAJwHqRFQVmjeL5opyy9Nubr6/L1G
+X-Gm-Gg: ATEYQzyU0Gv4rh15tCno397MQ+M9I9snXna7bSO0s/SHBbiqrzm1ZsyJZMasGffqzv7
+	Lm6WuzPtGPl15WH/o1oXIZyzSBpFPi/0M1Mckn/WQcwWJS2afvgpev8oVGM8tnGTkZ8s1xiMpN0
+	HXJg3Tg/F7i8yeicrY3rud+rFuihYg7QS6zGmmCpgevE4xINwEHg6olYGRIUiBOsjF+CcJCsffd
+	mcXbQEhrL4IMHf1LfVPlfwhpcnLu0nN3rJdalZPmL8eHBiUKRI2gNW69ySsQKm9epvrwgeZM1eY
+	MFAE
+X-Received: by 2002:a5d:5f53:0:b0:439:be04:13c4 with SMTP id ffacd0b85a97d-43b6423d85bmr9967737f8f.4.1774101120269;
+        Sat, 21 Mar 2026 06:52:00 -0700 (PDT)
+X-Received: by 2002:a5d:5f53:0:b0:439:be04:13c4 with SMTP id
+ ffacd0b85a97d-43b6423d85bmr9967714f8f.4.1774101119797; Sat, 21 Mar 2026
+ 06:51:59 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <ab3R54-kyHGDEW9L@google.com>
+References: <20260321000931.1947084-1-pbonzini@redhat.com> <20260321000931.1947084-19-pbonzini@redhat.com>
+ <20260321115826.GCab6H4lNYIih_g0B0@fat_crate.local>
+In-Reply-To: <20260321115826.GCab6H4lNYIih_g0B0@fat_crate.local>
+From: Paolo Bonzini <pbonzini@redhat.com>
+Date: Sat, 21 Mar 2026 14:51:47 +0100
+X-Gm-Features: AaiRm506_orGCVkkBUjNBBofGv7pudxvrLzRAVLWZsRrPdmmsYcoEP1tTBT_y2M
+Message-ID: <CABgObfbGxJYO0iXvkduFR=q=gyoF819pwkgJSke7SLr+6zCVZg@mail.gmail.com>
+Subject: Re: [PATCH 18/22] KVM: SVM: add GMET bit definitions
+To: Borislav Petkov <bp@alien8.de>
+Cc: linux-kernel@vger.kernel.org, kvm@vger.kernel.org, 
+	Jon Kohler <jon@nutanix.com>, Marcelo Tosatti <mtosatti@redhat.com>, 
+	Nikunj A Dadhania <nikunj@amd.com>, Amit Shah <amit.shah@amd.com>, 
+	Sean Christopherson <seanjc@google.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Fri, Mar 20, 2026 at 11:01:59PM +0000, Pranjal Shrivastava wrote:
-> On Tue, Feb 03, 2026 at 10:09:40PM +0000, Samiullah Khawaja wrote:
-> > Add implementation of the device and iommu presevation in a separate
-> > file. Also set the device and iommu preserve/unpreserve ops in the
-> > struct iommu_ops.
-> > 
-> > During normal shutdown the iommu translation is disabled. Since the root
-> > table is preserved during live update, it needs to be cleaned up and the
-> > context entries of the unpreserved devices need to be cleared.
-> > 
-> > Signed-off-by: Samiullah Khawaja <skhawaja@google.com>
-> > ---
-> >  drivers/iommu/intel/Makefile     |   1 +
-> >  drivers/iommu/intel/iommu.c      |  47 ++++++++++-
-> >  drivers/iommu/intel/iommu.h      |  27 +++++++
-> >  drivers/iommu/intel/liveupdate.c | 134 +++++++++++++++++++++++++++++++
-> >  4 files changed, 205 insertions(+), 4 deletions(-)
-> >  create mode 100644 drivers/iommu/intel/liveupdate.c
-> > 
-> > diff --git a/drivers/iommu/intel/Makefile b/drivers/iommu/intel/Makefile
-> > index ada651c4a01b..d38fc101bc35 100644
-> > --- a/drivers/iommu/intel/Makefile
-> > +++ b/drivers/iommu/intel/Makefile
-> > @@ -6,3 +6,4 @@ obj-$(CONFIG_INTEL_IOMMU_DEBUGFS) += debugfs.o
-> >  obj-$(CONFIG_INTEL_IOMMU_SVM) += svm.o
-> >  obj-$(CONFIG_IRQ_REMAP) += irq_remapping.o
-> >  obj-$(CONFIG_INTEL_IOMMU_PERF_EVENTS) += perfmon.o
-> > +obj-$(CONFIG_IOMMU_LIVEUPDATE) += liveupdate.o
-> > diff --git a/drivers/iommu/intel/iommu.c b/drivers/iommu/intel/iommu.c
-> > index 134302fbcd92..c95de93fb72f 100644
-> > --- a/drivers/iommu/intel/iommu.c
-> > +++ b/drivers/iommu/intel/iommu.c
-> > @@ -16,6 +16,7 @@
-> >  #include <linux/crash_dump.h>
-> >  #include <linux/dma-direct.h>
-> >  #include <linux/dmi.h>
-> > +#include <linux/iommu-lu.h>
-> >  #include <linux/memory.h>
-> >  #include <linux/pci.h>
-> >  #include <linux/pci-ats.h>
-> > @@ -52,6 +53,8 @@ static int rwbf_quirk;
-> >  
+On Sat, Mar 21, 2026 at 12:58=E2=80=AFPM Borislav Petkov <bp@alien8.de> wro=
+te:
+> > @@ -382,6 +382,7 @@
+> >  #define X86_FEATURE_AVIC             (15*32+13) /* "avic" Virtual Inte=
+rrupt Controller */
+> >  #define X86_FEATURE_V_VMSAVE_VMLOAD  (15*32+15) /* "v_vmsave_vmload" V=
+irtual VMSAVE VMLOAD */
+> >  #define X86_FEATURE_VGIF             (15*32+16) /* "vgif" Virtual GIF =
+*/
+> > +#define X86_FEATURE_GMET             (15*32+17) /* "gmet" Guest Mode E=
+xecution Trap */
+>                                                       ^^^^^^
+>
+> Why do you need to show it in /proc/cpuinfo?
 
-[ ---- snip >8 ----- ]
- 
-> > +
-> > +int intel_iommu_preserve(struct iommu_device *iommu_dev, struct iommu_ser *ser)
-> > +{
-> > +	struct intel_iommu *iommu;
-> > +	int ret;
-> > +
-> > +	iommu = container_of(iommu_dev, struct intel_iommu, iommu);
-> > +
-> > +	spin_lock(&iommu->lock);
-> 
-> Minor note: We call this with the session->mutex acquired which is a
-> sleepable/preemptable context whereas spin_lock disables preemption and
-> puts us in an atomic context. 
-> 
-> While iommu_context_addr() happens to be safe here because it uses
-> GFP_ATOMIC & we pass alloc=0, we are heavily relying on the assumption
-> that iommu_context_addr() or other helpers will never sleep or attempt
-> a GFP_KERNEL allocation under the hood.
-> 
-> Given how easy it would be for a future refactor to accidentally
-> introduce a sleeping lock inside any of the other helpers, I'd recommend
-> adding an explicit comment here warning that this runs in an atomic
-> context (same for unpreserve below).
-> 
+I prefer to be consistent with all the other ones in word 15.
 
-Thinking a little more about this, I think we shall instead add a
-comment in the core API docs, mentioning that these helpers (like
-iommu_preserve_page etc.) can be called from atomic context and hence
-should not acquire any mutexes as we can't be certain of the context the
-drivers call them in. 
- 
-Thanks,
-Praan
+Paolo
+
+> >  #define X86_FEATURE_X2AVIC           (15*32+18) /* "x2avic" Virtual x2=
+apic */
+> >  #define X86_FEATURE_V_SPEC_CTRL              (15*32+20) /* "v_spec_ctr=
+l" Virtual SPEC_CTRL */
+> >  #define X86_FEATURE_VNMI             (15*32+25) /* "vnmi" Virtual NMI =
+*/
+
