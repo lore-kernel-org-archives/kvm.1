@@ -1,83 +1,83 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 434A52D3225
-	for <kvm@vger.kernel.org>; Sat, 21 Mar 2026 00:10:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 763C325A2A2
+	for <kvm@vger.kernel.org>; Sat, 21 Mar 2026 00:10:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774051814; cv=none; b=IiqXDpqv/ybcAfabapDawsyP11B6rkWE+9Kyq4HWuCZV14X1Uno/gZsxlaxf9dqKN5vOdfdA1Idotl6XULYH8t1mnDMOAPLRxMcEkwGGfJZX310g3o7nftBV7PiUv1IPcKZy3CZO2ebIxBxgzH/nOoo1MwENwcBjax1JHKTyvd0=
+	t=1774051816; cv=none; b=i8ixX3h3ZHTI1Oj27ja1NobAOGc5Q0bcZ3haEI2anmj0gKFHojz3Ma6Ma5+0N9fnWCovbWmwV8Gywi2yT4yiQ7PH5yuF3qczJSvF8CXqq1X4x+w22c3yuTvW9XkYKgm237XuKyfgRKQLQnFd/Z86Up6b9mrYFAQLCWoG/dDQDrA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774051814; c=relaxed/simple;
-	bh=ANppQFqf+X4t4pHOfjYdzVVFwAF97XHTPN/zZhag3Ps=;
+	s=arc-20240116; t=1774051816; c=relaxed/simple;
+	bh=m150tyPF0qz+Yniy1uibRcAotrXLeoPzs7/NaMKpPOU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=n2JwRkd3o2FgIZULzDp8FwyQKjxGN+VwlCsWFt0dNa03IvEDymYv1wKWuUr24ZG/iSicbA36LdYYL32njonFl4pVthiBZbweDnJSRGLILgMxBDz6dUDWaV/N+KFrIcVKM70p9PkQxP4VzgB1Z9kd/TrMD51jcHhx3tGIRQ8Yoz4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=Q1zcHBT6; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=OnpumlhD; arc=none smtp.client-ip=170.10.133.124
+	 MIME-Version:Content-Type; b=Sity00UpprXQCoFoI0OV/lPm1M4UJnXjK3noTCUgG4KeFaE+3ML3jfIaHLG9116jtyKnF6Uab21aQ/y2OQpBEhwOcWde66p8+r0rsR38ux+s5kNR1U9SGkFGnayshOe3SWzk7pemtjVWLjm1RXIZqUVw81nzCUzce+guoBQba+A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=E5YdpAYB; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=XWwZJ9zF; arc=none smtp.client-ip=170.10.129.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="Q1zcHBT6";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="OnpumlhD"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="E5YdpAYB";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="XWwZJ9zF"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1774051812;
+	s=mimecast20190719; t=1774051813;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=zdVmercWnCZLP8zFvHBbqxOZlu/sYmRu38PlBYz1DLw=;
-	b=Q1zcHBT63CY0SKkzugZUkaQFWB/Kc7GGq0OnYujQqS4A0jbQdJE9eqjTJI0fBLVzhsMhlt
-	rru+40IPWxXM3S28gGuQLb0aTzjLSj17nZi/qGgeQYRr8ruL7f3B1slsZSsFqtSm1ITZ0U
-	hmY3zIKsb3oVkCc1CH2P19vw0ELf26I=
-Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
- [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=73seKWR51q+TIpru2UraHv6BQGSCJ+KST2GFL+f5EOY=;
+	b=E5YdpAYBKSMgUJD33GHM3wQ1/dtW85zuyyo9GjACtFNlHG8eD4COIm7jlnuaN5g40R47Lb
+	fdz1srxB21hxuCHSSbXBn4lesdxjCSUAO8Q3p27S5OLdrbDh3tE15H3hGtQsmpSlN6FQ+L
+	j6GzSVSu9P26WzAMQdSyn05lYxzdqbk=
+Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
+ [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-228-uuN3q230O56hLnVJzruknQ-1; Fri, 20 Mar 2026 20:10:10 -0400
-X-MC-Unique: uuN3q230O56hLnVJzruknQ-1
-X-Mimecast-MFC-AGG-ID: uuN3q230O56hLnVJzruknQ_1774051809
-Received: by mail-wm1-f72.google.com with SMTP id 5b1f17b1804b1-4853b5b0fafso21983665e9.3
-        for <kvm@vger.kernel.org>; Fri, 20 Mar 2026 17:10:09 -0700 (PDT)
+ us-mta-645-X4sGMgLTMwqjo6v5i_WviQ-1; Fri, 20 Mar 2026 20:10:11 -0400
+X-MC-Unique: X4sGMgLTMwqjo6v5i_WviQ-1
+X-Mimecast-MFC-AGG-ID: X4sGMgLTMwqjo6v5i_WviQ_1774051811
+Received: by mail-wr1-f69.google.com with SMTP id ffacd0b85a97d-43b4a9a3bf6so490399f8f.0
+        for <kvm@vger.kernel.org>; Fri, 20 Mar 2026 17:10:11 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1774051807; x=1774656607; darn=vger.kernel.org;
+        d=redhat.com; s=google; t=1774051810; x=1774656610; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=zdVmercWnCZLP8zFvHBbqxOZlu/sYmRu38PlBYz1DLw=;
-        b=OnpumlhD4bB93COB0i+aQ9dSXMxvANr0bncrOFxU3MT5CljNInJ1plrTDDyFC7MV6e
-         5qP4CUF4Jxsh/chZTZKETUzaUZkh4N5sJXoL6jPzB2Xq/PiEUgzNfTRXnOlPn7uO7Jd1
-         P8VIUGcA/NzJtq+YwKVgguTlx/oW9rlsdxhzMj+Us3hUonNc4H9mjKsIXOJwhm4INxUo
-         a3vVirOBQM0TRRkT4fYVca1ev0hLhxO99NIDoktpsLw7n3dCMpQUsbGNpnfmmdbunLZH
-         GL3RZ8EdlOv/m8evroidKiTEQWMAwbl/B3WQudkgjfHUKwxjh4LB7T6U34t1Cy3JoF8b
-         NRKA==
+        bh=73seKWR51q+TIpru2UraHv6BQGSCJ+KST2GFL+f5EOY=;
+        b=XWwZJ9zFh9f6TKLxwTRRSL2rnKInjOOCaA32w0hJvilFaQ0SMZj3bl6IBWFB7tmuga
+         a08UlrZPdVzUShGZx+uAWtMwjMaWcqa2Umk/MNlRjjckmCSrhQwpiXspEG8BUQgEyI7A
+         aJz/n4DLSMF52S11vQUmMqM4UKuP8ZNG9UGo7Z4JIT+zCHXmkJX7SplEiHFWJUxcFOjA
+         jMOE6DSE/3z3iHsP+9jD+fBnnKbF/y8JCnzOsfIlbotUBCfAKTGJp6Oh+mOrYw0fYyaj
+         OYm7jgQvAOB1I14t0Qf4+m0z2az8xwy5+PKf+d4hnK80TahtDHi03kF19sIaajz8Ymes
+         VKMw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774051807; x=1774656607;
+        d=1e100.net; s=20251104; t=1774051810; x=1774656610;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=zdVmercWnCZLP8zFvHBbqxOZlu/sYmRu38PlBYz1DLw=;
-        b=g4D95uHD+B5N4w/pP43MG7WyV1XediYMIwCE/4e5zFoja/E1WJuJI7OxiltEWsIEbU
-         +CLHHMZlbTTTaL88e97Rwmvi+4PRfo0fTiA7fwa7xRK7PuKldnvau96CdAJXSg9W5qdv
-         r9AqkwmcFPzxtUpG64vzyWFpWr77whmlzROUhNw1GXuamh+bNRe2s9Gkt/oynsboijhk
-         pkx6aChjinoLewX3SDqVhksaPjdxWwNWSMY4uqDKBA1kYJ2RtWU565APYqGkBseL109s
-         myfT8Dr2nh8N2GexdMGfoV2Tf+Q5n/NQdc/lYyqjAKBM5WYXYdIo2A6xXTN93EBxj3/B
-         +AkA==
-X-Forwarded-Encrypted: i=1; AJvYcCWY9fdmTuLOFEtC6oJgFX2z3oDMbCSWEkY2RlTFa6MM7ry5fiveY35lts20dbmpQeZxpn4=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy2U7+gCOU1YrQ3a5bqyn/JR8SJMKWMxfbBXK/4z7uQCPDIoT+e
-	GFdQdsKK0NBkZxUYxrtDI9ettVGTiI4CSmQZ6meLAk2Ghi/yW4YtuSjMUOfeYTas914mVVCplod
-	QOaJBoAC4enxlsYQaOQc0SpC1GRvmGMkmvCNyN+OhttFgaa1kcDVz/qAdLmqMBg==
-X-Gm-Gg: ATEYQzwmz7sJTmEh+72KZYpV9va7wilyJX8TPvZm/2K2BtcnHpbltQAZ1lbKF/elHcz
-	Z7eLnaumBnEgObQ3SCzALB5gZePORortJIdhAOtfepQ44xHb/mAmN7DzrwirLmhiQy13P4YcQGD
-	PTtMIUo3mKiefX9xGGnZ0FB7WcbC8AAMlnI415WNsuSMkdmD1GB8jF/HfhiBLp/C165HxPIFk7x
-	aIBfKamV318sXnOLkAQG47woJ8Gb1uvp9SJg2DgzgT8Jh/WGzzj1FZuVkxWxQ2eAFNTbYhNyY2z
-	0TYf5/jn19jswGfjnesBdWXzAzBf/8il4ksuyYlVRlsPRWU+xVN6cHjAp+z6UbjkWiDGALh5+1r
-	FHQ9NEIUKNOUHYUBtrhwQL5qaF7bKXSPjslgijK0jMxtBhNy5VBXi97/zWAE6RghugmZ+SOOXOZ
-	DcoUPARhhmjZIoKJnkFhdnOg8i
-X-Received: by 2002:a05:600c:530f:b0:485:2ce2:4c87 with SMTP id 5b1f17b1804b1-486febb455dmr74703375e9.4.1774051807363;
-        Fri, 20 Mar 2026 17:10:07 -0700 (PDT)
-X-Received: by 2002:a05:600c:530f:b0:485:2ce2:4c87 with SMTP id 5b1f17b1804b1-486febb455dmr74703105e9.4.1774051806935;
-        Fri, 20 Mar 2026 17:10:06 -0700 (PDT)
+        bh=73seKWR51q+TIpru2UraHv6BQGSCJ+KST2GFL+f5EOY=;
+        b=UKEfkuhSW/O0nwQi0hTKdeDnR8n9uJF1Xa+aKFlSZ7I4mWziQRcBjpMsCYjCcGImG4
+         tawMMwcwwhLCS7E3ccR2mKvehxLghUrZkCRPeUrY7lR/0fIPH2c0OV4wuZlW1Qf7i2yE
+         SVottndeqqA6lqnouAhYy5m4nBcCA2TL+o5GzLmglFJ0yg9KvrKHxAGmnbmlrSvRiAwf
+         0GFPo5985iy/FO6b+kGWj3TOQzRrP6CPI4plW40+JRdD2/0YFuGGshRrGe7Szt6ENQku
+         U+bTvjYLegwK9HWvikgLA3ObnygRKUgBWS2gXWs7CPMZkilS0m7z9ILtgpKJrKEGIXI9
+         Bk5A==
+X-Forwarded-Encrypted: i=1; AJvYcCUv0mdwabw06BRvqL8sves/TmW4uaKwqSxF0i8SOSzjB8EScQ7NoKAZnWrgmyssbeWhuqY=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzBx/tL+HLrd6ydopHdmWcNGrliKFk8BJ0bI55sUrIFcET87J8U
+	GJjKVe6+sXUaoK5jtnC/zc4YCrcNxhZjreN5bKCrh3OGZirywJBgqfvExayJVcpcec+hKzRihmE
+	aA1FTEka2OXoMciTuFOnavjRxG3upMCRlMJ84rWq+Q9o4MaZj6aOveg==
+X-Gm-Gg: ATEYQzx1yAVjvVegiMgODVqaptxsn75lBw7PdmWepuRhwLYKJ3x8v0A34xGoPgRGRsx
+	WBLQNWfDbdl++jr+JhDIeHLmlM72qPKY1xoQ/WJ/01xmKHaBJXPyaR95jkGezI+XSKwjo0YTBiG
+	k80GY7de3FKx3nwGbra9aAfqJmUUpT7nEy/ggmzphdxsUN5eTOGf+kZT4aD5ZIYNW6Emssv8ISS
+	kD1VCPl+eXsI5zHG121VcHCkLCPEsptHq+vLLhrSzP+2+YA9gKxoNhjZezLBYQ907yIhVNDMrbJ
+	khVULQVQQuhTtv0Fny+IxHPVgd8qAhPbSC5hVkD5Sk6udaMULxLYMXLAaL48ksF4ZPxy3c3SS9+
+	YRXcki3chXT6igJcx7qYPr1CNfsWjUb6C3s9Ct5YXKh/NJLYluHF3g92Q7LWmIJ4OoJYUFUA13f
+	ODp1svAImtMW9hpo981B8t0GPz
+X-Received: by 2002:a05:6000:2dc2:b0:43b:4aba:8f44 with SMTP id ffacd0b85a97d-43b64287241mr8001819f8f.45.1774051810534;
+        Fri, 20 Mar 2026 17:10:10 -0700 (PDT)
+X-Received: by 2002:a05:6000:2dc2:b0:43b:4aba:8f44 with SMTP id ffacd0b85a97d-43b64287241mr8001798f8f.45.1774051810116;
+        Fri, 20 Mar 2026 17:10:10 -0700 (PDT)
 Received: from [192.168.10.48] ([151.49.85.67])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-486f8b949e1sm289668275e9.9.2026.03.20.17.10.04
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-43b644ae132sm10122385f8f.6.2026.03.20.17.10.07
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 20 Mar 2026 17:10:04 -0700 (PDT)
+        Fri, 20 Mar 2026 17:10:07 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: linux-kernel@vger.kernel.org,
 	kvm@vger.kernel.org
@@ -86,9 +86,9 @@ Cc: Jon Kohler <jon@nutanix.com>,
 	Nikunj A Dadhania <nikunj@amd.com>,
 	Amit Shah <amit.shah@amd.com>,
 	Sean Christopherson <seanjc@google.com>
-Subject: [PATCH 13/22] KVM: x86/mmu: add support for nested MBEC
-Date: Sat, 21 Mar 2026 01:09:22 +0100
-Message-ID: <20260321000931.1947084-14-pbonzini@redhat.com>
+Subject: [PATCH 14/22] KVM: nVMX: advertise MBEC to nested guests
+Date: Sat, 21 Mar 2026 01:09:23 +0100
+Message-ID: <20260321000931.1947084-15-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260321000931.1947084-1-pbonzini@redhat.com>
 References: <20260321000931.1947084-1-pbonzini@redhat.com>
@@ -101,94 +101,108 @@ MIME-Version: 1.0
 Content-Type: text/plain
 Content-Transfer-Encoding: 8bit
 
+From: Jon Kohler <jon@nutanix.com>
+
+Advertise SECONDARY_EXEC_MODE_BASED_EPT_EXEC (MBEC) to userspace, which
+allows userspace to expose and advertise the feature to the guest.
+When MBEC is enabled by the guest, it is passed to the MMU via cr4_smep
+and to the processor by the merging of vmcs12->secondary_vm_exec_control
+into the VMCS02's secondary VM execution controls.
+
+Signed-off-by: Jon Kohler <jon@nutanix.com>
+Message-ID: <20251223054806.1611168-9-jon@nutanix.com>
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- arch/x86/kvm/mmu/paging_tmpl.h | 29 ++++++++++++++++++++---------
- 1 file changed, 20 insertions(+), 9 deletions(-)
+ arch/x86/kvm/mmu.h        |  2 +-
+ arch/x86/kvm/mmu/mmu.c    |  7 ++++---
+ arch/x86/kvm/vmx/nested.c | 10 ++++++++++
+ 3 files changed, 15 insertions(+), 4 deletions(-)
 
-diff --git a/arch/x86/kvm/mmu/paging_tmpl.h b/arch/x86/kvm/mmu/paging_tmpl.h
-index c657ea90bb33..d50085308506 100644
---- a/arch/x86/kvm/mmu/paging_tmpl.h
-+++ b/arch/x86/kvm/mmu/paging_tmpl.h
-@@ -124,12 +124,17 @@ static inline void FNAME(protect_clean_gpte)(struct kvm_mmu *mmu, unsigned *acce
- 	*access &= mask;
- }
+diff --git a/arch/x86/kvm/mmu.h b/arch/x86/kvm/mmu.h
+index 2a6caac39d40..035244ccbb5e 100644
+--- a/arch/x86/kvm/mmu.h
++++ b/arch/x86/kvm/mmu.h
+@@ -93,7 +93,7 @@ void kvm_init_shadow_npt_mmu(struct kvm_vcpu *vcpu, unsigned long cr0,
+ 			     unsigned long cr4, u64 efer, gpa_t nested_cr3);
+ void kvm_init_shadow_ept_mmu(struct kvm_vcpu *vcpu, bool execonly,
+ 			     int huge_page_level, bool accessed_dirty,
+-			     gpa_t new_eptp);
++			     bool mbec, gpa_t new_eptp);
+ bool kvm_can_do_async_pf(struct kvm_vcpu *vcpu);
+ int kvm_handle_page_fault(struct kvm_vcpu *vcpu, u64 error_code,
+ 				u64 fault_address, char *insn, int insn_len);
+diff --git a/arch/x86/kvm/mmu/mmu.c b/arch/x86/kvm/mmu/mmu.c
+index a0b4774e405a..647dffb69d85 100644
+--- a/arch/x86/kvm/mmu/mmu.c
++++ b/arch/x86/kvm/mmu/mmu.c
+@@ -5839,7 +5839,7 @@ EXPORT_SYMBOL_GPL(kvm_init_shadow_npt_mmu);
  
--static inline int FNAME(is_present_gpte)(unsigned long pte)
-+static inline int FNAME(is_present_gpte)(struct kvm_mmu *mmu,
-+					 unsigned long pte)
+ static union kvm_cpu_role
+ kvm_calc_shadow_ept_root_page_role(struct kvm_vcpu *vcpu, bool accessed_dirty,
+-				   bool execonly, u8 level)
++				   bool execonly, u8 level, bool mbec)
  {
- #if PTTYPE != PTTYPE_EPT
- 	return pte & PT_PRESENT_MASK;
- #else
--	return pte & 7;
-+	/*
-+	 * For EPT, an entry is present if any of bits 2:0 are set.
-+	 * With mode-based execute control, bit 10 also indicates presence.
-+	 */
-+	return pte & (7 | (mmu_has_mbec(mmu) ? VMX_EPT_USER_EXECUTABLE_MASK : 0));
- #endif
- }
+ 	union kvm_cpu_role role = {0};
  
-@@ -152,7 +157,7 @@ static bool FNAME(prefetch_invalid_gpte)(struct kvm_vcpu *vcpu,
- 				  struct kvm_mmu_page *sp, u64 *spte,
- 				  u64 gpte)
- {
--	if (!FNAME(is_present_gpte)(gpte))
-+	if (!FNAME(is_present_gpte)(vcpu->arch.mmu, gpte))
- 		goto no_present;
- 
- 	/* Prefetch only accessed entries (unless A/D bits are disabled). */
-@@ -173,14 +178,17 @@ static bool FNAME(prefetch_invalid_gpte)(struct kvm_vcpu *vcpu,
- static inline unsigned FNAME(gpte_access)(u64 gpte)
- {
- 	unsigned access;
--#if PTTYPE == PTTYPE_EPT
- 	/*
--	 * For now nested MBEC is not supported and permission_fault() ignores
--	 * ACC_USER_EXEC_MASK.
-+	 * Set bits in ACC_*_MASK even if they might not be used in the
-+	 * actual checks.  For example, if EFER.NX is clear permission_fault()
-+	 * will ignore ACC_EXEC_MASK, and if MBEC is disabled it will
-+	 * ignore ACC_USER_EXEC_MASK.
+@@ -5849,6 +5849,7 @@ kvm_calc_shadow_ept_root_page_role(struct kvm_vcpu *vcpu, bool accessed_dirty,
  	 */
-+#if PTTYPE == PTTYPE_EPT
- 	access = ((gpte & VMX_EPT_WRITABLE_MASK) ? ACC_WRITE_MASK : 0) |
- 		((gpte & VMX_EPT_EXECUTABLE_MASK) ? ACC_EXEC_MASK : 0) |
--		((gpte & VMX_EPT_READABLE_MASK) ? ACC_READ_MASK : 0);
-+		((gpte & VMX_EPT_READABLE_MASK) ? ACC_READ_MASK : 0) |
-+		((gpte & VMX_EPT_USER_EXECUTABLE_MASK) ? ACC_USER_EXEC_MASK : 0);
- #else
- 	/*
- 	 * P is set here, so the page is always readable and W/U/!NX represent
-@@ -335,7 +343,7 @@ static int FNAME(walk_addr_generic)(struct guest_walker *walker,
- 	if (walker->level == PT32E_ROOT_LEVEL) {
- 		pte = mmu->get_pdptr(vcpu, (addr >> 30) & 3);
- 		trace_kvm_mmu_paging_element(pte, walker->level);
--		if (!FNAME(is_present_gpte)(pte))
-+		if (!FNAME(is_present_gpte)(mmu, pte))
- 			goto error;
- 		--walker->level;
- 	}
-@@ -417,7 +425,7 @@ static int FNAME(walk_addr_generic)(struct guest_walker *walker,
- 		 */
- 		pte_access = pt_access & (pte ^ walk_nx_mask);
+ 	WARN_ON_ONCE(is_smm(vcpu));
+ 	role.base.level = level;
++	role.base.cr4_smep = mbec;
+ 	role.base.has_4_byte_gpte = false;
+ 	role.base.direct = false;
+ 	role.base.ad_disabled = !accessed_dirty;
+@@ -5864,13 +5865,13 @@ kvm_calc_shadow_ept_root_page_role(struct kvm_vcpu *vcpu, bool accessed_dirty,
  
--		if (unlikely(!FNAME(is_present_gpte)(pte)))
-+		if (unlikely(!FNAME(is_present_gpte)(mmu, pte)))
- 			goto error;
+ void kvm_init_shadow_ept_mmu(struct kvm_vcpu *vcpu, bool execonly,
+ 			     int huge_page_level, bool accessed_dirty,
+-			     gpa_t new_eptp)
++			     bool mbec, gpa_t new_eptp)
+ {
+ 	struct kvm_mmu *context = &vcpu->arch.guest_mmu;
+ 	u8 level = vmx_eptp_page_walk_level(new_eptp);
+ 	union kvm_cpu_role new_mode =
+ 		kvm_calc_shadow_ept_root_page_role(vcpu, accessed_dirty,
+-						   execonly, level);
++						   execonly, level, mbec);
  
- 		if (unlikely(FNAME(is_rsvd_bits_set)(mmu, pte, walker->level))) {
-@@ -514,6 +522,9 @@ static int FNAME(walk_addr_generic)(struct guest_walker *walker,
- 		 * ACC_*_MASK flags!
- 		 */
- 		walker->fault.exit_qualification |= EPT_VIOLATION_RWX_TO_PROT(pte_access);
-+		if (mmu_has_mbec(mmu))
-+			walker->fault.exit_qualification |=
-+				EPT_VIOLATION_USER_EXEC_TO_PROT(pte_access);
- 	}
- #endif
- 	walker->fault.address = addr;
+ 	if (new_mode.as_u64 != context->cpu_role.as_u64) {
+ 		/* EPT, and thus nested EPT, does not consume CR0, CR4, nor EFER. */
+diff --git a/arch/x86/kvm/vmx/nested.c b/arch/x86/kvm/vmx/nested.c
+index 7c55551a2680..7b0861d02166 100644
+--- a/arch/x86/kvm/vmx/nested.c
++++ b/arch/x86/kvm/vmx/nested.c
+@@ -460,6 +460,12 @@ static void nested_ept_inject_page_fault(struct kvm_vcpu *vcpu,
+ 	vmcs12->guest_physical_address = fault->address;
+ }
+ 
++static inline bool nested_ept_mbec_enabled(struct kvm_vcpu *vcpu)
++{
++	struct vmcs12 *vmcs12 = get_vmcs12(vcpu);
++	return nested_cpu_has2(vmcs12, SECONDARY_EXEC_MODE_BASED_EPT_EXEC);
++}
++
+ static void nested_ept_new_eptp(struct kvm_vcpu *vcpu)
+ {
+ 	struct vcpu_vmx *vmx = to_vmx(vcpu);
+@@ -468,6 +474,7 @@ static void nested_ept_new_eptp(struct kvm_vcpu *vcpu)
+ 
+ 	kvm_init_shadow_ept_mmu(vcpu, execonly, ept_lpage_level,
+ 				nested_ept_ad_enabled(vcpu),
++				nested_ept_mbec_enabled(vcpu),
+ 				nested_ept_get_eptp(vcpu));
+ }
+ 
+@@ -7145,6 +7152,9 @@ static void nested_vmx_setup_secondary_ctls(u32 ept_caps,
+ 			msrs->ept_caps |= VMX_EPT_AD_BIT;
+ 		}
+ 
++		if (cpu_has_ept_mbec())
++			msrs->secondary_ctls_high |=
++				SECONDARY_EXEC_MODE_BASED_EPT_EXEC;
+ 		/*
+ 		 * Advertise EPTP switching irrespective of hardware support,
+ 		 * KVM emulates it in software so long as VMFUNC is supported.
 -- 
 2.52.0
 
