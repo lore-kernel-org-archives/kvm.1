@@ -1,83 +1,83 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8737A28C009
-	for <kvm@vger.kernel.org>; Sat, 21 Mar 2026 00:09:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 540F126B760
+	for <kvm@vger.kernel.org>; Sat, 21 Mar 2026 00:09:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774051789; cv=none; b=JDKyQiniuVLfnHtxgEh+e3uB4JK8/ZPEsFf8VaTLIa67oZ7al57DZ627ugGQFVn6Xtpd4fgpgOVtEYOViTdjyuVoUr6pifFOTaXtwy64jNvVodEH4poZhg5xHr2tlKsvggNT8Fqz/cLX04hQNNHELOi7N6tcVkApls2aml7oG8o=
+	t=1774051790; cv=none; b=VsxcNJBdTUKvpptH4NhEUor5qpjVDFVHZSPSDXe1NGday6XiQECrdQroSGIDUl9wdhdePNv1oucW2lJ/V39XxNTl4ifA4bGjwYCr/Rn8a+TbQr7dodHM3Y1JGQxM4jMF62O4+IATtPzv2GEe90Kiv3xepD0NtGSUltgdQs7DuSA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774051789; c=relaxed/simple;
-	bh=z3zvzNjoHdnJl9hGaj4lEgJ4kD/PTw19cwfqw3eo3Yw=;
+	s=arc-20240116; t=1774051790; c=relaxed/simple;
+	bh=OJBsyJfTqth9OfgUA01Qnwq1JO04burdCzePl3InDIo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=nhBPybum/8Kzs1D/MfOl8yIH315yH5UmgTyzsh6+liwmJzHzm0fjufRD2ye5ihd4N1h4TuAZ/7DzbUV2FBySA+t58h2mfpERnx0uUpSyu3aYD25zMDMO7ZjTk/LIfb1HJ1uSuGSaLQ66sE/e7Gp83aUjQJf/i5UcQRcoS6lQ2W0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=KS8gXGTi; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=PISf/7vB; arc=none smtp.client-ip=170.10.129.124
+	 MIME-Version:Content-Type; b=dDSzui0jegJ/si/mnZ8rD3O/auhdjW33FDTUx86c4EqlC/ItA2VRNPrxmexruTIG08NyWHl+mPbfFlYPdVvvYJgM8+UGDiA6n+3v2210Iy2yEUL26HE9RBeOF4tlMsiuivBEvSgtD/wgqDdCUNXefBcoVIc8KeWdvaL/cPCTMDA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=gMVQS0I3; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=So4scJkA; arc=none smtp.client-ip=170.10.133.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="KS8gXGTi";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="PISf/7vB"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="gMVQS0I3";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="So4scJkA"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1774051784;
+	s=mimecast20190719; t=1774051788;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=0x8Li3x48YFTevSqz2TQi+0tuTqD1+6xIYxZTsWPCJo=;
-	b=KS8gXGTiifY4aoNlJKknLe3FeTc0MJKXaaq97exm7Jla0GWC/2E/x7u/BTwWwni56XUbLW
-	cqsLivzh1CatBKjyIr8rG2K5vAfGQFFnyaiD9342dixFtrqOHGnq9M2QclGyiTrgUoSNU+
-	3GDfMpV7XAqyQk+jzY8wQf5F3rQG6lA=
-Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
- [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=qXO9T9Z8K77B5X3+NmDVkDSP2SW3BrCQveRA3iJEcWI=;
+	b=gMVQS0I3xL6TSqU0WhKyx6iADMMKHJNKNXwkvl5ITDCLYZ5IqzRer3NxO/vcMD+3PURssf
+	5TmiSd6uNwc5sOrnP2754sbSwyw1cXg2tyhYBJpcvw5IKUDeTCVPUhfD2N8f6gN+B2ewqf
+	QhbBYm/53HHJHAYLp3Um1BaoVoTDrgs=
+Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
+ [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-125-A6q21acOOs-EEIqPNM78QQ-1; Fri, 20 Mar 2026 20:09:43 -0400
-X-MC-Unique: A6q21acOOs-EEIqPNM78QQ-1
-X-Mimecast-MFC-AGG-ID: A6q21acOOs-EEIqPNM78QQ_1774051782
-Received: by mail-wr1-f72.google.com with SMTP id ffacd0b85a97d-439c112b1a4so592509f8f.3
-        for <kvm@vger.kernel.org>; Fri, 20 Mar 2026 17:09:43 -0700 (PDT)
+ us-mta-618--L9V_fnVNTibqzXGmjEc2g-1; Fri, 20 Mar 2026 20:09:47 -0400
+X-MC-Unique: -L9V_fnVNTibqzXGmjEc2g-1
+X-Mimecast-MFC-AGG-ID: -L9V_fnVNTibqzXGmjEc2g_1774051786
+Received: by mail-wm1-f69.google.com with SMTP id 5b1f17b1804b1-48535f4d5e1so24013645e9.0
+        for <kvm@vger.kernel.org>; Fri, 20 Mar 2026 17:09:46 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1774051781; x=1774656581; darn=vger.kernel.org;
+        d=redhat.com; s=google; t=1774051786; x=1774656586; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=0x8Li3x48YFTevSqz2TQi+0tuTqD1+6xIYxZTsWPCJo=;
-        b=PISf/7vBAZ0hB61DgnwJCPgUq+vrhK90dpaypWcSQcxYXJoRHoyUS6ONQ1MOl9/xH6
-         1A+sqKAGZXQWT3J32RxIpdqCFZw7bUktnYkjpP1pvIfiFW9Q4/h9pN7oL0ykV3yWmXz8
-         K/4C4+CKGONlo+7P7E0MluTp8UlRkLIYwFw0iKTd0I24+2DtYx39H57I2oC2cvp/q6gW
-         MxnT4048TgDM6qFPWZ8RhH0TanT9ctJ+vNbsDkrRtYKoWCsXgCQH0mCtiaPsbz86urLo
-         +Vv7aPrWRIK49ezTiAdPX7XuWyf4MHA6ch4qhInig7bdK9/AkEeZAe7T5UkJZdOoEyQv
-         y96w==
+        bh=qXO9T9Z8K77B5X3+NmDVkDSP2SW3BrCQveRA3iJEcWI=;
+        b=So4scJkAxN3XmcQRDIymFGd6QDRyc/WkYENICafZL+Z59m/hxsqMfY+8As8kC70tIE
+         dfg8MaW5HRNIca6X5GQI+NF2qoWOUkbT8MWdc2VYTkWG4Zwvai+oGaDh4k7EEFUkBBGm
+         sWYapbEYmVLgiqyF8rvwCnKnNIAnZEIifAujSDI+8UCOdbVnUJmPTJKP5Bps912DtL3I
+         c4xgZRsMnOpOvC1JZt3x8Ranhb56EqXpYp0T/wrDhfWTD0Sl3A0v83s4bnb/f8iAqx0B
+         LNH9wvwB3LadPyceMjz2cQGw0o3J0tqUCVNk7ykYQlrtjHgkNy/7/AyK2yjkyzVYaCtC
+         SQ+Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774051781; x=1774656581;
+        d=1e100.net; s=20251104; t=1774051786; x=1774656586;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=0x8Li3x48YFTevSqz2TQi+0tuTqD1+6xIYxZTsWPCJo=;
-        b=d93/JFuKiGFF1njdTb219kTCPrhWEROotAd4RMRQXHkikcKoSILiJQy7zkS1DI1Cmc
-         TGhaGgbUpimuL2+SVnrmRArpH1UJfWNL38cHD/W5Y0rURDdqvdC1ASl9epcz0x4JmSWE
-         Cbv30QyZGvzng4yRW2sUos1HYUajkFz8nHjMORZljXUKQmWCcf5MCvT7xor3974ZHnkW
-         yn7M/RgX86AiCGrf94QEjFUov4t+WRZH8vkAvDs+FsvubzYP/30sDRNt5gBUTpjLj2/J
-         WDylqU0b3IEvYBuXiY77PmUkelMhvaJJD8bAPAHXTIohZvQL2byvXG1cvNHi8t7raPP2
-         7aOw==
-X-Forwarded-Encrypted: i=1; AJvYcCWv9cQ21YQqaWQYrLZmTknEz+yKol+Am0Gi+atcMgYH5UVzyFPzhXY8vik2XuZN97lIADY=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwicUHIltdM32xSZyz5nLT+kExxRIzXhVjwbe3S/eVtctq5bfu4
-	t9rovjFX2xZwJQQscHucVIBKcCQnWMNeu97rrCrDvPQZPvj9tiVvH1TY2esYgA9yKK/+Sa8r+ib
-	+D961B6Rxucph24DER11BlSBQQFYjl+9id7JiYn66ISpR4Cgw5x01yLN9yiZctw==
-X-Gm-Gg: ATEYQzwYBr73V4NI+MKoXIIYdU5AVlJ0+u1eFHdliJSkWGzjC09FuPrh4Q9HBS0ORs+
-	8I1pj4pOFnInEOaisBG0/b/eaUDCFn4sN5QkvkGvipj6gG6b0hmsfNgD7Bc29ZOoHLdhKibNcDI
-	+ChD/PlyEOgEjH7+BJ6ipqy1j4EtJ4DkfeVLlEX09901wYIJjass2Zcj9UJQB8Zt6Y3oAkOJRDJ
-	LjCoWTAd3Fd9p9B64PwnkqMMWyFIQL0+N34bBiSojAcwGCYbAAWmrjmU+5cHegFGrQTI3g/CSAM
-	VVU4kvM5XGdpPxep9y1CicVnnAUd7Sv5d464ncEhwxZvdZN2HGFY9GCKg+efLshFGscau2uRJ+J
-	EHKzf1oD7vzL2G6lFlM/jGZThbFtKWteR1ugsqGnba5gqyTELILoGRPc5XtpZJeBJURfXja0hy0
-	Yf8VWAF6smiGqko3ZdpD97qh1w
-X-Received: by 2002:a05:6000:2dc2:b0:43b:6352:a262 with SMTP id ffacd0b85a97d-43b64286a5amr8310930f8f.41.1774051781526;
-        Fri, 20 Mar 2026 17:09:41 -0700 (PDT)
-X-Received: by 2002:a05:6000:2dc2:b0:43b:6352:a262 with SMTP id ffacd0b85a97d-43b64286a5amr8310907f8f.41.1774051781069;
-        Fri, 20 Mar 2026 17:09:41 -0700 (PDT)
+        bh=qXO9T9Z8K77B5X3+NmDVkDSP2SW3BrCQveRA3iJEcWI=;
+        b=jiYBQZ8YFgAviy04QzP0K3wd0bKmZDfeDIVDVTGGh/fT1xtPWQ6/WRcOh/6io51BHC
+         aAWAjVT37ABD9iVU8SjoQrqtGIo0Vl2h6xM7DdWkoJjKaysz1mDTrMKsqI/WVCitWbbl
+         hnAnXS7CMNiZFilt5oXn4Wu+Vec84+08A3bpniYhjwIYCWPrwbtn0OIIM9CiNBsmj/er
+         llVwk0uFeB9s0iaU5cgXUeGg5ESOUJfrOuLjLSHyepM0ifOEg3RMgofZAOMV8DZJqZ7J
+         Tv3b/GLs/cfFN+MlxaWBh+0kDIp9M7WNe6CZJyhSyzQat+OwHvjw4m7t5iVcGolLNBPo
+         HeYg==
+X-Forwarded-Encrypted: i=1; AJvYcCXmG+auNMo0hx759l9qDlbZNeq92zjPOxg7diCWgUmZwQa95IoribYb8EPrmBuSaFi87Jk=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyVHq8csVqnnCM2A6avd0YAVqE26Jj19moX0/Apf0Kl1NY5yVE4
+	6GRNlaaG/Tt2mXVoam3QrrbSHHfsNUKvH/kQAlamirWA3lYs8oRuwpbfGOio7OGHlg6WVDpikfK
+	VS4fMUGBwe6cjAxDYOS+VXdt/z1zYISdqPdyLVDhPLumbkk3ENMgf9Q==
+X-Gm-Gg: ATEYQzy29ToreMpQeWsKy4sTjl0VmHSU6ltcif0dJX03w7ZbkvbB9r0r0yhQkY/C3e5
+	2ZLa/KOwECDh0fOmNM6D2IsPH0AzbZ0Yoqivf8ahmIDfbE6hOV45XHfGgoSei7QTXS/16B9ITyo
+	KAz8AKN4YhZ6iEBvFOlk1OJMFFRzTShJzNgpaoyyn8nkjbubY0YGWa4TmixH7/RVHf85tCUgMYi
+	7iaTF5nQTW0GTHZ6+sPdgylX6XcWrlLDsk2WOrezjfndy4I3jZG7f2XQd3MsfctfnhHB3TFmcug
+	eE/eAmZ9SqB8O9ba/1Jl52BCPy7cDwULoQRS9UoGGx/k3PcTc2v+Qq0QyEQl94G8K3DSmFsP0vQ
+	4yxW4xpXZLaXOHVubyH8Q3z+ThIgIweExM5fyD8PcqzEUcporWJrE2QX9ZXpQPFqRZf0X8U8hAq
+	7mEs6OOe+9fVJp+dIUpcPQsSaV
+X-Received: by 2002:a05:600c:3e8d:b0:486:fe45:483 with SMTP id 5b1f17b1804b1-486fee25f82mr63400785e9.22.1774051785830;
+        Fri, 20 Mar 2026 17:09:45 -0700 (PDT)
+X-Received: by 2002:a05:600c:3e8d:b0:486:fe45:483 with SMTP id 5b1f17b1804b1-486fee25f82mr63400545e9.22.1774051785417;
+        Fri, 20 Mar 2026 17:09:45 -0700 (PDT)
 Received: from [192.168.10.48] ([151.49.85.67])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-43b644acb52sm11272304f8f.7.2026.03.20.17.09.39
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-486ff1cb178sm26349555e9.29.2026.03.20.17.09.43
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 20 Mar 2026 17:09:39 -0700 (PDT)
+        Fri, 20 Mar 2026 17:09:44 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: linux-kernel@vger.kernel.org,
 	kvm@vger.kernel.org
@@ -85,11 +85,10 @@ Cc: Jon Kohler <jon@nutanix.com>,
 	Marcelo Tosatti <mtosatti@redhat.com>,
 	Nikunj A Dadhania <nikunj@amd.com>,
 	Amit Shah <amit.shah@amd.com>,
-	Sean Christopherson <seanjc@google.com>,
-	Kai Huang <kai.huang@intel.com>
-Subject: [PATCH 03/22] KVM: x86/mmu: adjust MMIO generation bit allocation and allowed mask
-Date: Sat, 21 Mar 2026 01:09:12 +0100
-Message-ID: <20260321000931.1947084-4-pbonzini@redhat.com>
+	Sean Christopherson <seanjc@google.com>
+Subject: [PATCH 05/22] KVM: x86/mmu: remove SPTE_EPT_*
+Date: Sat, 21 Mar 2026 01:09:14 +0100
+Message-ID: <20260321000931.1947084-6-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260321000931.1947084-1-pbonzini@redhat.com>
 References: <20260321000931.1947084-1-pbonzini@redhat.com>
@@ -102,69 +101,39 @@ MIME-Version: 1.0
 Content-Type: text/plain
 Content-Transfer-Encoding: 8bit
 
-From: Jon Kohler <jon@nutanix.com>
+spte.h is already including vmx.h, use the constants it defines.
 
-Update SPTE_MMIO_ALLOWED_MASK to allow EPT user executable (bit 10) to
-be treated like EPT RWX bit2:0, as when mode-based execute control is
-enabled, bit 10 can act like a "present" bit.
-
-No functional changes intended.
-
-Cc: Kai Huang <kai.huang@intel.com>
-Signed-off-by: Jon Kohler <jon@nutanix.com>
-Message-ID: <20251223054806.1611168-4-jon@nutanix.com>
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- arch/x86/kvm/mmu/spte.h | 13 +++++++------
- 1 file changed, 7 insertions(+), 6 deletions(-)
+ arch/x86/kvm/mmu/spte.h | 8 ++------
+ 1 file changed, 2 insertions(+), 6 deletions(-)
 
 diff --git a/arch/x86/kvm/mmu/spte.h b/arch/x86/kvm/mmu/spte.h
-index 0fc83c9064c5..b60666778f61 100644
+index 7223a61b1260..3d77755b6b10 100644
 --- a/arch/x86/kvm/mmu/spte.h
 +++ b/arch/x86/kvm/mmu/spte.h
-@@ -96,11 +96,11 @@ static_assert(!(EPT_SPTE_MMU_WRITABLE & SHADOW_ACC_TRACK_SAVED_MASK));
- #undef SHADOW_ACC_TRACK_SAVED_MASK
+@@ -57,10 +57,6 @@ static_assert(SPTE_TDP_AD_ENABLED == 0);
+ #define ACC_USER_MASK    PT_USER_MASK
+ #define ACC_ALL          (ACC_EXEC_MASK | ACC_WRITE_MASK | ACC_USER_MASK)
  
- /*
-- * Due to limited space in PTEs, the MMIO generation is a 19 bit subset of
-+ * Due to limited space in PTEs, the MMIO generation is an 18 bit subset of
-  * the memslots generation and is derived as follows:
-  *
-- * Bits 0-7 of the MMIO generation are propagated to spte bits 3-10
-- * Bits 8-18 of the MMIO generation are propagated to spte bits 52-62
-+ * Bits 0-6 of the MMIO generation are propagated to spte bits 3-9
-+ * Bits 7-17 of the MMIO generation are propagated to spte bits 52-62
-  *
-  * The KVM_MEMSLOT_GEN_UPDATE_IN_PROGRESS flag is intentionally not included in
-  * the MMIO generation number, as doing so would require stealing a bit from
-@@ -111,7 +111,7 @@ static_assert(!(EPT_SPTE_MMU_WRITABLE & SHADOW_ACC_TRACK_SAVED_MASK));
+-/* The mask for the R/X bits in EPT PTEs */
+-#define SPTE_EPT_READABLE_MASK			0x1ull
+-#define SPTE_EPT_EXECUTABLE_MASK		0x4ull
+-
+ #define SPTE_LEVEL_BITS			9
+ #define SPTE_LEVEL_SHIFT(level)		__PT_LEVEL_SHIFT(level, SPTE_LEVEL_BITS)
+ #define SPTE_INDEX(address, level)	__PT_INDEX(address, level, SPTE_LEVEL_BITS)
+@@ -73,8 +69,8 @@ static_assert(SPTE_TDP_AD_ENABLED == 0);
+  * restored only when a write is attempted to the page.  This mask obviously
+  * must not overlap the A/D type mask.
   */
- 
- #define MMIO_SPTE_GEN_LOW_START		3
--#define MMIO_SPTE_GEN_LOW_END		10
-+#define MMIO_SPTE_GEN_LOW_END		9
- 
- #define MMIO_SPTE_GEN_HIGH_START	52
- #define MMIO_SPTE_GEN_HIGH_END		62
-@@ -133,7 +133,8 @@ static_assert(!(SPTE_MMU_PRESENT_MASK &
-  * and so they're off-limits for generation; additional checks ensure the mask
-  * doesn't overlap legal PA bits), and bit 63 (carved out for future usage).
-  */
--#define SPTE_MMIO_ALLOWED_MASK (BIT_ULL(63) | GENMASK_ULL(51, 12) | GENMASK_ULL(2, 0))
-+#define SPTE_MMIO_ALLOWED_MASK (BIT_ULL(63) | GENMASK_ULL(51, 12) | \
-+				BIT_ULL(10) | GENMASK_ULL(2, 0))
- static_assert(!(SPTE_MMIO_ALLOWED_MASK &
- 		(SPTE_MMU_PRESENT_MASK | MMIO_SPTE_GEN_LOW_MASK | MMIO_SPTE_GEN_HIGH_MASK)));
- 
-@@ -141,7 +142,7 @@ static_assert(!(SPTE_MMIO_ALLOWED_MASK &
- #define MMIO_SPTE_GEN_HIGH_BITS		(MMIO_SPTE_GEN_HIGH_END - MMIO_SPTE_GEN_HIGH_START + 1)
- 
- /* remember to adjust the comment above as well if you change these */
--static_assert(MMIO_SPTE_GEN_LOW_BITS == 8 && MMIO_SPTE_GEN_HIGH_BITS == 11);
-+static_assert(MMIO_SPTE_GEN_LOW_BITS == 7 && MMIO_SPTE_GEN_HIGH_BITS == 11);
- 
- #define MMIO_SPTE_GEN_LOW_SHIFT		(MMIO_SPTE_GEN_LOW_START - 0)
- #define MMIO_SPTE_GEN_HIGH_SHIFT	(MMIO_SPTE_GEN_HIGH_START - MMIO_SPTE_GEN_LOW_BITS)
+-#define SHADOW_ACC_TRACK_SAVED_BITS_MASK (SPTE_EPT_READABLE_MASK | \
+-					  SPTE_EPT_EXECUTABLE_MASK)
++#define SHADOW_ACC_TRACK_SAVED_BITS_MASK (VMX_EPT_READABLE_MASK | \
++					  VMX_EPT_EXECUTABLE_MASK)
+ #define SHADOW_ACC_TRACK_SAVED_BITS_SHIFT 52
+ #define SHADOW_ACC_TRACK_SAVED_MASK	(SHADOW_ACC_TRACK_SAVED_BITS_MASK << \
+ 					 SHADOW_ACC_TRACK_SAVED_BITS_SHIFT)
 -- 
 2.52.0
 
