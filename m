@@ -1,127 +1,95 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 059B42D7398;
-	Sun, 22 Mar 2026 10:22:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+Received: from mail.loongson.cn (mail.loongson.cn [114.242.206.163])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D384740DFCE;
+	Sun, 22 Mar 2026 13:54:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=114.242.206.163
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774174950; cv=none; b=doYAIOJPFCOsXgXKxxw8FNl6W8P3uuok1Jml3Bxu3dlINi/FoKodbqA1U7HD9BLjUHbJqSi+uHsPyvdr7aZBMcCiyESJXt5tBmqpQyJ/5ryAVIdbfOhNsJaVrlDrka8CXy4IeVsfXDfaBjE59A9zQDIs3f/9aeAJeRQ/ndGf8zY=
+	t=1774187657; cv=none; b=cPoaPuz1okzrhhwJUhIsJeNS3pTavODtToQwMKS8Q0tJ4tdL+zar56U4Tv1t4zKM9gmgwoJuiXa7Zz5JHb7LfhlghGugG+U2PuYqyMLwlhLJGMJ8Qk1dRMBno4zloRuNBxvlkGDIiZYMRv7gmEVTdwhH/7wVZBUHaDAeC7nTRxo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774174950; c=relaxed/simple;
-	bh=ja8xYsnuPES+yA0rNROYguH6Aiw+cEWcqhgX6fvgPdk=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=VRxnZ1rH7tG3izoqCbAg7/AdyhzyB4BQjRZ+nAiPeWB0hdxdJelzsZrhUEnYRYmSNRvkO3wCEQPi9zFDY4WSXvTg71OSa5/vCPjMn7+25hp/YSVnt1hIB6X86gZ1tTnrNa6lgdHjVYDoax8SLKFObVHwgkuLygkN1v8uiUoMTFw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LBUBeWMG; arc=none smtp.client-ip=10.30.226.201
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LBUBeWMG"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DE2CBC19424;
-	Sun, 22 Mar 2026 10:22:21 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1774174949;
-	bh=ja8xYsnuPES+yA0rNROYguH6Aiw+cEWcqhgX6fvgPdk=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=LBUBeWMGDb+8siC07t1h2NvFCZ9g+o0BUqaeaOADmskfTDWZlRbxSMC+IV4f1YRm8
-	 7xNJWwypic+vW4gFPxCCxB9YUNfWNaZLHHLQT62spAQ6sQn0pLbITciakpYMnFzlHY
-	 7QV4Dthc4IrKZS/wmEJ9Avw+QhcHFpHBCQD8/snwbHF3npHHvLCLdE5+fBLHwOmLEe
-	 FlzeqpsvnJIB20mxp/4p+bUvzVzHdPu6RCoL2CoJEPxfp/ZtIxNR1AD47QusOm/Ah/
-	 7Elnp421pTGBrVqC/rBBgk0YRP/cFrtzTDJejpVNplpIxI1qzCtLuxd4MPY0XcGiVK
-	 S48LVT8HX5yVA==
-Date: Sun, 22 Mar 2026 12:22:17 +0200
-From: Mike Rapoport <rppt@kernel.org>
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-	Andrea Arcangeli <aarcange@redhat.com>,
-	Axel Rasmussen <axelrasmussen@google.com>,
-	Baolin Wang <baolin.wang@linux.alibaba.com>,
-	Hugh Dickins <hughd@google.com>,
-	James Houghton <jthoughton@google.com>,
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
-	Michal Hocko <mhocko@suse.com>, Muchun Song <muchun.song@linux.dev>,
-	Nikita Kalyazin <kalyazin@amazon.com>,
-	Oscar Salvador <osalvador@suse.de>,
-	Paolo Bonzini <pbonzini@redhat.com>, Peter Xu <peterx@redhat.com>,
-	Sean Christopherson <seanjc@google.com>,
-	Shuah Khan <shuah@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Vlastimil Babka <vbabka@suse.cz>, kvm@vger.kernel.org,
-	linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-kselftest@vger.kernel.org, linux-mm@kvack.org
-Subject: Re: [PATCH v2 03/15] userfaultfd: introduce mfill_get_pmd() helper.
-Message-ID: <ab_C2enJ5DTIH5aH@kernel.org>
-References: <20260306171815.3160826-1-rppt@kernel.org>
- <20260306171815.3160826-4-rppt@kernel.org>
- <ac39f02d-ed00-4b8d-8156-1e999f5b0af3@kernel.org>
+	s=arc-20240116; t=1774187657; c=relaxed/simple;
+	bh=AfWL8r2fVLOSiaFfp1K/VGEB5sEJdcb/ggopn4COiRo=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=e4Epu5pTEkv0elh8e7Z7wjsuA3K6ZuVpTQW9qerLw37MxFLhldH/qjtYqSsrSmPVkN9PgSMj564hXjutpjrKEQgoPyuT/dm8JxCmswM1T8Qji/KqSemE6k2FTwJGbazb7Hc0tUZv3LyRMMs9/q0aUsMIm8DsflFOXfS43VTkiOo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn; spf=pass smtp.mailfrom=loongson.cn; arc=none smtp.client-ip=114.242.206.163
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=loongson.cn
+Received: from loongson.cn (unknown [223.64.68.17])
+	by gateway (Coremail) with SMTP id _____8AxQcB89L9piosdAA--.25814S3;
+	Sun, 22 Mar 2026 21:54:04 +0800 (CST)
+Received: from kernelserver (unknown [223.64.68.17])
+	by front1 (Coremail) with SMTP id qMiowJAxIMNw9L9pDsVaAA--.39100S2;
+	Sun, 22 Mar 2026 21:53:59 +0800 (CST)
+From: Huacai Chen <chenhuacai@loongson.cn>
+To: Paolo Bonzini <pbonzini@redhat.com>,
+	Huacai Chen <chenhuacai@kernel.org>,
+	Tianrui Zhao <zhaotianrui@loongson.cn>,
+	Bibo Mao <maobibo@loongson.cn>
+Cc: kvm@vger.kernel.org,
+	loongarch@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	Xuerui Wang <kernel@xen0n.name>,
+	Jiaxun Yang <jiaxun.yang@flygoat.com>,
+	Huacai Chen <chenhuacai@loongson.cn>,
+	stable@vger.kernel.org,
+	Aurelien Jarno <aurel32@debian.org>
+Subject: [PATCH 1/2] LoongArch: KVM: Make kvm_get_vcpu_by_cpuid() more robust
+Date: Sun, 22 Mar 2026 21:53:45 +0800
+Message-ID: <20260322135346.3720577-1-chenhuacai@loongson.cn>
+X-Mailer: git-send-email 2.52.0
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <ac39f02d-ed00-4b8d-8156-1e999f5b0af3@kernel.org>
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:qMiowJAxIMNw9L9pDsVaAA--.39100S2
+X-CM-SenderInfo: hfkh0x5xdftxo6or00hjvr0hdfq/
+X-Coremail-Antispam: 1Uk129KBj9xXoWrtw15uw4kAryfuF1DZFyUXFc_yoWDZrc_Gw
+	1fta4YgrZ7CF10qr4q9ayfGF13J3yrAF4a9rZav343CasrJr1DW39Igw15ZryIgrW8CFs8
+	Aa1qy3sxC342yosvyTuYvTs0mTUanT9S1TB71UUUUj7qnTZGkaVYY2UrUUUUj1kv1TuYvT
+	s0mT0YCTnIWjqI5I8CrVACY4xI64kE6c02F40Ex7xfYxn0WfASr-VFAUDa7-sFnT9fnUUI
+	cSsGvfJTRUUUbfxYFVCjjxCrM7AC8VAFwI0_Jr0_Gr1l1xkIjI8I6I8E6xAIw20EY4v20x
+	vaj40_Wr0E3s1l1IIY67AEw4v_Jrv_JF1l8cAvFVAK0II2c7xJM28CjxkF64kEwVA0rcxS
+	w2x7M28EF7xvwVC0I7IYx2IY67AKxVWUJVWUCwA2z4x0Y4vE2Ix0cI8IcVCY1x0267AKxV
+	WUJVW8JwA2z4x0Y4vEx4A2jsIE14v26r4j6F4UM28EF7xvwVC2z280aVCY1x0267AKxVW8
+	JVW8Jr1ln4kS14v26r126r1DM2AIxVAIcxkEcVAq07x20xvEncxIr21l57IF6xkI12xvs2
+	x26I8E6xACxx1l5I8CrVACY4xI64kE6c02F40Ex7xfMcIj6xIIjxv20xvE14v26r126r1D
+	McIj6I8E87Iv67AKxVWUJVW8JwAm72CE4IkC6x0Yz7v_Jr0_Gr1lF7xvr2IYc2Ij64vIr4
+	1lc7CjxVAaw2AFwI0_JF0_Jw1l42xK82IYc2Ij64vIr41l4I8I3I0E4IkC6x0Yz7v_Jr0_
+	Gr1l4IxYO2xFxVAFwI0_JF0_Jw1lx2IqxVAqx4xG67AKxVWUJVWUGwC20s026x8GjcxK67
+	AKxVWUGVWUWwC2zVAF1VAY17CE14v26r1q6r43MIIYrxkI7VAKI48JMIIF0xvE2Ix0cI8I
+	cVAFwI0_Jr0_JF4lIxAIcVC0I7IYx2IY6xkF7I0E14v26r1j6r4UMIIF0xvE42xK8VAvwI
+	8IcIk0rVWUJVWUCwCI42IY6I8E87Iv67AKxVWUJVW8JwCI42IY6I8E87Iv6xkF7I0E14v2
+	6r1j6r4UYxBIdaVFxhVjvjDU0xZFpf9x07j5o7tUUUUU=
 
-On Fri, Mar 20, 2026 at 01:55:29PM +0100, David Hildenbrand (Arm) wrote:
-> On 3/6/26 18:18, Mike Rapoport wrote:
-> > From: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
-> 
-> Nit: "." at the end of the patch subject
+kvm_get_vcpu_by_cpuid() takes a cpuid parameter whose type is int, so
+cpuid can be negative. Let kvm_get_vcpu_by_cpuid() return NULL for this
+case so as to make it more robust.
+
+This fix an out-of-bounds access to kvm_arch::phyid_map::phys_map[].
+
+Cc: <stable@vger.kernel.org>
+Fixes: 73516e9da512adc ("LoongArch: KVM: Add vcpu mapping from physical cpuid")
+Reported-by: Aurelien Jarno <aurel32@debian.org>
+Link: https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=1131431
+Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
+---
+ arch/loongarch/kvm/vcpu.c | 3 +++
+ 1 file changed, 3 insertions(+)
+
+diff --git a/arch/loongarch/kvm/vcpu.c b/arch/loongarch/kvm/vcpu.c
+index 8ffd50a470e6..831f381a8fd1 100644
+--- a/arch/loongarch/kvm/vcpu.c
++++ b/arch/loongarch/kvm/vcpu.c
+@@ -588,6 +588,9 @@ struct kvm_vcpu *kvm_get_vcpu_by_cpuid(struct kvm *kvm, int cpuid)
+ {
+ 	struct kvm_phyid_map *map;
  
-Oops :/
++	if (cpuid < 0)
++		return NULL;
++
+ 	if (cpuid >= KVM_MAX_PHYID)
+ 		return NULL;
  
-> > +static int mfill_get_pmd(struct mfill_state *state)
-> > +{
-> > +	struct mm_struct *dst_mm = state->ctx->mm;
-> > +	pmd_t *dst_pmd;
-> > +	pmd_t dst_pmdval;
-> 
-> I'd just have both on a single line.
-
-Can do :) 
-
-> > +	/*
-> > +	 * If the dst_pmd is THP don't override it and just be strict.
-> > +	 * (This includes the case where the PMD used to be THP and
-> > +	 * changed back to none after __pte_alloc().)
-> > +	 */
-> > +	if (unlikely(!pmd_present(dst_pmdval) || pmd_trans_huge(dst_pmdval)))
-> 
-> Can we directly switch to pmd_leaf() while touching that?
-
-You mean instead of pmd_trans_huge()?
-Yeah, sure.
-
-> > @@ -809,41 +838,15 @@ static __always_inline ssize_t mfill_atomic(struct userfaultfd_ctx *ctx,
-> >  	while (state.src_addr < src_start + len) {
-> >  		VM_WARN_ON_ONCE(state.dst_addr >= dst_start + len);
-> >  
-> > -		pmd_t dst_pmdval;
-> > -
-> > -		dst_pmd = mm_alloc_pmd(dst_mm, state.dst_addr);
-> > -		if (unlikely(!dst_pmd)) {
-> > -			err = -ENOMEM;
-> > +		err = mfill_get_pmd(&state);
-> > +		if (err)
-> 
-> 
-> It's a bit odd that a "get" function doesn't return a PMD pointer but
-> instead stores it in the state.
-> 
-> Maybe more like "mfill_prepare_pmd" ? But actually you want to have a
-> pte table.
-> 
-> mfill_prepare_pte_table() or alternatively mfill_alloc_pte_table() /
-> mfill_alloc_dst_pte_table()
-
-As it actually allocates the pte table once in 512 times, I'd prefer
-mfill_establish_pmd().
- 
-> -- 
-> Cheers,
-> David
-
 -- 
-Sincerely yours,
-Mike.
+2.52.0
+
