@@ -1,32 +1,32 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1001B40DFC3;
-	Sun, 22 Mar 2026 10:03:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 059B42D7398;
+	Sun, 22 Mar 2026 10:22:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774173812; cv=none; b=Zyn+T+j1uK6UnioVGDE0VZ2anbl3C48Gmz09KImWhcnNH73cKuR1p6Tt0lZWS2Yu1+6bhXL7cA1sOU4G1stNZ68IiyYqyyQpNczCh0gslQUIhVGHFXjzZhkoqeaxtpgVNAeXX175r6AaZpTJr945MpAGh+oSX0GpNZMGv4SgkU4=
+	t=1774174950; cv=none; b=doYAIOJPFCOsXgXKxxw8FNl6W8P3uuok1Jml3Bxu3dlINi/FoKodbqA1U7HD9BLjUHbJqSi+uHsPyvdr7aZBMcCiyESJXt5tBmqpQyJ/5ryAVIdbfOhNsJaVrlDrka8CXy4IeVsfXDfaBjE59A9zQDIs3f/9aeAJeRQ/ndGf8zY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774173812; c=relaxed/simple;
-	bh=Fd+lxjtADX8/WZHW/OyQK4X1bNRqeHw1tgTw6r/x3uY=;
+	s=arc-20240116; t=1774174950; c=relaxed/simple;
+	bh=ja8xYsnuPES+yA0rNROYguH6Aiw+cEWcqhgX6fvgPdk=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=D1HU40s+eKPqn21CcB82M8KlpqrLkHopLjUewWuIaegvqqtLKYFs54KeVwMQNwMafN1ZwlFfu70SXX6goXjtkNv1qwHPRWXoOfUSY0sTfvIlHyFEDfPoRKyXttglwJ0LN7yaz6kgECLIp2r5p5KIQrT0SvA6TbbRAVPxDlxFkc8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jkwqs+Gd; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=VRxnZ1rH7tG3izoqCbAg7/AdyhzyB4BQjRZ+nAiPeWB0hdxdJelzsZrhUEnYRYmSNRvkO3wCEQPi9zFDY4WSXvTg71OSa5/vCPjMn7+25hp/YSVnt1hIB6X86gZ1tTnrNa6lgdHjVYDoax8SLKFObVHwgkuLygkN1v8uiUoMTFw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LBUBeWMG; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jkwqs+Gd"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F2E66C19424;
-	Sun, 22 Mar 2026 10:03:23 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LBUBeWMG"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DE2CBC19424;
+	Sun, 22 Mar 2026 10:22:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1774173811;
-	bh=Fd+lxjtADX8/WZHW/OyQK4X1bNRqeHw1tgTw6r/x3uY=;
+	s=k20201202; t=1774174949;
+	bh=ja8xYsnuPES+yA0rNROYguH6Aiw+cEWcqhgX6fvgPdk=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=jkwqs+GdaaEAajw166Bmx1YdcGAsvLlGDPSFBV70sxX+r1fX5sTLxCaahqhaG/lUd
-	 MUVFpXziVlYbj1lO2VnT9P8q0ZW4amvS6+Pc+bGSziz9pcMYA0Wv3M2IXakVzvhvJM
-	 LJGXn61p9spS2dEUse2xD8c2n/9cNe9Fv5vRUXOOoFl5PmWJg8GZ9oxHl+WeAUWa5t
-	 xlfltvoQkLoBSKpJUaerBRbWx2DpQAlkTGOhBSNaZvvhwwk6NnJtbolesp9EM9EIFO
-	 cNiBxU0nK9gppQK6FZUvlQkCpr/05lk+bGhp/MJUH7Uek1PPbNsbeQkncCWE4VhLOn
-	 7TY1/0TcY3zSQ==
-Date: Sun, 22 Mar 2026 12:03:20 +0200
+	b=LBUBeWMGDb+8siC07t1h2NvFCZ9g+o0BUqaeaOADmskfTDWZlRbxSMC+IV4f1YRm8
+	 7xNJWwypic+vW4gFPxCCxB9YUNfWNaZLHHLQT62spAQ6sQn0pLbITciakpYMnFzlHY
+	 7QV4Dthc4IrKZS/wmEJ9Avw+QhcHFpHBCQD8/snwbHF3npHHvLCLdE5+fBLHwOmLEe
+	 FlzeqpsvnJIB20mxp/4p+bUvzVzHdPu6RCoL2CoJEPxfp/ZtIxNR1AD47QusOm/Ah/
+	 7Elnp421pTGBrVqC/rBBgk0YRP/cFrtzTDJejpVNplpIxI1qzCtLuxd4MPY0XcGiVK
+	 S48LVT8HX5yVA==
+Date: Sun, 22 Mar 2026 12:22:17 +0200
 From: Mike Rapoport <rppt@kernel.org>
 To: "David Hildenbrand (Arm)" <david@kernel.org>
 Cc: Andrew Morton <akpm@linux-foundation.org>,
@@ -48,11 +48,11 @@ Cc: Andrew Morton <akpm@linux-foundation.org>,
 	Vlastimil Babka <vbabka@suse.cz>, kvm@vger.kernel.org,
 	linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org,
 	linux-kselftest@vger.kernel.org, linux-mm@kvack.org
-Subject: Re: [PATCH v2 02/15] userfaultfd: introduce struct mfill_state
-Message-ID: <ab--aBVpTIU0Kn7d@kernel.org>
+Subject: Re: [PATCH v2 03/15] userfaultfd: introduce mfill_get_pmd() helper.
+Message-ID: <ab_C2enJ5DTIH5aH@kernel.org>
 References: <20260306171815.3160826-1-rppt@kernel.org>
- <20260306171815.3160826-3-rppt@kernel.org>
- <cf190f78-3f5f-499a-aa78-35261850b01a@kernel.org>
+ <20260306171815.3160826-4-rppt@kernel.org>
+ <ac39f02d-ed00-4b8d-8156-1e999f5b0af3@kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -61,62 +61,65 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <cf190f78-3f5f-499a-aa78-35261850b01a@kernel.org>
+In-Reply-To: <ac39f02d-ed00-4b8d-8156-1e999f5b0af3@kernel.org>
 
-On Fri, Mar 20, 2026 at 01:43:02PM +0100, David Hildenbrand (Arm) wrote:
+On Fri, Mar 20, 2026 at 01:55:29PM +0100, David Hildenbrand (Arm) wrote:
 > On 3/6/26 18:18, Mike Rapoport wrote:
 > > From: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
-> > 
-> > mfill_atomic() passes a lot of parameters down to its callees.
-> > 
-> > Aggregate them all into mfill_state structure and pass this structure to
-> > functions that implement various UFFDIO_ commands.
-> > 
-> > Tracking the state in a structure will allow moving the code that retries
-> > copying of data for UFFDIO_COPY into mfill_atomic_pte_copy() and make the
-> > loop in mfill_atomic() identical for all UFFDIO operations on PTE-mapped
-> > memory.
-> > 
-> > The mfill_state definition is deliberately local to mm/userfaultfd.c, hence
-> > shmem_mfill_atomic_pte() is not updated.
-> > 
-> > Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
-> > ---
 > 
-> [...]
-> 
-> >  			if (fatal_signal_pending(current))
-> > @@ -866,10 +882,10 @@ static __always_inline ssize_t mfill_atomic(struct userfaultfd_ctx *ctx,
-> >  
-> >  out_unlock:
-> >  	up_read(&ctx->map_changing_lock);
-> > -	uffd_mfill_unlock(dst_vma);
-> > +	uffd_mfill_unlock(state.vma);
-> >  out:
-> > -	if (folio)
-> > -		folio_put(folio);
-> > +	if (state.folio)
-> > +		folio_put(state.folio);
-> >  	VM_WARN_ON_ONCE(copied < 0);
-> >  	VM_WARN_ON_ONCE(err > 0);
-> >  	VM_WARN_ON_ONCE(!copied && !err);
-> >	return copied ? copied : err;
-> 
-> I guess, "copied" could be easily avoided by
-> comparing state.src_addr with start_addr.
-
-Yeah, but a dedicated variable is more robust against potential changes
-in state handling. And it's surely more descriptive and shorter than 
-
-state.src_addr - src_addr;
+> Nit: "." at the end of the patch subject
  
-> Acked-by: David Hildenbrand (Arm) <david@kernel.org>
+Oops :/
+ 
+> > +static int mfill_get_pmd(struct mfill_state *state)
+> > +{
+> > +	struct mm_struct *dst_mm = state->ctx->mm;
+> > +	pmd_t *dst_pmd;
+> > +	pmd_t dst_pmdval;
+> 
+> I'd just have both on a single line.
 
-Thanks!
+Can do :) 
+
+> > +	/*
+> > +	 * If the dst_pmd is THP don't override it and just be strict.
+> > +	 * (This includes the case where the PMD used to be THP and
+> > +	 * changed back to none after __pte_alloc().)
+> > +	 */
+> > +	if (unlikely(!pmd_present(dst_pmdval) || pmd_trans_huge(dst_pmdval)))
+> 
+> Can we directly switch to pmd_leaf() while touching that?
+
+You mean instead of pmd_trans_huge()?
+Yeah, sure.
+
+> > @@ -809,41 +838,15 @@ static __always_inline ssize_t mfill_atomic(struct userfaultfd_ctx *ctx,
+> >  	while (state.src_addr < src_start + len) {
+> >  		VM_WARN_ON_ONCE(state.dst_addr >= dst_start + len);
+> >  
+> > -		pmd_t dst_pmdval;
+> > -
+> > -		dst_pmd = mm_alloc_pmd(dst_mm, state.dst_addr);
+> > -		if (unlikely(!dst_pmd)) {
+> > -			err = -ENOMEM;
+> > +		err = mfill_get_pmd(&state);
+> > +		if (err)
+> 
+> 
+> It's a bit odd that a "get" function doesn't return a PMD pointer but
+> instead stores it in the state.
+> 
+> Maybe more like "mfill_prepare_pmd" ? But actually you want to have a
+> pte table.
+> 
+> mfill_prepare_pte_table() or alternatively mfill_alloc_pte_table() /
+> mfill_alloc_dst_pte_table()
+
+As it actually allocates the pte table once in 512 times, I'd prefer
+mfill_establish_pmd().
  
 > -- 
 > Cheers,
-> 
 > David
 
 -- 
