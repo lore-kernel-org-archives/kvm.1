@@ -1,92 +1,93 @@
-Received: from mail-qt1-f181.google.com (mail-qt1-f181.google.com [209.85.160.181])
+Received: from mail-qt1-f175.google.com (mail-qt1-f175.google.com [209.85.160.175])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A6AFA40DFCE
-	for <kvm@vger.kernel.org>; Sun, 22 Mar 2026 15:37:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.160.181
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 92A0A367F44
+	for <kvm@vger.kernel.org>; Sun, 22 Mar 2026 15:44:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.160.175
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774193874; cv=pass; b=hQmsUoU5d11kYNfJAZ3FsuX+t4hoxt9wQWJmwH6qdrEiS+a4WuRpk+LQBD7T8VjGQZBdzjB4CPTkG5MDU5iVU7NzmJLd2JRaPCt9iv9QigAzU6PWP4IkV5Y9eXems2e4d10IeWSzCW0L10IK3oFtykYgB+k25x1WPz+Ljg/04yc=
+	t=1774194279; cv=pass; b=jGvA3hRpCymCYmel2Tqw5D7yHu/lR/nCmbvMqMCbeT+Kure9EL0SX6mYGrSeeNnzFOo8yLHSoegIPFTfT5XEuWOGp8RDEXS+teLRH6BkMmt69GStR6GjnARqi/1DGB77sovy/zFylBO8kQhGA6OSTTTBtKAS0ehqe7Ff1lhoNSU=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774193874; c=relaxed/simple;
-	bh=+LNE+MzMocq6UV5snjgoPgnWIGGRUa/ms921P2bHFvA=;
+	s=arc-20240116; t=1774194279; c=relaxed/simple;
+	bh=qe6ufksEAl3fXYhd7OFfdXbBxI1wGaRCuq6Vve5so4w=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=pe2a8kFj5clj+K4oyV9U7bvPTlmQqeE/R+y0UEYuESWaQBp1WN3P0E3zAALvcYtsRUfXI+wD75aKEsECQ/Ty+T89tFHOetF82gTsx42QFa1O6ivPEiJ2RSPYsdcBxK0GE3zrK5Yco4BrnLt/m/gwkNdjUhTjgGDFWrWlppVfQ7s=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=KQKkrriF; arc=pass smtp.client-ip=209.85.160.181
+	 To:Cc:Content-Type; b=L2A83jYTmPslaU7nvxeT3945HN7BwJKWtiFNS8TyuVeOOgU0x+Aib9IfbuqZdRs8QplRn3Xl4mg0BdxBITzPZXuFYWFvQlE1bfSRX1pMti3g3aMe7XXt1o6YYpd7/o8EzhvylxzrCmexElWY2eorzXl2GAQ4o6cyBLOMPfZJWLo=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=N+8H5HcR; arc=pass smtp.client-ip=209.85.160.175
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="KQKkrriF"
-Received: by mail-qt1-f181.google.com with SMTP id d75a77b69052e-509062d829dso779431cf.1
-        for <kvm@vger.kernel.org>; Sun, 22 Mar 2026 08:37:52 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1774193871; cv=none;
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="N+8H5HcR"
+Received: by mail-qt1-f175.google.com with SMTP id d75a77b69052e-5091ed02c54so688211cf.1
+        for <kvm@vger.kernel.org>; Sun, 22 Mar 2026 08:44:37 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1774194276; cv=none;
         d=google.com; s=arc-20240605;
-        b=B2cpCjJgdk7qM4iF/POnmfr7tDQFcd6q3+NRy4HKU2TnAA4whqV5UttC8GELIYsIL9
-         TO0Yv8rWzSHqRhwWjOLB07Xa2cFmpO3cQLKjdoEFXzag0rOlOFc2wsZvmsJR7Bz/nS4j
-         FhPiFPYLrHhpR9pZ3E+sMkx7doOEoy/dS8FmnObl4vT1nJkIxQKES7VHtTokOubTZAcT
-         PVYjXNMM8J0zyurpMp7En+hK0KUHvfXUgMoRhKXWadfudn6Z7TRJvDVLvZTv+N5OaaYm
-         vKS9colxoprwAUEzP9ekimNGdtcuwmsTQb5KJCp1znHwvp9YdFZQnxb9pXC8P2TAg6al
-         VnKw==
+        b=ck/PrG7AAAOxPy0JkiGmE1moh6pqiN7OfcBYKRhpPo3MvD2r+QH4KiK5hX7Ky4Xjwg
+         ZMD3TbMjYfb3b+ZxTbnVcG7p3s2zSrRFjxKbHqi8aXavak6udTGraubCZ4e59ZoP35uL
+         2cmxEjg9WC55ycKjI8UOhWBaxyHBLzqWF2KCbE4Ich82VgtZuvoMw1nXX9n6InoiLZ4c
+         LwmhHEYd3Rwvsl/8YYv5xKYSU5crEVVh3Bve7r/Ihqm8cSnSlUnZRTY/azSdOLvddS7P
+         gkZfJBDu2+m66eQYnv9kzKwmXPlBRq4L5UqV+wv4jWUXUv9NbGmsnX/hTJ0eL1KnePxY
+         wEDQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:dkim-signature;
-        bh=fuR+54+tQE6XrGnnBxOq8qWtA7CinZ4OjktX2EB6ezY=;
-        fh=mbqatOAspj0oDNlDrB5DyayeQWWaTigsNASrYqsms34=;
-        b=PxrrHYg2N2MLu5mqGRe79dsklCMiFIpTFCWgCZfmLywgaWahfMvpNxXwmkDXb9KAG6
-         I4S9nAOKoaCb7CqCZgDUKDfBA/GIGwWltewK4e61O79+gAqzX+EyqjfyAyx03ZPbIl0Z
-         F295H1douSvjKLQd2BvAkePcw60VMqd4XTf1ICGTFqwrdxwzDK5IiUAM6NinaO0rp/D/
-         qXZbZAiWscrwEiv063+DikBoC1erdSEPxpgF5mnPLrvm+pukQetJeYyLvL1QLZN3Q2ax
-         ZGOkwFMWLyTXH4NKZwRnEJzfwnNNOJKGsmHj0l9INCF0oTknH7UTjotE48mlzWodYHAX
-         xbwg==;
+        bh=7g8MY1vCtLNn6W/YkPkDXFGjyD7zE3ehnXdpUQaG3r8=;
+        fh=rNFeymFAqzBnBTxn68Pbdr4Px46Wkrou/w//2jXcSlI=;
+        b=OtQVdd/KVOwvVxQNwSWMXEgZpyGapsXvcsnGDdAVN22GwpX/7VVLvsx5xDu10W8KdU
+         cH0o2gUJ5zUuaOKD0bzNgx3urtzoY17iGxzy25LGMYt+H54KxgnSWoCfX8ETh37xnEhS
+         c5fALQsYBgqy+oI+RtUxJd82xAvpIXrflPjlv0wy3nOcAvRSUC2RSxxA/aq5ZuifWqZl
+         yPJ75wDMfeXQx/pktyBne9DhMFD3pOf7OUCGwqbxcUFPtOqUYQb+QkOYICydpoQ4qrEt
+         mY7UIWh7yYP4mQNQvNMgP72MUrakKHc0ZOE5kb4eQ5/lkZF7mNndL1kgWa3vMRrhBb++
+         71aA==;
         darn=vger.kernel.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1774193871; x=1774798671; darn=vger.kernel.org;
+        d=google.com; s=20251104; t=1774194276; x=1774799076; darn=vger.kernel.org;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=fuR+54+tQE6XrGnnBxOq8qWtA7CinZ4OjktX2EB6ezY=;
-        b=KQKkrriFElb6BU+LPStm9ylxKJs+OACUVWt2MIU83ksRLLDzrFH5dL6SvEAW9DunfV
-         7rGPj0IIsUftUYw3nlK38Hi+3EY4s1TfcARILeZzy6V0efjAvBUT9YY6Wl8RTq8maTol
-         Jwb/IiQQZrFVCKZ4+6AyjkALJY97RZ3uvGI3vBhQnC2t1RWJsG3xOaj+ixF76ydVEC6R
-         9nlX+n/+JB6tV1FvfXzsAqCqyHocD5fWRjsGDsLFTJWyRkgSXNezkSEXMVxoXaRXGotU
-         2wcOk0kDJk7u5uTwJ3F9IKc2xKumWA9ih84fKvoywpC4Zfb51D0xxq5MPwEi1tqXaFv5
-         ce/A==
+        bh=7g8MY1vCtLNn6W/YkPkDXFGjyD7zE3ehnXdpUQaG3r8=;
+        b=N+8H5HcRRhtXiMVn5mryACZufjtLuFo1ALceKyzVIthpu3j3bjs3o3febUbvJk/iA2
+         VeTd9DJlOXz3pD3aCAYf0ArRCYnsAwP8QvrUOrlm/AsMdbUiqM9vVw7z4O9EXpGskiu7
+         itGR19wqaYj3BAH8NEELlpULM8E1gWR0Dk4Dhqy+lvTHF3isdm0fMer+Ouhhg2h6F9oS
+         /3s4eacJybXMm3PJ0ugnUFLfJf6PT7O6viafCilHAbI5Bb/VSYoop493LwJ69OfwIMGv
+         2lGfnvaNqhT7kjQTwOEqS+GBs/dq4rNxgz1MzS6juP8tNBJSjIudIOoj17oL/kegI5J1
+         FhTg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774193871; x=1774798671;
+        d=1e100.net; s=20251104; t=1774194276; x=1774799076;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=fuR+54+tQE6XrGnnBxOq8qWtA7CinZ4OjktX2EB6ezY=;
-        b=eEbgMvWLufxSaFJqUP7X/bAQZh4ajVFfaqkFY0VFAET6gL5f6kWcZSebAjPhl+uCyy
-         m8KdMyFyMevtP6JCY0rW1aogYNKdpfKSbVYZQXdCweyL32jwABz3vk3aaa6eo+4THePg
-         Ictki7PDu2djRP25eQZUA+Miwuyv7geIIrOfjgrX2t0bjP79acyGvMmvQzAf8QwPyxaw
-         NsMbnV93bnnzAR8H8d1k6ZcKuRrzVJBuNr+wuKMtOhKrznVrE+EKq1svnuM3CMrMlXRs
-         w1Y+oNARfEa6A6tyuXfIeox2uimWeW1CC8koXKtd+wlxDvVfpdSvN4fbht7rBCVXgfN6
-         mOHg==
-X-Forwarded-Encrypted: i=1; AJvYcCVEd8ykkBwkZVzjm2/+SvJjkRqqPV19qkcIDiy9JRSaW97NMm3k6nQuZc5bXY2IMsoe938=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy87UGibFbm3rf8EVLq0H7ZQyHjrxAixbidIxTjX4sesP7ezZk7
-	3lYaWw+w5HrCdwgqAlLKI9bsQj8tiouMhpbnp4Yzf5JJ63kLrelb2J+CJyi24XKCI25IWaaljsv
-	YapcVnq10OpxgpcGaW51FSwt+MF0zOG2qGQ4wEMde
-X-Gm-Gg: ATEYQzybnoJ2+uDyMM8HdrFs0aDBsKlsJc0YgvURv4iFMusFPvUYYcDuWYZ3b7CYwGJ
-	No4sSj+ftrhvywC84XMhawGOGchLHuLGfbdC6axlUD56Pmdd5KMpSxJu+l6rGceU4ULmKBKiro4
-	9EQBVtQ860g80szjGD3J1x5Osp9Jd0AoT6n5WGS+3xeVIU0wk78zPjuxeYogRveDglHeoV48KnW
-	cxLL2YDzl0Z1jVslgHkxkPrBfsJ5VkHCQ2fim1ur5YzywNk2F6vdoYCoaOnB5qMshxrCGIBmWSP
-	LGl0/j+t
-X-Received: by 2002:a05:622a:2d1:b0:4ff:cb72:7c03 with SMTP id
- d75a77b69052e-50b48062695mr17650241cf.3.1774193871175; Sun, 22 Mar 2026
- 08:37:51 -0700 (PDT)
+        bh=7g8MY1vCtLNn6W/YkPkDXFGjyD7zE3ehnXdpUQaG3r8=;
+        b=iOGBokjjE7/6QEhjj6Zob5NcNOGWXo1LSI7X4fE0P/DRXxcJYgiFhHvENEIKv5vBCC
+         3Qv6Ex/9Icu6JxdJWmIBrtTvrfpOWhtIrVpZqxVW4igXmih4PcDK/sjm6+4OwOpkWUSs
+         DRngT/RV0JW+nCVWZG26zoS0K1lyP1A+w6pYatn0hcBlMyuc+bA2bWaCng3XFbWST0xJ
+         qQ2x6XaQ+pkcQ5YLHuvwvQD+pzGcGgz68SAG2wWb2Vk/JcwX1euLlAByjYlCVPGZ32to
+         qzQ99CdTuNxxvOqERgF9iAlD0GY4Uw4H916xU9lLcPqmXo1lqoYOzsPNvChQfnYFrWUN
+         uzPw==
+X-Forwarded-Encrypted: i=1; AJvYcCW8PdaepYJkSF3fS6CjTcNBtlpKqpHAfhlkWY4NKJA3+YVdxX7iJfdBzutzuFQGBVknoOo=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx7k09rezwnjlbGkLQY1sGqThjFAWmv+JrmT0+hg6PlFwAgxxxv
+	H6RRXU2MPqh1LLLqrajJ/qWDFZM6+VM12n/A7NrM5UN/4zP9m+7iTZDx5chIVqwW4dBgq+hr8Mt
+	oHwMhZCofwGEr2TaQ7Q25CKSTlcelxytkfxpwESt1uBOjVAsEGDrKzPLQtGg=
+X-Gm-Gg: ATEYQzw8zU3PP49upc8MNKupFvyFJrOdvk9hC1wI/eTXDEYT6NGBgcvDk3cuA7hscMT
+	7koQoe7IgsZozIYJmorBls+wwaaDr6hrfVB1vwHZChJ86UayLw5lfD/9MtJ5f78VGWd+E24H6Mz
+	beDnSpupS6mW6ImJ1uySXa4n4Mnptp+JHkgOIFuuR3YOcF7ZpuzNhFeQ4kd9v9mBw71JWrVFH8z
+	X6XsLTj5zBoeu8BNVFuzfcYh6a5G/6ibFC+EAHP6g5OkKdphZiAQQTbYUwIJaJHax5UJSz7ttOS
+	nGw9F7Fo
+X-Received: by 2002:a05:622a:8c04:b0:509:14f0:bff2 with SMTP id
+ d75a77b69052e-50b46cb352cmr19351491cf.12.1774194276032; Sun, 22 Mar 2026
+ 08:44:36 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260321212419.2803972-1-maz@kernel.org> <20260321212419.2803972-3-maz@kernel.org>
-In-Reply-To: <20260321212419.2803972-3-maz@kernel.org>
+References: <20260321212419.2803972-1-maz@kernel.org> <20260321212419.2803972-4-maz@kernel.org>
+In-Reply-To: <20260321212419.2803972-4-maz@kernel.org>
 From: Fuad Tabba <tabba@google.com>
-Date: Sun, 22 Mar 2026 15:37:14 +0000
-X-Gm-Features: AQROBzCYF63bg2F-Z9cPsy4KXnsrkxV-B-1xhNDq36LfpfgZNex4zdlpfFtoy30
-Message-ID: <CA+EHjTwfVkT4B87jn1Jhko=kf2us-1S4kCzj+stEOAm6ugFeAw@mail.gmail.com>
-Subject: Re: [PATCH 2/5] KVM: arm64: pkvm: Simplify BTI handling on CPU boot
+Date: Sun, 22 Mar 2026 15:43:58 +0000
+X-Gm-Features: AQROBzD3Objm2EQkQmOztE3PUeZpkFxeB6Okjt6XWmW0dH-3UyAexaWM0HnGGdI
+Message-ID: <CA+EHjTycbB1rZGALB0L1iyOkaVuH+5a5bBD0teo79YHNEE5-Pg@mail.gmail.com>
+Subject: Re: [PATCH 3/5] KVM: arm64: pkvm: Turn __kvm_hyp_init_cpu into an
+ inner label
 To: Marc Zyngier <maz@kernel.org>
 Cc: kvmarm@lists.linux.dev, kvm@vger.kernel.org, 
 	linux-arm-kernel@lists.infradead.org, Joey Gouly <joey.gouly@arm.com>, 
@@ -97,21 +98,11 @@ Content-Type: text/plain; charset="UTF-8"
 
 On Sat, 21 Mar 2026 at 21:24, Marc Zyngier <maz@kernel.org> wrote:
 >
-> In order to perform an indirect branch to kvm_host_psci_cpu_entry()
-> on a BTI-aware system, we first branch to a 'BTI j' landing pad,
-> and from there branch again to the target.
+> __kvm_hyp_init_cpu really is an internal label for kvm_hyp_cpu_entry
+> and kvm_hyp_cpu_resume.
 >
-> While this works, this is really not required:
->
-> - BLR works with 'BTI c' and 'PACIASP' as the landing pad
->
-> - Even if LR gets clobbered by BLR, we are going to restore the
->   host's registers, so it is pointless to try and avoid touching
->   LR
->
-> Given the above, drop the veneer and directly call into C code.
-> If we were to come back from it, we'd directly enter the error
-> handler.
+> Make it clear that this is what it is, and drop a pointless branch
+> in kvm_hyp_cpu_resume.
 >
 > Signed-off-by: Marc Zyngier <maz@kernel.org>
 
@@ -121,50 +112,50 @@ Cheers,
 /fuad
 
 > ---
->  arch/arm64/kvm/hyp/nvhe/host.S     | 10 ----------
->  arch/arm64/kvm/hyp/nvhe/hyp-init.S |  9 +++++----
->  2 files changed, 5 insertions(+), 14 deletions(-)
+>  arch/arm64/kvm/hyp/nvhe/hyp-init.S | 15 +++------------
+>  1 file changed, 3 insertions(+), 12 deletions(-)
 >
-> diff --git a/arch/arm64/kvm/hyp/nvhe/host.S b/arch/arm64/kvm/hyp/nvhe/host.S
-> index eef15b374abb0..465f6f1dd6414 100644
-> --- a/arch/arm64/kvm/hyp/nvhe/host.S
-> +++ b/arch/arm64/kvm/hyp/nvhe/host.S
-> @@ -291,13 +291,3 @@ SYM_CODE_START(__kvm_hyp_host_forward_smc)
->
->         ret
->  SYM_CODE_END(__kvm_hyp_host_forward_smc)
-> -
-> -/*
-> - * kvm_host_psci_cpu_entry is called through br instruction, which requires
-> - * bti j instruction as compilers (gcc and llvm) doesn't insert bti j for external
-> - * functions, but bti c instead.
-> - */
-> -SYM_CODE_START(kvm_host_psci_cpu_entry)
-> -       bti j
-> -       b __kvm_host_psci_cpu_entry
-> -SYM_CODE_END(kvm_host_psci_cpu_entry)
 > diff --git a/arch/arm64/kvm/hyp/nvhe/hyp-init.S b/arch/arm64/kvm/hyp/nvhe/hyp-init.S
-> index 5d00bde092010..55e0dce65dc56 100644
+> index 55e0dce65dc56..2e80fcbff2dff 100644
 > --- a/arch/arm64/kvm/hyp/nvhe/hyp-init.S
 > +++ b/arch/arm64/kvm/hyp/nvhe/hyp-init.S
-> @@ -213,12 +213,13 @@ SYM_CODE_START_LOCAL(__kvm_hyp_init_cpu)
->         mov     x0, x28
->         bl      ___kvm_hyp_init                 // Clobbers x0..x2
+> @@ -175,7 +175,6 @@ SYM_CODE_END(___kvm_hyp_init)
+>  SYM_CODE_START(kvm_hyp_cpu_entry)
+>         mov     x1, #1                          // is_cpu_on = true
+>         b       __kvm_hyp_init_cpu
+> -SYM_CODE_END(kvm_hyp_cpu_entry)
 >
-> -       /* Leave idmap. */
-> +       /* Leave idmap -- using BLR is OK, LR is restored from host context */
->         mov     x0, x29
-> -       ldr     x1, =kvm_host_psci_cpu_entry
-> -       br      x1
-> +       ldr     x1, =__kvm_host_psci_cpu_entry
-> +       blr     x1
+>  /*
+>   * PSCI CPU_SUSPEND / SYSTEM_SUSPEND entry point
+> @@ -184,17 +183,8 @@ SYM_CODE_END(kvm_hyp_cpu_entry)
+>   */
+>  SYM_CODE_START(kvm_hyp_cpu_resume)
+>         mov     x1, #0                          // is_cpu_on = false
+> -       b       __kvm_hyp_init_cpu
+> -SYM_CODE_END(kvm_hyp_cpu_resume)
 >
-> -       // The core booted in EL1. KVM cannot be initialized on it.
-> +       // The core booted in EL1, or the C code unexpectedly returned.
-> +       // Either way, KVM cannot be initialized on it.
+> -/*
+> - * Common code for CPU entry points. Initializes EL2 state and
+> - * installs the hypervisor before handing over to a C handler.
+> - *
+> - * x0: struct kvm_nvhe_init_params PA
+> - * x1: bool is_cpu_on
+> - */
+> -SYM_CODE_START_LOCAL(__kvm_hyp_init_cpu)
+> +SYM_INNER_LABEL(__kvm_hyp_init_cpu, SYM_L_LOCAL)
+>         mov     x28, x0                         // Stash arguments
+>         mov     x29, x1
+>
+> @@ -223,7 +213,8 @@ SYM_CODE_START_LOCAL(__kvm_hyp_init_cpu)
 >  1:     wfe
 >         wfi
 >         b       1b
+> -SYM_CODE_END(__kvm_hyp_init_cpu)
+> +SYM_CODE_END(kvm_hyp_cpu_resume)
+> +SYM_CODE_END(kvm_hyp_cpu_entry)
+>
+>  SYM_CODE_START(__kvm_handle_stub_hvc)
+>         /*
 > --
 > 2.47.3
 >
