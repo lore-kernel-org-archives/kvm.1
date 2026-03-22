@@ -1,208 +1,127 @@
-Received: from mail-dl1-f73.google.com (mail-dl1-f73.google.com [74.125.82.73])
+Received: from mail-qk1-f180.google.com (mail-qk1-f180.google.com [209.85.222.180])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 893633446CA
-	for <kvm@vger.kernel.org>; Sun, 22 Mar 2026 05:43:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.73
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774158217; cv=none; b=KlmKZYeqGRA7bMevCH7S3BrHbFualHEr1idKMJOKGJ0fee995mx2vDYPjx3d/gU4HcIf/j8HIzg2q/SYs+EbsQRnQBRpHmJYl3SzwKsN+ctT1AbhAP9bBCjbav2OtUtRPzuS9AaEbtZ1dC2uCJQkDXc58QfWGd+b/2E7tu/y3wc=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774158217; c=relaxed/simple;
-	bh=e3gWeXeUqlHXWzHbzz4ImGosonpJ2v75QKooiU11Mi0=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=QtQCAG0Wtpgh23okTyx1//P6JLoMzaZLI1srKXKWOSiPH+qMtjmCQaPa5NxfQz2MuXLXUoLOnOBmbBOThGuAbSAsA6R9M6Ml6BgOKchVUQMtV+5DJZz3AYKPQIXINqJepCJMSYXHtpcF9wQKcTpHj+hMO+LD/KvjMZMJTL3WDoM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--surenb.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=WLOLW2/A; arc=none smtp.client-ip=74.125.82.73
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--surenb.bounces.google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E6A8E192B90
+	for <kvm@vger.kernel.org>; Sun, 22 Mar 2026 07:49:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.222.180
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1774165778; cv=pass; b=KN0+zPsXQpVZp8D7aZAnRwoTDePoXffl/cQ9YhLcrj6+ECMEQ5Gu8Ixi/nLKHJjrrF/rwcGBx79b7iUlMIimWRHU0hwo0NifidKeiyN1pazGx12VLVOpL00nQgBn66pGBDYUHqDEZ777hOR0v2+UEZl1q7eSkfnMytFnSQrIL8s=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1774165778; c=relaxed/simple;
+	bh=yog4Y4FnY2pw/bISePo6mO0/0jBCwWfyVov9mO2pTgg=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=fiBlS3WPJjxhYMWhmoJvQAANHR3WWQwkpp4V0AxGuh4M9X5e8hWrIE3rUAShrYbw6JvJTvWvS7UYWq1GoLxIKlrYlJwmOfw6NMHaPdVQFYkijryyl6Upjq43UYKHqE25Hrj8dpootI/TMM1qTA1tPkgz/ONfseQDP66c/d8nAUk=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=F+CuJxU+; arc=pass smtp.client-ip=209.85.222.180
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="WLOLW2/A"
-Received: by mail-dl1-f73.google.com with SMTP id a92af1059eb24-12737f276a2so2798757c88.1
-        for <kvm@vger.kernel.org>; Sat, 21 Mar 2026 22:43:22 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="F+CuJxU+"
+Received: by mail-qk1-f180.google.com with SMTP id af79cd13be357-8cfc795ca97so182698185a.0
+        for <kvm@vger.kernel.org>; Sun, 22 Mar 2026 00:49:36 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1774165776; cv=none;
+        d=google.com; s=arc-20240605;
+        b=XJeRxfBqdhMhxdni/blnfrE8nlTsULkzoTUZAq2QzCVZfW1vcbUvnpVFptDR/+v09Z
+         Ikrv3Erxf3AHaylR77y1P9JFf5N7hSCLkV+fzsKGPcbnguPlJrf0SXP9P/LkgDfHqVuv
+         Vg+lQf8xGb9JMjOgQxHEmR+Y8JAMUn4edXP64ZsJPingOfnoaUT2oC/ytiYSPPIYSYtj
+         T8vXvZiqzlk8zYD9OYUHRIfTRz6dzg0jwRyFUhboOM3pW7fr4lppwoWajmzAam1Q/STl
+         IjupXFuUvt8lTRQZrjLK6gfvU0jjAxcRHeASRY4Z9TWJNPgBNj6OtuvL7bhDqpQ+6vrP
+         rXxQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=yog4Y4FnY2pw/bISePo6mO0/0jBCwWfyVov9mO2pTgg=;
+        fh=QYj4+Ph8oWHM5EKi4RsOfSwDFneEtqelfr83RmPwLPo=;
+        b=IW0UeXZQTYooos40bADXgLEcWTy5Ga7U9Cb7G3AZTYbqPs7u04cqkdtyETdXVDmKhC
+         je9cbpbiE6JhNgP20gcEjpP7/J5zRGvBTZbv+RIAy2z5Ii7VyMYKD8TY3fR3+js4a3Yf
+         Xfe6wxDWD5Ao+KpU+WCYnNuQocKlHBHUNYm44M/thZHuDHPxAOhK4vbYpSxV29jO2J8Q
+         Tc7p2yKG5FQrFhNmexK+eVbUUGqjr8IhzhoSAalH381FY4O68gC1mB5vOlcM7bygUNkt
+         cQIsUTcg6YXMz4R9YWiETQoHfGotXgtupXppjg01JUXM8EY/+X5lS2j0p5XxkcO0E4zM
+         HK8g==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1774158202; x=1774763002; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=pyZbVSMoPQsW5Fww5l9TjItBhtVQ4rSW6pB2FXRdwC8=;
-        b=WLOLW2/AyaZEOkBGbNYcql4O4fVEXA+nfjD6oSIQtq/bAj4eotghev7zRVGu1yJ8xP
-         5qkbj0Z/fGzHRjNQ/Ep71dLFC6nSaQqx+jYRUDepojhxpRIbQtU5ceT3RBA+YYndwqOQ
-         ++McDa6zTJ2y5I+sW+mOQpOZUKl0oyZdM3LCAvSbCLd5BOwDinyyo7RBAILToDgU48a9
-         gHciXI895qOfpleuJIxg5HEp7XXs1AVtaVa4Lx6qBH/SSJDmwfOXmguJbw9/pDua1zKX
-         TgEfjS/PY55GtLPTm3sorywiZXQzkvJzAZRnfmskE5IDKmgqRCebaCnZ0VbOKGuBVWoJ
-         ZzBA==
+        d=gmail.com; s=20230601; t=1774165776; x=1774770576; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=yog4Y4FnY2pw/bISePo6mO0/0jBCwWfyVov9mO2pTgg=;
+        b=F+CuJxU+Q4DrEWvnxfFZ6jPFM75VPl0dxcjCrPgbCqN0AhmcmkblSYnzZnEsS7vxkP
+         vHC8AdYlsqyn6lAhvSMgCDqakyX1MIzoAA339knHj5Kl5q4UiAVlKJtsANx3uJGt109m
+         p98dI6ZA66tY0PTsGKOaFaG1q1yxTVNhkEXtqcUqU8k4lWXPva1NNnuRlrlhMGF95Vnb
+         daHT0XTCoJ6JUVmWVelfHb4FhbSk31LAeMPARQTidrjhfFLc61cwpqqZSDds3lPRu1uV
+         8AIIH+VI5bQO/VS9VHlWfMfncDCVXUsDqoeRjU6+4LeeX2OUjv0/ogiOXHjqtZF+V0Ii
+         UBnA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774158202; x=1774763002;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=pyZbVSMoPQsW5Fww5l9TjItBhtVQ4rSW6pB2FXRdwC8=;
-        b=c6LFnfEtkVlY0v+pImy7g7jiBxWakyY+V95ykyfI7wyCUHeKO8VyhbC6oubvLrCL5A
-         SAiDmp1kgEq/FgM+Jf7Tf+gYlnlohXZhNXEfAfG1VPjEXruws/pEix0fGBagmdGpFEI7
-         Nfp8ctHKWKAq1lmJCq3EDO/Dj2vlmPsrl8FmUTHjw+amvTwXL9bjAoGtg7YQtr2fXNvV
-         IUFHDqfM7zQSVUYuguZiVg1FUnlsnwU9hPWFgzDkqQyhmthRXgtcIf3CApZEbOgCGVlj
-         Xog2e+8pumlzEpAXi9gvJkUUAQ+hBiHDoPAAiDMTZRWIjL8BqmierMS2iM0VW/jYTIPC
-         EYAg==
-X-Forwarded-Encrypted: i=1; AJvYcCVt9NREKETifTQHXAqC93R3xa4Vy6+3pvnTof70WV8Z6MIPWvGjqGOy437W3TPLS7lse9s=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yxt+XptHTZLp/5ywbaIgd/ZnjyTF3AYYI3nkeC4Lg0U9vwRKa0+
-	iSnKKdgDjPhbe8P13ZIBZWv0lbSh3CDOMEJssPhn9w3xa5EDnszSf3GbL1HLu1ZYdaVChlo+B3O
-	AGaeU1A==
-X-Received: from dyx25.prod.google.com ([2002:a05:693c:8219:b0:2c0:c743:7f67])
- (user=surenb job=prod-delivery.src-stubby-dispatcher) by 2002:a05:7022:220f:b0:119:e56b:98b9
- with SMTP id a92af1059eb24-12a726bb993mr3455319c88.32.1774158201439; Sat, 21
- Mar 2026 22:43:21 -0700 (PDT)
-Date: Sat, 21 Mar 2026 22:43:08 -0700
-In-Reply-To: <20260322054309.898214-1-surenb@google.com>
+        d=1e100.net; s=20251104; t=1774165776; x=1774770576;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=yog4Y4FnY2pw/bISePo6mO0/0jBCwWfyVov9mO2pTgg=;
+        b=JRjHIedgUwxjhZ/jKl1gAUtfU2wDS87BenNhYec6wwHXqW7WwK4M+dtmjsTlSNNNld
+         ACBHxPolF+az3d5JBqVi0h694O7yS2HZXvupZJrup7CArcXy9ZtR0JTicMU0ruOyn3Wi
+         fX/1M3lY0mWRmhR5mRT9Suo1igWpZIN91+vB7UvwlttK9J9Fa4TzxGTV2FozBb8Jy2+y
+         vUJHEpxDYV5ffbW0Yqk8gNc9Fb7iyXoYAPFfJr2Nh0cnnt2r3zYFTcc7GchInRXwAQyY
+         1odCsQB7JF4eElNJIauQ3lkSKNnvO0Jl3DUot8S0m8o8hBd4ZVdgLPMoWsNXhY+HVGs1
+         eAHw==
+X-Forwarded-Encrypted: i=1; AJvYcCXnknuTNfv6GqTJdSYX0RDZracRz7KwVam1VEa4mC8pNS9m55l5d/mnyi6U22HpSy3+mNk=@vger.kernel.org
+X-Gm-Message-State: AOJu0YynFJNV17NRJfHHCRHBXoEq0WgwYPatGe7YC3YjFz6QzuWpGCgQ
+	slBa+4acZ2p8263URfYwGDxL6EyZFqTNpynWmF2QT6mymuxEdWYD3z8BIjdlEcj6JnY4i5lV9kL
+	dakvNoUl+SoafkRy4zzI9NhpRvNt6/Es=
+X-Gm-Gg: ATEYQzwn21Oj5TisU9iwsR330BOBRjw/lWF0GiirtYlo3TM4Q/t1luwU25mEAU3t+Ur
+	7w293z8yZUNIqNynRh/22yow2+FkLiuIONSGN5S1eihQKmUkWpmGXZo/qMFrgTZaDFvowcbcg06
+	h02yE/4iITsm16QP9db2AF5XbgtfNUKNhjFyiTVSzpX69QyE7CROPwMUrDQpg752NtrwOmABjZl
+	nt/cjLh/nKuflMkMRESe7jyu58dGE4zT7RmWioc542P4xCZIc1lkz9bF/3PtwLFRmfkY8RegAu1
+	RQsYYJ0GjA==
+X-Received: by 2002:a05:620a:318b:b0:8cf:db7b:6224 with SMTP id
+ af79cd13be357-8cfdb7b68e2mr439093885a.59.1774165775634; Sun, 22 Mar 2026
+ 00:49:35 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20260322054309.898214-1-surenb@google.com>
-X-Mailer: git-send-email 2.53.0.1018.g2bb0e51243-goog
-Message-ID: <20260322054309.898214-5-surenb@google.com>
-Subject: [PATCH v4 4/4] mm: use vma_start_write_killable() in process_vma_walk_lock()
-From: Suren Baghdasaryan <surenb@google.com>
-To: akpm@linux-foundation.org
-Cc: willy@infradead.org, david@kernel.org, ziy@nvidia.com, 
-	matthew.brost@intel.com, joshua.hahnjy@gmail.com, rakie.kim@sk.com, 
-	byungchul@sk.com, gourry@gourry.net, ying.huang@linux.alibaba.com, 
-	apopple@nvidia.com, lorenzo.stoakes@oracle.com, baolin.wang@linux.alibaba.com, 
-	Liam.Howlett@oracle.com, npache@redhat.com, ryan.roberts@arm.com, 
-	dev.jain@arm.com, baohua@kernel.org, lance.yang@linux.dev, vbabka@suse.cz, 
+MIME-Version: 1.0
+References: <20260322054309.898214-1-surenb@google.com> <20260322054309.898214-2-surenb@google.com>
+In-Reply-To: <20260322054309.898214-2-surenb@google.com>
+From: Barry Song <21cnbao@gmail.com>
+Date: Sun, 22 Mar 2026 15:49:24 +0800
+X-Gm-Features: AaiRm53R0BSIBZ-7kcLpHy3OcZIzoW6AMt3M9APBFS4L2dJIHsEh5rSFscqFXrY
+Message-ID: <CAGsJ_4yAWxty2PAm0Lp-iDnAm6DpReedRvus7FFQb3A2dKPTYw@mail.gmail.com>
+Subject: Re: [PATCH v4 1/4] mm/vma: cleanup error handling path in vma_expand()
+To: Suren Baghdasaryan <surenb@google.com>
+Cc: akpm@linux-foundation.org, willy@infradead.org, david@kernel.org, 
+	ziy@nvidia.com, matthew.brost@intel.com, joshua.hahnjy@gmail.com, 
+	rakie.kim@sk.com, byungchul@sk.com, gourry@gourry.net, 
+	ying.huang@linux.alibaba.com, apopple@nvidia.com, lorenzo.stoakes@oracle.com, 
+	baolin.wang@linux.alibaba.com, Liam.Howlett@oracle.com, npache@redhat.com, 
+	ryan.roberts@arm.com, dev.jain@arm.com, lance.yang@linux.dev, vbabka@suse.cz, 
 	jannh@google.com, rppt@kernel.org, mhocko@suse.com, pfalcato@suse.de, 
 	kees@kernel.org, maddy@linux.ibm.com, npiggin@gmail.com, mpe@ellerman.id.au, 
 	chleroy@kernel.org, borntraeger@linux.ibm.com, frankja@linux.ibm.com, 
 	imbrenda@linux.ibm.com, hca@linux.ibm.com, gor@linux.ibm.com, 
 	agordeev@linux.ibm.com, svens@linux.ibm.com, gerald.schaefer@linux.ibm.com, 
 	linux-mm@kvack.org, linuxppc-dev@lists.ozlabs.org, kvm@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-s390@vger.kernel.org, surenb@google.com
+	linux-kernel@vger.kernel.org, linux-s390@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Replace vma_start_write() with vma_start_write_killable() when
-process_vma_walk_lock() is used with PGWALK_WRLOCK option.
-Adjust its direct and indirect users to check for a possible error
-and handle it. Ensure users handle EINTR correctly and do not ignore
-it.
+On Sun, Mar 22, 2026 at 1:43=E2=80=AFPM Suren Baghdasaryan <surenb@google.c=
+om> wrote:
+>
+> vma_expand() error handling is a bit confusing with "if (ret) return ret;=
+"
+> mixed with "if (!ret && ...) ret =3D ...;". Simplify the code to check
+> for errors and return immediately after an operation that might fail.
+> This also makes later changes to this function more readable.
+> Change variable name for storing the error code from "ret" to "err".
+>
+> No functional change intended.
+>
+> Suggested-by: Jann Horn <jannh@google.com>
+> Signed-off-by: Suren Baghdasaryan <surenb@google.com>
+> Reviewed-by: Liam R. Howlett <Liam.Howlett@oracle.com>
+> Reviewed-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+> ---
 
-Signed-off-by: Suren Baghdasaryan <surenb@google.com>
----
- fs/proc/task_mmu.c |  5 ++++-
- mm/mempolicy.c     |  1 +
- mm/pagewalk.c      | 20 ++++++++++++++------
- 3 files changed, 19 insertions(+), 7 deletions(-)
-
-diff --git a/fs/proc/task_mmu.c b/fs/proc/task_mmu.c
-index e091931d7ca1..2fe3d11aad03 100644
---- a/fs/proc/task_mmu.c
-+++ b/fs/proc/task_mmu.c
-@@ -1797,6 +1797,7 @@ static ssize_t clear_refs_write(struct file *file, const char __user *buf,
- 		struct clear_refs_private cp = {
- 			.type = type,
- 		};
-+		int err;
- 
- 		if (mmap_write_lock_killable(mm)) {
- 			count = -EINTR;
-@@ -1824,7 +1825,9 @@ static ssize_t clear_refs_write(struct file *file, const char __user *buf,
- 						0, mm, 0, -1UL);
- 			mmu_notifier_invalidate_range_start(&range);
- 		}
--		walk_page_range(mm, 0, -1, &clear_refs_walk_ops, &cp);
-+		err = walk_page_range(mm, 0, -1, &clear_refs_walk_ops, &cp);
-+		if (err)
-+			count = err;
- 		if (type == CLEAR_REFS_SOFT_DIRTY) {
- 			mmu_notifier_invalidate_range_end(&range);
- 			flush_tlb_mm(mm);
-diff --git a/mm/mempolicy.c b/mm/mempolicy.c
-index 929e843543cf..bb5b0e83ce0f 100644
---- a/mm/mempolicy.c
-+++ b/mm/mempolicy.c
-@@ -969,6 +969,7 @@ static const struct mm_walk_ops queue_pages_lock_vma_walk_ops = {
-  *      (a hugetlbfs page or a transparent huge page being counted as 1).
-  * -EIO - a misplaced page found, when MPOL_MF_STRICT specified without MOVEs.
-  * -EFAULT - a hole in the memory range, when MPOL_MF_DISCONTIG_OK unspecified.
-+ * -EINTR - walk got terminated due to pending fatal signal.
-  */
- static long
- queue_pages_range(struct mm_struct *mm, unsigned long start, unsigned long end,
-diff --git a/mm/pagewalk.c b/mm/pagewalk.c
-index eda74273c8ec..a42cd6a6d812 100644
---- a/mm/pagewalk.c
-+++ b/mm/pagewalk.c
-@@ -438,14 +438,13 @@ static inline void process_mm_walk_lock(struct mm_struct *mm,
- 		mmap_assert_write_locked(mm);
- }
- 
--static inline void process_vma_walk_lock(struct vm_area_struct *vma,
-+static inline int process_vma_walk_lock(struct vm_area_struct *vma,
- 					 enum page_walk_lock walk_lock)
- {
- #ifdef CONFIG_PER_VMA_LOCK
- 	switch (walk_lock) {
- 	case PGWALK_WRLOCK:
--		vma_start_write(vma);
--		break;
-+		return vma_start_write_killable(vma);
- 	case PGWALK_WRLOCK_VERIFY:
- 		vma_assert_write_locked(vma);
- 		break;
-@@ -457,6 +456,7 @@ static inline void process_vma_walk_lock(struct vm_area_struct *vma,
- 		break;
- 	}
- #endif
-+	return 0;
- }
- 
- /*
-@@ -500,7 +500,9 @@ int walk_page_range_mm_unsafe(struct mm_struct *mm, unsigned long start,
- 			if (ops->pte_hole)
- 				err = ops->pte_hole(start, next, -1, &walk);
- 		} else { /* inside vma */
--			process_vma_walk_lock(vma, ops->walk_lock);
-+			err = process_vma_walk_lock(vma, ops->walk_lock);
-+			if (err)
-+				break;
- 			walk.vma = vma;
- 			next = min(end, vma->vm_end);
- 			vma = find_vma(mm, vma->vm_end);
-@@ -717,6 +719,7 @@ int walk_page_range_vma_unsafe(struct vm_area_struct *vma, unsigned long start,
- 		.vma		= vma,
- 		.private	= private,
- 	};
-+	int err;
- 
- 	if (start >= end || !walk.mm)
- 		return -EINVAL;
-@@ -724,7 +727,9 @@ int walk_page_range_vma_unsafe(struct vm_area_struct *vma, unsigned long start,
- 		return -EINVAL;
- 
- 	process_mm_walk_lock(walk.mm, ops->walk_lock);
--	process_vma_walk_lock(vma, ops->walk_lock);
-+	err = process_vma_walk_lock(vma, ops->walk_lock);
-+	if (err)
-+		return err;
- 	return __walk_page_range(start, end, &walk);
- }
- 
-@@ -747,6 +752,7 @@ int walk_page_vma(struct vm_area_struct *vma, const struct mm_walk_ops *ops,
- 		.vma		= vma,
- 		.private	= private,
- 	};
-+	int err;
- 
- 	if (!walk.mm)
- 		return -EINVAL;
-@@ -754,7 +760,9 @@ int walk_page_vma(struct vm_area_struct *vma, const struct mm_walk_ops *ops,
- 		return -EINVAL;
- 
- 	process_mm_walk_lock(walk.mm, ops->walk_lock);
--	process_vma_walk_lock(vma, ops->walk_lock);
-+	err = process_vma_walk_lock(vma, ops->walk_lock);
-+	if (err)
-+		return err;
- 	return __walk_page_range(vma->vm_start, vma->vm_end, &walk);
- }
- 
--- 
-2.53.0.1018.g2bb0e51243-goog
-
+LGTM,
+Reviewed-by: Barry Song <baohua@kernel.org>
