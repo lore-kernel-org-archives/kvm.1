@@ -1,127 +1,173 @@
-Received: from mail-qk1-f180.google.com (mail-qk1-f180.google.com [209.85.222.180])
+Received: from va-2-30.ptr.blmpb.com (va-2-30.ptr.blmpb.com [209.127.231.30])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E6A8E192B90
-	for <kvm@vger.kernel.org>; Sun, 22 Mar 2026 07:49:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.222.180
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774165778; cv=pass; b=KN0+zPsXQpVZp8D7aZAnRwoTDePoXffl/cQ9YhLcrj6+ECMEQ5Gu8Ixi/nLKHJjrrF/rwcGBx79b7iUlMIimWRHU0hwo0NifidKeiyN1pazGx12VLVOpL00nQgBn66pGBDYUHqDEZ777hOR0v2+UEZl1q7eSkfnMytFnSQrIL8s=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774165778; c=relaxed/simple;
-	bh=yog4Y4FnY2pw/bISePo6mO0/0jBCwWfyVov9mO2pTgg=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=fiBlS3WPJjxhYMWhmoJvQAANHR3WWQwkpp4V0AxGuh4M9X5e8hWrIE3rUAShrYbw6JvJTvWvS7UYWq1GoLxIKlrYlJwmOfw6NMHaPdVQFYkijryyl6Upjq43UYKHqE25Hrj8dpootI/TMM1qTA1tPkgz/ONfseQDP66c/d8nAUk=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=F+CuJxU+; arc=pass smtp.client-ip=209.85.222.180
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 535F42EB0F
+	for <kvm@vger.kernel.org>; Sun, 22 Mar 2026 09:43:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.127.231.30
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1774172604; cv=none; b=Dge2Pi5/uQ1q8eICs54Pf75nU8Fpzp89HyEo0pjdS5+vBXaQm0qeVDxueeL+bHGEzy7BM3AvbpzutJ+/61XNXfpjDdOgqa9FOWRx0etnT0rkDgeAU/hi83WRiWVmrRvXIwrPzsc3BRo/hD/7B5rnpHC2d47tcC1dcNkTm12J2Ao=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1774172604; c=relaxed/simple;
+	bh=rgztf57Wkf3uNQrwjvwiUV1pJekdLenxeGJV/P9W4g0=;
+	h=Date:From:In-Reply-To:References:Content-Type:Message-Id:To:Cc:
+	 Subject:Mime-Version; b=bqfVM8x4ZI3dqANCwN2a/mb1wXemot5IaIBupftZ/F6Od5Z9MD4N87IsrJOuFHka4GQECyQBD0lWEo+yWRFj4UYm6iwnZaALB8gh6MOqn25V3v2d5hwK1bmvAsoKEXq21bQpnkdAUsxei7GZWeefLKy2Ztx7wJw5Xh0wT4mkU0o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=yunyoo.cc; spf=pass smtp.mailfrom=yunyoo.cc; dkim=pass (2048-bit key) header.d=yunyoo-cc.20200929.dkim.larksuite.com header.i=@yunyoo-cc.20200929.dkim.larksuite.com header.b=D6PGJe4g; arc=none smtp.client-ip=209.127.231.30
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=yunyoo.cc
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yunyoo.cc
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="F+CuJxU+"
-Received: by mail-qk1-f180.google.com with SMTP id af79cd13be357-8cfc795ca97so182698185a.0
-        for <kvm@vger.kernel.org>; Sun, 22 Mar 2026 00:49:36 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1774165776; cv=none;
-        d=google.com; s=arc-20240605;
-        b=XJeRxfBqdhMhxdni/blnfrE8nlTsULkzoTUZAq2QzCVZfW1vcbUvnpVFptDR/+v09Z
-         Ikrv3Erxf3AHaylR77y1P9JFf5N7hSCLkV+fzsKGPcbnguPlJrf0SXP9P/LkgDfHqVuv
-         Vg+lQf8xGb9JMjOgQxHEmR+Y8JAMUn4edXP64ZsJPingOfnoaUT2oC/ytiYSPPIYSYtj
-         T8vXvZiqzlk8zYD9OYUHRIfTRz6dzg0jwRyFUhboOM3pW7fr4lppwoWajmzAam1Q/STl
-         IjupXFuUvt8lTRQZrjLK6gfvU0jjAxcRHeASRY4Z9TWJNPgBNj6OtuvL7bhDqpQ+6vrP
-         rXxQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=yog4Y4FnY2pw/bISePo6mO0/0jBCwWfyVov9mO2pTgg=;
-        fh=QYj4+Ph8oWHM5EKi4RsOfSwDFneEtqelfr83RmPwLPo=;
-        b=IW0UeXZQTYooos40bADXgLEcWTy5Ga7U9Cb7G3AZTYbqPs7u04cqkdtyETdXVDmKhC
-         je9cbpbiE6JhNgP20gcEjpP7/J5zRGvBTZbv+RIAy2z5Ii7VyMYKD8TY3fR3+js4a3Yf
-         Xfe6wxDWD5Ao+KpU+WCYnNuQocKlHBHUNYm44M/thZHuDHPxAOhK4vbYpSxV29jO2J8Q
-         Tc7p2yKG5FQrFhNmexK+eVbUUGqjr8IhzhoSAalH381FY4O68gC1mB5vOlcM7bygUNkt
-         cQIsUTcg6YXMz4R9YWiETQoHfGotXgtupXppjg01JUXM8EY/+X5lS2j0p5XxkcO0E4zM
-         HK8g==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1774165776; x=1774770576; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=yog4Y4FnY2pw/bISePo6mO0/0jBCwWfyVov9mO2pTgg=;
-        b=F+CuJxU+Q4DrEWvnxfFZ6jPFM75VPl0dxcjCrPgbCqN0AhmcmkblSYnzZnEsS7vxkP
-         vHC8AdYlsqyn6lAhvSMgCDqakyX1MIzoAA339knHj5Kl5q4UiAVlKJtsANx3uJGt109m
-         p98dI6ZA66tY0PTsGKOaFaG1q1yxTVNhkEXtqcUqU8k4lWXPva1NNnuRlrlhMGF95Vnb
-         daHT0XTCoJ6JUVmWVelfHb4FhbSk31LAeMPARQTidrjhfFLc61cwpqqZSDds3lPRu1uV
-         8AIIH+VI5bQO/VS9VHlWfMfncDCVXUsDqoeRjU6+4LeeX2OUjv0/ogiOXHjqtZF+V0Ii
-         UBnA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774165776; x=1774770576;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=yog4Y4FnY2pw/bISePo6mO0/0jBCwWfyVov9mO2pTgg=;
-        b=JRjHIedgUwxjhZ/jKl1gAUtfU2wDS87BenNhYec6wwHXqW7WwK4M+dtmjsTlSNNNld
-         ACBHxPolF+az3d5JBqVi0h694O7yS2HZXvupZJrup7CArcXy9ZtR0JTicMU0ruOyn3Wi
-         fX/1M3lY0mWRmhR5mRT9Suo1igWpZIN91+vB7UvwlttK9J9Fa4TzxGTV2FozBb8Jy2+y
-         vUJHEpxDYV5ffbW0Yqk8gNc9Fb7iyXoYAPFfJr2Nh0cnnt2r3zYFTcc7GchInRXwAQyY
-         1odCsQB7JF4eElNJIauQ3lkSKNnvO0Jl3DUot8S0m8o8hBd4ZVdgLPMoWsNXhY+HVGs1
-         eAHw==
-X-Forwarded-Encrypted: i=1; AJvYcCXnknuTNfv6GqTJdSYX0RDZracRz7KwVam1VEa4mC8pNS9m55l5d/mnyi6U22HpSy3+mNk=@vger.kernel.org
-X-Gm-Message-State: AOJu0YynFJNV17NRJfHHCRHBXoEq0WgwYPatGe7YC3YjFz6QzuWpGCgQ
-	slBa+4acZ2p8263URfYwGDxL6EyZFqTNpynWmF2QT6mymuxEdWYD3z8BIjdlEcj6JnY4i5lV9kL
-	dakvNoUl+SoafkRy4zzI9NhpRvNt6/Es=
-X-Gm-Gg: ATEYQzwn21Oj5TisU9iwsR330BOBRjw/lWF0GiirtYlo3TM4Q/t1luwU25mEAU3t+Ur
-	7w293z8yZUNIqNynRh/22yow2+FkLiuIONSGN5S1eihQKmUkWpmGXZo/qMFrgTZaDFvowcbcg06
-	h02yE/4iITsm16QP9db2AF5XbgtfNUKNhjFyiTVSzpX69QyE7CROPwMUrDQpg752NtrwOmABjZl
-	nt/cjLh/nKuflMkMRESe7jyu58dGE4zT7RmWioc542P4xCZIc1lkz9bF/3PtwLFRmfkY8RegAu1
-	RQsYYJ0GjA==
-X-Received: by 2002:a05:620a:318b:b0:8cf:db7b:6224 with SMTP id
- af79cd13be357-8cfdb7b68e2mr439093885a.59.1774165775634; Sun, 22 Mar 2026
- 00:49:35 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=yunyoo-cc.20200929.dkim.larksuite.com header.i=@yunyoo-cc.20200929.dkim.larksuite.com header.b="D6PGJe4g"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+ s=s1; d=yunyoo-cc.20200929.dkim.larksuite.com; t=1774172591;
+  h=from:subject:mime-version:from:date:message-id:subject:to:cc:
+ reply-to:content-type:mime-version:in-reply-to:message-id;
+ bh=rgztf57Wkf3uNQrwjvwiUV1pJekdLenxeGJV/P9W4g0=;
+ b=D6PGJe4g/tUMFxxd/SMZc55KcRjPK9B12GGGjRxfNqaw8NsIOXsMYHZT4GHPTvlTwNrUyH
+ qq1V3/vbXAizEGtVnWn9xQoXUl1uo/E07ut1VCp4EzG423vv/xT7Zq/xuDgEH45Dc8yPZY
+ oCxC15bY6z+j9ErG/Hlk8nayppFOlMH8yHFHOupl9VjH2A269jONDdZvfuABNnIEHSSXAE
+ QfcqVo+8kBMATtEpcD8HDC+mFb/xpna+QI7fFumGlS9OnkbA8ATw3L5m/130IqGb9z+x7Q
+ JXTrwbXhEzrCfxSssu0c2lURNP/p+9lgY8kBx58Yt985QvW9NTi7+Up7cakHOA==
+Date: Sun, 22 Mar 2026 09:43:10 +0000
+From: "ShuangYu" <shuangyu@yunyoo.cc>
+In-Reply-To: <559b04ae6ce52973c535dc47e461638b7f4c3d63.1772441455.git.mst@redhat.com>
+References: <559b04ae6ce52973c535dc47e461638b7f4c3d63.1772441455.git.mst@redhat.com>
+Content-Type: text/plain; charset=UTF-8
+Message-Id: <9ac0a071e79e9da8128523ddeba19085f4f8c9aa.66fca736.e866.40b1.89bb.b04390067263@larksuite.com>
+To: "Michael S. Tsirkin" <mst@redhat.com>
+Cc: <linux-kernel@vger.kernel.org>, 
+	"Stefano Garzarella" <sgarzare@redhat.com>, 
+	"Stefan Hajnoczi" <stefanha@redhat.com>, 
+	"Jason Wang" <jasowang@redhat.com>, 
+	=?utf-8?q?Eugenio_P=C3=A9rez?= <eperezma@redhat.com>, 
+	<kvm@vger.kernel.org>, <virtualization@lists.linux.dev>, 
+	<netdev@vger.kernel.org>
+Subject: Re: [PATCH RFC] vhost: fix vhost_get_avail_idx for a non empty ring
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <20260322054309.898214-1-surenb@google.com> <20260322054309.898214-2-surenb@google.com>
-In-Reply-To: <20260322054309.898214-2-surenb@google.com>
-From: Barry Song <21cnbao@gmail.com>
-Date: Sun, 22 Mar 2026 15:49:24 +0800
-X-Gm-Features: AaiRm53R0BSIBZ-7kcLpHy3OcZIzoW6AMt3M9APBFS4L2dJIHsEh5rSFscqFXrY
-Message-ID: <CAGsJ_4yAWxty2PAm0Lp-iDnAm6DpReedRvus7FFQb3A2dKPTYw@mail.gmail.com>
-Subject: Re: [PATCH v4 1/4] mm/vma: cleanup error handling path in vma_expand()
-To: Suren Baghdasaryan <surenb@google.com>
-Cc: akpm@linux-foundation.org, willy@infradead.org, david@kernel.org, 
-	ziy@nvidia.com, matthew.brost@intel.com, joshua.hahnjy@gmail.com, 
-	rakie.kim@sk.com, byungchul@sk.com, gourry@gourry.net, 
-	ying.huang@linux.alibaba.com, apopple@nvidia.com, lorenzo.stoakes@oracle.com, 
-	baolin.wang@linux.alibaba.com, Liam.Howlett@oracle.com, npache@redhat.com, 
-	ryan.roberts@arm.com, dev.jain@arm.com, lance.yang@linux.dev, vbabka@suse.cz, 
-	jannh@google.com, rppt@kernel.org, mhocko@suse.com, pfalcato@suse.de, 
-	kees@kernel.org, maddy@linux.ibm.com, npiggin@gmail.com, mpe@ellerman.id.au, 
-	chleroy@kernel.org, borntraeger@linux.ibm.com, frankja@linux.ibm.com, 
-	imbrenda@linux.ibm.com, hca@linux.ibm.com, gor@linux.ibm.com, 
-	agordeev@linux.ibm.com, svens@linux.ibm.com, gerald.schaefer@linux.ibm.com, 
-	linux-mm@kvack.org, linuxppc-dev@lists.ozlabs.org, kvm@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-s390@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Mime-Version: 1.0
+X-Lms-Return-Path: <lba+169bfb9ae+d92fad+vger.kernel.org+shuangyu@yunyoo.cc>
 Content-Transfer-Encoding: quoted-printable
 
-On Sun, Mar 22, 2026 at 1:43=E2=80=AFPM Suren Baghdasaryan <surenb@google.c=
-om> wrote:
->
-> vma_expand() error handling is a bit confusing with "if (ret) return ret;=
-"
-> mixed with "if (!ret && ...) ret =3D ...;". Simplify the code to check
-> for errors and return immediately after an operation that might fail.
-> This also makes later changes to this function more readable.
-> Change variable name for storing the error code from "ret" to "err".
->
-> No functional change intended.
->
-> Suggested-by: Jann Horn <jannh@google.com>
-> Signed-off-by: Suren Baghdasaryan <surenb@google.com>
-> Reviewed-by: Liam R. Howlett <Liam.Howlett@oracle.com>
-> Reviewed-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-> ---
 
-LGTM,
-Reviewed-by: Barry Song <baohua@kernel.org>
+> From: "Michael S. Tsirkin"<mst@redhat.com>
+> Date:=C2=A0 Mon, Mar 2, 2026, 16:52
+> Subject:=C2=A0 [PATCH RFC] vhost: fix vhost_get_avail_idx for a non empty=
+ ring
+> To: <linux-kernel@vger.kernel.org>
+> Cc: "ShuangYu"<shuangyu@yunyoo.cc>, "Stefano Garzarella"<sgarzare@redhat.=
+com>, "Stefan Hajnoczi"<stefanha@redhat.com>, "Jason Wang"<jasowang@redhat.=
+com>, "Eugenio P=C3=A9rez"<eperezma@redhat.com>, <kvm@vger.kernel.org>, <vi=
+rtualization@lists.linux.dev>, <netdev@vger.kernel.org>
+> vhost_get_avail_idx is supposed to report whether it has updated
+> vq->avail_idx. Instead, it returns whether all entries have been
+> consumed, which is usually the same. But not always - in
+> drivers/vhost/net.c and when mergeable buffers have been enabled, the
+> driver checks whether the combined entries are big enough to store an
+> incoming packet. If not, the driver re-enables notifications with
+> available entries still in the ring. The incorrect return value from
+> vhost_get_avail_idx propagates through vhost_enable_notify and causes
+> the host to livelock if the guest is not making progress, as vhost will
+> immediately disable notifications and retry using the available entries.
+>=C2=A0
+> The obvious fix is to make vhost_get_avail_idx do what the comment
+> says it does and report whether new entries have been added.
+>=C2=A0
+> Reported-by: ShuangYu <shuangyu@yunyoo.cc>
+> Fixes: d3bb267bbdcb ("vhost: cache avail index in vhost_enable_notify()")
+> Cc: Stefano Garzarella <sgarzare@redhat.com>
+> Cc: Stefan Hajnoczi <stefanha@redhat.com>
+> Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
+> ---
+>=C2=A0
+> Lightly tested, posting early to simplify testing for the reporter.
+>=C2=A0
+> =C2=A0drivers/vhost/vhost.c | 11 +++++++----
+> =C2=A01 file changed, 7 insertions(+), 4 deletions(-)
+>=C2=A0
+> diff --git a/drivers/vhost/vhost.c b/drivers/vhost/vhost.c
+> index 2f2c45d20883..db329a6f6145 100644
+> --- a/drivers/vhost/vhost.c
+> +++ b/drivers/vhost/vhost.c
+> @@ -1522,6 +1522,7 @@ static void vhost_dev_unlock_vqs(struct vhost_dev *=
+d)
+> =C2=A0static inline int vhost_get_avail_idx(struct vhost_virtqueue *vq)
+> =C2=A0{
+> =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0__virtio16 idx;
+> + =C2=A0 =C2=A0 =C2=A0 =C2=A0u16 avail_idx;
+> =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0int r;
+> =C2=A0
+> =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0r =3D vhost_get_avail(vq, idx, &vq->ava=
+il->idx);
+> @@ -1532,17 +1533,19 @@ static inline int vhost_get_avail_idx(struct vhos=
+t_virtqueue *vq)
+> =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0}
+> =C2=A0
+> =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0/* Check it isn't doing very strange th=
+ing with available indexes */
+> - =C2=A0 =C2=A0 =C2=A0 =C2=A0vq->avail_idx =3D vhost16_to_cpu(vq, idx);
+> - =C2=A0 =C2=A0 =C2=A0 =C2=A0if (unlikely((u16)(vq->avail_idx - vq->last_=
+avail_idx) > vq->num)) {
+> + =C2=A0 =C2=A0 =C2=A0 =C2=A0avail_idx =3D vhost16_to_cpu(vq, idx);
+> + =C2=A0 =C2=A0 =C2=A0 =C2=A0if (unlikely((u16)(avail_idx - vq->last_avai=
+l_idx) > vq->num)) {
+> =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0vq_err(vq, =
+"Invalid available index change from %u to %u",
+> - =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =
+=C2=A0 vq->last_avail_idx, vq->avail_idx);
+> + =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =
+=C2=A0 vq->last_avail_idx, avail_idx);
+> =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0return -EIN=
+VAL;
+> =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0}
+> =C2=A0
+> =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0/* We're done if there is nothing new *=
+/
+> - =C2=A0 =C2=A0 =C2=A0 =C2=A0if (vq->avail_idx =3D=3D vq->last_avail_idx)
+> + =C2=A0 =C2=A0 =C2=A0 =C2=A0if (avail_idx =3D=3D vq->avail_idx)
+> =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0return 0;
+> =C2=A0
+> + =C2=A0 =C2=A0 =C2=A0 =C2=A0vq->avail_idx =3D avail_idx;
+> +
+> =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0/*
+> =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 * We updated vq->avail_idx so we need =
+a memory barrier between
+> =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 * the index read above and the caller =
+reading avail ring entries.
+> --=C2=A0
+> MST
+>=C2=A0
+
+Hi,
+
+Sorry for the delay, it took me some time to build a reliable test environm=
+ent.=C2=A0
+
+I've verified the patch on 6.18.10. With 16 concurrent TCP flows over
+virtio-net (TSO enabled, vCPU throttled to 1%, 300s duration):
+
+=C2=A0 Before patch (bpftrace + CPU monitor):
+=C2=A0=C2=A0=C2=A0 - vhost_discard_vq_desc: up to 3,716,272/3s
+=C2=A0=C2=A0=C2=A0 - vhost_enable_notify false positives: up to 3,716,278/3=
+s
+=C2=A0=C2=A0 =C2=A0=C2=A0 (nearly 1:1 with discard =E2=80=94 every partial =
+alloc triggers re-loop)
+=C2=A0=C2=A0=C2=A0 - vhost worker CPU: 0~99%, frequently 50-99%
+=C2=A0=C2=A0=C2=A0 - successful receives: as low as 137/3s
+
+=C2=A0 After patch:
+=C2=A0=C2=A0=C2=A0 - vhost_discard_vq_desc: 9~33/3s
+=C2=A0=C2=A0=C2=A0 - vhost_enable_notify false positives: 0 (all 100 sample=
+ windows)
+=C2=A0=C2=A0=C2=A0 - vhost worker CPU: 0% (all 149 sample points)
+=C2=A0=C2=A0=C2=A0 - successful receives: 873~2,667/3s
+
+The partial allocations still occur under load, but after the fix
+vhost_get_avail_idx correctly returns 0, so the worker sleeps
+instead of spinning. Thanks.
+
+Tested-by: ShuangYu <shuangyu@yunyoo.cc>
+
+Best regards,
+ShuangYu
