@@ -1,154 +1,133 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2D8B18FC80;
-	Mon, 23 Mar 2026 13:38:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2713A3AE1B8;
+	Mon, 23 Mar 2026 13:44:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774273084; cv=none; b=LTDICnhKOQGT8CFeS/ywWhyfO+FgKn/+V8pWfesEGSKb9xmtYOYREDqXO1WJJ0k1vnRCxQjikzls0MI+OFqEPWsNKlSccg8zC2rcLMzs1+02nPEn8PCa5O8l5r+lP8qb88CzPcBEQdv7LN9HgfIlMjVlZekp6U5OdvUMfzMCf6Q=
+	t=1774273448; cv=none; b=geVKa6LIj8ClK6to7Qpyh3Is3rMa1zLnWdcg3ipGRTiA5omulWUBTiogzYv5nsK60xi4U58uvSehW0A8Rf1odgupxRBiykGNISsmUJU8FAqH062XkACdDVVKLA+PUWrLGYMW3Ua5vNp8e0PV809ANiYXObAq8MQAymx+Jl3QAbA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774273084; c=relaxed/simple;
-	bh=USMzPIu1/1gwLcFqDyGpJPU6fyEk3mOxUeH0qtfA7+4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=fCWtBI+lFxmIVJqgUmUj3ILKtR6QxVKA8m9e+LAdYphF7IM+izBFmXB2GXdEHkD10SnCqq2wvLVIFut+uz5spGpLiUlx9B8APXzWgaTRnjZJQkNc0Z09pjOIJgJuNotSJWRKMcrFGkGpWTAgFH6weP6sGdQa3fsIuaYTmcQGulk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=OU6XHM0U; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1774273448; c=relaxed/simple;
+	bh=AKu1YaPhPPZaOaFw+r4TZS3TahnM2+GdXaXeiNaCJA8=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Subject:From:Cc:To:
+	 References:In-Reply-To; b=Mep/dsu/ryDz+TV5Oo/S5xto+ZvrxzBTq3pHKH731rDeCBOe8ScW677uhSm2ZwKC0wyN/mZhZpx4rXu58CGF4k6CtYeG1EvDfo+NBF3OxlhWXlv0nFN7kgRbMtQ4jkdL2fOdSR2ufFsvxh69JeosL+YJcE96UyKkuO0X0QetUF4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=EFtTJj/m; arc=none smtp.client-ip=148.163.158.5
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OU6XHM0U"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2D04FC4CEF7;
-	Mon, 23 Mar 2026 13:38:02 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1774273084;
-	bh=USMzPIu1/1gwLcFqDyGpJPU6fyEk3mOxUeH0qtfA7+4=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=OU6XHM0UffNDTEB4SvGp5qtXj77lQnim9j70B1Ao/FtqQGkpL+JILHVyU1MoPJY5a
-	 gfpBJjq2mBHAPZq74NqdSN+wdgGM/f56FnhflLgMyj2EcFrPWRtCBQ7su1v/gh231I
-	 9tfs/46j/7w1TUsxkZCCgEUXLBaWWHSBY5OSi6j1Y1v+D00Es5+/h29/vGfRvG5+U1
-	 M+kpRsaJo6ZOmGg+X5uD+a2fXCSK69WJraAal7nkqdX+smv4l6dWcSQ37W+UoVqBrz
-	 3kCBsVmPfJ5bGAOqihh/B0q9cWA9qaCxrfbs0dcySWU/bytIDRnhH7SLTgPn7Jgtdu
-	 Enppi209j2aIQ==
-Date: Mon, 23 Mar 2026 13:37:59 +0000
-From: Mark Brown <broonie@kernel.org>
-To: Sascha Bischoff <Sascha.Bischoff@arm.com>
-Cc: "linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>,
-	"kvmarm@lists.linux.dev" <kvmarm@lists.linux.dev>,
-	"kvm@vger.kernel.org" <kvm@vger.kernel.org>, nd <nd@arm.com>,
-	"maz@kernel.org" <maz@kernel.org>,
-	"oliver.upton@linux.dev" <oliver.upton@linux.dev>,
-	Joey Gouly <Joey.Gouly@arm.com>,
-	Suzuki Poulose <Suzuki.Poulose@arm.com>,
-	"yuzenghui@huawei.com" <yuzenghui@huawei.com>,
-	"peter.maydell@linaro.org" <peter.maydell@linaro.org>,
-	"lpieralisi@kernel.org" <lpieralisi@kernel.org>,
-	Timothy Hayes <Timothy.Hayes@arm.com>,
-	"jonathan.cameron@huawei.com" <jonathan.cameron@huawei.com>
-Subject: Re: [PATCH v7 12/41] KVM: arm64: gic-v5: Sanitize
- ID_AA64PFR2_EL1.GCIE
-Message-ID: <3be4971e-31a4-4033-9583-88d7fc96104f@sirena.org.uk>
-References: <20260319154937.3619520-1-sascha.bischoff@arm.com>
- <20260319154937.3619520-13-sascha.bischoff@arm.com>
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="EFtTJj/m"
+Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 62MLt6hu488451;
+	Mon, 23 Mar 2026 13:44:04 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=E9UIHq
+	w4xgdh6LZZONwad+M5bnFdSEcA68tjkCouitc=; b=EFtTJj/mdUHwoKg6/BPiFz
+	xJY1b4zG8x12xCXfcu/w3JeMJMEt4MUjsJ4l3CmJjadkFdlaGSf2mm86cymTZWiL
+	DVhtPTaoGnVNBGIEyteB+hBm6YQijvLQWdgjCeKhXwDKckncGX4uPDpBrFbth01N
+	pLQ0eynxPkNxPkjD7/eo2wOHs8akTZNOwFEssTum8ymmHUcO7IyHe0rtRQIyDDjf
+	quSNx1ZRVhxWPjl79kFp6+31ysdsg8NtD2l8aPxHyCSkR3AWX9SSFHuESqLZGuE0
+	if0or2A5qjH4mFjozWZLUI70rrujWSTflUnovSY8WAkZKiSl9AKDTF0aNdgmwgMg
+	==
+Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4d1kumet08-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 23 Mar 2026 13:44:03 +0000 (GMT)
+Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma22.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 62NC0PAX005976;
+	Mon, 23 Mar 2026 13:44:03 GMT
+Received: from smtprelay04.fra02v.mail.ibm.com ([9.218.2.228])
+	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4d261ydnj5-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 23 Mar 2026 13:44:03 +0000
+Received: from smtpav02.fra02v.mail.ibm.com (smtpav02.fra02v.mail.ibm.com [10.20.54.101])
+	by smtprelay04.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 62NDhxfK29885000
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Mon, 23 Mar 2026 13:43:59 GMT
+Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id E4A5920040;
+	Mon, 23 Mar 2026 13:43:58 +0000 (GMT)
+Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id CE0F92004B;
+	Mon, 23 Mar 2026 13:43:58 +0000 (GMT)
+Received: from darkmoore (unknown [9.52.198.32])
+	by smtpav02.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Mon, 23 Mar 2026 13:43:58 +0000 (GMT)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="MlKsc4YS4+0PkdYN"
-Content-Disposition: inline
-In-Reply-To: <20260319154937.3619520-13-sascha.bischoff@arm.com>
-X-Cookie: You will triumph over your enemy.
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Mon, 23 Mar 2026 14:43:53 +0100
+Message-Id: <DHA7FUZXVHSE.2CFXV16WE8PDA@linux.ibm.com>
+Subject: Re: [PATCH v2 1/8] KVM: s390: vsie: Fix dat_split_ste()
+From: "Christoph Schlameuss" <schlameuss@linux.ibm.com>
+Cc: <linux-kernel@vger.kernel.org>, <linux-s390@vger.kernel.org>,
+        <borntraeger@de.ibm.com>, <frankja@linux.ibm.com>, <nrb@linux.ibm.com>,
+        <seiden@linux.ibm.com>, <gra@linux.ibm.com>,
+        <schlameuss@linux.ibm.com>, <hca@linux.ibm.com>, <david@kernel.org>
+To: "Claudio Imbrenda" <imbrenda@linux.ibm.com>, <kvm@vger.kernel.org>
+X-Mailer: aerc 0.21.0
+References: <20260320161542.202913-1-imbrenda@linux.ibm.com>
+ <20260320161542.202913-2-imbrenda@linux.ibm.com>
+In-Reply-To: <20260320161542.202913-2-imbrenda@linux.ibm.com>
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: 0e-Su-VIdUAIXevdtnsTfrklmrCjZ8HJ
+X-Proofpoint-ORIG-GUID: 0e-Su-VIdUAIXevdtnsTfrklmrCjZ8HJ
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMzIzMDEwMyBTYWx0ZWRfXxJeAOu/QUS5R
+ HAUzMQLsehdnIaXMXV673v0BxjMcQv/4TPZ3nQ9SguRJHREVD/KFquQsOOhBwD6ZZQ8vYqJAFLG
+ Fuy1JN81iTHgFaGcsLj85bSzrCPnP2mXVBMzflL+h5emjAorLrmIQvKt1iCVj+emRV9bXMKqPJi
+ jgEjis/JjOHSPs+QQwpyJ1Kb+HzPocYBLbXtkYee4MFGCeSml7cscuCb9GIpoJomZV2EUEfIz7d
+ 9qa/WQ37OOVCcfoNnRw5Y+D9PQgO8otlnxQZax06LLN5em4PdEXqPpNP/eL/Uz6kYscmJYl42x3
+ D/jFimfz0Pp0biMGv0U8Md+iONEmmw9nbFui/Cum744dS91amaIaqZ1xbJPkACwPTp98cAf88O0
+ FZDKIjRkawWRydjZyGvBa6uC/IIo0IhF20c6CeqmfMnMQCIz2+BIM9gKYez1tHtDo7q0CKkvLPp
+ 0vAZ3snPx/qypVibXMA==
+X-Authority-Analysis: v=2.4 cv=KbXfcAYD c=1 sm=1 tr=0 ts=69c143a3 cx=c_pps
+ a=5BHTudwdYE3Te8bg5FgnPg==:117 a=5BHTudwdYE3Te8bg5FgnPg==:17
+ a=IkcTkHD0fZMA:10 a=Yq5XynenixoA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=RnoormkPH1_aCDwRdu11:22 a=RzCfie-kr_QcCd8fBx8p:22 a=VnNF1IyMAAAA:8
+ a=buXqh26OFB9ADXD7E0MA:9 a=QEXdDO2ut3YA:10
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
+ definitions=2026-03-23_04,2026-03-20_02,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ suspectscore=0 impostorscore=0 malwarescore=0 adultscore=0 clxscore=1015
+ priorityscore=1501 bulkscore=0 lowpriorityscore=0 phishscore=0 spamscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2603050001 definitions=main-2603230103
 
+On Fri Mar 20, 2026 at 5:15 PM CET, Claudio Imbrenda wrote:
+> If the guest misbehaves and puts the page tables for its nested guest
+> inside the memory of the nested guest itself, the shadow mapping will
+> lose synchronization with the actual mapping.
+>
+> Propagate the vsie_notif bit from shadowed large pages to smaller pages
+> when splitting a large page.
+>
+> Fixes: 2db149a0a6c5 ("KVM: s390: KVM page table management functions: wal=
+ks")
+> Signed-off-by: Claudio Imbrenda <imbrenda@linux.ibm.com>
 
---MlKsc4YS4+0PkdYN
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Reviewed-by: Christoph Schlameuss <schlameuss@linux.ibm.com>
 
-On Thu, Mar 19, 2026 at 03:52:50PM +0000, Sascha Bischoff wrote:
-> Add in a sanitization function for ID_AA64PFR2_EL1, preserving the
-> already-present behaviour for the FPMR, MTEFAR, and MTESTOREONLY
-> fields. Add sanitisation for the GCIE field, which is set to IMP if
-> the host supports a GICv5 guest and NI, otherwise.
+> ---
+>  arch/s390/kvm/dat.c | 1 +
+>  1 file changed, 1 insertion(+)
+>
+> diff --git a/arch/s390/kvm/dat.c b/arch/s390/kvm/dat.c
+> index 670404d4fa44..48b5f2bcf172 100644
+> --- a/arch/s390/kvm/dat.c
+> +++ b/arch/s390/kvm/dat.c
+> @@ -292,6 +292,7 @@ static int dat_split_ste(struct kvm_s390_mmu_cache *m=
+c, union pmd *pmdp, gfn_t g
+>  				pt->ptes[i].val =3D init.val | i * PAGE_SIZE;
+>  			/* No need to take locks as the page table is not installed yet. */
+>  			pgste_init.prefix_notif =3D old.s.fc1.prefix_notif;
+> +			pgste_init.vsie_notif =3D old.s.fc1.vsie_notif;
+>  			pgste_init.pcl =3D uses_skeys && init.h.i;
+>  			dat_init_pgstes(pt, pgste_init.val);
+>  		} else {
 
-...
-
-> All of this extra work is required to make sure that "legacy" GICv3
-> guests based on QEMU transparently work on compatible GICv5 hosts
-> without modification.
-
-I'm seeing a regression in -next in set_id_regs on a range of platforms,
-including physical ones like the Toradex Verdin AM62 and i.MX8MP-EVK,
-with a GICv3:
-
-# ok 105 # SKIP MTE capability not supported, nothing to test
-# ==== Test Assertion Failure ====
-#   arm64/set_id_regs.c:651: test_reg_vals[encoding_to_range_idx(uc.args[2])] == uc.args[3]
-#   pid=3573 tid=3573 errno=4 - Interrupted system call
-#      1	0x0000000000403047: test_guest_reg_read at set_id_regs.c:651
-#      2	0x00000000004024cb: main at set_id_regs.c:805
-#      3	0x0000ffff9e85251b: ?? ??:0
-#      4	0x0000ffff9e8525fb: ?? ??:0
-#      5	0x00000000004027af: _start at ??:?
-#   0x1111 != 0x1001111 (test_reg_vals[encoding_to_range_idx(uc.args[2])] != uc.args[3])
-not ok 20 selftests: kvm: set_id_regs # exit=254
-
-Platforms without a GICv3 appear unaffected.
-
-Full log:
-
-   https://lava.sirena.org.uk/scheduler/job/2584795#L4111
-
-bisect log:
-
-# bad: [0ec822710d040a1e4a13be04494dc9f0462f8ba7] Merge branch 'for-linux-next-fixes' of https://gitlab.freedesktop.org/drm/misc/kernel.git
-# good: [0e4f8f1a3d081e834be5fd0a62bdb2554fadd307] Merge tag 'parisc-for-7.0-rc5' of git://git.kernel.org/pub/scm/linux/kernel/git/deller/parisc-linux
-# good: [09e70e4f119ff650d24c96161fd2f62ac7e424b0] regmap: Synchronize cache for the page selector
-git bisect start '0ec822710d040a1e4a13be04494dc9f0462f8ba7' '0e4f8f1a3d081e834be5fd0a62bdb2554fadd307' '09e70e4f119ff650d24c96161fd2f62ac7e424b0'
-# test job: [09e70e4f119ff650d24c96161fd2f62ac7e424b0] https://lava.sirena.org.uk/scheduler/job/2565604
-# test job: [0ec822710d040a1e4a13be04494dc9f0462f8ba7] https://lava.sirena.org.uk/scheduler/job/2584795
-# bad: [0ec822710d040a1e4a13be04494dc9f0462f8ba7] Merge branch 'for-linux-next-fixes' of https://gitlab.freedesktop.org/drm/misc/kernel.git
-git bisect bad 0ec822710d040a1e4a13be04494dc9f0462f8ba7
-# test job: [a5d4dfaac4b2810ec2be80d2a9a1facce7dc554d] https://lava.sirena.org.uk/scheduler/job/2584889
-# good: [a5d4dfaac4b2810ec2be80d2a9a1facce7dc554d] Merge branch 'mtd/fixes' of https://git.kernel.org/pub/scm/linux/kernel/git/mtd/linux.git
-git bisect good a5d4dfaac4b2810ec2be80d2a9a1facce7dc554d
-# test job: [d04c0e637ff3323b010804dbfe349fb9c1309253] https://lava.sirena.org.uk/scheduler/job/2585075
-# bad: [d04c0e637ff3323b010804dbfe349fb9c1309253] Merge branch 'dma-mapping-fixes' of https://git.kernel.org/pub/scm/linux/kernel/git/mszyprowski/linux.git
-git bisect bad d04c0e637ff3323b010804dbfe349fb9c1309253
-# test job: [e3d585ed3ff891a00c2284fef4be9cf8581735ab] https://lava.sirena.org.uk/scheduler/job/2585150
-# bad: [e3d585ed3ff891a00c2284fef4be9cf8581735ab] Merge branch kvm-arm64/vgic-v5-ppi into kvmarm-master/next
-git bisect bad e3d585ed3ff891a00c2284fef4be9cf8581735ab
-# test job: [0a9f38bf612b195e04236d366ed9f769ce14cc27] https://lava.sirena.org.uk/scheduler/job/2585330
-# bad: [0a9f38bf612b195e04236d366ed9f769ce14cc27] KVM: arm64: selftests: Introduce a minimal GICv5 PPI selftest
-git bisect bad 0a9f38bf612b195e04236d366ed9f769ce14cc27
-# test job: [4d591252bacb2d004b7c7f5db439bfa23b552ee7] https://lava.sirena.org.uk/scheduler/job/2585661
-# bad: [4d591252bacb2d004b7c7f5db439bfa23b552ee7] KVM: arm64: gic-v5: Implement PPI interrupt injection
-git bisect bad 4d591252bacb2d004b7c7f5db439bfa23b552ee7
-# test job: [da92ff15ca4c5b0f75ec1cb3d2e275db2ff2c810] https://lava.sirena.org.uk/scheduler/job/2585906
-# good: [da92ff15ca4c5b0f75ec1cb3d2e275db2ff2c810] KVM: arm64: gic-v5: Add Arm copyright header
-git bisect good da92ff15ca4c5b0f75ec1cb3d2e275db2ff2c810
-# test job: [070543a85adce329672012a1fe35fa48c76e02d5] https://lava.sirena.org.uk/scheduler/job/2586294
-# bad: [070543a85adce329672012a1fe35fa48c76e02d5] KVM: arm64: gic-v5: Trap and emulate ICC_IDR0_EL1 accesses
-git bisect bad 070543a85adce329672012a1fe35fa48c76e02d5
-# test job: [a258a383b91774ac646517ec1003a442964d8946] https://lava.sirena.org.uk/scheduler/job/2586455
-# bad: [a258a383b91774ac646517ec1003a442964d8946] KVM: arm64: gic-v5: Sanitize ID_AA64PFR2_EL1.GCIE
-git bisect bad a258a383b91774ac646517ec1003a442964d8946
-# test job: [f656807150e3e1c6f76cab918e5adfad6d881d58] https://lava.sirena.org.uk/scheduler/job/2586592
-# good: [f656807150e3e1c6f76cab918e5adfad6d881d58] KVM: arm64: gic-v5: Detect implemented PPIs on boot
-git bisect good f656807150e3e1c6f76cab918e5adfad6d881d58
-# first bad commit: [a258a383b91774ac646517ec1003a442964d8946] KVM: arm64: gic-v5: Sanitize ID_AA64PFR2_EL1.GCIE
-
---MlKsc4YS4+0PkdYN
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmnBQjYACgkQJNaLcl1U
-h9DTIwf/W12+7bv3l6vdsZYzXz9UkyBV+fFwNob5fA9ESs077+n5J/rLY2sDZ9f4
-5q9rL8PMztjFc01LhDZ20SS96O1fHDMG3zlM5cqT71ydvqYbXxDjeUGDJ2q04mM3
-EpSZWfAePSmWXtfrKNpPyvv/tUixTjBx8L8njZN76ub+6j/G1/JmQLZPzK/p9HMZ
-04F7t6TyjzyTc66+9MWhnOT0YuCoeW0F40l0DGmsCkS4UvUo4ZGWCOgH7dhxB7Sa
-bIwBBg1uQ3slkJSZt4SDENiBbDKVvMrsKD5im8ne4vsZSlzhmxI2YX0RiKRdFtwq
-Qv3jM/t8g0tmkeezGlCcrKRdh+1U4w==
-=ZAl7
------END PGP SIGNATURE-----
-
---MlKsc4YS4+0PkdYN--
