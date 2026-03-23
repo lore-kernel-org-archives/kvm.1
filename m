@@ -1,213 +1,199 @@
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A80B38552F;
-	Mon, 23 Mar 2026 09:41:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
+Received: from mail.loongson.cn (mail.loongson.cn [114.242.206.163])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 888B6386C3D;
+	Mon, 23 Mar 2026 09:43:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=114.242.206.163
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774258918; cv=none; b=WmgGqGZX+z1alC89HqNsN0jOSDapWjTvWFuuyCMmnkOWJLcDFtCds6Idd/TQYfdPSz2+AZHyQY9YHrIaJ/rbR2g9dQvswfJOZZA9j9ACIXKWtk/KmewhkXEE8bOgiRk87pv1YpDfKOKyBrt4+pqyf87Zt1WJMBFOKgeuqWbvTOI=
+	t=1774259030; cv=none; b=tyoBLRjjQsJf9NeVAYiyo4fd6/1sFDAWiyogfDCr0oOZZdxHwymgfgQ8V2WW6LqOYHGRSIfIpJt5aop/DOGg8IUNJYgsAviz27g5Xp1zp7YcJTOsxvNDHd1ybg5mTrBm418c5z97riDdAaasod9x+MbPeBMKurLc4UoY2q2Kb0s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774258918; c=relaxed/simple;
-	bh=VOSK6AaCxQSTQFajzAiT0euTggc2yquqJNHeBBOjtiw=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Cc:To:Subject:From:
-	 References:In-Reply-To; b=sMUU3hzGVcDpgLeFosgkdWLWP2922KeLB2q4qi+/JjY4QFl5OZqKYx9VLOtHLEtlAV6B97Y17O64511nqMy53Q7Pg2d8OOzTAOMuIiSaT1xpof80ONEmQv+MbR2py7NXmJa3ZFCMyo0C2RUH+RbMnOUpiVgFWcndjv1dsy3Funs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=OKPJpDUU; arc=none smtp.client-ip=148.163.158.5
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="OKPJpDUU"
-Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 62MFHsvh3826166;
-	Mon, 23 Mar 2026 09:41:56 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=boeD76
-	3bC4E/gTbIGlfkP9tTn0/24w48tJhxst2DVNc=; b=OKPJpDUUcHAOJKFODEfVWh
-	qdTmQ/IT4tRqHkIF6xfiFnVChwwpflT/KViH09ee0gLg8tSZy71plDySJJ6cEGGA
-	t6bqcXWh8cb/7SF30QNOrKCyPGq4OUDXIHlyoQfCjxAuOYIWYPIdGQ4dxaYccvoN
-	g3pWmPUzeAFf8vMqOeBtKig++3TfNPZA6/DbQ3oM3IXYeP21vLjlFJT0rQ4UcUSm
-	4R0UhyM66f5grnOC4K9mC4kjfHr2A/SU1V7BMIvBTFovQscK5Etj0WHQhSoRXvIg
-	nAATE06hfNjboRjvfOtQr+0sWdpD4qIW7DDnxdH7NOT8POa+lRXcr3j7hUbwNDNQ
-	==
-Received: from ppma11.dal12v.mail.ibm.com (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4d1kxywwx1-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 23 Mar 2026 09:41:55 +0000 (GMT)
-Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma11.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 62N919k2004399;
-	Mon, 23 Mar 2026 09:41:55 GMT
-Received: from smtprelay06.fra02v.mail.ibm.com ([9.218.2.230])
-	by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 4d28c1vj81-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 23 Mar 2026 09:41:54 +0000
-Received: from smtpav05.fra02v.mail.ibm.com (smtpav05.fra02v.mail.ibm.com [10.20.54.104])
-	by smtprelay06.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 62N9fpCj22020386
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 23 Mar 2026 09:41:51 GMT
-Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 4D08B20040;
-	Mon, 23 Mar 2026 09:41:51 +0000 (GMT)
-Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 38EFF20043;
-	Mon, 23 Mar 2026 09:41:51 +0000 (GMT)
-Received: from darkmoore (unknown [9.52.198.32])
-	by smtpav05.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Mon, 23 Mar 2026 09:41:51 +0000 (GMT)
+	s=arc-20240116; t=1774259030; c=relaxed/simple;
+	bh=7KYvyCCikdDKG4hHpc4BcGJc8BqrgUaiJZNMZuspKIA=;
+	h=Subject:To:Cc:References:From:Message-ID:Date:MIME-Version:
+	 In-Reply-To:Content-Type; b=GJQHGjzO9Lm5ftzSf5545Ak4B3+yBRsxEY6jauee+FjL12dgDQyhNHVGLsCiVitS1I5TiQp/9HwCvFVZT15ppeZ+4p+xmm25WcS9XqW99w9wWxEjE5BA9m/KxJ7BgW4Fcu16JNVfykyri+kH3VCq26qcjPLKa9Ynn5fivi/u+vo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn; spf=pass smtp.mailfrom=loongson.cn; arc=none smtp.client-ip=114.242.206.163
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=loongson.cn
+Received: from loongson.cn (unknown [10.20.42.62])
+	by gateway (Coremail) with SMTP id _____8Dx_6tQC8Fpl78dAA--.26309S3;
+	Mon, 23 Mar 2026 17:43:44 +0800 (CST)
+Received: from [10.20.42.62] (unknown [10.20.42.62])
+	by front1 (Coremail) with SMTP id qMiowJAxGMFEC8FpmUJbAA--.29160S3;
+	Mon, 23 Mar 2026 17:43:34 +0800 (CST)
+Subject: Re: [PATCH 1/2] LoongArch: KVM: Make kvm_get_vcpu_by_cpuid() more
+ robust
+To: Huacai Chen <chenhuacai@kernel.org>
+Cc: Huacai Chen <chenhuacai@loongson.cn>, Paolo Bonzini
+ <pbonzini@redhat.com>, Tianrui Zhao <zhaotianrui@loongson.cn>,
+ kvm@vger.kernel.org, loongarch@lists.linux.dev,
+ linux-kernel@vger.kernel.org, Xuerui Wang <kernel@xen0n.name>,
+ Jiaxun Yang <jiaxun.yang@flygoat.com>, stable@vger.kernel.org,
+ Aurelien Jarno <aurel32@debian.org>
+References: <20260322135346.3720577-1-chenhuacai@loongson.cn>
+ <676198e5-78e4-ab41-e447-4a9d24655890@loongson.cn>
+ <CAAhV-H7rFtju3k=NYkAy6-O7f8U=CTNiryu2_Kr57pScjeH-yQ@mail.gmail.com>
+ <696c5177-4a89-f0d0-c305-c1581e72aa3d@loongson.cn>
+ <CAAhV-H43BrbWseejgrmtsBRbkbsMVOX0FaHvYOXfr-R9Y2g1Fw@mail.gmail.com>
+From: Bibo Mao <maobibo@loongson.cn>
+Message-ID: <40a172b3-1b8c-3cd6-97dd-64abb7502555@loongson.cn>
+Date: Mon, 23 Mar 2026 17:40:48 +0800
+User-Agent: Mozilla/5.0 (X11; Linux loongarch64; rv:68.0) Gecko/20100101
+ Thunderbird/68.7.0
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Mon, 23 Mar 2026 10:41:45 +0100
-Message-Id: <DHA2AH0CSLVL.2RED4W0M6RLNE@linux.ibm.com>
-Cc: <linux-s390@vger.kernel.org>, <imbrenda@linux.ibm.com>,
-        <borntraeger@linux.ibm.com>, <akrowiak@linux.ibm.com>
-To: "Janosch Frank" <frankja@linux.ibm.com>, <kvm@vger.kernel.org>
-Subject: Re: [RFC 09/10] KVM: s390: Use gpa_t in pv.c
-From: "Christoph Schlameuss" <schlameuss@linux.ibm.com>
-X-Mailer: aerc 0.21.0
-References: <20260316180310.17765-1-frankja@linux.ibm.com>
- <20260316180310.17765-10-frankja@linux.ibm.com>
-In-Reply-To: <20260316180310.17765-10-frankja@linux.ibm.com>
-X-TM-AS-GCONF: 00
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMzIzMDA3MSBTYWx0ZWRfXytLCM7dvAMOV
- 2HntCToGY6za6HPbIbu0SE04yxt0uxQeTyu5iT53WiBZlwB7gzQvx6RQ8bA3jBlnRLYpVVDeHTY
- CaBPVxqc2+5mYiRpE273qHc2EhwGMbOfktYqSL0zGo/hF4jMuGUBYvfhMmVHuNu3iSdbtIaMJEP
- 9YI2Tq75AaICywii3S6jz2mJNVOmcoBNn7ezYU4jfUbor6I4ltNLaTQhJyRekNCDUw48JQxc7Jx
- +ew/UOSsZmT+y02vRLeABBOTIQhy9mMOZRgzZcUOr5aTsgrWPPcv9X1s5BmlJZO2Rz4ghzArgSQ
- +Gr0fB3hJyt5Vg9LTMYkkNYIb9uoWQaXsfQM6tRvM6r17jUIg5dVJxS6kgCUAMvgHVcMeeRe94Z
- 7UX4xJ7TR2U2hmYtLJETabRAC1w52iTN2Pmo8f3o/gdQe3mqR/cwaSXnTXGdofmfOxAaGU7DlNZ
- 4lIdss2j0oiGxllFkiA==
-X-Authority-Analysis: v=2.4 cv=JK42csKb c=1 sm=1 tr=0 ts=69c10ae3 cx=c_pps
- a=aDMHemPKRhS1OARIsFnwRA==:117 a=aDMHemPKRhS1OARIsFnwRA==:17
- a=IkcTkHD0fZMA:10 a=Yq5XynenixoA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=RnoormkPH1_aCDwRdu11:22 a=V8glGbnc2Ofi9Qvn3v5h:22 a=VnNF1IyMAAAA:8
- a=L-qVmOLguht6ssTEgqgA:9 a=QEXdDO2ut3YA:10
-X-Proofpoint-ORIG-GUID: 7DwJzjc9F1QQ5FXSNlj68YCVvuY10b7p
-X-Proofpoint-GUID: 7DwJzjc9F1QQ5FXSNlj68YCVvuY10b7p
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
- definitions=2026-03-23_02,2026-03-20_02,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- impostorscore=0 clxscore=1015 priorityscore=1501 malwarescore=0 adultscore=0
- spamscore=0 suspectscore=0 phishscore=0 lowpriorityscore=0 bulkscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2603050001 definitions=main-2603230071
+MIME-Version: 1.0
+In-Reply-To: <CAAhV-H43BrbWseejgrmtsBRbkbsMVOX0FaHvYOXfr-R9Y2g1Fw@mail.gmail.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:qMiowJAxGMFEC8FpmUJbAA--.29160S3
+X-CM-SenderInfo: xpdruxter6z05rqj20fqof0/
+X-Coremail-Antispam: 1Uk129KBj93XoWxWrWUtr4fKFWrAFyfur1UXFc_yoWrCFy8p3
+	yjyayDArWrKr4IgrW0q3WkXF4aqrnrWr1kZF1Yga4Fyr1qvw1rAr1kAr1DCFyUuw1qkF40
+	gF15Jw1avF1UXwbCm3ZEXasCq-sJn29KB7ZKAUJUUUU7529EdanIXcx71UUUUU7KY7ZEXa
+	sCq-sGcSsGvfJ3Ic02F40EFcxC0VAKzVAqx4xG6I80ebIjqfuFe4nvWSU5nxnvy29KBjDU
+	0xBIdaVrnRJUUUB2b4IE77IF4wAFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2
+	IYs7xG6rWj6s0DM7CIcVAFz4kK6r1Y6r17M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48v
+	e4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_JFI_Gr1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI
+	0_Jr0_Gr1l84ACjcxK6I8E87Iv67AKxVW8Jr0_Cr1UM28EF7xvwVC2z280aVCY1x0267AK
+	xVW8Jr0_Cr1UM2kKe7AKxVWUXVWUAwAS0I0E0xvYzxvE52x082IY62kv0487Mc804VCY07
+	AIYIkI8VC2zVCFFI0UMc02F40EFcxC0VAKzVAqx4xG6I80ewAv7VC0I7IYx2IY67AKxVWU
+	AVWUtwAv7VC2z280aVAFwI0_Gr0_Cr1lOx8S6xCaFVCjc4AY6r1j6r4UM4x0Y48IcVAKI4
+	8JMxk0xIA0c2IEe2xFo4CEbIxvr21l42xK82IYc2Ij64vIr41l4I8I3I0E4IkC6x0Yz7v_
+	Jr0_Gr1l4IxYO2xFxVAFwI0_Jrv_JF1lx2IqxVAqx4xG67AKxVWUJVWUGwC20s026x8Gjc
+	xK67AKxVWUGVWUWwC2zVAF1VAY17CE14v26r1q6r43MIIYrxkI7VAKI48JMIIF0xvE2Ix0
+	cI8IcVAFwI0_Jr0_JF4lIxAIcVC0I7IYx2IY6xkF7I0E14v26r1j6r4UMIIF0xvE42xK8V
+	AvwI8IcIk0rVWUJVWUCwCI42IY6I8E87Iv67AKxVW8JVWxJwCI42IY6I8E87Iv6xkF7I0E
+	14v26r4j6r4UJbIYCTnIWIevJa73UjIFyTuYvjxU466zUUUUU
 
-It would be nicer to also rename the variables here from the mix of "gaddr"=
- and
-"addr" to "gpa". Or at least conistently to "gaddr" as they are in most cas=
-es
-then assigned to the ".gaddr" fields in the uv structs.
 
-On Mon Mar 16, 2026 at 5:23 PM CET, Janosch Frank wrote:
-> Lot's of locations where we could've used gpa_t but used u64/unsigned
-> long.
->
-> Signed-off-by: Janosch Frank <frankja@linux.ibm.com>
-> ---
->  arch/s390/kvm/kvm-s390.h |  8 ++++----
->  arch/s390/kvm/pv.c       | 12 ++++++------
->  2 files changed, 10 insertions(+), 10 deletions(-)
->
-> diff --git a/arch/s390/kvm/kvm-s390.h b/arch/s390/kvm/kvm-s390.h
-> index bf1d7798c1af..1ffaec723a30 100644
-> --- a/arch/s390/kvm/kvm-s390.h
-> +++ b/arch/s390/kvm/kvm-s390.h
-> @@ -308,17 +308,17 @@ int kvm_s390_pv_deinit_vm(struct kvm *kvm, u16 *rc,=
- u16 *rrc);
->  int kvm_s390_pv_init_vm(struct kvm *kvm, u16 *rc, u16 *rrc);
->  int kvm_s390_pv_set_sec_parms(struct kvm *kvm, void *hdr, u64 length, u1=
-6 *rc,
->  			      u16 *rrc);
-> -int kvm_s390_pv_unpack(struct kvm *kvm, unsigned long addr, unsigned lon=
-g size,
-> +int kvm_s390_pv_unpack(struct kvm *kvm, gpa_t addr, unsigned long size,
->  		       unsigned long tweak, u16 *rc, u16 *rrc);
->  int kvm_s390_pv_set_cpu_state(struct kvm_vcpu *vcpu, u8 state);
->  int kvm_s390_pv_dump_cpu(struct kvm_vcpu *vcpu, void *buff, u16 *rc, u16=
- *rrc);
->  int kvm_s390_pv_dump_stor_state(struct kvm *kvm, void __user *buff_user,
-> -				u64 *gaddr, u64 buff_user_len, u16 *rc, u16 *rrc);
-> +				gpa_t *gaddr, u64 buff_user_len, u16 *rc, u16 *rrc);
->  int kvm_s390_pv_dump_complete(struct kvm *kvm, void __user *buff_user,
->  			      u16 *rc, u16 *rrc);
->  int kvm_s390_pv_destroy_page(struct kvm *kvm, unsigned long gaddr);
-> -int kvm_s390_pv_convert_to_secure(struct kvm *kvm, unsigned long gaddr);
-> -int kvm_s390_pv_make_secure(struct kvm *kvm, unsigned long gaddr, void *=
-uvcb);
-> +int kvm_s390_pv_convert_to_secure(struct kvm *kvm, gpa_t gaddr);
-> +int kvm_s390_pv_make_secure(struct kvm *kvm, gpa_t gaddr, void *uvcb);
-> =20
->  static inline u64 kvm_s390_pv_get_handle(struct kvm *kvm)
->  {
-> diff --git a/arch/s390/kvm/pv.c b/arch/s390/kvm/pv.c
-> index c2dafd812a3b..a86469507309 100644
-> --- a/arch/s390/kvm/pv.c
-> +++ b/arch/s390/kvm/pv.c
-> @@ -125,7 +125,7 @@ static void _kvm_s390_pv_make_secure(struct guest_fau=
-lt *f)
->   * Context: needs to be called with kvm->srcu held.
->   * Return: 0 on success, < 0 in case of error.
->   */
-> -int kvm_s390_pv_make_secure(struct kvm *kvm, unsigned long gaddr, void *=
-uvcb)
-> +int kvm_s390_pv_make_secure(struct kvm *kvm, gpa_t gaddr, void *uvcb)
->  {
->  	struct pv_make_secure priv =3D { .uvcb =3D uvcb };
->  	struct guest_fault f =3D {
-> @@ -157,7 +157,7 @@ int kvm_s390_pv_make_secure(struct kvm *kvm, unsigned=
- long gaddr, void *uvcb)
->  	return rc;
->  }
-> =20
-> -int kvm_s390_pv_convert_to_secure(struct kvm *kvm, unsigned long gaddr)
-> +int kvm_s390_pv_convert_to_secure(struct kvm *kvm, gpa_t gaddr)
->  {
->  	struct uv_cb_cts uvcb =3D {
->  		.header.cmd =3D UVC_CMD_CONV_TO_SEC_STOR,
-> @@ -765,7 +765,7 @@ int kvm_s390_pv_set_sec_parms(struct kvm *kvm, void *=
-hdr, u64 length, u16 *rc,
->  	return cc ? -EINVAL : 0;
->  }
-> =20
-> -static int unpack_one(struct kvm *kvm, unsigned long addr, u64 tweak,
-> +static int unpack_one(struct kvm *kvm, gpa_t addr, u64 tweak,
->  		      u64 offset, u16 *rc, u16 *rrc)
->  {
->  	struct uv_cb_unp uvcb =3D {
-> @@ -793,7 +793,7 @@ static int unpack_one(struct kvm *kvm, unsigned long =
-addr, u64 tweak,
->  	return ret;
->  }
-> =20
-> -int kvm_s390_pv_unpack(struct kvm *kvm, unsigned long addr, unsigned lon=
-g size,
-> +int kvm_s390_pv_unpack(struct kvm *kvm, gpa_t addr, unsigned long size,
->  		       unsigned long tweak, u16 *rc, u16 *rrc)
->  {
->  	u64 offset =3D 0;
-> @@ -802,7 +802,7 @@ int kvm_s390_pv_unpack(struct kvm *kvm, unsigned long=
- addr, unsigned long size,
->  	if (addr & ~PAGE_MASK || !size || size & ~PAGE_MASK)
->  		return -EINVAL;
-> =20
-> -	KVM_UV_EVENT(kvm, 3, "PROTVIRT VM UNPACK: start addr %lx size %lx",
-> +	KVM_UV_EVENT(kvm, 3, "PROTVIRT VM UNPACK: start addr %llx size %lx",
->  		     addr, size);
-> =20
->  	guard(srcu)(&kvm->srcu);
-> @@ -891,7 +891,7 @@ int kvm_s390_pv_dump_cpu(struct kvm_vcpu *vcpu, void =
-*buff, u16 *rc, u16 *rrc)
->   *  -EFAULT if copying the result to buff_user failed
->   */
->  int kvm_s390_pv_dump_stor_state(struct kvm *kvm, void __user *buff_user,
-> -				u64 *gaddr, u64 buff_user_len, u16 *rc, u16 *rrc)
-> +				gpa_t *gaddr, u64 buff_user_len, u16 *rc, u16 *rrc)
->  {
->  	struct uv_cb_dump_stor_state uvcb =3D {
->  		.header.cmd =3D UVC_CMD_DUMP_CONF_STOR_STATE,
+
+On 2026/3/23 下午4:14, Huacai Chen wrote:
+> On Mon, Mar 23, 2026 at 3:59 PM Bibo Mao <maobibo@loongson.cn> wrote:
+>>
+>>
+>>
+>> On 2026/3/23 下午3:08, Huacai Chen wrote:
+>>> On Mon, Mar 23, 2026 at 11:16 AM Bibo Mao <maobibo@loongson.cn> wrote:
+>>>>
+>>>>
+>>>>
+>>>> On 2026/3/22 下午9:53, Huacai Chen wrote:
+>>>>> kvm_get_vcpu_by_cpuid() takes a cpuid parameter whose type is int, so
+>>>>> cpuid can be negative. Let kvm_get_vcpu_by_cpuid() return NULL for this
+>>>>> case so as to make it more robust.
+>>>>>
+>>>>> This fix an out-of-bounds access to kvm_arch::phyid_map::phys_map[].
+>>>>>
+>>>>> Cc: <stable@vger.kernel.org>
+>>>>> Fixes: 73516e9da512adc ("LoongArch: KVM: Add vcpu mapping from physical cpuid")
+>>>>> Reported-by: Aurelien Jarno <aurel32@debian.org>
+>>>>> Link: https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=1131431
+>>>>> Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
+>>>>> ---
+>>>>>     arch/loongarch/kvm/vcpu.c | 3 +++
+>>>>>     1 file changed, 3 insertions(+)
+>>>>>
+>>>>> diff --git a/arch/loongarch/kvm/vcpu.c b/arch/loongarch/kvm/vcpu.c
+>>>>> index 8ffd50a470e6..831f381a8fd1 100644
+>>>>> --- a/arch/loongarch/kvm/vcpu.c
+>>>>> +++ b/arch/loongarch/kvm/vcpu.c
+>>>>> @@ -588,6 +588,9 @@ struct kvm_vcpu *kvm_get_vcpu_by_cpuid(struct kvm *kvm, int cpuid)
+>>>>>     {
+>>>>>         struct kvm_phyid_map *map;
+>>>>>
+>>>>> +     if (cpuid < 0)
+>>>>> +             return NULL;
+>>>>> +
+>>>>>         if (cpuid >= KVM_MAX_PHYID)
+>>>>>                 return NULL;
+>>>>>
+>>>>>
+>>>>
+>>>> if (cpuid < 0 || cpuid >= KVM_MAX_PHYID)?
+>>>> however both are OK for me.
+>>> I use a similar style as kvm_get_vcpu_by_id(). :)
+>>>
+>>> But there is another warning which can't be solved by this series (and
+>>> I doubt whether it can be solved unless revert 01a8e68396a6d51f5b).
+>>> https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=1131431
+>>
+>> what is the kernel config file with bug
+>>      https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=1131431
+> I don't know exactly, but it needs CONFIG_FORTIFY_SOURCE.
+With CONFIG_FORTIFY_SOURCE enabled, this bug can be reproduced. It seems 
+that it actually need be converted to void * before arithmetic operation.
+
+Regards
+Bibo Mao
+> 
+> Huacai
+> 
+>>
+>> kvm_eiointc_regs_access() seems has problem, it need convert to void *
+>> before arithmetic operation. I do not know whether this patch can solve
+>> this bug.
+>>
+>> diff --git a/arch/loongarch/kvm/intc/eiointc.c
+>> b/arch/loongarch/kvm/intc/eiointc.c
+>> index d2acb4d09e73..71bd67b57338 100644
+>> --- a/arch/loongarch/kvm/intc/eiointc.c
+>> +++ b/arch/loongarch/kvm/intc/eiointc.c
+>> @@ -472,34 +472,34 @@ static int kvm_eiointc_regs_access(struct
+>> kvm_device *dev,
+>>           switch (addr) {
+>>           case EIOINTC_NODETYPE_START ... EIOINTC_NODETYPE_END:
+>>                   offset = (addr - EIOINTC_NODETYPE_START) / 4;
+>> -               p = s->nodetype + offset * 4;
+>> +               p = (void *)s->nodetype + offset * 4;
+>>                   break;
+>>           case EIOINTC_IPMAP_START ... EIOINTC_IPMAP_END:
+>>                   offset = (addr - EIOINTC_IPMAP_START) / 4;
+>> -               p = &s->ipmap + offset * 4;
+>> +               p = (void *)&s->ipmap + offset * 4;
+>>                   break;
+>>           case EIOINTC_ENABLE_START ... EIOINTC_ENABLE_END:
+>>                   offset = (addr - EIOINTC_ENABLE_START) / 4;
+>> -               p = s->enable + offset * 4;
+>> +               p = (void *)s->enable + offset * 4;
+>>                   break;
+>>           case EIOINTC_BOUNCE_START ... EIOINTC_BOUNCE_END:
+>>                   offset = (addr - EIOINTC_BOUNCE_START) / 4;
+>> -               p = s->bounce + offset * 4;
+>> +               p = (void *)s->bounce + offset * 4;
+>>                   break;
+>>           case EIOINTC_ISR_START ... EIOINTC_ISR_END:
+>>                   offset = (addr - EIOINTC_ISR_START) / 4;
+>> -               p = s->isr + offset * 4;
+>> +               p = (void *)s->isr + offset * 4;
+>>                   break;
+>>           case EIOINTC_COREISR_START ... EIOINTC_COREISR_END:
+>>                   if (cpu >= s->num_cpu)
+>>                           return -EINVAL;
+>>
+>>                   offset = (addr - EIOINTC_COREISR_START) / 4;
+>> -               p = s->coreisr[cpu] + offset * 4;
+>> +               p = (void *)s->coreisr[cpu] + offset * 4;
+>>                   break;
+>>           case EIOINTC_COREMAP_START ... EIOINTC_COREMAP_END:
+>>                   offset = (addr - EIOINTC_COREMAP_START) / 4;
+>> -               p = s->coremap + offset * 4;
+>> +               p = (void *)s->coremap + offset * 4;
+>>                   break;
+>>           default:
+>>                   kvm_err("%s: unknown eiointc register, addr = %d\n",
+>> __func__, addr);
+>>
+>>
+>> Regards
+>> Bibo Mao
+>>>
+>>> Huacai
+>>>
+>>>>
+>>>> Reviewed-by: Bibo Mao <maobibo@loongson.cn>
+>>>>
+>>
+>>
 
