@@ -1,360 +1,169 @@
-Received: from BL2PR02CU003.outbound.protection.outlook.com (mail-eastusazon11011009.outbound.protection.outlook.com [52.101.52.9])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f41.google.com (mail-wr1-f41.google.com [209.85.221.41])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 940EC3ACF03;
-	Mon, 23 Mar 2026 14:36:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.52.9
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774276620; cv=fail; b=ComO2z+Red675Lq2DY8vec2S8BMnWbPC+7hK8uieDdamncnguccgvPpsmx3Tux7CVQ5hPZRUarSOG4oTdVMAVU/oeDG+CZH3kcDrQvOvcv5jrqOY0jErALI7L4sNQdrZB/x8Pm2CB989GpqeRWvzPJe7EM2BlbVcIy4AKmYwjZU=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774276620; c=relaxed/simple;
-	bh=uO+FL8T2GgdfPZE9YfzKYp5sTRqvQ3AooOUq76UPf1c=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=RDyymXOBLzcCKIET5dM1gEJrMabYvlkNZOaJhlfQxXCkOyARO7Rqjl6k0eoSd2ZGz00c3/E2STBowvKr5e4vhpDuSDUBwgg+9wrv04BeenrjQaBhF1JszV/kHy3AqjFbGOwmIGL/eqLc/AvfvJprmbBR1j8d3hzgXNI1KgA+QL8=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=bCXR42q+; arc=fail smtp.client-ip=52.101.52.9
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB60D3A961B
+	for <kvm@vger.kernel.org>; Mon, 23 Mar 2026 14:44:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.41
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1774277070; cv=none; b=ZxoFYClUauqycAq6/l8Pfwr6SjFX7arddQDo7eRH21EDKUbL09iznlKMmqddeVyC4WCJJJLAQulQL2dK4QL+9qnpvjj+Sa7yYYQp7EZOubH+NyA2GZxqtzcv2es9kvAOUxzwgcOwWzHpZVf2/mB1kzY+iB/GgfK0hajXNgIfcT8=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1774277070; c=relaxed/simple;
+	bh=Sz8BjVHNR/2cFKMwkkMdh6g+P4C3BczN2D44AA+h7X4=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=e2bcgrk8vRKVv79pqJjLfBbSGGL8rhCTQhX9OPVrHPuznfiMWIRYrEmG+CHtwvXMHIBwl00Rg4/369v2bdLPYhJQsmGp8o1qxocsbHUJj4vQOQSWrYwXcR63vnUbJsfFmB5EJz+pfGJr58nSdaiBo/KelVjr2lMpxwq3H0ui3FY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b=a8KQOH0p; arc=none smtp.client-ip=209.85.221.41
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="bCXR42q+"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=mtfuO3oBZ3ZxPyMgzbwqgfn560ybP3Ih/go3bdNF2XVp2cSQlpfULP+6ddl2CQHvftqOFEDo+1ZF+kJURduR6llDI7NFrfCXE1vrvCTCNQIgodwxF/fMKfZEFSXbTZRA2EsCrcN3K7OHp/zx3jReJsxTfScpvYc1XYkTQud0gy7mHGJvJNnlLiTo09ku0p5AVyhnFUVFXWUNVTx+OTzRXGx6BTu5INfeKN01b90rm5Xmt5pIH7tK7M0RfWaR6PKV409j7nqwDM6V57aYTSDFGj8l/G+I/RQh9lJvwWWdTKY9tOJDw+k5as2rwfrWhm+zuklDZQM32etjXV3ZOJggxQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=1KzJLCl6xXM51zVdsG4qCVH2YaJjHhF0AEWHTD58Abg=;
- b=gi4xZRgz/SGOgMqd1YEHb5SGVRzjkQ5E1XQuJeGiQE/Wbzzew0TwWergPsGf6LkLyjCQcaVK+D9SgElsz6rMDgzr0FIxUyAMQUddSuy5AHgjPNgex0brUKJMEp57O+lFhYxDgnyvunGKByMIhvEMYVytswJ9mZ+1tHEbmZNhgFGWVqEcJCKMf0tggBpi1mNpJwXIOEgCSKCYyOiQQlV1tEALpjfiW2GIr7ryhfr16YTarXFLHCDzUe1F8dOpe1sRu0ZMcsvuR25rEeXIq3libUaCjKlZbLvNLAjiEkGNYb4DL/K6yiDH9Ef0FLyzovnm/i1tjK1RLdLiL2PU/x2jCQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=1KzJLCl6xXM51zVdsG4qCVH2YaJjHhF0AEWHTD58Abg=;
- b=bCXR42q+Ats1Me0SB0L9BiJXYbYc44ABRb4sMcZHnjuwZiSIpSaU37Ghi8oJRCDCxlvE9uzqgjGqxaohDzHPcrnBoPFg8iV0ooTYGvfqW3j5GfYSdd+GS5hNp+6sAix0KVCIg/JJETELehBdf4pelfek8xqDZF0q1hTy3ZT2zMkNCrgbpQRwvBk0Op4TIIFskE0LhQOquKNQE2qMz7dGVGCzvta0CxdlyhU0nlo4Qp/SgLM4B+yy1jAWShuCu/2D3uu/19UAXZBYe0yn8P1ebj8hzZyGIA8z0kMCZ3O1jhwMZBznJaxLY7XhUOg26Olgqj80Denax3c4eBLXb7zCsg==
-Received: from IA1PR12MB9030.namprd12.prod.outlook.com (2603:10b6:208:3f2::22)
- by SN7PR12MB6984.namprd12.prod.outlook.com (2603:10b6:806:260::9) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9745.15; Mon, 23 Mar
- 2026 14:36:54 +0000
-Received: from IA1PR12MB9030.namprd12.prod.outlook.com
- ([fe80::2c1d:ed27:b53a:97d2]) by IA1PR12MB9030.namprd12.prod.outlook.com
- ([fe80::2c1d:ed27:b53a:97d2%6]) with mapi id 15.20.9745.019; Mon, 23 Mar 2026
- 14:36:53 +0000
-From: Manish Honap <mhonap@nvidia.com>
-To: Jonathan Cameron <jonathan.cameron@huawei.com>, Alex Williamson
-	<alex@shazbot.org>
-CC: Aniket Agashe <aniketa@nvidia.com>, Ankit Agrawal <ankita@nvidia.com>,
-	Vikram Sethi <vsethi@nvidia.com>, Jason Gunthorpe <jgg@nvidia.com>, Matt Ochs
-	<mochs@nvidia.com>, Shameer Kolothum Thodi <skolothumtho@nvidia.com>,
-	"alejandro.lucero-palau@amd.com" <alejandro.lucero-palau@amd.com>,
-	"dave@stgolabs.net" <dave@stgolabs.net>, "dave.jiang@intel.com"
-	<dave.jiang@intel.com>, "alison.schofield@intel.com"
-	<alison.schofield@intel.com>, "vishal.l.verma@intel.com"
-	<vishal.l.verma@intel.com>, "ira.weiny@intel.com" <ira.weiny@intel.com>,
-	"dan.j.williams@intel.com" <dan.j.williams@intel.com>, "jgg@ziepe.ca"
-	<jgg@ziepe.ca>, Yishai Hadas <yishaih@nvidia.com>, "kevin.tian@intel.com"
-	<kevin.tian@intel.com>, Neo Jia <cjia@nvidia.com>, "Tarun Gupta (SW-GPU)"
-	<targupta@nvidia.com>, Zhi Wang <zhiw@nvidia.com>, Krishnakant Jaju
-	<kjaju@nvidia.com>, "linux-kernel@vger.kernel.org"
-	<linux-kernel@vger.kernel.org>, "linux-cxl@vger.kernel.org"
-	<linux-cxl@vger.kernel.org>, "kvm@vger.kernel.org" <kvm@vger.kernel.org>,
-	Manish Honap <mhonap@nvidia.com>
-Subject: RE: [PATCH 18/20] docs: vfio-pci: Document CXL Type-2 device
- passthrough
-Thread-Topic: [PATCH 18/20] docs: vfio-pci: Document CXL Type-2 device
- passthrough
-Thread-Index: AQHcsZbqDWj5q9OyiUWoNyL+92alnLWsYnqAgAbjS4CAAsu/AIAGL+rg
-Date: Mon, 23 Mar 2026 14:36:53 +0000
-Message-ID:
- <IA1PR12MB9030922D69CC296A76997CBFBD4BA@IA1PR12MB9030.namprd12.prod.outlook.com>
-References: <20260311203440.752648-1-mhonap@nvidia.com>
-	<20260311203440.752648-19-mhonap@nvidia.com>
-	<20260313121341.00001bfa@huawei.com>	<20260317152445.67a93881@shazbot.org>
- <20260319160630.00002c6d@huawei.com>
-In-Reply-To: <20260319160630.00002c6d@huawei.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: IA1PR12MB9030:EE_|SN7PR12MB6984:EE_
-x-ms-office365-filtering-correlation-id: 1c52eab2-12da-4c45-dc0c-08de88e9a07a
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam:
- BCL:0;ARA:13230040|1800799024|366016|7416014|376014|38070700021|56012099003|22082099003|18002099003;
-x-microsoft-antispam-message-info:
- hqvpde23Pw7HESbwubZu7TZhy05We3Kx96c3zdVvryTKxEuq8xMcYKIDsbF2y4aC2Cn3G8/pjDNg+e7efqXifC8qVIQyBE5rPPFKsojApQ4T3HfjOhMPmREAI1ibkctfCx9C7Tc0qMRBqLcJdyC+f/VtwM3RIZUddFk+oOc4/0rgYmb1UPU5LgLBp0O0G56pSyqSFUe5QaK7uv3kOuQtTgpvQBbHYGmEuTVxfqWQ2gKkMNBbcn46uy395hAHL9uwnqBr0kHnwsJ+oayHWhVxrxg0Iiga9bI4Y6j2GzCWHy812nwfCK6OLUXwHSfUCX415gA+WPG6uCMOhfjTRNKOzXjEKoah0W1esJqqKmePhsiuYIGvVLV3vBudC073XFA4azPkYAgLki/BRjDbC+R6Zy1ZfJmj8DSSrcKrSO76WbXCE6D9BeYHKCglxqcO7nT/yR0D6LDzKBs9Tf3hoUnzC09yvO15Zz9lg20+2QN8Xg0widt34A+1OiFGOzMPB8QizlUoKBNdA7PQAhuJjuhtYtaKKIGVRmi5MgQkozxKzEsg937vnmJz51fOBNFyYiOJ0yOdNDRtN3xQZgTzw/Hzhx1bImUYWgi0I8SmnXoGYgbEh4BkT9hMCGZNvNGRqmC5AS+ijtUBAImAHTjr0CBHMt58c4ZlXvpH1/UINNTcvSwOZxm3NrlZEBriXICW2/CKqXNngbxTXgfZR7mERg+8vklIF5p/ivaxGVFe5onxJAS5DymBWnweyBqivC8C58flK6i0ANR8bnuKnSOFzJBZegNqw+ijq24TnwnRouhsiAI=
-x-forefront-antispam-report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:IA1PR12MB9030.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(7416014)(376014)(38070700021)(56012099003)(22082099003)(18002099003);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0:
- =?us-ascii?Q?IiUYpbhDZxVIKwN+5obhMWyEs4LkKSEEV52mq2NL4Z9qrmZMptaRdMtGLLDD?=
- =?us-ascii?Q?JYw8yj9jjSKxXD3XhLg819HCuyHP3oooMxGbodXRooB4tkSejAXrkCeSSRl6?=
- =?us-ascii?Q?hTBFeV4jeAULNp4o2NYiykb1rFqqFEn9lchGHx+oc5EcirvOnKsh/MUewmcH?=
- =?us-ascii?Q?8Wd6PHqiuJxBYCEeFIM92YzyM/lKLG6JJnSXvP8XTJqpemrFLLkO+Evzdbn9?=
- =?us-ascii?Q?M82/uib9PWyPnGcFo6b2UmrQHuJZNQYoR8jHTgDYec7e6vzputYy5K3KTUdB?=
- =?us-ascii?Q?mf0wGBeaNc/VLnig9WXfzxj/LZ5RZmCj22HrbAPRmAPoLLAvKWFvliRW54W4?=
- =?us-ascii?Q?VhVwBk3leQ/BWHJjegT9na/AN6uuVsFABkHf2HM929ekAvMmqGIw86//4U3s?=
- =?us-ascii?Q?OGxkQafAtZIWV1Ouo+IFm/kNe6H5FEyl8i6Hoc/8Ozj5VQjMc26unPdZrHc7?=
- =?us-ascii?Q?2DM1/FYPNuR1tS2ng51r6jTFRRuGQQWSRnq35qJdsO6QIRKVIHs/bYmHjWxk?=
- =?us-ascii?Q?ETRZwBsnQf2j8fhlKNBwUOxHahxVQYjvalnn+nLrVo1lS245izt3JT00IJsl?=
- =?us-ascii?Q?xF4cw3vGfDsYImbfypf0PxAaoqQNiSghq1u/wzRFNqLlW5rAwc1TLCrShBl7?=
- =?us-ascii?Q?EuHFJaNR25wko6nHNJc/EAysH7JR1lRS1CM2dZq+ExYsL1eD0SG3vcnqQLZ1?=
- =?us-ascii?Q?fG/z/gsE+xIrRILaUxB+EFcB0crrVwEK2LAcHDjMne7jVHRNCUazQCxv9jhL?=
- =?us-ascii?Q?g9jtsV1eL8iptMMEx/V1WIG/+uG6UXptDEr3M9zGEJg5tCAZJRcSvIeRBOxi?=
- =?us-ascii?Q?CGb7JKz0dZgPTozmuEohY/6y2qcJp3ggzVtEb5wlSzi+e+/PziyD1g1DeQZf?=
- =?us-ascii?Q?09Cu39l15y9OMlQ6aBbl/hoHCteH3B38ZDRBSI1QBS0Loh2conVEumhtKFvH?=
- =?us-ascii?Q?mhCjIl8lSbBTAMJGmyA/sOKmjzZiF/1L6GhU39k5KqscIME9krYktXo47Lj9?=
- =?us-ascii?Q?M9ePghrwTPsDZLECyrjCyjKoVuQiy/Jm0poQJOE+WRHbomYfSoOsBxJOWG/h?=
- =?us-ascii?Q?VvlDzx+elWA73B09GI9i/CHALf/EJFAlHaso10OaqGG6vItzo/96Bexv+7/W?=
- =?us-ascii?Q?XvHNgHbZhfBHx8Ve0rtTHYlohbftJfpULT2Gf29OP4usuPjkQaWs+xOrK7+U?=
- =?us-ascii?Q?mdw/pvsB5yl7VPXf3h9zhbQqZqumQn7UmQTpDG7bXZrcVcCe7x0mTe/nqx0k?=
- =?us-ascii?Q?Q9+dYW+V6yopMw1/DYyosRieca962xCOlzeCk60okRcNmk7oWNiZSKB0onQs?=
- =?us-ascii?Q?bG9tjCXIcu7cLXKVkHnhe2epN5Q7cDf7KziL8R+n6SbRZ7zyJYb4fli7cHCr?=
- =?us-ascii?Q?zj4uQInAz1PwQpQQdDz5Y6aaLM4oNntz4Zojhai+oalwTYgnYQ8EoGZSXAnR?=
- =?us-ascii?Q?gfU69I9xY8Pg8r4i6jMua9Kh7tbZeJ0tlSeLdHR7PtN7MxGc5CoxbIEyeOaH?=
- =?us-ascii?Q?atO0QQ1MFBq5pNlOl87A2eWWdwxOnFF9U/e006eZIh4JM3j7CY3/x6EVM5gH?=
- =?us-ascii?Q?8+pUuje6L2HgFDHBhxMip9pqjuUalNUk2yfobSo4eXncsUMwer0BSwrGsaeO?=
- =?us-ascii?Q?V6LmoDG+v7qrn9YMMlsN/h9cc7j8LALBtLDrWMqlpGfom1seRwK2+AndKmjI?=
- =?us-ascii?Q?F8bcfEn7g86thYh2g+1vzOVMaBy60IgpeguNghj560U1EzjY?=
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b="a8KQOH0p"
+Received: by mail-wr1-f41.google.com with SMTP id ffacd0b85a97d-43b49819938so1783615f8f.0
+        for <kvm@vger.kernel.org>; Mon, 23 Mar 2026 07:44:28 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=suse.com; s=google; t=1774277067; x=1774881867; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:autocrypt:content-language
+         :from:references:cc:to:subject:user-agent:mime-version:date
+         :message-id:from:to:cc:subject:date:message-id:reply-to;
+        bh=Apeh08iQfW1zl1kubqYMTfp/o+HNBm1KzQrtiUj8S3o=;
+        b=a8KQOH0pAiA+ZM2rly7YnfrDD2YqKsHDVUBb2o1l44+QTfjmWE6o4ws2LBQYAKyg/A
+         +eCm2okHqUbQwMj5chUBGiBTgtm3Ya5EyVje19T/qC6taiNJXvdxIE4NrprbnMA4STy9
+         ip5yGuHO1Buo1i8ncJKVrf0auBAfCz4cLaKq9v8lUFOo9YKogshshzYfksooJcaPacxX
+         KxdBaI4VsVTasjEOc4O7XRzwD5shgDauAApetKvFkq5o+vj1ZHQhYPoMh72D1M+z5Fl2
+         Stelny+pssN3keGJj7mTnZuVzbvYIP4xCItPgj3St3vgAxqzdKvSUcqIU0eREBTGHdxv
+         yI+Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1774277067; x=1774881867;
+        h=content-transfer-encoding:in-reply-to:autocrypt:content-language
+         :from:references:cc:to:subject:user-agent:mime-version:date
+         :message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=Apeh08iQfW1zl1kubqYMTfp/o+HNBm1KzQrtiUj8S3o=;
+        b=Ms6X19k+uTyVkKNjJJtrlcxhotWZpkXrChjHDotGH0ptuFkxQT4ZpJy2IgPuGv+55C
+         3xJ/2t7hxZ6xXPZ7dKf8RKTEMmJBtZOVaOjbJyu9itFxN61Cgb0ftOqCbD7tP+xBzczp
+         LQMEdptlYaSwJEvr6pqsXQXnxe85PpdKzwfoW3oAIXVD08+bU3G09wSp36oNZtRGDkrX
+         lhO2nKVeO8SHn5JunwakpR+mXu6YCQvBzH6Wm9ZK95Udz07WW8Z93/pFC0lB2oOR7GEK
+         S0NtEg+EnhB9T5JcDoRZXLXQlms2Jk+NtCZNxtEkc70rSaYtNA8QCjxsmu/Locypn6Qb
+         V9bw==
+X-Forwarded-Encrypted: i=1; AJvYcCVT9t3rexAjXiJ7vayy9u4IPBJpTIfaW107uGUcl5pyTGJpBM/DNE5xfAA++wgaNHdZlWo=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yxf7lvQskYdTdQxpAtkM59iVR6L3QGSDAlmsXNzB0p68FEGFxoL
+	nQu9tKTDmdPoqg0jsKbdFFCooai94b+lPB9h7JeYzSTtTHGldO960+BDPSpBCisIs64=
+X-Gm-Gg: ATEYQzz3TSIbd7JZNuln2wtzdqKI/Ns3vnMiMmGYH0PrjLZuFKrevI1gri4IoVmAGL8
+	4rcg537xQIKInjZVdMeguFfriPLMHxg3kBJs7l+joXT+FJuNIjaPCGbaZiMHICg8wWKR7LqetNV
+	ccr0cbEA/hGl2FnDWEbZGiFDXRF24xydxulK5zzZThi7CUV6cGgtcpNm1phIhuIBbzHQskxiJ6X
+	MoWh6HaAKnKt9DeCagnHVpmM0XlyY7NMxAOZGVipwzRt69yDIEukMC8m5ZaDnnkf+4Ycjgu9Zog
+	f3r0qB5U3dHS52853GUpP+rcb1k5JbXpTkT5F9ThFWJvKfexn5Twyuh5JgGifR2FGPX+t0SsKmq
+	/lLy1JavpzFfLD5uW0hqAAQ8hjDeKPn0gl+AiD+ghaxQvP5B8nbJRwVCQva1eiTeIBrmH8wmxIN
+	efUNiG8LyZ+IJ5Sfc30fbsl6N1uw==
+X-Received: by 2002:a05:6000:4381:b0:439:afd8:621c with SMTP id ffacd0b85a97d-43b6428b417mr17458154f8f.55.1774277067029;
+        Mon, 23 Mar 2026 07:44:27 -0700 (PDT)
+Received: from [192.168.0.20] ([212.21.133.10])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-43b644bd0dcsm29028576f8f.11.2026.03.23.07.44.24
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 23 Mar 2026 07:44:26 -0700 (PDT)
+Message-ID: <6c315cb3-b3a0-478e-b8ec-36d82684d310@suse.com>
+Date: Mon, 23 Mar 2026 16:44:24 +0200
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: IA1PR12MB9030.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 1c52eab2-12da-4c45-dc0c-08de88e9a07a
-X-MS-Exchange-CrossTenant-originalarrivaltime: 23 Mar 2026 14:36:53.4102
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: /0fvgWrKCcfKKE+VkbF3DqkOhqjawpzxoeViqzDsF4M4lttTrIX3dgAvG5WBgWgkLzb8iLxCo8QpAqQlXk4wxQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SN7PR12MB6984
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v7 03/10] x86/bhi: Rename clear_bhb_loop() to
+ clear_bhb_loop_nofence()
+To: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>, x86@kernel.org,
+ "H. Peter Anvin" <hpa@zytor.com>, Josh Poimboeuf <jpoimboe@kernel.org>,
+ David Kaplan <david.kaplan@amd.com>, Sean Christopherson
+ <seanjc@google.com>, Borislav Petkov <bp@alien8.de>,
+ Dave Hansen <dave.hansen@linux.intel.com>,
+ Peter Zijlstra <peterz@infradead.org>, Alexei Starovoitov <ast@kernel.org>,
+ Daniel Borkmann <daniel@iogearbox.net>, Andrii Nakryiko <andrii@kernel.org>,
+ KP Singh <kpsingh@kernel.org>, Jiri Olsa <jolsa@kernel.org>,
+ "David S. Miller" <davem@davemloft.net>,
+ David Laight <david.laight.linux@gmail.com>,
+ Andy Lutomirski <luto@kernel.org>, Thomas Gleixner <tglx@kernel.org>,
+ Ingo Molnar <mingo@redhat.com>, David Ahern <dsahern@kernel.org>,
+ Martin KaFai Lau <martin.lau@linux.dev>, Eduard Zingerman
+ <eddyz87@gmail.com>, Song Liu <song@kernel.org>,
+ Yonghong Song <yonghong.song@linux.dev>,
+ John Fastabend <john.fastabend@gmail.com>,
+ Stanislav Fomichev <sdf@fomichev.me>, Hao Luo <haoluo@google.com>,
+ Paolo Bonzini <pbonzini@redhat.com>, Jonathan Corbet <corbet@lwn.net>
+Cc: linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
+ Asit Mallick <asit.k.mallick@intel.com>, Tao Zhang <tao1.zhang@intel.com>,
+ bpf@vger.kernel.org, netdev@vger.kernel.org, linux-doc@vger.kernel.org
+References: <20260319-vmscape-bhb-v7-0-b76a777a98af@linux.intel.com>
+ <20260319-vmscape-bhb-v7-3-b76a777a98af@linux.intel.com>
+From: Nikolay Borisov <nik.borisov@suse.com>
+Content-Language: en-US
+Autocrypt: addr=nik.borisov@suse.com; keydata=
+ xsFNBGcrpvIBEAD5cAR5+qu30GnmPrK9veWX5RVzzbgtkk9C/EESHy9Yz0+HWgCVRoNyRQsZ
+ 7DW7vE1KhioDLXjDmeu8/0A8u5nFMqv6d1Gt1lb7XzSAYw7uSWXLPEjFBtz9+fBJJLgbYU7G
+ OpTKy6gRr6GaItZze+r04PGWjeyVUuHZuncTO7B2huxcwIk9tFtRX21gVSOOC96HcxSVVA7X
+ N/LLM2EOL7kg4/yDWEhAdLQDChswhmdpHkp5g6ytj9TM8bNlq9I41hl/3cBEeAkxtb/eS5YR
+ 88LBb/2FkcGnhxkGJPNB+4Siku7K8Mk2Y6elnkOctJcDvk29DajYbQnnW4nhfelZuLNupb1O
+ M0912EvzOVI0dIVgR+xtosp66bYTOpX4Xb0fylED9kYGiuEAeoQZaDQ2eICDcHPiaLzh+6cc
+ pkVTB0sXkWHUsPamtPum6/PgWLE9vGI5s+FaqBaqBYDKyvtJfLK4BdZng0Uc3ijycPs3bpbQ
+ bOnK9LD8TYmYaeTenoNILQ7Ut54CCEXkP446skUMKrEo/HabvkykyWqWiIE/UlAYAx9+Ckho
+ TT1d2QsmsAiYYWwjU8igXBecIbC0uRtF/cTfelNGrQwbICUT6kJjcOTpQDaVyIgRSlUMrlNZ
+ XPVEQ6Zq3/aENA8ObhFxE5PLJPizJH6SC89BMKF3zg6SKx0qzQARAQABzSZOaWtvbGF5IEJv
+ cmlzb3YgPG5pay5ib3Jpc292QHN1c2UuY29tPsLBkQQTAQoAOxYhBDuWB8EJLBUZCPjT3SRn
+ XZEnyhfsBQJnK6byAhsDBQsJCAcCAiICBhUKCQgLAgQWAgMBAh4HAheAAAoJECRnXZEnyhfs
+ XbIQAJxuUnelGdXbSbtovBNm+HF3LtT0XnZ0+DoR0DemUGuA1bZAlaOXGr5mvVbTgaoGUQIJ
+ 3Ejx3UBEG7ZSJcfJobB34w1qHEDO0pN9orGIFT9Bic3lqhawD2r85QMcWwjsZH5FhyRx7P2o
+ DTuUClLMO95GuHYQngBF2rHHl8QMJPVKsR18w4IWAhALpEApxa3luyV7pAAqKllfCNt7tmed
+ uKmclf/Sz6qoP75CvEtRbfAOqYgG1Uk9A62C51iAPe35neMre3WGLsdgyMj4/15jPYi+tOUX
+ Tc7AAWgc95LXyPJo8069MOU73htZmgH4OYy+S7f+ArXD7h8lTLT1niff2bCPi6eiAQq6b5CJ
+ Ka4/27IiZo8tm1XjLYmoBmaCovqx5y5Xt2koibIWG3ZGD2I+qRwZ0UohKRH6kKVHGcrmCv0J
+ YO8yIprxgoYmA7gq21BpTqw3D4+8xujn/6LgndLKmGESM1FuY3ymXgj5983eqaxicKpT9iq8
+ /a1j31tms4azR7+6Dt8H4SagfN6VbJ0luPzobrrNFxUgpjR4ZyQQ++G7oSRdwjfIh1wuCF6/
+ mDUNcb6/kA0JS9otiC3omfht47yQnvod+MxFk1lTNUu3hePJUwg1vT1te3vO5oln8lkUo9BU
+ knlYpQ7QA2rDEKs+YWqUstr4pDtHzwQ6mo0rqP+zzsFNBGcrpvIBEADGYTFkNVttZkt6e7yA
+ LNkv3Q39zQCt8qe7qkPdlj3CqygVXfw+h7GlcT9fuc4kd7YxFys4/Wd9icj9ZatGMwffONmi
+ LnUotIq2N7+xvc4Xu76wv+QJpiuGEfCDB+VdZOmOzUPlmMkcJc/EDSH4qGogIYRu72uweKEq
+ VfBI43PZIGpGJ7TjS3THX5WVI2YNSmuwqxnQF/iVqDtD2N72ObkBwIf9GnrOgxEyJ/SQq2R0
+ g7hd6IYk7SOKt1a8ZGCN6hXXKzmM6gHRC8fyWeTqJcK4BKSdX8PzEuYmAJjSfx4w6DoxdK5/
+ 9sVrNzaVgDHS0ThH/5kNkZ65KNR7K2nk45LT5Crjbg7w5/kKDY6/XiXDx7v/BOR/a+Ryo+lM
+ MffN3XSnAex8cmIhNINl5Z8CAvDLUtItLcbDOv7hdXt6DSyb65CdyY8JwOt6CWno1tdjyDEG
+ 5ANwVPYY878IFkOJLRTJuUd5ltybaSWjKIwjYJfIXuoyzE7OL63856MC/Os8PcLfY7vYY2LB
+ cvKH1qOcs+an86DWX17+dkcKD/YLrpzwvRMur5+kTgVfXcC0TAl39N4YtaCKM/3ugAaVS1Mw
+ MrbyGnGqVMqlCpjnpYREzapSk8XxbO2kYRsZQd8J9ei98OSqgPf8xM7NCULd/xaZLJUydql1
+ JdSREId2C15jut21aQARAQABwsF2BBgBCgAgFiEEO5YHwQksFRkI+NPdJGddkSfKF+wFAmcr
+ pvICGwwACgkQJGddkSfKF+xuuxAA4F9iQc61wvAOAidktv4Rztn4QKy8TAyGN3M8zYf/A5Zx
+ VcGgX4J4MhRUoPQNrzmVlrrtE2KILHxQZx5eQyPgixPXri42oG5ePEXZoLU5GFRYSPjjTYmP
+ ypyTPN7uoWLfw4TxJqWCGRLsjnkwvyN3R4161Dty4Uhzqp1IkNhl3ifTDYEvbnmHaNvlvvna
+ 7+9jjEBDEFYDMuO/CA8UtoVQXjy5gtOhZZkEsptfwQYc+E9U99yxGofDul7xH41VdXGpIhUj
+ 4wjd3IbgaCiHxxj/M9eM99ybu5asvHyMo3EFPkyWxZsBlUN/riFXGspG4sT0cwOUhG2ZnExv
+ XXhOGKs/y3VGhjZeCDWZ+0ZQHPCL3HUebLxW49wwLxvXU6sLNfYnTJxdqn58Aq4sBXW5Un0Q
+ vfbd9VFV/bKFfvUscYk2UKPi9vgn1hY38IfmsnoS8b0uwDq75IBvup9pYFyNyPf5SutxhFfP
+ JDjakbdjBoYDWVoaPbp5KAQ2VQRiR54lir/inyqGX+dwzPX/F4OHfB5RTiAFLJliCxniKFsM
+ d8eHe88jWjm6/ilx4IlLl9/MdVUGjLpBi18X7ejLz3U2quYD8DBAGzCjy49wJ4Di4qQjblb2
+ pTXoEyM2L6E604NbDu0VDvHg7EXh1WwmijEu28c/hEB6DwtzslLpBSsJV0s1/jE=
+In-Reply-To: <20260319-vmscape-bhb-v7-3-b76a777a98af@linux.intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
 
 
-> -----Original Message-----
-> From: Jonathan Cameron <jonathan.cameron@huawei.com>
-> Sent: 19 March 2026 21:37
-> To: Alex Williamson <alex@shazbot.org>
-> Cc: Manish Honap <mhonap@nvidia.com>; Aniket Agashe
-> <aniketa@nvidia.com>; Ankit Agrawal <ankita@nvidia.com>; Vikram Sethi
-> <vsethi@nvidia.com>; Jason Gunthorpe <jgg@nvidia.com>; Matt Ochs
-> <mochs@nvidia.com>; Shameer Kolothum Thodi <skolothumtho@nvidia.com>;
-> alejandro.lucero-palau@amd.com; dave@stgolabs.net; dave.jiang@intel.com;
-> alison.schofield@intel.com; vishal.l.verma@intel.com;
-> ira.weiny@intel.com; dan.j.williams@intel.com; jgg@ziepe.ca; Yishai
-> Hadas <yishaih@nvidia.com>; kevin.tian@intel.com; Neo Jia
-> <cjia@nvidia.com>; Tarun Gupta (SW-GPU) <targupta@nvidia.com>; Zhi Wang
-> <zhiw@nvidia.com>; Krishnakant Jaju <kjaju@nvidia.com>; linux-
-> kernel@vger.kernel.org; linux-cxl@vger.kernel.org; kvm@vger.kernel.org
-> Subject: Re: [PATCH 18/20] docs: vfio-pci: Document CXL Type-2 device
-> passthrough
->=20
-> External email: Use caution opening links or attachments
->=20
->=20
-> On Tue, 17 Mar 2026 15:24:45 -0600
-> Alex Williamson <alex@shazbot.org> wrote:
->=20
-> > On Fri, 13 Mar 2026 12:13:41 +0000
-> > Jonathan Cameron <jonathan.cameron@huawei.com> wrote:
-> >
-> > > On Thu, 12 Mar 2026 02:04:38 +0530
-> > > mhonap@nvidia.com wrote:
-> > >
-> > > > From: Manish Honap <mhonap@nvidia.com>
-> > > > ---
-> > > >  Documentation/driver-api/index.rst        |   1 +
-> > > >  Documentation/driver-api/vfio-pci-cxl.rst | 216
-> > > > ++++++++++++++++++++++
-> > > >  2 files changed, 217 insertions(+)  create mode 100644
-> > > > Documentation/driver-api/vfio-pci-cxl.rst
-> > > >
-> > > > diff --git a/Documentation/driver-api/index.rst
-> > > > b/Documentation/driver-api/index.rst
-> > > > index 1833e6a0687e..7ec661846f6b 100644
-> > > > --- a/Documentation/driver-api/index.rst
-> > > > +++ b/Documentation/driver-api/index.rst
-> > >
-> > > >
-> > > >  Bus-level documentation
-> > > >  =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D
-> > > > diff --git a/Documentation/driver-api/vfio-pci-cxl.rst
-> > > > b/Documentation/driver-api/vfio-pci-cxl.rst
-> > > > new file mode 100644
-> > > > index 000000000000..f2cbe2fdb036
-> > > > --- /dev/null
-> > > > +++ b/Documentation/driver-api/vfio-pci-cxl.rst
-> > >
-> > > > +Device Detection
-> > > > +----------------
-> > > > +
-> > > > +CXL Type-2 detection happens automatically when ``vfio-pci``
-> > > > +registers a device that has:
-> > > > +
-> > > > +1. A CXL Device DVSEC capability (PCIe DVSEC Vendor ID 0x1E98, ID
-> 0x0000).
-> > > > +2. Bit 2 (Mem_Capable) set in the CXL Capability register within
-> that DVSEC.
-> > >
-> > > FWIW to be type 2 as opposed to a type 3 non class code device (e.g.
-> > > the compressed memory devices Gregory Price and others are using)
-> > > you need Cache_capable as well.  Might be worth making this all
-> > > about CXL Type-2 and non class code Type-3.
-> > >
-> > > > +3. A PCI class code that is **not** ``0x050210`` (CXL Type-3
-> memory device).
-> > > > +4. An HDM Decoder block discoverable via the Register Locator
-> DVSEC.
-> > > > +5. A pre-committed HDM decoder (BIOS/firmware programmed) with
-> non-zero size.
-> > >
-> > > This is the bit that we need to make more general. Otherwise you'll
-> > > have to have a bios upgrade for every type 2 device (and no native
-> hotplug).
-> > > Note native hotplug is quite likely if anyone is switch based device
-> > > pooling.
-> > >
-> > > I assume that you are doing this today to get something upstream and
-> > > presume it works for the type 2 device you have on the host you care
-> > > about.  I'm not sure there are 'general' solutions but maybe there
-> > > are some heuristics or sufficient conditions for establishing the
-> > > size.
-> > >
-> > > Type 2 might have any of:
-> > > - Conveniently preprogrammed HDM decoders (the case you use)
-> > > - Maximum of 2 HDM decoders + the same number of Range registers.
-> > >   In general the problem with range registers is they are a legacy
-> feature
-> > >   and there are only 2 of them whereas a real device may have many
-> more
-> > >   DPA ranges. In this corner case though, is it enough to give us
-> the
-> > >   necessary sizes?  I think it might be but would like others
-> familiar
-> > >   with the spec to confirm. (If needed I'll take this to the
-> consortium
-> > >   for an 'official' view).
-> > > - A DOE and table access protocol.  CDAT should give us enough info
-> to
-> > >   be fairly sure what is needed.
-> > > - A CXL mailbox (maybe the version in the PCI spec now) and the spec
-> defined
-> > >   commands to query what is there.  Reading the intro to 8.2.10.9
-> Memory
-> > >   Device Command Sets, it's a little unclear on whether these are
-> valid on
-> > >   non class code devices but I believe having the appropriate
-> Mailbox
-> > >   type identifier is enough to say we expect to get them.
-> > >
-> > > None of this is required though and the mailboxes are non trivial.
-> > > So personally I think we should propose a new DVSEC that provides
-> > > any info we need for generic passthrough.  Starting with what we
-> > > need to get the regions right.  Until something like that is in
-> > > place we will have to store this info somewhere.
-> > >
-> > > There is (maybe) an alternative of doing the region allocation on
-> demand.
-> > > That is emulate the HDM decoders in QEMU (on top of the emulation
-> > > here) and when settings corresponding to a region setup occur, go
-> > > request one from the CXL core. The problem is we can't guarantee it
-> > > will be available at that time. So we can 'guess' what to provide to
-> > > the VM in terms of CXL fixed memory windows, but short of heuristics
-> > > (either whole of the host offer, or divide it up based on devices
-> > > present  vs what is in the VM) that is going to be prone to it not
-> > > being available later.
-> > >
-> > > Where do people think this should be?  We are going to end up with a
-> > > device list somewhere. Could be in kernel, or in QEMU or make it an
-> > > orchestrator problem (applying the 'someone else's problem'
-> solution).
-> >
-> > That's the typical approach.  That's what we did with resizable BARs.
-> > If we cannot guarantee allocation on demand, we need to push the
-> > policy to the device, via something that indicates the size to use, or
-> > to the orchestration, via something that allows the size to be
-> > committed out-of-band.  As with REBAR, we then need to be able to
-> > restrict the guest behavior to select only the configured option.
-> >
-> > I imagine this means for the non-pre-allocated case, we need to
-> > develop some sysfs attributes that allows that out-of-band sizing,
-> > which would then appear as a fixed, pre-allocated configuration to the
-> guest.
-> > Thanks,
->=20
-> I did some reading as only vaguely familiar with how the resizeable bar
-> stuff was done. That approach should be fairly straight forward to adapt
-> here.
-> Stash some config in struct pci_dev before binding vfio-pci/cxl via a
-> sysfs interface.  Given that the association with the CXL infrastructure
-> only happens later (unlike bar config) it would then be the job of the
-> vfio-pci/cxl driver to see what was requested and attempt to set up the
-> CXL topology to deliver it at bind time.
->=20
-> Manesh, would you mind hack at small PoC on top of your existing code to
-> see if this approach shows up any problems?  I don't have anything to
-> test against right now, though could probably hack some emulation
-> together fairly fast.
-> I'm thinking you'll get there faster!  I'm mostly focused on this cycle
-> stuff at the moment, and I suspect we'll be discussing this for a while
-> yet + it has dependencies on other series that aren't in yet.
->=20
-> I'm not sure the PCI folk will like us stashing random stuff in their
-> structures just because we haven't bound anything yet though so have no
-> CXL structures to use.  We should probably think about how VF CXL.mem
-> region/sub-region assignment might work as well.
->=20
-> Sticking to PF (well actually just function 0) passthrough for now...
-> For the guest, we can constrain things so there is only one right option
-> though it will limit what topologies we can build.  Basically each
-> device passed through has it's own CXL fixed memory window, it's own
-> host bridge, it's own root port + no switches.  The sizing it sees for
-> the CFMWS matches what we configured in the host.  We could program that
-> topology up and lock it down but that means VM BIOS nastiness so I'd
-> leave it to the native linux code to bring it up.  If anyone wants to do
-> P2P it'll get harder to do within the spec as we will have to prevent
-> topologies that contain foot guns like the ability to configure
-> interleave.
->=20
-> This constrained approach is what we plan for the CXL class code type 3
-> device emulation used for DCD so we've been exploring it already.
-> It's still possible to do annoying things like zero size decoders +
-> skip. For now we can fail HDM decoder commits if they are particularly
-> non sensical and we haven't handled them yet - ultimately we'll probably
-> want to minimize what we refuse to handle as I'm sure 'other OS' may not
-> do things the same as Linux.
->=20
-> P2P and the fun of single device on multiple PCI heirarchies as to be
-> solved later. As an FYI, for bandwidth, people will be building devices
-> that interleave memory addresses over multiple root ports. Dan reminded
-> me of that challenge last night.  See bundled ports in CXL 4.0, though
-> this particular part related to CXL.mem is actually possible prior to
-> that stuff for CXL.cache.  Oh and don't get me started on TSP / coco
-> challenges.
-> I take the view they are Dan's problem for now ;)
->=20
-> Jonathan
->=20
+On 19.03.26 г. 17:40 ч., Pawan Gupta wrote:
+> To reflect the recent change that moved LFENCE to the caller side.
+> 
+> Suggested-by: Borislav Petkov <bp@alien8.de>
+> Signed-off-by: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
 
-Hello Alex, Jonathan,
 
-I will shortly provide the updated vfio-cxl patch v2 and the QEMU RFC as pe=
-r
-suggestions mentioned here.
+Nit: I think having the _nofence in the function name is leaking an 
+implementation detail into the name/interface. I.e things change and we 
+decide that the implementation of a particular function must change so 
+we just do the change and substantiate it in the commit message or in a 
+comment. Especially that we don't have a "with an lfence" version.
 
->=20
-> >
-> > Alex
+What's more I'd consider this a "private" function, that's called via 
+the CLEAR_BRANCH_HISTORY macros, the only place it's called directly is 
+in the bpf jit code, but that's more of an exception.
+
+Still,
+
+Reviewed-by: Nikolay Borisov <nik.borisov@suse.com>
+
+<snip>
 
