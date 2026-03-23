@@ -1,30 +1,30 @@
 Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A600B3B27EF
-	for <kvm@vger.kernel.org>; Mon, 23 Mar 2026 13:59:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 487583B9D9F
+	for <kvm@vger.kernel.org>; Mon, 23 Mar 2026 13:59:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=13.77.154.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774274392; cv=none; b=rp3982WXzBsMW4gx03Oxfx7EKlKohENDLRSHaOFHCSlmRsXXwwJOUN2/ETEEPST9mp+Yjz85G7L76KaLhpsY25k0rnQOMRhrMQnOwTTQ1jt9kV9mhMfUllU8ncKiQADZolpef9boPYJksPJea6mXVKB9Uo5ZuU+PUIrSM0VDpBI=
+	t=1774274396; cv=none; b=etk05wBbNR/hISHTZ1dQ5R9EVN2TFY3r6r/jmFDn4lPm4z9k4Gi6IgBP4se/4XfJw94lcZdFwQtRFBmlcc/MI7eA9jlBCA/osLSShTzPUM8t75pCb5zSsYVWxJ+DBHlerP9BgGfxFmsgiNGbUHPD4/mpuWIL2u/HUoWSaYzFU/g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774274392; c=relaxed/simple;
-	bh=VfT8FD77JJqyUIE1zIozwuUOhuY9LR57vHkBPt8FBok=;
+	s=arc-20240116; t=1774274396; c=relaxed/simple;
+	bh=L62qlWp3v1adwRedP//iNPVP6brfPemlKTSWzqRCVCg=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=Kg56B0pMU8YzKis838SYVaoJ+HYLLmKG2W72h8BsCW3Jhkf/nZFFgiSLwQceAPkK6+WM5R/amN46cnX5Ltc28C/KmOki5pTHKzbvicpZwL0coeiqr2icXAkyEBDrCt5a1zRfkaW4tXiBIcyJNnoVcna2lNohPAzlKHVFsCu5mp0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com; spf=pass smtp.mailfrom=linux.microsoft.com; dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b=dyeboFIJ; arc=none smtp.client-ip=13.77.154.182
+	 MIME-Version; b=CyE8CQ8GgP7hyr63VR+f3Yx8zwgLOksCAP0Q6lsKZjGCCUmLVVFQLWojPcW9IJZfHhO3rfXjP7Dyav9ufXCKLrDJoonT+KfBm7FEnMjgk8uipynCfTZU7GAqX2GZDf0fdHpsR+8ErZG5+ywFOsmN5aK5waWDJLlB5koC5HGT+jE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com; spf=pass smtp.mailfrom=linux.microsoft.com; dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b=UVeLNgdI; arc=none smtp.client-ip=13.77.154.182
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.microsoft.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b="dyeboFIJ"
+	dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b="UVeLNgdI"
 Received: from DESKTOP-TUU1E5L.localdomain (unknown [167.220.208.76])
-	by linux.microsoft.com (Postfix) with ESMTPSA id AA00220B6F15;
-	Mon, 23 Mar 2026 06:59:48 -0700 (PDT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com AA00220B6F15
+	by linux.microsoft.com (Postfix) with ESMTPSA id 2F30720B6F1B;
+	Mon, 23 Mar 2026 06:59:52 -0700 (PDT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 2F30720B6F1B
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
-	s=default; t=1774274391;
-	bh=/aJjVtv2N2HvKWYe9sJ5DIN7GG5pVPTEVn5pz5+VPjQ=;
+	s=default; t=1774274395;
+	bh=+GcfDGF+p4TwuNzdDU1vHppWDYVvy/FB9/c/HXYoevs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dyeboFIJ2FdETlp6CR65ZWMlL/58/lM9WsOgz8YXa8ZdGCT4GFFQbhdVxXhGh3Zc4
-	 xuNLnzXedjOIEom/ui2tP4fdkQwBPdtgkbgn+ZN/lKv10UleqbkEO3i563jq2ln8o0
-	 gZLNOK8aRjvC8y4hsQ6pgG/8pRxphI88VyPINcHw=
+	b=UVeLNgdI5nYWCu1OyAzf3VaXpB1gaFTPxadDDb6zHvYkUhmfNatrjByuo91FHcEXi
+	 AVJCN2Zt+lbprqjSuAah2EzDGjyvaOGFbM22H3Mt6XYwhgXiRwJB8tNALufhPHeiY2
+	 unvfwFRqfmC6PGyPiibJHBt4ed0rqPMOcSd2D39s=
 From: Magnus Kulke <magnuskulke@linux.microsoft.com>
 To: qemu-devel@nongnu.org
 Cc: kvm@vger.kernel.org,
@@ -41,9 +41,9 @@ Cc: kvm@vger.kernel.org,
 	Magnus Kulke <magnuskulke@microsoft.com>,
 	Magnus Kulke <magnuskulke@linux.microsoft.com>,
 	"Michael S. Tsirkin" <mst@redhat.com>
-Subject: [RFC 25/32] accel/mshv: write synthetic MSRs after migration
-Date: Mon, 23 Mar 2026 14:58:05 +0100
-Message-Id: <20260323135812.383509-26-magnuskulke@linux.microsoft.com>
+Subject: [RFC 26/32] accel/mshv: migrate REFERENCE_TIME
+Date: Mon, 23 Mar 2026 14:58:06 +0100
+Message-Id: <20260323135812.383509-27-magnuskulke@linux.microsoft.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20260323135812.383509-1-magnuskulke@linux.microsoft.com>
 References: <20260323135812.383509-1-magnuskulke@linux.microsoft.com>
@@ -55,87 +55,102 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Write partition-wide synthetic MSRs. This ensures the hypercall page and
-SynIC facilities are set up before vCPUs attempt to use it.
+This is a partition-wide state that we use a dedicated handler for. It
+is stored as-is in the "mshv" savevm_live field. We might have to extend
+this later if we have more partition-wide state to roundtrip.
 
 Signed-off-by: Magnus Kulke <magnuskulke@linux.microsoft.com>
 ---
- accel/mshv/mshv-all.c          |  7 +++++++
- include/hw/hyperv/hvgdk_mini.h |  3 +++
- include/system/mshv_int.h      |  1 +
- target/i386/mshv/mshv-cpu.c    | 15 +++++++++++++++
- 4 files changed, 26 insertions(+)
+ accel/mshv/mshv-all.c | 70 ++++++++++++++++++++++++++++++++++++++++++-
+ 1 file changed, 69 insertions(+), 1 deletion(-)
 
 diff --git a/accel/mshv/mshv-all.c b/accel/mshv/mshv-all.c
-index 365288b901..22e838ede6 100644
+index 22e838ede6..3927a82925 100644
 --- a/accel/mshv/mshv-all.c
 +++ b/accel/mshv/mshv-all.c
-@@ -137,6 +137,13 @@ static int mshv_load_setup(QEMUFile *f, void *opaque, Error **errp)
- static int mshv_load_cleanup(void *opaque)
- {
-     MshvState *s = opaque;
-+    int ret;
-+
-+    ret = mshv_arch_set_partition_msrs(first_cpu);
-+    if (ret < 0) {
-+        error_report("Failed to set partition MSRs: %s", strerror(-ret));
-+        return -1;
-+    }
- 
-     resume_vm(s->vm);
- 
-diff --git a/include/hw/hyperv/hvgdk_mini.h b/include/hw/hyperv/hvgdk_mini.h
-index a47bc6212e..00daac0431 100644
---- a/include/hw/hyperv/hvgdk_mini.h
-+++ b/include/hw/hyperv/hvgdk_mini.h
-@@ -23,6 +23,9 @@
- #define HV_X64_MSR_APIC_FREQUENCY   0x40000023
- 
- typedef enum hv_register_name {
-+    /* VP Management Registers */
-+    HV_REGISTER_INTERNAL_ACTIVITY_STATE = 0x00000004,
-+
-     /* Pending Interruption Register */
-     HV_REGISTER_PENDING_INTERRUPTION = 0x00010002,
- 
-diff --git a/include/system/mshv_int.h b/include/system/mshv_int.h
-index 7d685fc647..7052f20a00 100644
---- a/include/system/mshv_int.h
-+++ b/include/system/mshv_int.h
-@@ -84,6 +84,7 @@ int mshv_get_generic_regs(CPUState *cpu, hv_register_assoc *assocs,
-                           size_t n_regs);
- int mshv_arch_store_vcpu_state(const CPUState *cpu);
- int mshv_arch_load_vcpu_state(CPUState *cpu);
-+int mshv_arch_set_partition_msrs(const CPUState *cpu);
- void mshv_arch_init_vcpu(CPUState *cpu);
- void mshv_arch_destroy_vcpu(CPUState *cpu);
- void mshv_arch_amend_proc_features(
-diff --git a/target/i386/mshv/mshv-cpu.c b/target/i386/mshv/mshv-cpu.c
-index ec1caf4e7a..0b08f478ce 100644
---- a/target/i386/mshv/mshv-cpu.c
-+++ b/target/i386/mshv/mshv-cpu.c
-@@ -1141,6 +1141,21 @@ int mshv_arch_store_vcpu_state(const CPUState *cpu)
+@@ -85,13 +85,81 @@ static int set_time_freeze(int vm_fd, int freeze)
      return 0;
  }
  
-+int mshv_arch_set_partition_msrs(const CPUState *cpu)
++static int get_reference_time(int vm_fd, uint64_t *ref_time)
 +{
-+    CPUX86State *env = &X86_CPU(cpu)->env;
-+    struct hv_register_assoc assocs[] = {
-+        { .name = HV_REGISTER_GUEST_OS_ID,
-+          .value.reg64 = env->msr_hv_guest_os_id },
-+        { .name = HV_REGISTER_REFERENCE_TSC,
-+          .value.reg64 = env->msr_hv_tsc },
-+        { .name = HV_X64_REGISTER_HYPERCALL,
-+          .value.reg64 = env->msr_hv_hypercall },
-+    };
++    int ret;
++    struct hv_input_get_partition_property in = {0};
++    struct hv_output_get_partition_property out = {0};
++    struct mshv_root_hvcall args = {0};
 +
-+    return mshv_set_generic_regs(cpu, assocs, ARRAY_SIZE(assocs));
++    in.property_code = HV_PARTITION_PROPERTY_REFERENCE_TIME;
++
++    args.code = HVCALL_GET_PARTITION_PROPERTY;
++    args.in_sz = sizeof(in);
++    args.in_ptr = (uint64_t)&in;
++    args.out_sz = sizeof(out);
++    args.out_ptr = (uint64_t)&out;
++
++    ret = mshv_hvcall(vm_fd, &args);
++    if (ret < 0) {
++        error_report("Failed to get reference time");
++        return -1;
++    }
++
++    *ref_time = out.property_value;
++    return 0;
 +}
 +
- void mshv_arch_amend_proc_features(
-     union hv_partition_synthetic_processor_features *features)
+ static void mshv_save_state(QEMUFile *f, void *opaque)
  {
+-    return;
++    MshvState *s = opaque;
++    uint64_t ref_time;
++    int ret;
++
++    ret = get_reference_time(s->vm, &ref_time);
++    if (ret < 0) {
++        error_report("Failed to get reference time for migration");
++        abort();
++    }
++
++    qemu_put_be64(f, ref_time);
++}
++
++static int set_reference_time(int vm_fd, uint64_t ref_time)
++{
++    int ret;
++    struct hv_input_set_partition_property in = {0};
++    struct mshv_root_hvcall args = {0};
++
++    in.property_code = HV_PARTITION_PROPERTY_REFERENCE_TIME;
++    in.property_value = ref_time;
++
++    args.code = HVCALL_SET_PARTITION_PROPERTY;
++    args.in_sz = sizeof(in);
++    args.in_ptr = (uint64_t)&in;
++
++    ret = mshv_hvcall(vm_fd, &args);
++    if (ret < 0) {
++        error_report("Failed to set reference time");
++        return -1;
++    }
++
++    return 0;
+ }
+ 
+ static int mshv_load_state(QEMUFile *f, void *opaque, int version_id)
+ {
++    MshvState *s = opaque;
++    uint64_t ref_time;
++    int ret;
++
++    ref_time = qemu_get_be64(f);
++
++    ret = set_reference_time(s->vm, ref_time);
++    if (ret < 0) {
++        error_report("Failed to set reference time after migration");
++        return -1;
++    }
+     return 0;
+ }
+ 
 -- 
 2.34.1
 
