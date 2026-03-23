@@ -1,144 +1,181 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 735E93644A0
-	for <kvm@vger.kernel.org>; Mon, 23 Mar 2026 07:53:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=170.10.133.124
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774252432; cv=pass; b=pevH4k9q149t3mR+Bd4eemUO5zpSQFjUvgU3cMZt6MUvIy+SsNy8HukZSbgSHEM1VnVfHpVhnLTrb+Bl95YfeAo98UmoguZh9YwLBk9xGI0kI+lZgVggrOoxR38ykK4PAwEUwoHGGPv4xaJ3eXdurwybTcb0S2sZMt70Sv9+drY=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774252432; c=relaxed/simple;
-	bh=ZyPnZQkWGjsr4fVqWZicnEtV8egGF1NxpaFkdjbB1rE=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=skxUj42BSfYBdReAjAZpUdsR20gfR6E05LzIqN6u6R6Yv8mvcumM6fGcr9Q45D04ZV9jNTqOlRU1+ic9UVs+eRkUDLxbs3WB4m5ODMvOdZnZ742IVjbiHQ62N3foWeUu4tHRJnAAI3iJk2DpCiL9spUmrRjU9LajOAbYs2q2x2o=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=UtYCimR2; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=cq5pZdvf; arc=pass smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="UtYCimR2";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="cq5pZdvf"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1774252429;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=ZyPnZQkWGjsr4fVqWZicnEtV8egGF1NxpaFkdjbB1rE=;
-	b=UtYCimR2EDRI4URcABe+18mhr4dmy805xkPe5WqjnWwrB5ilBIOIPAsT8rWU6nnDlJMIe0
-	UIXRDbKSlQvFSoYdcYbR+Dr4knxqqUD0h822WE1BMlwAk4EFkQQMawwn094w+nF4opQA1o
-	pKYPPwW7MeFdk4JMFXE6vDAIUK5fuYs=
-Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
- [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-532-C5cr8zcSNii1ET3HaFnAzA-1; Mon, 23 Mar 2026 03:53:46 -0400
-X-MC-Unique: C5cr8zcSNii1ET3HaFnAzA-1
-X-Mimecast-MFC-AGG-ID: C5cr8zcSNii1ET3HaFnAzA_1774252425
-Received: by mail-wr1-f71.google.com with SMTP id ffacd0b85a97d-43b41d45be4so3610402f8f.0
-        for <kvm@vger.kernel.org>; Mon, 23 Mar 2026 00:53:46 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1774252425; cv=none;
-        d=google.com; s=arc-20240605;
-        b=KdkMhp50txJ8UodGUDDv3PQwSi0EK7Fjq10uppZ0FNMjCOVolXLrzxJDdLiHRGySzz
-         CpgUKS3UlvWlqlJ6f53NP9s6OnfZotcHy9b9XP7uP4qbBu1Y3zH0mWoGUqzLq6hy1rAt
-         QBrAsl59ZsiEMBhweA0uMZW1Ep1PmucS4REDoIYY3quwJDrloroX4S4ZfSszBBeryHTD
-         sEQOJ917ld9vctAtlLf0BtjdqEKKC5/HM6nztI0scGpZhbbF7alKCfVWsU1FCvVqdbA3
-         KTnFrPACCnqVKRv7PCtK2nb0eZ3nYjr1wHdCynkdP39O1ew5EV7Qy9eFNlwdgy2/a/Mv
-         OxNA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:dkim-signature;
-        bh=ZyPnZQkWGjsr4fVqWZicnEtV8egGF1NxpaFkdjbB1rE=;
-        fh=Aokfq+y5tx47TFIqDdTYLs3uJmMHSNFgNE2h11rs0Do=;
-        b=Z122YeZEFL93fR8UtJDuUl9BcxTkWY/YZdubmQnCjCdcaolHu8FAR2K6Fk/I3+zIFs
-         hert2Fmbx0qm/7dnAQVgpWlM41D3UAdoJfqCNgLZgU3wZfW4KhMoae7qNWLUFN34MBcB
-         /ZCMQPSdAySHZZX+HUFRlmqd2V0F4cjfJcJq9nsOFIGtreppazvrBsYyU2anuj6vuQmv
-         185WE8gFtkUgHAEnnILPJXuWfFdjpayCKfxiGGilZsq5jceKa7Kfj+G+FUBusuyMWlF8
-         PjkIWvsUF5bsRXCQHHUVLdB/8egUDfvZQyzwcihuGQnSryxF/L6iTdgYKCFiyW7a5KTH
-         2WJQ==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1774252425; x=1774857225; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=ZyPnZQkWGjsr4fVqWZicnEtV8egGF1NxpaFkdjbB1rE=;
-        b=cq5pZdvfmQAzpbDMxZdnFFbl2EBhMbNbAFHSGDwDSIUwgg2Gj0aNs9GRe793Q/jvDD
-         1ryVHliv0nS1B0PfFibaeum1bd9p382I5Dnkm/+kLxHBIe8X8F+lGAndLnkeeoDow7ZT
-         DUKWSPyAQhLQBnQzM0AiMEtgReN1UKc6ZOMV7x/ftlS/zv9IlBfROsXz9IQ+xVp7FyCq
-         rDyplIT6pq2xIJHRtdLu++HdxpxQOGATbDK95grbqf1RnKAqXN0OW1yuXu7FPKRHoXNF
-         Vr1/0Lu1w3+eIXh4ExMHjzdk6kjCypu/aFnxNpL4BXJNA+a3VkKLB8Gq9X3UAroj9atp
-         AY6Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774252425; x=1774857225;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=ZyPnZQkWGjsr4fVqWZicnEtV8egGF1NxpaFkdjbB1rE=;
-        b=gKJ+K9n78JHYTR3KoLRz8bsMXblr7c9uZEcOw8v8DuFUF+SeWiNxv8lxRdeJ/DDznU
-         WHOc+B6utABH8XZBvACvJKOp75YzTY7ggAcvQZ65OKmmHUySgFQUQK3w7fAwEOJUUXq3
-         fj1EasUVGNEg22kpU0GC9P1ztUMN8YmTlYtTSN6fcdapbLR7gdp6c29VdL+WlFPNBC03
-         OZFg6BPJL2+xG7HsegA3or2AgWNsCxWqag3PIt99swAwdY6kSLhd22NlAfiMuqKcVaYf
-         WXKL/wop58QIjL+zr0AUakykC8mJEnmk0seBhkyTxNHOQtdfC8yDDUEG3K0nz1py3ZlJ
-         k0kw==
-X-Forwarded-Encrypted: i=1; AJvYcCWkCn1/Z8ekjbOmrCl/rhR1EaBWD1XyeBLAN5y1sH1Oke9fog/8waWpSfnv9kfMQtbST58=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzucjPK/SGTj/vQAPavpOIvXuh5aliaSK2w1bqadX49TG88/WNK
-	xQB71MJIWLm8GxKgkrEwQtyjbb1xbil5ZNoorJElWEcjIAnemlcwgakY0v9WszrIhDv3v3n7bk3
-	Wg7RXOP2ZRrW9S2lM4Zn9P0x9Zr8Skm7hMuErprPkV9ps5qJGJeUCxJ74UTyME25P7eGUQUSemy
-	70sQZMGPd22TmRA25HN4C7/TaKqbL1
-X-Gm-Gg: ATEYQzz4zfoAlfZGAnAgGRNrbi/Sg08G350TYNuO/wykFN9f+DzFaaUfZPgdWf+WWup
-	8PLNnBjdig/XvxCdefT2bVBQkC92cOw1SW7NSPK1Sx2wsUFUVwO2eBvukauRHUnDudCiA4rzRNx
-	UobCj764AsViCak609+QOZEmDN1VCIKr2Dz51ipHgQba/hyUjBlTMFcoibG8rCbw8PS2pY4ra06
-	ResMr3XKUcytAuQ2nAiL7Fo7BVFz0qrveE8POVj9kg9kH2dYG3HE0Xq8anklIpe0JLL7f3KmXJV
-	L/yW
-X-Received: by 2002:a5d:5e83:0:b0:43b:4166:b855 with SMTP id ffacd0b85a97d-43b57723457mr23557138f8f.14.1774252425488;
-        Mon, 23 Mar 2026 00:53:45 -0700 (PDT)
-X-Received: by 2002:a5d:5e83:0:b0:43b:4166:b855 with SMTP id
- ffacd0b85a97d-43b57723457mr23557113f8f.14.1774252425082; Mon, 23 Mar 2026
- 00:53:45 -0700 (PDT)
+Received: from mail.loongson.cn (mail.loongson.cn [114.242.206.163])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 130A435DA65;
+	Mon, 23 Mar 2026 07:58:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=114.242.206.163
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1774252742; cv=none; b=Srb+srsX7jualDacrtAr+BEYQsEvEbKcurrmCTFcAw8xwUyz+FF2zAg/ShriqsHuDg3IBoxcpYA6YC9NtMDUtveYKIBl4s6tJgGcRVLl3v2wUL2tVBAixXAX4yw8m9evnNASujua3exeErvFa+FtjBQYvD7Nwp8ZKGWm47wJVvc=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1774252742; c=relaxed/simple;
+	bh=7QH3BsorKQIJ3a//5qucPyumwc4GWWuOSUjOOpVHDw4=;
+	h=Subject:To:Cc:References:From:Message-ID:Date:MIME-Version:
+	 In-Reply-To:Content-Type; b=rbBttIMuw0ocTNssU7qxs3KCK4x9T/R0bE+JbHv6SuebCHFyuhraq+31LINi+Bx+au8nFAyNWnlIvo6Vwxx75ZjtJLFcb76P65pt14LJ3GOu3QexN/vu8YrmXhgTJ3TaN190D7GFCJUi/MIgRQ1T93MvYCP0gbJ8qZLYHv8ZBQk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn; spf=pass smtp.mailfrom=loongson.cn; arc=none smtp.client-ip=114.242.206.163
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=loongson.cn
+Received: from loongson.cn (unknown [10.20.42.62])
+	by gateway (Coremail) with SMTP id _____8Dx7qnA8sBpiLYdAA--.25662S3;
+	Mon, 23 Mar 2026 15:58:56 +0800 (CST)
+Received: from [10.20.42.62] (unknown [10.20.42.62])
+	by front1 (Coremail) with SMTP id qMiowJBxpsC08sBpATJbAA--.8525S3;
+	Mon, 23 Mar 2026 15:58:44 +0800 (CST)
+Subject: Re: [PATCH 1/2] LoongArch: KVM: Make kvm_get_vcpu_by_cpuid() more
+ robust
+To: Huacai Chen <chenhuacai@kernel.org>
+Cc: Huacai Chen <chenhuacai@loongson.cn>, Paolo Bonzini
+ <pbonzini@redhat.com>, Tianrui Zhao <zhaotianrui@loongson.cn>,
+ kvm@vger.kernel.org, loongarch@lists.linux.dev,
+ linux-kernel@vger.kernel.org, Xuerui Wang <kernel@xen0n.name>,
+ Jiaxun Yang <jiaxun.yang@flygoat.com>, stable@vger.kernel.org,
+ Aurelien Jarno <aurel32@debian.org>
+References: <20260322135346.3720577-1-chenhuacai@loongson.cn>
+ <676198e5-78e4-ab41-e447-4a9d24655890@loongson.cn>
+ <CAAhV-H7rFtju3k=NYkAy6-O7f8U=CTNiryu2_Kr57pScjeH-yQ@mail.gmail.com>
+From: Bibo Mao <maobibo@loongson.cn>
+Message-ID: <696c5177-4a89-f0d0-c305-c1581e72aa3d@loongson.cn>
+Date: Mon, 23 Mar 2026 15:56:00 +0800
+User-Agent: Mozilla/5.0 (X11; Linux loongarch64; rv:68.0) Gecko/20100101
+ Thunderbird/68.7.0
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260321000931.1947084-1-pbonzini@redhat.com> <20260321000931.1947084-19-pbonzini@redhat.com>
- <20260321115826.GCab6H4lNYIih_g0B0@fat_crate.local> <CABgObfbGxJYO0iXvkduFR=q=gyoF819pwkgJSke7SLr+6zCVZg@mail.gmail.com>
- <20260321154219.GEab68W-ln67dqTB5x@fat_crate.local>
-In-Reply-To: <20260321154219.GEab68W-ln67dqTB5x@fat_crate.local>
-From: Paolo Bonzini <pbonzini@redhat.com>
-Date: Mon, 23 Mar 2026 08:53:32 +0100
-X-Gm-Features: AQROBzB3RJ1xXhK6-ToBkRLjZBBDsSzBWR-5VUMLD3Ty58qEBRyQYPBJx3CHEd0
-Message-ID: <CABgObfYHtUJtw4pykQ=cw3aJrc_KneG92GgG0dyaXhhKw4qHSQ@mail.gmail.com>
-Subject: Re: [PATCH 18/22] KVM: SVM: add GMET bit definitions
-To: Borislav Petkov <bp@alien8.de>
-Cc: "Kernel Mailing List, Linux" <linux-kernel@vger.kernel.org>, kvm <kvm@vger.kernel.org>, 
-	Jon Kohler <jon@nutanix.com>, Marcelo Tosatti <mtosatti@redhat.com>, 
-	Nikunj A Dadhania <nikunj@amd.com>, Amit Shah <amit.shah@amd.com>, 
-	Sean Christopherson <seanjc@google.com>
-Content-Type: text/plain; charset="UTF-8"
+In-Reply-To: <CAAhV-H7rFtju3k=NYkAy6-O7f8U=CTNiryu2_Kr57pScjeH-yQ@mail.gmail.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:qMiowJBxpsC08sBpATJbAA--.8525S3
+X-CM-SenderInfo: xpdruxter6z05rqj20fqof0/
+X-Coremail-Antispam: 1Uk129KBj93XoWxWrWUtr4fKFWrCFWfWrWfWFX_yoWrJrWUp3
+	yDAa98J3yrGr4xWrW0q3WkJF4UKrnrWr4DZayYga4Y9r4qqw1rCr1vyryDuFyUuw4kAF1I
+	gFy3Jw1avF1UJ3XCm3ZEXasCq-sJn29KB7ZKAUJUUUU7529EdanIXcx71UUUUU7KY7ZEXa
+	sCq-sGcSsGvfJ3Ic02F40EFcxC0VAKzVAqx4xG6I80ebIjqfuFe4nvWSU5nxnvy29KBjDU
+	0xBIdaVrnRJUUUB2b4IE77IF4wAFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2
+	IYs7xG6rWj6s0DM7CIcVAFz4kK6r1Y6r17M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48v
+	e4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_JFI_Gr1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI
+	0_Gr0_Cr1l84ACjcxK6I8E87Iv67AKxVW8Jr0_Cr1UM28EF7xvwVC2z280aVCY1x0267AK
+	xVW8Jr0_Cr1UM2kKe7AKxVWUXVWUAwAS0I0E0xvYzxvE52x082IY62kv0487Mc804VCY07
+	AIYIkI8VC2zVCFFI0UMc02F40EFcxC0VAKzVAqx4xG6I80ewAv7VC0I7IYx2IY67AKxVWU
+	AVWUtwAv7VC2z280aVAFwI0_Gr0_Cr1lOx8S6xCaFVCjc4AY6r1j6r4UM4x0Y48IcVAKI4
+	8JMxk0xIA0c2IEe2xFo4CEbIxvr21l42xK82IYc2Ij64vIr41l4I8I3I0E4IkC6x0Yz7v_
+	Jr0_Gr1l4IxYO2xFxVAFwI0_JF0_Jw1lx2IqxVAqx4xG67AKxVWUJVWUGwC20s026x8Gjc
+	xK67AKxVWUGVWUWwC2zVAF1VAY17CE14v26r1q6r43MIIYrxkI7VAKI48JMIIF0xvE2Ix0
+	cI8IcVAFwI0_Jr0_JF4lIxAIcVC0I7IYx2IY6xkF7I0E14v26r1j6r4UMIIF0xvE42xK8V
+	AvwI8IcIk0rVWUJVWUCwCI42IY6I8E87Iv67AKxVW8JVWxJwCI42IY6I8E87Iv6xkF7I0E
+	14v26r4j6r4UJbIYCTnIWIevJa73UjIFyTuYvjxU466zUUUUU
 
-Il sab 21 mar 2026, 16:42 Borislav Petkov <bp@alien8.de> ha scritto:
->
-> On Sat, Mar 21, 2026 at 02:51:47PM +0100, Paolo Bonzini wrote:
-> > I prefer to be consistent with all the other ones in word 15.
->
-> Sorry, no, /proc/cpuinfo is an ABI.
 
-I am not sure what you mean by ABI in this context, maybe "there are
-rules for whether to add stuff to cpuinfo.rst"? If so, GMET matches
-what cpuinfo.rst says:
 
-* the kernel knows about the feature enough to have an X86_FEATURE bit
-* the kernel supports it and is currently making it available to userspace
-* the hardware supports it.
+On 2026/3/23 下午3:08, Huacai Chen wrote:
+> On Mon, Mar 23, 2026 at 11:16 AM Bibo Mao <maobibo@loongson.cn> wrote:
+>>
+>>
+>>
+>> On 2026/3/22 下午9:53, Huacai Chen wrote:
+>>> kvm_get_vcpu_by_cpuid() takes a cpuid parameter whose type is int, so
+>>> cpuid can be negative. Let kvm_get_vcpu_by_cpuid() return NULL for this
+>>> case so as to make it more robust.
+>>>
+>>> This fix an out-of-bounds access to kvm_arch::phyid_map::phys_map[].
+>>>
+>>> Cc: <stable@vger.kernel.org>
+>>> Fixes: 73516e9da512adc ("LoongArch: KVM: Add vcpu mapping from physical cpuid")
+>>> Reported-by: Aurelien Jarno <aurel32@debian.org>
+>>> Link: https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=1131431
+>>> Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
+>>> ---
+>>>    arch/loongarch/kvm/vcpu.c | 3 +++
+>>>    1 file changed, 3 insertions(+)
+>>>
+>>> diff --git a/arch/loongarch/kvm/vcpu.c b/arch/loongarch/kvm/vcpu.c
+>>> index 8ffd50a470e6..831f381a8fd1 100644
+>>> --- a/arch/loongarch/kvm/vcpu.c
+>>> +++ b/arch/loongarch/kvm/vcpu.c
+>>> @@ -588,6 +588,9 @@ struct kvm_vcpu *kvm_get_vcpu_by_cpuid(struct kvm *kvm, int cpuid)
+>>>    {
+>>>        struct kvm_phyid_map *map;
+>>>
+>>> +     if (cpuid < 0)
+>>> +             return NULL;
+>>> +
+>>>        if (cpuid >= KVM_MAX_PHYID)
+>>>                return NULL;
+>>>
+>>>
+>>
+>> if (cpuid < 0 || cpuid >= KVM_MAX_PHYID)?
+>> however both are OK for me.
+> I use a similar style as kvm_get_vcpu_by_id(). :)
+> 
+> But there is another warning which can't be solved by this series (and
+> I doubt whether it can be solved unless revert 01a8e68396a6d51f5b).
+> https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=1131431
 
-The bullet that applies here is the second from the above list: 1)
-this series makes the feature available for userspace and guests to
-use it, 2) that requires explicit support, it's not just a bunch of
-new instructions.
+what is the kernel config file with bug
+    https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=1131431
 
-I agree that not all word 15 features should be added to
-/proc/cpuinfo, if that's what you meant by referencing cpuinfo.rst.
-For example these days something like AVIC would not be added to
-/proc/cpuinfo because it's transparent to userspace and guests.
+kvm_eiointc_regs_access() seems has problem, it need convert to void * 
+before arithmetic operation. I do not know whether this patch can solve 
+this bug.
 
-Paolo
+diff --git a/arch/loongarch/kvm/intc/eiointc.c 
+b/arch/loongarch/kvm/intc/eiointc.c
+index d2acb4d09e73..71bd67b57338 100644
+--- a/arch/loongarch/kvm/intc/eiointc.c
++++ b/arch/loongarch/kvm/intc/eiointc.c
+@@ -472,34 +472,34 @@ static int kvm_eiointc_regs_access(struct 
+kvm_device *dev,
+         switch (addr) {
+         case EIOINTC_NODETYPE_START ... EIOINTC_NODETYPE_END:
+                 offset = (addr - EIOINTC_NODETYPE_START) / 4;
+-               p = s->nodetype + offset * 4;
++               p = (void *)s->nodetype + offset * 4;
+                 break;
+         case EIOINTC_IPMAP_START ... EIOINTC_IPMAP_END:
+                 offset = (addr - EIOINTC_IPMAP_START) / 4;
+-               p = &s->ipmap + offset * 4;
++               p = (void *)&s->ipmap + offset * 4;
+                 break;
+         case EIOINTC_ENABLE_START ... EIOINTC_ENABLE_END:
+                 offset = (addr - EIOINTC_ENABLE_START) / 4;
+-               p = s->enable + offset * 4;
++               p = (void *)s->enable + offset * 4;
+                 break;
+         case EIOINTC_BOUNCE_START ... EIOINTC_BOUNCE_END:
+                 offset = (addr - EIOINTC_BOUNCE_START) / 4;
+-               p = s->bounce + offset * 4;
++               p = (void *)s->bounce + offset * 4;
+                 break;
+         case EIOINTC_ISR_START ... EIOINTC_ISR_END:
+                 offset = (addr - EIOINTC_ISR_START) / 4;
+-               p = s->isr + offset * 4;
++               p = (void *)s->isr + offset * 4;
+                 break;
+         case EIOINTC_COREISR_START ... EIOINTC_COREISR_END:
+                 if (cpu >= s->num_cpu)
+                         return -EINVAL;
+
+                 offset = (addr - EIOINTC_COREISR_START) / 4;
+-               p = s->coreisr[cpu] + offset * 4;
++               p = (void *)s->coreisr[cpu] + offset * 4;
+                 break;
+         case EIOINTC_COREMAP_START ... EIOINTC_COREMAP_END:
+                 offset = (addr - EIOINTC_COREMAP_START) / 4;
+-               p = s->coremap + offset * 4;
++               p = (void *)s->coremap + offset * 4;
+                 break;
+         default:
+                 kvm_err("%s: unknown eiointc register, addr = %d\n", 
+__func__, addr);
+
+
+Regards
+Bibo Mao
+> 
+> Huacai
+> 
+>>
+>> Reviewed-by: Bibo Mao <maobibo@loongson.cn>
+>>
 
