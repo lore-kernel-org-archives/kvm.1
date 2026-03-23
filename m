@@ -1,323 +1,375 @@
-Received: from mail-qt1-f171.google.com (mail-qt1-f171.google.com [209.85.160.171])
+Received: from mail-pl1-f170.google.com (mail-pl1-f170.google.com [209.85.214.170])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8DB2F3C060E
-	for <kvm@vger.kernel.org>; Mon, 23 Mar 2026 19:29:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.160.171
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774294173; cv=pass; b=Wk99sXnVbMoilYY7YwKpgu3K3EsoDmih4coxGK0Ulp7MgEmChvIlAPE4xAHVf1dIMI/GatM/MLwhqbpa7IHJ6xElL0I6J3UqsYupDCR5I3Dd2q02ZfmsFm/QmEFubi/UZ6zDHJwkN83lepF9Mv3TBTvzjbfIVWRYgmkUDYx6sVM=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774294173; c=relaxed/simple;
-	bh=iiQbiYx7JHsQH7TgWTlg4vZhIljHuH4PY6BnfJU4b3k=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=P3psN3w6fvXcD4w1Kkj36n3/1Pu7wBQ5vR5ZzBmfJ5ibYgOTJkd5WHx4tcd2OFfbNakUz7ehF8c2qdPaRBO6YgY3hSP9/PCyw5QiDzq7ODqTHaoZVvJjb01QaXAIf5EX9O03TGofCJQEFbO3vP0+OeJcB7k9XJwdINGbmC3Hk98=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=TJ981YJZ; arc=pass smtp.client-ip=209.85.160.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF6BB3DBD52
+	for <kvm@vger.kernel.org>; Mon, 23 Mar 2026 19:33:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.170
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1774294447; cv=none; b=P8Ah4x9IJwlH+dMhipZw057ie3HYwNyK2dqDGwxxpjAsBa6DtlcFG0Iyn2df3nYS7yvy4KLjbGN8T/+Mma9366OU/YZeNduiglCg74DzqjmlR4OkmPOcpp9Sp19sQJNT+H9Mam1P6zd9qNbu9cYWMWfRglO+i9/MNXPT/VLKn8E=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1774294447; c=relaxed/simple;
+	bh=FK7ryPPLQ1cMRqgcooTytVc5UdVnSaHYn7Jt+YRm4us=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=g5gk1PVHO/m7qVxDZ8ZOhm2J8kTE96xyKvN988shwWSKEMOMUMiUnjAw2FCJlULnBZlBs6a8uV1ZWlAO9jGTONEKaYh0U9gykWh1CfQwgKP03PP/Onhi/EJ3X83EC45a9s94obyXjekJuYi9B2j+aRKbIVv6EIS6XRMFFp+M7t0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=dNaNj9EO; arc=none smtp.client-ip=209.85.214.170
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="TJ981YJZ"
-Received: by mail-qt1-f171.google.com with SMTP id d75a77b69052e-509062d829dso11161cf.1
-        for <kvm@vger.kernel.org>; Mon, 23 Mar 2026 12:29:28 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1774294166; cv=none;
-        d=google.com; s=arc-20240605;
-        b=DjipwVmrnGSsq5rJCcyOV9YYR3i/xZYvAHn+dBcL2bO0WUwuYHxi0RnXa/JDKVLtvo
-         6jUxRX0SJnaWLEzlZBvijVDAd3NZw10RgqBohriEWjsTVK0P90NW1DUoIh77Gm1NMzIm
-         BUV7FdrkZToXXxodkdDnk72jxRmIHJnQCd9pY+82ncqUe5EoAFA1+qc8e2y3NbRZHZEc
-         KHZE8+cREGF0B/YT1ZpxIET01hrEx1aIkoA/ECGxeGMowMtFJu6c088nYGmUSlNWJoNN
-         z5cCcZYG9ix0gEPytoipvaiPY6+McLumZkKqGmNUuy60GtEjmKxoT0a24fZebQA8ZV3s
-         qj4Q==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=rL6rgT4p4eg6pWVBxL1qRwcnXbeBJSn9vYxp2HwXMQ4=;
-        fh=+cS6xno1kGjC3lcoX3LhTfohVMjUj5qPgu53sQCAMuQ=;
-        b=dcW/bLE5EEYQi0vJ8uMTuscI6ga1Og9TDORLlBB47SSvl0JvpyF85qW06epf4TXJph
-         7l3k/eAau2+0Xpptm0IGOkblg/VjwXwnCY2zeLgRlNrw14RIgis+meskjvGGI6WOunvU
-         lBRSyOoJzl4b8BUkA9q9/+/CLGmXpfNF1aKm8AnA+i/EBZBrfOUien7jsAtk6CFvhCWw
-         ZSD7oWkKCFV5x1unSDBG3/l4wr9NMK1/BcEq3o/rpF4VxrqJnA10YlYfePydCG7GTrk6
-         eiJjqdA8fxUPtXvsKzkPayxdRYqpkIGVtmJY6rLsZNzAc8noxFVkVVPrTlzH9YTgmKp2
-         dm1Q==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="dNaNj9EO"
+Received: by mail-pl1-f170.google.com with SMTP id d9443c01a7336-2b052ec7176so1635ad.1
+        for <kvm@vger.kernel.org>; Mon, 23 Mar 2026 12:33:58 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1774294166; x=1774898966; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=rL6rgT4p4eg6pWVBxL1qRwcnXbeBJSn9vYxp2HwXMQ4=;
-        b=TJ981YJZcV3aypCMFC8DKXzrGOsHmdmT+KgrWS4E1kX5W67zwkH3IEQa1ZWrcgepyQ
-         MaJGRjHKb8tQRBdKFIFnd8feHn/bEf89HNXZQvYQdPDh3wfWm9DTQ6rJbHzN3Mb/7SGY
-         UzAgVWKUcR62Y0rppwvdA7qmwURqCOxBDAD/qroPgPG6B9bT+y40ifja3oeqbSHarBjP
-         JHYu8i2j4pwrF/xt7r+liKbgD+gJhI5YEPJxuGsbqTfTQLC6BbzeMEHhJlGkfOukPo4f
-         hnOHqNnGl2wD8xW3woHRK3DAHiwDdZ8WgaykxSbcAFL+pylJDBsfxf1Z967CNpsbA/Xw
-         2IgQ==
+        d=google.com; s=20251104; t=1774294437; x=1774899237; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=fKE3oi4j/7h9F1EbALUrXcAiOT/nZnkORyKYR3F8H7Q=;
+        b=dNaNj9EOPQ55EwthgDUp9uIX+gWqZn2BmyY1xXWxff4MZPajf9k8uZIZ/l2wypRXu6
+         +R3DFI4joEC8SeyDokmgYQ4onvKvBXAUsaNdWQptw3cWnZVpfpJ4/jhEMTjh7BXwNJns
+         2QSHP6YJKc3OncPH9UFkwQFw/K+kY8FLYRYbSEZeqW6iyRr3Bj01M84g102TZ/1Deoav
+         mMFc8W8xycR7Uw370OTSzTczodYihwQTvWjVFUSxexKjj9nGz66CISoW6T6mrX2bUYSB
+         wzSv5mE4X7dztNGUiOyMqiSmNZzYTW5AXriAKPzXrMRskx3soLUnNNM5GhGo4lQh0tBm
+         xetw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774294166; x=1774898966;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=rL6rgT4p4eg6pWVBxL1qRwcnXbeBJSn9vYxp2HwXMQ4=;
-        b=aiDm8zQi7G20UdRa1SBhyJTxX99zMbOjJ0XIeBKrJm9HnQqBF9+SUHDM9DudtC+vEA
-         IDbAHUDwNevkXZ7RIwSrrV1xCkw8GLwn5fGhs8vW286ZKp8QxcrPUFG/M9zEAK89v4Lw
-         m8Cjc/AhXJqh/eTDTlQrtzw7q7Z2UVeJSJ8TC8YjTFWwhdbBwLu2i7ZoVWMcpa+z+zE2
-         zgfAhrX58i1bNly1htLHTEJvF0OIMgi3ChSmrQ2SGpmXEBZuZdaEWn08H9dI5s+fjv2C
-         2YMbRd6X2SeNh0884N/bwZvDQIZ/uRXNrwkqAQwg6vpCHAZ3jziVCMxVDloqhW1TEuYR
-         SM1g==
-X-Forwarded-Encrypted: i=1; AJvYcCX/XTVvWUwGpJO7oB38zBT4y4z9gz6YudKf20Z/U+fRokPMb8oOSjbFDPvjmA3U4voijGs=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz1QrCS4tses04JivafXNSI7PQ8vZtLhq6Bw/UJDBQHmzojRaZG
-	rDMFsqJTGPvA8NoKh2cQ2aOlwYJg5FTeNecQrnuKuK1kOOtRXXbAAIQ03t3Qpv3bNSMA2nONvY3
-	nuzPYczSEiyS+5OaG815v9xzhmEabgUFNPhMSpaS9
-X-Gm-Gg: ATEYQzw09q/tKbcf6K6A34jAS4tRDblqHPrQqJoegsI9OeDfvhrvMOb7DB8TTnD40eJ
-	JDHT6gHo8ty/3pR43/REzgadAoGrPXM0wWeGVU4+QkJK8WCtNW/E/WkZeklrG6Z2RjHhJF9U/Zl
-	ymUssOT9tvYBHwC9vMKD+lW5sEqkdcWKwgqDF5AFSXwWuDn20LJ8e6pzNk54EEBZwy8LaNOu3RX
-	AF9RJ5N6e9vNAb4mFwvV1kmYO9iOHw0UMX7ULnJA5vIgVlIxncNXvPoMeoc0cHfnSAr+KgR/0u9
-	+pPR1ip4J+h413M2
-X-Received: by 2002:a05:622a:a986:20b0:508:fd42:fd05 with SMTP id
- d75a77b69052e-50b6fe1094amr2337331cf.15.1774294165477; Mon, 23 Mar 2026
- 12:29:25 -0700 (PDT)
+        d=1e100.net; s=20251104; t=1774294437; x=1774899237;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=fKE3oi4j/7h9F1EbALUrXcAiOT/nZnkORyKYR3F8H7Q=;
+        b=q7OrKdcHGL8tnmaclzSaMwuIKYc7Gw/qiGb+tw7OkKjBR50Iatk59neTWEDYDOt6LX
+         TNe5h1xP1jBJbBnxv37OdBEmXkppn8y5YNCKKpPB21ncPYBYHTgWS7k5WG1j1VktFFwd
+         vvC8RCeBCdrKMNH6oX8qbNkpnBq5auTttbLMN6K4/Th6AI6k1x32BxyL+RnCbz8rbCjZ
+         5XZYy8EBimLOOF9i2ebqojnJ8UwmU4SkndsgW6gnP2kD+TslXSdXAYqGKuYuMbxRQfB2
+         HlxrP/RXNhKxWdsDICaKM8yKZtQ/+/soce/RKH4nVV6ZVqtn1TO8wXEBeotJo2fpgyWW
+         +gzw==
+X-Forwarded-Encrypted: i=1; AJvYcCX6KjNiFgHIabbYBzBKYRaFHvtl09yOOfcg9PMg7WMXs7cdo+3mCa/33eEH/smVRRy/K2A=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzVx22MeM+u0jbcggFW/UA9TTZw2Uegqk+uX4f6fx5o1Tmcnnjx
+	DHZkg5UZFos1IJ3BJWLpa5JhIHaFDlJ+vVJmk/WLqQKHv+Mt1ol4iYYLERfIzOylJQ==
+X-Gm-Gg: ATEYQzxvhHoWn0YrxABDXNybZpDZfelDXunTMjnimLo5gXbUwdln2o0BeJsVb0JaZhd
+	5gg/VAuN2Rlu7sOERlW2ghnp2flNmPFPRl8AsGzuZd2V3Urj1sv3l2ukMrTsW1vkmxOftXcsmfQ
+	ZaJhEQ36qz9Oy2ui+SUSgmp3NwmYlppvzHjKcPTrZFXVnVCuugzmLJ3wiR4YGldGoVpk5A85/4M
+	f3kAGCWT60qyalc5VPbvmLvKC8y3lyxDlNwSXx+5NmLLsdAkL60toUp76LbBhC/Oa6iSLhSoxH8
+	Ec8ey91+LniJGb1HAoShWAyCmfbJfXl6IAEq4f9NKXBo39+uLpmgRGloePqNIw2H0KZ2G61EefI
+	ZQXGVXKZ75XkpZi1WGA+t8HNCS0u2/BC6d7hHfTZTTIo4i/BFm3dznpPeFRBSGARkVFkYVBFn4o
+	VQbwSSdrYGNR0+9qiNWasGtwaUB/pLYis+ohlX1FL2MtJgduSRFHdkAECAuRkbvg==
+X-Received: by 2002:a17:902:d4cd:b0:2ae:575f:3755 with SMTP id d9443c01a7336-2b0a54ce8cdmr468725ad.20.1774294436733;
+        Mon, 23 Mar 2026 12:33:56 -0700 (PDT)
+Received: from google.com (168.136.83.34.bc.googleusercontent.com. [34.83.136.168])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2b083543503sm125155705ad.27.2026.03.23.12.33.55
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 23 Mar 2026 12:33:56 -0700 (PDT)
+Date: Mon, 23 Mar 2026 19:33:52 +0000
+From: Samiullah Khawaja <skhawaja@google.com>
+To: Pranjal Shrivastava <praan@google.com>
+Cc: David Woodhouse <dwmw2@infradead.org>, 
+	Lu Baolu <baolu.lu@linux.intel.com>, Joerg Roedel <joro@8bytes.org>, Will Deacon <will@kernel.org>, 
+	Jason Gunthorpe <jgg@ziepe.ca>, Robin Murphy <robin.murphy@arm.com>, 
+	Kevin Tian <kevin.tian@intel.com>, Alex Williamson <alex@shazbot.org>, 
+	Shuah Khan <shuah@kernel.org>, iommu@lists.linux.dev, linux-kernel@vger.kernel.org, 
+	kvm@vger.kernel.org, Saeed Mahameed <saeedm@nvidia.com>, 
+	Adithya Jayachandran <ajayachandra@nvidia.com>, Parav Pandit <parav@nvidia.com>, 
+	Leon Romanovsky <leonro@nvidia.com>, William Tu <witu@nvidia.com>, 
+	Pratyush Yadav <pratyush@kernel.org>, Pasha Tatashin <pasha.tatashin@soleen.com>, 
+	David Matlack <dmatlack@google.com>, Andrew Morton <akpm@linux-foundation.org>, 
+	Chris Li <chrisl@kernel.org>, Vipin Sharma <vipinsh@google.com>, 
+	YiFei Zhu <zhuyifei@google.com>
+Subject: Re: [PATCH 07/14] iommu/vt-d: Restore IOMMU state and reclaimed
+ domain ids
+Message-ID: <acGNBlN1Nwe59L3_@google.com>
+References: <20260203220948.2176157-1-skhawaja@google.com>
+ <20260203220948.2176157-8-skhawaja@google.com>
+ <acBIL052TH39FpNK@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260322054309.898214-1-surenb@google.com> <20260322054309.898214-5-surenb@google.com>
- <1c44dd0b-4f5a-4fc1-983f-f728b31c9e4d@lucifer.local>
-In-Reply-To: <1c44dd0b-4f5a-4fc1-983f-f728b31c9e4d@lucifer.local>
-From: Suren Baghdasaryan <surenb@google.com>
-Date: Mon, 23 Mar 2026 12:29:14 -0700
-X-Gm-Features: AQROBzCQaEF_cPLZfBQCzrdp1WYDK-0_JtC25zQIk1w6f-8rEEzfFfTeX5PuZ2c
-Message-ID: <CAJuCfpGk3sTw2_owiRZM=V2e0UGDad5MrDbCsPbY3GUvT4u63A@mail.gmail.com>
-Subject: Re: [PATCH v4 4/4] mm: use vma_start_write_killable() in process_vma_walk_lock()
-To: "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>
-Cc: akpm@linux-foundation.org, willy@infradead.org, david@kernel.org, 
-	ziy@nvidia.com, matthew.brost@intel.com, joshua.hahnjy@gmail.com, 
-	rakie.kim@sk.com, byungchul@sk.com, gourry@gourry.net, 
-	ying.huang@linux.alibaba.com, apopple@nvidia.com, lorenzo.stoakes@oracle.com, 
-	baolin.wang@linux.alibaba.com, Liam.Howlett@oracle.com, npache@redhat.com, 
-	ryan.roberts@arm.com, dev.jain@arm.com, baohua@kernel.org, 
-	lance.yang@linux.dev, vbabka@suse.cz, jannh@google.com, rppt@kernel.org, 
-	mhocko@suse.com, pfalcato@suse.de, kees@kernel.org, maddy@linux.ibm.com, 
-	npiggin@gmail.com, mpe@ellerman.id.au, chleroy@kernel.org, 
-	borntraeger@linux.ibm.com, frankja@linux.ibm.com, imbrenda@linux.ibm.com, 
-	hca@linux.ibm.com, gor@linux.ibm.com, agordeev@linux.ibm.com, 
-	svens@linux.ibm.com, gerald.schaefer@linux.ibm.com, linux-mm@kvack.org, 
-	linuxppc-dev@lists.ozlabs.org, kvm@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-s390@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Disposition: inline
+In-Reply-To: <acBIL052TH39FpNK@google.com>
 
-On Mon, Mar 23, 2026 at 11:04=E2=80=AFAM Lorenzo Stoakes (Oracle)
-<ljs@kernel.org> wrote:
+On Sun, Mar 22, 2026 at 07:51:11PM +0000, Pranjal Shrivastava wrote:
+>On Tue, Feb 03, 2026 at 10:09:41PM +0000, Samiullah Khawaja wrote:
+>> During boot fetch the preserved state of IOMMU unit and if found then
+>> restore the state.
+>>
+>> - Reuse the root_table that was preserved in the previous kernel.
+>> - Reclaim the domain ids of the preserved domains for each preserved
+>>   devices so these are not acquired by another domain.
+>>
+>> Signed-off-by: Samiullah Khawaja <skhawaja@google.com>
+>> ---
+>>  drivers/iommu/intel/iommu.c      | 26 +++++++++++++++------
+>>  drivers/iommu/intel/iommu.h      |  7 ++++++
+>>  drivers/iommu/intel/liveupdate.c | 40 ++++++++++++++++++++++++++++++++
+>>  3 files changed, 66 insertions(+), 7 deletions(-)
+>>
+>> diff --git a/drivers/iommu/intel/iommu.c b/drivers/iommu/intel/iommu.c
+>> index c95de93fb72f..8acb7f8a7627 100644
+>> --- a/drivers/iommu/intel/iommu.c
+>> +++ b/drivers/iommu/intel/iommu.c
+>> @@ -222,12 +222,12 @@ static void clear_translation_pre_enabled(struct intel_iommu *iommu)
+>>  	iommu->flags &= ~VTD_FLAG_TRANS_PRE_ENABLED;
+>>  }
+>>
+>> -static void init_translation_status(struct intel_iommu *iommu)
+>> +static void init_translation_status(struct intel_iommu *iommu, bool restoring)
+>>  {
+>>  	u32 gsts;
+>>
+>>  	gsts = readl(iommu->reg + DMAR_GSTS_REG);
+>> -	if (gsts & DMA_GSTS_TES)
+>> +	if (!restoring && (gsts & DMA_GSTS_TES))
+>>  		iommu->flags |= VTD_FLAG_TRANS_PRE_ENABLED;
+>>  }
+>>
+>> @@ -670,10 +670,16 @@ void dmar_fault_dump_ptes(struct intel_iommu *iommu, u16 source_id,
+>>  #endif
+>>
+>>  /* iommu handling */
+>> -static int iommu_alloc_root_entry(struct intel_iommu *iommu)
+>> +static int iommu_alloc_root_entry(struct intel_iommu *iommu, struct iommu_ser *restored_state)
+>>  {
+>>  	struct root_entry *root;
+>>
+>> +	if (restored_state) {
+>> +		intel_iommu_liveupdate_restore_root_table(iommu, restored_state);
+>> +		__iommu_flush_cache(iommu, iommu->root_entry, ROOT_SIZE);
+>> +		return 0;
+>> +	}
 >
-> On Sat, Mar 21, 2026 at 10:43:08PM -0700, Suren Baghdasaryan wrote:
-> > Replace vma_start_write() with vma_start_write_killable() when
-> > process_vma_walk_lock() is used with PGWALK_WRLOCK option.
-> > Adjust its direct and indirect users to check for a possible error
-> > and handle it. Ensure users handle EINTR correctly and do not ignore
-> > it.
-> >
-> > Signed-off-by: Suren Baghdasaryan <surenb@google.com>
-> > ---
-> >  fs/proc/task_mmu.c |  5 ++++-
-> >  mm/mempolicy.c     |  1 +
-> >  mm/pagewalk.c      | 20 ++++++++++++++------
-> >  3 files changed, 19 insertions(+), 7 deletions(-)
-> >
-> > diff --git a/fs/proc/task_mmu.c b/fs/proc/task_mmu.c
-> > index e091931d7ca1..2fe3d11aad03 100644
-> > --- a/fs/proc/task_mmu.c
-> > +++ b/fs/proc/task_mmu.c
-> > @@ -1797,6 +1797,7 @@ static ssize_t clear_refs_write(struct file *file=
-, const char __user *buf,
-> >               struct clear_refs_private cp =3D {
-> >                       .type =3D type,
-> >               };
-> > +             int err;
->
-> Maybe better to make it a ssize_t given return type of function?
+>Instead of putting this inside the allocator, shouldn't init_dmars and
+>intel_iommu_add check for iommu_ser and call
+>intel_iommu_liveupdate_restore_root_table() directly, bypassing the
+>allocation entirely? This looks like it could be a stand-alone function
+>which has nothing to do with allocation.
 
-Ack.
+Agreed. Will move the check out into the caller.
+>
+>> +
+>>  	root = iommu_alloc_pages_node_sz(iommu->node, GFP_ATOMIC, SZ_4K);
+>>  	if (!root) {
+>>  		pr_err("Allocating root entry for %s failed\n",
+>> @@ -1614,6 +1620,7 @@ static int copy_translation_tables(struct intel_iommu *iommu)
+>>
+>>  static int __init init_dmars(void)
+>>  {
+>> +	struct iommu_ser *iommu_ser = NULL;
+>>  	struct dmar_drhd_unit *drhd;
+>>  	struct intel_iommu *iommu;
+>>  	int ret;
+>> @@ -1636,8 +1643,10 @@ static int __init init_dmars(void)
+>>  						   intel_pasid_max_id);
+>>  		}
+>>
+>> +		iommu_ser = iommu_get_preserved_data(iommu->reg_phys, IOMMU_INTEL);
+>> +
+>>  		intel_iommu_init_qi(iommu);
+>> -		init_translation_status(iommu);
+>> +		init_translation_status(iommu, !!iommu_ser);
+>>
+>>  		if (translation_pre_enabled(iommu) && !is_kdump_kernel()) {
+>>  			iommu_disable_translation(iommu);
+>> @@ -1651,7 +1660,7 @@ static int __init init_dmars(void)
+>>  		 * we could share the same root & context tables
+>>  		 * among all IOMMU's. Need to Split it later.
+>>  		 */
+>> -		ret = iommu_alloc_root_entry(iommu);
+>> +		ret = iommu_alloc_root_entry(iommu, iommu_ser);
+>>  		if (ret)
+>>  			goto free_iommu;
+>>
+>> @@ -2110,15 +2119,18 @@ int dmar_parse_one_satc(struct acpi_dmar_header *hdr, void *arg)
+>>  static int intel_iommu_add(struct dmar_drhd_unit *dmaru)
+>>  {
+>>  	struct intel_iommu *iommu = dmaru->iommu;
+>> +	struct iommu_ser *iommu_ser = NULL;
+>>  	int ret;
+>>
+>
+>Nit: Add: /* Fetch the preserved context using MMIO base as a token */ ?
 
+Will add.
 >
-> >
-> >               if (mmap_write_lock_killable(mm)) {
-> >                       count =3D -EINTR;
-> > @@ -1824,7 +1825,9 @@ static ssize_t clear_refs_write(struct file *file=
-, const char __user *buf,
-> >                                               0, mm, 0, -1UL);
-> >                       mmu_notifier_invalidate_range_start(&range);
-> >               }
-> > -             walk_page_range(mm, 0, -1, &clear_refs_walk_ops, &cp);
-> > +             err =3D walk_page_range(mm, 0, -1, &clear_refs_walk_ops, =
-&cp);
-> > +             if (err)
-> > +                     count =3D err;
+>> +	iommu_ser = iommu_get_preserved_data(iommu->reg_phys, IOMMU_INTEL);
+>> +
+>>  	/*
+>>  	 * Disable translation if already enabled prior to OS handover.
+>>  	 */
+>> -	if (iommu->gcmd & DMA_GCMD_TE)
+>> +	if (!iommu_ser && iommu->gcmd & DMA_GCMD_TE)
+>>  		iommu_disable_translation(iommu);
+>>
+>> -	ret = iommu_alloc_root_entry(iommu);
+>> +	ret = iommu_alloc_root_entry(iommu, iommu_ser);
 >
-> Hmm this is gross, but it's an established pattern here, ugh.
+>I understand that iommu_get_preserved_data() will eventually return NULL
+>after the flb_finish op has executed (based on the LUO IOCTLs dropping
+>the incoming state), but I'm sensing a potential UAF/double-restore
+>issue here that could happen during the boot window.
 >
-> Now we have an err though, could we update:
+>I believe we could restore the same context multiple times? I see
+>intel_iommu_add() is called from both dmar_device_add() and
+>dmar_device_remove() paths, and the ACPI probe has the following
+>sequence [1]:
 >
->                 if (mmap_write_lock_killable(mm)) {
-> -                       count =3D -EINTR;
-> +                       err =3D -EINTR;
->                         goto out_mm;
->                 }
+>static int acpi_pci_root_add(struct acpi_device *device, ...)
+>{
+>	// ...
+>	if (hotadd && dmar_device_add(handle)) {
+>		result = -ENXIO;
+>		goto end;
+>	}
 >
-> Then we can just do:
+>	// ...
+>	root->bus = pci_acpi_scan_root(root);
+>	if (!root->bus) {
+>		// ...
+>		result = -ENODEV;
+>		goto remove_dmar;
+>	}
+>	// ...
 >
-> +               err =3D walk_page_range(mm, 0, -1, &clear_refs_walk_ops, =
-&cp);
+>remove_dmar:
+>	if (hotadd)
+>		dmar_device_remove(handle);
+>end:
+>	return result;
+>}
 >
-> And at the end do:
+>If we successfully restored a domain during dmar_device_add(), but the
+>ACPI probe fails later (e.g., pci_acpi_scan_root fails), we jump to
+>remove_dmar. This tears down the DMAR unit, it unwinds via
+>dmar_device_remove() which eventually calls dmar_iommu_hotplug(false)
+>where we:
 >
->         return err ?: count;
+>	disable_dmar_iommu(iommu);
+>	free_dmar_iommu(iommu);
 >
-> Which possibly _necessitates_ err being a ssize_t.
+>At this point, the root table folios are freed back to the allocator.
+>
+>However, if a re-scan is then triggered before the FLB drops the
+>incoming state, we would call:
+>
+>dmar_device_add() -> intel_iommu_add() -> iommu_alloc_root_entry() again
+>
+>Because the KHO state wasn't marked as deleted/consumed,
+>iommu_get_preserved_data() will hand us the exact same iommu_ser pointer?
+>
+>In which case, we'd call kho_restore_folio(iommu_ser->intel.root_table)
+>on a physical page that might have already been reallocated?
+>
+>Shouldn't the restored state be explicitly marked as consumed
+>(obj.deleted = 1), and shouldn't the driver properly unpreserve/clean up
+>the KHO tracking during the free_dmar_iommu() teardown path?
 
-Sounds doable. Let me try that.
+Thats a good point.
 
+I think on disable/free the restored state should not be freed abruptly.
+The iommu should be able to reuse the same state. We just need to mark
+it as consumed/restored. I will rework the disable/free code paths to
+handle this.
 >
-> >               if (type =3D=3D CLEAR_REFS_SOFT_DIRTY) {
-> >                       mmu_notifier_invalidate_range_end(&range);
-> >                       flush_tlb_mm(mm);
-> > diff --git a/mm/mempolicy.c b/mm/mempolicy.c
-> > index 929e843543cf..bb5b0e83ce0f 100644
-> > --- a/mm/mempolicy.c
-> > +++ b/mm/mempolicy.c
-> > @@ -969,6 +969,7 @@ static const struct mm_walk_ops queue_pages_lock_vm=
-a_walk_ops =3D {
-> >   *      (a hugetlbfs page or a transparent huge page being counted as =
-1).
-> >   * -EIO - a misplaced page found, when MPOL_MF_STRICT specified withou=
-t MOVEs.
-> >   * -EFAULT - a hole in the memory range, when MPOL_MF_DISCONTIG_OK uns=
-pecified.
-> > + * -EINTR - walk got terminated due to pending fatal signal.
+>>  	if (ret)
+>>  		goto out;
+>>
+>> diff --git a/drivers/iommu/intel/iommu.h b/drivers/iommu/intel/iommu.h
+>> index 70032e86437d..d7bf63aff17d 100644
+>> --- a/drivers/iommu/intel/iommu.h
+>> +++ b/drivers/iommu/intel/iommu.h
+>> @@ -1283,6 +1283,8 @@ int intel_iommu_preserve_device(struct device *dev, struct device_ser *device_se
+>>  void intel_iommu_unpreserve_device(struct device *dev, struct device_ser *device_ser);
+>>  int intel_iommu_preserve(struct iommu_device *iommu, struct iommu_ser *iommu_ser);
+>>  void intel_iommu_unpreserve(struct iommu_device *iommu, struct iommu_ser *iommu_ser);
+>> +void intel_iommu_liveupdate_restore_root_table(struct intel_iommu *iommu,
+>> +					       struct iommu_ser *iommu_ser);
+>>  #else
+>>  static inline int intel_iommu_preserve_device(struct device *dev, struct device_ser *device_ser)
+>>  {
+>> @@ -1301,6 +1303,11 @@ static inline int intel_iommu_preserve(struct iommu_device *iommu, struct iommu_
+>>  static inline void intel_iommu_unpreserve(struct iommu_device *iommu, struct iommu_ser *iommu_ser)
+>>  {
+>>  }
+>> +
+>> +static inline void intel_iommu_liveupdate_restore_root_table(struct intel_iommu *iommu,
+>> +							     struct iommu_ser *iommu_ser)
+>> +{
+>> +}
+>>  #endif
+>>
+>>  #ifdef CONFIG_INTEL_IOMMU_SVM
+>> diff --git a/drivers/iommu/intel/liveupdate.c b/drivers/iommu/intel/liveupdate.c
+>> index 82ba1daf1711..6dcb5783d1db 100644
+>> --- a/drivers/iommu/intel/liveupdate.c
+>> +++ b/drivers/iommu/intel/liveupdate.c
+>> @@ -73,6 +73,46 @@ static int preserve_iommu_context(struct intel_iommu *iommu)
+>>  	return ret;
+>>  }
+>>
+>> +static void restore_iommu_context(struct intel_iommu *iommu)
+>> +{
+>> +	struct context_entry *context;
+>> +	int i;
+>> +
+>> +	for (i = 0; i < ROOT_ENTRY_NR; i++) {
+>> +		context = iommu_context_addr(iommu, i, 0, 0);
+>> +		if (context)
+>> +			BUG_ON(!kho_restore_folio(virt_to_phys(context)));
+>> +
+>> +		if (!sm_supported(iommu))
+>> +			continue;
+>> +
+>> +		context = iommu_context_addr(iommu, i, 0x80, 0);
+>> +		if (context)
+>> +			BUG_ON(!kho_restore_folio(virt_to_phys(context)));
+>> +	}
+>> +}
+>> +
+>> +static int __restore_used_domain_ids(struct device_ser *ser, void *arg)
+>> +{
+>> +	int id = ser->domain_iommu_ser.did;
+>> +	struct intel_iommu *iommu = arg;
+>> +
 >
-> Thanks!
->
-> >   */
-> >  static long
-> >  queue_pages_range(struct mm_struct *mm, unsigned long start, unsigned =
-long end,
-> > diff --git a/mm/pagewalk.c b/mm/pagewalk.c
-> > index eda74273c8ec..a42cd6a6d812 100644
-> > --- a/mm/pagewalk.c
-> > +++ b/mm/pagewalk.c
-> > @@ -438,14 +438,13 @@ static inline void process_mm_walk_lock(struct mm=
-_struct *mm,
-> >               mmap_assert_write_locked(mm);
-> >  }
-> >
-> > -static inline void process_vma_walk_lock(struct vm_area_struct *vma,
-> > +static inline int process_vma_walk_lock(struct vm_area_struct *vma,
->
-> NIT: Don't need this to be an inline any longer. May as well fix up while=
- we're
-> here.
+>Shouldn't we check if the did actually belongs to the iommu instance?
+>iommu_for_each_preserved_device() iterates over all preserved devices in
+>the system. However, here (__restore_used_domain_ids) we allocate the
+>device's did in the current iommu->domain_ida without checking if that
+>device actually belongs to the current IOMMU?
 
-Ack.
+Yes, this needs to be checked. I will add this.
+>
+>On multi-IOMMU systems, this will cause every IOMMU's IDA to be
+>cross-polluted with the domain IDs of devices attached to other IOMMUs.
+>We must verify the device belongs to this specific IOMMU first, maybe:
+>
+>if (ser->domain_iommu_ser.iommu_phys != iommu->reg_phys)
+>		return 0;
+>
+>> +	ida_alloc_range(&iommu->domain_ida, id, id, GFP_ATOMIC);
+>> +	return 0;
+>> +}
+>> +
+>> +void intel_iommu_liveupdate_restore_root_table(struct intel_iommu *iommu,
+>> +					       struct iommu_ser *iommu_ser)
+>> +{
+>> +	BUG_ON(!kho_restore_folio(iommu_ser->intel.root_table));
+>> +	iommu->root_entry = __va(iommu_ser->intel.root_table);
+>> +
+>> +	restore_iommu_context(iommu);
+>> +	iommu_for_each_preserved_device(__restore_used_domain_ids, iommu);
+>> +	pr_info("Restored IOMMU[0x%llx] Root Table at: 0x%llx\n",
+>> +		iommu->reg_phys, iommu_ser->intel.root_table);
+>> +}
+>> +
+>>  int intel_iommu_preserve_device(struct device *dev, struct device_ser *device_ser)
+>>  {
+>>  	struct device_domain_info *info = dev_iommu_priv_get(dev);
+>
+>Thanks,
+>Praan
+>
+>[1] https://elixir.bootlin.com/linux/v7.0-rc4/source/drivers/acpi/pci_root.c#L728
 
->
-> >                                        enum page_walk_lock walk_lock)
-> >  {
-> >  #ifdef CONFIG_PER_VMA_LOCK
-> >       switch (walk_lock) {
-> >       case PGWALK_WRLOCK:
-> > -             vma_start_write(vma);
-> > -             break;
-> > +             return vma_start_write_killable(vma);
->
-> LGTM
->
-> >       case PGWALK_WRLOCK_VERIFY:
-> >               vma_assert_write_locked(vma);
-> >               break;
-> > @@ -457,6 +456,7 @@ static inline void process_vma_walk_lock(struct vm_=
-area_struct *vma,
-> >               break;
-> >       }
-> >  #endif
-> > +     return 0;
-> >  }
-> >
-> >  /*
-> > @@ -500,7 +500,9 @@ int walk_page_range_mm_unsafe(struct mm_struct *mm,=
- unsigned long start,
-> >                       if (ops->pte_hole)
-> >                               err =3D ops->pte_hole(start, next, -1, &w=
-alk);
-> >               } else { /* inside vma */
-> > -                     process_vma_walk_lock(vma, ops->walk_lock);
-> > +                     err =3D process_vma_walk_lock(vma, ops->walk_lock=
-);
-> > +                     if (err)
-> > +                             break;
->
-> In every other case we set walk.vma =3D vma or NULL. Is it a problem not =
-setting
-> it at all in this code path?
-
-IIUC the other cases set walk.vma because they later call
-ops->pte_hole(..., walk). In our case we immediately break out of the
-loop and exit the function, which pushes "walk" variable out of scope.
-So, walk.vma won't be used and setting it would achieve nothing.
-
->
-> >                       walk.vma =3D vma;
-> >                       next =3D min(end, vma->vm_end);
-> >                       vma =3D find_vma(mm, vma->vm_end);
-> > @@ -717,6 +719,7 @@ int walk_page_range_vma_unsafe(struct vm_area_struc=
-t *vma, unsigned long start,
-> >               .vma            =3D vma,
-> >               .private        =3D private,
-> >       };
-> > +     int err;
-> >
-> >       if (start >=3D end || !walk.mm)
-> >               return -EINVAL;
-> > @@ -724,7 +727,9 @@ int walk_page_range_vma_unsafe(struct vm_area_struc=
-t *vma, unsigned long start,
-> >               return -EINVAL;
-> >
-> >       process_mm_walk_lock(walk.mm, ops->walk_lock);
-> > -     process_vma_walk_lock(vma, ops->walk_lock);
-> > +     err =3D process_vma_walk_lock(vma, ops->walk_lock);
-> > +     if (err)
-> > +             return err;
->
-> LGTM
->
-> >       return __walk_page_range(start, end, &walk);
-> >  }
-> >
-> > @@ -747,6 +752,7 @@ int walk_page_vma(struct vm_area_struct *vma, const=
- struct mm_walk_ops *ops,
-> >               .vma            =3D vma,
-> >               .private        =3D private,
-> >       };
-> > +     int err;
-> >
-> >       if (!walk.mm)
-> >               return -EINVAL;
-> > @@ -754,7 +760,9 @@ int walk_page_vma(struct vm_area_struct *vma, const=
- struct mm_walk_ops *ops,
-> >               return -EINVAL;
-> >
-> >       process_mm_walk_lock(walk.mm, ops->walk_lock);
-> > -     process_vma_walk_lock(vma, ops->walk_lock);
-> > +     err =3D process_vma_walk_lock(vma, ops->walk_lock);
-> > +     if (err)
-> > +             return err;
->
-> LGTM
->
-> >       return __walk_page_range(vma->vm_start, vma->vm_end, &walk);
-> >  }
-> >
-> > --
-> > 2.53.0.1018.g2bb0e51243-goog
-> >
->
-> Thanks, Lorenzo
+Thanks,
+Sami
