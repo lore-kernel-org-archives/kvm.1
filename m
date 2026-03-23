@@ -1,188 +1,207 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40036340A47
-	for <kvm@vger.kernel.org>; Mon, 23 Mar 2026 08:14:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A42A1382F1F;
+	Mon, 23 Mar 2026 08:43:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774253693; cv=none; b=E6QpvsfT2rq6CenxuaCDLDK793qRqj7OwDt10EXBf0rzdKiNrlrcY4NOsl+QwZ/60Uc53JkAgD//zLewn+y2cu/ShfkHj8vZchmQ+tsuJSpGflqc3012A+Vsg6PQI/M3W8y5IWrcmMvGFXZa0xnveDCzK1/S7H/Pt2REqIhC+EQ=
+	t=1774255397; cv=none; b=Ss8zkkZBBS6XAL/3IFewJ45gyCkndBuv3ywV+g1DqnR6XRhbKLP6Q4jcS7b/8HCFveK6EvR1IvR3ubGqx+5AfmrdQxEhdqG2u3a3tcEBRFpAHiyHZpWpsCVgv4VpM6n6zxuSaKFBIPk6msSDMKNUlHqkrGBiN780brUZl3l+2sk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774253693; c=relaxed/simple;
-	bh=um5I7PVdJmAcpOBqS9KqVvbKn8LuqGYxZ7PJq9Mle4M=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=PawhSeH+14TK541srjGT2wXVsTPKazFhlRqqXtT7n2MldHhPOikAfC0v+MtJOrnZSlhK5pUUy3Xg96vSoPM0u2WAYYMikdEe6qXvp5n+53fLp/CvMPOhs+vSOIHghIAhv9PcYiLiw2g9/pebUx62QhduO5rztS1kTqDBwgSI14c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=rhDE9D+5; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1774255397; c=relaxed/simple;
+	bh=hI/WjybrpXzNAFHT59gckSTLPeS76ZpD3rBAeQW1h9c=;
+	h=Date:Message-ID:From:To:Cc:Subject:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=CktP0oFPlBN/uj8pi0R44gulh95DL1bh0Mcsk+E2gNjf9VleS3xxVOfZ3HHlPP5Jku/vvzS0/hZbupjwGX8TVZ9BLis/QCGXPA46q6lWpPWm9sxDx5YMny43LULX43n/Th427Yq9/tQI2bdkZwL2wtgtNPdBlE//gp8G0Ty4lzk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DfFJTb2M; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="rhDE9D+5"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EE3CAC2BCB4
-	for <kvm@vger.kernel.org>; Mon, 23 Mar 2026 08:14:52 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DfFJTb2M"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A3FF9C4CEF7;
+	Mon, 23 Mar 2026 08:43:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1774253693;
-	bh=um5I7PVdJmAcpOBqS9KqVvbKn8LuqGYxZ7PJq9Mle4M=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=rhDE9D+529V/peOH4XoD+v8lUBUgXtBn7LVp+RSetNM+z1+KiY9Yybld3XCnbZeQd
-	 5U2ZXFoWCwNtHBbL7nGSa0wqe8cOOkHCEoEbC0NtOAoVAXMZeyu7tF3chyeFg+IMKK
-	 +2T8WH5/a9xwttY3o8fvqU40cUHLC1UxE43DpOWltfK1/49vngJRxiqwatgkC47tAG
-	 eP9NJvZSsdEQniVhq4PWKhgOa3MRupERDXQYCYQo1LJOqmaD8z5K/g2I3cHr7qVwSX
-	 nFK7Yv3qxl0P0aSR9EjcU2S2AFYlyaOxsvf4q0pmvpA82TJ1DyBhGfgNShEwby2Ni8
-	 LIlu6OyfteLjA==
-Received: by mail-ej1-f46.google.com with SMTP id a640c23a62f3a-b9382e59c0eso396504866b.0
-        for <kvm@vger.kernel.org>; Mon, 23 Mar 2026 01:14:52 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCUkrqkm6UN/ZEB+T5XRhUJpn6vUKmFZ1fmHl9v4Zx12YfjW2F2bayQ+Itm7WdBYGyDGgy0=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx9WIIPIDtx7R8G4KLW7c7KbZnO4uHd/t5dda3oasIFMTkt6x8D
-	hd61t+szOKwgs93SCne7C1zoBu4w4jvEpmnPO+uz8dsP/KDN2d0V3voLnhDqvtxuPHNfzFOZw6w
-	WIorcKqZs+NnNEEd04QzvRQ0ypWbxPsA=
-X-Received: by 2002:a17:907:3d92:b0:b98:528b:8466 with SMTP id
- a640c23a62f3a-b98528b968emr440416066b.55.1774253691422; Mon, 23 Mar 2026
- 01:14:51 -0700 (PDT)
+	s=k20201202; t=1774255396;
+	bh=hI/WjybrpXzNAFHT59gckSTLPeS76ZpD3rBAeQW1h9c=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=DfFJTb2MjyLWtiPK7zTRtKLsbcec9JdUoHG8fssvfSEbZmJXK651jyHFUwT6PvcTH
+	 7B0BYGTKAIC+IxfHSxE2bRmrhGgjxI5P7DKV9cuUaWv3lMSyfm00yqpzBY9EWxldLC
+	 fDW6h6IUy8dCb2Q+X5U96pMm6VGUdXeBDFhxRHTGPrzyYl4ijDoHKkYIRHmcg7Sz0L
+	 rGK348RJoQxwGZqLyVZcOCB0PYyHN3p1O8tGHCvG0E2Fdf4Mk2pL2Z9vS98nBFyy7Y
+	 PfOmkIIn4zSnRjKZHUIryr18QsBRNBI8G3A/VdI4Nv1yXDi+o36A+xG9zkszu+C9Zx
+	 USFEaMiEBXiXA==
+Received: from sofa.misterjones.org ([185.219.108.64] helo=goblin-girl.misterjones.org)
+	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.98.2)
+	(envelope-from <maz@kernel.org>)
+	id 1w4asU-00000004da4-0iGU;
+	Mon, 23 Mar 2026 08:43:14 +0000
+Date: Mon, 23 Mar 2026 08:43:13 +0000
+Message-ID: <861phb542m.wl-maz@kernel.org>
+From: Marc Zyngier <maz@kernel.org>
+To: Fuad Tabba <tabba@google.com>
+Cc: kvmarm@lists.linux.dev,
+	kvm@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	Joey Gouly <joey.gouly@arm.com>,
+	Suzuki K Poulose <suzuki.poulose@arm.com>,
+	Oliver Upton <oupton@kernel.org>,
+	Zenghui Yu <yuzenghui@huawei.com>,
+	Will Deacon <will@kernel.org>,
+	Mostafa Saleh <smostafa@google.com>,
+	Quentin Perret <qperret@google.com>
+Subject: Re: [PATCH 4/5] KVM: arm64: pkvm: Use direct function pointers for cpu_{on,resume}
+In-Reply-To: <CA+EHjTyeuE3aqqmx8Fe4REOM7WstEAp_A0tvMNygPJCLT7V7wQ@mail.gmail.com>
+References: <20260321212419.2803972-1-maz@kernel.org>
+	<20260321212419.2803972-5-maz@kernel.org>
+	<CA+EHjTyeuE3aqqmx8Fe4REOM7WstEAp_A0tvMNygPJCLT7V7wQ@mail.gmail.com>
+User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
+ FLIM-LB/1.14.9 (=?UTF-8?B?R29qxY0=?=) APEL-LB/10.8 EasyPG/1.0.0 Emacs/30.1
+ (aarch64-unknown-linux-gnu) MULE/6.0 (HANACHIRUSATO)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <20260322135346.3720577-1-chenhuacai@loongson.cn>
- <676198e5-78e4-ab41-e447-4a9d24655890@loongson.cn> <CAAhV-H7rFtju3k=NYkAy6-O7f8U=CTNiryu2_Kr57pScjeH-yQ@mail.gmail.com>
- <696c5177-4a89-f0d0-c305-c1581e72aa3d@loongson.cn>
-In-Reply-To: <696c5177-4a89-f0d0-c305-c1581e72aa3d@loongson.cn>
-From: Huacai Chen <chenhuacai@kernel.org>
-Date: Mon, 23 Mar 2026 16:14:47 +0800
-X-Gmail-Original-Message-ID: <CAAhV-H43BrbWseejgrmtsBRbkbsMVOX0FaHvYOXfr-R9Y2g1Fw@mail.gmail.com>
-X-Gm-Features: AQROBzDUycA1vsWu2w015owAiI9fl2vqafZwY0vvqKec19L_lw2O20wJPIfxQRY
-Message-ID: <CAAhV-H43BrbWseejgrmtsBRbkbsMVOX0FaHvYOXfr-R9Y2g1Fw@mail.gmail.com>
-Subject: Re: [PATCH 1/2] LoongArch: KVM: Make kvm_get_vcpu_by_cpuid() more robust
-To: Bibo Mao <maobibo@loongson.cn>
-Cc: Huacai Chen <chenhuacai@loongson.cn>, Paolo Bonzini <pbonzini@redhat.com>, 
-	Tianrui Zhao <zhaotianrui@loongson.cn>, kvm@vger.kernel.org, loongarch@lists.linux.dev, 
-	linux-kernel@vger.kernel.org, Xuerui Wang <kernel@xen0n.name>, 
-	Jiaxun Yang <jiaxun.yang@flygoat.com>, stable@vger.kernel.org, 
-	Aurelien Jarno <aurel32@debian.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
+Content-Type: text/plain; charset=US-ASCII
+X-SA-Exim-Connect-IP: 185.219.108.64
+X-SA-Exim-Rcpt-To: tabba@google.com, kvmarm@lists.linux.dev, kvm@vger.kernel.org, linux-arm-kernel@lists.infradead.org, joey.gouly@arm.com, suzuki.poulose@arm.com, oupton@kernel.org, yuzenghui@huawei.com, will@kernel.org, smostafa@google.com, qperret@google.com
+X-SA-Exim-Mail-From: maz@kernel.org
+X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
 
-On Mon, Mar 23, 2026 at 3:59=E2=80=AFPM Bibo Mao <maobibo@loongson.cn> wrot=
-e:
->
->
->
-> On 2026/3/23 =E4=B8=8B=E5=8D=883:08, Huacai Chen wrote:
-> > On Mon, Mar 23, 2026 at 11:16=E2=80=AFAM Bibo Mao <maobibo@loongson.cn>=
- wrote:
-> >>
-> >>
-> >>
-> >> On 2026/3/22 =E4=B8=8B=E5=8D=889:53, Huacai Chen wrote:
-> >>> kvm_get_vcpu_by_cpuid() takes a cpuid parameter whose type is int, so
-> >>> cpuid can be negative. Let kvm_get_vcpu_by_cpuid() return NULL for th=
-is
-> >>> case so as to make it more robust.
-> >>>
-> >>> This fix an out-of-bounds access to kvm_arch::phyid_map::phys_map[].
-> >>>
-> >>> Cc: <stable@vger.kernel.org>
-> >>> Fixes: 73516e9da512adc ("LoongArch: KVM: Add vcpu mapping from physic=
-al cpuid")
-> >>> Reported-by: Aurelien Jarno <aurel32@debian.org>
-> >>> Link: https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=3D1131431
-> >>> Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
-> >>> ---
-> >>>    arch/loongarch/kvm/vcpu.c | 3 +++
-> >>>    1 file changed, 3 insertions(+)
-> >>>
-> >>> diff --git a/arch/loongarch/kvm/vcpu.c b/arch/loongarch/kvm/vcpu.c
-> >>> index 8ffd50a470e6..831f381a8fd1 100644
-> >>> --- a/arch/loongarch/kvm/vcpu.c
-> >>> +++ b/arch/loongarch/kvm/vcpu.c
-> >>> @@ -588,6 +588,9 @@ struct kvm_vcpu *kvm_get_vcpu_by_cpuid(struct kvm=
- *kvm, int cpuid)
-> >>>    {
-> >>>        struct kvm_phyid_map *map;
-> >>>
-> >>> +     if (cpuid < 0)
-> >>> +             return NULL;
-> >>> +
-> >>>        if (cpuid >=3D KVM_MAX_PHYID)
-> >>>                return NULL;
-> >>>
-> >>>
-> >>
-> >> if (cpuid < 0 || cpuid >=3D KVM_MAX_PHYID)?
-> >> however both are OK for me.
-> > I use a similar style as kvm_get_vcpu_by_id(). :)
+On Sun, 22 Mar 2026 15:49:50 +0000,
+Fuad Tabba <tabba@google.com> wrote:
+> 
+> Hi Marc,
+> 
+> On Sat, 21 Mar 2026 at 21:24, Marc Zyngier <maz@kernel.org> wrote:
 > >
-> > But there is another warning which can't be solved by this series (and
-> > I doubt whether it can be solved unless revert 01a8e68396a6d51f5b).
-> > https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=3D1131431
+> > Instead of using a boolean to decide whether a CPU is booting or
+> > resuming, just pass an actual function pointer around.
+> >
+> > This makes the code a bit more straightforward to understand.
+> >
+> > Signed-off-by: Marc Zyngier <maz@kernel.org>
+> > ---
+> >  arch/arm64/include/asm/kvm_asm.h     |  3 ++-
+> >  arch/arm64/kvm/hyp/nvhe/hyp-init.S   |  9 +++----
+> >  arch/arm64/kvm/hyp/nvhe/psci-relay.c | 39 +++++++++++++++++-----------
+> >  3 files changed, 29 insertions(+), 22 deletions(-)
+> >
+> > diff --git a/arch/arm64/include/asm/kvm_asm.h b/arch/arm64/include/asm/kvm_asm.h
+> > index a1ad12c72ebf1..f4c769857fdfc 100644
+> > --- a/arch/arm64/include/asm/kvm_asm.h
+> > +++ b/arch/arm64/include/asm/kvm_asm.h
+> > @@ -291,7 +291,8 @@ asmlinkage void __noreturn hyp_panic_bad_stack(void);
+> >  asmlinkage void kvm_unexpected_el2_exception(void);
+> >  struct kvm_cpu_context;
+> >  void handle_trap(struct kvm_cpu_context *host_ctxt);
+> > -asmlinkage void __noreturn __kvm_host_psci_cpu_entry(bool is_cpu_on);
+> > +asmlinkage void __noreturn __kvm_host_psci_cpu_on_entry(void);
+> > +asmlinkage void __noreturn __kvm_host_psci_cpu_resume_entry(void);
+> >  void __noreturn __pkvm_init_finalise(void);
+> >  void kvm_nvhe_prepare_backtrace(unsigned long fp, unsigned long pc);
+> >  void kvm_patch_vector_branch(struct alt_instr *alt,
+> > diff --git a/arch/arm64/kvm/hyp/nvhe/hyp-init.S b/arch/arm64/kvm/hyp/nvhe/hyp-init.S
+> > index 2e80fcbff2dff..64296b31da73d 100644
+> > --- a/arch/arm64/kvm/hyp/nvhe/hyp-init.S
+> > +++ b/arch/arm64/kvm/hyp/nvhe/hyp-init.S
+> > @@ -173,7 +173,7 @@ SYM_CODE_END(___kvm_hyp_init)
+> >   * x0: struct kvm_nvhe_init_params PA
+> >   */
+> >  SYM_CODE_START(kvm_hyp_cpu_entry)
+> > -       mov     x1, #1                          // is_cpu_on = true
+> > +       ldr     x29, =__kvm_host_psci_cpu_on_entry
+> >         b       __kvm_hyp_init_cpu
+> >
+> >  /*
+> > @@ -182,11 +182,10 @@ SYM_CODE_START(kvm_hyp_cpu_entry)
+> >   * x0: struct kvm_nvhe_init_params PA
+> >   */
+> >  SYM_CODE_START(kvm_hyp_cpu_resume)
+> > -       mov     x1, #0                          // is_cpu_on = false
+> > +       ldr     x29, =__kvm_host_psci_cpu_resume_entry
+> >
+> >  SYM_INNER_LABEL(__kvm_hyp_init_cpu, SYM_L_LOCAL)
+> >         mov     x28, x0                         // Stash arguments
+> > -       mov     x29, x1
+> >
+> >         /* Check that the core was booted in EL2. */
+> >         mrs     x0, CurrentEL
+> > @@ -204,9 +203,7 @@ SYM_INNER_LABEL(__kvm_hyp_init_cpu, SYM_L_LOCAL)
+> >         bl      ___kvm_hyp_init                 // Clobbers x0..x2
+> >
+> >         /* Leave idmap -- using BLR is OK, LR is restored from host context */
+> > -       mov     x0, x29
+> > -       ldr     x1, =__kvm_host_psci_cpu_entry
+> > -       blr     x1
+> > +       blr     x29
+> >
+> >         // The core booted in EL1, or the C code unexpectedly returned.
+> >         // Either way, KVM cannot be initialized on it.
+> > diff --git a/arch/arm64/kvm/hyp/nvhe/psci-relay.c b/arch/arm64/kvm/hyp/nvhe/psci-relay.c
+> > index c3e196fb8b18f..cc698ceee9c8c 100644
+> > --- a/arch/arm64/kvm/hyp/nvhe/psci-relay.c
+> > +++ b/arch/arm64/kvm/hyp/nvhe/psci-relay.c
+> > @@ -200,23 +200,12 @@ static int psci_system_suspend(u64 func_id, struct kvm_cpu_context *host_ctxt)
+> >                          __hyp_pa(init_params), 0);
+> >  }
+> >
+> > -asmlinkage void __noreturn __kvm_host_psci_cpu_entry(bool is_cpu_on)
+> > +static void __noreturn __kvm_host_psci_cpu_entry(unsigned long pc, unsigned long r0)
+> >  {
+> > -       struct psci_boot_args *boot_args;
+> > -       struct kvm_cpu_context *host_ctxt;
+> > -
+> > -       host_ctxt = host_data_ptr(host_ctxt);
+> > -
+> > -       if (is_cpu_on)
+> > -               boot_args = this_cpu_ptr(&cpu_on_args);
+> > -       else
+> > -               boot_args = this_cpu_ptr(&suspend_args);
+> > -
+> > -       cpu_reg(host_ctxt, 0) = boot_args->r0;
+> > -       write_sysreg_el2(boot_args->pc, SYS_ELR);
+> > +       struct kvm_cpu_context *host_ctxt = host_data_ptr(host_ctxt);
+> >
+> > -       if (is_cpu_on)
+> > -               release_boot_args(boot_args);
+> > +       cpu_reg(host_ctxt, 0) = r0;
+> > +       write_sysreg_el2(pc, SYS_ELR);
+> >
+> >         write_sysreg_el1(INIT_SCTLR_EL1_MMU_OFF, SYS_SCTLR);
+> >         write_sysreg(INIT_PSTATE_EL1, SPSR_EL2);
+> > @@ -224,6 +213,26 @@ asmlinkage void __noreturn __kvm_host_psci_cpu_entry(bool is_cpu_on)
+> >         __host_enter(host_ctxt);
+> >  }
+> >
+> > +asmlinkage void __noreturn __kvm_host_psci_cpu_on_entry(void)
+> > +{
+> > +       struct psci_boot_args *boot_args = this_cpu_ptr(&cpu_on_args);
+> > +       unsigned long pc, r0;
+> > +
+> > +       pc = READ_ONCE(boot_args->pc);
+> > +       r0 = READ_ONCE(boot_args->r0);
+> > +
+> > +       release_boot_args(boot_args);
+> > +
+> > +       __kvm_host_psci_cpu_entry(pc, r0);
+> > +}
+> > +
+> > +asmlinkage void __noreturn __kvm_host_psci_cpu_resume_entry(void)
+> > +{
+> > +       struct psci_boot_args *boot_args = this_cpu_ptr(&cpu_on_args);
+> 
+> This should be suspend_args:
+> +     struct psci_boot_args *boot_args = this_cpu_ptr(&suspend_args);
 >
-> what is the kernel config file with bug
->     https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=3D1131431
-I don't know exactly, but it needs CONFIG_FORTIFY_SOURCE.
 
-Huacai
+Arghhh! How did I miss that??? Thanks a bunch for spotting it!
 
->
-> kvm_eiointc_regs_access() seems has problem, it need convert to void *
-> before arithmetic operation. I do not know whether this patch can solve
-> this bug.
->
-> diff --git a/arch/loongarch/kvm/intc/eiointc.c
-> b/arch/loongarch/kvm/intc/eiointc.c
-> index d2acb4d09e73..71bd67b57338 100644
-> --- a/arch/loongarch/kvm/intc/eiointc.c
-> +++ b/arch/loongarch/kvm/intc/eiointc.c
-> @@ -472,34 +472,34 @@ static int kvm_eiointc_regs_access(struct
-> kvm_device *dev,
->          switch (addr) {
->          case EIOINTC_NODETYPE_START ... EIOINTC_NODETYPE_END:
->                  offset =3D (addr - EIOINTC_NODETYPE_START) / 4;
-> -               p =3D s->nodetype + offset * 4;
-> +               p =3D (void *)s->nodetype + offset * 4;
->                  break;
->          case EIOINTC_IPMAP_START ... EIOINTC_IPMAP_END:
->                  offset =3D (addr - EIOINTC_IPMAP_START) / 4;
-> -               p =3D &s->ipmap + offset * 4;
-> +               p =3D (void *)&s->ipmap + offset * 4;
->                  break;
->          case EIOINTC_ENABLE_START ... EIOINTC_ENABLE_END:
->                  offset =3D (addr - EIOINTC_ENABLE_START) / 4;
-> -               p =3D s->enable + offset * 4;
-> +               p =3D (void *)s->enable + offset * 4;
->                  break;
->          case EIOINTC_BOUNCE_START ... EIOINTC_BOUNCE_END:
->                  offset =3D (addr - EIOINTC_BOUNCE_START) / 4;
-> -               p =3D s->bounce + offset * 4;
-> +               p =3D (void *)s->bounce + offset * 4;
->                  break;
->          case EIOINTC_ISR_START ... EIOINTC_ISR_END:
->                  offset =3D (addr - EIOINTC_ISR_START) / 4;
-> -               p =3D s->isr + offset * 4;
-> +               p =3D (void *)s->isr + offset * 4;
->                  break;
->          case EIOINTC_COREISR_START ... EIOINTC_COREISR_END:
->                  if (cpu >=3D s->num_cpu)
->                          return -EINVAL;
->
->                  offset =3D (addr - EIOINTC_COREISR_START) / 4;
-> -               p =3D s->coreisr[cpu] + offset * 4;
-> +               p =3D (void *)s->coreisr[cpu] + offset * 4;
->                  break;
->          case EIOINTC_COREMAP_START ... EIOINTC_COREMAP_END:
->                  offset =3D (addr - EIOINTC_COREMAP_START) / 4;
-> -               p =3D s->coremap + offset * 4;
-> +               p =3D (void *)s->coremap + offset * 4;
->                  break;
->          default:
->                  kvm_err("%s: unknown eiointc register, addr =3D %d\n",
-> __func__, addr);
->
->
-> Regards
-> Bibo Mao
-> >
-> > Huacai
-> >
-> >>
-> >> Reviewed-by: Bibo Mao <maobibo@loongson.cn>
-> >>
->
->
+> With this fixed:
+> 
+> Reviewed-by: Fuad Tabba <tabba@google.com>
+
+Thanks again,
+
+	M.
+
+-- 
+Without deviation from the norm, progress is not possible.
