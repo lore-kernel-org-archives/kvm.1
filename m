@@ -1,65 +1,65 @@
-Received: from mail-pl1-f175.google.com (mail-pl1-f175.google.com [209.85.214.175])
+Received: from mail-pl1-f170.google.com (mail-pl1-f170.google.com [209.85.214.170])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A2B2537B032
-	for <kvm@vger.kernel.org>; Mon, 23 Mar 2026 22:07:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.175
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1434538238D
+	for <kvm@vger.kernel.org>; Mon, 23 Mar 2026 22:18:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.170
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774303659; cv=none; b=V/vQmaEwsamkHHfE0RCkG/riDE0YLNilW7+p4apXjK64k9ZmgtYEEUscD/5KTjeEs2Yg7cvg0wphJ5K604hHSkemYPE7Cc1F3IPAumOwOHDNT4DpWTAFwC/fqvT1jDpzNzb2KpOByEO3I/hRjR5/nXSTZR7ufmiPhtMbwWgXp5s=
+	t=1774304327; cv=none; b=YJ2SFG+TnlNB2k/4qb/9bMuiu7cgGWHAI19bgcgErm1fQ3yagBnk3z2B7o3xFTwiHL2z5UCespj8o2q5pg0pBoNmtSwkp09cD9EAvlezYokQ5Drb/t2jXVyq/l6xK9mRuoUmAD1i2gZfdENHrVLehEg7cT/LPqTxJ3z7ylaZ+BQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774303659; c=relaxed/simple;
-	bh=+5NvPwxkd+9i5GiKKfiHltHB6kQ8dritqed/r7e5gEE=;
+	s=arc-20240116; t=1774304327; c=relaxed/simple;
+	bh=m0Oct6L5BwAfzAqfEGPIqu2tZ0EzzUznTUJO7ip40R8=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=oLVh+W+6/TeViSDt+buobZ41HOrsg5qNuA3DK8NvL7qfJB3Xxvl40pToHRhpqDLPSKhzDc2RB44NTPLgH8GeNDZw5CyUFw2GuFt41wDPn5LeTf6cFB4kRweTSmYusOXf9K3XPKIBtD0EsZBTuWFompUjIBtAsGeVNnO2R5AbWFs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=LjnmsVBn; arc=none smtp.client-ip=209.85.214.175
+	 Content-Type:Content-Disposition:In-Reply-To; b=ZM5oP5/1keqIBttSwLUTDIuuih0kR5uBpAtEsUSpKbjOxaLrzfBgeU5QNKPqv4FNEzPngknvH1o2BQnMg5J7eaJKstEpXMr7GI6i+pyXtnIN1hJloE9xFiiUD9NAG2FmJ4dN6Pn6MlDjRujFsa0ewGKDBKMcWhNwwWnP8nVeMH4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=ZHltvsAR; arc=none smtp.client-ip=209.85.214.170
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="LjnmsVBn"
-Received: by mail-pl1-f175.google.com with SMTP id d9443c01a7336-2b052562254so35305ad.0
-        for <kvm@vger.kernel.org>; Mon, 23 Mar 2026 15:07:37 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="ZHltvsAR"
+Received: by mail-pl1-f170.google.com with SMTP id d9443c01a7336-2b04c9e3eb7so32725ad.0
+        for <kvm@vger.kernel.org>; Mon, 23 Mar 2026 15:18:45 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1774303657; x=1774908457; darn=vger.kernel.org;
+        d=google.com; s=20251104; t=1774304325; x=1774909125; darn=vger.kernel.org;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=exBHGWHqN/Fcx1Fk+ursFGf32PtT/7vVoLt/cnZyELU=;
-        b=LjnmsVBnJwZ2aw9PaeRTDBlW6IQkHvKbtyqhL1Ghqdvfx/oDSdRVCRSMjstWY6ST+4
-         eVyp5eH2bknrQw05qfOP3Qha0cNZwIrfSEe50nh1ApGkmH07tl7Km3q/kvAckLCsSOov
-         VM5UtwM9oBWLe25jxFcBaL03BUUtN79cX+jeJ4VPvQp8vrQuXut4+1PcjMYrf8/nyvLj
-         t3EyL3S1CzzA5rVTH70CCFJ/mLdWCGwqa/SVhPaB3dVZyCpJsHg0pmzVlVl/Cx1PqBOH
-         fUbu40tcZa3PMGW1vbyNezS/ToBrjJ3N5JZ5X8KLiuXflubQYFV265SLJaOhhu91o6KC
-         dyFA==
+        bh=SUjy+2x1i7Xfs6bwVX9ul43lO5ojBIL9kKYDxuqVt+4=;
+        b=ZHltvsARdk+nB05D2x/tLf7qQZp88iwKcSCZFwXi85zgadAsMspmjWfRaLdQDmlahC
+         uK4+aKc4Upe1E1fn/iO6FTcmAMV87nOOeMzfz8Rrg3PeHgX9F1blOdoqMmMGRZKqqUHX
+         vkXjZafAng608wAYLiGEeG6TEKWUS3+E2MSeUPqG2wy41fmk5Y8zQH4FGUBvP11QohG2
+         YnJDXpkZPrDkbChaNOAge0ptQX7wZNdyOHkupHhZrIeOMV9p0N9yIsfoUkOW4ClESs2c
+         GTMaO1B+UpTa9n3hg4UXn74AwQCA+IeI+AlfKAlK5n4WGEPyjiWUw+tKTfh2UD3nZMRo
+         nhMw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774303657; x=1774908457;
+        d=1e100.net; s=20251104; t=1774304325; x=1774909125;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=exBHGWHqN/Fcx1Fk+ursFGf32PtT/7vVoLt/cnZyELU=;
-        b=l5dVfYy7e6SnwmwOzNE80sf5Iny7m6k5PeOeB2PPwMB2UO2wSDAE4PFeAKBAtdLdQB
-         UK1JaozJPt9KTeD5y3Nq3Z0gCQmlAroRGPiGl8DmmeLueObRA/cgigZUC1sXDx1n1ctI
-         qUMTU4aYnKBig37Snox0VxbYHDCRA3636U+TmaxRaYqmNWTp9tnnSpj4BmQwAsCulGdh
-         AQw2s+E8oKidQPV9eWkmhnxYrQ1vDGdqhmLCf5ASTB8Kwn0SZ/KUOkceo/nKcAy8nBkz
-         iFjX9pYl7bujS3L9xbfhVL4wN6uKXuN5PRA4wHqOaELyjBAXKP8IMtN466byXXLXvwkD
-         QfvA==
-X-Forwarded-Encrypted: i=1; AJvYcCU+g9GmBMNDDGFGG/lrOwxjif8zZKF5+8+Jz+i9Yi8yOGRE7RId9EO0QluOKjSWpRdv9fg=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzbXaM/3c5BIvTmt4KGUhIJ0Q3X3w0QNjLnmffx6YVq5ysgqa/N
-	D6GmW8m2BreIKWImH8eZBLXzC6ExPk/Eo7GvObbuC9S5mIRbtcLuEVZ3KT13HKb2pw==
-X-Gm-Gg: ATEYQzyNIP5DA3MfOHQovQFSn/YbG50hyt0rDfVUMxFO3UzrYoGcGM5qQbX/GHSnGqY
-	moSDCUIS9n6/j65VeTNtR5oSG+bP7Pb+Ez09sx6HoY4XqCvP77qynNZacXqLUMlQWe+x7CAIf28
-	qIwMfr86bjCwBJR+QgPt1/gElSrkQSB8yXexIzwBlJHg/qOwp1Li5ffd5D5J0b1O8RGkMpQKK1D
-	1jWz3ER7XvUhT6ofLSIXR8NPK9As9stRmBPH8fkfOI3E9M1LNFrZRpmL4a2jto1vmMDiEzjEVfT
-	h5BEtFidWXHFkgq61zI6ZzB6i4XZGnft6tJdUW6ndolUUwbWvotVJ72Cr24kDpRE1lMrDrBEMIH
-	ep53MWBw5/g/Ic14ka7KVlsyYvhDOZUCKG5ckcW8XwQ5RCj3W/CqkZVAQ9uS2d21jGHcOHuTRC3
-	37tdUsjqP5scqTJJMs1+nyoBX9AnW6Wceir/AYG/HC5los9IT/LIp28DbPunsjog==
-X-Received: by 2002:a17:902:ce0a:b0:2b0:4613:2e35 with SMTP id d9443c01a7336-2b0a532cbf5mr1341715ad.0.1774303656096;
-        Mon, 23 Mar 2026 15:07:36 -0700 (PDT)
-Received: from google.com (168.136.83.34.bc.googleusercontent.com. [34.83.136.168])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2b0835551c3sm117347225ad.35.2026.03.23.15.07.35
+        bh=SUjy+2x1i7Xfs6bwVX9ul43lO5ojBIL9kKYDxuqVt+4=;
+        b=QX6PQMULTKoY6tToHL5RROcMe8i5zayIcTsZcBgG5d8kX+0QBjfQzlRpR1HDurLZ1I
+         4hK2UpzB2NknqsCUOTsn5LeKZRzrgfBVJGg5ecCvBuTKM9/LOgM7n7OSj/1ug6SMt6v2
+         p3NhOx6vy3RfVEJdd2peqPU6cQVlfwaOihNYUzqqsc9T2O905S7XLLaUwmTqmgxje8PE
+         sy8NbKxNzt2IgjPP4M/kD4vqJEIZn3KvbaF5VBNqMWi0ddnjjVUYW3MTsDyH3LNx0gtS
+         i49bFjMg5BGAK3eVRDVPYvovMhEtGdDXZH0p9wj+S+IEQc/i8WnJKL/8Ge6AT7ti3S+D
+         ETCw==
+X-Forwarded-Encrypted: i=1; AJvYcCXJqPqLASVcyRBxa+JQy2H6ejYH5YnXZLkJjIbRNH7kChV3XvpxyfurPKcKljFF4j49M2U=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwzpUQD3KCqhW5E+bGvzeUCBL4ebBHC9l6pfw86LtZb5iJXQ+Wy
+	NGwQtHBXV8BseSoBdu8snVlfVti+axMw3tUxhHJxIWujVAa4FNmjsDCniGBwNnw5YQ==
+X-Gm-Gg: ATEYQzySH42VLM1k+LqdcTDzdB8UCjFJ24z3/aqnTbt0yJue9VnCuEToDsd9CCFjAa8
+	2M4KPCGqnsuAuUmYvTQ/9gYKzupTanzxPB42RWOFyZcwbPkok564dZNRM5eUSIkw27tW+9dsV+P
+	hYvIpFgp/qenD64IaNtfcE+IU4HbT6BdFVno/Ew5a2jyt4NJPXvrgSdiXp7cHbKsZrguvVQHZ6n
+	t09rz9fzAoFK0gi/IskaK2LQG1WzcgJSLKqBSuFPwAaDMlhQldFyR7120MC1SVhuP4Fa5p3SxqZ
+	Z0B6nTdSO1YTeq2TkTz05UhoMayMmSNffpidvXv6EeSLCbaRX4+PeemEWs+vTD56DtCBJlWfWOZ
+	xADJRMgIETr4AMzi7Cxc8O4vDJWWXgVTveL+Owv7vk/4WjofQhGlcM1zW0dyIwv3wEAP2unCaZX
+	vcPn9ULd/u/JK378To4SeI0P6f814grTWg7D81Q9eiJ0ZcD87Pf8eU6hx6zWvA
+X-Received: by 2002:a17:902:f68d:b0:2ae:4808:bd99 with SMTP id d9443c01a7336-2b0a53e730fmr1188815ad.2.1774304324944;
+        Mon, 23 Mar 2026 15:18:44 -0700 (PDT)
+Received: from google.com (176.13.105.34.bc.googleusercontent.com. [34.105.13.176])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-35c0175e234sm131271a91.1.2026.03.23.15.18.43
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 23 Mar 2026 15:07:35 -0700 (PDT)
-Date: Mon, 23 Mar 2026 22:07:31 +0000
-From: Samiullah Khawaja <skhawaja@google.com>
-To: Vipin Sharma <vipinsh@google.com>
+        Mon, 23 Mar 2026 15:18:44 -0700 (PDT)
+Date: Mon, 23 Mar 2026 15:18:39 -0700
+From: Vipin Sharma <vipinsh@google.com>
+To: Samiullah Khawaja <skhawaja@google.com>
 Cc: David Woodhouse <dwmw2@infradead.org>, 
 	Lu Baolu <baolu.lu@linux.intel.com>, Joerg Roedel <joro@8bytes.org>, Will Deacon <will@kernel.org>, 
 	Jason Gunthorpe <jgg@ziepe.ca>, Robin Murphy <robin.murphy@arm.com>, 
@@ -72,84 +72,139 @@ Cc: David Woodhouse <dwmw2@infradead.org>,
 	David Matlack <dmatlack@google.com>, Andrew Morton <akpm@linux-foundation.org>, 
 	Chris Li <chrisl@kernel.org>, Pranjal Shrivastava <praan@google.com>, 
 	YiFei Zhu <zhuyifei@google.com>
-Subject: Re: [PATCH 13/14] vfio/pci: Preserve the iommufd state of the vfio
- cdev
-Message-ID: <acG3M41Ho96FyJ8V@google.com>
+Subject: Re: [PATCH 14/14] iommufd/selftest: Add test to verify iommufd
+ preservation
+Message-ID: <20260323212009.GC2571566.vipinsh@google.com>
 References: <20260203220948.2176157-1-skhawaja@google.com>
- <20260203220948.2176157-14-skhawaja@google.com>
- <20260323210111.GB2571566.vipinsh@google.com>
+ <20260203220948.2176157-15-skhawaja@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260323210111.GB2571566.vipinsh@google.com>
+In-Reply-To: <20260203220948.2176157-15-skhawaja@google.com>
 
-On Mon, Mar 23, 2026 at 02:17:29PM -0700, Vipin Sharma wrote:
->On Tue, Feb 03, 2026 at 10:09:47PM +0000, Samiullah Khawaja wrote:
->> If the vfio cdev is attached to an iommufd, preserve the state of the
->> attached iommufd also. Basically preserve the iommu state of the device
->> and also the attached domain. The token returned by the preservation API
->> will be used to restore/rebind to the iommufd state after liveupdate.
->
->Lets add token when it is used in restore/rebind patches in future.
+On Tue, Feb 03, 2026 at 10:09:48PM +0000, Samiullah Khawaja wrote:
+> Test iommufd preservation by setting up an iommufd and vfio cdev and
+> preserve it across live update. Test takes VFIO cdev path of a device
+> bound to vfio-pci driver and binds it to an iommufd being preserved. It
+> also preserves the vfio cdev so the iommufd state associated with it is
+> also preserved.
+> 
+> The restore path is tested by restoring the preserved vfio cdev only.
+> Test tries to finish the session without restoring iommufd and confirms
+> that it fails.
 
-Agreed.
->
->> diff --git a/drivers/vfio/pci/vfio_pci_liveupdate.c b/drivers/vfio/pci/vfio_pci_liveupdate.c
->> @@ -49,15 +51,32 @@ static int vfio_pci_liveupdate_preserve(struct liveupdate_file_op_args *args)
->>  	if (vfio_pci_is_intel_display(pdev))
->>  		return -EINVAL;
->>
->> +#if CONFIG_IOMMU_LIVEUPDATE
->> +	/* If iommufd is attached, preserve the underlying domain */
->> +	if (device->iommufd_attached) {
->> +		int err = iommufd_device_preserve(args->session,
->> +						  device->iommufd_device,
->> +						  &token);
->> +		if (err < 0)
->> +			return err;
->> +	}
->> +#endif
->> +
->>  	ser = kho_alloc_preserve(sizeof(*ser));
->> -	if (IS_ERR(ser))
->> +	if (IS_ERR(ser)) {
->> +		if (device->iommufd_attached)
->> +			iommufd_device_unpreserve(args->session,
->> +						  device->iommufd_device, token);
->> +
->>  		return PTR_ERR(ser);
->> +	}
->
->driver/vfio/pci/iommufd.c has all of the code which interacts with
->iommufd in VFIO, I think we should follow the convention and add a
->function there which can be called from here.
+May be alos add more details that VFIO bind will also fail, it will return EPERM
+due to ...
 
-I am assuming you meant driver/vfio/iommufd.c as
-drivers/vfio/pci/iommufd.c doens't exist.
+> diff --git a/tools/testing/selftests/iommu/Makefile b/tools/testing/selftests/iommu/Makefile
+> +$(TEST_GEN_PROGS_EXTENDED): %: %.o $(LIBLIVEUPDATE_O)
+> +	$(CC) $(CFLAGS) $(CPPFLAGS) $(LDFLAGS) $(TARGET_ARCH) $< $(LIBLIVEUPDATE_O) $(LDLIBS) -static -o $@
 
-I see iommufd_ctx and other iommufd_ functions being used directly in
-various places outside drivers/vfio/iommufd.c, so there is not a hard
-split I think. This will introduce unnecessary indirection I think.
->
->> diff --git a/include/linux/kho/abi/vfio_pci.h b/include/linux/kho/abi/vfio_pci.h
->> +/**
->> + * struct vfio_iommufd_ser - Serialized state of the attached iommufd.
->> + *
->> + * @token: The token of the bound iommufd state.
->> + */
->> +struct vfio_iommufd_ser {
->> +	u32 token;
->
->This is u32, whereas the token above is u64.
+Why static? User can pass static flag through EXTRA_CFLAGS.
 
-Will update.
->
->
+> diff --git a/tools/testing/selftests/iommu/iommufd_liveupdate.c b/tools/testing/selftests/iommu/iommufd_liveupdate.c
+> +
+> +#define ksft_assert(condition) \
+> +	do { if (!(condition)) \
+> +	ksft_exit_fail_msg("Failed: %s at %s %d: %s\n", \
+> +	#condition, __FILE__, __LINE__, strerror(errno)); } while (0)
 
-Thanks,
-Sami
+Please add indentation to the code.
+
+> +
+> +int setup_cdev(const char *vfio_cdev_path)
+
+Nit: s/setup_cdev/open_cdev
+
+Since you are using open_iommufd() name below, this will make it
+consistent as there not setup here apart from opening.
+
+> +int setup_iommufd(int iommufd, int memfd, int cdev_fd, int hwpt_token)
+> +	bind.iommufd = iommufd;
+> +	ret = ioctl(cdev_fd, VFIO_DEVICE_BIND_IOMMUFD, &bind);
+> +	ksft_assert(!ret);
+> +
+> +	ret = ioctl(iommufd, IOMMU_IOAS_ALLOC, &alloc_data);
+> +	ksft_assert(!ret);
+> +
+> +	hwpt_alloc.dev_id = bind.out_devid;
+> +	hwpt_alloc.pt_id = alloc_data.out_ioas_id;
+> +	ret = ioctl(iommufd, IOMMU_HWPT_ALLOC, &hwpt_alloc);
+> +	ksft_assert(!ret);
+> +
+> +	attach_data.pt_id = hwpt_alloc.out_hwpt_id;
+> +	ret = ioctl(cdev_fd, VFIO_DEVICE_ATTACH_IOMMUFD_PT, &attach_data);
+> +	ksft_assert(!ret);
+> +
+> +	map_file.ioas_id = alloc_data.out_ioas_id;
+> +	ret = ioctl(iommufd, IOMMU_IOAS_MAP_FILE, &map_file);
+> +	ksft_assert(!ret);
+> +
+> +	set_preserve.hwpt_id = attach_data.pt_id;
+> +	ret = ioctl(iommufd, IOMMU_HWPT_LU_SET_PRESERVE, &set_preserve);
+> +	ksft_assert(!ret);
+> +
+> +	return ret;
+> +}
+
+iommufd_utils.h has functions defined for iommufd ioctls. I think we
+should use those functions here and if related to iommufd are not
+present we should add there.
+
+> +int main(int argc, char *argv[])
+> +{
+> +	int iommufd, cdev_fd, memfd, luo, session, ret;
+> +	const int token = 0x123456;
+> +	const int cdev_token = 0x654321;
+> +	const int hwpt_token = 0x789012;
+> +	const int memfd_token = 0x890123;
+> +
+> +	if (argc < 2) {
+> +		printf("Usage: ./iommufd_liveupdate <vfio_cdev_path>\n");
+> +		return 1;
+> +	}
+> +
+> +	luo = luo_open_device();
+> +	ksft_assert(luo > 0);
+> +
+> +	session = luo_retrieve_session(luo, "iommufd-test");
+> +	if (session == -ENOENT) {
+> +		session = luo_create_session(luo, "iommufd-test");
+> +
+> +		iommufd = open_iommufd();
+> +		memfd = create_sealed_memfd(SZ_1M);
+> +		cdev_fd = setup_cdev(argv[1]);
+> +
+> +		ret = setup_iommufd(iommufd, memfd, cdev_fd, hwpt_token);
+> +		ksft_assert(!ret);
+> +
+> +		/* Cannot preserve cdev without iommufd */
+> +		ret = luo_session_preserve_fd(session, cdev_fd, cdev_token);
+> +		ksft_assert(ret);
+> +
+> +		/* Cannot preserve iommufd without preserving memfd. */
+> +		ret = luo_session_preserve_fd(session, iommufd, token);
+> +		ksft_assert(ret);
+> +
+> +		ret = luo_session_preserve_fd(session, memfd, memfd_token);
+> +		ksft_assert(!ret);
+> +
+> +		ret = luo_session_preserve_fd(session, iommufd, token);
+> +		ksft_assert(!ret);
+> +
+> +		ret = luo_session_preserve_fd(session, cdev_fd, cdev_token);
+> +		ksft_assert(!ret);
+> +
+
+All of these ksft_assert are hurting my eyes:) I like the approach in
+VFIO where library APIs does validation and test code only check actual
+things needed.
+
+Should we at least create a common function to combine both
+luo_session_preserve() and ksft_assert()?
+
