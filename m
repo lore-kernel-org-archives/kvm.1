@@ -1,184 +1,112 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 57E23348883;
-	Mon, 23 Mar 2026 06:47:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.7
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7850F35CB6E
+	for <kvm@vger.kernel.org>; Mon, 23 Mar 2026 07:08:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774248443; cv=none; b=uPubC+s4nViCmSaWroOEqNGhHkzXq9vgwKC3keBUH2oLmapemtaKNs6WyXRYu8Mx+kt6fXVx3zY49KwOs/5aiyuZ51F1xn67kePNpyVY+qS2PfaDhvOEkjZ8zI28028FvpTull6UYHpzWfCdmPEx+WXUUeQapEKV0eYW9JjsDGg=
+	t=1774249709; cv=none; b=BJng4Uf62Ic9yiIBLs4QmUl2qXAE3QOLV4MAhiGdeiWtky6oworJmD3pBYUVLwWiWxSVyyejBIciDMMwYmsM585SDngHOMnwWKM8vIWWRNs59wY3Tdi2cQV9BSE5PKGlNHr7vtKgmqqmZTeeD2MY0mhjWtKhuxVALm/Ayh2mk7A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774248443; c=relaxed/simple;
-	bh=fZ4dthvo6FiuhI8csVK1kkr1G1ANyOjv7U4MMqBAv48=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=t+DvuVBilVyipYDr0/pl5W4u0VrELwUn5bYMK/a3Z0ErtdXNGEuakvHJHP06QNeJ+JOkOxI/OvMS/g2bbHXOqRC8M+Jhe9GoC1NwcW0Fkx/p5EmqKUCEupHz4hzkKSNlbaEsgHPfqu61i7oqNBkz5Kuw/+oJfkzZDNLlXnBuJ4U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=k2YC9Yg2; arc=none smtp.client-ip=192.198.163.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1774249709; c=relaxed/simple;
+	bh=I7JQd27zGB4Ebig8E/VetdYeJzIIxW73/4qeDzntcGc=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=WAZR68i2rUWsjMOpk8Pxr0qKL0lVnmij4gEPnKbvOh2vGQrgrS2BG27GTTULHFEnQ5yqU621ibSyugglQyuWAntsiOyISQ+8cRec1Bz2Rw9xw2rLw8iOo6uTh05l0wVMHtmcQvEEfDyTzfi6C7+ntWJUGIO6OljSgHcbsmDN500=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=D3s7iWR8; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="k2YC9Yg2"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1774248441; x=1805784441;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=fZ4dthvo6FiuhI8csVK1kkr1G1ANyOjv7U4MMqBAv48=;
-  b=k2YC9Yg2ODZXxUAZ498Sk0fa74rAcpHelWUWa+nu8i7eidqetvs52IuR
-   g/gf6dp3IeBHTEjrSy4aOwW1PdrKRyJAx0we8ptNOAeEPUeegEmlmRydB
-   vnRMpvVf/+MOj5DEac6ot7KYS3hqRUOmb7JczsFFUXtHi4jUoNvQHfyl4
-   3aJiQHHkM2ZOwSvLHO3r2S95h9IHAng6WwKL3dx6budNvwzAPhaAMq3jX
-   PO6gqT+LyhrfBQ0UFzppiiHQsrOKg0jEU7IJpYxk62Ij7SxzhwbiUXDNd
-   ai3K3V0srsiE7QDln+xY3HnNxZXAWZecwymttk7W/B6pZbr2RwXisv142
-   g==;
-X-CSE-ConnectionGUID: /B1aq3lYSIqRGT1Ld3bxDQ==
-X-CSE-MsgGUID: gopsGW3sSqGTf7/3ns9EOQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11737"; a="100692618"
-X-IronPort-AV: E=Sophos;i="6.23,136,1770624000"; 
-   d="scan'208";a="100692618"
-Received: from orviesa001.jf.intel.com ([10.64.159.141])
-  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Mar 2026 23:47:20 -0700
-X-CSE-ConnectionGUID: Mn0cimg9SXCAJWIQDhbnLg==
-X-CSE-MsgGUID: ErtolgvsRzSN77y7FlHs9w==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,136,1770624000"; 
-   d="scan'208";a="261838000"
-Received: from intel-fishhawkfalls.iind.intel.com ([10.99.116.107])
-  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Mar 2026 23:47:18 -0700
-From: Sonam Sanju <sonam.sanju@intel.com>
-To: Paolo Bonzini <pbonzini@redhat.com>,
-	Sean Christopherson <seanjc@google.com>,
-	Vineeth Pillai <vineeth@bitbyteword.org>
-Cc: Dmitry Maluka <dmaluka@chromium.org>,
-	kvm@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org,
-	Sonam Sanju <sonam.sanju@intel.com>
-Subject: [PATCH v2] KVM: irqfd: fix deadlock by moving synchronize_srcu out of resampler_lock
-Date: Mon, 23 Mar 2026 12:12:48 +0530
-Message-Id: <20260323064248.1660757-1-sonam.sanju@intel.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20260323053353.805336-1-sonam.sanju@intel.com>
-References: <20260323053353.805336-1-sonam.sanju@intel.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="D3s7iWR8"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 497C9C2BCB6
+	for <kvm@vger.kernel.org>; Mon, 23 Mar 2026 07:08:29 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1774249709;
+	bh=I7JQd27zGB4Ebig8E/VetdYeJzIIxW73/4qeDzntcGc=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=D3s7iWR89wZfyatx1Fh5dUeZdUxS8P6DQQ3ZkW5I1Q65GQ8H1LdtlByB19m7kQDJ3
+	 4JoJL885zZGoy7sJla+xMexKeiefAJCYQ2/CZ9eJqy2LsEb+qLuuDoTFCs/pIQ6F2+
+	 pksprdLMfEjbQCW0y3VrBuEEseA3I9xFAaBHNwE8xE00pu46A7ey8vFoA+qWCy9JMw
+	 3vSlC2vjUm5o8ke5+N/Ay2pK6l9jRXuctaTt4i1d9KlT32MStteP8oT8RcHyeLp3P6
+	 AGLaUfBMnEcdSHg4McTGbte01FosRCJJfZ0mQ7B4IUWN4sJ4wuJBs/IB1p/AdFgV9M
+	 sMUDNrIWdCXoA==
+Received: by mail-ej1-f50.google.com with SMTP id a640c23a62f3a-b79f8f7ea43so609133466b.2
+        for <kvm@vger.kernel.org>; Mon, 23 Mar 2026 00:08:29 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCXogshPI24Pm3SfVk6y6OBXPsZWEivOWHhLx36tJfPfD6BJ1sgQ8GmwjjqgHvLRH0AlOlw=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwVhkSLAbbu9tNSkbkozJw4+qUe4k/0FzoFVzJJIsn8QWF4AKr8
+	U5RUaGyWrEcK5QO/8ysJm67GO8ywXd5qFfD3ngMwi2iB2aA2rb5NlNqv+l+ngnZZ6M8Uap1kTmz
+	M8Qdcm6yTB+kCZYrdMeaycxq3n/BmBjY=
+X-Received: by 2002:a17:907:86a7:b0:b98:3b5d:e147 with SMTP id
+ a640c23a62f3a-b983b5df9a2mr718350666b.3.1774249707731; Mon, 23 Mar 2026
+ 00:08:27 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20260322135346.3720577-1-chenhuacai@loongson.cn> <676198e5-78e4-ab41-e447-4a9d24655890@loongson.cn>
+In-Reply-To: <676198e5-78e4-ab41-e447-4a9d24655890@loongson.cn>
+From: Huacai Chen <chenhuacai@kernel.org>
+Date: Mon, 23 Mar 2026 15:08:24 +0800
+X-Gmail-Original-Message-ID: <CAAhV-H7rFtju3k=NYkAy6-O7f8U=CTNiryu2_Kr57pScjeH-yQ@mail.gmail.com>
+X-Gm-Features: AaiRm50Nqh46-k27BJ4OMuRIjKm603Sh-BaWcnA_C07nYZe0hy1pIZa-KVIqTeA
+Message-ID: <CAAhV-H7rFtju3k=NYkAy6-O7f8U=CTNiryu2_Kr57pScjeH-yQ@mail.gmail.com>
+Subject: Re: [PATCH 1/2] LoongArch: KVM: Make kvm_get_vcpu_by_cpuid() more robust
+To: Bibo Mao <maobibo@loongson.cn>
+Cc: Huacai Chen <chenhuacai@loongson.cn>, Paolo Bonzini <pbonzini@redhat.com>, 
+	Tianrui Zhao <zhaotianrui@loongson.cn>, kvm@vger.kernel.org, loongarch@lists.linux.dev, 
+	linux-kernel@vger.kernel.org, Xuerui Wang <kernel@xen0n.name>, 
+	Jiaxun Yang <jiaxun.yang@flygoat.com>, stable@vger.kernel.org, 
+	Aurelien Jarno <aurel32@debian.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-irqfd_resampler_shutdown() and kvm_irqfd_assign() both call
-synchronize_srcu_expedited() while holding kvm->irqfds.resampler_lock.
-This can deadlock when multiple irqfd workers run concurrently on the
-kvm-irqfd-cleanup workqueue during VM teardown or when VMs are rapidly
-created and destroyed:
+On Mon, Mar 23, 2026 at 11:16=E2=80=AFAM Bibo Mao <maobibo@loongson.cn> wro=
+te:
+>
+>
+>
+> On 2026/3/22 =E4=B8=8B=E5=8D=889:53, Huacai Chen wrote:
+> > kvm_get_vcpu_by_cpuid() takes a cpuid parameter whose type is int, so
+> > cpuid can be negative. Let kvm_get_vcpu_by_cpuid() return NULL for this
+> > case so as to make it more robust.
+> >
+> > This fix an out-of-bounds access to kvm_arch::phyid_map::phys_map[].
+> >
+> > Cc: <stable@vger.kernel.org>
+> > Fixes: 73516e9da512adc ("LoongArch: KVM: Add vcpu mapping from physical=
+ cpuid")
+> > Reported-by: Aurelien Jarno <aurel32@debian.org>
+> > Link: https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=3D1131431
+> > Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
+> > ---
+> >   arch/loongarch/kvm/vcpu.c | 3 +++
+> >   1 file changed, 3 insertions(+)
+> >
+> > diff --git a/arch/loongarch/kvm/vcpu.c b/arch/loongarch/kvm/vcpu.c
+> > index 8ffd50a470e6..831f381a8fd1 100644
+> > --- a/arch/loongarch/kvm/vcpu.c
+> > +++ b/arch/loongarch/kvm/vcpu.c
+> > @@ -588,6 +588,9 @@ struct kvm_vcpu *kvm_get_vcpu_by_cpuid(struct kvm *=
+kvm, int cpuid)
+> >   {
+> >       struct kvm_phyid_map *map;
+> >
+> > +     if (cpuid < 0)
+> > +             return NULL;
+> > +
+> >       if (cpuid >=3D KVM_MAX_PHYID)
+> >               return NULL;
+> >
+> >
+>
+> if (cpuid < 0 || cpuid >=3D KVM_MAX_PHYID)?
+> however both are OK for me.
+I use a similar style as kvm_get_vcpu_by_id(). :)
 
-  CPU A (mutex holder)               CPU B/C/D (mutex waiters)
-  irqfd_shutdown()                   irqfd_shutdown() / kvm_irqfd_assign()
-   irqfd_resampler_shutdown()         irqfd_resampler_shutdown()
-    mutex_lock(resampler_lock)  <---- mutex_lock(resampler_lock) //BLOCKED
-    list_del_rcu(...)                     ...blocked...
-    synchronize_srcu_expedited()      // Waiters block workqueue,
-      // waits for SRCU grace            preventing SRCU grace
-      // period which requires            period from completing
-      // workqueue progress          --- DEADLOCK ---
+But there is another warning which can't be solved by this series (and
+I doubt whether it can be solved unless revert 01a8e68396a6d51f5b).
+https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=3D1131431
 
-In irqfd_resampler_shutdown(), the synchronize_srcu_expedited() in
-the else branch is called directly within the mutex.  In the if-last
-branch, kvm_unregister_irq_ack_notifier() also calls
-synchronize_srcu_expedited() internally.  In kvm_irqfd_assign(),
-synchronize_srcu_expedited() is called after list_add_rcu() but
-before mutex_unlock().  All paths can block indefinitely because:
+Huacai
 
-  1. synchronize_srcu_expedited() waits for an SRCU grace period
-  2. SRCU grace period completion needs workqueue workers to run
-  3. The blocked mutex waiters occupy workqueue slots preventing progress
-  4. The mutex holder never releases the lock -> deadlock
-
-Fix both paths by releasing the mutex before calling
-synchronize_srcu_expedited().
-
-In irqfd_resampler_shutdown(), use a bool last flag to track whether
-this is the final irqfd for the resampler, then release the mutex
-before the SRCU synchronization.  This is safe because list_del_rcu()
-already removed the entries under the mutex, and
-kvm_unregister_irq_ack_notifier() uses its own locking (kvm->irq_lock).
-
-In kvm_irqfd_assign(), simply move synchronize_srcu_expedited() after
-mutex_unlock().  The SRCU grace period still completes before the irqfd
-goes live (the subsequent srcu_read_lock() ensures ordering).
-
-Signed-off-by: Sonam Sanju <sonam.sanju@intel.com>
----
-v2:
- - Fix the same deadlock in kvm_irqfd_assign() (Vineeth Pillai)
-
- virt/kvm/eventfd.c | 30 +++++++++++++++++++++++-------
- 1 file changed, 23 insertions(+), 7 deletions(-)
-
-diff --git a/virt/kvm/eventfd.c b/virt/kvm/eventfd.c
-index 0e8b8a2c5b79..8ae9f81f8bb3 100644
---- a/virt/kvm/eventfd.c
-+++ b/virt/kvm/eventfd.c
-@@ -93,6 +93,7 @@ irqfd_resampler_shutdown(struct kvm_kernel_irqfd *irqfd)
- {
- 	struct kvm_kernel_irqfd_resampler *resampler = irqfd->resampler;
- 	struct kvm *kvm = resampler->kvm;
-+	bool last = false;
- 
- 	mutex_lock(&kvm->irqfds.resampler_lock);
- 
-@@ -100,19 +101,27 @@ irqfd_resampler_shutdown(struct kvm_kernel_irqfd *irqfd)
- 
- 	if (list_empty(&resampler->list)) {
- 		list_del_rcu(&resampler->link);
-+		last = true;
-+	}
-+
-+	mutex_unlock(&kvm->irqfds.resampler_lock);
-+
-+	/*
-+	 * synchronize_srcu_expedited() (called explicitly below, or internally
-+	 * by kvm_unregister_irq_ack_notifier()) must not be invoked under
-+	 * resampler_lock.  Holding the mutex while waiting for an SRCU grace
-+	 * period creates a deadlock: the blocked mutex waiters occupy workqueue
-+	 * slots that the SRCU grace period machinery needs to make forward
-+	 * progress.
-+	 */
-+	if (last) {
- 		kvm_unregister_irq_ack_notifier(kvm, &resampler->notifier);
--		/*
--		 * synchronize_srcu_expedited(&kvm->irq_srcu) already called
--		 * in kvm_unregister_irq_ack_notifier().
--		 */
- 		kvm_set_irq(kvm, KVM_IRQFD_RESAMPLE_IRQ_SOURCE_ID,
- 			    resampler->notifier.gsi, 0, false);
- 		kfree(resampler);
- 	} else {
- 		synchronize_srcu_expedited(&kvm->irq_srcu);
- 	}
--
--	mutex_unlock(&kvm->irqfds.resampler_lock);
- }
- 
- /*
-@@ -450,9 +459,16 @@ kvm_irqfd_assign(struct kvm *kvm, struct kvm_irqfd *args)
- 		}
- 
- 		list_add_rcu(&irqfd->resampler_link, &irqfd->resampler->list);
--		synchronize_srcu_expedited(&kvm->irq_srcu);
- 
- 		mutex_unlock(&kvm->irqfds.resampler_lock);
-+
-+		/*
-+		 * Ensure the resampler_link is SRCU-visible before the irqfd
-+		 * itself goes live.  Moving synchronize_srcu_expedited() outside
-+		 * the resampler_lock avoids deadlock with shutdown workers waiting
-+		 * for the mutex while SRCU waits for workqueue progress.
-+		 */
-+		synchronize_srcu_expedited(&kvm->irq_srcu);
- 	}
- 
- 	/*
--- 
-2.34.1
-
+>
+> Reviewed-by: Bibo Mao <maobibo@loongson.cn>
+>
