@@ -1,342 +1,94 @@
-Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ED9A23B38BF
-	for <kvm@vger.kernel.org>; Mon, 23 Mar 2026 14:00:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=13.77.154.182
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 04E7F3AB295;
+	Mon, 23 Mar 2026 14:08:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774274419; cv=none; b=nPwRCr/H8NC25pFeSXwBzPR6EUwBoLW0ne96Zq8uyjTigurn/jCoumR6+BH49pWJK6GFE2uhB0jDkpt16UKLgWYb4QG0Yd8QQl26OFHbEZ7ctGvEgtbGb8+7/NA7gt4Out3UQwibLnw/dBcEV0l5nNs5LRHmremdEGQI5a45NoY=
+	t=1774274934; cv=none; b=ZlYKR1By2/qcN3+98Uy5mY2D+41dzXNDrE1iS65T9WlcPZ3mBkKmzfflNyUlW/ZuYj9B8AkrmPnXaXSW+6PFdJO/YyTK/eRhl5p88ko01H0Ty55dnTU1PWcUle8LpfIY/yahHju+C+3G7heQno4xoopGaDPW5Qnsikj0A8FG+yQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774274419; c=relaxed/simple;
-	bh=f6PtKyitq3mQy9i6w15lnvH4V4INVg2gUt/Am89kPp8=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=SmQ1TzUwWYimXYSWhUoJhENsdU5p0Z6RSEj7uDcTR4odRJZ2pIyfYc4g7W6WCWLdEFs+dsBIck4Wqy8hab2lHvoZcsiESIywEx2pzfy3rX7gMV1FErefgIZB0IDLcLyAtl2Jyyw2rCDUQIUnTfEf0R3zNlzdnizcU6s1LudTk9Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com; spf=pass smtp.mailfrom=linux.microsoft.com; dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b=RzbTvFBn; arc=none smtp.client-ip=13.77.154.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.microsoft.com
+	s=arc-20240116; t=1774274934; c=relaxed/simple;
+	bh=ibUEYe4GutvPEuyapGFe2ws3ChvH52UKKu92kP5Juwg=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=lVexq6TH6elWPjwyxXnxqP86hHwxSe70Xozu34cyaz2VqrZxIKRsiKiHRDahTej6hzRu7MBbpM1S0xJlkHF3q7apW3AMZMb3SUy31WHiVFeyX2obw7kg3X4ydvAHwnV7+yoFa1YKVOH8CawoHE5sn6uCe8LPl2/4KegvodVOiDA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YXO0PCmw; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b="RzbTvFBn"
-Received: from DESKTOP-TUU1E5L.localdomain (unknown [167.220.208.76])
-	by linux.microsoft.com (Postfix) with ESMTPSA id B723320B6F0C;
-	Mon, 23 Mar 2026 07:00:14 -0700 (PDT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com B723320B6F0C
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
-	s=default; t=1774274417;
-	bh=ZOKMgpZvx3abEQdJCz++yqLR/8YcM3C1DO/6gvmwcn8=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RzbTvFBnANB0PBLvvjyPiezmuOZ8V87zlr4HkR+zgBsOkUCO+4NSdoFLwNOnhlyd9
-	 JukQlPZtRvXBTWcxe3sxvaIxynSBnT7P2ehejkdWif5w2PYn3Rq1qDQFXG6EKU+WHf
-	 pwyw8Jj0V7csMTmyUH+AmQ8fCE2lCEGWIrUtbuyA=
-From: Magnus Kulke <magnuskulke@linux.microsoft.com>
-To: qemu-devel@nongnu.org
-Cc: kvm@vger.kernel.org,
-	Wei Liu <liuwe@microsoft.com>,
-	Richard Henderson <richard.henderson@linaro.org>,
-	Marcelo Tosatti <mtosatti@redhat.com>,
-	Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
-	Wei Liu <wei.liu@kernel.org>,
-	Alex Williamson <alex@shazbot.org>,
-	Paolo Bonzini <pbonzini@redhat.com>,
-	Zhao Liu <zhao1.liu@intel.com>,
-	=?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
-	=?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>,
-	Magnus Kulke <magnuskulke@microsoft.com>,
-	Magnus Kulke <magnuskulke@linux.microsoft.com>,
-	"Michael S. Tsirkin" <mst@redhat.com>
-Subject: [RFC 32/32] accel/mshv: enable dirty page tracking
-Date: Mon, 23 Mar 2026 14:58:12 +0100
-Message-Id: <20260323135812.383509-33-magnuskulke@linux.microsoft.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20260323135812.383509-1-magnuskulke@linux.microsoft.com>
-References: <20260323135812.383509-1-magnuskulke@linux.microsoft.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YXO0PCmw"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 316AEC2BCB1;
+	Mon, 23 Mar 2026 14:08:51 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1774274933;
+	bh=ibUEYe4GutvPEuyapGFe2ws3ChvH52UKKu92kP5Juwg=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=YXO0PCmwrRlPmNBfdqj+2xY1tZ8lfmetGhg534KH/K5FERePA+ZTQGECkMUmKsePd
+	 KfSbiLUlfWmtRkU0Oekn2bqZavw3y9uvwwqwaiW5Qlj9u+euHwMV/AQT1yJbfZ9lFv
+	 tgeGj9D+RcLHfJnX2mnMwP41/AxcYi/SDEr878+iziQff9Wvi+L5XJ3GFcdfzRSuGd
+	 e4maIyyjnFFISi7jL2BFppVjuidaQeZJ1amNUNtHuaiccZnpIxawfhwn6sLdMe7sSo
+	 28EQRgmvkwKBy1ZSwPV8tIjvDfow/lP6RcGPrKDsfP6jwFEQPjStc1ZeY7YEJEat5g
+	 /ddfhR4bHEpnw==
+Date: Mon, 23 Mar 2026 14:08:48 +0000
+From: Mark Brown <broonie@kernel.org>
+To: Marc Zyngier <maz@kernel.org>
+Cc: Sascha Bischoff <Sascha.Bischoff@arm.com>,
+	"linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>,
+	"kvmarm@lists.linux.dev" <kvmarm@lists.linux.dev>,
+	"kvm@vger.kernel.org" <kvm@vger.kernel.org>, nd <nd@arm.com>,
+	"oliver.upton@linux.dev" <oliver.upton@linux.dev>,
+	Joey Gouly <Joey.Gouly@arm.com>,
+	Suzuki Poulose <Suzuki.Poulose@arm.com>,
+	"yuzenghui@huawei.com" <yuzenghui@huawei.com>,
+	"peter.maydell@linaro.org" <peter.maydell@linaro.org>,
+	"lpieralisi@kernel.org" <lpieralisi@kernel.org>,
+	Timothy Hayes <Timothy.Hayes@arm.com>,
+	"jonathan.cameron@huawei.com" <jonathan.cameron@huawei.com>
+Subject: Re: [PATCH v7 12/41] KVM: arm64: gic-v5: Sanitize
+ ID_AA64PFR2_EL1.GCIE
+Message-ID: <aa0085c6-6b5c-45ed-91af-55fc68939fe9@sirena.org.uk>
+References: <20260319154937.3619520-1-sascha.bischoff@arm.com>
+ <20260319154937.3619520-13-sascha.bischoff@arm.com>
+ <3be4971e-31a4-4033-9583-88d7fc96104f@sirena.org.uk>
+ <86y0ji4pu5.wl-maz@kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="vd+FgqXVSRBWfKWZ"
+Content-Disposition: inline
+In-Reply-To: <86y0ji4pu5.wl-maz@kernel.org>
+X-Cookie: Avoid gunfire in the bathroom tonight.
 
-This change introduces the functions required to perform dirty page
-tracking to speed up migrations. We are using the sync, global_start,
-and global_stop hooks.
 
-The sync is implemented in batches.
+--vd+FgqXVSRBWfKWZ
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-Before we can disable the dirty page tracking we have to set all dirty bits.
+On Mon, Mar 23, 2026 at 01:50:42PM +0000, Marc Zyngier wrote:
+> Mark Brown <broonie@kernel.org> wrote:
 
-Signed-off-by: Magnus Kulke <magnuskulke@linux.microsoft.com>
----
- accel/mshv/mem.c          | 211 ++++++++++++++++++++++++++++++++++++++
- accel/mshv/mshv-all.c     |   3 +
- include/system/mshv_int.h |   5 +
- 3 files changed, 219 insertions(+)
+> > I'm seeing a regression in -next in set_id_regs on a range of platforms,
+> > including physical ones like the Toradex Verdin AM62 and i.MX8MP-EVK,
+> > with a GICv3:
 
-diff --git a/accel/mshv/mem.c b/accel/mshv/mem.c
-index e55c38d4db..820f87ef0c 100644
---- a/accel/mshv/mem.c
-+++ b/accel/mshv/mem.c
-@@ -12,10 +12,13 @@
- 
- #include "qemu/osdep.h"
- #include "qemu/error-report.h"
-+#include "qapi/error.h"
- #include "linux/mshv.h"
- #include "system/address-spaces.h"
- #include "system/mshv.h"
- #include "system/mshv_int.h"
-+#include "hw/hyperv/hvhdk_mini.h"
-+#include "system/physmem.h"
- #include "exec/memattrs.h"
- #include <sys/ioctl.h>
- #include "trace.h"
-@@ -211,3 +214,211 @@ void mshv_set_phys_mem(MshvMemoryListener *mml, MemoryRegionSection *section,
-         abort();
-     }
- }
-+
-+static int enable_dirty_page_tracking(int vm_fd)
-+{
-+    int ret;
-+    struct hv_input_set_partition_property in = {0};
-+    struct mshv_root_hvcall args = {0};
-+
-+    in.property_code = HV_PARTITION_PROPERTY_GPA_PAGE_ACCESS_TRACKING;
-+    in.property_value = 1;
-+
-+    args.code = HVCALL_SET_PARTITION_PROPERTY;
-+    args.in_sz = sizeof(in);
-+    args.in_ptr = (uint64_t)&in;
-+
-+    ret = mshv_hvcall(vm_fd, &args);
-+    if (ret < 0) {
-+        error_report("Failed to enable dirty page tracking: %s",
-+                     strerror(errno));
-+        return -1;
-+    }
-+
-+    return 0;
-+}
-+
-+/*
-+ * Retrieve dirty page bitmap for a GPA range, clearing the dirty bits
-+ * atomically. Large ranges are handled in batches.
-+ */
-+static int get_dirty_log(int vm_fd, uint64_t base_pfn, uint64_t page_count,
-+                         unsigned long *bitmap, size_t bitmap_size)
-+{
-+    uint64_t batch, bitmap_offset, completed = 0;
-+    struct mshv_gpap_access_bitmap args = {0};
-+    int ret;
-+
-+    QEMU_BUILD_BUG_ON(MSHV_DIRTY_PAGES_BATCH_SIZE % BITS_PER_LONG != 0);
-+    assert(bitmap_size >= ROUND_UP(page_count, BITS_PER_LONG) / 8);
-+
-+    while (completed < page_count) {
-+        batch = MIN(MSHV_DIRTY_PAGES_BATCH_SIZE, page_count - completed);
-+        bitmap_offset = completed / BITS_PER_LONG;
-+
-+        args.access_type = MSHV_GPAP_ACCESS_TYPE_DIRTY;
-+        args.access_op   = MSHV_GPAP_ACCESS_OP_CLEAR;
-+        args.page_count  = batch;
-+        args.gpap_base   = base_pfn + completed;
-+        args.bitmap_ptr  = (uint64_t)(bitmap + bitmap_offset);
-+
-+        ret = ioctl(vm_fd, MSHV_GET_GPAP_ACCESS_BITMAP, &args);
-+        if (ret < 0) {
-+            error_report("Failed to get dirty log (base_pfn=0x%" PRIx64
-+                         " batch=%" PRIu64 "): %s",
-+                         base_pfn + completed, batch, strerror(errno));
-+            return -1;
-+        }
-+        completed += batch;
-+    }
-+
-+    return 0;
-+}
-+
-+bool mshv_log_global_start(MemoryListener *listener, Error **errp)
-+{
-+    int ret;
-+
-+    ret = enable_dirty_page_tracking(mshv_state->vm);
-+    if (ret < 0) {
-+        error_setg_errno(errp, -ret, "Failed to enable dirty page tracking");
-+        return false;
-+    }
-+    return true;
-+}
-+
-+static int disable_dirty_page_tracking(int vm_fd)
-+{
-+    int ret;
-+    struct hv_input_set_partition_property in = {0};
-+    struct mshv_root_hvcall args = {0};
-+
-+    in.property_code = HV_PARTITION_PROPERTY_GPA_PAGE_ACCESS_TRACKING;
-+    in.property_value = 0;
-+
-+    args.code = HVCALL_SET_PARTITION_PROPERTY;
-+    args.in_sz = sizeof(in);
-+    args.in_ptr = (uint64_t)&in;
-+
-+    ret = mshv_hvcall(vm_fd, &args);
-+    if (ret < 0) {
-+        error_report("Failed to disable dirty page tracking: %s",
-+                     strerror(errno));
-+        return -1;
-+    }
-+
-+    return 0;
-+}
-+
-+static int set_dirty_pages(int vm_fd, uint64_t base_pfn, uint64_t page_count)
-+{
-+    uint64_t batch, completed = 0;
-+    unsigned long bitmap[MSHV_DIRTY_PAGES_BATCH_SIZE / BITS_PER_LONG];
-+    struct mshv_gpap_access_bitmap args = {0};
-+    int ret;
-+
-+    while (completed < page_count) {
-+        batch = MIN(MSHV_DIRTY_PAGES_BATCH_SIZE, page_count - completed);
-+
-+        args.access_type = MSHV_GPAP_ACCESS_TYPE_DIRTY;
-+        args.access_op   = MSHV_GPAP_ACCESS_OP_SET;
-+        args.page_count  = batch;
-+        args.gpap_base   = base_pfn + completed;
-+        args.bitmap_ptr  = (uint64_t)bitmap;
-+
-+        ret = ioctl(vm_fd, MSHV_GET_GPAP_ACCESS_BITMAP, &args);
-+        if (ret < 0) {
-+            error_report("Failed to set dirty pages (base_pfn=0x%" PRIx64
-+                         " batch=%" PRIu64 "): %s",
-+                         base_pfn + completed, batch, strerror(errno));
-+            return -1;
-+        }
-+        completed += batch;
-+    }
-+
-+    return 0;
-+}
-+
-+static bool set_dirty_bits_cb(Int128 start, Int128 len, const MemoryRegion *mr,
-+                              hwaddr offset_in_region, void *opaque)
-+{
-+    int ret, *errp = opaque;
-+    hwaddr gpa, size;
-+    uint64_t page_count, base_pfn;
-+
-+    gpa = int128_get64(start);
-+    size = int128_get64(len);
-+    page_count = size >> MSHV_PAGE_SHIFT;
-+    base_pfn = gpa >> MSHV_PAGE_SHIFT;
-+
-+    if (!mr->ram || mr->readonly) {
-+        return false;
-+    }
-+
-+    if (page_count == 0) {
-+        return false;
-+    }
-+
-+    ret = set_dirty_pages(mshv_state->vm, base_pfn, page_count);
-+
-+    /* true aborts the iteration, which is what we want if there's an error */
-+    if (ret < 0) {
-+        *errp = ret;
-+        return true;
-+    }
-+
-+    return false;
-+}
-+
-+void mshv_log_global_stop(MemoryListener *listener)
-+{
-+    int err = 0;
-+    /* MSHV requires all dirty bits to be set before disabling tracking. */
-+    FlatView *fv = address_space_to_flatview(&address_space_memory);
-+    flatview_for_each_range(fv, set_dirty_bits_cb, &err);
-+
-+    if (err < 0) {
-+        error_report("Failed to set dirty bits before disabling tracking");
-+    }
-+
-+    disable_dirty_page_tracking(mshv_state->vm);
-+}
-+
-+void mshv_log_sync(MemoryListener *listener, MemoryRegionSection *section)
-+{
-+    hwaddr size, start_addr, mr_offset;
-+    uint64_t page_count, base_pfn;
-+    size_t bitmap_size;
-+    unsigned long *bitmap;
-+    ram_addr_t ram_addr;
-+    int ret;
-+    MemoryRegion *mr = section->mr;
-+
-+    if (!memory_region_is_ram(mr) || memory_region_is_rom(mr)) {
-+        return;
-+    }
-+
-+    size = align_section(section, &start_addr);
-+    if (!size) {
-+        return;
-+    }
-+
-+    page_count = size >> MSHV_PAGE_SHIFT;
-+    base_pfn = start_addr >> MSHV_PAGE_SHIFT;
-+    bitmap_size = ROUND_UP(page_count, BITS_PER_LONG) / 8;
-+    bitmap = g_malloc0(bitmap_size);
-+
-+    ret = get_dirty_log(mshv_state->vm, base_pfn, page_count, bitmap,
-+                        bitmap_size);
-+    if (ret < 0) {
-+        g_free(bitmap);
-+        return;
-+    }
-+
-+    mr_offset = section->offset_within_region + start_addr -
-+                section->offset_within_address_space;
-+    ram_addr = memory_region_get_ram_addr(mr) + mr_offset;
-+
-+    physical_memory_set_dirty_lebitmap(bitmap, ram_addr, page_count);
-+    g_free(bitmap);
-+}
-diff --git a/accel/mshv/mshv-all.c b/accel/mshv/mshv-all.c
-index 45fe1ef468..87ed785302 100644
---- a/accel/mshv/mshv-all.c
-+++ b/accel/mshv/mshv-all.c
-@@ -546,6 +546,9 @@ static MemoryListener mshv_memory_listener = {
-     .region_del = mem_region_del,
-     .eventfd_add = mem_ioeventfd_add,
-     .eventfd_del = mem_ioeventfd_del,
-+    .log_sync = mshv_log_sync,
-+    .log_global_start = mshv_log_global_start,
-+    .log_global_stop = mshv_log_global_stop,
- };
- 
- static MemoryListener mshv_io_listener = {
-diff --git a/include/system/mshv_int.h b/include/system/mshv_int.h
-index c24efc8675..ddbdd76076 100644
---- a/include/system/mshv_int.h
-+++ b/include/system/mshv_int.h
-@@ -31,6 +31,8 @@ struct mshv_get_set_vp_state;
- #define MSHV_HV_INTERRUPTION_TYPE_PRIV_SW_EXC 5
- #define MSHV_HV_INTERRUPTION_TYPE_SW_EXC      6
- 
-+#define MSHV_DIRTY_PAGES_BATCH_SIZE 0x10000
-+
- typedef struct hyperv_message hv_message;
- 
- typedef struct MshvHvCallArgs {
-@@ -128,6 +130,9 @@ int mshv_guest_mem_write(uint64_t gpa, const uint8_t *data, uintptr_t size,
-                          bool is_secure_mode);
- void mshv_set_phys_mem(MshvMemoryListener *mml, MemoryRegionSection *section,
-                        bool add);
-+void mshv_log_sync(MemoryListener *listener, MemoryRegionSection *section);
-+bool mshv_log_global_start(MemoryListener *listener, Error **errp);
-+void mshv_log_global_stop(MemoryListener *listener);
- 
- /* msr */
- int mshv_init_msrs(const CPUState *cpu);
--- 
-2.34.1
+> What CPUs do these machines have?
 
+The physical boards are all running shiny new A53s.
+
+--vd+FgqXVSRBWfKWZ
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmnBSW8ACgkQJNaLcl1U
+h9DZtQf+OZCVNVbOqhkxeUB5zWWSOVy3pZGFgtFTYQydWn2Z6+S6Nyzwc4TPcN1u
+SoeQ/qHxWFQnl84KR3Ponu6jdImw/2WYjmhHCe3vhg6cFmxXbILMahCjTf14wQs6
+j4iwRDBaXHuh0+8D553n0BMKY0CmXsmJH3Fvb0lD+74m+HvxtgxFBR8FDhQTFD7R
+4w9hUlxiPpYT3iyRf0oUZeZi9UTl7xXizHN/uiVxLrUdFU7lzlCkqncX/c4IB48l
+lSdUd9MiwXY7IQYCeb+qD4F7X+BpSAk0dEBOn0YxH/8xa37HDRoiSDF1q+ye3Uz7
+6X4yALlwL5PlkjlzgEGsel1UaD9T6g==
+=7vYS
+-----END PGP SIGNATURE-----
+
+--vd+FgqXVSRBWfKWZ--
