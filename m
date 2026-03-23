@@ -1,110 +1,145 @@
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DBC6C2AEE4;
-	Mon, 23 Mar 2026 10:49:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2FD97390988;
+	Mon, 23 Mar 2026 11:04:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774262986; cv=none; b=uXtJtEuxuER2iC9omg5VpTLknWIfvGL4UZ3doqYUG5ifHfE9rOtoZKnZyvd4Rs21z4DoFJh0tNlf3IE0ktT7ncnehX3iQZ90Zq4FlVfUYFO9sD8bakTvhuwAHZrTv+lHff7eb2szcZFKoQxs0qtT3jXWbPMqIG4vZtpYHbIqKho=
+	t=1774263862; cv=none; b=eWlutesyjPIco8ZzPZvRvp5QsSmShRXRmGy2ioILuCrPTMoGPw+KyB0elVr1b277CkQQfC4NvzYOi5DEp/z3XE0hgeKnJJUvshrmcwpf307oI4wyDIB+512BOFnbqOoQU/ZKxdGHJCu5QfL1W1f0qzMycNiydEETZ3DpGlWAT7A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774262986; c=relaxed/simple;
-	bh=plaEK7F/BIXo3UH40704G6KQ+iux/fnNWamloR0FWsI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=sXDJXMi9PZRvLNKJIBsbpSrhbNCKfGs5CxggGkuVISD4DG6MQNTtDdwzDQyPA6/2B5+1CLYmCx4ZaZgak3M9cfi6cPNgCS1y45ks5+63amoNfHfsIhhaemO3UBl7zqKrNrRhflCMLASfj78GQuf0JD38SUj20b0oSI9ycmemg60=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=o6yWFken; arc=none smtp.client-ip=148.163.158.5
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+	s=arc-20240116; t=1774263862; c=relaxed/simple;
+	bh=cZpSLIsH4XFvNpI5LDZxz95hRu5Out/Dx+WnDsOPv7Q=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=WddwPJs7RxqRPs2gFMVsWZCMsmSO6lN4gFQADHUAUiuXIKqK3ewTbKO4AinVQfd8N5iRk1sIznCQws348KNCRvGsYl8g4d+wvYRvj9RqTS4Qim08j9W9YZl2FjCstblVuebfd3BDFFYTMx1VEcy9pVaqHc5Hh3W+eYkbajkCq8g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=O8uzlx4d; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="o6yWFken"
-Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 62MLt6WT488451;
-	Mon, 23 Mar 2026 10:49:42 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-type:date:from:in-reply-to:message-id:mime-version
-	:references:subject:to; s=pp1; bh=iNyOIrF5wDIdb/oHPt5T4RT06Qsl24
-	pIQ7tj2EUPFqg=; b=o6yWFkenKX2+VmOuoXWjUZ26hdnOxE72uONc/gtpU88JTG
-	xrow+GUk3X+hkNeFR4axiDJSnekfECgQavCJ/f7UPi6pyv7g1dGvwjBuG+0UW425
-	1RCq7QazKdbkOOw/YE7ASPolGhcirZzcSe8WgRKgH4U1v0PGRgj2GgwvSXRUrwRS
-	kMGxcbUy2sd94lXr/vnyFCZBjX8MUGlg5rk927Y2dmFIEmTPLyHvJBUbEjOjawyb
-	y4tR8wtF01SaQlY5THHx0PEuTeOvo9U/U9zjj6ryjRTRvVuq9OyjNVZ96Rg2XouA
-	TPWX7fdP57BGtvkiKj6vboeY/qZCPg+nHO00Om2Q==
-Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4d1kume6dq-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 23 Mar 2026 10:49:41 +0000 (GMT)
-Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma23.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 62N7po4I026681;
-	Mon, 23 Mar 2026 10:49:41 GMT
-Received: from smtprelay02.fra02v.mail.ibm.com ([9.218.2.226])
-	by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4d275kmxf5-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 23 Mar 2026 10:49:41 +0000
-Received: from smtpav01.fra02v.mail.ibm.com (smtpav01.fra02v.mail.ibm.com [10.20.54.100])
-	by smtprelay02.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 62NAnbNw46006740
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 23 Mar 2026 10:49:37 GMT
-Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 32DA52004D;
-	Mon, 23 Mar 2026 10:49:37 +0000 (GMT)
-Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id AB05620043;
-	Mon, 23 Mar 2026 10:49:36 +0000 (GMT)
-Received: from osiris (unknown [9.111.67.16])
-	by smtpav01.fra02v.mail.ibm.com (Postfix) with ESMTPS;
-	Mon, 23 Mar 2026 10:49:36 +0000 (GMT)
-Date: Mon, 23 Mar 2026 11:49:35 +0100
-From: Steffen Eiden <seiden@linux.ibm.com>
-To: Claudio Imbrenda <imbrenda@linux.ibm.com>
-Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-s390@vger.kernel.org, borntraeger@de.ibm.com,
-        frankja@linux.ibm.com, nrb@linux.ibm.com, gra@linux.ibm.com,
-        schlameuss@linux.ibm.com, hca@linux.ibm.com, david@kernel.org
-Subject: Re: [PATCH v2 5/8] KVM: s390: vsie: Fix refcount overflow for shadow
- gmaps
-Message-ID: <20260323104935.66303-E-seiden@linux.ibm.com>
-References: <20260320161542.202913-1-imbrenda@linux.ibm.com>
- <20260320161542.202913-6-imbrenda@linux.ibm.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="O8uzlx4d"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B458EC4CEF7;
+	Mon, 23 Mar 2026 11:04:13 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1774263861;
+	bh=cZpSLIsH4XFvNpI5LDZxz95hRu5Out/Dx+WnDsOPv7Q=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=O8uzlx4dv+oYAEjjcSqdVpXYZ8B1iP9u6eefUS7KnBdO1jV1nDLkt8M4cv+flrJ4x
+	 JF7n9LdVHizBHwgYFeftNAhGfNvKisywSC2AaXUa41lyhkyqMUb8NppSToaU+zt0oA
+	 UAtjne/8nIy5mv0bKnjNILw1rFYh6TWOnXJddrcLMCseV0/5HUCRM4Jypn9BKiYQho
+	 iGxT3MH3lNx89NIH5zl8sSPrXHrzz9E9C/kMhCuZPS2bPCSZy0MuA6DTcYRzcfqsAT
+	 TdXdgeuNufG5FxoEffzcSDEbgMga4n7kdNwccYNXqRFy5B9qmW8CcaHnCjmD2sCqFS
+	 WZIMdntBTtMgw==
+Message-ID: <955fb2e9-b3f9-479a-806d-79877635816c@kernel.org>
+Date: Mon, 23 Mar 2026 12:04:12 +0100
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260320161542.202913-6-imbrenda@linux.ibm.com>
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: a16vKRFmG3spi2_pw-qn9QQiHLe0hUj5
-X-Proofpoint-ORIG-GUID: a16vKRFmG3spi2_pw-qn9QQiHLe0hUj5
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMzIzMDA4MyBTYWx0ZWRfX0y5iFchZSz3+
- gRybnv2nGn3cCGV2wrbher7DO/0yyz18A1LVmh1jVPJ2zukBw+0bBnMxY0apbEM+x/ORemLz/Gm
- wt0N695QF7OOJ8TO7mUH2yeI1nENN/UaFpHT3saKIbc9BYbBej3GJrXGbay4/mj2WrXfrCDmnJz
- AO6OJsvyDI9zN9uQTjTS3KDZrqQ0gzXscW7e7WFu4atH0FHlGG1V5bLwP5wY64iKtOUSk/ZmUja
- N2x0maTRfWaKOIBizRCkGuRn98Y5c2l1sy1aWTqCz7Pus45/7KfamBhmd37SSkQi5JRVYbPuiYl
- e4nfATCzuCc0GL/QNBOgRQscRy3knPDibOSu5N8TFPCe3Q0f4bIpf465E+oMnigv2pcB9mRwy2m
- qS0W8V6hIpwBIdSYW+cf3W9cbbeJVmEA5FIkjIsthjBVh9R62ls8lJnBeQ9rTUbk39QrgVqUdqy
- MPLWVIlsQmnNyqmi8Ew==
-X-Authority-Analysis: v=2.4 cv=KbXfcAYD c=1 sm=1 tr=0 ts=69c11ac5 cx=c_pps
- a=3Bg1Hr4SwmMryq2xdFQyZA==:117 a=3Bg1Hr4SwmMryq2xdFQyZA==:17
- a=kj9zAlcOel0A:10 a=Yq5XynenixoA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=RnoormkPH1_aCDwRdu11:22 a=RzCfie-kr_QcCd8fBx8p:22 a=VnNF1IyMAAAA:8
- a=S7tHkTOIyoP8fopN8bkA:9 a=CjuIK1q_8ugA:10
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
- definitions=2026-03-23_03,2026-03-20_02,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- suspectscore=0 impostorscore=0 malwarescore=0 adultscore=0 clxscore=1015
- priorityscore=1501 bulkscore=0 lowpriorityscore=0 phishscore=0 spamscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2603050001 definitions=main-2603230083
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v7 1/2] mm/mmu_gather: prepare to skip redundant sync IPIs
+To: Lance Yang <lance.yang@linux.dev>, akpm@linux-foundation.org
+Cc: peterz@infradead.org, dave.hansen@intel.com, dave.hansen@linux.intel.com,
+ ypodemsk@redhat.com, hughd@google.com, will@kernel.org,
+ aneesh.kumar@kernel.org, npiggin@gmail.com, tglx@linutronix.de,
+ mingo@redhat.com, bp@alien8.de, x86@kernel.org, hpa@zytor.com,
+ arnd@arndb.de, lorenzo.stoakes@oracle.com, ziy@nvidia.com,
+ baolin.wang@linux.alibaba.com, Liam.Howlett@oracle.com, npache@redhat.com,
+ ryan.roberts@arm.com, dev.jain@arm.com, baohua@kernel.org,
+ shy828301@gmail.com, riel@surriel.com, jannh@google.com, jgross@suse.com,
+ seanjc@google.com, pbonzini@redhat.com, boris.ostrovsky@oracle.com,
+ virtualization@lists.linux.dev, kvm@vger.kernel.org,
+ linux-arch@vger.kernel.org, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, ioworker0@gmail.com
+References: <20260309020711.20831-1-lance.yang@linux.dev>
+ <20260309020711.20831-2-lance.yang@linux.dev>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <20260309020711.20831-2-lance.yang@linux.dev>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Fri, Mar 20, 2026 at 05:15:39PM +0100, Claudio Imbrenda wrote:
-> In most cases gmap_put() was not called when it should have.
+On 3/9/26 03:07, Lance Yang wrote:
+> From: Lance Yang <lance.yang@linux.dev>
 > 
-> Add the missing gmap_put() in vsie_run().
+> When page table operations require synchronization with software/lockless
+> walkers, they call tlb_remove_table_sync_{one,rcu}() after flushing the
+> TLB (tlb->freed_tables or tlb->unshared_tables).
 > 
-> Signed-off-by: Claudio Imbrenda <imbrenda@linux.ibm.com>
-> Fixes: e38c884df921 ("KVM: s390: Switch to new gmap")
+> On architectures where the TLB flush already sends IPIs to all target CPUs,
+> the subsequent sync IPI broadcast is redundant. This is not only costly on
+> large systems where it disrupts all CPUs even for single-process page table
+> operations, but has also been reported to hurt RT workloads[1].
+> 
+> Introduce tlb_table_flush_implies_ipi_broadcast() to check if the prior TLB
+> flush already provided the necessary synchronization. When true, the sync
+> calls can early-return.
+> 
+> A few cases rely on this synchronization:
+> 
+> 1) hugetlb PMD unshare[2]: The problem is not the freeing but the reuse
+>    of the PMD table for other purposes in the last remaining user after
+>    unsharing.
+> 
+> 2) khugepaged collapse[3]: Ensure no concurrent GUP-fast before collapsing
+>    and (possibly) freeing the page table / re-depositing it.
+> 
+> Currently always returns false (no behavior change). The follow-up patch
+> will enable the optimization for x86.
+> 
+> [1] https://lore.kernel.org/linux-mm/1b27a3fa-359a-43d0-bdeb-c31341749367@kernel.org/
+> [2] https://lore.kernel.org/linux-mm/6a364356-5fea-4a6c-b959-ba3b22ce9c88@kernel.org/
+> [3] https://lore.kernel.org/linux-mm/2cb4503d-3a3f-4f6c-8038-7b3d1c74b3c2@kernel.org/
+> 
+> Suggested-by: David Hildenbrand (Arm) <david@kernel.org>
+> Signed-off-by: Lance Yang <lance.yang@linux.dev>
+> ---
 
-Reviewed-by: Steffen Eiden <seiden@linux.ibm.com>
+Acked-by: David Hildenbrand (Arm) <david@kernel.org>
 
+-- 
+Cheers,
+
+David
