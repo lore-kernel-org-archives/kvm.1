@@ -1,30 +1,30 @@
 Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4F7D43AE70E
-	for <kvm@vger.kernel.org>; Mon, 23 Mar 2026 13:59:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A600B3B27EF
+	for <kvm@vger.kernel.org>; Mon, 23 Mar 2026 13:59:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=13.77.154.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774274389; cv=none; b=XslY0/jE2we/269M+L9A5cI4cnS1xU7CADOZpfxpTRWRRVP8USmV+/ApPzPGApjr/mr+ZZtkMCP+/kJ0fyEZogW6HZIAmmzeSZYEZc8IhLAFIWMgP6qVgZBr1IPSMvmryYxsv4EPn8uz6WCaShv9NMI3N/JOoGclWZkqN8EPNEA=
+	t=1774274392; cv=none; b=rp3982WXzBsMW4gx03Oxfx7EKlKohENDLRSHaOFHCSlmRsXXwwJOUN2/ETEEPST9mp+Yjz85G7L76KaLhpsY25k0rnQOMRhrMQnOwTTQ1jt9kV9mhMfUllU8ncKiQADZolpef9boPYJksPJea6mXVKB9Uo5ZuU+PUIrSM0VDpBI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774274389; c=relaxed/simple;
-	bh=K+oaLrsW51i9112q3bzzdvW9E40CnbVsgFO4CHM9NXA=;
+	s=arc-20240116; t=1774274392; c=relaxed/simple;
+	bh=VfT8FD77JJqyUIE1zIozwuUOhuY9LR57vHkBPt8FBok=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=VWUjMyyQqZfd3qx4pulNSjzz0MG4zt96gOIJKfq/u51g0qo2JGHYerq04aF8hwbIvvhVXkaRkctX+JUvoPFdh3yD2wCTtAk+nMOM0GV5AKEh8Zzd6qO4fML0mhuIWF+chOdvRiyT48vsoa02Is6Fc9nOkW7s2fuDxzo6hYoGk1Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com; spf=pass smtp.mailfrom=linux.microsoft.com; dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b=MQP4it7X; arc=none smtp.client-ip=13.77.154.182
+	 MIME-Version; b=Kg56B0pMU8YzKis838SYVaoJ+HYLLmKG2W72h8BsCW3Jhkf/nZFFgiSLwQceAPkK6+WM5R/amN46cnX5Ltc28C/KmOki5pTHKzbvicpZwL0coeiqr2icXAkyEBDrCt5a1zRfkaW4tXiBIcyJNnoVcna2lNohPAzlKHVFsCu5mp0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com; spf=pass smtp.mailfrom=linux.microsoft.com; dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b=dyeboFIJ; arc=none smtp.client-ip=13.77.154.182
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.microsoft.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b="MQP4it7X"
+	dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b="dyeboFIJ"
 Received: from DESKTOP-TUU1E5L.localdomain (unknown [167.220.208.76])
-	by linux.microsoft.com (Postfix) with ESMTPSA id 263DA20B6F21;
-	Mon, 23 Mar 2026 06:59:44 -0700 (PDT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 263DA20B6F21
+	by linux.microsoft.com (Postfix) with ESMTPSA id AA00220B6F15;
+	Mon, 23 Mar 2026 06:59:48 -0700 (PDT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com AA00220B6F15
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
-	s=default; t=1774274388;
-	bh=z5pOF/uzO+7evYgTyZgR0PS2QiZuE42WF+kRFN/Qu/4=;
+	s=default; t=1774274391;
+	bh=/aJjVtv2N2HvKWYe9sJ5DIN7GG5pVPTEVn5pz5+VPjQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MQP4it7X9kjqgaHAjWwpRdEqThg3YMJoToaoQvka51y29N8Ugk20eIlhJC5YTwPIM
-	 bxHknKSLeeuYASMTxJ1IgWzKolt5GcpPcNmBBgaTDQbGAfckyodyuJytvoBtHziXvn
-	 wbTt6GXiLKzkF9TPxqm1MJpyyEZXat0HH774cp/g=
+	b=dyeboFIJ2FdETlp6CR65ZWMlL/58/lM9WsOgz8YXa8ZdGCT4GFFQbhdVxXhGh3Zc4
+	 xuNLnzXedjOIEom/ui2tP4fdkQwBPdtgkbgn+ZN/lKv10UleqbkEO3i563jq2ln8o0
+	 gZLNOK8aRjvC8y4hsQ6pgG/8pRxphI88VyPINcHw=
 From: Magnus Kulke <magnuskulke@linux.microsoft.com>
 To: qemu-devel@nongnu.org
 Cc: kvm@vger.kernel.org,
@@ -41,9 +41,9 @@ Cc: kvm@vger.kernel.org,
 	Magnus Kulke <magnuskulke@microsoft.com>,
 	Magnus Kulke <magnuskulke@linux.microsoft.com>,
 	"Michael S. Tsirkin" <mst@redhat.com>
-Subject: [RFC 24/32] accel/mshv: introduce SaveVMHandler
-Date: Mon, 23 Mar 2026 14:58:04 +0100
-Message-Id: <20260323135812.383509-25-magnuskulke@linux.microsoft.com>
+Subject: [RFC 25/32] accel/mshv: write synthetic MSRs after migration
+Date: Mon, 23 Mar 2026 14:58:05 +0100
+Message-Id: <20260323135812.383509-26-magnuskulke@linux.microsoft.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20260323135812.383509-1-magnuskulke@linux.microsoft.com>
 References: <20260323135812.383509-1-magnuskulke@linux.microsoft.com>
@@ -55,132 +55,87 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-This mechanism is used to handle more imperative partition-wide steps
-that have to be taken as part of a migration routine.
-
-Currently it's a skeleton that will just pause/resume the partition as
-part of a migration. It will later be extended with more specific steps
-like reference time and hypercall pages.
+Write partition-wide synthetic MSRs. This ensures the hypercall page and
+SynIC facilities are set up before vCPUs attempt to use it.
 
 Signed-off-by: Magnus Kulke <magnuskulke@linux.microsoft.com>
 ---
- accel/mshv/mshv-all.c | 75 +++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 75 insertions(+)
+ accel/mshv/mshv-all.c          |  7 +++++++
+ include/hw/hyperv/hvgdk_mini.h |  3 +++
+ include/system/mshv_int.h      |  1 +
+ target/i386/mshv/mshv-cpu.c    | 15 +++++++++++++++
+ 4 files changed, 26 insertions(+)
 
 diff --git a/accel/mshv/mshv-all.c b/accel/mshv/mshv-all.c
-index d1bf148bb8..365288b901 100644
+index 365288b901..22e838ede6 100644
 --- a/accel/mshv/mshv-all.c
 +++ b/accel/mshv/mshv-all.c
-@@ -39,6 +39,8 @@
- #include "system/mshv.h"
- #include "system/mshv_int.h"
- #include "system/reset.h"
-+#include "migration/qemu-file-types.h"
-+#include "migration/register.h"
- #include "trace.h"
- #include <err.h>
- #include <sys/ioctl.h>
-@@ -47,6 +49,9 @@ bool mshv_allowed;
- 
- MshvState *mshv_state;
- 
-+static int pause_vm(int vm_fd);
-+static int resume_vm(int vm_fd);
-+
- static int init_mshv(int *mshv_fd)
+@@ -137,6 +137,13 @@ static int mshv_load_setup(QEMUFile *f, void *opaque, Error **errp)
+ static int mshv_load_cleanup(void *opaque)
  {
-     int fd = open("/dev/mshv", O_RDWR | O_CLOEXEC);
-@@ -80,6 +85,64 @@ static int set_time_freeze(int vm_fd, int freeze)
-     return 0;
- }
- 
-+static void mshv_save_state(QEMUFile *f, void *opaque)
-+{
-+    return;
-+}
-+
-+static int mshv_load_state(QEMUFile *f, void *opaque, int version_id)
-+{
-+    return 0;
-+}
-+
-+static int mshv_save_prepare(void *opaque, Error **errp)
-+{
-+    MshvState *s = opaque;
+     MshvState *s = opaque;
 +    int ret;
 +
-+    ret = pause_vm(s->vm);
++    ret = mshv_arch_set_partition_msrs(first_cpu);
 +    if (ret < 0) {
-+        error_setg(errp, "Failed to pause VM for migration");
++        error_report("Failed to set partition MSRs: %s", strerror(-ret));
 +        return -1;
 +    }
+ 
+     resume_vm(s->vm);
+ 
+diff --git a/include/hw/hyperv/hvgdk_mini.h b/include/hw/hyperv/hvgdk_mini.h
+index a47bc6212e..00daac0431 100644
+--- a/include/hw/hyperv/hvgdk_mini.h
++++ b/include/hw/hyperv/hvgdk_mini.h
+@@ -23,6 +23,9 @@
+ #define HV_X64_MSR_APIC_FREQUENCY   0x40000023
+ 
+ typedef enum hv_register_name {
++    /* VP Management Registers */
++    HV_REGISTER_INTERNAL_ACTIVITY_STATE = 0x00000004,
 +
-+    return 0;
-+}
-+
-+static void mshv_save_cleanup(void *opaque)
-+{
-+    MshvState *s = opaque;
-+    int ret;
-+
-+    ret = resume_vm(s->vm);
-+    if (ret < 0) {
-+        error_report("Failed to resme VM after  migration");
-+    }
-+}
-+
-+static int mshv_load_setup(QEMUFile *f, void *opaque, Error **errp)
-+{
-+    MshvState *s = opaque;
-+    int ret;
-+
-+    ret = pause_vm(s->vm);
-+    if (ret < 0) {
-+        error_setg(errp, "Failed to pause VM for migration restore");
-+        return -1;
-+    }
-+
-+    return 0;
-+}
-+
-+static int mshv_load_cleanup(void *opaque)
-+{
-+    MshvState *s = opaque;
-+
-+    resume_vm(s->vm);
-+
-+    return 0;
-+}
-+
- static int pause_vm(int vm_fd)
- {
-     int ret;
-@@ -454,6 +517,15 @@ static int mshv_init_vcpu(CPUState *cpu)
+     /* Pending Interruption Register */
+     HV_REGISTER_PENDING_INTERRUPTION = 0x00010002,
+ 
+diff --git a/include/system/mshv_int.h b/include/system/mshv_int.h
+index 7d685fc647..7052f20a00 100644
+--- a/include/system/mshv_int.h
++++ b/include/system/mshv_int.h
+@@ -84,6 +84,7 @@ int mshv_get_generic_regs(CPUState *cpu, hv_register_assoc *assocs,
+                           size_t n_regs);
+ int mshv_arch_store_vcpu_state(const CPUState *cpu);
+ int mshv_arch_load_vcpu_state(CPUState *cpu);
++int mshv_arch_set_partition_msrs(const CPUState *cpu);
+ void mshv_arch_init_vcpu(CPUState *cpu);
+ void mshv_arch_destroy_vcpu(CPUState *cpu);
+ void mshv_arch_amend_proc_features(
+diff --git a/target/i386/mshv/mshv-cpu.c b/target/i386/mshv/mshv-cpu.c
+index ec1caf4e7a..0b08f478ce 100644
+--- a/target/i386/mshv/mshv-cpu.c
++++ b/target/i386/mshv/mshv-cpu.c
+@@ -1141,6 +1141,21 @@ int mshv_arch_store_vcpu_state(const CPUState *cpu)
      return 0;
  }
  
-+static SaveVMHandlers savevm_mshv = {
-+    .save_prepare = mshv_save_prepare,
-+    .save_state = mshv_save_state,
-+    .save_cleanup = mshv_save_cleanup,
-+    .load_setup = mshv_load_setup,
-+    .load_state = mshv_load_state,
-+    .load_cleanup = mshv_load_cleanup,
-+};
++int mshv_arch_set_partition_msrs(const CPUState *cpu)
++{
++    CPUX86State *env = &X86_CPU(cpu)->env;
++    struct hv_register_assoc assocs[] = {
++        { .name = HV_REGISTER_GUEST_OS_ID,
++          .value.reg64 = env->msr_hv_guest_os_id },
++        { .name = HV_REGISTER_REFERENCE_TSC,
++          .value.reg64 = env->msr_hv_tsc },
++        { .name = HV_X64_REGISTER_HYPERCALL,
++          .value.reg64 = env->msr_hv_hypercall },
++    };
 +
- static int mshv_init(AccelState *as, MachineState *ms)
++    return mshv_set_generic_regs(cpu, assocs, ARRAY_SIZE(assocs));
++}
++
+ void mshv_arch_amend_proc_features(
+     union hv_partition_synthetic_processor_features *features)
  {
-     MshvState *s;
-@@ -509,6 +581,9 @@ static int mshv_init(AccelState *as, MachineState *ms)
-                                   0, "mshv-memory");
-     memory_listener_register(&mshv_io_listener, &address_space_io);
- 
-+    /* register custom handlers for migration events */
-+    register_savevm_live("mshv", 0, 1, &savevm_mshv, s);
-+
-     return 0;
- }
- 
 -- 
 2.34.1
 
