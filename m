@@ -1,54 +1,54 @@
-Received: from mail-pl1-f202.google.com (mail-pl1-f202.google.com [209.85.214.202])
+Received: from mail-pl1-f201.google.com (mail-pl1-f201.google.com [209.85.214.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D0CD38550F
-	for <kvm@vger.kernel.org>; Mon, 23 Mar 2026 23:58:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.202
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E5254386C35
+	for <kvm@vger.kernel.org>; Mon, 23 Mar 2026 23:58:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774310324; cv=none; b=u580GdFoLm+zuyy66TZeXqzo9Ez5OwjTyMCEC11nRn/mt0pMsSaN3X3nzjbW3R1i3bTv6cPm6wRzgM1mKXOel7Uoo8crqaxyU1afDyvvfHpiKbrFnXbwa/3O8tK4/mEx6Qhx1sSH/erFvMn+FQk7C4kd+gB0NgmLpADWwE8G0qQ=
+	t=1774310327; cv=none; b=E3G/tAPArc63COj5RjEBYb1N7waDxl1W473ebMLBZK0B0SKeyeoNz7M7eyy3ypf712XsFsAI1ukXlniPIjUSlMpu89GnLNVqvffIrFOWRCbSnzOtKAVAa7XYPfIoxnxpCrDL/MF5FNPQHYCniNn+uqNZZVTy4Fu+SgM6ka/xp3o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774310324; c=relaxed/simple;
-	bh=vLDgiBBZd58h0T0ReKqdykl5DlgchHSnpVYqQ6ykqu8=;
+	s=arc-20240116; t=1774310327; c=relaxed/simple;
+	bh=Xh0VD6c2DOiBYyNXtlX2CiZhzQ4nziyD7BKX5GcXGCo=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=nNJGrJ6Mxt0DTd+I+HVDMPrpDQEefwXiKL2hb+2G6qdfn3B1mj/30haQugm8oNZquGrk7vaK2pjzFtuxlScsql43tNL9fXRM8wk66OXunj4TWfkhlO2g2T2Thn3dfdNPcmDPhfxiOTxTFan7veaa4GkVdY/ADJYqGWv+xMD1B2E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--dmatlack.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=F1gkYkqP; arc=none smtp.client-ip=209.85.214.202
+	 To:Cc:Content-Type; b=hoOwkux9mRv0O2D7kFPvrW3jCiSBaVStnWTwvrk/3zkgVHCbJNtNDab8I8zmb+FiwF+s8l0Nh2yShAwkk4HP4TvPnk4BM+oq6hm9QvhrBSh52lawuW+NnAIHCoh0WrOYcVJM8ylqOZ/k5YkUkgYfIurt7eWu4uFsIq0OBZMbli8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--dmatlack.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=o5GR4Kwg; arc=none smtp.client-ip=209.85.214.201
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--dmatlack.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="F1gkYkqP"
-Received: by mail-pl1-f202.google.com with SMTP id d9443c01a7336-2b05a3c2421so8469415ad.1
-        for <kvm@vger.kernel.org>; Mon, 23 Mar 2026 16:58:43 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="o5GR4Kwg"
+Received: by mail-pl1-f201.google.com with SMTP id d9443c01a7336-2b061868724so3401095ad.1
+        for <kvm@vger.kernel.org>; Mon, 23 Mar 2026 16:58:44 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1774310323; x=1774915123; darn=vger.kernel.org;
+        d=google.com; s=20251104; t=1774310324; x=1774915124; darn=vger.kernel.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=Gw5NKF4E66vyohb8n/pa3diZrC0/+CJM8Skon/TvWYk=;
-        b=F1gkYkqPc+XdbjhbEZ9eztV6hD5/Rd6mu4MK2/mGOdF+e97YHQIKpaKbenq82XSibi
-         RxDRMPgvRENeXLq8GmvoRQPUY73un6Q/Fcb/sJsjhgH/imGRygfZsL60y0maJPtIeF9u
-         iS1QzMZ7xzBL/tHsROAf+j7U9GqftIp/slvyx/m+U1Y1cfIg+CDuK+N5P4oseShqs65J
-         uvSFfTzxUi0u8H3qaymMi6nT8dOdWM43zYNyCHhlKvPimNxhJ85Vbg97BjS8V/7BHz0s
-         U49yfXPQO4CN5glC9UZFv+4lb3mMMX3RdXiFliIpkWXKJ4aU5ejVeZlOyQdobWqwEM4F
-         wwPA==
+        bh=g7UW0RmcLc1SB8VXNrTH33hzd4ZkDSbd/G4mL4V5lhA=;
+        b=o5GR4KwglfgJGcj5bp7gGsk36lVS0yOcgt+DzXm3gJOZxuYR7i9lYKXiw1RZjz3kIX
+         qAL0rQkLoIc6YXKRWBa3MG6X+5Ayd8QUsy86K/SeHd++O95BxLnU0G9nwgdU8vY3lqEk
+         6/2gzybg5r8tm/V8LDDpMjy4awdshqFuuTB40RM23Jknh5XRhZO8rAz5jM68ClgO+D7v
+         jC1lDzWsMhuczOeLAmY15eLgaHzL4U/02phpopjJKZtBLEClstBkpIWwmRuR41obhDRG
+         YcuKmHKdWv03ogegnVpR6ud+js3rIjRtCSiSI1PhGV3GPB9ghf4SgbMNgRp5hP4k3wci
+         raTg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774310323; x=1774915123;
+        d=1e100.net; s=20251104; t=1774310324; x=1774915124;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=Gw5NKF4E66vyohb8n/pa3diZrC0/+CJM8Skon/TvWYk=;
-        b=LwLYM/phdsPTeAHLTPsXDzhLsDG6iVKWYOE2Xd6q54GMU+KnWFs1gUEdo4iQryCxk/
-         w9SvRdPIQjq+rU3rL3mHJYaZ9cyO80bccE7HW0hBl3oVu3B1BmzxYGkoYtDMYrCz9M04
-         PVYNGZ5k3DiijCmuQ1nDL8e9Y+rQsFqldRPfPuHDsr8ao1Kmhz4lNW5N3CGmqFoH27at
-         ASZtW74LLjH9c++kmUl4SW10VRX+QbxNs2UArJYenTojwR7IYkaDjk8qf3ACzDWfpidr
-         cmsdzMdbZVJknQZ+sK2PNciZIPqsnExu3YkuxUqb3pQ/ofo3rJF5otnKCI6ICAGRqlg2
-         tmWw==
-X-Forwarded-Encrypted: i=1; AJvYcCULKgEvexStIl9d53r1hP0LQT2uedlo5X9ShLZUmI7PEaPOO/PObxCO4ABU3Pzq++UVz7Y=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzD9uNsw8JTWQjsdfHvhvQ7sa+NuW/rViwyXyRnE1g2IX2O0YvN
-	T2u1Zy0jcnFfrH6mr1rBJ31EWS4bpw5BqRXHOYBb0tJd5AaTARBTuzvd3wKIBPbZDfORvs8iuyf
-	+Es58jjxL/tobYw==
-X-Received: from plar5.prod.google.com ([2002:a17:902:c7c5:b0:2b0:5a1f:4fdf])
+        bh=g7UW0RmcLc1SB8VXNrTH33hzd4ZkDSbd/G4mL4V5lhA=;
+        b=hP/E063ynciAMAbrenR20s9Q3a0+DWcdyOLKG6BUoxSzGm7bgsCxASYoFgpNBhlhN6
+         2mNSRDSvjCRqk2sOktYFQoqw/U6Q7h/5X3ONVbjk1DzRYLYE9NhTtZKIezwL+br39C7c
+         DABZBtnspKLhW5VnI9JeDIMEHCBiSIegMm/U/4uRFVmI2Z7zRPtsANEH4fcmcEYuEkcR
+         zv/vwdW557oT/PybCT7mmTZ7QYNzPGtZhYhEfKCsp165Hmvw6kghiTEzv8SkiBsqLVmI
+         PP//opSkoNbbalXtVs9GNfincOGCiXvZNgMdY5/x5+BxMcWTV+GLSTEJV4rmOSNbvx5X
+         vMMQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVqU3g7/jk3KdOa2ovqJoWXBmnnYhT8YW6iPOdi6HVNXPCK22VKqD4Yqj3pr1Pu6uREDJk=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyM7uETdQYdDGpHy2epE9apPPz7slmAUx4VOdylIOtIg9SICrCr
+	Ubj2makh8Ct1Nh6lwCIQ01ygAEb7EJCwqFCIAhj/hHuRoSDejzZ8Xl6fjODbooVayplV8VLE9ge
+	7rUF5JzyzSqgLLw==
+X-Received: from plbjx15.prod.google.com ([2002:a17:903:138f:b0:2b0:5b78:8e47])
  (user=dmatlack job=prod-delivery.src-stubby-dispatcher) by
- 2002:a17:902:d507:b0:2b0:5795:9ead with SMTP id d9443c01a7336-2b0825e35e3mr130027435ad.0.1774310322445;
- Mon, 23 Mar 2026 16:58:42 -0700 (PDT)
-Date: Mon, 23 Mar 2026 23:57:55 +0000
+ 2002:a17:902:e54a:b0:2b0:9183:ce1e with SMTP id d9443c01a7336-2b09183d6ddmr75835585ad.30.1774310324185;
+ Mon, 23 Mar 2026 16:58:44 -0700 (PDT)
+Date: Mon, 23 Mar 2026 23:57:56 +0000
 In-Reply-To: <20260323235817.1960573-1-dmatlack@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
@@ -58,9 +58,9 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 References: <20260323235817.1960573-1-dmatlack@google.com>
 X-Mailer: git-send-email 2.53.0.983.g0bb29b3bc5-goog
-Message-ID: <20260323235817.1960573-4-dmatlack@google.com>
-Subject: [PATCH v3 03/24] PCI: Require Live Update preserved devices are in
- singleton iommu_groups
+Message-ID: <20260323235817.1960573-5-dmatlack@google.com>
+Subject: [PATCH v3 04/24] PCI: Inherit bus numbers from previous kernel during
+ Live Update
 From: David Matlack <dmatlack@google.com>
 To: Alex Williamson <alex@shazbot.org>, Bjorn Helgaas <bhelgaas@google.com>
 Cc: Adithya Jayachandran <ajayachandra@nvidia.com>, Alexander Graf <graf@amazon.com>, 
@@ -88,96 +88,131 @@ Cc: Adithya Jayachandran <ajayachandra@nvidia.com>, Alexander Graf <graf@amazon.
 	Zhu Yanjun <yanjun.zhu@linux.dev>
 Content-Type: text/plain; charset="UTF-8"
 
-Require that Live Update preserved devices are in singleton iommu_groups
-during preservation (outgoing kernel) and retrieval (incoming kernel).
+Inherit bus numbers from the previous kernel during a Live Update when
+one or more PCI devices are being preserved, even if pci=assign-busses
+is enabled.
 
-PCI devices preserved across Live Update will be allowed to perform
-memory transactions throughout the Live Update. Thus IOMMU groups for
-preserved devices must remain fixed. Since all current use cases for
-Live Update are for PCI devices in singleton iommu_groups, require that
-as a starting point. This avoids the complexity of needing to enforce
-arbitrary iommu_group topologies while still allowing all current use
-cases.
+During a Live Update, preserved devices will be allowed to continue
+performing memory transactions. Thus the kernel cannot change the fabric
+topology, including changing bus numbers, since that would requiring
+disabling and flushing any memory transactions first.
 
-Suggested-by: Jason Gunthorpe <jgg@nvidia.com>
+So if pci=assign-busses is enabled, ignore it during the Live Update and
+inherit all bus numbers assigned by the previous kernel. This will not
+break users that rely on pci=assign-busses for their system to function
+correctly since the system can be assumed to be in a functional state
+already if a Live Update is underway. In other words, pci=assign-busses
+would establish a functional topology during the initial cold boot, and
+then that topology would remain fixed across any subsequent Live
+Updates.
+
 Signed-off-by: David Matlack <dmatlack@google.com>
 ---
- drivers/pci/liveupdate.c | 34 +++++++++++++++++++++++++++++++++-
- 1 file changed, 33 insertions(+), 1 deletion(-)
+ .../admin-guide/kernel-parameters.txt         |  6 +++-
+ drivers/pci/liveupdate.c                      |  5 ++-
+ drivers/pci/probe.c                           | 35 ++++++++++++++++---
+ 3 files changed, 40 insertions(+), 6 deletions(-)
 
+diff --git a/Documentation/admin-guide/kernel-parameters.txt b/Documentation/admin-guide/kernel-parameters.txt
+index 03a550630644..beff9f3f8e3b 100644
+--- a/Documentation/admin-guide/kernel-parameters.txt
++++ b/Documentation/admin-guide/kernel-parameters.txt
+@@ -5156,7 +5156,11 @@ Kernel parameters
+ 				explicitly which ones they are.
+ 		assign-busses	[X86] Always assign all PCI bus
+ 				numbers ourselves, overriding
+-				whatever the firmware may have done.
++				whatever the firmware may have done. Ignored
++				during a Live Update, where the kernel must
++				inherit the PCI topology (including bus numbers)
++				to avoid interrupting ongoing memory
++				transactions of preserved devices.
+ 		usepirqmask	[X86] Honor the possible IRQ mask stored
+ 				in the BIOS $PIR table. This is needed on
+ 				some systems with broken BIOSes, notably
 diff --git a/drivers/pci/liveupdate.c b/drivers/pci/liveupdate.c
-index bec7b3500057..a3dbe06650ff 100644
+index a3dbe06650ff..c1251f4f8438 100644
 --- a/drivers/pci/liveupdate.c
 +++ b/drivers/pci/liveupdate.c
-@@ -75,6 +75,8 @@
+@@ -84,7 +84,10 @@
+  * Update:
   *
-  *  * The device must not be a Physical Function (PF).
+  *  * The PCI Segment, Bus, Device, and Function numbers assigned to the device
+- *    are guaranteed to remain the same across Live Update.
++ *    are guaranteed to remain the same across Live Update. Note that this is
++ *    true even if pci=assign-busses is set on the command line. The kernel will
++ *    always inherit bus numbers assigned by the previous kernel during a Live
++ *    Update.
   *
-+ *  * The device must be the only device in its IOMMU group.
-+ *
-  * Preservation Behavior
-  * =====================
+  * This list will be extended in the future as new support is added.
   *
-@@ -105,6 +107,7 @@
- 
- #include <linux/bsearch.h>
- #include <linux/io.h>
-+#include <linux/iommu.h>
- #include <linux/kexec_handover.h>
- #include <linux/kho/abi/pci.h>
- #include <linux/liveupdate.h>
-@@ -222,6 +225,31 @@ static void pci_ser_delete(struct pci_ser *ser, struct pci_dev *dev)
- 	ser->nr_devices--;
+diff --git a/drivers/pci/probe.c b/drivers/pci/probe.c
+index c60222d45659..165056d71e66 100644
+--- a/drivers/pci/probe.c
++++ b/drivers/pci/probe.c
+@@ -1369,6 +1369,34 @@ bool pci_ea_fixed_busnrs(struct pci_dev *dev, u8 *sec, u8 *sub)
+ 	return true;
  }
  
-+static int count_devices(struct device *dev, void *__nr_devices)
++static bool pci_assign_all_busses(void)
 +{
-+	(*(int *)__nr_devices)++;
-+	return 0;
-+}
++	if (!pcibios_assign_all_busses())
++		return false;
 +
-+static int pci_liveupdate_validate_iommu_group(struct pci_dev *dev)
-+{
-+	struct iommu_group *group;
-+	int nr_devices = 0;
-+
-+	group = iommu_group_get(&dev->dev);
-+	if (group) {
-+		iommu_group_for_each_dev(group, &nr_devices, count_devices);
-+		iommu_group_put(group);
++	/*
++	 * During a Live Update, preserved devices are are allowed to continue
++	 * performing memory transactions. Thus the kernel cannot change the
++	 * fabric topology, including changing bus numbers, since that would
++	 * requiring disabling and flushing any memory transactions first.
++	 *
++	 * So if pci=assign-busses is enabled, ignore it during the Live Update
++	 * and inherit all bus numbers assigned by the previous kernel. This
++	 * will not break users that rely on pci=assign-busses for their system
++	 * to function correctly since the system can be assumed to be in a
++	 * functional state already if a Live Update is underway. In other
++	 * words, pci=assign-busses should be used to establish working bus
++	 * numbers during the initial cold boot, and then that topology would
++	 * then remain fixed across any subsequent Live Updates.
++	 */
++	if (pci_liveupdate_incoming_nr_devices()) {
++		pr_info_once("Ignoring pci=assign-busses and inheriting bus numbers during Live Update\n");
++		return false;
 +	}
 +
-+	if (nr_devices != 1) {
-+		pci_warn(dev, "Live Update preserved devices must be in singleton iommu groups!");
-+		return -EINVAL;
-+	}
-+
-+	return 0;
++	return true;
 +}
 +
- int pci_liveupdate_preserve(struct pci_dev *dev)
+ /*
+  * pci_scan_bridge_extend() - Scan buses behind a bridge
+  * @bus: Parent bus the bridge is on
+@@ -1396,6 +1424,7 @@ static int pci_scan_bridge_extend(struct pci_bus *bus, struct pci_dev *dev,
+ 				  int max, unsigned int available_buses,
+ 				  int pass)
  {
- 	struct pci_dev_ser new = INIT_PCI_DEV_SER(dev);
-@@ -232,6 +260,10 @@ int pci_liveupdate_preserve(struct pci_dev *dev)
- 	if (dev->is_virtfn || dev->is_physfn)
- 		return -EINVAL;
++	const bool assign_all_busses = pci_assign_all_busses();
+ 	struct pci_bus *child;
+ 	u32 buses;
+ 	u16 bctl;
+@@ -1448,8 +1477,7 @@ static int pci_scan_bridge_extend(struct pci_bus *bus, struct pci_dev *dev,
+ 		goto out;
+ 	}
  
-+	ret = pci_liveupdate_validate_iommu_group(dev);
-+	if (ret)
-+		return ret;
-+
- 	guard(mutex)(&pci_flb_outgoing_lock);
+-	if ((secondary || subordinate) &&
+-	    !pcibios_assign_all_busses() && !broken) {
++	if ((secondary || subordinate) && !assign_all_busses && !broken) {
+ 		unsigned int cmax, buses;
  
- 	if (dev->liveupdate_outgoing)
-@@ -357,7 +389,7 @@ int pci_liveupdate_retrieve(struct pci_dev *dev)
- 	if (!dev->liveupdate_incoming)
- 		return -EINVAL;
- 
--	return 0;
-+	return pci_liveupdate_validate_iommu_group(dev);
- }
- EXPORT_SYMBOL_GPL(pci_liveupdate_retrieve);
- 
+ 		/*
+@@ -1491,8 +1519,7 @@ static int pci_scan_bridge_extend(struct pci_bus *bus, struct pci_dev *dev,
+ 		 * do in the second pass.
+ 		 */
+ 		if (!pass) {
+-			if (pcibios_assign_all_busses() || broken)
+-
++			if (assign_all_busses || broken)
+ 				/*
+ 				 * Temporarily disable forwarding of the
+ 				 * configuration cycles on all bridges in
 -- 
 2.53.0.983.g0bb29b3bc5-goog
 
