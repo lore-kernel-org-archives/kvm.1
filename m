@@ -1,29 +1,30 @@
 Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 33CF33AC0E3
-	for <kvm@vger.kernel.org>; Mon, 23 Mar 2026 13:58:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 445573AE1BB
+	for <kvm@vger.kernel.org>; Mon, 23 Mar 2026 13:58:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=13.77.154.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774274305; cv=none; b=axKdGNdUqjbus2fEB8b9k6h3eENS3OXx5F/VUXGHHTvrLZ4bLw2tgs/oEBhdfNk754bwl0upIRr2pQdBqnQT11f0eTmG+8rvF0/srBAU/P2fIbiocqkqS8kzjnnMdFZxERvVAe6Zbsz4fE+RQ62O80FXfRT50wKG2Ul2gCt2vvc=
+	t=1774274308; cv=none; b=nJKKvPYJyonlbct/6FXHkbPVrMsQJUqi3aOituyfwTlW2LU2cBre9YRwoHl+K4Q5FCLyVR9ntWi7oVVQd/dSqyvg3gS59A96SacE7bBfhvM/5ftmBQ6CgN72PhWvcIfseLVe4N7ah8YXak/X/8YafmARpymU3Cf5Wy33zkOQ7IM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774274305; c=relaxed/simple;
-	bh=p3Spg5Kx+BRlRyO9RcbfBp4Qk3BdxZs+rqG/URZD3Tc=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=sMVp6Pf6pTuc48/QzMlBEKbRZ6s8mr55V84MUXfGrZ7qrjynZkGsXt3OKOGRdaErJuqR5Hasaa1PuOe1B5CYZVnH/e4e5gGUXvEl4JDXNGC/bRyE8D8k/RSe+q0NZ5mM0Ir/RktjBSIP5k/Fg+saOOSJ9JFErLD4bHiv6uM61S8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com; spf=pass smtp.mailfrom=linux.microsoft.com; dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b=e60CNyS1; arc=none smtp.client-ip=13.77.154.182
+	s=arc-20240116; t=1774274308; c=relaxed/simple;
+	bh=8onQ5cBwm3mwTxgpAQALDhuLbjheAuTdcvtsQlqlzOE=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=UooVn1ns7WCAEmiUlXsyU3c9wl7TN0aMdeylWbakq8hMLWtxki9MhFH2364Ae233rrN2ockFtWUaTZ9MweoEx9XTbgJlU02Ctw/msDx0rUYxDWUODe+CbvmqLTbdDXV6g5I7UxzsCsVFBAyWfynyOZR2izdfzv6u6sLrp62Fz8k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com; spf=pass smtp.mailfrom=linux.microsoft.com; dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b=bNNnk4MM; arc=none smtp.client-ip=13.77.154.182
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.microsoft.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b="e60CNyS1"
+	dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b="bNNnk4MM"
 Received: from DESKTOP-TUU1E5L.localdomain (unknown [167.220.208.76])
-	by linux.microsoft.com (Postfix) with ESMTPSA id 6EC2C20B710C;
-	Mon, 23 Mar 2026 06:58:15 -0700 (PDT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 6EC2C20B710C
+	by linux.microsoft.com (Postfix) with ESMTPSA id E81B720B7129;
+	Mon, 23 Mar 2026 06:58:22 -0700 (PDT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com E81B720B7129
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
-	s=default; t=1774274298;
-	bh=tJpBQZj75HUYMQsTFFKSpzrxKtG71ffSxKRsEuze/cA=;
-	h=From:To:Cc:Subject:Date:From;
-	b=e60CNyS1t+kSi37egryYGqrlSAU4SZlOrDSKjWnPYHlGHiXw8CR3GdJrQOxd315T8
-	 IT1ij0vS18sYsRkAMip3jK535kAInWobzBxwQUE+1t1r+bZ0c28n9LlpPjZELaq2ib
-	 j8whcBvzk2MJdJ0paxjV01cWZ9RBC4s7QEW6YpNw=
+	s=default; t=1774274305;
+	bh=YCyjkeVZjehmvMqQkFEvROL42xs/v9qbwCcFiaYqzZg=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=bNNnk4MMJ4vbAAJ2OXqT59mNqJKnUAZxhosxCIavInExD+4F65zTbDkNgopkDPB6K
+	 KY+mrlZr3rKPFY10z1h2XF0RWQotir9tHdsmjgbbO1OyZ+y8DhdvLHemRL/vOTQ2YN
+	 urxPXNOr1gN1l0e9CWXA6gsHzxzDa4wCNAD9cQxA=
 From: Magnus Kulke <magnuskulke@linux.microsoft.com>
 To: qemu-devel@nongnu.org
 Cc: kvm@vger.kernel.org,
@@ -40,10 +41,12 @@ Cc: kvm@vger.kernel.org,
 	Magnus Kulke <magnuskulke@microsoft.com>,
 	Magnus Kulke <magnuskulke@linux.microsoft.com>,
 	"Michael S. Tsirkin" <mst@redhat.com>
-Subject: [RFC 00/32] Add migration support to the MSHV accelerator
-Date: Mon, 23 Mar 2026 14:57:40 +0100
-Message-Id: <20260323135812.383509-1-magnuskulke@linux.microsoft.com>
+Subject: [RFC 02/32] target/i386/mshv: use generic FPU/xcr0 state
+Date: Mon, 23 Mar 2026 14:57:42 +0100
+Message-Id: <20260323135812.383509-3-magnuskulke@linux.microsoft.com>
 X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20260323135812.383509-1-magnuskulke@linux.microsoft.com>
+References: <20260323135812.383509-1-magnuskulke@linux.microsoft.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -52,118 +55,220 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Hey all, This is a draft patch series for live migration support in
-the MSHV accelerator. Since this is somewhat invasiva and touches
-various parts outside of the accel's folder hierarchies I'm sending
-an RFC series to collect early feedback.
+Instead of using an mshv-specific FPU state representation we switch to
+the generic i386 representation of the registers.
 
-Note: this patches are sent in sent in isolation, but for LM to be
-functional we will require require the recently submitted patch series
-"Support QEMU cpu models in MSHV accelerator" (at v3 currently) to be
-merged, since on some hosts we will need the CPUID infra to disable
-features that we currently do not yet migrate (e.g. AMX tiles).
+Signed-off-by: Magnus Kulke <magnuskulke@linux.microsoft.com>
+---
+ include/system/mshv_int.h   | 15 +-------
+ target/i386/mshv/mshv-cpu.c | 76 ++++++++++++++++++++++---------------
+ 2 files changed, 47 insertions(+), 44 deletions(-)
 
-In this series we perform some preperatory refactorings and introduce
-new abstractions where required, particulary for irqchips and MSR
-logic. We also have to introduce some generic logic for XSAVE
-de/compaction to allow migration of XSAVE state.
-
-Note 2: I did already receive some feedback offline on the new XSAVE
-de/compaction handlers. We want to avoid the buffer copy and rework
-existing code to be generic over a compacted or standard layout. The v1
-submission will contain this change.
-
-The guest state components that are covered by migration are:
-
-- standard regs
-- special regs
-- xcr0
-- (legacy) FPU regs
-- XSAVE
-- LAPIC
-- MSRs
-- SynIC state (SIMP, SIEFP, STIMER)
-- pending interrupts/exceptions
-- MP state (AP cpu modes)
-
-Finally, routines for dirty-page tracking to reduce migration downtime
-have beend added and integrated in the respective hooks.
-
-best,
-
-magnus
-
-Magnus Kulke (32):
-  target/i386/mshv: use arch_load/store_reg fns
-  target/i386/mshv: use generic FPU/xcr0 state
-  target/i386/mshv: impl init/load/store_vcpu_state
-  accel/accel-irq: add AccelRouteChange abstraction
-  accel/accel-irq: add generic begin_route_changes
-  accel/accel-irq: add generic commit_route_changes
-  accel/mshv: add irq_routes to state
-  accel/mshv: update s->irq_routes in add_msi_route
-  accel/mshv: update s->irq_routes in update_msi_route
-  accel/mshv: update s->irq_routes in release_virq
-  accel/mshv: use s->irq_routes in commit_routes
-  accel/mshv: reserve ioapic routes on s->irq_routes
-  accel/mshv: remove redundant msi controller
-  target/i386/mshv: move apic logic into own file
-  target/i386/mshv: migrate LAPIC state
-  target/i386/mshv: move msr code to arch
-  accel/mshv: store partition proc features
-  target/i386/mshv: expose msvh_get_generic_regs
-  target/i386/mshv: migrate MSRs
-  target/i386/mshv: migrate MTRR MSRs
-  target/i386/mshv: migrate Synic SINT MSRs
-  target/i386/mshv: migrate SIMP and SIEFP state
-  target/i386/mshv: migrate STIMER state
-  accel/mshv: introduce SaveVMHandler
-  accel/mshv: write synthetic MSRs after migration
-  accel/mshv: migrate REFERENCE_TIME
-  target/i386/mshv: migrate pending ints/excs
-  target/i386: add de/compaction to xsave_helper
-  target/i386/mshv: migrate XSAVE state
-  target/i386/mshv: reconstruct hflags after load
-  target/i386/mshv: migrate MP_STATE
-  accel/mshv: enable dirty page tracking
-
- accel/accel-irq.c               |  41 +-
- accel/kvm/kvm-all.c             |   6 +-
- accel/mshv/irq.c                | 360 ++++++------
- accel/mshv/mem.c                | 211 +++++++
- accel/mshv/meson.build          |   1 -
- accel/mshv/mshv-all.c           | 243 ++++++++-
- accel/mshv/msr.c                | 375 -------------
- accel/stubs/kvm-stub.c          |   2 +-
- accel/stubs/mshv-stub.c         |   6 +-
- hw/intc/apic_common.c           |   3 +
- hw/misc/ivshmem-pci.c           |   8 +-
- hw/vfio/pci.c                   |  11 +-
- hw/virtio/virtio-pci.c          |   3 +-
- include/accel/accel-route.h     |  17 +
- include/hw/hyperv/hvgdk_mini.h  |  22 +
- include/hw/hyperv/hvhdk.h       | 149 +++++
- include/hw/i386/apic_internal.h |   5 +
- include/system/accel-irq.h      |   6 +-
- include/system/kvm.h            |  23 +-
- include/system/mshv.h           |  15 +-
- include/system/mshv_int.h       |  89 +--
- target/i386/cpu.h               |  14 +-
- target/i386/kvm/kvm.c           |   5 +-
- target/i386/machine.c           |  46 ++
- target/i386/mshv/meson.build    |   3 +
- target/i386/mshv/mshv-apic.c    |  78 +++
- target/i386/mshv/mshv-cpu.c     | 940 +++++++++++++++++++++++---------
- target/i386/mshv/msr.c          | 432 +++++++++++++++
- target/i386/mshv/synic.c        | 206 +++++++
- target/i386/xsave_helper.c      | 255 +++++++++
- 30 files changed, 2641 insertions(+), 934 deletions(-)
- delete mode 100644 accel/mshv/msr.c
- create mode 100644 include/accel/accel-route.h
- create mode 100644 target/i386/mshv/mshv-apic.c
- create mode 100644 target/i386/mshv/msr.c
- create mode 100644 target/i386/mshv/synic.c
-
+diff --git a/include/system/mshv_int.h b/include/system/mshv_int.h
+index a142dd241a..e3d1867a77 100644
+--- a/include/system/mshv_int.h
++++ b/include/system/mshv_int.h
+@@ -58,19 +58,6 @@ typedef struct MshvMsiControl {
+ #define mshv_vcpufd(cpu) (cpu->accel->cpufd)
+ 
+ /* cpu */
+-typedef struct MshvFPU {
+-    uint8_t fpr[8][16];
+-    uint16_t fcw;
+-    uint16_t fsw;
+-    uint8_t ftwx;
+-    uint8_t pad1;
+-    uint16_t last_opcode;
+-    uint64_t last_ip;
+-    uint64_t last_dp;
+-    uint8_t xmm[16][16];
+-    uint32_t mxcsr;
+-    uint32_t pad2;
+-} MshvFPU;
+ 
+ typedef enum MshvVmExit {
+     MshvVmExitIgnore   = 0,
+@@ -81,7 +68,7 @@ typedef enum MshvVmExit {
+ void mshv_init_mmio_emu(void);
+ int mshv_create_vcpu(int vm_fd, uint8_t vp_index, int *cpu_fd);
+ void mshv_remove_vcpu(int vm_fd, int cpu_fd);
+-int mshv_configure_vcpu(const CPUState *cpu, const MshvFPU *fpu, uint64_t xcr0);
++int mshv_configure_vcpu(const CPUState *cpu);
+ int mshv_run_vcpu(int vm_fd, CPUState *cpu, hv_message *msg, MshvVmExit *exit);
+ int mshv_arch_load_regs(CPUState *cpu);
+ int mshv_arch_store_regs(CPUState *cpu);
+diff --git a/target/i386/mshv/mshv-cpu.c b/target/i386/mshv/mshv-cpu.c
+index 9456e75277..78b218e596 100644
+--- a/target/i386/mshv/mshv-cpu.c
++++ b/target/i386/mshv/mshv-cpu.c
+@@ -108,6 +108,9 @@ static enum hv_register_name FPU_REGISTER_NAMES[26] = {
+ };
+ 
+ static int set_special_regs(const CPUState *cpu);
++static int get_generic_regs(CPUState *cpu,
++                            struct hv_register_assoc *assocs,
++                            size_t n_regs);
+ 
+ static int translate_gva(const CPUState *cpu, uint64_t gva, uint64_t *gpa,
+                          uint64_t flags)
+@@ -717,48 +720,65 @@ static int set_special_regs(const CPUState *cpu)
+     return 0;
+ }
+ 
+-static int set_fpu(const CPUState *cpu, const struct MshvFPU *regs)
++static int set_fpu(const CPUState *cpu)
+ {
+     struct hv_register_assoc assocs[ARRAY_SIZE(FPU_REGISTER_NAMES)];
+     union hv_register_value *value;
+-    size_t fp_i;
+     union hv_x64_fp_control_status_register *ctrl_status;
+     union hv_x64_xmm_control_status_register *xmm_ctrl_status;
+     int ret;
+     size_t n_regs = ARRAY_SIZE(FPU_REGISTER_NAMES);
++    X86CPU *x86cpu = X86_CPU(cpu);
++    CPUX86State *env = &x86cpu->env;
++    size_t i, fp_i;
++    bool valid;
+ 
+     /* first 16 registers are xmm0-xmm15 */
+-    for (size_t i = 0; i < 16; i++) {
++    for (i = 0; i < 16; i++) {
+         assocs[i].name = FPU_REGISTER_NAMES[i];
+         value = &assocs[i].value;
+-        memcpy(&value->reg128, &regs->xmm[i], 16);
++        value->reg128.low_part  = env->xmm_regs[i].ZMM_Q(0);
++        value->reg128.high_part = env->xmm_regs[i].ZMM_Q(1);
+     }
+ 
+     /* next 8 registers are fp_mmx0-fp_mmx7 */
+-    for (size_t i = 16; i < 24; i++) {
+-        assocs[i].name = FPU_REGISTER_NAMES[i];
++    for (i = 16; i < 24; i++) {
+         fp_i = (i - 16);
++        assocs[i].name = FPU_REGISTER_NAMES[i];
+         value = &assocs[i].value;
+-        memcpy(&value->reg128, &regs->fpr[fp_i], 16);
++        value->fp.mantissa        = env->fpregs[fp_i].d.low;
++        value->fp.biased_exponent = env->fpregs[fp_i].d.high & 0x7FFF;
++        value->fp.sign            = (env->fpregs[fp_i].d.high >> 15) & 0x1;
++        value->fp.reserved        = 0;
+     }
+ 
+     /* last two registers are fp_control_status and xmm_control_status */
+     assocs[24].name = FPU_REGISTER_NAMES[24];
+     value = &assocs[24].value;
+     ctrl_status = &value->fp_control_status;
+-    ctrl_status->fp_control = regs->fcw;
+-    ctrl_status->fp_status = regs->fsw;
+-    ctrl_status->fp_tag = regs->ftwx;
++
++    ctrl_status->fp_control = env->fpuc;
++    /* bits 11,12,13 are the top of stack pointer */
++    ctrl_status->fp_status = (env->fpus & ~0x3800) | ((env->fpstt & 0x7) << 11);
++
++    ctrl_status->fp_tag = 0;
++    for (i = 0; i < 8; i++) {
++        valid = (env->fptags[i] == 0);
++        if (valid) {
++            ctrl_status->fp_tag |= (1u << i);
++        }
++    }
++
+     ctrl_status->reserved = 0;
+-    ctrl_status->last_fp_op = regs->last_opcode;
+-    ctrl_status->last_fp_rip = regs->last_ip;
++    ctrl_status->last_fp_op = env->fpop;
++    ctrl_status->last_fp_rip = env->fpip;
+ 
+     assocs[25].name = FPU_REGISTER_NAMES[25];
+     value = &assocs[25].value;
+     xmm_ctrl_status = &value->xmm_control_status;
+-    xmm_ctrl_status->xmm_status_control = regs->mxcsr;
+-    xmm_ctrl_status->xmm_status_control_mask = 0;
+-    xmm_ctrl_status->last_fp_rdp = regs->last_dp;
++    xmm_ctrl_status->xmm_status_control = env->mxcsr;
++    xmm_ctrl_status->xmm_status_control_mask = 0x0000ffff;
++    xmm_ctrl_status->last_fp_rdp = env->fpdp;
+ 
+     ret = mshv_set_generic_regs(cpu, assocs, n_regs);
+     if (ret < 0) {
+@@ -769,12 +789,15 @@ static int set_fpu(const CPUState *cpu, const struct MshvFPU *regs)
+     return 0;
+ }
+ 
+-static int set_xc_reg(const CPUState *cpu, uint64_t xcr0)
++static int set_xc_reg(const CPUState *cpu)
+ {
+     int ret;
++    X86CPU *x86cpu = X86_CPU(cpu);
++    CPUX86State *env = &x86cpu->env;
++
+     struct hv_register_assoc assoc = {
+         .name = HV_X64_REGISTER_XFEM,
+-        .value.reg64 = xcr0,
++        .value.reg64 = env->xcr0,
+     };
+ 
+     ret = mshv_set_generic_regs(cpu, &assoc, 1);
+@@ -785,8 +808,7 @@ static int set_xc_reg(const CPUState *cpu, uint64_t xcr0)
+     return 0;
+ }
+ 
+-static int set_cpu_state(const CPUState *cpu, const MshvFPU *fpu_regs,
+-                         uint64_t xcr0)
++static int set_cpu_state(const CPUState *cpu)
+ {
+     int ret;
+ 
+@@ -798,11 +820,11 @@ static int set_cpu_state(const CPUState *cpu, const MshvFPU *fpu_regs,
+     if (ret < 0) {
+         return ret;
+     }
+-    ret = set_fpu(cpu, fpu_regs);
++    ret = set_fpu(cpu);
+     if (ret < 0) {
+         return ret;
+     }
+-    ret = set_xc_reg(cpu, xcr0);
++    ret = set_xc_reg(cpu);
+     if (ret < 0) {
+         return ret;
+     }
+@@ -951,8 +973,7 @@ static int setup_msrs(const CPUState *cpu)
+  * CPUX86State *env = &x86cpu->env;
+  * X86CPUTopoInfo *topo_info = &env->topo_info;
+  */
+-int mshv_configure_vcpu(const CPUState *cpu, const struct MshvFPU *fpu,
+-                        uint64_t xcr0)
++int mshv_configure_vcpu(const CPUState *cpu)
+ {
+     int ret;
+     int cpu_fd = mshv_vcpufd(cpu);
+@@ -969,7 +990,7 @@ int mshv_configure_vcpu(const CPUState *cpu, const struct MshvFPU *fpu,
+         return -1;
+     }
+ 
+-    ret = set_cpu_state(cpu, fpu, xcr0);
++    ret = set_cpu_state(cpu);
+     if (ret < 0) {
+         error_report("failed to set cpu state");
+         return -1;
+@@ -986,14 +1007,9 @@ int mshv_configure_vcpu(const CPUState *cpu, const struct MshvFPU *fpu,
+ 
+ static int put_regs(const CPUState *cpu)
+ {
+-    X86CPU *x86cpu = X86_CPU(cpu);
+-    CPUX86State *env = &x86cpu->env;
+-    MshvFPU fpu = {0};
+     int ret;
+ 
+-    memset(&fpu, 0, sizeof(fpu));
+-
+-    ret = mshv_configure_vcpu(cpu, &fpu, env->xcr0);
++    ret = mshv_configure_vcpu(cpu);
+     if (ret < 0) {
+         error_report("failed to configure vcpu");
+         return ret;
 -- 
 2.34.1
 
