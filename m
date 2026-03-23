@@ -1,147 +1,155 @@
-Received: from CO1PR03CU002.outbound.protection.outlook.com (mail-westus2azon11010035.outbound.protection.outlook.com [52.101.46.35])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f175.google.com (mail-pl1-f175.google.com [209.85.214.175])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 645FF37D118;
-	Mon, 23 Mar 2026 21:59:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.46.35
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774303155; cv=fail; b=cYe2ACgI2/A514ChM11Fw0myYE3XL/ZWKV9ugDkekq7Hq63E6OzTXvbEDrC/ZA4cSTZOe9qI9IDSDRllQOtwpwdpUzP4y1PG8iayvFjdra1S0tLd+WysJxhck+aqfZZDldXdkxHwfZDtywSKubsqIjO6oZGHXGgYLbCAwHH5sFc=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774303155; c=relaxed/simple;
-	bh=+VZMmUnWdicSknV0URkRky7+NWXuFL8oOe0w30eB6Ko=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=PbYYe4T/q9AByxfYW50x9bycfXgD704jU2HDcI5ijf0lX0t/fLgdMQFrJXIMwrARNZJ4xa7aD4Wpup7Zs8X4vxS38w4rhDabCOxsPL1atM9zF13UlxAQDj6/vJWh4ZJ6Y8ZZ3tMZzUJdPcskKSdYRp5kooBrCHwclBJIIWEHbXY=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=kxiA0Dp3; arc=fail smtp.client-ip=52.101.46.35
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A2B2537B032
+	for <kvm@vger.kernel.org>; Mon, 23 Mar 2026 22:07:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.175
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1774303659; cv=none; b=V/vQmaEwsamkHHfE0RCkG/riDE0YLNilW7+p4apXjK64k9ZmgtYEEUscD/5KTjeEs2Yg7cvg0wphJ5K604hHSkemYPE7Cc1F3IPAumOwOHDNT4DpWTAFwC/fqvT1jDpzNzb2KpOByEO3I/hRjR5/nXSTZR7ufmiPhtMbwWgXp5s=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1774303659; c=relaxed/simple;
+	bh=+5NvPwxkd+9i5GiKKfiHltHB6kQ8dritqed/r7e5gEE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=oLVh+W+6/TeViSDt+buobZ41HOrsg5qNuA3DK8NvL7qfJB3Xxvl40pToHRhpqDLPSKhzDc2RB44NTPLgH8GeNDZw5CyUFw2GuFt41wDPn5LeTf6cFB4kRweTSmYusOXf9K3XPKIBtD0EsZBTuWFompUjIBtAsGeVNnO2R5AbWFs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=LjnmsVBn; arc=none smtp.client-ip=209.85.214.175
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="kxiA0Dp3"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=t7PWhzIkeyYktIwCU00R8V5fl7e7WgIfedVbrg37uhQtWSnjAS6XeQC5joZmfblnMh7K8b9NE6UtwimCHsy8j1Zg6MdYz2AbqBX8o0+3+xtTqck4wuwrvKzocnd/Um2gY1SRxYPvWbPHhSY0dDrl+6GdBKVAiRJwD+reccOf6TbgVVFlRPYw9jEWEbJ8zIDWDMTJ4JaXreM6LlMjlTIJDP52CRIVYky2SHtblRC0SRPR7ydZ954ZlWCp77aTHmKOxtw34SkTiJrpo1mkhEUOA/Qut72142dMsmsf7ow/UnH2PXdW7An8CDFC5c+6NTsj7hdsdn5mIy14eCB8pBtq5w==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=QLAt6HSVkXwshWLqUZWVUhgVKd+0Vu75abzHA0Etn50=;
- b=mJmmghqAUi7MTNODu0mnMjZ58O9Z214XOkO9CVmBUfpUFxFn+p9yIZy5VXS+Bw1Tp89Fl96OwREgojp8BvDg0KMhkwW/F9SXjFkd5M3bcgvBP3UZO9yescLZxDNp6u7I5tKmy29FLTTXNOoJJ86SM8IAlpDMOEaiARdB7m9OffYSrlhBncoKUAxsxjpVpYQElyxkdzgWS7WkxUBaypApszzmU3P1YxAfJby7jm9LXLAWT1yGi4EP9fNHB+W0wazaIqIq/+pGtzvMJKWxqwd07r//isZn3drIKA/dLzOzc7wAy4EBFkGiVlfAI+UXfOBqQ0pusBe7DmqL4XyPZxNT+w==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 216.228.117.161) smtp.rcpttodomain=shazbot.org smtp.mailfrom=nvidia.com;
- dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
- dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=QLAt6HSVkXwshWLqUZWVUhgVKd+0Vu75abzHA0Etn50=;
- b=kxiA0Dp3Wn5vYHZdJoQWcbJ4e1vIKZjBEhj+NczZzgCnpZqzm1uk5eM+z3EblnWirTJj9rDAlJYMVLGBO/E1a+zweud5Non4dxD7/ldmCnxsDOzcJUsVMrfoxrFFtPwMJFqNimw2w2AiEKfxquWYsz8KGyICDGryGyFAGoUMENvhvoxub/tsicL34M8pyngNVzfij5iKqRsJkH8ov7aqssdEOet4Jo72o8k7MEONqlhd9+d9nCoKThcw0ZXUoTUlCWRd29VZkq6sweToUwSUySY7MI2oQum9QdlYGsENh4nqNjGjFgGMjuYow5koWanEnihmNzeqxcVhhjUx5oVv8g==
-Received: from DM6PR08CA0066.namprd08.prod.outlook.com (2603:10b6:5:1e0::40)
- by MW6PR12MB8952.namprd12.prod.outlook.com (2603:10b6:303:246::17) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9745.15; Mon, 23 Mar
- 2026 21:59:10 +0000
-Received: from DS1PEPF00017094.namprd03.prod.outlook.com
- (2603:10b6:5:1e0:cafe::c0) by DM6PR08CA0066.outlook.office365.com
- (2603:10b6:5:1e0::40) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.20.9723.31 via Frontend Transport; Mon,
- 23 Mar 2026 21:59:04 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.117.161)
- smtp.mailfrom=nvidia.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=nvidia.com;
-Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
- 216.228.117.161 as permitted sender) receiver=protection.outlook.com;
- client-ip=216.228.117.161; helo=mail.nvidia.com; pr=C
-Received: from mail.nvidia.com (216.228.117.161) by
- DS1PEPF00017094.mail.protection.outlook.com (10.167.17.137) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.9723.19 via Frontend Transport; Mon, 23 Mar 2026 21:59:10 +0000
-Received: from rnnvmail201.nvidia.com (10.129.68.8) by mail.nvidia.com
- (10.129.200.67) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20; Mon, 23 Mar
- 2026 14:58:56 -0700
-Received: from meforce.lab.shazbot.org (10.126.231.35) by
- rnnvmail201.nvidia.com (10.129.68.8) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.20; Mon, 23 Mar 2026 14:58:55 -0700
-From: Alex Williamson <alex.williamson@nvidia.com>
-To: <alex@shazbot.org>
-CC: Alex Williamson <alex.williamson@nvidia.com>, <kvm@vger.kernel.org>,
-	<jgg@ziepe.ca>, Renato Marziano <renato@marziano.top>,
-	<stable@vger.kernel.org>, Leon Romanovsky <leonro@nvidia.com>
-Subject: [PATCH] vfio/pci: Fix double free in dma-buf feature
-Date: Mon, 23 Mar 2026 15:56:58 -0600
-Message-ID: <20260323215659.2108191-3-alex.williamson@nvidia.com>
-X-Mailer: git-send-email 2.51.0
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="LjnmsVBn"
+Received: by mail-pl1-f175.google.com with SMTP id d9443c01a7336-2b052562254so35305ad.0
+        for <kvm@vger.kernel.org>; Mon, 23 Mar 2026 15:07:37 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1774303657; x=1774908457; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=exBHGWHqN/Fcx1Fk+ursFGf32PtT/7vVoLt/cnZyELU=;
+        b=LjnmsVBnJwZ2aw9PaeRTDBlW6IQkHvKbtyqhL1Ghqdvfx/oDSdRVCRSMjstWY6ST+4
+         eVyp5eH2bknrQw05qfOP3Qha0cNZwIrfSEe50nh1ApGkmH07tl7Km3q/kvAckLCsSOov
+         VM5UtwM9oBWLe25jxFcBaL03BUUtN79cX+jeJ4VPvQp8vrQuXut4+1PcjMYrf8/nyvLj
+         t3EyL3S1CzzA5rVTH70CCFJ/mLdWCGwqa/SVhPaB3dVZyCpJsHg0pmzVlVl/Cx1PqBOH
+         fUbu40tcZa3PMGW1vbyNezS/ToBrjJ3N5JZ5X8KLiuXflubQYFV265SLJaOhhu91o6KC
+         dyFA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1774303657; x=1774908457;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=exBHGWHqN/Fcx1Fk+ursFGf32PtT/7vVoLt/cnZyELU=;
+        b=l5dVfYy7e6SnwmwOzNE80sf5Iny7m6k5PeOeB2PPwMB2UO2wSDAE4PFeAKBAtdLdQB
+         UK1JaozJPt9KTeD5y3Nq3Z0gCQmlAroRGPiGl8DmmeLueObRA/cgigZUC1sXDx1n1ctI
+         qUMTU4aYnKBig37Snox0VxbYHDCRA3636U+TmaxRaYqmNWTp9tnnSpj4BmQwAsCulGdh
+         AQw2s+E8oKidQPV9eWkmhnxYrQ1vDGdqhmLCf5ASTB8Kwn0SZ/KUOkceo/nKcAy8nBkz
+         iFjX9pYl7bujS3L9xbfhVL4wN6uKXuN5PRA4wHqOaELyjBAXKP8IMtN466byXXLXvwkD
+         QfvA==
+X-Forwarded-Encrypted: i=1; AJvYcCU+g9GmBMNDDGFGG/lrOwxjif8zZKF5+8+Jz+i9Yi8yOGRE7RId9EO0QluOKjSWpRdv9fg=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzbXaM/3c5BIvTmt4KGUhIJ0Q3X3w0QNjLnmffx6YVq5ysgqa/N
+	D6GmW8m2BreIKWImH8eZBLXzC6ExPk/Eo7GvObbuC9S5mIRbtcLuEVZ3KT13HKb2pw==
+X-Gm-Gg: ATEYQzyNIP5DA3MfOHQovQFSn/YbG50hyt0rDfVUMxFO3UzrYoGcGM5qQbX/GHSnGqY
+	moSDCUIS9n6/j65VeTNtR5oSG+bP7Pb+Ez09sx6HoY4XqCvP77qynNZacXqLUMlQWe+x7CAIf28
+	qIwMfr86bjCwBJR+QgPt1/gElSrkQSB8yXexIzwBlJHg/qOwp1Li5ffd5D5J0b1O8RGkMpQKK1D
+	1jWz3ER7XvUhT6ofLSIXR8NPK9As9stRmBPH8fkfOI3E9M1LNFrZRpmL4a2jto1vmMDiEzjEVfT
+	h5BEtFidWXHFkgq61zI6ZzB6i4XZGnft6tJdUW6ndolUUwbWvotVJ72Cr24kDpRE1lMrDrBEMIH
+	ep53MWBw5/g/Ic14ka7KVlsyYvhDOZUCKG5ckcW8XwQ5RCj3W/CqkZVAQ9uS2d21jGHcOHuTRC3
+	37tdUsjqP5scqTJJMs1+nyoBX9AnW6Wceir/AYG/HC5los9IT/LIp28DbPunsjog==
+X-Received: by 2002:a17:902:ce0a:b0:2b0:4613:2e35 with SMTP id d9443c01a7336-2b0a532cbf5mr1341715ad.0.1774303656096;
+        Mon, 23 Mar 2026 15:07:36 -0700 (PDT)
+Received: from google.com (168.136.83.34.bc.googleusercontent.com. [34.83.136.168])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2b0835551c3sm117347225ad.35.2026.03.23.15.07.35
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 23 Mar 2026 15:07:35 -0700 (PDT)
+Date: Mon, 23 Mar 2026 22:07:31 +0000
+From: Samiullah Khawaja <skhawaja@google.com>
+To: Vipin Sharma <vipinsh@google.com>
+Cc: David Woodhouse <dwmw2@infradead.org>, 
+	Lu Baolu <baolu.lu@linux.intel.com>, Joerg Roedel <joro@8bytes.org>, Will Deacon <will@kernel.org>, 
+	Jason Gunthorpe <jgg@ziepe.ca>, Robin Murphy <robin.murphy@arm.com>, 
+	Kevin Tian <kevin.tian@intel.com>, Alex Williamson <alex@shazbot.org>, 
+	Shuah Khan <shuah@kernel.org>, iommu@lists.linux.dev, linux-kernel@vger.kernel.org, 
+	kvm@vger.kernel.org, Saeed Mahameed <saeedm@nvidia.com>, 
+	Adithya Jayachandran <ajayachandra@nvidia.com>, Parav Pandit <parav@nvidia.com>, 
+	Leon Romanovsky <leonro@nvidia.com>, William Tu <witu@nvidia.com>, 
+	Pratyush Yadav <pratyush@kernel.org>, Pasha Tatashin <pasha.tatashin@soleen.com>, 
+	David Matlack <dmatlack@google.com>, Andrew Morton <akpm@linux-foundation.org>, 
+	Chris Li <chrisl@kernel.org>, Pranjal Shrivastava <praan@google.com>, 
+	YiFei Zhu <zhuyifei@google.com>
+Subject: Re: [PATCH 13/14] vfio/pci: Preserve the iommufd state of the vfio
+ cdev
+Message-ID: <acG3M41Ho96FyJ8V@google.com>
+References: <20260203220948.2176157-1-skhawaja@google.com>
+ <20260203220948.2176157-14-skhawaja@google.com>
+ <20260323210111.GB2571566.vipinsh@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: rnnvmail202.nvidia.com (10.129.68.7) To
- rnnvmail201.nvidia.com (10.129.68.8)
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DS1PEPF00017094:EE_|MW6PR12MB8952:EE_
-X-MS-Office365-Filtering-Correlation-Id: f248bf69-b831-4b2f-9e12-08de892769d9
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|36860700016|82310400026|376014|1800799024|18002099003|56012099003;
-X-Microsoft-Antispam-Message-Info:
-	I0iYhRFfyFi6y2v3zBQFF07N8NOcm7qs30mwpP2aKgsOsed5mhIo3YzQyDMDmj6dZRU3Ne2p8f8pcEkibk3dxDOb/HaO7/djyNdrS0xp/d4A22M8V+jZ4b/e53SDsuTqfPIGZqYcDFgrNkN0RN15TEHM/jJvNBcvigBYkTYdBA9mHjxWKxIB3VIdTlIX5shIwcCcv9epo64PRmgLJF2aEQdwhFFuANxDoko+DHiVWDoN0NWJs/dKLEgFwgXad2IEWRAXpC4GRxjo7eN+x1nUu6NprX0gOnxlot3KMBlc5f+Gd5omgn3oWzY6qvp4n3qUB4OFBuMDcUCYcYRW8fqkq+MMZm141Sm+2UWdxsM5thTFXJg0+oCtRIuFxqyviD3mGUwu+EYZg0Tm4112OPMnXn1f6KwaRK03zXLOdf234zZnC3HEMF16bj/8LsylHy6oxFKQDycsqaTqwF90+jWtWPsCz/KhQRrgQwPz4TNJjSmfkKturHhtDbpdhvxyO2lM49V7/ITa3BgyMgY4ZvwEoomD0aH/2gaKH+HTXIgqonjPAXo0ls+a1AJ6qZI7zpSEBVu5wjvEfq9YKgoBrRPVViS2ajK1wr5KI1ptNKo7CAZ4XjK4yGbaGkQWw1SI1LEshWO++d6v5re1Q1s2kpXAkSvCYdRasWMfNb0bbmeXgYEAAVy1bk47nkgf/3QVECPMhr36KGLZojpJ03Dvu7CcTo6wUUV0UpWcrwgo2OD8FNzewNETPooC5ne7ZLtQKpdxzBxCfV5jk5HULUPUWrEHxA==
-X-Forefront-Antispam-Report:
-	CIP:216.228.117.161;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc6edge2.nvidia.com;CAT:NONE;SFS:(13230040)(36860700016)(82310400026)(376014)(1800799024)(18002099003)(56012099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	xixzMuIOlkWlPrviW1ryMszCWlDQtKrXS+RuexkJ+Jz8rH/bjBUQGzDybXjPr86RQQ1bLFFiJqWwG/K2rhX5SGYH04TowSYIP1YE5CwuzQfi5AYSvHGgJEPnr9amqFJI2QBH1ksVzmWr2VUsuFgK6Sod6krqmU7WJIlsPJkbHnuf8l/ZM632gYYp5AVZpY91HH5KIq5ra1osXHVWREdZx3ys5QWVPNUS+qvKnBFU0CtRGkxPEu6wlWlGteAGI/3rgPY2bxfXSvoQc3EY+J9c4KsDJDqiqWpO3+5bTbPKq8WgM7RzfrOR4nUDZNeh390zEO+0PK5pYDacbtj9zZ1BtfvMMerUxUIAJhd1eBsXAZ0YvilDiO2rjHyBM7mzNFHan+/4FBygvKnHoqH9bwi3bDLjJ7TW6kpKxqJO3zDCP+ySD1upxZNXeX2EjvxYJ5vT
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 23 Mar 2026 21:59:10.4276
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: f248bf69-b831-4b2f-9e12-08de892769d9
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.117.161];Helo=[mail.nvidia.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	DS1PEPF00017094.namprd03.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MW6PR12MB8952
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Disposition: inline
+In-Reply-To: <20260323210111.GB2571566.vipinsh@google.com>
 
-The error path through vfio_pci_core_feature_dma_buf() ignores its
-own advice to only use dma_buf_put() after dma_buf_export(), instead
-falling through the entire unwind chain.  In the unlikely event that
-we encounter file descriptor exhaustion, this can result in an
-unbalanced refcount on the vfio device and double free of allocated
-objects.
+On Mon, Mar 23, 2026 at 02:17:29PM -0700, Vipin Sharma wrote:
+>On Tue, Feb 03, 2026 at 10:09:47PM +0000, Samiullah Khawaja wrote:
+>> If the vfio cdev is attached to an iommufd, preserve the state of the
+>> attached iommufd also. Basically preserve the iommu state of the device
+>> and also the attached domain. The token returned by the preservation API
+>> will be used to restore/rebind to the iommufd state after liveupdate.
+>
+>Lets add token when it is used in restore/rebind patches in future.
 
-Avoid this by moving the "put" directly into the error path and return
-the errno rather than entering the unwind chain.
+Agreed.
+>
+>> diff --git a/drivers/vfio/pci/vfio_pci_liveupdate.c b/drivers/vfio/pci/vfio_pci_liveupdate.c
+>> @@ -49,15 +51,32 @@ static int vfio_pci_liveupdate_preserve(struct liveupdate_file_op_args *args)
+>>  	if (vfio_pci_is_intel_display(pdev))
+>>  		return -EINVAL;
+>>
+>> +#if CONFIG_IOMMU_LIVEUPDATE
+>> +	/* If iommufd is attached, preserve the underlying domain */
+>> +	if (device->iommufd_attached) {
+>> +		int err = iommufd_device_preserve(args->session,
+>> +						  device->iommufd_device,
+>> +						  &token);
+>> +		if (err < 0)
+>> +			return err;
+>> +	}
+>> +#endif
+>> +
+>>  	ser = kho_alloc_preserve(sizeof(*ser));
+>> -	if (IS_ERR(ser))
+>> +	if (IS_ERR(ser)) {
+>> +		if (device->iommufd_attached)
+>> +			iommufd_device_unpreserve(args->session,
+>> +						  device->iommufd_device, token);
+>> +
+>>  		return PTR_ERR(ser);
+>> +	}
+>
+>driver/vfio/pci/iommufd.c has all of the code which interacts with
+>iommufd in VFIO, I think we should follow the convention and add a
+>function there which can be called from here.
 
-Reported-by: Renato Marziano <renato@marziano.top>
-Fixes: 5d74781ebc86 ("vfio/pci: Add dma-buf export support for MMIO regions")
-Cc: stable@vger.kernel.org
-Acked-by: Leon Romanovsky <leonro@nvidia.com>
-Signed-off-by: Alex Williamson <alex.williamson@nvidia.com>
----
- drivers/vfio/pci/vfio_pci_dmabuf.c | 5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
+I am assuming you meant driver/vfio/iommufd.c as
+drivers/vfio/pci/iommufd.c doens't exist.
 
-diff --git a/drivers/vfio/pci/vfio_pci_dmabuf.c b/drivers/vfio/pci/vfio_pci_dmabuf.c
-index 478beafc6ac3..b1d658b8f7b5 100644
---- a/drivers/vfio/pci/vfio_pci_dmabuf.c
-+++ b/drivers/vfio/pci/vfio_pci_dmabuf.c
-@@ -301,11 +301,10 @@ int vfio_pci_core_feature_dma_buf(struct vfio_pci_core_device *vdev, u32 flags,
- 	 */
- 	ret = dma_buf_fd(priv->dmabuf, get_dma_buf.open_flags);
- 	if (ret < 0)
--		goto err_dma_buf;
-+		dma_buf_put(priv->dmabuf);
-+
- 	return ret;
- 
--err_dma_buf:
--	dma_buf_put(priv->dmabuf);
- err_dev_put:
- 	vfio_device_put_registration(&vdev->vdev);
- err_free_phys:
--- 
-2.51.0
+I see iommufd_ctx and other iommufd_ functions being used directly in
+various places outside drivers/vfio/iommufd.c, so there is not a hard
+split I think. This will introduce unnecessary indirection I think.
+>
+>> diff --git a/include/linux/kho/abi/vfio_pci.h b/include/linux/kho/abi/vfio_pci.h
+>> +/**
+>> + * struct vfio_iommufd_ser - Serialized state of the attached iommufd.
+>> + *
+>> + * @token: The token of the bound iommufd state.
+>> + */
+>> +struct vfio_iommufd_ser {
+>> +	u32 token;
+>
+>This is u32, whereas the token above is u64.
 
+Will update.
+>
+>
+
+Thanks,
+Sami
