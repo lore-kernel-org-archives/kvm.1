@@ -1,107 +1,76 @@
-Received: from PH8PR06CU001.outbound.protection.outlook.com (mail-westus3azon11012028.outbound.protection.outlook.com [40.107.209.28])
+Received: from CO1PR03CU002.outbound.protection.outlook.com (mail-westus2azon11010030.outbound.protection.outlook.com [52.101.46.30])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C40CB175A8D;
-	Mon, 23 Mar 2026 13:11:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.209.28
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D85B399036;
+	Mon, 23 Mar 2026 13:25:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.46.30
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774271465; cv=fail; b=ZhKGsvw0DM/QCtkbiGtZQX/uq4z6aLw0+LhGC6wh//dl3b7D6fX+BwiX9ZiX3UPO6mOzk7ji2aOpVBwC4RaxDG3A7G0QGJs0UDtlnG4zHDS6Emt00JEsLWTAyr0Os5xLKbdXE7qre5AcdolwBzuVQcKcY0RBDZjixRczavzWmcA=
+	t=1774272346; cv=fail; b=ZRmHWxruKOSVWwi6k03WeX4enx/y7OFuPUgNabGwXoDbYVH3Cluq2iTnEFlqeIrcU17E9v21nARC4OSewChme42MHhxye7oulzTZbaIyfh028ecx0gwvDFHMz4N2w05H60NfXlpHcdbW5oOB4HxL4syDGj719clzY+V+0RDKOI4=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774271465; c=relaxed/simple;
-	bh=q7RXl8Bj2FjxyyuFYD3uDekQd9KrphRzqE8wHYhN97E=;
-	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=grnWdTjw9BtYvurZyX2BdUJZIaN6QUDhWcNtR++23CLlnaxGAMKwXNXjOSyLdNf+rTjqSx9sJ26AL9z2GlI+xIVY6dDTF09vHOOeub+2HSc/M0NR4XK+ocS/1XwJkVkQ7GFU8P8RhLJ/q4E6Ut6Jd0lZQ30qUt5Ih0DXnEBm59c=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=q24uBWOE; arc=fail smtp.client-ip=40.107.209.28
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
+	s=arc-20240116; t=1774272346; c=relaxed/simple;
+	bh=Z1V6UuUvr+0QWpLhwhIPhbcEp2VtL6rA9zFh7hlCXgA=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=FSB503YAYb+QATlUEtnawnJfLiCVz73vnLYCOzIxMAGISaSMBsldyDlXTV7uLxDPY9kKvYgyfNO1XfyrWsoBPzC5juUpqCnH8nkZHJWGWYtPm70BYGCdqs6jrllPzC2VxiPJYwbPCxnNcO6esHfgLUq2o4lkrWebPiu3wsbYW3E=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=fKzbfg2W; arc=fail smtp.client-ip=52.101.46.30
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="q24uBWOE"
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="fKzbfg2W"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=EC7PWgc0QNPXZ2AVO3JNIzj+ReplWI7NU7hmOhFiDNnsfrc8HrTJhGTvaCTVrO+PPCNV2QRS0vGQ3Lf6hh2AxPJzpfD0qGhb/9Puy7JfCuFbpifoYdu2ATKKXcPfwMkRN/f3iFnTO64f3mSaiAub6c460FxjUw0eD0Wms/WxS8jf99ATNRFFnpvqFh4pn1N+hSh8Ix6yFY19dDwtzN2H7tSkTURgFTgg+LszxNTjpgnXZAYD5O5krQzq6icdSDm+cDu9+czXBDMgSSFnX2gw9JRW4vu6XuFt/ChMmd4FsiPOTZJr4KNCOqlKK05GNLmI2hRfbtREtsyFTai+6RmULQ==
+ b=qhlY/2oH5sphvdpvC+VR96WEzYtlPhvl0H29yXx8iRksKU9l5B78RkiUEDFWgtHtI1PphCjYP1GC9h3BLcVjA8u7spn9DuIJVvPYbxmSbU3+95q2+B56lVsWuKYlQsRwGR/bbERUtsb1/+wbrzt5mAtbevTj+cfxZS/hvS76yo+ANQi96dp2vILttCObK2nKSn51LxGru8uvaRaLAwpvZORavPid5e9GNIAi64VEtJVc/cpEDREVbkc8vYlNLumuOkyALN8h2djAceSsuAR9gCN8hYlJ/aQdc/9kCTzzZrAgpqoyYBHoWJKUFhMgOdiakQ6Os7fFB3DjQKwESVkmow==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=GXcOZLIgNYLLwfBkfvtjxpJ1lccfSajU9C+wnJsvY4E=;
- b=I66Ak/1zWF90Ow/KV+xT06gyomxqI4UZv36X/hvzQqoiAmHZsy6kNhsqoxq0ogaYeDro1auH+eOV10iMeBqzHZRIrD7NdKJmUc+dpi0H1H6m+OB+1fyBcw7UB0Eles5eOgRr5LnaDM5U4e1aQ2kOzpJFD+qZd7p3ALAZmuwHxLQeVrcgkqfOr12DEKRYyg17Ud/6eCHuwyelMUdh/1Qm4f9SB2BjJeIymZmL8Z3Rgb+PCu5haLUY/O3bRH112x6woHmOqJXKNDqkGrcYvSEu3/iFPuRkwZsqZdwSGnyX6GLmi2khqSMbIgglO0rTR7qOiKBJ6JK1ge0Fy2t1Y9OmLA==
+ bh=ElObXdYKkr5+Zmy0X8sfD/HZ7Z4/6F5xLeO9AFHBHow=;
+ b=uvuBs2VtoKA/D2lvsilbSCQ/rySAhYc1CKbvq4s2Zf8b+jVxf8mY9b5Ll1zyROf9MH84tEsKul/MZLtsHlmaYSbMtKeng9qqNEYKtBkkOAWi++AfhXfyVAcULcN7D2WOsZjaZPB71Qq1zHYehaGRpu9VLAYONaMcgclUTmMbildf4K6cUqrpvwy5OIxFEkcCSflE5X1PBiZO1Q/a1XKKZPJOeltjWPu3XPHEv+l61JfOrhIDYQPp4BCiLySiru2pe5YAdcJYOJaxQPhKXaxWmY/tQCZlHmit1AmW41S3vDznW88zt/oV0Pi31hHgM+5iCS89ql1wKWjZjauYU8+J6g==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
- header.d=amd.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=GXcOZLIgNYLLwfBkfvtjxpJ1lccfSajU9C+wnJsvY4E=;
- b=q24uBWOEiOy75Foy0n1n05+0WI2XvaWYtX/qsMlzj9IHVUA3Zl00qfEa5CmstIMAY8H04j72D+7NCP4hZx0+nxaqxmZytuk2R2e/6PPGEscS9GyhrMCNAocUYajTwuydQ0NoLr2JJL8oCDwMxejDmEkQPeVYEwmmFLREuWOjvYY=
+ bh=ElObXdYKkr5+Zmy0X8sfD/HZ7Z4/6F5xLeO9AFHBHow=;
+ b=fKzbfg2WYnbCpB8PFAY7mvpKl3GRuSru4PEC4uc4sbfwzs7mlTOt0c7Bg++PNv/tnh5+Br4B/MePT3tYJZVgZYlaiPbn7ria1qizLpcq5XJ3eObUb+5IDblqGrGxicKZ/owIN6ZrTByr4kFv0fEX0UZny3+K13k9cA5q5Gm53uWm+wjd+v3EhXoJNbNcFdpBkDrwzHnxVXYJ4cp5cklqAKNBsxLsyqyATcew/4zlHVKg+UahGqLmLOT8g2iIEUccfxlTgExfhMmxj8JGIA+/KLtJCx4t83qgeUS3XxWUZxgKvTA3LR8WpMy2EkoI2IEQMVaQzBgtynVPJgzRjs+AVQ==
 Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=amd.com;
-Received: from DM4PR12MB5070.namprd12.prod.outlook.com (2603:10b6:5:389::22)
- by CH3PR12MB9121.namprd12.prod.outlook.com (2603:10b6:610:1a1::8) with
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from LV8PR12MB9620.namprd12.prod.outlook.com (2603:10b6:408:2a1::19)
+ by CH3PR12MB8728.namprd12.prod.outlook.com (2603:10b6:610:171::12) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9745.20; Mon, 23 Mar
- 2026 13:10:55 +0000
-Received: from DM4PR12MB5070.namprd12.prod.outlook.com
- ([fe80::f3f2:852c:78d5:9353]) by DM4PR12MB5070.namprd12.prod.outlook.com
- ([fe80::f3f2:852c:78d5:9353%4]) with mapi id 15.20.9745.019; Mon, 23 Mar 2026
- 13:10:55 +0000
-Message-ID: <647abba4-8d47-44b0-9e11-b3f1d04c408c@amd.com>
-Date: Mon, 23 Mar 2026 08:10:53 -0500
-User-Agent: Mozilla Thunderbird
-Subject: Re: SEV-ES guest shutdown: linux-next regression with QEMU 10.2.2;
- smp>1
-To: "Aithal, Srikanth" <sraithal@amd.com>,
- Sean Christopherson <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>
-Cc: open list <linux-kernel@vger.kernel.org>, KVM <kvm@vger.kernel.org>
-References: <c820e242-9f3a-4210-b414-19d11b022404@amd.com>
-From: Tom Lendacky <thomas.lendacky@amd.com>
-Content-Language: en-US
-Autocrypt: addr=thomas.lendacky@amd.com; keydata=
- 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
- WiyqywZI5g==
-In-Reply-To: <c820e242-9f3a-4210-b414-19d11b022404@amd.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: CH0PR03CA0092.namprd03.prod.outlook.com
- (2603:10b6:610:cd::7) To DM4PR12MB5070.namprd12.prod.outlook.com
- (2603:10b6:5:389::22)
+ 2026 13:25:37 +0000
+Received: from LV8PR12MB9620.namprd12.prod.outlook.com
+ ([fe80::299d:f5e0:3550:1528]) by LV8PR12MB9620.namprd12.prod.outlook.com
+ ([fe80::299d:f5e0:3550:1528%5]) with mapi id 15.20.9745.019; Mon, 23 Mar 2026
+ 13:25:37 +0000
+Date: Mon, 23 Mar 2026 10:25:35 -0300
+From: Jason Gunthorpe <jgg@nvidia.com>
+To: Alex Williamson <alex@shazbot.org>
+Cc: Matt Evans <mattev@meta.com>, Leon Romanovsky <leon@kernel.org>,
+	Alex Mastro <amastro@fb.com>, Mahmoud Adam <mngyadam@amazon.de>,
+	David Matlack <dmatlack@google.com>,
+	=?utf-8?B?QmrDtnJuIFTDtnBlbA==?= <bjorn@kernel.org>,
+	Sumit Semwal <sumit.semwal@linaro.org>,
+	Christian =?utf-8?B?S8O2bmln?= <christian.koenig@amd.com>,
+	Kevin Tian <kevin.tian@intel.com>,
+	Ankit Agrawal <ankita@nvidia.com>,
+	Pranjal Shrivastava <praan@google.com>,
+	Alistair Popple <apopple@nvidia.com>,
+	Vivek Kasireddy <vivek.kasireddy@intel.com>,
+	linux-kernel@vger.kernel.org, linux-media@vger.kernel.org,
+	dri-devel@lists.freedesktop.org, linaro-mm-sig@lists.linaro.org,
+	kvm@vger.kernel.org
+Subject: Re: [RFC v2 PATCH 04/10] vfio/pci: Add a helper to create a DMABUF
+ for a BAR-map VMA
+Message-ID: <20260323132535.GJ7340@nvidia.com>
+References: <20260312184613.3710705-1-mattev@meta.com>
+ <20260312184613.3710705-5-mattev@meta.com>
+ <20260318140408.4677fff5@shazbot.org>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260318140408.4677fff5@shazbot.org>
+X-ClientProxiedBy: BL1PR13CA0205.namprd13.prod.outlook.com
+ (2603:10b6:208:2be::30) To LV8PR12MB9620.namprd12.prod.outlook.com
+ (2603:10b6:408:2a1::19)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -109,172 +78,72 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DM4PR12MB5070:EE_|CH3PR12MB9121:EE_
-X-MS-Office365-Filtering-Correlation-Id: 41db1976-fdb7-40bd-9f40-08de88dd9d98
+X-MS-TrafficTypeDiagnostic: LV8PR12MB9620:EE_|CH3PR12MB8728:EE_
+X-MS-Office365-Filtering-Correlation-Id: 5fcbc565-694b-4953-23f3-08de88dfab48
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|376014|366016|56012099003|18002099003|22082099003;
+	BCL:0;ARA:13230040|366016|1800799024|7416014|376014|18002099003|22082099003|56012099003;
 X-Microsoft-Antispam-Message-Info:
-	yBizZQOneeb3TgOciSjH4pFi4yhP7kN65MDfvPnsImQqieRlGT4HEubm7WTeOvmCKcwt9Qe+GkbQut/EtZpmIySlQe1nczUYF9z30eMXUjSEXH0ZSSv48Bza2/96hzPe1g1HZzN+v0i0UrBhfSUcvwu/qXgiZnjFqSJ3e6vrwfsIn4WVXWN74pW91V+izBztDXlpABXyMo7fPvL6dHx0WrOLFQR2IN5MAog+A69lcmLWGyQdDIOVTueSl7I99u5DYTIysr6U+ZOOum5B/VKghPvlj6ApuaLZVx12o+ue2lvrv3HlWbAIW7aK8YUVEtBr2eoXChh428pnFGy1BOHuSlXF4Tj5IAFSZXmwijdkLlctBEu62/e2tJIzgQWQAYJKlCeDs/c++BLB/MBDMOjn7FB9YQkGEkbWx/1Ms+TpTGBG4eE7zC8Pr2fcPTblmBLVrh6Z+ph2JlSycYiiRf55tfJtaA7qlSQFiIUyHYKrmWC3xZVbufe2D6gX7YL8D/xOfhTeCfmRWoYD17eLpweZeDZUQccuAeqzlsEX5UK6curGDfsimpbW+XXvrtj4SvDrpuj2FL7T2h7eXLV7wgNGWN9ZYMBq0cqEOqaJGM/R3oHACGh23etps6pUwjipmqa7dMTfIOA2j5S3MoRttSXHNW8L2S7sK02NDDT3VGM+1e103amq1V51bByXI215syijgQOze3s3xjyhUFmhXjtnh90zRsSYLEGwgI5/oJTK6eiIYs8qdg9aU4FKTVRk6veg
+	D2NQ6t8zxXSiownOmvCY1Pl5R/uUAyaD5qL2kaqSlyrZKWsu09mN1K2+q8X4x3vW6lI1uwVf2+y+VW8B8jjyp0i8yn2S9/77myZYneybbKwfbXyGcCDp78WBFCk3m1YIKWRUIrqofWI3Wm2AJKFDmXnRV0HnxI7WGGuoEBB1Aq/Vg+CUY6Lw0NKWFHW49NglR2iysu2ZcbAEsrymg4/9/vGzELUx+cnXCz6DbvW2/kQRgne69lk0N4NYf8UZ1vhijykg/hQa11bwni4gH3dradON2dX1bteTPGCmqD/kUB/1TunjcmTDdOMLJwdVSu1fi+U1PvWFSPVfNQvDRiXD8dtgrH3orAeDbbnCJ+CLHWItf88GMOosCcr6xl+cSqGDpJDxHSdG3pkrC9enHskYLdMJorgrXONIDy+8HVExyKV+D5rpVI9Srz1wZ9xpWPOzPBUFGrCNElW1KzzwVW9esnPU2/epVfEBvLiL5wE3vaSuJIgfYa0xr59dzFDQ4fDFmiWosQ9eG8moqe6pLwUQG5+Qh6+haYWHvP/bWuRHSDbmN8n4nJbOGuz3Gf/Yk4qWwcYYhF9fGyOHyaLOjcbo6Fkrs3Qg1rK/3VBD5e1jRN/p/CrekmM61VrQqOh3Y5LfwdQ5NQyuPCmD6cmyIFWtcj/NC4TBG5aEbNpcZHDq2ywqCUO8FzS5zsNQSMnEazpda+MMqkY2AHtvRHY8runn4zI81hQGi3qv/zOtENLrLew=
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM4PR12MB5070.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(376014)(366016)(56012099003)(18002099003)(22082099003);DIR:OUT;SFP:1101;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LV8PR12MB9620.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(7416014)(376014)(18002099003)(22082099003)(56012099003);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?QVFwZEZqYVpWajd0WmZXSnVkNXVhS1NvRkFZc3V5VVRzNHQzUEkzN0c0S2FQ?=
- =?utf-8?B?bnliaGNyNVpUYjNGa0tIRUlHeWtEZFl1NU1JeWtoclYvSy85MUdLYW5ya20x?=
- =?utf-8?B?a0kyczVZd1Nvd09GVHk4cHY4U0s4a3lrem1MOXpNVGhlUVVSdU5qeGRkcXVl?=
- =?utf-8?B?WlhrK1dqbVhmc1EwK25MM1ZQVWd3bExXZm96K1NyeHhkYWpyeHh3N0JSVzNC?=
- =?utf-8?B?V21rZ0MzcURxQjYxYnNmOUlCRWVsbFBac3duYkFSeW5HUHUwRms4N0tyTFFX?=
- =?utf-8?B?aFpPZm1wR0hjMlZrZ3N6RVBKT1BjS3dva005aGpHVUZyU0ZNT0loK3p4dDhL?=
- =?utf-8?B?YmlON0hRYTVpVUhXakNWTnBXc3lMY0hpVEJoYnR1NVFtR1pWcmtnWmpIWmZO?=
- =?utf-8?B?WC9zRzBsRnU3Vy9ieTRPajhlMmorR0JxUHJ2RHBieG5xdG50Q0VpT3hHRzBy?=
- =?utf-8?B?UGtLK001N2RSZzlWamtPa3B5dS9DczgvWkRqdHJKM1NKbFBuY3kvY3FselZ0?=
- =?utf-8?B?VkdQZ05GQzlIM3NmUjJjOGhYZTJIbVI4Z1BPajg0aGs1cWM0VnU4VFJWR0NY?=
- =?utf-8?B?NjhCaWhhMlA5V0ZOd0dYZDU2c2g2Q0VMa3RTa1lPbnRCUFFkQXNqZ0ZsQnpT?=
- =?utf-8?B?Y0FHOUhuaXNOYUdaRXpsNUdTTUJ0Q3J3Smhick54VmtoTVdCbDYxUEJoM21H?=
- =?utf-8?B?bzBCUUIyNHgySlVQTVVSaUlxUW53aUlxVDBPUElVUGgxS2lXb21iaSt0QVJ0?=
- =?utf-8?B?YUI1enZrRlJsUUtOMHpsWmQxSDBGYXdOTWRRNHF4Y1RZTnhvWUhnOVErMjNL?=
- =?utf-8?B?ZUVFTGhURkJaZEZQM3JTUTJ5Z2VIMERpeklPcjlodWxZWXhMZjEvTXkydDl1?=
- =?utf-8?B?TUozMmtpK0Z0SW0xcFF5MWVPV1lpUmkzWjFSOUlQY2Y1dEVWckQ0WWtnc1Mz?=
- =?utf-8?B?TVBmcGNMbXYxelZyY2R6dWVwTmtlVGNrZUl4MFpPR2hob1hSQ1hrQzhVODRQ?=
- =?utf-8?B?UWQyMGx0QjlYdHNWZlE5UURPRXpRM1JwSGF6MWMrMFptbjFoL2RPYWt5VGRM?=
- =?utf-8?B?SUhDRWJlRTdaQzZxcUFiOGU3c0VvM2YyR2JQRWZ6OHZMdUZ6WXhxMjFaQjlF?=
- =?utf-8?B?eVlPR3Y1ODBLc3NlblovTDZCcFYxczJCbmRDVjVRb2tnQUlTUnlzZmRNWE5P?=
- =?utf-8?B?WCtieEMwUG1xUGQwc1B4QWF4NmQzdzY2R2Vob0V0UmFrRVI4OGhTZ2hIdXQ4?=
- =?utf-8?B?ZW1RNXEremx4R0ROOEZMM3VnSXljU3VuSDFqUGdrbDNVN1NQWnREQjd4bUxI?=
- =?utf-8?B?TTUrUS9BekowMGpVaEYwaENhMzNhOHlpbnZzQ0hSRll4dUo4UEYxRy9Idito?=
- =?utf-8?B?eG9qMVlQZmlVU2cza3I3VTBtTlVmeDMxa3VKZ1RoeUN1OEx1c2wyU1NucWpy?=
- =?utf-8?B?OUdzK3ZKTDl0NFFOSEVYQ2xDYkhsT3lQMENWZ1JkVHdzVWZ0NFVvMHN1VXY0?=
- =?utf-8?B?L0N6Ulk0NExFQnF2aEU3SGlRNjUzUEhqckdkQlVGTURicVNjeUYzWjZDYndO?=
- =?utf-8?B?cWpuWFExNi83WDA0bHl5S0lYcmtSYXphQ0lEVytmbWJEMEcvWG9BSmJ2akly?=
- =?utf-8?B?SFBxbkcyeE5NQVFBUG1QMEhRTm85VVFRNitsYmZkTDlKOVF0dUFXTklSQXpS?=
- =?utf-8?B?dzdFQ3NjOHovY2c2UnJoVDBBQUltcnBXZERSTWhKZ3gyMDRyeDFTMCtIUTY3?=
- =?utf-8?B?VjVkckhiUStJRlZ6aFpPTW5xU1NSZlV4N1o4YzVBeEF1RzZobkkyVFVKMVBx?=
- =?utf-8?B?TytMR0l6b1hHeU9lVVRjZFk1SzJJTDUxalBlV2YyUDRRQi82Q2xTR3RMRThT?=
- =?utf-8?B?QVZjMTlvaDN3b2J1VmlFN010RjdSb1ZvVXQ0cjVJM2V2aVJJY3kwU0VwZlMy?=
- =?utf-8?B?MU0xV24rWWFiTHN6bVlpZEJZVGZ2Q2xzZmtPTkkzSkhIR1NaejJHdUJ5THpF?=
- =?utf-8?B?NXRTQXBSR3BxeXpnRitWNjlGc3RZeDZkdGptSG9vMlNCKzJ2Q2hFY2R0TXAy?=
- =?utf-8?B?MGpEdHFrUVB6MHhxWng5TnNRY1p4WlBlYnQ0aDFhQnh1YUh3NzlrZWxnVVlw?=
- =?utf-8?B?cHNPUnRoTTc0dE16d1ZKRFFNT0plVEt5TVlFKzRIcVpoWDhsZ2U5OXJIb056?=
- =?utf-8?B?S0dxaXJ2a1J6cXh4bFRGZmpDdjZENGtMakMrY1RGWnlKVHRxcGxxVnZ4aWNz?=
- =?utf-8?B?aWF4dXU0SjZiQ2JRK0lzaWx3cERvK3VxUVRZOHhEeUdFWGRsL1JGS1lSRXVI?=
- =?utf-8?Q?pZpe7FvtbG/EuX6ciO?=
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 41db1976-fdb7-40bd-9f40-08de88dd9d98
-X-MS-Exchange-CrossTenant-AuthSource: DM4PR12MB5070.namprd12.prod.outlook.com
+	=?us-ascii?Q?5hkMb0716B/GhLQqPHGswrlmo9tbZkYeZjw9XSO422wLFaMGruEVZbxmsXOS?=
+ =?us-ascii?Q?zGakgqsS0rXmM9Yu6m0b//5V9SO0VHI4kY4SCOhkvyJkRC9GArE1xeQDdotR?=
+ =?us-ascii?Q?KzG/+B9yGk33qnr8aS6aBtmmGA/xpZJJ+2HOWcd9hMcJiXI9jttKVUzd/tI1?=
+ =?us-ascii?Q?AfWRmnsfgMU5s7W3ghUciKGO6uJ5vxK5B256K56535RufO3QDnZgkDWTPNSv?=
+ =?us-ascii?Q?9LQCWW0Y3gij1stfwrNqRYTJM/zrouAWwYcMJ8dkzWU+COXDBys4j3drAIdZ?=
+ =?us-ascii?Q?Dn29n48EBMCNGiptFVV7ZAJ6dZ73xPxrw/jZMAzVvEfSVTC91tdIlxP7ULYc?=
+ =?us-ascii?Q?qRyWxlny7cNDaCOuO/VpZ9ANeJrrKdIFmqaqmdmROOwEKWyDNBZYkmRC8xj3?=
+ =?us-ascii?Q?qx2JAxRz87sVq4sKTdHiuGFrIv4VD3hMQYHMZVd6V9Zgq/mOCzBlAYUjwkZ2?=
+ =?us-ascii?Q?xDihkF7slsn2cNZG0pkD9AMtMIzHihDIUfyri4VIPNvUvyCC5G9fLegRWMDT?=
+ =?us-ascii?Q?2lcnoXHOcMQUE1LfMbWSvaFgnSRsnQ/gMKnkoQM36IY4Eb0SqeBtKbJlnseh?=
+ =?us-ascii?Q?8sci2wMqOEq1dMQm1/MFy+AVAjAjj2w3umuW5loA9Dc+CtWX4+BA9iVqh4vQ?=
+ =?us-ascii?Q?gNRCLiv12cEneeVVwQU7gHPjv+2nsTYBE9nzXNDWvCb/nZV/ZMy3tlUvb2oj?=
+ =?us-ascii?Q?q5AR7oSOOPpqsSmoQWQwXYg2iYR9aK86jgArBuqng2QklNrAQgecfB+rX2G5?=
+ =?us-ascii?Q?O3m+NXTuWY1ZRwwye7PM+f31TeteDOg2D5DXTB4zajkyk/5XwE2mwA3XcaZL?=
+ =?us-ascii?Q?mvCXm/u/IAc5l1r5njba42Ni4cKLTCk8UJwQY9t94fvD9w8rmXtWe8rzCPHF?=
+ =?us-ascii?Q?TKJfPEmlPYTYI1Rbl9EZOuRjGICESWHKtDQkH/xWH0h8EP52BL3T3hMBe62i?=
+ =?us-ascii?Q?nfdrn9btu6ZG80JOtc6rFr+L1oQPO8i7H1eagN//W/B1xUshL5Jot+NzFS+B?=
+ =?us-ascii?Q?z/87y6QKKhSfBZfrzSTnPWJHGqhQ5ouRLwangTXKiL+cXQw1hXLAiTdozqKD?=
+ =?us-ascii?Q?MLfbw68dfLb8+p64TSuHumFTp6i+trS7UqTn16RDS5QWtEEjQu7mN/f6FKjf?=
+ =?us-ascii?Q?SQXmtGJ9IXq7Xo2mGGEfIKYwbJfFQ523R7D2KYAyEcjIC7dqoBHBrwWi6OLX?=
+ =?us-ascii?Q?RcIPHnrTz58F+hSGVONyKAl7vE+XGtxdyrb1HjgENiMRvePxO/v8nXclHTJo?=
+ =?us-ascii?Q?T5KAaCtbU7ha5NqknKCvc5woqMVcxmvBy5ySa4YElel7MExRvBKBAXWoEolw?=
+ =?us-ascii?Q?hroZMv7SdTByySUrPbCH3jwXZGIzMbys4QpcHBAioLMD+PYjUXwvR7ySdxSY?=
+ =?us-ascii?Q?+Y8Oa+iVfNvitmPuz4gIC6OEhZMuBhEwWWz6Do1a+SuK/75GyhpdQ1/2Pf9o?=
+ =?us-ascii?Q?bGyT8hTjbHaN2n1dMGQXBgbmLmysQl+hy8LsB5HkOVMMX53faZquJFc9Ct0T?=
+ =?us-ascii?Q?QuS2GNKQXScRDcT7+BLlUXQAF+lk2wmsXrBTiEE2aYO2K+tevO8MC2SQpQLJ?=
+ =?us-ascii?Q?wT4DPCI2z0hxwFbAX/lnlmlpjg1CuHI+2Zznl2erLEm7WeBRUboP3s8LmTAV?=
+ =?us-ascii?Q?W2SnEX01E2n8M1565Z9BunREerSvya8eATzDZ8EtQXPO9EO6fNzrxoGI5XYl?=
+ =?us-ascii?Q?/UfyNDGE4OyhpDpaGtcTOpzHNAn/GLXtTFN+iZEajml4rsZs?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 5fcbc565-694b-4953-23f3-08de88dfab48
+X-MS-Exchange-CrossTenant-AuthSource: LV8PR12MB9620.namprd12.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 23 Mar 2026 13:10:55.0046
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 23 Mar 2026 13:25:36.9762
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: ATGzJF1T9XSdOb5i1cNz/O1mpugQfxU3YjBxJSx1F1X4QAL2o8JIaoOiUO8/7/+WsPXEbgNAb+/WwO1jwhGloA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH3PR12MB9121
+X-MS-Exchange-CrossTenant-UserPrincipalName: 7FlAOQ+CFsM76fQ9CNv1XelEUa1KyEZFu9CdDq0w+SxE6JBCUVRY6R9hu1TVpBWc
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH3PR12MB8728
 
-On 3/20/26 11:08, Aithal, Srikanth wrote:
-> Hello,
-> 
-> I am hitting a failure when shutting down a SEV-ES guest (smp>1) on
-> recent linux-next, and narrowed it down with bisection on the host
-> kernel. The issue appears with more than one vCPU (e.g. -smp 2); with -
-> smp 1 shutdown completes normally in my tests. The same guest shutdown
-> path works with an older host kernel (<next-20260304) and is also
-> avoided with current QEMU master or by cherry-picking a specific QEMU
-> commit onto v10.2.2.
-> 
-> Environment:
-> Host kernel: linux-next, tag next-20260319 [1] (also observed starting
-> from next-20260304).
-> Guest: SEV-ES Linux guest; -smp 2 (or more) reproduces the issue; -smp 1
-> does not in my testing.
-> Hypervisor / QEMU: Initially QEMU v10.2.2 (stable). Later tested QEMU
-> master at 8e711856d763 [2].
-> 
-> Details on issue:
-> 
-> After SEV-ES guest shutdown , the serial log shows a register dump
-> (example below) .
-> 
-> [   12.613383] reboot: Power down^M
-> EAX=00000000 EBX=00000000 ECX=00000000 EDX=00a00f11
-> ESI=00000000 EDI=00000000 EBP=00000000 ESP=00000000
-> EIP=0000b004 EFL=00000002 [-------] CPL=0 II=0 A20=1 SMM=0 HLT=1
-> ES =0000 00000000 0000ffff 00009300
-> CS =f000 00800000 0000ffff 00009b00
-> SS =0000 00000000 0000ffff 00009300
-> DS =0000 00000000 0000ffff 00009300
-> FS =0000 00000000 0000ffff 00009300
-> GS =0000 00000000 0000ffff 00009300
-> LDT=0000 00000000 0000ffff 00008200
-> TR =0000 00000000 0000ffff 00008b00
-> GDT=     00000000 0000ffff
-> IDT=     00000000 0000ffff
-> CR0=60000010 CR2=00000000 CR3=00000000 CR4=00000000
-> DR0=0000000000000000 DR1=0000000000000000 DR2=0000000000000000
-> DR3=0000000000000000
-> DR6=00000000ffff0ff0 DR7=0000000000000400
-> EFER=0000000000000000
-> Code=b0 96 b5 61 ca ef 3f 51 00 c3 65 51 19 77 b1 e0 e5 e2 91 b8 <0c> 5d
-> c7 fc 59 bc 2b 6f 90 89 44 23 ec ec 2f 62 fd e0 8f d5 c7 31 24 70 e2 7d
-> c6 ee 00 00
-> -> Hangs here
-> 
-> Host kernel bisect (with QEMU v10.2.2) led to:
-> 
-> Good (no crash on guest shutdown):
-> 32d76cdfa1222c88262da5b12e0b2bba444c96fa
-> KVM: SVM: Move core EFER.SVME enablement to kernel (local build tagged
-> 7.0.0-rc232d76cdfa1222 during testing.)
-> 
-> Bad (crash reproduced):
-> 428afac5a8ea9c55bb8408e02dc92b8f85bf5f30
-> KVM: x86: Move bulk of emergency virtualization logic to virt subsystem
+On Wed, Mar 18, 2026 at 02:04:08PM -0600, Alex Williamson wrote:
 
-Any chance you have the enable_virt_at_load module option set to false?
+> AIUI, this affects what the user sees in /proc/<pid>/maps, right?
+> Previously a memory range could be clearly associated with a specific
+> vfio device, now, only for vfio-pci devices, I think the range is
+> associated to a nondescript dmabuf.  
 
-> 
-> So the first bad commit in my host kernel bisect was 428afac5a8ea. The
-> commit prior [32d76cdfa122] did not have this issue.
-> 
-> Later I used QEMU master and with same linux-next next-20260319 as host,
-> it did not reproduce the shutdown issue .. that was using QEMU master [2].
-> 
-> QEMU master contains 56d89db2cfd82c53439778fbf39294bf35194dba (target/
-> i386: convert SEV-ES termination requests to guest panic events).
-> Cherry-picking that commit onto QEMU v10.2.2 resolved or at least
-> avoided the shutdown crash in my setup.
+Probably
 
-Well, if it is converting a guest termination request, that is still not
-good. It should be a clean shutdown.
+> If so, is that an acceptable, user
+> visible, debugging friendly change (ex. lsof)?  Thanks,
 
-> 
-> 
-> Questions:
-> 
-> KVM: Is the interaction/issue with older QEMU (e.g. v10.2.2) expected
-> here, or is there anything that should be adjusted or documented
-> following 428afac5a8ea, like for multi-vCPU SEV-ES guests?
-> QEMU: Would a stable backport of 56d89db2cfd8 to 10.2.x (or equivalent
-> handling of SEV-ES termination) be appropriate for users staying on
-> stable QEMU while moving to newer host kernels?
+IIRC there is a way to attach a string to the inode that lsof can
+display, if we do that right it should be good enough.
 
-That wouldn't actually solve the issue, it is just a much more user
-friendly error message. Is there a termination event in the host dmesg log?
-
-Thanks,
-Tom
-
-> 
-> Thank you,
-> 
-> Srikanth Aithal <sraithal@amd.com>
-> 
-> References
-> 
-> [1] https://git.kernel.org/pub/scm/linux/kernel/git/next/linux-next.git
-> — next-20260319
-> [2] https://gitlab.com/qemu-project/qemu — master 8e711856d763
-> 
-> 
-
+Jason
