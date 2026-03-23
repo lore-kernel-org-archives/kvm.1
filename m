@@ -1,216 +1,250 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ua1-f53.google.com (mail-ua1-f53.google.com [209.85.222.53])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 23F623E6DF3;
-	Mon, 23 Mar 2026 20:59:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.18
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774299573; cv=none; b=HhbUz9o4Ts7BN7UvozlIl2cHg46oMh9QHlYUospgDYDNwsty14/vuGIqrg5lveDkdTweKt7xZu/dsQte5LC8gOO1MHOTPH4Zldse/FH/Po4ngHmaRTGMmyKHUMc0hkLn4kOAdk5IYl3VzT6jO28uYBKFyKzwMCqCWhnEt8XCAzI=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774299573; c=relaxed/simple;
-	bh=P2DVlROBb3MiFEF2zbD3N1sxc8wm0dVtPD3VmuMsna8=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=Rfns31y4Wrvc3QMpJswtAPJpQxF/6l+TWiJSWqnbbSXvELu0ZAe6i1aHNS/MYuO1AeEE9Ph0/kA9sBQrUCxa0R35njfijLSo08+5c3YPc5a8zSg6wX6as6jr0fDGj0cZS+Lws2faioXiQFQrlDgG1uugd1NIUQSFqoMVzkgh7sI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=FGpV5eZ6; arc=none smtp.client-ip=192.198.163.18
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4163A378D7F
+	for <kvm@vger.kernel.org>; Mon, 23 Mar 2026 21:15:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.222.53
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1774300528; cv=pass; b=O628E/maZPzcmPXNdRthSkKOA6zGHtm3/NOaaE22gqVXc4/AeOZjD/miGI5OfwV4TWoihtByx5hB/Cr2ZqjmxGG4HenlwJ3hu8/DoT2TXKXrg7ZBil96E4LGJvwjuICGcQ3UOhEh+itSlqUdMvc3kPiU1+SX7CaZEgA3c327Y3Q=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1774300528; c=relaxed/simple;
+	bh=SND86V77+KDMJcamkZKPvEg9WAFvOkbzniGBXqw9BCs=;
+	h=From:In-Reply-To:References:MIME-Version:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=ffGl9BrOims/9vuNP5RTChC5VF0+MxywVYIGZeodtAG59j+/qili/hLiFf7zAeUM2Nq9K6J59NLrnw7HZsIxUlQBUdY/6Fw7Qu70Y6KnAlkJ06PiVDFS4a1V+tEDhlWX/nrRTJ08P/LFgXpmTqH1dXGbgtSn26nHMJeZwrBBy24=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=e5BleEw1; arc=pass smtp.client-ip=209.85.222.53
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="FGpV5eZ6"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1774299564; x=1805835564;
-  h=from:date:subject:mime-version:content-transfer-encoding:
-   message-id:references:in-reply-to:to:cc;
-  bh=P2DVlROBb3MiFEF2zbD3N1sxc8wm0dVtPD3VmuMsna8=;
-  b=FGpV5eZ6sn9sF67aF0xCEIBeVEg7aqkm2F6N5WTSifn8qyx9oxrrtyDS
-   tZ7xNFJSRBQMVB13lpkTKU6ej2u4M08cmQJ7dSzHgpZGM7ec3FR4Ggzki
-   dT1/8UUHkfSFFJ9rC0fRO+3ePGTKJkpUyyPh26Fcb6JGnWjrF+D4vTOmQ
-   3dbDct7kfW+r3SWRZMp/XQP7ibtocwOvINeLHjOZUEKxGl/ZVbdYX5qIV
-   ljQethuySN03uu7hiORUlhv7yKN5/Et27V04FmPBS7vmogdM4aQK5o240
-   skY6UOiy8p8elg7rY2OEZnDas+VF9TBjkJKj64Le4MPxzk3tH8rUV5x+7
-   Q==;
-X-CSE-ConnectionGUID: IlL2lSmDTzCXRe81hBfnGQ==
-X-CSE-MsgGUID: VhspFhWuRLyMn7UeI8e/NQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11738"; a="74491152"
-X-IronPort-AV: E=Sophos;i="6.23,137,1770624000"; 
-   d="scan'208";a="74491152"
-Received: from orviesa008.jf.intel.com ([10.64.159.148])
-  by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Mar 2026 13:59:23 -0700
-X-CSE-ConnectionGUID: eoWAbyRMQjKofKFqzGUC1g==
-X-CSE-MsgGUID: IzNA7qE8TfSuzZoaU/t85A==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,137,1770624000"; 
-   d="scan'208";a="224156869"
-Received: from vverma7-desk1.amr.corp.intel.com (HELO [192.168.1.200]) ([10.124.221.51])
-  by orviesa008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Mar 2026 13:59:22 -0700
-From: Vishal Verma <vishal.l.verma@intel.com>
-Date: Mon, 23 Mar 2026 14:59:06 -0600
-Subject: [PATCH v2 3/5] x86/virt/tdx: Add SEAMCALL wrapper for
- TDH.SYS.DISABLE
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="e5BleEw1"
+Received: by mail-ua1-f53.google.com with SMTP id a1e0cc1a2514c-94a231b285dso289682241.1
+        for <kvm@vger.kernel.org>; Mon, 23 Mar 2026 14:15:27 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1774300526; cv=none;
+        d=google.com; s=arc-20240605;
+        b=DTMyXbuJjS/2XlmJ6HnfF3ulAnKRJYBCALnLoFsy9gZUezd6R6pZqDSQVZohJaXY1G
+         RLbpKWGwBzAPvStUQGe64fQk5pm0fUpMAXE7PB5mAsBGONNlgp66Yyr/05D9aVBJfWdQ
+         ctgaLF2K85B0cli9aAr7MgXxax/VfS1resNHDAlETmVo1PwsL8QFHyx5mDcEd9eBcPXc
+         VVze7FbNCJl0ca2HOMIBlegZkLwCrWt6Gj4v7UgaB5fKyVLQ+JYQdamv3HNUu34a+hc6
+         VOrp6h+V8Rnocb8OBjN25ZdCyag+B/3xN9Wz8qT7I4b1XNl9bp1cgIIQO2ZIUS2a85xt
+         ai6A==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
+         :from:dkim-signature;
+        bh=eOYudi6RRVXGeHCIabojBlAXxTWtuPC09s4XfPfEePE=;
+        fh=RNWbz0wy+d4D7p6wSrmFerh5oqeDbtpObIrrwfJo8uk=;
+        b=MTwABILrfEYqYe0I4vNERF0Nvc1gqwv4qw7N5uFi5TSaAogl2Unx+IZQdpZRy+BjCs
+         itoHnSCGoNVJHRUwk57ZIGGT1E5rPqYLdoBuV9Wgm9WbF+hTvRQcclEmyTyNXJPd5+BJ
+         ydpUnGeOcAmhjoxKFLcqbuqPypzL1h0nTYYjHqSbeglbgNn1spArCuwsq3qETHfLhoy1
+         cqnHACzrX1pJftlLdSiI1FlWkP4gunAZyrvyzkcxPcIXeWKbINDTneslzYyZg8efNvrm
+         PgwYGXdbzVZElbTIyXfRpqRGkXoHIPuEJaCKpzJdJaeSkq6xy2BDv65Zh6L6ptv5fmlc
+         FToQ==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1774300526; x=1774905326; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
+         :from:from:to:cc:subject:date:message-id:reply-to;
+        bh=eOYudi6RRVXGeHCIabojBlAXxTWtuPC09s4XfPfEePE=;
+        b=e5BleEw1glLMBlDV2mvho8od6v7OE1TjBT7o7AcHJnucjQrQWcUYXIdXiPs2ytNyEc
+         XG1vRRvI/IsGhJsmEcWSE+GO0sHOq3Mo9ISsD2XiWpQsYKBdEzG2HBv04x1LqbftNuNC
+         B+/mmBGPP4fJ2rSUFr6QFtBDSuY6kC8pOlVTU/qay6AxjoYIuXPhs8hPFgE9sUEj4Jmw
+         goya+iq/Ov9bBOgINMsbxo53m4vaJ41fFTGsgblNYf+BnVNC6l4EBVFo3cDqpVHiYGsP
+         NxvgITmNr8giRkhx6NNHj6OxvwI0watCuxzo79rMpSbmKYZHwNg+n8GplWuw0P+bZy2O
+         MdOQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1774300526; x=1774905326;
+        h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
+         :from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=eOYudi6RRVXGeHCIabojBlAXxTWtuPC09s4XfPfEePE=;
+        b=Kv8gTJg+DaPoEviycIUHM+LCkI2tOPXrpVLYgXlQs1unReT1OVQ9BNo8uxlcQhHE5S
+         /kzclp2UIBDESd8KDYGyaakU2WZLPi1sa/arcZfC+USn5xfA/xPca+2HZCtd1AkgMR3a
+         C2HMWaRuXRPz0Ep5vFkfDQhL/Dsqb59efjH0cECmNWbB1erkv7JBjbmr7zakZe4DWDKS
+         MCpM61nXv2bdbmIeulVbH6jcf2Ss0zMQHirft7kFObQigezaJdQ0XNyvJVqdNoB/4WIA
+         3DLgiKwBMec4jNRHd6mhx+ykYN5CUnKuws4dEdfBAhvStQM6c8DUlrCQiKnro8bWRoQl
+         wZCA==
+X-Forwarded-Encrypted: i=1; AJvYcCXSqfmD0Gca+sE+opjHv6eKHCIMPiCd+WzS+ppVIGgaiLlAxFrrdsno0c3sVrTb1RPdWeo=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyLg1fP9mQk2PdCEdf69HwYMHQeHBeDI9YzOOFAjsVQBQxDhIEy
+	CdUkTA5DeFjpvZJ0eE+Wmtw6Xrwy966rMNjQLxZ6FclAZ6JhCgQZuJ3GMYXp0eEaRwl0K/UbzEl
+	SChp/1xdn+fGfxBQ9P9wdRiYT8UxTa14vc1SYAYOio6wq5CzQ3LqM/mKLTK4=
+X-Gm-Gg: ATEYQzzImTrEQRjSD/Hgz7yUuwtGucDR3cNY4Mom49Uo9KDqVAIIUAkCMiZOAlC8Bdd
+	Do7PCXEy7rLBKXJaU/E91onDDmQgQBczPLIi7OpPSrCMskxDN16L+COOnjdHItz9cIZJQ1tCsXR
+	Xi2si/e6NpM1xod5x/UisrIJcflMk2cqZAZI+k9m5LMoqgYoJm/wqdqZ1Hacs8NzHK/mCnKrsQ2
+	iezksrQ4vMRY9NhdKSQK1z1HpiYrFCZhEET16FsOo+HkygkbDyxHazlSJH/kprySJqX8wZPYeYc
+	4hSDZyvOWN++EfrA3QUtjL2zlocdzAP7MbeLKnF1CKlPV3Hb6m7d5p1bPfZDwn4OLjosIA==
+X-Received: by 2002:a05:6102:c86:b0:602:8894:b770 with SMTP id
+ ada2fe7eead31-602aead01admr6510052137.4.1774300525553; Mon, 23 Mar 2026
+ 14:15:25 -0700 (PDT)
+Received: from 176938342045 named unknown by gmailapi.google.com with
+ HTTPREST; Mon, 23 Mar 2026 14:15:24 -0700
+Received: from 176938342045 named unknown by gmailapi.google.com with
+ HTTPREST; Mon, 23 Mar 2026 14:15:24 -0700
+From: Ackerley Tng <ackerleytng@google.com>
+In-Reply-To: <20260317141031.514-11-kalyazin@amazon.com>
+References: <20260317141031.514-1-kalyazin@amazon.com> <20260317141031.514-11-kalyazin@amazon.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260323-fuller_tdx_kexec_support-v2-3-87a36409e051@intel.com>
-References: <20260323-fuller_tdx_kexec_support-v2-0-87a36409e051@intel.com>
-In-Reply-To: <20260323-fuller_tdx_kexec_support-v2-0-87a36409e051@intel.com>
-To: Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, 
- Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, 
- x86@kernel.org, "H. Peter Anvin" <hpa@zytor.com>, 
- Kiryl Shutsemau <kas@kernel.org>, 
- Rick Edgecombe <rick.p.edgecombe@intel.com>, 
- Sean Christopherson <seanjc@google.com>, 
- Paolo Bonzini <pbonzini@redhat.com>
-Cc: linux-kernel@vger.kernel.org, linux-coco@lists.linux.dev, 
- kvm@vger.kernel.org, Vishal Verma <vishal.l.verma@intel.com>
-X-Mailer: b4 0.16-dev-8c19c
-X-Developer-Signature: v=1; a=openpgp-sha256; l=5650;
- i=vishal.l.verma@intel.com; h=from:subject:message-id;
- bh=P2DVlROBb3MiFEF2zbD3N1sxc8wm0dVtPD3VmuMsna8=;
- b=owGbwMvMwCXGf25diOft7jLG02pJDJkHVy7zKHKdy7voQ0KY8yOLLTGbH7rwzu132rt+mf35C
- UfDebdkdpSyMIhxMciKKbL83fOR8Zjc9nyewARHmDmsTCBDGLg4BWAiryUZ/lkcmzDn5U3Tfxtu
- zbiXKWPcwr7aL+t7pL6GXn/7t9Wf791nZNhb8GGO4ZtTphLpkw7YdKat6y/7U/k2y/vfZ3bJrXX
- 6z3kA
-X-Developer-Key: i=vishal.l.verma@intel.com; a=openpgp;
- fpr=F8682BE134C67A12332A2ED07AFA61BEA3B84DFF
+Date: Mon, 23 Mar 2026 14:15:24 -0700
+X-Gm-Features: AQROBzCF2PwLv08LGPIvZtVRv2cQA-zzDMITL8yo-SXZFcfoxiXCsTVqhJQCkhk
+Message-ID: <CAEvNRgGb95C3uRxPy2_Uj7SmTW45hNNdJxi5RR209s5KYcHgBw@mail.gmail.com>
+Subject: Re: [PATCH v11 10/16] KVM: guest_memfd: Add flag to remove from
+ direct map
+To: "Kalyazin, Nikita" <kalyazin@amazon.co.uk>, "kvm@vger.kernel.org" <kvm@vger.kernel.org>, 
+	"linux-doc@vger.kernel.org" <linux-doc@vger.kernel.org>, 
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, 
+	"linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>, 
+	"kvmarm@lists.linux.dev" <kvmarm@lists.linux.dev>, 
+	"linux-fsdevel@vger.kernel.org" <linux-fsdevel@vger.kernel.org>, "linux-mm@kvack.org" <linux-mm@kvack.org>, 
+	"bpf@vger.kernel.org" <bpf@vger.kernel.org>, 
+	"linux-kselftest@vger.kernel.org" <linux-kselftest@vger.kernel.org>, "kernel@xen0n.name" <kernel@xen0n.name>, 
+	"linux-riscv@lists.infradead.org" <linux-riscv@lists.infradead.org>, 
+	"linux-s390@vger.kernel.org" <linux-s390@vger.kernel.org>, 
+	"loongarch@lists.linux.dev" <loongarch@lists.linux.dev>, 
+	"linux-pm@vger.kernel.org" <linux-pm@vger.kernel.org>
+Cc: "pbonzini@redhat.com" <pbonzini@redhat.com>, "corbet@lwn.net" <corbet@lwn.net>, 
+	"maz@kernel.org" <maz@kernel.org>, "oupton@kernel.org" <oupton@kernel.org>, 
+	"joey.gouly@arm.com" <joey.gouly@arm.com>, "suzuki.poulose@arm.com" <suzuki.poulose@arm.com>, 
+	"yuzenghui@huawei.com" <yuzenghui@huawei.com>, "catalin.marinas@arm.com" <catalin.marinas@arm.com>, 
+	"will@kernel.org" <will@kernel.org>, "seanjc@google.com" <seanjc@google.com>, "tglx@kernel.org" <tglx@kernel.org>, 
+	"mingo@redhat.com" <mingo@redhat.com>, "bp@alien8.de" <bp@alien8.de>, 
+	"dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>, "x86@kernel.org" <x86@kernel.org>, 
+	"hpa@zytor.com" <hpa@zytor.com>, "luto@kernel.org" <luto@kernel.org>, 
+	"peterz@infradead.org" <peterz@infradead.org>, "willy@infradead.org" <willy@infradead.org>, 
+	"akpm@linux-foundation.org" <akpm@linux-foundation.org>, "david@kernel.org" <david@kernel.org>, 
+	"lorenzo.stoakes@oracle.com" <lorenzo.stoakes@oracle.com>, "vbabka@kernel.org" <vbabka@kernel.org>, 
+	"rppt@kernel.org" <rppt@kernel.org>, "surenb@google.com" <surenb@google.com>, "mhocko@suse.com" <mhocko@suse.com>, 
+	"ast@kernel.org" <ast@kernel.org>, "daniel@iogearbox.net" <daniel@iogearbox.net>, 
+	"andrii@kernel.org" <andrii@kernel.org>, "martin.lau@linux.dev" <martin.lau@linux.dev>, 
+	"eddyz87@gmail.com" <eddyz87@gmail.com>, "song@kernel.org" <song@kernel.org>, 
+	"yonghong.song@linux.dev" <yonghong.song@linux.dev>, 
+	"john.fastabend@gmail.com" <john.fastabend@gmail.com>, "kpsingh@kernel.org" <kpsingh@kernel.org>, 
+	"sdf@fomichev.me" <sdf@fomichev.me>, "haoluo@google.com" <haoluo@google.com>, 
+	"jolsa@kernel.org" <jolsa@kernel.org>, "jgg@ziepe.ca" <jgg@ziepe.ca>, 
+	"jhubbard@nvidia.com" <jhubbard@nvidia.com>, "peterx@redhat.com" <peterx@redhat.com>, 
+	"jannh@google.com" <jannh@google.com>, "pfalcato@suse.de" <pfalcato@suse.de>, 
+	"skhan@linuxfoundation.org" <skhan@linuxfoundation.org>, "riel@surriel.com" <riel@surriel.com>, 
+	"ryan.roberts@arm.com" <ryan.roberts@arm.com>, "jgross@suse.com" <jgross@suse.com>, 
+	"yu-cheng.yu@intel.com" <yu-cheng.yu@intel.com>, "kas@kernel.org" <kas@kernel.org>, 
+	"coxu@redhat.com" <coxu@redhat.com>, "kevin.brodsky@arm.com" <kevin.brodsky@arm.com>, 
+	"yosry@kernel.org" <yosry@kernel.org>, "ajones@ventanamicro.com" <ajones@ventanamicro.com>, 
+	"maobibo@loongson.cn" <maobibo@loongson.cn>, "tabba@google.com" <tabba@google.com>, 
+	"prsampat@amd.com" <prsampat@amd.com>, "wu.fei9@sanechips.com.cn" <wu.fei9@sanechips.com.cn>, 
+	"mlevitsk@redhat.com" <mlevitsk@redhat.com>, "jmattson@google.com" <jmattson@google.com>, 
+	"jthoughton@google.com" <jthoughton@google.com>, "agordeev@linux.ibm.com" <agordeev@linux.ibm.com>, 
+	"alex@ghiti.fr" <alex@ghiti.fr>, "aou@eecs.berkeley.edu" <aou@eecs.berkeley.edu>, 
+	"borntraeger@linux.ibm.com" <borntraeger@linux.ibm.com>, "chenhuacai@kernel.org" <chenhuacai@kernel.org>, 
+	"dev.jain@arm.com" <dev.jain@arm.com>, "gor@linux.ibm.com" <gor@linux.ibm.com>, 
+	"hca@linux.ibm.com" <hca@linux.ibm.com>, "palmer@dabbelt.com" <palmer@dabbelt.com>, 
+	"pjw@kernel.org" <pjw@kernel.org>, 
+	"shijie@os.amperecomputing.com" <shijie@os.amperecomputing.com>, "svens@linux.ibm.com" <svens@linux.ibm.com>, 
+	"thuth@redhat.com" <thuth@redhat.com>, "wyihan@google.com" <wyihan@google.com>, 
+	"yang@os.amperecomputing.com" <yang@os.amperecomputing.com>, 
+	"Jonathan.Cameron@huawei.com" <Jonathan.Cameron@huawei.com>, 
+	"Liam.Howlett@oracle.com" <Liam.Howlett@oracle.com>, "urezki@gmail.com" <urezki@gmail.com>, 
+	"zhengqi.arch@bytedance.com" <zhengqi.arch@bytedance.com>, 
+	"gerald.schaefer@linux.ibm.com" <gerald.schaefer@linux.ibm.com>, 
+	"jiayuan.chen@shopee.com" <jiayuan.chen@shopee.com>, "lenb@kernel.org" <lenb@kernel.org>, 
+	"osalvador@suse.de" <osalvador@suse.de>, "pavel@kernel.org" <pavel@kernel.org>, 
+	"rafael@kernel.org" <rafael@kernel.org>, "vannapurve@google.com" <vannapurve@google.com>, 
+	"jackmanb@google.com" <jackmanb@google.com>, "aneesh.kumar@kernel.org" <aneesh.kumar@kernel.org>, 
+	"patrick.roy@linux.dev" <patrick.roy@linux.dev>, "Thomson, Jack" <jackabt@amazon.co.uk>, 
+	"Itazuri, Takahiro" <itazur@amazon.co.uk>, "Manwaring, Derek" <derekmn@amazon.com>
+Content-Type: text/plain; charset="UTF-8"
 
-Some early TDX-capable platforms have an erratum where a partial write
-to TDX private memory can cause a machine check on a subsequent read.
-On these platforms, kexec and kdump have been disabled in these cases,
-because the old kernel cannot safely hand off TDX state to the new
-kernel. Later TDX modules support the TDH.SYS.DISABLE SEAMCALL, which
-provides a way to cleanly disable TDX and allow kexec to proceed.
+"Kalyazin, Nikita" <kalyazin@amazon.co.uk> writes:
 
-The new SEAMCALL has an enumeration bit, but that is ignored. It is
-expected that users will be using the latest TDX module, and the failure
-mode for running the missing SEAMCALL on an older module is not fatal.
+>
+> [...snip...]
+>
+>  static vm_fault_t kvm_gmem_fault_user_mapping(struct vm_fault *vmf)
+>  {
+>  	struct inode *inode = file_inode(vmf->vma->vm_file);
+>  	struct folio *folio;
+>  	vm_fault_t ret = VM_FAULT_LOCKED;
+> +	int err;
+>
+>  	if (((loff_t)vmf->pgoff << PAGE_SHIFT) >= i_size_read(inode))
+>  		return VM_FAULT_SIGBUS;
+> @@ -418,6 +454,14 @@ static vm_fault_t kvm_gmem_fault_user_mapping(struct vm_fault *vmf)
+>  		folio_mark_uptodate(folio);
+>  	}
+>
+> +	if (kvm_gmem_no_direct_map(folio_inode(folio))) {
+> +		err = kvm_gmem_folio_zap_direct_map(folio);
+> +		if (err) {
+> +			ret = vmf_error(err);
+> +			goto out_folio;
+> +		}
+> +	}
+> +
+>  	vmf->page = folio_file_page(folio, vmf->pgoff);
+>
 
-This can be a long running operation, and the time needed largely
-depends on the amount of memory that has been allocated to TDs. If all
-TDs have been destroyed prior to the sys_disable call, then it is fast,
-with only needing to override the TDX module memory.
+Sashiko pointed out that kvm_gmem_populate() might try and write to
+direct-map-removed folios, but I think that's handled because populate
+will first try and GUP folios, which is already blocked for
+direct-map-removed folios.
 
-After the SEAMCALL completes, the TDX module is disabled and all memory
-resources allocated to TDX are freed and reset. The next kernel can then
-re-initialize the TDX module from scratch via the normal TDX bring-up
-sequence.
+>  out_folio:
+> @@ -528,6 +572,9 @@ static void kvm_gmem_free_folio(struct folio *folio)
+>  	kvm_pfn_t pfn = page_to_pfn(page);
+>  	int order = folio_order(folio);
+>
+> +	if (kvm_gmem_folio_no_direct_map(folio))
+> +		kvm_gmem_folio_restore_direct_map(folio);
+> +
+>  	kvm_arch_gmem_invalidate(pfn, pfn + (1ul << order));
+>  }
+>
 
-The SEAMCALL can return two different error codes that expect a retry.
- - TDX_INTERRUPTED_RESUMABLE can be returned in the case of a host
-   interrupt. However, it will not return until it makes some forward
-   progress, so we can expect to complete even in the case of interrupt
-   storms.
- - TDX_SYS_BUSY will be returned on contention with other TDH.SYS.*
-   SEAMCALLs, however a side effect of TDH.SYS.DISABLE is that it will
-   block other SEAMCALLs once it gets going. So this contention will be
-   short lived.
+Sashiko says to invalidate then restore direct map, I think in this case
+it doesn't matter since if the folio needed invalidation, it must be
+private, and the host shouldn't be writing to the private pages anyway.
 
-So loop infinitely on either of these error codes, until success or other
-error.
+One benefit of retaining this order (restore, invalidate) is that it
+opens the invalidate hook to possibly do something regarding memory
+contents?
 
-Co-developed-by: Rick Edgecombe <rick.p.edgecombe@intel.com>
-Signed-off-by: Rick Edgecombe <rick.p.edgecombe@intel.com>
-Signed-off-by: Vishal Verma <vishal.l.verma@intel.com>
----
- arch/x86/include/asm/shared/tdx_errno.h |  1 +
- arch/x86/include/asm/tdx.h              |  3 +++
- arch/x86/virt/vmx/tdx/tdx.h             |  1 +
- arch/x86/virt/vmx/tdx/tdx.c             | 28 ++++++++++++++++++++++++++++
- 4 files changed, 33 insertions(+)
+Or perhaps we should just take the suggestion (invalidate, restore) and
+align that invalidate should not touch memory contents.
 
-diff --git a/arch/x86/include/asm/shared/tdx_errno.h b/arch/x86/include/asm/shared/tdx_errno.h
-index 8bf6765cf082..246b4fd54a48 100644
---- a/arch/x86/include/asm/shared/tdx_errno.h
-+++ b/arch/x86/include/asm/shared/tdx_errno.h
-@@ -15,6 +15,7 @@
- #define TDX_NON_RECOVERABLE_TD_NON_ACCESSIBLE	0x6000000500000000ULL
- #define TDX_NON_RECOVERABLE_TD_WRONG_APIC_MODE	0x6000000700000000ULL
- #define TDX_INTERRUPTED_RESUMABLE		0x8000000300000000ULL
-+#define TDX_SYS_BUSY				0x8000020200000000ULL
- #define TDX_OPERAND_INVALID			0xC000010000000000ULL
- #define TDX_OPERAND_BUSY			0x8000020000000000ULL
- #define TDX_PREVIOUS_TLB_EPOCH_BUSY		0x8000020100000000ULL
-diff --git a/arch/x86/include/asm/tdx.h b/arch/x86/include/asm/tdx.h
-index 7674fc530090..a0a4a15142fc 100644
---- a/arch/x86/include/asm/tdx.h
-+++ b/arch/x86/include/asm/tdx.h
-@@ -172,6 +172,8 @@ static inline int pg_level_to_tdx_sept_level(enum pg_level level)
-         return level - 1;
- }
- 
-+void tdx_sys_disable(void);
-+
- u64 tdh_vp_enter(struct tdx_vp *vp, struct tdx_module_args *args);
- u64 tdh_mng_addcx(struct tdx_td *td, struct page *tdcs_page);
- u64 tdh_mem_page_add(struct tdx_td *td, u64 gpa, struct page *page, struct page *source, u64 *ext_err1, u64 *ext_err2);
-@@ -203,6 +205,7 @@ static inline void tdx_init(void) { }
- static inline u32 tdx_get_nr_guest_keyids(void) { return 0; }
- static inline const char *tdx_dump_mce_info(struct mce *m) { return NULL; }
- static inline const struct tdx_sys_info *tdx_get_sysinfo(void) { return NULL; }
-+static inline void tdx_sys_disable(void) { }
- #endif	/* CONFIG_INTEL_TDX_HOST */
- 
- #endif /* !__ASSEMBLER__ */
-diff --git a/arch/x86/virt/vmx/tdx/tdx.h b/arch/x86/virt/vmx/tdx/tdx.h
-index dde219c823b4..e2cf2dd48755 100644
---- a/arch/x86/virt/vmx/tdx/tdx.h
-+++ b/arch/x86/virt/vmx/tdx/tdx.h
-@@ -46,6 +46,7 @@
- #define TDH_PHYMEM_PAGE_WBINVD		41
- #define TDH_VP_WR			43
- #define TDH_SYS_CONFIG			45
-+#define TDH_SYS_DISABLE			69
- 
- /*
-  * SEAMCALL leaf:
-diff --git a/arch/x86/virt/vmx/tdx/tdx.c b/arch/x86/virt/vmx/tdx/tdx.c
-index 0802d0fd18a4..3a76000dec7a 100644
---- a/arch/x86/virt/vmx/tdx/tdx.c
-+++ b/arch/x86/virt/vmx/tdx/tdx.c
-@@ -37,6 +37,7 @@
- #include <asm/msr.h>
- #include <asm/cpufeature.h>
- #include <asm/tdx.h>
-+#include <asm/shared/tdx_errno.h>
- #include <asm/cpu_device_id.h>
- #include <asm/processor.h>
- #include <asm/mce.h>
-@@ -1940,3 +1941,30 @@ u64 tdh_phymem_page_wbinvd_hkid(u64 hkid, struct page *page)
- 	return seamcall(TDH_PHYMEM_PAGE_WBINVD, &args);
- }
- EXPORT_SYMBOL_FOR_KVM(tdh_phymem_page_wbinvd_hkid);
-+
-+void tdx_sys_disable(void)
-+{
-+	struct tdx_module_args args = {};
-+	u64 ret;
-+
-+	/*
-+	 * Don't loop forever.
-+	 *  - TDX_INTERRUPTED_RESUMABLE guarantees forward progress between
-+	 *    calls.
-+	 *  - TDX_SYS_BUSY could transiently contend with TDH.SYS.* SEAMCALLs,
-+	 *    but will lock out future ones.
-+	 *
-+	 * This is a 'destructive' SEAMCALL, in that no other SEAMCALL can be
-+	 * run after this until a full reinitialization is done.
-+	 */
-+	do {
-+		ret = seamcall(TDH_SYS_DISABLE, &args);
-+	} while (ret == TDX_INTERRUPTED_RESUMABLE || ret == TDX_SYS_BUSY);
-+
-+	/*
-+	 * Print SEAMCALL failures, but not SW-defined error codes
-+	 * (SEAMCALL faulted with #GP/#UD, TDX not supported).
-+	 */
-+	if (ret && (ret & TDX_SW_ERROR) != TDX_SW_ERROR)
-+		pr_err("TDH.SYS.DISABLE failed: 0x%016llx\n", ret);
-+}
+> @@ -591,6 +638,9 @@ static int __kvm_gmem_create(struct kvm *kvm, loff_t size, u64 flags)
+>  	/* Unmovable mappings are supposed to be marked unevictable as well. */
+>  	WARN_ON_ONCE(!mapping_unevictable(inode->i_mapping));
+>
+> +	if (flags & GUEST_MEMFD_FLAG_NO_DIRECT_MAP)
+> +		mapping_set_no_direct_map(inode->i_mapping);
+> +
+>  	GMEM_I(inode)->flags = flags;
+>
+>  	file = alloc_file_pseudo(inode, kvm_gmem_mnt, name, O_RDWR, &kvm_gmem_fops);
+> @@ -803,13 +853,22 @@ int kvm_gmem_get_pfn(struct kvm *kvm, struct kvm_memory_slot *slot,
+>  	}
+>
+>  	r = kvm_gmem_prepare_folio(kvm, slot, gfn, folio);
+> +	if (r)
+> +		goto out_unlock;
+>
+> +	if (kvm_gmem_no_direct_map(folio_inode(folio))) {
+> +		r = kvm_gmem_folio_zap_direct_map(folio);
+> +		if (r)
+> +			goto out_unlock;
+> +	}
+> +
+>
+> [...snip...]
+>
 
--- 
-2.53.0
+Preparing a folio used to involve zeroing, but that has since been
+refactored out, so I believe zapping can come before preparing.
 
+Similar to the above point on invalidation: perhaps we should take the
+suggestion to zap then prepare
+
++ And align that preparation should not touch memory contents
++ Avoid needing to undo the preparation on zapping failure (.free_folio
+  is not called on folio_put(), it is only called folio on removal from
+  filemap).
