@@ -1,136 +1,89 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 353D93BF687;
-	Mon, 23 Mar 2026 17:07:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.10
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C99923BED71;
+	Mon, 23 Mar 2026 17:10:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.19
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774285637; cv=none; b=MdTshzzALFcnT1+Tln+4VixGj8+sfuvnrxwBVw/JvLyX7XC9hIg4hUPEa+pGtn5G9alj5nYuloDH+781VC7WmZQQRX0PtiGeIWjWSeW0nguAZK7xt5M9KzuGU3AKm0d0JJLvIPk2jGWWhmzA0XfSux9Bw+VQdiOFtSEN9OMHdzQ=
+	t=1774285812; cv=none; b=rGjZAN2dlLksjXd2BJDHv1SVFdAerawrzt0LVlxkt/CNG9dlDF2BhS+bsMK1uUjFwkO/0SKBz6qNQapkzJ8xq/GB2XVsL+ElKk7a9ewY7VFeD2ZrimPDlUGmQHmCJ3Iu2VufxZDxVa6+LwYCEGCgvRU57zHF7QoAeNdZdPgyWTM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774285637; c=relaxed/simple;
-	bh=ZPRtjSbDYAuXP+R2fMzJuVURJbzdyj1iPTpdebc3THE=;
+	s=arc-20240116; t=1774285812; c=relaxed/simple;
+	bh=BToZ9MXF18tUkB2EdKwBI+YzBkjfXFqtZ+G55rMzQsI=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=bskLGxPEzb99/Qy6vmsVA2PkfAdpXTO3JKyEO816HMchN4dEZsLyIqCP604Tn1SZv5sF0/XVjL2NyDFCLSTwQ/F0rKww0xOEShhScB3YFvBOHQfNoQ8HUhz6j+jCrmIiOGyWbzDt+v89HMwbUCvIAE6viUxe+Nybo5GTcv7tIGY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=m2zZpA5e; arc=none smtp.client-ip=192.198.163.10
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+	 Content-Type:Content-Disposition:In-Reply-To; b=D+Ee7Tzi632LJHe2Xah5jP5tfGNJfrw/d/vjKOZj9kA9X4aOUoKUG1/5Xfrsgx2Tp792sYxTmQ82sGbUY6T7Ka3d5lLsb4oaAnES3tcLgw889DZ10qKQjTGqLnKLGupxBD87lwNE1Hrt7Fh3vgc+Tq6CGSnsjo4sKjQdfZ5gXTI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Wib+0mNP; arc=none smtp.client-ip=192.198.163.19
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="m2zZpA5e"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Wib+0mNP"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1774285636; x=1805821636;
+  t=1774285811; x=1805821811;
   h=date:from:to:cc:subject:message-id:references:
-   mime-version:content-transfer-encoding:in-reply-to;
-  bh=ZPRtjSbDYAuXP+R2fMzJuVURJbzdyj1iPTpdebc3THE=;
-  b=m2zZpA5eoXOSOA6rSnbe92h1IrIrvZ91L/PHuHqY5B5RddnLRoH49n3y
-   /ZUStjaftN/d52TDJIP44ESWMsluh7nYD1oYj0j/QHmo0NKEAt8uMDnCw
-   tWtYpkug8Qkv8F1YZgkpSOArzIyHl87o99+aZtNK+nXFJ/GtXQGocPKHH
-   uyKYhojZAZFEp/nWOe8xwQLy1Xj9Kl1bYVyslkEzEsCqdRrGK/d6c7qOF
-   ggiVPDvuT9T5e2VORe+WRWs3vm1VX+vj+FvUQDu9DXSdTeenb0h2tHPe9
-   sUQW31jsv6Zkf8EEZ2UmE4+lWiJbI8HR74hHd1ljD9K5FUyIXVfIYKQ/7
-   w==;
-X-CSE-ConnectionGUID: mwn/cEOOTAa9M2/J68LzmA==
-X-CSE-MsgGUID: 80mGv3fvTbyWvRFvHsqe/A==
-X-IronPort-AV: E=McAfee;i="6800,10657,11738"; a="86657187"
+   mime-version:in-reply-to;
+  bh=BToZ9MXF18tUkB2EdKwBI+YzBkjfXFqtZ+G55rMzQsI=;
+  b=Wib+0mNPN8B4ec++jHByyqlq3uz1aFcNDFGoL3kR2rGz9CvM8I6oa4gd
+   UKx44Q5ufQOQoknuqeM8ImFZj0wPsoPXIpoVoa9ufX+gCwayZKgXYVn3X
+   I931qdxIIZcgxd94q2ju2oNG4Oxxihqs2eyKpXsaT5oQ2/3itzJQkonMX
+   fyFNKxBMZgdGDooMhfdujCXO0EoJa+NxoLgNDAxsC+fsTR9Np6trKb4pq
+   9ENNsO2BPuJidp1cGGlN85QDkTsh1XTFzSG5gWFNLXRMJSbYw7zRXGmVj
+   nWGcLTttIoLxmjQ/B3ymCOhT7UcX9ix1EV7QcXatCQYsF2hM4EVGHzsVv
+   Q==;
+X-CSE-ConnectionGUID: S43Z/3jOReW0jhMXIkOKuA==
+X-CSE-MsgGUID: Is97GuRuT+KM1+XJmJpBIQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11738"; a="74310363"
 X-IronPort-AV: E=Sophos;i="6.23,137,1770624000"; 
-   d="scan'208";a="86657187"
-Received: from orviesa007.jf.intel.com ([10.64.159.147])
-  by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Mar 2026 10:07:15 -0700
-X-CSE-ConnectionGUID: m87CQPESS927IIVwJpteSg==
-X-CSE-MsgGUID: BMDfODy4QgaI4VGb46H6FA==
+   d="scan'208";a="74310363"
+Received: from fmviesa005.fm.intel.com ([10.60.135.145])
+  by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Mar 2026 10:10:10 -0700
+X-CSE-ConnectionGUID: iRwRvSTTRlOfwVCK0oFJqQ==
+X-CSE-MsgGUID: 09IKz0B0SaGKNbQfiUiUtg==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.23,137,1770624000"; 
-   d="scan'208";a="224298095"
-Received: from guptapa-desk.jf.intel.com (HELO desk) ([10.165.239.46])
-  by orviesa007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Mar 2026 10:07:15 -0700
-Date: Mon, 23 Mar 2026 10:07:09 -0700
-From: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
-To: Nikolay Borisov <nik.borisov@suse.com>
-Cc: x86@kernel.org, "H. Peter Anvin" <hpa@zytor.com>,
-	Josh Poimboeuf <jpoimboe@kernel.org>,
-	David Kaplan <david.kaplan@amd.com>,
-	Sean Christopherson <seanjc@google.com>,
-	Borislav Petkov <bp@alien8.de>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Alexei Starovoitov <ast@kernel.org>,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	Andrii Nakryiko <andrii@kernel.org>, KP Singh <kpsingh@kernel.org>,
-	Jiri Olsa <jolsa@kernel.org>,
-	"David S. Miller" <davem@davemloft.net>,
-	David Laight <david.laight.linux@gmail.com>,
-	Andy Lutomirski <luto@kernel.org>,
-	Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>,
-	David Ahern <dsahern@kernel.org>,
-	Martin KaFai Lau <martin.lau@linux.dev>,
-	Eduard Zingerman <eddyz87@gmail.com>, Song Liu <song@kernel.org>,
-	Yonghong Song <yonghong.song@linux.dev>,
-	John Fastabend <john.fastabend@gmail.com>,
-	Stanislav Fomichev <sdf@fomichev.me>, Hao Luo <haoluo@google.com>,
-	Paolo Bonzini <pbonzini@redhat.com>,
-	Jonathan Corbet <corbet@lwn.net>, linux-kernel@vger.kernel.org,
-	kvm@vger.kernel.org, Asit Mallick <asit.k.mallick@intel.com>,
-	Tao Zhang <tao1.zhang@intel.com>, bpf@vger.kernel.org,
-	netdev@vger.kernel.org, linux-doc@vger.kernel.org
-Subject: Re: [PATCH v7 03/10] x86/bhi: Rename clear_bhb_loop() to
- clear_bhb_loop_nofence()
-Message-ID: <20260323170709.7lpdet4nnmhbdcxa@desk>
-References: <20260319-vmscape-bhb-v7-0-b76a777a98af@linux.intel.com>
- <20260319-vmscape-bhb-v7-3-b76a777a98af@linux.intel.com>
- <6c315cb3-b3a0-478e-b8ec-36d82684d310@suse.com>
+   d="scan'208";a="228820409"
+Received: from vpanait-mobl.ger.corp.intel.com (HELO localhost) ([10.245.244.22])
+  by fmviesa005-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Mar 2026 10:10:07 -0700
+Date: Mon, 23 Mar 2026 19:10:05 +0200
+From: Andy Shevchenko <andriy.shevchenko@intel.com>
+To: Yury Norov <ynorov@nvidia.com>
+Cc: linux-kernel@vger.kernel.org, Bibo Mao <maobibo@loongson.cn>,
+	Huacai Chen <chenhuacai@kernel.org>,
+	Rasmus Villemoes <linux@rasmusvillemoes.dk>,
+	Tianrui Zhao <zhaotianrui@loongson.cn>,
+	WANG Xuerui <kernel@xen0n.name>, Yury Norov <yury.norov@gmail.com>,
+	David Howells <dhowells@redhat.com>, kvm@vger.kernel.org,
+	loongarch@lists.linux.dev
+Subject: Re: [PATCH] lib: count_zeros: unify count_{leading,trailing}_zeros()
+Message-ID: <acFz7bEUchB2Arx7@ashevche-desk.local>
+References: <20260323170032.109858-1-ynorov@nvidia.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <6c315cb3-b3a0-478e-b8ec-36d82684d310@suse.com>
+In-Reply-To: <20260323170032.109858-1-ynorov@nvidia.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
+ krs, Bertel Jungin Aukio 5, 02600 Espoo
 
-On Mon, Mar 23, 2026 at 04:44:24PM +0200, Nikolay Borisov wrote:
+On Mon, Mar 23, 2026 at 01:00:32PM -0400, Yury Norov wrote:
+> The 'leading' helper returns BITS_PER_LONG if x == 0, while 'trailing'
+> one returns COUNT_TRAILING_ZEROS_0, which turns to be -1.
 > 
+> None of the current users explicitly check the returned value for
+> COUNT_TRAILING_ZEROS_0, except the loongarch, which tests implicitly
+> for the '>= 0'.
 > 
-> On 19.03.26 г. 17:40 ч., Pawan Gupta wrote:
-> > To reflect the recent change that moved LFENCE to the caller side.
-> > 
-> > Suggested-by: Borislav Petkov <bp@alien8.de>
-> > Signed-off-by: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
-> 
-> 
-> Nit: I think having the _nofence in the function name is leaking an
-> implementation detail into the name/interface. I.e things change and we
-> decide that the implementation of a particular function must change so we
-> just do the change and substantiate it in the commit message or in a
-> comment. Especially that we don't have a "with an lfence" version.
+> So, align count_trailing_zeros() with the count_leading_zeros(), and
+> simplify the loongarch handling.
 
-The explicit "_nofence" is because the series changes the implementation of
-clear_bhb_loop() from lfence. If new call sites miss to add an lfence when
-it is required could lead to a security issue. Having the "_nofence" in the
-name helps avoid it.
+Makes sense,
+Reviewed-by: Andy Shevchenko <andriy.shevchenko@intel.com>
 
-Apart from the name, the commit message of patch 1/10 and the comment in
-clear_bhb_loop() implementation covers this.
+-- 
+With Best Regards,
+Andy Shevchenko
 
-> What's more I'd consider this a "private" function, that's called via the
-> CLEAR_BRANCH_HISTORY macros, the only place it's called directly is in the
-> bpf jit code, but that's more of an exception.
 
-Another place where the explicit "_nofence" in the name could help is while
-applying the mitigation in vmscape_apply_mitigation(), which sets the
-static call:
-
-vmscape_apply_mitigation()
-{
-...
-    if (vmscape_mitigation == VMSCAPE_MITIGATION_IBPB_EXIT_TO_USER)
-        static_call_update(vmscape_predictor_flush, write_ibpb);
-    else if (vmscape_mitigation == VMSCAPE_MITIGATION_BHB_CLEAR_EXIT_TO_USER)
-        static_call_update(vmscape_predictor_flush, clear_bhb_loop_nofence);
-
-> Still,
-> 
-> Reviewed-by: Nikolay Borisov <nik.borisov@suse.com>
-
-Thank you.
