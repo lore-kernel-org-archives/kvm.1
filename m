@@ -1,375 +1,228 @@
-Received: from mail-pl1-f170.google.com (mail-pl1-f170.google.com [209.85.214.170])
+Received: from mail-vs1-f41.google.com (mail-vs1-f41.google.com [209.85.217.41])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF6BB3DBD52
-	for <kvm@vger.kernel.org>; Mon, 23 Mar 2026 19:33:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.170
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774294447; cv=none; b=P8Ah4x9IJwlH+dMhipZw057ie3HYwNyK2dqDGwxxpjAsBa6DtlcFG0Iyn2df3nYS7yvy4KLjbGN8T/+Mma9366OU/YZeNduiglCg74DzqjmlR4OkmPOcpp9Sp19sQJNT+H9Mam1P6zd9qNbu9cYWMWfRglO+i9/MNXPT/VLKn8E=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774294447; c=relaxed/simple;
-	bh=FK7ryPPLQ1cMRqgcooTytVc5UdVnSaHYn7Jt+YRm4us=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=g5gk1PVHO/m7qVxDZ8ZOhm2J8kTE96xyKvN988shwWSKEMOMUMiUnjAw2FCJlULnBZlBs6a8uV1ZWlAO9jGTONEKaYh0U9gykWh1CfQwgKP03PP/Onhi/EJ3X83EC45a9s94obyXjekJuYi9B2j+aRKbIVv6EIS6XRMFFp+M7t0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=dNaNj9EO; arc=none smtp.client-ip=209.85.214.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E3253DEAF1
+	for <kvm@vger.kernel.org>; Mon, 23 Mar 2026 20:22:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.217.41
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1774297370; cv=pass; b=os7CBgiz/gr/+yM+PPz/KXF5vEAFBTFcFdVI8Y04HXTG/1g5oV4uWSbBqL5d8rOZlKdD8u6Cu1HAvmAgYbTO6uJhDSql6A9JFvX865JNJ86/yBVpRSZofzde3qJqLyMb0cXH5ueKhCd4e9N7cGiJmt5KhDA26AG7YeDPAZw+4pE=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1774297370; c=relaxed/simple;
+	bh=+Ww3YVEwz3akOCPkGfwPOz5g/SjxY63PNjUlqwWXbGQ=;
+	h=From:In-Reply-To:References:MIME-Version:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=UUbhE4iOEMMjw6vBqgH6Rs1Nq8nCP9YP9CY2GmpGMR1Ad9x0s9YaEGjtsA8hvvDw9UP4C3uRfZcYdqbaVJEv54qORJviq0KAXV5mfDKbw/vYUkDZCdUOOGRx6xkaq38DAjN9gYV2A1mGHEyfW/3YSKzUlgQodbqwg3EPakSoFbo=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Ibwuzlau; arc=pass smtp.client-ip=209.85.217.41
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="dNaNj9EO"
-Received: by mail-pl1-f170.google.com with SMTP id d9443c01a7336-2b052ec7176so1635ad.1
-        for <kvm@vger.kernel.org>; Mon, 23 Mar 2026 12:33:58 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Ibwuzlau"
+Received: by mail-vs1-f41.google.com with SMTP id ada2fe7eead31-5ffe41e8e83so2881443137.1
+        for <kvm@vger.kernel.org>; Mon, 23 Mar 2026 13:22:45 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1774297365; cv=none;
+        d=google.com; s=arc-20240605;
+        b=jCm9l/UnnK9V7+cul5vEyWql2qNF+xA/1UoflnQt1k4ueQ52MFRNT2VBHLSamFZXKZ
+         QljcIpM1hjAqGPtwQFOfUH4TScTCiBDb76T8t9PBlE2aJ815JCVrlFVVVzllHeCD0BYx
+         T0SWEfFd6Elvnu4/To0pRjHrupEo8Q4R4tNjOVNBoBgEZ4d9XKuN5ji2Nkuyy/7SY/YA
+         cAvD375eZjW93Tte8awGIKnYaNLDbb8TFCufV2lirO3h5fJ4gCSdaqk/6wt3HzULFzk6
+         OoNy88kEvdnIBT4L803KKA2c94TjofC5XDg/c1fynYU44KmuzqLGgO0UB0iy0rXBXQEe
+         HiSQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
+         :from:dkim-signature;
+        bh=DfIEo8yQ3CK3TKTvqaXVb6LUrtHQE6Lxe6QzmQiMk8w=;
+        fh=MYWUhSU+3xy9MuvblBW6+NZBvyO5LE65DBK0nWHelJw=;
+        b=M7Z4+D5B7CHXzoO6DRYfHyuPuFs0o8Z5uF8SqzlxGawgD3j2vu/asewfivu3gY3B0X
+         vWVrIaslacPuIjorRdKbYPerWUaCD/B0BUU8Kd0Tt4NrcOHd4HzzaJqY56NcVuGgkvxu
+         Z2hgIIRGpJ/tS2SCKymLYuTu+3hlbwMvSj6L1SBDGCfaBrxzfZW3fNEt1EgGMd8TZDlx
+         rZzm8vjqApsdwZ8mQPXk/St9JRrW0C+4n9rMs9H/rKiCnf2l2qz6fukAeniHEfRWJJ8c
+         AINu2uahnR6ur5CNfT19lX4cpnuIcSsouHEl3Ns2xxhbawwBrnGiRgjGE9Gh9CSurBQz
+         +fuA==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1774294437; x=1774899237; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=fKE3oi4j/7h9F1EbALUrXcAiOT/nZnkORyKYR3F8H7Q=;
-        b=dNaNj9EOPQ55EwthgDUp9uIX+gWqZn2BmyY1xXWxff4MZPajf9k8uZIZ/l2wypRXu6
-         +R3DFI4joEC8SeyDokmgYQ4onvKvBXAUsaNdWQptw3cWnZVpfpJ4/jhEMTjh7BXwNJns
-         2QSHP6YJKc3OncPH9UFkwQFw/K+kY8FLYRYbSEZeqW6iyRr3Bj01M84g102TZ/1Deoav
-         mMFc8W8xycR7Uw370OTSzTczodYihwQTvWjVFUSxexKjj9nGz66CISoW6T6mrX2bUYSB
-         wzSv5mE4X7dztNGUiOyMqiSmNZzYTW5AXriAKPzXrMRskx3soLUnNNM5GhGo4lQh0tBm
-         xetw==
+        d=google.com; s=20251104; t=1774297365; x=1774902165; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
+         :from:from:to:cc:subject:date:message-id:reply-to;
+        bh=DfIEo8yQ3CK3TKTvqaXVb6LUrtHQE6Lxe6QzmQiMk8w=;
+        b=Ibwuzlauj5c8iKXxG1nK0hN4JyHV1Mv3KfKVQuiM0E+dlMSGVRwp8PfoYFyP1KyuxP
+         TV8eM6VPHDio+E5Cn8SvvUl81aCB1scyZpRBpQDqfaLDZ/2fcpxRSgfNro+mQ6DrusbP
+         Z/a96ziy/AhJVi5KNvSFNb0PJC3qVLwpHNJIPJ+i2XhBM9b547uqZ6kBX5VfuKRPpGll
+         zvvg4ItxeGu1cu1UCqpMsS5/wsgfWhO4cfLEXuCTkRTZm/O8BRjqXxrk7D84ejUoBBku
+         ZfHITQWeg4EzxLmcIyXpuaZa2R++4mxy+6mdQVDjSpf0LTRgOhE1fJU0yDfXDeikC89Y
+         vkow==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774294437; x=1774899237;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=fKE3oi4j/7h9F1EbALUrXcAiOT/nZnkORyKYR3F8H7Q=;
-        b=q7OrKdcHGL8tnmaclzSaMwuIKYc7Gw/qiGb+tw7OkKjBR50Iatk59neTWEDYDOt6LX
-         TNe5h1xP1jBJbBnxv37OdBEmXkppn8y5YNCKKpPB21ncPYBYHTgWS7k5WG1j1VktFFwd
-         vvC8RCeBCdrKMNH6oX8qbNkpnBq5auTttbLMN6K4/Th6AI6k1x32BxyL+RnCbz8rbCjZ
-         5XZYy8EBimLOOF9i2ebqojnJ8UwmU4SkndsgW6gnP2kD+TslXSdXAYqGKuYuMbxRQfB2
-         HlxrP/RXNhKxWdsDICaKM8yKZtQ/+/soce/RKH4nVV6ZVqtn1TO8wXEBeotJo2fpgyWW
-         +gzw==
-X-Forwarded-Encrypted: i=1; AJvYcCX6KjNiFgHIabbYBzBKYRaFHvtl09yOOfcg9PMg7WMXs7cdo+3mCa/33eEH/smVRRy/K2A=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzVx22MeM+u0jbcggFW/UA9TTZw2Uegqk+uX4f6fx5o1Tmcnnjx
-	DHZkg5UZFos1IJ3BJWLpa5JhIHaFDlJ+vVJmk/WLqQKHv+Mt1ol4iYYLERfIzOylJQ==
-X-Gm-Gg: ATEYQzxvhHoWn0YrxABDXNybZpDZfelDXunTMjnimLo5gXbUwdln2o0BeJsVb0JaZhd
-	5gg/VAuN2Rlu7sOERlW2ghnp2flNmPFPRl8AsGzuZd2V3Urj1sv3l2ukMrTsW1vkmxOftXcsmfQ
-	ZaJhEQ36qz9Oy2ui+SUSgmp3NwmYlppvzHjKcPTrZFXVnVCuugzmLJ3wiR4YGldGoVpk5A85/4M
-	f3kAGCWT60qyalc5VPbvmLvKC8y3lyxDlNwSXx+5NmLLsdAkL60toUp76LbBhC/Oa6iSLhSoxH8
-	Ec8ey91+LniJGb1HAoShWAyCmfbJfXl6IAEq4f9NKXBo39+uLpmgRGloePqNIw2H0KZ2G61EefI
-	ZQXGVXKZ75XkpZi1WGA+t8HNCS0u2/BC6d7hHfTZTTIo4i/BFm3dznpPeFRBSGARkVFkYVBFn4o
-	VQbwSSdrYGNR0+9qiNWasGtwaUB/pLYis+ohlX1FL2MtJgduSRFHdkAECAuRkbvg==
-X-Received: by 2002:a17:902:d4cd:b0:2ae:575f:3755 with SMTP id d9443c01a7336-2b0a54ce8cdmr468725ad.20.1774294436733;
-        Mon, 23 Mar 2026 12:33:56 -0700 (PDT)
-Received: from google.com (168.136.83.34.bc.googleusercontent.com. [34.83.136.168])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2b083543503sm125155705ad.27.2026.03.23.12.33.55
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 23 Mar 2026 12:33:56 -0700 (PDT)
-Date: Mon, 23 Mar 2026 19:33:52 +0000
-From: Samiullah Khawaja <skhawaja@google.com>
-To: Pranjal Shrivastava <praan@google.com>
-Cc: David Woodhouse <dwmw2@infradead.org>, 
-	Lu Baolu <baolu.lu@linux.intel.com>, Joerg Roedel <joro@8bytes.org>, Will Deacon <will@kernel.org>, 
-	Jason Gunthorpe <jgg@ziepe.ca>, Robin Murphy <robin.murphy@arm.com>, 
-	Kevin Tian <kevin.tian@intel.com>, Alex Williamson <alex@shazbot.org>, 
-	Shuah Khan <shuah@kernel.org>, iommu@lists.linux.dev, linux-kernel@vger.kernel.org, 
-	kvm@vger.kernel.org, Saeed Mahameed <saeedm@nvidia.com>, 
-	Adithya Jayachandran <ajayachandra@nvidia.com>, Parav Pandit <parav@nvidia.com>, 
-	Leon Romanovsky <leonro@nvidia.com>, William Tu <witu@nvidia.com>, 
-	Pratyush Yadav <pratyush@kernel.org>, Pasha Tatashin <pasha.tatashin@soleen.com>, 
-	David Matlack <dmatlack@google.com>, Andrew Morton <akpm@linux-foundation.org>, 
-	Chris Li <chrisl@kernel.org>, Vipin Sharma <vipinsh@google.com>, 
-	YiFei Zhu <zhuyifei@google.com>
-Subject: Re: [PATCH 07/14] iommu/vt-d: Restore IOMMU state and reclaimed
- domain ids
-Message-ID: <acGNBlN1Nwe59L3_@google.com>
-References: <20260203220948.2176157-1-skhawaja@google.com>
- <20260203220948.2176157-8-skhawaja@google.com>
- <acBIL052TH39FpNK@google.com>
+        d=1e100.net; s=20251104; t=1774297365; x=1774902165;
+        h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
+         :from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=DfIEo8yQ3CK3TKTvqaXVb6LUrtHQE6Lxe6QzmQiMk8w=;
+        b=OO/OKjbZj1/dvT7kpYu8D/FDdWWWmhybF8O9ppqgFPyfrWN+gx627zNImQ3XpNY9D2
+         Kz9EUG6f245EvQBbKxtncxiFDi57a8gxNsPbjET+IJcErk7l4ddwAT1xHeZ0/T69P+TM
+         fjmc0trLUwXfe4ohYjqnaUTvdKEw2wpFv15ZrWEcDXp4zr9809r3lVhIzcUkSoXwvE/l
+         c2T9xvwbJbg3vqt15kIylWPqYi7zNHhRQH+6ero31ALND8AIois8oijgL8bK1up8Os2t
+         1qwhI9W5vXFUvIvHGrBAEInQHZOFx/5fg+o8M2odrjxFqkDzG9MPXQRo6IPxwFIRPlUc
+         PRpw==
+X-Forwarded-Encrypted: i=1; AJvYcCVeQOl+zC2P07TbY8rOQuw9/E3UfgBMDptcG/+wwoHTGBqVWqUviERg0e6Bw3tykn06qCI=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwKvcsCjzbQ3vUfqnlT6CmlmKHH8icQMOJK/pAs416e42ymCIlR
+	vkP32y3tbnpna9R39ZIUq4JUGnCCKRNWsIiG54nc1ijQbV+zEzfPix+C51/0kevAnmHwpbEfKaT
+	SOr1TOk7KNIry21SiY/3nJ2AbgakxEXm73566De9p3AeNZVU+p85lkJ8lLoY=
+X-Gm-Gg: ATEYQzydMt7kKYeHvkpoGJDDXXFah/jKOdZgOGe2/in4ZgCEmxVabzZmdpb1ZEsMSy2
+	ZmXGIhsdBSgZgrVcrRWqfyzaF0IZoh0vHFKzYV53z5s696Bfkw0s2HvT3XxH3GLv5+4AoVMeJVn
+	k9eUir+rAG4QhkwwRIfUBNg7hRVOGtCfkUKqHZhz8Fp4SiN2Kn9jpn0YdVus6i5BtdE3bt0c+ty
+	GB0sYdlDFWMZF17T4GBdr24zxnKtG71UcNu6Ptqz4j0VPPr3hWZIPTeEl56SxgptMLDOBIlRcbq
+	25Kw+ZxyrR/yVob5b0Ti9U6KLCKMRAeCdRp4lsDJme9mH/FmbYcot7WGMw/jtpnB4s1TIQ==
+X-Received: by 2002:a05:6102:3a06:b0:602:8742:1fa with SMTP id
+ ada2fe7eead31-60316013f44mr514571137.9.1774297364023; Mon, 23 Mar 2026
+ 13:22:44 -0700 (PDT)
+Received: from 176938342045 named unknown by gmailapi.google.com with
+ HTTPREST; Mon, 23 Mar 2026 13:22:43 -0700
+Received: from 176938342045 named unknown by gmailapi.google.com with
+ HTTPREST; Mon, 23 Mar 2026 13:22:43 -0700
+From: Ackerley Tng <ackerleytng@google.com>
+In-Reply-To: <0a14c10d-0dab-4b9c-85ec-e0ee25cd0db8@kernel.org>
+References: <20260317141031.514-1-kalyazin@amazon.com> <20260317141031.514-6-kalyazin@amazon.com>
+ <0a14c10d-0dab-4b9c-85ec-e0ee25cd0db8@kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii; format=flowed
-Content-Disposition: inline
-In-Reply-To: <acBIL052TH39FpNK@google.com>
+Date: Mon, 23 Mar 2026 13:22:43 -0700
+X-Gm-Features: AQROBzAJTtmZ8_CHcmYDgt7IaYmvr2Pi4WE03drdmWTq3AGR3rA_vEwuIGtsbTw
+Message-ID: <CAEvNRgHqJGwmAfS8TuGBbUoQehpqY9GdtjUS=+Hc1ViK79RL4w@mail.gmail.com>
+Subject: Re: [PATCH v11 05/16] mm/gup: drop local variable in gup_fast_folio_allowed
+To: "David Hildenbrand (Arm)" <david@kernel.org>, "Kalyazin, Nikita" <kalyazin@amazon.co.uk>, 
+	"kvm@vger.kernel.org" <kvm@vger.kernel.org>, 
+	"linux-doc@vger.kernel.org" <linux-doc@vger.kernel.org>, 
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, 
+	"linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>, 
+	"kvmarm@lists.linux.dev" <kvmarm@lists.linux.dev>, 
+	"linux-fsdevel@vger.kernel.org" <linux-fsdevel@vger.kernel.org>, "linux-mm@kvack.org" <linux-mm@kvack.org>, 
+	"bpf@vger.kernel.org" <bpf@vger.kernel.org>, 
+	"linux-kselftest@vger.kernel.org" <linux-kselftest@vger.kernel.org>, "kernel@xen0n.name" <kernel@xen0n.name>, 
+	"linux-riscv@lists.infradead.org" <linux-riscv@lists.infradead.org>, 
+	"linux-s390@vger.kernel.org" <linux-s390@vger.kernel.org>, 
+	"loongarch@lists.linux.dev" <loongarch@lists.linux.dev>, 
+	"linux-pm@vger.kernel.org" <linux-pm@vger.kernel.org>
+Cc: "pbonzini@redhat.com" <pbonzini@redhat.com>, "corbet@lwn.net" <corbet@lwn.net>, 
+	"maz@kernel.org" <maz@kernel.org>, "oupton@kernel.org" <oupton@kernel.org>, 
+	"joey.gouly@arm.com" <joey.gouly@arm.com>, "suzuki.poulose@arm.com" <suzuki.poulose@arm.com>, 
+	"yuzenghui@huawei.com" <yuzenghui@huawei.com>, "catalin.marinas@arm.com" <catalin.marinas@arm.com>, 
+	"will@kernel.org" <will@kernel.org>, "seanjc@google.com" <seanjc@google.com>, "tglx@kernel.org" <tglx@kernel.org>, 
+	"mingo@redhat.com" <mingo@redhat.com>, "bp@alien8.de" <bp@alien8.de>, 
+	"dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>, "x86@kernel.org" <x86@kernel.org>, 
+	"hpa@zytor.com" <hpa@zytor.com>, "luto@kernel.org" <luto@kernel.org>, 
+	"peterz@infradead.org" <peterz@infradead.org>, "willy@infradead.org" <willy@infradead.org>, 
+	"akpm@linux-foundation.org" <akpm@linux-foundation.org>, 
+	"lorenzo.stoakes@oracle.com" <lorenzo.stoakes@oracle.com>, "vbabka@kernel.org" <vbabka@kernel.org>, 
+	"rppt@kernel.org" <rppt@kernel.org>, "surenb@google.com" <surenb@google.com>, "mhocko@suse.com" <mhocko@suse.com>, 
+	"ast@kernel.org" <ast@kernel.org>, "daniel@iogearbox.net" <daniel@iogearbox.net>, 
+	"andrii@kernel.org" <andrii@kernel.org>, "martin.lau@linux.dev" <martin.lau@linux.dev>, 
+	"eddyz87@gmail.com" <eddyz87@gmail.com>, "song@kernel.org" <song@kernel.org>, 
+	"yonghong.song@linux.dev" <yonghong.song@linux.dev>, 
+	"john.fastabend@gmail.com" <john.fastabend@gmail.com>, "kpsingh@kernel.org" <kpsingh@kernel.org>, 
+	"sdf@fomichev.me" <sdf@fomichev.me>, "haoluo@google.com" <haoluo@google.com>, 
+	"jolsa@kernel.org" <jolsa@kernel.org>, "jgg@ziepe.ca" <jgg@ziepe.ca>, 
+	"jhubbard@nvidia.com" <jhubbard@nvidia.com>, "peterx@redhat.com" <peterx@redhat.com>, 
+	"jannh@google.com" <jannh@google.com>, "pfalcato@suse.de" <pfalcato@suse.de>, 
+	"skhan@linuxfoundation.org" <skhan@linuxfoundation.org>, "riel@surriel.com" <riel@surriel.com>, 
+	"ryan.roberts@arm.com" <ryan.roberts@arm.com>, "jgross@suse.com" <jgross@suse.com>, 
+	"yu-cheng.yu@intel.com" <yu-cheng.yu@intel.com>, "kas@kernel.org" <kas@kernel.org>, 
+	"coxu@redhat.com" <coxu@redhat.com>, "kevin.brodsky@arm.com" <kevin.brodsky@arm.com>, 
+	"yosry@kernel.org" <yosry@kernel.org>, "ajones@ventanamicro.com" <ajones@ventanamicro.com>, 
+	"maobibo@loongson.cn" <maobibo@loongson.cn>, "tabba@google.com" <tabba@google.com>, 
+	"prsampat@amd.com" <prsampat@amd.com>, "wu.fei9@sanechips.com.cn" <wu.fei9@sanechips.com.cn>, 
+	"mlevitsk@redhat.com" <mlevitsk@redhat.com>, "jmattson@google.com" <jmattson@google.com>, 
+	"jthoughton@google.com" <jthoughton@google.com>, "agordeev@linux.ibm.com" <agordeev@linux.ibm.com>, 
+	"alex@ghiti.fr" <alex@ghiti.fr>, "aou@eecs.berkeley.edu" <aou@eecs.berkeley.edu>, 
+	"borntraeger@linux.ibm.com" <borntraeger@linux.ibm.com>, "chenhuacai@kernel.org" <chenhuacai@kernel.org>, 
+	"dev.jain@arm.com" <dev.jain@arm.com>, "gor@linux.ibm.com" <gor@linux.ibm.com>, 
+	"hca@linux.ibm.com" <hca@linux.ibm.com>, "palmer@dabbelt.com" <palmer@dabbelt.com>, 
+	"pjw@kernel.org" <pjw@kernel.org>, 
+	"shijie@os.amperecomputing.com" <shijie@os.amperecomputing.com>, "svens@linux.ibm.com" <svens@linux.ibm.com>, 
+	"thuth@redhat.com" <thuth@redhat.com>, "wyihan@google.com" <wyihan@google.com>, 
+	"yang@os.amperecomputing.com" <yang@os.amperecomputing.com>, 
+	"Jonathan.Cameron@huawei.com" <Jonathan.Cameron@huawei.com>, 
+	"Liam.Howlett@oracle.com" <Liam.Howlett@oracle.com>, "urezki@gmail.com" <urezki@gmail.com>, 
+	"zhengqi.arch@bytedance.com" <zhengqi.arch@bytedance.com>, 
+	"gerald.schaefer@linux.ibm.com" <gerald.schaefer@linux.ibm.com>, 
+	"jiayuan.chen@shopee.com" <jiayuan.chen@shopee.com>, "lenb@kernel.org" <lenb@kernel.org>, 
+	"osalvador@suse.de" <osalvador@suse.de>, "pavel@kernel.org" <pavel@kernel.org>, 
+	"rafael@kernel.org" <rafael@kernel.org>, "vannapurve@google.com" <vannapurve@google.com>, 
+	"jackmanb@google.com" <jackmanb@google.com>, "aneesh.kumar@kernel.org" <aneesh.kumar@kernel.org>, 
+	"patrick.roy@linux.dev" <patrick.roy@linux.dev>, "Thomson, Jack" <jackabt@amazon.co.uk>, 
+	"Itazuri, Takahiro" <itazur@amazon.co.uk>, "Manwaring, Derek" <derekmn@amazon.com>
+Content-Type: text/plain; charset="UTF-8"
 
-On Sun, Mar 22, 2026 at 07:51:11PM +0000, Pranjal Shrivastava wrote:
->On Tue, Feb 03, 2026 at 10:09:41PM +0000, Samiullah Khawaja wrote:
->> During boot fetch the preserved state of IOMMU unit and if found then
->> restore the state.
+"David Hildenbrand (Arm)" <david@kernel.org> writes:
+
+> On 3/17/26 15:11, Kalyazin, Nikita wrote:
+>> From: Nikita Kalyazin <kalyazin@amazon.com>
 >>
->> - Reuse the root_table that was preserved in the previous kernel.
->> - Reclaim the domain ids of the preserved domains for each preserved
->>   devices so these are not acquired by another domain.
+>> Move the check for pinning closer to where the result is used.
+>> No functional changes.
 >>
->> Signed-off-by: Samiullah Khawaja <skhawaja@google.com>
+>> Signed-off-by: Nikita Kalyazin <kalyazin@amazon.com>
 >> ---
->>  drivers/iommu/intel/iommu.c      | 26 +++++++++++++++------
->>  drivers/iommu/intel/iommu.h      |  7 ++++++
->>  drivers/iommu/intel/liveupdate.c | 40 ++++++++++++++++++++++++++++++++
->>  3 files changed, 66 insertions(+), 7 deletions(-)
+>>  mm/gup.c | 23 ++++++++++++-----------
+>>  1 file changed, 12 insertions(+), 11 deletions(-)
 >>
->> diff --git a/drivers/iommu/intel/iommu.c b/drivers/iommu/intel/iommu.c
->> index c95de93fb72f..8acb7f8a7627 100644
->> --- a/drivers/iommu/intel/iommu.c
->> +++ b/drivers/iommu/intel/iommu.c
->> @@ -222,12 +222,12 @@ static void clear_translation_pre_enabled(struct intel_iommu *iommu)
->>  	iommu->flags &= ~VTD_FLAG_TRANS_PRE_ENABLED;
->>  }
->>
->> -static void init_translation_status(struct intel_iommu *iommu)
->> +static void init_translation_status(struct intel_iommu *iommu, bool restoring)
+>> diff --git a/mm/gup.c b/mm/gup.c
+>> index 5856d35be385..869d79c8daa4 100644
+>> --- a/mm/gup.c
+>> +++ b/mm/gup.c
+>> @@ -2737,18 +2737,9 @@ EXPORT_SYMBOL(get_user_pages_unlocked);
+>>   */
+>>  static bool gup_fast_folio_allowed(struct folio *folio, unsigned int flags)
 >>  {
->>  	u32 gsts;
+>> -	bool reject_file_backed = false;
+>>  	struct address_space *mapping;
+>>  	unsigned long mapping_flags;
 >>
->>  	gsts = readl(iommu->reg + DMAR_GSTS_REG);
->> -	if (gsts & DMA_GSTS_TES)
->> +	if (!restoring && (gsts & DMA_GSTS_TES))
->>  		iommu->flags |= VTD_FLAG_TRANS_PRE_ENABLED;
->>  }
->>
->> @@ -670,10 +670,16 @@ void dmar_fault_dump_ptes(struct intel_iommu *iommu, u16 source_id,
->>  #endif
->>
->>  /* iommu handling */
->> -static int iommu_alloc_root_entry(struct intel_iommu *iommu)
->> +static int iommu_alloc_root_entry(struct intel_iommu *iommu, struct iommu_ser *restored_state)
->>  {
->>  	struct root_entry *root;
->>
->> +	if (restored_state) {
->> +		intel_iommu_liveupdate_restore_root_table(iommu, restored_state);
->> +		__iommu_flush_cache(iommu, iommu->root_entry, ROOT_SIZE);
->> +		return 0;
->> +	}
->
->Instead of putting this inside the allocator, shouldn't init_dmars and
->intel_iommu_add check for iommu_ser and call
->intel_iommu_liveupdate_restore_root_table() directly, bypassing the
->allocation entirely? This looks like it could be a stand-alone function
->which has nothing to do with allocation.
-
-Agreed. Will move the check out into the caller.
->
->> +
->>  	root = iommu_alloc_pages_node_sz(iommu->node, GFP_ATOMIC, SZ_4K);
->>  	if (!root) {
->>  		pr_err("Allocating root entry for %s failed\n",
->> @@ -1614,6 +1620,7 @@ static int copy_translation_tables(struct intel_iommu *iommu)
->>
->>  static int __init init_dmars(void)
->>  {
->> +	struct iommu_ser *iommu_ser = NULL;
->>  	struct dmar_drhd_unit *drhd;
->>  	struct intel_iommu *iommu;
->>  	int ret;
->> @@ -1636,8 +1643,10 @@ static int __init init_dmars(void)
->>  						   intel_pasid_max_id);
->>  		}
->>
->> +		iommu_ser = iommu_get_preserved_data(iommu->reg_phys, IOMMU_INTEL);
->> +
->>  		intel_iommu_init_qi(iommu);
->> -		init_translation_status(iommu);
->> +		init_translation_status(iommu, !!iommu_ser);
->>
->>  		if (translation_pre_enabled(iommu) && !is_kdump_kernel()) {
->>  			iommu_disable_translation(iommu);
->> @@ -1651,7 +1660,7 @@ static int __init init_dmars(void)
->>  		 * we could share the same root & context tables
->>  		 * among all IOMMU's. Need to Split it later.
->>  		 */
->> -		ret = iommu_alloc_root_entry(iommu);
->> +		ret = iommu_alloc_root_entry(iommu, iommu_ser);
->>  		if (ret)
->>  			goto free_iommu;
->>
->> @@ -2110,15 +2119,18 @@ int dmar_parse_one_satc(struct acpi_dmar_header *hdr, void *arg)
->>  static int intel_iommu_add(struct dmar_drhd_unit *dmaru)
->>  {
->>  	struct intel_iommu *iommu = dmaru->iommu;
->> +	struct iommu_ser *iommu_ser = NULL;
->>  	int ret;
->>
->
->Nit: Add: /* Fetch the preserved context using MMIO base as a token */ ?
-
-Will add.
->
->> +	iommu_ser = iommu_get_preserved_data(iommu->reg_phys, IOMMU_INTEL);
->> +
->>  	/*
->>  	 * Disable translation if already enabled prior to OS handover.
+>> -	/*
+>> -	 * If we aren't pinning then no problematic write can occur. A long term
+>> -	 * pin is the most egregious case so this is the one we disallow.
+>> -	 */
+>> -	if ((flags & (FOLL_PIN | FOLL_LONGTERM | FOLL_WRITE)) ==
+>> -	    (FOLL_PIN | FOLL_LONGTERM | FOLL_WRITE))
+>> -		reject_file_backed = true;
+>> -
+>>  	/* We hold a folio reference, so we can safely access folio fields. */
+>>  	if (WARN_ON_ONCE(folio_test_slab(folio)))
+>>  		return false;
+>> @@ -2793,8 +2784,18 @@ static bool gup_fast_folio_allowed(struct folio *folio, unsigned int flags)
 >>  	 */
->> -	if (iommu->gcmd & DMA_GCMD_TE)
->> +	if (!iommu_ser && iommu->gcmd & DMA_GCMD_TE)
->>  		iommu_disable_translation(iommu);
->>
->> -	ret = iommu_alloc_root_entry(iommu);
->> +	ret = iommu_alloc_root_entry(iommu, iommu_ser);
+>>  	if (secretmem_mapping(mapping))
+>>  		return false;
+>> -	/* The only remaining allowed file system is shmem. */
+>> -	return !reject_file_backed || shmem_mapping(mapping);
+>> +
+>> +	/*
+>> +	 * If we aren't pinning then no problematic write can occur. A writable
+>> +	 * long term pin is the most egregious case, so this is the one we
+>> +	 * allow only for ...
+>> +	 */
+>> +	if ((flags & (FOLL_PIN | FOLL_LONGTERM | FOLL_WRITE)) !=
+>> +	    (FOLL_PIN | FOLL_LONGTERM | FOLL_WRITE))
+>> +		return true;
+>> +
+>> +	/* ... hugetlb (which we allowed above already) and shared memory. */
+>> +	return shmem_mapping(mapping);
 >
->I understand that iommu_get_preserved_data() will eventually return NULL
->after the flb_finish op has executed (based on the LUO IOCTLs dropping
->the incoming state), but I'm sensing a potential UAF/double-restore
->issue here that could happen during the boot window.
+> Acked-by: David Hildenbrand (Arm) <david@kernel.org>
 >
->I believe we could restore the same context multiple times? I see
->intel_iommu_add() is called from both dmar_device_add() and
->dmar_device_remove() paths, and the ACPI probe has the following
->sequence [1]:
+> I'm wondering if it would be a good idea to check for a hugetlb mapping
+> here instead of having the folio_test_hugetlb() check above.
 >
->static int acpi_pci_root_add(struct acpi_device *device, ...)
->{
->	// ...
->	if (hotadd && dmar_device_add(handle)) {
->		result = -ENXIO;
->		goto end;
->	}
->
->	// ...
->	root->bus = pci_acpi_scan_root(root);
->	if (!root->bus) {
->		// ...
->		result = -ENODEV;
->		goto remove_dmar;
->	}
->	// ...
->
->remove_dmar:
->	if (hotadd)
->		dmar_device_remove(handle);
->end:
->	return result;
->}
->
->If we successfully restored a domain during dmar_device_add(), but the
->ACPI probe fails later (e.g., pci_acpi_scan_root fails), we jump to
->remove_dmar. This tears down the DMAR unit, it unwinds via
->dmar_device_remove() which eventually calls dmar_iommu_hotplug(false)
->where we:
->
->	disable_dmar_iommu(iommu);
->	free_dmar_iommu(iommu);
->
->At this point, the root table folios are freed back to the allocator.
->
->However, if a re-scan is then triggered before the FLB drops the
->incoming state, we would call:
->
->dmar_device_add() -> intel_iommu_add() -> iommu_alloc_root_entry() again
->
->Because the KHO state wasn't marked as deleted/consumed,
->iommu_get_preserved_data() will hand us the exact same iommu_ser pointer?
->
->In which case, we'd call kho_restore_folio(iommu_ser->intel.root_table)
->on a physical page that might have already been reallocated?
->
->Shouldn't the restored state be explicitly marked as consumed
->(obj.deleted = 1), and shouldn't the driver properly unpreserve/clean up
->the KHO tracking during the free_dmar_iommu() teardown path?
 
-Thats a good point.
+I think it's nice that hugetlb folios are determined immediately to be
+eligible for GUP-fast regardless of whether the folio is file-backed or
+not.
 
-I think on disable/free the restored state should not be freed abruptly.
-The iommu should be able to reuse the same state. We just need to mark
-it as consumed/restored. I will rework the disable/free code paths to
-handle this.
+> Something to ponder about :)
 >
->>  	if (ret)
->>  		goto out;
->>
->> diff --git a/drivers/iommu/intel/iommu.h b/drivers/iommu/intel/iommu.h
->> index 70032e86437d..d7bf63aff17d 100644
->> --- a/drivers/iommu/intel/iommu.h
->> +++ b/drivers/iommu/intel/iommu.h
->> @@ -1283,6 +1283,8 @@ int intel_iommu_preserve_device(struct device *dev, struct device_ser *device_se
->>  void intel_iommu_unpreserve_device(struct device *dev, struct device_ser *device_ser);
->>  int intel_iommu_preserve(struct iommu_device *iommu, struct iommu_ser *iommu_ser);
->>  void intel_iommu_unpreserve(struct iommu_device *iommu, struct iommu_ser *iommu_ser);
->> +void intel_iommu_liveupdate_restore_root_table(struct intel_iommu *iommu,
->> +					       struct iommu_ser *iommu_ser);
->>  #else
->>  static inline int intel_iommu_preserve_device(struct device *dev, struct device_ser *device_ser)
->>  {
->> @@ -1301,6 +1303,11 @@ static inline int intel_iommu_preserve(struct iommu_device *iommu, struct iommu_
->>  static inline void intel_iommu_unpreserve(struct iommu_device *iommu, struct iommu_ser *iommu_ser)
->>  {
->>  }
->> +
->> +static inline void intel_iommu_liveupdate_restore_root_table(struct intel_iommu *iommu,
->> +							     struct iommu_ser *iommu_ser)
->> +{
->> +}
->>  #endif
->>
->>  #ifdef CONFIG_INTEL_IOMMU_SVM
->> diff --git a/drivers/iommu/intel/liveupdate.c b/drivers/iommu/intel/liveupdate.c
->> index 82ba1daf1711..6dcb5783d1db 100644
->> --- a/drivers/iommu/intel/liveupdate.c
->> +++ b/drivers/iommu/intel/liveupdate.c
->> @@ -73,6 +73,46 @@ static int preserve_iommu_context(struct intel_iommu *iommu)
->>  	return ret;
->>  }
->>
->> +static void restore_iommu_context(struct intel_iommu *iommu)
->> +{
->> +	struct context_entry *context;
->> +	int i;
->> +
->> +	for (i = 0; i < ROOT_ENTRY_NR; i++) {
->> +		context = iommu_context_addr(iommu, i, 0, 0);
->> +		if (context)
->> +			BUG_ON(!kho_restore_folio(virt_to_phys(context)));
->> +
->> +		if (!sm_supported(iommu))
->> +			continue;
->> +
->> +		context = iommu_context_addr(iommu, i, 0x80, 0);
->> +		if (context)
->> +			BUG_ON(!kho_restore_folio(virt_to_phys(context)));
->> +	}
->> +}
->> +
->> +static int __restore_used_domain_ids(struct device_ser *ser, void *arg)
->> +{
->> +	int id = ser->domain_iommu_ser.did;
->> +	struct intel_iommu *iommu = arg;
->> +
+> --
+> Cheers,
 >
->Shouldn't we check if the did actually belongs to the iommu instance?
->iommu_for_each_preserved_device() iterates over all preserved devices in
->the system. However, here (__restore_used_domain_ids) we allocate the
->device's did in the current iommu->domain_ida without checking if that
->device actually belongs to the current IOMMU?
-
-Yes, this needs to be checked. I will add this.
->
->On multi-IOMMU systems, this will cause every IOMMU's IDA to be
->cross-polluted with the domain IDs of devices attached to other IOMMUs.
->We must verify the device belongs to this specific IOMMU first, maybe:
->
->if (ser->domain_iommu_ser.iommu_phys != iommu->reg_phys)
->		return 0;
->
->> +	ida_alloc_range(&iommu->domain_ida, id, id, GFP_ATOMIC);
->> +	return 0;
->> +}
->> +
->> +void intel_iommu_liveupdate_restore_root_table(struct intel_iommu *iommu,
->> +					       struct iommu_ser *iommu_ser)
->> +{
->> +	BUG_ON(!kho_restore_folio(iommu_ser->intel.root_table));
->> +	iommu->root_entry = __va(iommu_ser->intel.root_table);
->> +
->> +	restore_iommu_context(iommu);
->> +	iommu_for_each_preserved_device(__restore_used_domain_ids, iommu);
->> +	pr_info("Restored IOMMU[0x%llx] Root Table at: 0x%llx\n",
->> +		iommu->reg_phys, iommu_ser->intel.root_table);
->> +}
->> +
->>  int intel_iommu_preserve_device(struct device *dev, struct device_ser *device_ser)
->>  {
->>  	struct device_domain_info *info = dev_iommu_priv_get(dev);
->
->Thanks,
->Praan
->
->[1] https://elixir.bootlin.com/linux/v7.0-rc4/source/drivers/acpi/pci_root.c#L728
-
-Thanks,
-Sami
+> David
