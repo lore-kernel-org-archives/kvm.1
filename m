@@ -1,22 +1,23 @@
 Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B34CD253958
-	for <kvm@vger.kernel.org>; Mon, 23 Mar 2026 15:02:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7371B25393B
+	for <kvm@vger.kernel.org>; Mon, 23 Mar 2026 15:02:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774278169; cv=none; b=HxeXgIgt2AcORW//YL2vqTyu2BIdCNI+ry3q7oqJikJRTJEfqrcw8GxdMXQfPIN3Uh0eV9Zn7V89BHA1Cu3ckGkxK+bbKUv/gl+J2ch7Y2YzeQLF9m97VJvjoSTBhdcKi4hDDsJwy1LZCSIPp1bvVzTh9X9UsuXG+NJ3DN43rkY=
+	t=1774278171; cv=none; b=YMSjSyQzyV8fj76wSiP0wcAk5Yx/LtuOIEM4myggFWqBNg8vbU7P3Izh2TRVEbwdZTEjTxKjgmfcIya08mxW/23C3o8Rhkd/3NhZIZGekP7Y/GzNwKDPb/wzROpKxPNVe6WNVTpROJXcmxoBQ09CO5FY+sEk2HL9DM9dSKtp/g8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774278169; c=relaxed/simple;
-	bh=1wITn7JaX1m/FulqoouepXzg40hLl+PsPdDqCmZOZRo=;
-	h=From:To:Subject:Date:Message-ID:MIME-Version:Content-Type; b=NKW9k/3Wjzk3QrMs1OjW/V8MIrIXnRTnZS7xrKZSABmaxtyMIXJSRMGpw1GXw8DDozXfXGHD5/4CNm9l9ubGBWGnh4KwbzadB8TbFOvOu747LZYpMGBLa8WabYOyX+MAeRnOP8fyjb+sEuKjTwHYugox5aAcJ4t9DDUAYPi4YPU=
+	s=arc-20240116; t=1774278171; c=relaxed/simple;
+	bh=FWZZVFErfnfTu3eg2iv8rgeJGoD04ju8Lf+c86clM5w=;
+	h=From:To:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=sti9yqw7qf/7N2afpahsI4ZpJiHVgw3UmnprPI78zd63B8itEFjESHEsJbya2IcrdDpy7JZZ7X65vsKeYVYnKyA1JHYvYukQdWiNXg+UXAqpqXesGSw9ldAmmxJ3OKCIa8IAIg0k8fspcc+xCHIGpStCzvUq3q1szTofCBY9Zao=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
 Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 4188314BF;
-	Mon, 23 Mar 2026 08:02:41 -0700 (PDT)
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id DD8651516;
+	Mon, 23 Mar 2026 08:02:43 -0700 (PDT)
 Received: from raptor (usa-sjc-mx-foss1.foss.arm.com [172.31.20.19])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id AD3C53F73B;
-	Mon, 23 Mar 2026 08:02:42 -0700 (PDT)
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id B30F03F73B;
+	Mon, 23 Mar 2026 08:02:47 -0700 (PDT)
 From: Alexandru Elisei <alexandru.elisei@arm.com>
 To: will@kernel.org,
 	julien.thierry.kdev@gmail.com,
@@ -26,10 +27,12 @@ To: will@kernel.org,
 	andre.przywara@arm.com,
 	suzuki.poulose@arm.com,
 	kvm@vger.kernel.org
-Subject: [PATCH kvmtool 0/6] x86 compilation fixes and arm64 PMU improvements
-Date: Mon, 23 Mar 2026 15:02:15 +0000
-Message-ID: <20260323150221.49256-1-alexandru.elisei@arm.com>
+Subject: [PATCH kvmtool 1/6] virtio: Do not modify const strings in virtio_9p_rootdir_parser()
+Date: Mon, 23 Mar 2026 15:02:16 +0000
+Message-ID: <20260323150221.49256-2-alexandru.elisei@arm.com>
 X-Mailer: git-send-email 2.53.0
+In-Reply-To: <20260323150221.49256-1-alexandru.elisei@arm.com>
+References: <20260323150221.49256-1-alexandru.elisei@arm.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -39,48 +42,68 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-The first two patches fix the following compilation errors on x86 when
-using gcc 15.2.1:
+Even though @arg is of type const char *, virtio_9p_rootdir_parser()
+modifies it it if a tag name is specified, leading to the following
+compilation error on an x86_64 machine with gcc 15.2.1:
 
-disk/core.c: In function ‘disk_img_name_parser’:
-disk/core.c:27:21: error: assignment discards ‘const’ qualifier from pointer target type [-Werror=discarded-qualifiers]
-   27 |                 sep = strstr(arg, ":");
-      |                     ^
-disk/core.c:39:21: error: assignment discards ‘const’ qualifier from pointer target type [-Werror=discarded-qualifiers]
-   39 |                 sep = strstr(cur, ",");
-      |                     ^
-virtio/9p.c: In function ‘virtio_9p_rootdir_parser’:
 virtio/9p.c:1503:18: error: assignment discards ‘const’ qualifier from pointer target type [-Werror=discarded-qualifiers]
  1503 |         tag_name = strstr(arg, ",");
-      |                  ^
 
-I couldn't reproduce the errors on arm64 using aarch64-linux-gnu-gcc 15.1.0
-and 14.2.0. I tried doing make with V=1 and it looked to me like kvmtool
-uses the same flags on x86 as on arm64, so I assumed it's because of the
-difference in compilers and I didn't dig further.
+Fix it by copying @arg to a local string, which can then be modified
+in-place.
 
-The remaining of the patches are there to improve PMU initialisation and
-error reporting.
+Also use die_perror() if realpath() fails, to provide more information to
+the user.
 
-Alexandru Elisei (6):
-  virtio: Do not modify const strings in virtio_9p_rootdir_parser()
-  disk/core: Do not modify const strings in disk_img_name_parser()
-  arm64: Initialise the PMU last
-  util: Set exit status to errno in die_perror()
-  util: Allow die_perror() to take a variable list of argument
-  arm64: Improve KVM_ARM_VCPU_PMU_V3_CTRL diagnostics
+Signed-off-by: Alexandru Elisei <alexandru.elisei@arm.com>
+---
+ virtio/9p.c | 21 ++++++++++++++-------
+ 1 file changed, 14 insertions(+), 7 deletions(-)
 
- arm64/pmu.c              | 60 ++++++++++++++++++++++++++++------------
- disk/core.c              | 44 +++++++++++++++++++----------
- include/kvm/disk-image.h |  6 ++--
- include/kvm/util-init.h  |  6 ++--
- include/kvm/util.h       |  2 +-
- util/util.c              | 21 ++++++++++++--
- virtio/9p.c              | 21 +++++++++-----
- 7 files changed, 113 insertions(+), 47 deletions(-)
-
-
-base-commit: eb915c763e4b95dd4a9d32763fd449459742e053
+diff --git a/virtio/9p.c b/virtio/9p.c
+index e6f669c49895..cf3e547d3173 100644
+--- a/virtio/9p.c
++++ b/virtio/9p.c
+@@ -1491,25 +1491,32 @@ struct virtio_ops p9_dev_virtio_ops = {
+ 
+ int virtio_9p_rootdir_parser(const struct option *opt, const char *arg, int unset)
+ {
+-	char *tag_name;
+-	char tmp[PATH_MAX];
+ 	struct kvm *kvm = opt->ptr;
++	char *tag_name, *copy;
++	char path[PATH_MAX];
+ 
++	copy = strdup(arg);
++	if (!copy)
++		die_perror("strdup");
+ 	/*
+ 	 * 9p dir can be of the form dirname,tag_name or
+ 	 * just dirname. In the later case we use the
+ 	 * default tag name
+ 	 */
+-	tag_name = strstr(arg, ",");
++	tag_name = strstr(copy, ",");
+ 	if (tag_name) {
+ 		*tag_name = '\0';
+ 		tag_name++;
+ 	}
+-	if (realpath(arg, tmp)) {
+-		if (virtio_9p__register(kvm, tmp, tag_name) < 0)
++	if (realpath(copy, path)) {
++		if (virtio_9p__register(kvm, path, tag_name) < 0)
+ 			die("Unable to initialize virtio 9p");
+-	} else
+-		die("Failed resolving 9p path");
++	} else {
++		die_perror("Failed resolving 9p path");
++	}
++
++	free(copy);
++
+ 	return 0;
+ }
+ 
 -- 
 2.53.0
 
