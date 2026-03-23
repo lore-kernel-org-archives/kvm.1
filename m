@@ -1,454 +1,144 @@
-Received: from mail-pl1-f175.google.com (mail-pl1-f175.google.com [209.85.214.175])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from stravinsky.debian.org (stravinsky.debian.org [82.195.75.108])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD9052DB7BE
-	for <kvm@vger.kernel.org>; Mon, 23 Mar 2026 18:32:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.175
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4958D2DEA7B;
+	Mon, 23 Mar 2026 18:36:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=82.195.75.108
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774290754; cv=none; b=TP9N54iyNJKZg0vQjccpsajC24e3ykEUDWHd58Q7bnIbiLiukNtpKDWsVvlEh9Ls0jJmTcTb9B7H0LNIs3/Rt+RTdgTok8hHwlnmkjnoibsscvJ9vYRrHQjX7/zOXcoMsW/ocGmdDBWxHesVAngJs7yYAD3QO5KsEuqUMkkuRPk=
+	t=1774290990; cv=none; b=teQGU5BDHC/QGG9JUifdgFi5/4VF0wMHCB3SktbGbJylV/3C3yxrtA1QrPgkcr/b174XZzyG5fT4C8g4COhgjsMuHGQF2f+ELDk/O8anNygnmBd78JPHBgyqqTxa1+2IOKZ998l6au22ncvj7UCEZMZ9Y1B1ti7xFNKsIGyO1yo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774290754; c=relaxed/simple;
-	bh=PL3PQCBlT69UrY3KSUQ/W5HJncy6AAYgGvBq2b7aUoc=;
+	s=arc-20240116; t=1774290990; c=relaxed/simple;
+	bh=hl6X1HK0MVHB85xw9EAy9uyX8KPSXSWQpDivXp/F078=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=GGyKGFnCTL/ZHhiUg+XwVh2YT1eGyDEVhJieedrdLkkFnJcay28vMx425Qsu0cDL7jbu5rIRD4KiOBzRE5C9cI1uIWqPGqPoh4hhlX7V4vQ6301mClGVmukKzUc4UKzdNv4sJlb3TmCF2KvAsgMkVFBqp9bNHj0cX37AIh+xXCs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=KlrHJFID; arc=none smtp.client-ip=209.85.214.175
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	 Content-Type:Content-Disposition:In-Reply-To; b=DnJa94IT2/tJwD6Z1qcQRQAkUJheF84b4kyEqr0Mu+x0gHxst8hqGSDEIBN45/qq29ZwEaS2J3RvX1ier4JZDYabD5V1UgGjzFPx0o61AzEJudGdWrnDTfmstLzxzpLfpdJi/wfj9/O5yYmVyms40nxW99HaHdMWoEcDjkj4YXY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org; spf=none smtp.mailfrom=debian.org; dkim=pass (2048-bit key) header.d=debian.org header.i=@debian.org header.b=cPKUnUUw; arc=none smtp.client-ip=82.195.75.108
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=debian.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="KlrHJFID"
-Received: by mail-pl1-f175.google.com with SMTP id d9443c01a7336-2b052562254so17785ad.0
-        for <kvm@vger.kernel.org>; Mon, 23 Mar 2026 11:32:32 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1774290752; x=1774895552; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=OEdX6mGmgHwGRTe5QYgQxF0OvznIq+/2YpZXroyUrA0=;
-        b=KlrHJFIDi1kseNZnvOkXMorkeTU+gT2OuLvZOdmDiV7t+zOl4KZOJwBsjHB0xBOkLg
-         V/1pIsKvudz+J84EPIX0rFXtLOQgsKy1TWDR7uKGzA1qsIHRKCqDRiiiBfs7lgSYppRV
-         v5QRhFzB0IB1OyaPti7MMfbyG67nS3/XQM2/I77IAacAqc1nw0CfAKMsZMag+SrS7re/
-         CmiGBnCYmv3AUm782NXkPy+6wk1K85NOL8OsbkLDFiWiKIs3rqCKto8iIDIqFvXa1Keo
-         xlAeAbHZy7wdqEN/GLoFRAzEaB3udHJUrb7wvesDsC5Yx+t0QsVQRpTnWM643IEa4Rln
-         e76w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774290752; x=1774895552;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=OEdX6mGmgHwGRTe5QYgQxF0OvznIq+/2YpZXroyUrA0=;
-        b=L7SNPe9WARMm0jU6otYQ8BwJgAe/sepCwqz1YcXY5IHihqeSFD3okSDuYy3MY3ch1U
-         14C7VTA/UH37LFAuUsWpcjdds9bzkE4ekK+724GH3Jk2A6VS6TG6+5KUSE4VUd5vcVjv
-         S2zMvBFQQtJ9txcu04oxJf6gIufZXsTyF2grK1RmAVbTiBozLUSXEmEW7XzHIQNmO0mL
-         8S/83Q/x4taZ1tOjZef5+4TK9WwXXP0YQSzQJ9JZlgihfI8/9TWHeWSs9wP+NXSkNn1V
-         gRGK3j2OSen2WCDsH8hzaCMAG4+LnBQYBPctioRnENNVUrvCQrSpb/PI0OMn3w9wBGXP
-         g+vA==
-X-Forwarded-Encrypted: i=1; AJvYcCVO26FRgmMfz7tjw0lkGr6HcSzR2hK7weB6R3Cfssi6RoRLU31i6GVd7MwfU7h4OiWuH2I=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzObg2AJzFkGCR1fLnGgBcMoeLpc62q+Yn2i82e3GoTTOmD0uPk
-	ulvFi6bGhbHw5cl6ppOqq0wJ8JvpqqmtLJDzd5/KwwbAknLAY6uBCONos6LrOwr7BA==
-X-Gm-Gg: ATEYQzzaN1GdhXFm3cqAKOygYkM7hqJQm5Ypx/AIZtqpN1lQq9/7om5p6sXXVvQJyGL
-	Ss6Ec1qYIy+b9A5PsxgSe6mXrsR2vKtflTaqfOHfmXLIMCsrO/kluUBfXnx6f/lHhq91yIbQxAF
-	g+z2bDz6TGyumtGwHjQKQ7A/hiaL6NETzMwQR70UTISQ3cm4a2hcqgATVzizoTYjcV4bxg6BK1g
-	I8DJ/mQvAJU3hDbBNtzVG0ivGlp9ioOUiCxtMSqoU+8t1UrKAO6115607WKIyPwUKYSKp3NXvu9
-	31by+ZmrxuuXmsoqGoAWnPQUZ4RorF8I4ZjdVF25zpFUf9ukpagUc05r+9r+fsqPZeMQG1WxZ2W
-	FWTbg3QYj3r3DUN9gRKWJ4xsSPb6YXBZc/Wu6psJVsvq2PIvgoOK42xX8Hun63sQEW4Kumt/06D
-	MT3BdgxqnFANJIB2I62P5GmK/kkr/TtHjGrXqyflvAMrVNOa0Yl8+2rp093Ce3hw==
-X-Received: by 2002:a17:903:22d1:b0:2ae:c566:bd99 with SMTP id d9443c01a7336-2b0a54f45e4mr341065ad.22.1774290751355;
-        Mon, 23 Mar 2026 11:32:31 -0700 (PDT)
-Received: from google.com (168.136.83.34.bc.googleusercontent.com. [34.83.136.168])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-82b040debf9sm10282896b3a.47.2026.03.23.11.32.30
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 23 Mar 2026 11:32:30 -0700 (PDT)
-Date: Mon, 23 Mar 2026 18:32:26 +0000
-From: Samiullah Khawaja <skhawaja@google.com>
-To: Pranjal Shrivastava <praan@google.com>
-Cc: David Woodhouse <dwmw2@infradead.org>, 
-	Lu Baolu <baolu.lu@linux.intel.com>, Joerg Roedel <joro@8bytes.org>, Will Deacon <will@kernel.org>, 
-	Jason Gunthorpe <jgg@ziepe.ca>, Robin Murphy <robin.murphy@arm.com>, 
-	Kevin Tian <kevin.tian@intel.com>, Alex Williamson <alex@shazbot.org>, 
-	Shuah Khan <shuah@kernel.org>, iommu@lists.linux.dev, linux-kernel@vger.kernel.org, 
-	kvm@vger.kernel.org, Saeed Mahameed <saeedm@nvidia.com>, 
-	Adithya Jayachandran <ajayachandra@nvidia.com>, Parav Pandit <parav@nvidia.com>, 
-	Leon Romanovsky <leonro@nvidia.com>, William Tu <witu@nvidia.com>, 
-	Pratyush Yadav <pratyush@kernel.org>, Pasha Tatashin <pasha.tatashin@soleen.com>, 
-	David Matlack <dmatlack@google.com>, Andrew Morton <akpm@linux-foundation.org>, 
-	Chris Li <chrisl@kernel.org>, Vipin Sharma <vipinsh@google.com>, 
-	YiFei Zhu <zhuyifei@google.com>
-Subject: Re: [PATCH 06/14] iommu/vt-d: Implement device and iommu
- preserve/unpreserve ops
-Message-ID: <acGFFauPJFMT-Tkk@google.com>
-References: <20260203220948.2176157-1-skhawaja@google.com>
- <20260203220948.2176157-7-skhawaja@google.com>
- <ab3R54-kyHGDEW9L@google.com>
+	dkim=pass (2048-bit key) header.d=debian.org header.i=@debian.org header.b="cPKUnUUw"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=debian.org;
+	s=smtpauto.stravinsky; h=X-Debian-User:In-Reply-To:Content-Transfer-Encoding:
+	Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:
+	Reply-To:Content-ID:Content-Description;
+	bh=cD48I22UPGx57jyUUL+qOghGNHAJydJTw3sMS1pSeI0=; b=cPKUnUUwkeFEhEgctNdBpHoIDB
+	1knOio2bdLJZD2QgyS15lzFRZGe+xeqmCWVQP6EQuuJX9lerqhBy6pK6n0EQftWQxUIHzAvb51CeP
+	tYiDngYGDRWEc1/07mJmWfCNRmZELdyGffPz+tIohJEc1goTL6zi95l3qgGlOhdr+Fjo3y1Ti/iSn
+	TddLVIWTQ7g1DGPN8PcVdz633HgtmiXAIl41W2gnaJgpZJG7TYuDFnSZG/R9O8tFkMY44yeONzc2Q
+	7LoZBiV1eEg2EajEfqpSn60NQ/luMsZMZ+1KuQktsZ5qbXL38pTafUyEBEcL7XML9HoJaSXByMDY2
+	ND6jUhng==;
+Received: from authenticated user
+	by stravinsky.debian.org with esmtpsa (TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+	(Exim 4.94.2)
+	(envelope-from <aurel32@debian.org>)
+	id 1w4k8a-007jEE-JZ; Mon, 23 Mar 2026 18:36:27 +0000
+Received: from authenticated user
+	by hall.aurel32.net with esmtpsa  (TLS1.3)  tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.98.2)
+	(envelope-from <aurel32@debian.org>)
+	id 1w4k8T-0000000C72f-3Y9W;
+	Mon, 23 Mar 2026 19:36:21 +0100
+Date: Mon, 23 Mar 2026 19:36:21 +0100
+From: Aurelien Jarno <aurel32@debian.org>
+To: Bibo Mao <maobibo@loongson.cn>
+Cc: Huacai Chen <chenhuacai@kernel.org>,
+	Huacai Chen <chenhuacai@loongson.cn>,
+	Paolo Bonzini <pbonzini@redhat.com>,
+	Tianrui Zhao <zhaotianrui@loongson.cn>, kvm@vger.kernel.org,
+	loongarch@lists.linux.dev, linux-kernel@vger.kernel.org,
+	Xuerui Wang <kernel@xen0n.name>,
+	Jiaxun Yang <jiaxun.yang@flygoat.com>, stable@vger.kernel.org
+Subject: Re: [PATCH 1/2] LoongArch: KVM: Make kvm_get_vcpu_by_cpuid() more
+ robust
+Message-ID: <acGIJXccO5JVlrGh@aurel32.net>
+Mail-Followup-To: Bibo Mao <maobibo@loongson.cn>,
+	Huacai Chen <chenhuacai@kernel.org>,
+	Huacai Chen <chenhuacai@loongson.cn>,
+	Paolo Bonzini <pbonzini@redhat.com>,
+	Tianrui Zhao <zhaotianrui@loongson.cn>, kvm@vger.kernel.org,
+	loongarch@lists.linux.dev, linux-kernel@vger.kernel.org,
+	Xuerui Wang <kernel@xen0n.name>,
+	Jiaxun Yang <jiaxun.yang@flygoat.com>, stable@vger.kernel.org
+References: <20260322135346.3720577-1-chenhuacai@loongson.cn>
+ <676198e5-78e4-ab41-e447-4a9d24655890@loongson.cn>
+ <CAAhV-H7rFtju3k=NYkAy6-O7f8U=CTNiryu2_Kr57pScjeH-yQ@mail.gmail.com>
+ <696c5177-4a89-f0d0-c305-c1581e72aa3d@loongson.cn>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <ab3R54-kyHGDEW9L@google.com>
+Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <696c5177-4a89-f0d0-c305-c1581e72aa3d@loongson.cn>
+User-Agent: Mutt/2.2.13 (2024-03-09)
+X-Debian-User: aurel32
 
-On Fri, Mar 20, 2026 at 11:01:59PM +0000, Pranjal Shrivastava wrote:
->On Tue, Feb 03, 2026 at 10:09:40PM +0000, Samiullah Khawaja wrote:
->> Add implementation of the device and iommu presevation in a separate
->> file. Also set the device and iommu preserve/unpreserve ops in the
->> struct iommu_ops.
->>
->> During normal shutdown the iommu translation is disabled. Since the root
->> table is preserved during live update, it needs to be cleaned up and the
->> context entries of the unpreserved devices need to be cleared.
->>
->> Signed-off-by: Samiullah Khawaja <skhawaja@google.com>
->> ---
->>  drivers/iommu/intel/Makefile     |   1 +
->>  drivers/iommu/intel/iommu.c      |  47 ++++++++++-
->>  drivers/iommu/intel/iommu.h      |  27 +++++++
->>  drivers/iommu/intel/liveupdate.c | 134 +++++++++++++++++++++++++++++++
->>  4 files changed, 205 insertions(+), 4 deletions(-)
->>  create mode 100644 drivers/iommu/intel/liveupdate.c
->>
->> diff --git a/drivers/iommu/intel/Makefile b/drivers/iommu/intel/Makefile
->> index ada651c4a01b..d38fc101bc35 100644
->> --- a/drivers/iommu/intel/Makefile
->> +++ b/drivers/iommu/intel/Makefile
->> @@ -6,3 +6,4 @@ obj-$(CONFIG_INTEL_IOMMU_DEBUGFS) += debugfs.o
->>  obj-$(CONFIG_INTEL_IOMMU_SVM) += svm.o
->>  obj-$(CONFIG_IRQ_REMAP) += irq_remapping.o
->>  obj-$(CONFIG_INTEL_IOMMU_PERF_EVENTS) += perfmon.o
->> +obj-$(CONFIG_IOMMU_LIVEUPDATE) += liveupdate.o
->> diff --git a/drivers/iommu/intel/iommu.c b/drivers/iommu/intel/iommu.c
->> index 134302fbcd92..c95de93fb72f 100644
->> --- a/drivers/iommu/intel/iommu.c
->> +++ b/drivers/iommu/intel/iommu.c
->> @@ -16,6 +16,7 @@
->>  #include <linux/crash_dump.h>
->>  #include <linux/dma-direct.h>
->>  #include <linux/dmi.h>
->> +#include <linux/iommu-lu.h>
->>  #include <linux/memory.h>
->>  #include <linux/pci.h>
->>  #include <linux/pci-ats.h>
->> @@ -52,6 +53,8 @@ static int rwbf_quirk;
->>
->>  #define rwbf_required(iommu)	(rwbf_quirk || cap_rwbf((iommu)->cap))
->>
->> +static bool __maybe_clean_unpreserved_context_entries(struct intel_iommu *iommu);
->> +
->>  /*
->>   * set to 1 to panic kernel if can't successfully enable VT-d
->>   * (used when kernel is launched w/ TXT)
->> @@ -60,8 +63,6 @@ static int force_on = 0;
->>  static int intel_iommu_tboot_noforce;
->>  static int no_platform_optin;
->>
->> -#define ROOT_ENTRY_NR (VTD_PAGE_SIZE/sizeof(struct root_entry))
->> -
->>  /*
->>   * Take a root_entry and return the Lower Context Table Pointer (LCTP)
->>   * if marked present.
->> @@ -2378,8 +2379,10 @@ void intel_iommu_shutdown(void)
->>  		/* Disable PMRs explicitly here. */
->>  		iommu_disable_protect_mem_regions(iommu);
->>
->> -		/* Make sure the IOMMUs are switched off */
->> -		iommu_disable_translation(iommu);
->> +		if (!__maybe_clean_unpreserved_context_entries(iommu)) {
->> +			/* Make sure the IOMMUs are switched off */
->> +			iommu_disable_translation(iommu);
->> +		}
->>  	}
->>  }
->>
->> @@ -2902,6 +2905,38 @@ static const struct iommu_dirty_ops intel_second_stage_dirty_ops = {
->>  	.set_dirty_tracking = intel_iommu_set_dirty_tracking,
->>  };
->>
->> +#ifdef CONFIG_IOMMU_LIVEUPDATE
->> +static bool __maybe_clean_unpreserved_context_entries(struct intel_iommu *iommu)
->> +{
->> +	struct device_domain_info *info;
->> +	struct pci_dev *pdev = NULL;
->> +
->> +	if (!iommu->iommu.outgoing_preserved_state)
->> +		return false;
->> +
->> +	for_each_pci_dev(pdev) {
->
->Shouldn't we *also* clean context entries for non-pci devices?
->
->AFAICT, in the current code, we simply turn off translation during
->shutdowm. However, with this change, because this cleanup loop only runs
->for_each_pci_dev(), it completely ignores any non-PCI devices (like
->platform devices) that might be attached to this IOMMU?
->
->Since the IOMMU is left powered on during the handover, skipping non-PCI
->devices in this cleanup loop means their context entries are left
->perfectly intact and active in the hardware root table. There could be a
->chance that the new kernel doesn't reclaim/overwrite these entries in
->which case it could result in zombie DMAs surviving the KHO.
+Hi,
 
-Agreed. I will update this.
->
->> +		info = dev_iommu_priv_get(&pdev->dev);
->> +		if (!info)
->> +			continue;
->> +
->> +		if (info->iommu != iommu)
->> +			continue;
->> +
->> +		if (dev_iommu_preserved_state(&pdev->dev))
->> +			continue;
->> +
->> +		domain_context_clear(info);
->> +	}
->> +
->> +	return true;
->> +}
->> +#else
->> +static bool __maybe_clean_unpreserved_context_entries(struct intel_iommu *iommu)
->> +{
->> +	return false;
->> +}
->> +#endif
->> +
->>  static struct iommu_domain *
->>  intel_iommu_domain_alloc_second_stage(struct device *dev,
->>  				      struct intel_iommu *iommu, u32 flags)
->> @@ -3925,6 +3960,10 @@ const struct iommu_ops intel_iommu_ops = {
->>  	.is_attach_deferred	= intel_iommu_is_attach_deferred,
->>  	.def_domain_type	= device_def_domain_type,
->>  	.page_response		= intel_iommu_page_response,
->> +	.preserve_device	= intel_iommu_preserve_device,
->> +	.unpreserve_device	= intel_iommu_unpreserve_device,
->> +	.preserve		= intel_iommu_preserve,
->> +	.unpreserve		= intel_iommu_unpreserve,
->>  };
->>
->>  static void quirk_iommu_igfx(struct pci_dev *dev)
->> diff --git a/drivers/iommu/intel/iommu.h b/drivers/iommu/intel/iommu.h
->> index 25c5e22096d4..70032e86437d 100644
->> --- a/drivers/iommu/intel/iommu.h
->> +++ b/drivers/iommu/intel/iommu.h
->> @@ -557,6 +557,8 @@ struct root_entry {
->>  	u64     hi;
->>  };
->>
->> +#define ROOT_ENTRY_NR (VTD_PAGE_SIZE / sizeof(struct root_entry))
->> +
->>  /*
->>   * low 64 bits:
->>   * 0: present
->> @@ -1276,6 +1278,31 @@ static inline int iopf_for_domain_replace(struct iommu_domain *new,
->>  	return 0;
->>  }
->>
->> +#ifdef CONFIG_IOMMU_LIVEUPDATE
->> +int intel_iommu_preserve_device(struct device *dev, struct device_ser *device_ser);
->> +void intel_iommu_unpreserve_device(struct device *dev, struct device_ser *device_ser);
->> +int intel_iommu_preserve(struct iommu_device *iommu, struct iommu_ser *iommu_ser);
->> +void intel_iommu_unpreserve(struct iommu_device *iommu, struct iommu_ser *iommu_ser);
->> +#else
->> +static inline int intel_iommu_preserve_device(struct device *dev, struct device_ser *device_ser)
->> +{
->> +	return -EOPNOTSUPP;
->> +}
->> +
->> +static inline void intel_iommu_unpreserve_device(struct device *dev, struct device_ser *device_ser)
->> +{
->> +}
->> +
->> +static inline int intel_iommu_preserve(struct iommu_device *iommu, struct iommu_ser *iommu_ser)
->> +{
->> +	return -EOPNOTSUPP;
->> +}
->> +
->> +static inline void intel_iommu_unpreserve(struct iommu_device *iommu, struct iommu_ser *iommu_ser)
->> +{
->> +}
->> +#endif
->> +
->>  #ifdef CONFIG_INTEL_IOMMU_SVM
->>  void intel_svm_check(struct intel_iommu *iommu);
->>  struct iommu_domain *intel_svm_domain_alloc(struct device *dev,
->> diff --git a/drivers/iommu/intel/liveupdate.c b/drivers/iommu/intel/liveupdate.c
->> new file mode 100644
->> index 000000000000..82ba1daf1711
->> --- /dev/null
->> +++ b/drivers/iommu/intel/liveupdate.c
->> @@ -0,0 +1,134 @@
->> +// SPDX-License-Identifier: GPL-2.0-only
->> +
->> +/*
->> + * Copyright (C) 2025, Google LLC
->> + * Author: Samiullah Khawaja <skhawaja@google.com>
->> + */
->> +
->> +#define pr_fmt(fmt)    "iommu: liveupdate: " fmt
->> +
->> +#include <linux/kexec_handover.h>
->> +#include <linux/liveupdate.h>
->> +#include <linux/iommu-lu.h>
->> +#include <linux/module.h>
->> +#include <linux/pci.h>
->> +
->> +#include "iommu.h"
->> +#include "../iommu-pages.h"
->> +
->> +static void unpreserve_iommu_context(struct intel_iommu *iommu, int end)
->> +{
->> +	struct context_entry *context;
->> +	int i;
->> +
->> +	if (end < 0)
->> +		end = ROOT_ENTRY_NR;
->> +
->> +	for (i = 0; i < end; i++) {
->> +		context = iommu_context_addr(iommu, i, 0, 0);
->> +		if (context)
->> +			iommu_unpreserve_page(context);
->> +
->> +		if (!sm_supported(iommu))
->> +			continue;
->> +
->> +		context = iommu_context_addr(iommu, i, 0x80, 0);
->> +		if (context)
->> +			iommu_unpreserve_page(context);
->> +	}
->> +}
->> +
->> +static int preserve_iommu_context(struct intel_iommu *iommu)
->> +{
->> +	struct context_entry *context;
->> +	int ret;
->> +	int i;
->> +
->> +	for (i = 0; i < ROOT_ENTRY_NR; i++) {
->> +		context = iommu_context_addr(iommu, i, 0, 0);
->> +		if (context) {
->> +			ret = iommu_preserve_page(context);
->> +			if (ret)
->> +				goto error;
->> +		}
->> +
->> +		if (!sm_supported(iommu))
->> +			continue;
->> +
->> +		context = iommu_context_addr(iommu, i, 0x80, 0);
->> +		if (context) {
->> +			ret = iommu_preserve_page(context);
->> +			if (ret)
->> +				goto error_sm;
->> +		}
->> +	}
->> +
->> +	return 0;
->> +
->> +error_sm:
->> +	context = iommu_context_addr(iommu, i, 0, 0);
->> +	iommu_unpreserve_page(context);
->> +error:
->> +	unpreserve_iommu_context(iommu, i);
->> +	return ret;
->> +}
->> +
->> +int intel_iommu_preserve_device(struct device *dev, struct device_ser *device_ser)
->> +{
->> +	struct device_domain_info *info = dev_iommu_priv_get(dev);
->> +
->> +	if (!dev_is_pci(dev))
->> +		return -EOPNOTSUPP;
->
->Maybe also WARN_ON_ONCE ?
+On 2026-03-23 15:56, Bibo Mao wrote:
+>=20
+>=20
+> On 2026/3/23 =E4=B8=8B=E5=8D=883:08, Huacai Chen wrote:
+> > On Mon, Mar 23, 2026 at 11:16=E2=80=AFAM Bibo Mao <maobibo@loongson.cn>=
+ wrote:
+> > >=20
+> > >=20
+> > >=20
+> > > On 2026/3/22 =E4=B8=8B=E5=8D=889:53, Huacai Chen wrote:
+> > > > kvm_get_vcpu_by_cpuid() takes a cpuid parameter whose type is int, =
+so
+> > > > cpuid can be negative. Let kvm_get_vcpu_by_cpuid() return NULL for =
+this
+> > > > case so as to make it more robust.
+> > > >=20
+> > > > This fix an out-of-bounds access to kvm_arch::phyid_map::phys_map[].
+> > > >=20
+> > > > Cc: <stable@vger.kernel.org>
+> > > > Fixes: 73516e9da512adc ("LoongArch: KVM: Add vcpu mapping from phys=
+ical cpuid")
+> > > > Reported-by: Aurelien Jarno <aurel32@debian.org>
+> > > > Link: https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=3D1131431
+> > > > Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
+> > > > ---
+> > > >    arch/loongarch/kvm/vcpu.c | 3 +++
+> > > >    1 file changed, 3 insertions(+)
+> > > >=20
+> > > > diff --git a/arch/loongarch/kvm/vcpu.c b/arch/loongarch/kvm/vcpu.c
+> > > > index 8ffd50a470e6..831f381a8fd1 100644
+> > > > --- a/arch/loongarch/kvm/vcpu.c
+> > > > +++ b/arch/loongarch/kvm/vcpu.c
+> > > > @@ -588,6 +588,9 @@ struct kvm_vcpu *kvm_get_vcpu_by_cpuid(struct k=
+vm *kvm, int cpuid)
+> > > >    {
+> > > >        struct kvm_phyid_map *map;
+> > > >=20
+> > > > +     if (cpuid < 0)
+> > > > +             return NULL;
+> > > > +
+> > > >        if (cpuid >=3D KVM_MAX_PHYID)
+> > > >                return NULL;
+> > > >=20
+> > > >=20
+> > >=20
+> > > if (cpuid < 0 || cpuid >=3D KVM_MAX_PHYID)?
+> > > however both are OK for me.
+> > I use a similar style as kvm_get_vcpu_by_id(). :)
+> >=20
+> > But there is another warning which can't be solved by this series (and
+> > I doubt whether it can be solved unless revert 01a8e68396a6d51f5b).
+> > https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=3D1131431
+>=20
+> what is the kernel config file with bug
+>    https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=3D1131431
+>=20
 
-I think WARN should not be used if the driver supports only PCIe device
-preservation. Do you think returning NOTSUPP is not enough and an error
-should be logged? I can add a ratelimited error log.
->
->> +
->> +	if (!info)
->> +		return -EINVAL;
->> +
->> +	device_ser->domain_iommu_ser.did = domain_id_iommu(info->domain, info->iommu);
->> +	return 0;
->> +}
->> +
->> +void intel_iommu_unpreserve_device(struct device *dev, struct device_ser *device_ser)
->> +{
->> +}
->
->Nit: We can just not populate the unpreserve_device op here, we don't
->need an empty function
+I have just sent the kernel config to the bug report.
 
-Agreed.
->
->> +
->> +int intel_iommu_preserve(struct iommu_device *iommu_dev, struct iommu_ser *ser)
->> +{
->> +	struct intel_iommu *iommu;
->> +	int ret;
->> +
->> +	iommu = container_of(iommu_dev, struct intel_iommu, iommu);
->> +
->> +	spin_lock(&iommu->lock);
->
->Minor note: We call this with the session->mutex acquired which is a
->sleepable/preemptable context whereas spin_lock disables preemption and
->puts us in an atomic context.
->
->While iommu_context_addr() happens to be safe here because it uses
->GFP_ATOMIC & we pass alloc=0, we are heavily relying on the assumption
->that iommu_context_addr() or other helpers will never sleep or attempt
->a GFP_KERNEL allocation under the hood.
->
->Given how easy it would be for a future refactor to accidentally
->introduce a sleeping lock inside any of the other helpers, I'd recommend
->adding an explicit comment here warning that this runs in an atomic
->context (same for unpreserve below).
+Regards
+Aurelien
 
-I will add a comment about this as you suggested in the later email.
->
->>r +	ret = preserve_iommu_context(iommu);
->> +	if (ret)
->> +		goto err;
->> +
->> +	ret = iommu_preserve_page(iommu->root_entry);
->> +	if (ret) {
->> +		unpreserve_iommu_context(iommu, -1);
->
->Nit: The same overloading discussion as Vipin pointed out in the other
->patch.
-
-Agreed. Will update.
->
->> +		goto err;
->> +	}
->> +
->> +	ser->intel.phys_addr = iommu->reg_phys;
->> +	ser->intel.root_table = __pa(iommu->root_entry);
->> +	ser->type = IOMMU_INTEL;
->> +	ser->token = ser->intel.phys_addr;
->> +	spin_unlock(&iommu->lock);
->> +
->> +	return 0;
->> +err:
->> +	spin_unlock(&iommu->lock);
->> +	return ret;
->> +}
->> +
->> +void intel_iommu_unpreserve(struct iommu_device *iommu_dev, struct iommu_ser *iommu_ser)
->> +{
->> +	struct intel_iommu *iommu;
->> +
->> +	iommu = container_of(iommu_dev, struct intel_iommu, iommu);
->> +
->> +	spin_lock(&iommu->lock);
->> +	unpreserve_iommu_context(iommu, -1);
->> +	iommu_unpreserve_page(iommu->root_entry);
->> +	spin_unlock(&iommu->lock);
->> +}
->
->Thanks,
->Praan
-
-Thanks,
-Sami
+--=20
+Aurelien Jarno                          GPG: 4096R/1DDD8C9B
+aurelien@aurel32.net                     http://aurel32.net
