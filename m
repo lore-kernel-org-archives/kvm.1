@@ -1,235 +1,222 @@
-Received: from mail-pl1-f172.google.com (mail-pl1-f172.google.com [209.85.214.172])
+Received: from mail-ua1-f50.google.com (mail-ua1-f50.google.com [209.85.222.50])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B39F93659EA
-	for <kvm@vger.kernel.org>; Mon, 23 Mar 2026 20:28:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.172
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774297700; cv=none; b=Nge+RAeODkDhAu456IVtulhf09sK+iPGBDDkcS8qIZKaZ+N1GBB46vjJZ6w2FqysszdS0pbVICVGNI1Sra3m7rmh29jsCA4pxk8x/hTSDhGDMIBge5vAcBdVSJOoQM+yIyFbvCnhrhVCWpV4Sh9wGhzGEDVATGxjwte6WHoTqwQ=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774297700; c=relaxed/simple;
-	bh=Z+0+3TcrMrU5Ujk1sHPJMlRXC0Eeq9rMNfbNi+xXmqk=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=HELUdhoPrua4r1YES0NB+DMj4Q3b/SW3IepvKrfUax1RjE6+gBUH6w7iA/vx2zBt07IlWpVWt4e5Y+8vCvUaP3UhMzvh42Rq4+h3L2IDlG/aXb/qHH/P+Wi/dBRXUFqf1uM55WktaPxYExQ3Is4z8otVRelvN2UHR6CxYfo4jII=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Km1u5fGt; arc=none smtp.client-ip=209.85.214.172
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 214D33E3149
+	for <kvm@vger.kernel.org>; Mon, 23 Mar 2026 20:47:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.222.50
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1774298840; cv=pass; b=neB65q/xeL9QHm0F6BeWl6sRtvEJhPo7HwKFRHUoeTKmmh3/CEUGuissWAXwxyM0Ic0xiWw2mqW/fwLmetcjIfQz5Cr4OFW1nKk4Co63xmrsVBkH5o8lOivpeMy9ACCXphbL5fTn11nUmdwUDtNroVCtZtOUbv6SQb8r3/nwGi4=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1774298840; c=relaxed/simple;
+	bh=ng8E7qGgSHJkqBGRw/Py1ZjqtkBoNDU8zfEyX/fQOz4=;
+	h=From:In-Reply-To:References:MIME-Version:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=rezbojhmSv81BLI1FmeEbvt0T7DAazv2Y1YIuQuuu9U4kw88Y6V3wWo963UTFbEzbaMVKMALH8So0eHTq1cBWV7X8J/EJ3Tf40NOKMpzlIAbbjbHgVr/D6pTDUH9WRY6M/2sySLB4Xdf8uUitph1JPidsrzw9nmTRJT81JziHw0=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=E1Qx3iXY; arc=pass smtp.client-ip=209.85.222.50
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Km1u5fGt"
-Received: by mail-pl1-f172.google.com with SMTP id d9443c01a7336-2b052562254so26805ad.0
-        for <kvm@vger.kernel.org>; Mon, 23 Mar 2026 13:28:19 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="E1Qx3iXY"
+Received: by mail-ua1-f50.google.com with SMTP id a1e0cc1a2514c-950baad7b69so290539241.3
+        for <kvm@vger.kernel.org>; Mon, 23 Mar 2026 13:47:17 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1774298837; cv=none;
+        d=google.com; s=arc-20240605;
+        b=K5KyY1p4sMpRc/pY2DmdaeAe2qSE/0O5Yc7HqWAjpWRIbothixyeqLnsqGQd4u8DNo
+         SQ0685Os53Ax6mEgqsQWhHfnrcY0oOXaNIsABA4cjfsUOBm+DFl/+Kw/NgfWwhYXUft9
+         BPqkUZDwGEVJ8VRQgmdOzUtHlR0egDnxBs7OcAq6W/CKi9oBneTfAgCUm/Hr649biBFp
+         H1ojQZRLH+qr/PzlCVsLOk5Pu3oXkmN3x1FsyERCFfaodRA53TSRCEVvx8CAlP3EwG5+
+         DT7olR11Tn4LyZLlLSv4HWxSlEb/DAnXhiTtG8NgkzWRl5uO3udx2XqsTGkAUxP+oOVp
+         JWiw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
+         :from:dkim-signature;
+        bh=yac1rrBqJSF3O+e4IwcngZ2ptSQxNGOfPE9KG9sOce8=;
+        fh=lfiTFOwVKfCKc67/6VWZtPw23/PSdXrgoFtCn4Ye9rM=;
+        b=EJN6O3vSsxR5f/IwRnRnz3VgxMBTwgSVvjGmz0Sj7W3rkgX+2ZvFcWqvffBWxb7cem
+         jNNhi1/8cwRpL0yZpc5q5OsAwl1Tq0G70G5mT4ztJBC6in7W516kHp7FyNhQZxCQzxnb
+         IW3gSoTg3xnI1HM+ov47X5a3+hbFO/AJmUW/8phnBs7LPHMv1u7ghfTp8W0+kO063aIN
+         3EBl92v6YO9H4QbfLor3dnhb907r3ocP3Hu4HC+MOmEuNLEpB0s24tAhNVTlCuq8T9ex
+         SsF7MruQfC8WJGeWYx3UKu0at7JBy+eYvmFD/zJuS/GJk57JNkflT4syRCxB4pmZLcar
+         5FvA==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1774297699; x=1774902499; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=EVB+M1ARpuKmS3d+ozVws2Lc23aSqaEdxwdXJm81KT0=;
-        b=Km1u5fGte0H3MSGvwjiwS3SKpo0mKmwRslsHkWFUBu4zByzPjOHBNBkJWOT0CXvQLW
-         5sNWfv7SAf/n0JKyKsPcZTt6sge9rKD4oYEDNa+hGPbyLOetGR06lNSdWfnrXvqRZTFH
-         FE0PW6SoAaAlE+gT8XjvkzjCJpRc00E+WdcWwadHH2j1irw682GhnZZBDsgkhdmAEEh5
-         sXgpMlIqmxLavxFbxxYVhKUpS9t8p5O4E2XbWFj+vBmKiCPsrzmUcJGUxR3DbOY3NexU
-         kxCqyFRgKSuPNcHcDPYYJu92Cr7sF65vF1osHo1T8Vi55Sblhs4YpVMVBj9y+NXIS5Rl
-         xSZw==
+        d=google.com; s=20251104; t=1774298837; x=1774903637; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
+         :from:from:to:cc:subject:date:message-id:reply-to;
+        bh=yac1rrBqJSF3O+e4IwcngZ2ptSQxNGOfPE9KG9sOce8=;
+        b=E1Qx3iXYbuupJnhq0qmrXOl7xt+HGwZNfjstgxkLHfdyrCo56F2W1QOU+bkULeFtnS
+         mZauXctACK+epA2LTP0W/PJM5VIH0WgdMtO5ECotn7uX8U9322NLx89gBnpVxEtqTPkT
+         gNORVJmcQgMN7jMlaRWbTr5b2UutJroR2HV64bR2inaJgq4H4ZOOFRsAsV1zO9tX0N9T
+         ryaOxYjm8R4VaU87SJuclOeIz9mU75ow6GpAn4wrEG81ftM6GfQNsn0JrX7tSYEvvF3l
+         UZWkVEwCPpk26oroiFl1EZbcHqw2YV8uEVKl+PSDW2bHEEJNL7fvUL/LGywspaPKJb6t
+         k5KA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774297699; x=1774902499;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=EVB+M1ARpuKmS3d+ozVws2Lc23aSqaEdxwdXJm81KT0=;
-        b=DHfU76Ix899qwsSHbjgFndS4rlEFTrPMbt1Fjp54B0cdz53sEGw6tqXCqDlK2b9Kmr
-         gc+jw9PAb8uWF2Ev7otDuxSjRlNSryuxoq6Ttd8iJd7Los4+FaNQgIykAzJPq+Y1JJey
-         MFb5HLJ0Nc33wOZd9A0+HCVRJVMmAQx8+FQcJlUu/P51GOWZIjiY/ncuVyLJJr1s2gB2
-         QPlRIdShwBhh+vJrj2g/DiIflU/H/dUyuMv1t9GH6UY+lr+faou42TI0ZTsk7suOtQtO
-         +GupFVjXjEq8JegixolJGRf6HBQLqMdIm3Q8v91HIiFjfNXnm//DClH3b6Ozkwk8ffF6
-         oYMw==
-X-Forwarded-Encrypted: i=1; AJvYcCW416lnyT78yus/ZmDWJvk5dqQtssh6vB6kqEax2paJ5rMFwOZxR6i1iuQczGAYndDhUiY=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxpxObySMfQa3wUm1tS4NeOcMEDOwF2lmCRlIC1T9nDKrz9YUA5
-	XAa/sMbeL2WEDNXXkfv3mdboUqm4V1HcPNzk/ZKYUcE0jzEiWIpL5vA31vSsPLoTzQ==
-X-Gm-Gg: ATEYQzxod0UWlcrHuKR1QnfiPfMUw5u1hzmy2AVWVQ51XrlrVWbU5tCbM0F/D+SNeIA
-	O/cZNJJVF9sQvSMXsHR9Nh1gl5YmBvpEuf5CO1WAGDQHbf6bAgZkYOwAGNwLQfpPLtVXh+R1WjE
-	UgDLwWM05Zf43jrzuaFgUPuA0Fkvl1EvKzksCtg0dfdNe07xbap42fNJHXvbw/U9eHWI3Kh8rtp
-	PexNQW+XbZtsW07LRmvBRLkb3SHLPoq0CmoDj5pwXFh9bR9qV/zpuVPwUIGqhpWeKnFMBqpIQie
-	F2zZL/YwahiyE5UVygcHOSHYGzZOV1A1zPwU3r/6tVmUkDJqDTuNzkIof4evpa8Q8vV+klDGO5n
-	ymmdE1xbBWua11Q2SQAFExJENxCkNJtZOdAUu0rKUbXtzp2VD4Kuo+dMtAU2+JnmmmIaNNqDlgs
-	sq0msMZVbJ3izaGCU8JCaW5THl5XbbcVQjql+Gbef8DFVtrkMhpIHaS38zR9nk
-X-Received: by 2002:a17:902:f787:b0:2a1:3cdc:7720 with SMTP id d9443c01a7336-2b0a68a1461mr106215ad.21.1774297698546;
-        Mon, 23 Mar 2026 13:28:18 -0700 (PDT)
-Received: from google.com (176.13.105.34.bc.googleusercontent.com. [34.105.13.176])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2b08353e94asm118298165ad.25.2026.03.23.13.28.17
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 23 Mar 2026 13:28:17 -0700 (PDT)
-Date: Mon, 23 Mar 2026 13:28:13 -0700
-From: Vipin Sharma <vipinsh@google.com>
-To: Samiullah Khawaja <skhawaja@google.com>
-Cc: David Woodhouse <dwmw2@infradead.org>, 
-	Lu Baolu <baolu.lu@linux.intel.com>, Joerg Roedel <joro@8bytes.org>, Will Deacon <will@kernel.org>, 
-	Jason Gunthorpe <jgg@ziepe.ca>, YiFei Zhu <zhuyifei@google.com>, 
-	Robin Murphy <robin.murphy@arm.com>, Kevin Tian <kevin.tian@intel.com>, 
-	Alex Williamson <alex@shazbot.org>, Shuah Khan <shuah@kernel.org>, iommu@lists.linux.dev, 
-	linux-kernel@vger.kernel.org, kvm@vger.kernel.org, Saeed Mahameed <saeedm@nvidia.com>, 
-	Adithya Jayachandran <ajayachandra@nvidia.com>, Parav Pandit <parav@nvidia.com>, 
-	Leon Romanovsky <leonro@nvidia.com>, William Tu <witu@nvidia.com>, 
-	Pratyush Yadav <pratyush@kernel.org>, Pasha Tatashin <pasha.tatashin@soleen.com>, 
-	David Matlack <dmatlack@google.com>, Andrew Morton <akpm@linux-foundation.org>, 
-	Chris Li <chrisl@kernel.org>, Pranjal Shrivastava <praan@google.com>
-Subject: Re: [PATCH 11/14] iommufd-lu: Persist iommu hardware pagetables for
- live update
-Message-ID: <20260320230654.GB659132.vipinsh@google.com>
-References: <20260203220948.2176157-1-skhawaja@google.com>
- <20260203220948.2176157-12-skhawaja@google.com>
+        d=1e100.net; s=20251104; t=1774298837; x=1774903637;
+        h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
+         :from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=yac1rrBqJSF3O+e4IwcngZ2ptSQxNGOfPE9KG9sOce8=;
+        b=DfweB3VBQ71jLOkk/X6GiUk1TvnZtslxWR3Q1TI7GwpGKRSvb/Fz1vxQPYZCYUnVeG
+         oY0elxa/oZgbpI1CSjK1Ql/sGmWZ4oi3w0Co/3LED8v/1SjgtFQ9/fyEbfXbGG+h+4VD
+         d9klM8pwa+YMnhOwYp/bqF1YN8WsCRyXuCsh3Ci7xCZ/B+GGZYuTOFrcsKyujlFz1ksU
+         ZBjTPWKbs+SMYOq7jxbuvq11WBtxyWVPnCsJ+nV+PjmFBGCiz8Pnt07NM81CfIbWu+pp
+         HmzSy0U7gD1qh8Tu37cH67re+MH3s4WE3Wv0WSFyKz2+/HNraRR5ORWR54QtoNo2JwUJ
+         9s6g==
+X-Forwarded-Encrypted: i=1; AJvYcCX9cB67ltFRqWH3DezJUXP0ZWeiosesjsHDC1Lu0/gm28mld6khSKGn2YOYS+teWKyh8VA=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzM+CS5sYl47WPG9xIAPQae5qkhS8dzzo/AZYCXuiaZSMxiuHOE
+	o6xYqUgHEj5Pu9iaFExFkwP1RwFssgEnpMzxg6omYDbt2TGoUQUdr+dxwhwsjZsuvr8yo/P50c8
+	Uc2i5VIGCosvjnRncTcf33wjmvngqN0fU7yqkz4Mf
+X-Gm-Gg: ATEYQzw+MPEuA42G11EVqTjCr1FqYOqBvfvT17e6Gk4UsEf1aR4YClUB9spQwDFo37e
+	amXZwdeqHVGLO/9a026L3F6gvmRqjmfMnk5Q+splmnme1SZt08fBmzTTt4gIhekzn+lVttoqpQL
+	Jx+N8P7ZlLg0Ml9fI39Acc9z9j6BUqHXvpbsp/ckeDRNimM5VgN/nbMMVvbVdJCwuUPoqlK4htV
+	OuqHP/5LQTrAYuEqHmcbaiWsmVbALlsDpq9fHSMWCpgoP1pKzBk9ofsuKlBhH5S0EBJa7C9EWgR
+	hjXgxqJ1TbLOjHL+6KV+479beLKODvRjY/Sw843F5H5T1hP4TNa3xf1LDZZNIO5H/3mIiw==
+X-Received: by 2002:a05:6102:4a86:b0:5ef:ac78:3c77 with SMTP id
+ ada2fe7eead31-602aecd2a05mr6404753137.18.1774298836454; Mon, 23 Mar 2026
+ 13:47:16 -0700 (PDT)
+Received: from 176938342045 named unknown by gmailapi.google.com with
+ HTTPREST; Mon, 23 Mar 2026 13:47:15 -0700
+Received: from 176938342045 named unknown by gmailapi.google.com with
+ HTTPREST; Mon, 23 Mar 2026 13:47:15 -0700
+From: Ackerley Tng <ackerleytng@google.com>
+In-Reply-To: <50bfaeb5-551e-403f-bd00-a7d8b6bbf6e2@kernel.org>
+References: <20260317141031.514-1-kalyazin@amazon.com> <20260317141031.514-11-kalyazin@amazon.com>
+ <50bfaeb5-551e-403f-bd00-a7d8b6bbf6e2@kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260203220948.2176157-12-skhawaja@google.com>
+Date: Mon, 23 Mar 2026 13:47:15 -0700
+X-Gm-Features: AQROBzB7NM0e-Hubu0XRJL2ihJNatUocmuhRQlqLx8a7dgTL41taW0scozymRvQ
+Message-ID: <CAEvNRgEXp6busURR20cazeG2DQWdU5=ZaJv21OcSq+mhVKwJ4g@mail.gmail.com>
+Subject: Re: [PATCH v11 10/16] KVM: guest_memfd: Add flag to remove from
+ direct map
+To: "David Hildenbrand (Arm)" <david@kernel.org>, "Kalyazin, Nikita" <kalyazin@amazon.co.uk>, 
+	"kvm@vger.kernel.org" <kvm@vger.kernel.org>, 
+	"linux-doc@vger.kernel.org" <linux-doc@vger.kernel.org>, 
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, 
+	"linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>, 
+	"kvmarm@lists.linux.dev" <kvmarm@lists.linux.dev>, 
+	"linux-fsdevel@vger.kernel.org" <linux-fsdevel@vger.kernel.org>, "linux-mm@kvack.org" <linux-mm@kvack.org>, 
+	"bpf@vger.kernel.org" <bpf@vger.kernel.org>, 
+	"linux-kselftest@vger.kernel.org" <linux-kselftest@vger.kernel.org>, "kernel@xen0n.name" <kernel@xen0n.name>, 
+	"linux-riscv@lists.infradead.org" <linux-riscv@lists.infradead.org>, 
+	"linux-s390@vger.kernel.org" <linux-s390@vger.kernel.org>, 
+	"loongarch@lists.linux.dev" <loongarch@lists.linux.dev>, 
+	"linux-pm@vger.kernel.org" <linux-pm@vger.kernel.org>
+Cc: "pbonzini@redhat.com" <pbonzini@redhat.com>, "corbet@lwn.net" <corbet@lwn.net>, 
+	"maz@kernel.org" <maz@kernel.org>, "oupton@kernel.org" <oupton@kernel.org>, 
+	"joey.gouly@arm.com" <joey.gouly@arm.com>, "suzuki.poulose@arm.com" <suzuki.poulose@arm.com>, 
+	"yuzenghui@huawei.com" <yuzenghui@huawei.com>, "catalin.marinas@arm.com" <catalin.marinas@arm.com>, 
+	"will@kernel.org" <will@kernel.org>, "seanjc@google.com" <seanjc@google.com>, "tglx@kernel.org" <tglx@kernel.org>, 
+	"mingo@redhat.com" <mingo@redhat.com>, "bp@alien8.de" <bp@alien8.de>, 
+	"dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>, "x86@kernel.org" <x86@kernel.org>, 
+	"hpa@zytor.com" <hpa@zytor.com>, "luto@kernel.org" <luto@kernel.org>, 
+	"peterz@infradead.org" <peterz@infradead.org>, "willy@infradead.org" <willy@infradead.org>, 
+	"akpm@linux-foundation.org" <akpm@linux-foundation.org>, 
+	"lorenzo.stoakes@oracle.com" <lorenzo.stoakes@oracle.com>, "vbabka@kernel.org" <vbabka@kernel.org>, 
+	"rppt@kernel.org" <rppt@kernel.org>, "surenb@google.com" <surenb@google.com>, "mhocko@suse.com" <mhocko@suse.com>, 
+	"ast@kernel.org" <ast@kernel.org>, "daniel@iogearbox.net" <daniel@iogearbox.net>, 
+	"andrii@kernel.org" <andrii@kernel.org>, "martin.lau@linux.dev" <martin.lau@linux.dev>, 
+	"eddyz87@gmail.com" <eddyz87@gmail.com>, "song@kernel.org" <song@kernel.org>, 
+	"yonghong.song@linux.dev" <yonghong.song@linux.dev>, 
+	"john.fastabend@gmail.com" <john.fastabend@gmail.com>, "kpsingh@kernel.org" <kpsingh@kernel.org>, 
+	"sdf@fomichev.me" <sdf@fomichev.me>, "haoluo@google.com" <haoluo@google.com>, 
+	"jolsa@kernel.org" <jolsa@kernel.org>, "jgg@ziepe.ca" <jgg@ziepe.ca>, 
+	"jhubbard@nvidia.com" <jhubbard@nvidia.com>, "peterx@redhat.com" <peterx@redhat.com>, 
+	"jannh@google.com" <jannh@google.com>, "pfalcato@suse.de" <pfalcato@suse.de>, 
+	"skhan@linuxfoundation.org" <skhan@linuxfoundation.org>, "riel@surriel.com" <riel@surriel.com>, 
+	"ryan.roberts@arm.com" <ryan.roberts@arm.com>, "jgross@suse.com" <jgross@suse.com>, 
+	"yu-cheng.yu@intel.com" <yu-cheng.yu@intel.com>, "kas@kernel.org" <kas@kernel.org>, 
+	"coxu@redhat.com" <coxu@redhat.com>, "kevin.brodsky@arm.com" <kevin.brodsky@arm.com>, 
+	"yosry@kernel.org" <yosry@kernel.org>, "ajones@ventanamicro.com" <ajones@ventanamicro.com>, 
+	"maobibo@loongson.cn" <maobibo@loongson.cn>, "tabba@google.com" <tabba@google.com>, 
+	"prsampat@amd.com" <prsampat@amd.com>, "wu.fei9@sanechips.com.cn" <wu.fei9@sanechips.com.cn>, 
+	"mlevitsk@redhat.com" <mlevitsk@redhat.com>, "jmattson@google.com" <jmattson@google.com>, 
+	"jthoughton@google.com" <jthoughton@google.com>, "agordeev@linux.ibm.com" <agordeev@linux.ibm.com>, 
+	"alex@ghiti.fr" <alex@ghiti.fr>, "aou@eecs.berkeley.edu" <aou@eecs.berkeley.edu>, 
+	"borntraeger@linux.ibm.com" <borntraeger@linux.ibm.com>, "chenhuacai@kernel.org" <chenhuacai@kernel.org>, 
+	"dev.jain@arm.com" <dev.jain@arm.com>, "gor@linux.ibm.com" <gor@linux.ibm.com>, 
+	"hca@linux.ibm.com" <hca@linux.ibm.com>, "palmer@dabbelt.com" <palmer@dabbelt.com>, 
+	"pjw@kernel.org" <pjw@kernel.org>, 
+	"shijie@os.amperecomputing.com" <shijie@os.amperecomputing.com>, "svens@linux.ibm.com" <svens@linux.ibm.com>, 
+	"thuth@redhat.com" <thuth@redhat.com>, "wyihan@google.com" <wyihan@google.com>, 
+	"yang@os.amperecomputing.com" <yang@os.amperecomputing.com>, 
+	"Jonathan.Cameron@huawei.com" <Jonathan.Cameron@huawei.com>, 
+	"Liam.Howlett@oracle.com" <Liam.Howlett@oracle.com>, "urezki@gmail.com" <urezki@gmail.com>, 
+	"zhengqi.arch@bytedance.com" <zhengqi.arch@bytedance.com>, 
+	"gerald.schaefer@linux.ibm.com" <gerald.schaefer@linux.ibm.com>, 
+	"jiayuan.chen@shopee.com" <jiayuan.chen@shopee.com>, "lenb@kernel.org" <lenb@kernel.org>, 
+	"osalvador@suse.de" <osalvador@suse.de>, "pavel@kernel.org" <pavel@kernel.org>, 
+	"rafael@kernel.org" <rafael@kernel.org>, "vannapurve@google.com" <vannapurve@google.com>, 
+	"jackmanb@google.com" <jackmanb@google.com>, "aneesh.kumar@kernel.org" <aneesh.kumar@kernel.org>, 
+	"patrick.roy@linux.dev" <patrick.roy@linux.dev>, "Thomson, Jack" <jackabt@amazon.co.uk>, 
+	"Itazuri, Takahiro" <itazur@amazon.co.uk>, "Manwaring, Derek" <derekmn@amazon.com>
+Content-Type: text/plain; charset="UTF-8"
 
-On Tue, Feb 03, 2026 at 10:09:45PM +0000, Samiullah Khawaja wrote:
-> From: YiFei Zhu <zhuyifei@google.com>
-> 
-> The caller is expected to mark each HWPT to be preserved with an ioctl
-> call, with a token that will be used in restore. At preserve time, each
-> HWPT's domain is then called with iommu_domain_preserve to preserve the
+"David Hildenbrand (Arm)" <david@kernel.org> writes:
 
-Nit: Add () after iommu_domain_preserve, it makes easier to know this is
-a function.
+>
+> [...snip...]
+>
+>> +static int kvm_gmem_folio_zap_direct_map(struct folio *folio)
+>> +{
+>> +	u64 gmem_flags = GMEM_I(folio_inode(folio))->flags;
+>> +	int r = 0;
+>> +
+>> +	if (kvm_gmem_folio_no_direct_map(folio) || !(gmem_flags & GUEST_MEMFD_FLAG_NO_DIRECT_MAP))
+>
+> The function is only called when
+>
+> 	kvm_gmem_no_direct_map(folio_inode(folio))
+>
+> Does it really make sense to check for GUEST_MEMFD_FLAG_NO_DIRECT_MAP again?
+>
 
-> diff --git a/drivers/iommu/iommufd/liveupdate.c b/drivers/iommu/iommufd/liveupdate.c
-> +static int iommufd_save_hwpts(struct iommufd_ctx *ictx,
-> +			      struct iommufd_lu *iommufd_lu,
-> +			      struct liveupdate_session *session)
-> +{
-> +	struct iommufd_hwpt_paging *hwpt, **hwpts = NULL;
+Good point that GUEST_MEMFD_FLAG_NO_DIRECT_MAP was already checked in
+the caller. I think we can drop this second check.
 
-We should rename hwpts to something to denote that it is a list.
+> If, at all, it should be a warning if GUEST_MEMFD_FLAG_NO_DIRECT_MAP is
+> not set?
+>
+> Further, kvm_gmem_folio_zap_direct_map() uses the folio lock to
+> synchronize, right? Might be worth pointing that out somehow (e.g.,
+> lockdep check if possible).
+>
+>> +		goto out;
+>> +
+>> +	r = folio_zap_direct_map(folio);
+>> +	if (!r)
+>> +		folio->private = (void *)((u64)folio->private | KVM_GMEM_FOLIO_NO_DIRECT_MAP);
+>> +
+>> +out:
+>> +	return r;
+>> +}
+>> +
+>> +static void kvm_gmem_folio_restore_direct_map(struct folio *folio)
+>> +{
+>
+> kvm_gmem_folio_zap_direct_map() is allowed to be called on folios that
+> already have the directmap remove, kvm_gmem_folio_restore_direct_map()
+> cannot be called if the directmap was already restored.
+>
 
-> +	struct iommu_domain_ser *domain_ser;
-> +	struct iommufd_hwpt_lu *hwpt_lu;
-> +	struct iommufd_object *obj;
-> +	unsigned int nr_hwpts = 0;
-> +	unsigned long index;
-> +	unsigned int i;
-> +	int rc = 0;
-> +
-> +	if (iommufd_lu) {
-> +		hwpts = kcalloc(iommufd_lu->nr_hwpts, sizeof(*hwpts),
-> +				GFP_KERNEL);
-> +		if (!hwpts)
-> +			return -ENOMEM;
-> +	}
-> +
-> +	xa_lock(&ictx->objects);
-> +	xa_for_each(&ictx->objects, index, obj) {
-> +		if (obj->type != IOMMUFD_OBJ_HWPT_PAGING)
-> +			continue;
-> +
-> +		hwpt = container_of(obj, struct iommufd_hwpt_paging, common.obj);
-> +		if (!hwpt->lu_preserve)
-> +			continue;
-> +
-> +		if (hwpt->ioas) {
-> +			/*
-> +			 * Obtain exclusive access to the IOAS and IOPT while we
-> +			 * set immutability
-> +			 */
-> +			mutex_lock(&hwpt->ioas->mutex);
-> +			down_write(&hwpt->ioas->iopt.domains_rwsem);
-> +			down_write(&hwpt->ioas->iopt.iova_rwsem);
-> +
-> +			hwpt->ioas->iopt.lu_map_immutable = true;
+This inconsistency was probably introduced by my comments [1] (sorry!)
 
-It feels odd that this is not cleaned up in this function as a part of
-its error handling. Now it becomes caller resposibility to handle clean
-up for the side effect created by this function. 
+I think the inconsistency here is mostly because
+kvm_gmem_folio_zap_direct_map() is called from two places but restore is
+only called from one place :P
 
-IMO, this function should clean up lu_map_immutable instread of callers
-to make sure they call cleanups. You can also try exploring XA_MARK_*
-APIs if that can help in cleaning up easily.
+[1] https://lore.kernel.org/all/CAEvNRgEzVhEzr-3GWTsE7GSBsPdvVLq7WFEeLHzcmMe=R9S51w@mail.gmail.com/
 
-> +int iommufd_liveupdate_unregister_lufs(void)
-> +{
-> +	WARN_ON(iommu_liveupdate_unregister_flb(&iommufd_lu_handler));
-> +
-> +	return liveupdate_unregister_file_handler(&iommufd_lu_handler);
-
-This seems little insconsistent, iommu_liveupdate_unregister_flb() has
-WARN_ON and liveupdate_unregister_file_handler() does not.
-
-Also, refer https://lore.kernel.org/all/20260226160353.6f3371bc@shazbot.org/
-
-> diff --git a/drivers/iommu/iommufd/main.c b/drivers/iommu/iommufd/main.c
-> @@ -775,11 +775,21 @@ static int __init iommufd_init(void)
->  		if (ret)
->  			goto err_misc;
->  	}
-> +
-> +	if (IS_ENABLED(CONFIG_IOMMU_LIVEUPDATE)) {
-> +		ret = iommufd_liveupdate_register_lufs();
-> +		if (ret)
-> +			goto err_vfio_misc;
-> +	}
-> +
-
-Do we need IS_ENABLED here? iommufd_private.h is providing definition
-for both values of CONFIG_IOMMU_LIVEUPDATE.
-
-Nit: What is lufs? Should we just rename to iommufd_liveupdate_register()?
-
->  	ret = iommufd_test_init();
->  	if (ret)
-> -		goto err_vfio_misc;
-> +		goto err_lufs;
->  	return 0;
->  
-> +err_lufs:
-> +	if (IS_ENABLED(CONFIG_IOMMU_LIVEUPDATE))
-> +		iommufd_liveupdate_unregister_lufs();
->  err_vfio_misc:
->  	if (IS_ENABLED(CONFIG_IOMMUFD_VFIO_CONTAINER))
->  		misc_deregister(&vfio_misc_dev);
-> @@ -791,6 +801,8 @@ static int __init iommufd_init(void)
->  static void __exit iommufd_exit(void)
->  {
->  	iommufd_test_exit();
-> +	if (IS_ENABLED(CONFIG_IOMMU_LIVEUPDATE))
-> +		iommufd_liveupdate_unregister_lufs();
-
-Same as above.
-
-> diff --git a/drivers/iommu/iommufd/pages.c b/drivers/iommu/iommufd/pages.c
-> @@ -1427,6 +1429,12 @@ struct iopt_pages *iopt_alloc_file_pages(struct file *file,
->  	pages->file = get_file(file);
->  	pages->start = start - start_byte;
->  	pages->type = IOPT_ADDRESS_FILE;
-> +
-> +	pages->seals = 0;
-
-This is already 0.
-
-> +	seals = memfd_get_seals(file);
-> +	if (seals > 0)
-> +		pages->seals = seals;
-> +
->  	return pages;
->  }
->  
-> --- /dev/null
-> +++ b/include/linux/kho/abi/iommufd.h
-> +
-> +struct iommufd_lu {
-> +	unsigned int nr_hwpts;
-
-Should this be u32 or u64?
-
-> +	struct iommufd_hwpt_lu hwpts[];
-> +};
-> +
-
-Should this also be __packed?
-
-> +#endif /* _LINUX_KHO_ABI_IOMMUFD_H */
-> -- 
-> 2.53.0.rc2.204.g2597b5adb4-goog
-> 
+> Should we make that more consistent?
+>
+>
+> Hoping Sean can find some time to review
+>
+> --
+> Cheers,
+>
+> David
