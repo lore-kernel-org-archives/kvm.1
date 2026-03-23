@@ -1,116 +1,232 @@
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+Received: from out-173.mta1.migadu.com (out-173.mta1.migadu.com [95.215.58.173])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B1B039185B;
-	Mon, 23 Mar 2026 10:47:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F7682AEE4
+	for <kvm@vger.kernel.org>; Mon, 23 Mar 2026 10:49:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774262857; cv=none; b=ZDuuWMMos2f4ssq5NL9r49AbTi8B2AixuG86IauwTov3g8Cdis/fWOi93kHGUuecWqmJhGP7c68e/gtrzQX1y8GDYVUFKbmyfIaXPALb5QG2dewA3BIz8M2yFKQ6MUAU5AxMt6NpdCEtLdFVuF7rG++h0Calj9ex+c356jTFpZ4=
+	t=1774262946; cv=none; b=DDH9a1gg/X1C+UXiYLxY9kXGvjYeGu9fiVy6AAK2U89ABOaq9eofgAeIdALuOVqw9fDNRuYbEIKW7CHZwMW5y505APisvMdbuk5kUN2cvDOG00m9l5/m3WOmu+bdberqdbimM0PVkpUxK4u/BjY/CWGT2aa4eXFSJoKpE3h4/ew=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774262857; c=relaxed/simple;
-	bh=P6JQgVA1Zc5GIn+YZ/SlGRGAw2Qzdjj7zYLuyiuJwkg=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=NwFG7PJUj9DgGDvSm5HZoCUT81tXR8yB2FjMAba2PE2hTG+UcBFy+mWo22CTk4Rlhwu0r7koQLt4bCggY0SVmANttFJF/Y03jfZIG+hKGoK5VaMQsFqp9R5Ln8auLlQQaeI+ZPqJVpRE50HbO+uil8AjxYhm3UaT1lZ+B3E3Q3I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=QVSpeghQ; arc=none smtp.client-ip=148.163.156.1
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+	s=arc-20240116; t=1774262946; c=relaxed/simple;
+	bh=SHaYoo67LAzF6MLKxO0BpyvZV5GeULmIBGMyykaF4/Y=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=rpxfJkhkOAm085u0/+fv+W0fcnl1WxbDQo/6NMuxa17DDMUzkNnympP5EhwH0g3tI1Cp6Kh1IgitEuS/ykvUbnNS8h+B046NyufYlHHggqOptJUft6jzeiuadGnq4EAfcI+k3N4nbPHlDMIYMcy5mhbg738vJYvLpgVqKqa3qUA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=MF2ZZBzr; arc=none smtp.client-ip=95.215.58.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="QVSpeghQ"
-Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 62MHFTMQ4160176;
-	Mon, 23 Mar 2026 10:47:34 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-type:date:from:in-reply-to:message-id:mime-version
-	:references:subject:to; s=pp1; bh=j7x7ZJW51hGeiiX6BU92vM50HI4MrB
-	YIP35TtIAx7iE=; b=QVSpeghQWdF6dQOXBZQI+eQE4ECdWXLhcEcGqXkY2lxD4A
-	ZQVrOSOEkhT8sH+3IruT46PqTvzIxHyrXCtHBWsCdSTdoZw4eG9EedG4C6V2ctGQ
-	6JAs+wVxFE0gQMA02PYqmzYkYXiFA5ehsjX+ETikeG8U7CBw7dF7qwA4zQBcXxLG
-	NdaaHqFP8wjPHrUk4fwAdpZUPh5qkgWZh9iRZHoi4ui36kPOPpriUZBhpFYalk04
-	2rns+5P9GXIcdzm4N6AUYIsx5M3aoh4efiKXc7Gk/o9E4RB4EwwisXQzkV4ZBI4n
-	hZfwe5jbpoKhgQYeQTrCV85aMj8+PoLQh1iKEZMw==
-Received: from ppma13.dal12v.mail.ibm.com (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4d1ktxpe5m-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 23 Mar 2026 10:47:33 +0000 (GMT)
-Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma13.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 62N8CIdh011824;
-	Mon, 23 Mar 2026 10:47:33 GMT
-Received: from smtprelay07.fra02v.mail.ibm.com ([9.218.2.229])
-	by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 4d27vjvtrr-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 23 Mar 2026 10:47:32 +0000
-Received: from smtpav03.fra02v.mail.ibm.com (smtpav03.fra02v.mail.ibm.com [10.20.54.102])
-	by smtprelay07.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 62NAlTZc40894954
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 23 Mar 2026 10:47:29 GMT
-Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 5CDA420043;
-	Mon, 23 Mar 2026 10:47:29 +0000 (GMT)
-Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id D58312004B;
-	Mon, 23 Mar 2026 10:47:28 +0000 (GMT)
-Received: from osiris (unknown [9.111.67.16])
-	by smtpav03.fra02v.mail.ibm.com (Postfix) with ESMTPS;
-	Mon, 23 Mar 2026 10:47:28 +0000 (GMT)
-Date: Mon, 23 Mar 2026 11:47:27 +0100
-From: Steffen Eiden <seiden@linux.ibm.com>
-To: Claudio Imbrenda <imbrenda@linux.ibm.com>
-Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-s390@vger.kernel.org, borntraeger@de.ibm.com,
-        frankja@linux.ibm.com, nrb@linux.ibm.com, gra@linux.ibm.com,
-        schlameuss@linux.ibm.com, hca@linux.ibm.com, david@kernel.org
-Subject: Re: [PATCH v2 4/8] KVM: s390: Fix gmap_link()
-Message-ID: <20260323104727.66303-D-seiden@linux.ibm.com>
-References: <20260320161542.202913-1-imbrenda@linux.ibm.com>
- <20260320161542.202913-5-imbrenda@linux.ibm.com>
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="MF2ZZBzr"
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1774262932;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=IIWA57EXEjW5hjoCtv+I9HTIMV/HrYvLk+JVmnYDAwg=;
+	b=MF2ZZBzrtuNrSpZLTH2a3gF6RV1eNpmkt3BAmaWgG6S8RxOxlaeNFX4d222z2xmMeS3l0s
+	PIWBBUZQzzpEaGMYLzW4Fl7YjT6YlY42cEP+aWy63xavFj9szHY6GcdXWHYrO71AUkL9uE
+	pmzv4xes6AXSJgB1d4qf9aX8eXVokxw=
+From: Lance Yang <lance.yang@linux.dev>
+To: dave.hansen@intel.com,
+	peterz@infradead.org
+Cc: akpm@linux-foundation.org,
+	david@kernel.org,
+	dave.hansen@linux.intel.com,
+	ypodemsk@redhat.com,
+	hughd@google.com,
+	will@kernel.org,
+	aneesh.kumar@kernel.org,
+	npiggin@gmail.com,
+	tglx@linutronix.de,
+	mingo@redhat.com,
+	bp@alien8.de,
+	x86@kernel.org,
+	hpa@zytor.com,
+	arnd@arndb.de,
+	lorenzo.stoakes@oracle.com,
+	ziy@nvidia.com,
+	baolin.wang@linux.alibaba.com,
+	Liam.Howlett@oracle.com,
+	npache@redhat.com,
+	ryan.roberts@arm.com,
+	dev.jain@arm.com,
+	baohua@kernel.org,
+	shy828301@gmail.com,
+	riel@surriel.com,
+	jannh@google.com,
+	jgross@suse.com,
+	seanjc@google.com,
+	pbonzini@redhat.com,
+	boris.ostrovsky@oracle.com,
+	virtualization@lists.linux.dev,
+	kvm@vger.kernel.org,
+	linux-arch@vger.kernel.org,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	ioworker0@gmail.com,
+	Lance Yang <lance.yang@linux.dev>
+Subject: Re: [PATCH v7 2/2] x86/tlb: skip redundant sync IPIs for native TLB flush
+Date: Mon, 23 Mar 2026 18:48:28 +0800
+Message-Id: <20260323104828.55481-1-lance.yang@linux.dev>
+In-Reply-To: <20260316023630.92368-1-lance.yang@linux.dev>
+References: <20260316023630.92368-1-lance.yang@linux.dev>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260320161542.202913-5-imbrenda@linux.ibm.com>
-X-TM-AS-GCONF: 00
-X-Authority-Analysis: v=2.4 cv=IqITsb/g c=1 sm=1 tr=0 ts=69c11a45 cx=c_pps
- a=AfN7/Ok6k8XGzOShvHwTGQ==:117 a=AfN7/Ok6k8XGzOShvHwTGQ==:17
- a=kj9zAlcOel0A:10 a=Yq5XynenixoA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=RnoormkPH1_aCDwRdu11:22 a=uAbxVGIbfxUO_5tXvNgY:22 a=VnNF1IyMAAAA:8
- a=X0Xe0XUrc79U-KVWp3sA:9 a=CjuIK1q_8ugA:10
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMzIzMDA4MCBTYWx0ZWRfX6HCyhSf3nx7w
- FtfX3+FUvfCknCtz+kebhiQse/EpAUeIoOdOA71E5CBdDzGhr0fW0lGVV7s9QhDfsTegrfEJjta
- 6GEy5QE8b6PJD70UuqK2go5t1f5STy8xK0cukR9y3eZALRhDUvPQltndq9F2m8d++OdxVl0ygEa
- q8XIyEsTHPNLuNa3fPUSHTZP818xAURP+oLF7Z8qs0Gw2SA0qbGxHYIA5CMQMscE4yVcfcrGtlk
- n9trRfPG7J6j7YSTsW7You4cEvYkzQ062ea32t3auuoDrTg6rvzhABgFJJ3qsWI+R2V2WLIVXgy
- LxsLuluIEKLFUNb7cmIOD+x2RwtzXyLnzFQiV8vJuel/zlqT8DCPNZmXLg8I8XAN92dwwUW4zTM
- Rjj79R0+vd6EDs6yfuzLXwusyzCtaXfDqL/vWERR0PqnCK/2O7Z1ph0jDP7+Kp+/5At2BMnkucz
- K1nHf3njAPJ52e+B8dw==
-X-Proofpoint-GUID: ZjdFL63w9_Oqq-ET4l36EL891eHDly6H
-X-Proofpoint-ORIG-GUID: ZjdFL63w9_Oqq-ET4l36EL891eHDly6H
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
- definitions=2026-03-23_03,2026-03-20_02,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- malwarescore=0 clxscore=1015 spamscore=0 impostorscore=0 suspectscore=0
- phishscore=0 bulkscore=0 adultscore=0 priorityscore=1501 lowpriorityscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2603050001 definitions=main-2603230080
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Migadu-Flow: FLOW_OUT
 
-On Fri, Mar 20, 2026 at 05:15:38PM +0100, Claudio Imbrenda wrote:
-> The slow path of the fault handler ultimately called gmap_link(), which
-> assumed the fault was a major fault, and blindly called dat_link().
-> 
-> In case of minor faults, things were not always handled properly; in
-> particular the prefix and vsie marker bits were ignored.
-> 
-> Move dat_link() into gmap.c, renaming it accordingly. Once moved, the
-> new _gmap_link() function will be able to correctly honour the prefix
-> and vsie markers.
-> 
-> Signed-off-by: Claudio Imbrenda <imbrenda@linux.ibm.com>
-> Fixes: 94fd9b16cc67 ("KVM: s390: KVM page table management functions: lifecycle management")
-> Fixes: a2c17f9270cc ("KVM: s390: New gmap code")
+Just following up on this series. Any feedback would be appreciated!
 
-Reviewed-by: Steffen Eiden <seiden@linux.ibm.com>
+Thanks,
+Lance
 
+On Mon, Mar 16, 2026 at 10:36:30AM +0800, Lance Yang wrote:
+>
+>Gently ping :)
+>
+>On Mon, Mar 09, 2026 at 10:07:11AM +0800, Lance Yang wrote:
+>>From: Lance Yang <lance.yang@linux.dev>
+>>
+>>Enable the optimization introduced in the previous patch for x86.
+>>
+>>native_pv_tlb_init() checks whether native_flush_tlb_multi() is in use.
+>>On CONFIG_PARAVIRT systems, it checks pv_ops; on non-PARAVIRT, native
+>>flush is always in use.
+>>
+>>It decides once at boot whether to enable the optimization: if using
+>>native TLB flush and INVLPGB is not supported, we know IPIs were sent
+>>and can skip the redundant sync. The decision is fixed via a static
+>>key as Peter suggested[1].
+>>
+>>PV backends (KVM, Xen, Hyper-V) typically have their own implementations
+>>and don't call native_flush_tlb_multi() directly, so they cannot be trusted
+>>to provide the IPI guarantees we need.
+>>
+>>Two-step plan as David suggested[2]:
+>>
+>>Step 1 (this patch): Skip redundant sync when we're 100% certain the TLB
+>>flush sent IPIs. INVLPGB is excluded because when supported, we cannot
+>>guarantee IPIs were sent, keeping it clean and simple.
+>>
+>>Step 2 (future work): Send targeted IPIs only to CPUs actually doing
+>>software/lockless page table walks, benefiting all architectures.
+>>
+>>Regarding Step 2, it obviously only applies to setups where Step 1 does
+>>not apply: like x86 with INVLPGB or arm64.
+>>
+>>[1] https://lore.kernel.org/linux-mm/20260302145652.GH1395266@noisy.programming.kicks-ass.net/
+>>[2] https://lore.kernel.org/linux-mm/bbfdf226-4660-4949-b17b-0d209ee4ef8c@kernel.org/
+>>
+>>Suggested-by: Peter Zijlstra <peterz@infradead.org>
+>>Suggested-by: David Hildenbrand (Arm) <david@kernel.org>
+>>Signed-off-by: Lance Yang <lance.yang@linux.dev>
+>>---
+>> arch/x86/include/asm/tlb.h      | 17 ++++++++++++++++-
+>> arch/x86/include/asm/tlbflush.h |  2 ++
+>> arch/x86/kernel/smpboot.c       |  1 +
+>> arch/x86/mm/tlb.c               | 15 +++++++++++++++
+>> 4 files changed, 34 insertions(+), 1 deletion(-)
+>>
+>>diff --git a/arch/x86/include/asm/tlb.h b/arch/x86/include/asm/tlb.h
+>>index 866ea78ba156..99de622d3856 100644
+>>--- a/arch/x86/include/asm/tlb.h
+>>+++ b/arch/x86/include/asm/tlb.h
+>>@@ -5,11 +5,21 @@
+>> #define tlb_flush tlb_flush
+>> static inline void tlb_flush(struct mmu_gather *tlb);
+>> 
+>>+#define tlb_table_flush_implies_ipi_broadcast tlb_table_flush_implies_ipi_broadcast
+>>+static inline bool tlb_table_flush_implies_ipi_broadcast(void);
+>>+
+>> #include <asm-generic/tlb.h>
+>> #include <linux/kernel.h>
+>> #include <vdso/bits.h>
+>> #include <vdso/page.h>
+>> 
+>>+DECLARE_STATIC_KEY_FALSE(tlb_ipi_broadcast_key);
+>>+
+>>+static inline bool tlb_table_flush_implies_ipi_broadcast(void)
+>>+{
+>>+	return static_branch_likely(&tlb_ipi_broadcast_key);
+>>+}
+>>+
+>> static inline void tlb_flush(struct mmu_gather *tlb)
+>> {
+>> 	unsigned long start = 0UL, end = TLB_FLUSH_ALL;
+>>@@ -20,7 +30,12 @@ static inline void tlb_flush(struct mmu_gather *tlb)
+>> 		end = tlb->end;
+>> 	}
+>> 
+>>-	flush_tlb_mm_range(tlb->mm, start, end, stride_shift, tlb->freed_tables);
+>>+	/*
+>>+	 * Pass both freed_tables and unshared_tables so that lazy-TLB CPUs
+>>+	 * also receive IPIs during unsharing page tables.
+>>+	 */
+>>+	flush_tlb_mm_range(tlb->mm, start, end, stride_shift,
+>>+			   tlb->freed_tables || tlb->unshared_tables);
+>> }
+>> 
+>> static inline void invlpg(unsigned long addr)
+>>diff --git a/arch/x86/include/asm/tlbflush.h b/arch/x86/include/asm/tlbflush.h
+>>index 5a3cdc439e38..8ba853154b46 100644
+>>--- a/arch/x86/include/asm/tlbflush.h
+>>+++ b/arch/x86/include/asm/tlbflush.h
+>>@@ -18,6 +18,8 @@
+>> 
+>> DECLARE_PER_CPU(u64, tlbstate_untag_mask);
+>> 
+>>+void __init native_pv_tlb_init(void);
+>>+
+>> void __flush_tlb_all(void);
+>> 
+>> #define TLB_FLUSH_ALL	-1UL
+>>diff --git a/arch/x86/kernel/smpboot.c b/arch/x86/kernel/smpboot.c
+>>index 5cd6950ab672..3cdb04162843 100644
+>>--- a/arch/x86/kernel/smpboot.c
+>>+++ b/arch/x86/kernel/smpboot.c
+>>@@ -1167,6 +1167,7 @@ void __init native_smp_prepare_boot_cpu(void)
+>> 		switch_gdt_and_percpu_base(me);
+>> 
+>> 	native_pv_lock_init();
+>>+	native_pv_tlb_init();
+>> }
+>> 
+>> void __init native_smp_cpus_done(unsigned int max_cpus)
+>>diff --git a/arch/x86/mm/tlb.c b/arch/x86/mm/tlb.c
+>>index 621e09d049cb..8f5585ebaf09 100644
+>>--- a/arch/x86/mm/tlb.c
+>>+++ b/arch/x86/mm/tlb.c
+>>@@ -26,6 +26,8 @@
+>> 
+>> #include "mm_internal.h"
+>> 
+>>+DEFINE_STATIC_KEY_FALSE(tlb_ipi_broadcast_key);
+>>+
+>> #ifdef CONFIG_PARAVIRT
+>> # define STATIC_NOPV
+>> #else
+>>@@ -1834,3 +1836,16 @@ static int __init create_tlb_single_page_flush_ceiling(void)
+>> 	return 0;
+>> }
+>> late_initcall(create_tlb_single_page_flush_ceiling);
+>>+
+>>+void __init native_pv_tlb_init(void)
+>>+{
+>>+#ifdef CONFIG_PARAVIRT
+>>+	if (pv_ops.mmu.flush_tlb_multi != native_flush_tlb_multi)
+>>+		return;
+>>+#endif
+>>+
+>>+	if (cpu_feature_enabled(X86_FEATURE_INVLPGB))
+>>+		return;
+>>+
+>>+	static_branch_enable(&tlb_ipi_broadcast_key);
+>>+}
+>
+>
