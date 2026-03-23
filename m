@@ -1,193 +1,136 @@
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f181.google.com (mail-pl1-f181.google.com [209.85.214.181])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 26309245020;
-	Mon, 23 Mar 2026 15:54:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 045533BADB1
+	for <kvm@vger.kernel.org>; Mon, 23 Mar 2026 16:24:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.181
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774281252; cv=none; b=ltBnXaw3a437iM+hf59q8ESktDk6xzgztKtOfR73EbTTBrE1iJIMSoHcStVcwZEw7KSI18W5mIycHf/qFFS3y9Mx/zL9tWf8rDGUT+sE4mlrULBhSyziMeZtKcAHwXZg/z1HDVnoe7as0XDvZ1114Gfnj+Fe1O5ln4kEpFE8LIM=
+	t=1774283078; cv=none; b=nPRklvg+Y+bYdzr4qPjVyuwd6eTNsYCmmnOKJIhdikqt7SN4AzriRTqJcW67gkR/ejbq2wKvdOteZPKg2Mq1k8GudqYZsWX9/uWmNtSzUjs+XwjIeM0oM208s+XymiLY2YL/DnWvH6FeRt/qSTa88wzqpv+CyTAZz3yA2d7Iki4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774281252; c=relaxed/simple;
-	bh=1JXD3tbMeUCZPZw4eeaNwxtNY19aN/gno9Dq3cj7fNI=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=iPbdSq31WO6IASikVSTmPqbEPt+dd9LNIn39YttvCOqWAnNJGsMQ7o/1EnOjFti8iWBMidJ4mAO+dPUZTRBXHxtVrJxFVsUoEhlZhWHQo000XXe+eqeGRpZOV1Q62FrFp3VWFujpRYZZSrYUtAH0EO5f3zC3wP10tj38vkefUC8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=DfQKZXdn; arc=none smtp.client-ip=148.163.156.1
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+	s=arc-20240116; t=1774283078; c=relaxed/simple;
+	bh=0yKI8vbPNzHoqkTV0yKxdFRxvj0/LpVoQRkkpisgLuY=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=UNIHkFm3akH403oQr0rMGH08Ki9HXGRqD/OrPpvmG5Pek9k7lAHXsT7jmpXgJqVYJ/GehPYHEuRC6gzN5/uvJc2m91a8BNIdVvIFeE0DMoiZm+gG/l7O1pYXgdaSG+sl0a30kFFb2Ab/FqHPSdJnugkwesrUbTKTX8TnyusfT+Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=mzc+JQI0; arc=none smtp.client-ip=209.85.214.181
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="DfQKZXdn"
-Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 62NCnljl506491;
-	Mon, 23 Mar 2026 15:54:10 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=5Ee1FF
-	/7lZfHZW1Tntcb5eiOvEVmj+sP8ro1Tw3rgR4=; b=DfQKZXdnN8DYuxeh+Y+SA9
-	J4+ils4uda4iFBywXqvmvIS3sCP8nG6dgk6FLWRTUUppyuNce53rtjW6Ll3Qd5vC
-	vpSfNtLAH5kO8IaCD+2dTVlyurwzaPex27tUKry3eIcVq82XfC8OPmV/rgja3AEk
-	Lfo6M771alsY2N5AkgIFL0DLPfTwmiVWfkjfA9E2Wt881eGlI53bmOzCUMUH7lN3
-	BwZmvLS7LB2gdANxYa9vs3/3e8SBgPHCCYTnbz4gIP0bC6t93SQEFIJ7PeqRyh+J
-	cMuxSa5jhvLCZCnfrIF8YtTTIaBn+cNK7hAJjmvy0Iq/9jPyzi2+sO2Cr6+Kbnjg
-	==
-Received: from ppma12.dal12v.mail.ibm.com (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4d1kxq7m9q-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 23 Mar 2026 15:54:10 +0000 (GMT)
-Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma12.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 62NBZOhJ031631;
-	Mon, 23 Mar 2026 15:54:09 GMT
-Received: from smtprelay04.fra02v.mail.ibm.com ([9.218.2.228])
-	by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 4d25nsp456-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 23 Mar 2026 15:54:09 +0000
-Received: from smtpav06.fra02v.mail.ibm.com (smtpav06.fra02v.mail.ibm.com [10.20.54.105])
-	by smtprelay04.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 62NFs5vO29819580
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 23 Mar 2026 15:54:05 GMT
-Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 66E2E2004E;
-	Mon, 23 Mar 2026 15:54:05 +0000 (GMT)
-Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 2FB612004D;
-	Mon, 23 Mar 2026 15:54:05 +0000 (GMT)
-Received: from [9.111.26.142] (unknown [9.111.26.142])
-	by smtpav06.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Mon, 23 Mar 2026 15:54:05 +0000 (GMT)
-Message-ID: <6af0aa5c-6274-4614-a29c-0f373fd7b9b7@linux.ibm.com>
-Date: Mon, 23 Mar 2026 16:54:04 +0100
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="mzc+JQI0"
+Received: by mail-pl1-f181.google.com with SMTP id d9443c01a7336-2b052562254so202885ad.0
+        for <kvm@vger.kernel.org>; Mon, 23 Mar 2026 09:24:36 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1774283076; x=1774887876; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=T3ldqgT6JBnPQmHk8LHvu61BhVbR2PK1lqFwCMwVUO4=;
+        b=mzc+JQI0oGSnURDyym4xfap8mtE6ouKPURs/FGmnKu/W8Tdu4gy+c04GEXyaVvqeAm
+         tRl4p0JdfbxwPJECB7XsjTq7sIjiwnM9A5jbqKU9Cy8cWq+V2Ny+I9E5vMicIUIAiEb+
+         cNaCsUoqNlPoi7M6v9bq2DlMUyAreflLomrb9DIlU1edapCB2YlzlHDKRiGDBuN0egoL
+         MVEyAakmxV+0MgNsKJGA03V1mACwWfak1Bn4w1v03hicrk3jTNFoWTTJpa/xUDWaE9L9
+         LsZw5lArM3ul4cf07fYZT1+remU6C1r68IjX+Wv63Chzy2P79/4sZ9oRo+xRdHGiKEyQ
+         T66g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1774283076; x=1774887876;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=T3ldqgT6JBnPQmHk8LHvu61BhVbR2PK1lqFwCMwVUO4=;
+        b=AizSjsXmY/FymVURiqWQMUrd106xhNsdX5Pk39n/ocR+82AKYQ5P0PJwVkNchr2vLW
+         wrq1w2J4uJzuXUEuWR/9LkzcHwwTKoVMMGunGNhkoTD7uYN8W5skRhsgsPftU8Jsug8a
+         21zR5Z65kWqGJHlV9Dj0qw7l60uhsUT5auI/cbtIgBQmPdsZnpXN+uVOtD3B0z+ZWk7q
+         5xR3VUk4sHHOgCjj/KHGODKb3XaaY+dpyFPwZPciRWOYrGe+yW97m2UPVvfWr+s2ZF+A
+         BvsxF0RjhuE+Rh5WsiK04dWMaAEf8Q1RM1bieXp+k+HsEnVT5M0r2Eo5OVFNeK59FSnK
+         V48g==
+X-Forwarded-Encrypted: i=1; AJvYcCVkwZznNO0gxTYdxjHPtBMhfS8OB8Qv059s7PwY9sjO2LijuUFPYbyFIp3rjdmg9dbnXwc=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy5Uc8LWOy4vnelUuLHQIY2sgFtQUr7c++W7wGontWJgyksg7mT
+	4u+LZJP08sNoVefZL+dT5DHclLw/PPr3meDygAfNjipHz6PCHKBrkFJRNa6mm4oc4w==
+X-Gm-Gg: ATEYQzxVd6mg97jjslOpV+4kQ74k4yJwCklIDfH1iSzlSbQF+BphFC6wx1FhrzjnU23
+	0ynToHgofU5/UCwwWvLNUucgNmHPJrGLCuxJt+as6YiqsGYvjMBauxNOeYz+Xt+9Q94GkEHKskc
+	h217bEq/1PpoDDjbkd3d+MDEUDRZtxw637zg5nyKYG8mWXNsHSZtU8qfdqGrCPM5VEGpukjp7/2
+	40hbTiolQheKR/MfNtn/MilVGXu6lpbZTwTD9Xtu1kZyjuzTDYhc6UBam3d1TAEDRWNMIfsCfQc
+	Hqm4ct9dEauzA2ywsUmWYQimk3vKRty5hHj4nPbRWY+I99gjhSTbSmkXIwv9g7nm9VwYt2FaSwu
+	gFcbR/2/+PW6G0K5aLbyFg4gqoi2G9CqsdwbOIxoU7w5jnxoE9icrCS+YYt05NvADjgIeifTaUE
+	/WwRGGNuaHSn9KVaj17vkvUO2cyl8Bw2Z9K883kEnBB8lQSctRjf0EOgE8wR9ZiA==
+X-Received: by 2002:a17:902:fc4b:b0:2ae:4e8e:954e with SMTP id d9443c01a7336-2b08c423bcdmr4886495ad.5.1774283075771;
+        Mon, 23 Mar 2026 09:24:35 -0700 (PDT)
+Received: from google.com (168.136.83.34.bc.googleusercontent.com. [34.83.136.168])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-35bc5ff704bsm13278934a91.2.2026.03.23.09.24.34
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 23 Mar 2026 09:24:35 -0700 (PDT)
+Date: Mon, 23 Mar 2026 16:24:30 +0000
+From: Samiullah Khawaja <skhawaja@google.com>
+To: Vipin Sharma <vipinsh@google.com>
+Cc: David Woodhouse <dwmw2@infradead.org>, 
+	Lu Baolu <baolu.lu@linux.intel.com>, Joerg Roedel <joro@8bytes.org>, Will Deacon <will@kernel.org>, 
+	Jason Gunthorpe <jgg@ziepe.ca>, YiFei Zhu <zhuyifei@google.com>, 
+	Robin Murphy <robin.murphy@arm.com>, Kevin Tian <kevin.tian@intel.com>, 
+	Alex Williamson <alex@shazbot.org>, Shuah Khan <shuah@kernel.org>, iommu@lists.linux.dev, 
+	linux-kernel@vger.kernel.org, kvm@vger.kernel.org, Saeed Mahameed <saeedm@nvidia.com>, 
+	Adithya Jayachandran <ajayachandra@nvidia.com>, Parav Pandit <parav@nvidia.com>, 
+	Leon Romanovsky <leonro@nvidia.com>, William Tu <witu@nvidia.com>, 
+	Pratyush Yadav <pratyush@kernel.org>, Pasha Tatashin <pasha.tatashin@soleen.com>, 
+	David Matlack <dmatlack@google.com>, Andrew Morton <akpm@linux-foundation.org>, 
+	Chris Li <chrisl@kernel.org>, Pranjal Shrivastava <praan@google.com>
+Subject: Re: [PATCH 10/14] iommufd-lu: Implement ioctl to let userspace mark
+ an HWPT to be preserved
+Message-ID: <acFooviUrdnfudV6@google.com>
+References: <20260203220948.2176157-1-skhawaja@google.com>
+ <20260203220948.2176157-11-skhawaja@google.com>
+ <20260319231331.GB3983821.vipinsh@google.com>
+ <abyU3g-ta6Gg6kEx@google.com>
+ <20260320232634.GC659132.vipinsh@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC 05/10] KVM: s390: vsie: Cleanup and fixup of crycb handling
-To: Anthony Krowiak <akrowiak@linux.ibm.com>, kvm@vger.kernel.org
-Cc: linux-s390@vger.kernel.org, imbrenda@linux.ibm.com,
-        borntraeger@linux.ibm.com
-References: <20260316180310.17765-1-frankja@linux.ibm.com>
- <20260316180310.17765-6-frankja@linux.ibm.com>
- <28fafe1d-3b4d-42cf-b503-ca4e5782429c@linux.ibm.com>
-Content-Language: en-US
-From: Janosch Frank <frankja@linux.ibm.com>
-Autocrypt: addr=frankja@linux.ibm.com; keydata=
- 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
-In-Reply-To: <28fafe1d-3b4d-42cf-b503-ca4e5782429c@linux.ibm.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: LhVjo_SlkiSBTzq3Mhecm2oyLaZXcvaa
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMzIzMDEyMiBTYWx0ZWRfX88J96a1mPYtE
- K41ATq/Z/dgfZnHndos+40lE1jtIjLX6DgPfzKWFat4beONX8x60xIoIMU2bsydd5OTLV+7SuuQ
- 9eWoznEk/vvYmZJSFjoIM+T0MiVy3sx6cUdKINPNgnpQzOY/gNcE34TDpgIBe3S/UxMnSe07kTC
- RpvJrSYa2rT83lZq6l7wSanD+LviZIDZA0R38NI51EDzEcweu3ierY5G7EYZpKLFn4Y/kDEiybL
- eRTS2SlCOJnUlC7K4Q3BNZ6sJpLebVbcSRg6BEyBHgDG7xIdWXvYw6BBTSorNhetcSpvbWCfRay
- MHM9ugQIQLepIc3O6aE0+++BS/g50nydbBCYDTf5Dg+/2L/4r2YOIC2w38oGg+OszK7+ZZxzQsk
- 9z9adkBQk8SlOluJhhlv3a2pza849b1PwIZi6VQ2/4o8Gl/9eVTnDOexdbH9QVQrsbZEUn+3F8P
- TkaD58ET2MhW3AY67QA==
-X-Authority-Analysis: v=2.4 cv=bLEb4f+Z c=1 sm=1 tr=0 ts=69c16222 cx=c_pps
- a=bLidbwmWQ0KltjZqbj+ezA==:117 a=bLidbwmWQ0KltjZqbj+ezA==:17
- a=IkcTkHD0fZMA:10 a=Yq5XynenixoA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=RnoormkPH1_aCDwRdu11:22 a=iQ6ETzBq9ecOQQE5vZCe:22 a=VnNF1IyMAAAA:8
- a=Je7L4_Addt-7NUGo9P0A:9 a=QEXdDO2ut3YA:10
-X-Proofpoint-GUID: LhVjo_SlkiSBTzq3Mhecm2oyLaZXcvaa
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
- definitions=2026-03-23_04,2026-03-23_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- spamscore=0 adultscore=0 clxscore=1015 phishscore=0 impostorscore=0
- malwarescore=0 lowpriorityscore=0 suspectscore=0 bulkscore=0
- priorityscore=1501 classifier=typeunknown authscore=0 authtc= authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2603050001
- definitions=main-2603230122
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Disposition: inline
+In-Reply-To: <20260320232634.GC659132.vipinsh@google.com>
 
-On 3/20/26 13:01, Anthony Krowiak wrote:
-> 
-> 
-> On 3/16/26 12:23 PM, Janosch Frank wrote:
->> The crycbd denotes an absolute address and as such we need to use
->> gpa_t and read_guest_abs() instead of read_guest_real().
+On Fri, Mar 20, 2026 at 04:34:41PM -0700, Vipin Sharma wrote:
+>On Fri, Mar 20, 2026 at 12:40:44AM +0000, Samiullah Khawaja wrote:
+>> On Thu, Mar 19, 2026 at 04:35:32PM -0700, Vipin Sharma wrote:
+>> > On Tue, Feb 03, 2026 at 10:09:44PM +0000, Samiullah Khawaja wrote:
+>> > > From: YiFei Zhu <zhuyifei@google.com>
+>> > > @@ -374,6 +374,10 @@ struct iommufd_hwpt_paging {
+>> > >  	bool auto_domain : 1;
+>> > >  	bool enforce_cache_coherency : 1;
+>> > >  	bool nest_parent : 1;
+>> > > +#ifdef CONFIG_IOMMU_LIVEUPDATE
+>> > > +	bool lu_preserve : 1;
+>> > > +	u32 lu_token;
+>> >
+>> > Should we use full name i.e. liveupdate here and other places in this
+>> > series?
 >>
->> We don't want to copy the reserved fields into the host, so let's
->> define size constants that only include the masks and ignore the
->> reserved fields.
+>> I think using full name liveupdate would be too long in other places in
+>> this series. And also there are other examples of "luo" being used as a
+>> short form. Please see:
 >>
->> While we're at it, remove magic constants with compiler backed
->> constants.
->>
->> Signed-off-by: Janosch Frank <frankja@linux.ibm.com>
->> ---
->>    arch/s390/include/asm/kvm_host.h |  6 ++++
->>    arch/s390/kvm/vsie.c             | 50 +++++++++++++++-----------------
->>    2 files changed, 30 insertions(+), 26 deletions(-)
->>
->> diff --git a/arch/s390/include/asm/kvm_host.h b/arch/s390/include/asm/kvm_host.h
->> index 64a50f0862aa..52827db2fa97 100644
->> --- a/arch/s390/include/asm/kvm_host.h
->> +++ b/arch/s390/include/asm/kvm_host.h
->> @@ -516,6 +516,8 @@ struct kvm_s390_crypto {
->>    	__u8 apie;
->>    };
->>    
->> +#define APCB_NUM_MASKS 3
->> +
->>    #define APCB0_MASK_SIZE 1
->>    struct kvm_s390_apcb0 {
->>    	__u64 apm[APCB0_MASK_SIZE];		/* 0x0000 */
->> @@ -540,6 +542,10 @@ struct kvm_s390_crypto_cb {
->>    	struct kvm_s390_apcb1 apcb1;		/* 0x0080 */
->>    };
->>    
->> +#define APCB_KEY_MASK_SIZE \
-> 
-> Not critical, but should this maybe be APCB_KEY_MASKS_SIZE
-> or APCB_WRAPPING_KEY_MASKS_SIZE since
+>> https://lore.kernel.org/all/20251125165850.3389713-15-pasha.tatashin@soleen.com/
+>
+>That patch is using "luo" short, which I think is also wrong in saying
+>memfd_luo, as there is nothing related to orchestrator (O of LUO) in
+>that patch. It is saving memfd state for liveupdate. But that ship has
+>sailed.
 
-Sure, both would be fine with me.
+Yes, I think that makes sense.
+>
+>In the current patch, I don't think it will be too long, and it also
+>easier to read code without someone to know what "lu" is. We have worked
+>on it so we know what "lu" stands for and kind of accepted it but I
+>agree what Greg k-h was also suggesting.
 
+Agreed, in this patch it won't be too long. I think for the public API
+being used in other subsystems we can use "liveupdate", but internally
+we can use lu. I will rework this.
+>
+>https://lore.kernel.org/all/2025093023-frantic-sediment-9849@gregkh/
+> - "You have more letters, please use them.  "lu" is too short."
+>
+>Not a hard no from me, just a suggestion.
 
-> it encompasses both key masks? That notwithstanding:
-> 
-> Reviewed-by: Anthony Krowiak <akrowiak@linux.ibm.com>
-> 
+Thanks,
+Sami
