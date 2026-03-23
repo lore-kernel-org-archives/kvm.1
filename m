@@ -1,167 +1,194 @@
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3E3023C279A
-	for <kvm@vger.kernel.org>; Mon, 23 Mar 2026 16:47:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774284458; cv=none; b=sginaTrrzdRaZEIDNOKFIOMRhH0y1YS5unQzg2iPkN+zDOKdtGuKzYGbZ/3QKBQ+/eUsjTau8tGltCaQKp5ZyuSZSFVjsSw+ESUADuPknx+6N3yBTxyOa3F9dB0w2T76Q98dyvTiHkEkLNwl/XE5yH0RJS6ES6RNNI2YYe3jTGQ=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774284458; c=relaxed/simple;
-	bh=yuhmLMuJlV2TQhDuWBynLTirIlMJcbCV0ZkxezzIWCM=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OUN/YqSm5ZIPpcOlVAhImdcGucR6kkjSFTqm6sOrhJGkCXoJzhxIu/rv1I3IZIPsHEMizZmwaJf7ZLW0GJQW+AlUBcN7spOYTNlSEQjqiV48dGCkP82JwX0GnLpyQ2jxR8SjrTEk2LfdLF/M7m+lfSvTVwfkBjlEMG0DMQEQ4js=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id A1225169E;
-	Mon, 23 Mar 2026 09:47:30 -0700 (PDT)
-Received: from e142021.fritz.box (usa-sjc-mx-foss1.foss.arm.com [172.31.20.19])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 0985F3F73B;
-	Mon, 23 Mar 2026 09:47:34 -0700 (PDT)
-From: Andre Przywara <andre.przywara@arm.com>
-To: Will Deacon <will@kernel.org>,
-	Julien Thierry <julien.thierry.kdev@gmail.com>
-Cc: maz@kernel.org,
-	Sascha Bischoff <Sascha.Bischoff@arm.com>,
+Received: from CH5PR02CU005.outbound.protection.outlook.com (mail-northcentralusazon11012068.outbound.protection.outlook.com [40.107.200.68])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 09D3329B228;
+	Mon, 23 Mar 2026 17:00:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.200.68
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1774285240; cv=fail; b=cWpFwPRWdMihXY3Wmk7KD8qKe2UZHNA2ifwzXqlLrrNnWrHYbJC5mvNvBQmu2e/A+k9FjV/biIfm2xE1CvBn2SJGP0AIjljqYDx1ptIhiM3B146C639UPsinSd5WWBLO8125aVDvDSF2qT4lyZru0nkEL45BeMmjYOVHOW1nXhY=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1774285240; c=relaxed/simple;
+	bh=ab7IWwhLs9g9VnBXNXusZz0s/XXZsRzfZ8q3h+t1NuE=;
+	h=From:To:Cc:Subject:Date:Message-ID:Content-Type:MIME-Version; b=D1j+RBn+fwM1SLZHTv7tAs5yGfIiWM7URGTj4ULXnfV5fZpaXNnDDJ8JrCTx8sAcoQ6FA+dQofnjCB30Y7r/dPYbdN+NLKCbSS3AR4GcogzpIaGepa8BiHVHW6kSMHCPFgM2F1292tjDzQc1vFnHCDJ9makqYqRLgHFTbeMbppE=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=ivkS3+j7; arc=fail smtp.client-ip=40.107.200.68
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="ivkS3+j7"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=Rw+1YxkhH90m9mkeRDBEMR82ujCxF9NJMpwIaAOqWV/4oXJlPFtWZwuDm4H6lkrVltCUP/uP0ChuBVTMW51sMsMo8T0bcvTHfk2vE0DITQPyzuRDTQ6+FDlrQrd6ma8WmdJ2dViplokSTDPDWmbQWbk2mQuWdk8OW/t3JODeOwhq3UV1mgmcIQezqX8jtoUdLXkGHVU9HKGZ1cN+5jKg4TyY+aKkZQJ77sEmIjxf0f3V3ugqrFUuI848Z+dmKM3RFAR6FHMBb3zrt/cVKvGeNDhaT8tgggipnLrtaP+XxqVc+HhIQMf9525ivomromnM46RIXksAz5qn8Vxe1VAEng==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=30T5vUIZOtaM1x4GHKn97Shq0e6+bv7pyqk/c0OYpxY=;
+ b=iJ2VFFGDLIoEjF+cpG2rJPZvUg8PheJWz42JPGSBppOaGErhumbKUrgS8cP6PDqNdi+29Ej9FUyTPOv7ueWV6BX/6kcKwQNtqVr37yRq507suwp8w+FOmWDgwgMyg4/S72sbDaNF4adpp1KH2x/CrNMjnYQP1cZ78typqkH+gsKrGqR9rarx/6Cz6cVMyeN/BTN3vTyv9kDEx2RWIazwYvAXG/+bq/KMKPy6/pOZulX+3yitcnYFl7R5fQEscQapOPBPIcYzs47zCxGTtv7fWn4+PEgwFgd3ZKgNWBZpi4FDXwXy/1RKCfT6XGcRaSUxF9HsWfNR0XGM/uQCaJs8wg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=30T5vUIZOtaM1x4GHKn97Shq0e6+bv7pyqk/c0OYpxY=;
+ b=ivkS3+j7ohU3x4HhPBrZz8vG2CqBcNa8WiNngKQcKJLbotu8f3DYIzkJAYmmO/VOq4Ul4bknk8Gtiiz67vnWR6inkkRWvAJ5Cx4+w1+aw3g+2TEr+Sl/G+f6CogzquzEqWCe1FmsgO0lQTgb/irUbylatJwRQErBSQf3Kb40aXU+UBKzAJyldTpNET9yDz5kGVuzj9eDbF+MPEFd/etfhJg1z5w7EhhrSWTMYvkZ8Cm15sw4XLnxXCSvNW3WyGg4cz541iVSk7KiUFg7bQZgm83OEO3aN/VJ16Qj8nUd0tH3HvXKk0gSu9EYSEUm3/EmPgokFz/fm7rzcBkxJWCpbg==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from PH0PR12MB8800.namprd12.prod.outlook.com (2603:10b6:510:26f::12)
+ by LV3PR12MB9236.namprd12.prod.outlook.com (2603:10b6:408:1a5::15) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9745.20; Mon, 23 Mar
+ 2026 17:00:35 +0000
+Received: from PH0PR12MB8800.namprd12.prod.outlook.com
+ ([fe80::f79d:ddc5:2ad7:762d]) by PH0PR12MB8800.namprd12.prod.outlook.com
+ ([fe80::f79d:ddc5:2ad7:762d%4]) with mapi id 15.20.9745.019; Mon, 23 Mar 2026
+ 17:00:35 +0000
+From: Yury Norov <ynorov@nvidia.com>
+To: linux-kernel@vger.kernel.org,
+	Bibo Mao <maobibo@loongson.cn>,
+	Huacai Chen <chenhuacai@kernel.org>,
+	Rasmus Villemoes <linux@rasmusvillemoes.dk>,
+	Tianrui Zhao <zhaotianrui@loongson.cn>,
+	WANG Xuerui <kernel@xen0n.name>,
+	Yury Norov <yury.norov@gmail.com>,
+	David Howells <dhowells@redhat.com>,
 	kvm@vger.kernel.org,
-	kvmarm@lists.linux.dev,
-	Alexandru Elisei <alexandru.elisei@arm.com>
-Subject: [PATCH kvmtool v7 6/6] arm64: Handle virtio endianness reset when running nested
-Date: Mon, 23 Mar 2026 17:47:17 +0100
-Message-ID: <20260323164717.2571585-7-andre.przywara@arm.com>
+	loongarch@lists.linux.dev
+Cc: Yury Norov <ynorov@nvidia.com>,
+	Andy Shevchenko <andriy.shevchenko@intel.com>
+Subject: [PATCH] lib: count_zeros: unify count_{leading,trailing}_zeros()
+Date: Mon, 23 Mar 2026 13:00:32 -0400
+Message-ID: <20260323170032.109858-1-ynorov@nvidia.com>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20260323164717.2571585-1-andre.przywara@arm.com>
-References: <20260323164717.2571585-1-andre.przywara@arm.com>
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: BN9PR03CA0336.namprd03.prod.outlook.com
+ (2603:10b6:408:f6::11) To PH0PR12MB8800.namprd12.prod.outlook.com
+ (2603:10b6:510:26f::12)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PH0PR12MB8800:EE_|LV3PR12MB9236:EE_
+X-MS-Office365-Filtering-Correlation-Id: 56271343-798e-41ae-4f92-08de88fdb34c
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|10070799003|376014|7416014|366016|1800799024|921020|56012099003|18002099003;
+X-Microsoft-Antispam-Message-Info:
+	Nh9WiFI1xL8Ezfhudzt2ONa+qFjMClY+Lf8RG63OvmkDDmN2dajGO1NcSyqW3TKJsrrHAe53VjoLqWiaKvTiK+0Ns3XO4J+zbL/7bXOXuZgpEwRVAas7qVxhBmgcihdy4Yv8SK7q2yOzZXyQg8MGV7TFYEXc6h/6j8DLMP0MZw476ixQtjOBT7nkG8x3zgKTHkBgKXBisPULWZIT09o1xs5D6Nanka77czeX5qG322atUkNpNYX4D8TTeJynC1WP21rBtU0QznzvXwysoKP2ImqTKlABoOXv9f3a13sA8eLOi8i4ptbfDRKCGwmC+XzWKUzBG+wRzNDCNFYoLYBXt2EdGeXb+6t8bOiCiZUzg+OtCGjDeibjxxagYRc+Hpfu2+Bzhn+4HYdLZ/xWUmKTvERoVbDGNyMcO/VKpp596htxaxxrEhMOpgsmSo3jFbBlApg+yZK/xe0FHbYZ1zsoW8sC5Cd3goCNEQon5OZfyuh/oLqNZZyz1JKSrOtzabOXTuGMiNLC1n5ytD2Gfhl7XECl9iHrcjWrVpRbqZudRYFqrHDSjl66VLSR8qalXl3Hg4i9XGAaXyLj/OpfVnCImOYRQ71HVadbOOU8XtJAF8IXd0StiU+jsi4BaobEDRnjt+WpNIeuu+8+C3U10dk89HFb2xCKJUpCNU8Li8uwr5FOlff9YxF+t8dgSprknk/gRVrM/ss5U0P5rPaKQsGr69speu4guOOU6uL+lOny0flF7F6cGFtHes7yC0b+S+xNMWWZMOMZRVNLWLtuVHWQUw==
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH0PR12MB8800.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(10070799003)(376014)(7416014)(366016)(1800799024)(921020)(56012099003)(18002099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?1GrTrIUgbiXcFwlRZ4LzViDVRgv9M7fs598RFPKXd+tgbK4L6pcP7iEfFB5M?=
+ =?us-ascii?Q?2g8UVOZ8wMBtIt76GLhjlMRhdkr7td8rw3R3eO+VqbO0cIKruEiAp1EbRucO?=
+ =?us-ascii?Q?dacbeUWOLVf/1TQ30MrQx8r58uoD25ooq45/nwD9BNa+JqmvhGMXtEst5viZ?=
+ =?us-ascii?Q?tinR2tufEHa0/Mn6M4Ot2pl7IYw6fF+bKXMbScilC+l0REl3qPUJdZQK6sfJ?=
+ =?us-ascii?Q?JulYSQwLSBweuhRwIGp1Fe3qKo6RpRqtioXJWr2Z3QgzAWLqlQCQxnDsjqPp?=
+ =?us-ascii?Q?/p4SQd2zjKaQxt2+BFwTufGr7oix3+OiwuMu+XauE5dUKs9qiy7QdgzLaz7f?=
+ =?us-ascii?Q?KIta7xINdMYejEQ4pq4C4tfwR1ujP5TJTDpp3xE9PWN88+LF5fl5uo0++7za?=
+ =?us-ascii?Q?SWuai87W+Zcpl+E3j+rY7QQGiob+ANBYVnJWaP+bYbMCga8UJBwmMpc1+5s5?=
+ =?us-ascii?Q?oICcAw2kz14emVNSZPYuWo2vk4fwSGexjvexgdvEShDV1MYLGxgla1nyC1O3?=
+ =?us-ascii?Q?I/yy7KYLRSqlOYOLYgwqM1FY2Bs8U3fQA2Srvegl/5ViBv2XDqcTeQeqZ9pR?=
+ =?us-ascii?Q?UboSlzdfhyHL02wd3Qh/d4ZuvioNJ4hbHVVq0g7F5VpLlMrzI9t0obYY6iSh?=
+ =?us-ascii?Q?lGbb7WZgITtOWOxoglmlOL/2PWcbU4LcE0u82DPZG6fTv87tHDPsbkPz8aSd?=
+ =?us-ascii?Q?8wtJg6FUYYRmH3hfIwdnkJ5krWZNAKfQCT9bvBC/vuwjX1P++fUXvN/rBujw?=
+ =?us-ascii?Q?UlySIp/RDvHM0X6EUSXGfYlVZenZwR8A8B2ioUVQWmSF2/sEtkXi1BHHt1Ay?=
+ =?us-ascii?Q?MRdCZTgzE3+yduBmCyS79nGv/AqHlVkUn9IBSQj/P0kt8RE3hOqKX+pQCRXH?=
+ =?us-ascii?Q?8fH/pY4T9Xz5FtxrKa7kavU/Fji2JO4JLEWq9D0BWJHms5BMexk0qPqgAtKt?=
+ =?us-ascii?Q?dDOrjIr6ZDecmUJlcoYdNWitfnrIMmEOUrYAoBYu/nyG/lwAq8HbfSqwQ7Bv?=
+ =?us-ascii?Q?b7hZ1gJRVTTqF24xIpFjRCFB+HlP0cn8FguKz4clc2ODKyhKDFRpt4WTxg+H?=
+ =?us-ascii?Q?hltNoTG6gJqU+nF/NwgSOPSRoHwLD7XIpwz+ylbnyJPE/5BaZqCzVUpeLuvf?=
+ =?us-ascii?Q?CsTXVgWd0EPpH2rmpswF7la46uRjyhNHEBf+ubyZkk7HqDfXdYinbRrcORbv?=
+ =?us-ascii?Q?r/c+ObV8DpL1u/tkpb07AsgX/Xo9S8jvfIqyDnazCMI7dgQTSm91LHIGD67a?=
+ =?us-ascii?Q?RKPa/jqwFAafbquXy7mX7K5r+pvYv1J5WqYBFHtyxZvbCjVvSSJExxGjKc44?=
+ =?us-ascii?Q?brbC/ndOyUsABDeK2awFaUhm49oOl5vhisFSi5P658qMIeqSC9/y3Zc1NQ7B?=
+ =?us-ascii?Q?TAbOg/+PbjhODGOJEVZziydAgEkTLGzl3m1he3JYykWHrwef/8opipw0uqeu?=
+ =?us-ascii?Q?vVmyRrITwk1zuekQ/o2Y48i35pyiNtF4otS7lHUD1yW9qHGWK3LgtMcXRoxL?=
+ =?us-ascii?Q?xxlFy/eEPCzmBXYthCWKN3l5POig39DBGfWeqdUo+g4w/J6rue6NATHFnzUt?=
+ =?us-ascii?Q?91sUSOzHQjp62fDSYI68GL3v4uEnTDGJS7DJ6uCn2O89Bq55TRRjSd2Q4oA5?=
+ =?us-ascii?Q?KN6OH29K2Mzy1Vx9i7XY2x5yrPKhoeivxiLRvPOTd3cESVod2z+y1psKyoBt?=
+ =?us-ascii?Q?RXe0KIn7PhidW4ItZ/+Zn8lK4EsbIUfqM0QVUh+j1EPiVNT2MZLAsi8+Z2h5?=
+ =?us-ascii?Q?LavJjN2N2sMqNXyJXhSW9pK5YEM1XV7NLWM5eWmu2xOAkm5/GQnq?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 56271343-798e-41ae-4f92-08de88fdb34c
+X-MS-Exchange-CrossTenant-AuthSource: PH0PR12MB8800.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 23 Mar 2026 17:00:35.1492
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: +NDYq6ZFr/OCrEAoOe3tvFgGK9YmjhySniO2TGkAMl0RoKxucAoIEgJjE0RNEr9MFVRIFW5XvGQd6RvUiEzHTA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: LV3PR12MB9236
 
-From: Marc Zyngier <maz@kernel.org>
+The 'leading' helper returns BITS_PER_LONG if x == 0, while 'trailing'
+one returns COUNT_TRAILING_ZEROS_0, which turns to be -1.
 
-When running an EL2 guest, we need to make sure we don't sample
-SCTLR_EL1 to work out the virtio endianness, as this is likely
-to be a bit random.
+None of the current users explicitly check the returned value for
+COUNT_TRAILING_ZEROS_0, except the loongarch, which tests implicitly
+for the '>= 0'.
 
-Signed-off-by: Marc Zyngier <maz@kernel.org>
-Signed-off-by: Andre Przywara <andre.przywara@arm.com>
+So, align count_trailing_zeros() with the count_leading_zeros(), and
+simplify the loongarch handling.
+
+Signed-off-by: Yury Norov <ynorov@nvidia.com>
 ---
- arm64/include/kvm/kvm-cpu-arch.h |  5 +--
- arm64/kvm-cpu.c                  | 58 ++++++++++++++++++++++++++------
- 2 files changed, 51 insertions(+), 12 deletions(-)
+On top of bitmap-for-next.
 
-diff --git a/arm64/include/kvm/kvm-cpu-arch.h b/arm64/include/kvm/kvm-cpu-arch.h
-index 1af394aa..88cef813 100644
---- a/arm64/include/kvm/kvm-cpu-arch.h
-+++ b/arm64/include/kvm/kvm-cpu-arch.h
-@@ -10,8 +10,9 @@
- #define ARM_MPIDR_HWID_BITMASK	0xFF00FFFFFFUL
- #define ARM_CPU_ID		3, 0, 0, 0
- #define ARM_CPU_ID_MPIDR	5
--#define ARM_CPU_CTRL		3, 0, 1, 0
--#define ARM_CPU_CTRL_SCTLR_EL1	0
-+#define SYS_SCTLR_EL1		3, 0, 1, 0, 0
-+#define SYS_SCTLR_EL2		3, 4, 1, 0, 0
-+#define SYS_HCR_EL2		3, 4, 1, 1, 0
+ arch/loongarch/kvm/intc/eiointc.c | 4 ++--
+ include/linux/count_zeros.h       | 6 ++----
+ 2 files changed, 4 insertions(+), 6 deletions(-)
+
+diff --git a/arch/loongarch/kvm/intc/eiointc.c b/arch/loongarch/kvm/intc/eiointc.c
+index d2acb4d09e73..3b5268116727 100644
+--- a/arch/loongarch/kvm/intc/eiointc.c
++++ b/arch/loongarch/kvm/intc/eiointc.c
+@@ -16,7 +16,7 @@ static void eiointc_set_sw_coreisr(struct loongarch_eiointc *s)
+ 		ipnum = (s->ipmap >> (irq / 32 * 8)) & 0xff;
+ 		if (!(s->status & BIT(EIOINTC_ENABLE_INT_ENCODE))) {
+ 			ipnum = count_trailing_zeros(ipnum);
+-			ipnum = (ipnum >= 0 && ipnum < 4) ? ipnum : 0;
++			ipnum = ipnum < 4 ? ipnum : 0;
+ 		}
  
- struct kvm_cpu {
- 	pthread_t	thread;
-diff --git a/arm64/kvm-cpu.c b/arm64/kvm-cpu.c
-index 5e4f3a7d..7b012e7a 100644
---- a/arm64/kvm-cpu.c
-+++ b/arm64/kvm-cpu.c
-@@ -12,6 +12,8 @@
+ 		cpuid = ((u8 *)s->coremap)[irq];
+@@ -41,7 +41,7 @@ static void eiointc_update_irq(struct loongarch_eiointc *s, int irq, int level)
+ 	ipnum = (s->ipmap >> (irq / 32 * 8)) & 0xff;
+ 	if (!(s->status & BIT(EIOINTC_ENABLE_INT_ENCODE))) {
+ 		ipnum = count_trailing_zeros(ipnum);
+-		ipnum = (ipnum >= 0 && ipnum < 4) ? ipnum : 0;
++		ipnum = ipnum < 4 ? ipnum : 0;
+ 	}
  
- #define SCTLR_EL1_E0E_MASK	(1 << 24)
- #define SCTLR_EL1_EE_MASK	(1 << 25)
-+#define HCR_EL2_TGE		(1UL << 27)
-+#define HCR_EL2_E2H		(1UL << 34)
+ 	cpu = s->sw_coremap[irq];
+diff --git a/include/linux/count_zeros.h b/include/linux/count_zeros.h
+index 5034a30b5c7c..b72ba3faa036 100644
+--- a/include/linux/count_zeros.h
++++ b/include/linux/count_zeros.h
+@@ -10,8 +10,6 @@
  
- static int debug_fd;
+ #include <asm/bitops.h>
  
-@@ -408,7 +410,8 @@ int kvm_cpu__get_endianness(struct kvm_cpu *vcpu)
+-#define COUNT_TRAILING_ZEROS_0 (-1)
+-
+ /**
+  * count_leading_zeros - Count the number of zeros from the MSB back
+  * @x: The value
+@@ -38,11 +36,11 @@ static inline int count_leading_zeros(unsigned long x)
+  *
+  * If the LSB of @x is set, the result is 0.
+  * If only the MSB of @x is set, then the result is BITS_PER_LONG-1.
+- * If @x is 0 then the result is COUNT_TRAILING_ZEROS_0.
++ * If @x is 0 then the result is BITS_PER_LONG.
+  */
+ static inline int count_trailing_zeros(unsigned long x)
  {
- 	struct kvm_one_reg reg;
- 	u64 psr;
--	u64 sctlr;
-+	u64 sctlr, bit;
-+	u64 hcr = 0;
- 
- 	/*
- 	 * Quoting the definition given by Peter Maydell:
-@@ -419,8 +422,9 @@ int kvm_cpu__get_endianness(struct kvm_cpu *vcpu)
- 	 * We first check for an AArch32 guest: its endianness can
- 	 * change when using SETEND, which affects the CPSR.E bit.
- 	 *
--	 * If we're AArch64, use SCTLR_EL1.E0E if access comes from
--	 * EL0, and SCTLR_EL1.EE if access comes from EL1.
-+	 * If we're AArch64, determine which SCTLR register to use,
-+	 * depending on NV being used or not. Then use either the E0E
-+	 * bit for EL0, or the EE bit for EL1/EL2.
- 	 */
- 	reg.id = ARM64_CORE_REG(regs.pstate);
- 	reg.addr = (u64)&psr;
-@@ -430,16 +434,50 @@ int kvm_cpu__get_endianness(struct kvm_cpu *vcpu)
- 	if (psr & PSR_MODE32_BIT)
- 		return (psr & COMPAT_PSR_E_BIT) ? VIRTIO_ENDIAN_BE : VIRTIO_ENDIAN_LE;
- 
--	reg.id = ARM64_SYS_REG(ARM_CPU_CTRL, ARM_CPU_CTRL_SCTLR_EL1);
-+	if (vcpu->kvm->cfg.arch.nested_virt) {
-+		reg.id = ARM64_SYS_REG(SYS_HCR_EL2);
-+		reg.addr = (u64)&hcr;
-+		if (ioctl(vcpu->vcpu_fd, KVM_GET_ONE_REG, &reg) < 0)
-+			die("KVM_GET_ONE_REG failed (HCR_EL2)");
-+	}
-+
-+	switch (psr & PSR_MODE_MASK) {
-+	case PSR_MODE_EL0t:
-+		switch (hcr & (HCR_EL2_E2H | HCR_EL2_TGE)) {
-+		case HCR_EL2_E2H | HCR_EL2_TGE: /* EL2&0 */
-+			reg.id = ARM64_SYS_REG(SYS_SCTLR_EL2);
-+			bit = SCTLR_EL1_E0E_MASK;
-+			break;
-+		case HCR_EL2_TGE:		/* EL2 */
-+			reg.id = ARM64_SYS_REG(SYS_SCTLR_EL2);
-+			bit = SCTLR_EL1_EE_MASK;
-+			break;
-+		case HCR_EL2_E2H:		/* EL1&0 (VHE) */
-+		default:			/* EL1&0 (!VHE) */
-+			reg.id = ARM64_SYS_REG(SYS_SCTLR_EL1);
-+			bit = SCTLR_EL1_E0E_MASK;
-+			break;
-+		}
-+		break;
-+	case PSR_MODE_EL1t:
-+	case PSR_MODE_EL1h:
-+		reg.id = ARM64_SYS_REG(SYS_SCTLR_EL1);
-+		bit = SCTLR_EL1_EE_MASK;
-+		break;
-+	case PSR_MODE_EL2t:
-+	case PSR_MODE_EL2h:
-+		reg.id = ARM64_SYS_REG(SYS_SCTLR_EL2);
-+		bit = SCTLR_EL1_EE_MASK;
-+		break;
-+	default:
-+		die("What's that mode???\n");
-+	}
-+
- 	reg.addr = (u64)&sctlr;
- 	if (ioctl(vcpu->vcpu_fd, KVM_GET_ONE_REG, &reg) < 0)
--		die("KVM_GET_ONE_REG failed (SCTLR_EL1)");
-+		die("KVM_GET_ONE_REG failed (SCTLR_ELx)");
- 
--	if ((psr & PSR_MODE_MASK) == PSR_MODE_EL0t)
--		sctlr &= SCTLR_EL1_E0E_MASK;
--	else
--		sctlr &= SCTLR_EL1_EE_MASK;
--	return sctlr ? VIRTIO_ENDIAN_BE : VIRTIO_ENDIAN_LE;
-+	return (sctlr & bit) ? VIRTIO_ENDIAN_BE : VIRTIO_ENDIAN_LE;
+-	return (x != 0) ? __ffs(x) : COUNT_TRAILING_ZEROS_0;
++	return x ? __ffs(x) : BITS_PER_LONG;
  }
  
- void kvm_cpu__show_code(struct kvm_cpu *vcpu)
+ #endif /* _LINUX_BITOPS_COUNT_ZEROS_H_ */
 -- 
-2.43.0
-
